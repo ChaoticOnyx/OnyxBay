@@ -71,7 +71,6 @@
 	icon_state = "blueneckscarf"
 	item_state = "blueneckscarf"
 	w_class = ITEM_SIZE_SMALL
-	gas_transfer_coefficient = 0.90
 
 /obj/item/clothing/mask/redwscarf
 	name = "red white scarf"
@@ -79,7 +78,6 @@
 	icon_state = "redwhite_scarf"
 	item_state = "redwhite_scarf"
 	w_class = ITEM_SIZE_SMALL
-	gas_transfer_coefficient = 0.90
 
 /obj/item/clothing/mask/greenscarf
 	name = "green scarf"
@@ -87,7 +85,6 @@
 	icon_state = "green_scarf"
 	item_state = "green_scarf"
 	w_class = ITEM_SIZE_SMALL
-	gas_transfer_coefficient = 0.90
 
 /obj/item/clothing/mask/ninjascarf
 	name = "ninja scarf"
@@ -95,8 +92,6 @@
 	icon_state = "ninja_scarf"
 	item_state = "ninja_scarf"
 	w_class = ITEM_SIZE_SMALL
-	gas_transfer_coefficient = 0.90
-	siemens_coefficient = 0
 
 /obj/item/clothing/mask/sbluescarf
 	name = "stripped blue scarf"
@@ -104,7 +99,6 @@
 	icon_state = "sblue_scarf"
 	item_state = "sblue_scarf"
 	w_class = ITEM_SIZE_SMALL
-	gas_transfer_coefficient = 0.90
 
 /obj/item/clothing/mask/sgreenscarf
 	name = "stripped green scarf"
@@ -112,7 +106,6 @@
 	icon_state = "sgreen_scarf"
 	item_state = "sgreen_scarf"
 	w_class = ITEM_SIZE_SMALL
-	gas_transfer_coefficient = 0.90
 
 /obj/item/clothing/mask/sredscarf
 	name = "stripped red scarf"
@@ -120,7 +113,6 @@
 	icon_state = "sred_scarf"
 	item_state = "sred_scarf"
 	w_class = ITEM_SIZE_SMALL
-	gas_transfer_coefficient = 0.90
 
 /obj/item/clothing/mask/redscarf
 	name = "red scarf"
@@ -128,7 +120,6 @@
 	icon_state = "red_scarf"
 	item_state = "red_scarf"
 	w_class = ITEM_SIZE_SMALL
-	gas_transfer_coefficient = 0.90
 
 /obj/item/clothing/mask/pig
 	name = "pig mask"
