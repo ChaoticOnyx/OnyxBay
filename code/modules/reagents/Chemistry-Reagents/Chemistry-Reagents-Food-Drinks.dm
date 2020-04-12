@@ -361,7 +361,7 @@
 			if(I.body_parts_covered & EYES)
 				eyes_covered = 1
 				eye_protection = I.name
-			if((I.body_parts_covered & FACE) && !(I.item_flags & ITEM_FLAG_FLEXIBLEMATERIAL))
+			if(I.body_parts_covered & FACE)
 				mouth_covered = 1
 				face_protection = I.name
 
