@@ -41,7 +41,7 @@
 	item_state = "sterile"
 	w_class = ITEM_SIZE_SMALL
 	body_parts_covered = FACE
-	item_flags = ITEM_FLAG_AIRTIGHT
+	item_flags = 0
 	gas_transfer_coefficient = 0.90
 	permeability_coefficient = 0.01
 	armor = list(melee = 0, bullet = 0, laser = 0,energy = 0, bomb = 0, bio = 60, rad = 0)
@@ -73,7 +73,7 @@
 	icon_state = "blueneckscarf"
 	item_state = "blueneckscarf"
 	body_parts_covered = FACE
-	item_flags = ITEM_FLAG_FLEXIBLEMATERIAL
+	item_flags = 0
 	w_class = ITEM_SIZE_SMALL
 	gas_transfer_coefficient = 0.90
 
@@ -83,7 +83,7 @@
 	icon_state = "redwhite_scarf"
 	item_state = "redwhite_scarf"
 	body_parts_covered = FACE
-	item_flags = ITEM_FLAG_FLEXIBLEMATERIAL
+	item_flags = 0
 	w_class = ITEM_SIZE_SMALL
 	gas_transfer_coefficient = 0.90
 
@@ -277,7 +277,7 @@
 	body_parts_covered = FACE
 	icon_state = "bandblack"
 	item_state = "bandblack"
-	item_flags = ITEM_FLAG_AIRTIGHT
+	item_flags = 0
 	w_class = ITEM_SIZE_SMALL
 	armor = list(melee = 5, bullet = 0, laser = 0, energy = 0, bomb = 0, bio = 15, rad = 0)
 
