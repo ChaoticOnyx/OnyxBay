@@ -567,9 +567,6 @@
 	if(!handle_some_updates())
 		return 0
 
-	if(status_flags & GODMODE)
-		return 0
-
 	//SSD check, if a logged player is awake put them back to sleep!
 	if(ssd_check() && species.get_ssd(src))
 		Sleeping(2)
@@ -903,9 +900,6 @@
 		mind.changeling.regenerate()
 
 /mob/living/carbon/human/proc/handle_shock()
-	..()
-	if(status_flags & GODMODE)
-		return 0	//godmode
 	if(!can_feel_pain())
 		shock_stage = 0
 		return
@@ -965,8 +959,6 @@
 
 // Stance is being used in the Onyx fighting system. I wanted to call it stamina, but screw it.
 /mob/living/carbon/human/proc/handle_poise()
-	if(status_flags & GODMODE)
-		return 0 // I'm sorry, Kratos. No divine homicide up here.
 	if(poise >= poise_pool) return 0 // Saving every single msecond. Fuck our mob controller *sigh
 	var/pregen = poise_pool/10
 

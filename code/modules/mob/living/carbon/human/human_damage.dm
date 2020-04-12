@@ -343,7 +343,6 @@ In most cases it makes more sense to use apply_damage() instead! And make sure t
 //It automatically updates damage overlays if necesary
 //It automatically updates health status
 /mob/living/carbon/human/take_organ_damage(brute, burn, sharp = 0, edge = 0)
-	
 	var/list/obj/item/organ/external/parts = get_damageable_organs()
 	if(!parts.len)
 		return

@@ -1,4 +1,6 @@
 /mob/living/carbon/human/gib()
+	if(status_flags & GODMODE)
+		return
 	playsound(src, "gib", 75, 1)
 	for(var/obj/item/organ/I in internal_organs)
 		I.removed()
