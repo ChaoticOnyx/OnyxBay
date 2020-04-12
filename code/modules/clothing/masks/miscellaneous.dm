@@ -65,8 +65,6 @@
 	flags_inv = HIDEFACE
 	body_parts_covered = 0
 
-//scarves (fit in in mask slot)
-//None of these actually have on-mob sprites...
 /obj/item/clothing/mask/bluescarf
 	name = "blue neck scarf"
 	desc = "A blue neck scarf."
@@ -75,38 +73,57 @@
 	body_parts_covered = FACE
 	item_flags = 0
 	w_class = ITEM_SIZE_SMALL
-	gas_transfer_coefficient = 0.90
 
-/obj/item/clothing/mask/redscarf
-	name = "red scarf"
+/obj/item/clothing/mask/redwscarf
+	name = "red white scarf"
 	desc = "A red and white checkered neck scarf."
 	icon_state = "redwhite_scarf"
 	item_state = "redwhite_scarf"
 	body_parts_covered = FACE
 	item_flags = 0
 	w_class = ITEM_SIZE_SMALL
-	gas_transfer_coefficient = 0.90
 
 /obj/item/clothing/mask/greenscarf
 	name = "green scarf"
 	desc = "A green neck scarf."
 	icon_state = "green_scarf"
 	item_state = "green_scarf"
-	body_parts_covered = FACE
-	item_flags = ITEM_FLAG_THICKMATERIAL
 	w_class = ITEM_SIZE_SMALL
-	gas_transfer_coefficient = 0.90
 
 /obj/item/clothing/mask/ninjascarf
 	name = "ninja scarf"
 	desc = "A stealthy, dark scarf."
 	icon_state = "ninja_scarf"
 	item_state = "ninja_scarf"
-	body_parts_covered = FACE
-	item_flags = ITEM_FLAG_THICKMATERIAL
 	w_class = ITEM_SIZE_SMALL
-	gas_transfer_coefficient = 0.90
-	siemens_coefficient = 0
+
+/obj/item/clothing/mask/sbluescarf
+	name = "stripped blue scarf"
+	desc = "A stripped blue neck scarf."
+	icon_state = "sblue_scarf"
+	item_state = "sblue_scarf"
+	w_class = ITEM_SIZE_SMALL
+
+/obj/item/clothing/mask/sgreenscarf
+	name = "stripped green scarf"
+	desc = "A stripped green neck scarf."
+	icon_state = "sgreen_scarf"
+	item_state = "sgreen_scarf"
+	w_class = ITEM_SIZE_SMALL
+
+/obj/item/clothing/mask/sredscarf
+	name = "stripped red scarf"
+	desc = "A stripped red neck scarf."
+	icon_state = "sred_scarf"
+	item_state = "sred_scarf"
+	w_class = ITEM_SIZE_SMALL
+
+/obj/item/clothing/mask/redscarf
+	name = "red scarf"
+	desc = "A red neck scarf."
+	icon_state = "red_scarf"
+	item_state = "red_scarf"
+	w_class = ITEM_SIZE_SMALL
 
 /obj/item/clothing/mask/pig
 	name = "pig mask"
