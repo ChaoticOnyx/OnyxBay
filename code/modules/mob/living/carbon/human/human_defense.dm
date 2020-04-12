@@ -157,7 +157,7 @@ meteor_act
 /mob/living/carbon/human/check_mouth_coverage()
 	var/list/protective_gear = list(head, wear_mask, wear_suit, w_uniform)
 	for(var/obj/item/gear in protective_gear)
-		if(istype(gear) && (gear.body_parts_covered & FACE) && !(gear.item_flags & ITEM_FLAG_FLEXIBLEMATERIAL))
+		if(istype(gear) && (gear.body_parts_covered & FACE))
 			return gear
 	return null
 
