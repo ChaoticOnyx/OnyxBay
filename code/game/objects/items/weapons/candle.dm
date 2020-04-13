@@ -26,7 +26,7 @@
 
 /obj/item/weapon/flame/candle/attackby(obj/item/weapon/W as obj, mob/user as mob)
 	..()
-	if(is_hot(W))
+	if(isflamesource(W) || is_hot(W))
 		light()
 
 /obj/item/weapon/flame/candle/resolve_attackby(atom/A, mob/user)
