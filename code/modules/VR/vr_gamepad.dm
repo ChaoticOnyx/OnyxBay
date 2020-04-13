@@ -97,6 +97,7 @@
 		to_chat(usr, SPAN_NOTICE("Pay first."))
 		return
 	move_inside(usr)
+	to_chat(usr, SPAN_WARNING("Welcome to battleroyal game"))
 
 /obj/machinery/gamepod/MouseDrop_T(mob/target, mob/user)
 	if(user != target || target.stat != CONSCIOUS || !(ishuman(target)))
