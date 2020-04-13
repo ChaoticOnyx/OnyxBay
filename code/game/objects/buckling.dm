@@ -6,9 +6,6 @@
 	var/buckle_pixel_shift = "x=0;y=0" //where the buckled mob should be pixel shifted to, or null for no pixel shift control
 	var/buckle_require_restraints = 0 //require people to be handcuffed before being able to buckle. eg: pipes
 	var/mob/living/buckled_mob = null
-	FASTDMM_PROP(\
-		instance_var_whitelist = list("icon_state")\
-	)
 
 /obj/attack_hand(mob/living/user)
 	. = ..()
