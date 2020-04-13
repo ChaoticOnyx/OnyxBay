@@ -1,4 +1,4 @@
-#define RESPAWNS_FOR_PAYMENT 5
+#define RESPAWNS_FOR_PAYMENT 3
 #define PRICE_PER_USE 100
 #define POINTS_FOR_CHEATER 10
 /obj/machinery/gamepod
@@ -6,7 +6,7 @@
 	desc = "A gaming pod for wasting time."
 	icon = 'icons/obj/machines/gamepod.dmi'
 	icon_state = "gamepod_open"
-	density = FALSE
+	density = TRUE
 	anchored = TRUE
 	var/is_payed = FALSE
 	var/mob/living/carbon/human/occupant = null
@@ -184,20 +184,6 @@
 	if(occupant)
 		move_outside()
 	return ..()
-
-/obj/machinery/gamepod_controller
-	name = "\improper gamepod controller"
-	desc = "High-powerful GPU for VR gamepod."
-	icon = 'icons/obj/machines/gamepod.dmi'
-	icon_state = "gamepodc_on"
-	density = TRUE
-	anchored = TRUE
-
-/obj/machinery/gamepod_controller/power_change()
-	if(powered())
-		icon_state = "gamepodc_on"
-	else
-		icon_state = "gamepodc_off"
 
 #undef RESPAWNS_FOR_PAYMENT
 #undef PRICE_PER_USE
