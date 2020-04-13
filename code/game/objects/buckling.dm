@@ -7,10 +7,7 @@
 	var/buckle_require_restraints = 0 //require people to be handcuffed before being able to buckle. eg: pipes
 	var/mob/living/buckled_mob = null
 	FASTDMM_PROP(\
-		pinned_vars = list("dir"), /* This is a property*/\
-		set_instance_vars( /*This is a macro*/\
-			dir = (dir == SOUTH ? INSTANCE_VAR_DEFAULT : dir)\
-		)\
+		instance_var_whitelist = list("icon_state")\
 	)
 
 /obj/attack_hand(mob/living/user)
