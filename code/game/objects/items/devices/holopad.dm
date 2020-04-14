@@ -29,6 +29,7 @@
 
 /obj/item/device/holopad/Destroy()
 	GLOB.listening_objects -= src
+	abonent = null
 	. = ..()
 
 
@@ -37,7 +38,7 @@
 	set category = "Object"
 	set src in usr
 	var/newid = sanitize(input(usr, "What would be new ID?") as null|text, MAX_NAME_LEN)
-	if(newid)
+	if(newid && CanPhysicallyInteract(usr))
 		id = newid
 		name = "[initial(name)] [id] #[uniq_id]"
 
@@ -62,7 +63,7 @@
 		return
 	var/mob/living/L = loc
 	if(isliving(L) && L.client)
-		to_chat(loc, SPAN_WARNING("Something vibrates.."))
+		audible_message(SPAN_WARNING("Something vibrates.."), hearing_distance = 4)
 	addtimer(CALLBACK(src, .proc/ring), 50)
 
 /obj/item/device/holopad/proc/placeCall(mob/user)
@@ -115,8 +116,7 @@
 		return
 
 	if(isliving(loc))
-		to_chat(loc, SPAN_WARNING("Connection closed"))
-
+		audible_message(SPAN_WARNING("Connection closed"), hearing_distance = 4)
 	call_state = CALL_NONE
 	icon_state = initial(icon_state)
 	desc = initial(desc)
