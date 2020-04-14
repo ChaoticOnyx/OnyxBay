@@ -15,7 +15,7 @@
 
 /mob/living/carbon/human/adjustBrainLoss(amount)
 	if(status_flags & GODMODE)
-		return 0	//godmode
+		return 0
 	if(should_have_organ(BP_BRAIN))
 		if(amount > 0)
 			for(var/datum/modifier/M in modifiers)
