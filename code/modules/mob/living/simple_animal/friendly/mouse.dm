@@ -147,10 +147,10 @@
 	if(src.client && ishuman(AM) && !stat)
 		var/mob/M = AM
 		to_chat(M, "<span class='warning'>\icon[src] Squeek!</span>")
-		sound_to(M, 'sound/effects/mousesqueek.ogg')
+		playsound(loc, 'sound/effects/mousesqueek.ogg')
 		resting = 0
 		icon_state = "mouse_[body_color]"
-		if(prob(40))
+		if(prob(50))
 			UnarmedAttack(M)
 		set_panic_target(M)
 	..()
