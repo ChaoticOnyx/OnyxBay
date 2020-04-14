@@ -246,7 +246,8 @@ default behaviour is:
 	return maxHealth - health
 
 /mob/living/proc/adjustBruteLoss(amount)
-	if(status_flags & GODMODE)	return 0	//godmode
+	if(status_flags & GODMODE)
+		return 0
 	health = max(health-amount, 0)
 
 /mob/living/proc/getOxyLoss()
@@ -262,6 +263,8 @@ default behaviour is:
 	return 0
 
 /mob/living/proc/adjustToxLoss(amount)
+	if(status_flags & GODMODE)
+		return 0
 	adjustBruteLoss(amount * 0.5)
 
 /mob/living/proc/setToxLoss(amount)
@@ -271,6 +274,8 @@ default behaviour is:
 	return
 
 /mob/living/proc/adjustFireLoss(amount)
+	if(status_flags & GODMODE)
+		return 0
 	adjustBruteLoss(amount * 0.5)
 
 /mob/living/proc/setFireLoss(amount)
@@ -280,6 +285,8 @@ default behaviour is:
 	return 0
 
 /mob/living/proc/adjustHalLoss(amount)
+	if(status_flags & GODMODE)
+		return 0
 	adjustBruteLoss(amount * 0.5)
 
 /mob/living/proc/setHalLoss(amount)
@@ -389,7 +396,6 @@ default behaviour is:
 
 // damage ONE external organ, organ gets randomly selected from damaged ones.
 /mob/living/proc/take_organ_damage(brute, burn, emp=0)
-	if(status_flags & GODMODE)	return 0	//godmode
 	adjustBruteLoss(brute)
 	adjustFireLoss(burn)
 	src.updatehealth()
@@ -402,7 +408,6 @@ default behaviour is:
 
 // damage MANY external organs, in random order
 /mob/living/proc/take_overall_damage(brute, burn, used_weapon = null)
-	if(status_flags & GODMODE)	return 0	//godmode
 	adjustBruteLoss(brute)
 	adjustFireLoss(burn)
 	src.updatehealth()

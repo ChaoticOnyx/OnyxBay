@@ -75,6 +75,8 @@ proc/infection_chance(mob/living/carbon/M, vector = "Airborne")
 	if(!istype(M))
 //		log_debug("Bad mob")
 		return
+	if(M.status_flags & GODMODE)
+		return
 	if ("[disease.uniqueID]" in M.virus2)
 		return
 	// if one of the antibodies in the mob's body matches one of the disease's antigens, don't infect
