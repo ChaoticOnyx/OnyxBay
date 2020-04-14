@@ -79,6 +79,11 @@ var/list/flooring_types
 	icon_base = "blue2"
 	build_type = /obj/item/stack/tile/carpetblue2
 
+/decl/flooring/carpet/arcade
+	name = "pale arcade carpet"
+	icon_base = "arcade"
+	build_type = /obj/item/stack/tile/carpetarcade
+
 /decl/flooring/carpet/purple
 	name = "purple carpet"
 	icon_base = "purple"
