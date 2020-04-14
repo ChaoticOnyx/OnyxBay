@@ -17,7 +17,7 @@
 		user.Weaken(3 * force)
 		if(ishuman(user))
 			var/mob/living/carbon/human/H = user
-			H.apply_damage(2 * force, BRUTE, BP_HEAD)
+			H.apply_damage(3 * force, BRUTE, BP_HEAD)
 		else
 			user.take_organ_damage(2*force)
 		return
