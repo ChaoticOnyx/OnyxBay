@@ -61,9 +61,7 @@
 /obj/item/device/holopad/proc/ring()
 	if(call_state != CALL_RINGING)
 		return
-	var/mob/living/L = loc
-	if(isliving(L) && L.client)
-		audible_message(SPAN_WARNING("Something vibrates.."), hearing_distance = 4)
+	audible_message(SPAN_WARNING("Something vibrates.."), hearing_distance = 4)
 	addtimer(CALLBACK(src, .proc/ring), 50)
 
 /obj/item/device/holopad/proc/placeCall(mob/user)
@@ -115,8 +113,7 @@
 	if(call_state==CALL_NONE)
 		return
 
-	if(isliving(loc))
-		audible_message(SPAN_WARNING("Connection closed"), hearing_distance = 4)
+	audible_message(SPAN_WARNING("Connection closed"), hearing_distance = 4)
 	call_state = CALL_NONE
 	icon_state = initial(icon_state)
 	desc = initial(desc)
