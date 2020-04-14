@@ -147,7 +147,7 @@
 	if(src.client && ishuman(AM) && !stat)
 		var/mob/M = AM
 		to_chat(M, "<span class='warning'>\icon[src] Squeek!</span>")
-		playsound(loc, 'sound/effects/mousesqueek.ogg')
+		playsound(loc, 'sound/effects/mousesqueek.ogg', 40)
 		resting = 0
 		icon_state = "mouse_[body_color]"
 		if(prob(50))
