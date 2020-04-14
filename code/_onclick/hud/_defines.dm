@@ -141,3 +141,10 @@
 #define ui_blob_ping "EAST-1:[24*PIXEL_MULTIPLIER],CENTER+3:[21*PIXEL_MULTIPLIER]"
 #define ui_blob_rally "EAST-1:[24*PIXEL_MULTIPLIER],CENTER+4:[25*PIXEL_MULTIPLIER]"
 #define ui_blob_taunt "EAST-1:[24*PIXEL_MULTIPLIER],CENTER+5:[29*PIXEL_MULTIPLIER]"
+
+//Vrhuman
+#define ui_vrhuman_shop "WEST+2:-2,SOUTH+4:20"
+#define ui_vrhuman_exit "WEST+1:-2,SOUTH+4:20"
+#define ui_vrhuman_main "WEST:-2,SOUTH+4:20"
+#define ui_vrhuman_cleanup "WEST+3:-2,SOUTH+4:20"
+#define ui_vrhuman_dienow "WEST+4:-2,SOUTH+4:20"
