@@ -35,7 +35,7 @@
 
 /mob/living/carbon/human/setBrainLoss(amount)
 	if(status_flags & GODMODE)
-		return 0	//godmode
+		return 0
 	if(should_have_organ(BP_BRAIN))
 		var/obj/item/organ/internal/brain/sponge = internal_organs_by_name[BP_BRAIN]
 		if(sponge)
