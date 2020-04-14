@@ -25,13 +25,41 @@
 	..()
 	icon_state = "pine_c"
 
-/obj/structure/flora/tree/dead
+/obj/structure/flora/tree/dead/deadtree_0
 	icon = 'icons/obj/flora/deadtrees.dmi'
 	icon_state = "tree_1"
 
-/obj/structure/flora/tree/dead/New()
+/obj/structure/flora/tree/dead/deadtree_1
+	icon = 'icons/obj/flora/deadtrees.dmi'
+	icon_state = "tree_4"
+
+/obj/structure/flora/tree/dead/deadtree_2
+	icon = 'icons/obj/flora/deadtrees.dmi'
+	icon_state = "tree_5"
+
+/obj/structure/flora/tree/dead/deadtree_3
+	icon = 'icons/obj/flora/deadtrees.dmi'
+	icon_state = "tree_6"
+
+/obj/structure/flora/tree/dead/deadtree_4
+	icon = 'icons/obj/flora/deadtrees.dmi'
+	icon_state = "tree_10"
+
+/obj/structure/flora/tree/dead/deadtree_5
+	icon = 'icons/obj/flora/deadtrees.dmi'
+	icon_state = "tree_11"
+
+	/obj/structure/flora/tree/dead/deadtree_6
+	icon = 'icons/obj/flora/deadtrees.dmi'
+	icon_state = "tree_12"
+
+/obj/structure/flora/tree/dead/deadtree/New()
 	..()
-	icon_state = "tree_[rand(1, 6)]"
+	icon_state = "tree_[rand(1, 12)]"
+
+/obj/structure/flora/tree/tall/New()
+	icon_state = "tree_[rand(1,6)]"
+	..()
 
 /obj/structure/flora/tree/pine/old_pinteree
 	name = "xmas tree"
