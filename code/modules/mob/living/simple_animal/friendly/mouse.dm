@@ -144,7 +144,7 @@
 	return ..()
 
 /mob/living/simple_animal/mouse/Crossed(AM as mob|obj)
-	if(src.client && ishuman(AM) && !stat)
+	if(client && ishuman(AM) && !stat)
 		var/mob/M = AM
 		to_chat(M, "<span class='warning'>\icon[src] Squeek!</span>")
 		playsound(loc, 'sound/effects/mousesqueek.ogg', 40)
