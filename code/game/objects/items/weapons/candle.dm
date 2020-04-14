@@ -24,7 +24,7 @@
 	else i = 3
 	icon_state = "candle[i][lit ? "_lit" : ""]"
 
-/obj/item/weapon/flame/candle/attackby(obj/item/weapon/W as obj, mob/user as mob)
+/obj/item/weapon/flame/candle/attackby(obj/item/weapon/W, mob/user)
 	..()
 	if(isflamesource(W) || is_hot(W))
 		light()
