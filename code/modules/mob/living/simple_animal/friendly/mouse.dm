@@ -150,6 +150,8 @@
 		sound_to(M, 'sound/effects/mousesqueek.ogg')
 		resting = 0
 		icon_state = "mouse_[body_color]"
+		if(prob(40))
+			UnarmedAttack(M)
 		set_panic_target(M)
 	..()
 
