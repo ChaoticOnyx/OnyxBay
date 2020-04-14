@@ -122,7 +122,6 @@
 
 /obj/item/device/holopad/dropped()
 	update_holo()
-	. = ..()
 
 /obj/item/device/holopad/proc/update_holo()
 	if(call_state == CALL_IN_CALL)
