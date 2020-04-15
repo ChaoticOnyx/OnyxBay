@@ -59,14 +59,6 @@
 		to_chat(src, "<span class='warning'>The Github URL is not set in the server configuration.</span>")
 	return
 
-#define LORE_FILE "config/lore.html"
-/client/verb/lore_splash()
-	set name = "Lore"
-	set desc = "Links to the beginner Lore wiki."
-	set hidden = 1
-	show_browser(src, file(LORE_FILE), "window=lore;size=480x320")
-#undef LORE_FILE
-
 /client/verb/hotkeys_help()
 	set name = "Hotkeys Help"
 	set category = "OOC"
