@@ -17,6 +17,7 @@
 	var/obj/item/weapon/airlock_electronics/electronics = null
 	explosion_resistance = 5
 	air_properties_vary_with_direction = 1
+	var/timer = null
 
 /obj/machinery/door/window/Initialize()
 	. = ..()
@@ -69,6 +70,8 @@
 	shatter()
 
 /obj/machinery/door/window/Destroy()
+	if(timer)
+		deltimer(timer)
 	set_density(0)
 	update_nearby_tiles()
 	return ..()
@@ -81,7 +84,7 @@
 		var/mob/living/bot/bot = AM
 		if(check_access(bot.botcard))
 			if(density)
-				open()
+				open(autoclose = TRUE)
 			else
 				close()
 
@@ -89,7 +92,7 @@
 		var/obj/mecha/mech = AM
 		if(mech.occupant && allowed(mech.occupant))
 			if(density)
-				open()
+				open(autoclose = TRUE)
 			else
 				close()
 
@@ -97,7 +100,7 @@
 		var/mob/M = AM
 		if(allowed(M))
 			if(density)
-				open()
+				open(autoclose = TRUE)
 			else
 				close()
 		else if(density)
@@ -121,11 +124,14 @@
 	else
 		return 1
 
-/obj/machinery/door/window/open()
+/obj/machinery/door/window/open(autoclose = FALSE)
 	if(operating)
 		return
 	else
 		operating = TRUE
+
+	if(autoclose)
+		timer = addtimer(CALLBACK(src, .close), 10 SECONDS, TIMER_UNIQUE|TIMER_STOPPABLE)
 
 	flick("[base_state]opening", src)
 	set_density(0)
@@ -142,6 +148,10 @@
 		return
 	else
 		operating = TRUE
+
+	if(timer)
+		deltimer(timer)
+		timer = 0
 
 	flick(text("[]closing", base_state), src)
 	set_density(1)

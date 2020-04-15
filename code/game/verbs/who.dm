@@ -52,8 +52,8 @@
 						dead++
 				else
 					living++
-			
-			if(C.mob.mind.assigned_role)
+
+			if(C.mob.mind?.assigned_role)
 				entry += " - [C.mob.mind.assigned_role]"
 
 			if(isnum(C.player_age))

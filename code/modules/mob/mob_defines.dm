@@ -3,7 +3,6 @@
 
 	appearance_flags = PIXEL_SCALE
 	animate_movement = 2
-	movable_flags = MOVABLE_FLAG_PROXMOVE
 
 	virtual_mob = /mob/observer/virtual/mob
 

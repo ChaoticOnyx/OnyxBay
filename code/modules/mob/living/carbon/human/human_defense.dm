@@ -8,7 +8,8 @@ meteor_act
 */
 
 /mob/living/carbon/human/bullet_act(obj/item/projectile/P, def_zone)
-
+	if(status_flags & GODMODE)
+		return 0
 	def_zone = check_zone(def_zone)
 	if(!has_organ(def_zone))
 		return PROJECTILE_FORCE_MISS //if they don't have the organ in question then the projectile just passes by.
@@ -157,7 +158,7 @@ meteor_act
 /mob/living/carbon/human/check_mouth_coverage()
 	var/list/protective_gear = list(head, wear_mask, wear_suit, w_uniform)
 	for(var/obj/item/gear in protective_gear)
-		if(istype(gear) && (gear.body_parts_covered & FACE) && !(gear.item_flags & ITEM_FLAG_FLEXIBLEMATERIAL))
+		if(istype(gear) && (gear.body_parts_covered & FACE))
 			return gear
 	return null
 
@@ -251,6 +252,8 @@ meteor_act
 //aka Regular Attack
 //Jesus Christ what a mess I've made ~Toby
 /mob/living/carbon/human/standard_weapon_hit_effects(obj/item/I, mob/living/user, effective_force, blocked, hit_zone)
+	if(status_flags & GODMODE)
+		return 0
 	var/obj/item/organ/external/affecting = get_organ(hit_zone)
 	if(!affecting)
 		return 0
@@ -345,6 +348,8 @@ meteor_act
 // Well it has to look like this for the future reworks. I'm really sorry. ~Toby
 // Literally 'pull punches' for weapons.
 /mob/living/carbon/human/proc/alt_weapon_hit_effects(obj/item/I, mob/living/user, effective_force, blocked, hit_zone)
+	if(status_flags & GODMODE)
+		return 0
 	var/obj/item/organ/external/affecting = get_organ(hit_zone)
 
 	if(!affecting)

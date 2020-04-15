@@ -30,6 +30,7 @@ The answer was five and a half years -ZeroBits
 /datum/nano_module/library/ui_interact(mob/user, ui_key = "main", datum/nanoui/ui = null, force_open = 1, datum/topic_state/state = GLOB.default_state)
 	var/list/data = host.initial_data()
 
+	data["admin"] = check_rights(R_INVESTIGATE, FALSE, user)	
 	if(error_message)
 		data["error"] = error_message
 	else if(current_book)
@@ -167,6 +168,15 @@ The answer was five and a half years -ZeroBits
 			sort_by = "id"
 			error_message = ""
 		return 1
+	
+	if(href_list["delbook"])
+		if(!check_rights(R_INVESTIGATE, FALSE, usr))
+			href_exploit(usr.ckey, href)
+			return 1
+		if(alert(usr, "Are you sure that you want to delete that book?", "Delete Book", "Yes", "No") == "Yes")
+			current_book = null
+			del_book_from_db(href_list["delbook"], usr)
+		return 1
 
 /datum/nano_module/library/proc/view_book(id)
 	if(current_book || !id)
@@ -190,3 +200,30 @@ The answer was five and a half years -ZeroBits
 			)
 		break
 	return 1
+
+/proc/del_book_from_db(id, user)
+	if(!id || !user)
+		return
+	if(!check_rights(R_INVESTIGATE, TRUE, user))
+		return
+
+	var/sqlid = sanitizeSQL(id)
+	establish_db_connection()
+	if(!dbcon.IsConnected())
+		to_chat(user, SPAN_WARNING("Failed to establish database connection!"))
+		return
+
+	var/author
+	var/title
+	var/DBQuery/query = dbcon.NewQuery("SELECT author, title FROM library WHERE id=[sqlid]")
+	query.Execute()
+	if(query.NextRow())
+		author = query.item[1]
+		title = query.item[2]
+	else
+		to_chat(user, SPAN_WARNING("Book with ISBN number \[[sqlid]\] was not found!"))
+		return
+
+	query = dbcon.NewQuery("DELETE FROM library WHERE id=[sqlid]")
+	if(query.Execute())
+		log_and_message_admins("has deleted the book: \[[sqlid]\] \"[title]\" by [author]", user)

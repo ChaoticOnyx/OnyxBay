@@ -17,17 +17,13 @@
 	solar_next_update = world.time	// init the timer
 	angle = rand (0,359)			// the station position to the sun is randomised at round start
 
-/*/hook/startup/proc/createSun() // handled in scheduler
-	sun = new /datum/sun()
-	return 1*/
-
 // calculate the sun's position given the time of day
 // at the standard rate (100%) the angle is increase/decreased by 6 degrees every minute.
 // a full rotation thus take a game hour in that case
 /datum/sun/proc/calc_position()
 
 	if(world.time < solar_next_update) //if less than 60 game secondes have passed, do nothing
-		return;
+		return
 
 	angle = (angle + rate * 6) % 360	 // increase/decrease the angle to the sun, adjusted by the rate
 

@@ -572,7 +572,9 @@
 		rift_location = get_step(rift_location, step_dir) || rift_location
 
 	if(tporter && tporter.locked && !tporter.one_time_use && tporter.operable())
-		new /obj/effect/portal(rift_location, get_turf(tporter.locked))
+		var/obj/effect/portal/P = new (rift_location, get_turf(tporter.locked))
+		P.dangerous = TRUE
+		P.failchance = 20
 	else
 		var/turf/destination = get_random_turf_in_range(src, 10)
 		if(destination)

@@ -383,7 +383,8 @@
 //Now checks siemens_coefficient of the affected area by default
 /mob/living/carbon/human/electrocute_act(shock_damage, obj/source, base_siemens_coeff = 1.0, def_zone = null)
 
-	if(status_flags & GODMODE)	return 0	//godmode
+	if(status_flags & GODMODE)
+		return 0
 
 	if(species.siemens_coefficient == -1)
 		if(stored_shock_by_ref["\ref[src]"])
@@ -1551,7 +1552,7 @@
 		for(var/obj/item/organ/external/org in organs)
 			var/list/status = list()
 
-			var/feels = 1 + round(org.pain/100, 0.1)
+			var/feels = 1 + round(org.get_pain()/100, 0.1)
 			var/brutedamage = org.brute_dam * feels
 			var/burndamage = org.burn_dam * feels
 

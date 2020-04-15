@@ -161,3 +161,20 @@
 	display_name = "electronic cigarette, deluxe"
 	path = /obj/item/clothing/mask/smokable/ecig/deluxe
 	cost = 2
+
+datum/gear/mask/scarf
+	display_name ="neck scarf"
+	path = /obj/item/clothing/mask/bluescarf
+
+/datum/gear/mask/scarf/New()
+	..()
+	var/scarfs = list()
+	scarfs["blue scarf"] = /obj/item/clothing/mask/bluescarf
+	scarfs["green scarf"] = /obj/item/clothing/mask/greenscarf
+	scarfs["red scarf"] = /obj/item/clothing/mask/redscarf
+	scarfs["red white scarf"] = /obj/item/clothing/mask/redwscarf
+	scarfs["ninja scarf"] = /obj/item/clothing/mask/ninjascarf
+	scarfs["stripped blue scarf"] = /obj/item/clothing/mask/sbluescarf
+	scarfs["stripped green scarf"] = /obj/item/clothing/mask/sgreenscarf
+	scarfs["stipped red scarf"] = /obj/item/clothing/mask/sredscarf
+	gear_tweaks += new /datum/gear_tweak/path(scarfs)

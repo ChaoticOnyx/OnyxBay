@@ -125,6 +125,7 @@
 		var/area/A = get_area(R)
 		log_and_message_admins("created \an [R.cultname] rune at \the [A.name] - [loc.x]-[loc.y]-[loc.z].")
 		R.add_fingerprint(src)
+		R.add_blood(src)
 		return 1
 	return 0
 

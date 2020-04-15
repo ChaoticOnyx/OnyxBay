@@ -18,8 +18,6 @@ GLOBAL_LIST_INIT(bitflags, list(1, 2, 4, 8, 16, 32, 64, 128, 256, 512, 1024, 204
 #define ATOM_FLAG_OPEN_CONTAINER         0x0010 // Is an open container for chemistry purposes.
 #define ATOM_FLAG_INITIALIZED            0x0020 // Has this atom been initialized
 
-#define MOVABLE_FLAG_PROXMOVE            0x0001 // Does this object require proximity checking in Enter()?
-
 #define OBJ_FLAG_ANCHORABLE              0x0001 // This object can be stuck in place with a tool
 #define OBJ_FLAG_CONDUCTIBLE             0x0002 // Conducts electricity. (metal etc.)
 
@@ -32,7 +30,6 @@ GLOBAL_LIST_INIT(bitflags, list(1, 2, 4, 8, 16, 32, 64, 128, 256, 512, 1024, 204
 #define ITEM_FLAG_AIRTIGHT               0x0040 // Functions with internals.
 #define ITEM_FLAG_NOSLIP                 0x0080 // Prevents from slipping on wet floors, in space, etc.
 #define ITEM_FLAG_BLOCK_GAS_SMOKE_EFFECT 0x0100 // Blocks the effect that chemical clouds would have on a mob -- glasses, mask and helmets ONLY! (NOTE: flag shared with ONESIZEFITSALL)
-#define ITEM_FLAG_FLEXIBLEMATERIAL       0x0200 // At the moment, masks with this flag will not prevent eating even if they are covering your face.
 #define ITEM_FLAG_PREMODIFIED            0x0400 // Gloves that are clipped by default
 #define ITEM_FLAG_IS_BELT                0x0800 // Items that can be worn on the belt slot, even with no undersuit equipped
 

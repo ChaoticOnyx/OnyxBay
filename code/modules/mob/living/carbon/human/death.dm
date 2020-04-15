@@ -1,4 +1,6 @@
 /mob/living/carbon/human/gib()
+	if(status_flags & GODMODE)
+		return
 	playsound(src, "gib", 75, 1)
 	for(var/obj/item/organ/I in internal_organs)
 		I.removed()
@@ -19,6 +21,8 @@
 	gibs(loc, dna, null, species.get_flesh_colour(src), species.get_blood_colour(src))
 
 /mob/living/carbon/human/dust()
+	if(status_flags & GODMODE)
+		return
 	if(species)
 		..(species.dusted_anim, species.remains_type)
 	else

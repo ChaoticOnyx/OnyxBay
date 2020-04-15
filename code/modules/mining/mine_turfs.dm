@@ -319,23 +319,11 @@ var/list/mining_floors = list()
 		for (var/i = 1 to mineral.result_amount - mined_ore)
 			DropMineral()
 
-	//destroyed artifacts have weird, unpleasant effects
-	//make sure to destroy them before changing the turf though
+
 	if(artifact_find && artifact_fail)
-		var/pain = 0
-		if(prob(50))
-			pain = 1
 		for(var/mob/living/M in range(src, 200))
 			to_chat(M, "<font color='red'><b>[pick("A high pitched [pick("keening","wailing","whistle")]","A rumbling noise like [pick("thunder","heavy machinery")]")] somehow penetrates your mind before fading away!</b></font>")
-			if(pain)
-				flick("pain",M.pain)
-				if(prob(50))
-					M.adjustBruteLoss(5)
-			else
-				M.flash_eyes()
-				if(prob(50))
-					M.Stun(5)
-		SSradiation.flat_radiate(src, 25, 200)
+
 	//Add some rubble,  you did just clear out a big chunk of rock.
 
 	var/turf/simulated/floor/asteroid/N = ChangeTurf(mined_turf)

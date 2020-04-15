@@ -166,6 +166,15 @@
 /obj/item/stack/tile/carpetblue2/fifty
 	amount = 50
 
+/obj/item/stack/tile/carpetarcade
+	name = "pale arcade carpet"
+	desc = "A piece of blue and silver carpet."
+	singular_name = "pale arcade carpet"
+	icon_state = "tile_carpetblue2"
+
+/obj/item/stack/tile/carpetarcade/fifty
+	amount = 50
+
 /obj/item/stack/tile/carpetpurple
 	name = "purple carpet"
 	desc = "A piece of purple carpet."

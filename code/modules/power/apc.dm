@@ -897,18 +897,23 @@
 	if(!can_use(usr, 1))
 		return 1
 
+	if(href_list["reboot"])
+		if(!allowed(usr) && (locked && !emagged))
+			to_chat(usr, SPAN_WARNING("You must unlock the panel to use this!"))
+			return 1
+
+		failure_timer = 0
+		update_icon()
+		update()
+		return 1
+
 	if(!istype(usr, /mob/living/silicon) && (locked && !emagged))
 		// Shouldn't happen, this is here to prevent href exploits
-		to_chat(usr, "You must unlock the panel to use this!")
+		to_chat(usr, SPAN_WARNING("You must unlock the panel to use this!"))
 		return 1
 
 	if (href_list["lock"])
 		coverlocked = !coverlocked
-
-	else if( href_list["reboot"] )
-		failure_timer = 0
-		update_icon()
-		update()
 
 	else if (href_list["breaker"])
 		toggle_breaker()
@@ -992,10 +997,10 @@
 	if(!area.requires_power)
 		return
 	if(failure_timer)
-		update()
-		queue_icon_update()
-		failure_timer--
-		force_update = 1
+		if (!--failure_timer)
+			update()
+			queue_icon_update()
+			force_update = 1
 		return
 
 	lastused_light = area.usage(LIGHT)

@@ -29,6 +29,7 @@
 		to_chat(user, SPAN_WARNING("This device is not powered."))
 		return
 	if(istype(W,/obj/item/weapon/card/id))
+		visible_message(SPAN_NOTICE("\The [user] swipes \the [W] through \the [src]."))
 		var/obj/item/weapon/card/id/ID = W
 		if(access_keycard_auth in ID.access)
 			if(active)
@@ -121,7 +122,7 @@
 		if(KA == src)
 			continue
 		KA.reset()
-		KA.receive_request()
+		KA.receive_request(src, initial_card)
 
 	if(confirm_delay)
 		addtimer(CALLBACK(src, .broadcast_check), confirm_delay)
@@ -134,10 +135,11 @@
 		message_admins("[key_name(event_triggered_by)] triggered and [key_name(event_confirmed_by)] confirmed event [event]", 1)
 	reset()
 
-/obj/machinery/keycard_auth/proc/receive_request(obj/machinery/keycard_auth/source)
+/obj/machinery/keycard_auth/proc/receive_request(obj/machinery/keycard_auth/source, obj/item/weapon/card/id/ID)
 	if(stat & (BROKEN|NOPOWER))
 		return
 	event_source = source
+	initial_card = ID
 	busy = 1
 	active = 1
 	icon_state = "auth_on"
@@ -145,6 +147,7 @@
 	sleep(confirm_delay)
 
 	event_source = null
+	initial_card = null
 	icon_state = "auth_off"
 	active = 0
 	busy = 0

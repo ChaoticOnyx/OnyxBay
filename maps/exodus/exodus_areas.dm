@@ -598,6 +598,10 @@
 	name = "\improper Underground Research Shuttle Dock Maintenance"
 	icon_state = "uresearchshuttle"
 
+/area/maintenance/underground/research_utility_room
+	name = "\improper Underground Utility Room"
+	icon_state = "uresearchutilityroom"
+
 /area/maintenance/underground/research_starboard
 	name = "\improper Underground Research Maintenance - Starboard"
 	icon_state = "uresearchstarboard"
@@ -1106,9 +1110,9 @@
 	name = "\improper Fitness Room"
 	icon_state = "fitness"
 
-/area/crew_quarters/fitness/pool
-	name = "\improper Pool"
-	icon_state = "pool"
+/area/crew_quarters/fitness/arcade
+	name = "\improper Arcade"
+	icon_state = "arcade"
 
 /area/crew_quarters/kitchen
 	name = "\improper Kitchen"
@@ -2012,6 +2016,13 @@ area/rnd/test_area
 /area/merchant_station
 	name = "\improper Merchant Station"
 	icon_state = "LP"
+	requires_power = 0
+
+/area/thunder_rock
+	name = "\improper Thunder Rock"
+	icon_state = "LP"
+	luminosity = 1
+	dynamic_lighting = 0
 	requires_power = 0
 
 /area/acting/backstage

@@ -11,12 +11,13 @@
 	speak_emote = list("squeeks","squeeks","squiks")
 	emote_hear = list("squeeks","squeaks","squiks")
 	emote_see = list("runs in a circle", "shakes", "scritches at something")
+	attack_sound = 'sound/weapons/bite.ogg'
 	pass_flags = PASS_FLAG_TABLE
 	speak_chance = 1
 	turns_per_move = 5
 	see_in_dark = 6
-	maxHealth = 5
-	health = 5
+	maxHealth = 1
+	health = 1
 	meat_type = /obj/item/weapon/reagent_containers/food/snacks/meat
 	response_help  = "pets"
 	response_disarm = "gently pushes aside"
@@ -34,6 +35,7 @@
 	shy_animal = 1
 	controllable = TRUE
 	var/obj/item/holding_item = null
+	var/datum/disease2/disease/virus = null
 
 	can_pull_size = ITEM_SIZE_TINY
 	can_pull_mobs = MOB_PULL_SAME
@@ -62,8 +64,8 @@
 	..()
 	icon_state = resting ? "mouse_[body_color]_sleep" : "mouse_[body_color]"
 
-/mob/living/simple_animal/mouse/New()
-	..()
+/mob/living/simple_animal/mouse/Initialize()
+	. = ..()
 
 	verbs += /mob/living/proc/ventcrawl
 	verbs += /mob/living/proc/hide
@@ -71,6 +73,16 @@
 	if(name == initial(name))
 		name = "[name] ([sequential_id(/mob/living/simple_animal/mouse)])"
 	real_name = name
+
+	if(prob(30))
+		if(prob(1))
+			virus = new (VIRUS_EXOTIC)
+		else if(prob(10))
+			virus = new (VIRUS_ENGINEERED)
+		else if(prob(50))
+			virus = new (VIRUS_COMMON)
+		else
+			virus = new (VIRUS_MILD)
 
 	if(!body_color)
 		body_color = pick( list("brown","gray","white") )
@@ -84,6 +96,7 @@
 	if(holding_item)
 		holding_item.dropInto(src)
 		holding_item = null
+	virus = null
 	return ..()
 
 /mob/living/simple_animal/mouse/ex_act(severity)
@@ -101,13 +114,44 @@
 	adjustBruteLoss(maxHealth)  // Enough damage to kill
 	src.death()
 
+/mob/living/simple_animal/mouse/UnarmedAttack(atom/A, proximity)
+	if(ishuman(A))
+		var/mob/living/carbon/human/H = A
+
+		if(hiding)
+			to_chat(src, SPAN_WARNING("You can't bite while you are hiding!"))
+			return
+
+		var/available_limbs = H.lying ? BP_ALL_LIMBS : BP_BELOW_GROIN
+		var/obj/item/organ/external/limb
+		for(var/L in shuffle(available_limbs))
+			limb = H.get_organ(L)
+			if(limb)
+				break
+
+		var/blocked = H.run_armor_check(limb.organ_tag, "melee")
+		if(H.apply_damage(rand(1, 2), BRUTE, limb.organ_tag, blocked) && prob(70 - blocked))
+			limb.germ_level += rand(75, 150)
+			if(virus)
+				infect_virus2(H, virus)
+		visible_message(SPAN_DANGER("[src] bites [H]'s [organ_name_by_zone(H, limb.organ_tag)]!"),
+						SPAN_WARNING("You bite [H]'s [organ_name_by_zone(H, limb.organ_tag)]!"))
+		admin_attack_log(src, H, "Bit the victim", "Was bitten", "bite")
+		setClickCooldown(DEFAULT_ATTACK_COOLDOWN)
+		do_attack_animation(H)
+		playsound(loc, attack_sound, 25, 1, 1)
+		return
+	return ..()
+
 /mob/living/simple_animal/mouse/Crossed(AM as mob|obj)
-	if(ishuman(AM) && !stat)
+	if(client && ishuman(AM) && !stat)
 		var/mob/M = AM
 		to_chat(M, "<span class='warning'>\icon[src] Squeek!</span>")
-		sound_to(M, 'sound/effects/mousesqueek.ogg')
+		playsound(loc, 'sound/effects/mousesqueek.ogg', 40)
 		resting = 0
 		icon_state = "mouse_[body_color]"
+		if(prob(50))
+			UnarmedAttack(M)
 		set_panic_target(M)
 	..()
 

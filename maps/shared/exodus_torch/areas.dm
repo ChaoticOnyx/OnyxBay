@@ -231,6 +231,11 @@
 	icon_state = "engine"
 	sound_env = LARGE_ENCLOSED
 
+/area/engineering/grav_generator
+	name = "\improper Gravitational Generator Room"
+	icon_state = "engine"
+	sound_env = LARGE_ENCLOSED
+
 /area/engineering/drone_fabrication
 	name = "\improper Engineering Drone Fabrication"
 	icon_state = "drone_fab"

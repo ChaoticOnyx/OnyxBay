@@ -45,7 +45,8 @@ NOTE: there are two lists of areas in the end of this file: centcom and station 
 	var/oneoff_light   = 0
 	var/oneoff_environ = 0
 
-	var/has_gravity = 1
+	var/has_gravity = TRUE
+	var/gravity_state = AREA_GRAVITY_NORMAL
 	var/obj/machinery/power/apc/apc = null
 	var/no_air = null
 //	var/list/lights				// list of all lights on this area
@@ -265,3 +266,10 @@ area/space/atmosalert()
 					sound_to(H, S)
 
 	spawn(60) .()
+
+/area/thunderfield
+	name = "Thunderfield"
+	icon_state = "yellow"
+	luminosity = 1
+	dynamic_lighting = 0
+	requires_power = 0
