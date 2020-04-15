@@ -121,7 +121,7 @@
 		else if(player.current.stat == UNCONSCIOUS)
 			log_debug("[key_name(player)] is not eligible to become a [role_text]: They are unconscious!")
 		else if(istype(player.current, /mob/living/simple_animal))
-       		log_debug("[key_name(player)] is not eligible to become a [role_text]: They are simple animal!")
+			log_debug("[key_name(player)] is not eligible to become a [role_text]: They are simple animal!")
 		else
 			candidates |= player
 
@@ -148,7 +148,7 @@
 		else if(player.current.stat == UNCONSCIOUS)
 			log_debug("[key_name(player)] is not eligible to become a [role_text]: They are unconscious!")
 		else if(istype(player.current, /mob/living/simple_animal))
-      		log_debug("[key_name(player)] is not eligible to become a [role_text]: They are simple animal!")
+			log_debug("[key_name(player)] is not eligible to become a [role_text]: They are simple animal!")
 		else
 			potential_candidates |= player
 
