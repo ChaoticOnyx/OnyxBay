@@ -93,3 +93,18 @@
 /obj/item/weapon/soap/brig
 	desc = "Train your security guards!"
 	icon_state = "soapbrig"
+
+/obj/item/weapon/soap/synth
+	name = "synthetic soap"
+	desc = "Even robots wash their manipulators."
+	icon_state = "soapsynth"
+
+/obj/item/weapon/soap/synth/Crossed(mob/M)
+	if(issilicon(M) && !M.stat && !M.buckled)
+		var/mob/living/silicon/S = M
+		S.stop_pulling()
+		S.Stun(rand(2, 4))
+		S.update_canmove()
+		S.visible_message(SPAN_WARNING("[M] emits a malfunction signal after stepping on \the [src]!"), 
+							SPAN_WARNING("You step on \the [src], from which you have a slight malfunction!"))
+		playsound(loc, 'sound/misc/slip.ogg', 50, 1, -3)
