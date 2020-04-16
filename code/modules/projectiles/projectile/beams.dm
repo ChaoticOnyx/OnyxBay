@@ -220,4 +220,12 @@
 			return
 		else
 			M.emitter_blasts_taken += 2
+		if(istype(A, /mob/living))
+			if(prob(50))
+				var/obj/item/organ/external/LIMP = A
+				if (istype(LIMP,/obj/item/organ/external/chest) ||	\
+					istype(LIMP,/obj/item/organ/external/groin))
+					LIMP.take_external_damage(60, used_weapon = "Plasma beam")
+				else
+					LIMP.droplimb(1, DROPLIMB_BURN, 1)
 	. = ..()
