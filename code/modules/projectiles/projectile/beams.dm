@@ -200,7 +200,7 @@
 	name = "plasma arc"
 	icon_state = "omnilaser"
 	fire_sound = 'sound/effects/weapons/energy/fire3.ogg'
-	damage = 15
+	damage = 25
 	sharp = 1
 	edge = 1
 	damage_type = BURN
@@ -215,7 +215,7 @@
 /obj/item/projectile/beam/plasmacutter/on_impact(atom/A)
 	if(istype(A, /turf/simulated/mineral))
 		var/turf/simulated/mineral/M = A
-		if(prob(33))
+		if(prob(99))
 			M.GetDrilled(1)
 			return
 		else
