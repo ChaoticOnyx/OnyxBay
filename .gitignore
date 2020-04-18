@@ -13,6 +13,7 @@ data/
 # ignore config, but not subdirs
 config/*
 !config/example/
+!config/warnings_templates/
 build_log.txt
 use_map
 stopserver
