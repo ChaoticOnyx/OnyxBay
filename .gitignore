@@ -10,7 +10,9 @@ Thumbs.db
 *.db
 *.db-*
 data/
-cfg/
+# ignore config, but not subdirs
+config/*
+!config/example/
 build_log.txt
 use_map
 stopserver
