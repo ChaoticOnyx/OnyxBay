@@ -272,6 +272,15 @@
 			pref.job_low |= job.title
 		return 1
 
+	if(user.client.check_warnings("heads") && !(user.client.key in GLOB.newcomers_head_warned))
+		if(role == "Captain" || role == "Head of Personnel" || role == "Chief Engineer" || role == "Chief Medical Officer" || role == "Research Director" || role == "Head of Security")
+			user.client.warn_player("heads", "window=Warning;size=440x300;can_resize=0;can_minimize=0")
+			var/answer = alert(user, "Are you sure you want to play as head of department?",, "Yes", "No")
+			if(answer == "No")
+				return
+			else
+				user.client.warned("heads")
+				GLOB.newcomers_head_warned.Add(user.client.key)
 	if(job.title == pref.job_high)
 		SetJobDepartment(job, 1)
 	else if(job.title in pref.job_medium)

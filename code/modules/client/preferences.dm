@@ -135,6 +135,11 @@ datum/preferences
 	var/datum/browser/popup = new(user, "Character Setup","Character Setup", 1200, 800, src)
 	popup.set_content(dat)
 	popup.open()
+	var/client/C = user.client
+	if(!(C.key in GLOB.newcomers_warned) && C.check_warnings("newcommers"))
+		C.warn_player("newcommers", "window=Warning;size=360x240;can_resize=0;can_minimize=0")
+		GLOB.newcomers_warned.Add(C.key)
+		C.warned("newcommers")
 
 /datum/preferences/proc/process_link(mob/user, list/href_list)
 

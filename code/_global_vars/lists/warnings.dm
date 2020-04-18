@@ -1,0 +1,3 @@
+GLOBAL_LIST_EMPTY(newcomers_warned)
+
+GLOBAL_LIST_EMPTY(newcomers_head_warned)
