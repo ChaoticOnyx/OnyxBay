@@ -207,15 +207,8 @@
 		if(!check_species_allowed(S))
 			return 0
 		var/role = job.title
-		if(client.check_warnings("heads") && !(client.key in GLOB.newcomers_head_warned))
-			if(role == "Captain" || role == "Head of Personnel" || role == "Chief Engineer" || role == "Chief Medical Officer" || role == "Research Director" || role == "Head of Security")
-				client.warn_player("heads", "window=Warning;size=440x300;can_resize=0;can_minimize=0")
-				var/answer = alert(client, "Are you sure you want to play as head of department?",, "Yes", "No")
-				if(answer == "No")
-					return
-				else
-					client.warned("heads")
-					GLOB.newcomers_head_warned.Add(client.key)
+		if(role == "Captain" || role == "Head of Personnel" || role == "Chief Engineer" || role == "Chief Medical Officer" || role == "Research Director" || role == "Head of Security")
+			SSwarnings.show_warning(client, WARNINGS_HEADS, "window=Warning;size=440x300;can_resize=0;can_minimize=0")
 
 		AttemptLateSpawn(job, client.prefs.spawnpoint)
 		return

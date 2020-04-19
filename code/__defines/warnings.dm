@@ -1,0 +1,4 @@
+#define WARNINGS_NEWCOMMERS "newcommers"
+#define WARNINGS_HEADS "heads"
+
+#define WARNINGS_ALL list(WARNINGS_NEWCOMMERS, WARNINGS_HEADS)
