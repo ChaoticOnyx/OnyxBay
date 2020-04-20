@@ -1,3 +1,14 @@
+/proc/readglobal(which)
+	. = global.vars[which]
+
+/proc/writeglobal(which, newval)
+	global.vars[which] = newval
+
+/proc/getallglobals()
+	. = list()
+	for(var/some_global in global.vars)
+		. += some_global
+
 /var/decl/global_vars/global_vars_
 
 /decl/global_vars/get_view_variables_header()
@@ -7,7 +18,7 @@
 	return "" // Ensuring changes to the base proc never affect us
 
 /decl/global_vars/get_variables()
-	. = _all_globals - VV_hidden()
+	. = getallglobals() - VV_hidden()
 	if(!usr || !check_rights(R_ADMIN|R_DEBUG, FALSE))
 		. -= VV_secluded()
 
