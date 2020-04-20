@@ -272,6 +272,8 @@
 			pref.job_low |= job.title
 		return 1
 
+	if(role == "Captain" || role == "Head of Personnel" || role == "Chief Engineer" || role == "Chief Medical Officer" || role == "Research Director" || role == "Head of Security")
+		SSwarnings.show_warning(user.client, WARNINGS_HEADS, "window=Warning;size=440x300;can_resize=0;can_minimize=0")
 	if(job.title == pref.job_high)
 		SetJobDepartment(job, 1)
 	else if(job.title in pref.job_medium)
