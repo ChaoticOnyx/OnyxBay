@@ -128,6 +128,10 @@ default behaviour is:
 		if(isobj(AM) && !AM.anchored)
 			var/obj/I = AM
 			if(!can_pull_size || can_pull_size < I.w_class)
+				if(istype(AM, /obj/machinery/power/supermatter))
+					var/obj/machinery/power/supermatter/SM = AM
+					SM.Consume(src)
+					return
 				to_chat(src, "<span class='warning'>It won't budge!</span>")
 				now_pushing = 0
 				return
