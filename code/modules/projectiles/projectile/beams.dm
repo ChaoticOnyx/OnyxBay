@@ -200,6 +200,7 @@
 	name = "plasma arc"
 	icon_state = "omnilaser"
 	fire_sound = 'sound/effects/weapons/energy/fire3.ogg'
+	armor_penetration = 10
 	damage = 30
 	sharp = 1
 	edge = 1
