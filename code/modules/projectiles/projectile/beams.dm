@@ -223,13 +223,15 @@
 			M.emitter_blasts_taken += 2
 	if(istype(A, /mob/living/carbon/human))
 		var/mob/living/carbon/human/H = A
-		var/obj/item/organ/external/LIMP = H.get_organ(src.def_zone)
-		var/block = H.run_armor_check(src.def_zone, src.check_armour, src.armor_penetration)
-		if (block > 40)
-			block = 25
-		if(prob(40 - block))
-			if (istype(LIMP, /obj/item/organ/external/chest) ||	istype(LIMP, /obj/item/organ/external/groin))
-				LIMP.take_external_damage(30, used_weapon = "Plasma arc")
-			else
-				LIMP.droplimb(0, DROPLIMB_EDGE)
+		if(!H.wearing_rig)
+			var/obj/item/organ/external/LIMP = H.get_organ(src.def_zone)
+			var/block = H.run_armor_check(src.def_zone, src.check_armour, src.armor_penetration)
+			var/chance = 33
+			if(block > 0)
+				chance = round((100 - block) / 3)
+			if(prob(chance))
+				if (istype(LIMP, /obj/item/organ/external/chest) ||	istype(LIMP, /obj/item/organ/external/groin))
+					LIMP.take_external_damage(30, used_weapon = "Plasma arc")
+				else
+					LIMP.droplimb(0, DROPLIMB_EDGE)
 	. = ..()
