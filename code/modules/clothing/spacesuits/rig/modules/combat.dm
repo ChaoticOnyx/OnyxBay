@@ -203,7 +203,7 @@
 	icon_state = "plasmacutter"
 	interface_name = "mounted plasma cutter"
 	interface_desc = "A knee-mounted suit-powered plasma cutter. Don't question it."
-	origin_tech = list(TECH_MATERIAL = 5, TECH_PHORON = 4, TECH_ENGINEERING = 7, TECH_COMBAT = 5)
+	origin_tech = list(TECH_MATERIAL = 6, TECH_PHORON = 5, TECH_ENGINEERING = 7, TECH_COMBAT = 5)
 	gun = /obj/item/weapon/gun/energy/plasmacutter/mounted
 
 /obj/item/rig_module/mounted/energy_blade
