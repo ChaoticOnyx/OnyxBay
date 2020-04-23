@@ -37,7 +37,7 @@
 					event_source.confirmed = 1
 					event_source.event_confirmed_by = user
 				else
-					to_chat(user, SPAN_WARNING("Unable to confirm the event with the same card."))
+					visible_message(SPAN_WARNING("\the [src] blinks and displays a message: Unable to confirm the event with the same card."))
 			else if(screen == 2)
 				event_triggered_by = user
 				initial_card = ID
@@ -166,7 +166,7 @@
 			feedback_inc("alert_keycard_auth_maintRevoke",1)
 		if("Emergency Response Team")
 			if(is_ert_blocked())
-				to_chat(usr, "<span class='warning'>All emergency response teams are dispatched and can not be called at this time.</span>")
+				visible_message(SPAN_WARNING("\the [src] blinks and displays a message: All emergency response teams are dispatched and can not be called at this time."))
 				return
 
 			trigger_armed_response_team(1)
@@ -174,9 +174,9 @@
 		if("Grant Nuclear Authorization Code")
 			var/obj/machinery/nuclearbomb/nuke = locate(/obj/machinery/nuclearbomb/station) in world
 			if(nuke)
-				to_chat(usr, "The nuclear authorization code is [nuke.r_code]")
+				visible_message(SPAN_WARNING("\the [src] blinks and displays a message: The nuclear authorization code is [nuke.r_code]"))
 			else
-				to_chat(usr, "No self destruct terminal found.")
+				visible_message(SPAN_WARNING("\the [src] blinks and displays a message: No self destruct terminal found."))
 			feedback_inc("alert_keycard_auth_nukecode",1)
 
 /obj/machinery/keycard_auth/proc/is_ert_blocked()
