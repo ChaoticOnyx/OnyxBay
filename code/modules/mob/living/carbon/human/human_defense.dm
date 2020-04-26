@@ -25,7 +25,7 @@ meteor_act
 
 	var/obj/item/organ/external/organ = get_organ(def_zone)
 	var/armor = getarmor_organ(organ, P.check_armour)
-	var/penetrating_damage = ((P.damage + P.armor_penetration) * P.penetration_modifier) - armor
+	var/penetrating_damage = ((P.damage + P.armor_penetration) * P.penetration_modifier) - min(armor*1.4, 100)
 
 	//Organ damage
 	if(organ.internal_organs.len && prob(35 + max(penetrating_damage, -12.5)))
