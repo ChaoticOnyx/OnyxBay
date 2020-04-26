@@ -47,7 +47,7 @@
 	supervisors = "the head of personnel"
 	selection_color = "#515151"
 	economic_modifier = 5
-	access = list(access_maint_tunnels, access_mailsorting, access_cargo, access_cargo_bot, access_qm, access_mining)
+	access = list(access_maint_tunnels, access_mailsorting, access_cargo, access_cargo_bot, access_qm, access_mining, access_mining_station)
 	minimal_access = list(access_maint_tunnels, access_mailsorting, access_cargo, access_cargo_bot, access_qm, access_mining, access_mining_station)
 	minimal_player_age = 7
 	ideal_character_age = 40
@@ -116,7 +116,7 @@
 	selection_color = "#515151"
 	economic_modifier = 7
 	faction_restricted = TRUE
-	access = list(access_lawyer, access_sec_doors, access_maint_tunnels, access_maint_tunnels, access_heads)
+	access = list(access_lawyer, access_sec_doors, access_maint_tunnels, access_heads)
 	minimal_access = list(access_lawyer, access_sec_doors, access_maint_tunnels, access_heads)
 	minimal_player_age = 14
 	outfit_type = /decl/hierarchy/outfit/job/internal_affairs_agent
