@@ -409,6 +409,15 @@
 		..()
 		reagents.add_reagent(/datum/reagent/ethanol/herbal, 100)
 
+/obj/item/weapon/reagent_containers/food/drinks/bottle/chacha
+	name = "Chacha"
+	desc = "A bottle of true alchogol."
+	icon_state = "chacha"
+	center_of_mass = "x=16;y=6"
+	New()
+		..()
+		reagents.add_reagent(/datum/reagent/ethanol/chacha, 100)
+
 /obj/item/weapon/reagent_containers/food/drinks/bottle/grenadine
 	name = "Briar Rose Grenadine Syrup"
 	desc = "Sweet and tangy, a bar syrup used to add color or flavor to drinks."
