@@ -120,10 +120,12 @@
 	if(breath_pressure < species.hazard_low_pressure || breath_pressure > species.hazard_high_pressure)
 		var/datum/gas_mixture/environment = loc.return_air_for_internal_lifeform()
 		var/env_pressure = environment.return_pressure()
-		var/lung_rupture_prob = BP_IS_ROBOTIC(src) ? prob(2.5) : prob(5) //Robotic lungs are less likely to rupture.
+		var/lung_damage_prob = BP_IS_ROBOTIC(src) ? prob(2.5) : prob(5) //Robotic lungs are less likely to rupture.
 		if(env_pressure < species.hazard_low_pressure || env_pressure > species.hazard_high_pressure)
-			if(!is_bruised() && lung_rupture_prob) //only rupture if NOT already ruptured
-				rupture()
+			if(lung_damage_prob)
+				take_internal_damage(5)
+				if(!is_bruised() && damage > min_bruised_damage) //only rupture if NOT already ruptured and lungs are damaged
+					rupture()
 	if(breath.total_moles == 0)
 		breath_fail_ratio = 1
 		handle_failed_breath()
