@@ -183,7 +183,7 @@
 		if(4)
 			state = 3
 			for(var/atom/movable/O in contents)
-				O.forceMove(src)
+				O.forceMove(loc)
 			crayon = null
 			state = 1
 		if(5)
