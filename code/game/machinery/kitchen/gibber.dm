@@ -7,6 +7,7 @@
 	layer = BELOW_OBJ_LAYER
 	density = 1
 	anchored = 1
+	emagged = 1
 	req_access = list(access_kitchen,access_morgue)
 
 	var/operating = 0        //Is it on?
