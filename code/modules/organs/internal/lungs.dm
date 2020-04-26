@@ -123,8 +123,8 @@
 					if(istype(parent))
 						owner.custom_pain("You feel a stabbing pain in your [parent.name]!", 20, affecting = parent)
 		if(breath.total_moles == 0)
-		breath_fail_ratio = 1
-		handle_failed_breath()
+			breath_fail_ratio = 1
+			handle_failed_breath()
 		return 1
 
 	var/safe_pressure_min = min_breath_pressure // Minimum safe partial pressure of breathable gas in kPa
