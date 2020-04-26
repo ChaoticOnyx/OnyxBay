@@ -100,12 +100,6 @@
 
 			owner.losebreath += round(damage/2)
 
-/obj/item/organ/internal/lungs/proc/rupture()
-	var/obj/item/organ/external/parent = owner.get_organ(parent_organ)
-	if(istype(parent))
-		owner.custom_pain("You feel a stabbing pain in your [parent.name]!", 50, affecting = parent)
-	bruise()
-
 /obj/item/organ/internal/lungs/proc/handle_breath(datum/gas_mixture/breath, forced)
 	if(!owner)
 		return 1
@@ -124,9 +118,11 @@
 		if(env_pressure < species.hazard_low_pressure || env_pressure > species.hazard_high_pressure)
 			if(lung_damage_prob)
 				take_internal_damage(5)
-				if(!is_bruised() && damage > min_bruised_damage) //only rupture if NOT already ruptured and lungs are damaged
-					rupture()
-	if(breath.total_moles == 0)
+				if(is_bruised()) //only spam pain if already ruptured
+					var/obj/item/organ/external/parent = owner.get_organ(parent_organ)
+					if(istype(parent))
+						owner.custom_pain("You feel a stabbing pain in your [parent.name]!", 20, affecting = parent)
+		if(breath.total_moles == 0)
 		breath_fail_ratio = 1
 		handle_failed_breath()
 		return 1
