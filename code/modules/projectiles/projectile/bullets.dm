@@ -159,6 +159,7 @@
 	embed = 0
 	sharp = 0
 	armor_penetration = 2.5
+	penetration_modifier = 0.2
 
 /obj/item/projectile/bullet/pistol/rubber/c44
 	name = "rubber bullet"
