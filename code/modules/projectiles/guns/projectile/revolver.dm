@@ -15,6 +15,10 @@
 	var/chamber_offset = 0 //how many empty chambers in the cylinder until you hit a round
 	fire_sound = 'sound/effects/weapons/gun/fire2.ogg'
 
+/obj/item/weapon/gun/projectile/revolver/event
+	icon = 'icons/event/eventweapon.dmi'
+	icon_state = "revolver"
+	
 /obj/item/weapon/gun/projectile/revolver/coltpython
 	name = "Colt Python"
 	desc = "The Lumoco Arms Colt Python is a choice revolver for when you absolutely, positively need to put a hole in a criminal. Uses .357 ammo."

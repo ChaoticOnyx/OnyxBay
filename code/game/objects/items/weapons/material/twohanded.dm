@@ -99,6 +99,10 @@
 	attack_verb = list("attacked", "chopped", "cleaved", "torn", "cut")
 	applies_material_colour = 0
 
+/obj/item/weapon/material/twohanded/fireaxe/event
+	icon = 'icons/event/eventweapon.dmi'
+	icon_state = "fireaxe"
+
 /obj/item/weapon/material/twohanded/fireaxe/afterattack(atom/A as mob|obj|turf|area, mob/user as mob, proximity)
 	if(!proximity) return
 	..()

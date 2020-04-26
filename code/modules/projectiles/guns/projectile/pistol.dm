@@ -223,6 +223,23 @@
 	else
 		icon_state = "det-m9_e"
 
+/obj/item/weapon/gun/projectile/event_9m
+	name = "9mm Pistol"
+	desc = "A relatively cheap and reliable knock-off of a Beretta M9. Uses 9mm rounds. Used to be a standart-issue gun in almost every security company."
+	icon = 'icons/event/eventweapon.dmi'
+	icon_state = "9mm_pistol"
+	w_class = ITEM_SIZE_NORMAL
+	caliber = "9mm"
+	fire_delay = 1
+	mod_weight = 0.65
+	mod_reach = 0.5
+	mod_handy = 1.0
+	origin_tech = list(TECH_COMBAT = 2, TECH_MATERIAL = 2,)
+	load_method = MAGAZINE
+	magazine_type = /obj/item/ammo_magazine/mc9mm
+	allowed_magazines = /obj/item/ammo_magazine/mc9mm
+	fire_sound = 'sound/effects/weapons/gun/fire1.ogg'
+
 /obj/item/weapon/gun/projectile/pistol
 	name = "holdout pistol"
 	desc = "The Lumoco Arms P3 Whisper. A small, easily concealable gun. Uses 9mm rounds."

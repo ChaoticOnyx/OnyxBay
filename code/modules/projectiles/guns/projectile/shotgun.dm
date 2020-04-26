@@ -48,6 +48,11 @@
 
 	update_icon()
 
+/obj/item/weapon/gun/projectile/shotgun/pump/event
+	icon = 'icons/event/eventweapon.dmi'
+	icon_state = "shotgun"
+	ammo_type = /obj/item/ammo_casing/shotgun/pellet
+
 /obj/item/weapon/gun/projectile/shotgun/pump/combat
 	name = "combat shotgun"
 	desc = "Built for close quarters combat, the Hephaestus Industries KS-40 is widely regarded as a weapon of choice for repelling boarders."
