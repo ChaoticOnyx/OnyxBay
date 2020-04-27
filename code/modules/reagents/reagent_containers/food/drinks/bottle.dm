@@ -411,7 +411,7 @@
 
 /obj/item/weapon/reagent_containers/food/drinks/bottle/chacha
 	name = "Chacha"
-	desc = "A bottle of true alchogol."
+	desc = "A bottle of some real alchogol."
 	icon_state = "chacha"
 	center_of_mass = "x=16;y=6"
 	New()
