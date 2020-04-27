@@ -64,3 +64,10 @@
 /mob/living/carbon/brain/check_has_mouth()
 	return 0
 
+/mob/living/carbon/brain/forceMove(atom/destination)
+	ASSERT(istype(container))
+	return container.forceMove(destination)
+
+/mob/living/carbon/brain/Move(atom/destination)
+	ASSERT(istype(container))
+	return container.Move(destination)
