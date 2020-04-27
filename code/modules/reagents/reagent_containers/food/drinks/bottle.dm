@@ -410,7 +410,7 @@
 		reagents.add_reagent(/datum/reagent/ethanol/herbal, 100)
 
 /obj/item/weapon/reagent_containers/food/drinks/bottle/chacha
-	name = "Chacha"
+	name = "Georgian Wild Drink"
 	desc = "A bottle of some real alchogol."
 	icon_state = "chacha"
 	center_of_mass = "x=16;y=6"
