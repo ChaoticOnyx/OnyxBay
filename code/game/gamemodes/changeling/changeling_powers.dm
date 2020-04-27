@@ -337,7 +337,7 @@ var/global/list/possible_changeling_IDs = list("Alpha","Beta","Gamma","Delta","E
 
 	src.dna = chosen_dna.dna
 	src.real_name = chosen_dna.name
-	//src.flavor_text = ""
+	src.flavor_text = ""
 
 	if(ishuman(src))
 		var/mob/living/carbon/human/H = src
