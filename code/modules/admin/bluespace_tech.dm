@@ -95,7 +95,7 @@
 /mob/living/carbon/human/bluespace_tech/binarycheck()
 	return 1
 
-/mob/living/carbon/human/bluespace_tech/proc/suicide()
+/mob/living/carbon/human/bluespace_tech/proc/bt_suicide()
 	if(QDELETED(src))
 		return
 	custom_emote(VISIBLE_MESSAGE, "presses a button on their suit, followed by a polite bow.")
@@ -350,4 +350,4 @@
 	set name = "Move Downwards"
 	set category = "BST"
 
-	zMove(DOWN) 
+	zMove(DOWN)
