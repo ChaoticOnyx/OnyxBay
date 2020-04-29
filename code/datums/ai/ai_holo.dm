@@ -20,6 +20,9 @@
 /decl/ai_holo/default
 	icon_state = "Default"
 
+/decl/ai_holo/default_slim
+	icon_state = "Default-Slim"
+
 /decl/ai_holo/face
 	icon_state = "Face"
 
@@ -77,3 +80,7 @@
 	icon_state = "malf-TCC"
 	requires_malf = TRUE
 	icon_colorize = TRUE
+
+/decl/ai_holo/catalyst
+	icon_state = "malf-catalyst"
+	requires_malf = TRUE
