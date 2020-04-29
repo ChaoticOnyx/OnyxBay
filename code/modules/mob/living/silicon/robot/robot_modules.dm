@@ -201,8 +201,14 @@ var/global/list/robot_modules = list(
 	src.modules += new /obj/item/weapon/weldingtool/largetank(src)
 	src.modules += new /obj/item/device/lightreplacer(src)
 	src.modules += new /obj/item/weapon/soap/nanotrasen(src)
+	src.modules += new /obj/item/weapon/matter_decompiler(src)
 	src.emag = new /obj/item/weapon/melee/energy/sword(src)
 	..()
+
+/obj/item/weapon/robot_module/standard/respawn_consumable(mob/living/silicon/robot/R, amount)
+	..()
+	var/obj/item/device/lightreplacer/LR = locate() in src.modules
+	LR.Charge(R, amount)
 
 /obj/item/weapon/robot_module/medical
 	name = "medical robot module"
