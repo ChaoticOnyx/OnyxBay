@@ -63,6 +63,19 @@
 	poison_per_bite = 5
 	move_to_delay = 4
 
+/mob/living/simple_animal/hostile/giant_spider/hunter/event
+	desc = "SCARY SHIT, KILL IT!!!1"
+	icon = 'icons/event/eventmobs.dmi'
+	icon_state = "fleshling1"
+	icon_living = "fleshling1"
+	icon_dead = "fleshling_dead"	
+	poison_per_bite = 3
+	
+/mob/living/simple_animal/hostile/giant_spider/hunter/event/New(location, atom/parent)
+	icon_state = pick("fleshling1","fleshling2","fleshling3","fleshling4")
+	icon_living = icon_state
+	..()
+
 /mob/living/simple_animal/hostile/giant_spider/New(location, atom/parent)
 	get_light_and_color(parent)
 	..()
