@@ -16,7 +16,7 @@ mob/proc/airflow_stun()
 		return 0
 	if(lying)
 		return 0 // Chudo-code
-	to_chat(src, "<span class='warning'>The sudden rush of air knocks you over!</span>")
+	to_chat(src, SPAN_WARNING("The sudden rush of air knocks you over!")
 	Weaken(1)
 	last_airflow_stun = world.time
 
