@@ -221,6 +221,14 @@
 		mymob.fire.screen_loc = ui_fire
 		hud_elements |= mymob.fire
 
+	if(hud_data.has_pain)
+		mymob.pains = new /obj/screen()
+		mymob.pains.icon = ui_style
+		mymob.pains.icon_state = "pain0"
+		mymob.pains.SetName("pain")
+		mymob.pains.screen_loc = ui_health
+		hud_elements |= mymob.pains
+
 	if(hud_data.has_health)
 		mymob.healths = new /obj/screen()
 		mymob.healths.icon = ui_style

@@ -4,6 +4,7 @@
 	var/has_m_intent = 1  	// Set to draw move intent box.
 	var/has_warnings = 1  	// Set to draw environment warnings.
 	var/has_health = 1      // Set to draw health.
+	var/has_pain = 1		// Draw the pain indicator.
 	var/has_pressure = 1  	// Draw the pressure indicator.
 	var/has_nutrition = 1 	// Draw the nutrition indicator.
 	var/has_bodytemp = 1  	// Draw the bodytemp indicator.
@@ -93,6 +94,6 @@
 		"storage2" =     list("loc" = ui_storage2,  "name" = "Right Pocket", "slot" = slot_r_store,   "state" = "pocket"),
 		"head" =         list("loc" = ui_head,      "name" = "Hat",          "slot" = slot_head,      "state" = "hair",   "toggle" = 1),
 		"mask" =         list("loc" = ui_shoes,     "name" = "Mask", "slot" = slot_wear_mask, "state" = "mask",  "toggle" = 1),
-		"eyes" =         list("loc" = ui_glasses,   "name" = "Glasses",      "slot" = slot_glasses,   "state" = "glasses","toggle" = 1),		
+		"eyes" =         list("loc" = ui_glasses,   "name" = "Glasses",      "slot" = slot_glasses,   "state" = "glasses","toggle" = 1),
 		"back" =         list("loc" = ui_sstore1,   "name" = "Back", "slot" = slot_back,      "state" = "back"),
 		)
