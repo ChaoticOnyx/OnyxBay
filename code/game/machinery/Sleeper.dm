@@ -237,22 +237,23 @@
 		return
 
 	if(istype(I, /obj/item/grab))
-		if(!ismob(I:affecting))
+		var/obj/item/grab/G = I
+		if(!ismob(G.affecting))
 			return
-		if(!check_compatibility(I:affecting, user))
+		if(!check_compatibility(G.affecting, user))
 			return
-		user.visible_message("<span class='notice'>\The [user] starts placing \the [I:affecting] into \the [src].</span>", "<span class='notice'>You start placing \the [I:affecting] into \the [src].</span>")
+		user.visible_message("<span class='notice'>\The [user] starts placing \the [G.affecting] into \the [src].</span>", "<span class='notice'>You start placing \the [G.affecting] into \the [src].</span>")
 
 		if(do_after(user, 20, src))
-			if(!check_compatibility(I:affecting, user))
+			if(!check_compatibility(G.affecting, user))
 				return
-			I:affecting.stop_pulling()
-			if(I:affecting.client)
-				I:affecting.client.perspective = EYE_PERSPECTIVE
-				I:affecting.client.eye = src
-			I:affecting.forceMove(src)
+			G.affecting.stop_pulling()
+			if(G.affecting.client)
+				G.affecting.client.perspective = EYE_PERSPECTIVE
+				G.affecting.client.eye = src
+			G.affecting.forceMove(src)
 			update_use_power(POWER_USE_IDLE)
-			occupant = I:affecting
+			occupant = G.affecting
 			update_icon()
 			qdel(I)
 			return
