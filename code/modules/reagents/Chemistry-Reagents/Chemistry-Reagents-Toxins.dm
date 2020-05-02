@@ -670,13 +670,6 @@
 		else if (prob(10))
 			to_chat(H, "<span class='warning'>You feel terribly ill!</span>")
 
-/datum/reagent/vecuronium_bromide
-	name = "Vecuronium Bromide"
-	description = "A general anaesthetic, provides prolonged paralysis without unconsciousness or pain relief"
-	taste_description = "bitterness"
-	reagent_state = LIQUID
-	color = "#cccccc"
-
 /datum/reagent/vecuronium_bromide/affect_blood(mob/living/carbon/M, alien, removed)
 	if(alien == IS_DIONA)
 		return
