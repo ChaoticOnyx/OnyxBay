@@ -13,7 +13,7 @@ data/
 cfg/
 # ignore config, but not subdirs
 config/*
-!config/names/rus*
+!config/names/
 !config/example/
 !config/warnings_templates/
 build_log.txt
