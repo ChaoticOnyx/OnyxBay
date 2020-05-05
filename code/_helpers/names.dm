@@ -172,7 +172,7 @@ var/syndicate_code_response[] //Code response for traitors.
 		var/word = pick(
 			50; pick(GLOB.rus_nouns),
 			60; pick(GLOB.rus_adjectives),
-			20; pick(GLOB.rus_verbs),
+			30; pick(GLOB.rus_verbs),
 			90; pick(GLOB.rus_occupations),
 			80; pick(GLOB.rus_bays),
 			70; pick(GLOB.rus_local_terms)
