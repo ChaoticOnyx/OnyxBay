@@ -524,10 +524,14 @@ var/list/global/slot_flags_enumeration = list(
 	if(istype(damage_source,/obj/item/projectile))
 		var/obj/item/projectile/P = damage_source
 		if(src.mod_shield >= 2.5)
-			if(istype(user,/mob/living/carbon/human))
-				var/mob/living/carbon/human/H = user
-				H.useblock_off()
-			if(P.starting)
+			// some effects here
+			var/datum/effect/effect/system/spark_spread/spark_system = new /datum/effect/effect/system/spark_spread()
+			spark_system.set_up(3, 0, user.loc)
+			spark_system.start()
+			if(istype(P,/obj/item/projectile/beam))
+				visible_message("<span class='warning'>\The [user] dissolves [P] with their [src.name]!</span>")
+				return PROJECTILE_FORCE_BLOCK // Beam reflections code is kinda messy, I ain't gonna touch it. ~Toby
+			else if(P.starting)
 				visible_message("<span class='warning'>\The [user] reflects [P] with their [src.name]!</span>")
 
 				// Find a turf near or on the original location to bounce to
@@ -538,11 +542,6 @@ var/list/global/slot_flags_enumeration = list(
 				// redirect the projectile
 				P.redirect(new_x, new_y, curloc, user)
 
-			 	// some effects here
-				var/datum/effect/effect/system/spark_spread/spark_system = new /datum/effect/effect/system/spark_spread()
-				spark_system.set_up(3, 0, user.loc)
-				spark_system.start()
-
 				return PROJECTILE_CONTINUE // complete projectile permutation
 		else if(src.mod_shield >= 1.3)
 			if(P.armor_penetration > (25*src.mod_shield)-5)
@@ -551,11 +550,11 @@ var/list/global/slot_flags_enumeration = list(
 			visible_message("<span class='warning'>\The [user] blocks [P] with their [src.name]!</span>")
 			if(istype(user,/mob/living/carbon/human))
 				var/mob/living/carbon/human/H = user
-				H.poise -= P.damage/src.mod_shield
-				if(H.poise < P.damage/src.mod_shield)
+				H.poise -= P.damage/(src.mod_shield*2.0)
+				if(H.poise < P.damage/(src.mod_shield*2.0))
 					visible_message("<span class='warning'>[H] falls down, unable to keep balance !</span>")
 					H.apply_effect(3, WEAKEN, 0)
-				H.useblock_off()
+					H.useblock_off()
 			return PROJECTILE_FORCE_BLOCK
 	return 0
 

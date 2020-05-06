@@ -11,10 +11,16 @@
 	mod_handy = 1.0
 	one_hand_penalty = 2
 	accuracy = 2
+	max_shots = 12
 	origin_tech = list(TECH_COMBAT = 3, TECH_MAGNET = 2)
 	matter = list(MATERIAL_STEEL = 2000)
 	projectile_type = /obj/item/projectile/beam/midlaser
 	wielded_item_state = "laser-wielded"
+
+	firemodes = list(
+		list(mode_name="beam", projectile_type=/obj/item/projectile/beam/midlaser),
+		list(mode_name="slug", projectile_type=/obj/item/projectile/energy/laser/mid)
+		)
 
 /obj/item/weapon/gun/energy/laser/mounted
 	self_recharge = 1
@@ -45,6 +51,8 @@
 	icon_state = "laserp"
 	projectile_type = /obj/item/projectile/beam/practice
 	charge_cost = 10 //How much energy is needed to fire.
+
+	firemodes = list()
 
 /obj/item/weapon/gun/energy/laser/practice/proc/hacked()
 	return projectile_type != /obj/item/projectile/beam/practice
@@ -110,7 +118,7 @@ obj/item/weapon/gun/energy/retro
 	w_class = ITEM_SIZE_HUGE
 	projectile_type = /obj/item/projectile/beam/heavylaser
 	charge_cost = 40
-	max_shots = 6
+	max_shots = 8
 	accuracy = 2
 	fire_delay = 20
 	wielded_item_state = "gun_wielded"
@@ -118,6 +126,11 @@ obj/item/weapon/gun/energy/retro
 	mod_weight = 1.25
 	mod_reach = 1.0
 	mod_handy = 1.0
+
+	firemodes = list(
+		list(mode_name="beam", projectile_type=/obj/item/projectile/beam/heavylaser),
+		list(mode_name="slug", projectile_type=/obj/item/projectile/energy/laser/heavy)
+		)
 
 /obj/item/weapon/gun/energy/lasercannon/mounted
 	name = "mounted laser cannon"
