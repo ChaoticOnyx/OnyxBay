@@ -243,9 +243,13 @@
 /proc/trim(text)
 	return trim_left(trim_right(text))
 
-//Returns a string with the first element of the string capitalized.
+//Returns a string with the first element of the string capitalized, ignoring html-tags
 /proc/capitalize(t as text)
-	return ruppertext(copytext(t, 1, 2)) + copytext(t, 2)
+	var/i = 1
+	while(copytext(t, i, i + 1) == "<")
+		i = findtext(t, ">", i + 1)
+		if(i) i++
+	return copytext(t, 1, i) + ruppertext(copytext(t, i, i + 1)) + copytext(t, i + 1)
 
 //This proc strips html properly, remove < > and all text between
 //for complete text sanitizing should be used sanitize()
