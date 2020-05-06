@@ -122,6 +122,24 @@ var/global/list/rkeys = list(
 		text = "<b>[text]</b>"
 	return text
 
+// Highlights every entry of 'russian word + 3 letters' in text
+/proc/highlight_words_with_suffix(t as text, list/words, css_class = "notice")
+	t = replacetext(t, "&#255;", "ÿ")
+	var/words_concatenation = ""
+	for(var/word in words)
+		words_concatenation += rlowertext(word) + "|"
+	words_concatenation = copytext(words_concatenation, 1, -1)
+	var/regex/highlighted = new("(?:^|(?<=\[^à-þÿ¸\\xFF]))(?:[words_concatenation])\[à-þÿ¸\\xFF]{0,3}(?:(?=\[^à-þÿ¸\\xFF])|$)", "g")
+	var/lower_text = rlowertext(t)
+	var/left[0]
+	var/right[0]
+	while(highlighted.Find(lower_text))
+		left += highlighted.index
+		right += highlighted.next
+	for(var/i = left.len, i > 0, i--)
+		t = copytext(t, 1, left[i]) + "<span class='[css_class]'>" + copytext(t, left[i], right[i]) + "</span>" + copytext(t, right[i])
+	return replacetext(t, "ÿ", "&#255;")
+
 /proc/rustoutf(text)			//fucking tghui
 	text = replacetext(text, "à", "&#x430;")
 	text = replacetext(text, "á", "&#x431;")
