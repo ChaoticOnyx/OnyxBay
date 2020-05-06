@@ -170,12 +170,12 @@ var/syndicate_code_response[] //Code response for traitors.
 	var/code_phrase[words_count]
 	for(var/i = 1, i <= code_phrase.len, i++)
 		var/word = pick(
-			50; pick(GLOB.rus_nouns),
-			60; pick(GLOB.rus_adjectives),
-			30; pick(GLOB.rus_verbs),
-			90; pick(GLOB.rus_occupations),
-			80; pick(GLOB.rus_bays),
-			70; pick(GLOB.rus_local_terms)
+			55; pick(GLOB.rus_nouns),
+			65; pick(GLOB.rus_adjectives),
+			40; pick(GLOB.rus_verbs),
+			80; pick(GLOB.rus_occupations),
+			70; pick(GLOB.rus_bays),
+			65; pick(GLOB.rus_local_terms)
 		)
 		if(!word || code_phrase.Find(word,1,i)) // Reroll duplicates and errors
 			i--
