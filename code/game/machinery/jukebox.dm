@@ -161,9 +161,9 @@ datum/track/New(title_name, audio)
 			. = TRUE
 
 	if(!spamcheck)
-	spamcheck = TRUE
-	spawn(30)
-		spamcheck = FALSE
+		spamcheck = TRUE
+		spawn(30)
+			spamcheck = FALSE
 
 /obj/machinery/media/jukebox/proc/emag_play()
 	playsound(loc, 'sound/items/AirHorn.ogg', 100, 1)
