@@ -90,6 +90,8 @@ GLOBAL_DATUM_INIT(traitors, /datum/antagonist/traitor, new)
 /datum/antagonist/traitor/proc/give_intel(mob/living/traitor_mob)
 	give_collaborators(traitor_mob)
 	give_codewords(traitor_mob)
+	if (traitor_mob.mind)
+		traitor_mob.mind.syndicate_awareness = SUSPICIOUSLY_AWARED
 
 /datum/antagonist/traitor/proc/give_collaborators(mob/living/traitor_mob)
 	var/mob/living/carbon/human/M = get_nt_opposed()

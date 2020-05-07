@@ -67,9 +67,9 @@
 			else if(!is_blind())
 				to_chat(src, "<span class='name'>[speaker_name]</span>[alt_name] talks but you cannot hear \him.")
 	else
-		var/mob/living/living_body = istype(src,/mob/living) ? src : null
-		if(living_body && (living_body.check_special_role("Traitor") || src.mind && GLOB.traitors.is_antagonist(src.mind)))
-			message = highlight_words_with_suffix(message, syndicate_code_phrase) // Or syndicate_code_phrase + syndicate_code_response
+		if(istype(src,/mob/living) && src.mind && src.mind.syndicate_awareness == SUSPICIOUSLY_AWARED)
+			message = highlight_words_with_suffix(message, syndicate_code_phrase)
+			//message = highlight_words_with_suffix(message, syndicate_code_response, rose) // <-- Uncomment this to highlight responses too, with different color
 		if(language)
 			var/nverb = null
 			if(!say_understands(speaker,language) || language.name == LANGUAGE_GALCOM) //Check to see if we can understand what the speaker is saying. If so, add the name of the language after the verb. Don't do this for Galactic Common.
@@ -198,9 +198,9 @@
 			speaker_name = "[speaker.real_name] ([speaker_name])"
 		track = "[speaker_name] ([ghost_follow_link(speaker, src)])"
 
-	var/mob/living/living_body = istype(src,/mob/living) ? src : null
-	if(living_body && (living_body.check_special_role("Traitor") || src.mind && GLOB.traitors.is_antagonist(src.mind)))
-		message = highlight_words_with_suffix(message, syndicate_code_phrase) // Or syndicate_code_phrase + syndicate_code_response
+	if(istype(src,/mob/living) && src.mind && src.mind.syndicate_awareness == SUSPICIOUSLY_AWARED)
+		message = highlight_words_with_suffix(message, syndicate_code_phrase)
+		//message = highlight_words_with_suffix(message, syndicate_code_response, rose) // <-- Uncomment this to highlight responses too, with different color
 	var/formatted
 	if(language)
 		if(!say_understands(speaker,language) || language.name == LANGUAGE_GALCOM) //Check if we understand the message. If so, add the language name after the verb. Don't do this for Galactic Common.
