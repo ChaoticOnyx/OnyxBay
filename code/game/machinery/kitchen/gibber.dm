@@ -79,7 +79,6 @@
 
 /obj/machinery/gibber/interact(mob/user as mob)
 
-	var/dat = "<center><h1>Gibber Control Panel</h1><hr/>"
 	if(..() || (disabled && !panel_open))
 		to_chat(user, "<span class='danger'>\The [src] is disabled!</span>")
 		return
