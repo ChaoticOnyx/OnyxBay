@@ -15,8 +15,14 @@
 	var/gib_time = 40        // Time from starting until meat appears
 	var/gib_throw_dir = WEST // Direction to spit meat and gibs in.
 
+	var/hacked = 0
+	var/disabled = 0
+	var/shocked = 0
+
 	idle_power_usage = 2
 	active_power_usage = 500
+
+	var/datum/wires/gibber/wires = null
 
 //auto-gibs anything that bumps into it
 /obj/machinery/gibber/autogibber
@@ -51,6 +57,7 @@
 
 /obj/machinery/gibber/Initialize()
 	. = ..()
+	wires = new(src)
 	update_icon()
 
 /obj/machinery/gibber/update_icon()
@@ -70,14 +77,32 @@
 	src.go_out()
 	return
 
-/obj/machinery/gibber/attack_hand(mob/user as mob)
+/obj/machinery/gibber/interact(mob/user as mob)
+
+	var/dat = "<center><h1>Gibber Control Panel</h1><hr/>"
+	if(..() || (disabled && !panel_open))
+		to_chat(user, "<span class='danger'>\The [src] is disabled!</span>")
+		return
+	if(shocked)
+		shock(user, 50)
 	if(stat & (NOPOWER|BROKEN))
+		return
+	if(panel_open)
+		dat += "<h2>Maintenance Panel</h2>"
+		dat += wires.GetInteractWindow()
+		dat += "<hr>"
+		user << browse(dat, "window=gibber")
+		onclose(user, "gibber")
 		return
 	if(operating)
 		to_chat(user, "<span class='danger'>\The [src] is locked and running, wait for it to finish.</span>")
 		return
 	else
 		src.startgibbing(user)
+
+/obj/machinery/gibber/attack_hand(mob/user as mob)
+	user.set_machine(src)
+	interact(user)
 
 /obj/machinery/gibber/examine()
 	. = ..()
@@ -89,6 +114,25 @@
 	return 1
 
 /obj/machinery/gibber/attackby(obj/item/W, mob/user)
+
+	if(shocked)
+		shock(user, 50)
+
+	if(istype(W, /obj/item/weapon/screwdriver))
+		src.panel_open = !src.panel_open
+		to_chat(user, "You [src.panel_open ? "open" : "close"] the maintenance panel.")
+		src.overlays.Cut()
+		icon_state = (panel_open ? "grinder_open" : "grinder")
+
+
+		SSnano.update_uis(src)
+		return
+
+	if(isMultitool(W) || isWirecutter(W))
+		if(src.panel_open)
+			interact(user)
+			return
+
 	if(istype(W, /obj/item/grab))
 		var/obj/item/grab/G = W
 		if(!G.force_danger())
@@ -102,6 +146,7 @@
 		user.visible_message("<span class='danger'>\The [user] feeds \the [W] into \the [src], obliterating it.</span>")
 	else
 		return ..()
+
 
 /obj/machinery/gibber/MouseDrop_T(mob/target, mob/user)
 	if(user.stat || user.restrained())
@@ -122,7 +167,7 @@
 		to_chat(user, "<span class='danger'>This is not suitable for \the [src]!</span>")
 		return
 
-	if(istype(victim,/mob/living/carbon/human) && !emagged)
+	if(istype(victim,/mob/living/carbon/human) && !(emagged || hacked))
 		to_chat(user, "<span class='danger'>\The [src] safety guard is engaged!</span>")
 		return
 
