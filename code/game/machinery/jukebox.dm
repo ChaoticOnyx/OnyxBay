@@ -54,6 +54,9 @@ datum/track/New(title_name, audio)
 		new /datum/track("Space Oddity", 'sound/music/space_oddity.ogg'),
 	)
 
+	var/datum/track/rickroll = new("Never Gonna Give You Up", 'sound/music/rickroll.ogg')
+	var/rickrolling = FALSE
+
 
 /obj/machinery/media/jukebox/New()
 	..()
@@ -96,6 +99,9 @@ datum/track/New(title_name, audio)
 		to_chat(usr, "\The [src] doesn't appear to function.")
 		return
 
+	if(rickrolling)
+		to_chat(usr, "You notice a sinked button on a [src]")
+
 	tg_ui_interact(user)
 
 /obj/machinery/media/jukebox/ui_status(mob/user, datum/ui_state/state)
@@ -128,14 +134,16 @@ datum/track/New(title_name, audio)
 		return TRUE
 	switch(action)
 		if("change_track")
-			for(var/datum/track/T in tracks)
-				if(T.title == params["title"])
-					current_track = T
-					StartPlaying()
-					break
+			if(!rickrolling)
+				for(var/datum/track/T in tracks)
+					if(T.title == params["title"])
+						current_track = T
+						StartPlaying()
+						break
 			. = TRUE
 		if("stop")
-			StopPlaying()
+			if(!rickrolling)
+				StopPlaying()
 			. = TRUE
 		if("play")
 			if(emagged)
@@ -143,7 +151,8 @@ datum/track/New(title_name, audio)
 			else if(!current_track)
 				to_chat(usr, "No track selected.")
 			else
-				StartPlaying()
+				if(!rickrolling)
+					StartPlaying()
 			. = TRUE
 		if("volume")
 			AdjustVolume(text2num(params["level"]))
@@ -215,6 +224,7 @@ datum/track/New(title_name, audio)
 	if(!current_track)
 		return
 
+	if(prob(7)) lock_rickroll()
 	// Jukeboxes cheat massively and actually don't share id. This is only done because it's music rather than ambient noise.
 	sound_token = GLOB.sound_player.PlayLoopingSound(src, sound_id, current_track.sound, volume = volume, range = 7, falloff = 3, prefer_mute = TRUE, preference = /datum/client_preference/play_jukeboxes)
 
@@ -226,3 +236,13 @@ datum/track/New(title_name, audio)
 	volume = Clamp(new_volume, 0, 50)
 	if(sound_token)
 		sound_token.SetVolume(volume)
+
+/obj/machinery/media/jukebox/proc/lock_rickroll(duration = 150)
+	if(rickrolling)
+		return
+	current_track = rickroll
+	rickrolling = TRUE
+	addtimer(CALLBACK(src, .proc/unlock_rickroll), duration, 0)
+
+/obj/machinery/media/jukebox/proc/unlock_rickroll()
+	rickrolling = FALSE
