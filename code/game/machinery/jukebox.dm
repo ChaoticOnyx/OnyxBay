@@ -1,5 +1,5 @@
 //This file was auto-corrected by findeclaration.exe on 25.5.2012 20:42:32
-#define RICKROLL_PROBABILITY 7
+#define RICKROLL_PROBABILITY 1
 
 datum/track
 	var/title
@@ -57,6 +57,7 @@ datum/track/New(title_name, audio)
 
 	var/datum/track/rickroll = new("Never Gonna Give You Up", 'sound/music/rickroll.ogg')
 	var/rickrolling = FALSE
+	var/spamcheck = FALSE
 
 
 /obj/machinery/media/jukebox/New()
@@ -159,6 +160,11 @@ datum/track/New(title_name, audio)
 			AdjustVolume(text2num(params["level"]))
 			. = TRUE
 
+	if(!spamcheck)
+	spamcheck = TRUE
+	spawn(30)
+		spamcheck = FALSE
+
 /obj/machinery/media/jukebox/proc/emag_play()
 	playsound(loc, 'sound/items/AirHorn.ogg', 100, 1)
 	for(var/mob/living/carbon/M in ohearers(6, src))
@@ -225,7 +231,7 @@ datum/track/New(title_name, audio)
 	if(!current_track)
 		return
 
-	if(prob(RICKROLL_PROBABILITY)) lock_rickroll()
+	if(!spamcheck && prob(RICKROLL_PROBABILITY)) lock_rickroll()
 	// Jukeboxes cheat massively and actually don't share id. This is only done because it's music rather than ambient noise.
 	sound_token = GLOB.sound_player.PlayLoopingSound(src, sound_id, current_track.sound, volume = volume, range = 7, falloff = 3, prefer_mute = TRUE, preference = /datum/client_preference/play_jukeboxes)
 
@@ -243,7 +249,5 @@ datum/track/New(title_name, audio)
 		return
 	current_track = rickroll
 	rickrolling = TRUE
-	addtimer(CALLBACK(src, .proc/unlock_rickroll), duration, 0)
-
-/obj/machinery/media/jukebox/proc/unlock_rickroll()
-	rickrolling = FALSE
+	spawn(duration)
+		rickrolling = FALSE
