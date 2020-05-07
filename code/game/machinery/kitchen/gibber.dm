@@ -88,6 +88,7 @@
 	if(stat & (NOPOWER|BROKEN))
 		return
 	if(panel_open)
+		var/dat = "<center><h1>Gibber Control Panel</h1><hr/>"
 		dat += "<h2>Maintenance Panel</h2>"
 		dat += wires.GetInteractWindow()
 		dat += "<hr>"
@@ -121,11 +122,7 @@
 	if(istype(W, /obj/item/weapon/screwdriver))
 		src.panel_open = !src.panel_open
 		to_chat(user, "You [src.panel_open ? "open" : "close"] the maintenance panel.")
-		src.overlays.Cut()
 		icon_state = (panel_open ? "grinder_open" : "grinder")
-
-
-		SSnano.update_uis(src)
 		return
 
 	if(isMultitool(W) || isWirecutter(W))
