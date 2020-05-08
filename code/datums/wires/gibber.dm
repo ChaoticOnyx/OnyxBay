@@ -1,11 +1,11 @@
+#define GIBBER_HACK_WIRE 1
+#define GIBBER_SHOCK_WIRE 2
+#define GIBBER_DISABLE_WIRE 4
+
 /datum/wires/gibber
 
 	holder_type = /obj/machinery/gibber
 	wire_count = 6
-
-var/const/GIBBER_HACK_WIRE = 1
-var/const/GIBBER_SHOCK_WIRE = 2
-var/const/GIBBER_DISABLE_WIRE = 4
 
 /datum/wires/gibber/GetInteractWindow()
 	var/obj/machinery/gibber/A = holder
@@ -58,3 +58,7 @@ var/const/GIBBER_DISABLE_WIRE = 4
 				if(A && !IsIndexCut(index))
 					A.disabled = 0
 					Interact(usr)
+
+#undef GIBBER_HACK_WIRE
+#undef GIBBER_SHOCK_WIRE
+#undef GIBBER_DISABLE_WIRE

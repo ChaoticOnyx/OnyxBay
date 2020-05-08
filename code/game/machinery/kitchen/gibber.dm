@@ -98,12 +98,10 @@
 		src.startgibbing(user)
 
 /obj/machinery/gibber/attack_hand(mob/user)
-
 	if(stat & (NOPOWER|BROKEN))
 		return
 	user.set_machine(src)
 	interact(user)
-
 /obj/machinery/gibber/examine()
 	. = ..()
 	to_chat(usr, "The safety guard is [emagged||hacked ? "<span class='danger'>disabled</span>" : "enabled"].")
@@ -114,7 +112,10 @@
 	return 1
 
 /obj/machinery/gibber/attackby(obj/item/W, mob/user)
+	
 	if(shocked)
+		if(stat & (NOPOWER|BROKEN))
+			return
 		shock(user, 50)
 
 	if(istype(W, /obj/item/weapon/screwdriver))
