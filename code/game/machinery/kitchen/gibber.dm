@@ -77,7 +77,7 @@
 	src.go_out()
 	return
 
-/obj/machinery/gibber/interact(mob/user as mob)
+/obj/machinery/gibber/interact(mob/user)
 	if(..() || (disabled && !panel_open))
 		to_chat(user, SPAN_DANGER("\The [src] is disabled!"))
 		return
