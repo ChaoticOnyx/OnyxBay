@@ -12,6 +12,13 @@
 	build_path = /obj/item/weapon/circuitboard/arcade/orion_trail
 	sort_string = "MABAA"
 
+/datum/design/circuit/gibber
+	name = "gibber"
+	id = "gibber"
+	req_tech = list(TECH_DATA = 1)
+	build_path = /obj/item/weapon/circuitboard/gibber
+	sort_string = "MADAA"
+
 /datum/design/circuit/resleever
 	name = "neural lace resleever"
 	id = "resleever"

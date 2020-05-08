@@ -24,6 +24,13 @@
 
 	var/datum/wires/gibber/wires = null
 
+	component_types = list(
+		/obj/item/weapon/circuitboard/autolathe,
+		/obj/item/weapon/stock_parts/matter_bin = 3,
+		/obj/item/weapon/stock_parts/manipulator,
+		/obj/item/weapon/stock_parts/console_screen
+	)
+
 //auto-gibs anything that bumps into it
 /obj/machinery/gibber/autogibber
 	var/turf/input_plate
@@ -113,9 +120,10 @@
 
 /obj/machinery/gibber/attackby(obj/item/W, mob/user)
 	
-	if(shocked)
-		if(stat & (NOPOWER|BROKEN))
-			return
+	if(stat & BROKEN)
+		return
+
+	if(!(stat & NOPOWER) && shocked)
 		shock(user, 50)
 
 	if(istype(W, /obj/item/weapon/screwdriver))
