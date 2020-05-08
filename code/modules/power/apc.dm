@@ -213,6 +213,9 @@
 	if(emp_hardened)
 		return
 	failure_timer = max(failure_timer, round(duration))
+	update()
+	queue_icon_update()
+	force_update = 1
 
 /obj/machinery/power/apc/proc/make_terminal()
 	// create a terminal object at the same position as original turf loc
