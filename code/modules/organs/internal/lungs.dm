@@ -100,12 +100,6 @@
 
 			owner.losebreath += round(damage/2)
 
-/obj/item/organ/internal/lungs/proc/rupture()
-	var/obj/item/organ/external/parent = owner.get_organ(parent_organ)
-	if(istype(parent))
-		owner.custom_pain("You feel a stabbing pain in your [parent.name]!", 50, affecting = parent)
-	bruise()
-
 /obj/item/organ/internal/lungs/proc/handle_breath(datum/gas_mixture/breath, forced)
 	if(!owner)
 		return 1
@@ -120,13 +114,17 @@
 	if(breath_pressure < species.hazard_low_pressure || breath_pressure > species.hazard_high_pressure)
 		var/datum/gas_mixture/environment = loc.return_air_for_internal_lifeform()
 		var/env_pressure = environment.return_pressure()
-		var/lung_rupture_prob = BP_IS_ROBOTIC(src) ? prob(2.5) : prob(5) //Robotic lungs are less likely to rupture.
+		var/lung_damage_prob = BP_IS_ROBOTIC(src) ? prob(2.5) : prob(5) //Robotic lungs are less likely to rupture.
 		if(env_pressure < species.hazard_low_pressure || env_pressure > species.hazard_high_pressure)
-			if(!is_bruised() && lung_rupture_prob) //only rupture if NOT already ruptured
-				rupture()
-	if(breath.total_moles == 0)
-		breath_fail_ratio = 1
-		handle_failed_breath()
+			if(lung_damage_prob)
+				take_internal_damage(5)
+				if(is_bruised()) //only spam pain if already ruptured
+					var/obj/item/organ/external/parent = owner.get_organ(parent_organ)
+					if(istype(parent))
+						owner.custom_pain("You feel a stabbing pain in your [parent.name]!", 20, affecting = parent)
+		if(breath.total_moles == 0)
+			breath_fail_ratio = 1
+			handle_failed_breath()
 		return 1
 
 	var/safe_pressure_min = min_breath_pressure // Minimum safe partial pressure of breathable gas in kPa

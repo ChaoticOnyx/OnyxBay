@@ -35,7 +35,7 @@
 	switch(gravity_state)
 		if(AREA_GRAVITY_NEVER)
 			has_gravity = 0
-		if(AREA_GRAVITY_ALWAYS)	
+		if(AREA_GRAVITY_ALWAYS)
 			has_gravity = 1
 
 /area/proc/get_contents()
@@ -282,13 +282,9 @@ var/list/mob/living/forced_ambiance_list = new
 		if(istype(H.shoes, /obj/item/clothing/shoes/magboots) && (H.shoes.item_flags & ITEM_FLAG_NOSLIP))
 			return
 
-		if(H.m_intent == "run")
-			H.AdjustStunned(6)
-			H.AdjustWeakened(6)
-		else
-			H.AdjustStunned(3)
-			H.AdjustWeakened(3)
-		to_chat(mob, "<span class='notice'>The sudden appearance of gravity makes you fall to the floor!</span>")
+		H.AdjustStunned(1)
+		H.AdjustWeakened(1)
+		to_chat(mob, SPAN_WARNING("The sudden appearance of gravity makes you fall to the floor!"))
 
 /area/proc/prison_break()
 	var/obj/machinery/power/apc/theAPC = get_apc()

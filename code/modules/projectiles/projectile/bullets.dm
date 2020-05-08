@@ -159,6 +159,7 @@
 	embed = 0
 	sharp = 0
 	armor_penetration = 2.5
+	penetration_modifier = 0.2
 
 /obj/item/projectile/bullet/pistol/rubber/c44
 	name = "rubber bullet"
@@ -189,6 +190,7 @@
 	agony = 60
 	embed = 0
 	sharp = 0
+	penetration_modifier = 0.2
 
 //Should do about 80 damage at 1 tile distance (adjacent), and 50 damage at 3 tiles distance.
 //Overall less damage than slugs in exchange for more damage at very close range and more embedding
