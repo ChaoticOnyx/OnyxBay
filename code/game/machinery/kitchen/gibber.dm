@@ -97,7 +97,7 @@
 	else
 		src.startgibbing(user)
 
-/obj/machinery/gibber/attack_hand()
+/obj/machinery/gibber/attack_hand(mob/user)
 
 	if(stat & (NOPOWER|BROKEN))
 		return
