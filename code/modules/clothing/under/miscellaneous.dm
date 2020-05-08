@@ -301,7 +301,7 @@
 
 /obj/item/clothing/under/kilt
 	name = "kilt"
-	desc = "Includes shoes and plaid."
+	desc = "This skirt is not for women. And don't wear anything under it!"
 	icon_state = "kilt"
 	body_parts_covered = UPPER_TORSO|LOWER_TORSO|FEET
 
