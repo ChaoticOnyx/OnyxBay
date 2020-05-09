@@ -195,12 +195,14 @@
 
 #define SPAN_DEADSAY(X) "<span class='deadsay'>[X]</span>"
 
-#define FONT_SMALL(X) "<font size='1'>[X]</font>"
+#define FONT_SMALL(X) "<span class='small'>[X]</span>"
 
-#define FONT_NORMAL(X) "<font size='2'>[X]</font>"
+#define FONT_NORMAL(X) "<span class='normal'>[X]</span>"
 
-#define FONT_LARGE(X) "<font size='3'>[X]</font>"
+#define FONT_LARGE(X) "<span class='large'>[X]</span>"
 
-#define FONT_HUGE(X) "<font size='4'>[X]</font>"
+#define FONT_HUGE(X) "<span class='huge'>[X]</span>"
 
-#define FONT_GIANT(X) "<font size='5'>[X]</font>"
+#define FONT_GIANT(X) "<span class='giant'>[X]</span>"
+
+#define SPAN(class, X) "<span class='[class]'>[X]</span>"
