@@ -8,19 +8,21 @@
 	if(!candidate)
 		candidate = new()
 
-	if(!preference_mob())
-		return
-
-	candidate.savefile_load(preference_mob())
+	var/mob/pref_mob = preference_mob()
+	if(pref_mob)
+		candidate.savefile_load(pref_mob)
+	else
+		candidate.savefile_load(pref.client)
 
 /datum/category_item/player_setup_item/player_global/pai/save_preferences(savefile/S)
 	if(!candidate)
 		return
 
-	if(!preference_mob())
-		return
-
-	candidate.savefile_save(preference_mob())
+	var/mob/pref_mob = preference_mob()
+	if(pref_mob)
+		candidate.savefile_save(pref_mob)
+	else
+		candidate.savefile_save(pref.client)
 
 /datum/category_item/player_setup_item/player_global/pai/content(mob/user)
 	if(!candidate)
