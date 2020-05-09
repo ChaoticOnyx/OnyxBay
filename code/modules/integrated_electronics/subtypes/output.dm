@@ -71,8 +71,8 @@
 	outputs = list()
 	activators = list("toggle light" = IC_PINTYPE_PULSE_IN)
 	spawn_flags = IC_SPAWN_DEFAULT|IC_SPAWN_RESEARCH
-	var/light_toggled = 0
-	var/light_brightness = 1
+	var/light_toggled = FALSE
+	var/light_brightness = 4
 	var/light_rgb = "#ffffff"
 	power_draw_idle = 0 // Adjusted based on brightness.
 
@@ -83,7 +83,7 @@
 /obj/item/integrated_circuit/output/light/proc/update_lighting()
 	if(light_toggled)
 		if(assembly)
-			assembly.set_light(light_brightness, 1, 4, 2, light_rgb)
+			assembly.set_light(light_brightness, 4, light_rgb)
 	else
 		if(assembly)
 			assembly.set_light(0)
@@ -113,7 +113,7 @@
 	var/brightness = get_pin_data(IC_INPUT, 2)
 
 	if(new_color && isnum(brightness))
-		brightness = Clamp(brightness, 0, 1)
+		brightness = Clamp(brightness, 0, 7)
 		light_rgb = new_color
 		light_brightness = brightness
 
