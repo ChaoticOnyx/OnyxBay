@@ -28,10 +28,6 @@
 		yourself.
 
 */
-#define UNAWARED            0
-#define AWARED              1
-#define GREATLY_AWARED      2
-#define SUSPICIOUSLY_AWARED 3
 
 /datum/mind
 	var/key
@@ -53,7 +49,7 @@
 
 	var/list/datum/objective/objectives = list()
 	var/list/datum/objective/special_verbs = list()
-	var/syndicate_awareness = UNAWARED //how much does it know about syndicate and it`s equipment
+	var/syndicate_awareness = UNAWARED
 
 	var/has_been_rev = 0//Tracks if this mind has been a rev or not
 
