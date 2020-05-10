@@ -12,7 +12,7 @@
 			if (gender in build.genders)
 				available_body_builds += build
 		var/datum/body_build/BB
-		if (available_body_builds)
+		if (available_body_builds.len)
 			BB = pick(available_body_builds)
 		else
 			BB = pick(current_species.body_builds)
