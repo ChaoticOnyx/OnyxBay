@@ -832,7 +832,7 @@
 	seed_name = "lubanana"
 	display_name = "lubanana tree"
 	chems = list(/datum/reagent/lube = list(10,10))
-	mutants = ("banbanana")
+	mutants = list("banbanana")
 
 /datum/seed/banana/lubanana/New()
 	..()
