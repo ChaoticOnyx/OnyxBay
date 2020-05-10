@@ -184,6 +184,10 @@
 			var/flesh_colour = get_trait(TRAIT_FLESH_COLOUR)
 			if(!flesh_colour) flesh_colour = get_trait(TRAIT_PRODUCT_COLOUR)
 			if(flesh_colour) splat.color = get_trait(TRAIT_PRODUCT_COLOUR)
+			if(thrown.reagents)
+				thrown.reagents.touch_turf(T)
+				for(var/atom/A in T.contents)
+					thrown.reagents.touch(A)
 
 	if(chems)
 		for(var/mob/living/M in T.contents)

@@ -171,6 +171,9 @@ var/global/list/plant_seed_sprites = list()
 /obj/item/seeds/icepepperseed
 	seed_type = "icechili"
 
+/obj/item/seeds/flamechiliseed
+	seed_type = "flamechili"
+
 /obj/item/seeds/soyaseed
 	seed_type = "soybean"
 

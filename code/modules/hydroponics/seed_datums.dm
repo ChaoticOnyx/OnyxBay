@@ -4,7 +4,7 @@
 	seed_name = "chili"
 	display_name = "chili plants"
 	chems = list(/datum/reagent/capsaicin = list(3,5), /datum/reagent/nutriment = list(1,25))
-	mutants = list("icechili")
+	mutants = list("icechili","flamechili")
 	kitchen_tag = "chili"
 
 /datum/seed/chili/New()
@@ -33,6 +33,18 @@
 	set_trait(TRAIT_MATURATION,4)
 	set_trait(TRAIT_PRODUCTION,4)
 	set_trait(TRAIT_PRODUCT_COLOUR,"#00edc6")
+
+/datum/seed/chili/flame
+	name = "flamechili"
+	seed_name = "flame chili"
+	display_name = "flame chili plants"
+	mutants = null
+	chems = list(/datum/reagent/fuel = list(5,10))
+
+/datum/seed/chili/flame/New()
+	..()
+	set_trait(TRAIT_PRODUCT_COLOUR,"#743300")
+	set_trait(TRAIT_JUICY,1)
 
 // Berry plants/variants.
 /datum/seed/berry
@@ -820,12 +832,12 @@
 	seed_name = "lubanana"
 	display_name = "lubanana tree"
 	chems = list(/datum/reagent/lube = list(10,10))
-	mutants = list("banbanana")
+	mutants = ("banbanana")
 
 /datum/seed/banana/lubanana/New()
 	..()
 	set_trait(TRAIT_PRODUCT_COLOUR,"#BEECD1")
-	set_trait(TRAIT_JUICY,1)
+	set_trait(TRAIT_JUICY,2)
 	set_trait(TRAIT_WATER_CONSUMPTION, 9)
 
 /datum/seed/banana/banbanana

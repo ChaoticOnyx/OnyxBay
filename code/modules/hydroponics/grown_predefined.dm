@@ -63,3 +63,6 @@
 
 /obj/item/weapon/reagent_containers/food/snacks/grown/automato
 	plantname = "automato"
+
+/obj/item/weapon/reagent_containers/food/snacks/grown/flamechili
+	plantname = "flamechili"
