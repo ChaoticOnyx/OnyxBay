@@ -177,9 +177,9 @@
 	..()
 
 /obj/machinery/gamepod/power_change()
-	if(powered())
-		return
-	move_outside()
+	. = ..()
+	if(occupant && (stat & NOPOWER))
+		move_outside()
 
 /obj/machinery/gamepod/Destroy()
 	if(occupant)

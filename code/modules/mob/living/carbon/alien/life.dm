@@ -32,9 +32,6 @@
 	return
 
 /mob/living/carbon/alien/handle_regular_status_updates()
-
-	if(status_flags & GODMODE)	return 0
-
 	if(stat == DEAD)
 		blinded = 1
 		silent = 0

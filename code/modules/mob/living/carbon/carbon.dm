@@ -90,7 +90,8 @@
 	return
 
 /mob/living/carbon/electrocute_act(shock_damage, obj/source, siemens_coeff = 1.0, def_zone = null)
-	if(status_flags & GODMODE)	return 0	//godmode
+	if(status_flags & GODMODE)
+		return 0
 
 	shock_damage = apply_shock(shock_damage, def_zone, siemens_coeff)
 

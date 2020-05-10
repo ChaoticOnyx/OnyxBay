@@ -124,6 +124,8 @@
 	take_internal_damage(amount, silent)
 
 /obj/item/organ/internal/proc/take_internal_damage(amount, silent = FALSE)
+	if(owner.status_flags & GODMODE)
+		return 0
 	if(BP_IS_ROBOTIC(src))
 		damage = between(0, src.damage + (amount * 0.8), max_damage)
 	else
@@ -141,6 +143,8 @@
 				owner.custom_pain("Something inside your [parent.name] hurts[degree].", amount, affecting = parent)
 
 /obj/item/organ/internal/emp_act(severity)
+	if(owner.status_flags & GODMODE)
+		return 0
 	if(!BP_IS_ROBOTIC(src))
 		return
 	switch (severity)
