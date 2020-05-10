@@ -41,7 +41,7 @@
 		angry = 1
 		faction = "creature"
 
-/mob/living/simple_animal/hostile/maneater/attackby(obj/item/O as obj, mob/user as mob)
+/mob/living/simple_animal/hostile/maneater/attackby(obj/item/O, mob/user)
 	if(!angry && O.icon_state == "meat")
 		if(!stat)
 			for(var/mob/M in viewers(user, null))
