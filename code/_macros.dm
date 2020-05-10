@@ -185,24 +185,25 @@
 
 #define JOINTEXT(X) jointext(X, null)
 
-#define SPAN_NOTICE(X) "<span class='notice'>[X]</span>"
+#define SPAN(class, X)   "<span class='[class]'>[X]</span>"
 
-#define SPAN_WARNING(X) "<span class='warning'>[X]</span>"
+#define SPAN_NOTICE(X)   SPAN("notice", X)
 
-#define SPAN_DANGER(X) "<span class='danger'>[X]</span>"
+#define SPAN_WARNING(X)  SPAN("warning", X)
 
-#define SPAN_OCCULT(X) "<span class='cult'>[X]</span>"
+#define SPAN_DANGER(X)   SPAN("danger", X)
 
-#define SPAN_DEADSAY(X) "<span class='deadsay'>[X]</span>"
+#define SPAN_OCCULT(X)   SPAN("cult", X)
 
-#define FONT_SMALL(X) "<span class='small'>[X]</span>"
+#define SPAN_DEADSAY(X)  SPAN("deadsay", X)
 
-#define FONT_NORMAL(X) "<span class='normal'>[X]</span>"
+#define FONT_SMALL(X)    SPAN("small", X)
 
-#define FONT_LARGE(X) "<span class='large'>[X]</span>"
+#define FONT_NORMAL(X)   SPAN("normal", X)
 
-#define FONT_HUGE(X) "<span class='huge'>[X]</span>"
+#define FONT_LARGE(X)    SPAN("large", X)
 
-#define FONT_GIANT(X) "<span class='giant'>[X]</span>"
+#define FONT_HUGE(X)     SPAN("huge", X)
 
-#define SPAN(class, X) "<span class='[class]'>[X]</span>"
+#define FONT_GIANT(X)    SPAN("giant", X)
+
