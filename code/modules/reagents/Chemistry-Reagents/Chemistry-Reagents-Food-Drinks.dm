@@ -599,6 +599,30 @@
 	glass_name = "watermelon juice"
 	glass_desc = "Delicious juice made from watermelon."
 
+/datum/reagent/drink/juice/apple
+	name = "Apple Juice"
+	description = "Apples! Apples! Apples!"
+	taste_description = "apples"
+	color = "#E59C40"
+
+	glass_name = "apple juice"
+	glass_desc = "Two cups a day keep the doctor away!"
+
+/datum/reagent/drink/juice/apple/affect_ingest(mob/living/carbon/M, alien, removed)
+	..()
+	if(alien == IS_DIONA)
+		return
+	M.heal_organ_damage(0, 0.5 * removed)
+
+/datum/reagent/drink/juice/coconut
+	name = "Coconut Milk"
+	description = "It's white and smells like your granny's rice pudding."
+	taste_description = "coconut"
+	color = "FFFFFF"
+
+	glass_name = "coconut milk"
+	glass_desc = "How do they milk coconuts?"
+
 // Everything else
 
 /datum/reagent/drink/milk

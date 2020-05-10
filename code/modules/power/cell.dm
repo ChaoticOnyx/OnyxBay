@@ -295,7 +295,7 @@
 	origin_tech = list(TECH_POWER = 1)
 	icon = 'icons/obj/power.dmi' //'icons/obj/harvest.dmi'
 	icon_state = "potato_cell" //"potato_battery"
-	maxcharge = 20
+	maxcharge = 50
 
 
 /obj/item/weapon/cell/slime

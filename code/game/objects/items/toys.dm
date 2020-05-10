@@ -17,6 +17,7 @@
  *		Toy cult sword
  *		Marshalling wand
  *		Ring bell
+ *		BANana
  */
 
 
@@ -937,3 +938,21 @@
 			for(var/obj/item/W in H)
 				H.drop_from_inventory(W)
 		playsound(user.loc, pick('sound/effects/xylophone1.ogg','sound/effects/xylophone2.ogg','sound/effects/xylophone3.ogg'), 60)
+
+/obj/item/toy/banbanana
+	name = "BANana"
+	desc = "What happens if I peel it?"
+	icon = 'icons/obj/toy.dmi'
+	icon_state = "banana"
+
+/obj/item/toy/banbanana/attack_self(mob/user as mob)
+	for(var/mob/M in viewers(user, null))
+		if (M.client)
+			M.show_message("<span class='danger'>You have been banned by HO$T.\nReason: Honk.</span>")
+			M.show_message("<span class='warning'>This is a PERMENANT ban.</span>")
+			if(ishuman(M))
+				var/mob/living/carbon/human/H = M
+				H.eye_blind += 1
+	playsound(user.loc, 'sound/effects/adminhelp.ogg', 100)
+	user.drop_from_inventory(src)
+	qdel(src)

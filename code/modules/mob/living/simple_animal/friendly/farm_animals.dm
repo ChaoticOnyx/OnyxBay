@@ -106,18 +106,21 @@
 	response_harm   = "kicks"
 	attacktext = "kicked"
 	health = 50
+	var/milktype = /datum/reagent/drink/milk
 	var/datum/reagents/udder = null
 
 /mob/living/simple_animal/cow/New()
+	udder = milktype
 	udder = new(50)
 	udder.my_atom = src
+
 	..()
 
 /mob/living/simple_animal/cow/attackby(obj/item/O as obj, mob/user as mob)
 	var/obj/item/weapon/reagent_containers/glass/G = O
 	if(stat == CONSCIOUS && istype(G) && G.is_open_container())
 		user.visible_message("<span class='notice'>[user] milks [src] using \the [O].</span>")
-		var/transfered = udder.trans_type_to(G, /datum/reagent/drink/milk, rand(5,10))
+		var/transfered = udder.trans_type_to(G, milktype, rand(5,10))
 		if(G.reagents.total_volume >= G.volume)
 			to_chat(user, "<span class='warning'>\The [O] is full.</span>")
 		if(!transfered)
@@ -129,7 +132,7 @@
 	. = ..()
 	if(stat == CONSCIOUS)
 		if(udder && prob(5))
-			udder.add_reagent(/datum/reagent/drink/milk, rand(5, 10))
+			udder.add_reagent(milktype, rand(5, 10))
 
 /mob/living/simple_animal/cow/attack_hand(mob/living/carbon/M as mob)
 	if(!stat && M.a_intent == I_DISARM && icon_state != icon_dead)
@@ -146,6 +149,17 @@
 				to_chat(M, pick(responses))
 	else
 		..()
+
+/mob/living/simple_animal/cow/cowcownut
+	name = "cowcownut"
+	desc = "Looks like a physical embodiment of terrible puns."
+	icon_state = "cowcownut"
+	icon_living = "cowcownut"
+	icon_dead = "cowcownut_dead"
+	emote_see = list("shakes its nuts")
+	health = 100
+
+	milktype = /datum/reagent/drink/juice/coconut
 
 /mob/living/simple_animal/chick
 	name = "\improper chick"

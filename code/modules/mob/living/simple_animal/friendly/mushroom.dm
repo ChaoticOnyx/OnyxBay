@@ -14,6 +14,10 @@
 	response_disarm = "gently pushes aside"
 	response_harm   = "whacks"
 	harm_intent_damage = 5
+	possession_candidate = 1
+	controllable = TRUE
+	universal_speak = 0
+	universal_understand = 1
 	var/datum/seed/seed
 	var/harvest_time
 	var/min_explode_time = 1200

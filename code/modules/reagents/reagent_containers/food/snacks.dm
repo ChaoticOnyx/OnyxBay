@@ -525,6 +525,11 @@
 	else
 		..()
 
+/obj/item/weapon/reagent_containers/food/snacks/egg/randomcolor/New()
+	..()
+	var/clr = pick("blue","green","mime","orange","purple","rainbow","red","yellow")
+	icon_state = "egg-[clr]"
+
 /obj/item/weapon/reagent_containers/food/snacks/egg/blue
 	icon_state = "egg-blue"
 

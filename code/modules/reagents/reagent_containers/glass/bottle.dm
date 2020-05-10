@@ -144,6 +144,18 @@
 	update_icon()
 
 
+/obj/item/weapon/reagent_containers/glass/bottle/nanites
+	name = "nanites bottle"
+	desc = "A small bottle of nanites. Causes inpredictable changes in living lifeforms."
+	icon = 'icons/obj/chemical.dmi'
+	icon_state = "bottle-1"
+
+/obj/item/weapon/reagent_containers/glass/bottle/nanites/New()
+	..()
+	reagents.add_reagent(/datum/reagent/nanites, 60)
+	update_icon()
+
+
 /obj/item/weapon/reagent_containers/glass/bottle/ammonia
 	name = "ammonia bottle"
 	desc = "A small bottle."

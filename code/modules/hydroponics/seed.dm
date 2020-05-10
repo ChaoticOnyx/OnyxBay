@@ -21,8 +21,10 @@
 	var/kitchen_tag                // Used by the reagent grinder.
 	var/trash_type                 // Garbage item produced when eaten.
 	var/splat_type = /obj/effect/decal/cleanable/fruit_smudge // Graffiti decal.
-	var/has_mob_product
+	var/has_mob_product			   // Spawns a mob instead of regular harvest (i.e. killer tomatoes).
+	var/has_custom_product		   // Spawns a custom item instead of regular harvest (i.e. real egg plants).
 	var/force_layer
+	var/customsprite = 0		   // Set to 1 if you want to use a non-paintable harvest icon.
 
 /datum/seed/New()
 
@@ -717,12 +719,14 @@
 			var/obj/item/product
 			if(has_mob_product)
 				product = new has_mob_product(get_turf(user),name)
+			else if(has_custom_product)
+				product = new has_custom_product(get_turf(user),name)
 			else
 				product = new /obj/item/weapon/reagent_containers/food/snacks/grown(get_turf(user),name)
 			. += product
 
 			if(get_trait(TRAIT_PRODUCT_COLOUR))
-				if(!istype(product, /mob))
+				if(!istype(product, /mob) && !has_custom_product)
 					product.color = get_trait(TRAIT_PRODUCT_COLOUR)
 					if(istype(product,/obj/item/weapon/reagent_containers/food))
 						var/obj/item/weapon/reagent_containers/food/food = product
@@ -755,13 +759,14 @@
 
 	//Set up some basic information.
 	var/datum/seed/new_seed = new
-	new_seed.name =            "new line"
-	new_seed.uid =              0
-	new_seed.roundstart =       0
-	new_seed.can_self_harvest = can_self_harvest
-	new_seed.kitchen_tag =      kitchen_tag
-	new_seed.trash_type =       trash_type
-	new_seed.has_mob_product =  has_mob_product
+	new_seed.name =            		"new line"
+	new_seed.uid =              	0
+	new_seed.roundstart =       	0
+	new_seed.can_self_harvest = 	can_self_harvest
+	new_seed.kitchen_tag =      	kitchen_tag
+	new_seed.trash_type =       	trash_type
+	new_seed.has_mob_product =  	has_mob_product
+	new_seed.has_custom_product = 	has_custom_product
 	//Copy over everything else.
 	if(mutants)        new_seed.mutants = mutants.Copy()
 	if(chems)          new_seed.chems = chems.Copy()

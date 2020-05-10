@@ -37,7 +37,7 @@
 								/mob/living/simple_animal/mushroom							= TRADER_THIS_TYPE,
 								/mob/living/simple_animal/parrot							= TRADER_THIS_TYPE,
 								/mob/living/simple_animal/tindalos							= TRADER_THIS_TYPE,
-								/mob/living/simple_animal/tomato							= TRADER_THIS_TYPE,
+								/mob/living/simple_animal/hostile/tomato					= TRADER_THIS_TYPE,
 								/mob/living/simple_animal/cow								= TRADER_THIS_TYPE,
 								/mob/living/simple_animal/chick								= TRADER_THIS_TYPE,
 								/mob/living/simple_animal/chicken							= TRADER_THIS_TYPE,
