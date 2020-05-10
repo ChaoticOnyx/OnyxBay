@@ -7,7 +7,7 @@
 		if(!current_species) current_species = all_species[SPECIES_HUMAN]
 
 		gender = current_species.genders ? pick(current_species.genders) : MALE
-		var/available_body_builds = list()
+		var/list/available_body_builds = new()
 		for(var/datum/body_build/build in current_species.body_builds)
 			if (gender in build.genders)
 				available_body_builds += build
