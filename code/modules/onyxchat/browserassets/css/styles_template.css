@@ -240,6 +240,13 @@ a.popt {text-decoration: none;}
 /* ADD HERE FOR ITALIC */
 .italic, .italics, .emote {font-style: italic;}
 
+/* AND HERE FOR SIZE */
+.small   {font-size: 10px;}
+.normal  {font-size: 13px;}
+.large   {font-size: 16px;}
+.huge    {font-size: 18px;}
+.giant   {font-size: 24px;}
+
 /* OUTPUT COLORS */
 .highlight {background: yellow;}
 

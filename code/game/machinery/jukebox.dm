@@ -51,6 +51,7 @@ datum/track/New(title_name, audio)
 		new /datum/track("Lone Digger", 'sound/music/lonedigger.ogg'),
 		new /datum/track("Reaper & Blues", 'sound/music/reapernblues.ogg'),
 		new /datum/track("Undead Man Walkin`", 'sound/music/undeadwalking.ogg'),
+		new /datum/track("Space Oddity", 'sound/music/space_oddity.ogg'),
 	)
 
 

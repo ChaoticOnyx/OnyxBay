@@ -23,7 +23,7 @@
 	for (var/mob/living/carbon/M in GLOB.player_list)
 		if(!M.client)
 			continue
-		if (!M.is_dead() && ("blob" in M.client.prefs.be_special_role) && blob_antag.can_become_antag(M.mind, FALSE) && !M.mind.special_role)
+		if (!M.is_dead() && ("blob" in M.client.prefs.be_special_role) && blob_antag.can_become_antag(M.mind, FALSE) && !M.mind.special_role && !player_is_antag(M.mind))
 			antag_mob = M
 			break
 

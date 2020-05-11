@@ -11,6 +11,10 @@ Thumbs.db
 *.db-*
 data/
 cfg/
+# ignore config, but not subdirs
+config/*
+!config/example/
+!config/warnings_templates/
 build_log.txt
 use_map
 stopserver
@@ -18,9 +22,7 @@ reboot_called
 atupdate
 __pycache__
 
-# ignore config, but not subdirs
-!config/*/
-config/*
+
 sql/test_db
 
 # vscode specific files

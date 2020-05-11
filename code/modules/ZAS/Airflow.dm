@@ -14,9 +14,10 @@ mob/proc/airflow_stun()
 	if(buckled)
 		to_chat(src, "<span class='notice'>Air suddenly rushes past you!</span>")
 		return 0
-	if(!lying)
-		to_chat(src, "<span class='warning'>The sudden rush of air knocks you over!</span>")
-	Weaken(5)
+	if(lying)
+		return 0
+	to_chat(src, SPAN_WARNING("The sudden rush of air knocks you over!"))
+	Weaken(rand(1,2))
 	last_airflow_stun = world.time
 
 mob/living/silicon/airflow_stun()

@@ -199,9 +199,12 @@
 	cold_level_2 = 220 //Default 200
 	cold_level_3 = 130 //Default 120
 
-	heat_level_1 = 460 //Default 400 - Higher is better
+	heat_level_1 = 460 //Default 400 - Higher is better //186.85C lol
 	heat_level_2 = 650 //Default 500
 	heat_level_3 = 1100 //Default 1000
+
+	cold_discomfort_level = 295 //16.85C, not more because they will have a constant messages
+	heat_discomfort_level = 375 //101.85C
 
 	reagent_tag = IS_SKRELL
 

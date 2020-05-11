@@ -26,7 +26,7 @@
 				/spell/targeted/projectile/dumbfire/fireball = 		2,
 				/spell/area_teleport = 								2,
 				/spell/aoe_turf/conjure/forcewall = 				1,
-				/spell/noclothes = 									1,
+				/spell/noclothes = 									3,
 				/obj/item/weapon/magic_rock = 						1,
 				/obj/structure/closet/wizard/scrying = 				2,
 				/obj/item/weapon/contract/wizard/telepathy = 		1,
