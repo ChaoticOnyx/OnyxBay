@@ -70,6 +70,7 @@
 	if((equip_preview_mob & EQUIP_PREVIEW_LOADOUT) && !(previewJob && (equip_preview_mob & EQUIP_PREVIEW_JOB) && (previewJob.type == /datum/job/ai || previewJob.type == /datum/job/cyborg)))
 		// Equip custom gear loadout, replacing any job items
 		var/list/loadout_taken_slots = list()
+		var/list/accessories = list()
 		for(var/thing in Gear())
 			var/datum/gear/G = gear_datums[thing]
 			if(G)
@@ -88,9 +89,21 @@
 				if(!permitted)
 					continue
 
-				if(G.slot && G.slot != slot_tie && !(G.slot in loadout_taken_slots) && G.spawn_on_mob(mannequin, gear_list[gear_slot][G.display_name]))
+				if(G.slot == slot_tie)
+					accessories.Add(G)
+					continue
+
+				if(G.slot && !(G.slot in loadout_taken_slots) && G.spawn_on_mob(mannequin, gear_list[gear_slot][G.display_name]))
 					loadout_taken_slots.Add(G.slot)
 					update_icon = TRUE
+
+		// equip accessories after other slots so they don't attach to a suit which will be replaced
+		for(var/datum/gear/G in accessories)
+			G.spawn_as_accessory_on_mob(mannequin, gear_list[gear_slot][G.display_name])
+
+		if(accessories.len)
+			update_icon = TRUE
+
 
 	if(update_icon)
 		mannequin.update_icons()
