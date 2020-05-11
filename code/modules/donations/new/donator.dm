@@ -1,24 +1,42 @@
+
+/proc/patron_tier_to_css_class(tier)
+	switch(tier)
+		if(PATREON_CARGO)     return "pt_cargo"
+		if(PATREON_ENGINEER)  return "pt_engineer"
+		if(PATREON_SCIENTIST) return "pt_scientist"
+		if(PATREON_HOS)       return "pt_hos"
+		if(PATREON_CAPTAIN)   return "pt_captain"
+		if(PATREON_WIZARD)    return "pt_wizard"
+		if(PATREON_CULTIST)   return "pt_cultist"
+		if(PATREON_ASSISTANT) return "pt_assistant"
+
 /datum/donator_info
 	var/donator = FALSE
 	var/patron_type = PATREON_NONE
-	var/points
+	var/opyxes
+	var/list/items = new
 
-/datum/donator_info/proc/on_loaded(client/C)
+/datum/donator_info/proc/on_patreon_tier_loaded(client/C)
 	if(patron_type != PATREON_NONE)
 		C.set_preference(/datum/client_preference/ooc_name_color, patron_type)
 
 /datum/donator_info/proc/get_decorated_ooc_name(client/C)
 	var/choosen_ooc_patreon_tier = C.get_preference_value(/datum/client_preference/ooc_name_color)
-	switch(choosen_ooc_patreon_tier)
-		if(PATREON_CARGO)     return "<span class=\"pt_cargo\">[C.key]</span>"
-		if(PATREON_ENGINEER)  return "<span class=\"pt_engineer\">[C.key]</span>"
-		if(PATREON_SCIENTIST) return "<span class=\"pt_scientist\">[C.key]</span>"
-		if(PATREON_HOS)       return "<span class=\"pt_hos\">[C.key]</span>"
-		if(PATREON_CAPTAIN)   return "<span class=\"pt_captain\">[C.key]</span>"
-		if(PATREON_WIZARD)    return "<span class=\"pt_wizard\">[C.key]</span>"
-		if(PATREON_CULTIST)   return "<span class=\"pt_cultist\">[C.key]</span>"
-		if(PATREON_ASSISTANT) return "<span class=\"pt_assistant\">[C.key]</span>"
-	return C.key
+	if(choosen_ooc_patreon_tier == PATREON_NONE)
+		return C.key
+	return "<span class='[patron_tier_to_css_class(choosen_ooc_patreon_tier)]'>[C.key]</span>"
+
+/datum/donator_info/proc/get_full_patron_tier()
+	if(patron_type == PATREON_NONE)
+		return null
+
+	switch(patron_type)
+		if(PATREON_CARGO) . = "Cargo Technician"
+		if(PATREON_HOS) . = "Head of Security"
+		else
+			. = capitalize(patron_type)
+
+	return "<span class='[patron_tier_to_css_class(patron_type)]'>[.]</span>"
 
 /datum/donator_info/proc/get_available_ooc_patreon_tiers()
 	. = list()
@@ -40,3 +58,6 @@
 			return FALSE
 
 	ASSERT(FALSE) // inaccessible
+
+/datum/donator_info/proc/has_item(type)
+	return "[type]" in items
