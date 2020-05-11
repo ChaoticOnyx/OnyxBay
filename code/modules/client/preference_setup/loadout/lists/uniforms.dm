@@ -173,11 +173,6 @@
 	path = /obj/item/clothing/under/schoolgirl
 	price = 13
 
-/datum/gear/uniform/syndicate/tacticool
-	display_name = "tacticool turtleneck"
-	path = /obj/item/clothing/under/syndicate/tacticool
-	price = 13
-
 /datum/gear/uniform/soviet
 	display_name = "soviet uniform"
 	path = /obj/item/clothing/under/soviet

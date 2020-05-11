@@ -1,8 +1,10 @@
 
 /datum/gear/mask
-	display_name = "sterile mask"
 	sort_category = "Masks"
 	slot = slot_wear_mask
+
+/datum/gear/mask/surgical
+	display_name = "sterile mask"
 	path = /obj/item/clothing/mask/surgical
 	cost = 2
 

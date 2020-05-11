@@ -1,5 +1,5 @@
 /datum/gear/eyes
-	sort_category = "Glasses and Eyewear"
+	sort_category = "Glasses"
 	slot = slot_glasses
 
 /datum/gear/eyes/glasses

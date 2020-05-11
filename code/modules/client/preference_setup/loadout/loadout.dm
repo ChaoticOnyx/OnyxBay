@@ -131,16 +131,16 @@ var/list/gear_datums = list()
 	. += "<table style='width: 100%;'><tr>"
 
 	. += "<td>"
-	. += "<b>Loadout Set #<a href='?src=\ref[src];prev_slot=1'>\<\<</a><b><font color = '[fcolor]'>\[[pref.gear_slot]\]</font> </b><a href='?src=\ref[src];next_slot=1'>\>\></a></b><br>"
+	. += "<b>Loadout Set <a href='?src=\ref[src];prev_slot=1'>\<\<</a><b><font color = '[fcolor]'>\[[pref.gear_slot]\]</font></b><a href='?src=\ref[src];next_slot=1'>\>\></a></b><br>"
 
-	. += "<table><tr>"
+	. += "<table style='white-space: nowrap;'><tr>"
 	. += "<td><img src=previewicon.png width=[pref.preview_icon.Width()] height=[pref.preview_icon.Height()]></td>"
 
 	. += "<td style=\"vertical-align: top;\">"
 	if(config.max_gear_cost < INFINITY)
 		. += "<font color = '[fcolor]'>[total_cost]/[config.max_gear_cost]</font> loadout points spent.<br>"
 	. += "<a href='?src=\ref[src];clear_loadout=1'>Clear Loadout</a><br>"
-	. += "<a href='?src=\ref[src];toggle_hiding=1'>[hide_unavailable_gear ? "Show all" : "Hide unavailable"]</a><br>"
+	. += "<a href='?src=\ref[src];toggle_hiding=1'>[hide_unavailable_gear ? "Show all" : "Hide unavailable for your jobs"]</a><br>"
 	. += "</td>"
 
 	. += "</tr></table>"
@@ -205,21 +205,14 @@ var/list/gear_datums = list()
 			if(J)
 				dd_insertObjectList(jobs, J)
 
-	var/list/purchased_gears = new
-	var/list/paid_gears = new
-	var/list/not_paid_gears = new
+	var/purchased_gears = ""
+	var/paid_gears = ""
+	var/not_paid_gears = ""
+
 	for(var/gear_name in LC.gear)
 		if(!(gear_name in valid_gear_choices()))
 			continue
 		var/datum/gear/G = LC.gear[gear_name]
-		if(user.client.donator_info.has_item(G.type))
-			purchased_gears.Add(G)
-		else if(G.price)
-			paid_gears.Add(G)
-		else
-			not_paid_gears.Add(G)
-
-	for(var/datum/gear/G in purchased_gears + paid_gears + not_paid_gears)
 		var/entry = ""
 		var/ticked = (G.display_name in pref.gear_list[pref.gear_slot])
 		var/display_class
@@ -239,7 +232,7 @@ var/list/gear_datums = list()
 		entry += "<td width=25%><a [display_class ? "class='[display_class]' " : ""]href='?src=\ref[src];select_gear=[html_encode(G.display_name)]'>[G.display_name]</a></td>"
 		entry += "</td></tr>"
 
-		var/allowed
+		var/allowed = TRUE
 		if(G.allowed_roles)
 			var/good_job = FALSE
 			var/bad_job = FALSE
@@ -251,7 +244,17 @@ var/list/gear_datums = list()
 			allowed = good_job || !bad_job
 
 		if(!hide_unavailable_gear || allowed || ticked)
-			. += entry
+			if(user.client.donator_info.has_item(G.type))
+				purchased_gears += entry
+			else if(G.price)
+				paid_gears += entry
+			else
+				not_paid_gears += entry
+
+	. += purchased_gears
+	. += paid_gears
+	. += not_paid_gears
+
 	. += "</table>"
 	. += "</td>"
 
@@ -283,7 +286,7 @@ var/list/gear_datums = list()
 		. += "<b>Loadout Points:</b> [selected_gear.cost]<br>"
 
 		if(selected_gear.allowed_roles)
-			. += "<b>Has roles restrictions!</b>"
+			. += "<b>Has jobs restrictions!</b>"
 			if(jobs.len)
 				. += "<br>"
 				. += "<i>"
@@ -321,7 +324,7 @@ var/list/gear_datums = list()
 
 		if(flag_not_enough_opyxes)
 			flag_not_enough_opyxes = FALSE
-			. += "<span class='notice'>You have not enough opyxes!</span><br>"
+			. += "<span class='notice'>You don't have enough opyxes!</span><br>"
 
 		if(!selected_gear.price || user.client.donator_info.has_item(selected_gear.type))
 			. += "<a [ticked ? "class='linkOn' " : ""]href='?src=\ref[src];toggle_gear=[html_encode(selected_gear.display_name)]'>[ticked ? "Drop" : "Take"]</a>"
@@ -364,6 +367,7 @@ var/list/gear_datums = list()
 		return TOPIC_REFRESH_UPDATE_PREVIEW
 	if(href_list["toggle_gear"])
 		var/datum/gear/TG = gear_datums[href_list["toggle_gear"]]
+		ASSERT(!TG.price || user.client.donator_info.has_item(TG.type)) // someone trying to tricking us? However, it's may be just a bug
 		if(TG.display_name in pref.gear_list[pref.gear_slot])
 			pref.gear_list[pref.gear_slot] -= TG.display_name
 		else
@@ -480,7 +484,7 @@ var/list/gear_datums = list()
 /datum/gear
 	var/display_name       //Name/index. Must be unique.
 	var/description        //Description of this gear. If left blank will default to the description of the pathed item.
-	var/atom/path          //Path to item.
+	var/path               //Path to item.
 	var/cost = 1           //Number of points used. Items in general cost 1 point, storage/armor/gloves/special use costs 2 points.
 	var/price              //Price of item, opyxes
 	var/slot               //Slot to equip to.

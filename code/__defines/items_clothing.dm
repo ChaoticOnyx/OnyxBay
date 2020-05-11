@@ -253,4 +253,4 @@ var/list/default_onmob_icons = list(
 		if(slot_glasses) return "Glasses"
 		if(slot_s_store) return "Suit Store"
 		if(slot_tie) return "Accessory"
-	ASSERT(FALSE) // not accessible
+	throw EXCEPTION("Cannot provide description for unknown slot: [slot]!")
