@@ -258,6 +258,9 @@ GUEST_BAN
 ## Ban appeals URL - usually for a forum or wherever people should go to contact your admins.
 # BANAPPEALS http://example.com
 
+## Patreon URL
+# PATREONURL http://example.com
+
 ## Server id. This is used, when you have more than one server connected to single DB.
 ## NOTE! You should migrate your DB to schema with server_id applied to each ban record
 ## to actually support this option. Leave this commented, if you have just one server.

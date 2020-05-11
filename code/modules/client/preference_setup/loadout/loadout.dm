@@ -155,6 +155,7 @@ var/list/gear_datums = list()
 		. += "<b>Your Patreon tier is [patron_tier]</b><br>"
 	var/current_opyxes = round(user.client.donator_info.opyxes)
 	. += "<b>You have <font color='#e67300'>[current_opyxes]</font> opyx[current_opyxes != 1 ? "es" : ""].</b><br>"
+	. += "<a class='gold' href='?src=\ref[src];get_opyxes=1'><b>Get opyxes</b></a><br>"
 	. += "</td>"
 
 	. += "</tr></table>"
@@ -447,6 +448,9 @@ var/list/gear_datums = list()
 	if(href_list["toggle_hiding"])
 		hide_unavailable_gear = !hide_unavailable_gear
 		return TOPIC_REFRESH
+	if(href_list["get_opyxes"])
+		SSdonations.show_donations_info(user)
+		return TOPIC_NOACTION
 	return ..()
 
 /datum/category_item/player_setup_item/loadout/update_setup(savefile/preferences, savefile/character)
@@ -497,7 +501,7 @@ var/list/gear_datums = list()
 		gear_tweaks += new /datum/gear_tweak/path/type(path)
 	if(flags & GEAR_HAS_SUBTYPE_SELECTION)
 		gear_tweaks += new /datum/gear_tweak/path/subtype(path)
-		
+
 /datum/gear/proc/get_description(metadata)
 	. = description
 	for(var/datum/gear_tweak/gt in gear_tweaks)
