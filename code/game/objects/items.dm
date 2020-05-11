@@ -721,7 +721,7 @@ modules/mob/living/carbon/human/life.dm if you die, you will be zoomed out.
 		to_chat(user, SPAN("warning", "Your visor gets in the way of looking through the [devicename]."))
 		cannotzoom = 1
 	else if(!zoom && usr.get_active_hand() != src)
-		to_chat(user, "SPAN("warning", "You are too distracted to look through the [devicename], perhaps if it was in your active hand this might work better."))
+		to_chat(user, SPAN("warning", "You are too distracted to look through the [devicename], perhaps if it was in your active hand this might work better."))
 		cannotzoom = 1
 	else if (!zoom && H.machine_visual)
 		to_chat(user, SPAN("warning", "You are unable to focus through the monitor."))
