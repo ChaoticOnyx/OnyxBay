@@ -239,12 +239,12 @@ meteor_act
 	var/hit_zone = bodypart_miss_chance(target_zone, src, handymod, reach=I.mod_reach)
 
 	if(!hit_zone)
-		visible_message("<span class='warning'>\The [user] misses [src] with \the [I]!</span>")
+		visible_message(SPAN("warning", "\The [user] misses [src] with \the [I]!"))
 		return null
 
 	var/obj/item/organ/external/affecting = get_organ(hit_zone)
 	if (!affecting || affecting.is_stump())
-		to_chat(user, "<span class='danger'>They are missing that limb!</span>")
+		to_chat(user, SPAN("danger", "They are missing that limb!"))
 		return null
 
 	return hit_zone
@@ -260,7 +260,7 @@ meteor_act
 
 	var/poise_damage
 
-	visible_message("<span class='danger'>[src] has been [I.attack_verb.len? pick(I.attack_verb) : "attacked"] in the [affecting.name] with [I.name] by [user]!</span>")
+	visible_message(SPAN("danger", "[src] has been [I.attack_verb.len? pick(I.attack_verb) : "attacked"] in the [affecting.name] with [I.name] by [user]!"))
 	if(istype(user,/mob/living/carbon/human))
 		var/mob/living/carbon/human/A = user
 		A.poise -= 2.0+(I.mod_weight*2 + (1-I.mod_handy))
@@ -306,21 +306,21 @@ meteor_act
 				if(BP_HEAD, BP_EYES, BP_MOUTH) //Knocking your enemy out or making them dizzy
 					if(poise <= effective_force/3*I.mod_weight)
 						if(!stat || (stat && !paralysis))
-							visible_message("<span class='danger'>[src] [species.knockout_message]</span>")
+							visible_message(SPAN("danger", "[src] [species.knockout_message]"))
 							custom_pain("Your head's definitely gonna hurt tomorrow.", 30, affecting = affecting)
 						apply_effect((I.mod_weight*15), PARALYZE, (blocked/2))
 					else
 						if(prob(effective_force))
-							src.visible_message("<span class='danger'>[src] looks momentarily disoriented.</span>", "<span class='danger'>You see stars.</span>")
+							src.visible_message(SPAN("danger", "[src] looks momentarily disoriented."), SPAN("danger", "You see stars."))
 							src.apply_effect(2, EYE_BLUR, blocked)
 				if(BP_CHEST, BP_GROIN, BP_L_ARM, BP_R_ARM, BP_L_LEG, BP_R_LEG, BP_L_FOOT, BP_R_FOOT) //Knock down
 					if(poise <= effective_force/3*I.mod_weight)
 						if(!stat || (stat && !paralysis))
-							visible_message("<span class='danger'>[src] has been knocked down!</span>")
+							visible_message(SPAN("danger", "[src] has been knocked down!"))
 							apply_effect(min((I.mod_weight*3),2), WEAKEN, (blocked/2))
 				if(BP_L_HAND, BP_R_HAND) //Knocking someone down by smashing their hands? Hell no.
 					if(poise <= effective_force/3*I.mod_weight)
-						visible_message("<span class='danger'>[user] disarms [src] with their [I.name]!</span>")
+						visible_message(SPAN("danger", "[user] disarms [src] with their [I.name]!"))
 						var/list/holding = list(src.get_active_hand() = 40, src.get_inactive_hand() = 20)
 						for(var/obj/item/D in holding)
 							if(D)
@@ -333,7 +333,7 @@ meteor_act
 	//visible_message("Debug \[HIT\]: effective_force = [effective_force] | armor = [blocked] | flat_defence = [blocked*0.05]") // Debug Message
 
 	if(effective_force <= 0)
-		show_message("<span class='warning'>Your armor absorbs the blow!</span>")
+		show_message(SPAN("warning", "Your armor absorbs the blow!"))
 		return 0
 
 	apply_damage(effective_force, I.damtype, hit_zone, blocked, damage_flags, used_weapon=I)
@@ -359,7 +359,7 @@ meteor_act
 	var/damage_flags = I.damage_flags()
 	damage_flags &= ~(DAM_SHARP|DAM_EDGE)
 
-	visible_message("<span class='danger'>[user] bashes [src]'s [affecting.name] with their [I.name]!</span>")
+	visible_message(SPAN("danger", "[user] bashes [src]'s [affecting.name] with their [I.name]!"))
 	if(istype(user,/mob/living/carbon/human))
 		var/mob/living/carbon/human/A = user
 		A.poise -= 2.0+(I.mod_weight*2 + (1-I.mod_handy))
@@ -396,26 +396,26 @@ meteor_act
 			if(BP_HEAD, BP_EYES, BP_MOUTH)
 				if(poise <= effective_force/3*I.mod_weight)
 					if(!stat || (stat && !paralysis))
-						visible_message("<span class='danger'>[src] [species.knockout_message]</span>")
+						visible_message(SPAN("danger", "[src] [species.knockout_message]"))
 						custom_pain("Your head's <B>definitely</B> gonna hurt tomorrow.", 30, affecting = affecting)
 						apply_effect((I.mod_weight*20), PARALYZE, (blocked/2))
 				else
 					if(prob(effective_force))
-						src.visible_message("<span class='danger'>[src] looks momentarily disoriented.</span>", "<span class='danger'>You see stars.</span>")
+						src.visible_message(SPAN("danger", "[src] looks momentarily disoriented."), SPAN("danger", "You see stars."))
 						src.apply_effect(2, EYE_BLUR, blocked)
 			if(BP_L_ARM)
 				if(src.l_hand && (poise <= effective_force/3*I.mod_weight*1.5))
-					src.visible_message("<span class='danger'>\The [src.l_hand] was knocked right out of [src]'s grasp!</span>")
+					src.visible_message(SPAN("danger", "\The [src.l_hand] was knocked right out of [src]'s grasp!"))
 					playsound(src.loc, 'sound/weapons/thudswoosh.ogg', 50, 1, -1)
 					src.drop_l_hand()
 			if(BP_R_ARM)
 				if(src.r_hand && (poise <= effective_force/3*I.mod_weight*1.5))
-					src.visible_message("<span class='danger'>\The [src.l_hand] was knocked right out of [src]'s grasp!</span>")
+					src.visible_message(SPAN("danger", "\The [src.l_hand] was knocked right out of [src]'s grasp!"))
 					playsound(src.loc, 'sound/weapons/thudswoosh.ogg', 50, 1, -1)
 					src.drop_r_hand()
 			if(BP_L_HAND, BP_R_HAND)
 				if(poise <= effective_force*I.mod_reach)
-					visible_message("<span class='danger'>[user] disarms [src] with their [I.name]!</span>")
+					visible_message(SPAN("danger", "[user] disarms [src] with their [I.name]!"))
 					var/list/holding = list(src.get_active_hand() = 40, src.get_inactive_hand() = 20)
 					for(var/obj/item/D in holding)
 						if(D)
@@ -423,7 +423,7 @@ meteor_act
 					playsound(src.loc, 'sound/weapons/thudswoosh.ogg', 50, 1, -1)
 			if(BP_CHEST, BP_GROIN, BP_L_LEG, BP_R_LEG)
 				if(!stat && (poise <= effective_force/3*I.mod_weight))
-					visible_message("<span class='danger'>[src] has been knocked down!</span>")
+					visible_message(SPAN("danger", "[src] has been knocked down!"))
 					apply_effect((I.mod_weight*3), WEAKEN, (blocked/2))
 				else
 					if(!stat && prob(effective_force))
@@ -432,19 +432,19 @@ meteor_act
 							src.set_dir(GLOB.reverse_dir[src.dir])
 						if(!T.density)
 							step(src, get_dir(get_turf(user), get_turf(src)))
-							src.visible_message("<span class='danger'>[pick("[src] was sent flying backward!", "[src] staggers back from the impact!")]</span>")
+							src.visible_message(SPAN("danger", "[pick("[src] was sent flying backward!", "[src] staggers back from the impact!")]"))
 						else
-							src.visible_message("<span class='danger'>[src] bumps into \the [T]!</span>")
+							src.visible_message(SPAN("danger", "[src] bumps into \the [T]!"))
 							src.apply_effect(effective_force * 0.4, WEAKEN, (blocked/2))
 			if(BP_L_FOOT, BP_R_FOOT)
 				if(poise <= effective_force*I.mod_reach)
-					visible_message("<span class='danger'>[user] takes [src] down with their [I.name]!</span>")
+					visible_message(SPAN("danger", "[user] takes [src] down with their [I.name]!"))
 					apply_effect((I.mod_reach*5), WEAKEN, blocked)
 
 	//visible_message("Debug \[BASH\]: effective_force = [effective_force] | armor = [blocked] | poise_damage = [poise_damage]") // Debug Message
 
 	if(effective_force <= 0)
-		show_message("<span class='warning'>Your armor absorbs the blow!</span>")
+		show_message(SPAN("warning", "Your armor absorbs the blow!"))
 		return 0
 
 	apply_damage(effective_force*0.5, PAIN, hit_zone, blocked, damage_flags, used_weapon=I)
@@ -489,7 +489,7 @@ meteor_act
 		var/mob/living/carbon/human/A = user
 		A.setClickCooldown(I.update_attack_cooldown()*2)
 		A.parrying = 1
-		A.visible_message("<span class='warning'>[A] attempts to parry [src]'s attack with their [I]!</span>")
+		A.visible_message(SPAN("warning", "[A] attempts to parry [src]'s attack with their [I]!"))
 
 		//visible_message("[A] tries to parry [src]'s attack with their [I]! Parry window: [I.mod_handy*8]") //Debug message
 
@@ -501,7 +501,7 @@ meteor_act
 
 //User uses their I to touch src. I can't figure out how you can help anyone while holding a weapon :/
 /mob/living/touch_with_weapon(obj/item/I, mob/living/user, effective_force, hit_zone)
-	visible_message("<span class='notice'>[user] touches [src] with [I.name].</span>")
+	visible_message(SPAN("notice", "[user] touches [src] with [I.name]."))
 
 //	Parry processing
 //src	= defender
@@ -517,7 +517,7 @@ meteor_act
 			var/obj/item/w_def = defender.get_active_hand()
 			if(!w_def.force)
 				defender.parrying = 0
-				visible_message("<span class='warning'>[defender] pointlessly attempts to parry [attacker]'s [w_atk.name] with their [w_def].</span>")
+				visible_message(SPAN("warning", "[defender] pointlessly attempts to parry [attacker]'s [w_atk.name] with their [w_def]."))
 				return 0  //For the case of candles and dices lmao
 
 			if(w_def.mod_reach > 1.25)
@@ -527,7 +527,7 @@ meteor_act
 				if((w_atk.mod_reach - w_def.mod_reach) > 1.0)
 					failing = 1
 			if(failing)
-				visible_message("<span class='warning'>[defender] fails to parry [attacker]'s [w_atk.name] with their [w_def.name].</span>")
+				visible_message(SPAN("warning", "[defender] fails to parry [attacker]'s [w_atk.name] with their [w_def.name]."))
 				defender.parrying = 0
 				return 0
 			defender.next_move = world.time+1 //Well I'd prefer to use setClickCooldown but it ain't gonna work here.
@@ -540,13 +540,13 @@ meteor_act
 
 			//visible_message("Debug \[parry\]: Attacker [attacker] lost [20.0+(w_atk.mod_weight*5.0)] poise ([defender.poise]/[defender.poise_pool])") // Debug Message
 
-			visible_message("<span class='warning'>[defender] parries [attacker]'s [w_atk.name] with their [w_def.name].</span>")
+			visible_message(SPAN("warning", "[defender] parries [attacker]'s [w_atk.name] with their [w_def.name]."))
 
 			if(attacker.poise <= 5)
-				visible_message("<span class='warning'>[attacker] falls down, unable to keep balance!</span>")
+				visible_message(SPAN("warning", "[attacker] falls down, unable to keep balance!"))
 				attacker.apply_effect(5, WEAKEN, 0)
 			else if(attacker.poise <= 20)
-				visible_message("<span class='warning'>[attacker]'s [w_atk.name] flies off!</span>")
+				visible_message(SPAN("warning", "[attacker]'s [w_atk.name] flies off!"))
 				attacker.drop_from_inventory(w_atk)
 
 			playsound(loc, 'sound/weapons/parry.ogg', 50, 1, -1) // You know what's gonna happen next, eh?
@@ -572,7 +572,7 @@ meteor_act
 		if(w_def)
 			if(!w_def.force)
 				defender.useblock_off()
-				visible_message("<span class='warning'>[defender] pointlessly attempts to block [attacker]'s [w_atk.name] with [w_def].</span>")
+				visible_message(SPAN("warning", "[defender] pointlessly attempts to block [attacker]'s [w_atk.name] with [w_def]."))
 				return 0 //For the case of candles and dices lmao
 
 			if(w_def.mod_reach < w_atk.mod_reach)
@@ -589,14 +589,14 @@ meteor_act
 
 			//visible_message("Debug \[block\]: [attacker] lost [2.0+(w_atk.mod_weight*2 + (1-w_atk.mod_handy)*2)] poise ([attacker.poise]/[attacker.poise_pool])") // Debug Message
 
-			visible_message("<span class='warning'>[defender] blocks [attacker]'s [w_atk.name] with their [w_def.name]!</span>")
+			visible_message(SPAN("warning", "[defender] blocks [attacker]'s [w_atk.name] with their [w_def.name]!"))
 
 			if(defender.poise <= 5)
-				visible_message("<span class='warning'>[defender] falls down, unable to keep balance!</span>")
+				visible_message(SPAN("warning", "[defender] falls down, unable to keep balance!"))
 				defender.apply_effect(3, WEAKEN, 0)
 				defender.useblock_off()
 			else if(defender.poise <= 15)
-				visible_message("<span class='warning'>[defender]'s [w_def.name] flies off!</span>")
+				visible_message(SPAN("warning", "[defender]'s [w_def.name] flies off!"))
 				defender.drop_from_inventory(w_def)
 				defender.useblock_off()
 
@@ -606,15 +606,15 @@ meteor_act
 			defender.poise -= 2.5+(w_atk.mod_weight*10 + w_atk.mod_reach*5)
 			attacker.poise -= (w_atk.mod_weight*2 + (1-w_atk.mod_handy)*2)
 			if((w_atk.sharp || w_atk.edge) && w_atk.force >= 10)
-				visible_message("<span class='warning'>[defender] blocks [attacker]'s [w_atk.name] with their bare hands! Ouch.</span>")
+				visible_message(SPAN("warning", "[defender] blocks [attacker]'s [w_atk.name] with their bare hands! Ouch."))
 				defender.apply_damage((w_atk.force*0.2), w_atk.damtype, BP_R_HAND, 0, 0, used_weapon=w_atk)
 				defender.apply_damage((w_atk.force*0.2), w_atk.damtype, BP_L_HAND, 0, 0, used_weapon=w_atk)
 				defender.useblock_off()
 			else
-				visible_message("<span class='warning'>[defender] blocks [attacker]'s [w_atk.name] with their bare hands!</span>")
+				visible_message(SPAN("warning", "[defender] blocks [attacker]'s [w_atk.name] with their bare hands!"))
 			defender.useblock_off()
 			if(defender.poise <= 10)
-				visible_message("<span class='warning'>[defender] falls down, unable to keep balance!</span>")
+				visible_message(SPAN("warning", "[defender] falls down, unable to keep balance!"))
 				defender.apply_effect(3, WEAKEN, 0)
 				defender.useblock_off()
 	return 1
@@ -633,20 +633,20 @@ meteor_act
 		if(w_def)
 			if(!w_def.force)
 				defender.useblock_off()
-				visible_message("<span class='warning'>[defender] pointlessly attempts to block [attacker]'s attack with [w_def].</span>")
+				visible_message(SPAN("warning", "[defender] pointlessly attempts to block [attacker]'s attack with [w_def]."))
 				return 0 //For the case of candles and dices lmao
 
 			defender.poise -= 5.0
 			attacker.poise -= 5.0+w_def.mod_weight*2+w_def.mod_handy*3
 
-			visible_message("<span class='warning'>[defender] blocks [attacker]'s attack with their [w_def.name]!</span>")
+			visible_message(SPAN("warning", "[defender] blocks [attacker]'s attack with their [w_def.name]!"))
 
 			if(defender.poise < 5)
-				visible_message("<span class='warning'>[defender] falls down, unable to keep balance!</span>")
+				visible_message(SPAN("warning", "[defender] falls down, unable to keep balance!"))
 				defender.apply_effect(3, WEAKEN, 0)
 				defender.useblock_off()
 			else if(defender.poise < 15)
-				visible_message("<span class='warning'>[defender]'s [w_def.name] flies off!</span>")
+				visible_message(SPAN("warning", "[defender]'s [w_def.name] flies off!"))
 				defender.drop_from_inventory(w_def)
 				defender.useblock_off()
 
@@ -656,10 +656,10 @@ meteor_act
 			defender.poise -= 7.5
 			attacker.poise -= 5.0
 
-			visible_message("<span class='warning'>[defender] blocks [attacker]'s attack!</span>")
+			visible_message(SPAN("warning", "[defender] blocks [attacker]'s attack!"))
 
 			if(defender.poise <= 5)
-				visible_message("<span class='warning'>[defender] falls down, unable to keep balance!</span>")
+				visible_message(SPAN("warning", "[defender] falls down, unable to keep balance!"))
 				defender.apply_effect(3, WEAKEN, 0)
 				defender.useblock_off()
 	return 1
@@ -734,7 +734,7 @@ meteor_act
 	//want the dislocation chance to be such that the limb is expected to dislocate after dealing a fraction of the damage needed to break the limb
 	var/dislocate_chance = effective_force/(dislocate_mult * organ.min_broken_damage * config.organ_health_multiplier)*100
 	if(prob(dislocate_chance * blocked_mult(blocked)))
-		visible_message("<span class='danger'>[src]'s [organ.joint] [pick("gives way","caves in","crumbles","collapses")]!</span>")
+		visible_message(SPAN("danger", "[src]'s [organ.joint] [pick("gives way","caves in","crumbles","collapses")]!"))
 		organ.dislocate(1)
 		return 1
 	return 0
@@ -742,12 +742,12 @@ meteor_act
 /mob/living/carbon/human/emag_act(remaining_charges, mob/user, emag_source)
 	var/obj/item/organ/external/affecting = get_organ(user.zone_sel.selecting)
 	if(!affecting || !BP_IS_ROBOTIC(affecting))
-		to_chat(user, "<span class='warning'>That limb isn't robotic.</span>")
+		to_chat(user, SPAN("warning", "That limb isn't robotic."))
 		return -1
 	if(affecting.status & ORGAN_SABOTAGED)
-		to_chat(user, "<span class='warning'>[src]'s [affecting.name] is already sabotaged!</span>")
+		to_chat(user, SPAN("warning", "[src]'s [affecting.name] is already sabotaged!"))
 		return -1
-	to_chat(user, "<span class='notice'>You sneakily slide [emag_source] into the dataport on [src]'s [affecting.name] and short out the safeties.</span>")
+	to_chat(user, SPAN("notice", "You sneakily slide [emag_source] into the dataport on [src]'s [affecting.name] and short out the safeties."))
 	affecting.status |= ORGAN_SABOTAGED
 	return 1
 
@@ -760,7 +760,7 @@ meteor_act
 			if(canmove && !restrained())
 				if(isturf(O.loc))
 					put_in_active_hand(O)
-					visible_message("<span class='warning'>[src] catches [O]!</span>")
+					visible_message(SPAN("warning", "[src] catches [O]!"))
 					throw_mode_off()
 					return
 
@@ -778,11 +778,11 @@ meteor_act
 					var/dir = get_dir(src,O)
 					O.throw_at(get_edge_target_turf(src,dir),1)
 
-					visible_message("<span class='warning'>[src] blocks [O] with [w_def]!</span>")
+					visible_message(SPAN("warning", "[src] blocks [O] with [w_def]!"))
 
 					poise -= throw_damage/w_def.mod_shield
 					if(poise < throw_damage/w_def.mod_shield)
-						visible_message("<span class='warning'>[src] falls down, unable to keep balance!</span>")
+						visible_message(SPAN("warning", "[src] falls down, unable to keep balance!"))
 						apply_effect(2, WEAKEN, 0)
 						src.useblock_off()
 					return
@@ -811,7 +811,7 @@ meteor_act
 				return
 
 		if(!zone)
-			visible_message("<span class='notice'>\The [O] misses [src] narrowly!</span>")
+			visible_message(SPAN("notice", "\The [O] misses [src] narrowly!"))
 			return
 
 		O.throwing = 0		//it hit, so stop moving
@@ -820,7 +820,7 @@ meteor_act
 		var/hit_area = affecting.name
 		var/datum/wound/created_wound
 
-		src.visible_message("<span class='warning'>\The [src] has been hit in the [hit_area] by \the [O].</span>")
+		src.visible_message(SPAN("warning", "\The [src] has been hit in the [hit_area] by \the [O]."))
 		var/armor = run_armor_check(affecting, "melee", O.armor_penetration, "Your armor has protected your [hit_area].", "Your armor has softened hit to your [hit_area].") //I guess "melee" is the best fit here
 		if(armor < 100)
 			var/damage_flags = O.damage_flags()
@@ -862,7 +862,7 @@ meteor_act
 		if(O.throw_source && momentum >= THROWNOBJ_KNOCKBACK_SPEED)
 			var/dir = get_dir(O.throw_source, src)
 
-			visible_message("<span class='warning'>\The [src] staggers under the impact!</span>","<span class='warning'>You stagger under the impact!</span>")
+			visible_message(SPAN("warning", "\The [src] staggers under the impact!"),SPAN("warning", "You stagger under the impact!"))
 			src.throw_at(get_edge_target_turf(src,dir),1,momentum)
 
 			if(!O || !src) return
@@ -872,7 +872,7 @@ meteor_act
 
 				if(T)
 					src.loc = T
-					visible_message("<span class='warning'>[src] is pinned to the wall by [O]!</span>","<span class='warning'>You are pinned to the wall by [O]!</span>")
+					visible_message(SPAN("warning", "[src] is pinned to the wall by [O]!"),SPAN("warning", "You are pinned to the wall by [O]!"))
 					src.anchored = 1
 					src.pinned += O
 
