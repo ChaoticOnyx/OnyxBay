@@ -239,6 +239,13 @@ a.popt {text-decoration: none;}
 /* OUTPUT COLORS */
 .highlight {background: yellow;}
 
+/* AND HERE FOR SIZE */
+.small   {font-size: 10px;}
+.normal  {font-size: 13px;}
+.large   {font-size: 16px;}
+.huge    {font-size: 18px;}
+.giant   {font-size: 24px;}
+
 h1, h2, h3, h4, h5, h6	{color: #0000ff;font-family: Georgia, Verdana, sans-serif;}
 
 em						{font-style: normal;font-weight: bold;}
