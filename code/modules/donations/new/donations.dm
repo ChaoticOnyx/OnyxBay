@@ -105,6 +105,7 @@ SUBSYSTEM_DEF(donations)
 
 	if(!connected)
 		return FALSE
+	ASSERT(player)
 
 	var/was_donator = player.donator_info.donator
 
@@ -177,6 +178,11 @@ SUBSYSTEM_DEF(donations)
 		return FALSE
 	ASSERT(player)
 	ASSERT(isnum(change))
+
+	update_donator(player)
+	if(!player) // check if player was gone away, while we were updating him
+		return FALSE
+
 	if(player.donator_info.opyxes + change < 0)
 		return FALSE
 	type = sql_sanitize_text(type)
@@ -203,6 +209,7 @@ SUBSYSTEM_DEF(donations)
 		WHERE
 			player = (SELECT id from players WHERE ckey="[player.ckey]") AND
 			comment = "[comment]"
+		ORDER BY id DESC
 	"})
 	if(!query.Execute() || !query.NextRow())
 		log_debug("\[Donations DB] failed to load transaction's id: [query.ErrorMsg()]")
@@ -212,6 +219,29 @@ SUBSYSTEM_DEF(donations)
 	update_donator(player)
 
 	return text2num(transaction_id)
+
+
+/datum/controller/subsystem/donations/proc/remove_transaction(client/player, id)
+	if(!connected)
+		return FALSE
+	ASSERT(isnum(id))
+
+	log_debug("\[Donations DB] Transaction [id] rollback is called! User is '[player]'.")
+
+	var/DBQuery/query = dbconnection.NewQuery({"
+		DELETE FROM
+			points_transactions
+		WHERE
+			id = [id]
+	"})
+	if(!query.Execute())
+		log_debug("\[Donations DB] failed to delete transaction [id]: [query.ErrorMsg()]")
+		return FALSE
+
+	if(player)
+		update_donator(player)
+	return TRUE
+
 
 /datum/controller/subsystem/donations/proc/give_item(client/player, item_type, transaction_id = null)
 	if(!connected)
@@ -280,7 +310,7 @@ SUBSYSTEM_DEF(donations)
 
 
 /datum/controller/subsystem/donations/Topic(href, href_list)
-	var/mob/living/carbon/human/user = usr
+	var/mob/user = usr
 
 	switch(href_list["action"])
 		if("go_to_patreon")

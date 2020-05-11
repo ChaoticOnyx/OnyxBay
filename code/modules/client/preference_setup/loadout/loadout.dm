@@ -396,12 +396,13 @@ var/list/gear_datums = list()
 		var/comment = "Donation store purchase: [G.type]"
 		var/transaction = SSdonations.create_transaction(user.client, -G.price, DONATIONS_TRANSACTION_TYPE_PURCHASE, comment)
 		if(transaction)
-			SSdonations.give_item(user.client, G.type, transaction)
-			pref.trying_on_gear = null
-			pref.trying_on_tweaks.Cut()
-		else
-			flag_not_enough_opyxes = TRUE
-		return TOPIC_REFRESH_UPDATE_PREVIEW
+			if(SSdonations.give_item(user.client, G.type, transaction))
+				pref.trying_on_gear = null
+				pref.trying_on_tweaks.Cut()
+				return TOPIC_REFRESH_UPDATE_PREVIEW
+			else
+				SSdonations.remove_transaction(user.client, transaction)
+		return TOPIC_NOACTION
 	if(href_list["try_on"])
 		if(!istype(selected_gear))
 			return TOPIC_NOACTION
