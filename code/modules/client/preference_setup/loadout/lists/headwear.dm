@@ -1,7 +1,6 @@
 /datum/gear/head
-	sort_category = "Hats and Headwear"
+	sort_category = "Hats"
 	slot = slot_head
-	category = /datum/gear/head
 
 /datum/gear/head/beret
 	display_name = "beret, colour select"
@@ -144,3 +143,23 @@
 /datum/gear/head/tankccap
 	display_name = "padded cap"
 	path = /obj/item/clothing/head/tank
+
+/datum/gear/head/kitty
+	display_name = "kitty ears"
+	path = /obj/item/clothing/head/kitty
+	price = 10
+
+/datum/gear/head/wizard_fake
+	display_name = "wizard hat"
+	path = /obj/item/clothing/head/wizard/fake
+	price = 10
+
+/datum/gear/head/witchwig
+	display_name = "witchwig"
+	path = /obj/item/clothing/head/witchwig
+	price = 9
+
+/datum/gear/head/bearpelt
+	display_name = "bearpelt"
+	path = /obj/item/clothing/head/bearpelt
+	price = 20

@@ -1,9 +1,8 @@
 // Alien clothing.
 
 // Unathi clothing
-/datum/gear/suit/unathi/
+/datum/gear/suit/unathi
 	sort_category = "Xenowear"
-	category = /datum/gear/suit/unathi/
 	whitelisted = list(SPECIES_UNATHI)
 
 /datum/gear/suit/unathi/mantle
@@ -22,9 +21,8 @@
 	cost = 5
 
 //Skrell Chains
-/datum/gear/ears/skrell/
+/datum/gear/ears/skrell
 	sort_category = "Xenowear"
-	category = /datum/gear/ears/skrell/
 	whitelisted = list(SPECIES_SKRELL)
 
 /datum/gear/ears/skrell/chains

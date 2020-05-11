@@ -1,6 +1,5 @@
-/datum/gear/tactical/
+/datum/gear/tactical
 	sort_category = "Tactical Equipment"
-	category = /datum/gear/tactical/
 	slot = slot_tie
 
 /datum/gear/tactical/pcarrier
