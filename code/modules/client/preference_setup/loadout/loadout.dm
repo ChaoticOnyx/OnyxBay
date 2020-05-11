@@ -4,6 +4,8 @@ var/list/gear_datums = list()
 /datum/preferences
 	var/list/gear_list //Custom/fluff item loadouts.
 	var/gear_slot = 1  //The current gear save slot
+	var/datum/gear/trying_on_gear
+	var/list/trying_on_tweaks = new
 
 /datum/preferences/proc/Gear()
 	return gear_list[gear_slot]
@@ -21,7 +23,7 @@ var/list/gear_datums = list()
 	//create a list of gear datums to sort
 	for(var/geartype in typesof(/datum/gear)-/datum/gear)
 		var/datum/gear/G = geartype
-		if(initial(G.category) == geartype)
+		if(!initial(G.display_name))
 			continue
 		if(GLOB.using_map.loadout_blacklist && (geartype in GLOB.using_map.loadout_blacklist))
 			continue
@@ -48,6 +50,7 @@ var/list/gear_datums = list()
 	var/datum/gear/selected_gear
 	var/list/selected_tweaks = new
 	var/hide_unavailable_gear = 0
+	var/flag_not_enough_opyxes = FALSE
 
 /datum/category_item/player_setup_item/loadout/load_character(savefile/S)
 	from_file(S["gear_list"], pref.gear_list)
@@ -111,6 +114,9 @@ var/list/gear_datums = list()
 		pref.update_preview_icon()
 	user << browse_rsc(pref.preview_icon, "previewicon.png")
 
+	if(!user.client)
+		return
+
 	var/total_cost = 0
 	var/list/gears = pref.gear_list[pref.gear_slot]
 	for(var/i = 1; i <= gears.len; i++)
@@ -122,6 +128,9 @@ var/list/gear_datums = list()
 	if(total_cost < config.max_gear_cost)
 		fcolor = "#e67300"
 
+	. += "<table style='width: 100%;'><tr>"
+
+	. += "<td>"
 	. += "<b>Loadout Set #<a href='?src=\ref[src];prev_slot=1'>\<\<</a><b><font color = '[fcolor]'>\[[pref.gear_slot]\]</font> </b><a href='?src=\ref[src];next_slot=1'>\>\></a></b><br>"
 
 	. += "<table><tr>"
@@ -132,6 +141,20 @@ var/list/gear_datums = list()
 		. += "<font color = '[fcolor]'>[total_cost]/[config.max_gear_cost]</font> loadout points spent.<br>"
 	. += "<a href='?src=\ref[src];clear_loadout=1'>Clear Loadout</a><br>"
 	. += "<a href='?src=\ref[src];toggle_hiding=1'>[hide_unavailable_gear ? "Show all" : "Hide unavailable"]</a><br>"
+	. += "</td>"
+
+	. += "</tr></table>"
+	. += "</td>"
+
+	. += "<td style='width: 90%; text-align: right; vertical-align: top;'>"
+
+	var/patron_tier = user.client.donator_info.get_full_patron_tier()
+	if(!patron_tier)
+		. += "<b>You are not a Patron yet.</b><br>"
+	else
+		. += "<b>Your Patreon tier is [patron_tier]</b><br>"
+	var/current_opyxes = round(user.client.donator_info.opyxes)
+	. += "<b>You have <font color='#e67300'>[current_opyxes]</font> opyx[current_opyxes != 1 ? "es" : ""].</b><br>"
 	. += "</td>"
 
 	. += "</tr></table>"
@@ -162,7 +185,7 @@ var/list/gear_datums = list()
 			. += " <span class='linkOn'>[category] - [category_cost]</span> "
 		else
 			if(category_cost)
-				. += " <a href='?src=\ref[src];select_category=[category]'><font color = '#e67300'>[category] - [category_cost]</font></a> "
+				. += " <a class='white' href='?src=\ref[src];select_category=[category]'>[category] - [category_cost]</a> "
 			else
 				. += " <a href='?src=\ref[src];select_category=[category]'>[category] - 0</a> "
 		. += "<br>"
@@ -180,16 +203,39 @@ var/list/gear_datums = list()
 			var/datum/job/J = job_master.occupations_by_title[job_title]
 			if(J)
 				dd_insertObjectList(jobs, J)
+
+	var/list/purchased_gears = new
+	var/list/paid_gears = new
+	var/list/not_paid_gears = new
 	for(var/gear_name in LC.gear)
 		if(!(gear_name in valid_gear_choices()))
 			continue
-		var/entry = ""
 		var/datum/gear/G = LC.gear[gear_name]
+		if(user.client.donator_info.has_item(G.type))
+			purchased_gears.Add(G)
+		else if(G.price)
+			paid_gears.Add(G)
+		else
+			not_paid_gears.Add(G)
+
+	for(var/datum/gear/G in purchased_gears + paid_gears + not_paid_gears)
+		var/entry = ""
 		var/ticked = (G.display_name in pref.gear_list[pref.gear_slot])
-		var/selected = (G == selected_gear)
-		var/display_name = ticked ? "<font color = '#e67300'>[G.display_name]</font>" : "[G.display_name]"
+		var/display_class
+		if(G != selected_gear)
+			if(ticked)
+				display_class = "white"
+			else if(G.price)
+				if(user.client.donator_info.has_item(G.type))
+					display_class = null
+				else
+					display_class = "gold"
+			else
+				display_class = "gray"
+		else
+			display_class = "linkOn"
 		entry += "<tr>"
-		entry += "<td width=25%><a [selected ? "class='linkOn' " : ""]href='?src=\ref[src];select_gear=[html_encode(G.display_name)]'>[display_name]</a></td>"
+		entry += "<td width=25%><a [display_class ? "class='[display_class]' " : ""]href='?src=\ref[src];select_gear=[html_encode(G.display_name)]'>[G.display_name]</a></td>"
 		entry += "</td></tr>"
 
 		var/allowed
@@ -222,13 +268,17 @@ var/list/gear_datums = list()
 		var/icon/I = icon(gear_virtual_item.icon, gear_virtual_item.icon_state)
 		if(gear_virtual_item.color)
 			I.Blend(gear_virtual_item.color, ICON_MULTIPLY)
+		I.Scale(I.Width() * 2, I.Height() * 2)
 
 		. += "<td style='width: 80%;' class='block'>"
+
 		. += "<table><tr>"
-		. += "<td>[icon2html(I, user, class="bigIcon")]</td>"
+		. += "<td>[icon2html(I, user)]</td>"
 		. += "<td style='vertical-align: top;'><b>[selected_gear.display_name]</b></td>"
 		. += "</tr></table>"
 
+		if(selected_gear.slot)
+			. += "<b>Slot:</b> [slot_to_description(selected_gear.slot)]<br>"
 		. += "<b>Loadout Points:</b> [selected_gear.cost]<br>"
 
 		if(selected_gear.allowed_roles)
@@ -254,6 +304,11 @@ var/list/gear_datums = list()
 			. += desc
 			. += "<br>"
 
+		if(selected_gear.price)
+			. += "<br>"
+			. += "<b>Price: [selected_gear.price] opyx[selected_gear.price != 1 ? "es" : ""]</b>"
+			. += "<br>"
+
 		// Tweaks
 		if(selected_gear.gear_tweaks.len)
 			. += "<br><b>Options:</b><br>"
@@ -262,7 +317,16 @@ var/list/gear_datums = list()
 				. += "<br>"
 
 		. += "<br>"
-		. += "<a [ticked ? "class='linkOn' " : ""]href='?src=\ref[src];toggle_gear=[html_encode(selected_gear.display_name)]'>[ticked ? "Drop" : "Take"]</a>"
+
+		if(flag_not_enough_opyxes)
+			flag_not_enough_opyxes = FALSE
+			. += "<span class='notice'>You have not enough opyxes!</span><br>"
+
+		if(!selected_gear.price || user.client.donator_info.has_item(selected_gear.type))
+			. += "<a [ticked ? "class='linkOn' " : ""]href='?src=\ref[src];toggle_gear=[html_encode(selected_gear.display_name)]'>[ticked ? "Drop" : "Take"]</a>"
+		else
+			var/trying_on = (pref.trying_on_gear == selected_gear.display_name)
+			. += "<a class='gold' href='?src=\ref[src];buy_gear=\ref[selected_gear]'>Buy</a> <a [trying_on ? "class='linkOn' " : ""]href='?src=\ref[src];try_on=1'>Try On</a>"
 		. += "</td>"
 
 	. += "</tr></table>"
@@ -285,7 +349,8 @@ var/list/gear_datums = list()
 	var/list/metadata = get_gear_metadata(G)
 	metadata["[tweak]"] = new_metadata
 
-/datum/category_item/player_setup_item/loadout/OnTopic(href, href_list, user)
+/datum/category_item/player_setup_item/loadout/OnTopic(href, href_list, mob/user)
+	ASSERT(istype(user))
 	if(href_list["select_gear"])
 		selected_gear = gear_datums[href_list["select_gear"]]
 		selected_tweaks = pref.gear_list[pref.gear_slot][selected_gear.display_name]
@@ -293,7 +358,9 @@ var/list/gear_datums = list()
 			selected_tweaks = new
 			for(var/datum/gear_tweak/tweak in selected_gear.gear_tweaks)
 				selected_tweaks["[tweak]"] = tweak.get_default()
-		return TOPIC_REFRESH
+		pref.trying_on_gear = null
+		pref.trying_on_tweaks.Cut()
+		return TOPIC_REFRESH_UPDATE_PREVIEW
 	if(href_list["toggle_gear"])
 		var/datum/gear/TG = gear_datums[href_list["toggle_gear"]]
 		if(TG.display_name in pref.gear_list[pref.gear_slot])
@@ -317,6 +384,32 @@ var/list/gear_datums = list()
 		var/ticked = (selected_gear.display_name in pref.gear_list[pref.gear_slot])
 		if(ticked)
 			set_tweak_metadata(selected_gear, tweak, metadata)
+		var/trying_on = (selected_gear.display_name == pref.trying_on_gear)
+		if(trying_on)
+			pref.trying_on_tweaks["[tweak]"] = metadata
+		return TOPIC_REFRESH_UPDATE_PREVIEW
+	if(href_list["buy_gear"])
+		var/datum/gear/G = locate(href_list["buy_gear"])
+		ASSERT(G.price)
+		ASSERT(!user.client.donator_info.has_item(G.type))
+		var/comment = "Donation store purchase: [G.type]"
+		var/transaction = SSdonations.create_transaction(user.client, -G.price, DONATIONS_TRANSACTION_TYPE_PURCHASE, comment)
+		if(transaction)
+			SSdonations.give_item(user.client, G.type, transaction)
+			pref.trying_on_gear = null
+			pref.trying_on_tweaks.Cut()
+		else
+			flag_not_enough_opyxes = TRUE
+		return TOPIC_REFRESH_UPDATE_PREVIEW
+	if(href_list["try_on"])
+		if(!istype(selected_gear))
+			return TOPIC_NOACTION
+		if(selected_gear.display_name == pref.trying_on_gear)
+			pref.trying_on_gear = null
+			pref.trying_on_tweaks.Cut()
+		else
+			pref.trying_on_gear = selected_gear.display_name
+			pref.trying_on_tweaks = selected_tweaks.Copy()
 		return TOPIC_REFRESH_UPDATE_PREVIEW
 	if(href_list["next_slot"])
 		pref.gear_slot = pref.gear_slot+1
@@ -324,6 +417,8 @@ var/list/gear_datums = list()
 			pref.gear_slot = 1
 		selected_gear = null
 		selected_tweaks.Cut()
+		pref.trying_on_gear = null
+		pref.trying_on_tweaks.Cut()
 		return TOPIC_REFRESH_UPDATE_PREVIEW
 	if(href_list["prev_slot"])
 		pref.gear_slot = pref.gear_slot-1
@@ -331,17 +426,23 @@ var/list/gear_datums = list()
 			pref.gear_slot = config.loadout_slots
 		selected_gear = null
 		selected_tweaks.Cut()
+		pref.trying_on_gear = null
+		pref.trying_on_tweaks.Cut()
 		return TOPIC_REFRESH_UPDATE_PREVIEW
 	if(href_list["select_category"])
 		current_tab = href_list["select_category"]
 		selected_gear = null
 		selected_tweaks.Cut()
-		return TOPIC_REFRESH
+		pref.trying_on_gear = null
+		pref.trying_on_tweaks.Cut()
+		return TOPIC_REFRESH_UPDATE_PREVIEW
 	if(href_list["clear_loadout"])
 		var/list/gear = pref.gear_list[pref.gear_slot]
 		gear.Cut()
 		selected_gear = null
 		selected_tweaks.Cut()
+		pref.trying_on_gear = null
+		pref.trying_on_tweaks.Cut()
 		return TOPIC_REFRESH_UPDATE_PREVIEW
 	if(href_list["toggle_hiding"])
 		hide_unavailable_gear = !hide_unavailable_gear
@@ -376,6 +477,7 @@ var/list/gear_datums = list()
 	var/description        //Description of this gear. If left blank will default to the description of the pathed item.
 	var/atom/path          //Path to item.
 	var/cost = 1           //Number of points used. Items in general cost 1 point, storage/armor/gloves/special use costs 2 points.
+	var/price              //Price of item, opyxes
 	var/slot               //Slot to equip to.
 	var/list/allowed_roles //Roles that can spawn with this item.
 	var/whitelisted        //Term to check the whitelist for..
