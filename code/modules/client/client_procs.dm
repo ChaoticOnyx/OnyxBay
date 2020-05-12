@@ -401,7 +401,6 @@
 
 #undef UPLOAD_LIMIT
 #undef MIN_CLIENT_VERSION
-#undef MAX_CLIENT_VERSION
 
 //checks if a client is afk
 //3000 frames = 5 minutes

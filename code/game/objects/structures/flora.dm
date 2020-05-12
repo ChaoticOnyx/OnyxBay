@@ -49,7 +49,7 @@
 	icon = 'icons/obj/flora/deadtrees.dmi'
 	icon_state = "tree_11"
 
-	/obj/structure/flora/tree/dead/deadtree_6
+/obj/structure/flora/tree/dead/deadtree_6
 	icon = 'icons/obj/flora/deadtrees.dmi'
 	icon_state = "tree_12"
 

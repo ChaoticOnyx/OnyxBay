@@ -13,7 +13,7 @@ SUBSYSTEM_DEF(warnings)
 		shown_warnings_this_round[type] = list()
 		shown_warnings[type] = list()
 		var/savefile/S = new(data_path+type+".sav")
-		if(!lentext(S))
+		if(!length(S))
 			continue
 		for(var/I in S)
 			S[I] >> shown_warnings[type][I]

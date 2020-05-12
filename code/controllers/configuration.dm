@@ -827,6 +827,9 @@ var/list/gamemode_cache = list()
 				if("donations")
 					donations = TRUE
 
+				if("db_uses_cp1251_encoding")
+					db_uses_cp1251_encoding = TRUE
+
 				else
 					log_misc("Unknown setting in configuration: '[name]'")
 
@@ -880,9 +883,6 @@ var/list/gamemode_cache = list()
 
 				if("use_loyalty_implants")
 					config.use_loyalty_implants = 1
-
-				if("db_uses_cp1251_encoding")
-					config.db_uses_cp1251_encoding = 1
 
 				else
 					log_misc("Unknown setting in configuration: '[name]'")
