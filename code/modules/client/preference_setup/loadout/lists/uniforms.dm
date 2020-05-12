@@ -1,7 +1,6 @@
 /datum/gear/uniform
-	sort_category = "Uniforms and Casual Dress"
+	sort_category = "Uniforms"
 	slot = slot_w_uniform
-	category = /datum/gear/uniform
 
 /datum/gear/uniform/jumpsuit
 	display_name = "jumpsuit, colour select"
@@ -149,3 +148,53 @@
 // 	display_name = "frontier clothes"
 // 	path = /obj/item/clothing/under/frontier
 
+/datum/gear/uniform/rank/vice
+	display_name = "vice officer's jumpsuit"
+	path = /obj/item/clothing/under/rank/vice
+	price = 18
+
+/datum/gear/uniform/pirate
+	display_name = "pirate outfit"
+	path = /obj/item/clothing/under/pirate
+	price = 13
+
+/datum/gear/uniform/waiter
+	display_name = "waiter's outfit"
+	path = /obj/item/clothing/under/waiter
+	price = 12
+
+/datum/gear/uniform/rank/centcom/officer
+	display_name = "officer's dress uniform"
+	path = /obj/item/clothing/under/rank/centcom/officer
+	price = 39
+
+/datum/gear/uniform/schoolgirl
+	display_name = "schoolgirl uniform"
+	path = /obj/item/clothing/under/schoolgirl
+	price = 13
+
+/datum/gear/uniform/soviet
+	display_name = "soviet uniform"
+	path = /obj/item/clothing/under/soviet
+	price = 13
+
+/datum/gear/uniform/gladiator
+	display_name = "gladiator uniform"
+	path = /obj/item/clothing/under/gladiator
+	price = 10
+
+/datum/gear/uniform/assistantformal
+	display_name = "assistant's formal uniform"
+	path = /obj/item/clothing/under/assistantformal
+	price = 10
+
+/datum/gear/uniform/psyche
+	display_name = "psychedelic jumpsuit"
+	path = /obj/item/clothing/under/psyche
+	price = 25
+
+
+/datum/gear/uniform/captain_fly
+	display_name = "rogue's uniform"
+	path = /obj/item/clothing/under/captain_fly
+	price = 15

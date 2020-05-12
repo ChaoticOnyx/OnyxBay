@@ -1319,7 +1319,7 @@ window "infowindow"
 		background-color = none
 		saved-params = "is-checked"
 		text = "Donations"
-		command = "Donator-Store"
+		command = "donations-info"
 		group = "rpanemode"
 	elem "rulesb"
 		type = BUTTON

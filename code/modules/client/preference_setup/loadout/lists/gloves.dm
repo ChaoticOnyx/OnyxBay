@@ -1,8 +1,7 @@
 /datum/gear/gloves
 	cost = 2
 	slot = slot_gloves
-	sort_category = "Gloves and Handwear"
-	category = /datum/gear/gloves
+	sort_category = "Gloves"
 
 /datum/gear/gloves/colored
 	display_name = "gloves, colored"
@@ -56,3 +55,8 @@
 	display_name = "gloves, work"
 	path = /obj/item/clothing/gloves/thick
 	cost = 3
+
+/datum/gear/gloves/boxing
+	display_name = "boxing gloves"
+	path = /obj/item/clothing/gloves/boxing
+	price = 12

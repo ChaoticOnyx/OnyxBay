@@ -1,6 +1,5 @@
-/datum/gear/tactical/
+/datum/gear/tactical
 	sort_category = "Tactical Equipment"
-	category = /datum/gear/tactical/
 	slot = slot_tie
 
 /datum/gear/tactical/pcarrier
@@ -57,5 +56,5 @@
 
 /datum/gear/tactical/tacticool
 	display_name = "tacticool turtleneck"
-	path = /obj/item/clothing/under/syndicate
+	path = /obj/item/clothing/under/syndicate/tacticool
 	slot = slot_w_uniform

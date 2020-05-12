@@ -1,8 +1,7 @@
 
 /datum/gear/shoes
-	sort_category = "Shoes and Footwear"
+	sort_category = "Shoes"
 	slot = slot_shoes
-	category = /datum/gear/shoes
 
 /datum/gear/shoes/boots
 	display_name = "boot selection"
@@ -40,3 +39,13 @@
 /datum/gear/shoes/sandal
 	display_name = "wooden sandals"
 	path = /obj/item/clothing/shoes/sandal
+
+/datum/gear/shoes/clown_shoes
+	display_name = "clown shoes"
+	path = /obj/item/clothing/shoes/clown_shoes
+	price = 13
+
+/datum/gear/shoes/cyborg_shoes
+	display_name = "cyborg shoes"
+	path = /obj/item/clothing/shoes/cyborg
+	price = 13

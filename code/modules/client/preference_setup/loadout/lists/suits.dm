@@ -1,7 +1,6 @@
 /datum/gear/suit
 	slot = slot_wear_suit
-	sort_category = "Suits and Overwear"
-	category = /datum/gear/suit
+	sort_category = "Suits"
 
 /datum/gear/suit/poncho
 	display_name = "poncho selection"
@@ -147,3 +146,13 @@
 	trenchcoats += /obj/item/clothing/suit/storage/det_trench/grey
 	trenchcoats += /obj/item/clothing/suit/leathercoat
 	gear_tweaks += new /datum/gear_tweak/path/specified_types_list(trenchcoats)
+
+/datum/gear/suit/pirate
+	display_name = "pirate suit"
+	path = /obj/item/clothing/suit/pirate
+	price = 12
+
+/datum/gear/suit/cardborg
+	display_name = "cardborg"
+	path = /obj/item/clothing/suit/cardborg
+	price = 5

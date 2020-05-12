@@ -1,7 +1,6 @@
 // "Useful" items - I'm guessing things that might be used at work?
 /datum/gear/utility
 	sort_category = "Utility"
-	category = /datum/gear/utility
 
 /datum/gear/utility/briefcase
 	display_name = "briefcase"
