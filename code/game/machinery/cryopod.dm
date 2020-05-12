@@ -49,7 +49,7 @@
 
 	user.set_machine(src)
 
-	var/dat
+	var/dat = "<meta charset=\"utf-8\">"
 
 	dat += "<hr/><br/><b>[storage_name]</b><br/>"
 	dat += "<i>Welcome, [user.real_name].</i><br/><br/><hr/>"

@@ -137,7 +137,7 @@
 				if(announcment_cooldown)
 					to_chat(usr, "Please allow at least one minute to pass between announcements")
 					return TRUE
-				var/input = input(usr, "Please write a message to announce to the [station_name()].", "Priority Announcement") as null|text
+				var/input = sanitize(input(usr, "Please write a message to announce to the [station_name()].", "Priority Announcement") as null|text)
 				if(!input || !can_still_topic())
 					return 1
 				crew_announcement.Announce(input)
@@ -270,7 +270,7 @@ var/last_message_id = 0
 	var/list/message = list()
 	message["id"] = get_comm_message_id()
 	message["title"] = message_title
-	message["contents"] = cp1251_to_utf8(message_text)
+	message["contents"] = message_text
 
 	for (var/datum/comm_message_listener/l in comm_message_listeners)
 		l.Add(message)

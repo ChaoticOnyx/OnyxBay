@@ -344,7 +344,7 @@ var/world_topic_spam_protect_time = world.timeofday
 		var/ckey = input["ckey"]
 		var/message
 		if(!input["isadmin"])  // le costil, remove when discord-bot will be fixed ~HonkyDonky
-			message = rhtml_encode(input["ooc"])
+			message = html_encode(input["ooc"])
 		else
 			message = "<font color='#39034f'>" + strip_html_properly(input["ooc"]) + "</font>"
 		if(!ckey||!message)
@@ -357,7 +357,7 @@ var/world_topic_spam_protect_time = world.timeofday
 				continue //sanity
 			if(target.is_key_ignored(ckey) || target.get_preference_value(/datum/client_preference/show_ooc) == GLOB.PREF_HIDE || target.get_preference_value(/datum/client_preference/show_discord_ooc) == GLOB.PREF_HIDE  && !input["isadmin"]) // If we're ignored by this person, then do nothing.
 				continue //if it shouldn't see then it doesn't
-			to_chat(target, "<span class='ooc'><span class='everyone'>[russian_to_cp1251(sent_message)]</span></span>")
+			to_chat(target, "<span class='ooc'><span class='everyone'>[sent_message]</span></span>")
 
 	else if ("asay" in input)
 		return "not supported" //simply no asay on bay
@@ -382,9 +382,9 @@ var/world_topic_spam_protect_time = world.timeofday
 			return "No client with that name on server"
 
 		var/rank = "Discord Admin"
-		var/response = rhtml_encode(russian_to_cp1251(input["response"]))
+		var/response = html_encode(input["response"])
 
-		var/message =	"<font color='red'>[rank] PM from <b>[input["admin"]]</b>: [response]</font>"
+		var/message = "<font color='red'>[rank] PM from <b>[input["admin"]]</b>: [response]</font>"
 		var/amessage =  "<span class='info'>[rank] PM from [input["admin"]] to <b>[key_name(C)]</b> : [response])]</span>"
 		webhook_send_ahelp("[input["admin"]] -> [req_ckey]", response)
 
@@ -529,7 +529,7 @@ var/world_topic_spam_protect_time = world.timeofday
 	return 1
 
 /world/proc/load_motd()
-	join_motd = russian_to_cp1251(file2text("config/motd.txt"))
+	join_motd = file2text("config/motd.txt")
 	load_regular_announcement()
 
 

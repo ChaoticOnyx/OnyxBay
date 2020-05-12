@@ -98,7 +98,7 @@ var/list/artefact_feedback = list(/obj/structure/closet/wizard/armor = 		"HS",
 /obj/item/weapon/spellbook/interact(mob/user as mob)
 	var/dat = null
 	if(temp)
-		dat = "[temp]<br><a href='byond://?src=\ref[src];temp=1'>Return</a>"
+		dat = "<meta charset=\"utf-8\">[temp]<br><a href='byond://?src=\ref[src];temp=1'>Return</a>"
 	else
 		dat = "<center><h3>[spellbook.title]</h3><i>[spellbook.title_desc]</i><br>You have [uses] spell slot[uses > 1 ? "s" : ""] left.</center><br>"
 		dat += "<center><font color='#ff33cc'>Requires Wizard Garb</font><br><font color='#ff6600'>Selectable Target</font><br><font color='#33cc33'>Spell Charge Type: Recharge, Sacrifice, Charges</font></center><br>"

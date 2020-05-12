@@ -240,7 +240,7 @@
 		return
 
 	user.set_machine(src)
-	var/dat = "<B><HR><FONT size=3>[name]</FONT></B><BR><HR>"
+	var/dat = "<meta charset=\"utf-8\"><B><HR><FONT size=3>[name]</FONT></B><BR><HR>"
 
 	for(var/entry in species.hud.gear)
 		var/list/slot_ref = species.hud.gear[entry]

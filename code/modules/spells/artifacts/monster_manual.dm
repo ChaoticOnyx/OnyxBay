@@ -30,9 +30,9 @@
 /obj/item/weapon/monster_manual/interact(mob/user as mob)
 	var/dat
 	if(temp)
-		dat = "[temp]<br><a href='byond://?src=\ref[src];temp=1'>Return</a>"
+		dat = "<meta charset=\"utf-8\">[temp]<br><a href='byond://?src=\ref[src];temp=1'>Return</a>"
 	else
-		dat = "<center><h3>Monster Manual</h3>You have [uses] uses left.</center>"
+		dat = "<meta charset=\"utf-8\"><center><h3>Monster Manual</h3>You have [uses] uses left.</center>"
 		for(var/i=1;i<=monster_info.len;i++)
 			var/mob/M = monster[i]
 			var/name = capitalize(initial(M.name))

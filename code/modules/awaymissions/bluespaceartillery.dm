@@ -23,7 +23,7 @@
 
 /obj/machinery/artillerycontrol/attack_hand(mob/user as mob)
 	user.set_machine(src)
-	var/dat = "<B>Bluespace Artillery Control:</B><BR>"
+	var/dat = "<meta charset=\"utf-8\"><B>Bluespace Artillery Control:</B><BR>"
 	dat += "Locked on<BR>"
 	dat += "<B>Charge progress: [reload]/180:</B><BR>"
 	dat += "<A href='byond://?src=\ref[src];fire=1'>Open Fire</A><BR>"

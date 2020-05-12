@@ -131,7 +131,7 @@ a creative player the means to solve many problems.  Circuits are held inside an
 	var/table_edge_width = "30%"
 	var/table_middle_width = "40%"
 	var/list/HTML = list()
-	HTML += "<html><head><title>[src.displayed_name]</title></head><body>"
+	HTML += "<meta charset=\"utf-8\"><head><title>[src.displayed_name]</title></head><body>"
 	HTML += "<div align='center'>"
 	HTML += "<table border='1' style='undefined;table-layout: fixed; width: 80%'>"
 
@@ -225,7 +225,7 @@ a creative player the means to solve many problems.  Circuits are held inside an
 		HTML += "<br><font color='0000AA'>Power Draw: [power_draw_per_use] W (Active)</font>" // Borgcode says that powercells' checked_use() takes joules as input.
 	HTML += "<br><font color='0000AA'>[extended_desc]</font>"
 
-	HTML += "</body></html>"
+	HTML += "</body>"
 	var/HTML_merged = jointext(HTML, null)
 	if(assembly)
 		show_browser(user, HTML_merged, "window=assembly-\ref[assembly];size=[window_width]x[window_height];border=1;can_resize=1;can_close=1;can_minimize=1")

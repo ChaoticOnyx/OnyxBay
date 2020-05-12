@@ -39,7 +39,7 @@
 
 	user.set_machine(src)
 
-	var/dat = "<h1>Ore processor console</h1>"
+	var/dat = "<meta charset=\"utf-8\"><h1>Ore processor console</h1>"
 
 	dat += "Current unclaimed points: [points]<br>"
 

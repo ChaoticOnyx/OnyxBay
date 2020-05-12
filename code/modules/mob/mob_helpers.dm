@@ -188,12 +188,12 @@ var/list/global/organ_rel_size = list(
 			return n
 	var/te = n
 	var/t = ""
-	n = length(n)
+	n = length_char(n)
 	var/p = null
 	p = 1
 	var/intag = 0
 	while(p <= n)
-		var/char = copytext(te, p, p + 1)
+		var/char = copytext_char(te, p, p + 1)
 		if (char == "<") //let's try to not break tags
 			intag = !intag
 		if (intag || char == " " || prob(pr))
@@ -206,21 +206,27 @@ var/list/global/organ_rel_size = list(
 	return t
 
 proc/slur(phrase)
-	phrase = rhtml_decode(phrase)
-	var/leng=lentext(phrase)
-	var/counter=lentext(phrase)
+	phrase = html_decode(phrase)
+	var/leng=length_char(phrase)
+	var/counter=length_char(phrase)
 	var/newphrase=""
 	var/newletter=""
 	while(counter>=1)
-		newletter=copytext(phrase,(leng-counter)+1,(leng-counter)+2)
+		newletter=copytext_char(phrase,(leng-counter)+1,(leng-counter)+2)
 		if(rand(1,3)==3)
-			if(rlowertext(newletter)=="o")	newletter="u"
-			if(rlowertext(newletter)=="s")	newletter="ch"
-			if(rlowertext(newletter)=="a")	newletter="ah"
-			if(rlowertext(newletter)=="c")	newletter="k"
+			if(lowertext(newletter)=="o")	newletter="u"
+			if(lowertext(newletter)=="s")	newletter="ch"
+			if(lowertext(newletter)=="a")	newletter="ah"
+			if(lowertext(newletter)=="c")	newletter="k"
+
+			if(lowertext(newletter)=="–æ")	newletter="—É"
+			if(lowertext(newletter)=="—ë")	newletter="–æ"
+			if(lowertext(newletter)=="—Å")	newletter="—á"
+			if(lowertext(newletter)=="–∞")	newletter="a—Ö"
+			if(lowertext(newletter)=="–∫")	newletter="–≥"
 		switch(rand(1,15))
-			if(1,3,5,8)	newletter="[rlowertext(newletter)]"
-			if(2,4,6,15)	newletter="[ruppertext(newletter)]"
+			if(1,3,5,8)	newletter="[lowertext(newletter)]"
+			if(2,4,6,15)	newletter="[uppertext(newletter)]"
 			if(7)	newletter+="'"
 			//if(9,10)	newletter="<b>[newletter]</b>"
 			//if(11,12)	newletter="<big>[newletter]</big>"
@@ -229,14 +235,14 @@ proc/slur(phrase)
 	return newphrase
 
 /proc/stutter(n)
-	var/te = rhtml_decode(n)
+	var/te = html_decode(n)
 	var/t = ""//placed before the message. Not really sure what it's for.
-	n = length(n)//length of the entire word
+	n = length_char(n)//length of the entire word
 	var/p = null
 	p = 1//1 is the start of any word
 	while(p <= n)//while P, which starts at 1 is less or equal to N which is the length.
-		var/n_letter = copytext(te, p, p + 1)//copies text from a certain distance. In this case, only one letter at a time.
-		if (prob(80) && (rlowertext(n_letter) in list("·","‚","„","‰","Ê","Á","È","Í","Î","Ï","Ì","Ô","","Ò","Ú","Ù","ı","ˆ","˜","¯","˘","b","c","d","f","g","h","j","k","l","m","n","p","q","r","s","t","v","w","x","y","z")))
+		var/n_letter = copytext_char(te, p, p + 1)//copies text from a certain distance. In this case, only one letter at a time.
+		if (prob(80) && (lowertext(n_letter) in list("–±","–≤","–≥","–¥","–∂","–∑","–∫","–ª","–º","–Ω","–ø","—Ä","—Å","—Ç","—Ñ","—Ö","—Ü","—á","—à","—â","b","c","d","f","g","h","j","k","l","m","n","p","q","r","s","t","v","w","x","y","z")))
 			if (prob(10))
 				n_letter = text("[n_letter]-[n_letter]-[n_letter]-[n_letter]")//replaces the current letter with this instead.
 			else
@@ -255,9 +261,9 @@ proc/slur(phrase)
 proc/Gibberish(t, p)//t is the inputted message, and any value higher than 70 for p will cause letters to be replaced instead of added
 	/* Turn text into complete gibberish! */
 	var/returntext = ""
-	for(var/i = 1, i <= length(t), i++)
+	for(var/i = 1, i <= length_char(t), i++)
 
-		var/letter = copytext(t, i, i+1)
+		var/letter = copytext_char(t, i, i+1)
 		if(prob(50))
 			if(p >= 70)
 				letter = ""
@@ -276,9 +282,9 @@ The difference with stutter is that this proc can stutter more than 1 letter
 The issue here is that anything that does not have a space is treated as one word (in many instances). For instance, "LOOKING," is a word, including the comma.
 It's fairly easy to fix if dealing with single letters but not so much with compounds of letters./N
 */
-	var/te = rhtml_decode(n)
+	var/te = html_decode(n)
 	var/t = ""
-	n = length(n)
+	n = length_char(n)
 	var/p = 1
 	while(p <= n)
 		var/n_letter

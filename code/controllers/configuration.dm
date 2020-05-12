@@ -252,6 +252,8 @@ var/list/gamemode_cache = list()
 	var/list/lobby_images = list('icons/splashes/onyx_old.png', 'icons/splashes/onyx_new.png')
 	var/current_lobbyscreen = null
 
+	var/db_uses_cp1251_encoding = FALSE
+
 /datum/configuration/proc/Initialize()
 	var/list/L = typesof(/datum/game_mode) - /datum/game_mode
 	for (var/T in L)
@@ -828,6 +830,9 @@ var/list/gamemode_cache = list()
 
 				if("donations")
 					donations = TRUE
+
+				if("db_uses_cp1251_encoding")
+					db_uses_cp1251_encoding = TRUE
 
 				else
 					log_misc("Unknown setting in configuration: '[name]'")

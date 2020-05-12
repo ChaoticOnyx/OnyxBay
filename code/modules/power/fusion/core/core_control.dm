@@ -13,7 +13,7 @@
 
 /obj/machinery/computer/fusion_core_control/attackby(obj/item/thing, mob/user)
 	if(isMultitool(thing))
-		var/new_ident = input("Enter a new ident tag.", "Core Control", id_tag) as null|text
+		var/new_ident = sanitize(input("Enter a new ident tag.", "Core Control", id_tag) as null|text)
 		if(new_ident && user.Adjacent(src))
 			id_tag = new_ident
 			cur_viewed_device = null

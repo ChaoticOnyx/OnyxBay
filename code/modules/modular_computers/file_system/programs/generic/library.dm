@@ -46,9 +46,9 @@ The answer was five and a half years -ZeroBits
 
 			while(query.NextRow())
 				all_entries.Add(list(list(
-				"id" = query.item[1],
-				"author" = query.item[2],
-				"title" = query.item[3],
+				"id" = decode_from_db(query.item[1]),
+				"author" = decode_from_db(query.item[2]),
+				"title" = decode_from_db(query.item[3]),
 				"category" = query.item[4]
 			)))
 		data["book_list"] = all_entries
@@ -117,9 +117,9 @@ The answer was five and a half years -ZeroBits
 
 			var/upload_category = input(usr, "Upload to which category?") in list("Fiction", "Non-Fiction", "Reference", "Religion")
 
-			var/sqltitle = sanitizeSQL(B.name)
-			var/sqlauthor = sanitizeSQL(B.author)
-			var/sqlcontent = sanitizeSQL(B.dat)
+			var/sqltitle = encode_for_db(sanitizeSQL(B.name))
+			var/sqlauthor = encode_for_db(sanitizeSQL(B.author))
+			var/sqlcontent = encode_for_db(sanitizeSQL(B.dat))
 			var/sqlcategory = sanitizeSQL(upload_category)
 			var/DBQuery/query = dbcon_old.NewQuery("INSERT INTO library (author, title, content, category) VALUES ('[sqlauthor]', '[sqltitle]', '[sqlcontent]', '[sqlcategory]')")
 			if(!query.Execute())
@@ -194,9 +194,9 @@ The answer was five and a half years -ZeroBits
 	while(query.NextRow())
 		current_book = list(
 			"id" = query.item[1],
-			"author" = query.item[2],
-			"title" = query.item[3],
-			"content" = query.item[4]
+			"author" = decode_from_db(query.item[2]),
+			"title" = decode_from_db(query.item[3]),
+			"content" = decode_from_db(query.item[4])
 			)
 		break
 	return 1

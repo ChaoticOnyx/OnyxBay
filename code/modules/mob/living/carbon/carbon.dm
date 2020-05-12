@@ -420,6 +420,7 @@
 /mob/living/carbon/show_inv(mob/user as mob)
 	user.set_machine(src)
 	var/dat = {"
+	<meta charset=\"utf-8\">
 	<B><HR><FONT size=3>[name]</FONT></B>
 	<BR><HR>
 	<BR><B>Head(Mask):</B> <A href='?src=\ref[src];item=mask'>[(wear_mask ? wear_mask : "Nothing")]</A>

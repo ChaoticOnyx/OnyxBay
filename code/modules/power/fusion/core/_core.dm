@@ -104,7 +104,7 @@ var/list/fusion_cores = list()
 		return
 
 	if(isMultitool(W))
-		var/new_ident = input("Enter a new ident tag.", "Fusion Core", id_tag) as null|text
+		var/new_ident = sanitize(input("Enter a new ident tag.", "Fusion Core", id_tag) as null|text)
 		if(new_ident && user.Adjacent(src))
 			id_tag = new_ident
 		return

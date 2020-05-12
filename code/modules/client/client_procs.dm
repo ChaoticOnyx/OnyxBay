@@ -2,9 +2,8 @@
 	//SECURITY//
 	////////////
 #define UPLOAD_LIMIT		10485760	//Restricts client uploads to the server to 10MB //Boosted this thing. What's the worst that can happen?
-#define MIN_CLIENT_VERSION	512		//Just an ambiguously low version for now, I don't want to suddenly stop people playing.
+#define MIN_CLIENT_VERSION	513		//Just an ambiguously low version for now, I don't want to suddenly stop people playing.
 									//I would just like the code ready should it ever need to be used.
-#define MAX_CLIENT_VERSION	512
 
 #define LIMITER_SIZE	5
 #define CURRENT_SECOND	1
@@ -172,10 +171,6 @@
 
 	if(!(connection in list("seeker", "web")))					//Invalid connection type.
 		return null
-	if(byond_version < MIN_CLIENT_VERSION)		//Out of date client.
-		alert(src,"Your BYOND version is too out of date. Please update it.","Out of date","OK")
-		qdel(src)
-		return null
 
 	if(!config.guests_allowed && IsGuestKey(key))
 		alert(src,"This server doesn't allow guest accounts to play. Please go to http://www.byond.com/ and register for a key.","Guest","OK")
@@ -199,9 +194,6 @@
 		src.preload_rsc = pick(config.resource_urls)
 	else src.preload_rsc = 1 // If config.resource_urls is not set, preload like normal.
 
-	if(byond_version < DM_VERSION)
-		to_chat(src, "<span class='warning'>You are running an older version of BYOND than the server and may experience issues.</span>")
-		to_chat(src, "<span class='warning'>It is recommended that you update to at least [DM_VERSION] at http://www.byond.com/download/.</span>")
 	to_chat(src, "<span class='warning'>If the title screen is black, resources are still downloading. Please be patient until the title screen appears.</span>")
 	GLOB.clients += src
 	GLOB.ckey_directory[ckey] = src
@@ -244,10 +236,11 @@
 
 	. = ..()	//calls mob.Login()
 
-	if(byond_version > MAX_CLIENT_VERSION)
-		to_chat(src, SPAN_WARNING(FONT_GIANT("Your BYOND version is currently unstable. Please downgrade to the last stable version v[MAX_CLIENT_VERSION].")))
+	if(byond_version < MIN_CLIENT_VERSION)
+		to_chat(src, "<b><center><font size='5' color='red'>Your <font color='blue'>BYOND</font> version is too out of date!</font><br>\
+		<font size='3'>Please update it to [MIN_CLIENT_VERSION].</font></center>")
 		qdel(src)
-		return null
+		return
 
 	GLOB.using_map.map_info(src)
 
@@ -410,7 +403,6 @@
 
 #undef UPLOAD_LIMIT
 #undef MIN_CLIENT_VERSION
-#undef MAX_CLIENT_VERSION
 
 //checks if a client is afk
 //3000 frames = 5 minutes

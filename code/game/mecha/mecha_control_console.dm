@@ -17,7 +17,7 @@
 		if(..())
 			return
 		user.set_machine(src)
-		var/dat = "<html><head><title>[src.name]</title><style>h3 {margin: 0px; padding: 0px;}</style></head><body>"
+		var/dat = "<html><meta charset=\"utf-8\"><head><title>[src.name]</title><style>h3 {margin: 0px; padding: 0px;}</style></head><body>"
 		if(screen == 0)
 			dat += "<h3>Tracking beacons data</h3>"
 			for(var/obj/item/mecha_parts/mecha_tracking/TR in world)

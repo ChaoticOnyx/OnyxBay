@@ -76,7 +76,7 @@
 		age = text2num(age)
 
 	var/missing_ages = 0
-	var/msg = ""
+	var/msg = "<meta charset=\"utf-8\">"
 
 	var/highlight_special_characters = 1
 	if(is_mentor(usr.client))
@@ -106,7 +106,7 @@
 	if(!check_rights(R_ADMIN))
 		return
 
-	var/msg = russian_to_cp1251(input("Message:", text("Enter the text you wish to appear to everyone:")) as message)
+	var/msg = input("Message:", text("Enter the text you wish to appear to everyone:")) as message
 
 	if (!msg)
 		return
@@ -130,7 +130,7 @@
 	if(!M)
 		return
 
-	var/msg = russian_to_cp1251(input("Message:", text("Enter the text you wish to appear to your target:")) as message)
+	var/msg = input("Message:", text("Enter the text you wish to appear to your target:")) as message
 
 	if( !msg )
 		return
@@ -148,7 +148,7 @@
 	if(!check_rights(R_ADMIN))
 		return
 
-	var/msg = russian_to_cp1251(input("Message:", text("Enter the text you wish to appear to your target:")) as message)
+	var/msg = input("Message:", text("Enter the text you wish to appear to your target:")) as message
 
 	if( !msg )
 		return
@@ -174,7 +174,7 @@
 		to_chat(src, "You must be in control of a mob to use this.")
 		return
 
-	var/msg = russian_to_cp1251(input("Message:", text("Enter the text you wish to appear to your target:")) as message)
+	var/msg = input("Message:", text("Enter the text you wish to appear to your target:")) as message
 
 	if( !msg )
 		return
@@ -197,7 +197,7 @@
 		to_chat(src, "You must be in control of a mob to use this.")
 		return
 
-	var/msg = russian_to_cp1251(input("Message:", text("Enter the text you wish to appear to your target:")) as message)
+	var/msg = input("Message:", text("Enter the text you wish to appear to your target:")) as message
 
 	if( !msg )
 		return
