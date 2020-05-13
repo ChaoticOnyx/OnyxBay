@@ -7569,7 +7569,7 @@
 "sjb" = (/obj/machinery/light/small{dir = 1},/turf/simulated/floor/plating,/area/maintenance/research_starboard)
 "skb" = (/obj/structure/bed,/obj/effect/decal/cleanable/blood,/obj/item/weapon/bedsheet/clown,/turf/simulated/floor/tiled{icon_state = "steel_dirty"},/area/maintenance/research_starboard)
 "snb" = (/obj/machinery/door/firedoor/border_only,/obj/effect/wingrille_spawn/reinforced,/turf/simulated/floor/plating,/area/maintenance/research_starboard)
-"spb" = (/obj/machinery/light/small{dir = 8; icon_state = "bulb1"},/obj/structure/table/steel,/obj/item/stack/material/cardboard/ten,/obj/item/tape,/turf/simulated/floor/tiled{icon_state = "steel_dirty"},/area/maintenance/research_starboard)
+"spb" = (/obj/machinery/light/small{dir = 8; icon_state = "bulb1"},/obj/structure/table/steel,/obj/item/stack/material/cardboard/ten,/obj/item/weapon/tape_roll,/turf/simulated/floor/tiled{icon_state = "steel_dirty"},/area/maintenance/research_starboard)
 "sqb" = (/obj/effect/decal/cleanable/blood,/obj/item/weapon/material/kitchen/utensil/knife/boot,/turf/simulated/floor/plating,/area/maintenance/research_starboard)
 "sqv" = (/obj/machinery/disposal,/obj/structure/disposalpipe/trunk,/obj/machinery/atmospherics/pipe/simple/hidden/scrubbers,/obj/machinery/newscaster{dir = 1; pixel_x = -32; pixel_y = 0},/turf/simulated/floor/trim/carpet/arcade,/area/crew_quarters/fitness/arcade)
 "srb" = (/turf/simulated/floor/tiled{icon_state = "steel_dirty"},/area/maintenance/research_starboard)
