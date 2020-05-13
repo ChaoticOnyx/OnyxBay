@@ -603,7 +603,7 @@
 	target.sync_organ_dna()
 	target.regenerate_icons()
 
-	var/datum/absorbed_dna/newDNA = new(target.real_name, target.dna, target.species.name, target.languages, target.modifiers)
+	var/datum/absorbed_dna/newDNA = new(target.real_name, target.dna, target.species.name, target.languages, target.modifiers, target.flavor_texts)
 	absorbDNA(newDNA)
 
 	target.ghostize()

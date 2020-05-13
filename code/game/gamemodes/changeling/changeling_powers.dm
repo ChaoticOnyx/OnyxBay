@@ -113,7 +113,7 @@ var/global/list/possible_changeling_IDs = list("Alpha","Beta","Gamma","Delta","E
 
 	var/mob/living/carbon/human/H = src
 	if(istype(H))
-		var/datum/absorbed_dna/newDNA = new(H.real_name, H.dna, H.species.name, H.languages, H.modifiers)
+		var/datum/absorbed_dna/newDNA = new(H.real_name, H.dna, H.species.name, H.languages, H.modifiers, H.flavor_texts)
 		absorbDNA(newDNA)
 
 	return 1
@@ -245,7 +245,7 @@ var/global/list/possible_changeling_IDs = list("Alpha","Beta","Gamma","Delta","E
 	if(T.vessel)
 		T.vessel.remove_any(T.vessel.total_volume)
 
-	var/datum/absorbed_dna/newDNA = new(T.real_name, T.dna, T.species.name, T.languages, T.modifiers)
+	var/datum/absorbed_dna/newDNA = new(T.real_name, T.dna, T.species.name, T.languages, T.modifiers, T.flavor_texts)
 	absorbDNA(newDNA)
 	if(mind && T.mind)
 		mind.store_memory("[T.real_name]'s memories:")
@@ -343,6 +343,7 @@ var/global/list/possible_changeling_IDs = list("Alpha","Beta","Gamma","Delta","E
 		var/mob/living/carbon/human/H = src
 		var/newSpecies = chosen_dna.speciesName
 		H.modifiers = chosen_dna.modifiers
+		H.flavor_texts = chosen_dna.flavor_texts
 		H.set_species(newSpecies,1)
 		H.b_type = chosen_dna.dna.b_type
 		H.sync_organ_dna()
@@ -614,7 +615,7 @@ var/global/list/possible_changeling_IDs = list("Alpha","Beta","Gamma","Delta","E
 	changeling.rapidregen_active = TRUE
 	mind.changeling.chem_charges -= 30
 	new /datum/rapidregen(src)
-	
+
 	feedback_add_details("changeling_powers","RR")
 	return 1
 
@@ -921,7 +922,7 @@ var/list/datum/absorbed_dna/hivemind_bank = list()
 		to_chat(src, "<span class='notice'>That species must be absorbed directly.</span>")
 		return
 
-	var/datum/absorbed_dna/newDNA = new(target.real_name, target.dna, target.species.name, target.languages, target.modifiers)
+	var/datum/absorbed_dna/newDNA = new(target.real_name, target.dna, target.species.name, target.languages, target.modifiers, target.flavor_texts)
 	absorbDNA(newDNA)
 
 	feedback_add_details("changeling_powers","ED")
