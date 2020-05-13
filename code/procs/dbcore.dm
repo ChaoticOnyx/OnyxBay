@@ -64,7 +64,7 @@ DBConnection/proc/Connect(dbi_handler=src.dbi,user_handler=src.user,password_han
 	if(!cursor_handler) cursor_handler = Default_Cursor
 	. = _dm_db_connect(_db_con,dbi_handler,user_handler,password_handler,cursor_handler,null)
 	if(.)
-		NewQuery("SET NAMES latin1").Execute()
+		NewQuery("SET NAMES utf8").Execute()
 
 DBConnection/proc/Disconnect() return _dm_db_close(_db_con)
 
