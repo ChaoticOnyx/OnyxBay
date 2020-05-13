@@ -45,7 +45,7 @@
 		return 1
 
 	if(href_list["PRG_txtrpeview"])
-		show_browser(usr,"<HTML><HEAD><TITLE>[open_file]</TITLE></HEAD>[pencode2html(loaded_data)]</BODY></HTML>", "window=file_[open_file]")
+		show_browser(usr,"<HTML><meta charset=\"utf-8\"><HEAD><TITLE>[open_file]</TITLE></HEAD>[pencode2html(loaded_data)]</BODY></HTML>", "window=file_[open_file]")
 		return 1
 
 	if(href_list["PRG_taghelp"])
