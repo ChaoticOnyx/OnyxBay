@@ -509,14 +509,13 @@
 				return
 
 	if(isWelder(W))
-		if (src == user)
-			to_chat(user, "<span class='warning'>You lack the reach to be able to repair yourself.</span>")
-			return
-
 		if (!getBruteLoss())
 			to_chat(user, "Nothing to fix here!")
 			return
 		var/obj/item/weapon/weldingtool/WT = W
+		if (src == user && !do_after(user, 30, src))
+			to_chat(user, "<span class='warning'>You must stand still to repair yourself!</span>")
+			return
 		if (WT.remove_fuel(0))
 			user.setClickCooldown(DEFAULT_ATTACK_COOLDOWN)
 			adjustBruteLoss(-30)
