@@ -14,7 +14,7 @@
 	maxHealth = 150
 	health = 150
 	possession_candidate = 1
-	controllable = TRUE
+	controllable = FALSE
 	universal_speak = 0
 	universal_understand = 1
 
@@ -38,6 +38,8 @@
 	real_name = name
 
 	spawn(5 SECONDS)
+		if(!angry)
+			controllable = TRUE
 		angry = 1
 		faction = "creature"
 
