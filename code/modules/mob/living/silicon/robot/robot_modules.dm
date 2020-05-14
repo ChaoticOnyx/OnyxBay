@@ -12,7 +12,8 @@ var/global/list/robot_modules = list(
 	"Advanced Surgeon"		= /obj/item/weapon/robot_module/medical/surgeon_adv,
 	"Advanced Medical"		= /obj/item/weapon/robot_module/medical/crisis_adv,
 	"Advanced Engineering"	= /obj/item/weapon/robot_module/engineering/adv,
-	"Advanced Miner"		= /obj/item/weapon/robot_module/miner/adv
+	"Advanced Miner"		= /obj/item/weapon/robot_module/miner/adv,
+	"AI"			= /obj/item/weapon/robot_module/curio
 	)
 
 /obj/item/weapon/robot_module
@@ -193,7 +194,7 @@ var/global/list/robot_modules = list(
 /obj/item/weapon/robot_module/standard/New()
 	src.modules += new /obj/item/device/flash(src)
 	src.modules += new /obj/item/weapon/wrench(src)
-	src.modules += new /obj/item/weapon/melee/baton/loaded(src)
+	src.modules += new /obj/item/weapon/melee/baton/robot(src)
 	src.modules += new /obj/item/weapon/extinguisher(src)
 	src.modules += new /obj/item/weapon/crowbar(src)
 	src.modules += new /obj/item/device/healthanalyzer(src)
@@ -1133,3 +1134,89 @@ var/global/list/robot_modules = list(
 	var/obj/item/device/lightreplacer/LR = locate() in src.modules
 	LR.Charge(R, amount)
 	return
+
+/obj/item/weapon/robot_module/curio
+	name = "AI-controlled robot module"
+	subsystems = list(/datum/nano_module/power_monitor, /datum/nano_module/supermatter_monitor, /datum/nano_module/crew_monitor)
+	sprites = list("Default" = "curio")
+	no_slip = 1
+
+/obj/item/weapon/robot_module/curio/New()
+	..()
+	supported_upgrades += list(/obj/item/borg/upgrade/rcd,/obj/item/borg/upgrade/paramedic,/obj/item/borg/upgrade/visor/thermal)
+
+/obj/item/weapon/robot_module/curio/New()
+	src.modules += new /obj/item/device/flash(src)
+	src.modules += new /obj/item/weapon/melee/baton/robot(src)
+	src.modules += new /obj/item/weapon/gun/energy/taser/mounted/cyborg(src)
+	src.modules += new /obj/item/weapon/extinguisher(src)
+	src.modules += new /obj/item/device/healthanalyzer(src)
+	src.modules += new /obj/item/device/reagent_scanner/adv(src)
+	src.modules += new /obj/item/weapon/soap/nanotrasen(src)
+	src.modules += new /obj/item/weapon/weldingtool/largetank(src)
+	src.modules += new /obj/item/weapon/screwdriver(src)
+	src.modules += new /obj/item/weapon/wrench(src)
+	src.modules += new /obj/item/weapon/crowbar(src)
+	src.modules += new /obj/item/weapon/wirecutters(src)
+	src.modules += new /obj/item/device/multitool(src)
+	src.modules += new /obj/item/device/t_scanner(src)
+	src.modules += new /obj/item/device/analyzer(src)
+	src.modules += new /obj/item/device/geiger(src)
+	src.modules += new /obj/item/weapon/gripper(src)
+	src.modules += new /obj/item/device/lightreplacer(src)
+	src.modules += new /obj/item/device/pipe_painter(src)
+	src.modules += new /obj/item/device/floor_painter(src)
+	src.modules += new /obj/item/weapon/inflatable_dispenser/robot(src)
+	src.modules += new /obj/item/weapon/reagent_containers/syringe/borg(src)
+	src.modules += new /obj/item/robot_rack/general(src)
+	src.emag = new /obj/item/weapon/gun/energy/laser/mounted/cyborg(src)
+
+	var/datum/matter_synth/metal = new /datum/matter_synth/metal(60000)
+	var/datum/matter_synth/glass = new /datum/matter_synth/glass(40000)
+	var/datum/matter_synth/plasteel = new /datum/matter_synth/plasteel(20000)
+	var/datum/matter_synth/wire = new /datum/matter_synth/wire(100)
+	synths += metal
+	synths += glass
+	synths += plasteel
+	synths += wire
+
+	var/obj/item/weapon/matter_decompiler/MD = new /obj/item/weapon/matter_decompiler(src)
+	MD.metal = metal
+	MD.glass = glass
+	src.modules += MD
+
+	var/obj/item/stack/material/cyborg/steel/M = new (src)
+	M.synths = list(metal)
+	src.modules += M
+
+	var/obj/item/stack/material/cyborg/glass/G = new (src)
+	G.synths = list(glass)
+	src.modules += G
+
+	var/obj/item/stack/rods/cyborg/R = new /obj/item/stack/rods/cyborg(src)
+	R.synths = list(metal)
+	src.modules += R
+
+	var/obj/item/stack/cable_coil/cyborg/C = new /obj/item/stack/cable_coil/cyborg(src)
+	C.synths = list(wire)
+	src.modules += C
+
+	var/obj/item/stack/tile/floor/cyborg/S = new /obj/item/stack/tile/floor/cyborg(src)
+	S.synths = list(metal)
+	src.modules += S
+
+	var/obj/item/stack/material/cyborg/glass/reinforced/RG = new (src)
+	RG.synths = list(metal, glass)
+	src.modules += RG
+
+	var/obj/item/stack/material/cyborg/plasteel/PL = new (src)
+	PL.synths = list(plasteel)
+	src.modules += PL
+
+	appointed_huds = list("Disable", "Security", "Medical", "Meson")
+	..()
+
+/obj/item/weapon/robot_module/curio/respawn_consumable(mob/living/silicon/robot/R, amount)
+	..()
+	var/obj/item/device/lightreplacer/LR = locate() in src.modules
+	LR.Charge(R, amount)

@@ -96,6 +96,11 @@
 	id = "armour"
 	build_path = /obj/item/robot_parts/robot_component/armour
 
+/datum/design/item/mechfab/robot/component/ai_remote
+	name = "AI remote control"
+	id = "ai_remote"
+	build_path = /obj/item/device/ai_remote
+
 /datum/design/item/mechfab/ripley
 	category = "Ripley"
 
