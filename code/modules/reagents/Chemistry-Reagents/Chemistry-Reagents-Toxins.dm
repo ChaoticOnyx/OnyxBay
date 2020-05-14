@@ -622,6 +622,42 @@
 	taste_description = "slimey metal"
 	reagent_state = LIQUID
 	color = "#535e66"
+	overdose = 5
+
+/datum/reagent/nanites/affect_blood(mob/living/carbon/M, alien, removed)
+	if(alien != IS_DIONA)
+		M.heal_organ_damage(15 * removed, 15 * removed)
+		M.add_chemical_effect(CE_OXYGENATED, 2)
+
+/datum/reagent/nanites/affect_ingest(mob/living/carbon/M, alien, removed)
+	affect_blood(M, alien, removed)
+
+/datum/reagent/nanites/overdose(mob/living/carbon/M, alien)
+	if(prob(80))
+		if(prob(50))
+			var/msg = pick("clicking","clanking","beeping","buzzing","pinging")
+			to_chat(M, "<span class='warning'>You can feel something [msg] inside of you!</span>")
+	else
+		if(M.transforming)
+			return
+		to_chat(M, "<span class='danger'>Metal structures rapidly assemble inside of you, tearing your weak flesh, rupturing your skin, and crushing your innards!</span>")
+		M.transforming = 1
+		M.canmove = 0
+		M.icon = null
+		M.overlays.Cut()
+		M.set_invisibility(101)
+		for(var/obj/item/W in M)
+			if(istype(W, /obj/item/weapon/implant))
+				qdel(W)
+				continue
+			M.drop_from_inventory(W)
+		var/mob/living/silicon/robot/new_mob = new /mob/living/silicon/robot(M.loc)
+		new_mob.a_intent = "help"
+		if(M.mind)
+			M.mind.transfer_to(new_mob)
+		else
+			new_mob.key = M.key
+		M.gib()
 
 /datum/reagent/xenomicrobes
 	name = "Xenomicrobes"

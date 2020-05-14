@@ -49,7 +49,7 @@
 			var/mob/living/L = A
 			if(L.faction == src.faction && !attack_same)
 				continue
-			else if(weakref(L) in friends)
+			else if(L in friends)
 				continue
 			else
 				if(!L.stat)
