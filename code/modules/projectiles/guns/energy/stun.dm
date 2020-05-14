@@ -44,6 +44,7 @@
 	icon_state = "btaser"
 	self_recharge = 1
 	use_external_power = 1
+	projectile_type = /obj/item/projectile/energy/electrode
 
 	firemodes = list(
 		list(mode_name="sphere", projectile_type=/obj/item/projectile/energy/electrode),
