@@ -102,7 +102,7 @@
 	supervisors = "the head of personnel"
 	selection_color = "#515151"
 	access = list(access_library, access_maint_tunnels)
-	minimal_access = list(access_library)
+	minimal_access = list(access_library, access_maint_tunnels)
 	alt_titles = list("Journalist")
 	outfit_type = /decl/hierarchy/outfit/job/librarian
 
