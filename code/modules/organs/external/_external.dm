@@ -533,7 +533,7 @@ This function completely restores a damaged organ to perfect condition.
 
 //Determines if we even need to process this organ.
 /obj/item/organ/external/proc/need_process()
-	if(get_full_pain())
+	if(get_pain())
 		return 1
 	if(status & (ORGAN_CUT_AWAY|ORGAN_BLEEDING|ORGAN_BROKEN|ORGAN_DEAD|ORGAN_MUTATED))
 		return 1
@@ -1178,8 +1178,6 @@ obj/item/organ/external/proc/remove_clamps()
 	var/mob/living/carbon/human/victim = owner
 
 	..()
-
-	victim.bad_external_organs -= src
 
 	remove_splint()
 	for(var/atom/movable/implant in implants)

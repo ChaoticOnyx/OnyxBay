@@ -354,7 +354,7 @@
 	var/lost_limb_count = has_limbs.len - H.organs.len
 	if(lost_limb_count >= DIONA_LIMB_DEATH_COUNT)
 		return TRUE
-	for(var/thing in H.bad_external_organs)
+	for(var/thing in H.organs)
 		var/obj/item/organ/external/E = thing
 		if(E && E.is_stump())
 			lost_limb_count++
