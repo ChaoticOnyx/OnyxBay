@@ -46,9 +46,9 @@
 	use_external_power = 1
 
 	firemodes = list(
-		list(name_mode="sphere", projectile_type=/obj/item/projectile/energy/electrode),
+		list(mode_name="sphere", projectile_type=/obj/item/projectile/energy/electrode),
 		list(mode_name="stun", projectile_type=/obj/item/projectile/beam/stun),
-		list(mode_name="shock", projectile_type=/obj/item/projectile/beam/stun/shock)
+		list(mode_name="shock", projectile_type=/obj/item/projectile/beam/stun/shock),
 		)
 
 /obj/item/weapon/gun/energy/taser/mounted/cyborg
