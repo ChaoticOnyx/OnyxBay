@@ -7,15 +7,14 @@
 		ready = 0
 */
 
-/datum/paiCandidate/proc/savefile_path(mob/user)
+/datum/paiCandidate/proc/savefile_path(client/user)
 	return "data/player_saves/[copytext(user.ckey, 1, 2)]/[user.ckey]/pai.sav"
 
-/datum/paiCandidate/proc/savefile_save(mob/user)
+/datum/paiCandidate/proc/savefile_save(client/user)
 	if(IsGuestKey(user.key))
 		return 0
 
 	var/savefile/F = new /savefile(src.savefile_path(user))
-
 
 	F["name"] << src.name
 	F["description"] << src.description
@@ -31,7 +30,7 @@
 // returns 1 if loaded (or file was incompatible)
 // returns 0 if savefile did not exist
 
-/datum/paiCandidate/proc/savefile_load(mob/user, silent = 1)
+/datum/paiCandidate/proc/savefile_load(client/user, silent = 1)
 	if (IsGuestKey(user.key))
 		return 0
 
@@ -43,7 +42,6 @@
 	var/savefile/F = new /savefile(path)
 
 	if(!F) return //Not everyone has a pai savefile.
-
 	var/version = null
 	F["version"] >> version
 
