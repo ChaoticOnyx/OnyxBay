@@ -6,18 +6,12 @@
 		var/datum/species/current_species = all_species[species]
 		if(!current_species) current_species = all_species[SPECIES_HUMAN]
 
-		gender = current_species.genders ? pick(current_species.genders) : MALE
+		gender = pick(current_species.genders)
 		var/list/available_body_builds = new()
 		for(var/datum/body_build/build in current_species.body_builds)
 			if (gender in build.genders)
 				available_body_builds += build
-		var/datum/body_build/BB
-		if (available_body_builds.len)
-			BB = pick(available_body_builds)
-		else
-			BB = pick(current_species.body_builds)
-			gender = pick(BB.genders)
-		body = BB.name
+		body = pick(available_body_builds).name
 
 		h_style = random_hair_style(gender, species)
 		f_style = random_facial_hair_style(gender, species)
