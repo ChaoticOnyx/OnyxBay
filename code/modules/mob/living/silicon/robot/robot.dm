@@ -1144,7 +1144,6 @@
 					sleep(5)
 					to_chat(src, SPAN("danger", "Attempt aborted."))
 					to_chat(src, SPAN("danger", "System executable 'weapon_lock.ntb' has stopped working."))
-
 				else
 					to_chat(user, "You emag [src]'s interface.")
 					lawupdate = 0

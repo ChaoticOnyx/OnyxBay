@@ -19,7 +19,7 @@
 		to_chat(user, SPAN("warning", "You cannot take control of an autonomous, active cyborg."))
 		return
 
-	if(health < -35 || emagged)
+	if(health < -35)
 		to_chat(user, SPAN("notice", "<b>WARNING:</b> connection timed out."))
 		return
 
