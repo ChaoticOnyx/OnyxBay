@@ -7,20 +7,12 @@
 /datum/category_item/player_setup_item/player_global/pai/load_preferences(savefile/S)
 	if(!candidate)
 		candidate = new()
-
-	if(!preference_mob())
-		return
-
-	candidate.savefile_load(preference_mob())
+	candidate.savefile_load(pref.client)
 
 /datum/category_item/player_setup_item/player_global/pai/save_preferences(savefile/S)
 	if(!candidate)
 		return
-
-	if(!preference_mob())
-		return
-
-	candidate.savefile_save(preference_mob())
+	candidate.savefile_save(pref.client)
 
 /datum/category_item/player_setup_item/player_global/pai/content(mob/user)
 	if(!candidate)
