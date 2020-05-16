@@ -41,20 +41,18 @@
 	item_state = "gothic_d"
 	worn_state = "gothic_d"
 
-// /obj/item/clothing/under/dress/bar_f
-// 	name = "black bartender dress"
-// 	desc = "A black bartender dress with a white blouse."
-// 	icon_state = "bar_f"
-// 	worn_state = "bar_f"
+/obj/item/clothing/under/dress/bar_f
+	name = "black bartender dress"
+	desc = "A black bartender dress with a white blouse."
+	icon_state = "bar_f"
 
-// /obj/item/clothing/under/rank/rosa
-// 	desc = "A dress commonly worn by the nursing staff in the medical departament"
-// 	name = "rosa dress"
-// 	icon_state = "rosa"
-// 	worn_state = "rosa"
-// 	permeability_coefficient = 0.50
-// 	armor = list(melee = 0, bullet = 0, laser = 0, energy = 0, bomb = 0, bio = 10, rad = 0)
-// 	body_parts_covered = UPPER_TORSO|LOWER_TORSO
+/obj/item/clothing/under/rank/rosa
+	desc = "A dress commonly worn by the nursing staff in the medical departament"
+	name = "rosa dress"
+	icon_state = "rosa"
+	permeability_coefficient = 0.50
+	armor = list(melee = 0, bullet = 0, laser = 0, energy = 0, bomb = 0, bio = 10, rad = 0)
+	body_parts_covered = UPPER_TORSO|LOWER_TORSO
 
 /obj/item/clothing/under/captain_fly
 	name = "rogue's uniform"
@@ -416,6 +414,11 @@
 		slot_hand_str = "dress_white"
 		)
 
+/obj/item/clothing/under/dress/black_tango
+	name = "tango dress"
+	desc = "Por una cabeza..."
+	icon_state = "black_tango"
+
 //wedding stuff
 /obj/item/clothing/under/wedding
 	body_parts_covered = UPPER_TORSO|LOWER_TORSO|LEGS
@@ -473,13 +476,13 @@
 		slot_hand_str = "black"
 		)
 
-// /obj/item/clothing/under/shortjumpskirt
-// 	name = "short jumpskirt"
-// 	desc = "A slimming, short jumpskirt."
-// 	icon_state = "shortjumpskirt"
-// 	item_state_slots = list(
-// 		slot_hand_str = "white"
-// 		)
+/obj/item/clothing/under/shortjumpskirt
+	name = "short jumpskirt"
+	desc = "A slimming, short jumpskirt."
+	icon_state = "shortjumpskirt"
+	item_state_slots = list(
+		slot_hand_str = "white"
+		)
 
 /obj/item/clothing/under/captainformal
 	name = "captain's formal uniform"
@@ -556,76 +559,66 @@
 	permeability_coefficient = 0.50
 	armor = list(melee = 0, bullet = 0, laser = 0,energy = 0, bomb = 0, bio = 30, rad = 0)
 
-// /obj/item/clothing/under/suit_jacket/charcoal
-// 	name = "charcoal suit"
-// 	desc = "A charcoal suit and red tie. Very professional."
-// 	icon_state = "charcoal_suit"
-// 	item_state = "bl_suit"
-// 	worn_state = "charcoal_suit"
-// 	starting_accessories = list(/obj/item/clothing/accessory/navy, /obj/item/clothing/accessory/toggleable/charcoal_jacket)
+/obj/item/clothing/under/suit_jacket/charcoal
+	name = "charcoal suit"
+	desc = "A charcoal suit. Very professional."
+	icon_state = "charcoal_suit"
+	item_state = "ba_suit"
+	worn_state = "charcoal_suit"
 
-// /obj/item/clothing/under/suit_jacket/navy
-// 	name = "navy suit"
-// 	desc = "A navy suit and red tie, intended for the galaxy's finest."
-// 	icon_state = "navy_suit"
-// 	item_state = "bl_suit"
-// 	worn_state = "navy_suit"
-// 	starting_accessories = list(/obj/item/clothing/accessory/red, /obj/item/clothing/accessory/toggleable/navy_jacket)
+/obj/item/clothing/under/suit_jacket/navy
+	name = "navy suit"
+	desc = "A navy suit, intended for the galaxy's finest."
+	icon_state = "navy_suit"
+	item_state = "sl_suit"
+	worn_state = "navy_suit"
 
-// /obj/item/clothing/under/suit_jacket/burgundy
-// 	name = "burgundy suit"
-// 	desc = "A burgundy suit and black tie. Somewhat formal."
-// 	icon_state = "burgundy_suit"
-// 	item_state = "r_suit"
-// 	worn_state = "burgundy_suit"
-// 	starting_accessories = list(/obj/item/clothing/accessory/black, /obj/item/clothing/accessory/toggleable/burgundy_jacket)
 
-// /obj/item/clothing/under/suit_jacket/checkered
-// 	name = "checkered suit"
-// 	desc = "That's a very nice suit you have there. Shame if something were to happen to it, eh?"
-// 	icon_state = "checkered_suit"
-// 	item_state = "gy_suit"
-// 	worn_state = "checkered_suit"
-// 	starting_accessories = list(/obj/item/clothing/accessory/black, /obj/item/clothing/accessory/toggleable/checkered_jacket)
+/obj/item/clothing/under/suit_jacket/burgundy
+	name = "burgundy suit"
+	desc = "A burgundy suit and black tie. Somewhat formal."
+	icon_state = "burgundy_suit"
+	item_state = "ba_suit"
+	worn_state = "burgundy_suit"
 
-// /obj/item/clothing/under/suit_jacket/tan
-// 	name = "tan suit"
-// 	desc = "A tan suit. Smart, but casual."
-// 	icon_state = "tan_suit"
-// 	item_state = "lb_suit"
-// 	worn_state = "tan_suit"
-// 	starting_accessories = list(/obj/item/clothing/accessory/yellow, /obj/item/clothing/accessory/toggleable/tan_jacket)
+/obj/item/clothing/under/suit_jacket/checkered
+	name = "checkered suit"
+	desc = "That's a very nice suit you have there. Shame if something were to happen to it, eh?"
+	icon_state = "checkered_suit"
+	item_state = "ba_suit"
+	worn_state = "checkered_suit"
 
-// /obj/item/clothing/under/serviceoveralls
-// 	name = "workman outfit"
-// 	desc = "The very image of a working man. Not that you're probably doing work."
-// 	icon_state = "mechanic"
-// 	item_state = "lb_suit"
-// 	worn_state = "mechanic"
 
-// /obj/item/clothing/under/cheongsam
-// 	name = "cheongsam"
-// 	desc = "It is a cheongsam dress."
-// 	icon_state = "mai_yang"
-// 	item_state = "mai_yang"
-// 	worn_state = "mai_yang"
-// 	body_parts_covered = UPPER_TORSO|LOWER_TORSO|LEGS
+/obj/item/clothing/under/suit_jacket/tan
+	name = "tan suit"
+	desc = "A tan suit. Smart, but casual."
+	icon_state = "tan_suit"
+	item_state = "tan_suit"
+	worn_state = "tan_suit"
 
-// /obj/item/clothing/under/abaya
-// 	name = "abaya"
-// 	desc = "A loose-fitting, robe-like dress."
-// 	icon_state = "abaya"
-// 	item_state = "abaya"
-// 	worn_state = "abaya"
-// 	body_parts_covered = UPPER_TORSO|LOWER_TORSO|LEGS|ARMS
+/obj/item/clothing/under/cheongsam
+	name = "cheongsam"
+	desc = "It is a cheongsam dress."
+	icon_state = "mai_yang"
+	item_state = "mai_yang"
+	worn_state = "mai_yang"
+	body_parts_covered = UPPER_TORSO|LOWER_TORSO|LEGS
 
-// /obj/item/clothing/under/harness
-// 	name = "gear harness"
-// 	desc = "How... minimalist."
-// 	icon_state = "gear_harness"
-// 	worn_state = "gear_harness"
-// 	species_restricted = null
-// 	body_parts_covered = 0
+/obj/item/clothing/under/abaya
+	name = "abaya"
+	desc = "A loose-fitting, robe-like dress."
+	icon_state = "abaya"
+	item_state = "abaya"
+	worn_state = "abaya"
+	body_parts_covered = UPPER_TORSO|LOWER_TORSO|LEGS|ARMS
+
+/obj/item/clothing/under/harness
+	name = "gear harness"
+	desc = "How... minimalist."
+	icon_state = "gear_harness"
+	worn_state = "gear_harness"
+	species_restricted = null
+	body_parts_covered = 0
 
 // /obj/item/clothing/under/pcrc
 // 	name = "\improper PCRC uniform"
@@ -634,11 +627,11 @@
 // 	item_state = "jensensuit"
 // 	worn_state = "pcrc"
 
-// /obj/item/clothing/under/grayson
-// 	name = "\improper Grayson overalls"
-// 	desc = "A set of overalls belonging to Grayson Manufactories, a manufacturing and mining company."
-// 	icon_state = "grayson"
-// 	worn_state = "grayson"
+/obj/item/clothing/under/grayson
+	name = "improper Grayson overalls"
+	desc = "A set of overalls belonging to Grayson Manufactories, a manufacturing and mining company."
+	icon_state = "grayson"
+	worn_state = "grayson"
 
 // /obj/item/clothing/under/wardt
 // 	name = "\improper Ward-Takahashi jumpsuit"
@@ -652,56 +645,49 @@
 // 	icon_state = "mbill"
 // 	worn_state = "mbill"
 
-// // Replace this with actual uniform when someone wants to sprite one
-// /obj/item/clothing/under/confederacy
-// 	name = "\improper Confederate uniform"
-// 	desc = "A military uniform belonging to the Terran Colonial Confederation, an independent human government."
-// 	icon_state = "confed"
-// 	worn_state = "confed"
+// //
+/obj/item/clothing/under/confederacy
+	name = "improper Confederate uniform"
+	desc = "A military uniform belonging to an independent human government."
+	icon_state = "confed"
 
-// /obj/item/clothing/under/saare
-// 	name = "\improper SAARE uniform"
-// 	desc = "A uniform belonging to Strategic Assault and Asset Retention Enterprises, a minor private military corporation."
-// 	icon_state = "saare"
-// 	worn_state = "saare"
+/obj/item/clothing/under/saare
+	name = "improper SAARE uniform"
+	desc = "A uniform belonging to Strategic Assault and Asset Retention Enterprises, a minor private military corporation."
+	icon_state = "saare"
 
-// /obj/item/clothing/under/frontier
-// 	name = "frontier clothes"
-// 	desc = "A rugged flannel shirt and denim overalls. A popular style among frontier colonists."
-// 	icon_state = "frontier"
-// 	worn_state = "frontier"
+/obj/item/clothing/under/frontier
+	name = "frontier clothes"
+	desc = "A rugged flannel shirt and denim overalls. A popular style among frontier colonists."
+	icon_state = "frontier"
 
-// /obj/item/clothing/under/aether
-// 	name = "\improper Aether jumpsuit"
-// 	desc = "A jumpsuit belonging to Aether Atmospherics and Recycling, a company that supplies recycling and atmospheric systems to colonies."
-// 	icon_state = "aether"
-// 	worn_state = "aether"
+/obj/item/clothing/under/aether
+	name = "improper Aether jumpsuit"
+	desc = "A jumpsuit belonging to Aether Atmospherics and Recycling, a company that supplies recycling and atmospheric systems to colonies."
+	icon_state = "aether"
 
-// /obj/item/clothing/under/focal
-// 	name = "\improper Focal Point jumpsuit"
-// 	desc = "A jumpsuit belonging to Focal Point Energistics, an engineering corporation."
-// 	icon_state = "focal"
-// 	worn_state = "focal"
+/obj/item/clothing/under/focal
+	name = "improper Focal Point jumpsuit"
+	desc = "A jumpsuit belonging to Focal Point Energistics, an engineering corporation."
+	icon_state = "focal"
 
-// /obj/item/clothing/under/hephaestus
-// 	name = "\improper Hephaestus jumpsuit"
-// 	desc = "A jumpsuit belonging to Hephaestus Industries, a megacorp best known for its arms production."
-// 	icon_state = "heph"
-// 	worn_state = "heph"
+/obj/item/clothing/under/hephaestus
+	name = "improper Hephaestus jumpsuit"
+	desc = "A jumpsuit belonging to Hephaestus Industries, a megacorp best known for its arms production."
+	icon_state = "heph"
 
-// /obj/item/clothing/under/savage_hunter
-// 	name = "savage hunter's hides"
-// 	desc = "Makeshift hides bound together with the sinew, packwax, and leather of some alien creature."
-// 	icon_state = "hunterhide"
-// 	item_state = "hunter"
-// 	worn_state = "hunter"
-// 	body_parts_covered = LOWER_TORSO|LEGS|ARMS
+/obj/item/clothing/under/savage_hunter
+	name = "savage hunter's hides"
+	desc = "Makeshift hides bound together with the sinew, packwax, and leather of some alien creature."
+	icon_state = "hunterhide"
+	item_state = "hunter"
+	body_parts_covered = LOWER_TORSO|LEGS|ARMS
 
-// /obj/item/clothing/under/savage_hunter/female
-// 	name = "savage huntress's hides"
-// 	desc = "Makeshift hides bound together with the sinew, packwax, and leather of some alien creature. Includes a chestwrap so as not to leave one topless."
-// 	worn_state = "huntress"
-// 	body_parts_covered = UPPER_TORSO|LOWER_TORSO|LEGS|ARMS
+/obj/item/clothing/under/savage_hunter/female
+	name = "savage huntress's hides"
+	desc = "Makeshift hides bound together with the sinew, packwax, and leather of some alien creature. Includes a chestwrap so as not to leave one topless."
+	item_state = "huntress"
+	body_parts_covered = UPPER_TORSO|LOWER_TORSO|LEGS|ARMS
 
 // /obj/item/clothing/under/wetsuit
 // 	name = "tactical wetsuit"
