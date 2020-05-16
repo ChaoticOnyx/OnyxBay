@@ -23,6 +23,9 @@ REAGENT SCANNER
 	origin_tech = list(TECH_MAGNET = 1, TECH_BIO = 1)
 	var/mode = 1
 
+/obj/item/device/healthanalyzer/borg
+	icon_state = "health_d"
+
 /obj/item/device/healthanalyzer/do_surgery(mob/living/M, mob/living/user)
 	if(user.a_intent != I_HELP) //in case it is ever used as a surgery tool
 		return ..()

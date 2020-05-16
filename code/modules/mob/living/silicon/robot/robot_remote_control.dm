@@ -1,7 +1,7 @@
 /obj/item/device/ai_remote
 	name = "AI remote control circuit"
 	desc = "This device can be placed into a cyborg instead of its processor, rendering it mindless and non-autonomous, but allowing AI to assume direct control."
-	origin_tech = list(TECH_MAGNET = 3, TECH_ENGINEERING = 3)
+	origin_tech = list(TECH_MAGNET = 3, TECH_ENGINEERING = 3, TECH_MATERIAL = 2)
 	icon_state = "airemote"
 
 /mob/living/silicon/ai
