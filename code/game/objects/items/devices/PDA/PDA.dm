@@ -1051,6 +1051,9 @@ var/global/list/obj/item/device/pda/PDAs = list()
 	var/mob/living/L = null
 	if(loc && isliving(loc))
 		L = loc
+		if(L.mind && L.mind.syndicate_awareness == SUSPICIOUSLY_AWARED)
+			reception_message = highlight_rus_codewords(reception_message, syndicate_code_phrase)
+			//reception_message = highlight_rus_codewords(reception_message, syndicate_code_response, rose) // <-- Uncomment this to highlight responses too, with different color
 	//Maybe they are a pAI!
 	else
 		L = get(src, /mob/living/silicon)
