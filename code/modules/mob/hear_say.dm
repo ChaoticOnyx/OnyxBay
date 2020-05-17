@@ -67,6 +67,9 @@
 			else if(!is_blind())
 				to_chat(src, "<span class='name'>[speaker_name]</span>[alt_name] talks but you cannot hear \him.")
 	else
+		if(istype(src,/mob/living) && src.mind && src.mind.syndicate_awareness == SUSPICIOUSLY_AWARED)
+			message = highlight_rus_codewords(message, syndicate_code_phrase)
+			//message = highlight_rus_codewords(message, syndicate_code_response, rose) // <-- Uncomment this to highlight responses too, with different color
 		if(language)
 			var/nverb = null
 			if(!say_understands(speaker,language) || language.name == LANGUAGE_GALCOM) //Check to see if we can understand what the speaker is saying. If so, add the name of the language after the verb. Don't do this for Galactic Common.
@@ -194,6 +197,10 @@
 		if(speaker_name != speaker.real_name && !isAI(speaker)) //Announce computer and various stuff that broadcasts doesn't use it's real name but AI's can't pretend to be other mobs.
 			speaker_name = "[speaker.real_name] ([speaker_name])"
 		track = "[speaker_name] ([ghost_follow_link(speaker, src)])"
+
+	if(istype(src,/mob/living) && src.mind && src.mind.syndicate_awareness == SUSPICIOUSLY_AWARED)
+		message = highlight_rus_codewords(message, syndicate_code_phrase)
+		//message = highlight_rus_codewords(message, syndicate_code_response, rose) // <-- Uncomment this to highlight responses too, with different color
 
 	var/formatted
 	if(language)
