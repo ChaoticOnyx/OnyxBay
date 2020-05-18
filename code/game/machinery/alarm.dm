@@ -26,7 +26,6 @@
 
 //all air alarms in area are connected via magic
 /area
-	var/obj/machinery/alarm/master_air_alarm
 	var/list/air_vent_names = list()
 	var/list/air_scrub_names = list()
 	var/list/air_vent_info = list()
@@ -104,9 +103,6 @@
 	unregister_radio(src, frequency)
 	qdel(wires)
 	wires = null
-	if(alarm_area && alarm_area.master_air_alarm == src)
-		alarm_area.master_air_alarm = null
-		elect_master(exclude_self = TRUE)
 	return ..()
 
 /obj/machinery/alarm/New(loc, dir, atom/frame)
@@ -146,8 +142,6 @@
 			trace_gas += g
 
 	set_frequency(frequency)
-	if (!master_is_operating())
-		elect_master()
 
 /obj/machinery/alarm/Process()
 	if((stat & (NOPOWER|BROKEN)) || shorted || buildstage != 2)
@@ -279,20 +273,6 @@
 
 	return 0
 
-
-/obj/machinery/alarm/proc/master_is_operating()
-	return alarm_area.master_air_alarm && !(alarm_area.master_air_alarm.stat & (NOPOWER|BROKEN))
-
-
-/obj/machinery/alarm/proc/elect_master(exclude_self = FALSE)
-	for (var/obj/machinery/alarm/AA in alarm_area)
-		if(exclude_self && AA == src)
-			continue
-		if (!(AA.stat & (NOPOWER|BROKEN)))
-			alarm_area.master_air_alarm = AA
-			return 1
-	return 0
-
 /obj/machinery/alarm/proc/get_danger_level(current_value, list/danger_levels)
 	if((current_value > danger_levels[4] && danger_levels[4] > 0) || current_value < danger_levels[1])
 		return 2
@@ -331,12 +311,6 @@
 /obj/machinery/alarm/receive_signal(datum/signal/signal)
 	if(stat & (NOPOWER|BROKEN))
 		return
-	if (alarm_area.master_air_alarm != src)
-		if (master_is_operating())
-			return
-		elect_master()
-		if (alarm_area.master_air_alarm != src)
-			return
 	if(!signal || signal.encryption)
 		return
 	var/id_tag = signal.data["tag"]

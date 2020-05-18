@@ -47,7 +47,7 @@
 	I.Blend(icon('icons/effects/uristrunes.dmi', "rune-[word]"), ICON_OVERLAY)
 	var/finalblood = bcolor
 	if (finalblood)
-		var/list/blood_hsl = rgb2hsl(GetRedPart(finalblood),GetGreenPart(finalblood),GetBluePart(finalblood))
+		var/list/blood_hsl = rgb2hsl(GETREDPART(finalblood),GETGREENPART(finalblood),GETBLUEPART(finalblood))
 		var/list/blood_rgb = hsl2rgb(blood_hsl[1],blood_hsl[2],50)//producing a color that is neither too bright nor too dark
 		finalblood = rgb(blood_rgb[1],blood_rgb[2],blood_rgb[3])
 

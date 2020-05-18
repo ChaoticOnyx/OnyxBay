@@ -440,20 +440,11 @@ datum/projectile_data
 
 	return new /datum/projectile_data(src_x, src_y, time, distance, power_x, power_y, dest_x, dest_y)
 
-/proc/GetRedPart(const/hexa)
-	return hex2num(copytext(hexa,2,4))
-
-/proc/GetGreenPart(const/hexa)
-	return hex2num(copytext(hexa,4,6))
-
-/proc/GetBluePart(const/hexa)
-	return hex2num(copytext(hexa,6,8))
-
 /proc/GetHexColors(const/hexa)
 	return list(
-			GetRedPart(hexa),
-			GetGreenPart(hexa),
-			GetBluePart(hexa)
+			GETREDPART(hexa),
+			GETGREENPART(hexa),
+			GETBLUEPART(hexa)
 		)
 
 /proc/rgb2hsl(red as num, grn as num, blu as num)
@@ -559,9 +550,9 @@ datum/projectile_data
 	var/list/weights = list()
 
 	for (var/i = 0, ++i <= colors.len)
-		reds.Add(GetRedPart(colors[i]))
-		blues.Add(GetBluePart(colors[i]))
-		greens.Add(GetGreenPart(colors[i]))
+		reds.Add(GETREDPART(colors[i]))
+		greens.Add(GETGREENPART(colors[i]))
+		blues.Add(GETBLUEPART(colors[i]))
 		weights.Add(1)
 
 	var/r = mixOneColor(weights, reds)

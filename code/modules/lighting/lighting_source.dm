@@ -9,7 +9,7 @@
 	var/turf/source_turf     // The turf under the above.
 	var/light_power    // Intensity of the emitter light.
 	var/light_range      // The range of the emitted light.
-	var/light_color    // The colour of the light, string, decomposed by parse_light_color()
+	var/light_color    // The colour of the light, string, decomposed by PARSE_LIGHT_COLOR()
 
 	// Variables for keeping track of the colour.
 	var/lum_r
@@ -50,7 +50,7 @@
 	light_range = source_atom.light_range
 	light_color = source_atom.light_color
 
-	parse_light_color()
+	PARSE_LIGHT_COLOR(src)
 
 	effect_str      = list()
 	affecting_turfs = list()
@@ -141,19 +141,8 @@
 
 	if(source_atom.light_color != light_color)
 		light_color = source_atom.light_color
-		parse_light_color()
+		PARSE_LIGHT_COLOR(src)
 		. = 1
-
-// Decompile the hexadecimal colour into lumcounts of each perspective.
-/datum/light_source/proc/parse_light_color()
-	if(light_color)
-		lum_r = GetRedPart  (light_color) / 255
-		lum_g = GetGreenPart(light_color) / 255
-		lum_b = GetBluePart (light_color) / 255
-	else
-		lum_r = 1
-		lum_g = 1
-		lum_b = 1
 
 // Macro that applies light to a new corner.
 // It is a macro in the interest of speed, yet not having to copy paste it.

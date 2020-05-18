@@ -9,10 +9,6 @@
 	var/tmp/list/datum/lighting_corner/corners
 	var/opaque_counter
 
-/turf/New()
-	opaque_counter = opacity
-	..()
-	
 /turf/set_opacity()
 	. = ..()
 	handle_opacity_change(src)
@@ -73,7 +69,7 @@
 	if(Obj && Obj.opacity)
 		if(!opaque_counter++)
 			reconsider_lights()
-		
+
 
 /turf/Exited(atom/movable/Obj, atom/newloc)
 	. = ..()
@@ -109,5 +105,4 @@
 			opaque_counter--
 			if(old_counter && !opaque_counter)
 				reconsider_lights()
-	
-	
+
