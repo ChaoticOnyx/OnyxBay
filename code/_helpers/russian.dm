@@ -7,5 +7,5 @@
 /proc/highlight_rus_codewords(t as text, list/words, css_class = "notice")
 	var/pattern = lowertext(jointext(words,  "|"))
 	var/word_chars = @"\u0430-\u0451" // Russian chars only
-	var/static/regex/highlight = new("(^|\[^[word_chars]])((?:[pattern])\[[word_chars]]{0,3})(?:(?!\[[word_chars]]))", "ig")
+	var/regex/highlight = new("(^|\[^[word_chars]])((?:[pattern])\[[word_chars]]{0,3})(?:(?!\[[word_chars]]))", "ig")
 	return highlight.Replace(t, "$1[SPAN(css_class, "$2")]")
