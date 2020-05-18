@@ -27,13 +27,13 @@
 //////////////////////////////////////////////////////////////////
 /datum/surgery_step/internal/fix_organ
 	allowed_tools = list(
-	/obj/item/stack/medical/advanced/bruise_pack= 100,		\
+	/obj/item/stack/medical/advanced/bruise_pack= 100,	\
 	/obj/item/stack/medical/bruise_pack = 40,	\
 	/obj/item/weapon/tape_roll = 20
 	)
 
-	min_duration = 70
-	max_duration = 90
+	min_duration = 50
+	max_duration = 70
 
 /datum/surgery_step/internal/fix_organ/can_use(mob/living/user, mob/living/carbon/human/target, target_zone, obj/item/tool)
 
@@ -88,13 +88,12 @@
 		return
 	for(var/obj/item/organ/internal/I in affected.internal_organs)
 		if(I && I.damage > 0 && !BP_IS_ROBOTIC(I) && (I.surface_accessible || affected.open() >= (affected.encased ? SURGERY_ENCASED : SURGERY_RETRACTED)))
-			if(I.status & ORGAN_DEAD && I.can_recover())
-				user.visible_message("<span class='notice'>[user] treats damage to [target]'s [I.name] with [tool_name], though it needs to be recovered further.</span>", \
-				"<span class='notice'>You treat damage to [target]'s [I.name] with [tool_name], though it needs to be recovered further.</span>" )
-			else
-				user.visible_message("<span class='notice'>[user] treats damage to [target]'s [I.name] with [tool_name].</span>", \
-				"<span class='notice'>You treat damage to [target]'s [I.name] with [tool_name].</span>" )
+			user.visible_message("<span class='notice'>[user] treats damage to [target]'s [I.name] with [tool_name].</span>", \
+			"<span class='notice'>You treat damage to [target]'s [I.name] with [tool_name].</span>" )
 			I.damage = 0
+			if(I.status & ORGAN_DEAD && I.can_recover())
+				I.status &= ~ORGAN_DEAD
+				I.owner.update_body(1)
 
 /datum/surgery_step/internal/fix_organ/fail_step(mob/living/user, mob/living/carbon/human/target, target_zone, obj/item/tool)
 
@@ -124,14 +123,14 @@
 /datum/surgery_step/internal/detatch_organ
 
 	allowed_tools = list(
-	/obj/item/weapon/scalpel = 100,		\
+	/obj/item/weapon/scalpel = 100,	\
 	/obj/item/weapon/material/knife = 75,	\
 	/obj/item/weapon/material/kitchen/utensil/knife = 75,	\
-	/obj/item/weapon/material/shard = 50, 		\
+	/obj/item/weapon/material/shard = 50
 	)
 
-	min_duration = 90
-	max_duration = 110
+	min_duration = 60
+	max_duration = 90
 
 /datum/surgery_step/internal/detatch_organ/can_use(mob/living/user, mob/living/carbon/human/target, target_zone, obj/item/tool)
 
@@ -188,13 +187,13 @@
 	priority = 2
 	allowed_tools = list(
 	/obj/item/weapon/hemostat = 100,	\
-	/obj/item/weapon/wirecutters = 75,
+	/obj/item/weapon/wirecutters = 75,	\
 	/obj/item/weapon/material/knife = 75,	\
 	/obj/item/weapon/material/kitchen/utensil/fork = 20
 	)
 
-	min_duration = 60
-	max_duration = 80
+	min_duration = 40
+	max_duration = 60
 
 /datum/surgery_step/internal/remove_organ/can_use(mob/living/user, mob/living/carbon/human/target, target_zone, obj/item/tool)
 
@@ -267,8 +266,8 @@
 	/obj/item/organ = 100
 	)
 
-	min_duration = 60
-	max_duration = 80
+	min_duration = 30
+	max_duration = 50
 
 /datum/surgery_step/internal/replace_organ/can_use(mob/living/user, mob/living/carbon/human/target, target_zone, obj/item/tool)
 
@@ -343,13 +342,13 @@
 //////////////////////////////////////////////////////////////////
 /datum/surgery_step/internal/attach_organ
 	allowed_tools = list(
-	/obj/item/weapon/FixOVein = 100, \
+	/obj/item/weapon/FixOVein = 100,	\
 	/obj/item/stack/cable_coil = 75,	\
 	/obj/item/weapon/tape_roll = 50
 	)
 
-	min_duration = 100
-	max_duration = 120
+	min_duration = 65
+	max_duration = 95
 
 /datum/surgery_step/internal/attach_organ/can_use(mob/living/user, mob/living/carbon/human/target, target_zone, obj/item/tool)
 
@@ -408,18 +407,18 @@
 /datum/surgery_step/internal/treat_necrosis
 	priority = 2
 	allowed_tools = list(
-		/obj/item/weapon/reagent_containers/dropper = 100,
-		/obj/item/weapon/reagent_containers/glass/bottle = 75,
-		/obj/item/weapon/reagent_containers/glass/beaker = 75,
-		/obj/item/weapon/reagent_containers/spray = 50,
-		/obj/item/weapon/reagent_containers/glass/bucket = 50,
+		/obj/item/weapon/reagent_containers/dropper = 100, 	\
+		/obj/item/weapon/reagent_containers/glass/bottle = 75,	\
+		/obj/item/weapon/reagent_containers/glass/beaker = 75,	\
+		/obj/item/weapon/reagent_containers/spray = 50,	\
+		/obj/item/weapon/reagent_containers/glass/bucket = 50
 	)
 
 	can_infect = 0
 	blood_level = 0
 
-	min_duration = 50
-	max_duration = 60
+	min_duration = 15
+	max_duration = 25
 
 /datum/surgery_step/internal/treat_necrosis/can_use(mob/living/user, mob/living/carbon/human/target, target_zone, obj/item/tool)
 	var/obj/item/weapon/reagent_containers/container = tool
@@ -447,10 +446,7 @@
 	if(!organ_to_fix)
 		return 0
 	if(!organ_to_fix.can_recover())
-		to_chat(user, "<span class='notice'>The [organ_to_fix.name] is necrotic and can't be saved, it will need to be replaced.</span>")
-		return 0
-	if(organ_to_fix.damage >= organ_to_fix.max_damage)
-		to_chat(user, "<span class='notice'>The [organ_to_fix.name] needs to be repaired before it is regenerated.</span>")
+		to_chat(user, "<span class='notice'>The [organ_to_fix.name] is destroyed and can't be saved, it will need to be replaced.</span>")
 		return 0
 
 	target.op_stage.current_organ = organ_to_fix
@@ -478,6 +474,7 @@
 	if (trans > 0)
 
 		if(rejuvenate)
+			affected.damage = 0
 			affected.status &= ~ORGAN_DEAD
 			affected.owner.update_body(1)
 
