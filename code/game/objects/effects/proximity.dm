@@ -97,7 +97,7 @@
 
 	// for some reasons proximity_monitor removes himself from GLOB.moved_event.event_sources
 	// so we want to re-check
-	if(!(host in GLOB.moved_event.event_sources))	
+	if(!(host in GLOB.moved_event.event_sources))
 		GLOB.moved_event.register(host, src, .proc/HandleMove)
 
 /obj/effect/abstract/proximity_checker
@@ -119,5 +119,5 @@
 
 /obj/effect/abstract/proximity_checker/Crossed(atom/movable/AM)
 	set waitfor = FALSE
-	if(monitor)
+	if(monitor && AM)
 		monitor.hasprox_receiver.HasProximity(AM)
