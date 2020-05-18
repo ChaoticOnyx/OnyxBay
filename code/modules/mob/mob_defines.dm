@@ -25,6 +25,7 @@
 	var/obj/screen/fire = null
 	var/obj/screen/bodytemp = null
 	var/obj/screen/healths = null
+	var/obj/screen/pains = null
 	var/obj/screen/throw_icon = null
 	var/obj/screen/block_icon = null
 	var/obj/screen/blockswitch_icon = null
