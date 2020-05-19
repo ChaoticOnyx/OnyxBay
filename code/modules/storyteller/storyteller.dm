@@ -19,6 +19,8 @@ SUBSYSTEM_DEF(storyteller)
 
 // called on round setup, after players spawn and mode setup
 /datum/controller/subsystem/storyteller/proc/setup()
+	if (!config.storyteller)
+		return
 	_log_debug("Setup called")
 
 	__create_character()

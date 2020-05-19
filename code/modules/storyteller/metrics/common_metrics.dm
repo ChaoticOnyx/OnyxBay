@@ -102,7 +102,12 @@
 			// if ("actor") - /datum/antagonist/actor
 			// if ("deity") - /datum/antagonist/deity
 
-		var/count = antag.current_antagonists.len
+		var/count = 0
+		for (var/datum/mind/M in antag.current_antagonists)
+			if (M.current)
+				var/mob/living/L = M.current
+				if (!(L.stat & DEAD))
+					count++
 		if (count)
 			_log_debug("Add +[add_danger] for each [role_id] ([count] times)")
 			antagonists_danger += count * add_danger
