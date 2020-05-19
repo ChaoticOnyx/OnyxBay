@@ -68,8 +68,8 @@
 				to_chat(src, "<span class='name'>[speaker_name]</span>[alt_name] talks but you cannot hear \him.")
 	else
 		if(istype(src,/mob/living) && src.mind && src.mind.syndicate_awareness == SUSPICIOUSLY_AWARED)
-			message = highlight_rus_codewords(message, syndicate_code_phrase)
-			//message = highlight_rus_codewords(message, syndicate_code_response, rose) // <-- Uncomment this to highlight responses too, with different color
+			message = highlight_codewords(message, GLOB.code_phrase_highlight_rule)
+			//message = highlight_codewords(message, GLOB.code_response_highlight_rule, rose) // <-- Uncomment this to highlight responses too, with different color
 		if(language)
 			var/nverb = null
 			if(!say_understands(speaker,language) || language.name == LANGUAGE_GALCOM) //Check to see if we can understand what the speaker is saying. If so, add the name of the language after the verb. Don't do this for Galactic Common.
@@ -199,8 +199,8 @@
 		track = "[speaker_name] ([ghost_follow_link(speaker, src)])"
 
 	if(istype(src,/mob/living) && src.mind && src.mind.syndicate_awareness == SUSPICIOUSLY_AWARED)
-		message = highlight_rus_codewords(message, syndicate_code_phrase)
-		//message = highlight_rus_codewords(message, syndicate_code_response, rose) // <-- Uncomment this to highlight responses too, with different color
+		message = highlight_codewords(message, GLOB.code_phrase_highlight_rule)
+		//message = highlight_codewords(message, GLOB.code_response_highlight_rule, rose) // <-- Uncomment this to highlight responses too, with different color
 
 	var/formatted
 	if(language)

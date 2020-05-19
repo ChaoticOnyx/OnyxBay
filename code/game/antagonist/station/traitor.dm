@@ -100,13 +100,13 @@ GLOBAL_DATUM_INIT(traitors, /datum/antagonist/traitor, new)
 		traitor_mob.mind.store_memory("<b>Potential Collaborator</b>: [M.real_name]")
 
 /datum/antagonist/traitor/proc/give_codewords(mob/living/traitor_mob)
-	if (!syndicate_code_phrase.len || !syndicate_code_response.len)
+	if (!GLOB.syndicate_code_phrase.len || !GLOB.syndicate_code_response.len)
 		return
 	to_chat(traitor_mob, "<u><b>Your employers provided you with the following information on how to identify possible allies:</b></u>")
-	var/code_phrase = "<b>Code Phrase</b>: [codewords2string(syndicate_code_phrase)]"
+	var/code_phrase = "<b>Code Phrase</b>: [codewords2string(GLOB.syndicate_code_phrase)]"
 	to_chat(traitor_mob, code_phrase)
 	traitor_mob.mind.store_memory(code_phrase)
-	var/code_response = "<b>Code Response</b>: [codewords2string(syndicate_code_response)]"
+	var/code_response = "<b>Code Response</b>: [codewords2string(GLOB.syndicate_code_response)]"
 	to_chat(traitor_mob, code_response)
 	traitor_mob.mind.store_memory(code_response)
 	to_chat(traitor_mob, "Use the code words, preferably in the order provided, during regular conversation, to identify other agents. Proceed with caution, however, as everyone is a potential foe.")

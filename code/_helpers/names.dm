@@ -157,8 +157,10 @@ var/syndicate_name = null
 
 
 //Traitors and traitor silicons will get these. Revs will not.
-var/syndicate_code_phrase[]//Code phrase for traitors.
-var/syndicate_code_response[]//Code response for traitors.
+GLOBAL_LIST_EMPTY(syndicate_code_phrase) //Code phrase for traitors.
+GLOBAL_LIST_EMPTY(syndicate_code_response) //Code response for traitors.
+GLOBAL_DATUM(code_phrase_highlight_rule, /regex)
+GLOBAL_DATUM(code_response_highlight_rule, /regex)
 
 	/*
 	Should be expanded.
@@ -199,6 +201,14 @@ var/syndicate_code_response[]//Code response for traitors.
 		code_phrase[code_phrase[i]] = separator_position == length(word) ? "" : copytext(word, separator_position + 1) // Associated ending
 
 	return code_phrase
+
+/proc/generate_code_regex(list/words, ending_chars as text)
+	return regex("(^|\[^[ending_chars]])((?:[jointext(words,  "|")])\[[ending_chars]]{0,3})(?:(?!\[[ending_chars]]))", "ig")
+
+/proc/highlight_codewords(t as text, regex/rule, css_class = "notice")
+	if (!rule)
+		return t
+	return rule.Replace(t, "$1[SPAN(css_class, "$2")]")
 
 /proc/get_name(atom/A)
 	return A.name
