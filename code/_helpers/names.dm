@@ -202,10 +202,10 @@ GLOBAL_DATUM(code_response_highlight_rule, /regex)
 
 	return code_phrase
 
-/proc/generate_code_regex(list/words, var/ending_chars)
+/proc/generate_code_regex(list/words, ending_chars)
 	return regex("(^|\[^[ending_chars]])((?:[jointext(words,  "|")])\[[ending_chars]]{0,3})(?:(?!\[[ending_chars]]))", "ig")
 
-/proc/highlight_codewords(var/t, regex/rule, css_class = "notice")
+/proc/highlight_codewords(t, regex/rule, css_class = "notice")
 	if (!rule)
 		return t
 	return rule.Replace(t, "$1[SPAN(css_class, "$2")]")
