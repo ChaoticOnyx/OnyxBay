@@ -215,7 +215,3 @@ obj/item/weapon/gun/energy/staff/focus
 	max_shots = 10
 	self_recharge = 1
 
-/obj/item/weapon/gun/energy/plasmacutter/mounted
-	name = "mounted plasma cutter"
-	use_external_power = 1
-	max_shots = 4
