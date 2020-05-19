@@ -245,6 +245,7 @@ var/list/gamemode_cache = list()
 	var/server_port
 
 	var/donations = FALSE
+	var/storyteller = FALSE
 
 	var/projectile_basketball
 
@@ -830,6 +831,9 @@ var/list/gamemode_cache = list()
 
 				if("donations")
 					donations = TRUE
+
+				if("storyteller")
+					storyteller = TRUE
 
 				if("db_uses_cp1251_encoding")
 					db_uses_cp1251_encoding = TRUE

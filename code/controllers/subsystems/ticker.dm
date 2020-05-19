@@ -88,6 +88,8 @@ SUBSYSTEM_DEF(ticker)
 			continue
 		CreateModularRecord(H)
 
+	SSstoryteller.setup()
+
 	callHook("roundstart")
 
 	spawn(0)//Forking here so we dont have to wait for this to finish
