@@ -751,6 +751,9 @@
 	color = "#102838"
 	adj_temp = -5
 
+	glass_required = "square"
+	glass_icon_state = "icedcoffee"
+	glass_name = "cafe latte"
 	glass_name = "iced coffee"
 	glass_desc = "A drink to perk you up and refresh you!"
 	glass_special = list(DRINK_ICE)
@@ -762,6 +765,8 @@
 	color = "#c65905"
 	adj_temp = 5
 
+	glass_required = "coffeecup"
+	glass_icon_state = "soylatte"
 	glass_name = "soy latte"
 	glass_desc = "A nice and refrshing beverage while you are reading."
 
@@ -776,6 +781,8 @@
 	color = "#c65905"
 	adj_temp = 5
 
+	glass_required = "coffeecup"
+	glass_icon_state = "coffeelatte"
 	glass_name = "cafe latte"
 	glass_desc = "A nice, strong and refreshing beverage while you are reading."
 
@@ -792,6 +799,8 @@
 	nutrition = 2
 	adj_temp = 5
 
+	glass_required = "square"
+	glass_icon_state = "chocolate"
 	glass_name = "hot chocolate"
 	glass_desc = "Made with love! And cocoa beans."
 	glass_special = list(DRINK_VAPOR)
@@ -840,6 +849,8 @@
 	color = "#ffff00"
 	adj_temp = -5
 
+	glass_required = "square"
+	glass_icon_state = "lemonade"
 	glass_name = "lemonade"
 	glass_desc = "Oh the nostalgia..."
 	glass_special = list(DRINK_FIZZ)
@@ -851,6 +862,8 @@
 	color = "#cccc99"
 	adj_temp = -5
 
+	glass_required = "rocks"
+	glass_icon_state = "andalusia"
 	glass_name = "Kira Special"
 	glass_desc = "Long live the guy who everyone had mistaken for a girl. Baka!"
 	glass_special = list(DRINK_FIZZ)
@@ -862,6 +875,8 @@
 	color = "#9f3400"
 	adj_temp = -2
 
+	glass_required = "pint"
+	glass_icon_state = "brownstar"
 	glass_name = "Brown Star"
 	glass_desc = "It's not what it sounds like..."
 
@@ -872,6 +887,8 @@
 	color = "#aee5e4"
 	adj_temp = -9
 
+	glass_required = "shake"
+	glass_icon_state = "milkshake"
 	glass_name = "milkshake"
 	glass_desc = "Glorious brainfreezing mixture."
 
@@ -900,6 +917,8 @@
 	color = "#485000"
 	adj_temp = -5
 
+	glass_required = "mug"
+	glass_icon_state = "rewriter"
 	glass_name = "Rewriter"
 	glass_desc = "The secret of the sanctuary of the Libarian..."
 
@@ -911,7 +930,7 @@
 	name = "Nuka Cola"
 	description = "Cola, cola never changes."
 	taste_description = "the future"
-	color = "#100800"
+	color = "#006600"
 	adj_temp = -5
 	adj_sleepy = -2
 
@@ -933,6 +952,8 @@
 	taste_description = "100% pure pomegranate"
 	color = "#ff004f"
 
+	glass_required = "shake"
+	glass_icon_state = "grenadine"
 	glass_name = "grenadine syrup"
 	glass_desc = "Sweet and tangy, a bar syrup used to add color or flavor to drinks."
 
@@ -953,7 +974,7 @@
 	name = "Mountain Wind"
 	description = "Blows right through you like a space wind."
 	taste_description = "sweet citrus soda"
-	color = "#102000"
+	color = "#66ff66"
 	adj_drowsy = -7
 	adj_sleepy = -1
 	adj_temp = -5
@@ -966,7 +987,7 @@
 	name = "Dr. Gibb"
 	description = "A delicious blend of 42 different flavours"
 	taste_description = "cherry soda"
-	color = "#102000"
+	color = "#800000"
 	adj_drowsy = -6
 	adj_temp = -5
 
@@ -994,29 +1015,6 @@
 	glass_name = "lemon lime soda"
 	glass_desc = "A tangy substance made of 0.5% natural citrus!"
 	glass_special = list(DRINK_FIZZ)
-
-/datum/reagent/drink/doctor_delight
-	name = "The Doctor's Delight"
-	description = "A gulp a day keeps the MediBot away. That's probably for the best."
-	taste_description = "homely fruit"
-	reagent_state = LIQUID
-	color = "#ff8cff"
-	nutrition = 1
-
-	glass_name = "The Doctor's Delight"
-	glass_desc = "A healthy mixture of juices, guaranteed to keep you healthy until the next toolboxing takes place."
-
-/datum/reagent/drink/doctor_delight/affect_ingest(mob/living/carbon/M, alien, removed)
-	..()
-	if(alien == IS_DIONA)
-		return
-	M.adjustOxyLoss(-4 * removed)
-	M.heal_organ_damage(2 * removed, 2 * removed)
-	M.adjustToxLoss(-2 * removed)
-	if(M.dizziness)
-		M.dizziness = max(0, M.dizziness - 15)
-	if(M.confused)
-		M.confused = max(0, M.confused - 5)
 
 /datum/reagent/drink/dry_ramen
 	name = "Dry Ramen"
@@ -1175,6 +1173,17 @@
 
 	glass_name = "blue curacao"
 	glass_desc = "Exotically blue, fruity drink, distilled from oranges."
+
+
+/datum/reagent/ethanol/cider/apple
+	name = "Apple Cider"
+	description = "An alcoholic beverage made from apples."
+	taste_description = "apple cider"
+	color = "#e0e254"
+	strength = 50
+
+	glass_name = "apple cider"
+	glass_special = list(DRINK_FIZZ)
 
 /datum/reagent/ethanol/cognac
 	name = "Cognac"
@@ -1360,6 +1369,16 @@
 	glass_name = "whiskey"
 	glass_desc = "The silky, smokey whiskey goodness inside the glass makes the drink look very classy."
 
+/datum/reagent/ethanol/whiskey/specialwhiskey // I have no idea what this is and where it comes from
+	name = "Special Blend Whiskey"
+	description = "Just when you thought regular whiskey was good... This silky, amber goodness has to come along and ruin everything."
+	taste_description = "liquid fire"
+	color = "#523600"
+	strength = 25
+
+	glass_name = "special blend whiskey"
+	glass_desc = "Just when you thought regular whiskey was good... This silky, amber goodness has to come along and ruin everything."
+
 /datum/reagent/ethanol/wine
 	name = "Red Wine"
 	description = "An premium alchoholic beverage made from distilled grape juice."
@@ -1433,6 +1452,8 @@
 	color = "#365000"
 	strength = 30
 
+	glass_required = "pint"
+	glass_icon_state = "acidspit"
 	glass_name = "Acid Spit"
 	glass_desc = "A drink from the company archives. Made from live aliens."
 
@@ -1443,6 +1464,8 @@
 	color = "#d8ac45"
 	strength = 25
 
+	glass_required = "cocktail"
+	glass_icon_state = "allies"
 	glass_name = "Allies cocktail"
 	glass_desc = "A drink made from your allies."
 
@@ -1453,6 +1476,8 @@
 	color = "#b7ea75"
 	strength = 15
 
+	glass_required = "wine"
+	glass_icon_state = "alloe"
 	glass_name = "Aloe"
 	glass_desc = "Very, very, very good."
 
@@ -1464,6 +1489,8 @@
 	color = "#ff975d"
 	strength = 25
 
+	glass_required = "mug"
+	glass_icon_state = "amasec"
 	glass_name = "Amasec"
 	glass_desc = "Always handy before COMBAT!!!"
 
@@ -1474,8 +1501,22 @@
 	color = "#f4ea4a"
 	strength = 15
 
+	glass_required = "cognac"
+	glass_icon_state = "andalusia"
 	glass_name = "Andalusia"
 	glass_desc = "A nice, strange named drink."
+
+/datum/reagent/ethanol/armstrong
+	name = "Armstrong"
+	description = "One of the Official Cocktails of the Expeditionary Corps, celebrating Neil Armstrong."
+	taste_description = "limes and alcoholic beer"
+	color = "#ffd300"
+	strength = 15
+
+	glass_required = "pint"
+	glass_icon_state = "armstrong"
+	glass_name = "Armstrong cocktail"
+	glass_desc = "Beer, vodka and lime come together in this instant classic. Named for Neil Armstrong, who was the first man to set foot on Luna, in the 20th century."
 
 /datum/reagent/ethanol/antifreeze
 	name = "Anti-freeze"
@@ -1486,6 +1527,8 @@
 	adj_temp = 20
 	targ_temp = 330
 
+	glass_required = "pint"
+	glass_icon_state = "antifreeze"
 	glass_name = "Anti-freeze"
 	glass_desc = "The ultimate refreshment."
 
@@ -1498,6 +1541,8 @@
 	strength = 10
 	druggy = 50
 
+	glass_required = "carafe"
+	glass_icon_state = "atomicbomb"
 	glass_name = "Atomic Bomb"
 	glass_desc = "We cannot take legal responsibility for your actions after imbibing."
 
@@ -1509,8 +1554,22 @@
 	color = "#997650"
 	strength = 12
 
+	glass_required = "vodkaglass"
+	glass_icon_state = "b52"
 	glass_name = "B-52"
 	glass_desc = "Kahlua, Irish cream, and congac. You will get bombed."
+
+/datum/reagent/ethanol/bacardi
+	name = "Bacardi"
+	description = "A perfect mix of white rum, lime juice and grenadine."
+	color = "#ff5e5e"
+	strength = 15
+	taste_description = "lime and grenadine"
+
+	glass_required = "cocktail"
+	glass_icon_state = "bacardi"
+	glass_name = "Bacardi"
+	glass_desc = "A perfect mix of white rum, lime juice and grenadine."
 
 /datum/reagent/ethanol/bahama_mama
 	name = "Bahama mama"
@@ -1519,6 +1578,8 @@
 	color = "#ff7f3b"
 	strength = 25
 
+	glass_required = "hurricane"
+	glass_icon_state = "bahamamama"
 	glass_name = "Bahama Mama"
 	glass_desc = "Tropical cocktail"
 
@@ -1530,8 +1591,21 @@
 	color = "#ffff91"
 	strength = 12
 
+	glass_required = "pint"
+	glass_icon_state = "bananahonk"
 	glass_name = "Banana Honk"
 	glass_desc = "A drink from Banana Heaven."
+
+/datum/reagent/ethanol/bdaiquiri
+	name = "Banana daiquiri"
+	description = "The magic of frozen banana sweets."
+	color = "#ffd791"
+	strength = 15
+
+	glass_required = "cocktail"
+	glass_icon_state = "bananadaiquiri"
+	glass_name = "Banana daiquiri"
+	glass_desc = "The magic of frozen banana sweets."
 
 /datum/reagent/ethanol/barefoot
 	name = "Barefoot"
@@ -1540,6 +1614,8 @@
 	color = "#ffcdea"
 	strength = 30
 
+	glass_required = "cocktail"
+	glass_icon_state = "barefoot"
 	glass_name = "Barefoot"
 	glass_desc = "Barefoot and pregnant"
 
@@ -1552,6 +1628,8 @@
 	color = "#404040"
 	strength = 12
 
+	glass_required = "rocks"
+	glass_icon_state = "beepskysmash"
 	glass_name = "Beepsky Smash"
 	glass_desc = "Heavy, hot and strong. Just like the Iron fist of the LAW."
 
@@ -1567,6 +1645,8 @@
 	strength = 50
 	nutriment_factor = 2
 
+	glass_required = "square"
+	glass_icon_state = "bilk"
 	glass_name = "bilk"
 	glass_desc = "A brew of milk and beer. For those alcoholics who fear osteoporosis."
 
@@ -1577,6 +1657,8 @@
 	color = "#360000"
 	strength = 15
 
+	glass_required = "rocks"
+	glass_icon_state = "blackrussian"
 	glass_name = "Black Russian"
 	glass_desc = "For the lactose-intolerant. Still as classy as a White Russian."
 
@@ -1587,6 +1669,8 @@
 	color = "#b40000"
 	strength = 15
 
+	glass_required = "pint"
+	glass_icon_state = "bloodymary"
 	glass_name = "Bloody Mary"
 	glass_desc = "Tomato juice, mixed with Vodka and a lil' bit of lime. Tastes like liquid murder."
 
@@ -1597,6 +1681,8 @@
 	color = "#8cff8c"
 	strength = 30
 
+	glass_required = "square"
+	glass_icon_state = "booger"
 	glass_name = "Booger"
 	glass_desc = "Ewww..."
 
@@ -1608,6 +1694,8 @@
 	color = "#4c3100"
 	strength = 15
 
+	glass_required = "cognac"
+	glass_icon_state = "bravebull"
 	glass_name = "Brave Bull"
 	glass_desc = "Tequilla and coffee liquor, brought together in a mouthwatering mixture. Drink up."
 
@@ -1618,6 +1706,8 @@
 	color = "#2e6671"
 	strength = 10
 
+	glass_required = "square"
+	glass_icon_state = "changelingsting"
 	glass_name = "Changeling Sting"
 	glass_desc = "A stingy drink."
 
@@ -1628,8 +1718,45 @@
 	color = "#0064c8"
 	strength = 25
 
+	glass_required = "cocktail"
+	glass_icon_state = "classicmartini"
 	glass_name = "classic martini"
 	glass_desc = "Damn, the bartender even stirred it, not shook it."
+
+/datum/reagent/ethanol/commodore64
+	name = "Commodore 64"
+	description = "So-called ''ladies' drink,'' this sweet, fruity, unliquorly concoction that comes loaded with things like cream and egg white and a considerable charge of well-disguised inhibition- (and therefore, the theory goes, undergarment-) remover. "
+	color = "#ff6a54"
+	strength = 25
+	taste_description = "fruity sweetness"
+
+	glass_required = "rocks"
+	glass_icon_state = "commodore64"
+	glass_name = "Commodore 64"
+	glass_desc = "Also known as Pink Lady, Maiden's Prayer, Poet's Dream, and Angel's Wing."
+
+/datum/reagent/ethanol/chacha
+	name = "Chacha"
+	description = "favorite drink of mountain people."
+	color = "#f0db7f"
+	strength = 100
+	taste_description = "one feels the taste of a distant mountainous country"
+
+	glass_required = "shot"
+	glass_icon_state = "chyachya"
+	glass_name = "Chacha"
+	glass_desc = "favorite drink of mountain people."
+
+/datum/reagent/ethanol/corpserevive
+	name = "Corpse Reviver"
+	description = "The best hangover cure!"
+	color = "#f3ffca"
+	strength = 15
+
+	glass_required = "rock"
+	glass_icon_state = "corpserevive"
+	glass_name = "Corpse Reviver"
+	glass_desc = "The best hangover cure!"
 
 /datum/reagent/ethanol/cuba_libre
 	name = "Cuba Libre"
@@ -1638,8 +1765,34 @@
 	color = "#3e1b00"
 	strength = 30
 
+	glass_required = "pint"
+	glass_icon_state = "cubalibre"
 	glass_name = "Cuba Libre"
 	glass_desc = "A classic mix of rum and cola."
+
+/datum/reagent/ethanol/daddysindahouse
+	name = "Daddy's in da House"
+	description = "Bang, bang, bang, bang!"
+	color = "#049956"
+	strength = 14
+	taste_description = "a stab wound in your liver"
+
+	glass_required = "wine"
+	glass_icon_state = "daddysinthehouse"
+	glass_name = "Daddy's in da House"
+	glass_desc = "Bang, bang, bang, bang!"
+
+/datum/reagent/ethanol/afternoon
+	name = "Death in the afternoon"
+	description = "Favorite drink for functionary!"
+	color = "#d4ff66"
+	strength = 100
+	taste_description = "sweet and bitter, like Death itself."
+
+	glass_required = "wine"
+	glass_icon_state = "deathintheafternoon"
+	glass_name = "Death in the afternoon"
+	glass_desc = "Favorite drink for chapters!"
 
 /datum/reagent/ethanol/demonsblood
 	name = "Demons Blood"
@@ -1649,6 +1802,8 @@
 	color = "#820000"
 	strength = 15
 
+	glass_required = "cognac"
+	glass_icon_state = "demonsblood"
 	glass_name = "Demons' Blood"
 	glass_desc = "Just looking at this thing makes the hair at the back of your neck stand up."
 
@@ -1659,8 +1814,35 @@
 	color = "#a68310"
 	strength = 15
 
+	glass_required = "cocktail"
+	glass_icon_state = "devilskiss"
 	glass_name = "Devil's Kiss"
 	glass_desc = "Creepy time!"
+
+/datum/reagent/drink/doctor_delight
+	name = "The Doctor's Delight"
+	description = "A gulp a day keeps the MediBot away. That's probably for the best."
+	taste_description = "homely fruit"
+	reagent_state = LIQUID
+	color = "#ff8cff"
+	nutrition = 1
+
+	glass_required = "pint"
+	glass_icon_state = "doctordelight"
+	glass_name = "The Doctor's Delight"
+	glass_desc = "A healthy mixture of juices, guaranteed to keep you healthy until the next toolboxing takes place."
+
+/datum/reagent/drink/doctor_delight/affect_ingest(mob/living/carbon/M, alien, removed)
+	..()
+	if(alien == IS_DIONA)
+		return
+	M.adjustOxyLoss(-4 * removed)
+	M.heal_organ_damage(2 * removed, 2 * removed)
+	M.adjustToxLoss(-2 * removed)
+	if(M.dizziness)
+		M.dizziness = max(0, M.dizziness - 15)
+	if(M.confused)
+		M.confused = max(0, M.confused - 5)
 
 /datum/reagent/ethanol/driestmartini
 	name = "Driest Martini"
@@ -1670,29 +1852,10 @@
 	color = "#2e6671"
 	strength = 12
 
+	glass_required = "cocktail"
+	glass_icon_state = "driestmartini"
 	glass_name = "Driest Martini"
 	glass_desc = "Only for the experienced. You think you see sand floating in the glass."
-
-/datum/reagent/ethanol/ginfizz
-	name = "Gin Fizz"
-	description = "Refreshingly lemony, deliciously dry."
-	taste_description = "dry, tart lemons"
-	color = "#ffffae"
-	strength = 30
-
-	glass_name = "gin fizz"
-	glass_desc = "Refreshingly lemony, deliciously dry."
-
-/datum/reagent/ethanol/grog
-	name = "Grog"
-	description = "Watered-down rum, pirate approved!"
-	taste_description = "a poor excuse for alcohol"
-	reagent_state = LIQUID
-	color = "#ffbb00"
-	strength = 100
-
-	glass_name = "grog"
-	glass_desc = "A fine and cepa drink for Space."
 
 /datum/reagent/ethanol/erikasurprise
 	name = "Erika Surprise"
@@ -1701,20 +1864,63 @@
 	color = "#2e6671"
 	strength = 15
 
+	glass_required = "mug"
+	glass_icon_state = "ericasurprise"
 	glass_name = "Erika Surprise"
 	glass_desc = "The surprise is, it's green!"
 
-/datum/reagent/ethanol/gargle_blaster
-	name = "Pan-Galactic Gargle Blaster"
-	description = "Whoah, this stuff looks volatile!"
-	taste_description = "your brains smashed out by a lemon wrapped around a gold brick"
-	taste_mult = 5
-	reagent_state = LIQUID
-	color = "#7f00ff"
-	strength = 10
+/datum/reagent/ethanol/coffee/espressomartini
+	name = "Espresso Martini"
+	description = "Perfect for breakfast, perfect for dinner."
+	color = "#72481d"
+	strength = 15
+	taste_description = "sweet espresso"
 
-	glass_name = "Pan-Galactic Gargle Blaster"
-	glass_desc = "Does... does this mean that Arthur and Ford are here? Oh joy."
+	glass_required = "wine"
+	glass_icon_state = "espressomartini"
+	glass_name = "Espresso Martini"
+	glass_desc = "Perfect for breakfast, perfect for dinner."
+
+/datum/reagent/ethanol/fullbiotickick
+	name = "Full Biotic Kick"
+	description = "Fortunately, biotics aren't real. Are they?.."
+	color = "#d6774f"
+	strength = 15
+	taste_description = "mass effect"
+
+	glass_required = "mug"
+	glass_icon_state = "fullbiotickick"
+	glass_name = "Full Biotic Kick"
+	glass_desc = "Fortunately, biotics aren't real. Are they?.."
+
+/datum/reagent/ethanol/georgerrmartini
+	name = "George R.R. Martini"
+	description = "Makes you think about boobs and dragons."
+	color = "#9f0000"
+	strength = 15
+	taste_description = "blood, tears and pure agony"
+
+	glass_required = "hurricane"
+	glass_icon_state = "georgerrmartini"
+	glass_name = "George R.R. Martini"
+	glass_desc = "Makes you think about boobs and dragons."
+
+/datum/reagent/ethanol/georgerrmartini/affect_ingest(mob/living/carbon/M, alien, removed)
+	..()
+	if(prob(10))
+		M.emote(pick("cry"))
+
+/datum/reagent/ethanol/ginfizz
+	name = "Gin Fizz"
+	description = "Refreshingly lemony, deliciously dry."
+	taste_description = "dry, tart lemons"
+	color = "#ffffae"
+	strength = 30
+
+	glass_required = "square"
+	glass_icon_state = "ginfizz"
+	glass_name = "gin fizz"
+	glass_desc = "Refreshingly lemony, deliciously dry."
 
 /datum/reagent/ethanol/gintonic
 	name = "Gin and Tonic"
@@ -1723,8 +1929,26 @@
 	color = "#0064c8"
 	strength = 50
 
+	glass_required = "square"
+	glass_icon_state = "gintonic"
 	glass_name = "gin and tonic"
 	glass_desc = "A mild but still great cocktail. Drink up, like a true Englishman."
+
+/datum/reagent/ethanol/glintwine
+	name = "Glintwine"
+	description = "Mulled wine is very popular and traditional in the United Kingdom at Christmas, and less commonly throughout winter."
+	color = "#600202"
+	strength = 10
+	taste_mult = 1.5
+	druggy = 5
+	adj_temp = 10
+	targ_temp = 360
+	taste_description = "liquid new year"
+
+	glass_required = "mug"
+	glass_icon_state = "glintwine"
+	glass_name = "Glintwine"
+	glass_desc = "Mulled wine is very popular and traditional in the United Kingdom at Christmas, and less commonly throughout winter."
 
 /datum/reagent/ethanol/goldschlager
 	name = "Goldschlager"
@@ -1734,8 +1958,23 @@
 	color = "#f4e46d"
 	strength = 15
 
+	glass_required = "cocktail"
+	glass_icon_state = "goldschlager"
 	glass_name = "Goldschlager"
 	glass_desc = "100 proof that teen girls will drink anything with gold in it."
+
+/datum/reagent/ethanol/grog
+	name = "Grog"
+	description = "Watered-down rum, pirate approved!"
+	taste_description = "a poor excuse for alcohol"
+	reagent_state = LIQUID
+	color = "#ffbb00"
+	strength = 100
+
+	glass_required = "mug"
+	glass_icon_state = "grog"
+	glass_name = "grog"
+	glass_desc = "A fine and cepa drink for Space."
 
 /datum/reagent/ethanol/hippies_delight
 	name = "Hippies' Delight"
@@ -1746,6 +1985,8 @@
 	strength = 15
 	druggy = 50
 
+	glass_required = "pint"
+	glass_icon_state = "hippiesdelight"
 	glass_name = "Hippie's Delight"
 	glass_desc = "A drink enjoyed by people during the 1960's."
 
@@ -1757,8 +1998,22 @@
 	strength = 25
 	toxicity = 2
 
+	glass_required = "square"
+	glass_icon_state = "hooch"
 	glass_name = "Hooch"
 	glass_desc = "You've really hit rock bottom now... your liver packed its bags and left last night."
+
+/datum/reagent/ethanol/battuta
+	name = "Ibn Batutta"
+	description = "One of the Official Cocktails of the Expeditionary Corps, celebrating Muhammad Ibn Battuta."
+	taste_description = "a Moroccan garden"
+	color = "#dfbe00"
+	strength = 18
+
+	glass_required = "cognac"
+	glass_icon_state = "ibnbatutta"
+	glass_name = "Ibn Batutta cocktail"
+	glass_desc = "A refreshing blend of herbal liquor, the juice of an orange and a hint of mint. Named for Muhammad Ibn Battuta, whose travels spanned from Mali eastward to China in the 14th century."
 
 /datum/reagent/ethanol/iced_beer
 	name = "Iced Beer"
@@ -1769,6 +2024,8 @@
 	adj_temp = -20
 	targ_temp = 270
 
+	glass_required = "pint"
+	glass_icon_state = "icedbeer"
 	glass_name = "iced beer"
 	glass_desc = "A beer so frosty, the air around it freezes."
 	glass_special = list(DRINK_ICE, DRINK_FIZZ)
@@ -1780,6 +2037,8 @@
 	color = "#2e6671"
 	strength = 15
 
+	glass_required = "pint"
+	glass_icon_state = "irishcarbomb"
 	glass_name = "Irish Car Bomb"
 	glass_desc = "An irish car bomb."
 
@@ -1790,6 +2049,8 @@
 	color = "#4c3100"
 	strength = 15
 
+	glass_required = "vodkaglass"
+	glass_icon_state = "irishcoffee"
 	glass_name = "Irish coffee"
 	glass_desc = "Coffee and alcohol. More fun than a Mimosa to drink in the morning."
 
@@ -1800,6 +2061,8 @@
 	color = "#dddd9a3"
 	strength = 25
 
+	glass_required = "rocks"
+	glass_icon_state = "demonsblood"
 	glass_name = "Irish cream"
 	glass_desc = "It's cream, mixed with whiskey. What else would you expect from the Irish?"
 
@@ -1810,6 +2073,8 @@
 	color = "#895b1f"
 	strength = 12
 
+	glass_required = "pint"
+	glass_icon_state = "longislandicedtea"
 	glass_name = "Long Island iced tea"
 	glass_desc = "The liquor cabinet, brought together in a delicious mix. Intended for middle-aged alcoholic women only."
 
@@ -1820,6 +2085,8 @@
 	color = "#c13600"
 	strength = 15
 
+	glass_required = "cocktail"
+	glass_icon_state = "manhattan"
 	glass_name = "Manhattan"
 	glass_desc = "The Detective's undercover drink of choice. He never could stomach gin..."
 
@@ -1831,6 +2098,8 @@
 	strength = 10
 	druggy = 30
 
+	glass_required = "cocktail"
+	glass_icon_state = "manhattanproject"
 	glass_name = "Manhattan Project"
 	glass_desc = "A scientist's drink of choice, for pondering ways to blow stuff up."
 
@@ -1841,6 +2110,8 @@
 	color = "#4c3100"
 	strength = 25
 
+	glass_required = "bigmug"
+	glass_icon_state = "manlydorf"
 	glass_name = "The Manly Dorf"
 	glass_desc = "A manly concotion made from Ale and Beer. Intended for true men only."
 	glass_special = list(DRINK_FIZZ)
@@ -1852,18 +2123,10 @@
 	color = "#8cff8c"
 	strength = 15
 
+	glass_required = "cocktail"
+	glass_icon_state = "margarita"
 	glass_name = "margarita"
 	glass_desc = "On the rocks with salt on the rim. Arriba~!"
-
-/datum/reagent/ethanol/battuta
-	name = "Ibn Batutta"
-	description = "One of the Official Cocktails of the Expeditionary Corps, celebrating Muhammad Ibn Battuta."
-	taste_description = "a Moroccan garden"
-	color = "#dfbe00"
-	strength = 18
-
-	glass_name = "Ibn Batutta cocktail"
-	glass_desc = "A refreshing blend of herbal liquor, the juice of an orange and a hint of mint. Named for Muhammad Ibn Battuta, whose travels spanned from Mali eastward to China in the 14th century."
 
 /datum/reagent/ethanol/magellan
 	name = "Magellan"
@@ -1872,28 +2135,10 @@
 	color = "#6b3535"
 	strength = 13
 
+	glass_required = "rocks"
+	glass_icon_state = "magellan"
 	glass_name = "Magellan cocktail"
 	glass_desc = "A tasty sweetened blend of wine and fine whiskey. Named for Ferdinand Magellan, who led the first expedition to circumnavigate Earth in the 15th century."
-
-/datum/reagent/ethanol/zhenghe
-	name = "Zheng He"
-	description = "One of the Official Cocktails of the Expeditionary Corps, celebrating Zheng He."
-	taste_description = "herbal bitterness"
-	color = "#173b06"
-	strength = 20
-
-	glass_name = "Zheng He cocktail"
-	glass_desc = "A rather bitter blend of vermouth and well-steeped black tea. Named for Zheng He, who travelled from Nanjing in China as far as Mogadishu in the Horn of Africa in the 15th century."
-
-/datum/reagent/ethanol/armstrong
-	name = "Armstrong"
-	description = "One of the Official Cocktails of the Expeditionary Corps, celebrating Neil Armstrong."
-	taste_description = "limes and alcoholic beer"
-	color = "#ffd300"
-	strength = 15
-
-	glass_name = "Armstrong cocktail"
-	glass_desc = "Beer, vodka and lime come together in this instant classic. Named for Neil Armstrong, who was the first man to set foot on Luna, in the 20th century."
 
 /datum/reagent/ethanol/mead
 	name = "Mead"
@@ -1904,8 +2149,36 @@
 	strength = 30
 	nutriment_factor = 1
 
+	glass_required = "mug"
+	glass_icon_state = "mead"
 	glass_name = "mead"
 	glass_desc = "A Viking's beverage, though a cheap one."
+
+/datum/reagent/ethanol/metroidscore
+	name = "Metroid's Core"
+	description = "Old good metroids... Where did you go?"
+	color = "#026841"
+	strength = 20
+	taste_description = "sharp herbal taste and sourness"
+
+	glass_required = "square"
+	glass_icon_state = "metroidscore"
+	glass_name = "Metroid's Core"
+	glass_desc = "Old good metroids... Where did you go?"
+	glass_special = list(DRINK_FIZZ)
+
+/datum/reagent/ethanol/mojito
+	name = "Mojito"
+	description = "A refreshing summer drink."
+	color = "#76C98C"
+	strength = 20
+	taste_description = "mint and lime"
+
+	glass_required = "square"
+	glass_icon_state = "mojito"
+	glass_name = "Mojito"
+	glass_desc = "A refreshing summer drink."
+	glass_special = list(DRINK_FIZZ)
 
 /datum/reagent/ethanol/moonshine
 	name = "Moonshine"
@@ -1915,6 +2188,8 @@
 	color = "#0064c8"
 	strength = 12
 
+	glass_required = "square"
+	glass_icon_state = "moonshine"
 	glass_name = "moonshine"
 	glass_desc = "You've really hit rock bottom now... your liver packed its bags and left last night."
 
@@ -1926,6 +2201,8 @@
 	color = "#2e2e61"
 	strength = 10
 
+	glass_required = "pint"
+	glass_icon_state = "neurotoxin"
 	glass_name = "Neurotoxin"
 	glass_desc = "A drink that is guaranteed to knock you silly."
 	glass_icon = DRINK_ICON_NOISY
@@ -1936,6 +2213,20 @@
 	M.Weaken(3)
 	M.add_chemical_effect(CE_PULSE, -1)
 
+/datum/reagent/ethanol/gargle_blaster
+	name = "Pan-Galactic Gargle Blaster"
+	description = "Whoah, this stuff looks volatile!"
+	taste_description = "your brains smashed out by a lemon wrapped around a gold brick"
+	taste_mult = 5
+	reagent_state = LIQUID
+	color = "#7f00ff"
+	strength = 10
+
+	glass_required = "hurricane"
+	glass_icon_state = "gargleblaster"
+	glass_name = "Pan-Galactic Gargle Blaster"
+	glass_desc = "Does... does this mean that Arthur and Ford are here? Oh joy."
+
 /datum/reagent/ethanol/patron
 	name = "Patron"
 	description = "Tequila with silver in it, a favorite of alcoholic women in the club scene."
@@ -1943,6 +2234,8 @@
 	color = "#585840"
 	strength = 30
 
+	glass_required = "cocktail"
+	glass_icon_state = "patron"
 	glass_name = "Patron"
 	glass_desc = "Drinking patron in the bar, with all the subpar ladies."
 
@@ -1978,6 +2271,8 @@
 	color = "#c73c00"
 	strength = 30
 
+	glass_required = "mug"
+	glass_icon_state = "redmead"
 	glass_name = "red mead"
 	glass_desc = "A true Viking's beverage, though its color is strange."
 
@@ -1990,6 +2285,8 @@
 	adj_temp = 50
 	targ_temp = 360
 
+	glass_required = "hurricane"
+	glass_icon_state = "sbiten"
 	glass_name = "Sbiten"
 	glass_desc = "A spicy mix of Mead and Spice. Very hot."
 
@@ -2000,6 +2297,8 @@
 	color = "#a68310"
 	strength = 15
 
+	glass_required = "square"
+	glass_icon_state = "screwdriver"
 	glass_name = "Screwdriver"
 	glass_desc = "A simple, yet superb mixture of Vodka and orange juice. Just the thing for the tired engineer."
 
@@ -2010,278 +2309,10 @@
 	color = "#524d0f"
 	strength = 15
 
+	glass_required = "mug"
+	glass_icon_state = "shipssurgeon"
 	glass_name = "ship's surgeon"
 	glass_desc = "Rum qualified for surgical practice by Dr. Gibb. Smooth and steady."
-
-/datum/reagent/ethanol/silencer
-	name = "Silencer"
-	description = "A drink from Mime Heaven."
-	taste_description = "a pencil eraser"
-	taste_mult = 1.2
-	nutriment_factor = 1
-	color = "#ffffff"
-	strength = 12
-
-	glass_name = "Silencer"
-	glass_desc = "A drink from mime Heaven."
-
-/datum/reagent/ethanol/singulo
-	name = "Singulo"
-	description = "A blue-space beverage!"
-	taste_description = "concentrated matter"
-	color = "#2e6671"
-	strength = 10
-
-	glass_name = "Singulo"
-	glass_desc = "A blue-space beverage."
-
-/datum/reagent/ethanol/snowwhite
-	name = "Snow White"
-	description = "A cold refreshment"
-	taste_description = "refreshing cold"
-	color = "#ffffff"
-	strength = 30
-
-	glass_name = "Snow White"
-	glass_desc = "A cold refreshment."
-	glass_special = list(DRINK_FIZZ)
-
-/datum/reagent/ethanol/suidream
-	name = "Sui Dream"
-	description = "Comprised of: White soda, blue curacao, melon liquor."
-	taste_description = "fruit"
-	color = "#00a86b"
-	strength = 100
-
-	glass_name = "Sui Dream"
-	glass_desc = "A froofy, fruity, and sweet mixed drink. Understanding the name only brings shame."
-
-/datum/reagent/ethanol/syndicatebomb
-	name = "Syndicate Bomb"
-	description = "Tastes like terrorism!"
-	taste_description = "purified antagonism"
-	color = "#2e6671"
-	strength = 10
-
-	glass_name = "Syndicate Bomb"
-	glass_desc = "Tastes like terrorism!"
-	glass_special = list(DRINK_FIZZ)
-
-/datum/reagent/ethanol/tequilla_sunrise
-	name = "Tequila Sunrise"
-	description = "Tequila and orange juice. Much like a Screwdriver, only Mexican~"
-	taste_description = "oranges"
-	color = "#ffe48c"
-	strength = 25
-
-	glass_name = "Tequilla Sunrise"
-	glass_desc = "Oh great, now you feel nostalgic about sunrises back on Terra..."
-
-/datum/reagent/ethanol/threemileisland
-	name = "Three Mile Island Iced Tea"
-	description = "Made for a woman, strong enough for a man."
-	taste_description = "dry"
-	color = "#666340"
-	strength = 10
-	druggy = 50
-
-	glass_name = "Three Mile Island iced tea"
-	glass_desc = "A glass of this is sure to prevent a meltdown."
-
-/datum/reagent/ethanol/toxins_special
-	name = "Toxins Special"
-	description = "This thing is ON FIRE! CALL THE DAMN SHUTTLE!"
-	taste_description = "spicy toxins"
-	reagent_state = LIQUID
-	color = "#7f00ff"
-	strength = 10
-	adj_temp = 15
-	targ_temp = 330
-
-	glass_name = "Toxins Special"
-	glass_desc = "Whoah, this thing is on FIRE"
-
-/datum/reagent/ethanol/vodkamartini
-	name = "Vodka Martini"
-	description = "Vodka with Gin. Not quite how 007 enjoyed it, but still delicious."
-	taste_description = "shaken, not stirred"
-	color = "#0064c8"
-	strength = 12
-
-	glass_name = "vodka martini"
-	glass_desc ="A bastardisation of the classic martini. Still great."
-
-
-/datum/reagent/ethanol/vodkatonic
-	name = "Vodka and Tonic"
-	description = "For when a gin and tonic isn't russian enough."
-	taste_description = "tart bitterness"
-	color = "#0064c8" // rgb: 0, 100, 200
-	strength = 15
-
-	glass_name = "vodka and tonic"
-	glass_desc = "For when a gin and tonic isn't Russian enough."
-
-
-/datum/reagent/ethanol/white_russian
-	name = "White Russian"
-	description = "That's just, like, your opinion, man..."
-	taste_description = "bitter cream"
-	color = "#a68340"
-	strength = 15
-
-	glass_name = "White Russian"
-	glass_desc = "A very nice looking drink. But that's just, like, your opinion, man."
-
-
-/datum/reagent/ethanol/whiskey_cola
-	name = "Whiskey Cola"
-	description = "Whiskey, mixed with cola. Surprisingly refreshing."
-	taste_description = "cola"
-	color = "#3e1b00"
-	strength = 25
-
-	glass_name = "whiskey cola"
-	glass_desc = "An innocent-looking mixture of cola and Whiskey. Delicious."
-	glass_special = list(DRINK_FIZZ)
-
-
-/datum/reagent/ethanol/whiskeysoda
-	name = "Whiskey Soda"
-	description = "For the more refined griffon."
-	color = "#eab300"
-	strength = 15
-
-	glass_name = "whiskey soda"
-	glass_desc = "Ultimate refreshment."
-	glass_special = list(DRINK_FIZZ)
-
-/datum/reagent/ethanol/whiskey/specialwhiskey // I have no idea what this is and where it comes from
-	name = "Special Blend Whiskey"
-	description = "Just when you thought regular whiskey was good... This silky, amber goodness has to come along and ruin everything."
-	taste_description = "liquid fire"
-	color = "#523600"
-	strength = 25
-
-	glass_name = "special blend whiskey"
-	glass_desc = "Just when you thought regular whiskey was good... This silky, amber goodness has to come along and ruin everything."
-
-/datum/reagent/ethanol/glintwine
-	name = "Glintwine"
-	description = "Mulled wine is very popular and traditional in the United Kingdom at Christmas, and less commonly throughout winter."
-	color = "#600202"
-	strength = 10
-	taste_mult = 1.5
-	druggy = 5
-	adj_temp = 10
-	targ_temp = 360
-	taste_description = "liquid new year"
-
-	glass_name = "Glintwine"
-	glass_desc = "Mulled wine is very popular and traditional in the United Kingdom at Christmas, and less commonly throughout winter."
-
-/datum/reagent/ethanol/corpserevive
-	name = "Corpse Reviver"
-	description = "The best hangover cure!"
-	color = "#f3ffca"
-	strength = 15
-
-	glass_name = "Corpse Reviver"
-	glass_desc = "The best hangover cure!"
-
-/datum/reagent/ethanol/bdaiquiri
-	name = "Banana daiquiri"
-	description = "The magic of frozen banana sweets."
-	color = "#ffd791"
-	strength = 15
-
-	glass_name = "Banana daiquiri"
-	glass_desc = "The magic of frozen banana sweets."
-
-/datum/reagent/ethanol/xgrog
-	name = "Christmas Grog"
-	description = "Festive version of something very familiar."
-	color = "#ba7625"
-	strength = 100
-
-	glass_name = "Christmas Grog"
-	glass_desc = "Festive version of something very familiar."
-
-/datum/reagent/ethanol/afternoon
-	name = "Death in the afternoon"
-	description = "Favorite drink for functionary!"
-	color = "#d4ff66"
-	strength = 100
-	taste_description = "sweet and bitter, like Death itself."
-
-	glass_name = "Death in the afternoon"
-	glass_desc = "Favorite drink for chapters!"
-
-/datum/reagent/ethanol/chacha
-	name = "Chacha"
-	description = "favorite drink of mountain people."
-	color = "#f0db7f"
-	strength = 100
-	taste_description = "one feels the taste of a distant mountainous country"
-
-	glass_name = "Chacha"
-	glass_desc = "favorite drink of mountain people."
-
-/datum/reagent/ethanol/sexonthebeach
-	name = "Sex on the Beach"
-	description = "Don't take this as an instruction. You'll get robusted by ERP police."
-	color = "#d34b00"
-	strength = 20
-	taste_description = "fruity classic"
-
-	glass_name = "Sex on the Beach"
-	glass_desc = "Don't take this as an instruction. You'll get robusted by ERP police."
-
-/datum/reagent/ethanol/daddysindahouse
-	name = "Daddy's in da House"
-	description = "Bang, bang, bang, bang!"
-	color = "#049956"
-	strength = 14
-	taste_description = "a stab wound in your liver"
-
-	glass_name = "Daddy's in da House"
-	glass_desc = "Bang, bang, bang, bang!"
-
-/datum/reagent/ethanol/metroidscore
-	name = "Metroid's Core"
-	description = "Old good metroids... Where did you go?"
-	color = "#026841"
-	strength = 20
-	taste_description = "sharp herbal taste and sourness"
-
-	glass_name = "Metroid's Core"
-	glass_desc = "Old good metroids... Where did you go?"
-	glass_special = list(DRINK_FIZZ)
-
-/datum/reagent/ethanol/commodore64
-	name = "Commodore 64"
-	description = "So-called ''ladies' drink,'' this sweet, fruity, unliquorly concoction that comes loaded with things like cream and egg white and a considerable charge of well-disguised inhibition- (and therefore, the theory goes, undergarment-) remover. "
-	color = "#ff6a54"
-	strength = 25
-	taste_description = "fruity sweetness"
-
-	glass_name = "Commodore 64"
-	glass_desc = "Also known as Pink Lady, Maiden's Prayer, Poet's Dream, and Angel's Wing."
-
-/datum/reagent/ethanol/georgerrmartini
-	name = "George R.R. Martini"
-	description = "Makes you think about boobs and dragons."
-	color = "#9f0000"
-	strength = 15
-	taste_description = "blood, tears and pure agony"
-
-	glass_name = "George R.R. Martini"
-	glass_desc = "Makes you think about boobs and dragons."
-
-/datum/reagent/ethanol/georgerrmartini/affect_ingest(mob/living/carbon/M, alien, removed)
-	..()
-	if(prob(10))
-		M.emote(pick("cry"))
 
 /datum/reagent/ethanol/siegbrau
 	name = "Siegbrau"
@@ -2290,6 +2321,8 @@
 	strength = 35
 	taste_description = "malty flavor and something extremely dear and familiar"
 
+	glass_required = "bigmug"
+	glass_icon_state = "sigbrau"
 	glass_name = "Siegbrau"
 	glass_desc = "A drink that even an Undead can enjoy."
 
@@ -2305,37 +2338,6 @@
 	if(M.confused)
 		M.confused = max(0, M.confused - 5)
 
-/datum/reagent/ethanol/mojito
-	name = "Mojito"
-	description = "A refreshing summer drink."
-	color = "#76C98C"
-	strength = 20
-	taste_description = "mint and lime"
-
-	glass_name = "Mojito"
-	glass_desc = "A refreshing summer drink."
-	glass_special = list(DRINK_FIZZ)
-
-/datum/reagent/ethanol/bacardi
-	name = "Bacardi"
-	description = "A perfect mix of white rum, lime juice and grenadine."
-	color = "#ff5e5e"
-	strength = 15
-	taste_description = "lime and grenadine"
-
-	glass_name = "Bacardi"
-	glass_desc = "A perfect mix of white rum, lime juice and grenadine."
-
-/datum/reagent/ethanol/coffee/espressomartini
-	name = "Espresso Martini"
-	description = "Perfect for breakfast, perfect for dinner."
-	color = "#72481d"
-	strength = 15
-	taste_description = "sweet espresso"
-
-	glass_name = "Espresso Martini"
-	glass_desc = "Perfect for breakfast, perfect for dinner."
-
 /datum/reagent/ethanol/shroombeer
 	name = "shroom berr"
 	description = "A brew made of toxic mushrooms. What can go wrong?"
@@ -2343,9 +2345,10 @@
 	strength = 15
 	taste_description = "BOILING RAGE WAAAAAAAAAGH"
 
+	glass_required = "mug"
+	glass_icon_state = "shroombeer"
 	glass_name = "shroom berr"
 	glass_desc = "tiem to go berzerk!!"
-
 
 /datum/reagent/ethanol/shroombeer/affect_blood(mob/living/carbon/M, alien, removed)
 	..()
@@ -2390,15 +2393,121 @@
 		if(prob(15))
 			M.emote(pick("twitch", "blink_r", "shiver"))
 
-/datum/reagent/ethanol/fullbiotickick
-	name = "Full Biotic Kick"
-	description = "Fortunately, biotics aren't real. Are they?.."
-	color = "#d6774f"
-	strength = 15
-	taste_description = "mass effect"
+/datum/reagent/ethanol/silencer
+	name = "Silencer"
+	description = "A drink from Mime Heaven."
+	taste_description = "a pencil eraser"
+	taste_mult = 1.2
+	nutriment_factor = 1
+	color = "#ffffff"
+	strength = 12
 
-	glass_name = "Full Biotic Kick"
-	glass_desc = "Fortunately, biotics aren't real. Are they?.."
+	glass_required = "pint"
+	glass_icon_state = "silencer"
+	glass_name = "Silencer"
+	glass_desc = "A drink from mime Heaven."
+
+/datum/reagent/ethanol/singulo
+	name = "Singulo"
+	description = "A blue-space beverage!"
+	taste_description = "concentrated matter"
+	color = "#2e6671"
+	strength = 10
+
+	glass_required = "carafe"
+	glass_icon_state = "singulo"
+	glass_name = "Singulo"
+	glass_desc = "A blue-space beverage."
+
+/datum/reagent/ethanol/snowwhite
+	name = "Snow White"
+	description = "A cold refreshment"
+	taste_description = "refreshing cold"
+	color = "#ffffff"
+	strength = 30
+
+	glass_required = "pint"
+	glass_icon_state = "snowwhite"
+	glass_name = "Snow White"
+	glass_desc = "A cold refreshment."
+	glass_special = list(DRINK_FIZZ)
+
+/datum/reagent/ethanol/suidream
+	name = "Sui Dream"
+	description = "Comprised of: White soda, blue curacao, melon liquor."
+	taste_description = "fruit"
+	color = "#00a86b"
+	strength = 100
+
+	glass_required = "dpint"
+	glass_icon_state = "suidream"
+	glass_name = "Sui Dream"
+	glass_desc = "A froofy, fruity, and sweet mixed drink. Understanding the name only brings shame."
+
+/datum/reagent/ethanol/syndicatebomb
+	name = "Syndicate Bomb"
+	description = "Tastes like terrorism!"
+	taste_description = "purified antagonism"
+	color = "#2e6671"
+	strength = 10
+
+	glass_required = "pint"
+	glass_icon_state = "syndicatebomb"
+	glass_name = "Syndicate Bomb"
+	glass_desc = "Tastes like terrorism!"
+	glass_special = list(DRINK_FIZZ)
+
+/datum/reagent/ethanol/tequilla_sunrise
+	name = "Tequila Sunrise"
+	description = "Tequila and orange juice. Much like a Screwdriver, only Mexican~"
+	taste_description = "oranges"
+	color = "#ffe48c"
+	strength = 25
+
+	glass_required = "pint"
+	glass_icon_state = "tequillasunrise"
+	glass_name = "Tequilla Sunrise"
+	glass_desc = "Oh great, now you feel nostalgic about sunrises back on Terra..."
+
+/datum/reagent/ethanol/sexonthebeach
+	name = "Sex on the Beach"
+	description = "Don't take this as an instruction. You'll get robusted by ERP police."
+	color = "#d34b00"
+	strength = 20
+	taste_description = "fruity classic"
+
+	glass_required = "pint"
+	glass_icon_state = "sexonthebeach"
+	glass_name = "Sex on the Beach"
+	glass_desc = "Don't take this as an instruction. You'll get robusted by ERP police."
+
+/datum/reagent/ethanol/threemileisland
+	name = "Three Mile Island Iced Tea"
+	description = "Made for a woman, strong enough for a man."
+	taste_description = "dry"
+	color = "#666340"
+	strength = 10
+	druggy = 50
+
+	glass_required = "carafe"
+	glass_icon_state = "threemileisland"
+	glass_name = "Three Mile Island iced tea"
+	glass_desc = "A glass of this is sure to prevent a meltdown."
+
+/datum/reagent/ethanol/toxins_special
+	name = "Toxins Special"
+	description = "This thing is ON FIRE! CALL THE DAMN SHUTTLE!"
+	taste_description = "spicy toxins"
+	reagent_state = LIQUID
+	color = "#7f00ff"
+	strength = 10
+	adj_temp = 15
+	targ_temp = 330
+
+	glass_required = "shot"
+	glass_icon_state = "toxinsspecial"
+	glass_name = "Toxins Special"
+	glass_desc = "Whoah, this thing is on FIRE"
 
 /datum/reagent/ethanol/vesper
 	name = "Vesper Martini"
@@ -2407,17 +2516,72 @@
 	strength = 13
 	taste_description = "perfect dryness"
 
+	glass_required = "hurricane"
+	glass_icon_state = "vesper"
 	glass_name = "Vesper Martini"
 	glass_desc = "That one appears to be large and very strong and very cold and very well-made."
 
-/datum/reagent/ethanol/cider/apple
-	name = "Apple Cider"
-	description = "An alcoholic beverage made from apples."
-	taste_description = "apple cider"
-	color = "#e0e254"
-	strength = 50
+/datum/reagent/ethanol/vodkamartini
+	name = "Vodka Martini"
+	description = "Vodka with Gin. Not quite how 007 enjoyed it, but still delicious."
+	taste_description = "shaken, not stirred"
+	color = "#0064c8"
+	strength = 12
 
-	glass_name = "apple cider"
+	glass_required = "cocktail"
+	glass_icon_state = "vodkamartini"
+	glass_name = "vodka martini"
+	glass_desc ="A bastardisation of the classic martini. Still great."
+
+/datum/reagent/ethanol/vodkatonic
+	name = "Vodka and Tonic"
+	description = "For when a gin and tonic isn't russian enough."
+	taste_description = "tart bitterness"
+	color = "#0064c8"
+	strength = 15
+
+	glass_required = "square"
+	glass_icon_state = "vodkatonic"
+	glass_name = "vodka and tonic"
+	glass_desc = "For when a gin and tonic isn't Russian enough."
+
+
+/datum/reagent/ethanol/white_russian
+	name = "White Russian"
+	description = "That's just, like, your opinion, man..."
+	taste_description = "bitter cream"
+	color = "#a68340"
+	strength = 15
+
+	glass_required = "rocks"
+	glass_icon_state = "whiterussian"
+	glass_name = "White Russian"
+	glass_desc = "A very nice looking drink. But that's just, like, your opinion, man."
+
+
+/datum/reagent/ethanol/whiskey_cola
+	name = "Whiskey Cola"
+	description = "Whiskey, mixed with cola. Surprisingly refreshing."
+	taste_description = "cola"
+	color = "#3e1b00"
+	strength = 25
+
+	glass_required = "rocks"
+	glass_icon_state = "whiskeycola"
+	glass_name = "whiskey cola"
+	glass_desc = "An innocent-looking mixture of cola and Whiskey. Delicious."
+	glass_special = list(DRINK_FIZZ)
+
+/datum/reagent/ethanol/whiskeysoda
+	name = "Whiskey Soda"
+	description = "For the more refined griffon."
+	color = "#eab300"
+	strength = 15
+
+	glass_required = "rocks"
+	glass_icon_state = "whiskeysoda"
+	glass_name = "whiskey soda"
+	glass_desc = "Ultimate refreshment."
 	glass_special = list(DRINK_FIZZ)
 
 /datum/reagent/ethanol/witcher
@@ -2427,6 +2591,8 @@
 	strength = 15
 	taste_description = "potion"
 
+	glass_required = "pint"
+	glass_icon_state = "withcer"
 	glass_name = "witchers' drink"
 	glass_desc = "\"People,\" Geralt turned his head, \"like to invent monsters and monstrosities. Then they seem less monstrous themselves\""
 
@@ -2435,6 +2601,7 @@
 	color = "#d1f2b2"
 	taste_description = "lilac and gooseberries"
 
+	glass_icon_state = "withcerwolf"
 	glass_name = "School of the Wolf"
 
 /datum/reagent/ethanol/witcher/cat
@@ -2443,6 +2610,7 @@
 	strength = 20
 	taste_description = "berbercane fruit"
 
+	glass_icon_state = "withcercat"
 	glass_name = "School of the Cat"
 	glass_special = list(DRINK_FIZZ)
 
@@ -2452,6 +2620,7 @@
 	taste_description = "robust"
 	strength = 12
 
+	glass_icon_state = "withcerbear"
 	glass_name = "School of the Bear"
 
 /datum/reagent/ethanol/witcher/griffin
@@ -2459,5 +2628,18 @@
 	color = "#80b8e0"
 	taste_description = "mana potion"
 
+	glass_icon_state = "withcergriffin"
 	glass_name = "School of the Griffin"
 	glass_special = list(DRINK_FIZZ)
+
+/datum/reagent/ethanol/zhenghe
+	name = "Zheng He"
+	description = "One of the Official Cocktails of the Expeditionary Corps, celebrating Zheng He."
+	taste_description = "herbal bitterness"
+	color = "#173b06"
+	strength = 20
+
+	glass_required = "cognac"
+	glass_icon_state = "zhenghe"
+	glass_name = "Zheng He cocktail"
+	glass_desc = "A rather bitter blend of vermouth and well-steeped black tea. Named for Zheng He, who travelled from Nanjing in China as far as Mogadishu in the Horn of Africa in the 15th century."
