@@ -1148,7 +1148,6 @@ var/global/list/robot_modules = list(
 
 /obj/item/weapon/robot_module/curio/New()
 	src.modules += new /obj/item/device/flash(src)
-	src.modules += new /obj/item/weapon/melee/baton/robot(src)
 	src.modules += new /obj/item/weapon/extinguisher/borg(src)
 	src.modules += new /obj/item/device/healthanalyzer/borg(src)
 	src.modules += new /obj/item/weapon/inflatable_dispenser/robot(src)
