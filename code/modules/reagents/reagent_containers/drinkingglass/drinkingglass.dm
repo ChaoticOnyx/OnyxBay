@@ -111,9 +111,10 @@
 		desc = R.glass_desc ? R.glass_desc : initial(desc)
 
 		if (R.glass_required == base_icon)
-			icon = DRINK_COCKTAILICON_FILE
-			icon_state = R.glass_icon_state ? R.glass_icon_state : "glass_brown"
 			desc = "[desc] It's classicaly served."
+		if ((R.glass_required == base_icon) && R.glass_icon_state)
+			icon = DRINK_COCKTAILICON_FILE
+			icon_state = R.glass_icon_state
 			return
 		else
 			var/list/under_liquid = list()
