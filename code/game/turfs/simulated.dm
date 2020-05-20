@@ -84,8 +84,8 @@
 		if(M.lying)
 			return ..()
 
-		// Dirt overlays. It's kinda awesome, but hits performance too hard to keep it alive. ~Toby
-		//update_dirt()
+		// Dirt overlays. It's kinda awesome, but hits performance hard. Requires reworking. ~Toby
+		update_dirt()
 
 		if(istype(M, /mob/living/carbon/human))
 			var/mob/living/carbon/human/H = M
