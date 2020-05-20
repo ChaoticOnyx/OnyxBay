@@ -67,7 +67,7 @@
 			else if(!is_blind())
 				to_chat(src, "<span class='name'>[speaker_name]</span>[alt_name] talks but you cannot hear \him.")
 	else
-		if(istype(src,/mob/living) && src.mind && src.mind.syndicate_awareness == SYNDICATE_SUSPICIOUSLY_AWARED)
+		if(istype(src,/mob/living) && src.mind && src.mind.syndicate_awareness == SYNDICATE_SUSPICIOUSLY_AWARE)
 			message = highlight_codewords(message, GLOB.code_phrase_highlight_rule)  //  Same can be done with code_response or any other list of words, using regex created by generate_code_regex(). You can also add the name of CSS class as argument to change highlight style.
 		if(language)
 			var/nverb = null
@@ -197,7 +197,7 @@
 			speaker_name = "[speaker.real_name] ([speaker_name])"
 		track = "[speaker_name] ([ghost_follow_link(speaker, src)])"
 
-	if(istype(src,/mob/living) && src.mind && src.mind.syndicate_awareness == SYNDICATE_SUSPICIOUSLY_AWARED)
+	if(istype(src,/mob/living) && src.mind && src.mind.syndicate_awareness == SYNDICATE_SUSPICIOUSLY_AWARE)
 		message = highlight_codewords(message, GLOB.code_phrase_highlight_rule) //  Same can be done with code_response or any other list of words, using regex created by generate_code_regex(). You can also add the name of CSS class as argument to change highlight style.
 	var/formatted
 	if(language)

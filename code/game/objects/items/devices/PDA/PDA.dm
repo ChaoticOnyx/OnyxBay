@@ -1051,7 +1051,7 @@ var/global/list/obj/item/device/pda/PDAs = list()
 	var/mob/living/L = null
 	if(loc && isliving(loc))
 		L = loc
-		if(L.mind && L.mind.syndicate_awareness == SYNDICATE_SUSPICIOUSLY_AWARED)
+		if(L.mind && L.mind.syndicate_awareness == SYNDICATE_SUSPICIOUSLY_AWARE)
 			reception_message = highlight_codewords(reception_message, GLOB.code_phrase_highlight_rule)  //  Same can be done with code_response or any other list of words, using regex created by generate_code_regex(). You can also add the name of CSS class as argument to change highlight style.
 	//Maybe they are a pAI!
 	else

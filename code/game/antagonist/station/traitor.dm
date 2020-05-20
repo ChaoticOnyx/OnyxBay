@@ -92,7 +92,7 @@ GLOBAL_DATUM_INIT(traitors, /datum/antagonist/traitor, new)
 	give_collaborators(traitor_mob)
 	give_codewords(traitor_mob)
 	ASSERT(traitor_mob.mind)
-	traitor_mob.mind.syndicate_awareness = SYNDICATE_SUSPICIOUSLY_AWARED
+	traitor_mob.mind.syndicate_awareness = SYNDICATE_SUSPICIOUSLY_AWARE
 
 /datum/antagonist/traitor/proc/give_collaborators(mob/living/traitor_mob)
 	var/mob/living/carbon/human/M = get_nt_opposed()
