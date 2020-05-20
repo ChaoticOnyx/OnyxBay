@@ -42,7 +42,7 @@
 	holo_icon.ChangeOpacity(0.7)//Make it kinda transparent.
 	var/icon/alpha_mask = new('icons/effects/effects.dmi', "scanline-[HOLOPAD_SHORT_RANGE]")//Scanline effect.
 	holo_icon.AddAlphaMask(alpha_mask)//Finally, let's mix in a distortion effect.
-	death()
+	death(FALSE, TRUE)
 
 /mob/living/silicon/robot/remotable/curio/update_icon()
 	..()

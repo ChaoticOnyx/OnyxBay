@@ -46,10 +46,10 @@
 
 	to_chat(src, SPAN("notice", "<b>You have shunted your primary control loop into \a [initial(name)].</b> Use the <b>Release Control</b> verb to return to your core."))
 
-/mob/living/silicon/robot/remotable/death(gibbed)
+/mob/living/silicon/robot/remotable/death(gibbed, ai_release)
 	if(controlling_ai)
 		release_ai_control("<b>WARNING: remote system failure.</b> Connection timed out.")
-	. = ..(gibbed)
+	. = ..(gibbed, ai_release)
 
 /mob/living/silicon/ai/death(gibbed)
 	if(controlling_robot)
@@ -82,7 +82,7 @@
 	verbs -= /mob/living/silicon/robot/remotable/proc/release_ai_control_verb
 	full_law_reset()
 	updatename()
-	death()
+	death(FALSE, TRUE)
 
 /mob/living/silicon/robot/remotable/proc/full_law_reset()
 	clear_supplied_laws(1)

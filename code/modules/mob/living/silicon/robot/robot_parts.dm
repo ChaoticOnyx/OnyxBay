@@ -186,7 +186,7 @@
 				cell_component.wrapped = O.cell
 				cell_component.installed = 1
 
-			O.death()
+			O.death(FALSE, TRUE)
 			user.drop_item()
 			qdel(W)
 			qdel(src)
