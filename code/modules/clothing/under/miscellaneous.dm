@@ -628,7 +628,7 @@
 // 	worn_state = "pcrc"
 
 /obj/item/clothing/under/grayson
-	name = "improper Grayson overalls"
+	name = "\improper Grayson overalls"
 	desc = "A set of overalls belonging to Grayson Manufactories, a manufacturing and mining company."
 	icon_state = "grayson"
 	worn_state = "grayson"
@@ -647,12 +647,12 @@
 
 // //
 /obj/item/clothing/under/confederacy
-	name = "improper Confederate uniform"
+	name = "\improper Confederate uniform"
 	desc = "A military uniform belonging to an independent human government."
 	icon_state = "confed"
 
 /obj/item/clothing/under/saare
-	name = "improper SAARE uniform"
+	name = "\improper SAARE uniform"
 	desc = "A uniform belonging to Strategic Assault and Asset Retention Enterprises, a minor private military corporation."
 	icon_state = "saare"
 
@@ -662,17 +662,17 @@
 	icon_state = "frontier"
 
 /obj/item/clothing/under/aether
-	name = "improper Aether jumpsuit"
+	name = "\improper Aether jumpsuit"
 	desc = "A jumpsuit belonging to Aether Atmospherics and Recycling, a company that supplies recycling and atmospheric systems to colonies."
 	icon_state = "aether"
 
 /obj/item/clothing/under/focal
-	name = "improper Focal Point jumpsuit"
+	name = "\improper Focal Point jumpsuit"
 	desc = "A jumpsuit belonging to Focal Point Energistics, an engineering corporation."
 	icon_state = "focal"
 
 /obj/item/clothing/under/hephaestus
-	name = "improper Hephaestus jumpsuit"
+	name = "\improper Hephaestus jumpsuit"
 	desc = "A jumpsuit belonging to Hephaestus Industries, a megacorp best known for its arms production."
 	icon_state = "heph"
 
