@@ -67,9 +67,8 @@
 			else if(!is_blind())
 				to_chat(src, "<span class='name'>[speaker_name]</span>[alt_name] talks but you cannot hear \him.")
 	else
-		if(istype(src,/mob/living) && src.mind && src.mind.syndicate_awareness == SUSPICIOUSLY_AWARED)
-			message = highlight_codewords(message, GLOB.code_phrase_highlight_rule)
-			//message = highlight_codewords(message, GLOB.code_response_highlight_rule, rose) // <-- Uncomment this to highlight responses too, with different color
+		if(istype(src,/mob/living) && src.mind && src.mind.syndicate_awareness == SYNDICATE_SUSPICIOUSLY_AWARED)
+			message = highlight_codewords(message, GLOB.code_phrase_highlight_rule)  //  Same can be done with code_response or any other list of words, using regex created by generate_code_regex(). You can also add the name of CSS class as argument to change highlight style.
 		if(language)
 			var/nverb = null
 			if(!say_understands(speaker,language) || language.name == LANGUAGE_GALCOM) //Check to see if we can understand what the speaker is saying. If so, add the name of the language after the verb. Don't do this for Galactic Common.
@@ -198,10 +197,8 @@
 			speaker_name = "[speaker.real_name] ([speaker_name])"
 		track = "[speaker_name] ([ghost_follow_link(speaker, src)])"
 
-	if(istype(src,/mob/living) && src.mind && src.mind.syndicate_awareness == SUSPICIOUSLY_AWARED)
-		message = highlight_codewords(message, GLOB.code_phrase_highlight_rule)
-		//message = highlight_codewords(message, GLOB.code_response_highlight_rule, rose) // <-- Uncomment this to highlight responses too, with different color
-
+	if(istype(src,/mob/living) && src.mind && src.mind.syndicate_awareness == SYNDICATE_SUSPICIOUSLY_AWARED)
+		message = highlight_codewords(message, GLOB.code_phrase_highlight_rule) //  Same can be done with code_response or any other list of words, using regex created by generate_code_regex(). You can also add the name of CSS class as argument to change highlight style.
 	var/formatted
 	if(language)
 		if(!say_understands(speaker,language) || language.name == LANGUAGE_GALCOM) //Check if we understand the message. If so, add the language name after the verb. Don't do this for Galactic Common.

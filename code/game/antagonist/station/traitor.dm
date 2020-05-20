@@ -88,10 +88,11 @@ GLOBAL_DATUM_INIT(traitors, /datum/antagonist/traitor, new)
 	give_intel(traitor_mob)
 
 /datum/antagonist/traitor/proc/give_intel(mob/living/traitor_mob)
+	ASSERT(traitor_mob)
 	give_collaborators(traitor_mob)
 	give_codewords(traitor_mob)
-	if (traitor_mob.mind)
-		traitor_mob.mind.syndicate_awareness = SUSPICIOUSLY_AWARED
+	ASSERT(traitor_mob.mind)
+	traitor_mob.mind.syndicate_awareness = SYNDICATE_SUSPICIOUSLY_AWARED
 
 /datum/antagonist/traitor/proc/give_collaborators(mob/living/traitor_mob)
 	var/mob/living/carbon/human/M = get_nt_opposed()
@@ -100,15 +101,17 @@ GLOBAL_DATUM_INIT(traitors, /datum/antagonist/traitor, new)
 		traitor_mob.mind.store_memory("<b>Potential Collaborator</b>: [M.real_name]")
 
 /datum/antagonist/traitor/proc/give_codewords(mob/living/traitor_mob)
-	if (!GLOB.syndicate_code_phrase.len || !GLOB.syndicate_code_response.len)
-		return
+	ASSERT(GLOB.syndicate_code_phrase.len)
 	to_chat(traitor_mob, "<u><b>Your employers provided you with the following information on how to identify possible allies:</b></u>")
 	var/code_phrase = "<b>Code Phrase</b>: [codewords2string(GLOB.syndicate_code_phrase)]"
 	to_chat(traitor_mob, code_phrase)
 	traitor_mob.mind.store_memory(code_phrase)
+
+	ASSERT(GLOB.syndicate_code_response.len)
 	var/code_response = "<b>Code Response</b>: [codewords2string(GLOB.syndicate_code_response)]"
 	to_chat(traitor_mob, code_response)
 	traitor_mob.mind.store_memory(code_response)
+
 	to_chat(traitor_mob, "Use the code words, preferably in the order provided, during regular conversation, to identify other agents. Proceed with caution, however, as everyone is a potential foe.")
 
 /datum/antagonist/traitor/proc/spawn_uplink(mob/living/carbon/human/traitor_mob)

@@ -130,10 +130,10 @@
 #define COMPANY_ALIGNMENTS		list(COMPANY_LOYAL,COMPANY_SUPPORTATIVE,COMPANY_NEUTRAL,COMPANY_SKEPTICAL,COMPANY_OPPOSED)
 
 // Awareness about syndicate, it`s agents and equipment
-#define UNAWARED            0
-#define AWARED              1
-#define GREATLY_AWARED      2
-#define SUSPICIOUSLY_AWARED 3
+#define SYNDICATE_UNAWARED            0
+#define SYNDICATE_AWARED              1
+#define SYNDICATE_GREATLY_AWARED      2
+#define SYNDICATE_SUSPICIOUSLY_AWARED 3
 
 // Defines mob sizes, used by lockers and to determine what is considered a small sized mob, etc.
 #define MOB_LARGE  		40
