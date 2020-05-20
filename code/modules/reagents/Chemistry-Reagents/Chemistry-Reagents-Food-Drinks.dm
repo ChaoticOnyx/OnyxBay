@@ -860,7 +860,7 @@
 	adj_temp = -5
 
 	glass_required = "rocks"
-	glass_icon_state = "andalusia"
+	glass_icon_state = "kiraspecial"
 	glass_name = "Kira Special"
 	glass_desc = "Long live the guy who everyone had mistaken for a girl. Baka!"
 	glass_special = list(DRINK_FIZZ)
