@@ -981,7 +981,7 @@
 		pregen -= 1.25
 
 	if(blocking)
-		pregen -= 2.0
+		pregen -= 2.5
 
 	if(poise < poise_pool)
 		poise += pregen
