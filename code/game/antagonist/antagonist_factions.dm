@@ -34,7 +34,7 @@
 
 	player.rev_cooldown = world.time + 100
 	if (!faction.is_antagonist(player))
-		var/choice = alert(player.current, "Asked by [src]: Do you want to join the [faction.faction_descriptor]?","Join the [faction.faction_descriptor]?","Yes!","No!")
+		var/choice = alert(player.current, "Asked by [src]: Do you want to join the [faction.faction_descriptor]?","Join the [faction.faction_descriptor]?","No!","Yes!")
 		if(!(player.current in able_mobs_in_oview(src)))
 			return
 		if(choice == "Yes!" && faction.add_antagonist_mind(player, 1, faction.faction_role_text, faction.faction_welcome))
