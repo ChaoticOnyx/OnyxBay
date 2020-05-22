@@ -4,7 +4,7 @@
 	desc = "A musical audio player station, also known as boombox or ghettobox. Very robust."
 	icon = 'sprites/object.dmi'
 	icon_state = "boombox"
-	item_state = "boombox"
+	item_state = "RPED"
 	color = "#444444"
 
 	preference = /datum/client_preference/play_jukeboxes

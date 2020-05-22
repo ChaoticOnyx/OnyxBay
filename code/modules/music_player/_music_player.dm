@@ -340,9 +340,11 @@ GLOBAL_LIST_EMPTY(music_players)
 	update_icon()
 
 /obj/item/music_player/verb/eject(mob/user)
-	set name = "Eject"
+	set name = "Eject Tape"
 	set category = "Object"
-	set src in oview(1)
+
+	if(usr)
+		user = usr
 
 	if(!tape)
 		to_chat(user, SPAN_NOTICE("There's no tape in \the [src]."))
