@@ -90,23 +90,17 @@
 	if(rickrolling)
 		to_chat(usr, "You notice a sinked button on a [src]")
 
-	tg_ui_interact(user)
+	ui_interact(user)
 
-/obj/machinery/media/jukebox/ui_status(mob/user, datum/ui_state/state)
+/obj/machinery/media/jukebox/CanUseTopic(user, state)
 	if(!anchored || inoperable())
-		return UI_CLOSE
+		return STATUS_CLOSE
 	return ..()
 
-/obj/machinery/media/jukebox/tg_ui_interact(mob/user, ui_key = "main", datum/tgui/ui = null, force_open = 0, datum/tgui/master_ui = null, datum/ui_state/state = tg_default_state)
-	ui = SStgui.try_update_ui(user, src, ui_key, ui, force_open)
-	if(!ui)
-		ui = new(user, src, ui_key, "jukebox", "RetroBox - Space Style", 340, 440, master_ui, state)
-		ui.open()
-
-/obj/machinery/media/jukebox/ui_data()
+/obj/machinery/media/jukebox/ui_interact(mob/user, ui_key = "main", datum/nanoui/ui = null, force_open = 1)
 	var/list/juke_tracks = new
 	for(var/datum/track/T in tracks)
-		juke_tracks.Add(T.title)
+		juke_tracks.Add(list(list("track"=T.title)))
 
 	var/list/data = list(
 		"current_track" = current_track != null ? current_track.title : "No track selected",
@@ -116,44 +110,43 @@
 		"tape" = tape
 	)
 
-	return data
+	ui = SSnano.try_update_ui(user, src, ui_key, ui, data, force_open)
+	if (!ui)
+		ui = new(user, src, ui_key, "jukebox.tmpl", "Your Media Library", 340, 440)
+		ui.set_initial_data(data)
+		ui.open()
 
-/obj/machinery/media/jukebox/ui_act(action, params)
-	if(..())
-		return TRUE
-	switch(action)
-		if("change_track")
-			if(!rickrolling)
-				for(var/datum/track/T in tracks)
-					if(T.title == params["title"])
-						current_track = T
-						StartPlaying()
-						break
-			. = TRUE
-		if("stop")
-			if(!rickrolling)
-				StopPlaying()
-			. = TRUE
-		if("play")
-			if(emagged)
-				emag_play()
-			else if(!current_track)
-				to_chat(usr, "No track selected.")
-			else
-				if(!rickrolling)
+/obj/machinery/media/jukebox/OnTopic(mob/user, list/href_list, state)
+	if (href_list["title"])
+		if(!rickrolling)
+			for(var/datum/track/T in tracks)
+				if(T.title == href_list["title"])
+					current_track = T
 					StartPlaying()
-			. = TRUE
-		if("volume")
-			AdjustVolume(text2num(params["level"]))
-			. = TRUE
-		if("eject")
-			eject()
-			. = TRUE
+					break
+
+	if (href_list["stop"])
+		if(!rickrolling)
+			StopPlaying()
+
+	if (href_list["play"])
+		if(emagged)
+			emag_play()
+		else if(!current_track)
+			to_chat(usr, "No track selected.")
+		else
+			if(!rickrolling)
+				StartPlaying()
+
+	if (href_list["volume"])
+		AdjustVolume(text2num(href_list["volume"]))
 
 	if(!spamcheck)
 		spamcheck = TRUE
 		spawn(30)
 			spamcheck = FALSE
+
+	return TOPIC_REFRESH
 
 /obj/machinery/media/jukebox/proc/emag_play()
 	playsound(loc, 'sound/items/AirHorn.ogg', 100, 1)
