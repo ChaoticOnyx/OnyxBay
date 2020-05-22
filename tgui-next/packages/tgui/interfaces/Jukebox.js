@@ -33,6 +33,7 @@ export const Jukebox = props => {
       </Section>
       <Section title="Tracks List" buttons={(
         <Fragment>
+          <Button content="Eject" icon="eject" disabled={data.tape ? null : '1'} onClick={() => act(ref, 'eject', null)} />
           {data.playing
             ? <Button content="Stop" icon="stop" onClick={() => act(ref, 'stop', null)} />
             : <Button content="Play" icon="forward" onClick={() => act(ref, 'play', null)} />
