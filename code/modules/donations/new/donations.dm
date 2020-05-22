@@ -15,8 +15,6 @@ SUBSYSTEM_DEF(donations)
 		log_debug("Donations system is disabled by configuration!")
 		return
 
-	..()
-
 	var/credentials = null
 
 	var/savefile/F = new(DONATIONS_DB_CREDENTIALS_SAVEFILE)
@@ -32,6 +30,8 @@ SUBSYSTEM_DEF(donations)
 		log_debug("Donations system successfully connected!")
 	else
 		log_debug("Donations system failed to connect with DB!")
+
+	return ..()
 
 
 /datum/controller/subsystem/donations/proc/Reconnect(credentials)
