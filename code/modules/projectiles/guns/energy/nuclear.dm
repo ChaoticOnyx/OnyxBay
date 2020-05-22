@@ -95,7 +95,7 @@
 
 //override for failcheck behaviour
 /obj/item/weapon/gun/energy/gun/nuclear/Process()
-	if(fail_counter >= 15)
+	if(fail_counter > 15)
 		SSradiation.radiate(src, fail_counter--)
 	else if (fail_counter > 0)
 		fail_counter--
@@ -129,7 +129,7 @@
 		else
 			visible_message("\The [src]'s reactor heats up uncontrollably...  But nothing happens.")
 	if(prob(90))
-		fail_counter += rand(1,5)
+		fail_counter += rand(2,4)
 	else
 		fail_counter += rand(10,15)
 		to_chat(loc, SPAN("warning", "\The [src] emits a nasty buzzing sound!"))
