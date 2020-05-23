@@ -48,8 +48,7 @@ GLOBAL_DATUM_INIT(blobs, /datum/antagonist/blob, new)
 
 	var/datum/objective/O = global_objectives[1]
 
-	if (!O.completed && GLOB.blob_tiles_grown_total >= O.target_amount)
-		O.completed = TRUE
+	if (GLOB.blob_tiles_grown_total >= O.target_amount)
 		SSticker.mode.blob_domination = TRUE
 		universe_has_ended = TRUE
 	else if (!antags_are_dead() && GLOB.blob_tiles_grown_total >= O.target_amount * 0.05 && under_quarantine == FALSE)
@@ -102,9 +101,6 @@ GLOBAL_DATUM_INIT(blobs, /datum/antagonist/blob, new)
 
 /datum/objective/blob/infest
 	explanation_text = "Capture"
-
-/datum/objective/blob/infest/check_completion()
-	return (GLOB.blob_tiles_grown_total >= target_amount)
 
 /datum/objective/blob/infest/New()
 	..()
