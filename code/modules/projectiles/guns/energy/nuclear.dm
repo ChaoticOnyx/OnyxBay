@@ -136,6 +136,17 @@
 		var/datum/effect/effect/system/spark_spread/spark_system = new /datum/effect/effect/system/spark_spread()
 		spark_system.set_up(2, 0, user.loc)
 		spark_system.start()
+	if(fail_counter > 15)
+		to_chat(loc, SPAN("warning", "\The [src] feels pleasantly warm."))
+	else if (fail_counter > 30)
+		to_chat(loc, SPAN("warning", "\The [src] feels burning hot!"))
+
+/obj/item/weapon/gun/energy/gun/nuclear/examine(mob/user)
+	..(user)
+	if(fail_counter > 15)
+		to_chat(user, "It feels pleasantly warm.")
+	else if (fail_counter > 30)
+		to_chat(user, "It feels burning hot!")
 
 /obj/item/weapon/gun/energy/gun/nuclear/proc/get_charge_overlay()
 	var/ratio = power_supply.percent()
@@ -145,7 +156,7 @@
 /obj/item/weapon/gun/energy/gun/nuclear/proc/get_reactor_overlay()
 	if(fail_counter > 30)
 		return "nucgun-crit"
-	if(fail_counter > 10)
+	if(fail_counter > 15)
 		return "nucgun-medium"
 	if (power_supply.percent() <= 50)
 		return "nucgun-light"
