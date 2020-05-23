@@ -4,7 +4,7 @@
 /obj/machinery/door
 	name = "Door"
 	desc = "It opens and closes."
-	icon = 'icons/obj/doors/Doorint.dmi'
+	icon = 'icons/obj/doors/doorint.dmi'
 	icon_state = "door1"
 	anchored = 1
 	opacity = 1

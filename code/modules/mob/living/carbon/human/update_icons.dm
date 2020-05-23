@@ -793,7 +793,7 @@ var/global/list/damage_icon_parts = list()
 /mob/living/carbon/human/update_fire(update_icons=1)
 	overlays_standing[HO_FIRE_LAYER] = null
 	if(on_fire)
-		var/image/standing = overlay_image('icons/mob/OnFire.dmi', "Standing", RESET_COLOR)
+		var/image/standing = overlay_image('icons/mob/onfire.dmi', "Standing", RESET_COLOR)
 		overlays_standing[HO_FIRE_LAYER] = standing
 
 	if(update_icons) queue_icon_update()
