@@ -211,7 +211,6 @@ obj/item/weapon/gun/energy/staff/focus
 	force = 8
 	origin_tech = list(TECH_MATERIAL = 6, TECH_PHORON = 5, TECH_ENGINEERING = 6, TECH_COMBAT = 3)
 	matter = list(MATERIAL_STEEL = 4000)
-	projectile_type = /obj/item/projectile/beam/plasmacutter
+	projectile_type = /obj/item/projectile/beam/plasmacutter/danger
 	max_shots = 10
-	self_recharge = 1
 

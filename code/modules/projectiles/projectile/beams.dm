@@ -200,8 +200,7 @@
 	name = "plasma arc"
 	icon_state = "omnilaser"
 	fire_sound = 'sound/effects/weapons/energy/fire3.ogg'
-	armor_penetration = 10
-	damage = 30
+	damage = 15
 	sharp = 1
 	edge = 1
 	damage_type = BURN
@@ -221,17 +220,48 @@
 			return
 		else
 			M.emitter_blasts_taken += 2
+
+/obj/item/projectile/beam/plasmacutter/danger
+	name = "plasma arc"
+	icon_state = "omnilaser"
+	fire_sound = "sound/effects/weapons/energy/fire3.ogg"
+	damage = 30
+	sharp = 1
+	edge = 1
+	damage_type = BURN
+	check_armour = "laser"
+	kill_count = 5
+	pass_flags = PASS_FLAG_TABLE
+	armor_penetration = 10
+	muzzle_type = /obj/effect/projectile/trilaser/muzzle
+	tracer_type = /obj/effect/projectile/trilaser/tracer
+	impact_type = /obj/effect/projectile/trilaser/impact
+	var/beam_passed = 0
+	var/turf/f_loc = null
+
+/obj/item/projectile/beam/plasmacutter/danger/on_impact(atom/A)
+	if(istype(A, /turf/simulated/mineral))
+		var/turf/simulated/mineral/M = A
+		if(prob(99))
+			M.GetDrilled(1)
+			return
+		else
+			M.emitter_blasts_taken += 2
 	if(istype(A, /mob/living/carbon/human))
 		var/mob/living/carbon/human/H = A
 		if(!H.wearing_rig)
 			var/obj/item/organ/external/LIMP = H.get_organ(src.def_zone)
 			var/block = H.run_armor_check(src.def_zone, src.check_armour, src.armor_penetration)
-			var/chance = 33
-			if(block > 0)
-				chance = round((100 - block) / 3)
-			if(prob(chance))
+			var/chance = round((100 - block) / 3)
+			var/turf/imp_T = get_turf(A)
+			var/datum/gas_mixture/environment = imp_T.return_air()
+			if(prob(chance) && (environment.return_pressure() < 5))
 				if (istype(LIMP, /obj/item/organ/external/chest) ||	istype(LIMP, /obj/item/organ/external/groin))
-					LIMP.take_external_damage(30, used_weapon = "Plasma arc")
+					LIMP.take_external_damage(src.damage, used_weapon = src.name)
 				else
-					LIMP.droplimb(0, DROPLIMB_EDGE)
+					if (istype(LIMP, /obj/item/organ/external/head) && !(get_target_clothes(H, src.def_zone).flags & ITEM_FLAG_THICKMATERIAL))
+						LIMP.droplimb(0, DROPLIMB_EDGE)
+					else
+						LIMP.droplimb(0, DROPLIMB_EDGE)
+
 	. = ..()
