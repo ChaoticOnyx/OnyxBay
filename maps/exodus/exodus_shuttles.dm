@@ -542,7 +542,10 @@
 	current_location = "nav_merchant_start"
 	dock_target = "merchant_ship_dock"
 	home_waypoint = "nav_merchant_start"
+	cloaked = 1
 	move_time = 60
+	announcer = "NMV Icarus Sensor Array"
+	arrival_message = "Attention, you have an unarmed cargo vessel, which appears to be a merchant ship, approaching the station."
 
 /obj/effect/shuttle_landmark/merchant/start
 	name = "Merchant Base"
@@ -590,8 +593,11 @@
 	current_location = "nav_skipjack_start"
 	landmark_transition = "nav_skipjack_transition"
 	home_waypoint = "nav_skipjack_start"
-	cloaked = 0
+	cloaked = 1
 	move_time = 120
+	announcer = "NMV Icarus Sensor Array"
+	arrival_message = "Attention, you have a large signature approaching the station - looks unarmed to surface scans. We're too far out to intercept - brace for visitors."
+	departure_message = "Your visitors are on their way out of the system, burning delta-v like it's nothing. Good riddance."
 
 /obj/effect/shuttle_landmark/skipjack/start
 	name = "Raider Base"
