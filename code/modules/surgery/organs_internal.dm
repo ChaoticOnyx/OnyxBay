@@ -402,7 +402,7 @@
 	affected.take_external_damage(20, used_weapon = tool)
 
 //////////////////////////////////////////////////////////////////
-//	 Peridaxon necrosis treatment surgery step
+//	 Peridaxon destroyed organ restoration surgery step
 //////////////////////////////////////////////////////////////////
 /datum/surgery_step/internal/treat_necrosis
 	priority = 2
@@ -445,8 +445,8 @@
 	var/obj/item/organ/internal/organ_to_fix = input(user, "Which organ do you want to regenerate?") as null|anything in dead_organs
 	if(!organ_to_fix)
 		return 0
-	if(!organ_to_fix.can_recover())
-		to_chat(user, "<span class='notice'>The [organ_to_fix.name] is destroyed and can't be saved, it will need to be replaced.</span>")
+	if(!organ_to_fix.can_recover() && istype(organ_to_fix, /obj/item/organ/internal/brain))
+		to_chat(user, "<span class='notice'>The [organ_to_fix.name] is destroyed and can't be saved.</span>")
 		return 0
 
 	target.op_stage.current_organ = organ_to_fix
@@ -472,11 +472,15 @@
 
 	var/trans = temp_reagents.trans_to_mob(target, temp_reagents.total_volume, CHEM_BLOOD) //technically it's contact, but the reagents are being applied to internal tissue
 	if (trans > 0)
-
 		if(rejuvenate)
-			affected.damage = 0
-			affected.status &= ~ORGAN_DEAD
-			affected.owner.update_body(1)
+			if(affected.can_recover())
+				affected.damage = 0
+				affected.status &= ~ORGAN_DEAD
+				affected.owner.update_body(1)
+			else
+				affected.damage = affected.min_broken_damage
+				affected.death_time = 0
+				affected.owner.update_body(1)
 
 		user.visible_message("<span class='notice'>[user] applies [trans] unit\s of the solution to affected tissue in [target]'s [affected.name]</span>.", \
 			"<span class='notice'>You apply [trans] unit\s of the solution to affected tissue in [target]'s [affected.name] with \the [tool].</span>")
