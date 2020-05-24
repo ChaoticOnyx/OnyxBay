@@ -1160,6 +1160,7 @@ var/global/list/robot_modules = list(
 	src.modules += new /obj/item/weapon/wirecutters/borg/drone(src)
 	src.modules += new /obj/item/device/multitool/borg/drone(src)
 	src.modules += new /obj/item/weapon/matter_decompiler(src)
+	src.modules += new /obj/item/device/analyzer(src)
 	src.emag = new /obj/item/weapon/gun/energy/plasmacutter(src)
 
 	appointed_huds = list("Disable", "Security", "Medical", "Meson")

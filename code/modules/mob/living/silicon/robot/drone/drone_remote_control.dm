@@ -10,13 +10,13 @@
 		return
 
 	if(stat != 2 || client || key)
-		to_chat(user, "<span class='warning'>You cannot take control of an autonomous, active drone.</span>")
+		to_chat(user, SPAN("warning", "You cannot take control of an autonomous, active drone."))
 		return
 
 	if(health < -35 || emagged)
-		to_chat(user, "<span class='notice'><b>WARNING:</b> connection timed out.</span>")
+		to_chat(user, SPAN("notice", "<b>WARNING:</b> connection timed out."))
 		return
-	
+
 	assume_control(user)
 
 /mob/living/silicon/robot/drone/proc/assume_control(mob/living/silicon/ai/user)
@@ -26,7 +26,7 @@
 	local_transmit = FALSE
 	languages = controlling_ai.languages.Copy()
 	add_language("Robot Talk", 1)
-	
+
 	default_language = all_languages[LANGUAGE_GALCOM]
 
 	stat = CONSCIOUS
@@ -38,32 +38,7 @@
 	qdel(silicon_radio)
 	silicon_radio = new /obj/item/device/radio/headset/heads/ai_integrated(src)
 
-	to_chat(src, "<span class='notice'><b>You have shunted your primary control loop into \a [initial(name)].</b> Use the <b>Release Control</b> verb to return to your core.</span>")
-
-/obj/machinery/drone_fabricator/attack_ai(mob/living/silicon/ai/user)
-
-	if(!istype(user) || user.controlling_drone || !config.allow_drone_spawn)
-		return
-
-	if(stat & NOPOWER)
-		to_chat(user, "<span class='warning'>\The [src] is unpowered.</span>")
-		return
-
-	if(!produce_drones)
-		to_chat(user, "<span class='warning'>\The [src] is disabled.</span>")
-		return
-
-	if(drone_progress < 100)
-		to_chat(user, "<span class='warning'>\The [src] is not ready to produce a new drone.</span>")
-		return
-
-	if(count_drones() >= config.max_maint_drones)
-		to_chat(user, "<span class='warning'>The drone control subsystems are tasked to capacity; they cannot support any more drones.</span>")
-		return
-
-	var/mob/living/silicon/robot/drone/new_drone = create_drone()
-	new_drone.assume_control(user)
-
+	to_chat(src, SPAN("notice", "<b>You have shunted your primary control loop into \a [initial(name)].</b> Use the <b>Release Control</b> verb to return to your core."))
 
 /mob/living/silicon/robot/drone/death(gibbed)
 	if(controlling_ai)
@@ -94,7 +69,7 @@
 			mind.transfer_to(controlling_ai)
 		else
 			controlling_ai.key = key
-		to_chat(controlling_ai, "<span class='notice'>[message]</span>")
+		to_chat(controlling_ai, SPAN("notice", message))
 		controlling_ai.controlling_drone = null
 		controlling_ai = null
 
