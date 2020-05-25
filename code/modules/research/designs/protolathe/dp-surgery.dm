@@ -90,7 +90,7 @@
 	id = "organfixer_bluespace"
 	req_tech = list(TECH_MATERIAL = 6, TECH_ENGINEERING = 4, TECH_BIO = 6, TECH_BLUESPACE = 3)
 	materials = list (MATERIAL_STEEL = 12500, MATERIAL_GLASS = 7500, MATERIAL_GOLD = 1500, MATERIAL_SILVER = 2000, MATERIAL_DIAMOND = 750)
-	build_path = /obj/item/weapon/organfixer/advanced
+	build_path = /obj/item/weapon/organfixer/advanced/bluespace
 	sort_string = "MBEAJ"
 
 /datum/design/item/surgery/advanced_roller
