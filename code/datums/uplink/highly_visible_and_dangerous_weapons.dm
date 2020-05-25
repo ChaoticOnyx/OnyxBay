@@ -83,7 +83,7 @@
 /datum/uplink_item/item/visible_weapons/energy_sword
 	name = "Energy Sword"
 	item_cost = 60
-	path = /obj/item/weapon/melee/energy/sword
+	path = /obj/item/weapon/melee/energy/sword/traitor
 
 /datum/uplink_item/item/visible_weapons/heavysniper
 	name = "Anti-materiel Rifle with ammunition"
