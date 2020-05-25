@@ -163,21 +163,21 @@
 	attack_verb = list()
 	icon_state = initial(icon_state)
 
-/obj/item/weapon/melee/energy/sword/attackby(obj/item/sword as obj, mob/user as mob)
-	if(istype(sword, /obj/item/weapon/melee/energy/sword))
-		if (istype(sword,/obj/item/weapon/melee/energy/sword/dualsaber) || istype(src,/obj/item/weapon/melee/energy/sword/dualsaber))
-			return
-		to_chat(user, "<span class='notice'>You attach the ends of the two energy swords, making a single double-bladed weapon!</span>")
-		new /obj/item/weapon/melee/energy/sword/dualsaber(user.loc)
-		qdel(sword)
-		sword = null
-		qdel(src)
-
 /obj/item/weapon/melee/energy/sword/handle_shield(mob/user)
 	. = ..()
 
 	if(.)
 		playsound(user.loc, 'sound/weapons/blade1.ogg', 50, 1)
+		
+/obj/item/weapon/melee/energy/sword/traitor
+
+/obj/item/weapon/melee/energy/sword/traitor/attackby(obj/item/sword as obj, mob/user as mob)
+	if(istype(sword, /obj/item/weapon/melee/energy/sword/traitor))
+		to_chat(user, SPAN("notice","You attach the ends of the two energy swords, making a single double-bladed weapon!"))
+		new /obj/item/weapon/melee/energy/sword/dualsaber(user.loc)
+		qdel(sword)
+		sword = null
+		qdel(src)
 
 /obj/item/weapon/melee/energy/sword/pirate
 	name = "energy cutlass"
