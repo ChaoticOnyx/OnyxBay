@@ -29,7 +29,7 @@
 	/obj/item/weapon/organfixer/standard = 100
 	)
 
-	min_duration = 35
+	min_duration = 30
 	max_duration = 60
 
 /datum/surgery_step/internal/fix_organ/can_use(mob/living/user, mob/living/carbon/human/target, target_zone, obj/item/tool)
@@ -75,6 +75,11 @@
 	return TRUE
 
 /datum/surgery_step/internal/fix_organ/begin_step(mob/user, mob/living/carbon/human/target, target_zone, obj/item/tool)
+	if(!hasorgans(target))
+		return
+	var/obj/item/organ/external/affected = target.get_organ(target_zone)
+	if(!affected || affected.open() < 2)
+		return
 	user.visible_message("[user] starts repairing [target]'s [target.op_stage.current_organ] with \the [tool]." , \
 	"You start repairing [target]'s [target.op_stage.current_organ] with \the [tool].")
 
@@ -131,7 +136,7 @@
 	/obj/item/weapon/organfixer/advanced = 100
 	)
 
-	min_duration = 40
+	min_duration = 30
 	max_duration = 60
 
 /datum/surgery_step/internal/fix_organ_multiple/can_use(mob/living/user, mob/living/carbon/human/target, target_zone, obj/item/tool)
@@ -221,6 +226,116 @@
 	for(var/obj/item/organ/internal/I in affected.internal_organs)
 		if(I && I.damage > 0 && !BP_IS_ROBOTIC(I) && (I.surface_accessible || affected.open() >= (affected.encased ? 3 : 2)))
 			I.take_internal_damage(5, 0)
+
+//////////////////////////////////////////////////////////////////
+//	 Ghetto organs mending surgery step
+//////////////////////////////////////////////////////////////////
+/datum/surgery_step/internal/fix_organ_ghetto
+	allowed_tools = list(
+	/obj/item/stack/medical/advanced/bruise_pack= 67,		\
+	/obj/item/stack/medical/bruise_pack = 34,	\
+	/obj/item/weapon/tape_roll = 20
+	)
+
+	min_duration = 60
+	max_duration = 90
+
+/datum/surgery_step/internal/fix_organ_ghetto/can_use(mob/living/user, mob/living/carbon/human/target, target_zone, obj/item/tool)
+	if(!hasorgans(target))
+		return FALSE
+	var/obj/item/organ/external/affected = target.get_organ(target_zone)
+	if(!affected)
+		return FALSE
+	if(BP_IS_ROBOTIC(affected))
+		return FALSE
+	if(target.op_stage.current_organ)
+		to_chat(user, SPAN("warning", "You can't do this right now."))
+		return FALSE
+	if(istype(tool, /obj/item/stack/medical/advanced/bruise_pack) || istype(tool, /obj/item/stack/medical/bruise_pack))
+		var/obj/item/stack/medical/M = tool
+		if(M.amout < 1)
+				to_chat(user, SPAN("warning", "\The [M] is empty!"))
+				return FALSE
+
+	var/obj/item/organ/internal/list/damaged_organs = list()
+	for(var/obj/item/organ/internal/I in target.internal_organs)
+		if(I && !(I.status & ORGAN_CUT_AWAY) && I.parent_organ == affected.organ_tag && !BP_IS_ROBOTIC(I))
+			damaged_organs |= I
+
+	var/obj/item/organ/internal/organ_to_fix = input(user, "Which organ do you want to repair?") as null|anything in damaged_organs
+	if(!organ_to_fix)
+		return FALSE
+	if(!organ_to_fix.can_recover())
+		to_chat(user, SPAN("notice", "The [organ_to_fix.name] is destroyed and can't be saved."))
+		return FALSE
+	if(!organ_to_fix.damage && !O.emagged)
+		to_chat(user, SPAN("notice", "The [organ_to_fix.name] is intact and doesn't require any healing."))
+		return FALSE
+
+	target.op_stage.current_organ = organ_to_fix
+
+	return FALSE
+
+/datum/surgery_step/internal/fix_organ_ghetto/begin_step(mob/user, mob/living/carbon/human/target, target_zone, obj/item/tool)
+	var/tool_name = "\the [tool]"
+	if (istype(tool, /obj/item/stack/medical/advanced/bruise_pack))
+		tool_name = "regenerative membrane"
+	else if (istype(tool, /obj/item/stack/medical/bruise_pack))
+		tool_name = "the bandaid"
+
+	if (!hasorgans(target))
+		return
+	var/obj/item/organ/external/affected = target.get_organ(target_zone)
+	if(!affected || affected.open() < 2)
+		return
+	user.visible_message("[user] starts treating damage to [target]'s [target.op_stage.current_organ] with \the [tool_name]." , \
+			       	         "You start treating damage to [target]'s [target.op_stage.current_organ] with \the [tool_name].")
+	target.custom_pain("The pain in your [affected.name] is living hell!",100,affecting = affected)
+	..()
+
+/datum/surgery_step/internal/fix_organ_ghetto/end_step(mob/living/user, mob/living/carbon/human/target, target_zone, obj/item/tool)
+	if (!hasorgans(target))
+		return
+	var/tool_name = "\the [tool]"
+	if (istype(tool, /obj/item/stack/medical/advanced/bruise_pack))
+		tool_name = "regenerative membrane"
+	if (istype(tool, /obj/item/stack/medical/bruise_pack))
+		tool_name = "the bandaid"
+	var/obj/item/organ/internal/affected = target.op_stage.current_organ
+	if(affected && affected.damage > 0 && !BP_IS_ROBOTIC(affected) && (affected.surface_accessible || target.get_organ(target_zone).open() >= (target.get_organ(target_zone).encased ? SURGERY_ENCASED : SURGERY_RETRACTED)))
+		if(affected.status & ORGAN_DEAD && affected.can_recover())
+			user.visible_message(SPAN("notice", "[user] treats damage to [target]'s [affected.name] with [tool_name], though it needs to be recovered further."), \
+						             SPAN("notice", "You treat damage to [target]'s [affected.name] with [tool_name], though it needs to be recovered further."))
+		else
+			user.visible_message(SPAN("notice", "[user] treats damage to [target]'s [affected.name] with [tool_name]."), \
+						             SPAN("notice", "You treat damage to [target]'s [affected.name] with [tool_name].")
+		if(istype(tool, /obj/item/stack/medical/advanced/bruise_pack) || istype(tool, /obj/item/stack/medical/bruise_pack))
+			var/obj/item/stack/medical/M = tool
+			M.use(1)
+		affected.damage = 0
+		affected.owner.update_body(1)
+	target.op_stage.current_organ = null
+
+/datum/surgery_step/internal/fix_organ_ghetto/fail_step(mob/living/user, mob/living/carbon/human/target, target_zone, obj/item/tool)
+	if(!hasorgans(target))
+		return
+	var/obj/item/organ/external/affected = target.get_organ(target_zone)
+
+	user.visible_message(SPAN("warning", "[user]'s hand slips, getting mess and tearing the inside of [target]'s [affected.name] with \the [tool]!"), \
+			                 SPAN("warning", "Your hand slips, getting mess and tearing the inside of [target]'s [affected.name] with \the [tool]!"))
+	var/dam_amt = 2
+
+	if (istype(tool, /obj/item/stack/medical/advanced/bruise_pack))
+		target.adjustToxLoss(5)
+
+	else
+		dam_amt = 5
+		target.adjustToxLoss(10)
+		affected.take_external_damage(dam_amt, 0, (DAM_SHARP|DAM_EDGE), used_weapon = tool)
+
+	for(var/obj/item/organ/internal/I in affected.internal_organs)
+		if(I && I.damage > 0 && !BP_IS_ROBOTIC(I) && (I.surface_accessible || affected.open() >= (affected.encased ? 3 : 2)))
+			I.take_internal_damage(dam_amt, 0)
 
 //////////////////////////////////////////////////////////////////
 //	 Organ detatchment surgery step
