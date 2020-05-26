@@ -37,15 +37,15 @@
 /proc/testing(msg)
 	log_to_dd("\[[time_stamp()]]\[TESTING] [msg][log_end]")
 
-/proc/log_generic(type, message, location, log_to_diary = TRUE, notify_admin = FALSE, req_pref = null)
+/proc/log_generic(type, message, location, log_to_common = TRUE, notify_admin = FALSE, req_pref = null)
 	var/turf/T = get_turf(location)
 	if(location && T)
-		if(log_to_diary)
-			diary << "\[[time_stamp()]] [game_id] [type]: [message] ([T.x],[T.y],[T.z])[log_end]"
+		if(log_to_common)
+			WRITE_FILE(GLOB.world_common_log, "\[[time_stamp()]] [game_id] [type]: [message] ([T.x],[T.y],[T.z])[log_end]")
 		if(notify_admin)
 			message += " (<A HREF='?_src_=holder;adminplayerobservecoodjump=1;X=[T.x];Y=[T.y];Z=[T.z]'>JMP</a>)"
-	else if(log_to_diary)
-		diary << "\[[time_stamp()]] [game_id] [type]: [message][log_end]"
+	else if(log_to_common)
+		WRITE_FILE(GLOB.world_common_log, "\[[time_stamp()]] [game_id] [type]: [message][log_end]")
 
 	var/rendered = "<span class=\"log_message\"><span class=\"prefix\">[type] LOG:</span> <span class=\"message\">[message]</span></span>"
 	if(notify_admin)
@@ -107,7 +107,7 @@
 	log_generic("DATABASE", text, notify_admin = notify_admin)
 
 /proc/game_log(category, text)
-	diary << "\[[time_stamp()]\] [game_id] [category]: [text][log_end]"
+	WRITE_FILE(GLOB.world_common_log, "\[[time_stamp()]\] [game_id] [category]: [text][log_end]")
 
 /proc/log_unit_test(text)
 	log_to_dd("\[[time_stamp()]]\[UNIT TEST] [text]")
