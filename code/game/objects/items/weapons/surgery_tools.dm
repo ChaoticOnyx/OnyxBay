@@ -337,7 +337,7 @@
 
 /obj/item/weapon/organfixer/advanced/bluespace
 	name = "bluespace organ fixer"
-	desc = "A heavyly modified device, resembling QROF-26 produced by Vey-Mey. This prototype has some sort of bluespace-related device attached, and doesn't seem to have any gel injection ports."
+	desc = "A heavyly modified device, resembling QROF-26 produced by Vey-Med. This prototype has some sort of bluespace-related device attached, and doesn't seem to have any gel injection ports."
 	icon_state = "organ-fixer-bs"
 	gel_amt_max = -1
 	gel_amt = -1
