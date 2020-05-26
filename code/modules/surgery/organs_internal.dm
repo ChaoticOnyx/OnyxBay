@@ -253,9 +253,9 @@
 		return FALSE
 	if(istype(tool, /obj/item/stack/medical/advanced/bruise_pack) || istype(tool, /obj/item/stack/medical/bruise_pack))
 		var/obj/item/stack/medical/M = tool
-		if(M.amout < 1)
-				to_chat(user, SPAN("warning", "\The [M] is empty!"))
-				return FALSE
+		if(M.amount < 1)
+			to_chat(user, SPAN("warning", "\The [M] is empty!"))
+			return FALSE
 
 	var/obj/item/organ/internal/list/damaged_organs = list()
 	for(var/obj/item/organ/internal/I in target.internal_organs)
@@ -268,7 +268,7 @@
 	if(!organ_to_fix.can_recover())
 		to_chat(user, SPAN("notice", "The [organ_to_fix.name] is destroyed and can't be saved."))
 		return FALSE
-	if(!organ_to_fix.damage && !O.emagged)
+	if(!organ_to_fix.damage)
 		to_chat(user, SPAN("notice", "The [organ_to_fix.name] is intact and doesn't require any healing."))
 		return FALSE
 
@@ -308,7 +308,7 @@
 						             SPAN("notice", "You treat damage to [target]'s [affected.name] with [tool_name], though it needs to be recovered further."))
 		else
 			user.visible_message(SPAN("notice", "[user] treats damage to [target]'s [affected.name] with [tool_name]."), \
-						             SPAN("notice", "You treat damage to [target]'s [affected.name] with [tool_name].")
+						             SPAN("notice", "You treat damage to [target]'s [affected.name] with [tool_name]."))
 		if(istype(tool, /obj/item/stack/medical/advanced/bruise_pack) || istype(tool, /obj/item/stack/medical/bruise_pack))
 			var/obj/item/stack/medical/M = tool
 			M.use(1)
