@@ -7,7 +7,7 @@
 	var/datum/antagonist/antag = GLOB.all_antag_types_[antagonist_id]
 	var/result = antag.attempt_auto_spawn(called_by_storyteller=TRUE)
 	_log_debug("[capitalize(antagonist_id)] was tried to be spawned. Success: [result]")
-	return
+	return result
 
 /storyteller_trigger/spawn_antagonist/traitor/New()
 	name = "Spawn Traitor"
