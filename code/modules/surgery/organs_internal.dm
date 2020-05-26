@@ -29,14 +29,14 @@
 	/obj/item/weapon/organfixer/standard = 100
 	)
 
-	min_duration = 40
+	min_duration = 35
 	max_duration = 60
 
 /datum/surgery_step/internal/fix_organ/can_use(mob/living/user, mob/living/carbon/human/target, target_zone, obj/item/tool)
 	var/obj/item/weapon/organfixer/O = tool
 	if(!istype(O))
 		return FALSE
-	if (!..())
+	if(!..())
 		return FALSE
 	if(O.gel_amt == 0)
 		to_chat(user, SPAN("warning", "\The [O] is empty!"))
@@ -138,7 +138,7 @@
 	var/obj/item/weapon/organfixer/O = tool
 	if(!istype(O))
 		return FALSE
-	if (!hasorgans(target))
+	if(!hasorgans(target))
 		return FALSE
 	var/obj/item/organ/external/affected = target.get_organ(target_zone)
 	if(!affected)
@@ -209,7 +209,7 @@
 				I.take_internal_damage((affected.max_damage - affected.damage), 0)
 
 /datum/surgery_step/internal/fix_organ_multiple/fail_step(mob/living/user, mob/living/carbon/human/target, target_zone, obj/item/tool)
-	if (!hasorgans(target))
+	if(!hasorgans(target))
 		return
 	var/obj/item/organ/external/affected = target.get_organ(target_zone)
 
@@ -238,8 +238,7 @@
 	max_duration = 90
 
 /datum/surgery_step/internal/detatch_organ/can_use(mob/living/user, mob/living/carbon/human/target, target_zone, obj/item/tool)
-
-	if (!..())
+	if(!..())
 		return 0
 
 	var/obj/item/organ/external/affected = target.get_organ(target_zone)
@@ -303,16 +302,12 @@
 	max_duration = 60
 
 /datum/surgery_step/internal/remove_organ/can_use(mob/living/user, mob/living/carbon/human/target, target_zone, obj/item/tool)
-
-	if (!..())
+	if(!..())
 		return 0
 
 	target.op_stage.current_organ = null
 
 	var/obj/item/organ/external/affected = target.get_organ(target_zone)
-	if(!affected)
-		return 0
-
 	if(!affected)
 		return 0
 
@@ -462,8 +457,7 @@
 	max_duration = 90
 
 /datum/surgery_step/internal/attach_organ/can_use(mob/living/user, mob/living/carbon/human/target, target_zone, obj/item/tool)
-
-	if (!..())
+	if(!..())
 		return 0
 
 	if(target.op_stage.current_organ)
