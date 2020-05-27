@@ -30,10 +30,6 @@
 	var/list/query = list("ckey" = ckey, "token" = token) //token is eng anyway
 	webhook_send("token", query)
 
-/proc/webhook_send_runtime(runtime_text)
-	var/list/query = list("runtime_text" = runtime_text)
-	webhook_send("runtime", query)
-
 /proc/webhook_send(method, data)
 	if(!config.webhook_address || !config.webhook_key)
 		return
