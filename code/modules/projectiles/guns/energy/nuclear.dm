@@ -6,14 +6,13 @@
 	max_shots = 10
 	fire_delay = 10 // To balance for the fact that it is a pistol and can be used one-handed without penalty
 
-	projectile_type = /obj/item/projectile/beam/stun
+	projectile_type = /obj/item/projectile/energy/electrode/stunsphere
 	origin_tech = list(TECH_COMBAT = 3, TECH_MAGNET = 2)
 	modifystate = "tasertacticalstun"
 
 	firemodes = list(
-		list(mode_name="stun", projectile_type=/obj/item/projectile/beam/stun, modifystate="tasertacticalstun"),
-		list(mode_name="shock", projectile_type=/obj/item/projectile/beam/stun/shock, modifystate="tasertacticalshock"),
-		list(mode_name="lethal", projectile_type=/obj/item/projectile/beam, modifystate="tasertacticalkill"),
+		list(mode_name="stun", projectile_type=/obj/item/projectile/energy/electrode/stunsphere, modifystate="tasertacticalstun"),
+		list(mode_name="lethal", projectile_type=/obj/item/projectile/beam, modifystate="tasertacticalkill")
 		)
 
 /obj/item/weapon/gun/energy/secure/gun
@@ -24,15 +23,15 @@
 	max_shots = 10
 	fire_delay = 10 // To balance for the fact that it is a pistol and can be used one-handed without penalty
 
-	projectile_type = /obj/item/projectile/beam/stun
+	projectile_type = /obj/item/projectile/energy/electrode/stunsphere
 	origin_tech = list(TECH_COMBAT = 3, TECH_MAGNET = 2)
 	modifystate = "tasertacticalstun"
 	authorized_modes = list(ALWAYS_AUTHORIZED, AUTHORIZED)
 
 	firemodes = list(
-		list(mode_name="stun", projectile_type=/obj/item/projectile/beam/stun, modifystate="tasertacticalstun"),
+		list(mode_name="stun", projectile_type=/obj/item/projectile/energy/electrode/stunsphere, modifystate="tasertacticalstun"),
 		list(mode_name="shock", projectile_type=/obj/item/projectile/beam/stun/shock, modifystate="tasertacticalshock"),
-		list(mode_name="lethal", projectile_type=/obj/item/projectile/beam, modifystate="tasertacticalkill"),
+		list(mode_name="lethal", projectile_type=/obj/item/projectile/beam, modifystate="tasertacticalkill")
 		)
 
 /obj/item/weapon/gun/energy/gun/small
@@ -42,12 +41,12 @@
 	max_shots = 5
 	w_class = ITEM_SIZE_SMALL
 	force = 2 //it's the size of a car key, what did you expect?
+	projectile_type = /obj/item/projectile/energy/electrode
 	modifystate = "smallgunstun"
 
 	firemodes = list(
-		list(mode_name="stun", projectile_type=/obj/item/projectile/beam/stun, modifystate="smallgunstun"),
-		list(mode_name="shock", projectile_type=/obj/item/projectile/beam/stun/shock, modifystate="smallgunshock"),
-		list(mode_name="lethal", projectile_type=/obj/item/projectile/beam/smalllaser, modifystate="smallgunkill"),
+		list(mode_name="stun", projectile_type=/obj/item/projectile/energy/electrode, modifystate="smallgunstun"),
+		list(mode_name="lethal", projectile_type=/obj/item/projectile/beam/smalllaser, modifystate="smallgunkill")
 		)
 
 /obj/item/weapon/gun/energy/secure/gun/small
@@ -57,12 +56,13 @@
 	max_shots = 5
 	w_class = ITEM_SIZE_SMALL
 	force = 2
+	projectile_type = /obj/item/projectile/energy/electrode
 	modifystate = "smallgunstun"
 
 	firemodes = list(
-		list(mode_name="stun", projectile_type=/obj/item/projectile/beam/stun, modifystate="smallgunstun"),
-		list(mode_name="shock", projectile_type=/obj/item/projectile/beam/stun/shock, modifystate="smallgunshock"),
-		list(mode_name="lethal", projectile_type=/obj/item/projectile/beam/smalllaser, modifystate="smallgunkill"),
+		list(mode_name="stun", projectile_type=/obj/item/projectile/energy/electrode, modifystate="smallgunstun"),
+		list(mode_name="shock", projectile_type=/obj/item/projectile/beam/stun/shock, modifystate="tasertacticalshock"),
+		list(mode_name="lethal", projectile_type=/obj/item/projectile/beam/smalllaser, modifystate="smallgunkill")
 		)
 
 /obj/item/weapon/gun/energy/gun/mounted
@@ -85,6 +85,7 @@
 	self_recharge = 1
 	modifystate = null
 	one_hand_penalty = 2 //bulkier than an e-gun, but not quite the size of a carbine
+	recharge_time = 5
 
 	firemodes = list(
 		list(mode_name="stun", projectile_type=/obj/item/projectile/energy/electrode/stunsphere),
@@ -136,17 +137,18 @@
 		var/datum/effect/effect/system/spark_spread/spark_system = new /datum/effect/effect/system/spark_spread()
 		spark_system.set_up(2, 0, user.loc)
 		spark_system.start()
-	if(fail_counter > 15)
-		to_chat(loc, SPAN("warning", "\The [src] feels pleasantly warm."))
-	else if (fail_counter > 30)
+	if(fail_counter > 30)
 		to_chat(loc, SPAN("warning", "\The [src] feels burning hot!"))
+	else if(fail_counter > 15)
+		to_chat(loc, SPAN("warning", "\The [src] feels pleasantly warm."))
 
 /obj/item/weapon/gun/energy/gun/nuclear/examine(mob/user)
-	..(user)
-	if(fail_counter > 15)
-		to_chat(user, "It feels pleasantly warm.")
-	else if (fail_counter > 30)
-		to_chat(user, "It feels burning hot!")
+	. = ..()
+	if(. && user.Adjacent(src))
+		if(fail_counter > 30)
+			to_chat(user, SPAN("danger", "It feels burning hot!"))
+		else if(fail_counter > 15)
+			to_chat(user, SPAN("warning", "It feels pleasantly warm."))
 
 /obj/item/weapon/gun/energy/gun/nuclear/proc/get_charge_overlay()
 	var/ratio = power_supply.percent()
