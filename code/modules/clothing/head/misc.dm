@@ -360,6 +360,34 @@
 	desc = "U good bruh?"
 	icon_state = "rastacap"
 	item_state = "rastacap"
+	var/active = FALSE
+
+/obj/item/clothing/head/rasta/equipped(obj/item/item, slot)
+	. = ..()
+	var/mob/living/carbon/M = usr
+	if(!istype(M))
+		return 0
+	if (slot != slot_head)
+		return
+	M.hallucination(duration = 5, power = 15)
+	active = TRUE
+	START_PROCESSING(SSobj, src)
+
+/obj/item/clothing/head/rasta/Process()
+	var/mob/living/carbon/M = loc
+	ASSERT(istype(M))
+	if(M.get_equipped_item(slot_head) != src)
+		active = FALSE
+		STOP_PROCESSING(SSobj, src)
+		return
+	if(M.hallucination_power < 60)
+		M.adjust_hallucination(duration = 0, power = rand()) // Slowly rise and fight antipsychotics or other effects
+	M.hallucination(duration = 5, power = 0) // Minimum treshold
+
+/obj/item/clothing/head/rasta/Destroy()
+	if(active)
+		STOP_PROCESSING(SSobj, src)
+	. = ..()
 
 /obj/item/clothing/head/sombrero
 	name = "sombrero"
