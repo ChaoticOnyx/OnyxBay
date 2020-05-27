@@ -530,6 +530,13 @@ var/list/global/slot_flags_enumeration = list(
 			spark_system.start()
 			if(istype(P,/obj/item/projectile/beam))
 				visible_message(SPAN("warning", "\The [user] dissolves [P] with their [src.name]!"))
+				if(istype(user,/mob/living/carbon/human))
+					var/mob/living/carbon/human/H = user
+					if(src != H.get_active_hand())
+						H.poise -= P.damage/(src.mod_shield*1.5)
+						if(H.poise < P.damage/(src.mod_shield*1.5))
+							H.useblock_off()
+							shot_out(H, "knocked")
 				return PROJECTILE_FORCE_BLOCK // Beam reflections code is kinda messy, I ain't gonna touch it. ~Toby
 			else if(P.starting)
 				visible_message(SPAN("warning", "\The [user] reflects [P] with their [src.name]!"))
@@ -541,7 +548,13 @@ var/list/global/slot_flags_enumeration = list(
 
 				// redirect the projectile
 				P.redirect(new_x, new_y, curloc, user)
-
+				if(istype(user,/mob/living/carbon/human))
+					var/mob/living/carbon/human/H = user
+					if(src != H.get_active_hand())
+						H.poise -= P.damage/(src.mod_shield*2.0)
+						if(H.poise < P.damage/(src.mod_shield*2.0))
+							H.useblock_off()
+							shot_out(H, P, "knocked")
 				return PROJECTILE_CONTINUE // complete projectile permutation
 		else if(src.mod_shield >= 1.3)
 			if(P.armor_penetration > (25*src.mod_shield)-5)
@@ -550,13 +563,21 @@ var/list/global/slot_flags_enumeration = list(
 			visible_message(SPAN("warning", "\The [user] blocks [P] with their [src.name]!"))
 			if(istype(user,/mob/living/carbon/human))
 				var/mob/living/carbon/human/H = user
-				H.poise -= P.damage/(src.mod_shield*2.0)
-				if(H.poise < P.damage/(src.mod_shield*2.0))
-					visible_message(SPAN("warning", "[H] falls down, unable to keep balance !"))
-					H.apply_effect(3, WEAKEN, 0)
+				var/poisedamage = P.damage/(src.mod_shield*2.0)
+				if(P.damage_type == BRUTE)
+					poisedamage = P.damage+(P.agony/1.5)/(src.mod_shield*2.0)
+				H.poise -= poisedamage
+				if(H.poise < poisedamage)
 					H.useblock_off()
+					shot_out(H, "knocked")
 			return PROJECTILE_FORCE_BLOCK
 	return 0
+
+/obj/item/proc/shot_out(mob/living/carbon/human/H, obj/item/projectile/P, msg = "shot", dist = 3)
+	visible_message(SPAN("warning", "\The [src] gets [msg] out of [H]'s hands by \a [P]!"))
+	H.drop_from_inventory(src)
+	if(src && istype(loc,/turf))
+		throw_at(get_edge_target_turf(src,pick(GLOB.alldirs)),rand(1,dist),30)
 
 /obj/item/proc/get_loc_turf()
 	var/atom/L = loc

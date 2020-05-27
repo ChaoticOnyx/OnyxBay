@@ -15,15 +15,28 @@ meteor_act
 	//Marauder Shields
 	var/shield_check = check_shields(P.damage, P, null, def_zone, "the [P.name]")
 	if(shield_check)
-		if(shield_check < 0)
-			return shield_check
-		else
-			P.on_hit(src, 100, def_zone)
-			return 100
+		return shield_check
 
 	var/obj/item/organ/external/organ = get_organ(def_zone)
 	var/armor = getarmor_organ(organ, P.check_armour)
 	var/penetrating_damage = ((P.damage + P.armor_penetration) * P.penetration_modifier) - min(armor*1.4, 100)
+
+	var/disarm_slot // Shooting peoples' hands may get them disarmed
+	switch(def_zone)
+		if(BP_L_HAND)
+			disarm_slot = slot_l_hand
+		if(BP_R_HAND)
+			disarm_slot = slot_r_hand
+	if(disarm_slot)
+		var/obj/item/D = get_equipped_item(disarm_slot)
+		if(D && (P.damage || P.agony))
+			var/disarm_chance = sqrt(P.damage+P.agony)*10        // Agony goes into consideration because rubber bullets/stunspheres/etc. are supposed to be disabling ammunition
+			disarm_chance = disarm_chance * (D.w_class/5 + 0.4)  // The bigger an item is, the higher probability of it getting shot
+			if(prob(disarm_chance))
+				playsound(src.loc, 'sound/effects/fighting/Genhit.ogg', 50, 1)
+				D.shot_out(src, P, "shot")
+				if(D.w_class > 2)
+					return PROJECTILE_FORCE_BLOCK // Small items don't block the projectile while getting shot out
 
 	//Organ damage
 	if(organ.internal_organs.len && prob(35 + max(penetrating_damage, -12.5)))
@@ -588,6 +601,7 @@ meteor_act
 			//visible_message("Debug \[block\]: [attacker] lost [2.0+(w_atk.mod_weight*2 + (1-w_atk.mod_handy)*2)] poise ([attacker.poise]/[attacker.poise_pool])") // Debug Message
 
 			visible_message(SPAN("warning", "[defender] blocks [attacker]'s [w_atk.name] with their [w_def.name]!"))
+			defender.last_block = world.time
 
 			if(defender.poise <= 5)
 				visible_message(SPAN("warning", "[defender] falls down, unable to keep balance!"))
@@ -637,6 +651,7 @@ meteor_act
 			attacker.poise -= 5.0+w_def.mod_weight*2+w_def.mod_handy*3
 
 			visible_message(SPAN("warning", "[defender] blocks [attacker]'s attack with their [w_def.name]!"))
+			defender.last_block = world.time
 
 			if(defender.poise < 5)
 				visible_message(SPAN("warning", "[defender] falls down, unable to keep balance!"))

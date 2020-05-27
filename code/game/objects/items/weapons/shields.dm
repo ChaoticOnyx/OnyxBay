@@ -115,7 +115,7 @@
 	mod_weight = 0.5
 	mod_reach = 0.5
 	mod_handy = 1.25
-	mod_shield = 2.5
+	mod_shield = 3.0
 	origin_tech = list(TECH_MATERIAL = 4, TECH_MAGNET = 3, TECH_ILLEGAL = 4)
 	attack_verb = list("shoved", "bashed")
 	var/active = 0
