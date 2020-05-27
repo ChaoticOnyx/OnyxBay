@@ -213,4 +213,25 @@ obj/item/weapon/gun/energy/staff/focus
 	matter = list(MATERIAL_STEEL = 4000)
 	projectile_type = /obj/item/projectile/beam/plasmacutter/danger
 	max_shots = 10
+	var/standart_charge_cost = 20
+
+
+/obj/item/weapon/gun/energy/plasmacutter/attackby(obj/item/stack/material/phoron/W, mob/user)
+	if(user.stat || user.restrained() || user.lying)
+		return
+	var/current_power = round(src.power_supply.charge / src.standart_charge_cost)
+	if(current_power < 10)
+		if (W.get_amount() > src.max_shots)
+			return
+		else
+			if (W.get_amount() > current_power)
+				var/used_power = W.get_amount() - round(src.power_supply.charge / src.standart_charge_cost)
+				src.power_supply.charge = src.power_supply.charge + (src.standart_charge_cost * (used_power))
+				W.use(used_power)
+			else
+				src.power_supply.charge = src.power_supply.charge + (src.standart_charge_cost * W.get_amount())
+				user.drop_from_inventory(W, src)
+			to_chat(user, "You recharge your [src.name].")
+	else
+		to_chat(user, "You can't charge your [src.name], it's full.")
 

@@ -263,5 +263,3 @@
 						LIMP.droplimb(0, DROPLIMB_EDGE)
 					else
 						LIMP.droplimb(0, DROPLIMB_EDGE)
-
-	. = ..()
