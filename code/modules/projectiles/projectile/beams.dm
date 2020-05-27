@@ -200,10 +200,10 @@
 	name = "plasma arc"
 	icon_state = "omnilaser"
 	fire_sound = 'sound/effects/weapons/energy/fire3.ogg'
-	damage = 5
+	damage = 10
 	sharp = 1
 	edge = 1
-	damage_type = BURN
+	damage_type = BRUTE
 	check_armour = "laser"
 	kill_count = 5
 	pass_flags = PASS_FLAG_TABLE
@@ -228,7 +228,7 @@
 	damage = 30
 	sharp = 1
 	edge = 1
-	damage_type = BURN
+	damage_type = BRUTE
 	check_armour = "laser"
 	kill_count = 5
 	pass_flags = PASS_FLAG_TABLE

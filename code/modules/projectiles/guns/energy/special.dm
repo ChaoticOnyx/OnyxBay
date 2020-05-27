@@ -228,7 +228,12 @@ obj/item/weapon/gun/energy/staff/focus
 		src.danger_attack = TRUE
 		src.projectile_type = /obj/item/projectile/beam/plasmacutter/danger
 		src.charge_cost = standart_charge_cost
-		to_chat(user, SPAN_NOTICE("Your [src.name] now in danger mode, be careful with living creatures, potentially their head can go off"))
+		to_chat(user, SPAN_NOTICE("Your [src.name] now in danger mode."))
+
+/obj/item/weapon/gun/energy/plasmacutter/examine(mob/user)
+	. = ..(user)
+	to_chat(user, "Has [power_supply ? round(power_supply.charge / charge_cost) : "0"] shot\s remaining.")
+	to_chat(user, "It has recharge port with a capital letter P")
 
 /obj/item/weapon/gun/energy/plasmacutter/attackby(obj/item/stack/material/phoron/W, mob/user)
 	if(user.stat || user.restrained() || user.lying)
