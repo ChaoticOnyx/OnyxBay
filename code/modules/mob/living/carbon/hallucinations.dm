@@ -162,6 +162,7 @@
 			phrases.Cut(min(phrases.len, holder.hallucination_power))
 			message = pick(phrases)
 			holder.hear_say(message, speaker = talker)
+			log_misc("[holder.name] is hallucinating about [talker.name] SAYS : [message]")
 		else
 			to_chat(holder,"<B>[talker.name]</B> points at [holder.name]")
 			to_chat(holder,"<span class='game say'><span class='name'>[talker.name]</span> says something softly.</span>")
