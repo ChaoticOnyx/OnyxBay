@@ -479,8 +479,8 @@
 
 /mob/living/carbon/human/proc/get_medical_data()
 	var/mob/living/carbon/human/H = src
-	var/dat = "<meta charset=\"utf-8\">"
-	dat +="<b>SCAN RESULTS FOR: [H]</b><br>"
+	var/dat = list("<meta charset=\"utf-8\">")
+	dat +="<b>SCAN RESULTS FOR: [H]</b>"
 	dat +="Scan performed at [stationtime2text()]<br>"
 
 	var/brain_result = "normal"
@@ -492,7 +492,7 @@
 			brain_result = "[round(max(0,(1 - brain.damage/brain.max_damage)*100))]%"
 	else
 		brain_result = "<span class='danger'>ERROR - Nonstandard biology</span>"
-	dat += "<b>Brain activity:</b> [brain_result]<br>"
+	dat += "<b>Brain activity:</b> [brain_result]"
 
 	var/pulse_result = "normal"
 	if(H.should_have_organ(BP_HEART))
@@ -502,40 +502,40 @@
 			pulse_result = H.get_pulse(1)
 	else
 		pulse_result = "ERROR - Nonstandard biology"
-	dat += "<b>Pulse rate:</b> [pulse_result]bpm.<br>"
+	dat += "<b>Pulse rate:</b> [pulse_result]bpm."
 
 	// Blood pressure. Based on the idea of a normal blood pressure being 120 over 80.
 	if(H.get_blood_volume() <= 70)
-		dat += "<span class='danger'>Severe blood loss detected.</span><br>"
+		dat += "<span class='danger'>Severe blood loss detected.</span>"
 	if(H.b_type)
-		dat += "<b>Blood type:</b> [H.b_type]<br>"
-	dat += "<b>Blood pressure:</b> [H.get_blood_pressure()] ([H.get_blood_oxygenation()]% blood oxygenation)<br>"
-	dat += "<b>Blood volume:</b> [H.vessel.get_reagent_amount(/datum/reagent/blood)]/[H.species.blood_volume]u<br>"
+		dat += "<b>Blood type:</b> [H.b_type]"
+	dat += "<b>Blood pressure:</b> [H.get_blood_pressure()] ([H.get_blood_oxygenation()]% blood oxygenation)"
+	dat += "<b>Blood volume:</b> [H.vessel.get_reagent_amount(/datum/reagent/blood)]/[H.species.blood_volume]u"
 	if (H.chem_effects[CE_BLOCKAGE])
-		dat += "<span class='warning'>Warning: Blood clotting detected, blood transfusion recommended.</span><br>"
+		dat += "<span class='warning'>Warning: Blood clotting detected, blood transfusion recommended.</span>"
 	// Body temperature.
-	dat += "<b>Body temperature:</b> [H.bodytemperature-T0C]&deg;C ([H.bodytemperature*1.8-459.67]&deg;F)<br>"
+	dat += "<b>Body temperature:</b> [H.bodytemperature-T0C]&deg;C ([H.bodytemperature*1.8-459.67]&deg;F)"
 	if(H.nutrition < 150)
-		dat += "<span class='warning'>Warning: Very low nutrition value detected.</span><br>"
+		dat += "<span class='warning'>Warning: Very low nutrition value detected.</span>"
 
-	dat += "<b>Physical Trauma:</b>\t[get_severity(H.getBruteLoss())]<br>"
-	dat += "<b>Burn Severity:</b>\t[get_severity(H.getFireLoss())]<br>"
-	dat += "<b>Systematic Organ Failure:</b>\t[get_severity(H.getToxLoss())]<br>"
-	dat += "<b>Oxygen Deprivation:</b>\t[get_severity(H.getOxyLoss())]<br>"
+	dat += "<b>Physical Trauma:</b>\t[get_severity(H.getBruteLoss())]"
+	dat += "<b>Burn Severity:</b>\t[get_severity(H.getFireLoss())]"
+	dat += "<b>Systematic Organ Failure:</b>\t[get_severity(H.getToxLoss())]"
+	dat += "<b>Oxygen Deprivation:</b>\t[get_severity(H.getOxyLoss())]"
 
-	dat += "<b>Radiation Level:</b>\t[get_severity(H.radiation/5)]<br>"
-	dat += "<b>Genetic Tissue Damage:</b>\t[get_severity(H.getCloneLoss())]<br>"
+	dat += "<b>Radiation Level:</b>\t[get_severity(H.radiation/5)]"
+	dat += "<b>Genetic Tissue Damage:</b>\t[get_severity(H.getCloneLoss())]"
 	if(H.paralysis)
-		dat += "Paralysis Summary: approx. [H.paralysis/4] seconds left<br>"
+		dat += "Paralysis Summary: approx. [H.paralysis/4] seconds left"
 
-	dat += "Antibody levels and immune system perfomance are at [round(H.virus_immunity()*100)]% of baseline.<br>"
+	dat += "Antibody levels and immune system perfomance are at [round(H.virus_immunity()*100)]% of baseline."
 	if (H.virus2.len)
-		dat += "<font color='red'>Viral pathogen detected in blood stream.</font><br>"
+		dat += "<font color='red'>Viral pathogen detected in blood stream.</font>"
 		if(H.antibodies.len)
-			dat += "Antibodies detected: [antigens2string(H.antibodies)]<br>"
+			dat += "Antibodies detected: [antigens2string(H.antibodies)]"
 
 	if(H.has_brain_worms())
-		dat += "Large growth detected in frontal lobe, possibly cancerous. Surgical removal is recommended.<br>"
+		dat += "Large growth detected in frontal lobe, possibly cancerous. Surgical removal is recommended."
 	var/is_overdosed = 0
 	if(H.reagents.total_volume)
 		var/reagentdata[0]
@@ -546,15 +546,15 @@
 				if (R.volume >= R.overdose)
 					is_overdosed = 1
 		if(reagentdata.len)
-			dat += "Beneficial reagents detected in subject's blood:<br>"
+			dat += "Beneficial reagents detected in subject's blood:"
 			for(var/d in reagentdata)
 				dat += reagentdata[d]
 	if (is_overdosed)
-		dat += "<span class='warning'>Warning: Medicine overdose detected.</span><br>"
+		dat += "<span class='warning'>Warning: Medicine overdose detected.</span>"
 	if (H.chem_effects[CE_ALCOHOL])
-		dat += "<span class='notice'>Alcohol byproducts detected in subject's blood.</span><br>"
+		dat += "<span class='notice'>Alcohol byproducts detected in subject's blood.</span>"
 	if (H.chem_effects[CE_ALCOHOL_TOXIC])
-		dat += "<span class='warning'>Warning: Subject suffering from alcohol intoxication.</span><br>"
+		dat += "<span class='warning'>Warning: Subject suffering from alcohol intoxication.</span>"
 
 	var/list/table = list()
 	table += "<table border='1'><tr><th>Organ</th><th>Damage</th><th>Status</th></tr>"
@@ -590,11 +590,11 @@
 	table.Cut()
 	for(var/organ_name in H.species.has_organ)
 		if(!locate(H.species.has_organ[organ_name]) in H.internal_organs)
-			dat += text("No [organ_name] detected.<br>")
+			dat += text("No [organ_name] detected.")
 
 	if(H.sdisabilities & BLIND)
-		dat += text("Cataracts detected.<br>")
+		dat += text("Cataracts detected.")
 	if(H.sdisabilities & NEARSIGHTED)
-		dat += text("Retinal misalignment detected.<br>")
+		dat += text("Retinal misalignment detected.")
 
 	. = jointext(dat,"<br>")
