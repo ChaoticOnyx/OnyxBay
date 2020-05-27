@@ -536,3 +536,36 @@
 /datum/hallucination/room_effects/Destroy()
 	end()
 	. = ..()
+
+/datum/hallucination/coloring
+	duration = 30 SECONDS
+	max_power = 55
+	var/list/colored_images = new()
+	var/limit = 15
+
+/datum/hallucination/coloring/start()
+	for(var/obj/item/I in view(holder.client))
+		var/image/colored = new()
+		colored.appearance = I.appearance
+		colored.loc = I
+		colored.dir = I.dir
+		colored.pixel_x = 0
+		colored.pixel_y = 0
+		colored.pixel_z = 0
+		colored.pixel_w = 0
+		colored.override = 0 // This way, increasing I.plane or I.layer will reveal original icon. If you want to change this behavior, you need to make colored.override = 1, and manually change colored.plane and colored.layer along with original`s, because it's not inherited
+		colored.color = rgb(rand(60,255), rand(60,255), rand(60,255))
+		colored_images += colored
+		if(colored_images.len > limit) // Enough rainbow, stop cycling through view
+			break
+	holder.client.images |= colored_images
+
+/datum/hallucination/coloring/end()
+	if(!colored_images.len)
+		return // No ASSERT is needed, ending is correct
+	holder.client.images -= colored_images
+	qdel(colored_images)
+
+/datum/hallucination/coloring/Destroy()
+	end()
+	. = ..()
