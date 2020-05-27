@@ -16,6 +16,7 @@
 	randpixel = 0
 
 	armor = list(melee = 80, bullet = 60, laser = 60,energy = 25, bomb = 50, bio = 10, rad = 0)
+	siemens_coefficient = 0.3
 
 /obj/item/clothing/shoes/magboots/proc/set_slowdown()
 	slowdown_per_slot[slot_shoes] = shoes? max(0, shoes.slowdown_per_slot[slot_shoes]): 0	//So you can't put on magboots to make you walk faster.

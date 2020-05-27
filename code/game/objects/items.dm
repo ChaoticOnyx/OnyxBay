@@ -574,7 +574,11 @@ var/list/global/slot_flags_enumeration = list(
 	return 0
 
 /obj/item/proc/shot_out(mob/living/carbon/human/H, obj/item/projectile/P, msg = "shot", dist = 3)
-	visible_message(SPAN("warning", "\The [src] gets [msg] out of [H]'s hands by \a [P]!"))
+	H.poise -= 10
+	if(!canremove)
+		visible_message(SPAN("warning", "[H] blocks \a [P] with \the [P]!"))
+		return
+	visible_message(SPAN("danger", "\The [src] gets [msg] out of [H]'s hands by \a [P]!"))
 	H.drop_from_inventory(src)
 	if(src && istype(loc,/turf))
 		throw_at(get_edge_target_turf(src,pick(GLOB.alldirs)),rand(1,dist),30)

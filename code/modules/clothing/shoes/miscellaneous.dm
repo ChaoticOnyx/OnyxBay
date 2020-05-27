@@ -6,7 +6,7 @@
 	item_flags = ITEM_FLAG_NOSLIP
 	origin_tech = list(TECH_ILLEGAL = 3)
 	var/list/clothing_choices = list()
-	siemens_coefficient = 0.8
+	siemens_coefficient = 0.5
 	species_restricted = null
 
 	armor = list(melee = 40, bullet = 40, laser = 40, energy = 35, bomb = 20, bio = 30, rad = 0)
@@ -22,7 +22,7 @@
 	force = 3
 	armor = list(melee = 80, bullet = 60, laser = 60,energy = 25, bomb = 50, bio = 10, rad = 0)
 	item_flags = ITEM_FLAG_NOSLIP
-	siemens_coefficient = 0.6
+	siemens_coefficient = 0.4
 	can_hold_knife = 1
 
 /obj/item/clothing/shoes/combat //Basically SWAT shoes combined with galoshes.
@@ -32,7 +32,7 @@
 	force = 5
 	armor = list(melee = 80, bullet = 60, laser = 60,energy = 25, bomb = 50, bio = 10, rad = 0)
 	item_flags = ITEM_FLAG_NOSLIP
-	siemens_coefficient = 0.6
+	siemens_coefficient = 0.1
 	can_hold_knife = 1
 
 	cold_protection = FEET
@@ -44,6 +44,7 @@
 	name = "dress shoes"
 	desc = "The height of fashion, and they're pre-polished!"
 	icon_state = "laceups"
+	siemens_coefficient = 1.0
 
 /obj/item/clothing/shoes/sandal
 	desc = "A pair of rather plain, wooden sandals."
@@ -51,6 +52,7 @@
 	icon_state = "wizard"
 	species_restricted = null
 	body_parts_covered = 0
+	siemens_coefficient = 1.0
 
 	wizard_garb = 1
 
@@ -69,6 +71,7 @@
 	force = 0
 	var/footstep = 1	//used for squeeks whilst walking
 	species_restricted = null
+	siemens_coefficient = 0.5 // these things are kinda rubberish, aint they?
 
 	armor = list(melee = 35, bullet = 35, laser = 35,energy = 15, bomb = 25, bio = 15, rad = 0)
 
@@ -91,7 +94,7 @@
 	desc = "A pair of boots worn by the followers of Nar-Sie."
 	icon_state = "cult"
 	force = 2
-	siemens_coefficient = 0.7
+	siemens_coefficient = 0.5
 
 	armor = list(melee = 40, bullet = 40, laser = 40, energy = 15, bomb = 20, bio = 10, rad = 0)
 
@@ -113,6 +116,7 @@
 	force = 0
 	species_restricted = null
 	w_class = ITEM_SIZE_SMALL
+	siemens_coefficient = 1.0
 
 /obj/item/clothing/shoes/slippers_worn
 	name = "worn bunny slippers"
@@ -120,6 +124,7 @@
 	icon_state = "slippers_worn"
 	force = 0
 	w_class = ITEM_SIZE_SMALL
+	siemens_coefficient = 1.0
 
 /obj/item/clothing/shoes/laceup
 	name = "laceup shoes"

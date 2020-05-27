@@ -132,7 +132,7 @@
 	item_state = "pig"
 	flags_inv = HIDEFACE|BLOCKHAIR
 	w_class = ITEM_SIZE_SMALL
-	siemens_coefficient = 0.9
+	siemens_coefficient = 0.7
 	body_parts_covered = HEAD|FACE|EYES
 	armor = list(melee = 5, bullet = 5, laser = 5, energy = 0, bomb = 0, bio = 0, rad = 0)
 
@@ -144,7 +144,7 @@
 	flags_inv = HIDEFACE|BLOCKHAIR
 	body_parts_covered = HEAD|FACE|EYES
 	w_class = ITEM_SIZE_SMALL
-	siemens_coefficient = 0.9
+	siemens_coefficient = 0.7
 	armor = list(melee = 5, bullet = 5, laser = 5, energy = 0, bomb = 0, bio = 0, rad = 0)
 
 /obj/item/clothing/mask/horsehead/New()
@@ -218,7 +218,7 @@
 	desc = "A rubber mask."
 	icon_state = "balaclava"
 	flags_inv = HIDEFACE|BLOCKHAIR
-	siemens_coefficient = 0.9
+	siemens_coefficient = 0.7
 	body_parts_covered = HEAD|FACE|EYES
 	armor = list(melee = 5, bullet = 5, laser = 5, energy = 0, bomb = 0, bio = 0, rad = 0)
 
@@ -373,3 +373,4 @@
 	item_state = "skullmask"
 	w_class = ITEM_SIZE_NORMAL
 	armor = list(melee = 15, bullet = 10, laser = 10, energy = 0, bomb = 0, bio = 0, rad = 0)
+	siemens_coefficient = 0.8
