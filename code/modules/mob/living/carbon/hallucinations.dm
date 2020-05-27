@@ -52,6 +52,9 @@
 		H.holder = src
 		H.activate()
 
+/mob/living/carbon/proc/is_hallucinating()
+	return hallucination_power && hallucination_duration
+
 //////////////////////////////////////////////////////////////////////////////////////////////////////
 //Hallucination effects datums
 //////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -106,8 +109,15 @@
 	sounds = list('sound/items/Ratchet.ogg','sound/items/Welder.ogg','sound/items/Crowbar.ogg','sound/items/Screwdriver.ogg')
 
 /datum/hallucination/sound/danger
-	min_power = 30
-	//sounds = list('sound/effects/Explosion1.ogg','sound/effects/Explosion2.ogg','sound/effects/Glassbr1.ogg','sound/effects/Glassbr2.ogg','sound/effects/Glassbr3.ogg','sound/effects/fighting/smash.ogg')
+	min_power = 20
+	max_power = 50
+	sounds = list('sound/effects/glass_step.ogg', 'sound/effects/hit_on_shattered_glass.ogg', 'sound/effects/fighting/smash.ogg')
+
+/datum/hallucination/sound/danger/start()
+	sounds.Add(file("sound/effects/explosions/explosion[rand(1, 24)].ogg"))
+	sounds.Add(file("sound/effects/explosions/electric[rand(1, 11)].ogg"))
+	sounds.Add(file("sound/effects/fighting/punch[rand(1, 4)].ogg"))
+	..()
 
 /datum/hallucination/sound/spooky
 	min_power = 50
@@ -139,32 +149,29 @@
 	for(var/mob/living/M in oview(C))
 		return TRUE
 
+/datum/hallucination/talking
+	min_power = 15
+
 /datum/hallucination/talking/start()
-	var/sanity = 5 //even insanity needs some sanity
+	var/sanity = 2 //even insanity needs some sanity
 	for(var/mob/living/talker in oview(holder))
-		if(talker.stat)
-			continue
 		var/message
-		if(prob(80))
-			var/list/names = list()
-			var/lastname = copytext(holder.real_name, findtext(holder.real_name, " ")+1)
-			var/firstname = copytext(holder.real_name, 1, findtext(holder.real_name, " "))
-			if(lastname) names += lastname
-			if(firstname) names += firstname
-			if(!names.len)
-				names += holder.real_name
-			var/add = prob(20) ? ", [pick(names)]" : ""
-			var/list/phrases = list("[prob(50) ? "Hey, " : ""][pick(names)]!","[prob(50) ? "Hey, " : ""][pick(names)]?","Get out[add]!","Go away[add].","What are you doing[add]?","Where's your ID[add]?")
-			if(holder.hallucination_power > 50)
-				phrases += list("What did you come here for[add]?","Don't touch me[add].","You're not getting out of here[add].", "You are a failure, [pick(names)].","Just kill yourself already, [pick(names)].","Put on some clothes[add].","Take off your clothes[add].")
+		var/phrases_file = "code/modules/mob/living/carbon/hallucination_phrases.txt"
+		if(prob(80) && fexists(phrases_file))
+			var/list/phrases = world.file2list(phrases_file) // Must be ordered by hallucination power! Ex: phrases[30] would be shown only if hallucination_power >= 30
+			phrases.Cut(min(phrases.len, holder.hallucination_power))
 			message = pick(phrases)
-			to_chat(holder,"<span class='game say'><span class='name'>[talker.name]</span> [holder.say_quote(message)], <span class='message'><span class='body'>\"[message]\"</span></span></span>")
+			holder.hear_say(message, speaker = talker)
 		else
 			to_chat(holder,"<B>[talker.name]</B> points at [holder.name]")
 			to_chat(holder,"<span class='game say'><span class='name'>[talker.name]</span> says something softly.</span>")
+
 		var/image/speech_bubble = image('icons/mob/talk.dmi',talker,"h[holder.say_test(message)]")
-		spawn(30) qdel(speech_bubble)
-		show_image(holder,speech_bubble)
+		speech_bubble.alpha = 0
+		speech_bubble.plane = MOUSE_INVISIBLE_PLANE
+		speech_bubble.layer = FLOAT_LAYER
+		INVOKE_ASYNC(GLOBAL_PROC, /.proc/animate_speech_bubble, speech_bubble, list(holder.client), 3 SECONDS)
+
 		sanity-- //don't spam them in very populated rooms.
 		if(!sanity)
 			return
@@ -183,12 +190,31 @@
 		var/obj/O = pick(H.organs)
 		to_chat(H,"<span class='warning'>You feel something [pick("moving","squirming","skittering")] inside of your [O.name]!</span>")
 
+/datum/hallucination/virus
+	duration = 5 MINUTES // Just prevents duplicates for this duration
+	allow_duplicates = 0
+
+/datum/hallucination/virus/start()
+	var/message = pick("Your stomach feels heavy.", "Mucous runs down the back of your throat.", "You feel like you are about to sneeze!", "You feel a rush of energy inside you!", "Your hair starts to fall out in clumps...", "Your head hurts a bit.")
+	to_chat(holder, SPAN_WARNING(message))
+
+/datum/hallucination/evacuation
+	min_power = 60 // Very high
+
+/datum/hallucination/evacuation/can_affect()
+	return prob(5)
+
+/datum/hallucination/evacuation/start()
+	holder.playsound_local(holder, 'sound/effects/Evacuation.ogg', 35)
+	to_chat(holder, "<h1 class='alert'>Priority Announcement</h1><br>[SPAN("alert", replacetext(GLOB.using_map.emergency_shuttle_docked_message, "%ETD%", "3 minutes"))]")
+
 //Seeing stuff
 /datum/hallucination/mirage
 	duration = 30 SECONDS
-	max_power = 30
 	var/number = 1
 	var/list/things = list() //list of images to display
+	var/sound // Pop!
+	var/volume = 25
 
 /datum/hallucination/mirage/Destroy()
 	end()
@@ -206,7 +232,10 @@
 		for(var/i = 1 to number)
 			var/image/thing = generate_mirage()
 			things += thing
-			thing.loc = pick(possible_points)
+			var/turf/simulated/floor/point = pick(possible_points)
+			thing.loc = point
+			if(sound)
+				holder.playsound_local(point, sound, volume)
 		holder.client.images += things
 
 /datum/hallucination/mirage/end()
@@ -224,7 +253,7 @@
 
 //Blood and aftermath of firefight
 /datum/hallucination/mirage/carnage
-	min_power = 50
+	min_power = 40
 	number = 10
 
 /datum/hallucination/mirage/carnage/generate_mirage()
@@ -239,6 +268,16 @@
 		I.pixel_x = rand(-10,10)
 		I.pixel_y = rand(-10,10)
 		return I
+
+/datum/hallucination/mirage/portal
+	min_power = 50
+
+/datum/hallucination/mirage/portal/generate_mirage()
+	sound = 'sound/effects/phasein.ogg'
+	if(prob(90))
+		return image('icons/obj/stationobjs.dmi', "portal", layer = ABOVE_OBJ_LAYER)
+	else
+		return image('icons/obj/stationobjs.dmi', "portal1", layer = ABOVE_OBJ_LAYER)
 
 //Fake telepathy
 /datum/hallucination/telepahy
@@ -302,3 +341,197 @@
 
 /datum/hallucination/fakeattack/hypo/start()
 	to_chat(holder, "<span class='notice'>You feel a tiny prick!</span>")
+
+/datum/hallucination/fake_appearance
+	duration = 1 MINUTE
+	min_power = 45
+	var/radius = 6
+	var/mob/living/origin
+	var/mob/fake
+	var/image/fake_look
+
+/datum/hallucination/fake_appearance/can_affect(mob/living/carbon/C)
+	if(!..())
+		return FALSE
+	for(var/mob/living/M in orange(radius, C))
+		if(!M.is_invisible_to(C))
+			return TRUE
+
+/datum/hallucination/fake_appearance/start()
+	var/list/origin_candidates = new()
+	for(var/mob/living/O in orange(radius, holder)) //Including visible, but not in view
+		if(!O.is_invisible_to(holder))
+			origin_candidates += O
+	for(var/datum/hallucination/fake_appearance/other in holder.hallucinations)
+		if(other != src)
+			origin_candidates -= other.origin // Forbid multiappearances on the same mob
+	if(!origin_candidates.len)
+		end()
+		return
+	origin = pick(origin_candidates)
+
+	var/list/targets = new()
+	for(var/datum/objective/objective in holder.mind.objectives)
+		if(objective.target && objective.target.current)
+			targets |= objective.target.current
+	var/fake_type = pick(
+		targets.len               * 550; "target",
+		GLOB.human_mob_list.len   * 45;  "human",
+		GLOB.silicon_mob_list.len * 350; "cyborg",
+		GLOB.living_mob_list_.len * 6;   "animal",
+		GLOB.living_mob_list_.len * 5;   "xeno",
+		GLOB.living_mob_list_.len * 2;   "bot",
+		GLOB.living_mob_list_.len    ;   "mouse",
+		GLOB.ghost_mob_list.len   * 3;   "ghost"
+	)
+
+	var/list/fake_candidates = new()
+	switch(fake_type)
+		if("target")
+			fake_candidates = targets
+		if("human")
+			var/look_for_same_z = prob(80)
+			for(var/mob/living/F in GLOB.human_mob_list)
+				if((holder.z == F.z) == look_for_same_z)
+					fake_candidates += F
+		if("cyborg")
+			fake_candidates = GLOB.silicon_mob_list
+		if("animal")
+			fake_candidates = get_living_sublist(list(/mob/living/simple_animal), list(/mob/living/simple_animal/mouse))
+		if("xeno")
+			fake_candidates = get_living_sublist(list(/mob/living/carbon/alien, /mob/living/carbon/slime, /mob/living/deity))
+		if("bot")
+			fake_candidates = get_living_sublist(list(/mob/living/bot))
+		if("mouse")
+			fake_candidates = get_living_sublist(list(/mob/living/simple_animal/mouse))
+		if("ghost")
+			fake_candidates = GLOB.ghost_mob_list
+	fake_candidates -= origin
+	if(!fake_candidates.len)
+		end()
+		return
+	fake = pick(fake_candidates)
+
+	fake_look = new()
+	fake_look.appearance = fake.appearance
+	fake_look.loc = origin
+	fake_look.dir = null // This makes image to always rotate with the origin
+	fake_look.override = 1
+	if(isghost(fake))
+		fake_look.invisibility = 0
+	if(fake.lying)
+		fake_look.transform = turn(fake.transform, -90)
+	holder.client.images |= fake_look
+
+/datum/hallucination/fake_appearance/proc/get_living_sublist(var/list/subtypes, var/list/exclude)
+	var/list/same_z_candidates = new()
+	var/list/other_z_candidates = new()
+	for(var/mob/living/F in GLOB.living_mob_list_)
+		for(var/subtype in subtypes)
+			if(istype(F, subtype) && !(F:type in exclude))
+				if(holder.z == F.z)
+					same_z_candidates += F
+				else
+					other_z_candidates += F
+	if (same_z_candidates.len && (!other_z_candidates.len || prob(80)))
+		return same_z_candidates
+	if (other_z_candidates.len)
+		return other_z_candidates
+	// If both lists are empty, return nothing
+
+/datum/hallucination/fake_appearance/end()
+	holder.hallucinations -= src
+	if(!fake_look)
+		return // No ASSERT is needed, ending is correct
+	holder.client.images -= fake_look
+	QDEL_NULL(fake_look)
+
+/datum/hallucination/fake_appearance/Destroy()
+	end()
+	. = ..()
+
+/mob/living/carbon/proc/get_fake_appearance(mob/M)
+	for(var/datum/hallucination/fake_appearance/hallutination in hallucinations)
+		if(M == hallutination.origin)
+			return hallutination.fake
+
+/datum/hallucination/hud_error
+	duration = 10 SECONDS
+	min_power = 30
+	var/obj/screen/fake
+
+/datum/hallucination/hud_error/can_affect(mob/living/carbon/C)
+	if(!..())
+		return FALSE
+	return istype(C, /mob/living/carbon/human)
+
+/datum/hallucination/hud_error/start()
+	ASSERT(istype(holder, /mob/living/carbon/human))
+	var/mob/living/carbon/human/H = holder
+	var/obj/screen/origin = pick(H.toxin, H.oxygen, H.fire, H.bodytemp, H.pressure, H.nutrition_icon)
+	fake = new()
+	fake.name = origin.name
+	fake.icon = origin.icon
+	fake.appearance_flags = origin.appearance_flags
+	fake.unacidable = origin.unacidable
+	fake.globalscreen = FALSE
+	fake.plane = HUD_PLANE
+	fake.layer = HUD_ABOVE_ITEM_LAYER
+	fake.screen_loc = origin.screen_loc
+	switch(origin.name)
+		if("oxygen")
+			fake.icon_state = "oxy1"
+		if("toxin")
+			fake.icon_state = "tox1"
+		if("fire")
+			fake.icon_state = "fire[pick(1, 2)]"
+		if("body temperature")
+			fake.icon_state = "temp[pick(-4, -3, -2, 2, 3, 4)]"
+		if("pressure")
+			fake.icon_state = "pressure[pick(-2, -1, 1, 2)]"
+		if("nutrition")
+			fake.icon_state = "nutrition[pick(0, 3, 4)]"
+		else
+			end()
+			return
+	holder.client.screen |= fake
+
+/datum/hallucination/hud_error/end()
+	if(!fake)
+		return // No ASSERT is needed, ending is correct
+	holder.client.screen -= fake
+	qdel(fake)
+
+/datum/hallucination/hud_error/Destroy()
+	end()
+	. = ..()
+
+/datum/hallucination/room_effects
+	duration = 30 SECONDS
+	min_power = 40
+	var/list/effects = new()
+
+/datum/hallucination/room_effects/can_affect(mob/living/carbon/C)
+	if(!..())
+		return FALSE
+	return istype(get_turf(C), /turf/simulated)
+
+/datum/hallucination/room_effects/start()
+	var/turf/simulated/location = get_turf(holder)
+	ASSERT(istype(location))
+	var/zone/room = location.zone
+	var/list/available_effects = list("icons/effects/tile_effects.dmi" = "phoron", "icons/effects/tile_effects.dmi" = "sleeping_agent", "icons/effects/tile_effects.dmi" = "plasma-purple", "icons/effects/effects.dmi" = "electricity", "icons/effects/fire.dmi" = "real_fire") // Kinda ironic to use real_fire for non-real fire
+	var/chosen = rand(1, available_effects.len)
+	for(var/turf/simulated/T in room.contents)
+		effects.Add(image(icon = file(available_effects[chosen]), loc = T, icon_state = available_effects[available_effects[chosen]], layer = FLY_LAYER))
+	holder.client.images |= effects
+
+/datum/hallucination/room_effects/end()
+	if(!effects.len)
+		return // No ASSERT is needed, ending is correct
+	holder.client.images -= effects
+	qdel(effects)
+
+/datum/hallucination/room_effects/Destroy()
+	end()
+	. = ..()
