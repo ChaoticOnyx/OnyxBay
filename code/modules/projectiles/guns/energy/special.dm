@@ -214,24 +214,35 @@ obj/item/weapon/gun/energy/staff/focus
 	projectile_type = /obj/item/projectile/beam/plasmacutter/danger
 	max_shots = 10
 	var/standart_charge_cost = 20
+	var/danger_attack = TRUE
 
+/obj/item/weapon/gun/energy/plasmacutter/attack_self(mob/user)
+	if (src.danger_attack)
+		src.danger_attack = FALSE
+		projectile_type = /obj/item/projectile/beam/plasmacutter
+		src.fire_delay = 10
+		src.charge_cost = 0
+		to_chat(user, SPAN_NOTICE("Your [src.name] now in safe mode"))
+	else
+		src.fire_delay = 6
+		src.danger_attack = TRUE
+		src.projectile_type = /obj/item/projectile/beam/plasmacutter/danger
+		src.charge_cost = standart_charge_cost
+		to_chat(user, SPAN_NOTICE("Your [src.name] now in danger mode, be careful with living creatures, potentially their head can go off"))
 
 /obj/item/weapon/gun/energy/plasmacutter/attackby(obj/item/stack/material/phoron/W, mob/user)
 	if(user.stat || user.restrained() || user.lying)
 		return
 	var/current_power = round(src.power_supply.charge / src.standart_charge_cost)
 	if(current_power < 10)
-		if (W.get_amount() > src.max_shots)
-			return
+		if (W.get_amount() > current_power)
+			var/used_power = W.get_amount() - round(src.power_supply.charge / src.standart_charge_cost)
+			src.power_supply.charge = src.power_supply.charge + (src.standart_charge_cost * (used_power))
+			W.use(used_power)
 		else
-			if (W.get_amount() > current_power)
-				var/used_power = W.get_amount() - round(src.power_supply.charge / src.standart_charge_cost)
-				src.power_supply.charge = src.power_supply.charge + (src.standart_charge_cost * (used_power))
-				W.use(used_power)
-			else
-				src.power_supply.charge = src.power_supply.charge + (src.standart_charge_cost * W.get_amount())
-				user.drop_from_inventory(W, src)
-			to_chat(user, "You recharge your [src.name].")
+			src.power_supply.charge = src.power_supply.charge + (src.standart_charge_cost * W.get_amount())
+			user.drop_from_inventory(W, src)
+		to_chat(user, "You recharge your [src.name].")
 	else
 		to_chat(user, "You can't charge your [src.name], it's full.")
 
