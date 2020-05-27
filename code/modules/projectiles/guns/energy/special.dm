@@ -222,13 +222,13 @@ obj/item/weapon/gun/energy/staff/focus
 		projectile_type = /obj/item/projectile/beam/plasmacutter
 		src.fire_delay = 10
 		src.charge_cost = 0
-		to_chat(user, SPAN_NOTICE("Your [src.name] now in safe mode"))
+		to_chat(user, SPAN_NOTICE("Your [src.name] is  now in safe mode"))
 	else
 		src.fire_delay = 6
 		src.danger_attack = TRUE
 		src.projectile_type = /obj/item/projectile/beam/plasmacutter/danger
 		src.charge_cost = standart_charge_cost
-		to_chat(user, SPAN_NOTICE("Your [src.name] now in danger mode."))
+		to_chat(user, SPAN_NOTICE("Your [src.name] is  now in danger mode."))
 
 /obj/item/weapon/gun/energy/plasmacutter/examine(mob/user)
 	. = ..(user)
