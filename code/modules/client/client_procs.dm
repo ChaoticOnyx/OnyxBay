@@ -88,8 +88,8 @@
 			return
 
 	//Logs all hrefs
-	if(config && config.log_hrefs && href_logfile)
-		to_chat(href_logfile, "<small>[time2text(world.timeofday,"hh:mm")] [src] (usr:[usr])</small> || [hsrc ? "[hsrc] " : ""][href]<br>")
+	if(config && config.log_hrefs && GLOB.world_hrefs_log)
+		WRITE_FILE(GLOB.world_hrefs_log, "<small>[time2text(world.timeofday,"hh:mm")] [src] (usr:[usr])</small> || [hsrc ? "[hsrc] " : ""][href]<br>")
 
 	// ask BYOND client to stop spamming us with assert arrival confirmations (see byond bug ID:2256651)
 	if (asset_cache_job && (asset_cache_job in completed_asset_jobs))

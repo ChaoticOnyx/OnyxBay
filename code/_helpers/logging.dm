@@ -12,7 +12,7 @@
 /proc/log_to_dd(text)
 	world.log << text
 	if(config && config.log_world_output)
-		game_log("DD_OUTPUT", text)
+		log_debug("\[DD]: [text]")
 
 /proc/error(msg)
 	log_to_dd("\[[time_stamp()]]\[ERROR] [msg][log_end]")
@@ -37,15 +37,15 @@
 /proc/testing(msg)
 	log_to_dd("\[[time_stamp()]]\[TESTING] [msg][log_end]")
 
-/proc/log_generic(type, message, location, log_to_diary = TRUE, notify_admin = FALSE, req_pref = null)
+/proc/log_generic(type, message, location, log_to_common = TRUE, notify_admin = FALSE, req_pref = null)
 	var/turf/T = get_turf(location)
 	if(location && T)
-		if(log_to_diary)
-			diary << "\[[time_stamp()]] [game_id] [type]: [message] ([T.x],[T.y],[T.z])[log_end]"
+		if(log_to_common)
+			WRITE_FILE(GLOB.world_common_log, "\[[time_stamp()]] [game_id] [type]: [message] ([T.x],[T.y],[T.z])[log_end]")
 		if(notify_admin)
 			message += " (<A HREF='?_src_=holder;adminplayerobservecoodjump=1;X=[T.x];Y=[T.y];Z=[T.z]'>JMP</a>)"
-	else if(log_to_diary)
-		diary << "\[[time_stamp()]] [game_id] [type]: [message][log_end]"
+	else if(log_to_common)
+		WRITE_FILE(GLOB.world_common_log, "\[[time_stamp()]] [game_id] [type]: [message][log_end]")
 
 	var/rendered = "<span class=\"log_message\"><span class=\"prefix\">[type] LOG:</span> <span class=\"message\">[message]</span></span>"
 	if(notify_admin)
@@ -57,7 +57,7 @@
 	log_generic("ADMIN", text, location, config.log_admin, notify_admin)
 
 /proc/log_debug(text, location)
-	log_generic("DEBUG", text, location, config.log_debug, TRUE, /datum/client_preference/staff/show_debug_logs)
+	log_generic("DEBUG", text, location, FALSE, TRUE, /datum/client_preference/staff/show_debug_logs)
 	if(!config.log_debug || !GLOB.world_debug_log)
 		return
 	WRITE_FILE(GLOB.world_debug_log, "\[[time_stamp()]] DEBUG: [text][log_end]")
@@ -107,7 +107,7 @@
 	log_generic("DATABASE", text, notify_admin = notify_admin)
 
 /proc/game_log(category, text)
-	diary << "\[[time_stamp()]\] [game_id] [category]: [text][log_end]"
+	WRITE_FILE(GLOB.world_common_log, "\[[time_stamp()]\] [game_id] [category]: [text][log_end]")
 
 /proc/log_unit_test(text)
 	log_to_dd("\[[time_stamp()]]\[UNIT TEST] [text]")
