@@ -87,8 +87,6 @@ var/global/datum/body_build/default_body_build = new
 
 	return I
 
-
-
 /datum/body_build/slim
 	name			= "Slim"
 
@@ -139,6 +137,26 @@ var/global/datum/body_build/default_body_build = new
 	back_icon		= 'icons/inv_slots/back/mob_slim.dmi'
 	ties_icon		= 'icons/inv_slots/acessories/mob_slim.dmi'
 	hidden_icon 	= 'icons/inv_slots/hidden/mob_slimalt.dmi'
+	rig_back		= 'icons/inv_slots/rig/mob_slim.dmi'
+
+/datum/body_build/slim/male
+	name			= "Slim"
+
+	index			= "_slim"
+	roboindex   	= "_slim"
+	genders			= list(MALE)
+	uniform_icon	= 'icons/inv_slots/uniforms/mob_slim_m.dmi'
+	suit_icon		= 'icons/inv_slots/suits/mob_slim_m.dmi'
+	gloves_icon		= 'icons/inv_slots/gloves/mob_slim.dmi'
+	glasses_icon	= 'icons/inv_slots/glasses/mob_slim.dmi'
+	ears_icon		= 'icons/inv_slots/ears/mob_slim.dmi'
+	mask_icon		= 'icons/inv_slots/masks/mob_slim.dmi'
+	shoes_icon		= 'icons/inv_slots/shoes/mob_slim.dmi'
+	belt_icon		= 'icons/inv_slots/belts/mob_slim.dmi'
+	s_store_icon	= 'icons/mob/onmob/belt_mirror_slim.dmi'
+	back_icon		= 'icons/inv_slots/back/mob_slim.dmi'
+	ties_icon		= 'icons/inv_slots/acessories/mob_slim_m.dmi'
+	hidden_icon 	= 'icons/inv_slots/hidden/mob_slim_m.dmi'
 	rig_back		= 'icons/inv_slots/rig/mob_slim.dmi'
 
 /datum/body_build/slim/alt/tajaran //*sigh. I regret of doing this.
