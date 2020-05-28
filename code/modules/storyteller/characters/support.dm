@@ -50,13 +50,17 @@
 			triggers.Remove(choosen_trigger)
 		while (!result && triggers.len)
 
-		if(!result) // no one of our triggers works, we can't do anything with balance :(
+		if(!result)
+			_log_debug("Triggers don't work! We can't fix the balance :(")
 			break
 
 		if (choosen_trigger == /storyteller_trigger/spawn_antagonist/traitor)
 			security_advantage -= 4
 		else
 			security_advantage -= 8
+
+		if (security_advantage <= 5)
+			balancing_is_needed = FALSE
 
 	if (balancing_is_needed)
 		_log_debug("Security Advantage after balancing: [security_advantage]")
