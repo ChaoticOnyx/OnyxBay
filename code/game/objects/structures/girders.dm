@@ -144,7 +144,7 @@
 		user.visible_message(SPAN("notice", "[user] is repairing the damage to \the [src]..."), \
 				             SPAN("notice", "You start repairing the damage to \the [src]..."))
 		playsound(src, 'sound/items/Welder.ogg', 100, 1)
-		if(!do_after(user, max(5, health / 30), src) && WT && WT.isOn())
+		if(!do_after(user, max(5, health / 3), src) && WT && WT.isOn())
 			return
 		health = max_health
 		user.visible_message(SPAN("notice", "[user] repairs \the [src]."), \
