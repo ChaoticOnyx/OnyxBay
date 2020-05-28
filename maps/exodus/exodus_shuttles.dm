@@ -100,6 +100,7 @@
 	waypoint_offsite = "nav_transport_start"
 	waypoint_station = "nav_transport_station"
 	move_time = 30
+	defer_initialisation = TRUE // Lost shuttle, auto-initialization off
 
 /obj/effect/shuttle_landmark/transport/start
 	name = "Centcomm"
