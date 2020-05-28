@@ -155,7 +155,7 @@
 		return
 
 /turf/simulated/wall/blob_act(destroy, obj/effect/blob/source)
-	if (destroy)
+	if(destroy)
 		dismantle_wall(TRUE)
 	else
 		take_damage(25)
@@ -362,7 +362,7 @@
 
 /turf/simulated/wall/proc/dismantle_wall(devastated, explode, no_product)
 
-	playsound(src, 'sound/items/Welder.ogg', 100, 1)
+	playsound(src, 'sound/items/Deconstruct.ogg', 100, 1)
 	if(!no_product)
 		if(reinf_material)
 			reinf_material.place_dismantled_girder(src, reinf_material)

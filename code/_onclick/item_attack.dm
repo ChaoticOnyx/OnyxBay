@@ -110,6 +110,16 @@ avoid code duplication. This includes items that may sometimes act as a standard
 		visible_message(SPAN("danger", "[src] has been hit by [user] with [W]."))
 		user.setClickCooldown(W.update_attack_cooldown())
 		user.do_attack_animation(src)
+		obj_attack_sound(W)
+
+/atom/proc/obj_attack_sound(obj/item/W)
+	if(!W.hitsound)
+		return
+	if(W.hitsound == 'sound/effects/fighting/smash.ogg')
+		playsound(loc, 'sound/effects/fighting/smash.ogg', 50, 1, -1)
+		return
+	playsound(loc, 'sound/effects/metalhit2.ogg', rand(45,65), 1, -1)
+	return
 
 ////////////////////
 //Mobs procs below//
