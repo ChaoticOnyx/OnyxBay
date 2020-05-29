@@ -346,7 +346,7 @@
 /datum/hallucination/fake_appearance
 	duration = 1 MINUTE
 	min_power = 45
-	var/radius = 6
+	var/radius = 7
 	var/mob/living/origin
 	var/mob/fake
 	var/image/fake_look
@@ -423,6 +423,7 @@
 	if(fake.lying)
 		fake_look.transform = turn(fake.transform, -90)
 	holder.client.images |= fake_look
+	log_misc("[holder.name] is hallucinating that [origin.name] is the [fake.name]")
 
 /datum/hallucination/fake_appearance/proc/get_living_sublist(var/list/subtypes, var/list/exclude)
 	var/list/same_z_candidates = new()
