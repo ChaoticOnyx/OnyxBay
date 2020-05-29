@@ -292,21 +292,21 @@
 			to_chat(user, SPAN("notice", "\The [src] doesn't seem to be reloadable."))
 			return
 		var/obj/item/stack/medical/advanced/bruise_pack/O = I
-		if(O.stack_empty == 2 || !O.get_amount())
-			to_chat(user, SPAN("warning", "\The [O] is empty!"))
+		if(!O.amount)
+			to_chat(user, SPAN("warning", "You are trying to refill \the [src] using an empty container."))
 			return
-		if(gel_amt >= gel_amt_max)
+		if(O.refill())
+			to_chat(user, SPAN("notice", "You load some [O] into the [src]."))
+			O.use(1)
+		else
 			to_chat(user, SPAN("notice", "\The [src] is full."))
-			return
-		O.use(1)
-		gel_amt++
-		to_chat(user, SPAN("notice", "You load some [O] into the [src]."))
-		update_icon()
+		return
 	else
 		..()
 
 /obj/item/weapon/organfixer/examine(mob/user)
-	if(..(user, 0))
+	. = ..()
+	if(. && user.Adjacent(src))
 		if(gel_amt_max > 0)
 			if(gel_amt == 0)
 				to_chat(user, "It's empty.")
@@ -318,6 +318,13 @@
 		return
 	emagged = 1
 	to_chat(user, "<span class='danger'>You overload \the [src]'s circuits.</span>")
+	return 1
+
+/obj/item/weapon/organfixer/proc/refill(amt = 1)
+	if(gel_amt >= gel_amt_max)
+		return 0
+	gel_amt += amt
+	update_icon()
 	return 1
 
 /obj/item/weapon/organfixer/standard
@@ -343,3 +350,6 @@
 	gel_amt = -1
 	surgery_speed = 0.6
 	origin_tech = list(TECH_MATERIAL = 5, TECH_ENGINEERING = 3, TECH_BIO = 5, TECH_BLUESPACE = 2)
+
+/obj/item/weapon/organfixer/advanced/bluespace/refill()
+	return 0

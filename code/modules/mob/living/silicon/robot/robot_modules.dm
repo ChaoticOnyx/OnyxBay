@@ -283,9 +283,7 @@ var/global/list/robot_modules = list(
 		PS.reagents.add_reagent(/datum/reagent/acid/polyacid, 5 * amount)
 
 	var/obj/item/weapon/organfixer/standard/OF = locate(/obj/item/weapon/organfixer/standard) in src.modules
-	if(OF.gel_amt < OF.gel_amt_max)
-		OF.gel_amt++
-
+	OF.refill()
 
 /obj/item/weapon/robot_module/medical/surgeon_adv
 	name = "advanced surgeon robot module"
@@ -297,7 +295,6 @@ var/global/list/robot_modules = list(
 					"Drone" = "drone-surgery",
 					"Doot" = "eyebot-medical"
 					)
-
 
 /obj/item/weapon/robot_module/medical/surgeon_adv/New()
 	supported_upgrades += list(/obj/item/borg/upgrade/organ_printer)
@@ -356,8 +353,7 @@ var/global/list/robot_modules = list(
 	SC.reagents.add_reagent(/datum/reagent/space_cleaner,10 * amount)
 
 	var/obj/item/weapon/organfixer/advanced/OF = locate(/obj/item/weapon/organfixer/advanced) in src.modules
-	if(OF.gel_amt < OF.gel_amt_max)
-		OF.gel_amt++
+	OF.refill()
 
 /obj/item/weapon/robot_module/medical/crisis
 	name = "medical robot module"

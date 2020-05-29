@@ -193,11 +193,25 @@
 			affecting.disinfect()
 
 /obj/item/stack/medical/advanced/proc/refill(amt = 1)
+	if(amount >= max_amount)
+		return 0
 	amount += amt
 	if(stack_empty == 2)
 		name = initial(name)
 		stack_empty = 1
 	update_icon()
+	return 1
+
+/obj/item/stack/medical/advanced/proc/refill_from_same(obj/item/stack/medical/advanced/O, mob/user)
+	if(!O.amount)
+		to_chat(user, SPAN("warning", "You are trying to refill \the [src] using an empty container."))
+		return
+	var/amt_to_transfer = min((max_amount - amount), O.amount)
+	if(refill(amt_to_transfer))
+		to_chat(user, SPAN("notice", "You refill \the [src] with [amt_to_transfer] doses of [O]."))
+		O.use(amt_to_transfer)
+	else
+		to_chat(user, SPAN("notice", "\The [src] is already full."))
 
 /obj/item/stack/medical/advanced/bruise_pack
 	name = "somatic gel"
@@ -213,17 +227,8 @@
 
 /obj/item/stack/medical/advanced/bruise_pack/attackby(obj/item/W, mob/user)
 	if(istype(W, /obj/item/stack/medical/advanced/bruise_pack))
-		var/obj/item/stack/medical/advanced/bruise_pack/G = W
-		if(amount >= max_amount)
-			to_chat(user, SPAN("notice", "\The [src] is already full."))
-			return
-		if(!G.amount)
-			to_chat(user, SPAN("warning", "You are trying to refill \the [src] using an empty container."))
-			return
-		var/amt_to_transfer = min((max_amount - amount), G.amount)
-		G.use(amt_to_transfer)
-		refill(amt_to_transfer)
-		to_chat(user, SPAN("notice", "You refill \the [src] with [amt_to_transfer] doses of somatic gel."))
+		var/obj/item/stack/medical/advanced/bruise_pack/O = W
+		refill_from_same(O, user)
 		return
 	..()
 
@@ -281,17 +286,8 @@
 
 /obj/item/stack/medical/advanced/ointment/attackby(obj/item/W, mob/user)
 	if(istype(W, /obj/item/stack/medical/advanced/ointment))
-		var/obj/item/stack/medical/advanced/ointment/G = W
-		if(amount >= max_amount)
-			to_chat(user, SPAN("notice", "\The [src] is already full."))
-			return
-		if(!G.amount)
-			to_chat(user, SPAN("warning", "You are trying to refill \the [src] using an empty container."))
-			return
-		var/amt_to_transfer = min((max_amount - amount), G.amount)
-		G.use(amt_to_transfer)
-		refill(amt_to_transfer)
-		to_chat(user, SPAN("notice", "You refill \the [src] with [amt_to_transfer] doses of burn gel."))
+		var/obj/item/stack/medical/advanced/ointment/O = W
+		refill_from_same(O, user)
 		return
 	..()
 
