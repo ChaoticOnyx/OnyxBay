@@ -28,6 +28,7 @@
 
 	var/accuracy = 0
 	var/dispersion = 0.0
+	var/blockable = TRUE
 
 	var/damage = 10
 	var/damage_type = BRUTE //BRUTE, BURN, TOX, OXY, CLONE, PAIN are the only things that should be in here

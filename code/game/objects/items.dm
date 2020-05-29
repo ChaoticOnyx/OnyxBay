@@ -523,6 +523,8 @@ var/list/global/slot_flags_enumeration = list(
 	if(!user.blocking) return 0 // We weren't ready bruh
 	if(istype(damage_source,/obj/item/projectile))
 		var/obj/item/projectile/P = damage_source
+		if(!P.blockable)
+			return 0
 		if(src.mod_shield >= 2.5)
 			// some effects here
 			var/datum/effect/effect/system/spark_spread/spark_system = new /datum/effect/effect/system/spark_spread()
