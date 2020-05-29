@@ -535,8 +535,8 @@ var/list/global/slot_flags_enumeration = list(
 				if(istype(user,/mob/living/carbon/human))
 					var/mob/living/carbon/human/H = user
 					if(src != H.get_active_hand())
-						H.poise -= P.damage/(src.mod_shield*1.5)
-						if(H.poise < P.damage/(src.mod_shield*1.5))
+						H.poise -= P.damage/(src.mod_shield*1.25)
+						if(H.poise < P.damage/(src.mod_shield*1.25))
 							H.useblock_off()
 							shot_out(H, "knocked")
 				return PROJECTILE_FORCE_BLOCK // Beam reflections code is kinda messy, I ain't gonna touch it. ~Toby

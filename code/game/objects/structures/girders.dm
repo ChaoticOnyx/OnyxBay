@@ -170,7 +170,7 @@
 				visible_message(SPAN("danger", "\The [src] falls apart!"))
 				dismantle()
 		else
-			visible_message(SPAN("danger", "[user] hits \the [src] with \the [W], but it bounces off!"))
+			user.visible_message(SPAN("danger", "[user] hits \the [src] with \the [W], but it bounces off!"))
 
 /obj/structure/girder/proc/construct_wall(obj/item/stack/material/S, mob/user)
 	if(S.get_amount() < 2)

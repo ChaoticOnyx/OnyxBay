@@ -56,6 +56,13 @@
 	health -= amount
 	if(health <= 0)
 		visible_message("<span class='warning'>\The [src] breaks down!</span>")
+		if(atom_flags & ATOM_FLAG_CLIMBABLE)
+			object_shaken()
+		var/list/targets = list(get_step(src,dir),get_step(src,turn(dir, 45)),get_step(src,turn(dir, -45)))
+		for(var/atom/movable/A in get_turf(src))
+			if(!A.anchored)
+				spawn(0)
+					A.throw_at(pick(targets),1,1)
 		return break_to_parts() // if we break and form shards, return them to the caller to do !FUN! things with
 
 /obj/structure/table/Initialize()

@@ -108,6 +108,9 @@
 
 /obj/item/weapon/material/shard/shrapnel/New(loc)
 	..(loc, MATERIAL_STEEL)
+	name = "shrapnel"
+	icon_state = "shrapnel[pick("large", "medium", "small")]"
+	update_icon()
 
 /obj/item/weapon/material/shard/phoron/New(loc)
 	..(loc, MATERIAL_PHORON_GLASS)

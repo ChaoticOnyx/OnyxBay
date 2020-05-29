@@ -56,8 +56,8 @@
 /obj/structure/table/CheckExit(atom/movable/O as mob|obj, target as turf)
 	if(istype(O) && O.pass_flags & PASS_FLAG_TABLE)
 		return 1
-	if (flipped==1)
-		if (get_dir(loc, target) == dir)
+	if(flipped==1)
+		if(get_dir(loc, target) == dir)
 			return !density
 		else
 			return 1
@@ -66,12 +66,12 @@
 
 /obj/structure/table/MouseDrop_T(obj/O as obj, mob/user as mob)
 
-	if ((!( istype(O, /obj/item/weapon) ) || user.get_active_hand() != O))
+	if((!( istype(O, /obj/item/weapon) ) || user.get_active_hand() != O))
 		return ..()
 	if(isrobot(user))
 		return
 	user.drop_item()
-	if (O.loc != src.loc)
+	if(O.loc != src.loc)
 		step(O, get_dir(O, src))
 	return
 
@@ -123,6 +123,28 @@
 
 	if(can_plate && !material)
 		to_chat(user, "<span class='warning'>There's nothing to put \the [W] on! Try adding plating to \the [src] first.</span>")
+		return
+
+	if(user.a_intent == I_HURT && W.force)
+		user.setClickCooldown(W.update_attack_cooldown())
+		user.do_attack_animation(src)
+		obj_attack_sound(W)
+		shake_animation(stime = 1)
+		var/dam_threshhold = 5.0
+		if(material)
+			dam_threshhold = max(10.0, material.integrity / 15)
+		if(reinforced)
+			dam_threshhold *= 2
+		if(W.force >= dam_threshhold)
+			user.visible_message(SPAN("danger", "\The [src] has been hit with [W] by [user]!"))
+			var/list/targets = list(get_step(src,dir),get_step(src,turn(dir, 45)),get_step(src,turn(dir, -45)))
+			for(var/atom/movable/A in get_turf(src))
+				if(!A.anchored && prob(50))
+					spawn(0)
+						A.throw_at(pick(targets),1,1)
+			take_damage(W.force/1.5)
+		else
+			user.visible_message(SPAN("danger", "[user] hits \the [src] with \the [W], but it bounces off!"))
 		return
 
 	// Placing stuff on tables
