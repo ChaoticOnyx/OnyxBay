@@ -211,10 +211,12 @@ obj/item/weapon/gun/energy/staff/focus
 	force = 8
 	origin_tech = list(TECH_MATERIAL = 6, TECH_PHORON = 5, TECH_ENGINEERING = 6, TECH_COMBAT = 3)
 	matter = list(MATERIAL_STEEL = 4000)
-	projectile_type = /obj/item/projectile/beam/plasmacutter/danger
+	projectile_type = /obj/item/projectile/beam/plasmacutter
+	charge_cost = 0
+	fire_delay = 10
 	max_shots = 10
 	var/standart_charge_cost = 20
-	var/danger_attack = TRUE
+	var/danger_attack = FALSE
 
 /obj/item/weapon/gun/energy/plasmacutter/attack_self(mob/user)
 	if (src.danger_attack)
@@ -222,30 +224,29 @@ obj/item/weapon/gun/energy/staff/focus
 		projectile_type = /obj/item/projectile/beam/plasmacutter
 		src.fire_delay = 10
 		src.charge_cost = 0
-		to_chat(user, SPAN_NOTICE("Your [src.name] is  now in safe mode"))
+		to_chat(user, SPAN_NOTICE("Your [src.name] is now in safe mode"))
 	else
 		src.fire_delay = 6
 		src.danger_attack = TRUE
 		src.projectile_type = /obj/item/projectile/beam/plasmacutter/danger
-		src.charge_cost = standart_charge_cost
-		to_chat(user, SPAN_NOTICE("Your [src.name] is  now in danger mode."))
+		src.charge_cost = src.standart_charge_cost
+		to_chat(user, SPAN_NOTICE("Your [src.name] is now in danger mode."))
 
 /obj/item/weapon/gun/energy/plasmacutter/examine(mob/user)
 	. = ..(user)
-	to_chat(user, "Has [power_supply ? round(power_supply.charge / charge_cost) : "0"] shot\s remaining.")
 	to_chat(user, "It has recharge port with a capital letter P")
 
 /obj/item/weapon/gun/energy/plasmacutter/attackby(obj/item/stack/material/phoron/W, mob/user)
 	if(user.stat || user.restrained() || user.lying)
 		return
 	var/current_power = round(src.power_supply.charge / src.standart_charge_cost)
-	if(current_power < 10)
-		if (W.get_amount() > current_power)
-			var/used_power = W.get_amount() - round(src.power_supply.charge / src.standart_charge_cost)
-			src.power_supply.charge = src.power_supply.charge + (src.standart_charge_cost * (used_power))
+	if(current_power < 10 && src.danger_attack == TRUE)
+		var/used_power = src.max_shots - current_power
+		src.power_supply.charge = src.power_supply.charge + (src.standart_charge_cost * (used_power))
+		if (W.get_amount() - used_power > 0)
 			W.use(used_power)
 		else
-			src.power_supply.charge = src.power_supply.charge + (src.standart_charge_cost * W.get_amount())
+			W.use(used_power - W.get_amount())
 			user.drop_from_inventory(W, src)
 		to_chat(user, "You recharge your [src.name].")
 	else
