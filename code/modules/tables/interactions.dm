@@ -75,6 +75,28 @@
 		step(O, get_dir(O, src))
 	return
 
+/obj/structure/table/attack_hand(mob/user as mob)
+	if(user.a_intent == I_HURT)
+		src.add_fingerprint(user)
+		user.setClickCooldown(DEFAULT_ATTACK_COOLDOWN)
+		if(prob(50))
+			playsound(loc, 'sound/effects/deskslam.ogg', 50, 1)
+		else
+			playsound(loc, 'sound/effects/magnetclamp.ogg', 60, 1)
+		user.do_attack_animation(src)
+		user.visible_message(SPAN("warning", "[user] slams \the [src]!</span>"))
+		var/list/targets = list(get_step(src,dir),get_step(src,turn(dir, 45)),get_step(src,turn(dir, -45)))
+		for(var/atom/movable/A in get_turf(src))
+			var/dropchance = 25
+			if(istype(A,/obj))
+				var/obj/O = A
+				if(O.w_class)
+					dropchance = 80 - O.w_class*20 // 60% for tiny items, 40% for small items, 20% for normal items, others cannot be dropped;
+			if(!A.anchored && prob(dropchance))
+				spawn(0)
+					A.throw_at(pick(targets),1,1)
+		return
+	..()
 
 /obj/structure/table/attackby(obj/item/W, mob/user, click_params)
 	if (!W) return
@@ -136,10 +158,15 @@
 		if(reinforced)
 			dam_threshhold *= 2
 		if(W.force >= dam_threshhold)
-			user.visible_message(SPAN("danger", "\The [src] has been hit with [W] by [user]!"))
+			user.visible_message(SPAN("danger", "[user] hits \the [src] with \the [W]!"))
 			var/list/targets = list(get_step(src,dir),get_step(src,turn(dir, 45)),get_step(src,turn(dir, -45)))
 			for(var/atom/movable/A in get_turf(src))
-				if(!A.anchored && prob(50))
+				var/dropchance = 50
+				if(istype(A,/obj))
+					var/obj/O = A
+					if(O.w_class)
+						dropchance = 120 - O.w_class*20 // 100% for tiny items, 80% for small items, etc.
+				if(!A.anchored && prob(dropchance))
 					spawn(0)
 						A.throw_at(pick(targets),1,1)
 			take_damage(W.force/1.5)
