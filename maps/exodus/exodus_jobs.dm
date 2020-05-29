@@ -28,6 +28,7 @@
 									/datum/job/janitor,
 									/datum/job/librarian,
 									/datum/job/doctor,
+									/datum/job/virologist,
 									/datum/job/chemist,
 									/datum/job/geneticist,
 									/datum/job/psychiatrist,
