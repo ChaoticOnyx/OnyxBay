@@ -47,9 +47,6 @@
 
 	var/obj/item/organ/external/affected = target.get_organ(target_zone)
 
-	if(!affected)
-		return FALSE
-
 	if(BP_IS_ROBOTIC(affected))
 		return FALSE
 
@@ -143,11 +140,9 @@
 	var/obj/item/weapon/organfixer/O = tool
 	if(!istype(O))
 		return FALSE
-	if(!hasorgans(target))
+	if(!..())
 		return FALSE
 	var/obj/item/organ/external/affected = target.get_organ(target_zone)
-	if(!affected)
-		return FALSE
 	if(BP_IS_ROBOTIC(affected))
 		return FALSE
 	if(O.gel_amt == 0)
@@ -241,11 +236,9 @@
 	max_duration = 90
 
 /datum/surgery_step/internal/fix_organ_ghetto/can_use(mob/living/user, mob/living/carbon/human/target, target_zone, obj/item/tool)
-	if(!hasorgans(target))
+	if(!..())
 		return FALSE
 	var/obj/item/organ/external/affected = target.get_organ(target_zone)
-	if(!affected)
-		return FALSE
 	if(BP_IS_ROBOTIC(affected))
 		return FALSE
 	if(target.op_stage.current_organ)
@@ -358,9 +351,6 @@
 
 	var/obj/item/organ/external/affected = target.get_organ(target_zone)
 
-	if(!affected)
-		return 0
-
 	if(BP_IS_ROBOTIC(affected))
 		return 0
 
@@ -418,17 +408,15 @@
 
 /datum/surgery_step/internal/remove_organ/can_use(mob/living/user, mob/living/carbon/human/target, target_zone, obj/item/tool)
 	if(!..())
-		return 0
+		return FALSE
 
 	target.op_stage.current_organ = null
 
 	var/obj/item/organ/external/affected = target.get_organ(target_zone)
-	if(!affected)
-		return 0
 
 	if(target.op_stage.current_organ)
 		to_chat(user, SPAN("warning", "You can't do this right now."))
-		return 0
+		return FALSE
 
 	var/list/removable_organs = list()
 	for(var/obj/item/organ/internal/I in affected.implants)
@@ -437,7 +425,7 @@
 
 	var/organ_to_remove = input(user, "Which organ do you want to remove?") as null|anything in removable_organs
 	if(!organ_to_remove)
-		return 0
+		return FALSE
 
 	target.op_stage.current_organ = organ_to_remove
 	return ..()
@@ -491,13 +479,16 @@
 	max_duration = 50
 
 /datum/surgery_step/internal/replace_organ/can_use(mob/living/user, mob/living/carbon/human/target, target_zone, obj/item/tool)
+	if(!..())
+		return FALSE
 
 	var/obj/item/organ/internal/O = tool
 	var/obj/item/organ/external/affected = target.get_organ(target_zone)
-	if(!affected) return
+	if(!affected)
+		return FALSE
 
 	if(!istype(O))
-		return 0
+		return FALSE
 
 	if(BP_IS_ROBOTIC(affected) && !BP_IS_ROBOTIC(O))
 		to_chat(user, SPAN("danger", "You cannot install a naked organ into a robotic body."))
@@ -580,7 +571,7 @@
 		return 0
 
 	var/obj/item/organ/external/affected = target.get_organ(target_zone)
-	if(!affected || BP_IS_ROBOTIC(affected))
+	if(BP_IS_ROBOTIC(affected))
 		// robotic attachment handled via screwdriver
 		return 0
 
@@ -650,9 +641,6 @@
 		return 0
 
 	var/obj/item/organ/external/affected = target.get_organ(target_zone)
-
-	if(!affected)
-		return 0
 
 	if(BP_IS_ROBOTIC(affected))
 		return 0
