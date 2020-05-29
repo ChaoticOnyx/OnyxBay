@@ -328,6 +328,8 @@ GLOBAL_LIST_INIT(far_explosion_sound,list('sound/effects/explosions/far_explosio
 										'sound/effects/explosions/far_explosion43.ogg', 'sound/effects/explosions/far_explosion44.ogg', 'sound/effects/explosions/far_explosion45.ogg',
 										'sound/effects/explosions/far_explosion46.ogg', 'sound/effects/explosions/far_explosion47.ogg', 'sound/effects/explosions/far_explosion48.ogg',
 										'sound/effects/explosions/far_explosion49.ogg', 'sound/effects/explosions/far_explosion50.ogg'))
+GLOBAL_LIST_INIT(chisel_sound,list('sound/weapons/chisel1.ogg','sound/weapons/chisel2.ogg','sound/weapons/chisel3.ogg',
+								'sound/weapons/chisel4.ogg','sound/weapons/chisel5.ogg','sound/weapons/chisel6.ogg'))
 
 /proc/playsound(atom/source, soundin, vol as num, vary, extrarange as num, falloff, is_global, frequency, is_ambiance = 0)
 
@@ -510,6 +512,7 @@ var/const/FALLOFF_SOUNDS = 0.5
 			if ("button") 				soundin = pick(GLOB.button_sound)
 			if ("chop") 				soundin = pick(GLOB.chop_sound)
 			if ("far_explosion") 		soundin = pick(GLOB.far_explosion_sound)
+			if ("chisel")				soundin = pick(GLOB.chisel_sound)
 			else crash_with("Unknown sound: [soundin]")
 
 	return soundin

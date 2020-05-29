@@ -645,14 +645,11 @@
 			user.visible_message("<span class='notice'>[user] carves away at the sculpting block!</span>",
 				"<span class='notice'>You continue sculpting.</span>")
 
-			if(prob(15))
-				playsound(user, 'sound/items/Screwdriver.ogg', 20, 1)
-			else
-				playsound(user, file("sound/weapons/chisel[rand(1,6)].ogg"), 20, 1)
+			playsound(user, get_sfx("chisel"), 30, 1)
+			spawn(3)
+				playsound(user, get_sfx("chisel"), 30, 1)
 				spawn(3)
-					playsound(user, file("sound/weapons/chisel[rand(1,6)].ogg"), 20, 1)
-					spawn(3)
-						playsound(user, file("sound/weapons/chisel[rand(1,6)].ogg"), 20, 1)
+					playsound(user, get_sfx("chisel"), 30, 1)
 
 			last_struck = 1
 			if(do_after(user,(20)))
