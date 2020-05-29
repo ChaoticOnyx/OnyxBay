@@ -196,6 +196,13 @@
 		if (!client.EAMS_CheckForAccess())
 			return
 
+		//Prevents people rejoining as same character.
+		for (var/mob/living/carbon/human/C in SSmobs.mob_list)
+			var/char_name = client.prefs.real_name
+			if(char_name == C.real_name)
+				to_chat (usr, "<span class='danger'>There is a character that already exists with the same name: <b>[C.real_name]</b>, please join with a different one.</span>")
+				return
+			
 		if(!config.enter_allowed)
 			to_chat(usr, "<span class='notice'>There is an administrative lock on entering the game!</span>")
 			return
