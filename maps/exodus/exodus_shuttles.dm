@@ -88,19 +88,6 @@
 /obj/effect/shuttle_landmark/escape_pod/transit/pod5
 	number = 5
 
-//Transport shuttle
-
-/datum/shuttle/autodock/ferry/transport
-	name = "Transport"
-	warmup_time = 10
-	location = 1
-	shuttle_area = /area/shuttle/transport/centcom
-	dock_target = "centcom_transport_shuttle"
-	landmark_transition = "nav_transport_transition"
-	waypoint_offsite = "nav_transport_start"
-	waypoint_station = "nav_transport_station"
-	move_time = 30
-
 /obj/effect/shuttle_landmark/transport/start
 	name = "Centcomm"
 	landmark_tag = "nav_transport_start"
