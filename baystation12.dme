@@ -62,6 +62,7 @@
 #include "code\__defines\tgui.dm"
 #include "code\__defines\topic.dm"
 #include "code\__defines\turfs.dm"
+#include "code\__defines\virus.dm"
 #include "code\__defines\warnings.dm"
 #include "code\__defines\xenoarcheaology.dm"
 #include "code\__defines\ZAS.dm"

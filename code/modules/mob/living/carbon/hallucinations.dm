@@ -114,9 +114,9 @@
 	sounds = list('sound/effects/glass_step.ogg', 'sound/effects/hit_on_shattered_glass.ogg', 'sound/effects/fighting/smash.ogg')
 
 /datum/hallucination/sound/danger/start()
-	sounds.Add(file("sound/effects/explosions/explosion[rand(1, 24)].ogg"))
-	sounds.Add(file("sound/effects/explosions/electric[rand(1, 11)].ogg"))
-	sounds.Add(file("sound/effects/fighting/punch[rand(1, 4)].ogg"))
+	sounds.Add(get_sfx("explosion"))
+	sounds.Add(get_sfx("electric_explosion"))
+	sounds.Add(get_sfx("punch"))
 	..()
 
 /datum/hallucination/sound/spooky
@@ -158,9 +158,13 @@
 		var/message
 		var/phrases_file = "code/modules/mob/living/carbon/hallucination_phrases.txt"
 		if(prob(80) && fexists(phrases_file))
-			var/list/phrases = world.file2list(phrases_file) // Must be ordered by hallucination power! Ex: phrases[30] would be shown only if hallucination_power >= 30
-			phrases.Cut(min(phrases.len, holder.hallucination_power))
-			message = pick(phrases)
+			var/list/phrases = params2list(file2text(file(phrases_file)))
+			var/list/allowed_phrases = new()
+			for(var/phrase in phrases)
+				if(text2num(phrases[phrase]) <= holder.hallucination_power)
+					allowed_phrases += phrase
+			ASSERT(allowed_phrases.len)
+			message = pick(allowed_phrases)
 			holder.hear_say(message, speaker = talker)
 			log_misc("[holder.name] is hallucinating about [talker.name] SAYS : [message]")
 		else
@@ -192,12 +196,16 @@
 		to_chat(H,"<span class='warning'>You feel something [pick("moving","squirming","skittering")] inside of your [O.name]!</span>")
 
 /datum/hallucination/virus
-	duration = 5 MINUTES // Just prevents duplicates for this duration
+	duration = 1 MINUTE // Just prevents duplicates for this duration
 	allow_duplicates = 0
 
 /datum/hallucination/virus/start()
-	var/message = pick("Your stomach feels heavy.", "Mucous runs down the back of your throat.", "You feel like you are about to sneeze!", "You feel a rush of energy inside you!", "Your hair starts to fall out in clumps...", "Your head hurts a bit.")
-	to_chat(holder, SPAN_WARNING(message))
+	var/list/effects = list(STOMACH_EFFECT_WARNING, GUNCK_EFFECT_WARNING, SNEEZE_EFFECT_WARNING, DISORIENTATION_EFFECT_WARNING, STIMULANT_EFFECT_WARNING, HAIR_EFFECT_WARNING, CONFUSION_EFFECT_WARNING, IMMORTAL_AGING_EFFECT_WARNING)
+	if(istype(holder,/mob/living/carbon/human))
+		var/obj/item/organ/external/organ = pick(holder.organs)
+		if(organ)
+			effects.Add(ITCH_EFFECT_WARNING(organ.name), IMMORTAL_RECOVER_EFFECT_WARNING(organ.name), IMMORTAL_HEALING_EFFECT_WARNING(organ.name), ORGANS_SHUTDOWN_EFFECT_WARNING(organ.name), GIBBINGTONS_EFFECT_WARNING(organ.name))
+	to_chat(holder, pick(effects))
 
 /datum/hallucination/evacuation
 	min_power = 60 // Very high
@@ -407,6 +415,9 @@
 			fake_candidates = get_living_sublist(list(/mob/living/simple_animal/mouse))
 		if("ghost")
 			fake_candidates = GLOB.ghost_mob_list
+	if(!fake_candidates)
+		end()
+		return
 	fake_candidates -= origin
 	if(!fake_candidates.len)
 		end()
@@ -544,7 +555,6 @@
 	duration = 30 SECONDS
 	max_power = 55
 	var/list/colored_images = new()
-	var/limit = 15
 
 /datum/hallucination/coloring/start()
 	for(var/obj/item/I in view(holder.client))
@@ -559,8 +569,6 @@
 		colored.override = 0 // This way, increasing I.plane or I.layer will reveal original icon. If you want to change this behavior, you need to make colored.override = 1, and manually change colored.plane and colored.layer along with original`s, because it's not inherited
 		colored.color = rgb(rand(60,255), rand(60,255), rand(60,255))
 		colored_images += colored
-		if(colored_images.len > limit) // Enough rainbow, stop cycling through view
-			break
 	holder.client.images |= colored_images
 
 /datum/hallucination/coloring/end()
