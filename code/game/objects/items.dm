@@ -578,7 +578,7 @@ var/list/global/slot_flags_enumeration = list(
 /obj/item/proc/shot_out(mob/living/carbon/human/H, obj/item/projectile/P, msg = "shot", dist = 3)
 	H.poise -= 10
 	if(!canremove)
-		visible_message(SPAN("warning", "[H] blocks \a [P] with \the [P]!"))
+		visible_message(SPAN("warning", "[H] blocks \a [P] with \the [src]!"))
 		return
 	visible_message(SPAN("danger", "\The [src] gets [msg] out of [H]'s hands by \a [P]!"))
 	H.drop_from_inventory(src)
