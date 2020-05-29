@@ -276,7 +276,8 @@ GLOBAL_LIST_INIT(standing_objects, list(/obj/item/weapon/stool, /obj/structure/t
 		if(!H.need_breathe())
 			return
 
-		buckled_mob.adjustOxyLoss(3)
+		buckled_mob.adjustOxyLoss(5)
+		buckled_mob.adjustBrainLoss(0.5)
 		buckled_mob.silent = max(buckled_mob.silent, 10)
 		if(!(H.silent && H.stat) && prob(10))
 			buckled_mob.emote("gasp")
