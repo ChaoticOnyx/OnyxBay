@@ -79,10 +79,7 @@
 	if(user.a_intent == I_HURT)
 		src.add_fingerprint(user)
 		user.setClickCooldown(DEFAULT_ATTACK_COOLDOWN)
-		if(prob(50))
-			playsound(loc, 'sound/effects/deskslam.ogg', 50, 1)
-		else
-			playsound(loc, 'sound/effects/magnetclamp.ogg', 60, 1)
+		playsound(loc, 'sound/effects/deskslam.ogg', 50, 1)
 		user.do_attack_animation(src)
 		user.visible_message(SPAN("warning", "[user] slams \the [src]!</span>"))
 		var/list/targets = list(get_step(src,dir),get_step(src,turn(dir, 45)),get_step(src,turn(dir, -45)))
