@@ -101,6 +101,12 @@
 			else if(health < max_health)
 				to_chat(user, SPAN("warning", "It's showing signs of damage."))
 
+/obj/machinery/vending/proc/take_damage(force)
+	if(health > 0)
+		health = max(health-force, 0)
+		if(health == 0)
+			set_broken(1)
+
 /**
  *  Build src.produdct_records from the products lists
  *
@@ -170,10 +176,7 @@
 		return
 
 	..()
-	if(health > 0)
-		health -= damage
-		if(health <= 0)
-			set_broken(1)
+	take_damage(damage)
 	return
 
 /obj/machinery/vending/attackby(obj/item/weapon/W as obj, mob/user as mob)
@@ -254,10 +257,7 @@
 	else if(attempt_to_stock(W, user))
 		return
 	else if(W.force >= 10)
-		if(health > 0)
-			health -= W.force
-			if(health <= 0)
-				set_broken(1)
+		take_damage(W.force)
 		user.visible_message(SPAN("danger", "\The [src] has been [pick(W.attack_verb)] with [W] by [user]!"))
 		user.setClickCooldown(W.update_attack_cooldown())
 		user.do_attack_animation(src)
@@ -266,7 +266,7 @@
 		return
 	..()
 	if(W.mod_weight >= 0.75)
-		shake_animation(stime = 4)
+		shake_animation(stime = 2)
 	return
 
 /obj/machinery/vending/MouseDrop_T(obj/item/I as obj, mob/user as mob)

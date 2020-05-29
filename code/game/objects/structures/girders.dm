@@ -63,6 +63,7 @@
 /obj/structure/girder/attackby(obj/item/W as obj, mob/user as mob)
 	if(isWrench(W) && state == 0)
 		if(anchored && !reinf_material)
+			playsound(src.loc, 'sound/items/Ratchet.ogg', 100, 1)
 			user.visible_message(SPAN("notice", "[user] is disassembling \the [src]..."), \
 					   	         SPAN("notice", "Now disassembling \the [src]..."))
 			if(do_after(user,40,src))

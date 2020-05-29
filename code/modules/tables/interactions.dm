@@ -14,7 +14,6 @@
 	return (T && !T.flipped) 	//If we are moving from a table, check if it is flipped.
 								//If the table we are standing on is not flipped, then we can move freely to another table.
 
-
 //checks if projectile 'P' from turf 'from' can hit whatever is behind the table. Returns 1 if it can, 0 if bullet stops.
 /obj/structure/table/proc/check_cover(obj/item/projectile/P, turf/from)
 	var/turf/cover
@@ -30,7 +29,7 @@
 	var/chance = 20
 	if(ismob(P.original) && get_turf(P.original) == cover)
 		var/mob/M = P.original
-		if (M.lying)
+		if(M.lying)
 			chance += 20				//Lying down lets you catch less bullets
 	if(flipped)
 		if(get_dir(loc, from) == dir)	//Flipped tables catch mroe bullets
@@ -82,16 +81,7 @@
 		playsound(loc, 'sound/effects/deskslam.ogg', 50, 1)
 		user.do_attack_animation(src)
 		user.visible_message(SPAN("warning", "[user] slams \the [src]!</span>"))
-		var/list/targets = list(get_step(src,dir),get_step(src,turn(dir, 45)),get_step(src,turn(dir, -45)))
-		for(var/atom/movable/A in get_turf(src))
-			var/dropchance = 25
-			if(istype(A,/obj))
-				var/obj/O = A
-				if(O.w_class)
-					dropchance = 80 - O.w_class*20 // 60% for tiny items, 40% for small items, 20% for normal items, others cannot be dropped;
-			if(!A.anchored && prob(dropchance))
-				spawn(0)
-					A.throw_at(pick(targets),1,1)
+		throw_contents_around(ITEM_SIZE_NORMAL, 25)
 		return
 	..()
 
@@ -156,16 +146,7 @@
 			dam_threshhold *= 2
 		if(W.force >= dam_threshhold)
 			user.visible_message(SPAN("danger", "[user] hits \the [src] with \the [W]!"))
-			var/list/targets = list(get_step(src,dir),get_step(src,turn(dir, 45)),get_step(src,turn(dir, -45)))
-			for(var/atom/movable/A in get_turf(src))
-				var/dropchance = 50
-				if(istype(A,/obj))
-					var/obj/O = A
-					if(O.w_class)
-						dropchance = 120 - O.w_class*20 // 100% for tiny items, 80% for small items, etc.
-				if(!A.anchored && prob(dropchance))
-					spawn(0)
-						A.throw_at(pick(targets),1,1)
+			throw_contents_around(ITEM_SIZE_HUGE, 50)
 			take_damage(W.force/1.5)
 		else
 			user.visible_message(SPAN("danger", "[user] hits \the [src] with \the [W], but it bounces off!"))
