@@ -141,6 +141,10 @@
 	death()
 
 /obj/structure/flora/pottedplant/attackby(obj/item/W as obj, mob/user as mob)
+	if (W.edge && user.a_intent == I_HURT)
+		user.visible_message("<span class='warning'>[user] cuts down the [src]!</span>")
+		death()
+		return 1
 	if(!ishuman(user))
 		return
 	if(istype(W, /obj/item/weapon/holder))
