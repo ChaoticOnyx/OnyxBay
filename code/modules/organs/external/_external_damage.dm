@@ -24,6 +24,12 @@ obj/item/organ/external/take_general_damage(amount, silent = FALSE)
 
 	if(used_weapon)
 		add_autopsy_data("[used_weapon]", brute + burn)
+
+	if (brute)
+		SSstoryteller.report_wound(owner, BRUTE, brute)
+	if (burn)
+		SSstoryteller.report_wound(owner, BURN, burn)
+
 	var/can_cut = (!BP_IS_ROBOTIC(src) && (sharp || prob(brute*2)))
 	var/spillover = 0
 	var/pure_brute = brute

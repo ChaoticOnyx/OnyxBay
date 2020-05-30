@@ -2499,6 +2499,7 @@
 #include "code\modules\storyteller\storyteller_trigger.dm"
 #include "code\modules\storyteller\characters\support.dm"
 #include "code\modules\storyteller\metrics\common_metrics.dm"
+#include "code\modules\storyteller\metrics\wounds_metrics.dm"
 #include "code\modules\storyteller\triggers\spawn_antagonists_triggers.dm"
 #include "code\modules\supermatter\setup_supermatter.dm"
 #include "code\modules\supermatter\supermatter.dm"

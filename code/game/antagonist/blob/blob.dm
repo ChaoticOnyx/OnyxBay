@@ -16,6 +16,7 @@ GLOBAL_DATUM_INIT(blobs, /datum/antagonist/blob, new)
 	initial_spawn_target = 1
 
 	spawn_announcement = FALSE
+	station_crew_involved = FALSE
 
 	flags = ANTAG_RANDSPAWN
 
