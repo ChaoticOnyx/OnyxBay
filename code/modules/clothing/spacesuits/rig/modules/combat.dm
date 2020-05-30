@@ -197,8 +197,6 @@
 	origin_tech = list(TECH_POWER = 5, TECH_COMBAT = 5, TECH_ENGINEERING = 6)
 	gun = /obj/item/weapon/gun/energy/taser/mounted
 
-
-
 /obj/item/rig_module/mounted/energy_blade
 
 	name = "energy blade projector"
