@@ -171,6 +171,14 @@
 		return
 	if(.)
 		H.silent += 86400
+		var/new_name = sanitizeSafe(input(src, "Enter new name, mime. Leave blank or as is to cancel and stay boring.", "[H.real_name] - Enter new silent name", H.real_name))
+		if(new_name && new_name != H.real_name)
+			log_and_message_admins("has renamed the mime '[H.real_name]' to '[new_name]'")
+			H.fully_replace_character_name(new_name)
+			H.dna.real_name = new_name
+			if(H.mind)
+				H.mind.name = new_name
+		H.rename_self("mime")
 
 	// Add "Invisible wall" spell
 	H.add_spell(new /spell/aoe_turf/conjure/forcewall/mime, "grey_spell_ready")
