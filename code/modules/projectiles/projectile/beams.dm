@@ -220,6 +220,7 @@
 			return
 		else
 			M.emitter_blasts_taken += 2
+	. = ..()
 
 /obj/item/projectile/beam/plasmacutter/danger
 	name = "plasma arc"

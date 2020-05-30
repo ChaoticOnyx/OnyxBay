@@ -217,9 +217,10 @@ obj/item/weapon/gun/energy/staff/focus
 	max_shots = 10
 	var/standart_charge_cost = 20
 	var/danger_attack = FALSE
+
 	firemodes = list(
-		list(mode_name="safe mode", projectile_type = /obj/item/projectile/beam/plasmacutter, fire_delay = 10, charge_cost = 0, danger_attack = FALSE),
-		list(mode_name="danger mode", fire_delay = 6, danger_attack = TRUE, projectile_type = /obj/item/projectile/beam/plasmacutter/danger, charge_cost = 20)
+		list(mode_name="safe mode", projectile_type = /obj/item/projectile/beam/plasmacutter, charge_cost = 0, fire_delay = 10, danger_attack = FALSE),
+		list(mode_name="danger mode", projectile_type = /obj/item/projectile/beam/plasmacutter/danger, charge_cost = 20, fire_delay = 6, danger_attack = TRUE),
 	)
 
 /obj/item/weapon/gun/energy/plasmacutter/examine(mob/user)
