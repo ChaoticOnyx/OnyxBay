@@ -141,8 +141,9 @@
 
 /datum/job/clown/equip(mob/living/carbon/human/H)
 	. = ..()
-	H.mutations.Add(MUTATION_CLUMSY)
-	H.rename_self("clown")
+	if(.)
+		H.mutations.Add(MUTATION_CLUMSY)
+		H.rename_self("clown")
 
 /datum/job/mime
 	title = "Mime"
@@ -161,8 +162,9 @@
 	. = ..()
 	if(H.mind.changeling)
 		return
-	H.silent += 86400
-	H.rename_self("mime")
+	if(.)
+		H.silent += 86400
+		H.rename_self("mime")
 
 	// Add "Invisible wall" spell
 	H.add_spell(new /spell/aoe_turf/conjure/forcewall/mime, "grey_spell_ready")
