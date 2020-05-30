@@ -215,7 +215,6 @@ obj/item/weapon/gun/energy/staff/focus
 	charge_cost = 0
 	fire_delay = 10
 	max_shots = 10
-	var/standart_charge_cost = 20
 	var/danger_attack = FALSE
 
 	firemodes = list(
@@ -230,15 +229,10 @@ obj/item/weapon/gun/energy/staff/focus
 /obj/item/weapon/gun/energy/plasmacutter/attackby(obj/item/stack/material/phoron/W, mob/user)
 	if(user.stat || user.restrained() || user.lying)
 		return
-	var/current_power = round(src.power_supply.charge / src.standart_charge_cost)
+	var/current_power = round(src.power_supply.charge / src.charge_cost)
 	if(current_power < 10 && src.danger_attack == TRUE)
-		var/used_power = src.max_shots - current_power
-		src.power_supply.charge = src.power_supply.charge + (src.standart_charge_cost * (used_power))
-		if (W.get_amount() - used_power > 0)
-			W.use(used_power)
-		else
-			W.use(used_power - W.get_amount())
-			user.drop_from_inventory(W, src)
+		src.power_supply.charge = src.power_supply.charge + src.charge_cost
+		W.use(1)
 		to_chat(user, "You recharge your [src.name].")
 	else
 		to_chat(user, "You can't charge your [src.name], it's full.")
