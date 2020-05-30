@@ -41,8 +41,8 @@
 /obj/item/weapon/melee/energy/attack_self(mob/living/user as mob)
 	if(active)
 		if((MUTATION_CLUMSY in user.mutations) && prob(50))
-			user.visible_message("<span class='danger'>\The [user] accidentally cuts \himself with \the [src].</span>", \
-			"<span class='danger'>You accidentally cut yourself with \the [src].</span>")
+			user.visible_message(SPAN("danger","\The [user] accidentally cuts \himself with \the [src]."), \
+			SPAN("danger","You accidentally cut yourself with \the [src]."))
 			user.take_organ_damage(5, 5)
 		deactivate(user)
 	else
@@ -58,7 +58,7 @@
 
 /obj/item/weapon/melee/energy/dropped()
 	if(isturf(loc))
-		deactivate()	
+		deactivate()
 
 /obj/item/weapon/melee/energy/get_storage_cost()
 	if(active)
@@ -98,12 +98,12 @@
 /obj/item/weapon/melee/energy/axe/activate(mob/living/user)
 	..()
 	icon_state = "axe1"
-	to_chat(user, "<span class='notice'>\The [src] is now energised.</span>")
+	to_chat(user, SPAN("notice","\The [src] is now energised."))
 
 /obj/item/weapon/melee/energy/axe/deactivate(mob/living/user)
 	..()
 	icon_state = initial(icon_state)
-	to_chat(user, "<span class='notice'>\The [src] is de-energised. It's just a regular axe now.</span>")
+	to_chat(user, SPAN("notice","\The [src] is de-energised. It's just a regular axe now."))
 
 /*
  * Energy Sword
@@ -131,6 +131,7 @@
 	sharp = 0
 	edge = 1
 	var/blade_color
+	var/combinable = 1
 
 /obj/item/weapon/melee/energy/sword/New()
 	blade_color = pick("red", "blue", "green", "purple")
@@ -149,7 +150,7 @@
 
 /obj/item/weapon/melee/energy/sword/activate(mob/living/user)
 	if(!active)
-		to_chat(user, "<span class='notice'>\The [src] is now energised.</span>")
+		to_chat(user, SPAN("notice","\The [src] is now energised."))
 		mod_shield = 2.5
 	..()
 	attack_verb = list("attacked", "slashed", "stabbed", "sliced", "torn", "ripped", "diced", "cut")
@@ -157,7 +158,7 @@
 
 /obj/item/weapon/melee/energy/sword/deactivate(mob/living/user)
 	if(active)
-		to_chat(user, "<span class='notice'>\The [src] deactivates!</span>")
+		to_chat(user, SPAN("notice","\The [src] deactivates!"))
 		mod_shield = 1.0
 	..()
 	attack_verb = list()
@@ -165,7 +166,10 @@
 
 /obj/item/weapon/melee/energy/sword/attackby(obj/item/sword as obj, mob/user as mob)
 	if(istype(sword, /obj/item/weapon/melee/energy/sword))
-		to_chat(user, "<span class='notice'>You attach the ends of the two energy swords, making a single double-bladed weapon!</span>")
+		var/obj/item/weapon/melee/energy/sword/S = sword
+		if (!combinable || !S.combinable)
+			return
+		to_chat(user, SPAN("notice","You attach the ends of the two energy swords, making a single double-bladed weapon!"))
 		new /obj/item/weapon/melee/energy/sword/dualsaber(user.loc)
 		qdel(sword)
 		sword = null
@@ -181,6 +185,7 @@
 	name = "energy cutlass"
 	desc = "Arrrr matey."
 	icon_state = "cutlass0"
+	combinable = 0
 
 /obj/item/weapon/melee/energy/sword/pirate/activate(mob/living/user)
 	..()
@@ -190,6 +195,7 @@
 	name = "alien sword"
 	desc = "A strange, strange energy sword."
 	icon_state = "sword0"
+	combinable = 0
 
 /obj/item/weapon/melee/energy/sword/bogsword/activate(mob/living/user)
 	..()
@@ -212,6 +218,7 @@
 	mod_weight_a = 1.5
 	mod_handy_a = 1.75
 	origin_tech = list(TECH_MAGNET = 4, TECH_ILLEGAL = 5)
+	combinable = 0
 	var/base_block_chance = 50
 
 /obj/item/weapon/melee/energy/sword/dualsaber/New()
@@ -230,8 +237,20 @@
 	blade_color = "purple"
 
 /obj/item/weapon/melee/energy/sword/dualsaber/activate(mob/living/user)
+	if(!is_held_twohanded(user))
+		to_chat(user, SPAN("warning","You must hold \the [src] with both hands to activate it."))
+		return
 	..()
 	icon_state = "dualsaber[blade_color]"
+
+/obj/item/weapon/melee/energy/sword/dualsaber/update_twohanding()
+	if(active)
+		if (!isliving(loc))
+			return ..()
+		var/mob/living/user = loc
+		if (!is_held_twohanded(user))
+			deactivate(user)
+	..()
 
 /*
  *Energy Blade
