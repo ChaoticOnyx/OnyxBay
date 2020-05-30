@@ -325,7 +325,8 @@
 	var/first_step = 1
 	var/i = 0
 	spawn while(src && src.loc)
-		ASSERT(++i < 512)
+		if (++i > 512)
+			throw EXCEPTION("Projectile stuck! Position: [PRINT_ATOM(current)], Target: [PRINT_ATOM(original)], Target location: [PRINT_ATOM(targloc)], Trajectory offset: ([trajectory.offset_x], [trajectory.offset_y])")
 		if(kill_count-- < 1)
 			on_impact(src.loc) //for any final impact behaviours
 			qdel(src)
@@ -462,7 +463,11 @@
 	return Process(targloc)
 
 /obj/item/projectile/test/Process(turf/targloc)
+	var/i = 0
 	while(src) //Loop on through!
+		if (++i > 512)
+			throw EXCEPTION("Projectile stuck! Position: [PRINT_ATOM(current)], Target: [PRINT_ATOM(original)], Target location: [PRINT_ATOM(targloc)], Trajectory offset: ([trajectory.offset_x], [trajectory.offset_y])")
+
 		if(result)
 			return (result - 1)
 		if((!( targloc ) || loc == targloc))
