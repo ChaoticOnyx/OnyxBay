@@ -4,8 +4,8 @@
 	author = "Engineering Encyclopedia"
 	title = "Engineering Textbook"
 
-/obj/item/weapon/book/manual/engineering_guide/New()
-	..()
+/obj/item/weapon/book/manual/engineering_guide/Initialize()
+	. = ..()
 	dat = {"
 
 		<html><head>
@@ -228,8 +228,8 @@
 	author = "Engineering Encyclopedia"		 // Who wrote the thing, can be changed by pen or PC. It is not automatically assigned
 	title = "Repairs and Construction"
 
-/obj/item/weapon/book/manual/engineering_construction/New()
-	..()
+/obj/item/weapon/book/manual/engineering_construction/Initialize()
+	. = ..()
 	dat = {"
 
 		<html><head>
@@ -425,8 +425,8 @@
 	author = "Engineering Encyclopedia"		 // Who wrote the thing, can be changed by pen or PC. It is not automatically assigned
 	title = "Hacking"
 
-/obj/item/weapon/book/manual/engineering_hacking/New()
-	..()
+/obj/item/weapon/book/manual/engineering_hacking/Initialize()
+	. = ..()
 	dat = {"
 
 		<html><head>

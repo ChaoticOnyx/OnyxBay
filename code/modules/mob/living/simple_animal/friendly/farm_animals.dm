@@ -109,12 +109,10 @@
 	var/milktype = /datum/reagent/drink/milk
 	var/datum/reagents/udder = null
 
-/mob/living/simple_animal/cow/New()
+/mob/living/simple_animal/cow/Initialize()
+	. = ..()
 	udder = milktype
-	udder = new(50)
-	udder.my_atom = src
-
-	..()
+	udder = new(50, src)
 
 /mob/living/simple_animal/cow/attackby(obj/item/O, mob/user)
 	var/obj/item/weapon/reagent_containers/glass/G = O
