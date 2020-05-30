@@ -123,7 +123,7 @@
 	var/obj/item/stored_item
 	
 /obj/structure/flora/pottedplant/Destroy()
-	QDEL_NULL(stored_item)
+	stored_item.forceMove(loc)
 	return ..()
 
 /obj/structure/flora/pottedplant/proc/death()
@@ -140,10 +140,13 @@
 /obj/structure/flora/pottedplant/fire_act()
 	death()
 
-/obj/structure/flora/pottedplant/attackby(obj/item/W as obj, mob/user as mob)
+/obj/structure/flora/pottedplant/attackby(obj/item/W, mob/user)
 	if (W.edge && user.a_intent == I_HURT)
 		user.visible_message("<span class='warning'>[user] cuts down the [src]!</span>")
 		death()
+		return 1
+	if(W.mod_weight >= 0.75 && user.a_intent == I_HURT)
+		shake_animation(stime = 4)
 		return 1
 	if(!ishuman(user))
 		return
@@ -168,7 +171,7 @@
 
 /obj/structure/flora/pottedplant/attack_hand(mob/user as mob)
 	user.visible_message("[user] begins digging around inside of \the [src].", "You begin digging around in \the [src], searching it.")
-	playsound(loc, 'sound/effects/plantshake.ogg', 50, 1)
+	playsound(loc, 'sound/effects/plantshake.ogg', rand(50, 75), TRUE)
 	if(do_after(user, 40, src))
 		if(!stored_item)
 			to_chat(user,"<span class='notice'>There is nothing hidden in [src].</span>")
