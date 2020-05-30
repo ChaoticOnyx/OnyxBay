@@ -217,24 +217,14 @@ obj/item/weapon/gun/energy/staff/focus
 	max_shots = 10
 	var/standart_charge_cost = 20
 	var/danger_attack = FALSE
-
-/obj/item/weapon/gun/energy/plasmacutter/attack_self(mob/user)
-	if (src.danger_attack)
-		src.danger_attack = FALSE
-		projectile_type = /obj/item/projectile/beam/plasmacutter
-		src.fire_delay = 10
-		src.charge_cost = 0
-		to_chat(user, SPAN_NOTICE("Your [src.name] is now in safe mode"))
-	else
-		src.fire_delay = 6
-		src.danger_attack = TRUE
-		src.projectile_type = /obj/item/projectile/beam/plasmacutter/danger
-		src.charge_cost = src.standart_charge_cost
-		to_chat(user, SPAN_NOTICE("Your [src.name] is now in danger mode."))
+	firemodes = list(
+		list(mode_name="safe mode", projectile_type = /obj/item/projectile/beam/plasmacutter, fire_delay = 10, charge_cost = 0, danger_attack = FALSE),
+		list(mode_name="danger mode", fire_delay = 6, danger_attack = TRUE, projectile_type = /obj/item/projectile/beam/plasmacutter/danger, charge_cost = 20)
+	)
 
 /obj/item/weapon/gun/energy/plasmacutter/examine(mob/user)
 	. = ..(user)
-	to_chat(user, "It has recharge port with a capital letter P")
+	to_chat(user, "It has recharge port with a capital letter P.")
 
 /obj/item/weapon/gun/energy/plasmacutter/attackby(obj/item/stack/material/phoron/W, mob/user)
 	if(user.stat || user.restrained() || user.lying)
@@ -251,4 +241,3 @@ obj/item/weapon/gun/energy/staff/focus
 		to_chat(user, "You recharge your [src.name].")
 	else
 		to_chat(user, "You can't charge your [src.name], it's full.")
-

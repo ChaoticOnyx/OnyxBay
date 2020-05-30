@@ -236,12 +236,3 @@
 	muzzle_type = /obj/effect/projectile/trilaser/muzzle
 	tracer_type = /obj/effect/projectile/trilaser/tracer
 	impact_type = /obj/effect/projectile/trilaser/impact
-
-/obj/item/projectile/beam/plasmacutter/danger/on_impact(atom/A)
-	if(istype(A, /turf/simulated/mineral))
-		var/turf/simulated/mineral/M = A
-		if(prob(99))
-			M.GetDrilled(1)
-			return
-		else
-			M.emitter_blasts_taken += 2
