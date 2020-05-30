@@ -124,7 +124,7 @@
 
 /proc/log_runtime(text)
 	if (!GLOB.world_runtime_log)
-		log_error("Runtime is caught before log initialization!")
+		log_error("\[EARLY RUNTIME] [text]")
 		return
 	WRITE_FILE(GLOB.world_runtime_log, text)
 
