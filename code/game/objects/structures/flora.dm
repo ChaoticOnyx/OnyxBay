@@ -153,7 +153,7 @@
 	if(istype(W, /obj/item/weapon/holder))
 		return //no hiding mobs in there
 	user.visible_message("[user] begins digging around inside of \the [src].", "You begin digging around in \the [src], trying to hide \the [W].")
-	playsound(loc, 'sound/effects/plantshake.ogg', 50, 1)
+	playsound(loc, 'sound/effects/plantshake.ogg', rand(50, 75), TRUE)
 	if(do_after(user, 20, src))
 		if(!stored_item)
 			if(W.w_class <= ITEM_SIZE_NORMAL)
