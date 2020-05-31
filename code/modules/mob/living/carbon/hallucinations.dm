@@ -156,15 +156,15 @@
 	var/sanity = 2 //even insanity needs some sanity
 	for(var/mob/living/talker in oview(holder))
 		var/message
-		var/phrases_file = "code/modules/mob/living/carbon/hallucination_phrases.txt"
-		if(prob(80) && fexists(phrases_file))
-			var/list/phrases = params2list(file2text(file(phrases_file)))
-			var/list/allowed_phrases = new()
-			for(var/phrase in phrases)
-				if(text2num(phrases[phrase]) <= holder.hallucination_power)
-					allowed_phrases += phrase
-			ASSERT(allowed_phrases.len)
-			message = pick(allowed_phrases)
+		if(prob(80) && GLOB.hallucination_phrases.len)
+			var/list/phrases = new()
+			for(var/phrase in GLOB.hallucination_phrases)
+				var/separator_position = findtext(phrase, "|")
+				var/required_power = separator_position ? text2num(copytext(phrase, 1, separator_position)) : 0
+				if(holder.hallucination_power >= required_power)
+					phrases += separator_position ? copytext(phrase, separator_position + 1) : phrase
+			ASSERT(phrases.len)
+			message = pick(phrases)
 			holder.hear_say(message, speaker = talker)
 			log_misc("[holder.name] is hallucinating about [talker.name] SAYS : [message]")
 		else
