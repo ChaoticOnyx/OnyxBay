@@ -93,6 +93,12 @@
 	light_toggled = FALSE
 	update_lighting()
 
+/obj/item/integrated_circuit/output/light/disconnect_all()
+	if(light_toggled)
+		light_toggled = FALSE
+		update_lighting()
+	..()
+
 /obj/item/integrated_circuit/output/light/advanced
 	name = "advanced light"
 	desc = "A light that takes a hexadecimal color value and a brightness value, and can be toggled on/off by pulsing it."

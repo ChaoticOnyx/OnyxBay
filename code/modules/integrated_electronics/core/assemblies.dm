@@ -396,8 +396,6 @@
 
 // Actually removes the component, doesn't perform any checks.
 /obj/item/device/electronic_assembly/proc/remove_component(obj/item/integrated_circuit/component)
-	if(istype(component, /obj/item/integrated_circuit/output/light))
-		src.set_light(0)
 	component.disconnect_all()
 	component.dropInto(loc)
 	component.assembly = null
