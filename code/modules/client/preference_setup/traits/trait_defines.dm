@@ -70,26 +70,6 @@
 	Regardless, you find it quite difficult to land shots where you wanted them to go."
 	modifier_type = /datum/modifier/trait/inaccurate
 
-/datum/trait/modifier/physical/smaller
-	name = "Midget"
-	modifier_type = /datum/modifier/trait/smaller
-	mutually_exclusive = list(/datum/trait/modifier/physical/small, /datum/trait/modifier/physical/large, /datum/trait/modifier/physical/larger)
-
-/datum/trait/modifier/physical/small
-	name = "Short"
-	modifier_type = /datum/modifier/trait/small
-	mutually_exclusive = list(/datum/trait/modifier/physical/smaller, /datum/trait/modifier/physical/large, /datum/trait/modifier/physical/larger)
-
-/datum/trait/modifier/physical/large
-	name = "Tall"
-	modifier_type = /datum/modifier/trait/large
-	mutually_exclusive = list(/datum/trait/modifier/physical/smaller, /datum/trait/modifier/physical/small, /datum/trait/modifier/physical/larger)
-
-/datum/trait/modifier/physical/larger
-	name = "Giant"
-	modifier_type = /datum/modifier/trait/larger
-	mutually_exclusive = list(/datum/trait/modifier/physical/smaller, /datum/trait/modifier/physical/small, /datum/trait/modifier/physical/large)
-
 /datum/trait/modifier/physical/colorblind_protanopia
 	name = "Protanopia"
 	desc = "You have a form of red-green colorblindness. You cannot see reds, and have trouble distinguishing them from yellows and greens."
@@ -273,12 +253,12 @@
 /datum/trait/modifier/physical/stammering
 	name = "Stutterer"
 	modifier_type = /datum/modifier/trait/stammering
-	mutually_exclusive = list(/datum/trait/modifier/physical/burrieng, /datum/trait/modifier/physical/lisping)	
-	
+	mutually_exclusive = list(/datum/trait/modifier/physical/burrieng, /datum/trait/modifier/physical/lisping)
+
 /datum/trait/modifier/physical/burrieng
 	name = "Burry"
 	modifier_type = /datum/modifier/trait/burrieng
-	mutually_exclusive = list(/datum/trait/modifier/physical/stammering, /datum/trait/modifier/physical/lisping)		
+	mutually_exclusive = list(/datum/trait/modifier/physical/stammering, /datum/trait/modifier/physical/lisping)
 
 /datum/trait/modifier/physical/lisping
 	name = "Lisp"
