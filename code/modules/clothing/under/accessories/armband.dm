@@ -3,6 +3,7 @@
 	desc = "A fancy red armband!"
 	icon_state = "red"
 	slot = ACCESSORY_SLOT_ARMBAND
+	can_be_covered_with = SUIT_COVER_UPPER_ARM
 	species_restricted = null
 
 /obj/item/clothing/accessory/armband/cargo

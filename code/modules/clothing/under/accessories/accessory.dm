@@ -7,6 +7,7 @@
 	slot_flags = SLOT_TIE
 	w_class = ITEM_SIZE_SMALL
 	var/slot = ACCESSORY_SLOT_DECOR
+	var/can_be_covered_with = SUIT_COVER_CHEST
 	var/obj/item/clothing/has_suit = null		//the suit the tie may be attached to
 	var/image/inv_overlay = null	//overlay used when attached to clothing.
 	var/list/mob_overlay = list()
@@ -95,15 +96,18 @@
 	desc = "A simple necklace."
 	icon_state = "necklace"
 	slot_flags = SLOT_MASK | SLOT_TIE
+	can_be_covered_with = SUIT_COVER_CHEST
 
 //Misc
 /obj/item/clothing/accessory/kneepads
 	name = "kneepads"
 	desc = "A pair of synthetic kneepads. Doesn't provide protection from more than arthritis."
 	icon_state = "kneepads"
+	can_be_covered_with = SUIT_COVER_LOWER_LEG
 
 //Scarves
 /obj/item/clothing/accessory/scarf
 	name = "scarf"
 	desc = "A stylish scarf. The perfect winter accessory for those with a keen fashion sense, and those who just can't handle a cold breeze on their necks."
 	icon_state = "whitescarf"
+	can_be_covered_with = SUIT_COVER_CHEST

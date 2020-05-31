@@ -15,6 +15,7 @@
 	item_state = "bluetag"
 	blood_overlay_type = "armor"
 	body_parts_covered = UPPER_TORSO
+	cover_parts = SUIT_COVER_CHEST|SUIT_COVER_BACK|SUIT_COVER_UPPER_ARM
 	allowed = list (/obj/item/weapon/gun/energy/lasertag/blue)
 	siemens_coefficient = 3.0
 
@@ -25,6 +26,7 @@
 	item_state = "redtag"
 	blood_overlay_type = "armor"
 	body_parts_covered = UPPER_TORSO
+	cover_parts = SUIT_COVER_CHEST|SUIT_COVER_BACK|SUIT_COVER_UPPER_ARM
 	allowed = list (/obj/item/weapon/gun/energy/lasertag/red)
 	siemens_coefficient = 3.0
 
@@ -37,6 +39,7 @@
 	icon_state = "pirate"
 	item_state = "pirate"
 	body_parts_covered = UPPER_TORSO|ARMS
+	cover_parts = SUIT_COVER_BACK|SUIT_COVER_UPPER_ARM|SUIT_COVER_LOWER_ARM|SUIT_COVER_BELT|SUIT_COVER_UPPER_LEG|SUIT_COVER_LOWER_LEG
 
 
 /obj/item/clothing/suit/hgpirate
@@ -46,6 +49,7 @@
 	item_state = "hgpirate"
 	flags_inv = HIDEJUMPSUIT
 	body_parts_covered = UPPER_TORSO|LOWER_TORSO|ARMS|LEGS
+	cover_parts = SUIT_COVER_ALL
 
 
 /obj/item/clothing/suit/cyborg_suit
@@ -56,6 +60,7 @@
 	obj_flags = OBJ_FLAG_CONDUCTIBLE
 	fire_resist = T0C+5200
 	flags_inv = HIDEGLOVES|HIDESHOES|HIDEJUMPSUIT
+	cover_parts = SUIT_COVER_ALL
 
 
 /obj/item/clothing/suit/greatcoat
@@ -63,6 +68,7 @@
 	desc = "A heavy great coat."
 	icon_state = "nazi"
 	item_state = "nazi"
+	cover_parts = SUIT_COVER_ALL
 
 
 /obj/item/clothing/suit/johnny_coat
@@ -70,6 +76,7 @@
 	desc = "Johnny~~"
 	icon_state = "johnny"
 	item_state = "johnny"
+	cover_parts = SUIT_COVER_CHEST|SUIT_COVER_BACK|SUIT_COVER_UPPER_ARM|SUIT_COVER_LOWER_ARM|SUIT_COVER_BELT
 
 
 /obj/item/clothing/suit/justice
@@ -79,6 +86,7 @@
 	item_state = "justice"
 	flags_inv = HIDEGLOVES|HIDESHOES|HIDEJUMPSUIT
 	body_parts_covered = UPPER_TORSO|LOWER_TORSO|ARMS|HANDS|LEGS|FEET
+	cover_parts = SUIT_COVER_ALL
 
 
 /obj/item/clothing/suit/judgerobe
@@ -89,6 +97,7 @@
 	body_parts_covered = UPPER_TORSO|LOWER_TORSO|LEGS|ARMS
 	allowed = list(/obj/item/weapon/storage/fancy/cigarettes,/obj/item/weapon/spacecash)
 	flags_inv = HIDEJUMPSUIT
+	cover_parts = SUIT_COVER_ALL
 
 
 /obj/item/clothing/suit/apron/overalls
@@ -97,6 +106,7 @@
 	icon_state = "overalls"
 	item_state = "overalls"
 	body_parts_covered = UPPER_TORSO|LOWER_TORSO|LEGS
+	cover_parts = SUIT_COVER_CHEST|SUIT_COVER_BELT|SUIT_COVER_UPPER_LEG|SUIT_COVER_LOWER_LEG
 
 
 /obj/item/clothing/suit/syndicatefake
@@ -108,6 +118,7 @@
 	allowed = list(/obj/item/device/flashlight,/obj/item/weapon/tank/emergency,/obj/item/toy)
 	flags_inv = HIDEGLOVES|HIDESHOES|HIDEJUMPSUIT
 	body_parts_covered = UPPER_TORSO|LOWER_TORSO|ARMS|HANDS|LEGS|FEET
+	cover_parts = SUIT_COVER_ALL
 
 /obj/item/clothing/suit/hastur
 	name = "Hastur's Robes"
@@ -115,6 +126,7 @@
 	icon_state = "hastur"
 	item_state = "hastur"
 	body_parts_covered = UPPER_TORSO|LOWER_TORSO|LEGS|FEET|ARMS
+	cover_parts = SUIT_COVER_ALL
 	flags_inv = HIDEGLOVES|HIDESHOES|HIDEJUMPSUIT
 
 
@@ -124,6 +136,7 @@
 	icon_state = "imperium_monk"
 	item_state = "imperium_monk"
 	body_parts_covered = HEAD|UPPER_TORSO|LOWER_TORSO|LEGS|FEET|ARMS
+	cover_parts = SUIT_COVER_ALL
 	flags_inv = HIDESHOES|HIDEJUMPSUIT
 
 
@@ -133,6 +146,7 @@
 	icon_state = "chickensuit"
 	item_state = "chickensuit"
 	body_parts_covered = UPPER_TORSO|ARMS|LOWER_TORSO|LEGS|FEET
+	cover_parts = SUIT_COVER_ALL
 	flags_inv = HIDESHOES|HIDEJUMPSUIT
 	siemens_coefficient = 2.0
 
@@ -143,6 +157,7 @@
 	icon_state = "monkeysuit"
 	item_state = "monkeysuit"
 	body_parts_covered = UPPER_TORSO|ARMS|LOWER_TORSO|LEGS|FEET|HANDS
+	cover_parts = SUIT_COVER_ALL
 	flags_inv = HIDEGLOVES|HIDESHOES|HIDEJUMPSUIT
 	siemens_coefficient = 2.0
 
@@ -153,6 +168,7 @@
 	icon_state = "holidaypriest"
 	item_state = "holidaypriest"
 	body_parts_covered = UPPER_TORSO|LOWER_TORSO|LEGS|ARMS
+	cover_parts = SUIT_COVER_ALL
 	flags_inv = HIDEJUMPSUIT
 
 
@@ -162,6 +178,7 @@
 	icon_state = "cardborg"
 	item_state = "cardborg"
 	body_parts_covered = UPPER_TORSO|LOWER_TORSO
+	cover_parts = SUIT_COVER_ALL
 	flags_inv = HIDEJUMPSUIT
 
 /obj/item/clothing/suit/cardborg/Initialize()
@@ -178,6 +195,7 @@
 	icon_state = "straight_jacket"
 	item_state = "straight_jacket"
 	body_parts_covered = UPPER_TORSO|LOWER_TORSO|LEGS|FEET|ARMS|HANDS
+	cover_parts = SUIT_COVER_ALL
 	flags_inv = HIDEGLOVES|HIDESHOES|HIDEJUMPSUIT|HIDETAIL
 
 /obj/item/clothing/suit/straight_jacket/equipped(mob/user, slot)
@@ -194,6 +212,7 @@
 	icon_state = "ianshirt"
 	item_state = "ianshirt"
 	body_parts_covered = UPPER_TORSO|ARMS
+	cover_parts = SUIT_COVER_CHEST|SUIT_COVER_BACK|SUIT_COVER_UPPER_ARM|SUIT_COVER_LOWER_ARM|SUIT_COVER_BELT|SUIT_COVER_UPPER_LEG
 
 //pyjamas
 //originally intended to be pinstripes >.>
@@ -219,18 +238,21 @@
 	desc = "A long, thick black leather coat."
 	icon_state = "leathercoat"
 	item_state = "leathercoat"
+	cover_parts = SUIT_COVER_BACK|SUIT_COVER_UPPER_ARM|SUIT_COVER_LOWER_ARM|SUIT_COVER_BELT|SUIT_COVER_UPPER_LEG|SUIT_COVER_LOWER_LEG
 
 /obj/item/clothing/suit/browncoat
 	name = "brown leather coat"
 	desc = "A long, brown leather coat."
 	icon_state = "browncoat"
 	item_state = "browncoat"
+	cover_parts = SUIT_COVER_BACK|SUIT_COVER_UPPER_ARM|SUIT_COVER_LOWER_ARM|SUIT_COVER_BELT|SUIT_COVER_UPPER_LEG|SUIT_COVER_LOWER_LEG
 
 /obj/item/clothing/suit/neocoat
 	name = "black coat"
 	desc = "A flowing, black coat."
 	icon_state = "neocoat"
 	item_state = "neocoat"
+	cover_parts = SUIT_COVER_BACK|SUIT_COVER_UPPER_ARM|SUIT_COVER_LOWER_ARM|SUIT_COVER_BELT|SUIT_COVER_UPPER_LEG|SUIT_COVER_LOWER_LEG
 
 //stripper
 /obj/item/clothing/under/stripper
@@ -252,6 +274,7 @@
 	name = "pink skimpy dress"
 	desc = "A rather skimpy pink dress."
 	icon_state = "stripper_p_over"
+	cover_parts = SUIT_COVER_CHEST|SUIT_COVER_BACK|SUIT_COVER_UPPER_ARM
 	siemens_coefficient = 1
 
 /obj/item/clothing/suit/stripper/stripper_green
@@ -259,6 +282,7 @@
 	desc = "A rather skimpy green dress."
 	icon_state = "stripper_g_over"
 	//item_state = "stripper_g"
+	cover_parts = SUIT_COVER_CHEST|SUIT_COVER_BACK|SUIT_COVER_UPPER_ARM
 	siemens_coefficient = 1
 
 /obj/item/clothing/under/stripper/mankini
@@ -273,8 +297,10 @@
 	icon_state = "xenos"
 	//item_state = "xenos_helm"
 	body_parts_covered = UPPER_TORSO|LOWER_TORSO|LEGS|FEET|ARMS|HANDS
+	cover_parts = SUIT_COVER_ALL
 	flags_inv = HIDEGLOVES|HIDESHOES|HIDEJUMPSUIT
 	siemens_coefficient = 2.0
+
 //swimsuit
 /obj/item/clothing/under/swimsuit/
 	siemens_coefficient = 1
@@ -315,6 +341,7 @@
 	desc = "A simple, comfortable poncho."
 	icon_state = "classicponcho"
 	item_state = "classicponcho"
+	cover_parts = SUIT_COVER_ALL
 
 /obj/item/clothing/suit/poncho/colored/green
 	name = "green poncho"
@@ -348,6 +375,7 @@
 	icon_open = "bomber_open"
 	icon_closed = "bomber"
 	body_parts_covered = UPPER_TORSO|ARMS
+	cover_parts = SUIT_COVER_CHEST|SUIT_COVER_BACK|SUIT_COVER_UPPER_ARM|SUIT_COVER_LOWER_ARM|SUIT_COVER_BELT
 	cold_protection = UPPER_TORSO|ARMS
 	min_cold_protection_temperature = T0C - 20
 	siemens_coefficient = 0.7
@@ -359,6 +387,7 @@
 	icon_open = "varsity_black_open"
 	icon_closed = "varsity_black"
 	body_parts_covered = UPPER_TORSO|ARMS
+	cover_parts = SUIT_COVER_CHEST|SUIT_COVER_BACK|SUIT_COVER_UPPER_ARM|SUIT_COVER_LOWER_ARM|SUIT_COVER_BELT
 	cold_protection = UPPER_TORSO|ARMS
 	min_cold_protection_temperature = T0C - 20
 	siemens_coefficient = 0.7
@@ -388,6 +417,7 @@
 	icon_state = "leather_jacket"
 	item_state = "leather_jacket"
 	body_parts_covered = UPPER_TORSO|ARMS
+	cover_parts = SUIT_COVER_CHEST|SUIT_COVER_BACK|SUIT_COVER_UPPER_ARM|SUIT_COVER_LOWER_ARM|SUIT_COVER_BELT
 
 /obj/item/clothing/suit/storage/black_jacket_long
 	name = "long black jacket"
@@ -395,12 +425,14 @@
 	icon_state = "black_jacket_long"
 	item_state = "black_jacket_long"
 	body_parts_covered = UPPER_TORSO|ARMS
+	cover_parts = SUIT_COVER_CHEST|SUIT_COVER_BACK|SUIT_COVER_UPPER_ARM|SUIT_COVER_LOWER_ARM|SUIT_COVER_BELT
 
 /obj/item/clothing/suit/storage/black_jacket_NT
 	name = "black leather jacket NT"
 	desc = "A black leather coat. A corporate logo is proudly displayed on the back."
 	icon_state = "leather_jacket_nt"
 	body_parts_covered = UPPER_TORSO|ARMS
+	cover_parts = SUIT_COVER_CHEST|SUIT_COVER_BACK|SUIT_COVER_UPPER_ARM|SUIT_COVER_LOWER_ARM|SUIT_COVER_BELT
 
 //This one has buttons for some reason
 /obj/item/clothing/suit/storage/toggle/brown_jacket
@@ -411,6 +443,7 @@
 	icon_open = "brown_jacket_open"
 	icon_closed = "brown_jacket"
 	body_parts_covered = UPPER_TORSO|ARMS
+	cover_parts = SUIT_COVER_CHEST|SUIT_COVER_BACK|SUIT_COVER_UPPER_ARM|SUIT_COVER_LOWER_ARM|SUIT_COVER_BELT
 
 /obj/item/clothing/suit/storage/toggle/brown_jacket_NT
 	name = "brown jacket NT"
@@ -419,6 +452,7 @@
 	icon_open = "brown_jacket_nt_open"
 	icon_closed = "brown_jacket_nt"
 	body_parts_covered = UPPER_TORSO|ARMS
+	cover_parts = SUIT_COVER_CHEST|SUIT_COVER_BACK|SUIT_COVER_UPPER_ARM|SUIT_COVER_LOWER_ARM|SUIT_COVER_BELT
 
 /obj/item/clothing/suit/storage/toggle/marshal_jacket
 	name = "colonial marshal jacket"
@@ -429,6 +463,7 @@
 	icon_closed = "marshal_jacket"
 	valid_accessory_slots = list(ACCESSORY_SLOT_INSIGNIA)
 	body_parts_covered = UPPER_TORSO|ARMS
+	cover_parts = SUIT_COVER_CHEST|SUIT_COVER_BACK|SUIT_COVER_UPPER_ARM|SUIT_COVER_LOWER_ARM|SUIT_COVER_BELT
 
 /obj/item/clothing/suit/storage/toggle/hoodie
 	name = "hoodie"
@@ -437,6 +472,7 @@
 	item_state = "hoodie"
 	icon_open = "hoodie_open"
 	icon_closed = "hoodie"
+	cover_parts = SUIT_COVER_CHEST|SUIT_COVER_BACK|SUIT_COVER_UPPER_ARM|SUIT_COVER_LOWER_ARM|SUIT_COVER_BELT
 	min_cold_protection_temperature = T0C - 20
 	cold_protection = UPPER_TORSO|LOWER_TORSO|ARMS
 
@@ -478,6 +514,7 @@
 	desc = "A green jacket bearing the logo of Major Bill's Shipping."
 	icon_state = "mbill"
 	item_state = "mbill"
+	cover_parts = SUIT_COVER_BACK|SUIT_COVER_UPPER_ARM|SUIT_COVER_LOWER_ARM|SUIT_COVER_BELT
 
 /obj/item/clothing/suit/poncho/roles/security
 	name = "security poncho"
@@ -518,6 +555,7 @@
 	icon_state = "trackjacket"
 	icon_open = "trackjacket_open"
 	icon_closed = "trackjacket"
+	cover_parts = SUIT_COVER_CHEST|SUIT_COVER_BACK|SUIT_COVER_UPPER_ARM|SUIT_COVER_LOWER_ARM|SUIT_COVER_BELT
 
 /obj/item/clothing/suit/storage/toggle/track/blue
 	name = "blue track jacket"
@@ -558,6 +596,7 @@
 	name = "human suit"
 	desc = "A Human suit made out of rubber."
 	icon_state = "mansuit"
+	cover_parts = SUIT_COVER_ALL
 
 /obj/item/clothing/suit/rubber/tajaran
 	name = "tajara suit"

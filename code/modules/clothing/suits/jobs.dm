@@ -10,6 +10,7 @@
 	item_state = "apron"
 	blood_overlay_type = "armor"
 	body_parts_covered = 0
+	cover_parts = SUIT_COVER_CHEST
 	allowed = list (/obj/item/weapon/reagent_containers/spray/plantbgone,/obj/item/device/analyzer/plant_analyzer,/obj/item/seeds,/obj/item/weapon/reagent_containers/glass/bottle,/obj/item/weapon/material/minihoe)
 
 //Captain
@@ -19,6 +20,7 @@
 	icon_state = "captunic"
 	item_state = "captunic"
 	body_parts_covered = UPPER_TORSO|ARMS
+	cover_parts = SUIT_COVER_ALL
 	flags_inv = HIDEJUMPSUIT
 
 /obj/item/clothing/suit/captunic/capjacket
@@ -27,6 +29,7 @@
 	icon_state = "capjacket"
 	item_state = "capjacket"
 	body_parts_covered = UPPER_TORSO|LOWER_TORSO|LEGS|ARMS
+	cover_parts = SUIT_COVER_BACK|SUIT_COVER_UPPER_ARM|SUIT_COVER_LOWER_ARM
 	flags_inv = 0
 
 //Chaplain
@@ -36,6 +39,7 @@
 	icon_state = "chaplain_hoodie"
 	item_state = "chaplain_hoodie"
 	body_parts_covered = UPPER_TORSO|ARMS
+	cover_parts = SUIT_COVER_BACK|SUIT_COVER_UPPER_ARM|SUIT_COVER_LOWER_ARM|SUIT_COVER_BELT|SUIT_COVER_UPPER_LEG|SUIT_COVER_LOWER_LEG
 
 //Chaplain
 /obj/item/clothing/suit/nun
@@ -44,6 +48,7 @@
 	icon_state = "nun"
 	item_state = "nun"
 	body_parts_covered = UPPER_TORSO|LOWER_TORSO|LEGS|ARMS
+	cover_parts = SUIT_COVER_ALL
 	flags_inv = HIDESHOES|HIDEJUMPSUIT
 
 //Chef
@@ -55,6 +60,7 @@
 	gas_transfer_coefficient = 0.90
 	permeability_coefficient = 0.50
 	body_parts_covered = UPPER_TORSO|LOWER_TORSO|ARMS
+	cover_parts = SUIT_COVER_BACK|SUIT_COVER_UPPER_ARM|SUIT_COVER_LOWER_ARM|SUIT_COVER_BELT
 	allowed = list (/obj/item/weapon/material/knife)
 
 //Chef
@@ -65,14 +71,18 @@
 	item_state = "apronchef"
 	blood_overlay_type = "armor"
 	body_parts_covered = 0
+	cover_parts = SUIT_COVER_CHEST
 
 //Security
+/obj/item/clothing/suit/security
+
 /obj/item/clothing/suit/security/navyofficer
 	name = "security officer's jacket"
 	desc = "This jacket is for those special occasions when a security officer actually feels safe."
 	icon_state = "officerbluejacket"
 	item_state = "officerbluejacket"
 	body_parts_covered = UPPER_TORSO|LOWER_TORSO|ARMS
+	cover_parts = SUIT_COVER_CHEST|SUIT_COVER_BACK|SUIT_COVER_UPPER_ARM|SUIT_COVER_LOWER_ARM
 
 /obj/item/clothing/suit/security/navywarden
 	name = "warden's jacket"
@@ -80,6 +90,7 @@
 	icon_state = "wardenbluejacket"
 	item_state = "wardenbluejacket"
 	body_parts_covered = UPPER_TORSO|LOWER_TORSO|ARMS
+	cover_parts = SUIT_COVER_CHEST|SUIT_COVER_BACK|SUIT_COVER_UPPER_ARM|SUIT_COVER_LOWER_ARM
 
 /obj/item/clothing/suit/security/navyhos
 	name = "head of security's jacket"
@@ -87,6 +98,7 @@
 	icon_state = "hosbluejacket"
 	item_state = "hosbluejacket"
 	body_parts_covered = UPPER_TORSO|LOWER_TORSO|ARMS
+	cover_parts = SUIT_COVER_CHEST|SUIT_COVER_BACK|SUIT_COVER_UPPER_ARM|SUIT_COVER_LOWER_ARM
 
 //Detective
 /obj/item/clothing/suit/storage/det_trench
@@ -97,6 +109,7 @@
 	valid_accessory_slots = list(ACCESSORY_SLOT_INSIGNIA)
 	blood_overlay_type = "coat"
 	body_parts_covered = UPPER_TORSO|ARMS
+	cover_parts = SUIT_COVER_BACK|SUIT_COVER_UPPER_ARM|SUIT_COVER_LOWER_ARM|SUIT_COVER_BELT|SUIT_COVER_UPPER_LEG|SUIT_COVER_LOWER_LEG
 	allowed = list(/obj/item/weapon/tank/emergency,/obj/item/device/flashlight,/obj/item/weapon/gun/energy,/obj/item/weapon/gun/projectile,/obj/item/ammo_magazine,/obj/item/ammo_casing,/obj/item/weapon/melee/baton,/obj/item/weapon/handcuffs,/obj/item/weapon/storage/fancy/cigarettes,/obj/item/weapon/flame/lighter,/obj/item/device/taperecorder)
 	armor = list(melee = 50, bullet = 10, laser = 25, energy = 10, bomb = 0, bio = 0, rad = 0)
 
@@ -104,6 +117,7 @@
     name = "comfy greatcoat"
     desc = "A greatcoat that is holding small pieces of dirt and such. It feels underarmored, yet you're absolutely sure that it will keep out the cold."
     icon_state = "redcoat"
+    cover_parts = SUIT_COVER_ALL
     armor = list(melee = 0, bullet = 0, laser = 0, energy = 0, bomb = 0, bio = 0, rad = 0)
 
 /obj/item/clothing/suit/storage/det_trench/warfare/mob_can_equip(mob/user)
@@ -126,6 +140,7 @@
 	desc = "A forensics technician jacket."
 	item_state = "det_suit"
 	body_parts_covered = UPPER_TORSO|ARMS
+	cover_parts = SUIT_COVER_BACK|SUIT_COVER_UPPER_ARM|SUIT_COVER_LOWER_ARM|SUIT_COVER_BELT|SUIT_COVER_UPPER_LEG|SUIT_COVER_LOWER_LEG
 	blood_overlay_type = "armor"
 	allowed = list(/obj/item/weapon/tank/emergency,/obj/item/device/flashlight,/obj/item/weapon/gun/energy,/obj/item/weapon/gun/projectile,/obj/item/ammo_magazine,/obj/item/ammo_casing,/obj/item/weapon/melee/baton,/obj/item/weapon/handcuffs,/obj/item/device/taperecorder)
 	armor = list(melee = 10, bullet = 10, laser = 15, energy = 10, bomb = 0, bio = 0, rad = 0)
@@ -154,6 +169,7 @@
 	icon_state = "forensics_red_open"
 	icon_open = "forensics_red_open"
 	icon_closed = "forensics_red"
+	cover_parts = SUIT_COVER_BACK|SUIT_COVER_UPPER_ARM|SUIT_COVER_LOWER_ARM|SUIT_COVER_BELT|SUIT_COVER_UPPER_LEG
 
 /obj/item/clothing/suit/storage/toggle/forensics/blue
 	name = "blue jacket"
@@ -162,6 +178,7 @@
 	icon_state = "forensics_blue_open"
 	icon_open = "forensics_blue_open"
 	icon_closed = "forensics_blue"
+	cover_parts = SUIT_COVER_BACK|SUIT_COVER_UPPER_ARM|SUIT_COVER_LOWER_ARM|SUIT_COVER_BELT|SUIT_COVER_UPPER_LEG
 
 /obj/item/clothing/suit/storage/toggle/forensics/customred //Custom item
 	name = "red jacket"
@@ -176,6 +193,7 @@
 	icon_state = "forensictech_open"
 	icon_open = "forensictech_open"
 	icon_closed = "forensictech"
+	cover_parts = SUIT_COVER_BACK|SUIT_COVER_UPPER_ARM|SUIT_COVER_LOWER_ARM|SUIT_COVER_BELT|SUIT_COVER_UPPER_LEG
 
 //Engineering
 /obj/item/clothing/suit/storage/hazardvest
@@ -188,6 +206,7 @@
 	/obj/item/weapon/crowbar, /obj/item/weapon/screwdriver, /obj/item/weapon/weldingtool, /obj/item/weapon/wirecutters, /obj/item/weapon/wrench, /obj/item/weapon/tank/emergency, \
 	/obj/item/clothing/mask/gas, /obj/item/taperoll/engineering)
 	body_parts_covered = UPPER_TORSO
+	cover_parts = SUIT_COVER_CHEST|SUIT_COVER_BACK
 
 /obj/item/clothing/suit/storage/hazardvest/blue
 	name = "blue hazard vest"
@@ -214,6 +233,7 @@
 	icon_closed = "suitjacket"
 	blood_overlay_type = "coat"
 	body_parts_covered = UPPER_TORSO|ARMS
+	cover_parts = SUIT_COVER_BACK|SUIT_COVER_UPPER_ARM|SUIT_COVER_LOWER_ARM
 
 /obj/item/clothing/suit/storage/toggle/suit/blue
 	name = "blue suit jacket"
@@ -239,6 +259,7 @@
 	allowed = list(/obj/item/stack/medical, /obj/item/weapon/reagent_containers/dropper, /obj/item/weapon/reagent_containers/hypospray, /obj/item/weapon/reagent_containers/syringe, \
 	/obj/item/device/healthanalyzer, /obj/item/device/flashlight, /obj/item/device/radio, /obj/item/weapon/tank/emergency)
 	body_parts_covered = UPPER_TORSO|ARMS
+	cover_parts = SUIT_COVER_BACK|SUIT_COVER_UPPER_ARM|SUIT_COVER_LOWER_ARM
 
 /obj/item/clothing/suit/storage/toggle/fr_jacket/ems
 	name = "\improper EMS jacket"
@@ -255,6 +276,7 @@
 	item_state = "surgical"
 	blood_overlay_type = "armor"
 	body_parts_covered = UPPER_TORSO|LOWER_TORSO
+	cover_parts = SUIT_COVER_CHEST
 	allowed = list(/obj/item/stack/medical, /obj/item/weapon/reagent_containers/dropper, /obj/item/weapon/reagent_containers/hypospray, /obj/item/weapon/reagent_containers/syringe, \
 	/obj/item/device/healthanalyzer, /obj/item/device/flashlight, /obj/item/device/radio, /obj/item/weapon/tank/emergency,/obj/item/weapon/scalpel,/obj/item/weapon/retractor,/obj/item/weapon/hemostat, \
 	/obj/item/weapon/cautery,/obj/item/weapon/bonegel,/obj/item/weapon/FixOVein)

@@ -137,18 +137,22 @@
 
 /obj/item/clothing/get_examine_line()
 	. = ..()
+	var/hidden = 0
 	var/list/ties = list()
 	for(var/obj/item/clothing/accessory/accessory in accessories)
 		if(!accessory.high_visibility)
 			continue
 		if (ishuman(loc))
 			var/mob/living/carbon/human/H = loc
-			if (istype(accessory,/obj/item/clothing/accessory/holster) && H.wear_suit)
-				continue
+			if (H.wear_suit)
+				var/obj/item/clothing/suit/suit = H.wear_suit
+				if (suit.cover_parts & accessory.can_be_covered_with)
+					hidden = 1
+					continue
 		ties += "\icon[accessory] \a [accessory]"
 	if(ties.len)
 		.+= " with [english_list(ties)] attached"
-	if(accessories.len > ties.len)
+	if(accessories.len > ties.len && !hidden)
 		.+= ". <a href='?src=\ref[src];list_ungabunga=1'>\[See accessories\]</a>"
 
 /obj/item/clothing/CanUseTopic(user)
@@ -160,10 +164,6 @@
 		if(accessories.len)
 			var/list/ties = list()
 			for(var/accessory in accessories)
-				if (ishuman(loc))
-					var/mob/living/carbon/human/H = loc
-					if (istype(accessory,/obj/item/clothing/accessory/holster) && H.wear_suit)
-						continue
 				ties += "\icon[accessory] \a [accessory]"
 			to_chat(user, "Attached to \the [src] are [english_list(ties)].")
 		return TOPIC_HANDLED
@@ -637,6 +637,7 @@ BLIND     // can't see anything
 	blood_overlay_type = "suit"
 	siemens_coefficient = 0.9
 	w_class = ITEM_SIZE_NORMAL
+	var/cover_parts = 0
 
 /obj/item/clothing/suit/update_clothing_icon()
 	if (ismob(src.loc))

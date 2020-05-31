@@ -6,6 +6,7 @@
 	icon_state = "robe-unathi"
 	item_state = "robe-unathi"
 	body_parts_covered = UPPER_TORSO|LOWER_TORSO|LEGS
+	cover_parts = SUIT_COVER_CHEST|SUIT_COVER_BACK|SUIT_COVER_BELT|SUIT_COVER_UPPER_LEG|SUIT_COVER_LOWER_LEG
 
 /obj/item/clothing/suit/unathi/mantle
 	name = "hide mantle"
@@ -22,13 +23,15 @@
 	icon_state = "zhan_furs"
 	item_state = "zhan_furs"
 	body_parts_covered = UPPER_TORSO|LOWER_TORSO|LEGS|FEET|ARMS
+	flags_inv = HIDEJUMPSUIT
+	cover_parts = SUIT_COVER_ALL
 
 /obj/item/clothing/head/tajaran/scarf
 	name = "headscarf"
 	desc = "A scarf of coarse fabric. Seems to have ear-holes."
 	icon_state = "zhan_scarf"
 	body_parts_covered = HEAD|FACE
-	
+
 /obj/item/clothing/shoes/sandal/tajaran/caligae
 	name = "caligae"
 	desc = "The standard Tajaran footwear loosly resembles the Roman Caligae. Made of leather and rubber, their unique design allows for improved traction and protection. They don't look like they would fit on anyone but a Tajara."
@@ -37,12 +40,12 @@
 	item_state = "caligae"
 	body_parts_covered = FEET|LEGS
 	species_restricted = list(SPECIES_TAJARA)
-	
+
 /obj/item/clothing/shoes/sandal/tajaran/caligae/white
 	desc = "The standard Tajaran footwear loosly resembles the Roman Caligae. Made of leather and rubber, their unique design allows for improved traction and protection. They don't look like they would fit on anyone but a Tajara. /This one has a white covering."
 	icon_state = "whitecaligae"
 	item_state = "whitecaligae"
-	
+
 /obj/item/clothing/shoes/sandal/tajaran/caligae/grey
 	desc = "The standard Tajaran footwear loosly resembles the Roman Caligae. Made of leather and rubber, their unique design allows for improved traction and protection. They don't look like they would fit on anyone but a Tajara. /This one has a grey covering."
 	icon_state = "greycaligae"
@@ -52,13 +55,13 @@
 	desc = "The standard Tajaran footwear loosly resembles the Roman Caligae. Made of leather and rubber, their unique design allows for improved traction and protection. They don't look like they would fit on anyone but a Tajara. /This one has a black covering."
 	icon_state = "blackcaligae"
 	item_state = "blackcaligae"
-	
+
 /obj/item/clothing/accessory/shouldercape
 	name = "shoulder cape"
 	desc = "A simple shoulder cape."
 	icon_state = "gruntcape"
 	slot = ACCESSORY_SLOT_INSIGNIA // Adding again in case we want to change it in the future.
-	
+
 /obj/item/clothing/accessory/shouldercape/grunt
 	name = "modir cape"
 	desc = "A simple looking cape with a couple of runes woven into the fabric."
@@ -89,5 +92,6 @@
 	icon_state = "vox-scrap"
 	icon_state = "vox-scrap"
 	body_parts_covered = UPPER_TORSO|ARMS|LOWER_TORSO|LEGS
+	cover_parts = SUIT_COVER_CHEST|SUIT_COVER_BACK|SUIT_COVER_BELT|SUIT_COVER_UPPER_LEG
 	species_restricted = list(SPECIES_VOX)
 	siemens_coefficient = 1 //Its literally metal

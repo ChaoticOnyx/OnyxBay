@@ -8,6 +8,7 @@
 	icon_state = "pouches"
 	gender = PLURAL
 	slot = ACCESSORY_SLOT_ARMOR_S
+	can_be_covered_with = 0
 	slots = 2
 
 /obj/item/clothing/accessory/storage/pouches/blue

@@ -35,6 +35,18 @@
 #define ACCESSORY_SLOT_ARMOR_M  "Misc armor"
 #define ACCESSORY_SLOT_HELM_C	"Helmet cover"
 
+// These are for cover_parts and can_be_covered_with variables. Used to determine when a suit hides an accessory.
+// WARNING: The following flags apply only to external suits and accessories.
+#define SUIT_COVER_CHEST     0x1
+#define SUIT_COVER_BACK      0x2 // Needed to hide holsters while not hiding ties and stuff
+#define SUIT_COVER_UPPER_ARM 0x4
+#define SUIT_COVER_LOWER_ARM 0x8
+#define SUIT_COVER_BELT      0x10
+#define SUIT_COVER_UPPER_LEG 0x20
+#define SUIT_COVER_LOWER_LEG 0x40
+
+#define SUIT_COVER_ALL SUIT_COVER_CHEST|SUIT_COVER_BACK|SUIT_COVER_UPPER_ARM|SUIT_COVER_LOWER_ARM|SUIT_COVER_BELT|SUIT_COVER_UPPER_LEG|SUIT_COVER_LOWER_LEG
+
 // Bitmasks for the flags_inv variable. These determine when a piece of clothing hides another, i.e. a helmet hiding glasses.
 // WARNING: The following flags apply only to the external suit!
 #define HIDEGLOVES      0x1

@@ -69,6 +69,7 @@
 	desc = "A heavy jacket made from 'synthetic' animal furs."
 	icon_state = "coatwinter"
 	body_parts_covered = UPPER_TORSO|LOWER_TORSO|ARMS
+	cover_parts = SUIT_COVER_CHEST|SUIT_COVER_BACK|SUIT_COVER_UPPER_ARM|SUIT_COVER_LOWER_ARM|SUIT_COVER_BELT|SUIT_COVER_UPPER_LEG
 	cold_protection = UPPER_TORSO|LOWER_TORSO|ARMS
 	min_cold_protection_temperature = ARMOR_MIN_COLD_PROTECTION_TEMPERATURE
 	armor = list(melee = 0, bullet = 0, laser = 0,energy = 0, bomb = 0, bio = 10, rad = 0)
@@ -133,11 +134,12 @@
 	desc = "A warm sweatshirt."
 	icon_state = "hoodie"
 	item_state = "hoodie"
+	cover_parts = SUIT_COVER_CHEST|SUIT_COVER_BACK|SUIT_COVER_UPPER_ARM|SUIT_COVER_LOWER_ARM|SUIT_COVER_BELT
 	min_cold_protection_temperature = T0C - 20
 	cold_protection = UPPER_TORSO|LOWER_TORSO|ARMS
 	action_button_name = "Toggle Hood"
 	hoodtype = /obj/item/clothing/head/hoodiehood
-	
+
 /obj/item/clothing/head/hoodiehood
 	name = "hoodie hood"
 	desc = "A hood attached to a warm sweatshirt."

@@ -3,6 +3,7 @@
 	desc = "A uniform service jacket belonging to the Miranian Defence Forces."
 	icon_state = "m_service"
 	item_state = "m_service"
+	cover_parts = SUIT_COVER_CHEST|SUIT_COVER_BACK|SUIT_COVER_UPPER_ARM|SUIT_COVER_LOWER_ARM
 
 /obj/item/clothing/suit/storage/service/mirania/intelligence
 	name = "intelligence service jacket"
@@ -15,6 +16,7 @@
 	desc = "A dress jacket belonging to the Miranian Defence Forces. Fashionable, for the 25th century at least."
 	icon_state = "m_dress"
 	item_state = "m_dress"
+	cover_parts = SUIT_COVER_CHEST|SUIT_COVER_BACK|SUIT_COVER_UPPER_ARM|SUIT_COVER_LOWER_ARM
 
 /obj/item/clothing/suit/dress/mirania/intelligence
 	name = "intelligence service dress jacket"

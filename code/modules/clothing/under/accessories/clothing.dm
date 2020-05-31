@@ -3,16 +3,19 @@
 	desc = "For some classy, murderous fun."
 	icon_state = "vest"
 	item_state = "wcoat"
+	can_be_covered_with = SUIT_COVER_CHEST
 
 /obj/item/clothing/accessory/suspenders
 	name = "suspenders"
 	desc = "They suspend the illusion of the mime's play."
 	icon_state = "suspenders"
+	can_be_covered_with = SUIT_COVER_CHEST
 
 /obj/item/clothing/accessory/nt_tunic
 	name = "\improper NanoTrasen tunic"
 	desc = "A fashionable tunic that NanoTrasen gives to its lab workers."
 	icon_state = "nttunic"
+	can_be_covered_with = SUIT_COVER_CHEST|SUIT_COVER_UPPER_ARM|SUIT_COVER_LOWER_ARM
 
 /obj/item/clothing/accessory/nt_tunic/exec
 	name = "\improper NanoTrasen executive tunic"
@@ -22,6 +25,7 @@
 	name = "black dashiki"
 	desc = "An ornately embroidered pullover garmant sporting a v-shaped collar. This one is green and black."
 	icon_state = "dashiki"
+	can_be_covered_with = SUIT_COVER_CHEST|SUIT_COVER_UPPER_ARM|SUIT_COVER_LOWER_ARM
 
 /obj/item/clothing/accessory/dashiki/red
 	name = "red dashiki"
@@ -37,26 +41,31 @@
 	name = "thawb"
 	desc = "A white, ankle-length robe designed to be cool in hot climates."
 	icon_state = "thawb"
+	can_be_covered_with = SUIT_COVER_ALL
 
 /obj/item/clothing/accessory/sherwani
 	name = "sherwani"
 	desc = "A long, coat-like frock with fancy embroidery on the cuffs and collar."
 	icon_state = "sherwani"
+	can_be_covered_with = SUIT_COVER_CHEST|SUIT_COVER_UPPER_ARM|SUIT_COVER_LOWER_ARM|SUIT_COVER_BELT|SUIT_COVER_UPPER_LEG
 
 /obj/item/clothing/accessory/qipao
 	name = "qipao"
 	desc = "A tight-fitting blouse with intricate designs of flowers embroidered on it."
 	icon_state = "qipao"
+	can_be_covered_with = SUIT_COVER_CHEST|SUIT_COVER_UPPER_ARM
 
 /obj/item/clothing/accessory/sweater
 	name = "turtleneck sweater"
 	desc = "A stylish sweater to keep you warm on those cold days."
 	icon_state = "sweater"
+	can_be_covered_with = SUIT_COVER_CHEST|SUIT_COVER_UPPER_ARM|SUIT_COVER_LOWER_ARM
 
 /obj/item/clothing/accessory/ubac
 	name = "black ubac"
 	desc = "A flexible, close-fitting shirt with camouflage sleeves designed to be worn under combat equipment. This one is black."
 	icon_state = "ubacblack"
+	can_be_covered_with = SUIT_COVER_CHEST|SUIT_COVER_UPPER_ARM|SUIT_COVER_LOWER_ARM
 
 /obj/item/clothing/accessory/ubac/blue
 	name = "blue ubac"
@@ -75,6 +84,8 @@
 
 /obj/item/clothing/accessory/toggleable
 	var/icon_closed
+	can_be_covered_with = SUIT_COVER_CHEST
+
 /obj/item/clothing/accessory/toggleable/New()
 	if(!icon_closed)
 		icon_closed = icon_state
@@ -126,6 +137,7 @@
 	name = "tan suit jacket"
 	desc = "Cozy suit jacket."
 	icon_state = "tan_jacket"
+	can_be_covered_with = SUIT_COVER_CHEST|SUIT_COVER_UPPER_ARM|SUIT_COVER_LOWER_ARM
 
 /obj/item/clothing/accessory/toggleable/tan_jacket/New()
 	..()
@@ -135,42 +147,43 @@
 	name = "charcoal suit jacket"
 	desc = "Strict suit jacket."
 	icon_state = "charcoal_jacket"
+	can_be_covered_with = SUIT_COVER_CHEST|SUIT_COVER_UPPER_ARM|SUIT_COVER_LOWER_ARM
 
 /obj/item/clothing/accessory/toggleable/navy_jacket
 	name = "navy suit jacket"
 	desc = "Official suit jacket."
 	icon_state = "navy_jacket"
+	can_be_covered_with = SUIT_COVER_CHEST|SUIT_COVER_UPPER_ARM|SUIT_COVER_LOWER_ARM
 
 /obj/item/clothing/accessory/toggleable/burgundy_jacket
 	name = "burgundy suit jacket"
 	desc = "Expensive suit jacket."
 	icon_state = "burgundy_jacket"
+	can_be_covered_with = SUIT_COVER_CHEST|SUIT_COVER_UPPER_ARM|SUIT_COVER_LOWER_ARM
 
 /obj/item/clothing/accessory/toggleable/checkered_jacket
 	name = "checkered suit jacket"
 	desc = "Lucky suit jacket."
 	icon_state = "checkered_jacket"
+	can_be_covered_with = SUIT_COVER_CHEST|SUIT_COVER_UPPER_ARM|SUIT_COVER_LOWER_ARM
 
 /obj/item/clothing/accessory/toggleable/nanotrasen_jacket
 	name = "\improper NanoTrasen suit jacket"
 	desc = "A jacket that NanoTrasen has its executives wear."
 	icon_state = "nt_jacket"
+	can_be_covered_with = SUIT_COVER_CHEST|SUIT_COVER_UPPER_ARM|SUIT_COVER_LOWER_ARM
 
 /obj/item/clothing/accessory/toggleable/hawaii
 	name = "flower-pattern shirt"
 	desc = "You probably need some welder googles to look at this."
 	icon_state = "hawaii"
+	can_be_covered_with = SUIT_COVER_CHEST|SUIT_COVER_UPPER_ARM
 
 /obj/item/clothing/accessory/toggleable/hawaii/red
 	icon_state = "hawaii2"
 
 /obj/item/clothing/accessory/toggleable/hawaii/random
 	name = "flower-pattern shirt"
-
-/obj/item/clothing/accessory/toggleable/zhongshan
-	name = "zhongshan suit jacket"
-	desc = "A stylish Chinese tunic suit jacket."
-	icon_state = "zhongshan"
 
 /obj/item/clothing/accessory/toggleable/hawaii/random/New()
 	..()
@@ -179,10 +192,17 @@
 		icon_closed = "hawaii2"
 	color = color_rotation(rand(-11,12)*15)
 
+/obj/item/clothing/accessory/toggleable/zhongshan
+	name = "zhongshan suit jacket"
+	desc = "A stylish Chinese tunic suit jacket."
+	icon_state = "zhongshan"
+	can_be_covered_with = SUIT_COVER_CHEST|SUIT_COVER_UPPER_ARM|SUIT_COVER_LOWER_ARM|SUIT_COVER_BELT
+
 /obj/item/clothing/accessory/toggleable/flannel
 	name = "flannel shirt"
 	desc = "A comfy, plaid flannel shirt."
 	icon_state = "flannel"
+	can_be_covered_with = SUIT_COVER_CHEST|SUIT_COVER_UPPER_ARM|SUIT_COVER_LOWER_ARM
 	var/rolled = 0
 	var/tucked = 0
 	var/buttoned = 0
@@ -223,9 +243,11 @@
 
 	if(H.rolled == 0)
 		H.rolled = 1
+		H.can_be_covered_with &= ~SUIT_COVER_LOWER_ARM
 		to_chat(usr, "You roll up the sleeves of your [H].")
 	else
 		H.rolled = 0
+		H.can_be_covered_with |= SUIT_COVER_LOWER_ARM
 		to_chat(usr, "You roll down the sleeves of your [H].")
 	H.update_icon()
 	update_clothing_icon()
@@ -266,3 +288,4 @@
 	name = "tangzhuang jacket"
 	desc = "A traditional Chinese coat tied together with straight, symmetrical knots."
 	icon_state = "tangzhuang"  //This was originally intended to have the ability to roll sleeves. I can't into code. Will be done later (hopefully.)
+	can_be_covered_with = SUIT_COVER_CHEST|SUIT_COVER_UPPER_ARM|SUIT_COVER_LOWER_ARM

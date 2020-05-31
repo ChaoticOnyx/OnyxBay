@@ -4,6 +4,7 @@
 	icon_state = "holster"
 	slot = ACCESSORY_SLOT_HOLSTER
 	high_visibility = 1
+	can_be_covered_with = SUIT_COVER_BACK
 	var/obj/item/holstered = null
 	var/list/can_hold
 
@@ -131,14 +132,17 @@
 	name = "hip holster"
 	desc = "A handgun holster slung low on the hip, draw pardner!"
 	icon_state = "holster_hip"
+	can_be_covered_with = SUIT_COVER_BELT
 
 /obj/item/clothing/accessory/holster/thigh
 	name = "thigh holster"
 	desc = "A drop leg holster made of a durable synthetic fiber."
 	icon_state = "holster_thigh"
+	can_be_covered_with = SUIT_COVER_UPPER_LEG
 
 /obj/item/clothing/accessory/holster/machete
 	name = "machete sheath"
 	desc = "A handsome synthetic leather sheath with matching belt."
 	icon_state = "holster_machete"
+	can_be_covered_with = SUIT_COVER_UPPER_LEG|SUIT_COVER_LOWER_LEG
 	can_hold = list(/obj/item/weapon/material/hatchet/machete)

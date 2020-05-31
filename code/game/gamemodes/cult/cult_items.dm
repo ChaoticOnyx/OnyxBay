@@ -75,6 +75,7 @@
 	desc = "A set of durable robes worn by the followers of Nar-Sie."
 	icon_state = "cultrobes"
 	body_parts_covered = UPPER_TORSO|LOWER_TORSO|LEGS|ARMS
+	cover_parts = SUIT_COVER_ALL
 	allowed = list(/obj/item/weapon/book/tome,/obj/item/weapon/melee/cultblade)
 	armor = list(melee = 35, bullet = 30, laser = 25,energy = 20, bomb = 25, bio = 10, rad = 0)
 	flags_inv = HIDEJUMPSUIT

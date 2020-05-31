@@ -2,6 +2,7 @@
 /obj/item/clothing/suit/armor
 	allowed = list(/obj/item/weapon/gun/energy,/obj/item/device/radio,/obj/item/weapon/reagent_containers/spray/pepper,/obj/item/weapon/gun/projectile,/obj/item/ammo_magazine,/obj/item/ammo_casing,/obj/item/weapon/melee/baton,/obj/item/weapon/handcuffs,/obj/item/weapon/gun/magnetic)
 	body_parts_covered = UPPER_TORSO|LOWER_TORSO
+	cover_parts = SUIT_COVER_CHEST|SUIT_COVER_BACK|SUIT_COVER_BELT
 	item_flags = ITEM_FLAG_THICKMATERIAL
 
 	cold_protection = UPPER_TORSO|LOWER_TORSO
@@ -38,6 +39,7 @@
 	desc = "An armoured jacket with silver rank pips and livery."
 	icon_state = "warden_jacket"
 	//item_state = "armor"
+	cover_parts = SUIT_COVER_ALL
 	armor = list(melee = 40, bullet = 50, laser = 50, energy = 10, bomb = 25, bio = 0, rad = 0)
 	body_parts_covered = UPPER_TORSO|LOWER_TORSO|ARMS
 	cold_protection = UPPER_TORSO|LOWER_TORSO|ARMS
@@ -51,6 +53,7 @@
 	//item_state = "det_suit"
 	blood_overlay_type = "coat"
 	body_parts_covered = UPPER_TORSO|LOWER_TORSO|ARMS
+	cover_parts = SUIT_COVER_BACK|SUIT_COVER_UPPER_ARM|SUIT_COVER_LOWER_ARM|SUIT_COVER_BELT|SUIT_COVER_UPPER_LEG|SUIT_COVER_LOWER_LEG
 	cold_protection = UPPER_TORSO|LOWER_TORSO|ARMS
 	heat_protection = UPPER_TORSO|LOWER_TORSO|ARMS
 	valid_accessory_slots = list(ACCESSORY_SLOT_INSIGNIA)
@@ -170,6 +173,7 @@
 	icon_state = "ertarmor_cmd"
 	item_state = "armor"
 	body_parts_covered = UPPER_TORSO|LOWER_TORSO|ARMS
+	cover_parts = SUIT_COVER_CHEST|SUIT_COVER_BACK|SUIT_COVER_UPPER_ARM|SUIT_COVER_LOWER_ARM|SUIT_COVER_BELT
 	armor = list(melee = 60, bullet = 60, laser = 60, energy = 40, bomb = 20, bio = 0, rad = 0)
 
 //Security
@@ -196,6 +200,7 @@
 	desc = "An armor vest made of synthetic fibers."
 	icon_state = "kvest"
 	item_state = "armor"
+	cover_parts = SUIT_COVER_CHEST|SUIT_COVER_BACK
 	armor = list(melee = 35, bullet = 45, laser = 40, energy = 10, bomb = 25, bio = 0, rad = 0)
 	valid_accessory_slots = list(ACCESSORY_SLOT_INSIGNIA)
 
@@ -233,6 +238,7 @@
 	valid_accessory_slots = list(ACCESSORY_SLOT_INSIGNIA)
 	allowed = list(/obj/item/weapon/gun/energy,/obj/item/device/radio,/obj/item/weapon/reagent_containers/spray/pepper,/obj/item/weapon/gun/projectile,/obj/item/ammo_magazine,/obj/item/ammo_casing,/obj/item/weapon/melee/baton,/obj/item/weapon/handcuffs,/obj/item/weapon/gun/magnetic)
 	body_parts_covered = UPPER_TORSO|LOWER_TORSO
+	cover_parts = SUIT_COVER_CHEST|SUIT_COVER_BACK
 	item_flags = ITEM_FLAG_THICKMATERIAL
 	cold_protection = UPPER_TORSO|LOWER_TORSO
 	min_cold_protection_temperature = ARMOR_MIN_COLD_PROTECTION_TEMPERATURE
@@ -258,6 +264,7 @@
 	icon_state = "warden_heavy"
 	armor = list(melee = 45, bullet = 55, laser = 55, energy = 10, bomb = 25, bio = 0, rad = 0)
 	body_parts_covered = UPPER_TORSO|LOWER_TORSO|ARMS
+	cover_parts = SUIT_COVER_CHEST|SUIT_COVER_BACK|SUIT_COVER_UPPER_ARM
 	cold_protection = UPPER_TORSO|LOWER_TORSO|ARMS
 	heat_protection = UPPER_TORSO|LOWER_TORSO|ARMS
 
@@ -285,6 +292,7 @@
 	item_state = "mercwebvest"
 	armor = list(melee = 60, bullet = 60, laser = 60, energy = 40, bomb = 40, bio = 0, rad = 0)
 	body_parts_covered = UPPER_TORSO|LOWER_TORSO|LEGS //now covers legs with new sprite
+	cover_parts = SUIT_COVER_CHEST|SUIT_COVER_BACK|SUIT_COVER_UPPER_ARM|SUIT_COVER_BELT|SUIT_COVER_UPPER_LEG
 	cold_protection = UPPER_TORSO|LOWER_TORSO|LEGS
 	heat_protection = UPPER_TORSO|LOWER_TORSO|LEGS
 
@@ -295,6 +303,7 @@
 	icon = 'icons/obj/clothing/modular_armor.dmi'
 	item_icons = list(slot_wear_suit_str = 'icons/mob/onmob/modular_armor.dmi')
 	icon_state = "pcarrier"
+	cover_parts = SUIT_COVER_CHEST
 	valid_accessory_slots = list(ACCESSORY_SLOT_INSIGNIA, ACCESSORY_SLOT_ARMOR_C, ACCESSORY_SLOT_ARMOR_A, ACCESSORY_SLOT_ARMOR_L, ACCESSORY_SLOT_ARMOR_S, ACCESSORY_SLOT_ARMOR_M)
 	restricted_accessory_slots = list(ACCESSORY_SLOT_INSIGNIA, ACCESSORY_SLOT_ARMOR_C, ACCESSORY_SLOT_ARMOR_A, ACCESSORY_SLOT_ARMOR_L, ACCESSORY_SLOT_ARMOR_S)
 	blood_overlay_type = "armor"
@@ -418,6 +427,7 @@
 	item_state = "centcom"
 	w_class = ITEM_SIZE_HUGE//bulky item
 	body_parts_covered = UPPER_TORSO|LOWER_TORSO|LEGS|FEET|ARMS|HANDS
+	cover_parts = SUIT_COVER_ALL
 	allowed = list(/obj/item/weapon/gun/energy,/obj/item/weapon/melee/baton,/obj/item/weapon/handcuffs,/obj/item/weapon/tank/emergency)
 	flags_inv = HIDEGLOVES|HIDESHOES|HIDEJUMPSUIT
 	cold_protection = UPPER_TORSO | LOWER_TORSO | LEGS | FEET | ARMS | HANDS
@@ -433,6 +443,7 @@
 	w_class = ITEM_SIZE_HUGE//bulky item
 	gas_transfer_coefficient = 0.90
 	body_parts_covered = UPPER_TORSO|LOWER_TORSO|LEGS|FEET|ARMS|HANDS
+	cover_parts = SUIT_COVER_ALL
 	flags_inv = HIDEGLOVES|HIDESHOES|HIDEJUMPSUIT
 	siemens_coefficient = 0
 	armor = list(melee = 65, bullet = 75, laser = 42, energy = 10, bomb = 25, bio = 0, rad = 0)
@@ -443,6 +454,7 @@
 
 /obj/item/clothing/suit/armor/tdome
 	body_parts_covered = UPPER_TORSO|LOWER_TORSO|LEGS|FEET|ARMS|HANDS
+	cover_parts = SUIT_COVER_ALL
 	flags_inv = HIDEGLOVES|HIDESHOES|HIDEJUMPSUIT
 
 /obj/item/clothing/suit/armor/tdome/red

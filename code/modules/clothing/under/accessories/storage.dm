@@ -3,6 +3,7 @@
 	desc = "Used to hold things when you don't have enough hands."
 	icon_state = "webbing"
 	slot = ACCESSORY_SLOT_UTILITY
+	can_be_covered_with = SUIT_COVER_CHEST
 	var/slots = 3
 	var/max_w_class = ITEM_SIZE_SMALL //pocket sized
 	var/obj/item/weapon/storage/internal/pockets/hold
@@ -94,6 +95,7 @@
 	icon_state = "altwebbing_white"
 
 /obj/item/clothing/accessory/storage/drop_pouches
+	can_be_covered_with = SUIT_COVER_UPPER_LEG
 	slots = 4 //to accomodate it being slotless
 
 /obj/item/clothing/accessory/storage/drop_pouches/create_storage()
@@ -118,6 +120,7 @@
 	name = "decorated harness"
 	desc = "A heavily decorated harness of sinew and leather with two knife-loops."
 	icon_state = "unathiharness2"
+	can_be_covered_with = SUIT_COVER_BELT|SUIT_COVER_UPPER_LEG
 	slots = 2
 	max_w_class = ITEM_SIZE_NORMAL //for knives
 

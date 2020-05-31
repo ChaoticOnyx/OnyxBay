@@ -21,6 +21,7 @@
 	gas_transfer_coefficient = 0.90
 	permeability_coefficient = 0.50
 	body_parts_covered = UPPER_TORSO|LOWER_TORSO|LEGS|FEET|ARMS|HANDS
+	cover_parts = SUIT_COVER_ALL
 	allowed = list(/obj/item/device/flashlight,/obj/item/weapon/tank/emergency,/obj/item/weapon/extinguisher)
 	flags_inv = HIDEGLOVES|HIDESHOES|HIDEJUMPSUIT|HIDETAIL
 	item_flags = ITEM_FLAG_STOPPRESSUREDAMAGE
@@ -38,6 +39,7 @@
 		slot_l_hand_str = "firefighter",
 		slot_r_hand_str = "firefighter",
 	)
+	cover_parts = SUIT_COVER_ALL
 
 
 /obj/item/clothing/suit/fire/heavy
@@ -49,6 +51,7 @@
 		slot_r_hand_str = "ro_suit",
 	)
 	w_class = ITEM_SIZE_HUGE//bulky item
+	cover_parts = SUIT_COVER_ALL
 
 /obj/item/clothing/suit/fire/heavy/New()
 	..()
@@ -72,6 +75,7 @@
 	desc = "A suit designed for safety when handling explosives."
 	icon_state = "bombsuit"
 	w_class = ITEM_SIZE_HUGE//bulky item
+	cover_parts = SUIT_COVER_ALL
 	gas_transfer_coefficient = 0.01
 	permeability_coefficient = 0.01
 	armor = list(melee = 70, bullet = 15, laser = 30, energy = 50, bomb = 90, bio = 0, rad = 0)
@@ -114,6 +118,7 @@
 		slot_r_hand_str = "rad_suit",
 	)
 	w_class = ITEM_SIZE_HUGE//bulky item
+	cover_parts = SUIT_COVER_ALL
 	gas_transfer_coefficient = 0.90
 	permeability_coefficient = 0.50
 	body_parts_covered = UPPER_TORSO|LOWER_TORSO|LEGS|ARMS|HANDS|FEET

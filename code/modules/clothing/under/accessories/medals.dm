@@ -1,10 +1,11 @@
 //Medals!
 
 /obj/item/clothing/accessory/medal
-	name = ACCESSORY_SLOT_MEDAL
+	name = "medal"
 	desc = "A simple medal."
 	icon_state = "bronze"
 	slot = ACCESSORY_SLOT_MEDAL
+	can_be_covered_with = SUIT_COVER_CHEST
 
 /obj/item/clothing/accessory/medal/iron
 	name = "iron medal"
