@@ -90,6 +90,10 @@
 			to_chat(user, "<span class='warning'>This machine only accepts beakers!</span>")
 			return
 
+		if(!accept_drinking && istype(RC,/obj/item/weapon/reagent_containers/glass/bucket))
+			to_chat(user, "<span class='warning'>This machine only accepts beakers!</span>")
+			return
+
 		if(!RC.is_open_container())
 			to_chat(user, "<span class='warning'>You don't see how \the [src] could dispense reagents into \the [RC].</span>")
 			return
