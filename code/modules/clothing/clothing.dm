@@ -139,8 +139,13 @@
 	. = ..()
 	var/list/ties = list()
 	for(var/obj/item/clothing/accessory/accessory in accessories)
-		if(accessory.high_visibility)
-			ties += "\icon[accessory] \a [accessory]"
+		if(!accessory.high_visibility)
+			continue
+		if (ishuman(loc))
+			var/mob/living/carbon/human/H = loc
+			if (istype(accessory,/obj/item/clothing/accessory/holster) && H.wear_suit)
+				continue
+		ties += "\icon[accessory] \a [accessory]"
 	if(ties.len)
 		.+= " with [english_list(ties)] attached"
 	if(accessories.len > ties.len)
@@ -155,6 +160,10 @@
 		if(accessories.len)
 			var/list/ties = list()
 			for(var/accessory in accessories)
+				if (ishuman(loc))
+					var/mob/living/carbon/human/H = loc
+					if (istype(accessory,/obj/item/clothing/accessory/holster) && H.wear_suit)
+						continue
 				ties += "\icon[accessory] \a [accessory]"
 			to_chat(user, "Attached to \the [src] are [english_list(ties)].")
 		return TOPIC_HANDLED
