@@ -90,7 +90,7 @@
 			to_chat(user, "<span class='warning'>This machine only accepts beakers!</span>")
 			return
 
-		if(!accept_drinking && istype(RC,/obj/item/weapon/reagent_containers/glass/bucket))
+		if(istype(RC,/obj/item/weapon/reagent_containers/glass/bucket))
 			to_chat(user, "<span class='warning'>This machine only accepts beakers!</span>")
 			return
 
