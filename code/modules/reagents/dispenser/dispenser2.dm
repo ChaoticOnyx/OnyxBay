@@ -86,11 +86,7 @@
 
 		var/obj/item/weapon/reagent_containers/RC = W
 
-		if(!accept_drinking && istype(RC,/obj/item/weapon/reagent_containers/food))
-			to_chat(user, "<span class='warning'>This machine only accepts beakers!</span>")
-			return
-
-		if(istype(RC,/obj/item/weapon/reagent_containers/glass/bucket))
+		if(!istype(RC, /obj/item/weapon/reagent_containers/glass/beaker) && !istype(RC, /obj/item/weapon/reagent_containers/glass/bottle))
 			to_chat(user, "<span class='warning'>This machine only accepts beakers!</span>")
 			return
 
