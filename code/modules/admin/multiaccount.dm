@@ -20,7 +20,7 @@
 
 /datum/admins/proc/showAccounts(targetkey)
 	var/size = 0
-	var/output = "<meta charset=\"utf-8\"><center><table border='1'> <caption>Совпадение по computerID</caption><tr> <th width='100px' >ckey</th><th width='100px'>firstseen</th><th width='100px'>lastseen</th><th width='100px'>ip</th><th width='100px'>computerid </th></tr>"
+	var/output = "<meta charset=\"utf-8\"><center><table border='1'> <caption>Matching computerID</caption><tr> <th width='100px' >ckey</th><th width='100px'>firstseen</th><th width='100px'>lastseen</th><th width='100px'>ip</th><th width='100px'>computerid </th></tr>"
 
 	var/DBQuery/query = dbcon.NewQuery("SELECT ckey,firstseen,lastseen,ip,computerid FROM erro_player WHERE computerid IN (SELECT DISTINCT computerid FROM erro_player WHERE ckey LIKE '[targetkey]')")
 	query.Execute()
@@ -34,7 +34,7 @@
 
 	output+="</table>"
 
-	output += "<center><table border='1'> <caption>Совпадение по IP</caption><tr> <th width='100px' >ckey</th><th width='100px'>firstseen</th><th width='100px'>lastseen</th><th width='100px'>ip</th><th width='100px'>computerid </th></tr>"
+	output += "<center><table border='1'> <caption>Matching IP</caption><tr> <th width='100px' >ckey</th><th width='100px'>firstseen</th><th width='100px'>lastseen</th><th width='100px'>ip</th><th width='100px'>computerid </th></tr>"
 
 	query = dbcon.NewQuery("SELECT ckey,firstseen,lastseen,ip,computerid FROM erro_player WHERE ip IN (SELECT DISTINCT ip FROM erro_player WHERE computerid IN (SELECT DISTINCT computerid FROM erro_player WHERE ckey LIKE '[targetkey]'))")
 	query.Execute()
@@ -55,7 +55,7 @@
 /datum/admins/proc/checkAllAccounts()
 	var/DBQuery/query
 	var/t1 = ""
-	var/output = "<meta charset=\"utf-8\"><B>Совпадение по IP</B><BR><BR>"
+	var/output = "<meta charset=\"utf-8\"><B>Matching IP</B><BR><BR>"
 
 	for (var/client/C in GLOB.clients)
 		t1 =""
@@ -69,7 +69,7 @@
 		if (c > 1)
 			output+= "Ckey: [C.ckey] <A href='?_src_=holder;showmultiacc=[C.ckey]'>Show</A><BR>" + t1
 
-	output+= "<BR><BR><B>Совпадение по computerID</B><BR><BR>"
+	output+= "<BR><BR><B>Matching computerID</B><BR><BR>"
 
 	for (var/client/C in GLOB.clients)
 		t1 =""
