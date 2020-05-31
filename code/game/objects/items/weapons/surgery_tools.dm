@@ -292,7 +292,7 @@
 			to_chat(user, SPAN("notice", "\The [src] doesn't seem to be reloadable."))
 			return
 		var/obj/item/stack/medical/advanced/bruise_pack/O = I
-		if(!O.amount)
+		if(!O.get_amount())
 			to_chat(user, SPAN("warning", "You are trying to refill \the [src] using an empty container."))
 			return
 		if(O.refill())

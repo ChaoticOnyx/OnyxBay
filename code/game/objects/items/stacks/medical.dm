@@ -39,7 +39,7 @@
 		return 0
 
 	amount -= used
-	if(amount <= 0)
+	if(get_amount() <= 0)
 		if(!stack_empty)
 			if(usr)
 				usr.remove_from_mob(src)
@@ -193,7 +193,7 @@
 			affecting.disinfect()
 
 /obj/item/stack/medical/advanced/proc/refill(amt = 1)
-	if(amount >= max_amount)
+	if(get_amount() >= max_amount)
 		return 0
 	amount += amt
 	if(stack_empty == 2)
@@ -202,7 +202,10 @@
 	update_icon()
 	return 1
 
-/obj/item/stack/medical/advanced/proc/refill_from_same(obj/item/stack/medical/advanced/O, mob/user)
+/obj/item/stack/medical/advanced/proc/refill_from_same(obj/item/I, mob/user)
+	if(!istype(src, I))
+		return
+	var/obj/item/stack/medical/advanced/O = I
 	if(!O.amount)
 		to_chat(user, SPAN("warning", "You are trying to refill \the [src] using an empty container."))
 		return
@@ -212,6 +215,12 @@
 		O.use(amt_to_transfer)
 	else
 		to_chat(user, SPAN("notice", "\The [src] is already full."))
+
+/obj/item/stack/medical/advanced/attackby(obj/item/W, mob/user)
+	if(istype(W, /obj/item/stack/medical/advanced))
+		refill_from_same(W, user)
+		return
+	..()
 
 /obj/item/stack/medical/advanced/bruise_pack
 	name = "somatic gel"
@@ -224,13 +233,6 @@
 	stack_empty = 1
 	splittable = 0
 	stack_full = 1
-
-/obj/item/stack/medical/advanced/bruise_pack/attackby(obj/item/W, mob/user)
-	if(istype(W, /obj/item/stack/medical/advanced/bruise_pack))
-		var/obj/item/stack/medical/advanced/bruise_pack/O = W
-		refill_from_same(O, user)
-		return
-	..()
 
 /obj/item/stack/medical/advanced/bruise_pack/attack(mob/living/carbon/M as mob, mob/user as mob)
 	if(..())
@@ -283,13 +285,6 @@
 	stack_empty = 1
 	splittable = 0
 	stack_full = 1
-
-/obj/item/stack/medical/advanced/ointment/attackby(obj/item/W, mob/user)
-	if(istype(W, /obj/item/stack/medical/advanced/ointment))
-		var/obj/item/stack/medical/advanced/ointment/O = W
-		refill_from_same(O, user)
-		return
-	..()
 
 /obj/item/stack/medical/advanced/ointment/attack(mob/living/carbon/M as mob, mob/user as mob)
 	if(..())
