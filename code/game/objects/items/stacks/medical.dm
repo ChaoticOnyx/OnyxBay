@@ -180,8 +180,13 @@
 			if(!do_mob(user, M, 10))
 				to_chat(user, "<span class='notice'>You must stand still to salve wounds.</span>")
 				return 1
-			user.visible_message("<span class='notice'>[user] salved wounds on [M]'s [affecting.name].</span>", \
-			                         "<span class='notice'>You salved wounds on [M]'s [affecting.name].</span>" )
+			if(user.zone_sel.selecting == BP_MOUTH)
+				to_chat(M, SPAN_NOTICE("You can taste [pick("aloe", "welding fuel")]"))
+				user.visible_message(SPAN_NOTICE("[user] salved wounds in [M]'s mouth."), \
+			                         SPAN_NOTICE("You salved wounds in [M]'s oral cavity.") )
+			else
+				user.visible_message(SPAN_NOTICE("[user] salved wounds on [M]'s [affecting.name]."), \
+			                         SPAN_NOTICE("You salved wounds on [M]'s [affecting.name].") )
 			use(1)
 			affecting.salve()
 			affecting.disinfect()
@@ -265,8 +270,13 @@
 			if(!do_mob(user, M, 10))
 				to_chat(user, "<span class='notice'>You must stand still to salve wounds.</span>")
 				return 1
-			user.visible_message( 	"<span class='notice'>[user] covers wounds on [M]'s [affecting.name] with protein-renaturating gel.</span>", \
-									"<span class='notice'>You cover wounds on [M]'s [affecting.name] with protein-renaturating gel.</span>" )
+			if(user.zone_sel.selecting == BP_MOUTH)
+				to_chat(M, SPAN_NOTICE("You can taste mint"))
+				user.visible_message(SPAN_NOTICE("[user] salved wounds in [M]'s mouth with protein-renaturating gel."), \
+			                         SPAN_NOTICE("You salved wounds in [M]'s oral cavity with protein-renaturating gel."))
+			else
+				user.visible_message(SPAN_NOTICE("[user] salved wounds on [M]'s [affecting.name] with protein-renaturating gel."), \
+			                         SPAN_NOTICE("You salved wounds on [M]'s [affecting.name] with protein-renaturating gel."))
 			affecting.heal_damage(0,heal_burn)
 			use(1)
 			affecting.salve()

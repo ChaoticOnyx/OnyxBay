@@ -237,7 +237,12 @@
 					wound_flavor_text[E.name] = "[T.He] [T.has] a [E.name].\n"
 				var/wounddesc = E.get_wounds_desc()
 				if(wounddesc != "nothing")
-					wound_flavor_text[E.name] += "[T.He] [T.has] [wounddesc] on [T.his] [E.name].<br>"
+					wound_flavor_text[E.name] += "[T.He] [T.has] [wounddesc] on [T.his] [E.name]"
+					if(organ_tag == BP_HEAD)
+						var/obj/item/organ/external/head/head = E
+						if(istype(head) && (head.is_mouth_cutted() || head.is_mouth_burned()))
+							wound_flavor_text[E.name] += " and [T.his] mouth"
+					wound_flavor_text[E.name] += ".<br>"
 		if(!hidden || distance <=1)
 			if(E.dislocated > 0)
 				wound_flavor_text[E.name] += "[T.His] [E.joint] is dislocated!<br>"

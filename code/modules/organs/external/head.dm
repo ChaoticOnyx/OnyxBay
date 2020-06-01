@@ -81,11 +81,51 @@
 	has_lips = null
 
 /obj/item/organ/external/head/take_external_damage(brute, burn, damage_flags, used_weapon = null)
-	. = ..()
+	var/datum/wound/created_wound = ..()
+	if (istype(created_wound) && has_lips && (damage_flags & DAM_TO_MOUTH || prob(5)))
+		created_wound.in_mouth = TRUE // That's why you shouldn't talk during gunfight
+		for(var/i = 1, i <= created_wound.desc_list, i++)
+			created_wound.desc_list[i] += pick(" in mouth", " on lips")
+		if(owner)
+			if(brute > 0)
+				to_chat(owner, SPAN_DANGER("Your [pick("lip", "tongue")] was cutted!"))
+			if(burn > 0)
+				to_chat(owner, SPAN_DANGER("Your [pick("soft palace", "tongue")] burns!"))
 	if ((brute_dam > 40) && prob(50))
 		disfigure("brute")
 	if (burn_dam > 40)
 		disfigure("burn")
+	return created_wound
+
+/obj/item/organ/external/head/heal_damage(brute, burn, internal = 0, robo_repair = 0, to_mouth = 0)
+	if(BP_IS_ROBOTIC(src) && !robo_repair)
+		return
+	// If targeting into mouth, heal it first
+	if(to_mouth)
+		for(var/datum/wound/W in wounds)
+			if(brute == 0 && burn == 0)
+				break
+			if(!W.in_mouth)
+				continue
+			if(W.damage_type == BURN && (burn_ratio < 1 || vital))
+				burn = W.heal_damage(burn)
+			else if(brute_ratio < 1 || vital)
+				brute = W.heal_damage(brute)
+	. = ..()
+
+/obj/item/organ/external/head/proc/is_mouth_cutted()
+	if(deformities)
+		return TRUE
+	for(var/datum/wound/W in wounds)
+		if(W.in_mouth && (W.damage_type == CUT || W.damage_type == PIERCE) && W.damage > 20)
+			return TRUE
+	return FALSE
+
+/obj/item/organ/external/head/proc/is_mouth_burned()
+	for(var/datum/wound/W in wounds)
+		if(W.in_mouth && W.damage_type == BURN && W.damage > 10)
+			return TRUE
+	return FALSE
 
 /obj/item/organ/external/head/no_eyes
 	eye_icon = "blank_eyes"

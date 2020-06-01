@@ -17,6 +17,7 @@
 	var/amount = 1             // number of wounds of this type
 	var/germ_level = 0         // amount of germs in the wound
 	var/obj/item/organ/external/parent_organ	// the organ the wound is on, if on an organ
+	var/in_mouth = FALSE
 
 	/*  These are defined by the wound type and should not be changed */
 	var/list/stages            // stages such as "cut", "deep cut", etc.
@@ -81,6 +82,7 @@
 	if (other.damage_type != src.damage_type) return 0
 	if (!(other.can_autoheal()) != !(src.can_autoheal())) return 0
 	if (other.is_surgical() != src.is_surgical()) return 0
+	if (other.in_mouth != src.in_mouth) return 0
 	if (!(other.bandaged) != !(src.bandaged)) return 0
 	if (!(other.clamped) != !(src.clamped)) return 0
 	if (!(other.salved) != !(src.salved)) return 0

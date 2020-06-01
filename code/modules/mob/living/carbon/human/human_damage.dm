@@ -417,7 +417,7 @@ This function restores all organs.
 /mob/living/carbon/human/proc/HealDamage(zone, brute, burn)
 	var/obj/item/organ/external/E = get_organ(zone)
 	if(istype(E, /obj/item/organ/external))
-		if (E.heal_damage(brute, burn))
+		if (E.heal_damage(brute, burn, internal = 0, robo_repair = 0, in_mouth = (zone == BP_MOUTH)))
 			BITSET(hud_updateflag, HEALTH_HUD)
 	else
 		return 0
@@ -430,6 +430,8 @@ This function restores all organs.
 /mob/living/carbon/human/apply_damage(damage = 0, damagetype = BRUTE, def_zone = null, blocked = 0, damage_flags = 0, obj/used_weapon = null, obj/item/organ/external/given_organ = null)
 	if(status_flags & GODMODE)
 		return 0
+	if(def_zone == BP_MOUTH)
+		damage_flags |= DAM_TO_MOUTH
 	var/obj/item/organ/external/organ = given_organ
 	if(!organ)
 		if(isorgan(def_zone))
