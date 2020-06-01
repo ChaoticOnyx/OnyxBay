@@ -33,10 +33,10 @@
 		return
 	var/amt_to_transfer = min((O.max_amount - O.amount), capacity)
 	if(O.refill(amt_to_transfer))
-		to_chat(user, SPAN("notice", "You refill \the [src] with [amt_to_transfer] doses of [gel_type] gel."))
+		to_chat(user, SPAN("notice", "You refill \the [O] with [amt_to_transfer] doses of [gel_type] gel."))
 		use(amt_to_transfer)
 	else
-		to_chat(user, SPAN("notice", "\The [src] is already full."))
+		to_chat(user, SPAN("notice", "\The [O] is already full."))
 
 /obj/structure/geltank/somatic
 	name = "somatic gel tank"
@@ -55,12 +55,12 @@
 			to_chat(user, SPAN("warning", "\The [src] is empty!"))
 			return
 		if(G.gel_amt_max == -1)
-			to_chat(user, SPAN("notice", "\The [src] doesn't seem to be reloadable."))
+			to_chat(user, SPAN("notice", "\The [G] doesn't seem to be reloadable."))
 			return
 		var/amt_to_transfer = min((G.gel_amt_max - G.gel_amt), capacity)
 		if(G.refill(amt_to_transfer))
 			G.update_icon()
-			to_chat(user, SPAN("notice", "You refill \the [src] with [amt_to_transfer] doses of somatic gel."))
+			to_chat(user, SPAN("notice", "You refill \the [G] with [amt_to_transfer] doses of somatic gel."))
 			use(amt_to_transfer)
 		else
 			to_chat(user, SPAN("notice", "\The [G] is full."))
