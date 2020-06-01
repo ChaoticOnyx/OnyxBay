@@ -542,8 +542,6 @@
 /datum/hallucination/room_effects/end()
 	if(!effects)
 		return // Already qdeleted
-	if(!effects.len)
-		return // No ASSERT is needed, ending is correct
 	holder.client.images -= effects
 	QDEL_NULL_LIST(effects)
 
@@ -574,8 +572,6 @@
 /datum/hallucination/coloring/end()
 	if(!colored_images)
 		return // Already qdeleted
-	if(colored_images.len)
-		return // No ASSERT is needed, ending is correct
 	holder.client.images -= colored_images
 	QDEL_NULL_LIST(colored_images)
 
