@@ -55,6 +55,7 @@
 		return
 	playsound(get_turf(src), 'sound/effects/pop.ogg', 100, 1, -6)
 	appearance = saved_item.appearance
+	dir = saved_item.dir
 	overlays = saved_overlays
 	alpha -= 15
 	active = 1
