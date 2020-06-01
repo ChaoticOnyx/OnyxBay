@@ -101,6 +101,7 @@ var/list/admin_verbs_admin = list(
 	/client/proc/add_trader,
 	/client/proc/remove_trader,
 	/datum/admins/proc/sendFax,
+	/client/proc/check_fax_history,
 	/client/proc/change_regular_announcement,
 	/client/proc/delbook
 	)
@@ -335,6 +336,7 @@ var/list/admin_verbs_mod = list(
 	/client/proc/cmd_admin_subtle_message, // send an message to somebody as a 'voice in their head',
 	/client/proc/aooc,
 	/datum/admins/proc/sendFax,
+	/client/proc/check_fax_history,
 	/client/proc/delbook
 	)
 
