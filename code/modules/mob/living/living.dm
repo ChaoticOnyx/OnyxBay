@@ -136,10 +136,19 @@ default behaviour is:
 		spawn(0)
 			..()
 			if (!istype(AM, /atom/movable) || AM.anchored)
-				if(confused && prob(50) && m_intent=="run")
-					Weaken(2)
-					playsound(loc, "punch", rand(80, 100), 1, -1)
-					visible_message("<span class='warning'>[src] [pick("ran", "slammed")] into \the [AM]!</span>")
+				if(confused && (m_intent=="run" && prob(50) || m_intent=="walk" && prob(10)))
+					if(istype(AM, /obj/machinery/disposal))
+						Weaken(6)
+						playsound(get_turf(AM), 'sound/effects/clang.ogg', 75)
+						visible_message(SPAN_WARNING("[src] falls into \the [AM]!"), SPAN_WARNING("You fall into \the [AM]!"))
+						if (client)
+							client.perspective = EYE_PERSPECTIVE
+							client.eye = src
+						forceMove(AM)
+					else
+						Weaken(2)
+						playsound(loc, "punch", rand(80, 100), 1, -1)
+						visible_message(SPAN_WARNING("[src] [pick("ran", "slammed")] into \the [AM]!"))
 					src.apply_damage(5, BRUTE)
 				return
 			if (!now_pushing)
