@@ -775,7 +775,7 @@
 		M.add_chemical_effect(CE_PAINKILLER, min(10*volume, 20))
 	M.add_chemical_effect(CE_PULSE, 2)
 	if(M.chem_doses[type] > 10)
-		M.make_jittery(3)
+		M.make_jittery(5)
 	if(volume >= 5 && M.is_asystole())
 		remove_self(5)
 		M.resuscitate()
