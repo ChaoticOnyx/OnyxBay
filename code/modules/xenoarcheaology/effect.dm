@@ -31,8 +31,8 @@
 			effectrange = rand(5, 15)
 		if(3)
 			//large range, long charge time
-			chargelevelmax = rand(20, 120)
-			effectrange = rand(20, 200)
+			chargelevelmax = rand(20, 60)
+			effectrange = rand(10, 30)
 
 /datum/artifact_effect/proc/ToggleActivate(reveal_toggle = 1)
 	//so that other stuff happens first
