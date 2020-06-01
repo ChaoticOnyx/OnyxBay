@@ -41,7 +41,7 @@
 
 /datum/uplink_item/item/stealth_items/chameleon_hologram
 	name = "Chameleon Hologram"
-	item_cost = 25
+	item_cost = 18
 	path = /obj/item/device/chameleonholo
 	desc = "This device can scan any item and save its appearance, projecting it onto itself when dropped and becoming almost indistinguishable from the scanned item. It will lose its disguise if it's picked up again. You can also clear the memory buffer when holding it."
 

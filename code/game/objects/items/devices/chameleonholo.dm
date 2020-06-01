@@ -10,18 +10,12 @@
 	w_class = ITEM_SIZE_SMALL
 	origin_tech = list(TECH_ILLEGAL = 4, TECH_MAGNET = 4)
 	var/active = 0
-	var/default_name
-	var/default_desc
-	var/default_icon
-	var/default_icon_state
+	var/default_appearance
 	var/saved_item
 	var/saved_overlays
 
 /obj/item/device/chameleonholo/New()
-	default_name = name
-	default_desc = desc
-	default_icon = icon
-	default_icon_state = icon_state
+	default_appearance = appearance
 
 /obj/item/device/chameleonholo/dropped()
 	activate(saved_item)
@@ -60,22 +54,15 @@
 	if(!saved_item || active)
 		return
 	playsound(get_turf(src), 'sound/effects/pop.ogg', 100, 1, -6)
-	name = saved_item.name
-	desc = saved_item.desc
-	icon = saved_item.icon
-	icon_state = saved_item.icon_state
+	appearance = saved_item.appearance
 	overlays = saved_overlays
-	alpha = 240
+	alpha -= 15
 	active = 1
 
 /obj/item/device/chameleonholo/proc/deactivate()
 	if (!saved_item || !active)
 		return
 	playsound(get_turf(src), 'sound/effects/pop.ogg', 100, 1, -6)
-	name = default_name
-	desc = default_desc
-	icon = default_icon
-	icon_state = default_icon_state
+	appearance = default_appearance
 	overlays = null
-	alpha = 255
 	active = 0
