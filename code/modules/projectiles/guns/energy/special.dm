@@ -224,13 +224,13 @@ obj/item/weapon/gun/energy/staff/focus
 
 /obj/item/weapon/gun/energy/plasmacutter/examine(mob/user)
 	. = ..(user)
-	to_chat(user, "It has recharge port with a capital letter P.")
+	to_chat(user, "It has recharge port with the capital letter P.")
 
 /obj/item/weapon/gun/energy/plasmacutter/attackby(obj/item/stack/material/phoron/W, mob/user)
 	if(user.stat || user.restrained() || user.lying)
 		return
 	var/current_power = round(src.power_supply.charge / src.charge_cost)
-	if(current_power < 10 && src.danger_attack == TRUE)
+	if(current_power < src.max_shots && src.danger_attack == TRUE)
 		src.power_supply.charge = src.power_supply.charge + src.charge_cost
 		W.use(1)
 		to_chat(user, "You recharge your [src.name].")

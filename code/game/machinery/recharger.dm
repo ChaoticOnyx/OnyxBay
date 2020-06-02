@@ -42,7 +42,7 @@ obj/machinery/recharger/attackby(obj/item/weapon/G as obj, mob/user as mob)
 		if (istype(G, /obj/item/weapon/gun/energy/staff))
 			return
 		if (istype(G, /obj/item/weapon/gun/energy/plasmacutter))
-			to_chat(user, SPAN("notice", "It seems like plasma cutter have another type of charging port, so it doesn't fit in recharger."))
+			to_chat(user, SPAN("notice", "It seems like plasma cutter has another type of charging port, so it doesn't fit in recharger."))
 			return
 		if(istype(G, /obj/item/modular_computer))
 			var/obj/item/modular_computer/C = G
