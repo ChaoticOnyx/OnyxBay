@@ -229,10 +229,10 @@ obj/item/weapon/gun/energy/staff/focus
 /obj/item/weapon/gun/energy/plasmacutter/attackby(obj/item/stack/material/phoron/W, mob/user)
 	if(user.stat || user.restrained() || user.lying)
 		return
-	var/current_power = round(src.power_supply.charge / src.charge_cost)
-	if(current_power < src.max_shots && src.danger_attack == TRUE)
-		src.power_supply.charge = src.power_supply.charge + src.charge_cost
+	var/current_power = round(power_supply.charge / charge_cost)
+	if(current_power < max_shots && danger_attack == TRUE)
+		power_supply.charge = power_supply.charge + charge_cost
 		W.use(1)
-		to_chat(user, "You recharge your [src.name].")
+		to_chat(user, "You recharge your [name].")
 	else
-		to_chat(user, "You can't charge your [src.name], it's full.")
+		to_chat(user, "You can't charge your [name], it's full.")
