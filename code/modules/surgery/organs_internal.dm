@@ -422,7 +422,7 @@
 
 	if(target.op_stage.current_organ)
 		to_chat(user, SPAN("warning", "You can't do this right now."))
-		return FALSE
+		return SURGERY_FAILURE
 
 	var/list/removable_organs = list()
 	for(var/obj/item/organ/internal/I in affected.implants)
@@ -659,7 +659,7 @@
 
 	if(target.op_stage.current_organ)
 		to_chat(user, SPAN("warning", "You can't do this right now."))
-		return 0
+		return SURGERY_FAILURE
 
 	var/obj/item/organ/internal/list/dead_organs = list()
 	for(var/obj/item/organ/internal/I in target.internal_organs)
@@ -674,7 +674,7 @@
 		return SURGERY_FAILURE
 	if(!organ_to_fix.can_recover() && istype(organ_to_fix, /obj/item/organ/internal/brain))
 		to_chat(user, SPAN("warning", "The [organ_to_fix.name] is destroyed and can't be saved."))
-		return 0
+		return SURGERY_FAILURE
 
 	target.op_stage.current_organ = organ_to_fix
 
