@@ -136,7 +136,7 @@ default behaviour is:
 		spawn(0)
 			..()
 			if (!istype(AM, /atom/movable) || AM.anchored)
-				if(confused && (m_intent=="run" && prob(50) || m_intent=="walk" && prob(10)))
+				if(confused && prob(50) && m_intent=="run")
 					if(istype(AM, /obj/machinery/disposal))
 						Weaken(6)
 						playsound(get_turf(AM), 'sound/effects/clang.ogg', 75)
