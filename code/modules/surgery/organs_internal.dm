@@ -40,10 +40,10 @@
 		return FALSE
 	if(O.gel_amt == 0)
 		to_chat(user, SPAN("warning", "\The [O] is empty!"))
-		return FALSE
+		return SURGERY_FAILURE
 	if(target.op_stage.current_organ)
 		to_chat(user, SPAN("warning", "You can't do this right now."))
-		return FALSE
+		return SURGERY_FAILURE
 
 	var/obj/item/organ/external/affected = target.get_organ(target_zone)
 
@@ -62,10 +62,10 @@
 		return FALSE
 	if(!organ_to_fix.can_recover())
 		to_chat(user, SPAN("notice", "The [organ_to_fix.name] is destroyed and can't be saved."))
-		return FALSE
+		return SURGERY_FAILURE
 	if(!organ_to_fix.damage && !O.emagged)
 		to_chat(user, SPAN("notice", "The [organ_to_fix.name] is intact and doesn't require any healing."))
-		return FALSE
+		return SURGERY_FAILURE
 
 	target.op_stage.current_organ = organ_to_fix
 
@@ -147,7 +147,7 @@
 		return FALSE
 	if(O.gel_amt == 0)
 		to_chat(user, SPAN("warning", "\The [O] is empty!"))
-		return FALSE
+		return SURGERY_FAILURE
 	if(O.emagged == 1) // We can shred 'em even if they have no damaged internals
 		return TRUE
 	for(var/obj/item/organ/internal/I in affected.internal_organs)
@@ -243,12 +243,12 @@
 		return FALSE
 	if(target.op_stage.current_organ)
 		to_chat(user, SPAN("warning", "You can't do this right now."))
-		return FALSE
+		return SURGERY_FAILURE
 	if(istype(tool, /obj/item/stack/medical/advanced/bruise_pack) || istype(tool, /obj/item/stack/medical/bruise_pack))
 		var/obj/item/stack/medical/M = tool
 		if(M.amount < 1)
 			to_chat(user, SPAN("warning", "\The [M] is empty!"))
-			return FALSE
+			return SURGERY_FAILURE
 
 	var/obj/item/organ/internal/list/damaged_organs = list()
 	for(var/obj/item/organ/internal/I in target.internal_organs)
@@ -258,12 +258,15 @@
 	var/obj/item/organ/internal/organ_to_fix = input(user, "Which organ do you want to repair?") as null|anything in damaged_organs
 	if(!organ_to_fix)
 		return FALSE
+	if(target.op_stage.current_organ)
+		to_chat(user, SPAN("warning", "You can't do this right now."))
+		return SURGERY_FAILURE
 	if(!organ_to_fix.can_recover())
 		to_chat(user, SPAN("notice", "The [organ_to_fix.name] is destroyed and can't be saved."))
-		return FALSE
+		return SURGERY_FAILURE
 	if(!organ_to_fix.damage)
 		to_chat(user, SPAN("notice", "The [organ_to_fix.name] is intact and doesn't require any healing."))
-		return FALSE
+		return SURGERY_FAILURE
 
 	target.op_stage.current_organ = organ_to_fix
 
@@ -347,16 +350,16 @@
 
 /datum/surgery_step/internal/detatch_organ/can_use(mob/living/user, mob/living/carbon/human/target, target_zone, obj/item/tool)
 	if(!..())
-		return 0
+		return FALSE
 
 	var/obj/item/organ/external/affected = target.get_organ(target_zone)
 
 	if(BP_IS_ROBOTIC(affected))
-		return 0
+		return FALSE
 
 	if(target.op_stage.current_organ)
 		to_chat(user, SPAN("warning", "You can't do this right now."))
-		return 0
+		return SURGERY_FAILURE
 
 	var/list/attached_organs = list()
 	for(var/obj/item/organ/organ in target.internal_organs)
@@ -365,7 +368,10 @@
 
 	var/organ_to_remove = input(user, "Which organ do you want to separate?") as null|anything in attached_organs
 	if(!organ_to_remove)
-		return 0
+		return FALSE
+	if(target.op_stage.current_organ)
+		to_chat(user, SPAN("warning", "You can't do this right now."))
+		return SURGERY_FAILURE
 
 	target.op_stage.current_organ = organ_to_remove
 
@@ -426,6 +432,9 @@
 	var/organ_to_remove = input(user, "Which organ do you want to remove?") as null|anything in removable_organs
 	if(!organ_to_remove)
 		return FALSE
+	if(target.op_stage.current_organ)
+		to_chat(user, SPAN("warning", "You can't do this right now."))
+		return SURGERY_FAILURE
 
 	target.op_stage.current_organ = organ_to_remove
 	return ..()
@@ -564,16 +573,16 @@
 
 /datum/surgery_step/internal/attach_organ/can_use(mob/living/user, mob/living/carbon/human/target, target_zone, obj/item/tool)
 	if(!..())
-		return 0
+		return FALSE
 
 	if(target.op_stage.current_organ)
 		to_chat(user, SPAN("warning", "You can't do this right now."))
-		return 0
+		return FALSE
 
 	var/obj/item/organ/external/affected = target.get_organ(target_zone)
 	if(BP_IS_ROBOTIC(affected))
 		// robotic attachment handled via screwdriver
-		return 0
+		return FALSE
 
 	var/list/attachable_organs = list()
 	for(var/obj/item/organ/I in affected.implants)
@@ -582,7 +591,10 @@
 
 	var/obj/item/organ/organ_to_replace = input(user, "Which organ do you want to reattach?") as null|anything in attachable_organs
 	if(!organ_to_replace)
-		return 0
+		return FALSE
+	if(target.op_stage.current_organ)
+		to_chat(user, SPAN("warning", "You can't do this right now."))
+		return SURGERY_FAILURE
 	if(organ_to_replace.parent_organ != affected.organ_tag)
 		to_chat(user, SPAN("warning", "You can't find anywhere to attach [organ_to_replace] to!"))
 		return SURGERY_FAILURE
@@ -657,6 +669,9 @@
 	var/obj/item/organ/internal/organ_to_fix = input(user, "Which organ do you want to regenerate?") as null|anything in dead_organs
 	if(!organ_to_fix)
 		return 0
+	if(target.op_stage.current_organ)
+		to_chat(user, SPAN("warning", "You can't do this right now."))
+		return SURGERY_FAILURE
 	if(!organ_to_fix.can_recover() && istype(organ_to_fix, /obj/item/organ/internal/brain))
 		to_chat(user, SPAN("warning", "The [organ_to_fix.name] is destroyed and can't be saved."))
 		return 0
