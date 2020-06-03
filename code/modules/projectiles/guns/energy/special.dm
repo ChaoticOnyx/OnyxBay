@@ -233,6 +233,6 @@ obj/item/weapon/gun/energy/staff/focus
 	if(current_power < max_shots && danger_attack == TRUE)
 		power_supply.charge = power_supply.charge + charge_cost
 		W.use(1)
-		to_chat(user, SPAN_WARNING("You can't insert \the [W] into \the [src], it's full."))
+		to_chat(user, "You recharge your [name].")
 	else
-		to_chat(user, SPAN_WARNING("You can't insert \the [W] into \the [src], it's full."))
+		to_chat(user, "You can't charge your [name], it's full.")
