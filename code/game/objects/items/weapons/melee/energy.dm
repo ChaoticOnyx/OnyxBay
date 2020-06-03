@@ -193,8 +193,7 @@
 	if(istype(sword, /obj/item/weapon/melee/energy/sword/combinable))
 		to_chat(user, SPAN("notice","You attach the ends of the two energy swords, making a single double-bladed weapon!"))
 		new /obj/item/weapon/melee/energy/sword/dualsaber(user.loc)
-		qdel(sword)
-		sword = null
+		QDEL_NULL(sword)
 		qdel(src)
 
 /obj/item/weapon/melee/energy/sword/pirate
