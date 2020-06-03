@@ -131,7 +131,6 @@
 	sharp = 0
 	edge = 1
 	var/blade_color
-	var/combinable = 1
 
 /obj/item/weapon/melee/energy/sword/New()
 	blade_color = pick("red", "blue", "green", "purple")
@@ -164,28 +163,44 @@
 	attack_verb = list()
 	icon_state = initial(icon_state)
 
-/obj/item/weapon/melee/energy/sword/attackby(obj/item/sword as obj, mob/user as mob)
-	if(istype(sword, /obj/item/weapon/melee/energy/sword))
-		var/obj/item/weapon/melee/energy/sword/S = sword
-		if (!combinable || !S.combinable)
-			return
-		to_chat(user, SPAN("notice","You attach the ends of the two energy swords, making a single double-bladed weapon!"))
-		new /obj/item/weapon/melee/energy/sword/dualsaber(user.loc)
-		qdel(sword)
-		sword = null
-		qdel(src)
-
 /obj/item/weapon/melee/energy/sword/handle_shield(mob/user)
 	. = ..()
 
 	if(.)
 		playsound(user.loc, 'sound/weapons/blade1.ogg', 50, 1)
 
+/obj/item/weapon/melee/energy/sword/combinable
+	name = "energy sword"
+	desc = "May the force be within you. This sword has an attachment port on its handle."
+	icon_state = "sword0"
+
+/obj/item/weapon/melee/energy/sword/combinable/New()
+	blade_color = pick("red", "blue", "green", "purple")
+
+/obj/item/weapon/melee/energy/sword/combinable/green/New()
+	blade_color = "green"
+
+/obj/item/weapon/melee/energy/sword/combinable/red/New()
+	blade_color = "red"
+
+/obj/item/weapon/melee/energy/sword/combinable/blue/New()
+	blade_color = "blue"
+
+/obj/item/weapon/melee/energy/sword/combinable/purple/New()
+	blade_color = "purple"
+
+/obj/item/weapon/melee/energy/sword/combinable/attackby(obj/item/sword as obj, mob/user as mob)
+	if(istype(sword, /obj/item/weapon/melee/energy/sword/combinable))
+		to_chat(user, SPAN("notice","You attach the ends of the two energy swords, making a single double-bladed weapon!"))
+		new /obj/item/weapon/melee/energy/sword/dualsaber(user.loc)
+		qdel(sword)
+		sword = null
+		qdel(src)
+
 /obj/item/weapon/melee/energy/sword/pirate
 	name = "energy cutlass"
 	desc = "Arrrr matey."
 	icon_state = "cutlass0"
-	combinable = 0
 
 /obj/item/weapon/melee/energy/sword/pirate/activate(mob/living/user)
 	..()
@@ -195,7 +210,6 @@
 	name = "alien sword"
 	desc = "A strange, strange energy sword."
 	icon_state = "sword0"
-	combinable = 0
 
 /obj/item/weapon/melee/energy/sword/bogsword/activate(mob/living/user)
 	..()
@@ -218,7 +232,6 @@
 	mod_weight_a = 1.5
 	mod_handy_a = 1.75
 	origin_tech = list(TECH_MAGNET = 4, TECH_ILLEGAL = 5)
-	combinable = 0
 	var/base_block_chance = 50
 
 /obj/item/weapon/melee/energy/sword/dualsaber/New()
