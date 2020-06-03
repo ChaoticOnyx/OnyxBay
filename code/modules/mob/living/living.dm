@@ -672,10 +672,10 @@ default behaviour is:
 	else if(istype(H.loc,/obj))
 		if(istype(H.loc, /obj/machinery/cooker))
 			var/obj/machinery/cooker/C = H.loc
-			C.cooking_obj = null
-			C.check_cooking_obj()
+			C.eject()
+		else
+			H.forceMove(get_turf(H))
 		to_chat(src, "<span class='warning'>You struggle free of \the [H.loc].</span>")
-		H.forceMove(get_turf(H))
 
 	if(loc != H)
 		qdel(H)

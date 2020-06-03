@@ -8,7 +8,7 @@
 
 	output_options = list(
 		"Jawbreaker" = /obj/item/weapon/reagent_containers/food/snacks/variable/jawbreaker,
-		"Candy Bar" = /obj/item/weapon/reagent_containers/food/snacks/variable/candybar,
+		"Candy Bar" = /obj/item/weapon/reagent_containers/food/snacks/candy/variable,
 		"Sucker" = /obj/item/weapon/reagent_containers/food/snacks/variable/sucker,
 		"Jelly" = /obj/item/weapon/reagent_containers/food/snacks/variable/jelly
 		)
