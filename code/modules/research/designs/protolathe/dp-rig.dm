@@ -57,7 +57,6 @@
 	build_path = /obj/item/rig_module/device/drill
 	sort_string = "WCCAA"
 
-
 /datum/design/item/rig/orescanner
 	name = "Ore Scanner"
 	desc = "A sonar system for detecting large masses of ore, mountable on a RIG."
