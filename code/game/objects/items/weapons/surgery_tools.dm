@@ -280,6 +280,10 @@
 	var/gel_amt = 10
 	var/emagged = 0 // Emagged organ fixer destroys organs for good
 
+/obj/item/weapon/organfixer/New()
+	..()
+	update_icon()
+
 /obj/item/weapon/organfixer/update_icon()
 	if(gel_amt == 0)
 		icon_state = "[initial(icon_state)]-empty"
@@ -295,7 +299,7 @@
 		if(!O.get_amount())
 			to_chat(user, SPAN("warning", "You are trying to refill \the [src] using an empty container."))
 			return
-		if(O.refill())
+		if(refill())
 			to_chat(user, SPAN("notice", "You load some [O] into the [src]."))
 			O.use(1)
 		else
@@ -341,6 +345,9 @@
 	gel_amt_max = 20
 	gel_amt = 20
 	origin_tech = list(TECH_MATERIAL = 4, TECH_ENGINEERING = 3, TECH_BIO = 4)
+
+/obj/item/weapon/organfixer/advanced/empty
+	gel_amt = 0
 
 /obj/item/weapon/organfixer/advanced/bluespace
 	name = "bluespace organ fixer"
