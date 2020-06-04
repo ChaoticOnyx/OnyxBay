@@ -173,11 +173,11 @@
 				if(istype(thing_inside, /obj/item/weapon/reagent_containers/food/snacks))
 					var/obj/item/weapon/reagent_containers/food/snacks/I = thing_inside
 					I.cooked_types |= cook_type
+				cooking_is_done = TRUE
 
 				src.visible_message(SPAN_NOTICE("\The [src] pings!"))
 				if(cooked_sound)
 					playsound(get_turf(src), cooked_sound, 50, 1)
-				cooking_is_done = TRUE
 		if(COOKED)
 			if(!can_burn_food)
 				eject()
@@ -193,8 +193,9 @@
 						smoke.attach(src)
 						smoke.set_up(10, 0, loc)
 						smoke.start()
-		//if BURNED, just keep running
+		if(BURNED); // Just keep running
 		else
+			stop()
 			CRASH("Something weird happened during product_status() check in [src]")
 
 /obj/machinery/cooker/proc/product_status()
@@ -204,11 +205,6 @@
 		return BURNED
 	if(cooking_is_done)
 		return COOKED
-	// Next check is redundant, but kept for safety reasons (smbdy messing with "cooking_is_done" value)
-	if(istype(thing_inside, /obj/item/weapon/reagent_containers/food/snacks))
-		var/obj/item/weapon/reagent_containers/food/snacks/check = thing_inside
-		if(cook_type in check.cooked_types)
-			return COOKED
 	return COOKING
 
 /obj/machinery/cooker/proc/eject(mob/receiver)
