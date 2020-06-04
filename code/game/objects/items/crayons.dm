@@ -94,10 +94,18 @@
 /obj/item/weapon/pen/crayon/afterattack(atom/target, mob/user as mob, proximity)
 	if(!proximity) return
 	if(istype(target,/turf/simulated/floor) || istype(target,/turf/simulated/wall))
-		var/drawtype = input("Choose what you'd like to draw.", "Crayon scribbles") in list("graffiti","rune","letter","arrow")
+		var/drawtype = input("Choose what you'd like to draw.", "Crayon scribbles") in list("graffiti","rune","english","russian","arrow")
 		switch(drawtype)
-			if("letter")
+			if("english")
 				drawtype = input("Choose the letter.", "Crayon scribbles") in list("a","b","c","d","e","f","g","h","i","j","k","l","m","n","o","p","q","r","s","t","u","v","w","x","y","z")
+				to_chat(user, "You start drawing a letter on the [target.name].")
+			if("russian")
+				var/list/rus = list("а","б","в","г","д","е","ё","ж","з","и","й",
+									"к","л","м","н","о","п","р","с","т","у","ф",
+									"х","ц","ч","ш","щ","ъ","ы","ь","э","ю","я"
+									) // This list is too big to be shown, but it's gonna be reworked anyway
+				drawtype = input("Choose the letter.", "Crayon scribbles") in rus
+				drawtype = "rus[rus.Find(drawtype)]"
 				to_chat(user, "You start drawing a letter on the [target.name].")
 			if("graffiti")
 				drawtype = input("Choose the graffiti.", "Crayon scribbles") in list("amyjon","face","matt",
