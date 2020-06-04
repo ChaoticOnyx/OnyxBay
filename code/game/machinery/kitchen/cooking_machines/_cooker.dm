@@ -204,6 +204,7 @@
 		return BURNED
 	if(cooking_is_done)
 		return COOKED
+	// Next check is redundant, but kept for safety reasons (smbdy messing with "cooking_is_done" value)
 	if(istype(thing_inside, /obj/item/weapon/reagent_containers/food/snacks))
 		var/obj/item/weapon/reagent_containers/food/snacks/check = thing_inside
 		if(cook_type in check.cooked_types)
@@ -279,9 +280,6 @@
 		if(istype(product, /obj/item/weapon/reagent_containers/food))
 			var/obj/item/weapon/reagent_containers/food/food_item = product
 			food_item.filling_color = food_color
-
-		if(isliving(product))
-			product.color = food_color
 	else
 		var/image/I = image(product.icon, "[product.icon_state]_filling")
 		if(istype(origin, /obj/item/weapon/reagent_containers/food/snacks))
