@@ -88,7 +88,7 @@
 	name = "bluespace organ fixer"
 	desc = "A modification of QROF-26 organ fixer design. This prototype uses a bluespace engine to rebuild biological tissue, removing the need for somatic gel."
 	id = "organfixer_bluespace"
-	req_tech = list(TECH_MATERIAL = 7, TECH_ENGINEERING = 4, TECH_BIO = 6, TECH_BLUESPACE = 5)
+	req_tech = list(TECH_MATERIAL = 7, TECH_ENGINEERING = 6, TECH_BIO = 6, TECH_BLUESPACE = 5)
 	materials = list (MATERIAL_STEEL = 12500, MATERIAL_GLASS = 7500, MATERIAL_GOLD = 1500, MATERIAL_SILVER = 2000, MATERIAL_DIAMOND = 750)
 	build_path = /obj/item/weapon/organfixer/advanced/bluespace
 	sort_string = "MBEAJ"
