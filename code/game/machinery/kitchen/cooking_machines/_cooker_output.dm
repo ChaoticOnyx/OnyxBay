@@ -91,3 +91,8 @@
 	name = "jelly"
 	desc = "All your friends will be jelly."
 	icon_state = "jellycustom"
+
+/obj/item/weapon/reagent_containers/food/snacks/variable/cereal
+	name = "cereal"
+	desc = "Eat to become a cereal killer"
+	icon_state = "cerealcustom"

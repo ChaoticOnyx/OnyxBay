@@ -2,14 +2,13 @@
 	name = "deep fryer"
 	desc = "Deep fried <i>everything</i>."
 	icon_state = "fryer_off"
-	can_cook_mobs = 1
 	cook_type = "deep fried"
 	on_icon = "fryer_on"
 	off_icon = "fryer_off"
 	food_color = "#ffad33"
 	cooked_sound = 'sound/machines/ding.ogg'
 
-/obj/machinery/cooker/fryer/cook_mob(mob/living/victim, mob/user)
+/obj/machinery/cooker/fryer/hurt_big_mob(mob/living/victim, mob/user)
 
 	if(!istype(victim))
 		return

@@ -670,11 +670,7 @@ default behaviour is:
 		to_chat(src, "<span class='warning'>You extricate yourself from \the [holster].</span>")
 		H.forceMove(get_turf(H))
 	else if(istype(H.loc,/obj))
-		if(istype(H.loc, /obj/machinery/cooker))
-			var/obj/machinery/cooker/C = H.loc
-			C.eject()
-		else
-			H.forceMove(get_turf(H))
+		H.forceMove(get_turf(H))
 		to_chat(src, "<span class='warning'>You struggle free of \the [H.loc].</span>")
 
 	if(loc != H)

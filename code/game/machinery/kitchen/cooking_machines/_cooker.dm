@@ -23,26 +23,26 @@
 	var/is_cooking = FALSE			// Whether or not the machine is currently operating.
 	var/cook_type					// A string value used to track what kind of food this machine makes.
 	var/cook_time = 200				// How many ticks the cooking will take.
-	var/can_cook_mobs = FALSE		// Whether or not this machine accepts grabbed mobs.
+	var/mob_fitting_size = MOB_SMALL// Maximum size of a mob can be cooked (humans are MOB_MEDIUM)
 	var/food_color					// Colour of resulting food item.
 	var/cooked_sound				// Sound played when cooking completes.
 	var/can_burn_food = FALSE		// Can the object burn food that is left inside?
 	var/burn_chance = 10			// How likely is the food to burn?
-	var/obj/item/cooking_obj		// Holder for the currently cooking object.
+	var/atom/movable/thing_inside	// Holder for the currently cooking object.
+
+	// If the machine has multiple output modes, define them here.
+	var/selected_option
+	var/list/output_options = list()
 
 	// Variables for internal usage
 	var/cooking_done_time
 	var/next_burn_time
 	var/cooking_is_done = FALSE
 
-	// If the machine has multiple output modes, define them here.
-	var/selected_option
-	var/list/output_options = list()
-
 /obj/machinery/cooker/Destroy()
-	if(cooking_obj)
-		qdel(cooking_obj)
-		cooking_obj = null
+	if(thing_inside)
+		qdel(thing_inside)
+		thing_inside = null
 	if(is_cooking)
 		stop()
 	return ..()
@@ -53,14 +53,14 @@
 		switch(product_status())
 			//if NO_PRODUCT, say no more
 			if(COOKING)
-				to_chat(usr, "You can see \a [cooking_obj] inside.")
+				to_chat(usr, "You can see \a [thing_inside] inside.")
 			if(COOKED)
 				var/smell = "good"
-				if(istype(cooking_obj, /obj/item/weapon/reagent_containers/food/snacks))
-					var/obj/item/weapon/reagent_containers/food/snacks/S = cooking_obj
+				if(istype(thing_inside, /obj/item/weapon/reagent_containers/food/snacks))
+					var/obj/item/weapon/reagent_containers/food/snacks/S = thing_inside
 					if(islist(S.nutriment_desc) && length(S.nutriment_desc))
 						smell = pick(S.nutriment_desc)
-				to_chat(usr, "You can see \a [cooking_obj] inside. It smells [smell]")
+				to_chat(usr, "You can see \a [thing_inside] inside. It smells [smell]")
 			if(BURNED)
 				to_chat(usr, SPAN_WARNING("Inside is covered by dirt, and it smells smoke!"))
 
@@ -69,27 +69,13 @@
 
 	if(!cook_type || (stat & (NOPOWER|BROKEN)))
 		to_chat(user, SPAN_WARNING("\The [src] is not working"))
-		return
+		return 0
 
 	if(product_status() != NO_PRODUCT)
-		to_chat(user, SPAN_WARNING("There is no more space in \the [src]. \A [cooking_obj] is already there!"))
-		return
+		to_chat(user, SPAN_WARNING("There is no more space in \the [src]. \A [thing_inside] is already there!"))
+		return 0
 
-	// We are trying to cook a grabbed mob.
-	var/obj/item/grab/G = I
-	if(istype(G))
-
-		if(!can_cook_mobs)
-			to_chat(user, "<span class='warning'>That's not going to fit.</span>")
-			return
-
-		if(!isliving(G.affecting))
-			to_chat(user, "<span class='warning'>You can't cook that.</span>")
-			return
-
-		cook_mob(G.affecting, user)
-		return
-
+	var/mob/living/inserted_mob
 	if(istype(I, /obj/item/weapon/reagent_containers/food/snacks/badrecipe))
 		to_chat(user, SPAN_WARNING("Making [I] [cook_type] shouldn't help"))
 		return 0
@@ -107,32 +93,49 @@
 	else if(istype(I, /obj/item/weapon/disk/nuclear))
 		to_chat(user, SPAN_WARNING("Central Command would kill you if you [cook_type] that."))
 		return 0
-	else if(!istype(I, /obj/item/weapon/holder))
+	else if(istype(I, /obj/item/weapon/holder) || istype(I, /obj/item/grab))
+		if(istype(I, /obj/item/weapon/holder))
+			for(var/mob/living/M in I.contents)
+				inserted_mob = M
+				break
+		else
+			var/obj/item/grab/G = I
+			inserted_mob = G.affecting
+	else
 		to_chat(user, SPAN_WARNING("That's not edible."))
+		return 0
+
+	if(inserted_mob && (!isliving(inserted_mob) || isbot(inserted_mob) || issilicon(inserted_mob)))
+		to_chat(user, SPAN_WARNING("You can't cook that."))
+		return 0
+
+	if(inserted_mob && inserted_mob.mob_size > mob_fitting_size)
+		hurt_big_mob(inserted_mob, user)
 		return 0
 
 	// Not sure why a food item that passed the previous checks would fail to drop, but safety first.
 	if(!user.unEquip(I))
 		return
 
-	// We can actually start cooking now.
-	user.visible_message("<span class='notice'>\The [user] puts \the [I] into \the [src].</span>")
-	cooking_obj = I
-	cooking_obj.forceMove(src)
+	if(inserted_mob)
+		thing_inside = inserted_mob
+	else
+		thing_inside = I
+	user.visible_message(SPAN_NOTICE("\The [user] puts \the [thing_inside] into \the [src]."))
+	thing_inside.forceMove(src)
 	is_cooking = 1
 	cooking_is_done = FALSE
 	icon_state = on_icon
 
-	// Gotta hurt.
-	if(istype(cooking_obj, /obj/item/weapon/holder))
-		for(var/mob/living/M in cooking_obj.contents)
-			M.apply_damage(rand(30,40), BURN, BP_CHEST)
+	if(inserted_mob)
+		inserted_mob.apply_damage(rand(30,40), BURN, BP_CHEST)
 
 	// Doop de doo. Jeopardy theme goes here.
 	cooking_done_time = world.time + cook_time
 	if(can_burn_food)
 		next_burn_time = cooking_done_time + max(Floor(cook_time/5),1)
 	START_PROCESSING(SSmachines, src)
+	return 1
 
 /obj/machinery/cooker/Process()
 	if(!is_cooking || !cook_type || (stat & (NOPOWER|BROKEN)))
@@ -144,35 +147,34 @@
 		if(COOKING)
 			ASSERT(cooking_done_time)
 			if(world.time > cooking_done_time)
-				if(istype(cooking_obj, /obj/item/weapon/holder))
-					for(var/mob/living/M in cooking_obj.contents)
-						M.death()
-						qdel(M)
+				if(isliving(thing_inside))
+					var/mob/living/L = thing_inside
+					L.death()
 
 				if(selected_option && output_options.len)
 					var/cook_path = output_options[selected_option]
 					var/obj/item/weapon/reagent_containers/food/snacks/result = new cook_path(src)
 
-					result = change_product_strings(result, cooking_obj)
-					result = change_product_appearance(result, cooking_obj)
+					result = change_product_strings(result, thing_inside)
+					result = change_product_appearance(result, thing_inside)
 
-					if(cooking_obj.reagents && cooking_obj.reagents.total_volume)
-						cooking_obj.reagents.trans_to(result, cooking_obj.reagents.total_volume)
-					if(istype(cooking_obj, /obj/item/weapon/reagent_containers/food/snacks))
-						var/obj/item/weapon/reagent_containers/food/snacks/I = cooking_obj
+					if(thing_inside.reagents && thing_inside.reagents.total_volume)
+						thing_inside.reagents.trans_to(result, thing_inside.reagents.total_volume)
+					if(istype(thing_inside, /obj/item/weapon/reagent_containers/food/snacks))
+						var/obj/item/weapon/reagent_containers/food/snacks/I = thing_inside
 						result.cooked_types = I.cooked_types.Copy()
 
-					qdel(cooking_obj)
-					cooking_obj = result
+					qdel(thing_inside)
+					thing_inside = result
 				else
-					cooking_obj = change_product_strings(cooking_obj)
-					cooking_obj = change_product_appearance(cooking_obj)
+					thing_inside = change_product_strings(thing_inside)
+					thing_inside = change_product_appearance(thing_inside)
 
-				if(istype(cooking_obj, /obj/item/weapon/reagent_containers/food/snacks))
-					var/obj/item/weapon/reagent_containers/food/snacks/I = cooking_obj
+				if(istype(thing_inside, /obj/item/weapon/reagent_containers/food/snacks))
+					var/obj/item/weapon/reagent_containers/food/snacks/I = thing_inside
 					I.cooked_types |= cook_type
 
-				src.visible_message("<span class='notice'>\The [src] pings!</span>")
+				src.visible_message(SPAN_NOTICE("\The [src] pings!"))
 				if(cooked_sound)
 					playsound(get_turf(src), cooked_sound, 50, 1)
 				cooking_is_done = TRUE
@@ -184,10 +186,9 @@
 				if(world.time > next_burn_time)
 					next_burn_time += max(Floor(cook_time/5),1)
 					if(prob(burn_chance))
-						qdel(cooking_obj) // TODO: Check it doesn't delete reference to the new cooking_obj
-						cooking_obj = new /obj/item/weapon/reagent_containers/food/snacks/badrecipe()
-						// Produce nasty smoke.
-						visible_message("<span class='danger'>\The [src] vomits a gout of rancid smoke!</span>")
+						qdel(thing_inside)
+						thing_inside = new /obj/item/weapon/reagent_containers/food/snacks/badrecipe(src)
+						visible_message(SPAN_DANGER("\The [src] vomits a gout of rancid smoke!"))
 						var/datum/effect/effect/system/smoke_spread/bad/smoke = new /datum/effect/effect/system/smoke_spread/bad()
 						smoke.attach(src)
 						smoke.set_up(10, 0, loc)
@@ -197,29 +198,34 @@
 			CRASH("Something weird happened during product_status() check in [src]")
 
 /obj/machinery/cooker/proc/product_status()
-	if(!cooking_obj || cooking_obj.loc != src)
+	if(!thing_inside || thing_inside.loc != src)
 		return NO_PRODUCT
-	if(istype(cooking_obj, /obj/item/weapon/reagent_containers/food/snacks/badrecipe))
+	if(istype(thing_inside, /obj/item/weapon/reagent_containers/food/snacks/badrecipe))
 		return BURNED
 	if(cooking_is_done)
 		return COOKED
-	if(istype(cooking_obj, /obj/item/weapon/reagent_containers/food/snacks))
-		var/obj/item/weapon/reagent_containers/food/snacks/check = cooking_obj
+	if(istype(thing_inside, /obj/item/weapon/reagent_containers/food/snacks))
+		var/obj/item/weapon/reagent_containers/food/snacks/check = thing_inside
 		if(cook_type in check.cooked_types)
 			return COOKED
 	return COOKING
 
 /obj/machinery/cooker/proc/eject(mob/receiver)
-	if(!cooking_obj)
+	if(!thing_inside)
+		if(is_cooking)
+			stop()
 		return
 	if(receiver)
-		to_chat(receiver, SPAN_NOTICE("You grab \the [cooking_obj] from \the [src]."))
-		receiver.put_in_hands(cooking_obj)
+		if(isliving(thing_inside))
+			var/mob/living/L = thing_inside
+			L.get_scooped(receiver, self_grab = FALSE)
+		else
+			to_chat(receiver, SPAN_NOTICE("You grab \the [thing_inside] from \the [src]."))
+			receiver.put_in_hands(thing_inside)
 	else
-		cooking_obj.forceMove(get_turf(src)) // <-- TODO: Heavily track everything around this for holders
-		if(istype(cooking_obj, /obj/item/weapon/holder))
-			cooking_obj.dropped()
-	cooking_obj = null
+		thing_inside.forceMove(get_turf(src))
+
+	thing_inside = null
 	cooking_is_done = FALSE
 	if(is_cooking)
 		stop()
@@ -235,7 +241,7 @@
 		eject(user)
 		return
 
-	if(output_options.len)
+	if(output_options.len > 1)
 
 		var/choice = input("What specific food do you wish to make with \the [src]?") as null|anything in output_options+"Default"
 		if(!choice)
@@ -249,32 +255,33 @@
 
 	..()
 
-/obj/machinery/cooker/proc/cook_mob(mob/living/victim, mob/user)
+/obj/machinery/cooker/proc/hurt_big_mob(mob/living/victim, mob/user)
+	to_chat(user, SPAN_WARNING("That's not going to fit."))
 	return
 
-/obj/machinery/cooker/proc/change_product_strings(obj/item/weapon/product, obj/item/origin)
+/obj/machinery/cooker/proc/change_product_strings(atom/movable/product, atom/movable/origin)
 	if(!origin)
 		product.SetName("[cook_type] [product.name]")
 		product.desc = "[product.desc] It has been [cook_type]."
 	else
-		product.SetName("[origin.name] [product.name]")
+		var/origin_name = origin.name
+		if(isliving(origin))
+			var/open_bkt = findtext(origin.name, "(")
+			var/close_bkt = findtext(origin.name, "(")
+			if(open_bkt && close_bkt)
+				origin_name = copytext(origin.name, 1, open_bkt - 1) + copytext(origin.name, close_bkt + 1)
+		product.SetName("[origin_name] [product.name]")
 	return product
 
-/obj/machinery/cooker/proc/change_product_appearance(obj/item/weapon/product, obj/item/origin)
+/obj/machinery/cooker/proc/change_product_appearance(atom/movable/product, atom/movable/origin)
 	if(!origin)
 		product.color = food_color
 		if(istype(product, /obj/item/weapon/reagent_containers/food))
 			var/obj/item/weapon/reagent_containers/food/food_item = product
 			food_item.filling_color = food_color
 
-		// Make 'em into a corpse.
-		if(istype(product, /obj/item/weapon/holder))
-			var/matrix/M = matrix()
-			M.Turn(90)
-			M.Translate(1,-6)
-			product.transform = M
-			for(var/mob/living/L in product.contents)
-				L.color = food_color
+		if(isliving(product))
+			product.color = food_color
 	else
 		var/image/I = image(product.icon, "[product.icon_state]_filling")
 		if(istype(origin, /obj/item/weapon/reagent_containers/food/snacks))
