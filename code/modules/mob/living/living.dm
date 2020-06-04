@@ -670,8 +670,8 @@ default behaviour is:
 		to_chat(src, "<span class='warning'>You extricate yourself from \the [holster].</span>")
 		H.forceMove(get_turf(H))
 	else if(istype(H.loc,/obj))
-		H.forceMove(get_turf(H))
 		to_chat(src, "<span class='warning'>You struggle free of \the [H.loc].</span>")
+		H.forceMove(get_turf(H))
 
 	if(loc != H)
 		qdel(H)

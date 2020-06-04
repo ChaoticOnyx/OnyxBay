@@ -10,7 +10,7 @@
 	selected_option = "Cereal"
 
 /obj/machinery/cooker/cereal/change_product_strings(atom/movable/product, atom/movable/origin)
-	..(product, origin)
+	. = ..()
 	product.SetName("box of [product.name]")
 	return product
 
