@@ -174,7 +174,7 @@
 		to_chat(M, "You take a bite of the [src.name] and swallow it.")
 		M.nutrition += 1
 		M.reagents.add_reagent(/datum/reagent/crayon_dust,min(5,uses)/3)
-		reduce_uses(5)
+		reduce_uses(5, "ate")
 	else if(istype(M,/mob/living/carbon/human) && M.lying)
 		to_chat(user, "You start outlining [M.name].")
 		if(do_after(user, 50))
@@ -189,9 +189,9 @@
 	if(popup)
 		popup.close() // ...but he can't, if you disable his hands
 
-/obj/item/weapon/pen/crayon/proc/reduce_uses(amount = 1)
+/obj/item/weapon/pen/crayon/proc/reduce_uses(amount = 1, action_text = "used up")
 	if(uses)
 		uses -= amount
 		if(uses <= 0)
-			to_chat(usr, SPAN_WARNING("You used up your [src.name]!"))
+			to_chat(usr, SPAN_WARNING("You [action_text] your [src.name]!"))
 			qdel(src)
