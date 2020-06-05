@@ -1236,7 +1236,7 @@ obj/item/organ/external/proc/remove_clamps()
 	else if(is_stump())
 		qdel(src)
 
-/obj/item/organ/external/proc/disfigure(type = "brute")
+/obj/item/organ/external/head/proc/disfigure(type = "brute")
 	if(status & ORGAN_DISFIGURED)
 		return
 	if(owner)

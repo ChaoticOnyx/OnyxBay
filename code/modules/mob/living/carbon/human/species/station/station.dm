@@ -11,14 +11,15 @@
 	num_alternate_languages = 2
 	secondary_langs = list(LANGUAGE_SOL_COMMON)
 	name_language = null // Use the first-name last-name generator rather than a language scrambler
-	min_age = 17
+	min_age = 18
 	max_age = 100
 	gluttonous = GLUT_TINY
 
 	body_builds = list(
 		new /datum/body_build,
 		new /datum/body_build/slim,
-		new /datum/body_build/slim/alt
+		new /datum/body_build/slim/alt,
+		new /datum/body_build/slim/male
 	)
 
 	spawn_flags = SPECIES_CAN_JOIN
@@ -95,7 +96,7 @@
 	name_language = LANGUAGE_SIIK_MAAS
 	health_hud_intensity = 1.75
 
-	min_age = 19
+	min_age = 18
 	max_age = 140
 
 	blurb = "The Tajaran are a species of furred mammalian bipeds hailing from the chilly planet of Ahdomai \
@@ -164,7 +165,7 @@
 	name_language = null
 	health_hud_intensity = 1.75
 
-	min_age = 19
+	min_age = 18
 	max_age = 90
 
 	body_builds = list(

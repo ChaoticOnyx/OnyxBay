@@ -48,10 +48,11 @@ GLOBAL_DATUM_INIT(blobs, /datum/antagonist/blob, new)
 
 	var/datum/objective/O = global_objectives[1]
 
-	if (!O.completed && blob_tiles_grown_total >= O.target_amount)
+	if (!O.completed && GLOB.blob_tiles_grown_total >= O.target_amount)
 		O.completed = TRUE
 		SSticker.mode.blob_domination = TRUE
-	else if (!antags_are_dead() && blob_tiles_grown_total >= O.target_amount * 0.05 && under_quarantine == FALSE)
+		universe_has_ended = TRUE
+	else if (!antags_are_dead() && GLOB.blob_tiles_grown_total >= O.target_amount * 0.05 && under_quarantine == FALSE)
 		command_announcement.Announce("Confirmed outbreak of level 7 viral biohazard aboard [station_name()]. All personnel must contain the outbreak or initiate the self-destruction procedure at any cost. [station_name()] is now under quarantine, no one should exit or enter the station, all flights canceled.", "Lifesign Alert", new_sound = 'sound/AI/outbreak7.ogg')
 		under_quarantine = TRUE
 
@@ -103,7 +104,7 @@ GLOBAL_DATUM_INIT(blobs, /datum/antagonist/blob, new)
 	explanation_text = "Capture"
 
 /datum/objective/blob/infest/check_completion()
-	return (blob_tiles_grown_total >= target_amount)
+	return (GLOB.blob_tiles_grown_total >= target_amount)
 
 /datum/objective/blob/infest/New()
 	..()

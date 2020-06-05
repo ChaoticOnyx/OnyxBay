@@ -34,6 +34,7 @@
 	fire = null
 	bodytemp = null
 	healths = null
+	pains = null
 	throw_icon = null
 	block_icon = null
 	blockswitch_icon = null

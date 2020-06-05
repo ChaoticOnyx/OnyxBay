@@ -65,7 +65,7 @@
 	coverlocked = 0
 
 /obj/machinery/door/airlock/autoname/command
-	icon = 'icons/obj/doors/Doorhatchele.dmi'
+	icon = 'icons/obj/doors/doorhatchele.dmi'
 	req_access = list(access_heads)
 
 /obj/machinery/door/airlock/autoname/engineering

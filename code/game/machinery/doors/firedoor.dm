@@ -11,7 +11,7 @@
 /obj/machinery/door/firedoor
 	name = "\improper Emergency Shutter"
 	desc = "Emergency air-tight shutter, capable of sealing off breached areas."
-	icon = 'icons/obj/doors/DoorHazard.dmi'
+	icon = 'icons/obj/doors/doorhazard.dmi'
 	icon_state = "door_open"
 	req_one_access = list(access_atmospherics, access_engine_equip)
 	opacity = 0
@@ -412,7 +412,7 @@
 
 /obj/machinery/door/firedoor/border_only
 /*
-	icon = 'icons/obj/doors/edge_Doorfire.dmi'
+	icon = 'icons/obj/doors/edge_doorfire.dmi'
 	glass = 1 //There is a glass window so you can see through the door
 			  //This is needed due to BYOND limitations in controlling visibility
 	heat_proof = 1
@@ -450,6 +450,6 @@
 */
 
 /obj/machinery/door/firedoor/multi_tile
-	icon = 'icons/obj/doors/DoorHazard2x1.dmi'
+	icon = 'icons/obj/doors/doorhazard2x1.dmi'
 	dir = EAST
 	width = 2

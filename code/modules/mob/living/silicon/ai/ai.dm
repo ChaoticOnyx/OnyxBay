@@ -43,7 +43,7 @@ var/list/ai_verbs_default = list(
 
 /mob/living/silicon/ai
 	name = "AI"
-	icon = 'icons/mob/AI.dmi'//
+	icon = 'icons/mob/ai.dmi'//
 	icon_state = "ai"
 	anchored = 1 // -- TLE
 	density = 1

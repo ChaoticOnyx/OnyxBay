@@ -734,6 +734,14 @@
 		else
 			clear_fullscreen("brute")
 
+		if(pains)
+			switch(get_shock())
+				if(150 to INFINITY)		pains.icon_state = "pain5"
+				if(75 to 150)			pains.icon_state = "pain4"
+				if(40 to 75)			pains.icon_state = "pain3"
+				if(25 to 40)			pains.icon_state = "pain2"
+				if(10 to 25)			pains.icon_state = "pain1"
+				else					pains.icon_state = "pain0"
 		if(healths)
 			healths.overlays.Cut()
 			if (chem_effects[CE_PAINKILLER] > 100)
@@ -973,7 +981,7 @@
 		pregen -= 1.25
 
 	if(blocking)
-		pregen -= 2.0
+		pregen -= 2.5
 
 	if(poise < poise_pool)
 		poise += pregen

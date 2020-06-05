@@ -319,6 +319,7 @@
 	has_m_intent =  1
 	has_warnings =  0
 	has_health =    1
+	has_pain =		0
 	has_hands =     1
 	has_drop =      1
 	has_throw =     1

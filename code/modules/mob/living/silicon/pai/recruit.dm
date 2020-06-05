@@ -71,9 +71,9 @@ var/datum/paiController/paiController			// Global handler for pAI candidates
 				if(t)
 					candidate.comments = sanitize(t)
 			if("save")
-				candidate.savefile_save(usr)
+				candidate.savefile_save(usr.client)
 			if("load")
-				candidate.savefile_load(usr)
+				candidate.savefile_load(usr.client)
 				//In case people have saved unsanitized stuff.
 				if(candidate.name)
 					candidate.name = sanitizeSafe(candidate.name, MAX_NAME_LEN)

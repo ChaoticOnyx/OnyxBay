@@ -66,12 +66,8 @@
 
 #define RECOMMENDED_VERSION 511
 /world/New()
-	//logs
 	SetupLogs()
-	var/date_string = time2text(world.realtime, "YYYY/MM-Month/DD-Day")
-	href_logfile = file("data/logs/[date_string] hrefs.htm")
-	diary = file("data/logs/[date_string].log")
-	diary << "[log_end]\n[log_end]\nStarting up. (ID: [game_id]) [time_stamp()][log_end]\n---------------------[log_end]"
+
 	changelog_hash = md5('html/changelog.html')					//used for telling if the changelog has changed recently
 
 	if(byond_version < RECOMMENDED_VERSION)
@@ -122,7 +118,7 @@
 var/world_topic_spam_protect_time = world.timeofday
 
 /world/Topic(T, addr, master, key)
-	diary << "TOPIC: \"[T]\", from:[addr], master:[master][log_end]"
+	WRITE_FILE(GLOB.world_common_log, "TOPIC: \"[T]\", from:[addr], master:[master][log_end]")
 
 	var/input[] = params2list(T)
 	var/key_valid = config.comms_password && input["key"] == config.comms_password
@@ -641,17 +637,19 @@ var/world_topic_spam_protect_time = world.timeofday
 		src.status = s
 
 #define WORLD_LOG_START(X) WRITE_FILE(GLOB.world_##X##_log, "\n\nStarting up round ID [game_id]. [time_stamp()]\n---------------------")
-#define WORLD_SETUP_LOG(X) GLOB.world_##X##_log = file("[GLOB.log_directory]/[#X].log") ; WORLD_LOG_START(X)
+#define WORLD_SETUP_LOG(X) GLOB.world_##X##_log = file("[GLOB.log_directory]/[GLOB.log_prefix][#X].log") ; WORLD_LOG_START(X)
 /world/proc/SetupLogs()
-	GLOB.log_directory = "data/logs/[time2text(world.realtime, "YYYY/MM/DD")]/round-"
-	if(game_id)
-		GLOB.log_directory += "[game_id]"
-	else
-		GLOB.log_directory += "[replacetext(time_stamp(), ":", ".")]"
+	if (!game_id)
+		crash_with("Unknown game_id!")
+
+	GLOB.log_directory = "data/logs/[time2text(world.realtime, "YYYY/MM-Month")]"
+	GLOB.log_prefix = "[time2text(world.realtime, "DD.MM.YY_hh.mm")]_[game_id]_"
 
 	WORLD_SETUP_LOG(runtime)
 	WORLD_SETUP_LOG(qdel)
 	WORLD_SETUP_LOG(debug)
+	WORLD_SETUP_LOG(hrefs)
+	WORLD_SETUP_LOG(common)
 
 #undef WORLD_SETUP_LOG
 #undef WORLD_LOG_START

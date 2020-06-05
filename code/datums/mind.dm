@@ -49,6 +49,7 @@
 
 	var/list/datum/objective/objectives = list()
 	var/list/datum/objective/special_verbs = list()
+	var/syndicate_awareness = SYNDICATE_UNAWARE
 
 	var/has_been_rev = 0//Tracks if this mind has been a rev or not
 
@@ -65,6 +66,7 @@
 
 	//used for optional self-objectives that antagonists can give themselves, which are displayed at the end of the round.
 	var/ambitions
+	var/was_antag_given_by_storyteller = FALSE
 
 	//used to store what traits the player had picked out in their preferences before joining, in text form.
 	var/list/traits = list()

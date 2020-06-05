@@ -145,7 +145,7 @@
 	result = /datum/reagent/thermite
 	required_reagents = list(/datum/reagent/aluminum = 1, /datum/reagent/iron = 1, /datum/reagent/acetone = 1)
 	result_amount = 3
-	log_is_important = 1	
+	log_is_important = 1
 
 /datum/chemical_reaction/space_drugs
 	name = "Space Drugs"
@@ -159,7 +159,7 @@
 	required_reagents = list(/datum/reagent/water = 1, /datum/reagent/silicon = 1, /datum/reagent/acetone = 1)
 	result_amount = 4
 	log_is_important = 1
-	
+
 /datum/chemical_reaction/pacid
 	name = "Polytrinic acid"
 	result = /datum/reagent/acid/polyacid
@@ -2073,7 +2073,7 @@
 	result = /datum/reagent/ethanol/witcher/griffin
 	required_reagents = list(/datum/reagent/ethanol/witcher = 3,/datum/reagent/ethanol/bluecuracao = 1,/datum/reagent/ethanol/wine/sparkling = 1)
 	result_amount = 5
-	
+
 /datum/chemical_reaction/immunobooster
 	name = "Immunobooster"
 	result = /datum/reagent/immunobooster
@@ -2084,4 +2084,4 @@
 	name = "Vecuronium Bromide"
 	result = /datum/reagent/vecuronium_bromide
 	required_reagents = list(/datum/reagent/ethanol = 1, /datum/reagent/mercury = 2, /datum/reagent/luminol = 2)
-	result_amount = 1	
+	result_amount = 1

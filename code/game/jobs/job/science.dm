@@ -11,11 +11,11 @@
 	req_admin_notify = 1
 	economic_modifier = 15
 	faction_restricted = TRUE
-	access = list(access_rd, access_heads, access_tox, access_genetics, access_morgue,
+	access = list(access_rd, access_heads, access_tox, access_morgue,
 			            access_tox_storage, access_teleporter, access_sec_doors, access_maint_tunnels,
 			            access_research, access_robotics, access_xenobiology, access_ai_upload, access_tech_storage,
 			            access_RC_announce, access_keycard_auth, access_tcomsat, access_gateway, access_xenoarch, access_network)
-	minimal_access = list(access_rd, access_heads, access_tox, access_genetics, access_morgue,
+	minimal_access = list(access_rd, access_heads, access_tox, access_morgue,
 			            access_tox_storage, access_teleporter, access_sec_doors, access_maint_tunnels,
 			            access_research, access_robotics, access_xenobiology, access_ai_upload, access_tech_storage,
 			            access_RC_announce, access_keycard_auth, access_tcomsat, access_gateway, access_xenoarch, access_network)

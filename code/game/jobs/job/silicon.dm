@@ -25,7 +25,7 @@
 	title = "Cyborg"
 	department_flag = MSC
 
-	total_positions = 2
+	total_positions = 3
 	spawn_positions = 2
 	supervisors = "your laws and the AI"	//Nodrak
 	selection_color = "#254c25"

@@ -40,8 +40,17 @@
 
 /obj/item/weapon/gun/energy/taser/mounted
 	name = "mounted taser gun"
+	desc = "Modified NT Mk30 NL, designed to be mounted on cyborgs and other battle machinery. It can switch between high and low intensity stun beams, and concentrated stun spheres."
+	icon_state = "btaser"
 	self_recharge = 1
 	use_external_power = 1
+	projectile_type = /obj/item/projectile/energy/electrode
+
+	firemodes = list(
+		list(mode_name="sphere", projectile_type=/obj/item/projectile/energy/electrode),
+		list(mode_name="stun", projectile_type=/obj/item/projectile/beam/stun),
+		list(mode_name="shock", projectile_type=/obj/item/projectile/beam/stun/shock),
+		)
 
 /obj/item/weapon/gun/energy/taser/mounted/cyborg
 	name = "taser gun"

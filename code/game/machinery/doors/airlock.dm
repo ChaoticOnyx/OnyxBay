@@ -3,7 +3,7 @@
 #define BOLTS_CUT 2
 /obj/machinery/door/airlock
 	name = "airlock"
-	icon = 'icons/obj/doors/Doorint.dmi'
+	icon = 'icons/obj/doors/doorint.dmi'
 	icon_state = "door_closed"
 	power_channel = ENVIRON
 
@@ -73,37 +73,37 @@
 
 /obj/machinery/door/airlock/command
 	name = "Airlock"
-	icon = 'icons/obj/doors/Doorcom.dmi'
+	icon = 'icons/obj/doors/doorcom.dmi'
 	assembly_type = /obj/structure/door_assembly/door_assembly_com
 
 /obj/machinery/door/airlock/security
 	name = "Airlock"
-	icon = 'icons/obj/doors/Doorsec.dmi'
+	icon = 'icons/obj/doors/doorsec.dmi'
 	assembly_type = /obj/structure/door_assembly/door_assembly_sec
 
 /obj/machinery/door/airlock/engineering
 	name = "Airlock"
-	icon = 'icons/obj/doors/Dooreng.dmi'
+	icon = 'icons/obj/doors/dooreng.dmi'
 	assembly_type = /obj/structure/door_assembly/door_assembly_eng
 
 /obj/machinery/door/airlock/medical
 	name = "Airlock"
-	icon = 'icons/obj/doors/Doormed.dmi'
+	icon = 'icons/obj/doors/doormed.dmi'
 	assembly_type = /obj/structure/door_assembly/door_assembly_med
 
 /obj/machinery/door/airlock/virology
 	name = "Airlock"
-	icon = 'icons/obj/doors/Doorviro.dmi'
+	icon = 'icons/obj/doors/doorviro.dmi'
 	assembly_type = /obj/structure/door_assembly/door_assembly_viro
 
 /obj/machinery/door/airlock/maintenance
 	name = "Maintenance Access"
-	icon = 'icons/obj/doors/Doormaint.dmi'
+	icon = 'icons/obj/doors/doormaint.dmi'
 	assembly_type = /obj/structure/door_assembly/door_assembly_mai
 
 /obj/machinery/door/airlock/external
 	name = "External Airlock"
-	icon = 'icons/obj/doors/Doorext.dmi'
+	icon = 'icons/obj/doors/doorext.dmi'
 	opacity = 1
 	assembly_type = /obj/structure/door_assembly/door_assembly_ext
 	open_sound_powered = list('sound/machines/airlock/open_exterior1.ogg', 'sound/machines/airlock/open_exterior2.ogg', 'sound/machines/airlock/open_exterior3.ogg', 'sound/machines/airlock/open_exterior4.ogg')
@@ -124,12 +124,12 @@
 
 /obj/machinery/door/airlock/sol
 	name = "Airlock"
-	icon = 'icons/obj/doors/Doorsol.dmi'
+	icon = 'icons/obj/doors/doorsol.dmi'
 	assembly_type = /obj/structure/door_assembly/door_assembly_sol
 
 /obj/machinery/door/airlock/glass
 	name = "Glass Airlock"
-	icon = 'icons/obj/doors/Doorglass.dmi'
+	icon = 'icons/obj/doors/doorglass.dmi'
 	hitsound = null
 	maxhealth = 300
 	explosion_resistance = 5
@@ -152,7 +152,7 @@
 
 /obj/machinery/door/airlock/centcom
 	name = "Airlock"
-	icon = 'icons/obj/doors/Doorele.dmi'
+	icon = 'icons/obj/doors/doorele.dmi'
 	opacity = 0
 
 /obj/machinery/door/airlock/vault
@@ -169,20 +169,20 @@
 
 /obj/machinery/door/airlock/freezer
 	name = "Freezer Airlock"
-	icon = 'icons/obj/doors/Doorfreezer.dmi'
+	icon = 'icons/obj/doors/doorfreezer.dmi'
 	opacity = 1
 	assembly_type = /obj/structure/door_assembly/door_assembly_fre
 
 /obj/machinery/door/airlock/hatch
 	name = "Airtight Hatch"
-	icon = 'icons/obj/doors/Doorhatchele.dmi'
+	icon = 'icons/obj/doors/doorhatchele.dmi'
 	explosion_resistance = 20
 	opacity = 1
 	assembly_type = /obj/structure/door_assembly/door_assembly_hatch
 
 /obj/machinery/door/airlock/maintenance_hatch
 	name = "Maintenance Hatch"
-	icon = 'icons/obj/doors/Doorhatchmaint2.dmi'
+	icon = 'icons/obj/doors/doorhatchmaint2.dmi'
 	explosion_resistance = 20
 	opacity = 1
 	assembly_type = /obj/structure/door_assembly/door_assembly_mhatch
@@ -193,7 +193,7 @@
 
 /obj/machinery/door/airlock/glass_command
 	name = "Maintenance Hatch"
-	icon = 'icons/obj/doors/Doorcomglass.dmi'
+	icon = 'icons/obj/doors/doorcomglass.dmi'
 	hitsound = null
 	maxhealth = 300
 	explosion_resistance = 5
@@ -212,7 +212,7 @@
 
 /obj/machinery/door/airlock/glass_external
 	name = "External Airlock"
-	icon = 'icons/obj/doors/Doorextglass.dmi'
+	icon = 'icons/obj/doors/doorextglass.dmi'
 	hitsound = null
 	maxhealth = 300
 	explosion_resistance = 5
@@ -244,7 +244,7 @@
 
 /obj/machinery/door/airlock/glass_engineering
 	name = "Maintenance Hatch"
-	icon = 'icons/obj/doors/Doorengglass.dmi'
+	icon = 'icons/obj/doors/doorengglass.dmi'
 	hitsound = null
 	maxhealth = 300
 	explosion_resistance = 5
@@ -263,7 +263,7 @@
 
 /obj/machinery/door/airlock/glass_security
 	name = "Maintenance Hatch"
-	icon = 'icons/obj/doors/Doorsecglass.dmi'
+	icon = 'icons/obj/doors/doorsecglass.dmi'
 	hitsound = null
 	maxhealth = 300
 	explosion_resistance = 5
@@ -282,7 +282,7 @@
 
 /obj/machinery/door/airlock/glass_medical
 	name = "Maintenance Hatch"
-	icon = 'icons/obj/doors/Doormedglass.dmi'
+	icon = 'icons/obj/doors/doormedglass.dmi'
 	hitsound = null
 	maxhealth = 300
 	explosion_resistance = 5
@@ -301,7 +301,7 @@
 
 /obj/machinery/door/airlock/glass_virology
 	name = "Maintenance Hatch"
-	icon = 'icons/obj/doors/Doorviroglass.dmi'
+	icon = 'icons/obj/doors/doorviroglass.dmi'
 	hitsound = null
 	maxhealth = 300
 	explosion_resistance = 5
@@ -320,7 +320,7 @@
 
 /obj/machinery/door/airlock/glass_sol
 	name = "Maintenance Hatch"
-	icon = 'icons/obj/doors/Doorsolglass.dmi'
+	icon = 'icons/obj/doors/doorsolglass.dmi'
 	hitsound = null
 	maxhealth = 300
 	explosion_resistance = 5
@@ -340,22 +340,22 @@
 
 /obj/machinery/door/airlock/mining
 	name = "Mining Airlock"
-	icon = 'icons/obj/doors/Doormining.dmi'
+	icon = 'icons/obj/doors/doormining.dmi'
 	assembly_type = /obj/structure/door_assembly/door_assembly_min
 
 /obj/machinery/door/airlock/atmos
 	name = "Atmospherics Airlock"
-	icon = 'icons/obj/doors/Dooratmo.dmi'
+	icon = 'icons/obj/doors/dooratmo.dmi'
 	assembly_type = /obj/structure/door_assembly/door_assembly_atmo
 
 /obj/machinery/door/airlock/research
 	name = "Airlock"
-	icon = 'icons/obj/doors/Doorresearch.dmi'
+	icon = 'icons/obj/doors/doorresearch.dmi'
 	assembly_type = /obj/structure/door_assembly/door_assembly_research
 
 /obj/machinery/door/airlock/glass_research
 	name = "Maintenance Hatch"
-	icon = 'icons/obj/doors/Doorresearchglass.dmi'
+	icon = 'icons/obj/doors/doorresearchglass.dmi'
 	hitsound = null
 	maxhealth = 300
 	explosion_resistance = 5
@@ -375,7 +375,7 @@
 
 /obj/machinery/door/airlock/glass_mining
 	name = "Maintenance Hatch"
-	icon = 'icons/obj/doors/Doorminingglass.dmi'
+	icon = 'icons/obj/doors/doorminingglass.dmi'
 	hitsound = null
 	maxhealth = 300
 	explosion_resistance = 5
@@ -394,7 +394,7 @@
 
 /obj/machinery/door/airlock/glass_atmos
 	name = "Maintenance Hatch"
-	icon = 'icons/obj/doors/Dooratmoglass.dmi'
+	icon = 'icons/obj/doors/dooratmoglass.dmi'
 	hitsound = null
 	maxhealth = 300
 	explosion_resistance = 5
@@ -413,23 +413,23 @@
 
 /obj/machinery/door/airlock/gold
 	name = "Gold Airlock"
-	icon = 'icons/obj/doors/Doorgold.dmi'
+	icon = 'icons/obj/doors/doorgold.dmi'
 	mineral = MATERIAL_GOLD
 
 /obj/machinery/door/airlock/silver
 	name = "Silver Airlock"
-	icon = 'icons/obj/doors/Doorsilver.dmi'
+	icon = 'icons/obj/doors/doorsilver.dmi'
 	mineral = MATERIAL_SILVER
 
 /obj/machinery/door/airlock/diamond
 	name = "Diamond Airlock"
-	icon = 'icons/obj/doors/Doordiamond.dmi'
+	icon = 'icons/obj/doors/doordiamond.dmi'
 	mineral = MATERIAL_DIAMOND
 
 /obj/machinery/door/airlock/uranium
 	name = "Uranium Airlock"
 	desc = "And they said I was crazy."
-	icon = 'icons/obj/doors/Dooruranium.dmi'
+	icon = 'icons/obj/doors/dooruranium.dmi'
 	mineral = MATERIAL_URANIUM
 	var/last_event = 0
 	var/rad_power = 7.5
@@ -454,7 +454,7 @@
 /obj/machinery/door/airlock/phoron
 	name = "Phoron Airlock"
 	desc = "No way this can end badly."
-	icon = 'icons/obj/doors/Doorphoron.dmi'
+	icon = 'icons/obj/doors/doorphoron.dmi'
 	mineral = MATERIAL_PHORON
 
 /obj/machinery/door/airlock/phoron/fire_act(datum/gas_mixture/air, exposed_temperature, exposed_volume)
@@ -478,17 +478,17 @@
 
 /obj/machinery/door/airlock/sandstone
 	name = "Sandstone Airlock"
-	icon = 'icons/obj/doors/Doorsand.dmi'
+	icon = 'icons/obj/doors/doorsand.dmi'
 	mineral = MATERIAL_SANDSTONE
 
 /obj/machinery/door/airlock/science
 	name = "Airlock"
-	icon = 'icons/obj/doors/Doorsci.dmi'
+	icon = 'icons/obj/doors/doorsci.dmi'
 	assembly_type = /obj/structure/door_assembly/door_assembly_science
 
 /obj/machinery/door/airlock/glass_science
 	name = "Glass Airlocks"
-	icon = 'icons/obj/doors/Doorsciglass.dmi'
+	icon = 'icons/obj/doors/doorsciglass.dmi'
 	opacity = 0
 	assembly_type = /obj/structure/door_assembly/door_assembly_science
 	glass = 1
@@ -1394,7 +1394,7 @@ About the new airlock wires panel:
 
 /obj/machinery/door/airlock/autoname
 	name = "hatch"
-	icon = 'icons/obj/doors/Doorhatchmaint2.dmi'
+	icon = 'icons/obj/doors/doorhatchmaint2.dmi'
 	assembly_type = /obj/structure/door_assembly/door_assembly_mhatch
 
 /obj/machinery/door/airlock/autoname/New()

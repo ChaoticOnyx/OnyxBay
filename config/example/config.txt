@@ -480,3 +480,7 @@ MINUTE_TOPIC_LIMIT 100
 
 ## Uncomment to override a lobby screen or comment to use random one (see code/controllers/configuration.dm var/lobby_images list)
 # OVERRIDE_LOBBYSCREEN icons/splashes/onyx_new.png
+
+# DONATIONS
+
+# STORYTELLER

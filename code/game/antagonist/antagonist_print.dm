@@ -28,6 +28,8 @@
 				text += "<br><font color='red'><B>The [role_text] has failed.</B></font>"
 			else
 				text += "<br><font color='green'><B>The [role_text] was successful!</B></font>"
+			if(P.was_antag_given_by_storyteller)
+				text += "<br><b>This antagonist was spawned by storyteller.</b>"
 
 	if(global_objectives && global_objectives.len)
 		text += "<BR><FONT size = 2>Their objectives were:</FONT>"

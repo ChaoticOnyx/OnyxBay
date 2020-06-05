@@ -365,8 +365,6 @@
 			return global.department_radio_keys;
 		if("description_icons")
 			return global.description_icons;
-		if("diary")
-			return global.diary;
 		if("dna_activity_bounds")
 			return global.dna_activity_bounds;
 		if("dna_genes")
@@ -485,8 +483,6 @@
 			return global.holder_mob_icon_cache;
 		if("host")
 			return global.host;
-		if("href_logfile")
-			return global.href_logfile;
 		if("human_icon_cache")
 			return global.human_icon_cache;
 		if("id_card_states")
@@ -862,9 +858,9 @@
 		if("syndicate_access")
 			return global.syndicate_access;
 		if("syndicate_code_phrase")
-			return global.syndicate_code_phrase;
+			return GLOB.syndicate_code_phrase;
 		if("syndicate_code_response")
-			return global.syndicate_code_response;
+			return GLOB.syndicate_code_response;
 		if("syndicate_name")
 			return global.syndicate_name;
 		if("tail_icon_cache")
@@ -1348,8 +1344,6 @@
 			global.department_radio_keys=newval;
 		if("description_icons")
 			global.description_icons=newval;
-		if("diary")
-			global.diary=newval;
 		if("dna_activity_bounds")
 			global.dna_activity_bounds=newval;
 		if("dna_genes")
@@ -1468,8 +1462,6 @@
 			global.holder_mob_icon_cache=newval;
 		if("host")
 			global.host=newval;
-		if("href_logfile")
-			global.href_logfile=newval;
 		if("human_icon_cache")
 			global.human_icon_cache=newval;
 		if("id_card_states")
@@ -1845,9 +1837,9 @@
 		if("syndicate_access")
 			global.syndicate_access=newval;
 		if("syndicate_code_phrase")
-			global.syndicate_code_phrase=newval;
+			GLOB.syndicate_code_phrase=newval;
 		if("syndicate_code_response")
-			global.syndicate_code_response=newval;
+			GLOB.syndicate_code_response=newval;
 		if("syndicate_name")
 			global.syndicate_name=newval;
 		if("tail_icon_cache")
@@ -2148,7 +2140,6 @@
 	"department_accounts",
 	"department_radio_keys",
 	"description_icons",
-	"diary",
 	"dna_activity_bounds",
 	"dna_genes",
 	"doppler_arrays",
@@ -2208,7 +2199,6 @@
 	"hivemind_bank",
 	"holder_mob_icon_cache",
 	"host",
-	"href_logfile",
 	"human_icon_cache",
 	"id_card_states",
 	"image_repository",
