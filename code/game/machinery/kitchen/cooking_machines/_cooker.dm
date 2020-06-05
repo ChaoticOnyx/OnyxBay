@@ -60,7 +60,7 @@
 					var/obj/item/weapon/reagent_containers/food/snacks/S = thing_inside
 					if(islist(S.nutriment_desc) && length(S.nutriment_desc))
 						smell = pick(S.nutriment_desc)
-				to_chat(usr, "You can see \a [thing_inside] inside. It smells [smell]")
+				to_chat(usr, "You can see \a [thing_inside] inside. It smells [smell].")
 			if(BURNED)
 				to_chat(usr, SPAN_WARNING("Inside is covered by dirt, and it smells smoke!"))
 
@@ -68,7 +68,7 @@
 	set waitfor = 0  //So that any remaining parts of calling proc don't have to wait for the long cooking time ahead.
 
 	if(!cook_type || (stat & (NOPOWER|BROKEN)))
-		to_chat(user, SPAN_WARNING("\The [src] is not working"))
+		to_chat(user, SPAN_WARNING("\The [src] is not working."))
 		return 0
 
 	if(product_status() != NO_PRODUCT)
@@ -77,7 +77,7 @@
 
 	var/mob/living/inserted_mob
 	if(istype(I, /obj/item/weapon/reagent_containers/food/snacks/badrecipe))
-		to_chat(user, SPAN_WARNING("Making [I] [cook_type] shouldn't help"))
+		to_chat(user, SPAN_WARNING("Making [I] [cook_type] shouldn't help."))
 		return 0
 	else if(istype(I, /obj/item/weapon/reagent_containers/food/snacks))
 		var/obj/item/weapon/reagent_containers/food/snacks/check = I
@@ -85,7 +85,7 @@
 			to_chat(user, SPAN_WARNING("\The [I] has already been [cook_type]."))
 			return 0
 	else if(istype(I, /obj/item/weapon/reagent_containers/food/condiment))
-		to_chat(user, SPAN_WARNING("You can't make \the [I] [cook_type]"))
+		to_chat(user, SPAN_WARNING("You can't make \the [I] [cook_type]."))
 		return 0
 	else if(istype(I, /obj/item/weapon/reagent_containers/glass))
 		to_chat(user, SPAN_WARNING("That would probably break [src]."))
@@ -196,7 +196,7 @@
 		if(BURNED); // Just keep running
 		else
 			stop()
-			CRASH("Something weird happened during product_status() check in [src]")
+			CRASH("Something weird happened during product_status() check in [src].")
 
 /obj/machinery/cooker/proc/product_status()
 	if(!thing_inside || thing_inside.loc != src)
