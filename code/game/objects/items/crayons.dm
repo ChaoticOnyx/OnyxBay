@@ -89,70 +89,109 @@
 /obj/item/weapon/pen/crayon/rainbow/attack_self(mob/living/user as mob)
 	colour = input(user, "Please select the main colour.", "Crayon colour") as color
 	shadeColour = input(user, "Please select the shade colour.", "Crayon colour") as color
+	update_popup(user)
 	return
+
+/obj/item/weapon/pen/crayon
+	var/datum/browser/popup
+	var/turf/last_target
+
+/obj/item/weapon/pen/crayon/proc/update_popup(mob/user)
+	if(!user)
+		user = usr
+	var/dat = "Write russian: "
+	var/list/rus_alphabet = list("А","Б","В","Г","Д","Е","Ё","Ж","З","И","Й",
+							"К","Л","М","Н","О","П","Р","С","Т","У","Ф",
+							"Х","Ц","Ч","Ш","Щ","Ъ","Ы","Ь","Э","Ю","Я"
+							)
+	for(var/letter_num = 1, letter_num <= rus_alphabet.len, letter_num++)
+		dat += "<a href='?\ref[src];drawtype=rus[letter_num]'>[rus_alphabet[letter_num]]</a> "
+
+	dat += "<hr>Write english: "
+	for(var/letter_num in text2ascii("a") to text2ascii("z"))
+		dat += "<a href='?\ref[src];drawtype=[ascii2text(letter_num)]'>[uppertext(ascii2text(letter_num))]</a> "
+
+	dat += "<hr><a href='?\ref[src];drawtype=rune'>Draw rune</a>"
+
+	dat += "<hr>Show direction: "
+	var/list/arrows = list("left" = "&larr;", "right" = "&rarr;", "up" = "&uarr;", "down" = "&darr;")
+	for(var/drawtype in arrows)
+		dat += "<a href='?\ref[src];drawtype=[drawtype]'>[arrows[drawtype]]</a> "
+
+	dat += "<hr>Draw graffiti: "
+	for(var/drawtype in list("amyjon","face","matt","revolution","engie","guy","end","dwarf","uboa","xyu","stayhigh","fuckxenos","help","cheesy","ghost","godleft"))
+		dat += "<a href='?\ref[src];drawtype=[drawtype]'><img src=\"[get_preview(usr, drawtype)]\" style=\"width: 32px; height: 32px;\"></a> "
+
+	if(!popup || popup.user != user)
+		popup = new /datum/browser(user, "crayon", "Choose drawing", 960, 230)
+		popup.set_content(dat)
+	else
+		popup.set_content(dat)
+		popup.update()
+
+/obj/item/weapon/pen/crayon/proc/get_preview(mob/receiver, type = "rune1")
+	var/icon/mainOverlay = new /icon('icons/effects/crayondecal.dmi',"[type]",2.1)
+	var/icon/shadeOverlay = new /icon('icons/effects/crayondecal.dmi',"[type]s",2.1)
+	mainOverlay.Blend(colour,ICON_ADD)
+	shadeOverlay.Blend(shadeColour,ICON_ADD)
+	mainOverlay.Blend(shadeOverlay, ICON_OVERLAY)
+
+	if(!receiver)
+		return mainOverlay
+	else
+		var/resourse_name = "[type]-crayon-[copytext(colour,2)]-[copytext(shadeColour,2)].png"
+		receiver << browse(mainOverlay, "file=[resourse_name];display=0")
+		return resourse_name
 
 /obj/item/weapon/pen/crayon/afterattack(atom/target, mob/user as mob, proximity)
 	if(!proximity) return
 	if(istype(target,/turf/simulated/floor) || istype(target,/turf/simulated/wall))
-		var/drawtype = input("Choose what you'd like to draw.", "Crayon scribbles") in list("graffiti","rune","english","russian","arrow")
-		switch(drawtype)
-			if("english")
-				drawtype = input("Choose the letter.", "Crayon scribbles") in list("a","b","c","d","e","f","g","h","i","j","k","l","m","n","o","p","q","r","s","t","u","v","w","x","y","z")
-				to_chat(user, "You start drawing a letter on the [target.name].")
-			if("russian")
-				var/list/rus = list("а","б","в","г","д","е","ё","ж","з","и","й",
-									"к","л","м","н","о","п","р","с","т","у","ф",
-									"х","ц","ч","ш","щ","ъ","ы","ь","э","ю","я"
-									) // This list is too big to be shown, but it's gonna be reworked anyway
-				drawtype = input("Choose the letter.", "Crayon scribbles") in rus
-				drawtype = "rus[rus.Find(drawtype)]"
-				to_chat(user, "You start drawing a letter on the [target.name].")
-			if("graffiti")
-				drawtype = input("Choose the graffiti.", "Crayon scribbles") in list("amyjon","face","matt",
-																					"revolution","engie","guy",
-																					"end","dwarf","uboa", "xyu",
-																					"stayhigh","fuckxenos","help",
-																					"cheesy", "ghost", "godleft",
-																					)
-				to_chat(user, "You start drawing graffiti on the [target.name].")
-			if("rune")
-				to_chat(user, "You start drawing a rune on the [target.name].")
-			if("arrow")
-				drawtype = input("Choose the arrow.", "Crayon scribbles") in list("left", "right", "up", "down")
-				to_chat(user, "You start drawing an arrow on the [target.name].")
-		if(!in_range(user, target))
-			to_chat(user, "<span class = 'notice'>You must stay close to your drawing if you want to draw something.</span>")
-			return
-		if(instant || do_after(user, 50))
-			new /obj/effect/decal/cleanable/crayon(target,colour,shadeColour,drawtype)
-			to_chat(user, "You finish drawing.")
-			target.add_fingerprint(user)		// Adds their fingerprints to the floor the crayon is drawn on.
-			if(uses)
-				uses--
-				if(!uses)
-					to_chat(user, "<span class='warning'>You used up your crayon!</span>")
-					qdel(src)
+		last_target = target
+		update_popup(usr)
+		popup.open()
 	return
+
+/obj/item/weapon/pen/crayon/Topic(href, href_list, state = GLOB.physical_state)
+	. = ..()
+	if(!last_target.Adjacent(usr))
+		to_chat(usr, SPAN_WARNING("You moved too far away!"))
+		popup.close()
+		return
+	if(usr.incapacitated()) // Clown can draw dicks if conscious...
+		return
+	var/drawtype = href_list["drawtype"] ? href_list["drawtype"] : "rune"
+	popup.close()
+	if(instant || do_after(usr, 50))
+		if(!last_target)
+			last_target = get_turf(usr)
+		new /obj/effect/decal/cleanable/crayon(last_target,colour,shadeColour,drawtype)
+		to_chat(usr, "You finish drawing.")
+		last_target.add_fingerprint(usr)
+		reduce_uses()
 
 /obj/item/weapon/pen/crayon/attack(mob/living/carbon/M as mob, mob/user as mob)
 	if(istype(M) && M == user)
 		to_chat(M, "You take a bite of the [src.name] and swallow it.")
 		M.nutrition += 1
 		M.reagents.add_reagent(/datum/reagent/crayon_dust,min(5,uses)/3)
-		if(uses)
-			uses -= 5
-			if(uses <= 0)
-				to_chat(M, "<span class='warning'>You ate your [src.name]!</span>")
-				qdel(src)
+		reduce_uses(5)
 	else if(istype(M,/mob/living/carbon/human) && M.lying)
 		to_chat(user, "You start outlining [M.name].")
 		if(do_after(user, 50))
 			to_chat(user, "You finish outlining [M.name].")
 			new /obj/effect/decal/cleanable/crayon(M.loc,colour,shadeColour,"body outline")
-			if(uses)
-				uses--
-				if(!uses)
-					to_chat(user, "<span class='warning'>You used up your [src.name]!</span>")
-					qdel(src)
+			reduce_uses()
 	else
 		..()
+
+/obj/item/weapon/pen/crayon/dropped()
+	. = ..()
+	if(popup)
+		popup.close() // ...but he can't, if you disable his hands
+
+/obj/item/weapon/pen/crayon/proc/reduce_uses(amount = 1)
+	if(uses)
+		uses -= amount
+		if(uses <= 0)
+			to_chat(usr, SPAN_WARNING("You used up your [src.name]!"))
+			qdel(src)
