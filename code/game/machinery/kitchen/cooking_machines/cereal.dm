@@ -15,23 +15,23 @@
 	return product
 
 /obj/machinery/cooker/cereal/change_product_appearance(obj/item/weapon/reagent_containers/food/snacks/variable/cereal/product, atom/movable/origin)
+	var/icon/background = icon(product.icon, "[product.icon_state]_filling")
+	var/origin_color
+	if(istype(origin, /obj/item/weapon/reagent_containers/food/snacks))
+		var/obj/item/weapon/reagent_containers/food/snacks/S = origin
+		origin_color = S.filling_color
+	else
+		origin_color = origin.color
+	if(origin_color)
+		background.Blend(origin_color, ICON_SUBTRACT) // Invert
+		product.filling_color = origin_color
+
+	product.overlays += background
+
 	var/image/food_image = image(origin.icon, origin.icon_state)
 	food_image.color = origin.color
 	food_image.overlays += origin.overlays
 	food_image.transform *= 0.7
 	food_image.pixel_y = 2
-
-	var/image/background = image(product.icon, "[product.icon_state]_filling")
-	if(istype(origin, /obj/item/weapon/reagent_containers/food/snacks))
-		var/obj/item/weapon/reagent_containers/food/snacks/S = origin
-		background.color = S.filling_color
-	else
-		background.color = origin.color
-	if(background.color)
-		background.color = list(-1,0,0, 0,-1,0, 0,0,-1, 1,1,1) // Invert
-		product.filling_color = background.color
-
-	background.layer = food_image.layer - 1
-	product.overlays += background
 	product.overlays += food_image
 	return product
