@@ -392,7 +392,7 @@
 				H.drowsyness++
 				if(I.damage >= I.min_bruised_damage)
 					continue
-			I.damage = max(I.damage - removed, 0)
+			I.damage = max(I.damage - removed*3, 0)
 
 /datum/reagent/ryetalyn
 	name = "Ryetalyn"
@@ -928,7 +928,7 @@
 	if(!M.should_have_organ(BP_HEART)) //We want the var for safety but we can do without the actual blood.
 		return
 	M.regenerate_blood(1.5 * removed)
-	
+
 /datum/reagent/immunobooster
 	name = "Immunobooster"
 	description = "A drug that helps restore the immune system. Will not replace a normal immunity."

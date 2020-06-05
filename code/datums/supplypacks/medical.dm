@@ -17,6 +17,32 @@
 	cost = 10
 	containername = "\improper Medical crate"
 
+/decl/hierarchy/supply_pack/medical/somaticgel
+	name = "Somatic gel crate"
+	contains = list(/obj/item/stack/medical/advanced/bruise_pack = 5)
+	cost = 10
+	containername = "\improper Somatic gel crate"
+
+/decl/hierarchy/supply_pack/medical/burngel
+	name = "Burn gel crate"
+	contains = list(/obj/item/stack/medical/advanced/ointment = 5)
+	cost = 10
+	containername = "\improper Burn gel crate"
+
+/decl/hierarchy/supply_pack/medical/somaticgeltank
+	name = "Somatic gel tank"
+	contains = list(/obj/structure/geltank/somatic)
+	cost = 10
+	containername = "\improper Somatic gel crate"
+	containertype = /obj/structure/largecrate
+
+/decl/hierarchy/supply_pack/medical/burngeltank
+	name = "Burn gel tank"
+	contains = list(/obj/structure/geltank/burn)
+	cost = 10
+	containername = "\improper Burn gel crate"
+	containertype = /obj/structure/largecrate
+
 /decl/hierarchy/supply_pack/medical/pills
 	num_contained = 5
 	contains = list(/obj/item/weapon/storage/pill_bottle/antitox,
