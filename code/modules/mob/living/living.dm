@@ -137,7 +137,8 @@ default behaviour is:
 			..()
 			if (!istype(AM, /atom/movable) || AM.anchored)
 				if(confused && prob(50) && m_intent=="run")
-					if(istype(AM, /obj/machinery/disposal))
+					var/obj/machinery/disposal/D = AM
+					if(istype(D) && !(D.stat & BROKEN))
 						Weaken(6)
 						playsound(get_turf(AM), 'sound/effects/clang.ogg', 75)
 						visible_message(SPAN_WARNING("[src] falls into \the [AM]!"), SPAN_WARNING("You fall into \the [AM]!"))
