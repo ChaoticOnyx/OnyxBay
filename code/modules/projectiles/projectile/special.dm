@@ -6,6 +6,7 @@
 	damage_type = BURN
 	nodamage = 1
 	check_armour = "energy"
+	blockable = FALSE
 	var/heavy_effect_range = 1
 	var/light_effect_range = 2
 
@@ -63,6 +64,7 @@
 	damage_type = BRUTE
 	nodamage = 1
 	check_armour = "bullet"
+	blockable = FALSE
 
 	Bump(atom/A as mob|obj|turf|area)
 		if(A == firer)
