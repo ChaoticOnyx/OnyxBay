@@ -147,7 +147,7 @@
 	if(!proximity) return
 	if(istype(target,/turf/simulated/floor) || istype(target,/turf/simulated/wall))
 		last_target = target
-		update_popup(usr)
+		update_popup(user)
 		popup.open()
 	return
 
