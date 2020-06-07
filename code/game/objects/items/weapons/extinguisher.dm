@@ -40,6 +40,28 @@
 	max_water = 1000
 	sprite_name = "miniFE"
 
+/obj/item/weapon/extinguisher/borg
+	name = "mounted extinguisher"
+	desc = "A mounted fire extinguiser."
+	icon_state = "fire_extinguisher_d0"
+	sprite_name = "fire_extinguisher_d"
+	force = 12.5
+	mod_handy = 0.7
+	mod_weight = 1.35
+	max_water = 2500
+
+/obj/item/weapon/extinguisher/borg/mini
+	name = "mounted mini-extinguisher"
+	desc = "A small-capacity fire extinguisher."
+	force = 4.5
+	mod_handy = 0.7
+	mod_weight = 0.6
+	mod_reach = 0.5
+	max_water = 1000
+	spray_amount = 80
+	icon_state = "fire_extinguisher_dm0"
+	sprite_name = "fire_extinguisher_dm"
+
 /obj/item/weapon/extinguisher/New()
 	create_reagents(max_water)
 	reagents.add_reagent(/datum/reagent/water, max_water)

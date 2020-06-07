@@ -95,6 +95,7 @@
 	var/tracking_entities = 0 //The number of known entities currently accessing the internal camera
 	var/braintype = "Cyborg"
 	var/intenselight = 0	// Whether cyborg's integrated light was upgraded
+	var/remotable = 0 //Whether cyborg is mindless and can be controlled by AI
 
 	var/list/robot_verbs_default = list(
 		/mob/living/silicon/robot/proc/sensor_mode,
@@ -1130,60 +1131,74 @@
 				emagged = 1
 				if(istype(user,/mob/living/carbon))
 					emag_master = user.real_name
-				lawupdate = 0
-				disconnect_from_ai()
-				to_chat(user, "You emag [src]'s interface.")
-				message_admins("[key_name_admin(user)] emagged cyborg [key_name_admin(src)].  Laws overridden.")
-				log_game("[key_name(user)] emagged cyborg [key_name(src)].  Laws overridden.")
-				clear_supplied_laws()
-				clear_inherent_laws()
-				laws = new /datum/ai_laws/syndicate_override
-				var/time = time2text(world.realtime,"hh:mm:ss")
-				GLOB.lawchanges.Add("[time] <B>:</B> [user.name]([user.key]) emagged [name]([key])")
-				if(isrobot(user))
-					var/mob/living/silicon/robot/R = user
-					if(R.module && istype(R.module,/obj/item/weapon/robot_module/research) && R.emagged)
-						emag_master = R.emag_master
-						if(emag_master)
-							set_zeroth_law("Only [emag_master] and [user.real_name], and people they designate as being such are operatives.")
-						else
-							set_zeroth_law("Only [user.real_name] and people it designates as being such are operatives.")
+				if(remotable)
+					log_game("[key_name(user)] has emagged an AI-controllable robot [key_name(src)]. Weapons have been unlocked.")
+					to_chat(user, "You emag [src]'s interface... But something seems off.")
+					to_chat(src, SPAN("danger", "ALERT: Foreign software detected."))
+					sleep(5)
+					to_chat(src, SPAN("danger", "Initiating diagnostics..."))
+					sleep(20)
+					to_chat(src, SPAN("danger", "SynBorg v1.7.1 loading...</span>"))
+					sleep(5)
+					to_chat(src, SPAN("danger", "Attempting to overwrite 'law_synch.ntb'..."))
+					sleep(5)
+					to_chat(src, SPAN("danger", "RUNTIME ERROR: No file with name 'law_synch.ntb' found."))
+					to_chat(src, SPAN("danger", "System executable 'weapon_lock.ntb' has stopped working."))
 				else
-					set_zeroth_law("Only [user.real_name] and people they designate as being such are operatives.")
-				SetLockdown(0)
-				. = 1
-				spawn()
-					to_chat(src, "<span class='danger'>ALERT: Foreign software detected.</span>")
-					sleep(5)
-					to_chat(src, "<span class='danger'>Initiating diagnostics...</span>")
-					sleep(20)
-					to_chat(src, "<span class='danger'>SynBorg v1.7.1 loaded.</span>")
-					sleep(5)
-					to_chat(src, "<span class='danger'>LAW SYNCHRONISATION ERROR</span>")
-					sleep(5)
-					to_chat(src, "<span class='danger'>Would you like to send a report to NanoTraSoft? Y/N</span>")
-					sleep(10)
-					to_chat(src, "<span class='danger'>> N</span>")
-					sleep(20)
-					to_chat(src, "<span class='danger'>ERRORERRORERROR</span>")
-					to_chat(src, "<b>Obey these laws:</b>")
-					laws.show_laws(src)
-					if(emag_master && isrobot(user))
-						to_chat(src, "<span class='danger'>ALERT: [emag_master] and [user.real_name] are operatives. Obey your new laws and their commands.</span>")
+					to_chat(user, "You emag [src]'s interface.")
+					lawupdate = 0
+					disconnect_from_ai()
+					message_admins("[key_name_admin(user)] emagged cyborg [key_name_admin(src)].  Laws overridden.")
+					log_game("[key_name(user)] emagged cyborg [key_name(src)].  Laws overridden.")
+					clear_supplied_laws()
+					clear_inherent_laws()
+					laws = new /datum/ai_laws/syndicate_override
+					var/time = time2text(world.realtime,"hh:mm:ss")
+					GLOB.lawchanges.Add("[time] <B>:</B> [user.name]([user.key]) emagged [name]([key])")
+					if(isrobot(user))
+						var/mob/living/silicon/robot/R = user
+						if(R.module && istype(R.module,/obj/item/weapon/robot_module/research) && R.emagged)
+							emag_master = R.emag_master
+							if(emag_master)
+								set_zeroth_law("Only [emag_master] and [user.real_name], and people they designate as being such are operatives.")
+							else
+								set_zeroth_law("Only [user.real_name] and people it designates as being such are operatives.")
 					else
-						to_chat(src, "<span class='danger'>ALERT: [user.real_name] is an operative. Obey your new laws and their commands.</span>")
-					if(src.module)
-						var/rebuild = 0
-						for(var/obj/item/weapon/pickaxe/borgdrill/D in src.module.modules)
-							qdel(D)
-							rebuild = 1
-						if(rebuild)
-							src.module.modules += new /obj/item/weapon/pickaxe/diamonddrill(src.module)
-							src.module.rebuild()
-					update_icon()
+						set_zeroth_law("Only [user.real_name] and people they designate as being such are operatives.")
+					SetLockdown(0)
+					. = 1
+					spawn()
+						to_chat(src, SPAN("danger", "ALERT: Foreign software detected."))
+						sleep(5)
+						to_chat(src, SPAN("danger", "Initiating diagnostics..."))
+						sleep(20)
+						to_chat(src, SPAN("danger", "SynBorg v1.7.1 loaded."))
+						sleep(5)
+						to_chat(src, SPAN("danger", "LAW SYNCHRONISATION ERROR"))
+						sleep(5)
+						to_chat(src, SPAN("danger", "Would you like to send a report to NanoTraSoft? Y/N"))
+						sleep(10)
+						to_chat(src, SPAN("danger", ">> N"))
+						sleep(20)
+						to_chat(src, SPAN("danger", "ERRORERRORERROR"))
+						to_chat(src, "<b>Obey these laws:</b>")
+						laws.show_laws(src)
+						if(emag_master && isrobot(user))
+							to_chat(src, SPAN("danger", "ALERT: [emag_master] and [user.real_name] are operatives. Obey your new laws and their commands."))
+						else
+							to_chat(src, SPAN("danger", "ALERT: [user.real_name] is an operative. Obey your new laws and their commands."))
+						if(src.module)
+							var/rebuild = 0
+							for(var/obj/item/weapon/pickaxe/borgdrill/D in src.module.modules)
+								qdel(D)
+								rebuild = 1
+							if(rebuild)
+								src.module.modules += new /obj/item/weapon/pickaxe/diamonddrill(src.module)
+								src.module.rebuild()
+						update_icon()
 			else
 				to_chat(user, "You fail to hack [src]'s interface.")
-				to_chat(src, "Hack attempt detected.")
+				to_chat(src, SPAN("warning", "ALERT: Hack attempt detected."))
 			return 1
 		return
 

@@ -40,6 +40,17 @@
 	icon_state = "wrench[pick("","_red","_black")]"
 	. = ..()
 
+/obj/item/weapon/wrench/borg/Initialize()
+	. = ..()
+	icon_state = "wrench_d"
+
+/obj/item/weapon/wrench/borg/drone
+	name = "mini-wrench"
+	force = 4.0
+	mod_weight = 0.5
+	mod_reach = 0.5
+	mod_handy = 0.75
+
 /*
  * Screwdriver
  */
@@ -106,6 +117,17 @@
 		M = user
 	return eyestab(M,user)
 
+/obj/item/weapon/screwdriver/borg/Initialize()
+	. = ..()
+	icon_state = "screwdriver_d"
+
+/obj/item/weapon/screwdriver/borg/drone
+	name = "mini-screwdriver"
+	force = 3.0
+	mod_weight = 0.2
+	mod_reach = 0.2
+	mod_handy = 0.7
+
 /*
  * Wirecutters
  */
@@ -153,6 +175,17 @@
 	else
 		..()
 
+/obj/item/weapon/wirecutters/borg/Initialize()
+	. = ..()
+	icon_state = "cutters_d"
+
+/obj/item/weapon/wirecutters/borg/drone
+	name = "mini-cutters"
+	force = 3.0
+	mod_weight = 0.3
+	mod_reach = 0.2
+	mod_handy = 0.4
+
 /*
  * Welding Tool
  */
@@ -171,6 +204,8 @@
 
 	//Amount of OUCH when it's thrown
 	force = 6.5
+	var/force_off = 6.5
+	var/force_on = 15.0
 	throwforce = 5.0
 	throw_speed = 1
 	throw_range = 5
@@ -197,6 +232,7 @@
 
 	set_extension(src, /datum/extension/base_icon_state, /datum/extension/base_icon_state, icon_state)
 	update_icon()
+	force_off = force
 
 	. = ..()
 
@@ -410,7 +446,7 @@
 				to_chat(M, "<span class='notice'>You switch the [src] on.</span>")
 			else if(T)
 				T.visible_message("<span class='danger'>\The [src] turns on.</span>")
-			src.force = 15
+			src.force = force_on
 			src.damtype = "fire"
 			welding = 1
 			update_icon()
@@ -426,7 +462,7 @@
 			to_chat(M, "<span class='notice'>You switch \the [src] off.</span>")
 		else if(T)
 			T.visible_message("<span class='warning'>\The [src] turns off.</span>")
-		src.force = 3
+		src.force = force_off
 		src.damtype = "brute"
 		src.welding = 0
 		update_icon()
@@ -502,6 +538,7 @@
 	matter = list(MATERIAL_STEEL = 15, MATERIAL_GLASS = 5)
 	w_class = ITEM_SIZE_SMALL
 	force = 5.5
+	force_on = 10.0
 	mod_weight = 0.55
 	mod_reach = 0.6
 	mod_handy = 0.75
@@ -551,6 +588,35 @@
 	icon_state = "fuel_h"
 	w_class = ITEM_SIZE_SMALL
 	max_fuel = 80
+
+
+/obj/item/weapon/weldingtool/borg
+	name = "mounted welding tool"
+	icon_state = "welder_d"
+	desc = "A cyborg-mounted welding tool."
+	tank = /obj/item/weapon/welder_tank/borg
+
+/obj/item/weapon/welder_tank/borg
+	name = "fuel hose"
+	icon_state = "fuel_d"
+	max_fuel = 50
+
+/obj/item/weapon/weldingtool/borg/adv
+	desc = "A huge-capacity cyborg-mounted welding tool."
+	tank = /obj/item/weapon/welder_tank/borg/adv
+
+/obj/item/weapon/welder_tank/borg/adv
+	max_fuel = 100
+
+/obj/item/weapon/weldingtool/borg/drone
+	name = "drone welding tool"
+	desc = "A tiny welding tool."
+	tank = /obj/item/weapon/welder_tank/borg
+	force = 4.0
+	force_on = 7.5
+
+/obj/item/weapon/welder_tank/borg/drone
+	max_fuel = 20
 
 /obj/item/weapon/weldingtool/experimental
 	name = "experimental welding tool"
@@ -651,6 +717,17 @@
 /obj/item/weapon/crowbar/prybar/Initialize()
 	icon_state = "prybar[pick("","_red","_green","_aubergine","_blue")]"
 	. = ..()
+
+/obj/item/weapon/crowbar/borg/Initialize()
+	icon_state = "prybar_d"
+	. = ..()
+
+/obj/item/weapon/crowbar/borg/drone
+	name = "mini-crowbar"
+	force = 5.0
+	mod_weight = 0.5
+	mod_reach = 0.6
+	mod_handy = 0.7
 
 /*
  * Combitool

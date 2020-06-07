@@ -31,7 +31,8 @@
 		/obj/item/stack/material,
 		/obj/item/stack/tile,
 		/obj/item/clamp,
-		/obj/item/frame
+		/obj/item/frame,
+		/obj/item/stack/gassembly
 		)
 
 	var/list/cant_hold = list(
@@ -156,7 +157,8 @@
 		/obj/item/device/assembly/igniter,
 		/obj/item/device/assembly/infra,
 		/obj/item/weapon/tank,
-		/obj/item/weapon/paper
+		/obj/item/weapon/paper,
+		/obj/item/device/ai_remote
 		)
 
 /obj/item/weapon/gripper/service //Used to handle food, drinks, and seeds.

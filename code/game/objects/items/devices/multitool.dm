@@ -73,3 +73,10 @@
 	user.AddTopicPrint(src)
 	MT.interact(src, user)
 	return 1
+
+/obj/item/device/multitool/borg
+	icon_state = "multitool_d"
+
+/obj/item/device/multitool/borg/drone
+	name = "mini-multitool"
+	force = 3.0

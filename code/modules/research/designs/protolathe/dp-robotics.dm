@@ -45,3 +45,13 @@
 	build_path = /obj/item/device/mmi/radio_enabled
 	category = "Misc"
 	sort_string = "VACCB"
+
+/datum/design/item/device/ai_remote
+	name = "radio-enabled man-machine interface"
+	id = "ai_remote"
+	req_tech = list(TECH_MAGNET = 3, TECH_ENGINEERING = 3, TECH_MATERIAL = 2)
+	build_type = PROTOLATHE | MECHFAB
+	materials = list(MATERIAL_STEEL = 2500, MATERIAL_GLASS = 1000)
+	build_path = /obj/item/device/ai_remote
+	category = "Robotics"
+	sort_string = "VACCC"

@@ -17,41 +17,44 @@
 	msg += "</span>"
 
 	if(opened)
-		msg += "<span class='warning'>Its cover is open and the power cell is [cell ? "installed" : "missing"].</span>\n"
+		msg += SPAN("warning", "Its cover is open and the power cell is [cell ? "installed" : "missing"].\n")
 	else
 		msg += "Its cover is closed.\n"
 
 	if(!has_power)
-		msg += "<span class='warning'>It appears to be running on backup power.</span>\n"
+		msg += SPAN("warning", "It appears to be running on backup power.\n")
 
 	switch(src.stat)
 		if(CONSCIOUS)
 			if(!src.client)	msg += "It appears to be in stand-by mode.\n" //afk
-		if(UNCONSCIOUS)		msg += "<span class='warning'>It doesn't seem to be responding.</span>\n"
+		if(UNCONSCIOUS)		msg += msg += SPAN("warning", "It doesn't seem to be responding.\n")
 		if(DEAD)
-			msg += "<span class='deadsay'>It's broken, but looks repairable.</span>\n"
+			if(remotable)
+				msg += SPAN("notice", "It appears to be in stand-by mode.\n") // AI disconnected from it
+			else
+				msg += SPAN("deadsay", "It's broken, but looks repairable.\n")
 			//msg += "<span class='deadsay'>It looks completely unsalvageable.</span>\n"
 	msg += "*---------*"
 
 	if(print_flavor_text()) msg += "\n[print_flavor_text()]\n"
 
-	if (pose)
+	if(pose)
 		if( findtext(pose,".",length(pose)) == 0 && findtext(pose,"!",length(pose)) == 0 && findtext(pose,"?",length(pose)) == 0 )
 			pose = addtext(pose,".") //Makes sure all emotes end with a period.
 		msg += "\nIt is [pose]"
 
 	if(hasHUD(user, HUD_SCIENCE))
-		if (module)
+		if(module)
 			msg += "<hr>"
 			var/visors = ""
-			msg += "<b><span class='notice'>Supported upgrades:</b></span>\n"
+			msg += SPAN("notice", "<b>Supported upgrades:</b>\n")
 			for(var/i in module.supported_upgrades)
 				var/atom/tmp = i
 				if(findtext("[tmp]","/obj/item/borg/upgrade/visor/"))
-					visors += "<span class='notice'>	[initial(tmp.name)]<br></span>"
+					visors += SPAN("notice", "	[initial(tmp.name)]<br>")
 				else
-					msg += "<span class='notice'>	[initial(tmp.name)]<br></span>"
-			msg += "<b><span class='notice'>Supported visors:</b></span>\n"
+					msg += SPAN("notice", "	[initial(tmp.name)]<br>")
+			msg += SPAN("notice", "<b>Supported visors:</b>\n")
 			msg += visors
 
 	to_chat(user, msg)
