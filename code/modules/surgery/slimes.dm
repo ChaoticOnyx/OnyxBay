@@ -24,8 +24,8 @@
 	/obj/item/weapon/material/shard = 50, 		\
 	)
 
-	min_duration = 5
-	max_duration = 2 SECONDS
+	min_duration = CUT_MIN_DURATION
+	max_duration = CUT_MAX_DURATION
 	clothes_penalty = FALSE
 
 /datum/surgery_step/slime/cut_flesh/can_use(mob/living/user, mob/living/carbon/slime/target, target_zone, obj/item/tool)
@@ -54,8 +54,8 @@
 	/obj/item/weapon/material/shard = 50, 		\
 	)
 
-	min_duration = 5
-	max_duration = 2 SECONDS
+	min_duration = CUT_MIN_DURATION
+	max_duration = CUT_MAX_DURATION
 	clothes_penalty = FALSE
 
 /datum/surgery_step/slime/cut_innards/can_use(mob/living/user, mob/living/carbon/slime/target, target_zone, obj/item/tool)
@@ -84,8 +84,8 @@
 	/obj/item/weapon/material/hatchet = 75
 	)
 
-	min_duration = 1 SECOND
-	max_duration = 3 SECONDS
+	min_duration = SAW_MIN_DURATION * 0.75
+	max_duration = SAW_MAX_DURATION * 0.75
 	clothes_penalty = FALSE
 
 /datum/surgery_step/slime/saw_core/can_use(mob/living/user, mob/living/carbon/slime/target, target_zone, obj/item/tool)

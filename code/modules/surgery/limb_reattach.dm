@@ -36,8 +36,8 @@
 /datum/surgery_step/limb/attach
 	allowed_tools = list(/obj/item/organ/external = 100)
 
-	min_duration = 40
-	max_duration = 60
+	min_duration = ATTACH_MIN_DURATION
+	max_duration = ATTACH_MAX_DURATION
 
 /datum/surgery_step/limb/attach/begin_step(mob/user, mob/living/carbon/human/target, target_zone, obj/item/tool)
 	var/obj/item/organ/external/E = tool
@@ -72,8 +72,8 @@
 	)
 	can_infect = 1
 
-	min_duration = 75
-	max_duration = 105
+	min_duration = CLAMP_MIN_DURATION * 1.75
+	max_duration = CLAMP_MAX_DURATION * 1.75
 
 /datum/surgery_step/limb/connect/can_use(mob/living/user, mob/living/carbon/human/target, target_zone, obj/item/tool)
 	var/obj/item/organ/external/E = target.get_organ(target_zone)
@@ -109,8 +109,8 @@
 /datum/surgery_step/limb/mechanize
 	allowed_tools = list(/obj/item/robot_parts = 100)
 
-	min_duration = 50
-	max_duration = 70
+	min_duration = ATTACH_MIN_DURATION
+	max_duration = ATTACH_MAX_DURATION
 
 /datum/surgery_step/limb/mechanize/can_use(mob/living/user, mob/living/carbon/human/target, target_zone, obj/item/tool)
 	if(..())

@@ -29,8 +29,8 @@
 	/obj/item/weapon/organfixer/standard = 100
 	)
 
-	min_duration = 30
-	max_duration = 60
+	min_duration = ORGAN_FIX_MIN_DURATION
+	max_duration = ORGAN_FIX_MAX_DURATION
 
 /datum/surgery_step/internal/fix_organ/can_use(mob/living/user, mob/living/carbon/human/target, target_zone, obj/item/tool)
 	var/obj/item/weapon/organfixer/O = tool
@@ -133,8 +133,8 @@
 	/obj/item/weapon/organfixer/advanced = 100
 	)
 
-	min_duration = 30
-	max_duration = 60
+	min_duration = ORGAN_FIX_MIN_DURATION * 1.20
+	max_duration = ORGAN_FIX_MAX_DURATION * 1.20
 
 /datum/surgery_step/internal/fix_organ_multiple/can_use(mob/living/user, mob/living/carbon/human/target, target_zone, obj/item/tool)
 	var/obj/item/weapon/organfixer/O = tool
@@ -232,8 +232,8 @@
 	/obj/item/weapon/tape_roll = 20
 	)
 
-	min_duration = 60
-	max_duration = 90
+	min_duration = ORGAN_FIX_MIN_DURATION * 2
+	max_duration = ORGAN_FIX_MAX_DURATION * 2
 
 /datum/surgery_step/internal/fix_organ_ghetto/can_use(mob/living/user, mob/living/carbon/human/target, target_zone, obj/item/tool)
 	if(!..())
@@ -345,8 +345,8 @@
 	/obj/item/weapon/material/shard = 50
 	)
 
-	min_duration = 60
-	max_duration = 90
+	min_duration = CUT_MIN_DURATION * 1.75
+	max_duration = CUT_MAX_DURATION * 1.75
 
 /datum/surgery_step/internal/detatch_organ/can_use(mob/living/user, mob/living/carbon/human/target, target_zone, obj/item/tool)
 	if(!..())
@@ -409,8 +409,8 @@
 	/obj/item/weapon/material/kitchen/utensil/fork = 20
 	)
 
-	min_duration = 40
-	max_duration = 60
+	min_duration = CLAMP_MIN_DURATION
+	max_duration = CLAMP_MAX_DURATION
 
 /datum/surgery_step/internal/remove_organ/can_use(mob/living/user, mob/living/carbon/human/target, target_zone, obj/item/tool)
 	if(!..())
@@ -484,8 +484,8 @@
 	/obj/item/organ = 100
 	)
 
-	min_duration = 30
-	max_duration = 50
+	min_duration = ATTACH_MIN_DURATION
+	max_duration = ATTACH_MAX_DURATION
 
 /datum/surgery_step/internal/replace_organ/can_use(mob/living/user, mob/living/carbon/human/target, target_zone, obj/item/tool)
 	if(!..())
@@ -568,8 +568,8 @@
 	/obj/item/weapon/tape_roll = 50
 	)
 
-	min_duration = 60
-	max_duration = 90
+	min_duration = CONNECT_MIN_DURATION
+	max_duration = CONNECT_MAX_DURATION
 
 /datum/surgery_step/internal/attach_organ/can_use(mob/living/user, mob/living/carbon/human/target, target_zone, obj/item/tool)
 	if(!..())
@@ -642,8 +642,8 @@
 	can_infect = 0
 	blood_level = 0
 
-	min_duration = 15
-	max_duration = 25
+	min_duration = ORGAN_FIX_MIN_DURATION * 0.5
+	max_duration = ORGAN_FIX_MAX_DURATION * 0.5
 
 /datum/surgery_step/internal/treat_necrosis/can_use(mob/living/user, mob/living/carbon/human/target, target_zone, obj/item/tool)
 	var/obj/item/weapon/reagent_containers/container = tool
