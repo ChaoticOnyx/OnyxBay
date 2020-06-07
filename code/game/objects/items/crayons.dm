@@ -105,22 +105,23 @@
 							"Х","Ц","Ч","Ш","Щ","Ъ","Ы","Ь","Э","Ю","Я"
 							)
 	for(var/letter_num = 1, letter_num <= rus_alphabet.len, letter_num++)
-		dat += "<a href='?\ref[src];drawtype=rus[letter_num]'>[rus_alphabet[letter_num]]</a> "
+		dat += "<a href='?\ref[src];type=russian_letter;drawing=rus[letter_num]'>[rus_alphabet[letter_num]]</a> "
 
 	dat += "<hr>Write english: "
 	for(var/letter_num in text2ascii("a") to text2ascii("z"))
-		dat += "<a href='?\ref[src];drawtype=[ascii2text(letter_num)]'>[uppertext(ascii2text(letter_num))]</a> "
+		dat += "<a href='?\ref[src];type=english_letter;drawing=[ascii2text(letter_num)]'>[uppertext(ascii2text(letter_num))]</a> "
 
-	dat += "<hr><a href='?\ref[src];drawtype=rune'>Draw rune</a>"
+	dat += "<hr><a href='?\ref[src];type=rune;drawing=rune'>Draw rune</a>"
 
 	dat += "<hr>Show direction: "
 	var/list/arrows = list("left" = "&larr;", "right" = "&rarr;", "up" = "&uarr;", "down" = "&darr;")
-	for(var/drawtype in arrows)
-		dat += "<a href='?\ref[src];drawtype=[drawtype]'>[arrows[drawtype]]</a> "
+	for(var/drawing in arrows)
+		dat += "<a href='?\ref[src];type=arrow;drawing=[drawing]'>[arrows[drawing]]</a> "
 
 	dat += "<hr>Draw graffiti: "
-	for(var/drawtype in list("amyjon","face","matt","revolution","engie","guy","end","dwarf","uboa","xyu","stayhigh","fuckxenos","help","cheesy","ghost","godleft"))
-		dat += "<a href='?\ref[src];drawtype=[drawtype]'><img src=\"[get_preview(usr, drawtype)]\" style=\"width: 32px; height: 32px;\"></a> "
+	for(var/drawing in icon_states('icons/effects/crayongraffiti.dmi'))
+		if(length(drawing) > 2 && copytext(drawing, -2) != "_s")
+			dat += "<a href='?\ref[src];type=graffiti;drawing=[drawing]'><img src=\"[get_crayon_preview(colour, shadeColour, drawing, user)]\" style=\"width: 32px; height: 32px;\"></a> "
 
 	if(!popup || popup.user != user)
 		popup = new /datum/browser(user, "crayon", "Choose drawing", 960, 230)
@@ -129,25 +130,11 @@
 		popup.set_content(dat)
 		popup.update()
 
-/obj/item/weapon/pen/crayon/proc/get_preview(mob/receiver, type = "rune1")
-	var/icon/mainOverlay = new /icon('icons/effects/crayondecal.dmi',"[type]",2.1)
-	var/icon/shadeOverlay = new /icon('icons/effects/crayondecal.dmi',"[type]s",2.1)
-	mainOverlay.Blend(colour,ICON_ADD)
-	shadeOverlay.Blend(shadeColour,ICON_ADD)
-	mainOverlay.Blend(shadeOverlay, ICON_OVERLAY)
-
-	if(!receiver)
-		return mainOverlay
-	else
-		var/resourse_name = "[type]-crayon-[copytext(colour,2)]-[copytext(shadeColour,2)].png"
-		receiver << browse(mainOverlay, "file=[resourse_name];display=0")
-		return resourse_name
-
 /obj/item/weapon/pen/crayon/afterattack(atom/target, mob/user as mob, proximity)
 	if(!proximity) return
 	if(istype(target,/turf/simulated/floor) || istype(target,/turf/simulated/wall))
 		last_target = target
-		update_popup(usr)
+		update_popup(user)
 		popup.open()
 	return
 
@@ -157,14 +144,21 @@
 		to_chat(usr, SPAN_WARNING("You moved too far away!"))
 		popup.close()
 		return
-	if(usr.incapacitated()) // Clown can draw dicks if conscious...
+	if(usr.incapacitated())
 		return
-	var/drawtype = href_list["drawtype"] ? href_list["drawtype"] : "rune"
+
+	var/drawing = href_list["drawing"] ? href_list["drawing"] : "rune"
+	var/visible_name = href_list["type"] ? replacetext(href_list["type"], "_", " ") : "drawing"
 	popup.close()
+	var/turf/multiple_check = last_target
 	if(instant || do_after(usr, 50))
+		if(multiple_check != last_target)
+			return // Someone is trying to draw is several adjacent places using one crayon
 		if(!last_target)
 			last_target = get_turf(usr)
-		new /obj/effect/decal/cleanable/crayon(last_target,colour,shadeColour,drawtype)
+		if(drawing == "rune")
+			drawing = "rune[rand(1,6)]"
+		new /obj/effect/decal/cleanable/crayon(last_target, colour, shadeColour, drawing, visible_name)
 		to_chat(usr, "You finish drawing.")
 		last_target.add_fingerprint(usr)
 		reduce_uses()
@@ -179,7 +173,7 @@
 		to_chat(user, "You start outlining [M.name].")
 		if(do_after(user, 50))
 			to_chat(user, "You finish outlining [M.name].")
-			new /obj/effect/decal/cleanable/crayon(M.loc,colour,shadeColour,"body outline")
+			new /obj/effect/decal/cleanable/crayon(M.loc, colour, shadeColour, "outline", "body outline")
 			reduce_uses()
 	else
 		..()
@@ -187,7 +181,7 @@
 /obj/item/weapon/pen/crayon/dropped()
 	. = ..()
 	if(popup)
-		popup.close() // ...but he can't, if you disable his hands
+		popup.close()
 
 /obj/item/weapon/pen/crayon/proc/reduce_uses(amount = 1, action_text = "used up")
 	if(uses)
