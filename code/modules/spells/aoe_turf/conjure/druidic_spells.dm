@@ -107,3 +107,61 @@
 						"color" = "#0099ff"
 						)
 			return "Your bear is now worshiped as a god amongst bears."
+
+/spell/aoe_turf/conjure/summon/goat
+	name = "Summon Goat"
+	desc = "This spell summons a permanent goat companion that will follow your orders and eat your cabbage."
+	charge_max = 3000
+	feedback = "GT"
+	spell_flags = NEEDSCLOTHES
+	invocation = "MEH'YOR AH-MEDGOR DAYA!"
+	invocation_type = SpI_SHOUT
+	level_max = list(Sp_TOTAL = 2, Sp_SPEED = 0, Sp_POWER = 2)
+
+	range = 0
+
+	name_summon = 1
+
+	summon_amt = 1
+
+	summon_type = list(/mob/living/simple_animal/hostile/commanded/goat)
+	newVars = list("maxHealth" = 80,
+				"health" = 80,
+				"melee_damage_lower" = 10,
+				"melee_damage_upper" = 15,
+				)
+
+	hud_state = "wiz_goat1"
+
+
+/spell/aoe_turf/conjure/summon/goat/empower_spell()
+	if(!..())
+		return 0
+
+	switch(spell_levels[Sp_POWER])
+		if(1)
+			newVars = list("maxHealth" = 130,
+						"health" = 130,
+						"melee_damage_lower" = 15,
+						"melee_damage_upper" = 20,
+						"icon_state" = "goat_guard",
+						"icon_living" = "goat_guard",
+						"icon_dead" = "goat_guard_dead"
+						)
+			hud_state = "wiz_goat2"
+			usr.ability_master.update_abilities(1)
+			return "Your goat has been upgraded to guard."
+
+		if(2)
+			newVars = list("maxHealth" = 180,
+						"health" = 180,
+						"melee_damage_lower" = 25,
+						"melee_damage_upper" = 30,
+						"icon_state" = "king_goat",
+						"icon_living" = "king_goat",
+						"icon_dead" = "king_goat_dead"
+						)
+			hud_state = "wiz_goat3"
+			usr.ability_master.update_abilities(1)
+			return "Your goat has been upgraded to king."
+

@@ -37,9 +37,9 @@
 				if(istype(src, /mob/living/carbon))
 					var/mob/living/carbon/C = src
 					understand_animals = C.is_hallucinating() && prob(15)
-				if(!understand_animals)
 					var/mob/living/simple_animal/S = speaker
 					message = pick(S.speak)
+				if(!understand_animals)
 			else
 				if(language)
 					message = language.scramble(message)

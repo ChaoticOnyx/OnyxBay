@@ -1,15 +1,21 @@
 //goat
-/mob/living/simple_animal/hostile/retaliate/goat
+/mob/living/simple_animal/hostile/retaliate/goat  //If you are searching wizard-spawned goat, go to /mob/living/simple_animal/hostile/commanded/goat
 	name = "goat"
 	desc = "Not known for their pleasant disposition."
 	icon_state = "goat"
 	icon_living = "goat"
 	icon_dead = "goat_dead"
-	speak = list("EHEHEHEHEH","eh?")
+	speak = list("Be-e-e...", "Me-e-e...", "A-a-ah...", "ME-E-E!", "BE-E-E!",
+				 "A-A-AH!", "Be-e?", "Me-e?", "A-ah?", "M-e-e-e-e-e-e!")
+	var/rare_speaks = list("Be-e-da-a-un" = 0.0001, "Ahme-e-d" = 0.001) //fucken rare rjombas (chance in percents)
+	var/crazy_time = 0 SECONDS
+	var/DEFAULT_CRAZY_TIME = 2 MINUTES
+	var/CRAZY_DAMAGE_REDUCTION = 0.75 //for example 0.75 mean what only 25% of damage will be taken by goat
+	var/CRAZY_ATTACK_BOOST = 5 //for example 5 mean what every attack will five times powerful
 	speak_emote = list("brays")
 	emote_hear = list("brays")
 	emote_see = list("shakes its head", "stamps a foot", "glares around")
-	speak_chance = 1
+	speak_chance = 5
 	turns_per_move = 5
 	see_in_dark = 6
 	meat_type = /obj/item/weapon/reagent_containers/food/snacks/meat/goat
@@ -19,7 +25,7 @@
 	response_harm   = "kicks"
 	faction = "goat"
 	attacktext = "kicked"
-	health = 40
+	health = 120
 	melee_damage_lower = 1
 	melee_damage_upper = 5
 	var/datum/reagents/udder = null
@@ -36,10 +42,12 @@
 	. = ..()
 	if(.)
 		//chance to go crazy and start wacking stuff
-		if(!enemies.len && prob(1))
+		if((!enemies.len && prob(1)) || crazy_time > 0)
 			Retaliate()
+			crazy_time -= 2 SECONDS
+			if(crazy_time < 0)crazy_time = 0
 
-		if(enemies.len && prob(10))
+		if(enemies.len && prob(10) && crazy_time <= 0)
 			enemies = list()
 			LoseTarget()
 			src.visible_message("<span class='notice'>\The [src] calms down.</span>")
@@ -67,9 +75,45 @@
 				var/step = get_step_to(src, food, 0)
 				Move(step)
 
+/mob/living/simple_animal/hostile/retaliate/goat/speaking()
+	for(var/message in rare_speaks)
+		if(prob(rare_speaks[message]))
+			say(message)
+			return
+
+	var/action = pick(
+		speak.len;      "speak",
+		emote_hear.len; "emote_hear",
+		emote_see.len;  "emote_see"
+		)
+
+	switch(action)
+		if("speak")
+			var/message = pick(speak)
+			say(message)
+			if(prob(10))
+				if(message == "ME-E-E!")
+					playsound_local(loc, 'sound/voice/goat3.ogg', 40)
+				if(message == "Me-e-e..." || message == "M-e-e-e-e-e-e!")
+					playsound_local(loc, 'sound/voice/goat4.ogg', 40)
+				if(message == "A-a-ah...")
+					playsound_local(loc, 'sound/voice/goat2.ogg', 25)
+				if(message == "A-A-AH!")
+					playsound_local(loc, 'sound/voice/goat1.ogg', 15)
+
+		if("emote_hear")
+			audible_emote("[pick(emote_hear)].")
+		if("emote_see")
+			visible_emote("[pick(emote_see)].")
+
+/mob/living/simple_animal/hostile/retaliate/goat/adjustBruteLoss(damage)
+	if(crazy_time)
+		damage = damage * (1 - CRAZY_DAMAGE_REDUCTION)
+	..(damage)
+
 /mob/living/simple_animal/hostile/retaliate/goat/Retaliate()
 	..()
-	if(stat == CONSCIOUS && prob(50))
+	if(stat == CONSCIOUS && prob(50) && (crazy_time == 0 || crazy_time == DEFAULT_CRAZY_TIME))
 		visible_message("<span class='warning'>\The [src] gets an evil-looking gleam in their eye.</span>")
 
 /mob/living/simple_animal/hostile/retaliate/goat/attackby(obj/item/O, mob/user)
@@ -81,9 +125,33 @@
 			to_chat(user, "<span class='warning'>\The [O] is full.</span>")
 		if(!transfered)
 			to_chat(user, "<span class='warning'>The udder is dry. Wait a bit longer...</span>")
-	else
-		..()
+		return
+	var/obj/item/weapon/reagent_containers/food/snacks/grown/fruit = O
+	if(stat == CONSCIOUS && istype(fruit) && fruit.seed.kitchen_tag  == "chili")
+		qdel(O)
+		addtimer(CALLBACK(src, .proc/set_crazy), 10 SECONDS)
+		visible_message("<span class='warning'>\The [src] face redden and it blows steam out of the nose.</span>")
+		return
+	..()
 
+/mob/living/simple_animal/hostile/retaliate/goat/proc/set_crazy()
+	crazy_time = DEFAULT_CRAZY_TIME
+
+/mob/living/simple_animal/hostile/retaliate/goat/AttackingTarget()
+	var/damage_changed = false
+	if(crazy_time)
+		melee_damage_lower = melee_damage_lower * CRAZY_ATTACK_BOOST
+		melee_damage_upper = melee_damage_upper * CRAZY_ATTACK_BOOST
+		damage_changed = true
+	..()
+	if(isliving(target_mob) && prob(10))
+		var/mob/living/L = target_mob
+		if(!L.stat || (L.stat && !L.paralysis))
+			visible_message("<span class='danger'>[L] has been knocked down!</span>")
+			L.apply_effect(4, WEAKEN)
+	if(damage_changed)
+		melee_damage_lower = melee_damage_lower / CRAZY_ATTACK_BOOST
+		melee_damage_upper = melee_damage_upper / CRAZY_ATTACK_BOOST
 //cow
 /mob/living/simple_animal/cow
 	name = "cow"
