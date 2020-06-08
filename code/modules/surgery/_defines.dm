@@ -3,7 +3,7 @@
 
 /* some defines for often used surgery steps */
 
-#define CUT_MIN_DURATION       25 // making cuts/unscrewing or deattaching organs
+#define CUT_MIN_DURATION       25 // making cuts / unscrewing or deattaching organs
 #define CUT_MAX_DURATION       35
 
 #define CLAMP_MIN_DURATION     30 // hemostat usage
@@ -30,8 +30,8 @@
 #define ATTACH_MIN_DURATION    40 // attaching externals / putting something in
 #define ATTACH_MAX_DURATION    60
 
-#define ORGAN_FIX_MIN_DURATION 30 // organs fixing / welding
-#define ORGAN_FIX_MAX_DURATION 50
+#define ORGAN_FIX_MIN_DURATION 25 // organs fixing / welding
+#define ORGAN_FIX_MAX_DURATION 45
 
 #define CONNECT_MIN_DURATION   40 // fix o vein usage
 #define CONNECT_MAX_DURATION   60
