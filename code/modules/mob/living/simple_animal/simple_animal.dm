@@ -121,19 +121,7 @@
 	//Speaking
 	if(!client && speak_chance)
 		if(rand(0,200) < speak_chance)
-			var/action = pick(
-				speak.len;      "speak",
-				emote_hear.len; "emote_hear",
-				emote_see.len;  "emote_see"
-				)
-
-			switch(action)
-				if("speak")
-					say(pick(speak))
-				if("emote_hear")
-					audible_emote("[pick(emote_hear)].")
-				if("emote_see")
-					visible_emote("[pick(emote_see)].")
+			speaking()
 
 	if(in_stasis)
 		return 1 // return early to skip atmos checks
@@ -185,6 +173,21 @@
 			handle_panic_target()
 
 	return 1
+
+/mob/living/simple_animal/proc/speaking()
+	var/action = pick(
+		speak.len;      "speak",
+		emote_hear.len; "emote_hear",
+		emote_see.len;  "emote_see"
+		)
+
+	switch(action)
+		if("speak")
+			say(pick(speak))
+		if("emote_hear")
+			audible_emote("[pick(emote_hear)].")
+		if("emote_see")
+			visible_emote("[pick(emote_see)].")
 
 /mob/living/simple_animal/proc/escape(mob/living/M, obj/O)
 	O.unbuckle_mob(M)

@@ -1923,6 +1923,7 @@
 #include "code\modules\mob\living\simple_animal\hostile\commanded\_command_defines.dm"
 #include "code\modules\mob\living\simple_animal\hostile\commanded\bear_companion.dm"
 #include "code\modules\mob\living\simple_animal\hostile\commanded\commanded.dm"
+#include "code\modules\mob\living\simple_animal\hostile\commanded\magic_goat.dm"
 #include "code\modules\mob\living\simple_animal\hostile\commanded\nanomachines.dm"
 #include "code\modules\mob\living\simple_animal\hostile\retaliate\clown.dm"
 #include "code\modules\mob\living\simple_animal\hostile\retaliate\drone.dm"
