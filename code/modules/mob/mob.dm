@@ -244,6 +244,12 @@
 		return 1
 
 	face_atom(A)
+	if(istype(src, /mob/living/carbon))
+		var/mob/living/carbon/C = src
+		var/mob/fake = C.get_fake_appearance(A)
+		if(fake)
+			fake.examine(src)
+			return
 	A.examine(src)
 
 /mob/verb/pointed(atom/A as mob|obj|turf in view())
