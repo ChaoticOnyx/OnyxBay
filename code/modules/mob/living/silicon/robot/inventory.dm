@@ -232,3 +232,19 @@
 /mob/living/silicon/robot/put_in_hands(obj/item/W) // No hands.
 	W.forceMove(get_turf(src))
 	return 1
+
+/mob/living/silicon/robot/proc/examine_module(var/slot)
+	var/list/index_module = list(module_state_1,module_state_2,module_state_3)
+	var/result = "	Module [slot] is "
+	result += (index_module[slot]) ? "\icon[index_module[slot]] [index_module[slot]]." : "nothing."
+	result += "\n"
+	return result
+
+/mob/living/silicon/robot/proc/examine_all_modules()
+	var/result="It has three module slots.\n"
+	for (var/x = 1; x <=3; x++)
+		result += examine_module(x)
+	var/selected = get_selected_module()
+	if (selected)
+		result += "\nThe light on Module [selected] is glowing green.\n"
+	return result
