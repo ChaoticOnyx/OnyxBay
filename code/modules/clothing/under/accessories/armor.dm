@@ -66,7 +66,7 @@
 	name = "medium armor plate"
 	desc = "A plasteel-reinforced synthetic armor plate, providing good protection. Attaches to a plate carrier."
 	icon_state = "armor_medium"
-	armor = list(melee = 40, bullet = 40, laser = 40, energy = 15, bomb = 30, bio = 0, rad = 0)
+	armor = list(melee = 35, bullet = 35, laser = 35, energy = 15, bomb = 30, bio = 0, rad = 0)
 
 /obj/item/clothing/accessory/armorplate/merc
 	name = "heavy armor plate"
@@ -85,7 +85,7 @@
 	icon_state = "armguards"
 	gender = PLURAL
 	body_parts_covered = ARMS
-	armor = list(melee = 40, bullet = 40, laser = 40, energy = 25, bomb = 30, bio = 0, rad = 0)
+	armor = list(melee = 40, bullet = 40, laser = 40, energy = 15, bomb = 25, bio = 0, rad = 0)
 	slot = ACCESSORY_SLOT_ARMOR_A
 
 /obj/item/clothing/accessory/armguards/blue
@@ -114,21 +114,21 @@
 	name = "riot arm guards"
 	desc = "A pair of armored arm pads with heavy padding to protect against melee attacks."
 	icon_state = "armguards_riot"
-	armor = list(melee = 80, bullet = 40, laser = 40, energy = 15, bomb = 25, bio = 0, rad = 0)
+	armor = list(melee = 80, bullet = 35, laser = 35, energy = 15, bomb = 25, bio = 0, rad = 0)
 	siemens_coefficient = 0.5
 
 /obj/item/clothing/accessory/armguards/ballistic
 	name = "ballistic arm guards"
 	desc = "A pair of armored arm pads with heavy plates to protect against ballistic projectiles."
 	icon_state = "armguards_ballistic"
-	armor = list(melee = 40, bullet = 85, laser = 40, energy = 15, bomb = 25, bio = 0, rad = 0)
+	armor = list(melee = 35, bullet = 85, laser = 35, energy = 15, bomb = 25, bio = 0, rad = 0)
 	siemens_coefficient = 0.7
 
 /obj/item/clothing/accessory/armguards/ablative
 	name = "ablative arm guards"
 	desc = "A pair of armored arm pads with advanced shielding to protect against energy weapons."
 	icon_state = "armguards_ablative"
-	armor = list(melee = 40, bullet = 40, laser = 85, energy = 60, bomb = 0, bio = 0, rad = 0)
+	armor = list(melee = 35, bullet = 35, laser = 85, energy = 60, bomb = 0, bio = 0, rad = 0)
 	siemens_coefficient = 0
 
 //Leg guards
@@ -141,7 +141,7 @@
 	icon_state = "legguards"
 	gender = PLURAL
 	body_parts_covered = LEGS
-	armor = list(melee = 40, bullet = 40, laser = 40, energy = 15, bomb = 30, bio = 0, rad = 0)
+	armor = list(melee = 35, bullet = 35, laser = 35, energy = 15, bomb = 25, bio = 0, rad = 0)
 	slot = ACCESSORY_SLOT_ARMOR_L
 
 /obj/item/clothing/accessory/legguards/blue
@@ -170,7 +170,7 @@
 	name = "riot leg guards"
 	desc = "A pair of armored leg pads with heavy padding to protect against melee attacks. Looks like they might impair movement."
 	icon_state = "legguards_riot"
-	armor = list(melee = 80, bullet = 40, laser = 40, energy = 15, bomb = 25, bio = 0, rad = 0)
+	armor = list(melee = 80, bullet = 35, laser = 35, energy = 15, bomb = 25, bio = 0, rad = 0)
 	siemens_coefficient = 0.5
 	slowdown = 1
 
@@ -178,7 +178,7 @@
 	name = "ballistic leg guards"
 	desc = "A pair of armored leg pads with heavy plates to protect against ballistic projectiles. Looks like they might impair movement."
 	icon_state = "legguards_ballistic"
-	armor = list(melee = 40, bullet = 85, laser = 40, energy = 15, bomb = 25, bio = 0, rad = 0)
+	armor = list(melee = 35, bullet = 85, laser = 35, energy = 15, bomb = 25, bio = 0, rad = 0)
 	siemens_coefficient = 0.7
 	slowdown = 1
 
@@ -186,7 +186,7 @@
 	name = "ablative leg guards"
 	desc = "A pair of armored leg pads with advanced shielding to protect against energy weapons. Looks like they might impair movement."
 	icon_state = "legguards_ablative"
-	armor = list(melee = 40, bullet = 40, laser = 85, energy = 60, bomb = 0, bio = 0, rad = 0)
+	armor = list(melee = 35, bullet = 35, laser = 85, energy = 60, bomb = 25, bio = 0, rad = 0)
 	siemens_coefficient = 0
 	slowdown = 1
 
