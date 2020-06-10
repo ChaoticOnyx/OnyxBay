@@ -6,8 +6,8 @@
 
 ## Полезная информация
 
-* [Руководство по разработке](https://github.com/ChaoticOnyx/OnyxBay/blob/dev/docs/contributing.md)
-* [Процесс работы с иссуями](https://github.com/ChaoticOnyx/OnyxBay/blob/dev/docs/issues_processing.md)
+* **[Руководство по разработке OnyxBay](https://github.com/ChaoticOnyx/OnyxBay/blob/dev/docs/contributing.md)** - обязательный гайд для всех контрибутеров о правилах написания кода и создания Пулл Реквестов.
+* **[Процесс работы с задачами](https://github.com/ChaoticOnyx/OnyxBay/blob/dev/docs/issues_processing.md)** - информация о том, как мы работаем с задачами и подробное описание всех функциональных плашек, которые вешаются на иссуи.
 
 ## Списки задач
 
