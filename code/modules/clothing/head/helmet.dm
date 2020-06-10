@@ -1,7 +1,7 @@
 /obj/item/clothing/head/helmet
 	name = "helmet"
 	desc = "Reinforced headgear. Protects the head from impacts."
-	icon_state = "helmetold"
+	icon_state = "helmet"
 	item_state_slots = list(
 		slot_l_hand_str = "helmet",
 		slot_r_hand_str = "helmet",
@@ -10,7 +10,7 @@
 	restricted_accessory_slots = list(ACCESSORY_SLOT_HELM_C)
 	item_flags = ITEM_FLAG_THICKMATERIAL
 	body_parts_covered = HEAD
-	armor = list(melee = 50, bullet = 50, laser = 50,energy = 25, bomb = 30, bio = 0, rad = 0)
+	armor = list(melee = 50, bullet = 50, laser = 50,energy = 25, bomb = 35, bio = 0, rad = 0)
 	flags_inv = HIDEEARS|BLOCKHEADHAIR
 	cold_protection = HEAD
 	min_cold_protection_temperature = HELMET_MIN_COLD_PROTECTION_TEMPERATURE
@@ -18,33 +18,26 @@
 	max_heat_protection_temperature = HELMET_MAX_HEAT_PROTECTION_TEMPERATURE
 	siemens_coefficient = 0.6
 	w_class = ITEM_SIZE_NORMAL
+	var/has_visor = 1
+
+/obj/item/clothing/head/helmet/attack_self(mob/user)
+	if(has_visor)
+		togglevisor(user)
+		add_fingerprint(user)
+	else
+		..()
+
+/obj/item/clothing/head/helmet/proc/togglevisor(mob/user)
+	if(icon_state == initial(icon_state))
+		src.icon_state = "[icon_state]_up"
+		to_chat(user, "You raise the visor on the [src].")
+	else
+		icon_state = initial(icon_state)
+		to_chat(user, "You lower the visor on the [src].")
+	update_clothing_icon()
 
 /obj/item/clothing/head/helmet/nt
-	name = "\improper corporate security helmet"
-	desc = "A helmet with 'CORPORATE SECURITY' printed on the back in red lettering."
-	icon_state = "helmet_nt"
-
-/obj/item/clothing/head/helmet/pcrc
-	name = "\improper PCRC helmet"
-	desc = "A helmet with 'PRIVATE SECURITY' printed on the back in cyan lettering."
-	icon_state = "helmet_pcrc"
-
-/obj/item/clothing/head/helmet/nt/guard
 	starting_accessories = list(/obj/item/clothing/accessory/armor/helmcover/nt)
-
-/obj/item/clothing/head/helmet/tactical
-	name = "tactical helmet"
-	desc = "A tan helmet made from advanced ceramic. Comfortable and robust."
-	icon_state = "helmet_tac"
-	armor = list(melee = 55, bullet = 60, laser = 60, energy = 45, bomb = 30, bio = 0, rad = 0)
-	siemens_coefficient = 0.5
-
-/obj/item/clothing/head/helmet/merc
-	name = "combat helmet"
-	desc = "A heavily reinforced helmet painted with red markings. Feels like it could take a lot of punishment."
-	icon_state = "helmet_merc"
-	armor = list(melee = 70, bullet = 70, laser = 70, energy = 35, bomb = 30, bio = 0, rad = 0)
-	siemens_coefficient = 0.4
 
 /obj/item/clothing/head/helmet/riot
 	name = "riot helmet"
@@ -52,53 +45,16 @@
 	icon_state = "helmet_riot"
 	valid_accessory_slots = null
 	body_parts_covered = HEAD|FACE|EYES //face shield
-	armor = list(melee = 70, bullet = 45, laser = 45, energy = 25, bomb = 35, bio = 5, rad = 0)
+	armor = list(melee = 85, bullet = 50, laser = 50, energy = 25, bomb = 35, bio = 5, rad = 0)
 	siemens_coefficient = 0.5
 	action_button_name = "Toggle Visor"
-
-/obj/item/clothing/head/helmet/riot/attack_self(mob/user as mob)
-	if(src.icon_state == initial(icon_state))
-		src.icon_state = "[icon_state]_up"
-		to_chat(user, "You raise the visor on the [src].")
-	else
-		src.icon_state = initial(icon_state)
-		to_chat(user, "You lower the visor on the [src].")
-	update_clothing_icon()
-
-/obj/item/clothing/head/helmet/police
-	name = "police helmet"
-	desc = "It's a helmet specifically designed for police use. Comfortable and robust."
-	icon_state = "helmet_police"
-	valid_accessory_slots = null
-	body_parts_covered = HEAD|FACE|EYES //face shield
-	armor = list(melee = 55, bullet = 55, laser = 55, energy = 25, bomb = 35, bio = 5, rad = 0)
-	siemens_coefficient = 0.6
-	action_button_name = "Toggle Visor"
-
-/obj/item/clothing/head/helmet/police/attack_self(mob/user as mob)
-	if(src.icon_state == initial(icon_state))
-		src.icon_state = "[icon_state]_up"
-		to_chat(user, "You raise the visor on the [src].")
-	else
-		src.icon_state = initial(icon_state)
-		to_chat(user, "You lower the visor on the [src].")
-	update_clothing_icon()
-
-/obj/item/clothing/head/helmet/german
-	name = "stahlhelm"
-	desc = "A simple yet menacing looking steel helmet. Protects the head from bullets."
-	icon_state = "wehrhelm"
-	valid_accessory_slots = null
-	body_parts_covered = HEAD
-	armor = list(melee = 45, bullet = 60, laser = 45,energy = 10, bomb = 40, bio = 2, rad = 10)
-	siemens_coefficient = 1
 
 /obj/item/clothing/head/helmet/ablative
 	name = "ablative helmet"
 	desc = "A helmet made from advanced materials which protects against concentrated energy weapons."
 	icon_state = "helmet_reflect"
 	valid_accessory_slots = null
-	armor = list(melee = 35, bullet = 35, laser = 82, energy = 50, bomb = 5, bio = 2, rad = 0)
+	armor = list(melee = 50, bullet = 50, laser = 90, energy = 60, bomb = 35, bio = 2, rad = 0)
 	siemens_coefficient = 0
 
 /obj/item/clothing/head/helmet/ballistic
@@ -106,27 +62,8 @@
 	desc = "A helmet with reinforced plating to protect against ballistic projectiles."
 	icon_state = "helmet_bulletproof"
 	valid_accessory_slots = null
-	armor = list(melee = 45, bullet = 85, laser = 45, energy = 5, bomb = 40, bio = 2, rad = 0)
+	armor = list(melee = 50, bullet = 90, laser = 50, energy = 5, bomb = 35, bio = 2, rad = 0)
 	siemens_coefficient = 0.6
-
-/obj/item/clothing/head/helmet/swat
-	name = "\improper SWAT helmet"
-	desc = "They're often used by highly trained Swat Members."
-	icon_state = "swat"
-	armor = list(melee = 65, bullet = 75, laser = 75,energy = 25, bomb = 50, bio = 10, rad = 0)
-	cold_protection = HEAD
-	min_cold_protection_temperature = SPACE_HELMET_MIN_COLD_PROTECTION_TEMPERATURE
-	siemens_coefficient = 0.3
-
-/obj/item/clothing/head/helmet/thunderdome
-	name = "\improper Thunderdome helmet"
-	desc = "<i>'Let the battle commence!'</i>"
-	icon_state = "thunderdome"
-	valid_accessory_slots = null
-	armor = list(melee = 80, bullet = 60, laser = 50,energy = 10, bomb = 25, bio = 10, rad = 0)
-	cold_protection = HEAD
-	min_cold_protection_temperature = SPACE_HELMET_MIN_COLD_PROTECTION_TEMPERATURE
-	siemens_coefficient = 1
 
 /obj/item/clothing/head/helmet/gladiator
 	name = "gladiator helmet"
@@ -136,18 +73,17 @@
 	flags_inv = HIDEMASK|HIDEEARS|HIDEEYES|BLOCKHAIR
 	body_parts_covered = HEAD|FACE
 	siemens_coefficient = 1
+	has_visor = 0
 
-/obj/item/clothing/head/helmet/augment
-	name = "Augment Array"
-	desc = "A helmet with optical and cranial augments coupled to it."
-	icon_state = "v62"
-	valid_accessory_slots = null
-	armor = list(melee = 70, bullet = 60, laser = 50,energy = 25, bomb = 50, bio = 10, rad = 0)
-	flags_inv = HIDEEARS|HIDEEYES
-	body_parts_covered = HEAD|EYES|BLOCKHEADHAIR
-	cold_protection = HEAD
-	min_cold_protection_temperature = SPACE_HELMET_MIN_COLD_PROTECTION_TEMPERATURE
-	siemens_coefficient = 0.4
+/obj/item/clothing/head/helmet/captain
+	name = "captain's helmet"
+	icon_state = "caphelmet"
+	item_state = "caphelmet"
+	desc = "A special extra-durable helmet designed for the most fashionable of military figureheads."
+	flags_inv = HIDEFACE|BLOCKHAIR
+	armor = list(melee = 65, bullet = 65, laser = 65,energy = 35, bomb = 45, bio = 10, rad = 10)
+	siemens_coefficient = 0.5
+	has_visor = 0
 
 //Non-hardsuit ERT helmets.
 //Commander
@@ -162,6 +98,7 @@
 		)
 	armor = list(melee = 62, bullet = 50, laser = 50,energy = 35, bomb = 10, bio = 2, rad = 0)
 	siemens_coefficient = 0.5
+	has_visor = 0
 
 //Security
 /obj/item/clothing/head/helmet/ert/security
@@ -181,7 +118,54 @@
 	desc = "An in-atmosphere helmet worn by many corporate and private asset protection forces. Has red and white highlights."
 	icon_state = "erthelmet_med"
 
-/obj/item/clothing/head/helmet/tactical/mirania
-	name = "bundeforz tactical helmet"
-	desc = "A light grey helmet made from advanced ceramic. Comfortable and robust."
-	icon_state = "m_helmet"
+//All of the armor below is mostly unused
+/obj/item/clothing/head/helmet/swat
+	name = "\improper SWAT helmet"
+	desc = "They're often used by highly trained SWAT Members."
+	icon_state = "swat"
+	armor = list(melee = 85, bullet = 85, laser = 85,energy = 55, bomb = 50, bio = 50, rad = 0)
+	cold_protection = HEAD
+	min_cold_protection_temperature = SPACE_HELMET_MIN_COLD_PROTECTION_TEMPERATURE
+	siemens_coefficient = 0.3
+	has_visor = 0
+
+/obj/item/clothing/head/helmet/german
+	name = "stahlhelm"
+	desc = "A simple yet menacing looking steel helmet. Protects the head from bullets."
+	icon_state = "wehrhelm"
+	valid_accessory_slots = null
+	body_parts_covered = HEAD
+	armor = list(melee = 45, bullet = 60, laser = 45,energy = 10, bomb = 40, bio = 2, rad = 10)
+	siemens_coefficient = 1
+	has_visor = 0
+
+/obj/item/clothing/head/helmet/augment
+	name = "Augment Array"
+	desc = "A helmet with optical and cranial augments coupled to it."
+	icon_state = "v62"
+	valid_accessory_slots = null
+	armor = list(melee = 70, bullet = 60, laser = 50,energy = 25, bomb = 50, bio = 10, rad = 0)
+	flags_inv = HIDEEARS|HIDEEYES
+	body_parts_covered = HEAD|EYES|BLOCKHEADHAIR
+	cold_protection = HEAD
+	min_cold_protection_temperature = SPACE_HELMET_MIN_COLD_PROTECTION_TEMPERATURE
+	siemens_coefficient = 0.4
+	has_visor = 0
+
+/obj/item/clothing/head/helmet/merc
+	name = "heavy helmet"
+	desc = "A heavily reinforced helmet painted with red markings. Feels like it could take a lot of punishment."
+	icon_state = "helmet_merc"
+	armor = list(melee = 75, bullet = 75, laser = 75, energy = 50, bomb = 50, bio = 50, rad = 0)
+	siemens_coefficient = 0.4
+
+/obj/item/clothing/head/helmet/thunderdome
+	name = "\improper Thunderdome helmet"
+	desc = "<i>'Let the battle commence!'</i>"
+	icon_state = "thunderdome"
+	valid_accessory_slots = null
+	armor = list(melee = 80, bullet = 60, laser = 50,energy = 10, bomb = 25, bio = 10, rad = 0)
+	cold_protection = HEAD
+	min_cold_protection_temperature = SPACE_HELMET_MIN_COLD_PROTECTION_TEMPERATURE
+	siemens_coefficient = 1
+	has_visor = 0

@@ -23,6 +23,7 @@
 	randpixel = 0
 	species_restricted = list("exclude", SPECIES_NABBER, SPECIES_DIONA, "Xenomorph")
 	flash_protection = FLASH_PROTECTION_MAJOR
+	has_visor = 0
 
 	var/obj/machinery/camera/camera
 

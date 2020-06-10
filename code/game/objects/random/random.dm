@@ -823,7 +823,6 @@ obj/random/obstruction/spawn_choices()
 
 /obj/random/hat/spawn_choices()
 	return list(/obj/item/clothing/head/helmet = 2,
-				/obj/item/clothing/head/helmet/tactical = 1,
 				/obj/item/clothing/head/helmet/space/emergency = 1,
 				/obj/item/clothing/head/bio_hood/general = 1,
 				/obj/item/clothing/head/hardhat = 4,

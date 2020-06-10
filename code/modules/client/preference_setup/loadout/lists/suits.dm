@@ -142,8 +142,8 @@
 /datum/gear/suit/trenchcoat/New()
 	..()
 	var/trenchcoats = list()
-	trenchcoats += /obj/item/clothing/suit/storage/det_trench
-	trenchcoats += /obj/item/clothing/suit/storage/det_trench/grey
+	trenchcoats += /obj/item/clothing/suit/storage/det_trench/civilian
+	trenchcoats += /obj/item/clothing/suit/storage/det_trench/civilian/grey
 	trenchcoats += /obj/item/clothing/suit/leathercoat
 	gear_tweaks += new /datum/gear_tweak/path/specified_types_list(trenchcoats)
 
