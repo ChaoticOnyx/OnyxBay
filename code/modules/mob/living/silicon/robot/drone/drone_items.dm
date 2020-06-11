@@ -50,7 +50,7 @@
 	can_hold = list(
 	/obj/item/weapon/cell,
 	/obj/item/weapon/stock_parts,
-	/obj/item/weapon/circuitboard/miningdrill
+	/obj/item/weapon/circuitboard/miningdrill,
 	)
 
 /obj/item/weapon/gripper/paperwork
@@ -64,7 +64,7 @@
 		/obj/item/weapon/paper_bundle,
 		/obj/item/weapon/card/id,
 		/obj/item/weapon/book,
-		/obj/item/weapon/newspaper
+		/obj/item/weapon/newspaper,
 		)
 
 /obj/item/weapon/gripper/chemistry
@@ -281,6 +281,25 @@
 	user.do_attack_animation(src)
 
 	if(wrapped)
+		if(istype(target, /obj/machinery/recharger))
+			var/obj/machinery/recharger/charger = target
+			charger.charging = wrapped
+			wrapped = null
+			charger.update_icon()
+			return
+		if(istype(target, /obj/machinery/cell_charger))
+			var/obj/machinery/cell_charger/charger = target
+			var/area/a = get_area(target.loc)
+			if(a.power_equip == 0) // There's no APC in this area, don't try to cheat power!
+				to_chat(user, "<span class='warning'>The [name] blinks red as you try to insert the cell!</span>")
+				return
+			charger.charging = wrapped
+			wrapped = null
+			charger.set_power()
+			START_PROCESSING(SSmachines, charger)
+			user.visible_message("[user] inserts a cell into the charger.", "You insert a cell into the charger.")
+			charger.chargelevel = -1
+			return
 		if(istype(target,/obj/structure/table)) //Putting item on the table if any
 			var/obj/structure/table/T = target
 			to_chat(src.loc, "<span class='notice'>You place \the [wrapped] on \the [target].</span>")
@@ -338,6 +357,24 @@
 		if(istype(target,atypepath))
 			to_chat(user, "<span class='danger'>Your gripper cannot hold \the [target].</span>")
 			return
+
+	//not human, need kostyl
+	if(istype(target, /obj/machinery/recharger))
+		var/obj/machinery/recharger/charger = target
+		wrapped = charger.charging
+		charger.charging = null
+		wrapped.update_icon()
+		charger.update_icon()
+		return
+	if(istype(target, /obj/machinery/cell_charger))
+		var/obj/machinery/cell_charger/charger = target
+		wrapped = charger.charging
+		charger.charging = null
+		wrapped.update_icon()
+		user.visible_message("[user] removes the cell from the charger.", "You remove the cell from the charger.")
+		charger.update_icon()
+		charger.chargelevel = -1
+		return
 
 	if(istype(target,/obj/item)) //Check that we're not pocketing a mob.
 
