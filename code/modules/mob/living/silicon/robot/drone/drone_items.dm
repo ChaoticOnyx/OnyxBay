@@ -158,6 +158,24 @@
 		/obj/item/weapon/tank,
 		/obj/item/weapon/paper
 		)
+/obj/item/weapon/gripper/research/resolve_attackby(atom/target, mob/living/user, params)
+	. = ..()
+	// copy-past
+	if(istype(target,/obj/item/organ)) //Check that we're not pocketing a mob.
+
+		//...and that the item is not in a container.
+		if(!isturf(target.loc))
+			return
+
+		var/obj/item/organ/I = target
+
+		//We can grab the item, finally.
+		//We have error message in parent, we don't need it here
+		if(BP_IS_ROBOTIC(I))
+			to_chat(user, "<span class='notice'>You collect \the [I].</span>")
+			I.loc = src
+			wrapped = I
+			return
 
 /obj/item/weapon/gripper/service //Used to handle food, drinks, and seeds.
 	name = "service gripper"
