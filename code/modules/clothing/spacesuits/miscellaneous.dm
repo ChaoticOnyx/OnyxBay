@@ -70,4 +70,4 @@
 
 /obj/item/clothing/suit/space/emergency/New()
 	..()
-	slowdown_per_slot[slot_wear_suit] = 4
+	slowdown_per_slot[slot_wear_suit] = 3
