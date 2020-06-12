@@ -10,7 +10,7 @@
 					/obj/item/weapon/reagent_containers/food/snacks/tofu = 4,
 					/obj/item/weapon/reagent_containers/food/snacks/meat = 4
 					)
-	cost = 10
+	cost = 25
 	containertype = /obj/structure/closet/crate/freezer
 	containername = "\improper Food crate"
 

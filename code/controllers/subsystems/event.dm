@@ -229,7 +229,8 @@ SUBSYSTEM_DEF(event)
 	return html
 
 /datum/controller/subsystem/event/Topic(href, href_list)
-	if(..())
+	if(!check_rights(R_ADMIN))
+		href_exploit(usr.ckey, href)
 		return
 
 	if(href_list["toggle_report"])

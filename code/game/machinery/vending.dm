@@ -14,6 +14,8 @@
 	clicksound = "button"
 	clickvol = 40
 
+	var/max_health = 100
+	var/health = 100
 	var/icon_vend //Icon_state when vending
 	var/icon_deny //Icon_state when denying access
 	var/diona_spawn_chance = 0.1
@@ -88,6 +90,23 @@
 	build_inventory()
 	power_change()
 
+/obj/machinery/vending/examine(mob/user)
+	. = ..()
+	if(.)
+		if(stat & BROKEN)
+			to_chat(user, SPAN("warning", "It's broken."))
+		else
+			if(health <= 0.4 * max_health)
+				to_chat(user, SPAN("warning", "It's heavily damaged!"))
+			else if(health < max_health)
+				to_chat(user, SPAN("warning", "It's showing signs of damage."))
+
+/obj/machinery/vending/proc/take_damage(force)
+	if(health > 0)
+		health = max(health-force, 0)
+		if(health == 0)
+			set_broken(1)
+
 /**
  *  Build src.produdct_records from the products lists
  *
@@ -151,6 +170,15 @@
 		to_chat(user, "You short out the product lock on \the [src]")
 		return 1
 
+/obj/machinery/vending/bullet_act(obj/item/projectile/Proj)
+	var/damage = Proj.get_structure_damage()
+	if(!damage)
+		return
+
+	..()
+	take_damage(damage)
+	return
+
 /obj/machinery/vending/attackby(obj/item/weapon/W as obj, mob/user as mob)
 
 	var/obj/item/weapon/card/id/I = W.GetIdCard()
@@ -206,11 +234,39 @@
 		to_chat(user, "<span class='notice'>You insert \the [W] into \the [src].</span>")
 		SSnano.update_uis(src)
 		return
+	else if(istype(W,/obj/item/weapon/weldingtool))
+		var/obj/item/weapon/weldingtool/WT = W
+		if(!WT.isOn())
+			return
+		if(health == max_health)
+			to_chat(user, SPAN("notice", "\The [src] is undamaged."))
+			return
+		if(!WT.remove_fuel(0,user))
+			to_chat(user, SPAN("notice", "You need more welding fuel to complete this task."))
+			return
+		user.visible_message(SPAN("notice", "[user] is repairing \the [src]..."), \
+				             SPAN("notice", "You start repairing the damage to [src]..."))
+		playsound(src, 'sound/items/Welder.ogg', 100, 1)
+		if(!do_after(user, 30, src) && WT && WT.isOn())
+			return
+		health = max_health
+		set_broken(0)
+		user.visible_message(SPAN("notice", "[user] repairs \the [src]."), \
+				             SPAN("notice", "You repair \the [src]."))
+		return
 	else if(attempt_to_stock(W, user))
+		return
+	else if(W.force >= 10)
+		take_damage(W.force)
+		user.visible_message(SPAN("danger", "\The [src] has been [pick(W.attack_verb)] with [W] by [user]!"))
+		user.setClickCooldown(W.update_attack_cooldown())
+		user.do_attack_animation(src)
+		obj_attack_sound(W)
+		shake_animation(stime = 4)
 		return
 	..()
 	if(W.mod_weight >= 0.75)
-		shake_animation(stime = 4)
+		shake_animation(stime = 2)
 	return
 
 /obj/machinery/vending/MouseDrop_T(obj/item/I as obj, mob/user as mob)
@@ -582,6 +638,14 @@
 		throw_item.throw_at(target, rand(1,2), 3, src)
 	src.visible_message("<span class='warning'>\The [src] launches \a [throw_item] at \the [target]!</span>")
 	return 1
+
+/obj/machinery/vending/set_broken(new_state)
+	..()
+	if(new_state)
+		var/datum/effect/effect/system/spark_spread/spark_system = new /datum/effect/effect/system/spark_spread()
+		spark_system.set_up(5, 0, loc)
+		spark_system.start()
+		playsound(loc, "spark", 50, 1)
 
 /*
  * Vending machine types

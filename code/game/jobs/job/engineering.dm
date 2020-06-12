@@ -25,7 +25,7 @@
 	outfit_type = /decl/hierarchy/outfit/job/engineering/chief_engineer
 
 /datum/job/engineer
-	title = "Engineer"
+	title = "Station Engineer"
 	department = "Engineering"
 	department_flag = ENG
 
