@@ -35,9 +35,9 @@
 		to_chat(user, "Current charge: [charging.charge]")
 
 /obj/machinery/cell_charger/proc/take_battery_cyborg(obj/item/weapon/cell/CELL, obj/item/weapon/gripper/GRIP, mob/living/silicon/user)
-	ASSERT(CELL)
-	ASSERT(GRIP)
-	ASSERT(user)
+	ASSERT(istype(CELL))
+	ASSERT(istype(GRIP))
+	ASSERT(istype(user))
 	if(stat & BROKEN)
 		return
 	if(anchored)
@@ -58,8 +58,8 @@
 		queue_icon_update()
 
 /obj/machinery/cell_charger/proc/give_battery_cyborg(obj/item/weapon/gripper/GRIP, mob/living/silicon/user)
-	ASSERT(GRIP)
-	ASSERT(user)
+	ASSERT(istype(GRIP))
+	ASSERT(istype(user))
 	if(charging)
 		charging.add_fingerprint(user)
 		charging.update_icon()
