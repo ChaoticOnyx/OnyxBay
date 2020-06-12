@@ -84,11 +84,11 @@
 	var/datum/wound/created_wound = ..()
 	if (istype(created_wound) && has_lips && (damage_flags & DAM_TO_MOUTH || prob(5)))
 		created_wound.in_mouth = TRUE // That's why you shouldn't talk during gunfight
-		for(var/i = 1, i <= created_wound.desc_list, i++)
+		for(var/i = 1, i <= length(created_wound.desc_list), i++)
 			created_wound.desc_list[i] += pick(" in mouth", " on lips")
 		if(owner)
 			if(brute > 0)
-				to_chat(owner, SPAN_DANGER("Your [pick("lip", "tongue")] was cutted!"))
+				to_chat(owner, SPAN_DANGER("Your [pick("lip", "tongue")] was cut!"))
 			if(burn > 0)
 				to_chat(owner, SPAN_DANGER("Your [pick("soft palace", "tongue")] burns!"))
 	if ((brute_dam > 40) && prob(50))
@@ -113,7 +113,7 @@
 				brute = W.heal_damage(brute)
 	. = ..()
 
-/obj/item/organ/external/head/proc/is_mouth_cutted()
+/obj/item/organ/external/head/proc/is_mouth_cut()
 	if(deformities)
 		return TRUE
 	for(var/datum/wound/W in wounds)

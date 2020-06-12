@@ -193,6 +193,22 @@
 			spawn(0)
 				emote("cough")
 
+/mob/living/carbon/human/handle_lisping()
+	lisping = ..()
+	if(!lisping)
+		var/obj/item/organ/external/head/head = src.organs_by_name[BP_HEAD]
+		if(head)
+			lisping = head.is_mouth_cut()
+	return lisping
+
+/mob/living/carbon/human/handle_burrieng()
+	burrieng = ..()
+	if(!burrieng)
+		var/obj/item/organ/external/head/head = src.organs_by_name[BP_HEAD]
+		if(head)
+			burrieng = head.is_mouth_burned()
+	return burrieng
+
 /mob/living/carbon/human/handle_mutations_and_radiation()
 	if(getFireLoss())
 		if((MUTATION_COLD_RESISTANCE in mutations) || (prob(1)))

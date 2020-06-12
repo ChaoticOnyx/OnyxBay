@@ -147,12 +147,6 @@
 	for(var/datum/modifier/trait/burrieng/M in modifiers)
 		if(!isnull(M.burrieng))
 			burrieng = TRUE
-			return burrieng
-	var/mob/living/carbon/human/H = src
-	if(istype(H))
-		var/obj/item/organ/external/head/head = H.organs_by_name[BP_HEAD]
-		if(head)
-			burrieng = head.is_mouth_burned()
 	return burrieng
 
 /mob/living/proc/handle_lisping()
@@ -160,12 +154,6 @@
 	for(var/datum/modifier/trait/lisping/M in modifiers)
 		if(!isnull(M.lisping))
 			lisping = TRUE
-			return lisping
-	var/mob/living/carbon/human/H = src
-	if(istype(H))
-		var/obj/item/organ/external/head/head = H.organs_by_name[BP_HEAD]
-		if(head)
-			lisping = head.is_mouth_cutted()
 	return lisping
 
 /mob/living/proc/handle_paralysed()
