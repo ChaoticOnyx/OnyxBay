@@ -244,7 +244,4 @@
 	var/result="It has three module slots.\n"
 	for (var/x = 1; x <=3; x++)
 		result += examine_module(x)
-	var/selected = get_selected_module()
-	if (selected)
-		result += "\nThe light on Module [selected] is glowing green.\n"
 	return result
