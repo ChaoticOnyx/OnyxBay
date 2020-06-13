@@ -40,6 +40,7 @@
 	alt_titles = list("Maintenance Technician","Engine Technician","Electrician",
 		"Atmospheric Technician" = /decl/hierarchy/outfit/job/engineering/atmos)
 	outfit_type = /decl/hierarchy/outfit/job/engineering/engineer
+	hud_icon = "engineer"
 
 /datum/job/atmos
 	title = "Atmospheric Technician"
