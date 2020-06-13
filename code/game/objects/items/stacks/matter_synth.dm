@@ -33,6 +33,12 @@
 	max_energy_multiplied = max_energy * multiplier
 	energy = min(max_energy_multiplied, energy)
 
+/datum/matter_synth/silver
+	name = "Silver Synthesizer"
+
+/datum/matter_synth/gold
+	name = "Gold Synthesizer"
+
 /datum/matter_synth/medicine
 	name = "Medicine Synthesizer"
 

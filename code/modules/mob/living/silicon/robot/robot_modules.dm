@@ -940,7 +940,7 @@ var/global/list/robot_modules = list(
 					)
 
 /obj/item/weapon/robot_module/research/general/New()
-	supported_upgrades += list(/obj/item/borg/upgrade/cargo_managment,/obj/item/borg/upgrade/visor/thermal,/obj/item/borg/upgrade/visor/meson,/obj/item/borg/upgrade/rped,/obj/item/borg/upgrade/paramedic,/obj/item/borg/upgrade/archeologist)
+	supported_upgrades += list(/obj/item/borg/upgrade/cargo_managment,/obj/item/borg/upgrade/visor/thermal,/obj/item/borg/upgrade/visor/meson,/obj/item/borg/upgrade/rped,/obj/item/borg/upgrade/paramedic,/obj/item/borg/upgrade/archeologist,/obj/item/borg/upgrade/integrated_circuit_upgrade)
 
 	src.modules += new /obj/item/device/flash(src)
 	src.modules += new /obj/item/weapon/extinguisher/mini(src)

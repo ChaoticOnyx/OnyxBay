@@ -25,6 +25,12 @@
 	can_clone = TRUE
 	fast_clone = TRUE
 
+/obj/item/device/integrated_circuit_printer/cyborg
+	name = "cyborg integrated circuit printer"
+	upgraded = TRUE
+	can_clone = TRUE
+	fast_clone = TRUE
+
 /obj/item/device/integrated_circuit_printer/debug //translation: "integrated_circuit_printer/local_server"
 	name = "debug circuit printer"
 	debug = TRUE
