@@ -17,6 +17,8 @@ GLOBAL_DATUM_INIT(borers, /datum/antagonist/xenos/borer, new)
 	initial_spawn_req = 3
 	initial_spawn_target = 5
 
+	station_crew_involved = FALSE
+
 /datum/antagonist/xenos/borer/get_extra_panel_options(datum/mind/player)
 	return "<a href='?src=\ref[src];move_to_spawn=\ref[player.current]'>\[put in host\]</a>"
 
