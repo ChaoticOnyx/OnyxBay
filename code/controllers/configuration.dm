@@ -395,7 +395,7 @@ var/list/gamemode_cache = list()
 				if ("no_click_cooldown")
 					config.no_click_cooldown = 1
 
-				if("allow_admin_ooccolor")
+				if ("allow_admin_ooccolor")
 					config.allow_admin_ooccolor = 1
 
 				if ("allow_vote_restart")
@@ -434,14 +434,11 @@ var/list/gamemode_cache = list()
 				if ("vote_autogamemode_timeleft")
 					config.vote_autogamemode_timeleft = text2num(value)
 
-				if("ert_admin_only")
+				if ("ert_admin_only")
 					config.ert_admin_call_only = 1
 
 				if ("allow_ai")
 					config.allow_ai = 1
-
-//				if ("authentication")
-//					config.enable_authentication = 1
 
 				if ("respawn_delay")
 					config.respawn_delay = text2num(value)
@@ -537,7 +534,7 @@ var/list/gamemode_cache = list()
 				if ("aliens_allowed")
 					config.aliens_allowed = 1
 
-				if("alien_eggs_allowed")
+				if ("alien_eggs_allowed")
 					config.alien_eggs_allowed = 1
 
 				if ("ninjas_allowed")
@@ -657,12 +654,6 @@ var/list/gamemode_cache = list()
 
 				if("ghost_interaction")
 					config.ghost_interaction = 1
-
-				if("disable_player_mice")
-					config.disable_player_mice = 1
-
-				if("uneducated_mice")
-					config.uneducated_mice = 1
 
 				if("comms_password")
 					config.comms_password = value
@@ -797,9 +788,6 @@ var/list/gamemode_cache = list()
 
 				if("autostealth")
 					config.autostealth = text2num(value)
-
-				if("radiation_lower_limit")
-					radiation_lower_limit = text2num(value)
 
 				if("projectile_basketball")
 					config.projectile_basketball = 1

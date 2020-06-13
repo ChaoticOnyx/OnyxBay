@@ -24,6 +24,9 @@ ORGAN_HEALTH_MULTIPLIER 90
 ## 100 means normal, 50 means half
 ORGAN_REGENERATION_MULTIPLIER 25
 
+## Uncomment to enable organ decay outside of a body or storage item.
+# ORGANS_CAN_DECAY
+
 ### REVIVAL ###
 
 ## whether pod plants work or not
