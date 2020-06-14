@@ -380,6 +380,9 @@ BONES_CAN_BREAK 1
 ## 0 means limbs can't be amputated, 1 means they can
 LIMBS_CAN_BREAK 1
 
+## Uncomment to enable organ decay outside of a body or storage item.
+# ORGANS_CAN_DECAY
+
 ## multiplier which enables organs to take more damage before bones breaking or limbs being destroyed
 ## 100 means normal, 50 means half
 ORGAN_HEALTH_MULTIPLIER 90
@@ -388,8 +391,9 @@ ORGAN_HEALTH_MULTIPLIER 90
 ## 100 means normal, 50 means half
 ORGAN_REGENERATION_MULTIPLIER 25
 
-## Uncomment to enable organ decay outside of a body or storage item.
-# ORGANS_CAN_DECAY
+## multiplier which influences spillover modifier
+## 100 means normal, 50 means half
+ORGAN_DAMAGE_SPILLOVER_MULTIPLIER 50
 
 # # REVIVAL
 # # # # # # # #
@@ -418,8 +422,9 @@ WALK_SPEED 1
 ## The variables below affect the movement of specific mob types.
 HUMAN_DELAY  0
 ROBOT_DELAY  0
-MONKEY_DELAY 0
-ALIEN_DELAY  0
+MONKEY_DELAY 0 ## doesn't work because build is shit TODO: FIX
+ALIEN_DELAY  0 ## doesn't work because build is shit TODO: FIX
+SLIME_DELAY  0
 ANIMAL_DELAY 0
 
 ## Remove the # in front of this config option to have loyalty implants spawn by default on your server.
@@ -457,6 +462,9 @@ ANIMAL_DELAY 0
 
 ## Strength of ambient star light. Set to 0 or less to turn off. A value of 1 is unlikely to have a noticeable effect in most lighting systems.
 STARLIGHT 0
+
+## Determines... maximum amount of walking mushrooms.
+MAXIMUM_MUSHROOMS 15
 
 ## How long the delay is before the Away Mission gate opens. Default is half an hour.
 GATEWAY_DELAY 18000
