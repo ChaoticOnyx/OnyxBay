@@ -653,6 +653,12 @@ var/list/gamemode_cache = list()
 				if("ghost_interaction")
 					config.ghost_interaction = 1
 
+				if("disable_player_mice")
+					config.disable_player_mice = 1
+
+				if("uneducated_mice")
+					config.uneducated_mice = 1
+
 				if("comms_password")
 					config.comms_password = value
 
