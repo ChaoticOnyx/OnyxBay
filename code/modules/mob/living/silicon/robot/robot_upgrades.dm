@@ -732,23 +732,12 @@
 	if(!can_install(src, R))
 		return 0
 	else
+		R.module.modules += new /obj/item/device/integrated_circuit_printer/cyborg(R.module)
+		R.module.modules += new /obj/item/weapon/gripper/integrated_circuit(R.module)
 		R.module.modules += new /obj/item/device/integrated_electronics/wirer(R.module)
 		R.module.modules += new /obj/item/device/integrated_electronics/debugger(R.module)
 		R.module.modules += new /obj/item/device/integrated_electronics/analyzer(R.module)
 		R.module.modules += new /obj/item/device/integrated_electronics/detailer(R.module)
-
-		var/datum/matter_synth/metal = new /datum/matter_synth/metal(50000)
-		R.module.synths += metal
-		var/datum/matter_synth/silver = new /datum/matter_synth/silver(10000)
-		R.module.synths += silver
-		var/datum/matter_synth/gold = new /datum/matter_synth/gold(1000)
-		R.module.synths += gold
-
-		var/obj/item/device/integrated_circuit_printer/cyborg/G = new (R.module)
-		G.materials[MATERIAL_STEEL] = list(metal)
-		G.materials[MATERIAL_SILVER] = list(silver)
-		G.materials[MATERIAL_GOLD] = list(gold)
-		R.module.modules += G
 
 		installed = 1
 		return 1

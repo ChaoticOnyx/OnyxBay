@@ -39,6 +39,17 @@
 	fast_clone = TRUE
 	w_class = ITEM_SIZE_TINY
 
+/obj/item/device/integrated_circuit_printer/cyborg/afterattack(atom/target, mob/user, proximity)
+	if(proximity && istype(target, /obj/item/stack/material))
+		var/obj/item/stack/material/O = target
+		attackby(O, user)
+	if(proximity && istype(target, /obj/item/device/electronic_assembly))
+		var/obj/item/device/electronic_assembly/O = target
+		attackby(O, user)
+	if(istype(target, /obj/item/integrated_circuit))
+		var/obj/item/integrated_circuit/O = target
+		recycle(O, user)
+
 /obj/item/device/integrated_circuit_printer/proc/print_program(mob/user)
 	if(!cloning)
 		return

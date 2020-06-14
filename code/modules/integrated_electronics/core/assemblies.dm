@@ -79,6 +79,8 @@
 
 
 /obj/item/device/electronic_assembly/proc/check_interactivity(mob/user)
+	if(istype(user, /mob/living/silicon))
+		return 1
 	return (Adjacent(user) && !user.incapacitated() && CanUseTopic(user))
 
 /obj/item/device/electronic_assembly/GetAccess()
@@ -331,7 +333,7 @@
 		. += part.size
 
 // Returns true if the circuit made it inside.
-/obj/item/device/electronic_assembly/proc/try_add_component(obj/item/integrated_circuit/IC, mob/user)
+/obj/item/device/electronic_assembly/proc/try_add_component(obj/item/integrated_circuit/IC, mob/user, obj/item/weapon/gripper/grip)
 	if(!opened)
 		to_chat(user, "<span class='warning'>\The [src]'s hatch is closed, you can't put anything inside.</span>")
 		return FALSE
@@ -353,9 +355,11 @@
 		to_chat(user, "<span class='warning'>You can't seem to add the '[IC]', since the case doesn't support the circuit type.</span>")
 		return FALSE
 
-	if(!user.unEquip(IC,src))
+	if(!user.unEquip(IC,src) && !istype(grip))
 		return FALSE
-
+	if(istype(grip))
+		grip.wrapped.loc = src.loc
+		grip.wrapped = null
 	to_chat(user, "<span class='notice'>You slide [IC] inside [src].</span>")
 	playsound(src, 'sound/items/Deconstruct.ogg', 50, 1)
 	add_allowed_scanner(user.ckey)
@@ -371,7 +375,7 @@
 	assembly_components |= component
 
 
-/obj/item/device/electronic_assembly/proc/try_remove_component(obj/item/integrated_circuit/IC, mob/user, silent)
+/obj/item/device/electronic_assembly/proc/try_remove_component(obj/item/integrated_circuit/IC, mob/user, silent, obj/item/weapon/gripper/grip)
 	if(!opened)
 		if(!silent)
 			to_chat(user, "<span class='warning'>[src]'s hatch is closed, so you can't fiddle with the internal components.</span>")
@@ -386,7 +390,10 @@
 	if(!silent)
 		to_chat(user, "<span class='notice'>You pop \the [IC] out of the case, and slide it out.</span>")
 		playsound(src, 'sound/items/crowbar.ogg', 50, 1)
-		user.put_in_hands(IC)
+		if(istype(user, /mob/living/silicon/robot))
+			IC.loc = get_turf(user)
+		else
+			user.put_in_hands(IC)
 	add_allowed_scanner(user.ckey)
 
 	// Make sure we're not on an invalid page
@@ -397,7 +404,7 @@
 // Actually removes the component, doesn't perform any checks.
 /obj/item/device/electronic_assembly/proc/remove_component(obj/item/integrated_circuit/component)
 	component.disconnect_all()
-	component.dropInto(loc)
+	component.dropInto(get_turf(loc))
 	component.assembly = null
 	assembly_components.Remove(component)
 
