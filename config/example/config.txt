@@ -363,9 +363,6 @@ RADIATION_MATERIAL_RESISTANCE_DIVISOR 2
 ## Max range =  DISTANCE^2 * POWER / RADIATION_LOWER_LIMIT
 RADIATION_LOWER_LIMIT 0.35
 
-## disconnect players who did nothing during the set amount of minutes
-# KICK_INACTIVE 10
-
 # # HEALTH
 # # # # # # # 
 
@@ -462,6 +459,9 @@ ANIMAL_DELAY 0
 
 ## Strength of ambient star light. Set to 0 or less to turn off. A value of 1 is unlikely to have a noticeable effect in most lighting systems.
 STARLIGHT 0
+
+## disconnect players who did nothing during the set amount of minutes
+# KICK_INACTIVE 10
 
 ## Determines... maximum amount of walking mushrooms.
 MAXIMUM_MUSHROOMS 15
