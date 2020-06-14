@@ -7,6 +7,7 @@
 	force = 3
 	mod_weight = 0.25
 	mod_reach = 0.15
+	mod_speed = 1.35
 	mod_handy = 1.30
 	attack_verb = list("hit", "punched")
 	default_material = MATERIAL_STEEL
