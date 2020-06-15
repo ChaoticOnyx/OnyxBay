@@ -75,7 +75,7 @@
 		sleep(rand(200,400))
 		src.visible_message("[src] whirs as it prints and binds a new book.")
 		var/obj/item/weapon/book/b = new(src.loc)
-		b.dat = O:info
+		b.dat += O:info
 		b.SetName("Print Job #" + "[rand(100, 999)]")
 		b.icon_state = "book[rand(1,7)]"
 		qdel(O)

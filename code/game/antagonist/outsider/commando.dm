@@ -15,6 +15,8 @@ GLOBAL_DATUM_INIT(commandos, /datum/antagonist/deathsquad/mercenary, new)
 	initial_spawn_req = 4
 	initial_spawn_target = 6
 
+	station_crew_involved = FALSE
+
 /datum/antagonist/deathsquad/mercenary/equip(mob/living/carbon/human/player)
 
 	player.equip_to_slot_or_del(new /obj/item/clothing/under/syndicate(player), slot_w_uniform)

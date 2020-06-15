@@ -19,6 +19,8 @@ GLOBAL_DATUM_INIT(mercs, /datum/antagonist/mercenary, new)
 
 	faction = "mercenary"
 
+	station_crew_involved = FALSE
+
 /datum/antagonist/mercenary/create_global_objectives()
 	if(!..())
 		return 0
