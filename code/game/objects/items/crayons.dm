@@ -150,6 +150,7 @@
 	var/drawing = href_list["drawing"] ? href_list["drawing"] : "rune"
 	var/visible_name = href_list["type"] ? replacetext(href_list["type"], "_", " ") : "drawing"
 	popup.close()
+	usr.visible_message(SPAN_NOTICE("[usr] starts drawing something on \the [last_target]."), SPAN_NOTICE("You start drawing on \the [last_target]"))
 	var/turf/multiple_check = last_target
 	if(instant || do_after(usr, 50))
 		if(multiple_check != last_target)
@@ -159,7 +160,8 @@
 		if(drawing == "rune")
 			drawing = "rune[rand(1,6)]"
 		new /obj/effect/decal/cleanable/crayon(last_target, colour, shadeColour, drawing, visible_name)
-		to_chat(usr, "You finish drawing.")
+		usr.visible_message(SPAN_NOTICE("[usr] finished drawing [visible_name] on \the [last_target]."), \
+							SPAN_NOTICE("You finished drawing [visible_name] on \the [last_target]"))
 		last_target.add_fingerprint(usr)
 		reduce_uses()
 
