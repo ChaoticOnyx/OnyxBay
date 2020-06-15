@@ -376,29 +376,29 @@
 		bodytemperature += between(BODYTEMP_COOLING_MAX, temp_adj*relative_density, BODYTEMP_HEATING_MAX)
 
 	// +/- 50 degrees from 310.15K is the 'safe' zone, where no damage is dealt.
-	if(bodytemperature >= getSpeciesOrSynthTemp(HEAT_LEVEL_1))
+	if(bodytemperature >= species.heat_level_1)
 		//Body temperature is too hot.
 		fire_alert = max(fire_alert, 1)
 		if(status_flags & GODMODE)	return 1	//godmode
 		var/burn_dam = 0
-		if(bodytemperature < getSpeciesOrSynthTemp(HEAT_LEVEL_2))
+		if(bodytemperature < species.heat_level_2)
 			burn_dam = HEAT_DAMAGE_LEVEL_1
-		else if(bodytemperature < getSpeciesOrSynthTemp(HEAT_LEVEL_3))
+		else if(bodytemperature < species.heat_level_3)
 			burn_dam = HEAT_DAMAGE_LEVEL_2
 		else
 			burn_dam = HEAT_DAMAGE_LEVEL_3
 		take_overall_damage(burn=burn_dam, used_weapon = "High Body Temperature")
 		fire_alert = max(fire_alert, 2)
 
-	else if(bodytemperature <= getSpeciesOrSynthTemp(COLD_LEVEL_1))
+	else if(bodytemperature <= species.cold_level_1)
 		fire_alert = max(fire_alert, 1)
 		if(status_flags & GODMODE)	return 1	//godmode
 
 		var/burn_dam = 0
 
-		if(bodytemperature > getSpeciesOrSynthTemp(COLD_LEVEL_2))
+		if(bodytemperature > species.cold_level_2)
 			burn_dam = COLD_DAMAGE_LEVEL_1
-		else if(bodytemperature > getSpeciesOrSynthTemp(COLD_LEVEL_3))
+		else if(bodytemperature > species.cold_level_3)
 			burn_dam = COLD_DAMAGE_LEVEL_2
 		else
 			burn_dam = COLD_DAMAGE_LEVEL_3
@@ -824,13 +824,13 @@
 				//TODO: precalculate all of this stuff when the species datum is created
 				var/base_temperature = species.body_temperature
 				if(base_temperature == null) //some species don't have a set metabolic temperature
-					base_temperature = (getSpeciesOrSynthTemp(HEAT_LEVEL_1) + getSpeciesOrSynthTemp(COLD_LEVEL_1))/2
+					base_temperature = (species.heat_level_1 + species.cold_level_1)/2
 
 				var/temp_step
 				if (bodytemperature >= base_temperature)
-					temp_step = (getSpeciesOrSynthTemp(HEAT_LEVEL_1) - base_temperature)/4
+					temp_step = (species.heat_level_1 - base_temperature)/4
 
-					if (bodytemperature >= getSpeciesOrSynthTemp(HEAT_LEVEL_1))
+					if (bodytemperature >= species.heat_level_1)
 						bodytemp.icon_state = "temp4"
 					else if (bodytemperature >= base_temperature + temp_step*3)
 						bodytemp.icon_state = "temp3"
@@ -842,9 +842,9 @@
 						bodytemp.icon_state = "temp0"
 
 				else if (bodytemperature < base_temperature)
-					temp_step = (base_temperature - getSpeciesOrSynthTemp(COLD_LEVEL_1))/4
+					temp_step = (base_temperature - species.cold_level_1)/4
 
-					if (bodytemperature <= getSpeciesOrSynthTemp(COLD_LEVEL_1))
+					if (bodytemperature <= species.cold_level_1)
 						bodytemp.icon_state = "temp-4"
 					else if (bodytemperature <= base_temperature - temp_step*3)
 						bodytemp.icon_state = "temp-3"

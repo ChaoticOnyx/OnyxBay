@@ -256,66 +256,7 @@
 			coil.use(1)
 			src.wires = 1.0
 			to_chat(user, "<span class='notice'>You insert the wire!</span>")
-	if(istype(W, /obj/item/robot_parts/head))
-		var/obj/item/robot_parts/head/head_part = W
-		// Attempt to create full-body prosthesis.
-		var/success = TRUE
-		success &= can_install(user)
-		success &= head_part.can_install(user)
-		if (success)
-
-			// Species selection.
-			var/species = input(user, "Select a species for the prosthetic.") as null|anything in GetCyborgSpecies()
-			if(!species)
-				return
-			var/name = sanitizeSafe(input(user,"Set a name for the new prosthetic."), MAX_NAME_LEN)
-			if(!name)
-				SetName("prosthetic ([random_id("prosthetic_id", 1, 999)])")
-
-			// Create a new, nonliving human.
-			var/mob/living/carbon/human/H = new /mob/living/carbon/human(get_turf(loc))
-			H.death(0, "no message")
-			H.set_species(species)
-			H.fully_replace_character_name(name)
-
-			// Remove all external organs other than chest and head..
-			for (var/O in list(BP_L_ARM, BP_R_ARM, BP_L_LEG, BP_R_LEG))
-				var/obj/item/organ/external/organ = H.organs_by_name[O]
-				H.organs -= organ
-				H.organs_by_name.Remove(organ.organ_tag)
-				qdel(organ)
-
-			// Remove brain (we want to put one in).
-			var/obj/item/organ/internal/brain = H.internal_organs_by_name[BP_BRAIN]
-			H.organs -= brain
-			H.organs_by_name.Remove(brain.organ_tag)
-			qdel(brain)
-
-			// Robotize remaining organs: Eyes, head, and chest.
-			// Respect brand used.
-			var/obj/item/organ/internal/eyes = H.internal_organs_by_name[BP_EYES]
-			eyes.robotize()
-
-			var/obj/item/organ/external/head = H.organs_by_name[BP_HEAD]
-			var/head_company = head_part.model_info
-			head.robotize(head_company)
-
-			var/obj/item/organ/external/chest = H.organs_by_name[BP_CHEST]
-			var/chest_company = model_info
-			chest.robotize(chest_company)
-
-			// Cleanup
-			qdel(W)
-			qdel(src)
 	return
-
-/obj/item/robot_parts/chest/proc/GetCyborgSpecies()
-	. = list()
-	for(var/N in playable_species)
-		var/datum/species/S = all_species[N]
-		if(S.spawn_flags & SPECIES_NO_FBP_CONSTRUCTION)
-			continue
-		. += N
 
 /obj/item/robot_parts/head/attackby(obj/item/W as obj, mob/user as mob)
 	..()

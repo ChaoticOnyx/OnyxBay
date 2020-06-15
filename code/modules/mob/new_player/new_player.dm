@@ -105,6 +105,11 @@
 			if(jobban_isbanned(src, "FEMALE") && client.prefs.gender == FEMALE)
 				to_chat(src, "<span class='warning'>No traps allowed.</span>")
 				return
+
+			if(client.prefs.organ_data[BP_CHEST] == "cyborg")
+				to_chat(src, "<span class='warning'>No FBPs allowed.</span>")
+				return
+
 			ready = text2num(href_list["ready"])
 		else
 			ready = 0
@@ -181,6 +186,10 @@
 			to_chat(src, "<span class='warning'>No traps allowed.</span>")
 			return
 
+		if(client.prefs.organ_data[BP_CHEST] == "cyborg")
+			to_chat(src, "<span class='warning'>No FBPs allowed.</span>")
+			return
+
 		LateChoices() //show the latejoin job selection menu
 
 	if(href_list["manifest"])
@@ -202,7 +211,7 @@
 			if(char_name == C.real_name)
 				to_chat (usr, "<span class='danger'>There is a character that already exists with the same name: <b>[C.real_name]</b>, please join with a different one.</span>")
 				return
-			
+
 		if(!config.enter_allowed)
 			to_chat(usr, "<span class='notice'>There is an administrative lock on entering the game!</span>")
 			return

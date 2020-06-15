@@ -151,7 +151,7 @@ var/list/trait_categories = list() // The categories available for the trait men
 /datum/trait/proc/apply_trait_post_spawn(mob/living/L)
 	return
 
-// Used to forbid a trait based on certain criteria (e.g. if they are an FBP).
+// Used to forbid a trait based on certain criteria.
 // It receives the player_setup_item datum since some reasons for being invalid depend on the currently loaded preferences.
 // Returns a string explaining why the trait is invalid.  Returns null if valid.
 /datum/trait/proc/test_for_invalidity(datum/category_item/player_setup_item/traits/setup)

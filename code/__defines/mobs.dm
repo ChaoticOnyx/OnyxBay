@@ -218,7 +218,7 @@
 #define BP_ANCHOR   "anchoring ligament"
 #define BP_PHORON   "phoron filter"
 #define BP_CHANG    "biostructure"
-#define BP_CANCER    "cancer"
+#define BP_CANCER   "cancer"
 
 // Robo Organs.
 #define BP_POSIBRAIN	"posibrain"
@@ -273,7 +273,7 @@
 #define HEAT_LEVEL_2 2
 #define HEAT_LEVEL_3 3
 
-//Synthetic human temperature vals
+//IPC temperature vals
 #define SYNTH_COLD_LEVEL_1 50
 #define SYNTH_COLD_LEVEL_2 -1
 #define SYNTH_COLD_LEVEL_3 -1

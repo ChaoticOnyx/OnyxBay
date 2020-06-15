@@ -199,7 +199,7 @@ var/global/list/valid_bloodtypes = list("A+", "A-", "B+", "B-", "AB+", "AB-", "O
 			if(BP_KIDNEYS)
 				organ_name = BP_KIDNEYS
 			if(BP_STOMACH)
-				organ_name = BP_STOMACH				
+				organ_name = BP_STOMACH
 			if(BP_CHEST)
 				organ_name = "upper body"
 			if(BP_GROIN)
@@ -481,14 +481,7 @@ var/global/list/valid_bloodtypes = list("A+", "A-", "B+", "B-", "AB+", "AB-", "O
 
 	else if(href_list["limbs"])
 
-		var/list/limb_selection_list = list("Left Leg","Right Leg","Left Arm","Right Arm","Left Foot","Right Foot","Left Hand","Right Hand","Full Body")
-
-		// Full prosthetic bodies without a brain are borderline unkillable so make sure they have a brain to remove/destroy.
-		var/datum/species/current_species = all_species[pref.species]
-		if(current_species.spawn_flags & SPECIES_NO_FBP_CHARGEN)
-			limb_selection_list -= "Full Body"
-		else if(pref.organ_data[BP_CHEST] == "cyborg")
-			limb_selection_list |= "Head"
+		var/list/limb_selection_list = list("Left Leg","Right Leg","Left Arm","Right Arm","Left Foot","Right Foot","Left Hand","Right Hand")
 
 		var/organ_tag = input(user, "Which limb do you want to change?") as null|anything in limb_selection_list
 
@@ -530,13 +523,6 @@ var/global/list/valid_bloodtypes = list("A+", "A-", "B+", "B-", "AB+", "AB-", "O
 			if("Right Hand")
 				limb = BP_R_HAND
 				third_limb = BP_R_ARM
-			if("Head")
-				limb =        BP_HEAD
-				choice_options = list("Prosthesis")
-			if("Full Body")
-				limb =        BP_CHEST
-				third_limb =  BP_GROIN
-				choice_options = list("Normal","Prosthesis")
 
 		var/new_state = input(user, "What state do you wish the limb to be in?") as null|anything in choice_options
 		if(!new_state || !CanUseTopic(user)) return TOPIC_NOACTION
@@ -616,12 +602,9 @@ var/global/list/valid_bloodtypes = list("A+", "A-", "B+", "B-", "AB+", "AB-", "O
 			if("Kidneys")
 				organ = BP_KIDNEYS
 			if("Stomach")
-				organ = BP_STOMACH				
+				organ = BP_STOMACH
 
 		var/list/organ_choices = list("Normal","Assisted","Synthetic")
-		if(pref.organ_data[BP_CHEST] == "cyborg")
-			organ_choices -= "Normal"
-			organ_choices += "Synthetic"
 
 		var/new_state = input(user, "What state do you wish the organ to be in?") as null|anything in organ_choices
 		if(!new_state) return

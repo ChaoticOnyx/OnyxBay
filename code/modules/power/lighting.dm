@@ -279,7 +279,7 @@
 		if(current_mode == LIGHTMODE_EMERGENCY)
 			set_mode(null)
 			update_power_channel(initial(power_channel))
-		
+
 /obj/machinery/light/proc/set_evacuation_lighting(state)
 	if(state)
 		if(LIGHTMODE_EVACUATION in lightbulb.lighting_modes)
@@ -444,7 +444,7 @@
 		var/mob/living/carbon/human/H = user
 
 		if(istype(H))
-			if(H.getSpeciesOrSynthTemp(HEAT_LEVEL_1) > LIGHT_BULB_TEMPERATURE)
+			if(H.species.heat_level_1 > LIGHT_BULB_TEMPERATURE)
 				prot = 1
 			else if(H.gloves)
 				var/obj/item/clothing/gloves/G = H.gloves
