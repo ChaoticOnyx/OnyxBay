@@ -33,7 +33,7 @@
 	icon_state = "curio"
 	modtype  = "AI"
 	module = /obj/item/weapon/robot_module/curio
-	cell = /obj/item/weapon/cell/super
+	cell = /obj/item/weapon/cell/crap
 	remotable = 1
 	var/holooverlay = FALSE
 	var/icon/holo_icon

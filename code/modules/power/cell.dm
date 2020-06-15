@@ -200,6 +200,7 @@
 	name = "old power cell"
 	desc = "A cheap old power cell. It's probably been in use for quite some time now."
 	origin_tech = list(TECH_POWER = 0)
+	icon_state = "crcell"
 	maxcharge = 100
 	matter = list(MATERIAL_STEEL = 700, MATERIAL_GLASS = 40)
 
