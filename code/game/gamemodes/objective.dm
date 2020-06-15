@@ -403,8 +403,12 @@ datum/objective/harm
 
 datum/objective/nuclear
 	explanation_text = "Cause mass destruction with a nuclear device."
-
-
+	GLOBAL_VAR_INIT(is_station_destroyed, FALSE)
+	check_completion()
+		if(GLOB.is_station_destroyed)
+			return 1
+		else
+			return 0
 
 datum/objective/steal
 	var/obj/item/steal_target
@@ -875,4 +879,3 @@ datum/objective/heist/salvage
 			rval = 2
 		return 0
 	return rval
-
