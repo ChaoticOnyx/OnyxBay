@@ -6,7 +6,6 @@
 	on_icon = "fryer_on"
 	off_icon = "fryer_off"
 	food_color = "#ffad33"
-	cooked_sound = 'sound/machines/ding.ogg'
 
 /obj/machinery/cooker/fryer/hurt_big_mob(mob/living/victim, mob/user)
 
