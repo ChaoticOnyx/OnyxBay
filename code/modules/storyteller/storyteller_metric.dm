@@ -43,9 +43,14 @@
 /storyteller_metric/proc/_evaluate(time_elapsed)
 	ASSERT("Storyteller metric '[name]' evaluate method is not implemented!")
 
-/storyteller_metric/proc/_log_debug(text)
-	if (__debug)
-		log_debug("\[Storyteller Metric [name]]: [text]")
+/storyteller_metric/proc/_log_debug(text, verbose = FALSE)
+	if (!__debug)
+		return
+	var/string_to_log = "\[Storyteller Metric [name]]: [text]"
+	if (!verbose)
+		log_debug(string_to_log)
+	else
+		log_debug_verbose(string_to_log)
 
 /storyteller_metric/proc/print_statistics()
 	var/stat = "\n----\n" // start from newline
