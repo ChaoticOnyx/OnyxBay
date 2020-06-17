@@ -187,7 +187,6 @@
 /datum/gear/champion
 	display_name = "champion's belt"
 	path = /obj/item/weapon/storage/belt/champion
-	slot = slot_belt
 	price = 20
 
 /datum/gear/bedsheet_clown
