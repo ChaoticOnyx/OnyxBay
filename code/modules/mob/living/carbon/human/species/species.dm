@@ -603,7 +603,9 @@ The slots that you can use are found in items_clothing.dm and are the inventory 
 		LAZYSET(hair_styles, type, L)
 		for(var/hairstyle in GLOB.hair_styles_list)
 			var/datum/sprite_accessory/S = GLOB.hair_styles_list[hairstyle]
-			if(!(name in S.species_allowed))
+			if(S.species_allowed && !(get_bodytype() in S.species_allowed))
+				continue
+			if(S.subspecies_allowed && !(name in S.subspecies_allowed))
 				continue
 			ADD_SORTED(L, hairstyle, /proc/cmp_text_asc)
 			L[hairstyle] = S
@@ -626,7 +628,9 @@ The slots that you can use are found in items_clothing.dm and are the inventory 
 				continue
 			if(gender == FEMALE && S.gender == MALE)
 				continue
-			if(!(name in S.species_allowed))
+			if(S.species_allowed && !(get_bodytype() in S.species_allowed))
+				continue
+			if(S.subspecies_allowed && !(name in S.subspecies_allowed))
 				continue
 			ADD_SORTED(facial_hair_style_by_gender, facialhairstyle, /proc/cmp_text_asc)
 			facial_hair_style_by_gender[facialhairstyle] = S

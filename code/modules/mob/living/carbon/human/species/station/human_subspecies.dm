@@ -81,3 +81,14 @@
 	blurb = "Ook ook."
 	icobase = 'icons/mob/human_races/subspecies/r_upliftedchimp.dmi'
 */
+
+/datum/species/human/booster
+	name = "Booster"
+	name_plural = "Boosters"
+	blurb = "The self-proclaimed 'boosters' are a loosely affiliated group of self-modifying \
+	bio-tinkers, engineers and radical philosophers dedicated to expanding the definition of what it \
+	means to be human. Conservatives frown on their excessive recklessness, and most booster habitats \
+	are found on the outskirts of systems - some even linger at the edge of human space.<br><br>The \
+	shared Booster genotype is extremely unstable and liable for rapid, apparently random change, \
+	but is certainly both unique and remarkable in its ability to cope with the extremes that the \
+	Universe can throw at it."

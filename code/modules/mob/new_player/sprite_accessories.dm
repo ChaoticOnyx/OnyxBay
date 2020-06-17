@@ -30,6 +30,7 @@
 
 	// Restrict some styles to specific species
 	var/list/species_allowed = list(SPECIES_HUMAN)
+	var/list/subspecies_allowed                    // Restrict some styles to specific species names
 
 	// Whether or not the accessory can be affected by colouration
 	var/do_colouration = 1
@@ -54,7 +55,7 @@
 	name = "Bald"
 	icon_state = "bald"
 	gender = MALE
-	species_allowed = list(SPECIES_HUMAN,SPECIES_UNATHI,SPECIES_VOX)
+	species_allowed = list(SPECIES_HUMAN,SPECIES_BOOSTER,SPECIES_UNATHI,SPECIES_VOX)
 	flags = VERY_SHORT
 
 /datum/sprite_accessory/hair/short
@@ -185,19 +186,19 @@
 	name = "Bobcurl"
 	icon_state = "hair_bobcurl"
 	gender = FEMALE
-	species_allowed = list(SPECIES_HUMAN,SPECIES_UNATHI)
+	species_allowed = list(SPECIES_HUMAN,SPECIES_BOOSTER,SPECIES_UNATHI)
 
 /datum/sprite_accessory/hair/bob
 	name = "Bob"
 	icon_state = "hair_bobcut"
 	gender = FEMALE
-	species_allowed = list(SPECIES_HUMAN,SPECIES_UNATHI)
+	species_allowed = list(SPECIES_HUMAN,SPECIES_BOOSTER,SPECIES_UNATHI)
 
 /datum/sprite_accessory/hair/bobcutalt
 	name = "Chin Length Bob"
 	icon_state = "hair_bobcutalt"
 	gender = FEMALE
-	species_allowed = list(SPECIES_HUMAN,SPECIES_UNATHI)
+	species_allowed = list(SPECIES_HUMAN,SPECIES_BOOSTER,SPECIES_UNATHI)
 
 /datum/sprite_accessory/hair/bowl
 	name = "Bowl"
@@ -208,7 +209,7 @@
 	name = "Buzzcut"
 	icon_state = "hair_buzzcut"
 	gender = MALE
-	species_allowed = list(SPECIES_HUMAN,SPECIES_UNATHI)
+	species_allowed = list(SPECIES_HUMAN,SPECIES_BOOSTER,SPECIES_UNATHI)
 	flags = VERY_SHORT
 
 /datum/sprite_accessory/hair/crew
@@ -310,7 +311,7 @@
 /datum/sprite_accessory/hair/mohawk
 	name = "Mohawk"
 	icon_state = "hair_d"
-	species_allowed = list(SPECIES_HUMAN,SPECIES_UNATHI)
+	species_allowed = list(SPECIES_HUMAN,SPECIES_BOOSTER,SPECIES_UNATHI)
 
 /datum/sprite_accessory/hair/jensen
 	name = "Adam Jensen Hair"
@@ -345,7 +346,7 @@
 /datum/sprite_accessory/hair/spiky
 	name = "Spiky"
 	icon_state = "hair_spikey"
-	species_allowed = list(SPECIES_HUMAN,SPECIES_UNATHI)
+	species_allowed = list(SPECIES_HUMAN,SPECIES_BOOSTER,SPECIES_UNATHI)
 
 /datum/sprite_accessory/hair/kusangi
 	name = "Kusanagi Hair"
@@ -988,14 +989,14 @@ May God have mercy.
 /datum/sprite_accessory/hair/wolfmane
 	name = "Wolven mane"
 	icon_state = "hair_wolfmane"
-	
+
 /datum/sprite_accessory/hair/sickboy
     name = "Sick"
     icon_state = "hair_sickboy"
 
 /datum/sprite_accessory/hair/bowie
     name = "From Mars"
-    icon_state = "hair_bowie"	
+    icon_state = "hair_bowie"
 
 /*
 ///////////////////////////////////
@@ -1014,7 +1015,7 @@ May God have mercy.
 	name = "Shaved"
 	icon_state = "bald"
 	gender = NEUTER
-	species_allowed = list(SPECIES_HUMAN,SPECIES_UNATHI,SPECIES_TAJARA,SPECIES_SKRELL,SPECIES_VOX,SPECIES_IPC)
+	species_allowed = list(SPECIES_HUMAN,SPECIES_BOOSTER,SPECIES_UNATHI,SPECIES_TAJARA,SPECIES_SKRELL,SPECIES_VOX,SPECIES_IPC)
 
 /datum/sprite_accessory/facial_hair/watson
 	name = "Watson Mustache"
@@ -1055,7 +1056,7 @@ May God have mercy.
 /datum/sprite_accessory/facial_hair/elvis
 	name = "Elvis Sideburns"
 	icon_state = "facial_elvis"
-	species_allowed = list(SPECIES_HUMAN,SPECIES_UNATHI)
+	species_allowed = list(SPECIES_HUMAN,SPECIES_BOOSTER,SPECIES_UNATHI)
 
 /datum/sprite_accessory/facial_hair/abe
 	name = "Abraham Lincoln Beard"
@@ -1348,6 +1349,7 @@ May God have mercy.
 /  =--------------------=  /
 ////////////////////////////
 */
+
 /datum/sprite_accessory/marking
 	icon = 'icons/mob/human_races/markings.dmi'
 	do_colouration = 1 //Almost all of them have it, COLOR_ADD
@@ -1357,7 +1359,8 @@ May God have mercy.
 	//Empty list is unrestricted. Should only restrict the ones that make NO SENSE on other species,
 	//like Tajara inner-ear coloring overlay stuff.
 	species_allowed = list()
-
+	var/draw_target = MARKING_TARGET_SKIN
+	var/list/disallows = list() //A list of other marking types to ban from adding when this marking is already added
 	var/body_parts = list() //A list of bodyparts this covers, in organ_tag defines
 	//Reminder: BP_L_FOOT,BP_R_FOOT,BP_L_LEG,BP_R_LEG,BP_L_ARM,BP_R_ARM,BP_L_HAND,BP_R_HAND,BP_CHEST,BP_GROIN,BP_HEAD
 

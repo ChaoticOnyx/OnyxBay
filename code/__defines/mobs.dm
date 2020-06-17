@@ -285,6 +285,7 @@
 #define CORPSE_CAN_REENTER_AND_RESPAWN 2
 
 #define SPECIES_HUMAN       "Human"
+#define SPECIES_BOOSTER       "Booster"
 #define SPECIES_TAJARA      "Tajara"
 #define SPECIES_DIONA       "Diona"
 #define SPECIES_VOX         "Vox"
@@ -325,3 +326,6 @@
 #define MOB_INPUT_TEXT "text"
 #define MOB_INPUT_MESSAGE "message"
 #define MOB_INPUT_NUM "num"
+
+#define MARKING_TARGET_SKIN 0 // Draw a datum/sprite_accessory/marking to the mob's body, eg. tattoos
+#define MARKING_TARGET_HAIR 1 // Draw a datum/sprite_accessory/marking to the mob's hair, eg. ears & horns

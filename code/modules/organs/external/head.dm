@@ -117,15 +117,18 @@
 
 	return mob_icon
 
+
 /obj/item/organ/external/head/proc/get_hair_icon()
 	var/image/res = image(species.icon_template,"")
 	if(owner.f_style)
 		var/datum/sprite_accessory/facial_hair_style = GLOB.facial_hair_styles_list[owner.f_style]
-		if(facial_hair_style && facial_hair_style.species_allowed && (species.name in facial_hair_style.species_allowed))
-			var/icon/facial_s = new /icon("icon" = facial_hair_style.icon, "icon_state" = "[facial_hair_style.icon_state]_s")
-			if(facial_hair_style.do_colouration)
-				facial_s.Blend(rgb(owner.r_facial, owner.g_facial, owner.b_facial), facial_hair_style.blend)
-			res.overlays |= facial_s
+		if(facial_hair_style)
+			if(!facial_hair_style.species_allowed || (species.get_bodytype(owner) in facial_hair_style.species_allowed))
+				if(!facial_hair_style.subspecies_allowed || (species.name in facial_hair_style.subspecies_allowed))
+					var/icon/facial_s = new/icon("icon" = facial_hair_style.icon, "icon_state" = "[facial_hair_style.icon_state]_s")
+					if(facial_hair_style.do_colouration)
+						facial_s.Blend(rgb(owner.r_facial, owner.g_facial, owner.b_facial), facial_hair_style.blend)
+					res.overlays |= facial_s
 
 	if(owner.h_style)
 		var/style = owner.h_style
@@ -133,11 +136,29 @@
 		if(owner.head && (owner.head.flags_inv & BLOCKHEADHAIR))
 			if(!(hair_style.flags & VERY_SHORT))
 				hair_style = GLOB.hair_styles_list["Short Hair"]
-		if(hair_style && (species.name in hair_style.species_allowed))
-			var/icon/hair_s = new /icon("icon" = hair_style.icon, "icon_state" = "[hair_style.icon_state]_s")
-			if(hair_style.do_colouration && islist(h_col) && h_col.len >= 3)
-				hair_s.Blend(rgb(h_col[1], h_col[2], h_col[3]), hair_style.blend)
-			res.overlays |= hair_s
+		if(hair_style)
+			if(!hair_style.species_allowed || (species.get_bodytype(owner) in hair_style.species_allowed))
+				if(!hair_style.subspecies_allowed || (species.name in hair_style.subspecies_allowed))
+					var/icon/hair_s = new/icon("icon" = hair_style.icon, "icon_state" = "[hair_style.icon_state]_s")
+					if(hair_style.do_colouration && islist(h_col) && h_col.len >= 3)
+						hair_s.Blend(rgb(h_col[1], h_col[2], h_col[3]), hair_style.blend)
+					res.overlays |= hair_s
+
+	for (var/M in markings)
+		var/datum/sprite_accessory/marking/mark_style = markings[M]["datum"]
+		if (mark_style.draw_target == MARKING_TARGET_HAIR)
+			var/icon/mark_icon = new/icon("icon" = mark_style.icon, "icon_state" = "[mark_style.icon_state]")
+			if (!mark_style.do_colouration && owner.h_style)
+				var/datum/sprite_accessory/hair/hair_style = GLOB.hair_styles_list[owner.h_style]
+				if ((~hair_style.flags & HAIR_BALD) && islist(h_col) && h_col.len >= 3)
+					mark_icon.Blend(rgb(h_col[1], h_col[2], h_col[3]), ICON_ADD)
+				else //only baseline human skin tones; others will need species vars for coloration
+					mark_icon.Blend(rgb(200 + s_tone, 150 + s_tone, 123 + s_tone), ICON_ADD)
+			else
+				mark_icon.Blend(markings[M]["color"], ICON_ADD)
+			res.overlays |= mark_icon
+			icon_cache_key += "[M][markings[M]["color"]]"
+
 	return res
 
 /obj/item/organ/external/head/update_icon_drop(mob/living/carbon/human/powner)
