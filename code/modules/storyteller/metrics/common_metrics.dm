@@ -106,8 +106,13 @@
 		for (var/datum/mind/M in antag.current_antagonists)
 			if (M.current)
 				var/mob/living/L = M.current
-				if (!(L.stat & DEAD))
-					count++
+				if (L.stat & DEAD)
+					_log_debug("Dead antagonist: [L] ([role_id])")
+					continue
+				if (antag.station_crew_involved && M.is_brigged(0))
+					_log_debug("Brigged antagonist: [L] ([role_id])")
+					continue
+				count++
 		if (count)
 			_log_debug("Add +[add_danger] for each [role_id] ([count] times)")
 			antagonists_danger += count * add_danger

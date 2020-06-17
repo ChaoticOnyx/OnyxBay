@@ -3,7 +3,6 @@
 	name_language = LANGUAGE_SKRELLIAN
 	origin = "Pet Shop"
 	trade_flags = TRADER_GOODS|TRADER_MONEY|TRADER_WANTED_ONLY|TRADER_WANTED_ALL
-	want_multiplier = 15
 	possible_origins = list("Paws-Out", "Pets-R-Smart", "Tentacle Companions", "Xeno-Pets and Assorted Goods", "Barks and Drools")
 	speech = list("hail_generic"    = "Welcome to my xeno-pet shop! Here you will find many wonderful companions. Some a bit more... aggressive than others. But companions none the less. I also buy pets, or trade them.",
 				"hail_Skrell"       = "Ah! A fellow Skrell. How wonderful, I may have a few pets imported from back home. Take a look.",

@@ -79,9 +79,16 @@
 	if(..()) return 1
 
 	if(!can_open)
-		to_chat(user, "<span class='notice'>You push \the [src], but nothing happens.</span>")
+		if(user.a_intent == I_HURT)
+			user.visible_message("<span class='danger'>\The [user] bangs against \the [src]!</span>",
+								 "<span class='danger'>You bang against \the [src]!</span>",
+								 "You hear a banging sound.")
+			user.do_attack_animation(src)
+		else
+			to_chat(user, "<span class='notice'>You push \the [src], but nothing happens.</span>")
 		playsound(src, hitsound, 25, 1)
 	else
+		to_chat(user, "<span class='notice'>You push \the [src] and it retracts.</span>")
 		toggle_open(user)
 	return 0
 
@@ -352,16 +359,14 @@
 		var/dam_threshhold = material.integrity
 		if(reinf_material)
 			dam_threshhold = ceil(max(dam_threshhold,reinf_material.integrity)/2)
-		var/dam_prob = min(100, material.hardness*1.5)
-		if(dam_prob < 100 && W.force > (dam_threshhold/10))
-			playsound(src, 'sound/effects/metalhit.ogg', 50, 1)
-			if(!prob(dam_prob))
-				visible_message("<span class='danger'>\The [user] attacks \the [src] with \the [W] and it [material.destruction_desc]!</span>")
-				dismantle_wall(1)
-			else
-				visible_message("<span class='danger'>\The [user] attacks \the [src] with \the [W]!</span>")
-		else
-			visible_message("<span class='danger'>\The [user] attacks \the [src] with \the [W], but it bounces off!</span>")
 		user.setClickCooldown(W.update_attack_cooldown())
 		user.do_attack_animation(src)
+		var/dam_prob = min(100, material.hardness*1.5)
+		if(dam_prob < 100 && W.force > (dam_threshhold/10))
+			visible_message("<span class='danger'>\The [user] attacks \the [src] with \the [W]!</span>")
+			playsound(src, 'sound/effects/metalhit2.ogg', rand(50,75), 1, -1)
+			take_damage(W.force)
+		else
+			visible_message("<span class='danger'>\The [user] attacks \the [src] with \the [W], but it bounces off!</span>")
+			playsound(src, 'sound/effects/metalhit2.ogg', 20, 1, -1)
 		return

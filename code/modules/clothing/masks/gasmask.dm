@@ -9,11 +9,11 @@
 	w_class = ITEM_SIZE_NORMAL
 	gas_transfer_coefficient = 0.01
 	permeability_coefficient = 0.01
-	siemens_coefficient = 0.9
+	siemens_coefficient = 0.8
 	var/gas_filter_strength = 1			//For gas mask filters
 	var/list/filtered_gases = list("phoron", "sleeping_agent")
 	var/istinted = 0
-	armor = list(melee = 10, bullet = 5, laser = 10, energy = 0, bomb = 0, bio = 75, rad = 0)
+	armor = list(melee = 10, bullet = 5, laser = 10, energy = 0, bomb = 0, bio = 75, rad = 25)
 
 /obj/item/clothing/mask/gas/Initialize()
 	. = ..()
@@ -39,7 +39,7 @@
 	icon_state = "gas_mask"
 	item_state = "gas_mask"
 
-	armor = list(melee = 10, bullet = 5, laser = 10, energy = 0, bomb = 0, bio = 55, rad = 0)
+	armor = list(melee = 10, bullet = 5, laser = 10, energy = 0, bomb = 0, bio = 55, rad = 25)
 
 //Plague Dr suit can be found in clothing/suits/bio.dm
 /obj/item/clothing/mask/gas/plaguedoctor
@@ -47,8 +47,9 @@
 	desc = "A modernised version of the classic design, this mask will not only filter out phoron but it can also be connected to an air supply."
 	icon_state = "plaguedoctor"
 	item_state = "plaguedoctor"
-	armor = list(melee = 5, bullet = 5, laser = 5,energy = 2, bomb = 0, bio = 90, rad = 0)
+	armor = list(melee = 5, bullet = 5, laser = 5,energy = 2, bomb = 0, bio = 90, rad = 10)
 	body_parts_covered = HEAD|FACE|EYES
+	siemens_coefficient = 0.9
 
 /obj/item/clothing/mask/gas/swat
 	name = "\improper SWAT mask"
@@ -56,9 +57,9 @@
 	icon_state = "swat"
 	item_state = "swat"
 	istinted = 0
-	siemens_coefficient = 0.7
+	siemens_coefficient = 0.5
 	body_parts_covered = FACE|EYES
-	armor = list(melee = 15, bullet = 15, laser = 15, energy = 0, bomb = 0, bio = 75, rad = 0)
+	armor = list(melee = 15, bullet = 15, laser = 15, energy = 0, bomb = 0, bio = 75, rad = 50)
 
 /obj/item/clothing/mask/gas/tactical
 	name = "\improper tactical mask"
@@ -72,6 +73,7 @@
 	icon_state = "gasmask-clear"
 	item_state = "gasmask-clear"
 	istinted = 0
+	siemens_coefficient = 0.9
 
 /obj/item/clothing/mask/gas/police
 	name = "police gas mask"
@@ -103,8 +105,8 @@
 	icon_state = "swat"
 	item_state = "swat"
 	istinted = 0
-	siemens_coefficient = 0.7
-	armor = list(melee = 15, bullet = 15, laser = 15, energy = 0, bomb = 0, bio = 75, rad = 0)
+	siemens_coefficient = 0.5
+	armor = list(melee = 15, bullet = 15, laser = 15, energy = 0, bomb = 0, bio = 75, rad = 50)
 
 /obj/item/clothing/mask/gas/clown_hat
 	name = "clown wig and mask"
@@ -153,6 +155,7 @@
 	desc = "Beep boop!"
 	icon_state = "death"
 	item_state = "death"
+	siemens_coefficient = 1.0
 
 /obj/item/clothing/mask/gas/owl_mask
 	name = "owl mask"
@@ -161,6 +164,7 @@
 	item_state = "owl"
 	body_parts_covered = HEAD|FACE|EYES
 	istinted = 0
+	siemens_coefficient = 1.0
 
 /obj/item/clothing/mask/gas/vox
 	name = "vox breathing mask"

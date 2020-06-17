@@ -21,31 +21,13 @@
 	var/hex_to_work_on = copytext(hex,5,7)
 	return hex2num(hex_to_work_on)
 
-
 /mob/living/update_transform()
-	// First, get the correct size.
-	var/desired_scale = icon_scale
-	for(var/datum/modifier/M in modifiers)
-		if(!isnull(M.icon_scale_percent))
-			desired_scale *= M.icon_scale_percent
-
-	// Now for the regular stuff.
 	var/matrix/M = matrix()
-	M.Scale(desired_scale)
-	M.Translate(0, 16*(desired_scale-1))
+	M.Scale(icon_scale)
+	M.Translate(0, 16*(icon_scale-1))
 	animate(src, transform = M, time = 10)
 
 /mob/living/carbon/human/update_transform()
-	// First, get the correct size.
-	var/desired_scale = icon_scale
-
-	desired_scale *= species.icon_scale
-
-	for(var/datum/modifier/M in modifiers)
-		if(!isnull(M.icon_scale_percent))
-			desired_scale *= M.icon_scale_percent
-
-	// Regular stuff again.
 	var/matrix/M = matrix()
 	var/anim_time = 3
 
@@ -55,16 +37,15 @@
 
 	if(lying && !species.prone_icon) //Only rotate them if we're not drawing a specific icon for being prone.
 		M.Turn(90)
-		M.Scale(desired_scale)
+		M.Scale(icon_scale)
 		M.Translate(1,-6)
 		layer = MOB_LAYER -0.01 // Fix for a byond bug where turf entry order no longer matters
 	else
-		M.Scale(desired_scale)
-		M.Translate(0, 16*(desired_scale-1))
+		M.Scale(icon_scale)
+		M.Translate(0, 16*(icon_scale-1))
 		layer = MOB_LAYER // Fix for a byond bug where turf entry order no longer matters
 
 	animate(src, transform = M, time = anim_time)
-
 
 /mob/living/proc/update_modifier_visuals()
 	return
@@ -72,7 +53,6 @@
 /atom/movable
 	var/icon_scale = 1 // Used to scale icons up or down in update_transform().
 	var/icon_rotation = 0 // Used to rotate icons in update_transform()
-
 
 /atom/movable/proc/update_transform()
 	var/matrix/M = matrix()
@@ -84,7 +64,6 @@
 	if(client && client.color)
 		animate(client, color = null, time = 10)
 	return
-
 
 /mob/living/carbon/human/update_modifier_visuals()
 	if(QDESTROYING(src))

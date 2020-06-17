@@ -38,9 +38,9 @@
 	RefreshParts()
 
 	manufacturer = basic_robolimb.company
-	update_categories()
 
 	files = new /datum/research(src) //Setup the research data holder.
+	update_categories()
 
 /obj/machinery/mecha_part_fabricator/Process()
 	..()

@@ -758,7 +758,7 @@
 	desc = "Sretch and squeeze it to make music."
 	icon_state = "accordion"
 	item_state = "accordion"
-	force = 0
+	force = 3
 	InstrumentId  = "accordion"
 
 /obj/item/instrument/recorder
@@ -766,7 +766,7 @@
 	desc = "Wooden stick with holes. Blow into it to make some music."
 	icon_state = "recorder"
 	item_state = "recorder"
-	force = 3
+	force = 0
 	InstrumentId  = "recorder"
 	attack_verb = list("played hard", "blowed", "played")
 
@@ -784,7 +784,7 @@
 	desc = "A wooden musical instrument with four strings and a bow."
 	icon_state = "violin"
 	item_state = "violin"
-	force = 4
+	force = 3
 	InstrumentId  = "violin"
 	attack_verb = list("played hard", "bowed", "played")
 

@@ -252,11 +252,12 @@ update_flag
 
 /obj/machinery/portable_atmospherics/canister/attackby(obj/item/weapon/W as obj, mob/user as mob)
 	if(!isWrench(W) && !istype(W, /obj/item/weapon/tank) && !istype(W, /obj/item/device/analyzer) && !istype(W, /obj/item/device/pda))
-		visible_message("<span class='warning'>\The [user] hits \the [src] with \a [W]!</span>")
+		user.visible_message(SPAN("danger", "\The [src] has been [pick(W.attack_verb)] with [W] by [user]!"))
 		src.health -= W.force
 		healthcheck()
 		user.setClickCooldown(W.update_attack_cooldown())
 		user.do_attack_animation(src)
+		playsound(src.loc, 'sound/effects/fighting/smash.ogg', 50, 1)
 		shake_animation(stime = 4)
 
 	if(istype(user, /mob/living/silicon/robot) && istype(W, /obj/item/weapon/tank/jetpack))

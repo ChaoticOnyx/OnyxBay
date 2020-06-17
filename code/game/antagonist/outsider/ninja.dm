@@ -19,6 +19,8 @@ GLOBAL_DATUM_INIT(ninjas, /datum/antagonist/ninja, new)
 
 	faction = "ninja"
 
+	station_crew_involved = FALSE
+
 /datum/antagonist/ninja/attempt_random_spawn()
 	if(config.ninjas_allowed) ..()
 

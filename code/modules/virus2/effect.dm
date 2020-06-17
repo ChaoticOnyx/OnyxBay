@@ -72,7 +72,7 @@
 		mob.adjustBruteLoss(10*multiplier)
 		var/obj/item/organ/external/O = pick(mob.organs)
 		if(prob(25))
-			to_chat(mob, "<span class='warning'>Your [O.name] feels as if it might burst!</span>")
+			to_chat(mob, GIBBINGTONS_EFFECT_WARNING(O.name))
 		if(prob(10))
 			spawn(50)
 				if(O)
@@ -125,7 +125,7 @@
 		var/obj/item/organ/external/E = mob.organs_by_name[organ]
 		if (!(E.status & ORGAN_DEAD))
 			E.status |= ORGAN_DEAD
-			to_chat(mob, "<span class='notice'>You can't feel your [E.name] anymore...</span>")
+			to_chat(mob, ORGANS_SHUTDOWN_EFFECT_WARNING(E.name))
 			for (var/obj/item/organ/external/C in E.children)
 				C.status |= ORGAN_DEAD
 		mob.update_body(1)
@@ -145,19 +145,19 @@
 	activate(mob/living/carbon/human/mob, multiplier)
 		for (var/obj/item/organ/external/E in mob.organs)
 			if (E.status & ORGAN_BROKEN && prob(30))
-				to_chat(mob, "<span class='notice'>Your [E.name] suddenly feels much better!</span>")
+				to_chat(mob, IMMORTAL_RECOVER_EFFECT_WARNING(E.name))
 				E.status ^= ORGAN_BROKEN
 				break
 		for (var/obj/item/organ/internal/I in mob.internal_organs)
 			if (I.damage && prob(30))
-				to_chat(mob, "<span class='notice'>Your [mob.get_organ(I.parent_organ)] feels a bit warm...</span>")
+				to_chat(mob, IMMORTAL_HEALING_EFFECT_WARNING(mob.get_organ(I.parent_organ)))
 				I.take_internal_damage(-2*multiplier)
 				break
 		var/heal_amt = -5*multiplier
 		mob.apply_damages(heal_amt,heal_amt,heal_amt,heal_amt)
 
 	deactivate(var/mob/living/carbon/human/mob,var/multiplier)
-		to_chat(mob, "<span class='notice'>You suddenly feel hurt and old...</span>")
+		to_chat(mob, IMMORTAL_AGING_EFFECT_WARNING)
 		mob.age += 8
 		var/backlash_amt = 5*multiplier
 		mob.apply_damages(backlash_amt,backlash_amt,backlash_amt,backlash_amt)
@@ -217,7 +217,7 @@
 	name = "Topographical Cretinism"
 	stage = 3
 	activate(var/mob/living/carbon/human/mob,var/multiplier)
-		to_chat(mob, "<span class='notice'>You have trouble telling right and left apart all of a sudden.</span>")
+		to_chat(mob, CONFUSION_EFFECT_WARNING)
 		mob.confused += 10
 
 /datum/disease2/effect/mutation
@@ -307,7 +307,7 @@
 	badness = VIRUS_COMMON
 	activate(var/mob/living/carbon/human/mob,var/multiplier)
 		if(mob.species.name == SPECIES_HUMAN && !(mob.h_style == "Bald") && !(mob.h_style == "Balding Hair"))
-			to_chat(mob, "<span class='danger'>Your hair starts to fall out in clumps...</span>")
+			to_chat(mob, HAIR_EFFECT_WARNING)
 			spawn(50)
 				mob.h_style = "Balding Hair"
 				mob.update_hair()
@@ -317,7 +317,7 @@
 	stage = 2
 	badness = VIRUS_COMMON
 	activate(var/mob/living/carbon/human/mob,var/multiplier)
-		to_chat(mob, "<span class='notice'>You feel a rush of energy inside you!</span>")
+		to_chat(mob, STIMULANT_EFFECT_WARNING)
 		if (mob.reagents.get_reagent_amount(/datum/reagent/hyperzine) < 10)
 			mob.reagents.add_reagent(/datum/reagent/hyperzine, 4)
 		if (prob(30))
@@ -329,7 +329,7 @@
 	delay = 15 SECONDS
 
 /datum/disease2/effect/disorientation/activate(mob/living/carbon/human/mob, multiplier)
-	to_chat(mob, SPAN_WARNING("You feel disoriented..."))
+	to_chat(mob, DISORIENTATION_EFFECT_WARNING)
 	if(mob.client)
 		var/client/C = mob.client
 		if(prob(50))
@@ -346,7 +346,7 @@
 
 	activate(var/mob/living/carbon/human/mob,var/multiplier)
 		if (prob(30))
-			to_chat(mob, "<span class='warning'>You feel like you are about to sneeze!</span>")
+			to_chat(mob, SNEEZE_EFFECT_WARNING)
 		sleep(5)
 		mob.emote("sneeze")
 		for(var/mob/living/carbon/human/M in get_step(mob,mob.dir))
@@ -360,7 +360,7 @@
 	stage = 1
 	delay = 25 SECONDS
 	activate(var/mob/living/carbon/human/mob,var/multiplier)
-		to_chat(mob, "<span class='warning'>Mucous runs down the back of your throat.</span>")
+		to_chat(mob, GUNCK_EFFECT_WARNING)
 
 /datum/disease2/effect/drool
 	name = "Saliva Effect"
@@ -391,14 +391,14 @@
 	delay = 25 SECONDS
 	activate(var/mob/living/carbon/human/mob,var/multiplier)
 		var/obj/O = pick(mob.organs)
-		to_chat(mob, "<span class='warning'>Your [O.name] itches like hell.</span>")
+		to_chat(mob, ITCH_EFFECT_WARNING(O.name))
 
 /datum/disease2/effect/stomach
 	name = "Upset stomach"
 	stage = 1
 	delay = 25 SECONDS
 	activate(var/mob/living/carbon/human/mob,var/multiplier)
-		to_chat(mob, "<span class='warning'>Your stomach feels heavy.</span>")
+		to_chat(mob, STOMACH_EFFECT_WARNING)
 
 /datum/disease2/effect/stealth
 	name = "Silent Death Syndrome"

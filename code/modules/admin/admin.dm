@@ -26,8 +26,8 @@ var/global/floorIsLava = 0
 				to_chat(C, msg)
 /proc/href_exploit(suspect_ckey, href)
 	var/rendered = "<span class=\"log_message\"><span class=\"prefix\">HREF EXPLOIT POSSIBLE:</span> <span class=\"message\">Suspect: '[suspect_ckey]' || Href: '[href]'</span></span><br>"
-	if (config && config.log_hrefs && href_logfile)
-		to_chat(href_logfile, rendered)
+	if (config && config.log_hrefs && GLOB.world_hrefs_log)
+		WRITE_FILE(GLOB.world_hrefs_log, rendered)
 	for(var/client/C in GLOB.admins)
 		if(check_rights(R_INVESTIGATE, 0, C))
 			var/msg = rendered
@@ -1491,6 +1491,20 @@ var/global/floorIsLava = 0
 
 			P.adminbrowse()
 
+/client/proc/check_fax_history()
+	set category = "Special Verbs"
+	set name = "Check Fax History"
+	set desc = "Look up the faxes sent this round."
+
+	var/data = "<center><b>Fax History:</b></center><br>"
+
+	if (GLOB.adminfaxes)
+		for (var/obj/item/item in GLOB.adminfaxes)
+			data += "[item.name] - <a href='?_src_=holder;AdminFaxView=\ref[item]'>view message</a><br>"
+	else
+		data += "<center>No faxes yet.</center>"
+
+	usr << browse("<HTML><HEAD><TITLE>Centcomm Fax History</TITLE></HEAD><BODY>[data]</BODY></HTML>", "window=Centcomm Fax History")
 
 datum/admins/var/obj/item/weapon/paper/admin/faxreply // var to hold fax replies in
 

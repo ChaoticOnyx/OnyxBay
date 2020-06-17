@@ -27,7 +27,7 @@ var/list/admin_verbs_admin = list(
 	/client/proc/colorooc,				//allows us to set a custom colour for everythign we say in ooc,
 	/client/proc/admin_ghost,			//allows us to ghost/reenter body at will,
 	/client/proc/toggle_view_range,		//changes how far we can see,
-	/datum/admins/proc/view_txt_log,	//shows the server log (diary) for today,
+	/datum/admins/proc/view_txt_log,	//shows the server log for today,
 	/datum/admins/proc/view_atk_log,	//shows the server combat-log, doesn't do anything presently,
 	/client/proc/cmd_admin_pm_context,	//right-click adminPM interface,
 	/client/proc/cmd_admin_pm_panel,	//admin-pm list,
@@ -35,7 +35,7 @@ var/list/admin_verbs_admin = list(
 	/client/proc/cmd_admin_delete,		//delete an instance/object/mob/etc,
 	/client/proc/cmd_admin_check_contents,	//displays the contents of an instance,
 	/datum/admins/proc/access_news_network,	//allows access of newscasters,
-	/client/proc/getserverlog,			//allows us to fetch server logs (diary) for other days,
+	/client/proc/getserverlog,			//allows us to fetch server logs for other days,
 	/client/proc/jumptocoord,			//we ghost and jump to a coordinate,
 	/client/proc/Getmob,				//teleports a mob to our location,
 	/client/proc/Getkey,				//teleports a mob with a certain ckey to our location,
@@ -101,6 +101,7 @@ var/list/admin_verbs_admin = list(
 	/client/proc/add_trader,
 	/client/proc/remove_trader,
 	/datum/admins/proc/sendFax,
+	/client/proc/check_fax_history,
 	/client/proc/change_regular_announcement,
 	/client/proc/delbook
 	)
@@ -335,6 +336,7 @@ var/list/admin_verbs_mod = list(
 	/client/proc/cmd_admin_subtle_message, // send an message to somebody as a 'voice in their head',
 	/client/proc/aooc,
 	/datum/admins/proc/sendFax,
+	/client/proc/check_fax_history,
 	/client/proc/delbook
 	)
 

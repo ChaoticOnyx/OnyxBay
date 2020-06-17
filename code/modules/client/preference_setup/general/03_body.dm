@@ -3,7 +3,7 @@ var/global/list/valid_bloodtypes = list("A+", "A-", "B+", "B-", "AB+", "AB-", "O
 /datum/preferences
 	var/species = SPECIES_HUMAN         //Species datum to use.
 	var/b_type = "A+"					//blood type (not-chooseable)
-	var/h_style = "Bald"				//Hair type
+	var/h_style = "Short Hair"			//Hair type
 	var/r_hair = 0						//Hair color
 	var/g_hair = 0						//Hair color
 	var/b_hair = 0						//Hair color

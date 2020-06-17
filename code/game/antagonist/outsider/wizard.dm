@@ -17,6 +17,8 @@ GLOBAL_DATUM_INIT(wizards, /datum/antagonist/wizard, new)
 
 	faction = "wizard"
 
+	station_crew_involved = FALSE
+
 /datum/antagonist/wizard/create_objectives(datum/mind/wizard)
 
 	if(!..())
@@ -71,7 +73,7 @@ GLOBAL_DATUM_INIT(wizards, /datum/antagonist/wizard, new)
 
 	if(!..())
 		return 0
-			
+
 	var/outfit_type = pick(subtypesof(/decl/hierarchy/outfit/wizard))
 	var/decl/hierarchy/outfit/wizard_outfit = outfit_by_type(outfit_type)
 	wizard_outfit.equip(wizard_mob)
