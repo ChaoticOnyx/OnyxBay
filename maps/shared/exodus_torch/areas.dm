@@ -297,6 +297,7 @@
 /area/medical/morgue
 	name = "\improper Morgue"
 	icon_state = "morgue"
+	ambience = list('sound/ambience/morgue/ambimo1.ogg')
 
 /area/medical/sleeper
 	name = "\improper Emergency Treatment Centre"
