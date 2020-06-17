@@ -1,2 +1,0 @@
-#define SURGERY_FAILURE -1
-#define SURGERY_BLOCKED -2
