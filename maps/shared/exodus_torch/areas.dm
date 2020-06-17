@@ -297,7 +297,6 @@
 /area/medical/morgue
 	name = "\improper Morgue"
 	icon_state = "morgue"
-	ambience = list('sound/ambience/morgue/ambimo1.ogg','sound/ambience/morgue/ambimo2.ogg')
 
 /area/medical/sleeper
 	name = "\improper Emergency Treatment Centre"
@@ -556,7 +555,6 @@
 /area/chapel/main
 	name = "\improper Chapel"
 	icon_state = "chapel"
-	ambience = list('sound/ambience/chapel/ambicha1.ogg','sound/ambience/chapel/ambicha2.ogg','sound/ambience/chapel/ambicha3.ogg','sound/ambience/chapel/ambicha4.ogg')
 	sound_env = LARGE_ENCLOSED
 
 // Merchant
