@@ -555,6 +555,7 @@
 /area/chapel/main
 	name = "\improper Chapel"
 	icon_state = "chapel"
+	ambience = list('sound/ambience/chapel/ambicha1.ogg','sound/ambience/chapel/ambicha2.ogg','sound/ambience/chapel/ambicha3.ogg','sound/ambience/chapel/ambicha4.ogg')
 	sound_env = LARGE_ENCLOSED
 
 // Merchant
