@@ -34,9 +34,10 @@
 	name = "hot pocket"
 	desc = "You wanna put a bangin- oh, nevermind."
 	icon_state = "donk"
-	New()
-		..()
-		heat()
+
+/obj/item/weapon/reagent_containers/food/snacks/donkpocket/variable/New()
+	..()
+	heat()
 
 /obj/item/weapon/reagent_containers/food/snacks/tofukabob/variable
 	icon = 'icons/obj/food_custom.dmi'

@@ -47,22 +47,22 @@
 		stop()
 	return ..()
 
-/obj/machinery/cooker/examine()
+/obj/machinery/cooker/examine(mob/user)
 	. = ..()
-	if(Adjacent(usr))
+	if(Adjacent(user))
 		switch(product_status())
 			//if NO_PRODUCT, say no more
 			if(COOKING)
-				to_chat(usr, "You can see \a [thing_inside] inside.")
+				to_chat(user, "You can see \a [thing_inside] inside.")
 			if(COOKED)
 				var/smell = "good"
 				if(istype(thing_inside, /obj/item/weapon/reagent_containers/food/snacks))
 					var/obj/item/weapon/reagent_containers/food/snacks/S = thing_inside
 					if(islist(S.nutriment_desc) && length(S.nutriment_desc))
 						smell = pick(S.nutriment_desc)
-				to_chat(usr, "You can see \a [thing_inside] inside. It smells [smell].")
+				to_chat(user, "You can see \a [thing_inside] inside. It smells [smell].")
 			if(BURNED)
-				to_chat(usr, SPAN_WARNING("Inside is covered by dirt, and it smells smoke!"))
+				to_chat(user, SPAN_WARNING("Inside is covered by dirt, and it smells smoke!"))
 
 /obj/machinery/cooker/attackby(obj/item/I, mob/user)
 	set waitfor = 0  //So that any remaining parts of calling proc don't have to wait for the long cooking time ahead.
@@ -89,9 +89,6 @@
 		return 0
 	else if(istype(I, /obj/item/weapon/reagent_containers/glass))
 		to_chat(user, SPAN_WARNING("That would probably break [src]."))
-		return 0
-	else if(istype(I, /obj/item/weapon/disk/nuclear))
-		to_chat(user, SPAN_WARNING("Central Command would kill you if you [cook_type] that."))
 		return 0
 	else if(istype(I, /obj/item/weapon/holder) || istype(I, /obj/item/grab))
 		if(istype(I, /obj/item/weapon/holder))
