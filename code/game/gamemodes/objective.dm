@@ -1,6 +1,5 @@
 //This file was auto-corrected by findeclaration.exe on 25.5.2012 20:42:31
 var/global/list/all_objectives = list()
-GLOBAL_VAR_INIT(is_station_destroyed, FALSE)
 
 datum/objective
 	var/datum/mind/owner = null			//Who owns the objective.
@@ -406,7 +405,7 @@ datum/objective/nuclear
 	explanation_text = "Cause mass destruction with a nuclear device."
 
 	check_completion()
-		if(GLOB.is_station_destroyed)
+		if(GLOB.mercs.is_station_destroyed)
 			return 1
 		else
 			return 0
