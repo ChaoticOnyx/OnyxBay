@@ -99,11 +99,10 @@
 
 	New()
 		..()
-		new /obj/item/weapon/book/manual/medical_cloning(src)
-		new /obj/item/weapon/book/manual/medical_chemistry(src)
-		new /obj/item/weapon/book/manual/medical_diagnostics_manual(src)
-		new /obj/item/weapon/book/manual/medical_diagnostics_manual(src)
-		new /obj/item/weapon/book/manual/medical_diagnostics_manual(src)
+		new /obj/item/weapon/book/wiki/medical_chemistry(src)
+		new /obj/item/weapon/book/wiki/medical_diagnostics_manual(src)
+		new /obj/item/weapon/book/wiki/medical_diagnostics_manual(src)
+		new /obj/item/weapon/book/wiki/medical_diagnostics_manual(src)
 		update_icon()
 
 
@@ -112,13 +111,12 @@
 
 	New()
 		..()
-		new /obj/item/weapon/book/manual/engineering_construction(src)
-		new /obj/item/weapon/book/manual/engineering_particle_accelerator(src)
-		new /obj/item/weapon/book/manual/engineering_hacking(src)
-		new /obj/item/weapon/book/manual/engineering_guide(src)
-		new /obj/item/weapon/book/manual/atmospipes(src)
-		new /obj/item/weapon/book/manual/engineering_singularity_safety(src)
-		new /obj/item/weapon/book/manual/evaguide(src)
+		new /obj/item/weapon/book/wiki/engineering_construction(src)
+		new /obj/item/weapon/book/wiki/engineering_hacking(src)
+		new /obj/item/weapon/book/wiki/engineering_guide(src)
+		new /obj/item/weapon/book/wiki/atmospipes(src)
+		new /obj/item/weapon/book/wiki/engineering_singularity_safety(src)
+		new /obj/item/weapon/book/wiki/hardsuits(src)
 		update_icon()
 
 /obj/structure/bookcase/manuals/research_and_development
@@ -126,7 +124,7 @@
 
 	New()
 		..()
-		new /obj/item/weapon/book/manual/research_and_development(src)
+		new /obj/item/weapon/book/wiki/research_and_development(src)
 		update_icon()
 
 
@@ -159,7 +157,7 @@
 			to_chat(user, "<span class='notice'>The pages of [title] have been cut out!</span>")
 			return
 	if(src.dat)
-		user << browse(dat, "window=book;size=1000x550")
+		user << browse(dat, "window=book;size=650x650")
 		user.visible_message("[user] opens a book titled \"[src.title]\" and begins reading intently.")
 		onclose(user, "book")
 	else
@@ -227,9 +225,63 @@
 		M << browse("<i>Author: [author].</i><br><br>" + "[dat]", "window=book;size=1000x550")
 		user.setClickCooldown(DEFAULT_QUICK_COOLDOWN) //to prevent spam
 
-/*
- * Manual Base Object
- */
-/obj/item/weapon/book/manual
-	icon = 'icons/obj/library.dmi'
-	unique = 1   // 0 - Normal book, 1 - Should not be treated as normal book, unable to be copied, unable to be modified
+/obj/item/weapon/book/wiki
+	title = ""
+	unique = 1
+	var/topic
+	var/style = WIKI_MINI
+	var/censored = 1
+
+/obj/item/weapon/book/wiki/Initialize()
+	dat = wiki_request(topic, style, censored, src)
+
+/obj/item/weapon/book/wiki/Topic(href, href_list[])
+	// No parent call here
+	if(href_list["title"] && initial(title) == "")
+		title = href_list["title"]
+		//name = href_list["title"] // <- Uncomment this if cirillic names are OK
+	return 1
+
+// Put this into browse() to show a wiki topic
+/proc/wiki_request(topic, style = WIKI_MINI, censorship = 0, obj/source)
+	var/preamble = ""
+	var/add_params = ""
+	var/script = ""
+	var/ref = source ? "var ref = \ref[source];" : "";
+	switch(style)
+		if(WIKI_FULL)
+			script = "window.location='[config.wikiurl]/index.php?title=[topic]&printable=yes'"
+		if(WIKI_MINI)
+			script = file2text('code/js/wiki_html.js')
+			add_params = "&useskin=monobook&disabletoc=true" // Whenever BYOND bug about anchor links in local files will be fixed, remove '&disabletoc=true' to allow index
+		if(WIKI_MOBILE)
+			script = file2text('code/js/wiki_html.js')
+			add_params = "&useskin=minerva"
+		if(WIKI_TEXT)
+			script = file2text('code/js/wiki_text.js');
+			if(source)
+				usr << browse(icon(source.icon, source.icon_state), "file=wiki_paper.png&display=0")
+			else
+				usr << browse(icon('icons/obj/bureaucracy.dmi', "paper"), "file=wiki_paper.png&display=0")
+			usr << browse(icon('icons/misc/mark.dmi', "rt"), "file=right_arrow.png&display=0")
+			usr << browse(icon('icons/obj/library.dmi', "binder"), "file=bookbinder.png&display=0")
+			usr << browse(icon('icons/obj/library.dmi', "book1"), "file=book1.png&display=0")
+			preamble = {"<div style='text-align:center;border-style: dashed;'><b>This is a book template. Process it through a bookbinder to get a proper book.</b>
+						<img src='wiki_paper.png' style='width: 32px; height: 32px;'/>
+						<img src='right_arrow.png' style='width: 32px; height: 32px;'/>
+						<img src='bookbinder.png' style='width: 32px; height: 32px;'/>
+						<img src='right_arrow.png' style='width: 32px; height: 32px;'/>
+						<img src='book1.png' style='width: 32px; height: 32px;'/>
+						</div><br>"}
+
+	return {"<!DOCTYPE html><html>
+		<head><meta http-equiv=\"x-ua-compatible\" content=\"IE=edge\" charset=\"UTF-8\"></head>
+		<body>[preamble]<div id='status'>Turning on...</div></body>
+		<script>
+		var mainPage = '[config.wikiurl]';
+		var topic = '[topic][add_params]';
+		var censorship = [censorship];
+		[ref]
+		[script]
+		</script>
+		</html>"}
