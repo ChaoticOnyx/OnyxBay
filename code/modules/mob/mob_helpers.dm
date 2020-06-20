@@ -209,20 +209,26 @@ var/list/global/organ_rel_size = list(
 proc/slur(phrase)
 	phrase = html_decode(phrase)
 	var/new_phrase = ""
-	var/list/replacements = list(
-		"o" = "u", "s" = "ch", "a" = "ah", "c" = "k",
-		"г" = "х", "к" = "х", "з" = "с", "ц" = "с", "ч" = "щ", "щ" = "шш", "п" = "б",
-		"ы" = "'", "а" = "'", "е" = "'", "ё" = "'", "и" = "'", "о" = "'", "у" = "'", "ю" = "'", "я" = "'"
+	var/list/replacements_consonants = list(
+		"s" = "ch", "c" = "k",
+		"г" = "х", "к" = "х", "з" = "с", "ц" = "с", "ч" = "щ", "щ" = "шш", "п" = "б"
+		)
+	var/list/replacements_vowels = list(
+		"o" = "u",
+		"ы" = "'", "а" = "'", "е" = "э", "ё" = "'", "и" = "'", "о" = "'", "у" = "'", "ю" = "'"
 		)
 	for(var/i = 1, i <= length_char(phrase), i++)
 		var/letter = copytext_char(phrase, i, i + 1)
-		var/chosen = replacements.Find(lowertext(letter))
-		if(chosen && prob(33))
-			letter = replacements[replacements[chosen]]
+		if(lowertext(letter) in replacements_consonants)
+			if(prob(40))
+				letter = replacements_consonants[lowertext(letter)]
+		else if(lowertext(letter) in replacements_vowels)
+			if(prob(12))
+				letter = replacements_vowels[lowertext(letter)]
 		new_phrase += pick(
-			60; letter,
+			65; letter,
 			20; lowertext(letter),
-			20; uppertext(letter),
+			15; uppertext(letter),
 			)
 	return html_encode(new_phrase)
 
