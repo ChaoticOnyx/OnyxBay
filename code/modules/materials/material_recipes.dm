@@ -28,7 +28,6 @@
 		recipes += new /datum/stack_recipe("[display_name] fork", /obj/item/weapon/material/kitchen/utensil/fork/plastic, 1, on_floor = 1, supplied_material = "[name]")
 		recipes += new /datum/stack_recipe("[display_name] knife", /obj/item/weapon/material/kitchen/utensil/knife/plastic, 1, on_floor = 1, supplied_material = "[name]")
 		recipes += new /datum/stack_recipe("[display_name] blade", /obj/item/weapon/material/knife/shiv, 5, time = 30, on_floor = 1, supplied_material = "[name]")
-		recipes += new /datum/stack_recipe("[display_name] brass knuckle", /obj/item/weapon/material/brass_knuckle, 2, time = 25, on_floor = 1, supplied_material = "[name]")
 		recipes += new /datum/stack_recipe("[display_name] shuriken", /obj/item/weapon/material/star, 2, time = 20, on_floor = 1, supplied_material = "[name]")
 
 /material/steel/generate_recipes()
