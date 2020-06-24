@@ -74,9 +74,9 @@
 			for(var/menu_item in menu)
 				if(findtext(true_text, menu_item))
 					queue_dish(menu_item)
-			if(findtext(true_text, "status"))
+			if(findtext(true_text, "status") || findtext(true_text, "статус"))
 				state_status()
-			else if(findtext(true_text, "menu"))
+			else if(findtext(true_text, "menu") || findtext(true_text, "меню"))
 				state_menu()
 	..()
 
