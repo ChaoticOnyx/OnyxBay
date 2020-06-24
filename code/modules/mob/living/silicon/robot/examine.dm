@@ -3,6 +3,9 @@
 	. = ..(user, infix = custom_infix)
 
 	var/msg = ""
+	msg += "\n"
+	msg += examine_all_modules()
+	
 	msg += "<span class='warning'>"
 	if (src.getBruteLoss())
 		if (src.getBruteLoss() < 75)

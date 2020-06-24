@@ -197,15 +197,6 @@
 	origin_tech = list(TECH_POWER = 5, TECH_COMBAT = 5, TECH_ENGINEERING = 6)
 	gun = /obj/item/weapon/gun/energy/taser/mounted
 
-/obj/item/rig_module/mounted/plasmacutter
-	name = "mounted plasma cutter"
-	desc = "A knee-mounted plasma cutter. Don't question it."
-	icon_state = "plasmacutter"
-	interface_name = "mounted plasma cutter"
-	interface_desc = "A knee-mounted suit-powered plasma cutter. Don't question it."
-	origin_tech = list(TECH_MATERIAL = 6, TECH_PHORON = 5, TECH_ENGINEERING = 7, TECH_COMBAT = 5)
-	gun = /obj/item/weapon/gun/energy/plasmacutter/mounted
-
 /obj/item/rig_module/mounted/energy_blade
 
 	name = "energy blade projector"
