@@ -400,6 +400,30 @@ datum/objective/harm
 				return 1
 		return 0
 
+// ert evacuate reqires these information:
+// /area/rescue_base/start, /area/rescue_base/base
+
+datum/objective/ert_station_save
+	// Just check the special variable which changed by *unforeseen* events
+	// This objective is anti antag team objective, e.g. "don't allow Cult to summon Nar-sie for greentext", "don't allow mercery to destroy station for greentext", "don't allow singularity to join in supermatter..."
+
+	check_completion()
+		// rev win check...
+		if(GLOB.revs.global_objectives.len > 0)
+			var/completed = 0
+			for(var/datum/objective/rev/task in GLOB.revs.global_objectives)
+				if(task.check_completion())
+					completed += 1
+			if(completed == GLOB.revs.global_objectives.len)
+				GLOB.ert.is_station_secure = FALSE
+		// main ERT task greentext check...
+		if(GLOB.ert.is_station_secure)
+			return 1
+		else
+			return 0
+
+datum/objective/ert_custom
+	completed = TRUE
 
 datum/objective/nuclear
 	explanation_text = "Cause mass destruction with a nuclear device."
@@ -828,7 +852,11 @@ datum/objective/heist/salvage
 	explanation_text = "Summon Nar-Sie via the use of the Tear Reality rune. It will only work if five or more cultists stand on and around it. Use the Convert rune to recruit new cultists."
 
 /datum/objective/cult/eldergod/check_completion()
-	return (locate(/obj/singularity/narsie/large) in SSmachines.machinery)
+	if(locate(/obj/singularity/narsie/large) in SSmachines.machinery)
+		GLOB.ert.is_station_secure = FALSE
+		return 1
+	else
+		return 0
 
 /datum/objective/cult/sacrifice
 	explanation_text = "Conduct a ritual sacrifice for the glory of Nar-Sie."

@@ -22,9 +22,14 @@ GLOBAL_DATUM_INIT(ert, /datum/antagonist/ert, new)
 	hard_cap_round = 6
 	initial_spawn_req = 3
 	initial_spawn_target = 4
-	show_objectives_on_creation = 0 //we are not antagonists, we do not need the antagonist shpiel/objectives
+	//we are not antagonists, we do not need the antagonist shpiel/objectives
+	//If you still need THING above just enter on the next line: show_objectives_on_creation = 0
 
 	station_crew_involved = FALSE
+
+	var/prim_task_text = "You shouldn't see this"
+	var/list/squad_members = list()
+	var/is_station_secure = TRUE
 
 /datum/antagonist/ert/create_default(mob/source)
 	var/mob/living/carbon/human/M = ..()
@@ -33,6 +38,37 @@ GLOBAL_DATUM_INIT(ert, /datum/antagonist/ert, new)
 /datum/antagonist/ert/Initialize()
 	..()
 	leader_welcome_text = "As leader of the Emergency Response Team, you answer only to [GLOB.using_map.boss_name], and have authority to override the Captain where it is necessary to achieve your mission goals. It is recommended that you attempt to cooperate with the captain where possible, however."
+	prim_task_text = "Protect [GLOB.using_map.company_name]'s ass-ets on [station_name()]. Find the source of an emergency and deal with it."
+
+/datum/antagonist/ert/create_global_objectives()
+	if(!..())
+		return 0
+	global_objectives = list()
+	var/datum/objective/ert_station_save/prim_task = new
+	prim_task.explanation_text = prim_task_text
+	global_objectives |= prim_task
+	return 1
+
+/datum/antagonist/ert/add_antagonist(datum/mind/player, ignore_role, do_not_equip, move_to_spawn, do_not_announce, preserve_appearance)
+	if(!..())
+		return 0
+	squad_members.Add(player)
+
+// just to be sure we don't get mission when we are not antag, k?
+/datum/antagonist/ert/remove_antagonist(datum/mind/player, show_message, implanted)
+	if(!..())
+		return 0
+	squad_members.Remove(player)
+
+/datum/antagonist/ert/proc/add_global_objective(var/datum/objective/Mission)
+	global_objectives |= Mission
+	for(var/datum/mind/player in squad_members)
+		player.objectives |= Mission
+
+/datum/antagonist/ert/proc/remove_global_objective(var/datum/objective/Mission)
+	global_objectives ^= Mission
+	for(var/datum/mind/player in squad_members)
+		player.objectives ^= Mission
 
 /datum/antagonist/ert/greet(datum/mind/player)
 	if(!..())

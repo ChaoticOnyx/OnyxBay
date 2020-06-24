@@ -35,6 +35,75 @@ var/can_call_ert
 	log_admin("[key_name(usr)] used Dispatch Response Team.", notify_admin = TRUE)
 	trigger_armed_response_team(1)
 
+/client/proc/response_team_menu()
+	set name = "Emergency Response Team Mission Menu"
+	set category = "Special Verbs"
+	set desc = "Add/remove/redacte ERT mission"
+
+	if(!holder)
+		to_chat(usr, "<span class='danger'>Only administrators may use this command.</span>")
+		return
+	holder.edit_mission()
+
+/datum/admins/proc/edit_mission()
+	if(GAME_STATE <= RUNLEVEL_SETUP)
+		alert("Not before round-start!", "Alert")
+		return
+
+	var/out = "<meta charset=\"utf-8\">The Emergency Response Team Mission Menu"
+	out += "<hr>"
+	out += "<b>Objectives</b></br>"
+	if(GLOB.ert.global_objectives && GLOB.ert.global_objectives.len)
+		var/num = 1
+		for(var/datum/objective/O in GLOB.ert.global_objectives)
+			out += "<b>Objective #[num]:</b> [O.explanation_text] "
+			if(O.completed)
+				out += "(<font color='green'>complete</font>)"
+			else
+				out += "(<font color='red'>incomplete</font>)"
+			out += " <a href='?src=\ref[src];obj_completed=\ref[O];ert_action=1'>\[toggle\]</a>"
+			out += " <a href='?src=\ref[src];obj_delete=\ref[O];ert_action=1'>\[remove\]</a><br>"
+			num++
+		out += "<br><a href='?src=\ref[src];obj_announce=1;ert_action=1'>\[announce objectives\]</a>"
+	else
+		out += "Something are went wrong or we don't have active ERT."
+	out += "<br><a href='?src=\ref[src];obj_add=1;ert_action=1'>\[add\]</a><br><br>"
+	usr << browse(out, "window=edit_mission[src]")
+
+/datum/admins/Topic(href, href_list)
+	ASSERT(check_rights(R_ADMIN))
+	//I have some problem with topics, if you have information how to make it better, please use "git blame" on this line and contact me.
+	if(href_list["ert_action"])
+		if(href_list["obj_completed"])
+			var/datum/objective/objective = locate(href_list["obj_completed"])
+			ASSERT(istype(objective))
+			objective.completed = !objective.completed
+		else if(href_list["obj_add"])
+			var/new_obj_type = input("Select objective type:", "Objective type", null) as null|anything in list("standart", "custom")
+			switch(new_obj_type)
+				if("standart")
+					var/datum/objective/ert_station_save/basic = new
+					basic.explanation_text = GLOB.ert.prim_task_text
+					GLOB.ert.add_global_objective(basic)
+				else if("custom")
+					var/text = input("Write down the ERT mission", "ERT mission", null)
+					if(text)
+						var/datum/objective/ert_custom/custom = new
+						custom.explanation_text = text
+						GLOB.ert.add_global_objective(custom)
+		else if (href_list["obj_delete"])
+			var/datum/objective/objective = locate(href_list["obj_delete"])
+			ASSERT(istype(objective))
+			GLOB.ert.remove_global_objective(objective)
+		else if(href_list["obj_announce"])
+			for(var/datum/mind/player in GLOB.ert.squad_members)
+				var/obj_count = 1
+				to_chat(player.current, SPAN_NOTICE("Your current objectives:"))
+				for(var/datum/objective/objective in player.objectives)
+					to_chat(player.current, "<B>Objective #[obj_count]</B>: [objective.explanation_text]")
+					obj_count++
+		edit_mission()
+
 /mob/proc/join_response_team()
 	set name = "Join Response Team"
 	set category = "OOC"

@@ -53,7 +53,7 @@ var/global/universe_has_ended = 0
 
 	// Disable Nar-Sie.
 	GLOB.cult.allow_narsie = 0
-
+  GLOB.ert.is_station_secure = FALSE
 	PlayerSet()
 	SSskybox.reinstate_skyboxes("cascade", FALSE)
 

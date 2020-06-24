@@ -25,6 +25,7 @@
 	if(isStationLevel(T.z))
 		to_world("<span class='danger'>The [station_name()] was destroyed by the nuclear blast!</span>")
 		GLOB.mercs.is_station_destroyed = TRUE
+		GLOB.ert.is_station_secure = FALSE
 		dust_mobs(GLOB.using_map.station_levels)
 		play_cinematic_station_destroyed()
 	else
