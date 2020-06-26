@@ -74,7 +74,9 @@ var parseBody = function (response) {
 	var guidemenu = body.querySelector("#guidemenu");
 	if (guidemenu) guidemenu.parentElement.removeChild(guidemenu);
 	var jobmenu = body.querySelector("#jobmenu");
-	if (jobmenu) guidemenu.parentElement.removeChild(jobmenu);
+	if (jobmenu) jobmenu.parentElement.removeChild(jobmenu);
+	var racemenu = body.querySelector("#racemenu");
+	if (racemenu) racemenu.parentElement.removeChild(racemenu);
 	
 	html.getElementsByTagName("body")[0].innerHTML = body.innerHTML;
 	body_loading_complete = true;

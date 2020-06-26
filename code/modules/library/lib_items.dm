@@ -53,10 +53,14 @@
 
 /obj/structure/bookcase/attack_hand(mob/user as mob)
 	if(contents.len)
-		var/obj/item/weapon/book/choice = input("Which book would you like to remove from the shelf?") as null|obj in contents
-		if(choice)
+		var/titles[length(contents)]
+		for(var/i = 1, i <= length(contents), i++)
+			titles[i] = istype(contents[i], /obj/item/weapon/book) && contents[i].title ? contents[i].title : contents[i].name
+		var/title = input("Which book would you like to remove from the shelf?") as null|anything in titles
+		if(title)
 			if(!usr.canmove || usr.stat || usr.restrained() || !in_range(loc, usr))
 				return
+			var/obj/choice = contents[titles.Find(title)]
 			if(ishuman(user))
 				if(!user.get_active_hand())
 					user.put_in_hands(choice)
@@ -145,6 +149,7 @@
 	var/title		 // The real name of the book.
 	var/carved = 0	 // Has the book been hollowed out for use as a secret storage item?
 	var/obj/item/store	//What's in the book?
+	var/width = 650
 
 /obj/item/weapon/book/attack_self(mob/user as mob)
 	if(carved)
@@ -157,7 +162,7 @@
 			to_chat(user, "<span class='notice'>The pages of [title] have been cut out!</span>")
 			return
 	if(src.dat)
-		user << browse(dat, "window=book;size=650x650")
+		user << browse(dat, "window=book_[title];size=[width]x650")
 		user.visible_message("[user] opens a book titled \"[src.title]\" and begins reading intently.")
 		onclose(user, "book")
 	else
@@ -222,7 +227,7 @@
 	if(user.zone_sel.selecting == BP_EYES)
 		user.visible_message("<span class='notice'>You open up the book and show it to [M]. </span>", \
 			"<span class='notice'> [user] opens up a book and shows it to [M]. </span>")
-		M << browse("<i>Author: [author].</i><br><br>" + "[dat]", "window=book;size=1000x550")
+		M << browse(dat, "window=book_[title];size=[width]x650")
 		user.setClickCooldown(DEFAULT_QUICK_COOLDOWN) //to prevent spam
 
 /obj/item/weapon/book/wiki
@@ -232,8 +237,19 @@
 	var/style = WIKI_MINI
 	var/censored = 1
 
-/obj/item/weapon/book/wiki/Initialize()
+/obj/item/weapon/book/wiki/Initialize(mapload, ntopic, ncensored, nstyle)
+	if(ntopic)
+		topic = ntopic
+	if(!isnull(ncensored))
+		censored = ncensored
+	if(nstyle)
+		style = nstyle
+	if(!title)
+		title = topic
+	if(title)
+		SetName(title)
 	dat = wiki_request(topic, style, censored, src)
+	. = ..(mapload)
 
 /obj/item/weapon/book/wiki/Topic(href, href_list[])
 	// No parent call here
@@ -266,12 +282,8 @@
 			usr << browse(icon('icons/misc/mark.dmi', "rt"), "file=right_arrow.png&display=0")
 			usr << browse(icon('icons/obj/library.dmi', "binder"), "file=bookbinder.png&display=0")
 			usr << browse(icon('icons/obj/library.dmi', "book1"), "file=book1.png&display=0")
-			preamble = {"<div style='text-align:center;border-style: dashed;'><b>This is a book template. Process it through a bookbinder to get a proper book.</b>
-						<img src='wiki_paper.png' style='width: 32px; height: 32px;'/>
-						<img src='right_arrow.png' style='width: 32px; height: 32px;'/>
-						<img src='bookbinder.png' style='width: 32px; height: 32px;'/>
-						<img src='right_arrow.png' style='width: 32px; height: 32px;'/>
-						<img src='book1.png' style='width: 32px; height: 32px;'/>
+			preamble = {"<div style='text-align:center;border-style: dashed;'><b>This is a book template. Process it through a bookbinder to get a proper book.</b><br>
+						<img src='wiki_paper.png' style='width: 32px; height: 32px;'/><img src='right_arrow.png' style='width: 32px; height: 32px;'/><img src='bookbinder.png' style='width: 32px; height: 32px;'/><img src='right_arrow.png' style='width: 32px; height: 32px;'/><img src='book1.png' style='width: 32px; height: 32px;'/>
 						</div><br>"}
 
 	return {"<!DOCTYPE html><html>
@@ -285,3 +297,8 @@
 		[script]
 		</script>
 		</html>"}
+
+/obj/item/weapon/book/wiki/template
+	icon_state = "paper_stack"
+	desc = "Bunch of unbinded paper pieces."
+	style = WIKI_TEXT

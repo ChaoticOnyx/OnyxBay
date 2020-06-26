@@ -67,17 +67,41 @@
 	density = 1
 
 /obj/machinery/bookbinder/attackby(obj/O as obj, mob/user as mob)
-	if(istype(O, /obj/item/weapon/paper))
+	if(istype(O, /obj/item/weapon/paper) || istype(O, /obj/item/weapon/book/wiki/template))
 		user.drop_item()
 		O.loc = src
 		user.visible_message("[user] loads some paper into [src].", "You load some paper into [src].")
 		src.visible_message("[src] begins to hum as it warms up its printing drums.")
 		sleep(rand(200,400))
 		src.visible_message("[src] whirs as it prints and binds a new book.")
-		var/obj/item/weapon/book/b = new(src.loc)
-		b.dat += O:info
-		b.SetName("Print Job #" + "[rand(100, 999)]")
-		b.icon_state = "book[rand(1,7)]"
+		if(istype(O, /obj/item/weapon/paper))
+			print(O:info, "Print Job #" + "[rand(100, 999)]")
+		if(istype(O, /obj/item/weapon/book/wiki/template))
+			print_wiki(O:topic, O:censored)
 		qdel(O)
 	else
 		..()
+
+/obj/machinery/bookbinder/proc/print(text, title, author)
+	var/obj/item/weapon/book/book = new(src.loc)
+	if(text)
+		book.dat += text
+	if(title)
+		book.title = title
+		book.SetName(title)
+	if(author)
+		book.author = author
+	book.icon_state = "book[rand(1,7)]"
+	return book
+
+/obj/machinery/bookbinder/proc/print_wiki(topic, censorship)
+	var/obj/item/weapon/book/wiki/book
+	if(topic in GLOB.premade_manuals)
+		var/manual_type = GLOB.premade_manuals[topic]
+		book = new manual_type(src.loc, topic, censorship)
+	else
+		book = new /obj/item/weapon/book/wiki(src.loc, topic, censorship, WIKI_MINI)
+		book.icon_state = "book[rand(1,7)]"
+	if(book.layer <= src.layer)
+		book.layer = src.layer + 0.01 // Prevents spawning under bookbinder
+	return book
