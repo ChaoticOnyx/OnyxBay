@@ -18,7 +18,7 @@
 	set category = "Object"
 	set src in oview(1)
 
-	if (!can_touch(usr) || ismouse(usr))
+	if (!can_touch(usr) || ismouse(usr) || isslime(usr) || istype(usr, /mob/living/simple_animal/lizard))
 		return
 
 	if(flipped < 0 || !flip(get_cardinal_dir(usr,src)))
