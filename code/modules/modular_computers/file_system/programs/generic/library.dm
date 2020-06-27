@@ -269,12 +269,18 @@ The answer was five and a half years -ZeroBits
 		for(var/d in GLOB.cardinal)
 			var/obj/machinery/bookbinder/bndr = locate(/obj/machinery/bookbinder, get_step(nano_host(), d))
 			if(bndr && bndr.anchored)
-				bndr.print_wiki(href_list["topic"], emagged ? 0 : 1)
+				var/obj/item/weapon/book/wiki/book = bndr.print_wiki(href_list["topic"], emagged ? 0 : 1)
+				if(href_list["title"])
+					book.title = href_list["title"]
+					book.SetName(href_list["title"])
 				return 1
 
 		// Regular print (creates book template)
 		if(istype(nano_host(), /obj/item/modular_computer) && !nano_host():nano_printer)
 			to_chat(usr, SPAN_DANGER("Error: No printer detected. Unable to print document."))
 			return 1
-		new /obj/item/weapon/book/wiki/template(get_turf(nano_host()), href_list["topic"], emagged ? 0 : 1)
+		var/obj/item/weapon/book/wiki/template/book_template = new(get_turf(nano_host()), href_list["topic"], emagged ? 0 : 1)
+		if(href_list["title"])
+			book_template.title = href_list["title"]
+			book_template.SetName(href_list["title"])
 		return 1
