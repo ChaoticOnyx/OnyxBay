@@ -255,7 +255,7 @@
 	// No parent call here
 	if(href_list["title"] && initial(title) == "")
 		title = href_list["title"]
-		//name = href_list["title"] // <- Uncomment this if cirillic names are OK
+		SetName(href_list["title"]) // Cirillic names are possible!
 	return 1
 
 // Put this into browse() to show a wiki topic
