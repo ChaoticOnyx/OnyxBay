@@ -564,7 +564,7 @@ DEFAULT_NO_VOTE
 # # # # # # # # # # # # # # # # # # # # # #
 
 ## Wiki URL
-# WIKIURL http://example.com
+WIKIURL https://wiki.ss13.ru
 
 ## Rules URL
 # RULESURL http://example.com
