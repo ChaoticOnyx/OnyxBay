@@ -89,7 +89,7 @@ GLOBAL_LIST_INIT(maintenance_ambient_sound,list('sound/ambience/maintenance/amb1
 												'sound/ambience/maintenance/amb4.ogg','sound/ambience/maintenance/amb5.ogg','sound/ambience/maintenance/amb6.ogg',
 												'sound/ambience/maintenance/amb7.ogg','sound/ambience/maintenance/amb8.ogg','sound/ambience/maintenance/amb9.ogg',
 												'sound/ambience/maintenance/amb10.ogg','sound/ambience/maintenance/amb12.ogg','sound/ambience/maintenance/amb13.ogg',
-												'sound/ambience/maintenance/amb14.ogg','sound/ambience/maintenance/amb15.ogg','sound/ambience/maintenance/amb16.ogg',
+												'sound/ambience/maintenance/amb14.ogg',
 												'sound/ambience/maintenance/amb17.ogg','sound/ambience/maintenance/amb18.ogg','sound/ambience/maintenance/amb19.ogg',
 												'sound/ambience/maintenance/amb20.ogg','sound/ambience/maintenance/amb21.ogg','sound/ambience/maintenance/amb22.ogg',
 												'sound/ambience/maintenance/amb23.ogg','sound/ambience/maintenance/amb24.ogg','sound/ambience/maintenance/amb25.ogg',
