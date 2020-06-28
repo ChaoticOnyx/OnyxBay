@@ -9,8 +9,24 @@
 				return 0
 
 /obj/item/clothing/attackby(obj/item/I, mob/user)
-	if(istype(I, /obj/item/clothing/accessory))
+	if(is_sharp(I) && istype(src, /obj/item/clothing/under))
+		var/mob/living/carbon/human/H = user
+		if(H.wear_suit)
+			to_chat(user, "<span class='warning'>You are unable to cut your underwear as \the [H.wear_suit] is in the way.</span>")
+			return
 
+		user.visible_message("<span class='notice'>\The [user] begins cutting up \the [src] with \a [I].</span>", "<span class='notice'>You begin cutting up \the [src] with \the [I].</span>")
+		for(var/obj/item/clothing/accessory/A in accessories)
+			A.on_removed(user)
+
+		if(do_after(user, 20, src))
+			to_chat(user, "<span class='notice'>You cut \the [src] into pieces!</span>")
+			for(var/i in 1 to rand(0,1))
+				new /obj/item/weapon/reagent_containers/glass/rag(get_turf(src))
+			qdel(src)
+		return
+
+	if(istype(I, /obj/item/clothing/accessory))
 		if(!valid_accessory_slots || !valid_accessory_slots.len)
 			to_chat(usr, "<span class='warning'>You cannot attach accessories of any kind to \the [src].</span>")
 			return
