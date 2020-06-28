@@ -188,7 +188,7 @@
 	display_name = "champion's belt"
 	path = /obj/item/weapon/storage/belt/champion
 	slot = slot_belt
-	price = 20
+	price = 40
 
 /datum/gear/bedsheet_clown
 	display_name = "clown's bedsheet"
@@ -208,19 +208,19 @@
 /datum/gear/bosunwhistle
 	display_name = "bosun's whistle"
 	path = /obj/item/toy/bosunwhistle
-	price = 100
+	price = 75
 
 /datum/gear/balloon
 	display_name = "balloon"
 	path = /obj/item/toy/balloon
-	price = 75
+	price = 100
 
 /datum/gear/balloon/nanotrasen
 	display_name = "'motivational' balloon"
 	path = /obj/item/toy/balloon/nanotrasen
-	price = 50
+	price = 75
 
 /datum/gear/spinningtoy
 	display_name = "gravitational singularity"
 	path = /obj/item/toy/spinningtoy
-	price = 25
+	price = 30

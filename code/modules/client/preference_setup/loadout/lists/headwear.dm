@@ -151,22 +151,22 @@
 /datum/gear/head/kitty
 	display_name = "kitty ears"
 	path = /obj/item/clothing/head/kitty
-	price = 10
+	price = 15
 
 /datum/gear/head/wizard_fake
 	display_name = "wizard hat"
 	path = /obj/item/clothing/head/wizard/fake
-	price = 10
+	price = 20
 
 /datum/gear/head/marisa_wizard_fake
 	display_name = "marisa wizard hat"
 	path = /obj/item/clothing/head/wizard/marisa/fake
-	price = 10
+	price = 20
 
 /datum/gear/head/witchwig
 	display_name = "witchwig"
 	path = /obj/item/clothing/head/witchwig
-	price = 9
+	price = 20
 
 /datum/gear/head/bearpelt
 	display_name = "bearpelt"
@@ -201,7 +201,7 @@
 /datum/gear/head/plaguedoctorhat
 	display_name = "plague doctor hat"
 	path = /obj/item/clothing/head/plaguedoctorhat
-	price = 5
+	price = 10
 
 /datum/gear/head/sombrero
 	display_name = "sombrero"
@@ -221,9 +221,9 @@
 /datum/gear/head/richard
 	display_name = "cock head"
 	path = /obj/item/clothing/head/richard
-	price = 15
+	price = 12
 
 /datum/gear/head/pumpkinhead
 	display_name = "pumpkin head"
 	path = /obj/item/clothing/head/pumpkinhead
-	price = 10
+	price = 12

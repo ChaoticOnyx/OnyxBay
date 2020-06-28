@@ -176,7 +176,7 @@
 /datum/gear/uniform/schoolgirl
 	display_name = "schoolgirl uniform"
 	path = /obj/item/clothing/under/schoolgirl
-	price = 13
+	price = 15
 
 /datum/gear/uniform/soviet
 	display_name = "soviet uniform"
@@ -196,7 +196,7 @@
 /datum/gear/uniform/psyche
 	display_name = "psychedelic jumpsuit"
 	path = /obj/item/clothing/under/psyche
-	price = 25
+	price = 100
 
 /datum/gear/uniform/captain_fly
 	display_name = "rogue's uniform"
@@ -216,12 +216,12 @@
 /datum/gear/uniform/sexyclown
 	display_name = "sexy clown outfit"
 	path = /obj/item/clothing/under/sexyclown
-	price = 10
+	price = 15
 
 /datum/gear/uniform/sexymime
 	display_name = "sexy mime outfit"
 	path = /obj/item/clothing/under/sexymime
-	price = 10
+	price = 15
 
 /datum/gear/uniform/owl
 	display_name = "owl uniform"
@@ -246,32 +246,32 @@
 /datum/gear/uniform/dress/gothic_d
 	display_name = "gothic dress"
 	path = /obj/item/clothing/under/dress/gothic_d
-	price = 2
+	price = 10
 
 /datum/gear/uniform/dress/bride_white
 	display_name = "silky wedding dress"
 	path = /obj/item/clothing/under/wedding/bride_white
-	price = 10
+	price = 15
 
 /datum/gear/uniform/dress/bride_blue
 	display_name = "blue wedding dress"
 	path = /obj/item/clothing/under/wedding/bride_blue
-	price = 10
+	price = 12
 
 /datum/gear/uniform/dress/bride_red
 	display_name = "red wedding dress"
 	path = /obj/item/clothing/under/wedding/bride_red
-	price = 10
+	price = 12
 
 /datum/gear/uniform/dress/bride_purple
 	display_name = "purple wedding dress"
 	path = /obj/item/clothing/under/wedding/bride_purple
-	price = 10
+	price = 12
 
 /datum/gear/uniform/dress/bride_orange
 	display_name = "orange wedding dress"
 	path = /obj/item/clothing/under/wedding/bride_orange
-	price = 10
+	price = 12
 
 /datum/gear/uniform/dress/long_gown
 	display_name = "silk gown"
@@ -286,12 +286,12 @@
 /datum/gear/uniform/dress/long_black
 	display_name = "black maxi dress"
 	path = /obj/item/clothing/under/skirt_c/dress/long/black
-	price = 10
+	price = 15
 
 /datum/gear/uniform/dress/long_eggshell
 	display_name = "eggshell maxi dress"
 	path = /obj/item/clothing/under/skirt_c/dress/long/eggshell
-	price = 10
+	price = 8
 
 /datum/gear/uniform/dress/mintcream
 	display_name = "mint short dress"
@@ -306,7 +306,7 @@
 /datum/gear/uniform/dress/long
 	display_name = "maxi dress"
 	path = /obj/item/clothing/under/skirt_c/dress/long
-	price = 10
+	price = 15
 
 /datum/gear/uniform/hosformal
 	display_name = "HoS's formal uniform"
