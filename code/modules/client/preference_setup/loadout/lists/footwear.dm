@@ -40,6 +40,10 @@
 	display_name = "wooden sandals"
 	path = /obj/item/clothing/shoes/sandal
 
+//
+// Donator's shop
+//
+
 /datum/gear/shoes/clown_shoes
 	display_name = "clown shoes"
 	path = /obj/item/clothing/shoes/clown_shoes
@@ -49,3 +53,18 @@
 	display_name = "cyborg shoes"
 	path = /obj/item/clothing/shoes/cyborg
 	price = 13
+
+/datum/gear/shoes/swimmingfins
+	display_name = "swimming fins"
+	path = /obj/item/clothing/shoes/swimmingfins
+	price = 2
+
+/datum/gear/shoes/slippers
+	display_name = "bunny slippers"
+	path = /obj/item/clothing/shoes/slippers
+	price = 5
+
+/datum/gear/shoes/mime_shoes
+	display_name = "mime shoes"
+	path = /obj/item/clothing/shoes/mime
+	price = 10

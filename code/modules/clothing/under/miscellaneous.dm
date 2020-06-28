@@ -493,7 +493,7 @@
 		)
 
 /obj/item/clothing/under/hosformalmale
-	name = "head of security's formal uniform"
+	name = "head of security's male formal uniform"
 	desc = "A male head of security's formal-wear, for special occasions."
 	icon_state = "hos_formal_male"
 	item_state_slots = list(
@@ -501,7 +501,7 @@
 		)
 
 /obj/item/clothing/under/hosformalfem
-	name = "head of security's formal uniform"
+	name = "head of security's female formal uniform"
 	desc = "A female head of security's formal-wear, for special occasions."
 	icon_state = "hos_formal_fem"
 	item_state_slots = list(
