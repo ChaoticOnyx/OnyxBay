@@ -5,6 +5,7 @@
 /datum/gear/utility/briefcase
 	display_name = "briefcase"
 	path = /obj/item/weapon/storage/briefcase
+	cost = 2
 
 /datum/gear/utility/clipboard
 	display_name = "clipboard"
@@ -17,6 +18,7 @@
 /datum/gear/utility/taperecorder
 	display_name = "tape recorder"
 	path = /obj/item/device/taperecorder
+	cost = 2
 
 /datum/gear/utility/folder/New()
 	..()
@@ -31,15 +33,28 @@
 /datum/gear/utility/paicard
 	display_name = "personal AI device"
 	path = /obj/item/device/paicard
+	cost = 2
 
 /datum/gear/utility/camera
 	display_name = "camera"
 	path = /obj/item/device/camera
+	cost = 2
 
-/datum/gear/accessory/stethoscope
+/datum/gear/utility/stethoscope
 	display_name = "stethoscope (medical)"
 	path = /obj/item/clothing/accessory/stethoscope
 	cost = 2
+
+/datum/gear/mask/gas
+	sort_category = "Utility"
+	display_name = "old gas mask"
+	path = /obj/item/clothing/mask/gas/old
+	cost = 3
+
+/datum/gear/mask/gas/clear
+	display_name = "clear gas mask"
+	path = /obj/item/clothing/mask/gas/clear
+	price = 10
 
 /****************
 modular computers

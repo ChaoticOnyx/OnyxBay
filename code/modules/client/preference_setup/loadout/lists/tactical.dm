@@ -5,7 +5,7 @@
 /datum/gear/tactical/pcarrier
 	display_name = "plate carrier selection"
 	path = /obj/item/clothing/suit/armor/pcarrier
-	cost = 1
+	cost = 2
 	slot = slot_wear_suit
 	allowed_roles = ARMORED_ROLES
 
@@ -36,25 +36,37 @@
 	path = /obj/item/clothing/accessory/armor/tag
 	flags = GEAR_HAS_SUBTYPE_SELECTION
 	allowed_roles = ARMORED_ROLES
+	cost = 2
 
 /datum/gear/tactical/helm_covers
 	display_name = "helmet covers"
 	path = /obj/item/clothing/accessory/armor/helmcover
 	flags = GEAR_HAS_SUBTYPE_SELECTION
 	allowed_roles = ARMORED_ROLES
+	cost = 2
 
 /datum/gear/tactical/kneepads
 	display_name = "kneepads"
 	path = /obj/item/clothing/accessory/kneepads
 	allowed_roles = ARMORED_ROLES
+	cost = 2
 
 /datum/gear/tactical/holster
 	display_name = "holster selection"
 	path = /obj/item/clothing/accessory/holster
-	cost = 3
+	cost = 4
 	flags = GEAR_HAS_TYPE_SELECTION
+	allowed_roles = ARMORED_ROLES
 
-/datum/gear/tactical/tacticool
+/datum/gear/uniform/tactical
+	sort_category = "Tactical Equipment"
+	cost = 2
+
+/datum/gear/uniform/tactical/tacticool_turtleneck
 	display_name = "tacticool turtleneck"
 	path = /obj/item/clothing/under/syndicate/tacticool
-	slot = slot_w_uniform
+
+/datum/gear/uniform/tactical/jumpsuit
+	display_name = "tactical jumpsuit"
+	path = /obj/item/clothing/under/tactical
+	price = 15
