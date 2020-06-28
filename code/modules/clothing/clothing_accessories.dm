@@ -92,6 +92,10 @@
 	set category = "Object"
 	set src in usr
 
+	if(!istype(src, /obj/item/clothing/under))
+		to_chat(usr, "<span class='warning'>You abble to make rag only from underwear.</span>")
+		return
+
 	if(accessories.len)
 		to_chat(usr, "<span class='warning'>You are unable to make rag as \the [src] have attachment.</span>")
 		return
