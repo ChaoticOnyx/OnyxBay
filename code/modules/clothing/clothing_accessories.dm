@@ -101,7 +101,7 @@
 		return
 
 	var/mob/living/carbon/human/H = usr
-	if(H.wear_suit)
+	if(H.wear_suit == src)
 		to_chat(usr, "<span class='warning'>You are unable to make rag as \the [H.wear_suit] is in the way.</span>")
 		return
 
