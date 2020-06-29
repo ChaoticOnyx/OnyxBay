@@ -28,7 +28,6 @@ GLOBAL_DATUM_INIT(ert, /datum/antagonist/ert, new)
 	station_crew_involved = FALSE
 
 	var/prim_task_text = "You shouldn't see this"
-	var/list/squad_members = list()
 	var/is_station_secure = TRUE
 
 /datum/antagonist/ert/create_default(mob/source)
@@ -49,25 +48,14 @@ GLOBAL_DATUM_INIT(ert, /datum/antagonist/ert, new)
 	global_objectives |= prim_task
 	return 1
 
-/datum/antagonist/ert/add_antagonist(datum/mind/player, ignore_role, do_not_equip, move_to_spawn, do_not_announce, preserve_appearance)
-	if(!..())
-		return 0
-	squad_members.Add(player)
-
-// just to be sure we don't get mission when we are not antag, k?
-/datum/antagonist/ert/remove_antagonist(datum/mind/player, show_message, implanted)
-	if(!..())
-		return 0
-	squad_members.Remove(player)
-
 /datum/antagonist/ert/proc/add_global_objective(var/datum/objective/Mission)
 	global_objectives |= Mission
-	for(var/datum/mind/player in squad_members)
+	for(var/datum/mind/player in current_antagonists)
 		player.objectives |= Mission
 
 /datum/antagonist/ert/proc/remove_global_objective(var/datum/objective/Mission)
 	global_objectives ^= Mission
-	for(var/datum/mind/player in squad_members)
+	for(var/datum/mind/player in current_antagonists)
 		player.objectives ^= Mission
 
 /datum/antagonist/ert/greet(datum/mind/player)

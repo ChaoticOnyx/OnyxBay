@@ -96,7 +96,7 @@ var/can_call_ert
 			ASSERT(istype(objective))
 			GLOB.ert.remove_global_objective(objective)
 		else if(href_list["obj_announce"])
-			for(var/datum/mind/player in GLOB.ert.squad_members)
+			for(var/datum/mind/player in GLOB.ert.current_antagonists)
 				var/obj_count = 1
 				to_chat(player.current, SPAN_NOTICE("Your current objectives:"))
 				for(var/datum/objective/objective in player.objectives)
