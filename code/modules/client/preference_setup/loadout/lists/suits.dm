@@ -154,7 +154,7 @@
 /datum/gear/suit/pirate
 	display_name = "pirate suit"
 	path = /obj/item/clothing/suit/pirate
-	price = 12
+	price = 15
 
 /datum/gear/suit/cardborg
 	display_name = "cardborg suit"
@@ -169,7 +169,7 @@
 /datum/gear/suit/plaguedoctorsuit
 	display_name = "plague doctor suit"
 	path = /obj/item/clothing/suit/bio_suit/plaguedoctorsuit
-	price = 15
+	price = 20
 
 /datum/gear/suit/hgpirate
 	display_name = "pirate captain coat"
@@ -199,12 +199,12 @@
 /datum/gear/suit/wizrobe_fake
 	display_name = "wizard robe"
 	path = /obj/item/clothing/suit/wizrobe/fake
-	price = 15
+	price = 20
 
 /datum/gear/suit/wizrobe_marisa_fake
 	display_name = "witch robe"
 	path = /obj/item/clothing/suit/wizrobe/marisa/fake
-	price = 15
+	price = 20
 
 /datum/gear/suit/ianshirt
 	display_name = "ian shirt"

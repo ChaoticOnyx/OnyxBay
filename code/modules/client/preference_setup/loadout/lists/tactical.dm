@@ -75,4 +75,4 @@
 	sort_category = "Tactical Equipment"
 	display_name = "balaclava"
 	path = /obj/item/clothing/mask/balaclava 
-	price = 20
+	price = 25
