@@ -392,7 +392,7 @@
 				H.drowsyness++
 				if(I.damage >= I.min_bruised_damage)
 					continue
-			I.damage = max(I.damage - removed, 0)
+			I.damage = max(I.damage - removed*3, 0)
 
 /datum/reagent/ryetalyn
 	name = "Ryetalyn"
@@ -710,8 +710,8 @@
 	M.adjustToxLoss(-20 * removed)
 	if(M.chem_doses[type] > 3 && ishuman(M))
 		var/mob/living/carbon/human/H = M
-		for(var/obj/item/organ/external/E in H.organs)
-			E.status |= ORGAN_DISFIGURED //currently only matters for the head, but might as well disfigure them all.
+		for(var/obj/item/organ/external/head/h in H.organs)
+			h.status |= ORGAN_DISFIGURED //currently only matters for the head, but might as well disfigure them all. // ONLY HEAD JESUS CHRIST ONLY HEAD, IF IT'S NOT HEAD IT CAN'T BE HEALED AND IT WILL DESTROY handle_stance() WITH SANITY OF ALL PLAYERS WHO TOUCHED 0.00001337 UNITS OF ANY SHIT PLEASE GOD NO
 	if(M.chem_doses[type] > 10)
 		M.make_dizzy(5)
 		M.make_jittery(5)
@@ -928,7 +928,7 @@
 	if(!M.should_have_organ(BP_HEART)) //We want the var for safety but we can do without the actual blood.
 		return
 	M.regenerate_blood(1.5 * removed)
-	
+
 /datum/reagent/immunobooster
 	name = "Immunobooster"
 	description = "A drug that helps restore the immune system. Will not replace a normal immunity."

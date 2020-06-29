@@ -1,7 +1,7 @@
 /obj/aiming_overlay
 	name = ""
 	desc = "Stick 'em up!"
-	icon = 'icons/effects/Targeted.dmi'
+	icon = 'icons/effects/targeted.dmi'
 	icon_state = "locking"
 	anchored = 1
 	density = 0

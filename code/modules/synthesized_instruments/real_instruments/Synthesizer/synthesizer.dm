@@ -46,6 +46,7 @@
 	name = "Synthesizer Mini"
 	desc = "The power of an entire orchestra in a handy midi keyboard format."
 	icon_state = "h_synthesizer"
+	force = 6
 	path = /datum/instrument
 	sound_player = /datum/sound_player/synthesizer
 

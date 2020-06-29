@@ -137,9 +137,19 @@ default behaviour is:
 			..()
 			if (!istype(AM, /atom/movable) || AM.anchored)
 				if(confused && prob(50) && m_intent=="run")
-					Weaken(2)
-					playsound(loc, "punch", rand(80, 100), 1, -1)
-					visible_message("<span class='warning'>[src] [pick("ran", "slammed")] into \the [AM]!</span>")
+					var/obj/machinery/disposal/D = AM
+					if(istype(D) && !(D.stat & BROKEN))
+						Weaken(6)
+						playsound(get_turf(AM), 'sound/effects/clang.ogg', 75)
+						visible_message(SPAN_WARNING("[src] falls into \the [AM]!"), SPAN_WARNING("You fall into \the [AM]!"))
+						if (client)
+							client.perspective = EYE_PERSPECTIVE
+							client.eye = src
+						forceMove(AM)
+					else
+						Weaken(2)
+						playsound(loc, "punch", rand(80, 100), 1, -1)
+						visible_message(SPAN_WARNING("[src] [pick("ran", "slammed")] into \the [AM]!"))
 					src.apply_damage(5, BRUTE)
 				return
 			if (!now_pushing)
@@ -670,10 +680,6 @@ default behaviour is:
 		to_chat(src, "<span class='warning'>You extricate yourself from \the [holster].</span>")
 		H.forceMove(get_turf(H))
 	else if(istype(H.loc,/obj))
-		if(istype(H.loc, /obj/machinery/cooker))
-			var/obj/machinery/cooker/C = H.loc
-			C.cooking_obj = null
-			C.check_cooking_obj()
 		to_chat(src, "<span class='warning'>You struggle free of \the [H.loc].</span>")
 		H.forceMove(get_turf(H))
 

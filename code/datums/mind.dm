@@ -49,6 +49,7 @@
 
 	var/list/datum/objective/objectives = list()
 	var/list/datum/objective/special_verbs = list()
+	var/syndicate_awareness = SYNDICATE_UNAWARE
 
 	var/has_been_rev = 0//Tracks if this mind has been a rev or not
 
@@ -65,6 +66,7 @@
 
 	//used for optional self-objectives that antagonists can give themselves, which are displayed at the end of the round.
 	var/ambitions
+	var/was_antag_given_by_storyteller = FALSE
 
 	//used to store what traits the player had picked out in their preferences before joining, in text form.
 	var/list/traits = list()
@@ -454,26 +456,32 @@
 	var/turf/T = current.loc
 	if(!istype(T))
 		brigged_since = -1
-		return 0
-	var/is_currently_brigged = 0
-	if(istype(T.loc,/area/security/brig))
-		is_currently_brigged = 1
+		return FALSE
+
+	var/is_currently_brigged = FALSE
+	if(istype(T.loc, /area/security/brig) || istype(T.loc, /area/security/prison))
+		is_currently_brigged = TRUE
 		for(var/obj/item/weapon/card/id/card in current)
-			is_currently_brigged = 0
-			break // if they still have ID they're not brigged
+			is_currently_brigged = FALSE
+			break
 		for(var/obj/item/device/pda/P in current)
 			if(P.id)
-				is_currently_brigged = 0
-				break // if they still have ID they're not brigged
+				is_currently_brigged = FALSE
+				break
+		if (player_is_antag(src) && find_syndicate_uplink())
+			is_currently_brigged = FALSE
 
-	if(!is_currently_brigged)
+	if (!is_currently_brigged)
 		brigged_since = -1
-		return 0
+		return FALSE
 
-	if(brigged_since == -1)
+	if (is_currently_brigged && brigged_since == -1)
 		brigged_since = world.time
 
-	return (duration <= world.time - brigged_since)
+	if (!duration)
+		return TRUE
+	else
+		return duration <= world.time - brigged_since
 
 /datum/mind/proc/reset()
 	assigned_role =   null

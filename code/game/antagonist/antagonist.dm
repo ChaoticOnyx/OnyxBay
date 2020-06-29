@@ -50,6 +50,7 @@
 	var/suspicion_chance = 50               // Prob of being on the initial Command report
 	var/flags = 0                           // Various runtime options.
 	var/show_objectives_on_creation = 1     // Whether or not objectives are shown when a player is added to this antag datum
+	var/station_crew_involved = TRUE
 
 	// Used for setting appearance.
 	var/list/valid_species =       list(SPECIES_UNATHI,SPECIES_TAJARA,SPECIES_SKRELL,SPECIES_HUMAN,SPECIES_VOX)
@@ -160,15 +161,16 @@
 	attempt_spawn()
 	finalize_spawn()
 
-/datum/antagonist/proc/attempt_auto_spawn()
-	if(!can_late_spawn())
+// ignore mode restrictions of antagonist count, if called by storyteller
+/datum/antagonist/proc/attempt_auto_spawn(called_by_storyteller = FALSE)
+	if(!can_late_spawn() && !called_by_storyteller)
 		return 0
 
 	update_current_antag_max(SSticker.mode)
 	var/active_antags = get_active_antag_count()
 	log_debug("[uppertext(id)]: Found [active_antags]/[cur_max] active [role_text_plural].")
 
-	if(active_antags >= cur_max)
+	if(active_antags >= cur_max && !called_by_storyteller)
 		log_debug("Could not auto-spawn a [role_text], active antag limit reached.")
 		return 0
 
@@ -186,6 +188,9 @@
 	if(!add_antagonist(player,0,0,0,1,1))
 		log_debug("Could not auto-spawn a [role_text], failed to add antagonist.")
 		return 0
+
+	if(called_by_storyteller)
+		player.was_antag_given_by_storyteller = TRUE
 
 	reset_antag_selection()
 

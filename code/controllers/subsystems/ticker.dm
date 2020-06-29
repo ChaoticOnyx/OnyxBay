@@ -88,6 +88,8 @@ SUBSYSTEM_DEF(ticker)
 			continue
 		CreateModularRecord(H)
 
+	SSstoryteller.setup()
+
 	callHook("roundstart")
 
 	spawn(0)//Forking here so we dont have to wait for this to finish
@@ -155,6 +157,7 @@ SUBSYSTEM_DEF(ticker)
 			if(blackbox)
 				blackbox.save_all_data_to_sql()
 			handle_tickets()
+			SSstoryteller.collect_statistics()
 		if(END_GAME_ENDING)
 			restart_timeout -= (world.time - last_fire)
 			if(restart_timeout <= 0)

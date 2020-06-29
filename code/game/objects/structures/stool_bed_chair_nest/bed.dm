@@ -89,6 +89,21 @@
 				qdel(src)
 				return
 
+/obj/structure/bed/bullet_act(obj/item/projectile/Proj)
+	var/damage = Proj.get_structure_damage()
+	if(!damage)
+		return
+	..()
+	if(prob(50))
+		return
+	if(material)
+		if(prob(20))
+			material.place_sheet(loc)
+		else
+			material.place_shard(loc)
+	qdel(src)
+	return
+
 /obj/structure/bed/attackby(obj/item/weapon/W as obj, mob/user as mob)
 	if(isWrench(W))
 		playsound(src.loc, 'sound/items/Ratchet.ogg', 50, 1)

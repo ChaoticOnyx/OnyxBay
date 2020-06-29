@@ -57,15 +57,6 @@
 	build_path = /obj/item/rig_module/device/drill
 	sort_string = "WCCAA"
 
-/datum/design/item/rig/plasmacutter
-	name = "Plasma Cutter"
-	desc = "A rock cutter that projects bursts of hot plasma, mountable on a RIG."
-	id = "rig_plasmacutter"
-	req_tech = list(TECH_MATERIAL = 6, TECH_PHORON = 5, TECH_ENGINEERING = 6, TECH_COMBAT = 4)
-	materials = list(MATERIAL_STEEL = 2000, MATERIAL_GLASS = 1000, MATERIAL_PLASTIC = 1000, MATERIAL_GOLD = 700, MATERIAL_PHORON = 500)
-	build_path = /obj/item/rig_module/mounted/plasmacutter
-	sort_string = "VCCAB"
-
 /datum/design/item/rig/orescanner
 	name = "Ore Scanner"
 	desc = "A sonar system for detecting large masses of ore, mountable on a RIG."

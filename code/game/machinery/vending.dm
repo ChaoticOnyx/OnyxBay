@@ -14,6 +14,8 @@
 	clicksound = "button"
 	clickvol = 40
 
+	var/max_health = 100
+	var/health = 100
 	var/icon_vend //Icon_state when vending
 	var/icon_deny //Icon_state when denying access
 	var/diona_spawn_chance = 0.1
@@ -88,6 +90,23 @@
 	build_inventory()
 	power_change()
 
+/obj/machinery/vending/examine(mob/user)
+	. = ..()
+	if(.)
+		if(stat & BROKEN)
+			to_chat(user, SPAN("warning", "It's broken."))
+		else
+			if(health <= 0.4 * max_health)
+				to_chat(user, SPAN("warning", "It's heavily damaged!"))
+			else if(health < max_health)
+				to_chat(user, SPAN("warning", "It's showing signs of damage."))
+
+/obj/machinery/vending/proc/take_damage(force)
+	if(health > 0)
+		health = max(health-force, 0)
+		if(health == 0)
+			set_broken(1)
+
 /**
  *  Build src.produdct_records from the products lists
  *
@@ -151,6 +170,15 @@
 		to_chat(user, "You short out the product lock on \the [src]")
 		return 1
 
+/obj/machinery/vending/bullet_act(obj/item/projectile/Proj)
+	var/damage = Proj.get_structure_damage()
+	if(!damage)
+		return
+
+	..()
+	take_damage(damage)
+	return
+
 /obj/machinery/vending/attackby(obj/item/weapon/W as obj, mob/user as mob)
 
 	var/obj/item/weapon/card/id/I = W.GetIdCard()
@@ -206,11 +234,39 @@
 		to_chat(user, "<span class='notice'>You insert \the [W] into \the [src].</span>")
 		SSnano.update_uis(src)
 		return
+	else if(istype(W,/obj/item/weapon/weldingtool))
+		var/obj/item/weapon/weldingtool/WT = W
+		if(!WT.isOn())
+			return
+		if(health == max_health)
+			to_chat(user, SPAN("notice", "\The [src] is undamaged."))
+			return
+		if(!WT.remove_fuel(0,user))
+			to_chat(user, SPAN("notice", "You need more welding fuel to complete this task."))
+			return
+		user.visible_message(SPAN("notice", "[user] is repairing \the [src]..."), \
+				             SPAN("notice", "You start repairing the damage to [src]..."))
+		playsound(src, 'sound/items/Welder.ogg', 100, 1)
+		if(!do_after(user, 30, src) && WT && WT.isOn())
+			return
+		health = max_health
+		set_broken(0)
+		user.visible_message(SPAN("notice", "[user] repairs \the [src]."), \
+				             SPAN("notice", "You repair \the [src]."))
+		return
 	else if(attempt_to_stock(W, user))
+		return
+	else if(W.force >= 10)
+		take_damage(W.force)
+		user.visible_message(SPAN("danger", "\The [src] has been [pick(W.attack_verb)] with [W] by [user]!"))
+		user.setClickCooldown(W.update_attack_cooldown())
+		user.do_attack_animation(src)
+		obj_attack_sound(W)
+		shake_animation(stime = 4)
 		return
 	..()
 	if(W.mod_weight >= 0.75)
-		shake_animation(stime = 4)
+		shake_animation(stime = 2)
 	return
 
 /obj/machinery/vending/MouseDrop_T(obj/item/I as obj, mob/user as mob)
@@ -583,6 +639,14 @@
 	src.visible_message("<span class='warning'>\The [src] launches \a [throw_item] at \the [target]!</span>")
 	return 1
 
+/obj/machinery/vending/set_broken(new_state)
+	..()
+	if(new_state)
+		var/datum/effect/effect/system/spark_spread/spark_system = new /datum/effect/effect/system/spark_spread()
+		spark_system.set_up(5, 0, loc)
+		spark_system.start()
+		playsound(loc, "spark", 50, 1)
+
 /*
  * Vending machine types
  */
@@ -606,7 +670,29 @@
 	desc = "A refrigerated vending unit for alcoholic beverages and alcoholic beverage accessories."
 	icon_state = "boozeomat"
 	icon_deny = "boozeomat-deny"
-	products = list(/obj/item/weapon/reagent_containers/food/drinks/bottle/gin = 5,
+	products = list(/obj/item/weapon/reagent_containers/food/drinks/glass2/vodkaglass = 10,
+					/obj/item/weapon/reagent_containers/food/drinks/glass2/shot = 10,
+					/obj/item/weapon/reagent_containers/food/drinks/glass2/dshot = 10,
+					/obj/item/weapon/reagent_containers/food/drinks/glass2/cocktail = 10,
+					/obj/item/weapon/reagent_containers/food/drinks/glass2/rocks = 10,
+					/obj/item/weapon/reagent_containers/food/drinks/glass2/wine = 10,
+					/obj/item/weapon/reagent_containers/food/drinks/glass2/cognac = 10,
+					/obj/item/weapon/reagent_containers/food/drinks/glass2/hurricane = 10,
+					/obj/item/weapon/reagent_containers/food/drinks/glass2/square = 10,
+					/obj/item/weapon/reagent_containers/food/drinks/glass2/shake = 10,
+					/obj/item/weapon/reagent_containers/food/drinks/glass2/mug = 10,
+					/obj/item/weapon/reagent_containers/food/drinks/glass2/pint = 10,
+					/obj/item/weapon/reagent_containers/food/drinks/glass2/bigmug = 10,
+					/obj/item/weapon/reagent_containers/food/drinks/glass2/carafe = 2,
+					/obj/item/weapon/reagent_containers/food/drinks/coffeecup/metal = 10,
+					/obj/item/weapon/reagent_containers/food/drinks/flask/barflask = 5,
+					/obj/item/weapon/reagent_containers/food/drinks/flask/vacuumflask = 5,
+					/obj/item/weapon/bottle_extra/pourer = 15,
+					/obj/item/weapon/glass_extra/stick = 25,
+					/obj/item/weapon/glass_extra/straw = 25,
+					/obj/item/weapon/glass_extra/orange_slice = 25,
+					/obj/item/weapon/glass_extra/lime_slice = 25,
+					/obj/item/weapon/reagent_containers/food/drinks/bottle/gin = 5,
 					/obj/item/weapon/reagent_containers/food/drinks/bottle/whiskey = 5,
 					/obj/item/weapon/reagent_containers/food/drinks/bottle/specialwhiskey = 5,
 					/obj/item/weapon/reagent_containers/food/drinks/bottle/tequilla = 5,
@@ -643,28 +729,7 @@
 					/obj/item/weapon/reagent_containers/food/drinks/cans/colavanilla = 15,
 					/obj/item/weapon/reagent_containers/food/drinks/cans/colacherry =15,
 					/obj/item/weapon/reagent_containers/food/drinks/tea = 15,
-					/obj/item/weapon/reagent_containers/food/drinks/ice = 10,
-					/obj/item/weapon/reagent_containers/food/drinks/glass2/vodkaglass = 10,
-					/obj/item/weapon/reagent_containers/food/drinks/glass2/shot = 10,
-					/obj/item/weapon/reagent_containers/food/drinks/glass2/dshot = 10,
-					/obj/item/weapon/reagent_containers/food/drinks/glass2/cocktail = 10,
-					/obj/item/weapon/reagent_containers/food/drinks/glass2/rocks = 10,
-					/obj/item/weapon/reagent_containers/food/drinks/glass2/wine = 10,
-					/obj/item/weapon/reagent_containers/food/drinks/glass2/cognac = 10,
-					/obj/item/weapon/reagent_containers/food/drinks/glass2/hurricane = 10,
-					/obj/item/weapon/reagent_containers/food/drinks/glass2/square = 10,
-					/obj/item/weapon/reagent_containers/food/drinks/glass2/shake = 10,
-					/obj/item/weapon/reagent_containers/food/drinks/glass2/mug = 10,
-					/obj/item/weapon/reagent_containers/food/drinks/glass2/pint = 10,
-					/obj/item/weapon/reagent_containers/food/drinks/glass2/bigmug = 10,
-					/obj/item/weapon/reagent_containers/food/drinks/coffeecup/metal = 10,
-					/obj/item/weapon/reagent_containers/food/drinks/flask/barflask = 5,
-					/obj/item/weapon/reagent_containers/food/drinks/flask/vacuumflask = 5,
-					/obj/item/weapon/bottle_extra/pourer = 15,
-					/obj/item/weapon/glass_extra/stick = 25,
-					/obj/item/weapon/glass_extra/straw = 25,
-					/obj/item/weapon/glass_extra/orange_slice = 25,
-					/obj/item/weapon/glass_extra/lime_slice = 25)
+					/obj/item/weapon/reagent_containers/food/drinks/ice = 10)
 	contraband = list(/obj/item/weapon/reagent_containers/food/drinks/bottle/premiumwine = 2,
 					  /obj/item/weapon/reagent_containers/food/drinks/bottle/premiumvodka = 2,
 				      /obj/item/weapon/reagent_containers/food/drinks/cans/dopecola = 5,

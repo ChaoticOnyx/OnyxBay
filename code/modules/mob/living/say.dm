@@ -89,25 +89,25 @@ proc/get_radio_key_from_channel(channel)
 		verb = pick("yells","roars","hollers")
 		message_data[3] = 0
 		. = TRUE
-	if(slurring)
-		message = slur(message)
-		verb = pick("slobbers","slurs")
-		. = TRUE
-	if(stuttering)
-		message = stutter(message)
-		verb = pick("stammers","stutters")
-		. = TRUE
-	if(stammering)
-		message = NewStutter(message)
-		verb = pick("stammers","stutters")
+	if(lisping)
+		message = lisp(message)
+		verb = pick("lisps","croups")
 		. = TRUE
 	if(burrieng)
 		message = burr(message)
 		verb = pick("burrs","croups")
 		. = TRUE
-	if(lisping)
-		message = lisp(message)
-		verb = pick("lisps","croups")
+	if(slurring)
+		message = slur(message)
+		verb = pick("slobbers","slurs")
+		. = TRUE
+	if(stammering)
+		message = stammer(message)
+		verb = pick("stammers","stutters")
+		. = TRUE
+	if(stuttering)
+		message = stutter(message)
+		verb = pick("stammers","stutters")
 		. = TRUE
 
 	message_data[1] = message
@@ -174,7 +174,7 @@ proc/get_radio_key_from_channel(channel)
 		speaking.broadcast(src,trim(message))
 		return 1
 
-	if(is_muzzled())
+	if(is_muzzled() && !(speaking.flags & NONVERBAL|SIGNLANG))
 		to_chat(src, "<span class='danger'>You're muzzled and cannot speak!</span>")
 		return
 

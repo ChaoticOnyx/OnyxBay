@@ -120,6 +120,11 @@
 
 	layer = ABOVE_HUMAN_LAYER
 	var/dead = FALSE
+	var/obj/item/stored_item
+	
+/obj/structure/flora/pottedplant/Destroy()
+	stored_item.forceMove(loc)
+	return ..()
 
 /obj/structure/flora/pottedplant/proc/death()
 	if (!dead)
@@ -135,15 +140,46 @@
 /obj/structure/flora/pottedplant/fire_act()
 	death()
 
-/obj/structure/flora/pottedplant/attackby(obj/item/weapon/W, mob/user)
-	if (W.edge)
-		user.visible_message("<span class='warning'>\The [user] cuts down the [src]!</span>")
+/obj/structure/flora/pottedplant/attackby(obj/item/W, mob/user)
+	if (W.edge && user.a_intent == I_HURT)
+		user.visible_message("<span class='warning'>[user] cuts down the [src]!</span>")
 		death()
 		return 1
-	if(W.mod_weight >= 0.75)
+	if(W.mod_weight >= 0.75 && user.a_intent == I_HURT)
 		shake_animation(stime = 4)
+		return 1
+	if(!ishuman(user))
+		return
+	if(istype(W, /obj/item/weapon/holder))
+		return //no hiding mobs in there
+	user.visible_message("[user] begins digging around inside of \the [src].", "You begin digging around in \the [src], trying to hide \the [W].")
+	playsound(loc, 'sound/effects/plantshake.ogg', rand(50, 75), TRUE)
+	if(do_after(user, 20, src))
+		if(!stored_item)
+			if(W.w_class <= ITEM_SIZE_NORMAL)
+				user.drop_from_inventory(W, src)
+				stored_item = W
+				to_chat(user,"<span class='notice'>You hide \the [W] in [src].</span>")
+				return
+			else
+				to_chat(user,"<span class='notice'>\The [W] can't be hidden in [src], it's too big.</span>")
+				return
+		else
+			to_chat(user,"<span class='notice'>Something is already hidden in [src].</span>")
+			return
 	return ..()
 
+/obj/structure/flora/pottedplant/attack_hand(mob/user as mob)
+	user.visible_message("[user] begins digging around inside of \the [src].", "You begin digging around in \the [src], searching it.")
+	playsound(loc, 'sound/effects/plantshake.ogg', rand(50, 75), TRUE)
+	if(do_after(user, 40, src))
+		if(!stored_item)
+			to_chat(user,"<span class='notice'>There is nothing hidden in [src].</span>")
+		else
+			user.put_in_hands(stored_item)
+			to_chat(user,"<span class='notice'>You take \the [stored_item] from [src].</span>")
+			stored_item = null
+	
 /obj/structure/flora/pottedplant/bullet_act(obj/item/projectile/Proj)
 	if (prob(Proj.damage*2))
 		death()

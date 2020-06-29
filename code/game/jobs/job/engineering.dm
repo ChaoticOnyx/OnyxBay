@@ -25,7 +25,7 @@
 	outfit_type = /decl/hierarchy/outfit/job/engineering/chief_engineer
 
 /datum/job/engineer
-	title = "Engineer"
+	title = "Station Engineer"
 	department = "Engineering"
 	department_flag = ENG
 
@@ -40,6 +40,7 @@
 	alt_titles = list("Maintenance Technician","Engine Technician","Electrician",
 		"Atmospheric Technician" = /decl/hierarchy/outfit/job/engineering/atmos)
 	outfit_type = /decl/hierarchy/outfit/job/engineering/engineer
+	hud_icon = "hudengineer"
 
 /datum/job/atmos
 	title = "Atmospheric Technician"

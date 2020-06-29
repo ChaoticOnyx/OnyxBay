@@ -60,7 +60,8 @@ var/global/list/additional_antag_types = list()
 		round_autoantag = TRUE
 
 /datum/game_mode/Topic(href, href_list[])
-	if(..())
+	if(!check_rights(R_ADMIN))
+		href_exploit(usr.ckey, href)
 		return
 	if(href_list["toggle"])
 		switch(href_list["toggle"])
@@ -288,7 +289,7 @@ var/global/list/additional_antag_types = list()
 	command_announcement.Announce("The presence of [pick(reasons)] in the region is tying up all available local emergency resources; emergency response teams cannot be called at this time, and post-evacuation recovery efforts will be substantially delayed.","Emergency Transmission")
 
 /datum/game_mode/proc/check_finished()
-	if(evacuation_controller.round_over() || station_was_nuked)
+	if(evacuation_controller.round_over() || station_was_nuked || blob_domination)
 		return 1
 	if(end_on_antag_death && antag_templates && antag_templates.len)
 		var/has_antags = 0

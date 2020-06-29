@@ -45,6 +45,7 @@
 	var/poise_pool = HUMAN_DEFAULT_POISE
 	var/poise = HUMAN_DEFAULT_POISE
 	var/blocking_hand = 0 //0 for main hand, 1 for offhand
+	var/last_block = 0
 
 /mob/living/carbon/human/Life()
 	set invisibility = 0
@@ -981,7 +982,7 @@
 		pregen -= 1.25
 
 	if(blocking)
-		pregen -= 2.0
+		pregen -= 2.5
 
 	if(poise < poise_pool)
 		poise += pregen

@@ -130,7 +130,7 @@
 				break
 
 		var/blocked = H.run_armor_check(limb.organ_tag, "melee")
-		if(H.apply_damage(rand(1, 2), BRUTE, limb.organ_tag, blocked) && prob(70 - blocked))
+		if(H.apply_damage(rand(1, 2), BRUTE, limb.organ_tag, blocked) && !BP_IS_ROBOTIC(limb) && prob(70 - blocked))
 			limb.germ_level += rand(75, 150)
 			if(virus)
 				infect_virus2(H, virus)

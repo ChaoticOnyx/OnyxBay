@@ -53,6 +53,7 @@
 #define SHARD_SHRAPNEL "shrapnel"
 #define SHARD_STONE_PIECE "piece"
 #define SHARD_SPLINTER "splinters"
+#define SHARD_SCRAP "scrap"
 #define SHARD_NONE ""
 
 #define MATERIAL_UNMELTABLE 0x1

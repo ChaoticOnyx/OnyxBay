@@ -201,8 +201,10 @@
 
 // Stunbaton module for Security synthetics
 /obj/item/weapon/melee/baton/robot
+	name = "mounted baton"
 	bcell = null
 	hitcost = 20
+	icon_state = "mounted baton"
 
 // Addition made by Techhead0, thanks for fullfilling the todo!
 /obj/item/weapon/melee/baton/robot/examine_cell(mob/user)

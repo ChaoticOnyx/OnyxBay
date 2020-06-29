@@ -15,8 +15,6 @@ SUBSYSTEM_DEF(donations)
 		log_debug("Donations system is disabled by configuration!")
 		return
 
-	..()
-
 	var/credentials = null
 
 	var/savefile/F = new(DONATIONS_DB_CREDENTIALS_SAVEFILE)
@@ -32,6 +30,8 @@ SUBSYSTEM_DEF(donations)
 		log_debug("Donations system successfully connected!")
 	else
 		log_debug("Donations system failed to connect with DB!")
+
+	return ..()
 
 
 /datum/controller/subsystem/donations/proc/Reconnect(credentials)
@@ -121,7 +121,6 @@ SUBSYSTEM_DEF(donations)
 		return FALSE
 
 	if(query.NextRow())
-		log_debug("Patreon loaded: [query.item[1]]")
 		player.donator_info.patron_type = query.item[1]
 
 	query = dbconnection.NewQuery({"
@@ -137,7 +136,6 @@ SUBSYSTEM_DEF(donations)
 
 	player.donator_info.opyxes = 0
 	while(query.NextRow())
-		log_debug("opyxes change: [query.item[1]]")
 		player.donator_info.opyxes += text2num(query.item[1])
 
 	if(player.donator_info.opyxes > 0)
@@ -154,8 +152,6 @@ SUBSYSTEM_DEF(donations)
 	if(!connected)
 		return FALSE
 
-	log_debug("update_donator_items")
-
 	var/DBQuery/query = dbconnection.NewQuery({"
 		SELECT item_path
 		FROM store_players_items
@@ -165,10 +161,7 @@ SUBSYSTEM_DEF(donations)
 		log_debug("\[Donations DB] failed to load donator's items: [query.ErrorMsg()]")
 		return FALSE
 
-	log_debug("update_donator_items executed")
-
 	while(query.NextRow())
-		log_debug("update_donator_items item [query.item[1]]")
 		player.donator_info.items.Add(query.item[1])
 
 	return TRUE
