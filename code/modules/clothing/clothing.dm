@@ -696,6 +696,26 @@ BLIND     // can't see anything
 		return
 	..()
 
+/obj/item/clothing/under/attackby(obj/item/I, mob/user)
+	if(is_sharp(I))
+		var/mob/living/carbon/human/H = user
+		if(H.wear_suit == src)
+			to_chat(user, "<span class='warning'>You are unable to cut your underwear as \the [H.wear_suit] is in the way.</span>")
+			return
+
+		if(accessories.len)
+			to_chat(user, "<span class='warning'>You are unable to make rag as \the [src] have attachment.</span>")
+			return
+
+		user.visible_message("<span class='notice'>\The [user] begins cutting up \the [src] with \a [I].</span>", "<span class='notice'>You begin cutting up \the [src] with \the [I].</span>")
+
+		if(do_after(user, 20, src))
+			to_chat(user, "<span class='notice'>You cut \the [src] into pieces!</span>")
+			for(var/i in 1 to rand(2,3))
+				new /obj/item/weapon/reagent_containers/glass/rag(get_turf(src))
+			qdel(src)
+		return
+
 /obj/item/clothing/under/New()
 	..()
 	if(worn_state)
@@ -879,6 +899,28 @@ BLIND     // can't see anything
 		item_state_slots[slot_w_uniform_str] = "[worn_state]"
 		to_chat(usr, "<span class='notice'>You roll down your [src]'s sleeves.</span>")
 	update_clothing_icon()
+
+/obj/item/clothing/under/verb/makerag_verb()
+	set name = "Make Rag"
+	set category = "Object"
+	set src in usr
+
+	if(accessories.len)
+		to_chat(usr, "<span class='warning'>You are unable to make rag as \the [src] have attachment.</span>")
+		return
+
+	var/mob/living/carbon/human/H = usr
+	if(H.wear_suit == src)
+		to_chat(usr, "<span class='warning'>You are unable to make rag as \the [H.wear_suit] is in the way.</span>")
+		return
+
+	usr.visible_message("<span class='notice'>\The [usr] begins make rag \the [src]</span>", "<span class='notice'>You begin cutting up \the [src]</span>")
+
+	if(do_after(usr, 50, src))
+		to_chat(usr, "<span class='notice'>You cut \the [src] into rag!</span>")
+		new /obj/item/weapon/reagent_containers/glass/rag(get_turf(src))
+		qdel(src)
+
 
 /obj/item/clothing/under/rank/New()
 	sensor_mode = pick(0,1,2,3)
