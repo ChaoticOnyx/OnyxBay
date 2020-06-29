@@ -106,9 +106,9 @@ var/list/organ_cache = list()
 			blood_splatter(src,B,1)
 		if(config.organs_decay)
 			take_general_damage(rand(1,3))
-		germ_level += rand(2,6)
+		germ_level += rand(4,12)
 		if(germ_level >= INFECTION_LEVEL_TWO)
-			germ_level += rand(2,6)
+			germ_level += rand(5,14)
 		if(germ_level >= INFECTION_LEVEL_THREE)
 			die()
 
@@ -151,9 +151,9 @@ var/list/organ_cache = list()
 		//aiming for germ level to go from ambient to INFECTION_LEVEL_TWO in an average of 15 minutes
 		if(antibiotics < 5 && prob(round(germ_level/6 * owner.immunity_weakness() * 0.01)))
 			if(virus_immunity > 0)
-				germ_level += round(1/virus_immunity, 1) // Immunity starts at 100. This doubles infection rate at 50% immunity. Rounded to nearest whole.
+				germ_level += round(2/virus_immunity, 1) // Immunity starts at 100. This doubles infection rate at 50% immunity. Rounded to nearest whole.
 			else // Will only trigger if immunity has hit zero. Once it does, 10x infection rate.
-				germ_level += 10
+				germ_level += 15
 
 	if(germ_level >= INFECTION_LEVEL_ONE)
 		var/fever_temperature = (owner.species.heat_level_1 - owner.species.body_temperature - 5)* min(germ_level/INFECTION_LEVEL_TWO, 1) + owner.species.body_temperature
@@ -165,8 +165,8 @@ var/list/organ_cache = list()
 		if (antibiotics < 5 && parent.germ_level < germ_level && ( parent.germ_level < INFECTION_LEVEL_ONE*2 || prob(owner.immunity_weakness() * 0.3) ))
 			parent.germ_level++
 
-		if (prob(3))	//about once every 30 seconds
-			take_general_damage(1,silent=prob(30))
+		if (prob(3))	//about once every 20 seconds
+			take_general_damage(1,silent=prob(20))
 
 /obj/item/organ/proc/handle_rejection()
 	// Process unsuitable transplants. TODO: consider some kind of
@@ -188,9 +188,9 @@ var/list/organ_cache = list()
 					if(51 to 200)
 						germ_level += rand(1,2)
 					if(201 to 500)
-						germ_level += rand(2,3)
+						germ_level += rand(3,4)
 					if(501 to INFINITY)
-						germ_level += rand(3,5)
+						germ_level += rand(4,6)
 						owner.reagents.add_reagent(/datum/reagent/toxin, rand(1,2))
 
 /obj/item/organ/proc/receive_chem(chemical as obj)
