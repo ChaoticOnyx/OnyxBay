@@ -1,6 +1,6 @@
 /obj/machinery/food_replicator
 	name = "replicator"
-	desc = "like a microwave, except better."
+	desc = "like a microwave, except better. You can see that the machine has a microphone."
 	icon = 'icons/obj/vending.dmi'
 	icon_state = "soda"
 	density = 1
