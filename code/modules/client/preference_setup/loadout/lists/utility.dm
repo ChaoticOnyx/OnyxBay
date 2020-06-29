@@ -54,7 +54,7 @@
 /datum/gear/mask/gas/clear
 	display_name = "clear gas mask"
 	path = /obj/item/clothing/mask/gas/clear
-	price = 10
+	price = 15
 
 /****************
 modular computers

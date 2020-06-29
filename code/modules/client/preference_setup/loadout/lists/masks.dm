@@ -97,7 +97,7 @@
 /datum/gear/mask/ballgag
 	display_name = "ballgag"
 	path = /obj/item/clothing/mask/muzzle/ballgag
-	price = 15
+	price = 20
 
 /datum/gear/mask/trasen
 	display_name = "trasen mask"
@@ -122,7 +122,7 @@
 /datum/gear/mask/skrell
 	display_name = "skrell mask"
 	path = /obj/item/clothing/mask/rubber/species/skrell
-	price = 15
+	price = 20
 
 /datum/gear/mask/human
 	display_name = "human mask"
@@ -132,14 +132,14 @@
 /datum/gear/mask/unathi
 	display_name = "unathi mask"
 	path = /obj/item/clothing/mask/rubber/species/unathi
-	price = 15
+	price = 20
 
 /datum/gear/mask/tajaran
 	display_name = "tajara mask"
 	path = /obj/item/clothing/mask/rubber/species/tajaran
-	price = 15
+	price = 20
 
 /datum/gear/mask/spirit
 	display_name = "spirit mask"
 	path = /obj/item/clothing/mask/spirit
-	price = 5
+	price = 10
