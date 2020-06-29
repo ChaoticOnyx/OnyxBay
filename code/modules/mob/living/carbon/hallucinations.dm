@@ -453,8 +453,7 @@
 	// If both lists are empty, return nothing
 
 /datum/hallucination/fake_appearance/end()
-	if(holder)
-		holder.hallucinations -= src
+	holder.hallucinations -= src
 	if(!fake_look)
 		return // No ASSERT is needed, ending is correct
 	if(holder.client)
