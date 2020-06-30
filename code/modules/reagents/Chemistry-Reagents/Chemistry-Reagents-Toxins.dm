@@ -375,7 +375,7 @@
 	if(alien == IS_SKRELL)
 		threshold = 1.2
 
-	if(M.chem_doses[type] == metabolism * threshold)
+	if(M.chem_doses[type] < metabolism * threshold)
 		M.confused += 2
 		M.drowsyness += 2
 	else if(M.chem_doses[type] < 2 * threshold)
