@@ -163,14 +163,16 @@
 	name = "service gripper"
 	icon_state = "gripper-service"
 	desc = "A simple grasping tool used to perform tasks in the service sector, such as handling food, drinks, and seeds."
-
+	storage_type = list(
+		/obj/item/weapon/storage/fancy/egg_box
+		)
+	
 	can_hold = list(
 		/obj/item/weapon/reagent_containers/glass,
 		/obj/item/weapon/reagent_containers/food,
 		/obj/item/seeds,
 		/obj/item/weapon/grown,
 		/obj/item/weapon/glass_extra,
-		/obj/item/weapon/storage/fancy/egg_box
 		)
 
 /obj/item/weapon/gripper/surgical //Used to handle organs.
