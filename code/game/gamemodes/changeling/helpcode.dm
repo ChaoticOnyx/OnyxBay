@@ -483,6 +483,9 @@
 
 /mob/living/simple_animal/hostile/little_changeling/proc/infest(mob/living/carbon/human/target as mob in oview(1))
 	var/datum/changeling/changeling = src.mind.changeling
+	if(!changeling)
+		return
+
 	if(src.stat == DEAD)
 		to_chat(src, "<span class='warning'>We cannot use this ability. We are dead.</span>")
 		return
