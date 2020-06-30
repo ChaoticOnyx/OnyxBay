@@ -34,7 +34,7 @@
 	if(!canremove)
 		return
 
-	if (ishuman(usr) || issilicon(usr) || issmall(usr)) //so monkeys can take off their backpacks -- Urist
+	if (ishuman(usr) || issmall(usr)) //so monkeys can take off their backpacks -- Urist
 		if(over_object == usr && Adjacent(usr)) // this must come before the screen objects only block
 			src.open(usr)
 			return
