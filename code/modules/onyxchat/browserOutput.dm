@@ -199,9 +199,6 @@ GLOBAL_DATUM_INIT(iconCache, /savefile, new("tmp/iconCache.sav")) //Cache of ico
 			if (!C)
 				continue
 
-			//Send it to the old style output window.
-			C << original_message
-
 			if(!C.chatOutput || C.chatOutput.broken) // A player who hasn't updated his skin file.
 				continue
 
@@ -216,9 +213,6 @@ GLOBAL_DATUM_INIT(iconCache, /savefile, new("tmp/iconCache.sav")) //Cache of ico
 
 		if (!C)
 			return
-
-		//Send it to the old style output window.
-		C << original_message
 
 		if(!C.chatOutput || C.chatOutput.broken) // A player who hasn't updated his skin file.
 			return
