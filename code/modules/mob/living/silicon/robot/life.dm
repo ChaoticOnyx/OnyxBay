@@ -208,7 +208,7 @@
 		if(src.mind)
 			// TODO: Update to new antagonist system.
 			if(!src.mind.special_role)
-				src.mind.special_role = "traitor"
+				src.mind.special_role = "Traitor"
 				GLOB.traitors.current_antagonists |= src.mind
 
 	if (src.cells)

@@ -69,22 +69,6 @@
 	path = /obj/item/weapon/material/kitchen/utensil/knife/boot
 	cost = 3
 
-/datum/gear/lunchbox
-	display_name = "lunchbox"
-	description = "A little lunchbox."
-	cost = 2
-	path = /obj/item/weapon/storage/lunchbox
-
-/datum/gear/lunchbox/New()
-	..()
-	var/list/lunchboxes = list()
-	for(var/lunchbox_type in typesof(/obj/item/weapon/storage/lunchbox))
-		var/obj/item/weapon/storage/lunchbox/lunchbox = lunchbox_type
-		if(!initial(lunchbox.filled))
-			lunchboxes[initial(lunchbox.name)] = lunchbox_type
-	gear_tweaks += new /datum/gear_tweak/path(lunchboxes)
-	gear_tweaks += new /datum/gear_tweak/contents(lunchables_lunches(), lunchables_snacks(), lunchables_drinks())
-
 /datum/gear/towel
 	display_name = "towel"
 	path = /obj/item/weapon/towel
@@ -180,9 +164,19 @@
 	cost = 2
 
 /datum/gear/rubberducky
+	display_name = "bike horn"
+	path = /obj/item/weapon/bikehorn
+	price = 25
+
+/datum/gear/rubberducky
+	display_name = "vuvuzela"
+	path = /obj/item/weapon/bikehorn/vuvuzela
+	price = 25
+
+/datum/gear/rubberducky
 	display_name = "rubber ducky"
 	path = /obj/item/weapon/bikehorn/rubberducky
-	price = 20
+	price = 25
 
 /datum/gear/champion
 	display_name = "champion's belt"
@@ -208,19 +202,19 @@
 /datum/gear/bosunwhistle
 	display_name = "bosun's whistle"
 	path = /obj/item/toy/bosunwhistle
-	price = 100
+	price = 75
 
 /datum/gear/balloon
 	display_name = "balloon"
 	path = /obj/item/toy/balloon
-	price = 75
+	price = 100
 
 /datum/gear/balloon/nanotrasen
 	display_name = "'motivational' balloon"
 	path = /obj/item/toy/balloon/nanotrasen
-	price = 50
+	price = 75
 
 /datum/gear/spinningtoy
 	display_name = "gravitational singularity"
 	path = /obj/item/toy/spinningtoy
-	price = 25
+	price = 30

@@ -122,3 +122,13 @@
 	item_cost = 30
 	path = /obj/item/device/radio/intercept
 	desc = "A radio that can intercept secure radio channels. Doesn't fit in pockets."
+	
+/datum/uplink_item/item/tools/c4explosive
+	name = "Small Package Bomb"
+	item_cost = 25
+	path = /obj/item/weapon/syndie/c4explosive
+
+/datum/uplink_item/item/tools/c4explosive/heavy
+	name = "Large Package Bomb"
+	item_cost = 50
+	path = /obj/item/weapon/syndie/c4explosive/heavy

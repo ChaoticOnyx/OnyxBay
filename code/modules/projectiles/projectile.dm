@@ -28,6 +28,7 @@
 
 	var/accuracy = 0
 	var/dispersion = 0.0
+	var/blockable = TRUE
 
 	var/damage = 10
 	var/damage_type = BRUTE //BRUTE, BURN, TOX, OXY, CLONE, PAIN are the only things that should be in here
@@ -74,7 +75,7 @@
 		animate_movement = SLIDE_STEPS
 	if(config.projectile_basketball)
 		anchored = 0
-		mouse_opacity = 1		
+		mouse_opacity = 1
 	else animate_movement = NO_STEPS
 	. = ..()
 
@@ -213,10 +214,10 @@
 		return 0
 
 	//sometimes bullet_act() will want the projectile to continue flying
-	if (result == PROJECTILE_CONTINUE)
+	if(result == PROJECTILE_CONTINUE)
 		return 0
 
-	if (result == PROJECTILE_FORCE_BLOCK)
+	if(result == PROJECTILE_FORCE_BLOCK)
 		if(!no_attack_log)
 			if(istype(firer, /mob))
 				var/attacker_message = "shot with \a [src.type] (blocked)"

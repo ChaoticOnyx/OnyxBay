@@ -60,7 +60,8 @@ var/global/list/additional_antag_types = list()
 		round_autoantag = TRUE
 
 /datum/game_mode/Topic(href, href_list[])
-	if(..())
+	if(!check_rights(R_ADMIN))
+		href_exploit(usr.ckey, href)
 		return
 	if(href_list["toggle"])
 		switch(href_list["toggle"])

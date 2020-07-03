@@ -236,6 +236,7 @@ You can set verify to TRUE if you want send() to sleep until the client has the 
 	)
 
 /datum/asset/group/onyxchat
+	isTrivial = FALSE
 	children = list(
 		/datum/asset/simple/jquery,
 		/datum/asset/simple/onyxchat,
@@ -249,6 +250,7 @@ You can set verify to TRUE if you want send() to sleep until the client has the 
 	)
 
 /datum/asset/simple/onyxchat
+	isTrivial = FALSE
 	verify = FALSE
 	assets = list(
 		"json2.min.js"             = 'code/modules/onyxchat/browserassets/js/json2.min.js',
@@ -259,6 +261,7 @@ You can set verify to TRUE if you want send() to sleep until the client has the 
 	)
 
 /datum/asset/simple/fontawesome
+	isTrivial = TRUE
 	verify = FALSE
 	assets = list(
 		"fa-regular-400.eot"  = 'html/font-awesome/webfonts/fa-regular-400.eot',

@@ -21,6 +21,8 @@ GLOBAL_DATUM_INIT(raiders, /datum/antagonist/raider, new)
 
 	faction = "pirate"
 
+	station_crew_involved = FALSE
+
 	// Heist overrides check_victory() and doesn't need victory or loss strings/tags.
 	var/list/raider_uniforms = list(
 		/obj/item/clothing/under/soviet,

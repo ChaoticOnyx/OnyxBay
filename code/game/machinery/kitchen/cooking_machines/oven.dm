@@ -3,6 +3,7 @@
 	desc = "Cookies are ready, dear."
 	icon = 'icons/obj/cooking_machines.dmi'
 	icon_state = "oven_off"
+	cooked_sound = 'sound/machines/ding.ogg'
 	on_icon = "oven_on"
 	off_icon = "oven_off"
 	cook_type = "baked"
@@ -12,13 +13,13 @@
 
 	output_options = list(
 		"Personal Pizza" = /obj/item/weapon/reagent_containers/food/snacks/variable/pizza,
-		"Bread" = /obj/item/weapon/reagent_containers/food/snacks/variable/bread,
-		"Pie" = /obj/item/weapon/reagent_containers/food/snacks/variable/pie,
-		"Small Cake" = /obj/item/weapon/reagent_containers/food/snacks/variable/cake,
-		"Hot Pocket" = /obj/item/weapon/reagent_containers/food/snacks/variable/pocket,
-		"Kebab" = /obj/item/weapon/reagent_containers/food/snacks/variable/kebab,
-		"Waffles" = /obj/item/weapon/reagent_containers/food/snacks/variable/waffles,
-		"Pancakes" = /obj/item/weapon/reagent_containers/food/snacks/variable/pancakes,
-		"Cookie" = /obj/item/weapon/reagent_containers/food/snacks/variable/cookie,
-		"Donut" = /obj/item/weapon/reagent_containers/food/snacks/variable/donut,
+		"Bread" = /obj/item/weapon/reagent_containers/food/snacks/sliceable/bread/variable,
+		"Pie" = /obj/item/weapon/reagent_containers/food/snacks/pie/variable,
+		"Small Cake" = /obj/item/weapon/reagent_containers/food/snacks/sliceable/plaincake/variable,
+		"Hot Pocket" = /obj/item/weapon/reagent_containers/food/snacks/donkpocket/variable,
+		"Kebab" = /obj/item/weapon/reagent_containers/food/snacks/tofukabob/variable,
+		"Waffles" = /obj/item/weapon/reagent_containers/food/snacks/waffles/variable,
+		"Pancakes" = /obj/item/weapon/reagent_containers/food/snacks/pancakes/variable,
+		"Cookie" = /obj/item/weapon/reagent_containers/food/snacks/cookie/variable,
+		"Donut" = /obj/item/weapon/reagent_containers/food/snacks/donut/variable,
 		)
