@@ -147,7 +147,7 @@ The answer was five and a half years -ZeroBits
 			if(bndr && bndr.anchored)
 				var/obj/item/weapon/book/new_book = bndr.print(current_book["content"], current_book["title"], current_book["author"])
 				if(new_book)
-					new_book.desc = current_book["author"]+", "+current_book["title"]+", "+"USBN "+current_book["id"]
+					new_book.desc = current_book["author"] + ", " + current_book["title"] + ", " + "USBN " + current_book["id"]
 					bndr.visible_message("\The [bndr] whirs as it prints and binds a new book.")
 				return 1
 
