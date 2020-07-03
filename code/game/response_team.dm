@@ -38,7 +38,7 @@ var/can_call_ert
 /client/proc/response_team_menu()
 	set name = "Emergency Response Team Mission Menu"
 	set category = "Special Verbs"
-	set desc = "Add/remove/redacte ERT mission"
+	set desc = "Add/remove/redact ERT mission"
 
 	if(!holder)
 		to_chat(usr, "<span class='danger'>Only administrators may use this command.</span>")
@@ -82,8 +82,7 @@ var/can_call_ert
 			var/new_obj_type = input("Select objective type:", "Objective type", null) as null|anything in list("standart", "custom")
 			switch(new_obj_type)
 				if("standart")
-					var/datum/objective/ert_station_save/basic = new
-					basic.explanation_text = GLOB.ert.prim_task_text
+					var/datum/objective/ert_station_save/basic = new()
 					GLOB.ert.add_global_objective(basic)
 				else if("custom")
 					var/text = input("Write down the ERT mission", "ERT mission", null)

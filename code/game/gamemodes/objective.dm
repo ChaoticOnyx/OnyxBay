@@ -408,6 +408,9 @@ datum/objective/ert_station_save
 	// This objective is anti antag team objective, e.g. "don't allow Cult to summon Nar-sie for greentext", "don't allow mercery to destroy station for greentext", "don't allow singularity to join in supermatter..."
 
 	check_completion()
+		// blobe victory check
+		if(SSticker.mode.blob_domination)
+			return 1
 		// rev win check...
 		if(GLOB.revs.global_objectives.len > 0)
 			var/completed = 0
@@ -421,6 +424,9 @@ datum/objective/ert_station_save
 			return 1
 		else
 			return 0
+datum/objective/ert_station_save/New()
+	..()
+	explanation_text = "Protect [GLOB.using_map.company_name]'s ass-ets on [station_name()]. Find the source of an emergency and deal with it."
 
 datum/objective/ert_custom
 	completed = TRUE
@@ -429,7 +435,7 @@ datum/objective/nuclear
 	explanation_text = "Cause mass destruction with a nuclear device."
 
 	check_completion()
-		if(GLOB.mercs.is_station_destroyed)
+		if(SSticker.mode.station_was_nuked)
 			return 1
 		else
 			return 0

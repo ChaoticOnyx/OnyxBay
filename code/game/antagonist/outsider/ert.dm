@@ -27,7 +27,6 @@ GLOBAL_DATUM_INIT(ert, /datum/antagonist/ert, new)
 
 	station_crew_involved = FALSE
 
-	var/prim_task_text = "You shouldn't see this"
 	var/is_station_secure = TRUE
 
 /datum/antagonist/ert/create_default(mob/source)
@@ -37,15 +36,12 @@ GLOBAL_DATUM_INIT(ert, /datum/antagonist/ert, new)
 /datum/antagonist/ert/Initialize()
 	..()
 	leader_welcome_text = "As leader of the Emergency Response Team, you answer only to [GLOB.using_map.boss_name], and have authority to override the Captain where it is necessary to achieve your mission goals. It is recommended that you attempt to cooperate with the captain where possible, however."
-	prim_task_text = "Protect [GLOB.using_map.company_name]'s ass-ets on [station_name()]. Find the source of an emergency and deal with it."
 
 /datum/antagonist/ert/create_global_objectives()
 	if(!..())
 		return 0
 	global_objectives = list()
-	var/datum/objective/ert_station_save/prim_task = new
-	prim_task.explanation_text = prim_task_text
-	global_objectives |= prim_task
+	global_objectives |= new /datum/objective/ert_station_save()
 	return 1
 
 /datum/antagonist/ert/proc/add_global_objective(var/datum/objective/Mission)
