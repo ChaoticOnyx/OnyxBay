@@ -410,7 +410,7 @@ datum/objective/ert_station_save
 	check_completion()
 		// blobe victory check
 		if(SSticker.mode.blob_domination)
-			return 1
+			GLOB.ert.is_station_secure = FALSE
 		// rev win check...
 		if(GLOB.revs.global_objectives.len > 0)
 			var/completed = 0
