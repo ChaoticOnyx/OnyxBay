@@ -55,7 +55,7 @@
 	if(contents.len)
 		var/titles[length(contents)]
 		for(var/i in 1 to length(contents))
-			titles[i] = istype(contents[i], /obj/item/weapon/book) && contents[i].title ? contents[i].title : contents[i].name
+			titles[i] = (istype(contents[i], /obj/item/weapon/book) && contents[i].title) ? contents[i].title : contents[i].name
 		var/title = input("Which book would you like to remove from the shelf?") as null|anything in titles
 		if(title)
 			if(!usr.canmove || usr.stat || usr.restrained() || !in_range(loc, usr))
