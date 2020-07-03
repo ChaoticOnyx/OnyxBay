@@ -220,6 +220,7 @@ var/list/admin_verbs_debug = list(
 	/client/proc/visualpower,
 	/client/proc/visualpower_remove,
 	/client/proc/hard_del,
+	/client/proc/toggle_profiler,
 	/client/proc/bluespace_tech
 	)
 
@@ -313,6 +314,7 @@ var/list/admin_verbs_hideable = list(
 	/datum/admins/proc/ictus,
 	/client/proc/projectile_basketball,
 	/client/proc/toggle_possess_mode,
+	/client/proc/toggle_profiler,
 	/client/proc/bluespace_tech,
 	/client/proc/delbook
 	)
@@ -956,6 +958,23 @@ var/list/admin_verbs_mentor = list(
 	config.projectile_basketball = !(config.projectile_basketball)
 	log_and_message_admins("toggled projectile basketball mode.")
 	feedback_add_details("admin_verb","PROBAS")
+
+/client/proc/toggle_profiler()
+	set name = "Toggle Profiler"
+	set category = "Debug"
+
+	if(!check_rights(R_DEBUG))
+		return
+	if(alert(src, "Are you sure that you want to [config.auto_profile ? "disable" : "enable"] auto-profiler?", "Toggle Profiler", "Yes", "No") == "No")
+		return
+
+	config.auto_profile = !config.auto_profile
+	if(config.auto_profile)
+		SSprofiler.StartProfiling()
+	else
+		SSprofiler.StopProfiling()
+
+	log_and_message_admins("has [config.auto_profile ? "enabled" : "disabled"] auto-profiler.")
 
 /client/proc/delbook()
 	set name = "Delete Book"
