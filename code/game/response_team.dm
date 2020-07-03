@@ -67,6 +67,10 @@ var/can_call_ert
 		out += "<br><a href='?src=\ref[src];obj_announce=1;ert_action=1'>\[announce objectives\]</a>"
 	else
 		out += "Something are went wrong or we don't have active ERT."
+	out += "<hr>"
+	out += "Maximum avaliable players in ERT squad: [GLOB.ert.hard_cap] "
+	out += "<a href='?src=\ref[src];max_cap_change=1;ert_action=1'>\[Change\]</a>"
+	out += "<hr>"
 	out += "<br><a href='?src=\ref[src];obj_add=1;ert_action=1'>\[add\]</a><br><br>"
 	usr << browse(out, "window=edit_mission[src]")
 
@@ -101,6 +105,12 @@ var/can_call_ert
 				for(var/datum/objective/objective in player.objectives)
 					to_chat(player.current, "<B>Objective #[obj_count]</B>: [objective.explanation_text]")
 					obj_count++
+		else if(href_list["max_cap_change"])
+			var/change_num = input("Max cap ERT", "Enter a number") as null|num
+			if(isnull(change_num)) return
+			change_num = round(change_num)
+			if(change_num <= 0) return
+			GLOB.ert.hard_cap = change_num
 		edit_mission()
 
 /mob/proc/join_response_team()
