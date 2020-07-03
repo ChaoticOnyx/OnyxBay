@@ -269,7 +269,7 @@
 			script = "window.location='[config.wikiurl]/index.php?title=[topic]&printable=yes'"
 		if(WIKI_MINI)
 			script = file2text('code/js/wiki_html.js')
-			add_params = "&useskin=monobook&disabletoc=true" // Whenever BYOND bug about anchor links in local files will be fixed, remove '&disabletoc=true' to allow index
+			add_params = "&useskin=monobook&disabletoc=true" // TODO: Whenever BYOND bug about anchor links in local files will be fixed, remove '&disabletoc=true' to allow index
 		if(WIKI_MOBILE)
 			script = file2text('code/js/wiki_html.js')
 			add_params = "&useskin=minerva"
