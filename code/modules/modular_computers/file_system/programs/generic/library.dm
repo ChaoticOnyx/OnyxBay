@@ -144,7 +144,7 @@ The answer was five and a half years -ZeroBits
 			return 1
 		for(var/d in GLOB.cardinal)
 			var/obj/machinery/bookbinder/bndr = locate(/obj/machinery/bookbinder, get_step(nano_host(), d))
-			if(bndr && bndr.anchored)
+			if(bndr && bndr.anchored && bndr.operable())
 				var/obj/item/weapon/book/new_book = bndr.print(current_book["content"], current_book["title"], current_book["author"])
 				if(new_book)
 					new_book.desc = current_book["author"] + ", " + current_book["title"] + ", " + "USBN " + current_book["id"]
@@ -247,7 +247,13 @@ The answer was five and a half years -ZeroBits
 /datum/nano_module/wiki/ui_interact(mob/user, ui_key = "main", datum/nanoui/ui = null, force_open = 0, datum/topic_state/state = GLOB.default_state)
 	var/list/data = host.initial_data()
 
-	var/emagged = host && (istype(host, /obj/item/modular_computer) || istype(host, /datum/computer_file/program)) ? host:computer_emagged : 0
+	var/emagged = 0
+	if(istype(nano_host(), /obj/item/modular_computer))
+		var/obj/item/modular_computer/computer = nano_host()
+		emagged = computer.computer_emagged
+	if(istype(nano_host(), /datum/computer_file/program))
+		var/datum/computer_file/program/program = nano_host()
+		emagged = program.computer_emagged
 
 	ui = SSnano.try_update_ui(user, src, ui_key, ui, data, force_open)
 	if (!ui)
@@ -263,18 +269,29 @@ The answer was five and a half years -ZeroBits
 	if(..())
 		return 1
 	if(href_list["topic"])
-		var/emagged = host && (istype(host, /obj/item/modular_computer) || istype(host, /datum/computer_file/program)) ? host:computer_emagged : 0
+		var/emagged = 0
+		if(istype(nano_host(), /obj/item/modular_computer))
+			var/obj/item/modular_computer/computer = nano_host()
+			emagged = computer.computer_emagged
+		if(istype(nano_host(), /datum/computer_file/program))
+			var/datum/computer_file/program/program = nano_host()
+			emagged = program.computer_emagged
 
 		// Print to connected bookbinders (if any)
 		for(var/d in GLOB.cardinal)
 			var/obj/machinery/bookbinder/bndr = locate(/obj/machinery/bookbinder, get_step(nano_host(), d))
-			if(bndr && bndr.anchored)
+			if(bndr && bndr.anchored && bndr.operable())
 				bndr.print_wiki(href_list["topic"], emagged ? 0 : 1)
 				return 1
 
 		// Regular print (creates book template)
-		if(istype(nano_host(), /obj/item/modular_computer) && !nano_host():nano_printer)
-			to_chat(usr, SPAN_DANGER("Error: No printer detected. Unable to print document."))
-			return 1
+		if(istype(nano_host(), /obj/item/modular_computer))
+			var/obj/item/modular_computer/computer = nano_host()
+			if(!computer.nano_printer)
+				to_chat(usr, SPAN_DANGER("Error: No printer detected. Unable to print document."))
+				return 1
 		new /obj/item/weapon/book/wiki/template(get_turf(nano_host()), href_list["topic"], emagged ? 0 : 1)
 		return 1
+
+#undef WIKI_COMMON_CATEGORY
+#undef WIKI_HACKED_CATEGORY

@@ -144,12 +144,13 @@
 	w_class = ITEM_SIZE_NORMAL		 //upped to three because books are, y'know, pretty big. (and you could hide them inside eachother recursively forever)
 	attack_verb = list("bashed", "whacked", "educated")
 	var/dat = "<meta charset=\"utf-8\">" // Actual page content
-	var/author		 // Who wrote the thing, can be changed by pen or PC. It is not automatically assigned
-	var/unique = 0   // 0 - Normal book, 1 - Should not be treated as normal book, unable to be copied, unable to be modified
-	var/title		 // The real name of the book.
-	var/carved = 0	 // Has the book been hollowed out for use as a secret storage item?
-	var/obj/item/store	//What's in the book?
-	var/width = 650
+	var/author		       // Who wrote the thing, can be changed by pen or PC. It is not automatically assigned
+	var/unique = 0         // 0 - Normal book, 1 - Should not be treated as normal book, unable to be copied, unable to be modified
+	var/title = "Untitled" // The real name of the book.
+	var/carved = 0         // Has the book been hollowed out for use as a secret storage item?
+	var/obj/item/store	   // What's in the book?
+	var/window_width = 650
+	var/window_height = 650
 
 /obj/item/weapon/book/attack_self(mob/user as mob)
 	if(carved)
@@ -162,7 +163,7 @@
 			to_chat(user, "<span class='notice'>The pages of [title] have been cut out!</span>")
 			return
 	if(src.dat)
-		user << browse(dat, "window=book_[title];size=[width]x650")
+		user << browse(dat, "window=book_[title];size=[window_width]x[window_height]")
 		user.visible_message("[user] opens a book titled \"[src.title]\" and begins reading intently.")
 		onclose(user, "book")
 	else
@@ -227,7 +228,7 @@
 	if(user.zone_sel.selecting == BP_EYES)
 		user.visible_message("<span class='notice'>You open up the book and show it to [M]. </span>", \
 			"<span class='notice'> [user] opens up a book and shows it to [M]. </span>")
-		M << browse(dat, "window=book_[title];size=[width]x650")
+		M << browse(dat, "window=book_[title];size=[window_width]x[window_height]")
 		user.setClickCooldown(DEFAULT_QUICK_COOLDOWN) //to prevent spam
 
 /obj/item/weapon/book/wiki

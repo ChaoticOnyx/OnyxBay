@@ -87,6 +87,7 @@ Class Procs:
 	icon = 'icons/obj/stationobjs.dmi'
 	w_class = ITEM_SIZE_NO_CONTAINER
 	pull_sound = "pull_machine"
+	layer = BELOW_OBJ_LAYER
 
 	var/stat = 0
 	var/emagged = 0

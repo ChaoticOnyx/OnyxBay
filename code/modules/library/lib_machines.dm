@@ -67,20 +67,25 @@
 	density = 1
 
 /obj/machinery/bookbinder/attackby(obj/O as obj, mob/user as mob)
-	if(istype(O, /obj/item/weapon/paper) || istype(O, /obj/item/weapon/book/wiki/template))
-		user.drop_item()
-		O.loc = src
-		user.visible_message("[user] loads some paper into [src].", "You load some paper into [src].")
-		src.visible_message("[src] begins to hum as it warms up its printing drums.")
-		sleep(rand(200,400))
-		src.visible_message("[src] whirs as it prints and binds a new book.")
-		if(istype(O, /obj/item/weapon/paper))
-			print(O:info, "Print Job #" + "[rand(100, 999)]")
-		if(istype(O, /obj/item/weapon/book/wiki/template))
-			print_wiki(O:topic, O:censored)
-		qdel(O)
+	if(operable())
+		if(istype(O, /obj/item/weapon/paper) || istype(O, /obj/item/weapon/book/wiki/template))
+			user.drop_item()
+			O.loc = src
+			user.visible_message("[user] loads some paper into [src].", "You load some paper into [src].")
+			src.visible_message("[src] begins to hum as it warms up its printing drums.")
+			sleep(rand(200,400))
+			src.visible_message("[src] whirs as it prints and binds a new book.")
+			if(istype(O, /obj/item/weapon/paper))
+				var/obj/item/weapon/paper/paper = O
+				print(paper.info, "Print Job #" + "[rand(100, 999)]")
+			if(istype(O, /obj/item/weapon/book/wiki/template))
+				var/obj/item/weapon/book/wiki/template/template = O
+				print_wiki(template.topic, template.censored)
+			qdel(O)
+		else
+			..()
 	else
-		..()
+		to_chat(user, "[src] doesn't work!")
 
 /obj/machinery/bookbinder/proc/print(text, title, author)
 	var/obj/item/weapon/book/book = new(src.loc)
@@ -102,6 +107,4 @@
 	else
 		book = new /obj/item/weapon/book/wiki(src.loc, topic, censorship, WIKI_MINI)
 		book.icon_state = "book[rand(1,7)]"
-	if(book.layer <= src.layer)
-		book.layer = src.layer + 0.01 // Prevents spawning under bookbinder
 	return book

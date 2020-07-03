@@ -124,33 +124,33 @@
 
 /obj/item/weapon/book/wiki/chain_of_command
 	topic = "Chain of Command"
-	width = 800
+	window_width = 800
 
 /obj/item/weapon/book/wiki/trials
 	topic = "Guide to Trials"
-	width = 850
+	window_width = 850
 
 /obj/item/weapon/book/wiki/chemistry
 	topic = "Guide to Chemistry"
-	width = 800
+	window_width = 800
 
 /obj/item/weapon/book/wiki/virology
 	topic = "Guide to Virology"
-	width = 450
+	window_width = 450
 	style = WIKI_MOBILE
 
 /obj/item/weapon/book/wiki/eftpos
 	topic = "Payment Machines"
-	width = 700
+	window_width = 700
 
 /obj/item/weapon/book/wiki/medical_glossary
 	topic = "Medical Glossary"
-	width = 1000
+	window_width = 1000
 	style = WIKI_MOBILE
 
 /obj/item/weapon/book/wiki/grammar
 	topic = "Guide to Grammar"
-	width = 800
+	window_width = 800
 	style = WIKI_MOBILE
 
 /obj/item/weapon/book/wiki/surgery
