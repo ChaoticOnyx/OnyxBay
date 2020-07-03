@@ -219,7 +219,6 @@ var/list/admin_verbs_debug = list(
 	/client/proc/visualpower,
 	/client/proc/visualpower_remove,
 	/client/proc/hard_del,
-	/client/proc/enable_profiler,
 	/client/proc/bluespace_tech
 	)
 
@@ -313,7 +312,6 @@ var/list/admin_verbs_hideable = list(
 	/datum/admins/proc/ictus,
 	/client/proc/projectile_basketball,
 	/client/proc/toggle_possess_mode,
-	/client/proc/enable_profiler,
 	/client/proc/bluespace_tech,
 	/client/proc/delbook
 	)
@@ -956,23 +954,6 @@ var/list/admin_verbs_mentor = list(
 	config.projectile_basketball = !(config.projectile_basketball)
 	log_and_message_admins("toggled projectile basketball mode.")
 	feedback_add_details("admin_verb","PROBAS")
-
-/client/proc/enable_profiler()
-	set category = "Debug"
-	set name = "Enable Profiler"
-	set desc = "Access BYOND's proc performance profiler"
-
-	if(!check_rights(R_DEBUG))
-		return
-	if(alert(src, "This will lead to a huge lag, are you sure you want to enable profiler?", "Enable Profiler", "Yes", "No") == "No")
-		return
-
-	log_and_message_admins("has enabled performance profiler. This may cause lag.")
-
-	// Give profiler access
-	world.SetConfig("APP/admin", ckey, "role=admin")
-	winset(src, "browserwindow", "is-visible=true")
-	send_link(src, "?debug=profile")
 
 /client/proc/delbook()
 	set name = "Delete Book"

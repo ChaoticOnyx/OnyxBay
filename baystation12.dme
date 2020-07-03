@@ -176,6 +176,7 @@
 #include "code\controllers\subsystems\misc_late.dm"
 #include "code\controllers\subsystems\open_space.dm"
 #include "code\controllers\subsystems\plants.dm"
+#include "code\controllers\subsystems\profiler.dm"
 #include "code\controllers\subsystems\radiation.dm"
 #include "code\controllers\subsystems\shuttle.dm"
 #include "code\controllers\subsystems\skybox.dm"

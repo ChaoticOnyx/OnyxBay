@@ -484,3 +484,8 @@ MINUTE_TOPIC_LIMIT 100
 # DONATIONS
 
 # STORYTELLER
+
+# DEBUG
+
+## Enable automatic profiling - Byond 513.1506 and newer only.
+#AUTO_PROFILE
