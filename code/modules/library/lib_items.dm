@@ -54,7 +54,7 @@
 /obj/structure/bookcase/attack_hand(mob/user as mob)
 	if(contents.len)
 		var/titles[length(contents)]
-		for(var/i = 1, i <= length(contents), i++)
+		for(var/i in 1 to length(contents))
 			titles[i] = istype(contents[i], /obj/item/weapon/book) && contents[i].title ? contents[i].title : contents[i].name
 		var/title = input("Which book would you like to remove from the shelf?") as null|anything in titles
 		if(title)
