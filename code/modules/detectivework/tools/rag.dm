@@ -123,22 +123,6 @@
 
 	var/mob/living/carbon/human/H = M
 
-	if ((user.zone_sel.selecting in list(BP_L_HAND, BP_R_HAND)) && H.gloves)
-		to_chat(user, SPAN("warning", "Your target shouldn't have gloves!"))
-		return 1
-
-	if ((user.zone_sel.selecting in list(BP_L_FOOT, BP_R_FOOT)) && H.shoes)
-		to_chat(user, SPAN("warning", "Your target shouldn't have shoes!"))
-		return 1
-
-	if ((user.zone_sel.selecting in list(BP_HEAD)) && (H.wear_mask || H.head))
-		to_chat(user, SPAN("warning", "Your target shouldn't have mask or hats!"))
-		return 1
-
-	if ((user.zone_sel.selecting in list(BP_CHEST,BP_GROIN)) && H.wear_suit)
-		to_chat(user, SPAN("warning", "Your target shouldn't have suit!"))
-		return 1
-
 	if(user.zone_sel.selecting == BP_MOUTH)
 		if (H.wear_mask || !reagents.total_volume)
 			to_chat(user, SPAN("warning", "Your target shouldn't have mask and rag must not be dry!"))
@@ -154,9 +138,22 @@
 		return 1
 
 	var/obj/item/organ/external/affecting = H.get_organ(user.zone_sel.selecting)
+
+	if(BP_IS_ROBOTIC(affecting))
+		to_chat(user, SPAN("warning", "This isn't useful at all on a robotic limb."))
+		return 1
+	
+	if(affecting.organ_tag == BP_HEAD)
+		if(H.head && istype(H.head,/obj/item/clothing/head/helmet/space))
+			to_chat(user, SPAN("warning", "You can't apply [src] through [H.head]!"))
+			return 1
+	else
+		if(H.wear_suit && istype(H.wear_suit,/obj/item/clothing/suit/space))
+			to_chat(user, SPAN("warning", "You can't apply [src] through [H.wear_suit]!"))
+			return 1
 	
 	if (!(affecting.status & ORGAN_BLEEDING))
-		to_chat(user, SPAN("warning", "Your target should have bleeding!"))
+		to_chat(user, SPAN("warning", "Target limbs must be bleeding!"))
 		return 1
 	
 	for (var/datum/wound/W in affecting.wounds)
