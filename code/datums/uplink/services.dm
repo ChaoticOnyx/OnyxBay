@@ -213,6 +213,18 @@
 *********************************/
 /obj/item/device/uplink_service/fake_crew_announcement
 	service_label = "Crew Arrival Announcement and Records"
+	var/mode = 1
+
+/obj/item/device/uplink_service/fake_crew_announcement/verb/verb_toggle_mode()
+	set category = "Object"
+	set name = "Toggle Mode"
+	set src in usr
+
+	mode = !mode
+	if (mode):
+		to_chat(usr, "<span class='notice'>Device announce your visit!</span>")
+	else:
+		to_chat(usr, "<span class='notice'>Device not announce your visit!</span>") 
 
 /obj/item/device/uplink_service/fake_crew_announcement/enable(mob/user = usr)
 	var/obj/item/weapon/card/id/I = user.GetIdCard()
@@ -242,6 +254,7 @@
 		new_record.set_sex(capitalize(user.gender))
 		new_record.set_age(age)
 		new_record.set_job(assignment)
+
 	new_record.set_species(user.get_species())
 
 	if(random_record)
@@ -249,7 +262,16 @@
 		for(var/field in to_copy)
 			new_record.set_field(field, random_record.get_field(field))
 
-	var/datum/job/job = job_master.GetJob(new_record.get_job())
-	if(istype(job) && job.announced)
-		AnnounceArrivalSimple(new_record.get_name(), new_record.get_job(), get_announcement_frequency(job))
+	if (mode)
+		for (var/mob/M in GLOB.player_list)
+			M.playsound_local(M.loc, 'sound/signals/arrival1.ogg', 70)
+
+		var/datum/spawnpoint/spawnpoint = job_master.get_spawnpoint_for(user.client, "Captain")
+
+		AnnounceArrivalSimple(new_record.get_name(), new_record.get_job(), spawnpoint.msg, "Common")
+
+		var/datum/job/job = job_master.GetJob(new_record.get_job())
+		if (job && (job.department_flag != COM))
+			AnnounceArrivalSimple(new_record.get_name(), new_record.get_job(), spawnpoint.msg, get_announcement_frequency(job))
+
 	. = ..()
