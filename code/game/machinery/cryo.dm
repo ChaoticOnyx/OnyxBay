@@ -199,6 +199,10 @@
 			if(M.Victim == G:affecting)
 				to_chat(usr, "[G:affecting:name] will not fit into the cryo because they have a slime latched onto their head.")
 				return
+		if(!do_after(user, 30, src))
+			return
+		if(!ismob(G:affecting))
+			return
 		var/mob/M = G:affecting
 		if(put_mob(M))
 			qdel(G)
@@ -341,17 +345,24 @@
 	update_icon()
 	return 1
 
-	//Like grab-putting, but for mouse-dropping.
-/obj/machinery/atmospherics/unary/cryo_cell/MouseDrop_T(mob/target, mob/user)
+/obj/machinery/atmospherics/unary/cryo_cell/proc/check_compatibility(mob/target, mob/user)
 	if(!CanMouseDrop(target, user))
-		return
+		return 0
 	if (!istype(target))
-		return
+		return 0
 	if (target.buckled)
 		to_chat(user, "<span class='warning'>Unbuckle the subject before attempting to move them.</span>")
+		return 0
+	return 1
+
+	//Like grab-putting, but for mouse-dropping.
+/obj/machinery/atmospherics/unary/cryo_cell/MouseDrop_T(mob/target, mob/user)
+	if(!check_compatibility(target, user))
 		return
 	user.visible_message("<span class='notice'>\The [user] begins placing \the [target] into \the [src].</span>", "<span class='notice'>You start placing \the [target] into \the [src].</span>")
 	if(!do_after(user, 30, src))
+		return
+	if(!check_compatibility(target, user))
 		return
 	put_mob(target)
 
