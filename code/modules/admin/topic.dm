@@ -2001,6 +2001,19 @@
 					to_chat(usr, "Failed to add language '[lang2toggle]' from \the [M]!")
 
 			show_player_panel(M)
+	
+	else if(href_list["listen_tape_sound"])
+		var/sound/S = sound(locate(href_list["listen_tape_sound"]))
+		if(!S) return
+
+		S.channel = 703
+		sound_to(usr, S)
+		to_chat(usr, "<B><A HREF='?_src_=holder;stop_tape_sound=1'>Stop listening</A></B>")
+	
+	else if(href_list["stop_tape_sound"])
+		var/sound/S = sound(null)
+		S.channel = 703
+		sound_to(usr, S)
 
 	// player info stuff
 

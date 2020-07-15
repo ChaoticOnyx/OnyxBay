@@ -65,8 +65,7 @@ GLOBAL_LIST_EMPTY(music_players)
 			tape = new tape(src)
 
 		sound_id = "[/obj/item/music_player]_[sequential_id(/obj/item/music_player)]"
-		serial_number = "[rand(1,999)]"
-		desc = desc + "<br> You see \"#[serial_number]\" on the cover."
+		serial_number = "[random_id(/obj/item/music_player, 100, 999)]"
 		GLOB.music_players += src
 		log_and_message_admins("MUSIC PLAYER: <a href='?_src_=holder;adminplayerobservefollow=\ref[src]'>#[serial_number]</a> has been created.")
 		update_icon()

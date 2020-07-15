@@ -2,12 +2,10 @@
 /obj/item/music_tape/title2
 	name = "tape - \"Title 2\""
 	track = new /datum/track("Title 2", 'sound/music/title2.ogg')
-	rewrites_left = 0
 
 /obj/item/music_tape/clouds
 	name = "tape - \"Clouds\""
 	track = new /datum/track("Clouds of Fire", 'sound/music/clouds.s3m')
-	rewrites_left = 0
 
 /obj/item/music_tape/custom
 	name = "dusty tape"
@@ -21,7 +19,7 @@
 	..()
 
 /obj/item/music_tape/custom/proc/setup_tape(mob/user)
-	var/new_sound = input(user, "Select sound to upload. You should use only those audio formats which byond can accept. Ogg and module files is good choice.", "Song Reminiscence: File") as null|sound
+	var/new_sound = input(user, "Select sound to upload. You can use mp3, ogg and other audio formats which are supported by BYOND.", "Song Reminiscence: File") as null|sound
 	if(isnull(new_sound))
 		return FALSE
 

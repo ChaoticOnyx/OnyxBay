@@ -13,7 +13,6 @@
 
 	var/random_color = TRUE
 	var/ruined = 0
-	var/rewrites_left = 2
 
 	var/list/datum/track/track
 	var/uploader_ckey
