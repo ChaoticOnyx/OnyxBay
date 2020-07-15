@@ -1,6 +1,6 @@
 // Boombox
 /obj/item/music_player/boombox
-	name = "black boombox"
+	name = "boombox"
 	desc = "A musical audio player station, also known as boombox or ghettobox. Very robust."
 	icon = 'sprites/object.dmi'
 	icon_state = "boombox"
