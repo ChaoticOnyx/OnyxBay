@@ -2015,6 +2015,27 @@
 		S.channel = 703
 		sound_to(usr, S)
 
+	else if(href_list["wipe_tape_data"])
+		var/obj/item/music_tape/tape = locate(href_list["wipe_tape_data"])
+		if(!tape.track)
+			to_chat(usr, "This [tape] have no data or already is wiped. Report it to developers.")
+			return
+
+		if(alert("Wipe data written by [(tape.uploader_ckey) ? tape.uploader_ckey : "UNKNOWN PLAYER"]?",,"Yes", "No") == "Yes")
+			if(istype(tape.loc, /obj/machinery/media/jukebox))
+				var/obj/machinery/media/jukebox/J = tape.loc
+				if(J.current_track == tape.track)
+					J.StopPlaying()
+					J.current_track = null
+
+			if(istype(tape.loc, /obj/item/music_player))
+				var/obj/item/music_player/mp = tape.loc
+				if(mp.mode)
+					mp.StopPlaying()
+
+			tape.ruin()
+			tape.SetName("burned [initial(tape.name)]")
+
 	// player info stuff
 
 	if(href_list["add_player_info"])

@@ -46,9 +46,6 @@ GLOBAL_LIST_EMPTY(music_players)
 	var/power_usage = 250
 	var/obj/item/music_tape/tape = null
 
-	// Used for identification
-	var/serial_number
-
 /obj/item/music_player/Initialize()
 	. = ..()
 	if(type == /obj/item/music_player)
@@ -65,16 +62,13 @@ GLOBAL_LIST_EMPTY(music_players)
 			tape = new tape(src)
 
 		sound_id = "[/obj/item/music_player]_[sequential_id(/obj/item/music_player)]"
-		serial_number = "[random_id(/obj/item/music_player, 100, 999)]"
 		GLOB.music_players += src
-		log_and_message_admins("MUSIC PLAYER: <a href='?_src_=holder;adminplayerobservefollow=\ref[src]'>#[serial_number]</a> has been created.")
 		update_icon()
 
 /obj/item/music_player/Destroy()
 	set_mode(PLAYER_STATE_OFF)
 	QDEL_NULL(cell)
 	QDEL_NULL(tape)
-	log_and_message_admins("MUSIC PLAYER: #[serial_number] is deleted.")
 	GLOB.music_players -= src
 	. = ..()
 
@@ -421,7 +415,7 @@ GLOBAL_LIST_EMPTY(music_players)
 
 	mode = PLAYER_STATE_PLAY
 	START_PROCESSING(SSobj, src)
-	log_and_message_admins("launched [src] <a href='?_src_=holder;adminplayerobservefollow=\ref[src]'>#[serial_number]</a> with the song \"[tape.track.title]\".")
+	log_and_message_admins("launched <a href='?_src_=holder;adminplayerobservefollow=\ref[src]'>[src]</a> with the song \"[tape.track.title]\".")
 
 	if(prob(break_chance))
 		break_act()

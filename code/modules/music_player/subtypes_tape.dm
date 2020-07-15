@@ -33,5 +33,10 @@
 
 	if(new_sound && new_name && !track)
 		track = new /datum/track(new_name, new_sound)
+		uploader_ckey = user.ckey
 		return TRUE
 	return FALSE
+
+/obj/item/music_tape/custom/ruin()
+	QDEL_NULL(track)
+	..()
