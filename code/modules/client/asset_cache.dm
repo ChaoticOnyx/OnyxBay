@@ -31,7 +31,6 @@ You can set verify to TRUE if you want send() to sleep until the client has the 
 		return 0
 
 	client << browse_rsc(asset_cache.cache[asset_name], asset_name)
-	log_debug_verbose("\[ASSETS\] Asset \"[asset_name]\" was sended to [client.ckey]! Verify is [verify ? "" : "not "]needed.")
 
 	if(!verify)
 		client.cache += asset_name
@@ -41,8 +40,6 @@ You can set verify to TRUE if you want send() to sleep until the client has the 
 
 	client.sending |= asset_name
 	var/job = ++client.last_asset_job
-
-	log_debug_verbose("\[ASSETS\] Send verification for asset \"[asset_name]\" to client [client.ckey]. Job number is [job].")
 
 	client << browse({"
 	<script>
@@ -74,12 +71,9 @@ You can set verify to TRUE if you want send() to sleep until the client has the 
 	if (unreceived.len >= ASSET_CACHE_TELL_CLIENT_AMOUNT)
 		to_chat(client, "Sending Resources...")
 
-	log_debug_verbose("\[ASSETS\] Sending asset list to [client.ckey]... Verify is [verify ? "" : "not "]needed.")
-
 	for(var/asset in unreceived)
 		if (asset in asset_cache.cache)
 			client << browse_rsc(asset_cache.cache[asset], asset)
-			log_debug_verbose("\[ASSETS\] Asset \"[asset]\" was sended to [client.ckey] with list!")
 
 	if(!verify || !winexists(client, "asset_cache_browser")) // Can't access the asset cache browser, rip.
 		client.cache += unreceived
@@ -87,8 +81,6 @@ You can set verify to TRUE if you want send() to sleep until the client has the 
 	ASSERT(client)
 	client.sending |= unreceived
 	var/job = ++client.last_asset_job
-
-	log_debug_verbose("\[ASSETS\] Send verification for assets list to client [client.ckey]. Job number is [job].")
 
 	client << browse({"
 	<script>
