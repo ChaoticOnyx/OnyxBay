@@ -101,12 +101,8 @@
 		else
 			var/obj/item/weapon/disk/botany/B = W
 
-			if(B.genes && B.genes.len)
-				if(!disk_needs_genes)
-					to_chat(user, "That disk already has gene data loaded.")
-					return
-			else
-				if(disk_needs_genes)
+			if(disk_needs_genes)
+				if(!B.genes || !B.genes.len)
 					to_chat(user, "That disk does not have any gene data loaded.")
 					return
 
