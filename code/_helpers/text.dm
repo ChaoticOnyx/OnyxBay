@@ -142,8 +142,8 @@
 					//if(strict)
 					//	return  TODO: port from tg
 					continue
-					number_of_alphanumeric++
-					last_char_group = NUMBERS_DETECTED
+				number_of_alphanumeric++
+				last_char_group = NUMBERS_DETECTED
 
 			// '  -  .
 			if(39,45,46)   //Common name punctuation
