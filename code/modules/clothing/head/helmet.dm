@@ -23,7 +23,6 @@
 /obj/item/clothing/head/helmet/attack_self(mob/user)
 	if(has_visor)
 		togglevisor(user)
-		add_fingerprint(user)
 	else
 		..()
 
@@ -34,6 +33,7 @@
 	else
 		icon_state = initial(icon_state)
 		to_chat(user, "You lower the visor on the [src].")
+	add_fingerprint(user)
 	update_clothing_icon()
 
 /obj/item/clothing/head/helmet/nt
@@ -127,16 +127,6 @@
 	cold_protection = HEAD
 	min_cold_protection_temperature = SPACE_HELMET_MIN_COLD_PROTECTION_TEMPERATURE
 	siemens_coefficient = 0.3
-	has_visor = 0
-
-/obj/item/clothing/head/helmet/german
-	name = "stahlhelm"
-	desc = "A simple yet menacing looking steel helmet. Protects the head from bullets."
-	icon_state = "wehrhelm"
-	valid_accessory_slots = null
-	body_parts_covered = HEAD
-	armor = list(melee = 45, bullet = 60, laser = 45,energy = 10, bomb = 40, bio = 2, rad = 10)
-	siemens_coefficient = 1
 	has_visor = 0
 
 /obj/item/clothing/head/helmet/augment

@@ -287,16 +287,3 @@
 	icon_state = "hostrench"
 	item_state = "hostrench"
 	armor = list(melee = 15, bullet = 10, laser = 10, energy = 10, bomb = 10, bio = 0, rad = 0)
-
-/obj/item/clothing/suit/armor/hos/jensen/fieldcoat
-	name = "military trenchcoat"
-	desc = "A military trenchcoat with a leather belt and long, custom collar. Looks kinda old, but is kept in a good shape."
-	icon_state = "dalek_coat"
-	item_state = "dalek_coat"
-	armor = list(melee = 45, bullet = 35, laser = 35, energy = 10, bomb = 10, bio = 0, rad = 0)
-
-/obj/item/clothing/suit/armor/hos/jensen/fieldcoat/mob_can_equip(mob/user)
-	.=..()
-	if(user.gender == FEMALE)
-		to_chat(user, "<span class='warning'> You aren't sure you'll fit in this fascist cloth..</span>")
-		return 0
