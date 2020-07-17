@@ -120,7 +120,7 @@
 	// Want to iterate all of it.
 	if(t_len > 3 * MAX_NAME_LEN)
 		return
-	for(var/i=1, i <= t_len, i += length_char(char))
+	for(var/i in 1 to t_len)
 		char = text2ascii_char(input,i)
 		switch(char)
 
