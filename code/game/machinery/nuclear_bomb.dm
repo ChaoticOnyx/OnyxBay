@@ -342,9 +342,17 @@ var/bomb_set
 /obj/machinery/nuclearbomb/ex_act(severity)
 	return
 
+/obj/machinery/nuclearbomb/blob_act(destroy = 0)
+	if(destroy)
+		SetUniversalState(/datum/universal_state/nuclear_explosion, arguments=list(src))
+		if(prob(95))
+			priority_announcement.Announce("It looks like the biohazard decided to withdraw. All's well that ends well. However, you lost the station, crew. The Death Squad is preparing to arrive and interrogate the survivors, if any. Consider yourself fired.", "NT CentCom")
+		else
+			priority_announcement.Announce("What was that?", "The Blob")
+
 #define NUKERANGE 80
 /obj/machinery/nuclearbomb/proc/explode()
-	if (safety)
+	if(safety)
 		timing = 0
 		return
 	timing = -1
