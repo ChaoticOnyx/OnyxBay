@@ -111,7 +111,7 @@
 	var/number_of_alphanumeric = 0
 	var/last_char_group = NO_CHARS_DETECTED
 	var/output = ""
-	var/t_len = length(input)
+	var/t_len = length_char(input)
 	var/charcount = 0
 	var/char = ""
 
@@ -120,9 +120,9 @@
 	// Want to iterate all of it.
 	if(t_len > 3 * MAX_NAME_LEN)
 		return
-	for(var/i=1, i <= t_len, i += length(char))
-		char = input[i]
-		switch(text2ascii(char))
+	for(var/i=1, i <= t_len, i += length_char(char))
+		char = text2ascii_char(input,i)
+		switch(char)
 
 			// A  .. Z
 			if(65 to 90)   //Uppercase Letters
