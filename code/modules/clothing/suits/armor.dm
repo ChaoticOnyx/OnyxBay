@@ -19,7 +19,7 @@
 	body_parts_covered = UPPER_TORSO|LOWER_TORSO
 	cold_protection = UPPER_TORSO|LOWER_TORSO
 	heat_protection = UPPER_TORSO|LOWER_TORSO
-	armor = list(melee = 35, bullet = 35, laser = 35, energy = 15, bomb = 25, bio = 0, rad = 0)
+	armor = list(melee = 40, bullet = 40, laser = 40, energy = 15, bomb = 25, bio = 0, rad = 0)
 	valid_accessory_slots = list(ACCESSORY_SLOT_INSIGNIA)
 
 /obj/item/clothing/suit/armor/vest/detective
@@ -233,7 +233,7 @@
 	flags_inv = HIDEGLOVES|HIDESHOES|HIDEJUMPSUIT
 	valid_accessory_slots = list(ACCESSORY_SLOT_INSIGNIA)
 	siemens_coefficient = 0
-	armor = list(melee = 85, bullet = 85, laser = 85, energy = 55, bomb = 50, bio = 50, rad = 0)
+	armor = list(melee = 90, bullet = 90, laser = 90, energy = 55, bomb = 90, bio = 50, rad = 100)
 
 /obj/item/clothing/suit/armor/swat/officer
 	name = "officer jacket"
