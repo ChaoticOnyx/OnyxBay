@@ -64,9 +64,9 @@
 	WRITE_FILE(GLOB.world_debug_log, "\[[time_stamp()]] DEBUG: [text][log_end]")
 
 /proc/log_debug_verbose(text)
-	if(!config.log_debug || !GLOB.world_debug_log)
+	if(!config.log_debug_verbose || !GLOB.world_debug_log)
 		return
-	WRITE_FILE(GLOB.world_debug_log, "\[[time_stamp()]] DEBUG: [text][log_end]")
+	WRITE_FILE(GLOB.world_debug_log, "\[[time_stamp()]] DEBUG VERBOSE: [text][log_end]")
 
 /proc/log_game(text, location, notify_admin)
 	log_generic("GAME", text, location, config.log_game, notify_admin)
