@@ -165,7 +165,7 @@ var/global/list/ores_by_type = list()
 	worth = 8
 
 /ore/hydrogen
-	name = "mhydrogen"
+	name = MATERIAL_HYDROGEN
 	display_name = "metallic hydrogen"
 	smelts_to = MATERIAL_TRITIUM
 	compresses_to = MATERIAL_HYDROGEN

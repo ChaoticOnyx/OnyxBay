@@ -8,6 +8,7 @@
 	var/obj/machinery/teleport/station/station = null
 	var/obj/machinery/teleport/hub/hub = null
 	var/obj/item/locked = null
+	var/calibrated = FALSE
 	var/id = null
 	var/one_time_use = 0 //Used for one-time-use teleport cards (such as clown planet coordinates.)
 						 //Setting this to 1 will set src.locked to null after a player enters the portal and will not allow hand-teles to open portals to that location.
@@ -97,6 +98,10 @@
 	/* Ghosts can't use this one because it's a direct selection */
 	if(isobserver(user)) return
 
+	if(station.engaged)
+		to_chat(user, SPAN_WARNING("You need to disengage the teleport to use it."))
+		return
+
 	var/list/L = list()
 	var/list/areaindex = list()
 
@@ -144,6 +149,11 @@
 		O.show_message("<span class='notice'>Locked In</span>", 2)
 	return
 
+/obj/machinery/computer/teleporter/power_change()
+	. = ..()
+	if(!(stat & NOPOWER))
+		calibrated = FALSE
+
 /obj/machinery/computer/teleporter/verb/set_id(t as text)
 	set category = "Object"
 	set name = "Set teleporter ID"
@@ -155,6 +165,25 @@
 	if (t)
 		src.id = t
 	return
+
+/obj/machinery/computer/teleporter/verb/calibrate()
+	set name = "Calibrate Teleporter"
+	set category = "Object"
+	set src in view(1)
+
+	if(stat & (NOPOWER|BROKEN))
+		return
+	if(!CanPhysicallyInteract(usr))
+		return
+	if(calibrated)
+		to_chat(usr, SPAN_WARNING("It's already calibrated!"))
+		return
+	if(station.engaged)
+		to_chat(usr, SPAN_WARNING("Disengage the teleporter first."))
+		return
+
+	calibrated = TRUE
+	to_chat(usr, SPAN_NOTICE("You calibrated the teleporter."))
 
 /proc/find_loc(obj/R as obj)
 	if (!R)	return null
@@ -200,7 +229,10 @@
 		for(var/mob/O in hearers(src, null))
 			O.show_message("<span class='warning'>Failure: Cannot authenticate locked on coordinates. Please reinstate coordinate matrix.</span>")
 		return
-	do_teleport(M, com.locked)
+	if(!com.calibrated && prob(5))
+		do_teleport(M, locate(rand(TRANSITIONEDGE, world.maxx - TRANSITIONEDGE), rand(TRANSITIONEDGE, world.maxy -TRANSITIONEDGE), pick(GLOB.using_map.player_levels)), 0)
+	else
+		do_teleport(M, com.locked)
 	if(com.one_time_use) //Make one-time-use cards only usable one time!
 		com.one_time_use = 0
 		com.locked = null
@@ -308,7 +340,7 @@
 	overlays.Cut()
 	overlays += image('icons/obj/stationobjs.dmi', icon_state = "controller-wires")
 
-/obj/machinery/teleport/station/attackby(var/obj/item/weapon/W)
+/obj/machinery/teleport/station/attackby(obj/item/weapon/W)
 	src.attack_hand()
 
 /obj/machinery/teleport/station/attack_ai()
@@ -316,9 +348,10 @@
 
 /obj/machinery/teleport/station/attack_hand()
 	if(engaged)
-		src.disengage()
+		disengage()
+		com.com.calibrated = FALSE
 	else
-		src.engage()
+		engage()
 
 /obj/machinery/teleport/station/proc/engage()
 	if(stat & (BROKEN|NOPOWER))

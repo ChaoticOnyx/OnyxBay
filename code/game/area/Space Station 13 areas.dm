@@ -45,7 +45,8 @@ NOTE: there are two lists of areas in the end of this file: centcom and station 
 	var/oneoff_light   = 0
 	var/oneoff_environ = 0
 
-	var/has_gravity = 1
+	var/has_gravity = TRUE
+	var/gravity_state = AREA_GRAVITY_NORMAL
 	var/obj/machinery/power/apc/apc = null
 	var/no_air = null
 //	var/list/lights				// list of all lights on this area
@@ -115,6 +116,10 @@ area/space/atmosalert()
 /area/hallway
 	name = "hallway"
 
+/area/hallway/Initialize()
+	. = ..()
+	GLOB.hallway += src
+
 /area/medical
 	ambience = list("global_ambient", "science_ambient")
 
@@ -149,6 +154,11 @@ area/space/atmosalert()
 /area/rnd/xenobiology
 	name = "\improper Xenobiology Lab"
 	icon_state = "xeno_lab"
+
+/area/rnd/xenobiology/dorm
+	name = "\improper Xenobiology Lab Dormitories"
+	icon_state = "xeno_lab_dorm"
+
 
 /area/rnd/xenobiology/xenoflora
 	name = "\improper Xenoflora Lab"
@@ -212,7 +222,7 @@ area/space/atmosalert()
 
 /area/beach/New()
 	..()
-	var/sound/S = new/sound()
+	var/sound/S = new /sound()
 	mysound = S
 	S.file = 'sound/ambience/shore.ogg'
 	S.repeat = 1
@@ -256,3 +266,10 @@ area/space/atmosalert()
 					sound_to(H, S)
 
 	spawn(60) .()
+
+/area/thunderfield
+	name = "Thunderfield"
+	icon_state = "yellow"
+	luminosity = 1
+	dynamic_lighting = 0
+	requires_power = 0

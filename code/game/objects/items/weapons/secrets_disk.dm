@@ -28,7 +28,7 @@
 	subject += " " + pick("that is extremely powerful", "which is highly efficient", "which is incredibly compact",\
 	"that runs off of phoron", "that runs off of hydrogen gas", "created by the Skrell", "that just looks really cool")
 
-/obj/item/weapon/disk/secret_project/examine(var/user)
+/obj/item/weapon/disk/secret_project/examine(user)
 	..()
 	if(!locked)
 		to_chat(user, "With the disk's classified contents unlocked, \
@@ -36,7 +36,7 @@
 	else
 		to_chat(user, "The disk is locked, you cannot see its contents.")
 
-/obj/item/weapon/disk/secret_project/emag_act(var/remaining_charges, var/mob/user)
+/obj/item/weapon/disk/secret_project/emag_act(remaining_charges, mob/user)
 	to_chat(user, "<span class='warning'>The cryptographic lock on this disk is far too complex. \
 	Your sequencer can't break the code.</span>")
 	return 0

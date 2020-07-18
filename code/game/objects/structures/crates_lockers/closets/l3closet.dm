@@ -36,7 +36,7 @@
 	return list(
 		/obj/item/clothing/suit/bio_suit/virology,
 		/obj/item/clothing/head/bio_hood/virology,
-		/obj/item/clothing/mask/gas,
+		/obj/item/clothing/mask/gas/clear,
 		/obj/item/weapon/tank/oxygen
 	)
 
@@ -50,7 +50,7 @@
 	return list(
 		/obj/item/clothing/suit/bio_suit/security,
 		/obj/item/clothing/head/bio_hood/security,
-		/obj/item/clothing/mask/gas/old,
+		/obj/item/clothing/mask/gas/clear,
 		/obj/item/weapon/tank/emergency/oxygen/engi
 	)
 
@@ -63,7 +63,7 @@
 	return list(
 		/obj/item/clothing/suit/bio_suit/janitor,
 		/obj/item/clothing/head/bio_hood/janitor,
-		/obj/item/clothing/mask/gas/old,
+		/obj/item/clothing/mask/gas/clear,
 		/obj/item/weapon/tank/emergency/oxygen/engi
 	)
 

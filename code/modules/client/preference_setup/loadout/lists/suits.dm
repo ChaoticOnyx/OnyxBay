@@ -1,7 +1,6 @@
 /datum/gear/suit
 	slot = slot_wear_suit
-	sort_category = "Suits and Overwear"
-	category = /datum/gear/suit
+	sort_category = "Suits"
 
 /datum/gear/suit/poncho
 	display_name = "poncho selection"
@@ -39,7 +38,7 @@
 	suitjackets += /obj/item/clothing/suit/storage/toggle/suit/black
 	suitjackets += /obj/item/clothing/suit/storage/toggle/suit/blue
 	suitjackets += /obj/item/clothing/suit/storage/toggle/suit/purple
-	gear_tweaks += new/datum/gear_tweak/path/specified_types_list(suitjackets)
+	gear_tweaks += new /datum/gear_tweak/path/specified_types_list(suitjackets)
 
 /datum/gear/suit/custom_suit_jacket
 	display_name = "suit jacket, colour select"
@@ -57,7 +56,7 @@
 	varsity += /obj/item/clothing/suit/storage/toggle/varsity/blue
 	varsity += /obj/item/clothing/suit/storage/toggle/varsity/red
 	varsity += /obj/item/clothing/suit/storage/toggle/varsity/brown
-	gear_tweaks += new/datum/gear_tweak/path/specified_types_list(varsity)
+	gear_tweaks += new /datum/gear_tweak/path/specified_types_list(varsity)
 
 /datum/gear/suit/hazard
 	display_name = "hazard vests"
@@ -80,7 +79,7 @@
 	hoodies += /obj/item/clothing/suit/storage/toggle/hoodie/mu
 	hoodies += /obj/item/clothing/suit/storage/toggle/hoodie/nt
 	hoodies += /obj/item/clothing/suit/storage/toggle/hoodie/smw
-	gear_tweaks += new/datum/gear_tweak/path/specified_types_list(hoodies)
+	gear_tweaks += new /datum/gear_tweak/path/specified_types_list(hoodies)
 
 /datum/gear/suit/labcoat
 	display_name = "labcoat, colour select"
@@ -106,7 +105,7 @@
 	jackets += /obj/item/clothing/suit/storage/toggle/brown_jacket
 	jackets += /obj/item/clothing/suit/storage/mbill
 	jackets += /obj/item/clothing/suit/storage/black_jacket_long
-	gear_tweaks += new/datum/gear_tweak/path/specified_types_list(jackets)
+	gear_tweaks += new /datum/gear_tweak/path/specified_types_list(jackets)
 
 /datum/gear/suit/wintercoat
 	display_name = "winter coat"
@@ -133,7 +132,7 @@
 
 /datum/gear/suit/medcoat/New()
 	..()
-	gear_tweaks += new/datum/gear_tweak/path/specified_types_args(/obj/item/clothing/suit/storage/toggle/fr_jacket, /obj/item/clothing/suit/storage/toggle/labcoat/blue, /obj/item/clothing/suit/surgicalapron)
+	gear_tweaks += new /datum/gear_tweak/path/specified_types_args(/obj/item/clothing/suit/storage/toggle/fr_jacket, /obj/item/clothing/suit/storage/toggle/labcoat/blue, /obj/item/clothing/suit/surgicalapron)
 
 /datum/gear/suit/trenchcoat
 	display_name = "trenchcoat selection"
@@ -146,4 +145,68 @@
 	trenchcoats += /obj/item/clothing/suit/storage/det_trench
 	trenchcoats += /obj/item/clothing/suit/storage/det_trench/grey
 	trenchcoats += /obj/item/clothing/suit/leathercoat
-	gear_tweaks += new/datum/gear_tweak/path/specified_types_list(trenchcoats)
+	gear_tweaks += new /datum/gear_tweak/path/specified_types_list(trenchcoats)
+
+//
+// Donator's shop
+//
+
+/datum/gear/suit/pirate
+	display_name = "pirate suit"
+	path = /obj/item/clothing/suit/pirate
+	price = 15
+
+/datum/gear/suit/cardborg
+	display_name = "cardborg suit"
+	path = /obj/item/clothing/suit/cardborg
+	price = 6
+
+/datum/gear/suit/santa
+	display_name = "santa's suit"
+	path = /obj/item/clothing/suit/space/santa
+	price = 40
+
+/datum/gear/suit/plaguedoctorsuit
+	display_name = "plague doctor suit"
+	path = /obj/item/clothing/suit/bio_suit/plaguedoctorsuit
+	price = 20
+
+/datum/gear/suit/hgpirate
+	display_name = "pirate captain coat"
+	path = /obj/item/clothing/suit/hgpirate
+	price = 10
+
+/datum/gear/suit/johnny_coat
+	display_name = "johnny coat"
+	path = /obj/item/clothing/suit/johnny_coat
+	price = 10
+
+/datum/gear/suit/judgerobe
+	display_name = "judge's robe"
+	path = /obj/item/clothing/suit/judgerobe
+	price = 10
+
+/datum/gear/suit/monkeysuit
+	display_name = "monkey suit"
+	path = /obj/item/clothing/suit/monkeysuit
+	price = 10
+
+/datum/gear/suit/chickensuit
+	display_name = "chicken suit"
+	path = /obj/item/clothing/suit/chickensuit
+	price = 10
+
+/datum/gear/suit/wizrobe_fake
+	display_name = "wizard robe"
+	path = /obj/item/clothing/suit/wizrobe/fake
+	price = 20
+
+/datum/gear/suit/wizrobe_marisa_fake
+	display_name = "witch robe"
+	path = /obj/item/clothing/suit/wizrobe/marisa/fake
+	price = 20
+
+/datum/gear/suit/ianshirt
+	display_name = "ian shirt"
+	path = /obj/item/clothing/suit/ianshirt
+	price = 5

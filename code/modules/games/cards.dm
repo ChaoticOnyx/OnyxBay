@@ -147,7 +147,7 @@
 		return
 	..()
 
-/obj/item/weapon/deck/attack_self(var/mob/user as mob)
+/obj/item/weapon/deck/attack_self(mob/user as mob)
 
 	cards = shuffle(cards)
 	user.visible_message("\The [user] shuffles [src].")
@@ -174,7 +174,7 @@
 	var/list/cards = list()
 
 
-/obj/item/weapon/pack/attack_self(var/mob/user as mob)
+/obj/item/weapon/pack/attack_self(mob/user as mob)
 	user.visible_message("[user] rips open \the [src]!")
 	var/obj/item/weapon/hand/H = new()
 
@@ -223,7 +223,7 @@
 	if(!cards.len)
 		qdel(src)
 
-/obj/item/weapon/hand/attack_self(var/mob/user as mob)
+/obj/item/weapon/hand/attack_self(mob/user as mob)
 	concealed = !concealed
 	update_icon()
 	user.visible_message("\The [user] [concealed ? "conceals" : "reveals"] their hand.")
@@ -235,7 +235,7 @@
 		for(var/datum/playingcard/P in cards)
 			to_chat(user, "The [P.name].")
 
-/obj/item/weapon/hand/update_icon(var/direction = 0)
+/obj/item/weapon/hand/update_icon(direction = 0)
 
 	if(!cards.len)
 		qdel(src)

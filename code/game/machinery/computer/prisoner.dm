@@ -23,7 +23,7 @@
 		if(..())
 			return
 		user.set_machine(src)
-		var/dat
+		var/dat = "<meta charset=\"utf-8\">"
 		dat += "<B>Prisoner Implant Manager System</B><BR>"
 		if(screen == 0)
 			dat += "<HR><A href='?src=\ref[src];lock=1'>Unlock Console</A>"

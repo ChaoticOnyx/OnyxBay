@@ -18,10 +18,10 @@
 /obj/item/weapon/storage/box/syndie_kit/imp_freedom
 	name = "box (F)"
 	startswith = list(/obj/item/weapon/implanter/freedom)
-	
+
 /obj/item/weapon/storage/box/syndie_kit/adrenalin
 	name = "box (A)"
-	startswith = list(/obj/item/weapon/implanter/adrenalin)	
+	startswith = list(/obj/item/weapon/implanter/adrenalin)
 
 /obj/item/weapon/storage/box/syndie_kit/imp_uplink
 	name = "box (U)"
@@ -170,7 +170,7 @@
 
 	new /obj/item/weapon/flame/lighter/zippo(src)
 
-/proc/fill_cigarre_package(var/obj/item/weapon/storage/fancy/cigarettes/C, var/list/reagents)
+/proc/fill_cigarre_package(obj/item/weapon/storage/fancy/cigarettes/C, list/reagents)
 	for(var/reagent in reagents)
 		C.reagents.add_reagent(reagent, reagents[reagent] * C.max_storage_space)
 
@@ -220,6 +220,7 @@
 		/obj/item/weapon/surgicaldrill,
 		/obj/item/weapon/bonegel,
 		/obj/item/weapon/FixOVein/clot,
+		/obj/item/weapon/organfixer/advanced,
 		/obj/item/stack/medical/advanced/bruise_pack,
 		/obj/item/stack/nanopaste,
-		)	
+		)

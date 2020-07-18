@@ -15,6 +15,7 @@
 #define SS_PRIORITY_AIR            80	// ZAS processing.
 #define SS_PRIORITY_ALARM          20	// Alarm processing.
 #define SS_PRIORITY_EVENT          20	// Event processing and queue handling.
+#define SS_PRIORITY_STORYTELLER    20
 #define SS_PRIORITY_RADIATION      20	// Radiation processing and cache updates.
 #define SS_PRIORITY_SHUTTLE        20	// Shuttle movement.
 #define SS_PRIORITY_CIRCUIT_COMP   20	// Processing circuit component do_work.
@@ -30,6 +31,7 @@
 #define SS_PRIORITY_PROCESSING    30	// Generic datum processor. Replaces objects processor.
 #define SS_PRIORITY_PLANTS        30	// Spreading vine effects.
 #define SS_PRIORITY_CIRCUIT       30	// Processing Circuit's ticks and all that.
+#define SS_PRIORITY_CHAR_SETUP    25	// Writes player preferences to savefiles.
 #define SS_PRIORITY_GARBAGE       25	// Garbage collection.
 #define SS_PRIORITY_VINES         25	// Spreading vine effects.
 #define SS_PRIORITY_NANO          20	// Updates to nanoui uis.

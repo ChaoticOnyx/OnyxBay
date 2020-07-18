@@ -18,7 +18,7 @@
 	combustion = 1
 
 	var/obj/item/weapon/grenade/chambered
-	var/list/grenades = new/list()
+	var/list/grenades = new /list()
 	var/max_grenades = 5 //holds this + one in the chamber
 	var/whitelisted_grenades = list(
 		/obj/item/weapon/grenade/frag/shell)

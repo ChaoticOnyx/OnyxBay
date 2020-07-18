@@ -23,29 +23,20 @@ You can set verify to TRUE if you want send() to sleep until the client has the 
 
 //This proc sends the asset to the client, but only if it needs it.
 //This proc blocks(sleeps) unless verify is set to false
-/proc/send_asset(client/client, asset_name, verify = TRUE)
-	if(!istype(client))
-		if(ismob(client))
-			var/mob/M = client
-			if(M.client)
-				client = M.client
-
-			else
-				return 0
-
-		else
-			return 0
+/proc/send_asset(client/client, asset_name, verify = FALSE)
+	ASSERT(client)
+	ASSERT(istype(client))
 
 	if(client.cache.Find(asset_name) || client.sending.Find(asset_name))
 		return 0
 
 	client << browse_rsc(asset_cache.cache[asset_name], asset_name)
-	if(!verify || !winexists(client, "asset_cache_browser")) // Can't access the asset cache browser, rip.
-		if (client)
-			client.cache += asset_name
+
+	if(!verify)
+		client.cache += asset_name
 		return 1
-	if (!client)
-		return 0
+
+	ASSERT(winexists(client, "asset_cache_browser"))
 
 	client.sending |= asset_name
 	var/job = ++client.last_asset_job
@@ -70,34 +61,24 @@ You can set verify to TRUE if you want send() to sleep until the client has the 
 	return 1
 
 //This proc blocks(sleeps) unless verify is set to false
-/proc/send_asset_list(client/client, list/asset_list, verify = TRUE)
-	if(!istype(client))
-		if(ismob(client))
-			var/mob/M = client
-			if(M.client)
-				client = M.client
-
-			else
-				return 0
-
-		else
-			return 0
+/proc/send_asset_list(client/client, list/asset_list, verify = FALSE)
+	ASSERT(client)
+	ASSERT(istype(client))
 
 	var/list/unreceived = asset_list - (client.cache + client.sending)
 	if(!unreceived || !unreceived.len)
 		return 0
 	if (unreceived.len >= ASSET_CACHE_TELL_CLIENT_AMOUNT)
 		to_chat(client, "Sending Resources...")
+
 	for(var/asset in unreceived)
 		if (asset in asset_cache.cache)
 			client << browse_rsc(asset_cache.cache[asset], asset)
 
 	if(!verify || !winexists(client, "asset_cache_browser")) // Can't access the asset cache browser, rip.
-		if (client)
-			client.cache += unreceived
+		client.cache += unreceived
 		return 1
-	if (!client)
-		return 0
+	ASSERT(client)
 	client.sending |= unreceived
 	var/job = ++client.last_asset_job
 
@@ -122,16 +103,13 @@ You can set verify to TRUE if you want send() to sleep until the client has the 
 
 //This proc will download the files without clogging up the browse() queue, used for passively sending files on connection start.
 //The proc calls procs that sleep for long times.
-/proc/getFilesSlow(client/client, list/files, register_assets = TRUE)
+/proc/getFilesSlow(client/client, list/files)
 	for(var/file in files)
-		if (!client)
-			break
-		if (register_assets)
-			debug_print("file: [file]")
-			debug_print("files file: [files[file]]")
-			register_asset(file, files[file])
+		if(!client)
+			return FALSE
 		send_asset(client, file)
 		sleep(0) //queuing calls like this too quickly can cause issues in some client versions
+	return TRUE
 
 //This proc "registers" an asset, it adds it to the cache for further use, you cannot touch it from this point on or you'll fuck things up.
 //if it's an icon or something be careful, you'll have to copy it before further use.
@@ -141,12 +119,12 @@ You can set verify to TRUE if you want send() to sleep until the client has the 
 //Generated names do not include file extention.
 //Used mainly for code that deals with assets in a generic way
 //The same asset will always lead to the same asset name
-/proc/generate_asset_name(var/file)
+/proc/generate_asset_name(file)
 	return "asset.[md5(fcopy_rsc(file))]"
 
 // will return filename for cached atom icon or null if not cached
 // can accept atom objects or types
-/proc/getAtomCacheFilename(var/atom/A)
+/proc/getAtomCacheFilename(atom/A)
 	if(!A || (!istype(A) && !ispath(A)))
 		return
 	var/filename = "[ispath(A) ? A : A.type].png"
@@ -183,11 +161,15 @@ You can set verify to TRUE if you want send() to sleep until the client has the 
 		register_asset(asset_name, assets[asset_name])
 	registred = TRUE
 
-/datum/asset/proc/send(client)
+/datum/asset/proc/send(client/client)
+	ASSERT(client)
+	ASSERT(istype(client))
 	send_asset_list(client, assets, verify)
 
-/datum/asset/proc/send_slow(client)
-	getFilesSlow(client, assets, register_assets = FALSE)
+/datum/asset/proc/send_slow(client/client)
+	ASSERT(client)
+	ASSERT(istype(client))
+	return getFilesSlow(client, assets)
 
 // Check if all the assets were already sent
 /datum/asset/proc/check_sent(client/C)
@@ -220,7 +202,9 @@ You can set verify to TRUE if you want send() to sleep until the client has the 
 	for(var/asset_name in assets)
 		register_asset(asset_name, assets[asset_name])
 
-/datum/asset/simple/send(client)
+/datum/asset/simple/send(client/client)
+	ASSERT(client)
+	ASSERT(istype(client))
 	send_asset_list(client,assets,verify)
 
 // For registering or sending multiple others at once
@@ -244,6 +228,7 @@ You can set verify to TRUE if you want send() to sleep until the client has the 
 	)
 
 /datum/asset/group/onyxchat
+	isTrivial = FALSE
 	children = list(
 		/datum/asset/simple/jquery,
 		/datum/asset/simple/onyxchat,
@@ -257,7 +242,8 @@ You can set verify to TRUE if you want send() to sleep until the client has the 
 	)
 
 /datum/asset/simple/onyxchat
-	verify = TRUE
+	isTrivial = FALSE
+	verify = FALSE
 	assets = list(
 		"json2.min.js"             = 'code/modules/onyxchat/browserassets/js/json2.min.js',
 		"browserOutput.js"         = 'code/modules/onyxchat/browserassets/js/browserOutput.js',
@@ -267,6 +253,7 @@ You can set verify to TRUE if you want send() to sleep until the client has the 
 	)
 
 /datum/asset/simple/fontawesome
+	isTrivial = TRUE
 	verify = FALSE
 	assets = list(
 		"fa-regular-400.eot"  = 'html/font-awesome/webfonts/fa-regular-400.eot',
@@ -278,7 +265,7 @@ You can set verify to TRUE if you want send() to sleep until the client has the 
 	)
 
 /datum/asset/simple/tgui
-	verify = TRUE
+	verify = FALSE
 	assets = list(
 		// tgui-next
 		"tgui-main.html" = 'tgui-next/packages/tgui/public/tgui-main.html',
@@ -323,13 +310,3 @@ var/decl/asset_cache/asset_cache = new()
 /decl/asset_cache/New()
 	..()
 	cache = new
-
-/proc/send_assets()
-	// Creates and registers every asset datum
-	for(var/type in subtypesof(/datum/asset))
-		get_asset_datum(type)
-
-	for(var/client/C in GLOB.clients)
-		C.send_resources()
-
-	return TRUE

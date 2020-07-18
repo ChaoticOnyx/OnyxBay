@@ -2,8 +2,8 @@
 
 proc/Intoxicated(phrase)
 	phrase = html_decode(phrase)
-	var/leng=lentext(phrase)
-	var/counter=lentext(phrase)
+	var/leng=length(phrase)
+	var/counter=length(phrase)
 	var/newphrase=""
 	var/newletter=""
 	while(counter>=1)
@@ -14,8 +14,8 @@ proc/Intoxicated(phrase)
 			if(lowertext(newletter)=="a")	newletter="ah"
 			if(lowertext(newletter)=="c")	newletter="k"
 		switch(rand(1,7))
-			if(1,3,5,8)	newletter="[rlowertext(newletter)]"
-			if(2,4,6,15)	newletter="[ruppertext(newletter)]"
+			if(1,3,5,8)	newletter="[lowertext(newletter)]"
+			if(2,4,6,15)	newletter="[uppertext(newletter)]"
 			if(7)	newletter+="'"
 			//if(9,10)	newletter="<b>[newletter]</b>"
 			//if(11,12)	newletter="<big>[newletter]</big>"
@@ -23,41 +23,47 @@ proc/Intoxicated(phrase)
 		newphrase+="[newletter]";counter-=1
 	return newphrase
 
-proc/NewStutter(phrase,stunned)
+// This is prolonged effect, often toggled by prefences
+proc/stammer(phrase)
 	phrase = html_decode(phrase)
-
-	var/list/split_phrase = splittext(phrase," ") //Split it up into words.
-
-	var/list/unstuttered_words = split_phrase.Copy()
-	var/i = rand(1,3)
-	if(stunned) i = split_phrase.len
-	for(,i > 0,i--) //Pick a few words to stutter on.
-
-		if (!unstuttered_words.len)
-			break
-		var/word = pick(unstuttered_words)
-		unstuttered_words -= word //Remove from unstuttered words so we don't stutter it again.
-		var/index = split_phrase.Find(word) //Find the word in the split phrase so we can replace it.
-
-		//Search for dipthongs (two letters that make one sound.)
-		var/first_sound = copytext(word,1,3)
-		var/first_letter = copytext(word,1,2)
-		if(lowertext(first_sound) in list("ch","th","sh"))
-			first_letter = first_sound
-
-		//Repeat the first letter to create a stutter.
-		var/rnum = rand(1,3)
-		switch(rnum)
-			if(1)
-				word = "[first_letter]-[word]"
-			if(2)
-				word = "[first_letter]-[first_letter]-[word]"
-			if(3)
-				word = "[first_letter]-[word]"
-
-		split_phrase[index] = word
-
-	return sanitize(jointext(split_phrase," "))
+	var/list/vowels = list(
+		"–∞", "–∏", "–æ", "—É", "—ã", "—ç", "–µ", "—ë", "—é", "—è",
+		"a", "e", "i", "o", "u"
+		)
+	var/list/consonants = list(
+		"–±", "–≤", "–≥", "–¥", "–∂", "–∑", "–π", "–∫", "–ª", "–º", "–Ω", "–ø", "—Ä", "—Å", "—Ç", "—Ñ", "—Ö", "—Ü", "—á", "—à", "—â",
+		"b", "c", "d", "f", "g", "h", "j", "k", "l", "m", "n", "p", "q", "r", "s", "t", "v", "x", "z", "w", "y"
+		)
+	var/list/letters = vowels + consonants + "—å" + "—ä"
+	var/stoppers = list(
+		"–±", "–≥", "–¥", "–∫", "–ø", "—Ç", "—Ü", "—á",
+		"b", "d", "g", "j", "k", "p", "t", "x"
+		)
+	var/new_phrase = ""
+	var/index_in_word = 0
+	var/last_char = ""
+	for(var/i = 1, i <= length_char(phrase), i++)
+		var/char = copytext_char(phrase, i, i + 1)
+		var/current_char = lowertext(char)
+		if(current_char in letters)
+			index_in_word++
+		else
+			index_in_word = 0
+		if(index_in_word == 2 && prob(40) && (last_char in consonants))
+			var/passage = ""
+			if(current_char in vowels)
+				if((last_char in stoppers) && prob(50))
+					passage = "-[last_char]"
+				else
+					passage = "[current_char]-[last_char]"
+			else if(last_char in stoppers)
+				passage = "-[last_char]"
+			do
+				new_phrase += passage
+			while(prob(25))
+		last_char = current_char
+		new_phrase += char
+	return html_encode(new_phrase)
 
 proc/Stagger(mob/M,d) //Technically not a filter, but it relates to drunkenness.
 	step(M, pick(d,turn(d,90),turn(d,-90)))
@@ -96,19 +102,19 @@ proc/RadioChat(mob/living/user, message, distortion_chance = 60, distortion_spee
 	message = html_decode(message)
 	var/new_message = ""
 	var/input_size = length(message)
-	var/lentext = 0
+	var/length = 0
 	if(input_size < 20) // Short messages get distorted too. Bit hacksy.
 		distortion += (20-input_size)/2
-	while(lentext <= input_size)
-		var/newletter=copytext(message, lentext, lentext+1)
+	while(length <= input_size)
+		var/newletter=copytext(message, length, length+1)
 		if(!prob(distortion_chance))
 			new_message += newletter
-			lentext += 1
+			length += 1
 			continue
 		if(newletter != " ")
 			if(prob(0.08 * distortion)) // Major cutout
 				newletter = "*zzzt*"
-				lentext += rand(1, (length(message) - lentext)) // Skip some characters
+				length += rand(1, (length(message) - length)) // Skip some characters
 				distortion += 1 * distortion_speed
 			else if(prob(0.8 * distortion)) // Minor cut out
 				if(prob(25))
@@ -134,14 +140,14 @@ proc/RadioChat(mob/living/user, message, distortion_chance = 60, distortion_spee
 					if(english_only)
 						newletter += "*"
 					else
-						newletter = pick("¯", "–", "%", "Ê", "µ")
+						newletter = pick("—à", "–†", "%", "–∂", "¬µ")
 				distortion += 0.5 * distortion_speed
 			else if(prob(0.75 * distortion)) // Incomprehensible
 				newletter = pick("<", ">", "!", "$", "%", "^", "&", "*", "~", "#")
 				distortion += 0.75 * distortion_speed
 			else if(prob(0.05 * distortion)) // Total cut out
 				if(!english_only)
-					newletter = "¶w°ºbª%> -BZZT-"
+					newletter = "¬¶w–é—òb¬ª%> -BZZT-"
 				else
 					newletter = "srgt%$hjc< -BZZT-"
 				new_message += newletter
@@ -151,15 +157,15 @@ proc/RadioChat(mob/living/user, message, distortion_chance = 60, distortion_spee
 					if("s")
 						newletter = "$"
 					if("e")
-						newletter = "Ä"
+						newletter = "¬¨"
 					if("w")
-						newletter = "¯"
+						newletter = "—à"
 					if("y")
-						newletter = "°"
+						newletter = "–é"
 					if("x")
-						newletter = "Ê"
+						newletter = "–∂"
 					if("u")
-						newletter = "µ"
+						newletter = "¬µ"
 		else
 			if(prob(0.2 * distortion))
 				newletter = " *crackle* "
@@ -167,63 +173,33 @@ proc/RadioChat(mob/living/user, message, distortion_chance = 60, distortion_spee
 		if(prob(20))
 			capitalize(newletter)
 		new_message += newletter
-		lentext += 1
+		length += 1
 	return new_message
-	
-proc/burr(phrase)	
-	phrase = rhtml_decode(phrase)
-	var/index = findtext(phrase,"")
-	while(index)
-		phrase = copytext(phrase,1,index) + pick("Î", "pÎ", "'Î", "p'Î") + copytext(phrase,index+1)
-		index = findtext(phrase, "")
-	index = findtext(phrase,"–")
-	while(index)
-		phrase = copytext(phrase,1,index) + pick("À", "PÎ", "'À", "P'Î") + copytext(phrase,index+1)
-		index = findtext(phrase, "–")	
-	return phrase	
 
+// This is prolonged effect, often toggled by prefences
+proc/burr(phrase)
+	phrase = html_decode(phrase)
+	var/new_phrase = ""
+	for(var/i = 1, i <= length_char(phrase), i++)
+		var/letter = copytext_char(phrase, i, i + 1)
+		if(letter == "—Ä")
+			letter = pick("–ª", "p–ª", "'–ª", "p'–ª")
+		else if(letter == "–†")
+			letter = pick("–õ", "P–ª", "'–õ", "P'–ª")
+		new_phrase += letter
+	return html_encode(new_phrase)
+
+// This is prolonged effect, often toggled by prefences
 proc/lisp(phrase)
-	phrase = rhtml_decode(phrase)
-	var/index = findtext(phrase,"¯")
-	while(index)
-		phrase = copytext(phrase,1,index) + "Ù" + copytext(phrase,index+1)
-		index = findtext(phrase, "¯")
-	index = findtext(phrase,"ÿ")
-	while(index)
-		phrase = copytext(phrase,1,index) + "‘" + copytext(phrase,index+1)
-		index = findtext(phrase, "ÿ")
-	index = findtext(phrase,"∆")
-	while(index)
-		phrase = copytext(phrase,1,index) + "‘" + copytext(phrase,index+1)
-		index = findtext(phrase, "∆")
-	index = findtext(phrase,"Ê")
-	while(index)
-		phrase = copytext(phrase,1,index) + "Ù" + copytext(phrase,index+1)
-		index = findtext(phrase, "Ê")
-	index = findtext(phrase,"˜")
-	while(index)
-		phrase = copytext(phrase,1,index) + "Ù" + copytext(phrase,index+1)
-		index = findtext(phrase, "˜")
-	index = findtext(phrase,"◊")
-	while(index)
-		phrase = copytext(phrase,1,index) + "‘" + copytext(phrase,index+1)
-		index = findtext(phrase, "◊")
-	index = findtext(phrase,"∆")
-	while(index)
-		phrase = copytext(phrase,1,index) + "‘" + copytext(phrase,index+1)
-		index = findtext(phrase, "∆")
-	index = findtext(phrase,"Ê")
-	while(index)
-		phrase = copytext(phrase,1,index) + "Ù" + copytext(phrase,index+1)
-		index = findtext(phrase, "Ê")
-	index = findtext(phrase,"Ÿ")
-	while(index)
-		phrase = copytext(phrase,1,index) + "‘" + copytext(phrase,index+1)
-		index = findtext(phrase, "Ÿ")
-	index = findtext(phrase,"˘")
-	while(index)
-		phrase = copytext(phrase,1,index) + "Ù" + copytext(phrase,index+1)
-		index = findtext(phrase, "˘")			
-		
-	return phrase	
-
+	phrase = html_decode(phrase)
+	var/list/hissing = list("–∂", "—á", "—à", "—â")
+	var/new_phrase = ""
+	for(var/i = 1, i <= length_char(phrase), i++)
+		var/letter = copytext_char(phrase, i, i + 1)
+		if(lowertext(letter) in hissing)
+			if(lowertext(letter) == letter)
+				letter = "—Ñ"
+			else
+				letter = "–§"
+		new_phrase += letter
+	return html_encode(new_phrase)

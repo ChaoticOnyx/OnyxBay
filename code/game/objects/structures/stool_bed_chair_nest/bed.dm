@@ -22,7 +22,7 @@
 	var/base_icon = "bed"
 	var/material_alteration = MATERIAL_ALTERATION_ALL
 
-/obj/structure/bed/New(var/newloc, var/new_material, var/new_padding_material)
+/obj/structure/bed/New(newloc, new_material, new_padding_material)
 	..(newloc)
 	color = null
 	if(!new_material)
@@ -89,6 +89,21 @@
 				qdel(src)
 				return
 
+/obj/structure/bed/bullet_act(obj/item/projectile/Proj)
+	var/damage = Proj.get_structure_damage()
+	if(!damage)
+		return
+	..()
+	if(prob(50))
+		return
+	if(material)
+		if(prob(20))
+			material.place_sheet(loc)
+		else
+			material.place_shard(loc)
+	qdel(src)
+	return
+
 /obj/structure/bed/attackby(obj/item/weapon/W as obj, mob/user as mob)
 	if(isWrench(W))
 		playsound(src.loc, 'sound/items/Ratchet.ogg', 50, 1)
@@ -140,7 +155,7 @@
 		if(W.mod_weight >= 0.75)
 			shake_animation(stime = 4)
 		..()
-/obj/structure/bed/attack_robot(var/mob/user)
+/obj/structure/bed/attack_robot(mob/user)
 	if(Adjacent(user)) // Robots can open/close it, but not the AI.
 		attack_hand(user)
 
@@ -163,7 +178,7 @@
 		padding_material = null
 	update_icon()
 
-/obj/structure/bed/proc/add_padding(var/padding_type)
+/obj/structure/bed/proc/add_padding(padding_type)
 	padding_material = get_material_by_name(padding_type)
 	update_icon()
 
@@ -179,24 +194,18 @@
 	base_icon = "psychbed"
 	buckle_pixel_shift = "x=0;y=1"
 
-/obj/structure/bed/psych/New(var/newloc)
+/obj/structure/bed/psych/New(newloc)
 	..(newloc, MATERIAL_WOOD, MATERIAL_LEATHER)
 
-/obj/structure/bed/padded/New(var/newloc)
+/obj/structure/bed/padded/New(newloc)
 	..(newloc, MATERIAL_PLASTIC, MATERIAL_COTTON)
 
 /obj/structure/bed/alien
 	name = "resting contraption"
 	desc = "This looks similar to contraptions from earth. Could aliens be stealing our technology?"
 
-/obj/structure/bed/alien/New(var/newloc)
+/obj/structure/bed/alien/New(newloc)
 	..(newloc, MATERIAL_RESIN)
-
-/obj/structure/bed/bogani
-	name = "alien bed"
-	desc = "a strange looking bed, not from something you've seen before."
-	icon_state = "bogbed"
-
 
 /*
  * Roller beds
@@ -323,8 +332,8 @@
 	base_icon = "wheelbed"
 	buckle_pixel_shift = "x=0;y=3"
 
-/obj/structure/bed/wheel/padded/New(var/newloc)
+/obj/structure/bed/wheel/padded/New(newloc)
 	..(newloc, MATERIAL_PLASTIC, MATERIAL_COTTON)
 
-/obj/structure/bed/wheel/luxury/New(var/newloc)
+/obj/structure/bed/wheel/luxury/New(newloc)
 	..(newloc, MATERIAL_GOLD, MATERIAL_CARPET)

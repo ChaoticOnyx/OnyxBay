@@ -212,20 +212,20 @@
 	desc = "A portable flag with the Sol Government symbol on it. I claim this land for Sol!"
 	light_color = COLOR_BLUE
 
-/obj/item/stack/flag/attackby(var/obj/item/W, var/mob/user)
+/obj/item/stack/flag/attackby(obj/item/W, mob/user)
 	if(upright)
 		attack_hand(user)
 		return
 	return ..()
 
-/obj/item/stack/flag/attack_hand(var/mob/user)
+/obj/item/stack/flag/attack_hand(mob/user)
 	if(upright)
 		knock_down()
 		user.visible_message("\The [user] knocks down \the [singular_name].")
 		return
 	return ..()
 
-/obj/item/stack/flag/attack_self(var/mob/user)
+/obj/item/stack/flag/attack_self(mob/user)
 	var/turf/T = get_turf(src)
 
 	if(istype(T, /turf/space) || istype(T, /turf/simulated/open))
@@ -576,7 +576,7 @@
 	for(var/obj/item/weapon/ore/O in orange(7,user))
 		if(limit <= 0)
 			break
-		new/obj/effect/sparks(O.loc)
+		new /obj/effect/sparks(O.loc)
 		do_teleport(O, user, 0)
 		limit -= 1
 		CHECK_TICK
@@ -645,14 +645,11 @@
 			user.visible_message("<span class='notice'>[user] carves away at the sculpting block!</span>",
 				"<span class='notice'>You continue sculpting.</span>")
 
-			if(prob(25))
-				playsound(user, 'sound/items/Screwdriver.ogg', 20, 1)
-			else
-				playsound(user, "sound/weapons/chisel[rand(1,2)].ogg", 20, 1)
+			playsound(user, get_sfx("chisel"), 30, 1)
+			spawn(3)
+				playsound(user, get_sfx("chisel"), 30, 1)
 				spawn(3)
-					playsound(user, "sound/weapons/chisel[rand(1,2)].ogg", 20, 1)
-					spawn(3)
-						playsound(user, "sound/weapons/chisel[rand(1,2)].ogg", 20, 1)
+					playsound(user, get_sfx("chisel"), 30, 1)
 
 			last_struck = 1
 			if(do_after(user,(20)))

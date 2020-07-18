@@ -91,20 +91,20 @@ GLOBAL_LIST_INIT(registered_weapons, list())
 
 /obj/item/weapon/gun/energy/examine(mob/user)
 	. = ..(user)
-	var/shots_remaining = round(power_supply.charge / charge_cost)
-	to_chat(user, "Has [shots_remaining] shot\s remaining.")
-	return
+	to_chat(user, "Has [power_supply ? round(power_supply.charge / charge_cost) : "0"] shot\s remaining.")
 
 /obj/item/weapon/gun/energy/update_icon()
-	..()
+	. = ..()
 	if(charge_meter)
-		var/ratio = power_supply.percent()
+		var/ratio
 
-		//make sure that rounding down will not give us the empty state even if we have charge for a shot left.
-		if(power_supply.charge < charge_cost)
+		if(power_supply)
+			if(power_supply.charge < charge_cost)
+				ratio = 0
+			else
+				ratio = max(round(power_supply.percent(), icon_rounder), icon_rounder)
+		else 
 			ratio = 0
-		else
-			ratio = max(round(ratio, icon_rounder), icon_rounder)
 
 		if(modifystate)
 			icon_state = "[modifystate][ratio]"
@@ -163,7 +163,7 @@ GLOBAL_LIST_INIT(registered_weapons, list())
 
 	. = ..()
 
-/obj/item/weapon/gun/energy/secure/proc/authorize(var/mode, var/authorized, var/by)
+/obj/item/weapon/gun/energy/secure/proc/authorize(mode, authorized, by)
 	if(emagged || mode < 1 || mode > authorized_modes.len || authorized_modes[mode] == authorized)
 		return 0
 
@@ -199,7 +199,7 @@ GLOBAL_LIST_INIT(registered_weapons, list())
 
 	return new_mode
 
-/obj/item/weapon/gun/energy/secure/examine(var/mob/user)
+/obj/item/weapon/gun/energy/secure/examine(mob/user)
 	..()
 
 	if(registered_owner)
@@ -215,7 +215,7 @@ GLOBAL_LIST_INIT(registered_weapons, list())
 			return null
 	while(!authorized_modes[.] && !emagged)
 
-/obj/item/weapon/gun/energy/secure/emag_act(var/charges, var/mob/user)
+/obj/item/weapon/gun/energy/secure/emag_act(charges, mob/user)
 	if(emagged || !charges)
 		return NO_EMAG_ACT
 	else

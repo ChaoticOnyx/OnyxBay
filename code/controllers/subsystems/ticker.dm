@@ -22,11 +22,11 @@ SUBSYSTEM_DEF(ticker)
 	var/delay_notified = 0          //Spam prevention.
 	var/restart_timeout = 1 MINUTE
 
+	var/force_end = FALSE
+
 	var/list/minds = list()         //Minds of everyone in the game.
 	var/list/antag_pool = list()
 	var/looking_for_antags = 0
-
-	var/datum/round_event/eof
 
 /datum/controller/subsystem/ticker/Initialize()
 	to_world("<span class='info'><B>Welcome to the pre-game lobby!</B></span>")
@@ -82,23 +82,18 @@ SUBSYSTEM_DEF(ticker)
 
 	create_characters() //Create player characters and transfer them
 	collect_minds()
-	if (config.roundstart_events)
-		eof = pick_round_event()
 	equip_characters()
 	for(var/mob/living/carbon/human/H in GLOB.player_list)
 		if(!H.mind || player_is_antag(H.mind, only_offstation_roles = 1) || !job_master.ShouldCreateRecords(H.mind.assigned_role))
 			continue
 		CreateModularRecord(H)
 
+	SSstoryteller.setup()
+
 	callHook("roundstart")
 
 	spawn(0)//Forking here so we dont have to wait for this to finish
 		mode.post_setup()
-
-		if (eof)
-			eof.apply_event()
-			eof.announce_event()
-
 		to_world("<span class='info'><B>Enjoy the game!</B></span>")
 
 		for (var/mob/M in GLOB.player_list)
@@ -114,7 +109,7 @@ SUBSYSTEM_DEF(ticker)
 	mode.process()
 	var/mode_finished = mode_finished()
 
-	if(mode_finished && game_finished())
+	if((mode_finished && game_finished()) || force_end)
 		Master.SetRunLevel(RUNLEVEL_POSTGAME)
 		end_game_state = END_GAME_READY_TO_END
 		INVOKE_ASYNC(src, .proc/declare_completion)
@@ -162,6 +157,7 @@ SUBSYSTEM_DEF(ticker)
 			if(blackbox)
 				blackbox.save_all_data_to_sql()
 			handle_tickets()
+			SSstoryteller.collect_statistics()
 		if(END_GAME_ENDING)
 			restart_timeout -= (world.time - last_fire)
 			if(restart_timeout <= 0)
@@ -298,6 +294,8 @@ Helpers
 			else
 				if(player.create_character())
 					qdel(player)
+		else if(player && !player.ready)
+			player.new_player_panel()
 
 /datum/controller/subsystem/ticker/proc/collect_minds()
 	for(var/mob/living/player in GLOB.player_list)
@@ -305,20 +303,20 @@ Helpers
 			minds += player.mind
 
 /datum/controller/subsystem/ticker/proc/equip_characters()
-	var/captainless = 1 // what kind of motherfucker doesn't put blanks in?
+	var/captainless = TRUE
 	for(var/mob/living/carbon/human/player in GLOB.player_list)
 		if(player && player.mind && player.mind.assigned_role)
 			if(player.mind.assigned_role == "Captain")
-				captainless = 0 // and here
+				captainless = FALSE
 			if(!player_is_antag(player.mind, only_offstation_roles = 1))
 				job_master.EquipRank(player, player.mind.assigned_role, 0)
 				equip_custom_items(player)
 	if(captainless)
 		for(var/mob/M in GLOB.player_list)
-			if(!istype(M, /mob/new_player)) // cyka blyat
+			if(!istype(M, /mob/new_player))
 				to_chat(M, "Captainship not forced on anyone.")
 
-/datum/controller/subsystem/ticker/proc/attempt_late_antag_spawn(var/list/antag_choices)
+/datum/controller/subsystem/ticker/proc/attempt_late_antag_spawn(list/antag_choices)
 	var/datum/antagonist/antag = antag_choices[1]
 	while(antag_choices.len && antag)
 		var/needs_ghost = antag.flags & (ANTAG_OVERRIDE_JOB | ANTAG_OVERRIDE_MOB)
@@ -365,7 +363,7 @@ Helpers
 	if(mode.explosion_in_progress)
 		return 0
 	if(config.continous_rounds)
-		return evacuation_controller.round_over() || mode.station_was_nuked
+		return evacuation_controller.round_over() || mode.station_was_nuked || mode.blob_domination
 	else
 		return mode.check_finished() || (evacuation_controller.round_over() && evacuation_controller.emergency_evacuation) || universe_has_ended
 
@@ -393,9 +391,9 @@ Helpers
 
 /datum/controller/subsystem/ticker/proc/declare_completion()
 	to_world("<br><br><br><H1>A round of [mode.name] has ended!</H1>")
-	// for(var/client/C)
-		// if(!C.credits)
-			// C.RollCredits()
+	for(var/client/C in GLOB.clients)
+		if(!C.credits && C.get_preference_value(/datum/client_preference/cinema_credits) == GLOB.PREF_YES)
+			C.RollCredits()
 	// TODO [V] Make these credits more like represing real state of things
 	// This is not a movie afterall
 	for(var/mob/Player in GLOB.player_list)

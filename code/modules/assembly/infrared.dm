@@ -66,7 +66,7 @@
 		return
 
 	user.set_machine(src)
-	var/dat = list()
+	var/dat = "<meta charset=\"utf-8\">"
 	dat += text("<TT><B>Infrared Laser</B>\n<B>Status</B>: []<BR>\n<B>Visibility</B>: []<BR>\n</TT>", (on ? text("<A href='?src=\ref[];state=0'>On</A>", src) : text("<A href='?src=\ref[];state=1'>Off</A>", src)), (src.visible ? text("<A href='?src=\ref[];visible=0'>Visible</A>", src) : text("<A href='?src=\ref[];visible=1'>Invisible</A>", src)))
 	dat += "<BR><BR><A href='?src=\ref[src];refresh=1'>Refresh</A>"
 	dat += "<BR><BR><A href='?src=\ref[src];close=1'>Close</A>"
@@ -100,7 +100,7 @@
 
 	set_dir(turn(dir, 90))
 
-/obj/item/device/assembly/infra/proc/on_beam_entered(var/atom/enterer)
+/obj/item/device/assembly/infra/proc/on_beam_entered(atom/enterer)
 	if(enterer == src)
 		return
 	if(enterer.invisibility > INVISIBILITY_LEVEL_TWO)
@@ -117,14 +117,14 @@
 	spawn(10)
 		process_cooldown()
 
-/obj/item/device/assembly/infra/proc/on_visibility_change(var/list/old_turfs, var/list/new_turfs)
+/obj/item/device/assembly/infra/proc/on_visibility_change(list/old_turfs, list/new_turfs)
 	seen_turfs = new_turfs
 	update_beams()
 
 /obj/item/device/assembly/infra/proc/update_beams()
 	create_update_and_delete_beams(on, visible, dir, seen_turfs, beams)
 
-/proc/create_update_and_delete_beams(var/active, var/visible, var/dir, var/list/seen_turfs, var/list/existing_beams)
+/proc/create_update_and_delete_beams(active, visible, dir, list/seen_turfs, list/existing_beams)
 	if(!active)
 		for(var/b in existing_beams)
 			qdel(b)

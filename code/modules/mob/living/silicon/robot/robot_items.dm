@@ -77,7 +77,7 @@
 			to_chat(user, "The [src] is already empty.")
 
 
-/obj/item/weapon/portable_destructive_analyzer/afterattack(var/atom/target, var/mob/living/user, proximity)
+/obj/item/weapon/portable_destructive_analyzer/afterattack(atom/target, mob/living/user, proximity)
 	if(!target)
 		return
 	if(!proximity)
@@ -97,7 +97,7 @@
 		flick("portable_analyzer_load", src)
 		icon_state = "portable_analyzer_full"
 
-/obj/item/weapon/portable_destructive_analyzer/examine(var/mob/user)
+/obj/item/weapon/portable_destructive_analyzer/examine(mob/user)
 	..()
 	to_chat(user, "<span class='notice'><b>Current science levels:</b></span>")
 	for(var/i = 1, i <= files.known_tech.len, i++)
@@ -127,7 +127,7 @@
 	icon = 'icons/obj/weapons.dmi'
 	icon_state = "autoharvester"
 
-/obj/item/weapon/robot_harvester/afterattack(var/atom/target, var/mob/living/user, proximity)
+/obj/item/weapon/robot_harvester/afterattack(atom/target, mob/living/user, proximity)
 	if(!target)
 		return
 	if(!proximity)
@@ -293,7 +293,7 @@
 /obj/item/weapon/form_printer/attack_self(mob/user as mob)
 	deploy_paper(get_turf(src))
 
-/obj/item/weapon/form_printer/proc/deploy_paper(var/turf/T)
+/obj/item/weapon/form_printer/proc/deploy_paper(turf/T)
 	T.visible_message("<span class='notice'>\The [src.loc] dispenses a sheet of crisp white paper.</span>")
 	new /obj/item/weapon/paper(T)
 
@@ -341,7 +341,7 @@
 	max_walls = 10
 	max_doors = 5
 
-/obj/item/weapon/inflatable_dispenser/examine(var/mob/user)
+/obj/item/weapon/inflatable_dispenser/examine(mob/user)
 	if(!..(user))
 		return
 	to_chat(user, "It has [stored_walls] wall segment\s and [stored_doors] door segment\s stored.")
@@ -351,7 +351,7 @@
 	mode = !mode
 	to_chat(usr, "You set \the [src] to deploy [mode ? "doors" : "walls"].")
 
-/obj/item/weapon/inflatable_dispenser/afterattack(var/atom/A, var/mob/user)
+/obj/item/weapon/inflatable_dispenser/afterattack(atom/A, mob/user)
 	..(A, user)
 	if(!user)
 		return
@@ -363,7 +363,7 @@
 	if(istype(A, /obj/item/inflatable) || istype(A, /obj/structure/inflatable))
 		pick_up(A, user)
 
-/obj/item/weapon/inflatable_dispenser/proc/try_deploy_inflatable(var/turf/T, var/mob/living/user)
+/obj/item/weapon/inflatable_dispenser/proc/try_deploy_inflatable(turf/T, mob/living/user)
 	if(mode) // Door deployment
 		if(!stored_doors)
 			to_chat(user, "\The [src] is out of doors!")
@@ -385,7 +385,7 @@
 	playsound(T, 'sound/items/zip.ogg', 75, 1)
 	to_chat(user, "You deploy the inflatable [mode ? "door" : "wall"]!")
 
-/obj/item/weapon/inflatable_dispenser/proc/pick_up(var/obj/A, var/mob/living/user)
+/obj/item/weapon/inflatable_dispenser/proc/pick_up(obj/A, mob/living/user)
 	if(istype(A, /obj/structure/inflatable))
 		if(istype(A, /obj/structure/inflatable/wall))
 			if(stored_walls >= max_walls)
@@ -447,7 +447,7 @@
 			held -= R
 	return ..()
 
-/obj/item/robot_rack/emp_act(var/severity)
+/obj/item/robot_rack/emp_act(severity)
 	if (length(held))
 		if (prob(40))
 			var/obj/item/R = held[length(held)]
@@ -472,7 +472,7 @@
 		var/o_type = pick(object_type)
 		held += new o_type(src)
 
-/obj/item/robot_rack/proc/deploy(var/loc, mob/user)
+/obj/item/robot_rack/proc/deploy(loc, mob/user)
 	if (!inuse)
 		if(!length(held))
 			to_chat(user, "<span class='notice'>The rack is empty.</span>")
@@ -532,7 +532,7 @@
 		deploy(get_turf(A),user)
 
 
-/obj/item/robot_rack/proc/add_item_type(var/obj/T, var/text) //adds type of item in list of pickable items
+/obj/item/robot_rack/proc/add_item_type(obj/T, text) //adds type of item in list of pickable items
 	object_type += T
 	if (text)
 		desc += text
@@ -687,13 +687,13 @@
 /datum/dispense_type/pipe
 	var/pipe_type = null
 
-/datum/dispense_type/New(var/name, var/type, var/delay = 30, var/energy = 200)
+/datum/dispense_type/New(name, type, delay = 30, energy = 200)
 	src.name = name
 	src.item_type = type
 	src.delay = delay
 	src.energy = energy
 
-/datum/dispense_type/pipe/New(var/name, var/type, var/p_type, var/delay = 30, var/energy = 200)
+/datum/dispense_type/pipe/New(name, type, p_type, delay = 30, energy = 200)
 	..(name,type,delay,energy)
 	pipe_type = p_type
 
@@ -717,7 +717,7 @@
 	t = "Available products: [t]."
 	to_chat(user, t)
 
-/obj/item/weapon/robot_item_dispenser/OnTopic(var/href, var/list/href_list)
+/obj/item/weapon/robot_item_dispenser/OnTopic(href, list/href_list)
 	if(href_list["product_index"])
 		var/index = text2num(href_list["product_index"])
 		if(index > 0 && index <= item_types.len)
@@ -737,7 +737,10 @@
 				user.visible_message("<span class='notice'>\The [user] starts recycling [A]...</span>")
 				if(do_after(user,recycling_time,src))
 					to_chat(user, "<span class='notice'>\The [src] consumes [A] and you get some energy back.</span>")
-					A.Destroy()
+					if(istype(A, /obj/structure/closet))
+						var/obj/structure/closet/C = A
+						C.dump_contents()
+					qdel(A)
 					if(istype(user,/mob/living/silicon/robot))
 						var/mob/living/silicon/robot/R = user
 						if (R.cell)

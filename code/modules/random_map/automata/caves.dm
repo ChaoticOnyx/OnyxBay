@@ -8,7 +8,7 @@
 	var/mineral_rich = /turf/simulated/mineral/random/high_chance
 	var/list/ore_turfs = list()
 	var/max_mobs_count = 100 //maximum amount of mobs on the map. Some of the numbers lost in "frame" of the map
-/datum/random_map/automata/cave_system/get_appropriate_path(var/value)
+/datum/random_map/automata/cave_system/get_appropriate_path(value)
 	switch(value)
 		if(DOOR_CHAR)
 			return mineral_sparse
@@ -19,7 +19,7 @@
 		if(WALL_CHAR)
 			return wall_type
 
-/datum/random_map/automata/cave_system/get_map_char(var/value)
+/datum/random_map/automata/cave_system/get_map_char(value)
 	switch(value)
 		if(DOOR_CHAR)
 			return "x"
@@ -146,4 +146,4 @@
 	game_log("ASGEN", "Spawned [count_goliath] goliaths (asteroid).")
 	game_log("ASGEN", "Spawned [count_shockzard] shockzards (asteroid).")
 	game_log("ASGEN", "Spawned [count_beholder] beholders (asteroid).")
-	log_world("Spawned [mobs_count] monsters (asteroid).")
+	log_to_dd("Spawned [mobs_count] monsters (asteroid).")

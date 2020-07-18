@@ -71,9 +71,9 @@ var/datum/paiController/paiController			// Global handler for pAI candidates
 				if(t)
 					candidate.comments = sanitize(t)
 			if("save")
-				candidate.savefile_save(usr)
+				candidate.savefile_save(usr.client)
 			if("load")
-				candidate.savefile_load(usr)
+				candidate.savefile_load(usr.client)
 				//In case people have saved unsanitized stuff.
 				if(candidate.name)
 					candidate.name = sanitizeSafe(candidate.name, MAX_NAME_LEN)
@@ -95,7 +95,7 @@ var/datum/paiController/paiController			// Global handler for pAI candidates
 
 		recruitWindow(usr, href_list["allow_submit"] != "0")
 
-/datum/paiController/proc/recruitWindow(var/mob/M as mob, allowSubmit = 1)
+/datum/paiController/proc/recruitWindow(mob/M as mob, allowSubmit = 1)
 	var/datum/paiCandidate/candidate
 	for(var/datum/paiCandidate/c in pai_candidates)
 		if(!istype(c) || !istype(M))
@@ -107,7 +107,7 @@ var/datum/paiController/paiController			// Global handler for pAI candidates
 		candidate.key = M.key
 		pai_candidates.Add(candidate)
 
-	var/dat = ""
+	var/dat = "<meta charset=\"utf-8\">"
 	dat += {"
 			<style type="text/css">
 				body {
@@ -227,7 +227,7 @@ var/datum/paiController/paiController			// Global handler for pAI candidates
 
 	M << browse(dat, "window=paiRecruit;size=580x580;")
 
-/datum/paiController/proc/findPAI(var/obj/item/device/paicard/p, var/mob/user)
+/datum/paiController/proc/findPAI(obj/item/device/paicard/p, mob/user)
 	requestRecruits(user)
 	var/list/available = list()
 	for(var/datum/paiCandidate/c in paiController.pai_candidates)
@@ -243,6 +243,7 @@ var/datum/paiController/paiController			// Global handler for pAI candidates
 	dat += {"
 		<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.01 Transitional//EN\" \"http://www.w3.org/TR/html4/loose.dtd\">
 		<html>
+			<meta charset=\"utf-8\">
 			<head>
 				<style>
 					body {
@@ -344,7 +345,7 @@ var/datum/paiController/paiController			// Global handler for pAI candidates
 	user << browse(dat, "window=findPai")
 
 
-/datum/paiController/proc/requestRecruits(var/mob/user)
+/datum/paiController/proc/requestRecruits(mob/user)
 	inquirer = user
 	for(var/mob/observer/ghost/O in GLOB.player_list)
 		if(!O.MayRespawn())
@@ -360,7 +361,7 @@ var/datum/paiController/paiController			// Global handler for pAI candidates
 			if(BE_PAI in O.client.prefs.be_special_role)
 				question(O.client)
 
-/datum/paiController/proc/question(var/client/C)
+/datum/paiController/proc/question(client/C)
 	spawn(0)
 		if(!C)	return
 		asked.Add(C.key)

@@ -208,7 +208,7 @@
 		if(src.mind)
 			// TODO: Update to new antagonist system.
 			if(!src.mind.special_role)
-				src.mind.special_role = "traitor"
+				src.mind.special_role = "Traitor"
 				GLOB.traitors.current_antagonists |= src.mind
 
 	if (src.cells)
@@ -333,9 +333,9 @@
 	return canmove
 
 /mob/living/silicon/robot/update_fire()
-	overlays -= image("icon"='icons/mob/OnFire.dmi', "icon_state"="Standing")
+	overlays -= image("icon"='icons/mob/onfire.dmi', "icon_state"="Standing")
 	if(on_fire)
-		overlays += image("icon"='icons/mob/OnFire.dmi', "icon_state"="Standing")
+		overlays += image("icon"='icons/mob/onfire.dmi', "icon_state"="Standing")
 
 /mob/living/silicon/robot/fire_act()
 	if(!on_fire) //Silicons don't gain stacks from hotspots, but hotspots can ignite them

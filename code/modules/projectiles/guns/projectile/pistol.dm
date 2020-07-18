@@ -340,7 +340,7 @@
 		if(2) to_chat(user, "It has a barrel that has been secured to the stock with tape.")
 		if(3) to_chat(user, "It has a trigger and firing pin assembly loosely fitted into place.")
 
-/obj/item/weapon/zipgunframe/attackby(var/obj/item/thing, var/mob/user)
+/obj/item/weapon/zipgunframe/attackby(obj/item/thing, mob/user)
 	if(istype(thing,/obj/item/pipe) && buildstate == 0)
 		user.drop_from_inventory(thing)
 		qdel(thing)
@@ -367,7 +367,7 @@
 		user.visible_message("<span class='notice'>\The [user] secures the trigger assembly with \the [thing].</span>")
 		playsound(loc, 'sound/items/Screwdriver.ogg', 50, 1)
 		var/obj/item/weapon/gun/projectile/pirate/zipgun
-		zipgun = new/obj/item/weapon/gun/projectile/pirate { starts_loaded = 0 } (loc)
+		zipgun = new /obj/item/weapon/gun/projectile/pirate { starts_loaded = 0 } (loc)
 		if(ismob(loc))
 			var/mob/M = loc
 			M.drop_from_inventory(src)

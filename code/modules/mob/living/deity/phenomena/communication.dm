@@ -4,7 +4,7 @@
 	flags = PHENOMENA_FOLLOWER | PHENOMENA_NONFOLLOWER
 	expected_type = /mob/living
 
-/datum/phenomena/communicate/activate(var/mob/living/L)
+/datum/phenomena/communicate/activate(mob/living/L)
 	var/text_to_send = sanitize(input(linked, "Subjugate a member to your will", "Message a Believer") as text)
 	if(text_to_send)
 		var/text_size = 4
@@ -21,7 +21,7 @@
 	expected_type = /atom
 	var/image/arrow
 
-/datum/phenomena/point/activate(var/atom/a)
+/datum/phenomena/point/activate(atom/a)
 	..()
 	if(!arrow)
 		arrow = image('icons/mob/screen1.dmi', icon_state = "arrow", layer = POINTER_LAYER)
@@ -40,7 +40,7 @@
 					if(M.client)
 						remove_image(M)
 
-/datum/phenomena/point/proc/remove_image(var/mob/living/L)
+/datum/phenomena/point/proc/remove_image(mob/living/L)
 	L.client.images -= arrow
 	GLOB.logged_out_event.unregister(L, src)
 
@@ -51,7 +51,7 @@
 	expected_type = /mob/living
 	var/static/list/punishment_list = list("Pain (0)" = 0, "Light Wound (5)" = 5, "Brain Damage (10)" = 10, "Heavy Wounds (20)" = 20)
 
-/datum/phenomena/punish/activate(var/mob/living/L)
+/datum/phenomena/punish/activate(mob/living/L)
 	var/pain = input(linked, "Choose their punishment.", "Punishment") as anything in punishment_list
 	if(!pain)
 		return

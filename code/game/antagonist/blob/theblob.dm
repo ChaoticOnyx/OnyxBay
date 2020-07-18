@@ -1,5 +1,6 @@
 //Few global vars to track the blob
-var/blob_tiles_grown_total = 0
+
+GLOBAL_VAR_INIT(blob_tiles_grown_total, 0)
 var/list/blobs = list()
 var/list/blob_cores = list()
 var/list/blob_nodes = list()
@@ -12,9 +13,9 @@ var/list/blob_overminds = list()
 	icon_state = "center"
 	luminosity = 2
 	desc = "A part of a blob."
-	density = 0
-	opacity = 0
-	anchored = 1
+	density = TRUE
+	opacity = TRUE
+	anchored = TRUE
 
 	var/health = 20
 	var/maxhealth = 20
@@ -74,7 +75,7 @@ var/list/blob_overminds = list()
 	update_icon()
 	return
 
-/obj/effect/blob/bullet_act(var/obj/item/projectile/Proj)
+/obj/effect/blob/bullet_act(obj/item/projectile/Proj)
 	..()
 
 	switch(Proj.damage_type)
@@ -106,7 +107,7 @@ var/list/blob_overminds = list()
 	for(var/atom/A in loc)
 		A.blob_act(0,src)
 
-	blob_tiles_grown_total++
+	GLOB.blob_tiles_grown_total++
 
 	if (!(src in SSobj.processing))
 		START_PROCESSING(SSobj, src)
@@ -114,7 +115,7 @@ var/list/blob_overminds = list()
 	return
 
 /obj/effect/blob/Destroy()
-	blob_tiles_grown_total--
+	GLOB.blob_tiles_grown_total--
 	blobs -= src
 
 	for(var/obj/effect/blob/B in orange(loc,1))
@@ -185,7 +186,6 @@ var/list/blob_overminds = list()
 	if (!T)
 		return 0
 	var/obj/effect/blob/normal/B = new(src.loc)
-	B.density = TRUE
 
 	if(istype(src,/obj/effect/blob/normal))
 		var/num = rand(1,100)
@@ -193,7 +193,6 @@ var/list/blob_overminds = list()
 		B.layer = layer - num
 
 	if (T.Enter(B,src))//Attempt to move into the tile
-		B.density = (initial(B.density))
 		B.forceMove(T)
 
 		if (istype(T,/turf/simulated/floor))
@@ -226,7 +225,7 @@ var/list/blob_overminds = list()
 
 		overlays += image(icon,hurt_icon)
 
-/obj/effect/blob/proc/change_to(var/type, var/mob/blob/M = null, var/special = FALSE)
+/obj/effect/blob/proc/change_to(type, mob/blob/M = null, special = FALSE)
 	if (!ispath(type))
 		error("[type] is an invalid type for the blob.")
 	if (special) //Send additional information to the New()
@@ -245,7 +244,7 @@ var/list/blob_overminds = list()
 	health = 21
 	layer = BLOB_BASE_LAYER
 
-/obj/effect/blob/normal/update_icon(var/spawnend = 0)
+/obj/effect/blob/normal/update_icon(spawnend = 0)
 	spawn(1)
 		overlays.len = 0
 		underlays.len = 0

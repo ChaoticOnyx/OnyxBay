@@ -28,6 +28,8 @@
 				text += "<br><font color='red'><B>The [role_text] has failed.</B></font>"
 			else
 				text += "<br><font color='green'><B>The [role_text] was successful!</B></font>"
+			if(P.was_antag_given_by_storyteller)
+				text += "<br><b>This antagonist was spawned by storyteller.</b>"
 
 	if(global_objectives && global_objectives.len)
 		text += "<BR><FONT size = 2>Their objectives were:</FONT>"
@@ -41,7 +43,7 @@
 	to_world(jointext(text,null))
 
 
-/datum/antagonist/proc/print_objective(var/datum/objective/O, var/num, var/append_success)
+/datum/antagonist/proc/print_objective(datum/objective/O, num, append_success)
 	var/text = "<br><b>Objective [num]:</b> [O.explanation_text] "
 	if(append_success)
 		if(O.check_completion())
@@ -50,7 +52,7 @@
 			text += "<font color='red'>Fail.</font>"
 	return text
 
-/datum/antagonist/proc/print_player(var/datum/mind/ply)
+/datum/antagonist/proc/print_player(datum/mind/ply)
 	var/role = ply.assigned_role ? "\improper[ply.assigned_role]" : (ply.special_role ? "\improper[ply.special_role]" : "unknown role")
 	var/text = "<br><b>[ply.name]</b> (<b>[ply.key]</b>) as \a <b>[role]</b> ("
 	if(ply.current)

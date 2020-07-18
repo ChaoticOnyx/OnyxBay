@@ -1,6 +1,6 @@
 var/list/client_preference_stats_
 
-/proc/client_preference_stats_for_usr(var/mob/user = usr)
+/proc/client_preference_stats_for_usr(mob/user = usr)
 	. = list()
 	if(!user)
 		return
@@ -11,11 +11,11 @@ var/list/client_preference_stats_
 
 	for(var/client_pref_description in client_preference_stats_)
 		var/stat_client_preference/scp = client_preference_stats_[client_pref_description]
-		if(scp.client_preference.may_set(user))
+		if(scp.client_preference.may_set(user.client))
 			scp.update_name(user)
 			.[client_pref_description] = scp
 
-/client/verb/toggle_preference_verb(var/client_pref_name in client_preference_stats_for_usr())
+/client/verb/toggle_preference_verb(client_pref_name in client_preference_stats_for_usr())
 	set name = "Toggle Preference"
 	set desc = "Toggles the selected preference."
 	set category = "OOC"
@@ -39,7 +39,7 @@ var/list/client_preference_stats_
 	simulated = 0
 	var/datum/client_preference/client_preference
 
-/stat_client_preference/New(var/loc, var/preference)
+/stat_client_preference/New(loc, preference)
 	client_preference = preference
 	update_name(usr)
 	..()
@@ -51,12 +51,11 @@ var/list/client_preference_stats_
 /stat_client_preference/Click()
 	if(!usr.client)
 		return
-
 	if(!usr.cycle_preference(client_preference))
 		return
 
-	usr.client.prefs.save_preferences()
+	SScharacter_setup.queue_preferences_save(usr.client.prefs)
 	to_chat(usr, "[client_preference.description]: [usr.get_preference_value(client_preference)]")
 
-/stat_client_preference/proc/update_name(var/mob/user)
+/stat_client_preference/proc/update_name(mob/user)
 	name = user.get_preference_value(client_preference)

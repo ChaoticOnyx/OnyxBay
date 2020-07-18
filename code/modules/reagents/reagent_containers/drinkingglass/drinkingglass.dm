@@ -1,4 +1,5 @@
-#define DRINK_ICON_FILE 'icons/pdrink.dmi'
+#define DRINK_ICON_FILE 'icons/obj/drink_glasses.dmi'
+#define DRINK_COCKTAILICON_FILE 'icons/obj/drink_cocktails.dmi'
 
 /var/const/DRINK_FIZZ = "fizz"
 /var/const/DRINK_ICE = "ice"
@@ -15,6 +16,7 @@
 	filling_states = "20;40;60;80;100"
 	volume = 30
 	matter = list(MATERIAL_GLASS = 65)
+	can_be_splashed = TRUE
 
 	var/list/extras = list() // List of extras. Two extras maximum
 
@@ -85,6 +87,10 @@
 	update_icon()
 
 /obj/item/weapon/reagent_containers/food/drinks/glass2/proc/can_add_extra(obj/item/weapon/glass_extra/GE)
+	if (reagents.reagent_list.len > 0)
+		var/datum/reagent/R = reagents.get_master_reagent()
+		if (R.glass_required == base_icon)
+			return 0
 	if(!("[base_icon]_[GE.glass_addition]left" in icon_states(DRINK_ICON_FILE)))
 		return 0
 	if(!("[base_icon]_[GE.glass_addition]right" in icon_states(DRINK_ICON_FILE)))
@@ -95,41 +101,51 @@
 /obj/item/weapon/reagent_containers/food/drinks/glass2/update_icon()
 	underlays.Cut()
 	overlays.Cut()
+	icon = DRINK_ICON_FILE
+	icon_state = base_icon
 
 	if (reagents.reagent_list.len > 0)
 		var/datum/reagent/R = reagents.get_master_reagent()
+
 		SetName("[base_name] of [R.glass_name ? R.glass_name : "something"]")
 		desc = R.glass_desc ? R.glass_desc : initial(desc)
 
-		var/list/under_liquid = list()
-		var/list/over_liquid = list()
+		if (R.glass_required == base_icon)
+			desc = "[desc] It's classicaly served."
+		if ((R.glass_required == base_icon) && R.glass_icon_state)
+			icon = DRINK_COCKTAILICON_FILE
+			icon_state = R.glass_icon_state
+			return
+		else
+			var/list/under_liquid = list()
+			var/list/over_liquid = list()
 
-		var/amnt = get_filling_state()
+			var/amnt = get_filling_state()
 
-		if(has_ice())
-			over_liquid |= "[base_icon][amnt]_ice"
+			if(has_ice())
+				over_liquid |= "[base_icon][amnt]_ice"
 
-		if(has_fizz())
-			over_liquid |= "[base_icon][amnt]_fizz"
+			if(has_fizz())
+				over_liquid |= "[base_icon][amnt]_fizz"
 
-		if(has_vapor())
-			over_liquid |= "[base_icon]_vapor"
+			if(has_vapor())
+				over_liquid |= "[base_icon]_vapor"
 
-		for(var/S in R.glass_special)
-			if("[base_icon]_[S]" in icon_states(DRINK_ICON_FILE))
-				under_liquid |= "[base_icon]_[S]"
-			else if("[base_icon][amnt]_[S]" in icon_states(DRINK_ICON_FILE))
-				over_liquid |= "[base_icon][amnt]_[S]"
+			for(var/S in R.glass_special)
+				if("[base_icon]_[S]" in icon_states(DRINK_ICON_FILE))
+					under_liquid |= "[base_icon]_[S]"
+				else if("[base_icon][amnt]_[S]" in icon_states(DRINK_ICON_FILE))
+					over_liquid |= "[base_icon][amnt]_[S]"
 
-		for(var/k in under_liquid)
-			underlays += image(DRINK_ICON_FILE, src, k, -3)
+			for(var/k in under_liquid)
+				underlays += image(DRINK_ICON_FILE, src, k, -3)
 
-		var/image/filling = image(DRINK_ICON_FILE, src, "[base_icon][amnt][R.glass_icon]", -2)
-		filling.color = reagents.get_color()
-		underlays += filling
+			var/image/filling = image(DRINK_ICON_FILE, src, "[base_icon][amnt][R.glass_icon]", -2)
+			filling.color = reagents.get_color()
+			underlays += filling
 
-		for(var/k in over_liquid)
-			underlays += image(DRINK_ICON_FILE, src, k, -1)
+			for(var/k in over_liquid)
+				underlays += image(DRINK_ICON_FILE, src, k, -1)
 	else
 		SetName(initial(name))
 		desc = initial(desc)
@@ -174,13 +190,3 @@
 		user.visible_message("<span class='notice'>[user] gently strikes \the [src] with a spoon, calling the room to attention.</span>")
 		playsound(src, "sound/items/wineglass.ogg", 65, 1)
 	else return ..()
-
-/obj/item/weapon/reagent_containers/food/drinks/glass2/afterattack(var/obj/target, var/mob/user)
-	if(user.a_intent == I_HURT)
-		if(standard_splash_mob(user,target))
-			return 1
-		if(reagents && reagents.total_volume)
-			to_chat(user, "<span class='notice'>You splash the contents of \the [src] onto [target].</span>") //They are on harm intent, aka wanting to spill it.
-			reagents.splash(target, reagents.total_volume)
-			return 1
-	..()

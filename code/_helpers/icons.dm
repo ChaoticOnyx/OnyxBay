@@ -667,7 +667,7 @@ proc // Creates a single icon from a given /atom or /image.  Only the first argu
 				noIcon = TRUE // Do not render this object.
 
 		var/curdir
-		if(A.dir != 2 && !always_use_defdir)
+		if(!always_use_defdir)
 			curdir = A.dir
 		else
 			curdir = defdir
@@ -748,30 +748,12 @@ proc // Creates a single icon from a given /atom or /image.  Only the first argu
 			if(I == copy) // 'I' is an /image based on the object being flattened.
 				curblend = BLEND_OVERLAY
 				add = icon(I:icon, I:icon_state, I:dir)
-				// This checks for a silent failure mode of the icon routine. If the requested dir
-				// doesn't exist in this icon state it returns a 32x32 icon with 0 alpha.
-				if (I:dir != SOUTH && add.Width() == 32 && add.Height() == 32)
-					// Check every pixel for blank (computationally expensive, but the process is limited
-					// by the amount of film on the station, only happens when we hit something that's
-					// turned, and bails at the very first pixel it sees.
-					var/blankpixel;
-					for(var/y;y<=32;y++)
-						for(var/x;x<32;x++)
-							blankpixel = isnull(add.GetPixel(x,y))
-							if(!blankpixel)
-								break
-						if(!blankpixel)
-							break
-					// If we ALWAYS returned a null (which happens when GetPixel encounters something with alpha 0)
-					if (blankpixel)
-						// Pull the default direction.
-						add = icon(I:icon, I:icon_state)
 			else // 'I' is an appearance object.
 				if(istype(A,/obj/machinery/atmospherics) && I in A.underlays)
 					var/image/Im = I
-					add = getFlatIcon(new/image(I), Im.dir, curicon, curstate, curblend, 1)
+					add = getFlatIcon(new /image(I), Im.dir, curicon, curstate, curblend, 1)
 				else
-					add = getFlatIcon(new/image(I), curdir, curicon, curstate, curblend, always_use_defdir)
+					add = getFlatIcon(new /image(I), curdir, curicon, curstate, curblend, always_use_defdir)
 
 			// Find the new dimensions of the flat icon to fit the added overlay
 			addX1 = min(flatX1, I:pixel_x+1)
@@ -829,7 +811,7 @@ proc // Creates a single icon from a given /atom or /image.  Only the first argu
 #define HOLOPAD_SHORT_RANGE 1 //For determining the color of holopads based on whether they're short or long range.
 #define HOLOPAD_LONG_RANGE 2
 
-/proc/getHologramIcon(icon/A, safety=1, noDecolor=FALSE, var/hologram_color=HOLOPAD_SHORT_RANGE)//If safety is on, a new icon is not created.
+/proc/getHologramIcon(icon/A, safety=1, noDecolor=FALSE, hologram_color=HOLOPAD_SHORT_RANGE)//If safety is on, a new icon is not created.
 	var/icon/flat_icon = safety ? A : new(A)//Has to be a new icon to not constantly change the same icon.
 	if (noDecolor == FALSE)
 		if(hologram_color == HOLOPAD_LONG_RANGE)
@@ -849,7 +831,7 @@ proc // Creates a single icon from a given /atom or /image.  Only the first argu
 		composite.Blend(icon(I.icon, I.icon_state, I.dir, 1), ICON_OVERLAY)
 	return composite
 
-proc/adjust_brightness(var/color, var/value)
+proc/adjust_brightness(color, value)
 	if (!color) return "#ffffff"
 	if (!value) return color
 
@@ -859,7 +841,7 @@ proc/adjust_brightness(var/color, var/value)
 	RGB[3] = Clamp(RGB[3]+value,0,255)
 	return rgb(RGB[1],RGB[2],RGB[3])
 
-proc/sort_atoms_by_layer(var/list/atoms)
+proc/sort_atoms_by_layer(list/atoms)
 	// Comb sort icons based on levels
 	var/list/result = atoms.Copy()
 	var/gap = result.len
@@ -883,7 +865,7 @@ arguments tx, ty, tz are target coordinates (requred), range defines render dist
 cap_mode is capturing mode (optional), user is capturing mob (requred only wehen cap_mode = CAPTURE_MODE_REGULAR),
 lighting determines lighting capturing (optional), suppress_errors suppreses errors and continues to capture (optional).
 */
-proc/generate_image(var/tx as num, var/ty as num, var/tz as num, var/range as num, var/cap_mode = CAPTURE_MODE_PARTIAL, var/mob/living/user, var/lighting = 1, var/suppress_errors = 1)
+proc/generate_image(tx as num, ty as num, tz as num, range as num, cap_mode = CAPTURE_MODE_PARTIAL, mob/living/user, lighting = 1, suppress_errors = 1)
 	var/list/turfstocapture = list()
 	//Lines below determine what tiles will be rendered
 	for(var/xoff = 0 to range)
@@ -908,7 +890,11 @@ proc/generate_image(var/tx as num, var/ty as num, var/tz as num, var/range as nu
 			if(istype(A, /atom/movable/lighting_overlay) && lighting) //Special case for lighting
 				atoms.Add(A)
 				continue
-			if(A.invisibility) continue
+			if(isghost(A) && prob(1 + GLOB.cult.cult_rating * 0.1))
+				atoms.Add(A)
+				continue
+			if(A.invisibility)
+				continue
 			atoms.Add(A)
 	//Lines below actually render all colected data
 	atoms = sort_atoms_by_layer(atoms)
@@ -950,6 +936,12 @@ proc/generate_image(var/tx as num, var/ty as num, var/tz as num, var/range as nu
 			var/name = "[generate_asset_name(thing)].png"
 			register_asset(name, thing)
 			for (var/thing2 in targets)
+				ASSERT(isclient(thing2) || ismob(thing2))
+				if(ismob(thing2))
+					var/mob/M = thing2
+					if(!M.client)
+						continue
+					thing2 = M.client
 				send_asset(thing2, key, FALSE)
 			return "<img class='icon icon-misc [class]' src=\"[url_encode(name)]\">"
 		var/atom/A = thing
@@ -974,9 +966,30 @@ proc/generate_image(var/tx as num, var/ty as num, var/tz as num, var/range as nu
 	key = "[generate_asset_name(I)].png"
 	register_asset(key, I)
 	for (var/thing2 in targets)
+		ASSERT(isclient(thing2) || ismob(thing2))
+		if(ismob(thing2))
+			var/mob/M = thing2
+			if(!M.client)
+				continue
+			thing2 = M.client
 		send_asset(thing2, key, FALSE)
 
 	if(realsize)
 		return "<img class='icon icon-[icon_state] [class]' style='width:[I.Width()]px;height:[I.Height()]px;min-height:[I.Height()]px' src=\"[url_encode(key)]\">"
 
 	return "<img class='icon icon-[icon_state] [class]' src=\"[url_encode(key)]\">"
+
+/proc/build_composite_icon_omnidir(atom/A)
+	var/icon/composite = icon('icons/effects/effects.dmi', "icon_state"="nothing")
+	for(var/O in A.underlays)
+		var/image/I = O
+		composite.Blend(new /icon(I.icon, I.icon_state), ICON_OVERLAY)
+	var/icon/ico_omnidir = new(A.icon)
+	if(A.icon_state in ico_omnidir.IconStates())
+		composite.Blend(new /icon(ico_omnidir, A.icon_state), ICON_OVERLAY)
+	else
+		composite.Blend(new /icon(ico_omnidir, null), ICON_OVERLAY)
+	for(var/O in A.overlays)
+		var/image/I = O
+		composite.Blend(new /icon(I.icon, I.icon_state), ICON_OVERLAY)
+	return composite

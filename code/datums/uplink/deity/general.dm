@@ -16,7 +16,7 @@
 	item_cost = 30
 	can_buy_multiples = 1
 
-/datum/uplink_item/deity/feat/ability_general/innate_minimum/buy(var/obj/item/device/uplink/U, var/mob/living/deity/user)
+/datum/uplink_item/deity/feat/ability_general/innate_minimum/buy(obj/item/device/uplink/U, mob/living/deity/user)
 	. = ..()
 	if(.)
 		user.power_min += 5
@@ -27,7 +27,7 @@
 	item_cost = 10
 	can_buy_multiples = 1
 
-/datum/uplink_item/deity/feat/ability_general/power_regeneration/buy(var/obj/item/device/uplink/U, var/mob/living/deity/user)
+/datum/uplink_item/deity/feat/ability_general/power_regeneration/buy(obj/item/device/uplink/U, mob/living/deity/user)
 	. = ..()
 	if(.)
 		if(!user.feats[DEITY_POWER_BONUS])

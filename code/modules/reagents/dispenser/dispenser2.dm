@@ -90,6 +90,10 @@
 			to_chat(user, "<span class='warning'>This machine only accepts beakers!</span>")
 			return
 
+		if(istype(RC,/obj/item/weapon/reagent_containers/glass/bucket))
+			to_chat(user, "<span class='warning'>This machine only accepts beakers!</span>")
+			return
+
 		if(!RC.is_open_container())
 			to_chat(user, "<span class='warning'>You don't see how \the [src] could dispense reagents into \the [RC].</span>")
 			return
@@ -105,7 +109,7 @@
 		..()
 	return
 
-/obj/machinery/chemical_dispenser/ui_interact(mob/user, ui_key = "main",var/datum/nanoui/ui = null, var/force_open = 1)
+/obj/machinery/chemical_dispenser/ui_interact(mob/user, ui_key = "main",datum/nanoui/ui = null, force_open = 1)
 	// this is the data which will be sent to the ui
 	var/data[0]
 	data["amount"] = amount

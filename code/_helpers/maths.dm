@@ -125,8 +125,8 @@
 /proc/norm(x, y)
 	return sqrt(squaredNorm(x, y))
 
-/proc/IsPowerOfTwo(var/val)
+/proc/IsPowerOfTwo(val)
 	return (val & (val-1)) == 0
 
-/proc/RoundUpToPowerOfTwo(var/val)
+/proc/RoundUpToPowerOfTwo(val)
 	return 2 ** -round(-log(2,val))

@@ -15,7 +15,7 @@
 		privacy_poll()
 
 /mob/new_player/proc/privacy_poll()
-	var/output = "<div align='center'><B>Player poll</B>"
+	var/output = "<meta charset=\"utf-8\"><div align='center'><B>Player poll</B>"
 	output +="<hr>"
 	output += "<b>We would like to expand our stats gathering.</b>"
 	output += "<br>This however involves gathering data about player behavior, play styles, unique player numbers, play times, etc. Data like that cannot be gathered fully anonymously, which is why we're asking you how you'd feel if player-specific data was gathered. Prior to any of this actually happening, a privacy policy will be discussed, but before that can begin, we'd preliminarily like to know how you feel about the concept."
@@ -56,7 +56,7 @@
 		var/DBQuery/select_query = dbcon.NewQuery("SELECT id, question FROM erro_poll_question WHERE [(isadmin ? "" : "adminonly = false AND")] Now() BETWEEN starttime AND endtime")
 		select_query.Execute()
 
-		var/output = "<div align='center'><B>Player polls</B>"
+		var/output = "<meta charset=\"utf-8\"><div align='center'><B>Player polls</B>"
 		output +="<hr>"
 
 		var/pollid
@@ -79,7 +79,7 @@
 
 
 
-/mob/new_player/proc/poll_player(var/pollid = -1)
+/mob/new_player/proc/poll_player(pollid = -1)
 	if(pollid == -1) return
 	establish_db_connection()
 	if(dbcon.IsConnected())
@@ -129,7 +129,7 @@
 					PO.optiontext = options_query.item[2]
 					options += PO
 
-				var/output = "<div align='center'><B>Player poll</B>"
+				var/output = "<meta charset=\"utf-8\"><div align='center'><B>Player poll</B>"
 				output +="<hr>"
 				output += "<b>Question: [pollquestion]</b><br>"
 				output += "<font size='2'>Poll runs from <b>[pollstarttime]</b> until <b>[pollendtime]</b></font><p>"
@@ -173,7 +173,7 @@
 					break
 
 
-				var/output = "<div align='center'><B>Player poll</B>"
+				var/output = "<meta charset=\"utf-8\"><div align='center'><B>Player poll</B>"
 				output +="<hr>"
 				output += "<b>Question: [pollquestion]</b><br>"
 				output += "<font size='2'>Feedback gathering runs from <b>[pollstarttime]</b> until <b>[pollendtime]</b></font><p>"
@@ -207,7 +207,7 @@
 				var/DBQuery/voted_query = dbcon.NewQuery("SELECT o.text, v.rating FROM erro_poll_option o, erro_poll_vote v WHERE o.pollid = [pollid] AND v.ckey = '[usr.ckey]' AND o.id = v.optionid")
 				voted_query.Execute()
 
-				var/output = "<div align='center'><B>Player poll</B>"
+				var/output = "<meta charset=\"utf-8\"><div align='center'><B>Player poll</B>"
 				output +="<hr>"
 				output += "<b>Question: [pollquestion]</b><br>"
 				output += "<font size='2'>Poll runs from <b>[pollstarttime]</b> until <b>[pollendtime]</b></font><p>"
@@ -302,7 +302,7 @@
 				if(select_query.item[5])
 					multiplechoiceoptions = text2num(select_query.item[5])
 
-				var/output = "<div align='center'><B>Player poll</B>"
+				var/output = "<meta charset=\"utf-8\"><div align='center'><B>Player poll</B>"
 				output +="<hr>"
 				output += "<b>Question: [pollquestion]</b><br>You can select up to [multiplechoiceoptions] options. If you select more, the first [multiplechoiceoptions] will be saved.<br>"
 				output += "<font size='2'>Poll runs from <b>[pollstarttime]</b> until <b>[pollendtime]</b></font><p>"
@@ -336,7 +336,7 @@
 				src << browse(output,"window=playerpoll;size=500x250")
 		return
 
-/mob/new_player/proc/vote_on_poll(var/pollid = -1, var/optionid = -1, var/multichoice = 0)
+/mob/new_player/proc/vote_on_poll(pollid = -1, optionid = -1, multichoice = 0)
 	if(pollid == -1 || optionid == -1)
 		return
 
@@ -406,7 +406,7 @@
 		usr << browse(null,"window=playerpoll")
 
 
-/mob/new_player/proc/log_text_poll_reply(var/pollid = -1, var/replytext = "")
+/mob/new_player/proc/log_text_poll_reply(pollid = -1, replytext = "")
 	if(pollid == -1 || replytext == "")
 		return
 
@@ -464,7 +464,7 @@
 		usr << browse(null,"window=playerpoll")
 
 
-/mob/new_player/proc/vote_on_numval_poll(var/pollid = -1, var/optionid = -1, var/rating = null)
+/mob/new_player/proc/vote_on_numval_poll(pollid = -1, optionid = -1, rating = null)
 	if(pollid == -1 || optionid == -1)
 		return
 

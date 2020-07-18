@@ -1,5 +1,7 @@
-/datum/antagonist/proc/can_become_antag(var/datum/mind/player, var/ignore_role)
+/datum/antagonist/proc/can_become_antag(datum/mind/player, ignore_role)
 	if(player.current && jobban_isbanned(player.current, id))
+		return 0
+	if(isliving(player.current) && player.current.stat)
 		return 0
 	var/datum/job/J = job_master.GetJob(player.assigned_role)
 	if(is_type_in_list(J,blacklisted_jobs))
@@ -40,11 +42,11 @@
 		active_antags++
 	return active_antags
 
-/datum/antagonist/proc/is_antagonist(var/datum/mind/player)
+/datum/antagonist/proc/is_antagonist(datum/mind/player)
 	if(player in current_antagonists)
 		return 1
 
-/datum/antagonist/proc/is_type(var/antag_type)
+/datum/antagonist/proc/is_type(antag_type)
 	if(antag_type == id || antag_type == role_text)
 		return 1
 	return 0

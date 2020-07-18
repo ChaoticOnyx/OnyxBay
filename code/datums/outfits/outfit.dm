@@ -2,7 +2,7 @@ var/list/outfits_decls_
 var/list/outfits_decls_root_
 var/list/outfits_decls_by_type_
 
-/proc/outfit_by_type(var/outfit_type)
+/proc/outfit_by_type(outfit_type)
 	if(!outfits_decls_root_)
 		init_outfit_decls()
 	return outfits_decls_by_type_[outfit_type]
@@ -17,7 +17,7 @@ var/list/outfits_decls_by_type_
 		return
 	outfits_decls_ = list()
 	outfits_decls_by_type_ = list()
-	outfits_decls_root_ = new/decl/hierarchy/outfit()
+	outfits_decls_root_ = new /decl/hierarchy/outfit()
 
 /decl/hierarchy/outfit
 	name = "Naked"
@@ -101,7 +101,7 @@ var/list/outfits_decls_by_type_
 
 // end of check_and_try_equip_xeno
 
-/decl/hierarchy/outfit/proc/equip(mob/living/carbon/human/H, var/rank, var/assignment, var/equip_adjustments)
+/decl/hierarchy/outfit/proc/equip(mob/living/carbon/human/H, rank, assignment, equip_adjustments)
 	equip_base(H, equip_adjustments)
 
 	rank = id_pda_assignment || rank
@@ -124,7 +124,7 @@ var/list/outfits_decls_by_type_
 		H.set_id_info(W)
 	return 1
 
-/decl/hierarchy/outfit/proc/equip_base(mob/living/carbon/human/H, var/equip_adjustments)
+/decl/hierarchy/outfit/proc/equip_base(mob/living/carbon/human/H, equip_adjustments)
 	pre_equip(H)
 
 	//Start with uniform,suit,backpack for additional slots
@@ -146,12 +146,10 @@ var/list/outfits_decls_by_type_
 		H.equip_to_slot_or_del(new head(H),slot_head)
 	if(l_ear)
 		var/l_ear_path = (OUTFIT_ADJUSTMENT_PLAIN_HEADSET & equip_adjustments) && ispath(l_ear, /obj/item/device/radio/headset) ? /obj/item/device/radio/headset : l_ear
-		if(!SSticker.eof || SSticker.eof.id != "CANYOUHEARMEMAJTOM")
-			H.equip_to_slot_or_del(new l_ear_path(H),slot_l_ear)
+		H.equip_to_slot_or_del(new l_ear_path(H),slot_l_ear)
 	if(r_ear)
 		var/r_ear_path = (OUTFIT_ADJUSTMENT_PLAIN_HEADSET & equip_adjustments) && ispath(r_ear, /obj/item/device/radio/headset) ? /obj/item/device/radio/headset : r_ear
-		if(!SSticker.eof || SSticker.eof.id != "CANYOUHEARMEMAJTOM")
-			H.equip_to_slot_or_del(new r_ear_path(H),slot_r_ear)
+		H.equip_to_slot_or_del(new r_ear_path(H),slot_r_ear)
 	if(glasses)
 		H.equip_to_slot_or_del(new glasses(H),slot_glasses)
 	if(id)
@@ -191,7 +189,7 @@ var/list/outfits_decls_by_type_
 		H.species.equip_survival_gear(H, flags&OUTFIT_EXTENDED_SURVIVAL)
 	check_and_try_equip_xeno(H)
 
-/decl/hierarchy/outfit/proc/equip_id(var/mob/living/carbon/human/H, var/rank, var/assignment, var/equip_adjustments)
+/decl/hierarchy/outfit/proc/equip_id(mob/living/carbon/human/H, rank, assignment, equip_adjustments)
 	if(!id_slot || !id_type)
 		return
 	if(OUTFIT_ADJUSTMENT_SKIP_ID_PDA & equip_adjustments)
@@ -207,7 +205,7 @@ var/list/outfits_decls_by_type_
 	if(H.equip_to_slot_or_store_or_drop(W, id_slot))
 		return W
 
-/decl/hierarchy/outfit/proc/equip_pda(var/mob/living/carbon/human/H, var/rank, var/assignment, var/equip_adjustments)
+/decl/hierarchy/outfit/proc/equip_pda(mob/living/carbon/human/H, rank, assignment, equip_adjustments)
 	if(!pda_slot || !pda_type)
 		return
 	if(OUTFIT_ADJUSTMENT_SKIP_ID_PDA & equip_adjustments)

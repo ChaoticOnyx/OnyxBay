@@ -104,7 +104,7 @@
 	desc = "this contract grants you a boon for signing it."
 	var/path
 
-/obj/item/weapon/contract/boon/New(var/newloc, var/new_path)
+/obj/item/weapon/contract/boon/New(newloc, new_path)
 	..(newloc)
 	if(new_path)
 		path = new_path

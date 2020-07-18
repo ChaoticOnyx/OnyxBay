@@ -9,9 +9,6 @@
 /mob/verb/say_verb(message as text)
 	set name = "Say"
 	set category = "IC"
-	
-	if(typing_indicator)
-		qdel(typing_indicator)
 	usr.say(message)
 
 /mob/verb/me_verb(message as text)
@@ -20,20 +17,18 @@
 
 	message = sanitize(message)
 
-	if(typing_indicator)
-		qdel(typing_indicator)
 	if(use_me)
 		usr.emote("me",usr.emote_type,message)
 	else
 		usr.emote(message)
-	
+
 	var/ckeyname = "[usr.ckey]/[usr.name]"
 	webhook_send_me(ckeyname, message)
 
-/mob/proc/say_dead(var/message)
+/mob/proc/say_dead(message)
 	communicate(/decl/communication_channel/dsay, client, message)
 
-/mob/proc/say_understands(var/mob/other,var/datum/language/speaking = null)
+/mob/proc/say_understands(mob/other,datum/language/speaking = null)
 
 	if (src.stat == 2)		//Dead
 		return 1
@@ -64,7 +59,7 @@
 
 	return 0
 
-/mob/proc/say_quote(var/message, var/datum/language/speaking = null)
+/mob/proc/say_quote(message, datum/language/speaking = null)
 	var/ending = copytext(message, length(message))
 	if(speaking)
 		return speaking.get_spoken_verb(ending)
@@ -85,7 +80,7 @@
 
 	return get_turf(src)
 
-/mob/proc/say_test(var/text)
+/mob/proc/say_test(text)
 	var/ending = copytext(text, length(text))
 	if (ending == "?")
 		return "1"
@@ -96,25 +91,25 @@
 //parses the message mode code (e.g. :h, :w) from text, such as that supplied to say.
 //returns the message mode string or null for no message mode.
 //standard mode is the mode returned for the special ';' radio code.
-/mob/proc/parse_message_mode(var/message, var/standard_mode="headset")
-	if(length(message) >= 1 && copytext(message,1,2) == get_prefix_key(/decl/prefix/radio_main_channel))
+/mob/proc/parse_message_mode(message, standard_mode="headset")
+	if(length_char(message) >= 1 && copytext_char(message,1,2) == get_prefix_key(/decl/prefix/radio_main_channel))
 		return standard_mode
 
-	if(length(message) >= 2)
-		var/channel_prefix = copytext(message, 1 ,3)
+	if(length_char(message) >= 2)
+		var/channel_prefix = copytext_char(message, 1 ,3)
 		return department_radio_keys[channel_prefix]
 
 	return null
 
 //parses the language code (e.g. :j) from text, such as that supplied to say.
 //returns the language object only if the code corresponds to a language that src can speak, otherwise null.
-/mob/proc/parse_language(var/message)
-	var/prefix = copytext(message,1,2)
+/mob/proc/parse_language(message)
+	var/prefix = copytext_char(message,1,2)
 	if(length(message) >= 1 && prefix == get_prefix_key(/decl/prefix/audible_emote))
 		return all_languages["Noise"]
 
 	if(length(message) >= 2 && is_language_prefix(prefix))
-		var/language_prefix = lowertext(copytext(message, 2 ,3))
+		var/language_prefix = lowertext(copytext_char(message, 2 ,3))
 		var/datum/language/L = language_keys[language_prefix]
 		if (can_speak(L))
 			return L

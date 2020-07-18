@@ -1,829 +1,832 @@
 macro "borghotkeymode"
-	elem
+	elem 
 		name = "Tab"
 		command = ".winset \"mainwindow.macro=borgmacro hotkey_toggle.is-checked=false input.focus=true input.background-color=#D3B5B5\""
-	elem
+	elem 
 		name = "Center+REP"
 		command = ".center"
-	elem
+	elem 
 		name = "ALT+Return"
 		command = "Toggle-Fullscreen"
-	elem
+	elem 
 		name = "Northeast"
 		command = ".northeast"
-	elem
+	elem 
 		name = "Southeast"
 		command = ".southeast"
-	elem
+	elem 
 		name = "Southwest"
 		command = ".southwest"
-	elem
+	elem 
 		name = "Northwest"
 		command = ".northwest"
-	elem
+	elem 
 		name = "CTRL+West"
 		command = "westface"
-	elem
+	elem 
 		name = "West+REP"
 		command = ".moveleft"
-	elem
+	elem 
 		name = "CTRL+North"
 		command = "northface"
-	elem
+	elem 
 		name = "North+REP"
 		command = ".moveup"
-	elem
+	elem 
 		name = "CTRL+East"
 		command = "eastface"
-	elem
+	elem 
 		name = "East+REP"
 		command = ".moveright"
-	elem
+	elem 
 		name = "CTRL+South"
 		command = "southface"
-	elem
+	elem 
 		name = "South+REP"
 		command = ".movedown"
-	elem
+	elem 
 		name = "Insert"
 		command = "a-intent right"
-	elem
+	elem 
 		name = "Delete"
 		command = "delete-key-pressed"
-	elem
+	elem 
 		name = "1"
 		command = "toggle-module 1"
-	elem
+	elem 
 		name = "CTRL+1"
 		command = "toggle-module 1"
-	elem
+	elem 
 		name = "2"
 		command = "toggle-module 2"
-	elem
+	elem 
 		name = "CTRL+2"
 		command = "toggle-module 2"
-	elem
+	elem 
 		name = "3"
 		command = "toggle-module 3"
-	elem
+	elem 
 		name = "CTRL+3"
 		command = "toggle-module 3"
-	elem
+	elem 
 		name = "4"
 		command = "a-intent left"
-	elem
+	elem 
 		name = "CTRL+4"
 		command = "a-intent left"
-	elem
+	elem 
 		name = "5"
 		command = ".me"
-	elem
+	elem 
 		name = "A+REP"
 		command = ".moveleft"
-	elem
+	elem 
 		name = "CTRL+A+REP"
 		command = ".moveleft"
-	elem
+	elem 
 		name = "D+REP"
 		command = ".moveright"
-	elem
+	elem 
 		name = "CTRL+D+REP"
 		command = ".moveright"
-	elem
+	elem 
 		name = "F"
 		command = "a-intent left"
-	elem
+	elem 
 		name = "CTRL+F"
 		command = "a-intent left"
-	elem
+	elem 
 		name = "G"
 		command = "a-intent right"
-	elem
+	elem 
 		name = "CTRL+G"
 		command = "a-intent right"
-	elem
+	elem 
 		name = "J"
 		command = "toggle-gun-mode"
-	elem
+	elem 
 		name = "CTRL+J"
 		command = "toggle-gun-mode"
-	elem
+	elem 
 		name = "Q"
 		command = "unequip-module"
-	elem
+	elem 
 		name = "CTRL+Q"
 		command = "unequip-module"
-	elem
+	elem 
 		name = "R"
 		command = ".southwest"
-	elem
+	elem 
 		name = "CTRL+R"
 		command = ".southwest"
 	elem "s_key"
 		name = "S+REP"
 		command = ".movedown"
-	elem
+	elem 
 		name = "CTRL+S+REP"
 		command = ".movedown"
-	elem
+	elem 
 		name = "T"
 		command = ".say"
 	elem "w_key"
 		name = "W+REP"
 		command = ".moveup"
-	elem
+	elem 
 		name = "CTRL+W+REP"
 		command = ".moveup"
-	elem
+	elem 
 		name = "X"
 		command = ".northeast"
-	elem
+	elem 
 		name = "CTRL+X"
 		command = ".northeast"
-	elem
+	elem 
 		name = "Y"
 		command = "Activate-Held-Object"
-	elem
+	elem 
 		name = "CTRL+Y"
 		command = "Activate-Held-Object"
-	elem
+	elem 
 		name = "Z"
 		command = "Activate-Held-Object"
-	elem
+	elem 
 		name = "CTRL+Z"
 		command = "Activate-Held-Object"
-	elem
+	elem 
 		name = "Numpad1"
 		command = "body-r-leg"
-	elem
+	elem 
 		name = "Numpad2"
 		command = "body-groin"
-	elem
+	elem 
 		name = "Numpad3"
 		command = "body-l-leg"
-	elem
+	elem 
 		name = "Numpad4"
 		command = "body-r-arm"
-	elem
+	elem 
 		name = "Numpad5"
 		command = "body-chest"
-	elem
+	elem 
 		name = "Numpad6"
 		command = "body-l-arm"
-	elem
+	elem 
 		name = "Numpad8"
 		command = "body-toggle-head"
-	elem
+	elem 
 		name = "F1"
 		command = "adminhelp"
-	elem
+	elem 
 		name = "CTRL+SHIFT+F1+REP"
 		command = ".options"
-	elem
+	elem 
 		name = "F2"
 		command = "ooc"
-	elem
+	elem 
 		name = "F2+REP"
 		command = ".screenshot auto"
-	elem
+	elem 
 		name = "SHIFT+F2+REP"
 		command = ".screenshot"
-	elem
+	elem 
 		name = "F3"
 		command = ".say"
-	elem
+	elem 
 		name = "F4"
 		command = ".me"
-	elem
+	elem 
 		name = "F5"
 		command = "msay"
-	elem
+	elem 
 		name = "F6"
 		command = "Player-Panel-New"
-	elem
+	elem 
 		name = "F7"
 		command = "View-Tickets"
-	elem
+	elem 
 		name = "F8"
 		command = "Banning-Panel"
-	elem
+	elem 
 		name = "F9"
 		command = "asay"
-	elem
+	elem 
 		name = "F10"
 		command = "Aghost"
-	elem
+	elem 
 		name = "F11"
 		command = "Toggle-Build-Mode-Self"
-	elem
+	elem 
 		name = "F12"
 		command = "F12"
 
 macro "macro"
-	elem
+	elem 
 		name = "Tab"
 		command = ".winset \"mainwindow.macro=hotkeymode hotkey_toggle.is-checked=true mapwindow.map.focus=true\""
-	elem
+	elem 
 		name = "Center+REP"
 		command = ".center"
-	elem
+	elem 
 		name = "ALT+Return"
 		command = "Toggle-Fullscreen"
-	elem
+	elem 
 		name = "Northeast"
 		command = ".northeast"
-	elem
+	elem 
 		name = "Southeast"
 		command = ".southeast"
-	elem
+	elem 
 		name = "Southwest"
 		command = ".southwest"
-	elem
+	elem 
 		name = "Northwest"
 		command = ".northwest"
-	elem
+	elem 
 		name = "CTRL+West"
 		command = "westface"
-	elem
+	elem 
 		name = "West+REP"
 		command = ".moveleft"
-	elem
+	elem 
 		name = "CTRL+North"
 		command = "northface"
-	elem
+	elem 
 		name = "North+REP"
 		command = ".moveup"
-	elem
+	elem 
 		name = "CTRL+East"
 		command = "eastface"
-	elem
+	elem 
 		name = "East+REP"
 		command = ".moveright"
-	elem
+	elem 
 		name = "CTRL+South"
 		command = "southface"
-	elem
+	elem 
 		name = "South+REP"
 		command = ".movedown"
-	elem
+	elem 
 		name = "Insert"
 		command = "a-intent right"
-	elem
+	elem 
 		name = "Delete"
 		command = "delete-key-pressed"
-	elem
+	elem 
 		name = "CTRL+1"
 		command = "a-intent help"
-	elem
+	elem 
 		name = "CTRL+2"
 		command = "a-intent disarm"
-	elem
+	elem 
 		name = "CTRL+3"
 		command = "a-intent grab"
-	elem
+	elem 
 		name = "CTRL+4"
 		command = "a-intent harm"
-	elem
+	elem 
 		name = "CTRL+A+REP"
 		command = ".moveleft"
-	elem
+	elem 
 		name = "CTRL+D+REP"
 		command = ".moveright"
-	elem
+	elem 
 		name = "CTRL+E"
 		command = "quick-equip"
-	elem
+	elem 
 		name = "CTRL+F"
 		command = "a-intent left"
-	elem
+	elem 
 		name = "CTRL+G"
 		command = "a-intent right"
-	elem
+	elem 
 		name = "CTRL+SHIFT+G"
 		command = ".configure graphics-hwmode on"
-	elem
+	elem 
 		name = "CTRL+Q"
 		command = ".northwest"
-	elem
+	elem 
 		name = "CTRL+R"
 		command = ".southwest"
-	elem
+	elem 
 		name = "CTRL+S+REP"
 		command = ".movedown"
-	elem
+	elem 
 		name = "CTRL+W+REP"
 		command = ".moveup"
-	elem
+	elem 
 		name = "CTRL+X"
 		command = ".northeast"
-	elem
+	elem 
 		name = "CTRL+Y"
 		command = "Activate-Held-Object"
-	elem
+	elem 
 		name = "CTRL+Z"
 		command = "Activate-Held-Object"
-	elem
+	elem 
 		name = "CTRL+Numpad1"
 		command = "body-r-leg"
-	elem
+	elem 
 		name = "CTRL+Numpad2"
 		command = "body-groin"
-	elem
+	elem 
 		name = "CTRL+Numpad3"
 		command = "body-l-leg"
-	elem
+	elem 
 		name = "CTRL+Numpad4"
 		command = "body-r-arm"
-	elem
+	elem 
 		name = "CTRL+Numpad5"
 		command = "body-chest"
-	elem
+	elem 
 		name = "CTRL+Numpad6"
 		command = "body-l-arm"
-	elem
+	elem 
 		name = "CTRL+Numpad8"
 		command = "body-toggle-head"
-	elem
+	elem 
 		name = "F1"
 		command = "adminhelp"
-	elem
+	elem 
 		name = "CTRL+SHIFT+F1+REP"
 		command = ".options"
-	elem
+	elem 
 		name = "F2"
 		command = "ooc"
-	elem
+	elem 
 		name = "F2+REP"
 		command = ".screenshot auto"
-	elem
+	elem 
 		name = "SHIFT+F2+REP"
 		command = ".screenshot"
-	elem
+	elem 
 		name = "F3"
 		command = ".say"
-	elem
+	elem 
 		name = "F4"
 		command = ".me"
-	elem
+	elem 
 		name = "F5"
 		command = "msay"
-	elem
+	elem 
 		name = "F6"
 		command = "Player-Panel-New"
-	elem
+	elem 
 		name = "F7"
 		command = "View-Tickets"
-	elem
+	elem 
 		name = "F8"
 		command = "Banning-Panel"
-	elem
+	elem 
 		name = "F9"
 		command = "asay"
-	elem
+	elem 
 		name = "F10"
 		command = "Aghost"
-	elem
+	elem 
 		name = "F11"
 		command = "Toggle-Build-Mode-Self"
-	elem
+	elem 
 		name = "F12"
 		command = "F12"
 
 macro "hotkeymode"
-	elem
+	elem 
 		name = "Tab"
 		command = ".winset \"mainwindow.macro=macro hotkey_toggle.is-checked=false input.focus=true\""
-	elem
+	elem 
 		name = "Center+REP"
 		command = ".center"
-	elem
+	elem 
 		name = "ALT+Return"
 		command = "Toggle-Fullscreen"
-	elem
+	elem 
 		name = "Northeast"
 		command = ".northeast"
-	elem
+	elem 
 		name = "Southeast"
 		command = ".southeast"
-	elem
+	elem 
 		name = "Southwest"
 		command = ".southwest"
-	elem
+	elem 
 		name = "Northwest"
 		command = ".northwest"
-	elem
+	elem 
 		name = "CTRL+West"
 		command = "westface"
-	elem
+	elem 
 		name = "West+REP"
 		command = ".moveleft"
-	elem
+	elem 
 		name = "CTRL+North"
 		command = "northface"
-	elem
+	elem 
 		name = "North+REP"
 		command = ".moveup"
-	elem
+	elem 
 		name = "CTRL+East"
 		command = "eastface"
-	elem
+	elem 
 		name = "East+REP"
 		command = ".moveright"
-	elem
+	elem 
 		name = "CTRL+South"
 		command = "southface"
-	elem
+	elem 
 		name = "South+REP"
 		command = ".movedown"
-	elem
+	elem 
 		name = "Insert"
 		command = "a-intent right"
-	elem
+	elem 
 		name = "Delete"
 		command = "delete-key-pressed"
-	elem
+	elem 
 		name = "1"
 		command = "a-intent help"
-	elem
+	elem 
 		name = "CTRL+1"
 		command = "a-intent help"
-	elem
+	elem 
 		name = "2"
 		command = "a-intent disarm"
-	elem
+	elem 
 		name = "CTRL+2"
 		command = "a-intent disarm"
-	elem
+	elem 
 		name = "3"
 		command = "a-intent grab"
-	elem
+	elem 
 		name = "CTRL+3"
 		command = "a-intent grab"
-	elem
+	elem 
 		name = "4"
 		command = "a-intent harm"
-	elem
+	elem 
 		name = "CTRL+4"
 		command = "a-intent harm"
-	elem
+	elem 
 		name = "5"
 		command = ".me"
-	elem
+	elem 
 		name = "A+REP"
 		command = ".moveleft"
-	elem
+	elem 
 		name = "CTRL+A+REP"
 		command = ".moveleft"
-	elem
+	elem 
+		name = "C"
+		command = "Block"
+	elem 
 		name = "D+REP"
 		command = ".moveright"
-	elem
+	elem 
 		name = "CTRL+D+REP"
 		command = ".moveright"
-	elem
+	elem 
 		name = "E"
 		command = "quick-equip"
-	elem
+	elem 
 		name = "CTRL+E"
 		command = "quick-equip"
-	elem
+	elem 
 		name = "F"
 		command = "a-intent left"
-	elem
+	elem 
 		name = "CTRL+F"
 		command = "a-intent left"
-	elem
+	elem 
 		name = "G"
 		command = "a-intent right"
-	elem
+	elem 
 		name = "CTRL+G"
 		command = "a-intent right"
-	elem
+	elem 
 		name = "H"
 		command = "holster"
-	elem
+	elem 
 		name = "CTRL+H"
 		command = "holster"
-	elem
+	elem 
 		name = "J"
 		command = "toggle-gun-mode"
-	elem
+	elem 
 		name = "CTRL+J"
 		command = "toggle-gun-mode"
-	elem
+	elem 
 		name = "Q"
 		command = ".northwest"
-	elem
+	elem 
 		name = "CTRL+Q"
 		command = ".northwest"
-	elem
+	elem 
 		name = "R"
 		command = ".southwest"
-	elem
+	elem 
 		name = "CTRL+R"
 		command = ".southwest"
 	elem "s_key"
 		name = "S+REP"
 		command = ".movedown"
-	elem
+	elem 
 		name = "CTRL+S+REP"
 		command = ".movedown"
-	elem
+	elem 
 		name = "T"
 		command = ".say"
 	elem "w_key"
 		name = "W+REP"
 		command = ".moveup"
-	elem
+	elem 
 		name = "CTRL+W+REP"
 		command = ".moveup"
-	elem
+	elem 
 		name = "X"
 		command = ".northeast"
-	elem
+	elem 
 		name = "CTRL+X"
 		command = ".northeast"
-	elem
+	elem 
 		name = "Y"
 		command = "Activate-Held-Object"
-	elem
+	elem 
 		name = "CTRL+Y"
 		command = "Activate-Held-Object"
-	elem
+	elem 
 		name = "Z"
 		command = "Activate-Held-Object"
-	elem
+	elem 
 		name = "CTRL+Z"
 		command = "Activate-Held-Object"
-	elem
+	elem 
 		name = "Numpad1"
 		command = "body-r-leg"
-	elem
+	elem 
 		name = "Numpad2"
 		command = "body-groin"
-	elem
+	elem 
 		name = "Numpad3"
 		command = "body-l-leg"
-	elem
+	elem 
 		name = "Numpad4"
 		command = "body-r-arm"
-	elem
+	elem 
 		name = "Numpad5"
 		command = "body-chest"
-	elem
+	elem 
 		name = "Numpad6"
 		command = "body-l-arm"
-	elem
+	elem 
 		name = "Numpad8"
 		command = "body-toggle-head"
-	elem
+	elem 
 		name = "F1"
 		command = "adminhelp"
-	elem
+	elem 
 		name = "CTRL+SHIFT+F1+REP"
 		command = ".options"
-	elem
+	elem 
 		name = "F2"
 		command = "ooc"
-	elem
+	elem 
 		name = "F2+REP"
 		command = ".screenshot auto"
-	elem
+	elem 
 		name = "SHIFT+F2+REP"
 		command = ".screenshot"
-	elem
+	elem 
 		name = "F3"
 		command = ".say"
-	elem
+	elem 
 		name = "F4"
 		command = ".me"
-	elem
+	elem 
 		name = "F5"
 		command = "msay"
-	elem
+	elem 
 		name = "F6"
 		command = "Player-Panel-New"
-	elem
+	elem 
 		name = "F7"
 		command = "View-Tickets"
-	elem
+	elem 
 		name = "F8"
 		command = "Banning-Panel"
-	elem
+	elem 
 		name = "F9"
 		command = "asay"
-	elem
+	elem 
 		name = "F10"
 		command = "Aghost"
-	elem
+	elem 
 		name = "F11"
 		command = "Toggle-Build-Mode-Self"
-	elem
+	elem 
 		name = "F12"
 		command = "F12"
-	elem
+	elem 
 		name = ","
 		command = "move-upwards"
-	elem
+	elem 
 		name = "."
 		command = "move-down"
 
 macro "borgmacro"
-	elem
+	elem 
 		name = "Tab"
 		command = ".winset \"mainwindow.macro=borghotkeymode hotkey_toggle.is-checked=true mapwindow.map.focus=true input.background-color=#F0F0F0\""
-	elem
+	elem 
 		name = "Center+REP"
 		command = ".center"
-	elem
+	elem 
 		name = "ALT+Return"
 		command = "Toggle-Fullscreen"
-	elem
+	elem 
 		name = "Northeast"
 		command = ".northeast"
-	elem
+	elem 
 		name = "Southeast"
 		command = ".southeast"
-	elem
+	elem 
 		name = "Southwest"
 		command = ".southwest"
-	elem
+	elem 
 		name = "Northwest"
 		command = ".northwest"
-	elem
+	elem 
 		name = "CTRL+West"
 		command = "westface"
-	elem
+	elem 
 		name = "West+REP"
 		command = ".moveleft"
-	elem
+	elem 
 		name = "CTRL+North"
 		command = "northface"
-	elem
+	elem 
 		name = "North+REP"
 		command = ".moveup"
-	elem
+	elem 
 		name = "CTRL+East"
 		command = "eastface"
-	elem
+	elem 
 		name = "East+REP"
 		command = ".moveright"
-	elem
+	elem 
 		name = "CTRL+South"
 		command = "southface"
-	elem
+	elem 
 		name = "South+REP"
 		command = ".movedown"
-	elem
+	elem 
 		name = "Insert"
 		command = "a-intent right"
-	elem
+	elem 
 		name = "Delete"
 		command = "delete-key-pressed"
-	elem
+	elem 
 		name = "CTRL+1"
 		command = "toggle-module 1"
-	elem
+	elem 
 		name = "CTRL+2"
 		command = "toggle-module 2"
-	elem
+	elem 
 		name = "CTRL+3"
 		command = "toggle-module 3"
-	elem
+	elem 
 		name = "CTRL+4"
 		command = "a-intent left"
-	elem
+	elem 
 		name = "CTRL+A+REP"
 		command = ".moveleft"
-	elem
+	elem 
 		name = "CTRL+D+REP"
 		command = ".moveright"
-	elem
+	elem 
 		name = "CTRL+F"
 		command = "a-intent left"
-	elem
+	elem 
 		name = "CTRL+G"
 		command = "a-intent right"
-	elem
+	elem 
 		name = "CTRL+Q"
 		command = ".northwest"
-	elem
+	elem 
 		name = "CTRL+R"
 		command = ".southwest"
-	elem
+	elem 
 		name = "CTRL+S+REP"
 		command = ".movedown"
-	elem
+	elem 
 		name = "CTRL+W+REP"
 		command = ".moveup"
-	elem
+	elem 
 		name = "CTRL+X"
 		command = ".northeast"
-	elem
+	elem 
 		name = "CTRL+Y"
 		command = "Activate-Held-Object"
-	elem
+	elem 
 		name = "CTRL+Z"
 		command = "Activate-Held-Object"
-	elem
+	elem 
 		name = "CTRL+Numpad1"
 		command = "body-r-leg"
-	elem
+	elem 
 		name = "CTRL+Numpad2"
 		command = "body-groin"
-	elem
+	elem 
 		name = "CTRL+Numpad3"
 		command = "body-l-leg"
-	elem
+	elem 
 		name = "CTRL+Numpad4"
 		command = "body-r-arm"
-	elem
+	elem 
 		name = "CTRL+Numpad5"
 		command = "body-chest"
-	elem
+	elem 
 		name = "CTRL+Numpad6"
 		command = "body-l-arm"
-	elem
+	elem 
 		name = "CTRL+Numpad8"
 		command = "body-toggle-head"
-	elem
+	elem 
 		name = "F1"
 		command = "adminhelp"
-	elem
+	elem 
 		name = "CTRL+SHIFT+F1+REP"
 		command = ".options"
-	elem
+	elem 
 		name = "F2"
 		command = "ooc"
-	elem
+	elem 
 		name = "F2+REP"
 		command = ".screenshot auto"
-	elem
+	elem 
 		name = "SHIFT+F2+REP"
 		command = ".screenshot"
-	elem
+	elem 
 		name = "F3"
 		command = ".say"
-	elem
+	elem 
 		name = "F4"
 		command = ".me"
-	elem
+	elem 
 		name = "F5"
 		command = "msay"
-	elem
+	elem 
 		name = "F6"
 		command = "Player-Panel-New"
-	elem
+	elem 
 		name = "F7"
 		command = "View-Tickets"
-	elem
+	elem 
 		name = "F8"
 		command = "Banning-Panel"
-	elem
+	elem 
 		name = "F9"
 		command = "asay"
-	elem
+	elem 
 		name = "F10"
 		command = "Aghost"
-	elem
+	elem 
 		name = "F11"
 		command = "Toggle-Build-Mode-Self"
-	elem
+	elem 
 		name = "F12"
 		command = "F12"
 
 
 menu "menu"
-	elem
+	elem 
 		name = "&File"
 		command = ""
 		saved-params = "is-checked"
-	elem
+	elem 
 		name = "&Quick screenshot\tF2"
 		command = ".screenshot auto"
 		category = "&File"
 		saved-params = "is-checked"
-	elem
+	elem 
 		name = "&Save screenshot as...\tShift+F2"
 		command = ".screenshot"
 		category = "&File"
 		saved-params = "is-checked"
-	elem
+	elem 
 		name = ""
 		command = ""
 		category = "&File"
 		saved-params = "is-checked"
-	elem
+	elem 
 		name = "&Reconnect"
 		command = ".reconnect"
 		category = "&File"
 		saved-params = "is-checked"
-	elem
+	elem 
 		name = "&Quit"
 		command = ".quit"
 		category = "&File"
 		saved-params = "is-checked"
-	elem
+	elem 
 		name = "&Icons"
 		command = ""
 		saved-params = "is-checked"
@@ -870,16 +873,23 @@ menu "menu"
 		can-check = true
 		group = "size"
 		saved-params = "is-checked"
-	elem
+	elem "zoommode"
+		name = "&Smooth scaling"
+		command = ".winset \"zoommode.is-checked=true?map.zoom-mode=normal:map.zoom-mode=distort\""
+		category = "&Icons"
+		is-checked = true
+		can-check = true
+		saved-params = "is-checked"
+	elem 
 		name = "&Help"
 		command = ""
 		saved-params = "is-checked"
-	elem
+	elem 
 		name = "&Admin help\tF1"
 		command = "adminhelp"
 		category = "&Help"
 		saved-params = "is-checked"
-	elem
+	elem 
 		name = "&Hotkeys"
 		command = "hotkeys-help"
 		category = "&Help"
@@ -1096,7 +1106,6 @@ window "mainwindow"
 		size = 1001x739
 		anchor1 = none
 		anchor2 = none
-		background-color = none
 		is-default = true
 		saved-params = "pos;size;is-minimized;is-maximized"
 		icon = 'icons\\onyxlogo132x32.png'
@@ -1108,7 +1117,6 @@ window "mainwindow"
 		size = 1x1
 		anchor1 = none
 		anchor2 = none
-		background-color = none
 		is-visible = false
 		saved-params = ""
 	elem "mainvsplit"
@@ -1117,7 +1125,6 @@ window "mainwindow"
 		size = 1001x720
 		anchor1 = 0,0
 		anchor2 = 100,100
-		background-color = none
 		saved-params = "splitter"
 		right = "infowindow"
 		is-vert = true
@@ -1137,7 +1144,6 @@ window "mainwindow"
 		size = 40x20
 		anchor1 = 100,100
 		anchor2 = none
-		background-color = none
 		saved-params = "is-checked"
 		text = "Chat"
 		command = ".winset \"saybutton.is-checked=true?input.command=\"!say \\\"\" macrobutton.is-checked=false:input.command=\""
@@ -1148,7 +1154,6 @@ window "mainwindow"
 		size = 80x20
 		anchor1 = 100,100
 		anchor2 = none
-		background-color = none
 		saved-params = ""
 		text = "Hotkey Toggle"
 		command = ".winset \"mainwindow.macro!=macro ? mainwindow.macro=macro hotkey_toggle.is-checked=false input.focus=true : mainwindow.macro=hotkeymode hotkey_toggle.is-checked=true mapwindow.map.focus=true\""
@@ -1177,7 +1182,7 @@ window "mapwindow"
 		font-family = "Arial Rounded MT Bold,Arial Black,Arial,sans-serif"
 		font-size = 7
 		is-default = true
-		saved-params = "icon-size"
+		saved-params = "icon-size;zoom-mode"
 		on-show = ".winset\"mainwindow.mainvsplit.left=mapwindow\""
 		on-hide = ".winset\"mainwindow.mainvsplit.left=\""
 
@@ -1188,7 +1193,6 @@ window "outputwindow"
 		size = 640x480
 		anchor1 = none
 		anchor2 = none
-		background-color = none
 		saved-params = "pos;size;is-minimized;is-maximized"
 		titlebar = false
 		statusbar = false
@@ -1220,7 +1224,6 @@ window "outputwindow"
 		size = 40x20
 		anchor1 = 100,100
 		anchor2 = none
-		background-color = none
 		is-visible = false
 		is-disabled = true
 		saved-params = "is-checked"
@@ -1244,7 +1247,6 @@ window "outputwindow"
 		size = 80x20
 		anchor1 = 100,100
 		anchor2 = none
-		background-color = none
 		is-visible = false
 		is-disabled = true
 		saved-params = ""
@@ -1259,9 +1261,9 @@ window "browserwindow"
 		size = 640x480
 		anchor1 = none
 		anchor2 = none
+		is-visible = false
 		saved-params = "pos;size;is-minimized;is-maximized"
 		title = "Browser"
-		is-pane = true
 	elem "browser"
 		type = BROWSER
 		pos = 0,0
@@ -1279,7 +1281,6 @@ window "infowindow"
 		size = 640x480
 		anchor1 = none
 		anchor2 = none
-		background-color = none
 		saved-params = "pos;size;is-minimized;is-maximized"
 		title = "Info"
 		titlebar = false
@@ -1294,7 +1295,6 @@ window "infowindow"
 		size = 640x456
 		anchor1 = 0,0
 		anchor2 = 100,100
-		background-color = none
 		saved-params = "splitter"
 		left = "statwindow"
 		right = "outputwindow"
@@ -1305,7 +1305,6 @@ window "infowindow"
 		size = 66x20
 		anchor1 = 12,0
 		anchor2 = 23,0
-		background-color = none
 		saved-params = "is-checked"
 		text = "Wiki"
 		command = "wiki"
@@ -1316,10 +1315,9 @@ window "infowindow"
 		size = 66x20
 		anchor1 = 78,0
 		anchor2 = 88,0
-		background-color = none
 		saved-params = "is-checked"
 		text = "Donations"
-		command = "Donator-Store"
+		command = "donations-info"
 		group = "rpanemode"
 	elem "rulesb"
 		type = BUTTON
@@ -1327,7 +1325,6 @@ window "infowindow"
 		size = 64x20
 		anchor1 = 23,0
 		anchor2 = 34,0
-		background-color = none
 		saved-params = "is-checked"
 		text = "Rules"
 		command = "rules"
@@ -1338,7 +1335,6 @@ window "infowindow"
 		size = 67x20
 		anchor1 = 34,0
 		anchor2 = 45,0
-		background-color = none
 		saved-params = "is-checked"
 		text = "Backstory"
 		command = "backstory"
@@ -1349,7 +1345,6 @@ window "infowindow"
 		size = 65x20
 		anchor1 = 45,0
 		anchor2 = 56,0
-		background-color = none
 		saved-params = "is-checked"
 		text = "Discord"
 		command = "discord"
@@ -1360,7 +1355,6 @@ window "infowindow"
 		size = 65x20
 		anchor1 = 56,0
 		anchor2 = 67,0
-		background-color = none
 		saved-params = "is-checked"
 		text = "Bug Report"
 		command = "bug-report"
@@ -1371,7 +1365,6 @@ window "infowindow"
 		size = 67x20
 		anchor1 = 67,0
 		anchor2 = 78,0
-		background-color = none
 		saved-params = "is-checked"
 		text = "Changelog"
 		command = "Changelog"
@@ -1434,7 +1427,6 @@ window "statwindow"
 		size = 640x480
 		anchor1 = none
 		anchor2 = none
-		background-color = none
 		saved-params = "pos;size;is-minimized;is-maximized"
 		is-pane = true
 	elem "stat"
@@ -1445,5 +1437,4 @@ window "statwindow"
 		anchor2 = 100,100
 		is-default = true
 		saved-params = ""
-		tab-background-color = none
 

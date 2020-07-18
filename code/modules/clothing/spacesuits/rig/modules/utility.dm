@@ -97,8 +97,7 @@
 		device.attack_self(holder.wearer)
 		return 1
 
-	var/turf/T = get_turf(target)
-	if(istype(T) && !T.Adjacent(get_turf(src)))
+	if(!target.Adjacent(holder.wearer))
 		return 0
 
 	var/resolved = target.attackby(device,holder.wearer)
@@ -150,7 +149,7 @@
 		list("radium",        "radium",        /datum/reagent/radium,            20)
 		)
 
-/obj/item/rig_module/chem_dispenser/accepts_item(var/obj/item/input_item, var/mob/living/user)
+/obj/item/rig_module/chem_dispenser/accepts_item(obj/item/input_item, mob/living/user)
 
 	if(!input_item.is_open_container())
 		return 0
@@ -239,6 +238,15 @@
 
 	interface_name = "combat chem dispenser"
 	interface_desc = "Dispenses loaded chemicals directly into the bloodstream."
+
+/obj/item/rig_module/chem_dispenser/combat/security
+
+	charges = list(
+		list("tricordrazine", "tricordrazine", /datum/reagent/tricordrazine,     20),
+		list("tramadol",      "tramadol",      /datum/reagent/tramadol,          20),
+		list("antitoxins",    "antitoxins",    /datum/reagent/dylovene,          20),
+		list("glucose",     "glucose",     /datum/reagent/nutriment/glucose, 60),
+		)
 
 
 /obj/item/rig_module/chem_dispenser/injector

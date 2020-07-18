@@ -2,8 +2,6 @@
 /mob/living/carbon/var/immunity_norm 	= 100		//it will regenerate to this value
 /mob/living/carbon/proc/handle_viruses()
 
-	if(status_flags & GODMODE)	return 0	//godmode
-
 	if(bodytemperature > 406)
 		for (var/ID in virus2)
 			var/datum/disease2/disease/V = virus2[ID]

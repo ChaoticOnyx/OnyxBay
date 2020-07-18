@@ -20,8 +20,10 @@
 	virtual_mob = null // Hear no evil, speak no evil
 
 /mob/new_player/New()
-	..()
+	. = ..()
 	verbs += /mob/proc/toggle_antag_pool
+	verbs += /mob/proc/join_as_actor
+	verbs += /mob/proc/join_response_team
 
 /mob/new_player/verb/new_player_panel()
 	set src = usr
@@ -194,6 +196,13 @@
 		if (!client.EAMS_CheckForAccess())
 			return
 
+		//Prevents people rejoining as same character.
+		for (var/mob/living/carbon/human/C in SSmobs.mob_list)
+			var/char_name = client.prefs.real_name
+			if(char_name == C.real_name)
+				to_chat (usr, "<span class='danger'>There is a character that already exists with the same name: <b>[C.real_name]</b>, please join with a different one.</span>")
+				return
+			
 		if(!config.enter_allowed)
 			to_chat(usr, "<span class='notice'>There is an administrative lock on entering the game!</span>")
 			return
@@ -204,6 +213,9 @@
 		var/datum/species/S = all_species[client.prefs.species]
 		if(!check_species_allowed(S))
 			return 0
+		var/role = job.title
+		if(role == "Captain" || role == "Head of Personnel" || role == "Chief Engineer" || role == "Chief Medical Officer" || role == "Research Director" || role == "Head of Security")
+			SSwarnings.show_warning(client, WARNINGS_HEADS, "window=Warning;size=440x300;can_resize=0;can_minimize=0")
 
 		AttemptLateSpawn(job, client.prefs.spawnpoint)
 		return
@@ -311,7 +323,7 @@
 					if(!isnull(href_list["option_[optionid]"]))	//Test if this optionid was selected
 						vote_on_poll(pollid, optionid, 1)
 
-/mob/new_player/proc/IsJobAvailable(var/datum/job/job)
+/mob/new_player/proc/IsJobAvailable(datum/job/job)
 	if(!job)	return 0
 	if(!job.is_position_available()) return 0
 	if(jobban_isbanned(src, job.title))	return 0
@@ -327,7 +339,7 @@
 	if(client)
 		return client.prefs.char_rank
 
-/mob/new_player/proc/AttemptLateSpawn(var/datum/job/job, var/spawning_at)
+/mob/new_player/proc/AttemptLateSpawn(datum/job/job, spawning_at)
 	if(src != usr)
 		return 0
 	if(GAME_STATE != RUNLEVEL_GAME)
@@ -412,7 +424,7 @@
 	qdel(src)
 
 
-/mob/new_player/proc/AnnounceCyborg(var/mob/living/character, var/rank, var/join_message)
+/mob/new_player/proc/AnnounceCyborg(mob/living/character, rank, join_message)
 	if (GAME_STATE == RUNLEVEL_GAME)
 		if(character.mind.role_alt_title)
 			rank = character.mind.role_alt_title
@@ -423,7 +435,7 @@
 /mob/new_player/proc/LateChoices()
 	var/name = client.prefs.be_random_name ? "friend" : client.prefs.real_name
 
-	var/list/dat = list("<html><body><center>")
+	var/list/dat = list("<html><meta charset=\"utf-8\"><body><center>")
 	dat += "<b>Welcome, [name].<br></b>"
 	dat += "Round Duration: [roundduration2text()]<br>"
 
@@ -442,6 +454,8 @@
 		if(job && IsJobAvailable(job))
 			if(job.minimum_character_age && (client.prefs.age < job.minimum_character_age))
 				continue
+			if(job.faction_restricted && (client.prefs.faction != GLOB.using_map.company_name || (client.prefs.nanotrasen_relation in COMPANY_OPPOSING)))
+				continue
 
 			var/active = 0
 			// Only players with the job assigned and AFK for less than 10 minutes count as active
@@ -457,7 +471,7 @@
 	dat += "</table></center>"
 	src << browse(jointext(dat, null), "window=latechoices;size=450x640;can_close=1")
 
-/mob/new_player/proc/create_character(var/turf/spawn_turf)
+/mob/new_player/proc/create_character(turf/spawn_turf)
 	spawning = 1
 	close_spawn_windows()
 
@@ -565,7 +579,7 @@
 /mob/new_player/has_admin_rights()
 	return check_rights(R_ADMIN, 0, src)
 
-/mob/new_player/proc/check_species_allowed(datum/species/S, var/show_alert=1)
+/mob/new_player/proc/check_species_allowed(datum/species/S, show_alert=1)
 	if (!(S.spawn_flags & SPECIES_CAN_JOIN) && !has_admin_rights())
 		if (show_alert)
 			alert(client, "Your current species, [client.prefs.species], is not available for play.")
@@ -597,10 +611,10 @@
 /mob/new_player/is_ready()
 	return ready && ..()
 
-/mob/new_player/hear_say(var/message, var/verb = "says", var/datum/language/language = null, var/alt_name = "",var/italics = 0, var/mob/speaker = null)
+/mob/new_player/hear_say(message, verb = "says", datum/language/language = null, alt_name = "",italics = 0, mob/speaker = null)
 	return
 
-/mob/new_player/hear_radio(var/message, var/verb="says", var/datum/language/language=null, var/part_a, var/part_b, var/part_c, var/mob/speaker = null, var/hard_to_hear = 0)
+/mob/new_player/hear_radio(message, verb="says", datum/language/language=null, part_a, part_b, part_c, mob/speaker = null, hard_to_hear = 0)
 	return
 
 /mob/new_player/show_message(msg, type, alt, alt_type)
@@ -612,5 +626,5 @@ mob/new_player/MayRespawn()
 /mob/new_player/touch_map_edge()
 	return
 
-/mob/new_player/say(var/message)
+/mob/new_player/say(message)
 	sanitize_and_communicate(/decl/communication_channel/ooc, client, message)

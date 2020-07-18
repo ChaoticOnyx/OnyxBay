@@ -98,22 +98,6 @@ a.popt {text-decoration: none;}
 }
 #newMessages:hover {background: #ccc;}
 #newMessages i {vertical-align: middle; padding-left: 3px;}
-#ping {
-	position: fixed;
-	top: 0;
-	right: 135px;
-	width: 45px;
-	background: #ddd;
-	height: 30px;
-	padding: 8px 0 2px 0;
-}
-#ping i {display: block; text-align: center;}
-#ping .ms {
-	display: block;
-	text-align: center;
-	font-size: 8pt;
-	padding-top: 2px;
-}
 #userBar {
 	position: fixed;
 	top: 0;
@@ -255,6 +239,13 @@ a.popt {text-decoration: none;}
 /* OUTPUT COLORS */
 .highlight {background: yellow;}
 
+/* AND HERE FOR SIZE */
+.small   {font-size: 10px;}
+.normal  {font-size: 13px;}
+.large   {font-size: 16px;}
+.huge    {font-size: 18px;}
+.giant   {font-size: 24px;}
+
 h1, h2, h3, h4, h5, h6	{color: #0000ff;font-family: Georgia, Verdana, sans-serif;}
 
 em						{font-style: normal;font-weight: bold;}
@@ -273,6 +264,16 @@ em						{font-style: normal;font-weight: bold;}
 .ooc .developer			{color: #1b521f;}
 .ooc .admin				{color: #b82e00;}
 .ooc .aooc				{color: #960018;}
+
+/* OOC Patreon Tiers */
+.ooc .pt_cargo			{color: #5c72bc;}
+.ooc .pt_engineer		{color: #009cb7;}
+.ooc .pt_scientist		{color: #b54a9d;}
+.ooc .pt_hos			{color: #e51919;}
+.ooc .pt_captain		{color: #e5b232;}
+.ooc .pt_wizard			{color: #ed0776;}
+.ooc .pt_cultist		{color: #ea4f07;}
+.ooc .pt_assistant		{color: #74767a;}
 
 /* Admin: Private Messages */
 .pm  .howto				{color: #ff0000;font-weight: bold;font-size: 200%;}

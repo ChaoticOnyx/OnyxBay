@@ -48,7 +48,7 @@
 		list("EMP grenade", "EMP grenade", /obj/item/weapon/grenade/empgrenade, 3),
 		)
 
-/obj/item/rig_module/grenade_launcher/accepts_item(var/obj/item/input_device, var/mob/living/user)
+/obj/item/rig_module/grenade_launcher/accepts_item(obj/item/input_device, mob/living/user)
 
 	if(!istype(input_device) || !istype(user))
 		return 0
@@ -99,6 +99,7 @@
 	charge.charges--
 	var/obj/item/weapon/grenade/new_grenade = new charge.product_type(get_turf(H))
 	H.visible_message("<span class='danger'>[H] launches \a [new_grenade]!</span>")
+	new_grenade.det_time = 10
 	new_grenade.activate(H)
 	new_grenade.throw_at(target,fire_force,fire_distance)
 
@@ -116,6 +117,14 @@
 
 	charges = list(
 		list("smoke bomb",   "smoke bomb",   /obj/item/weapon/grenade/smokebomb,  6),
+		)
+
+/obj/item/rig_module/grenade_launcher/flashbang
+	name = "mounted flashbang grenade launcher"
+	desc = "A shoulder-mounted micro-explosive dispenser designed for security forces."
+
+	charges = list(
+		list("flashbang",   "flashbang",   /obj/item/weapon/grenade/flashbang,  4),
 		)
 
 /obj/item/rig_module/grenade_launcher/mfoam
@@ -187,15 +196,6 @@
 	interface_desc = "A palm-mounted, cell-powered taser."
 	origin_tech = list(TECH_POWER = 5, TECH_COMBAT = 5, TECH_ENGINEERING = 6)
 	gun = /obj/item/weapon/gun/energy/taser/mounted
-
-/obj/item/rig_module/mounted/plasmacutter
-	name = "mounted plasma cutter"
-	desc = "A knee-mounted plasma cutter. Don't question it."
-	icon_state = "plasmacutter"
-	interface_name = "mounted plasma cutter"
-	interface_desc = "A knee-mounted suit-powered plasma cutter. Don't question it."
-	origin_tech = list(TECH_MATERIAL = 5, TECH_PHORON = 4, TECH_ENGINEERING = 7, TECH_COMBAT = 5)
-	gun = /obj/item/weapon/gun/energy/plasmacutter/mounted
 
 /obj/item/rig_module/mounted/energy_blade
 

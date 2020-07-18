@@ -7,7 +7,7 @@
 	mute_setting = MUTE_AOOC
 	show_preference_setting = /datum/client_preference/show_aooc
 
-/decl/communication_channel/aooc/can_communicate(var/client/C, var/message)
+/decl/communication_channel/aooc/can_communicate(client/C, message)
 	. = ..()
 	if(!.)
 		return
@@ -20,13 +20,14 @@
 			to_chat(C, "<span class='danger'>You must be an antag to use [name].</span>")
 			return FALSE
 
-/decl/communication_channel/aooc/do_communicate(var/client/C, var/message)
+/decl/communication_channel/aooc/do_communicate(client/C, message)
 	var/datum/admins/holder = C.holder
+	message = emoji_parse(C, message)
 
 	for(var/client/target in GLOB.clients)
 		if(target.holder)
-			receive_communication(C, target, "<span class='ooc'><span class='aooc'>[create_text_tag("aooc", "Antag-OOC:", target)] <EM>[get_options_bar(C, 0, 1, 1)]:</EM> <span class='message'>[message]</span></span></span>")
+			receive_communication(C, target, "<span class='ooc'><span class='aooc'>[create_text_tag("aooc", "Antag-OOC:", target)] <EM>[get_options_bar(C, 0, 1, 1)]:</EM> <span class='message linkify'>[message]</span></span></span>")
 		else if(target.mob && target.mob.mind && target.mob.mind.special_role)
 			var/display_name = C.key
 			var/player_display = holder ? "[display_name]([usr.client.holder.rank])" : display_name
-			receive_communication(C, target, "<span class='ooc'><span class='aooc'>[create_text_tag("aooc", "Antag-OOC:", target)] <EM>[player_display]:</EM> <span class='message'>[message]</span></span></span>")
+			receive_communication(C, target, "<span class='ooc'><span class='aooc'>[create_text_tag("aooc", "Antag-OOC:", target)] <EM>[player_display]:</EM> <span class='message linkify'>[message]</span></span></span>")

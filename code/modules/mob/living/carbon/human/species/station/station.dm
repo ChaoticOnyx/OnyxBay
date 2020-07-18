@@ -11,14 +11,15 @@
 	num_alternate_languages = 2
 	secondary_langs = list(LANGUAGE_SOL_COMMON)
 	name_language = null // Use the first-name last-name generator rather than a language scrambler
-	min_age = 17
+	min_age = 18
 	max_age = 100
 	gluttonous = GLUT_TINY
 
 	body_builds = list(
-		new/datum/body_build,
-		new/datum/body_build/slim,
-		new/datum/body_build/slim/alt
+		new /datum/body_build,
+		new /datum/body_build/slim,
+		new /datum/body_build/slim/alt,
+		new /datum/body_build/slim/male
 	)
 
 	spawn_flags = SPECIES_CAN_JOIN
@@ -26,7 +27,7 @@
 
 	sexybits_location = BP_GROIN
 
-/datum/species/human/handle_npc(var/mob/living/carbon/human/H)
+/datum/species/human/handle_npc(mob/living/carbon/human/H)
 	if(H.stat != CONSCIOUS)
 		return
 
@@ -70,7 +71,7 @@
 				var/obj/item/organ/external/parent = H.get_organ(I.parent_organ)
 				H.custom_emote("clutches [T.his] [parent.name]!")
 
-/datum/species/human/get_ssd(var/mob/living/carbon/human/H)
+/datum/species/human/get_ssd(mob/living/carbon/human/H)
 	if(H.stat == CONSCIOUS)
 		return "staring blankly, not reacting to your presence"
 	return ..()
@@ -95,7 +96,7 @@
 	name_language = LANGUAGE_SIIK_MAAS
 	health_hud_intensity = 1.75
 
-	min_age = 19
+	min_age = 18
 	max_age = 140
 
 	blurb = "The Tajaran are a species of furred mammalian bipeds hailing from the chilly planet of Ahdomai \
@@ -106,8 +107,8 @@
 	of highly advanced cybernetic technology, causing a culture shock within Tajaran society."
 
 	body_builds = list(
-		new/datum/body_build/tajaran,
-		new/datum/body_build/slim/alt/tajaran
+		new /datum/body_build/tajaran,
+		new /datum/body_build/slim/alt/tajaran
 	)
 
 	cold_level_1 = 200 //Default 260
@@ -141,7 +142,7 @@
 
 	sexybits_location = BP_GROIN
 
-/datum/species/tajaran/equip_survival_gear(var/mob/living/carbon/human/H)
+/datum/species/tajaran/equip_survival_gear(mob/living/carbon/human/H)
 	..()
 	H.equip_to_slot_or_del(new /obj/item/clothing/shoes/sandal(H),slot_shoes)
 	H.equip_to_slot_or_del(new /obj/item/clothing/glasses/tajblind(H),slot_glasses)
@@ -164,13 +165,13 @@
 	name_language = null
 	health_hud_intensity = 1.75
 
-	min_age = 19
+	min_age = 18
 	max_age = 90
 
 	body_builds = list(
-		new/datum/body_build,
-		new/datum/body_build/slim,
-		new/datum/body_build/slim/alt
+		new /datum/body_build,
+		new /datum/body_build/slim,
+		new /datum/body_build/slim/alt
 	)
 
 	burn_mod = 0.9
@@ -199,9 +200,12 @@
 	cold_level_2 = 220 //Default 200
 	cold_level_3 = 130 //Default 120
 
-	heat_level_1 = 460 //Default 400 - Higher is better
+	heat_level_1 = 460 //Default 400 - Higher is better //186.85C lol
 	heat_level_2 = 650 //Default 500
 	heat_level_3 = 1100 //Default 1000
+
+	cold_discomfort_level = 295 //16.85C, not more because they will have a constant messages
+	heat_discomfort_level = 375 //101.85C
 
 	reagent_tag = IS_SKRELL
 
@@ -252,7 +256,7 @@
 	water and other radiation."
 
 	body_builds = list(
-		new/datum/body_build
+		new /datum/body_build
 	)
 
 	has_organ = list(
@@ -305,7 +309,7 @@
 	reagent_tag = IS_DIONA
 	genders = list(PLURAL)
 
-/proc/spawn_diona_nymph(var/turf/target)
+/proc/spawn_diona_nymph(turf/target)
 	if(!istype(target))
 		return 0
 
@@ -327,12 +331,12 @@
 // Dionaea spawned by hand or by joining will not have any
 // nymphs passed to them. This should take care of that.
 
-/datum/species/diona/handle_post_spawn(var/mob/living/carbon/human/H)
+/datum/species/diona/handle_post_spawn(mob/living/carbon/human/H)
 	H.gender = NEUTER
 	. = ..()
 	addtimer(CALLBACK(src, .proc/fill_with_nymphs, H), 0)
 
-/datum/species/diona/proc/fill_with_nymphs(var/mob/living/carbon/human/H)
+/datum/species/diona/proc/fill_with_nymphs(mob/living/carbon/human/H)
 	if(!H || H.species.name != name)
 		return
 
@@ -347,34 +351,34 @@
 		nymph_count++
 
 #define DIONA_LIMB_DEATH_COUNT 9
-/datum/species/diona/handle_death_check(var/mob/living/carbon/human/H)
+/datum/species/diona/handle_death_check(mob/living/carbon/human/H)
 	var/lost_limb_count = has_limbs.len - H.organs.len
 	if(lost_limb_count >= DIONA_LIMB_DEATH_COUNT)
 		return TRUE
-	for(var/thing in H.bad_external_organs)
+	for(var/thing in H.organs)
 		var/obj/item/organ/external/E = thing
 		if(E && E.is_stump())
 			lost_limb_count++
 	return (lost_limb_count >= DIONA_LIMB_DEATH_COUNT)
 #undef DIONA_LIMB_DEATH_COUNT
 
-/datum/species/diona/can_understand(var/mob/other)
+/datum/species/diona/can_understand(mob/other)
 	var/mob/living/carbon/alien/diona/D = other
 	if(istype(D))
 		return 1
 	return 0
 
-/datum/species/diona/equip_survival_gear(var/mob/living/carbon/human/H)
+/datum/species/diona/equip_survival_gear(mob/living/carbon/human/H)
 	if(istype(H.get_equipped_item(slot_back), /obj/item/weapon/storage/backpack))
 		H.equip_to_slot_or_del(new /obj/item/device/flashlight/flare(H.back), slot_in_backpack)
 	else
 		H.equip_to_slot_or_del(new /obj/item/device/flashlight/flare(H), slot_r_hand)
 
-/datum/species/diona/handle_post_spawn(var/mob/living/carbon/human/H)
+/datum/species/diona/handle_post_spawn(mob/living/carbon/human/H)
 	H.gender = NEUTER
 	return ..()
 
-/datum/species/diona/handle_death(var/mob/living/carbon/human/H)
+/datum/species/diona/handle_death(mob/living/carbon/human/H)
 
 	if(H.isSynthetic())
 		var/mob/living/carbon/alien/diona/S = new(get_turf(H))
@@ -389,7 +393,7 @@
 /datum/species/diona/get_blood_name()
 	return "sap"
 
-/datum/species/diona/handle_environment_special(var/mob/living/carbon/human/H)
+/datum/species/diona/handle_environment_special(mob/living/carbon/human/H)
 	if(H.InStasis() || H.stat == DEAD)
 		return
 	if(H.nutrition < 10)

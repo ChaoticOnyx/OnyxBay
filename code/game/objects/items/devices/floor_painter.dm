@@ -52,7 +52,7 @@
 		"precise" = 0
 		)
 
-/obj/item/device/floor_painter/resolve_attackby(var/atom/A, var/mob/user, proximity, params)
+/obj/item/device/floor_painter/afterattack(atom/A, mob/user, proximity, params)
 	if(!proximity)
 		return
 	add_fingerprint(user)
@@ -62,7 +62,7 @@
 		to_chat(user, "<span class='warning'>\The [src] can only be used on actual flooring.</span>")
 		return
 
-	if(!F.flooring.can_paint || F.broken || F.burnt)
+	if(!F.flooring || !F.flooring.can_paint || F.broken || F.burnt)
 		to_chat(user, "<span class='warning'>\The [src] cannot paint broken tiles.</span>")
 		return
 
@@ -115,7 +115,7 @@
 	playsound(get_turf(src), 'sound/effects/spray3.ogg', 30, 1, -6)
 	new painting_decal(F, painting_dir, painting_colour)
 
-/obj/item/device/floor_painter/attack_self(var/mob/user)
+/obj/item/device/floor_painter/attack_self(mob/user)
 	var/choice = input("Do you wish to change the decal type, paint direction, or paint colour?") as null|anything in list("Decal","Direction", "Colour")
 	if(choice == "Decal")
 		choose_decal()

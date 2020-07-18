@@ -49,6 +49,7 @@
 
 	var/list/datum/objective/objectives = list()
 	var/list/datum/objective/special_verbs = list()
+	var/syndicate_awareness = SYNDICATE_UNAWARE
 
 	var/has_been_rev = 0//Tracks if this mind has been a rev or not
 
@@ -65,11 +66,17 @@
 
 	//used for optional self-objectives that antagonists can give themselves, which are displayed at the end of the round.
 	var/ambitions
+	var/was_antag_given_by_storyteller = FALSE
 
 	//used to store what traits the player had picked out in their preferences before joining, in text form.
 	var/list/traits = list()
 
-/datum/mind/New(var/key)
+	var/thunder_points = 0
+	var/thunder_respawns = 0
+	var/mob/living/carbon/human/thunderfield_owner
+	var/thunderfield_cheater = FALSE
+
+/datum/mind/New(key)
 	src.key = key
 	..()
 
@@ -106,7 +113,7 @@
 	memory += "[new_text]<BR>"
 
 /datum/mind/proc/show_memory(mob/recipient)
-	var/output = "<B>[current.real_name]'s Memory</B><HR>"
+	var/output = "<meta charset=\"utf-8\"><B>[current.real_name]'s Memory</B><HR>"
 	output += memory
 
 	if(objectives.len>0)
@@ -125,7 +132,7 @@
 		alert("Not before round-start!", "Alert")
 		return
 
-	var/out = "<B>[name]</B>[(current&&(current.real_name!=name))?" (as [current.real_name])":""]<br>"
+	var/out = "<meta charset=\"utf-8\"><B>[name]</B>[(current&&(current.real_name!=name))?" (as [current.real_name])":""]<br>"
 	out += "Mind currently owned by key: [key] [active?"(synced)":"(not synced)"]<br>"
 	out += "Assigned role: [assigned_role]. <a href='?src=\ref[src];role_edit=1'>Edit</a><br>"
 	out += "<hr>"
@@ -449,26 +456,32 @@
 	var/turf/T = current.loc
 	if(!istype(T))
 		brigged_since = -1
-		return 0
-	var/is_currently_brigged = 0
-	if(istype(T.loc,/area/security/brig))
-		is_currently_brigged = 1
+		return FALSE
+
+	var/is_currently_brigged = FALSE
+	if(istype(T.loc, /area/security/brig) || istype(T.loc, /area/security/prison))
+		is_currently_brigged = TRUE
 		for(var/obj/item/weapon/card/id/card in current)
-			is_currently_brigged = 0
-			break // if they still have ID they're not brigged
+			is_currently_brigged = FALSE
+			break
 		for(var/obj/item/device/pda/P in current)
 			if(P.id)
-				is_currently_brigged = 0
-				break // if they still have ID they're not brigged
+				is_currently_brigged = FALSE
+				break
+		if (player_is_antag(src) && find_syndicate_uplink())
+			is_currently_brigged = FALSE
 
-	if(!is_currently_brigged)
+	if (!is_currently_brigged)
 		brigged_since = -1
-		return 0
+		return FALSE
 
-	if(brigged_since == -1)
+	if (is_currently_brigged && brigged_since == -1)
 		brigged_since = world.time
 
-	return (duration <= world.time - brigged_since)
+	if (!duration)
+		return TRUE
+	else
+		return duration <= world.time - brigged_since
 
 /datum/mind/proc/reset()
 	assigned_role =   null

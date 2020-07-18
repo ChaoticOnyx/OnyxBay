@@ -79,50 +79,50 @@
 	force = 15
 	required_type = list(/obj/mecha/working/ripley, /obj/mecha/combat)
 
-	action(atom/target)
-		if(!action_checks(target)) return
-		if(isobj(target))
-			var/obj/target_obj = target
-			if(!target_obj.vars.Find("unacidable") || target_obj.unacidable)	return
-		set_ready_state(0)
-		chassis.use_power(energy_drain)
-		chassis.visible_message("<span class='danger'>\The [chassis] starts to drill \the [target]</span>", "<span class='warning'>You hear a large drill.</span>")
-		occupant_message("<span class='danger'>You start to drill \the [target]</span>")
-		var/T = chassis.loc
-		var/C = target.loc	//why are these backwards? we may never know -Pete
-		if(do_after_cooldown(target))
-			if(T == chassis.loc && src == chassis.selected)
-				if(istype(target, /turf/simulated/wall))
-					var/turf/simulated/wall/W = target
-					if(W.reinf_material)
-						occupant_message("<span class='warning'>\The [target] is too durable to drill through.</span>")
-					else
-						log_message("Drilled through \the [target]")
-						target.ex_act(2)
-				else if(istype(target, /turf/simulated/mineral) || istype(target, /turf/simulated/floor/asteroid) || istype(target, /obj/structure/rock))
-					if (istype(target, /turf/simulated/mineral))
-						for(var/turf/simulated/mineral/M in range(chassis,1))
-							if(get_dir(chassis,M)&chassis.dir)
-								M.GetDrilled()
-					else if (istype(target, /turf/simulated/floor/asteroid))
-						for(var/turf/simulated/floor/asteroid/M in range(chassis,1))
-							if(get_dir(chassis,M)&chassis.dir)
-								M.gets_dug()
-					else if(istype(target, /obj/structure/rock))
-						for(var/obj/structure/rock/R in range(chassis,1))
-							if(get_dir(chassis,R)&chassis.dir)
-								R.Destroy()
-					log_message("Drilled through \the [target]")
-					if(locate(/obj/item/mecha_parts/mecha_equipment/tool/hydraulic_clamp) in chassis.equipment)
-						var/obj/structure/ore_box/ore_box = locate(/obj/structure/ore_box) in chassis:cargo
-						if(ore_box)
-							for(var/obj/item/weapon/ore/ore in range(chassis,1))
-								if(get_dir(chassis,ore)&chassis.dir)
-									ore.Move(ore_box)
-				else if(target.loc == C)
+/obj/item/mecha_parts/mecha_equipment/tool/drill/action(atom/target)
+	if(!action_checks(target)) return
+	if(isobj(target))
+		var/obj/target_obj = target
+		if(!target_obj.vars.Find("unacidable") || target_obj.unacidable)	return
+	set_ready_state(0)
+	chassis.use_power(energy_drain)
+	chassis.visible_message("<span class='danger'>\The [chassis] starts to drill \the [target]</span>", "<span class='warning'>You hear a large drill.</span>")
+	occupant_message("<span class='danger'>You start to drill \the [target]</span>")
+	var/T = chassis.loc
+	var/C = target.loc	//why are these backwards? we may never know -Pete
+	if(do_after_cooldown(target))
+		if(T == chassis.loc && src == chassis.selected)
+			if(istype(target, /turf/simulated/wall))
+				var/turf/simulated/wall/W = target
+				if(W.reinf_material)
+					occupant_message("<span class='warning'>\The [target] is too durable to drill through.</span>")
+				else
 					log_message("Drilled through \the [target]")
 					target.ex_act(2)
-		return 1
+			else if(istype(target, /turf/simulated/mineral) || istype(target, /turf/simulated/floor/asteroid) || istype(target, /obj/structure/rock))
+				if (istype(target, /turf/simulated/mineral))
+					for(var/turf/simulated/mineral/M in range(chassis,1))
+						if(get_dir(chassis,M)&chassis.dir)
+							M.GetDrilled()
+				else if (istype(target, /turf/simulated/floor/asteroid))
+					for(var/turf/simulated/floor/asteroid/M in range(chassis,1))
+						if(get_dir(chassis,M)&chassis.dir)
+							M.gets_dug()
+				else if(istype(target, /obj/structure/rock))
+					for(var/obj/structure/rock/R in range(chassis,1))
+						if(get_dir(chassis,R)&chassis.dir)
+							qdel(R)
+				log_message("Drilled through \the [target]")
+				if(locate(/obj/item/mecha_parts/mecha_equipment/tool/hydraulic_clamp) in chassis.equipment)
+					var/obj/structure/ore_box/ore_box = locate(/obj/structure/ore_box) in chassis:cargo
+					if(ore_box)
+						for(var/obj/item/weapon/ore/ore in range(chassis,1))
+							if(get_dir(chassis,ore)&chassis.dir)
+								ore.Move(ore_box)
+			else if(target.loc == C)
+				log_message("Drilled through \the [target]")
+				target.ex_act(2)
+	return 1
 
 /obj/item/mecha_parts/mecha_equipment/tool/drill/diamonddrill
 	name = "diamond drill"
@@ -132,48 +132,48 @@
 	equip_cooldown = 20
 	force = 15
 
-	action(atom/target)
-		if(!action_checks(target)) return
-		if(isobj(target))
-			var/obj/target_obj = target
-			if(target_obj.unacidable)	return
-		set_ready_state(0)
-		chassis.use_power(energy_drain)
-		chassis.visible_message("<span class='danger'>\The [chassis] starts to drill \the [target]</span>", "<span class='warning'>You hear a large drill.</span>")
-		occupant_message("<span class='danger'>You start to drill \the [target]</span>")
-		var/T = chassis.loc
-		var/C = target.loc	//why are these backwards? we may never know -Pete
-		if(do_after_cooldown(target))
-			if(T == chassis.loc && src == chassis.selected)
-				if(istype(target, /turf/simulated/wall))
-					var/turf/simulated/wall/W = target
-					if(!W.reinf_material || do_after_cooldown(target))//To slow down how fast mechs can drill through the station
-						log_message("Drilled through \the [target]")
-						target.ex_act(3)
-					else if(istype(target, /turf/simulated/mineral) || istype(target, /turf/simulated/floor/asteroid) || istype(target, /obj/structure/rock))
-						if (istype(target, /turf/simulated/mineral))
-							for(var/turf/simulated/mineral/M in range(chassis,1))
-								if(get_dir(chassis,M)&chassis.dir)
-									M.GetDrilled()
-						else if (istype(target, /turf/simulated/floor/asteroid))
-							for(var/turf/simulated/floor/asteroid/M in range(chassis,1))
-								if(get_dir(chassis,M)&chassis.dir)
-									M.gets_dug()
-						else if(istype(target, /obj/structure/rock))
-							for(var/obj/structure/rock/R in range(chassis,1))
-								if(get_dir(chassis,R)&chassis.dir)
-									R.Destroy()
-						log_message("Drilled through \the [target]")
-						if(locate(/obj/item/mecha_parts/mecha_equipment/tool/hydraulic_clamp) in chassis.equipment)
-							var/obj/structure/ore_box/ore_box = locate(/obj/structure/ore_box) in chassis:cargo
-							if(ore_box)
-								for(var/obj/item/weapon/ore/ore in range(chassis,1))
-									if(get_dir(chassis,ore)&chassis.dir)
-										ore.Move(ore_box)
-				else if(target.loc == C)
+/obj/item/mecha_parts/mecha_equipment/tool/drill/diamonddrill/action(atom/target)
+	if(!action_checks(target)) return
+	if(isobj(target))
+		var/obj/target_obj = target
+		if(!target_obj.vars.Find("unacidable") || target_obj.unacidable)	return
+	set_ready_state(0)
+	chassis.use_power(energy_drain)
+	chassis.visible_message("<span class='danger'>\The [chassis] starts to drill \the [target]</span>", "<span class='warning'>You hear a large drill.</span>")
+	occupant_message("<span class='danger'>You start to drill \the [target]</span>")
+	var/T = chassis.loc
+	var/C = target.loc	//why are these backwards? we may never know -Pete
+	if(do_after_cooldown(target))
+		if(T == chassis.loc && src == chassis.selected)
+			if(istype(target, /turf/simulated/wall))
+				var/turf/simulated/wall/W = target
+				if(!W.reinf_material || do_after_cooldown(target))//To slow down how fast mechs can drill through the station
 					log_message("Drilled through \the [target]")
-					target.ex_act(2)
-		return 1
+					target.ex_act(3)
+			else if(istype(target, /turf/simulated/mineral) || istype(target, /turf/simulated/floor/asteroid) || istype(target, /obj/structure/rock))
+				if (istype(target, /turf/simulated/mineral))
+					for(var/turf/simulated/mineral/M in range(chassis,1))
+						if(get_dir(chassis,M)&chassis.dir)
+							M.GetDrilled()
+				else if (istype(target, /turf/simulated/floor/asteroid))
+					for(var/turf/simulated/floor/asteroid/M in range(chassis,1))
+						if(get_dir(chassis,M)&chassis.dir)
+							M.gets_dug()
+				else if(istype(target, /obj/structure/rock))
+					for(var/obj/structure/rock/R in range(chassis,1))
+						if(get_dir(chassis,R)&chassis.dir)
+							qdel(R)
+				log_message("Drilled through \the [target]")
+				if(locate(/obj/item/mecha_parts/mecha_equipment/tool/hydraulic_clamp) in chassis.equipment)
+					var/obj/structure/ore_box/ore_box = locate(/obj/structure/ore_box) in chassis:cargo
+					if(ore_box)
+						for(var/obj/item/weapon/ore/ore in range(chassis,1))
+							if(get_dir(chassis,ore)&chassis.dir)
+								ore.Move(ore_box)
+			else if(target.loc == C)
+				log_message("Drilled through \the [target]")
+				target.ex_act(2)
+	return 1
 
 /obj/item/mecha_parts/mecha_equipment/tool/extinguisher
 	name = "extinguisher"
@@ -1012,7 +1012,7 @@
 /obj/item/mecha_parts/mecha_equipment/tool/passenger/Exit(atom/movable/O)
 	return 0
 
-/obj/item/mecha_parts/mecha_equipment/tool/passenger/proc/move_inside(var/mob/user)
+/obj/item/mecha_parts/mecha_equipment/tool/passenger/proc/move_inside(mob/user)
 	if (chassis)
 		chassis.visible_message("<span class='notice'>[user] starts to climb into [chassis].</span>")
 
@@ -1167,7 +1167,7 @@
 	chassis.events.clearEvent("onMove",event)
 	return ..()
 
-/obj/item/mecha_parts/mecha_equipment/tool/cable_layer/action(var/obj/item/stack/cable_coil/target)
+/obj/item/mecha_parts/mecha_equipment/tool/cable_layer/action(obj/item/stack/cable_coil/target)
 	if(!action_checks(target))
 		return
 	var/result = load_cable(target)
@@ -1207,7 +1207,7 @@
 		return "[output] \[Cable: [cable ? cable.amount : 0] m\][(cable && cable.amount) ? "- <a href='?src=\ref[src];toggle=1'>[!equip_ready?"Dea":"A"]ctivate</a>|<a href='?src=\ref[src];cut=1'>Cut</a>" : null]"
 	return
 
-/obj/item/mecha_parts/mecha_equipment/tool/cable_layer/proc/load_cable(var/obj/item/stack/cable_coil/CC)
+/obj/item/mecha_parts/mecha_equipment/tool/cable_layer/proc/load_cable(obj/item/stack/cable_coil/CC)
 	if(istype(CC) && CC.amount)
 		var/cur_amount = cable? cable.amount : 0
 		var/to_load = max(max_cable - cur_amount,0)
@@ -1239,14 +1239,14 @@
 /obj/item/mecha_parts/mecha_equipment/tool/cable_layer/proc/reset()
 	last_piece = null
 
-/obj/item/mecha_parts/mecha_equipment/tool/cable_layer/proc/dismantleFloor(var/turf/new_turf)
+/obj/item/mecha_parts/mecha_equipment/tool/cable_layer/proc/dismantleFloor(turf/new_turf)
 	if(istype(new_turf, /turf/simulated/floor))
 		var/turf/simulated/floor/T = new_turf
 		if(!T.is_plating())
 			T.make_plating(!(T.broken || T.burnt))
 	return new_turf.is_plating()
 
-/obj/item/mecha_parts/mecha_equipment/tool/cable_layer/proc/layCable(var/turf/new_turf)
+/obj/item/mecha_parts/mecha_equipment/tool/cable_layer/proc/layCable(turf/new_turf)
 	if(equip_ready || !istype(new_turf) || !dismantleFloor(new_turf))
 		return reset()
 	var/fdirn = turn(chassis.dir,180)

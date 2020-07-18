@@ -7,20 +7,22 @@
 	var/break_on_impact = 1 //There are two modes to the eggs.
 							//One breaks the egg on hit,
 
-/obj/item/weapon/slugegg/throw_impact(atom/hit_atom, var/speed)
+/obj/item/weapon/slugegg/Initialize()
+	. = ..()
+	proximity_monitor = new(src, 0)
+
+/obj/item/weapon/slugegg/throw_impact(atom/hit_atom, speed)
 	if(break_on_impact)
 		squish()
-	else
-		movable_flags |= MOVABLE_FLAG_PROXMOVE //Dont want it active during the throw... loooots of unneeded checking.
 	return ..()
 
-/obj/item/weapon/slugegg/attack_self(var/mob/living/user)
+/obj/item/weapon/slugegg/attack_self(mob/living/user)
 	user.drop_from_inventory(src)
 	squish()
 
-/obj/item/weapon/slugegg/HasProximity(var/atom/movable/AM)
+/obj/item/weapon/slugegg/HasProximity(atom/movable/AM)
 	if(isliving(AM))
-		if(istype(AM,/mob/living/carbon/human))
+		if(ishuman(AM))
 			var/mob/living/carbon/human/H = AM
 			if(H.species && H.species.name == SPECIES_VOX)
 				return
@@ -61,6 +63,6 @@
 	return S
 
 
-/obj/item/weapon/gun/launcher/alien/slugsling/attack_self(var/mob/living/user)
+/obj/item/weapon/gun/launcher/alien/slugsling/attack_self(mob/living/user)
 	mode = mode == "Impact" ? "Sentry" : "Impact"
 	to_chat(user,"<span class='notice'>You switch \the [src]'s mode to \"[mode]\"</span>")

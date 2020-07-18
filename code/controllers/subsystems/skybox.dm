@@ -27,7 +27,7 @@ SUBSYSTEM_DEF(skybox)
 	skyboxes = SSskybox.skyboxes
 
 //Update skyboxes. Called by universes, for now. Won't be going back to their original appearance in such a case... So be aware of this.
-/datum/controller/subsystem/skybox/proc/reinstate_skyboxes(var/state, var/using_stars)
+/datum/controller/subsystem/skybox/proc/reinstate_skyboxes(state, using_stars)
 
 	use_stars = using_stars
 
@@ -52,7 +52,7 @@ SUBSYSTEM_DEF(skybox)
 			P.overlays += stars
 
 //new_color_and_rotation(bool, bool, string) Where the string is to be a color in hexadecimal form. Accepts input as color.
-/datum/controller/subsystem/skybox/proc/new_color_and_rotation(var/do_rotate, var/do_recolor, var/forced_color)
+/datum/controller/subsystem/skybox/proc/new_color_and_rotation(do_rotate, do_recolor, forced_color)
 	if(do_rotate)
 		BGrot = RANDOM_RIGHT_ANGLE
 	if(do_recolor)

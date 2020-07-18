@@ -33,11 +33,11 @@
 		/obj/item/clamp,
 		/obj/item/frame
 		)
-		
+
 	var/list/cant_hold = list(
 		/obj/item/weapon/reagent_containers/food/snacks/grown,
 		)
-	
+
 
 	var/obj/item/wrapped = null // Item currently being held.
 
@@ -249,7 +249,7 @@
 	// Don't fall through and smack people with gripper, instead just no-op
 	return 0
 
-/obj/item/weapon/gripper/resolve_attackby(var/atom/target, var/mob/living/user, params)
+/obj/item/weapon/gripper/resolve_attackby(atom/target, mob/living/user, params)
 
 	//There's some weirdness with items being lost inside the arm. Trying to fix all cases. ~Z
 	if(!wrapped)
@@ -308,19 +308,19 @@
 							var/turf/T = get_turf(src)
 							S.remove_from_storage(I,T)
 							visible_message("<span class='notice'>\The [I] drops on \the [T].</span>")
-						else 
+						else
 							inuse = 0
 							to_chat(user, "<span class='notice'>\The [target] is empty.</span>")
 					else
 						inuse = 0
 						to_chat(user, "<span class='danger'>The process was interrupted!</span>")
 			return
-			
+
 	for(var/atypepath in cant_hold)
 		if(istype(target,atypepath))
-			to_chat(user, "<span class='danger'>Your gripper cannot hold \the [target].</span>")		
-			return		
-			
+			to_chat(user, "<span class='danger'>Your gripper cannot hold \the [target].</span>")
+			return
+
 	if(istype(target,/obj/item)) //Check that we're not pocketing a mob.
 
 		//...and that the item is not in a container.
@@ -332,7 +332,7 @@
 		//Check if the item is blacklisted.
 		var/grab = 0
 		for(var/typepath in can_hold)
-			if(istype(I,typepath))			
+			if(istype(I,typepath))
 				grab = 1
 				break
 
@@ -375,15 +375,15 @@
 				A.cell = null
 
 				user.visible_message("<span class='danger'>[user] removes the power cell from [A]!</span>", "You remove the power cell.")
-	
+
 	else if(istype(target,/obj/machinery/portable_atmospherics/canister))
 		var/obj/machinery/portable_atmospherics/canister/A = target
 		A.ui_interact(user)
-	
+
 	else
 		to_chat(user, "<span class='notice'>[src] can't interact with \the [target].</span>")
 
-/obj/item/weapon/gripper/proc/finish_using(var/atom/target, var/mob/living/user, params, force_holder, resolved)
+/obj/item/weapon/gripper/proc/finish_using(atom/target, mob/living/user, params, force_holder, resolved)
 	if(!resolved && wrapped && target)
 		wrapped.afterattack(target,user,1,params)
 
@@ -431,7 +431,7 @@
 	for(var/mob/M in T)
 		if(istype(M,/mob/living/simple_animal/lizard) || istype(M,/mob/living/simple_animal/mouse))
 			src.loc.visible_message("<span class='danger'>[src.loc] sucks [M] into its decompiler. There's a horrible crunching noise.</span>","<span class='danger'>It's a bit of a struggle, but you manage to suck [M] into your decompiler. It makes a series of visceral crunching noises.</span>")
-			new/obj/effect/decal/cleanable/blood/splatter(get_turf(src))
+			new /obj/effect/decal/cleanable/blood/splatter(get_turf(src))
 			qdel(M)
 			if(wood)
 				wood.add_charge(2000)
@@ -456,7 +456,7 @@
 
 			to_chat(D, "<span class='danger'>You carefully and thoroughly decompile [M], storing as much of its resources as you can within yourself.</span>")
 			qdel(M)
-			new/obj/effect/decal/cleanable/blood/oil(get_turf(src))
+			new /obj/effect/decal/cleanable/blood/oil(get_turf(src))
 
 			if(metal)
 				metal.add_charge(15000)
@@ -542,7 +542,7 @@
 	if(!module)
 		module = new /obj/item/weapon/robot_module/drone(src)
 
-	var/dat = "<HEAD><TITLE>Drone modules</TITLE></HEAD><BODY>\n"
+	var/dat = "<meta charset=\"utf-8\"><HEAD><TITLE>Drone modules</TITLE></HEAD><BODY>\n"
 	dat += {"
 	<B>Activated Modules</B>
 	<BR>

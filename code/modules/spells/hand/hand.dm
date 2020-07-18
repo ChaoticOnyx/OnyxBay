@@ -10,7 +10,7 @@
 /spell/hand/choose_targets(mob/user = usr)
 	return list(user)
 
-/spell/hand/cast_check(skipcharge = 0,mob/user = usr, var/list/targets)
+/spell/hand/cast_check(skipcharge = 0,mob/user = usr, list/targets)
 	if(!..())
 		return 0
 	if(targets)
@@ -32,7 +32,7 @@
 			return
 	return 1
 
-/spell/hand/proc/valid_target(var/atom/a,var/mob/user) //we use seperate procs for our target checking for the hand spells.
+/spell/hand/proc/valid_target(atom/a,mob/user) //we use seperate procs for our target checking for the hand spells.
 	var/distance = get_dist(a,user)
 	if((min_range && distance < min_range) || (range && distance > range))
 		return 0
@@ -40,7 +40,7 @@
 		return 0
 	return 1
 
-/spell/hand/proc/cast_hand(var/atom/a,var/mob/user) //same for casting.
+/spell/hand/proc/cast_hand(atom/a,mob/user) //same for casting.
 	return 1
 
 /spell/hand/charges

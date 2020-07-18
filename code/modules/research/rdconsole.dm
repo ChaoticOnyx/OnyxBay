@@ -69,7 +69,7 @@ won't update every console in existence) but it's more of a hassle to do. Also, 
 
 //	req_access = list(access_research)	//Data and setting manipulation requires scientist access.
 
-/obj/machinery/computer/rdconsole/proc/CallMaterialName(var/ID)
+/obj/machinery/computer/rdconsole/proc/CallMaterialName(ID)
 	var/return_name = ID
 	switch(return_name)
 		if(MATERIAL_STEEL)
@@ -88,7 +88,7 @@ won't update every console in existence) but it's more of a hassle to do. Also, 
 			return_name = "Diamond"
 	return return_name
 
-/obj/machinery/computer/rdconsole/proc/CallReagentName(var/reagent_type)
+/obj/machinery/computer/rdconsole/proc/CallReagentName(reagent_type)
 	var/datum/reagent/R = reagent_type
 	return ispath(reagent_type, /datum/reagent) ? initial(R.name) : "Unknown"
 
@@ -130,7 +130,7 @@ won't update every console in existence) but it's more of a hassle to do. Also, 
 	SyncRDevices()
 	. = ..()
 
-/obj/machinery/computer/rdconsole/attackby(var/obj/item/weapon/D as obj, var/mob/user as mob)
+/obj/machinery/computer/rdconsole/attackby(obj/item/weapon/D as obj, mob/user as mob)
 	//Loading a disk into it.
 	if(istype(D, /obj/item/weapon/disk))
 		if(t_disk || d_disk)
@@ -154,14 +154,14 @@ won't update every console in existence) but it's more of a hassle to do. Also, 
 	src.updateUsrDialog()
 	return
 
-/obj/machinery/computer/rdconsole/emp_act(var/remaining_charges, var/mob/user)
+/obj/machinery/computer/rdconsole/emp_act(remaining_charges, mob/user)
 	if(!emagged)
 		playsound(src.loc, get_sfx("spark"), 75, 1)
 		emagged = 1
 		to_chat(user, "<span class='notice'>You you disable the security protocols.</span>")
 		return 1
 
-/obj/machinery/computer/rdconsole/CanUseTopic(var/mob/user, var/datum/topic_state/state, var/href_list)
+/obj/machinery/computer/rdconsole/CanUseTopic(mob/user, datum/topic_state/state, href_list)
 	if(href_list["menu"])
 		var/temp_screen = text2num(href_list["menu"])
 		if(!(temp_screen <= 1.1 || (3 <= temp_screen && 4.9 >= temp_screen) || allowed(usr) || emagged))
@@ -309,7 +309,8 @@ won't update every console in existence) but it's more of a hassle to do. Also, 
 						return //in case the 'lathe gets unlinked or destroyed or someshit while the popup is open
 				else
 					n = text2num(href_list["n"])
-				for(var/i=1;i<=n;i++)
+				n = min(n, (100 - linked_lathe.queue.len))
+				for(var/i in 1 to n)
 					linked_lathe.addToQueue(being_built)
 
 		screen = 3.1
@@ -429,7 +430,7 @@ won't update every console in existence) but it's more of a hassle to do. Also, 
 		screen = 0.5
 		. = TOPIC_HANDLED
 		spawn(20)
-			var/obj/item/weapon/paper/PR = new/obj/item/weapon/paper
+			var/obj/item/weapon/paper/PR = new /obj/item/weapon/paper
 			PR.name = "fabricator report"
 			PR.info = "<center><b>[station_name()] Fabricator Laboratory</b>"
 			PR.info += "<h2>[ (text2num(href_list["print"]) == 2) ? "Detailed" : null ] Fabricator Status Report</h2>"
@@ -724,25 +725,26 @@ won't update every console in existence) but it's more of a hassle to do. Also, 
 				if(name_set in filtered["protolathe"])
 					continue
 				dat += "<H2>[name_set]</H2><UL>"
-				for(var/datum/design/D in files.known_designs)
-					if(!D.build_path || !(D.build_type & PROTOLATHE) || D.category_items != name_set)
-						continue
-					var/temp_dat
-					for(var/M in D.materials)
-						temp_dat += ", [D.materials[M]*linked_imprinter.mat_efficiency] [CallMaterialName(M)]"
-					for(var/T in D.chemicals)
-						temp_dat += ", [D.chemicals[T]*linked_imprinter.mat_efficiency] [CallReagentName(T)]"
-					if(temp_dat)
-						temp_dat = " \[[copytext(temp_dat, 3)]\]"
-					if(linked_lathe.canBuild(D, 1))
-						dat += "<LI><B><A href='?src=\ref[src];build=[D.id];n=1'>[D.name]</A></B>[temp_dat] Queue: "
-						if(linked_lathe.canBuild(D, 5))
-							dat += "<A href='?src=\ref[src];build=[D.id];n=5'>(&times;5)</A>"
-						if(linked_lathe.canBuild(D, 10))
-							dat += "<A href='?src=\ref[src];build=[D.id];n=10'>(&times;10)</A>"
-						dat += "<A href='?src=\ref[src];build=[D.id];customamt=1'>(Custom)</A>"
-					else
-						dat += "<LI><B>[D.name]</B>[temp_dat]"
+				if(linked_imprinter)
+					for(var/datum/design/D in files.known_designs)
+						if(!D.build_path || !(D.build_type & PROTOLATHE) || D.category_items != name_set)
+							continue
+						var/temp_dat
+						for(var/M in D.materials)
+							temp_dat += ", [D.materials[M]*linked_imprinter.mat_efficiency] [CallMaterialName(M)]"
+						for(var/T in D.chemicals)
+							temp_dat += ", [D.chemicals[T]*linked_imprinter.mat_efficiency] [CallReagentName(T)]"
+						if(temp_dat)
+							temp_dat = " \[[copytext(temp_dat, 3)]\]"
+						if(linked_lathe.canBuild(D, 1))
+							dat += "<LI><B><A href='?src=\ref[src];build=[D.id];n=1'>[D.name]</A></B>[temp_dat] Queue: "
+							if(linked_lathe.canBuild(D, 5))
+								dat += "<A href='?src=\ref[src];build=[D.id];n=5'>(&times;5)</A>"
+							if(linked_lathe.canBuild(D, 10))
+								dat += "<A href='?src=\ref[src];build=[D.id];n=10'>(&times;10)</A>"
+							dat += "<A href='?src=\ref[src];build=[D.id];customamt=1'>(Custom)</A>"
+						else
+							dat += "<LI><B>[D.name]</B>[temp_dat]"
 				dat += "</UL>"
 
 		if(3.2) //Protolathe Material Storage Sub-menu
@@ -886,7 +888,7 @@ won't update every console in existence) but it's more of a hassle to do. Also, 
 			dat += "List of Available Designs:"
 			dat += GetResearchListInfo()
 
-	user << browse("<TITLE>Fabrication Control Console</TITLE><HR>[dat]", "window=rdconsole;size=850x600")
+	user << browse("<meta charset=\"utf-8\"><TITLE>Fabrication Control Console</TITLE><HR>[dat]", "window=rdconsole;size=850x600")
 	onclose(user, "rdconsole")
 
 /obj/machinery/computer/rdconsole/robotics

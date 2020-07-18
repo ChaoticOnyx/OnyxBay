@@ -59,7 +59,7 @@ var/global/photo_count = 0
 
 /obj/item/weapon/photo/attackby(obj/item/weapon/P as obj, mob/user as mob)
 	if(istype(P, /obj/item/weapon/pen))
-		var/txt = sanitize(input_utf8(user, "What would you like to write on the back?", "Photo Writing", null), 128)
+		var/txt = sanitize(input(user, "What would you like to write on the back?", "Photo Writing", null), 128)
 		if(loc == user && user.stat == 0)
 			scribble = txt
 	..()
@@ -73,7 +73,7 @@ var/global/photo_count = 0
 
 /obj/item/weapon/photo/proc/show(mob/user as mob)
 	user << browse_rsc(img, "tmp_photo_[id].png")
-	user << browse("<html><head><title>[name]</title></head>" \
+	user << browse("<html><meta charset=\"utf-8\"><head><title>[name]</title></head>" \
 		+ "<body style='overflow:hidden;margin:0;text-align:center'>" \
 		+ "<img src='tmp_photo_[id].png' width='[64*photo_size]' style='-ms-interpolation-mode:nearest-neighbor' />" \
 		+ "[scribble ? "<br>Written on the back:<br><i>[scribble]</i>" : ""]"\
@@ -275,7 +275,7 @@ var/global/photo_count = 0
 		user.put_in_inactive_hand(p)
 
 /obj/item/weapon/photo/proc/copy(copy_id = 0)
-	var/obj/item/weapon/photo/p = new/obj/item/weapon/photo()
+	var/obj/item/weapon/photo/p = new /obj/item/weapon/photo()
 
 	p.SetName(name)
 	p.appearance = appearance

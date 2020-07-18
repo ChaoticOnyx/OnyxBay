@@ -22,9 +22,9 @@
 		var/ore = text2path("/obj/item/weapon/ore/[mineral_name]")
 		for(var/i=1,i <= rand(2,6),i++)
 			new ore(get_turf(src))
-	..()
+	return ..()
 
-/obj/structure/rock/attackby(var/obj/item/I, var/mob/user)
+/obj/structure/rock/attackby(obj/item/I, mob/user)
 	if (isMonkey(user))
 		to_chat(user, "<span class='warning'>You don't have the dexterity to do this!</span>")
 		return
@@ -43,7 +43,7 @@
 
 		if(do_after(user,P.digspeed - P.digspeed/4, src))
 			to_chat(user, "<span class='notice'>You finish [P.drill_verb] \the [src].</span>")
-			Destroy(src)
+			qdel(src)
 	return ..()
 
 /obj/structure/rock/Bumped(AM)

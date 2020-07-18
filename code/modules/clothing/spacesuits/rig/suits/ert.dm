@@ -51,7 +51,6 @@
 	initial_modules = list(
 		/obj/item/rig_module/ai_container,
 		/obj/item/rig_module/maneuvering_jets,
-		/obj/item/rig_module/mounted/plasmacutter,
 		/obj/item/rig_module/device/rcd,
 		/obj/item/rig_module/cooling_unit
 		)
@@ -108,7 +107,7 @@
 	desc = "A heavy, modified version of a common asset protection hardsuit. Has blood red highlights.  Armoured and space ready."
 	suit_type = "heavy asset protection"
 	icon_state = "asset_protection_rig"
-	armor = list(melee = 60, bullet = 50, laser = 50,energy = 40, bomb = 40, bio = 100, rad = 100)
+	armor = list(melee = 70, bullet = 55, laser = 55,energy = 40, bomb = 70, bio = 100, rad = 100)
 
 	glove_type = /obj/item/clothing/gloves/rig/ert/assetprotection
 
@@ -119,7 +118,6 @@
 		/obj/item/rig_module/vision/multi,
 		/obj/item/rig_module/mounted/egun,
 		/obj/item/rig_module/chem_dispenser/injector,
-		/obj/item/rig_module/mounted/plasmacutter,
 		/obj/item/rig_module/device/rcd,
 		/obj/item/rig_module/datajack,
 		/obj/item/rig_module/cooling_unit

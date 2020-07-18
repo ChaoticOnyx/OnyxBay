@@ -26,8 +26,9 @@
 		to_chat(usr, "<span class='redtext'>[target_ckey] is already on the watchlist.</span>")
 		return
 
-	var/reason = sanitize(input_utf8(usr, "Please State Reason", "Reason"))
+	var/reason = sanitize(input(usr, "Please State Reason", "Reason"))
 	reason = sanitizeSQL(reason)
+	reason = encode_for_db(reason)
 	if (!reason)
 		return
 
@@ -42,7 +43,7 @@
 		log_DB("Watchlist error during adding new watch entry \[[err]\].", notify_admin = TRUE)
 		return
 
-	reason = utf8_to_cp1251(rhtml_decode(reason))
+	reason = html_decode(reason)
 	log_admin("[key_name(usr)] has added [target_ckey] to the watchlist - Reason: [reason]", notify_admin = TRUE)
 
 	for(var/client/player in GLOB.clients)
@@ -64,7 +65,7 @@
 		return
 
 	if (query_watch.NextRow())
-		return utf8_to_cp1251(rhtml_decode(query_watch.item[1]))
+		return decode_from_db(html_decode(query_watch.item[1]))
 	else
 		return null
 
@@ -99,9 +100,9 @@
 		return
 
 	if (query_watchreason.NextRow())
-		var/watch_reason = query_watchreason.item[1]
+		var/watch_reason = decode_from_db(query_watchreason.item[1])
 
-		var/new_reason = sanitize(input_utf8(usr, "Input new reason", "New Reason", rhtml_decode(watch_reason)))
+		var/new_reason = sanitize(input(usr, "Input new reason", "New Reason", html_decode(watch_reason)))
 		new_reason = sanitizeSQL(new_reason)
 		if (!new_reason)
 			return
@@ -109,15 +110,17 @@
 		var/admin_ckey = sanitizeSQL(usr.ckey)
 		var/edit_text = "Edited by [admin_ckey] on [time2text(world.realtime, "YYYY-MM-DD hh:mm:ss")] from<br>[watch_reason]<br>to<br>[new_reason]<hr>"
 		edit_text = sanitizeSQL(edit_text)
+		edit_text = encode_for_db(edit_text)
 
+		new_reason = encode_for_db(new_reason)
 		var/DBQuery/query_watchupdate = dbcon.NewQuery("UPDATE erro_watch SET reason = '[new_reason]', last_editor = '[admin_ckey]', edits = CONCAT(IFNULL(edits,''),'[edit_text]') WHERE ckey = '[target_ckey]'")
 		if (!query_watchupdate.Execute())
 			var/err = query_watchupdate.ErrorMsg()
 			log_DB("Watchlist error: reason can't be updated \[[err]\].", notify_admin = TRUE)
 			return
 
-		watch_reason = utf8_to_cp1251(rhtml_decode(watch_reason))
-		new_reason = utf8_to_cp1251(rhtml_decode(new_reason))
+		watch_reason = html_decode(watch_reason)
+		new_reason = html_decode(new_reason)
 		log_admin("[key_name(usr)] has edited [target_ckey]'s watchlist reason from [watch_reason] to [new_reason]", notify_admin = TRUE)
 
 		for(var/client/player in GLOB.clients)
@@ -130,7 +133,7 @@
 
 
 /datum/watchlist/proc/Show(search)
-	var/output
+	var/output = "<meta charset=\"utf-8\">"
 	output += "<form method='GET' name='search' action='?'>\
 	<input type='hidden' name='_src_' value='holder'>\
 	<input type='text' name='watchsearch' value='[search]'>\
@@ -152,7 +155,7 @@
 
 	while(query_watchlist.NextRow())
 		var/ckey = query_watchlist.item[1]
-		var/reason = query_watchlist.item[2]
+		var/reason = decode_from_db(query_watchlist.item[2])
 		var/adminckey = query_watchlist.item[3]
 		var/timestamp = query_watchlist.item[4]
 		var/last_editor = query_watchlist.item[5]
@@ -163,7 +166,7 @@
 
 	usr << browse(output, "window=watchwin;size=900x500")
 
-/datum/watchlist/proc/OnLogin(var/client/C)
+/datum/watchlist/proc/OnLogin(client/C)
 	if (!C)
 		return
 
@@ -176,7 +179,7 @@
 			if (player.watchlist_warn)
 				to_chat(C, "<span class=\"log_message\"><font color='red'><B>WATCHLIST: </B></font><span class='info'>[key_name_admin(player)] is playing - Reason: [player.watchlist_warn]</span></span>")
 
-/datum/watchlist/proc/AdminTopicProcess(var/datum/admins/source, var/list/href_list)
+/datum/watchlist/proc/AdminTopicProcess(datum/admins/source, list/href_list)
 	if(href_list["watchadd"])
 		var/target_ckey = locate(href_list["watchadd"])
 		Add(target_ckey)
@@ -220,5 +223,5 @@
 			return
 
 		if(query_watchedits.NextRow())
-			var/edit_log = query_watchedits.item[1]
+			var/edit_log = decode_from_db(query_watchedits.item[1])
 			usr << browse(edit_log,"window=watchedits")

@@ -32,7 +32,7 @@ var/list/datum/power/changeling/powerinstances = list()
 	desc = "We become weakened to a death-like state, where we will rise again from death."
 	helptext = "Can be used before or after death. Duration varies greatly."
 	genomecost = 0
-	verbpath = /mob/proc/changeling_fakedeath
+	verbpath = /mob/living/carbon/human/proc/changeling_fakedeath
 
 // Hivemind
 
@@ -198,7 +198,7 @@ var/list/datum/power/changeling/powerinstances = list()
 	desc = "We evolve the ability to rapidly regenerate, negating the need for stasis."
 	helptext = "Heals a moderate amount of damage every tick."
 	genomecost = 8
-	verbpath = /mob/proc/changeling_rapidregen
+	verbpath = /mob/living/carbon/human/proc/changeling_rapidregen
 
 /datum/power/changeling/visible_camouflage
 	name = "Camouflage"
@@ -327,7 +327,7 @@ var/list/datum/power/changeling/powerinstances = list()
 		for(var/P in powers)
 			powerinstances += new P()
 
-	var/dat = "<html><head><title>Changling Evolution Menu</title></head>"
+	var/dat = "<html><meta charset=\"utf-8\"><head><title>Changling Evolution Menu</title></head>"
 
 	//javascript, the part that does most of the work~
 	dat += {"
@@ -602,7 +602,7 @@ var/list/datum/power/changeling/powerinstances = list()
 
 
 
-/datum/changeling/proc/purchasePower(var/datum/mind/M, var/Pname, var/remake_verbs = 1)
+/datum/changeling/proc/purchasePower(datum/mind/M, Pname, remake_verbs = 1)
 	if(!M || !M.changeling)
 		return
 

@@ -21,7 +21,7 @@
 	tail = "chimptail"
 
 	body_builds = list(
-		new/datum/body_build/monkey
+		new /datum/body_build/monkey
 	)
 
 	unarmed_types = list(/datum/unarmed_attack/bite, /datum/unarmed_attack/claws)
@@ -55,12 +55,53 @@
 		BP_L_FOOT = list("path" = /obj/item/organ/external/foot),
 		BP_R_FOOT = list("path" = /obj/item/organ/external/foot/right)
 		)
+		
+	var/list/no_touchie = list(
+		/obj/item/weapon/mirror,
+		/obj/item/weapon/paper,
+		/obj/item/device/taperecorder,	
+		/obj/item/modular_computer,	
+	)	
 
-/datum/species/monkey/handle_npc(var/mob/living/carbon/human/H)
+/datum/species/monkey/handle_npc(mob/living/carbon/human/H)
 	if(H.stat != CONSCIOUS)
 		return
-	if(prob(33) && H.canmove && isturf(H.loc) && !H.pulledby) //won't move if being pulled
+		
+	if(prob(25) && isturf(H.loc) && !H.pulledby && H.canmove) //won't move if being pulled
 		step(H, pick(GLOB.cardinal))
+		
+	if(prob(25))
+		H.hand = !(H.hand)
+
+	var/obj/held = H.get_active_hand()
+	if(prob(5) && held)
+		var/turf/T = get_random_turf_in_range(H, 7, 2)
+		if(T && !is_type_in_list(T, no_touchie))
+			if(istype(held, /obj/item/weapon/gun) && prob(80))
+				var/obj/item/weapon/gun/G = held
+				G.Fire(T, H)
+			if(istype(held, /obj/item/weapon/reagent_containers) && prob(80))
+				var/obj/item/weapon/reagent_containers/C = held
+				C.attack(H, H)
+			if(istype(held, /obj/item/) && prob(50))
+				var/obj/item/O = held
+				O.attack_self(H)					
+			else
+				H.throw_item(T)
+		else
+			H.drop_item()
+	if(prob(5) && !held && !H.restrained() && istype(H.loc, /turf/))
+		var/list/touchables = list()
+		for(var/obj/item/O in range(1,get_turf(H)))
+			if(O.simulated && O.Adjacent(H) && !is_type_in_list(O, no_touchie) && istype(O.loc, /turf/))
+				touchables += O
+		if(touchables.len)
+			var/obj/touchy = pick(touchables)
+			touchy.attack_hand(H)
+			
+	if(H.buckled && prob(10))
+		H.resist()
+
 	if(prob(1))
 		H.emote(pick("scratch","jump","roll","tail"))
 
@@ -79,7 +120,7 @@
 /datum/species/monkey/get_random_name()
 	return "[lowertext(name)] ([rand(100,999)])"
 
-/datum/species/monkey/handle_post_spawn(var/mob/living/carbon/human/H)
+/datum/species/monkey/handle_post_spawn(mob/living/carbon/human/H)
 	..()
 	H.item_state = lowertext(name)
 

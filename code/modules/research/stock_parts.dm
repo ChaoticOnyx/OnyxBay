@@ -74,12 +74,12 @@
 	. = ..()
 	max_charge *= rating
 
-/obj/item/weapon/stock_parts/capacitor/proc/charge(var/amount)
+/obj/item/weapon/stock_parts/capacitor/proc/charge(amount)
 	charge += amount
 	if(charge > max_charge)
 		charge = max_charge
 
-/obj/item/weapon/stock_parts/capacitor/proc/use(var/amount)
+/obj/item/weapon/stock_parts/capacitor/proc/use(amount)
 	if(charge)
 		charge -= amount
 		if(charge < 0)
@@ -242,7 +242,7 @@
 	name = "subspace wavelength analyzer"
 	icon_state = "wavelength_analyzer"
 	desc = "A sophisticated analyzer capable of analyzing cryptic subspace wavelengths."
-	origin_tech = list(TECH_DATA = 3, TECH_MAGNETS = 4, TECH_MATERIAL = 4, TECH_BLUESPACE = 2)
+	origin_tech = list(TECH_DATA = 3, TECH_MAGNET = 4, TECH_MATERIAL = 4, TECH_BLUESPACE = 2)
 	matter = list(MATERIAL_STEEL = 30, MATERIAL_GLASS = 10)
 
 /obj/item/weapon/stock_parts/subspace/crystal

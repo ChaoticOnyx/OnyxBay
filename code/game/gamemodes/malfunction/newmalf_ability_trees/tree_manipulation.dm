@@ -3,7 +3,7 @@
 // Abilities in this tree allow the AI to physically manipulate systems around the station.
 // T1 - Electrical Pulse - Sends out pulse that breaks some lights and sometimes even APCs. This can actually break the AI's APC so be careful!
 // T2 - Reboot camera - Allows the AI to reactivate a camera.
-// T3 - Emergency Forcefield - Allows the AI to project 1 tile forcefield that blocks movement and air flow. Forcefield�dissipates over time. It is also very susceptible to energetic weaponry.
+// T3 - Emergency Forcefield - Allows the AI to project 1 tile forcefield that blocks movement and air flow. Forcefield dissipates over time. It is also very susceptible to energetic weaponry.
 // T4 - Machine Overload - Detonates machine of choice in a minor explosion. Two of these are usually enough to kill or K/O someone.
 // T5 - Machine Upgrade - Upgrades a machine of choice. Upgrade behavior can be defined for each machine independently.
 
@@ -11,34 +11,34 @@
 // BEGIN RESEARCH DATUMS
 
 /datum/malf_research_ability/manipulation/electrical_pulse
-	ability = new/datum/game_mode/malfunction/verb/electrical_pulse()
+	ability = new /datum/game_mode/malfunction/verb/electrical_pulse()
 	price = 250
-	next = new/datum/malf_research_ability/manipulation/reboot_camera()
+	next = new /datum/malf_research_ability/manipulation/reboot_camera()
 	name = "T1 - Electrical Pulse"
 
 
 /datum/malf_research_ability/manipulation/reboot_camera
-	ability = new/datum/game_mode/malfunction/verb/reboot_camera()
+	ability = new /datum/game_mode/malfunction/verb/reboot_camera()
 	price = 1000
-	next = new/datum/malf_research_ability/manipulation/emergency_forcefield()
+	next = new /datum/malf_research_ability/manipulation/emergency_forcefield()
 	name = "T2 - Reboot Camera"
 
 
 /datum/malf_research_ability/manipulation/emergency_forcefield
-	ability = new/datum/game_mode/malfunction/verb/emergency_forcefield()
+	ability = new /datum/game_mode/malfunction/verb/emergency_forcefield()
 	price = 2000
-	next = new/datum/malf_research_ability/manipulation/machine_overload()
+	next = new /datum/malf_research_ability/manipulation/machine_overload()
 	name = "T3 - Emergency Forcefield"
 
 
 /datum/malf_research_ability/manipulation/machine_overload
-	ability = new/datum/game_mode/malfunction/verb/machine_overload()
+	ability = new /datum/game_mode/malfunction/verb/machine_overload()
 	price = 4000
-	next = new/datum/malf_research_ability/manipulation/machine_upgrade()
+	next = new /datum/malf_research_ability/manipulation/machine_upgrade()
 	name = "T4 - Machine Overload"
 
 /datum/malf_research_ability/manipulation/machine_upgrade
-	ability = new/datum/game_mode/malfunction/verb/machine_upgrade()
+	ability = new /datum/game_mode/malfunction/verb/machine_upgrade()
 	price = 4000
 	name = "T5 - Machine Upgrade"
 
@@ -64,7 +64,7 @@
 	spawn(15 SECONDS)
 		user.hacking = 0
 
-/datum/game_mode/malfunction/verb/reboot_camera(var/obj/machinery/camera/target in cameranet.cameras)
+/datum/game_mode/malfunction/verb/reboot_camera(obj/machinery/camera/target in cameranet.cameras)
 	set name = "Reboot Camera"
 	set desc = "100 CPU - Reboots a damaged but not completely destroyed camera."
 	set category = "Software"
@@ -89,7 +89,7 @@
 	log_ability_use(user, "reset camera", target)
 
 
-/datum/game_mode/malfunction/verb/emergency_forcefield(var/turf/T as turf in world)
+/datum/game_mode/malfunction/verb/emergency_forcefield(turf/T as turf in world)
 	set name = "Emergency Forcefield"
 	set desc = "275 CPU - Uses the emergency shielding system to create temporary barrier which lasts for few minutes, but won't resist gunfire."
 	set category = "Software"
@@ -101,7 +101,7 @@
 		return
 
 	to_chat(user, "Emergency forcefield projection completed.")
-	new/obj/machinery/shield/malfai(T)
+	new /obj/machinery/shield/malfai(T)
 	user.hacking = 1
 	log_ability_use(user, "emergency forcefield", T)
 	spawn(2 SECONDS)

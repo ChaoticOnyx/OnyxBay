@@ -12,7 +12,7 @@ I IS TYPIN'!'
 	plane = MOUSE_INVISIBLE_PLANE
 	layer = FLOAT_LAYER
 
-/atom/movable/overlay/typing_indicator/New(var/newloc, var/mob/master)
+/atom/movable/overlay/typing_indicator/New(newloc, mob/master)
 	..(newloc)
 	if(master.typing_indicator)
 		qdel(master.typing_indicator)
@@ -42,7 +42,7 @@ I IS TYPIN'!'
 
 /mob/proc/create_typing_indicator()
 	if(client && !stat && get_preference_value(/datum/client_preference/show_typing_indicator) == GLOB.PREF_SHOW)
-		new/atom/movable/overlay/typing_indicator(get_turf(src), src)
+		new /atom/movable/overlay/typing_indicator(get_turf(src), src)
 
 /mob/proc/remove_typing_indicator() // A bit excessive, but goes with the creation of the indicator I suppose
 	QDEL_NULL(typing_indicator)

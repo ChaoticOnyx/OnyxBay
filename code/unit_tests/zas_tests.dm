@@ -40,7 +40,7 @@ datum/unit_test/zas_area_test/start_test()
 //
 //	The primary helper proc.
 //
-proc/test_air_in_area(var/test_area, var/expectation = UT_NORMAL)
+proc/test_air_in_area(test_area, expectation = UT_NORMAL)
 	var/test_result = list("result" = FAILURE, "msg"    = "")
 
 	var/area/A = locate(test_area)

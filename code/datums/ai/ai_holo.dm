@@ -10,7 +10,7 @@
 	var/name
 
 
-/decl/ai_holo/proc/may_be_used_by_ai(var/mob/living/silicon/ai/AI)
+/decl/ai_holo/proc/may_be_used_by_ai(mob/living/silicon/ai/AI)
 	return !requires_malf || AI.is_malf_or_traitor()
 
 /decl/ai_holo/New()
@@ -19,6 +19,9 @@
 
 /decl/ai_holo/default
 	icon_state = "Default"
+
+/decl/ai_holo/default_slim
+	icon_state = "Default-Slim"
 
 /decl/ai_holo/face
 	icon_state = "Face"
@@ -38,6 +41,12 @@
 /decl/ai_holo/chevrons
 	icon_state = "Chevrons"
 
+/decl/ai_holo/dronum
+	icon_state = "Dronum"
+
+/decl/ai_holo/dronus
+	icon_state = "Dronus"
+
 /decl/ai_holo/question
 	icon_state = "Question"
 
@@ -51,6 +60,11 @@
 /decl/ai_holo/malfcursor
 	requires_malf = TRUE
 	icon_state = "malf-cursor"
+
+/decl/ai_holo/malfdronus
+	requires_malf = TRUE
+	icon_colorize = TRUE
+	icon_state = "malf-Dronus"
 
 /decl/ai_holo/missingno
 	requires_malf = TRUE
@@ -66,3 +80,7 @@
 	icon_state = "malf-TCC"
 	requires_malf = TRUE
 	icon_colorize = TRUE
+
+/decl/ai_holo/catalyst
+	icon_state = "malf-catalyst"
+	requires_malf = TRUE

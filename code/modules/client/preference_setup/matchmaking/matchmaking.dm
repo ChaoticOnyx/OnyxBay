@@ -73,7 +73,7 @@ var/global/datum/matchmaker/matchmaker = new()
 
 	return TRUE
 
-/datum/relation/proc/can_connect(var/datum/relation/R)
+/datum/relation/proc/can_connect(datum/relation/R)
 	for(var/datum/relation/D in matchmaker.relations) //have to check all connections between us and them
 		if(D.holder == R.holder && D.other && D.other.holder == holder)
 			if(D.name in incompatible)
@@ -192,7 +192,7 @@ var/global/datum/matchmaker/matchmaker = new()
 	if(href_list["info_relation"])
 		var/datum/relation/R = locate(href_list["info_relation"])
 		if(istype(R))
-			var/info = sanitize(input_utf8("What would you like the other party for this connection to know about your character?","Character info",R.info))
+			var/info = sanitize(input("What would you like the other party for this connection to know about your character?","Character info",R.info))
 			if(info)
 				R.info = info
 				see_relationship_info()

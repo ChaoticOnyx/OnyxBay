@@ -2,8 +2,6 @@
 	appearance_flags = TILE_BOUND
 	glide_size = 8
 
-	var/movable_flags
-
 	var/last_move = null
 	var/anchored = 0
 	// var/elevation = 2    - not used anywhere
@@ -31,7 +29,7 @@
 			pulledby.pulling = null
 		pulledby = null
 
-/atom/movable/Bump(var/atom/A, yes)
+/atom/movable/Bump(atom/A, yes)
 	if(src.throwing)
 		src.throw_impact(A)
 		src.throwing = 0
@@ -76,7 +74,7 @@
 	return 1
 
 //called when src is thrown into hit_atom
-/atom/movable/proc/throw_impact(atom/hit_atom, var/speed)
+/atom/movable/proc/throw_impact(atom/hit_atom, speed)
 	if(istype(hit_atom,/mob/living))
 		var/mob/living/M = hit_atom
 		M.hitby(src,speed)
@@ -93,7 +91,7 @@
 		T.hitby(src,speed)
 
 //decided whether a movable atom being thrown can pass through the turf it is in.
-/atom/movable/proc/hit_check(var/speed)
+/atom/movable/proc/hit_check(speed)
 	if(src.throwing)
 		for(var/atom/A in get_turf(src))
 			if(A == src) continue

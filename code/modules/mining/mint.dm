@@ -56,7 +56,7 @@
 
 /obj/machinery/mineral/mint/attack_hand(user as mob)
 
-	var/dat = "<b>Coin Press</b><br>"
+	var/dat = "<meta charset=\"utf-8\"><b>Coin Press</b><br>"
 
 	if (!input)
 		dat += text("input connection status: ")
@@ -130,7 +130,7 @@
 			switch(chosen)
 				if(MATERIAL_IRON)
 					while(amt_iron > 0 && coinsToProduce > 0)
-						new/obj/item/weapon/coin/iron(M)
+						new /obj/item/weapon/coin/iron(M)
 						amt_iron -= 20
 						coinsToProduce--
 						newCoins++

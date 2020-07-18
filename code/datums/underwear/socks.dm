@@ -46,6 +46,7 @@
 	name = "Pantyhose"
 	underwear_name = "pantyhose"
 	icon_state = "pantyhose"
+	has_color = TRUE
 
 /datum/category_item/underwear/socks/thin_thigh
 	name = "Thigh, thin"

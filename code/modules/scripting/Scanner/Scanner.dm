@@ -115,7 +115,7 @@
 
 	Scan() //Creates a list of tokens from source code
 		var/list/tokens=new
-		for(, src.codepos<=lentext(code), src.codepos++)
+		for(, src.codepos<=length(code), src.codepos++)
 
 			var/char=copytext(code, codepos, codepos+1)
 			if(char=="\n")
@@ -154,7 +154,7 @@
 */
 		ReadString(start)
 			var/buf
-			for(, codepos <= lentext(code), codepos++)//codepos to lentext(code))
+			for(, codepos <= length(code), codepos++)//codepos to length(code))
 				var/char=copytext(code, codepos, codepos+1)
 				switch(char)
 					if("\\")					//Backslash (\) encountered in string
@@ -171,8 +171,8 @@
 								else				//Unknown escaped text
 									buf+=char
 					if("\n")
-						. = new/token/string(buf, line, COL)
-						errors+=new/scriptError("Unterminated string. Newline reached.", .)
+						. = new /token/string(buf, line, COL)
+						errors+=new /scriptError("Unterminated string. Newline reached.", .)
 						line++
 						linepos=codepos
 						break
@@ -181,7 +181,7 @@
 							break
 						else
 							buf+=char     //Just a normal character in a string
-			if(!.) return new/token/string(buf, line, COL)
+			if(!.) return new /token/string(buf, line, COL)
 
 /*
 	Proc: ReadWord
@@ -190,7 +190,7 @@
 		ReadWord()
 			var/char=copytext(code, codepos, codepos+1)
 			var/buf
-			while(!delim.Find(char) && codepos<=lentext(code))
+			while(!delim.Find(char) && codepos<=length(code))
 				buf+=char
 				char=copytext(code, ++codepos, codepos+1)
 			codepos-- //allow main Scan() proc to read the delimiter
@@ -209,7 +209,7 @@
 
 			while(options.symbols.Find(buf+char))
 				buf+=char
-				if(++codepos>lentext(code)) break
+				if(++codepos>length(code)) break
 				char=copytext(code, codepos, codepos+1)
 
 			codepos-- //allow main Scan() proc to read the next character
@@ -231,7 +231,7 @@
 				char=copytext(code, codepos, codepos+1)
 			var/token/number/T=new(buf, line, COL)
 			if(isnull(text2num(buf)))
-				errors+=new/scriptError("Bad number: ", T)
+				errors+=new /scriptError("Bad number: ", T)
 				T.value=0
 			codepos-- //allow main Scan() proc to read the next character
 			return T
@@ -255,7 +255,7 @@
 					comm = 2 // starts a multi-line comment
 
 				while(comm)
-					if(++codepos>lentext(code)) break
+					if(++codepos>length(code)) break
 
 					if(expectedend) // ending statement expected...
 						char = copytext(code, codepos, codepos+1)
@@ -278,5 +278,5 @@
 					if(expectedend) expectedend = 0
 
 				if(comm == 2)
-					errors+=new/scriptError/UnterminatedComment()
+					errors+=new /scriptError/UnterminatedComment()
 

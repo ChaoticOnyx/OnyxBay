@@ -33,7 +33,7 @@
 		playsound(src.loc, src.use_sound, 50, 1, -5)
 	return ..()
 
-/obj/item/weapon/storage/backpack/equipped(var/mob/user, var/slot)
+/obj/item/weapon/storage/backpack/equipped(mob/user, slot)
 	if (slot == slot_back && src.use_sound)
 		playsound(src.loc, src.use_sound, 50, 1, -5)
 	..(user, slot)
@@ -70,6 +70,10 @@
 	max_w_class = ITEM_SIZE_NORMAL
 	max_storage_space = 400 // can store a ton of shit!
 	item_state_slots = null
+
+/obj/item/weapon/storage/backpack/santabag/fake
+	desc = "Space Santa uses this to deliver toys to all the nice children in space for Christmas! It would seem to be very large, but in real life there is no place for fairy tales."
+	max_storage_space = DEFAULT_BACKPACK_STORAGE
 
 /obj/item/weapon/storage/backpack/cultpack
 	name = "trophy rack"
@@ -422,7 +426,7 @@
 		/obj/item/weapon/crowbar
 		)
 
-/obj/item/weapon/storage/backpack/satchel/flat/hide(var/i)
+/obj/item/weapon/storage/backpack/satchel/flat/hide(i)
 	set_invisibility(i ? 101 : 0)
 	anchored = i ? TRUE : FALSE
 	alpha = i ? 128 : initial(alpha)

@@ -1,7 +1,6 @@
 
 /datum/gear/clothing/
 	sort_category = "Clothing Pieces"
-	category = /datum/gear/clothing/
 	slot = slot_tie
 
 /datum/gear/clothing/flannel
@@ -25,7 +24,7 @@
 	shirts["blue hawaii shirt"] = /obj/item/clothing/accessory/toggleable/hawaii
 	shirts["red hawaii shirt"] = /obj/item/clothing/accessory/toggleable/hawaii/red
 	shirts["random colored hawaii shirt"] = /obj/item/clothing/accessory/toggleable/hawaii/random
-	gear_tweaks += new/datum/gear_tweak/path(shirts)
+	gear_tweaks += new /datum/gear_tweak/path(shirts)
 
 /datum/gear/clothing/vest
 	display_name = "black vest"

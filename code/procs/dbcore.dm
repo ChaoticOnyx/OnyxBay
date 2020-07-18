@@ -64,7 +64,7 @@ DBConnection/proc/Connect(dbi_handler=src.dbi,user_handler=src.user,password_han
 	if(!cursor_handler) cursor_handler = Default_Cursor
 	. = _dm_db_connect(_db_con,dbi_handler,user_handler,password_handler,cursor_handler,null)
 	if(.)
-		NewQuery("SET NAMES latin1").Execute()
+		NewQuery("SET NAMES utf8").Execute()
 
 DBConnection/proc/Disconnect() return _dm_db_close(_db_con)
 
@@ -81,7 +81,7 @@ DBConnection/proc/SelectDB(database_name,dbi)
 	if(IsConnected()) Disconnect()
 	//return Connect("[dbi?"[dbi]":"dbi:mysql:[database_name]:[DB_SERVER]:[DB_PORT]"]",user,password)
 	return Connect("[dbi?"[dbi]":"dbi:mysql:[database_name]:[sqladdress]:[sqlport]"]",user,password)
-DBConnection/proc/NewQuery(sql_query,cursor_handler=src.default_cursor) return new/DBQuery(sql_query,src,cursor_handler)
+DBConnection/proc/NewQuery(sql_query,cursor_handler=src.default_cursor) return new /DBQuery(sql_query,src,cursor_handler)
 
 
 DBQuery/New(sql_query,DBConnection/connection_handler,cursor_handler)
@@ -143,7 +143,7 @@ DBQuery/proc/Quote(str)
 
 DBQuery/proc/SetConversion(column,conversion)
 	if(istext(column)) column = columns.Find(column)
-	if(!conversions) conversions = new/list(column)
+	if(!conversions) conversions = new /list(column)
 	else if(conversions.len < column) conversions.len = column
 	conversions[column] = conversion
 

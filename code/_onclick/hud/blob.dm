@@ -25,7 +25,7 @@
 		if("Rally Spores")
 			overmind.rally_spores_power()
 		if("Psionic Message")
-			var/message = input(overmind,"Send a message to the crew.","Psionic Message") as null|text
+			var/message = sanitize(input(overmind,"Send a message to the crew.","Psionic Message") as null|text)
 			if(message)
 				overmind.telepathy(message)
 		if("Jump to Blob")

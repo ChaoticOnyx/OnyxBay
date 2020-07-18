@@ -14,7 +14,7 @@
 	name = "Occupation"
 	sort_order = 1
 
-/datum/category_item/player_setup_item/occupation/load_character(var/savefile/S)
+/datum/category_item/player_setup_item/occupation/load_character(savefile/S)
 	S["alternate_option"]  >> pref.alternate_option
 	S["job_high"]          >> pref.job_high
 	S["job_medium"]        >> pref.job_medium
@@ -23,7 +23,7 @@
 	S["char_branch"]       >> pref.char_branch
 	S["char_rank"]         >> pref.char_rank
 
-/datum/category_item/player_setup_item/occupation/save_character(var/savefile/S)
+/datum/category_item/player_setup_item/occupation/save_character(savefile/S)
 	S["alternate_option"]  << pref.alternate_option
 	S["job_high"]          << pref.job_high
 	S["job_medium"]        << pref.job_medium
@@ -113,6 +113,15 @@
 		else if(bannedReason)
 			. += "<del>[rank]</del></td><td><b> \[BANNED]</b></td></tr>"
 			continue
+
+		if(job.faction_restricted)
+			if(user.client?.prefs.faction != GLOB.using_map.company_name)
+				. += "<del>[rank]</del></td><td><b> \[FOR [uppertext(GLOB.using_map.company_name)] EMPLOYESS ONLY]</b></td></tr>"
+				continue
+			if(user.client?.prefs.nanotrasen_relation in COMPANY_OPPOSING)
+				. += "<del>[rank]</del></td><td><b> \[LOW LOYALTY IS FORBIDDEN]</b></td></tr>"
+				continue
+
 		if(!job.player_old_enough(user.client))
 			var/available_in_days = job.available_in_days(user.client)
 			. += "<del>[rank]</del></td><td> \[IN [(available_in_days)] DAYS]</td></tr>"
@@ -263,6 +272,8 @@
 			pref.job_low |= job.title
 		return 1
 
+	if(role == "Captain" || role == "Head of Personnel" || role == "Chief Engineer" || role == "Chief Medical Officer" || role == "Research Director" || role == "Head of Security")
+		SSwarnings.show_warning(user.client, WARNINGS_HEADS, "window=Warning;size=440x300;can_resize=0;can_minimize=0")
 	if(job.title == pref.job_high)
 		SetJobDepartment(job, 1)
 	else if(job.title in pref.job_medium)
@@ -274,7 +285,7 @@
 
 	return 1
 
-/datum/category_item/player_setup_item/occupation/proc/SetJobDepartment(var/datum/job/job, var/level)
+/datum/category_item/player_setup_item/occupation/proc/SetJobDepartment(datum/job/job, level)
 	if(!job || !level)	return 0
 	switch(level)
 		if(1)//Only one of these should ever be active at once so clear them all here
@@ -290,7 +301,7 @@
 			pref.job_low |= job.title
 	return 1
 
-/datum/preferences/proc/CorrectLevel(var/datum/job/job, var/level)
+/datum/preferences/proc/CorrectLevel(datum/job/job, level)
 	if(!job || !level)	return 0
 	switch(level)
 		if(1)

@@ -1,60 +1,45 @@
 var/list/department_radio_keys = list(
-	  ":r" = "right ear",	":ê" = "right ear",
-	  ":l" = "left ear",	":ä" = "left ear",
-	  ":i" = "intercom",	":ø" = "intercom",
-	  ":h" = "department",	":ð" = "department",
+	  ":r" = "right ear",	":Ðº" = "right ear",
+	  ":l" = "left ear",	":Ð´" = "left ear",
+	  ":i" = "intercom",	":Ñˆ" = "intercom",
+	  ":h" = "department",	":Ñ€" = "department",
 	  ":+" = "special",		".+" = "special", //activate radio-specific special functions
-	  ":c" = "Command",		":ñ" = "Command",
-	  ":n" = "Science",		":ò" = "Science",
-	  ":m" = "Medical",		":ü" = "Medical",
-	  ":e" = "Engineering", ":ó" = "Engineering",
-	  ":s" = "Security",	":û" = "Security",
-	  ":w" = "whisper",		":ö" = "whisper",
-	  ":t" = "Mercenary",	":å" = "Mercenary",
-	  ":x" = "Raider",		":÷" = "Raider",
-	  ":u" = "Supply",		":ã" = "Supply",
-	  ":v" = "Service",		":ì" = "Service",
-	  ":p" = "AI Private",	":ç" = "AI Private",
-	  ":z" = "Entertainment",":ÿ" = "Entertainment",
-	  ":y" = "Exploration",		":í" = "Exploration",
+	  ":c" = "Command",		":Ñ" = "Command",
+	  ":n" = "Science",		":Ñ‚" = "Science",
+	  ":m" = "Medical",		":ÑŒ" = "Medical",
+	  ":e" = "Engineering", ":Ñƒ" = "Engineering",
+	  ":s" = "Security",	":Ñ‹" = "Security",
+	  ":w" = "whisper",		":Ñ†" = "whisper",
+	  ":t" = "Mercenary",	":Ðµ" = "Mercenary",
+	  ":x" = "Raider",		":Ñ‡" = "Raider",
+	  ":u" = "Supply",		":Ð³" = "Supply",
+	  ":v" = "Service",		":Ð¼" = "Service",
+	  ":p" = "AI Private",	":Ð·" = "AI Private",
+	  ":z" = "Entertainment",":Ñ" = "Entertainment",
+	  ":y" = "Exploration",		":Ð½" = "Exploration",
 
-	  ":R" = "right ear",	":Ê" = "right ear",
-	  ":L" = "left ear",	":Ä" = "left ear",
-	  ":I" = "intercom",	":Ø" = "intercom",
-	  ":H" = "department",	":Ð" = "department",
-	  ":C" = "Command",		":Ñ" = "Command",
-	  ":N" = "Science",		":Ò" = "Science",
-	  ":M" = "Medical",		":Ü" = "Medical",
-	  ":E" = "Engineering",	":Ó" = "Engineering",
-	  ":S" = "Security",	":Û" = "Security",
-	  ":W" = "whisper",		":Ö" = "whisper",
-	  ":T" = "Mercenary",	":Å" = "Mercenary",
-	  ":X" = "Raider",		":×" = "Raider",
-	  ":U" = "Supply",		":Ã" = "Supply",
-	  ":V" = "Service",		":Ì" = "Service",
-	  ":P" = "AI Private",	":Ç" = "AI Private",
-	  ":Z" = "Entertainment",":ß" = "Entertainment",
-	  ":Y" = "Exploration",		":Í" = "Exploration",
-
-	  //kinda localization -- rastaf0 uebalo ruslan
-	  //same keys as above, but on russian keyboard layout. This file uses cp1251 as encoding.
-	  ":Ãª" = "right ear",	".Ãª" = "right ear",
-	  ":Ã¤" = "left ear",	".Ã¤" = "left ear",
-	  ":Ã¸" = "intercom",	".Ã¸" = "intercom",
-	  ":Ã°" = "department",	".Ã°" = "department",
-	  ":Ã±" = "Command",		".Ã±" = "Command",
-	  ":Ã²" = "Science",		".Ã²" = "Science",
-	  ":Ã¼" = "Medical",		".Ã¼" = "Medical",
-	  ":Ã³" = "Engineering",	".Ã³" = "Engineering",
-	  ":Ã»" = "Security",	".Ã»" = "Security",
-	  ":Ã¶" = "whisper",		".Ã¶" = "whisper",
-	  ":Ã¥" = "Mercenary",	".Ã¥" = "Mercenary",
-	  ":Ã©" = "Supply",		".Ã©" = "Supply",
+	  ":R" = "right ear",	":Ðš" = "right ear",
+	  ":L" = "left ear",	":Ð”" = "left ear",
+	  ":I" = "intercom",	":Ð¨" = "intercom",
+	  ":H" = "department",	":Ð " = "department",
+	  ":C" = "Command",		":Ð¡" = "Command",
+	  ":N" = "Science",		":Ð¢" = "Science",
+	  ":M" = "Medical",		":Ð¬" = "Medical",
+	  ":E" = "Engineering",	":Ð£" = "Engineering",
+	  ":S" = "Security",	":Ð«" = "Security",
+	  ":W" = "whisper",		":Ð¦" = "whisper",
+	  ":T" = "Mercenary",	":Ð•" = "Mercenary",
+	  ":X" = "Raider",		":Ð§" = "Raider",
+	  ":U" = "Supply",		":Ð“" = "Supply",
+	  ":V" = "Service",		":Ðœ" = "Service",
+	  ":P" = "AI Private",	":Ð—" = "AI Private",
+	  ":Z" = "Entertainment",":Ð¯" = "Entertainment",
+	  ":Y" = "Exploration",		":Ð" = "Exploration",
 )
 
 
 var/list/channel_to_radio_key = new
-proc/get_radio_key_from_channel(var/channel)
+proc/get_radio_key_from_channel(channel)
 	var/key = channel_to_radio_key[channel]
 	if(!key)
 		for(var/radio_key in department_radio_keys)
@@ -89,43 +74,43 @@ proc/get_radio_key_from_channel(var/channel)
 	return default_language
 
 /mob/proc/is_muzzled()
-	return istype(wear_mask, /obj/item/clothing/mask/muzzle)
+	return (wear_mask && (istype(wear_mask, /obj/item/clothing/mask/muzzle) || istype(src.wear_mask, /obj/item/weapon/grenade)))
 
 //Takes a list of the form list(message, verb, whispering) and modifies it as needed
 //Returns 1 if a speech problem was applied, 0 otherwise
-/mob/living/proc/handle_speech_problems(var/list/message_data)
-	var/message = rhtml_decode(message_data[1])
+/mob/living/proc/handle_speech_problems(list/message_data)
+	var/message = html_decode(message_data[1])
 	var/verb = message_data[2]
 
-		. = FALSE
+	. = FALSE
 
 	if((MUTATION_HULK in mutations) && health >= 25 && length(message))
-		message = "[ruppertext(message)]!!!"
+		message = "[uppertext(message)]!!!"
 		verb = pick("yells","roars","hollers")
 		message_data[3] = 0
-		. = TRUE
-	if(slurring)
-		message = slur(message)
-		verb = pick("slobbers","slurs")
-		. = TRUE
-	if(stuttering)
-		message = stutter(message)
-		verb = pick("stammers","stutters")
-		. = TRUE
-	if(stammering)
-		message = NewStutter(message)
-		verb = pick("stammers","stutters")
-		. = TRUE
-	if(burrieng)
-		message = burr(message)
-		verb = pick("burrs","croups")
 		. = TRUE
 	if(lisping)
 		message = lisp(message)
 		verb = pick("lisps","croups")
 		. = TRUE
+	if(burrieng)
+		message = burr(message)
+		verb = pick("burrs","croups")
+		. = TRUE
+	if(slurring)
+		message = slur(message)
+		verb = pick("slobbers","slurs")
+		. = TRUE
+	if(stammering)
+		message = stammer(message)
+		verb = pick("stammers","stutters")
+		. = TRUE
+	if(stuttering)
+		message = stutter(message)
+		verb = pick("stammers","stutters")
+		. = TRUE
 
-	message_data[1] = russian_to_cp1251(message)
+	message_data[1] = message
 	message_data[2] = verb
 
 /mob/living/proc/handle_message_mode(message_mode, message, verb, speaking, used_radios, alt_name)
@@ -141,14 +126,14 @@ proc/get_radio_key_from_channel(var/channel)
 	returns[2] = null
 	return returns
 
-/mob/living/proc/get_speech_ending(verb, var/ending)
+/mob/living/proc/get_speech_ending(verb, ending)
 	if(ending=="!")
 		return pick("exclaims","shouts","yells")
 	if(ending=="?")
 		return "asks"
 	return verb
 
-/mob/living/say(var/message, var/datum/language/speaking = null, var/verb="says", var/alt_name="", whispering)
+/mob/living/say(message, datum/language/speaking = null, verb="says", alt_name="", whispering)
 	if(client)
 		if(client.prefs.muted & MUTE_IC)
 			to_chat(src, "<span class='warning'>You cannot speak in IC (Muted).</span>")
@@ -159,19 +144,19 @@ proc/get_radio_key_from_channel(var/channel)
 			return say_dead(message)
 		return
 
-	var/prefix = copytext(message,1,2)
+	var/prefix = copytext_char(message,1,2)
 	if(prefix == get_prefix_key(/decl/prefix/custom_emote))
-		return emote(copytext(message,2))
+		return emote(copytext_char(message,2))
 	if(prefix == get_prefix_key(/decl/prefix/visible_emote))
-		return custom_emote(1, copytext(message,2))
+		return custom_emote(1, copytext_char(message,2))
 
 	//parse the radio code and consume it
 	var/message_mode = parse_message_mode(message, "headset")
 	if (message_mode)
 		if (message_mode == "headset")
-			message = copytext(message,2)	//it would be really nice if the parse procs could do this for us.
+			message = copytext_char(message,2)	//it would be really nice if the parse procs could do this for us.
 		else
-			message = copytext(message,3)
+			message = copytext_char(message,3)
 
 	message = trim_left(message)
 
@@ -179,7 +164,7 @@ proc/get_radio_key_from_channel(var/channel)
 	if(!speaking)
 		speaking = parse_language(message)
 		if(speaking)
-			message = copytext(message,2+length(speaking.key))
+			message = copytext_char(message,2+length_char(speaking.key))
 		else
 			speaking = get_default_language()
 
@@ -189,7 +174,7 @@ proc/get_radio_key_from_channel(var/channel)
 		speaking.broadcast(src,trim(message))
 		return 1
 
-	if(is_muzzled())
+	if(is_muzzled() && !(speaking.flags & NONVERBAL|SIGNLANG))
 		to_chat(src, "<span class='danger'>You're muzzled and cannot speak!</span>")
 		return
 
@@ -330,7 +315,7 @@ proc/get_radio_key_from_channel(var/channel)
 		log_message(message, INDIVIDUAL_SAY_LOG)
 	return 1
 
-/mob/living/proc/say_signlang(var/message, var/verb="gestures", var/datum/language/language)
+/mob/living/proc/say_signlang(message, verb="gestures", datum/language/language)
 	for (var/mob/O in viewers(src, null))
 		O.hear_signlang(message, verb, language, src)
 	return 1

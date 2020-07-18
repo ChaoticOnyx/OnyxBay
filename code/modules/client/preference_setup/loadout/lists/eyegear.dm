@@ -1,6 +1,5 @@
 /datum/gear/eyes
-	sort_category = "Glasses and Eyewear"
-	category = /datum/gear/eyes
+	sort_category = "Glasses"
 	slot = slot_glasses
 
 /datum/gear/eyes/glasses
@@ -27,7 +26,7 @@
 	glasses["hipster glasses"] = /obj/item/clothing/glasses/regular/hipster
 	glasses["monocle"] = /obj/item/clothing/glasses/monocle
 	glasses["scanning goggles"] = /obj/item/clothing/glasses/regular/scanners
-	gear_tweaks += new/datum/gear_tweak/path(glasses)
+	gear_tweaks += new /datum/gear_tweak/path(glasses)
 
 /datum/gear/eyes/sciencegoggles
 	display_name = "Science Goggles"

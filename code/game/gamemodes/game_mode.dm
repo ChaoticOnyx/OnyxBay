@@ -32,6 +32,8 @@ var/global/list/additional_antag_types = list()
 	var/station_was_nuked = 0                // See nuclearbomb.dm and malfunction.dm.
 	var/explosion_in_progress = 0            // Sit back and relax
 
+	var/blob_domination = 0                  // Blob ate the station, end the game
+
 	var/event_delay_mod_moderate             // Modifies the timing of random events.
 	var/event_delay_mod_major                // As above.
 
@@ -58,7 +60,8 @@ var/global/list/additional_antag_types = list()
 		round_autoantag = TRUE
 
 /datum/game_mode/Topic(href, href_list[])
-	if(..())
+	if(!check_rights(R_ADMIN))
+		href_exploit(usr.ckey, href)
 		return
 	if(href_list["toggle"])
 		switch(href_list["toggle"])
@@ -286,7 +289,7 @@ var/global/list/additional_antag_types = list()
 	command_announcement.Announce("The presence of [pick(reasons)] in the region is tying up all available local emergency resources; emergency response teams cannot be called at this time, and post-evacuation recovery efforts will be substantially delayed.","Emergency Transmission")
 
 /datum/game_mode/proc/check_finished()
-	if(evacuation_controller.round_over() || station_was_nuked)
+	if(evacuation_controller.round_over() || station_was_nuked || blob_domination)
 		return 1
 	if(end_on_antag_death && antag_templates && antag_templates.len)
 		var/has_antags = 0
@@ -373,7 +376,7 @@ var/global/list/additional_antag_types = list()
 /datum/game_mode/proc/check_win() //universal trigger to be called at mob death, nuke explosion, etc. To be called from everywhere.
 	return 0
 
-/datum/game_mode/proc/get_players_for_role(var/antag_id)
+/datum/game_mode/proc/get_players_for_role(antag_id)
 	var/list/players = list()
 	var/list/candidates = list()
 
@@ -538,7 +541,7 @@ proc/get_nt_opposed()
 	if(dudes.len == 0) return null
 	return pick(dudes)
 
-/proc/show_objectives(var/datum/mind/player)
+/proc/show_objectives(datum/mind/player)
 
 	if(!player || !player.current) return
 

@@ -1,7 +1,5 @@
 #define SAVE_RESET -1
 
-var/list/preferences_datums = list()
-
 datum/preferences
 	//doohickeys for savefiles
 	var/path
@@ -32,26 +30,31 @@ datum/preferences
 	var/datum/browser/panel
 
 /datum/preferences/New(client/C)
+	if(istype(C))
+		client = C
+		client_ckey = C.ckey
+		SScharacter_setup.preferences_datums[C.ckey] = src
+
 	player_setup = new(src)
 	gender = pick(MALE, FEMALE)
 	real_name = random_name(gender,species)
 	b_type = RANDOM_BLOOD_TYPE
 
-	if(istype(C))
-		client = C
-		client_ckey = C.ckey
-		if(!IsGuestKey(C.key))
-			load_path(C.ckey)
-			load_preferences()
-			load_and_update_character()
+	if(!IsGuestKey(C.key))
+		load_path(C.ckey)
+		load_preferences()
+		load_and_update_character()
+	sanitize_preferences()
 
-/datum/preferences/proc/load_and_update_character(var/slot)
+	..()
+
+/datum/preferences/proc/load_and_update_character(slot)
 	load_character(slot)
 	if(update_setup(loaded_preferences, loaded_character))
-		save_preferences()
+		SScharacter_setup.queue_preferences_save(src)
 		save_character()
 
-/datum/preferences/proc/ZeroSkills(var/forced = 0)
+/datum/preferences/proc/ZeroSkills(forced = 0)
 	for(var/V in SKILLS) for(var/datum/skill/S in SKILLS[V])
 		if(!skills.Find(S.ID) || forced)
 			skills[S.ID] = SKILL_NONE
@@ -104,7 +107,8 @@ datum/preferences
 			return "God"
 
 /datum/preferences/proc/ShowChoices(mob/user)
-	if(!user || !user.client)	return
+	if(!user || !user.client)
+		return
 
 	if(!get_mob_by_key(client_ckey))
 		to_chat(user, "<span class='danger'>No mob exists for the given client!</span>")
@@ -131,6 +135,7 @@ datum/preferences
 	var/datum/browser/popup = new(user, "Character Setup","Character Setup", 1200, 800, src)
 	popup.set_content(dat)
 	popup.open()
+	SSwarnings.show_warning(user.client, WARNINGS_NEWCOMERS, "window=Warning;size=360x240;can_resize=0;can_minimize=0")
 
 /datum/preferences/proc/process_link(mob/user, list/href_list)
 
@@ -242,11 +247,11 @@ datum/preferences
 		O.status = 0
 		O.model = null
 		if(status == "amputated")
-			character.organs_by_name[O.organ_tag] = null
+			character.organs_by_name.Remove(O.organ_tag)
 			character.organs -= O
 			if(O.children) // This might need to become recursive.
 				for(var/obj/item/organ/external/child in O.children)
-					character.organs_by_name[child.organ_tag] = null
+					character.organs_by_name.Remove(child.organ_tag)
 					character.organs -= child
 		else if(status == "cyborg")
 			if(rlimb_data[name])

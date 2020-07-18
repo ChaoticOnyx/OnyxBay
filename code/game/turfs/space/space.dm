@@ -3,7 +3,7 @@
 	icon = 'icons/turf/space.dmi'
 
 	name = "\proper space"
-	icon_state = "white"
+	icon_state = "on_map"
 	dynamic_lighting = 0
 	temperature = T20C
 	thermal_conductivity = OPEN_HEAT_TRANSFER_COEFFICIENT
@@ -22,6 +22,7 @@
 
 /turf/space/Initialize()
 	. = ..()
+	icon_state = "white"
 	update_starlight()
 	if (!dust_cache)
 		build_dust_cache()
@@ -213,7 +214,7 @@
 					A.loc.Entered(A)
 	return
 
-/turf/space/ChangeTurf(var/turf/N, var/tell_universe=1, var/force_lighting_update = 0)
+/turf/space/ChangeTurf(turf/N, tell_universe=1, force_lighting_update = 0)
 	return ..(N, tell_universe, 1)
 
 //Bluespace turfs for shuttles and possible future transit use

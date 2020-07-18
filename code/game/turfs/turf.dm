@@ -47,7 +47,29 @@
 /turf/proc/is_solid_structure()
 	return 1
 
+/turf/proc/handle_crawling(mob/user)
+	if(!user)
+		return
+
+	if(!user.lying || user.anchored || user.restrained() || !ishuman(user)) //Because do_after's aren't actually interrupted by most things unfortunately.
+		return
+
+	var/area/A = get_area(src)
+	if((istype(A) && !(A.has_gravity)) || istype(src, /turf/space))
+		return
+
+	for(var/obj/item/grab/G in user.grabbed_by)
+		if(G.stop_move())
+			return
+
+	if(do_after(user, 15 + (user.weakened * 2), src, incapacitation_flags = ~INCAPACITATION_FORCELYING))
+		if(step_towards(user, src))
+			user.visible_message(SPAN_WARNING("<font size=1>[user] crawls on \the [src]!</font>"))
+
 /turf/attack_hand(mob/user)
+	user.setClickCooldown(DEFAULT_QUICK_COOLDOWN)
+	handle_crawling(user)
+
 	if(!(user.canmove) || user.restrained() || !(user.pulling))
 		return 0
 	if(user.pulling.anchored || !isturf(user.pulling.loc))
@@ -55,7 +77,6 @@
 	if(user.pulling.loc != user.loc && get_dist(user, user.pulling) > 1)
 		return 0
 
-	user.setClickCooldown(DEFAULT_QUICK_COOLDOWN)
 	if(ismob(user.pulling))
 		var/mob/M = user.pulling
 		var/atom/movable/t = M.pulling
@@ -66,31 +87,12 @@
 		step(user.pulling, get_dir(user.pulling.loc, src))
 	return 1
 
-turf/attackby(obj/item/weapon/W as obj, mob/user as mob)
+/turf/attackby(obj/item/weapon/W as obj, mob/user as mob)
 	if(istype(W, /obj/item/weapon/storage))
 		var/obj/item/weapon/storage/S = W
 		if(S.use_to_pickup && S.collection_mode)
 			S.gather_all(src, user)
 	return ..()
-
-/turf/MouseDrop_T(atom/movable/O as mob|obj, mob/user as mob)
-	var/turf/T = get_turf(user)
-	var/area/A = T.loc
-	if((istype(A) && !(A.has_gravity)) || (istype(T,/turf/space)))
-		return
-	if(istype(O, /obj/screen))
-		return
-	if((!(istype(O, /atom/movable)) || O.anchored || !Adjacent(user) || !Adjacent(O) || !user.Adjacent(O)))
-		return
-	if(!isturf(O.loc) || !isturf(user.loc))
-		return
-	if(isanimal(user) && O != user)
-		return
-	for (var/obj/item/grab/G in user.grabbed_by)
-		if(G.stop_move())
-			return
-	if (do_after(user, 25 + (5 * user.weakened), incapacitation_flags = ~INCAPACITATION_FORCELYING))
-		step_towards(O, src)
 
 /turf/Enter(atom/movable/mover as mob|obj, atom/forget as mob|obj|turf|area)
 
@@ -154,25 +156,13 @@ var/const/enterloopsanity = 100
 			M.inertia_dir = 0
 			M.make_floating(0) //we know we're not on solid ground so skip the checks to save a bit of processing
 
-	var/objects = 0
-	if(A && (A.movable_flags & MOVABLE_FLAG_PROXMOVE))
-		for(var/atom/movable/thing in range(1))
-			if(objects > enterloopsanity) break
-			objects++
-			spawn(0)
-				if(A)
-					A.HasProximity(thing, 1)
-					if ((thing && A) && (thing.movable_flags & MOVABLE_FLAG_PROXMOVE))
-						thing.HasProximity(A, 1)
-	return
-
 /turf/proc/adjacent_fire_act(turf/simulated/floor/source, temperature, volume)
 	return
 
 /turf/proc/is_plating()
 	return 0
 
-/turf/proc/protects_atom(var/atom/A)
+/turf/proc/protects_atom(atom/A)
 	return FALSE
 
 /turf/proc/inertial_drift(atom/movable/A)
@@ -193,7 +183,7 @@ var/const/enterloopsanity = 100
 	for(var/obj/O in src)
 		O.hide(O.hides_under_flooring() && !is_plating())
 
-/turf/proc/AdjacentTurfs(var/check_blockage = TRUE)
+/turf/proc/AdjacentTurfs(check_blockage = TRUE)
 	. = list()
 	for(var/turf/t in (trange(1,src) - src))
 		if(check_blockage)
@@ -203,7 +193,7 @@ var/const/enterloopsanity = 100
 		else
 			. += t
 
-/turf/proc/CardinalTurfs(var/check_blockage = TRUE)
+/turf/proc/CardinalTurfs(check_blockage = TRUE)
 	. = list()
 	for(var/ad in AdjacentTurfs(check_blockage))
 		var/turf/T = ad
@@ -257,7 +247,7 @@ var/const/enterloopsanity = 100
 		decals = null
 
 // Called when turf is hit by a thrown object
-/turf/hitby(atom/movable/AM as mob|obj, var/speed)
+/turf/hitby(atom/movable/AM as mob|obj, speed)
 	if(src.density)
 		spawn(2)
 			step(AM, turn(AM.last_move, 180))

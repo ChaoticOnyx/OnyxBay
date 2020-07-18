@@ -6,11 +6,11 @@
 	name = "Skills"
 	sort_order = 1
 
-/datum/category_item/player_setup_item/skills/load_character(var/savefile/S)
+/datum/category_item/player_setup_item/skills/load_character(savefile/S)
 	S["skills"]					>> pref.skills
 	S["used_skillpoints"]		>> pref.used_skillpoints
 
-/datum/category_item/player_setup_item/skills/save_character(var/savefile/S)
+/datum/category_item/player_setup_item/skills/save_character(savefile/S)
 	S["skills"]					<< pref.skills
 	S["used_skillpoints"]		<< pref.used_skillpoints
 
@@ -44,7 +44,7 @@
 	. += "</table>"
 	. = jointext(.,null)
 
-/datum/category_item/player_setup_item/proc/skill_to_button(var/skill, var/level_name, var/current_level, var/selection_level)
+/datum/category_item/player_setup_item/proc/skill_to_button(skill, level_name, current_level, selection_level)
 	if(current_level == selection_level)
 		return "<th><span class='linkOn'>[level_name]</span></th>"
 	return "<th><a href='?src=\ref[src];setskill=\ref[skill];newvalue=[selection_level]'>[level_name]</a></th>"
@@ -52,7 +52,7 @@
 /datum/category_item/player_setup_item/skills/OnTopic(href, href_list, user)
 	if(href_list["skillinfo"])
 		var/datum/skill/S = locate(href_list["skillinfo"])
-		var/HTML = "<h2>[S.name][S.secondary ? "(secondary)" : ""]</h2>"
+		var/HTML = "<meta charset=\"utf-8\"><h2>[S.name][S.secondary ? "(secondary)" : ""]</h2>"
 		HTML += "<b>Generic Description</b>: [S.desc]<br><br><b>Unskilled</b>: [S.desc_unskilled]<br>"
 		if(!S.secondary)
 			HTML += "<b>Amateur</b>: [S.desc_amateur]<br>"

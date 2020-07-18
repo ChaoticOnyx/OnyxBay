@@ -178,7 +178,7 @@
 	else
 		return TRUE
 
-/turf/simulated/floor/can_build_cable(var/mob/user)
+/turf/simulated/floor/can_build_cable(mob/user)
 	if(!is_plating() || flooring)
 		to_chat(user, "<span class='warning'>Removing the tiling first.</span>")
 		return 0

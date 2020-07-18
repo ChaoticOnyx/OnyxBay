@@ -2,6 +2,7 @@
 #define DIRECT_OUTPUT(A, B) A << B
 #define WRITE_FILE(file, text) DIRECT_OUTPUT(file, text)
 
+#define PRINT_ATOM(A) "[A] ([A.x], [A.y], [A.z])"
 
 // On Linux/Unix systems the line endings are LF, on windows it's CRLF, admins that don't use notepad++
 // will get logs that are one big line if the system is Linux and they are using notepad.  This solves it by adding CR to every line ending
@@ -9,17 +10,21 @@
 
 /var/global/log_end= world.system_type == UNIX ? ascii2text(13) : ""
 
+/proc/log_to_dd(text)
+	world.log << text
+	if(config && config.log_world_output)
+		log_debug("\[DD]: [text]")
 
 /proc/error(msg)
-	to_world_log("## ERROR: [msg][log_end]")
+	log_to_dd("\[[time_stamp()]]\[ERROR] [msg][log_end]")
 
-/proc/log_ss(subsystem, text, log_world = TRUE)
+/proc/log_ss(subsystem, text, log_to_dd = TRUE)
 	if (!subsystem)
 		subsystem = "UNKNOWN"
 	var/msg = "[subsystem]: [text]"
 	game_log("SS", msg)
-	if (log_world)
-		to_world_log("SS[subsystem]: [text]")
+	if (log_to_dd)
+		log_to_dd("SS[subsystem]: [text]")
 
 /proc/log_ss_init(text)
 	game_log("SS", "[text]")
@@ -27,21 +32,21 @@
 #define WARNING(MSG) warning("[MSG] in [__FILE__] at line [__LINE__] src: [src] usr: [usr].")
 //print a warning message to world.log
 /proc/warning(msg)
-	to_world_log("## WARNING: [msg][log_end]")
+	log_to_dd("\[[time_stamp()]]\[WARNING] [msg][log_end]")
 
 //print a testing-mode debug message to world.log
 /proc/testing(msg)
-	to_world_log("## TESTING: [msg][log_end]")
+	log_to_dd("\[[time_stamp()]]\[TESTING] [msg][log_end]")
 
-/proc/log_generic(var/type, var/message, var/location, var/log_to_diary = TRUE, var/notify_admin = FALSE, var/req_pref = null)
+/proc/log_generic(type, message, location, log_to_common = TRUE, notify_admin = FALSE, req_pref = null)
 	var/turf/T = get_turf(location)
 	if(location && T)
-		if(log_to_diary)
-			diary << "\[[time_stamp()]] [game_id] [type]: [message] ([T.x],[T.y],[T.z])[log_end]"
+		if(log_to_common)
+			WRITE_FILE(GLOB.world_common_log, "\[[time_stamp()]] [game_id] [type]: [message] ([T.x],[T.y],[T.z])[log_end]")
 		if(notify_admin)
 			message += " (<A HREF='?_src_=holder;adminplayerobservecoodjump=1;X=[T.x];Y=[T.y];Z=[T.z]'>JMP</a>)"
-	else if(log_to_diary)
-		diary << "\[[time_stamp()]] [game_id] [type]: [message][log_end]"
+	else if(log_to_common)
+		WRITE_FILE(GLOB.world_common_log, "\[[time_stamp()]] [game_id] [type]: [message][log_end]")
 
 	var/rendered = "<span class=\"log_message\"><span class=\"prefix\">[type] LOG:</span> <span class=\"message\">[message]</span></span>"
 	if(notify_admin)
@@ -53,7 +58,15 @@
 	log_generic("ADMIN", text, location, config.log_admin, notify_admin)
 
 /proc/log_debug(text, location)
-	log_generic("DEBUG", text, location, config.log_debug, TRUE, /datum/client_preference/staff/show_debug_logs)
+	log_generic("DEBUG", text, location, FALSE, TRUE, /datum/client_preference/staff/show_debug_logs)
+	if(!config.log_debug || !GLOB.world_debug_log)
+		return
+	WRITE_FILE(GLOB.world_debug_log, "\[[time_stamp()]] DEBUG: [text][log_end]")
+
+/proc/log_debug_verbose(text)
+	if(!config.log_debug_verbose || !GLOB.world_debug_log)
+		return
+	WRITE_FILE(GLOB.world_debug_log, "\[[time_stamp()]] DEBUG VERBOSE: [text][log_end]")
 
 /proc/log_game(text, location, notify_admin)
 	log_generic("GAME", text, location, config.log_game, notify_admin)
@@ -95,27 +108,14 @@
 	log_generic("DATABASE", text, notify_admin = notify_admin)
 
 /proc/game_log(category, text)
-	diary << "\[[time_stamp()]\] [game_id] [category]: [text][log_end]"
-
-/proc/log_to_dd(text)
-	to_world_log(text) //this comes before the config check because it can't possibly runtime
-	if(config.log_world_output)
-		game_log("DD_OUTPUT", text)
+	WRITE_FILE(GLOB.world_common_log, "\[[time_stamp()]\] [game_id] [category]: [text][log_end]")
 
 /proc/log_unit_test(text)
-	to_world_log("## UNIT_TEST ##: [text]")
+	log_to_dd("\[[time_stamp()]]\[UNIT TEST] [text]")
 	log_debug(text)
 
 /proc/log_qdel(text)
 	WRITE_FILE(GLOB.world_qdel_log, "\[[time_stamp()]]QDEL: [text]")
-
-//This replaces world.log so it displays both in DD and the file
-/proc/log_world(text)
-	if(config && config.log_runtime)
-		to_world_log(runtime_diary)
-		to_world_log(text)
-	to_world_log(null)
-	to_world_log(text)
 
 /proc/log_error(text)
 	error(text)
@@ -123,13 +123,19 @@
 /proc/log_warning(text)
 	warning(text)
 
+/proc/log_runtime(text)
+	if (!GLOB.world_runtime_log)
+		log_error("\[EARLY RUNTIME] [text]")
+		return
+	WRITE_FILE(GLOB.world_runtime_log, text)
+
 /* ui logging */
 
 /proc/log_tgui(text)
 	log_debug(text)
 
 //pretty print a direction bitflag, can be useful for debugging.
-/proc/dir_text(var/dir)
+/proc/dir_text(dir)
 	var/list/comps = list()
 	if(dir & NORTH) comps += "NORTH"
 	if(dir & SOUTH) comps += "SOUTH"
@@ -141,7 +147,7 @@
 	return english_list(comps, nothing_text="0", and_text="|", comma_text="|")
 
 //more or less a logging utility
-/proc/key_name(var/whom, var/include_link = null, var/include_name = 1, var/highlight_special_characters = 1, var/datum/ticket/ticket = null)
+/proc/key_name(whom, include_link = null, include_name = 1, highlight_special_characters = 1, datum/ticket/ticket = null)
 	var/mob/M
 	var/client/C
 	var/key
@@ -197,7 +203,7 @@
 
 	return .
 
-/proc/key_name_admin(var/whom, var/include_name = 1)
+/proc/key_name_admin(whom, include_name = 1)
 	return key_name(whom, 1, include_name)
 
 // Helper procs for building detailed log lines
@@ -217,7 +223,7 @@
 /mob/get_log_info_line()
 	return ckey ? "[..()] ([ckey])" : ..()
 
-/proc/log_info_line(var/datum/d)
+/proc/log_info_line(datum/d)
 	if(isnull(d))
 		return "*null*"
 	if(islist(d))
@@ -229,6 +235,6 @@
 		return json_encode(d)
 	return d.get_log_info_line()
 
-/proc/report_progress(var/progress_message)
+/proc/report_progress(progress_message)
 	admin_notice("<span class='boldannounce'>[progress_message]</span>", R_DEBUG)
-	to_world_log(progress_message)
+	log_to_dd(progress_message)

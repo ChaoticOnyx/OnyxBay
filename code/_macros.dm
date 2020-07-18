@@ -5,10 +5,6 @@
 
 #define get_turf(A) get_step(A,0)
 
-#define SPAN_NOTE(text) "<span class='notice'>[text]</span>"
-#define SPAN_WARN(text) "<span class='warning'>[text]</span>"
-#define SPAN_DANG(text) "<span class='danger'>[text]</span>"
-
 #define isAI(A) istype(A, /mob/living/silicon/ai)
 
 #define isalien(A) istype(A, /mob/living/carbon/alien)
@@ -41,6 +37,8 @@
 
 #define isliving(A) istype(A, /mob/living)
 
+#define isbot(A) istype(A, /mob/living/bot)
+
 #define ismouse(A) istype(A, /mob/living/simple_animal/mouse)
 
 #define ismovable(A) istype(A, /atom/movable)
@@ -50,6 +48,8 @@
 #define isobj(A) istype(A, /obj)
 
 #define isghost(A) istype(A, /mob/observer/ghost)
+
+#define isvrhuman(A) (istype(A, /mob/living/carbon/human/vrhuman))
 
 #define isobserver(A) istype(A, /mob/observer)
 
@@ -103,12 +103,14 @@
 
 #define isovermind(A) istype(A, /mob/blob)
 
+#define ismech(A) istype(A, /obj/mecha)
+
+#define iseffect(A) istype(A, /obj/effect)
+
 #define sequential_id(key) uniqueness_repository.Generate(/datum/uniqueness_generator/id_sequential, key)
 
 #define random_id(key,min_id,max_id) uniqueness_repository.Generate(/datum/uniqueness_generator/id_random, key, min_id, max_id)
 
-#define to_world(message)                                   to_chat(world,message)
-#define to_world_log(message)                               world.log << message
 #define sound_to(target, sound)                             target << sound
 #define to_file(file_entry, source_var)                     file_entry << source_var
 #define from_file(file_entry, target_var)                   file_entry >> target_var
@@ -183,20 +185,25 @@
 
 #define JOINTEXT(X) jointext(X, null)
 
-#define SPAN_NOTICE(X) "<span class='notice'>[X]</span>"
+#define SPAN(class, X)   "<span class='[class]'>[X]</span>"
 
-#define SPAN_WARNING(X) "<span class='warning'>[X]</span>"
+#define SPAN_NOTICE(X)   SPAN("notice", X)
 
-#define SPAN_DANGER(X) "<span class='danger'>[X]</span>"
+#define SPAN_WARNING(X)  SPAN("warning", X)
 
-#define SPAN_OCCULT(X) "<span class='cult'>[X]</span>"
+#define SPAN_DANGER(X)   SPAN("danger", X)
 
-#define FONT_SMALL(X) "<font size='1'>[X]</font>"
+#define SPAN_OCCULT(X)   SPAN("cult", X)
 
-#define FONT_NORMAL(X) "<font size='2'>[X]</font>"
+#define SPAN_DEADSAY(X)  SPAN("deadsay", X)
 
-#define FONT_LARGE(X) "<font size='3'>[X]</font>"
+#define FONT_SMALL(X)    SPAN("small", X)
 
-#define FONT_HUGE(X) "<font size='4'>[X]</font>"
+#define FONT_NORMAL(X)   SPAN("normal", X)
 
-#define FONT_GIANT(X) "<font size='5'>[X]</font>"
+#define FONT_LARGE(X)    SPAN("large", X)
+
+#define FONT_HUGE(X)     SPAN("huge", X)
+
+#define FONT_GIANT(X)    SPAN("giant", X)
+

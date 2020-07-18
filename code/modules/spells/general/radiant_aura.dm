@@ -16,6 +16,6 @@
 /spell/radiant_aura/choose_targets()
 	return list(holder)
 
-/spell/radiant_aura/cast(var/list/targets, var/mob/user)
+/spell/radiant_aura/cast(list/targets, mob/user)
 	var/obj/aura/radiant_aura/A = new(user)
 	QDEL_IN(A,duration)

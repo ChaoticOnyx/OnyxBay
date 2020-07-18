@@ -21,7 +21,7 @@ REAGENT SCANNER
 	throw_range = 10
 	matter = list(MATERIAL_STEEL = 200)
 	origin_tech = list(TECH_MAGNET = 1, TECH_BIO = 1)
-	var/mode = 1;
+	var/mode = 1
 
 /obj/item/device/healthanalyzer/do_surgery(mob/living/M, mob/living/user)
 	if(user.a_intent != I_HELP) //in case it is ever used as a surgery tool
@@ -33,7 +33,7 @@ REAGENT SCANNER
 	user.setClickCooldown(DEFAULT_ATTACK_COOLDOWN)
 	scan_mob(M, user)
 
-/obj/item/device/healthanalyzer/proc/scan_mob(var/mob/living/carbon/C, var/mob/living/user)
+/obj/item/device/healthanalyzer/proc/scan_mob(mob/living/carbon/C, mob/living/user)
 
 	if (!user.IsAdvancedToolUser())
 		to_chat(user, "<span class='warning'>You are not nimble enough to use this device.</span>")
@@ -45,7 +45,7 @@ REAGENT SCANNER
 	//user << browse(medical_scan_results(H, mode), "window=scanconsole;size=550x400")
 	ui_interact(user,target = C)
 
-/obj/item/device/healthanalyzer/ui_interact(mob/user, ui_key = "main", var/datum/nanoui/ui = null, var/force_open = 1,var/mob/living/carbon/human/target)
+/obj/item/device/healthanalyzer/ui_interact(mob/user, ui_key = "main", datum/nanoui/ui = null, force_open = 1,mob/living/carbon/human/target)
 
 	var/data[0]
 
@@ -76,7 +76,7 @@ REAGENT SCANNER
 		ui.set_window_options("focus=0;can_close=1;can_minimize=1;can_maximize=0;can_resize=0;titlebar=1;")
 		ui.open()
 
-proc/medical_scan_results(var/mob/living/carbon/human/H, var/verbose, var/separate_result)
+proc/medical_scan_results(mob/living/carbon/human/H, verbose, separate_result)
 
 	. = list()
 	var/p_name = list()
@@ -374,7 +374,7 @@ proc/medical_scan_results(var/mob/living/carbon/human/H, var/verbose, var/separa
 
 
 // Calculates severity based on the ratios defined external limbs.
-proc/get_wound_severity(var/damage_ratio, var/vital = 0)
+proc/get_wound_severity(damage_ratio, vital = 0)
 	var/degree
 
 	switch(damage_ratio)
@@ -458,7 +458,7 @@ proc/get_wound_severity(var/damage_ratio, var/vital = 0)
 	set name = "Print Data"
 	set category = "Object"
 	if (last_target && dat)
-		new/obj/item/weapon/paper/(get_turf(src), "<tt>[dat]</tt>", "Body scan report - [last_target]")
+		new /obj/item/weapon/paper/(get_turf(src), "<tt>[dat]</tt>", "Body scan report - [last_target]")
 		src.visible_message("<span class='notice'>[src] prints out \the scan result.</span>")
 
 
@@ -657,7 +657,7 @@ proc/get_wound_severity(var/damage_ratio, var/vital = 0)
 	obj_flags = OBJ_FLAG_CONDUCTIBLE
 	matter = list(MATERIAL_STEEL = 30, MATERIAL_GLASS = 20)
 
-/obj/item/device/slime_scanner/proc/list_gases(var/gases)
+/obj/item/device/slime_scanner/proc/list_gases(gases)
 	. = list()
 	for(var/g in gases)
 		. += "[gas_data.name[g]] ([gases[g]]%)"

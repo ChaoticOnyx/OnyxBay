@@ -28,7 +28,7 @@
 				/spell/targeted/ethereal_jaunt = 					1,
 				/spell/targeted/heal_target = 						1,
 				/spell/aoe_turf/knock = 							1,
-				/spell/noclothes = 									2,
+				/spell/noclothes = 									3,
 				/spell/aoe_turf/conjure/faithful_hound = 			1,
 				/obj/item/weapon/gun/energy/staff/focus = 			1,
 				/obj/structure/closet/wizard/souls = 				1,

@@ -10,7 +10,7 @@
 
 	var/obj/item/weapon/reagent_containers/container = null
 
-/obj/machinery/computer/curer/attackby(var/obj/I as obj, var/mob/user as mob)
+/obj/machinery/computer/curer/attackby(obj/I as obj, mob/user as mob)
 	if(istype(I,/obj/item/weapon/reagent_containers))
 		var/mob/living/carbon/C = user
 		if(!container)
@@ -36,24 +36,24 @@
 	..()
 	return
 
-/obj/machinery/computer/curer/attack_ai(var/mob/user as mob)
+/obj/machinery/computer/curer/attack_ai(mob/user as mob)
 	return src.attack_hand(user)
 
-/obj/machinery/computer/curer/attack_hand(var/mob/user as mob)
+/obj/machinery/computer/curer/attack_hand(mob/user as mob)
 	if(..())
 		return
 	user.machine = src
-	var/dat
+	var/dat = "<meta charset=\"utf-8\">"
 	if(curing)
-		dat = "Antibody production in progress"
+		dat += "Antibody production in progress"
 	else if(virusing)
-		dat = "Virus production in progress"
+		dat += "Virus production in progress"
 	else if(container)
 		// see if there's any blood in the container
 		var/datum/reagent/blood/B = locate(/datum/reagent/blood) in container.reagents.reagent_list
 
 		if(B)
-			dat = "Blood sample inserted."
+			dat += "Blood sample inserted."
 			dat += "<BR>Antibodies: [antigens2string(B.data["antibodies"])]"
 			dat += "<BR><A href='?src=\ref[src];antibody=1'>Begin antibody production</a>"
 		else
@@ -91,7 +91,7 @@
 	if(. == TOPIC_REFRESH)
 		attack_hand(user)
 
-/obj/machinery/computer/curer/proc/createcure(var/obj/item/weapon/reagent_containers/container)
+/obj/machinery/computer/curer/proc/createcure(obj/item/weapon/reagent_containers/container)
 	var/obj/item/weapon/reagent_containers/glass/beaker/product = new(src.loc)
 
 	var/datum/reagent/blood/B = locate() in container.reagents.reagent_list

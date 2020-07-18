@@ -10,4 +10,4 @@
 	var/guns = list()
 	guns["holdout"] = /obj/item/weapon/gun/projectile/pistol
 	guns[".45 gun"] = /obj/item/weapon/gun/projectile/sec
-	gear_tweaks += new/datum/gear_tweak/path(guns)
+	gear_tweaks += new /datum/gear_tweak/path(guns)

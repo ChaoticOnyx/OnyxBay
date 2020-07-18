@@ -3,7 +3,6 @@
 	icon = 'icons/effects/effects.dmi'
 	icon_state = "fuel"
 	layer = BLOOD_LAYER
-	anchored = 1
 	var/amount = 1
 
 /obj/effect/decal/cleanable/liquid_fuel/proc/Spread(exclude=list())
@@ -22,13 +21,12 @@
 					exclude += src
 					other_fuel.Spread(exclude)
 			else
-				new/obj/effect/decal/cleanable/liquid_fuel(target, amount*0.25,1)
+				new /obj/effect/decal/cleanable/liquid_fuel(target, amount*0.25,1)
 			amount *= 0.75
 
 
 /obj/effect/decal/cleanable/liquid_fuel/flamethrower_fuel
 	icon_state = "mustard"
-	anchored = 0
 
 /obj/effect/decal/cleanable/liquid_fuel/flamethrower_fuel/Initialize(mapload, amt=1, d=0)
 	set_dir(d) //Setting this direction means you won't get torched by your own flamethrower.
@@ -45,7 +43,7 @@
 		if(locate(/obj/effect/decal/cleanable/liquid_fuel/flamethrower_fuel) in O)
 			continue
 		if(O.CanPass(null, S, 0, 0) && S.CanPass(null, O, 0, 0))
-			new/obj/effect/decal/cleanable/liquid_fuel/flamethrower_fuel(O,amount*0.25,d)
+			new /obj/effect/decal/cleanable/liquid_fuel/flamethrower_fuel(O,amount*0.25,d)
 			O.hotspot_expose((T20C*2) + 380,500) //Light flamethrower fuel on fire immediately.
 
 	amount *= 0.25

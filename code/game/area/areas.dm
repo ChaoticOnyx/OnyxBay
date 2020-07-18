@@ -32,6 +32,12 @@
 		power_environ = 0
 	power_change()		// all machines set to current power level, also updates lighting icon
 
+	switch(gravity_state)
+		if(AREA_GRAVITY_NEVER)
+			has_gravity = 0
+		if(AREA_GRAVITY_ALWAYS)
+			has_gravity = 1
+
 /area/proc/get_contents()
 	return contents
 
@@ -44,7 +50,7 @@
 /area/proc/is_shuttle_locked()
 	return 0
 
-/area/proc/atmosalert(danger_level, var/alarm_source)
+/area/proc/atmosalert(danger_level, alarm_source)
 	if (danger_level == 0)
 		atmosphere_alarm.clearAlarm(src, alarm_source)
 	else
@@ -176,7 +182,7 @@
 	//	new lighting behaviour with obj lights
 		icon_state = null
 
-/area/proc/set_lightswitch(var/new_switch)
+/area/proc/set_lightswitch(new_switch)
 	if(lightswitch != new_switch)
 		lightswitch = new_switch
 		for(var/obj/machinery/light_switch/L in src)
@@ -187,6 +193,10 @@
 /area/proc/set_emergency_lighting(state as num)
 	for(var/obj/machinery/light/M in src)
 		M.set_emergency_lighting(state)
+
+/area/proc/set_evacuation_lighting(state)
+	for(var/obj/machinery/light/L in src)
+		L.set_evacuation_lighting(state)
 
 /area/proc/set_alert_lighting(state as num)
 	for(var/obj/machinery/light/M in src)
@@ -212,7 +222,7 @@ var/list/mob/living/forced_ambiance_list = new
 	L.lastarea = newarea
 	play_ambience(L)
 
-/area/proc/play_ambience(var/mob/living/L, custom_period = 1 MINUTES)
+/area/proc/play_ambience(mob/living/L, custom_period = 1 MINUTES)
 	if(!L.client) //Why play the ambient without a client?
 		return
 	// Ambience goes down here -- make sure to list each area seperately for ease of adding things in later, thanks! Note: areas adjacent to each other should have the same sounds to prevent cutoff when possible.- LastyScratch
@@ -245,17 +255,19 @@ var/list/mob/living/forced_ambiance_list = new
 		if(forced_ambience.len)
 			var/S = get_sfx(pick(forced_ambience))
 			forced_ambiance_list |= L
-			L.playsound_local(T,sound(S, repeat = 1, wait = 0, volume = 60, channel = 1))
+			L.playsound_local(T,sound(S, repeat = 1, wait = 0, volume = 30, channel = 1))
 		else
 			sound_to(L, sound(null, channel = 1))
 	else if(src.ambience.len && prob(35) && (world.time >= L.client.played + custom_period))
 		var/S = get_sfx(pick(ambience))
-		L.playsound_local(T, sound(S, repeat = 0, wait = 0, volume = 60, channel = 1))
+		L.playsound_local(T, sound(S, repeat = 0, wait = 0, volume = 30, channel = 1))
 		L.client.played = world.time
 
-/area/proc/gravitychange(var/gravitystate = 0)
-	has_gravity = gravitystate
+/area/proc/gravitychange(new_state = 0)
+	if(gravity_state in list(AREA_GRAVITY_NEVER, AREA_GRAVITY_ALWAYS))
+		return
 
+	has_gravity = new_state
 	for(var/mob/M in src)
 		if(has_gravity)
 			thunk(M)
@@ -270,13 +282,9 @@ var/list/mob/living/forced_ambiance_list = new
 		if(istype(H.shoes, /obj/item/clothing/shoes/magboots) && (H.shoes.item_flags & ITEM_FLAG_NOSLIP))
 			return
 
-		if(H.m_intent == "run")
-			H.AdjustStunned(6)
-			H.AdjustWeakened(6)
-		else
-			H.AdjustStunned(3)
-			H.AdjustWeakened(3)
-		to_chat(mob, "<span class='notice'>The sudden appearance of gravity makes you fall to the floor!</span>")
+		H.AdjustStunned(1)
+		H.AdjustWeakened(1)
+		to_chat(mob, SPAN_WARNING("The sudden appearance of gravity makes you fall to the floor!"))
 
 /area/proc/prison_break()
 	var/obj/machinery/power/apc/theAPC = get_apc()
@@ -294,13 +302,11 @@ var/list/mob/living/forced_ambiance_list = new
 /area/space/has_gravity()
 	return 0
 
-/proc/has_gravity(atom/AT, turf/T)
-	if(!T)
-		T = get_turf(AT)
-	var/area/A = get_area(T)
-	if(A && A.has_gravity())
-		return 1
-	return 0
+/proc/has_gravity(atom/AT)
+	var/area/A = get_area(AT)
+	if(A?.has_gravity())
+		return TRUE
+	return FALSE
 
 /area/proc/get_dimensions()
 	var/list/res = list("x"=1,"y"=1)

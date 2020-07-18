@@ -12,7 +12,7 @@
 /obj/machinery/computer/cryopod
 	name = "cryogenic oversight console"
 	desc = "An interface between crew and the cryogenic storage oversight systems."
-	icon = 'icons/obj/Cryogenic2.dmi'
+	icon = 'icons/obj/cryogenic2.dmi'
 	icon_state = "cellconsole"
 	circuit = /obj/item/weapon/circuitboard/cryopodcontrol
 	density = 0
@@ -49,7 +49,7 @@
 
 	user.set_machine(src)
 
-	var/dat
+	var/dat = "<meta charset=\"utf-8\">"
 
 	dat += "<hr/><br/><b>[storage_name]</b><br/>"
 	dat += "<i>Welcome, [user.real_name].</i><br/><br/><hr/>"
@@ -134,7 +134,7 @@
 
 	name = "cryogenic feed"
 	desc = "A bewildering tangle of machinery and pipes."
-	icon = 'icons/obj/Cryogenic2.dmi'
+	icon = 'icons/obj/cryogenic2.dmi'
 	icon_state = "cryo_rear"
 	anchored = 1
 	dir = WEST
@@ -143,7 +143,7 @@
 /obj/machinery/cryopod
 	name = "cryogenic freezer"
 	desc = "A man-sized pod for entering suspended animation."
-	icon = 'icons/obj/Cryogenic2.dmi'
+	icon = 'icons/obj/cryogenic2.dmi'
 	icon_state = "body_scanner_0"
 	density = 1
 	anchored = 1
@@ -269,7 +269,7 @@
 		if(occupant)
 			occupant.examine(user)
 
-/obj/machinery/cryopod/emag_act(var/remaining_charges, var/mob/user)
+/obj/machinery/cryopod/emag_act(remaining_charges, mob/user)
 	if(!emagged)
 		to_chat(user, "<span class='notice'The locking mechanism has been disabled.</span>")
 		emagged = 1
@@ -432,7 +432,7 @@
 	set_occupant(null)
 
 
-/obj/machinery/cryopod/attackby(var/obj/item/weapon/G as obj, var/mob/user as mob)
+/obj/machinery/cryopod/attackby(obj/item/weapon/G as obj, mob/user as mob)
 
 	if(istype(G, /obj/item/grab))
 		var/obj/item/grab/grab = G
@@ -529,7 +529,7 @@
 		set_occupant(M)
 		return TRUE
 
-/obj/machinery/cryopod/proc/set_occupant(var/mob/living/carbon/occupant)
+/obj/machinery/cryopod/proc/set_occupant(mob/living/carbon/occupant)
 	src.occupant = occupant
 	if(!occupant)
 		SetName(initial(name))

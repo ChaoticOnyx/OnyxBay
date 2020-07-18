@@ -1,5 +1,5 @@
 //Returns 1 if mob can be infected, 0 otherwise.
-proc/infection_chance(var/mob/living/carbon/M, var/vector = "Airborne")
+proc/infection_chance(mob/living/carbon/M, vector = "Airborne")
 	if (!istype(M))
 		return 0
 
@@ -44,7 +44,7 @@ proc/infection_chance(var/mob/living/carbon/M, var/vector = "Airborne")
 			return 100
 
 //Similar to infection check, but used for when M is spreading the virus.
-/proc/infection_spreading_check(var/mob/living/carbon/M, var/vector = "Airborne")
+/proc/infection_spreading_check(mob/living/carbon/M, vector = "Airborne")
 	if (!istype(M))
 		return 0
 
@@ -68,12 +68,14 @@ proc/infection_chance(var/mob/living/carbon/M, var/vector = "Airborne")
 		return source.zone == target.zone
 
 //Attemptes to infect mob M with virus. Set forced to 1 to ignore protective clothnig
-/proc/infect_virus2(var/mob/living/carbon/M,var/datum/disease2/disease/disease,var/forced = 0)
+/proc/infect_virus2(mob/living/carbon/M,datum/disease2/disease/disease,forced = 0)
 	if(!istype(disease))
 //		log_debug("Bad virus")
 		return
 	if(!istype(M))
 //		log_debug("Bad mob")
+		return
+	if(M.status_flags & GODMODE)
 		return
 	if ("[disease.uniqueID]" in M.virus2)
 		return
@@ -103,24 +105,24 @@ proc/infection_chance(var/mob/living/carbon/M, var/vector = "Airborne")
 		BITSET(M.hud_updateflag, STATUS_HUD)
 
 //Infects mob M with random lesser disease, if he doesn't have one
-/proc/infect_mob_random_lesser(var/mob/living/carbon/M)
+/proc/infect_mob_random_lesser(mob/living/carbon/M)
 	var/datum/disease2/disease/D = new /datum/disease2/disease
 
 	D.makerandom(VIRUS_MILD)
 	infect_virus2(M, D, 1)
 
 //Infects mob M with random greated disease, if he doesn't have one
-/proc/infect_mob_random_greater(var/mob/living/carbon/M)
+/proc/infect_mob_random_greater(mob/living/carbon/M)
 	var/datum/disease2/disease/D = new /datum/disease2/disease
 
 	D.makerandom(VIRUS_COMMON)
 	infect_virus2(M, D, 1)
 
 //Fancy prob() function.
-/proc/dprob(var/p)
+/proc/dprob(p)
 	return(prob(sqrt(p)) && prob(sqrt(p)))
 
-/mob/living/carbon/proc/spread_disease_to(var/mob/living/carbon/victim, var/vector = "Airborne")
+/mob/living/carbon/proc/spread_disease_to(mob/living/carbon/victim, vector = "Airborne")
 	if (src == victim)
 		return "retardation"
 

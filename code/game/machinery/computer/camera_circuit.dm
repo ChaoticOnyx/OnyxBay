@@ -54,7 +54,7 @@
 			return
 		if (!ishuman(user))
 			return ..(user)
-		var/t = "<B>Circuitboard Console - Camera Monitoring Computer</B><BR>"
+		var/t = "<meta charset=\"utf-8\"><B>Circuitboard Console - Camera Monitoring Computer</B><BR>"
 		t += "<A href='?src=\ref[src];close=1'>Close</A><BR>"
 		t += "<hr> Please select a camera network:<br>"
 
@@ -105,7 +105,7 @@
 		if(istype(src.loc,/mob))
 			attack_self(src.loc)
 
-/obj/item/weapon/circuitboard/camera/emag_act(var/remaining_charges, var/mob/user)
+/obj/item/weapon/circuitboard/camera/emag_act(remaining_charges, mob/user)
 	if(network)
 		authorised = 1
 		to_chat(user, "<span class='notice'>You authorised the circuit network!</span>")

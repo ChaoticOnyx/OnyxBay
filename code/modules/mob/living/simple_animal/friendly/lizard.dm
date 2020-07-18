@@ -29,6 +29,7 @@
 	possession_candidate = 1
 	can_escape = 1
 	shy_animal = 1
+	controllable = TRUE
 
 	can_pull_size = ITEM_SIZE_TINY
 	can_pull_mobs = MOB_PULL_SAME

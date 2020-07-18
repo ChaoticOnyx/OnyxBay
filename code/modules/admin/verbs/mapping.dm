@@ -59,7 +59,7 @@ var/intercom_range_display_status = 0
 
 	if(camera_range_display_status)
 		for(var/obj/machinery/camera/C in cameranet.cameras)
-			new/obj/effect/debugging/camera_range(C.loc)
+			new /obj/effect/debugging/camera_range(C.loc)
 	feedback_add_details("admin_verb","mCRD") //If you are copy-pasting this, ensure the 2nd parameter is unique to the new proc!
 
 
@@ -73,7 +73,7 @@ var/intercom_range_display_status = 0
 	for(var/obj/machinery/camera/C in cameranet.cameras)
 		CL += C
 
-	var/output = {"<B>CAMERA ANNOMALITIES REPORT</B><HR>
+	var/output = {"<meta charset=\"utf-8\"><B>CAMERA ANNOMALITIES REPORT</B><HR>
 <B>The following annomalities have been detected. The ones in red need immediate attention: Some of those in black may be intentional.</B><BR><ul>"}
 
 	for(var/obj/machinery/camera/C1 in CL)
@@ -115,7 +115,7 @@ var/intercom_range_display_status = 0
 	if(intercom_range_display_status)
 		for(var/obj/item/device/radio/intercom/I in world)
 			for(var/turf/T in orange(7,I))
-				var/obj/effect/debugging/marker/F = new/obj/effect/debugging/marker(T)
+				var/obj/effect/debugging/marker/F = new /obj/effect/debugging/marker(T)
 				if (!(F in view(7,I.loc)))
 					qdel(F)
 	feedback_add_details("admin_verb","mIRD") //If you are copy-pasting this, ensure the 2nd parameter is unique to the new proc!
@@ -131,7 +131,6 @@ var/list/debug_verbs = list (
 		,/client/proc/count_objects_on_z_level
 		,/client/proc/count_objects_all
 		,/client/proc/cmd_assume_direct_control
-		,/client/proc/startSinglo
 		,/client/proc/ticklag
 		,/client/proc/cmd_admin_grantfullaccess
 		,/client/proc/cmd_admin_areatest
@@ -178,7 +177,7 @@ var/list/debug_verbs = list (
 /client/var/usedZAScolors = 0
 /client/var/list/image/ZAScolors = list()
 
-/client/proc/recurse_zone(var/zone/Z, var/recurse_level =1)
+/client/proc/recurse_zone(zone/Z, recurse_level =1)
 	testZAScolors_zones += Z
 	if(recurse_level > 10)
 		return
@@ -327,5 +326,5 @@ var/list/debug_verbs = list (
 	log_debug("There are [count] objects of type [type_path] in the game world")
 	feedback_add_details("admin_verb","mOBJ") //If you are copy-pasting this, ensure the 2nd parameter is unique to the new proc!
 
-/proc/get_zas_image(var/turf/T, var/icon_state)
+/proc/get_zas_image(turf/T, icon_state)
 	return image_repository.atom_image(T, 'icons/misc/debug_group.dmi', icon_state, plane = DEFAULT_PLANE, layer = ABOVE_TILE_LAYER)

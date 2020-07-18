@@ -1,6 +1,8 @@
 //This is the proc for gibbing a mob. Cannot gib ghosts.
 //added different sort of gibs and animations. N
 /mob/proc/gib(anim="gibbed-m",do_gibs)
+	if(status_flags & GODMODE)
+		return
 	death(1)
 	transforming = 1
 	canmove = 0
@@ -21,7 +23,7 @@
 
 	addtimer(CALLBACK(src, .proc/check_delete, animation), 15)
 
-/mob/proc/check_delete(var/atom/movable/overlay/animation)
+/mob/proc/check_delete(atom/movable/overlay/animation)
 	if(animation)	qdel(animation)
 	if(src)			qdel(src)
 
@@ -29,6 +31,8 @@
 //Originally created for wizard disintegrate. I've removed the virus code since it's irrelevant here.
 //Dusting robots does not eject the MMI, so it's a bit more powerful than gib() /N
 /mob/proc/dust(anim="dust-m",remains=/obj/effect/decal/cleanable/ash)
+	if(status_flags & GODMODE)
+		return
 	death(1)
 	var/atom/movable/overlay/animation = null
 	transforming = 1

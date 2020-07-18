@@ -2,11 +2,16 @@
 			   DAMAGE PROCS
 ****************************************************/
 
-/obj/item/organ/external/proc/is_damageable(var/additional_damage = 0)
+/obj/item/organ/external/proc/is_damageable(additional_damage = 0)
 	//Continued damage to vital organs can kill you, and robot organs don't count towards total damage so no need to cap them.
 	return (BP_IS_ROBOTIC(src) || brute_dam + burn_dam + additional_damage < max_damage * 4)
 
-/obj/item/organ/external/take_damage(brute, burn, damage_flags, used_weapon = null)
+obj/item/organ/external/take_general_damage(amount, silent = FALSE)
+	take_external_damage(amount)
+
+/obj/item/organ/external/proc/take_external_damage(brute, burn, damage_flags, used_weapon = null)
+	if(owner.status_flags & GODMODE)
+		return 0
 	brute = round(brute * brute_mod, 0.1)
 	burn = round(burn * burn_mod, 0.1)
 	if((brute <= 0) && (burn <= 0))
@@ -19,6 +24,12 @@
 
 	if(used_weapon)
 		add_autopsy_data("[used_weapon]", brute + burn)
+
+	if (brute)
+		SSstoryteller.report_wound(owner, BRUTE, brute)
+	if (burn)
+		SSstoryteller.report_wound(owner, BURN, burn)
+
 	var/can_cut = (!BP_IS_ROBOTIC(src) && (sharp || prob(brute*2)))
 	var/spillover = 0
 	var/pure_brute = brute
@@ -97,16 +108,16 @@
 				victims += I
 		if(!victims.len)
 			victims += pick(internal_organs)
-		for(var/obj/item/organ/victim in victims)
+		for(var/obj/item/organ/internal/victim in victims)
 			brute /= 2
 			if(laser)
 				burn /= 3
 			damage_amt /= 2
-			victim.take_damage(damage_amt)
+			victim.take_internal_damage(damage_amt)
 
 	if(status & ORGAN_BROKEN && brute)
 		jostle_bone(brute)
-		if(can_feel_pain() && prob(40))
+		if(owner && can_feel_pain() && prob(40))
 			owner.emote("scream")	//getting hit on broken hand hurts
 
 	if(brute_dam > min_broken_damage && prob(brute_dam + brute * (1+blunt)) ) //blunt damage is gud at fracturing
@@ -134,17 +145,17 @@
 		else
 			createwound(BURN, burn)
 
-	add_pain(0.6*burn + 0.4*brute)
+	adjust_pain(0.6*burn + 0.4*brute)
 	//If there are still hurties to dispense
 	if (spillover)
 		owner.shock_stage += spillover * config.organ_damage_spillover_multiplier
 
 	// sync the organ's damage with its wounds
-	src.update_damages()
-	owner.updatehealth()
-
-	if(owner && update_damstate())
-		owner.UpdateDamageIcon()
+	update_damages()
+	if(owner)
+		owner.updatehealth()
+		if(update_damstate())
+			owner.UpdateDamageIcon()
 
 	return created_wound
 
@@ -183,7 +194,7 @@
 /obj/item/organ/external/proc/get_genetic_damage()
 	return ((species && (species.species_flags & SPECIES_FLAG_NO_SCAN)) || BP_IS_ROBOTIC(src)) ? 0 : genetic_degradation
 
-/obj/item/organ/external/proc/remove_genetic_damage(var/amount)
+/obj/item/organ/external/proc/remove_genetic_damage(amount)
 	if((species.species_flags & SPECIES_FLAG_NO_SCAN) || BP_IS_ROBOTIC(src))
 		genetic_degradation = 0
 		status &= ~ORGAN_MUTATED
@@ -196,7 +207,9 @@
 			to_chat(src, "<span class = 'notice'>Your [name] is shaped normally again.</span>")
 	return -(genetic_degradation - last_gene_dam)
 
-/obj/item/organ/external/proc/add_genetic_damage(var/amount)
+/obj/item/organ/external/proc/add_genetic_damage(amount)
+	if(owner.status_flags & GODMODE)
+		return 0
 	if((species.species_flags & SPECIES_FLAG_NO_SCAN) || BP_IS_ROBOTIC(src))
 		genetic_degradation = 0
 		status &= ~ORGAN_MUTATED
@@ -219,50 +232,65 @@
 	src.status &= ~ORGAN_MUTATED
 	if(owner) owner.update_body()
 
-// Pain/halloss
-/obj/item/organ/external/proc/get_pain()
+/obj/item/organ/external/proc/update_pain()
 	if(!can_feel_pain())
-		return 0
+		pain = 0
+		full_pain = 0
+		return
+
+	if(pain)
+		pain -= owner.lying ? 3 : 1
+		pain = max(pain, 0)
+
 	var/lasting_pain = 0
 	if(is_broken())
 		lasting_pain += 10
 	else if(is_dislocated())
 		lasting_pain += 5
+
 	var/tox_dam = 0
-	for(var/obj/item/organ/internal/I in internal_organs)
+	for(var/i in internal_organs)
+		var/obj/item/organ/internal/I = i
 		tox_dam += I.getToxLoss()
-	return pain + lasting_pain + 0.7 * brute_dam + 0.8 * burn_dam + 0.3 * tox_dam + 0.5 * get_genetic_damage()
 
-/obj/item/organ/external/proc/remove_pain(var/amount)
+	full_pain = pain + lasting_pain + 0.7 * brute_dam + 0.8 * burn_dam + 0.3 * tox_dam + 0.5 * get_genetic_damage()
+
+/obj/item/organ/external/proc/get_pain()
+	return pain
+
+/obj/item/organ/external/proc/get_full_pain()
+	return full_pain
+
+/obj/item/organ/external/proc/adjust_pain(change)
 	if(!can_feel_pain())
-		pain = 0
-		return
+		return 0
 	var/last_pain = pain
-	pain = max(0,min(max_damage,pain-amount))
-	return -(pain-last_pain)
+	pain = max(0, min(max_damage, pain + change))
 
-/obj/item/organ/external/proc/add_pain(var/amount)
-	if(!can_feel_pain())
-		pain = 0
-		return
-	var/last_pain = pain
-	pain = max(0,min(max_damage,pain+amount))
-	if(owner && ((amount > 15 && prob(20)) || (amount > 30 && prob(60))))
-		owner.emote("scream")
-	return pain-last_pain
+	if(change > 0 && owner)
+		if((change > 15 && prob(20)) || (change > 30 && prob(60)))
+			owner.emote("scream")
 
-/obj/item/organ/external/proc/stun_act(var/stun_amount, var/agony_amount)
+	return pain - last_pain
+
+/obj/item/organ/external/proc/remove_all_pain()
+	pain = 0
+	full_pain = 0
+
+/obj/item/organ/external/proc/stun_act(stun_amount, agony_amount)
+	if(owner.status_flags & GODMODE)
+		return 0
 	if(agony_amount > 5 && owner)
 
 		if((limb_flags & ORGAN_FLAG_CAN_GRASP) && prob(25))
 			owner.grasp_damage_disarm(src)
 
-		if((limb_flags & ORGAN_FLAG_CAN_STAND) && prob(min(agony_amount * ((body_part == LEG_LEFT || body_part == LEG_RIGHT)? 2 : 4),70)))
+		if((limb_flags & ORGAN_FLAG_CAN_STAND) && prob(min(agony_amount * ((body_part == LEG_LEFT || body_part == LEG_RIGHT)? 1 : 2),70)))
 			owner.stance_damage_prone(src)
 
-		if(vital && get_pain() > 0.5 * max_damage)
+		if(vital && get_full_pain() > 0.5 * max_damage)
 			owner.visible_message("<span class='warning'>[owner] reels in pain!</span>")
-			if(has_genitals() || get_pain() + agony_amount > max_damage)
+			if(has_genitals() || get_full_pain() + agony_amount > max_damage)
 				owner.Weaken(6)
 			else
 				owner.Stun(6)

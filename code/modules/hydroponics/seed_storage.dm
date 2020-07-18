@@ -5,14 +5,14 @@
 	var/list/obj/item/seeds/seeds = list() // Tracks actual objects contained in the pile
 	var/ID
 
-/datum/seed_pile/New(var/obj/item/seeds/O, var/ID)
+/datum/seed_pile/New(obj/item/seeds/O, ID)
 	name = O.name
 	amount = 1
 	seed_type = O.seed
 	seeds += O
 	src.ID = ID
 
-/datum/seed_pile/proc/matches(var/obj/item/seeds/O)
+/datum/seed_pile/proc/matches(obj/item/seeds/O)
 	if (O.seed == seed_type)
 		return 1
 	return 0
@@ -31,7 +31,7 @@
 	var/list/starting_seeds = list()
 	var/list/scanner = list() // What properties we can view
 
-/obj/machinery/seed_storage/Initialize(var/mapload)
+/obj/machinery/seed_storage/Initialize(mapload)
 	. = ..()
 	for(var/typepath in starting_seeds)
 		var/amount = starting_seeds[typepath]
@@ -50,8 +50,11 @@
 	name = "Garden seed storage"
 	scanner = list("stats")
 	starting_seeds = list(
+		/obj/item/seeds/amanitamycelium = 30,
 		/obj/item/seeds/ambrosiavulgarisseed = 30,
-		/obj/item/seeds/appleseed = 30,
+		/obj/item/seeds/appleseed = 10,
+		/obj/item/seeds/greenappleseed = 10,
+		/obj/item/seeds/yellowappleseed = 10,
 		/obj/item/seeds/bananaseed = 30,
 		/obj/item/seeds/berryseed = 30,
 		/obj/item/seeds/blueberryseed = 30,
@@ -62,11 +65,10 @@
 		/obj/item/seeds/cherryseed = 30,
 		/obj/item/seeds/chiliseed = 30,
 		/obj/item/seeds/cocoapodseed = 30,
+		/obj/item/seeds/coconutseed = 30,
 		/obj/item/seeds/cornseed = 30,
-		/obj/item/seeds/peanutseed = 30,
-		/obj/item/seeds/replicapod = 30,
 		/obj/item/seeds/eggplantseed = 30,
-		/obj/item/seeds/amanitamycelium = 30,
+		/obj/item/seeds/garlicseed = 30,
 		/obj/item/seeds/glowshroom = 30,
 		/obj/item/seeds/grapeseed = 30,
 		/obj/item/seeds/grassseed = 30,
@@ -77,20 +79,21 @@
 		/obj/item/seeds/limeseed = 30,
 		/obj/item/seeds/mtearseed = 30,
 		/obj/item/seeds/nettleseed = 30,
+		/obj/item/seeds/onionseed = 30,
 		/obj/item/seeds/orangeseed = 30,
-		/obj/item/seeds/plumpmycelium = 30,
+		/obj/item/seeds/peanutseed = 30,
+		/obj/item/seeds/peppercornseed = 30,
 		/obj/item/seeds/poppyseed = 30,
 		/obj/item/seeds/potatoseed = 30,
-		/obj/item/seeds/onionseed = 30,
-		/obj/item/seeds/garlicseed = 30,
+		/obj/item/seeds/plumpmycelium = 30,
 		/obj/item/seeds/pumpkinseed = 30,
 		/obj/item/seeds/reishimycelium = 30,
+		/obj/item/seeds/replicapod = 30,
 		/obj/item/seeds/riceseed = 30,
+		/obj/item/seeds/shandseed = 30,
 		/obj/item/seeds/soyaseed = 30,
-		/obj/item/seeds/peppercornseed = 30,
 		/obj/item/seeds/sugarcaneseed = 30,
 		/obj/item/seeds/sunflowerseed = 30,
-		/obj/item/seeds/shandseed = 30,
 		/obj/item/seeds/tobaccoseed = 30,
 		/obj/item/seeds/tomatoseed = 30,
 		/obj/item/seeds/towermycelium = 30,
@@ -159,6 +162,7 @@
 		/obj/item/seeds/cherryseed = 30,
 		/obj/item/seeds/chiliseed = 30,
 		/obj/item/seeds/cocoapodseed = 30,
+		/obj/item/seeds/coconutseed = 30,
 		/obj/item/seeds/cornseed = 30,
 		/obj/item/seeds/peanutseed = 30,
 		/obj/item/seeds/replicapod = 30,
@@ -207,7 +211,7 @@
 	if (..())
 		return
 
-	var/dat = "<center><h1>Seed storage contents</h1></center>"
+	var/dat = "<meta charset=\"utf-8\"><center><h1>Seed storage contents</h1></center>"
 	if (piles.len == 0)
 		dat += "<font color='red'>No seeds</font>"
 	else
@@ -315,7 +319,7 @@
 	user << browse(dat, "window=seedstorage")
 	onclose(user, "seedstorage")
 
-/obj/machinery/seed_storage/Topic(var/href, var/list/href_list)
+/obj/machinery/seed_storage/Topic(href, list/href_list)
 	if (..())
 		return
 	var/task = href_list["task"]
@@ -343,7 +347,7 @@
 			break
 	updateUsrDialog()
 
-/obj/machinery/seed_storage/attackby(var/obj/item/O as obj, var/mob/user as mob)
+/obj/machinery/seed_storage/attackby(obj/item/O as obj, mob/user as mob)
 	if (istype(O, /obj/item/seeds))
 		add(O)
 		user.visible_message("[user] puts \the [O.name] into \the [src].", "You put \the [O] into \the [src].")
@@ -364,7 +368,7 @@
 		anchored = !anchored
 		to_chat(user, "You [anchored ? "wrench" : "unwrench"] \the [src].")
 
-/obj/machinery/seed_storage/proc/add(var/obj/item/seeds/O as obj)
+/obj/machinery/seed_storage/proc/add(obj/item/seeds/O as obj)
 	if (istype(O.loc, /mob))
 		var/mob/user = O.loc
 		user.remove_from_mob(O)

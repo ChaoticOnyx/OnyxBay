@@ -30,8 +30,8 @@
 	/obj/item/weapon/material/hatchet = 75
 	)
 
-	min_duration = 50
-	max_duration = 70
+	min_duration = 30
+	max_duration = 40
 	shock_level = 60
 
 /datum/surgery_step/open_encased/saw/can_use(mob/living/user, mob/living/carbon/human/target, target_zone, obj/item/tool)
@@ -70,5 +70,5 @@
 	user.visible_message("<span class='warning'>[user]'s hand slips, cracking [target]'s [affected.encased] with \the [tool]!</span>" , \
 	"<span class='warning'>Your hand slips, cracking [target]'s [affected.encased] with \the [tool]!</span>" )
 
-	affected.take_damage(15, 0, (DAM_SHARP|DAM_EDGE), used_weapon = tool)
+	affected.take_external_damage(15, 0, (DAM_SHARP|DAM_EDGE), used_weapon = tool)
 	affected.fracture()

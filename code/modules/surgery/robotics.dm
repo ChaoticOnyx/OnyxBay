@@ -30,8 +30,8 @@
 		/obj/item/weapon/material/kitchen/utensil/knife = 50
 	)
 
-	min_duration = 90
-	max_duration = 110
+	min_duration = 40
+	max_duration = 60
 
 /datum/surgery_step/robotics/unscrew_hatch/can_use(mob/living/user, mob/living/carbon/human/target, target_zone, obj/item/tool)
 	if(..())
@@ -65,8 +65,8 @@
 		/obj/item/weapon/material/kitchen/utensil/knife = 50
 	)
 
-	min_duration = 90
-	max_duration = 110
+	min_duration = 40
+	max_duration = 60
 
 /datum/surgery_step/robotics/screw_hatch/can_use(mob/living/user, mob/living/carbon/human/target, target_zone, obj/item/tool)
 	if(..())
@@ -100,8 +100,8 @@
 		/obj/item/weapon/material/kitchen/utensil = 50
 	)
 
-	min_duration = 30
-	max_duration = 40
+	min_duration = 20
+	max_duration = 30
 
 /datum/surgery_step/robotics/open_hatch/can_use(mob/living/user, mob/living/carbon/human/target, target_zone, obj/item/tool)
 	if(..())
@@ -135,8 +135,8 @@
 		/obj/item/weapon/material/kitchen/utensil = 50
 	)
 
-	min_duration = 70
-	max_duration = 100
+	min_duration = 40
+	max_duration = 60
 
 /datum/surgery_step/robotics/close_hatch/can_use(mob/living/user, mob/living/carbon/human/target, target_zone, obj/item/tool)
 	if(..())
@@ -170,8 +170,8 @@
 		/obj/item/weapon/gun/energy/plasmacutter = 50
 	)
 
-	min_duration = 50
-	max_duration = 60
+	min_duration = 40
+	max_duration = 55
 
 /datum/surgery_step/robotics/repair_brute/can_use(mob/living/user, mob/living/carbon/human/target, target_zone, obj/item/tool)
 	if(..())
@@ -199,7 +199,7 @@
 	var/obj/item/organ/external/affected = target.get_organ(target_zone)
 	user.visible_message("<span class='warning'>[user]'s [tool.name] slips, damaging the internal structure of [target]'s [affected.name].</span>",
 	"<span class='warning'>Your [tool.name] slips, damaging the internal structure of [target]'s [affected.name].</span>")
-	affected.take_damage(0, rand(5,10), 0, used_weapon = tool)
+	affected.take_external_damage(0, rand(5,10), 0, used_weapon = tool)
 	//target.apply_damage(rand(5,10), BURN, affected)
 
 //////////////////////////////////////////////////////////////////
@@ -210,8 +210,8 @@
 		/obj/item/stack/cable_coil = 100
 	)
 
-	min_duration = 50
-	max_duration = 60
+	min_duration = 40
+	max_duration = 55
 
 /datum/surgery_step/robotics/repair_burn/can_use(mob/living/user, mob/living/carbon/human/target, target_zone, obj/item/tool)
 	if(..())
@@ -267,8 +267,8 @@
 	/obj/item/weapon/screwdriver = 70,	\
 	)
 
-	min_duration = 70
-	max_duration = 90
+	min_duration = 50
+	max_duration = 70
 
 /datum/surgery_step/robotics/fix_organ_robotic/can_use(mob/living/user, mob/living/carbon/human/target, target_zone, obj/item/tool)
 	if (!hasorgans(target))
@@ -319,9 +319,9 @@
 	target.adjustToxLoss(5)
 	affected.createwound(CUT, 5)
 
-	for(var/obj/item/organ/I in affected.internal_organs)
+	for(var/obj/item/organ/internal/I in affected.internal_organs)
 		if(I)
-			I.take_damage(rand(3,5),0)
+			I.take_internal_damage(rand(3,5), 0)
 
 //////////////////////////////////////////////////////////////////
 //	robotic organ detachment surgery step
@@ -332,8 +332,8 @@
 	/obj/item/device/multitool = 100
 	)
 
-	min_duration = 90
-	max_duration = 110
+	min_duration = 70
+	max_duration = 90
 
 /datum/surgery_step/robotics/detatch_organ_robotic/can_use(mob/living/user, mob/living/carbon/human/target, target_zone, obj/item/tool)
 
@@ -385,8 +385,8 @@
 		/obj/item/weapon/screwdriver = 100,
 	)
 
-	min_duration = 100
-	max_duration = 120
+	min_duration = 70
+	max_duration = 90
 
 /datum/surgery_step/robotics/attach_organ_robotic/can_use(mob/living/user, mob/living/carbon/human/target, target_zone, obj/item/tool)
 	var/obj/item/organ/external/affected = target.get_organ(target_zone)

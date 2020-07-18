@@ -1,7 +1,7 @@
 /obj/machinery/resleever
 	name = "neural lace resleever"
 	desc = "It's a machine that allows neural laces to be sleeved into new bodies."
-	icon = 'icons/obj/Cryogenic2.dmi'
+	icon = 'icons/obj/cryogenic2.dmi'
 
 	anchored = 1
 	density = 1

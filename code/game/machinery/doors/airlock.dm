@@ -3,7 +3,7 @@
 #define BOLTS_CUT 2
 /obj/machinery/door/airlock
 	name = "airlock"
-	icon = 'icons/obj/doors/Doorint.dmi'
+	icon = 'icons/obj/doors/doorint.dmi'
 	icon_state = "door_closed"
 	power_channel = ENVIRON
 
@@ -52,7 +52,7 @@
 	var/datum/wifi/receiver/button/door/wifi_receiver
 	var/obj/item/weapon/airlock_brace/brace = null
 
-/obj/machinery/door/airlock/attack_generic(var/mob/user, var/damage)
+/obj/machinery/door/airlock/attack_generic(mob/user, damage)
 	if(stat & (BROKEN|NOPOWER))
 		if(damage >= 10)
 			if(src.density)
@@ -73,37 +73,37 @@
 
 /obj/machinery/door/airlock/command
 	name = "Airlock"
-	icon = 'icons/obj/doors/Doorcom.dmi'
+	icon = 'icons/obj/doors/doorcom.dmi'
 	assembly_type = /obj/structure/door_assembly/door_assembly_com
 
 /obj/machinery/door/airlock/security
 	name = "Airlock"
-	icon = 'icons/obj/doors/Doorsec.dmi'
+	icon = 'icons/obj/doors/doorsec.dmi'
 	assembly_type = /obj/structure/door_assembly/door_assembly_sec
 
 /obj/machinery/door/airlock/engineering
 	name = "Airlock"
-	icon = 'icons/obj/doors/Dooreng.dmi'
+	icon = 'icons/obj/doors/dooreng.dmi'
 	assembly_type = /obj/structure/door_assembly/door_assembly_eng
 
 /obj/machinery/door/airlock/medical
 	name = "Airlock"
-	icon = 'icons/obj/doors/Doormed.dmi'
+	icon = 'icons/obj/doors/doormed.dmi'
 	assembly_type = /obj/structure/door_assembly/door_assembly_med
 
 /obj/machinery/door/airlock/virology
 	name = "Airlock"
-	icon = 'icons/obj/doors/Doorviro.dmi'
+	icon = 'icons/obj/doors/doorviro.dmi'
 	assembly_type = /obj/structure/door_assembly/door_assembly_viro
 
 /obj/machinery/door/airlock/maintenance
 	name = "Maintenance Access"
-	icon = 'icons/obj/doors/Doormaint.dmi'
+	icon = 'icons/obj/doors/doormaint.dmi'
 	assembly_type = /obj/structure/door_assembly/door_assembly_mai
 
 /obj/machinery/door/airlock/external
 	name = "External Airlock"
-	icon = 'icons/obj/doors/Doorext.dmi'
+	icon = 'icons/obj/doors/doorext.dmi'
 	opacity = 1
 	assembly_type = /obj/structure/door_assembly/door_assembly_ext
 	open_sound_powered = list('sound/machines/airlock/open_exterior1.ogg', 'sound/machines/airlock/open_exterior2.ogg', 'sound/machines/airlock/open_exterior3.ogg', 'sound/machines/airlock/open_exterior4.ogg')
@@ -124,12 +124,12 @@
 
 /obj/machinery/door/airlock/sol
 	name = "Airlock"
-	icon = 'icons/obj/doors/Doorsol.dmi'
+	icon = 'icons/obj/doors/doorsol.dmi'
 	assembly_type = /obj/structure/door_assembly/door_assembly_sol
 
 /obj/machinery/door/airlock/glass
 	name = "Glass Airlock"
-	icon = 'icons/obj/doors/Doorglass.dmi'
+	icon = 'icons/obj/doors/doorglass.dmi'
 	hitsound = null
 	maxhealth = 300
 	explosion_resistance = 5
@@ -152,7 +152,7 @@
 
 /obj/machinery/door/airlock/centcom
 	name = "Airlock"
-	icon = 'icons/obj/doors/Doorele.dmi'
+	icon = 'icons/obj/doors/doorele.dmi'
 	opacity = 0
 
 /obj/machinery/door/airlock/vault
@@ -169,20 +169,20 @@
 
 /obj/machinery/door/airlock/freezer
 	name = "Freezer Airlock"
-	icon = 'icons/obj/doors/Doorfreezer.dmi'
+	icon = 'icons/obj/doors/doorfreezer.dmi'
 	opacity = 1
 	assembly_type = /obj/structure/door_assembly/door_assembly_fre
 
 /obj/machinery/door/airlock/hatch
 	name = "Airtight Hatch"
-	icon = 'icons/obj/doors/Doorhatchele.dmi'
+	icon = 'icons/obj/doors/doorhatchele.dmi'
 	explosion_resistance = 20
 	opacity = 1
 	assembly_type = /obj/structure/door_assembly/door_assembly_hatch
 
 /obj/machinery/door/airlock/maintenance_hatch
 	name = "Maintenance Hatch"
-	icon = 'icons/obj/doors/Doorhatchmaint2.dmi'
+	icon = 'icons/obj/doors/doorhatchmaint2.dmi'
 	explosion_resistance = 20
 	opacity = 1
 	assembly_type = /obj/structure/door_assembly/door_assembly_mhatch
@@ -193,7 +193,7 @@
 
 /obj/machinery/door/airlock/glass_command
 	name = "Maintenance Hatch"
-	icon = 'icons/obj/doors/Doorcomglass.dmi'
+	icon = 'icons/obj/doors/doorcomglass.dmi'
 	hitsound = null
 	maxhealth = 300
 	explosion_resistance = 5
@@ -212,7 +212,7 @@
 
 /obj/machinery/door/airlock/glass_external
 	name = "External Airlock"
-	icon = 'icons/obj/doors/Doorextglass.dmi'
+	icon = 'icons/obj/doors/doorextglass.dmi'
 	hitsound = null
 	maxhealth = 300
 	explosion_resistance = 5
@@ -244,7 +244,7 @@
 
 /obj/machinery/door/airlock/glass_engineering
 	name = "Maintenance Hatch"
-	icon = 'icons/obj/doors/Doorengglass.dmi'
+	icon = 'icons/obj/doors/doorengglass.dmi'
 	hitsound = null
 	maxhealth = 300
 	explosion_resistance = 5
@@ -263,7 +263,7 @@
 
 /obj/machinery/door/airlock/glass_security
 	name = "Maintenance Hatch"
-	icon = 'icons/obj/doors/Doorsecglass.dmi'
+	icon = 'icons/obj/doors/doorsecglass.dmi'
 	hitsound = null
 	maxhealth = 300
 	explosion_resistance = 5
@@ -282,7 +282,7 @@
 
 /obj/machinery/door/airlock/glass_medical
 	name = "Maintenance Hatch"
-	icon = 'icons/obj/doors/Doormedglass.dmi'
+	icon = 'icons/obj/doors/doormedglass.dmi'
 	hitsound = null
 	maxhealth = 300
 	explosion_resistance = 5
@@ -301,7 +301,7 @@
 
 /obj/machinery/door/airlock/glass_virology
 	name = "Maintenance Hatch"
-	icon = 'icons/obj/doors/Doorviroglass.dmi'
+	icon = 'icons/obj/doors/doorviroglass.dmi'
 	hitsound = null
 	maxhealth = 300
 	explosion_resistance = 5
@@ -320,7 +320,7 @@
 
 /obj/machinery/door/airlock/glass_sol
 	name = "Maintenance Hatch"
-	icon = 'icons/obj/doors/Doorsolglass.dmi'
+	icon = 'icons/obj/doors/doorsolglass.dmi'
 	hitsound = null
 	maxhealth = 300
 	explosion_resistance = 5
@@ -340,22 +340,22 @@
 
 /obj/machinery/door/airlock/mining
 	name = "Mining Airlock"
-	icon = 'icons/obj/doors/Doormining.dmi'
+	icon = 'icons/obj/doors/doormining.dmi'
 	assembly_type = /obj/structure/door_assembly/door_assembly_min
 
 /obj/machinery/door/airlock/atmos
 	name = "Atmospherics Airlock"
-	icon = 'icons/obj/doors/Dooratmo.dmi'
+	icon = 'icons/obj/doors/dooratmo.dmi'
 	assembly_type = /obj/structure/door_assembly/door_assembly_atmo
 
 /obj/machinery/door/airlock/research
 	name = "Airlock"
-	icon = 'icons/obj/doors/Doorresearch.dmi'
+	icon = 'icons/obj/doors/doorresearch.dmi'
 	assembly_type = /obj/structure/door_assembly/door_assembly_research
 
 /obj/machinery/door/airlock/glass_research
 	name = "Maintenance Hatch"
-	icon = 'icons/obj/doors/Doorresearchglass.dmi'
+	icon = 'icons/obj/doors/doorresearchglass.dmi'
 	hitsound = null
 	maxhealth = 300
 	explosion_resistance = 5
@@ -375,7 +375,7 @@
 
 /obj/machinery/door/airlock/glass_mining
 	name = "Maintenance Hatch"
-	icon = 'icons/obj/doors/Doorminingglass.dmi'
+	icon = 'icons/obj/doors/doorminingglass.dmi'
 	hitsound = null
 	maxhealth = 300
 	explosion_resistance = 5
@@ -394,7 +394,7 @@
 
 /obj/machinery/door/airlock/glass_atmos
 	name = "Maintenance Hatch"
-	icon = 'icons/obj/doors/Dooratmoglass.dmi'
+	icon = 'icons/obj/doors/dooratmoglass.dmi'
 	hitsound = null
 	maxhealth = 300
 	explosion_resistance = 5
@@ -413,23 +413,23 @@
 
 /obj/machinery/door/airlock/gold
 	name = "Gold Airlock"
-	icon = 'icons/obj/doors/Doorgold.dmi'
+	icon = 'icons/obj/doors/doorgold.dmi'
 	mineral = MATERIAL_GOLD
 
 /obj/machinery/door/airlock/silver
 	name = "Silver Airlock"
-	icon = 'icons/obj/doors/Doorsilver.dmi'
+	icon = 'icons/obj/doors/doorsilver.dmi'
 	mineral = MATERIAL_SILVER
 
 /obj/machinery/door/airlock/diamond
 	name = "Diamond Airlock"
-	icon = 'icons/obj/doors/Doordiamond.dmi'
+	icon = 'icons/obj/doors/doordiamond.dmi'
 	mineral = MATERIAL_DIAMOND
 
 /obj/machinery/door/airlock/uranium
 	name = "Uranium Airlock"
 	desc = "And they said I was crazy."
-	icon = 'icons/obj/doors/Dooruranium.dmi'
+	icon = 'icons/obj/doors/dooruranium.dmi'
 	mineral = MATERIAL_URANIUM
 	var/last_event = 0
 	var/rad_power = 7.5
@@ -444,8 +444,6 @@
 	else if(electrified_until > 0 && world.time >= electrified_until)
 		electrify(0)
 
-	..()
-
 /obj/machinery/door/airlock/uranium/Process()
 	if(world.time > last_event+20)
 		if(prob(50))
@@ -456,7 +454,7 @@
 /obj/machinery/door/airlock/phoron
 	name = "Phoron Airlock"
 	desc = "No way this can end badly."
-	icon = 'icons/obj/doors/Doorphoron.dmi'
+	icon = 'icons/obj/doors/doorphoron.dmi'
 	mineral = MATERIAL_PHORON
 
 /obj/machinery/door/airlock/phoron/fire_act(datum/gas_mixture/air, exposed_temperature, exposed_volume)
@@ -475,22 +473,22 @@
 		W.burn((temperature/4))//Added so that you can't set off a massive chain reaction with a small flame
 	for(var/obj/machinery/door/airlock/phoron/D in range(3,src))
 		D.ignite(temperature/4)
-	new/obj/structure/door_assembly( src.loc )
+	new /obj/structure/door_assembly( src.loc )
 	qdel(src)
 
 /obj/machinery/door/airlock/sandstone
 	name = "Sandstone Airlock"
-	icon = 'icons/obj/doors/Doorsand.dmi'
+	icon = 'icons/obj/doors/doorsand.dmi'
 	mineral = MATERIAL_SANDSTONE
 
 /obj/machinery/door/airlock/science
 	name = "Airlock"
-	icon = 'icons/obj/doors/Doorsci.dmi'
+	icon = 'icons/obj/doors/doorsci.dmi'
 	assembly_type = /obj/structure/door_assembly/door_assembly_science
 
 /obj/machinery/door/airlock/glass_science
 	name = "Glass Airlocks"
-	icon = 'icons/obj/doors/Doorsciglass.dmi'
+	icon = 'icons/obj/doors/doorsciglass.dmi'
 	opacity = 0
 	assembly_type = /obj/structure/door_assembly/door_assembly_science
 	glass = 1
@@ -549,7 +547,7 @@ About the new airlock wires panel:
 		return 1
 	return 0
 
-/obj/machinery/door/airlock/proc/isWireCut(var/wireIndex)
+/obj/machinery/door/airlock/proc/isWireCut(wireIndex)
 	// You can find the wires in the datum folder.
 	return wires.IsIndexCut(wireIndex)
 
@@ -618,7 +616,7 @@ About the new airlock wires panel:
 
 	update_icon()
 
-/obj/machinery/door/airlock/proc/electrify(var/duration, var/feedback = 0)
+/obj/machinery/door/airlock/proc/electrify(duration, feedback = 0)
 	var/message = ""
 	if(src.isWireCut(AIRLOCK_WIRE_ELECTRIFY) && arePowerSystemsOn())
 		message = text("The electrification wire is cut - Door permanently electrified.")
@@ -645,7 +643,7 @@ About the new airlock wires panel:
 	if(.)
 		playsound(src, get_sfx("spark"), 30, 0, -6)
 
-/obj/machinery/door/airlock/proc/set_idscan(var/activate, var/feedback = 0)
+/obj/machinery/door/airlock/proc/set_idscan(activate, feedback = 0)
 	var/message = ""
 	if(src.isWireCut(AIRLOCK_WIRE_IDSCAN))
 		message = "The IdScan wire is cut - IdScan feature permanently disabled."
@@ -659,7 +657,7 @@ About the new airlock wires panel:
 	if(feedback && message)
 		to_chat(usr, message)
 
-/obj/machinery/door/airlock/proc/set_safeties(var/activate, var/feedback = 0)
+/obj/machinery/door/airlock/proc/set_safeties(activate, feedback = 0)
 	var/message = ""
 	// Safeties!  We don't need no stinking safeties!
 	if (src.isWireCut(AIRLOCK_WIRE_SAFETY))
@@ -755,7 +753,7 @@ About the new airlock wires panel:
 /obj/machinery/door/airlock/attack_ai(mob/user as mob)
 	ui_interact(user)
 
-/obj/machinery/door/airlock/ui_interact(mob/user, ui_key = "main", var/datum/nanoui/ui = null, var/force_open = 1, var/datum/topic_state/state = GLOB.default_state)
+/obj/machinery/door/airlock/ui_interact(mob/user, ui_key = "main", datum/nanoui/ui = null, force_open = 1, datum/topic_state/state = GLOB.default_state)
 	var/data[0]
 
 	data["main_power_loss"]		= round(main_power_lost_until 	> 0 ? max(main_power_lost_until - world.time,	0) / 10 : main_power_lost_until,	1)
@@ -851,7 +849,7 @@ About the new airlock wires panel:
 		..(user)
 	return
 
-/obj/machinery/door/airlock/CanUseTopic(var/mob/user)
+/obj/machinery/door/airlock/CanUseTopic(mob/user)
 	if(operating < 0) //emagged
 		to_chat(user, "<span class='warning'>Unable to interface: Internal error.</span>")
 		return STATUS_CLOSE
@@ -926,7 +924,7 @@ About the new airlock wires panel:
 	return 1
 
 //returns 1 on success, 0 on failure
-/obj/machinery/door/airlock/proc/cut_bolts(item, var/mob/user)
+/obj/machinery/door/airlock/proc/cut_bolts(item, mob/user)
 	var/cut_delay = (15 SECONDS)
 	var/cut_verb
 	var/cut_sound
@@ -1002,7 +1000,7 @@ About the new airlock wires panel:
 			src.unlock(1) //force it
 		return 1
 
-/obj/machinery/door/airlock/attackby(var/obj/item/C, var/mob/user)
+/obj/machinery/door/airlock/attackby(obj/item/C, mob/user)
 	// Brace is considered installed on the airlock, so interacting with it is protected from electrification.
 	if(brace && (istype(C.GetIdCard(), /obj/item/weapon/card/id/) || istype(C, /obj/item/weapon/crowbar/brace_jack)))
 		return brace.attackby(C, user)
@@ -1120,7 +1118,7 @@ About the new airlock wires panel:
 		..()
 	return
 
-/obj/machinery/door/airlock/deconstruct(mob/user, var/moved = FALSE)
+/obj/machinery/door/airlock/deconstruct(mob/user, moved = FALSE)
 	var/obj/structure/door_assembly/da = new assembly_type(src.loc)
 	if (istype(da, /obj/structure/door_assembly/multi_tile))
 		da.set_dir(src.dir)
@@ -1168,7 +1166,7 @@ About the new airlock wires panel:
 		s.set_up(5, 1, src)
 		s.start()
 
-/obj/machinery/door/airlock/open(var/forced=0)
+/obj/machinery/door/airlock/open(forced=0)
 	if(!can_open(forced))
 		return 0
 	use_power_oneoff(360)	//360 W seems much more appropriate for an actuator moving an industrial door capable of crushing people
@@ -1189,7 +1187,7 @@ About the new airlock wires panel:
 		src.closeOther.close()
 	return ..()
 
-/obj/machinery/door/airlock/can_open(var/forced=0)
+/obj/machinery/door/airlock/can_open(forced=0)
 	if(brace)
 		return 0
 
@@ -1201,7 +1199,7 @@ About the new airlock wires panel:
 		return 0
 	return ..()
 
-/obj/machinery/door/airlock/can_close(var/forced=0)
+/obj/machinery/door/airlock/can_close(forced=0)
 	if(locked || welded)
 		return 0
 
@@ -1212,8 +1210,9 @@ About the new airlock wires panel:
 
 	return ..()
 
-/obj/machinery/door/airlock/close(var/forced=0)
+/obj/machinery/door/airlock/close(forced=0)
 	if(!can_close(forced))
+		addtimer(CALLBACK(src, .close), next_close_time(), TIMER_UNIQUE|TIMER_OVERRIDE)	
 		return 0
 
 	if(safe)
@@ -1223,7 +1222,7 @@ About the new airlock wires panel:
 					if(world.time > next_beep_at)
 						playsound(src.loc, close_failure_blocked, 30, 0, -3)
 						next_beep_at = world.time + SecondsToTicks(10)
-					close_door_at = world.time + 6
+					addtimer(CALLBACK(src, .close), next_close_time(), TIMER_UNIQUE|TIMER_OVERRIDE)	
 					return
 
 	for(var/turf/turf in locs)
@@ -1240,7 +1239,7 @@ About the new airlock wires panel:
 
 	..()
 
-/obj/machinery/door/airlock/proc/lock(var/forced=0)
+/obj/machinery/door/airlock/proc/lock(forced=0)
 	if(locked)
 		return 0
 
@@ -1254,7 +1253,7 @@ About the new airlock wires panel:
 	update_icon()
 	return 1
 
-/obj/machinery/door/airlock/proc/unlock(var/forced=0)
+/obj/machinery/door/airlock/proc/unlock(forced=0)
 	if(!src.locked)
 		return
 
@@ -1273,7 +1272,7 @@ About the new airlock wires panel:
 		return 0
 	return ..(M)
 
-/obj/machinery/door/airlock/New(var/newloc, var/obj/structure/door_assembly/assembly=null)
+/obj/machinery/door/airlock/New(newloc, obj/structure/door_assembly/assembly=null)
 	..()
 
 	//if assembly is given, create the new door from the assembly
@@ -1306,9 +1305,9 @@ About the new airlock wires panel:
 	if(T && (T.z in GLOB.using_map.admin_levels))
 		secured_wires = 1
 	if (secured_wires)
-		wires = new/datum/wires/airlock/secure(src)
+		wires = new /datum/wires/airlock/secure(src)
 	else
-		wires = new/datum/wires/airlock(src)
+		wires = new /datum/wires/airlock(src)
 
 /obj/machinery/door/airlock/Initialize()
 	if(src.closeOtherId != null)
@@ -1340,9 +1339,9 @@ About the new airlock wires panel:
 /obj/machinery/door/airlock/proc/create_electronics()
 	//create new electronics
 	if (secured_wires)
-		src.electronics = new/obj/item/weapon/airlock_electronics/secure( src.loc )
+		src.electronics = new /obj/item/weapon/airlock_electronics/secure( src.loc )
 	else
-		src.electronics = new/obj/item/weapon/airlock_electronics( src.loc )
+		src.electronics = new /obj/item/weapon/airlock_electronics( src.loc )
 
 	//update the electronics to match the door's access
 	if(!src.req_access)
@@ -1353,7 +1352,7 @@ About the new airlock wires panel:
 		electronics.conf_access = src.req_one_access
 		electronics.one_access = 1
 
-/obj/machinery/door/airlock/emp_act(var/severity)
+/obj/machinery/door/airlock/emp_act(severity)
 	if(prob(20/severity))
 		spawn(0)
 			open()
@@ -1377,7 +1376,7 @@ About the new airlock wires panel:
 	return
 
 // Braces can act as an extra layer of armor - they will take damage first.
-/obj/machinery/door/airlock/take_damage(var/amount)
+/obj/machinery/door/airlock/take_damage(amount)
 	if(brace)
 		brace.take_damage(amount)
 	else
@@ -1395,7 +1394,7 @@ About the new airlock wires panel:
 
 /obj/machinery/door/airlock/autoname
 	name = "hatch"
-	icon = 'icons/obj/doors/Doorhatchmaint2.dmi'
+	icon = 'icons/obj/doors/doorhatchmaint2.dmi'
 	assembly_type = /obj/structure/door_assembly/door_assembly_mhatch
 
 /obj/machinery/door/airlock/autoname/New()

@@ -1,7 +1,7 @@
 /mob/living/carbon/human
 	hud_type = /datum/hud/human
 
-/datum/hud/human/FinalizeInstantiation(var/ui_style='icons/mob/screen1_White.dmi', var/ui_color = "#ffffff", var/ui_alpha = 255)
+/datum/hud/human/FinalizeInstantiation(ui_style='icons/mob/screen1_white.dmi', ui_color = "#ffffff", ui_alpha = 255)
 	var/mob/living/carbon/human/target = mymob
 	var/datum/hud_data/hud_data
 	if(!istype(target))
@@ -220,6 +220,14 @@
 		mymob.fire.SetName("fire")
 		mymob.fire.screen_loc = ui_fire
 		hud_elements |= mymob.fire
+
+	if(hud_data.has_pain)
+		mymob.pains = new /obj/screen()
+		mymob.pains.icon = ui_style
+		mymob.pains.icon_state = "pain0"
+		mymob.pains.SetName("pain")
+		mymob.pains.screen_loc = ui_health
+		hud_elements |= mymob.pains
 
 	if(hud_data.has_health)
 		mymob.healths = new /obj/screen()

@@ -71,15 +71,15 @@
 		return
 	..()
 
-/obj/machinery/computer/guestpass/attack_ai(var/mob/user as mob)
+/obj/machinery/computer/guestpass/attack_ai(mob/user as mob)
 	return attack_hand(user)
 
-/obj/machinery/computer/guestpass/attack_hand(var/mob/user as mob)
+/obj/machinery/computer/guestpass/attack_hand(mob/user as mob)
 	if(..())
 		return
 
 	user.set_machine(src)
-	var/dat
+	var/dat = "<meta charset=\"utf-8\">"
 
 	if (mode == 1) //Logs
 		dat += "<h3>Activity log</h3><br>"
@@ -107,7 +107,7 @@
 	onclose(user, "guestpass")
 
 
-/obj/machinery/computer/guestpass/OnTopic(var/mob/user, href_list, state)
+/obj/machinery/computer/guestpass/OnTopic(mob/user, href_list, state)
 	if (href_list["mode"])
 		mode = text2num(href_list["mode"])
 		. = TOPIC_REFRESH
@@ -157,7 +157,7 @@
 					dat += "[entry]<br><hr>"
 //				to_chat(user, "Printing the log, standby...")
 				//sleep(50)
-				var/obj/item/weapon/paper/P = new/obj/item/weapon/paper( loc )
+				var/obj/item/weapon/paper/P = new /obj/item/weapon/paper( loc )
 				P.SetName("activity log")
 				P.info = dat
 				. = TOPIC_REFRESH

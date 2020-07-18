@@ -29,7 +29,7 @@ avoid code duplication. This includes items that may sometimes act as a standard
 	return
 
 //I would prefer to rename this to attack(), but that would involve touching hundreds of files.
-/obj/item/proc/resolve_attackby(atom/A, mob/user, var/click_params)
+/obj/item/proc/resolve_attackby(atom/A, mob/user, click_params)
 	if(!(item_flags & ITEM_FLAG_NO_PRINT))
 		add_fingerprint(user)
 	return A.attackby(src, user, click_params)
@@ -40,15 +40,15 @@ avoid code duplication. This includes items that may sometimes act as a standard
 	return
 
 //I would prefer to rename this attack_as_weapon(), but that would involve touching hundreds of files.
-/obj/item/proc/attack(mob/living/M, mob/living/user, var/target_zone)
+/obj/item/proc/attack(mob/living/M, mob/living/user, target_zone)
 	if(!force || (item_flags & ITEM_FLAG_NO_BLUDGEON))
 		return 0
 	if(M == user && user.a_intent != I_HURT)
 		return 0
 	if(ishuman(user))
 		var/mob/living/carbon/human/H = user
-		if(H.blocking)
-			to_chat(user, "<span class='warning'>You can't attack while blocking!</span>")
+		if(H.blocking && (world.time - H.last_block) > 15)
+			to_chat(user, SPAN("warning", "You can't attack while blocking!"))
 			return 0
 
 	//////////Logging////////
@@ -71,7 +71,7 @@ avoid code duplication. This includes items that may sometimes act as a standard
 	return 1
 
 //Called when a weapon is used to make a successful melee attack on a mob. Returns the blocked result
-/obj/item/proc/apply_hit_effect(mob/living/target, mob/living/user, var/hit_zone)
+/obj/item/proc/apply_hit_effect(mob/living/target, mob/living/user, hit_zone)
 
 	var/power = force
 	for(var/datum/modifier/M in user.modifiers)
@@ -102,14 +102,22 @@ avoid code duplication. This includes items that may sometimes act as a standard
 //Atom procs below//
 ////////////////////
 
-/atom/proc/attackby(obj/item/W, mob/user, var/click_params)
+/atom/proc/attackby(obj/item/W, mob/user, click_params)
 	return
 
 /atom/movable/attackby(obj/item/W, mob/user)
 	if(!(W.item_flags & ITEM_FLAG_NO_BLUDGEON))
-		visible_message("<span class='danger'>[src] has been hit by [user] with [W].</span>")
+		visible_message(SPAN("danger", "[src] has been hit by [user] with [W]."))
 		user.setClickCooldown(W.update_attack_cooldown())
 		user.do_attack_animation(src)
+		obj_attack_sound(W)
+
+/atom/proc/obj_attack_sound(obj/item/W)
+	if(W.hitsound == 'sound/effects/fighting/smash.ogg')
+		playsound(loc, 'sound/effects/fighting/smash.ogg', 50, 1, -1)
+		return
+	playsound(loc, 'sound/effects/metalhit2.ogg', rand(45,65), 1, -1)
+	return
 
 ////////////////////
 //Mobs procs below//
@@ -126,7 +134,7 @@ avoid code duplication. This includes items that may sometimes act as a standard
 	if(user == src && src.a_intent == I_DISARM && src.zone_sel.selecting == "mouth")
 		var/obj/item/blocked = src.check_mouth_coverage()
 		if(blocked)
-			to_chat(user, "<span class='warning'>\The [blocked] is in the way!</span>")
+			to_chat(user, SPAN("warning", "\The [blocked] is in the way!"))
 			return 1
 		else if(devour(I))
 			return 1

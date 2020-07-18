@@ -45,6 +45,7 @@
 //		else
 //			t1 = "-------"	Speaker: [src.listening ? "<A href='byond://?src=\ref[src];listen=0'>Engaged</A>" : "<A href='byond://?src=\ref[src];listen=1'>Disengaged</A>"]<BR>
 	var/dat = {"
+		<meta charset=\"utf-8\">
 		<TT>
 
 		<A href='byond://?src=\ref[src];send=1'>Send Signal</A><BR>
@@ -118,7 +119,7 @@
 	return 0*/
 
 
-/obj/item/device/assembly/signaler/pulse(var/radio = 0)
+/obj/item/device/assembly/signaler/pulse(radio = 0)
 	if(src.connected && src.wires)
 		connected.Pulse(src)
 	else if(holder)

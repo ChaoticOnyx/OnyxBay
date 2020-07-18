@@ -33,15 +33,16 @@ var/list/sounds_cache = list()
 /client/proc/play_server_sound()
 	set category = "Fun"
 	set name = "Play Server Sound"
-	if(!check_rights(R_SOUNDS))	return
 
-	var/list/sounds = file2list("sound/serversound_list.txt");
-	sounds += "--CANCEL--"
+	if(!check_rights(R_SOUNDS))
+		return
+
+	var/list/sounds = getallfiles("sound/music/")
 	sounds += sounds_cache
 
-	var/melody = input("Select a sound from the server to play", "Server sound list", "--CANCEL--") in sounds
-
-	if(melody == "--CANCEL--")	return
+	var/melody = input("Select a sound from the server to play", "Server sound list") as null|anything in sounds
+	if(!melody)
+		return
 
 	play_sound(melody)
 	feedback_add_details("admin_verb","PSS") //If you are copy-pasting this, ensure the 2nd parameter is unique to the new proc!

@@ -64,6 +64,8 @@
 	return FALSE
 
 /mob/living/carbon/human/can_overcome_gravity()
+	if(incorporeal_move)
+		return TRUE
 	//First do species check
 	if(species && species.can_overcome_gravity(src))
 		return 1
@@ -160,7 +162,7 @@
 			if(is_client_moving) M.client.moving = 0
 
 //For children to override
-/atom/movable/proc/can_fall(var/anchor_bypass = FALSE, var/turf/location_override = src.loc)
+/atom/movable/proc/can_fall(anchor_bypass = FALSE, turf/location_override = src.loc)
 	if(!simulated)
 		return FALSE
 
@@ -205,14 +207,14 @@
 	if(..())
 		return species.can_fall(src)
 
-/atom/movable/proc/handle_fall(var/turf/landing)
+/atom/movable/proc/handle_fall(turf/landing)
 	forceMove(landing)
 	if(locate(/obj/structure/stairs) in landing)
 		return 1
 	else
 		handle_fall_effect(landing)
 
-/atom/movable/proc/handle_fall_effect(var/turf/landing)
+/atom/movable/proc/handle_fall_effect(turf/landing)
 	if(istype(landing, /turf/simulated/open))
 		visible_message("\The [src] falls from the deck above through \the [landing]!", "You hear a whoosh of displaced air.")
 	else
@@ -232,7 +234,7 @@
 		return 100
 	return base_storage_cost(w_class)
 
-/mob/living/carbon/human/handle_fall_effect(var/turf/landing)
+/mob/living/carbon/human/handle_fall_effect(turf/landing)
 	if(species && species.handle_fall_special(src, landing))
 		return
 

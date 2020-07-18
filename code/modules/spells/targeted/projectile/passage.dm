@@ -22,7 +22,7 @@
 	hud_state = "gen_project"
 
 
-/spell/targeted/projectile/dumbfire/passage/prox_cast(var/list/targets, atom/spell_holder)
+/spell/targeted/projectile/dumbfire/passage/prox_cast(list/targets, atom/spell_holder)
 	for(var/mob/living/L in targets)
 		apply_spell_damage(L)
 

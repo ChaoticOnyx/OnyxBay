@@ -122,7 +122,7 @@
 
 			user.machine = src
 
-			var/dat = text("<b>[name]</b><br>")
+			var/dat = text("<meta charset=\"utf-8\"><b>[name]</b><br>")
 			if (active)
 				dat += text("Generator: <A href='?src=\ref[src];action=disable'>On</A><br>")
 			else
@@ -164,7 +164,7 @@
 				usr << browse(null, "window=port_gen")
 				usr.machine = null
 
-/obj/machinery/power/port_gen/pacman2/emag_act(var/remaining_uses, var/mob/user)
+/obj/machinery/power/port_gen/pacman2/emag_act(remaining_uses, mob/user)
 	emagged = 1
 	emp_act(1)
 	return 1

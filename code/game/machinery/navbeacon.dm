@@ -24,7 +24,7 @@ var/global/list/navbeacons = list()
 
 	navbeacons += src
 
-/obj/machinery/navbeacon/hide(var/intact)
+/obj/machinery/navbeacon/hide(intact)
 	set_invisibility(intact ? 101 : 0)
 	update_icon()
 
@@ -37,7 +37,7 @@ var/global/list/navbeacons = list()
 	else
 		icon_state = "[state]"
 
-/obj/machinery/navbeacon/attackby(var/obj/item/I, var/mob/user)
+/obj/machinery/navbeacon/attackby(obj/item/I, mob/user)
 	var/turf/T = loc
 	if(!T.is_plating())
 		return		// prevent intraction when T-scanner revealed
@@ -61,17 +61,17 @@ var/global/list/navbeacons = list()
 			to_chat(user, "You must open the cover first!")
 	return
 
-/obj/machinery/navbeacon/attack_ai(var/mob/user)
+/obj/machinery/navbeacon/attack_ai(mob/user)
 	interact(user, 1)
 
-/obj/machinery/navbeacon/attack_hand(var/mob/user)
+/obj/machinery/navbeacon/attack_hand(mob/user)
 
 	if(!user.IsAdvancedToolUser())
 		return 0
 
 	interact(user, 0)
 
-/obj/machinery/navbeacon/interact(var/mob/user, var/ai = 0)
+/obj/machinery/navbeacon/interact(mob/user, ai = 0)
 	var/turf/T = loc
 	if(!T.is_plating())
 		return		// prevent intraction when T-scanner revealed
@@ -83,7 +83,7 @@ var/global/list/navbeacons = list()
 	var/t
 
 	if(locked && !ai)
-		t = {"<TT><B>Navigation Beacon</B><HR><BR>
+		t = {"<meta charset=\"utf-8\"><TT><B>Navigation Beacon</B><HR><BR>
 <i>(swipe card to unlock controls)</i><BR><HR>
 Location: [location ? location : "(none)"]</A><BR>
 Transponder Codes:<UL>"}
@@ -94,7 +94,7 @@ Transponder Codes:<UL>"}
 
 	else
 
-		t = {"<TT><B>Navigation Beacon</B><HR><BR>
+		t = {"<meta charset=\"utf-8\"><TT><B>Navigation Beacon</B><HR><BR>
 <i>(swipe card to lock controls)</i><BR><HR>
 Location: <A href='byond://?src=\ref[src];locedit=1'>[location ? location : "(none)"]</A><BR>
 Transponder Codes:<UL>"}

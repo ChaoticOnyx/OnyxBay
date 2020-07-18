@@ -24,6 +24,7 @@ SUBSYSTEM_DEF(garbage)
 
 	//Queue
 	var/list/queues
+	var/avoid_harddel = TRUE //Avoid hard del
 
 	#ifdef TESTING
 	var/list/reference_find_on_fail = list()
@@ -164,7 +165,6 @@ SUBSYSTEM_DEF(garbage)
 			continue
 
 		// Something's still referring to the qdel'd object.
-		fail_counts[level]++
 		switch (level)
 			if (GC_QUEUE_CHECK)
 				#ifdef TESTING
@@ -181,7 +181,11 @@ SUBSYSTEM_DEF(garbage)
 				if(!I.failures)
 					crash_with("GC: -- \ref[D] | [type] was unable to be GC'd --")
 				I.failures++
+				fail_counts[level]++
 			if (GC_QUEUE_HARDDELETE)
+				if(avoid_harddel)
+					continue
+				fail_counts[level]++
 				HardDelete(D)
 				if (MC_TICK_CHECK)
 					break
@@ -260,6 +264,11 @@ SUBSYSTEM_DEF(garbage)
 		for (var/i in 1 to SSgarbage.queues.len)
 			queues[i] |= SSgarbage.queues[i]
 
+/datum/controller/subsystem/garbage/proc/toggle_harddel(state = TRUE)
+	if(state == avoid_harddel)
+		return
+	avoid_harddel = state
+	return
 
 /datum/qdel_item
 	var/name = ""
@@ -428,7 +437,7 @@ SUBSYSTEM_DEF(garbage)
 #define TYPEID_NULL "0"
 #define TYPEID_NORMAL_LIST "f"
 //helper macros
-#define GET_TYPEID(ref) ( ( (lentext(ref) <= 10) ? "TYPEID_NULL" : copytext(ref, 4, lentext(ref)-6) ) )
+#define GET_TYPEID(ref) ( ( (length(ref) <= 10) ? "TYPEID_NULL" : copytext(ref, 4, length(ref)-6) ) )
 #define IS_NORMAL_LIST(L) (GET_TYPEID("\ref[L]") == TYPEID_NORMAL_LIST)
 
 /datum/proc/DoSearchVar(X, Xname, recursive_limit = 64)

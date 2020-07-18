@@ -10,7 +10,7 @@ This is /obj/machinery level code to properly manage power usage from the area.
 
 // returns true if the area has power on given channel (or doesn't require power), defaults to power_channel.
 // May also optionally specify an area, otherwise defaults to src.loc.loc
-/obj/machinery/proc/powered(var/chan = -1, var/area/check_area = null)
+/obj/machinery/proc/powered(chan = -1, area/check_area = null)
 
 	if(!src.loc)
 		return 0
@@ -53,7 +53,7 @@ This is /obj/machinery level code to properly manage power usage from the area.
 			return 0
 
 // This will have this machine have its area eat this much power next tick, and not afterwards. Do not use for continued power draw.
-/obj/machinery/proc/use_power_oneoff(var/amount, var/chan = POWER_CHAN)
+/obj/machinery/proc/use_power_oneoff(amount, chan = POWER_CHAN)
 	var/area/A = get_area(src)		// make sure it's in an area
 	if(!A)
 		return
@@ -64,17 +64,20 @@ This is /obj/machinery level code to properly manage power usage from the area.
 // Do not do power stuff in New/Initialize until after ..()
 /obj/machinery/Initialize()
 	REPORT_POWER_CONSUMPTION_CHANGE(0, get_power_usage())
-	GLOB.moved_event.register(src, src, .proc/update_power_on_move)
 	power_init_complete = TRUE
 	. = ..()
 
 // Or in Destroy at all, but especially after the ..().
 /obj/machinery/Destroy()
-	GLOB.moved_event.unregister(src, src, .proc/update_power_on_move)
 	REPORT_POWER_CONSUMPTION_CHANGE(get_power_usage(), 0)
 	. = ..()
 
-/obj/machinery/proc/update_power_on_move(atom/movable/mover, atom/old_loc, atom/new_loc)
+/obj/machinery/Move(NewLoc)
+	var/atom/OldLoc = loc
+	. = ..()
+	update_power_on_move(OldLoc, loc)
+
+/obj/machinery/proc/update_power_on_move(atom/old_loc, atom/new_loc)
 	var/power = get_power_usage()
 	if(!power)
 		return // This is the most likely case anyway.

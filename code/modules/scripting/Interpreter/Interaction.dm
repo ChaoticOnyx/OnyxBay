@@ -77,7 +77,7 @@
 				C.func_name	= path
 				C.object		= new("src")
 				for(var/p in params)
-					C.parameters += new/node/expression/value/variable(p)
+					C.parameters += new /node/expression/value/variable(p)
 				var/node/statement/ReturnStatement/R=new()
 				R.value=C
 				S.block.statements += R

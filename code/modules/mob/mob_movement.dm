@@ -7,7 +7,7 @@
 			return TRUE
 	return (!mover.density || !density || lying)
 
-/mob/proc/setMoveCooldown(var/timeout)
+/mob/proc/setMoveCooldown(timeout)
 	if(client)
 		client.move_delay = max(world.time + timeout, client.move_delay)
 
@@ -397,7 +397,7 @@
 // Checks whether this mob is allowed to move in space
 // Return 1 for movement, 0 for none,
 // -1 to allow movement but with a chance of slipping
-/mob/proc/Allow_Spacemove(var/check_drift = 0)
+/mob/proc/Allow_Spacemove(check_drift = 0)
 	if(!Check_Dense_Object()) //Nothing to push off of so end here
 		return 0
 
@@ -452,12 +452,21 @@
 		return 1
 	return 0
 
-/mob/proc/slip_chance(var/prob_slip = 5)
+/mob/proc/slip_chance(prob_slip = 5)
 	if(stat)
 		return 0
 	if(Check_Shoegrip())
 		return 0
 	return prob_slip
+
+/mob/proc/update_gravity()
+	return
+
+/mob/proc/mob_has_gravity()
+	return has_gravity(src)
+
+/mob/proc/mob_negates_gravity()
+	return 0
 
 #define DO_MOVE(this_dir) var/final_dir = turn(this_dir, -dir2angle(dir)); Move(get_step(mob, final_dir), final_dir);
 

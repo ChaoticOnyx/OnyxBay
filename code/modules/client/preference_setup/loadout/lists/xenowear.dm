@@ -1,9 +1,8 @@
 // Alien clothing.
 
 // Unathi clothing
-/datum/gear/suit/unathi/
+/datum/gear/suit/unathi
 	sort_category = "Xenowear"
-	category = /datum/gear/suit/unathi/
 	whitelisted = list(SPECIES_UNATHI)
 
 /datum/gear/suit/unathi/mantle
@@ -22,9 +21,8 @@
 	cost = 5
 
 //Skrell Chains
-/datum/gear/ears/skrell/
+/datum/gear/ears/skrell
 	sort_category = "Xenowear"
-	category = /datum/gear/ears/skrell/
 	whitelisted = list(SPECIES_SKRELL)
 
 /datum/gear/ears/skrell/chains
@@ -56,7 +54,7 @@
 /datum/gear/ears/skrell/cloth/male/New()
 	..()
 	var/list/valid_colors = list("#c20c00", "#0227f7", "#6262ff", "#454545", "#009900", "#e17291")
-	gear_tweaks = list(new/datum/gear_tweak/color(valid_colors))
+	gear_tweaks = list(new /datum/gear_tweak/color(valid_colors))
 
 /datum/gear/ears/skrell/cloth/female
 	display_name = "women's headtail cloth (Skrell)"
@@ -65,7 +63,7 @@
 /datum/gear/ears/skrell/cloth/female/New()
 	..()
 	var/list/valid_colors = list("#c20c00", "#0227f7", "#6262ff", "#454545", "#009900", "#e17291")
-	gear_tweaks = list(new/datum/gear_tweak/color(valid_colors))
+	gear_tweaks = list(new /datum/gear_tweak/color(valid_colors))
 
 // IPC clothing
 /datum/gear/mask/ipc_monitor
@@ -131,7 +129,7 @@
 	caligae["black sock"] = /obj/item/clothing/shoes/sandal/tajaran/caligae/black
 	caligae["grey sock"] = /obj/item/clothing/shoes/sandal/tajaran/caligae/grey
 	caligae["white sock"] = /obj/item/clothing/shoes/sandal/tajaran/caligae/white
-	gear_tweaks += new/datum/gear_tweak/path(caligae)
+	gear_tweaks += new /datum/gear_tweak/path(caligae)
 
 /datum/gear/head/zhan_scarf
 	display_name = "Zhan headscarf (Tajara)"
@@ -151,7 +149,7 @@
 	capes["simple cape"] = /obj/item/clothing/accessory/shouldercape/grunt
 	capes["decorated cape"] = /obj/item/clothing/accessory/shouldercape/officer
 	capes["government cape"] = /obj/item/clothing/accessory/shouldercape/command
-	gear_tweaks += new/datum/gear_tweak/path(capes)
+	gear_tweaks += new /datum/gear_tweak/path(capes)
 
 // Pre-modified gloves
 

@@ -1,12 +1,15 @@
-/mob/living/New()
-	..()
+/mob/living/Initialize()
+	. = ..()
 	if(stat == DEAD)
 		add_to_dead_mob_list()
 	else
 		add_to_living_mob_list()
 		verbs -= /mob/living/proc/ghost
-	update_transform() // Some mobs may start bigger or smaller than normal.
 
+	if(controllable)
+		GLOB.available_mobs_for_possess += src
+
+	update_transform() // Some mobs may start bigger or smaller than normal.
 
 //mob verbs are faster than object verbs. See mob/verb/examine.
 /mob/living/verb/pulled(atom/movable/AM as mob|obj in oview(1))
@@ -30,30 +33,31 @@
 	usr.visible_message("<b>[src]</b> points to [A]")
 	return 1
 
-/*one proc, four uses
-swapping: if it's 1, the mobs are trying to switch, if 0, non-passive is pushing passive
-default behaviour is:
- - non-passive mob passes the passive version
- - passive mob checks to see if its mob_bump_flag is in the non-passive's mob_bump_flags
- - if si, the proc returns
-*/
-/mob/living/proc/can_move_mob(var/mob/living/swapped, swapping = 0, passive = 0)
-	if(!swapped)
-		return 1
+// Check if current mob can push other mob or swap with it
+// - other - the other mob to be pushed/swapped with
+// - are_swaping - TRUE if current mob is intenting to swap, FALSE for pushing
+// - passive - TRUE if current mob isn't initiator of swap/push
+// Returns TRUE/FALSE
+/mob/living/proc/can_move_mob(mob/living/other, are_swapping, passive)
+	ASSERT(other)
+	ASSERT(src != other)
+
 	if(!passive)
-		return swapped.can_move_mob(src, swapping, 1)
+		return other.can_move_mob(src, are_swapping, TRUE)
+
+	var/context_flags = 0
+	if(are_swapping)
+		context_flags = other.mob_swap_flags
 	else
-		var/context_flags = 0
-		if(swapping)
-			context_flags = swapped.mob_swap_flags
-		else
-			context_flags = swapped.mob_push_flags
-		if(!mob_bump_flag) //nothing defined, go wild
-			return 1
-		if(mob_bump_flag & context_flags)
-			return 1
-		else
-			return ((a_intent == I_HELP && swapped.a_intent == I_HELP) && swapped.can_move_mob(src, swapping, 1))
+		context_flags = other.mob_push_flags
+
+	if(!mob_bump_flag) //nothing defined, go wild
+		return TRUE
+
+	if(mob_bump_flag & context_flags)
+		return TRUE
+
+	return a_intent == I_HELP && other.a_intent == I_HELP
 
 /mob/living/canface()
 	if(stat)
@@ -134,9 +138,19 @@ default behaviour is:
 			..()
 			if (!istype(AM, /atom/movable) || AM.anchored)
 				if(confused && prob(50) && m_intent=="run")
-					Weaken(2)
-					playsound(loc, "punch", rand(80, 100), 1, -1)
-					visible_message("<span class='warning'>[src] [pick("ran", "slammed")] into \the [AM]!</span>")
+					var/obj/machinery/disposal/D = AM
+					if(istype(D) && !(D.stat & BROKEN))
+						Weaken(6)
+						playsound(get_turf(AM), 'sound/effects/clang.ogg', 75)
+						visible_message(SPAN_WARNING("[src] falls into \the [AM]!"), SPAN_WARNING("You fall into \the [AM]!"))
+						if (client)
+							client.perspective = EYE_PERSPECTIVE
+							client.eye = src
+						forceMove(AM)
+					else
+						Weaken(2)
+						playsound(loc, "punch", rand(80, 100), 1, -1)
+						visible_message(SPAN_WARNING("[src] [pick("ran", "slammed")] into \the [AM]!"))
 					src.apply_damage(5, BRUTE)
 				return
 			if (!now_pushing)
@@ -160,7 +174,7 @@ default behaviour is:
 						G.adjust_position()
 				now_pushing = 0
 
-/proc/swap_density_check(var/mob/swapper, var/mob/swapee)
+/proc/swap_density_check(mob/swapper, mob/swapee)
 	var/turf/T = get_turf(swapper)
 	if(T)
 		if(T.density)
@@ -171,7 +185,7 @@ default behaviour is:
 			if(!A.CanPass(swapee, T, 1))
 				return 1
 
-/mob/living/proc/can_swap_with(var/mob/living/tmob)
+/mob/living/proc/can_swap_with(mob/living/tmob)
 	if(tmob.buckled || buckled)
 		return 0
 	//BubbleWrap: people in handcuffs are always switched around as if they were on 'help' intent to prevent a person being pulled from being seperated from their puller
@@ -205,7 +219,7 @@ default behaviour is:
 
 //This proc is used for mobs which are affected by pressure to calculate the amount of pressure that actually
 //affects them once clothing is factored in. ~Errorage
-/mob/living/proc/calculate_affecting_pressure(var/pressure)
+/mob/living/proc/calculate_affecting_pressure(pressure)
 	return
 
 
@@ -242,62 +256,69 @@ default behaviour is:
 /mob/living/proc/getBruteLoss()
 	return maxHealth - health
 
-/mob/living/proc/adjustBruteLoss(var/amount)
-	if(status_flags & GODMODE)	return 0	//godmode
+/mob/living/proc/adjustBruteLoss(amount)
+	if(status_flags & GODMODE)
+		return 0
 	health = max(health-amount, 0)
 
 /mob/living/proc/getOxyLoss()
 	return 0
 
-/mob/living/proc/adjustOxyLoss(var/amount)
+/mob/living/proc/adjustOxyLoss(amount)
 	return
 
-/mob/living/proc/setOxyLoss(var/amount)
+/mob/living/proc/setOxyLoss(amount)
 	return
 
 /mob/living/proc/getToxLoss()
 	return 0
 
-/mob/living/proc/adjustToxLoss(var/amount)
+/mob/living/proc/adjustToxLoss(amount)
+	if(status_flags & GODMODE)
+		return 0
 	adjustBruteLoss(amount * 0.5)
 
-/mob/living/proc/setToxLoss(var/amount)
+/mob/living/proc/setToxLoss(amount)
 	adjustBruteLoss((amount * 0.5)-getBruteLoss())
 
 /mob/living/proc/getFireLoss()
 	return
 
-/mob/living/proc/adjustFireLoss(var/amount)
+/mob/living/proc/adjustFireLoss(amount)
+	if(status_flags & GODMODE)
+		return 0
 	adjustBruteLoss(amount * 0.5)
 
-/mob/living/proc/setFireLoss(var/amount)
+/mob/living/proc/setFireLoss(amount)
 	adjustBruteLoss((amount * 0.5)-getBruteLoss())
 
 /mob/living/proc/getHalLoss()
 	return 0
 
-/mob/living/proc/adjustHalLoss(var/amount)
+/mob/living/proc/adjustHalLoss(amount)
+	if(status_flags & GODMODE)
+		return 0
 	adjustBruteLoss(amount * 0.5)
 
-/mob/living/proc/setHalLoss(var/amount)
+/mob/living/proc/setHalLoss(amount)
 	adjustBruteLoss((amount * 0.5)-getBruteLoss())
 
 /mob/living/proc/getBrainLoss()
 	return 0
 
-/mob/living/proc/adjustBrainLoss(var/amount)
+/mob/living/proc/adjustBrainLoss(amount)
 	return
 
-/mob/living/proc/setBrainLoss(var/amount)
+/mob/living/proc/setBrainLoss(amount)
 	return
 
 /mob/living/proc/getCloneLoss()
 	return 0
 
-/mob/living/proc/setCloneLoss(var/amount)
+/mob/living/proc/setCloneLoss(amount)
 	return
 
-/mob/living/proc/adjustCloneLoss(var/amount)
+/mob/living/proc/adjustCloneLoss(amount)
 	return
 
 /mob/living/proc/getMaxHealth()
@@ -311,7 +332,7 @@ default behaviour is:
 			result *= M.max_health_percent
 	return result
 
-/mob/living/proc/setMaxHealth(var/newMaxHealth)
+/mob/living/proc/setMaxHealth(newMaxHealth)
 	maxHealth = newMaxHealth
 
 // ++++ROCKDTBEN++++ MOB PROCS //END
@@ -320,7 +341,7 @@ default behaviour is:
 	return
 
 //Recursive function to find everything a mob is holding.
-/mob/living/get_contents(var/obj/item/weapon/storage/Storage = null)
+/mob/living/get_contents(obj/item/weapon/storage/Storage = null)
 	var/list/L = list()
 
 	if(Storage) //If it called itself
@@ -366,7 +387,7 @@ default behaviour is:
 			return 1
 	return 0
 
-/mob/living/proc/can_inject(var/mob/user, var/target_zone)
+/mob/living/proc/can_inject(mob/user, target_zone)
 	return 1
 
 /mob/living/proc/get_organ_target()
@@ -379,33 +400,37 @@ default behaviour is:
 
 
 // heal ONE external organ, organ gets randomly selected from damaged ones.
-/mob/living/proc/heal_organ_damage(var/brute, var/burn)
+/mob/living/proc/heal_organ_damage(brute, burn)
 	adjustBruteLoss(-brute)
 	adjustFireLoss(-burn)
 	src.updatehealth()
 
 // damage ONE external organ, organ gets randomly selected from damaged ones.
-/mob/living/proc/take_organ_damage(var/brute, var/burn, var/emp=0)
-	if(status_flags & GODMODE)	return 0	//godmode
+/mob/living/proc/take_organ_damage(brute, burn, emp=0)
 	adjustBruteLoss(brute)
 	adjustFireLoss(burn)
 	src.updatehealth()
 
 // heal MANY external organs, in random order
-/mob/living/proc/heal_overall_damage(var/brute, var/burn)
+/mob/living/proc/heal_overall_damage(brute, burn)
 	adjustBruteLoss(-brute)
 	adjustFireLoss(-burn)
 	src.updatehealth()
 
 // damage MANY external organs, in random order
-/mob/living/proc/take_overall_damage(var/brute, var/burn, var/used_weapon = null)
-	if(status_flags & GODMODE)	return 0	//godmode
+/mob/living/proc/take_overall_damage(brute, burn, used_weapon = null)
 	adjustBruteLoss(brute)
 	adjustFireLoss(burn)
 	src.updatehealth()
 
 /mob/living/proc/restore_all_organs()
 	return
+
+/mob/living/update_gravity(has_gravity)
+	if(has_gravity)
+		stop_floating()
+	else
+		start_floating()
 
 /mob/living/proc/revive()
 	rejuvenate()
@@ -656,10 +681,6 @@ default behaviour is:
 		to_chat(src, "<span class='warning'>You extricate yourself from \the [holster].</span>")
 		H.forceMove(get_turf(H))
 	else if(istype(H.loc,/obj))
-		if(istype(H.loc, /obj/machinery/cooker))
-			var/obj/machinery/cooker/C = H.loc
-			C.cooking_obj = null
-			C.check_cooking_obj()
 		to_chat(src, "<span class='warning'>You struggle free of \the [H.loc].</span>")
 		H.forceMove(get_turf(H))
 
@@ -709,30 +730,30 @@ default behaviour is:
 /mob/living/proc/has_eyes()
 	return 1
 
-/mob/living/proc/slip(var/slipped_on,stun_duration=8)
+/mob/living/proc/slip(slipped_on,stun_duration=8)
 	return 0
 
-/mob/living/carbon/drop_from_inventory(var/obj/item/W, var/atom/Target = null, var/force = null)
+/mob/living/carbon/drop_from_inventory(obj/item/W, atom/Target = null, force = null)
 	if(W in internal_organs)
 		return
 	. = ..()
 
 //damage/heal the mob ears and adjust the deaf amount
-/mob/living/adjustEarDamage(var/damage, var/deaf)
+/mob/living/adjustEarDamage(damage, deaf)
 	ear_damage = max(0, ear_damage + damage)
 	ear_deaf = max(0, ear_deaf + deaf)
 
 //pass a negative argument to skip one of the variable
-/mob/living/setEarDamage(var/damage = null, var/deaf = null)
+/mob/living/setEarDamage(damage = null, deaf = null)
 	if(!isnull(damage))
 		ear_damage = damage
 	if(!isnull(deaf))
 		ear_deaf = deaf
 
-/mob/proc/can_be_possessed_by(var/mob/observer/ghost/possessor)
+/mob/proc/can_be_possessed_by(mob/observer/ghost/possessor)
 	return istype(possessor) && possessor.client
 
-/mob/living/can_be_possessed_by(var/mob/observer/ghost/possessor)
+/mob/living/can_be_possessed_by(mob/observer/ghost/possessor)
 	if(!..())
 		return 0
 	if(!possession_candidate)
@@ -745,7 +766,7 @@ default behaviour is:
 		return 0
 	return 1
 
-/mob/living/proc/do_possession(var/mob/observer/ghost/possessor)
+/mob/living/proc/do_possession(mob/observer/ghost/possessor)
 
 	if(!(istype(possessor) && possessor.ckey))
 		return 0
@@ -782,12 +803,12 @@ default behaviour is:
 	if(auras)
 		overlays |= auras
 
-/mob/living/proc/add_aura(var/obj/aura/aura)
+/mob/living/proc/add_aura(obj/aura/aura)
 	LAZYDISTINCTADD(auras,aura)
 	update_icons()
 	return 1
 
-/mob/living/proc/remove_aura(var/obj/aura/aura)
+/mob/living/proc/remove_aura(obj/aura/aura)
 	LAZYREMOVE(auras,aura)
 	update_icons()
 	return 1
@@ -798,7 +819,7 @@ default behaviour is:
 			remove_aura(a)
 	return ..()
 
-/mob/living/proc/set_m_intent(var/intent)
+/mob/living/proc/set_m_intent(intent)
 	if (intent != "walk" && intent != "run")
 		return 0
 	m_intent = intent
@@ -844,3 +865,6 @@ default behaviour is:
 		Paralyse(rand(8,16))
 		make_jittery(rand(150,200))
 		adjustHalLoss(rand(50,60))
+
+/mob/living/proc/on_ghost_possess()
+	return

@@ -22,7 +22,7 @@
 	unbreakable = 1 //It's already broken.
 	drops_debris = 0
 
-/obj/item/weapon/material/shard/set_material(var/new_material)
+/obj/item/weapon/material/shard/set_material(new_material)
 	..(new_material)
 	if(!istype(material))
 		return
@@ -59,12 +59,14 @@
 			return
 	return ..()
 
-/obj/item/weapon/material/shard/Crossed(AM as mob|obj)
-	..()
-	if(isliving(AM))
-		var/mob/M = AM
+/obj/item/weapon/material/shard/Crossed(mob/M)
+	if((locate(/obj/item/weapon/material/shard) in loc) != src)
+		return
 
-		if(M.buckled) //wheelchairs, office chairs, rollerbeds
+	if(isliving(M))
+		var/mob/living/L = M
+
+		if(L.buckled) //wheelchairs, office chairs, rollerbeds
 			return
 
 		playsound(src.loc, 'sound/effects/glass_step.ogg', 50, 1) // not sure how to handle metal shards with sounds
@@ -79,6 +81,10 @@
 
 			to_chat(M, "<span class='danger'>You step on \the [src]!</span>")
 
+			var/amount = 0
+			for(var/obj/item/weapon/material/shard/S in loc)
+				amount++
+
 			var/list/check = list(BP_L_FOOT, BP_R_FOOT)
 			while(check.len)
 				var/picked = pick(check)
@@ -86,10 +92,10 @@
 				if(affecting)
 					if(BP_IS_ROBOTIC(affecting))
 						return
-					affecting.take_damage(5, 0)
+					affecting.take_external_damage(min(5 * amount, 15), 0)
 					H.updatehealth()
 					if(affecting.can_feel_pain())
-						H.Weaken(3)
+						H.Weaken(min(3 * amount, 9))
 					return
 				check -= picked
 			return
@@ -102,6 +108,9 @@
 
 /obj/item/weapon/material/shard/shrapnel/New(loc)
 	..(loc, MATERIAL_STEEL)
+	name = "shrapnel"
+	icon_state = "shrapnel[pick("large", "medium", "small")]"
+	update_icon()
 
 /obj/item/weapon/material/shard/phoron/New(loc)
 	..(loc, MATERIAL_PHORON_GLASS)

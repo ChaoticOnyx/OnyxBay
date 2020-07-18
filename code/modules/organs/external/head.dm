@@ -31,7 +31,7 @@
 	if(forehead_graffiti && graffiti_style)
 		to_chat(user, "<span class='notice'>It has \"[forehead_graffiti]\" written on it in [graffiti_style]!</span>")
 
-/obj/item/organ/external/head/proc/write_on(var/mob/penman, var/style)
+/obj/item/organ/external/head/proc/write_on(mob/penman, style)
 	var/head_name = name
 	var/atom/target = src
 	if(owner)
@@ -63,7 +63,7 @@
 			forehead_graffiti = graffiti
 			graffiti_style = style
 
-/obj/item/organ/external/head/set_dna(var/datum/dna/new_dna)
+/obj/item/organ/external/head/set_dna(datum/dna/new_dna)
 	..()
 	eye_icon = species.eye_icon
 	eye_icon_location = species.eye_icon_location
@@ -71,7 +71,7 @@
 /obj/item/organ/external/head/get_agony_multiplier()
 	return (owner && owner.headcheck(organ_tag)) ? 1.50 : 1
 
-/obj/item/organ/external/head/robotize(var/company, var/skip_prosthetics, var/keep_organs)
+/obj/item/organ/external/head/robotize(company, skip_prosthetics, keep_organs)
 	if(company)
 		var/datum/robolimb/R = all_robolimbs[company]
 		if(R)
@@ -80,7 +80,7 @@
 	. = ..(company, skip_prosthetics, 1)
 	has_lips = null
 
-/obj/item/organ/external/head/take_damage(brute, burn, damage_flags, used_weapon = null)
+/obj/item/organ/external/head/take_external_damage(brute, burn, damage_flags, used_weapon = null)
 	. = ..()
 	if ((brute_dam > 40) && prob(50))
 		disfigure("brute")
@@ -96,12 +96,12 @@
 
 	if(owner)
 		if(eye_icon)
-			var/icon/eyes_icon = new/icon(eye_icon_location, eye_icon)
+			var/icon/eyes_icon = new /icon(eye_icon_location, eye_icon)
 			var/obj/item/organ/internal/eyes/eyes = owner.internal_organs_by_name[owner.species.vision_organ ? owner.species.vision_organ : BP_EYES]
 			if(eyes)
 				eyes_icon.Blend(rgb(eyes.eye_colour[1], eyes.eye_colour[2], eyes.eye_colour[3]), ICON_ADD)
 			else if(owner.should_have_organ(BP_EYES))
-				eyes_icon = new/icon('icons/mob/human_face.dmi', "eyeless")
+				eyes_icon = new /icon('icons/mob/human_face.dmi', "eyeless")
 				eyes_icon.Blend(rgb(128,0,0), ICON_ADD)
 			else
 				eyes_icon.Blend(rgb(128,0,0), ICON_ADD)
@@ -109,7 +109,7 @@
 			overlays |= eyes_icon
 
 		if(owner.lip_style && !BP_IS_ROBOTIC(src) && (species && (species.appearance_flags & HAS_LIPS)))
-			var/icon/lip_icon = new/icon('icons/mob/human_face.dmi', "lips_[owner.lip_style]_s")
+			var/icon/lip_icon = new /icon('icons/mob/human_face.dmi', "lips_[owner.lip_style]_s")
 			overlays |= lip_icon
 			mob_icon.Blend(lip_icon, ICON_OVERLAY)
 
@@ -122,7 +122,7 @@
 	if(owner.f_style)
 		var/datum/sprite_accessory/facial_hair_style = GLOB.facial_hair_styles_list[owner.f_style]
 		if(facial_hair_style && facial_hair_style.species_allowed && (species.name in facial_hair_style.species_allowed))
-			var/icon/facial_s = new/icon("icon" = facial_hair_style.icon, "icon_state" = "[facial_hair_style.icon_state]_s")
+			var/icon/facial_s = new /icon("icon" = facial_hair_style.icon, "icon_state" = "[facial_hair_style.icon_state]_s")
 			if(facial_hair_style.do_colouration)
 				facial_s.Blend(rgb(owner.r_facial, owner.g_facial, owner.b_facial), facial_hair_style.blend)
 			res.overlays |= facial_s
@@ -134,18 +134,21 @@
 			if(!(hair_style.flags & VERY_SHORT))
 				hair_style = GLOB.hair_styles_list["Short Hair"]
 		if(hair_style && (species.name in hair_style.species_allowed))
-			var/icon/hair_s = new/icon("icon" = hair_style.icon, "icon_state" = "[hair_style.icon_state]_s")
+			var/icon/hair_s = new /icon("icon" = hair_style.icon, "icon_state" = "[hair_style.icon_state]_s")
 			if(hair_style.do_colouration && islist(h_col) && h_col.len >= 3)
 				hair_s.Blend(rgb(h_col[1], h_col[2], h_col[3]), hair_style.blend)
 			res.overlays |= hair_s
 	return res
 
-/obj/item/organ/external/head/update_icon_drop(var/mob/living/carbon/human/powner)
+/obj/item/organ/external/head/update_icon_drop(mob/living/carbon/human/powner)
+	if(!powner)
+		return
+
 	overlays.Cut()
 	if(powner.f_style)
 		var/datum/sprite_accessory/facial_hair_style = GLOB.facial_hair_styles_list[powner.f_style]
 		if(facial_hair_style && facial_hair_style.species_allowed && (species.name in facial_hair_style.species_allowed))
-			var/icon/facial_s = new/icon("icon" = facial_hair_style.icon, "icon_state" = "[facial_hair_style.icon_state]_s")
+			var/icon/facial_s = new /icon("icon" = facial_hair_style.icon, "icon_state" = "[facial_hair_style.icon_state]_s")
 			if(facial_hair_style.do_colouration)
 				facial_s.Blend(rgb(powner.r_facial, powner.g_facial, powner.b_facial), facial_hair_style.blend)
 			src.overlays += facial_s
@@ -154,11 +157,10 @@
 		var/style = powner.h_style
 		var/datum/sprite_accessory/hair/hair_style = GLOB.hair_styles_list[style]
 		if(hair_style && (species.name in hair_style.species_allowed))
-			var/icon/hair_s = new/icon("icon" = hair_style.icon, "icon_state" = "[hair_style.icon_state]_s")
+			var/icon/hair_s = new /icon("icon" = hair_style.icon, "icon_state" = "[hair_style.icon_state]_s")
 			if(hair_style.do_colouration && islist(h_col) && h_col.len >= 3)
 				hair_s.Blend(rgb(h_col[1], h_col[2], h_col[3]), hair_style.blend)
 			src.overlays += hair_s
-	return
 
 /obj/item/weapon/skull
 	name = "skull"
@@ -185,7 +187,7 @@
 		return
 	if((istype(W,/obj/item/weapon/handcuffs/cable)) && iscut)
 		user.visible_message("<span class='notice'>[user] attaches [W] to [src].</span>")
-		new/obj/item/clothing/mask/skullmask(user.loc)
+		new /obj/item/clothing/mask/skullmask(user.loc)
 		qdel(src)
 		qdel(W)
 		return
@@ -193,13 +195,13 @@
 		var/obj/item/stack/M = W
 		if(M.get_material_name() == MATERIAL_STEEL)
 			if(do_after(usr, 10, src))
-				new/obj/item/weapon/reagent_containers/food/drinks/skullgoblet(user.loc)
+				new /obj/item/weapon/reagent_containers/food/drinks/skullgoblet(user.loc)
 				user.visible_message("<span class='notice'>[user] makes a goblet out of [src].</span>")
 				M.use(1)
 				qdel(src)
 		else if(M.get_material_name() == MATERIAL_GOLD)
 			if(do_after(usr, 10, src))
-				new/obj/item/weapon/reagent_containers/food/drinks/skullgoblet/gold(user.loc)
+				new /obj/item/weapon/reagent_containers/food/drinks/skullgoblet/gold(user.loc)
 				user.visible_message("<span class='notice'>[user] makes a <b>golden</b> goblet out of [src].</span>")
 				M.use(1)
 				qdel(src)

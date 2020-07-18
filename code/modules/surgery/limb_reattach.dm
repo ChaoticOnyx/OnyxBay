@@ -12,6 +12,8 @@
 	can_infect = 0
 	shock_level = 40
 	delicate = 1
+	clothes_penalty = FALSE
+
 /datum/surgery_step/limb/can_use(mob/living/user, mob/living/carbon/human/target, target_zone, obj/item/tool)
 	if (!hasorgans(target))
 		return 0
@@ -34,8 +36,8 @@
 /datum/surgery_step/limb/attach
 	allowed_tools = list(/obj/item/organ/external = 100)
 
-	min_duration = 50
-	max_duration = 70
+	min_duration = 40
+	max_duration = 60
 
 /datum/surgery_step/limb/attach/begin_step(mob/user, mob/living/carbon/human/target, target_zone, obj/item/tool)
 	var/obj/item/organ/external/E = tool
@@ -70,8 +72,8 @@
 	)
 	can_infect = 1
 
-	min_duration = 100
-	max_duration = 120
+	min_duration = 75
+	max_duration = 105
 
 /datum/surgery_step/limb/connect/can_use(mob/living/user, mob/living/carbon/human/target, target_zone, obj/item/tool)
 	var/obj/item/organ/external/E = target.get_organ(target_zone)
@@ -107,8 +109,8 @@
 /datum/surgery_step/limb/mechanize
 	allowed_tools = list(/obj/item/robot_parts = 100)
 
-	min_duration = 80
-	max_duration = 100
+	min_duration = 50
+	max_duration = 70
 
 /datum/surgery_step/limb/mechanize/can_use(mob/living/user, mob/living/carbon/human/target, target_zone, obj/item/tool)
 	if(..())

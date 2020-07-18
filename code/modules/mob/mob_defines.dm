@@ -3,7 +3,6 @@
 
 	appearance_flags = PIXEL_SCALE
 	animate_movement = 2
-	movable_flags = MOVABLE_FLAG_PROXMOVE
 
 	virtual_mob = /mob/observer/virtual/mob
 
@@ -26,6 +25,7 @@
 	var/obj/screen/fire = null
 	var/obj/screen/bodytemp = null
 	var/obj/screen/healths = null
+	var/obj/screen/pains = null
 	var/obj/screen/throw_icon = null
 	var/obj/screen/block_icon = null
 	var/obj/screen/blockswitch_icon = null

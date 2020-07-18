@@ -1,4 +1,4 @@
-/obj/item/slime_extract/Value(var/base)
+/obj/item/slime_extract/Value(base)
 	return base * Uses
 
 /obj/item/ammo_casing/Value()
@@ -14,7 +14,7 @@
 			. += reg.value * reg.volume
 	. = round(.)
 
-/obj/item/stack/Value(var/base)
+/obj/item/stack/Value(base)
 	return base * amount
 
 /obj/item/stack/material/Value()

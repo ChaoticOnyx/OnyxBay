@@ -79,18 +79,18 @@
 /datum/species/xenos/get_random_name()
 	return "alien [caste_name] ([alien_number])"
 
-/datum/species/xenos/can_understand(var/mob/other)
+/datum/species/xenos/can_understand(mob/other)
 
 	if(istype(other,/mob/living/carbon/alien/larva))
 		return 1
 
 	return 0
 
-/datum/species/xenos/hug(var/mob/living/carbon/human/H,var/mob/living/target)
+/datum/species/xenos/hug(mob/living/carbon/human/H,mob/living/target)
 	H.visible_message("<span class='notice'>[H] caresses [target] with its scythe-like arm.</span>", \
 					"<span class='notice'>You caress [target] with your scythe-like arm.</span>")
 
-/datum/species/xenos/handle_post_spawn(var/mob/living/carbon/human/H)
+/datum/species/xenos/handle_post_spawn(mob/living/carbon/human/H)
 
 	if(H.mind)
 		H.mind.assigned_role = "Alien"
@@ -102,7 +102,7 @@
 
 	..()
 
-/datum/species/xenos/handle_environment_special(var/mob/living/carbon/human/H)
+/datum/species/xenos/handle_environment_special(mob/living/carbon/human/H)
 
 	var/turf/T = H.loc
 	if(!T) return
@@ -116,7 +116,7 @@
 			P.stored_plasma = min(max(P.stored_plasma, 0), P.max_plasma)
 	..()
 
-/datum/species/xenos/proc/regenerate(var/mob/living/carbon/human/H)
+/datum/species/xenos/proc/regenerate(mob/living/carbon/human/H)
 	var/heal_rate = weeds_heal_rate
 	var/mend_prob = 10
 	if (!H.resting)
@@ -142,7 +142,7 @@
 			return 1
 
 	//next mend broken bones, approx 10 ticks each
-	for(var/obj/item/organ/external/E in H.bad_external_organs)
+	for(var/obj/item/organ/external/E in H.organs)
 		if (E.status & ORGAN_BROKEN)
 			if (prob(mend_prob))
 				if (E.mend_fracture())
@@ -151,11 +151,11 @@
 
 	return 0
 /*
-/datum/species/xenos/handle_login_special(var/mob/living/carbon/human/H)
+/datum/species/xenos/handle_login_special(mob/living/carbon/human/H)
 	H.AddInfectionImages()
 	..()
 
-/datum/species/xenos/handle_logout_special(var/mob/living/carbon/human/H)
+/datum/species/xenos/handle_logout_special(mob/living/carbon/human/H)
 	H.RemoveInfectionImages()
 	..()
 */
@@ -192,7 +192,7 @@
 		/mob/living/carbon/human/proc/toggle_darksight
 		)
 
-/datum/species/xenos/drone/handle_post_spawn(var/mob/living/carbon/human/H)
+/datum/species/xenos/drone/handle_post_spawn(mob/living/carbon/human/H)
 
 	var/mob/living/carbon/human/A = H
 	if(!istype(A))
@@ -302,7 +302,7 @@
 		/mob/living/carbon/human/proc/toggle_darksight
 		)
 
-/datum/species/xenos/queen/handle_login_special(var/mob/living/carbon/human/H)
+/datum/species/xenos/queen/handle_login_special(mob/living/carbon/human/H)
 	..()
 	// Make sure only one official queen exists at any point.
 	if(!alien_queen_exists(1,H))
@@ -319,6 +319,7 @@
 	has_m_intent =  1
 	has_warnings =  0
 	has_health =    1
+	has_pain =		0
 	has_hands =     1
 	has_drop =      1
 	has_throw =     1

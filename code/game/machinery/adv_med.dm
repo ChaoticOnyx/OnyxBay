@@ -5,7 +5,7 @@
 	var/mob/living/carbon/human/occupant
 	var/locked
 	name = "Body Scanner"
-	icon = 'icons/obj/Cryogenic2.dmi'
+	icon = 'icons/obj/cryogenic2.dmi'
 	icon_state = "body_scanner_0"
 	density = 1
 	anchored = 1
@@ -101,7 +101,7 @@
 	else
 		return
 
-/obj/machinery/bodyscanner/proc/check_compatibility(var/mob/target, var/mob/user)
+/obj/machinery/bodyscanner/proc/check_compatibility(mob/target, mob/user)
 	if(!istype(user) || !istype(target))
 		return FALSE
 
@@ -125,7 +125,7 @@
 			return FALSE
 	return TRUE
 
-/obj/machinery/bodyscanner/MouseDrop_T(var/mob/target, var/mob/user)
+/obj/machinery/bodyscanner/MouseDrop_T(mob/target, mob/user)
 	if(!check_compatibility(target, user))
 		return
 	user.visible_message("<span class='notice'>\The [user] begins placing \the [target] into \the [src].</span>", "<span class='notice'>You start placing \the [target] into \the [src].</span>")
@@ -204,7 +204,7 @@
 	var/delete
 	var/temphtml
 	name = "Body Scanner Console"
-	icon = 'icons/obj/Cryogenic2.dmi'
+	icon = 'icons/obj/cryogenic2.dmi'
 	icon_state = "body_scannerconsole"
 	density = 0
 	anchored = 1
@@ -268,7 +268,7 @@
 				to_chat(usr, "\icon[src]<span class='warning'>The body scanner cannot scan that lifeform.</span>")
 				return TRUE
 
-			new/obj/item/weapon/paper/(loc, "<tt>[connected.occupant.get_medical_data()]</tt>", "Body scan report - [occupant]")
+			new /obj/item/weapon/paper/(loc, "<tt>[connected.occupant.get_medical_data()]</tt>", "Body scan report - [occupant]")
 			return TRUE
 		if ("eject")
 			if (connected)
@@ -479,7 +479,7 @@
 
 /mob/living/carbon/human/proc/get_medical_data()
 	var/mob/living/carbon/human/H = src
-	var/dat = list()
+	var/dat = list("<meta charset=\"utf-8\">")
 	dat +="<b>SCAN RESULTS FOR: [H]</b>"
 	dat +="Scan performed at [stationtime2text()]<br>"
 

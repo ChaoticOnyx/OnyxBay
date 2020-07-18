@@ -24,7 +24,7 @@ obj/item/weapon/spellbook/warlock
 				/spell/targeted/torment =							1,
 				/spell/hand/burning_grip =							1,
 				/spell/aoe_turf/drain_blood =						1,
-				/spell/noclothes =									1,
+				/spell/noclothes =									3,
 				/obj/item/weapon/contract/apprentice =				1,
 				/obj/item/weapon/gun/energy/staff/focus =			1,
 				/obj/structure/closet/wizard/souls =				1,

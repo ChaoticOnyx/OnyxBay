@@ -88,19 +88,6 @@
 /obj/effect/shuttle_landmark/escape_pod/transit/pod5
 	number = 5
 
-//Transport shuttle
-
-/datum/shuttle/autodock/ferry/transport
-	name = "Transport"
-	warmup_time = 10
-	location = 1
-	shuttle_area = /area/shuttle/transport/centcom
-	dock_target = "centcom_transport_shuttle"
-	landmark_transition = "nav_transport_transition"
-	waypoint_offsite = "nav_transport_start"
-	waypoint_station = "nav_transport_station"
-	move_time = 30
-
 /obj/effect/shuttle_landmark/transport/start
 	name = "Centcomm"
 	landmark_tag = "nav_transport_start"
@@ -138,6 +125,31 @@
 	name = "Dock Station"
 	landmark_tag = "nav_cargo_station"
 	docking_controller = "cargo_bay"
+	autoset = 1
+
+//Cargo Elevator
+
+/datum/shuttle/autodock/ferry/elevator
+	name = "Cargo Elevator"
+	//category = /datum/shuttle/autodock/ferry/supply
+	shuttle_area = /area/shuttle/supply/elevator/upper
+	warmup_time = 4
+	waypoint_station = "nav_cargo_elevator_top"
+	waypoint_offsite = "nav_cargo_elevator_bottom"
+	sound_takeoff = 'sound/effects/lift_heavy_start.ogg'
+	sound_landing = 'sound/effects/lift_heavy_stop.ogg'
+	knockdown = 0
+	ceiling_type = null
+
+/obj/effect/shuttle_landmark/elevator/top
+	name = "Top Deck"
+	landmark_tag = "nav_cargo_elevator_top"
+	autoset = 0
+	base_area = /area/quartermaster/storage
+
+/obj/effect/shuttle_landmark/elevator/bottom
+	name = "Lower Deck"
+	landmark_tag = "nav_cargo_elevator_bottom"
 	autoset = 1
 
 //Research Shuttle
@@ -503,16 +515,24 @@
 
 //Merchant
 
-/datum/shuttle/autodock/ferry/merchant
+/datum/shuttle/autodock/multi/antag/merchant
 	name = "Merchant"
 	warmup_time = 10
-	location = 0
+	destination_tags = list(
+		"nav_merchant_start",
+		"nav_merchant_out",
+		"nav_merchant_shop",
+		"nav_merchant_space",
+		)
 	shuttle_area = /area/shuttle/merchant/home
 	landmark_transition = "nav_merchant_transition"
-	waypoint_station = "nav_merchant_start"
-	waypoint_offsite = "nav_merchant_out"
+	current_location = "nav_merchant_start"
 	dock_target = "merchant_ship_dock"
-	move_time = 30
+	home_waypoint = "nav_merchant_start"
+	cloaked = 1
+	move_time = 60
+	announcer = "NMV Icarus Sensor Array"
+	arrival_message = "Attention, you have an unarmed cargo vessel, which appears to be a merchant ship, approaching the station."
 
 /obj/effect/shuttle_landmark/merchant/start
 	name = "Merchant Base"
@@ -526,9 +546,20 @@
 	autoset = 1
 
 /obj/effect/shuttle_landmark/merchant/out
-	name = "Docking Bay"
+	name = "Station Ghetto Dock"
 	landmark_tag = "nav_merchant_out"
 	docking_controller = "merchant_shuttle_station_dock"
+	autoset = 1
+
+/obj/effect/shuttle_landmark/merchant/shop
+	name = "Station Docking Bay"
+	landmark_tag = "nav_merchant_shop"
+	docking_controller = "merchant_shuttle_station_shop"
+	autoset = 1
+
+/obj/effect/shuttle_landmark/merchant/space
+	name = "Station North East"
+	landmark_tag = "nav_merchant_space"
 	autoset = 1
 
 
@@ -549,7 +580,7 @@
 	current_location = "nav_skipjack_start"
 	landmark_transition = "nav_skipjack_transition"
 	home_waypoint = "nav_skipjack_start"
-	cloaked = 0
+	cloaked = 1
 	move_time = 120
 	announcer = "NMV Icarus Sensor Array"
 	arrival_message = "Attention, you have a large signature approaching the station - looks unarmed to surface scans. We're too far out to intercept - brace for visitors."

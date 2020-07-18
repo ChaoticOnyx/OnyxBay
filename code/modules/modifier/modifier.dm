@@ -49,14 +49,13 @@
 	var/accuracy                        // Positive numbers makes hitting things with guns easier, negatives make it harder.
 	var/accuracy_dispersion             // Positive numbers make gun firing cover a wider tile range, and therefore more inaccurate.  Negatives help negate dispersion penalties.
 	var/metabolism_percent              // Adjusts the mob's metabolic rate, which affects reagent processing.  Won't affect mobs without reagent processing.
-	var/icon_scale_percent              // Makes the holder's icon get scaled up or down.
 	var/attack_speed_percent            // Makes the holder's 'attack speed' (click delay) shorter or longer.
 	var/pain_immunity                   // Makes the holder not care about pain while this is on. Only really useful to human mobs.
 	var/stammering
 	var/burrieng
 	var/lisping
 
-/datum/modifier/New(var/new_holder, var/new_origin)
+/datum/modifier/New(new_holder, new_origin)
 	holder = new_holder
 	if(new_origin)
 		origin = weakref(new_origin)
@@ -66,7 +65,7 @@
 
 // Checks if the modifier should be allowed to be applied to the mob before attaching it.
 // Override for special criteria, e.g. forbidding robots from receiving it.
-/datum/modifier/proc/can_apply(var/mob/living/L)
+/datum/modifier/proc/can_apply(mob/living/L)
 	return TRUE
 
 // Checks to see if this datum should continue existing.
@@ -74,16 +73,13 @@
 	if(expire_at && expire_at < world.time) // Is our time up?
 		src.expire()
 
-/datum/modifier/proc/expire(var/silent = FALSE)
+/datum/modifier/proc/expire(silent = FALSE)
 	if(on_expired_text && !silent)
 		to_chat(holder, on_expired_text)
 	on_expire()
 	holder.modifiers.Remove(src)
 	if(mob_overlay_state) // We do this after removing ourselves from the list so that the overlay won't remain.
 		holder.update_modifier_visuals()
-	if(icon_scale_percent) // Correct the scaling.
-//		holder.update_icons()
-		holder.update_transform()
 	if(client_color)
 		holder.update_client_color()
 	qdel(src)
@@ -121,7 +117,7 @@
 // Call this to add a modifier to a mob. First argument is the modifier type you want, second is how long it should last, in ticks.
 // Third argument is the 'source' of the modifier, if it's from someone else.  If null, it will default to the mob being applied to.
 // The SECONDS/MINUTES macro is very helpful for this.  E.g. M.add_modifier(/datum/modifier/example, 5 MINUTES)
-/mob/living/proc/add_modifier(var/modifier_type, var/expire_at = null, var/mob/living/origin = null)
+/mob/living/proc/add_modifier(modifier_type, expire_at = null, mob/living/origin = null)
 	// First, check if the mob already has this modifier.
 	for(var/datum/modifier/M in modifiers)
 		if(ispath(modifier_type, M))
@@ -149,37 +145,35 @@
 	mod.on_applied()
 	if(mod.mob_overlay_state)
 		update_modifier_visuals()
-	if(mod.icon_scale_percent)
-		update_icons()
 	if(mod.client_color)
 		update_client_color()
 
 	return mod
 
 // Removes a specific instance of modifier
-/mob/living/proc/remove_specific_modifier(var/datum/modifier/M, var/silent = FALSE)
+/mob/living/proc/remove_specific_modifier(datum/modifier/M, silent = FALSE)
 	M.expire(silent)
 
 // Removes one modifier of a type
-/mob/living/proc/remove_a_modifier_of_type(var/modifier_type, var/silent = FALSE)
+/mob/living/proc/remove_a_modifier_of_type(modifier_type, silent = FALSE)
 	for(var/datum/modifier/M in modifiers)
 		if(ispath(M.type, modifier_type))
 			M.expire(silent)
 			break
 
 // Removes all modifiers of a type
-/mob/living/proc/remove_modifiers_of_type(var/modifier_type, var/silent = FALSE)
+/mob/living/proc/remove_modifiers_of_type(modifier_type, silent = FALSE)
 	for(var/datum/modifier/M in modifiers)
 		if(ispath(M.type, modifier_type))
 			M.expire(silent)
 
 // Removes all modifiers, useful if the mob's being deleted
-/mob/living/proc/remove_all_modifiers(var/silent = FALSE)
+/mob/living/proc/remove_all_modifiers(silent = FALSE)
 	for(var/datum/modifier/M in modifiers)
 		M.expire(silent)
 
 // Checks if the mob has a modifier type.
-/mob/living/proc/has_modifier_of_type(var/modifier_type)
+/mob/living/proc/has_modifier_of_type(modifier_type)
 	for(var/datum/modifier/M in modifiers)
 		if(istype(M, modifier_type))
 			return TRUE
@@ -241,9 +235,6 @@
 		effects += "Your metabolism is [metabolism_percent > 1.0 ? "faster" : "slower"], \
 		causing reagents in your body to process, and hunger to occur [multipler_to_percentage(metabolism_percent, TRUE)] [metabolism_percent > 1.0 ? "faster" : "slower"]."
 
-	if(!isnull(icon_scale_percent))
-		effects += "Your appearance is [multipler_to_percentage(icon_scale_percent, TRUE)] [icon_scale_percent > 1 ? "larger" : "smaller"]."
-
 	if(!isnull(attack_speed_percent))
 		effects += "The delay between attacking is [multipler_to_percentage(attack_speed_percent, TRUE)] [disable_duration_percent > 1.0 ? "longer" : "shorter"]."
 
@@ -252,7 +243,7 @@
 
 
 // Helper to format multiplers (e.g. 1.4) to percentages (like '40%')
-/proc/multipler_to_percentage(var/multi, var/abs = FALSE)
+/proc/multipler_to_percentage(multi, abs = FALSE)
 	if(abs)
 		return "[abs( ((multi - 1) * 100) )]%"
 	return "[((multi - 1) * 100)]%"

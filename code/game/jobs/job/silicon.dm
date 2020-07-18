@@ -7,14 +7,14 @@
 	selection_color = "#3f823f"
 	supervisors = "your laws"
 	req_admin_notify = 1
-	minimal_player_age = 14
+	minimal_player_age = 30
 	account_allowed = 0
 	economic_modifier = 0
 	outfit_type = /decl/hierarchy/outfit/job/silicon/ai
 	loadout_allowed = FALSE
 	hud_icon = "hudblank"
 
-/datum/job/ai/equip(var/mob/living/carbon/human/H)
+/datum/job/ai/equip(mob/living/carbon/human/H)
 	if(!H)	return 0
 	return 1
 
@@ -25,11 +25,11 @@
 	title = "Cyborg"
 	department_flag = MSC
 
-	total_positions = 2
+	total_positions = 3
 	spawn_positions = 2
 	supervisors = "your laws and the AI"	//Nodrak
 	selection_color = "#254c25"
-	minimal_player_age = 7
+	minimal_player_age = 14
 	alt_titles = list("Android", "Robot")
 	account_allowed = 0
 	economic_modifier = 0
@@ -37,6 +37,6 @@
 	outfit_type = /decl/hierarchy/outfit/job/silicon/cyborg
 	hud_icon = "hudblank"
 
-/datum/job/cyborg/equip(var/mob/living/carbon/human/H)
+/datum/job/cyborg/equip(mob/living/carbon/human/H)
 	if(!H)	return 0
 	return 1

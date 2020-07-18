@@ -1,11 +1,11 @@
 /datum/admin_secret_item/admin_secret/list_fingerprints
 	name = "List Fingerprints"
 
-/datum/admin_secret_item/admin_secret/list_fingerprints/execute(var/mob/user)
+/datum/admin_secret_item/admin_secret/list_fingerprints/execute(mob/user)
 	. = ..()
 	if(!.)
 		return
-	var/dat = "<B>Showing Fingerprints.</B><HR>"
+	var/dat = "<meta charset=\"utf-8\"><B>Showing Fingerprints.</B><HR>"
 	dat += "<table cellspacing=5><tr><th>Name</th><th>Fingerprints</th></tr>"
 	for(var/mob/living/carbon/human/H in SSmobs.mob_list)
 		if(H.ckey)

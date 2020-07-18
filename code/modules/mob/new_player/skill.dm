@@ -29,7 +29,7 @@ proc/setup_skills()
 mob/living/carbon/human/proc/GetSkillClass(points)
 	return CalculateSkillClass(points, age)
 
-proc/show_skill_window(var/mob/user, var/mob/living/carbon/human/M)
+proc/show_skill_window(mob/user, mob/living/carbon/human/M)
 	if(!istype(M)) return
 	if(SKILLS == null)
 		setup_skills()
@@ -38,7 +38,7 @@ proc/show_skill_window(var/mob/user, var/mob/living/carbon/human/M)
 		to_chat(user, "There are no skills to display.")
 		return
 
-	var/HTML = "<body>"
+	var/HTML = "<meta charset=\"utf-8\"><body>"
 	HTML += "<b>Select your Skills</b><br>"
 	HTML += "Current skill level: <b>[M.GetSkillClass(M.used_skillpoints)]</b> ([M.used_skillpoints])<br>"
 	HTML += "<table>"
@@ -249,7 +249,7 @@ var/global/list/SKILLS = null
 	desc_amateur = "You use and repair high-tech equipment in the course of your daily work. You can fix simple problems, and you know how to use a circuit printer or autolathe. You can build simple robots such as cleanbots and medibots. If you have the relevant medical or electronic knowledge, you can repair a prosthesis or artificial organ; if not, these devices are beyond you."
 	desc_trained = "You can build or repair an exosuit or cyborg chassis, use a protolathe and destructive analyzer, and build prosthetic limbs. You can safely transfer an MMI or posibrain into a cyborg chassis."
 	desc_professional = "You are an inventor, researcher, or anomalist. You can design, build, and modify equipment that most people don't even know exists. You are at home in the lab and the workshop and you've never met a gadget you couldn't take apart, put back together, and replicate."
-	
+
 /datum/skill/research/computer
 	ID = "computer"
 	name = "Information Technology"

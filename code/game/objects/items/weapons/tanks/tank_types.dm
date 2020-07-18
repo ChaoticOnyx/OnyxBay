@@ -69,16 +69,6 @@
 	slot_flags = null
 	starting_pressure = list("hydrogen" = 3*ONE_ATMOSPHERE)
 
-/obj/item/weapon/tank/hydrogen/attackby(obj/item/weapon/W as obj, mob/user as mob)
-	..()
-	if (istype(W, /obj/item/weapon/flamethrower))
-		var/obj/item/weapon/flamethrower/F = W
-		if (!F.status||F.ptank)	return
-		master = F
-		F.ptank = src
-		user.remove_from_mob(src)
-		forceMove(F)
-
 /*
  * Emergency Oxygen
  */

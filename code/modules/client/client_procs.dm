@@ -2,7 +2,7 @@
 	//SECURITY//
 	////////////
 #define UPLOAD_LIMIT		10485760	//Restricts client uploads to the server to 10MB //Boosted this thing. What's the worst that can happen?
-#define MIN_CLIENT_VERSION	512		//Just an ambiguously low version for now, I don't want to suddenly stop people playing.
+#define MIN_CLIENT_VERSION	513		//Just an ambiguously low version for now, I don't want to suddenly stop people playing.
 									//I would just like the code ready should it ever need to be used.
 
 #define LIMITER_SIZE	5
@@ -43,16 +43,20 @@
 	#endif
 
 	// asset_cache
+	var/asset_cache_job = null
 	if(href_list["asset_cache_confirm_arrival"])
-//		to_chat(src, "ASSET JOB [href_list["asset_cache_confirm_arrival"]] ARRIVED.")
-		var/job = text2num(href_list["asset_cache_confirm_arrival"])
-				//because we skip the limiter, we have to make sure this is a valid arrival and not somebody tricking us
+		asset_cache_job = text2num(href_list["asset_cache_confirm_arrival"])
+
+		//because we skip the limiter, we have to make sure this is a valid arrival and not somebody tricking us
 		//	into letting append to a list without limit.
-		if (job && job <= last_asset_job && !(job in completed_asset_jobs))
-			completed_asset_jobs += job
+		if (!asset_cache_job || asset_cache_job > last_asset_job)
 			return
 
-	if (!holder && config.minutetopiclimit)
+		if (!(asset_cache_job in completed_asset_jobs))
+			completed_asset_jobs += asset_cache_job
+			return
+
+	if (config.minutetopiclimit)
 		var/minute = round(world.time, 600)
 		if (!topiclimiter)
 			topiclimiter = new(LIMITER_SIZE)
@@ -70,7 +74,7 @@
 			to_chat(src, "<span class='danger'>[msg]</span>")
 			return
 
-	if (!holder && config.secondtopiclimit)
+	if (config.secondtopiclimit)
 		var/second = round(world.time, 10)
 		if (!topiclimiter)
 			topiclimiter = new(LIMITER_SIZE)
@@ -81,6 +85,15 @@
 		if (topiclimiter[SECOND_COUNT] > config.secondtopiclimit)
 			to_chat(src, "<span class='danger'>Your previous action was ignored because you've done too many in a second</span>")
 			return
+
+	//Logs all hrefs
+	if(config && config.log_hrefs && GLOB.world_hrefs_log)
+		WRITE_FILE(GLOB.world_hrefs_log, "<small>[time2text(world.timeofday,"hh:mm")] [src] (usr:[usr])</small> || [hsrc ? "[hsrc] " : ""][href]<br>")
+
+	// ask BYOND client to stop spamming us with assert arrival confirmations (see byond bug ID:2256651)
+	if (asset_cache_job && (asset_cache_job in completed_asset_jobs))
+		to_chat(src, SPAN_DANGER("An error has been detected in how your client is receiving resources. Attempting to correct.... (If you keep seeing these messages you might want to close byond and reconnect)"))
+		src << browse("...", "window=asset_cache_browser")
 
 	//search the href for script injection
 	if( findtext(href,"<script",1,0) )
@@ -117,10 +130,6 @@
 			return
 
 		ticket.close(client_repository.get_lite_client(usr.client))
-
-	//Logs all hrefs
-	if(config && config.log_hrefs && href_logfile)
-		to_chat(href_logfile, "<small>[time2text(world.timeofday,"hh:mm")] [src] (usr:[usr])</small> || [hsrc ? "[hsrc] " : ""][href]<br>")
 
 	switch(href_list["_src_"])
 		if("holder")	hsrc = holder
@@ -161,46 +170,43 @@
 
 	if(!(connection in list("seeker", "web")))					//Invalid connection type.
 		return null
-	if(byond_version < MIN_CLIENT_VERSION)		//Out of date client.
-		alert(src,"Your BYOND version is too out of date. Please update it.","Out of date","OK")
-		qdel(src)
-		return null
 
 	if(!config.guests_allowed && IsGuestKey(key))
 		alert(src,"This server doesn't allow guest accounts to play. Please go to http://www.byond.com/ and register for a key.","Guest","OK")
 		qdel(src)
 		return
 
-	if(config.player_limit != 0)
-		if((GLOB.clients.len >= config.player_limit) && !(ckey in admin_datums))
-			if(config.panic_address && TopicData != "redirect")
-				alert(src,"This server is currently full and not accepting new connections. Sending you to [config.panic_server_name ? config.panic_server_name : config.panic_address].","Server Full","OK")
-				winset(src, null, "command=.options")
-				src << link("[config.panic_address]?redirect")
-			else
-				alert(src,"This server is currently full and not accepting new connections.","Server Full","OK")
+	if(config.player_limit && is_player_rejected_by_player_limit(usr, ckey))
+		if(config.panic_address && TopicData != "redirect")
+			alert(src,"This server is currently full and not accepting new connections. Sending you to [config.panic_server_name ? config.panic_server_name : config.panic_address].","Server Full","OK")
+			winset(src, null, "command=.options")
+			src << link("[config.panic_address]?redirect")
+		else
+			alert(src, "This server is currently full and not accepting new connections.","Server Full","OK")
 
-			log_admin("[ckey] tried to join but the server is full (player_limit=[config.player_limit])")
-			qdel(src)
-			return
+		log_admin("[ckey] tried to join but the server is full (player_limit=[config.player_limit])")
+		qdel(src)
+		return
 
 	// Change the way they should download resources.
 	if(config.resource_urls && config.resource_urls.len)
 		src.preload_rsc = pick(config.resource_urls)
 	else src.preload_rsc = 1 // If config.resource_urls is not set, preload like normal.
 
-	if(byond_version < DM_VERSION)
-		to_chat(src, "<span class='warning'>You are running an older version of BYOND than the server and may experience issues.</span>")
-		to_chat(src, "<span class='warning'>It is recommended that you update to at least [DM_VERSION] at http://www.byond.com/download/.</span>")
-	to_chat(src, "<span class='warning'>If the title screen is black, resources are still downloading. Please be patient until the title screen appears.</span>")
+	DIRECT_OUTPUT(src, "<span class='warning'>If the title screen is black and chat is broken, resources are still downloading. Please be patient until the title screen appears.</span>")
 	GLOB.clients += src
 	GLOB.ckey_directory[ckey] = src
 
 	//Admin Authorisation
-	holder = admin_datums[ckey]
-	if(holder)
-		GLOB.admins += src
-		holder.owner = src
+	var/datum/admins/admin_datum = admin_datums[ckey]
+	if(admin_datum)
+		if(admin_datum in GLOB.deadmined_list)
+			deadmin_holder = admin_datum
+			verbs |= /client/proc/readmin_self
+		else
+			holder = admin_datum
+			GLOB.admins += src
+		admin_datum.owner = src
 
 	else if((config.panic_bunker != 0) && (get_player_age(ckey) < config.panic_bunker))
 		var/player_age = get_player_age(ckey)
@@ -220,16 +226,20 @@
 	EAMS_CollectData()
 
 	//preferences datum - also holds some persistant data for the client (because we may as well keep these datums to a minimum)
-	prefs = preferences_datums[ckey]
+	prefs = SScharacter_setup.preferences_datums[ckey]
 	if(!prefs)
 		prefs = new /datum/preferences(src)
-		preferences_datums[ckey] = prefs
 	prefs.last_ip = address				//these are gonna be used for banning
 	prefs.last_id = computer_id			//these are gonna be used for banning
 	apply_fps(prefs.clientfps)
 
 	. = ..()	//calls mob.Login()
-	prefs.sanitize_preferences()
+
+	if(byond_version < MIN_CLIENT_VERSION)
+		to_chat(src, "<b><center><font size='5' color='red'>Your <font color='blue'>BYOND</font> version is too out of date!</font><br>\
+		<font size='3'>Please update it to [MIN_CLIENT_VERSION].</font></center>")
+		qdel(src)
+		return
 
 	GLOB.using_map.map_info(src)
 
@@ -253,6 +263,9 @@
 			winset(src, null, "command=\".configure graphics-hwmode on\"")
 
 	log_client_to_db()
+	SSdonations.log_client_to_db(src)
+	SSdonations.update_donator(src)
+	SSdonations.update_donator_items(src)
 
 	send_resources()
 
@@ -261,41 +274,17 @@
 		if(config.aggressive_changelog)
 			src.changes()
 
-	if(isnum(player_age) && player_age < 7)
-		src.lore_splash()
-		to_chat(src, "<span class = 'notice'>Greetings, and welcome to the server! A link to the beginner's lore page has been opened, please read through it! This window will stop automatically opening once your account here is greater than 7 days old.</span>")
-
 	if(!winexists(src, "asset_cache_browser")) // The client is using a custom skin, tell them.
 		to_chat(src, "<span class='warning'>Unable to access asset cache browser, if you are using a custom skin file, please allow DS to download the updated version, if you are not, then make a bug report. This is not a critical issue but can cause issues with resource downloading, as it is impossible to know when extra resources arrived to you.</span>")
 
 	chatOutput.start()
 
-	// Maptext tooltip
-	tooltip = new()
-	tooltip.icon = 'icons/misc/static.dmi'
-	tooltip.icon_state = "transparent"
-	tooltip.screen_loc = "NORTH,WEST+25%"
-	tooltip.maptext_width = 256
-	tooltip.maptext_x = 0
-	tooltip.plane = FULLSCREEN_PLANE
-
-	if (mob && mob.get_preference_value("TOOLTIP") == GLOB.PREF_NO)
-		tooltip.alpha = 0
-
-	screen += tooltip
-
 	// Change position only if it not default
-	if (mob.get_preference_value("CHAT_ALT") == GLOB.PREF_YES)
+	if (get_preference_value(/datum/client_preference/chat_position) == GLOB.PREF_YES)
 		update_chat_position(TRUE)
-		fit_viewport()
 
-/client/MouseEntered(atom/object, location, control, params)
-	if (tooltip)
-		screen |= tooltip
-		tooltip.maptext = ""
-
-		if (GAME_STATE > RUNLEVEL_SETUP)
-			tooltip.maptext = "<center style=\"text-shadow: 1px 1px 2px black;\">[object.name]</center>"
+	if(get_preference_value(/datum/client_preference/fullscreen_mode) != GLOB.PREF_NO)
+		toggle_fullscreen(get_preference_value(/datum/client_preference/fullscreen_mode))
 
 /*	if(holder)
 		src.control_freak = 0 //Devs need 0 for profiler access
@@ -335,6 +324,14 @@
 	else
 		return -1
 
+/proc/is_player_rejected_by_player_limit(mob/user, ckey)
+	if(ckey in admin_datums)
+		return FALSE
+	if(GLOB.clients.len >= config.player_limit)
+		if(config.hard_player_limit && GLOB.clients.len <= config.hard_player_limit && user && (user in GLOB.living_mob_list_))
+			return FALSE
+		return TRUE
+	return FALSE
 
 /client/proc/log_client_to_db()
 
@@ -445,7 +442,9 @@
 		)
 
 	spawn (10) //removing this spawn causes all clients to not get verbs.
-		//Precache the client with all other assets slowly, so as to not block other browse() calls
+		if(!src) // client disconnected
+			return
+
 		var/list/priority_assets = list()
 		var/list/other_assets = list()
 
@@ -460,7 +459,8 @@
 				priority_assets += D
 
 		for(var/datum/asset/D in (priority_assets + other_assets))
-			D.send_slow(src)
+			if (!D.send_slow(src)) //Precache the client with all other assets slowly, so as to not block other browse() calls
+				return
 
 mob/proc/MayRespawn()
 	return 0
@@ -478,29 +478,9 @@ client/verb/character_setup()
 	if(prefs)
 		prefs.ShowChoices(usr)
 
-/client/proc/apply_fps(var/client_fps)
+/client/proc/apply_fps(client_fps)
 	if(world.byond_version >= 511 && byond_version >= 511 && client_fps >= CLIENT_MIN_FPS && client_fps <= CLIENT_MAX_FPS)
 		vars["fps"] = prefs.clientfps
-
-/client/verb/toggle_fullscreen()
-	set name = "Toggle Fullscreen"
-	set category = "OOC"
-
-	fullscreen = !fullscreen
-
-	if (fullscreen)
-		winset(usr, "mainwindow", "titlebar=false")
-		winset(usr, "mainwindow", "can-resize=false")
-		winset(usr, "mainwindow", "is-maximized=false")
-		winset(usr, "mainwindow", "is-maximized=true")
-		winset(usr, "mainwindow", "menu=")
-	else
-		winset(usr, "mainwindow", "is-maximized=false")
-		winset(usr, "mainwindow", "titlebar=true")
-		winset(usr, "mainwindow", "can-resize=true")
-		winset(usr, "mainwindow", "menu=menu")
-
-	fit_viewport()
 
 /client/proc/update_chat_position(use_alternative)
 	var/input_height = 0
@@ -543,6 +523,20 @@ client/verb/character_setup()
 		current_size = splittext(winget(src, "mainwindow.mainvsplit", "size"), "x")
 		new_size = "[current_size[1]]x[text2num(current_size[2]) - input_height]"
 		winset(src, "mainwindow.mainvsplit", "size=[new_size]")
+	fit_viewport()
+
+/client/proc/toggle_fullscreen(new_value)
+	if((new_value == GLOB.PREF_BASIC) || (new_value == GLOB.PREF_FULL))
+		winset(src, "mainwindow", "is-maximized=false;can-resize=false;titlebar=false")
+		if(new_value == GLOB.PREF_FULL)
+			winset(src, "mainwindow", "menu=null;statusbar=false")
+		winset(src, "mainwindow.mainvsplit", "pos=0x0")
+	else
+		winset(src, "mainwindow", "is-maximized=false;can-resize=true;titlebar=true")
+		winset(src, "mainwindow", "menu=menu;statusbar=true")
+		winset(src, "mainwindow.mainvsplit", "pos=3x0")
+	winset(src, "mainwindow", "is-maximized=true")
+	fit_viewport()
 
 /client/verb/fit_viewport()
 	set name = "Fit Viewport"

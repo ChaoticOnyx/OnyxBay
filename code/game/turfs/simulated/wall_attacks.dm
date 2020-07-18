@@ -1,5 +1,5 @@
 //Interactions
-/turf/simulated/wall/proc/toggle_open(var/mob/user)
+/turf/simulated/wall/proc/toggle_open(mob/user)
 
 	if(can_open == WALL_OPENING)
 		return
@@ -47,7 +47,7 @@
 		SSair.mark_for_update(turf)
 
 
-/turf/simulated/wall/proc/update_thermal(var/turf/simulated/source)
+/turf/simulated/wall/proc/update_thermal(turf/simulated/source)
 	if(istype(source))
 		if(density && opacity)
 			source.thermal_conductivity = WALL_HEAT_TRANSFER_COEFFICIENT
@@ -56,17 +56,17 @@
 
 
 
-/turf/simulated/wall/proc/fail_smash(var/mob/user)
+/turf/simulated/wall/proc/fail_smash(mob/user)
 	to_chat(user, "<span class='danger'>You smash against \the [src]!</span>")
 	take_damage(rand(25,75))
 
-/turf/simulated/wall/proc/success_smash(var/mob/user)
+/turf/simulated/wall/proc/success_smash(mob/user)
 	to_chat(user, "<span class='danger'>You smash through \the [src]!</span>")
 	user.do_attack_animation(src)
 	spawn(1)
 		dismantle_wall(1)
 
-/turf/simulated/wall/proc/try_touch(var/mob/user, var/rotting)
+/turf/simulated/wall/proc/try_touch(mob/user, rotting)
 
 	if(rotting)
 		if(reinf_material)
@@ -79,14 +79,21 @@
 	if(..()) return 1
 
 	if(!can_open)
-		to_chat(user, "<span class='notice'>You push \the [src], but nothing happens.</span>")
+		if(user.a_intent == I_HURT)
+			user.visible_message("<span class='danger'>\The [user] bangs against \the [src]!</span>",
+								 "<span class='danger'>You bang against \the [src]!</span>",
+								 "You hear a banging sound.")
+			user.do_attack_animation(src)
+		else
+			to_chat(user, "<span class='notice'>You push \the [src], but nothing happens.</span>")
 		playsound(src, hitsound, 25, 1)
 	else
+		to_chat(user, "<span class='notice'>You push \the [src] and it retracts.</span>")
 		toggle_open(user)
 	return 0
 
 
-/turf/simulated/wall/attack_hand(var/mob/user)
+/turf/simulated/wall/attack_hand(mob/user)
 
 	radiate()
 	add_fingerprint(user)
@@ -101,7 +108,7 @@
 
 	try_touch(user, rotting)
 
-/turf/simulated/wall/attack_generic(var/mob/user, var/damage, var/attack_message, var/wallbreaker)
+/turf/simulated/wall/attack_generic(mob/user, damage, attack_message, wallbreaker)
 
 	radiate()
 	if(!istype(user))
@@ -352,16 +359,14 @@
 		var/dam_threshhold = material.integrity
 		if(reinf_material)
 			dam_threshhold = ceil(max(dam_threshhold,reinf_material.integrity)/2)
-		var/dam_prob = min(100, material.hardness*1.5)
-		if(dam_prob < 100 && W.force > (dam_threshhold/10))
-			playsound(src, 'sound/effects/metalhit.ogg', 50, 1)
-			if(!prob(dam_prob))
-				visible_message("<span class='danger'>\The [user] attacks \the [src] with \the [W] and it [material.destruction_desc]!</span>")
-				dismantle_wall(1)
-			else
-				visible_message("<span class='danger'>\The [user] attacks \the [src] with \the [W]!</span>")
-		else
-			visible_message("<span class='danger'>\The [user] attacks \the [src] with \the [W], but it bounces off!</span>")
 		user.setClickCooldown(W.update_attack_cooldown())
 		user.do_attack_animation(src)
+		var/dam_prob = min(100, material.hardness*1.5)
+		if(dam_prob < 100 && W.force > (dam_threshhold/10))
+			visible_message("<span class='danger'>\The [user] attacks \the [src] with \the [W]!</span>")
+			playsound(src, 'sound/effects/metalhit2.ogg', rand(50,75), 1, -1)
+			take_damage(W.force)
+		else
+			visible_message("<span class='danger'>\The [user] attacks \the [src] with \the [W], but it bounces off!</span>")
+			playsound(src, 'sound/effects/metalhit2.ogg', 20, 1, -1)
 		return

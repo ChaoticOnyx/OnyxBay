@@ -16,6 +16,7 @@
 	atom_flags = ATOM_FLAG_OPEN_CONTAINER
 	unacidable = 1 //glass doesn't dissolve in acid
 	pickup_sound = 'sound/effects/using/bottles/pickup3.ogg'
+	can_be_splashed = TRUE
 
 
 	var/list/can_be_placed_into = list(
@@ -48,7 +49,7 @@
 	..()
 	base_name = name
 
-/obj/item/weapon/reagent_containers/glass/examine(var/mob/user)
+/obj/item/weapon/reagent_containers/glass/examine(mob/user)
 	if(!..(user, 2))
 		return
 	if(reagents && reagents.reagent_list.len)
@@ -75,7 +76,7 @@
 		return
 	return 0
 
-/obj/item/weapon/reagent_containers/glass/standard_feed_mob(var/mob/user, var/mob/target)
+/obj/item/weapon/reagent_containers/glass/standard_feed_mob(mob/user, mob/target)
 	if(!is_open_container())
 		to_chat(user, "<span class='notice'>You need to open \the [src] first.</span>")
 		return 1
@@ -83,10 +84,10 @@
 		return 1
 	return ..()
 
-/obj/item/weapon/reagent_containers/glass/self_feed_message(var/mob/user)
+/obj/item/weapon/reagent_containers/glass/self_feed_message(mob/user)
 	to_chat(user, "<span class='notice'>You swallow a gulp from \the [src].</span>")
 
-/obj/item/weapon/reagent_containers/glass/afterattack(var/obj/target, var/mob/user, var/proximity)
+/obj/item/weapon/reagent_containers/glass/afterattack(obj/target, mob/user, proximity)
 	if(!is_open_container() || !proximity) //Is the container open & are they next to whatever they're clicking?
 		return 1 //If not, do nothing.
 	for(var/type in can_be_placed_into) //Is it something it can be placed into?
@@ -96,14 +97,7 @@
 		return 1
 	if(standard_pour_into(user, target)) //Pouring into another beaker?
 		return
-	if(user.a_intent == I_HURT)
-		if(standard_splash_mob(user,target))
-			return 1
-		if(reagents && reagents.total_volume)
-			to_chat(user, "<span class='notice'>You splash the contents of \the [src] onto [target].</span>") //They are on harm intent, aka wanting to spill it.
-			reagents.splash(target, reagents.total_volume)
-			return 1
-	..()
+	return ..()
 
 /obj/item/weapon/reagent_containers/glass/beaker
 	name = "beaker"
@@ -227,7 +221,7 @@
 	atom_flags = ATOM_FLAG_OPEN_CONTAINER
 	unacidable = 0
 
-/obj/item/weapon/reagent_containers/glass/bucket/attackby(var/obj/D, mob/user as mob)
+/obj/item/weapon/reagent_containers/glass/bucket/attackby(obj/D, mob/user as mob)
 
 	if(isprox(D))
 		to_chat(user, "You add [D] to [src].")

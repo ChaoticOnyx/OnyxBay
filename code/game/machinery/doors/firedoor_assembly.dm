@@ -1,7 +1,7 @@
 obj/structure/firedoor_assembly
 	name = "\improper emergency shutter assembly"
 	desc = "It can save lives."
-	icon = 'icons/obj/doors/DoorHazard.dmi'
+	icon = 'icons/obj/doors/doorhazard.dmi'
 	icon_state = "door_construction"
 	anchored = 0
 	opacity = 0
@@ -33,7 +33,7 @@ obj/structure/firedoor_assembly/attackby(C as obj, mob/user as mob)
 		if(do_after(user, 40, src))
 			if(!src) return
 			to_chat(user, "<span class='notice'>You cut the wires!</span>")
-			new/obj/item/stack/cable_coil(src.loc, 1)
+			new /obj/item/stack/cable_coil(src.loc, 1)
 			wired = 0
 
 	else if(istype(C, /obj/item/weapon/airalarm_electronics) && wired)

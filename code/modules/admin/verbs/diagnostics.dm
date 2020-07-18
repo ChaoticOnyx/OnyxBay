@@ -23,7 +23,7 @@
 			else
 				inactive_on_main_station++
 
-	var/output = {"<B>AIR SYSTEMS REPORT</B><HR>
+	var/output = {"<meta charset=\"utf-8\"><B>AIR SYSTEMS REPORT</B><HR>
 <B>General Processing Data</B><BR>
 	Cycle: [SSair.times_fired]<br>
 	Groups: [SSair.zones.len]<BR>
@@ -76,7 +76,7 @@
 	set category = "Debug"
 	set name = "Radio report"
 
-	var/output = "<b>Radio Report</b><hr>"
+	var/output = "<meta charset=\"utf-8\"><b>Radio Report</b><hr>"
 	for (var/fq in radio_controller.frequencies)
 		output += "<b>Freq: [fq]</b><br>"
 		var/list/datum/radio_frequency/fqs = radio_controller.frequencies[fq]

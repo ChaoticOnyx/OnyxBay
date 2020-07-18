@@ -1,4 +1,4 @@
-/mob/living/carbon/human/proc/get_unarmed_attack(var/mob/living/carbon/human/target, var/hit_zone)
+/mob/living/carbon/human/proc/get_unarmed_attack(mob/living/carbon/human/target, hit_zone)
 	for(var/datum/unarmed_attack/u_attack in species.unarmed_attacks)
 		if(u_attack.is_usable(src, target, hit_zone))
 			if(pulling_punches)
@@ -119,6 +119,16 @@
 			return H.make_grab(H, src)
 
 		if(I_HURT)
+
+			if(M.zone_sel.selecting == "mouth" && wear_mask && istype(wear_mask, /obj/item/weapon/grenade))
+				var/obj/item/weapon/grenade/G = wear_mask
+				if(!G.active)
+					visible_message("<span class='danger'>\The [M] pulls the pin from \the [src]'s [G.name]!</span>")
+					G.activate(M)
+					update_inv_wear_mask()
+				else
+					to_chat(M, SPAN_WARNING("The [G] is already primed! Run!"))
+				return
 
 			if(!istype(H))
 				attack_generic(H,rand(1,3),"punched")
@@ -285,7 +295,7 @@
 /mob/living/carbon/human/proc/afterattack(atom/target as mob|obj|turf|area, mob/living/user as mob|obj, inrange, params)
 	return
 
-/mob/living/carbon/human/attack_generic(var/mob/user, var/damage, var/attack_message, var/environment_smash, var/damtype = BRUTE, var/armorcheck = "melee")
+/mob/living/carbon/human/attack_generic(mob/user, damage, attack_message, environment_smash, damtype = BRUTE, armorcheck = "melee")
 
 	if(!damage || !istype(user))
 		return
@@ -301,7 +311,7 @@
 	return 1
 
 //Breaks all grips and pulls that the mob currently has.
-/mob/living/carbon/human/proc/break_all_grabs(mob/living/carbon/user,var/silent = 0)
+/mob/living/carbon/human/proc/break_all_grabs(mob/living/carbon/user,silent = 0)
 	var/success = 0
 	if(pulling)
 		if(!silent) visible_message("<span class='danger'>[user] has broken [src]'s grip on [pulling]!</span>")
@@ -331,7 +341,7 @@
 	If you are applying pressure to another and attempt to apply pressure to yourself, you'll have to switch to an empty hand which will also stop do_mob()
 	Changing targeted zones should also stop do_mob(), preventing you from applying pressure to more than one body part at once.
 */
-/mob/living/carbon/human/proc/apply_pressure(mob/living/user, var/target_zone)
+/mob/living/carbon/human/proc/apply_pressure(mob/living/user, target_zone)
 	var/obj/item/organ/external/organ = get_organ(target_zone)
 	if(!organ || !(organ.status & ORGAN_BLEEDING) || BP_IS_ROBOTIC(organ))
 		return 0

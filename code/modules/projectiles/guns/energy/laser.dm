@@ -11,15 +11,24 @@
 	mod_handy = 1.0
 	one_hand_penalty = 2
 	accuracy = 2
+	max_shots = 12
 	origin_tech = list(TECH_COMBAT = 3, TECH_MAGNET = 2)
 	matter = list(MATERIAL_STEEL = 2000)
 	projectile_type = /obj/item/projectile/beam/midlaser
 	wielded_item_state = "laser-wielded"
 
+	firemodes = list(
+		list(mode_name="beam", projectile_type=/obj/item/projectile/beam/midlaser),
+		list(mode_name="slug", projectile_type=/obj/item/projectile/energy/laser/mid)
+	)
+
+
 /obj/item/weapon/gun/energy/laser/mounted
+	desc = "A modification Hephaestus Industries G40E carbine, designed to be mounted on cyborgs and other battle machinery. It's designed to kill with concentrated energy blasts."
 	self_recharge = 1
 	use_external_power = 1
 	one_hand_penalty = 0 //just in case
+	icon_state = "blaser"
 
 /obj/item/weapon/gun/energy/laser/mounted/cyborg
 	max_shots = 6
@@ -46,10 +55,12 @@
 	projectile_type = /obj/item/projectile/beam/practice
 	charge_cost = 10 //How much energy is needed to fire.
 
+	firemodes = list()
+
 /obj/item/weapon/gun/energy/laser/practice/proc/hacked()
 	return projectile_type != /obj/item/projectile/beam/practice
 
-/obj/item/weapon/gun/energy/laser/practice/emag_act(var/remaining_charges, var/mob/user, var/emag_source)
+/obj/item/weapon/gun/energy/laser/practice/emag_act(remaining_charges, mob/user, emag_source)
 	if(hacked())
 		return NO_EMAG_ACT
 	to_chat(user, "<span class='warning'>You disable the safeties on [src] and crank the output to the lethal levels.</span>")
@@ -59,7 +70,7 @@
 	max_shots = rand(3,6) //will melt down after those
 	return 1
 
-/obj/item/weapon/gun/energy/laser/practice/handle_post_fire(mob/user, atom/target, var/pointblank=0, var/reflex=0)
+/obj/item/weapon/gun/energy/laser/practice/handle_post_fire(mob/user, atom/target, pointblank=0, reflex=0)
 	..()
 	if(hacked())
 		max_shots--
@@ -110,7 +121,7 @@ obj/item/weapon/gun/energy/retro
 	w_class = ITEM_SIZE_HUGE
 	projectile_type = /obj/item/projectile/beam/heavylaser
 	charge_cost = 40
-	max_shots = 6
+	max_shots = 8
 	accuracy = 2
 	fire_delay = 20
 	wielded_item_state = "gun_wielded"
@@ -118,6 +129,11 @@ obj/item/weapon/gun/energy/retro
 	mod_weight = 1.25
 	mod_reach = 1.0
 	mod_handy = 1.0
+
+	firemodes = list(
+		list(mode_name="beam", projectile_type=/obj/item/projectile/beam/heavylaser),
+		list(mode_name="slug", projectile_type=/obj/item/projectile/energy/laser/heavy)
+	)
 
 /obj/item/weapon/gun/energy/lasercannon/mounted
 	name = "mounted laser cannon"
@@ -210,7 +226,7 @@ obj/item/weapon/gun/energy/retro
 	projectile_type = /obj/item/projectile/beam/lastertag/blue
 	var/required_vest
 
-/obj/item/weapon/gun/energy/lasertag/special_check(var/mob/living/carbon/human/M)
+/obj/item/weapon/gun/energy/lasertag/special_check(mob/living/carbon/human/M)
 	if(ishuman(M))
 		if(!istype(M.wear_suit, required_vest))
 			to_chat(M, "<span class='warning'>You need to be wearing your laser tag vest!</span>")

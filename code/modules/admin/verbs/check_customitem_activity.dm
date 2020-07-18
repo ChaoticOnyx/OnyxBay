@@ -5,7 +5,7 @@ var/inactive_keys = "None<br>"
 	set category = "Admin"
 	set name = "Check activity of players with custom items"
 
-	var/dat = "<b>Inactive players with custom items</b><br>"
+	var/dat = "<meta charset=\"utf-8\"><b>Inactive players with custom items</b><br>"
 	dat += "<br>"
 	dat += "The list below contains players with custom items that have not logged\
 	 in for the past two months, or have not logged in since this system was implemented.\
@@ -23,7 +23,7 @@ var/inactive_keys = "None<br>"
 
 	usr << browse(dat, "window=inactive_customitems;size=600x480")
 
-/proc/populate_inactive_customitems_list(var/client/C)
+/proc/populate_inactive_customitems_list(client/C)
 	set background = 1
 
 	if(checked_for_inactives)

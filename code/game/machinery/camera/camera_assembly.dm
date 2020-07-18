@@ -117,7 +117,7 @@
 
 			else if(isWirecutter(W))
 
-				new/obj/item/stack/cable_coil(get_turf(src), 2)
+				new /obj/item/stack/cable_coil(get_turf(src), 2)
 				playsound(src.loc, 'sound/items/Wirecutter.ogg', 50, 1)
 				to_chat(user, "You cut the wires from the circuits.")
 				state = 2
@@ -153,7 +153,7 @@
 	if(!anchored)
 		..()
 
-/obj/item/weapon/camera_assembly/proc/weld(var/obj/item/weapon/weldingtool/WT, var/mob/user)
+/obj/item/weapon/camera_assembly/proc/weld(obj/item/weapon/weldingtool/WT, mob/user)
 
 	if(busy)
 		return 0

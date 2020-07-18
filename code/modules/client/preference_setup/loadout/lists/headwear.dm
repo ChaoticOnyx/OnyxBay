@@ -1,7 +1,6 @@
 /datum/gear/head
-	sort_category = "Hats and Headwear"
+	sort_category = "Hats"
 	slot = slot_head
-	category = /datum/gear/head
 
 /datum/gear/head/beret
 	display_name = "beret, colour select"
@@ -19,7 +18,7 @@
 
 /datum/gear/head/bandana/New()
 	..()
-	gear_tweaks += new/datum/gear_tweak/path/specified_types_list(typesof(/obj/item/clothing/mask/bandana) + typesof(/obj/item/clothing/head/bandana))
+	gear_tweaks += new /datum/gear_tweak/path/specified_types_list(typesof(/obj/item/clothing/mask/bandana) + typesof(/obj/item/clothing/head/bandana))
 
 /datum/gear/head/bow
 	display_name = "hair bow, colour select"
@@ -40,7 +39,7 @@
 	caps["rainbow cap"] = /obj/item/clothing/head/soft/rainbow
 	caps["white cap"] = /obj/item/clothing/head/soft/mime
 	caps["major bill's shipping cap"] = /obj/item/clothing/head/soft/mbill
-	gear_tweaks += new/datum/gear_tweak/path(caps)
+	gear_tweaks += new /datum/gear_tweak/path(caps)
 
 /datum/gear/head/hairflower
 	display_name = "hair flower pin"
@@ -53,7 +52,7 @@
 	pins["pink pin"] = /obj/item/clothing/head/hairflower/pink
 	pins["red pin"] = /obj/item/clothing/head/hairflower
 	pins["yellow pin"] = /obj/item/clothing/head/hairflower/yellow
-	gear_tweaks += new/datum/gear_tweak/path(pins)
+	gear_tweaks += new /datum/gear_tweak/path(pins)
 
 /datum/gear/head/hardhat
 	display_name = "hardhat selection"
@@ -67,7 +66,7 @@
 	hardhats["orange hardhat"] = /obj/item/clothing/head/hardhat/orange
 	hardhats["red hardhat"] = /obj/item/clothing/head/hardhat/red
 	hardhats["yellow hardhat"] = /obj/item/clothing/head/hardhat
-	gear_tweaks += new/datum/gear_tweak/path(hardhats)
+	gear_tweaks += new /datum/gear_tweak/path(hardhats)
 
 /datum/gear/head/formalhat
 	display_name = "formal hat selection"
@@ -84,7 +83,7 @@
 	formalhats["top hat"] = /obj/item/clothing/head/that
 	formalhats["fedora, brown"] = /obj/item/clothing/head/det
 	formalhats["fedora, grey"] = /obj/item/clothing/head/det/grey
-	gear_tweaks += new/datum/gear_tweak/path(formalhats)
+	gear_tweaks += new /datum/gear_tweak/path(formalhats)
 
 /datum/gear/head/informalhat
 	display_name = "informal hat selection"
@@ -96,7 +95,7 @@
 	informalhats["cowboy hat"] = /obj/item/clothing/head/cowboy_hat
 	informalhats["ushanka"] = /obj/item/clothing/head/ushanka
 	informalhats["TCC ushanka"] = /obj/item/clothing/head/ushanka/tcc
-	gear_tweaks += new/datum/gear_tweak/path(informalhats)
+	gear_tweaks += new /datum/gear_tweak/path(informalhats)
 
 /datum/gear/head/hijab
 	display_name = "hijab, colour select"
@@ -139,8 +138,92 @@
 	welding_masks += /obj/item/clothing/head/welding/fancy
 	welding_masks += /obj/item/clothing/head/welding/knight
 	welding_masks += /obj/item/clothing/head/welding/carp
-	gear_tweaks += new/datum/gear_tweak/path/specified_types_list(welding_masks)
+	gear_tweaks += new /datum/gear_tweak/path/specified_types_list(welding_masks)
 
 /datum/gear/head/tankccap
 	display_name = "padded cap"
 	path = /obj/item/clothing/head/tank
+
+//
+// Donator's shop
+//
+
+/datum/gear/head/kitty
+	display_name = "kitty ears"
+	path = /obj/item/clothing/head/kitty
+	price = 20
+
+/datum/gear/head/wizard_fake
+	display_name = "wizard hat"
+	path = /obj/item/clothing/head/wizard/fake
+	price = 30
+
+/datum/gear/head/marisa_wizard_fake
+	display_name = "marisa wizard hat"
+	path = /obj/item/clothing/head/wizard/marisa/fake
+	price = 30
+
+/datum/gear/head/witchwig
+	display_name = "witchwig"
+	path = /obj/item/clothing/head/witchwig
+	price = 30
+
+/datum/gear/head/bearpelt
+	display_name = "bearpelt"
+	path = /obj/item/clothing/head/bearpelt
+	price = 30
+
+/datum/gear/head/rabbitears
+	display_name = "rabbit ears"
+	path = /obj/item/clothing/head/rabbitears
+	price = 16
+
+/datum/gear/head/festive
+	display_name = "festive hat"
+	path = /obj/item/clothing/head/festive
+	price = 2
+
+/datum/gear/head/petehat
+	display_name = "pete hat"
+	path = /obj/item/clothing/head/collectable/petehat
+	price = 5
+
+/datum/gear/head/cardborg
+	display_name = "cardborg hat"
+	path = /obj/item/clothing/head/cardborg
+	price = 5
+
+/datum/gear/head/pirate
+	display_name = "pirate cap"
+	path = /obj/item/clothing/head/pirate
+	price = 10
+
+/datum/gear/head/plaguedoctorhat
+	display_name = "plague doctor hat"
+	path = /obj/item/clothing/head/plaguedoctorhat
+	price = 10
+
+/datum/gear/head/sombrero
+	display_name = "sombrero"
+	path = /obj/item/clothing/head/sombrero
+	price = 5
+
+/datum/gear/head/chicken
+	display_name = "chicken head"
+	path = /obj/item/clothing/head/chicken
+	price = 18
+
+/datum/gear/head/rasta
+	display_name = "rasta hat"
+	path = /obj/item/clothing/head/rasta
+	price = 10
+
+/datum/gear/head/richard
+	display_name = "cock head"
+	path = /obj/item/clothing/head/richard
+	price = 20
+
+/datum/gear/head/pumpkinhead
+	display_name = "pumpkin head"
+	path = /obj/item/clothing/head/pumpkinhead
+	price = 12

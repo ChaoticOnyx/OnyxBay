@@ -19,6 +19,8 @@ GLOBAL_DATUM_INIT(mercs, /datum/antagonist/mercenary, new)
 
 	faction = "mercenary"
 
+	station_crew_involved = FALSE
+
 /datum/antagonist/mercenary/create_global_objectives()
 	if(!..())
 		return 0
@@ -26,7 +28,7 @@ GLOBAL_DATUM_INIT(mercs, /datum/antagonist/mercenary, new)
 	global_objectives |= new /datum/objective/nuclear
 	return 1
 
-/datum/antagonist/mercenary/equip(var/mob/living/carbon/human/player)
+/datum/antagonist/mercenary/equip(mob/living/carbon/human/player)
 	if(!..())
 		return 0
 

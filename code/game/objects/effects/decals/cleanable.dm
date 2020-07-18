@@ -1,7 +1,8 @@
 /obj/effect/decal/cleanable
+	anchored = TRUE
 	var/list/random_icon_states
 
-/obj/effect/decal/cleanable/clean_blood(var/ignore = 0)
+/obj/effect/decal/cleanable/clean_blood(ignore = 0)
 	if(!ignore)
 		qdel(src)
 		return
