@@ -539,6 +539,11 @@ var/list/global/slot_flags_enumeration = list(
 						if(H.poise < P.damage/(src.mod_shield*1.25))
 							H.useblock_off()
 							shot_out(H, "knocked")
+					else
+						H.poise -= P.damage/(src.mod_shield*2.5)
+						if(H.poise < P.damage/(src.mod_shield*2.5))
+							H.useblock_off()
+							shot_out(H, "knocked")
 				return PROJECTILE_FORCE_BLOCK // Beam reflections code is kinda messy, I ain't gonna touch it. ~Toby
 			else if(P.starting)
 				visible_message(SPAN("warning", "\The [user] reflects [P] with their [src.name]!"))
@@ -578,7 +583,7 @@ var/list/global/slot_flags_enumeration = list(
 /obj/item/proc/shot_out(mob/living/carbon/human/H, obj/item/projectile/P, msg = "shot", dist = 3)
 	H.poise -= 10
 	if(!canremove)
-		visible_message(SPAN("warning", "[H] blocks \a [P] with \the [src]!"))
+		visible_message(SPAN("warning", "[H] blocks [P] with \the [src]!"))
 		return
 	visible_message(SPAN("danger", "\The [src] gets [msg] out of [H]'s hands by \a [P]!"))
 	H.drop_from_inventory(src)
