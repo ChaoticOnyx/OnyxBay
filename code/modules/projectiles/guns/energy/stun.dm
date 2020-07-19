@@ -139,3 +139,16 @@
 	mod_weight = 0.7
 	mod_reach = 0.5
 	mod_handy = 1.0
+
+/obj/item/weapon/gun/energy/classictaser/attackby(obj/item/W, mob/user)
+	if(istype(W, /obj/item/weapon/bikehorn) && W.icon_state == "bike_horn")
+		user.drop_from_inventory(W, src)
+		to_chat(user, SPAN("notice", "You somehow manage to replace \the [name]'s muzzle with \the [W] trumpet, and pull the rubber bulb over the trigger."))
+		desc += " This one looks extra honky."
+		modifystate = "bananazer"
+		projectile_type = /obj/item/projectile/energy/electrode/stunsphere/honk
+		origin_tech = list(TECH_COMBAT = 3, TECH_MATERIAL = 3, TECH_POWER = 2, TECH_ILLEGAL = 1)
+		update_icon()
+		update_held_icon()
+	else
+		..()

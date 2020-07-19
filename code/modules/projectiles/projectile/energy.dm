@@ -91,6 +91,10 @@
 	stutter = 10
 	armor_penetration = 10
 
+/obj/item/projectile/energy/electrode/stunsphere/honk
+	icon_state = "bananazer"
+	fire_sound = 'sound/items/bikehorn.ogg'
+
 /obj/item/projectile/energy/electrode/c44
 	name = "shock bullet"
 	icon_state = "shockbullet"
