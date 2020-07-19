@@ -93,7 +93,7 @@
 
 /obj/item/projectile/energy/electrode/stunsphere/honk
 	icon_state = "bananazer"
-	fire_sound = 'sound/items/bikehorn.ogg'
+	fire_sound = 'sound/weapons/honktaser.ogg'
 
 /obj/item/projectile/energy/electrode/c44
 	name = "shock bullet"
