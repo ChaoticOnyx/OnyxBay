@@ -54,3 +54,9 @@
 	if(user.gender == FEMALE)
 		to_chat(user, SPAN("warning", "You aren't sure you'll fit in this men's cloth..."))
 		return 0
+
+/obj/item/clothing/suit/storage/toggle/forensics/customred
+	name = "red jacket"
+	desc = "A nice red forensics technician jacket."
+	icon_state = "custom_forensics_red_long"
+	item_state = "custom_forensics_red_long"
