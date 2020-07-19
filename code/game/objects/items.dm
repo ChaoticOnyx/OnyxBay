@@ -534,16 +534,13 @@ var/list/global/slot_flags_enumeration = list(
 				visible_message(SPAN("warning", "\The [user] dissolves [P] with their [src.name]!"))
 				if(istype(user,/mob/living/carbon/human))
 					var/mob/living/carbon/human/H = user
+					var/poise_dmg = P.damage/(src.mod_shield*2.5)
 					if(src != H.get_active_hand())
-						H.poise -= P.damage/(src.mod_shield*1.25)
-						if(H.poise < P.damage/(src.mod_shield*1.25))
-							H.useblock_off()
-							shot_out(H, "knocked")
-					else
-						H.poise -= P.damage/(src.mod_shield*2.5)
-						if(H.poise < P.damage/(src.mod_shield*2.5))
-							H.useblock_off()
-							shot_out(H, "knocked")
+						poise_dmg *= 2
+					H.poise -= poise_dmg
+					if(H.poise < poise_dmg)
+						H.useblock_off()
+						shot_out(H, "knocked")
 				return PROJECTILE_FORCE_BLOCK // Beam reflections code is kinda messy, I ain't gonna touch it. ~Toby
 			else if(P.starting)
 				visible_message(SPAN("warning", "\The [user] reflects [P] with their [src.name]!"))
@@ -557,11 +554,13 @@ var/list/global/slot_flags_enumeration = list(
 				P.redirect(new_x, new_y, curloc, user)
 				if(istype(user,/mob/living/carbon/human))
 					var/mob/living/carbon/human/H = user
+					var/poise_dmg = P.damage/(src.mod_shield*2.5)
 					if(src != H.get_active_hand())
-						H.poise -= P.damage/(src.mod_shield*2.0)
-						if(H.poise < P.damage/(src.mod_shield*2.0))
-							H.useblock_off()
-							shot_out(H, P, "knocked")
+						poise_dmg *= 2
+					H.poise -= poise_dmg
+					if(H.poise < poise_dmg)
+						H.useblock_off()
+						shot_out(H, P, "knocked")
 				return PROJECTILE_CONTINUE // complete projectile permutation
 		else if(src.mod_shield >= 1.3)
 			if(P.armor_penetration > (25*src.mod_shield)-5)
@@ -576,7 +575,7 @@ var/list/global/slot_flags_enumeration = list(
 				H.poise -= poisedamage
 				if(H.poise < poisedamage)
 					H.useblock_off()
-					shot_out(H, "knocked")
+					shot_out(H, P, "knocked")
 			return PROJECTILE_FORCE_BLOCK
 	return 0
 
