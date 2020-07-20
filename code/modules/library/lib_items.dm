@@ -301,5 +301,5 @@
 
 /obj/item/weapon/book/wiki/template
 	icon_state = "paper_stack"
-	desc = "Bunch of unbinded paper pieces."
+	desc = "Bunch of unbound paper pieces."
 	style = WIKI_TEXT
