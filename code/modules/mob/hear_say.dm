@@ -40,10 +40,7 @@
 					message = pick(S.speak)
 				if(!understand_animals)
 			else
-				if(language)
-					message = language.scramble(message)
-				else
-					message = stars(message)
+				message = stars(message)
 
 	var/speaker_name = "Unknown"
 	if(speaker)
