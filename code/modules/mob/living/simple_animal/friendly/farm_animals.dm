@@ -7,7 +7,7 @@
 	icon_dead = "goat_dead"
 	speak = list("Be-e-e...", "Me-e-e...", "A-a-ah...", "ME-E-E!", "BE-E-E!",
 				 "A-A-AH!", "Be-e?", "Me-e?", "A-ah?", "M-e-e-e-e-e-e!")
-	var/rare_speaks = list("Be-e-da-a-un" = 0.0001, "Ahme-e-d" = 0.001) //fucken rare rjombas (chance in percents)
+	var/rare_speaks = list("Be-e-da-a-un" = 0.01, "Ahme-e-d" = 0.001) //fucken rare rjombas (chance in percents)
 	var/crazy_time = 0 SECONDS
 	var/DEFAULT_CRAZY_TIME = 2 MINUTES
 	var/CRAZY_DAMAGE_REDUCTION = 0.75 //for example 0.75 mean what only 25% of damage will be taken by goat
@@ -138,11 +138,11 @@
 	crazy_time = DEFAULT_CRAZY_TIME
 
 /mob/living/simple_animal/hostile/retaliate/goat/AttackingTarget()
-	var/damage_changed = false
+	var/damage_changed = FALSE
 	if(crazy_time)
 		melee_damage_lower = melee_damage_lower * CRAZY_ATTACK_BOOST
 		melee_damage_upper = melee_damage_upper * CRAZY_ATTACK_BOOST
-		damage_changed = true
+		damage_changed = TRUE
 	..()
 	if(isliving(target_mob) && prob(10))
 		var/mob/living/L = target_mob
