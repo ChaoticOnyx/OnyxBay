@@ -215,6 +215,16 @@ var/const/EXTRA_COST_FACTOR = 1.25
 	path = /obj/item/device/tape
 	category = "General"
 
+/datum/autolathe/recipe/caution
+	name = "caution sign"
+	path = /obj/item/weapon/caution
+	category = "General"
+
+/datum/autolathe/recipe/caution_cone
+	name = "caution cone"
+	path = /obj/item/weapon/caution/cone
+	category = "General"
+
 /datum/autolathe/recipe/airlockmodule
 	name = "airlock electronics"
 	path = /obj/item/weapon/airlock_electronics
@@ -239,6 +249,7 @@ var/const/EXTRA_COST_FACTOR = 1.25
 	name = "matter cartridge"
 	path = /obj/item/weapon/rcd_ammo
 	category = "Engineering"
+
 /datum/autolathe/recipe/rcd_ammo_large
 	name = "high-capacity matter cartridge"
 	path = /obj/item/weapon/rcd_ammo/large
@@ -322,12 +333,6 @@ var/const/EXTRA_COST_FACTOR = 1.25
 	hidden = 1
 	category = "Arms and Ammunition"
 
-/datum/autolathe/recipe/shotgun_flash
-	name = "ammunition (shotgun, flash)"
-	path = /obj/item/ammo_casing/shotgun/flash
-	hidden = 1
-	category = "Arms and Ammunition"
-
 /datum/autolathe/recipe/magazine_rubber
 	name = "ammunition (.45, rubber)"
 	path = /obj/item/ammo_magazine/c45m/rubber
@@ -337,12 +342,6 @@ var/const/EXTRA_COST_FACTOR = 1.25
 /datum/autolathe/recipe/speedloader_44_rubber
 	name = "speed loader (.44 magnum, rubber)"
 	path = /obj/item/ammo_magazine/c44/rubber
-	hidden = 1
-	category = "Arms and Ammunition"
-
-/datum/autolathe/recipe/magazine_flash
-	name = "ammunition (.45, flash)"
-	path = /obj/item/ammo_magazine/c45m/flash
 	hidden = 1
 	category = "Arms and Ammunition"
 
@@ -361,7 +360,7 @@ var/const/EXTRA_COST_FACTOR = 1.25
 	name = "igniter"
 	path = /obj/item/device/assembly/igniter
 	category = "Devices and Components"
-	
+
 /datum/autolathe/recipe/voice
 	name = "voice analyzer"
 	path = /obj/item/device/assembly/voice
@@ -460,105 +459,9 @@ var/const/EXTRA_COST_FACTOR = 1.25
 	category = "Arms and Ammunition"
 	resources = list(MATERIAL_STEEL = 74000)
 
-/datum/autolathe/recipe/magazine_revolver_1
-	name = "ammunition (.357)"
-	path = /obj/item/ammo_magazine/a357
-	hidden = 1
-	category = "Arms and Ammunition"
-
-/datum/autolathe/recipe/magazine_revolver_2
-	name = "ammunition (.45)"
-	path = /obj/item/ammo_magazine/c45m
-	hidden = 1
-	category = "Arms and Ammunition"
-
-/datum/autolathe/recipe/speedloader_44
-	name = "speed loader (.44 magnum)"
-	path = /obj/item/ammo_magazine/c44
-	hidden = 1
-	category = "Arms and Ammunition"
-
-/datum/autolathe/recipe/magazine_revolver_3
-	name = "ammunition (.38)"
-	path = /obj/item/ammo_magazine/c38
-	hidden = 1
-	category = "Arms and Ammunition"
-
-/datum/autolathe/recipe/magazine_revolver_4
-	name = "ammunition (.50AE)"
-	path = /obj/item/ammo_magazine/c50
-	hidden = 1
-	category = "Arms and Ammunition"
-
-/datum/autolathe/recipe/magazine_stetchkin
-	name = "ammunition (9mm)"
-	path = /obj/item/ammo_magazine/mc9mm
-	hidden = 1
-	category = "Arms and Ammunition"
-
-/datum/autolathe/recipe/magazine_stetchkin_flash
-	name = "ammunition (9mm, flash)"
-	path = /obj/item/ammo_magazine/mc9mm/flash
-	hidden = 1
-	category = "Arms and Ammunition"
-
-/datum/autolathe/recipe/magazine_c20r
-	name = "ammunition (10mm)"
-	path = /obj/item/ammo_magazine/a10mm
-	hidden = 1
-	category = "Arms and Ammunition"
-
-/datum/autolathe/recipe/magazine_arifle
-	name = "ammunition (5.56mm)"
-	path = /obj/item/ammo_magazine/c556
-	hidden = 1
-	category = "Arms and Ammunition"
-
-/datum/autolathe/recipe/magazine_smg
-	name = "ammunition (9mm top mounted)"
-	path = /obj/item/ammo_magazine/mc9mmt
-	hidden = 1
-	category = "Arms and Ammunition"
-
-/datum/autolathe/recipe/magazine_carbine
-	name = "ammunition (7.62mm)"
-	path = /obj/item/ammo_magazine/a762
-	hidden = 1
-	category = "Arms and Ammunition"
-
-/datum/autolathe/recipe/shotgun
-	name = "ammunition (slug, shotgun)"
-	path = /obj/item/ammo_casing/shotgun
-	hidden = 1
-	category = "Arms and Ammunition"
-
-/datum/autolathe/recipe/shotgun_pellet
-	name = "ammunition (shell, shotgun)"
-	path = /obj/item/ammo_casing/shotgun/pellet
-	hidden = 1
-	category = "Arms and Ammunition"
-
 /datum/autolathe/recipe/tacknife
 	name = "tactical knife"
 	path = /obj/item/weapon/material/hatchet/tacknife
-	hidden = 1
-	category = "Arms and Ammunition"
-
-/datum/autolathe/recipe/stunshell
-	name = "ammunition (stun cartridge, shotgun)"
-	path = /obj/item/ammo_casing/shotgun/stunshell
-	hidden = 1
-	category = "Arms and Ammunition"
-
-/datum/autolathe/recipe/magazine_uzi
-	name = "ammunition (machine.45)"
-	path = /obj/item/ammo_magazine/c45uzi
-	hidden = 1
-	category = "Arms and Ammunition"
-
-/datum/autolathe/recipe/magazine_deagle
-	name = "ammunition (.50 AE)"
-	path = /obj/item/ammo_magazine/a50
 	hidden = 1
 	category = "Arms and Ammunition"
 
