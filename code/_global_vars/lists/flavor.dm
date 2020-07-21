@@ -76,3 +76,38 @@ GLOBAL_LIST_INIT(numbers_as_words, list("One", "Two", "Three", "Four",
 	"Five", "Six", "Seven", "Eight", "Nine", "Ten", "Eleven", "Twelve",
 	"Thirteen", "Fourteen", "Fifteen", "Sixteen", "Seventeen",
 	"Eighteen", "Nineteen"))
+
+GLOBAL_LIST_INIT(music_tracks, list(
+	"Prey" = 'sound/music/prey.ogg',
+	"Clouds of Fire" = 'sound/music/clouds.s3m',
+	"D`Bert" = 'sound/music/title2.ogg',
+	"D`Fort" = 'sound/ambience/song_game.ogg',
+	"Floating" = 'sound/music/main.ogg',
+	"Endless Space" = 'sound/music/space.ogg',
+	"Part A" = 'sound/misc/TestLoop1.ogg',
+	"Scratch" = 'sound/music/title1.ogg',
+	"Trai`Tor" = 'sound/music/traitor.ogg',
+	"All That I Can See" = 'sound/music/all_that_i_can_see.ogg',
+	"Delirium" = 'sound/music/delirium.ogg',
+	"End" = 'sound/music/end.ogg',
+	"Magicfly" = 'sound/music/magicfly.ogg',
+	"Self Justified Sacrifices" = 'sound/music/self_justified_sacrifices.ogg',
+	"Final Countdown" = 'sound/music/newyear/christmasamb1.ogg',
+	"Last Christmas" = 'sound/music/newyear/christmasamb2.ogg',
+	"We With You a Merry Christmas" = 'sound/music/newyear/christmasamb3.ogg',
+	"Jingle Bells" = 'sound/music/newyear/christmasamb4.ogg',
+	"Happy New Year" = 'sound/music/newyear/happynewyear.ogg',
+	"Mr. Sandman" = 'sound/music/newyear/sandman.ogg',
+	"Lone Digger" = 'sound/music/lonedigger.ogg',
+	"Reaper & Blues" = 'sound/music/reapernblues.ogg',
+	"Undead Man Walkin`" = 'sound/music/undeadwalking.ogg',
+	"Space Oddity" = 'sound/music/space_oddity.ogg'
+))
+
+/proc/setup_music_tracks(list/tracks)
+	. = list()
+	var/track_list = LAZYLEN(tracks) ? tracks : GLOB.music_tracks
+	for(var/track_name in track_list)
+		var/track_path = track_list[track_name]
+		. += new /datum/track(track_name, track_path)
+
