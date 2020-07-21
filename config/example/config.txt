@@ -106,9 +106,6 @@ LOG_GAME
 ## log debug output
 # LOG_DEBUG
 
-## log debug verbose output
-# LOG_DEBUG_VERBOSE
-
 ## log all Topic() calls (for use by coders in tracking down Topic issues)
 # LOG_HREFS
 
@@ -134,6 +131,7 @@ LOG_GAME
 # PANIC_SERVER_NAME [Put the name here]
 
 ## Uncomment to enable The Epic Anti-Multiaccount System.
+## Prevents spawn if the player is not from whitelisted region or using proxy.
 # EAMS
 
 ## Uncomment to prohibit sending in OOC for players blocked by EAMS.

@@ -11,63 +11,49 @@
 	desc = "A personalized pan pizza meant for only one person."
 	icon_state = "personal_pizza"
 
-/obj/item/weapon/reagent_containers/food/snacks/sliceable/bread/variable
-	icon = 'icons/obj/food_custom.dmi'
+/obj/item/weapon/reagent_containers/food/snacks/variable/bread
 	name = "bread"
 	desc = "Tasty bread."
 	icon_state = "breadcustom"
 
-/obj/item/weapon/reagent_containers/food/snacks/pie/variable
-	icon = 'icons/obj/food_custom.dmi'
+/obj/item/weapon/reagent_containers/food/snacks/variable/pie
 	name = "pie"
 	desc = "Tasty pie."
 	icon_state = "piecustom"
 
-/obj/item/weapon/reagent_containers/food/snacks/sliceable/plaincake/variable
-	icon = 'icons/obj/food_custom.dmi'
+/obj/item/weapon/reagent_containers/food/snacks/variable/cake
 	name = "cake"
 	desc = "A popular band."
 	icon_state = "cakecustom"
 
-/obj/item/weapon/reagent_containers/food/snacks/donkpocket/variable
-	icon = 'icons/obj/food_custom.dmi'
+/obj/item/weapon/reagent_containers/food/snacks/variable/pocket
 	name = "hot pocket"
 	desc = "You wanna put a bangin- oh, nevermind."
 	icon_state = "donk"
 
-/obj/item/weapon/reagent_containers/food/snacks/donkpocket/variable/New()
-	..()
-	heat()
-
-/obj/item/weapon/reagent_containers/food/snacks/tofukabob/variable
-	icon = 'icons/obj/food_custom.dmi'
+/obj/item/weapon/reagent_containers/food/snacks/variable/kebab
 	name = "kebab"
 	desc = "Remove this!"
 	icon_state = "kabob"
-	nutriment_desc = list("metal" = 1)
 
-/obj/item/weapon/reagent_containers/food/snacks/waffles/variable
-	icon = 'icons/obj/food_custom.dmi'
+/obj/item/weapon/reagent_containers/food/snacks/variable/waffles
 	name = "waffles"
 	desc = "Made with love."
 	icon_state = "waffles"
 	gender = PLURAL
 
-/obj/item/weapon/reagent_containers/food/snacks/pancakes/variable
-	icon = 'icons/obj/food_custom.dmi'
+/obj/item/weapon/reagent_containers/food/snacks/variable/pancakes
 	name = "pancakes"
 	desc = "How does an oven make pancakes?"
 	icon_state = "pancakescustom"
 	gender = PLURAL
 
-/obj/item/weapon/reagent_containers/food/snacks/cookie/variable
-	icon = 'icons/obj/food_custom.dmi'
+/obj/item/weapon/reagent_containers/food/snacks/variable/cookie
 	name = "cookie"
 	desc = "Sugar snap!"
 	icon_state = "cookie"
 
-/obj/item/weapon/reagent_containers/food/snacks/donut/variable
-	icon = 'icons/obj/food_custom.dmi'
+/obj/item/weapon/reagent_containers/food/snacks/variable/donut
 	name = "filled donut"
 	desc = "Donut eat this!" // kill me
 	icon_state = "donut"
@@ -77,8 +63,7 @@
 	desc = "It's like cracking a molar on a rainbow."
 	icon_state = "jawbreaker"
 
-/obj/item/weapon/reagent_containers/food/snacks/candy/variable
-	icon = 'icons/obj/food_custom.dmi'
+/obj/item/weapon/reagent_containers/food/snacks/variable/candybar
 	name = "flavored chocolate bar"
 	desc = "Made in a factory downtown."
 	icon_state = "bar"
@@ -92,8 +77,3 @@
 	name = "jelly"
 	desc = "All your friends will be jelly."
 	icon_state = "jellycustom"
-
-/obj/item/weapon/reagent_containers/food/snacks/variable/cereal
-	name = "cereal"
-	desc = "Eat to become a cereal killer"
-	icon_state = "cerealcustom"

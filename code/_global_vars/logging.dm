@@ -10,6 +10,8 @@ var/list/jobMax        = list()
 
 GLOBAL_VAR(log_directory)
 GLOBAL_PROTECT(log_directory)
+GLOBAL_VAR(log_prefix)
+GLOBAL_PROTECT(log_prefix)
 
 GLOBAL_VAR(world_runtime_log)
 GLOBAL_PROTECT(world_runtime_log)

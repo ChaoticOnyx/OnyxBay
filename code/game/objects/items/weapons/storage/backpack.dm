@@ -71,10 +71,6 @@
 	max_storage_space = 400 // can store a ton of shit!
 	item_state_slots = null
 
-/obj/item/weapon/storage/backpack/santabag/fake
-	desc = "Space Santa uses this to deliver toys to all the nice children in space for Christmas! It would seem to be very large, but in real life there is no place for fairy tales."
-	max_storage_space = DEFAULT_BACKPACK_STORAGE
-
 /obj/item/weapon/storage/backpack/cultpack
 	name = "trophy rack"
 	desc = "It's useful for both carrying extra gear and proudly declaring your insanity."

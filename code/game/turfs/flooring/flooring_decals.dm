@@ -666,9 +666,6 @@ var/list/floor_decals = list()
 /obj/effect/floor_decal/sign/armory/tactical
 	icon_state = "tacticaldecal"
 
-/obj/effect/floor_decal/sign/armory/suits
-	icon_state = "suitsdecal"
-
 /obj/effect/floor_decal/sign/armory/riot1
 	icon_state = "riotdecal_1"
 

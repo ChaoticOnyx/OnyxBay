@@ -219,11 +219,10 @@ var/list/gear_datums = list()
 		if(G != selected_gear)
 			if(ticked)
 				display_class = "white"
-			else if(G.patron_tier)
-				if(!user.client.donator_info.patreon_tier_available(G.patron_tier))
-					display_class = "gold"
 			else if(G.price)
-				if(!user.client.donator_info.has_item(G.type))
+				if(user.client.donator_info.has_item(G.type))
+					display_class = null
+				else
 					display_class = "gold"
 			else
 				display_class = "gray"
@@ -245,9 +244,9 @@ var/list/gear_datums = list()
 			allowed = good_job || !bad_job
 
 		if(!hide_unavailable_gear || allowed || ticked)
-			if(user.client.donator_info.has_item(G.type) || (G.patron_tier && user.client.donator_info.patreon_tier_available(G.patron_tier)))
+			if(user.client.donator_info.has_item(G.type))
 				purchased_gears += entry
-			else if(G.price || G.patron_tier)
+			else if(G.price)
 				paid_gears += entry
 			else
 				not_paid_gears += entry
@@ -309,11 +308,6 @@ var/list/gear_datums = list()
 			. += desc
 			. += "<br>"
 
-		if(selected_gear.patron_tier)
-			. += "<br>"
-			. += "<b>Patreon tier: [patron_tier_decorated(selected_gear.patron_tier)]</b>"
-			. += "<br>"
-
 		if(selected_gear.price)
 			. += "<br>"
 			. += "<b>Price: [selected_gear.price] opyx[selected_gear.price != 1 ? "es" : ""]</b>"
@@ -332,20 +326,11 @@ var/list/gear_datums = list()
 			flag_not_enough_opyxes = FALSE
 			. += "<span class='notice'>You don't have enough opyxes!</span><br>"
 
-		var/is_available = TRUE
-		if(selected_gear.price && !user.client.donator_info.has_item(selected_gear.type))
-			is_available = FALSE
-		else if(selected_gear.patron_tier && !user.client.donator_info.patreon_tier_available(selected_gear.patron_tier))
-			is_available = FALSE
-
-		if(is_available)
+		if(!selected_gear.price || user.client.donator_info.has_item(selected_gear.type))
 			. += "<a [ticked ? "class='linkOn' " : ""]href='?src=\ref[src];toggle_gear=[html_encode(selected_gear.display_name)]'>[ticked ? "Drop" : "Take"]</a>"
 		else
-			if (selected_gear.price)
-				. += "<a class='gold' href='?src=\ref[src];buy_gear=\ref[selected_gear]'>Buy</a> "
 			var/trying_on = (pref.trying_on_gear == selected_gear.display_name)
-			. += "<a [trying_on ? "class='linkOn' " : ""]href='?src=\ref[src];try_on=1'>Try On</a>"
-
+			. += "<a class='gold' href='?src=\ref[src];buy_gear=\ref[selected_gear]'>Buy</a> <a [trying_on ? "class='linkOn' " : ""]href='?src=\ref[src];try_on=1'>Try On</a>"
 		. += "</td>"
 
 	. += "</tr></table>"
@@ -382,11 +367,7 @@ var/list/gear_datums = list()
 		return TOPIC_REFRESH_UPDATE_PREVIEW
 	if(href_list["toggle_gear"])
 		var/datum/gear/TG = gear_datums[href_list["toggle_gear"]]
-
-		// check if someone trying to tricking us. However, it's may be just a bug
-		ASSERT(!TG.price || user.client.donator_info.has_item(TG.type))
-		ASSERT(!TG.patron_tier || user.client.donator_info.patreon_tier_available(TG.patron_tier))
-
+		ASSERT(!TG.price || user.client.donator_info.has_item(TG.type)) // someone trying to tricking us? However, it's may be just a bug
 		if(TG.display_name in pref.gear_list[pref.gear_slot])
 			pref.gear_list[pref.gear_slot] -= TG.display_name
 		else
@@ -506,7 +487,6 @@ var/list/gear_datums = list()
 	var/path               //Path to item.
 	var/cost = 1           //Number of points used. Items in general cost 1 point, storage/armor/gloves/special use costs 2 points.
 	var/price              //Price of item, opyxes
-	var/patron_tier        //Patron tier restriction
 	var/slot               //Slot to equip to.
 	var/list/allowed_roles //Roles that can spawn with this item.
 	var/whitelisted        //Term to check the whitelist for..

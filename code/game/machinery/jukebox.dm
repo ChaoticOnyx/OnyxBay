@@ -1,19 +1,13 @@
 //This file was auto-corrected by findeclaration.exe on 25.5.2012 20:42:32
 #define RICKROLL_PROBABILITY 1
 
-/datum/track
+datum/track
 	var/title
 	var/sound
 
-/datum/track/New(title, audio)
-	src.title = title
-	src.sound = audio
-
-/datum/track/proc/GetTrack()
-	if(ispath(sound, /lobby_music))
-		var/lobby_music/music_track = decls_repository.get_decl(sound)
-		return music_track.song
-	return sound // Allows admins to continue their adminbus simply by overriding the track var
+datum/track/New(title_name, audio)
+	title = title_name
+	sound = audio
 
 /obj/machinery/media/jukebox
 	name = "space jukebox"
@@ -33,26 +27,46 @@
 	var/sound_id
 	var/datum/sound_token/sound_token
 
-	var/obj/item/music_tape/tape
-
 	var/datum/track/current_track
-	var/list/datum/track/tracks
+	var/list/datum/track/tracks = list(
+		new /datum/track("Prey", 'sound/music/prey.ogg'),
+		new /datum/track("Clouds of Fire", 'sound/music/clouds.s3m'),
+		new /datum/track("D`Bert", 'sound/music/title2.ogg'),
+		new /datum/track("D`Fort", 'sound/ambience/song_game.ogg'),
+		new /datum/track("Floating", 'sound/music/main.ogg'),
+		new /datum/track("Endless Space", 'sound/music/space.ogg'),
+		new /datum/track("Part A", 'sound/misc/TestLoop1.ogg'),
+		new /datum/track("Scratch", 'sound/music/title1.ogg'),
+		new /datum/track("Trai`Tor", 'sound/music/traitor.ogg'),
+		new /datum/track("All That I Can See", 'sound/music/all_that_i_can_see.ogg'),
+		new /datum/track("Delirium", 'sound/music/delirium.ogg'),
+		new /datum/track("End", 'sound/music/end.ogg'),
+		new /datum/track("Magicfly", 'sound/music/magicfly.ogg'),
+		new /datum/track("Self Justified Sacrifices", 'sound/music/self_justified_sacrifices.ogg'),
+		new /datum/track("Final Countdown", 'sound/music/newyear/christmasamb1.ogg'),
+		new /datum/track("Last Christmas", 'sound/music/newyear/christmasamb2.ogg'),
+		new /datum/track("We With You a Merry Christmas", 'sound/music/newyear/christmasamb3.ogg'),
+		new /datum/track("Jingle Bells", 'sound/music/newyear/christmasamb4.ogg'),
+		new /datum/track("Happy New Year", 'sound/music/newyear/happynewyear.ogg'),
+		new /datum/track("Mr. Sandman", 'sound/music/newyear/sandman.ogg'),
+		new /datum/track("Lone Digger", 'sound/music/lonedigger.ogg'),
+		new /datum/track("Reaper & Blues", 'sound/music/reapernblues.ogg'),
+		new /datum/track("Undead Man Walkin`", 'sound/music/undeadwalking.ogg'),
+		new /datum/track("Space Oddity", 'sound/music/space_oddity.ogg'),
+	)
 
 	var/datum/track/rickroll = new("Never Gonna Give You Up", 'sound/music/rickroll.ogg')
 	var/rickrolling = FALSE
 	var/spamcheck = FALSE
 
-/obj/machinery/media/jukebox/Initialize()
-	. = ..()
-	tracks = setup_music_tracks(tracks)
+
+/obj/machinery/media/jukebox/New()
+	..()
 	update_icon()
-	sound_id = "[/obj/machinery/media/jukebox]_[sequential_id(/obj/machinery/media/jukebox)]"
+	sound_id = "[type]_[sequential_id(type)]"
 
 /obj/machinery/media/jukebox/Destroy()
 	StopPlaying()
-	QDEL_NULL_LIST(tracks)
-	current_track = null
-	QDEL_NULL(tape)
 	. = ..()
 
 /obj/machinery/media/jukebox/powered()
@@ -80,7 +94,7 @@
 
 /obj/machinery/media/jukebox/interact(mob/user)
 	if(!anchored)
-		to_chat(usr, SPAN_WARNING("You must secure \the [src] first."))
+		to_chat(usr, "<span class='warning'>You must secure \the [src] first.</span>")
 		return
 
 	if(stat & (NOPOWER|BROKEN))
@@ -90,63 +104,66 @@
 	if(rickrolling)
 		to_chat(usr, "You notice a sinked button on a [src]")
 
-	ui_interact(user)
+	tg_ui_interact(user)
 
-/obj/machinery/media/jukebox/CanUseTopic(user, state)
+/obj/machinery/media/jukebox/ui_status(mob/user, datum/ui_state/state)
 	if(!anchored || inoperable())
-		return STATUS_CLOSE
+		return UI_CLOSE
 	return ..()
 
-/obj/machinery/media/jukebox/ui_interact(mob/user, ui_key = "main", datum/nanoui/ui = null, force_open = 1)
+/obj/machinery/media/jukebox/tg_ui_interact(mob/user, ui_key = "main", datum/tgui/ui = null, force_open = 0, datum/tgui/master_ui = null, datum/ui_state/state = tg_default_state)
+	ui = SStgui.try_update_ui(user, src, ui_key, ui, force_open)
+	if(!ui)
+		ui = new(user, src, ui_key, "jukebox", "RetroBox - Space Style", 340, 440, master_ui, state)
+		ui.open()
+
+/obj/machinery/media/jukebox/ui_data()
 	var/list/juke_tracks = new
 	for(var/datum/track/T in tracks)
-		juke_tracks.Add(list(list("track"=T.title)))
+		juke_tracks.Add(T.title)
 
 	var/list/data = list(
 		"current_track" = current_track != null ? current_track.title : "No track selected",
 		"playing" = playing,
 		"tracks" = juke_tracks,
-		"volume" = volume,
-		"tape" = tape
+		"volume" = volume
 	)
 
-	ui = SSnano.try_update_ui(user, src, ui_key, ui, data, force_open)
-	if (!ui)
-		ui = new(user, src, ui_key, "jukebox.tmpl", "Your Media Library", 340, 440)
-		ui.set_initial_data(data)
-		ui.open()
+	return data
 
-/obj/machinery/media/jukebox/OnTopic(mob/user, list/href_list, state)
-	if (href_list["title"])
-		if(!rickrolling)
-			for(var/datum/track/T in tracks)
-				if(T.title == href_list["title"])
-					current_track = T
-					StartPlaying()
-					break
-
-	if (href_list["stop"])
-		if(!rickrolling)
-			StopPlaying()
-
-	if (href_list["play"])
-		if(emagged)
-			emag_play()
-		else if(!current_track)
-			to_chat(usr, "No track selected.")
-		else
+/obj/machinery/media/jukebox/ui_act(action, params)
+	if(..())
+		return TRUE
+	switch(action)
+		if("change_track")
 			if(!rickrolling)
-				StartPlaying()
-
-	if (href_list["volume"])
-		AdjustVolume(text2num(href_list["volume"]))
+				for(var/datum/track/T in tracks)
+					if(T.title == params["title"])
+						current_track = T
+						StartPlaying()
+						break
+			. = TRUE
+		if("stop")
+			if(!rickrolling)
+				StopPlaying()
+			. = TRUE
+		if("play")
+			if(emagged)
+				emag_play()
+			else if(!current_track)
+				to_chat(usr, "No track selected.")
+			else
+				if(!rickrolling)
+					StartPlaying()
+			. = TRUE
+		if("volume")
+			AdjustVolume(text2num(params["level"]))
+			. = TRUE
 
 	if(!spamcheck)
 		spamcheck = TRUE
 		spawn(30)
 			spamcheck = FALSE
-
-	return TOPIC_REFRESH
 
 /obj/machinery/media/jukebox/proc/emag_play()
 	playsound(loc, 'sound/items/AirHorn.ogg', 100, 1)
@@ -174,16 +191,16 @@
 	interact(user)
 
 /obj/machinery/media/jukebox/proc/explode()
-	walk_to(src, 0)
-	src.visible_message(SPAN_DANGER("\the [src] blows apart!"), 1)
+	walk_to(src,0)
+	src.visible_message("<span class='danger'>\the [src] blows apart!</span>", 1)
 
-	explosion(get_turf(src), 0, 0, 1, rand(1,2), 1)
+	explosion(src.loc, 0, 0, 1, rand(1,2), 1)
 
 	var/datum/effect/effect/system/spark_spread/s = new /datum/effect/effect/system/spark_spread
 	s.set_up(3, 1, src)
 	s.start()
 
-	new /obj/effect/decal/cleanable/blood/oil(loc)
+	new /obj/effect/decal/cleanable/blood/oil(src.loc)
 	qdel(src)
 
 /obj/machinery/media/jukebox/attackby(obj/item/W as obj, mob/user as mob)
@@ -192,30 +209,13 @@
 		wrench_floor_bolts(user, 0)
 		power_change()
 		return
-	else if(istype(W, /obj/item/music_tape))
-		var/obj/item/music_tape/D = W
-		if(tape)
-			to_chat(user, SPAN_NOTICE("There is already \a [tape] inside."))
-			return
-
-		if(D.ruined)
-			to_chat(user, SPAN_WARNING("\The [D] is ruined, you can't use it."))
-			return
-
-		if(user.drop_item())
-			visible_message(SPAN_NOTICE("[usr] insert \a [tape] into \the [src]."))
-			D.forceMove(src)
-			tape = D
-			tracks += tape.track
-			verbs += /obj/machinery/media/jukebox/verb/eject
-		return
 	return ..()
 
 /obj/machinery/media/jukebox/emag_act(remaining_charges, mob/user)
 	if(!emagged)
 		emagged = 1
 		StopPlaying()
-		visible_message(SPAN_DANGER("\The [src] makes a fizzling sound."))
+		visible_message("<span class='danger'>\The [src] makes a fizzling sound.</span>")
 		update_icon()
 		return 1
 
@@ -234,7 +234,7 @@
 	if(!spamcheck && prob(RICKROLL_PROBABILITY))
 		lock_rickroll()
 	// Jukeboxes cheat massively and actually don't share id. This is only done because it's music rather than ambient noise.
-	sound_token = GLOB.sound_player.PlayLoopingSound(src, sound_id, current_track.GetTrack(), volume = volume, range = 7, falloff = 3, prefer_mute = TRUE, preference = /datum/client_preference/play_jukeboxes, streaming = TRUE)
+	sound_token = GLOB.sound_player.PlayLoopingSound(src, sound_id, current_track.sound, volume = volume, range = 7, falloff = 3, prefer_mute = TRUE, preference = /datum/client_preference/play_jukeboxes)
 
 	playing = 1
 	update_use_power(POWER_USE_ACTIVE)
@@ -252,25 +252,3 @@
 	rickrolling = TRUE
 	spawn(duration)
 		rickrolling = FALSE
-
-/obj/machinery/media/jukebox/verb/eject()
-	set name = "Eject"
-	set category = "Object"
-	set src in oview(1)
-
-	if(!CanPhysicallyInteract(usr))
-		return
-
-	if(tape)
-		StopPlaying()
-		current_track = null
-		for(var/datum/track/T in tracks)
-			if(T == tape.track)
-				tracks -= T
-
-		if(!usr.put_in_hands(tape))
-			tape.dropInto(loc)
-
-		tape = null
-		visible_message(SPAN_NOTICE("[usr] eject \a [tape] from \the [src]."))
-		verbs -= /obj/machinery/media/jukebox/verb/eject

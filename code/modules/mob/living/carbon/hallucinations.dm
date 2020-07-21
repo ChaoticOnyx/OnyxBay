@@ -456,8 +456,7 @@
 	holder.hallucinations -= src
 	if(!fake_look)
 		return // No ASSERT is needed, ending is correct
-	if(holder.client)
-		holder.client.images -= fake_look
+	holder.client.images -= fake_look
 	QDEL_NULL(fake_look)
 
 /datum/hallucination/fake_appearance/Destroy()
@@ -513,8 +512,7 @@
 /datum/hallucination/hud_error/end()
 	if(!fake)
 		return // No ASSERT is needed, ending is correct
-	if(holder.client)
-		holder.client.screen -= fake
+	holder.client.screen -= fake
 	qdel(fake)
 
 /datum/hallucination/hud_error/Destroy()
@@ -544,8 +542,7 @@
 /datum/hallucination/room_effects/end()
 	if(!effects)
 		return // Already qdeleted
-	if(holder.client)
-		holder.client.images -= effects
+	holder.client.images -= effects
 	QDEL_NULL_LIST(effects)
 
 /datum/hallucination/room_effects/Destroy()
@@ -575,8 +572,7 @@
 /datum/hallucination/coloring/end()
 	if(!colored_images)
 		return // Already qdeleted
-	if(holder.client)
-		holder.client.images -= colored_images
+	holder.client.images -= colored_images
 	QDEL_NULL_LIST(colored_images)
 
 /datum/hallucination/coloring/Destroy()

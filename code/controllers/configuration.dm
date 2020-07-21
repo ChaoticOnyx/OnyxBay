@@ -11,7 +11,6 @@ var/list/gamemode_cache = list()
 	var/log_admin = 0						// Log admin actions
 	var/log_asay = 0						// Log admin/mod say
 	var/log_debug = 1						// Log debug output
-	var/log_debug_verbose = 1               // Log verbose debug output
 	var/log_game = 0						// Log game events
 	var/log_vote = 0						// Log voting
 	var/log_whisper = 0						// Log client whisper
@@ -357,9 +356,6 @@ var/list/gamemode_cache = list()
 
 				if ("log_debug")
 					config.log_debug = 1
-
-				if ("log_debug_verbose")
-					config.log_debug_verbose = 1
 
 				if ("log_game")
 					config.log_game = 1

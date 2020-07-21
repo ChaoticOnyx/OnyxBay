@@ -636,29 +636,21 @@ var/world_topic_spam_protect_time = world.timeofday
 	if (src.status != s)
 		src.status = s
 
-#define WORLD_LOG_START(X) WRITE_FILE(GLOB.world_##X##_log, "\n\nStarting up round ID [game_id]. [time2text(world.realtime, "DD.MM.YY hh:mm")]\n---------------------")
-#define WORLD_SETUP_LOG(X) GLOB.world_##X##_log = file("[log_directory]/[log_prefix][#X].log") ; WORLD_LOG_START(X)
-#define WORLD_SETUP_LOG_DETAILED(X) GLOB.world_##X##_log = file("[log_directory_detailed]/[log_prefix_detailed][#X].log") ; WORLD_LOG_START(X)
-
+#define WORLD_LOG_START(X) WRITE_FILE(GLOB.world_##X##_log, "\n\nStarting up round ID [game_id]. [time_stamp()]\n---------------------")
+#define WORLD_SETUP_LOG(X) GLOB.world_##X##_log = file("[GLOB.log_directory]/[GLOB.log_prefix][#X].log") ; WORLD_LOG_START(X)
 /world/proc/SetupLogs()
 	if (!game_id)
 		crash_with("Unknown game_id!")
 
-	var/log_directory = "data/logs/[time2text(world.realtime, "YYYY/MM-Month")]"
-	var/log_prefix = "[time2text(world.realtime, "DD.MM.YY")]_"
+	GLOB.log_directory = "data/logs/[time2text(world.realtime, "YYYY/MM-Month")]"
+	GLOB.log_prefix = "[time2text(world.realtime, "DD.MM.YY_hh.mm")]_[game_id]_"
 
-	GLOB.log_directory = log_directory // TODO: remove GLOB.log_directory, check initialize.log
-
-	var/log_directory_detailed = "data/logs/[time2text(world.realtime, "YYYY/MM-Month")]/[time2text(world.realtime, "DD.MM.YY")]_detailed"
-	var/log_prefix_detailed = "[time2text(world.realtime, "DD.MM.YY_hh.mm")]_[game_id]_"
-
-	WORLD_SETUP_LOG_DETAILED(runtime)
-	WORLD_SETUP_LOG_DETAILED(qdel)
-	WORLD_SETUP_LOG_DETAILED(debug)
-	WORLD_SETUP_LOG_DETAILED(hrefs)
+	WORLD_SETUP_LOG(runtime)
+	WORLD_SETUP_LOG(qdel)
+	WORLD_SETUP_LOG(debug)
+	WORLD_SETUP_LOG(hrefs)
 	WORLD_SETUP_LOG(common)
 
-#undef WORLD_SETUP_LOG_DETAILED
 #undef WORLD_SETUP_LOG
 #undef WORLD_LOG_START
 

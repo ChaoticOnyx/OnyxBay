@@ -147,66 +147,12 @@
 	trenchcoats += /obj/item/clothing/suit/leathercoat
 	gear_tweaks += new /datum/gear_tweak/path/specified_types_list(trenchcoats)
 
-//
-// Donator's shop
-//
-
 /datum/gear/suit/pirate
 	display_name = "pirate suit"
 	path = /obj/item/clothing/suit/pirate
-	price = 15
+	price = 12
 
 /datum/gear/suit/cardborg
-	display_name = "cardborg suit"
+	display_name = "cardborg"
 	path = /obj/item/clothing/suit/cardborg
-	price = 6
-
-/datum/gear/suit/santa
-	display_name = "santa's suit"
-	path = /obj/item/clothing/suit/space/santa
-	price = 40
-
-/datum/gear/suit/plaguedoctorsuit
-	display_name = "plague doctor suit"
-	path = /obj/item/clothing/suit/bio_suit/plaguedoctorsuit
-	price = 20
-
-/datum/gear/suit/hgpirate
-	display_name = "pirate captain coat"
-	path = /obj/item/clothing/suit/hgpirate
-	price = 10
-
-/datum/gear/suit/johnny_coat
-	display_name = "johnny coat"
-	path = /obj/item/clothing/suit/johnny_coat
-	price = 10
-
-/datum/gear/suit/judgerobe
-	display_name = "judge's robe"
-	path = /obj/item/clothing/suit/judgerobe
-	price = 10
-
-/datum/gear/suit/monkeysuit
-	display_name = "monkey suit"
-	path = /obj/item/clothing/suit/monkeysuit
-	price = 10
-
-/datum/gear/suit/chickensuit
-	display_name = "chicken suit"
-	path = /obj/item/clothing/suit/chickensuit
-	price = 10
-
-/datum/gear/suit/wizrobe_fake
-	display_name = "wizard robe"
-	path = /obj/item/clothing/suit/wizrobe/fake
-	price = 20
-
-/datum/gear/suit/wizrobe_marisa_fake
-	display_name = "witch robe"
-	path = /obj/item/clothing/suit/wizrobe/marisa/fake
-	price = 20
-
-/datum/gear/suit/ianshirt
-	display_name = "ian shirt"
-	path = /obj/item/clothing/suit/ianshirt
 	price = 5

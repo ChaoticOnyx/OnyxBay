@@ -33,31 +33,30 @@
 	usr.visible_message("<b>[src]</b> points to [A]")
 	return 1
 
-// Check if current mob can push other mob or swap with it
-// - other - the other mob to be pushed/swapped with
-// - are_swaping - TRUE if current mob is intenting to swap, FALSE for pushing
-// - passive - TRUE if current mob isn't initiator of swap/push
-// Returns TRUE/FALSE
-/mob/living/proc/can_move_mob(mob/living/other, are_swapping, passive)
-	ASSERT(other)
-	ASSERT(src != other)
-
+/*one proc, four uses
+swapping: if it's 1, the mobs are trying to switch, if 0, non-passive is pushing passive
+default behaviour is:
+ - non-passive mob passes the passive version
+ - passive mob checks to see if its mob_bump_flag is in the non-passive's mob_bump_flags
+ - if si, the proc returns
+*/
+/mob/living/proc/can_move_mob(mob/living/swapped, swapping = 0, passive = 0)
+	if(!swapped)
+		return 1
 	if(!passive)
-		return other.can_move_mob(src, are_swapping, TRUE)
-
-	var/context_flags = 0
-	if(are_swapping)
-		context_flags = other.mob_swap_flags
+		return swapped.can_move_mob(src, swapping, 1)
 	else
-		context_flags = other.mob_push_flags
-
-	if(!mob_bump_flag) //nothing defined, go wild
-		return TRUE
-
-	if(mob_bump_flag & context_flags)
-		return TRUE
-
-	return a_intent == I_HELP && other.a_intent == I_HELP
+		var/context_flags = 0
+		if(swapping)
+			context_flags = swapped.mob_swap_flags
+		else
+			context_flags = swapped.mob_push_flags
+		if(!mob_bump_flag) //nothing defined, go wild
+			return 1
+		if(mob_bump_flag & context_flags)
+			return 1
+		else
+			return ((a_intent == I_HELP && swapped.a_intent == I_HELP) && swapped.can_move_mob(src, swapping, 1))
 
 /mob/living/canface()
 	if(stat)
@@ -681,6 +680,10 @@
 		to_chat(src, "<span class='warning'>You extricate yourself from \the [holster].</span>")
 		H.forceMove(get_turf(H))
 	else if(istype(H.loc,/obj))
+		if(istype(H.loc, /obj/machinery/cooker))
+			var/obj/machinery/cooker/C = H.loc
+			C.cooking_obj = null
+			C.check_cooking_obj()
 		to_chat(src, "<span class='warning'>You struggle free of \the [H.loc].</span>")
 		H.forceMove(get_turf(H))
 

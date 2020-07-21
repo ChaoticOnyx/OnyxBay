@@ -76,6 +76,6 @@
 /datum/gear/storage/santabag
 	display_name = "santabag"
 	slot = slot_back
-	path = /obj/item/weapon/storage/backpack/santabag/fake
-	cost = 2
-	price = 20
+	path = /obj/item/weapon/storage/backpack/santabag
+	cost = 4
+	price = 60

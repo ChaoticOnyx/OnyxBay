@@ -10,18 +10,6 @@
 		if(PATREON_CULTIST)   return "pt_cultist"
 		if(PATREON_ASSISTANT) return "pt_assistant"
 
-/proc/patron_tier_decorated(tier)
-	if(tier == PATREON_NONE)
-		return null
-
-	switch(tier)
-		if(PATREON_CARGO) . = "Cargo Technician"
-		if(PATREON_HOS) . = "Head of Security"
-		else
-			. = capitalize(tier)
-
-	return "<span class='[patron_tier_to_css_class(tier)]'>[.]</span>"
-
 /datum/donator_info
 	var/donator = FALSE
 	var/patron_type = PATREON_NONE
@@ -39,7 +27,16 @@
 	return "<span class='[patron_tier_to_css_class(choosen_ooc_patreon_tier)]'>[C.key]</span>"
 
 /datum/donator_info/proc/get_full_patron_tier()
-	return patron_tier_decorated(patron_type)
+	if(patron_type == PATREON_NONE)
+		return null
+
+	switch(patron_type)
+		if(PATREON_CARGO) . = "Cargo Technician"
+		if(PATREON_HOS) . = "Head of Security"
+		else
+			. = capitalize(patron_type)
+
+	return "<span class='[patron_tier_to_css_class(patron_type)]'>[.]</span>"
 
 /datum/donator_info/proc/get_available_ooc_patreon_tiers()
 	. = list()

@@ -64,7 +64,7 @@
 	WRITE_FILE(GLOB.world_debug_log, "\[[time_stamp()]] DEBUG: [text][log_end]")
 
 /proc/log_debug_verbose(text)
-	if(!config.log_debug_verbose || !GLOB.world_debug_log)
+	if(!config.log_debug || !GLOB.world_debug_log)
 		return
 	WRITE_FILE(GLOB.world_debug_log, "\[[time_stamp()]] DEBUG VERBOSE: [text][log_end]")
 

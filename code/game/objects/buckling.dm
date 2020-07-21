@@ -62,8 +62,6 @@
 			animate(M, pixel_x = M.default_pixel_x, pixel_y = M.default_pixel_y, 4, 1, LINEAR_EASING)
 
 /obj/proc/user_buckle_mob(mob/living/M, mob/user)
-	if(isanimal(user))
-		return 0
 	if(!user.Adjacent(M) || user.restrained() || user.incapacitated(INCAPACITATION_ALL) || user.stat || istype(user, /mob/living/silicon/pai))
 		return 0
 	if(M == buckled_mob)
@@ -107,3 +105,4 @@
 				"<span class='notice'>You hear metal clanking.</span>")
 		add_fingerprint(user)
 	return M
+
