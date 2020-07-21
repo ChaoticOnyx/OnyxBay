@@ -53,14 +53,19 @@
 
 /obj/structure/bookcase/attack_hand(mob/user as mob)
 	if(contents.len)
-		var/titles[length(contents)]
-		for(var/i in 1 to length(contents))
-			titles[i] = (istype(contents[i], /obj/item/weapon/book) && contents[i].title) ? contents[i].title : contents[i].name
+		var/list/titles = list()
+		for(var/obj/item in contents)
+			var/item_name = item.name
+			if(istype(item, /obj/item/weapon/book))
+				var/obj/item/weapon/book/B = item
+				item_name = B.title
+			titles[item_name] = item
 		var/title = input("Which book would you like to remove from the shelf?") as null|anything in titles
 		if(title)
 			if(!usr.canmove || usr.stat || usr.restrained() || !in_range(loc, usr))
 				return
-			var/obj/choice = contents[titles.Find(title)]
+			var/obj/choice = titles[title]
+			ASSERT(choice)
 			if(ishuman(user))
 				if(!user.get_active_hand())
 					user.put_in_hands(choice)

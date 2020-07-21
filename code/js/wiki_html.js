@@ -47,7 +47,7 @@ var parseBody = function (response) {
 		}
 		ingame.parentElement.removeChild(ingame);
 	}
-	//else throw new Error("Information is blocked!"); // <-- Uncomment this if availability of content is regulated by {{Ingame}} template
+	else throw new Error("Information is blocked!");
 	
 	// Searching for scpecific {{NT_Censorship}} template and removing everything INSIDE it
 	if (censorship !== 0) {

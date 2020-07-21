@@ -28,7 +28,7 @@ var parseBody = function (response) {
 		ingame_index = body.innerHTML.indexOf("}}");
 		body.innerHTML = body.innerHTML.slice(ingame_index + 2);
 	}
-	//else throw new Error("Information is blocked!"); // <-- Uncomment this if availability of content is regulated by {{Ingame}} template
+	else throw new Error("Information is blocked!");
 	
 	document.title = title;
 

@@ -85,6 +85,7 @@
 		else
 			..()
 	else
+		..()
 		to_chat(user, "[src] doesn't work!")
 
 /obj/machinery/bookbinder/proc/print(text, title, author)
