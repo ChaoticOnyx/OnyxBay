@@ -54,19 +54,6 @@
 	item_state = "hostrench"
 	flags_inv = 0
 
-/obj/item/clothing/suit/armor/hos/german
-	name = "ancient trenchcoat"
-	desc = "An ancient trenchcoat, how did it survive to these days? There's a label on the neck that reads 'Hergestellt von Hugo Boss'" //did survived, sure
-	icon_state = "trenchcoatger"
-	item_state = "trenchcoatger"
-	armor = list(melee = 35, bullet = 15, laser = 15, energy = 10, bomb = 10, bio = 0, rad = 0)
-
-/obj/item/clothing/suit/armor/hos/german/mob_can_equip(mob/user)
-	.=..()
-	if(user.gender == FEMALE)
-		to_chat(user, "<span class='warning'> You aren't sure you'll fit in this men's cloth..</span>")
-		return 0
-
 //Non-hardsuit ERT armor.
 //Commander
 /obj/item/clothing/suit/armor/vest/ert
@@ -247,6 +234,10 @@
 	valid_accessory_slots = list(ACCESSORY_SLOT_INSIGNIA)
 	armor = list(melee = 42, bullet = 75, laser = 42, energy = 10, bomb = 25, bio = 0, rad = 0)
 
+/obj/item/clothing/suit/armor/swat/officer
+	..()
+	flags_inv = 0
+
 /obj/item/clothing/suit/armor/heavy // A more balanced version of SWAT armor
 	name = "heavy armor"
 	desc = "A heavily armored suit that protects against moderate damage."
@@ -280,10 +271,3 @@
 	icon_state = "tdgreen"
 	item_state = "tdgreen"
 	siemens_coefficient = 1
-
-/obj/item/clothing/suit/armor/hos/jensen/custom
-	name = "stylish trenchcoat"
-	desc = "A loose, unbelted trenchcoat of military style. Has a \"MILITA\" writen on chest."
-	icon_state = "hostrench"
-	item_state = "hostrench"
-	armor = list(melee = 15, bullet = 10, laser = 10, energy = 10, bomb = 10, bio = 0, rad = 0)

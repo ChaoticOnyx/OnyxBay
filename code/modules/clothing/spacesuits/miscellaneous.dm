@@ -40,6 +40,7 @@
 	flags_inv = BLOCKHAIR
 	body_parts_covered = 0
 	siemens_coefficient = 0.9
+	has_visor = 0
 
 /obj/item/clothing/suit/space/pirate
 	name = "pirate coat"

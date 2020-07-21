@@ -156,7 +156,6 @@
 								/obj/item/clothing/suit/storage				= TRADER_BLACKLIST,
 								/obj/item/clothing/suit/storage/hooded		= TRADER_BLACKLIST,
 								/obj/item/clothing/suit/storage/toggle		= TRADER_BLACKLIST,
-								/obj/item/clothing/suit/storage/vest		= TRADER_BLACKLIST_ALL,
 								/obj/item/clothing/suit/straight_jacket		= TRADER_BLACKLIST,
 								/obj/item/clothing/suit/stripper			= TRADER_BLACKLIST_ALL,
 								/obj/item/clothing/suit/syndicatefake		= TRADER_BLACKLIST,

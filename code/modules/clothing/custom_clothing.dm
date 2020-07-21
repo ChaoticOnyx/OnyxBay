@@ -42,6 +42,12 @@
 	siemens_coefficient = 1
 	has_visor = 0
 
+/obj/item/clothing/head/HoS/german
+	name = "ancient cap"
+	desc = "An ancient cap, how did it survived to these days?"
+	icon_state = "capger"
+	armor = list(melee = 25, bullet = 10, laser = 10,energy = 10, bomb = 10, bio = 0, rad = 0)
+
 /obj/item/clothing/suit/armor/hos/german
 	name = "ancient trenchcoat"
 	desc = "An ancient trenchcoat, how did it survived to these days? There's a label on the neck that reads 'Hergestellt von Hugo Boss'"
@@ -60,3 +66,22 @@
 	desc = "A nice red forensics technician jacket."
 	icon_state = "custom_forensics_red_long"
 	item_state = "custom_forensics_red_long"
+
+/obj/item/clothing/suit/armor/hos/jensen/custom
+	name = "stylish trenchcoat"
+	desc = "A loose, unbelted trenchcoat of military style. Has a \"MILITA\" writen on chest."
+	icon_state = "hostrench"
+	item_state = "hostrench"
+	armor = list(melee = 15, bullet = 10, laser = 10, energy = 10, bomb = 10, bio = 0, rad = 0)
+
+/obj/item/clothing/suit/storage/det_trench/warfare
+    name = "comfy greatcoat"
+    desc = "A greatcoat that is holding small pieces of dirt and such. It feels underarmored, yet you're absolutely sure that it will keep out the cold."
+    icon_state = "redcoat"
+    armor = list(melee = 0, bullet = 0, laser = 0, energy = 0, bomb = 0, bio = 0, rad = 0)
+
+/obj/item/clothing/suit/storage/det_trench/warfare/mob_can_equip(mob/user)
+	.=..()
+	if(user.gender == FEMALE)
+		to_chat(user, SPAN("warning", "You aren't sure you'll fit in this men's cloth..."))
+		return 0

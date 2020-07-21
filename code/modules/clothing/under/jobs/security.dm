@@ -18,17 +18,6 @@
 	armor = list(melee = 10, bullet = 0, laser = 0,energy = 0, bomb = 0, bio = 0, rad = 0)
 	siemens_coefficient = 0.9
 
-/obj/item/clothing/head/warden 							// TODO: move all head clothing to /head
-	name = "warden's hat"
-	desc = "It's a special helmet issued to the Warden of a securiy force."
-	icon_state = "policehelm"
-	body_parts_covered = 0
-
-/obj/item/clothing/head/warden/drill
-	name = "warden's drill hat"
-	desc = "You've definitely have seen that hat before."
-	icon_state = "wardendrill"
-
 /obj/item/clothing/under/rank/security
 	name = "security officer's jumpsuit"
 	desc = "It's made of a slightly sturdier material than standard jumpsuits, to allow for robust protection."
@@ -112,7 +101,6 @@
 /*
  * Head of Security
  */
- //Uniforms
 /obj/item/clothing/under/rank/head_of_security
 	desc = "It's a jumpsuit worn by those few with the dedication to achieve the position of \"Head of Security\". It has additional armor to protect the wearer."
 	name = "head of security's jumpsuit"
@@ -133,24 +121,7 @@
 	desc = "You never asked for anything that stylish."
 	name = "head of security's jumpsuit"
 	icon_state = "jensen"
+	item_state_slots = list(
+		slot_hand_str = "jensen"
+		)
 	siemens_coefficient = 0.6
-
-//Hats
-/obj/item/clothing/head/HoS
-	name = "Head of Security Hat"
-	desc = "The hat of the Head of Security, reinforced with a plasteel plate. For showing the officers who's in charge."
-	icon_state = "hoscap"
-	body_parts_covered = HEAD
-	armor = list(melee = 60, bullet = 60, laser = 60,energy = 35, bomb = 45, bio = 0, rad = 0)
-	siemens_coefficient = 0.6
-
-/obj/item/clothing/head/HoS/dermal
-	name = "Dermal Armour Patch"
-	desc = "You're not quite sure how you manage to take it on and off, but it implants nicely in your head."
-	icon_state = "dermal"
-
-/obj/item/clothing/head/HoS/german
-	name = "ancient cap"
-	desc = "An ancient cap, how did it survived to these days?"
-	icon_state = "capger"
-	armor = list(melee = 25, bullet = 10, laser = 10,energy = 10, bomb = 10, bio = 0, rad = 0)
