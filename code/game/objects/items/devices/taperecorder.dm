@@ -94,9 +94,9 @@
 		if(speaking)
 			if(!speaking.machine_understands)
 				msg = speaking.scramble(msg)
-			mytape.record_speech("[M.name] [speaking.format_message_plain(msg, verb)]")
+			mytape.record_speech("[M.GetVoice()] [speaking.format_message_plain(msg, verb)]")
 		else
-			mytape.record_speech("[M.name] [verb], \"[msg]\"")
+			mytape.record_speech("[M.GetVoice()] [verb], \"[msg]\"")
 
 
 /obj/item/device/taperecorder/see_emote(mob/M as mob, text, emote_type)

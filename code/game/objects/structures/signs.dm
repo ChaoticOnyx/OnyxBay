@@ -339,6 +339,10 @@
 	desc = "A sign labelling an area as a place where plant growing supplies are kept."
 	icon_state = "hydro3"
 
+/obj/structure/sign/eva
+	name = "\improper EVA"
+	icon_state = "eva"
+
 /obj/structure/sign/directions
 	name = "direction sign"
 	desc = "A direction sign, claiming to know the way."
