@@ -721,7 +721,7 @@
 
 /obj/item/borg/upgrade/integrated_circuit_upgrade
 	name = "integrated circuit module"
-	desc = "A system allows cyborg to create and using integrated circuit assemblies."
+	desc = "A system that allows cyborgs to create and use integrated circuit assemblies."
 	icon_state = "cyborg_upgrade1"
 	origin_tech = list(TECH_DATA = 3, TECH_MATERIAL = 5)
 	require_module = 1
