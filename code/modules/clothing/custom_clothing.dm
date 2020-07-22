@@ -30,6 +30,13 @@
 /obj/item/clothing/head/helmet/police/attack_self(mob/user)
 	togglevisor(user)
 
+/obj/item/clothing/suit/storage/vest/police
+	name = " police armored vest"
+	desc = "A synthetic armor vest with a large webbing and additional ballistic plates. Has a name badge on the frontal plate, that reads 'Sgt. Bauer'"
+	icon_state = "policevest"
+	item_state = "policevest"
+	armor = list(melee = 40, bullet = 40, laser = 45, energy = 15, bomb = 30, bio = 0, rad = 0)
+
 // Items below belong to i-dont-fucking-know-who
 // Please, sign them ASAP
 /obj/item/clothing/head/helmet/german
