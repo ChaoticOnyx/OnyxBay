@@ -32,7 +32,9 @@
 
 	if(!(language && (language.flags & INNATE))) // skip understanding checks for INNATE languages
 		if(!say_understands(speaker,language))
-			if(istype(speaker,/mob/living/simple_animal) && !speaker.client)
+			//todo: make here refactoring and add language to simpleanimals, for scrambling it, not picking random phrase
+			var/is_goat = istype(speaker, /mob/living/simple_animal/hostile/retaliate/goat) || istype(speaker, /mob/living/simple_animal/hostile/commanded/goat)
+			if(istype(speaker,/mob/living/simple_animal) && !is_goat)
 				var/understand_animals = FALSE
 				if(istype(src, /mob/living/carbon))
 					var/mob/living/carbon/C = src
