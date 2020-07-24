@@ -32,10 +32,19 @@
 
 	if(!(language && (language.flags & INNATE))) // skip understanding checks for INNATE languages
 		if(!say_understands(speaker,language))
-			if(language)
-				message = language.scramble(message)
+			if(istype(speaker,/mob/living/simple_animal) && !speaker.client)
+				var/understand_animals = FALSE
+				if(istype(src, /mob/living/carbon))
+					var/mob/living/carbon/C = src
+					understand_animals = C.is_hallucinating() && prob(15)
+				if(!understand_animals)
+					var/mob/living/simple_animal/S = speaker
+					message = pick(S.speak)
 			else
-				message = stars(message)
+				if(language)
+					message = language.scramble(message)
+				else
+					message = stars(message)
 
 	var/speaker_name = "Unknown"
 	if(speaker)
