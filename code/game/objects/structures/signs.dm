@@ -43,8 +43,8 @@
 	if(isScrewdriver(W) && isturf(user.loc))
 		if(fastening)
 			return
-		var/direction = input("In which direction?", "Select direction.") in list("North", "East", "South", "West", "Cancel")
 		fastening = 1
+		var/direction = input("In which direction?", "Select direction.") in list("North", "East", "South", "West", "Cancel")
 		if(direction == "Cancel")
 			fastening = 0
 			return
