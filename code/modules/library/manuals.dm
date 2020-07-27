@@ -112,7 +112,7 @@
 	topic = "Guide to Xenoarchaeology"
 
 /obj/item/weapon/book/wiki/medical_chemistry
-	icon_state ="book"
+	icon_state ="chemistry"
 	author = "Caroline Morgan"
 	title = "A Brief Chemist Guide In Zero Gravity"
 	topic = "Brief Chemist Guide"
