@@ -196,6 +196,14 @@ var/global/list/string_slot_flags = list(
 		var/datum/grab/G = all_grabstates[grabstate_name]
 		G.refresh_updown()
 
+	//Manuals
+	paths = typesof(/obj/item/weapon/book/wiki) - /obj/item/weapon/book/wiki - /obj/item/weapon/book/wiki/template
+	for(var/booktype in paths)
+		var/obj/item/weapon/book/wiki/manual = new booktype
+		if(manual.topic)
+			GLOB.premade_manuals[manual.topic] = booktype
+		qdel(manual)
+
 	return 1
 
 /* // Uncomment to debug chemical reaction list.
