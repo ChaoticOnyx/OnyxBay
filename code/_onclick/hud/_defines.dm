@@ -155,9 +155,11 @@
 #define ui_ai_status "SOUTH:6,WEST+2"
 #define ui_ai_change_hologram "SOUTH:6,WEST+3"
 #define ui_ai_crew_manifest "SOUTH:6,WEST+4"
+//#define ui_ai_null "SOUTH:6,WEST+5"
 #define ui_ai_announcement "SOUTH:6,WEST+6"
 #define ui_ai_shuttle "SOUTH:6,WEST+7"
 #define ui_ai_state_laws "SOUTH:6,WEST+8"
+//#define ui_ai_null "SOUTH:6,WEST+9"
 #define ui_ai_multitool "SOUTH:6,WEST+10"
 
 #define ui_ai_pda_ringer "SOUTH:6,WEST+11"
@@ -173,8 +175,9 @@
 #define ui_ai_radio "SOUTH:6+1,WEST+4"
 #define ui_ai_scl "SOUTH:6+1,WEST+6"
 #define ui_ai_gcl "SOUTH:6+1,WEST+7"
+//#define ui_ai_null "SOUTH:6+1,WEST+5"
 #define ui_ai_dcl "SOUTH:6+1,WEST+8"
-#define ui_ai_null "SOUTH:6+1,WEST+9"
+//#define ui_ai_null "SOUTH:6+1,WEST+9"
 #define ui_ai_shutdown "SOUTH:6+1,WEST+10"
 #define ui_ai_override "SOUTH:6+1,WEST+11"
 
