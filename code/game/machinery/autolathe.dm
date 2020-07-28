@@ -245,6 +245,8 @@
 		for(var/material in making.resources)
 			if(!isnull(stored_material[material]))
 				if(stored_material[material] < round(making.resources[material] * mat_efficiency) * multiplier)
+					busy = FALSE
+					update_use_power(POWER_USE_IDLE)
 					return TOPIC_REFRESH
 
 		//Consume materials.
