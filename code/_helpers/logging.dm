@@ -117,6 +117,11 @@
 /proc/log_qdel(text)
 	WRITE_FILE(GLOB.world_qdel_log, "\[[time_stamp()]]QDEL: [text]")
 
+/proc/log_href(text)
+	if(!config.log_hrefs)
+		return
+	WRITE_FILE(GLOB.world_href_log, "\[[time_stamp()]] HREF: [text]")
+
 /proc/log_error(text)
 	error(text)
 
