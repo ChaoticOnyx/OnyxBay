@@ -454,9 +454,11 @@
 
 	if(ishuman(human_user) && !human_user.get_active_hand())
 		human_user.put_in_hands(held_card)
-	held_card = null
-
-
+		held_card = null
+	else if (ishuman(human_user))
+		usr.drop_item()
+		human_user.put_in_hands(held_card)
+		held_card = null
 /obj/machinery/atm/proc/spawn_ewallet(sum, loc, mob/living/carbon/human/human_user as mob)
 	var/obj/item/weapon/spacecash/ewallet/E = new /obj/item/weapon/spacecash/ewallet(loc)
 	if(ishuman(human_user) && !human_user.get_active_hand())
