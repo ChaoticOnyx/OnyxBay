@@ -176,7 +176,6 @@ GLOBAL_DATUM_INIT(iconCache, /savefile, new("tmp/iconCache.sav")) //Cache of ico
 	if(target == world)
 		target = GLOB.clients
 
-	var/original_message = message
 	if(handle_whitespace)
 		message = replacetext(message, "\n", "<br>")
 		message = replacetext(message, "\t", "[FOURSPACES][FOURSPACES]")
