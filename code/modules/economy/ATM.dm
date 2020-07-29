@@ -452,6 +452,7 @@
 	authenticated_account = null
 	account_security_level = 0
 
+
 	if(ishuman(human_user) && !human_user.get_active_hand())
 		human_user.put_in_hands(held_card)
 		held_card = null
