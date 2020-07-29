@@ -120,7 +120,7 @@
 /proc/log_href(text)
 	if(!config.log_hrefs)
 		return
-	WRITE_FILE(GLOB.world_href_log, "\[[time_stamp()]] HREF: [text]")
+	WRITE_FILE(GLOB.world_hrefs_log, "\[[time_stamp()]] HREF: [text]")
 
 /proc/log_error(text)
 	error(text)
