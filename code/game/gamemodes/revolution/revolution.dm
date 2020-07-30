@@ -1,3 +1,5 @@
+GLOBAL_LIST_EMPTY(revolution_posters)
+
 /datum/game_mode/revolution
 	name = "Revolution"
 	config_tag = "revolution"
@@ -10,3 +12,20 @@
 	shuttle_delay = 2
 	antag_tags = list(MODE_REVOLUTIONARY)
 	require_all_templates = 1
+
+	var/last_poster_update
+	var/points = 0
+
+/datum/game_mode/revolution/post_setup()
+	..()
+	last_poster_update = round_duration_in_ticks + 1 MINUTES
+
+
+/datum/game_mode/revolution/process()
+	if(last_poster_update <= round_duration_in_ticks)
+		for(var/obj/structure/P in GLOB.revolution_posters)
+			if(P && (P.z in GLOB.using_map.station_levels))
+				points += get_area(P.loc).score
+			else
+				GLOB.revolution_posters -= P
+		last_poster_update = round_duration_in_ticks + 1 MINUTES

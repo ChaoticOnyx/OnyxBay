@@ -7,6 +7,7 @@
 	var/global/global_uid = 0
 	var/uid
 	var/area_flags
+	var/score = 1
 
 /area/New()
 	icon_state = ""

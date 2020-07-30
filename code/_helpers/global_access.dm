@@ -747,6 +747,8 @@
 			return global.restricted_camera_networks;
 		if("revdata")
 			return global.revdata;
+		if("revolution_posters")
+			return GLOB.revolution_posters;
 		if("robot_custom_icons")
 			return global.robot_custom_icons;
 		if("robot_hud_colours")
@@ -1726,6 +1728,8 @@
 			global.restricted_camera_networks=newval;
 		if("revdata")
 			global.revdata=newval;
+		if("revolution_posters")
+			GLOB.revolution_posters=newval;
 		if("robot_custom_icons")
 			global.robot_custom_icons=newval;
 		if("robot_hud_colours")
@@ -2333,6 +2337,7 @@
 	"responsive_carriers",
 	"restricted_camera_networks",
 	"revdata",
+	"revolution_posters",
 	"rkeys",
 	"robot_custom_icons",
 	"robot_hud_colours",

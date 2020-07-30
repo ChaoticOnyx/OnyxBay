@@ -44,3 +44,28 @@ GLOBAL_DATUM_INIT(revs, /datum/antagonist/revolutionary, new)
 		rev_obj.target = player.mind
 		rev_obj.explanation_text = "Assassinate, capture or convert [player.real_name], the [player.mind.assigned_role]."
 		global_objectives += rev_obj
+
+/datum/antagonist/revolutionary/equip(mob/living/carbon/human/revolutionary)
+	if(!..())
+		return 0
+
+	equip_poster(revolutionary)
+	equip_poster(revolutionary)
+
+/datum/antagonist/revolutionary/proc/equip_poster(mob/living/carbon/human/player)
+
+	var/obj/item/weapon/contraband/poster/revolutionary/P = new(get_turf(player))
+	var/list/slots = list (
+		"backpack" = slot_in_backpack,
+		"left pocket" = slot_l_store,
+		"right pocket" = slot_r_store,
+		"left hand" = slot_l_hand,
+		"right hand" = slot_r_hand,
+	)
+	for(var/slot in slots)
+		player.equip_to_slot(P, slot)
+		if(P.loc == player)
+			break
+	var/obj/item/weapon/storage/S = locate() in player.contents
+	if(istype(S))
+		P.forceMove(S)

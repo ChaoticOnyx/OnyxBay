@@ -13,6 +13,7 @@
 	desc = "The poster comes with its own automatic adhesive mechanism, for easy pinning to any vertical surface."
 	icon_state = "rolled_poster"
 	var/serial_number = 0
+	var/revolution = FALSE
 
 
 /obj/item/weapon/contraband/poster/New(turf/loc, given_serial = 0)
@@ -57,8 +58,7 @@
 
 	to_chat(user, "<span class='notice'>You start placing the poster on the wall...</span>")//Looks like it's uncluttered enough. Place the poster.
 
-
-	var/obj/structure/sign/poster/P = new(user.loc, placement_dir=get_dir(user, W), serial=serial_number)
+	var/obj/structure/sign/poster/P = new(user.loc, placement_dir=get_dir(user, W), serial=serial_number, revolution=revolution)
 
 	flick("poster_being_set", P)
 	//playsound(W, 'sound/items/poster_being_created.ogg', 100, 1) //why the hell does placing a poster make printer sounds?
@@ -75,6 +75,33 @@
 
 	qdel(oldsrc)	//delete it now to cut down on sanity checks afterwards. Agouri's code supports rerolling it anyway
 
+//REV POSTER
+/obj/item/weapon/contraband/poster/revolutionary
+	name = "rolled-up poster - unknown number"
+	desc = "This poster has strange message."
+	revolution = TRUE
+
+/obj/item/weapon/contraband/poster/revolutionary/New(turf/loc)
+	..(loc, serial_number=666)
+
+/obj/item/weapon/contraband/poster/revolutionary/afterattack(atom/A, mob/user, adjacent, clickparams)
+	var/area/B = get_area(user.loc)
+	if(istype(B, /area/space))
+		to_chat(user, SPAN_WARNING("You can't place this poster in space."))
+		return
+
+	if(!(user.z in GLOB.using_map.station_levels))
+		to_chat(user, SPAN_WARNING("You can place this poster only on station levels,"))
+		return
+
+	for(var/obj/structure/P in GLOB.revolution_posters)
+		if(istype(B, get_area(P.loc)))
+			to_chat(user, SPAN_WARNING("A poster has been placed in this area already."))
+			return
+
+	..(A, user, adjacent, clickparams)
+
+
 //############################## THE ACTUAL DECALS ###########################
 
 /obj/structure/sign/poster
@@ -85,16 +112,22 @@
 	var/serial_number	//Will hold the value of src.loc if nobody initialises it
 	var/poster_type		//So mappers can specify a desired poster
 	var/ruined = 0
+	var/revolutionary = FALSE
 
-/obj/structure/sign/poster/New(newloc, placement_dir=null, serial=null)
+/obj/structure/sign/poster/New(newloc, placement_dir=null, serial=null, revolution=FALSE)
 	..(newloc)
 
-	if(!serial)
-		serial = rand(1, poster_designs.len) //use a random serial if none is given
+	if(revolution)
+		revolutionary = TRUE
+		set_revolution_poster()
+		GLOB.revolution_posters += src
+	else
+		if(!serial)
+			serial = rand(1, poster_designs.len) //use a random serial if none is given
 
-	serial_number = serial
-	var/datum/poster/design = poster_designs[serial_number]
-	set_poster(design)
+		serial_number = serial
+		var/datum/poster/design = poster_designs[serial_number]
+		set_poster(design)
 
 	switch (placement_dir)
 		if (NORTH)
@@ -122,6 +155,11 @@
 	desc = "[initial(desc)] [design.desc]"
 	icon_state = design.icon_state // poster[serial_number]
 
+/obj/structure/sign/poster/proc/set_revolution_poster()
+	SetName("[initial(name)] - Break our Chains!")
+	desc = "[initial(desc)] It's time to end golden age of Nanotrasen!"
+	icon_state = "revposter"
+
 /obj/structure/sign/poster/attackby(obj/item/weapon/W as obj, mob/user as mob)
 	if(isWirecutter(W))
 		playsound(loc, 'sound/items/Wirecutter.ogg', 100, 1)
@@ -131,6 +169,8 @@
 		else
 			to_chat(user, "<span class='notice'>You carefully remove the poster from the wall.</span>")
 			roll_and_drop(user.loc)
+			if(revolutionary)
+				GLOB.revolution_posters -= src
 		return
 
 
@@ -151,6 +191,10 @@
 		SetName("ripped poster")
 		desc = "You can't make out anything from the poster's original print. It's ruined."
 		add_fingerprint(user)
+
+		if(revolutionary)
+			GLOB.revolution_posters -= src
+		return
 
 /obj/structure/sign/poster/proc/roll_and_drop(turf/newloc)
 	var/obj/item/weapon/contraband/poster/P = new(src, serial_number)

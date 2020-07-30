@@ -3,6 +3,7 @@
 /area/bridge
 	name = "\improper Bridge"
 	icon_state = "bridge"
+	score = 4
 
 /area/bridge/meeting_room
 	name = "\improper Heads of Staff Meeting Room"
