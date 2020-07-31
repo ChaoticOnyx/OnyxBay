@@ -49,7 +49,7 @@ var/can_call_ert
 		to_chat(usr, SPAN_DANGER("The game hasn't started yet!"))
 		return
 
-	var/out = "<meta charset=\"utf-8\">The Emergency Response Team Mission Menu"
+	var/out = "<meta charset=\"utf-8\"><b>The Emergency Response Team Mission Menu</b>"
 	out += "<hr>"
 	out += "<b>Objectives</b></br>"
 	if(GLOB.ert.global_objectives && GLOB.ert.global_objectives.len)
