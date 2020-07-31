@@ -68,22 +68,26 @@
 	. = . || outfit_type
 	. = outfit_by_type(.)
 
+/datum/preferences/proc/get_loyalty_as_number()
+	switch(nanotrasen_relation)
+		if(COMPANY_LOYAL) return 1.30
+		if(COMPANY_SUPPORTATIVE) return 1.15
+		if(COMPANY_NEUTRAL) return 1
+		if(COMPANY_SKEPTICAL) return 0.85
+		if(COMPANY_OPPOSED) return 0.70
+		else return 1
+
 /datum/job/proc/setup_account(mob/living/carbon/human/H)
 	if(!account_allowed || (H.mind && H.mind.initial_account))
 		return
 
 	var/loyalty = 1
 	if(H.client)
-		switch(H.client.prefs.nanotrasen_relation)
-			if(COMPANY_LOYAL)		loyalty = 1.30
-			if(COMPANY_SUPPORTATIVE)loyalty = 1.15
-			if(COMPANY_NEUTRAL)		loyalty = 1
-			if(COMPANY_SKEPTICAL)	loyalty = 0.85
-			if(COMPANY_OPPOSED)		loyalty = 0.70
+		loyalty = H.client.prefs.get_loyalty_as_number()
 
 	//give them an account in the station database
 	if(!(H.species && (H.species.type in economic_species_modifier)))
-		return //some bizarre species like shadow, slime, or monkey? You don't get an account.
+		return //some bizarre species like shadow, slime, or monkey? You don't ge	t an account.
 
 	var/species_modifier = economic_species_modifier[H.species.type]
 

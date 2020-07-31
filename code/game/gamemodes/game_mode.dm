@@ -392,8 +392,20 @@ var/global/list/additional_antag_types = list()
 				continue
 			if(istype(player, /mob/new_player))
 				continue
-			if(!antag_id || (antag_id in player.client.prefs.be_special_role))
+			if(!antag_id || (antag_id in player.client.prefs.be_special_role) && (player.client.prefs.get_loyalty_as_number()<0.85))
 				log_debug("[player.key] had [antag_id] enabled, so we are drafting them.")
+				candidates += player.mind
+			else if(!antag_id || !(antag_id in player.client.prefs.never_be_special_role)&&(player.client.prefs.get_loyalty_as_number()<1))
+				log_debug("[player.key] has not selected never for this role, so we are drafting them.")
+				candidates += player.mind
+			else if(!antag_id || !(antag_id in player.client.prefs.never_be_special_role)&&(player.client.prefs.get_loyalty_as_number()<1.15))
+				log_debug("[player.key] has not selected never for this role, so we are drafting them.")
+				candidates += player.mind
+			else if(!antag_id || !(antag_id in player.client.prefs.never_be_special_role)&&(player.client.prefs.get_loyalty_as_number()<1.30))
+				log_debug("[player.key] has not selected never for this role, so we are drafting them.")
+				candidates += player.mind
+			else if(!antag_id || !(antag_id in player.client.prefs.never_be_special_role)&&(player.client.prefs.get_loyalty_as_number()==1.30))
+				log_debug("[player.key] has not selected never for this role, so we are drafting them.")
 				candidates += player.mind
 	else
 		// Assemble a list of active players without jobbans.
@@ -403,21 +415,37 @@ var/global/list/additional_antag_types = list()
 
 		// Get a list of all the people who want to be the antagonist for this round
 		for(var/mob/new_player/player in players)
-			if(!antag_id || (antag_id in player.client.prefs.be_special_role))
+			if(!antag_id || (antag_id in player.client.prefs.be_special_role) && (player.client.prefs.get_loyalty_as_number()<0.85))
 				log_debug("[player.key] had [antag_id] enabled, so we are drafting them.")
 				candidates += player.mind
 				players -= player
-
 		// If we don't have enough antags, draft people who voted for the round.
 		if(candidates.len < required_enemies)
 			for(var/mob/new_player/player in players)
-				if(!antag_id || !(antag_id in player.client.prefs.never_be_special_role))
+				if(!antag_id || !(antag_id in player.client.prefs.never_be_special_role)&&(player.client.prefs.get_loyalty_as_number()<1))
 					log_debug("[player.key] has not selected never for this role, so we are drafting them.")
 					candidates += player.mind
 					players -= player
 					if(candidates.len == required_enemies || players.len == 0)
 						break
-
+				else if(!antag_id || !(antag_id in player.client.prefs.never_be_special_role)&&(player.client.prefs.get_loyalty_as_number()<1.15))
+					log_debug("[player.key] has not selected never for this role, so we are drafting them.")
+					candidates += player.mind
+					players -= player
+					if(candidates.len == required_enemies || players.len == 0)
+						break
+				else if(!antag_id || !(antag_id in player.client.prefs.never_be_special_role)&&(player.client.prefs.get_loyalty_as_number()<1.30))
+					log_debug("[player.key] has not selected never for this role, so we are drafting them.")
+					candidates += player.mind
+					players -= player
+					if(candidates.len == required_enemies || players.len == 0)
+						break
+				else if(!antag_id || !(antag_id in player.client.prefs.never_be_special_role)&&(player.client.prefs.get_loyalty_as_number()==1.30))
+					log_debug("[player.key] has not selected never for this role, so we are drafting them.")
+					candidates += player.mind
+					players -= player
+					if(candidates.len == required_enemies || players.len == 0)
+						break
 	return candidates		// Returns: The number of people who had the antagonist role set to yes, regardless of recomended_enemies, if that number is greater than required_enemies
 							//			required_enemies if the number of people with that role set to yes is less than recomended_enemies,
 							//			Less if there are not enough valid players in the game entirely to make required_enemies.
