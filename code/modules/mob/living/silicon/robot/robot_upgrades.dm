@@ -727,10 +727,11 @@
 	require_module = 1
 
 /obj/item/borg/upgrade/integrated_circuit_upgrade/action(mob/living/silicon/robot/R)
-	if(..()) return 0
+	if(..())
+		return FALSE
 
 	if(!can_install(src, R))
-		return 0
+		return FALSE
 	else
 		R.module.modules += new /obj/item/device/integrated_circuit_printer/cyborg(R.module)
 		R.module.modules += new /obj/item/weapon/gripper/integrated_circuit(R.module)
@@ -739,5 +740,5 @@
 		R.module.modules += new /obj/item/device/integrated_electronics/analyzer(R.module)
 		R.module.modules += new /obj/item/device/integrated_electronics/detailer(R.module)
 
-		installed = 1
-		return 1
+		installed = TRUE
+		return TRUE
