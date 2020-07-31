@@ -2067,6 +2067,7 @@
 			if(change_num <= 0) return
 			GLOB.ert.hard_cap = change_num
 		edit_mission()
+		return
 
 	watchlist.AdminTopicProcess(src, href_list)
 	EAMS_AdminTopicProcess(src, href_list)

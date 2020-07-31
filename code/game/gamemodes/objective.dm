@@ -414,10 +414,7 @@ datum/objective/harm
 		if(completed == GLOB.revs.global_objectives.len)
 			GLOB.ert.is_station_secure = FALSE
 
-	if(GLOB.ert.is_station_secure)
-		return TRUE
-	else
-		return FALSE
+	return GLOB.ert.is_station_secure
 
 /datum/objective/ert_station_save/New()
 	..()
@@ -430,10 +427,7 @@ datum/objective/harm
 	explanation_text = "Cause mass destruction with a nuclear device."
 
 /datum/objective/nuclear/check_completion()
-	if(SSticker.mode.station_was_nuked)
-		return TRUE
-	else
-		return FALSE
+	return SSticker.mode.station_was_nuked
 
 datum/objective/steal
 	var/obj/item/steal_target
@@ -853,10 +847,7 @@ datum/objective/heist/salvage
 	explanation_text = "Summon Nar-Sie via the use of the Tear Reality rune. It will only work if five or more cultists stand on and around it. Use the Convert rune to recruit new cultists."
 
 /datum/objective/cult/eldergod/check_completion()
-	if(GLOB.cult.narsie_summoned)
-		return TRUE
-	else
-		return FALSE
+	return GLOB.cult.narsie_summoned
 
 /datum/objective/cult/sacrifice
 	explanation_text = "Conduct a ritual sacrifice for the glory of Nar-Sie."

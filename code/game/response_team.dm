@@ -65,9 +65,8 @@ var/can_call_ert
 			num++
 		out += "<br><a href='?src=\ref[src];obj_announce=1;ert_action=1'>\[announce objectives\]</a>"
 	else
-		out += "There are no active Emergency Response Team yet!"
-	out += "<hr>"
-	out += "<br><a href='?src=\ref[src];obj_add=1;ert_action=1'>\[add\]</a><br><br>"
+		out += "Emergency Response Teams haven't received any tasks yet!"
+	out += "<br><a href='?src=\ref[src];obj_add=1;ert_action=1'>\[add objective\]</a><br><br>"
 	out += "<hr>"
 	out += "<b>Maximum avaliable players in ERT squad:</b> [GLOB.ert.hard_cap] "
 	out += "<a href='?src=\ref[src];max_cap_change=1;ert_action=1'>\[Change\]</a>"
