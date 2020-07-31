@@ -87,7 +87,7 @@
 			return
 
 	//Logs all hrefs
-	log_href("[src] (usr:[usr])</small> || [hsrc ? "[hsrc] " : ""][href]")
+	log_href("[src] (usr:[usr]) || [hsrc ? "[hsrc] " : ""][href]")
 
 	// ask BYOND client to stop spamming us with assert arrival confirmations (see byond bug ID:2256651)
 	if (asset_cache_job && (asset_cache_job in completed_asset_jobs))
