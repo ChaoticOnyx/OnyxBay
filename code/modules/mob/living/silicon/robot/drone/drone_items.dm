@@ -160,7 +160,7 @@
 		)
 /obj/item/weapon/gripper/research/resolve_attackby(atom/target, mob/living/user, params)
 	. = ..()
-	// copy-past
+
 	if(istype(target,/obj/item/organ)) //Check that we're not pocketing a mob.
 
 		//...and that the item is not in a container.
@@ -170,7 +170,6 @@
 		var/obj/item/organ/I = target
 
 		//We can grab the item, finally.
-		//We have error message in parent, we don't need it here
 		if(BP_IS_ROBOTIC(I))
 			to_chat(user, "<span class='notice'>You collect \the [I].</span>")
 			I.loc = src
@@ -280,15 +279,16 @@
 
 	user.do_attack_animation(src)
 
+	if(istype(target, /obj/machinery/recharger))
+		var/obj/machinery/recharger/charger = target
+		charger.attackby(src, user)
+		return
+	if(istype(target, /obj/machinery/cell_charger))
+		var/obj/machinery/cell_charger/charger = target
+		charger.attackby(src, user)
+		return
+
 	if(wrapped)
-		if(istype(target, /obj/machinery/recharger))
-			if(istype(wrapped, /obj/item/weapon/cell))
-				var/obj/machinery/recharger/charger = target
-				charger.take_battery_cyborg(wrapped, src, user)
-		if(istype(target, /obj/machinery/cell_charger))
-			if(istype(wrapped, /obj/item/weapon/cell))
-				var/obj/machinery/cell_charger/charger = target
-				charger.take_battery_cyborg(wrapped, src, user)
 		if(istype(target,/obj/structure/table)) //Putting item on the table if any
 			var/obj/structure/table/T = target
 			to_chat(src.loc, "<span class='notice'>You place \the [wrapped] on \the [target].</span>")
@@ -346,15 +346,6 @@
 		if(istype(target,atypepath))
 			to_chat(user, "<span class='danger'>Your gripper cannot hold \the [target].</span>")
 			return
-
-	if(istype(target, /obj/machinery/recharger))
-		var/obj/machinery/recharger/charger = target
-		charger.give_battery_cyborg(src, user)
-		return
-	if(istype(target, /obj/machinery/cell_charger))
-		var/obj/machinery/cell_charger/charger = target
-		charger.give_battery_cyborg(src, user)
-		return
 
 	if(istype(target,/obj/item)) //Check that we're not pocketing a mob.
 

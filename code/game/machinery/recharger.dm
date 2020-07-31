@@ -20,33 +20,40 @@ obj/machinery/recharger
 		/obj/item/weapon/stock_parts/capacitor
 	)
 
-obj/machinery/recharger/proc/take_battery_cyborg(obj/item/weapon/cell/CELL, obj/item/weapon/gripper/GRIP, mob/living/silicon/user)
-	ASSERT(istype(CELL))
-	ASSERT(istype(GRIP))
-	ASSERT(istype(user))
-	if(!powered())
-		to_chat(user, SPAN_WARNING("The [name] blinks red as you try to insert the item!"))
-		return
+/obj/machinery/recharger/proc/remove_cell_from_machine(mob/user, is_tool, obj/item/weapon/tool)
 	if(charging)
-		to_chat(user, SPAN_WARNING("A [charging] is already charging here."))
-	else
-		charging = CELL
-		GRIP.wrapped.loc = src
-		GRIP.wrapped = null
+		if(!is_tool)
+			user.put_in_hands(charging)
+		else
+			if(istype(tool, /obj/item/weapon/gripper))
+				var/obj/item/weapon/gripper/grip = tool
+				grip.wrapped = src.charging
+				src.charging.loc = grip.wrapped
 
-obj/machinery/recharger/proc/give_battery_cyborg(obj/item/weapon/gripper/GRIP, mob/living/silicon/user)
-	ASSERT(GRIP)
-	ASSERT(user)
-	if(charging && istype(charging, /obj/item/weapon/cell))
 		charging.add_fingerprint(user)
 		charging.update_icon()
-		GRIP.wrapped = charging
+
 		src.charging = null
-		src.update_icon()
+		update_icon()
+
+/obj/machinery/recharger/proc/remove_item_from_mob(obj/item/weapon/cell/W, mob/user)
+	if(istype(user, /mob/living/silicon))
+		return
+	else
+		user.unEquip(W, FALSE, src)
+		W.forceMove(src)
 
 obj/machinery/recharger/attackby(obj/item/weapon/G as obj, mob/user as mob)
-	if(istype(user,/mob/living/silicon))
-		return
+	if(istype(G, /obj/item/weapon/gripper))
+		var/obj/item/weapon/gripper/grip = G
+		if(grip.wrapped)
+			if(istype(grip.wrapped, /obj/item/weapon/cell))
+				G = grip.wrapped
+			if(!src.charging)
+				grip.wrapped.loc = src
+				grip.wrapped = null
+		else
+			remove_cell_from_machine(user, TRUE, grip)
 
 	var/allowed = 0
 	for (var/allowed_type in allowed_devices)
@@ -81,10 +88,9 @@ obj/machinery/recharger/attackby(obj/item/weapon/G as obj, mob/user as mob)
 				to_chat(user, "This device does not have a battery installed.")
 				return
 
-		if(user.unEquip(G))
-			G.forceMove(src)
-			charging = G
-			update_icon()
+		remove_item_from_mob(G, user)
+		charging = G
+		update_icon()
 	else if((isScrewdriver(G) || isCrowbar(G) || isWrench(G)) && portable)
 		if(charging)
 			to_chat(user, "<span class='warning'>Remove [charging] first!</span>")
@@ -107,10 +113,7 @@ obj/machinery/recharger/attack_hand(mob/user as mob)
 	..()
 
 	if(charging)
-		charging.update_icon()
-		user.put_in_hands(charging)
-		charging = null
-		update_icon()
+		remove_cell_from_machine(user, FALSE)
 
 obj/machinery/recharger/Process()
 	if(stat & (NOPOWER|BROKEN) || !anchored)

@@ -34,45 +34,44 @@
 	if(charging)
 		to_chat(user, "Current charge: [charging.charge]")
 
-/obj/machinery/cell_charger/proc/take_battery_cyborg(obj/item/weapon/cell/CELL, obj/item/weapon/gripper/GRIP, mob/living/silicon/user)
-	ASSERT(istype(CELL))
-	ASSERT(istype(GRIP))
-	ASSERT(istype(user))
-	if(stat & BROKEN)
-		return
-	if(anchored)
-		if(charging)
-			to_chat(user, SPAN_WARNING("There is already a cell in the charger."))
-		else
-			var/area/a = get_area(loc)
-			if(a.power_equip == 0) // There's no APC in this area, don't try to cheat power!
-				to_chat(user, "<span class='warning'>The [name] blinks red as you try to insert the cell!</span>")
-				return
-			GRIP.wrapped.loc = src
-			GRIP.wrapped = null
-			src.charging = CELL
-			src.set_power()
-			START_PROCESSING(SSmachines, src)
-			user.visible_message("[user] inserts a cell into the charger.", "You insert a cell into the charger.")
-			src.chargelevel = -1
-		queue_icon_update()
-
-/obj/machinery/cell_charger/proc/give_battery_cyborg(obj/item/weapon/gripper/GRIP, mob/living/silicon/user)
-	ASSERT(istype(GRIP))
-	ASSERT(istype(user))
+/obj/machinery/cell_charger/proc/remove_cell_from_machine(mob/user, is_tool, obj/item/weapon/tool)
 	if(charging)
+		if(!is_tool)
+			user.put_in_hands(charging)
+		else
+			if(istype(tool, /obj/item/weapon/gripper))
+				var/obj/item/weapon/gripper/grip = tool
+				grip.wrapped = src.charging
+				src.charging.loc = grip.wrapped
+
 		charging.add_fingerprint(user)
 		charging.update_icon()
-		GRIP.wrapped = charging
 
 		src.charging = null
 		user.visible_message("[user] removes the cell from the charger.", "You remove the cell from the charger.")
-		src.chargelevel = -1
-		src.update_icon()
+		chargelevel = -1
+		update_icon()
+
+/obj/machinery/cell_charger/proc/remove_item_from_mob(obj/item/weapon/cell/W, mob/user)
+	if(istype(user, /mob/living/silicon))
+		return
+	else
+		user.unEquip(W, FALSE, src)
 
 /obj/machinery/cell_charger/attackby(obj/item/weapon/W, mob/user)
 	if(stat & BROKEN)
 		return
+
+	if(istype(W, /obj/item/weapon/gripper))
+		var/obj/item/weapon/gripper/grip = W
+		if(grip.wrapped)
+			if(istype(grip.wrapped, /obj/item/weapon/cell))
+				W = grip.wrapped
+			if(!src.charging)
+				grip.wrapped.loc = src
+				grip.wrapped = null
+		else
+			remove_cell_from_machine(user, TRUE, grip)
 
 	if(istype(W, /obj/item/weapon/cell) && anchored)
 		if(charging)
@@ -83,8 +82,7 @@
 			if(a.power_equip == 0) // There's no APC in this area, don't try to cheat power!
 				to_chat(user, "<span class='warning'>The [name] blinks red as you try to insert the cell!</span>")
 				return
-			if(!user.unEquip(W, FALSE, src))
-				return
+			remove_item_from_mob(W, user)
 			charging = W
 			set_power()
 			START_PROCESSING(SSmachines, src)
@@ -110,14 +108,7 @@
 
 /obj/machinery/cell_charger/attack_hand(mob/user)
 	if(charging)
-		user.put_in_hands(charging)
-		charging.add_fingerprint(user)
-		charging.update_icon()
-
-		src.charging = null
-		user.visible_message("[user] removes the cell from the charger.", "You remove the cell from the charger.")
-		chargelevel = -1
-		update_icon()
+		remove_cell_from_machine(user, FALSE)
 
 /obj/machinery/cell_charger/attack_ai(mob/user)
 	if(istype(user, /mob/living/silicon/robot) && Adjacent(user)) // Borgs can remove the cell if they are near enough
