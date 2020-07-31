@@ -2032,6 +2032,42 @@
 			show_player_info(ckey)
 		return
 
+	if(href_list["ert_action"])
+		if(href_list["obj_completed"])
+			var/datum/objective/objective = locate(href_list["obj_completed"])
+			ASSERT(istype(objective))
+			objective.completed = !objective.completed
+		else if(href_list["obj_add"])
+			var/new_obj_type = input("Select objective type:", "Objective type", null) as null|anything in list("resolve emergency", "custom")
+			switch(new_obj_type)
+				if("resolve emergency")
+					var/datum/objective/ert_station_save/basic = new()
+					GLOB.ert.add_global_objective(basic)
+				else if("custom")
+					var/text = input("Write down the ERT mission", "ERT mission", null)
+					if(text)
+						var/datum/objective/ert_custom/custom = new
+						custom.explanation_text = text
+						GLOB.ert.add_global_objective(custom)
+		else if (href_list["obj_delete"])
+			var/datum/objective/objective = locate(href_list["obj_delete"])
+			ASSERT(istype(objective))
+			GLOB.ert.remove_global_objective(objective)
+		else if(href_list["obj_announce"])
+			for(var/datum/mind/player in GLOB.ert.current_antagonists)
+				var/obj_count = 1
+				to_chat(player.current, SPAN_NOTICE("Your current objectives:"))
+				for(var/datum/objective/objective in player.objectives)
+					to_chat(player.current, "<B>Objective #[obj_count]</B>: [objective.explanation_text]")
+					obj_count++
+		else if(href_list["max_cap_change"])
+			var/change_num = input("Max cap ERT", "Enter a number") as null|num
+			if(isnull(change_num)) return
+			change_num = round(change_num)
+			if(change_num <= 0) return
+			GLOB.ert.hard_cap = change_num
+		edit_mission()
+
 	watchlist.AdminTopicProcess(src, href_list)
 	EAMS_AdminTopicProcess(src, href_list)
 	SpeciesIngameWhitelist_AdminTopicProcess(src, href_list)

@@ -400,45 +400,40 @@ datum/objective/harm
 				return 1
 		return 0
 
-// ert evacuate reqires these information:
-// /area/rescue_base/start, /area/rescue_base/base
+/datum/objective/ert_station_save
 
-datum/objective/ert_station_save
-	// Just check the special variable which changed by *unforeseen* events
-	// This objective is anti antag team objective, e.g. "don't allow Cult to summon Nar-sie for greentext", "don't allow mercery to destroy station for greentext", "don't allow singularity to join in supermatter..."
+/datum/objective/ert_station_save/check_completion()
+	if(SSticker.mode.blob_domination)
+		GLOB.ert.is_station_secure = FALSE
 
-	check_completion()
-		// blobe victory check
-		if(SSticker.mode.blob_domination)
+	if(GLOB.revs.global_objectives.len > 0)
+		var/completed = 0
+		for(var/datum/objective/rev/task in GLOB.revs.global_objectives)
+			if(task.check_completion())
+				completed += 1
+		if(completed == GLOB.revs.global_objectives.len)
 			GLOB.ert.is_station_secure = FALSE
-		// rev win check...
-		if(GLOB.revs.global_objectives.len > 0)
-			var/completed = 0
-			for(var/datum/objective/rev/task in GLOB.revs.global_objectives)
-				if(task.check_completion())
-					completed += 1
-			if(completed == GLOB.revs.global_objectives.len)
-				GLOB.ert.is_station_secure = FALSE
-		// main ERT task greentext check...
-		if(GLOB.ert.is_station_secure)
-			return 1
-		else
-			return 0
-datum/objective/ert_station_save/New()
-	..()
-	explanation_text = "Protect [GLOB.using_map.company_name]'s ass-ets on [station_name()]. Find the source of an emergency and deal with it."
 
-datum/objective/ert_custom
+	if(GLOB.ert.is_station_secure)
+		return TRUE
+	else
+		return FALSE
+
+/datum/objective/ert_station_save/New()
+	..()
+	explanation_text = "Resolve emergency situation you were called for and preserve any [GLOB.using_map.company_name]'s property from being lost."
+
+/datum/objective/ert_custom
 	completed = TRUE
 
-datum/objective/nuclear
+/datum/objective/nuclear
 	explanation_text = "Cause mass destruction with a nuclear device."
 
-	check_completion()
-		if(SSticker.mode.station_was_nuked)
-			return 1
-		else
-			return 0
+/datum/objective/nuclear/check_completion()
+	if(SSticker.mode.station_was_nuked)
+		return TRUE
+	else
+		return FALSE
 
 datum/objective/steal
 	var/obj/item/steal_target
@@ -858,11 +853,10 @@ datum/objective/heist/salvage
 	explanation_text = "Summon Nar-Sie via the use of the Tear Reality rune. It will only work if five or more cultists stand on and around it. Use the Convert rune to recruit new cultists."
 
 /datum/objective/cult/eldergod/check_completion()
-	if(locate(/obj/singularity/narsie/large) in SSmachines.machinery)
-		GLOB.ert.is_station_secure = FALSE
-		return 1
+	if(GLOB.cult.narsie_summoned)
+		return TRUE
 	else
-		return 0
+		return FALSE
 
 /datum/objective/cult/sacrifice
 	explanation_text = "Conduct a ritual sacrifice for the glory of Nar-Sie."

@@ -40,14 +40,13 @@ var/can_call_ert
 	set category = "Special Verbs"
 	set desc = "Add/remove/redact ERT mission"
 
-	if(!holder)
-		to_chat(usr, "<span class='danger'>Only administrators may use this command.</span>")
+	if(!check_rights(R_ADMIN))
 		return
 	holder.edit_mission()
 
 /datum/admins/proc/edit_mission()
 	if(GAME_STATE <= RUNLEVEL_SETUP)
-		alert("Not before round-start!", "Alert")
+		to_chat(usr, SPAN_DANGER("The game hasn't started yet!"))
 		return
 
 	var/out = "<meta charset=\"utf-8\">The Emergency Response Team Mission Menu"
@@ -66,52 +65,13 @@ var/can_call_ert
 			num++
 		out += "<br><a href='?src=\ref[src];obj_announce=1;ert_action=1'>\[announce objectives\]</a>"
 	else
-		out += "Something are went wrong or we don't have active ERT."
-	out += "<hr>"
-	out += "Maximum avaliable players in ERT squad: [GLOB.ert.hard_cap] "
-	out += "<a href='?src=\ref[src];max_cap_change=1;ert_action=1'>\[Change\]</a>"
+		out += "There are no active Emergency Response Team yet!"
 	out += "<hr>"
 	out += "<br><a href='?src=\ref[src];obj_add=1;ert_action=1'>\[add\]</a><br><br>"
+	out += "<hr>"
+	out += "<b>Maximum avaliable players in ERT squad:</b> [GLOB.ert.hard_cap] "
+	out += "<a href='?src=\ref[src];max_cap_change=1;ert_action=1'>\[Change\]</a>"
 	usr << browse(out, "window=edit_mission[src]")
-
-/datum/admins/Topic(href, href_list)
-	ASSERT(check_rights(R_ADMIN))
-	//I have some problem with topics, if you have information how to make it better, please use "git blame" on this line and contact me.
-	if(href_list["ert_action"])
-		if(href_list["obj_completed"])
-			var/datum/objective/objective = locate(href_list["obj_completed"])
-			ASSERT(istype(objective))
-			objective.completed = !objective.completed
-		else if(href_list["obj_add"])
-			var/new_obj_type = input("Select objective type:", "Objective type", null) as null|anything in list("standart", "custom")
-			switch(new_obj_type)
-				if("standart")
-					var/datum/objective/ert_station_save/basic = new()
-					GLOB.ert.add_global_objective(basic)
-				else if("custom")
-					var/text = input("Write down the ERT mission", "ERT mission", null)
-					if(text)
-						var/datum/objective/ert_custom/custom = new
-						custom.explanation_text = text
-						GLOB.ert.add_global_objective(custom)
-		else if (href_list["obj_delete"])
-			var/datum/objective/objective = locate(href_list["obj_delete"])
-			ASSERT(istype(objective))
-			GLOB.ert.remove_global_objective(objective)
-		else if(href_list["obj_announce"])
-			for(var/datum/mind/player in GLOB.ert.current_antagonists)
-				var/obj_count = 1
-				to_chat(player.current, SPAN_NOTICE("Your current objectives:"))
-				for(var/datum/objective/objective in player.objectives)
-					to_chat(player.current, "<B>Objective #[obj_count]</B>: [objective.explanation_text]")
-					obj_count++
-		else if(href_list["max_cap_change"])
-			var/change_num = input("Max cap ERT", "Enter a number") as null|num
-			if(isnull(change_num)) return
-			change_num = round(change_num)
-			if(change_num <= 0) return
-			GLOB.ert.hard_cap = change_num
-		edit_mission()
 
 /mob/proc/join_response_team()
 	set name = "Join Response Team"

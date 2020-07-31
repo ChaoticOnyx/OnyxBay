@@ -55,6 +55,8 @@ var/global/list/narsie_list = list()
 
 		spawn(10 SECONDS)
 			if(evacuation_controller)
+				GLOB.cult.narsie_summoned = TRUE
+				GLOB.ert.is_station_secure = FALSE
 				evacuation_controller.call_evacuation(null, TRUE, 1)
 				evacuation_controller.evac_no_return = 0 // Cannot recall
 

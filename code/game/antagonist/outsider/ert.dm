@@ -22,8 +22,6 @@ GLOBAL_DATUM_INIT(ert, /datum/antagonist/ert, new)
 	hard_cap_round = 6
 	initial_spawn_req = 3
 	initial_spawn_target = 4
-	//we are not antagonists, we do not need the antagonist shpiel/objectives
-	//If you still need THING above just enter on the next line: show_objectives_on_creation = 0
 
 	station_crew_involved = FALSE
 
@@ -39,20 +37,20 @@ GLOBAL_DATUM_INIT(ert, /datum/antagonist/ert, new)
 
 /datum/antagonist/ert/create_global_objectives()
 	if(!..())
-		return 0
+		return FALSE
 	global_objectives = list()
 	global_objectives |= new /datum/objective/ert_station_save()
-	return 1
+	return TRUE
 
-/datum/antagonist/ert/proc/add_global_objective(var/datum/objective/Mission)
-	global_objectives |= Mission
+/datum/antagonist/ert/proc/add_global_objective(datum/objective/mission)
+	global_objectives.Add(mission)
 	for(var/datum/mind/player in current_antagonists)
-		player.objectives |= Mission
+		player.objectives.Add(mission)
 
-/datum/antagonist/ert/proc/remove_global_objective(var/datum/objective/Mission)
-	global_objectives ^= Mission
+/datum/antagonist/ert/proc/remove_global_objective(datum/objective/mission)
+	global_objectives.Remove(mission)
 	for(var/datum/mind/player in current_antagonists)
-		player.objectives ^= Mission
+		player.objectives.Remove(mission)
 
 /datum/antagonist/ert/greet(datum/mind/player)
 	if(!..())
