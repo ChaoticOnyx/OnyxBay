@@ -11,7 +11,9 @@
 	if (!(src in able_mobs_in_oview(M)))
 		to_chat(src, SPAN_WARNING("\The [M] can't see you."))
 		return
-
+	if(M.client.prefs.get_loyalty_as_number()==1.30)
+		to_chat(src, SPAN_WARNING("\The [M] is too loyal to NanoTrasen for this."))
+		return
 	convert_to_faction(M.mind, GLOB.revs)
 
 /mob/living/proc/convert_to_faction(datum/mind/player, datum/antagonist/faction)
