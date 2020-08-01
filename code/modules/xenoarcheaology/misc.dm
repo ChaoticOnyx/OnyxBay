@@ -43,12 +43,10 @@
 
 /obj/structure/bookcase/manuals/xenoarchaeology/New()
 	..()
-	new /obj/item/weapon/book/manual/excavation(src)
-	new /obj/item/weapon/book/manual/mass_spectrometry(src)
-	new /obj/item/weapon/book/manual/materials_chemistry_analysis(src)
-	new /obj/item/weapon/book/manual/anomaly_testing(src)
-	new /obj/item/weapon/book/manual/anomaly_spectroscopy(src)
-	new /obj/item/weapon/book/manual/stasis(src)
+	new /obj/item/weapon/book/wiki/excavation(src)
+	new /obj/item/weapon/book/wiki/excavation(src)
+	new /obj/item/weapon/book/wiki/excavation(src)
+	new /obj/item/weapon/book/wiki/excavation(src)
 	update_icon()
 
 /obj/structure/closet/secure_closet/xenoarchaeologist
@@ -74,7 +72,7 @@
 	new /obj/item/clothing/shoes/white(src)
 	new /obj/item/clothing/glasses/science(src)
 	new /obj/item/device/radio/headset/headset_sci(src)
-	new /obj/item/clothing/mask/gas(src) 
+	new /obj/item/clothing/mask/gas(src)
 	new /obj/item/weapon/clipboard(src)
 	new /obj/item/weapon/storage/belt/archaeology(src)
 	new /obj/item/weapon/storage/excavation(src)

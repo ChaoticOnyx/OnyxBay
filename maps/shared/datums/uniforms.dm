@@ -70,7 +70,7 @@
 	glasses = /obj/item/clothing/glasses/sunglasses
 	uniform = /obj/item/clothing/under/syndicate/soldier
 	shoes = /obj/item/clothing/shoes/jackboots
-	suit = /obj/item/clothing/suit/storage/vest/opvest
+	suit = /obj/item/clothing/suit/armor/vest
 	belt = /obj/item/weapon/melee/classic_baton//So they at least start off with some kind of weapon to defend themselves.
 	r_pocket = /obj/item/weapon/handcuffs
 	id_type = /obj/item/weapon/card/id/dreyfus/sec
@@ -118,7 +118,7 @@
 	shoes = /obj/item/clothing/shoes/jackboots/arbiter
 	l_ear = /obj/item/device/radio/headset/inquision
 	r_pocket = /obj/item/device/arbiter_scanner
-	suit = /obj/item/clothing/suit/storage/vest/arbiter
+	suit = /obj/item/clothing/suit/armor/vest
 	gloves = /obj/item/clothing/gloves/arbiter
 	id_type = /obj/item/weapon/card/id/arbiter
 	pda_type = /obj/item/device/pda/lawyer
@@ -133,7 +133,7 @@
 	shoes = /obj/item/clothing/shoes/jackboots/arbiter
 	l_ear = /obj/item/device/radio/headset/inquision
 	r_pocket = /obj/item/device/arbiter_scanner
-	suit = /obj/item/clothing/suit/storage/vest/cowl
+	suit = /obj/item/clothing/suit/armor/vest
 	gloves = /obj/item/clothing/gloves/arbiter
 	id_type = /obj/item/weapon/card/id/arbiter
 	pda_type = /obj/item/device/pda/lawyer
@@ -158,7 +158,7 @@
 	l_ear = /obj/item/device/radio/headset/raider
 	r_pocket = /obj/item/weapon/card/emag
 	//belt = /obj/item/weapon/gun/projectile/pistol
-	suit = /obj/item/clothing/suit/storage/vest/opvest
+	suit = /obj/item/clothing/suit/armor/vest
 	//mask = /obj/item/clothing/mask/gas
 	gloves = /obj/item/clothing/gloves/thick/swat/combat
 	//back = /obj/item/weapon/gun/projectile/shotgun/pump/boltaction/shitty/bayonet

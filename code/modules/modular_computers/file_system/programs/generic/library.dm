@@ -30,7 +30,7 @@ The answer was five and a half years -ZeroBits
 /datum/nano_module/library/ui_interact(mob/user, ui_key = "main", datum/nanoui/ui = null, force_open = 1, datum/topic_state/state = GLOB.default_state)
 	var/list/data = host.initial_data()
 
-	data["admin"] = check_rights(R_INVESTIGATE, FALSE, user)	
+	data["admin"] = check_rights(R_INVESTIGATE, FALSE, user)
 	if(error_message)
 		data["error"] = error_message
 	else if(current_book)
@@ -144,15 +144,11 @@ The answer was five and a half years -ZeroBits
 			return 1
 		for(var/d in GLOB.cardinal)
 			var/obj/machinery/bookbinder/bndr = locate(/obj/machinery/bookbinder, get_step(nano_host(), d))
-			if(bndr && bndr.anchored)
-				var/obj/item/weapon/book/B = new(bndr.loc)
-				B.SetName(current_book["title"])
-				B.title = current_book["title"]
-				B.author = current_book["author"]
-				B.dat = current_book["content"]
-				B.icon_state = "book[rand(1,7)]"
-				B.desc = current_book["author"]+", "+current_book["title"]+", "+"USBN "+current_book["id"]
-				bndr.visible_message("\The [bndr] whirs as it prints and binds a new book.")
+			if(bndr && bndr.anchored && bndr.operable())
+				var/obj/item/weapon/book/new_book = bndr.print(current_book["content"], current_book["title"], current_book["author"])
+				if(new_book)
+					new_book.desc = current_book["author"] + ", " + current_book["title"] + ", " + "USBN " + current_book["id"]
+					bndr.visible_message("\The [bndr] whirs as it prints and binds a new book.")
 				return 1
 
 		//Regular printing
@@ -168,7 +164,7 @@ The answer was five and a half years -ZeroBits
 			sort_by = "id"
 			error_message = ""
 		return 1
-	
+
 	if(href_list["delbook"])
 		if(!check_rights(R_INVESTIGATE, FALSE, usr))
 			href_exploit(usr.ckey, href)
@@ -227,3 +223,75 @@ The answer was five and a half years -ZeroBits
 	query = dbcon.NewQuery("DELETE FROM library WHERE id=[sqlid]")
 	if(query.Execute())
 		log_and_message_admins("has deleted the book: \[[sqlid]\] \"[title]\" by [author]", user)
+
+#define WIKI_COMMON_CATEGORY "Available_in_library"
+#define WIKI_HACKED_CATEGORY "Available_in_hacked_library"
+
+/datum/computer_file/program/wiki
+	filename = "wiki"
+	filedesc = "Knowledge Base"
+	extended_desc = "This program grants access to a vast corporate knowledge base."
+	program_icon_state = "upload"
+	program_key_state = "atmos_key"
+	program_menu_icon = "lightbulb"
+	size = 10
+	category = PROG_OFFICE
+	requires_ntnet = 1
+	available_on_ntnet = 1
+
+	nanomodule_path = /datum/nano_module/wiki
+
+/datum/nano_module/wiki
+	name = "Wiki"
+
+/datum/nano_module/wiki/ui_interact(mob/user, ui_key = "main", datum/nanoui/ui = null, force_open = 0, datum/topic_state/state = GLOB.default_state)
+	var/list/data = host.initial_data()
+
+	var/emagged = 0
+	if(istype(nano_host(), /obj/item/modular_computer))
+		var/obj/item/modular_computer/computer = nano_host()
+		emagged = computer.computer_emagged
+	if(istype(nano_host(), /datum/computer_file/program))
+		var/datum/computer_file/program/program = nano_host()
+		emagged = program.computer_emagged
+
+	ui = SSnano.try_update_ui(user, src, ui_key, ui, data, force_open)
+	if (!ui)
+		ui = new(user, src, ui_key, "wiki_topics.tmpl", "Knowledge Base", 575, 700, state = state)
+		ui.add_script("wiki_topics.js")
+		ui.add_script("[config.wikiurl]/api.php?action=query&list=categorymembers&cmtitle=Category:[WIKI_COMMON_CATEGORY]&cmprop=title&cmtype=page&cmlimit=100&format=json&formatversion=2&callback=parseCat")
+		if(emagged)
+			ui.add_script("[config.wikiurl]/api.php?action=query&list=categorymembers&cmtitle=Category:[WIKI_HACKED_CATEGORY]&cmprop=title&cmtype=page&cmlimit=100&format=json&formatversion=2&callback=parseCat")
+		ui.set_initial_data(data)
+		ui.open()
+
+/datum/nano_module/wiki/Topic(href, href_list)
+	if(..())
+		return 1
+	if(href_list["topic"])
+		var/emagged = 0
+		if(istype(nano_host(), /obj/item/modular_computer))
+			var/obj/item/modular_computer/computer = nano_host()
+			emagged = computer.computer_emagged
+		if(istype(nano_host(), /datum/computer_file/program))
+			var/datum/computer_file/program/program = nano_host()
+			emagged = program.computer_emagged
+
+		// Print to connected bookbinders (if any)
+		for(var/d in GLOB.cardinal)
+			var/obj/machinery/bookbinder/bndr = locate(/obj/machinery/bookbinder, get_step(nano_host(), d))
+			if(bndr && bndr.anchored && bndr.operable())
+				bndr.print_wiki(href_list["topic"], emagged ? 0 : 1)
+				return 1
+
+		// Regular print (creates book template)
+		if(istype(nano_host(), /obj/item/modular_computer))
+			var/obj/item/modular_computer/computer = nano_host()
+			if(!computer.nano_printer)
+				to_chat(usr, SPAN_DANGER("Error: No printer detected. Unable to print document."))
+				return 1
+		new /obj/item/weapon/book/wiki/template(get_turf(nano_host()), href_list["topic"], emagged ? 0 : 1)
+		return 1
+
+#undef WIKI_COMMON_CATEGORY
+#undef WIKI_HACKED_CATEGORY
