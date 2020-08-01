@@ -45,7 +45,8 @@
 		if((!enemies.len && prob(1)) || crazy_time > 0)
 			Retaliate()
 			crazy_time -= 2 SECONDS
-			if(crazy_time < 0)crazy_time = 0
+			if(crazy_time < 0)
+				crazy_time = 0
 
 		if(enemies.len && prob(10) && crazy_time <= 0)
 			enemies = list()
