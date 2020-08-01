@@ -52,11 +52,10 @@ var/global/list/narsie_list = list()
 		if(cause_hell)
 			SetUniversalState(/datum/universal_state/hell)
 		narsie_cometh = 1
-
+		GLOB.cult.narsie_summoned = TRUE
+		GLOB.ert.is_station_secure = FALSE
 		spawn(10 SECONDS)
 			if(evacuation_controller)
-				GLOB.cult.narsie_summoned = TRUE
-				GLOB.ert.is_station_secure = FALSE
 				evacuation_controller.call_evacuation(null, TRUE, 1)
 				evacuation_controller.evac_no_return = 0 // Cannot recall
 
