@@ -249,7 +249,7 @@ var/list/artefact_feedback = list(/obj/structure/closet/wizard/armor = 		"HS",
 /obj/item/weapon/spellbook/proc/invest()
 	var/turf/T = get_turf(src)
 	if(!T || isNotStationLevel(T.z))
-		return "Your invest powers don't work in your current location!\n You must be on station level for successful investiment."
+		return "Your invest powers don't work in your current location!\n You must be on the station level for the successful investment."
 	if(uses < 1)
 		return "You don't have enough slots to invest!"
 	if(investing_time)
