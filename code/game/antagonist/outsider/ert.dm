@@ -22,9 +22,10 @@ GLOBAL_DATUM_INIT(ert, /datum/antagonist/ert, new)
 	hard_cap_round = 6
 	initial_spawn_req = 3
 	initial_spawn_target = 4
-	show_objectives_on_creation = 0 //we are not antagonists, we do not need the antagonist shpiel/objectives
 
 	station_crew_involved = FALSE
+
+	var/is_station_secure = TRUE
 
 /datum/antagonist/ert/create_default(mob/source)
 	var/mob/living/carbon/human/M = ..()
@@ -33,6 +34,23 @@ GLOBAL_DATUM_INIT(ert, /datum/antagonist/ert, new)
 /datum/antagonist/ert/Initialize()
 	..()
 	leader_welcome_text = "As leader of the Emergency Response Team, you answer only to [GLOB.using_map.boss_name], and have authority to override the Captain where it is necessary to achieve your mission goals. It is recommended that you attempt to cooperate with the captain where possible, however."
+
+/datum/antagonist/ert/create_global_objectives()
+	if(!..())
+		return FALSE
+	global_objectives = list()
+	global_objectives |= new /datum/objective/ert_station_save()
+	return TRUE
+
+/datum/antagonist/ert/proc/add_global_objective(datum/objective/mission)
+	global_objectives.Add(mission)
+	for(var/datum/mind/player in current_antagonists)
+		player.objectives.Add(mission)
+
+/datum/antagonist/ert/proc/remove_global_objective(datum/objective/mission)
+	global_objectives.Remove(mission)
+	for(var/datum/mind/player in current_antagonists)
+		player.objectives.Remove(mission)
 
 /datum/antagonist/ert/greet(datum/mind/player)
 	if(!..())
