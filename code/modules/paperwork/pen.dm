@@ -72,9 +72,9 @@
 		if(ishuman(A) && user.a_intent == I_HELP && target_zone == BP_HEAD)
 			var/mob/living/carbon/human/H = M
 			var/obj/item/organ/external/head/head = H.organs_by_name[BP_HEAD]
-			if(istype(head))
+			if(istype(head)&&desc!="It's a black ink pen with a sharp point and a carefully engraved \"Waffle Co.\".")
 				head.write_on(user, src.color_description)
-		else
+		else if (desc!="It's a black ink pen with a sharp point and a carefully engraved \"Waffle Co.\".")
 			to_chat(user, SPAN_WARNING("You stab [M] with \the [src]."))
 			admin_attack_log(user, M, "Stabbed using \a [src]", "Was stabbed with \a [src]", "used \a [src] to stab")
 	else if(istype(A, /obj/item/organ/external/head))
