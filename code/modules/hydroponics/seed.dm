@@ -696,7 +696,7 @@
 		if(istype(user)) to_chat(user, "You [harvest_sample ? "take a sample" : "harvest"] from the [display_name].")
 		//This may be a new line. Update the global if it is.
 		if(name == "new line" || !(name in SSplants.seeds))
-			uid = SSplants.seeds.len + 1
+			uid = sequential_id(/datum/seed/)
 			name = "[uid]"
 			SSplants.seeds[name] = src
 

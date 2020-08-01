@@ -400,11 +400,34 @@ datum/objective/harm
 				return 1
 		return 0
 
+/datum/objective/ert_station_save
 
-datum/objective/nuclear
+/datum/objective/ert_station_save/check_completion()
+	if(SSticker.mode.blob_domination)
+		GLOB.ert.is_station_secure = FALSE
+
+	if(GLOB.revs.global_objectives.len > 0)
+		var/completed = 0
+		for(var/datum/objective/rev/task in GLOB.revs.global_objectives)
+			if(task.check_completion())
+				completed += 1
+		if(completed == GLOB.revs.global_objectives.len)
+			GLOB.ert.is_station_secure = FALSE
+
+	return GLOB.ert.is_station_secure
+
+/datum/objective/ert_station_save/New()
+	..()
+	explanation_text = "Resolve emergency situation you were called for and preserve any [GLOB.using_map.company_name]'s property from being lost."
+
+/datum/objective/ert_custom
+	completed = TRUE
+
+/datum/objective/nuclear
 	explanation_text = "Cause mass destruction with a nuclear device."
 
-
+/datum/objective/nuclear/check_completion()
+	return SSticker.mode.station_was_nuked
 
 datum/objective/steal
 	var/obj/item/steal_target
@@ -824,7 +847,7 @@ datum/objective/heist/salvage
 	explanation_text = "Summon Nar-Sie via the use of the Tear Reality rune. It will only work if five or more cultists stand on and around it. Use the Convert rune to recruit new cultists."
 
 /datum/objective/cult/eldergod/check_completion()
-	return (locate(/obj/singularity/narsie/large) in SSmachines.machinery)
+	return GLOB.cult.narsie_summoned
 
 /datum/objective/cult/sacrifice
 	explanation_text = "Conduct a ritual sacrifice for the glory of Nar-Sie."
@@ -875,4 +898,3 @@ datum/objective/heist/salvage
 			rval = 2
 		return 0
 	return rval
-

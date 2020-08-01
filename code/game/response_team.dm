@@ -35,6 +35,43 @@ var/can_call_ert
 	log_admin("[key_name(usr)] used Dispatch Response Team.", notify_admin = TRUE)
 	trigger_armed_response_team(1)
 
+/client/proc/response_team_menu()
+	set name = "Emergency Response Team Mission Menu"
+	set category = "Special Verbs"
+	set desc = "Add/remove/redact ERT mission"
+
+	if(!check_rights(R_ADMIN))
+		return
+	holder.edit_mission()
+
+/datum/admins/proc/edit_mission()
+	if(GAME_STATE <= RUNLEVEL_SETUP)
+		to_chat(usr, SPAN_DANGER("The game hasn't started yet!"))
+		return
+
+	var/out = "<meta charset=\"utf-8\"><b>The Emergency Response Team Mission Menu</b>"
+	out += "<hr>"
+	out += "<b>Objectives</b></br>"
+	if(GLOB.ert.global_objectives && GLOB.ert.global_objectives.len)
+		var/num = 1
+		for(var/datum/objective/O in GLOB.ert.global_objectives)
+			out += "<b>Objective #[num]:</b> [O.explanation_text] "
+			if(O.completed)
+				out += "(<font color='green'>complete</font>)"
+			else
+				out += "(<font color='red'>incomplete</font>)"
+			out += " <a href='?src=\ref[src];obj_completed=\ref[O];ert_action=1'>\[toggle\]</a>"
+			out += " <a href='?src=\ref[src];obj_delete=\ref[O];ert_action=1'>\[remove\]</a><br>"
+			num++
+		out += "<br><a href='?src=\ref[src];obj_announce=1;ert_action=1'>\[announce objectives\]</a>"
+	else
+		out += "Emergency Response Teams haven't received any tasks yet!"
+	out += "<br><a href='?src=\ref[src];obj_add=1;ert_action=1'>\[add objective\]</a><br><br>"
+	out += "<hr>"
+	out += "<b>Maximum avaliable players in ERT squad:</b> [GLOB.ert.hard_cap] "
+	out += "<a href='?src=\ref[src];max_cap_change=1;ert_action=1'>\[Change\]</a>"
+	usr << browse(out, "window=edit_mission[src]")
+
 /mob/proc/join_response_team()
 	set name = "Join Response Team"
 	set category = "OOC"

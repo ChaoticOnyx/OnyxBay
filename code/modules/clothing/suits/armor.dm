@@ -233,9 +233,6 @@
 	heat_protection = UPPER_TORSO|LOWER_TORSO|ARMS
 	valid_accessory_slots = list(ACCESSORY_SLOT_INSIGNIA)
 	armor = list(melee = 42, bullet = 75, laser = 42, energy = 10, bomb = 25, bio = 0, rad = 0)
-
-/obj/item/clothing/suit/armor/swat/officer
-	..()
 	flags_inv = 0
 
 /obj/item/clothing/suit/armor/heavy // A more balanced version of SWAT armor
