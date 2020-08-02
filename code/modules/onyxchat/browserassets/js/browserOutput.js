@@ -25,7 +25,7 @@ var $messages, $subTheme, $subOptions, $subFont, $selectedSub, $contextMenu, $fi
 var opts = {
 	//General
 	'messageCount': 0, //A count...of messages...
-	'messageLimit': 2053, //A limit...for the messages...
+	'messageLimit': 5000, //A limit...for the messages...
 	'scrollSnapTolerance': 10, //If within x pixels of bottom
 	'clickTolerance': 10, //Keep focus if outside x pixels of mousedown position on mouseup
 	'imageRetryDelay': 50, //how long between attempts to reload images (in ms)
@@ -412,8 +412,8 @@ function output(message, flag) {
 
 	//Pop the top message off if history limit reached
 	if (opts.messageCount >= opts.messageLimit) {
-		$messages.children('div.entry:first-child').remove();
-		opts.messageCount--; //I guess the count should only ever equal the limit
+		$messages.children('div.entry:nth-child(-n+' + opts.messageLimit / 2 + ')').remove();
+		opts.messageCount -= opts.messageLimit / 2; //I guess the count should only ever equal the limit
 	}
 
 	// Create the element - if combining is off, we use it, and if it's on, we
