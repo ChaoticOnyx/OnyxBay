@@ -381,10 +381,10 @@ function output(message, flag) {
 
 	//Stuff we do along with appending a message
 	var atBottom = false;
+	var scrollPos = $('body,html').scrollTop();
 	if (!filteredOut) {
 		var bodyHeight = $('body').height();
 		var messagesHeight = $messages.outerHeight();
-		var scrollPos = $('body,html').scrollTop();
 
 		//Should we snap the output to the bottom?
 		if (bodyHeight + scrollPos >= messagesHeight - opts.scrollSnapTolerance) {
@@ -409,11 +409,13 @@ function output(message, flag) {
 	}
 
 	opts.messageCount++;
+	var trimmedHeight = 0;
 
 	//Pop the top message off if history limit reached
 	if (opts.messageCount >= opts.messageLimit) {
-		$messages.children('div.entry:nth-child(-n+' + opts.messageLimit / 2 + ')').remove();
-		opts.messageCount -= opts.messageLimit / 2; //I guess the count should only ever equal the limit
+		trimmedHeight = $messages.children('div.entry:first-child').outerHeight();
+		$messages.children('div.entry:first-child').remove();
+		opts.messageCount--; //I guess the count should only ever equal the limit
 	}
 
 	// Create the element - if combining is off, we use it, and if it's on, we
@@ -489,6 +491,8 @@ function output(message, flag) {
 
 	if (!filteredOut && atBottom) {
 		$('body,html').scrollTop($messages.outerHeight());
+	} else if (trimmedHeight) {
+		$('body,html').scrollTop(scrollPos - trimmedHeight);
 	}
 }
 
