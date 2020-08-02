@@ -392,8 +392,8 @@ var/message_delay = 0 // To make sure restarting the recentmessages list is kept
 
 		/* but firstly, logging! */
 
-		log_say("[M.name]/[M.key] : \[[freq_text]\] [message]") 
-		M.log_message("\[[freq_text]\] [message]", INDIVIDUAL_SAY_LOG)
+		log_say("[M.name]/[M.key] : \[[freq_text]\] [loud ? "\[LOUD\] " : ""][message]") 
+		M.log_message("\[[freq_text]\] [loud ? "\[LOUD\] " : ""][message]", INDIVIDUAL_SAY_LOG)
 
 	  	/* --- Process all the mobs that heard a masked voice (understood) --- */
 

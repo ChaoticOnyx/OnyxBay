@@ -152,7 +152,7 @@
 		return
 
 	loud = !loud
-	to_chat(usr, SPAN("notice", "You have [loud ? "enabled" : "disabled"] command mode for [src]."))
+	to_chat(user, SPAN("notice", "You have [loud ? "enabled" : "disabled"] command mode for [src]."))
 
 /obj/item/device/radio/headset/heads/captain
 	name = "captain's headset"
