@@ -96,7 +96,7 @@
 	var/time = say_timestamp()
 	to_chat(src, "[time] [message]")
 
-/mob/proc/hear_radio(message, verb="says", datum/language/language=null, part_a, part_b, part_c, mob/speaker = null, hard_to_hear = 0, vname ="")
+/mob/proc/hear_radio(message, verb="says", datum/language/language=null, part_a, part_b, part_c, mob/speaker = null, hard_to_hear = 0, vname ="", loud)
 
 	if(!client)
 		return
@@ -218,26 +218,38 @@
 	if(sdisabilities & DEAF || ear_deaf)
 		var/mob/living/carbon/human/H = src
 		if(istype(H) && H.has_headset_in_ears() && prob(20))
-			to_chat(src, "<span class='warning'>You feel your headset vibrate but can hear nothing from it!</span>")
+			to_chat(src, "<span class='warning'>You feel your headset vibrate [loud ? "really hard " : ""]but can hear nothing from it!</span>")
 	else
-		on_hear_radio(part_a, speaker_name, track, part_b, part_c, formatted)
+		on_hear_radio(part_a, speaker_name, track, part_b, part_c, formatted, loud)
 
 /proc/say_timestamp()
 	return "<span class='say_quote'>\[[stationtime2text()]\]</span>"
 
-/mob/proc/on_hear_radio(part_a, speaker_name, track, part_b, part_c, formatted)
-	to_chat(src, "[part_a][speaker_name][part_b][formatted][part_c]")
+/mob/proc/on_hear_radio(part_a, speaker_name, track, part_b, part_c, formatted, loud)
+	if(loud)
+		to_chat(src, "<font size='3'><b>[part_a][speaker_name][part_b][formatted][part_c]</b></font>")
+	else
+		to_chat(src, "[part_a][speaker_name][part_b][formatted][part_c]")
 
-/mob/observer/ghost/on_hear_radio(part_a, speaker_name, track, part_b, part_c, formatted)
-	to_chat(src, "[part_a][track][part_b][formatted][part_c]")
+/mob/observer/ghost/on_hear_radio(part_a, speaker_name, track, part_b, part_c, formatted, loud)
+	if(loud)
+		to_chat(src, "<font size='3'><b>[part_a][track][part_b][formatted][part_c]</b></font>")
+	else
+		to_chat(src, "[part_a][track][part_b][formatted][part_c]")
 
-/mob/living/silicon/on_hear_radio(part_a, speaker_name, track, part_b, part_c, formatted)
+/mob/living/silicon/on_hear_radio(part_a, speaker_name, track, part_b, part_c, formatted, loud)
 	var/time = say_timestamp()
-	to_chat(src, "[time][part_a][speaker_name][part_b][formatted][part_c]")
+	if(loud)
+		to_chat(src, "<font size='3'>[time]<b>[part_a][speaker_name][part_b][formatted][part_c]</b></font>")
+	else
+		to_chat(src, "[time][part_a][speaker_name][part_b][formatted][part_c]")
 
-/mob/living/silicon/ai/on_hear_radio(part_a, speaker_name, track, part_b, part_c, formatted)
+/mob/living/silicon/ai/on_hear_radio(part_a, speaker_name, track, part_b, part_c, formatted, loud)
 	var/time = say_timestamp()
-	to_chat(src, "[time][part_a][track][part_b][formatted][part_c]")
+	if(loud)
+		to_chat(src, "<font size='3'>[time]<b>[part_a][track][part_b][formatted][part_c]</b></font>")
+	else
+		to_chat(src, "[time][part_a][track][part_b][formatted][part_c]")
 
 /mob/proc/hear_signlang(message, verb = "gestures", datum/language/language, mob/speaker = null)
 	if(!client)

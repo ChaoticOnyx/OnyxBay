@@ -18,6 +18,7 @@
 	var/subspace_transmission = 0
 	var/syndie = 0//Holder to see if it's a syndicate encrypted radio
 	var/intercept = 0 //can intercept other channels
+	var/loud = FALSE
 	obj_flags = OBJ_FLAG_CONDUCTIBLE
 	slot_flags = SLOT_BELT
 	throw_speed = 2
@@ -361,7 +362,8 @@
 			"reject" = 0,	// if nonzero, the signal will not be accepted by any broadcasting machinery
 			"level" = position.z, // The source's z level
 			"language" = speaking,
-			"verb" = verb
+			"verb" = verb,
+			"loud" = loud
 		)
 		signal.frequency = connection.frequency // Quick frequency set
 
@@ -416,7 +418,8 @@
 		"reject" = 0,
 		"level" = position.z,
 		"language" = speaking,
-		"verb" = verb
+		"verb" = verb,
+		"loud" = loud
 	)
 	signal.frequency = connection.frequency // Quick frequency set
 
@@ -437,7 +440,7 @@
 	if(!connection)	return 0	//~Carn
 	return Broadcast_Message(connection, M, voicemask, pick(M.speak_emote),
 					  src, message, displayname, jobname, real_name, M.voice_name,
-					  filter_type, signal.data["compression"], GetConnectedZlevels(position.z), connection.frequency,verb,speaking)
+					  filter_type, signal.data["compression"], GetConnectedZlevels(position.z), connection.frequency,verb,speaking,loud)
 
 
 /obj/item/device/radio/hear_talk(mob/M as mob, msg, verb = "says", datum/language/speaking = null)
