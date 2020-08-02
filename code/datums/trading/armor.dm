@@ -27,10 +27,8 @@
 								/obj/item/clothing/head/helmet/ballistic				= TRADER_THIS_TYPE,
 								/obj/item/clothing/head/helmet/merc						= TRADER_THIS_TYPE,
 								/obj/item/clothing/head/helmet/nt						= TRADER_ALL,
-								/obj/item/clothing/head/helmet/pcrc						= TRADER_THIS_TYPE,
 								/obj/item/clothing/head/helmet/riot						= TRADER_THIS_TYPE,
 								/obj/item/clothing/head/helmet/swat						= TRADER_THIS_TYPE,
-								/obj/item/clothing/head/helmet/tactical					= TRADER_ALL,
 								/obj/item/clothing/accessory/armguards					= TRADER_ALL,
 								/obj/item/clothing/accessory/armor/helmcover			= TRADER_SUBTYPES_ONLY,
 								/obj/item/clothing/accessory/armor/tag					= TRADER_SUBTYPES_ONLY,
@@ -44,6 +42,5 @@
 								/obj/item/clothing/suit/armor/reactive					= TRADER_THIS_TYPE,
 								/obj/item/clothing/suit/armor/riot						= TRADER_THIS_TYPE,
 								/obj/item/clothing/suit/armor/vest						= TRADER_ALL,
-								/obj/item/clothing/suit/armor/vest/ert					= TRADER_BLACKLIST_ALL,
-								/obj/item/clothing/suit/storage/vest					= TRADER_ALL
+								/obj/item/clothing/suit/armor/vest/ert					= TRADER_BLACKLIST_ALL
 								)

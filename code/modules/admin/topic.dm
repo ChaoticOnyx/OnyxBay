@@ -2001,6 +2001,40 @@
 					to_chat(usr, "Failed to add language '[lang2toggle]' from \the [M]!")
 
 			show_player_panel(M)
+	
+	else if(href_list["listen_tape_sound"])
+		var/sound/S = sound(locate(href_list["listen_tape_sound"]))
+		if(!S) return
+
+		S.channel = 703
+		sound_to(usr, S)
+		to_chat(usr, "<B><A HREF='?_src_=holder;stop_tape_sound=1'>Stop listening</A></B>")
+	
+	else if(href_list["stop_tape_sound"])
+		var/sound/S = sound(null)
+		S.channel = 703
+		sound_to(usr, S)
+
+	else if(href_list["wipe_tape_data"])
+		var/obj/item/music_tape/tape = locate(href_list["wipe_tape_data"])
+		if(!tape.track)
+			to_chat(usr, "This [tape] have no data or already is wiped. Report it to developers.")
+			return
+
+		if(alert("Wipe data written by [(tape.uploader_ckey) ? tape.uploader_ckey : "UNKNOWN PLAYER"]?",,"Yes", "No") == "Yes")
+			if(istype(tape.loc, /obj/machinery/media/jukebox))
+				var/obj/machinery/media/jukebox/J = tape.loc
+				if(J.current_track == tape.track)
+					J.StopPlaying()
+					J.current_track = null
+
+			if(istype(tape.loc, /obj/item/music_player))
+				var/obj/item/music_player/mp = tape.loc
+				if(mp.mode)
+					mp.StopPlaying()
+
+			tape.ruin()
+			tape.SetName("burned [initial(tape.name)]")
 
 	// player info stuff
 
@@ -2030,6 +2064,43 @@
 				if(ismob(M))
 					ckey = M.ckey
 			show_player_info(ckey)
+		return
+
+	if(href_list["ert_action"])
+		if(href_list["obj_completed"])
+			var/datum/objective/objective = locate(href_list["obj_completed"])
+			ASSERT(istype(objective))
+			objective.completed = !objective.completed
+		else if(href_list["obj_add"])
+			var/new_obj_type = input("Select objective type:", "Objective type", null) as null|anything in list("resolve emergency", "custom")
+			switch(new_obj_type)
+				if("resolve emergency")
+					var/datum/objective/ert_station_save/basic = new()
+					GLOB.ert.add_global_objective(basic)
+				else if("custom")
+					var/text = input("Write down the ERT mission", "ERT mission", null)
+					if(text)
+						var/datum/objective/ert_custom/custom = new
+						custom.explanation_text = text
+						GLOB.ert.add_global_objective(custom)
+		else if (href_list["obj_delete"])
+			var/datum/objective/objective = locate(href_list["obj_delete"])
+			ASSERT(istype(objective))
+			GLOB.ert.remove_global_objective(objective)
+		else if(href_list["obj_announce"])
+			for(var/datum/mind/player in GLOB.ert.current_antagonists)
+				var/obj_count = 1
+				to_chat(player.current, SPAN_NOTICE("Your current objectives:"))
+				for(var/datum/objective/objective in player.objectives)
+					to_chat(player.current, "<B>Objective #[obj_count]</B>: [objective.explanation_text]")
+					obj_count++
+		else if(href_list["max_cap_change"])
+			var/change_num = input("Max cap ERT", "Enter a number") as null|num
+			if(isnull(change_num)) return
+			change_num = round(change_num)
+			if(change_num <= 0) return
+			GLOB.ert.hard_cap = change_num
+		edit_mission()
 		return
 
 	watchlist.AdminTopicProcess(src, href_list)

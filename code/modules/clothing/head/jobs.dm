@@ -175,7 +175,6 @@
 	desc = "A simple, solid color beret. This one has no emblems or insignia on it."
 	icon_state = "beret_white"
 
-
 //Some retard put these in /under/jobs/security.dm. What a shame.
 /obj/item/clothing/head/det
 	name = "fedora"
@@ -187,7 +186,6 @@
 		)
 	armor = list(melee = 30, bullet = 25, laser = 25,energy = 10, bomb = 0, bio = 0, rad = 0)
 	siemens_coefficient = 0.9
-	flags_inv = BLOCKHEADHAIR
 
 /obj/item/clothing/head/det/attack_self(mob/user)
 	flags_inv ^= BLOCKHEADHAIR
@@ -197,3 +195,27 @@
 /obj/item/clothing/head/det/grey
 	icon_state = "detective2"
 	desc = "A grey fedora - either the cornerstone of a detective's style or a poor attempt at looking cool, depending on the person wearing it."
+
+/obj/item/clothing/head/HoS
+	name = "Head of Security Hat"
+	desc = "The hat of the Head of Security, reinforced with a plasteel plate. For showing the officers who's in charge."
+	icon_state = "hoscap"
+	body_parts_covered = HEAD
+	armor = list(melee = 60, bullet = 60, laser = 60,energy = 35, bomb = 45, bio = 0, rad = 0)
+	siemens_coefficient = 0.6
+
+/obj/item/clothing/head/HoS/dermal
+	name = "Dermal Armour Patch"
+	desc = "You're not quite sure how you manage to take it on and off, but it implants nicely in your head."
+	icon_state = "dermal"
+
+/obj/item/clothing/head/warden 							// TODO: move all head clothing to /head
+	name = "warden's hat"
+	desc = "It's a special helmet issued to the Warden of a securiy force."
+	icon_state = "policehelm"
+	body_parts_covered = 0
+
+/obj/item/clothing/head/warden/drill
+	name = "warden's drill hat"
+	desc = "You've definitely have seen that hat before."
+	icon_state = "wardendrill"
