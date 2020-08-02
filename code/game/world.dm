@@ -347,7 +347,7 @@ var/world_topic_spam_protect_time = world.timeofday
 			return
 		if(!config.vars["ooc_allowed"]&&!input["isadmin"])
 			return "globally muted"
-		if(jobban_keylist.Find("[ckey] - ooc"))
+		if(jobban_keylist.Find("[ckey] - OOC"))
 			return "banned from ooc"
 		var/sent_message = "[create_text_tag("DISCORD OOC:")] <EM>[ckey]:</EM> <span class='message linkify'>[message]</span>"
 		for(var/client/target in GLOB.clients)
