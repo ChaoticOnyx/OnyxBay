@@ -3532,7 +3532,7 @@
 "bpV" = (/obj/structure/disposalpipe/segment{dir = 4},/turf/simulated/wall,/area/quartermaster/storage)
 "bpW" = (/obj/effect/floor_decal/corner/purple,/turf/simulated/floor/tiled/white,/area/maintenance/research_shuttle)
 "bpX" = (/obj/machinery/shield_diffuser,/obj/structure/catwalk,/turf/simulated/floor,/area/space)
-"bpY" = (/obj/structure/lattice,/obj/structure/catwalk,/obj/machinery/light/small/red{dir = 1},/turf/simulated/floor,/area/space)
+"bpY" = (/obj/structure/lattice,/obj/structure/catwalk,/turf/simulated/floor,/area/space)
 "bpZ" = (/obj/structure/lattice,/obj/machinery/access_button{command = "cycle_exterior"; frequency = 1379; master_tag = "eng_eva_airlock"; name = "exterior access button"; pixel_x = 25; pixel_y = -25; req_access = list(13)},/obj/structure/catwalk,/turf/simulated/floor,/area/space)
 "bqa" = (/mob/living/simple_animal/mouse,/turf/simulated/floor/plating,/area/space)
 "bqb" = (/obj/structure/disposalpipe/segment,/turf/simulated/wall,/area/quartermaster/office)
