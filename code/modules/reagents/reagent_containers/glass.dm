@@ -221,6 +221,10 @@
 	atom_flags = ATOM_FLAG_OPEN_CONTAINER
 	unacidable = 0
 
+/obj/item/weapon/reagent_containers/glass/bucket/full/New()
+  ..()
+  src.reagents.add_reagent(/datum/reagent/water, 180)
+
 /obj/item/weapon/reagent_containers/glass/bucket/attackby(obj/D, mob/user as mob)
 
 	if(isprox(D))
