@@ -17,7 +17,7 @@
 #define BE_PLANT "BE_PLANT"
 #define BE_SYNTH "BE_SYNTH"
 #define BE_PAI   "BE_PAI"
-
+#define BE_VAMPIRE "BE_VAMPIRE"
 // Antagonist datum flags.
 #define ANTAG_OVERRIDE_JOB        0x1 // Assigned job is set to MODE when spawning.
 #define ANTAG_OVERRIDE_MOB        0x2 // Mob is recreated from datum mob_type var when spawning.
@@ -46,6 +46,8 @@
 #define MODE_RAIDER "raider"
 #define MODE_WIZARD "wizard"
 #define MODE_CHANGELING "changeling"
+#define MODE_VAMPIRE "vampire"
+#define MODE_THRALL "thrall"
 #define MODE_CULTIST "cultist"
 #define MODE_MONKEY "monkey"
 #define MODE_RENEGADE "renegade"
@@ -106,3 +108,12 @@
 #define VOTE_STATUS_PREVOTE   1
 #define VOTE_STATUS_ACTIVE    2
 #define VOTE_STATUS_COMPLETE  3
+
+
+//vampire
+#define VAMP_DRAINING   0x1
+#define VAMP_HEALING    0x2
+#define VAMP_PRESENCE   0x4
+#define VAMP_FRENZIED   0x8
+#define VAMP_ISTHRALL   0x10
+#define VAMP_FULLPOWER  0x20

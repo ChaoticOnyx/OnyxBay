@@ -14,7 +14,8 @@
 	possible_transfer_amounts = "0.2;1;2"
 	amount_per_transfer_from_this = REM
 	atom_flags = ATOM_FLAG_OPEN_CONTAINER
-
+	var/being_feed = FALSE
+	var/vampire_marks = null
 	var/mob/living/carbon/human/attached
 
 /obj/item/weapon/reagent_containers/ivbag/Destroy()
@@ -28,6 +29,39 @@
 		w_class = ITEM_SIZE_NORMAL
 	else
 		w_class = ITEM_SIZE_SMALL
+
+
+
+/obj/item/weapon/reagent_containers/ivbag/attack(mob/living/carbon/human/M as mob, mob/living/carbon/human/user as mob, var/target_zone)
+	if (user == M && (M.mind.vampire))
+		if (being_feed)
+			to_chat(user, "<span class='notice'>You are already feeding on \the [src].</span>")
+			return
+		if (reagents.get_reagent_amount(/datum/reagent/blood))
+			user.visible_message("<span class='warning'>[user] raises \the [src] up to their mouth and bites into it.</span>", "<span class='notice'>You raise \the [src] up to your mouth and bite into it, starting to drain its contents.<br>You need to stand still.</span>")
+			being_feed = TRUE
+			vampire_marks = TRUE
+			while (do_after(user, 25, 5, 1))
+				var/blood_taken = 0
+				blood_taken = min(5, reagents.get_reagent_amount(/datum/reagent/blood)/4)
+
+				reagents.remove_reagent(/datum/reagent/blood, blood_taken*4)
+				user.mind.vampire.blood_usable += blood_taken
+
+				if (blood_taken)
+					to_chat(user, "<span class='notice'>You have accumulated [user.mind.vampire.blood_usable] [user.mind.vampire.blood_usable > 1 ? "units" : "unit"] of usable blood. It tastes quite stale.</span>")
+
+				if (reagents.get_reagent_amount(/datum/reagent/blood) < 1)
+					break
+			user.visible_message("<span class='warning'>[user] licks \his fangs dry, lowering \the [src].</span>", "<span class='notice'>You lick your fangs clean of the tasteless blood.</span>")
+			being_feed = FALSE
+	else
+		..()
+
+/obj/item/weapon/reagent_containers/ivbag/examine(mob/user, distance = 2)
+	if (..() && vampire_marks)
+		to_chat(user, "<span class='warning'>There are teeth marks on it.</span>")
+	return
 
 /obj/item/weapon/reagent_containers/attackby(obj/item/weapon/W as obj, mob/user as mob)
 
