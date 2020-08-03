@@ -14,7 +14,7 @@
 
 	mind.vampire.blood_usable += 30
 
-	verbs += new/datum/game_mode/vampire/verb/vampire_help
+	verbs += /datum/game_mode/vampire/verb/vampire_help
 
 	for(var/datum/power/vampire/P in vampirepowers)
 		if(!(P in mind.vampire.purchased_powers))
