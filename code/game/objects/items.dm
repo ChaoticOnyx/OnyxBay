@@ -97,6 +97,16 @@
 		m.update_inv_r_hand()
 		m.update_inv_l_hand()
 		src.loc = null
+	if(maptext)
+		maptext = ""
+	if(istype(src.loc, /obj/item/weapon/storage))
+		var/obj/item/weapon/storage/storage = src.loc
+		storage.prepare_ui()
+		var/datum/storage_ui/s_ui = storage.storage_ui
+		if(s_ui)
+			s_ui.on_pre_remove(usr, src)
+		storage.contents -= src
+		storage.update_ui_after_item_removal()
 	return ..()
 
 /obj/item/device
