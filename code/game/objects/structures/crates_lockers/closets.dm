@@ -57,9 +57,9 @@
 	throw_speed = 1
 	throw_range = 4
 	w_class = ITEM_SIZE_HUGE
-	mod_weight = 1.5
+	mod_weight = 1.6
 	mod_reach = 1.4
-	mod_handy = 0.65
+	mod_handy = 0.7
 	mod_shield = 1.3
 	origin_tech = list(TECH_MATERIAL = 2)
 	matter = list(MATERIAL_STEEL = 1000)

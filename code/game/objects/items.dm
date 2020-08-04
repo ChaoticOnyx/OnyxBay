@@ -532,15 +532,7 @@ var/list/global/slot_flags_enumeration = list(
 			spark_system.start()
 			if(istype(P,/obj/item/projectile/beam))
 				visible_message(SPAN("warning", "\The [user] dissolves [P] with their [src.name]!"))
-				if(istype(user,/mob/living/carbon/human))
-					var/mob/living/carbon/human/H = user
-					var/poise_dmg = P.damage/(src.mod_shield*2.5)
-					if(src != H.get_active_hand())
-						poise_dmg *= 2
-					H.poise -= poise_dmg
-					if(H.poise < poise_dmg)
-						H.useblock_off()
-						shot_out(H, "knocked")
+				proj_poise_drain(user, P)
 				return PROJECTILE_FORCE_BLOCK // Beam reflections code is kinda messy, I ain't gonna touch it. ~Toby
 			else if(P.starting)
 				visible_message(SPAN("warning", "\The [user] reflects [P] with their [src.name]!"))
@@ -552,32 +544,29 @@ var/list/global/slot_flags_enumeration = list(
 
 				// redirect the projectile
 				P.redirect(new_x, new_y, curloc, user)
-				if(istype(user,/mob/living/carbon/human))
-					var/mob/living/carbon/human/H = user
-					var/poise_dmg = P.damage/(src.mod_shield*2.5)
-					if(src != H.get_active_hand())
-						poise_dmg *= 2
-					H.poise -= poise_dmg
-					if(H.poise < poise_dmg)
-						H.useblock_off()
-						shot_out(H, P, "knocked")
+				proj_poise_drain(user, P)
 				return PROJECTILE_CONTINUE // complete projectile permutation
 		else if(src.mod_shield >= 1.3)
 			if(P.armor_penetration > (25*src.mod_shield)-5)
 				visible_message(SPAN("warning", "\The [user] tries to block [P] with their [src.name]. <b>Not the best idea.</b>"))
 				return 0
 			visible_message(SPAN("warning", "\The [user] blocks [P] with their [src.name]!"))
-			if(istype(user,/mob/living/carbon/human))
-				var/mob/living/carbon/human/H = user
-				var/poisedamage = P.damage/(src.mod_shield*2.0)
-				if(P.damage_type == BRUTE)
-					poisedamage = P.damage+(P.agony/1.5)/(src.mod_shield*2.0)
-				H.poise -= poisedamage
-				if(H.poise < poisedamage)
-					H.useblock_off()
-					shot_out(H, P, "knocked")
+			proj_poise_drain(user, P, TRUE)
 			return PROJECTILE_FORCE_BLOCK
 	return 0
+
+/obj/item/proc/proj_poise_drain(mob/user, obj/item/projectile/P, weak_shield = FALSE)
+	if(istype(user,/mob/living/carbon/human))
+		var/mob/living/carbon/human/H = user
+		var/poise_dmg = P.damage/(src.mod_shield*2.5)
+		if(weak_shield && P.damage_type == BRUTE)
+			poise_dmg = P.damage+(P.agony/1.5)/(src.mod_shield*2.5)
+		if(src != H.get_active_hand())
+			poise_dmg *= 2
+		H.poise -= poise_dmg
+		if(H.poise < poise_dmg)
+			H.useblock_off()
+			shot_out(H, "knocked")
 
 /obj/item/proc/shot_out(mob/living/carbon/human/H, obj/item/projectile/P, msg = "shot", dist = 3)
 	H.poise -= 10
