@@ -49,4 +49,4 @@
 	if(prob(random_sensor_type_prob))
 		crew_data["sensor_type"] = pick(SUIT_SENSOR_OFF, SUIT_SENSOR_BINARY, SUIT_SENSOR_VITAL, SUIT_SENSOR_TRACKING)
 	if(prob(random_rank_prob))
-		crew_data["rank"] = pick("Clown", "Mime", "Janitor", "Unknown")
+		crew_data["rank"] = pick("Janitor", "Unknown")
