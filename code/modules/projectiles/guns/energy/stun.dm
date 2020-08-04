@@ -141,7 +141,7 @@
 	mod_handy = 1.0
 
 /obj/item/weapon/gun/energy/classictaser/attackby(obj/item/W, mob/user)
-	if(istype(W, /obj/item/weapon/bikehorn) && W.icon_state == "bike_horn")
+	if(W.type == /obj/item/weapon/bikehorn && W.icon_state == "bike_horn")
 		user.drop_from_inventory(W, src)
 		to_chat(user, SPAN("notice", "You somehow manage to replace \the [name]'s muzzle with \the [W] trumpet, and pull the rubber bulb over the trigger."))
 		desc += " This one looks extra honky."
