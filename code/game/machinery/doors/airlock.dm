@@ -1152,7 +1152,7 @@ About the new airlock wires panel:
 	return da
 /obj/machinery/door/airlock/phoron/attackby(C as obj, mob/user as mob)
 	if(C)
-		ignite(is_hot(C))
+		ignite(is_flame_source(C))
 	..()
 
 /obj/machinery/door/airlock/set_broken(new_state)

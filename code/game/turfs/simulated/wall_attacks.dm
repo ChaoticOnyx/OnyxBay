@@ -142,8 +142,8 @@
 
 	if(W)
 		radiate()
-		if(is_hot(W))
-			burn(is_hot(W))
+		if(is_flame_source(W))
+			burn(is_flame_source(W))
 
 	if(locate(/obj/effect/overlay/wallrot) in src)
 		if(isWelder(W))

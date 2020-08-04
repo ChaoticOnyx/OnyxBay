@@ -9,6 +9,7 @@
 	projectile_type = /obj/item/projectile/energy/electrode/stunsphere
 	origin_tech = list(TECH_COMBAT = 3, TECH_MAGNET = 2)
 	modifystate = "tasertacticalstun"
+	combustion = FALSE
 
 	firemodes = list(
 		list(mode_name="stun", projectile_type=/obj/item/projectile/energy/electrode/stunsphere, modifystate="tasertacticalstun"),
@@ -194,6 +195,7 @@
 	projectile_type = /obj/item/projectile/energy/electrode/stunsphere
 	origin_tech = list(TECH_COMBAT = 4, TECH_MATERIAL = 4, TECH_POWER = 3)
 	modifystate = "egunstun"
+	combustion = FALSE
 
 	firemodes = list(
 		list(mode_name="stun", projectile_type=/obj/item/projectile/energy/electrode/stunsphere, modifystate="egunstun"),

@@ -21,6 +21,7 @@
 	fire_sound = 'sound/weapons/kenetic_accel.ogg'
 	var/max_mod_capacity = 100
 	var/list/modkits = list()
+	combustion = FALSE
 
 /obj/item/weapon/gun/energy/kinetic_accelerator/attack_self(mob/living/user as mob)
 	if(power_supply.charge < power_supply.maxcharge)

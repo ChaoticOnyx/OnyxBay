@@ -16,20 +16,6 @@ CIGARETTE PACKETS ARE IN FANCY.DM
 /obj/item/weapon/flame
 	var/lit = 0
 
-/proc/isflamesource(A)
-	if(isWelder(A))
-		var/obj/item/weapon/weldingtool/WT = A
-		return (WT.isOn())
-	else if(istype(A, /obj/item/weapon/flame))
-		var/obj/item/weapon/flame/F = A
-		return (F.lit)
-	else if(istype(A, /obj/item/clothing/mask/smokable) && !istype(A, /obj/item/clothing/mask/smokable/pipe))
-		var/obj/item/clothing/mask/smokable/S = A
-		return (S.lit)
-	else if(istype(A, /obj/item/device/assembly/igniter))
-		return 1
-	return 0
-
 ///////////
 //MATCHES//
 ///////////
@@ -91,11 +77,6 @@ CIGARETTE PACKETS ARE IN FANCY.DM
 	var/type_butt = null
 	var/chem_volume = 15
 	var/smoketime = 0
-	var/matchmes = "USER lights NAME with FLAME"
-	var/lightermes = "USER lights NAME with FLAME"
-	var/zippomes = "USER lights NAME with FLAME"
-	var/weldermes = "USER lights NAME with FLAME"
-	var/ignitermes = "USER lights NAME with FLAME"
 	var/brand
 
 /obj/item/clothing/mask/smokable/New()
@@ -118,14 +99,31 @@ CIGARETTE PACKETS ARE IN FANCY.DM
 		else // else just remove some of the reagents
 			reagents.remove_any(REM)
 
+#define MIN_OXIDIZER_PRESSURE_TO_SMOKE 8
+
 /obj/item/clothing/mask/smokable/Process()
 	var/turf/location = get_turf(src)
 	smoke(1)
 	if(smoketime < 1)
 		die()
 		return
+	
+	var/datum/gas_mixture/air = location.return_air()
+	if(!air)
+		die(nomessage = TRUE, nodestroy = TRUE)
+	else if(air.gas["oxygen"] < MIN_OXIDIZER_PRESSURE_TO_SMOKE)
+		die(nomessage = TRUE, nodestroy = TRUE)
+	
 	if(location)
 		location.hotspot_expose(700, 5)
+	
+	if(ishuman(loc))
+		var/mob/living/carbon/human/H = loc
+		if(H.head && istype(H.head, /obj/item/clothing/head/cardborg) && prob(1))
+			H.visible_message(SPAN_DANGER("[src] ignites \the [H.head], and sets [H] on fire!"), \
+								SPAN_DANGER("[src] ignites \the [H.head] on your head. You are on fire!"))
+			H.adjust_fire_stacks(1)
+			H.IgniteMob()
 
 /obj/item/clothing/mask/smokable/update_icon()
 	if(lit && icon_on)
@@ -140,9 +138,14 @@ CIGARETTE PACKETS ARE IN FANCY.DM
 		M.update_inv_l_hand(0)
 		M.update_inv_r_hand(1)
 
-/obj/item/clothing/mask/smokable/proc/light(flavor_text = "[usr] lights the [name].")
+#undef MIN_OXIDIZER_PRESSURE_TO_SMOKE
+
+/obj/item/clothing/mask/smokable/proc/light(atom/used_tool, mob/holder) // both arguments are optional
 	if(!src.lit)
 		src.lit = 1
+
+		damtype = BURN
+		force = initial(force) + 2
 
 		var/explosion_amount = 0
 
@@ -160,42 +163,49 @@ CIGARETTE PACKETS ARE IN FANCY.DM
 
 		update_icon()
 		var/turf/T = get_turf(src)
-		T.visible_message(flavor_text)
+		T.visible_message(generate_lighting_message(used_tool, holder))
 		set_light(2, 0.25, "#e38f46")
 		START_PROCESSING(SSobj, src)
 
-/obj/item/clothing/mask/smokable/proc/die(nomessage = 0)
+/obj/item/clothing/mask/smokable/proc/die(nomessage = 0, nodestroy = 0)
 	set_light(0)
 	lit = 0
 	STOP_PROCESSING(SSobj, src)
 	update_icon()
+	damtype = initial(damtype)
+	force = initial(force)
+	playsound(loc, 'sound/items/pffsh.ogg', 50, 1, -1)
 
-/obj/item/clothing/mask/smokable/attackby(obj/item/weapon/W as obj, mob/user as mob)
-	..()
-	if(isflamesource(W))
-		var/text = matchmes
-		if(istype(W, /obj/item/weapon/flame/match))
-			text = matchmes
-		else if(istype(W, /obj/item/weapon/flame/lighter/zippo))
-			text = zippomes
-		else if(istype(W, /obj/item/weapon/flame/lighter))
-			text = lightermes
-		else if(isWelder(W))
-			text = weldermes
-		else if(istype(W, /obj/item/device/assembly/igniter))
-			text = ignitermes
-		text = replacetext(text, "USER", "[user]")
-		text = replacetext(text, "NAME", "[name]")
-		text = replacetext(text, "FLAME", "[W.name]")
-		light(text)
+/obj/item/clothing/mask/smokable/proc/can_be_lit_with(obj/W)
+	return is_flame_source(W) || istype(W, /obj/item/device/assembly/igniter)
 
-/obj/item/clothing/mask/smokable/attack(mob/living/M, mob/living/user, def_zone)
-	if(istype(M) && M.on_fire)
-		user.do_attack_animation(M)
-		light("<span class='notice'>\The [user] coldly lights the \the [src] with the burning body of \the [M].</span>")
-		return 1
+/obj/item/clothing/mask/smokable/proc/generate_lighting_message(atom/tool, mob/holder)
+	var/text = ""
+	if(holder)
+		if(src.loc == holder)
+			text += "[holder] lights \his [name]"
+		else
+			text += "[holder] lights [name]"
 	else
-		return ..()
+		text += "\A [name] was lit"
+	if(tool)
+		if(istype(tool, /obj/machinery))
+			text += " by \a [tool]"
+		else
+			text += " with \a [tool]"
+	return SPAN_NOTICE(text)
+
+/obj/item/clothing/mask/smokable/attackby(obj/item/W as obj, mob/user as mob)
+	..()
+	if(!lit && can_be_lit_with(W))
+		light(W, user)
+
+/obj/item/clothing/mask/smokable/afterattack(obj/item/W, mob/user as mob, proximity)
+	if(!proximity)
+		return
+	
+	if(!lit && can_be_lit_with(W))
+		light(W, user)
 
 /obj/item/clothing/mask/smokable/cigarette
 	name = "cigarette"
@@ -209,12 +219,8 @@ CIGARETTE PACKETS ARE IN FANCY.DM
 	type_butt = /obj/item/weapon/cigbutt
 	chem_volume = 5
 	smoketime = 120
-	matchmes = "<span class='notice'>USER lights their NAME with their FLAME.</span>"
-	lightermes = "<span class='notice'>USER manages to light their NAME with FLAME.</span>"
-	zippomes = "<span class='rose'>With a flick of their wrist, USER lights their NAME with their FLAME.</span>"
-	weldermes = "<span class='notice'>USER casually lights the NAME with FLAME.</span>"
-	ignitermes = "<span class='notice'>USER fiddles with FLAME, and manages to light their NAME.</span>"
 	brand = "\improper Trans-Stellar Duty-free"
+	hitsound = 'sound/items/pffsh.ogg'
 	var/list/filling = list(/datum/reagent/tobacco = 3)
 
 /obj/item/clothing/mask/smokable/cigarette/New()
@@ -234,9 +240,9 @@ CIGARETTE PACKETS ARE IN FANCY.DM
 	if(lit)
 		overlays += overlay_image(icon, "cigarello-on", flags=RESET_COLOR)
 
-/obj/item/clothing/mask/smokable/cigarette/die(nomessage = 0)
+/obj/item/clothing/mask/smokable/cigarette/die(nomessage = 0, nodestroy = 0)
 	..()
-	if (type_butt)
+	if (type_butt && !nodestroy)
 		var/obj/item/butt = new type_butt(get_turf(src))
 		transfer_fingerprints_to(butt)
 		butt.color = color
@@ -337,32 +343,134 @@ CIGARETTE PACKETS ARE IN FANCY.DM
 	icon_state = "woodbutt"
 	matter = list(MATERIAL_WOOD = 1)
 
-/obj/item/clothing/mask/smokable/cigarette/attackby(obj/item/weapon/W as obj, mob/user as mob)
-	..()
+/obj/item/clothing/mask/smokable/cigarette/can_be_lit_with(obj/W)
+	if(istype(W, /obj/item/weapon/gun))
+		var/obj/item/weapon/gun/gun = W
+		return gun.combustion && gun.loc == src.loc
+	if(istype(W, /obj/machinery/cooker/grill))
+		var/obj/machinery/cooker/grill/grill = W
+		return !(grill.stat & (NOPOWER|BROKEN))
+	if(istype(W, /obj/machinery/light))
+		var/obj/machinery/light/mounted = W
+		var/obj/item/weapon/light/bulb = mounted.lightbulb
+		return bulb && istype(bulb, /obj/item/weapon/light/bulb) && bulb.status == 2 && !(mounted.stat & BROKEN)
+	return ..()
 
-	if(istype(W, /obj/item/weapon/melee/energy/sword))
-		var/obj/item/weapon/melee/energy/sword/S = W
-		if(S.active)
-			light("<span class='warning'>[user] swings their [W], barely missing their nose. They light their [name] in the process.</span>")
+/obj/item/clothing/mask/smokable/cigarette/generate_lighting_message(atom/tool, mob/holder)
+	if(!holder || !tool)
+		return ..()
+	if(src.loc != holder)
+		return ..()
 
-	return
+	if(istype(tool, /obj/item/weapon/flame/lighter))
+		if(istype(tool, /obj/item/weapon/flame/lighter/zippo))
+			return SPAN("rose", "With a flick of the wrist, [holder] lights \his [name] with \a [tool].")
+		else
+			return SPAN_NOTICE("[holder] manages to light \his [name] with \a [tool].")
+	if(istype(tool, /obj/item/weapon/flame/candle))
+		return SPAN_NOTICE("[holder] carefully lights \his [name] with \a [tool].")
+	if(istype(tool, /obj/item/weapon/weldingtool))
+		return SPAN_NOTICE("[holder] casually lights \his [name] with \a [tool].")
+	if(istype(tool, /obj/item/device/assembly/igniter))
+		return SPAN_NOTICE("[holder] fiddles with \his [tool.name], and manages to light \a [name].")
+	if(istype(tool, /obj/item/weapon/reagent_containers/glass/rag))
+		return SPAN_NOTICE("[holder] somehow manages to light \his [name] with \a [tool].")
+	if(istype(tool, /obj/item/jackolantern))
+		return SPAN_NOTICE("[holder] shoves \his [name] into \a [tool] to light it up")
+	if(istype(tool, /obj/item/weapon/melee/energy))
+		return SPAN_WARNING("[holder] swings \his [tool.name], and light \a [name] in the process.")
+	if(istype(tool, /obj/item/weapon/gun))
+		if(istype(tool, /obj/item/weapon/gun/flamer))
+			return SPAN_WARNING("[holder] fearlessly lights \his [name] with the twinkling flare of \the lit [tool].")
+		else if(istype(tool, /obj/item/weapon/gun/energy/plasmacutter))
+			return SPAN_NOTICE("[holder] touches \his [tool.name] with \a [name] to light it up.")
+		else
+			return SPAN_DANGER("[holder] fired \his [tool.name] into the air, lighting \a [name] in the process!")
+	if(istype(tool, /spell/targeted/projectile/dumbfire/fireball))
+		return SPAN_NOTICE("Roaring fireball lits \a [name] in the mouth of [holder]!")
+	if(istype(tool, /obj/machinery/light))
+		return SPAN_NOTICE("[holder] cleverly lights \his [name] by a red-hot incandescent spiral inside the broken lightbulb.")
+	if(isliving(tool))
+		return SPAN_NOTICE("[holder] coldly lights \his [name] with the burning body of [tool].")
 
-/obj/item/clothing/mask/smokable/cigarette/attack(mob/living/carbon/human/H, mob/user, def_zone)
-	if(lit && H == user && istype(H))
+	return ..()
+
+/obj/item/clothing/mask/smokable/cigarette/attackby(obj/item/W, mob/user)
+	if(istype(W, /obj/item/weapon/wirecutters))
+		user.visible_message(SPAN_NOTICE("[user] cut the tip of \his [name] with [W]"), "You cut the tip of your [name]")
+		smoketime -= 1
+		if(smoketime <= 0)
+			die()
+		else
+			die(nodestroy = TRUE)
+		return
+	
+	if(istype(W, /obj/item/weapon/gun) && !istype(W, /obj/item/weapon/gun/energy/plasmacutter) && !istype(W, /obj/item/weapon/gun/flamer))
+		if(!lit && can_be_lit_with(W))
+			var/obj/item/weapon/gun/gun = W
+			if(gun.special_check(user))
+				var/obj/P = gun.consume_next_projectile()
+				if(P)
+					gun.play_fire_sound(user, P)
+					gun.handle_post_fire(user, src, TRUE)
+
+					var/oops_chance = 25 // %
+					if(isliving(user))
+						var/mob/living/L = user
+						for(var/datum/modifier/trait/inaccurate/M in L.modifiers)
+							oops_chance = max(0, oops_chance - 2 * M.accuracy)
+					if(ishuman(user))
+						var/mob/living/carbon/human/H = user
+						oops_chance = max(0, oops_chance - 10 * H.skills["weapons"])
+					
+					var/fuck_up_chance = ceil(oops_chance / 8)
+					var/roll = rand(99) + 1
+					if(roll < fuck_up_chance)
+						if(gun.process_projectile(P, user, user, BP_HEAD))
+							user.visible_message(SPAN_DANGER("[user] shot \himself in the face with \the [gun]")) // Oops
+						return
+					else if(roll < oops_chance && istype(gun, /obj/item/weapon/gun/projectile) && isliving(user))
+						var/mob/living/L = user
+						to_chat(user, SPAN_WARNING("You burned your face a little"))
+						L.apply_damage(5, BURN, BP_HEAD, used_weapon = gun)	
+					light(W, user)
+				else
+					gun.handle_click_empty(user)
+					return
+			else
+				return
+		else
+			..()
+	else
+		..()
+
+/obj/item/clothing/mask/smokable/cigarette/attack(mob/living/M, mob/user, def_zone)
+	if(lit && M == user && istype(M, /mob/living/carbon/human))
+		var/mob/living/carbon/human/H = M
 		var/obj/item/blocked = H.check_mouth_coverage()
 		if(blocked)
-			to_chat(H, "<span class='warning'>\The [blocked] is in the way!</span>")
+			to_chat(H, SPAN_WARNING("\The [blocked] is in the way!"))
 			return 1
-		to_chat(H, "<span class='notice'>You take a drag on your [name].</span>")
+		to_chat(H, SPAN_NOTICE("You take a drag on your [name]."))
 		smoke(5)
+		return 1
+	if(!lit && istype(M) && M.on_fire)
+		user.do_attack_animation(M)
+		light(M, user)
 		return 1
 	return ..()
 
-/obj/item/clothing/mask/smokable/cigarette/afterattack(obj/item/weapon/reagent_containers/glass/glass, mob/user as mob, proximity)
-	..()
-	if(!proximity)
+/obj/item/clothing/mask/smokable/cigarette/afterattack(obj/item/W, mob/user as mob, proximity)
+	if(istype(W, /obj/item/weapon/melee/energy))
 		return
-	if(istype(glass)) //you can dip cigarettes into beakers
+	
+	if(istype(W, /obj/item/weapon/gun) && !istype(W, /obj/item/weapon/gun/energy/plasmacutter) && !istype(W, /obj/item/weapon/gun/flamer))
+		return
+	
+	..()
+	
+	if(istype(W, /obj/item/weapon/reagent_containers/glass)) //you can dip cigarettes into beakers
+		var/obj/item/weapon/reagent_containers/glass/glass = W
 		if(!glass.is_open_container())
 			to_chat(user, "<span class='notice'>You need to take the lid off first.</span>")
 			return
@@ -372,14 +480,26 @@ CIGARETTE PACKETS ARE IN FANCY.DM
 		else			//if not, either the beaker was empty, or the cigarette was full
 			if(!glass.reagents.total_volume)
 				to_chat(user, "<span class='notice'>[glass] is empty.</span>")
+				return
 			else
 				to_chat(user, "<span class='notice'>[src] is full.</span>")
+		if(!istype(W, /obj/item/weapon/reagent_containers/glass/rag))
+			die(nomessage = FALSE, nodestroy = TRUE)
 
 /obj/item/clothing/mask/smokable/cigarette/attack_self(mob/user as mob)
 	if(lit == 1)
 		user.visible_message("<span class='notice'>[user] calmly drops and treads on the lit [src], putting it out instantly.</span>")
 		die(1)
 	return ..()
+
+/obj/item/clothing/mask/smokable/cigarette/apply_hit_effect(mob/living/target, mob/living/user, hit_zone)
+	. = ..()
+	if(lit)
+		if(ishuman(user))
+			var/mob/living/carbon/human/H = user
+			if(H.a_intent == I_HELP)
+				return
+		die()
 
 /obj/item/clothing/mask/smokable/cigarette/get_icon_state(slot)
 	return item_state
@@ -406,12 +526,25 @@ CIGARETTE PACKETS ARE IN FANCY.DM
 	item_state = "cigaroff"
 	smoketime = 1200
 	chem_volume = 22.5
-	matchmes = "<span class='notice'>USER lights their NAME with their FLAME.</span>"
-	lightermes = "<span class='notice'>USER manages to offend their NAME by lighting it with FLAME.</span>"
-	zippomes = "<span class='rose'>With a flick of their wrist, USER lights their NAME with their FLAME.</span>"
-	weldermes = "<span class='notice'>USER insults NAME by lighting it with FLAME.</span>"
-	ignitermes = "<span class='notice'>USER fiddles with FLAME, and manages to light their NAME with the power of science.</span>"
 	filling = list(/datum/reagent/tobacco/fine = 15)
+
+/obj/item/clothing/mask/smokable/cigarette/cigar/generate_lighting_message(obj/tool, mob/holder)
+	if(!holder || !tool)
+		return ..()
+	if(src.loc != holder)
+		return ..()
+	
+	if(istype(tool, /obj/item/weapon/flame/lighter) && !istype(tool, /obj/item/weapon/flame/lighter/zippo))
+		return SPAN_NOTICE("[holder] manages to offend \his [name] by lighting it with \a [tool].")
+	if(istype(tool, /obj/item/weapon/flame/candle))
+		return SPAN_NOTICE("[holder] carefully lights \his [name] with \a classic [tool].")
+	if(istype(tool, /obj/item/weapon/weldingtool))
+		return SPAN_NOTICE("[holder] insults \his [name] by lighting it with \a [tool].")
+	if(istype(tool, /obj/item/device/assembly/igniter))
+		return SPAN_NOTICE("[holder] fiddles with \his [tool.name], and manages to light \a [name] with the power of science.")
+	if(istype(tool, /obj/item/weapon/reagent_containers/glass/rag))
+		return SPAN_NOTICE("[holder] somehow manages to light \his [name] with \a [tool]. What a clown!")
+	return ..()
 
 /obj/item/clothing/mask/smokable/cigarette/cigar/cohiba
 	name = "\improper Cohiba Robusto cigar"
@@ -466,15 +599,10 @@ CIGARETTE PACKETS ARE IN FANCY.DM
 	icon_on = "pipeon"  //Note - these are in masks.dmi
 	smoketime = 0
 	chem_volume = 50
-	matchmes = "<span class='notice'>USER lights their NAME with their FLAME.</span>"
-	lightermes = "<span class='notice'>USER manages to light their NAME with FLAME.</span>"
-	zippomes = "<span class='rose'>With much care, USER lights their NAME with their FLAME.</span>"
-	weldermes = "<span class='notice'>USER recklessly lights NAME with FLAME.</span>"
-	ignitermes = "<span class='notice'>USER fiddles with FLAME, and manages to light their NAME with the power of science.</span>"
 
 /obj/item/clothing/mask/smokable/pipe/New()
 	..()
-	name = "empty [initial(name)]"
+	name = "empty [initial(name)]"	
 
 /obj/item/clothing/mask/smokable/pipe/smoke(amount)
 	smoketime -= amount
@@ -486,14 +614,14 @@ CIGARETTE PACKETS ARE IN FANCY.DM
 			else // else just remove some of the reagents
 				reagents.remove_any(REM)
 
-/obj/item/clothing/mask/smokable/pipe/light(flavor_text = "[usr] lights the [name].")
+/obj/item/clothing/mask/smokable/pipe/light(obj/used_tool, mob/holder)
 	if(!src.lit && src.smoketime)
 		src.lit = 1
 		damtype = "fire"
 		icon_state = icon_on
 		item_state = icon_on
 		var/turf/T = get_turf(src)
-		T.visible_message(flavor_text)
+		T.visible_message(generate_lighting_message(used_tool, holder))
 		START_PROCESSING(SSobj, src)
 		if(ismob(loc))
 			var/mob/living/M = loc
@@ -524,9 +652,6 @@ CIGARETTE PACKETS ARE IN FANCY.DM
 		SetName("empty [initial(name)]")
 
 /obj/item/clothing/mask/smokable/pipe/attackby(obj/item/weapon/W as obj, mob/user as mob)
-	if(istype(W, /obj/item/weapon/melee/energy/sword))
-		return
-
 	..()
 
 	if (istype(W, /obj/item/weapon/reagent_containers/food/snacks))
@@ -543,22 +668,41 @@ CIGARETTE PACKETS ARE IN FANCY.DM
 		SetName("[G.name]-packed [initial(name)]")
 		qdel(G)
 
-	else if(istype(W, /obj/item/weapon/flame/lighter))
-		var/obj/item/weapon/flame/lighter/L = W
-		if(L.lit)
-			light("<span class='notice'>[user] manages to light their [name] with [W].</span>")
-
-	else if(istype(W, /obj/item/weapon/flame/match))
-		var/obj/item/weapon/flame/match/M = W
-		if(M.lit)
-			light("<span class='notice'>[user] lights their [name] with their [W].</span>")
-
-	else if(istype(W, /obj/item/device/assembly/igniter))
-		light("<span class='notice'>[user] fiddles with [W], and manages to light their [name] with the power of science.</span>")
-
 	user.update_inv_wear_mask(0)
 	user.update_inv_l_hand(0)
 	user.update_inv_r_hand(1)
+
+/obj/item/clothing/mask/smokable/pipe/can_be_lit_with(obj/W)
+	for(var/ignitor_type in list(/obj/item/weapon/flame/lighter, /obj/item/weapon/flame/lighter/zippo, /obj/item/weapon/weldingtool, /obj/item/device/assembly/igniter, /obj/item/weapon/flame/candle, /obj/item/clothing/mask/smokable/cigarette, /obj/item/weapon/reagent_containers/glass/rag))
+		if(istype(W.type, ignitor_type))
+			return ..()
+	
+	if(istype(W, /obj/machinery/light))
+		var/obj/machinery/light/mounted = W
+		var/obj/item/weapon/light/bulb = mounted.lightbulb
+		return bulb && istype(bulb, /obj/item/weapon/light/bulb) && bulb.status == 2 && mounted.on
+	return FALSE
+
+/obj/item/clothing/mask/smokable/pipe/generate_lighting_message(obj/tool, mob/holder)
+	if(!holder || !tool)
+		return ..()
+	if(src.loc != holder)
+		return ..()
+	
+	if(istype(tool, /obj/item/weapon/flame/lighter/zippo))
+		return SPAN("rose", "With much care, [holder] lights \his [name] with \a [tool].")
+	if(istype(tool, /obj/item/weapon/flame/candle))
+		return SPAN_NOTICE("[holder] lights \his [name] with a hot wax from \a [tool].")
+	if(istype(tool, /obj/item/weapon/weldingtool))
+		return SPAN_NOTICE("[holder] recklessly \his [name] with \a [tool].")
+	if(istype(tool, /obj/item/weapon/reagent_containers/glass/rag))
+		return SPAN_WARNING("[holder] puts a piece of \a [tool] into \a [name] to light it up.")
+	if(istype(tool, /obj/item/clothing/mask/smokable/cigarette))
+		return SPAN_NOTICE("[holder] dips \his [tool.name] into \a [name] to light it up.")
+	if(istype(tool, /obj/machinery/light))
+		return SPAN_NOTICE("[holder] cleverly lights \his [name] by a red-hot incandescent spiral inside the broken lightbulb.")
+	
+	return ..()
 
 /obj/item/clothing/mask/smokable/pipe/cobpipe
 	name = "corn cob pipe"
@@ -682,9 +826,10 @@ CIGARETTE PACKETS ARE IN FANCY.DM
 				cig.attackby(src, user)
 			else
 				if(istype(src, /obj/item/weapon/flame/lighter/zippo))
-					cig.light("<span class='rose'>[user] whips the [name] out and holds it for [M].</span>")
+					visible_message(SPAN("rose", "[user] whips the [name] out and holds it for [M]."))
 				else
-					cig.light("<span class='notice'>[user] holds the [name] out for [M], and lights the [cig.name].</span>")
+					visible_message(SPAN_NOTICE("[user] holds the [name] out for [M], and lights the [cig.name]."))
+				cig.light(src, user)
 			return
 
 	..()
@@ -719,11 +864,6 @@ CIGARETTE PACKETS ARE IN FANCY.DM
 	throw_speed = 0.5
 	smoketime = 120
 	chem_volume = 15
-	matchmes = "<span class='notice'>USER lights their NAME with their FLAME.</span>"
-	lightermes = "<span class='notice'>USER lights their NAME with their FLAME.</span>"
-	zippomes = "<span class='rose'>With a flick of their wrist, USER lights their NAME with their FLAME.</span>"
-	weldermes = "<span class='notice'>USER looks like a real stoner after lighting their NAME with their FLAME.</span>"
-	ignitermes = "<span class='notice'>USER fiddles with FLAME, and manages to light their NAME with the power of science.</span>"
 	filling = list(/datum/reagent/thc = 12)
 
 /obj/item/clothing/mask/smokable/cigarette/spliff/smoke(amount)
@@ -735,6 +875,16 @@ CIGARETTE PACKETS ARE IN FANCY.DM
 				reagents.trans_to_mob(C, REM, CHEM_BLOOD, 1) // Smoke it all, b1tch!
 			else // else just remove some of the reagents
 				reagents.remove_any(REM)
+
+/obj/item/clothing/mask/smokable/cigarette/spliff/generate_lighting_message(obj/tool, mob/holder)
+	if(!holder || !tool)
+		return ..()
+	if(src.loc != holder)
+		return ..()
+	
+	if(istype(tool, /obj/item/weapon/weldingtool))
+		return SPAN_NOTICE("[holder] looks like a real stoner after lighting \his [name] with \a [tool].")
+	return ..()
 
 /obj/item/weapon/cigbutt/spliffbutt
 	name = "spliff butt"
