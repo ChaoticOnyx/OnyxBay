@@ -44,11 +44,16 @@
 		if(fastening)
 			return
 		fastening = 1
+		var/loc_W = W.loc
+		var/loc_user = user.loc
 		var/direction = input("In which direction?", "Select direction.") in list("North", "East", "South", "West", "Cancel")
 		if(direction == "Cancel")
 			fastening = 0
 			return
 		if(!QDELETED(src) && do_after(user, 10, src))
+			if(!(loc_W == W.loc && loc_user == user.loc && Adjacent(user)))
+				fastening = 0
+				return
 			var/obj/structure/sign/S = new(user.loc)
 			switch(direction)
 				if("North")
@@ -68,7 +73,8 @@
 			qdel(src)
 		else
 			fastening = 0
-	else ..()
+	else
+		..()
 
 /obj/structure/sign/double/map
 	name = "map"
