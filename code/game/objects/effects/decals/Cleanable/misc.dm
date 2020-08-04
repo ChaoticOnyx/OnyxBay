@@ -130,3 +130,16 @@
 	icon = 'icons/effects/blood.dmi'
 	icon_state = "mfloor1"
 	random_icon_states = list("mfloor1", "mfloor2", "mfloor3", "mfloor4", "mfloor5", "mfloor6", "mfloor7")
+
+/obj/effect/decal/cleanable/soap_smudge
+	name = "soap smudge"
+	desc = "Doesn't look like it can be used for washing anymore."
+	density = 0
+	anchored = 1
+	icon = 'icons/effects/effects.dmi'
+	icon_state = "soap"
+
+/obj/effect/decal/cleanable/soap_smudge/Crossed(AM as mob|obj)
+	if(istype(AM, /mob/living))
+		var/mob/living/M = AM
+		M.slip("the [src.name]", 4)

@@ -10,6 +10,7 @@
 	throw_speed = 4
 	throw_range = 20
 	var/key_data
+	var/durability = 50
 
 /obj/item/weapon/soap/New()
 	..()
@@ -20,38 +21,42 @@
 	reagents.add_reagent(/datum/reagent/space_cleaner, 15)
 
 /obj/item/weapon/soap/Crossed(AM as mob|obj)
-	if (istype(AM, /mob/living))
-		var/mob/living/M =	AM
-		M.slip("the [src.name]",3)
+	if(istype(AM, /mob/living))
+		var/mob/living/M = AM
+		if(M.slip("the [src.name]", 4))
+			if(prob(100-durability))
+				new /obj/effect/decal/cleanable/soap_smudge(loc)
+				visible_message(SPAN("danger", "[M] smudges \the [src]!"))
+				qdel(src)
 
 /obj/item/weapon/soap/afterattack(atom/target, mob/user as mob, proximity)
 	if(!proximity) return
 	//I couldn't feasibly  fix the overlay bugs caused by cleaning items we are wearing.
 	//So this is a workaround. This also makes more sense from an IC standpoint. ~Carn
 	if(user.client && (target in user.client.screen))
-		to_chat(user, "<span class='notice'>You need to take that [target.name] off before cleaning it.</span>")
+		to_chat(user, SPAN("notice", "You need to take that [target.name] off before cleaning it."))
 	else if(istype(target,/obj/effect/decal/cleanable/blood))
-		to_chat(user, "<span class='notice'>You scrub \the [target.name] out.</span>")
+		to_chat(user, SPAN("notice", "You scrub \the [target.name] out."))
 		target.clean_blood() //Blood is a cleanable decal, therefore needs to be accounted for before all cleanable decals.
 	else if(istype(target,/obj/effect/decal/cleanable))
-		to_chat(user, "<span class='notice'>You scrub \the [target.name] out.</span>")
+		to_chat(user, SPAN("notice", "You scrub \the [target.name] out."))
 		qdel(target)
 	else if(istype(target,/turf))
-		to_chat(user, "<span class='notice'>You scrub \the [target.name] clean.</span>")
+		to_chat(user, SPAN("notice", "You scrub \the [target.name] clean."))
 		var/turf/T = target
 		T.clean(src, user)
 	else if(istype(target,/obj/structure/sink))
-		to_chat(user, "<span class='notice'>You wet \the [src] in the sink.</span>")
+		to_chat(user, SPAN("notice", "You wet \the [src] in the sink."))
 		wet()
 	else
-		to_chat(user, "<span class='notice'>You clean \the [target.name].</span>")
+		to_chat(user, SPAN("notice", "You clean \the [target.name]."))
 		target.clean_blood() //Clean bloodied atoms. Blood decals themselves need to be handled above.
 	return
 
 //attack_as_weapon
 /obj/item/weapon/soap/attack(mob/living/target, mob/living/user, target_zone)
 	if(target && user && ishuman(target) && ishuman(user) && !target.stat && !user.stat && user.zone_sel &&user.zone_sel.selecting == BP_MOUTH)
-		user.visible_message("<span class='danger'>\The [user] washes \the [target]'s mouth out with soap!</span>")
+		user.visible_message(SPAN("danger", "\The [user] washes \the [target]'s mouth out with soap!"))
 		user.setClickCooldown(DEFAULT_QUICK_COOLDOWN) //prevent spam
 		return
 	..()
@@ -59,7 +64,7 @@
 /obj/item/weapon/soap/attackby(obj/item/I, mob/user)
 	if(istype(I, /obj/item/weapon/key))
 		if(!key_data)
-			to_chat(user, "<span class='notice'>You imprint \the [I] into \the [src].</span>")
+			to_chat(user, SPAN("notice", "You imprint \the [I] into \the [src]."))
 			var/obj/item/weapon/key/K = I
 			key_data = K.key_data
 			update_icon()
@@ -77,6 +82,7 @@
 
 /obj/item/weapon/soap/deluxe
 	icon_state = "soapdeluxe"
+	durability = 80
 
 /obj/item/weapon/soap/deluxe/New()
 	desc = "A deluxe Waffle Co. brand bar of soap. Smells of [pick("lavender", "vanilla", "strawberry", "chocolate" ,"space")]."
@@ -85,10 +91,12 @@
 /obj/item/weapon/soap/syndie
 	desc = "An untrustworthy bar of soap. Smells of fear."
 	icon_state = "soapsyndie"
+	durability = 75
 
 /obj/item/weapon/soap/gold
 	desc = "One true soap to rule them all."
 	icon_state = "soapgold"
+	durability = 95
 
 /obj/item/weapon/soap/brig
 	desc = "Train your security guards!"
