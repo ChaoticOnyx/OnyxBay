@@ -59,6 +59,7 @@
 	allowed_magazines = /obj/item/ammo_magazine/chemdart
 	auto_eject = 0
 	handle_casings = CLEAR_CASINGS //delete casings instead of dropping them
+	combustion = FALSE
 
 	var/list/beakers = list() //All containers inside the gun.
 	var/list/mixing = list() //Containers being used for mixing.

@@ -889,35 +889,49 @@ var/global/list/common_tools = list(
 		return 1
 	return 0
 
-/proc/is_hot(obj/item/W as obj)
-	switch(W.type)
-		if(/obj/item/weapon/weldingtool)
-			var/obj/item/weapon/weldingtool/WT = W
-			if(WT.isOn())
-				return 3800
-			else
-				return 0
-		if(/obj/item/weapon/flame/lighter)
-			if(W:lit)
-				return 1500
-			else
-				return 0
-		if(/obj/item/weapon/flame/match)
-			if(W:lit)
-				return 1000
-			else
-				return 0
-		if(/obj/item/clothing/mask/smokable/cigarette)
-			if(W:lit)
-				return 1000
-			else
-				return 0
-		if(/obj/item/weapon/gun/energy/plasmacutter)
+/proc/is_flame_source(obj/item/W as obj)
+	if(istype(W, /obj/item/weapon/weldingtool))
+		var/obj/item/weapon/weldingtool/X = W
+		if(X.isOn())
 			return 3800
-		if(/obj/item/weapon/melee/energy)
+	else if(istype(W, /obj/item/weapon/flame/lighter))
+		var/obj/item/weapon/flame/lighter/X = W
+		if(X.lit)
+			return 1500
+	else if(istype(W, /obj/item/weapon/flame))
+		var/obj/item/weapon/flame/X = W
+		if(X.lit)
+			return 1000
+	else if(istype(W, /obj/item/clothing/mask/smokable/cigarette))
+		var/obj/item/clothing/mask/smokable/cigarette/X = W
+		if(X.lit)
+			return 1000
+	else if(istype(W, /obj/item/weapon/reagent_containers/glass/rag))
+		var/obj/item/weapon/reagent_containers/glass/rag/X = W
+		if(X.on_fire)
+			return 2000
+	else if(istype(W, /obj/item/device/spaceflare))
+		var/obj/item/device/spaceflare/X = W
+		if(X.active)
+			return 1000
+	else if(istype(W, /obj/item/weapon/gun/flamer))
+		var/obj/item/weapon/gun/flamer/X = W
+		if(X.lit)
+			return 3800
+	else if(istype(W, /obj/item/weapon/gun/energy/plasmacutter))
+		return 3800
+	else if(istype(W, /obj/item/weapon/melee/energy))
+		var/obj/item/weapon/melee/energy/X = W
+		if(X.active)
 			return 3500
-		else
-			return 0
+	else if(istype(W, /obj/item/jackolantern))
+		var/obj/item/jackolantern/X = W
+		if(X.lit_up)
+			return 1500
+	else if(istype(W, /obj/item/clothing/head/cakehat))
+		var/obj/item/clothing/head/cakehat/X = W
+		if(X.onfire)
+			return 1000
 
 	return 0
 

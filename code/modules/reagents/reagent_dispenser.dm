@@ -143,7 +143,7 @@
 			test.Shift(EAST,6)
 			overlays += test
 
-	else if(isflamesource(W))
+	else if(is_flame_source(W))
 		log_and_message_admins("triggered a fueltank explosion with [W].")
 		user.visible_message("<span class='danger'>[user] puts [W] to [src]!</span>", "<span class='danger'>You put \the [W] to \the [src] and with a moment of lucidity you realize, this might not have been the smartest thing you've ever done.</span>")
 		src.explode()

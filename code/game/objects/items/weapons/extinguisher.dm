@@ -114,6 +114,10 @@
 
 		playsound(src.loc, 'sound/effects/extinguish.ogg', 75, 1, -3)
 
+		if(istype(target, /obj/item/clothing/mask/smokable))
+			var/obj/item/clothing/mask/smokable/cig = target
+			cig.die()
+
 		var/direction = get_dir(src,target)
 
 		if(user.buckled && isobj(user.buckled))
