@@ -252,6 +252,9 @@ its easier to just keep the beam vertical.
 		else
 			f_name += "oil-stained [name][infix]."
 
+	if(!user)
+		return "\icon[src] That's [f_name] [suffix]\n[desc]"
+
 	to_chat(user, "\icon[src] That's [f_name] [suffix]")
 	to_chat(user, desc)
 
