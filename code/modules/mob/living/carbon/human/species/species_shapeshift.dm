@@ -117,7 +117,7 @@ var/list/wrapped_species_by_ref = list()
 	if(!new_gender)
 		return
 
-	visible_message("<span class='notice'>\The [src]'s form contorts subtly.</span>")
+	visible_message(SPAN_NOTICE("\The [src]'s form contorts subtly."))
 	change_gender(new_gender)
 
 /mob/living/carbon/human/proc/shapeshifter_select_shape()
@@ -139,7 +139,7 @@ var/list/wrapped_species_by_ref = list()
 		return
 
 	wrapped_species_by_ref["\ref[src]"] = new_species
-	visible_message("<span class='notice'>\The [src] shifts and contorts, taking the form of \a ["\improper [new_species]"]!</span>")
+	visible_message(SPAN_NOTICE("\The [src] shifts and contorts, taking the form of \a ["\improper [new_species]"]!"))
 	regenerate_icons()
 
 /mob/living/carbon/human/proc/shapeshifter_select_colour()
@@ -200,4 +200,4 @@ var/list/wrapped_species_by_ref = list()
 	if(S.get_body_build_datum_list(gender))
 		var/new_body_build = input("Please select a new body build.", "Shapeshifter Body Build") as null|anything in S.get_body_build_datum_list(gender)
 		change_body_build(new_body_build)
-	visible_message("<span class='notice'>\The [src]'s form contorts subtly.</span>")
+	visible_message(SPAN_NOTICE("\The [src]'s form contorts subtly."))
