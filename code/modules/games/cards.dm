@@ -229,11 +229,11 @@
 	user.visible_message("\The [user] [concealed ? "conceals" : "reveals"] their hand.")
 
 /obj/item/weapon/hand/examine(mob/user)
-	. = ..(user)
+	. = ..()
 	if((!concealed || src.loc == user) && cards.len)
-		to_chat(user, "It contains: ")
+		. = to_chat_or_concat(., user, "It contains: ")
 		for(var/datum/playingcard/P in cards)
-			to_chat(user, "The [P.name].")
+			. = to_chat_or_concat(., user, "The [P.name].")
 
 /obj/item/weapon/hand/update_icon(direction = 0)
 

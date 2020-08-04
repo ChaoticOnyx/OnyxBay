@@ -114,8 +114,8 @@ var/const/NO_EMAG_ACT = -50
 		user.visible_message("<span class='warning'>\The [src] fizzles and sparks - it seems it's been used once too often, and is now spent.</span>")
 	return 1
 /obj/item/weapon/card/emag/robot/examine(mob/user)
-	..()
-	to_chat(usr, "<span class='notice'>It has [uses] uses left.</span>")
+	. = ..()
+	. = to_chat_or_concat(., user, "<span class='notice'>It has [uses] uses left.</span>")
 
 /obj/item/weapon/card/id
 	name = "identification card"
@@ -156,12 +156,11 @@ var/const/NO_EMAG_ACT = -50
 			access |= j.get_access()
 
 /obj/item/weapon/card/id/examine(mob/user)
-	set src in oview(1)
-	if(in_range(usr, src))
-		show(usr)
-		to_chat(usr, desc)
+	if(in_range(user, src))
+		show(user)
+		. = to_chat_or_concat(., user, desc)
 	else
-		to_chat(usr, "<span class='warning'>It is too far away.</span>")
+		. = to_chat_or_concat(., user, "<span class='warning'>It is too far away.</span>")
 
 /obj/item/weapon/card/id/proc/prevent_tracking()
 	return 0

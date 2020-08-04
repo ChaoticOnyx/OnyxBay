@@ -1,9 +1,9 @@
 /obj/item/modular_computer/examine(mob/user)
 	. = ..()
 	if(damage > broken_damage)
-		to_chat(user, "<span class='danger'>It is heavily damaged!</span>")
+		. = to_chat_or_concat(., user, "<span class='danger'>It is heavily damaged!</span>")
 	else if(damage)
-		to_chat(user, "It is damaged.")
+		. = to_chat_or_concat(., user, "It is damaged.")
 
 /obj/item/modular_computer/proc/break_apart()
 	visible_message("\The [src] breaks apart!")

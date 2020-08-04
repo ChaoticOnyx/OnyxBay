@@ -40,7 +40,7 @@
 			stored_ore[O.name] = 1
 
 /obj/structure/ore_box/examine(mob/user)
-	. = ..(user)
+	. = ..()
 
 	// Borgs can now check contents too.
 	if((!istype(user, /mob/living/carbon/human)) && (!istype(user, /mob/living/silicon/robot)))
@@ -52,16 +52,16 @@
 	add_fingerprint(user)
 
 	if(!contents.len)
-		to_chat(user, "It is empty.")
+		. = to_chat_or_concat(., user, "It is empty.")
 		return
 
 	if(world.time > last_update + 10)
 		update_ore_count()
 		last_update = world.time
 
-	to_chat(user, "It holds:")
+	. = to_chat_or_concat(., user, "It holds:")
 	for(var/ore in stored_ore)
-		to_chat(user, "- [stored_ore[ore]] [ore]")
+		. = to_chat_or_concat(., user, "- [stored_ore[ore]] [ore]")
 	return
 
 

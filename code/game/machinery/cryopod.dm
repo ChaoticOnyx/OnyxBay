@@ -267,7 +267,9 @@
 	. = ..()
 	if (. && user.Adjacent(src))
 		if(occupant)
-			occupant.examine(user)
+			var/ret = occupant.examine(user)
+			if(!user)
+				. += "\n[ret]"
 
 /obj/machinery/cryopod/emag_act(remaining_charges, mob/user)
 	if(!emagged)

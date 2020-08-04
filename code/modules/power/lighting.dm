@@ -50,13 +50,15 @@
 		if(3) icon_state = "tube-empty"
 
 /obj/machinery/light_construct/examine(mob/user)
-	if(!..(user, 2))
+	. = ..(user, 2)
+	if(!.)
 		return
 
 	switch(src.stage)
-		if(1) to_chat(user, "It's an empty frame.")
-		if(2) to_chat(user, "It's wired.")
-		if(3) to_chat(user, "The casing is closed.")
+		if(1) . = to_chat_or_concat(., user, "It's an empty frame.")
+		if(2) . = to_chat_or_concat(., user, "It's wired.")
+		if(3) . = to_chat_or_concat(., user, "The casing is closed.")
+
 /obj/machinery/light_construct/attackby(obj/item/weapon/W as obj, mob/user as mob)
 	src.add_fingerprint(user)
 	if(isWrench(W))
@@ -308,13 +310,13 @@
 	var/fitting = get_fitting_name()
 	switch(get_status())
 		if(LIGHT_OK)
-			to_chat(user, "[desc] It is turned [on? "on" : "off"].")
+			. = to_chat_or_concat(., user, "[desc] It is turned [on? "on" : "off"].")
 		if(LIGHT_EMPTY)
-			to_chat(user, "[desc] The [fitting] has been removed.")
+			. = to_chat_or_concat(., user, "[desc] The [fitting] has been removed.")
 		if(LIGHT_BURNED)
-			to_chat(user, "[desc] The [fitting] is burnt out.")
+			. = to_chat_or_concat(., user, "[desc] The [fitting] is burnt out.")
 		if(LIGHT_BROKEN)
-			to_chat(user, "[desc] The [fitting] has been smashed.")
+			. = to_chat_or_concat(., user, "[desc] The [fitting] has been smashed.")
 
 /obj/machinery/light/proc/get_fitting_name()
 	var/obj/item/weapon/light/L = light_type

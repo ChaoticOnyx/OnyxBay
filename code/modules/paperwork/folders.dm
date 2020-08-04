@@ -122,8 +122,8 @@
 		icon_state = "envelope[contents.len > 0]"
 
 /obj/item/weapon/folder/envelope/examine(user)
-	..()
-	to_chat(user, "The seal is [sealed ? "intact" : "broken"].")
+	. = ..()
+	. = to_chat_or_concat(., user, "The seal is [sealed ? "intact" : "broken"].")
 
 /obj/item/weapon/folder/envelope/proc/sealcheck(user)
 	var/ripperoni = alert("Are you sure you want to break the seal on \the [src]?", "Confirmation","Yes", "No")

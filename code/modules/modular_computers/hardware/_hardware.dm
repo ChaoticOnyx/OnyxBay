@@ -74,11 +74,11 @@
 /obj/item/weapon/computer_hardware/examine(mob/user)
 	. = ..()
 	if(damage > damage_failure)
-		to_chat(user, "<span class='danger'>It seems to be severely damaged!</span>")
+		. = to_chat_or_concat(., user, "<span class='danger'>It seems to be severely damaged!</span>")
 	else if(damage > damage_malfunction)
-		to_chat(user, "<span class='notice'>It seems to be damaged!</span>")
+		. = to_chat_or_concat(., user, "<span class='notice'>It seems to be damaged!</span>")
 	else if(damage)
-		to_chat(user, "It seems to be slightly damaged.")
+		. = to_chat_or_concat(., user, "It seems to be slightly damaged.")
 
 // Damages the component. Contains necessary checks. Negative damage "heals" the component.
 /obj/item/weapon/computer_hardware/proc/take_damage(amount)

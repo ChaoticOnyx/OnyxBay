@@ -23,7 +23,9 @@
 	. = ..()
 	if (. && user.Adjacent(src))
 		if(occupant)
-			occupant.examine(user)
+			var/ret = occupant.examine(user)
+			if(!user)
+				. += "\n[ret]"
 
 /obj/machinery/bodyscanner/verb/eject()
 	set src in oview(1)

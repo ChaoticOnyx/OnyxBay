@@ -29,14 +29,14 @@ obj/structure/closet/crate
 				A.activate()
 
 /obj/structure/closet/crate/examine(mob/user)
-	..()
+	. = ..()
 	if(rigged && opened)
 		var/list/devices = list()
 		for(var/obj/item/device/assembly_holder/H in src)
 			devices += H
 		for(var/obj/item/device/assembly/A in src)
 			devices += A
-		to_chat(user,"There are some wires attached to the lid, connected to [english_list(devices)].")
+		. = to_chat_or_concat(., user,"There are some wires attached to the lid, connected to [english_list(devices)].")
 
 /obj/structure/closet/crate/attackby(obj/item/weapon/W as obj, mob/user as mob)
 	if(opened)

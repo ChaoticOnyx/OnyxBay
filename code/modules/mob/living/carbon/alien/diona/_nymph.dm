@@ -80,9 +80,9 @@
 /mob/living/carbon/alien/diona/examine(mob/user)
 	. = ..()
 	if(holding_item)
-		to_chat(user, "<span class='notice'>It is holding \icon[holding_item] \a [holding_item].</span>")
+		. = to_chat_or_concat(., user, "<span class='notice'>It is holding \icon[holding_item] \a [holding_item].</span>")
 	if(hat)
-		to_chat(user, "<span class='notice'>It is wearing \icon[hat] \a [hat].</span>")
+		. = to_chat_or_concat(., user, "<span class='notice'>It is wearing \icon[hat] \a [hat].</span>")
 
 /mob/living/carbon/alien/diona/IsAdvancedToolUser()
 	return FALSE

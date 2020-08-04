@@ -7,20 +7,24 @@
 
 /obj/machinery/power/debug_items/examine(mob/user)
 	. = ..()
-	if(show_extended_information)
-		show_info(user)
+	if(!show_extended_information)
+		return
+	var/ret = show_info(user)
+	if (!user)
+		. += "\n[ret]"
+
 
 /obj/machinery/power/debug_items/proc/show_info(mob/user)
 	if(!powernet)
-		to_chat(user, "This device is not connected to a powernet")
+		. = to_chat_or_concat(., user, "This device is not connected to a powernet")
 		return
 
-	to_chat(user, "Connected to powernet: [powernet]")
-	to_chat(user, "Available power: [num2text(powernet.avail, 20)] W")
-	to_chat(user, "Load: [num2text(powernet.viewload, 20)] W")
-	to_chat(user, "Has alert: [powernet.problem ? "YES" : "NO"]")
-	to_chat(user, "Cables: [powernet.cables.len]")
-	to_chat(user, "Nodes: [powernet.nodes.len]")
+	. = to_chat_or_concat(., user, "Connected to powernet: [powernet]")
+	. = to_chat_or_concat(., user, "Available power: [num2text(powernet.avail, 20)] W")
+	. = to_chat_or_concat(., user, "Load: [num2text(powernet.viewload, 20)] W")
+	. = to_chat_or_concat(., user, "Has alert: [powernet.problem ? "YES" : "NO"]")
+	. = to_chat_or_concat(., user, "Cables: [powernet.cables.len]")
+	. = to_chat_or_concat(., user, "Nodes: [powernet.nodes.len]")
 
 
 // An infinite power generator. Adds energy to connected cable.

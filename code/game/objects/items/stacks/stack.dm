@@ -42,17 +42,18 @@
 	return ..()
 
 /obj/item/stack/examine(mob/user)
-	if(..(user, 1))
+	. = ..(user, 1)
+	if(.)
 		if(!uses_charge)
-			to_chat(user, "There [src.amount == 1 ? "is" : "are"] [src.amount] [src.singular_name]\s in the stack.")
+			. = to_chat_or_concat(., user, "There [src.amount == 1 ? "is" : "are"] [src.amount] [src.singular_name]\s in the stack.")
 		else
-			to_chat(user, "There is enough charge for [get_amount()].")
+			. = to_chat_or_concat(., user, "There is enough charge for [get_amount()].")
 	if(color)
-		to_chat(user, "It's painted.")
+		. = to_chat_or_concat(., user, "It's painted.")
 	if (istype(src,/obj/item/stack/tile))
 		var/obj/item/stack/tile/T = src
 		if(length(T.stored_decals))
-			to_chat(user, "It's has painted decals on it.")
+			. = to_chat_or_concat(., user, "It's has painted decals on it.")
 
 /obj/item/stack/attack_self(mob/user as mob)
 	if(uses_charge)

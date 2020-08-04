@@ -187,12 +187,12 @@
 	. = ..()
 	if(tank)
 		if (!is_loosen)
-			to_chat(user, "\The [tank] connected to it.")
-		to_chat(user, "The meter shows [round(tank.air_contents.return_pressure())]. The valve is [valve_opened == TRUE ? "open" : "closed"].")
+			. = to_chat_or_concat(., user, "\The [tank] connected to it.")
+		. = to_chat_or_concat(., user, "The meter shows [round(tank.air_contents.return_pressure())]. The valve is [valve_opened == TRUE ? "open" : "closed"].")
 		if (tank.distribute_pressure == 0)
-			to_chat(user, "Use wrench to replace tank.")
+			. = to_chat_or_concat(., user, "Use wrench to replace tank.")
 	else
-		to_chat(user, "<span class='warning'>It is missing a tank!</span>")
+		. = to_chat_or_concat(., user, "<span class='warning'>It is missing a tank!</span>")
 
 /obj/structure/gas_stand/Process()
 	if(breather)

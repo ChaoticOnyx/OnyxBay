@@ -130,12 +130,15 @@ var/list/organ_cache = list()
 		return (istype(loc,/obj/item/device/mmi) || istype(loc,/obj/structure/closet/body_bag/cryobag) || istype(loc,/obj/structure/closet/crate/freezer) || istype(loc,/obj/item/weapon/storage/box/freezer) || istype(loc,/mob/living/simple_animal/hostile/little_changeling))
 
 /obj/item/organ/examine(mob/user)
-	. = ..(user)
-	show_decay_status(user)
+	. = ..()
+	var/ret = show_decay_status(user)
+	if (user)
+		return
+	. += "\n[ret]"
 
 /obj/item/organ/proc/show_decay_status(mob/user)
 	if(status & ORGAN_DEAD)
-		to_chat(user, "<span class='notice'>The decay has set into \the [src].</span>")
+		. = to_chat_or_concat(., user, "<span class='notice'>The decay has set into \the [src].</span>")
 
 /obj/item/organ/proc/handle_germ_effects()
 	//** Handle the effects of infections

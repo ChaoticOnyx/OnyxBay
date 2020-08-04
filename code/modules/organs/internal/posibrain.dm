@@ -83,7 +83,8 @@
 	return
 
 /obj/item/organ/internal/posibrain/examine(mob/user)
-	if(!..(user))
+	. = ..()
+	if(!.)
 		return
 
 	var/msg = "<span class='info'>*---------*</span>\nThis is \icon[src] \a <EM>[src]</EM>!\n[desc]\n"
@@ -102,7 +103,7 @@
 		msg += "<span class='deadsay'>It appears to be completely inactive.</span>\n"
 
 	msg += "</span><span class='info'>*---------*</span>"
-	to_chat(user, msg)
+	. = to_chat_or_concat(., user, msg)
 	return
 
 /obj/item/organ/internal/posibrain/emp_act(severity)

@@ -68,26 +68,28 @@
 
 /obj/item/weapon/gun/magnetic/proc/show_ammo(mob/user)
 	if(loaded)
-		to_chat(user, "<span class='notice'>It has \a [loaded] loaded.</span>")
+		. = to_chat_or_concat(., user, "<span class='notice'>It has \a [loaded] loaded.</span>")
 
 /obj/item/weapon/gun/magnetic/examine(mob/user)
 	. = ..(user, 2)
 	if(.)
-		show_ammo(user)
+		var/ret = show_ammo(user)
+		if (!user && ret)
+			. += "\n[ret]"
 
 		if(cell)
-			to_chat(user, "<span class='notice'>The installed [cell.name] has a charge level of [round((cell.charge/cell.maxcharge)*100)]%.</span>")
+			. = to_chat_or_concat(., user, "<span class='notice'>The installed [cell.name] has a charge level of [round((cell.charge/cell.maxcharge)*100)]%.</span>")
 		if(capacitor)
-			to_chat(user, "<span class='notice'>The installed [capacitor.name] has a charge level of [round((capacitor.charge/capacitor.max_charge)*100)]%.</span>")
+			. = to_chat_or_concat(., user, "<span class='notice'>The installed [capacitor.name] has a charge level of [round((capacitor.charge/capacitor.max_charge)*100)]%.</span>")
 
 		if(!cell || !capacitor)
-			to_chat(user, "<span class='notice'>The capacitor charge indicator is blinking <font color ='[COLOR_RED]'>red</font>. Maybe you should check the cell or capacitor.</span>")
+			. = to_chat_or_concat(., user, "<span class='notice'>The capacitor charge indicator is blinking <font color ='[COLOR_RED]'>red</font>. Maybe you should check the cell or capacitor.</span>")
 		else
 			if(capacitor.charge < power_cost)
-				to_chat(user, "<span class='notice'>The capacitor charge indicator is <font color ='[COLOR_ORANGE]'>amber</font>.</span>")
+				. = to_chat_or_concat(., user, "<span class='notice'>The capacitor charge indicator is <font color ='[COLOR_ORANGE]'>amber</font>.</span>")
 			else
-				to_chat(user, "<span class='notice'>The capacitor charge indicator is <font color ='[COLOR_GREEN]'>green</font>.</span>")
-		return TRUE
+				. = to_chat_or_concat(., user, "<span class='notice'>The capacitor charge indicator is <font color ='[COLOR_GREEN]'>green</font>.</span>")
+		return
 
 /obj/item/weapon/gun/magnetic/attackby(obj/item/thing, mob/user)
 

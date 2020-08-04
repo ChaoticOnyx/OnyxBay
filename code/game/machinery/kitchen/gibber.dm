@@ -79,9 +79,9 @@
 	else
 		src.startgibbing(user)
 
-/obj/machinery/gibber/examine()
+/obj/machinery/gibber/examine(mob/user)
 	. = ..()
-	to_chat(usr, "The safety guard is [emagged ? "<span class='danger'>disabled</span>" : "enabled"].")
+	. = to_chat_or_concat(., user, "The safety guard is [emagged ? "<span class='danger'>disabled</span>" : "enabled"].")
 
 /obj/machinery/gibber/emag_act(remaining_charges, mob/user)
 	emagged = !emagged

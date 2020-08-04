@@ -871,7 +871,7 @@
 	pixel_y = 0
 
 /obj/item/toy/chubbyskeleton/examine(mob/user)
-	to_chat(user, "<span class='notice'>*---------*<BR>This is [src], a Skeleton!<BR>He is wearing some black shorts.<BR>He is wearing a blue hoodie.<BR>He is wearing some slippers on his feet.<BR>*---------*</span>")
+	. = to_chat_or_concat(., user, "<span class='notice'>*---------*<BR>This is [src], a Skeleton!<BR>He is wearing some black shorts.<BR>He is wearing a blue hoodie.<BR>He is wearing some slippers on his feet.<BR>*---------*</span>")
 	return
 
 /obj/item/toy/chubbyskeleton/attack_hand(mob/user)

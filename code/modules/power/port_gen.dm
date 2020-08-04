@@ -54,12 +54,14 @@
 		return
 
 /obj/machinery/power/port_gen/examine(mob/user)
-	if(!..(user,1 ))
+	. = ..(user,1 )
+	if(!.)
 		return
 	if(active)
-		to_chat(usr, "<span class='notice'>The generator is on.</span>")
+		. = to_chat_or_concat(., user, "<span class='notice'>The generator is on.</span>")
 	else
-		to_chat(usr, "<span class='notice'>The generator is off.</span>")
+		. = to_chat_or_concat(., user, "<span class='notice'>The generator is off.</span>")
+
 /obj/machinery/power/port_gen/emp_act(severity)
 	if(!active)
 		return
@@ -148,10 +150,13 @@
 
 /obj/machinery/power/port_gen/pacman/examine(mob/user)
 	. = ..(user)
-	to_chat(user, "\The [src] appears to be producing [power_gen*power_output] W.")
-	to_chat(user, "There [sheets == 1 ? "is" : "are"] [sheets] sheet\s left in the hopper.")
-	if(IsBroken()) to_chat(user, "<span class='warning'>\The [src] seems to have broken down.</span>")
-	if(overheating) to_chat(user, "<span class='danger'>\The [src] is overheating!</span>")
+	. = to_chat_or_concat(., user, "\The [src] appears to be producing [power_gen*power_output] W.")
+	. = to_chat_or_concat(., user, "There [sheets == 1 ? "is" : "are"] [sheets] sheet\s left in the hopper.")
+	if(IsBroken())
+		. = to_chat_or_concat(., user, "<span class='warning'>\The [src] seems to have broken down.</span>")
+	if(overheating)
+		. = to_chat_or_concat(., user, "<span class='danger'>\The [src] is overheating!</span>")
+
 /obj/machinery/power/port_gen/pacman/HasFuel()
 	var/needed_sheets = power_output / time_per_sheet
 	if(sheets >= needed_sheets - sheet_left)
@@ -459,8 +464,8 @@
 	..()
 
 /obj/machinery/power/port_gen/pacman/super/potato/examine(mob/user)
-	..()
-	to_chat(user, "Auxilary tank shows [reagents.total_volume]u of liquid in it.")
+	. = ..()
+	. = to_chat_or_concat(., user, "Auxilary tank shows [reagents.total_volume]u of liquid in it.")
 
 /obj/machinery/power/port_gen/pacman/super/potato/UseFuel()
 	if(reagents.has_reagent("vodka"))

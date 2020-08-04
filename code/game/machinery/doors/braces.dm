@@ -26,7 +26,7 @@
 
 /obj/item/weapon/airlock_brace/examine(mob/user)
 	. = ..()
-	to_chat(user, examine_health())
+	. = to_chat_or_concat(., user, examine_health())
 
 
 // This is also called from airlock's examine, so it's a different proc to prevent code copypaste.

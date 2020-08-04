@@ -28,9 +28,9 @@
 	. = ..(user)
 	var/msg = "[scanning ? "ambient" : "stored"] Radiation level: [radiation_count ? radiation_count : "0"] Bq."
 	if(radiation_count > RAD_LEVEL_LOW)
-		to_chat(user, "<span class='warning'>[msg]</span>")
+		. = to_chat_or_concat(., user, "<span class='warning'>[msg]</span>")
 	else
-		to_chat(user, "<span class='notice'>[msg]</span>")
+		. = to_chat_or_concat(., user, "<span class='notice'>[msg]</span>")
 
 /obj/item/device/geiger/attack_self(mob/user)
 	scanning = !scanning

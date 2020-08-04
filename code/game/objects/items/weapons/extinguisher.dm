@@ -46,8 +46,9 @@
 	..()
 
 /obj/item/weapon/extinguisher/examine(mob/user)
-	if(..(user, 0))
-		to_chat(user, text("\icon[] [] contains [] units of water left!", src, src.name, src.reagents.total_volume))
+	. = ..(user, 0)
+	if(.)
+		. = to_chat_or_concat(., user, text("\icon[] [] contains [] units of water left!", src, src.name, src.reagents.total_volume))
 	return
 
 /obj/item/weapon/extinguisher/attack_self(mob/user as mob)

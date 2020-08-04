@@ -369,10 +369,11 @@ Class Procs:
 	if(clicksound && istype(user, /mob/living/carbon))
 		playsound(src, clicksound, clickvol)
 
-/obj/machinery/proc/display_parts(mob/user)
-	to_chat(user, "<span class='notice'>Following parts detected in the machine:</span>")
+/obj/machinery/proc/display_parts(mob/user, prefix)
+	. = prefix
+	. = to_chat_or_concat(., user, "<span class='notice'>Following parts detected in the machine:</span>")
 	for(var/var/obj/item/C in component_parts)
-		to_chat(user, "<span class='notice'>	[C.name]</span>")
+		. = to_chat_or_concat(., user, "<span class='notice'>	[C.name]</span>")
 
 /obj/machinery/examine(mob/user)
 	. = ..(user)

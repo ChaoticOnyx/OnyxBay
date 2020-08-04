@@ -63,6 +63,6 @@
 
 /obj/machinery/shield_diffuser/examine(mob/user)
 	. = ..()
-	to_chat(user, "It is [enabled ? "enabled" : "disabled"].")
+	. = to_chat_or_concat(., user, "It is [enabled ? "enabled" : "disabled"].")
 	if(alarm)
-		to_chat(user, "A red LED labeled \"Proximity Alarm\" is blinking on the control panel.")
+		. = to_chat_or_concat(., user, "A red LED labeled \"Proximity Alarm\" is blinking on the control panel.")

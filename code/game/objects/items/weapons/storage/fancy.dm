@@ -33,15 +33,16 @@
 	. = ..()
 
 /obj/item/weapon/storage/fancy/examine(mob/user)
-	if(!..(user, 1))
+	. = ..(user, 1)
+	if(!.)
 		return
 
 	var/key_name = initial(key_type.name)
 	if(!contents.len)
-		to_chat(user, "There are no [key_name]s left in the box.")
+		. = to_chat_or_concat(., user, "There are no [key_name]s left in the box.")
 	else
 		var/key_count = count_by_type(contents, key_type)
-		to_chat(user, "There [key_count == 1? "is" : "are"] [key_count] [key_name]\s in the box.")
+		. = to_chat_or_concat(., user, "There [key_count == 1? "is" : "are"] [key_count] [key_name]\s in the box.")
 
 /*
  * Egg Box

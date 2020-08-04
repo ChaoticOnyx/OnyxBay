@@ -34,10 +34,10 @@
 		cooking_obj = null
 	return ..()
 
-/obj/machinery/cooker/examine()
+/obj/machinery/cooker/examine(mob/user)
 	. = ..()
-	if(cooking_obj && Adjacent(usr))
-		to_chat(usr, "You can see \a [cooking_obj] inside.")
+	if(cooking_obj && Adjacent(user))
+		. = to_chat_or_concat(., user, "You can see \a [cooking_obj] inside.")
 
 /obj/machinery/cooker/attackby(obj/item/I, mob/user)
 	set waitfor = 0  //So that any remaining parts of calling proc don't have to wait for the long cooking time ahead.

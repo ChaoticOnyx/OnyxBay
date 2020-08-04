@@ -78,11 +78,12 @@
 
 
 /turf/simulated/open/examine(mob/user, distance, infix, suffix)
-	if(..(user, 2))
+	. = ..(user, 2)
+	if(.)
 		var/depth = 1
 		for(var/T = GetBelow(src); isopenspace(T); T = GetBelow(T))
 			depth += 1
-		to_chat(user, "It is about [depth] level\s deep.")
+		. = to_chat_or_concat(., user, "It is about [depth] level\s deep.")
 
 
 

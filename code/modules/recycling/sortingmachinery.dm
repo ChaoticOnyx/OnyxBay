@@ -103,11 +103,12 @@
 		overlays += I
 
 /obj/structure/bigDelivery/examine(mob/user)
-	if(..(user, 4))
+	. = ..(user, 4)
+	if(.)
 		if(sortTag)
-			to_chat(user, "<span class='notice'>It is labeled \"[sortTag]\"</span>")
+			. = to_chat_or_concat(., user, "<span class='notice'>It is labeled \"[sortTag]\"</span>")
 		if(examtext)
-			to_chat(user, "<span class='notice'>It has a note attached which reads, \"[examtext]\"</span>")
+			. = to_chat_or_concat(., user, "<span class='notice'>It has a note attached which reads, \"[examtext]\"</span>")
 	return
 
 /obj/structure/bigDelivery/Destroy()
@@ -230,11 +231,12 @@
 		overlays += I
 
 /obj/item/smallDelivery/examine(mob/user)
-	if(..(user, 4))
+	. = ..(user, 4)
+	if(.)
 		if(sortTag)
-			to_chat(user, "<span class='notice'>It is labeled \"[sortTag]\"</span>")
+			. = to_chat_or_concat(., user, "<span class='notice'>It is labeled \"[sortTag]\"</span>")
 		if(examtext)
-			to_chat(user, "<span class='notice'>It has a note attached which reads, \"[examtext]\"</span>")
+			. = to_chat_or_concat(., user, "<span class='notice'>It has a note attached which reads, \"[examtext]\"</span>")
 	return
 
 /obj/item/weapon/packageWrap
@@ -334,8 +336,9 @@
 	return
 
 /obj/item/weapon/packageWrap/examine(mob/user)
-	if(..(user, 0))
-		to_chat(user, "<span class='notice'>There are [amount] units of package wrap left!</span>")
+	. = ..(user, 0)
+	if(.)
+		. = to_chat_or_concat(., user, "<span class='notice'>There are [amount] units of package wrap left!</span>")
 	return
 
 /obj/item/device/destTagger

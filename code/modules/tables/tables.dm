@@ -90,11 +90,12 @@
 	if(health < maxhealth)
 		switch(health / maxhealth)
 			if(0.0 to 0.5)
-				to_chat(user, "<span class='warning'>It looks severely damaged!</span>")
+				. = to_chat_or_concat(., user, "<span class='warning'>It looks severely damaged!</span>")
 			if(0.25 to 0.5)
-				to_chat(user, "<span class='warning'>It looks damaged!</span>")
+				. = to_chat_or_concat(., user, "<span class='warning'>It looks damaged!</span>")
 			if(0.5 to 1.0)
-				to_chat(user, "<span class='notice'>It has a few scrapes and dents.</span>")
+				. = to_chat_or_concat(., user, "<span class='notice'>It has a few scrapes and dents.</span>")
+
 /obj/structure/table/attackby(obj/item/weapon/W, mob/user)
 
 	if(reinforced && istype(W, /obj/item/weapon/screwdriver))

@@ -102,12 +102,12 @@ var/list/global/tank_gauge_cache = list()
 					descriptive = "cold"
 				else
 					descriptive = "bitterly cold"
-		to_chat(user, "<span class='notice'>\The [src] feels [descriptive].</span>")
+		. = to_chat_or_concat(., user, "<span class='notice'>\The [src] feels [descriptive].</span>")
 
 	if(proxyassembly.assembly || wired)
-		to_chat(user, "<span class='warning'>It seems to have [wired? "some wires ": ""][wired && proxyassembly.assembly? "and ":""][proxyassembly.assembly ? "some sort of assembly ":""]attached to it.</span>")
+		. = to_chat_or_concat(., user, "<span class='warning'>It seems to have [wired? "some wires ": ""][wired && proxyassembly.assembly? "and ":""][proxyassembly.assembly ? "some sort of assembly ":""]attached to it.</span>")
 	if(valve_welded)
-		to_chat(user, "<span class='warning'>\The [src] emergency relief valve has been welded shut!</span>")
+		. = to_chat_or_concat(., user, "<span class='warning'>\The [src] emergency relief valve has been welded shut!</span>")
 
 
 /obj/item/weapon/tank/attackby(obj/item/weapon/W as obj, mob/user as mob)

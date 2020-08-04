@@ -19,9 +19,9 @@
 	return tally
 
 /mob/living/bot/remotebot/examine(mob/user)
-	. = ..(user)
+	. = ..()
 	if(holding)
-		to_chat(user, "<span class='notice'>It is holding \the \icon[holding] [holding].</span>")
+		. = to_chat_or_concat(., user, "<span class='notice'>It is holding \the \icon[holding] [holding].</span>")
 
 /mob/living/bot/remotebot/explode()
 	on = 0

@@ -20,9 +20,9 @@
 /obj/item/weapon/card/id/guest/examine(mob/user)
 	. = ..()
 	if (world.time < expiration_time)
-		to_chat(user, "<span class='notice'>This pass expires at [worldtime2stationtime(expiration_time)].</span>")
+		. = to_chat_or_concat(., user, "<span class='notice'>This pass expires at [worldtime2stationtime(expiration_time)].</span>")
 	else
-		to_chat(user, "<span class='warning'>It expired at [worldtime2stationtime(expiration_time)].</span>")
+		. = to_chat_or_concat(., user, "<span class='warning'>It expired at [worldtime2stationtime(expiration_time)].</span>")
 
 /obj/item/weapon/card/id/guest/read()
 	if (world.time > expiration_time)

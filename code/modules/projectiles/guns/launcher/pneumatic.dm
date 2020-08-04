@@ -100,13 +100,14 @@
 	return launched
 
 /obj/item/weapon/gun/launcher/pneumatic/examine(mob/user)
-	if(!..(user, 2))
+	. = ..(user, 2)
+	if(!.)
 		return
-	to_chat(user, "The valve is dialed to [pressure_setting]%.")
+	. = to_chat_or_concat(., user, "The valve is dialed to [pressure_setting]%.")
 	if(tank)
-		to_chat(user, "The tank dial reads [tank.air_contents.return_pressure()] kPa.")
+		. = to_chat_or_concat(., user, "The tank dial reads [tank.air_contents.return_pressure()] kPa.")
 	else
-		to_chat(user, "Nothing is attached to the tank valve!")
+		. = to_chat_or_concat(., user, "Nothing is attached to the tank valve!")
 
 /obj/item/weapon/gun/launcher/pneumatic/update_release_force(obj/item/projectile)
 	if(tank)
@@ -148,13 +149,13 @@
 	icon_state = "pneumatic[buildstate]"
 
 /obj/item/weapon/cannonframe/examine(mob/user)
-	. = ..(user)
+	. = ..()
 	switch(buildstate)
-		if(1) to_chat(user, "It has a pipe segment installed.")
-		if(2) to_chat(user, "It has a pipe segment welded in place.")
-		if(3) to_chat(user, "It has an outer chassis installed.")
-		if(4) to_chat(user, "It has an outer chassis welded in place.")
-		if(5) to_chat(user, "It has a transfer valve installed.")
+		if(1) . = to_chat_or_concat(., user, "It has a pipe segment installed.")
+		if(2) . = to_chat_or_concat(., user, "It has a pipe segment welded in place.")
+		if(3) . = to_chat_or_concat(., user, "It has an outer chassis installed.")
+		if(4) . = to_chat_or_concat(., user, "It has an outer chassis welded in place.")
+		if(5) . = to_chat_or_concat(., user, "It has a transfer valve installed.")
 
 /obj/item/weapon/cannonframe/attackby(obj/item/W as obj, mob/user as mob)
 	if(istype(W,/obj/item/pipe))

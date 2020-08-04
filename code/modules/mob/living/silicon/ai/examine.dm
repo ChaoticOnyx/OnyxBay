@@ -1,5 +1,6 @@
 /mob/living/silicon/ai/examine(mob/user)
-	if(!..(user))
+	. = ..()
+	if(!.)
 		return
 
 	var/msg = ""
@@ -32,7 +33,7 @@
 	if(hardware && (hardware.owner == src))
 		msg += "<br>"
 		msg += hardware.get_examine_desc()
-	to_chat(user, msg)
+	. = to_chat_or_concat(., user, msg)
 	user.showLaws(src)
 	return
 

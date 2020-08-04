@@ -37,7 +37,7 @@
 /obj/machinery/beehive/examine(mob/user)
 	. = ..()
 	if(!closed)
-		to_chat(user, "The lid is open.")
+		. = to_chat_or_concat(., user, "The lid is open.")
 
 /obj/machinery/beehive/attackby(obj/item/I, mob/user)
 	if(isCrowbar(I))

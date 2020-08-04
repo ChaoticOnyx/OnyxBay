@@ -370,12 +370,13 @@
 		..()
 
 /obj/machinery/atmospherics/unary/vent_pump/examine(mob/user)
-	if(..(user, 1))
-		to_chat(user, "A small gauge in the corner reads [round(last_flow_rate, 0.1)] L/s; [round(last_power_draw)] W")
+	. = ..(user, 1)
+	if(.)
+		. = to_chat_or_concat(., user, "A small gauge in the corner reads [round(last_flow_rate, 0.1)] L/s; [round(last_power_draw)] W")
 	else
-		to_chat(user, "You are too far away to read the gauge.")
+		. = to_chat_or_concat(., user, "You are too far away to read the gauge.")
 	if(welded)
-		to_chat(user, "It seems welded shut.")
+		. = to_chat_or_concat(., user, "It seems welded shut.")
 
 /obj/machinery/atmospherics/unary/vent_pump/attackby(obj/item/weapon/W as obj, mob/user as mob)
 	if(!isWrench(W))

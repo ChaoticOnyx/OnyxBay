@@ -98,13 +98,12 @@
 
 /obj/item/weapon/boomstickframe/examine(mob/user)
 	. = ..()
-	..(user)
 	switch(buildstate)
-		if(0) to_chat(user, "It has a pipe loosely fitted to the welding tool.")
-		if(1) to_chat(user, "It has a pipe welded to the welding tool.")
-		if(2) to_chat(user, "It has a bent metal rod attached to it.")
-		if(3) to_chat(user, "It has a spring inside.")
-		if(4) to_chat(user, "It is all covered with duct tape.")
+		if(0) . = to_chat_or_concat(., user, "It has a pipe loosely fitted to the welding tool.")
+		if(1) . = to_chat_or_concat(., user, "It has a pipe welded to the welding tool.")
+		if(2) . = to_chat_or_concat(., user, "It has a bent metal rod attached to it.")
+		if(3) . = to_chat_or_concat(., user, "It has a spring inside.")
+		if(4) . = to_chat_or_concat(., user, "It is all covered with duct tape.")
 
 /obj/item/weapon/boomstickframe/attackby(obj/item/W, mob/user)
 	if(isWelder(W) && buildstate == 0)

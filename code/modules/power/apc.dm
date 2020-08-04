@@ -245,27 +245,28 @@
 	update_icon()
 
 /obj/machinery/power/apc/examine(mob/user)
-	if(..(user, 1))
+	. = ..(user, 1)
+	if(.)
 		if(stat & BROKEN)
-			to_chat(user, "Looks broken.")
+			. = to_chat_or_concat(., user, "Looks broken.")
 			return
 		if(opened)
 			if(has_electronics && terminal)
-				to_chat(user, "The cover is [opened==2?"removed":"open"] and the power cell is [ cell ? "installed" : "missing"].")
+				. = to_chat_or_concat(., user, "The cover is [opened==2?"removed":"open"] and the power cell is [ cell ? "installed" : "missing"].")
 			else if (!has_electronics && terminal)
-				to_chat(user, "There are some wires but no any electronics.")
+				. = to_chat_or_concat(., user, "There are some wires but no any electronics.")
 			else if (has_electronics && !terminal)
-				to_chat(user, "Electronics installed but not wired.")
+				. = to_chat_or_concat(., user, "Electronics installed but not wired.")
 			else /* if (!has_electronics && !terminal) */
-				to_chat(user, "There is no electronics nor connected wires.")
+				. = to_chat_or_concat(., user, "There is no electronics nor connected wires.")
 
 		else
 			if (stat & MAINT)
-				to_chat(user, "The cover is closed. Something wrong with it: it doesn't work.")
+				. = to_chat_or_concat(., user, "The cover is closed. Something wrong with it: it doesn't work.")
 			else if (hacker && !hacker.hacked_apcs_hidden)
-				to_chat(user, "The cover is locked.")
+				. = to_chat_or_concat(., user, "The cover is locked.")
 			else
-				to_chat(user, "The cover is closed.")
+				. = to_chat_or_concat(., user, "The cover is closed.")
 
 
 // update the APC icon to show the three base states

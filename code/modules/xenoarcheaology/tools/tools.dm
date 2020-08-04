@@ -13,9 +13,9 @@
 	to_chat(user, "<span class='notice'>\icon[src] \The [src] flashes <i>[T.x]:[T.y]:[T.z]</i>.</span>")
 
 /obj/item/device/gps/examine(mob/user)
-	..()
+	. = ..()
 	var/turf/T = get_turf(src)
-	to_chat(user, "<span class='notice'>\The [src]'s screen shows: <i>[T.x]:[T.y]:[T.z]</i>.</span>")
+	. = to_chat_or_concat(., user, "<span class='notice'>\The [src]'s screen shows: <i>[T.x]:[T.y]:[T.z]</i>.</span>")
 
 /obj/item/device/measuring_tape
 	name = "measuring tape"

@@ -14,7 +14,7 @@
 		user.set_machine(src)
 		interact(user)
 		return
-	..()
+	. = ..()
 
 /obj/item/weapon/board/attack_hand(mob/living/carbon/human/M as mob)
 	if(M.machine == src)

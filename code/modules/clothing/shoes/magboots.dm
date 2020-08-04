@@ -86,8 +86,8 @@
 	wearer = null
 
 /obj/item/clothing/shoes/magboots/examine(mob/user)
-	. = ..(user)
+	. = ..()
 	var/state = "disabled"
 	if(item_flags & ITEM_FLAG_NOSLIP)
 		state = "enabled"
-	to_chat(user, "Its mag-pulse traction system appears to be [state].")
+	. = to_chat_or_concat(., user, "Its mag-pulse traction system appears to be [state].")

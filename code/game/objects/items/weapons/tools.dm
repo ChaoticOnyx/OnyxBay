@@ -209,11 +209,12 @@
 	return ..()
 
 /obj/item/weapon/weldingtool/examine(mob/user)
-	if(..(user, 0))
+	. = ..(user, 0)
+	if(.)
 		if(tank)
-			to_chat(user, "\icon[tank] \The [tank] contains [get_fuel()]/[tank.max_fuel] units of fuel!")
+			. = to_chat_or_concat(., user, "\icon[tank] \The [tank] contains [get_fuel()]/[tank.max_fuel] units of fuel!")
 		else
-			to_chat(user, "There is no tank attached.")
+			. = to_chat_or_concat(., user, "There is no tank attached.")
 
 /obj/item/weapon/weldingtool/MouseDrop(atom/over)
 	if(!CanMouseDrop(over, usr))

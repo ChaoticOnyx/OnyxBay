@@ -31,4 +31,4 @@
 
 /obj/item/device/pipe_painter/examine(mob/user)
 	. = ..(user)
-	to_chat(user, "It is in [mode] mode.")
+	. = to_chat_or_concat(., user, "It is in [mode] mode.")

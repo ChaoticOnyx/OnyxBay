@@ -29,7 +29,7 @@
 	. = ..()
 
 	if(forehead_graffiti && graffiti_style)
-		to_chat(user, "<span class='notice'>It has \"[forehead_graffiti]\" written on it in [graffiti_style]!</span>")
+		. = to_chat_or_concat(., user, "<span class='notice'>It has \"[forehead_graffiti]\" written on it in [graffiti_style]!</span>")
 
 /obj/item/organ/external/head/proc/write_on(mob/penman, style)
 	var/head_name = name

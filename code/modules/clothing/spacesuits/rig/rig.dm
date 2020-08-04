@@ -86,21 +86,21 @@
 	var/datum/wires/rig/wires
 	var/datum/effect/effect/system/spark_spread/spark_system
 
-/obj/item/weapon/rig/examine()
+/obj/item/weapon/rig/examine(mob/user)
 	. = ..()
 	if(wearer)
 		for(var/obj/item/piece in list(helmet,gloves,chest,boots))
 			if(!piece || piece.loc != wearer)
 				continue
-			to_chat(usr, "\icon[piece] \The [piece] [piece.gender == PLURAL ? "are" : "is"] deployed.")
+			. = to_chat_or_concat(., user, "\icon[piece] \The [piece] [piece.gender == PLURAL ? "are" : "is"] deployed.")
 
 	if(src.loc == usr)
-		to_chat(usr, "The access panel is [locked? "locked" : "unlocked"].")
-		to_chat(usr, "The maintenance panel is [open ? "open" : "closed"].")
-		to_chat(usr, "Hardsuit systems are [offline ? "<font color='red'>offline</font>" : "<font color='green'>online</font>"].")
+		. = to_chat_or_concat(., user, "The access panel is [locked? "locked" : "unlocked"].")
+		. = to_chat_or_concat(., user, "The maintenance panel is [open ? "open" : "closed"].")
+		. = to_chat_or_concat(., user, "Hardsuit systems are [offline ? "<font color='red'>offline</font>" : "<font color='green'>online</font>"].")
 
 		if(open)
-			to_chat(usr, "It's equipped with [english_list(installed_modules)].")
+			. = to_chat_or_concat(., user, "It's equipped with [english_list(installed_modules)].")
 
 /obj/item/weapon/rig/Initialize()
 	. = ..()

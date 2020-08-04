@@ -74,7 +74,7 @@
 /obj/item/ammo_casing/examine(mob/user)
 	. = ..()
 	if (!BB)
-		to_chat(user, "This one is spent.")
+		. = to_chat_or_concat(., user, "This one is spent.")
 
 //Gun loading types
 #define SINGLE_CASING 	1	//The gun only accepts ammo_casings. ammo_magazines should never have this as their mag_type.
@@ -183,7 +183,7 @@
 
 /obj/item/ammo_magazine/examine(mob/user)
 	. = ..()
-	to_chat(user, "There [(stored_ammo.len == 1)? "is" : "are"] [stored_ammo.len] round\s left!")
+	. = to_chat_or_concat(., user, "There [(stored_ammo.len == 1)? "is" : "are"] [stored_ammo.len] round\s left!")
 
 //magazine icon state caching
 /var/global/list/magazine_icondata_keys = list()

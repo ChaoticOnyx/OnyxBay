@@ -13,8 +13,8 @@
 	icon_state = "vclamp[open]"
 
 /obj/machinery/atmospherics/valve/shutoff/examine(mob/user)
-	..()
-	to_chat(user, "The automatic shutoff circuit is [override_open ? "disabled" : "enabled"].")
+	. = ..()
+	. = to_chat_or_concat(., user, "The automatic shutoff circuit is [override_open ? "disabled" : "enabled"].")
 
 /obj/machinery/atmospherics/valve/shutoff/New()
 	open()

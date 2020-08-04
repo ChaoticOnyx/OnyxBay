@@ -44,8 +44,9 @@
 
 /obj/item/weapon/material/twohanded/fireaxe/cult/examine(mob/user)
 	. = ..()
-	if(. && stored_power)
-		to_chat(user, "<span class='notice'>It exudes a death-like smell.</span>")
+	if(!. || !stored_power)
+		return
+	. = to_chat_or_concat(., user, "<span class='notice'>It exudes a death-like smell.</span>")
 
 /obj/item/weapon/material/twohanded/fireaxe/cult/resolve_attackby(atom/a, mob/user, click_params)
 	if(istype(a, /obj/structure/deity/altar))

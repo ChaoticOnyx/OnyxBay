@@ -51,7 +51,7 @@
 
 /obj/machinery/cablelayer/examine(mob/user)
 	. = ..()
-	to_chat(user, "\The [src]'s cable reel has [cable.amount] length\s left.")
+	. = to_chat_or_concat(., user, "\The [src]'s cable reel has [cable.amount] length\s left.")
 
 /obj/machinery/cablelayer/proc/load_cable(obj/item/stack/cable_coil/CC)
 	if(istype(CC) && CC.amount)

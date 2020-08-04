@@ -169,16 +169,17 @@
 
 
 /obj/item/device/suit_cooling_unit/examine(mob/user)
-	if(!..(user, 1))
+	. = ..(user, 1)
+	if(!.)
 		return
 
 	if (on)
-		to_chat(user, "It's switched on and running.")
+		. = to_chat_or_concat(., user, "It's switched on and running.")
 	else
-		to_chat(user, "It is switched off.")
+		. = to_chat_or_concat(., user, "It is switched off.")
 
 	if (cover_open)
-		to_chat(user, "The panel is open.")
+		. = to_chat_or_concat(., user, "The panel is open.")
 
 	if (cell)
-		to_chat(user, "The charge meter reads [round(cell.percent())]%.")
+		. = to_chat_or_concat(., user, "The charge meter reads [round(cell.percent())]%.")

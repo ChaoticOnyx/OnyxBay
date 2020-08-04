@@ -146,9 +146,9 @@
 	. = ..()
 	if(. && user.Adjacent(src))
 		if(fail_counter > 30)
-			to_chat(user, SPAN("danger", "It feels burning hot!"))
+			. = to_chat_or_concat(., user, SPAN("danger", "It feels burning hot!"))
 		else if(fail_counter > 15)
-			to_chat(user, SPAN("warning", "It feels pleasantly warm."))
+			. = to_chat_or_concat(., user, SPAN("warning", "It feels pleasantly warm."))
 
 /obj/item/weapon/gun/energy/gun/nuclear/proc/get_charge_overlay()
 	var/ratio = power_supply.percent()

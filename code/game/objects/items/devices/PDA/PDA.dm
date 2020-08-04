@@ -67,7 +67,7 @@ var/global/list/obj/item/device/pda/PDAs = list()
 /obj/item/device/pda/examine(mob/user)
 	. = ..(user, 1)
 	if(.)
-		to_chat(user, "The time [stationtime2text()] is displayed in the corner of the screen.")
+		. = to_chat_or_concat(., user, "The time [stationtime2text()] is displayed in the corner of the screen.")
 
 /obj/item/device/pda/medical
 	default_cartridge = /obj/item/weapon/cartridge/medical

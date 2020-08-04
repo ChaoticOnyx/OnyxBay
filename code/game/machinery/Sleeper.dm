@@ -57,9 +57,11 @@
 	. = ..()
 	if (. && user.Adjacent(src))
 		if (beaker)
-			to_chat(user, "It is loaded with a beaker.")
+			. = to_chat_or_concat(., user, "It is loaded with a beaker.")
 		if(occupant)
-			occupant.examine(user)
+			var/ret = occupant.examine(user)
+			if(!user)
+				. += "\n[ret]"
 
 /obj/machinery/sleeper/Process()
 	if(stat & (NOPOWER|BROKEN))

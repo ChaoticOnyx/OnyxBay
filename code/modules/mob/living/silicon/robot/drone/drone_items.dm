@@ -206,9 +206,9 @@
 /obj/item/weapon/gripper/examine(mob/user)
 	. = ..()
 	if(wrapped)
-		to_chat(user, "It is holding \a [wrapped].")
+		. = to_chat_or_concat(., user, "It is holding \a [wrapped].")
 	else if (length(storage_type))
-		to_chat(user, "[src] is currently can [mode == MODE_EMPTY ? "empty" : "open"] containers.")
+		. = to_chat_or_concat(., user, "[src] is currently can [mode == MODE_EMPTY ? "empty" : "open"] containers.")
 
 /obj/item/weapon/gripper/attack_self(mob/user as mob)
 	if(wrapped)

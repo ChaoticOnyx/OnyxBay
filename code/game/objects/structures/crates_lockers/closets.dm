@@ -119,21 +119,22 @@
 	return null
 
 /obj/structure/closet/examine(mob/user)
-	if(..(user, 1) && !opened)
+	. = ..(user, 1)
+	if(. && !opened)
 		var/content_size = 0
 		for(var/atom/movable/AM in src.contents)
 			if(!AM.anchored)
 				content_size += content_size(AM)
 		if(!content_size)
-			to_chat(user, "It is empty.")
+			. = to_chat_or_concat(., user, "It is empty.")
 		else if(storage_capacity > content_size*4)
-			to_chat(user, "It is barely filled.")
+			. = to_chat_or_concat(., user, "It is barely filled.")
 		else if(storage_capacity > content_size*2)
-			to_chat(user, "It is less than half full.")
+			. = to_chat_or_concat(., user, "It is less than half full.")
 		else if(storage_capacity > content_size)
-			to_chat(user, "There is still some free space.")
+			. = to_chat_or_concat(., user, "There is still some free space.")
 		else
-			to_chat(user, "It is full.")
+			. = to_chat_or_concat(., user, "It is full.")
 
 /obj/structure/closet/CanPass(atom/movable/mover, turf/target, height=0, air_group=0)
 	if(air_group || (height==0 || wall_mounted)) return 1

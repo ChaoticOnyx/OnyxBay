@@ -7,9 +7,9 @@
 	var/new_icon_file
 	var/uses = 1        // Uses before the kit deletes itself.
 
-/obj/item/device/kit/examine()
+/obj/item/device/kit/examine(mob/user)
 	. = ..()
-	to_chat(usr, "It has [uses] use\s left.")
+	. = to_chat_or_concat(., user, "It has [uses] use\s left.")
 
 /obj/item/device/kit/proc/use(amt, mob/user)
 	uses -= amt
@@ -73,12 +73,12 @@
 	var/removable = null
 	var/list/allowed_types = list()
 
-/obj/item/device/kit/paint/examine()
+/obj/item/device/kit/paint/examine(mob/user)
 	. = ..()
-	to_chat(usr, "This kit will convert an exosuit into: [new_name].")
-	to_chat(usr, "This kit can be used on the following exosuit models:")
+	. = to_chat_or_concat(., user, "This kit will convert an exosuit into: [new_name].")
+	. = to_chat_or_concat(., user, "This kit can be used on the following exosuit models:")
 	for(var/exotype in allowed_types)
-		to_chat(usr, "- [capitalize(exotype)]")
+		. = to_chat_or_concat(., user, "- [capitalize(exotype)]")
 
 /obj/mecha/attackby(obj/item/weapon/W, mob/user)
 	if(istype(W, /obj/item/device/kit/paint))

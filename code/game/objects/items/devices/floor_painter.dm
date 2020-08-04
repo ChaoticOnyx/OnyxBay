@@ -126,7 +126,7 @@
 
 /obj/item/device/floor_painter/examine(mob/user)
 	. = ..(user)
-	to_chat(user, "It is configured to produce the '[decal]' decal with a direction of '[paint_dir]' using [paint_colour] paint.")
+	. = to_chat_or_concat(., user, "It is configured to produce the '[decal]' decal with a direction of '[paint_dir]' using [paint_colour] paint.")
 
 /obj/item/device/floor_painter/verb/choose_colour()
 	set name = "Choose Colour"
