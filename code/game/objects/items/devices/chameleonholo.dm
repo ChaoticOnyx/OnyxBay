@@ -13,7 +13,7 @@
 	var/saved_appearance
 	var/saved_dir
 	var/saved_density
-	var/saved_w_class
+	var/saved_examine_result
 
 /obj/item/device/chameleonholo/dropped()
 	activate()
@@ -31,6 +31,14 @@
 	if (active)
 		deactivate()
 		return
+
+/obj/item/device/chameleonholo/examine(mob/user, distance = -1)
+	if (!active)
+		return ..(user, distance)
+	if (!user)
+		return saved_examine_result //for consistency with /atom/proc/examine() changes
+	to_chat(user, saved_examine_result)
+	return distance == -1 || (get_dist(src, user) <= distance)
 
 /obj/item/device/chameleonholo/attack_self(mob/user)
 	if (!saved_appearance)
@@ -51,7 +59,7 @@
 	saved_appearance = object.appearance
 	saved_dir = object.dir
 	saved_density = object.density
-	saved_w_class = object.w_class
+	saved_examine_result = object.examine()
 
 /obj/item/device/chameleonholo/proc/activate(obj/saved_item)
 	if(active || !saved_appearance)
@@ -60,7 +68,6 @@
 	appearance = saved_appearance
 	dir = saved_dir
 	density = saved_density
-	w_class = saved_w_class
 	alpha = max(0, alpha - 50)
 	active = TRUE
 
@@ -71,5 +78,4 @@
 	appearance = initial(appearance)
 	dir = initial(dir)
 	density = initial(density)
-	w_class = initial(w_class)
 	active = FALSE
