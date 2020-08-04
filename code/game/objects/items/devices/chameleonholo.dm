@@ -13,6 +13,7 @@
 	var/saved_appearance
 	var/saved_dir
 	var/saved_density
+	var/saved_w_class
 
 /obj/item/device/chameleonholo/dropped()
 	activate()
@@ -44,11 +45,13 @@
 	if(!istype(target,/obj))
 		to_chat(user, SPAN("warning","\The [src] can't scan \the [target]."))
 		return
+	var/obj/object = target 
 	playsound(get_turf(src), 'sound/weapons/flash.ogg', 100, 1, -6)
 	to_chat(user, SPAN("notice","Scanned \the [target]."))
-	saved_appearance = target.appearance
-	saved_dir = target.dir
-	saved_density = target.density
+	saved_appearance = object.appearance
+	saved_dir = object.dir
+	saved_density = object.density
+	saved_w_class = object.w_class
 
 /obj/item/device/chameleonholo/proc/activate(obj/saved_item)
 	if(active || !saved_appearance)
@@ -57,6 +60,7 @@
 	appearance = saved_appearance
 	dir = saved_dir
 	density = saved_density
+	w_class = saved_w_class
 	alpha = max(0, alpha - 50)
 	active = TRUE
 
@@ -67,4 +71,5 @@
 	appearance = initial(appearance)
 	dir = initial(dir)
 	density = initial(density)
+	w_class = initial(w_class)
 	active = FALSE
