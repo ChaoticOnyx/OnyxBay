@@ -69,7 +69,7 @@
 	var/list/dispersion = list(0)
 	var/one_hand_penalty
 	var/wielded_item_state
-	var/combustion	= TRUE //whether it creates hotspot when fired
+	var/combustion = TRUE //whether it creates hotspot when fired
 	var/clumsy_unaffected
 
 	var/next_fire_time = 0
