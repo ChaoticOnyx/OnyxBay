@@ -226,30 +226,28 @@
 	return "<span class='say_quote'>\[[stationtime2text()]\]</span>"
 
 /mob/proc/on_hear_radio(part_a, speaker_name, track, part_b, part_c, formatted, loud)
+	var/text = "[part_a][speaker_name][part_b][formatted][part_c]"
 	if(loud)
-		to_chat(src, "<font size='3'><b>[part_a][speaker_name][part_b][formatted][part_c]</b></font>")
-	else
-		to_chat(src, "[part_a][speaker_name][part_b][formatted][part_c]")
+		text = FONT_LARGE(text)
+	to_chat(src, text)
 
 /mob/observer/ghost/on_hear_radio(part_a, speaker_name, track, part_b, part_c, formatted, loud)
+	var/text = "[part_a][track][part_b][formatted][part_c]"
 	if(loud)
-		to_chat(src, "<font size='3'><b>[part_a][track][part_b][formatted][part_c]</b></font>")
-	else
-		to_chat(src, "[part_a][track][part_b][formatted][part_c]")
+		text = FONT_LARGE(text)
+	to_chat(src, text)
 
 /mob/living/silicon/on_hear_radio(part_a, speaker_name, track, part_b, part_c, formatted, loud)
-	var/time = say_timestamp()
+	var/text = "[say_timestamp()][part_a][speaker_name][part_b][formatted][part_c]"
 	if(loud)
-		to_chat(src, "<font size='3'>[time]<b>[part_a][speaker_name][part_b][formatted][part_c]</b></font>")
-	else
-		to_chat(src, "[time][part_a][speaker_name][part_b][formatted][part_c]")
+		text = FONT_LARGE(text)
+	to_chat(src, text)
 
 /mob/living/silicon/ai/on_hear_radio(part_a, speaker_name, track, part_b, part_c, formatted, loud)
-	var/time = say_timestamp()
+	var/text = "[say_timestamp()][part_a][track][part_b][formatted][part_c]"
 	if(loud)
-		to_chat(src, "<font size='3'>[time]<b>[part_a][track][part_b][formatted][part_c]</b></font>")
-	else
-		to_chat(src, "[time][part_a][track][part_b][formatted][part_c]")
+		text = FONT_LARGE(text)
+	to_chat(src, text)
 
 /mob/proc/hear_signlang(message, verb = "gestures", datum/language/language, mob/speaker = null)
 	if(!client)
