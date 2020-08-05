@@ -48,16 +48,3 @@
 		to_chat(usr, "You attempt to button-up the velcro on your [src], before promptly realising how silly you are.")
 		return
 	update_clothing_icon()	//so our overlays update
-
-/obj/item/clothing/suit/storage/vest/merc/New()
-	..()
-	pockets = new /obj/item/weapon/storage/internal/pockets(src, slots = 4, slot_size = 2)
-
-
-/obj/item/clothing/suit/storage/vest/tactical/New()
-	..()
-	pockets = new /obj/item/weapon/storage/internal/pockets(src, slots = 4, slot_size = 2)
-
-/obj/item/clothing/suit/storage/vest/police/New()
-	..()
-	pockets = new /obj/item/weapon/storage/internal/pockets(src, slots = 4, slot_size = 2)

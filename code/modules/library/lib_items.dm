@@ -53,10 +53,19 @@
 
 /obj/structure/bookcase/attack_hand(mob/user as mob)
 	if(contents.len)
-		var/obj/item/weapon/book/choice = input("Which book would you like to remove from the shelf?") as null|obj in contents
-		if(choice)
+		var/list/titles = list()
+		for(var/obj/item in contents)
+			var/item_name = item.name
+			if(istype(item, /obj/item/weapon/book))
+				var/obj/item/weapon/book/B = item
+				item_name = B.title
+			titles[item_name] = item
+		var/title = input("Which book would you like to remove from the shelf?") as null|anything in titles
+		if(title)
 			if(!usr.canmove || usr.stat || usr.restrained() || !in_range(loc, usr))
 				return
+			var/obj/choice = titles[title]
+			ASSERT(choice)
 			if(ishuman(user))
 				if(!user.get_active_hand())
 					user.put_in_hands(choice)
@@ -99,11 +108,10 @@
 
 	New()
 		..()
-		new /obj/item/weapon/book/manual/medical_cloning(src)
-		new /obj/item/weapon/book/manual/medical_chemistry(src)
-		new /obj/item/weapon/book/manual/medical_diagnostics_manual(src)
-		new /obj/item/weapon/book/manual/medical_diagnostics_manual(src)
-		new /obj/item/weapon/book/manual/medical_diagnostics_manual(src)
+		new /obj/item/weapon/book/wiki/medical_chemistry(src)
+		new /obj/item/weapon/book/wiki/medical_diagnostics_manual(src)
+		new /obj/item/weapon/book/wiki/medical_diagnostics_manual(src)
+		new /obj/item/weapon/book/wiki/medical_diagnostics_manual(src)
 		update_icon()
 
 
@@ -112,13 +120,12 @@
 
 	New()
 		..()
-		new /obj/item/weapon/book/manual/engineering_construction(src)
-		new /obj/item/weapon/book/manual/engineering_particle_accelerator(src)
-		new /obj/item/weapon/book/manual/engineering_hacking(src)
-		new /obj/item/weapon/book/manual/engineering_guide(src)
-		new /obj/item/weapon/book/manual/atmospipes(src)
-		new /obj/item/weapon/book/manual/engineering_singularity_safety(src)
-		new /obj/item/weapon/book/manual/evaguide(src)
+		new /obj/item/weapon/book/wiki/engineering_construction(src)
+		new /obj/item/weapon/book/wiki/engineering_hacking(src)
+		new /obj/item/weapon/book/wiki/engineering_guide(src)
+		new /obj/item/weapon/book/wiki/atmospipes(src)
+		new /obj/item/weapon/book/wiki/engineering_singularity_safety(src)
+		new /obj/item/weapon/book/wiki/hardsuits(src)
 		update_icon()
 
 /obj/structure/bookcase/manuals/research_and_development
@@ -126,7 +133,7 @@
 
 	New()
 		..()
-		new /obj/item/weapon/book/manual/research_and_development(src)
+		new /obj/item/weapon/book/wiki/research_and_development(src)
 		update_icon()
 
 
@@ -142,11 +149,13 @@
 	w_class = ITEM_SIZE_NORMAL		 //upped to three because books are, y'know, pretty big. (and you could hide them inside eachother recursively forever)
 	attack_verb = list("bashed", "whacked", "educated")
 	var/dat = "<meta charset=\"utf-8\">" // Actual page content
-	var/author		 // Who wrote the thing, can be changed by pen or PC. It is not automatically assigned
-	var/unique = 0   // 0 - Normal book, 1 - Should not be treated as normal book, unable to be copied, unable to be modified
-	var/title		 // The real name of the book.
-	var/carved = 0	 // Has the book been hollowed out for use as a secret storage item?
-	var/obj/item/store	//What's in the book?
+	var/author		       // Who wrote the thing, can be changed by pen or PC. It is not automatically assigned
+	var/unique = 0         // 0 - Normal book, 1 - Should not be treated as normal book, unable to be copied, unable to be modified
+	var/title = "Untitled" // The real name of the book.
+	var/carved = 0         // Has the book been hollowed out for use as a secret storage item?
+	var/obj/item/store	   // What's in the book?
+	var/window_width = 650
+	var/window_height = 650
 
 /obj/item/weapon/book/attack_self(mob/user as mob)
 	if(carved)
@@ -159,7 +168,7 @@
 			to_chat(user, "<span class='notice'>The pages of [title] have been cut out!</span>")
 			return
 	if(src.dat)
-		user << browse(dat, "window=book;size=1000x550")
+		user << browse(dat, "window=book_[title];size=[window_width]x[window_height]")
 		user.visible_message("[user] opens a book titled \"[src.title]\" and begins reading intently.")
 		onclose(user, "book")
 	else
@@ -224,12 +233,78 @@
 	if(user.zone_sel.selecting == BP_EYES)
 		user.visible_message("<span class='notice'>You open up the book and show it to [M]. </span>", \
 			"<span class='notice'> [user] opens up a book and shows it to [M]. </span>")
-		M << browse("<i>Author: [author].</i><br><br>" + "[dat]", "window=book;size=1000x550")
+		M << browse(dat, "window=book_[title];size=[window_width]x[window_height]")
 		user.setClickCooldown(DEFAULT_QUICK_COOLDOWN) //to prevent spam
 
-/*
- * Manual Base Object
- */
-/obj/item/weapon/book/manual
-	icon = 'icons/obj/library.dmi'
-	unique = 1   // 0 - Normal book, 1 - Should not be treated as normal book, unable to be copied, unable to be modified
+/obj/item/weapon/book/wiki
+	title = ""
+	unique = 1
+	var/topic
+	var/style = WIKI_MINI
+	var/censored = 1
+
+/obj/item/weapon/book/wiki/Initialize(mapload, ntopic, ncensored, nstyle)
+	if(ntopic)
+		topic = ntopic
+	if(!isnull(ncensored))
+		censored = ncensored
+	if(nstyle)
+		style = nstyle
+	if(!title)
+		title = topic
+	if(title)
+		SetName(title)
+	dat = wiki_request(topic, style, censored, src)
+	. = ..(mapload)
+
+/obj/item/weapon/book/wiki/Topic(href, href_list[])
+	// No parent call here
+	if(href_list["title"] && initial(title) == "")
+		title = href_list["title"]
+		SetName(href_list["title"]) // Cirillic names are possible!
+	return 1
+
+// Put this into browse() to show a wiki topic
+/proc/wiki_request(topic, style = WIKI_MINI, censorship = 0, obj/source)
+	var/preamble = ""
+	var/add_params = ""
+	var/script = ""
+	var/ref = source ? "var ref = \ref[source];" : "";
+	switch(style)
+		if(WIKI_FULL)
+			script = "window.location='[config.wikiurl]/index.php?title=[topic]&printable=yes'"
+		if(WIKI_MINI)
+			script = file2text('code/js/wiki_html.js')
+			add_params = "&useskin=monobook&disabletoc=true" // TODO: Whenever BYOND bug about anchor links in local files will be fixed, remove '&disabletoc=true' to allow index
+		if(WIKI_MOBILE)
+			script = file2text('code/js/wiki_html.js')
+			add_params = "&useskin=minerva"
+		if(WIKI_TEXT)
+			script = file2text('code/js/wiki_text.js');
+			if(source)
+				usr << browse(icon(source.icon, source.icon_state), "file=wiki_paper.png&display=0")
+			else
+				usr << browse(icon('icons/obj/bureaucracy.dmi', "paper"), "file=wiki_paper.png&display=0")
+			usr << browse(icon('icons/misc/mark.dmi', "rt"), "file=right_arrow.png&display=0")
+			usr << browse(icon('icons/obj/library.dmi', "binder"), "file=bookbinder.png&display=0")
+			usr << browse(icon('icons/obj/library.dmi', "book1"), "file=book1.png&display=0")
+			preamble = {"<div style='text-align:center;border-style: dashed;'><b>This is a book template. Process it through a bookbinder to get a proper book.</b><br>
+						<img src='wiki_paper.png' style='width: 32px; height: 32px;'/><img src='right_arrow.png' style='width: 32px; height: 32px;'/><img src='bookbinder.png' style='width: 32px; height: 32px;'/><img src='right_arrow.png' style='width: 32px; height: 32px;'/><img src='book1.png' style='width: 32px; height: 32px;'/>
+						</div><br>"}
+
+	return {"<!DOCTYPE html><html>
+		<head><meta http-equiv=\"x-ua-compatible\" content=\"IE=edge\" charset=\"UTF-8\"></head>
+		<body>[preamble]<div id='status'>Turning on...</div></body>
+		<script>
+		var mainPage = '[config.wikiurl]';
+		var topic = '[topic][add_params]';
+		var censorship = [censorship];
+		[ref]
+		[script]
+		</script>
+		</html>"}
+
+/obj/item/weapon/book/wiki/template
+	icon_state = "paper_stack"
+	desc = "Bunch of unbound paper pieces."
+	style = WIKI_TEXT
