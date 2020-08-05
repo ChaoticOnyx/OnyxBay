@@ -1,6 +1,6 @@
 /obj/item/device/chameleonholo
 	name = "chameleon hologram"
-	icon_state = "shield0"
+	icon_state = "chamholo"
 	obj_flags = OBJ_FLAG_CONDUCTIBLE
 	slot_flags = SLOT_BELT
 	item_state = "electronic"
