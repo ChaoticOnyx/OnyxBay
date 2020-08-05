@@ -10,7 +10,7 @@
 	throw_speed = 4
 	throw_range = 20
 	var/key_data
-	var/durability = 50
+	var/durability = 50 // consider 100 as maximum possible durability
 
 /obj/item/weapon/soap/New()
 	..()
