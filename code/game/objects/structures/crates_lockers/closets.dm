@@ -416,7 +416,7 @@
 		src.welded = !src.welded
 		src.update_icon()
 		user.visible_message("<span class='warning'>\The [src] has been [welded?"welded shut":"unwelded"] by \the [user].</span>", blind_message = "You hear welding.", range = 3)
-	else if(istype(W, /obj/item/device/multitool))
+	else if(istype(W, /obj/item/device/multitool) && (setup & CLOSET_HAS_LOCK))
 		var/obj/item/device/multitool/multi = W
 		if(multi.in_use)
 			to_chat(user, "<span class='warning'>This multitool is already in use!</span>")
