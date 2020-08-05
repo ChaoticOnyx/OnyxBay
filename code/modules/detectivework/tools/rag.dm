@@ -224,4 +224,3 @@
 	if(on_fire)
 		return 2000
 	return 0
-	
