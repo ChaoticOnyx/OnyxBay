@@ -181,6 +181,7 @@ meteor_act
 		if(!I) continue
 		if(I.mod_shield > shield_mod_shield)
 			shield = I
+			shield_mod_shield = I.mod_shield
 	. = shield.handle_shield(src, damage, damage_source, attacker, def_zone, attack_text)
 	return
 
