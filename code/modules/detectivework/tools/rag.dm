@@ -219,3 +219,9 @@
 	reagents.remove_reagent(/datum/reagent/fuel, reagents.maximum_volume/25)
 	update_name()
 	burn_time--
+
+/obj/item/weapon/reagent_containers/glass/rag/get_temperature_as_from_ignitor()
+	if(on_fire)
+		return 2000
+	return 0
+	

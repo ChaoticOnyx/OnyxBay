@@ -338,6 +338,11 @@
 		M.adjust_fire_stacks(rand(2, burn))
 		M.IgniteMob()
 
+/obj/item/weapon/gun/flamer/get_temperature_as_from_ignitor()
+	if(lit)
+		return 3800
+	return 0
+
 /turf/proc/ignite(fire_lvl, burn_lvl, fire_stacks = 0, fire_damage = 0)
 	//extinguish any flame present
 	var/obj/flamer_fire/F = locate(/obj/flamer_fire) in src

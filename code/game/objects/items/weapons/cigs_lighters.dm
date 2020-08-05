@@ -16,6 +16,11 @@ CIGARETTE PACKETS ARE IN FANCY.DM
 /obj/item/weapon/flame
 	var/lit = 0
 
+/obj/item/weapon/flame/get_temperature_as_from_ignitor()
+	if(lit)
+		return 1000
+	return 0
+
 ///////////
 //MATCHES//
 ///////////
@@ -177,7 +182,7 @@ CIGARETTE PACKETS ARE IN FANCY.DM
 	playsound(loc, 'sound/items/pffsh.ogg', 50, 1, -1)
 
 /obj/item/clothing/mask/smokable/proc/can_be_lit_with(obj/W)
-	return is_flame_source(W) || istype(W, /obj/item/device/assembly/igniter)
+	return W.get_temperature_as_from_ignitor() || istype(W, /obj/item/device/assembly/igniter)
 
 /obj/item/clothing/mask/smokable/proc/generate_lighting_message(atom/tool, mob/holder)
 	var/text = ""
@@ -254,6 +259,11 @@ CIGARETTE PACKETS ARE IN FANCY.DM
 				to_chat(M, "<span class='notice'>Your [name] goes out.</span>")
 			M.remove_from_mob(src) //un-equip it so the overlays can update
 		qdel(src)
+
+/obj/item/clothing/mask/smokable/cigarette/get_temperature_as_from_ignitor()
+	if(lit)
+		return 1000
+	return 0
 
 /obj/item/clothing/mask/smokable/cigarette/menthol
 	name = "menthol cigarette"
@@ -766,6 +776,11 @@ CIGARETTE PACKETS ARE IN FANCY.DM
 
 /obj/item/weapon/flame/lighter/proc/shutoff_effects(mob/user)
 	user.visible_message("<span class='notice'>[user] quietly shuts off the [src].</span>")
+
+/obj/item/weapon/flame/lighter/get_temperature_as_from_ignitor()
+	if(lit)
+		return 1500
+	return 0
 
 /obj/item/weapon/flame/lighter/zippo
 	name = "\improper Zippo lighter"

@@ -65,6 +65,11 @@
 		return ITEM_SIZE_NO_CONTAINER
 	return ..()
 
+/obj/item/weapon/melee/energy/get_temperature_as_from_ignitor()
+	if(active)
+		return 3500
+	return 0
+
 /*
  * Energy Axe
  */
