@@ -199,6 +199,7 @@
 			if(M.Victim == G:affecting)
 				to_chat(usr, "[G:affecting:name] will not fit into the cryo because they have a slime latched onto their head.")
 				return
+		user.visible_message(SPAN("notice", "\The [user] begins placing \the [target] into \the [src]."), SPAN("notice", "You start placing \the [target] into \the [src]."))
 		if(!do_after(user, 30, src))
 			return
 		if(!ismob(G:affecting))
