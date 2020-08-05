@@ -408,7 +408,7 @@ CIGARETTE PACKETS ARE IN FANCY.DM
 /obj/item/clothing/mask/smokable/cigarette/attackby(obj/item/W, mob/user)
 	if(istype(W, /obj/item/weapon/wirecutters))
 		user.visible_message(SPAN_NOTICE("[user] cut the tip of \his [name] with [W]"), "You cut the tip of your [name]")
-		smoketime -= 1
+		smoketime -= 10
 		if(smoketime <= 0)
 			die()
 		else
