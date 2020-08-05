@@ -241,3 +241,6 @@ obj/item/weapon/gun/energy/staff/focus
 		to_chat(user, SPAN_NOTICE("You insert \the [W.material.use_name] [W.material.sheet_singular_name] into \the [src]."))
 	else
 		to_chat(user, SPAN_WARNING("You can't insert \the [W.material.use_name] [W.material.sheet_singular_name] into \the [src], it's full."))
+
+/obj/item/weapon/gun/energy/plasmacutter/get_temperature_as_from_ignitor()
+	return 3800

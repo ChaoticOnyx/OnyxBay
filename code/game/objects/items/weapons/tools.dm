@@ -472,6 +472,11 @@
 				spawn(100)
 					H.disabilities &= ~NEARSIGHTED
 
+/obj/item/weapon/weldingtool/get_temperature_as_from_ignitor()
+	if(isOn())
+		return 3800
+	return 0
+
 /obj/item/weapon/welder_tank
 	name = "welding fuel tank"
 	desc = "An interchangeable fuel tank meant for a welding tool."

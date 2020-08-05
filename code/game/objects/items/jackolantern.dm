@@ -7,7 +7,7 @@
 	var/lit_up = FALSE
 
 /obj/item/jackolantern/attackby(obj/item/W, mob/user)
-	if(is_flame_source(W) && !lit_up)
+	if(W.get_temperature_as_from_ignitor() && !lit_up)
 		user.visible_message("<span class='notice'>\The [user] lit up \the [src] with \the [W].</span>", "<span class='notice'>You lit up \the [src] with \the [W].</span>")
 		lit_up = TRUE
 		set_light(2, 1, COLOR_ORANGE)
@@ -25,6 +25,11 @@
 /obj/item/jackolantern/Process()
 	var/turf/place = get_turf(src)
 	place.hotspot_expose(700, 5)
+
+/obj/item/jackolantern/get_temperature_as_from_ignitor()
+	if(lit_up)
+		return 1500
+	return 0
 
 /obj/item/jackolantern/best
 	name = "jack o'lantern"
