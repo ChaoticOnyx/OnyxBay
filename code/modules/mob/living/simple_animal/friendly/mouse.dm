@@ -130,6 +130,11 @@
 				break
 
 		var/blocked = H.run_armor_check(limb.organ_tag, "melee")
+		for(var/obj/item/clothing/clothes in list(H.head, H.wear_mask, H.wear_suit, H.w_uniform, H.gloves, H.shoes))
+			if(istype(clothes) && (clothes.body_parts_covered & limb.body_part) && ((clothes.item_flags & ITEM_FLAG_THICKMATERIAL) || (blocked >= 30)))
+				to_chat(src, "<span class='warning'>You can't bite through [H]'s [clothes].</span>")
+				return
+
 		if(H.apply_damage(rand(1, 2), BRUTE, limb.organ_tag, blocked) && !BP_IS_ROBOTIC(limb) && prob(70 - blocked))
 			limb.germ_level += rand(75, 150)
 			if(virus)
