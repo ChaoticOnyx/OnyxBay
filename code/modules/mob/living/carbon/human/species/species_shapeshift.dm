@@ -139,7 +139,7 @@ var/list/wrapped_species_by_ref = list()
 		return
 
 	wrapped_species_by_ref["\ref[src]"] = new_species
-	visible_message(SPAN_NOTICE("\The [src] shifts and contorts, taking the form of \a ["\improper [new_species]"]!"))
+	visible_message("<span class='notice'>\The [src] shifts and contorts, taking the form of \a ["\improper [new_species]"]!</span>")
 	regenerate_icons()
 
 /mob/living/carbon/human/proc/shapeshifter_select_colour()
