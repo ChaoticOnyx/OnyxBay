@@ -13,6 +13,7 @@
 			// Limits antag status to clients above player age, if the age system is being used.
 			if(C && config.use_age_restriction_for_antags && isnum(C.player_age) && isnum(min_player_age) && (C.player_age < min_player_age))
 				return 0
+		log_debug("can_become_antag: ckey is [player.current.ckey], mob is [player.current], assigned_role is [player.assigned_role], assigned_job is [player.assigned_job.type]")
 		if(is_type_in_list(J,restricted_jobs))
 			return 0
 		if(player.current && (player.current.status_flags & NO_ANTAG))

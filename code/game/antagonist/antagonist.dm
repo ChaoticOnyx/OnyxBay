@@ -1,9 +1,9 @@
 /datum/antagonist
 
 	// Text shown when becoming this antagonist.
-	var/list/restricted_jobs = 		list()   // Jobs that cannot be this antagonist at roundstart (depending on config)
-	var/list/protected_jobs = 		list()   // As above.
-	var/list/blacklisted_jobs =		list()   // Jobs that can NEVER be this antagonist
+	var/list/restricted_jobs            = list()   // Jobs that cannot be this antagonist at roundstart
+	var/list/additional_restricted_jobs = list()   // Mostly security jobs which can be restricted in addition via config
+	var/list/blacklisted_jobs           = list()   // Jobs that can NEVER be this antagonist
 
 	// Strings.
 	var/welcome_text = "Cry havoc and let slip the dogs of war!"
@@ -90,7 +90,7 @@
 	if(!role_text_plural)
 		role_text_plural = role_text
 	if(config.protect_roles_from_antagonist)
-		restricted_jobs |= protected_jobs
+		restricted_jobs |= additional_restricted_jobs
 	if(antaghud_indicator)
 		if(!GLOB.hud_icon_reference)
 			GLOB.hud_icon_reference = list()
@@ -107,6 +107,8 @@
 	// Prune restricted status. Broke it up for readability.
 	// Note that this is done before jobs are handed out.
 	for(var/datum/mind/player in mode.get_players_for_role(id))
+		if (!player.current.client)
+			continue
 		if(ghosts_only && !(isghostmind(player) || isnewplayer(player.current)))
 			log_debug("[key_name(player)] is not eligible to become a [role_text]: Only ghosts may join as this role!")
 		else if(config.use_age_restriction_for_antags && player.current.client.player_age < minimum_player_age)
@@ -116,6 +118,7 @@
 		else if (player in pending_antagonists)
 			log_debug("[key_name(player)] is not eligible to become a [role_text]: They have already been selected for this role!")
 		else if(!can_become_antag(player))
+			log_debug("[key_name(player)], can_become_antag returned FALSE!")
 			log_debug("[key_name(player)] is not eligible to become a [role_text]: They are blacklisted for this role!")
 		else if(player_is_antag(player))
 			log_debug("[key_name(player)] is not eligible to become a [role_text]: They are already an antagonist!")
@@ -124,6 +127,7 @@
 		else if(istype(player.current, /mob/living/simple_animal))
 			log_debug("[key_name(player)] is not eligible to become a [role_text]: They are simple animal!")
 		else
+			log_debug("[key_name(player)] is eligible to become a [role_text]")
 			candidates |= player
 
 	return candidates
