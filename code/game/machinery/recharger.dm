@@ -21,9 +21,9 @@ obj/machinery/recharger
 	)
 
 obj/machinery/recharger/proc/take_battery_cyborg(obj/item/weapon/cell/CELL, obj/item/weapon/gripper/GRIP, mob/living/silicon/user)
-	ASSERT(istype(CELL))
-	ASSERT(istype(GRIP))
-	ASSERT(istype(user))
+	ASSERT(CELL)
+	ASSERT(GRIP)
+	ASSERT(user)
 	if(!powered())
 		to_chat(user, SPAN_WARNING("The [name] blinks red as you try to insert the item!"))
 		return
