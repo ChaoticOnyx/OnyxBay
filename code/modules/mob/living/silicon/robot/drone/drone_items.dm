@@ -160,7 +160,7 @@
 		)
 /obj/item/weapon/gripper/research/resolve_attackby(atom/target, mob/living/user, params)
 	. = ..()
-	// copy-past
+
 	if(istype(target,/obj/item/organ)) //Check that we're not pocketing a mob.
 
 		//...and that the item is not in a container.
@@ -170,7 +170,6 @@
 		var/obj/item/organ/I = target
 
 		//We can grab the item, finally.
-		//We have error message in parent, we don't need it here
 		if(BP_IS_ROBOTIC(I))
 			to_chat(user, "<span class='notice'>You collect \the [I].</span>")
 			I.loc = src
@@ -397,6 +396,20 @@
 	else if(istype(target,/obj/machinery/portable_atmospherics/canister))
 		var/obj/machinery/portable_atmospherics/canister/A = target
 		A.ui_interact(user)
+
+	else if(istype(target, /obj/machinery/cell_charger))
+		var/obj/machinery/cell_charger/charger = target
+		if(charger.charging)
+
+			wrapped = charger.charging
+
+			charger.charging.add_fingerprint(user)
+			charger.charging.update_icon()
+			charger.charging.loc = src
+			charger.charging = null
+			charger.update_icon()
+
+			user.visible_message(SPAN_DANGER("[user] removes the power cell from [charger]!"), "You remove the power cell.")
 
 	else
 		to_chat(user, "<span class='notice'>[src] can't interact with \the [target].</span>")
