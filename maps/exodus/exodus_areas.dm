@@ -461,6 +461,18 @@
 	name = "\improper Ghetto Main"
 	icon_state = "ghettomain"
 
+/area/maintenance/ghetto_main_south
+	name = "\improper Ghetto Main - South"
+	icon_state = "ghettomainsouth"
+
+/area/maintenance/ghetto_eva
+	name = "\improper Ghetto EVA"
+	icon_state = "ghettoeva"
+
+/area/maintenance/ghetto_eva_maint
+	name = "\improper Ghetto EVA Maintenance"
+	icon_state = "ghettoevamaint"
+
 /area/maintenance/ghetto_casino
 	name = "\improper Ghetto Casino"
 	icon_state = "ghettocasino"
