@@ -50,7 +50,7 @@
 	can_hold = list(
 	/obj/item/weapon/cell,
 	/obj/item/weapon/stock_parts,
-	/obj/item/weapon/circuitboard/miningdrill,
+	/obj/item/weapon/circuitboard/miningdrill
 	)
 
 /obj/item/weapon/gripper/paperwork
@@ -64,7 +64,7 @@
 		/obj/item/weapon/paper_bundle,
 		/obj/item/weapon/card/id,
 		/obj/item/weapon/book,
-		/obj/item/weapon/newspaper,
+		/obj/item/weapon/newspaper
 		)
 
 /obj/item/weapon/gripper/chemistry
@@ -281,14 +281,6 @@
 	user.do_attack_animation(src)
 
 	if(wrapped)
-		if(istype(target, /obj/machinery/recharger))
-			if(istype(wrapped, /obj/item/weapon/cell))
-				var/obj/machinery/recharger/charger = target
-				charger.take_battery_cyborg(wrapped, src, user)
-		if(istype(target, /obj/machinery/cell_charger))
-			if(istype(wrapped, /obj/item/weapon/cell))
-				var/obj/machinery/cell_charger/charger = target
-				charger.take_battery_cyborg(wrapped, src, user)
 		if(istype(target,/obj/structure/table)) //Putting item on the table if any
 			var/obj/structure/table/T = target
 			to_chat(src.loc, "<span class='notice'>You place \the [wrapped] on \the [target].</span>")
@@ -346,15 +338,6 @@
 		if(istype(target,atypepath))
 			to_chat(user, "<span class='danger'>Your gripper cannot hold \the [target].</span>")
 			return
-
-	if(istype(target, /obj/machinery/recharger))
-		var/obj/machinery/recharger/charger = target
-		charger.give_battery_cyborg(src, user)
-		return
-	if(istype(target, /obj/machinery/cell_charger))
-		var/obj/machinery/cell_charger/charger = target
-		charger.give_battery_cyborg(src, user)
-		return
 
 	if(istype(target,/obj/item)) //Check that we're not pocketing a mob.
 

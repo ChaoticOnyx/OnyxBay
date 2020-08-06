@@ -34,42 +34,6 @@
 	if(charging)
 		to_chat(user, "Current charge: [charging.charge]")
 
-/obj/machinery/cell_charger/proc/take_battery_cyborg(obj/item/weapon/cell/CELL, obj/item/weapon/gripper/GRIP, mob/living/silicon/user)
-	ASSERT(CELL)
-	ASSERT(GRIP)
-	ASSERT(user)
-	if(stat & BROKEN)
-		return
-	if(anchored)
-		if(charging)
-			to_chat(user, SPAN_WARNING("There is already a cell in the charger."))
-		else
-			var/area/a = get_area(loc)
-			if(a.power_equip == 0) // There's no APC in this area, don't try to cheat power!
-				to_chat(user, "<span class='warning'>The [name] blinks red as you try to insert the cell!</span>")
-				return
-			GRIP.wrapped.loc = src
-			GRIP.wrapped = null
-			src.charging = CELL
-			src.set_power()
-			START_PROCESSING(SSmachines, src)
-			user.visible_message("[user] inserts a cell into the charger.", "You insert a cell into the charger.")
-			src.chargelevel = -1
-		queue_icon_update()
-
-/obj/machinery/cell_charger/proc/give_battery_cyborg(obj/item/weapon/gripper/GRIP, mob/living/silicon/user)
-	ASSERT(GRIP)
-	ASSERT(user)
-	if(charging)
-		charging.add_fingerprint(user)
-		charging.update_icon()
-		GRIP.wrapped = charging
-
-		src.charging = null
-		user.visible_message("[user] removes the cell from the charger.", "You remove the cell from the charger.")
-		src.chargelevel = -1
-		src.update_icon()
-
 /obj/machinery/cell_charger/attackby(obj/item/weapon/W, mob/user)
 	if(stat & BROKEN)
 		return

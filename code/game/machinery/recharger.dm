@@ -20,30 +20,6 @@ obj/machinery/recharger
 		/obj/item/weapon/stock_parts/capacitor
 	)
 
-obj/machinery/recharger/proc/take_battery_cyborg(obj/item/weapon/cell/CELL, obj/item/weapon/gripper/GRIP, mob/living/silicon/user)
-	ASSERT(CELL)
-	ASSERT(GRIP)
-	ASSERT(user)
-	if(!powered())
-		to_chat(user, SPAN_WARNING("The [name] blinks red as you try to insert the item!"))
-		return
-	if(charging)
-		to_chat(user, SPAN_WARNING("A [charging] is already charging here."))
-	else
-		charging = CELL
-		GRIP.wrapped.loc = src
-		GRIP.wrapped = null
-
-obj/machinery/recharger/proc/give_battery_cyborg(obj/item/weapon/gripper/GRIP, mob/living/silicon/user)
-	ASSERT(GRIP)
-	ASSERT(user)
-	if(charging && istype(charging, /obj/item/weapon/cell))
-		charging.add_fingerprint(user)
-		charging.update_icon()
-		GRIP.wrapped = charging
-		src.charging = null
-		src.update_icon()
-
 obj/machinery/recharger/attackby(obj/item/weapon/G as obj, mob/user as mob)
 	if(istype(user,/mob/living/silicon))
 		return
