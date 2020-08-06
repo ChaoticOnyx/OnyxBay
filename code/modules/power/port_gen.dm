@@ -54,8 +54,8 @@
 		return
 
 /obj/machinery/power/port_gen/examine(mob/user)
-	. = ..(user,1 )
-	if(!.)
+	. = ..()
+	if(get_dist(src, user) > 1)
 		return
 	if(active)
 		. = to_chat_or_concat(., user, "<span class='notice'>The generator is on.</span>")
@@ -149,7 +149,7 @@
 	power_gen = round(initial(power_gen) * (max(2, temp_rating) / 2))
 
 /obj/machinery/power/port_gen/pacman/examine(mob/user)
-	. = ..(user)
+	. = ..()
 	. = to_chat_or_concat(., user, "\The [src] appears to be producing [power_gen*power_output] W.")
 	. = to_chat_or_concat(., user, "There [sheets == 1 ? "is" : "are"] [sheets] sheet\s left in the hopper.")
 	if(IsBroken())

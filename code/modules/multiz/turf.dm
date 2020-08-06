@@ -78,8 +78,8 @@
 
 
 /turf/simulated/open/examine(mob/user, distance, infix, suffix)
-	. = ..(user, 2)
-	if(.)
+	. = ..()
+	if(get_dist(src, user) <= 2)
 		var/depth = 1
 		for(var/T = GetBelow(src); isopenspace(T); T = GetBelow(T))
 			depth += 1

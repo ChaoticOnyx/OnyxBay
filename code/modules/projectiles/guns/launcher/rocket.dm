@@ -24,8 +24,8 @@
 	var/list/rockets = new /list()
 
 /obj/item/weapon/gun/launcher/rocket/examine(mob/user)
-	. = ..(user, 2)
-	if(!.)
+	. = ..()
+	if(get_dist(src, user) > 2)
 		return
 	. = to_chat_or_concat(., user, "<span class='notice'>[rockets.len] / [max_rockets] rockets.</span>")
 

@@ -24,8 +24,8 @@
 	return 1
 
 /obj/item/weapon/grenade/examine(mob/user)
-	. = ..(user, 0)
-	if(.)
+	. = ..()
+	if(get_dist(src, user) <= 1)
 		if(det_time > 1)
 			. = to_chat_or_concat(., user, "The timer is set to [det_time/10] seconds.")
 			return

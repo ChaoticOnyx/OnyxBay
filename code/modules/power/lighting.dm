@@ -50,8 +50,8 @@
 		if(3) icon_state = "tube-empty"
 
 /obj/machinery/light_construct/examine(mob/user)
-	. = ..(user, 2)
-	if(!.)
+	. = ..()
+	if(get_dist(src, user) > 2)
 		return
 
 	switch(src.stage)

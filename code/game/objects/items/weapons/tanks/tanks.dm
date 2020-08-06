@@ -80,8 +80,8 @@ var/list/global/tank_gauge_cache = list()
 	. = ..()
 
 /obj/item/weapon/tank/examine(mob/user)
-	. = ..(user, 0)
-	if(.)
+	. = ..()
+	if(get_dist(src, user) <= 0)
 		var/descriptive
 		if(air_contents.total_moles == 0)
 			descriptive = "empty"

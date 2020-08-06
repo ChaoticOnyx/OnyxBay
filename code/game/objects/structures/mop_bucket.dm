@@ -15,8 +15,8 @@
 	..()
 
 /obj/structure/mopbucket/examine(mob/user)
-	. = ..(user, 1)
-	if(.)
+	. = ..()
+	if(get_dist(src, user) <= 1)
 		. = to_chat_or_concat(., user, "[src] \icon[src] contains [reagents.total_volume] unit\s of water!")
 
 /obj/structure/mopbucket/attackby(obj/item/I, mob/user)

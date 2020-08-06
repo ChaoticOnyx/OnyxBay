@@ -91,8 +91,8 @@
 	var/obj/item/weapon/evidencebag/filled_bag
 
 /obj/item/device/core_sampler/examine(mob/user)
-	. = ..(user, 2)
-	if(.)
+	. = ..()
+	if(get_dist(src, user) <= 2)
 		. = to_chat_or_concat(., user, "<span class='notice'>Used to extract geological core samples - this one is [sampled_turf ? "full" : "empty"], and has [num_stored_bags] bag[num_stored_bags != 1 ? "s" : ""] remaining.</span>")
 
 /obj/item/device/core_sampler/attackby(obj/item/I, mob/living/user)

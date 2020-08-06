@@ -158,9 +158,8 @@ var/const/NO_EMAG_ACT = -50
 /obj/item/weapon/card/id/examine(mob/user)
 	if(in_range(user, src))
 		show(user)
-		. = to_chat_or_concat(., user, desc)
-	else
-		. = to_chat_or_concat(., user, "<span class='warning'>It is too far away.</span>")
+		return desc
+	return "<span class='warning'>It is too far away.</span>"
 
 /obj/item/weapon/card/id/proc/prevent_tracking()
 	return 0

@@ -15,8 +15,8 @@ obj/item/device/cable_painter/New()
 	color_selection = pick(possible_cable_coil_colours)
 
 obj/item/device/cable_painter/examine(user)
-	. = ..(user, 1)
-	if(.)
+	. = ..()
+	if(get_dist(src, user) <= 1)
 		. = to_chat_or_concat(., user, "The color is currently set to [lowertext(color_selection)].")
 
 obj/item/device/cable_painter/attack_self(mob/user)

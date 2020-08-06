@@ -33,8 +33,8 @@
 	. = ..()
 
 /obj/item/weapon/storage/fancy/examine(mob/user)
-	. = ..(user, 1)
-	if(!.)
+	. = ..()
+	if(get_dist(src, user) > 1)
 		return
 
 	var/key_name = initial(key_type.name)

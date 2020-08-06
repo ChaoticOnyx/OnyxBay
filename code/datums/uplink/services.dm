@@ -63,8 +63,8 @@
 	. = ..()
 
 /obj/item/device/uplink_service/examine(user)
-	. = ..(user, 1)
-	if(!.)
+	. = ..()
+	if(get_dist(src, user) > 1)
 		return
 	var/msg
 	switch(state)

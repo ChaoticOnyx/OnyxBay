@@ -103,8 +103,8 @@
 	return 0
 
 /obj/item/weapon/reagent_containers/food/snacks/examine(mob/user)
-	. = ..(user, 1)
-	if(!.)
+	. = ..()
+	if(get_dist(src, user) > 1)
 		return
 	if (bitecount==0)
 		return

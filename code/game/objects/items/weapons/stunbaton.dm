@@ -60,8 +60,8 @@
 		set_light(0)
 
 /obj/item/weapon/melee/baton/examine(mob/user)
-	. = ..(user, 1)
-	if(!.)
+	. = ..()
+	if(get_dist(src, user) > 1)
 		return
 	. = examine_cell(user, .)
 	return

@@ -34,11 +34,8 @@
 
 /obj/item/device/chameleonholo/examine(mob/user, distance = -1)
 	if (!active)
-		return ..(user, distance)
-	if (!user)
-		return saved_examine_result //for consistency with /atom/proc/examine() changes
-	to_chat(user, saved_examine_result)
-	return distance == -1 || (get_dist(src, user) <= distance)
+		return ..()
+	return saved_examine_result
 
 /obj/item/device/chameleonholo/attack_self(mob/user)
 	if (!saved_appearance)

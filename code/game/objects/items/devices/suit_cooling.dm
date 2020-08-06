@@ -169,8 +169,8 @@
 
 
 /obj/item/device/suit_cooling_unit/examine(mob/user)
-	. = ..(user, 1)
-	if(!.)
+	. = ..()
+	if(get_dist(src, user) > 1)
 		return
 
 	if (on)

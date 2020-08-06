@@ -76,8 +76,8 @@
 	to_chat(user, "<span class='notice'>You swallow a gulp from \the [src].</span>")
 
 /obj/item/weapon/reagent_containers/food/drinks/examine(mob/user)
-	. = ..(user, 1)
-	if(!.)
+	. = ..()
+	if(get_dist(src, user) > 1)
 		return
 	if(!reagents || reagents.total_volume == 0)
 		. = to_chat_or_concat(., user, "<span class='notice'>\The [src] is empty!</span>")

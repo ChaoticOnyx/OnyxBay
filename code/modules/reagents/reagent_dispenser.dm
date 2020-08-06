@@ -29,8 +29,8 @@
 	..()
 
 /obj/structure/reagent_dispensers/examine(mob/user)
-	. = ..(user, 2)
-	if(!.)
+	. = ..()
+	if(get_dist(src, user) > 2)
 		return
 	. = to_chat_or_concat(., user, "<span class='notice'>It contains:</span>")
 	if(reagents && reagents.reagent_list.len)
@@ -97,8 +97,8 @@
 	atom_flags = ATOM_FLAG_CLIMBABLE
 
 /obj/structure/reagent_dispensers/fueltank/examine(mob/user)
-	. = ..(user, 2)
-	if(!.)
+	. = ..()
+	if(get_dist(src, user) > 2)
 		return
 	if (modded)
 		. = to_chat_or_concat(., user, "<span class='warning'>Fuel faucet is wrenched open, leaking the fuel!</span>")

@@ -65,8 +65,8 @@ var/global/list/obj/item/device/pda/PDAs = list()
 	var/obj/item/device/paicard/pai = null	// A slot for a personal AI device
 
 /obj/item/device/pda/examine(mob/user)
-	. = ..(user, 1)
-	if(.)
+	. = ..()
+	if(get_dist(src, user) <= 1)
 		. = to_chat_or_concat(., user, "The time [stationtime2text()] is displayed in the corner of the screen.")
 
 /obj/item/device/pda/medical

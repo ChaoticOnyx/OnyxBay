@@ -1,8 +1,5 @@
 /mob/living/silicon/ai/examine(mob/user)
 	. = ..()
-	if(!.)
-		return
-
 	var/msg = ""
 	if (src.stat == DEAD)
 		msg += "<span class='deadsay'>It appears to be powered-down.</span>\n"

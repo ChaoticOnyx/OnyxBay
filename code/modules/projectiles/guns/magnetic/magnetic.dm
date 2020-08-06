@@ -71,8 +71,8 @@
 		. = to_chat_or_concat(., user, "<span class='notice'>It has \a [loaded] loaded.</span>")
 
 /obj/item/weapon/gun/magnetic/examine(mob/user)
-	. = ..(user, 2)
-	if(.)
+	. = ..()
+	if(get_dist(src, user) <= 2)
 		var/ret = show_ammo(user)
 		if (!user && ret)
 			. += "\n[ret]"

@@ -88,8 +88,8 @@
 	icon_state = "coilgun_construction_[construction_stage]"
 
 /obj/item/weapon/coilgun_assembly/examine(mob/user)
-	. = ..(user,2)
-	if(.)
+	. = ..()
+	if(get_dist(src, user) <= 2)
 		switch(construction_stage)
 			if(2) . = to_chat_or_concat(., user, "<span class='notice'>It has a metal frame loosely shaped around the stock.</span>")
 			if(3) . = to_chat_or_concat(., user, "<span class='notice'>It has a metal frame duct-taped to the stock.</span>")

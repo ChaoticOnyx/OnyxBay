@@ -48,8 +48,8 @@
 	update_icon()
 
 /obj/item/weapon/gun/launcher/grenade/examine(mob/user)
-	. = ..(user, 2)
-	if(.)
+	. = ..()
+	if(get_dist(src, user) <= 2)
 		var/grenade_count = grenades.len + (chambered? 1 : 0)
 		. = to_chat_or_concat(., user, "Has [grenade_count] grenade\s remaining.")
 		if(chambered)

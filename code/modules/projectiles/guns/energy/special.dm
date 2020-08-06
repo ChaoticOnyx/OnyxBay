@@ -223,7 +223,7 @@ obj/item/weapon/gun/energy/staff/focus
 	)
 
 /obj/item/weapon/gun/energy/plasmacutter/examine(mob/user)
-	. = ..(user)
+	. = ..()
 	to_chat(user, "It has a recharge port with a capital letter P.")
 
 /obj/item/weapon/gun/energy/plasmacutter/attackby(obj/item/stack/material/phoron/W, mob/user)

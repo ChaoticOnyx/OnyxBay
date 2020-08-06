@@ -195,8 +195,8 @@
 		set_frequency(frequency)
 
 /obj/machinery/atmospherics/binary/dp_vent_pump/examine(mob/user)
-	. = ..(user, 1)
-	if(.)
+	. = ..()
+	if(get_dist(src, user) <= 1)
 		. = to_chat_or_concat(., user, "A small gauge in the corner reads [round(last_flow_rate, 0.1)] L/s; [round(last_power_draw)] W")
 
 /obj/machinery/atmospherics/binary/dp_vent_pump/receive_signal(datum/signal/signal)

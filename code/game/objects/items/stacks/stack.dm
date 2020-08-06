@@ -42,8 +42,8 @@
 	return ..()
 
 /obj/item/stack/examine(mob/user)
-	. = ..(user, 1)
-	if(.)
+	. = ..()
+	if(get_dist(src, user) <= 1)
 		if(!uses_charge)
 			. = to_chat_or_concat(., user, "There [src.amount == 1 ? "is" : "are"] [src.amount] [src.singular_name]\s in the stack.")
 		else

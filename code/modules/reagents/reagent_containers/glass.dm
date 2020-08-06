@@ -50,8 +50,8 @@
 	base_name = name
 
 /obj/item/weapon/reagent_containers/glass/examine(mob/user)
-	. = ..(user, 2)
-	if(!.)
+	. = ..()
+	if(get_dist(src, user) > 2)
 		return
 	if(reagents && reagents.reagent_list.len)
 		. = to_chat_or_concat(., user, "<span class='notice'>It contains [reagents.total_volume] units of liquid.</span>")

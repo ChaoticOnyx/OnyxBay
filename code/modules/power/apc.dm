@@ -245,8 +245,8 @@
 	update_icon()
 
 /obj/machinery/power/apc/examine(mob/user)
-	. = ..(user, 1)
-	if(.)
+	. = ..()
+	if(get_dist(src, user) <= 1)
 		if(stat & BROKEN)
 			. = to_chat_or_concat(., user, "Looks broken.")
 			return

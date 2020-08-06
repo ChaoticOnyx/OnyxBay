@@ -46,8 +46,8 @@
 	..()
 
 /obj/item/weapon/extinguisher/examine(mob/user)
-	. = ..(user, 0)
-	if(.)
+	. = ..()
+	if(get_dist(src, user) <= 0)
 		. = to_chat_or_concat(., user, text("\icon[] [] contains [] units of water left!", src, src.name, src.reagents.total_volume))
 	return
 

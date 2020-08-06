@@ -37,8 +37,8 @@
 	return list_secure_channels()
 
 /obj/item/device/radio/headset/examine(mob/user)
-	. = ..(user, 1)
-	if(!(. && radio_desc))
+	. = ..()
+	if(!(get_dist(src, user) <= 1 && radio_desc))
 		return
 
 	. = to_chat_or_concat(., user, "The following channels are available:")

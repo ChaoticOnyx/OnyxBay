@@ -84,8 +84,6 @@
 
 /obj/item/organ/internal/posibrain/examine(mob/user)
 	. = ..()
-	if(!.)
-		return
 
 	var/msg = "<span class='info'>*---------*</span>\nThis is \icon[src] \a <EM>[src]</EM>!\n[desc]\n"
 

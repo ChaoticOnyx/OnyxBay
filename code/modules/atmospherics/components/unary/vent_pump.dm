@@ -370,8 +370,8 @@
 		..()
 
 /obj/machinery/atmospherics/unary/vent_pump/examine(mob/user)
-	. = ..(user, 1)
-	if(.)
+	. = ..()
+	if(get_dist(src, user) <= 1)
 		. = to_chat_or_concat(., user, "A small gauge in the corner reads [round(last_flow_rate, 0.1)] L/s; [round(last_power_draw)] W")
 	else
 		. = to_chat_or_concat(., user, "You are too far away to read the gauge.")

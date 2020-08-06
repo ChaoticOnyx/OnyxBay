@@ -25,7 +25,7 @@
 	update_icon()
 
 /obj/item/device/geiger/examine(mob/user)
-	. = ..(user)
+	. = ..()
 	var/msg = "[scanning ? "ambient" : "stored"] Radiation level: [radiation_count ? radiation_count : "0"] Bq."
 	if(radiation_count > RAD_LEVEL_LOW)
 		. = to_chat_or_concat(., user, "<span class='warning'>[msg]</span>")

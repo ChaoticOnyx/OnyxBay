@@ -27,8 +27,8 @@
 		overlays.Cut()
 
 /obj/machinery/cell_charger/examine(mob/user)
-	. = ..(user, 5)
-	if(!.)
+	. = ..()
+	if(get_dist(src, user) > 5)
 		return
 
 	. = to_chat_or_concat(., user, "There's [charging ? "a" : "no"] cell in the charger.")

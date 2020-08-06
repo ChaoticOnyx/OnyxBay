@@ -114,8 +114,8 @@
 		return TOPIC_REFRESH
 
 /obj/item/weapon/reagent_containers/borghypo/examine(mob/user)
-	. = ..(user, 2)
-	if(!.)
+	. = ..()
+	if(get_dist(src, user) > 2)
 		return
 
 	var/datum/reagent/R = reagent_ids[mode]

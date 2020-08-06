@@ -231,8 +231,6 @@ var/global/photo_count = 0
 
 /obj/item/device/camera/examine(mob/user)
 	. = ..()
-	if(!.)
-		return
 
 	. = to_chat_or_concat(., user, "It has [pictures_left] photo\s left.")
 

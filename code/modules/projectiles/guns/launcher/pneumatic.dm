@@ -100,8 +100,8 @@
 	return launched
 
 /obj/item/weapon/gun/launcher/pneumatic/examine(mob/user)
-	. = ..(user, 2)
-	if(!.)
+	. = ..()
+	if(get_dist(src, user) > 2)
 		return
 	. = to_chat_or_concat(., user, "The valve is dialed to [pressure_setting]%.")
 	if(tank)

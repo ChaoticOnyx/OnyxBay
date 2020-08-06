@@ -103,8 +103,8 @@
 		overlays += I
 
 /obj/structure/bigDelivery/examine(mob/user)
-	. = ..(user, 4)
-	if(.)
+	. = ..()
+	if(get_dist(src, user) <= 4)
 		if(sortTag)
 			. = to_chat_or_concat(., user, "<span class='notice'>It is labeled \"[sortTag]\"</span>")
 		if(examtext)
@@ -231,8 +231,8 @@
 		overlays += I
 
 /obj/item/smallDelivery/examine(mob/user)
-	. = ..(user, 4)
-	if(.)
+	. = ..()
+	if(get_dist(src, user) <= 4)
 		if(sortTag)
 			. = to_chat_or_concat(., user, "<span class='notice'>It is labeled \"[sortTag]\"</span>")
 		if(examtext)
@@ -336,8 +336,8 @@
 	return
 
 /obj/item/weapon/packageWrap/examine(mob/user)
-	. = ..(user, 0)
-	if(.)
+	. = ..()
+	if(get_dist(src, user) <= 0)
 		. = to_chat_or_concat(., user, "<span class='notice'>There are [amount] units of package wrap left!</span>")
 	return
 

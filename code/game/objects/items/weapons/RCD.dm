@@ -124,8 +124,8 @@
 	var/remaining = 10
 
 /obj/item/weapon/rcd_ammo/examine(mob/user)
-	. = ..(user,1)
-	if(.)
+	. = ..()
+	if(get_dist(src, user) <= 1)
 		. = to_chat_or_concat(., user, "<span class='notice'>It has [remaining] unit\s of matter left.</span>")
 
 /obj/item/weapon/rcd_ammo/large

@@ -119,8 +119,8 @@
 	return null
 
 /obj/structure/closet/examine(mob/user)
-	. = ..(user, 1)
-	if(. && !opened)
+	. = ..()
+	if(get_dist(src, user) <= 1 && !opened)
 		var/content_size = 0
 		for(var/atom/movable/AM in src.contents)
 			if(!AM.anchored)

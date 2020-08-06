@@ -79,7 +79,7 @@
 	..()
 
 /obj/item/weapon/reagent_containers/food/snacks/csandwich/examine(mob/user)
-	. = ..(user)
+	. = ..()
 	var/obj/item/O = pick(contents)
 	. = to_chat_or_concat(., user, "<span class='warning'>You think you can see [O.name] in there.</span>")
 

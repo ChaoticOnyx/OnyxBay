@@ -100,8 +100,8 @@
 	set_range(new_range)
 
 obj/item/device/suit_sensor_jammer/examine(user)
-	. = ..(user, 3)
-	if(.)
+	. = ..()
+	if(get_dist(src, user) <= 3)
 		var/list/message = list()
 		message += "This device appears to be [active ? "" : "in"]active and "
 		if(bcell)

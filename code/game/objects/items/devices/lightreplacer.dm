@@ -78,8 +78,8 @@
 	..()
 
 /obj/item/device/lightreplacer/examine(mob/user)
-	. = ..(user, 2)
-	if(.)
+	. = ..()
+	if(get_dist(src, user) <= 2)
 		. = to_chat_or_concat(., user, "It has [uses] light\s remaining.")
 		if (store_broken)
 			. = to_chat_or_concat(., user, "It is storing [stored()]/[max_stored] broken light\s.")

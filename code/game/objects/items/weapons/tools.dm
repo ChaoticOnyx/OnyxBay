@@ -209,8 +209,8 @@
 	return ..()
 
 /obj/item/weapon/weldingtool/examine(mob/user)
-	. = ..(user, 0)
-	if(.)
+	. = ..()
+	if(get_dist(src, user) <= 0)
 		if(tank)
 			. = to_chat_or_concat(., user, "\icon[tank] \The [tank] contains [get_fuel()]/[tank.max_fuel] units of fuel!")
 		else

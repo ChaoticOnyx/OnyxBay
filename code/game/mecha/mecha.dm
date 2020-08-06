@@ -222,7 +222,7 @@
 		return 0
 
 /obj/mecha/examine(mob/user)
-	. = ..(user)
+	. = ..()
 	var/integrity = health/initial(health)*100
 	switch(integrity)
 		if(85 to 100)

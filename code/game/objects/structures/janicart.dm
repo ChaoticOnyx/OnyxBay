@@ -20,8 +20,8 @@
 
 
 /obj/structure/janitorialcart/examine(mob/user)
-	. = ..(user, 1)
-	if(.)
+	. = ..()
+	if(get_dist(src, user) <= 1)
 		. = to_chat_or_concat(., user, "[src] \icon[src] contains [reagents.total_volume] unit\s of liquid!")
 	//everything else is visible, so doesn't need to be mentioned
 
@@ -183,8 +183,8 @@
 
 
 /obj/structure/bed/chair/janicart/examine(mob/user)
-	. = ..(user, 1)
-	if(!.)
+	. = ..()
+	if(get_dist(src, user) > 1)
 		return
 
 	. = to_chat_or_concat(., user, "\icon[src] This [callme] contains [reagents.total_volume] unit\s of water!")

@@ -15,8 +15,8 @@
 	icon_state = "netshell"
 
 /obj/item/weapon/gun/launcher/net/examine(mob/user)
-	. = ..(user, 2)
-	if(. && chambered)
+	. = ..()
+	if(get_dist(src, user) <= 2 && chambered)
 		. = to_chat_or_concat(., user, "\A [chambered] is chambered.")
 
 /obj/item/weapon/gun/launcher/net/proc/load(obj/item/weapon/net_shell/S, mob/user)

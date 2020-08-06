@@ -183,6 +183,6 @@
 	..()
 
 /obj/machinery/atmospherics/unary/freezer/examine(mob/user)
-	. = ..(user)
+	. = ..()
 	if(panel_open)
 		. = to_chat_or_concat(., user, "The maintenance hatch is open.")

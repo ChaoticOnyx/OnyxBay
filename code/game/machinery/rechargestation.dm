@@ -113,7 +113,7 @@
 
 
 /obj/machinery/recharge_station/examine(mob/user)
-	. = ..(user)
+	. = ..()
 	. = to_chat_or_concat(., user, "The charge meter reads: [round(chargepercentage())]%")
 
 /obj/machinery/recharge_station/proc/chargepercentage()

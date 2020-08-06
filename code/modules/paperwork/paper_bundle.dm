@@ -94,8 +94,8 @@
 				to_chat(user, "<span class='warning'>You must hold \the [P] steady to burn \the [src].</span>")
 
 /obj/item/weapon/paper_bundle/examine(mob/user)
-	. = ..(user, 1)
-	if(. && user)
+	. = ..()
+	if(get_dist(src, user) <= 1 && user)
 		src.show_content(user)
 	else
 		. = to_chat_or_concat(., user, "<span class='notice'>It is too far away.</span>")

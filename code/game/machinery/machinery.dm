@@ -370,16 +370,15 @@ Class Procs:
 	if(clicksound && istype(user, /mob/living/carbon))
 		playsound(src, clicksound, clickvol)
 
-/obj/machinery/proc/display_parts(mob/user, prefix)
-	. = prefix
-	. = to_chat_or_concat(., user, "<span class='notice'>Following parts detected in the machine:</span>")
+/obj/machinery/proc/display_parts(mob/user)
+	. = "<span class='notice'>Following parts detected in the machine:</span>"
 	for(var/var/obj/item/C in component_parts)
 		. = to_chat_or_concat(., user, "<span class='notice'>	[C.name]</span>")
 
 /obj/machinery/examine(mob/user)
-	. = ..(user)
+	. = ..()
 	if(component_parts && hasHUD(user, HUD_SCIENCE))
-		display_parts(user)
+		. += "\n[display_parts(user)]"
 
 /obj/machinery/blob_act(destroy, obj/effect/blob/source)
 	if (stat & BROKEN)
