@@ -504,9 +504,9 @@
 	. = ..()
 	if ((in_range(src, user) || loc == user))
 		if (b_stat)
-			user.show_message("<span class='notice'>\The [src] can be attached and modified!</span>")
+			. += "\n[SPAN_NOTICE("\The [src] can be attached and modified!</span>")]"
 		else
-			user.show_message("<span class='notice'>\The [src] can not be modified or attached!</span>")
+			. += "\n[SPAN_NOTICE("\The [src] can not be modified or attached!</span>")]"
 	return
 
 /obj/item/device/radio/attackby(obj/item/weapon/W as obj, mob/user as mob)
