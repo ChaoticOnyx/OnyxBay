@@ -7,6 +7,9 @@
 /datum/gear_tweak/proc/get_default()
 	return
 
+/datum/gear_tweak/proc/get_random()
+	return get_default()
+
 /datum/gear_tweak/proc/tweak_gear_data(metadata, datum/gear_data)
 	return
 
@@ -32,6 +35,9 @@
 
 /datum/gear_tweak/color/get_default()
 	return valid_colors ? valid_colors[1] : COLOR_WHITE
+
+/datum/gear_tweak/color/get_random()
+	return valid_colors ? pick(valid_colors) : rgb(rand(200) + 55, rand(200) + 55, rand(200) + 55)
 
 /datum/gear_tweak/color/get_metadata(user, metadata, title = CHARACTER_PREFERENCE_INPUT_TITLE)
 	if(valid_colors)
@@ -85,6 +91,9 @@
 /datum/gear_tweak/path/get_default()
 	return valid_paths[1]
 
+/datum/gear_tweak/path/get_random()
+	return pick(valid_paths)
+
 /datum/gear_tweak/path/get_metadata(user, metadata)
 	return input(user, "Choose a type.", CHARACTER_PREFERENCE_INPUT_TITLE, metadata) as null|anything in valid_paths
 
@@ -117,6 +126,9 @@
 	. = list()
 	for(var/i = 1 to valid_contents.len)
 		. += "Random"
+
+/datum/gear_tweak/contents/get_random()
+	return "Random"
 
 /datum/gear_tweak/contents/get_metadata(user, list/metadata)
 	. = list()
