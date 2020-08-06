@@ -11,6 +11,7 @@
 	cold_protection =    HEAD|FACE|EYES
 	brightness_on = 4
 	species_restricted = null
+	has_visor = 0
 
 /obj/item/clothing/gloves/rig
 	name = "gauntlets"

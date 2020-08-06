@@ -74,6 +74,10 @@ else if(##equipment_var) {\
 	QDEL_NULL(helmet)
 	QDEL_NULL(tank)
 
+/obj/item/clothing/suit/space/void/New()
+	..()
+	slowdown_per_slot[slot_wear_suit] = 1
+
 /obj/item/clothing/suit/space/void/examine(user)
 	. = ..()
 	var/list/part_list = new

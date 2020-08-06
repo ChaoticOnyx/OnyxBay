@@ -1491,6 +1491,20 @@ var/global/floorIsLava = 0
 
 			P.adminbrowse()
 
+/client/proc/check_fax_history()
+	set category = "Special Verbs"
+	set name = "Check Fax History"
+	set desc = "Look up the faxes sent this round."
+
+	var/data = "<center><b>Fax History:</b></center><br>"
+
+	if (GLOB.adminfaxes)
+		for (var/obj/item/item in GLOB.adminfaxes)
+			data += "[item.name] - <a href='?_src_=holder;AdminFaxView=\ref[item]'>view message</a><br>"
+	else
+		data += "<center>No faxes yet.</center>"
+
+	usr << browse("<HTML><HEAD><TITLE>Centcomm Fax History</TITLE></HEAD><BODY>[data]</BODY></HTML>", "window=Centcomm Fax History")
 
 datum/admins/var/obj/item/weapon/paper/admin/faxreply // var to hold fax replies in
 

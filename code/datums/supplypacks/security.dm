@@ -28,21 +28,6 @@
 	containername = "\improper Armor crate"
 	access = access_security
 
-/decl/hierarchy/supply_pack/security/tacticalarmor
-	name = "Armor - Tactical"
-	contains = list(/obj/item/clothing/under/tactical,
-					/obj/item/clothing/suit/armor/pcarrier/tan/tactical,
-					/obj/item/clothing/head/helmet/tactical,
-					/obj/item/clothing/mask/balaclava/tactical,
-					/obj/item/clothing/glasses/tacgoggles,
-					/obj/item/weapon/storage/belt/security/tactical,
-					/obj/item/clothing/shoes/jackboots/tactical,
-					/obj/item/clothing/gloves/tactical)
-	cost = 45
-	containertype = /obj/structure/closet/crate/secure
-	containername = "\improper Tactical armor crate"
-	access = access_armory
-
 /decl/hierarchy/supply_pack/security/blackguards
 	name = "Armor - Arm and leg guards, black"
 	contains = list(/obj/item/clothing/accessory/armguards = 2,
@@ -84,15 +69,6 @@
 	contains = list(/obj/item/clothing/accessory/armguards/tan = 2,
 					/obj/item/clothing/accessory/legguards/tan = 2)
 	cost = 20
-	containertype = /obj/structure/closet/crate/secure
-	containername = "\improper Arm and leg guards crate"
-	access = access_armory
-
-/decl/hierarchy/supply_pack/security/tacguards
-	name = "Armor - Arm and leg guards, tactical"
-	contains = list(/obj/item/clothing/accessory/armguards/tactical = 2,
-					/obj/item/clothing/accessory/legguards/tactical = 2)
-	cost = 25
 	containertype = /obj/structure/closet/crate/secure
 	containername = "\improper Arm and leg guards crate"
 	access = access_armory

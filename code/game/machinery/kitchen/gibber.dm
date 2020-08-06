@@ -74,32 +74,23 @@
 	if(stat & (NOPOWER|BROKEN))
 		return
 	if(operating)
-		to_chat(user, "<span class='danger'>\The [src] is locked and running, wait for it to finish.</span>")
+		to_chat(user, SPAN("danger","\The [src] is locked and running, wait for it to finish."))
 		return
 	else
 		src.startgibbing(user)
-
-/obj/machinery/gibber/examine(mob/user)
-	. = ..()
-	. = to_chat_or_concat(., user, "The safety guard is [emagged ? "<span class='danger'>disabled</span>" : "enabled"].")
-
-/obj/machinery/gibber/emag_act(remaining_charges, mob/user)
-	emagged = !emagged
-	to_chat(user, "<span class='danger'>You [emagged ? "disable" : "enable"] \the [src]'s safety guard.</span>")
-	return 1
 
 /obj/machinery/gibber/attackby(obj/item/W, mob/user)
 	if(istype(W, /obj/item/grab))
 		var/obj/item/grab/G = W
 		if(!G.force_danger())
-			to_chat(user, "<span class='danger'>You need a better grip to do that!</span>")
+			to_chat(user, SPAN("danger","You need a better grip to do that!"))
 			return
 		move_into_gibber(user,G.affecting)
 		user.drop_from_inventory(G)
 	else if(istype(W, /obj/item/organ))
 		user.drop_from_inventory(W)
 		qdel(W)
-		user.visible_message("<span class='danger'>\The [user] feeds \the [W] into \the [src], obliterating it.</span>")
+		user.visible_message(SPAN("danger","\The [user] feeds \the [W] into \the [src], obliterating it."))
 	else
 		return ..()
 
@@ -111,30 +102,25 @@
 /obj/machinery/gibber/proc/move_into_gibber(mob/user,mob/living/victim)
 
 	if(src.occupant)
-		to_chat(user, "<span class='danger'>\The [src] is full, empty it first!</span>")
+		to_chat(user, SPAN("danger","\The [src] is full, empty it first!"))
 		return
 
 	if(operating)
-		to_chat(user, "<span class='danger'>\The [src] is locked and running, wait for it to finish.</span>")
+		to_chat(user, SPAN("danger","\The [src] is locked and running, wait for it to finish."))
 		return
 
 	if(!(istype(victim, /mob/living/carbon)) && !(istype(victim, /mob/living/simple_animal)) )
-		to_chat(user, "<span class='danger'>This is not suitable for \the [src]!</span>")
+		to_chat(user, SPAN("danger","This is not suitable for \the [src]!"))
 		return
-
-	if(istype(victim,/mob/living/carbon/human) && !emagged)
-		to_chat(user, "<span class='danger'>\The [src] safety guard is engaged!</span>")
-		return
-
 
 	if(victim.abiotic(1))
-		to_chat(user, "<span class='danger'>\The [victim] may not have any abiotic items on.</span>")
+		to_chat(user, SPAN("danger","\The [victim] may not have any abiotic items on."))
 		return
 
-	user.visible_message("<span class='danger'>\The [user] starts to put \the [victim] into \the [src]!</span>")
+	user.visible_message(SPAN("danger","\The [user] starts to put \the [victim] into \the [src]!"))
 	src.add_fingerprint(user)
 	if(do_after(user, 30, src) && victim.Adjacent(src) && user.Adjacent(src) && victim.Adjacent(user) && !occupant)
-		user.visible_message("<span class='danger'>\The [user] stuffs \the [victim] into \the [src]!</span>")
+		user.visible_message(SPAN("danger","\The [user] stuffs \the [victim] into \the [src]!"))
 		if(victim.client)
 			victim.client.perspective = EYE_PERSPECTIVE
 			victim.client.eye = src
@@ -170,11 +156,11 @@
 	if(src.operating)
 		return
 	if(!src.occupant)
-		visible_message("<span class='danger'>You hear a loud metallic grinding sound.</span>")
+		visible_message(SPAN("danger","You hear a loud metallic grinding sound."))
 		return
 
 	use_power_oneoff(1000)
-	visible_message("<span class='danger'>You hear a loud [occupant.isSynthetic() ? "metallic" : "squelchy"] grinding sound.</span>")
+	visible_message(SPAN("danger","You hear a loud [occupant.isSynthetic() ? "metallic" : "squelchy"] grinding sound."))
 	src.operating = 1
 	update_icon()
 
@@ -228,7 +214,7 @@
 				qdel(thing)
 				continue
 			thing.dropInto(loc) // Attempts to drop it onto the turf for throwing.
-			thing.throw_at(get_edge_target_turf(src,gib_throw_dir),rand(0,3),emagged ? 100 : 50) // Being pelted with bits of meat and bone would hurt.
+			thing.throw_at(get_edge_target_turf(src,gib_throw_dir),rand(0,3),100) // Being pelted with bits of meat and bone would hurt.
 		update_icon()
 
 

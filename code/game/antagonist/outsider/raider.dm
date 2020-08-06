@@ -21,6 +21,8 @@ GLOBAL_DATUM_INIT(raiders, /datum/antagonist/raider, new)
 
 	faction = "pirate"
 
+	station_crew_involved = FALSE
+
 	// Heist overrides check_victory() and doesn't need victory or loss strings/tags.
 	var/list/raider_uniforms = list(
 		/obj/item/clothing/under/soviet,
@@ -165,15 +167,13 @@ GLOBAL_DATUM_INIT(raiders, /datum/antagonist/raider, new)
 		win_type = "Major"
 		win_group = "Crew"
 		win_msg += "<B>The Raiders have been wiped out!</B>"
-	else if(is_raider_crew_safe())
+	else if(!is_raider_crew_safe())
 		if(win_group == "Crew" && win_type == "Minor")
 			win_type = "Major"
 		win_group = "Crew"
 		win_msg += "<B>The Raiders have left someone behind!</B>"
 	else
 		if(win_group == "Raider")
-			if(win_type == "Minor")
-				win_type = "Major"
 			win_msg += "<B>The Raiders escaped!</B>"
 		else
 			win_msg += "<B>The Raiders were repelled!</B>"

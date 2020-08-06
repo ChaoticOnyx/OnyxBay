@@ -256,22 +256,23 @@
 			P.state = state
 			qdel(src)
 	else
-		user.setClickCooldown(DEFAULT_ATTACK_COOLDOWN)
-		if(W.damtype == BRUTE || W.damtype == BURN)
-			user.do_attack_animation(src)
+		user.setClickCooldown(W.update_attack_cooldown())
+		user.do_attack_animation(src)
+		if((W.damtype == BRUTE || W.damtype == BURN) && W.force >= 3)
+			visible_message(SPAN("danger", "[src] has been hit by [user] with [W]."))
 			hit(W.force)
 			if(health <= 7)
 				set_anchored(FALSE)
 				step(src, get_dir(user, src))
 				update_verbs()
 		else
+			visible_message(SPAN("danger", "[user] hits [src] with [W], but it bounces off!"))
 			playsound(loc, get_sfx("glass_hit"), 75, 1)
-		..()
 	return
 
 /obj/structure/window/proc/hit(damage, sound_effect = 1)
 	if(reinf) damage *= 0.5
-	take_damage(damage)
+	take_damage(damage, sound_effect)
 	return
 
 

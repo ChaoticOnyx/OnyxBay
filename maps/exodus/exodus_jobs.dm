@@ -30,7 +30,6 @@
 									/datum/job/doctor,
 									/datum/job/virologist,
 									/datum/job/chemist,
-									/datum/job/geneticist,
 									/datum/job/psychiatrist,
 									/datum/job/scientist,
 									/datum/job/xenobiologist,

@@ -50,6 +50,7 @@
 	var/suspicion_chance = 50               // Prob of being on the initial Command report
 	var/flags = 0                           // Various runtime options.
 	var/show_objectives_on_creation = 1     // Whether or not objectives are shown when a player is added to this antag datum
+	var/station_crew_involved = TRUE
 
 	// Used for setting appearance.
 	var/list/valid_species =       list(SPECIES_UNATHI,SPECIES_TAJARA,SPECIES_SKRELL,SPECIES_HUMAN,SPECIES_VOX)

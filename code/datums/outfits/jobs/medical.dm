@@ -74,14 +74,6 @@
 	..()
 	BACKPACK_OVERRIDE_CHEMISTRY
 
-/decl/hierarchy/outfit/job/medical/geneticist
-	name = OUTFIT_JOB_NAME("Geneticist")
-	uniform = /obj/item/clothing/under/rank/geneticist
-	suit = /obj/item/clothing/suit/storage/toggle/labcoat/genetics
-	r_pocket = /obj/item/device/flashlight/pen
-	id_type = /obj/item/weapon/card/id/medical/geneticist
-	pda_type = /obj/item/device/pda/geneticist
-
 /decl/hierarchy/outfit/job/medical/geneticist/New()
 	..()
 	backpack_overrides[/decl/backpack_outfit/backpack] = /obj/item/weapon/storage/backpack/genetics

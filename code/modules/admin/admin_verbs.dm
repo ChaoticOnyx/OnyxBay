@@ -83,6 +83,7 @@ var/list/admin_verbs_admin = list(
 	/client/proc/man_up,
 	/client/proc/global_man_up,
 	/client/proc/response_team, // Response Teams admin verb,
+	/client/proc/response_team_menu, // Response Teams Menu admin verb,
 	/client/proc/toggle_antagHUD_use,
 	/client/proc/toggle_antagHUD_restrictions,
 	/client/proc/allow_character_respawn,    // Allows a ghost to respawn ,
@@ -101,6 +102,7 @@ var/list/admin_verbs_admin = list(
 	/client/proc/add_trader,
 	/client/proc/remove_trader,
 	/datum/admins/proc/sendFax,
+	/client/proc/check_fax_history,
 	/client/proc/change_regular_announcement,
 	/client/proc/delbook
 	)
@@ -335,6 +337,7 @@ var/list/admin_verbs_mod = list(
 	/client/proc/cmd_admin_subtle_message, // send an message to somebody as a 'voice in their head',
 	/client/proc/aooc,
 	/datum/admins/proc/sendFax,
+	/client/proc/check_fax_history,
 	/client/proc/delbook
 	)
 

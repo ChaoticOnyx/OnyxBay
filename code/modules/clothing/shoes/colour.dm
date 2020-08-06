@@ -54,6 +54,7 @@
 	icon_state = "orange"
 	force = 0 //nerf brig shoe throwing
 	throwforce = 0
+	siemens_coefficient = 1  // prisoners shall be scared of tasers
 	desc = "A pair of flimsy, cheap shoes. The soles have been made of a soft rubber."
 	var/obj/item/weapon/handcuffs/chained = null
 

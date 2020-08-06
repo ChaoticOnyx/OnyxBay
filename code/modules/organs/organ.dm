@@ -138,7 +138,7 @@ var/list/organ_cache = list()
 
 /obj/item/organ/proc/show_decay_status(mob/user)
 	if(status & ORGAN_DEAD)
-		. = to_chat_or_concat(., user, "<span class='notice'>The decay has set into \the [src].</span>")
+		. = to_chat_or_concat(., user, "<span class='notice'>\The [src] looks severely damaged.</span>")
 
 /obj/item/organ/proc/handle_germ_effects()
 	//** Handle the effects of infections
@@ -325,9 +325,9 @@ var/list/organ_cache = list()
 		. += "Genetic Deformation"
 	if(status & ORGAN_DEAD)
 		if(can_recover())
-			. += "Decaying"
+			. += "Critical"
 		else
-			. += "Necrotic"
+			. += "Destroyed"
 	switch (germ_level)
 		if (INFECTION_LEVEL_ONE to INFECTION_LEVEL_ONE + 200)
 			. +=  "Mild Infection"
