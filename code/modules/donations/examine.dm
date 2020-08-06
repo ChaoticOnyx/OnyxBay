@@ -1,6 +1,6 @@
 /obj/var/donator_owner = null
 
-/obj/examine(mob/user, distance = -1, infix = "", suffix = "")
+/obj/examine(mob/user, infix = "", suffix = "")
 	. = ..()
 
 	if (. && src.donator_owner)

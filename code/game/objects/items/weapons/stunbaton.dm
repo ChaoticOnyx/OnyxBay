@@ -63,16 +63,15 @@
 	. = ..()
 	if(get_dist(src, user) > 1)
 		return
-	. = examine_cell(user, .)
+	. += "\n[examine_cell()]"
 	return
 
 // Addition made by Techhead0, thanks for fullfilling the todo!
-/obj/item/weapon/melee/baton/proc/examine_cell(mob/user, prefix)
-	. = prefix
+/obj/item/weapon/melee/baton/proc/examine_cell()
 	if(bcell)
-		. += "\n<span class='notice'>The baton is [round(bcell.percent())]% charged.</span>"
+		return "<span class='notice'>The baton is [round(bcell.percent())]% charged.</span>"
 	else
-		. += "\n<span class='warning'>The baton does not have a power source installed.</span>"
+		return "<span class='warning'>The baton does not have a power source installed.</span>"
 
 /obj/item/weapon/melee/baton/attackby(obj/item/weapon/W, mob/user)
 	if(istype(W, /obj/item/weapon/cell/device))

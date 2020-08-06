@@ -77,7 +77,7 @@
 
 
 
-/turf/simulated/open/examine(mob/user, distance, infix, suffix)
+/turf/simulated/open/examine(mob/user, infix, suffix)
 	. = ..()
 	if(get_dist(src, user) <= 2)
 		var/depth = 1

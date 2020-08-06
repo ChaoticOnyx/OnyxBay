@@ -32,7 +32,7 @@
 		deactivate()
 		return
 
-/obj/item/device/chameleonholo/examine(mob/user, distance = -1)
+/obj/item/device/chameleonholo/examine(mob/user)
 	if (!active)
 		return ..()
 	return saved_examine_result
