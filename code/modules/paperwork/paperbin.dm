@@ -107,9 +107,9 @@
 	. = ..()
 	if(get_dist(src, user) <= 1)
 		if(amount)
-			. = to_chat_or_concat(., user, "<span class='notice'>There " + (amount > 1 ? "are [amount] papers" : "is one paper") + " in the bin.</span>")
+			. += "\n<span class='notice'>There " + (amount > 1 ? "are [amount] papers" : "is one paper") + " in the bin.</span>"
 		else
-			. = to_chat_or_concat(., user, "<span class='notice'>There are no papers in the bin.</span>")
+			. += "\n<span class='notice'>There are no papers in the bin.</span>"
 	return
 
 

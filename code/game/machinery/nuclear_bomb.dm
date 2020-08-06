@@ -413,7 +413,7 @@ var/bomb_set
 
 /obj/item/weapon/storage/secure/briefcase/nukedisk/examine(user)
 	. = ..()
-	. = to_chat_or_concat(., user,"On closer inspection, you see \a [GLOB.using_map.company_name] emblem is etched into the front of it.")
+	. += "\nOn closer inspection, you see \a [GLOB.using_map.company_name] emblem is etched into the front of it."
 
 /obj/item/weapon/folder/envelope/nuke_instructions
 	name = "instructions envelope"

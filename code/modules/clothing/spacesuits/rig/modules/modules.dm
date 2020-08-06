@@ -59,11 +59,11 @@
 	. = ..()
 	switch(damage)
 		if(0)
-			. = to_chat_or_concat(., user, "It is undamaged.")
+			. += "\nIt is undamaged."
 		if(1)
-			. = to_chat_or_concat(., user, "It is badly damaged.")
+			. += "\nIt is badly damaged."
 		if(2)
-			. = to_chat_or_concat(., user, "It is almost completely destroyed.")
+			. += "\nIt is almost completely destroyed."
 
 /obj/item/rig_module/attackby(obj/item/W as obj, mob/user as mob)
 

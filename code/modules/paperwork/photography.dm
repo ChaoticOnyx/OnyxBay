@@ -67,9 +67,9 @@ var/global/photo_count = 0
 /obj/item/weapon/photo/examine(mob/user)
 	if(in_range(user, src))
 		show(user)
-		. = to_chat_or_concat(., user, desc)
+		. += "\n[desc]"
 	else
-		. = to_chat_or_concat(., user, "<span class='notice'>It is too far away.</span>")
+		. += "\n<span class='notice'>It is too far away.</span>"
 
 /obj/item/weapon/photo/proc/show(mob/user as mob)
 	user << browse_rsc(img, "tmp_photo_[id].png")
@@ -232,7 +232,7 @@ var/global/photo_count = 0
 /obj/item/device/camera/examine(mob/user)
 	. = ..()
 
-	. = to_chat_or_concat(., user, "It has [pictures_left] photo\s left.")
+	. += "\nIt has [pictures_left] photo\s left."
 
 /mob/living/proc/can_capture_turf(turf/T)
 	return (T in view(src))

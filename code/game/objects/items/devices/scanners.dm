@@ -440,7 +440,7 @@ proc/get_wound_severity(damage_ratio, vital = 0)
 /obj/item/device/healthanalyzer_advanced/examine(mob/user)
 	. = ..()
 	if (last_target)
-		. = to_chat_or_concat(., user, "It contains saved data for [last_target].")
+		. += "\nIt contains saved data for [last_target]."
 
 
 /obj/item/device/healthanalyzer_advanced/attack(mob/living/carbon/human/M, mob/living/user)

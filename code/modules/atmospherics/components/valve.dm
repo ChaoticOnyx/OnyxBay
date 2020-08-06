@@ -300,4 +300,4 @@
 
 /obj/machinery/atmospherics/valve/examine(mob/user)
 	. = ..()
-	. = to_chat_or_concat(., user, "It is [open ? "open" : "closed"].")
+	. += "\nIt is [open ? "open" : "closed"]."

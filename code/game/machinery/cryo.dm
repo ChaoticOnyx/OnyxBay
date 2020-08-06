@@ -428,4 +428,4 @@
 /obj/machinery/atmospherics/unary/cryo_cell/examine(mob/user)
 	. = ..()
 	if(emagged)
-		. = to_chat_or_concat(., user, "The panel is loose and circuits is charred.")
+		. += "\nThe panel is loose and circuits is charred."

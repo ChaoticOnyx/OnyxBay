@@ -28,24 +28,24 @@
 	. = ..()
 
 	if(health == maxhealth)
-		. = to_chat_or_concat(., user, "<span class='notice'>It looks fully intact.</span>")
+		. += "\n<span class='notice'>It looks fully intact.</span>"
 	else
 		var/perc = health / maxhealth
 		if(perc > 0.75)
-			. = to_chat_or_concat(., user, "<span class='notice'>It has a few cracks.</span>")
+			. += "\n<span class='notice'>It has a few cracks.</span>"
 		else if(perc > 0.5)
-			. = to_chat_or_concat(., user, "<span class='warning'>It looks slightly damaged.</span>")
+			. += "\n<span class='warning'>It looks slightly damaged.</span>"
 		else if(perc > 0.25)
-			. = to_chat_or_concat(., user, "<span class='warning'>It looks moderately damaged.</span>")
+			. += "\n<span class='warning'>It looks moderately damaged.</span>"
 		else
-			. = to_chat_or_concat(., user, "<span class='danger'>It looks heavily damaged.</span>")
+			. += "\n<span class='danger'>It looks heavily damaged.</span>"
 	if(silicate)
 		if (silicate < 30)
-			. = to_chat_or_concat(., user, "<span class='notice'>It has a thin layer of silicate.</span>")
+			. += "\n<span class='notice'>It has a thin layer of silicate.</span>"
 		else if (silicate < 70)
-			. = to_chat_or_concat(., user, "<span class='notice'>It is covered in silicate.</span>")
+			. += "\n<span class='notice'>It is covered in silicate.</span>"
 		else
-			. = to_chat_or_concat(., user, "<span class='notice'>There is a thick layer of silicate covering it.</span>")
+			. += "\n<span class='notice'>There is a thick layer of silicate covering it.</span>"
 
 /obj/structure/window/proc/take_damage(damage = 0,  sound_effect = 1)
 	var/initialhealth = health

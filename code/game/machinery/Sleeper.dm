@@ -57,7 +57,7 @@
 	. = ..()
 	if (. && user.Adjacent(src))
 		if (beaker)
-			. = to_chat_or_concat(., user, "It is loaded with a beaker.")
+			. += "\nIt is loaded with a beaker."
 		if(occupant)
 			var/ret = occupant.examine(user)
 			if(!user)

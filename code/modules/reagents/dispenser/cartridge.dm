@@ -23,13 +23,13 @@
 
 /obj/item/weapon/reagent_containers/chem_disp_cartridge/examine(mob/user)
 	. = ..()
-	. = to_chat_or_concat(., user, "It has a capacity of [volume] units.")
+	. += "\nIt has a capacity of [volume] units."
 	if(reagents.total_volume <= 0)
-		. = to_chat_or_concat(., user, "It is empty.")
+		. += "\nIt is empty."
 	else
-		. = to_chat_or_concat(., user, "It contains [reagents.total_volume] units of liquid.")
+		. += "\nIt contains [reagents.total_volume] units of liquid."
 	if(!is_open_container())
-		. = to_chat_or_concat(., user, "The cap is sealed.")
+		. += "\nThe cap is sealed."
 
 /obj/item/weapon/reagent_containers/chem_disp_cartridge/verb/verb_set_label()
 	set name = "Set Cartridge Label"

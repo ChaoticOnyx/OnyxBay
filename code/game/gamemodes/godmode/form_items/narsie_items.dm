@@ -46,7 +46,7 @@
 	. = ..()
 	if(!. || !stored_power)
 		return
-	. = to_chat_or_concat(., user, "<span class='notice'>It exudes a death-like smell.</span>")
+	. += "\n<span class='notice'>It exudes a death-like smell.</span>"
 
 /obj/item/weapon/material/twohanded/fireaxe/cult/resolve_attackby(atom/a, mob/user, click_params)
 	if(istype(a, /obj/structure/deity/altar))

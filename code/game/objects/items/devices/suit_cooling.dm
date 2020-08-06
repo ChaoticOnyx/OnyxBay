@@ -174,12 +174,12 @@
 		return
 
 	if (on)
-		. = to_chat_or_concat(., user, "It's switched on and running.")
+		. += "\nIt's switched on and running."
 	else
-		. = to_chat_or_concat(., user, "It is switched off.")
+		. += "\nIt is switched off."
 
 	if (cover_open)
-		. = to_chat_or_concat(., user, "The panel is open.")
+		. += "\nThe panel is open."
 
 	if (cell)
-		. = to_chat_or_concat(., user, "The charge meter reads [round(cell.percent())]%.")
+		. += "\nThe charge meter reads [round(cell.percent())]%."

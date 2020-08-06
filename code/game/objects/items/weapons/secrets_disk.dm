@@ -31,10 +31,10 @@
 /obj/item/weapon/disk/secret_project/examine(user)
 	. = ..()
 	if(!locked)
-		. = to_chat_or_concat(., user, "With the disk's classified contents unlocked, \
-		you peer into its preview screen and see <span class='notice'>[subject]</span>.")
+		. += "\nWith the disk's classified contents unlocked, \
+		you peer into its preview screen and see <span class='notice'>[subject]</span>."
 	else
-		. = to_chat_or_concat(., user, "The disk is locked, you cannot see its contents.")
+		. += "\nThe disk is locked, you cannot see its contents."
 
 /obj/item/weapon/disk/secret_project/emag_act(remaining_charges, mob/user)
 	to_chat(user, "<span class='warning'>The cryptographic lock on this disk is far too complex. \

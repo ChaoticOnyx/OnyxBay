@@ -19,7 +19,7 @@
 /obj/machinery/firealarm/examine(mob/user)
 	. = ..()
 	var/decl/security_state/security_state = decls_repository.get_decl(GLOB.using_map.security_state)
-	. = to_chat_or_concat(., user, "The current alert level is [security_state.current_security_level.name].")
+	. += "\nThe current alert level is [security_state.current_security_level.name]."
 
 /obj/machinery/firealarm/update_icon()
 	overlays.Cut()

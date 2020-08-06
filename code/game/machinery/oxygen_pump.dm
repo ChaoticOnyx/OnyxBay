@@ -154,9 +154,9 @@
 /obj/machinery/oxygen_pump/examine(mob/user)
 	. = ..()
 	if(tank)
-		. = to_chat_or_concat(., user, "The meter shows [round(tank.air_contents.return_pressure())]")
+		. += "\nThe meter shows [round(tank.air_contents.return_pressure())]"
 	else
-		. = to_chat_or_concat(., user, "<span class='warning'>It is missing a tank!</span>")
+		. += "\n<span class='warning'>It is missing a tank!</span>"
 
 /obj/machinery/oxygen_pump/Process()
 	if(breather)

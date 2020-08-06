@@ -91,11 +91,11 @@
 	. = ..()
 	if(get_dist(src, user) <= 2)
 		switch(construction_stage)
-			if(2) . = to_chat_or_concat(., user, "<span class='notice'>It has a metal frame loosely shaped around the stock.</span>")
-			if(3) . = to_chat_or_concat(., user, "<span class='notice'>It has a metal frame duct-taped to the stock.</span>")
-			if(4) . = to_chat_or_concat(., user, "<span class='notice'>It has a length of pipe attached to the body.</span>")
-			if(4) . = to_chat_or_concat(., user, "<span class='notice'>It has a length of pipe welded to the body.</span>")
-			if(6) . = to_chat_or_concat(., user, "<span class='notice'>It has a cable mount and capacitor jack wired to the frame.</span>")
-			if(7) . = to_chat_or_concat(., user, "<span class='notice'>It has a single superconducting coil threaded onto the barrel.</span>")
-			if(8) . = to_chat_or_concat(., user, "<span class='notice'>It has a pair of superconducting coils threaded onto the barrel.</span>")
-			if(9) . = to_chat_or_concat(., user, "<span class='notice'>It has three superconducting coils attached to the body, waiting to be secured.</span>")
+			if(2) . += "\n<span class='notice'>It has a metal frame loosely shaped around the stock.</span>"
+			if(3) . += "\n<span class='notice'>It has a metal frame duct-taped to the stock.</span>"
+			if(4) . += "\n<span class='notice'>It has a length of pipe attached to the body.</span>"
+			if(4) . += "\n<span class='notice'>It has a length of pipe welded to the body.</span>"
+			if(6) . += "\n<span class='notice'>It has a cable mount and capacitor jack wired to the frame.</span>"
+			if(7) . += "\n<span class='notice'>It has a single superconducting coil threaded onto the barrel.</span>"
+			if(8) . += "\n<span class='notice'>It has a pair of superconducting coils threaded onto the barrel.</span>"
+			if(9) . += "\n<span class='notice'>It has three superconducting coils attached to the body, waiting to be secured.</span>"

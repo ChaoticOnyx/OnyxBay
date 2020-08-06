@@ -114,7 +114,7 @@
 
 /obj/machinery/recharge_station/examine(mob/user)
 	. = ..()
-	. = to_chat_or_concat(., user, "The charge meter reads: [round(chargepercentage())]%")
+	. += "\nThe charge meter reads: [round(chargepercentage())]%"
 
 /obj/machinery/recharge_station/proc/chargepercentage()
 	if(!cell)

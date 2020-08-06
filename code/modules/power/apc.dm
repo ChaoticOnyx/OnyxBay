@@ -248,25 +248,25 @@
 	. = ..()
 	if(get_dist(src, user) <= 1)
 		if(stat & BROKEN)
-			. = to_chat_or_concat(., user, "Looks broken.")
+			. += "\nLooks broken."
 			return
 		if(opened)
 			if(has_electronics && terminal)
-				. = to_chat_or_concat(., user, "The cover is [opened==2?"removed":"open"] and the power cell is [ cell ? "installed" : "missing"].")
+				. += "\nThe cover is [opened==2?"removed":"open"] and the power cell is [ cell ? "installed" : "missing"]."
 			else if (!has_electronics && terminal)
-				. = to_chat_or_concat(., user, "There are some wires but no any electronics.")
+				. += "\nThere are some wires but no any electronics."
 			else if (has_electronics && !terminal)
-				. = to_chat_or_concat(., user, "Electronics installed but not wired.")
+				. += "\nElectronics installed but not wired."
 			else /* if (!has_electronics && !terminal) */
-				. = to_chat_or_concat(., user, "There is no electronics nor connected wires.")
+				. += "\nThere is no electronics nor connected wires."
 
 		else
 			if (stat & MAINT)
-				. = to_chat_or_concat(., user, "The cover is closed. Something wrong with it: it doesn't work.")
+				. += "\nThe cover is closed. Something wrong with it: it doesn't work."
 			else if (hacker && !hacker.hacked_apcs_hidden)
-				. = to_chat_or_concat(., user, "The cover is locked.")
+				. += "\nThe cover is locked."
 			else
-				. = to_chat_or_concat(., user, "The cover is closed.")
+				. += "\nThe cover is closed."
 
 
 // update the APC icon to show the three base states

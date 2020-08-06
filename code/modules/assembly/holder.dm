@@ -76,9 +76,9 @@
 	. = ..()
 	if ((in_range(src, user) || src.loc == user))
 		if (src.secured)
-			. = to_chat_or_concat(., user, "\The [src] is ready!")
+			. += "\n\The [src] is ready!"
 		else
-			. = to_chat_or_concat(., user, "\The [src] can be attached!")
+			. += "\n\The [src] can be attached!"
 	return
 
 

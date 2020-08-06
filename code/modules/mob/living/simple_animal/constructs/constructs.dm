@@ -77,7 +77,7 @@
 		msg += "</span>"
 	msg += "*---------*</span>"
 
-	. = to_chat_or_concat(., user, msg)
+	. += "\n[msg]"
 
 /obj/item/weapon/ectoplasm
 	name = "ectoplasm"

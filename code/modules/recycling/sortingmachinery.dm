@@ -106,9 +106,9 @@
 	. = ..()
 	if(get_dist(src, user) <= 4)
 		if(sortTag)
-			. = to_chat_or_concat(., user, "<span class='notice'>It is labeled \"[sortTag]\"</span>")
+			. += "\n<span class='notice'>It is labeled \"[sortTag]\"</span>"
 		if(examtext)
-			. = to_chat_or_concat(., user, "<span class='notice'>It has a note attached which reads, \"[examtext]\"</span>")
+			. += "\n<span class='notice'>It has a note attached which reads, \"[examtext]\"</span>"
 	return
 
 /obj/structure/bigDelivery/Destroy()
@@ -234,9 +234,9 @@
 	. = ..()
 	if(get_dist(src, user) <= 4)
 		if(sortTag)
-			. = to_chat_or_concat(., user, "<span class='notice'>It is labeled \"[sortTag]\"</span>")
+			. += "\n<span class='notice'>It is labeled \"[sortTag]\"</span>"
 		if(examtext)
-			. = to_chat_or_concat(., user, "<span class='notice'>It has a note attached which reads, \"[examtext]\"</span>")
+			. += "\n<span class='notice'>It has a note attached which reads, \"[examtext]\"</span>"
 	return
 
 /obj/item/weapon/packageWrap
@@ -338,7 +338,7 @@
 /obj/item/weapon/packageWrap/examine(mob/user)
 	. = ..()
 	if(get_dist(src, user) <= 0)
-		. = to_chat_or_concat(., user, "<span class='notice'>There are [amount] units of package wrap left!</span>")
+		. += "\n<span class='notice'>There are [amount] units of package wrap left!</span>"
 	return
 
 /obj/item/device/destTagger

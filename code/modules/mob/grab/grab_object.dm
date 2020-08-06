@@ -38,7 +38,7 @@
 /obj/item/grab/examine(user)
 	. = ..()
 	var/obj/item/O = get_targeted_organ()
-	. = to_chat_or_concat(., user,"A grab on \the [affecting]'s [O.name].")
+	. += "\nA grab on \the [affecting]'s [O.name]."
 
 /obj/item/grab/Process()
 	current_grab.process(src)

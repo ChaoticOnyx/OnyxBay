@@ -164,15 +164,6 @@ GLOBAL_DATUM_INIT(iconCache, /savefile, new("tmp/iconCache.sav")) //Cache of ico
 /datum/chatOutput/proc/debug(error)
 	log_to_dd("\[[time2text(world.realtime, "YYYY-MM-DD hh:mm:ss")]\] Client: [(src.owner.key ? src.owner.key : src.owner)] triggered JS error: [error]")
 
-//for /atom/proc/examine rework
-/proc/to_chat_or_concat(prefix, target, message, handle_whitespace=TRUE)
-	if(target)
-		to_chat(target, message, handle_whitespace)
-		return prefix
-	if(prefix)
-		return "[prefix]\n[message]"
-	return message
-
 //Global chat procs
 /proc/to_chat(target, message, handle_whitespace=TRUE)
 	if(!target)

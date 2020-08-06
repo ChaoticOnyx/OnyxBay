@@ -45,15 +45,15 @@
 	. = ..()
 	if(get_dist(src, user) <= 1)
 		if(!uses_charge)
-			. = to_chat_or_concat(., user, "There [src.amount == 1 ? "is" : "are"] [src.amount] [src.singular_name]\s in the stack.")
+			. += "\nThere [src.amount == 1 ? "is" : "are"] [src.amount] [src.singular_name]\s in the stack."
 		else
-			. = to_chat_or_concat(., user, "There is enough charge for [get_amount()].")
+			. += "\nThere is enough charge for [get_amount()]."
 	if(color)
-		. = to_chat_or_concat(., user, "It's painted.")
+		. += "\nIt's painted."
 	if (istype(src,/obj/item/stack/tile))
 		var/obj/item/stack/tile/T = src
 		if(length(T.stored_decals))
-			. = to_chat_or_concat(., user, "It's has painted decals on it.")
+			. += "\nIt's has painted decals on it."
 
 /obj/item/stack/attack_self(mob/user as mob)
 	if(uses_charge)

@@ -97,13 +97,13 @@
 /obj/structure/inflatable/examine(mob/user)
 	. = ..()
 	if(health >= initial(health))
-		. = to_chat_or_concat(., user, SPAN_NOTICE("It's undamaged."))
+		. += "\n[SPAN_NOTICE("It's undamaged.")]"
 	else if(health >= 0.5 * initial(health))
-		. = to_chat_or_concat(., user, SPAN_WARNING("It's showing signs of damage."))
+		. += "\n[SPAN_WARNING("It's showing signs of damage.")]"
 	else if(health >= 0)
-		. = to_chat_or_concat(., user, SPAN_DANGER("It's heavily damaged!"))
+		. += "\n[SPAN_DANGER("It's heavily damaged!")]"
 	if(taped)
-		. = to_chat_or_concat(., user, SPAN_NOTICE("It's been duct taped in few places."))
+		. += "\n[SPAN_NOTICE("It's been duct taped in few places.")]"
 
 /obj/structure/inflatable/CanPass(atom/movable/mover, turf/target, height=0, air_group=0)
 	return 0

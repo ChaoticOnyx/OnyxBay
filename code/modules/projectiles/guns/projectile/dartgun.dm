@@ -98,11 +98,11 @@
 /obj/item/weapon/gun/projectile/dartgun/examine(mob/user)
 	. = ..()
 	if (beakers.len)
-		. = to_chat_or_concat(., user, "<span class='notice'>\The [src] contains:</span>")
+		. += "\n<span class='notice'>\The [src] contains:</span>"
 		for(var/obj/item/weapon/reagent_containers/glass/beaker/B in beakers)
 			if(B.reagents && B.reagents.reagent_list.len)
 				for(var/datum/reagent/R in B.reagents.reagent_list)
-					. = to_chat_or_concat(., user, "<span class='notice'>[R.volume] units of [R.name]</span>")
+					. += "\n<span class='notice'>[R.volume] units of [R.name]</span>"
 
 /obj/item/weapon/gun/projectile/dartgun/attackby(obj/item/I as obj, mob/user as mob)
 	if(istype(I, /obj/item/weapon/reagent_containers/glass))

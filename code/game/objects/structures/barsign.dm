@@ -19,13 +19,13 @@
 	. = ..()
 	switch(icon_state)
 		if("Off")
-			. = to_chat_or_concat(., user, "It appears to be switched off.")
+			. += "\nIt appears to be switched off."
 		if("narsiebistro")
-			. = to_chat_or_concat(., user, "It shows a picture of a large black and red being. Spooky!")
+			. += "\nIt shows a picture of a large black and red being. Spooky!"
 		if("on", "empty")
-			. = to_chat_or_concat(., user, "The lights are on, but there's no picture.")
+			. += "\nThe lights are on, but there's no picture."
 		else
-			. = to_chat_or_concat(., user, "It says '[icon_state]'")
+			. += "\nIt says '[icon_state]'"
 
 /obj/structure/sign/double/barsign/New()
 	..()

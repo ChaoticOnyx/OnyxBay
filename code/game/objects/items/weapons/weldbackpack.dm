@@ -88,7 +88,7 @@
 
 /obj/item/weapon/weldpack/examine(mob/user)
 	. = ..()
-	. = to_chat_or_concat(., user, text("\icon[] [] units of fuel left!", src, src.reagents.total_volume))
+	. += "\n[text("\icon[] [] units of fuel left!", src, src.reagents.total_volume)]"
 
 	if(welder)
-		. = to_chat_or_concat(., user, "\The [welder] is attached.")
+		. += "\n\The [welder] is attached."

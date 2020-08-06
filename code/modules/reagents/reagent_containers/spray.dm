@@ -83,7 +83,7 @@
 /obj/item/weapon/reagent_containers/spray/examine(mob/user)
 	. = ..()
 	if(get_dist(src, user) <= 0 && loc == user)
-		. = to_chat_or_concat(., user, "[round(reagents.total_volume)] unit\s left.")
+		. += "\n[round(reagents.total_volume)] unit\s left."
 	return
 
 /obj/item/weapon/reagent_containers/spray/verb/empty()
@@ -142,7 +142,7 @@
 /obj/item/weapon/reagent_containers/spray/pepper/examine(mob/user)
 	. = ..()
 	if(get_dist(src, user) <= 1)
-		. = to_chat_or_concat(., user, "The safety is [safety ? "on" : "off"].")
+		. += "\nThe safety is [safety ? "on" : "off"]."
 
 /obj/item/weapon/reagent_containers/spray/pepper/attack_self(mob/user)
 	safety = !safety

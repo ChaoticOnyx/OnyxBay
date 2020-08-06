@@ -19,7 +19,7 @@ RSF
 /obj/item/weapon/rsf/examine(mob/user)
 	. = ..()
 	if(get_dist(src, user) <= 0)
-		. = to_chat_or_concat(., user, "It currently holds [stored_matter]/30 fabrication-units.")
+		. += "\nIt currently holds [stored_matter]/30 fabrication-units."
 
 /obj/item/weapon/rsf/attackby(obj/item/weapon/W as obj, mob/user as mob)
 	..()

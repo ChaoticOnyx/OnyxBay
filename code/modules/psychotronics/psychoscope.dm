@@ -641,7 +641,7 @@
 /obj/item/clothing/glasses/hud/psychoscope/examine(mob/user)
 	. = ..()
 
-	. = to_chat_or_concat(., user, "The battery panel is [cell_panel_opened ? "opened" : "closed"].")
+	. += "\nThe battery panel is [cell_panel_opened ? "opened" : "closed"]."
 
 /obj/item/clothing/glasses/hud/psychoscope/attack_hand(mob/user)
 	if (cell_panel_opened && bcell)

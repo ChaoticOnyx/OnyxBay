@@ -23,7 +23,7 @@
 
 /obj/item/weapon/gun/launcher/alien/examine(mob/user)
 	. = ..()
-	. = to_chat_or_concat(., user, "It has [ammo] [ammo_name]\s remaining.")
+	. += "\nIt has [ammo] [ammo_name]\s remaining."
 
 /obj/item/weapon/gun/launcher/alien/consume_next_projectile()
 	if(ammo < 1) return null

@@ -223,10 +223,10 @@
 /obj/item/weapon/gun/projectile/examine(mob/user)
 	. = ..()
 	if(is_jammed)
-		. = to_chat_or_concat(., user, "<span class='warning'>It looks jammed.</span>")
+		. += "\n<span class='warning'>It looks jammed.</span>"
 	if(ammo_magazine)
-		. = to_chat_or_concat(., user, "It has \a [ammo_magazine] loaded.")
-	. = to_chat_or_concat(., user, "Has [getAmmo()] round\s remaining.")
+		. += "\nIt has \a [ammo_magazine] loaded."
+	. += "\nHas [getAmmo()] round\s remaining."
 	return
 
 /obj/item/weapon/gun/projectile/proc/getAmmo()

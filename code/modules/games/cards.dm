@@ -231,9 +231,9 @@
 /obj/item/weapon/hand/examine(mob/user)
 	. = ..()
 	if((!concealed || src.loc == user) && cards.len)
-		. = to_chat_or_concat(., user, "It contains: ")
+		. += "\nIt contains: "
 		for(var/datum/playingcard/P in cards)
-			. = to_chat_or_concat(., user, "The [P.name].")
+			. += "\nThe [P.name]."
 
 /obj/item/weapon/hand/update_icon(direction = 0)
 

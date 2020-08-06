@@ -74,7 +74,7 @@
 			msg = "It is labeled '[service_label]' and appears to be active."
 		if(HAS_BEEN_ACTIVATED)
 			msg = "It is labeled '[service_label]' and appears to be permanently disabled."
-	. = to_chat_or_concat(., user, msg)
+	. += "\n[msg]"
 
 /obj/item/device/uplink_service/attack_self(mob/user)
 	if(state != AWAITING_ACTIVATION)

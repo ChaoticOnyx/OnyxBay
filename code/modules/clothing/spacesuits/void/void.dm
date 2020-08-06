@@ -83,9 +83,9 @@ else if(##equipment_var) {\
 	var/list/part_list = new
 	for(var/obj/item/I in list(helmet,boots,tank))
 		part_list += "\a [I]"
-	. = to_chat_or_concat(., user, "\The [src] has [english_list(part_list)] installed.")
+	. += "\n\The [src] has [english_list(part_list)] installed."
 	if(tank && in_range(src,user))
-		. = to_chat_or_concat(., user, "<span class='notice'>The wrist-mounted pressure gauge reads [max(round(tank.air_contents.return_pressure()),0)] kPa remaining in \the [tank].</span>")
+		. += "\n<span class='notice'>The wrist-mounted pressure gauge reads [max(round(tank.air_contents.return_pressure()),0)] kPa remaining in \the [tank].</span>"
 
 /obj/item/clothing/suit/space/void/refit_for_species(target_species)
 	..()

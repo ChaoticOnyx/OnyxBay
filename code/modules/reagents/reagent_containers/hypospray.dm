@@ -141,9 +141,9 @@
 /obj/item/weapon/reagent_containers/hypospray/autoinjector/examine(mob/user)
 	. = ..()
 	if(reagents && reagents.reagent_list.len)
-		. = to_chat_or_concat(., user, "<span class='notice'>It is currently loaded.</span>")
+		. += "\n<span class='notice'>It is currently loaded.</span>"
 	else
-		. = to_chat_or_concat(., user, "<span class='notice'>It is spent.</span>")
+		. += "\n<span class='notice'>It is spent.</span>"
 
 /obj/item/weapon/reagent_containers/hypospray/autoinjector/detox
 	name = "autoinjector (antitox)"

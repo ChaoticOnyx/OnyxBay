@@ -78,19 +78,19 @@
 	. = ..()
 
 	if(get_dist(user, src) > 3 && !(istype(user, /mob/living/silicon/ai) || isghost(user)))
-		. = to_chat_or_concat(., user, "<span class='warning'>You are too far away to read it.</span>")
+		. += "\n<span class='warning'>You are too far away to read it.</span>"
 
 	else if(stat & (NOPOWER|BROKEN))
-		. = to_chat_or_concat(., user, "<span class='warning'>The display is off.</span>")
+		. += "\n<span class='warning'>The display is off.</span>"
 
 	else if(src.target)
 		var/datum/gas_mixture/environment = target.return_air()
 		if(environment)
-			. = to_chat_or_concat(., user, "The pressure gauge reads [round(environment.return_pressure(), 0.01)] kPa; [round(environment.temperature,0.01)]K ([round(environment.temperature-T0C,0.01)]&deg;C)")
+			. += "\nThe pressure gauge reads [round(environment.return_pressure(), 0.01)] kPa; [round(environment.temperature,0.01)]K ([round(environment.temperature-T0C,0.01)]&deg;C)"
 		else
-			. = to_chat_or_concat(., user, "The sensor error light is blinking.")
+			. += "\nThe sensor error light is blinking."
 	else
-		. = to_chat_or_concat(., user, "The connect error light is blinking.")
+		. += "\nThe connect error light is blinking."
 
 
 /obj/machinery/meter/Click()

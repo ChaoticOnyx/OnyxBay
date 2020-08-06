@@ -40,7 +40,7 @@
 
 /obj/machinery/atmospherics/binary/oxyregenerator/examine(user)
 	. = ..()
-	. = to_chat_or_concat(., user,"Its outlet port is to the [dir2text(dir)]")
+	. += "\nIts outlet port is to the [dir2text(dir)]"
 
 /obj/machinery/atmospherics/binary/oxyregenerator/attackby(obj/item/O as obj, mob/user as mob)
 	if(default_deconstruction_screwdriver(user, O))

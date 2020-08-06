@@ -38,7 +38,7 @@
 	. = ..()
 	if(locked)
 		var/turf/T = get_turf(locked)
-		. = to_chat_or_concat(., user, "<span class='notice'>The console is locked on to \[[T.loc.name]\].</span>")
+		. += "\n<span class='notice'>The console is locked on to \[[T.loc.name]\].</span>"
 
 
 /obj/machinery/computer/teleporter/attackby(I as obj, mob/living/user as mob)

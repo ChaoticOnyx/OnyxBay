@@ -131,8 +131,8 @@
 
 /obj/item/weapon/cell/examine(mob/user)
 	. = ..()
-	. = to_chat_or_concat(., user, "The label states it's capacity is [maxcharge] Wh")
-	. = to_chat_or_concat(., user, "The charge meter reads [round(src.percent(), 0.1)]%")
+	. += "\nThe label states it's capacity is [maxcharge] Wh"
+	. += "\nThe charge meter reads [round(src.percent(), 0.1)]%"
 
 /obj/item/weapon/cell/emp_act(severity)
 	//remove this once emp changes on dev are merged in

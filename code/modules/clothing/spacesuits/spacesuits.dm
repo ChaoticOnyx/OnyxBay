@@ -62,7 +62,7 @@
 /obj/item/clothing/head/helmet/space/examine(mob/user)
 	. = ..()
 	if(get_dist(src, user) <= 1 && camera)
-		. = to_chat_or_concat(., user, "This helmet has a built-in camera. Its [!ispath(camera) && camera.status ? "" : "in"]active.")
+		. += "\nThis helmet has a built-in camera. Its [!ispath(camera) && camera.status ? "" : "in"]active."
 
 /obj/item/clothing/suit/space
 	name = "Space suit"

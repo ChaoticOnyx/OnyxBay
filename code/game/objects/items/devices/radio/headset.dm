@@ -41,8 +41,8 @@
 	if(!(get_dist(src, user) <= 1 && radio_desc))
 		return
 
-	. = to_chat_or_concat(., user, "The following channels are available:")
-	. = to_chat_or_concat(., user, radio_desc)
+	. += "\nThe following channels are available:"
+	. += "\n[radio_desc]"
 
 /obj/item/device/radio/headset/handle_message_mode(mob/living/M as mob, message, channel)
 	if (channel == "special")

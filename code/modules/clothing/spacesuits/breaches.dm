@@ -243,4 +243,4 @@
 	. = ..()
 	if(can_breach && breaches && breaches.len)
 		for(var/datum/breach/B in breaches)
-			. = to_chat_or_concat(., user, "<span class='danger'>It has \a [B.descriptor].</span>")
+			. += "\n<span class='danger'>It has \a [B.descriptor].</span>"

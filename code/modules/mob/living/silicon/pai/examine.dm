@@ -16,4 +16,4 @@
 			pose = addtext(pose,".") //Makes sure all emotes end with a period.
 		msg += "\nIt is [pose]"
 
-	. = to_chat_or_concat(., user, msg)
+	. += "\n[msg]"

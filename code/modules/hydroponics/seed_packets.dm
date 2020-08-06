@@ -60,7 +60,7 @@ var/global/list/plant_seed_sprites = list()
 /obj/item/seeds/examine(mob/user)
 	. = ..(user)
 	if(seed && !seed.roundstart)
-		. = to_chat_or_concat(., user, "It's tagged as variety #[seed.uid].")
+		. += "\nIt's tagged as variety #[seed.uid]."
 
 /obj/item/seeds/cutting
 	name = "cuttings"

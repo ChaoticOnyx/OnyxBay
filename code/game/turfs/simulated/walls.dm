@@ -299,18 +299,18 @@
 	. = ..()
 
 	if(!damage)
-		. = to_chat_or_concat(., user, "<span class='notice'>It looks fully intact.</span>")
+		. += "\n<span class='notice'>It looks fully intact.</span>"
 	else
 		var/dam = damage / material.integrity
 		if(dam <= 0.3)
-			. = to_chat_or_concat(., user, "<span class='warning'>It looks slightly damaged.</span>")
+			. += "\n<span class='warning'>It looks slightly damaged.</span>"
 		else if(dam <= 0.6)
-			. = to_chat_or_concat(., user, "<span class='warning'>It looks moderately damaged.</span>")
+			. += "\n<span class='warning'>It looks moderately damaged.</span>"
 		else
-			. = to_chat_or_concat(., user, "<span class='danger'>It looks heavily damaged.</span>")
+			. += "\n<span class='danger'>It looks heavily damaged.</span>"
 
 	if(locate(/obj/effect/overlay/wallrot) in src)
-		. = to_chat_or_concat(., user, "<span class='warning'>There is fungus growing on [src].</span>")
+		. += "\n<span class='warning'>There is fungus growing on [src].</span>"
 
 //Damage
 

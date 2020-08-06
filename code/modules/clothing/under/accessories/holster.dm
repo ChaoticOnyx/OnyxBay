@@ -74,9 +74,9 @@
 /obj/item/clothing/accessory/holster/examine(mob/user)
 	. = ..()
 	if (holstered)
-		. = to_chat_or_concat(., user, "A [holstered] is holstered here.")
+		. += "\nA [holstered] is holstered here."
 	else
-		. = to_chat_or_concat(., user, "It is empty.")
+		. += "\nIt is empty."
 
 /obj/item/clothing/accessory/holster/on_attached(obj/item/clothing/under/S, mob/user as mob)
 	..()

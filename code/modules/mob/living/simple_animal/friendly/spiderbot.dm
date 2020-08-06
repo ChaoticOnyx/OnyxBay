@@ -280,6 +280,6 @@
 /mob/living/simple_animal/spiderbot/examine(mob/user)
 	. = ..()
 	if(src.held_item)
-		. = to_chat_or_concat(., user, "It is carrying \icon[src.held_item] \a [src.held_item].")
+		. += "\nIt is carrying \icon[src.held_item] \a [src.held_item]."
 /mob/living/simple_animal/spiderbot/binarycheck()
 	return positronic

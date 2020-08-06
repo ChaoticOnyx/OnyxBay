@@ -38,9 +38,9 @@
 /obj/item/clothing/mask/smokable/ecig/simple/examine(mob/user)
 	. = ..()
 	if(src.ec_cartridge)
-		. = to_chat_or_concat(., user,"<span class='notice'>There is roughly [round(ec_cartridge.reagents.total_volume / ec_cartridge.volume, 25)]% of liquid remaining.</span>")
+		. += "\n<span class='notice'>There is roughly [round(ec_cartridge.reagents.total_volume / ec_cartridge.volume, 25)]% of liquid remaining.</span>"
 	else
-		. = to_chat_or_concat(., user,"<span class='notice'>There is no cartridge connected.</span>")
+		. += "\n<span class='notice'>There is no cartridge connected.</span>"
 
 /obj/item/clothing/mask/smokable/ecig/util
 	name = "electronic cigarette"
@@ -58,10 +58,10 @@
 obj/item/clothing/mask/smokable/ecig/util/examine(mob/user)
 	. = ..()
 	if(src.ec_cartridge)
-		. = to_chat_or_concat(., user,"<span class='notice'>There are [round(ec_cartridge.reagents.total_volume, 1)] units of liquid remaining.</span>")
+		. += "\n<span class='notice'>There are [round(ec_cartridge.reagents.total_volume, 1)] units of liquid remaining.</span>"
 	else
-		. = to_chat_or_concat(., user,"<span class='notice'>There is no cartridge connected.</span>")
-	. = to_chat_or_concat(., user,"<span class='notice'>Gauge shows about [round(cigcell.percent(), 25)]% energy remaining</span>")
+		. += "\n<span class='notice'>There is no cartridge connected.</span>"
+	. += "\n<span class='notice'>Gauge shows about [round(cigcell.percent(), 25)]% energy remaining</span>"
 
 /obj/item/clothing/mask/smokable/ecig/deluxe
 	name = "deluxe electronic cigarette"
@@ -75,10 +75,10 @@ obj/item/clothing/mask/smokable/ecig/util/examine(mob/user)
 obj/item/clothing/mask/smokable/ecig/deluxe/examine(mob/user)
 	. = ..()
 	if(src.ec_cartridge)
-		. = to_chat_or_concat(., user,"<span class='notice'>There are [round(ec_cartridge.reagents.total_volume, 1)] units of liquid remaining.</span>")
+		. += "\n<span class='notice'>There are [round(ec_cartridge.reagents.total_volume, 1)] units of liquid remaining.</span>"
 	else
-		. = to_chat_or_concat(., user,"<span class='notice'>There is no cartridge connected.</span>")
-	. = to_chat_or_concat(., user,"<span class='notice'>Gauge shows [round(cigcell.percent(), 1)]% energy remaining</span>")
+		. += "\n<span class='notice'>There is no cartridge connected.</span>"
+	. += "\n<span class='notice'>Gauge shows [round(cigcell.percent(), 1)]% energy remaining</span>"
 
 /obj/item/clothing/mask/smokable/ecig/Process()
 	if(idle >= idle_treshold) //idle too long -> automatic shut down
@@ -214,7 +214,7 @@ obj/item/clothing/mask/smokable/ecig/deluxe/examine(mob/user)
 
 /obj/item/weapon/reagent_containers/ecig_cartridge/examine(mob/user as mob)//to see how much left
 	. = ..()
-	. = to_chat_or_concat(., user, "The cartridge has [reagents.total_volume] units of liquid remaining.")
+	. += "\nThe cartridge has [reagents.total_volume] units of liquid remaining."
 
 //flavours
 /obj/item/weapon/reagent_containers/ecig_cartridge/blank

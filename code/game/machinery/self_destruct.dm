@@ -105,13 +105,13 @@
 /obj/machinery/self_destruct/examine(mob/user)
 	. = ..()
 	if(damaged)
-		. = to_chat_or_concat(., user, "<span class='warning'>[src] is damaged, it needs repairs.</span>")
+		. += "\n<span class='warning'>[src] is damaged, it needs repairs.</span>"
 		return
 	if(armed)
-		. = to_chat_or_concat(., user, "[src] is armed and ready.")
+		. += "\n[src] is armed and ready."
 		return
 	if(cylinder)
-		. = to_chat_or_concat(., user, "[src] is loaded and ready to be armed.")
+		. += "\n[src] is loaded and ready to be armed."
 		return
 
 /obj/machinery/self_destruct/update_icon()

@@ -184,7 +184,7 @@ proc/spawn_money(sum, spawnloc, mob/living/carbon/human/human_user as mob)
 /obj/item/weapon/spacecash/ewallet/examine(mob/user)
 	. = ..()
 	if (!(user in view(2)) && user!=src.loc) return
-	. = to_chat_or_concat(., user, "<span class='notice'>Charge card's owner: [src.owner_name]. Thalers remaining: [src.worth].</span>")
+	. += "\n<span class='notice'>Charge card's owner: [src.owner_name]. Thalers remaining: [src.worth].</span>"
 
 /obj/item/weapon/spacecash/ewallet/lotto
 	name = "space lottery card"

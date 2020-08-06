@@ -103,9 +103,9 @@
 
 /obj/structure/closet/body_bag/cryobag/examine(mob/user)
 	. = ..()
-	. = to_chat_or_concat(., user,"The stasis meter shows '[stasis_power]x'.")
+	. += "\nThe stasis meter shows '[stasis_power]x'."
 	if(Adjacent(user)) //The bag's rather thick and opaque from a distance.
-		. = to_chat_or_concat(., user, "<span class='info'>You peer into \the [src].</span>")
+		. += "\n<span class='info'>You peer into \the [src].</span>"
 		for(var/mob/living/L in contents)
 			L.examine(user)
 

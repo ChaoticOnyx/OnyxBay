@@ -767,13 +767,13 @@ BLIND     // can't see anything
 	. = ..()
 	switch(src.sensor_mode)
 		if(0)
-			. = to_chat_or_concat(., user, "Its sensors appear to be disabled.")
+			. += "\nIts sensors appear to be disabled."
 		if(1)
-			. = to_chat_or_concat(., user, "Its binary life sensors appear to be enabled.")
+			. += "\nIts binary life sensors appear to be enabled."
 		if(2)
-			. = to_chat_or_concat(., user, "Its vital tracker appears to be enabled.")
+			. += "\nIts vital tracker appears to be enabled."
 		if(3)
-			. = to_chat_or_concat(., user, "Its vital tracker and tracking beacon appear to be enabled.")
+			. += "\nIts vital tracker and tracking beacon appear to be enabled."
 
 /obj/item/clothing/under/proc/set_sensors(mob/user as mob)
 	var/mob/M = user

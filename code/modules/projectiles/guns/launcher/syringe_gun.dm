@@ -158,4 +158,4 @@
 /obj/item/weapon/gun/launcher/syringe/disguised/examine(mob/user)
 	. = ..()
 	if(get_dist(src, user) <= 0)
-		. = to_chat_or_concat(., user, "The button is a little stiff.")
+		. += "\nThe button is a little stiff."

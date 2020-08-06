@@ -70,9 +70,9 @@
 /obj/item/weapon/melee/baton/proc/examine_cell(mob/user, prefix)
 	. = prefix
 	if(bcell)
-		. = to_chat_or_concat(., user, "<span class='notice'>The baton is [round(bcell.percent())]% charged.</span>")
+		. += "\n<span class='notice'>The baton is [round(bcell.percent())]% charged.</span>"
 	else
-		. = to_chat_or_concat(., user, "<span class='warning'>The baton does not have a power source installed.</span>")
+		. += "\n<span class='warning'>The baton does not have a power source installed.</span>"
 
 /obj/item/weapon/melee/baton/attackby(obj/item/weapon/W, mob/user)
 	if(istype(W, /obj/item/weapon/cell/device))
@@ -210,7 +210,7 @@
 
 // Addition made by Techhead0, thanks for fullfilling the todo!
 /obj/item/weapon/melee/baton/robot/examine_cell(mob/user, prefix)
-	. = to_chat_or_concat(., user, "<span class='notice'>The baton is running off an external power supply.</span>")
+	. += "\n<span class='notice'>The baton is running off an external power supply.</span>"
 
 // Override proc for the stun baton module, found in PC Security synthetics
 // Refactored to fix #14470 - old proc defination increased the hitcost beyond

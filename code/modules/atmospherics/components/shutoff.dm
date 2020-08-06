@@ -14,7 +14,7 @@
 
 /obj/machinery/atmospherics/valve/shutoff/examine(mob/user)
 	. = ..()
-	. = to_chat_or_concat(., user, "The automatic shutoff circuit is [override_open ? "disabled" : "enabled"].")
+	. += "\nThe automatic shutoff circuit is [override_open ? "disabled" : "enabled"]."
 
 /obj/machinery/atmospherics/valve/shutoff/New()
 	open()

@@ -391,9 +391,9 @@
 /obj/item/weapon/lazarus_injector/examine(mob/user)
 	. = ..()
 	if(!loaded)
-		. = to_chat_or_concat(., user, "<span class='info'>[src] is empty.</span>")
+		. += "\n<span class='info'>[src] is empty.</span>"
 	if(malfunctioning)
-		. = to_chat_or_concat(., user, "<span class='info'>The display on [src] seems to be flickering.</span>")
+		. += "\n<span class='info'>The display on [src] seems to be flickering.</span>"
 
 /**********************Point Transfer Card**********************/
 
@@ -416,7 +416,7 @@
 
 /obj/item/weapon/card/mining_point_card/examine(mob/user)
 	. = ..()
-	. = to_chat_or_concat(., user, "There's [points] point\s on the card.")
+	. += "\nThere's [points] point\s on the card."
 
 /**********************Resonator**********************/
 

@@ -101,7 +101,7 @@
 		msg += "<span class='deadsay'>It appears to be completely inactive.</span>\n"
 
 	msg += "</span><span class='info'>*---------*</span>"
-	. = to_chat_or_concat(., user, msg)
+	. += "\n[msg]"
 	return
 
 /obj/item/organ/internal/posibrain/emp_act(severity)

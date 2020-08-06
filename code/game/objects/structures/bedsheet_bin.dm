@@ -121,12 +121,12 @@ LINEN BINS
 	. = ..()
 
 	if(amount < 1)
-		. = to_chat_or_concat(., user, "There are no bed sheets in the bin.")
+		. += "\nThere are no bed sheets in the bin."
 		return
 	if(amount == 1)
-		. = to_chat_or_concat(., user, "There is one bed sheet in the bin.")
+		. += "\nThere is one bed sheet in the bin."
 		return
-	. = to_chat_or_concat(., user, "There are [amount] bed sheets in the bin.")
+	. += "\nThere are [amount] bed sheets in the bin."
 
 
 /obj/structure/bedsheetbin/update_icon()

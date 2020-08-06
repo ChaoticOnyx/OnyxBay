@@ -99,13 +99,13 @@
 
 /obj/item/weapon/portable_destructive_analyzer/examine(mob/user)
 	. = ..()
-	. = to_chat_or_concat(., user, "<span class='notice'><b>Current science levels:</b></span>")
+	. += "\n<span class='notice'><b>Current science levels:</b></span>"
 	for(var/i = 1, i <= files.known_tech.len, i++)
 		if(files.known_tech[i].name == "ILLEGAL" || files.known_tech[i].name == "Arcane")
 			if(files.known_tech[i].level > 0)
-				. = to_chat_or_concat(., user, "<span class='notice'>[files.known_tech[i].name] - [files.known_tech[i].level]</span>")
+				. += "\n<span class='notice'>[files.known_tech[i].name] - [files.known_tech[i].level]</span>"
 		else
-			. = to_chat_or_concat(., user, "<span class='notice'>[files.known_tech[i].name] - [files.known_tech[i].level]</span>")
+			. += "\n<span class='notice'>[files.known_tech[i].name] - [files.known_tech[i].level]</span>"
 
 	//This is used to unlock other borg covers.
 /obj/item/weapon/card/robot //This is not a child of id cards, as to avoid dumb typechecks on computers.
@@ -345,8 +345,8 @@
 	. = ..()
 	if(!.)
 		return
-	. = to_chat_or_concat(., user, "It has [stored_walls] wall segment\s and [stored_doors] door segment\s stored.")
-	. = to_chat_or_concat(., user, "It is set to deploy [mode ? "doors" : "walls"]")
+	. += "\nIt has [stored_walls] wall segment\s and [stored_doors] door segment\s stored."
+	. += "\nIt is set to deploy [mode ? "doors" : "walls"]"
 
 /obj/item/weapon/inflatable_dispenser/attack_self()
 	mode = !mode
@@ -460,12 +460,12 @@
 
 /obj/item/robot_rack/examine(mob/user)
 	. = ..()
-	. = to_chat_or_concat(., user, "It can hold up to [capacity] item[capacity == 1 ? "" : "s"].")
+	. += "\nIt can hold up to [capacity] item[capacity == 1 ? "" : "s"]."
 	if (length(held))
 		var/text = "| "
 		for (var/obj/O in held)
 			text += "[O] | "
-		. = to_chat_or_concat(., user, "Contains: [text]")
+		. += "\nContains: [text]"
 
 /obj/item/robot_rack/Initialize(mapload, starting_objects = 0)
 	. = ..()
@@ -700,7 +700,7 @@
 
 /obj/item/weapon/robot_item_dispenser/examine(mob/user)
 	. = ..()
-	. = to_chat_or_concat(., user, "[selected.name] is chosen to be produced.")
+	. += "\n[selected.name] is chosen to be produced."
 
 
 /obj/item/weapon/robot_item_dispenser/New()

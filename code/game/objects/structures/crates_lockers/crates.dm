@@ -36,7 +36,7 @@ obj/structure/closet/crate
 			devices += H
 		for(var/obj/item/device/assembly/A in src)
 			devices += A
-		. = to_chat_or_concat(., user,"There are some wires attached to the lid, connected to [english_list(devices)].")
+		. += "\nThere are some wires attached to the lid, connected to [english_list(devices)]."
 
 /obj/structure/closet/crate/attackby(obj/item/weapon/W as obj, mob/user as mob)
 	if(opened)

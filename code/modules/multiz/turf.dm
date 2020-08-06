@@ -83,7 +83,7 @@
 		var/depth = 1
 		for(var/T = GetBelow(src); isopenspace(T); T = GetBelow(T))
 			depth += 1
-		. = to_chat_or_concat(., user, "It is about [depth] level\s deep.")
+		. += "\nIt is about [depth] level\s deep."
 
 
 

@@ -108,7 +108,7 @@ obj/item/device/suit_sensor_jammer/examine(user)
 			message += "displays a charge level of [bcell.percent()]%."
 		else
 			message += "is lacking a cell."
-		. = to_chat_or_concat(., user, jointext(message,.))
+		. += "\n[jointext(message, " ")]"
 
 obj/item/device/suit_sensor_jammer/ui_status(mob/user, datum/ui_state/state)
 	if(!bcell || bcell.charge <= 0)

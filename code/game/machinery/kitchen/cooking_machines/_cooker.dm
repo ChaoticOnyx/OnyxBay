@@ -53,16 +53,16 @@
 		switch(product_status())
 			//if NO_PRODUCT, say no more
 			if(COOKING)
-				. = to_chat_or_concat(., user, "You can see \a [thing_inside] inside.")
+				. += "\nYou can see \a [thing_inside] inside."
 			if(COOKED)
 				var/smell = "good"
 				if(istype(thing_inside, /obj/item/weapon/reagent_containers/food/snacks))
 					var/obj/item/weapon/reagent_containers/food/snacks/S = thing_inside
 					if(islist(S.nutriment_desc) && length(S.nutriment_desc))
 						smell = pick(S.nutriment_desc)
-				. = to_chat_or_concat(., user, "You can see \a [thing_inside] inside. It smells [smell].")
+				. += "\nYou can see \a [thing_inside] inside. It smells [smell]."
 			if(BURNED)
-				. = to_chat_or_concat(., user, SPAN_WARNING("Inside is covered by dirt, and it smells smoke!"))
+				. += "\n[SPAN_WARNING("Inside is covered by dirt, and it smells smoke!")]"
 
 /obj/machinery/cooker/attackby(obj/item/I, mob/user)
 	set waitfor = 0  //So that any remaining parts of calling proc don't have to wait for the long cooking time ahead.

@@ -81,7 +81,7 @@
 /obj/item/weapon/reagent_containers/food/snacks/csandwich/examine(mob/user)
 	. = ..()
 	var/obj/item/O = pick(contents)
-	. = to_chat_or_concat(., user, "<span class='warning'>You think you can see [O.name] in there.</span>")
+	. += "\n<span class='warning'>You think you can see [O.name] in there.</span>"
 
 /obj/item/weapon/reagent_containers/food/snacks/csandwich/attack(mob/M as mob, mob/user as mob, def_zone)
 

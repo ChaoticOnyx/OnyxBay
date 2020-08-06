@@ -188,7 +188,7 @@
 /obj/machinery/door/unpowered/simple/examine(mob/user)
 	. = ..()
 	if(get_dist(src, user) <= 1 && lock)
-		. = to_chat_or_concat(., user, "<span class='notice'>It appears to have a lock.</span>")
+		. += "\n<span class='notice'>It appears to have a lock.</span>"
 
 /obj/machinery/door/unpowered/simple/can_open()
 	if(!..() || (lock && lock.isLocked()))

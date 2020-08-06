@@ -83,7 +83,7 @@
 /obj/item/weapon/gun/magnetic/railgun/automatic/examine(mob/user)
 	. = ..()
 	if(get_dist(src, user) <= 1)
-		. = to_chat_or_concat(., user, "<span class='notice'>Someone has scratched <i>Ultima Ratio Regum</i> onto the side of the barrel.</span>")
+		. += "\n<span class='notice'>Someone has scratched <i>Ultima Ratio Regum</i> onto the side of the barrel.</span>"
 
 /obj/item/weapon/gun/magnetic/railgun/flechette
 	name = "flechette gun"

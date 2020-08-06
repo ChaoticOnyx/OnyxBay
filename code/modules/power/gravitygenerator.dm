@@ -122,7 +122,7 @@ GLOBAL_VAR(station_gravity_generator)
 /obj/machinery/gravity_generator/main/examine(mob/user)
 	. = ..()
 	if(panel_open)
-		. = to_chat_or_concat(., user, "The maintenance hatch is open.")
+		. += "\nThe maintenance hatch is open."
 	var/ret = show_broken_info(user)
 	if (!user)
 		. += "\n[ret]"
@@ -130,13 +130,13 @@ GLOBAL_VAR(station_gravity_generator)
 /obj/machinery/gravity_generator/main/show_broken_info(mob/user)
 	switch(broken_state)
 		if(GRAV_NEEDS_PLASTEEL)
-			. = to_chat_or_concat(., user, "It requires ten plasteel to repair.")
+			. += "\nIt requires ten plasteel to repair."
 		if(GRAV_NEEDS_WELDING)
-			. = to_chat_or_concat(., user, "It requires a welder to repair.")
+			. += "\nIt requires a welder to repair."
 		if(GRAV_NEEDS_WRENCH)
-			. = to_chat_or_concat(., user, "It requires a wrench to repair.")
+			. += "\nIt requires a wrench to repair."
 		if(GRAV_NEEDS_SCREWDRIVER)
-			. = to_chat_or_concat(., user, "It requires a screwdriver to repair.")
+			. += "\nIt requires a screwdriver to repair."
 
 /obj/machinery/gravity_generator/main/ex_act(severity)
 	switch(severity)

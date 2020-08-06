@@ -463,7 +463,7 @@
 /obj/item/clothing/shoes/magboots/vox/examine(mob/user)
 	. = ..()
 	if (magpulse)
-		. = to_chat_or_concat(., user, "It would be hard to take these off without relaxing your grip first.")//theoretically this message should only be seen by the wearer when the claws are equipped.
+		. += "\nIt would be hard to take these off without relaxing your grip first."//theoretically this message should only be seen by the wearer when the claws are equipped.
 
 
 /obj/item/clothing/gloves/nabber

@@ -21,7 +21,7 @@
 /mob/living/bot/remotebot/examine(mob/user)
 	. = ..()
 	if(holding)
-		. = to_chat_or_concat(., user, "<span class='notice'>It is holding \the \icon[holding] [holding].</span>")
+		. += "\n<span class='notice'>It is holding \the \icon[holding] [holding].</span>"
 
 /mob/living/bot/remotebot/explode()
 	on = 0

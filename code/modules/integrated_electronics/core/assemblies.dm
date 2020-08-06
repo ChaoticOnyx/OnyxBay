@@ -56,17 +56,17 @@
 	if(!.)
 		return
 	if(IC_FLAG_ANCHORABLE & circuit_flags)
-		. = to_chat_or_concat(., user, "<span class='notice'>The anchoring bolts [anchored ? "are" : "can be"] <b>wrenched</b> in place and the maintenance panel [opened ? "can be" : "is"] <b>screwed</b> in place.</span>")
+		. += "\n<span class='notice'>The anchoring bolts [anchored ? "are" : "can be"] <b>wrenched</b> in place and the maintenance panel [opened ? "can be" : "is"] <b>screwed</b> in place.</span>"
 	else
-		. = to_chat_or_concat(., user, "<span class='notice'>The maintenance panel [opened ? "can be" : "is"] <b>screwed</b> in place.</span>")
+		. += "\n<span class='notice'>The maintenance panel [opened ? "can be" : "is"] <b>screwed</b> in place.</span>"
 	if(health != initial(health))
 		if(health <= initial(health)/2)
-			. = to_chat_or_concat(., user,"<span class='warning'>It looks pretty beat up.</span>")
+			. += "\n<span class='warning'>It looks pretty beat up.</span>"
 		else
-			. = to_chat_or_concat(., user, "<span class='warning'>Its got a few dents in it.</span>")
+			. += "\n<span class='warning'>Its got a few dents in it.</span>"
 
 	if((isobserver(user) && ckeys_allowed_to_scan[user.ckey]) || check_rights(R_ADMIN, 0, user))
-		. = to_chat_or_concat(., user, "You can <a href='?src=\ref[src];ghostscan=1'>scan</a> this circuit.");
+		. += "\nYou can <a href='?src=\ref[src];ghostscan=1'>scan</a> this circuit.";
 
 
 /obj/item/device/electronic_assembly/proc/take_damage(amnt)

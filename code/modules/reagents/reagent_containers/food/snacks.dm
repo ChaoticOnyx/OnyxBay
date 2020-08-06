@@ -109,11 +109,11 @@
 	if (bitecount==0)
 		return
 	else if (bitecount==1)
-		. = to_chat_or_concat(., user, "<span class='notice'>\The [src] was bitten by someone!</span>")
+		. += "\n<span class='notice'>\The [src] was bitten by someone!</span>"
 	else if (bitecount<=3)
-		. = to_chat_or_concat(., user, "<span class='notice'>\The [src] was bitten [bitecount] time\s!</span>")
+		. += "\n<span class='notice'>\The [src] was bitten [bitecount] time\s!</span>"
 	else
-		. = to_chat_or_concat(., user, "<span class='notice'>\The [src] was bitten multiple times!</span>")
+		. += "\n<span class='notice'>\The [src] was bitten multiple times!</span>"
 
 /obj/item/weapon/reagent_containers/food/snacks/attackby(obj/item/weapon/W as obj, mob/user as mob)
 	if(istype(W,/obj/item/weapon/storage))

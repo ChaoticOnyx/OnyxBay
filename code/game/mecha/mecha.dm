@@ -226,19 +226,19 @@
 	var/integrity = health/initial(health)*100
 	switch(integrity)
 		if(85 to 100)
-			. = to_chat_or_concat(., user, "It's fully intact.")
+			. += "\nIt's fully intact."
 		if(65 to 85)
-			. = to_chat_or_concat(., user, "It's slightly damaged.")
+			. += "\nIt's slightly damaged."
 		if(45 to 65)
-			. = to_chat_or_concat(., user, "It's badly damaged.")
+			. += "\nIt's badly damaged."
 		if(25 to 45)
-			. = to_chat_or_concat(., user, "It's heavily damaged.")
+			. += "\nIt's heavily damaged."
 		else
-			. = to_chat_or_concat(., user, "It's falling apart.")
+			. += "\nIt's falling apart."
 	if(equipment && equipment.len)
-		. = to_chat_or_concat(., user, "It's equipped with:")
+		. += "\nIt's equipped with:"
 		for(var/obj/item/mecha_parts/mecha_equipment/ME in equipment)
-			. = to_chat_or_concat(., user, "\icon[ME] [ME]")
+			. += "\n\icon[ME] [ME]"
 	return
 
 

@@ -22,7 +22,7 @@
 /obj/structure/janitorialcart/examine(mob/user)
 	. = ..()
 	if(get_dist(src, user) <= 1)
-		. = to_chat_or_concat(., user, "[src] \icon[src] contains [reagents.total_volume] unit\s of liquid!")
+		. += "\n[src] \icon[src] contains [reagents.total_volume] unit\s of liquid!"
 	//everything else is visible, so doesn't need to be mentioned
 
 
@@ -187,9 +187,9 @@
 	if(get_dist(src, user) > 1)
 		return
 
-	. = to_chat_or_concat(., user, "\icon[src] This [callme] contains [reagents.total_volume] unit\s of water!")
+	. += "\n\icon[src] This [callme] contains [reagents.total_volume] unit\s of water!"
 	if(mybag)
-		. = to_chat_or_concat(., user, "\A [mybag] is hanging on the [callme].")
+		. += "\n\A [mybag] is hanging on the [callme]."
 
 
 /obj/structure/bed/chair/janicart/attackby(obj/item/I, mob/user)

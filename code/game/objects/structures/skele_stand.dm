@@ -42,7 +42,7 @@
 		for(var/slot in swag)
 			var/obj/item/clothing/C = swag[slot]
 			swagnames += C.get_examine_line()
-		. = to_chat_or_concat(., user,"[gender == MALE ? "He" : "She"] is wearing [english_list(swagnames)].")
+		. += "\n[gender == MALE ? "He" : "She"] is wearing [english_list(swagnames)]."
 
 /obj/structure/skele_stand/attackby(obj/item/weapon/W, mob/user)
 	if(istype(W,/obj/item/weapon/pen))

@@ -16,15 +16,15 @@
 
 /obj/machinery/power/debug_items/proc/show_info(mob/user)
 	if(!powernet)
-		. = to_chat_or_concat(., user, "This device is not connected to a powernet")
+		. += "\nThis device is not connected to a powernet"
 		return
 
-	. = to_chat_or_concat(., user, "Connected to powernet: [powernet]")
-	. = to_chat_or_concat(., user, "Available power: [num2text(powernet.avail, 20)] W")
-	. = to_chat_or_concat(., user, "Load: [num2text(powernet.viewload, 20)] W")
-	. = to_chat_or_concat(., user, "Has alert: [powernet.problem ? "YES" : "NO"]")
-	. = to_chat_or_concat(., user, "Cables: [powernet.cables.len]")
-	. = to_chat_or_concat(., user, "Nodes: [powernet.nodes.len]")
+	. += "\nConnected to powernet: [powernet]"
+	. += "\nAvailable power: [num2text(powernet.avail, 20)] W"
+	. += "\nLoad: [num2text(powernet.viewload, 20)] W"
+	. += "\nHas alert: [powernet.problem ? "YES" : "NO"]"
+	. += "\nCables: [powernet.cables.len]"
+	. += "\nNodes: [powernet.nodes.len]"
 
 
 // An infinite power generator. Adds energy to connected cable.

@@ -30,7 +30,7 @@
 				data = "[d]"
 		else if(!isnull(O.data))
 			data = O.data
-		. = to_chat_or_concat(., user, "\The [src] has [data] saved to address [i].")
+		. += "\n\The [src] has [data] saved to address [i]."
 
 /obj/item/integrated_circuit/memory/do_work()
 	for(var/i = 1 to inputs.len)

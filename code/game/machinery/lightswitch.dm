@@ -46,7 +46,7 @@
 /obj/machinery/light_switch/examine(mob/user)
 	. = ..()
 	if(get_dist(src, user) <= 1)
-		. = to_chat_or_concat(., user, "A light switch. It is [on? "on" : "off"].")
+		. += "\nA light switch. It is [on? "on" : "off"]."
 
 /obj/machinery/light_switch/proc/set_state(newstate)
 	if(on != newstate)

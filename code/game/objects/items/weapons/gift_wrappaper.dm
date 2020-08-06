@@ -187,7 +187,7 @@
 /obj/item/weapon/wrapping_paper/examine(mob/user)
 	. = ..()
 	if(get_dist(src, user) <= 1)
-		. = to_chat_or_concat(., user, text("There is about [] square units of paper left!", src.amount))
+		. += "\n[text("There is about [] square units of paper left!", src.amount)]"
 
 /obj/item/weapon/wrapping_paper/attack(mob/target as mob, mob/user as mob)
 	if (!istype(target, /mob/living/carbon/human)) return

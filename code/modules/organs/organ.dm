@@ -138,7 +138,7 @@ var/list/organ_cache = list()
 
 /obj/item/organ/proc/show_decay_status(mob/user)
 	if(status & ORGAN_DEAD)
-		. = to_chat_or_concat(., user, "<span class='notice'>\The [src] looks severely damaged.</span>")
+		. += "\n<span class='notice'>\The [src] looks severely damaged.</span>"
 
 /obj/item/organ/proc/handle_germ_effects()
 	//** Handle the effects of infections

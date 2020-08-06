@@ -80,7 +80,7 @@
 
 /obj/machinery/pipelayer/examine(mob/user)
 	. = ..()
-	. = to_chat_or_concat(., user, "\The [src] has [metal] sheet\s, is set to produce [P_type_t], and auto-dismantling is [!a_dis?"de":""]activated.")
+	. += "\n\The [src] has [metal] sheet\s, is set to produce [P_type_t], and auto-dismantling is [!a_dis?"de":""]activated."
 
 /obj/machinery/pipelayer/proc/reset()
 	on=0

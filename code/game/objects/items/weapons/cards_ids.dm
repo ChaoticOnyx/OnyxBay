@@ -115,7 +115,7 @@ var/const/NO_EMAG_ACT = -50
 	return 1
 /obj/item/weapon/card/emag/robot/examine(mob/user)
 	. = ..()
-	. = to_chat_or_concat(., user, "<span class='notice'>It has [uses] uses left.</span>")
+	. += "\n<span class='notice'>It has [uses] uses left.</span>"
 
 /obj/item/weapon/card/id
 	name = "identification card"

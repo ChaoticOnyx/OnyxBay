@@ -198,10 +198,10 @@
 		for(var/obj/item/I in contents)
 			if(istype(I, /obj/item/organ))
 				continue
-			. = to_chat_or_concat(., user, "<span class='danger'>There is \a [I] sticking out of it.</span>")
+			. += "\n<span class='danger'>There is \a [I] sticking out of it.</span>"
 		var/ouchies = get_wounds_desc()
 		if(ouchies != "nothing")
-			. = to_chat_or_concat(., user, "<span class='notice'>There is [ouchies] visible on it.</span>")
+			. += "\n<span class='notice'>There is [ouchies] visible on it.</span>"
 
 	return
 

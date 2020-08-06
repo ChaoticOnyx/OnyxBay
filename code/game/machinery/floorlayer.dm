@@ -71,7 +71,7 @@
 	var/laying = mode["laying"]
 	var/collect = mode["collect"]
 	var/message = "<span class='notice'>\The [src] [!T?"don't ":""]has [!T?"":"[T.get_amount()] [T] "]tile\s, dismantle is [dismantle?"on":"off"], laying is [laying?"on":"off"], collect is [collect?"on":"off"].</span>"
-	. = to_chat_or_concat(., user, message)
+	. += "\n[message]"
 
 /obj/machinery/floorlayer/proc/reset()
 	on=0

@@ -835,9 +835,9 @@
 /obj/machinery/alarm/examine(mob/user)
 	. = ..(user)
 	if (buildstage < 2)
-		. = to_chat_or_concat(., user, "It is not wired.")
+		. += "\nIt is not wired."
 	if (buildstage < 1)
-		. = to_chat_or_concat(., user, "The circuit is missing.")
+		. += "\nThe circuit is missing."
 /*
 AIR ALARM CIRCUIT
 Just a object used in constructing air alarms

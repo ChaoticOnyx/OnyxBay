@@ -138,7 +138,7 @@
 
 /obj/structure/gravemarker/examine(mob/user)
 	. = ..()
-	. = to_chat_or_concat(., user,"It says: '[message]'")
+	. += "\nIt says: '[message]'"
 
 /obj/structure/gravemarker/random/Initialize()
 	generate()

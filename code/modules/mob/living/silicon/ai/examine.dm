@@ -30,7 +30,7 @@
 	if(hardware && (hardware.owner == src))
 		msg += "<br>"
 		msg += hardware.get_examine_desc()
-	. = to_chat_or_concat(., user, msg)
+	. += "\n[msg]"
 	user.showLaws(src)
 	return
 

@@ -153,15 +153,15 @@
 	if (get_dist(src, user) > 2) 
 		return
 
-	. = to_chat_or_concat(., user, "The IV drip is [mode ? "injecting" : "taking blood"].")
-	. = to_chat_or_concat(., user, "It is set to transfer [transfer_amount]u of chemicals per cycle.")
+	. += "\nThe IV drip is [mode ? "injecting" : "taking blood"]."
+	. += "\nIt is set to transfer [transfer_amount]u of chemicals per cycle."
 
 	if(beaker)
 		if(beaker.reagents && beaker.reagents.total_volume)
-			. = to_chat_or_concat(., usr, "<span class='notice'>Attached is \a [beaker] with [beaker.reagents.total_volume] units of liquid.</span>")
+			. += "\n<span class='notice'>Attached is \a [beaker] with [beaker.reagents.total_volume] units of liquid.</span>"
 		else
-			. = to_chat_or_concat(., usr, "<span class='notice'>Attached is an empty [beaker].</span>")
+			. += "\n<span class='notice'>Attached is an empty [beaker].</span>"
 	else
-		. = to_chat_or_concat(., usr, "<span class='notice'>No chemicals are attached.</span>")
+		. += "\n<span class='notice'>No chemicals are attached.</span>"
 
-	. = to_chat_or_concat(., usr, "<span class='notice'>[attached ? attached : "No one"] is hooked up to it.</span>")
+	. += "\n<span class='notice'>[attached ? attached : "No one"] is hooked up to it.</span>"

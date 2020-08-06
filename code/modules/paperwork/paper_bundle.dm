@@ -98,7 +98,7 @@
 	if(get_dist(src, user) <= 1 && user)
 		src.show_content(user)
 	else
-		. = to_chat_or_concat(., user, "<span class='notice'>It is too far away.</span>")
+		. += "\n<span class='notice'>It is too far away.</span>"
 	return
 
 /obj/item/weapon/paper_bundle/proc/show_content(mob/user as mob)

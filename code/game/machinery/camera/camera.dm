@@ -40,7 +40,7 @@
 /obj/machinery/camera/examine(mob/user)
 	. = ..()
 	if(stat & BROKEN)
-		. = to_chat_or_concat(., user, "<span class='warning'>It is completely demolished.</span>")
+		. += "\n<span class='warning'>It is completely demolished.</span>"
 
 /obj/machinery/camera/malf_upgrade(mob/living/silicon/ai/user)
 	..()

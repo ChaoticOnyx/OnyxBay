@@ -489,9 +489,9 @@
 	if(!(in_range(user, src)))
 		return
 	if(!active)
-		. = to_chat_or_concat(., user, "<span class='notice'>There's a little switch on the bottom. It's flipped down.</span>")
+		. += "\n<span class='notice'>There's a little switch on the bottom. It's flipped down.</span>"
 	else
-		. = to_chat_or_concat(., user, "<span class='notice'>There's a little switch on the bottom. It's flipped up.</span>")
+		. += "\n<span class='notice'>There's a little switch on the bottom. It's flipped up.</span>"
 /obj/item/weapon/orion_ship/attack_self(mob/user)
 	if(active)
 		return

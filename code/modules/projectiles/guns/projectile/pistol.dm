@@ -335,9 +335,9 @@
 /obj/item/weapon/zipgunframe/examine(mob/user)
 	. = ..()
 	switch(buildstate)
-		if(1) . = to_chat_or_concat(., user, "It has a barrel loosely fitted to the stock.")
-		if(2) . = to_chat_or_concat(., user, "It has a barrel that has been secured to the stock with tape.")
-		if(3) . = to_chat_or_concat(., user, "It has a trigger and firing pin assembly loosely fitted into place.")
+		if(1) . += "\nIt has a barrel loosely fitted to the stock."
+		if(2) . += "\nIt has a barrel that has been secured to the stock with tape."
+		if(3) . += "\nIt has a trigger and firing pin assembly loosely fitted into place."
 
 /obj/item/weapon/zipgunframe/attackby(obj/item/thing, mob/user)
 	if(istype(thing,/obj/item/pipe) && buildstate == 0)
