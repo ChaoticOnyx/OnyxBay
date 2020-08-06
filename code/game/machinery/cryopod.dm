@@ -265,11 +265,9 @@
 
 /obj/machinery/cryopod/examine(mob/user)
 	. = ..()
-	if (. && user.Adjacent(src))
+	if (user.Adjacent(src))
 		if(occupant)
-			var/ret = occupant.examine(user)
-			if(!user)
-				. += "\n[ret]"
+			. += "\n[occupant.examine(user)]"
 
 /obj/machinery/cryopod/emag_act(remaining_charges, mob/user)
 	if(!emagged)

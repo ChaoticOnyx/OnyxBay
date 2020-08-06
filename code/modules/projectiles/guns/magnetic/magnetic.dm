@@ -66,15 +66,15 @@
 	overlays = overlays_to_add
 	..()
 
-/obj/item/weapon/gun/magnetic/proc/show_ammo(mob/user)
+/obj/item/weapon/gun/magnetic/proc/show_ammo()
 	if(loaded)
-		. += "\n<span class='notice'>It has \a [loaded] loaded.</span>"
+		. += "<span class='notice'>It has \a [loaded] loaded.</span>"
 
 /obj/item/weapon/gun/magnetic/examine(mob/user)
 	. = ..()
 	if(get_dist(src, user) <= 2)
-		var/ret = show_ammo(user)
-		if (!user && ret)
+		var/ret = show_ammo()
+		if (ret)
 			. += "\n[ret]"
 
 		if(cell)

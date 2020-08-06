@@ -97,8 +97,4 @@
 	. = ..()
 	if (!stored_item)
 		return
-	if (user)
-		user.examinate(stored_item)
-	else
-		var/ret = stored_item.examine()
-		. += "\n[ret]"
+	. += "\n[stored_item.examine(user)]"

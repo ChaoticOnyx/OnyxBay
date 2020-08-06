@@ -39,9 +39,9 @@
 /obj/item/weapon/gun/magnetic/railgun/show_ammo(mob/user)
 	var/obj/item/weapon/rcd_ammo/ammo = loaded
 	if (ammo)
-		to_chat(user, "<span class='notice'>There are [ammo.remaining] shot\s remaining in \the [loaded].</span>")
+		return "<span class='notice'>There are [ammo.remaining] shot\s remaining in \the [loaded].</span>"
 	else
-		to_chat(user, "<span class='notice'>There is nothing loaded.</span>")
+		return "<span class='notice'>There is nothing loaded.</span>"
 
 /obj/item/weapon/gun/magnetic/railgun/check_ammo()
 	var/obj/item/weapon/rcd_ammo/ammo = loaded

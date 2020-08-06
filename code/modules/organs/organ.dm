@@ -131,14 +131,11 @@ var/list/organ_cache = list()
 
 /obj/item/organ/examine(mob/user)
 	. = ..()
-	var/ret = show_decay_status(user)
-	if (user)
-		return
-	. += "\n[ret]"
+	. += "\n[show_decay_status(user)]"
 
 /obj/item/organ/proc/show_decay_status(mob/user)
 	if(status & ORGAN_DEAD)
-		. += "\n<span class='notice'>\The [src] looks severely damaged.</span>"
+		return SPAN_NOTICE("\The [src] looks severely damaged.")
 
 /obj/item/organ/proc/handle_germ_effects()
 	//** Handle the effects of infections

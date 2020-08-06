@@ -123,11 +123,9 @@ GLOBAL_VAR(station_gravity_generator)
 	. = ..()
 	if(panel_open)
 		. += "\nThe maintenance hatch is open."
-	var/ret = show_broken_info(user)
-	if (!user)
-		. += "\n[ret]"
+	. += "[show_broken_info()]"
 
-/obj/machinery/gravity_generator/main/show_broken_info(mob/user)
+/obj/machinery/gravity_generator/main/show_broken_info()
 	switch(broken_state)
 		if(GRAV_NEEDS_PLASTEEL)
 			. += "\nIt requires ten plasteel to repair."
@@ -559,9 +557,7 @@ GLOBAL_VAR(station_gravity_generator)
 
 /obj/machinery/gravity_generator/part/examine(mob/user)
 	. = ..()
-	var/ret = main_part.show_broken_info(user)
-	if (!user)
-		. += "\n[ret]"
+	. += "[main_part.show_broken_info()]"
 
 /obj/machinery/gravity_generator/part/attackby(obj/item/I, mob/user)
 	return main_part.attackby(I, user)
