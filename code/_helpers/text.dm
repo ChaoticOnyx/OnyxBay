@@ -113,70 +113,54 @@
 	var/output = ""
 	var/t_len = length_char(input)
 	var/charcount = 0
-	var/char = ""
 
 	// This is a sanity short circuit, if the users name is three times the maximum allowable length of name
 	// We bail out on trying to process the name at all, as it could be a bug or malicious input and we dont
 	// Want to iterate all of it.
 	if(t_len > 3 * MAX_NAME_LEN)
 		return
-	for(var/i = 1, i <= t_len, i += length_char(char))
-		char = input[i]
-		switch(text2ascii_char(char))
-
+	for(var/char in splittext_char(input, ""))
+		var/char_code = text2ascii_char(char)
+		switch(char_code)
 			// A  .. Z
-			if(65 to 90)   //Uppercase Letters
+			if(65 to 90)   //Uppercase Letters	
 				number_of_alphanumeric++
 				last_char_group = LETTERS_DETECTED
-
+				
 			// a  .. z
 			if(97 to 122)   //Lowercase Letters
 				if(last_char_group == NO_CHARS_DETECTED || last_char_group == SPACES_DETECTED || last_char_group == SYMBOLS_DETECTED) //start of a word
 					char = uppertext(char)
 				number_of_alphanumeric++
 				last_char_group = LETTERS_DETECTED
-
+				
 			// 0  .. 9
 			if(48 to 57)   //Numbers
 				if(last_char_group == NO_CHARS_DETECTED || !allow_numbers) //suppress at start of string
-					//if(strict)
-					//	return  TODO: port from tg
 					continue
 				number_of_alphanumeric++
 				last_char_group = NUMBERS_DETECTED
-
+				
 			// '  -  .
-			if(39,45,46)   //Common name punctuation
+			if(39, 45, 46)   //Common name punctuation
 				if(last_char_group == NO_CHARS_DETECTED)
-					//if(strict)
-					//	return  TODO: port from tg
 					continue
 				last_char_group = SYMBOLS_DETECTED
-
-			// ~   |   @  :  #  $  %  &  *  +
-			if(126,124,64,58,35,36,37,38,42,43)			//Other symbols that we'll allow (mainly for AI)
+				
+			// ~    |    @   :   #   $   %   &   *   +
+			if(126, 124, 64, 58, 35, 36, 37, 38, 42, 43)			//Other symbols that we'll allow (mainly for AI)
 				if(last_char_group == NO_CHARS_DETECTED || !allow_numbers) //suppress at start of string
-					//if(strict)
-					//	return  TODO: port from tg
 					continue
 				last_char_group = SYMBOLS_DETECTED
-
+				
 			//Space
 			if(32)
 				if(last_char_group == NO_CHARS_DETECTED || last_char_group == SPACES_DETECTED) //suppress double-spaces and spaces at start of string
-					//if(strict)
-					//	return  TODO: port from tg
 					continue
 				last_char_group = SPACES_DETECTED
-
-			if(127 to INFINITY)
+				
+			if(127 to INFINITY) // cyrillic, chinese, and other unicode stuff
 				return
-				//if(ascii_only)
-					//if(strict)
-					//	return  TODO: port from tg
-					//continue
-				//last_char_group = SYMBOLS_DETECTED //for now, we'll treat all non-ascii characters like symbols even though most are letters
-
 			else
 				continue
 		output += char
