@@ -806,11 +806,12 @@ Note that amputating the affected organ does in fact remove the infection from t
 	if(disintegrate == DROPLIMB_EDGE && species.limbs_are_nonsolid)
 		disintegrate = DROPLIMB_BLUNT //splut
 
-	var/list/organ_msgs = get_droplimb_messages_for(disintegrate, clean)
-	if(LAZYLEN(organ_msgs) >= 3)
-		owner.visible_message("<span class='danger'>[organ_msgs[1]]</span>", \
-			"<span class='moderate'><b>[organ_msgs[2]]</b></span>", \
-			"<span class='danger'>[organ_msgs[3]]</span>")
+	if (!silent)
+		var/list/organ_msgs = get_droplimb_messages_for(disintegrate, clean)
+		if(LAZYLEN(organ_msgs) >= 3)
+			owner.visible_message("<span class='danger'>[organ_msgs[1]]</span>", \
+				"<span class='moderate'><b>[organ_msgs[2]]</b></span>", \
+				"<span class='danger'>[organ_msgs[3]]</span>")
 
 	var/mob/living/carbon/human/victim = owner //Keep a reference for post-removed().
 	var/obj/item/organ/external/parent_organ = parent
