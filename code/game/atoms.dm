@@ -252,9 +252,6 @@ its easier to just keep the beam vertical.
 		else
 			f_name += "oil-stained [name][infix]."
 
-	if(!user)
-		return "\icon[src] That's [f_name] [suffix]\n[desc]"
-
 	. = "\icon[src] That's [f_name] [suffix]"
 	. += "\n[desc]"
 
