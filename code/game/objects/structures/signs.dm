@@ -20,9 +20,9 @@
 		else
 	return
 
-/obj/structure/sign/attackby(obj/item/tool as obj, mob/user as mob)	//deconstruction
-	if(isScrewdriver(tool) && !istype(src, /obj/structure/sign/double))
-		to_chat(user, "You unfasten the sign with your [tool.name].")
+/obj/structure/sign/attackby(obj/item/W, mob/user)	//deconstruction
+	if(isScrewdriver(W) && !istype(src, /obj/structure/sign/double))
+		to_chat(user, "You unfasten the sign with your [W].")
 		var/obj/item/sign/S = new(src.loc)
 		S.SetName(name)
 		S.desc = desc
@@ -37,28 +37,44 @@
 	icon = 'icons/obj/decals.dmi'
 	w_class = ITEM_SIZE_NORMAL		//big
 	var/sign_state = ""
+	var/fastening = 0
 
-/obj/item/sign/attackby(obj/item/tool as obj, mob/user as mob)	//construction
-	if(istype(tool, /obj/item/weapon/screwdriver) && isturf(user.loc))
+/obj/item/sign/attackby(obj/item/W, mob/user)	//construction
+	if(isScrewdriver(W) && isturf(user.loc))
+		if(fastening)
+			return
+		fastening = 1
+		var/loc_W = W.loc
+		var/loc_user = user.loc
 		var/direction = input("In which direction?", "Select direction.") in list("North", "East", "South", "West", "Cancel")
-		if(direction == "Cancel") return
-		var/obj/structure/sign/S = new(user.loc)
-		switch(direction)
-			if("North")
-				S.pixel_y = 32
-			if("East")
-				S.pixel_x = 32
-			if("South")
-				S.pixel_y = -32
-			if("West")
-				S.pixel_x = -32
-			else return
-		S.SetName(name)
-		S.desc = desc
-		S.icon_state = sign_state
-		to_chat(user, "You fasten \the [S] with your [tool].")
-		qdel(src)
-	else ..()
+		if(direction == "Cancel")
+			fastening = 0
+			return
+		if(!QDELETED(src) && do_after(user, 10, src))
+			if(!(loc_W == W.loc && loc_user == user.loc && Adjacent(user)))
+				fastening = 0
+				return
+			var/obj/structure/sign/S = new(user.loc)
+			switch(direction)
+				if("North")
+					S.pixel_y = 32
+				if("East")
+					S.pixel_x = 32
+				if("South")
+					S.pixel_y = -32
+				if("West")
+					S.pixel_x = -32
+				else
+					return
+			S.SetName(name)
+			S.desc = desc
+			S.icon_state = sign_state
+			to_chat(user, "You fasten \the [S] with your [W].")
+			qdel(src)
+		else
+			fastening = 0
+	else
+		..()
 
 /obj/structure/sign/double/map
 	name = "map"
