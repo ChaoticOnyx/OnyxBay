@@ -49,7 +49,7 @@ var/list/gear_datums = list()
 	var/current_tab = "General"
 	var/datum/gear/selected_gear
 	var/list/selected_tweaks = new
-	var/hide_unavailable_gear = TRUE
+	var/hide_unavailable_gear = FALSE
 	var/flag_not_enough_opyxes = FALSE
 
 /datum/category_item/player_setup_item/loadout/load_character(savefile/S)
@@ -217,16 +217,15 @@ var/list/gear_datums = list()
 			continue
 		var/entry = ""
 		var/ticked = (G.display_name in pref.gear_list[pref.gear_slot])
+		var/allowed_to_see = gear_allowed_to_see(G, user)
 		var/display_class
 		if(G != selected_gear)
 			if(ticked)
 				display_class = "white"
-			else if(G.patron_tier)
-				if(!user.client.donator_info.patreon_tier_available(G.patron_tier))
-					display_class = "gold"
-			else if(G.price)
-				if(!user.client.donator_info.has_item(G.type))
-					display_class = "gold"
+			else if(!gear_allowed_to_equip(G, user))
+				display_class = "gold"
+			else if(!allowed_to_see)
+				display_class = "red"
 			else
 				display_class = "gray"
 		else
@@ -235,7 +234,7 @@ var/list/gear_datums = list()
 		entry += "<td width=25%><a [display_class ? "class='[display_class]' " : ""]href='?src=\ref[src];select_gear=[html_encode(G.display_name)]'>[G.display_name]</a></td>"
 		entry += "</td></tr>"
 
-		if(!hide_unavailable_gear || gear_allowed_to_see(G, user) || ticked)
+		if(!hide_unavailable_gear || allowed_to_see || ticked)
 			if(user.client.donator_info.has_item(G.type) || (G.patron_tier && user.client.donator_info.patreon_tier_available(G.patron_tier)))
 				purchased_gears += entry
 			else if(G.price || G.patron_tier)
@@ -295,6 +294,24 @@ var/list/gear_datums = list()
 					. += "<font color='#808080'>[J.title]</font>"
 			. += "</i>"
 			. += "<br>"
+		
+		if(selected_gear.whitelisted)
+			. += "<b>Has species restrictions!</b>"
+			. += "<br>"
+			. += "<i>"
+			if(!istype(selected_gear.whitelisted, /list))
+				selected_gear.whitelisted = list(selected_gear.whitelisted)
+			var/ind = 0
+			for(var/allowed_species in selected_gear.whitelisted)
+				++ind
+				if(ind > 1)
+					. += ", "
+				if(pref.species && pref.species == allowed_species)
+					. += "<font color='#55cc55'>[allowed_species]</font>"
+				else
+					. += "<font color='#808080'>[allowed_species]</font>"
+			. += "</i>"
+			. += "<br>"
 
 		var/desc = selected_gear.get_description(selected_tweaks)
 		if(desc)
@@ -330,9 +347,12 @@ var/list/gear_datums = list()
 		else
 			if (selected_gear.price)
 				. += "<a class='gold' href='?src=\ref[src];buy_gear=\ref[selected_gear]'>Buy</a> "
-			if(gear_allowed_to_see(selected_gear, user))
-				var/trying_on = (pref.trying_on_gear == selected_gear.display_name)
-				. += "<a [trying_on ? "class='linkOn' " : ""]href='?src=\ref[src];try_on=1'>Try On</a>"
+			var/trying_on = (pref.trying_on_gear == selected_gear.display_name)
+			. += "<a [trying_on ? "class='linkOn' " : ""]href='?src=\ref[src];try_on=1'>Try On</a>"
+
+		if(!gear_allowed_to_see(selected_gear, user))
+			. += "<br>"
+			. += "<span class='notice'>This item will never spawn with you, using your current preferences.</span>"
 
 		. += "</td>"
 
@@ -460,13 +480,12 @@ var/list/gear_datums = list()
 	if(href_list["random_loadout"])
 		var/list/gear = pref.gear_list[pref.gear_slot]
 		gear.Cut()
-		var/list/pool = new
-		if(pref.trying_on_gear)
-			pool += gear_datums[pref.trying_on_gear]
+		pref.trying_on_gear = null
 		pref.trying_on_tweaks.Cut()
+		var/list/pool = new
 		for(var/gear_name in gear_datums)
 			var/datum/gear/G = gear_datums[gear_name]
-			if(gear_allowed_to_equip(G, user) && G.cost <= config.max_gear_cost)
+			if(gear_allowed_to_see(G, user) && gear_allowed_to_equip(G, user) && G.cost <= config.max_gear_cost)
 				pool += G
 		var/points_left = config.max_gear_cost
 		while (points_left > 0 && length(pool))
@@ -537,8 +556,6 @@ var/list/gear_datums = list()
 	return TRUE
 
 /datum/category_item/player_setup_item/loadout/proc/gear_allowed_to_equip(datum/gear/G, mob/user)
-	if(!gear_allowed_to_see(G, user))
-		return FALSE
 	if(G.price && !user.client.donator_info.has_item(G.type))
 		return FALSE
 	if(G.patron_tier && !user.client.donator_info.patreon_tier_available(G.patron_tier))
