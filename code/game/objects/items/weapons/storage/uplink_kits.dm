@@ -197,6 +197,20 @@
 
 	startswith = list(/obj/item/weapon/spacecash/bundle/c1000 = 10)
 
+/obj/item/weapon/storage/backpack/satchel/syndie_kit/cleaning_kit
+	name="cleaning kit"
+	desc="Used to clean your dirty deeds up."
+	startswith = list(
+		/obj/item/weapon/reagent_containers/spray/cleaner,
+		/obj/item/weapon/reagent_containers/spray/sterilizine,
+		/obj/item/weapon/soap/syndie,
+		/obj/item/weapon/storage/bag/trash,
+		/obj/item/weapon/grenade/chem_grenade/cleaner = 3,
+		/obj/item/weapon/reagent_containers/glass/bucket/full,
+		/obj/item/weapon/mop,
+		/obj/item/weapon/storage/box/bodybags
+		)
+
 /obj/item/weapon/storage/backpack/satchel/syndie_kit/armor
 	name = "armor satchel"
 	desc = "A satchel for when you don't want to try a diplomatic approach."
