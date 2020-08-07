@@ -32,7 +32,11 @@
 	if (spike(user, G.affecting))
 		qdel(G)
 	
-
+/obj/structure/kitchenspike/Destroy()
+	if (buckled_mob)
+		buckled_mob.hanging = FALSE
+		unbuckle_mob()
+	. = ..()
 
 /obj/structure/kitchenspike/proc/can_spike(mob/living/victim)
 	if(!istype(victim))
