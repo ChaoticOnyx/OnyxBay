@@ -57,7 +57,6 @@
 	var/list/implants = list()         // Currently implanted objects.
 	var/base_miss_chance = 20          // Chance of missing.
 	var/genetic_degradation = 0
-	var/internal_organs_size = 0       // Currently size cost of internal organs in this body part
 
 	//Forensics stuff
 	var/list/autopsy_data = list()    // Trauma data for forensics.
@@ -80,6 +79,7 @@
 	var/cavity = 0
 	var/atom/movable/applied_pressure
 	var/atom/movable/splinted
+	var/internal_organs_size = 0       // Current size cost of internal organs in this body part
 
 	// HUD element variable, see organ_icon.dm get_damage_hud_image()
 	var/image/hud_damage_image
@@ -258,10 +258,6 @@
 				return
 	..()
 
-/obj/item/organ/external/proc/update_internal_organs_cost()
-	internal_organs_size = 0
-	for(var/obj/item/organ/internal/org in internal_organs)
-		internal_organs_size += org.get_storage_cost()
 
 /**
  *  Get a list of contents of this organ and all the child organs

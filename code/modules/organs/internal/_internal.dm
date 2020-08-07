@@ -23,7 +23,6 @@
 				CRASH("[src] spawned in [holder] without a parent organ: [parent_organ].")
 			E.internal_organs |= src
 			E.cavity_max_w_class = max(E.cavity_max_w_class, w_class)
-			E.update_internal_organs_cost()
 
 /obj/item/organ/internal/Destroy()
 	if(owner)
@@ -54,9 +53,7 @@
 		owner.internal_organs_by_name.Remove(organ_tag)
 		owner.internal_organs_by_name -= organ_tag
 		owner.internal_organs_by_name -= null
-		var/obj/item/organ/external/E = owner.get_organ(parent_organ)
 		owner.internal_organs -= src
-		E.update_internal_organs_cost()
 
 		if(detach)
 			var/obj/item/organ/external/affected = owner.get_organ(parent_organ)
