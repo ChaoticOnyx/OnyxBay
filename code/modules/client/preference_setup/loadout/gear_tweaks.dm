@@ -314,6 +314,16 @@
 /datum/gear_tweak/tablet/get_default()
 	return list(1, 1, 1, 1, 1, 1, 1)
 
+/datum/gear_tweak/tablet/get_random()
+	return list(rand(1, length(ValidProcessors)), \
+				rand(1, length(ValidBatteries)), \
+				rand(1, length(ValidHardDrives)), \
+				rand(1, length(ValidNetworkCards)), \
+				rand(1, length(ValidNanoPrinters)), \
+				rand(1, length(ValidCardSlots)), \
+				rand(1, length(ValidTeslaLinks)), \
+				)
+
 /datum/gear_tweak/tablet/tweak_item(obj/item/modular_computer/tablet/I, list/metadata)
 	if(ValidProcessors[metadata[1]])
 		var/t = ValidProcessors[metadata[1]]
