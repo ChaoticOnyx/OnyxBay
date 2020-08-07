@@ -191,8 +191,9 @@
 	for (var/obj/item/organ/external/O in H.organs)
 		if (BP_IS_ROBOTIC(O) || O.is_stump())
 			continue
-		if (istype(C))
-			meat_limbs_left += C.butchering_capacity
+		var/obj/item/organ/external/chest/OC = O
+		if (istype(OC))
+			meat_limbs_left += OC.butchering_capacity
 			continue
 		meat_limbs_left++
 	
