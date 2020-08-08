@@ -507,6 +507,10 @@
 	name = "\improper Custodial Closet"
 	icon_state = "janitor"
 
+/area/officesupplies
+	name = "\improper Office Supplies"
+	icon_state = "law"
+
 // Tcomm
 /area/tcommsat/
 	ambience = list("ai_ambient")
