@@ -526,6 +526,15 @@
 		to_chat(user, SPAN("warning", "\The [target] already has [o_a][O.name]."))
 		return SURGERY_FAILURE
 
+	var/used_volume = 0
+	for(var/obj/item/implant in affected.implants)
+		used_volume += implant.get_storage_cost()
+	for(var/obj/item/organ in affected.internal_organs)
+		used_volume += organ.get_storage_cost()
+	if((base_storage_capacity(affected.cavity_max_w_class) + affected.internal_organs_size) < used_volume + O.get_storage_cost())
+		to_chat(user, SPAN("warning", "There isn't enough space left in [affected.name]"))
+		return SURGERY_FAILURE
+
 	return ..()
 
 /datum/surgery_step/internal/replace_organ/begin_step(mob/user, mob/living/carbon/human/target, target_zone, obj/item/tool)
