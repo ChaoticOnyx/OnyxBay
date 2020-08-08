@@ -118,7 +118,7 @@
 		H.custom_emote("thrashes in agony")
 
 /datum/species/monkey/get_random_name()
-	return "[lowertext(name)] ([rand(100,999)])"
+	return pick(GLOB.clown_names)
 
 /datum/species/monkey/handle_post_spawn(mob/living/carbon/human/H)
 	..()
