@@ -799,35 +799,40 @@
 /obj/effect/rune/blood_boil
 	cultname = "blood boil"
 	strokes = 4
+	var/is_used = FALSE
 
 /obj/effect/rune/blood_boil/cast(mob/living/user)
 	var/list/mob/living/cultists = get_cultists()
-	if(cultists.len < 3)
+	if(cultists.len < MIN_CULTIST)
+		return fizzle()
+	if(is_used)
 		return fizzle()
 
 	for(var/mob/living/M in cultists)
 		M.say("Dedo ol[pick("'","`")]btoh!")
-
+	is_used = TRUE
 	var/list/mob/living/previous = list()
 	var/list/mob/living/current = list()
 	while(cultists.len >= MIN_CULTIST)
 		cultists = get_cultists()
-		for(var/mob/living/carbon/M in viewers(src))
-			if(iscultist(M))
-				continue
-			current |= M
-			var/obj/item/weapon/nullrod/N = locate() in M
-			if(N)
-				continue
-			M.take_overall_damage(5, 5)
-			if(!(M in previous))
-				if(M.should_have_organ(BP_HEART))
-					to_chat(M, "<span class='danger'>Your blood boils!</span>")
-				else
-					to_chat(M, "<span class='danger'>You feel searing heat inside!</span>")
-		previous = current.Copy()
-		current.Cut()
-		sleep(10)
+		if(is_used)
+			for(var/mob/living/carbon/M in viewers(src))
+				if(iscultist(M))
+					continue
+				current |= M
+				var/obj/item/weapon/nullrod/N = locate() in M
+				if(N)
+					continue
+				is_used = FALSE
+				M.take_overall_damage(5, 5)
+				if(!(M in previous))
+					if(M.should_have_organ(BP_HEART))
+						to_chat(M, "<span class='danger'>Your blood boils!</span>")
+					else
+						to_chat(M, "<span class='danger'>You feel searing heat inside!</span>")
+			previous = current.Copy()
+			current.Cut()
+		sleep(100)
 
 /* Tier NarNar runes */
 
