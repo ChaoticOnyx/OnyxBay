@@ -432,6 +432,9 @@
 	cultname = "defile"
 
 /obj/effect/rune/defile/cast(mob/living/user)
+	if(!is_station_turf(get_turf(src)))
+		to_chat(user, SPAN_DANGER("This place is not weak to intercept reality!"))
+		return
 	speak_incantation(user, "Ia! Ia! Zasan therium viortia!")
 	for(var/turf/T in range(1, src))
 		if(T.holy)
@@ -682,6 +685,9 @@
 
 /obj/effect/rune/massdefile/cast(mob/living/user)
 	var/list/mob/living/cultists = get_cultists()
+	if(!is_station_turf(get_turf(src)))
+		to_chat(user, SPAN_DANGER("This place is not weak to intercept reality!"))
+		return
 	if(cultists.len < MIN_CULTIST)
 		to_chat(user, "<span class='warning'>You need three cultists around this rune to make it work.</span>")
 		return fizzle(user)
@@ -845,6 +851,9 @@
 
 /obj/effect/rune/tearreality/cast(mob/living/user)
 	if(!GLOB.cult.allow_narsie)
+		return
+	if(!is_station_turf(get_turf(src)))
+		to_chat(user, SPAN("cult", "This is strong place to tear reality, find weak place on the Exodus!"))
 		return
 	if(the_end_comes)
 		to_chat(user, "<span class='cult'>You are already summoning! Be patient!</span>")
