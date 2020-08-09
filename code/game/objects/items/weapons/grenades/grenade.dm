@@ -25,7 +25,7 @@
 
 /obj/item/weapon/grenade/examine(mob/user)
 	. = ..()
-	if(get_dist(src, user) <= 1)
+	if(get_dist(src, user) <= 0)
 		if(det_time > 1)
 			. += "\nThe timer is set to [det_time/10] seconds."
 			return

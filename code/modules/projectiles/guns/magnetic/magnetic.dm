@@ -68,7 +68,7 @@
 
 /obj/item/weapon/gun/magnetic/proc/show_ammo()
 	if(loaded)
-		. += "<span class='notice'>It has \a [loaded] loaded.</span>"
+		return "<span class='notice'>It has \a [loaded] loaded.</span>"
 
 /obj/item/weapon/gun/magnetic/examine(mob/user)
 	. = ..()

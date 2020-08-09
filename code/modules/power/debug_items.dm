@@ -52,7 +52,7 @@
 
 /obj/machinery/power/debug_items/infinite_cable_powersink/show_info(mob/user)
 	. = ..()
-	. += "Power sink is demanding [num2text(power_usage_rate, 20)] W"
+	. += "\nPower sink is demanding [num2text(power_usage_rate, 20)] W"
 	. += "\n[num2text(last_used, 20)] W was actually used last tick"
 
 
@@ -64,5 +64,5 @@
 
 /obj/machinery/power/debug_items/infinite_apc_powersink/show_info(mob/user)
 	. = ..()
-	. += "Dummy load is using [num2text(active_power_usage, 20)] W"
+	. += "\nDummy load is using [num2text(active_power_usage, 20)] W"
 	. += "\nPowered: [powered() ? "YES" : "NO"]"
