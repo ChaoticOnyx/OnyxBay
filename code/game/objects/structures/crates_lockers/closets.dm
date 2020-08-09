@@ -57,9 +57,9 @@
 	throw_speed = 1
 	throw_range = 4
 	w_class = ITEM_SIZE_HUGE
-	mod_weight = 1.5
+	mod_weight = 1.6
 	mod_reach = 1.4
-	mod_handy = 0.65
+	mod_handy = 0.7
 	mod_shield = 1.3
 	origin_tech = list(TECH_MATERIAL = 2)
 	matter = list(MATERIAL_STEEL = 1000)
@@ -416,7 +416,7 @@
 		src.welded = !src.welded
 		src.update_icon()
 		user.visible_message("<span class='warning'>\The [src] has been [welded?"welded shut":"unwelded"] by \the [user].</span>", blind_message = "You hear welding.", range = 3)
-	else if(istype(W, /obj/item/device/multitool))
+	else if(istype(W, /obj/item/device/multitool) && (setup & CLOSET_HAS_LOCK))
 		var/obj/item/device/multitool/multi = W
 		if(multi.in_use)
 			to_chat(user, "<span class='warning'>This multitool is already in use!</span>")

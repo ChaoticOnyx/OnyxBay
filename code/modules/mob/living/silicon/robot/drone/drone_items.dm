@@ -111,6 +111,14 @@
 	storage_type = list(
 		/obj/item/weapon/storage/
 		)
+/obj/item/weapon/gripper/integrated_circuit
+	name = "integrated circuit assemblies manipulator"
+	desc = "Complex grasping tool for integrated circuit assemblies"
+
+	can_hold = list(
+		/obj/item/device/electronic_assembly,
+		/obj/item/integrated_circuit,
+	)
 
 /obj/item/weapon/gripper/archeologist
 	name = "archeologist gripper"
@@ -209,6 +217,17 @@
 		to_chat(user, "It is holding \a [wrapped].")
 	else if (length(storage_type))
 		to_chat(user, "[src] is currently can [mode == MODE_EMPTY ? "empty" : "open"] containers.")
+
+/obj/item/weapon/gripper/integrated_circuit/attack_self(mob/living/silicon/user)
+	if(wrapped)
+		if (istype(wrapped, /obj/item/device/electronic_assembly))
+			var/obj/item/device/electronic_assembly/O = wrapped
+			O.interact(user)
+
+/obj/item/weapon/gripper/integrated_circuit/afterattack(atom/target, mob/user, proximity)
+	if(proximity && istype(wrapped, /obj/item/integrated_circuit) && istype(target, /obj/item/device/electronic_assembly))
+		var/obj/item/device/electronic_assembly/AS = target
+		AS.try_add_component(wrapped, user, AS)
 
 /obj/item/weapon/gripper/attack_self(mob/user as mob)
 	if(wrapped)

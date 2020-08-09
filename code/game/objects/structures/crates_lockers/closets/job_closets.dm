@@ -93,7 +93,5 @@
 		/obj/item/clothing/under/lawyer/purpsuit,
 		/obj/item/clothing/suit/storage/toggle/suit/purple,
 		/obj/item/clothing/shoes/brown,
-		/obj/item/clothing/shoes/black,
-		/obj/item/toy/pig,
-		/obj/item/toy/pig
+		/obj/item/clothing/shoes/black
 	)

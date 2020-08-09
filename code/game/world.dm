@@ -118,7 +118,7 @@
 var/world_topic_spam_protect_time = world.timeofday
 
 /world/Topic(T, addr, master, key)
-	WRITE_FILE(GLOB.world_common_log, "TOPIC: \"[T]\", from:[addr], master:[master][log_end]")
+	log_href("\"[T]\", from:[addr], master:[master][log_end]")
 
 	var/input[] = params2list(T)
 	var/key_valid = config.comms_password && input["key"] == config.comms_password
