@@ -528,6 +528,8 @@
 
 	var/used_volume = 0
 	for(var/obj/item/implant in affected.implants)
+		if(istype(implant, /obj/item/weapon/implant))
+			continue
 		used_volume += implant.get_storage_cost()
 	for(var/obj/item/organ in affected.internal_organs)
 		used_volume += organ.get_storage_cost()
