@@ -243,6 +243,10 @@ var/list/_client_preferences_by_type
 	key = "SHOW_CREDITS"
 	default_value = GLOB.PREF_NO
 
+/datum/client_preference/hover_tips
+	description = "Show names on hover"
+	key = "SHOW_HOVER_TIPS"
+
 /datum/client_preference/ooc_name_color
 	description = "OOC Name Color"
 	key = "OOC_NAME_COLOR"

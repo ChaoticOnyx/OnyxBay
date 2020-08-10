@@ -13,6 +13,7 @@
 	min_gas = list("oxygen" = 1)
 	max_gas = null
 	unsuitable_atoms_damage = 1
+	maptext_style = new /datum/css_style/animal/friendly
 
 	var/list/wizardy_spells = list()
 

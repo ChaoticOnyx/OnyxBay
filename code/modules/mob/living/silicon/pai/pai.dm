@@ -6,6 +6,7 @@
 	emote_type = 2		// pAIs emotes are heard, not seen, so they can be seen through a container (eg. person)
 	pass_flags = 1
 	mob_size = MOB_SMALL
+	maptext_style = null
 
 	can_pull_size = ITEM_SIZE_SMALL
 	can_pull_mobs = MOB_PULL_SMALLER

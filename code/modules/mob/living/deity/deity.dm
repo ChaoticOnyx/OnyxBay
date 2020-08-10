@@ -9,6 +9,7 @@
 	health = 100
 	maxHealth = 100 //I dunno what to do with health at this point.
 	universal_understand = 1
+	maptext_style = new /datum/css_style/deity
 	var/eye_type = /mob/observer/eye/cult
 	var/list/minions = list() //Minds of those who follow him
 	var/list/structures = list() //The objs that this dude controls.

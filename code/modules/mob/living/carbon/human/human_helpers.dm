@@ -314,3 +314,33 @@
 
 	UNSETEMPTY(cloaking_sources)
 	return !cloaking_sources // If cloaking_sources wasn't initially null but is now, we've uncloaked
+
+/mob/living/carbon/human/show_hover_tip()
+	var/datum/css_style/m_type = maptext_style
+	if(istype(src, /mob/living/carbon/human/monkey))
+		m_type = /datum/css_style/animal/friendly
+	else
+		switch(gender)
+			if(MALE)
+				if(src.client && src.client.donator_info && src.client.donator_info.patreon_tier_available(PATREON_SCIENTIST))
+					m_type = /datum/css_style/donator/male
+				else
+					m_type = /datum/css_style/human/male
+			if(FEMALE)
+				if(src.client && src.client.donator_info && src.client.donator_info.patreon_tier_available(PATREON_SCIENTIST))
+					m_type = /datum/css_style/donator/female
+				else
+					m_type = /datum/css_style/human/female
+			else
+				if(src.client && src.client.donator_info && src.client.donator_info.patreon_tier_available(PATREON_SCIENTIST))
+					m_type = /datum/css_style/donator
+				else
+					m_type = /datum/css_style/human
+	if(!istype(maptext_style, m_type))
+		maptext_style = new m_type
+
+	/*var/face_name = get_face_name()
+	var/id_name = get_id_name("")
+	if((face_name == "Unknown") && id_name && (id_name != face_name))
+		inscribe(face_name, "(as [id_name])")*/
+	inscribe(replacetext_char(get_visible_name(), " (as ", "\n(as "))

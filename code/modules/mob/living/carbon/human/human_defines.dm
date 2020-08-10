@@ -120,4 +120,6 @@
 	var/skin_state = SKIN_NORMAL
 	var/no_pain = 0
 
+	maptext_style = new /datum/css_style/human
+
 	var/debug = 0

@@ -4,6 +4,7 @@
 	icon_state = "grey baby slime"
 	pass_flags = PASS_FLAG_TABLE
 	speak_emote = list("chirps")
+	maptext_style = new /datum/css_style/alien
 
 	maxHealth = 150
 	health = 150

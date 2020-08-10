@@ -9,6 +9,7 @@
 	maxHealth = 100
 	mob_size = 4
 	species_language = "Xenomorph"
+	maptext_style = new /datum/css_style/alien
 
 	var/dead_icon
 	var/language

@@ -29,6 +29,7 @@
 
 	var/list/avaliable_huds
 	var/active_hud
+	maptext_style = new /datum/css_style/robot
 
 /mob/living/silicon/New()
 	GLOB.silicon_mob_list += src

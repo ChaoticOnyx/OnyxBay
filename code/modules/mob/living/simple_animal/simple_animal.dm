@@ -3,6 +3,7 @@
 	icon = 'icons/mob/animal.dmi'
 	health = 20
 	maxHealth = 20
+	maptext_style = new /datum/css_style/animal
 
 	mob_bump_flag = SIMPLE_ANIMAL
 	mob_swap_flags = MONKEY|SLIME|SIMPLE_ANIMAL

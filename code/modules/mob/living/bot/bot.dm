@@ -5,6 +5,7 @@
 	icon = 'icons/obj/aibots.dmi'
 	universal_speak = 1
 	density = 0
+	maptext_style = new /datum/css_style/robot
 	var/obj/item/weapon/card/id/botcard = null
 	var/list/botcard_access = list()
 	var/on = 1
