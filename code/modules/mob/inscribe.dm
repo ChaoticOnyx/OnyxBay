@@ -74,7 +74,9 @@ mob/MouseEntered()
 			last_mob_hovered.inscribe() // Only one sign at a time, flush previous one
 		last_mob_hovered = src
 	next_hover_allowed = world.time + INSCRIBE_DELAY
+	layer += 0.01 // Bump over adjacent mobs on the same layer
 	show_hover_tip()
+	layer -= 0.01
 
 mob/MouseExited()
 	is_hovered = FALSE

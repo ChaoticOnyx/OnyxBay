@@ -339,8 +339,4 @@
 	if(!istype(maptext_style, m_type))
 		maptext_style = new m_type
 
-	/*var/face_name = get_face_name()
-	var/id_name = get_id_name("")
-	if((face_name == "Unknown") && id_name && (id_name != face_name))
-		inscribe(face_name, "(as [id_name])")*/
 	inscribe(replacetext_char(get_visible_name(), " (as ", "\n(as "))

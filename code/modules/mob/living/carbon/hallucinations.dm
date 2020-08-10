@@ -425,6 +425,7 @@
 	fake = pick(fake_candidates)
 
 	fake_look = new()
+	fake.maptext = "" // Hard-counter one strange bug
 	fake_look.appearance = fake.appearance
 	fake_look.loc = origin
 	fake_look.dir = null // This makes image to always rotate with the origin
