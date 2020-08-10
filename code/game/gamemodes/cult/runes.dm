@@ -836,9 +836,11 @@
 						to_chat(M, "<span class='danger'>Your blood boils!</span>")
 					else
 						to_chat(M, "<span class='danger'>You feel searing heat inside!</span>")
+			if(!is_used)
+				break
 			previous = current.Copy()
 			current.Cut()
-		sleep(100)
+		sleep(10)
 
 /* Tier NarNar runes */
 
