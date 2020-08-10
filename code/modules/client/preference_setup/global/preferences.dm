@@ -247,6 +247,20 @@ var/list/_client_preferences_by_type
 	description = "Show names on hover"
 	key = "SHOW_HOVER_TIPS"
 
+/datum/client_preference/maptext_glow
+	description = "Highlight my hover-name in gold"
+	key = "MAPTEXT_HIGHLIGHT"
+
+/datum/client_preference/maptext_glow/may_set(client/given_client)
+	ASSERT(given_client)
+	return given_client.donator_info && given_client.donator_info.patreon_tier_available(PATREON_SCIENTIST)
+
+/datum/client_preference/maptext_glow/get_default_value(client/given_client)
+	ASSERT(given_client)
+	if(given_client.donator_info && given_client.donator_info.patreon_tier_available(PATREON_SCIENTIST))
+		return GLOB.PREF_YES
+	return GLOB.PREF_NO
+
 /datum/client_preference/ooc_name_color
 	description = "OOC Name Color"
 	key = "OOC_NAME_COLOR"
