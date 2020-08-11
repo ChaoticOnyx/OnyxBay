@@ -80,6 +80,7 @@
 		return
 	if (unbuckling)
 		to_chat(user, SPAN_NOTICE("Someone is already trying to get [buckled_mob == user ? "you" : buckled_mob] off \the [src], you can't help!"))
+		return
 
 	var/mob/living/M = buckled_mob
 	if(M != user)
