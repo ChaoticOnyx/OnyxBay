@@ -79,8 +79,8 @@
 	if (!buckled_mob || !buckled_mob.buckled)
 		return
 	if (unbuckling)
-		to_chat(user, SPAN_NOTICE("Someone is already trying to get [user] off \the [src], you can't help!"))
-		return
+		to_chat(user, SPAN_NOTICE("Someone is already trying to get [buckled_mob == user ? "you" : buckled_mob] off \the [src], you can't help!"))
+
 	var/mob/living/M = buckled_mob
 	if(M != user)
 		M.visible_message(\
@@ -89,7 +89,7 @@
 			SPAN("italics", "You hear a squishy wet noise.</span>"))
 		unbuckling = TRUE
 		if(!do_after(user, delay = 150, target = src))
-			if(M && M.buckled)
+			if(M && M.buckled == src)
 				M.visible_message(\
 				SPAN_WARNING("[user] fails to free [M]!"),\
 				SPAN_WARNING("[user] fails to pull you off of \the [src]."))
@@ -102,12 +102,12 @@
 		SPAN("italics", "You hear a wet squishing noise."))
 		M.adjustBruteLoss(30)
 		if(!do_after(M, delay = 600, target = src))
-			if(M && M.buckled)
+			if(M && M.buckled == src)
 				M << "<span class='warning'>You fail to free yourself!</span>"
 			return
 
 	unbuckling = FALSE
-	if(!M.buckled)
+	if(!M || M.buckled != src)
 		return
 	M.adjustBruteLoss(30)
 	src.visible_message(SPAN_DANGER("[M] falls free of \the [src]!"))
@@ -163,7 +163,6 @@
 
 		to_chat(user, SPAN_NOTICE("You've finished butchering [buckled_mob]."))
 		admin_attack_log(user, buckled_mob, "Gibbed the victim", "Was gibbed", "gibbed")
-		buckled_mob.ghostize()
 		playsound(loc, 'sound/effects/splat.ogg', 50, 1)
 		QDEL_NULL(buckled_mob)
 		return

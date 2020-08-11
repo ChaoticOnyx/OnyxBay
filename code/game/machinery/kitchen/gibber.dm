@@ -222,7 +222,6 @@
 
 
 	admin_attack_log(user, occupant, "Gibbed the victim", "Was gibbed", "gibbed")
-	src.occupant.ghostize()
 
 	spawn(gib_time)
 
