@@ -218,6 +218,8 @@
 		user.visible_message(SPAN_WARNING("[user]'ve successfully butchered [H]'s [butchered_organ_name]!"),\
 			SPAN_NOTICE("You've successfully butchered [H]'s [butchered_organ_name]..."),\
 			SPAN("italics", "You hear a squishy wet noise.</span>"))
+		if (istype(H) && H.can_feel_pain())
+			H.emote("scream")
 		H.nutrition -= slab_nutrition
 		var/obj/item/weapon/reagent_containers/food/snacks/meat/new_meat = new slab_type(get_turf(src), rand(3,8))
 		if (istype(new_meat))
