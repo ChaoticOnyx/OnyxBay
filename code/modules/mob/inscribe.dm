@@ -19,8 +19,6 @@ Used for 'hover' tips.
 		return
 	
 	var/text = ""
-	if(maptext_style.debug_text) // DEBUG
-		text = maptext_style.debug_text // DEBUG
 	maptext_width = 0
 	maptext_height = 100 * length(strings)
 	for(var/i = 1, i <= length(strings), i++)
