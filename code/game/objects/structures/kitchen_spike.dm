@@ -168,10 +168,6 @@
 		QDEL_NULL(buckled_mob)
 		return
 
-	if (H.isSynthetic())
-		to_chat(user, SPAN_WARNING("Can't extract meat from synths!"))
-		return
-
 	var/zone = check_zone(user.zone_sel?.selecting)
 	var/obj/item/organ/external/organ = H.get_organ(zone)
 	if (BP_IS_ROBOTIC(organ))
@@ -218,7 +214,7 @@
 		user.visible_message(SPAN_WARNING("[user]'ve successfully butchered [H]'s [butchered_organ_name]!"),\
 			SPAN_NOTICE("You've successfully butchered [H]'s [butchered_organ_name]..."),\
 			SPAN("italics", "You hear a squishy wet noise.</span>"))
-		if (istype(H) && H.can_feel_pain())
+		if (H.can_feel_pain())
 			H.emote("scream")
 		H.nutrition -= slab_nutrition
 		var/obj/item/weapon/reagent_containers/food/snacks/meat/new_meat = new slab_type(get_turf(src), rand(3,8))
