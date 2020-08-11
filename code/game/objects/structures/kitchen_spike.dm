@@ -90,7 +90,7 @@
 			SPAN("italics", "You hear a squishy wet noise.</span>"))
 		unbuckling = TRUE
 		if(!do_after(user, delay = 150, target = src))
-			if(M && M.buckled == src)
+			if(M && M == buckled_mob)
 				M.visible_message(\
 				SPAN_WARNING("[user] fails to free [M]!"),\
 				SPAN_WARNING("[user] fails to pull you off of \the [src]."))
@@ -103,12 +103,12 @@
 		SPAN("italics", "You hear a wet squishing noise."))
 		M.adjustBruteLoss(30)
 		if(!do_after(M, delay = 600, target = src))
-			if(M && M.buckled == src)
+			if(M && M == buckled_mob)
 				M << "<span class='warning'>You fail to free yourself!</span>"
 			return
 
 	unbuckling = FALSE
-	if(!M || M.buckled != src)
+	if(!M || M != buckled_mob)
 		return
 	M.adjustBruteLoss(30)
 	src.visible_message(SPAN_DANGER("[M] falls free of \the [src]!"))
