@@ -320,7 +320,7 @@
 	if(istype(src, /mob/living/carbon/human/monkey))
 		m_type = /datum/css_style/animal/friendly
 	else
-		var/is_donator = src.client.donator_info && src.client.donator_info.patreon_tier_available(PATREON_SCIENTIST)
+		var/is_donator = src.client.donator_info && src.client.donator_info.patreon_tier_available(PATREON_SCIENTIST) && usr.get_preference_value(/datum/client_preference/maptext_glow) == GLOB.PREF_YES
 		if(mind && mind.assigned_role == "Clown")
 			if(is_donator)
 				m_type = /datum/css_style/clown/donator
