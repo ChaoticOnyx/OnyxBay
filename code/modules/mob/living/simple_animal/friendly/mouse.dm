@@ -107,7 +107,7 @@
 /mob/living/simple_animal/mouse/examine(mob/user)
 	. = ..()
 	if(holding_item)
-		to_chat(user, SPAN_NOTICE("You may notice that she has \a [holding_item] glued with tape."))
+		. += "\n[SPAN_NOTICE("You may notice that she has \a [holding_item] glued with tape.")]"
 
 /mob/living/simple_animal/mouse/proc/splat()
 	icon_dead = "mouse_[body_color]_splat"

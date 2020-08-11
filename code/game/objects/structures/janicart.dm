@@ -20,8 +20,9 @@
 
 
 /obj/structure/janitorialcart/examine(mob/user)
-	if(..(user, 1))
-		to_chat(user, "[src] \icon[src] contains [reagents.total_volume] unit\s of liquid!")
+	. = ..()
+	if(get_dist(src, user) <= 1)
+		. += "\n[src] \icon[src] contains [reagents.total_volume] unit\s of liquid!"
 	//everything else is visible, so doesn't need to be mentioned
 
 
@@ -182,12 +183,13 @@
 
 
 /obj/structure/bed/chair/janicart/examine(mob/user)
-	if(!..(user, 1))
+	. = ..()
+	if(get_dist(src, user) > 1)
 		return
 
-	to_chat(user, "\icon[src] This [callme] contains [reagents.total_volume] unit\s of water!")
+	. += "\n\icon[src] This [callme] contains [reagents.total_volume] unit\s of water!"
 	if(mybag)
-		to_chat(user, "\A [mybag] is hanging on the [callme].")
+		. += "\n\A [mybag] is hanging on the [callme]."
 
 
 /obj/structure/bed/chair/janicart/attackby(obj/item/I, mob/user)

@@ -64,11 +64,11 @@
 /obj/item/weapon/paper/examine(mob/user)
 	. = ..()
 	if(name != "sheet of paper")
-		to_chat(user, "It's titled '[name]'.")
-	if(in_range(user, src) || isghost(user))
+		. += "\nIt's titled '[name]'."
+	if(user && (in_range(user, src) || isghost(user)))
 		show_content(usr)
 	else
-		to_chat(user, "<span class='notice'>You have to go closer if you want to read it.</span>")
+		. += "\n<span class='notice'>You have to go closer if you want to read it.</span>"
 
 /obj/item/weapon/paper/proc/show_content(mob/user, forceshow)
 	var/can_read = (istype(user, /mob/living/carbon/human) || isghost(user) || istype(user, /mob/living/silicon)) || forceshow

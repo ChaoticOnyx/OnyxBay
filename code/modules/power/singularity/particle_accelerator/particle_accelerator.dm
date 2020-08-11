@@ -123,7 +123,7 @@ So, hopefully this is helpful if any more icons are to be added/changed/wonderin
 			src.desc = text("The [name] is assembled")
 			if(powered)
 				src.desc = src.desc_holder
-	..()
+	. = ..()
 	return
 
 
@@ -305,7 +305,7 @@ So, hopefully this is helpful if any more icons are to be added/changed/wonderin
 			src.desc = text("The [name] is assembled")
 			if(powered)
 				src.desc = src.desc_holder
-	..()
+	. = ..()
 	return
 
 

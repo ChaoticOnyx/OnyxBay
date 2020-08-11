@@ -301,11 +301,11 @@
 /obj/machinery/door/examine(mob/user)
 	. = ..()
 	if(src.health < src.maxhealth / 4)
-		to_chat(user, "\The [src] looks like it's about to break!")
+		. += "\n\The [src] looks like it's about to break!"
 	else if(src.health < src.maxhealth / 2)
-		to_chat(user, "\The [src] looks seriously damaged!")
+		. += "\n\The [src] looks seriously damaged!"
 	else if(src.health < src.maxhealth * 3/4)
-		to_chat(user, "\The [src] shows signs of damage!")
+		. += "\n\The [src] shows signs of damage!"
 
 
 /obj/machinery/door/set_broken(new_state)

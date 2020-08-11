@@ -34,29 +34,29 @@
 	START_PROCESSING(SSobj, src)
 
 /obj/item/weapon/gun/flamer/examine(mob/user)
-	. = ..(user)
+	. = ..()
 
 	if(igniter)
-		to_chat(user, "It's turned [lit? "on" : "off"].")
+		. += "\nIt's turned [lit? "on" : "off"]."
 	else
-		to_chat(user, SPAN_WARNING("Igniter not installed in [src]!"))
+		. += "\n[SPAN_WARNING("Igniter not installed in [src]!")]"
 
 	if(pressure_tank)
-		to_chat(user, "The pressure tank wrenched into the [src].")
+		. += "\nThe pressure tank wrenched into the [src]."
 
 	if(gauge)
 		if(fuel_tank)
-			to_chat(user, "The fuel tank contains [round(get_fuel())]/[fuel_tank.max_fuel] units of fuel.")
+			. += "\nThe fuel tank contains [round(get_fuel())]/[fuel_tank.max_fuel] units of fuel."
 		else
-			to_chat(user, SPAN_WARNING("There's no fuel tank in [src]!"))
+			. += "\n[SPAN_WARNING("There's no fuel tank in [src]!")]"
 
 		if(pressure_tank)
-			to_chat(user, "The pressure gauge shows the current tank is [pressure_tank.air_contents.return_pressure()].")
+			. += "\nThe pressure gauge shows the current tank is [pressure_tank.air_contents.return_pressure()]."
 		else
-			to_chat(user, SPAN_WARNING("There's no pressure tank in [src]!"))
+			. += "\n[SPAN_WARNING("There's no pressure tank in [src]!")]"
 
 	else
-		to_chat(user, SPAN_WARNING("Gauge not installed, you have no idea how much fuel left in [src]!"))
+		. += "\n[SPAN_WARNING("Gauge not installed, you have no idea how much fuel left in [src]!")]"
 
 /obj/item/weapon/gun/flamer/update_icon()
 	overlays.Cut()

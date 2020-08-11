@@ -50,14 +50,15 @@
 	base_name = name
 
 /obj/item/weapon/reagent_containers/glass/examine(mob/user)
-	if(!..(user, 2))
+	. = ..()
+	if(get_dist(src, user) > 2)
 		return
 	if(reagents && reagents.reagent_list.len)
-		to_chat(user, "<span class='notice'>It contains [reagents.total_volume] units of liquid.</span>")
+		. += "\n<span class='notice'>It contains [reagents.total_volume] units of liquid.</span>"
 	else
-		to_chat(user, "<span class='notice'>It is empty.</span>")
+		. += "\n<span class='notice'>It is empty.</span>"
 	if(!is_open_container())
-		to_chat(user, "<span class='notice'>The airtight lid seals it completely.</span>")
+		. += "\n<span class='notice'>The airtight lid seals it completely.</span>"
 
 /obj/item/weapon/reagent_containers/glass/attack_self()
 	..()

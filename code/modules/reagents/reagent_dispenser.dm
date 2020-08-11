@@ -29,14 +29,15 @@
 	..()
 
 /obj/structure/reagent_dispensers/examine(mob/user)
-	if(!..(user, 2))
+	. = ..()
+	if(get_dist(src, user) > 2)
 		return
-	to_chat(user, "<span class='notice'>It contains:</span>")
+	. += "\n<span class='notice'>It contains:</span>"
 	if(reagents && reagents.reagent_list.len)
 		for(var/datum/reagent/R in reagents.reagent_list)
-			to_chat(user, "<span class='notice'>[R.volume] units of [R.name]</span>")
+			. += "\n<span class='notice'>[R.volume] units of [R.name]</span>"
 	else
-		to_chat(user, "<span class='notice'>Nothing.</span>")
+		. += "\n<span class='notice'>Nothing.</span>"
 
 /obj/structure/reagent_dispensers/verb/set_APTFT() //set amount_per_transfer_from_this
 	set name = "Set transfer amount"
@@ -96,12 +97,14 @@
 	atom_flags = ATOM_FLAG_CLIMBABLE
 
 /obj/structure/reagent_dispensers/fueltank/examine(mob/user)
-	if(!..(user, 2))
+	. = ..()
+	if(get_dist(src, user) > 2)
 		return
 	if (modded)
-		to_chat(user, "<span class='warning'>Fuel faucet is wrenched open, leaking the fuel!</span>")
+		. += "\n<span class='warning'>Fuel faucet is wrenched open, leaking the fuel!</span>"
 	if(rig)
-		to_chat(user, "<span class='notice'>There is some kind of device rigged to the tank.</span>")
+		. += "\n<span class='notice'>There is some kind of device rigged to the tank.</span>"
+
 /obj/structure/reagent_dispensers/fueltank/attack_hand()
 	if (rig)
 		usr.visible_message("<span class='notice'>\The [usr] begins to detach [rig] from \the [src].</span>", "<span class='notice'>You begin to detach [rig] from \the [src].</span>")

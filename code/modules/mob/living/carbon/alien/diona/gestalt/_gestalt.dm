@@ -41,4 +41,4 @@
 
 /obj/structure/diona_gestalt/examine(mob/user)
 	. = ..()
-	if(nymphs) to_chat(user, "It seems to be composed of at least [nymphs.len] nymph\s.")
+	if(nymphs) . += "\nIt seems to be composed of at least [nymphs.len] nymph\s."

@@ -54,12 +54,14 @@
 		return
 
 /obj/machinery/power/port_gen/examine(mob/user)
-	if(!..(user,1 ))
+	. = ..()
+	if(get_dist(src, user) > 1)
 		return
 	if(active)
-		to_chat(usr, "<span class='notice'>The generator is on.</span>")
+		. += "\n<span class='notice'>The generator is on.</span>"
 	else
-		to_chat(usr, "<span class='notice'>The generator is off.</span>")
+		. += "\n<span class='notice'>The generator is off.</span>"
+
 /obj/machinery/power/port_gen/emp_act(severity)
 	if(!active)
 		return
@@ -147,11 +149,14 @@
 	power_gen = round(initial(power_gen) * (max(2, temp_rating) / 2))
 
 /obj/machinery/power/port_gen/pacman/examine(mob/user)
-	. = ..(user)
-	to_chat(user, "\The [src] appears to be producing [power_gen*power_output] W.")
-	to_chat(user, "There [sheets == 1 ? "is" : "are"] [sheets] sheet\s left in the hopper.")
-	if(IsBroken()) to_chat(user, "<span class='warning'>\The [src] seems to have broken down.</span>")
-	if(overheating) to_chat(user, "<span class='danger'>\The [src] is overheating!</span>")
+	. = ..()
+	. += "\n\The [src] appears to be producing [power_gen*power_output] W."
+	. += "\nThere [sheets == 1 ? "is" : "are"] [sheets] sheet\s left in the hopper."
+	if(IsBroken())
+		. += "\n<span class='warning'>\The [src] seems to have broken down.</span>"
+	if(overheating)
+		. += "\n<span class='danger'>\The [src] is overheating!</span>"
+
 /obj/machinery/power/port_gen/pacman/HasFuel()
 	var/needed_sheets = power_output / time_per_sheet
 	if(sheets >= needed_sheets - sheet_left)
@@ -459,8 +464,8 @@
 	..()
 
 /obj/machinery/power/port_gen/pacman/super/potato/examine(mob/user)
-	..()
-	to_chat(user, "Auxilary tank shows [reagents.total_volume]u of liquid in it.")
+	. = ..()
+	. += "\nAuxilary tank shows [reagents.total_volume]u of liquid in it."
 
 /obj/machinery/power/port_gen/pacman/super/potato/UseFuel()
 	if(reagents.has_reagent("vodka"))

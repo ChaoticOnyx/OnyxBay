@@ -250,7 +250,7 @@
 		if(fake)
 			fake.examine(src)
 			return
-	A.examine(src)
+	to_chat(usr, A.examine(src))
 
 /mob/verb/pointed(atom/A as mob|obj|turf in view())
 	set name = "Point To"

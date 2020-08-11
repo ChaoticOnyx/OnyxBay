@@ -90,8 +90,8 @@ GLOBAL_LIST_INIT(registered_weapons, list())
 	return null
 
 /obj/item/weapon/gun/energy/examine(mob/user)
-	. = ..(user)
-	to_chat(user, "Has [power_supply ? round(power_supply.charge / charge_cost) : "0"] shot\s remaining.")
+	. = ..()
+	. += "\nHas [power_supply ? round(power_supply.charge / charge_cost) : "0"] shot\s remaining."
 
 /obj/item/weapon/gun/energy/update_icon()
 	. = ..()
@@ -200,10 +200,10 @@ GLOBAL_LIST_INIT(registered_weapons, list())
 	return new_mode
 
 /obj/item/weapon/gun/energy/secure/examine(mob/user)
-	..()
+	. = ..()
 
 	if(registered_owner)
-		to_chat(user, "A small screen on the side of the weapon indicates that it is registered to [registered_owner].")
+		. += "\nA small screen on the side of the weapon indicates that it is registered to [registered_owner]."
 
 /obj/item/weapon/gun/energy/secure/proc/get_next_authorized_mode()
 	. = sel_mode

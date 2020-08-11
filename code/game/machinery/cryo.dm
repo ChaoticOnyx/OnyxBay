@@ -437,7 +437,7 @@
 	spark_system.start()
 	return 1
 
-/obj/machinery/atmospherics/unary/cryo_cell/examine()
+/obj/machinery/atmospherics/unary/cryo_cell/examine(mob/user)
 	. = ..()
 	if(emagged)
-		to_chat(usr, "The panel is loose and circuits is charred.")
+		. += "\nThe panel is loose and circuits is charred."
