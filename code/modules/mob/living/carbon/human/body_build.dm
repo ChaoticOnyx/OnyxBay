@@ -206,3 +206,4 @@ var/global/datum/body_build/default_body_build = new
 
 	uniform_icon= 'icons/mob/species/monkey/uniform.dmi'
 	ties_icon	= 'icons/mob/species/monkey/ties.dmi'
+	blood_icon		= 'icons/mob/human_races/masks/blood_monkey.dmi'

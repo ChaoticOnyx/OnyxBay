@@ -30,14 +30,14 @@
 /obj/item/clothing/get_mob_overlay(mob/user_mob, slot)
 	var/image/ret = ..()
 
-	if(slot == slot_l_hand_str || slot == slot_r_hand_str)
+	if(slot == slot_l_hand_str || slot == slot_r_hand_str || slot == slot_shoes_str)
 		return ret
 
 	if(ishuman(user_mob))
 		var/mob/living/carbon/human/user_human = user_mob
 		if(blood_DNA && user_human.species.blood_mask)
 			var/image/bloodsies	= overlay_image(user_human.species.blood_mask, blood_overlay_type, blood_color, RESET_COLOR)
-			ret.overlays	+= bloodsies
+			ret.overlays += bloodsies
 
 	if(accessories.len)
 		for(var/obj/item/clothing/accessory/A in accessories)
@@ -609,6 +609,15 @@ BLIND     // can't see anything
 
 /obj/item/clothing/shoes/proc/handle_movement(turf/walking, running)
 	return
+
+/obj/item/clothing/shoes/get_mob_overlay(mob/user_mob, slot)
+	var/image/ret = ..()
+	if(ishuman(user_mob))
+		var/mob/living/carbon/human/user_human = user_mob
+		if(blood_DNA && user_human.body_build.blood_icon)
+			var/image/bloodsies	= overlay_image(user_human.body_build.blood_icon, "shoeblood", blood_color, RESET_COLOR)
+			ret.overlays += bloodsies
+	return ret
 
 /obj/item/clothing/shoes/update_clothing_icon()
 	if (ismob(src.loc))
