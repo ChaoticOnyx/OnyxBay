@@ -12,6 +12,7 @@ GLOBAL_VAR_CONST(PREF_FANCY, "Fancy")
 GLOBAL_VAR_CONST(PREF_PLAIN, "Plain")
 GLOBAL_VAR_CONST(PREF_PRIMARY, "Primary")
 GLOBAL_VAR_CONST(PREF_ALL, "All")
+GLOBAL_VAR_CONST(PREF_ON, "On")
 GLOBAL_VAR_CONST(PREF_OFF, "Off")
 GLOBAL_VAR_CONST(PREF_BASIC, "Basic")
 GLOBAL_VAR_CONST(PREF_FULL, "Full")
@@ -19,6 +20,7 @@ GLOBAL_VAR_CONST(PREF_MIDDLE_CLICK, "middle click")
 GLOBAL_VAR_CONST(PREF_ALT_CLICK, "alt click")
 GLOBAL_VAR_CONST(PREF_CTRL_CLICK, "ctrl click")
 GLOBAL_VAR_CONST(PREF_CTRL_SHIFT_CLICK, "ctrl shift click")
+GLOBAL_VAR_CONST(PREF_SHIFT_HOLD, "Hold Shift")
 GLOBAL_VAR_CONST(PREF_HEAR, "Hear")
 GLOBAL_VAR_CONST(PREF_SILENT, "Silent")
 GLOBAL_VAR_CONST(PREF_SHORTHAND, "Shorthand")
@@ -246,6 +248,8 @@ var/list/_client_preferences_by_type
 /datum/client_preference/hover_tips
 	description = "Show names on hover"
 	key = "SHOW_HOVER_TIPS"
+	options = list(GLOB.PREF_ON, GLOB.PREF_SHIFT_HOLD, GLOB.PREF_OFF)
+	default_value = GLOB.PREF_OFF
 
 /datum/client_preference/maptext_glow
 	description = "Highlight my hover-name in gold"

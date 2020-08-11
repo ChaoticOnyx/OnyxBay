@@ -19,6 +19,8 @@ Used for 'hover' tips.
 		return
 	
 	var/text = ""
+	if(maptext_style.debug_text) // DEBUG
+		text = maptext_style.debug_text // DEBUG
 	maptext_width = 0
 	maptext_height = 100 * length(strings)
 	for(var/i = 1, i <= length(strings), i++)
@@ -61,9 +63,9 @@ var/next_hover_allowed = 0 // World.time before hover can be resolved. Reduces c
 /mob/proc/show_hover_tip()
 	inscribe(name)
 
-mob/MouseEntered()
+mob/MouseEntered(location, control, params)
 	is_hovered = TRUE
-	if(!maptext_style || !usr || usr.get_preference_value(/datum/client_preference/hover_tips) == GLOB.PREF_NO)
+	if(!maptext_style || !usr || usr.get_preference_value(/datum/client_preference/hover_tips) == GLOB.PREF_OFF || (usr.get_preference_value(/datum/client_preference/hover_tips) == GLOB.PREF_SHIFT_HOLD && params && !("shift" in params2list(params))))
 		return // Return early, since we don't use MouseEntered() for anything else but showing hover tips using maptext
 	
 	if(src == last_mob_hovered)
@@ -78,9 +80,9 @@ mob/MouseEntered()
 	show_hover_tip()
 	layer -= 0.01
 
-mob/MouseExited()
+mob/MouseExited(location, control, params)
 	is_hovered = FALSE
-	if(!maptext_style || !usr || usr.get_preference_value(/datum/client_preference/hover_tips) == GLOB.PREF_NO)
+	if(!maptext_style || !usr || usr.get_preference_value(/datum/client_preference/hover_tips) == GLOB.PREF_OFF || (usr.get_preference_value(/datum/client_preference/hover_tips) == GLOB.PREF_SHIFT_HOLD && params && !("shift" in params2list(params))))
 		return
 	
 	spawn(INSCRIBE_DELAY)
