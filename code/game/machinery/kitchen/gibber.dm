@@ -184,7 +184,7 @@
 	else if(istype(src.occupant,/mob/living/carbon/human))
 		var/mob/living/carbon/human/H = occupant
 		slab_name = src.occupant.real_name
-		slab_type = H.isSynthetic() ? robotic_slab_type : H.species.meat_type
+		slab_type = H.species.meat_type
 		slab_count = 0
 		for (var/obj/item/organ/external/O in H.organs)
 			if (O.is_stump())

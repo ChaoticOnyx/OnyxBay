@@ -39,9 +39,7 @@
 	. = ..()
 
 /obj/structure/kitchenspike/proc/can_spike(mob/living/victim)
-	if(!istype(victim))
-		return
-	return TRUE
+	return iscarbon(victim) || isanimal(victim)
 
 /obj/structure/kitchenspike/proc/spike(mob/user, mob/living/victim)
 	user.visible_message(SPAN_DANGER("[user] starts putting [victim] onto \the [src]..."),
