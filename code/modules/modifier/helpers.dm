@@ -25,6 +25,8 @@
 	var/matrix/M = matrix()
 	M.Scale(icon_scale)
 	M.Translate(0, 16*(icon_scale-1))
+	if (hanging)
+		M.Turn(180)
 	animate(src, transform = M, time = 10)
 
 /mob/living/carbon/human/update_transform()
@@ -40,6 +42,11 @@
 		M.Scale(icon_scale)
 		M.Translate(1,-6)
 		layer = MOB_LAYER -0.01 // Fix for a byond bug where turf entry order no longer matters
+	else if(hanging && !species.prone_icon)
+		M.Turn(180)
+		M.Scale(icon_scale)
+		M.Translate(0, -16*(icon_scale-1))
+		layer = MOB_LAYER // Fix for a byond bug where turf entry order no longer matters
 	else
 		M.Scale(icon_scale)
 		M.Translate(0, 16*(icon_scale-1))
