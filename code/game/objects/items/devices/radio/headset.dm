@@ -135,6 +135,25 @@
 	item_state = "headset"
 	ks2type = /obj/item/device/encryptionkey/headset_com
 
+/obj/item/device/radio/headset/heads/verb/try_to_toggle_mode()
+	set name = "Toggle Command Mode"
+	set category = "Object"
+	set src in usr
+
+	toggle_mode(usr)
+
+/obj/item/device/radio/headset/heads/AltClick(mob/user)
+	toggle_mode(user)
+
+/obj/item/device/radio/headset/heads/proc/toggle_mode(mob/user)
+	if(!user)
+		return
+	if(!CanPhysicallyInteract(user))
+		return
+
+	loud = !loud
+	to_chat(user, SPAN("notice", "You have [loud ? "enabled" : "disabled"] command mode for [src]."))
+
 /obj/item/device/radio/headset/heads/captain
 	name = "captain's headset"
 	desc = "The headset of the boss."
