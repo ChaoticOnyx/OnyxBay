@@ -14,6 +14,7 @@
 	var/saved_dir
 	var/saved_density
 	var/saved_examine_result
+	var/static/list/blacklist = list(/obj/item/weapon/holder, /obj/item/grab)
 
 /obj/item/device/chameleonholo/dropped()
 	activate()
@@ -44,11 +45,19 @@
 	to_chat(user, SPAN("notice","You clear \the [src]'s memory buffer."))
 	saved_appearance = null
 
+/obj/item/device/chameleonholo/proc/check_blacklist(atom/target)
+	for(var/type in blacklist)
+		if (istype(target, type))
+			return TRUE
+
 /obj/item/device/chameleonholo/afterattack(atom/target, mob/user, proximity)
 	if(!proximity)
 		return
 	if(!istype(target,/obj))
-		to_chat(user, SPAN("warning","\The [src] can't scan \the [target]."))
+		to_chat(user, SPAN("warning", "\The [src] can't scan \the [target]."))
+		return
+	if(check_blacklist(target))
+		to_chat(user, SPAN("warning", "\The [src] is unable to scan \the [target]!"))
 		return
 	var/obj/object = target 
 	playsound(get_turf(src), 'sound/weapons/flash.ogg', 100, 1, -6)
