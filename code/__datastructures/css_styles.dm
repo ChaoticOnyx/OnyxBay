@@ -31,10 +31,11 @@ If you ever need to implement your css in any other situation, consider a bunch 
 	return "<span style='[get_string()]'>[text]</span>"
 
 /datum/css_style/human
-	font_size = 9
+	font_size = 8
 	color = "#A6A6A6"
 	outline_color = "black"
-	max_char_width = 9
+	font_family = "Arial"
+	max_char_width = 8
 
 /datum/css_style/human/male
 	color = "#A6A6DD"
@@ -43,24 +44,24 @@ If you ever need to implement your css in any other situation, consider a bunch 
 	color = "#DBA6DB" // Trap detector goes 'pink-pink'
 
 /datum/css_style/robot
-	font_size = 9
+	font_size = 8
 	color = "#A6A6A6"
 	outline_color = "black"
 	font_family = "Consolas, monospace"
-	max_char_width = 7
+	max_char_width = 6
 
 /datum/css_style/alien
 	font_size = 12
 	color = "#33CC33"
-	outline_color = "#707000"
-	font_family = "cursive"
-	max_char_width = 12
+	outline_color = "#007744"
+	font_family = "Chiller"
+	max_char_width = 9
 
 /datum/css_style/deity
 	font_size = 12
 	color = "#FFD700"
-	outline_color = "#009966"
-	font_family = "cursive"
+	outline_color = "#707000"
+	font_family = "Algeria cursive"
 	shadow_color = "#FFFF88"
 	max_char_width = 12
 
@@ -78,13 +79,24 @@ If you ever need to implement your css in any other situation, consider a bunch 
 	color = "#D870D8"
 
 /datum/css_style/animal
-	font_size = 9
+	font_size = 8
 	color = "#A6A6A6"
 	outline_color = "#404040"
-	max_char_width = 9
+	font_family = "Arial"
+	max_char_width = 8
 
 /datum/css_style/animal/friendly
 	color = "#80A080"
 
 /datum/css_style/animal/hostile
 	color = "#CC5151"
+
+/datum/css_style/clown
+	font_size = 9
+	color = "#00FF00"
+	outline_color = "black"
+	font_family = "Jokerman"
+	max_char_width = 11
+
+/datum/css_style/clown/donator
+	shadow_color = "#FFFF88"

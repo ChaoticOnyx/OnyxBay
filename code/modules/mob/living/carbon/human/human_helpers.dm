@@ -316,26 +316,33 @@
 	return !cloaking_sources // If cloaking_sources wasn't initially null but is now, we've uncloaked
 
 /mob/living/carbon/human/show_hover_tip()
-	var/datum/css_style/m_type = maptext_style
+	var/datum/css_style/m_type = maptext_style.type
 	if(istype(src, /mob/living/carbon/human/monkey))
 		m_type = /datum/css_style/animal/friendly
 	else
-		switch(gender)
-			if(MALE)
-				if(src.client && src.client.donator_info && src.client.donator_info.patreon_tier_available(PATREON_SCIENTIST))
-					m_type = /datum/css_style/donator/male
-				else
-					m_type = /datum/css_style/human/male
-			if(FEMALE)
-				if(src.client && src.client.donator_info && src.client.donator_info.patreon_tier_available(PATREON_SCIENTIST))
-					m_type = /datum/css_style/donator/female
-				else
-					m_type = /datum/css_style/human/female
+		var/is_donator = src.client.donator_info && src.client.donator_info.patreon_tier_available(PATREON_SCIENTIST)
+		if(mind && mind.assigned_role == "Clown")
+			if(is_donator)
+				m_type = /datum/css_style/clown/donator
 			else
-				if(src.client && src.client.donator_info && src.client.donator_info.patreon_tier_available(PATREON_SCIENTIST))
-					m_type = /datum/css_style/donator
+				m_type = /datum/css_style/clown
+		else
+			switch(gender)
+				if(MALE)
+					if(src.client && is_donator)
+						m_type = /datum/css_style/donator/male
+					else
+						m_type = /datum/css_style/human/male
+				if(FEMALE)
+					if(src.client && is_donator)
+						m_type = /datum/css_style/donator/female
+					else
+						m_type = /datum/css_style/human/female
 				else
-					m_type = /datum/css_style/human
+					if(src.client && is_donator)
+						m_type = /datum/css_style/donator
+					else
+						m_type = /datum/css_style/human
 	if(!istype(maptext_style, m_type))
 		maptext_style = new m_type
 
