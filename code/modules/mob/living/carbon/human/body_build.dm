@@ -22,6 +22,7 @@ var/global/datum/body_build/default_body_build = new
 	var/hidden_icon = 'icons/inv_slots/hidden/mob.dmi'
 	var/rig_back	= 'icons/inv_slots/rig/mob.dmi'
 	var/id_icon		= 'icons/mob/onmob/id.dmi'
+	var/blood_icon	= 'icons/mob/human_races/masks/blood_human.dmi'
 
 	//var/r_hand		= 'icons/inv_slots/items/items_r_default.dmi'
 	//var/l_hand		= 'icons/inv_slots/items/items_l_default.dmi'
@@ -106,6 +107,7 @@ var/global/datum/body_build/default_body_build = new
 	ties_icon		= 'icons/inv_slots/acessories/mob_slim.dmi'
 	hidden_icon 	= 'icons/inv_slots/hidden/mob_slim.dmi'
 	rig_back		= 'icons/inv_slots/rig/mob_slim.dmi'
+	blood_icon		= 'icons/mob/human_races/masks/blood_human_slim.dmi'
 
 	l_hand = 'icons/mob/onmob/items/lefthand_slim.dmi'
 	r_hand = 'icons/mob/onmob/items/righthand_slim.dmi'
@@ -138,6 +140,7 @@ var/global/datum/body_build/default_body_build = new
 	ties_icon		= 'icons/inv_slots/acessories/mob_slim.dmi'
 	hidden_icon 	= 'icons/inv_slots/hidden/mob_slimalt.dmi'
 	rig_back		= 'icons/inv_slots/rig/mob_slim.dmi'
+	blood_icon		= 'icons/mob/human_races/masks/blood_human_slim_alt.dmi'
 
 /datum/body_build/slim/male
 	name			= "Slim"
@@ -158,6 +161,7 @@ var/global/datum/body_build/default_body_build = new
 	ties_icon		= 'icons/inv_slots/acessories/mob_slim_m.dmi'
 	hidden_icon 	= 'icons/inv_slots/hidden/mob_slim_m.dmi'
 	rig_back		= 'icons/inv_slots/rig/mob_slim.dmi'
+	blood_icon		= 'icons/mob/human_races/masks/blood_human_slim.dmi'
 
 /datum/body_build/slim/alt/tajaran //*sigh. I regret of doing this.
 	name = "Slim Tajaran"
@@ -165,6 +169,7 @@ var/global/datum/body_build/default_body_build = new
 	mask_icon	= 'icons/inv_slots/masks/mob_tajaran.dmi'
 	hat_icon	= 'icons/inv_slots/hats/mob_tajaran.dmi'
 	suit_icon	= 'icons/inv_slots/suits/mob_tajaran.dmi'
+	blood_icon		= 'icons/mob/human_races/masks/blood_human_slim.dmi'
 
 /datum/body_build/tajaran
 	name		= "Tajaran"
