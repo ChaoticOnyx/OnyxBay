@@ -1,4 +1,3 @@
-#define MIN_CULTIST 3
 /obj/effect/rune
 	name = "rune"
 	desc = "A strange collection of symbols drawn in blood."
@@ -159,7 +158,7 @@
 
 /obj/effect/rune/proc/get_cultists()
 	. = list()
-	for(var/mob/living/M in range(1))
+	for(var/mob/living/M in range(1, src))
 		if(iscultist(M))
 			. += M
 
@@ -433,7 +432,7 @@
 
 /obj/effect/rune/defile/cast(mob/living/user)
 	if(!is_station_turf(get_turf(src)))
-		to_chat(user, SPAN_DANGER("This place is not weak to intercept reality!"))
+		to_chat(user, SPAN_DANGER("This place is too powerless for any defiling!"))
 		return
 	speak_incantation(user, "Ia! Ia! Zasan therium viortia!")
 	for(var/turf/T in range(1, src))
@@ -495,7 +494,7 @@
 	if(victim)
 		to_chat(user, "<span class='warning'>You are already sarcificing \the [victim] on this rune.</span>")
 		return
-	if(cultists.len < MIN_CULTIST)
+	if(cultists.len < 3)
 		to_chat(user, "<span class='warning'>You need three cultists around this rune to make it work.</span>")
 		return fizzle(user)
 	var/turf/T = get_turf(src)
@@ -511,7 +510,7 @@
 
 	while(victim && victim.loc == T && victim.stat != DEAD)
 		var/list/mob/living/casters = get_cultists()
-		if(casters.len < MIN_CULTIST)
+		if(casters.len < 3)
 			break
 		//T.turf_animation('icons/effects/effects.dmi', "rune_sac")
 		victim.fire_stacks = max(2, victim.fire_stacks)
@@ -686,9 +685,9 @@
 /obj/effect/rune/massdefile/cast(mob/living/user)
 	var/list/mob/living/cultists = get_cultists()
 	if(!is_station_turf(get_turf(src)))
-		to_chat(user, SPAN_DANGER("This place is not weak to intercept reality!"))
+		to_chat(user, SPAN_DANGER("This place is too powerless for any defiling!"))
 		return
-	if(cultists.len < MIN_CULTIST)
+	if(cultists.len < 3)
 		to_chat(user, "<span class='warning'>You need three cultists around this rune to make it work.</span>")
 		return fizzle(user)
 	else
@@ -752,7 +751,7 @@
 
 /obj/effect/rune/confuse/cast(mob/living/user)
 	var/list/mob/living/cultists = get_cultists()
-	if(cultists.len < MIN_CULTIST)
+	if(cultists.len < 3)
 		to_chat(user, "<span class='warning'>You need three cultists around this rune to make it work.</span>")
 		return fizzle(user)
 	speak_incantation(user, "Fuu ma[pick("'","`")]jin!")
@@ -809,7 +808,7 @@
 
 /obj/effect/rune/blood_boil/cast(mob/living/user)
 	var/list/mob/living/cultists = get_cultists()
-	if(cultists.len < MIN_CULTIST)
+	if(cultists.len < 3)
 		return fizzle()
 	if(is_used)
 		return fizzle()
@@ -819,28 +818,25 @@
 	is_used = TRUE
 	var/list/mob/living/previous = list()
 	var/list/mob/living/current = list()
-	while(cultists.len >= MIN_CULTIST)
+	while(cultists.len >= 3)
 		cultists = get_cultists()
-		if(is_used)
-			for(var/mob/living/carbon/M in viewers(src))
-				if(iscultist(M))
-					continue
-				current |= M
-				var/obj/item/weapon/nullrod/N = locate() in M
-				if(N)
-					continue
-				is_used = FALSE
-				M.take_overall_damage(5, 5)
-				if(!(M in previous))
-					if(M.should_have_organ(BP_HEART))
-						to_chat(M, "<span class='danger'>Your blood boils!</span>")
-					else
-						to_chat(M, "<span class='danger'>You feel searing heat inside!</span>")
-			if(!is_used)
-				break
-			previous = current.Copy()
-			current.Cut()
+		for(var/mob/living/carbon/M in viewers(src))
+			if(iscultist(M))
+				continue
+			current |= M
+			var/obj/item/weapon/nullrod/N = locate() in M
+			if(N)
+				continue
+			M.take_overall_damage(5, 5)
+			if(!(M in previous))
+				if(M.should_have_organ(BP_HEART))
+					to_chat(M, "<span class='danger'>Your blood boils!</span>")
+				else
+					to_chat(M, "<span class='danger'>You feel searing heat inside!</span>")
+		previous = current.Copy()
+		current.Cut()
 		sleep(10)
+	is_used = FALSE
 
 /* Tier NarNar runes */
 
@@ -855,7 +851,7 @@
 	if(!GLOB.cult.allow_narsie)
 		return
 	if(!is_station_turf(get_turf(src)))
-		to_chat(user, SPAN("cult", "This is strong place to tear reality, find weak place on the Exodus!"))
+		to_chat(user, SPAN("cult", "This place is too powerless for tearing reality, find another place!"))
 		return
 	if(the_end_comes)
 		to_chat(user, "<span class='cult'>You are already summoning! Be patient!</span>")
@@ -952,4 +948,3 @@
 /obj/effect/rune/imbue/stun
 	cultname = "consciousness freeze imbue"
 	papertype = /obj/item/weapon/paper/talisman/stun
-#undef MIN_CULTIST
