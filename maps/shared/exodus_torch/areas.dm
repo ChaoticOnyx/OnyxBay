@@ -80,6 +80,10 @@
 	name = "Waste Disposal"
 	icon_state = "disposal"
 
+/area/maintenance/disposal/underground
+	name = "Underground Waste Disposal"
+	icon_state = "disposal"
+
 /area/maintenance/incinerator
 	name = "\improper Incinerator"
 	icon_state = "disposal"

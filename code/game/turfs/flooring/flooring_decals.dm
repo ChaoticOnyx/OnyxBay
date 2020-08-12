@@ -304,6 +304,10 @@ var/list/floor_decals = list()
 	icon_state = "oldfloor"
 	alpha = 120
 
+/obj/effect/floor_decal/stairs
+	name = "stairs"
+	icon_state = "stairs"
+
 /obj/effect/floor_decal/spline/plain/black
 	color = "#333333"
 
