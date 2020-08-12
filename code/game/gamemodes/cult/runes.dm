@@ -851,7 +851,7 @@
 	if(!GLOB.cult.allow_narsie)
 		return
 	if(!is_station_turf(get_turf(src)))
-		to_chat(user, SPAN("cult", "This place is too powerless for tearing reality, find another place!"))
+		to_chat(user, SPAN("cult", "Our Deity does not have enough influence on this place to be summoned there!"))
 		return
 	if(the_end_comes)
 		to_chat(user, "<span class='cult'>You are already summoning! Be patient!</span>")
