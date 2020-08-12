@@ -172,7 +172,7 @@ CIGARETTE PACKETS ARE IN FANCY.DM
 		set_light(2, 0.25, "#e38f46")
 		START_PROCESSING(SSobj, src)
 
-/obj/item/clothing/mask/smokable/proc/die(nomessage = 0, nodestroy = 0)
+/obj/item/clothing/mask/smokable/proc/die(nomessage = FALSE, nodestroy = FALSE)
 	set_light(0)
 	lit = 0
 	STOP_PROCESSING(SSobj, src)
@@ -245,7 +245,7 @@ CIGARETTE PACKETS ARE IN FANCY.DM
 	if(lit)
 		overlays += overlay_image(icon, "cigarello-on", flags=RESET_COLOR)
 
-/obj/item/clothing/mask/smokable/cigarette/die(nomessage = 0, nodestroy = 0)
+/obj/item/clothing/mask/smokable/cigarette/die(nomessage = FALSE, nodestroy = FALSE)
 	..()
 	if (type_butt && !nodestroy)
 		var/obj/item/butt = new type_butt(get_turf(src))
@@ -499,7 +499,7 @@ CIGARETTE PACKETS ARE IN FANCY.DM
 /obj/item/clothing/mask/smokable/cigarette/attack_self(mob/user as mob)
 	if(lit == 1)
 		user.visible_message("<span class='notice'>[user] calmly drops and treads on the lit [src], putting it out instantly.</span>")
-		die(1)
+		die(nomessage = TRUE, nodestroy = FALSE)
 	return ..()
 
 /obj/item/clothing/mask/smokable/cigarette/apply_hit_effect(mob/living/target, mob/living/user, hit_zone)
@@ -639,7 +639,7 @@ CIGARETTE PACKETS ARE IN FANCY.DM
 			M.update_inv_l_hand(0)
 			M.update_inv_r_hand(1)
 
-/obj/item/clothing/mask/smokable/pipe/die(nomessage = 0)
+/obj/item/clothing/mask/smokable/pipe/die(nomessage = FALSE)
 	..()
 	new /obj/effect/decal/cleanable/ash(get_turf(src))
 	if(ismob(loc))

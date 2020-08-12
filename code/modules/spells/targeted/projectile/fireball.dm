@@ -35,8 +35,7 @@
 			var/mob/living/carbon/human/H = M
 			var/list/cig_places = list(H.wear_mask, H.l_ear, H.r_ear, H.r_hand, H.l_hand)
 			for(var/obj/item/clothing/mask/smokable/cig in cig_places)
-				if(istype(cig))
-					cig.light(src, H)
+				cig.light(src, H)
 	explosion(get_turf(spell_holder), ex_severe, ex_heavy, ex_light, ex_flash)
 
 /spell/targeted/projectile/dumbfire/fireball/empower_spell()
