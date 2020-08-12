@@ -110,7 +110,7 @@
 	// You need a multitool to use this, or be silicon
 	if(!issilicon(user))
 		// istype returns false if the value is null
-		if(!istype(user.get_active_hand(), /obj/item/device/multitool))
+		if(!isMultitool(get_multitool(user)))
 			return
 
 	if(stat & (BROKEN|NOPOWER))
@@ -201,8 +201,12 @@
 
 	var/obj/item/device/multitool/P = null
 	// Let's double check
-	if(!issilicon(user) && istype(user.get_active_hand(), /obj/item/device/multitool))
-		P = user.get_active_hand()
+	if(!issilicon(user))
+		if(isMultitool(user.get_active_hand()))
+			P = user.get_active_hand()
+		else if(istype(user.get_active_hand(), /obj/item/weapon/combotool))
+			var/obj/item/weapon/combotool/tool = user.get_active_hand()
+			P = tool.tool_u
 	else if(isAI(user))
 		var/mob/living/silicon/ai/U = user
 		P = U.aiMulti
@@ -290,7 +294,7 @@
 	if(..())
 		return 1
 	if(!issilicon(usr))
-		if(!istype(usr.get_active_hand(), /obj/item/device/multitool))
+		if(!isMultitool(get_multitool(usr)))
 			return
 
 	if(stat & (BROKEN|NOPOWER))
