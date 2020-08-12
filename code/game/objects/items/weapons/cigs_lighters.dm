@@ -122,9 +122,9 @@ CIGARETTE PACKETS ARE IN FANCY.DM
 	if(location)
 		location.hotspot_expose(700, 5)
 	
-	if(ishuman(loc))
+	if(prob(1) && ishuman(loc))
 		var/mob/living/carbon/human/H = loc
-		if(H.head && istype(H.head, /obj/item/clothing/head/cardborg) && prob(1))
+		if(H.head && istype(H.head, /obj/item/clothing/head/cardborg))
 			H.visible_message(SPAN_DANGER("[src] ignites \the [H.head], and sets [H] on fire!"), \
 								SPAN_DANGER("[src] ignites \the [H.head] on your head. You are on fire!"))
 			H.adjust_fire_stacks(1)

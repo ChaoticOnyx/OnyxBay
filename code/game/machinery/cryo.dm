@@ -343,12 +343,8 @@
 	current_heat_capacity = HEAT_CAPACITY_HUMAN
 	update_use_power(POWER_USE_ACTIVE)
 
-	if(ishuman(M))
-		var/mob/living/carbon/human/H = M
-		var/list/cig_places = list(H.wear_mask, H.l_ear, H.r_ear, H.l_hand, H.r_hand, H.l_store, H.r_store)
-		for(var/obj/item/clothing/mask/smokable/cig in cig_places)
-			if(istype(cig))
-				cig.die(nomessage = TRUE, nodestroy = TRUE)
+	for(var/obj/item/clothing/mask/smokable/cig in M.contents)
+		cig.die(nomessage = TRUE, nodestroy = TRUE)
 
 	add_fingerprint(usr)
 	update_icon()
