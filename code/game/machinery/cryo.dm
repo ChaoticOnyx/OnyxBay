@@ -347,6 +347,7 @@
 		cig.die(nomessage = TRUE, nodestroy = TRUE)
 
 	add_fingerprint(usr)
+	occupant.update_icon()
 	update_icon()
 	return 1
 

@@ -27,7 +27,7 @@
 /obj/item/weapon/flame/candle/attackby(obj/item/weapon/W, mob/user)
 	..()
 	if(W.get_temperature_as_from_ignitor())
-		light()
+		light(user)
 
 /obj/item/weapon/flame/candle/resolve_attackby(atom/A, mob/user)
 	. = ..()

@@ -13,14 +13,14 @@
 		set_light(2, 1, COLOR_ORANGE)
 		icon_state = "[initial(icon_state)]_lit_up"
 		START_PROCESSING(SSobj, src)
-		return
-	else if(lit_up)
+
+/obj/item/jackolantern/attack_self(mob/user)
+	if(lit_up)
 		user.visible_message("<span class='notice'>\The [user] put out \the [src].</span>", "<span class='notice'>You put out \the [src].</span>")
 		lit_up = FALSE
 		set_light(0)
 		icon_state = "[initial(icon_state)]"
 		STOP_PROCESSING(SSobj, src)
-		return
 
 /obj/item/jackolantern/Process()
 	var/turf/place = get_turf(src)
