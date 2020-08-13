@@ -1022,6 +1022,10 @@
 	name = "\improper Underground Dormitories"
 	icon_state = "underdorm"
 
+/area/crew_quarters/underdorm/boxing
+	name = "\improper Boxing Club"
+	icon_state = "fitness"
+
 /area/crew_quarters/underdorm/maint
 	name = "\improper Underground Dormitories Maintenance"
 	icon_state = "underdormmaint"
