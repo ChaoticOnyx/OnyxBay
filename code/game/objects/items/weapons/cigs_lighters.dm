@@ -195,9 +195,11 @@ CIGARETTE PACKETS ARE IN FANCY.DM
 		text += "\A [name] was lit"
 	if(tool)
 		if(istype(tool, /obj/machinery))
-			text += " by \a [tool]"
+			text += " by \a [tool]."
 		else
-			text += " with \a [tool]"
+			text += " with \a [tool]."
+	else
+		text += "."
 	return SPAN_NOTICE(text)
 
 /obj/item/clothing/mask/smokable/attackby(obj/item/W as obj, mob/user as mob)
@@ -354,7 +356,7 @@ CIGARETTE PACKETS ARE IN FANCY.DM
 	matter = list(MATERIAL_WOOD = 1)
 
 /obj/item/clothing/mask/smokable/cigarette/can_be_lit_with(obj/W)
-	if(istype(W, /obj/item/weapon/gun))
+	if(istype(W, /obj/item/weapon/gun) && !istype(W, /obj/item/weapon/gun/flamer) && !istype(W, /obj/item/weapon/gun/energy/plasmacutter))
 		var/obj/item/weapon/gun/gun = W
 		return gun.combustion && gun.loc == src.loc
 	if(istype(W, /obj/machinery/cooker/grill))
@@ -386,7 +388,7 @@ CIGARETTE PACKETS ARE IN FANCY.DM
 	if(istype(tool, /obj/item/weapon/reagent_containers/glass/rag))
 		return SPAN_NOTICE("[holder] somehow manages to light \his [name] with \a [tool].")
 	if(istype(tool, /obj/item/jackolantern))
-		return SPAN_NOTICE("[holder] shoves \his [name] into \a [tool] to light it up")
+		return SPAN_NOTICE("[holder] shoves \his [name] into \a [tool] to light it up.")
 	if(istype(tool, /obj/item/weapon/melee/energy))
 		return SPAN_WARNING("[holder] swings \his [tool.name], and light \a [name] in the process.")
 	if(istype(tool, /obj/item/weapon/gun))
@@ -407,7 +409,7 @@ CIGARETTE PACKETS ARE IN FANCY.DM
 
 /obj/item/clothing/mask/smokable/cigarette/attackby(obj/item/W, mob/user)
 	if(istype(W, /obj/item/weapon/wirecutters))
-		user.visible_message(SPAN_NOTICE("[user] cut the tip of \his [name] with [W]"), "You cut the tip of your [name]")
+		user.visible_message(SPAN_NOTICE("[user] cut the tip of \his [name] with [W]."), "You cut the tip of your [name]")
 		smoketime -= 10
 		if(smoketime <= 0)
 			die()
@@ -437,11 +439,11 @@ CIGARETTE PACKETS ARE IN FANCY.DM
 					var/roll = rand(99) + 1
 					if(roll < fuck_up_chance)
 						if(gun.process_projectile(P, user, user, BP_HEAD))
-							user.visible_message(SPAN_DANGER("[user] shot \himself in the face with \the [gun]")) // Oops
+							user.visible_message(SPAN_DANGER("[user] shot \himself in the face with \the [gun].")) // Oops
 						return
 					else if(roll < oops_chance && istype(gun, /obj/item/weapon/gun/projectile) && isliving(user))
 						var/mob/living/L = user
-						to_chat(user, SPAN_WARNING("You burned your face a little"))
+						to_chat(user, SPAN_WARNING("You burned your face a little."))
 						L.apply_damage(5, BURN, BP_HEAD, used_weapon = gun)	
 					light(W, user)
 				else
@@ -479,7 +481,7 @@ CIGARETTE PACKETS ARE IN FANCY.DM
 	
 	..()
 	
-	if(istype(W, /obj/item/weapon/reagent_containers/glass)) //you can dip cigarettes into beakers
+	if(istype(W, /obj/item/weapon/reagent_containers/glass) && !istype(W, /obj/item/weapon/reagent_containers/glass/rag)) //you can dip cigarettes into beakers
 		var/obj/item/weapon/reagent_containers/glass/glass = W
 		if(!glass.is_open_container())
 			to_chat(user, "<span class='notice'>You need to take the lid off first.</span>")
@@ -493,8 +495,7 @@ CIGARETTE PACKETS ARE IN FANCY.DM
 				return
 			else
 				to_chat(user, "<span class='notice'>[src] is full.</span>")
-		if(!istype(W, /obj/item/weapon/reagent_containers/glass/rag))
-			die(nomessage = FALSE, nodestroy = TRUE)
+		die(nomessage = FALSE, nodestroy = TRUE)
 
 /obj/item/clothing/mask/smokable/cigarette/attack_self(mob/user as mob)
 	if(lit == 1)
@@ -612,7 +613,7 @@ CIGARETTE PACKETS ARE IN FANCY.DM
 
 /obj/item/clothing/mask/smokable/pipe/New()
 	..()
-	name = "empty [initial(name)]"	
+	name = "empty [initial(name)]"
 
 /obj/item/clothing/mask/smokable/pipe/smoke(amount)
 	smoketime -= amount
