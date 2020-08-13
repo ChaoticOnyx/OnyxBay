@@ -473,9 +473,6 @@ CIGARETTE PACKETS ARE IN FANCY.DM
 	return ..()
 
 /obj/item/clothing/mask/smokable/cigarette/afterattack(obj/item/W, mob/user as mob, proximity)
-	if(istype(W, /obj/item/weapon/melee/energy))
-		return
-	
 	if(istype(W, /obj/item/weapon/gun) && !istype(W, /obj/item/weapon/gun/energy/plasmacutter) && !istype(W, /obj/item/weapon/gun/flamer))
 		return
 	
