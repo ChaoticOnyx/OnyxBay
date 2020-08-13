@@ -45,7 +45,6 @@
 	var/temp = client.close_saywindow()
 	if (!temp)
 		temp = winget(client, "input", "text")
-		temp = trim_left(temp)
 		if(findtextEx(temp, "Say \"", 1, 6) && length(temp) > 5)
 			temp = copytext(temp, 6)
 			var/custom_emote_key = get_prefix_key(/decl/prefix/custom_emote)
