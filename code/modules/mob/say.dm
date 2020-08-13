@@ -9,6 +9,9 @@
 /mob/verb/say_verb(message as text)
 	set name = "Say"
 	set category = "IC"
+	if (client && usr == src)
+		client.close_saywindow()
+	remove_typing_indicator()
 	usr.say(message)
 
 /mob/verb/me_verb(message as text)
