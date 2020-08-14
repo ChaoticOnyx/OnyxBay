@@ -30,11 +30,18 @@
 /mob/living/carbon/human/proc/randomize_gender()
 	change_gender(pick(species.genders))
 
-/mob/living/carbon/human/proc/sanitize_body()
-	var/list/body_builds = src.species.get_body_build_datum_list(src.gender)
-	if(!(body_build in body_builds))
-		body_build = body_builds[1]
-		regenerate_icons()
+/mob/living/carbon/human/proc/sanitize_body(wrapped=FALSE) //in case if used wrapped species system
+	if(wrapped)
+		var/datum/species/S = all_species[wrapped_species_by_ref["\ref[src]"]]
+		var/list/body_builds = S.get_body_build_datum_list(src.gender)
+		if(!(body_build in body_builds))
+			body_build = body_builds[1]
+			regenerate_icons()
+	else
+		var/list/body_builds = src.species.get_body_build_datum_list(src.gender)
+		if(!(body_build in body_builds))
+			body_build = body_builds[1]
+			regenerate_icons()
 
 /mob/living/carbon/human/proc/change_body_build(body_build)
 	if(src.body_build == body_build)
