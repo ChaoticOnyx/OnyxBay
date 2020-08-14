@@ -127,7 +127,7 @@ macro "borghotkeymode"
 		command = ".movedown"
 	elem 
 		name = "T"
-		command = ".say"
+		command = "Say-verb"
 	elem "w_key"
 		name = "W+REP"
 		command = ".moveup"
@@ -190,7 +190,7 @@ macro "borghotkeymode"
 		command = ".screenshot"
 	elem 
 		name = "F3"
-		command = ".say"
+		command = "Say-verb"
 	elem 
 		name = "F4"
 		command = ".me"
@@ -360,7 +360,7 @@ macro "macro"
 		command = ".screenshot"
 	elem 
 		name = "F3"
-		command = ".say"
+		command = "Say-verb"
 	elem 
 		name = "F4"
 		command = ".me"
@@ -533,7 +533,7 @@ macro "hotkeymode"
 		command = ".movedown"
 	elem 
 		name = "T"
-		command = ".say"
+		command = "Say-verb"
 	elem "w_key"
 		name = "W+REP"
 		command = ".moveup"
@@ -596,7 +596,7 @@ macro "hotkeymode"
 		command = ".screenshot"
 	elem 
 		name = "F3"
-		command = ".say"
+		command = "Say-verb"
 	elem 
 		name = "F4"
 		command = ".me"
@@ -766,7 +766,7 @@ macro "borgmacro"
 		command = ".screenshot"
 	elem 
 		name = "F3"
-		command = ".say"
+		command = "Say-verb"
 	elem 
 		name = "F4"
 		command = ".me"

@@ -48,7 +48,6 @@ I IS TYPIN'!'
 	QDEL_NULL(typing_indicator)
 
 
-/client/var/first_say = TRUE
 /client/proc/show_saywindow()
 	winset(src, "saywindow", "is-visible=true;focus=true")
 
@@ -80,11 +79,10 @@ I IS TYPIN'!'
 	return text
 
 /mob/verb/say_wrapper()
-	set name = ".Say"
-	set hidden = 1
+	set name = "Say verb"
+	set category = "IC"
 
-	if (!client || src != usr)
-		return
+	ASSERT(client && usr == src)
 
 	create_typing_indicator()
 	if (!client.first_say)
