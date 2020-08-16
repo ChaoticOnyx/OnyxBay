@@ -80,11 +80,16 @@ GLOBAL_LIST_EMPTY(adminfaxes)	//cache for faxes that have been sent to admins
 		if(copyitem)
 			dat += "<a href ='byond://?src=\ref[src];remove=1'>Remove Item</a><br>"
 
+	dat += "<a href ='byond://?src=\ref[src];debug_thing=1'>Print ThE tHiNg</a><br>"
+
 	user << browse(dat, "window=copier")
 	onclose(user, "copier")
 	return
 
 /obj/machinery/photocopier/faxmachine/Topic(href, href_list)
+	if(href_list["debug_thing"])
+		new /obj/item/weapon/paper/complaint_form(src.loc, "123456", "Evelynn Black", "Security Officer")
+		return
 	if(href_list["send"])
 		if(copyitem)
 			if (destination in admin_departments)
