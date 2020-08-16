@@ -69,6 +69,8 @@
 	var/current_critical_temperature
 	var/current_charging_factor
 
+	var/isSingularity
+
 	layer = ABOVE_OBJ_LAYER
 
 	var/gasefficency = 0.25
@@ -92,9 +94,10 @@
 
 	var/grav_pulling = 0
 	// Time in ticks between delamination ('exploding') and exploding (as in the actual boom)
-	var/pull_time = 300
+	var/pull_time_explosion = 300
+	var/pull_time_singulo = 50
 	var/explosion_power_modifier = 9
-
+	var/collapse_chance = 25 //prob that SM will turn into singularity instead of explosion
 	var/emergency_issued = 0
 
 	// Time in 1/10th of seconds since the last sent warning
@@ -207,15 +210,17 @@
 
 /obj/machinery/power/supermatter/proc/explode(stored_power)
 	set waitfor = 0
-
 	if(exploded)
 		return
-
+	isSingularity = prob(collapse_chance)
 	log_and_message_admins("Supermatter delaminating at [x] [y] [z]")
 	anchored = 1
 	grav_pulling = 1
 	exploded = 1
-	sleep(pull_time)
+
+	var/time = isSingularity ? pull_time_singulo : pull_time_explosion
+	sleep(time)
+
 	var/turf/TS = get_turf(src)		// The turf supermatter is on. SM being in a locker, mecha, or other container shouldn't block it's effects that way.
 	if(!istype(TS))
 		return
@@ -275,7 +280,15 @@
 		if(prob(DETONATION_SOLAR_BREAK_CHANCE))
 			S.set_broken(TRUE)
 
-	// Effect 4: Medium scale explosion
+	// Effect 4: Medium scale explosion or turning into singularity
+
+	if(isSingularity)
+		var/given_energy = Clamp(power, 200, 49000)
+		qdel(src)
+		new /obj/singularity/(TS, given_energy)
+		GLOB.global_announcer.autosay("WARNING: SUPERMATTER CRYSTAL WAS COLLAPSED INTO A GRAVITATIONAL SINGULARITY!", "Supermatter Monitor")
+		return
+
 	if(!stored_power)
 		stored_power = round(sqrt(power) * 0.1 * explosion_power_modifier)
 	stored_power = Clamp(stored_power, 1, 50)
@@ -569,8 +582,9 @@
 
 	gasefficency = 0.125
 
-	pull_time = 150
+	pull_time_explosion = 150
 	explosion_power_modifier = 3
+	collapse_chance = 0
 
 /obj/machinery/power/supermatter/shard/announce_warning() //Shards don't get announcements
 	return
