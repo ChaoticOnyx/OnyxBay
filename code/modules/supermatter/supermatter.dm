@@ -94,8 +94,7 @@
 
 	var/grav_pulling = 0
 	// Time in ticks between delamination ('exploding') and exploding (as in the actual boom)
-	var/pull_time_explosion = 300
-	var/pull_time_singulo = 50
+	var/pull_time = 300
 	var/explosion_power_modifier = 9
 	var/collapse_chance = 25 //prob that SM will turn into singularity instead of explosion
 	var/emergency_issued = 0
@@ -218,8 +217,7 @@
 	grav_pulling = 1
 	exploded = 1
 
-	var/time = isSingularity ? pull_time_singulo : pull_time_explosion
-	sleep(time)
+	sleep(pull_time)
 
 	var/turf/TS = get_turf(src)		// The turf supermatter is on. SM being in a locker, mecha, or other container shouldn't block it's effects that way.
 	if(!istype(TS))
@@ -582,7 +580,7 @@
 
 	gasefficency = 0.125
 
-	pull_time_explosion = 150
+	pull_time = 150
 	explosion_power_modifier = 3
 	collapse_chance = 0
 
