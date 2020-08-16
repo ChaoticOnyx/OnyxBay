@@ -1,7 +1,14 @@
 #define NITROGEN_RETARDATION_FACTOR 0.15	//Higher == N2 slows reaction more
+
 #define THERMAL_RELEASE_MODIFIER 10000		//Higher == more heat released during reaction
+#define DELTA_THERMAL_RELEASE_MODIFIER 6000
+
+#define RADIATION_RELEASE_MODIFIER 1.5
+#define DELTA_RADIATION_RELEASE_MODIFIER 0.7
+
 #define PHORON_RELEASE_MODIFIER 1500		//Higher == less phoron released by reaction
 #define OXYGEN_RELEASE_MODIFIER 15000		//Higher == less oxygen released at high temperature/power
+
 #define REACTION_POWER_MODIFIER 1.1			//Higher == more overall power
 
 /*
@@ -16,9 +23,17 @@
 
 //Controls how much power is produced by each collector in range - this is the main parameter for tweaking SM balance, as it basically controls how the power variable relates to the rest of the game.
 #define POWER_FACTOR 1.0
+#define DELTA_POWER_FACTOR 0.2
+
 #define DECAY_FACTOR 700			//Affects how fast the supermatter power decays
+#define DELTA_DECAY_FACTOR 400
+
 #define CRITICAL_TEMPERATURE 5000	//K
+#define DELTA_CRITICAL_TEMPERATURE 2600
+
 #define CHARGING_FACTOR 0.05
+#define DELTA_CHARGING_FACTOR 0.03
+
 #define DAMAGE_RATE_LIMIT 4.5		//damage rate cap at power = 300, scales linearly with power
 
 
@@ -46,6 +61,13 @@
 	density = 1
 	anchored = 0
 	light_range = 4
+
+	var/current_thermal_release_modifier
+	var/current_radiation_release_modifier
+	var/current_power_factor
+	var/current_decay_factor
+	var/current_critical_temperature
+	var/current_charging_factor
 
 	layer = ABOVE_OBJ_LAYER
 
@@ -107,6 +129,12 @@
 /obj/machinery/power/supermatter/Initialize()
 	. = ..()
 	uid = gl_uid++
+	current_thermal_release_modifier = rand(THERMAL_RELEASE_MODIFIER - DELTA_THERMAL_RELEASE_MODIFIER, THERMAL_RELEASE_MODIFIER + DELTA_THERMAL_RELEASE_MODIFIER)
+	current_radiation_release_modifier = rand(10*(RADIATION_RELEASE_MODIFIER - DELTA_RADIATION_RELEASE_MODIFIER), 10*(RADIATION_RELEASE_MODIFIER + DELTA_RADIATION_RELEASE_MODIFIER)) / 10
+	current_power_factor = rand(10*(POWER_FACTOR - DELTA_POWER_FACTOR), 10*(POWER_FACTOR + DELTA_POWER_FACTOR)) / 10
+	current_decay_factor = rand(DECAY_FACTOR - DELTA_DECAY_FACTOR, DECAY_FACTOR + DELTA_DECAY_FACTOR)
+	current_critical_temperature = rand(CRITICAL_TEMPERATURE - DELTA_CRITICAL_TEMPERATURE, CRITICAL_TEMPERATURE + DELTA_CRITICAL_TEMPERATURE)
+	current_charging_factor = rand(100*(CHARGING_FACTOR - DELTA_CHARGING_FACTOR), 100*(CHARGING_FACTOR + DELTA_CHARGING_FACTOR)) / 100
 
 /obj/machinery/power/supermatter/proc/handle_admin_warnings()
 	if(disable_adminwarn)
@@ -166,10 +194,10 @@
 	if(get_integrity() < 50)
 		return SUPERMATTER_DANGER
 
-	if((get_integrity() < 100) || (air.temperature > CRITICAL_TEMPERATURE))
+	if((get_integrity() < 100) || (air.temperature > current_critical_temperature))
 		return SUPERMATTER_WARNING
 
-	if(air.temperature > (CRITICAL_TEMPERATURE * 0.8))
+	if(air.temperature > (current_critical_temperature * 0.8))
 		return SUPERMATTER_NOTIFY
 
 	if(power > 5)
@@ -207,7 +235,7 @@
 
 		mob.Weaken(DETONATION_MOB_CONCUSSION)
 		to_chat(mob, "<span class='danger'>An invisible force slams you against the ground!</span>")
-		
+
 		if(iscarbon(mob))
 			var/mob/living/carbon/C = mob
 			var/area/A = get_area(TM)
@@ -339,13 +367,13 @@
 		removed = env.remove(gasefficency * env.total_moles)	//Remove gas from surrounding area
 
 	if(!env || !removed || !removed.total_moles)
-		damage += max((power - 15*POWER_FACTOR)/10, 0)
+		damage += max((power - 15*current_power_factor)/10, 0)
 	else if (grav_pulling) //If supermatter is detonating, remove all air from the zone
 		env.remove(env.total_moles)
 	else
 		damage_archived = damage
 
-		damage = max(0, damage + between(-DAMAGE_RATE_LIMIT, (removed.temperature - CRITICAL_TEMPERATURE) / 150, damage_inc_limit))
+		damage = max(0, damage + between(-DAMAGE_RATE_LIMIT, (removed.temperature - current_critical_temperature) / 150, damage_inc_limit))
 
 		//Ok, 100% oxygen atmosphere = best reaction
 		//Maxes out at 100% oxygen pressure
@@ -363,7 +391,7 @@
 			equilibrium_power = 250
 			icon_state = base_icon_state
 
-		temp_factor = ( (equilibrium_power/DECAY_FACTOR)**3 )/800
+		temp_factor = ( (equilibrium_power/current_decay_factor)**3 )/800
 		power = max( (removed.temperature * temp_factor) * oxygen + power, 0)
 
 		var/device_energy = power * REACTION_POWER_MODIFIER
@@ -373,7 +401,7 @@
 		removed.adjust_multi("phoron", max(device_energy / PHORON_RELEASE_MODIFIER, 0), \
 		                     "oxygen", max((device_energy + removed.temperature - T0C) / OXYGEN_RELEASE_MODIFIER, 0))
 
-		var/thermal_power = THERMAL_RELEASE_MODIFIER * device_energy
+		var/thermal_power = current_thermal_release_modifier * device_energy
 		if (debug)
 			var/heat_capacity_new = removed.heat_capacity()
 			visible_message("[src]: Releasing [round(thermal_power)] W.")
@@ -392,8 +420,8 @@
 				var/effect = max(0, min(200, power * config_hallucination_power * sqrt( 1 / max(1,get_dist(l, src)))) )
 				l.adjust_hallucination(effect, 0.25*effect)
 
-	SSradiation.radiate(src, power * 1.5) //Better close those shutters!
-	power -= (power/DECAY_FACTOR)**3		//energy losses due to radiation
+	SSradiation.radiate(src, power * current_radiation_release_modifier) //Better close those shutters!
+	power -= (power/current_decay_factor)**3		//energy losses due to radiation
 	handle_admin_warnings()
 
 	return 1
@@ -408,7 +436,7 @@
 
 	var/proj_damage = Proj.get_structure_damage()
 	if(istype(Proj, /obj/item/projectile/beam))
-		power += proj_damage * config_bullet_energy	* CHARGING_FACTOR / POWER_FACTOR
+		power += proj_damage * config_bullet_energy	* current_charging_factor / current_power_factor
 	else
 		damage += proj_damage * config_bullet_energy
 	return 0
@@ -550,13 +578,20 @@
 
 #undef NITROGEN_RETARDATION_FACTOR
 #undef THERMAL_RELEASE_MODIFIER
+#undef DELTA_THERMAL_RELEASE_MODIFIER
+#undef RADIATION_RELEASE_MODIFIER
+#undef DELTA_RADIATION_RELEASE_MODIFIER
 #undef PHORON_RELEASE_MODIFIER
 #undef OXYGEN_RELEASE_MODIFIER
 #undef REACTION_POWER_MODIFIER
 #undef POWER_FACTOR
+#undef DELTA_POWER_FACTOR
 #undef DECAY_FACTOR
+#undef DELTA_DECAY_FACTOR
 #undef CRITICAL_TEMPERATURE
+#undef DELTA_CRITICAL_TEMPERATURE
 #undef CHARGING_FACTOR
+#undef DELTA_CHARGING_FACTOR
 #undef DAMAGE_RATE_LIMIT
 #undef DETONATION_MOB_CONCUSSION
 #undef DETONATION_APC_OVERLOAD_PROB
