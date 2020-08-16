@@ -26,7 +26,7 @@
 #define DELTA_POWER_FACTOR 0.2
 
 #define DECAY_FACTOR 700			//Affects how fast the supermatter power decays
-#define DELTA_DECAY_FACTOR 400
+#define DELTA_DECAY_FACTOR 100
 
 #define CRITICAL_TEMPERATURE 5000	//K
 #define DELTA_CRITICAL_TEMPERATURE 2600
