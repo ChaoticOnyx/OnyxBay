@@ -404,7 +404,7 @@
 	to_chat(usr,"<span class='danger'>An arbitrary speech module is not installed in the [src]!</span>")
 
 /mob/living/bot/secbot/say_wrapper()
-	set name = "Say verb"
+	set name = "Say Verb"
 	set hidden = 1
 
 	to_chat(usr,"<span class='danger'>An arbitrary speech module is not installed in the [src]!</span>")

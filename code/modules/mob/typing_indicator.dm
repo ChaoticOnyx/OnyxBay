@@ -79,7 +79,7 @@ I IS TYPIN'!'
 	return text
 
 /mob/verb/say_wrapper()
-	set name = "Say verb"
+	set name = "Say Verb"
 	set category = "IC"
 
 	ASSERT(client && usr == src)
