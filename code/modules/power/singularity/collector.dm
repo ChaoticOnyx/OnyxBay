@@ -20,15 +20,16 @@ var/global/list/rad_collectors = list()
 	var/max_safe_temp = 1000 + T0C
 	var/melted
 
-	var/max_rads = 700 // rad collector will reach max power output at this value, and break at twice this value
+	var/max_rads = 500 // rad collector will reach max power output at this value, and break at twice this value
 	var/max_power = 5e6
-	var/pulse_coeff = 20
+	var/pulse_coeff
 	var/end_time = 0
 	var/alert_delay = 10 SECONDS
 
 /obj/machinery/power/rad_collector/New()
 	..()
 	rad_collectors += src
+	pulse_coeff = max_power / 28 //get max_power with full tank of phoron
 
 /obj/machinery/power/rad_collector/Destroy()
 	rad_collectors -= src
@@ -58,7 +59,7 @@ var/global/list/rad_collectors = list()
 				playsound(src, 'sound/effects/screech.ogg', 100, 1, 1)
 		if(rads > max_rads * 2)
 			collector_break()
-		receive_pulse(12.5*(rads/max_rads)/(0.3+(rads/max_rads)))
+		receive_pulse(min(rads/max_rads, 1)) //get max_power when get max rads but more rads won't compensate for the lack of phoron
 
 	if(P)
 		if(P.air_contents.gas["phoron"] == 0)
@@ -181,7 +182,7 @@ var/global/list/rad_collectors = list()
 /obj/machinery/power/rad_collector/proc/receive_pulse(pulse_strength)
 	if(P && active)
 		var/power_produced = 0
-		power_produced = min(100*P.air_contents.gas["phoron"]*pulse_strength*pulse_coeff,max_power)
+		power_produced = min(P.air_contents.gas["phoron"]*pulse_strength*pulse_coeff,max_power)
 		add_avail(power_produced)
 		last_power_new = power_produced
 		return
