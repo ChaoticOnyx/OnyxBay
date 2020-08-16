@@ -3,6 +3,7 @@
 
 	var/signed = FALSE
 	var/signed_ckey
+	var/id
 
 /obj/item/weapon/paper/complaint_form/examine(mob/user)
 	. = ..()
@@ -26,6 +27,7 @@
 /obj/item/weapon/paper/complaint_form/New(loc, id, target_name, target_occupation)
 	..(loc)
 	appendable = FALSE
+	src.id = id
 	var/new_title = "Complaint form #[id]: [target_name]"
 	var/new_content = "Subject: [target_name]"
 	new_content += "\[br\]Subject occupation: [target_occupation]"
@@ -35,3 +37,10 @@
 	new_content += "\[br\]Occupation: \[field\]"
 	new_content += "\[br\]Sign: \[signfield\]\[/right\]"
 	set_content(new_content, new_title)
+
+
+
+/obj/item/weapon/folder/complaint_folder
+	name = "Complaint #______"
+	var/id
+	var/creator_ckey
