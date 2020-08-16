@@ -23,6 +23,7 @@
 	var/info_links	//A different version of the paper which includes html links at fields and EOF
 	var/stamps		//The (text for the) stamps on the paper.
 	var/fields		//Amount of user created fields
+	var/signfields = 0
 	var/free_space = MAX_PAPER_MESSAGE_LEN
 	var/list/stamped
 	var/list/ico[0]      //Icons and
@@ -30,13 +31,18 @@
 	var/list/offset_y[0] //usage by the photocopier
 	var/rigged = 0
 	var/spam_flag = 0
+	var/readonly = FALSE
+	var/appendable = TRUE
 
 	var/const/deffont = "Verdana"
 	var/const/signfont = "Times New Roman"
 	var/const/crayonfont = "Comic Sans MS"
 	var/const/fancyfont = "Segoe Script"
 
-/obj/item/weapon/paper/New(loc, text,title)
+	//static because it can't be const
+	var/static/regex/signfields_regex = regex("<I><span class='sign_field_(\[0-9\]+)'> sign here </span></I>", "g")
+
+/obj/item/weapon/paper/New(loc, text, title)
 	..(loc)
 	set_content(text ? text : info, title)
 
@@ -66,7 +72,7 @@
 	if(name != "sheet of paper")
 		. += "\nIt's titled '[name]'."
 	if(user && (in_range(user, src) || isghost(user)))
-		show_content(usr)
+		show_content(user)
 	else
 		. += "\n<span class='notice'>You have to go closer if you want to read it.</span>"
 
@@ -176,10 +182,16 @@
 
 /obj/item/weapon/paper/proc/updateinfolinks()
 	info_links = info
+	if (readonly)
+		return
 	var/i = 0
 	for(i=1,i<=fields,i++)
 		addtofield(i, "<font face=\"[deffont]\"><A href='?src=\ref[src];write=[i]'>write</A></font>", 1)
-	info_links = info_links + "<font face=\"[deffont]\"><A href='?src=\ref[src];write=end'>write</A></font>"
+	if (appendable)
+		info_links = info_links + "<font face=\"[deffont]\"><A href='?src=\ref[src];write=end'>write</A></font>"
+
+	info_links = signfields_regex.Replace(info_links, "<I> <A href='?src=\ref[src];signfield=$1'>sign here</A> </I>")
+
 
 
 /obj/item/weapon/paper/proc/clearpaper()
@@ -202,6 +214,9 @@
 
 	if(findtext(t, "\[sign\]"))
 		t = replacetext(t, "\[sign\]", "<font face=\"[signfont]\"><i>[get_signature(P, user)]</i></font>")
+
+	if(findtext(t, "\[signfield\]"))
+		t = replacetext(t, "\[signfield\]", "<I><span class='sign_field_[signfields++]'> sign here </span></I>")
 
 	if(iscrayon) // If it is a crayon, and he still tries to use these, make them empty!
 		t = replacetext(t, "\[*\]", "")
@@ -262,12 +277,45 @@
 				to_chat(user, "<span class='warning'>You must hold \the [P] steady to burn \the [src].</span>")
 
 
+/obj/item/weapon/paper/proc/get_pen()
+	var/obj/item/i = usr.get_active_hand()
+	if(istype(i, /obj/item/weapon/pen))
+		return i
+	if(usr.back && istype(usr.back,/obj/item/weapon/rig))
+		var/obj/item/weapon/rig/r = usr.back
+		var/obj/item/rig_module/device/pen/m = locate(/obj/item/rig_module/device/pen) in r.installed_modules
+		if(!r.offline && m)
+			return m.device
+		else
+			return
+	else
+		return
+
+/obj/item/weapon/paper/proc/check_proximity()
+	// if paper is not in usr, then it must be near them, or in a clipboard or folder, which must be in or near usr
+	return !(src.loc != usr && !src.Adjacent(usr)\
+		&& !((istype(src.loc, /obj/item/weapon/clipboard) || istype(src.loc, /obj/item/weapon/folder))\
+		&& (src.loc.loc == usr || src.loc.Adjacent(usr)) ) )
+
+
 /obj/item/weapon/paper/Topic(href, href_list)
 	..()
 	if(!usr || (usr.stat || usr.restrained()))
 		return
-
+	if (href_list["signfield"])
+		var/signfield = href_list["signfield"]
+		var/pen = get_pen()
+		if (!pen || !check_proximity())
+			return
+		info = replacetext(info, "<I><span class='sign_field_[signfield]'> sign here </span></I>", " <font face=\"[signfont]\"><i>[get_signature(pen, usr)]</i></font> ")
+		updateinfolinks()
+		update_space()
+		usr << browse("<HTML><meta charset=\"utf-8\"><HEAD><TITLE>[name]</TITLE></HEAD><BODY bgcolor='[color]'>[info_links][stamps]</BODY></HTML>", "window=[name]") // Update the window
+		return
 	if(href_list["write"])
+		if (readonly)
+			to_chat(usr, SPAN_WARNING("Your pen fails to leave any trace on \the [src]!"))
+			return
 		var/id = href_list["write"]
 		//var/t = strip_html_simple(input(usr, "What text do you wish to add to " + (id=="end" ? "the end of the paper" : "field "+id) + "?", "[name]", null),8192) as message
 
@@ -280,19 +328,11 @@
 		if(!t)
 			return
 
-		var/obj/item/i = usr.get_active_hand() // Check to see if he still got that darn pen, also check what type of pen
+		var/obj/item/i = get_pen()
+		if (!i)
+			return
 		var/iscrayon = 0
 		var/isfancy = 0
-		if(!istype(i, /obj/item/weapon/pen))
-			if(usr.back && istype(usr.back,/obj/item/weapon/rig))
-				var/obj/item/weapon/rig/r = usr.back
-				var/obj/item/rig_module/device/pen/m = locate(/obj/item/rig_module/device/pen) in r.installed_modules
-				if(!r.offline && m)
-					i = m.device
-				else
-					return
-			else
-				return
 
 		if(istype(i, /obj/item/weapon/pen/crayon))
 			iscrayon = 1
@@ -300,9 +340,7 @@
 		if(istype(i, /obj/item/weapon/pen/fancy))
 			isfancy = 1
 
-
-		// if paper is not in usr, then it must be near them, or in a clipboard or folder, which must be in or near usr
-		if(src.loc != usr && !src.Adjacent(usr) && !((istype(src.loc, /obj/item/weapon/clipboard) || istype(src.loc, /obj/item/weapon/folder)) && (src.loc.loc == usr || src.loc.Adjacent(usr)) ) )
+		if (!check_proximity())
 			return
 
 		var/last_fields_value = fields
