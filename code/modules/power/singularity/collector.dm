@@ -20,7 +20,7 @@ var/global/list/rad_collectors = list()
 	var/max_safe_temp = 1000 + T0C
 	var/melted
 
-	var/max_rads = 250 // rad collector will reach max power output at this value, and break at twice this value
+	var/max_rads = 700 // rad collector will reach max power output at this value, and break at twice this value
 	var/max_power = 5e6
 	var/pulse_coeff = 20
 	var/end_time = 0
