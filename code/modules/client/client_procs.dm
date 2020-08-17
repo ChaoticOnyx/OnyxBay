@@ -582,3 +582,16 @@ client/verb/character_setup()
 
 		pct += delta
 		winset(src, "mainwindow.mainvsplit", "splitter=[pct]")
+
+/client/verb/fix_lags()
+	set name = "Fix Lags"
+	set desc = "Fixes any lags"
+	set category = "OOC"
+
+	if(alert(usr, "Are you sure that you want to be fixed?", "Fix Tool", "Yes", "No") == "No")
+		return
+
+	spawn(1)
+		qdel(src)
+	
+	alert(usr, "Done! Have fun!", "Fix Tool")
