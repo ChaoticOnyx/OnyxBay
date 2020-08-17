@@ -13,7 +13,7 @@
 
 /datum/game_mode/vampire/verb/vampire_help()
 	set category = "Vampire"
-	set name = "Display Help"
+	set name = "Vampire Help"
 	set desc = "Opens help window with overview of available powers and other important information."
 	var/mob/living/carbon/human/user = usr
 
