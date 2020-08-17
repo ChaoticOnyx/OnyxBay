@@ -5,18 +5,7 @@ GLOBAL_DATUM_INIT(thralls, /datum/antagonist/thrall, new)
 	role_text = "Thrall"
 	role_text_plural = "Thralls"
 	feedback_tag = "thrall_objective"
-	restricted_jobs = list("AI", "Cyborg", "Chaplain")
-	protected_jobs = list()
-	/*restricted_species = list(
-		"Baseline Frame",
-		"Shell Frame",
-		"Hephaestus G1 Industrial Frame",
-		"Hephaestus G2 Industrial Frame",
-		"Xion Industrial Frame",
-		"Zeng-Hu Mobility Frame",
-		"Bishop Accessory Frame"
-	)
-	*/
+	blacklisted_jobs = list(/datum/job/ai, /datum/job/cyborg, /datum/job/chaplain)
 	welcome_text = "You are a vampire or psionic operant's thrall: a pawn to be commanded by them at will."
 	antaghud_indicator = "hudthrall"
 
