@@ -301,8 +301,8 @@
 	/obj/item/weapon/gun/energy/plasmacutter = 90
 	)
 
-	min_duration = SAW_MIN_DURATION * 2.5
-	max_duration = SAW_MAX_DURATION * 2.5
+	min_duration = 100
+	max_duration = 150 //hardcoded by design
 
 /datum/surgery_step/generic/amputate/can_use(mob/living/user, mob/living/carbon/human/target, target_zone, obj/item/tool)
 	if (target_zone == BP_EYES)	//there are specific steps for eye surgery
