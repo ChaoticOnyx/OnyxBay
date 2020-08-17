@@ -43,6 +43,8 @@
 		return
 
 	var/temp = client.close_saywindow()
+	remove_typing_indicator()
+
 	if (!temp)
 		temp = winget(client, "input", "text")
 		if(findtextEx(temp, "Say ", 1, 5) && length(temp) > 4)
