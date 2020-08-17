@@ -6,7 +6,7 @@
 	set category = "IC"
 	return
 
-/mob/verb/say_verb(message as text)
+/mob/verb/say_verb(message as text|null)
 	set name = "Say"
 	set hidden = 1
 
