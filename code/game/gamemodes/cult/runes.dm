@@ -158,7 +158,7 @@
 
 /obj/effect/rune/proc/get_cultists()
 	. = list()
-	for(var/mob/living/M in range(1))
+	for(var/mob/living/M in range(1, src))
 		if(iscultist(M))
 			. += M
 
@@ -431,6 +431,9 @@
 	cultname = "defile"
 
 /obj/effect/rune/defile/cast(mob/living/user)
+	if(!is_station_turf(get_turf(src)))
+		to_chat(user, SPAN_DANGER("This place is too powerless for any defiling!"))
+		return
 	speak_incantation(user, "Ia! Ia! Zasan therium viortia!")
 	for(var/turf/T in range(1, src))
 		if(T.holy)
@@ -681,6 +684,9 @@
 
 /obj/effect/rune/massdefile/cast(mob/living/user)
 	var/list/mob/living/cultists = get_cultists()
+	if(!is_station_turf(get_turf(src)))
+		to_chat(user, SPAN_DANGER("This place is too powerless for any defiling!"))
+		return
 	if(cultists.len < 3)
 		to_chat(user, "<span class='warning'>You need three cultists around this rune to make it work.</span>")
 		return fizzle(user)
@@ -798,15 +804,18 @@
 /obj/effect/rune/blood_boil
 	cultname = "blood boil"
 	strokes = 4
+	var/is_used = FALSE
 
 /obj/effect/rune/blood_boil/cast(mob/living/user)
 	var/list/mob/living/cultists = get_cultists()
 	if(cultists.len < 3)
 		return fizzle()
+	if(is_used)
+		return fizzle()
 
 	for(var/mob/living/M in cultists)
 		M.say("Dedo ol[pick("'","`")]btoh!")
-
+	is_used = TRUE
 	var/list/mob/living/previous = list()
 	var/list/mob/living/current = list()
 	while(cultists.len >= 3)
@@ -827,6 +836,7 @@
 		previous = current.Copy()
 		current.Cut()
 		sleep(10)
+	is_used = FALSE
 
 /* Tier NarNar runes */
 
@@ -839,6 +849,9 @@
 
 /obj/effect/rune/tearreality/cast(mob/living/user)
 	if(!GLOB.cult.allow_narsie)
+		return
+	if(!is_station_turf(get_turf(src)))
+		to_chat(user, SPAN("cult", "Our Deity does not have enough influence on this place to be summoned there!"))
 		return
 	if(the_end_comes)
 		to_chat(user, "<span class='cult'>You are already summoning! Be patient!</span>")

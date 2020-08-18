@@ -19,8 +19,7 @@
 	. = ..()
 
 /obj/item/integrated_circuit/memory/examine(mob/user)
-	if(!(. = ..()))
-		return
+	. = ..()
 	var/i
 	for(i = 1, i <= outputs.len, i++)
 		var/datum/integrated_io/O = outputs[i]
@@ -31,7 +30,7 @@
 				data = "[d]"
 		else if(!isnull(O.data))
 			data = O.data
-		to_chat(user, "\The [src] has [data] saved to address [i].")
+		. += "\n\The [src] has [data] saved to address [i]."
 
 /obj/item/integrated_circuit/memory/do_work()
 	for(var/i = 1 to inputs.len)

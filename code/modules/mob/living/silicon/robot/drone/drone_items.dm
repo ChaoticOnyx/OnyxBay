@@ -215,9 +215,9 @@
 /obj/item/weapon/gripper/examine(mob/user)
 	. = ..()
 	if(wrapped)
-		to_chat(user, "It is holding \a [wrapped].")
+		. += "\nIt is holding \a [wrapped]."
 	else if (length(storage_type))
-		to_chat(user, "[src] is currently can [mode == MODE_EMPTY ? "empty" : "open"] containers.")
+		. += "\n[src] is currently can [mode == MODE_EMPTY ? "empty" : "open"] containers."
 
 /obj/item/weapon/gripper/integrated_circuit/attack_self(mob/living/silicon/user)
 	if(wrapped)

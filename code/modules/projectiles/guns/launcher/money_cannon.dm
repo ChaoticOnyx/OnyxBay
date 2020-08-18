@@ -134,17 +134,17 @@
 		to_chat(user, "<span class='warning'>That's not going to fit in there.</span>")
 
 /obj/item/weapon/gun/launcher/money/examine(mob/user)
-	. = ..(user)
-	to_chat(user, "It is configured to dispense [dispensing] thaler at a time.")
+	. = ..()
+	. += "\nIt is configured to dispense [dispensing] thaler at a time."
 
 	if(receptacle_value >= 1)
-		to_chat(user, "The receptacle is loaded with [receptacle_value] thaler.")
+		. += "\nThe receptacle is loaded with [receptacle_value] thaler."
 
 	else
-		to_chat(user, "The receptacle is empty.")
+		. += "\nThe receptacle is empty."
 
 	if(emagged)
-		to_chat(user, "<span class='notice'>Its motors are severely overloaded.</span>")
+		. += "\n<span class='notice'>Its motors are severely overloaded.</span>"
 
 /obj/item/weapon/gun/launcher/money/handle_suicide(mob/living/user)
 	if(!ishuman(user))

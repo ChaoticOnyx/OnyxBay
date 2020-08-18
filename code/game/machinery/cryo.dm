@@ -342,7 +342,12 @@
 	occupant = M
 	current_heat_capacity = HEAT_CAPACITY_HUMAN
 	update_use_power(POWER_USE_ACTIVE)
+
+	for(var/obj/item/clothing/mask/smokable/cig in M.contents)
+		cig.die(nomessage = TRUE, nodestroy = TRUE)
+
 	add_fingerprint(usr)
+	occupant.update_icon()
 	update_icon()
 	return 1
 
@@ -437,7 +442,7 @@
 	spark_system.start()
 	return 1
 
-/obj/machinery/atmospherics/unary/cryo_cell/examine()
+/obj/machinery/atmospherics/unary/cryo_cell/examine(mob/user)
 	. = ..()
 	if(emagged)
-		to_chat(usr, "The panel is loose and circuits is charred.")
+		. += "\nThe panel is loose and circuits is charred."

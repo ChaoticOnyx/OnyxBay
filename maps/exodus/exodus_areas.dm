@@ -450,19 +450,19 @@
 	icon_state = "ghettolibrary"
 
 /area/maintenance/ghetto_toilet
-	name = "\improper Ghetto Toilets"
+	name = "\improper Underground Toilets"
 	icon_state = "ghettotoilets"
 
 /area/maintenance/ghetto_dorm
-	name = "\improper Ghetto Dorm"
+	name = "\improper Abandoned Dorm"
 	icon_state = "ghettodorm"
 
 /area/maintenance/ghetto_main
-	name = "\improper Ghetto Main"
+	name = "\improper Underground Main"
 	icon_state = "ghettomain"
 
 /area/maintenance/ghetto_main_south
-	name = "\improper Ghetto Main - South"
+	name = "\improper Underground Main - South"
 	icon_state = "ghettomainsouth"
 
 /area/maintenance/ghetto_eva
@@ -482,19 +482,19 @@
 	icon_state = "ghettosyndie"
 
 /area/maintenance/ghetto_dockhall
-	name = "\improper Ghetto Dock Hall"
+	name = "\improper Underground Dock Hall"
 	icon_state = "ghettodockhall"
 
 /area/maintenance/ghetto_cafe
-	name = "\improper Ghetto Cafe"
+	name = "\improper Underground Cafe"
 	icon_state = "ghettocafe"
 
 /area/maintenance/ghetto_strangeplace
-	name = "\improper Ghetto Strange Place"
+	name = "\improper Underground Bar"
 	icon_state = "ghettostrangeplace"
 
 /area/maintenance/ghetto_detective
-	name = "\improper Ghetto Detective"
+	name = "\improper Abandoned Detective's Office"
 	icon_state = "ghettodetective"
 
 /area/maintenance/underground/central_one
@@ -1022,6 +1022,10 @@
 	name = "\improper Underground Dormitories"
 	icon_state = "underdorm"
 
+/area/crew_quarters/underdorm/boxing
+	name = "\improper Boxing Club"
+	icon_state = "fitness"
+
 /area/crew_quarters/underdorm/maint
 	name = "\improper Underground Dormitories Maintenance"
 	icon_state = "underdormmaint"
@@ -1037,6 +1041,11 @@
 /area/crew_quarters/underdorm/theater/mime
 	name = "\improper Mime's Bedroom"
 	icon_state = "Theatre"
+
+/area/crew_quarters/underdorm/theater/actor
+	name = "\improper Actors' Break Room"
+	icon_state = "Theatre"
+
 
 /area/crew_quarters/sleep/cabin1
 	name = "\improper Private Cabin One"
@@ -1500,6 +1509,11 @@
 /area/hydroponics/garden
 	name = "\improper Garden"
 	icon_state = "garden"
+
+/area/hydroponics/lower
+	name = "\improper Lower Hydroponics"
+	icon_state = "garden"
+
 
 
 // Research

@@ -156,5 +156,6 @@
 	release_force = 7
 
 /obj/item/weapon/gun/launcher/syringe/disguised/examine(mob/user)
-	if(( . = ..(user, 0)))
-		to_chat(user, "The button is a little stiff.")
+	. = ..()
+	if(get_dist(src, user) <= 0)
+		. += "\nThe button is a little stiff."

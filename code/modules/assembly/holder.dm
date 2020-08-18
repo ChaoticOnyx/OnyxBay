@@ -73,12 +73,12 @@
 		master.update_icon()
 
 /obj/item/device/assembly_holder/examine(mob/user)
-	. = ..(user)
+	. = ..()
 	if ((in_range(src, user) || src.loc == user))
 		if (src.secured)
-			to_chat(user, "\The [src] is ready!")
+			. += "\n\The [src] is ready!"
 		else
-			to_chat(user, "\The [src] can be attached!")
+			. += "\n\The [src] can be attached!"
 	return
 
 

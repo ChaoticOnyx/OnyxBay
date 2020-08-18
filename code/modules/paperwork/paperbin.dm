@@ -78,6 +78,8 @@
 
 /obj/item/weapon/paper_bin/attackby(obj/item/weapon/i as obj, mob/user as mob)
 	if(istype(i, /obj/item/weapon/paper))
+		if(istype(i, /obj/item/weapon/paper/talisman))
+			return
 		user.drop_item()
 		i.forceMove(src)
 		to_chat(user, "<span class='notice'>You put [i] in [src].</span>")
@@ -107,9 +109,9 @@
 	. = ..()
 	if(get_dist(src, user) <= 1)
 		if(amount)
-			to_chat(user, "<span class='notice'>There " + (amount > 1 ? "are [amount] papers" : "is one paper") + " in the bin.</span>")
+			. += "\n<span class='notice'>There " + (amount > 1 ? "are [amount] papers" : "is one paper") + " in the bin.</span>"
 		else
-			to_chat(user, "<span class='notice'>There are no papers in the bin.</span>")
+			. += "\n<span class='notice'>There are no papers in the bin.</span>"
 	return
 
 

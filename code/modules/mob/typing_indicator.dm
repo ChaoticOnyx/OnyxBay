@@ -47,28 +47,48 @@ I IS TYPIN'!'
 /mob/proc/remove_typing_indicator() // A bit excessive, but goes with the creation of the indicator I suppose
 	QDEL_NULL(typing_indicator)
 
-/mob/verb/say_wrapper()
-	set name = ".Say"
-	set hidden = 1
 
+/client/proc/show_saywindow()
+	winset(src, "saywindow", "is-visible=true;focus=true")
+
+/client/proc/center_and_show_saywindow()
+	first_say = FALSE
+	var/our_size = winget(src, "saywindow", "outer-size")
+	var/list/our_size_split = splittext(our_size, "x")
+	var/our_size_x = text2num(our_size_split[1])
+	var/our_size_y = text2num(our_size_split[2])
+	var/main_params = winget(src, "mainwindow", "outer-size;pos;is-maximized")
+	var/list/main_params_parsed = params2list(main_params)
+	var/maximized = main_params_parsed["is-maximized"] == "true"
+	var/list/main_pos = splittext(main_params_parsed["pos"], ",")
+	var/main_pos_x = maximized ? 0 : text2num(main_pos[1])
+	var/main_pos_y = maximized ? 0 : text2num(main_pos[2])
+	var/list/main_size = splittext(main_params_parsed["outer-size"], "x")
+	var/main_size_x = text2num(main_size[1])
+	var/main_size_y = text2num(main_size[2])
+
+	var/resulting_x = main_pos_x + main_size_x / 2 - our_size_x / 2
+	var/resulting_y = main_pos_y + main_size_y / 2 - our_size_y / 2
+
+	winset(src, "saywindow", "is-visible=true;focus=true;pos=[resulting_x],[resulting_y]")
+
+/client/proc/close_saywindow()
+	var/text = winget(src, "saywindow.saywindow-input", "text")
+	winset(src, "saywindow", "is-visible=false;focus=false")
+	winset(src, "saywindow.saywindow-input", "text=\"\"")
+	return text
+
+/mob/verb/say_wrapper()
+	set name = "Say Verb"
+	set category = "IC"
+
+	ASSERT(client && usr == src)
 
 	create_typing_indicator()
-	var/message = input("","say (text)") as text
-	remove_typing_indicator()
-	if(message)
-		say_verb(message)
-
-	/* Well maybe some day. Later.
-	var/dat = ""
-	dat += "<form name='Say' action='?src=\ref[src]' method='get'>"
-	dat += "<input type='hidden' name='src' value='\ref[src]'>"
-	dat += "<input type='hidden' name='choice' value='Say'>"
-	dat += "<input type='submit' value='Say'><input type='text' id='mobsay' name='mobsay' value='' style='width:350px; background-color:white;'>"
-	dat += "</form>"
-	var/datum/browser/popup = new(src, "Say", ntitle = "Say (text)", nwidth = 440, nheight = 90)
-	visible_message("<span class='danger'>[src] uses chat.</span>")
-	popup.set_content(jointext(dat,null))
-	popup.open()*/
+	if (!client.first_say)
+		client.show_saywindow()
+		return
+	client.center_and_show_saywindow()
 
 /mob/verb/me_wrapper()
 	set name = ".Me"

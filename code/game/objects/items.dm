@@ -167,7 +167,7 @@
 
 	src.loc = T
 
-/obj/item/examine(mob/user, distance = -1)
+/obj/item/examine(mob/user)
 	var/size
 	switch(src.w_class)
 		if(ITEM_SIZE_TINY)
@@ -231,7 +231,7 @@
 	//if(weapon_desc)
 	//	desc_comp += handle_weapon_desc()
 
-	return ..(user, distance, "", desc_comp)
+	return ..(user, "", desc_comp)
 
 /obj/item/attack_hand(mob/user as mob)
 	if (!user)
