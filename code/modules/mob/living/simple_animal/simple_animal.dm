@@ -45,8 +45,8 @@
 	var/cold_damage_per_tick = 2	//same as heat_damage_per_tick, only if the bodytemperature it's lower than minbodytemp
 	var/fire_alert = 0
 	var/oxygen_alert = 0
-	var/toxins_alert = 0	
-	
+	var/toxins_alert = 0
+
 	//Atmos effect - Yes, you can make creatures that require phoron or co2 to survive. N2O is a trace gas and handled separately, hence why it isn't here. It'd be hard to add it. Hard and me don't mix (Yes, yes make all the dick jokes you want with that.) - Errorage
 	var/min_gas = list("oxygen" = 5)
 	var/max_gas = list("phoron" = 1, "carbon_dioxide" = 5)
@@ -162,7 +162,7 @@
 					atmos_suitable = 0
 					toxins_alert = 1
 				else
-					toxins_alert = 0					
+					toxins_alert = 0
 
 	//Atmos effect
 	if(bodytemperature < minbodytemp)
@@ -212,6 +212,8 @@
 		damage = (Proj.damage / 8)
 
 	adjustBruteLoss(damage)
+	if(health <= 0)
+		death()
 	return 0
 
 /mob/living/simple_animal/attack_hand(mob/living/carbon/human/M as mob)
@@ -232,7 +234,8 @@
 			adjustBruteLoss(harm_intent_damage)
 			M.visible_message("<span class='warning'>[M] [response_harm] \the [src]!</span>")
 			M.do_attack_animation(src)
-
+			if(health <= 0)
+				death()
 	return
 
 /mob/living/simple_animal/attackby(obj/item/O, mob/user)
@@ -280,7 +283,8 @@
 		damage *= 2
 		purge = 3
 	adjustBruteLoss(damage)
-
+	if(health <= 0)
+		death()
 	return 0
 
 /mob/living/simple_animal/movement_delay()
