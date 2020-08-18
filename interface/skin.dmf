@@ -127,7 +127,7 @@ macro "borghotkeymode"
 		command = ".movedown"
 	elem 
 		name = "T"
-		command = ".say"
+		command = "Say-Verb"
 	elem "w_key"
 		name = "W+REP"
 		command = ".moveup"
@@ -190,7 +190,7 @@ macro "borghotkeymode"
 		command = ".screenshot"
 	elem 
 		name = "F3"
-		command = ".say"
+		command = "Say-Verb"
 	elem 
 		name = "F4"
 		command = ".me"
@@ -360,7 +360,7 @@ macro "macro"
 		command = ".screenshot"
 	elem 
 		name = "F3"
-		command = ".say"
+		command = "Say-Verb"
 	elem 
 		name = "F4"
 		command = ".me"
@@ -533,7 +533,7 @@ macro "hotkeymode"
 		command = ".movedown"
 	elem 
 		name = "T"
-		command = ".say"
+		command = "Say-Verb"
 	elem "w_key"
 		name = "W+REP"
 		command = ".moveup"
@@ -596,7 +596,7 @@ macro "hotkeymode"
 		command = ".screenshot"
 	elem 
 		name = "F3"
-		command = ".say"
+		command = "Say-Verb"
 	elem 
 		name = "F4"
 		command = ".me"
@@ -766,7 +766,7 @@ macro "borgmacro"
 		command = ".screenshot"
 	elem 
 		name = "F3"
-		command = ".say"
+		command = "Say-Verb"
 	elem 
 		name = "F4"
 		command = ".me"
@@ -1369,6 +1369,45 @@ window "infowindow"
 		text = "Changelog"
 		command = "Changelog"
 		group = "rpanemode"
+
+window "saywindow"
+	elem "saywindow"
+		type = MAIN
+		pos = 570,452
+		size = 300x90
+		anchor1 = none
+		anchor2 = none
+		background-color = none
+		is-visible = false
+		saved-params = "size"
+		title = "say (text)"
+		statusbar = false
+		can-close = false
+		can-minimize = false
+		can-resize = false
+		outer-size = 308x117
+		inner-size = 300x90
+	elem "saywindow-button"
+		type = BUTTON
+		pos = 110,50
+		size = 80x25
+		anchor1 = none
+		anchor2 = none
+		background-color = none
+		border = line
+		saved-params = ""
+		text = "OK"
+		command = "say [[saywindow-input.text]]"
+	elem "saywindow-input"
+		type = INPUT
+		pos = 8,16
+		size = 280x20
+		anchor1 = none
+		anchor2 = none
+		is-default = true
+		border = sunken
+		saved-params = ""
+		command = "say"
 
 window "text_editor"
 	elem "text_editor"

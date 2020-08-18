@@ -209,11 +209,12 @@
 	return ..()
 
 /obj/item/weapon/weldingtool/examine(mob/user)
-	if(..(user, 0))
+	. = ..()
+	if(get_dist(src, user) <= 0)
 		if(tank)
-			to_chat(user, "\icon[tank] \The [tank] contains [get_fuel()]/[tank.max_fuel] units of fuel!")
+			. += "\n\icon[tank] \The [tank] contains [get_fuel()]/[tank.max_fuel] units of fuel!"
 		else
-			to_chat(user, "There is no tank attached.")
+			. += "\nThere is no tank attached."
 
 /obj/item/weapon/weldingtool/MouseDrop(atom/over)
 	if(!CanMouseDrop(over, usr))
@@ -470,6 +471,11 @@
 				H.disabilities |= NEARSIGHTED
 				spawn(100)
 					H.disabilities &= ~NEARSIGHTED
+
+/obj/item/weapon/weldingtool/get_temperature_as_from_ignitor()
+	if(isOn())
+		return 3800
+	return 0
 
 /obj/item/weapon/welder_tank
 	name = "welding fuel tank"

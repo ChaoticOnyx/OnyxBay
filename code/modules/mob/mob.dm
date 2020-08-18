@@ -250,7 +250,7 @@
 		if(fake)
 			fake.examine(src)
 			return
-	A.examine(src)
+	to_chat(usr, A.examine(src))
 
 /mob/verb/pointed(atom/A as mob|obj|turf in view())
 	set name = "Point To"
@@ -730,7 +730,7 @@
 	if( update_icon )	//forces a full overlay update
 		update_icon = 0
 		regenerate_icons()
-	else if( lying != lying_prev )
+	else if( lying != lying_prev || hanging != hanging_prev)
 		update_icons()
 
 	return canmove

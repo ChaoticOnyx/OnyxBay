@@ -13,11 +13,10 @@
 
 /obj/structure/geltank/examine(mob/user)
 	. = ..()
-	if(.)
-		if(capacity >= 0)
-			to_chat(user, "It contains [capacity]/[capacity_max] units of gel.")
-		else
-			to_chat(user, "It's empty.")
+	if(capacity >= 0)
+		. += "\nIt contains [capacity]/[capacity_max] units of gel."
+	else
+		. += "\nIt's empty."
 
 /obj/structure/geltank/proc/use(amt = 1)
 	capacity -= amt

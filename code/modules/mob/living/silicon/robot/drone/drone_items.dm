@@ -111,6 +111,14 @@
 	storage_type = list(
 		/obj/item/weapon/storage/
 		)
+/obj/item/weapon/gripper/integrated_circuit
+	name = "integrated circuit assemblies manipulator"
+	desc = "Complex grasping tool for integrated circuit assemblies"
+
+	can_hold = list(
+		/obj/item/device/electronic_assembly,
+		/obj/item/integrated_circuit,
+	)
 
 /obj/item/weapon/gripper/archeologist
 	name = "archeologist gripper"
@@ -135,6 +143,7 @@
 		/obj/item/weapon/storage/lockbox/vials
 		)
 	can_hold = list(
+		/obj/item/organ,
 		/obj/item/weapon/cell,
 		/obj/item/weapon/stock_parts,
 		/obj/item/device/mmi,
@@ -206,9 +215,20 @@
 /obj/item/weapon/gripper/examine(mob/user)
 	. = ..()
 	if(wrapped)
-		to_chat(user, "It is holding \a [wrapped].")
+		. += "\nIt is holding \a [wrapped]."
 	else if (length(storage_type))
-		to_chat(user, "[src] is currently can [mode == MODE_EMPTY ? "empty" : "open"] containers.")
+		. += "\n[src] is currently can [mode == MODE_EMPTY ? "empty" : "open"] containers."
+
+/obj/item/weapon/gripper/integrated_circuit/attack_self(mob/living/silicon/user)
+	if(wrapped)
+		if (istype(wrapped, /obj/item/device/electronic_assembly))
+			var/obj/item/device/electronic_assembly/O = wrapped
+			O.interact(user)
+
+/obj/item/weapon/gripper/integrated_circuit/afterattack(atom/target, mob/user, proximity)
+	if(proximity && istype(wrapped, /obj/item/integrated_circuit) && istype(target, /obj/item/device/electronic_assembly))
+		var/obj/item/device/electronic_assembly/AS = target
+		AS.try_add_component(wrapped, user, AS)
 
 /obj/item/weapon/gripper/attack_self(mob/user as mob)
 	if(wrapped)
@@ -379,6 +399,20 @@
 	else if(istype(target,/obj/machinery/portable_atmospherics/canister))
 		var/obj/machinery/portable_atmospherics/canister/A = target
 		A.ui_interact(user)
+
+	else if(istype(target, /obj/machinery/cell_charger))
+		var/obj/machinery/cell_charger/charger = target
+		if(charger.charging)
+
+			wrapped = charger.charging
+
+			charger.charging.add_fingerprint(user)
+			charger.charging.update_icon()
+			charger.charging.loc = src
+			charger.charging = null
+			charger.update_icon()
+
+			user.visible_message(SPAN_DANGER("[user] removes the power cell from [charger]!"), "You remove the power cell.")
 
 	else
 		to_chat(user, "<span class='notice'>[src] can't interact with \the [target].</span>")

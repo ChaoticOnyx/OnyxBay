@@ -162,3 +162,7 @@
 	if(Adjacent(user))
 		add_fingerprint(user)
 	..()
+	
+// If object can not be used to start fire, return 0.
+/obj/proc/get_temperature_as_from_ignitor()
+	return 0

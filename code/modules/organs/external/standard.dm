@@ -21,6 +21,7 @@
 	artery_name = "aorta"
 	cavity_name = "thoracic"
 	limb_flags = ORGAN_FLAG_GENDERED_ICON | ORGAN_FLAG_HEALS_OVERKILL | ORGAN_FLAG_CAN_BREAK
+	var/butchering_capacity = 1
 	internal_organs_size = 7
 
 /obj/item/organ/external/chest/robotize()

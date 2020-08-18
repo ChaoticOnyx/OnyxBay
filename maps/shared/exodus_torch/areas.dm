@@ -80,6 +80,10 @@
 	name = "Waste Disposal"
 	icon_state = "disposal"
 
+/area/maintenance/disposal/underground
+	name = "Underground Waste Disposal"
+	icon_state = "disposal"
+
 /area/maintenance/incinerator
 	name = "\improper Incinerator"
 	icon_state = "disposal"
@@ -506,6 +510,10 @@
 /area/janitor
 	name = "\improper Custodial Closet"
 	icon_state = "janitor"
+
+/area/officesupplies
+	name = "\improper Office Supplies"
+	icon_state = "law"
 
 // Tcomm
 /area/tcommsat/

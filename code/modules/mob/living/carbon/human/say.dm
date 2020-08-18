@@ -39,38 +39,30 @@
 
 
 /mob/living/carbon/human/proc/forcesay(list/append)
-	if(stat == CONSCIOUS)
-		if(client)
-			var/virgin = 1	//has the text been modified yet?
-			var/temp = winget(client, "input", "text")
-			if(findtextEx(temp, "Say \"", 1, 7) && length(temp) > 5)	//case sensitive means
-				var/main_key = get_prefix_key(/decl/prefix/radio_main_channel)
-				temp = replacetext(temp, main_key, "")	//general radio
+	if(stat != CONSCIOUS || !client)
+		return
 
-				var/channel_key = get_prefix_key(/decl/prefix/radio_channel_selection)
-				if(findtext(trim_left(temp), channel_key, 6, 7))	//dept radio
-					temp = copytext(trim_left(temp), 8)
-					virgin = 0
+	var/temp = client.close_saywindow()
+	remove_typing_indicator()
 
-				if(virgin)
-					temp = copytext(trim_left(temp), 6)	//normal speech
-					virgin = 0
+	if (!temp)
+		temp = winget(client, "input", "text")
+		if(findtextEx(temp, "Say ", 1, 5) && length(temp) > 4)
+			temp = copytext(temp, 5)
+			if (text2ascii(temp, 1) == text2ascii("\""))
+				temp = copytext(temp, 2)
+			var/custom_emote_key = get_prefix_key(/decl/prefix/custom_emote)
+			if(findtext(temp, custom_emote_key, 1, 2))	//emotes
+				return
+		else
+			return
+		winset(client, "input", "text=[null]")
+	temp = trim_left(temp)
 
-				while(findtext(trim_left(temp), channel_key, 1, 2))	//dept radio again (necessary)
-					temp = copytext(trim_left(temp), 3)
-
-				var/custom_emote_key = get_prefix_key(/decl/prefix/custom_emote)
-				if(findtext(temp, custom_emote_key, 1, 2))	//emotes
-					return
-				temp = copytext(trim_left(temp), 1, rand(5,8))
-
-				var/trimmed = trim_left(temp)
-				if(length(trimmed))
-					if(append)
-						temp += pick(append)
-
-					say(temp)
-				winset(client, "input", "text=[null]")
+	if(length(temp))
+		if(append)
+			temp += pick(append)
+			say(temp)
 
 /mob/living/carbon/human/say_understands(mob/other,datum/language/speaking = null)
 

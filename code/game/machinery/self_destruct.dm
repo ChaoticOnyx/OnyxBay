@@ -102,16 +102,16 @@
 		src.visible_message("<span class='warning'>[src] dents and chars.</span>")
 		damaged = 1
 
-/obj/machinery/self_destruct/examine(mob/usr)
+/obj/machinery/self_destruct/examine(mob/user)
 	. = ..()
 	if(damaged)
-		to_chat(usr, "<span class='warning'>[src] is damaged, it needs repairs.</span>")
+		. += "\n<span class='warning'>[src] is damaged, it needs repairs.</span>"
 		return
 	if(armed)
-		to_chat(usr, "[src] is armed and ready.")
+		. += "\n[src] is armed and ready."
 		return
 	if(cylinder)
-		to_chat(usr, "[src] is loaded and ready to be armed.")
+		. += "\n[src] is loaded and ready to be armed."
 		return
 
 /obj/machinery/self_destruct/update_icon()

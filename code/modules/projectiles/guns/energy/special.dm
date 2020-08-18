@@ -128,6 +128,7 @@
 	icon_state = "xray"
 	origin_tech = list(TECH_COMBAT = 5, TECH_MAGNET = 4)
 	projectile_type = /obj/item/projectile/beam/mindflayer
+	combustion = FALSE
 
 /obj/item/weapon/gun/energy/toxgun
 	name = "phoron pistol"
@@ -156,6 +157,7 @@
 	self_recharge = 1
 	charge_meter = 0
 	clumsy_unaffected = 1
+	combustion = FALSE
 
 /obj/item/weapon/gun/energy/staff/special_check(mob/user)
 	if((user.mind && !GLOB.wizards.is_antagonist(user.mind)))
@@ -186,6 +188,7 @@ obj/item/weapon/gun/energy/staff/focus
 	slot_flags = SLOT_BELT|SLOT_BACK
 	w_class = ITEM_SIZE_LARGE
 	projectile_type = /obj/item/projectile/forcebolt
+	combustion = FALSE
 	/*
 	attack_self(mob/living/user as mob)
 		if(projectile_type == /obj/item/projectile/forcebolt)
@@ -223,16 +226,21 @@ obj/item/weapon/gun/energy/staff/focus
 	)
 
 /obj/item/weapon/gun/energy/plasmacutter/examine(mob/user)
-	. = ..(user)
+	. = ..()
 	to_chat(user, "It has a recharge port with a capital letter P.")
 
 /obj/item/weapon/gun/energy/plasmacutter/attackby(obj/item/stack/material/phoron/W, mob/user)
 	if(user.stat || user.restrained() || user.lying)
 		return
-	var/current_power = round(power_supply.charge / charge_cost)
+	if(!istype(W))
+		return
+	var/current_power = charge_cost ? round(power_supply.charge / charge_cost) : INFINITY
 	if(current_power < max_shots && danger_attack == TRUE)
 		power_supply.charge = power_supply.charge + charge_cost
 		W.use(1)
 		to_chat(user, SPAN_NOTICE("You insert \the [W.material.use_name] [W.material.sheet_singular_name] into \the [src]."))
 	else
 		to_chat(user, SPAN_WARNING("You can't insert \the [W.material.use_name] [W.material.sheet_singular_name] into \the [src], it's full."))
+
+/obj/item/weapon/gun/energy/plasmacutter/get_temperature_as_from_ignitor()
+	return 3800

@@ -25,7 +25,7 @@ var $messages, $subTheme, $subOptions, $subFont, $selectedSub, $contextMenu, $fi
 var opts = {
 	//General
 	'messageCount': 0, //A count...of messages...
-	'messageLimit': 2053, //A limit...for the messages...
+	'messageLimit': 5000, //A limit...for the messages...
 	'scrollSnapTolerance': 10, //If within x pixels of bottom
 	'clickTolerance': 10, //Keep focus if outside x pixels of mousedown position on mouseup
 	'imageRetryDelay': 50, //how long between attempts to reload images (in ms)
@@ -381,10 +381,10 @@ function output(message, flag) {
 
 	//Stuff we do along with appending a message
 	var atBottom = false;
+	var scrollPos = $('body,html').scrollTop();
 	if (!filteredOut) {
 		var bodyHeight = $('body').height();
 		var messagesHeight = $messages.outerHeight();
-		var scrollPos = $('body,html').scrollTop();
 
 		//Should we snap the output to the bottom?
 		if (bodyHeight + scrollPos >= messagesHeight - opts.scrollSnapTolerance) {
@@ -409,9 +409,11 @@ function output(message, flag) {
 	}
 
 	opts.messageCount++;
+	var trimmedHeight = 0;
 
 	//Pop the top message off if history limit reached
 	if (opts.messageCount >= opts.messageLimit) {
+		trimmedHeight = $messages.children('div.entry:first-child').outerHeight();
 		$messages.children('div.entry:first-child').remove();
 		opts.messageCount--; //I guess the count should only ever equal the limit
 	}
@@ -489,6 +491,8 @@ function output(message, flag) {
 
 	if (!filteredOut && atBottom) {
 		$('body,html').scrollTop($messages.outerHeight());
+	} else if (trimmedHeight) {
+		$('body,html').scrollTop(scrollPos - trimmedHeight);
 	}
 }
 

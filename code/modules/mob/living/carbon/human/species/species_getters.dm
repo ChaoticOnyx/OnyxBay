@@ -84,6 +84,12 @@
 		if(gender in BB.genders)
 			. += BB.name
 
+/datum/species/proc/get_body_build_datum_list(gender)
+	. = list()
+	for(var/datum/body_build/BB in body_builds)
+		if(gender in BB.genders)
+			. += BB
+
 /datum/species/proc/get_random_name(gender)
 	if(!name_language)
 		if(gender == FEMALE)

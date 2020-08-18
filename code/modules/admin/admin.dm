@@ -26,8 +26,7 @@ var/global/floorIsLava = 0
 				to_chat(C, msg)
 /proc/href_exploit(suspect_ckey, href)
 	var/rendered = "<span class=\"log_message\"><span class=\"prefix\">HREF EXPLOIT POSSIBLE:</span> <span class=\"message\">Suspect: '[suspect_ckey]' || Href: '[href]'</span></span><br>"
-	if (config && config.log_hrefs && GLOB.world_hrefs_log)
-		WRITE_FILE(GLOB.world_hrefs_log, rendered)
+	log_href(rendered)
 	for(var/client/C in GLOB.admins)
 		if(check_rights(R_INVESTIGATE, 0, C))
 			var/msg = rendered

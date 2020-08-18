@@ -91,71 +91,100 @@
 /proc/sanitize_filename(t)
 	return sanitize_simple(t, list("\n"="", "\t"="", "/"="", "\\"="", "?"="", "%"="", "*"="", ":"="", "|"="", "\""="", "<"="", ">"=""))
 
-//Filters out undesirable characters from names
+#define NO_CHARS_DETECTED 0
+#define SPACES_DETECTED 1
+#define SYMBOLS_DETECTED 2
+#define NUMBERS_DETECTED 3
+#define LETTERS_DETECTED 4
+
+/**
+  * Filters out undesirable characters from names.
+  *
+  * * strict - return null immidiately instead of filtering out  TODO: port from tg
+  * * allow_numbers - allows numbers and common special characters - used for silicon/other weird things names
+  */
+
 /proc/sanitizeName(input, max_length = MAX_NAME_LEN, allow_numbers = 0, force_first_letter_uppercase = TRUE)
-	if(!input || length_char(input) > max_length)
-		return //Rejects the input if it is null or if it is longer then the max length allowed
+	if(!input)
+		return //Rejects the input if it is null
 
-	var/number_of_alphanumeric	= 0
-	var/last_char_group			= 0
+	var/number_of_alphanumeric = 0
+	var/last_char_group = NO_CHARS_DETECTED
 	var/output = ""
+	var/t_len = length_char(input)
+	var/charcount = 0
 
-	for(var/i=1, i<=length_char(input), i++)
-		var/ascii_char = text2ascii_char(input,i)
-		switch(ascii_char)
-			// A  .. Z, А .. Я
-			if(65 to 90, 1040 to 1071)			//Uppercase Letters
-				output += ascii2text(ascii_char)
+	// This is a sanity short circuit, if the users name is three times the maximum allowable length of name
+	// We bail out on trying to process the name at all, as it could be a bug or malicious input and we dont
+	// Want to iterate all of it.
+	if(t_len > 3 * MAX_NAME_LEN)
+		return
+	for(var/char in splittext_char(input, ""))
+		var/char_code = text2ascii_char(char)
+		switch(char_code)
+			// A  .. Z
+			if(65 to 90)   //Uppercase Letters	
 				number_of_alphanumeric++
-				last_char_group = 4
-
-			// a  .. z, а .. я
-			if(97 to 122, 1072 to 1103)			//Lowercase Letters
-				if(last_char_group<2 && force_first_letter_uppercase)
-					output += uppertext(ascii2text(ascii_char))	//Force uppercase first character
-				else
-					output += ascii2text(ascii_char)
+				last_char_group = LETTERS_DETECTED
+				
+			// a  .. z
+			if(97 to 122)   //Lowercase Letters
+				if(last_char_group == NO_CHARS_DETECTED || last_char_group == SPACES_DETECTED || last_char_group == SYMBOLS_DETECTED) //start of a word
+					char = uppertext(char)
 				number_of_alphanumeric++
-				last_char_group = 4
-
+				last_char_group = LETTERS_DETECTED
+				
 			// 0  .. 9
-			if(48 to 57)			//Numbers
-				if(!last_char_group)		continue	//suppress at start of string
-				if(!allow_numbers)			continue
-				output += ascii2text(ascii_char)
+			if(48 to 57)   //Numbers
+				if(last_char_group == NO_CHARS_DETECTED || !allow_numbers) //suppress at start of string
+					continue
 				number_of_alphanumeric++
-				last_char_group = 3
-
+				last_char_group = NUMBERS_DETECTED
+				
 			// '  -  .
-			if(39,45,46)			//Common name punctuation
-				if(!last_char_group) continue
-				output += ascii2text(ascii_char)
-				last_char_group = 2
-
-			// ~   |   @  :  #  $  %  &  *  +
-			if(126,124,64,58,35,36,37,38,42,43)			//Other symbols that we'll allow (mainly for AI)
-				if(!last_char_group)		continue	//suppress at start of string
-				if(!allow_numbers)			continue
-				output += ascii2text(ascii_char)
-				last_char_group = 2
-
+			if(39, 45, 46)   //Common name punctuation
+				if(last_char_group == NO_CHARS_DETECTED)
+					continue
+				last_char_group = SYMBOLS_DETECTED
+				
+			// ~    |    @   :   #   $   %   &   *   +
+			if(126, 124, 64, 58, 35, 36, 37, 38, 42, 43)			//Other symbols that we'll allow (mainly for AI)
+				if(last_char_group == NO_CHARS_DETECTED || !allow_numbers) //suppress at start of string
+					continue
+				last_char_group = SYMBOLS_DETECTED
+				
 			//Space
 			if(32)
-				if(last_char_group <= 1)	continue	//suppress double-spaces and spaces at start of string
-				output += ascii2text(ascii_char)
-				last_char_group = 1
-			else
+				if(last_char_group == NO_CHARS_DETECTED || last_char_group == SPACES_DETECTED) //suppress double-spaces and spaces at start of string
+					continue
+				last_char_group = SPACES_DETECTED
+				
+			if(127 to INFINITY) // cyrillic, chinese, and other unicode stuff
 				return
+			else
+				continue
+		output += char
+		charcount++
+		if(charcount >= max_length)
+			break
 
-	if(number_of_alphanumeric < 2)	return		//protects against tiny names like "A" and also names like "' ' ' ' ' ' ' '"
+	if(number_of_alphanumeric < 2)
+		return //protects against tiny names like "A" and also names like "' ' ' ' ' ' ' '"
 
-	if(last_char_group == 1)
-		output = copytext(output,1,length_char(output))	//removes the last character (in this case a space)
+	if(last_char_group == SPACES_DETECTED)
+		output = copytext_char(output, 1, -1) //removes the last character (in this case a space)
 
-	for(var/bad_name in list("space","floor","wall","r-wall","monkey","unknown","inactive ai","plating"))	//prevents these common metagamey names
-		if(cmptext(output,bad_name))	return	//(not case sensitive)
+	for(var/bad_name in list("space","floor","wall","r-wall","monkey","unknown","inactive ai"))	//prevents these common metagamey names
+		if(cmptext(output,bad_name))
+			return	//(not case sensitive)
 
 	return output
+
+#undef NO_CHARS_DETECTED
+#undef SPACES_DETECTED
+#undef SYMBOLS_DETECTED
+#undef NUMBERS_DETECTED
+#undef LETTERS_DETECTED
 
 //Returns null if there is any bad text in the string
 /proc/reject_bad_text(text, max_length=512)

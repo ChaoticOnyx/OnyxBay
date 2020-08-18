@@ -346,6 +346,33 @@ The slots that you can use are found in items_clothing.dm and are the inventory 
 				H.visible_message("<span class='warning'>[target] refuses to shake [H]'s hand!</span>", \
 								"<span class='warning'>[target] refuses to shake your hand!</span>")
 		if(BP_MOUTH)
+			var/obj/item/clothing/mask/actor_mask = H.wear_mask
+			var/obj/item/clothing/mask/target_mask
+			if(V)
+				target_mask = V.wear_mask
+			if(actor_mask && target_mask)
+				if(istype(actor_mask, /obj/item/clothing/mask/smokable/cigarette) && istype(target_mask, /obj/item/clothing/mask/smokable/cigarette))
+					H.visible_message(SPAN_NOTICE("[H] reaches out for [target]'s face...)"), \
+									SPAN_NOTICE("You reach out for [target]'s face..."))
+					H.next_move = world.time + 15
+					if(!do_after(H,15,target) || target.a_intent != I_HELP)
+						return
+					H.visible_message(SPAN_NOTICE("\The [actor_mask] touches \the [target_mask].</span>")) // Harsh spessman flirt
+					var/obj/item/clothing/mask/smokable/cigarette/actor_cig = actor_mask
+					var/obj/item/clothing/mask/smokable/cigarette/target_cig = target_mask
+					if(actor_cig.lit && !target_cig.lit)
+						target_cig.light(actor_cig, H)
+					if(!actor_cig.lit && target_cig.lit)
+						actor_cig.light(target_cig, H)
+					return
+			
+			if(actor_mask)
+				to_chat(H, "\A [actor_mask] is in the way!")
+				return
+			if(target_mask)
+				to_chat(H, "[target] wears \a [target_mask]. It's in your way!")
+				return
+
 			H.visible_message("<span class='notice'>[H] reaches out for [target]'s face...</span>", \
 							"<span class='notice'>You reach out for [target]'s face...</span>")
 			H.next_move = world.time + 15 // In a matter of a second we get subpoenaed for sexual harassment

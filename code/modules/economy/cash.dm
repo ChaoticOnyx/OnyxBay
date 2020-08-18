@@ -182,9 +182,9 @@ proc/spawn_money(sum, spawnloc, mob/living/carbon/human/human_user as mob)
 	var/owner_name = "" //So the ATM can set it so the EFTPOS can put a valid name on transactions.
 
 /obj/item/weapon/spacecash/ewallet/examine(mob/user)
-	. = ..(user)
+	. = ..()
 	if (!(user in view(2)) && user!=src.loc) return
-	to_chat(user, "<span class='notice'>Charge card's owner: [src.owner_name]. Thalers remaining: [src.worth].</span>")
+	. += "\n<span class='notice'>Charge card's owner: [src.owner_name]. Thalers remaining: [src.worth].</span>"
 
 /obj/item/weapon/spacecash/ewallet/lotto
 	name = "space lottery card"

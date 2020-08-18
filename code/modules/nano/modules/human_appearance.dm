@@ -30,8 +30,16 @@
 	if(href_list["gender"])
 		if(can_change(APPEARANCE_GENDER) && (href_list["gender"] in owner.species.genders))
 			if(owner.change_gender(href_list["gender"]))
+				owner.sanitize_body()
 				cut_and_generate_data()
 				return 1
+	if(href_list["bodybuild"])
+		if(can_change(APPEARANCE_BODY_BUILD))
+			var/body_builds = owner.species.get_body_build_datum_list(owner.gender)
+			var/new_body_build = input(usr, "Choose your character's body build:", "Body Build", null) as null|anything in body_builds
+			if(new_body_build && can_still_topic(state))
+				if(owner.change_body_build(new_body_build))
+					return 1
 	if(href_list["skin_tone"])
 		if(can_change_skin_tone())
 			var/new_s_tone = input(usr, "Choose your character's skin-tone:\n1 (lighter) - [owner.species.max_skin_tone()] (darker)", "Skin Tone", -owner.s_tone + 35) as num|null
@@ -100,6 +108,7 @@
 
 	data["specimen"] = owner.species.name
 	data["gender"] = owner.gender
+	data["body_build"] = owner.body_build
 	data["change_race"] = can_change(APPEARANCE_RACE)
 	if(data["change_race"])
 		var/species[0]
@@ -113,6 +122,7 @@
 		for(var/gender in owner.species.genders)
 			genders[++genders.len] =  list("gender_name" = gender2text(gender), "gender_key" = gender)
 		data["genders"] = genders
+	data["change_body_build"] = can_change(APPEARANCE_BODY_BUILD)
 	data["change_skin_tone"] = can_change_skin_tone()
 	data["change_skin_color"] = can_change_skin_color()
 	data["change_eye_color"] = can_change(APPEARANCE_EYE_COLOR)
