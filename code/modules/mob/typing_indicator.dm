@@ -73,9 +73,9 @@ I IS TYPIN'!'
 	winset(src, "saywindow", "is-visible=true;focus=true;pos=[resulting_x],[resulting_y]")
 
 /client/proc/close_saywindow()
-	var/text = winget(src, "saywindow.sayinput", "text")
+	var/text = winget(src, "saywindow.saywindow-input", "text")
 	winset(src, "saywindow", "is-visible=false;focus=false")
-	winset(src, "saywindow.sayinput", "text=\"\"")
+	winset(src, "saywindow.saywindow-input", "text=\"\"")
 	return text
 
 /mob/verb/say_wrapper()
