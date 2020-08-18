@@ -682,13 +682,13 @@ CIGARETTE PACKETS ARE IN FANCY.DM
 
 /obj/item/clothing/mask/smokable/pipe/can_be_lit_with(obj/W)
 	for(var/ignitor_type in list(/obj/item/weapon/flame/lighter, /obj/item/weapon/flame/lighter/zippo, /obj/item/weapon/weldingtool, /obj/item/device/assembly/igniter, /obj/item/weapon/flame/candle, /obj/item/clothing/mask/smokable/cigarette, /obj/item/weapon/reagent_containers/glass/rag))
-		if(istype(W.type, ignitor_type))
+		if(istype(W, ignitor_type))
 			return ..()
 	
 	if(istype(W, /obj/machinery/light))
 		var/obj/machinery/light/mounted = W
 		var/obj/item/weapon/light/bulb = mounted.lightbulb
-		return bulb && istype(bulb, /obj/item/weapon/light/bulb) && bulb.status == 2 && mounted.on
+		return bulb && istype(bulb, /obj/item/weapon/light/bulb) && bulb.status == 2 && !(mounted.stat & BROKEN)
 	return FALSE
 
 /obj/item/clothing/mask/smokable/pipe/generate_lighting_message(obj/tool, mob/holder)
