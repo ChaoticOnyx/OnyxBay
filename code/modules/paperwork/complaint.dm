@@ -56,10 +56,9 @@
 	var/const/author_occupation
 	var/subject_name
 	var/subject_occupation
-	var/
 
 /obj/item/weapon/complaint_folder/attackby(obj/item/weapon/W, mob/user)
-	if (istype(W, /obj/item/weapon/paper/complaint_form)
+	if (istype(W, /obj/item/weapon/paper/complaint_form))
 		var/obj/item/weapon/paper/complaint_form/CF = W
 		if (id == CF.id)
 			to_chat(user, SPAN_NOTICE("You add \the [CF] to \the [src]."))
@@ -71,6 +70,3 @@
 		if (signed)
 			to_chat(user, SPAN_WARNING("[src] is already signed! You can't modify it!"))
 			return
-
-/obj/item/weapon/complaint_folder/show_menu(mob/user)
-	

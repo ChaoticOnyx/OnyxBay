@@ -87,22 +87,21 @@ obj/item/weapon/paper/admin/proc/updateDisplay()
 		if(!t)
 			return
 
-		var last_fields_value = fields
-
 		//t = html_encode(t)
 		t = replacetext(t, "\n", "<BR>")
 		t = parsepencode(t,,, isCrayon) // Encode everything from pencode to html
 
-
-		if(fields > 50)//large amount of fields creates a heavy load on the server, see updateinfolinks() and addtofield()
-			to_chat(usr, "<span class='warning'>Too many fields. Sorry, you can't do this.</span>")
-			fields = last_fields_value
-			return
+		var/terminated = FALSE
+		if (findtext(t, @"[end]"))
+			t = replacetext(t, @"[end]","")
+			terminated = TRUE
 
 		if(id!="end")
-			addtofield(text2num(id), t) // He wants to edit a field, let him.
+			addtofield(text2num(id), t, terminated) // He wants to edit a field, let him.
 		else
 			info += t // Oh, he wants to edit to the end of the file, let him.
+			if (terminated)
+				appendable = FALSE
 			updateinfolinks()
 
 		update_space(t)

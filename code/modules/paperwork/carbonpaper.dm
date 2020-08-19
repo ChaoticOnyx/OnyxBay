@@ -40,7 +40,6 @@
 		copy.info += copycontents
 		copy.info += "</font>"
 		copy.SetName("Copy - " + c.name)
-		copy.fields = c.fields
 		copy.updateinfolinks()
 		to_chat(usr, "<span class='notice'>You tear off the carbon-copy!</span>")
 		c.copied = 1

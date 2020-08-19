@@ -158,7 +158,6 @@
 	c.info += copied
 	c.info += "</font>"//</font>
 	c.SetName(copy.name) // -- Doohl
-	c.fields = copy.fields
 	c.stamps = copy.stamps
 	c.stamped = copy.stamped
 	c.ico = copy.ico

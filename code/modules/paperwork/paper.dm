@@ -22,8 +22,6 @@
 	var/info		//What's actually written on the paper.
 	var/info_links	//A different version of the paper which includes html links at fields and EOF
 	var/stamps		//The (text for the) stamps on the paper.
-	var/fields		//Amount of user created fields
-	var/signfields = 0
 	var/free_space = MAX_PAPER_MESSAGE_LEN
 	var/list/stamped
 	var/list/ico[0]      //Icons and
@@ -39,8 +37,10 @@
 	var/const/crayonfont = "Comic Sans MS"
 	var/const/fancyfont = "Segoe Script"
 
-	//static because it can't be const
-	var/static/regex/signfields_regex = regex("<I><span class='sign_field_(\[0-9\]+)'> sign here </span></I>", "g")
+	//static because these can't be const
+	var/static/regex/sign_field_regex = regex(@"<I><span class='sign_field_(\d+)'>sign here</span></I>", "g")
+	var/static/regex/named_field_regex = regex(@"\[field=(\w+)\]", "g")
+	var/static/regex/field_regex = regex(@#<span class="paper_field_(\w+)">#, "g")
 
 /obj/item/weapon/paper/New(loc, text, title)
 	..(loc)
@@ -50,7 +50,7 @@
 	if(title)
 		SetName(title)
 	info = html_encode(text)
-	info = parsepencode(text)
+	info = parsepencode(text, is_init = TRUE)
 	update_icon()
 	update_space(info)
 	updateinfolinks()
@@ -63,9 +63,9 @@
 	else
 		icon_state = "paper"
 
-/obj/item/weapon/paper/proc/update_space(new_text)
-	if(new_text)
-		free_space -= length(strip_html_properly(new_text))
+/obj/item/weapon/paper/proc/update_space()
+	free_space = initial(free_space)
+	free_space -= length(strip_html_properly(info_links)) //using info_links to also count field prompts
 
 /obj/item/weapon/paper/examine(mob/user)
 	. = ..()
@@ -144,53 +144,23 @@
 					H.lip_style = null
 					H.update_body()
 
-/obj/item/weapon/paper/proc/addtofield(id, text, links = 0)
-	var/locid = 0
-	var/laststart = 1
-	var/textindex = 1
-	while(1) // I know this can cause infinite loops and fuck up the whole server, but the if(istart==0) should be safe as fuck
-		var/istart = 0
-		if(links)
-			istart = findtext(info_links, "<span class=\"paper_field\">", laststart)
-		else
-			istart = findtext(info, "<span class=\"paper_field\">", laststart)
-
-		if(istart==0)
-			return // No field found with matching id
-
-		laststart = istart+1
-		locid++
-		if(locid == id)
-			var/iend = 1
-			if(links)
-				iend = findtext(info_links, "</span>", istart)
-			else
-				iend = findtext(info, "</span>", istart)
-
-			textindex = iend
-			break
-
-	if(links)
-		var/before = copytext(info_links, 1, textindex)
-		var/after = copytext(info_links, textindex)
-		info_links = before + text + after
-	else
-		var/before = copytext(info, 1, textindex)
-		var/after = copytext(info, textindex)
-		info = before + text + after
-		updateinfolinks()
+/obj/item/weapon/paper/proc/addtofield(id, text, terminate = FALSE)
+	var/token = "<span class=\"paper_field_[id]\"></span>" //for now always keep field span empty
+	info = replacetext(info, token, "[text][terminate ? "" : token]")
+	updateinfolinks()
+	
 
 /obj/item/weapon/paper/proc/updateinfolinks()
 	info_links = info
 	if (readonly)
 		return
-	var/i = 0
-	for(i=1,i<=fields,i++)
-		addtofield(i, "<font face=\"[deffont]\"><A href='?src=\ref[src];write=[i]'>write</A></font>", 1)
+
+	info_links = field_regex.Replace(info_links, "<font face=\"[deffont]\"><A href='?src=\ref[src];write=$1'>write</A></font>$0")
+	info_links = sign_field_regex.Replace(info_links, " <I><A href='?src=\ref[src];signfield=$1'>sign here</A></I> ")
+
 	if (appendable)
 		info_links = info_links + "<font face=\"[deffont]\"><A href='?src=\ref[src];write=end'>write</A></font>"
 
-	info_links = signfields_regex.Replace(info_links, "<I> <A href='?src=\ref[src];signfield=$1'>sign here</A> </I>")
 
 
 
@@ -208,15 +178,30 @@
 		return P.get_signature(user)
 	return (user && user.real_name) ? user.real_name : "Anonymous"
 
-/obj/item/weapon/paper/proc/parsepencode(t, obj/item/weapon/pen/P, mob/user, iscrayon, isfancy)
+/proc/new_unnamed_field(to_replace)
+	var/static/counter
+	if (!counter)
+		counter = 0
+	return "<span class=\"paper_field_[counter++]\"></span>"
+
+/proc/new_sign_field(to_replace)
+	var/static/counter
+	if (!counter)
+		counter = 0
+	return " <I><span class='sign_field_[counter++]'>sign here</span></I> "
+
+/obj/item/weapon/paper/proc/parsepencode(t, obj/item/weapon/pen/P, mob/user, iscrayon, isfancy, is_init = FALSE)
 	if(length(t) == 0)
 		return ""
 
 	if(findtext(t, "\[sign\]"))
 		t = replacetext(t, "\[sign\]", "<font face=\"[signfont]\"><i>[get_signature(P, user)]</i></font>")
 
-	if(findtext(t, "\[signfield\]"))
-		t = replacetext(t, "\[signfield\]", "<I><span class='sign_field_[signfields++]'> sign here </span></I>")
+	t = replacetext(t, @"[signfield]", /proc/new_sign_field)
+	t = replacetext(t, @"[field]", /proc/new_unnamed_field)
+	//TODO: check if there's any way to sneak old fields there and add converter if there is
+	if (is_init) //shouldn't allow users to create named fields because a) they're useless for them b) they'll fuck you up
+		t = replacetext(t, named_field_regex, "<span class=\"paper_field_N$1\"></span>") //prefixed with N to prevent unnamed-named collisions
 
 	if(iscrayon) // If it is a crayon, and he still tries to use these, make them empty!
 		t = replacetext(t, "\[*\]", "")
@@ -239,15 +224,6 @@
 		t = "<font face=\"[deffont]\" color=[P ? P.colour : "black"]>[t]</font>"
 
 	t = pencode2html(t)
-
-	//Count the fields
-	var/laststart = 1
-	while(1)
-		var/i = findtext(t, "<span class=\"paper_field\">", laststart)	//</span>
-		if(i==0)
-			break
-		laststart = i+1
-		fields++
 
 	return t
 
@@ -307,7 +283,7 @@
 		var/pen = get_pen()
 		if (!pen || !check_proximity())
 			return
-		info = replacetext(info, "<I><span class='sign_field_[signfield]'> sign here </span></I>", " <font face=\"[signfont]\"><i>[get_signature(pen, usr)]</i></font> ")
+		info = replacetext(info, "<I><span class='sign_field_[signfield]'>sign here</span></I>", "<font face=\"[signfont]\"><i>[get_signature(pen, usr)]</i></font>")
 		updateinfolinks()
 		update_space()
 		usr << browse("<HTML><meta charset=\"utf-8\"><HEAD><TITLE>[name]</TITLE></HEAD><BODY bgcolor='[color]'>[info_links][stamps]</BODY></HTML>", "window=[name]") // Update the window
@@ -343,20 +319,19 @@
 		if (!check_proximity())
 			return
 
-		var/last_fields_value = fields
-
 		t = parsepencode(t, i, usr, iscrayon, isfancy) // Encode everything from pencode to html
 
-
-		if(fields > 50)//large amount of fields creates a heavy load on the server, see updateinfolinks() and addtofield()
-			to_chat(usr, "<span class='warning'>Too many fields. Sorry, you can't do this.</span>")
-			fields = last_fields_value
-			return
+		var/terminated = FALSE
+		if (findtext(t, @"[end]"))
+			t = replacetext(t, @"[end]", "")
+			terminated = TRUE
 
 		if(id!="end")
-			addtofield(text2num(id), t) // He wants to edit a field, let him.
+			addtofield(id, t, terminated) // He wants to edit a field, let him.
 		else
 			info += t // Oh, he wants to edit to the end of the file, let him.
+			if (terminated)
+				appendable = FALSE
 			updateinfolinks()
 
 		update_space(t)
