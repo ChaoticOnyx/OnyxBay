@@ -72,11 +72,11 @@ I IS TYPIN'!'
 
 	winset(src, "saywindow", "is-visible=true;focus=true;pos=[resulting_x],[resulting_y]")
 
-/client/proc/close_saywindow()
-	var/text = winget(src, "saywindow.saywindow-input", "text")
+/client/proc/close_saywindow(return_content = FALSE)
 	winset(src, "saywindow", "is-visible=false;focus=false")
+	if (return_content)
+		. = winget(src, "saywindow.saywindow-input", "text")
 	winset(src, "saywindow.saywindow-input", "text=\"\"")
-	return text
 
 /mob/verb/say_wrapper()
 	set name = "Say Verb"
