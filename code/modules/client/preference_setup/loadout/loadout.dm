@@ -202,8 +202,9 @@ var/list/gear_datums = list()
 	var/list/selected_jobs = new
 	if(job_master)
 		for(var/job_title in (pref.job_medium|pref.job_low|pref.job_high))
-			if(job_master.occupations_by_title[job_title])
-				selected_jobs += job_master.occupations_by_title[job_title]
+			var/datum/job/J = job_master.occupations_by_title[job_title]
+			if(J)
+				dd_insertObjectList(selected_jobs, J)
 
 	var/purchased_gears = ""
 	var/paid_gears = ""
@@ -217,7 +218,7 @@ var/list/gear_datums = list()
 			continue
 		var/entry = ""
 		var/ticked = (G.display_name in pref.gear_list[pref.gear_slot])
-		var/allowed_to_see = gear_allowed_to_see(G, user)
+		var/allowed_to_see = gear_allowed_to_see(G)
 		var/display_class
 		if(G != selected_gear)
 			if(ticked)
@@ -283,6 +284,7 @@ var/list/gear_datums = list()
 			var/ind = 0
 			for(var/allowed_type in selected_gear.allowed_roles)
 				if(!ispath(allowed_type, /datum/job))
+					log_warning("There is an object called '[allowed_type]' in the list of whitelisted jobs for a gear '[selected_gear.display_name]'. It's not /datum/job.")
 					continue
 				var/datum/job/J = job_master ? job_master.occupations_by_type[allowed_type] : new allowed_type
 				++ind
@@ -350,7 +352,7 @@ var/list/gear_datums = list()
 			var/trying_on = (pref.trying_on_gear == selected_gear.display_name)
 			. += "<a [trying_on ? "class='linkOn' " : ""]href='?src=\ref[src];try_on=1'>Try On</a>"
 
-		if(!gear_allowed_to_see(selected_gear, user))
+		if(!gear_allowed_to_see(selected_gear))
 			. += "<br>"
 			. += "<span class='notice'>This item will never spawn with you, using your current preferences.</span>"
 
@@ -478,26 +480,7 @@ var/list/gear_datums = list()
 		pref.trying_on_tweaks.Cut()
 		return TOPIC_REFRESH_UPDATE_PREVIEW
 	if(href_list["random_loadout"])
-		var/list/gear = pref.gear_list[pref.gear_slot]
-		gear.Cut()
-		pref.trying_on_gear = null
-		pref.trying_on_tweaks.Cut()
-		var/list/pool = new
-		for(var/gear_name in gear_datums)
-			var/datum/gear/G = gear_datums[gear_name]
-			if(gear_allowed_to_see(G, user) && gear_allowed_to_equip(G, user) && G.cost <= config.max_gear_cost)
-				pool += G
-		var/points_left = config.max_gear_cost
-		while (points_left > 0 && length(pool))
-			var/datum/gear/chosen = pick(pool)
-			var/list/chosen_tweaks = new
-			for(var/datum/gear_tweak/tweak in chosen.gear_tweaks)
-				chosen_tweaks["[tweak]"] = tweak.get_random()
-			gear[chosen.display_name] = chosen_tweaks.Copy()
-			points_left -= chosen.cost
-			for(var/datum/gear/G in pool)
-				if(G.cost > points_left || (G.slot && G.slot == chosen.slot))
-					pool -= G
+		randomize(user)
 		return TOPIC_REFRESH_UPDATE_PREVIEW
 	if(href_list["toggle_hiding"])
 		hide_unavailable_gear = !hide_unavailable_gear
@@ -506,6 +489,29 @@ var/list/gear_datums = list()
 		SSdonations.show_donations_info(user)
 		return TOPIC_NOACTION
 	return ..()
+
+/datum/category_item/player_setup_item/loadout/proc/randomize(mob/user)
+	ASSERT(user)
+	var/list/gear = pref.gear_list[pref.gear_slot]
+	gear.Cut()
+	pref.trying_on_gear = null
+	pref.trying_on_tweaks.Cut()
+	var/list/pool = new
+	for(var/gear_name in gear_datums)
+		var/datum/gear/G = gear_datums[gear_name]
+		if(gear_allowed_to_see(G) && gear_allowed_to_equip(G, user) && G.cost <= config.max_gear_cost)
+			pool += G
+	var/points_left = config.max_gear_cost
+	while (points_left > 0 && length(pool))
+		var/datum/gear/chosen = pick(pool)
+		var/list/chosen_tweaks = new
+		for(var/datum/gear_tweak/tweak in chosen.gear_tweaks)
+			chosen_tweaks["[tweak]"] = tweak.get_random()
+		gear[chosen.display_name] = chosen_tweaks.Copy()
+		points_left -= chosen.cost
+		for(var/datum/gear/G in pool)
+			if(G.cost > points_left || (G.slot && G.slot == chosen.slot))
+				pool -= G
 
 /datum/category_item/player_setup_item/loadout/update_setup(savefile/preferences, savefile/character)
 	if(preferences["version"] < 14)
@@ -530,16 +536,17 @@ var/list/gear_datums = list()
 				pref.gear_list[index] = value
 		return 1
 
-/datum/category_item/player_setup_item/loadout/proc/gear_allowed_to_see(datum/gear/G, mob/user)
-	if(!G || !G.path)
+/datum/category_item/player_setup_item/loadout/proc/gear_allowed_to_see(datum/gear/G)
+	ASSERT(G)
+	if(!G.path)
 		return FALSE
 	
 	if(G.allowed_roles)
+		ASSERT(job_master)
 		var/list/jobs = new
-		if(job_master)
-			for(var/job_title in (pref.job_medium|pref.job_low|pref.job_high))
-				if(job_master.occupations_by_title[job_title])
-					jobs += job_master.occupations_by_title[job_title]
+		for(var/job_title in (pref.job_medium|pref.job_low|pref.job_high))
+			if(job_master.occupations_by_title[job_title])
+				jobs += job_master.occupations_by_title[job_title]
 		if(!jobs || !length(jobs))
 			return FALSE
 		var/job_ok = FALSE
@@ -556,6 +563,9 @@ var/list/gear_datums = list()
 	return TRUE
 
 /datum/category_item/player_setup_item/loadout/proc/gear_allowed_to_equip(datum/gear/G, mob/user)
+	ASSERT(G)
+	ASSERT(user && user.client)
+	ASSERT(user.client.donator_info)
 	if(G.price && !user.client.donator_info.has_item(G.type))
 		return FALSE
 	if(G.patron_tier && !user.client.donator_info.patreon_tier_available(G.patron_tier))
