@@ -240,9 +240,8 @@ var/list/artefact_feedback = list(/obj/structure/closet/wizard/armor = 		"HS",
 	if(!T || isNotStationLevel(T.z))
 		if(investing_time)
 			src.visible_message(SPAN_WARNING("<b>\The [src]</b> emits a cranky chime."))
-			uses++
-			if(uses > spellbook.max_uses)
-				spellbook.max_uses = uses
+			if(uses < spellbook.max_uses)
+				uses++
 			investing_time = 0
 			STOP_PROCESSING(SSobj, src)
 
