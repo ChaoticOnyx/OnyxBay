@@ -42,7 +42,7 @@
 	if(stat != CONSCIOUS || !client)
 		return
 
-	var/temp = client.close_saywindow()
+	var/temp = client.close_saywindow(return_content = TRUE)
 	remove_typing_indicator()
 
 	if (!temp)
