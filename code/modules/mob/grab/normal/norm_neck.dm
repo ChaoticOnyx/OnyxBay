@@ -18,6 +18,7 @@
 	can_throw = 1
 	force_danger = 1
 	restrains = 1
+	ladder_carry = 1
 
 	icon_state = "kill"
 
