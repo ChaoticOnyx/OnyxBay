@@ -196,6 +196,7 @@
 
 /obj/random/contraband/spawn_choices()
 	return list(/obj/item/weapon/haircomb = 4,
+				/obj/item/weapon/material/brass_knuckle = 35
 				/obj/item/weapon/storage/pill_bottle/tramadol = 3,
 				/obj/item/weapon/storage/pill_bottle/happy = 2,
 				/obj/item/weapon/storage/pill_bottle/zoom = 2,
@@ -1012,6 +1013,7 @@ something, make sure it's not in one of the other lists.*/
 				/obj/item/weapon/circular_saw = 7,
 				/obj/item/weapon/scalpel = 7,
 				/obj/item/weapon/melee/baton/loaded = 9,
+				/obj/item/weapon/material/brass_knuckle = 10
 				/obj/item/device/radio/headset/syndicate = 6)
 
 /obj/random/voidhelmet

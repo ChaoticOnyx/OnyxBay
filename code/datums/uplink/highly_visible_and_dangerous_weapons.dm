@@ -3,7 +3,13 @@
 ***************************************/
 /datum/uplink_item/item/visible_weapons
 	category = /datum/uplink_category/visible_weapons
-	
+
+/datum/uplink_item/item/visible_weapons/brass_knuckle
+	name = "Brass Knuckles"
+	desc = "Handmade brass knuckles for beating faces."
+	item_cost = 6
+	path = /obj/item/weapon/material/brass_knuckle
+
 /datum/uplink_item/item/visible_weapons/smallenergy_gun
 	name = "Small Energy Gun"
 	desc = "A pocket-sized energy based sidearm with three different lethality settings."
@@ -13,13 +19,13 @@
 /datum/uplink_item/item/visible_weapons/dartgun
 	name = "Dart Gun"
 	desc = "A gas-powered dart gun capable of delivering chemical payloads across short distances. \
-			Uses a unique cartridge loaded with hollow darts."	
+			Uses a unique cartridge loaded with hollow darts."
 	item_cost = 20
 	path = /obj/item/weapon/gun/projectile/dartgun
 
 /datum/uplink_item/item/visible_weapons/crossbow
 	name = "Energy Crossbow"
-	desc = "A self-recharging, almost silent weapon employed by stealth operatives."	
+	desc = "A self-recharging, almost silent weapon employed by stealth operatives."
 	item_cost = 24
 	path = /obj/item/weapon/gun/energy/crossbow
 
