@@ -204,7 +204,7 @@
 
 /obj/random/contraband/spawn_choices()
 	return list(/obj/item/weapon/haircomb = 4,
-				/obj/item/weapon/material/brass_knuckle = 50,
+				/obj/item/weapon/material/brass_knuckle = 3,
 				/obj/item/weapon/storage/pill_bottle/tramadol = 3,
 				/obj/item/weapon/storage/pill_bottle/happy = 2,
 				/obj/item/weapon/storage/pill_bottle/zoom = 2,
