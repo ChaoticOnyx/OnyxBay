@@ -4,12 +4,6 @@
 /datum/uplink_item/item/visible_weapons
 	category = /datum/uplink_category/visible_weapons
 
-/datum/uplink_item/item/visible_weapons/brass_knuckle
-	name = "Brass Knuckles"
-	desc = "Steel brass knuckles for beating faces."
-	item_cost = 6
-	path = /obj/item/weapon/material/brass_knuckle
-
 /datum/uplink_item/item/visible_weapons/smallenergy_gun
 	name = "Small Energy Gun"
 	desc = "A pocket-sized energy based sidearm with three different lethality settings."
