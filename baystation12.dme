@@ -2500,6 +2500,7 @@
 #include "code\modules\spells\targeted\projectile\projectile.dm"
 #include "code\modules\spells\targeted\projectile\stuncuff.dm"
 #include "code\modules\storyteller\storyteller.dm"
+#include "code\modules\storyteller\storyteller_admin_secret.dm"
 #include "code\modules\storyteller\storyteller_character.dm"
 #include "code\modules\storyteller\storyteller_metric.dm"
 #include "code\modules\storyteller\storyteller_trigger.dm"

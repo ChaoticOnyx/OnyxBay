@@ -13,6 +13,9 @@ SUBSYSTEM_DEF(storyteller)
 	var/list/__metrics = new
 	var/list/__triggers = new
 
+	var/list/__ui_tabs = list("StorytellerCPCharacterTab", "StorytellerCPMetricsTab", "StorytellerCPTriggersTab")
+	var/list/__ckey_to_ui_data = new
+
 /datum/controller/subsystem/storyteller/Initialize(timeofday)
 	if (config.storyteller)
 		return ..()
@@ -25,6 +28,8 @@ SUBSYSTEM_DEF(storyteller)
 	_log_debug("Setup called")
 
 	__create_character()
+	__create_all_metrics()
+	__create_all_triggers()
 	_log_debug("Chosen character is '[__character]'")
 
 	_log_debug("Process round start")
@@ -52,14 +57,91 @@ SUBSYSTEM_DEF(storyteller)
 	ASSERT(time_to_next_cycle)
 	wait = time_to_next_cycle
 
+/datum/controller/subsystem/storyteller/proc/__get_params_for_ui(current_tab)
+	var/list/data = new
+
+	if (current_tab == "StorytellerCPCharacterTab")
+		data["character"] = __character ? __character.get_params_for_ui() : null
+
+	else if (current_tab == "StorytellerCPMetricsTab")
+		var/list/metrics_data = new
+		for (var/type in __metrics)
+			var/storyteller_metric/metric = __metrics[type]
+			metrics_data[type] = metric.get_params_for_ui()
+		data["metrics"] = metrics_data
+
+	else if (current_tab == "StorytellerCPTriggersTab")
+		var/list/triggers_data = new
+		for (var/type in __triggers)
+			var/storyteller_trigger/trigger = __triggers[type]
+			if (trigger.can_be_invoked())
+				triggers_data[type] = trigger.get_params_for_ui()
+		data["triggers"] = triggers_data
+	
+	return data
+
+/datum/controller/subsystem/storyteller/proc/open_control_panel(mob/user, drop_data = TRUE)
+	if (!config.storyteller)
+		return
+	ASSERT(user)
+
+	if (drop_data)
+		__ckey_to_ui_data[user.ckey] = list()
+	var/data = __ckey_to_ui_data[user.ckey]
+	data["storyteller"] = __get_params_for_ui(data["current_tab"])
+	data["pregame"] = !!(GAME_STATE < RUNLEVEL_GAME)
+
+	var/ui_key = "storyteller_control_panel"
+	var/datum/nanoui/ui = SSnano.try_update_ui(user, src, ui_key, null, data, force_open=FALSE)
+	if(!ui)
+		ui = new (user, src, ui_key, "storyteller_control_panel.tmpl", "Storyteller Control Panel", 500, 600, state=GLOB.interactive_state)
+		ui.set_initial_data(data)
+		ui.open()
+		ui.set_auto_update(0)
+
+/datum/controller/subsystem/storyteller/Topic(href, href_list)
+	var/mob/user = usr
+	if (!user)
+		return
+
+	if(!check_rights(R_ADMIN))
+		log_and_message_admins("[key_name(usr)] invoked Storyteller Control Panel topic without Admin rights.")
+		return
+
+	if (href_list["change_tab"])
+		var/new_tab = href_list["change_tab"]
+		ASSERT(new_tab in __ui_tabs)
+		__ckey_to_ui_data[user.ckey]["current_tab"] = new_tab
+		open_control_panel(user, drop_data = FALSE)
+
+	else if (href_list["update_metric"])
+		var/metric_type = text2path(href_list["update_metric"])
+		ASSERT(ispath(metric_type, /storyteller_metric))
+		var/storyteller_metric/metric = get_metric(metric_type);
+		metric.update()
+		open_control_panel(user, drop_data = FALSE)
+
+	else if (href_list["view_metric_statistics"])
+		var/metric_type = text2path(href_list["view_metric_statistics"])
+		ASSERT(ispath(metric_type, /storyteller_metric))
+		var/storyteller_metric/metric = get_metric(metric_type)
+		metric.print_statistics(user)
+
+	else if (href_list["invoke_trigger"])
+		var/trigger_type = text2path(href_list["invoke_trigger"])
+		ASSERT(ispath(trigger_type, /storyteller_trigger))
+		var/result = run_trigger(trigger_type)
+		to_chat(user, SPAN_WARNING("Trigger '[trigger_type]' was [result ? " completed successfuly!" : " failed!"]"))
+		open_control_panel(user, drop_data = FALSE)
+
+	return 0
+
 /datum/controller/subsystem/storyteller/proc/get_metric(type)
-	if (!(type in __metrics))
-		__metrics[type] = new type
+	ASSERT(type in __metrics)
 	return __metrics[type]
 
 /datum/controller/subsystem/storyteller/proc/run_trigger(type)
-	if (!(type in __triggers))
-		__triggers[type] = new type
+	ASSERT(type in __triggers)
 	var/storyteller_trigger/trigger = __triggers[type]
 	return trigger.invoke()
 
@@ -72,3 +154,10 @@ SUBSYSTEM_DEF(storyteller)
 /datum/controller/subsystem/storyteller/proc/__create_character()
 	__character = new /datum/storyteller_character/support
 
+/datum/controller/subsystem/storyteller/proc/__create_all_metrics()
+	for (var/type in typesof(/storyteller_metric) - /storyteller_metric)
+		__metrics[type] = new type
+
+/datum/controller/subsystem/storyteller/proc/__create_all_triggers()
+	for (var/type in typesof(/storyteller_trigger) - /storyteller_trigger)
+		__triggers[type] = new type

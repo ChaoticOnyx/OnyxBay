@@ -2,6 +2,9 @@
 	name = "Spawn Unknown Antagonist"
 	var/antagonist_id
 
+/storyteller_trigger/spawn_antagonist/can_be_invoked()
+	return !!antagonist_id
+
 /storyteller_trigger/spawn_antagonist/invoke()
 	ASSERT(antagonist_id)
 	var/datum/antagonist/antag = GLOB.all_antag_types_[antagonist_id]
