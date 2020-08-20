@@ -1209,7 +1209,6 @@ window "outputwindow"
 		background-color = #ffffff
 		is-visible = false
 		saved-params = ""
-		auto-format = false
 	elem "output"
 		type = OUTPUT
 		pos = 0,0
@@ -1384,15 +1383,15 @@ window "saywindow"
 		statusbar = false
 		can-close = false
 		can-minimize = false
-		can-resize = false
+		can-resize = true
 		outer-size = 308x117
 		inner-size = 300x90
 	elem "saywindow-button"
 		type = BUTTON
 		pos = 110,50
 		size = 80x25
-		anchor1 = none
-		anchor2 = none
+		anchor1 = 37,56
+		anchor2 = 63,83
 		background-color = none
 		border = line
 		saved-params = ""
@@ -1402,8 +1401,8 @@ window "saywindow"
 		type = INPUT
 		pos = 8,16
 		size = 280x20
-		anchor1 = none
-		anchor2 = none
+		anchor1 = 3,18
+		anchor2 = 96,40
 		is-default = true
 		border = sunken
 		saved-params = ""
