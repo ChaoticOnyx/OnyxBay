@@ -2,7 +2,7 @@
 /obj/structure/reagent_dispensers
 	name = "Dispenser"
 	desc = "..."
-	icon = 'icons/obj/objects.dmi'
+	icon = 'icons/obj/reagent_tanks.dmi'
 	icon_state = "watertank"
 	density = 1
 	anchored = 0
@@ -77,7 +77,6 @@
 /obj/structure/reagent_dispensers/watertank
 	name = "watertank"
 	desc = "A tank containing water."
-	icon = 'icons/obj/objects.dmi'
 	icon_state = "watertank"
 	amount_per_transfer_from_this = 10
 	possible_transfer_amounts = "10;25;50;100"
@@ -88,7 +87,6 @@
 /obj/structure/reagent_dispensers/fueltank
 	name = "fueltank"
 	desc = "A tank containing fuel."
-	icon = 'icons/obj/objects.dmi'
 	icon_state = "weldtank"
 	amount_per_transfer_from_this = 10
 	var/modded = 0
@@ -206,7 +204,6 @@
 /obj/structure/reagent_dispensers/peppertank
 	name = "Pepper Spray Refiller"
 	desc = "Refills pepper spray canisters."
-	icon = 'icons/obj/objects.dmi'
 	icon_state = "peppertank"
 	anchored = 1
 	density = 0
@@ -218,7 +215,6 @@
 	name = "Water-Cooler"
 	desc = "A machine that dispenses water to drink."
 	amount_per_transfer_from_this = 5
-	icon = 'icons/obj/vending.dmi'
 	icon_state = "water_cooler"
 	possible_transfer_amounts = null
 	anchored = 1
@@ -244,7 +240,6 @@
 /obj/structure/reagent_dispensers/beerkeg
 	name = "beer keg"
 	desc = "A beer keg."
-	icon = 'icons/obj/objects.dmi'
 	icon_state = "beertankTEMP"
 	amount_per_transfer_from_this = 10
 	initial_reagent_types = list(/datum/reagent/ethanol/beer = 1)
@@ -253,7 +248,6 @@
 /obj/structure/reagent_dispensers/virusfood
 	name = "Virus Food Dispenser"
 	desc = "A dispenser of virus food."
-	icon = 'icons/obj/objects.dmi'
 	icon_state = "virusfoodtank"
 	amount_per_transfer_from_this = 10
 	anchored = 1
@@ -262,7 +256,6 @@
 /obj/structure/reagent_dispensers/acid
 	name = "Sulphuric Acid Dispenser"
 	desc = "A dispenser of acid for industrial processes."
-	icon = 'icons/obj/objects.dmi'
 	icon_state = "acidtank"
 	amount_per_transfer_from_this = 10
 	anchored = 1
