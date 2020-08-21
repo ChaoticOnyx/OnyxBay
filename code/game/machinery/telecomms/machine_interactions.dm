@@ -112,7 +112,7 @@
 
 	var/obj/item/device/multitool/P = get_multitool(user)
 
-	if(!isMultitool(P))
+	if(!P)
 		return
 
 	user.set_machine(src)
@@ -298,7 +298,7 @@
 
 	var/obj/item/device/multitool/P = get_multitool(usr)
 
-	if(!isMultitool(P))
+	if(!P)
 		return
 
 	if(href_list["input"])
