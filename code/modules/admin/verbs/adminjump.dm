@@ -32,15 +32,14 @@
 	mob.jumpTo(T)
 	feedback_add_details("admin_verb","JT") //If you are copy-pasting this, ensure the 2nd parameter is unique to the new proc!
 
-/client/proc/jumptomob(datum/follow_holder/fh in get_follow_targets())
-	set category = "Admin"
-	set name = "Jump to Mob"
+/client/proc/jumptomob(mob/M in SSmobs.mob_list)
+	set category = null
+	set name = "Jump to this mob"
 
 	if(!check_rights(R_ADMIN|R_MOD|R_DEBUG))
 		return
 
 	if(config.allow_admin_jump)
-		var/mob/M = fh.followed_instance
 		log_and_message_admins("jumped to [key_name(M)]")
 		if(mob)
 			var/turf/T = get_turf(M)
@@ -51,6 +50,12 @@
 				to_chat(mob, "This mob is not located in the game world.")
 	else
 		alert("Admin jumping disabled")
+
+/client/proc/jumptomob_verb(datum/follow_holder/fh in get_follow_targets(mobs_only = TRUE))
+	set category = "Admin"
+	set name = "Jump to Mob"
+
+	jumptomob(fh.followed_instance)
 
 /client/proc/jumptocoord(tx as num, ty as num, tz as num)
 	set category = "Admin"
@@ -95,19 +100,24 @@
 	else
 		alert("Admin jumping disabled")
 
-/client/proc/Getmob(datum/follow_holder/fh in get_follow_targets())
-	set category = "Admin"
-	set name = "Get Mob"
+/client/proc/Getmob(mob/M in SSmobs.mob_list)
+	set category = null
+	set name = "Get this mob"
 	set desc = "Mob to teleport"
 	if(!check_rights(R_ADMIN|R_MOD|R_DEBUG))
 		return
 	if(config.allow_admin_jump)
-		var/mob/M = fh.followed_instance
 		log_and_message_admins("teleported [key_name(M)] to self.")
 		M.jumpTo(get_turf(mob))
 		feedback_add_details("admin_verb","GM") //If you are copy-pasting this, ensure the 2nd parameter is unique to the new proc!
 	else
 		alert("Admin jumping disabled")
+
+/client/proc/Getmob_verb(datum/follow_holder/fh in get_follow_targets(mobs_only = TRUE))
+	set category = "Admin"
+	set name = "Get mob"
+
+	Getmob(fh.followed_instance)
 
 /client/proc/Getkey()
 	set category = "Admin"
