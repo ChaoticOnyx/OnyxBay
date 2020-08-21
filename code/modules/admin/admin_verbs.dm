@@ -38,11 +38,13 @@ var/list/admin_verbs_admin = list(
 	/client/proc/getserverlog,			//allows us to fetch server logs for other days,
 	/client/proc/jumptocoord,			//we ghost and jump to a coordinate,
 	/client/proc/Getmob,				//teleports a mob to our location,
+	/client/proc/Getmob_verb,			//allows to choose a mob to teleport to you,
 	/client/proc/Getkey,				//teleports a mob with a certain ckey to our location,
 //	/client/proc/sendmob,				//sends a mob somewhere, -Removed due to it needing two sorting procs to work, which were executed every time an admin right-clicked. ~Errorage,
 	/client/proc/Jump,
 	/client/proc/jumptokey,				//allows us to jump to the location of a mob with a certain ckey,
 	/client/proc/jumptomob,				//allows us to jump to a specific mob,
+	/client/proc/jumptomob_verb,		//allows to choose a mob to jump to,
 	/client/proc/jumptoturf,			//allows us to jump to a specific turf,
 	/client/proc/admin_call_shuttle,	//allows us to call the emergency shuttle,
 	/client/proc/admin_cancel_shuttle,	//allows us to cancel the emergency shuttle, sending it back to centcomm,
@@ -209,6 +211,7 @@ var/list/admin_verbs_debug = list(
 	/client/proc/SDQL2_query,
 	/client/proc/Jump,
 	/client/proc/jumptomob,
+	/client/proc/jumptomob_verb,
 	/client/proc/jumptocoord,
 	/client/proc/dsay,
 	/datum/admins/proc/run_unit_test,
@@ -916,7 +919,7 @@ var/list/admin_verbs_mentor = list(
 			to_chat(src, "<b>Enabled maint drones.</b>")
 			message_admins("Admin [key_name_admin(usr)] has enabled maint drones.", 1)
 
-/client/proc/man_up(datum/follow_holder/fh in get_follow_targets())
+/client/proc/man_up(datum/follow_holder/fh in get_follow_targets(mobs_only = TRUE))
 	set category = "Fun"
 	set name = "Man Up"
 	set desc = "Tells mob to man up and deal with it."
