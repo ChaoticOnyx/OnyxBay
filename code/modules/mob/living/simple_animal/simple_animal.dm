@@ -212,8 +212,6 @@
 		damage = (Proj.damage / 8)
 
 	adjustBruteLoss(damage)
-	if(health <= 0)
-		death()
 	return 0
 
 /mob/living/simple_animal/attack_hand(mob/living/carbon/human/M as mob)
@@ -234,8 +232,6 @@
 			adjustBruteLoss(harm_intent_damage)
 			M.visible_message("<span class='warning'>[M] [response_harm] \the [src]!</span>")
 			M.do_attack_animation(src)
-			if(health <= 0)
-				death()
 	return
 
 /mob/living/simple_animal/attackby(obj/item/O, mob/user)
@@ -283,8 +279,6 @@
 		damage *= 2
 		purge = 3
 	adjustBruteLoss(damage)
-	if(health <= 0)
-		death()
 	return 0
 
 /mob/living/simple_animal/movement_delay()
@@ -345,6 +339,11 @@
 /mob/living/simple_animal/adjustOxyLoss(damage)
 	..()
 	updatehealth()
+
+/mob/living/simple_animal/updatehealth()
+	..()
+	if(health <= 0)
+		death()
 
 /mob/living/simple_animal/proc/SA_attackable(target_mob)
 	if (isliving(target_mob))
