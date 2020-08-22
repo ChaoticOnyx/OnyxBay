@@ -65,7 +65,7 @@
 
 
 /obj/item/weapon/paper/admin/proc/adminbrowse()
-	updateinfolinks()
+	generateinfolinks()
 	generateHeader()
 	generateFooter()
 	updateDisplay()
@@ -97,12 +97,14 @@ obj/item/weapon/paper/admin/proc/updateDisplay()
 			terminated = TRUE
 
 		if(id!="end")
-			addtofield(text2num(id), t, terminated) // He wants to edit a field, let him.
+			addtofield(id, t, terminated) // He wants to edit a field, let him.
 		else
+			var/t_with_links = field_regex.Replace(t, "<font face=\"[deffont]\"><A href='?src=\ref[src];write=$1'>write</A></font>")
+			t_with_links = sign_field_regex.Replace(t_with_links, " <I><A href='?src=\ref[src];signfield=$1'>sign here</A></I> ")
 			info += t // Oh, he wants to edit to the end of the file, let him.
+			info_links += t
 			if (terminated)
 				appendable = FALSE
-			updateinfolinks()
 
 		update_space(t)
 
@@ -115,10 +117,16 @@ obj/item/weapon/paper/admin/proc/updateDisplay()
 		switch(alert("Are you sure you want to send the fax as is?",, "Yes", "No"))
 			if("Yes")
 				if(headerOn)
+					var/header_with_links = field_regex.Replace(header, "<font face=\"[deffont]\"><A href='?src=\ref[src];write=$1'>write</A></font>")
+					header_with_links = sign_field_regex.Replace(header_with_links, " <I><A href='?src=\ref[src];signfield=$1'>sign here</A></I> ")
 					info = header + info
+					info_links = header_with_links + info_links
 				if(footerOn)
+					var/footer_with_links = field_regex.Replace(footer, "<font face=\"[deffont]\"><A href='?src=\ref[src];write=$1'>write</A></font>")
+					footer_with_links = sign_field_regex.Replace(footer_with_links, " <I><A href='?src=\ref[src];signfield=$1'>sign here</A></I> ")
 					info += footer
-				updateinfolinks()
+					info_links += footer_with_links
+
 				usr << browse(null, "window=[name]")
 				admindatum.faxCallback(src, destination)
 		return

@@ -53,7 +53,7 @@
 	info = parsepencode(text, is_init = TRUE)
 	update_icon()
 	update_space(info)
-	updateinfolinks()
+	generateinfolinks()
 
 /obj/item/weapon/paper/update_icon()
 	if(icon_state == "paper_talisman")
@@ -146,21 +146,27 @@
 
 /obj/item/weapon/paper/proc/addtofield(id, text, terminate = FALSE)
 	var/token = "<span class=\"paper_field_[id]\"></span>" //for now always keep field span empty
+	var/token_link = "<font face=\"[deffont]\"><A href='?src=\ref[src];write=[id]'>write</A></font>"
+	var/text_with_links = field_regex.Replace(text, "<font face=\"[deffont]\"><A href='?src=\ref[src];write=$1'>write</A></font>")
+	text_with_links = sign_field_regex.Replace(text_with_links, " <I><A href='?src=\ref[src];signfield=$1'>sign here</A></I> ")
 	info = replacetext(info, token, "[text][terminate ? "" : token]")
-	updateinfolinks()
+	info_links = replacetext(info_links, token_link, "[text_with_links][terminate ? "" : token_link]")
 	
 
-/obj/item/weapon/paper/proc/updateinfolinks()
+/obj/item/weapon/paper/proc/generateinfolinks()
 	info_links = info
 	if (readonly)
 		return
 
-	info_links = field_regex.Replace(info_links, "<font face=\"[deffont]\"><A href='?src=\ref[src];write=$1'>write</A></font>$0")
+	info_links = field_regex.Replace(info_links, "<font face=\"[deffont]\"><A href='?src=\ref[src];write=$1'>write</A></font>")
 	info_links = sign_field_regex.Replace(info_links, " <I><A href='?src=\ref[src];signfield=$1'>sign here</A></I> ")
 
 	if (appendable)
-		info_links = info_links + "<font face=\"[deffont]\"><A href='?src=\ref[src];write=end'>write</A></font>"
+		info += "<span class=\"paper_field_end\"></span>"
+		info_links += "<font face=\"[deffont]\"><A href='?src=\ref[src];write=end'>write</A></font>"
 
+/obj/item/weapon/paper/proc/migrateinfolinks(from)
+	info_links = replacetext(info_links, "\ref[from]", "\ref[src]")
 
 
 
@@ -170,7 +176,7 @@
 	free_space = MAX_PAPER_MESSAGE_LEN
 	stamped = list()
 	overlays.Cut()
-	updateinfolinks()
+	generateinfolinks()
 	update_icon()
 
 /obj/item/weapon/paper/proc/get_signature(obj/item/weapon/pen/P, mob/user as mob)
@@ -283,8 +289,9 @@
 		var/pen = get_pen()
 		if (!pen || !check_proximity())
 			return
-		info = replacetext(info, "<I><span class='sign_field_[signfield]'>sign here</span></I>", "<font face=\"[signfont]\"><i>[get_signature(pen, usr)]</i></font>")
-		updateinfolinks()
+		var/signature = get_signature(pen, usr)
+		info = replacetext(info, "<I><span class='sign_field_[signfield]'>sign here</span></I>", "<font face=\"[signfont]\"><i>[signature]</i></font>")
+		info_links = replacetext(info, "<I><A href='?src=\ref[src];signfield=[signfield]'>sign here</A></I>", "<font face=\"[signfont]\"><i>[signature]</i></font>")
 		update_space()
 		usr << browse("<HTML><meta charset=\"utf-8\"><HEAD><TITLE>[name]</TITLE></HEAD><BODY bgcolor='[color]'>[info_links][stamps]</BODY></HTML>", "window=[name]") // Update the window
 		return
@@ -326,13 +333,9 @@
 			t = replacetext(t, @"[end]", "")
 			terminated = TRUE
 
-		if(id!="end")
-			addtofield(id, t, terminated) // He wants to edit a field, let him.
-		else
-			info += t // Oh, he wants to edit to the end of the file, let him.
-			if (terminated)
-				appendable = FALSE
-			updateinfolinks()
+		addtofield(id, t, terminated) // He wants to edit a field, let him.
+		if (id == "end" && terminated)
+			appendable = FALSE
 
 		update_space(t)
 

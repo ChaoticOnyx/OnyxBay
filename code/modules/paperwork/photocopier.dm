@@ -150,13 +150,18 @@
 	var/obj/item/weapon/paper/c = new /obj/item/weapon/paper (loc)
 	if(toner > 10)	//lots of toner, make it dark
 		c.info = "<font color = #101010>"
+		c.info_links = "<font color = #101010>"
 	else			//no toner? shitty copies for you!
 		c.info = "<font color = #808080>"
-	var/copied = html_decode(copy.info)
-	copied = replacetext(copied, "<font face=\"[c.deffont]\" color=", "<font face=\"[c.deffont]\" nocolor=")	//state of the art techniques in action
-	copied = replacetext(copied, "<font face=\"[c.crayonfont]\" color=", "<font face=\"[c.crayonfont]\" nocolor=")	//This basically just breaks the existing color tag, which we need to do because the innermost tag takes priority.
-	c.info += copied
-	c.info += "</font>"//</font>
+		c.info_links = "<font color = #808080>"
+
+	var/copycontents = replacetext(copy.info, "<font face=\"[c.deffont]\" color=", "<font face=\"[c.deffont]\" nocolor=")
+	copycontents = replacetext(copycontents, "<font face=\"[c.crayonfont]\" color=", "<font face=\"[c.crayonfont]\" nocolor=")
+	c.info = copycontents
+	var/copycontents_links = replacetext(copy.info_links, "<font face=\"[c.deffont]\" color=", "<font face=\"[c.deffont]\" nocolor=")
+	copycontents_links = replacetext(copycontents_links, "<font face=\"[c.crayonfont]\" color=", "<font face=\"[c.crayonfont]\" nocolor=")
+	c.info_links = copycontents_links
+
 	c.SetName(copy.name) // -- Doohl
 	c.stamps = copy.stamps
 	c.stamped = copy.stamped
@@ -175,7 +180,7 @@
 		img.pixel_x = copy.offset_x[j]
 		img.pixel_y = copy.offset_y[j]
 		c.overlays += img
-	c.updateinfolinks()
+	c.migrateinfolinks(src)
 	if(need_toner)
 		toner--
 	if(toner == 0)
