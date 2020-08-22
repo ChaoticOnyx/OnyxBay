@@ -12,7 +12,7 @@
 
 	ASSERT(client && usr == src)
 
-	winset(client, null, "input.background-color=#D3B5B5 mapwindow.map.focus=true");
+	winset(client, null, "input.background-color=[client.input_theme_background]; input.text-color=[client.input_theme_text]; mapwindow.map.focus=true");
 	usr.say(message)
 
 /mob/verb/say_verb_fake()
@@ -21,7 +21,7 @@
 
 	ASSERT(client && usr == src)
 
-	winset(usr, null, "input.focus=true; input.background-color=#FFFFFF; input.text=\"Say \\\"\"")
+	winset(usr, null, "input.focus=true; text-color=#000000; input.background-color=#FFFFFF; input.text=\"Say \\\"\"")
 
 /mob/verb/me_verb(message as text)
 	set name = "Me"

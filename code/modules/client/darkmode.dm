@@ -17,6 +17,8 @@ Thanks to spacemaniac and mcdonald for help with the JS side of this.
 */
 
 /client/proc/force_white_theme() //There's no way round it. We're essentially changing the skin by hand. It's painful but it works, and is the way Lummox suggested.
+	input_theme_background = "none"
+	input_theme_text = "#000000"
 	//Main windows
 	winset(src, "infowindow", "background-color = [COLOR_DARKMODE_DARKBACKGROUND];background-color = none")
 	winset(src, "infowindow", "text-color = [COLOR_DARKMODE_TEXT];text-color = #000000")
@@ -74,6 +76,8 @@ Thanks to spacemaniac and mcdonald for help with the JS side of this.
 	winset(src, "input_alt", "text-color = [COLOR_DARKMODE_TEXT];text-color = #000000")
 
 /client/proc/force_dark_theme() //Inversely, if theyre using white theme and want to swap to the superior dark theme, let's get WINSET() ing
+	input_theme_background = COLOR_DARKMODE_BACKGROUND
+	input_theme_text = COLOR_DARKMODE_TEXT
 	//Main windows
 	winset(src, "infowindow", "background-color = none;background-color = [COLOR_DARKMODE_BACKGROUND]")
 	winset(src, "infowindow", "text-color = #000000;text-color = [COLOR_DARKMODE_TEXT]")
@@ -131,6 +135,8 @@ Thanks to spacemaniac and mcdonald for help with the JS side of this.
 	winset(src, "input_alt", "text-color = #000000;text-color = [COLOR_DARKMODE_TEXT]")
 
 /client/proc/force_marines_mode()
+	input_theme_background = COLOR_MARINEMODE_BACKGROUND
+	input_theme_text = COLOR_MARINEMODE_TEXT
 	//Main windows
 	winset(src, "infowindow", "background-color = none;background-color = [COLOR_MARINEMODE_BACKGROUND]")
 	winset(src, "infowindow", "text-color = #000000;text-color = [COLOR_MARINEMODE_TEXT]")
