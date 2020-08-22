@@ -295,7 +295,7 @@
 	/obj/item/weapon/gun/energy/plasmacutter = 90
 	)
 
-	duration = 135 //hardcoded by design
+	duration = 125 //hardcoded by design
 
 /datum/surgery_step/generic/amputate/can_use(mob/living/user, mob/living/carbon/human/target, target_zone, obj/item/tool)
 	if (target_zone == BP_EYES)	//there are specific steps for eye surgery
