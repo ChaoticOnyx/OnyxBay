@@ -326,6 +326,10 @@
 		if (!check_proximity())
 			return
 
+		if (counttext(t, @"[field]") > 50)
+			to_chat(usr, "<span class='warning'>Too many fields. Sorry, you can't do this.</span>")
+			return
+
 		t = parsepencode(t, i, usr, iscrayon, isfancy) // Encode everything from pencode to html
 
 		var/terminated = FALSE
