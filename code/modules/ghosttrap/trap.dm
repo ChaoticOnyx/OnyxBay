@@ -147,7 +147,7 @@ var/list/ghost_traps
 /datum/ghosttrap/borer
 	object = "cortical borer"
 	ban_checks = list(MODE_BORER)
-	pref_check = MODE_BORER
+	pref_check = BE_BORER
 	ghost_trap_message = "They are occupying a borer now."
 	ghost_trap_role = "Cortical Borer"
 	can_set_own_name = FALSE
@@ -203,7 +203,7 @@ datum/ghosttrap/pai/transfer_personality(mob/candidate, mob/living/silicon/robot
 ******************/
 /datum/ghosttrap/familiar
 	object = "wizard familiar"
-	pref_check = MODE_WIZARD
+	pref_check = BE_FAMILIAR
 	ghost_trap_message = "They are occupying a familiar now."
 	ghost_trap_role = "Wizard Familiar"
 	ban_checks = list(MODE_WIZARD)
@@ -214,10 +214,11 @@ datum/ghosttrap/pai/transfer_personality(mob/candidate, mob/living/silicon/robot
 /datum/ghosttrap/cult
 	object = "cultist"
 	ban_checks = list("cultist")
-	pref_check = MODE_CULTIST
+	pref_check = BE_SHADE
 	can_set_own_name = FALSE
 	ghost_trap_message = "They are occupying a cultist's body now."
 	ghost_trap_role = "Cultist"
+	list_as_special_role = FALSE
 
 /datum/ghosttrap/cult/welcome_candidate(mob/target)
 	var/obj/item/device/soulstone/S = target.loc
@@ -233,3 +234,4 @@ datum/ghosttrap/pai/transfer_personality(mob/candidate, mob/living/silicon/robot
 	object = "soul stone"
 	ghost_trap_message = "They are occupying a soul stone now."
 	ghost_trap_role = "Shade"
+	list_as_special_role = TRUE
