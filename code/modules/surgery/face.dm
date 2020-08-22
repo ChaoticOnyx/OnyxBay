@@ -28,8 +28,7 @@
 	/obj/item/weapon/material/shard = 50, 		\
 	)
 
-	min_duration = CUT_MIN_DURATION * 1.25
-	max_duration = CUT_MAX_DURATION * 1.25
+	duration = CUT_DURATION * 1.25
 
 /datum/surgery_step/generic/cut_face/can_use(mob/living/user, mob/living/carbon/human/target, target_zone, obj/item/tool)
 	return ..() && target_zone == BP_MOUTH && target.op_stage.face == 0
@@ -61,8 +60,7 @@
 	/obj/item/device/assembly/mousetrap = 10	//I don't know. Don't ask me. But I'm leaving it because hilarity.
 	)
 
-	min_duration = CLAMP_MIN_DURATION * 1.25
-	max_duration = CLAMP_MAX_DURATION * 1.25
+	duration = CLAMP_DURATION * 1.25
 
 /datum/surgery_step/face/mend_vocal/can_use(mob/living/user, mob/living/carbon/human/target, target_zone, obj/item/tool)
 	return ..() && target.op_stage.face == 1
@@ -91,8 +89,7 @@
 	/obj/item/weapon/crowbar = 55,	\
 	/obj/item/weapon/material/kitchen/utensil/fork = 75)
 
-	min_duration = RETRACT_MIN_DURATION * 1.50
-	max_duration = RETRACT_MAX_DURATION * 1.50
+	duration = RETRACT_DURATION * 1.25
 
 /datum/surgery_step/face/fix_face/can_use(mob/living/user, mob/living/carbon/human/target, target_zone, obj/item/tool)
 	return ..() && target.op_stage.face == 2
@@ -124,8 +121,7 @@
 	/obj/item/weapon/weldingtool = 25
 	)
 
-	min_duration = CAUTERIZE_MIN_DURATION * 1.25
-	max_duration = CAUTERIZE_MAX_DURATION * 1.25
+	duration = CAUTERIZE_DURATION * 1.25
 
 /datum/surgery_step/face/cauterize/can_use(mob/living/user, mob/living/carbon/human/target, target_zone, obj/item/tool)
 	return ..() && target.op_stage.face > 0

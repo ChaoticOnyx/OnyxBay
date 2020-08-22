@@ -3,35 +3,16 @@
 
 /* some defines for often used surgery steps */
 
-#define CUT_MIN_DURATION       25 // making cuts / unscrewing or deattaching organs
-#define CUT_MAX_DURATION       35
+#define SURGERY_DURATION_DELTA rand(8,12) / 10 // delta multiplier for all surgeries, from 0.8 to 1.2
 
-#define CLAMP_MIN_DURATION     30 // hemostat usage
-#define CLAMP_MAX_DURATION     40
-
-#define RETRACT_MIN_DURATION   20 // retracting
-#define RETRACT_MAX_DURATION   30
-
-#define CAUTERIZE_MIN_DURATION 30 // cautery
-#define CAUTERIZE_MAX_DURATION 40
-
-#define GLUE_BONE_MIN_DURATION 30 // bone glue
-#define GLUE_BONE_MAX_DURATION 40
-
-#define BONE_MEND_MIN_DURATION 35 // bone menders
-#define BONE_MEND_MAX_DURATION 45
-
-#define SAW_MIN_DURATION       40 // saw
-#define SAW_MAX_DURATION       60
-
-#define DRILL_MIN_DURATION     60 // payday2drillbroken.avi
-#define DRILL_MAX_DURATION     80
-
-#define ATTACH_MIN_DURATION    40 // attaching externals / putting something in
-#define ATTACH_MAX_DURATION    60
-
-#define ORGAN_FIX_MIN_DURATION 25 // organs fixing / welding
-#define ORGAN_FIX_MAX_DURATION 45
-
-#define CONNECT_MIN_DURATION   40 // fix o vein usage
-#define CONNECT_MAX_DURATION   60
+#define CUT_DURATION           30 // making cuts / unscrewing or deattaching organs
+#define CLAMP_DURATION         35 // hemostat usage
+#define RETRACT_DURATION       25 // retracting
+#define CAUTERIZE_DURATION     35 // cautery
+#define GLUE_BONE_DURATION     35 // bone glue
+#define BONE_MEND_DURATION     40 // bone menders
+#define SAW_DURATION           50 // saw
+#define DRILL_DURATION         70 // payday2drillbroken.avi
+#define ATTACH_DURATION        50 // attaching externals / putting something in
+#define ORGAN_FIX_DURATION     35 // organs fixing / welding
+#define CONNECT_DURATION       50 // fix o vein usage

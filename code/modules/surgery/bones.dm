@@ -18,8 +18,7 @@
 	can_infect = 1
 	blood_level = 1
 
-	min_duration = GLUE_BONE_MIN_DURATION
-	max_duration = GLUE_BONE_MAX_DURATION
+	duration = GLUE_BONE_DURATION
 	shock_level = 20
 
 /datum/surgery_step/glue_bone/can_use(mob/living/user, mob/living/carbon/human/target, target_zone, obj/item/tool)
@@ -59,8 +58,7 @@
 	/obj/item/weapon/wrench = 75		\
 	)
 
-	min_duration = BONE_MEND_MIN_DURATION
-	max_duration = BONE_MEND_MAX_DURATION
+	duration = BONE_MEND_DURATION
 	shock_level = 40
 	delicate = 1
 
@@ -107,8 +105,7 @@
 	/obj/item/weapon/wrench = 75		\
 	)
 
-	min_duration = BONE_MEND_MIN_DURATION
-	max_duration = BONE_MEND_MAX_DURATION
+	duration = BONE_MEND_DURATION
 	shock_level = 40
 	delicate = 1
 
@@ -148,8 +145,7 @@
 	can_infect = 1
 	blood_level = 1
 
-	min_duration = GLUE_BONE_MIN_DURATION
-	max_duration = GLUE_BONE_MAX_DURATION
+	duration = GLUE_BONE_DURATION
 	shock_level = 20
 
 /datum/surgery_step/finish_bone/can_use(mob/living/user, mob/living/carbon/human/target, target_zone, obj/item/tool)
@@ -187,8 +183,7 @@
 	can_infect = 1
 	blood_level = 1
 
-	min_duration = BONE_MEND_MIN_DURATION * 1.15
-	max_duration = BONE_MEND_MAX_DURATION * 1.15
+	duration = BONE_MEND_DURATION
 	shock_level = 20
 
 /datum/surgery_step/bone_mender/can_use(mob/living/user, mob/living/carbon/human/target, target_zone, obj/item/tool)
