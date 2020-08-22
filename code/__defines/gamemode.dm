@@ -17,7 +17,6 @@
 #define BE_PLANT "BE_PLANT"
 #define BE_SYNTH "BE_SYNTH"
 #define BE_PAI   "BE_PAI"
-#define BE_BORER "BE_BORER"
 #define BE_FAMILIAR "BE_FAMILIAR"
 #define BE_SHADE "BE_SHADE"
 
