@@ -42,21 +42,19 @@
 	if(stat != CONSCIOUS || !client)
 		return
 
-	var/temp = client.close_saywindow(return_content = TRUE)
-	remove_typing_indicator()
+	var/temp = winget(usr, "input", "text")
 
-	if (!temp)
-		temp = winget(client, "input", "text")
-		if(findtextEx(temp, "Say ", 1, 5) && length(temp) > 4)
-			temp = copytext(temp, 5)
-			if (text2ascii(temp, 1) == text2ascii("\""))
-				temp = copytext(temp, 2)
-			var/custom_emote_key = get_prefix_key(/decl/prefix/custom_emote)
-			if(findtext(temp, custom_emote_key, 1, 2))	//emotes
-				return
-		else
+	temp = winget(client, "input", "text")
+	if(findtextEx(temp, "Say ", 1, 5) && length(temp) > 4)
+		temp = copytext(temp, 5)
+		if (text2ascii(temp, 1) == text2ascii("\""))
+			temp = copytext(temp, 2)
+		var/custom_emote_key = get_prefix_key(/decl/prefix/custom_emote)
+		if(findtext(temp, custom_emote_key, 1, 2))	//emotes
 			return
-		winset(client, "input", "text=[null]")
+	else
+		return
+	winset(client, null, "input.background-color=#D3B5B5 mapwindow.map.focus=true; input.text=\"Say \\\"\"")
 	temp = trim_left(temp)
 
 	if(length(temp))

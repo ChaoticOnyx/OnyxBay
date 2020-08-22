@@ -114,9 +114,6 @@ mob/blob/DblClickOn(atom/A) //Teleport view to another blob
 	else
 		B = locate() in range("3x3", src.loc)
 
-/mob/blob/say_wrapper()
-	say(input("","say (text)"))
-
 /mob/blob/say(message)
 	if (!message)
 		return

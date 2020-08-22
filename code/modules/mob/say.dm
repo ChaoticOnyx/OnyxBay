@@ -12,10 +12,16 @@
 
 	ASSERT(client && usr == src)
 
-	client.close_saywindow()
-	remove_typing_indicator()
-
+	winset(client, null, "input.background-color=#D3B5B5 mapwindow.map.focus=true");
 	usr.say(message)
+
+/mob/verb/say_verb_fake()
+	set name = "Say Verb"
+	set category = "IC"
+
+	ASSERT(client && usr == src)
+
+	winset(usr, null, "input.focus=true; input.background-color=#FFFFFF; input.text=\"Say \\\"\"")
 
 /mob/verb/me_verb(message as text)
 	set name = "Me"
