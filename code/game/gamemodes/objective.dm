@@ -728,8 +728,8 @@ datum/objective/heist/loot
 			if(!raider.current)
 				continue
 
-			var/area/raider_area = get_area(raider)
-			if(is_type_in_list(raider_area, GLOB.raiders.safe_areas))
+			var/area/raider_area = get_area(raider.current)
+			if(!is_type_in_list(raider_area, GLOB.raiders.safe_areas))
 				continue
 			
 			for(var/obj/O in raider.current.get_contents())
@@ -795,8 +795,8 @@ datum/objective/heist/salvage
 			if(!raider.current)
 				continue
 
-			var/area/raider_area = get_area(raider)
-			if(is_type_in_list(raider_area, GLOB.raiders.safe_areas))
+			var/area/raider_area = get_area(raider.current)
+			if(!is_type_in_list(raider_area, GLOB.raiders.safe_areas))
 				continue
 			
 			for(var/obj/item/stack/material/M in raider.current.get_contents())
