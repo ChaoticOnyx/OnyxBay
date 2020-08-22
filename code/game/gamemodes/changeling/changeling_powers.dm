@@ -1756,7 +1756,7 @@ var/list/datum/absorbed_dna/hivemind_bank = list()
 		BIO = locate() in src.contents
 
 	if(!BIO)
-		return
+		BIO = new(src)
 	var/mob/M = A
 
 	BIO.change_host(A)
