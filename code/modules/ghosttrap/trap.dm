@@ -214,7 +214,7 @@ datum/ghosttrap/pai/transfer_personality(mob/candidate, mob/living/silicon/robot
 /datum/ghosttrap/cult
 	object = "cultist"
 	ban_checks = list("cultist")
-	pref_check = BE_SHADE
+	pref_check = MODE_CULTIST
 	can_set_own_name = FALSE
 	ghost_trap_message = "They are occupying a cultist's body now."
 	ghost_trap_role = "Cultist"
@@ -234,4 +234,5 @@ datum/ghosttrap/pai/transfer_personality(mob/candidate, mob/living/silicon/robot
 	object = "soul stone"
 	ghost_trap_message = "They are occupying a soul stone now."
 	ghost_trap_role = "Shade"
+	pref_check = BE_SHADE
 	list_as_special_role = TRUE
