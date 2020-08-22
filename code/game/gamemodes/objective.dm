@@ -660,10 +660,9 @@ datum/objective/heist/kidnap
 			//if (!target.current.restrained())
 			//	return 0 // They're loose. Close but no cigar.
 
-			var/area/skipjack_station/start/A = locate()
-			for(var/mob/living/carbon/human/M in A)
-				if(target.current == M)
-					return 1 //They're restrained on the shuttle. Success.
+			var/area/target_area = get_area(target.current)
+			if(is_type_in_list(target_area, GLOB.raiders.safe_areas))
+				return 1
 		else
 			return 0
 
@@ -679,7 +678,7 @@ datum/objective/heist/loot
 			if(2)
 				target = /obj/machinery/the_singularitygen
 				target_amount = 1
-				loot = "a gravitational generator"
+				loot = "a gravitational singularity generator"
 			if(3)
 				target = /obj/machinery/power/emitter
 				target_amount = 4
@@ -711,18 +710,34 @@ datum/objective/heist/loot
 
 		var/total_amount = 0
 
-		for(var/obj/O in locate(/area/skipjack_station/start))
-			if(istype(O,target)) total_amount++
-			for(var/obj/I in O.contents)
-				if(istype(I,target)) total_amount++
-			if(total_amount >= target_amount) return 1
+		var/list/objects_to_check = list()
+		for(var/i in GLOB.raiders.safe_areas)
+			var/area/A = locate(i)
+			for(var/obj/O in A)
+				objects_to_check |= O
+
+		for(var/obj/O in objects_to_check)
+			if(istype(O, target))
+				total_amount++
+			else
+				for(var/obj/C in O.contents)
+					if(istype(C, target))
+						total_amount++
 
 		for(var/datum/mind/raider in GLOB.raiders.current_antagonists)
-			if(raider.current)
-				for(var/obj/O in raider.current.get_contents())
-					if(istype(O,target)) total_amount++
-					if(total_amount >= target_amount) return 1
+			if(!raider.current)
+				continue
 
+			var/area/raider_area = get_area(raider)
+			if(is_type_in_list(raider_area, GLOB.raiders.safe_areas))
+				continue
+			
+			for(var/obj/O in raider.current.get_contents())
+				if(istype(O, target))
+					total_amount++
+
+		if(total_amount >= target_amount)
+			return 1
 		return 0
 
 datum/objective/heist/salvage
@@ -760,30 +775,37 @@ datum/objective/heist/salvage
 
 		var/total_amount = 0
 
-		for(var/obj/item/O in locate(/area/skipjack_station/start))
-
-			var/obj/item/stack/material/S
-			if(istype(O,/obj/item/stack/material))
-				if(O.name == target)
-					S = O
-					total_amount += S.get_amount()
-			for(var/obj/I in O.contents)
-				if(istype(I,/obj/item/stack/material))
-					if(I.name == target)
-						S = I
-						total_amount += S.get_amount()
+		var/list/objects_to_check = list()
+		for(var/i in GLOB.raiders.safe_areas)
+			var/area/A = locate(i)
+			for(var/obj/O in A)
+				objects_to_check |= O
+	
+		for(var/obj/O in objects_to_check)
+			if(istype(O, /obj/item/stack/material))
+				var/obj/item/stack/material/M = O
+				if(M.material.name == target)
+					total_amount += M.get_amount()
+			else
+				for(var/obj/item/stack/material/M in O.contents)
+					if(M.material.name == target)
+						total_amount += M.get_amount()
 
 		for(var/datum/mind/raider in GLOB.raiders.current_antagonists)
-			if(raider.current)
-				for(var/obj/item/O in raider.current.get_contents())
-					if(istype(O,/obj/item/stack/material))
-						if(O.name == target)
-							var/obj/item/stack/material/S = O
-							total_amount += S.get_amount()
+			if(!raider.current)
+				continue
 
-		if(total_amount >= target_amount) return 1
+			var/area/raider_area = get_area(raider)
+			if(is_type_in_list(raider_area, GLOB.raiders.safe_areas))
+				continue
+			
+			for(var/obj/item/stack/material/M in raider.current.get_contents())
+				if(M.material.name == target)
+					total_amount += M.get_amount()
+
+		if(total_amount >= target_amount)
+			return 1
 		return 0
-
 
 /datum/objective/heist/preserve_crew
 	explanation_text = "Do not leave anyone behind, alive or dead."
