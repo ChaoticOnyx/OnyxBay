@@ -104,7 +104,7 @@
   * * allow_numbers - allows numbers and common special characters - used for silicon/other weird things names
   */
 
-/proc/sanitizeName(input, max_length = MAX_NAME_LEN, allow_numbers = 0, force_first_letter_uppercase = TRUE)
+/proc/sanitizeName(input, max_length = MAX_NAME_LEN, allow_numbers = FALSE)
 	if(!input)
 		return //Rejects the input if it is null
 
@@ -123,42 +123,38 @@
 		var/char_code = text2ascii_char(char)
 		switch(char_code)
 			// A  .. Z
-			if(65 to 90)   //Uppercase Letters	
+			if(65 to 90)   //Uppercase Letters
 				number_of_alphanumeric++
 				last_char_group = LETTERS_DETECTED
-				
+
 			// a  .. z
 			if(97 to 122)   //Lowercase Letters
-				if(last_char_group == NO_CHARS_DETECTED || last_char_group == SPACES_DETECTED || last_char_group == SYMBOLS_DETECTED) //start of a word
-					char = uppertext(char)
 				number_of_alphanumeric++
 				last_char_group = LETTERS_DETECTED
-				
+
 			// 0  .. 9
 			if(48 to 57)   //Numbers
-				if(last_char_group == NO_CHARS_DETECTED || !allow_numbers) //suppress at start of string
+				if(!allow_numbers)
 					continue
 				number_of_alphanumeric++
 				last_char_group = NUMBERS_DETECTED
-				
-			// '  -  .
+
+			// '   -   .
 			if(39, 45, 46)   //Common name punctuation
-				if(last_char_group == NO_CHARS_DETECTED)
-					continue
 				last_char_group = SYMBOLS_DETECTED
-				
+
 			// ~    |    @   :   #   $   %   &   *   +
 			if(126, 124, 64, 58, 35, 36, 37, 38, 42, 43)			//Other symbols that we'll allow (mainly for AI)
-				if(last_char_group == NO_CHARS_DETECTED || !allow_numbers) //suppress at start of string
+				if(!allow_numbers)
 					continue
 				last_char_group = SYMBOLS_DETECTED
-				
+
 			//Space
 			if(32)
 				if(last_char_group == NO_CHARS_DETECTED || last_char_group == SPACES_DETECTED) //suppress double-spaces and spaces at start of string
 					continue
 				last_char_group = SPACES_DETECTED
-				
+
 			if(127 to INFINITY) // cyrillic, chinese, and other unicode stuff
 				return
 			else
