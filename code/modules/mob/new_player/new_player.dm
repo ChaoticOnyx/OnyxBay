@@ -202,7 +202,7 @@
 			if(char_name == C.real_name)
 				to_chat (usr, "<span class='danger'>There is a character that already exists with the same name: <b>[C.real_name]</b>, please join with a different one.</span>")
 				return
-			
+
 		if(!config.enter_allowed)
 			to_chat(usr, "<span class='notice'>There is an administrative lock on entering the game!</span>")
 			return
@@ -511,13 +511,13 @@
 		client.prefs.real_name = random_name(new_character.gender)
 		client.prefs.randomize_appearance_and_body_for(new_character)
 	else
-		client.prefs.copy_to(new_character)
-
 		if(jobban_isbanned(src, "NAME"))
 			client.prefs.real_name = random_name(new_character.gender)
 
 		if(jobban_isbanned(src, "APPEARANCE"))
 			client.prefs.randomize_appearance_and_body_for(new_character)
+
+		client.prefs.copy_to(new_character)
 
 	sound_to(src, sound(null, repeat = 0, wait = 0, volume = 85, channel = 1))// MAD JAMS cant last forever yo
 
