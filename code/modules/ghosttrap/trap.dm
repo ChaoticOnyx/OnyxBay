@@ -207,6 +207,7 @@ datum/ghosttrap/pai/transfer_personality(mob/candidate, mob/living/silicon/robot
 	ghost_trap_message = "They are occupying a familiar now."
 	ghost_trap_role = "Wizard Familiar"
 	ban_checks = list(MODE_WIZARD)
+	list_as_special_role = FALSE
 
 /datum/ghosttrap/familiar/welcome_candidate(mob/target)
 	return 0
@@ -218,6 +219,7 @@ datum/ghosttrap/pai/transfer_personality(mob/candidate, mob/living/silicon/robot
 	can_set_own_name = FALSE
 	ghost_trap_message = "They are occupying a cultist's body now."
 	ghost_trap_role = "Cultist"
+	list_as_special_role = FALSE
 
 /datum/ghosttrap/cult/welcome_candidate(mob/target)
 	var/obj/item/device/soulstone/S = target.loc
