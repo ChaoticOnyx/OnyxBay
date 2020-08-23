@@ -47,6 +47,24 @@ I IS TYPIN'!'
 /mob/proc/remove_typing_indicator() // A bit excessive, but goes with the creation of the indicator I suppose
 	QDEL_NULL(typing_indicator)
 
+/mob/verb/add_typing_indicator()
+	set name = ".add_typing_indicator"
+	set hidden = 1
+
+	ASSERT(client && src == usr)
+
+	var/text = winget(usr, "input", "text")
+	if(findtextEx(text, "Say ", 1, 5))
+		create_typing_indicator()
+
+/mob/verb/remove_typing_indicator_verb()
+	set name = ".remove_typing_indicator"
+	set hidden = 1
+
+	ASSERT(client && src == usr)
+
+	remove_typing_indicator()
+
 /mob/verb/me_wrapper()
 	set name = ".Me"
 	set hidden = 1

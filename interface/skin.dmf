@@ -127,7 +127,10 @@ macro "borghotkeymode"
 		command = ".movedown"
 	elem 
 		name = "T"
-		command = ".winset \"input.focus=true; input.text-color=#000000; input.background-color=#FFFFFF; input.text=\"\" ? input.text=\"Say \\\"\"\""
+		command = ".winset \"input.focus=true; input.text-color=#000000; input.background-color=#FEFEFE; input.text=\"\" ? input.text=\"Say \\\"\"\""
+	elem
+		name = "SHIFT+T"
+		command = ".winset \"input.focus=true; input.text-color=#000000; input.background-color=#FEFEFE; input.text=\"Say \\\"\"\""
 	elem "w_key"
 		name = "W+REP"
 		command = ".moveup"
@@ -190,7 +193,7 @@ macro "borghotkeymode"
 		command = ".screenshot"
 	elem 
 		name = "F3"
-		command = ".winset \"input.focus=true; input.text-color=#000000; input.background-color=#FFFFFF; input.text=\"\" ? input.text=\"Say \\\"\"\""
+		command = ".winset \"input.focus=true; input.text-color=#000000; input.background-color=#FEFEFE; input.text=\"\" ? input.text=\"Say \\\"\"\""
 	elem 
 		name = "F4"
 		command = ".me"
@@ -360,7 +363,7 @@ macro "macro"
 		command = ".screenshot"
 	elem 
 		name = "F3"
-		command = ".winset \"input.focus=true; input.text-color=#000000; input.background-color=#FFFFFF; input.text=\"\" ? input.text=\"Say \\\"\"\""
+		command = ".winset \"input.focus=true; input.text-color=#000000; input.background-color=#FEFEFE; input.text=\"\" ? input.text=\"Say \\\"\"\""
 	elem 
 		name = "F4"
 		command = ".me"
@@ -388,7 +391,6 @@ macro "macro"
 	elem 
 		name = "F12"
 		command = "F12"
-
 macro "hotkeymode"
 	elem 
 		name = "Tab"
@@ -533,7 +535,10 @@ macro "hotkeymode"
 		command = ".movedown"
 	elem 
 		name = "T"
-		command = ".winset \"input.focus=true; input.text-color=#000000; input.background-color=#FFFFFF; input.text=\"\" ? input.text=\"Say \\\"\"\""
+		command = ".winset \"input.focus=true; input.text-color=#000000; input.background-color=#FEFEFE; input.text=\"\" ? input.text=\"Say \\\"\"\""
+	elem
+		name = "SHIFT+T"
+		command = ".winset \"input.focus=true; input.text-color=#000000; input.background-color=#FEFEFE; input.text=\"Say \\\"\"\""
 	elem "w_key"
 		name = "W+REP"
 		command = ".moveup"
@@ -596,7 +601,7 @@ macro "hotkeymode"
 		command = ".screenshot"
 	elem 
 		name = "F3"
-		command = ".winset \"input.focus=true; input.text-color=#000000; input.background-color=#FFFFFF; input.text=\"\" ? input.text=\"Say \\\"\"\""
+		command = ".winset \"input.focus=true; input.text-color=#000000; input.background-color=#FEFEFE; input.text=\"\" ? input.text=\"Say \\\"\"\""
 	elem 
 		name = "F4"
 		command = ".me"
@@ -630,7 +635,6 @@ macro "hotkeymode"
 	elem 
 		name = "."
 		command = "move-down"
-
 macro "borgmacro"
 	elem 
 		name = "Tab"
@@ -766,7 +770,7 @@ macro "borgmacro"
 		command = ".screenshot"
 	elem 
 		name = "F3"
-		command = ".winset \"input.focus=true; input.text-color=#000000; input.background-color=#FFFFFF; input.text=\"\" ? input.text=\"Say \\\"\"\""
+		command = ".winset \"input.focus=true; input.text-color=#000000; input.background-color=#FEFEFE; input.text=\"\" ? input.text=\"Say \\\"\"\""
 	elem 
 		name = "F4"
 		command = ".me"
@@ -794,7 +798,6 @@ macro "borgmacro"
 	elem 
 		name = "F12"
 		command = "F12"
-
 
 menu "menu"
 	elem 
@@ -1138,6 +1141,8 @@ window "mainwindow"
 		is-default = true
 		border = sunken
 		saved-params = "command"
+		on-focus = ".add_typing_indicator"
+		on-blur = ".remove_typing_indicator"
 	elem "saybutton"
 		type = BUTTON
 		pos = 880,720

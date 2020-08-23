@@ -13,6 +13,7 @@
 	ASSERT(client && usr == src)
 
 	winset(client, null, "input.background-color=[client.input_theme_background]; input.text-color=[client.input_theme_text]; mapwindow.map.focus=true");
+	remove_typing_indicator()
 	usr.say(message)
 
 /mob/verb/say_verb_fake()

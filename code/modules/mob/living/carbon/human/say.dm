@@ -42,9 +42,7 @@
 	if(stat != CONSCIOUS || !client)
 		return
 
-	var/temp = winget(usr, "input", "text")
-
-	temp = winget(client, "input", "text")
+	var/temp = winget(client, "input", "text")
 	if(findtextEx(temp, "Say ", 1, 5) && length(temp) > 4)
 		temp = copytext(temp, 5)
 		if (text2ascii(temp, 1) == text2ascii("\""))
@@ -55,6 +53,7 @@
 	else
 		return
 	winset(client, null, "input.background-color=#D3B5B5 mapwindow.map.focus=true; input.text=\"Say \\\"\"")
+	remove_typing_indicator()
 	temp = trim_left(temp)
 
 	if(length(temp))
