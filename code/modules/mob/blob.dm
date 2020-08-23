@@ -114,8 +114,10 @@ mob/blob/DblClickOn(atom/A) //Teleport view to another blob
 	else
 		B = locate() in range("3x3", src.loc)
 
-/mob/blob/say_wrapper()
-	say(input("","say (text)"))
+/mob/blob/add_typing_indicator(is_sayinput as num|null)
+	set name = ".add_typing_indicator"
+	set hidden = 1
+	//no typing indicator for blob
 
 /mob/blob/say(message)
 	if (!message)

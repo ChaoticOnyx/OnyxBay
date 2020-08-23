@@ -127,7 +127,7 @@ macro "borghotkeymode"
 		command = ".movedown"
 	elem 
 		name = "T"
-		command = "Say-Verb"
+		command = ".winset \"saywindow.is-visible=true;saywindow-input.focus=true;\""
 	elem "w_key"
 		name = "W+REP"
 		command = ".moveup"
@@ -190,7 +190,7 @@ macro "borghotkeymode"
 		command = ".screenshot"
 	elem 
 		name = "F3"
-		command = "Say-Verb"
+		command = ".winset \"saywindow.is-visible=true;saywindow-input.focus=true;\""
 	elem 
 		name = "F4"
 		command = ".me"
@@ -360,7 +360,7 @@ macro "macro"
 		command = ".screenshot"
 	elem 
 		name = "F3"
-		command = "Say-Verb"
+		command = ".winset \"saywindow.is-visible=true;saywindow-input.focus=true;\""
 	elem 
 		name = "F4"
 		command = ".me"
@@ -533,7 +533,7 @@ macro "hotkeymode"
 		command = ".movedown"
 	elem 
 		name = "T"
-		command = "Say-Verb"
+		command = ".winset \"saywindow.is-visible=true;saywindow-input.focus=true;\""
 	elem "w_key"
 		name = "W+REP"
 		command = ".moveup"
@@ -596,7 +596,7 @@ macro "hotkeymode"
 		command = ".screenshot"
 	elem 
 		name = "F3"
-		command = "Say-Verb"
+		command = ".winset \"saywindow.is-visible=true;saywindow-input.focus=true;\""
 	elem 
 		name = "F4"
 		command = ".me"
@@ -766,7 +766,7 @@ macro "borgmacro"
 		command = ".screenshot"
 	elem 
 		name = "F3"
-		command = "Say-Verb"
+		command = ".winset \"saywindow.is-visible=true;saywindow-input.focus=true;\""
 	elem 
 		name = "F4"
 		command = ".me"
@@ -1138,6 +1138,8 @@ window "mainwindow"
 		is-default = true
 		border = sunken
 		saved-params = "command"
+		on-focus = ".add_typing_indicator"
+		on-blur = ".remove_typing_indicator"
 	elem "saybutton"
 		type = BUTTON
 		pos = 880,720
@@ -1146,7 +1148,7 @@ window "mainwindow"
 		anchor2 = none
 		saved-params = "is-checked"
 		text = "Chat"
-		command = ".winset \"saybutton.is-checked=true?input.command=\"!say \\\"\" macrobutton.is-checked=false:input.command=\""
+		command = ".winset \"saybutton.is-checked=true?input.command=\"!Say \\\"\" macrobutton.is-checked=false:input.command=\""
 		button-type = pushbox
 	elem "hotkey_toggle"
 		type = BUTTON
@@ -1379,20 +1381,20 @@ window "saywindow"
 		anchor2 = none
 		background-color = none
 		is-visible = false
-		saved-params = "size"
+		saved-params = "size;pos"
 		title = "say (text)"
 		statusbar = false
 		can-close = false
 		can-minimize = false
-		can-resize = false
+		can-resize = true
 		outer-size = 308x117
 		inner-size = 300x90
 	elem "saywindow-button"
 		type = BUTTON
 		pos = 110,50
 		size = 80x25
-		anchor1 = none
-		anchor2 = none
+		anchor1 = 37,56
+		anchor2 = 63,83
 		background-color = none
 		border = line
 		saved-params = ""
@@ -1402,12 +1404,14 @@ window "saywindow"
 		type = INPUT
 		pos = 8,16
 		size = 280x20
-		anchor1 = none
-		anchor2 = none
-		is-default = true
+		anchor1 = 3,18
+		anchor2 = 96,40
+		is-default = false
 		border = sunken
 		saved-params = ""
-		command = "say"
+		command = "Say "
+		on-focus = ".add_typing_indicator 1"
+		on-blur = ".remove_typing_indicator"
 
 window "text_editor"
 	elem "text_editor"
