@@ -40,7 +40,8 @@
 	//static because these can't be const
 	var/static/regex/sign_field_regex = regex(@"<I><span class='sign_field_(\d+)'>sign here</span></I>", "g")
 	var/static/regex/named_field_regex = regex(@"\[field=(\w+)\]", "g")
-	var/static/regex/field_regex = regex(@#<span class="paper_field_(\w+)">#, "g")
+	var/static/regex/named_field_extraction_regex = regex(@#<meta class="paper_fieldstart_N(\w+)">(.*?)(?:<meta class="paper_field_N\1">)?<meta class="paper_fieldend_N\1">#, "g")
+	var/static/regex/field_regex = regex(@#<meta class="paper_field_(\w+)">#, "g")
 
 /obj/item/weapon/paper/New(loc, text, title)
 	..(loc)
@@ -145,7 +146,7 @@
 					H.update_body()
 
 /obj/item/weapon/paper/proc/addtofield(id, text, terminate = FALSE)
-	var/token = "<span class=\"paper_field_[id]\"></span>" //for now always keep field span empty
+	var/token = "<meta class=\"paper_field_[id]\">"
 	var/token_link = "<font face=\"[deffont]\"><A href='?src=\ref[src];write=[id]'>write</A></font>"
 	var/text_with_links = field_regex.Replace(text, "<font face=\"[deffont]\"><A href='?src=\ref[src];write=$1'>write</A></font>")
 	text_with_links = sign_field_regex.Replace(text_with_links, " <I><A href='?src=\ref[src];signfield=$1'>sign here</A></I> ")
@@ -162,7 +163,7 @@
 	info_links = sign_field_regex.Replace(info_links, " <I><A href='?src=\ref[src];signfield=$1'>sign here</A></I> ")
 
 	if (appendable)
-		info += "<span class=\"paper_field_end\"></span>"
+		info += "<meta class=\"paper_field_end\">"
 		info_links += "<font face=\"[deffont]\"><A href='?src=\ref[src];write=end'>write</A></font>"
 
 /obj/item/weapon/paper/proc/migrateinfolinks(from)
@@ -188,7 +189,7 @@
 	var/static/counter
 	if (!counter)
 		counter = 0
-	return "<span class=\"paper_field_[counter++]\"></span>"
+	return "<meta class=\"paper_field_[counter++]\">"
 
 /proc/new_sign_field(to_replace)
 	var/static/counter
@@ -206,8 +207,11 @@
 	t = replacetext(t, @"[signfield]", /proc/new_sign_field)
 	t = replacetext(t, @"[field]", /proc/new_unnamed_field)
 	//TODO: check if there's any way to sneak old fields there and add converter if there is
-	if (is_init) //shouldn't allow users to create named fields because a) they're useless for them b) they'll fuck you up
-		t = replacetext(t, named_field_regex, "<span class=\"paper_field_N$1\"></span>") //prefixed with N to prevent unnamed-named collisions
+	//shouldn't allow users to create named fields because a) they're useless for them b) they'll fuck you up
+	if (is_init)
+		//prefixed with N to prevent unnamed-named collisions
+		//start and end meta tags for cases when you want to extract info from named fields
+		t = replacetext(t, named_field_regex, "<meta class=\"paper_fieldstart_N$1\"><meta class=\"paper_field_N$1\"><meta class=\"paper_fieldend_N$1\">")
 
 	if(iscrayon) // If it is a crayon, and he still tries to use these, make them empty!
 		t = replacetext(t, "\[*\]", "")
@@ -233,6 +237,14 @@
 
 	return t
 
+/obj/item/weapon/paper/verb/parse_named_fields()
+	var/list/matches = list()
+	named_field_extraction_regex.next = 1
+	while (named_field_extraction_regex.Find(info))
+		matches[named_field_extraction_regex.group[1]] = named_field_extraction_regex.group[2]
+	for (var/match in matches)
+		to_chat(usr, "[match] -> [matches[match]]")
+	return matches
 
 /obj/item/weapon/paper/proc/burnpaper(obj/item/weapon/flame/P, mob/user)
 	var/class = "warning"
@@ -327,7 +339,7 @@
 			return
 
 		if (counttext(t, @"[field]") > 50)
-			to_chat(usr, "<span class='warning'>Too many fields. Sorry, you can't do this.</span>")
+			to_chat(usr, SPAN_WARNING("Too many fields. Sorry, you can't do this."))
 			return
 
 		t = parsepencode(t, i, usr, iscrayon, isfancy) // Encode everything from pencode to html

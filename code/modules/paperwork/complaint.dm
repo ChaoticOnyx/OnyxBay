@@ -31,11 +31,11 @@
 	var/new_title = "Complaint form #[id]: [target_name]"
 	var/new_content = "Subject: [target_name]"
 	new_content += "\[br\]Subject occupation: [target_occupation]"
-	new_content += "\[br\]Complaint reason (brief): \[field\]"
-	new_content += "\[br\]Complaint reason: \[field\]"
+	new_content += "\[br\]Complaint reason (brief): \[field=brief_reason\]"
+	new_content += "\[br\]Complaint reason: \[field=reason\]"
 	new_content += "\[br\]\[hr\]"
-	new_content += "\[br\]\[right\]Name: \[field\]"
-	new_content += "\[br\]Occupation: \[field\]"
+	new_content += "\[br\]\[right\]Name: \[field=name\]"
+	new_content += "\[br\]Occupation: \[field=occupation\]"
 	new_content += "\[br\]Sign: \[signfield\]\[/right\]"
 	set_content(new_content, new_title)
 
