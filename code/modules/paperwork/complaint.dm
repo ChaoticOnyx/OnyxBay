@@ -13,16 +13,18 @@
 		. += "\n[SPAN_NOTICE("It appears to be unsigned and ready for modifications.")]"
 
 
-/obj/item/weapon/paper/complaint_form/get_signature(obj/item/weapon/pen/P, mob/user as mob)
-	signed = TRUE
-	signed_ckey = user?.client?.ckey
-	make_readonly() //nanomachines, son
+/obj/item/weapon/paper/complaint_form/get_signature(obj/item/weapon/pen/P, mob/user as mob, signfield)
+	if (signfield == "finish")
+		signed = TRUE
+		signed_ckey = user?.client?.ckey
+		make_readonly() //nanomachines, son
 	return ..()
 
-/obj/item/weapon/paper/complaint_form/parsepencode(t, obj/item/weapon/pen/P, mob/user, iscrayon, isfancy, is_init = FALSE)
-	if (!is_init)
-		t = replacetext(t, "\[signfield\]", "")
-	return ..()
+// /obj/item/weapon/paper/complaint_form/parsepencode(t, obj/item/weapon/pen/P, mob/user, iscrayon, isfancy, is_init = FALSE)
+// 	if (!is_init)
+// 		t = replacetext(t, @"[signfield]", "")
+// 		t = replacetext(t, @"[sign]", "")
+// 	return ..()
 
 
 /obj/item/weapon/paper/complaint_form/rename()
@@ -42,7 +44,7 @@
 	new_content += "\[br\]\[hr\]"
 	new_content += "\[br\]\[right\]Name: \[field=name\]"
 	new_content += "\[br\]Occupation: \[field=occupation\]"
-	new_content += "\[br\]Sign: \[signfield\]\[/right\]"
+	new_content += "\[br\]Sign: \[signfield=finish\]\[/right\]"
 	set_content(new_content, new_title)
 
 

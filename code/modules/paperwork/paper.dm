@@ -38,11 +38,12 @@
 	var/const/fancyfont = "Segoe Script"
 
 	//static because these can't be const
-	var/static/regex/sign_field_regex = regex(@"<I><span class='sign_field_(\d+)'>sign here</span></I>", "g")
-	var/static/regex/named_field_regex = regex(@"\[field=(\w+)\]", "g")
+	var/static/regex/named_field_tag_regex = regex(@"\[field=(\w+)\]", "g")
+	var/static/regex/named_sign_field_tag_regex = regex(@"\[signfield=(\w+)\]", "g")
+	var/static/regex/sign_field_regex = regex(@"<I><span class='sign_field_(\w+)'>sign here</span></I>", "g")
 	var/static/regex/named_field_extraction_regex = regex(@#<meta class="paper_fieldstart_N(\w+)">(.*?)(?:<meta class="paper_field_N\1">)?<meta class="paper_fieldend_N\1">#, "g")
 	var/static/regex/field_regex = regex(@#<meta class="paper_field_(\w+)">#, "g")
-	var/static/regex/field_link_regex = regex("<font face=\"[deffont]\"><A href='?src=\[^'\]+?;write=\[^'\]+'>write</A></font>", "g")
+	var/static/regex/field_link_regex = regex("<font face=\"[deffont]\"><A href='\\?src=\[^'\]+?;write=\[^'\]+'>write</A></font>", "g")
 
 /obj/item/weapon/paper/New(loc, text, title)
 	..(loc)
@@ -185,7 +186,7 @@
 	generateinfolinks()
 	update_icon()
 
-/obj/item/weapon/paper/proc/get_signature(obj/item/weapon/pen/P, mob/user as mob)
+/obj/item/weapon/paper/proc/get_signature(obj/item/weapon/pen/P, mob/user as mob, signfield)
 	if(P && istype(P, /obj/item/weapon/pen))
 		return P.get_signature(user)
 	return (user && user.real_name) ? user.real_name : "Anonymous"
@@ -212,11 +213,12 @@
 	t = replacetext(t, @"[signfield]", /proc/new_sign_field)
 	t = replacetext(t, @"[field]", /proc/new_unnamed_field)
 	//TODO: check if there's any way to sneak old fields there and add converter if there is
-	//shouldn't allow users to create named fields because a) they're useless for them b) they'll fuck you up
+	//shouldn't allow users to create named fields because a) they're useless for them b) they'll (users) fuck you up
 	if (is_init)
 		//prefixed with N to prevent unnamed-named collisions
 		//start and end meta tags for cases when you want to extract info from named fields
-		t = replacetext(t, named_field_regex, "<meta class=\"paper_fieldstart_N$1\"><meta class=\"paper_field_N$1\"><meta class=\"paper_fieldend_N$1\">")
+		t = replacetext(t, named_field_tag_regex, "<meta class=\"paper_fieldstart_N$1\"><meta class=\"paper_field_N$1\"><meta class=\"paper_fieldend_N$1\">")
+		t = replacetext(t, named_sign_field_tag_regex, " <I><span class='sign_field_N$1'>sign here</span></I> ")
 
 	if(iscrayon) // If it is a crayon, and he still tries to use these, make them empty!
 		t = replacetext(t, "\[*\]", "")
@@ -306,11 +308,15 @@
 		var/obj/item/weapon/pen/P = get_pen()
 		if (!P || !check_proximity())
 			return
-		var/signature = get_signature(P, usr)
+		var/signfield_name
+		if (copytext(signfield, 1, 2) == "N")
+			signfield_name = copytext(signfield, 2)
+
+		var/signature = get_signature(P, usr, signfield_name)
 		if(istype(P, /obj/item/weapon/pen/crayon))
 			signature = "<b>[signature]</b>"
 		info = replacetext(info, "<I><span class='sign_field_[signfield]'>sign here</span></I>", "<font face=\"[signfont]\" color=[P.colour]><i>[signature]</i></font>")
-		info_links = replacetext(info, "<I><A href='?src=\ref[src];signfield=[signfield]'>sign here</A></I>", "<font face=\"[signfont]\" color=[P.colour]><i>[signature]</i></font>")
+		info_links = replacetext(info_links, "<I><A href='?src=\ref[src];signfield=[signfield]'>sign here</A></I>", "<font face=\"[signfont]\" color=[P.colour]><i>[signature]</i></font>")
 		update_space()
 		usr << browse("<HTML><meta charset=\"utf-8\"><HEAD><TITLE>[name]</TITLE></HEAD><BODY bgcolor='[color]'>[info_links][stamps]</BODY></HTML>", "window=[name]") // Update the window
 		return
@@ -360,7 +366,7 @@
 		if (id == "end" && terminated)
 			appendable = FALSE
 
-		update_space(t)
+		update_space()
 
 		usr << browse("<HTML><meta charset=\"utf-8\"><HEAD><TITLE>[name]</TITLE></HEAD><BODY bgcolor='[color]'>[info_links][stamps]</BODY></HTML>", "window=[name]") // Update the window
 
