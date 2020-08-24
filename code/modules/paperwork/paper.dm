@@ -45,9 +45,28 @@
 	var/static/regex/field_regex = regex(@#<meta class="paper_field_(\w+)">#, "g")
 	var/static/regex/field_link_regex = regex("<font face=\"[deffont]\"><A href='\\?src=\[^'\]+?;write=\[^'\]+'>write</A></font>", "g")
 
-/obj/item/weapon/paper/New(loc, text, title)
+/obj/item/weapon/paper/New(loc, text, title, noinit = FALSE)
 	..(loc)
+	if (noinit)
+		return
 	set_content(text ? text : info, title)
+
+/obj/item/weapon/paper/proc/copy(loc = src.loc)
+	var/obj/item/weapon/paper/P = new src.type(loc, noinit = TRUE)
+	P.name = name
+	P.info = info
+	P.info_links = info_links
+	P.migrateinfolinks(src)
+	P.stamps = stamps
+	P.free_space = free_space
+	P.stamped = stamped
+	P.ico = ico
+	P.offset_x = offset_x
+	P.offset_y = offset_y
+	P.rigged = rigged
+	P.readonly = readonly
+	P.appendable = appendable
+	return P
 
 /obj/item/weapon/paper/proc/set_content(text,title)
 	if(title)
@@ -249,8 +268,6 @@
 	named_field_extraction_regex.next = 1
 	while (named_field_extraction_regex.Find(info))
 		matches[named_field_extraction_regex.group[1]] = named_field_extraction_regex.group[2]
-	for (var/match in matches)
-		to_chat(usr, "[match] -> [matches[match]]")
 	return matches
 
 /obj/item/weapon/paper/proc/burnpaper(obj/item/weapon/flame/P, mob/user)

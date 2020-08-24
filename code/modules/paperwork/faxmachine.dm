@@ -88,7 +88,7 @@ GLOBAL_LIST_EMPTY(adminfaxes)	//cache for faxes that have been sent to admins
 
 /obj/machinery/photocopier/faxmachine/Topic(href, href_list)
 	if(href_list["debug_thing"])
-		new /obj/item/weapon/paper/complaint_form(src.loc, "123456", "Evelynn Black", "Security Officer")
+		new /obj/item/weapon/complaint_folder(src.loc, "DADEAD")
 		return
 	if(href_list["send"])
 		if(copyitem)
@@ -197,6 +197,9 @@ GLOBAL_LIST_EMPTY(adminfaxes)	//cache for faxes that have been sent to admins
 		rcvdcopy = photocopy(copyitem, 0)
 	else if (istype(copyitem, /obj/item/weapon/paper_bundle))
 		rcvdcopy = bundlecopy(copyitem, 0)
+	else if (istype(copyitem, /obj/item/weapon/complaint_folder))
+		var/obj/item/weapon/complaint_folder/CF = copyitem
+		rcvdcopy = copyitem.copy(null)
 	else
 		visible_message("[src] beeps, \"Error transmitting message.\"")
 		return

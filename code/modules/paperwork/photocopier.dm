@@ -103,7 +103,7 @@
 		updateUsrDialog()
 
 /obj/machinery/photocopier/attackby(obj/item/O as obj, mob/user as mob)
-	if(istype(O, /obj/item/weapon/paper) || istype(O, /obj/item/weapon/photo) || istype(O, /obj/item/weapon/paper_bundle))
+	if(istype(O, /obj/item/weapon/paper) || istype(O, /obj/item/weapon/photo) || istype(O, /obj/item/weapon/paper_bundle) || istype(O, /obj/item/weapon/complaint_folder))
 		if(!copyitem)
 			user.drop_item()
 			copyitem = O
@@ -157,10 +157,12 @@
 
 	var/copycontents = replacetext(copy.info, "<font face=\"[c.deffont]\" color=", "<font face=\"[c.deffont]\" nocolor=")
 	copycontents = replacetext(copycontents, "<font face=\"[c.crayonfont]\" color=", "<font face=\"[c.crayonfont]\" nocolor=")
-	c.info = copycontents
+	c.info += copycontents
+	c.info += "</font>"
 	var/copycontents_links = replacetext(copy.info_links, "<font face=\"[c.deffont]\" color=", "<font face=\"[c.deffont]\" nocolor=")
 	copycontents_links = replacetext(copycontents_links, "<font face=\"[c.crayonfont]\" color=", "<font face=\"[c.crayonfont]\" nocolor=")
-	c.info_links = copycontents_links
+	c.info_links += copycontents_links
+	c.info_links += "</font>"
 
 	c.SetName(copy.name) // -- Doohl
 	c.stamps = copy.stamps
@@ -228,7 +230,7 @@
 	p.icon_state = "paper_words"
 	p.SetName(bundle.name)
 	return p
-
+	
 /obj/item/device/toner
 	name = "toner cartridge"
 	icon_state = "tonercartridge"
