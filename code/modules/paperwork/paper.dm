@@ -42,6 +42,7 @@
 	var/static/regex/named_field_regex = regex(@"\[field=(\w+)\]", "g")
 	var/static/regex/named_field_extraction_regex = regex(@#<meta class="paper_fieldstart_N(\w+)">(.*?)(?:<meta class="paper_field_N\1">)?<meta class="paper_fieldend_N\1">#, "g")
 	var/static/regex/field_regex = regex(@#<meta class="paper_field_(\w+)">#, "g")
+	var/static/regex/field_link_regex = regex("<font face=\"[deffont]\"><A href='?src=\[^'\]+?;write=\[^'\]+'>write</A></font>", "g")
 
 /obj/item/weapon/paper/New(loc, text, title)
 	..(loc)
@@ -169,7 +170,11 @@
 /obj/item/weapon/paper/proc/migrateinfolinks(from)
 	info_links = replacetext(info_links, "\ref[from]", "\ref[src]")
 
-
+/obj/item/weapon/paper/proc/make_readonly()
+	if (readonly)
+		return
+	info_links = field_link_regex.Replace(info_links, "")
+	readonly = TRUE
 
 /obj/item/weapon/paper/proc/clearpaper()
 	info = null
@@ -298,12 +303,14 @@
 		return
 	if (href_list["signfield"])
 		var/signfield = href_list["signfield"]
-		var/pen = get_pen()
-		if (!pen || !check_proximity())
+		var/obj/item/weapon/pen/P = get_pen()
+		if (!P || !check_proximity())
 			return
-		var/signature = get_signature(pen, usr)
-		info = replacetext(info, "<I><span class='sign_field_[signfield]'>sign here</span></I>", "<font face=\"[signfont]\"><i>[signature]</i></font>")
-		info_links = replacetext(info, "<I><A href='?src=\ref[src];signfield=[signfield]'>sign here</A></I>", "<font face=\"[signfont]\"><i>[signature]</i></font>")
+		var/signature = get_signature(P, usr)
+		if(istype(P, /obj/item/weapon/pen/crayon))
+			signature = "<b>[signature]</b>"
+		info = replacetext(info, "<I><span class='sign_field_[signfield]'>sign here</span></I>", "<font face=\"[signfont]\" color=[P.colour]><i>[signature]</i></font>")
+		info_links = replacetext(info, "<I><A href='?src=\ref[src];signfield=[signfield]'>sign here</A></I>", "<font face=\"[signfont]\" color=[P.colour]><i>[signature]</i></font>")
 		update_space()
 		usr << browse("<HTML><meta charset=\"utf-8\"><HEAD><TITLE>[name]</TITLE></HEAD><BODY bgcolor='[color]'>[info_links][stamps]</BODY></HTML>", "window=[name]") // Update the window
 		return

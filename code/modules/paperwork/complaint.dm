@@ -16,8 +16,14 @@
 /obj/item/weapon/paper/complaint_form/get_signature(obj/item/weapon/pen/P, mob/user as mob)
 	signed = TRUE
 	signed_ckey = user?.client?.ckey
-	readonly = TRUE //nanomachines, son
+	make_readonly() //nanomachines, son
 	return ..()
+
+/obj/item/weapon/paper/complaint_form/parsepencode(t, obj/item/weapon/pen/P, mob/user, iscrayon, isfancy, is_init = FALSE)
+	if (!is_init)
+		t = replacetext(t, "\[signfield\]", "")
+	return ..()
+
 
 /obj/item/weapon/paper/complaint_form/rename()
 	set name = "Rename paper"
