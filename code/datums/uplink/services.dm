@@ -224,10 +224,10 @@
 	set src in usr
 
 	mode = !mode
-	if (mode):
-		to_chat(usr, "<span class='notice'>Device announce your visit!</span>")
-	else:
-		to_chat(usr, "<span class='notice'>Device not announce your visit!</span>") 
+	if (mode)
+		to_chat(usr, "<span class='notice'>Device will announce your visit!</span>")
+	else
+		to_chat(usr, "<span class='notice'>Device will not announce your visit!</span>") 
 
 /obj/item/device/uplink_service/fake_crew_announcement/enable(mob/user = usr)
 	var/obj/item/weapon/card/id/I = user.GetIdCard()
