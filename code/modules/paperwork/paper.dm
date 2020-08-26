@@ -51,9 +51,11 @@
 		return
 	set_content(text ? text : info, title)
 
-/obj/item/weapon/paper/proc/copy(loc = src.loc)
+/obj/item/weapon/paper/proc/copy(loc = src.loc, nooverlays = FALSE)
 	var/obj/item/weapon/paper/P = new src.type(loc, noinit = TRUE)
 	P.name = name
+	if (!nooverlays)
+		P.overlays = overlays
 	P.info = info
 	P.info_links = info_links
 	P.migrateinfolinks(src)

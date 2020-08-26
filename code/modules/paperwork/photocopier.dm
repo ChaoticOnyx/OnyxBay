@@ -147,29 +147,15 @@
 	return
 
 /obj/machinery/photocopier/proc/copy(obj/item/weapon/paper/copy, need_toner=1)
-	var/obj/item/weapon/paper/c = new /obj/item/weapon/paper (loc)
-	if(toner > 10)	//lots of toner, make it dark
-		c.info = "<font color = #101010>"
-		c.info_links = "<font color = #101010>"
-	else			//no toner? shitty copies for you!
-		c.info = "<font color = #808080>"
-		c.info_links = "<font color = #808080>"
+	var/obj/item/weapon/paper/c = copy.copy(loc, nooverlays = TRUE)
 
-	var/copycontents = replacetext(copy.info, "<font face=\"[c.deffont]\" color=", "<font face=\"[c.deffont]\" nocolor=")
-	copycontents = replacetext(copycontents, "<font face=\"[c.crayonfont]\" color=", "<font face=\"[c.crayonfont]\" nocolor=")
-	c.info += copycontents
-	c.info += "</font>"
-	var/copycontents_links = replacetext(copy.info_links, "<font face=\"[c.deffont]\" color=", "<font face=\"[c.deffont]\" nocolor=")
-	copycontents_links = replacetext(copycontents_links, "<font face=\"[c.crayonfont]\" color=", "<font face=\"[c.crayonfont]\" nocolor=")
-	c.info_links += copycontents_links
-	c.info_links += "</font>"
+	c.info = "<font color = [toner > 10 ? "#101010" : "#808080"]>[c.info]</font>"
+	c.info = replacetext(c.info, "<font face=\"[c.deffont]\" color=", "<font face=\"[c.deffont]\" nocolor=")
+	c.info = replacetext(c.info, "<font face=\"[c.crayonfont]\" color=", "<font face=\"[c.crayonfont]\" nocolor=")
+	c.info_links = "<font color = [toner > 10 ? "#101010" : "#808080"]>[c.info_links]</font>"
+	c.info_links = replacetext(c.info_links, "<font face=\"[c.deffont]\" color=", "<font face=\"[c.deffont]\" nocolor=")
+	c.info_links = replacetext(c.info_links, "<font face=\"[c.crayonfont]\" color=", "<font face=\"[c.crayonfont]\" nocolor=")
 
-	c.SetName(copy.name) // -- Doohl
-	c.stamps = copy.stamps
-	c.stamped = copy.stamped
-	c.ico = copy.ico
-	c.offset_x = copy.offset_x
-	c.offset_y = copy.offset_y
 	var/list/temp_overlays = copy.overlays       //Iterates through stamps
 	var/image/img                                //and puts a matching
 	for (var/j = 1, j <= min(temp_overlays.len, copy.ico.len), j++) //gray overlay onto the copy
@@ -182,7 +168,6 @@
 		img.pixel_x = copy.offset_x[j]
 		img.pixel_y = copy.offset_y[j]
 		c.overlays += img
-	c.migrateinfolinks(src)
 	if(need_toner)
 		toner--
 	if(toner == 0)
