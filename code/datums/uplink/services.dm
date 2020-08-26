@@ -274,7 +274,7 @@
 		AnnounceArrivalSimple(new_record.get_name(), new_record.get_job(), spawnpoint.msg, "Common")
 
 		var/datum/job/job = job_master.GetJob(new_record.get_job())
-		if (job && (job.department_flag != COM))
+		if("Common" != get_announcement_frequency(job))
 			AnnounceArrivalSimple(new_record.get_name(), new_record.get_job(), spawnpoint.msg, get_announcement_frequency(job))
 
 	. = ..()
