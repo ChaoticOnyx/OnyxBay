@@ -198,8 +198,7 @@ GLOBAL_LIST_EMPTY(adminfaxes)	//cache for faxes that have been sent to admins
 	else if (istype(copyitem, /obj/item/weapon/paper_bundle))
 		rcvdcopy = bundlecopy(copyitem, 0)
 	else if (istype(copyitem, /obj/item/weapon/complaint_folder))
-		var/obj/item/weapon/complaint_folder/CF = copyitem
-		rcvdcopy = copyitem.copy(null)
+		rcvdcopy = complaintcopy(copyitem, 0)
 	else
 		visible_message("[src] beeps, \"Error transmitting message.\"")
 		return

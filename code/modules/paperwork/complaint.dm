@@ -55,7 +55,7 @@
 	new_content += "\[br\]Sign: \[signfield=finish\]\[/right\]"
 	set_content(new_content, new_title)
 
-/obj/item/weapon/paper/complaint_form/copy(loc = src.loc)
+/obj/item/weapon/paper/complaint_form/copy()
 	var/obj/item/weapon/paper/complaint_form/CF = ..()
 	CF.id = id
 	CF.signed = signed
@@ -77,7 +77,7 @@
 	var/signed = FALSE
 	var/obj/item/weapon/paper/complaint_form/main_form
 
-/obj/item/weapon/complaint_folder/proc/copy(loc = src.loc)
+/obj/item/weapon/complaint_folder/proc/copy(loc = src.loc, generate_stamps = TRUE)
 	var/obj/item/weapon/complaint_folder/CFo = new src.type(loc, noinit = TRUE)
 	CFo.name = name
 	CFo.id = id
@@ -85,8 +85,24 @@
 	CFo.target_occupation = target_occupation
 	for (var/obj/item/weapon/paper/complaint_form/CF in contents)
 		if (CF != main_form)
-			CF.copy(CFo)
-	CFo.main_form = main_form.copy(CFo)
+			CF.copy(CFo, generate_stamps)
+	CFo.main_form = main_form.copy(CFo, generate_stamps)
+	return CFo
+
+/obj/item/weapon/complaint_folder/proc/recolorize(saturation = 1, grayscale = FALSE, amount = 99)
+	if (amount < 1)
+		return 0
+	main_form.recolorize(saturation, grayscale)
+	for (var/obj/item/weapon/paper/complaint_form/CF in contents)
+		if (CF == main_form)
+			continue
+		if (--amount < 0)
+			qdel(CF)
+		else
+			CF.recolorize(saturation, grayscale)
+	return amount
+
+
 
 /obj/item/weapon/complaint_folder/New(loc, id, noinit = FALSE)
 	. = ..()

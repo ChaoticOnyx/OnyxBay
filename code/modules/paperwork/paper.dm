@@ -23,6 +23,7 @@
 	var/info_links	//A different version of the paper which includes html links at fields and EOF
 	var/stamps		//The (text for the) stamps on the paper.
 	var/free_space = MAX_PAPER_MESSAGE_LEN
+	var/stamps_generated = TRUE
 	var/list/stamped
 	var/list/ico[0]      //Icons and
 	var/list/offset_x[0] //offsets stored for later
@@ -36,6 +37,7 @@
 	var/const/signfont = "Times New Roman"
 	var/const/crayonfont = "Comic Sans MS"
 	var/const/fancyfont = "Segoe Script"
+	var/text_color = COLOR_BLACK
 
 	//static because these can't be const
 	var/static/regex/named_field_tag_regex = regex(@"\[field=(\w+)\]", "g")
@@ -51,11 +53,9 @@
 		return
 	set_content(text ? text : info, title)
 
-/obj/item/weapon/paper/proc/copy(loc = src.loc, nooverlays = FALSE)
+/obj/item/weapon/paper/proc/copy(loc = src.loc, generate_stamps = TRUE)
 	var/obj/item/weapon/paper/P = new src.type(loc, noinit = TRUE)
 	P.name = name
-	if (!nooverlays)
-		P.overlays = overlays
 	P.info = info
 	P.info_links = info_links
 	P.migrateinfolinks(src)
@@ -68,7 +68,51 @@
 	P.rigged = rigged
 	P.readonly = readonly
 	P.appendable = appendable
+	P.color = color
+	P.text_color = text_color
+	if (generate_stamps)
+		P.generate_stamps()
+	else
+		P.stamps_generated = FALSE
 	return P
+
+/obj/item/weapon/paper/proc/recolorize(saturation = 1, grayscale = FALSE)
+	var/static/regex/color_regex = regex("color=(#\[0-9a-fA-F\]+)", "g")
+	text_color = BlendRGB(color ? color : COLOR_WHITE, text_color, saturation)
+	if (grayscale)
+		if (color)
+			color = GrayScale(color)
+		text_color = GrayScale(text_color)
+
+	var/list/found_colors = list()
+	color_regex.next = 1
+	while (color_regex.Find(info))
+		var/found_color = color_regex.group[1]
+		found_colors |= found_color
+	
+	for (var/found_color in found_colors)
+		var/result_color = BlendRGB(color ? color : COLOR_WHITE, found_color, saturation)
+		if (grayscale)
+			result_color = GrayScale(result_color)
+		info = replacetext(info, "color=[found_color]", "color=[result_color]")
+		info_links = replacetext(info_links, "color=[found_color]", "color=[result_color]")
+
+	if (!stamps_generated) //not sure how to remove merged stamps, so limiting it to generation (no regeneration) for now
+		generate_stamps(saturation, grayscale)
+
+/obj/item/weapon/paper/proc/generate_stamps(saturation = 1, grayscale = FALSE)
+	stamps_generated = TRUE
+	var/image/img
+	for (var/j = 1, j <= min(ico.len), j++) //gray overlay onto the copy
+		var/chosen_stamp = ico[j]
+		img = image('icons/obj/bureaucracy.dmi', chosen_stamp)
+		img.pixel_x = offset_x[j]
+		img.pixel_y = offset_y[j]
+		if (grayscale)
+			img.color = list(0.3,0.3,0.3, 59,59,59, 11,11,11)
+		img.alpha = saturation * 255
+		overlays += img
+	update_icon()
 
 /obj/item/weapon/paper/proc/set_content(text,title)
 	if(title)
@@ -105,7 +149,7 @@
 	if(!forceshow && istype(user,/mob/living/silicon/ai))
 		var/mob/living/silicon/ai/AI = user
 		can_read = get_dist(src, AI.camera) < 2
-	user << browse("<HTML><meta charset=\"utf-8\"><HEAD><TITLE>[name]</TITLE></HEAD><BODY bgcolor='[color]'>[can_read ? info : stars(info)][stamps]</BODY></HTML>", "window=[name]")
+	user << browse("<HTML><meta charset=\"utf-8\"><HEAD><TITLE>[name]</TITLE></HEAD><BODY bgcolor='[color ? color : COLOR_WHITE]' text='[text_color]'>[can_read ? info : stars(info)][stamps]</BODY></HTML>", "window=[name]")
 	onclose(user, "[name]")
 
 /obj/item/weapon/paper/verb/rename()
@@ -255,11 +299,11 @@
 		t = replacetext(t, "\[logo\]", "")
 
 	if(iscrayon)
-		t = "<font face=\"[crayonfont]\" color=[P ? P.colour : "black"]><b>[t]</b></font>"
+		t = "<font face=\"[crayonfont]\" color=[P ? P.colour : COLOR_BLACK]><b>[t]</b></font>"
 	else if(isfancy)
-		t = "<font face=\"[fancyfont]\" color=[P ? P.colour : "black"]><i>[t]</i></font>"
+		t = "<font face=\"[fancyfont]\" color=[P ? P.colour : COLOR_BLACK]><i>[t]</i></font>"
 	else
-		t = "<font face=\"[deffont]\" color=[P ? P.colour : "black"]>[t]</font>"
+		t = "<font face=\"[deffont]\" color=[P ? P.colour : COLOR_BLACK]>[t]</font>"
 
 	t = pencode2html(t)
 
