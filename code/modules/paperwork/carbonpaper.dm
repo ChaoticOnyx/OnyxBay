@@ -31,21 +31,13 @@
 	set src in usr
 
 	if (copied == 0)
-		var/obj/item/weapon/paper/carbon/c = src
-		var/obj/item/weapon/paper/carbon/copy = new /obj/item/weapon/paper/carbon (usr.loc)
-		// <font>
-		var/copycontents = replacetext(c.info, "<font face=\"[c.deffont]\" color=", "<font face=\"[c.deffont]\" nocolor=")
-		copycontents = replacetext(copycontents, "<font face=\"[c.crayonfont]\" color=", "<font face=\"[c.crayonfont]\" nocolor=")
-		copy.info = copycontents
-		var/copycontents_links = replacetext(c.info_links, "<font face=\"[c.deffont]\" color=", "<font face=\"[c.deffont]\" nocolor=")
-		copycontents_links = replacetext(copycontents_links, "<font face=\"[c.crayonfont]\" color=", "<font face=\"[c.crayonfont]\" nocolor=")
-		copy.info_links = copycontents_links
-		copy.SetName("Copy - " + c.name)
-		copy.migrateinfolinks(src)
+		var/obj/item/weapon/paper/carbon/copy = copy(usr.loc, generate_stamps = FALSE)
+		copy.recolorize(saturation = 1, greyscale = TRUE)
+		copy.SetName("Copy - " + copy.name)
 		to_chat(usr, "<span class='notice'>You tear off the carbon-copy!</span>")
-		c.copied = 1
+		copied = 1
+		update_icon()
 		copy.iscopy = 1
 		copy.update_icon()
-		c.update_icon()
 	else
 		to_chat(usr, "There are no more carbon copies attached to this paper!")
