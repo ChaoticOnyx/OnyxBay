@@ -23,13 +23,6 @@
 		name += ", signed by [signed_name]"
 		make_readonly() //nanomachines, son
 
-// /obj/item/weapon/paper/complaint_form/parsepencode(t, obj/item/weapon/pen/P, mob/user, iscrayon, isfancy, is_init = FALSE)
-// 	if (!is_init)
-// 		t = replacetext(t, @"[signfield]", "")
-// 		t = replacetext(t, @"[sign]", "")
-// 	return ..()
-
-
 /obj/item/weapon/paper/complaint_form/rename()
 	set name = "Rename paper"
 	set hidden = 1
@@ -74,8 +67,11 @@
 	var/id
 	var/target_name
 	var/target_occupation
+	var/target_ckey
 	var/signed = FALSE
 	var/obj/item/weapon/paper/complaint_form/main_form
+
+	var/finished = FALSE
 
 /obj/item/weapon/complaint_folder/proc/copy(loc = src.loc, generate_stamps = TRUE)
 	var/obj/item/weapon/complaint_folder/CFo = new src.type(loc, noinit = TRUE)
@@ -180,3 +176,140 @@
 		user.put_in_hands(new_form)
 		to_chat(user, SPAN_NOTICE("You take [new_form] out of [src]."))
 		return
+
+
+#define enum_CAPTAIN 1
+#define enum_HEAD 2
+#define enum_CREWMEMBER 3
+
+/proc/check_records(name, occupation)
+	if (!name || !occupation)
+		return 0
+	var/datum/computer_file/crew_record/CR = get_crewmember_record(name)
+	if (!CR)
+		return 0
+	var/job = CR.get_job()
+	if (occupation != job)
+		return 0
+	var/datum/job/actual_job = job_master.GetJob(CR.get_job())
+	if (!actual_job)
+		return 0
+	if (actual_job.title == "Captain")
+		return enum_CAPTAIN
+	if (actual_job.head_position)
+		return enum_HEAD
+	return enum_CREWMEMBER
+
+/proc/check_requirements(target_significance, captains, heads, crewmembers)
+	switch(target_significance)
+		if (enum_CAPTAIN)
+			return (heads + captains >= 2 && crewmembers >= 1 || crewmembers + heads + captains >= 7)
+		if (enum_HEAD)
+			return (captains >= 1 && crewmembers + heads >= 2 || crewmembers + heads >= 5)
+		if (enum_CREWMEMBER)
+			return (captains + heads >= 1 && crewmembers + heads + captains >= 2 || crewmembers + heads + captains >= 5)
+		else //???
+			return FALSE
+
+
+//validation procs return reason if validation fails
+//prevalidation happens before sending to admins, fail reason is shown to sender
+//validation happens after sending to admins but before working with database, fail reason is relayed to admins
+
+/obj/item/weapon/complaint_folder/proc/prevalidate()
+	if (finished) //???
+		return "Already finished"
+	if (!check_signed())
+		return "Main form is not signed"
+
+	var/target_significance = check_records(target_name, target_occupation)
+	if (!target_significance)
+		return "Main form is malformed"
+
+	var/parsed_main_data = main_form.parse_named_fields()
+	var/parsed_main_name = strip_html_properly(parsed_main_data["name"])
+	var/parsed_main_occupation = strip_html_properly(parsed_main_data["occupation"])
+	var/main_record = check_records(parsed_main_name, parsed_main_occupation)
+	if (!main_record)
+		return "Main form is malformed"
+
+	for (var/obj/item/weapon/paper/complaint_form/CF in contents)
+		if(!CF.signed)
+			return "At least one of supplementary forms is not signed"
+	
+	var/captains = 0
+	var/heads = 0
+	var/crewmembers = 0
+
+	var/list/names = list()
+	names += parsed_main_name
+
+	for (var/obj/item/weapon/paper/complaint_form/CF in contents)
+		if (CF == main_form)
+			continue
+		var/parsed_data = CF.parse_named_fields()
+		var/parsed_name = strip_html_properly(parsed_data["name"])
+		var/parsed_occupation = strip_html_properly(parsed_data["occupation"])
+		var/parsed_reason = strip_html_properly(parsed_data["reason"])
+		var/parsed_brief_reason = strip_html_properly(parsed_data["brief_reason"])
+		var/record = check_records(parsed_name, parsed_occupation)
+		
+		if (!record || !parsed_reason || !parsed_brief_reason || parsed_name != CF.signed_name)
+			return "At least one of supplementary forms is malformed"
+		if (parsed_name in names)
+			return "There's at least one duplicate supplementary form"
+		names += parsed_name
+
+		switch(record)
+			if(enum_CAPTAIN)
+				captains++
+			if(enum_HEAD)
+				heads++
+			if(enum_CREWMEMBER)
+				crewmembers++
+			else //???
+				return "Verification software error"
+
+	if (!check_requirements(target_significance, captains, heads, crewmembers))
+		return "Minimal requirements on supplementary complaints weren't reached"
+	return //success
+
+/obj/item/weapon/complaint_folder/proc/validate()
+	if (finished) //???
+		return "Already finished"
+	var/list/ckeys = list()
+	for (var/obj/item/weapon/paper/complaint_form/CF in contents)
+		if (CF.signed_ckey in ckeys)
+			return "Duplicate ckey found"
+		if (!CF.signed_ckey) //???
+			return "Signed form with no ckey bound found"
+		ckeys += CF.signed_ckey
+
+	var/main_ckey = main_form.signed_ckey
+	var/mob/main_mob = get_mob_by_key(main_ckey)
+	if (!main_mob.mind) //???
+		return "Sender has no mind"
+	if (main_mob.mind.assigned_role != "Internal Affairs Agent")
+		return "IAA wasn't assigned by Centcomm"
+	return //success
+
+/obj/item/weapon/complaint_folder/proc/postvalidate()
+	if (finished) //???
+		return "Already finished"
+	for(var/mob/M in SSmobs.mob_list)
+		if (M.real_name == target_name && M.ckey)
+			target_ckey = M.ckey
+	if (target_ckey == "???")
+		return "Wasn't able to deduce target player ckey"
+	return //success
+
+/obj/item/weapon/complaint_folder/proc/send_to_db()
+
+	return //TODO
+
+/proc/complaint_check_auto_approve(ckey)
+	return //TODO
+
+#undef enum_CAPTAIN
+#undef enum_HEAD
+#undef enum_CREWMEMBER

@@ -1543,11 +1543,14 @@
 		else if (istype(fax, /obj/item/weapon/complaint_folder))
 			var/data = "<meta charset=\"utf-8\">"
 			var/obj/item/weapon/complaint_folder/CF = fax
-			data += "<A href='?src=\ref[src];AdminFaxViewPaper=\ref[CF.main_form]'>Main form</A><BR>"
+			data += "<A href='?src=\ref[src];AdminFaxViewPaper=\ref[CF.main_form]'>Main form ([CF?.main_form?.signed_ckey])</A><BR>"
 			for (var/obj/item/weapon/paper/complaint_form/cf in CF.contents)
 				if (cf == CF.main_form)
 					continue
-				data += "<A href='?src=\ref[src];AdminFaxViewPaper=\ref[cf]'>[cf]</A><BR>"
+				data += "<A href='?src=\ref[src];AdminFaxViewPaper=\ref[cf]'>[cf] ([cf.signed_ckey])</A><BR>"
+			if (CF.target_ckey == "???")
+				data += "<HR><BR>"
+				data += "<A href='?src=\ref[src];AdminFaxComplaintCkey=\ref[CF]'>Set target ckey manually</A><BR>"
 
 			usr << browse(data, "window=[CF.name]")
 		else
@@ -1569,6 +1572,13 @@
 		var/obj/item/weapon/paper/P = locate(href_list["AdminFaxViewPaper"])
 		if (P)
 			P.show_content(src.owner, 1)
+		return
+	else if (href_list["AdminFaxComplaintCkey"])
+		var/obj/item/weapon/complaint_folder/CF = locate(href_list["AdminFaxComplaintCkey"])
+		var/key = input(usr, "Enter target ckey:", "Complaint ckey manual fix", "???") as text|null
+		if (CF && key)
+			CF.target_ckey = ckey(key)
+			CF.postvalidate()
 		return
 	else if (href_list["FaxReply"])
 		var/mob/sender = locate(href_list["FaxReply"])
