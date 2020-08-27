@@ -152,10 +152,10 @@ mob/blob/DblClickOn(atom/A) //Teleport view to another blob
 	if (is_dead())
 		return
 
-	var/datum/hud/blob/H = hud_used
-
-	if (!H)
+	if (!hud_used)
 		InitializeHud()
+
+	var/datum/hud/blob/H = hud_used
 
 	var/number_of_cores = blob_cores.len
 	var/matrix/M = matrix()
