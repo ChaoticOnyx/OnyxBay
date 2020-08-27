@@ -299,16 +299,25 @@
 	for(var/mob/M in SSmobs.mob_list)
 		if (M.real_name == target_name && M.ckey)
 			target_ckey = M.ckey
+			break
+
+	if (!target_ckey)
+		target_ckey = "???"
 	if (target_ckey == "???")
 		return "Wasn't able to deduce target player ckey"
-	return //success
 
-/obj/item/weapon/complaint_folder/proc/send_to_db()
-
-	return //TODO
-
-/proc/complaint_check_auto_approve(ckey)
-	return //TODO
+	//success
+	var/list/others = list()
+	var/list/reason = list()
+	for(var/obj/item/weapon/paper/complaint_form/CF in contents)
+		reason += "[CF.signed_name] ([CF.signed_ckey])\[hr\]"
+		reason += CF.info
+		if (CF == main_form)
+			continue
+		others += CF.signed_ckey
+	var/datum/job/actual_job = job_master.GetJob(get_crewmember_record(target_name)?.get_job())
+	IAAJ_insert_new(id, target_ckey, main_form.signed_ckey, jointext(others, ", "), jointext(reason, "\[hr\]\[hr\]"), actual_job ? actual_job : target_occupation)
+	return
 
 #undef enum_CAPTAIN
 #undef enum_HEAD

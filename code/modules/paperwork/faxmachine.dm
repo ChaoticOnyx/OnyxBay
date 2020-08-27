@@ -74,21 +74,25 @@ GLOBAL_LIST_EMPTY(adminfaxes)	//cache for faxes that have been sent to admins
 			else
 				dat += "Please insert paper to send via secure connection.<br><br>"
 
+		dat += "<a href ='byond://?src=\ref[src];print_complaint=1'>Print complaint kit</a><br>"
 	else
 		dat += "Proper authentication is required to use this device.<br><br>"
 
 		if(copyitem)
 			dat += "<a href ='byond://?src=\ref[src];remove=1'>Remove Item</a><br>"
 
-	dat += "<a href ='byond://?src=\ref[src];debug_thing=1'>Print ThE tHiNg</a><br>"
 
 	user << browse(dat, "window=copier")
 	onclose(user, "copier")
 	return
 
 /obj/machinery/photocopier/faxmachine/Topic(href, href_list)
-	if(href_list["debug_thing"])
-		new /obj/item/weapon/complaint_folder(src.loc, "DADEAD")
+	if(href_list["print_complaint"])
+		var/id = IAAJ_generate_fake_id()
+		if (!id)
+			return
+		id = num2hex(id)
+		new /obj/item/weapon/complaint_folder(src.loc, id)
 		return
 	if(href_list["send"])
 		if(copyitem)
