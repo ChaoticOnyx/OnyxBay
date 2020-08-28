@@ -149,6 +149,8 @@ CIGARETTE PACKETS ARE IN FANCY.DM
 	if(!src.lit)
 		src.lit = 1
 
+		reagents.process_reactions()
+
 		damtype = BURN
 		force = initial(force) + 2
 
