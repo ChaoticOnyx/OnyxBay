@@ -91,7 +91,7 @@ GLOBAL_LIST_EMPTY(adminfaxes)	//cache for faxes that have been sent to admins
 		var/id = IAAJ_generate_fake_id()
 		if (!id)
 			return
-		id = num2hex(id)
+		id = num2hex(id, len = 6)
 		new /obj/item/weapon/complaint_folder(src.loc, id)
 		return
 	if(href_list["send"])
