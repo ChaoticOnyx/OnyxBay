@@ -310,13 +310,13 @@
 	var/list/others = list()
 	var/list/reason = list()
 	for(var/obj/item/weapon/paper/complaint_form/CF in contents)
-		reason += "[CF.signed_name] ([CF.signed_ckey])\[hr\][CF.info]"
+		reason += "[CF.signed_name] ([CF.signed_ckey])<hr>[CF.info]"
 		if (CF == main_form)
 			continue
 		others += CF.signed_ckey
 	var/datum/job/actual_job = job_master.GetJob(get_crewmember_record(target_name)?.get_job())
 	finished = TRUE
-	IAAJ_insert_new(id, target_ckey, main_form.signed_ckey, jointext(others, ", "), jointext(reason, "\[hr\]\[hr\]"), actual_job ? actual_job : target_occupation)
+	IAAJ_insert_new(id, target_ckey, main_form.signed_ckey, jointext(others, ", "), jointext(reason, "<hr><hr>"), actual_job ? actual_job.title : target_occupation)
 	return
 
 #undef enum_CAPTAIN

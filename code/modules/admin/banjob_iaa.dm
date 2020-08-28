@@ -8,28 +8,44 @@ GLOBAL_LIST_EMPTY(IAA_approved_list)
 
 #define IAA_FAKE_ID_UPPER_LIMIT     16777215
 #define IAA_BAN_DURATION            60 * 24 * 7
+
+/proc/sql_query(template, ...)
+	var/list/arguments = args.Copy(2)
+	var/search_from = 1
+	var/arg_counter = 0
+	var/current_ind
+	while((current_ind = findtext(template, "?", search_from)))
+		ASSERT(++arg_counter <= arguments.len)
+		var/replacement = arguments[arg_counter]
+		if (!isnum(replacement))
+			replacement = dbcon.Quote("[replacement]")
+		var/temp = copytext(template, 1, current_ind)
+		temp += "[replacement]"
+		search_from = length(temp) + 1
+		template = temp + copytext(template, current_ind + 1)
+	ASSERT(arg_counter == arguments.len)
+	var/DBQuery/query = dbcon.NewQuery(template)
+	query.Execute()
+	return query
+
 /proc/IAA_approve(key)
 	key = ckey(key)
-	var/DBQuery/query
 	if (GLOB.IAA_approved_list[key])
 		GLOB.IAA_approved_list[key]++
-		query = dbcon.NewQuery("UPDATE erro_iaa_approved SET approvals = approvals + 1 where ckey = ?", key)
+		sql_query("UPDATE erro_iaa_approved SET approvals = approvals + 1 where ckey = ?", key)
 	else
 		GLOB.IAA_approved_list[key] = 1
-		query = dbcon.NewQuery("INSERT INTO erro_iaa_approved (`ckey`) VALUES (?)", key)
-	query.Execute()
+		sql_query("INSERT INTO erro_iaa_approved (`ckey`) VALUES (?)", key)
 	return
 
 /proc/IAA_disprove(key)
 	key = ckey(key)
 	GLOB.IAA_approved_list[key] = 0
-	var/DBQuery/query = dbcon.NewQuery("DELETE FROM erro_iaa_approved WHERE ckey = ?", key)
-	query.Execute()
+	sql_query("DELETE FROM erro_iaa_approved WHERE ckey = ?", key)
 	return
 
 /proc/IAA_disprove_by_id(id)
-	var/DBQuery/query = dbcon.NewQuery("SELECT iaa_ckey, other_ckeys FROM erro_iaa_jobban WHERE id = ?", id)
-	query.Execute()
+	var/DBQuery/query = sql_query("SELECT iaa_ckey, other_ckeys FROM erro_iaa_jobban WHERE id = ?", id)
 	query.NextRow()
 	IAA_disprove(query.item[1])
 	var/list/others = splittext(query.item[2], ", ")
@@ -53,13 +69,11 @@ GLOBAL_LIST_EMPTY(IAA_approved_list)
 /datum/IAA_brief_jobban_info/proc/resolve(approved = TRUE, comment = "automatic_approval", ckey = "system")
 	ASSERT(status == IAA_STATUS_PENDING)
 	var/DBQuery/query
-	query = dbcon.NewQuery("UPDATE erro_iaa_jobban SET status = ?, resolve_time = Now(), resolve_comment = ?, resolve_ckey = ?, \
+	query = sql_query("UPDATE erro_iaa_jobban SET status = ?, resolve_time = Now(), resolve_comment = ?, resolve_ckey = ?, \
 		expiration_time = DATE_ADD(Now(), INTERVAL ? MINUTE) where id = ?", approved ? IAA_STATUS_APPROVED : IAA_STATUS_DENIED, comment, ckey, IAA_BAN_DURATION, id)
-	query.Execute()
 
 	if (approved)
-		query = dbcon.NewQuery("SELECT expiration_time FROM erro_iaa_jobban WHERE id = ?", id)
-		query.Execute()
+		query = sql_query("SELECT expiration_time FROM erro_iaa_jobban WHERE id = ?", id)
 		query.NextRow()
 		expiration_time = query.item[1]
 		IAA_approve(src.ckey)
@@ -67,13 +81,11 @@ GLOBAL_LIST_EMPTY(IAA_approved_list)
 		IAA_disprove_by_id(id)
 
 /proc/IAAJ_cancel(id, comment, ckey)
-	var/DBQuery/query = dbcon.NewQuery("SELECT status FROM erro_iaa_jobban WHERE id = ?", id)
-	query.Execute()
+	var/DBQuery/query = sql_query("SELECT status FROM erro_iaa_jobban WHERE id = ?", id)
 	query.NextRow()
 	ASSERT(query.item[1] == IAA_STATUS_APPROVED)
-	query = dbcon.NewQuery("UPDATE erro_iaa_jobban SET status = ?, cancel_time = Now(), cancel_comment = ?, cancel_ckey = ? where id = ?", \
+	query = sql_query("UPDATE erro_iaa_jobban SET status = ?, cancel_time = Now(), cancel_comment = ?, cancel_ckey = ? where id = ?", \
 		IAA_STATUS_CANCELLED, comment, ckey, id)
-	query.Execute()
 	for (var/datum/IAA_brief_jobban_info/JB in GLOB.IAA_active_jobbans_list)
 		if (JB.id == id)
 			GLOB.IAA_active_jobbans_list -= JB
@@ -90,10 +102,9 @@ GLOBAL_LIST_EMPTY(IAA_approved_list)
 		return
 
 	var/DBQuery/query
-	query = dbcon.NewQuery("SELECT id, fakeid, ckey, iaa_ckey, job, status, expiration_time FROM erro_iaa_jobban \
+	query = sql_query("SELECT id, fakeid, ckey, iaa_ckey, job, status, expiration_time FROM erro_iaa_jobban \
 		WHERE (status = '[IAA_STATUS_PENDING]' OR status = '[IAA_STATUS_APPROVED]' AND isnull(expiration_time, Now()) >= Now()) \
 		[isnull(config.server_id) ? "" : "AND server_id = '[config.server_id]'"]")
-	query.Execute()
 
 	while (query.NextRow())
 		var/datum/IAA_brief_jobban_info/JB = new()
@@ -107,19 +118,17 @@ GLOBAL_LIST_EMPTY(IAA_approved_list)
 
 		GLOB.IAA_active_jobbans_list.Add(JB)
 
-	query = dbcon.NewQuery("SELECT ckey, approvals from erro_iaa_approved")
-	query.Execute()
+	query = sql_query("SELECT ckey, approvals from erro_iaa_approved")
 
 	while (query.NextRow())
 		GLOB.IAA_approved_list[query.item[1]] = query.item[2]
 
 /proc/IAAJ_check_fakeid_available(fakeid)
-	var/DBQuery/query = dbcon.NewQuery("SELECT fakeid FROM erro_iaa_jobban where fakeid = ?", fakeid)
-	query.Execute()
+	var/DBQuery/query = sql_query("SELECT fakeid FROM erro_iaa_jobban where fakeid = ?", fakeid)
 	return !query.RowCount()
 
 /proc/IAAJ_generate_fake_id()
-	var/ret = rand(0, IAA_FAKE_ID_UPPER_LIMIT)
+	var/ret = num2hex(rand(0, IAA_FAKE_ID_UPPER_LIMIT), 6)
 	if (IAAJ_check_fakeid_available(ret))
 		return ret
 	return IAAJ_generate_fake_id() //nigh impossible to get there, will be even more impossible to descend further into recursion
@@ -136,13 +145,11 @@ GLOBAL_LIST_EMPTY(IAA_approved_list)
 	JB.status = IAA_STATUS_PENDING
 
 	var/DBQuery/query
-	query = dbcon.NewQuery("INSERT INTO erro_iaa_jobban \
+	query = sql_query("INSERT INTO erro_iaa_jobban \
 		(`fakeid`, `ckey`, `iaa_ckey`, `other_ckeys`, `reason`, `job`, `creation_time`, `status`) VALUES \
 		(?, ?, ?, ?, ?, ?, Now(), ?)", fakeid, ckey, iaa_ckey, other_ckeys, reason, job, IAA_STATUS_PENDING)
-	query.Execute()
 
-	query = dbcon.NewQuery("SELECT id, creation_time FROM erro_iaa_jobban WHERE fakeid = ?", fakeid)
-	query.Execute()
+	query = sql_query("SELECT id, creation_time FROM erro_iaa_jobban WHERE fakeid = ?", fakeid)
 	query.NextRow() //tbh I have no real idea how to handle database faults so might as well let it crash right there if it happens
 	JB.id = query.item[1]
 	JB.expiration_time = query.item[2]
@@ -171,7 +178,7 @@ GLOBAL_LIST_EMPTY(IAA_approved_list)
 	var/dat = "<meta charset=\"utf-8\"><B>IAA active Jobans!</B><HR><table>"
 	dat += "<tr> <td> ID </td> <td> Who from who by who </td> <td> Expiration date </td> <td> Status </td> </tr>"
 	for (var/datum/IAA_brief_jobban_info/JB in GLOB.IAA_active_jobbans_list)
-		dat += text("<tr><td><a href='?src=\ref[src];iaaj_inspect=[JB.id]>[JB.id] ([JB.fakeid])</a></td> \
+		dat += text("<tr><td><a href='?src=\ref[src];iaaj_inspect=[JB.id]'>[JB.id] ([JB.fakeid])</a></td> \
 			<td>[JB.ckey] banned from [JB.job] by [JB.iaa_ckey]</td> \
 			<td> [JB.expiration_time] </td> \
 			<td> [IAAJ_status_colorize(JB.status, JB.status)] </td> \
@@ -195,10 +202,9 @@ GLOBAL_LIST_EMPTY(IAA_approved_list)
 	dat += "<table>"
 	dat += "<b><tr> <td> ID </td> <td> Who from who by who </td> <td> Expiration date </td> <td> Status </td> </tr>"
 	var/DBQuery/query
-	query = dbcon.NewQuery("SELECT id, fakeid, ckey, iaa_ckey, job, status, expiration_time FROM erro_iaa_jobban \
+	query = sql_query("SELECT id, fakeid, ckey, iaa_ckey, job, status, expiration_time FROM erro_iaa_jobban \
 		[isnull(config.server_id) ? "" : "WHERE server_id = '[config.server_id]'"] \
 		ORDER BY id DESC LIMIT [results_per_page] OFFSET [startfrom]")
-	query.Execute()
 
 	while (query.NextRow())
 		var/datum/IAA_brief_jobban_info/JB = new()
@@ -209,7 +215,7 @@ GLOBAL_LIST_EMPTY(IAA_approved_list)
 		JB.job             = query.item[5]
 		JB.status          = query.item[6]
 		JB.expiration_time = query.item[7]
-		dat += text("<tr><td><a href='?src=\ref[src];iaaj_inspect=[JB.id]>[JB.id] ([JB.fakeid])</a></td> \
+		dat += text("<tr><td><a href='?src=\ref[src];iaaj_inspect=[JB.id]'>[JB.id] ([JB.fakeid])</a></td> \
 			<td>[JB.ckey] banned from [JB.job] by [JB.iaa_ckey]</td> \
 			<td> [JB.expiration_time] </td> \
 			<td> [IAAJ_status_colorize(JB.status, JB.status)] </td> \
@@ -222,10 +228,9 @@ GLOBAL_LIST_EMPTY(IAA_approved_list)
 		return
 	ASSERT(isnum(id))
 	var/DBQuery/query
-	query = dbcon.NewQuery("SELECT id, fakeid, ckey, iaa_ckey, other_ckeys, reason, job, creation_time, resolve_time, \
+	query = sql_query("SELECT id, fakeid, ckey, iaa_ckey, other_ckeys, reason, job, creation_time, resolve_time, \
 		resolve_comment, resolve_ckey, cancel_time, cancel_comment, cancel_ckey, status, expiration_time \
 		FROM erro_iaa_jobban WHERE id = ?", id)
-	query.Execute()
 	query.NextRow()
 	var/fakeid            = query.item[ 2]
 	var/ckey              = query.item[ 3]
@@ -247,9 +252,9 @@ GLOBAL_LIST_EMPTY(IAA_approved_list)
 	dat += "Status: [IAAJ_status_colorize(status, status)]"
 	switch (status)
 		if (IAA_STATUS_PENDING)
-			dat += "<a href='?src=\ref[src];iaa_resolve=[id]'> resolve </a>"
+			dat += "<a href='?src=\ref[src];iaaj_resolve=[id]'> resolve </a>"
 		if (IAA_STATUS_APPROVED)
-			dat += "<a href='?src=\ref[src];iaa_close=[id]'> close </a>"
+			dat += "<a href='?src=\ref[src];iaaj_close=[id]'> close </a>"
 	dat += "<HR>"
 	dat += "Created at [creation_time] <BR>"
 	if (resolve_time)
@@ -285,6 +290,7 @@ GLOBAL_LIST_EMPTY(IAA_approved_list)
 		if (!chosen_JB)
 			to_chat(usr, SPAN_WARNING("Failed to find active jobban with such id!"))
 			return
+		to_chat(usr, "Here")
 		var/action = input(usr, "Select action:", "Resolve IAA jobban", "Cancel") as anything in list("Approve", "Deny", "Cancel")
 		switch(action)
 			if ("Cancel")
