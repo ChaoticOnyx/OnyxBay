@@ -504,20 +504,13 @@
 	s.set_up(2, 1, location)
 	s.start()
 	for(var/mob/living/carbon/M in viewers(world.view, location))
+		if(hasvar(M, "glasses") && istype(M:glasses, /obj/item/clothing/glasses/sunglasses))
+			continue
 		switch(get_dist(M, location))
 			if(0 to 3)
-				if(hasvar(M, "glasses"))
-					if(istype(M:glasses, /obj/item/clothing/glasses/sunglasses))
-						continue
-
 				M.flash_eyes()
 				M.Weaken(round(created_volume / 5))
-
 			if(4 to 5)
-				if(hasvar(M, "glasses"))
-					if(istype(M:glasses, /obj/item/clothing/glasses/sunglasses))
-						continue
-
 				M.flash_eyes()
 				M.Stun(round(created_volume / 16))
 
