@@ -110,6 +110,8 @@ var/list/admin_verbs_admin = list(
 var/list/admin_verbs_ban = list(
 	/client/proc/unban_panel,
 	/client/proc/jobbans,
+	/client/proc/iaaj_bans_active,
+	/client/proc/iaaj_bans,
 	/client/proc/DB_ban_panel
 	)
 
@@ -507,6 +509,22 @@ var/list/admin_verbs_mentor = list(
 		else
 			holder.DB_ban_panel()
 	feedback_add_details("admin_verb","VJB") //If you are copy-pasting this, ensure the 2nd parameter is unique to the new proc!
+	return
+
+/client/proc/iaaj_bans_active()
+	set name = "Display active IAA job bans"
+	set category = "Admin"
+	if (holder)
+		holder.IAAJ_list_active_bans()
+	feedback_add_details("admin_verb", "VIAAJB")
+	return
+
+/client/proc/iaaj_bans()
+	set name = "Display IAA job bans"
+	set category = "Admin"
+	if (holder)
+		holder.IAAJ_list_all_bans()
+	feedback_add_details("admin_verb", "VIAAJBA")
 	return
 
 /client/proc/unban_panel()
