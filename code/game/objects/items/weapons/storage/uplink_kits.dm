@@ -139,40 +139,44 @@
 
 /obj/item/weapon/storage/box/syndie_kit/cigarette
 	name = "\improper Tricky smokes"
-	desc = "Comes with the following brands of cigarettes, in this order: 2xFlash, 2xSmoke, 1xMindBreaker, 1xTricordrazine. Avoid mixing them up."
+	desc = "Comes with the following brands of cigarettes, in this order: 1xFlash(30u), 1xPhoron(40u), 1xSmoke(120u), 1xNeuroToxin(10u), 1xMindBreaker(20u), 1xTricordrazine(20u). Avoid mixing them up."
 
 /obj/item/weapon/storage/box/syndie_kit/cigarette/New()
 	..()
 	var/obj/item/weapon/storage/fancy/cigarettes/pack
 	pack = new /obj/item/weapon/storage/fancy/cigarettes(src)
-	fill_cigarre_package(pack, list(/datum/reagent/aluminum = 1, /datum/reagent/potassium = 1, /datum/reagent/sulfur = 1))
+	
+	fill_cigarre_package(pack, list(/datum/reagent/aluminum = 10, /datum/reagent/potassium = 10, /datum/reagent/sulfur = 10))
 	pack.desc += " 'F' has been scribbled on it."
 
 	pack = new /obj/item/weapon/storage/fancy/cigarettes(src)
-	fill_cigarre_package(pack, list(/datum/reagent/aluminum = 1, /datum/reagent/potassium = 1, /datum/reagent/sulfur = 1))
-	pack.desc += " 'F' has been scribbled on it."
+	fill_cigarre_package(pack, list(/datum/reagent/toxin/phoron = 40))
+	pack.desc += " 'Ph' has been scribbled on it."
 
 	pack = new /obj/item/weapon/storage/fancy/cigarettes(src)
-	fill_cigarre_package(pack, list(/datum/reagent/potassium = 1, /datum/reagent/sugar = 1, /datum/reagent/phosphorus = 1))
+	fill_cigarre_package(pack, list(/datum/reagent/potassium = 40, /datum/reagent/sugar = 40, /datum/reagent/phosphorus = 40))
 	pack.desc += " 'S' has been scribbled on it."
 
 	pack = new /obj/item/weapon/storage/fancy/cigarettes(src)
-	fill_cigarre_package(pack, list(/datum/reagent/potassium = 1, /datum/reagent/sugar = 1, /datum/reagent/phosphorus = 1))
-	pack.desc += " 'S' has been scribbled on it."
+	fill_cigarre_package(pack, list(/datum/reagent/ethanol/neurotoxin=10))
+	pack.desc += " 'NT' has been scribbled on it."
 
 	pack = new /obj/item/weapon/storage/fancy/cigarettes(src)
-	fill_cigarre_package(pack, list(/datum/reagent/dylovene = 1, /datum/reagent/silicon = 1, /datum/reagent/hydrazine = 1))
+	fill_cigarre_package(pack, list(/datum/reagent/mindbreaker = 20))
 	pack.desc += " 'MB' has been scribbled on it."
 
 	pack = new /obj/item/weapon/storage/fancy/cigarettes(src)
-	fill_cigarre_package(pack, list(/datum/reagent/tricordrazine = 4))
+	fill_cigarre_package(pack, list(/datum/reagent/tricordrazine = 20))
 	pack.desc += " 'T' has been scribbled on it."
 
 	new /obj/item/weapon/flame/lighter/zippo(src)
 
-/proc/fill_cigarre_package(obj/item/weapon/storage/fancy/cigarettes/C, list/reagents)
-	for(var/reagent in reagents)
-		C.reagents.add_reagent(reagent, reagents[reagent] * C.max_storage_space)
+/proc/fill_cigarre_package(obj/item/weapon/storage/fancy/cigarettes/P, list/reagents)
+	for(var/obj/C in P.contents)
+		for(var/reagent in reagents)
+			C.reagents.maximum_volume += reagents[reagent]
+			C.reagents.add_reagent(reagent, reagents[reagent], safety = 1)
+		C.reagents.maximum_volume = 5
 
 //Rig Electrowarfare and Voice Synthesiser kit
 /obj/item/weapon/storage/backpack/satchel/syndie_kit/ewar_voice
