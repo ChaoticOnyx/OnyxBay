@@ -496,7 +496,7 @@
 	name = "Flash powder"
 	result = null
 	required_reagents = list(/datum/reagent/aluminum = 1, /datum/reagent/potassium = 1, /datum/reagent/sulfur = 1 )
-	result_amount = 2
+	result_amount = 3
 
 /datum/chemical_reaction/flash_powder/on_reaction(datum/reagents/holder, created_volume)
 	var/location = get_turf(holder.my_atom)
@@ -509,10 +509,10 @@
 		switch(get_dist(M, location))
 			if(0 to 3)
 				M.flash_eyes()
-				M.Weaken(round(created_volume / 5))
+				M.Weaken(round(created_volume / 4))
 			if(4 to 5)
 				M.flash_eyes()
-				M.Stun(round(created_volume / 16))
+				M.Stun(round(created_volume / 12))
 
 /datum/chemical_reaction/emp_pulse
 	name = "EMP Pulse"
