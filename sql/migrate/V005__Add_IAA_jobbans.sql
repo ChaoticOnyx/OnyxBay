@@ -1,6 +1,6 @@
 CREATE TABLE IF NOT EXISTS `erro_iaa_jobban` (
   `id` int(11) AUTO_INCREMENT PRIMARY KEY,
-  `fakeid` text(6) NOT NULL,
+  `fakeid` varchar(6) NOT NULL,
   `ckey` varchar(32) NOT NULL,
   `iaa_ckey` varchar(32) NOT NULL,
   `other_ckeys` text NOT NULL,
