@@ -162,7 +162,7 @@ GLOBAL_LIST_EMPTY(IAA_approved_list)
 		return
 
 	var/dat = "<meta charset=\"utf-8\"><B>IAA active Jobans!</B><HR><table>"
-	dat += "<b><tr> <td> ID </td> <td> Who from who by who </td> <td> Expiration date </td> <td> Status </td> </tr>"
+	dat += "<tr> <td> ID </td> <td> Who from who by who </td> <td> Expiration date </td> <td> Status </td> </tr>"
 	for (var/datum/IAA_brief_jobban_info/JB in GLOB.IAA_active_jobbans_list)
 		dat += text("<tr><td><a href='?src=\ref[src];iaaj_inspect=[JB.id]>[JB.id] ([JB.fakeid])</a></td> \
 			<td>[JB.ckey] banned from [JB.job] by [JB.iaa_ckey]</td> \
