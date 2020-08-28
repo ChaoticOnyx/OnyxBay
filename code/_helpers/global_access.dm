@@ -2448,4 +2448,6 @@
 	"worths",
 	"wrapped_species_by_ref",
 	"z_levels",
-	"zone_blocked")
+	"zone_blocked",
+	"IAA_active_jobbans_list",
+	"IAA_approved_list")

@@ -103,8 +103,7 @@ GLOBAL_LIST_EMPTY(IAA_approved_list)
 
 	var/DBQuery/query
 	query = sql_query("SELECT id, fakeid, ckey, iaa_ckey, job, status, expiration_time FROM erro_iaa_jobban \
-		WHERE (status = '[IAA_STATUS_PENDING]' OR status = '[IAA_STATUS_APPROVED]' AND isnull(expiration_time, Now()) >= Now()) \
-		[isnull(config.server_id) ? "" : "AND server_id = '[config.server_id]'"]")
+		WHERE (status = '[IAA_STATUS_PENDING]' OR status = '[IAA_STATUS_APPROVED]' AND IFNULL(expiration_time, Now()) >= Now())")
 
 	while (query.NextRow())
 		var/datum/IAA_brief_jobban_info/JB = new()
@@ -203,7 +202,6 @@ GLOBAL_LIST_EMPTY(IAA_approved_list)
 	dat += "<b><tr> <td> ID </td> <td> Who from who by who </td> <td> Expiration date </td> <td> Status </td> </tr>"
 	var/DBQuery/query
 	query = sql_query("SELECT id, fakeid, ckey, iaa_ckey, job, status, expiration_time FROM erro_iaa_jobban \
-		[isnull(config.server_id) ? "" : "WHERE server_id = '[config.server_id]'"] \
 		ORDER BY id DESC LIMIT [results_per_page] OFFSET [startfrom]")
 
 	while (query.NextRow())

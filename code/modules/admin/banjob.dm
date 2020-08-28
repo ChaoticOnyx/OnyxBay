@@ -36,7 +36,7 @@ var/jobban_keylist[0]		//to store the keys & ranks
 				return "Reason Unspecified"
 		if (M.ckey)
 			for (var/datum/IAA_brief_jobban_info/JB in GLOB.IAA_active_jobbans_list)
-				if (JB.ckey == M.ckey && JB.job == rank)
+				if (JB.ckey == M.ckey && JB.job == rank && JB.status == "APPROVED")
 					return "Restricted by CentComm"
 	return FALSE
 
