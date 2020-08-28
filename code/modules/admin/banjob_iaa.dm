@@ -96,7 +96,7 @@ GLOBAL_LIST_EMPTY(IAA_approved_list)
 	query.Execute()
 
 	while (query.NextRow())
-		var/datum/IAA_brief_jobban_info/JB
+		var/datum/IAA_brief_jobban_info/JB = new()
 		JB.id              = query.item[1]
 		JB.fakeid          = query.item[2]
 		JB.ckey            = query.item[3]
@@ -128,7 +128,7 @@ GLOBAL_LIST_EMPTY(IAA_approved_list)
 	if (!IAAJ_check_fakeid_available(fakeid))
 		message_admins("IAAJ fakeid collision. Possible duplicate?")
 		return
-	var/datum/IAA_brief_jobban_info/JB
+	var/datum/IAA_brief_jobban_info/JB = new()
 	JB.fakeid = fakeid
 	JB.ckey = ckey
 	JB.iaa_ckey = iaa_ckey
@@ -201,7 +201,7 @@ GLOBAL_LIST_EMPTY(IAA_approved_list)
 	query.Execute()
 
 	while (query.NextRow())
-		var/datum/IAA_brief_jobban_info/JB
+		var/datum/IAA_brief_jobban_info/JB = new()
 		JB.id              = query.item[1]
 		JB.fakeid          = query.item[2]
 		JB.ckey            = query.item[3]

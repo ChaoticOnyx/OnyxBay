@@ -310,8 +310,7 @@
 	var/list/others = list()
 	var/list/reason = list()
 	for(var/obj/item/weapon/paper/complaint_form/CF in contents)
-		reason += "[CF.signed_name] ([CF.signed_ckey])\[hr\]"
-		reason += CF.info
+		reason += "[CF.signed_name] ([CF.signed_ckey])\[hr\][CF.info]"
 		if (CF == main_form)
 			continue
 		others += CF.signed_ckey
