@@ -14,10 +14,10 @@ CREATE TABLE IF NOT EXISTS `erro_iaa_jobban` (
   `cancel_comment` text DEFAULT NULL,
   `cancel_ckey` varchar(32) DEFAULT NULL,
   `status` varchar(32) NOT NULL,
-  `expiration_time` datetime DEFAULT NULL,
+  `expiration_time` datetime DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
-CREATE TABLE IF NOT EXISTS `erro_iaa_approved` {
+CREATE TABLE IF NOT EXISTS `erro_iaa_approved` (
   `ckey` varchar(32) NOT NULL,
   `approvals` int(11) DEFAULT 1
-} ENGINE=InnoDB DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
