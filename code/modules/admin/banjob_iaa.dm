@@ -113,14 +113,21 @@ GLOBAL_LIST_EMPTY(IAA_approved_list)
 	while (query.NextRow())
 		GLOB.IAA_approved_list[query.item[1]] = query.item[2]
 
+/proc/IAAJ_check_fakeid_available(fakeid)
+	var/DBQuery/query = dbcon.NewQuery("SELECT fakeid FROM erro_iaa_jobban where fakeid = ?", fakeid)
+	query.Execute()
+	return !query.RowCount()
+
 /proc/IAAJ_generate_fake_id()
 	var/ret = rand(0, IAA_FAKE_ID_UPPER_LIMIT)
-	var/DBQuery/query = dbcon.NewQuery("SELECT fakeid FROM erro_iaa_jobban where fakeid = ?", ret)
-	if (query.RowCount())
-		return IAAJ_generate_fake_id() //nigh impossible to get there, will be even more impossible to descend further into recursion
-	return ret
+	if (IAAJ_check_fakeid_available(ret))
+		return ret
+	return IAAJ_generate_fake_id() //nigh impossible to get there, will be even more impossible to descend further into recursion
 
 /proc/IAAJ_insert_new(fakeid, ckey, iaa_ckey, other_ckeys, reason, job)
+	if (!IAAJ_check_fakeid_available(fakeid))
+		message_admins("IAAJ fakeid collision. Possible duplicate?")
+		return
 	var/datum/IAA_brief_jobban_info/JB
 	JB.fakeid = fakeid
 	JB.ckey = ckey

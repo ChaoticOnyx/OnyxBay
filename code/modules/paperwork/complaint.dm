@@ -218,7 +218,7 @@
 
 /obj/item/weapon/complaint_folder/proc/prevalidate()
 	if (finished) //???
-		return "Already finished"
+		return //no need to alert the crew
 	if (!check_signed())
 		return "Main form is not signed"
 
@@ -316,6 +316,7 @@
 			continue
 		others += CF.signed_ckey
 	var/datum/job/actual_job = job_master.GetJob(get_crewmember_record(target_name)?.get_job())
+	finished = TRUE
 	IAAJ_insert_new(id, target_ckey, main_form.signed_ckey, jointext(others, ", "), jointext(reason, "\[hr\]\[hr\]"), actual_job ? actual_job : target_occupation)
 	return
 
