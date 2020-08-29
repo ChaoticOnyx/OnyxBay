@@ -23,7 +23,7 @@
 	for(var/datum/modifier/M in modifiers)
 		if(!isnull(M.haste) && M.haste == TRUE)
 			return -1 // Returning -1 will actually result in a slowdown for Teshari.
-		else if(!isnull(M.slowdown))
+		if(!isnull(M.slowdown))
 			tally += M.slowdown
 
 	if(species.slowdown)
