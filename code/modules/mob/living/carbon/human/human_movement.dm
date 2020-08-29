@@ -1,34 +1,59 @@
 /mob/living/carbon/human/movement_delay()
 	var/tally = ..()
 
+	if(istype(loc, /turf/space)) return -1 // It's hard to be slowed down in space by... anything
+
+	if(embedded_flag || (stomach_contents && stomach_contents.len))
+		handle_embedded_and_stomach_objects() //Moving with objects stuck in you can cause bad times.
+
+	for(var/M in mutations)
+		switch(M)
+			if(mRun)
+				return config.human_delay
+			if(MUTATION_FAT)
+				tally += 1.5
+
+	for(var/E in chem_effects)
+		switch(E)
+			if(CE_SPEEDBOOST)
+				return 1
+			if(CE_SLOWDOWN)
+				tally += chem_effects[CE_SLOWDOWN]
+
+	for(var/datum/modifier/M in modifiers)
+		if(!isnull(M.haste) && M.haste == TRUE)
+			return -1 // Returning -1 will actually result in a slowdown for Teshari.
+		else if(!isnull(M.slowdown))
+			tally += M.slowdown
+
 	if(species.slowdown)
 		tally += species.slowdown
 
 	tally += species.handle_movement_delay_special(src)
 
-	if (istype(loc, /turf/space)) return -1 // It's hard to be slowed down in space by... anything
+	if(aiming && aiming.aiming_at)
+		tally += 5 // Iron sights make you slower, it's a well-known fact.
 
-	if(embedded_flag || (stomach_contents && stomach_contents.len))
-		handle_embedded_and_stomach_objects() //Moving with objects stuck in you can cause bad times.
+	if(bodytemperature < 283.222)
+		tally += (283.222 - bodytemperature) / 10 * 1.75
 
-	if(CE_SPEEDBOOST in chem_effects)
-		return -1
-
-	if(CE_SLOWDOWN in chem_effects)
-		tally += chem_effects[CE_SLOWDOWN]
-
-	for(var/datum/modifier/M in modifiers)
-		if(!isnull(M.haste) && M.haste == TRUE)
-			return -1 // Returning -1 will actually result in a slowdown for Teshari.
-		if(!isnull(M.slowdown))
-			tally += M.slowdown
+	tally += blocking * 1.5
 
 	var/health_deficiency = (maxHealth - health)
-	if(health_deficiency >= 40) tally += (health_deficiency / 25)
+	if(health_deficiency >= 40)
+		tally += (health_deficiency / 25)
 
 	if(can_feel_pain())
 		if(get_shock() >= 10)
 			tally += (get_shock() / 10) //pain shouldn't slow you down if you can't even feel it
+
+	if(!isSynthetic(src))	// are you hungry? I think yes
+		var/nut_level = nutrition / 100
+		switch(nutrition)
+			if(0 to 150)
+				tally += 1.5 - nut_level
+			if(450 to INFINITY)
+				tally += nut_level - 4.5
 
 	if(istype(buckled, /obj/structure/bed/chair/wheelchair))
 		for(var/organ_name in list(BP_L_HAND, BP_R_HAND, BP_L_ARM, BP_R_ARM))
@@ -60,6 +85,8 @@
 				total_item_slowdown += max(item_slowdown, 0)
 		tally += round(total_item_slowdown)
 
+		tally += max(2 * stance_damage, 0) //damaged/missing feet or legs is slow
+
 		for(var/organ_name in list(BP_L_LEG, BP_R_LEG, BP_L_FOOT, BP_R_FOOT))
 			var/obj/item/organ/external/E = get_organ(organ_name)
 			if(!E || E.is_stump())
@@ -68,29 +95,6 @@
 				tally += 0.5
 			else if(E.status & ORGAN_BROKEN)
 				tally += 1.5
-
-	if(aiming && aiming.aiming_at)
-		tally += 5 // Iron sights make you slower, it's a well-known fact.
-
-	if(MUTATION_FAT in mutations)
-		tally += 1.5
-	if (bodytemperature < 283.222)
-		tally += (283.222 - bodytemperature) / 10 * 1.75
-
-	tally += blocking * 1.5
-
-	tally += max(2 * stance_damage, 0) //damaged/missing feet or legs is slow
-
-	if(!isSynthetic(src))	// are you hungry? I think yes
-		var/nut_level = nutrition / 100
-		switch(nutrition)
-			if(0 to 150)
-				tally += 1.5 - nut_level
-			if(450 to INFINITY)
-				tally += nut_level - 4.5
-
-	if(mRun in mutations)
-		tally = 0
 
 	return (tally+config.human_delay)
 
