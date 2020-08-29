@@ -6,6 +6,8 @@
 	if(embedded_flag || (stomach_contents && stomach_contents.len))
 		handle_embedded_and_stomach_objects() //Moving with objects stuck in you can cause bad times.
 
+	tally += species.handle_movement_delay_special(src)
+
 	for(var/M in mutations)
 		switch(M)
 			if(mRun)
@@ -28,8 +30,6 @@
 
 	if(species.slowdown)
 		tally += species.slowdown
-
-	tally += species.handle_movement_delay_special(src)
 
 	if(aiming && aiming.aiming_at)
 		tally += 5 // Iron sights make you slower, it's a well-known fact.
