@@ -13,6 +13,13 @@ var/jobban_keylist[0]		//to store the keys & ranks
 	jobban_keylist.Add(text("[ckey] - [rank]"))
 	jobban_savebanfile()
 
+/proc/rank_is_low_hierarchy(rank)
+	var/datum/job/J = job_master.GetJob(rank)
+	if (!istype(J))
+		return
+	return (J.department == "Civilian" || J.department == "Service" || J.department == "Supply")
+
+
 //returns a reason if M is banned from rank, returns 0 otherwise
 /proc/jobban_isbanned(mob/M, rank)
 	if(M && rank)
@@ -34,10 +41,21 @@ var/jobban_keylist[0]		//to store the keys & ranks
 					if(text)
 						return text
 				return "Reason Unspecified"
-		if (M.ckey)
-			for (var/datum/IAA_brief_jobban_info/JB in GLOB.IAA_active_jobbans_list)
-				if (JB.ckey == M.ckey && JB.job == rank && JB.status == "APPROVED")
+
+		if (!M.ckey)
+			return FALSE
+
+		var/is_low_hierarchy = rank_is_low_hierarchy(rank)
+		if (isnull(is_low_hierarchy))
+			return FALSE //no such job
+		for (var/datum/IAA_brief_jobban_info/JB in GLOB.IAA_active_jobbans_list)
+			if (JB.ckey == M.ckey && JB.status == "APPROVED")
+				if (rank_is_low_hierarchy(JB.job))
+					if (!is_low_hierarchy)
+						return "Restricted by CentComm"
+				else if (JB.job == rank)
 					return "Restricted by CentComm"
+
 	return FALSE
 
 /*

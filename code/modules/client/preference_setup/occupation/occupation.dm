@@ -110,6 +110,8 @@
 		if(bannedReason == "Whitelisted Job")
 			. += "<del>[rank]</del></td><td><b> \[WHITELIST]</b></td></tr>"
 			continue
+		else if (bannedReason == "Restricted by CentComm")
+			. += "<del>[rank]</del></td><td><b> \[RESTRICTED]</b></td></tr>"
 		else if(bannedReason)
 			. += "<del>[rank]</del></td><td><b> \[BANNED]</b></td></tr>"
 			continue

@@ -67,6 +67,7 @@
 	var/id
 	var/target_name
 	var/target_occupation
+	var/target_rank
 	var/target_ckey
 	var/signed = FALSE
 	var/obj/item/weapon/paper/complaint_form/main_form
@@ -126,6 +127,16 @@
 		target_name = strip_html_properly(fields["target_name"])
 		target_occupation = strip_html_properly(fields["target_occupation"])
 		signed = TRUE
+
+		for(var/mob/M in SSmobs.mob_list)
+			if (M.real_name != target_name || !M.ckey || !M.mind)
+				continue
+			if (target_occupation != (M.mind.role_alt_title ? M.mind.role_alt_title : M.mind.assigned_role))
+				continue
+			target_ckey = M.ckey
+			target_rank = M.mind.assigned_role //screw these alt titles, need real job to ban
+			break
+
 		return TRUE
 
 /obj/item/weapon/complaint_folder/attackby(obj/item/weapon/W, mob/user)
@@ -296,9 +307,14 @@
 /obj/item/weapon/complaint_folder/proc/postvalidate()
 	if (finished) //???
 		return "Already finished"
-	for(var/mob/M in SSmobs.mob_list)
-		if (M.real_name == target_name && M.ckey)
+	if (!target_ckey)
+		for(var/mob/M in SSmobs.mob_list)
+			if (M.real_name != target_name || !M.ckey || !M.mind)
+				continue
+			if (target_occupation != (M.mind.role_alt_title ? M.mind.role_alt_title : M.mind.assigned_role))
+				continue
 			target_ckey = M.ckey
+			target_rank = M.mind.assigned_role //screw these alt titles, need real job to ban
 			break
 
 	if (!target_ckey)
@@ -314,9 +330,8 @@
 		if (CF == main_form)
 			continue
 		others += CF.signed_ckey
-	var/datum/job/actual_job = job_master.GetJob(get_crewmember_record(target_name)?.get_job())
 	finished = TRUE
-	IAAJ_insert_new(id, target_ckey, main_form.signed_ckey, jointext(others, ", "), jointext(reason, "<hr><hr>"), actual_job ? actual_job.title : target_occupation)
+	IAAJ_insert_new(id, target_ckey, main_form.signed_ckey, jointext(others, ", "), jointext(reason, "<hr><hr>"), target_rank)
 	return
 
 #undef enum_CAPTAIN

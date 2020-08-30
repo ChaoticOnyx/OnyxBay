@@ -224,7 +224,6 @@ GLOBAL_LIST_EMPTY(IAA_approved_list)
 /datum/admins/proc/IAAJ_inspect_ban(id)
 	if(!check_rights(R_BAN))
 		return
-	ASSERT(isnum(id))
 	var/DBQuery/query
 	query = sql_query("SELECT id, fakeid, ckey, iaa_ckey, other_ckeys, reason, job, creation_time, resolve_time, \
 		resolve_comment, resolve_ckey, cancel_time, cancel_comment, cancel_ckey, status, expiration_time \
@@ -275,7 +274,7 @@ GLOBAL_LIST_EMPTY(IAA_approved_list)
 		return
 
 	if (href_list["iaaj_inspect"])
-		IAAJ_inspect_ban(text2num(href_list["iaaj_inspect"]))
+		IAAJ_inspect_ban(href_list["iaaj_inspect"])
 		return
 
 	if (href_list["iaaj_resolve"])
@@ -295,7 +294,7 @@ GLOBAL_LIST_EMPTY(IAA_approved_list)
 				var/comment = input(usr, "Enter comment:", "IAA approval comment") as text|null
 				if (!comment)
 					return
-				chosen_JB.resolve(approved = TRUE, comment, ckey = usr.ckey)
+				chosen_JB.resolve(approved = TRUE, comment = comment, ckey = usr.ckey)
 			if ("Deny")
 				var/comment = input(usr, "Enter comment:", "IAA deny comment") as text|null
 				if (!comment)
