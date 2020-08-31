@@ -175,6 +175,7 @@
 
 	storage_type = list(
 		/obj/item/weapon/storage/fancy/egg_box,
+		/obj/item/weapon/storage/lunchbox,
 	)
 
 	can_hold = list(
