@@ -2628,7 +2628,7 @@
 
 /datum/reagent/ethanol/kvas
 	name = "Kvas"
-	description = "Kvas is a traditional drink of Dr. Armolitsky commonly made from rye bread."
+	description = "Kvas is a traditional drink of old north nations from earth, commonly made from rye bread."
 	taste_description = "russkiy duh"
 	color = "#473000"
 	strength = 10
