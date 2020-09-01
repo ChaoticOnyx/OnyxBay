@@ -2625,3 +2625,23 @@
 	glass_icon_state = "zhenghe"
 	glass_name = "Zheng He cocktail"
 	glass_desc = "A rather bitter blend of vermouth and well-steeped black tea. Named for Zheng He, who travelled from Nanjing in China as far as Mogadishu in the Horn of Africa in the 15th century."
+
+/datum/reagent/ethanol/kvas
+	name = "Kvas"
+	description = "Kvass is a traditional fermented Slavic and Baltic beverage commonly made from rye bread."
+	taste_description = "russkiy duh"
+	color = "#473000"
+	strength = 10
+	adj_temp = 10
+
+	glass_required = "mug"
+	glass_icon_state = "kvas"
+	glass_name = "kvas"
+	glass_desc = "Tasty kvas, it has BEST antioxidants, it's good for your duh!"
+	glass_special = list(DRINK_FIZZ)
+
+/datum/reagent/ethanol/kvas/affect_ingest(mob/living/carbon/M, alien, removed)
+	..()
+	if(alien == IS_DIONA)
+		return
+	M.adjustToxLoss(-3 * removed)
