@@ -2629,7 +2629,7 @@
 /datum/reagent/ethanol/kvas
 	name = "Kvas"
 	description = "Kvas is a traditional drink of old north nations from earth, commonly made from rye bread."
-	taste_description = "russkiy duh"
+	taste_description = "old north valleys"
 	color = "#473000"
 	strength = 10
 	adj_temp = 10
@@ -2637,7 +2637,7 @@
 	glass_required = "mug"
 	glass_icon_state = "kvas"
 	glass_name = "kvas"
-	glass_desc = "Tasty kvas, it has BEST antioxidants, it's good for your duh!"
+	glass_desc = "Tasty kvas, it has BEST antioxidants, it's good for your soul!"
 	glass_special = list(DRINK_FIZZ)
 
 /datum/reagent/ethanol/kvas/affect_ingest(mob/living/carbon/M, alien, removed)
