@@ -68,10 +68,15 @@ GLOBAL_LIST_EMPTY(IAA_approved_list)
 
 /datum/IAA_brief_jobban_info/proc/resolve(approved = TRUE, comment = "automatic_approval", ckey = "system")
 	ASSERT(status == IAA_STATUS_PENDING)
+	var/action = approved ? IAA_STATUS_APPROVED : IAA_STATUS_DENIED
+	log_and_message_admins("IAA jobban <a href='?_src_=holder;iaaj_inspect=[id]'>[id] ([fakeid])</a> was [IAAJ_status_colorize(action, action)] by [ckey] ([comment])")
 	var/DBQuery/query
-	query = sql_query("UPDATE erro_iaa_jobban SET status = ?, resolve_time = Now(), resolve_comment = ?, resolve_ckey = ?, \
-		expiration_time = DATE_ADD(Now(), INTERVAL ? MINUTE) where id = ?", approved ? IAA_STATUS_APPROVED : IAA_STATUS_DENIED, comment, ckey, IAA_BAN_DURATION, id)
-
+	if (approved)
+		query = sql_query("UPDATE erro_iaa_jobban SET status = ?, resolve_time = Now(), resolve_comment = ?, resolve_ckey = ?, \
+			expiration_time = DATE_ADD(Now(), INTERVAL ? MINUTE) where id = ?", action, comment, ckey, IAA_BAN_DURATION, id)
+	else
+		query = sql_query("UPDATE erro_iaa_jobban SET status = ?, resolve_time = Now(), resolve_comment = ?, resolve_ckey = ? \
+			where id = ?", action, comment, ckey, id)	
 	if (approved)
 		query = sql_query("SELECT expiration_time FROM erro_iaa_jobban WHERE id = ?", id)
 		query.NextRow()
@@ -79,13 +84,20 @@ GLOBAL_LIST_EMPTY(IAA_approved_list)
 		IAA_approve(src.ckey)
 	else
 		IAA_disprove_by_id(id)
+	status = action
+	if (status != IAA_STATUS_APPROVED)
+		GLOB.IAA_active_jobbans_list -= src
+		qdel(src)
 
 /proc/IAAJ_cancel(id, comment, ckey)
-	var/DBQuery/query = sql_query("SELECT status FROM erro_iaa_jobban WHERE id = ?", id)
+	var/DBQuery/query = sql_query("SELECT status, fakeid FROM erro_iaa_jobban WHERE id = ?", id)
 	query.NextRow()
 	ASSERT(query.item[1] == IAA_STATUS_APPROVED)
+	var/fakeid = query.item[2]
+	var/action = IAA_STATUS_CANCELLED
+	log_and_message_admins("IAA jobban <a href='?_src_=holder;iaaj_inspect=[id]'>[id] ([fakeid])</a> was [IAAJ_status_colorize(action, action)] by [ckey] ([comment])")
 	query = sql_query("UPDATE erro_iaa_jobban SET status = ?, cancel_time = Now(), cancel_comment = ?, cancel_ckey = ? where id = ?", \
-		IAA_STATUS_CANCELLED, comment, ckey, id)
+		action, comment, ckey, id)
 	for (var/datum/IAA_brief_jobban_info/JB in GLOB.IAA_active_jobbans_list)
 		if (JB.id == id)
 			GLOB.IAA_active_jobbans_list -= JB
@@ -153,8 +165,9 @@ GLOBAL_LIST_EMPTY(IAA_approved_list)
 	JB.id = query.item[1]
 	JB.expiration_time = query.item[2]
 	GLOB.IAA_active_jobbans_list.Add(JB)
+	log_and_message_admins("Complaint <a href='?_src_=holder;iaaj_inspect=[JB.id]'>#[JB.id] ([JB.fakeid])</a> added into database.")
 	if (IAA_is_trustworthy(iaa_ckey))
-		message_admins("[iaa_ckey] is thrustworthy, complaint #[JB.id] was automatically approved.")
+		message_admins("[iaa_ckey] is thrustworthy, complaint <a href='?_src_=holder;iaaj_inspect=[JB.id]'>#[JB.id] ([JB.fakeid])</a> was automatically approved.")
 		JB.resolve()
 
 /proc/IAAJ_status_colorize(status, text)
@@ -174,8 +187,8 @@ GLOBAL_LIST_EMPTY(IAA_approved_list)
 	if(!check_rights(R_BAN))
 		return
 
-	var/dat = "<meta charset=\"utf-8\"><B>IAA active Jobans!</B><HR><table>"
-	dat += "<tr> <td> ID </td> <td> Who from who by who </td> <td> Expiration date </td> <td> Status </td> </tr>"
+	var/dat = "<meta charset=\"utf-8\"><B>IAA active Jobans!</B><HR><table border>"
+	dat += "<tr style=\"font-weight:bold\"> <td> ID </td> <td> Who from who by who </td> <td> Expiration date </td> <td> Status </td> </tr>"
 	for (var/datum/IAA_brief_jobban_info/JB in GLOB.IAA_active_jobbans_list)
 		dat += text("<tr><td><a href='?src=\ref[src];iaaj_inspect=[JB.id]'>[JB.id] ([JB.fakeid])</a></td> \
 			<td>[JB.ckey] banned from [JB.job] by [JB.iaa_ckey]</td> \
@@ -192,14 +205,14 @@ GLOBAL_LIST_EMPTY(IAA_approved_list)
 	ASSERT(isnum(startfrom))
 	if (startfrom < 0)
 		startfrom = 0
-	var/dat = "<meta charset=\"utf-8\"><B>IAA active Jobans!</B><HR>"
+	var/dat = "<meta charset=\"utf-8\"><B>IAA Jobans!</B><HR>"
 	if (!isnull(startfrom))
 		dat += "<a href = '?src=\ref[src];iaaj_page=[startfrom - 10]'> Previous page</a>"
 	else
 		dat += " Previous page"
 	dat += "<a href = '?src=\ref[src];iaaj_page=[startfrom + 10]'> Next page</a><hr>"
-	dat += "<table>"
-	dat += "<b><tr> <td> ID </td> <td> Who from who by who </td> <td> Expiration date </td> <td> Status </td> </tr>"
+	dat += "<table border>"
+	dat += "<tr style=\"font-weight:bold\"> <td> ID </td> <td> Who from who by who </td> <td> Expiration date </td> <td> Status </td> </tr>"
 	var/DBQuery/query
 	query = sql_query("SELECT id, fakeid, ckey, iaa_ckey, job, status, expiration_time FROM erro_iaa_jobban \
 		ORDER BY id DESC LIMIT [results_per_page] OFFSET [startfrom]")
@@ -261,7 +274,7 @@ GLOBAL_LIST_EMPTY(IAA_approved_list)
 	if (expiration_time)
 		dat += "Expires at [expiration_time] <BR>"
 	dat += "<HR>"
-	dat += "Reason: <BR> [reason]"
+	dat += "Reason (everything below): <BR><BR> [reason]"
 	usr << browse(dat, "window=iaaj_ban_inspect;size=400x400")
 	return
 

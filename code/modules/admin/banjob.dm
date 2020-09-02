@@ -13,13 +13,7 @@ var/jobban_keylist[0]		//to store the keys & ranks
 	jobban_keylist.Add(text("[ckey] - [rank]"))
 	jobban_savebanfile()
 
-/proc/rank_is_low_hierarchy(rank)
-	var/datum/job/J = job_master.GetJob(rank)
-	if (!istype(J))
-		return
-	return (J.department == "Civilian" || J.department == "Service" || J.department == "Supply")
-
-
+var/const/IAA_ban_reason = "Restricted by CentComm"
 //returns a reason if M is banned from rank, returns 0 otherwise
 /proc/jobban_isbanned(mob/M, rank)
 	if(M && rank)
@@ -45,16 +39,22 @@ var/jobban_keylist[0]		//to store the keys & ranks
 		if (!M.ckey)
 			return FALSE
 
-		var/is_low_hierarchy = rank_is_low_hierarchy(rank)
-		if (isnull(is_low_hierarchy))
-			return FALSE //no such job
+		var/datum/job/J = job_master.GetJob(rank)
+		if (!istype(J))
+			return FALSE
+
 		for (var/datum/IAA_brief_jobban_info/JB in GLOB.IAA_active_jobbans_list)
-			if (JB.ckey == M.ckey && JB.status == "APPROVED")
-				if (rank_is_low_hierarchy(JB.job))
-					if (!is_low_hierarchy)
-						return "Restricted by CentComm"
-				else if (JB.job == rank)
-					return "Restricted by CentComm"
+			if (JB.ckey != M.ckey || JB.status != "APPROVED")
+				continue
+			var/datum/job/J_banned = job_master.GetJob(JB.job)
+			if (rank == JB.job) //fastest check first
+				return IAA_ban_reason
+			if (J_banned.department == "Civilian" || J_banned.department == "Service" || J_banned.department == "Supply")
+				if (J.head_position)
+					return IAA_ban_reason
+			else if (J_banned.department == J.department)
+				if (J.head_position)
+					return IAA_ban_reason
 
 	return FALSE
 
