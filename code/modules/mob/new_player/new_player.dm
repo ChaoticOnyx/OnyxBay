@@ -340,7 +340,6 @@
 		return client.prefs.char_rank
 
 /mob/new_player/proc/AttemptLateSpawn(datum/job/job, spawning_at)
-	animate(client, color = null, time = 10) // delete all old special color shaders
 	if(src != usr)
 		return 0
 	if(GAME_STATE != RUNLEVEL_GAME)
@@ -386,6 +385,7 @@
 
 	character = job_master.EquipRank(character, job.title, 1)					//equips the human
 	equip_custom_items(character)
+	character.apply_traits()
 	// AIs don't need a spawnpoint, they must spawn at an empty core
 	if(character.mind.assigned_role == "AI")
 
@@ -420,8 +420,6 @@
 			M.playsound_local(M.loc, 'sound/signals/arrival1.ogg', 75)
 
 		matchmaker.do_matchmaking()
-	if (character.mind.assigned_role != "AI" && character.mind.assigned_role != "Cyborg")
-		character.apply_traits() // Preventing traits from being applied to silicons
 	log_and_message_admins("has joined the round as [character.mind.assigned_role].", character)
 	qdel(src)
 
@@ -474,7 +472,6 @@
 	src << browse(jointext(dat, null), "window=latechoices;size=450x640;can_close=1")
 
 /mob/new_player/proc/create_character(turf/spawn_turf)
-	animate(client, color = null, time = 10) // delete all old special color shaders
 	spawning = 1
 	close_spawn_windows()
 
@@ -539,6 +536,7 @@
 		mind.traits = client.prefs.traits.Copy()
 		mind.transfer_to(new_character)					//won't transfer key since the mind is not active
 
+	new_character.apply_traits()
 	new_character.SetName(real_name)
 	new_character.dna.ready_dna(new_character)
 	new_character.dna.b_type = client.prefs.b_type
@@ -560,9 +558,6 @@
 	// Give them their cortical stack if we're using them.
 	if(config && config.use_cortical_stacks && new_character.client && new_character.client.prefs.has_cortical_stack /*&& new_character.should_have_organ(BP_BRAIN)*/)
 		new_character.create_stack()
-
-	if (new_character.mind.assigned_role != "AI" && new_character.mind.assigned_role != "Cyborg")
-		new_character.apply_traits()
 
 	return new_character
 
