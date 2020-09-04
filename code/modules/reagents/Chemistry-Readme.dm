@@ -167,6 +167,9 @@ About Reagents:
 		touch_met
 			Ditto when touching.
 
+		inhale_met
+			How much of the reagent is processed when inhaled; by default equals 1 (100%), lower values decrease the absorbability.
+
 		dose
 			How much of the reagent has been processed, limited by [max_dose]. Used for reagents with varying effects (e.g. ethanol or rezadone) and overdosing.
 
@@ -225,6 +228,9 @@ About Reagents:
 
 		affect_touch(var/mob/living/carbon/M, var/alien, var/removed)
 			Ditto, touching.
+
+		affect_inhale(var/mob/living/carbon/M, var/alien, var/removed)
+			How reagent affects mob when inhaled. Defaults to affect_blood (75%) and affect_ingest (25%).
 
 		overdose(var/mob/living/carbon/M, var/alien)
 			Called when dose is above overdose. Defaults to M.adjustToxLoss(REM).

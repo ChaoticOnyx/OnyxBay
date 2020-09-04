@@ -10,6 +10,7 @@
 	var/metabolism = REM // This would be 0.2 normally
 	var/ingest_met = 0
 	var/touch_met = 0
+	var/inhale_met = 1
 	var/overdose = INFINITY
 	var/scannable = 0 // Shows up on health analyzers.
 	var/color = "#000000"
@@ -58,6 +59,8 @@
 		removed = ingest_met
 	if(touch_met && (location == CHEM_TOUCH))
 		removed = touch_met
+	if(location == CHEM_INHALE)
+		removed = value
 	for(var/datum/modifier/mod in M.modifiers)
 		if(!isnull(mod.metabolism_percent))
 			removed *= mod.metabolism_percent
@@ -78,6 +81,8 @@
 				affect_ingest(M, alien, effective)
 			if(CHEM_TOUCH)
 				affect_touch(M, alien, effective)
+			if(CHEM_INHALE)
+				affect_inhale(M, alien, removed * inhale_met) // Inhalation is different from other affects as it's processed instantly;
 
 	if(volume)
 		remove_self(removed)
@@ -91,6 +96,11 @@
 	return
 
 /datum/reagent/proc/affect_touch(mob/living/carbon/M, alien, removed)
+	return
+
+/datum/reagent/proc/affect_inhale(mob/living/carbon/M, alien, removed)
+	affect_blood(M, alien, removed * 0.75)
+	affect_ingest(M, alien, removed * 0.25)
 	return
 
 /datum/reagent/proc/overdose(mob/living/carbon/M, alien) // Overdose effect. Doesn't happen instantly.
