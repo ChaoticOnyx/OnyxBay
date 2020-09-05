@@ -36,7 +36,8 @@ datum/objective
 				target = possible_target
 				break
 
-
+	proc/process_currently()
+		return
 
 datum/objective/assassinate
 	find_target()
@@ -111,16 +112,13 @@ datum/objective/anti_revolution/brig
 		return target
 
 	check_completion()
-		if(already_completed)
-			return 1
+		return already_completed
 
-		if(target && target.current)
-			if(target.current.stat == DEAD)
-				return 0
-			if(target.is_brigged(10 * 60 * 10))
+	process_currently()
+		if(!already_completed && target && target.current)
+			if(target.is_brigged(10 * 60))
 				already_completed = 1
 				return 1
-			return 0
 		return 0
 
 datum/objective/anti_revolution/demote
@@ -338,17 +336,13 @@ datum/objective/brig
 		return target
 
 	check_completion()
-		if(already_completed)
-			return 1
+		return already_completed
 
-		if(target && target.current)
-			if(target.current.stat == DEAD)
-				return 0
-			// Make the actual required time a bit shorter than the official time
-			if(target.is_brigged(10 * 60 * 5))
+	process_currently()
+		if(!already_completed && target && target.current)
+			if(target.is_brigged(10 * 60))
 				already_completed = 1
 				return 1
-			return 0
 		return 0
 
 // Harm a crew member, making an example of them
