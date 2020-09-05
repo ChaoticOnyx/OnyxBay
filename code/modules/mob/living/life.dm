@@ -39,6 +39,10 @@
 	update_canmove()
 	handle_regular_hud_updates()
 
+	if(mind)
+		for(var/datum/objective/O in mind.objectives)
+			O.process_currently()
+
 	return 1
 
 /mob/living/proc/handle_neuromods()
