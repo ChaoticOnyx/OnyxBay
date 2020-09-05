@@ -59,24 +59,27 @@ SUBSYSTEM_DEF(storyteller)
 
 /datum/controller/subsystem/storyteller/proc/__get_params_for_ui(current_tab)
 	var/list/data = new
+	
+	switch (current_tab)
+		if ("StorytellerCPCharacterTab")
+			data["character"] = __character ? __character.get_params_for_ui() : null
 
-	if (current_tab == "StorytellerCPCharacterTab")
-		data["character"] = __character ? __character.get_params_for_ui() : null
+		if ("StorytellerCPMetricsTab")
+			var/list/metrics_data = new
+			for (var/type in __metrics)
+				var/storyteller_metric/metric = __metrics[type]
+				metrics_data[type] = metric.get_params_for_ui()
+			data["metrics"] = metrics_data
 
-	else if (current_tab == "StorytellerCPMetricsTab")
-		var/list/metrics_data = new
-		for (var/type in __metrics)
-			var/storyteller_metric/metric = __metrics[type]
-			metrics_data[type] = metric.get_params_for_ui()
-		data["metrics"] = metrics_data
-
-	else if (current_tab == "StorytellerCPTriggersTab")
-		var/list/triggers_data = new
-		for (var/type in __triggers)
-			var/storyteller_trigger/trigger = __triggers[type]
-			if (trigger.can_be_invoked())
-				triggers_data[type] = trigger.get_params_for_ui()
-		data["triggers"] = triggers_data
+		if ("StorytellerCPTriggersTab")
+			var/list/triggers_data = new
+			for (var/type in __triggers)
+				var/storyteller_trigger/trigger = __triggers[type]
+				if (trigger.can_be_invoked())
+					triggers_data[type] = trigger.get_params_for_ui()
+			data["triggers"] = triggers_data
+		
+		else crash_with("Bad tab key")
 	
 	return data
 
@@ -89,7 +92,7 @@ SUBSYSTEM_DEF(storyteller)
 		__ckey_to_ui_data[user.ckey] = list()
 	var/data = __ckey_to_ui_data[user.ckey]
 	data["storyteller"] = __get_params_for_ui(data["current_tab"])
-	data["pregame"] = !!(GAME_STATE < RUNLEVEL_GAME)
+	data["pregame"] = (GAME_STATE < RUNLEVEL_GAME)
 
 	var/ui_key = "storyteller_control_panel"
 	var/datum/nanoui/ui = SSnano.try_update_ui(user, src, ui_key, null, data, force_open=FALSE)
@@ -155,9 +158,9 @@ SUBSYSTEM_DEF(storyteller)
 	__character = new /datum/storyteller_character/support
 
 /datum/controller/subsystem/storyteller/proc/__create_all_metrics()
-	for (var/type in typesof(/storyteller_metric) - /storyteller_metric)
+	for (var/type in subtypesof(/storyteller_metric))
 		__metrics[type] = new type
 
 /datum/controller/subsystem/storyteller/proc/__create_all_triggers()
-	for (var/type in typesof(/storyteller_trigger) - /storyteller_trigger)
+	for (var/type in subtypesof(/storyteller_trigger))
 		__triggers[type] = new type

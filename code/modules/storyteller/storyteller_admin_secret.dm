@@ -3,7 +3,7 @@
 
 /datum/admin_secret_item/admin_secret/storyteller_control_panel/can_execute(mob/user)
 	if (!config.storyteller)
-		return 0
+		return FALSE
 	return ..()
 
 /datum/admin_secret_item/admin_secret/storyteller_control_panel/execute(mob/user)

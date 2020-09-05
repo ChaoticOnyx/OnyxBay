@@ -30,12 +30,11 @@
                     few moments ago
                 {{/if}}
                 </i>
-                <br>
             </div>
         {{/for}}
 
     {{else data.current_tab == "StorytellerCPTriggersTab"}}
-        <i>All of the triggers will be invoked immediately after button click. Be careful!</i><br>
+        <i>All of the triggers will be invoked immediately after button click. Be careful!</i>
         {{props data.storyteller.triggers :trigger :type}}
             <div class="item">
                 {{:helper.link(trigger.name, "", {"invoke_trigger" : type})}}
