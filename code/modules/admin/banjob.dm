@@ -36,9 +36,7 @@ var/const/IAA_ban_reason = "Restricted by CentComm"
 						return text
 				return "Reason Unspecified"
 
-		if (!M.ckey)
-			return FALSE
-
+		ASSERT(M.ckey)
 		var/datum/job/J = job_master.GetJob(rank)
 		if (!istype(J))
 			return FALSE

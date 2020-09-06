@@ -43,8 +43,8 @@
 	var/static/regex/named_field_tag_regex = regex(@"\[field=(\w+)\]", "g")
 	var/static/regex/named_sign_field_tag_regex = regex(@"\[signfield=(\w+)\]", "g")
 	var/static/regex/sign_field_regex = regex(@"<I><span class='sign_field_(\w+)'>sign here</span></I>", "g")
-	var/static/regex/named_field_extraction_regex = regex(@#<meta class="paper_fieldstart_N(\w+)">(.*?)(?:<meta class="paper_field_N\1">)?<meta class="paper_fieldend_N\1">#, "g")
-	var/static/regex/field_regex = regex(@#<meta class="paper_field_(\w+)">#, "g")
+	var/static/regex/named_field_extraction_regex = regex(@#<!--paper_fieldstart_N(\w+)-->(.*?)(?:<!--paper_field_N\1-->)?<!--paper_fieldend_N\1-->#, "g")
+	var/static/regex/field_regex = regex(@#<!--paper_field_(\w+)-->#, "g")
 	var/static/regex/field_link_regex = regex("<font face=\"[deffont]\"><A href='\\?src=\[^'\]+?;write=\[^'\]+'>write</A></font>", "g")
 
 /obj/item/weapon/paper/New(loc, text, title, noinit = FALSE)
@@ -213,7 +213,7 @@
 					H.update_body()
 
 /obj/item/weapon/paper/proc/addtofield(id, text, terminate = FALSE)
-	var/token = "<meta class=\"paper_field_[id]\">"
+	var/token = "<!--paper_field_[id]-->"
 	var/token_link = "<font face=\"[deffont]\"><A href='?src=\ref[src];write=[id]'>write</A></font>"
 	var/text_with_links = field_regex.Replace(text, "<font face=\"[deffont]\"><A href='?src=\ref[src];write=$1'>write</A></font>")
 	text_with_links = sign_field_regex.Replace(text_with_links, " <I><A href='?src=\ref[src];signfield=$1'>sign here</A></I> ")
@@ -230,7 +230,7 @@
 	info_links = sign_field_regex.Replace(info_links, " <I><A href='?src=\ref[src];signfield=$1'>sign here</A></I> ")
 
 	if (appendable)
-		info += "<meta class=\"paper_field_end\">"
+		info += "<!--paper_field_end-->"
 		info_links += "<font face=\"[deffont]\"><A href='?src=\ref[src];write=end'>write</A></font>"
 
 /obj/item/weapon/paper/proc/migrateinfolinks(from)
@@ -260,7 +260,7 @@
 	var/static/counter
 	if (!counter)
 		counter = 0
-	return "<meta class=\"paper_field_[counter++]\">"
+	return "<!--paper_field_[counter++]-->"
 
 /proc/new_sign_field(to_replace)
 	var/static/counter
@@ -281,8 +281,8 @@
 	//shouldn't allow users to create named fields because a) they're useless for them b) they'll (users) fuck you up
 	if (is_init)
 		//prefixed with N to prevent unnamed-named collisions
-		//start and end meta tags for cases when you want to extract info from named fields
-		t = replacetext(t, named_field_tag_regex, "<meta class=\"paper_fieldstart_N$1\"><meta class=\"paper_field_N$1\"><meta class=\"paper_fieldend_N$1\">")
+		//start and end tags for cases when you want to extract info from named fields
+		t = replacetext(t, named_field_tag_regex, "<!--paper_fieldstart_N$1--><!--paper_field_N$1--><!--paper_fieldend_N$1-->")
 		t = replacetext(t, named_sign_field_tag_regex, " <I><span class='sign_field_N$1'>sign here</span></I> ")
 
 	if(iscrayon) // If it is a crayon, and he still tries to use these, make them empty!

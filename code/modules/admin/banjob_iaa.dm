@@ -4,48 +4,29 @@ GLOBAL_LIST_EMPTY(IAA_approved_list)
 #define IAA_STATUS_PENDING          "PENDING"
 #define IAA_STATUS_APPROVED         "APPROVED"
 #define IAA_STATUS_DENIED           "DENIED"
-#define IAA_STATUS_CANCELLED  	    "CANCELLED"
+#define IAA_STATUS_CANCELLED        "CANCELLED"
 
-#define IAA_FAKE_ID_UPPER_LIMIT     16777215
-#define IAA_BAN_DURATION            60 * 24 * 7
-
-/proc/sql_query(template, ...)
-	var/list/arguments = args.Copy(2)
-	var/search_from = 1
-	var/arg_counter = 0
-	var/current_ind
-	while((current_ind = findtext(template, "?", search_from)))
-		ASSERT(++arg_counter <= arguments.len)
-		var/replacement = arguments[arg_counter]
-		if (!isnum(replacement))
-			replacement = dbcon.Quote("[replacement]")
-		var/temp = copytext(template, 1, current_ind)
-		temp += "[replacement]"
-		search_from = length(temp) + 1
-		template = temp + copytext(template, current_ind + 1)
-	ASSERT(arg_counter == arguments.len)
-	var/DBQuery/query = dbcon.NewQuery(template)
-	query.Execute()
-	return query
+#define IAA_FAKE_ID_UPPER_LIMIT     256 ** 3 - 1 //6 hex digits
+#define IAA_BAN_DURATION_IN_SECONDS 7 DAYS / (1 SECOND)
 
 /proc/IAA_approve(key)
 	key = ckey(key)
 	if (GLOB.IAA_approved_list[key])
 		GLOB.IAA_approved_list[key]++
-		sql_query("UPDATE erro_iaa_approved SET approvals = approvals + 1 where ckey = ?", key)
+		sql_query("UPDATE erro_iaa_approved SET approvals = approvals + 1 where ckey = $$", key)
 	else
 		GLOB.IAA_approved_list[key] = 1
-		sql_query("INSERT INTO erro_iaa_approved (`ckey`) VALUES (?)", key)
+		sql_query("INSERT INTO erro_iaa_approved (`ckey`) VALUES ($$)", key)
 	return
 
 /proc/IAA_disprove(key)
 	key = ckey(key)
 	GLOB.IAA_approved_list[key] = 0
-	sql_query("DELETE FROM erro_iaa_approved WHERE ckey = ?", key)
+	sql_query("DELETE FROM erro_iaa_approved WHERE ckey = $$", key)
 	return
 
 /proc/IAA_disprove_by_id(id)
-	var/DBQuery/query = sql_query("SELECT iaa_ckey, other_ckeys FROM erro_iaa_jobban WHERE id = ?", id)
+	var/DBQuery/query = sql_query("SELECT iaa_ckey, other_ckeys FROM erro_iaa_jobban WHERE id = $$", id)
 	query.NextRow()
 	IAA_disprove(query.item[1])
 	var/list/others = splittext(query.item[2], ", ")
@@ -69,16 +50,25 @@ GLOBAL_LIST_EMPTY(IAA_approved_list)
 /datum/IAA_brief_jobban_info/proc/resolve(approved = TRUE, comment = "automatic_approval", ckey = "system")
 	ASSERT(status == IAA_STATUS_PENDING)
 	var/action = approved ? IAA_STATUS_APPROVED : IAA_STATUS_DENIED
-	log_and_message_admins("IAA jobban <a href='?_src_=holder;iaaj_inspect=[id]'>[id] ([fakeid])</a> was [IAAJ_status_colorize(action, action)] by [ckey] ([comment])")
+	message_admins("IAA jobban <a href='?_src_=holder;iaaj_inspect=[id]'>[id] ([fakeid])</a> was [IAAJ_status_colorize(action, action)] by [ckey] ([comment])")
+	log_admin("IAA jobban [id] ([fakeid]) was [action] by [ckey] ([comment])")
 	var/DBQuery/query
 	if (approved)
-		query = sql_query("UPDATE erro_iaa_jobban SET status = ?, resolve_time = Now(), resolve_comment = ?, resolve_ckey = ?, \
-			expiration_time = DATE_ADD(Now(), INTERVAL ? MINUTE) where id = ?", action, comment, ckey, IAA_BAN_DURATION, id)
+		query = sql_query("UPDATE erro_iaa_jobban SET status = $status, resolve_time = Now(), resolve_comment = $comment, resolve_ckey = $ckey, \
+			expiration_time = DATE_ADD(Now(), INTERVAL $duration MINUTE) WHERE id = $id", list(
+				status = action,
+				comment = comment,
+				ckey = ckey,
+				duration = IAA_BAN_DURATION_IN_SECONDS,
+				id = id))
 	else
-		query = sql_query("UPDATE erro_iaa_jobban SET status = ?, resolve_time = Now(), resolve_comment = ?, resolve_ckey = ? \
-			where id = ?", action, comment, ckey, id)	
+		query = sql_query("UPDATE erro_iaa_jobban SET status = $status, resolve_time = Now(), resolve_comment = $comment, resolve_ckey = $ckey WHERE id = $id", list(
+				status = action,
+				comment = comment,
+				ckey = ckey,
+				id = id))
 	if (approved)
-		query = sql_query("SELECT expiration_time FROM erro_iaa_jobban WHERE id = ?", id)
+		query = sql_query("SELECT expiration_time FROM erro_iaa_jobban WHERE id = $$", id)
 		query.NextRow()
 		expiration_time = query.item[1]
 		IAA_approve(src.ckey)
@@ -90,14 +80,18 @@ GLOBAL_LIST_EMPTY(IAA_approved_list)
 		qdel(src)
 
 /proc/IAAJ_cancel(id, comment, ckey)
-	var/DBQuery/query = sql_query("SELECT status, fakeid FROM erro_iaa_jobban WHERE id = ?", id)
+	var/DBQuery/query = sql_query("SELECT status, fakeid FROM erro_iaa_jobban WHERE id = $$", id)
 	query.NextRow()
 	ASSERT(query.item[1] == IAA_STATUS_APPROVED)
 	var/fakeid = query.item[2]
 	var/action = IAA_STATUS_CANCELLED
-	log_and_message_admins("IAA jobban <a href='?_src_=holder;iaaj_inspect=[id]'>[id] ([fakeid])</a> was [IAAJ_status_colorize(action, action)] by [ckey] ([comment])")
-	query = sql_query("UPDATE erro_iaa_jobban SET status = ?, cancel_time = Now(), cancel_comment = ?, cancel_ckey = ? where id = ?", \
-		action, comment, ckey, id)
+	message_admins("IAA jobban <a href='?_src_=holder;iaaj_inspect=[id]'>[id] ([fakeid])</a> was [IAAJ_status_colorize(action, action)] by [ckey] ([comment])")
+	log_admin("IAA jobban [id] ([fakeid]) was [action] by [ckey] ([comment])")
+	query = sql_query("UPDATE erro_iaa_jobban SET status = $status, cancel_time = Now(), cancel_comment = $comment, cancel_ckey = $ckey where id = $id", list(
+		status = action,
+		comment = comment,
+		ckey = ckey,
+		id = id))
 	for (var/datum/IAA_brief_jobban_info/JB in GLOB.IAA_active_jobbans_list)
 		if (JB.id == id)
 			GLOB.IAA_active_jobbans_list -= JB
@@ -135,7 +129,7 @@ GLOBAL_LIST_EMPTY(IAA_approved_list)
 		GLOB.IAA_approved_list[query.item[1]] = query.item[2]
 
 /proc/IAAJ_check_fakeid_available(fakeid)
-	var/DBQuery/query = sql_query("SELECT fakeid FROM erro_iaa_jobban where fakeid = ?", fakeid)
+	var/DBQuery/query = sql_query("SELECT fakeid FROM erro_iaa_jobban where fakeid = $$", fakeid)
 	return !query.RowCount()
 
 /proc/IAAJ_generate_fake_id()
@@ -146,7 +140,7 @@ GLOBAL_LIST_EMPTY(IAA_approved_list)
 
 /proc/IAAJ_insert_new(fakeid, ckey, iaa_ckey, other_ckeys, reason, job)
 	if (!IAAJ_check_fakeid_available(fakeid))
-		message_admins("IAAJ fakeid collision. Possible duplicate?")
+		message_admins("IAAJ fakeid collision. Possible re-send and/or duplicate?")
 		return
 	var/datum/IAA_brief_jobban_info/JB = new()
 	JB.fakeid = fakeid
@@ -158,14 +152,22 @@ GLOBAL_LIST_EMPTY(IAA_approved_list)
 	var/DBQuery/query
 	query = sql_query("INSERT INTO erro_iaa_jobban \
 		(`fakeid`, `ckey`, `iaa_ckey`, `other_ckeys`, `reason`, `job`, `creation_time`, `status`) VALUES \
-		(?, ?, ?, ?, ?, ?, Now(), ?)", fakeid, ckey, iaa_ckey, other_ckeys, reason, job, IAA_STATUS_PENDING)
+		($fakeid, $ckey, $iaa_ckey, $other_ckeys, $reason, $job, Now(), $status)", list(
+			fakeid = fakeid,
+			ckey = ckey,
+			iaa_ckey = iaa_ckey,
+			other_ckeys = other_ckeys,
+			reason = reason,
+			job = job,
+			status = IAA_STATUS_PENDING))
 
-	query = sql_query("SELECT id, creation_time FROM erro_iaa_jobban WHERE fakeid = ?", fakeid)
+	query = sql_query("SELECT id, creation_time FROM erro_iaa_jobban WHERE fakeid = $$", fakeid)
 	query.NextRow() //tbh I have no real idea how to handle database faults so might as well let it crash right there if it happens
 	JB.id = query.item[1]
 	JB.expiration_time = query.item[2]
 	GLOB.IAA_active_jobbans_list.Add(JB)
-	log_and_message_admins("Complaint <a href='?_src_=holder;iaaj_inspect=[JB.id]'>#[JB.id] ([JB.fakeid])</a> added into database.")
+	message_admins("Complaint <a href='?_src_=holder;iaaj_inspect=[JB.id]'>#[JB.id] ([JB.fakeid])</a> added into database.")
+	log_admin("Complaint #[JB.id] ([JB.fakeid]) added into database.")
 	if (IAA_is_trustworthy(iaa_ckey))
 		message_admins("[iaa_ckey] is thrustworthy, complaint <a href='?_src_=holder;iaaj_inspect=[JB.id]'>#[JB.id] ([JB.fakeid])</a> was automatically approved.")
 		JB.resolve()
@@ -240,7 +242,7 @@ GLOBAL_LIST_EMPTY(IAA_approved_list)
 	var/DBQuery/query
 	query = sql_query("SELECT id, fakeid, ckey, iaa_ckey, other_ckeys, reason, job, creation_time, resolve_time, \
 		resolve_comment, resolve_ckey, cancel_time, cancel_comment, cancel_ckey, status, expiration_time \
-		FROM erro_iaa_jobban WHERE id = ?", id)
+		FROM erro_iaa_jobban WHERE id = $$", id)
 	query.NextRow()
 	var/fakeid            = query.item[ 2]
 	var/ckey              = query.item[ 3]
