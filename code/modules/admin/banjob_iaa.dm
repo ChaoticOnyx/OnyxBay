@@ -189,7 +189,11 @@ GLOBAL_LIST_EMPTY(IAA_approved_list)
 		FROM
 			erro_iaa_jobban
 		WHERE
-			(status = '[IAA_STATUS_PENDING]' OR status = '[IAA_STATUS_APPROVED]' AND IFNULL(expiration_time, Now()) >= Now())
+			(status = '[IAA_STATUS_PENDING]'
+			OR
+			status = '[IAA_STATUS_APPROVED]'
+			AND
+			IFNULL(expiration_time, Now()) >= Now())
 		"})
 	while (query.NextRow())
 		var/datum/IAA_brief_jobban_info/JB = new()
