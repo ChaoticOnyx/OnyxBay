@@ -1570,14 +1570,15 @@
 		return
 	else if (href_list["AdminFaxViewPaper"])
 		var/obj/item/weapon/paper/P = locate(href_list["AdminFaxViewPaper"])
-		if (P)
-			P.show_content(src.owner, 1)
+		ASSERT(istype(P))
+		P.show_content(src.owner, 1)
 		return
 	else if (href_list["AdminFaxComplaintCkey"])
 		var/obj/item/weapon/complaint_folder/CF = locate(href_list["AdminFaxComplaintCkey"])
-		var/key = input(usr, "Enter target ckey:", "Complaint ckey manual fix", "???") as text|null
-		var/rank = input(usr, "Enter target rank:", "Complaint rank manual fix", "???") as text|null
-		if (CF && key && rank)
+		ASSERT(istype(CF))
+		var/key = sanitize(input(usr, "Enter target ckey:", "Complaint ckey manual fix", "???") as text|null)
+		var/rank = sanitize(input(usr, "Enter target rank:", "Complaint rank manual fix", "???") as text|null)
+		if (key && rank)
 			CF.target_ckey = ckey(key)
 			CF.target_rank = rank
 			CF.postvalidate()

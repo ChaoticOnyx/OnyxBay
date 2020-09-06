@@ -17,6 +17,7 @@ GLOBAL_LIST_EMPTY(adminfaxes)	//cache for faxes that have been sent to admins
 	var/obj/item/weapon/card/id/scan = null // identification
 	var/authenticated = 0
 	var/sendcooldown = 0 // to avoid spamming fax messages
+	var/print_cooldown = 30 SECONDS //to avoid spamming printing complaints
 	var/department = "Unknown" // our department
 	var/destination = null // the department we're sending to
 
@@ -86,12 +87,25 @@ GLOBAL_LIST_EMPTY(adminfaxes)	//cache for faxes that have been sent to admins
 	onclose(user, "copier")
 	return
 
+/obj/machinery/photocopier/faxmachine/proc/print_cooldown_check()
+	if (print_cooldown)
+		return
+	print_cooldown = initial(print_cooldown)
+	addtimer(CALLBACK(src, .go_off_print_cooldown), print_cooldown)
+	return TRUE
+
+/obj/machinery/photocopier/faxmachine/proc/go_off_print_cooldown()
+	print_cooldown = 0
+
 /obj/machinery/photocopier/faxmachine/Topic(href, href_list)
+	. = ..()
+	if (.)
+		return
 	if(href_list["print_complaint"])
 		var/id = IAAJ_generate_fake_id()
-		if (!id)
-			return
-		new /obj/item/weapon/complaint_folder(src.loc, id)
+		ASSERT(id)
+		if (print_cooldown_check())
+			new /obj/item/weapon/complaint_folder(src.loc, id)
 		return
 	if(href_list["send"])
 		if(copyitem)

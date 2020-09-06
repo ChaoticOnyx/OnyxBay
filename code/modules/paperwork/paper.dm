@@ -251,7 +251,7 @@
 	generateinfolinks()
 	update_icon()
 
-/obj/item/weapon/paper/proc/get_signature(obj/item/weapon/pen/P, mob/user as mob, signfield)
+/obj/item/weapon/paper/proc/get_signature(obj/item/weapon/pen/P, mob/user, signfield)
 	if(P && istype(P, /obj/item/weapon/pen))
 		return P.get_signature(user)
 	return (user && user.real_name) ? user.real_name : "Anonymous"

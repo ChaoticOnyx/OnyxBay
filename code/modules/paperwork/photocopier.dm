@@ -48,6 +48,9 @@
 	return busy
 
 /obj/machinery/photocopier/Topic(href, href_list)
+	. = ..()
+	if (.)
+		return
 	if (busy_check(usr))
 		return
 	if(href_list["copy"])

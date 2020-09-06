@@ -102,10 +102,7 @@ GLOBAL_LIST_EMPTY(IAA_approved_list)
 	return 1
 
 /proc/IAAJ_populate()
-	if(!establish_db_connection())
-		error("Database connection failed. Aborting IAA jobbans loading.")
-		log_misc("Database connection failed. Aborting IAA jobbans loading.")
-		return
+	ASSERT(establish_db_connection())
 
 	var/DBQuery/query
 	query = sql_query("SELECT id, fakeid, ckey, iaa_ckey, job, status, expiration_time FROM erro_iaa_jobban \

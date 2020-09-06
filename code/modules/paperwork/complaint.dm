@@ -9,16 +9,18 @@
 /obj/item/weapon/paper/complaint_form/examine(mob/user)
 	. = ..()
 	if (signed)
-		. += "\n[SPAN_NOTICE("It appears to be signed. Any modifications will be rejected.")]"
+		. += "\n[SPAN_NOTICE("It appears to be signed. It can't be modified.")]"
 	else
 		. += "\n[SPAN_NOTICE("It appears to be unsigned and ready for modifications.")]"
 
 
-/obj/item/weapon/paper/complaint_form/get_signature(obj/item/weapon/pen/P, mob/user as mob, signfield)
+/obj/item/weapon/paper/complaint_form/get_signature(obj/item/weapon/pen/P, mob/user, signfield)
 	. = ..()
 	if (signfield == "finish")
 		signed = TRUE
 		signed_ckey = user?.client?.ckey
+		if (isnull(signed_ckey))
+			crash_with("THIS IS NOT AN ERROR. obj/item/weapon/paper/complaint_form got signed by mob/user with no client/ckey, if it is intended remove that `crash_with`")
 		signed_name = strip_html_properly(.)
 		name += ", signed by [signed_name]"
 		make_readonly() //nanomachines, son
@@ -143,7 +145,7 @@
 	if (istype(W, /obj/item/weapon/paper/complaint_form))
 		var/obj/item/weapon/paper/complaint_form/CF = W
 		if (!check_signed())
-			to_chat(user, SPAN_WARNING("Sign [src] first!")) //how did they get complaint form tho?
+			to_chat(user, SPAN_WARNING("Sign [src] first!"))
 			return
 		if (id == CF.id)
 			to_chat(user, SPAN_NOTICE("You add \the [CF] to \the [src]."))
@@ -159,7 +161,7 @@
 
 	return ..()
 
-/obj/item/weapon/complaint_folder/attack_self(mob/living/user as mob)
+/obj/item/weapon/complaint_folder/attack_self(mob/living/user)
 	user.examinate(main_form)
 	return ..()
 
@@ -219,8 +221,8 @@
 			return (captains >= 1 && crewmembers + heads >= 2 || crewmembers + heads >= 5)
 		if (enum_CREWMEMBER)
 			return (captains + heads >= 1 && crewmembers + heads + captains >= 2 || crewmembers + heads + captains >= 5)
-		else //???
-			return FALSE
+		else
+			EXCEPTION("Invalid target_significance")
 
 
 //validation procs return reason if validation fails
@@ -228,8 +230,9 @@
 //validation happens after sending to admins but before working with database, fail reason is relayed to admins
 
 /obj/item/weapon/complaint_folder/proc/prevalidate()
-	if (finished) //???
+	if (finished)
 		return //no need to alert the crew
+
 	if (!check_signed())
 		return "Main form is not signed"
 
@@ -278,34 +281,34 @@
 				heads++
 			if(enum_CREWMEMBER)
 				crewmembers++
-			else //???
-				return "Verification software error"
+			else
+				EXCEPTION("Invalid record")
 
 	if (!check_requirements(target_significance, captains, heads, crewmembers))
 		return "Minimal requirements on supplementary complaints weren't reached"
 	return //success
 
 /obj/item/weapon/complaint_folder/proc/validate()
-	if (finished) //???
+	if (finished)
 		return "Already finished"
 	var/list/ckeys = list()
 	for (var/obj/item/weapon/paper/complaint_form/CF in contents)
 		if (CF.signed_ckey in ckeys)
 			return "Duplicate ckey found"
-		if (!CF.signed_ckey) //???
+		if (!CF.signed_ckey)
 			return "Signed form with no ckey bound found"
 		ckeys += CF.signed_ckey
 
 	var/main_ckey = main_form.signed_ckey
 	var/mob/main_mob = get_mob_by_key(main_ckey)
-	if (!main_mob.mind) //???
+	if (!main_mob.mind)
 		return "Sender has no mind"
 	if (main_mob.mind.assigned_role != "Internal Affairs Agent")
 		return "IAA wasn't assigned by Centcomm"
 	return //success
 
 /obj/item/weapon/complaint_folder/proc/postvalidate()
-	if (finished) //???
+	if (finished)
 		return "Already finished"
 	if (!target_ckey)
 		for(var/mob/M in SSmobs.mob_list)
