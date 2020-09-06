@@ -7,7 +7,7 @@ GLOBAL_LIST_EMPTY(IAA_approved_list)
 #define IAA_STATUS_CANCELLED        "CANCELLED"
 
 #define IAA_FAKE_ID_UPPER_LIMIT     256 ** 3 - 1 //6 hex digits
-#define IAA_BAN_DURATION_IN_SECONDS 7 DAYS / (1 SECOND)
+#define IAA_BAN_DURATION_DAYS       7
 
 /proc/IAA_approve(key)
 	key = ckey(key)
@@ -55,11 +55,11 @@ GLOBAL_LIST_EMPTY(IAA_approved_list)
 	var/DBQuery/query
 	if (approved)
 		query = sql_query("UPDATE erro_iaa_jobban SET status = $status, resolve_time = Now(), resolve_comment = $comment, resolve_ckey = $ckey, \
-			expiration_time = DATE_ADD(Now(), INTERVAL $duration MINUTE) WHERE id = $id", list(
+			expiration_time = DATE_ADD(Now(), INTERVAL $duration DAY) WHERE id = $id", list(
 				status = action,
 				comment = comment,
 				ckey = ckey,
-				duration = IAA_BAN_DURATION_IN_SECONDS,
+				duration = IAA_BAN_DURATION_DAYS,
 				id = id))
 	else
 		query = sql_query("UPDATE erro_iaa_jobban SET status = $status, resolve_time = Now(), resolve_comment = $comment, resolve_ckey = $ckey WHERE id = $id", list(

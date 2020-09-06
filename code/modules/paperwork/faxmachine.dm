@@ -17,7 +17,7 @@ GLOBAL_LIST_EMPTY(adminfaxes)	//cache for faxes that have been sent to admins
 	var/obj/item/weapon/card/id/scan = null // identification
 	var/authenticated = 0
 	var/sendcooldown = 0 // to avoid spamming fax messages
-	var/print_cooldown = 30 SECONDS //to avoid spamming printing complaints
+	var/print_cooldown = 0 //to avoid spamming printing complaints
 	var/department = "Unknown" // our department
 	var/destination = null // the department we're sending to
 
@@ -74,8 +74,10 @@ GLOBAL_LIST_EMPTY(adminfaxes)	//cache for faxes that have been sent to admins
 				dat += "<b>Transmitter arrays realigning. Please stand by.</b><br>"
 			else
 				dat += "Please insert paper to send via secure connection.<br><br>"
-
-		dat += "<a href ='byond://?src=\ref[src];print_complaint=1'>Print complaint kit</a><br>"
+		if (print_cooldown)
+			dat += "<b> Complaint printer is recharging. Please stand by. </b><br>"
+		else
+			dat += "<a href ='byond://?src=\ref[src];print_complaint=1'>Print complaint kit</a><br>"
 	else
 		dat += "Proper authentication is required to use this device.<br><br>"
 
@@ -90,7 +92,7 @@ GLOBAL_LIST_EMPTY(adminfaxes)	//cache for faxes that have been sent to admins
 /obj/machinery/photocopier/faxmachine/proc/print_cooldown_check()
 	if (print_cooldown)
 		return
-	print_cooldown = initial(print_cooldown)
+	print_cooldown = 30 SECONDS
 	addtimer(CALLBACK(src, .go_off_print_cooldown), print_cooldown)
 	return TRUE
 
@@ -99,14 +101,14 @@ GLOBAL_LIST_EMPTY(adminfaxes)	//cache for faxes that have been sent to admins
 
 /obj/machinery/photocopier/faxmachine/Topic(href, href_list)
 	. = ..()
-	if (.)
+	if (. != TOPIC_NOACTION)
 		return
 	if(href_list["print_complaint"])
-		var/id = IAAJ_generate_fake_id()
-		ASSERT(id)
 		if (print_cooldown_check())
+			var/id = IAAJ_generate_fake_id()
+			ASSERT(id)
 			new /obj/item/weapon/complaint_folder(src.loc, id)
-		return
+			. =  TOPIC_HANDLED
 	if(href_list["send"])
 		if(copyitem)
 			if (destination in admin_departments)

@@ -49,7 +49,7 @@
 
 /obj/machinery/photocopier/Topic(href, href_list)
 	. = ..()
-	if (.)
+	if (. != TOPIC_NOACTION)
 		return
 	if (busy_check(usr))
 		return
