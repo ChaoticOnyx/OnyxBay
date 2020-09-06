@@ -143,7 +143,9 @@ GLOBAL_LIST_EMPTY(IAA_approved_list)
 		WHERE
 			id = $$
 		"}, id)
-	query.NextRow()
+	if (!query.NextRow())
+		to_chat(usr, "No entry with such id")
+		return
 	ASSERT(query.item[1] == IAA_STATUS_APPROVED)
 	var/fakeid = query.item[2]
 	var/action = IAA_STATUS_CANCELLED
@@ -158,7 +160,7 @@ GLOBAL_LIST_EMPTY(IAA_approved_list)
 			cancel_comment = $comment,
 			cancel_ckey = $ckey
 		WHERE
-			id = $id", list(
+			id = $id"}, list(
 		status = action,
 		comment = comment,
 		ckey = ckey,
@@ -174,7 +176,6 @@ GLOBAL_LIST_EMPTY(IAA_approved_list)
 
 /proc/IAAJ_populate()
 	ASSERT(establish_db_connection())
-
 	var/DBQuery/query
 	query = sql_query({"
 		SELECT
@@ -188,13 +189,8 @@ GLOBAL_LIST_EMPTY(IAA_approved_list)
 		FROM
 			erro_iaa_jobban
 		WHERE
-			(status = '[IAA_STATUS_PENDING]'
-			OR
-			status = '[IAA_STATUS_APPROVED]'
-			AND
-			IFNULL(expiration_time, Now()) >= Now())
+			(status = '[IAA_STATUS_PENDING]' OR status = '[IAA_STATUS_APPROVED]' AND IFNULL(expiration_time, Now()) >= Now())
 		"})
-
 	while (query.NextRow())
 		var/datum/IAA_brief_jobban_info/JB = new()
 		JB.id              = query.item[1]
@@ -254,7 +250,8 @@ GLOBAL_LIST_EMPTY(IAA_approved_list)
 				`ckey`,
 				`iaa_ckey`,
 				`other_ckeys`,
-				`reason`, `job`,
+				`reason`,
+				`job`,
 				`creation_time`,
 				`status`
 			)
@@ -263,9 +260,11 @@ GLOBAL_LIST_EMPTY(IAA_approved_list)
 				$ckey,
 				$iaa_ckey,
 				$other_ckeys,
-				$reason, $job,
+				$reason,
+				$job,
 				Now(),
-				$status)
+				$status
+			)
 			"}, list(
 			fakeid = fakeid,
 			ckey = ckey,
@@ -275,7 +274,15 @@ GLOBAL_LIST_EMPTY(IAA_approved_list)
 			job = job,
 			status = IAA_STATUS_PENDING))
 
-	query = sql_query("SELECT id, creation_time FROM erro_iaa_jobban WHERE fakeid = $$", fakeid)
+	query = sql_query({"
+		SELECT
+			id,
+			creation_time
+		FROM
+			erro_iaa_jobban
+		WHERE
+			fakeid = $$
+		"}, fakeid)
 	query.NextRow() //tbh I have no real idea how to handle database faults so might as well let it crash right there if it happens
 	JB.id = query.item[1]
 	JB.expiration_time = query.item[2]
@@ -389,7 +396,9 @@ GLOBAL_LIST_EMPTY(IAA_approved_list)
 		WHERE
 			id = $$
 		"}, id)
-	query.NextRow()
+	if (!query.NextRow())
+		to_chat(usr, "No entry with such id")
+		return
 	var/fakeid            = query.item[ 2]
 	var/ckey              = query.item[ 3]
 	var/iaa_ckey          = query.item[ 4]
