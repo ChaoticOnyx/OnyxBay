@@ -5,18 +5,16 @@
 		return
 
 	var/near = view(src)
-	var/is_ghost = isghost(src)
 	var/dist_speech = get_dist(speaker, src)
-	var/pref_ghost_ears_all_speech = get_preference_value(/datum/client_preference/ghost_ears) == GLOB.PREF_ALL_SPEECH
 
-	if(speaker && !speaker.client && is_ghost && pref_ghost_ears_all_speech && !(speaker in near))
+	if(speaker && !speaker.client && isghost(src) && get_preference_value(/datum/client_preference/ghost_ears) == GLOB.PREF_ALL_SPEECH && !(speaker in near))
 			//Does the speaker have a client?  It's either random stuff that observers won't care about (Experiment 97B says, 'EHEHEHEHEHEHEHE')
 			//Or someone snoring.  So we make it where they won't hear it.
 		return
 
 	//make sure the air can transmit speech - hearer's side
 	var/turf/T = get_turf(src)
-	if(T && !is_ghost) //Ghosts can hear even in vacuum.
+	if(T && !isghost(src)) //Ghosts can hear even in vacuum.
 		var/datum/gas_mixture/environment = T.return_air()
 		var/pressure = (environment)? environment.return_pressure() : 0
 		if(pressure < SOUND_MINIMUM_PRESSURE && dist_speech > 1)
@@ -73,11 +71,11 @@
 		message = "<i>[message]</i>"
 
 	var/track = null
-	if(is_ghost)
+	if(isghost(src))
 		if(speaker_name != speaker.real_name && speaker.real_name)
 			speaker_name = "[speaker.real_name] ([speaker_name])"
 		track = "([ghost_follow_link(speaker, src)]) "
-		if(pref_ghost_ears_all_speech && (speaker in near))
+		if(get_preference_value(/datum/client_preference/ghost_ears) == GLOB.PREF_ALL_SPEECH && (speaker in near))
 			message = "<b>[message]</b>"
 
 	if(is_deaf())
