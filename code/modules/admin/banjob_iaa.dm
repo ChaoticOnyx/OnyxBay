@@ -13,20 +13,47 @@ GLOBAL_LIST_EMPTY(IAA_approved_list)
 	key = ckey(key)
 	if (GLOB.IAA_approved_list[key])
 		GLOB.IAA_approved_list[key]++
-		sql_query("UPDATE erro_iaa_approved SET approvals = approvals + 1 where ckey = $$", key)
+		sql_query({"
+			UPDATE
+				erro_iaa_approved
+			SET
+				approvals = approvals + 1
+			WHERE
+				ckey = $$
+			"}, key)
 	else
 		GLOB.IAA_approved_list[key] = 1
-		sql_query("INSERT INTO erro_iaa_approved (`ckey`) VALUES ($$)", key)
+		sql_query({"
+			INSERT INTO
+				erro_iaa_approved (
+					`ckey`
+				)
+			VALUES
+				($$)
+			"}, key)
 	return
 
 /proc/IAA_disprove(key)
 	key = ckey(key)
 	GLOB.IAA_approved_list[key] = 0
-	sql_query("DELETE FROM erro_iaa_approved WHERE ckey = $$", key)
+	sql_query({"
+		DELETE FROM
+			erro_iaa_approved
+		WHERE
+			ckey = $$
+		"}, key)
 	return
 
 /proc/IAA_disprove_by_id(id)
-	var/DBQuery/query = sql_query("SELECT iaa_ckey, other_ckeys FROM erro_iaa_jobban WHERE id = $$", id)
+	var/DBQuery/query = sql_query({"
+		SELECT
+			iaa_ckey,
+			other_ckeys
+		FROM
+			erro_iaa_jobban
+		WHERE
+			id = $$
+		"}, id)
 	query.NextRow()
 	IAA_disprove(query.item[1])
 	var/list/others = splittext(query.item[2], ", ")
@@ -54,21 +81,48 @@ GLOBAL_LIST_EMPTY(IAA_approved_list)
 	log_admin("IAA jobban [id] ([fakeid]) was [action] by [ckey] ([comment])")
 	var/DBQuery/query
 	if (approved)
-		query = sql_query("UPDATE erro_iaa_jobban SET status = $status, resolve_time = Now(), resolve_comment = $comment, resolve_ckey = $ckey, \
-			expiration_time = DATE_ADD(Now(), INTERVAL $duration DAY) WHERE id = $id", list(
+		query = sql_query({"
+			UPDATE
+				erro_iaa_jobban
+			SET
+				status = $status,
+				resolve_time = Now(),
+				resolve_comment = $comment,
+				resolve_ckey = $ckey,
+				expiration_time = DATE_ADD(Now(), INTERVAL $duration DAY)
+			WHERE
+				id = $id
+			"}, list(
 				status = action,
 				comment = comment,
 				ckey = ckey,
 				duration = IAA_BAN_DURATION_DAYS,
 				id = id))
 	else
-		query = sql_query("UPDATE erro_iaa_jobban SET status = $status, resolve_time = Now(), resolve_comment = $comment, resolve_ckey = $ckey WHERE id = $id", list(
+		query = sql_query({"
+			UPDATE
+				erro_iaa_jobban
+			SET
+				status = $status,
+				resolve_time = Now(),
+				resolve_comment = $comment,
+				resolve_ckey = $ckey
+			WHERE
+				id = $id
+			"}, list(
 				status = action,
 				comment = comment,
 				ckey = ckey,
 				id = id))
 	if (approved)
-		query = sql_query("SELECT expiration_time FROM erro_iaa_jobban WHERE id = $$", id)
+		query = sql_query({"
+			SELECT
+				expiration_time
+			FROM
+				erro_iaa_jobban
+			WHERE
+				id = $$
+			"}, id)
 		query.NextRow()
 		expiration_time = query.item[1]
 		IAA_approve(src.ckey)
@@ -80,14 +134,31 @@ GLOBAL_LIST_EMPTY(IAA_approved_list)
 		qdel(src)
 
 /proc/IAAJ_cancel(id, comment, ckey)
-	var/DBQuery/query = sql_query("SELECT status, fakeid FROM erro_iaa_jobban WHERE id = $$", id)
+	var/DBQuery/query = sql_query({"
+		SELECT
+			status,
+			fakeid
+		FROM
+			erro_iaa_jobban
+		WHERE
+			id = $$
+		"}, id)
 	query.NextRow()
 	ASSERT(query.item[1] == IAA_STATUS_APPROVED)
 	var/fakeid = query.item[2]
 	var/action = IAA_STATUS_CANCELLED
 	message_admins("IAA jobban <a href='?_src_=holder;iaaj_inspect=[id]'>[id] ([fakeid])</a> was [IAAJ_status_colorize(action, action)] by [ckey] ([comment])")
 	log_admin("IAA jobban [id] ([fakeid]) was [action] by [ckey] ([comment])")
-	query = sql_query("UPDATE erro_iaa_jobban SET status = $status, cancel_time = Now(), cancel_comment = $comment, cancel_ckey = $ckey where id = $id", list(
+	query = sql_query({"
+		UPDATE
+			erro_iaa_jobban
+		SET
+			status = $status,
+			cancel_time = Now(),
+			cancel_comment = $comment,
+			cancel_ckey = $ckey
+		WHERE
+			id = $id", list(
 		status = action,
 		comment = comment,
 		ckey = ckey,
@@ -105,8 +176,24 @@ GLOBAL_LIST_EMPTY(IAA_approved_list)
 	ASSERT(establish_db_connection())
 
 	var/DBQuery/query
-	query = sql_query("SELECT id, fakeid, ckey, iaa_ckey, job, status, expiration_time FROM erro_iaa_jobban \
-		WHERE (status = '[IAA_STATUS_PENDING]' OR status = '[IAA_STATUS_APPROVED]' AND IFNULL(expiration_time, Now()) >= Now())")
+	query = sql_query({"
+		SELECT
+			id,
+			fakeid,
+			ckey,
+			iaa_ckey,
+			job,
+			status,
+			expiration_time
+		FROM
+			erro_iaa_jobban
+		WHERE
+			(status = '[IAA_STATUS_PENDING]'
+			OR
+			status = '[IAA_STATUS_APPROVED]'
+			AND
+			IFNULL(expiration_time, Now()) >= Now())
+		"})
 
 	while (query.NextRow())
 		var/datum/IAA_brief_jobban_info/JB = new()
@@ -120,13 +207,26 @@ GLOBAL_LIST_EMPTY(IAA_approved_list)
 
 		GLOB.IAA_active_jobbans_list.Add(JB)
 
-	query = sql_query("SELECT ckey, approvals from erro_iaa_approved")
+	query = sql_query({"
+		SELECT
+			ckey,
+			approvals
+		FROM
+			erro_iaa_approved
+		"})
 
 	while (query.NextRow())
 		GLOB.IAA_approved_list[query.item[1]] = query.item[2]
 
 /proc/IAAJ_check_fakeid_available(fakeid)
-	var/DBQuery/query = sql_query("SELECT fakeid FROM erro_iaa_jobban where fakeid = $$", fakeid)
+	var/DBQuery/query = sql_query({"
+		SELECT
+			fakeid
+		FROM
+			erro_iaa_jobban
+		WHERE
+			fakeid = $$
+		"}, fakeid)
 	return !query.RowCount()
 
 /proc/IAAJ_generate_fake_id()
@@ -147,9 +247,26 @@ GLOBAL_LIST_EMPTY(IAA_approved_list)
 	JB.status = IAA_STATUS_PENDING
 
 	var/DBQuery/query
-	query = sql_query("INSERT INTO erro_iaa_jobban \
-		(`fakeid`, `ckey`, `iaa_ckey`, `other_ckeys`, `reason`, `job`, `creation_time`, `status`) VALUES \
-		($fakeid, $ckey, $iaa_ckey, $other_ckeys, $reason, $job, Now(), $status)", list(
+	query = sql_query({"
+		INSERT INTO
+			erro_iaa_jobban (
+				`fakeid`,
+				`ckey`,
+				`iaa_ckey`,
+				`other_ckeys`,
+				`reason`, `job`,
+				`creation_time`,
+				`status`
+			)
+			VALUES (
+				$fakeid,
+				$ckey,
+				$iaa_ckey,
+				$other_ckeys,
+				$reason, $job,
+				Now(),
+				$status)
+			"}, list(
 			fakeid = fakeid,
 			ckey = ckey,
 			iaa_ckey = iaa_ckey,
@@ -213,8 +330,20 @@ GLOBAL_LIST_EMPTY(IAA_approved_list)
 	dat += "<table border>"
 	dat += "<tr style=\"font-weight:bold\"> <td> ID </td> <td> Who from who by who </td> <td> Expiration date </td> <td> Status </td> </tr>"
 	var/DBQuery/query
-	query = sql_query("SELECT id, fakeid, ckey, iaa_ckey, job, status, expiration_time FROM erro_iaa_jobban \
-		ORDER BY id DESC LIMIT [results_per_page] OFFSET [startfrom]")
+	query = sql_query({"
+		SELECT
+			id,
+			fakeid,
+			ckey,
+			iaa_ckey,
+			job, status,
+			expiration_time
+		FROM
+			erro_iaa_jobban
+		ORDER BY id DESC
+		LIMIT [results_per_page]
+		OFFSET [startfrom]
+		"})
 
 	while (query.NextRow())
 		var/datum/IAA_brief_jobban_info/JB = new()
@@ -237,9 +366,29 @@ GLOBAL_LIST_EMPTY(IAA_approved_list)
 	if(!check_rights(R_BAN))
 		return
 	var/DBQuery/query
-	query = sql_query("SELECT id, fakeid, ckey, iaa_ckey, other_ckeys, reason, job, creation_time, resolve_time, \
-		resolve_comment, resolve_ckey, cancel_time, cancel_comment, cancel_ckey, status, expiration_time \
-		FROM erro_iaa_jobban WHERE id = $$", id)
+	query = sql_query({"
+		SELECT
+			id,
+			fakeid,
+			ckey,
+			iaa_ckey,
+			other_ckeys,
+			reason,
+			job,
+			creation_time,
+			resolve_time,
+			resolve_comment,
+			resolve_ckey,
+			cancel_time,
+			cancel_comment,
+			cancel_ckey,
+			status,
+			expiration_time
+		FROM
+			erro_iaa_jobban
+		WHERE
+			id = $$
+		"}, id)
 	query.NextRow()
 	var/fakeid            = query.item[ 2]
 	var/ckey              = query.item[ 3]
@@ -277,16 +426,9 @@ GLOBAL_LIST_EMPTY(IAA_approved_list)
 	usr << browse(dat, "window=iaaj_ban_inspect;size=400x400")
 	return
 
-/datum/admins/Topic(href, href_list)
-	. = ..()
-
-	if(usr.client != src.owner || !check_rights(0)) //is not really needed here but still putting it here for extra safety
-		log_admin("[key_name(usr)] tried to use the admin panel without authorization.")
-		message_admins("[usr.key] has attempted to override the admin panel!")
-		return
-
+/proc/IAAJ_AdminTopicProcess(datum/admins/source, list/href_list)
 	if (href_list["iaaj_inspect"])
-		IAAJ_inspect_ban(href_list["iaaj_inspect"])
+		source.IAAJ_inspect_ban(href_list["iaaj_inspect"])
 		return
 
 	if (href_list["iaaj_resolve"])
@@ -312,7 +454,7 @@ GLOBAL_LIST_EMPTY(IAA_approved_list)
 				if (!comment)
 					return
 				chosen_JB.resolve(approved = FALSE, comment = comment, ckey = usr.ckey)
-		IAAJ_inspect_ban(id)
+		source.IAAJ_inspect_ban(id)
 		return
 
 	if (href_list["iaaj_close"])			
@@ -321,7 +463,7 @@ GLOBAL_LIST_EMPTY(IAA_approved_list)
 		if (!comment)
 			return
 		IAAJ_cancel(id, comment, usr.ckey)
-		IAAJ_inspect_ban(id)
+		source.IAAJ_inspect_ban(id)
 		return
 
 
