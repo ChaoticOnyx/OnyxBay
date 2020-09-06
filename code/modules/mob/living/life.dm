@@ -41,7 +41,7 @@
 
 	if(mind)
 		for(var/datum/objective/O in mind.objectives)
-			O.process_currently()
+			O.update()
 
 	return 1
 
