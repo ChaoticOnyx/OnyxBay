@@ -1,4 +1,8 @@
 // Contains all /mob/procs that relate to vampire.
+/mob/living/carbon/human/MiddleClickOn(atom/A)
+	if(mind && mind.vampire && istype(A , /turf/simulated/floor) && /mob/living/carbon/human/proc/vampire_veilstep in verbs)
+		vampire_veilstep(A)
+	..()
 
 // Makes vampire's victim not get paralyzed, and remember the suckings
 /mob/living/carbon/human/proc/vampire_alertness()
@@ -127,7 +131,7 @@
 		if (blood_total != vampire.blood_total)
 			var/update_msg = SPAN_NOTICE("You have accumulated [vampire.blood_total] [vampire.blood_total > 1 ? "units" : "unit"] of blood")
 			if (blood_usable != vampire.blood_usable)
-				update_msg += SPAN_NOTICE("and have [vampire.blood_usable] left to use.")
+				update_msg += SPAN_NOTICE(" and have [vampire.blood_usable] left to use.")
 			else
 				update_msg += SPAN_NOTICE(".")
 
@@ -240,7 +244,7 @@
 
 // Targeted teleportation, must be to a low-light tile.
 /mob/living/carbon/human/proc/vampire_veilstep(turf/simulated/floor/T in view(7))
-	set category = "Vampire"
+	set category = null
 	set name = "Veil Step (20)"
 	set desc = "For a moment, move through the Veil and emerge at a shadow of your choice."
 
