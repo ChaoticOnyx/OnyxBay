@@ -496,7 +496,7 @@ var/global/list/possible_changeling_IDs = list("Alpha","Beta","Gamma","Delta","E
 
 		to_chat(src, "<span class='notice'><font size='5'>We are ready to rise.  Use the <b>Revive</b> verb when you are ready.</font></span>")
 		verbs += /mob/living/carbon/human/proc/changeling_revive
-		addtimer(CALLBACK(src, .changeling_revive), 10 SECONDS)
+		// addtimer(CALLBACK(src, .changeling_revive), 10 SECONDS)
 
 	feedback_add_details("changeling_powers","FD")
 
