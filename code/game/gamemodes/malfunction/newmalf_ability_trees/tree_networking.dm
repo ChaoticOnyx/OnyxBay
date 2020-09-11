@@ -98,7 +98,7 @@
 			user.last_failed_malf_message = null
 
 	var/title = user.last_failed_malf_title ? user.last_failed_malf_title : sanitize(input("Select message title: "))
-	var/text = user.last_failed_malf_message ? user.last_failed_malf_message : sanitize(input("Select message text: "))
+	var/text = user.last_failed_malf_message ? user.last_failed_malf_message : sanitize(input("Select message text: "), encode = 0)
 
 	if(!title || !text || !ability_pay(user, price))
 		to_chat(user, "Hack Aborted")
@@ -117,7 +117,7 @@
 		user.last_failed_malf_title = title
 		return
 	log_ability_use(user, "elite encryption hack (SUCCESS - title: [title])")
-	command_announcement.Announce(text, title)
+	command_announcement.Announce(text, title, msg_sanitized = TRUE)
 
 /datum/game_mode/malfunction/verb/elite_encryption_hack()
 	set category = "Software"
