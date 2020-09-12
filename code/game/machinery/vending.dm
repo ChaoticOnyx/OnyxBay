@@ -1232,9 +1232,10 @@
 	icon_deny = "nutri-deny"
 	icon_vend = "nutri-vend"
 	vend_delay = 26
-	products = list(/obj/item/weapon/reagent_containers/glass/bottle/eznutrient = 6,
-					/obj/item/weapon/reagent_containers/glass/bottle/left4zed = 4,
-					/obj/item/weapon/reagent_containers/glass/bottle/robustharvest = 3,
+	products = list(/obj/item/weapon/reagent_containers/glass/bottle/eznutrient = 5,
+					/obj/item/weapon/reagent_containers/glass/bottle/left4zed = 5,
+					/obj/item/weapon/reagent_containers/glass/bottle/robustharvest = 5,
+					/obj/item/weapon/reagent_containers/glass/bottle/mutogrow = 5,
 					/obj/item/weapon/plantspray/pests = 20,
 					/obj/item/weapon/reagent_containers/syringe = 5,
 					/obj/item/weapon/storage/plants = 5)
