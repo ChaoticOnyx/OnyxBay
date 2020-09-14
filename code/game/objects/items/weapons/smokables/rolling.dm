@@ -37,9 +37,9 @@
 		if(ishuman(loc))
 			R_loc = user.loc
 		if(quality == "cheap")
-			R = new/obj/item/clothing/mask/smokable/cigarette/roll/joint(R_loc)
+			R = new /obj/item/clothing/mask/smokable/cigarette/roll/joint(R_loc)
 		else if(quality == "good")
-			R = new/obj/item/clothing/mask/smokable/cigarette/roll/joint/good(R_loc)
+			R = new /obj/item/clothing/mask/smokable/cigarette/roll/joint/good(R_loc)
 		if(G.reagents)
 			G.reagents.trans_to_obj(R, G.reagents.total_volume)
 		R.desc += " Looks like it contains some [G]."
