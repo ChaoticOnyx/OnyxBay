@@ -289,17 +289,12 @@
 	desc = "A narrow cigar with a wooden tip."
 	icon_state = "cigarello"
 	item_state = "cigaroff"
+	ember_state = "cigarello-on"
 	smoketime = 480
 	chem_volume = 10
 	filter_trans = 0.25
 	type_butt = /obj/item/weapon/cigbutt/woodbutt
 	filling = list(/datum/reagent/tobacco/fine = 6)
-
-/obj/item/clothing/mask/smokable/cigarette/trident/update_icon()
-	..()
-	overlays.Cut()
-	if(lit)
-		overlays += overlay_image(icon, "cigarello-on", flags=RESET_COLOR)
 
 /obj/item/weapon/cigbutt/woodbutt
 	name = "wooden tip"
