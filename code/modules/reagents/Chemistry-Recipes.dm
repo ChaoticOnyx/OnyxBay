@@ -107,7 +107,7 @@
 	name = "Tramadol"
 	result = /datum/reagent/tramadol
 	required_reagents = list(/datum/reagent/inaprovaline = 1, /datum/reagent/ethanol = 1, /datum/reagent/acetone = 1)
-	result_amount = 3
+	result_amount = 1
 
 /datum/chemical_reaction/paracetamol
 	name = "Paracetamol"
@@ -121,6 +121,12 @@
 	required_reagents = list(/datum/reagent/ethanol = 1, /datum/reagent/tramadol = 1)
 	catalysts = list(/datum/reagent/toxin/phoron = 5)
 	result_amount = 1
+
+/datum/chemical_reaction/tarine
+	name = "Tarine"
+	result = /datum/reagent/tramadol/opium/tarine
+	required_reagents = list(/datum/reagent/tramadol/opium = 3, /datum/reagent/acetone = 1, /datum/reagent/acid/hydrochloric = 1)
+	result_amount = 3
 
 /datum/chemical_reaction/sterilizine
 	name = "Sterilizine"
