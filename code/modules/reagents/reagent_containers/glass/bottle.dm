@@ -324,12 +324,12 @@
 	update_icon()
 
 /obj/item/weapon/reagent_containers/glass/bottle/tarine
-	name = "opium bottle"
+	name = "tarine bottle"
 	desc = "A small bottle of tarine. An extremely effective painkiller, yet is terribly addictive and notorious for its life-threatening side-effects."
 	icon = 'icons/obj/chemical.dmi'
 	icon_state = "bottle-4"
 
 /obj/item/weapon/reagent_containers/glass/bottle/tarine/New()
 	..()
-	reagents.add_reagent(/datum/reagent/tramadol/tarine, 60)
+	reagents.add_reagent(/datum/reagent/tramadol/opium/tarine, 60)
 	update_icon()

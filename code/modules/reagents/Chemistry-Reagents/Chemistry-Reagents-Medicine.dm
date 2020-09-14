@@ -1,3 +1,6 @@
+#define DRUGS_MESSAGE_DELAY 1*60*10
+#define ANTIDEPRESSANT_MESSAGE_DELAY 5*60*10
+
 /* General medicine */
 
 /datum/reagent/inaprovaline
@@ -341,9 +344,7 @@
 		to_chat(M, SPAN("notice", "You feel [msg]."))
 
 /datum/reagent/tramadol/opium/handle_painkiller_overdose(mob/living/carbon/M)
-	var/whole_volume = volume
-	if(M.chem_doses[type] > volume) // side effects are more robust (dose-wise) than in the case of *legal* painkillers usage
-		whole_volume = M.chem_doses[type]
+	var/whole_volume = (volume + M.chem_doses[type]) // side effects are more robust (dose-wise) than in the case of *legal* painkillers usage
 	if(whole_volume > soft_overdose)
 		M.add_chemical_effect(CE_SLOWDOWN, 1)
 		M.druggy = max(M.druggy, 10)
@@ -360,24 +361,22 @@
 			M.Weaken(2)
 			M.drowsyness = max(M.drowsyness, 5)
 
-/datum/reagent/tramadol/tarine
+/datum/reagent/tramadol/opium/tarine
 	name = "Tarine"
 	description = "An opioid most commonly used as a recreational drug for its euphoric effects. An extremely effective painkiller, yet is terribly addictive and notorious for its life-threatening side-effects."
 	color = "#b79a8d"
 	overdose = 15
-	soft_overdose = 10
+	soft_overdose = 7.5
 	pain_power = 240
 	scannable = 0
 	reagent_state = SOLID
 
-/datum/reagent/tramadol/tarine/affect_blood(mob/living/carbon/M, alien, removed)
+/datum/reagent/tramadol/opium/tarine/affect_blood(mob/living/carbon/M, alien, removed)
 	..()
 	M.add_chemical_effect(CE_SLOWDOWN, 1)
 
-/datum/reagent/tramadol/tarine/handle_painkiller_overdose(mob/living/carbon/M)
-	var/whole_volume = volume
-	if(M.chem_doses[type] > volume) // side effects are more robust (dose-wise) than in the case of *legal* painkillers usage
-		whole_volume = M.chem_doses[type]
+/datum/reagent/tramadol/opium/tarine/handle_painkiller_overdose(mob/living/carbon/M)
+	var/whole_volume = (volume + M.chem_doses[type]) // side effects are more robust (dose-wise) than in the case of *legal* painkillers usage
 	if(whole_volume > soft_overdose)
 		M.hallucination(30, 30)
 		M.eye_blurry = max(M.eye_blurry, 10)
@@ -391,7 +390,8 @@
 		M.slurring = max(M.slurring, 30)
 		M.Weaken(5)
 		if(prob(25))
-			M.sleeping = max(M.sleeping, 5)
+			M.sleeping = max(M.sleeping, 3)
+		M.add_chemical_effect(CE_BREATHLOSS, 0.2)
 
 /* Other medicine */
 
@@ -639,8 +639,6 @@
 		M.bodytemperature = min(310, M.bodytemperature + (40 * TEMPERATURE_DAMAGE_COEFFICIENT))
 
 /* Antidepressants */
-
-#define ANTIDEPRESSANT_MESSAGE_DELAY 5*60*10
 
 /datum/reagent/methylphenidate
 	name = "Methylphenidate"
@@ -892,8 +890,6 @@
 /* THC - done				  */
 /* CBD - to be done			  */
 /* cannabis oil - to be done  */
-
-#define DRUGS_MESSAGE_DELAY 1*60*10
 
 /datum/reagent/thc   // -SECURITY OPEN UP!!! - Ha-ha. No. c:
 	name = "Tetrahydrocannabinol"
