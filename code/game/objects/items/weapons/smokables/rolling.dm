@@ -55,9 +55,9 @@
 		if(ishuman(loc))
 			R_loc = user.loc
 		if(quality == "cheap")
-			R = new/obj/item/clothing/mask/smokable/cigarette/roll(R_loc)
+			R = new /obj/item/clothing/mask/smokable/cigarette/roll(R_loc)
 		else if(quality == "good")
-			R = new/obj/item/clothing/mask/smokable/cigarette/roll/good(R_loc)
+			R = new /obj/item/clothing/mask/smokable/cigarette/roll/good(R_loc)
 		if(G.reagents)
 			G.reagents.trans_to_obj(R, G.reagents.total_volume)
 		to_chat(user, SPAN("notice", "You roll a cigarette!"))
