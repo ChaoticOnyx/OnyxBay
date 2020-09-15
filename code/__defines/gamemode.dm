@@ -17,6 +17,8 @@
 #define BE_PLANT "BE_PLANT"
 #define BE_SYNTH "BE_SYNTH"
 #define BE_PAI   "BE_PAI"
+#define BE_FAMILIAR "BE_FAMILIAR"
+#define BE_SHADE "BE_SHADE"
 
 // Antagonist datum flags.
 #define ANTAG_OVERRIDE_JOB        0x1 // Assigned job is set to MODE when spawning.
