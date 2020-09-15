@@ -39,12 +39,11 @@
 		return
 
 	if(max_length)
-		//testing shows that just looking for > max_length alone will actually cut off the final character if message is precisely max_length, so >= instead
-		if(length_char(input) >= max_length)
-			var/overflow = ((length_char(input)+1) - max_length)
-			to_chat(usr, "<span class='warning'>Your message is too long by [overflow] character\s.</span>")
+		var/input_length = length_char(input)
+		if(input_length > max_length)
+			to_chat(usr, SPAN_WARNING("Your message is too long by [input_length - max_length] character\s."))
 			return
-		input = copytext_char(input, 1, max_length)
+		input = copytext_char(input, 1, max_length+1)
 
 	if(extra)
 		input = replace_characters(input, list("\n"=" ","\t"=" "))
