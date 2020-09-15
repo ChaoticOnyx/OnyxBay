@@ -141,7 +141,7 @@ var/list/uplink_random_selections_
 /proc/debug_uplink_purchage_log()
 	for(var/antag_type in GLOB.all_antag_types_)
 		var/datum/antagonist/A = GLOB.all_antag_types_[antag_type]
-		A.print_player_summary()
+		to_world(A.print_player_summary())
 
 /proc/debug_uplink_item_assoc_list()
 	for(var/key in uplink.items_assoc)
