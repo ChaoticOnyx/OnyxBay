@@ -22,5 +22,9 @@
 	parent_organ = BP_CHEST
 	color = "#0033cc"
 
+/obj/item/organ/internal/stomach/vox
+	name = "gizzard"
+	color = "#0033cc"
+
 /obj/item/organ/external/groin/vox //vox have an extended ribcage for extra protection.
 	encased = "lower ribcage"
