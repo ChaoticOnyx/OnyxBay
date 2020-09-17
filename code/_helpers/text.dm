@@ -414,6 +414,10 @@ proc/TextPreview(string, len=40)
 	t = replacetext(t, "\n", "<BR>")
 	t = replacetext(t, "\[center\]", "<center>")
 	t = replacetext(t, "\[/center\]", "</center>")
+	t = replacetext(t, "\[right\]", "<div style=\"text-align:right\">")
+	t = replacetext(t, "\[/right\]", "</div>")
+	t = replacetext(t, "\[left\]", "<div style=\"text-align:left\">")
+	t = replacetext(t, "\[/left\]", "</div>")
 	t = replacetext(t, "\[br\]", "<BR>")
 	t = replacetext(t, "\[b\]", "<B>")
 	t = replacetext(t, "\[/b\]", "</B>")
@@ -425,7 +429,7 @@ proc/TextPreview(string, len=40)
 	t = replacetext(t, "\[date\]", "[stationdate2text()]")
 	t = replacetext(t, "\[large\]", "<font size=\"4\">")
 	t = replacetext(t, "\[/large\]", "</font>")
-	t = replacetext(t, "\[field\]", "<span class=\"paper_field\"></span>")
+	t = replacetext(t, "\[field\]", "<!--paper_field-->")
 	t = replacetext(t, "\[h1\]", "<H1>")
 	t = replacetext(t, "\[/h1\]", "</H1>")
 	t = replacetext(t, "\[h2\]", "<H2>")
@@ -523,3 +527,8 @@ proc/TextPreview(string, len=40)
 		if (text2ascii(A, i) != text2ascii(B, i))
 			return FALSE
 	return TRUE
+
+/proc/counttext(haystack, needle, start = 0)
+	. = 0
+	while ((start = findtext(haystack, needle, start + 1)))
+		.++

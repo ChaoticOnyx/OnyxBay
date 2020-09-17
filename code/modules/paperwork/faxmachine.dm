@@ -17,6 +17,7 @@ GLOBAL_LIST_EMPTY(adminfaxes)	//cache for faxes that have been sent to admins
 	var/obj/item/weapon/card/id/scan = null // identification
 	var/authenticated = 0
 	var/sendcooldown = 0 // to avoid spamming fax messages
+	var/print_cooldown = 0 //to avoid spamming printing complaints
 	var/department = "Unknown" // our department
 	var/destination = null // the department we're sending to
 
@@ -73,18 +74,41 @@ GLOBAL_LIST_EMPTY(adminfaxes)	//cache for faxes that have been sent to admins
 				dat += "<b>Transmitter arrays realigning. Please stand by.</b><br>"
 			else
 				dat += "Please insert paper to send via secure connection.<br><br>"
-
+		if (print_cooldown)
+			dat += "<b> Complaint printer is recharging. Please stand by. </b><br>"
+		else
+			dat += "<a href ='byond://?src=\ref[src];print_complaint=1'>Print complaint kit</a><br>"
 	else
 		dat += "Proper authentication is required to use this device.<br><br>"
 
 		if(copyitem)
 			dat += "<a href ='byond://?src=\ref[src];remove=1'>Remove Item</a><br>"
 
+
 	user << browse(dat, "window=copier")
 	onclose(user, "copier")
 	return
 
+/obj/machinery/photocopier/faxmachine/proc/print_cooldown_check()
+	if (print_cooldown)
+		return
+	print_cooldown = 30 SECONDS
+	addtimer(CALLBACK(src, .go_off_print_cooldown), print_cooldown)
+	return TRUE
+
+/obj/machinery/photocopier/faxmachine/proc/go_off_print_cooldown()
+	print_cooldown = 0
+
 /obj/machinery/photocopier/faxmachine/Topic(href, href_list)
+	. = ..()
+	if (. != TOPIC_NOACTION)
+		return
+	if(href_list["print_complaint"])
+		if (print_cooldown_check())
+			var/id = IAAJ_generate_fake_id()
+			ASSERT(id)
+			new /obj/item/weapon/complaint_folder(src.loc, id)
+			. =  TOPIC_HANDLED
 	if(href_list["send"])
 		if(copyitem)
 			if (destination in admin_departments)
@@ -192,6 +216,14 @@ GLOBAL_LIST_EMPTY(adminfaxes)	//cache for faxes that have been sent to admins
 		rcvdcopy = photocopy(copyitem, 0)
 	else if (istype(copyitem, /obj/item/weapon/paper_bundle))
 		rcvdcopy = bundlecopy(copyitem, 0)
+	else if (istype(copyitem, /obj/item/weapon/complaint_folder))
+		var/obj/item/weapon/complaint_folder/CF = copyitem
+		var/fail_reason = CF.prevalidate()
+		if (fail_reason)
+			visible_message("[src] beeps, \"Error transmitting message: [fail_reason].\"")
+			sendcooldown = 100 //here to prevent spam
+			return
+		rcvdcopy = complaintcopy(copyitem, 0)
 	else
 		visible_message("[src] beeps, \"Error transmitting message.\"")
 		return
@@ -203,23 +235,36 @@ GLOBAL_LIST_EMPTY(adminfaxes)	//cache for faxes that have been sent to admins
 
 
 	//message badmins that a fax has arrived
+	var/msg_color = null
 	if (destination == GLOB.using_map.boss_name)
-		message_admins(sender, "[uppertext(destination)] FAX[intercepted ? "(Intercepted by [intercepted])" : null]", rcvdcopy, destination, "#006100")
+		msg_color = "#006100"
 	else if (destination == "Colonial Marshal Service")
-		message_admins(sender, "[uppertext(destination)] FAX[intercepted ? "(Intercepted by [intercepted])" : null]", rcvdcopy, destination, "#1f66a0")
+		msg_color = "#1f66a0"
 	else if (destination == "[GLOB.using_map.boss_short] Supply")
-		message_admins(sender, "[uppertext(destination)] FAX[intercepted ? "(Intercepted by [intercepted])" : null]", rcvdcopy, destination, "#5f4519")
+		msg_color = "#5f4519"
 	else if (destination in GLOB.using_map.map_admin_faxes)
-		message_admins(sender, "[uppertext(destination)] FAX[intercepted ? "(Intercepted by [intercepted])" : null]", rcvdcopy, destination, "#510b74")
+		msg_color = "#510b74"
 	else
-		message_admins(sender, "[uppertext(destination)] FAX[intercepted ? "(Intercepted by [intercepted])" : null]", rcvdcopy, "UNKNOWN")
+		destination = "UNKNOWN"
+
+	fax_message_admins(sender, "[uppertext(destination)] FAX[intercepted ? "(Intercepted by [intercepted])" : null]", rcvdcopy, destination, msg_color)
+
+	var/obj/item/weapon/complaint_folder/CF = rcvdcopy
+	if (istype(CF))
+		var/fail_reason = CF.validate()
+		if (fail_reason)
+			message_admins("Complaint automatically rejected: [fail_reason].")
+		else
+			fail_reason = CF.postvalidate()
+			if (fail_reason)
+				message_admins("Complaint postvalidation failed: [fail_reason]. Check received fax to manually correct it.")
 
 	sendcooldown = 1800
 	sleep(50)
 	visible_message("[src] beeps, \"Message transmitted successfully.\"")
 
 
-/obj/machinery/photocopier/faxmachine/proc/message_admins(mob/sender, faxname, obj/item/sent, reply_type, font_colour="#006100")
+/obj/machinery/photocopier/faxmachine/proc/fax_message_admins(mob/sender, faxname, obj/item/sent, reply_type, font_colour="#006100")
 	var/msg = "<span class='notice'><b><font color='[font_colour]'>[faxname]: </font>[get_options_bar(sender, 2,1,1)]"
 	msg += "(<A HREF='?_src_=holder;take_ic=\ref[sender]'>TAKE</a>) (<a href='?_src_=holder;FaxReply=\ref[sender];originfax=\ref[src];replyorigin=[reply_type]'>REPLY</a>)</b>: "
 	msg += "Receiving '[sent.name]' via secure connection ... <a href='?_src_=holder;AdminFaxView=\ref[sent]'>view message</a></span>"

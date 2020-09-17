@@ -65,7 +65,7 @@
 
 
 /obj/item/weapon/paper/admin/proc/adminbrowse()
-	updateinfolinks()
+	generateinfolinks()
 	generateHeader()
 	generateFooter()
 	updateDisplay()
@@ -87,25 +87,20 @@ obj/item/weapon/paper/admin/proc/updateDisplay()
 		if(!t)
 			return
 
-		var last_fields_value = fields
-
 		//t = html_encode(t)
 		t = replacetext(t, "\n", "<BR>")
 		t = parsepencode(t,,, isCrayon) // Encode everything from pencode to html
 
+		var/terminated = FALSE
+		if (findtext(t, @"[end]"))
+			t = replacetext(t, @"[end]", "")
+			terminated = TRUE
 
-		if(fields > 50)//large amount of fields creates a heavy load on the server, see updateinfolinks() and addtofield()
-			to_chat(usr, "<span class='warning'>Too many fields. Sorry, you can't do this.</span>")
-			fields = last_fields_value
-			return
+		addtofield(id, t, terminated) // He wants to edit a field, let him.
+		if (id == "end" && terminated)
+			appendable = FALSE
 
-		if(id!="end")
-			addtofield(text2num(id), t) // He wants to edit a field, let him.
-		else
-			info += t // Oh, he wants to edit to the end of the file, let him.
-			updateinfolinks()
-
-		update_space(t)
+		update_space()
 
 		updateDisplay()
 
@@ -116,10 +111,16 @@ obj/item/weapon/paper/admin/proc/updateDisplay()
 		switch(alert("Are you sure you want to send the fax as is?",, "Yes", "No"))
 			if("Yes")
 				if(headerOn)
+					var/header_with_links = field_regex.Replace(header, "<font face=\"[deffont]\"><A href='?src=\ref[src];write=$1'>write</A></font>")
+					header_with_links = sign_field_regex.Replace(header_with_links, " <I><A href='?src=\ref[src];signfield=$1'>sign here</A></I> ")
 					info = header + info
+					info_links = header_with_links + info_links
 				if(footerOn)
+					var/footer_with_links = field_regex.Replace(footer, "<font face=\"[deffont]\"><A href='?src=\ref[src];write=$1'>write</A></font>")
+					footer_with_links = sign_field_regex.Replace(footer_with_links, " <I><A href='?src=\ref[src];signfield=$1'>sign here</A></I> ")
 					info += footer
-				updateinfolinks()
+					info_links += footer_with_links
+
 				usr << browse(null, "window=[name]")
 				admindatum.faxCallback(src, destination)
 		return
