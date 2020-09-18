@@ -47,7 +47,7 @@
 		/datum/reagent/dylovene =           -2,
 		/datum/reagent/toxin =               2,
 		/datum/reagent/hydrazine =           2.5,
-		/datum/reagent/acetone =	         1,
+		/datum/reagent/acetone =             1,
 		/datum/reagent/acid =                1.5,
 		/datum/reagent/acid/hydrochloric =   1.5,
 		/datum/reagent/acid/polyacid =       3,
