@@ -477,9 +477,6 @@ var/global/list/possible_changeling_IDs = list("Alpha","Beta","Gamma","Delta","E
 		status_flags &= ~(FAKEDEATH)
 		// let us move again
 		update_canmove()
-		// re-add out changeling powers
-		verbs -= /mob/living/carbon/human/proc/changeling_fakedeath
-		make_changeling()
 		// sending display messages
 		to_chat(src, SPAN_NOTICE("We have regenerated."))
 		return
@@ -500,14 +497,12 @@ var/global/list/possible_changeling_IDs = list("Alpha","Beta","Gamma","Delta","E
 
 	status_flags |= FAKEDEATH
 	update_canmove()
-	remove_changeling_powers()
-	verbs += /mob/living/carbon/human/proc/changeling_fakedeath
 
 	emote("gasp")
 
-	//I can't use addtimer(), my religion (shitcodity) forbid this
-	sleep(rand(80 SECONDS, 200 SECONDS))
+	addtimer(CALLBACK(src, .revive_ready), rand(80 SECONDS, 200 SECONDS))
 
+/mob/living/carbon/human/proc/revive_ready()
 	if(QDELETED(src))
 		return
 	if(changeling_power(20,1,100,DEAD))
