@@ -292,7 +292,8 @@ var/global/list/possible_changeling_IDs = list("Alpha","Beta","Gamma","Delta","E
 /mob/proc/changeling_transform()
 	set category = "Changeling"
 	set name = "Transform (5)"
-
+	if(status_flags & FAKEDEATH)
+		return
 	var/datum/changeling/changeling = changeling_power(5,1,0)
 	if(!changeling)	return
 
@@ -357,6 +358,8 @@ var/global/list/possible_changeling_IDs = list("Alpha","Beta","Gamma","Delta","E
 /mob/proc/changeling_lesser_form()
 	set category = "Changeling"
 	set name = "Lesser Form (1)"
+	if(status_flags & FAKEDEATH)
+		return
 
 	var/datum/changeling/changeling = changeling_power(1,0,0)
 	if(!changeling)	return
@@ -385,7 +388,8 @@ var/global/list/possible_changeling_IDs = list("Alpha","Beta","Gamma","Delta","E
 /mob/proc/changeling_lesser_transform()
 	set category = "Changeling"
 	set name = "Transform (1)"
-
+	if(status_flags & FAKEDEATH)
+		return
 	var/datum/changeling/changeling = changeling_power(1,1,0)
 	if(!changeling)	return
 
@@ -508,9 +512,7 @@ var/global/list/possible_changeling_IDs = list("Alpha","Beta","Gamma","Delta","E
 	if(changeling_power(20,1,100,DEAD))
 		// charge the changeling chemical cost for stasis
 		mind.changeling.chem_charges -= 20
-
 		mind.changeling.is_revive_ready = TRUE
-
 		to_chat(src, SPAN_NOTICE("<font size='5'>We are ready to rise.  Use the <b>Regenerative Stasis (20)</b> verb when you are ready.</font>"))
 
 	feedback_add_details("changeling_powers","FD")
@@ -520,6 +522,9 @@ var/global/list/possible_changeling_IDs = list("Alpha","Beta","Gamma","Delta","E
 	set category = "Changeling"
 	set name = "Ranged Sting (10)"
 	set desc="Your next sting ability can be used against targets 2 squares away."
+
+	if(status_flags & FAKEDEATH)
+		return
 
 	var/datum/changeling/changeling = changeling_power(10)
 	if(!changeling)	return 0
@@ -537,7 +542,8 @@ var/global/list/possible_changeling_IDs = list("Alpha","Beta","Gamma","Delta","E
 	set category = "Changeling"
 	set name = "Epinephrine Sacs (45)"
 	set desc = "Removes all stuns"
-
+	if(status_flags & FAKEDEATH)
+		return
 	var/datum/changeling/changeling = changeling_power(45,0,100,UNCONSCIOUS)
 	if(!changeling)	return 0
 	changeling.chem_charges -= 45
@@ -574,7 +580,8 @@ var/global/list/possible_changeling_IDs = list("Alpha","Beta","Gamma","Delta","E
 	set category = "Changeling"
 	set name = "Toggle Digital Camoflague"
 	set desc = "The AI can no longer track us, but we will look different if examined.  Has a constant cost while active."
-
+	if(status_flags & FAKEDEATH)
+		return
 	var/datum/changeling/changeling = changeling_power()
 	if(!changeling)	return 0
 
@@ -600,6 +607,9 @@ var/global/list/possible_changeling_IDs = list("Alpha","Beta","Gamma","Delta","E
 	set name = "Rapid Regeneration (30)"
 	set desc = "Begins rapidly regenerating.  Does not effect stuns or chemicals."
 
+	if(status_flags & FAKEDEATH)
+		return
+
 	var/datum/changeling/changeling = changeling_power(30,0,100,UNCONSCIOUS)
 	if(!changeling)
 		return
@@ -622,6 +632,9 @@ var/list/datum/absorbed_dna/hivemind_bank = list()
 	set category = "Changeling"
 	set name = "Hive Channel (10)"
 	set desc = "Allows you to channel DNA in the airwaves to allow other changelings to absorb it."
+
+	if(status_flags & FAKEDEATH)
+		return
 
 	var/datum/changeling/changeling = changeling_power(10,1)
 	if(!changeling)	return
@@ -664,6 +677,9 @@ var/list/datum/absorbed_dna/hivemind_bank = list()
 	set name = "Hive Absorb (20)"
 	set desc = "Allows you to absorb DNA that is being channeled in the airwaves."
 
+	if(status_flags & FAKEDEATH)
+		return
+
 	var/datum/changeling/changeling = changeling_power(20,1)
 	if(!changeling)	return
 
@@ -695,6 +711,8 @@ var/list/datum/absorbed_dna/hivemind_bank = list()
 	set name = "Mimic Voice"
 	set desc = "Shape our vocal glands to form a voice of someone we choose. We cannot regenerate chemicals when mimicing."
 
+	if(status_flags & FAKEDEATH)
+		return
 
 	var/datum/changeling/changeling = changeling_power()
 	if(!changeling)	return
@@ -788,6 +806,9 @@ var/list/datum/absorbed_dna/hivemind_bank = list()
 	set name = "Hallucination Sting (15)"
 	set desc = "Causes terror in the target"
 
+	if(status_flags & FAKEDEATH)
+		return
+
 	change_ctate(/datum/click_handler/changeling/changeling_lsdsting)
 	return
 
@@ -806,6 +827,9 @@ var/list/datum/absorbed_dna/hivemind_bank = list()
 	set name = "Silence sting (10)"
 	set desc = "Sting target"
 
+	if(status_flags & FAKEDEATH)
+		return
+
 	change_ctate(/datum/click_handler/changeling/changeling_silence_sting)
 	return
 
@@ -821,6 +845,9 @@ var/list/datum/absorbed_dna/hivemind_bank = list()
 	set category = "Changeling"
 	set name = "Blind sting (20)"
 	set desc = "Sting target"
+
+	if(status_flags & FAKEDEATH)
+		return
 
 	change_ctate(/datum/click_handler/changeling/changeling_blind_sting)
 	return
@@ -842,7 +869,8 @@ var/list/datum/absorbed_dna/hivemind_bank = list()
 	set category = "Changeling"
 	set name = "Deaf sting (5)"
 	set desc = "Sting target"
-
+	if(status_flags & FAKEDEATH)
+		return
 	change_ctate(/datum/click_handler/changeling/changeling_deaf_sting)
 	return
 
@@ -861,7 +889,8 @@ var/list/datum/absorbed_dna/hivemind_bank = list()
 	set category = "Changeling"
 	set name = "Vomit Sting (15)"
 	set desc = "Urges target to vomit."
-
+	if(status_flags & FAKEDEATH)
+		return
 	change_ctate(/datum/click_handler/changeling/changeling_vomit_sting)
 	return
 
@@ -878,7 +907,8 @@ var/list/datum/absorbed_dna/hivemind_bank = list()
 	set category = "Changeling"
 	set name = "Death Sting (40)"
 	set desc = "Causes spasms to death."
-
+	if(status_flags & FAKEDEATH)
+		return
 	change_ctate(/datum/click_handler/changeling/changeling_death_sting)
 	return
 
@@ -902,7 +932,8 @@ var/list/datum/absorbed_dna/hivemind_bank = list()
 	set category = "Changeling"
 	set name = "Extract DNA Sting (40)"
 	set desc="Stealthily sting a target to extract their DNA."
-
+	if(status_flags & FAKEDEATH)
+		return
 	change_ctate(/datum/click_handler/changeling/changeling_extract_dna_sting)
 	return
 
@@ -927,7 +958,8 @@ var/list/datum/absorbed_dna/hivemind_bank = list()
 	set category = "Changeling"
 	set name = "Fake arm Blade (30)"
 	set desc = "We reform victims arm into a fake armblade."
-
+	if(status_flags & FAKEDEATH)
+		return
 	change_ctate(/datum/click_handler/changeling/changeling_fake_arm_blade_sting)
 	return
 
@@ -969,7 +1001,8 @@ var/list/datum/absorbed_dna/hivemind_bank = list()
 	set category = "Changeling"
 	set name = "Chemical Sting (5)"
 	set desc = "We inject synthesized chemicals into the victim."
-
+	if(status_flags & FAKEDEATH)
+		return
 	change_ctate(/datum/click_handler/changeling/changeling_chemical_sting)
 	return
 
@@ -1117,6 +1150,8 @@ var/list/datum/absorbed_dna/hivemind_bank = list()
 	set name = "Visible Camouflage (10)"
 	set desc = "Turns yourself almost invisible, as long as you move slowly."
 
+	if(status_flags & FAKEDEATH)
+		return
 
 	if(istype(src,/mob/living/carbon/human))
 		var/mob/living/carbon/human/H = src
@@ -1181,6 +1216,9 @@ var/list/datum/absorbed_dna/hivemind_bank = list()
 	set category = "Changeling"
 	set name = "Electric Lockpick (5 + 10/use)"
 	set desc = "Bruteforces open most electrical locking systems, at 10 chemicals per use."
+
+	if(status_flags & FAKEDEATH)
+		return
 
 	var/datum/changeling/changeling = changeling_power(5)
 	if(!changeling)
@@ -1273,6 +1311,9 @@ var/list/datum/absorbed_dna/hivemind_bank = list()
 /mob/proc/changeling_claw()
 	set category = "Changeling"
 	set name = "Claw (15)"
+
+	if(status_flags & FAKEDEATH)
+		return
 
 	if(src.mind.changeling.recursive_enhancement)
 		if(changeling_generic_weapon(/obj/item/weapon/melee/changeling/claw/greater, 1, 15))
@@ -1383,6 +1424,8 @@ var/list/datum/absorbed_dna/hivemind_bank = list()
 /mob/proc/changeling_arm_blade()
 	set category = "Changeling"
 	set name = "Arm Blade (20)"
+	if(status_flags & FAKEDEATH)
+		return
 	visible_message("<span class='warning'>The flesh is torn around the [src.name]\'s arm!</span>",
 		"<span class='warning'>The flesh of our hand is transforming.</span>",
 		"<span class='italics'>You hear organic matter ripping and tearing!</span>")
@@ -1423,7 +1466,8 @@ var/list/datum/absorbed_dna/hivemind_bank = list()
 	set category = "Changeling"
 	set name = "Division (20)"
 	set desc = "You will be like us."
-
+	if(status_flags & FAKEDEATH)
+		return
 	var/datum/changeling/changeling = changeling_power()
 	if(!changeling)
 		return
@@ -1512,7 +1556,8 @@ var/list/datum/absorbed_dna/hivemind_bank = list()
 	set category = "Changeling"
 	set name = "Detach Limb (10)"
 	set desc = "We tear off our limb, turning it into an aggressive biomass."
-
+	if(status_flags & FAKEDEATH)
+		return
 	var/datum/changeling/changeling = changeling_power(10, max_stat = DEAD)
 	if(!changeling)	return
 	if(changeling.isdetachingnow)	return
@@ -1568,7 +1613,8 @@ var/list/datum/absorbed_dna/hivemind_bank = list()
 	set category = "Changeling"
 	set name = "Body Disjunction (40)"
 	set desc = "Tear apart your human disguise, revealing your little form."
-
+	if(status_flags & FAKEDEATH)
+		return
 	var/datum/changeling/changeling = changeling_power(40,0,0,DEAD)
 	if(!changeling)	return 0
 
@@ -1644,7 +1690,8 @@ var/list/datum/absorbed_dna/hivemind_bank = list()
 	set category = "Changeling"
 	set name = "Runaway form"
 	set desc = "We take our weakest form."
-
+	if(status_flags & FAKEDEATH)
+		return
 	var/mob/living/simple_animal/hostile/little_changeling/headcrab/HC = new (get_turf(src))
 	var/obj/item/organ/internal/biostructure/BIO = src.loc
 
@@ -1657,7 +1704,8 @@ var/list/datum/absorbed_dna/hivemind_bank = list()
 	set category = "Changeling"
 	set name = "Toggle feel pain (10)"
 	set desc = "We choose whether or not to fell pain."
-
+	if(status_flags & FAKEDEATH)
+		return
 	var/datum/changeling/changeling = changeling_power(10, 0, 0, UNCONSCIOUS)
 	if(!changeling)
 		return FALSE
@@ -1682,7 +1730,8 @@ var/list/datum/absorbed_dna/hivemind_bank = list()
 	set category = "Changeling"
 	set name = "Passive Regeneration (10)"
 	set desc = "Allows you to passively regenerate when activated."
-
+	if(status_flags & FAKEDEATH)
+		return
 	if(istype(src,/mob/living/carbon/human))
 		var/mob/living/carbon/human/H = src
 		if(H.mind.changeling.heal)
@@ -1790,7 +1839,8 @@ var/list/datum/absorbed_dna/hivemind_bank = list()
 	set category = "Changeling"
 	set name = "Bioelectrogenesis (20)"
 	set desc = "We create an electromagnetic pulse against synthetics."
-
+	if(status_flags & FAKEDEATH)
+		return
 	change_ctate(/datum/click_handler/changeling/changeling_bioelectrogenesis)
 	return
 
