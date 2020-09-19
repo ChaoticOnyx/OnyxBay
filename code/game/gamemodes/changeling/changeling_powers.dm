@@ -30,6 +30,7 @@ var/global/list/possible_changeling_IDs = list("Alpha","Beta","Gamma","Delta","E
 	var/isdetachingnow = FALSE
 	var/FLP_last_time_used = 0
 	var/rapidregen_active = FALSE
+	var/is_revive_ready = FALSE
 
 /datum/changeling/New()
 	..()
@@ -465,6 +466,24 @@ var/global/list/possible_changeling_IDs = list("Alpha","Beta","Gamma","Delta","E
 	set category = "Changeling"
 	set name = "Regenerative Stasis (20)"
 
+	if(mind.changeling.is_revive_ready)
+		if(mind.changeling.true_dead)
+			to_chat(src, SPAN_NOTICE("We can not do this. We are really dead."))
+			return
+		mind.changeling.is_revive_ready = FALSE
+		// restore us to health
+		revive(ignore_prosthetic_prefs = TRUE)
+		// remove our fake death flag
+		status_flags &= ~(FAKEDEATH)
+		// let us move again
+		update_canmove()
+		// re-add out changeling powers
+		verbs -= /mob/living/carbon/human/proc/changeling_fakedeath
+		make_changeling()
+		// sending display messages
+		to_chat(src, SPAN_NOTICE("We have regenerated."))
+		return
+
 	var/datum/changeling/changeling = changeling_power(20,1,100,DEAD)
 	if(!changeling)
 		return
@@ -482,43 +501,24 @@ var/global/list/possible_changeling_IDs = list("Alpha","Beta","Gamma","Delta","E
 	status_flags |= FAKEDEATH
 	update_canmove()
 	remove_changeling_powers()
+	verbs += /mob/living/carbon/human/proc/changeling_fakedeath
 
 	emote("gasp")
 
-	addtimer(CALLBACK(src, .end_fakedeath), rand(80 SECONDS, 200 SECONDS))
+	//I can't use addtimer(), my religion (shitcodity) forbid this
+	sleep(rand(80 SECONDS, 200 SECONDS))
 
-/mob/living/carbon/human/proc/end_fakedeath()
 	if(QDELETED(src))
 		return
 	if(changeling_power(20,1,100,DEAD))
 		// charge the changeling chemical cost for stasis
 		mind.changeling.chem_charges -= 20
 
-		to_chat(src, "<span class='notice'><font size='5'>We are ready to rise.  Use the <b>Revive</b> verb when you are ready.</font></span>")
-		verbs += /mob/living/carbon/human/proc/changeling_revive
-		addtimer(CALLBACK(src, .changeling_revive), 10 SECONDS)
+		mind.changeling.is_revive_ready = TRUE
+
+		to_chat(src, SPAN_NOTICE("<font size='5'>We are ready to rise.  Use the <b>Regenerative Stasis (20)</b> verb when you are ready.</font>"))
 
 	feedback_add_details("changeling_powers","FD")
-
-/mob/living/carbon/human/proc/changeling_revive()
-	set category = "Changeling"
-	set name = "Revive"
-
-	if(mind.changeling.true_dead)
-		to_chat(src, "<span class='notice'>We can not do this. We are really dead.</span>")
-		return
-
-	// restore us to health
-	revive(ignore_prosthetic_prefs = TRUE)
-	// remove our fake death flag
-	status_flags &= ~(FAKEDEATH)
-	// let us move again
-	update_canmove()
-	// re-add out changeling powers
-	make_changeling()
-	// sending display messages
-	to_chat(src, "<span class='notice'>We have regenerated.</span>")
-	verbs -= /mob/living/carbon/human/proc/changeling_revive
 
 //Boosts the range of your next sting attack by 1
 /mob/proc/changeling_boost_range()
