@@ -16,7 +16,7 @@
 /datum/vampire/thrall
 	status = VAMP_ISTHRALL
 
-/datum/vampire/proc/add_power(var/datum/mind/vampire, var/datum/power/vampire/power, var/announce = 0)
+/datum/vampire/proc/add_power(datum/mind/vampire, datum/power/vampire/power, announce = 0)
 	if (!vampire || !power)
 		return
 	if (power in purchased_powers)
@@ -27,13 +27,13 @@
 	if (power.isVerb && power.verbpath)
 		vampire.current.verbs += power.verbpath
 	if (announce)
-		to_chat(vampire.current, "<span class='notice'><b>You have unlocked a new power:</b> [power.name].</span>")
-		to_chat(vampire.current, "<span class='notice'>[power.desc]</span>")
+		to_chat(vampire.current, SPAN_NOTICE("<b>You have unlocked a new power:</b> [power.name]."))
+		to_chat(vampire.current, SPAN_NOTICE("[power.desc]"))
 		if (power.helptext)
 			to_chat(vampire.current, "<font color='green'>[power.helptext]</font>")
 
 // Proc to safely remove blood, without resulting in negative amounts of blood.
-/datum/vampire/proc/use_blood(var/blood_to_use)
+/datum/vampire/proc/use_blood(blood_to_use)
 	if (!blood_to_use || blood_to_use <= 0)
 		return
 

@@ -17,7 +17,7 @@ GLOBAL_DATUM_INIT(vampires, /datum/antagonist/vampire, new)
 	antaghud_indicator = "hudvampire"
 
 
-/datum/antagonist/vampire/update_antag_mob(var/datum/mind/player)
+/datum/antagonist/vampire/update_antag_mob(datum/mind/player)
 	..()
 	player.current.make_vampire()
 

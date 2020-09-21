@@ -1,5 +1,5 @@
 // Contains all /mob/procs that relate to vampire.
-/mob/living/carbon/human/MiddleClickOn(atom/A)
+/mob/living/carbon/human/AltClickOn(atom/A)
 	if(mind && mind.vampire && istype(A , /turf/simulated/floor) && /mob/living/carbon/human/proc/vampire_veilstep in verbs)
 		vampire_veilstep(A)
 	..()
@@ -153,7 +153,7 @@
 			to_chat(T, SPAN_WARNING("You remember everything about being fed upon. How you react to [src.name]'s actions is up to you."))
 
 // Check that our target is alive, logged in, and any other special cases
-/mob/living/carbon/human/proc/check_drain_target_state(var/mob/living/carbon/human/T)
+/mob/living/carbon/human/proc/check_drain_target_state(mob/living/carbon/human/T)
 	if(T.stat < DEAD && T.client)
 		return TRUE
 
@@ -165,10 +165,8 @@
 
 	if (!vampire_power(0, 1))
 		return
-	if(is_blind())
-		return
-	if (istype(glasses, /obj/item/clothing/glasses/sunglasses))
-		to_chat(src, SPAN_WARNING("You can't do that with [glasses.name] covering your eyes!"))
+	if (eyecheck() > FLASH_PROTECTION_NONE)
+		to_chat(src, SPAN_WARNING("You can't do that, because no one will see the light of your eyes!"))
 		return
 
 	visible_message(SPAN_DANGER("[src.name]'s eyes emit a blinding flash"))
@@ -178,9 +176,7 @@
 			continue
 		if (!vampire_can_affect_target(H, 0))
 			continue
-		if(H.is_blind())
-			continue
-		if(istype(H.glasses, /obj/item/clothing/glasses/sunglasses))
+		if (eyecheck() > FLASH_PROTECTION_NONE)
 			continue
 		H.Weaken(8)
 		H.stuttering = 20
@@ -203,17 +199,16 @@
 	var/datum/vampire/vampire = vampire_power(10, 1)
 	if (!vampire)
 		return
-	if(is_blind())
-		return
-	if (istype(glasses, /obj/item/clothing/glasses/sunglasses))
-		to_chat(src, SPAN_WARNING("You can't do that with [glasses.name] covering your eyes!"))
+
+	if (eyecheck() > FLASH_PROTECTION_NONE)
+		to_chat(src, SPAN_WARNING("You can't do that, because no one will see your eyes!"))
 		return
 
 	var/list/victims = list()
 	for (var/mob/living/carbon/human/H in view(3))
 		if (H == src)
 			continue
-		if(H.is_blind())
+		if(H.eyecheck() > FLASH_PROTECTION_MODERATE)
 			continue
 		victims += H
 	if (!victims.len)
@@ -267,16 +262,14 @@
 		return
 
 	vampire_phase_out(get_turf(loc))
-
-	forceMove(T)
-
 	vampire_phase_in(T)
+	forceMove(T)
 
 	for (var/obj/item/grab/G in contents)
 		if (G.affecting && (vampire.status & VAMP_FULLPOWER))
 			G.affecting.vampire_phase_out(get_turf(G.affecting.loc))
-			G.affecting.forceMove(locate(T.x + rand(-1,1), T.y + rand(-1,1), T.z))
 			G.affecting.vampire_phase_in(get_turf(G.affecting.loc))
+			G.affecting.forceMove(locate(T.x + rand(-1,1), T.y + rand(-1,1), T.z))
 		else
 			qdel(G)
 
@@ -431,7 +424,7 @@
 			var/mob/M = A
 			M.reset_view(null)
 
-/obj/effect/dummy/veil_walk/relaymove(var/mob/user, direction)
+/obj/effect/dummy/veil_walk/relaymove(mob/user, direction)
 	if (!can_move)
 		return
 
@@ -476,7 +469,7 @@
 	else
 		deactivate()
 
-/obj/effect/dummy/veil_walk/proc/activate(var/mob/owner)
+/obj/effect/dummy/veil_walk/proc/activate(mob/owner)
 	if (!owner)
 		qdel(src)
 		return

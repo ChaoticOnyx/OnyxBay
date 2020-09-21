@@ -17,7 +17,10 @@
 #define BE_PLANT "BE_PLANT"
 #define BE_SYNTH "BE_SYNTH"
 #define BE_PAI   "BE_PAI"
+#define BE_FAMILIAR "BE_FAMILIAR"
+#define BE_SHADE "BE_SHADE"
 #define BE_VAMPIRE "BE_VAMPIRE"
+
 // Antagonist datum flags.
 #define ANTAG_OVERRIDE_JOB        0x1 // Assigned job is set to MODE when spawning.
 #define ANTAG_OVERRIDE_MOB        0x2 // Mob is recreated from datum mob_type var when spawning.
