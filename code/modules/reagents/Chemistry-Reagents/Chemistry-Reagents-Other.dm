@@ -186,7 +186,7 @@
 				var/obj/effect/spider/spiderling/S = new /obj/effect/spider/spiderling(M.loc)
 				M.visible_message("<span class='warning'>\The [M] coughs up \the [S]!</span>")
 
-		if(M.mind.vampire)
+		if(M.mind && M.mind.vampire)
 			M.adjustFireLoss(6)
 			M.adjust_fire_stacks(1)
 			M.IgniteMob()
