@@ -3,7 +3,7 @@
 	if(!C || !user)
 		return 0
 
-	if(isCoil(C) || (flooring && istype(C, /obj/item/stack/rods)))
+	if(isCoil(C) || (flooring && istype(C, /obj/item/stack/rods)) || user.a_intent != I_HELP)
 		return ..(C, user)
 
 	if(flooring)

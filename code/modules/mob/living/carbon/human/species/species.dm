@@ -365,7 +365,7 @@ The slots that you can use are found in items_clothing.dm and are the inventory 
 					if(!actor_cig.lit && target_cig.lit)
 						actor_cig.light(target_cig, H)
 					return
-			
+
 			if(actor_mask)
 				to_chat(H, "\A [actor_mask] is in the way!")
 				return
@@ -556,10 +556,10 @@ The slots that you can use are found in items_clothing.dm and are the inventory 
 	attacker.do_attack_animation(target)
 
 	if(target.parrying)
-		if(attacker.get_parried_w(target,w_atk=null))
+		if(target.handle_parry(attacker, w_atk=null))
 			return
 	if(target.blocking)
-		if(attacker.get_blocked_h(target))
+		if(target.handle_block_normal(attacker))
 			return
 
 	if(target.w_uniform)
