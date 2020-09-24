@@ -64,7 +64,7 @@ var/list/global/tank_gauge_cache = list()
 	air_contents.update_values()
 
 	START_PROCESSING(SSobj, src)
-	update_icon(1)
+	update_icon(TRUE)
 
 /obj/item/weapon/tank/Destroy()
 	STOP_PROCESSING(SSobj, src)
@@ -128,7 +128,7 @@ var/list/global/tank_gauge_cache = list()
 		if(C.use(1))
 			wired = 1
 			to_chat(user, "<span class='notice'>You attach the wires to the tank.</span>")
-			update_icon(1)
+			update_icon(TRUE)
 
 	if(isWirecutter(W))
 		if(wired && proxyassembly.assembly)
@@ -150,7 +150,7 @@ var/list/global/tank_gauge_cache = list()
 						assy.a_right = null
 						proxyassembly.assembly = null
 						qdel(assy)
-				update_icon(1)
+				update_icon(TRUE)
 
 			else
 				to_chat(user, "<span class='danger'>You slip and bump the igniter!</span>")
@@ -161,7 +161,7 @@ var/list/global/tank_gauge_cache = list()
 			if(do_after(user, 10, src))
 				to_chat(user, "<span class='notice'>You quickly clip the wire from the tank.</span>")
 				wired = 0
-				update_icon(1)
+				update_icon(TRUE)
 
 		else
 			to_chat(user, "<span class='notice'>There are no wires to cut!</span>")
@@ -354,7 +354,7 @@ var/list/global/tank_gauge_cache = list()
 /obj/item/weapon/tank/Process()
 	//Allow for reactions
 	air_contents.react() //cooking up air tanks - add phoron and oxygen, then heat above PHORON_MINIMUM_BURN_TEMPERATURE
-	update_icon(1)
+	update_icon()
 	check_status()
 
 /obj/item/weapon/tank/update_icon(override)
@@ -531,8 +531,8 @@ var/list/global/tank_gauge_cache = list()
 	proxyassembly.assembly = H
 	H.master = proxyassembly
 
-	H.update_icon(1)
-	update_icon(1)
+	H.update_icon(TRUE)
+	update_icon(TRUE)
 
 /obj/item/weapon/tank/phoron/onetankbomb/Initialize()
 	. = ..()
@@ -588,7 +588,7 @@ var/list/global/tank_gauge_cache = list()
 		src.air_contents.temperature = new_temperature
 
 /obj/item/device/tankassemblyproxy/update_icon()
-	tank.update_icon(1)
+	tank.update_icon()
 
 /obj/item/device/tankassemblyproxy/HasProximity(atom/movable/AM as mob|obj)
 	if(assembly)
