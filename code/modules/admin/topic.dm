@@ -2131,7 +2131,6 @@
 		return
 
 	watchlist.AdminTopicProcess(src, href_list)
-	EAMS_AdminTopicProcess(src, href_list)
 	IAAJ_AdminTopicProcess(src, href_list)
 	SpeciesIngameWhitelist_AdminTopicProcess(src, href_list)
 
