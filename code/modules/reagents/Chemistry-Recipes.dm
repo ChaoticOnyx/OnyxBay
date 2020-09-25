@@ -2085,3 +2085,10 @@
 	result = /datum/reagent/vecuronium_bromide
 	required_reagents = list(/datum/reagent/ethanol = 1, /datum/reagent/mercury = 2, /datum/reagent/luminol = 2)
 	result_amount = 1
+
+/datum/chemical_reaction/kvas
+	name = "Kvas"
+	result = /datum/reagent/ethanol/kvas
+	required_reagents = list(/datum/reagent/ethanol/beer = 1, /datum/reagent/sugar = 1)
+	catalysts = list(/datum/reagent/enzyme = 5)
+	result_amount = 2
