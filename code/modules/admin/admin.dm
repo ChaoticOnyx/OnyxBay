@@ -102,7 +102,7 @@ var/global/floorIsLava = 0
 		else
 			body += "<A style=\"pointer-events: none; cursor: default;\">Watchlist Disabled (Needs SQL)</A>"
 
-		body += EAMS_GetPlayerPannelButton(src, M.client)
+		body += SSeams.GetPlayerPanelButton(src, M.client)
 		body += SpeciesIngameWhitelist_GetPlayerPannelButton(src, M.client)
 
 	body += {"<br><br>

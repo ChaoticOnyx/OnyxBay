@@ -222,7 +222,7 @@
 		return
 
 	// Load EAMS data
-	EAMS_CollectData()
+	SSeams.CollectDataForClient(src)
 
 	//preferences datum - also holds some persistant data for the client (because we may as well keep these datums to a minimum)
 	prefs = SScharacter_setup.preferences_datums[ckey]

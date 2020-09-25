@@ -91,9 +91,6 @@
 
 	if(href_list["ready"])
 		if(GAME_STATE <= RUNLEVEL_LOBBY) // Make sure we don't ready up after the round has started
-			if (!client.EAMS_CheckForAccess())
-				return
-
 			if(jobban_isbanned(src, "MALE") && jobban_isbanned(src, "FEMALE"))
 				to_chat(src, "<span class='warning'>Only genderqueers allowed.</span>")
 				return
@@ -105,7 +102,12 @@
 			if(jobban_isbanned(src, "FEMALE") && client.prefs.gender == FEMALE)
 				to_chat(src, "<span class='warning'>No traps allowed.</span>")
 				return
-			ready = text2num(href_list["ready"])
+
+			var/value = text2num(href_list["ready"])
+			if (value && !SSeams.CheckForAccess(client))
+				return
+			
+			ready = value
 		else
 			ready = 0
 
@@ -118,7 +120,7 @@
 			to_chat(src, "<span class='warning'>Please wait for server initialization to complete...</span>")
 			return
 
-		if (!client.EAMS_CheckForAccess())
+		if (!SSeams.CheckForAccess(client))
 			return
 
 		if(!config.respawn_delay || client.holder || alert(src,"Are you sure you wish to observe? You will have to wait [config.respawn_delay] minute\s before being able to respawn!","Player Setup","Yes","No") == "Yes")
@@ -166,7 +168,7 @@
 			to_chat(usr, "<span class='warning'>The round is either not ready, or has already finished...</span>")
 			return
 
-		if (!client.EAMS_CheckForAccess())
+		if (!SSeams.CheckForAccess(client))
 			return
 
 		if(jobban_isbanned(src, "MALE") && jobban_isbanned(src, "FEMALE"))
@@ -193,7 +195,7 @@
 			to_chat(usr, "<span class='danger'>The job '[href_list["SelectedJob"]]' doesn't exist!</span>")
 			return
 
-		if (!client.EAMS_CheckForAccess())
+		if (!SSeams.CheckForAccess(client))
 			return
 
 		//Prevents people rejoining as same character.
