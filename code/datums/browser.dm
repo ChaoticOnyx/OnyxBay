@@ -33,11 +33,21 @@
 		return
 	add_stylesheet("common", 'html/browser/common.css') // this CSS sheet is common to all UIs
 
+/datum/browser/proc/process_icons(text)
+	//taken from to_chat(), processes all explanded \icon macros since they don't work in minibrowser (they only work in text output)
+	var/static/regex/icon_replacer = new(@/<IMG CLASS=icon SRC=(\[[^]]+])(?: ICONSTATE='([^']+)')?>/, "g")	//syntax highlighter fix -> '
+	while(icon_replacer.Find(text))
+		text =\
+			copytext(text,1,icon_replacer.index) +\
+			icon2html(locate(icon_replacer.group[1]), target = world, icon_state=icon_replacer.group[2]) +\
+			copytext(text,icon_replacer.next)
+	return text
+
 /datum/browser/proc/set_title(ntitle)
 	title = format_text(ntitle)
 
 /datum/browser/proc/add_head_content(nhead_content)
-	head_content = nhead_content
+	head_content += process_icons(nhead_content)
 
 /datum/browser/proc/set_title_buttons(ntitle_buttons)
 	title_buttons = ntitle_buttons
@@ -55,10 +65,10 @@
 	scripts[name] = file
 
 /datum/browser/proc/set_content(ncontent)
-	content = ncontent
+	content = process_icons(ncontent)
 
 /datum/browser/proc/add_content(ncontent)
-	content += ncontent
+	content += process_icons(ncontent)
 
 /datum/browser/proc/get_header()
 	var/key
