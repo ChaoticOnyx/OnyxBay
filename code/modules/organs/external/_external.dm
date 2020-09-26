@@ -79,6 +79,7 @@
 	var/cavity = 0
 	var/atom/movable/applied_pressure
 	var/atom/movable/splinted
+	var/internal_organs_size = 0       // Current size cost of internal organs in this body part
 
 	// HUD element variable, see organ_icon.dm get_damage_hud_image()
 	var/image/hud_damage_image

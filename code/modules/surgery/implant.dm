@@ -105,11 +105,14 @@
 		if(istype(user,/mob/living/silicon/robot))
 			return FALSE
 		if(affected && affected.cavity)
-			var/max_volume = base_storage_capacity(affected.cavity_max_w_class)
+			var/max_volume = base_storage_capacity(affected.cavity_max_w_class) + affected.internal_organs_size
 
-			if(tool.w_class > affected.cavity_max_w_class)
-				to_chat(user, "<span class='warning'>\The [tool] is too big for [affected.cavity_name] cavity.</span>")
-				return FALSE
+			for(var/obj/item/organ/internal/org in affected.internal_organs)
+				max_volume -= org.get_storage_cost()
+
+			if(tool.get_storage_cost() > max_volume)
+				to_chat(user, SPAN_WARNING("\The [tool] is too big for [affected.cavity_name] cavity."))
+				return SURGERY_FAILURE
 
 			var/total_volume = tool.get_storage_cost()
 			for(var/obj/item/I in affected.implants)
