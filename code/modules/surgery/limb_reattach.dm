@@ -24,6 +24,9 @@
 		to_chat(user, "<span class='danger'>The [E.amputation_point] is missing!</span>")
 		return SURGERY_FAILURE
 
+	if(istype(E, /obj/item/organ/external/head) && BP_IS_ROBOTIC(E) && !BP_IS_ROBOTIC(P))
+		return SURGERY_FAILURE
+
 	var/obj/item/organ/external/affected = target.get_organ(target_zone)
 	if (affected)
 		return 0
