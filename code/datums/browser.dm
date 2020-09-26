@@ -39,7 +39,7 @@
 	while(icon_replacer.Find(text))
 		text =\
 			copytext(text,1,icon_replacer.index) +\
-			icon2html(locate(icon_replacer.group[1]), target = world, icon_state=icon_replacer.group[2]) +\
+			icon2html(locate(icon_replacer.group[1]), target = user, icon_state=icon_replacer.group[2]) +\
 			copytext(text,icon_replacer.next)
 	return text
 
