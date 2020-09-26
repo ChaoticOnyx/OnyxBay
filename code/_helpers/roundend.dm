@@ -198,6 +198,16 @@ GLOBAL_LIST_EMPTY(common_report)
 
 /datum/controller/subsystem/ticker/proc/display_report()
 	GLOB.common_report = build_roundend_report()
+
+	//taken from to_chat(), processes all explanded \icon macros since they don't work in minibrowser (they only work in text output)
+	var/static/regex/icon_replacer = new(@/<IMG CLASS=icon SRC=(\[[^]]+])(?: ICONSTATE='([^']+)')?>/, "g")	//syntax highlighter fix -> '
+	while(icon_replacer.Find(GLOB.common_report))
+		GLOB.common_report =\
+			copytext(GLOB.common_report,1,icon_replacer.index) +\
+			icon2html(locate(icon_replacer.group[1]), target = world, icon_state=icon_replacer.group[2]) +\
+			copytext(GLOB.common_report,icon_replacer.next)
+
+
 	GLOB.survivor_report = survivor_report()
 	for(var/client/C in GLOB.clients)
 		show_roundend_report(C)
