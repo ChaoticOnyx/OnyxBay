@@ -105,7 +105,7 @@ GLOBAL_VAR_INIT(arrest_security_status, "Arrest")
 
 // Simple record to HTML (for paper purposes) conversion.
 // Not visually that nice, but it gets the work done, feel free to tweak it visually
-/proc/record_to_html(datum/computer_file/crew_record/CR, access)
+/proc/record_to_html(datum/computer_file/crew_record/CR, access, records_context = record_field_context_none)
 	var/dat = "<tt><H2>RECORD DATABASE DATA DUMP</H2><i>Generated on: [stationdate2text()] [stationtime2text()]</i><br>******************************<br>"
 	dat += "<table>"
 	for(var/record_field/F in CR.fields)
@@ -132,6 +132,13 @@ GLOBAL_VAR_INIT(arrest_security_status, "Arrest")
 		return H.mind.role_alt_title
 	return H.mind.assigned_role
 
+var/const/record_field_context_none        = 0
+var/const/record_field_context_medical     = 1 << 0
+var/const/record_field_context_security    = 1 << 1
+var/const/record_field_context_HoP         = 1 << 2
+var/const/record_field_context_syndicate   = 1 << 4
+var/const/record_field_context_universal   = ~record_field_context_none
+
 /record_field
 	var/name = "Unknown"
 	var/value = "Unset"
@@ -140,6 +147,10 @@ GLOBAL_VAR_INIT(arrest_security_status, "Arrest")
 	var/acccess_edit
 	var/record_id
 	var/hidden = FALSE
+
+	
+	var/context_edit = record_field_context_HoP
+	var/context_view = record_field_context_universal
 
 /record_field/New(datum/computer_file/crew_record/record)
 	if(!acccess_edit)
@@ -176,15 +187,19 @@ GLOBAL_VAR_INIT(arrest_security_status, "Arrest")
 /record_field/proc/get_options()
 	return list()
 
-/record_field/proc/can_edit(used_access)
+/record_field/proc/can_edit(used_access, used_context = record_field_context_none)
+	if (!(context_edit & used_context))
+		return FALSE
 	if(!acccess_edit)
 		return TRUE
 	if(!used_access)
 		return FALSE
 	return islist(used_access) ? (acccess_edit in used_access) : acccess_edit == used_access
 
-/record_field/proc/can_see(used_access)
+/record_field/proc/can_see(used_access, used_context = record_field_context_none)
 	if (hidden)
+		return FALSE
+	if (!(context_view & used_context))
 		return FALSE
 	if(!acccess)
 		return TRUE
@@ -213,13 +228,18 @@ GLOBAL_VAR_INIT(arrest_security_status, "Arrest")
 #define FIELD_LIST(NAME, KEY, HIDDEN, OPTIONS) FIELD_SHORT(##NAME, ##KEY, ##HIDDEN); /record_field/##KEY/valtype = EDIT_LIST; /record_field/##KEY/get_options(){. = ##OPTIONS;}
 #define FIELD_LIST_SECURE(NAME, KEY, HIDDEN, OPTIONS, ACCESS) FIELD_LIST(##NAME, ##KEY, ##HIDDEN, ##OPTIONS); /record_field/##KEY/acccess = ##ACCESS
 
+#define FIELD_CONTEXT_VIEW(KEY, CONTEXT_VIEW) /record_field/##KEY/context_view = (##CONTEXT_VIEW)
+#define FIELD_CONTEXT_EDIT(KEY, CONTEXT_EDIT) /record_field/##KEY/context_edit = (##CONTEXT_EDIT)
+#define FIELD_CONTEXT(KEY, CONTEXT_VIEW, CONTEXT_EDIT) FIELD_CONTEXT_VIEW(##KEY, ##CONTEXT_VIEW); FIELD_CONTEXT_EDIT(##KEY, ##CONTEXT_EDIT)
+#define FIELD_CONTEXT_BOTH(KEY, CONTEXT) FIELD_CONTEXT(##KEY, ##CONTEXT, ##CONTEXT)
+#define CONTEXT(KEY) record_field_context_##KEY
 // GENERIC RECORDS
 FIELD_SHORT("Name",name, FALSE)
 FIELD_SHORT("Job",job, FALSE)
 FIELD_LIST("Sex", sex, FALSE, record_genders())
 FIELD_NUM("Age", age, FALSE)
 
-FIELD_LIST("Status", status, FALSE, GLOB.physical_statuses)
+FIELD_LIST("Status", status, FALSE, GLOB.physical_statuses); FIELD_CONTEXT_EDIT(status, CONTEXT(medical))
 /record_field/status/acccess_edit = access_medical
 
 FIELD_SHORT("Species",species, FALSE)
@@ -227,11 +247,11 @@ FIELD_LIST("Branch", branch, TRUE, record_branches()) // hidden field
 FIELD_LIST("Rank", rank, TRUE, record_ranks()) // hidden field
 
 // MEDICAL RECORDS
-FIELD_LIST("Blood Type", bloodtype, FALSE, GLOB.blood_types)
-FIELD_LONG_SECURE("Medical Record", medRecord, FALSE, access_medical)
+FIELD_LIST("Blood Type", bloodtype, FALSE, GLOB.blood_types); FIELD_CONTEXT(bloodtype, CONTEXT(medical) | CONTEXT(HoP), CONTEXT(medical))
 
+FIELD_LONG_SECURE("Medical Record", medRecord, FALSE, access_medical); FIELD_CONTEXT_BOTH(medRecord, CONTEXT(medical))
 // SECURITY RECORDS
-FIELD_LIST_SECURE("Criminal Status", criminalStatus, FALSE, GLOB.security_statuses, access_security)
+FIELD_LIST_SECURE("Criminal Status", criminalStatus, FALSE, GLOB.security_statuses, access_security); FIELD_CONTEXT_BOTH(criminalStatus, CONTEXT(security))
 /record_field/criminalStatus/announce(automatic)
 	if(automatic)
 		return
@@ -251,7 +271,7 @@ FIELD_LIST_SECURE("Criminal Status", criminalStatus, FALSE, GLOB.security_status
 
 			GLOB.global_announcer.autosay("<font color='black'><b>[R.get_name()]</b> security status is changed to [status]!</font>", "<b>Security Records Announcer</b>", "Security")
 
-FIELD_LONG_SECURE("Security Record", secRecord, FALSE, access_security)
+FIELD_LONG_SECURE("Security Record", secRecord, FALSE, access_security); FIELD_CONTEXT_BOTH(secRecord, CONTEXT(security))
 /record_field/secRecord/announce(automatic)
 	if(automatic)
 		return
@@ -259,18 +279,18 @@ FIELD_LONG_SECURE("Security Record", secRecord, FALSE, access_security)
 		if(R.uid == record_id)
 			GLOB.global_announcer.autosay("<font color='black'><b>[R.get_name()]</b> security record was changed!</font>", "<b>Security Records Announcer</b>", "Security")
 
-FIELD_SHORT_SECURE("DNA", dna, FALSE, access_security)
-FIELD_SHORT_SECURE("Fingerprint", fingerprint, FALSE, access_security)
+FIELD_SHORT_SECURE("DNA", dna, FALSE, access_security); FIELD_CONTEXT_EDIT(dna, CONTEXT(medical) | CONTEXT(security))
+FIELD_SHORT_SECURE("Fingerprint", fingerprint, FALSE, access_security); FIELD_CONTEXT_EDIT(dna, CONTEXT(security))
 
 // EMPLOYMENT RECORDS
-FIELD_LONG_SECURE("Employment Record", emplRecord, FALSE, access_heads)
-FIELD_SHORT_SECURE("Home System", homeSystem, FALSE, access_heads)
-FIELD_SHORT_SECURE("Citizenship", citizenship, FALSE, access_heads)
-FIELD_SHORT_SECURE("Faction", faction, FALSE, access_heads)
-FIELD_SHORT_SECURE("Religion", religion, FALSE, access_heads)
+FIELD_LONG_SECURE("Employment Record", emplRecord, FALSE, access_heads); FIELD_CONTEXT_BOTH(emplRecord, CONTEXT(HoP))
+FIELD_SHORT_SECURE("Home System", homeSystem, FALSE, access_heads); FIELD_CONTEXT_BOTH(homeSystem, CONTEXT(HoP))
+FIELD_SHORT_SECURE("Citizenship", citizenship, FALSE, access_heads); FIELD_CONTEXT_BOTH(citizenship, CONTEXT(HoP))
+FIELD_SHORT_SECURE("Faction", faction, FALSE, access_heads); FIELD_CONTEXT_BOTH(faction, CONTEXT(HoP))
+FIELD_SHORT_SECURE("Religion", religion, FALSE, access_heads); FIELD_CONTEXT_BOTH(religion, CONTEXT(HoP))
 
 // ANTAG RECORDS
-FIELD_LONG_SECURE("Exploitable Information", antagRecord, FALSE, access_syndicate)
+FIELD_LONG_SECURE("Exploitable Information", antagRecord, FALSE, access_syndicate); FIELD_CONTEXT_BOTH(antagRecord, CONTEXT(syndicate))
 
 //Options builderes
 /record_field/rank/proc/record_ranks()
@@ -297,3 +317,5 @@ FIELD_LONG_SECURE("Exploitable Information", antagRecord, FALSE, access_syndicat
 	for(var/B in mil_branches.branches)
 		var/datum/mil_branch/BR = mil_branches.branches[B]
 		. |= BR.name
+
+#undef CONTEXT

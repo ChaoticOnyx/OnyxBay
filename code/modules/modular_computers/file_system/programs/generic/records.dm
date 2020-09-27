@@ -14,6 +14,7 @@
 	name = "Crew Records"
 	var/datum/computer_file/crew_record/active_record
 	var/message = null
+	var/const/records_context = record_field_context_HoP
 
 /datum/nano_module/records/ui_interact(mob/user, ui_key = "main", datum/nanoui/ui = null, force_open = 1, state = GLOB.default_state)
 	var/list/data = host.initial_data()
@@ -27,12 +28,12 @@
 		data["uid"] = active_record.uid
 		var/list/fields = list()
 		for(var/record_field/F in active_record.fields)
-			if(F.can_see(user_access))
+			if(F.can_see(user_access, records_context))
 				fields.Add(list(list(
 					"key" = F.type,
 					"name" = F.name,
 					"val" = F.get_display_value(),
-					"editable" = F.can_edit(user_access),
+					"editable" = F.can_edit(user_access, records_context),
 					"large" = (F.valtype == EDIT_LONGTEXT)
 				)))
 		data["fields"] = fields
@@ -78,7 +79,7 @@
 	if(!F)
 		return
 
-	if(!F.can_edit(get_record_access(user)))
+	if(!F.can_edit(get_record_access(user), records_context))
 		to_chat(user, "<span class='notice'>\The [nano_host()] flashes an \"Access Denied\" warning.</span>")
 		return
 
@@ -96,7 +97,7 @@
 
 	if(active_record != R)
 		return
-	if(!F.can_edit(get_record_access(user)))
+	if(!F.can_edit(get_record_access(user), records_context))
 		to_chat(user, "<span class='notice'>\The [nano_host()] flashes an \"Access Denied\" warning.</span>")
 		return
 	if(newValue)
@@ -128,7 +129,7 @@
 	if(href_list["print_active"])
 		if(!active_record)
 			return
-		print_text(record_to_html(active_record, get_record_access(usr)), usr)
+		print_text(record_to_html(active_record, get_record_access(usr), records_context), usr)
 		return 1
 	if(href_list["search"])
 		var/field = text2path("/record_field/"+href_list["search"])
