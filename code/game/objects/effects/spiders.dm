@@ -116,6 +116,10 @@
 	anchored = 0
 	layer = BELOW_OBJ_LAYER
 	health = 3
+	var/harm_intent_damage = 3
+	var/response_help  = "pets"
+	var/response_disarm = "gently pushes aside"
+	var/response_harm   = "stamps on"
 	var/mob/living/simple_animal/hostile/giant_spider/greater_form
 	var/last_itch = 0
 	var/amount_grown = -1
@@ -161,6 +165,28 @@
 	..()
 	if(health > 0)
 		disturbed()
+
+/obj/effect/spider/spiderling/attack_hand(mob/living/carbon/human/M as mob)
+	..()
+
+	switch(M.a_intent)
+
+		if(I_HELP)
+			if (health > 0)
+				M.visible_message("<span class='notice'>[M] [response_help] \the [src].</span>")
+
+		if(I_DISARM)
+			M.visible_message("<span class='notice'>[M] [response_disarm] \the [src].</span>")
+			M.do_attack_animation(src)
+			//TODO: Push the mob away or something
+
+		if(I_HURT)
+			M.visible_message("<span class='warning'>[M] [response_harm] \the [src]!</span>")
+			M.do_attack_animation(src)
+			health -= harm_intent_damage
+			healthcheck()
+
+	return
 
 /obj/effect/spider/spiderling/Crossed(mob/living/L)
 	if(dormant && istype(L) && L.mob_size > MOB_TINY)
