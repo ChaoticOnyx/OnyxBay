@@ -310,7 +310,7 @@ FIELD_LONG_SECURE("Security Background", secRecord, FALSE, access_security); FIE
 		if(R.uid == record_id)
 			GLOB.global_announcer.autosay("<font color='black'><b>[R.get_name()]</b> security record was changed!</font>", "<b>Security Records Announcer</b>", "Security")
 
-FIELD_SHORT_SECURE("DNA", dna, FALSE, access_security); FIELD_CONTEXT_EDIT(dna, CONTEXT(medical) | CONTEXT(security))
+FIELD_SHORT_SECURE("DNA", dna, FALSE, access_medical); FIELD_CONTEXT_EDIT(dna, CONTEXT(medical))
 FIELD_SHORT_SECURE("Fingerprint", fingerprint, FALSE, access_security); FIELD_CONTEXT_EDIT(fingerprint, CONTEXT(security))
 
 // EMPLOYMENT RECORDS
