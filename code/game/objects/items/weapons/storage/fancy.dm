@@ -360,8 +360,8 @@
 	can_hold = list(/obj/item/rollingpaper/cheap)
 
 /obj/item/weapon/storage/fancy/rollingpapers/good
-	name = "RYR Papers"
-	desc = "A pack of high-quality unbleached organic rolling papers. It's rumored that the brand was created hundreds of years ago, on the Earth."
+	name = "MAN Papers"
+	desc = "A pack of high-quality unbleached organic rolling papers. Looking at this makes you feel like you know how to roll a proper joint."
 	icon_state = "rps_good"
 
 	key_type = /obj/item/rollingpaper/good

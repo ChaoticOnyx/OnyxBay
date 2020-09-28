@@ -37,7 +37,7 @@
 				reagents.remove_any(smokeamount*amount)
 			smoke_loc = C.loc
 		smoke_effect++
-		if(smoke_effect >= 2 || manual)
+		if(smoke_effect >= 3 || manual)
 			smoke_effect = 0
 			new /obj/effect/effect/cig_smoke(smoke_loc)
 	else

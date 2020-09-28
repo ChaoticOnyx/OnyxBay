@@ -22,7 +22,7 @@
 
 /obj/item/rollingpaper/good
 	name = "rolling paper"
-	desc = "A sheen of thin unbleached paper. This one looks like it may end up being a big nice joint."
+	desc = "A sheet of thin unbleached paper. This one looks like it may end up being a big nice joint."
 	icon_state = "papers_good"
 	quality = "good"
 

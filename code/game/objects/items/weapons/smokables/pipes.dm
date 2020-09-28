@@ -24,6 +24,7 @@
 		item_state = icon_on
 		var/turf/T = get_turf(src)
 		T.visible_message(generate_lighting_message(used_tool, holder))
+		smokeamount = reagents.total_volume / smoketime
 		START_PROCESSING(SSobj, src)
 		if(ismob(loc))
 			var/mob/living/M = loc
@@ -45,7 +46,7 @@
 		lit = 0
 		update_icon()
 		STOP_PROCESSING(SSobj, src)
-	else if (smoketime)
+	else if(smoketime)
 		var/turf/location = get_turf(user)
 		user.visible_message("<span class='notice'>[user] empties out [src].</span>", "<span class='notice'>You empty out [src].</span>")
 		new /obj/effect/decal/cleanable/ash(location)
