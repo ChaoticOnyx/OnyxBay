@@ -55,6 +55,11 @@ GLOBAL_VAR_INIT(arrest_security_status, "Arrest")
 	set_criminalStatus(GLOB.default_security_status, automatic)
 	set_dna(H ? H.dna.unique_enzymes : "")
 	set_fingerprint(H ? md5(H.dna.uni_identity) : "")
+	set_major_crimes("None")
+	set_minor_crimes("None")
+	set_crime_details("None")
+	set_crime_notes("None")
+	set_crime_recent("None")
 	set_secRecord((H && H.sec_record && !jobban_isbanned(H, "Records") ? H.sec_record : "No record supplied"), automatic)
 
 	// Employment record
@@ -109,7 +114,7 @@ GLOBAL_VAR_INIT(arrest_security_status, "Arrest")
 	var/dat = "<tt><H2>RECORD DATABASE DATA DUMP</H2><i>Generated on: [stationdate2text()] [stationtime2text()]</i><br>******************************<br>"
 	dat += "<table>"
 	for(var/record_field/F in CR.fields)
-		if(F.can_see(access))
+		if(F.can_see(access, records_context))
 			dat += "<tr><td><b>[F.name]</b>"
 			if(F.valtype == EDIT_LONGTEXT)
 				dat += "<tr>"
@@ -135,7 +140,7 @@ GLOBAL_VAR_INIT(arrest_security_status, "Arrest")
 var/const/record_field_context_none        = 0
 var/const/record_field_context_medical     = 1 << 0
 var/const/record_field_context_security    = 1 << 1
-var/const/record_field_context_HoP         = 1 << 2
+var/const/record_field_context_crew        = 1 << 2
 var/const/record_field_context_syndicate   = 1 << 4
 var/const/record_field_context_universal   = ~record_field_context_none
 
@@ -148,8 +153,8 @@ var/const/record_field_context_universal   = ~record_field_context_none
 	var/record_id
 	var/hidden = FALSE
 
-	
-	var/context_edit = record_field_context_HoP
+
+	var/context_edit = record_field_context_crew
 	var/context_view = record_field_context_universal
 
 /record_field/New(datum/computer_file/crew_record/record)
@@ -170,19 +175,19 @@ var/const/record_field_context_universal   = ~record_field_context_none
 
 /record_field/proc/set_value(newval, automatic = FALSE)
 	if(isnull(newval))
-		return
+		return FALSE
 	switch(valtype)
 		if(EDIT_LIST)
 			var/options = get_options()
 			if(!(newval in options))
-				return
+				return FALSE
 		if(EDIT_SHORTTEXT)
 			newval = sanitize(newval)
 		if(EDIT_LONGTEXT)
 			newval = sanitize(replacetext(newval, "\n", "\[br\]"), MAX_PAPER_MESSAGE_LEN)
 	value = newval
 	announce(automatic)
-	return 1
+	return TRUE
 
 /record_field/proc/get_options()
 	return list()
@@ -247,9 +252,9 @@ FIELD_LIST("Branch", branch, TRUE, record_branches()) // hidden field
 FIELD_LIST("Rank", rank, TRUE, record_ranks()) // hidden field
 
 // MEDICAL RECORDS
-FIELD_LIST("Blood Type", bloodtype, FALSE, GLOB.blood_types); FIELD_CONTEXT(bloodtype, CONTEXT(medical) | CONTEXT(HoP), CONTEXT(medical))
+FIELD_LIST("Blood Type", bloodtype, FALSE, GLOB.blood_types); FIELD_CONTEXT(bloodtype, CONTEXT(medical) | CONTEXT(crew), CONTEXT(medical))
 
-FIELD_LONG_SECURE("Medical Record", medRecord, FALSE, access_medical); FIELD_CONTEXT_BOTH(medRecord, CONTEXT(medical))
+FIELD_LONG_SECURE("Medical Background", medRecord, FALSE, access_medical); FIELD_CONTEXT_BOTH(medRecord, CONTEXT(medical))
 // SECURITY RECORDS
 FIELD_LIST_SECURE("Criminal Status", criminalStatus, FALSE, GLOB.security_statuses, access_security); FIELD_CONTEXT_BOTH(criminalStatus, CONTEXT(security))
 /record_field/criminalStatus/announce(automatic)
@@ -271,7 +276,13 @@ FIELD_LIST_SECURE("Criminal Status", criminalStatus, FALSE, GLOB.security_status
 
 			GLOB.global_announcer.autosay("<font color='black'><b>[R.get_name()]</b> security status is changed to [status]!</font>", "<b>Security Records Announcer</b>", "Security")
 
-FIELD_LONG_SECURE("Security Record", secRecord, FALSE, access_security); FIELD_CONTEXT_BOTH(secRecord, CONTEXT(security))
+FIELD_LONG_SECURE("Major Crimes", major_crimes, FALSE, access_security); FIELD_CONTEXT_BOTH(major_crimes, CONTEXT(security))
+FIELD_LONG_SECURE("Minor Crimes", minor_crimes, FALSE, access_security); FIELD_CONTEXT_BOTH(minor_crimes, CONTEXT(security))
+FIELD_LONG_SECURE("Crime Details", crime_details, FALSE, access_security); FIELD_CONTEXT_BOTH(crime_details, CONTEXT(security))
+FIELD_LONG_SECURE("Important Notes", crime_notes, FALSE, access_security); FIELD_CONTEXT_BOTH(crime_notes, CONTEXT(security))
+FIELD_LONG_SECURE("Recent Records", crime_recent, FALSE, access_security); FIELD_CONTEXT_BOTH(crime_recent, CONTEXT(security))
+
+FIELD_LONG_SECURE("Security Background", secRecord, FALSE, access_security); FIELD_CONTEXT_BOTH(secRecord, CONTEXT(security))
 /record_field/secRecord/announce(automatic)
 	if(automatic)
 		return
@@ -283,11 +294,11 @@ FIELD_SHORT_SECURE("DNA", dna, FALSE, access_security); FIELD_CONTEXT_EDIT(dna, 
 FIELD_SHORT_SECURE("Fingerprint", fingerprint, FALSE, access_security); FIELD_CONTEXT_EDIT(dna, CONTEXT(security))
 
 // EMPLOYMENT RECORDS
-FIELD_LONG_SECURE("Employment Record", emplRecord, FALSE, access_heads); FIELD_CONTEXT_BOTH(emplRecord, CONTEXT(HoP))
-FIELD_SHORT_SECURE("Home System", homeSystem, FALSE, access_heads); FIELD_CONTEXT_BOTH(homeSystem, CONTEXT(HoP))
-FIELD_SHORT_SECURE("Citizenship", citizenship, FALSE, access_heads); FIELD_CONTEXT_BOTH(citizenship, CONTEXT(HoP))
-FIELD_SHORT_SECURE("Faction", faction, FALSE, access_heads); FIELD_CONTEXT_BOTH(faction, CONTEXT(HoP))
-FIELD_SHORT_SECURE("Religion", religion, FALSE, access_heads); FIELD_CONTEXT_BOTH(religion, CONTEXT(HoP))
+FIELD_LONG_SECURE("Employment Record", emplRecord, FALSE, access_heads); FIELD_CONTEXT_BOTH(emplRecord, CONTEXT(crew))
+FIELD_SHORT_SECURE("Home System", homeSystem, FALSE, access_heads); FIELD_CONTEXT_BOTH(homeSystem, CONTEXT(crew))
+FIELD_SHORT_SECURE("Citizenship", citizenship, FALSE, access_heads); FIELD_CONTEXT_BOTH(citizenship, CONTEXT(crew))
+FIELD_SHORT_SECURE("Faction", faction, FALSE, access_heads); FIELD_CONTEXT_BOTH(faction, CONTEXT(crew))
+FIELD_SHORT_SECURE("Religion", religion, FALSE, access_heads); FIELD_CONTEXT_BOTH(religion, CONTEXT(crew))
 
 // ANTAG RECORDS
 FIELD_LONG_SECURE("Exploitable Information", antagRecord, FALSE, access_syndicate); FIELD_CONTEXT_BOTH(antagRecord, CONTEXT(syndicate))

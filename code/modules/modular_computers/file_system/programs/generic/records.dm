@@ -4,7 +4,7 @@
 	extended_desc = "This program allows access to the crew's various records."
 	program_icon_state = "generic"
 	program_key_state = "generic_key"
-	size = 14
+	size = 1
 	category = PROG_OFFICE
 	requires_ntnet = 1
 	available_on_ntnet = 1
@@ -14,9 +14,10 @@
 	name = "Crew Records"
 	var/datum/computer_file/crew_record/active_record
 	var/message = null
-	var/const/records_context = record_field_context_HoP
+	var/template_file = "crew_records.tmpl"
+	var/records_context = record_field_context_crew
 
-/datum/nano_module/records/ui_interact(mob/user, ui_key = "main", datum/nanoui/ui = null, force_open = 1, state = GLOB.default_state)
+/datum/nano_module/records/proc/generate_updated_data(mob/user)
 	var/list/data = host.initial_data()
 	var/list/user_access = get_record_access(user)
 
@@ -53,9 +54,14 @@
 		data["dnasearch"] = check_access(user, access_medical) || check_access(user, access_forensics_lockers)
 		data["fingersearch"] = check_access(user, access_security)
 
+	return data
+
+/datum/nano_module/records/ui_interact(mob/user, ui_key = "main", datum/nanoui/ui = null, force_open = 1, state = GLOB.default_state)
+	var/list/data = generate_updated_data(user)
+
 	ui = SSnano.try_update_ui(user, src, ui_key, ui, data, force_open)
 	if (!ui)
-		ui = new(user, src, ui_key, "crew_records.tmpl", name, 700, 540, state = state)
+		ui = new(user, src, ui_key, template_file, name, 700, 540, state = state)
 		ui.auto_update_layout = 1
 		ui.set_initial_data(data)
 		ui.open()
@@ -74,14 +80,14 @@
 /datum/nano_module/records/proc/edit_field(mob/user, field)
 	var/datum/computer_file/crew_record/R = active_record
 	if(!R)
-		return
+		return FALSE
 	var/record_field/F = locate(field) in R.fields
 	if(!F)
-		return
+		return FALSE
 
 	if(!F.can_edit(get_record_access(user), records_context))
 		to_chat(user, "<span class='notice'>\The [nano_host()] flashes an \"Access Denied\" warning.</span>")
-		return
+		return FALSE
 
 	var/newValue
 	switch(F.valtype)
@@ -96,10 +102,10 @@
 			newValue = input(user,"Pick [F.name]:", "Record edit", F.get_value()) as null|anything in options
 
 	if(active_record != R)
-		return
+		return FALSE
 	if(!F.can_edit(get_record_access(user), records_context))
 		to_chat(user, "<span class='notice'>\The [nano_host()] flashes an \"Access Denied\" warning.</span>")
-		return
+		return FALSE
 	if(newValue)
 		return F.set_value(newValue)
 
