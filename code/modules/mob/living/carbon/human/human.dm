@@ -538,9 +538,9 @@
 
 			var/datum/computer_file/crew_record/E = get_crewmember_record(perpname)
 			if(E)
-				var/setmedical = input(usr, "Specify a new medical status for this person.", "Medical HUD", E.get_status()) as null|anything in GLOB.physical_statuses
+				var/setmedical = input(usr, "Specify a new medical status for this person.", "Medical HUD", E.get_status_physical()) as null|anything in GLOB.physical_statuses
 				if(hasHUD(usr, HUD_MEDICAL) && setmedical)
-					E.set_status(setmedical)
+					E.set_status_physical(setmedical)
 					modified = 1
 
 					spawn()
