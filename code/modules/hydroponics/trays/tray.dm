@@ -47,7 +47,7 @@
 		/datum/reagent/dylovene =           -2,
 		/datum/reagent/toxin =               2,
 		/datum/reagent/hydrazine =           2.5,
-		/datum/reagent/acetone =	         1,
+		/datum/reagent/acetone =             1,
 		/datum/reagent/acid =                1.5,
 		/datum/reagent/acid/hydrochloric =   1.5,
 		/datum/reagent/acid/polyacid =       3,
@@ -111,7 +111,7 @@
 		/datum/reagent/diethylamine =                    list(  1,    0,   0  ),
 		/datum/reagent/nutriment =                       list(  0.5,  0.1, 0  ),
 		/datum/reagent/radium =                          list( -1.5,  0,   0.2),
-		/datum/reagent/mutagen/industrial =				 list( -0.25, 0,   0.1),
+		/datum/reagent/mutagen/industrial =              list( -0.25, 0,   0.1),
 		/datum/reagent/adminordrazine =                  list(  1,    1,   1  ),
 		/datum/reagent/toxin/fertilizer/robustharvest =  list(  0,    0.2, 0  ),
 		/datum/reagent/toxin/fertilizer/left4zed =       list(  0,    0,   0.2)
