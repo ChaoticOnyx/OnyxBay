@@ -1048,48 +1048,48 @@
 
 
 /area/crew_quarters/sleep/cabin1
-	name = "\improper Private Cabin One"
+	name = "\improper Private Bedroom One"
 	icon_state = "PrivDormOne"
 	sound_env = SMALL_SOFTFLOOR
 
 /area/crew_quarters/sleep/cabin2
-	name = "\improper Private Cabin Two"
+	name = "\improper Private Bedroomn Two"
 	icon_state = "PrivDormTwo"
 	sound_env = SMALL_SOFTFLOOR
 
 /area/crew_quarters/sleep/cabin3
-	name = "\improper Private Cabin Three"
+	name = "\improper Private Bedroom Three"
 	icon_state = "PrivDormThree"
 	sound_env = SMALL_SOFTFLOOR
 
 /area/crew_quarters/sleep/cabin4
-	name = "\improper Private Cabin Four"
+	name = "\improper Private Bedroom Four"
 	icon_state = "PrivDormFour"
 	sound_env = SMALL_SOFTFLOOR
 
 /area/crew_quarters/sleep/cabin5
-	name = "\improper Private Cabin Five"
+	name = "\improper Private Bedroom Five"
 	icon_state = "PrivDormFive"
 	sound_env = SMALL_SOFTFLOOR
 
 /area/crew_quarters/sleep/cabin6
-	name = "\improper Private Cabin Six"
+	name = "\improper Private Bedroom Six"
 	icon_state = "PrivDormSix"
 	sound_env = SMALL_SOFTFLOOR
 
-/area/crew_quarters/sleep/cabin7
-	name = "\improper Private Cabin Seven"
-	icon_state = "PrivDormSeven"
+/area/crew_quarters/sleep/underg_cabin1
+	name = "\improper Underground Bedroom One"
+	icon_state = "UndergroundDormOne"
 	sound_env = SMALL_SOFTFLOOR
 
-/area/crew_quarters/sleep/cabin8
-	name = "\improper Private Cabin Eight"
-	icon_state = "PrivDormEight"
+/area/crew_quarters/sleep/underg_cabin2
+	name = "\improper Underground Bedroom Two"
+	icon_state = "UndergroundDormTwo"
 	sound_env = SMALL_SOFTFLOOR
 
-/area/crew_quarters/sleep/cabin9
-	name = "\improper Private Cabin Nine"
-	icon_state = "PrivDormNine"
+/area/crew_quarters/sleep/underg_cabin3
+	name = "\improper Underground Bedroom Three"
+	icon_state = "UndergroundDormThree"
 	sound_env = SMALL_SOFTFLOOR
 
 /area/crew_quarters/sleep/engi_wash
@@ -1099,6 +1099,11 @@
 
 /area/crew_quarters/sleep/bedrooms
 	name = "\improper Dormitory Bedroom One"
+	icon_state = "Sleep"
+	sound_env = SMALL_SOFTFLOOR
+
+/area/crew_quarters/sleep/dorms
+	name = "\improper Dormitory Shared Bedroom"
 	icon_state = "Sleep"
 	sound_env = SMALL_SOFTFLOOR
 
