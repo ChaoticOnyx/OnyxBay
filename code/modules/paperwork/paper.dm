@@ -529,6 +529,21 @@
 		attacking_bundle.insert_sheet_at(user, (attacking_bundle.pages.len)+1, src)
 		attacking_bundle.update_icon()
 
+	else if(istype(P, /obj/item/weapon/reagent_containers/food/snacks/grown))
+		var/obj/item/weapon/reagent_containers/food/snacks/grown/G = P
+		if(!G.dry)
+			to_chat(user, SPAN("notice", "[G] must be dried before you can grind and roll it."))
+			return
+		var/obj/item/clothing/mask/smokable/cigarette/roll/joint/big/R = new(user.loc)
+		if(G.reagents)
+			G.reagents.trans_to_obj(R, G.reagents.total_volume)
+		R.desc += "Looks like it contains some [G]."
+		to_chat(user, SPAN("notice", "You grind \the [G] and roll a big joint!"))
+		R.add_fingerprint(user)
+		qdel(src)
+		qdel(G)
+		return
+
 	add_fingerprint(user)
 	return
 

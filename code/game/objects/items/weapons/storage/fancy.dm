@@ -8,12 +8,15 @@
  *		Candle Box
  *		Crayon Box
  *		Cigarette Box
+ *		Vial Box
+ *		Rolling Papers Box
  */
 
 /obj/item/weapon/storage/fancy
 	item_state = "syringe_kit" //placeholder, many of these don't have inhands
 	var/obj/item/key_type //path of the key item that this "fancy" container is meant to store
 	var/opened = 0 //if an item has been removed from this container
+	var/hasany = 0 //if an item only changes sprite upon being used/finished, w/out displaying each key_type occasion
 
 /obj/item/weapon/storage/fancy/remove_from_storage()
 	. = ..()
@@ -28,7 +31,13 @@
 		return
 
 	var/key_count = count_by_type(contents, key_type)
-	icon_state = "[initial(icon_state)][key_count]"
+	if(hasany)
+		if(key_count)
+			icon_state = "[initial(icon_state)]1"
+		else
+			icon_state = "[initial(icon_state)]0"
+	else
+		icon_state = "[initial(icon_state)][key_count]"
 
 	. = ..()
 
@@ -330,3 +339,31 @@
 	else
 		overlays += image(icon, src, "ledb")
 	return
+
+/*
+ * Rolling Papers
+ */
+
+/obj/item/weapon/storage/fancy/rollingpapers
+	name = "GreySlide Papers"
+	desc = "A pack of cheap bleached rolling papers manufactured by Acme Co."
+	icon = 'icons/obj/cigarettes.dmi'
+	icon_state = "rps_cheap"
+	item_state = "Dpacket" // placeholder, yet to be drawn
+	w_class = ITEM_SIZE_SMALL
+	max_w_class = ITEM_SIZE_TINY
+	storage_slots = 20
+	hasany = 1
+
+	key_type = /obj/item/rollingpaper/cheap
+	startswith = list(/obj/item/rollingpaper/cheap = 20)
+	can_hold = list(/obj/item/rollingpaper/cheap)
+
+/obj/item/weapon/storage/fancy/rollingpapers/good
+	name = "MAN Papers"
+	desc = "A pack of high-quality unbleached organic rolling papers. Looking at this makes you feel like you know how to roll a proper joint."
+	icon_state = "rps_good"
+
+	key_type = /obj/item/rollingpaper/good
+	startswith = list(/obj/item/rollingpaper/good = 20)
+	can_hold = list(/obj/item/rollingpaper/good)
