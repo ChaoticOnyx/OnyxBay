@@ -242,6 +242,8 @@ var/const/record_field_context_universal   = ~record_field_context_none
 #define FIELD_LIST(NAME, KEY, HIDDEN, OPTIONS) FIELD_SHORT(##NAME, ##KEY, ##HIDDEN); /record_field/##KEY/valtype = EDIT_LIST; /record_field/##KEY/get_options(){. = ##OPTIONS;}
 #define FIELD_LIST_SECURE(NAME, KEY, HIDDEN, OPTIONS, ACCESS) FIELD_LIST(##NAME, ##KEY, ##HIDDEN, ##OPTIONS); /record_field/##KEY/acccess = ##ACCESS
 
+#define FIELD_ACCESS_EDIT(KEY, ACCESS) /record_field/##KEY/acccess = ##ACCESS
+
 #define FIELD_CONTEXT_VIEW(KEY, CONTEXT_VIEW) /record_field/##KEY/context_view = (##CONTEXT_VIEW)
 #define FIELD_CONTEXT_EDIT(KEY, CONTEXT_EDIT) /record_field/##KEY/context_edit = (##CONTEXT_EDIT)
 #define FIELD_CONTEXT(KEY, CONTEXT_VIEW, CONTEXT_EDIT) FIELD_CONTEXT_VIEW(##KEY, ##CONTEXT_VIEW); FIELD_CONTEXT_EDIT(##KEY, ##CONTEXT_EDIT)
@@ -259,24 +261,45 @@ FIELD_SHORT("Species",species, FALSE)
 FIELD_LIST("Branch", branch, TRUE, record_branches()) // hidden field
 FIELD_LIST("Rank", rank, TRUE, record_ranks()) // hidden field
 
+
 // MEDICAL RECORDS
-FIELD_LIST("Blood Type", bloodtype, FALSE, GLOB.blood_types); FIELD_CONTEXT_EDIT(bloodtype, CONTEXT(medical))
+FIELD_LIST("Blood Type", bloodtype, FALSE, GLOB.blood_types);
+FIELD_CONTEXT_EDIT(bloodtype, CONTEXT(medical))
 
-FIELD_LIST("Physical Status", status_physical, FALSE, GLOB.physical_statuses); FIELD_CONTEXT_EDIT(status_physical, CONTEXT(medical))
-/record_field/status_physical/acccess_edit = access_medical
-FIELD_LIST("Mental Status", status_mental, FALSE, GLOB.mental_statuses); FIELD_CONTEXT_EDIT(status_mental, CONTEXT(medical))
-/record_field/status_mental/acccess_edit = access_medical
+FIELD_LIST("Physical Status", status_physical, FALSE, GLOB.physical_statuses);
+FIELD_CONTEXT_EDIT(status_physical, CONTEXT(medical))
+FIELD_ACCESS_EDIT(status_physical, access_medical)
 
-FIELD_LONG_SECURE("Major Disabilities", major_disabilities, FALSE, access_medical); FIELD_CONTEXT_BOTH(major_disabilities, CONTEXT(medical))
-FIELD_LONG_SECURE("Minor Disabilities", minor_disabilities, FALSE, access_medical); FIELD_CONTEXT_BOTH(minor_disabilities, CONTEXT(medical))
-FIELD_LONG_SECURE("Current Diseases", current_diseases, FALSE, access_medical); FIELD_CONTEXT_BOTH(current_diseases, CONTEXT(medical))
-FIELD_LONG_SECURE("Medical Condition Details", medical_details, FALSE, access_medical); FIELD_CONTEXT_BOTH(medical_details, CONTEXT(medical))
-FIELD_LONG_SECURE("Important Notes", medical_notes, FALSE, access_medical); FIELD_CONTEXT_BOTH(medical_notes, CONTEXT(medical))
-FIELD_LONG_SECURE("Recent Records", medical_records, FALSE, access_medical); FIELD_CONTEXT_BOTH(medical_records, CONTEXT(medical))
+FIELD_LIST("Mental Status", status_mental, FALSE, GLOB.mental_statuses);
+FIELD_CONTEXT_EDIT(status_mental, CONTEXT(medical))
+FIELD_ACCESS_EDIT(status_mental, access_medical)
 
-FIELD_LONG_SECURE("Medical Background", medRecord, FALSE, access_medical); FIELD_CONTEXT_BOTH(medRecord, CONTEXT(medical))
+FIELD_LONG_SECURE("Major Disabilities", major_disabilities, FALSE, access_medical);
+FIELD_CONTEXT_BOTH(major_disabilities, CONTEXT(medical))
+
+FIELD_LONG_SECURE("Minor Disabilities", minor_disabilities, FALSE, access_medical);
+FIELD_CONTEXT_BOTH(minor_disabilities, CONTEXT(medical))
+
+FIELD_LONG_SECURE("Current Diseases", current_diseases, FALSE, access_medical);
+FIELD_CONTEXT_BOTH(current_diseases, CONTEXT(medical))
+
+FIELD_LONG_SECURE("Medical Condition Details", medical_details, FALSE, access_medical);
+FIELD_CONTEXT_BOTH(medical_details, CONTEXT(medical))
+
+FIELD_LONG_SECURE("Important Notes", medical_notes, FALSE, access_medical);
+FIELD_CONTEXT_BOTH(medical_notes, CONTEXT(medical))
+
+FIELD_LONG_SECURE("Recent Records", medical_records, FALSE, access_medical);
+FIELD_CONTEXT_BOTH(medical_records, CONTEXT(medical))
+
+
+FIELD_LONG_SECURE("Medical Background", medRecord, FALSE, access_medical);
+FIELD_CONTEXT_BOTH(medRecord, CONTEXT(medical))
+
+
 // SECURITY RECORDS
-FIELD_LIST_SECURE("Criminal Status", criminalStatus, FALSE, GLOB.security_statuses, access_security); FIELD_CONTEXT_BOTH(criminalStatus, CONTEXT(security))
+FIELD_LIST_SECURE("Criminal Status", criminalStatus, FALSE, GLOB.security_statuses, access_security);
+FIELD_CONTEXT_BOTH(criminalStatus, CONTEXT(security))
 /record_field/criminalStatus/announce(automatic)
 	if(automatic)
 		return
@@ -296,13 +319,25 @@ FIELD_LIST_SECURE("Criminal Status", criminalStatus, FALSE, GLOB.security_status
 
 			GLOB.global_announcer.autosay("<font color='black'><b>[R.get_name()]</b> security status is changed to [status]!</font>", "<b>Security Records Announcer</b>", "Security")
 
-FIELD_LONG_SECURE("Major Crimes", major_crimes, FALSE, access_security); FIELD_CONTEXT_BOTH(major_crimes, CONTEXT(security))
-FIELD_LONG_SECURE("Minor Crimes", minor_crimes, FALSE, access_security); FIELD_CONTEXT_BOTH(minor_crimes, CONTEXT(security))
-FIELD_LONG_SECURE("Crime Details", crime_details, FALSE, access_security); FIELD_CONTEXT_BOTH(crime_details, CONTEXT(security))
-FIELD_LONG_SECURE("Important Notes", crime_notes, FALSE, access_security); FIELD_CONTEXT_BOTH(crime_notes, CONTEXT(security))
-FIELD_LONG_SECURE("Recent Records", crime_recent, FALSE, access_security); FIELD_CONTEXT_BOTH(crime_recent, CONTEXT(security))
 
-FIELD_LONG_SECURE("Security Background", secRecord, FALSE, access_security); FIELD_CONTEXT_BOTH(secRecord, CONTEXT(security))
+FIELD_LONG_SECURE("Major Crimes", major_crimes, FALSE, access_security);
+FIELD_CONTEXT_BOTH(major_crimes, CONTEXT(security))
+
+FIELD_LONG_SECURE("Minor Crimes", minor_crimes, FALSE, access_security);
+FIELD_CONTEXT_BOTH(minor_crimes, CONTEXT(security))
+
+FIELD_LONG_SECURE("Crime Details", crime_details, FALSE, access_security);
+FIELD_CONTEXT_BOTH(crime_details, CONTEXT(security))
+
+FIELD_LONG_SECURE("Important Notes", crime_notes, FALSE, access_security);
+FIELD_CONTEXT_BOTH(crime_notes, CONTEXT(security))
+
+FIELD_LONG_SECURE("Recent Records", crime_recent, FALSE, access_security);
+FIELD_CONTEXT_BOTH(crime_recent, CONTEXT(security))
+
+
+FIELD_LONG_SECURE("Security Background", secRecord, FALSE, access_security);
+FIELD_CONTEXT_BOTH(secRecord, CONTEXT(security))
 /record_field/secRecord/announce(automatic)
 	if(automatic)
 		return
@@ -310,18 +345,35 @@ FIELD_LONG_SECURE("Security Background", secRecord, FALSE, access_security); FIE
 		if(R.uid == record_id)
 			GLOB.global_announcer.autosay("<font color='black'><b>[R.get_name()]</b> security record was changed!</font>", "<b>Security Records Announcer</b>", "Security")
 
-FIELD_SHORT_SECURE("DNA", dna, FALSE, access_medical); FIELD_CONTEXT_EDIT(dna, CONTEXT(medical))
-FIELD_SHORT_SECURE("Fingerprint", fingerprint, FALSE, access_security); FIELD_CONTEXT_EDIT(fingerprint, CONTEXT(security))
+
+FIELD_SHORT_SECURE("DNA", dna, FALSE, access_medical);
+FIELD_CONTEXT_EDIT(dna, CONTEXT(medical))
+
+FIELD_SHORT_SECURE("Fingerprint", fingerprint, FALSE, access_security);
+FIELD_CONTEXT_EDIT(fingerprint, CONTEXT(security))
+
 
 // EMPLOYMENT RECORDS
-FIELD_LONG_SECURE("Employment Record", emplRecord, FALSE, access_heads); FIELD_CONTEXT_BOTH(emplRecord, CONTEXT(crew))
-FIELD_SHORT_SECURE("Home System", homeSystem, FALSE, access_heads); FIELD_CONTEXT_BOTH(homeSystem, CONTEXT(crew))
-FIELD_SHORT_SECURE("Citizenship", citizenship, FALSE, access_heads); FIELD_CONTEXT_BOTH(citizenship, CONTEXT(crew))
-FIELD_SHORT_SECURE("Faction", faction, FALSE, access_heads); FIELD_CONTEXT_BOTH(faction, CONTEXT(crew))
-FIELD_SHORT_SECURE("Religion", religion, FALSE, access_heads); FIELD_CONTEXT_BOTH(religion, CONTEXT(crew))
+FIELD_LONG_SECURE("Employment Record", emplRecord, FALSE, access_heads);
+FIELD_CONTEXT_BOTH(emplRecord, CONTEXT(crew))
+
+FIELD_SHORT_SECURE("Home System", homeSystem, FALSE, access_heads);
+FIELD_CONTEXT_BOTH(homeSystem, CONTEXT(crew))
+
+FIELD_SHORT_SECURE("Citizenship", citizenship, FALSE, access_heads);
+FIELD_CONTEXT_BOTH(citizenship, CONTEXT(crew))
+
+FIELD_SHORT_SECURE("Faction", faction, FALSE, access_heads);
+FIELD_CONTEXT_BOTH(faction, CONTEXT(crew))
+
+FIELD_SHORT_SECURE("Religion", religion, FALSE, access_heads);
+FIELD_CONTEXT_BOTH(religion, CONTEXT(crew))
+
 
 // ANTAG RECORDS
-FIELD_LONG_SECURE("Exploitable Information", antagRecord, FALSE, access_syndicate); FIELD_CONTEXT_BOTH(antagRecord, CONTEXT(syndicate))
+FIELD_LONG_SECURE("Exploitable Information", antagRecord, FALSE, access_syndicate);
+FIELD_CONTEXT_BOTH(antagRecord, CONTEXT(syndicate))
+
 
 //Options builderes
 /record_field/rank/proc/record_ranks()
