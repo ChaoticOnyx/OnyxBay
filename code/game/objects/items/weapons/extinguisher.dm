@@ -8,7 +8,7 @@
 	obj_flags = OBJ_FLAG_CONDUCTIBLE
 	force = 15.0
 	throwforce = 10
-	mod_handy = 0.65
+	mod_handy = 0.7
 	mod_weight = 1.5
 	mod_reach = 1.0
 	w_class = ITEM_SIZE_NORMAL
@@ -19,10 +19,11 @@
 
 	var/spray_particles = 3
 	var/spray_amount = 120	//units of liquid per spray - 120 -> same as splashing them with a bucket per spray
-	var/max_water = 2000
+	var/max_volume = 2000
 	var/last_use = 1.0
 	var/safety = 1
 	var/sprite_name = "fire_extinguisher"
+	var/ff_reagent = /datum/reagent/firefoam
 
 /obj/item/weapon/extinguisher/mini
 	name = "fire extinguisher"
@@ -37,18 +38,18 @@
 	mod_reach = 0.6
 	w_class = ITEM_SIZE_SMALL
 	spray_amount = 80
-	max_water = 1000
+	max_volume = 1000
 	sprite_name = "miniFE"
 
 /obj/item/weapon/extinguisher/New()
-	create_reagents(max_water)
-	reagents.add_reagent(/datum/reagent/water, max_water)
+	create_reagents(max_volume)
+	reagents.add_reagent(ff_reagent, max_volume)
 	..()
 
 /obj/item/weapon/extinguisher/examine(mob/user)
 	. = ..()
 	if(get_dist(src, user) <= 0)
-		. += "\n[text("\icon[] [] contains [] units of water left!", src, src.name, src.reagents.total_volume)]"
+		. += "\n[text("\icon[] [] contains [] units of reagents left!", src, src.name, src.reagents.total_volume)]"
 	return
 
 /obj/item/weapon/extinguisher/attack_self(mob/user as mob)
@@ -63,13 +64,13 @@
 		if(src.safety || (world.time < src.last_use + 20)) // We still catch help intent to not randomly attack people
 			return
 		if(src.reagents.total_volume < 1)
-			to_chat(user, "<span class='notice'>\The [src] is empty.</span>")
+			to_chat(user, SPAN("notice", "\The [src] is empty."))
 			return
 
 		src.last_use = world.time
 		reagents.splash(M, min(reagents.total_volume, spray_amount))
 
-		user.visible_message("<span class='notice'>\The [user] sprays \the [M] with \the [src].</span>")
+		user.visible_message(SPAN("notice", "\The [user] sprays \the [M] with \the [src]."))
 		playsound(src.loc, 'sound/effects/extinguish.ogg', 75, 1, -3)
 
 		return 1 // No afterattack
@@ -96,19 +97,27 @@
 /obj/item/weapon/extinguisher/afterattack(atom/target, mob/user, flag)
 	//TODO; Add support for reagents in water.
 
-	if( istype(target, /obj/structure/reagent_dispensers/watertank) && flag)
-		var/obj/o = target
-		var/amount = o.reagents.trans_to_obj(src, 500)
-		to_chat(user, "<span class='notice'>You fill [src] with [amount] units of the contents of [target].</span>")
+	if(istype(target, /obj/structure/reagent_dispensers/watertank) && flag)
+		var/obj/O = target
+		var/amount = min((max_volume - reagents.total_volume), O.reagents.total_volume)
+		if(!O.reagents.total_volume)
+			to_chat(user, SPAN("warning", "\The [O] is empty."))
+			return
+		if(!amount)
+			to_chat(user, SPAN("notice", "\The [src] is full."))
+			return
+		O.reagents.remove_any(amount)
+		reagents.add_reagent(ff_reagent, amount)
+		to_chat(user, SPAN("notice", "You fill [src] with [amount] units of the contents of [O]."))
 		playsound(src.loc, 'sound/effects/refill.ogg', 50, 1, -6)
 		return
 
-	if (!safety)
-		if (src.reagents.total_volume < 1)
-			to_chat(usr, "<span class='notice'>\The [src] is empty.</span>")
+	if(!safety)
+		if(src.reagents.total_volume < 1)
+			to_chat(usr, SPAN("notice", "\The [src] is empty."))
 			return
 
-		if (world.time < src.last_use + 20)
+		if(world.time < src.last_use + 20)
 			return
 
 		src.last_use = world.time
