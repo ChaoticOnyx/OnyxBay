@@ -85,3 +85,11 @@
 	containertype = /obj/structure/closet/crate/secure
 	containername = "\improper Shaft miner equipment"
 	access = access_mining
+
+/decl/hierarchy/supply_pack/supply/plasmacutter
+	name = "Plasma cutter"
+	contains = list(/obj/item/weapon/gun/energy/plasmacutter)
+	cost = 75
+	containertype = /obj/structure/closet/crate/secure
+	containername = "Shaft miner's plasma cutter"
+	access = access_mining
