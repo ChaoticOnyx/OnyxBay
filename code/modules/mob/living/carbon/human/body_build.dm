@@ -161,7 +161,7 @@ var/global/datum/body_build/default_body_build = new
 	ties_icon		= 'icons/inv_slots/acessories/mob_slim_m.dmi'
 	hidden_icon 	= 'icons/inv_slots/hidden/mob_slim_m.dmi'
 	rig_back		= 'icons/inv_slots/rig/mob_slim.dmi'
-	blood_icon		= 'icons/mob/human_races/masks/blood_human_slim.dmi'
+	blood_icon		= 'icons/mob/human_races/masks/blood_human_m_slim.dmi'
 
 /datum/body_build/slim/alt/tajaran //*sigh. I regret of doing this.
 	name = "Slim Tajaran"

@@ -31,11 +31,6 @@ var/list/wrapped_species_by_ref = list()
 // 	var/datum/species/S = all_species[wrapped_species_by_ref["\ref[H]"]]
 // 	return S.get_bodytype(H)
 
-/datum/species/shapeshifter/get_blood_mask(mob/living/carbon/human/H)
-	if(!H) return ..()
-	var/datum/species/S = all_species[wrapped_species_by_ref["\ref[H]"]]
-	return S.get_blood_mask(H)
-
 /datum/species/shapeshifter/get_damage_mask(mob/living/carbon/human/H)
 	if(!H) return ..()
 	var/datum/species/S = all_species[wrapped_species_by_ref["\ref[H]"]]

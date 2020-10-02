@@ -527,7 +527,7 @@ var/global/list/damage_icon_parts = list()
 	if(gloves && !(wear_suit && wear_suit.flags_inv & HIDEGLOVES))
 		overlays_standing[HO_GLOVES_LAYER] = gloves.get_mob_overlay(src,slot_gloves_str)
 	else
-		if(blood_DNA && species.blood_mask)
+		if(blood_DNA && body_build.blood_icon)
 			var/image/bloodsies	= overlay_image(body_build.blood_icon, "bloodyhands", hand_blood_color, RESET_COLOR)
 			overlays_standing[HO_GLOVES_LAYER] = bloodsies
 		else
