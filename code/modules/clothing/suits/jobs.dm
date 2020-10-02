@@ -29,6 +29,14 @@
 	body_parts_covered = UPPER_TORSO|LOWER_TORSO|LEGS|ARMS
 	flags_inv = 0
 
+/obj/item/clothing/suit/captunic/formal
+	name = "captain's formal coat"
+	desc = "An extremely formal coat for ceremonial use."
+	icon_state = "capformal"
+	item_state = "capformal"
+	body_parts_covered = UPPER_TORSO|LOWER_TORSO|ARMS
+	flags_inv = 0
+
 //Chaplain
 /obj/item/clothing/suit/chaplain_hoodie
 	name = "chaplain hoodie"
@@ -90,33 +98,33 @@
 
 //Detective
 /obj/item/clothing/suit/storage/det_trench
-	name = "brown trenchcoat"
-	desc = "A rugged canvas trenchcoat, designed and created by TX Fabrication Corp. The coat is externally impact resistant - perfect for your next act of autodefenestration!"
+	name = "detective's trenchcoat"
+	desc = "A reinforced canvas trenchcoat, designed and created by TX Fabrication Corp. The coat is externally impact resistant - perfect for your next act of autodefenestration!"
 	icon_state = "detective"
-	//item_state = "det_suit"
 	valid_accessory_slots = list(ACCESSORY_SLOT_INSIGNIA)
 	blood_overlay_type = "coat"
-	body_parts_covered = UPPER_TORSO|ARMS
+	body_parts_covered = UPPER_TORSO|LOWER_TORSO|ARMS
 	allowed = list(/obj/item/weapon/tank/emergency,/obj/item/device/flashlight,/obj/item/weapon/gun/energy,/obj/item/weapon/gun/projectile,/obj/item/ammo_magazine,/obj/item/ammo_casing,/obj/item/weapon/melee/baton,/obj/item/weapon/handcuffs,/obj/item/weapon/storage/fancy/cigarettes,/obj/item/weapon/flame/lighter,/obj/item/device/taperecorder)
-	armor = list(melee = 50, bullet = 10, laser = 25, energy = 10, bomb = 0, bio = 0, rad = 0)
+	armor = list(melee = 35, bullet = 35, laser = 35, energy = 20, bomb = 25, bio = 0, rad = 0)
 
-/obj/item/clothing/suit/storage/det_trench/warfare
-    name = "comfy greatcoat"
-    desc = "A greatcoat that is holding small pieces of dirt and such. It feels underarmored, yet you're absolutely sure that it will keep out the cold."
-    icon_state = "redcoat"
-    armor = list(melee = 0, bullet = 0, laser = 0, energy = 0, bomb = 0, bio = 0, rad = 0)
-
-/obj/item/clothing/suit/storage/det_trench/warfare/mob_can_equip(mob/user)
-	.=..()
-	if(user.gender == FEMALE)
-		to_chat(user, "<span class='warning'> You aren't sure you'll fit in this men's cloth..</span>")
-		return 0
+/obj/item/clothing/suit/storage/det_trench/grey
+	icon_state = "detective2"
 
 /obj/item/clothing/suit/storage/det_trench/ft/
 	desc = "A rugged canvas trenchcoat, designed and created by TX Fabrication Corp. This one wouldn't block much of anything."
 	armor = list(melee = 0, bullet = 0, laser = 0, energy = 0, bomb = 0, bio = 0, rad = 0)
 
-/obj/item/clothing/suit/storage/det_trench/grey
+/obj/item/clothing/suit/storage/civ_trench
+	name = "brown trenchcoat"
+	desc = "A cheap rugged canvas trenchcoat, manufactured by TX Fabrication Corp. May soften a punch, but is literally disabled compared to the detective's coat."
+	icon_state = "detective"
+	valid_accessory_slots = list(ACCESSORY_SLOT_INSIGNIA)
+	blood_overlay_type = "coat"
+	body_parts_covered = UPPER_TORSO|LOWER_TORSO|ARMS
+	allowed = list(/obj/item/weapon/tank/emergency,/obj/item/device/flashlight,/obj/item/weapon/storage/fancy/cigarettes,/obj/item/weapon/flame/lighter,/obj/item/device/taperecorder)
+	armor = list(melee = 10, bullet = 10, laser = 10, energy = 0, bomb = 0, bio = 0, rad = 0)
+
+/obj/item/clothing/suit/storage/civ_trench/grey
 	name = "grey trenchcoat"
 	icon_state = "detective2"
 
@@ -162,12 +170,6 @@
 	icon_state = "forensics_blue_open"
 	icon_open = "forensics_blue_open"
 	icon_closed = "forensics_blue"
-
-/obj/item/clothing/suit/storage/toggle/forensics/customred //Custom item
-	name = "red jacket"
-	desc = "A nice red forensics technician jacket."
-	icon_state = "custom_forensics_red_long"
-	item_state = "custom_forensics_red_long"
 
 /obj/item/clothing/suit/storage/toggle/forensics/labcoat
 	name = "forensic labcoat"

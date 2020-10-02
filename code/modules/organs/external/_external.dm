@@ -24,6 +24,7 @@
 	var/burn_ratio = 0                 // Ratio of current burn damage to max damage.
 	var/last_dam = -1                  // used in healing/processing calculations.
 	var/pain = 0                       // How much the limb hurts.
+	var/full_pain = 0                  // Overall pain including damages.
 	var/pain_disability_threshold      // Point at which a limb becomes unusable due to pain.
 
 	// A bitfield for a collection of limb behavior flags.
@@ -78,6 +79,7 @@
 	var/cavity = 0
 	var/atom/movable/applied_pressure
 	var/atom/movable/splinted
+	var/internal_organs_size = 0       // Current size cost of internal organs in this body part
 
 	// HUD element variable, see organ_icon.dm get_damage_hud_image()
 	var/image/hud_damage_image
@@ -191,16 +193,16 @@
 		return //no eating the limb until everything's been removed
 	return ..()
 
-/obj/item/organ/external/examine()
+/obj/item/organ/external/examine(mob/user)
 	. = ..()
-	if(in_range(usr, src) || isghost(usr))
+	if(in_range(user, src) || isghost(user))
 		for(var/obj/item/I in contents)
 			if(istype(I, /obj/item/organ))
 				continue
-			to_chat(usr, "<span class='danger'>There is \a [I] sticking out of it.</span>")
+			. += "\n<span class='danger'>There is \a [I] sticking out of it.</span>"
 		var/ouchies = get_wounds_desc()
 		if(ouchies != "nothing")
-			to_chat(usr, "<span class='notice'>There is [ouchies] visible on it.</span>")
+			. += "\n<span class='notice'>There is [ouchies] visible on it.</span>"
 
 	return
 
@@ -411,7 +413,7 @@ This function completely restores a damaged organ to perfect condition.
 	brute_dam = 0
 	burn_dam = 0
 	germ_level = 0
-	pain = 0
+	remove_all_pain()
 	genetic_degradation = 0
 	for(var/datum/wound/wound in wounds)
 		wound.embedded_objects.Cut()
@@ -549,11 +551,7 @@ This function completely restores a damaged organ to perfect condition.
 
 /obj/item/organ/external/Process()
 	if(owner)
-
-		if(pain)
-			pain -= owner.lying ? 3 : 1
-			if(pain<0)
-				pain = 0
+		update_pain()
 
 		// Process wounds, doing healing etc. Only do this every few ticks to save processing power
 		if(owner.life_tick % wound_update_accuracy == 0)
@@ -562,7 +560,7 @@ This function completely restores a damaged organ to perfect condition.
 		//Infections
 		update_germs()
 	else
-		pain = 0
+		remove_all_pain()
 		..()
 
 //Updating germ levels. Handles organ germ levels and necrosis.
@@ -809,11 +807,12 @@ Note that amputating the affected organ does in fact remove the infection from t
 	if(disintegrate == DROPLIMB_EDGE && species.limbs_are_nonsolid)
 		disintegrate = DROPLIMB_BLUNT //splut
 
-	var/list/organ_msgs = get_droplimb_messages_for(disintegrate, clean)
-	if(LAZYLEN(organ_msgs) >= 3)
-		owner.visible_message("<span class='danger'>[organ_msgs[1]]</span>", \
-			"<span class='moderate'><b>[organ_msgs[2]]</b></span>", \
-			"<span class='danger'>[organ_msgs[3]]</span>")
+	if (!silent)
+		var/list/organ_msgs = get_droplimb_messages_for(disintegrate, clean)
+		if(LAZYLEN(organ_msgs) >= 3)
+			owner.visible_message("<span class='danger'>[organ_msgs[1]]</span>", \
+				"<span class='moderate'><b>[organ_msgs[2]]</b></span>", \
+				"<span class='danger'>[organ_msgs[3]]</span>")
 
 	var/mob/living/carbon/human/victim = owner //Keep a reference for post-removed().
 	var/obj/item/organ/external/parent_organ = parent
@@ -822,7 +821,7 @@ Note that amputating the affected organ does in fact remove the infection from t
 	var/use_blood_colour = species.get_blood_colour(owner)
 
 	removed(null, ignore_children)
-	add_pain(60)
+	adjust_pain(60)
 	if(!clean)
 		victim.shock_stage += min_broken_damage
 
@@ -837,7 +836,7 @@ Note that amputating the affected organ does in fact remove the infection from t
 			stump.SetName("stump of \a [name]")
 			stump.artery_name = "mangled [artery_name]"
 			stump.arterial_bleed_severity = arterial_bleed_severity
-			stump.add_pain(max_damage)
+			stump.adjust_pain(max_damage)
 			if(BP_IS_ROBOTIC(src))
 				stump.robotize()
 			stump.wounds |= W
@@ -962,7 +961,7 @@ Note that amputating the affected organ does in fact remove the infection from t
 		W.germ_level = 0
 	return rval
 
-/obj/item/organ/external/proc/clamp()
+/obj/item/organ/external/proc/clamp_organ()
 	var/rval = 0
 	src.status &= ~ORGAN_BLEEDING
 	for(var/datum/wound/W in wounds)
@@ -1182,8 +1181,6 @@ obj/item/organ/external/proc/remove_clamps()
 
 	..()
 
-	victim.bad_external_organs -= src
-
 	remove_splint()
 	for(var/atom/movable/implant in implants)
 		//large items and non-item objs fall to the floor, everything else stays
@@ -1241,7 +1238,7 @@ obj/item/organ/external/proc/remove_clamps()
 	else if(is_stump())
 		qdel(src)
 
-/obj/item/organ/external/proc/disfigure(type = "brute")
+/obj/item/organ/external/head/proc/disfigure(type = "brute")
 	if(status & ORGAN_DISFIGURED)
 		return
 	if(owner)
@@ -1480,7 +1477,7 @@ obj/item/organ/external/proc/remove_clamps()
 		to_chat(owner, "<span class='danger'>You feel extreme pain!</span>")
 
 		var/max_halloss = round(owner.species.total_health * 0.8 * ((100 - armor) / 100)) //up to 80% of passing out, further reduced by armour
-		add_pain(Clamp(0, max_halloss - owner.getHalLoss(), 30))
+		adjust_pain(Clamp(0, max_halloss - owner.getHalLoss(), 30))
 
 //Adds autopsy data for used_weapon.
 /obj/item/organ/external/proc/add_autopsy_data(used_weapon, damage)

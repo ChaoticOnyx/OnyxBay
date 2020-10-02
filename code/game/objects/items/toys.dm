@@ -17,6 +17,7 @@
  *		Toy cult sword
  *		Marshalling wand
  *		Ring bell
+ *		BANana
  */
 
 
@@ -52,10 +53,10 @@
 	create_reagents(10)
 	..()
 
-/obj/item/toy/water_balloon/attack(mob/living/carbon/human/M as mob, mob/user as mob)
+/obj/item/toy/water_balloon/attack(mob/living/carbon/human/M, mob/user)
 	return
 
-/obj/item/toy/water_balloon/afterattack(atom/A as mob|obj, mob/user as mob, proximity)
+/obj/item/toy/water_balloon/afterattack(atom/A, mob/user, proximity)
 	if(!proximity) return
 	if (istype(A, /obj/structure/reagent_dispensers/watertank) && get_dist(src,A) <= 1)
 		A.reagents.trans_to_obj(src, 10)
@@ -64,7 +65,7 @@
 		src.update_icon()
 	return
 
-/obj/item/toy/water_balloon/attackby(obj/O as obj, mob/user as mob)
+/obj/item/toy/water_balloon/attackby(obj/O, mob/user)
 	if(istype(O, /obj/item/weapon/reagent_containers/glass))
 		if(O.reagents)
 			if(O.reagents.total_volume < 1)
@@ -164,7 +165,7 @@
 		if(..(user, 2) && bullets)
 			to_chat(user, "<span class='notice'>It is loaded with [bullets] foam darts!</span>")
 
-	attackby(obj/item/I as obj, mob/user as mob)
+	attackby(obj/item/I, mob/user)
 		if(istype(I, /obj/item/toy/ammo/crossbow))
 			if(bullets <= 4)
 				user.drop_item()
@@ -175,7 +176,7 @@
 				to_chat(usr, "<span class='warning'>It's already fully loaded.</span>")
 
 
-	afterattack(atom/target as mob|obj|turf|area, mob/user as mob, flag)
+	afterattack(atom/target, mob/user, flag)
 		if(!isturf(target.loc) || target == user) return
 		if(flag) return
 
@@ -223,7 +224,7 @@
 				O.show_message(text("<span class='warning'>\The [] realized they were out of ammo and starting scrounging for some!</span>", user), 1)
 
 
-	attack(mob/M as mob, mob/user as mob)
+	attack(mob/M, mob/user)
 		src.add_fingerprint(user)
 
 // ******* Check
@@ -274,7 +275,7 @@
 	w_class = ITEM_SIZE_SMALL
 	attack_verb = list("attacked", "struck", "hit")
 
-	attack_self(mob/user as mob)
+	attack_self(mob/user)
 		src.active = !( src.active )
 		if (src.active)
 			to_chat(user, "<span class='notice'>You extend the plastic blade with a quick flick of your wrist.</span>")
@@ -354,7 +355,7 @@
 	w_class = ITEM_SIZE_TINY
 	slot_flags = SLOT_EARS
 
-/obj/item/toy/bosunwhistle/attack_self(mob/user as mob)
+/obj/item/toy/bosunwhistle/attack_self(mob/user)
 	if(cooldown < world.time - 35)
 		to_chat(user, "<span class='notice'>You blow on [src], creating an ear-splitting noise!</span>")
 		playsound(user, 'sound/misc/boatswain.ogg', 20, 1)
@@ -369,13 +370,13 @@
 	var/cooldown = 0
 
 //all credit to skasi for toy mech fun ideas
-/obj/item/toy/prize/attack_self(mob/user as mob)
+/obj/item/toy/prize/attack_self(mob/user)
 	if(cooldown < world.time - 8)
 		to_chat(user, "<span class='notice'>You play with [src].</span>")
 		playsound(user, 'sound/mecha/mechstep.ogg', 20, 1)
 		cooldown = world.time
 
-/obj/item/toy/prize/attack_hand(mob/user as mob)
+/obj/item/toy/prize/attack_hand(mob/user)
 	if(loc == user)
 		if(cooldown < world.time - 8)
 			to_chat(user, "<span class='notice'>You play with [src].</span>")
@@ -736,7 +737,7 @@
 	icon = 'icons/obj/toy.dmi'
 	icon_state = "nymphplushie"
 
-/obj/item/toy/plushie/attack_self(mob/user as mob)
+/obj/item/toy/plushie/attack_self(mob/user)
 	if(user.a_intent == I_HELP)
 		user.visible_message("<span class='notice'><b>\The [user]</b> hugs [src]!</span>","<span class='notice'>You hug [src]!</span>")
 	else if (user.a_intent == I_HURT)
@@ -813,7 +814,7 @@
 	set_light(1.5, 1.5, "#ff0000")
 	return ..()
 
-/obj/item/weapon/marshalling_wand/attack_self(mob/living/user as mob)
+/obj/item/weapon/marshalling_wand/attack_self(mob/living/user)
 	if (user.a_intent == I_HELP)
 		user.visible_message("<span class='notice'>[user] beckons with \the [src], signalling forward motion.</span>",
 							"<span class='notice'>You beckon with \the [src], signalling forward motion.</span>")
@@ -844,7 +845,7 @@
 	icon_state= "ringbell"
 	anchored = 1
 
-/obj/item/toy/ringbell/attack_hand(mob/user as mob)
+/obj/item/toy/ringbell/attack_hand(mob/user)
 	if (user.a_intent == I_HELP)
 		user.visible_message("<span class='notice'>[user] rings \the [src], signalling the beginning of the contest.</span>")
 		playsound(user.loc, 'sound/items/oneding.ogg', 60)
@@ -870,10 +871,9 @@
 	pixel_y = 0
 
 /obj/item/toy/chubbyskeleton/examine(mob/user)
-	to_chat(user, "<span class='notice'>*---------*<BR>This is [src], a Skeleton!<BR>He is wearing some black shorts.<BR>He is wearing a blue hoodie.<BR>He is wearing some slippers on his feet.<BR>*---------*</span>")
-	return
+	return "<span class='notice'>*---------*<BR>This is [src], a Skeleton!<BR>He is wearing some black shorts.<BR>He is wearing a blue hoodie.<BR>He is wearing some slippers on his feet.<BR>*---------*</span>"
 
-/obj/item/toy/chubbyskeleton/attack_hand(mob/user as mob)
+/obj/item/toy/chubbyskeleton/attack_hand(mob/user)
 	if(spam_flag == 0)
 		spam_flag = 1
 		if(user.a_intent == I_HELP)
@@ -887,7 +887,7 @@
 						"i'm not fat. i'm just big boned!",
 						"what do skeletons say before they begin dining? bone-appetit!",
 						"what do you call a skeleton snake? a rattler!",
-						"what did the skeleton say while riding his Harley Davidson motorcycle? i’m bone to be wild!",
+						"what did the skeleton say while riding his Harley Davidson motorcycle? iÂ’m bone to be wild!",
 						"my brother always works himself down to the bone!",
 						"why did the skeleton want a friend? because she was feeling BONELY",
 						"what do you do if you see a skeleton running across a road? jump out of your skin and join him!",
@@ -910,7 +910,7 @@
 			spam_flag = 0
 	return
 
-/obj/item/toy/chubbyskeleton/attackby(obj/item/I as obj, mob/user as mob)
+/obj/item/toy/chubbyskeleton/attackby(obj/item/I, mob/user)
 	if(spam_flag == 0)
 		spam_flag = 1
 		badtime(user)
@@ -918,7 +918,7 @@
 			spam_flag = 0
 	return
 
-/obj/item/toy/chubbyskeleton/proc/badtime(mob/user as mob)
+/obj/item/toy/chubbyskeleton/proc/badtime(mob/user)
 	dodgecount++
 	if(dodgecount < 4)
 		user.visible_message("<span class='warning'>[src] dodges [user]'s attack!</span>")
@@ -937,3 +937,21 @@
 			for(var/obj/item/W in H)
 				H.drop_from_inventory(W)
 		playsound(user.loc, pick('sound/effects/xylophone1.ogg','sound/effects/xylophone2.ogg','sound/effects/xylophone3.ogg'), 60)
+
+/obj/item/toy/banbanana
+	name = "BANana"
+	desc = "What happens if I peel it?"
+	icon = 'icons/obj/toy.dmi'
+	icon_state = "banana"
+
+/obj/item/toy/banbanana/attack_self(mob/user)
+	for(var/mob/M in viewers(user, null))
+		if (M.client)
+			M.show_message("<span class='danger'>You have been banned by HO$T.\nReason: Honk.</span>")
+			M.show_message("<span class='warning'>This is a PERMENANT ban.</span>")
+			if(ishuman(M))
+				var/mob/living/carbon/human/H = M
+				H.eye_blind += 1
+	playsound(user.loc, 'sound/effects/adminhelp.ogg', 100)
+	user.drop_from_inventory(src)
+	qdel(src)

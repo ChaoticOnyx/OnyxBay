@@ -246,6 +246,10 @@ var/const/CHARACTER_PREFERENCE_INPUT_TITLE = "Character Preference"
 		return 1
 
 	. = OnTopic(href, href_list, usr)
+
+	if(!pref_mob || !pref_mob.client)
+		return
+
 	if(. & TOPIC_UPDATE_PREVIEW)
 		pref_mob.client.prefs.preview_icon = null
 	if(. & TOPIC_REFRESH)

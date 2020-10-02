@@ -7,32 +7,28 @@
 	webhook_send("roundstatus", query)
 
 /proc/webhook_send_asay(ckey, message)
-	var/list/query = list("ckey" = ckey, "message" = rustoutf(message))
+	var/list/query = list("ckey" = ckey, "message" = message)
 	webhook_send("asaymessage", query)
 
 /proc/webhook_send_ooc(ckey, message)
-	var/list/query = list("ckey" = ckey, "message" = rustoutf(message))
+	var/list/query = list("ckey" = ckey, "message" = message)
 	webhook_send("oocmessage", query)
 
 /proc/webhook_send_me(ckey, message)
-	var/list/query = list("ckey" = ckey, "message" = rustoutf(message))
+	var/list/query = list("ckey" = ckey, "message" = message)
 	webhook_send("memessage", query)
 
 /proc/webhook_send_ahelp(ckey, message)
-	var/list/query = list("ckey" = ckey, "message" = rustoutf(message))
+	var/list/query = list("ckey" = ckey, "message" = message)
 	webhook_send("ahelpmessage", query)
 
 /proc/webhook_send_garbage(ckey, message)
-	var/list/query = list("ckey" = ckey, "message" = rustoutf(message))
+	var/list/query = list("ckey" = ckey, "message" = message)
 	webhook_send("garbage", query)
 
 /proc/webhook_send_token(ckey, token)
 	var/list/query = list("ckey" = ckey, "token" = token) //token is eng anyway
 	webhook_send("token", query)
-
-/proc/webhook_send_runtime(runtime_text)
-	var/list/query = list("runtime_text" = runtime_text)
-	webhook_send("runtime", query)
 
 /proc/webhook_send(method, data)
 	if(!config.webhook_address || !config.webhook_key)

@@ -35,7 +35,7 @@
 	else
 		temp_text = "<FONT color=blue>[temperature] ([round(temperature-T0C)]&deg;C) ([round(temperature*1.8-459.67)]&deg;F)</FONT>"
 
-	var/dat = {"<B>Freeze Gun Configuration: </B><BR>
+	var/dat = {"<meta charset=\"utf-8\"><B>Freeze Gun Configuration: </B><BR>
 	Current output temperature: [temp_text]<BR>
 	Target output temperature: <A href='?src=\ref[src];temp=-100'>-</A> <A href='?src=\ref[src];temp=-10'>-</A> <A href='?src=\ref[src];temp=-1'>-</A> [current_temperature] <A href='?src=\ref[src];temp=1'>+</A> <A href='?src=\ref[src];temp=10'>+</A> <A href='?src=\ref[src];temp=100'>+</A><BR>
 	"}

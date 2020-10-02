@@ -11,6 +11,7 @@
 	cold_protection =    HEAD|FACE|EYES
 	brightness_on = 4
 	species_restricted = null
+	has_visor = 0
 
 /obj/item/clothing/gloves/rig
 	name = "gauntlets"
@@ -69,7 +70,7 @@
 		return
 
 	if(can_support(user))
-		for(var/obj/item/organ/external/E in user.bad_external_organs)
+		for(var/obj/item/organ/external/E in user.organs)
 			if((E.body_part & body_parts_covered) && E.is_broken() && E.apply_splint(src))
 				to_chat(user, "<span class='notice'>You feel [src] constrict about your [E.name], supporting it.</span>")
 				supporting_limbs |= E

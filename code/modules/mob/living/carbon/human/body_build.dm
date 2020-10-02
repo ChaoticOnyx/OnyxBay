@@ -16,7 +16,7 @@ var/global/datum/body_build/default_body_build = new
 	var/hat_icon	= 'icons/inv_slots/hats/mob.dmi'
 	var/shoes_icon	= 'icons/inv_slots/shoes/mob.dmi'
 	var/belt_icon	= 'icons/inv_slots/belts/mob.dmi'
-//	var/s_store_icon= 'icons/mob/belt_mirror.dmi'
+	var/s_store_icon= 'icons/mob/onmob/belt_mirror.dmi'
 	var/back_icon	= 'icons/inv_slots/back/mob.dmi'
 	var/ties_icon	= 'icons/inv_slots/acessories/mob.dmi'
 	var/hidden_icon = 'icons/inv_slots/hidden/mob.dmi'
@@ -72,6 +72,7 @@ var/global/datum/body_build/default_body_build = new
 			if (slot_head_str)    		I = BB.hat_icon
 			if (slot_shoes_str)   		I = BB.shoes_icon
 			if (slot_belt_str)    		I = BB.belt_icon
+			if (slot_s_store_str)       I = BB.s_store_icon
 			if (slot_back_str)    		I = BB.back_icon
 			if (slot_tie_str)     		I = BB.ties_icon
 			if (slot_l_hand_str)		I = BB.l_hand
@@ -85,8 +86,6 @@ var/global/datum/body_build/default_body_build = new
 			break
 
 	return I
-
-
 
 /datum/body_build/slim
 	name			= "Slim"
@@ -102,6 +101,7 @@ var/global/datum/body_build/default_body_build = new
 	mask_icon		= 'icons/inv_slots/masks/mob_slim.dmi'
 	shoes_icon		= 'icons/inv_slots/shoes/mob_slim.dmi'
 	belt_icon		= 'icons/inv_slots/belts/mob_slim.dmi'
+	s_store_icon	= 'icons/mob/onmob/belt_mirror_slim.dmi'
 	back_icon		= 'icons/inv_slots/back/mob_slim.dmi'
 	ties_icon		= 'icons/inv_slots/acessories/mob_slim.dmi'
 	hidden_icon 	= 'icons/inv_slots/hidden/mob_slim.dmi'
@@ -137,6 +137,26 @@ var/global/datum/body_build/default_body_build = new
 	back_icon		= 'icons/inv_slots/back/mob_slim.dmi'
 	ties_icon		= 'icons/inv_slots/acessories/mob_slim.dmi'
 	hidden_icon 	= 'icons/inv_slots/hidden/mob_slimalt.dmi'
+	rig_back		= 'icons/inv_slots/rig/mob_slim.dmi'
+
+/datum/body_build/slim/male
+	name			= "Slim"
+
+	index			= "_slim"
+	roboindex   	= "_slim"
+	genders			= list(MALE)
+	uniform_icon	= 'icons/inv_slots/uniforms/mob_slim_m.dmi'
+	suit_icon		= 'icons/inv_slots/suits/mob_slim_m.dmi'
+	gloves_icon		= 'icons/inv_slots/gloves/mob_slim.dmi'
+	glasses_icon	= 'icons/inv_slots/glasses/mob_slim.dmi'
+	ears_icon		= 'icons/inv_slots/ears/mob_slim.dmi'
+	mask_icon		= 'icons/inv_slots/masks/mob_slim.dmi'
+	shoes_icon		= 'icons/inv_slots/shoes/mob_slim.dmi'
+	belt_icon		= 'icons/inv_slots/belts/mob_slim.dmi'
+	s_store_icon	= 'icons/mob/onmob/belt_mirror_slim.dmi'
+	back_icon		= 'icons/inv_slots/back/mob_slim_m.dmi'
+	ties_icon		= 'icons/inv_slots/acessories/mob_slim_m.dmi'
+	hidden_icon 	= 'icons/inv_slots/hidden/mob_slim_m.dmi'
 	rig_back		= 'icons/inv_slots/rig/mob_slim.dmi'
 
 /datum/body_build/slim/alt/tajaran //*sigh. I regret of doing this.

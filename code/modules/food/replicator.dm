@@ -1,6 +1,6 @@
 /obj/machinery/food_replicator
 	name = "replicator"
-	desc = "like a microwave, except better."
+	desc = "like a microwave, except better. It has label \"Voice activation device\""
 	icon = 'icons/obj/vending.dmi'
 	icon_state = "soda"
 	density = 1
@@ -74,9 +74,9 @@
 			for(var/menu_item in menu)
 				if(findtext(true_text, menu_item))
 					queue_dish(menu_item)
-			if(findtext(true_text, "status"))
+			if(findtext(true_text, "status") || findtext(true_text, "статус"))
 				state_status()
-			else if(findtext(true_text, "menu"))
+			else if(findtext(true_text, "menu") || findtext(true_text, "меню"))
 				state_menu()
 	..()
 
@@ -155,6 +155,6 @@
 	..()
 
 /obj/machinery/food_replicator/examine(mob/user)
-	. = ..(user)
+	. = ..()
 	if(panel_open)
-		to_chat(user, "The maintenance hatch is open.")
+		. += "\nThe maintenance hatch is open."

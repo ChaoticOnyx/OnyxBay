@@ -142,7 +142,7 @@
 			return 1
 
 	//next mend broken bones, approx 10 ticks each
-	for(var/obj/item/organ/external/E in H.bad_external_organs)
+	for(var/obj/item/organ/external/E in H.organs)
 		if (E.status & ORGAN_BROKEN)
 			if (prob(mend_prob))
 				if (E.mend_fracture())
@@ -319,6 +319,7 @@
 	has_m_intent =  1
 	has_warnings =  0
 	has_health =    1
+	has_pain =		0
 	has_hands =     1
 	has_drop =      1
 	has_throw =     1

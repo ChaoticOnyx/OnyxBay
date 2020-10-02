@@ -3,6 +3,9 @@
 	. = ..(user, infix = custom_infix)
 
 	var/msg = ""
+	msg += "\n"
+	msg += examine_all_modules()
+	
 	msg += "<span class='warning'>"
 	if (src.getBruteLoss())
 		if (src.getBruteLoss() < 75)
@@ -36,7 +39,7 @@
 	if(print_flavor_text()) msg += "\n[print_flavor_text()]\n"
 
 	if (pose)
-		if( findtext(pose,".",lentext(pose)) == 0 && findtext(pose,"!",lentext(pose)) == 0 && findtext(pose,"?",lentext(pose)) == 0 )
+		if( findtext(pose,".",length(pose)) == 0 && findtext(pose,"!",length(pose)) == 0 && findtext(pose,"?",length(pose)) == 0 )
 			pose = addtext(pose,".") //Makes sure all emotes end with a period.
 		msg += "\nIt is [pose]"
 
@@ -53,7 +56,7 @@
 					msg += "<span class='notice'>	[initial(tmp.name)]<br></span>"
 			msg += "<b><span class='notice'>Supported visors:</b></span>\n"
 			msg += visors
-			
-	to_chat(user, msg)
+
+	. += "\n[msg]"
 	user.showLaws(src)
 	return

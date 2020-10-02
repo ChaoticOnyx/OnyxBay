@@ -63,15 +63,18 @@
 	. = ..()
 
 /obj/item/device/uplink_service/examine(user)
-	. = ..(user, 1)
-	if(.)
-		switch(state)
-			if(AWAITING_ACTIVATION)
-				to_chat(user, "It is labeled '[service_label]' and appears to be awaiting activation.")
-			if(CURRENTLY_ACTIVE)
-				to_chat(user, "It is labeled '[service_label]' and appears to be active.")
-			if(HAS_BEEN_ACTIVATED)
-				to_chat(user, "It is labeled '[service_label]' and appears to be permanently disabled.")
+	. = ..()
+	if(get_dist(src, user) > 1)
+		return
+	var/msg
+	switch(state)
+		if(AWAITING_ACTIVATION)
+			msg = "It is labeled '[service_label]' and appears to be awaiting activation."
+		if(CURRENTLY_ACTIVE)
+			msg = "It is labeled '[service_label]' and appears to be active."
+		if(HAS_BEEN_ACTIVATED)
+			msg = "It is labeled '[service_label]' and appears to be permanently disabled."
+	. += "\n[msg]"
 
 /obj/item/device/uplink_service/attack_self(mob/user)
 	if(state != AWAITING_ACTIVATION)
@@ -103,9 +106,9 @@
 		if(AWAITING_ACTIVATION)
 			icon_state = initial(icon_state)
 		if(CURRENTLY_ACTIVE)
-			icon_state = "sflash2"
+			icon_state = "sflash_on"
 		if(HAS_BEEN_ACTIVATED)
-			icon_state = "flashburnt"
+			icon_state = "sflash_burnt"
 
 /obj/item/device/uplink_service/proc/enable(mob/user = usr)
 	return TRUE
@@ -204,9 +207,9 @@
 		if(AWAITING_ACTIVATION)
 			icon_state = initial(icon_state)
 		if(CURRENTLY_ACTIVE)
-			icon_state = "sflash2"
+			icon_state = "sflash_on"
 		if(HAS_BEEN_ACTIVATED)
-			icon_state = "flashburnt"
+			icon_state = "sflash_burnt"
 
 /*********************************
 * Fake Crew Records/Announcement *

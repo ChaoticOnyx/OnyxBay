@@ -36,7 +36,7 @@ datum/objective
 				target = possible_target
 				break
 
-
+	proc/update()
 
 datum/objective/assassinate
 	find_target()
@@ -111,17 +111,12 @@ datum/objective/anti_revolution/brig
 		return target
 
 	check_completion()
-		if(already_completed)
-			return 1
+		return already_completed
 
-		if(target && target.current)
-			if(target.current.stat == DEAD)
-				return 0
-			if(target.is_brigged(10 * 60 * 10))
+	update()
+		if(!already_completed && target && target.current && target.current.stat != DEAD)
+			if(target.is_brigged(10 MINUTES))
 				already_completed = 1
-				return 1
-			return 0
-		return 0
 
 datum/objective/anti_revolution/demote
 	find_target()
@@ -338,18 +333,12 @@ datum/objective/brig
 		return target
 
 	check_completion()
-		if(already_completed)
-			return 1
+		return already_completed
 
-		if(target && target.current)
-			if(target.current.stat == DEAD)
-				return 0
-			// Make the actual required time a bit shorter than the official time
-			if(target.is_brigged(10 * 60 * 5))
+	update()
+		if(!already_completed && target && target.current && target.current.stat != DEAD)
+			if(target.is_brigged(10 MINUTES))
 				already_completed = 1
-				return 1
-			return 0
-		return 0
 
 // Harm a crew member, making an example of them
 datum/objective/harm
@@ -400,11 +389,34 @@ datum/objective/harm
 				return 1
 		return 0
 
+/datum/objective/ert_station_save
 
-datum/objective/nuclear
+/datum/objective/ert_station_save/check_completion()
+	if(SSticker.mode.blob_domination)
+		GLOB.ert.is_station_secure = FALSE
+
+	if(GLOB.revs.global_objectives.len > 0)
+		var/completed = 0
+		for(var/datum/objective/rev/task in GLOB.revs.global_objectives)
+			if(task.check_completion())
+				completed += 1
+		if(completed == GLOB.revs.global_objectives.len)
+			GLOB.ert.is_station_secure = FALSE
+
+	return GLOB.ert.is_station_secure
+
+/datum/objective/ert_station_save/New()
+	..()
+	explanation_text = "Resolve emergency situation you were called for and preserve any [GLOB.using_map.company_name]'s property from being lost."
+
+/datum/objective/ert_custom
+	completed = TRUE
+
+/datum/objective/nuclear
 	explanation_text = "Cause mass destruction with a nuclear device."
 
-
+/datum/objective/nuclear/check_completion()
+	return SSticker.mode.station_was_nuked
 
 datum/objective/steal
 	var/obj/item/steal_target
@@ -821,10 +833,10 @@ datum/objective/heist/salvage
 	return 0
 
 /datum/objective/cult/eldergod
-	explanation_text = "Summon Nar-Sie via the use of the appropriate rune (Hell join self). It will only work if nine cultists stand on and around it. The convert rune is join blood self."
+	explanation_text = "Summon Nar-Sie via the use of the Tear Reality rune. It will only work if five or more cultists stand on and around it. Use the Convert rune to recruit new cultists."
 
 /datum/objective/cult/eldergod/check_completion()
-	return (locate(/obj/singularity/narsie/large) in SSmachines.machinery)
+	return GLOB.cult.narsie_summoned
 
 /datum/objective/cult/sacrifice
 	explanation_text = "Conduct a ritual sacrifice for the glory of Nar-Sie."
@@ -837,7 +849,7 @@ datum/objective/heist/salvage
 				possible_targets += player.mind
 	if(possible_targets.len > 0)
 		target = pick(possible_targets)
-	if(target) explanation_text = "Sacrifice [target.name], the [target.assigned_role]. You will need the sacrifice rune (Hell blood join) and three acolytes to do so."
+	if(target) explanation_text = "Sacrifice [target.name], the [target.assigned_role]. You will need the Offering rune and three acolytes to do so."
 
 /datum/objective/cult/sacrifice/check_completion()
 	return (target && GLOB.cult && !GLOB.cult.sacrificed.Find(target))
@@ -875,4 +887,3 @@ datum/objective/heist/salvage
 			rval = 2
 		return 0
 	return rval
-

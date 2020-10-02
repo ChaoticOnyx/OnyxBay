@@ -40,7 +40,7 @@
 /obj/machinery/camera/examine(mob/user)
 	. = ..()
 	if(stat & BROKEN)
-		to_chat(user, "<span class='warning'>It is completely demolished.</span>")
+		. += "\n<span class='warning'>It is completely demolished.</span>"
 
 /obj/machinery/camera/malf_upgrade(mob/living/silicon/ai/user)
 	..()
@@ -202,7 +202,7 @@
 		set_status(0)
 		user.do_attack_animation(src)
 		visible_message("<span class='warning'>\The [user] slashes at [src]!</span>")
-		playsound(src.loc, 'sound/effects/fighting/smash.ogg', 100, 1)
+		playsound(src.loc, 'sound/effects/fighting/smash.ogg', 50, 1)
 		add_hiddenprint(user)
 		destroy()
 
@@ -262,7 +262,7 @@
 			if(!O.client) continue
 			if(U.name == "Unknown") to_chat(O, "<b>[U]</b> holds \a [itemname] up to one of your cameras ...")
 			else to_chat(O, "<b><a href='byond://?src=\ref[O];track2=\ref[O];track=\ref[U];trackname=[U.name]'>[U]</a></b> holds \a [itemname] up to one of your cameras ...")
-			O << browse(text("<HTML><HEAD><TITLE>[]</TITLE></HEAD><BODY><TT>[]</TT></BODY></HTML>", itemname, info), text("window=[]", itemname))
+			O << browse(text("<HTML><meta charset=\"utf-8\"><HEAD><TITLE>[]</TITLE></HEAD><BODY><TT>[]</TT></BODY></HTML>", itemname, info), text("window=[]", itemname))
 
 	else if(W.damtype == BRUTE || W.damtype == BURN) //bashing cameras
 		user.setClickCooldown(DEFAULT_ATTACK_COOLDOWN)
@@ -270,10 +270,7 @@
 			user.do_attack_animation(src)
 			visible_message("<span class='warning'><b>[src] has been [pick(W.attack_verb)] with [W] by [user]!</b></span>")
 			shake_animation(stime = 3)
-			if (istype(W, /obj/item)) //is it even possible to get into attackby() with non-items?
-				var/obj/item/I = W
-				if (I.hitsound)
-					playsound(src.loc, 'sound/effects/fighting/smash.ogg', 50, 1, -1)
+			obj_attack_sound(W)
 		take_damage(W.force)
 
 	else

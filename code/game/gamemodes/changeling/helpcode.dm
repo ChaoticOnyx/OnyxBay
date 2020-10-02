@@ -482,6 +482,10 @@
 	return
 
 /mob/living/simple_animal/hostile/little_changeling/proc/infest(mob/living/carbon/human/target as mob in oview(1))
+	var/datum/changeling/changeling = src.mind.changeling
+	if(!changeling)
+		return
+
 	if(src.stat == DEAD)
 		to_chat(src, "<span class='warning'>We cannot use this ability. We are dead.</span>")
 		return
@@ -506,7 +510,7 @@
 		to_chat(src, "<span class='warning'>This creature's DNA is ruined beyond useability!</span>")
 		return
 
-	if(src.mind.changeling.isabsorbing)
+	if(changeling.isabsorbing)
 		to_chat(src, "<span class='warning'>We are already infesting!</span>")
 		return
 
@@ -554,7 +558,7 @@
 	src.visible_message("<span class='danger'>[src] has latched onto \the [target].</span>", \
 						"<span class='warning'>We have latched onto \the [target].</span>")
 
-	src.mind.changeling.isabsorbing = 1
+	changeling.isabsorbing = 1
 	for(var/stage = 1, stage<=3, stage++)
 		switch(stage)
 			if(2)
@@ -569,7 +573,7 @@
 		feedback_add_details("changeling_powers","A[stage]")
 		if(!do_mob(src, target, 150))
 			to_chat(src, "<span class='warning'>Our infestation of [target] has been interrupted!</span>")
-			src.mind.changeling.isabsorbing = 0
+			changeling.isabsorbing = 0
 			target.getBruteLoss(39)
 			return
 
@@ -578,7 +582,7 @@
 
 	to_chat(target, "<span class='danger'><h3>Your neural network has been overtaken by \the [src]!</h3></span>")
 	to_chat(target,"<span class='deadsay'>You have died.</span>")
-	src.mind.changeling.isabsorbing = 0
+	changeling.isabsorbing = 0
 
 	if(istype(src,/mob/living/simple_animal/hostile/little_changeling/arm_chan))
 		if(!target.has_limb(BP_L_ARM))
@@ -603,7 +607,7 @@
 	target.sync_organ_dna()
 	target.regenerate_icons()
 
-	var/datum/absorbed_dna/newDNA = new(target.real_name, target.dna, target.species.name, target.languages, target.modifiers)
+	var/datum/absorbed_dna/newDNA = new(target.real_name, target.dna, target.species.name, target.languages, target.modifiers, target.flavor_texts)
 	absorbDNA(newDNA)
 
 	target.ghostize()

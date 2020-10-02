@@ -121,6 +121,7 @@
 /datum/category_item/underwear/undershirt/blouse_female
 	name = "Women's Dress Shirt"
 	icon_state = "blouse_female_s"
+	has_color = TRUE
 
 /datum/category_item/underwear/undershirt/undershirt_female
 	name = "Undershirt, Female"

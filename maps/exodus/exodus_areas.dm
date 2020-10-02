@@ -450,16 +450,28 @@
 	icon_state = "ghettolibrary"
 
 /area/maintenance/ghetto_toilet
-	name = "\improper Ghetto Toilets"
+	name = "\improper Underground Toilets"
 	icon_state = "ghettotoilets"
 
 /area/maintenance/ghetto_dorm
-	name = "\improper Ghetto Dorm"
+	name = "\improper Abandoned Dorm"
 	icon_state = "ghettodorm"
 
 /area/maintenance/ghetto_main
-	name = "\improper Ghetto Main"
+	name = "\improper Underground Main"
 	icon_state = "ghettomain"
+
+/area/maintenance/ghetto_main_south
+	name = "\improper Underground Main - South"
+	icon_state = "ghettomainsouth"
+
+/area/maintenance/ghetto_eva
+	name = "\improper Ghetto EVA"
+	icon_state = "ghettoeva"
+
+/area/maintenance/ghetto_eva_maint
+	name = "\improper Ghetto EVA Maintenance"
+	icon_state = "ghettoevamaint"
 
 /area/maintenance/ghetto_casino
 	name = "\improper Ghetto Casino"
@@ -470,19 +482,19 @@
 	icon_state = "ghettosyndie"
 
 /area/maintenance/ghetto_dockhall
-	name = "\improper Ghetto Dock Hall"
+	name = "\improper Underground Dock Hall"
 	icon_state = "ghettodockhall"
 
 /area/maintenance/ghetto_cafe
-	name = "\improper Ghetto Cafe"
+	name = "\improper Underground Cafe"
 	icon_state = "ghettocafe"
 
 /area/maintenance/ghetto_strangeplace
-	name = "\improper Ghetto Strange Place"
+	name = "\improper Underground Bar"
 	icon_state = "ghettostrangeplace"
 
 /area/maintenance/ghetto_detective
-	name = "\improper Ghetto Detective"
+	name = "\improper Abandoned Detective's Office"
 	icon_state = "ghettodetective"
 
 /area/maintenance/underground/central_one
@@ -597,6 +609,10 @@
 /area/maintenance/underground/research_shuttle
 	name = "\improper Underground Research Shuttle Dock Maintenance"
 	icon_state = "uresearchshuttle"
+
+/area/maintenance/underground/research_utility_room
+	name = "\improper Underground Utility Room"
+	icon_state = "uresearchutilityroom"
 
 /area/maintenance/underground/research_starboard
 	name = "\improper Underground Research Maintenance - Starboard"
@@ -1006,6 +1022,10 @@
 	name = "\improper Underground Dormitories"
 	icon_state = "underdorm"
 
+/area/crew_quarters/underdorm/boxing
+	name = "\improper Boxing Club"
+	icon_state = "fitness"
+
 /area/crew_quarters/underdorm/maint
 	name = "\improper Underground Dormitories Maintenance"
 	icon_state = "underdormmaint"
@@ -1022,49 +1042,54 @@
 	name = "\improper Mime's Bedroom"
 	icon_state = "Theatre"
 
+/area/crew_quarters/underdorm/theater/actor
+	name = "\improper Actors' Break Room"
+	icon_state = "Theatre"
+
+
 /area/crew_quarters/sleep/cabin1
-	name = "\improper Private Cabin One"
+	name = "\improper Private Bedroom One"
 	icon_state = "PrivDormOne"
 	sound_env = SMALL_SOFTFLOOR
 
 /area/crew_quarters/sleep/cabin2
-	name = "\improper Private Cabin Two"
+	name = "\improper Private Bedroomn Two"
 	icon_state = "PrivDormTwo"
 	sound_env = SMALL_SOFTFLOOR
 
 /area/crew_quarters/sleep/cabin3
-	name = "\improper Private Cabin Three"
+	name = "\improper Private Bedroom Three"
 	icon_state = "PrivDormThree"
 	sound_env = SMALL_SOFTFLOOR
 
 /area/crew_quarters/sleep/cabin4
-	name = "\improper Private Cabin Four"
+	name = "\improper Private Bedroom Four"
 	icon_state = "PrivDormFour"
 	sound_env = SMALL_SOFTFLOOR
 
 /area/crew_quarters/sleep/cabin5
-	name = "\improper Private Cabin Five"
+	name = "\improper Private Bedroom Five"
 	icon_state = "PrivDormFive"
 	sound_env = SMALL_SOFTFLOOR
 
 /area/crew_quarters/sleep/cabin6
-	name = "\improper Private Cabin Six"
+	name = "\improper Private Bedroom Six"
 	icon_state = "PrivDormSix"
 	sound_env = SMALL_SOFTFLOOR
 
-/area/crew_quarters/sleep/cabin7
-	name = "\improper Private Cabin Seven"
-	icon_state = "PrivDormSeven"
+/area/crew_quarters/sleep/underg_cabin1
+	name = "\improper Underground Bedroom One"
+	icon_state = "UndergroundDormOne"
 	sound_env = SMALL_SOFTFLOOR
 
-/area/crew_quarters/sleep/cabin8
-	name = "\improper Private Cabin Eight"
-	icon_state = "PrivDormEight"
+/area/crew_quarters/sleep/underg_cabin2
+	name = "\improper Underground Bedroom Two"
+	icon_state = "UndergroundDormTwo"
 	sound_env = SMALL_SOFTFLOOR
 
-/area/crew_quarters/sleep/cabin9
-	name = "\improper Private Cabin Nine"
-	icon_state = "PrivDormNine"
+/area/crew_quarters/sleep/underg_cabin3
+	name = "\improper Underground Bedroom Three"
+	icon_state = "UndergroundDormThree"
 	sound_env = SMALL_SOFTFLOOR
 
 /area/crew_quarters/sleep/engi_wash
@@ -1074,6 +1099,11 @@
 
 /area/crew_quarters/sleep/bedrooms
 	name = "\improper Dormitory Bedroom One"
+	icon_state = "Sleep"
+	sound_env = SMALL_SOFTFLOOR
+
+/area/crew_quarters/sleep/dorms
+	name = "\improper Dormitory Shared Bedroom"
 	icon_state = "Sleep"
 	sound_env = SMALL_SOFTFLOOR
 
@@ -1106,9 +1136,9 @@
 	name = "\improper Fitness Room"
 	icon_state = "fitness"
 
-/area/crew_quarters/fitness/pool
-	name = "\improper Pool"
-	icon_state = "pool"
+/area/crew_quarters/fitness/arcade
+	name = "\improper Arcade"
+	icon_state = "arcade"
 
 /area/crew_quarters/kitchen
 	name = "\improper Kitchen"
@@ -1484,6 +1514,11 @@
 /area/hydroponics/garden
 	name = "\improper Garden"
 	icon_state = "garden"
+
+/area/hydroponics/lower
+	name = "\improper Lower Hydroponics"
+	icon_state = "garden"
+
 
 
 // Research
@@ -2012,6 +2047,13 @@ area/rnd/test_area
 /area/merchant_station
 	name = "\improper Merchant Station"
 	icon_state = "LP"
+	requires_power = 0
+
+/area/thunder_rock
+	name = "\improper Thunder Rock"
+	icon_state = "LP"
+	luminosity = 1
+	dynamic_lighting = 0
 	requires_power = 0
 
 /area/acting/backstage

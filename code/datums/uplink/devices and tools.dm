@@ -8,18 +8,23 @@
 	name = "Fully Loaded Toolbox"
 	item_cost = 8
 	path = /obj/item/weapon/storage/toolbox/syndicate
-	
+
 /datum/uplink_item/item/tools/ductape
 	name = "Duct Tape"
 	desc = "A roll of duct tape. changes \"HELP\" in to sexy \"mmm\"."
 	item_cost = 8
-	path = /obj/item/weapon/tape_roll	
+	path = /obj/item/weapon/tape_roll
 
 /datum/uplink_item/item/tools/money
 	name = "Operations Funding"
 	item_cost = 8
 	path = /obj/item/weapon/storage/secure/briefcase/money
 	desc = "A briefcase with 10,000 untraceable thalers for funding your sneaky activities."
+
+datum/uplink_item/item/tools/cleaning_kit
+	name = "Cleaning Kit"
+	item_cost = 15
+	path = /obj/item/weapon/storage/backpack/satchel/syndie_kit/cleaning_kit
 
 /datum/uplink_item/item/tools/clerical
 	name = "Morphic Clerical Kit"
@@ -45,7 +50,7 @@
 	name = "Handheld Shield Diffuser"
 	item_cost = 16
 	path = /obj/item/weapon/shield_diffuser
-	
+
 /datum/uplink_item/item/tools/sindicuffs
 	name = "Explosive Handcuffs"
 	item_cost = 16
@@ -122,3 +127,13 @@
 	item_cost = 30
 	path = /obj/item/device/radio/intercept
 	desc = "A radio that can intercept secure radio channels. Doesn't fit in pockets."
+
+/datum/uplink_item/item/tools/c4explosive
+	name = "Small Package Bomb"
+	item_cost = 25
+	path = /obj/item/weapon/syndie/c4explosive
+
+/datum/uplink_item/item/tools/c4explosive/heavy
+	name = "Large Package Bomb"
+	item_cost = 50
+	path = /obj/item/weapon/syndie/c4explosive/heavy

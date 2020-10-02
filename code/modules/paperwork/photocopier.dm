@@ -14,6 +14,8 @@
 	var/copies = 1	//how many copies to print!
 	var/toner = 30 //how much toner is left! woooooo~
 	var/maxcopies = 10	//how many copies can be copied at once- idea shamelessly stolen from bs12's copier!
+	var/grayscale = TRUE //if FALSE it'll preserve colors at least on paper
+	var/busy = FALSE
 
 /obj/machinery/photocopier/attack_ai(mob/user as mob)
 	return attack_hand(user)
@@ -21,7 +23,7 @@
 /obj/machinery/photocopier/attack_hand(mob/user as mob)
 	user.set_machine(src)
 
-	var/dat = "Photocopier<BR><BR>"
+	var/dat = "<meta charset=\"utf-8\">Photocopier<BR><BR>"
 	if(copyitem)
 		dat += "<a href='byond://?src=\ref[src];remove=1'>Remove Item</a><BR>"
 		if(toner)
@@ -40,15 +42,28 @@
 	onclose(user, "copier")
 	return
 
+/obj/machinery/photocopier/proc/busy_check(user)
+	if (busy)
+		to_chat(user, SPAN_WARNING("[src] is busy!"))
+	return busy
+
 /obj/machinery/photocopier/Topic(href, href_list)
+	. = ..()
+	if (. != TOPIC_NOACTION)
+		return
+	if (busy_check(usr))
+		return
 	if(href_list["copy"])
 		if(stat & (BROKEN|NOPOWER))
 			return
 
+		busy = TRUE
 		for(var/i = 0, i < copies, i++)
 			if(toner <= 0)
 				break
-
+			if(stat & (BROKEN|NOPOWER))
+				break
+			use_power_oneoff(active_power_usage)
 			if (istype(copyitem, /obj/item/weapon/paper))
 				copy(copyitem)
 				sleep(15)
@@ -58,12 +73,15 @@
 			else if (istype(copyitem, /obj/item/weapon/paper_bundle))
 				var/obj/item/weapon/paper_bundle/B = bundlecopy(copyitem)
 				sleep(15*B.pages.len)
+			else if (istype(copyitem, /obj/item/weapon/complaint_folder))
+				var/obj/item/weapon/complaint_folder/CF = complaintcopy(copyitem)
+				sleep(15 * CF.contents.len)
 			else
 				to_chat(usr, "<span class='warning'>\The [copyitem] can't be copied by \the [src].</span>")
 				break
 
-			use_power_oneoff(active_power_usage)
 		updateUsrDialog()
+		busy = FALSE
 	else if(href_list["remove"])
 		if(copyitem)
 			copyitem.loc = usr.loc
@@ -103,7 +121,7 @@
 		updateUsrDialog()
 
 /obj/machinery/photocopier/attackby(obj/item/O as obj, mob/user as mob)
-	if(istype(O, /obj/item/weapon/paper) || istype(O, /obj/item/weapon/photo) || istype(O, /obj/item/weapon/paper_bundle))
+	if(istype(O, /obj/item/weapon/paper) || istype(O, /obj/item/weapon/photo) || istype(O, /obj/item/weapon/paper_bundle) || istype(O, /obj/item/weapon/complaint_folder))
 		if(!copyitem)
 			user.drop_item()
 			copyitem = O
@@ -123,7 +141,8 @@
 			updateUsrDialog()
 		else
 			to_chat(user, "<span class='notice'>This cartridge is not yet ready for replacement! Use up the rest of the toner.</span>")
-	..()
+	else
+		..()
 	if(O.mod_weight >= 0.75)
 		shake_animation(stime = 4)
 	return
@@ -147,36 +166,8 @@
 	return
 
 /obj/machinery/photocopier/proc/copy(obj/item/weapon/paper/copy, need_toner=1)
-	var/obj/item/weapon/paper/c = new /obj/item/weapon/paper (loc)
-	if(toner > 10)	//lots of toner, make it dark
-		c.info = "<font color = #101010>"
-	else			//no toner? shitty copies for you!
-		c.info = "<font color = #808080>"
-	var/copied = rhtml_decode(copy.info)
-	copied = replacetext(copied, "<font face=\"[c.deffont]\" color=", "<font face=\"[c.deffont]\" nocolor=")	//state of the art techniques in action
-	copied = replacetext(copied, "<font face=\"[c.crayonfont]\" color=", "<font face=\"[c.crayonfont]\" nocolor=")	//This basically just breaks the existing color tag, which we need to do because the innermost tag takes priority.
-	c.info += copied
-	c.info += "</font>"//</font>
-	c.SetName(copy.name) // -- Doohl
-	c.fields = copy.fields
-	c.stamps = copy.stamps
-	c.stamped = copy.stamped
-	c.ico = copy.ico
-	c.offset_x = copy.offset_x
-	c.offset_y = copy.offset_y
-	var/list/temp_overlays = copy.overlays       //Iterates through stamps
-	var/image/img                                //and puts a matching
-	for (var/j = 1, j <= min(temp_overlays.len, copy.ico.len), j++) //gray overlay onto the copy
-		if (findtext(copy.ico[j], "cap") || findtext(copy.ico[j], "cent"))
-			img = image('icons/obj/bureaucracy.dmi', "paper_stamp-circle")
-		else if (findtext(copy.ico[j], "deny"))
-			img = image('icons/obj/bureaucracy.dmi', "paper_stamp-x")
-		else
-			img = image('icons/obj/bureaucracy.dmi', "paper_stamp-dots")
-		img.pixel_x = copy.offset_x[j]
-		img.pixel_y = copy.offset_y[j]
-		c.overlays += img
-	c.updateinfolinks()
+	var/obj/item/weapon/paper/c = copy.copy(loc, generate_stamps = FALSE)
+	c.recolorize(saturation = Clamp(toner / 30.0, 0.5, 0.94), grayscale = src.grayscale)
 	if(need_toner)
 		toner--
 	if(toner == 0)
@@ -184,6 +175,16 @@
 	c.update_icon()
 	return c
 
+/obj/machinery/photocopier/proc/complaintcopy(obj/item/weapon/complaint_folder/copy, need_toner=1)
+	var/obj/item/weapon/complaint_folder/CF = copy.copy(loc, generate_stamps = !need_toner)
+	if (need_toner)
+		var/toner_left = toner
+		toner_left = CF.recolorize(saturation = Clamp(toner / 30.0, 0.5, 0.94), grayscale = src.grayscale, amount = toner_left)
+		if (toner_left <= 0)
+			visible_message(SPAN_NOTICE("A red light on \the [src] flashes, indicating that it is out of toner."))
+			toner_left = 0
+		toner = toner_left
+	return CF
 
 /obj/machinery/photocopier/proc/photocopy(obj/item/weapon/photo/photocopy, need_toner=1)
 	var/obj/item/weapon/photo/p = photocopy.copy()
@@ -224,7 +225,7 @@
 	p.icon_state = "paper_words"
 	p.SetName(bundle.name)
 	return p
-
+	
 /obj/item/device/toner
 	name = "toner cartridge"
 	icon_state = "tonercartridge"

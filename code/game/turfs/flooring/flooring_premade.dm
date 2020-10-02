@@ -230,6 +230,11 @@
 	icon_state = "brown"
 	initial_flooring = /decl/flooring/carpet
 
+/turf/simulated/floor/trim/carpet/arcade
+	name = "arcade carpet"
+	icon_state = "arcade"
+	initial_flooring = /decl/flooring/carpet/arcade
+
 /turf/simulated/floor/trim/carpet/blue
 	name = "blue carpet"
 	icon_state = "blue1"

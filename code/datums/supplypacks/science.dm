@@ -7,7 +7,7 @@
 	cost = 25
 	containertype = /obj/structure/closet/crate/secure
 	containername = "\improper Virus sample crate"
-	access = access_cmo
+	access = access_virology
 
 /decl/hierarchy/supply_pack/science/coolanttank
 	name = "Coolant tank crate"
@@ -18,7 +18,7 @@
 
 /decl/hierarchy/supply_pack/science/mecha_ripley
 	name = "Circuit Crate (\"Ripley\" APLU)"
-	contains = list(/obj/item/weapon/book/manual/ripley_build_and_repair,
+	contains = list(/obj/item/weapon/book/wiki/robotics_cyborgs,
 					/obj/item/weapon/circuitboard/mecha/ripley/main, //TEMPORARY due to lack of circuitboard printer,
 					/obj/item/weapon/circuitboard/mecha/ripley/peripherals) //TEMPORARY due to lack of circuitboard printer
 	cost = 30

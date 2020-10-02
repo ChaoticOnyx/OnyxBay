@@ -15,6 +15,7 @@
 	item_flags = 0
 	obj_flags = 0
 	volume = 60
+	var/lid_state = "lid_bottle"
 
 	on_reagent_change()
 		update_icon()
@@ -143,6 +144,17 @@
 	reagents.add_reagent(/datum/reagent/mutagen, 60)
 	update_icon()
 
+/obj/item/weapon/reagent_containers/glass/bottle/nanites
+	name = "nanites bottle"
+	desc = "A small bottle of nanites. Causes inpredictable changes in living lifeforms."
+	icon = 'icons/obj/chemical.dmi'
+	icon_state = "bottle-1"
+
+/obj/item/weapon/reagent_containers/glass/bottle/nanites/New()
+	..()
+	reagents.add_reagent(/datum/reagent/nanites, 60)
+	update_icon()
+
 
 /obj/item/weapon/reagent_containers/glass/bottle/ammonia
 	name = "ammonia bottle"
@@ -158,9 +170,10 @@
 
 /obj/item/weapon/reagent_containers/glass/bottle/eznutrient
 	name = "\improper EZ NUtrient bottle"
-	desc = "A small bottle."
+	desc = "A small bottle of EZ NUtrient. It's extra nutritious!"
 	icon = 'icons/obj/chemical.dmi'
-	icon_state = "bottle-4"
+	icon_state = "fertilizer1"
+	lid_state = "lid_fert"
 
 /obj/item/weapon/reagent_containers/glass/bottle/eznutrient/New()
 	..()
@@ -168,11 +181,23 @@
 	update_icon()
 
 
+/obj/item/weapon/reagent_containers/glass/bottle/compost
+	name = "compost bottle"
+	desc = "A small bottle"
+	icon = 'icons/obj/chemical.dmi'
+	icon_state = "bottle-1"
+
+/obj/item/weapon/reagent_containers/glass/bottle/compost/New()
+	..()
+	reagents.add_reagent(/datum/reagent/toxin/fertilizer/compost, 60)
+	update_icon()
+
 /obj/item/weapon/reagent_containers/glass/bottle/left4zed
 	name = "\improper Left-4-Zed bottle"
-	desc = "A small bottle."
+	desc = "A small bottle of Left-4-Zed. It helps plants to mutate!"
 	icon = 'icons/obj/chemical.dmi'
-	icon_state = "bottle-4"
+	icon_state = "fertilizer2"
+	lid_state = "lid_fert"
 
 /obj/item/weapon/reagent_containers/glass/bottle/left4zed/New()
 	..()
@@ -182,13 +207,26 @@
 
 /obj/item/weapon/reagent_containers/glass/bottle/robustharvest
 	name = "\improper Robust Harvest"
-	desc = "A small bottle."
+	desc = "A small bottle of Robust Harvest. Causes high yield!"
 	icon = 'icons/obj/chemical.dmi'
-	icon_state = "bottle-4"
+	icon_state = "fertilizer3"
+	lid_state = "lid_fert"
 
 /obj/item/weapon/reagent_containers/glass/bottle/robustharvest/New()
 	..()
 	reagents.add_reagent(/datum/reagent/toxin/fertilizer/robustharvest, 60)
+	update_icon()
+
+/obj/item/weapon/reagent_containers/glass/bottle/mutogrow
+	name = "\improper Mut'o'Grow"
+	desc = "A small bottle of Mut'o'Grow. Randomly changes the DNA structure of plants. Warning: ingestion may (and will) cause severe poisoning!"
+	icon = 'icons/obj/chemical.dmi'
+	icon_state = "mutagen"
+	lid_state = "lid_fert"
+
+/obj/item/weapon/reagent_containers/glass/bottle/mutogrow/New()
+	..()
+	reagents.add_reagent(/datum/reagent/mutagen/industrial, 60)
 	update_icon()
 
 
@@ -272,4 +310,26 @@
 /obj/item/weapon/reagent_containers/glass/bottle/slimetoxin/New()
 	..()
 	reagents.add_reagent(/datum/reagent/slimetoxin, 60)
+	update_icon()
+
+/obj/item/weapon/reagent_containers/glass/bottle/opium
+	name = "opium bottle"
+	desc = "A small bottle of opium. An effective, but addictive painkiller."
+	icon = 'icons/obj/chemical.dmi'
+	icon_state = "bottle-4"
+
+/obj/item/weapon/reagent_containers/glass/bottle/opium/New()
+	..()
+	reagents.add_reagent(/datum/reagent/tramadol/opium, 60)
+	update_icon()
+
+/obj/item/weapon/reagent_containers/glass/bottle/tarine
+	name = "tarine bottle"
+	desc = "A small bottle of tarine. An extremely effective painkiller, yet is terribly addictive and notorious for its life-threatening side-effects."
+	icon = 'icons/obj/chemical.dmi'
+	icon_state = "bottle-4"
+
+/obj/item/weapon/reagent_containers/glass/bottle/tarine/New()
+	..()
+	reagents.add_reagent(/datum/reagent/tramadol/opium/tarine, 60)
 	update_icon()

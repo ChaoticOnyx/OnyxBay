@@ -30,7 +30,7 @@
 
 /obj/machinery/chemical_dispenser/examine(mob/user)
 	. = ..()
-	to_chat(user, "It has [cartridges.len] cartridges installed, and has space for [DISPENSER_MAX_CARTRIDGES - cartridges.len] more.")
+	. += "\nIt has [cartridges.len] cartridges installed, and has space for [DISPENSER_MAX_CARTRIDGES - cartridges.len] more."
 
 /obj/machinery/chemical_dispenser/proc/add_cartridge(obj/item/weapon/reagent_containers/chem_disp_cartridge/C, mob/user)
 	if(!istype(C))
@@ -87,6 +87,10 @@
 		var/obj/item/weapon/reagent_containers/RC = W
 
 		if(!accept_drinking && istype(RC,/obj/item/weapon/reagent_containers/food))
+			to_chat(user, "<span class='warning'>This machine only accepts beakers!</span>")
+			return
+
+		if(istype(RC,/obj/item/weapon/reagent_containers/glass/bucket))
 			to_chat(user, "<span class='warning'>This machine only accepts beakers!</span>")
 			return
 

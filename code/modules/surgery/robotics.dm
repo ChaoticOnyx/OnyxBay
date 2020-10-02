@@ -30,8 +30,7 @@
 		/obj/item/weapon/material/kitchen/utensil/knife = 50
 	)
 
-	min_duration = 90
-	max_duration = 110
+	duration = CUT_DURATION
 
 /datum/surgery_step/robotics/unscrew_hatch/can_use(mob/living/user, mob/living/carbon/human/target, target_zone, obj/item/tool)
 	if(..())
@@ -65,8 +64,7 @@
 		/obj/item/weapon/material/kitchen/utensil/knife = 50
 	)
 
-	min_duration = 90
-	max_duration = 110
+	duration = CUT_DURATION
 
 /datum/surgery_step/robotics/screw_hatch/can_use(mob/living/user, mob/living/carbon/human/target, target_zone, obj/item/tool)
 	if(..())
@@ -100,8 +98,7 @@
 		/obj/item/weapon/material/kitchen/utensil = 50
 	)
 
-	min_duration = 30
-	max_duration = 40
+	duration = RETRACT_DURATION
 
 /datum/surgery_step/robotics/open_hatch/can_use(mob/living/user, mob/living/carbon/human/target, target_zone, obj/item/tool)
 	if(..())
@@ -135,8 +132,7 @@
 		/obj/item/weapon/material/kitchen/utensil = 50
 	)
 
-	min_duration = 70
-	max_duration = 100
+	duration = RETRACT_DURATION
 
 /datum/surgery_step/robotics/close_hatch/can_use(mob/living/user, mob/living/carbon/human/target, target_zone, obj/item/tool)
 	if(..())
@@ -170,8 +166,7 @@
 		/obj/item/weapon/gun/energy/plasmacutter = 50
 	)
 
-	min_duration = 50
-	max_duration = 60
+	duration = ORGAN_FIX_DURATION
 
 /datum/surgery_step/robotics/repair_brute/can_use(mob/living/user, mob/living/carbon/human/target, target_zone, obj/item/tool)
 	if(..())
@@ -210,8 +205,7 @@
 		/obj/item/stack/cable_coil = 100
 	)
 
-	min_duration = 50
-	max_duration = 60
+	duration = CONNECT_DURATION
 
 /datum/surgery_step/robotics/repair_burn/can_use(mob/living/user, mob/living/carbon/human/target, target_zone, obj/item/tool)
 	if(..())
@@ -267,8 +261,7 @@
 	/obj/item/weapon/screwdriver = 70,	\
 	)
 
-	min_duration = 70
-	max_duration = 90
+	duration = ORGAN_FIX_DURATION
 
 /datum/surgery_step/robotics/fix_organ_robotic/can_use(mob/living/user, mob/living/carbon/human/target, target_zone, obj/item/tool)
 	if (!hasorgans(target))
@@ -332,8 +325,7 @@
 	/obj/item/device/multitool = 100
 	)
 
-	min_duration = 90
-	max_duration = 110
+	duration = CUT_DURATION * 1.75
 
 /datum/surgery_step/robotics/detatch_organ_robotic/can_use(mob/living/user, mob/living/carbon/human/target, target_zone, obj/item/tool)
 
@@ -385,8 +377,7 @@
 		/obj/item/weapon/screwdriver = 100,
 	)
 
-	min_duration = 100
-	max_duration = 120
+	duration = CONNECT_DURATION
 
 /datum/surgery_step/robotics/attach_organ_robotic/can_use(mob/living/user, mob/living/carbon/human/target, target_zone, obj/item/tool)
 	var/obj/item/organ/external/affected = target.get_organ(target_zone)
@@ -438,8 +429,7 @@
 	/obj/item/device/mmi = 100,
 	)
 
-	min_duration = 60
-	max_duration = 80
+	duration = ATTACH_DURATION
 
 /datum/surgery_step/robotics/install_mmi/can_use(mob/living/user, mob/living/carbon/human/target, target_zone, obj/item/tool)
 

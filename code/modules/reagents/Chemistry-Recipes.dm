@@ -107,7 +107,7 @@
 	name = "Tramadol"
 	result = /datum/reagent/tramadol
 	required_reagents = list(/datum/reagent/inaprovaline = 1, /datum/reagent/ethanol = 1, /datum/reagent/acetone = 1)
-	result_amount = 3
+	result_amount = 1
 
 /datum/chemical_reaction/paracetamol
 	name = "Paracetamol"
@@ -121,6 +121,12 @@
 	required_reagents = list(/datum/reagent/ethanol = 1, /datum/reagent/tramadol = 1)
 	catalysts = list(/datum/reagent/toxin/phoron = 5)
 	result_amount = 1
+
+/datum/chemical_reaction/tarine
+	name = "Tarine"
+	result = /datum/reagent/tramadol/opium/tarine
+	required_reagents = list(/datum/reagent/tramadol/opium = 3, /datum/reagent/acetone = 1, /datum/reagent/acid/hydrochloric = 1)
+	result_amount = 3
 
 /datum/chemical_reaction/sterilizine
 	name = "Sterilizine"
@@ -145,6 +151,7 @@
 	result = /datum/reagent/thermite
 	required_reagents = list(/datum/reagent/aluminum = 1, /datum/reagent/iron = 1, /datum/reagent/acetone = 1)
 	result_amount = 3
+	log_is_important = 1
 
 /datum/chemical_reaction/space_drugs
 	name = "Space Drugs"
@@ -157,12 +164,14 @@
 	result = /datum/reagent/lube
 	required_reagents = list(/datum/reagent/water = 1, /datum/reagent/silicon = 1, /datum/reagent/acetone = 1)
 	result_amount = 4
+	log_is_important = 1
 
 /datum/chemical_reaction/pacid
 	name = "Polytrinic acid"
 	result = /datum/reagent/acid/polyacid
 	required_reagents = list(/datum/reagent/acid = 1, /datum/reagent/acid/hydrochloric = 1, /datum/reagent/potassium = 1)
 	result_amount = 3
+	log_is_important = 1
 
 /datum/chemical_reaction/synaptizine
 	name = "Synaptizine"
@@ -193,7 +202,6 @@
 	result = /datum/reagent/kelotane
 	required_reagents = list(/datum/reagent/silicon = 1, /datum/reagent/carbon = 1)
 	result_amount = 2
-	log_is_important = 1
 
 /datum/chemical_reaction/peridaxon
 	name = "Peridaxon"
@@ -313,18 +321,21 @@
 	result = /datum/reagent/chloralhydrate
 	required_reagents = list(/datum/reagent/ethanol = 1, /datum/reagent/acid/hydrochloric = 3, /datum/reagent/water = 1)
 	result_amount = 1
+	log_is_important = 1
 
 /datum/chemical_reaction/potassium_chloride
 	name = "Potassium Chloride"
 	result = /datum/reagent/toxin/potassium_chloride
 	required_reagents = list(/datum/reagent/sodiumchloride = 1, /datum/reagent/potassium = 1)
 	result_amount = 2
+	log_is_important = 1
 
 /datum/chemical_reaction/potassium_chlorophoride
 	name = "Potassium Chlorophoride"
 	result = /datum/reagent/toxin/potassium_chlorophoride
 	required_reagents = list(/datum/reagent/toxin/potassium_chloride = 1, /datum/reagent/toxin/phoron = 1, /datum/reagent/chloralhydrate = 1)
 	result_amount = 4
+	log_is_important = 1
 
 /datum/chemical_reaction/zombiepowder
 	name = "Zombie Powder"
@@ -398,7 +409,6 @@
 	result = /datum/reagent/coolant
 	required_reagents = list(/datum/reagent/tungsten = 1, /datum/reagent/acetone = 1, /datum/reagent/water = 1)
 	result_amount = 3
-	log_is_important = 1
 
 /datum/chemical_reaction/rezadone
 	name = "Rezadone"
@@ -522,6 +532,7 @@
 	result = null
 	required_reagents = list(/datum/reagent/uranium = 1, /datum/reagent/iron = 1) // Yes, laugh, it's the best recipe I could think of that makes a little bit of sense
 	result_amount = 2
+	log_is_important = 1
 
 /datum/chemical_reaction/emp_pulse/on_reaction(datum/reagents/holder, created_volume)
 	var/location = get_turf(holder.my_atom)
@@ -535,6 +546,7 @@
 	result = null
 	required_reagents = list(/datum/reagent/aluminum = 1, /datum/reagent/toxin/phoron = 1, /datum/reagent/acid = 1 )
 	result_amount = 1
+	log_is_important = 1
 
 /datum/chemical_reaction/napalm/on_reaction(datum/reagents/holder, created_volume)
 	var/turf/location = get_turf(holder.my_atom.loc)
@@ -2067,7 +2079,7 @@
 	result = /datum/reagent/ethanol/witcher/griffin
 	required_reagents = list(/datum/reagent/ethanol/witcher = 3,/datum/reagent/ethanol/bluecuracao = 1,/datum/reagent/ethanol/wine/sparkling = 1)
 	result_amount = 5
-	
+
 /datum/chemical_reaction/immunobooster
 	name = "Immunobooster"
 	result = /datum/reagent/immunobooster
@@ -2078,4 +2090,11 @@
 	name = "Vecuronium Bromide"
 	result = /datum/reagent/vecuronium_bromide
 	required_reagents = list(/datum/reagent/ethanol = 1, /datum/reagent/mercury = 2, /datum/reagent/luminol = 2)
-	result_amount = 1	
+	result_amount = 1
+
+/datum/chemical_reaction/kvas
+	name = "Kvas"
+	result = /datum/reagent/ethanol/kvas
+	required_reagents = list(/datum/reagent/ethanol/beer = 1, /datum/reagent/sugar = 1)
+	catalysts = list(/datum/reagent/enzyme = 5)
+	result_amount = 2

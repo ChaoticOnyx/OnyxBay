@@ -39,9 +39,9 @@
 /obj/item/weapon/gun/magnetic/railgun/show_ammo(mob/user)
 	var/obj/item/weapon/rcd_ammo/ammo = loaded
 	if (ammo)
-		to_chat(user, "<span class='notice'>There are [ammo.remaining] shot\s remaining in \the [loaded].</span>")
+		return "<span class='notice'>There are [ammo.remaining] shot\s remaining in \the [loaded].</span>"
 	else
-		to_chat(user, "<span class='notice'>There is nothing loaded.</span>")
+		return "<span class='notice'>There is nothing loaded.</span>"
 
 /obj/item/weapon/gun/magnetic/railgun/check_ammo()
 	var/obj/item/weapon/rcd_ammo/ammo = loaded
@@ -81,9 +81,9 @@
 		)
 
 /obj/item/weapon/gun/magnetic/railgun/automatic/examine(mob/user)
-	. = ..(user,1)
-	if(.)
-		to_chat(user, "<span class='notice'>Someone has scratched <i>Ultima Ratio Regum</i> onto the side of the barrel.</span>")
+	. = ..()
+	if(get_dist(src, user) <= 1)
+		. += "\n<span class='notice'>Someone has scratched <i>Ultima Ratio Regum</i> onto the side of the barrel.</span>"
 
 /obj/item/weapon/gun/magnetic/railgun/flechette
 	name = "flechette gun"

@@ -188,12 +188,12 @@ var/list/global/organ_rel_size = list(
 			return n
 	var/te = n
 	var/t = ""
-	n = length(n)
+	n = length_char(n)
 	var/p = null
 	p = 1
 	var/intag = 0
 	while(p <= n)
-		var/char = copytext(te, p, p + 1)
+		var/char = copytext_char(te, p, p + 1)
 		if (char == "<") //let's try to not break tags
 			intag = !intag
 		if (intag || char == " " || prob(pr))
@@ -205,59 +205,51 @@ var/list/global/organ_rel_size = list(
 		p++
 	return t
 
+// This is temporary effect, often caused by alcohol
 proc/slur(phrase)
-	phrase = rhtml_decode(phrase)
-	var/leng=lentext(phrase)
-	var/counter=lentext(phrase)
-	var/newphrase=""
-	var/newletter=""
-	while(counter>=1)
-		newletter=copytext(phrase,(leng-counter)+1,(leng-counter)+2)
-		if(rand(1,3)==3)
-			if(rlowertext(newletter)=="o")	newletter="u"
-			if(rlowertext(newletter)=="s")	newletter="ch"
-			if(rlowertext(newletter)=="a")	newletter="ah"
-			if(rlowertext(newletter)=="c")	newletter="k"
-		switch(rand(1,15))
-			if(1,3,5,8)	newletter="[rlowertext(newletter)]"
-			if(2,4,6,15)	newletter="[ruppertext(newletter)]"
-			if(7)	newletter+="'"
-			//if(9,10)	newletter="<b>[newletter]</b>"
-			//if(11,12)	newletter="<big>[newletter]</big>"
-			//if(13)	newletter="<small>[newletter]</small>"
-		newphrase+="[newletter]";counter-=1
-	return newphrase
+	phrase = html_decode(phrase)
+	var/new_phrase = ""
+	var/list/replacements_consonants = list(
+		"s" = "ch", "c" = "k",
+		"–≥" = "—Ö", "–∫" = "—Ö", "–∑" = "—Å", "—Ü" = "—Å", "—á" = "—â", "—â" = "—à—à", "–ø" = "–±"
+		)
+	var/list/replacements_vowels = list(
+		"o" = "u",
+		"—ã" = "'", "–∞" = "'", "–µ" = "—ç", "—ë" = "'", "–∏" = "'", "–æ" = "'", "—É" = "'", "—é" = "'"
+		)
+	for(var/i = 1, i <= length_char(phrase), i++)
+		var/letter = copytext_char(phrase, i, i + 1)
+		if(lowertext(letter) in replacements_consonants)
+			if(prob(40))
+				letter = replacements_consonants[lowertext(letter)]
+		else if(lowertext(letter) in replacements_vowels)
+			if(prob(12))
+				letter = replacements_vowels[lowertext(letter)]
+		new_phrase += pick(
+			65; letter,
+			20; lowertext(letter),
+			15; uppertext(letter),
+			)
+	return html_encode(new_phrase)
 
-/proc/stutter(n)
-	var/te = rhtml_decode(n)
-	var/t = ""//placed before the message. Not really sure what it's for.
-	n = length(n)//length of the entire word
-	var/p = null
-	p = 1//1 is the start of any word
-	while(p <= n)//while P, which starts at 1 is less or equal to N which is the length.
-		var/n_letter = copytext(te, p, p + 1)//copies text from a certain distance. In this case, only one letter at a time.
-		if (prob(80) && (rlowertext(n_letter) in list("·","‚","„","‰","Ê","Á","È","Í","Î","Ï","Ì","Ô","","Ò","Ú","Ù","ı","ˆ","˜","¯","˘","b","c","d","f","g","h","j","k","l","m","n","p","q","r","s","t","v","w","x","y","z")))
-			if (prob(10))
-				n_letter = text("[n_letter]-[n_letter]-[n_letter]-[n_letter]")//replaces the current letter with this instead.
-			else
-				if (prob(20))
-					n_letter = text("[n_letter]-[n_letter]-[n_letter]")
-				else
-					if (prob(5))
-						n_letter = null
-					else
-						n_letter = text("[n_letter]-[n_letter]")
-		t = text("[t][n_letter]")//since the above is ran through for each letter, the text just adds up back to the original word.
-		p++//for each letter p is increased to find where the next letter will be.
-	return sanitize(t)
-
+// This is temporary effect, often caused by shock
+proc/stutter(phrase)
+	phrase = html_decode(phrase)
+	var/new_phrase = ""
+	for(var/i = 1, i <= length_char(phrase), i++)
+		var/letter = copytext_char(phrase, i, i + 1)
+		new_phrase += letter
+		if(lowertext(letter) in list("–±", "–≥", "–¥", "–∫", "–ø", "—Ç", "—Ü", "—á", "b", "c", "d", "f", "g", "j", "k", "p", "q", "t", "x"))
+			while(prob(45))
+				new_phrase += "-[letter]"
+	return html_encode(new_phrase)
 
 proc/Gibberish(t, p)//t is the inputted message, and any value higher than 70 for p will cause letters to be replaced instead of added
 	/* Turn text into complete gibberish! */
 	var/returntext = ""
-	for(var/i = 1, i <= length(t), i++)
+	for(var/i = 1, i <= length_char(t), i++)
 
-		var/letter = copytext(t, i, i+1)
+		var/letter = copytext_char(t, i, i+1)
 		if(prob(50))
 			if(p >= 70)
 				letter = ""
@@ -276,9 +268,9 @@ The difference with stutter is that this proc can stutter more than 1 letter
 The issue here is that anything that does not have a space is treated as one word (in many instances). For instance, "LOOKING," is a word, including the comma.
 It's fairly easy to fix if dealing with single letters but not so much with compounds of letters./N
 */
-	var/te = rhtml_decode(n)
+	var/te = html_decode(n)
 	var/t = ""
-	n = length(n)
+	n = length_char(n)
 	var/p = 1
 	while(p <= n)
 		var/n_letter

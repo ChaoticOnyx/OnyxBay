@@ -9,12 +9,12 @@
 	var/board = list()
 	var/selected = -1
 
-/obj/item/weapon/board/examine(mob/user, distance = -1)
+/obj/item/weapon/board/examine(mob/user)
 	if(in_range(user,src))
 		user.set_machine(src)
 		interact(user)
 		return
-	..()
+	. = ..()
 
 /obj/item/weapon/board/attack_hand(mob/living/carbon/human/M as mob)
 	if(M.machine == src)
@@ -68,7 +68,7 @@ obj/item/weapon/board/attackby(obj/item/I as obj, mob/user as mob)
 		return
 
 	var/list/dat = list({"
-	<html><head><style type='text/css'>
+	<html><meta charset=\"utf-8\"><head><style type='text/css'>
 	td,td a{height:50px;width:50px}table{border-spacing:0;border:none;border-collapse:collapse}td{text-align:center;padding:0;background-repeat:no-repeat;background-position:center center}td.light{background-color:#6cf}td.dark{background-color:#544b50}td.selected{background-color:#c8dbc3}td a{display:table-cell;text-decoration:none;position:relative;line-height:50px;height:50px;width:50 px;vertical-align:middle}
 	</style></head><body><table>
 	"})

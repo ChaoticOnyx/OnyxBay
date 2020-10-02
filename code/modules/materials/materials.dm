@@ -383,6 +383,7 @@ var/list/name_to_material
 	icon_base = "solid"
 	icon_reinf = "reinf_over"
 	icon_colour = "#666666"
+	shard_type = SHARD_SCRAP
 	hitsound = 'sound/effects/fighting/Genhit.ogg'
 	resilience = 36
 	reflectance = 13
@@ -402,6 +403,7 @@ var/list/name_to_material
 	icon_base = "solid"
 	icon_reinf = "reinf_over"
 	icon_colour = "#777777"
+	shard_type = SHARD_SCRAP
 	explosion_resistance = 25
 	brute_armor = 6
 	burn_armor = 10
@@ -676,6 +678,7 @@ var/list/name_to_material
 	sheet_singular_name = "ingot"
 	sheet_plural_name = "ingots"
 	hitsound = 'sound/effects/fighting/smash.ogg'
+	shard_type = SHARD_SCRAP
 
 // Adminspawn only, do not let anyone get this.
 /material/voxalloy
@@ -690,6 +693,7 @@ var/list/name_to_material
 	explosion_resistance = 200 // Hull plating.
 	hardness = 500
 	weight = 500
+	shard_type = SHARD_SCRAP
 
 // Likewise.
 /material/voxalloy/elevatorium

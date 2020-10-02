@@ -11,14 +11,15 @@
 	num_alternate_languages = 2
 	secondary_langs = list(LANGUAGE_SOL_COMMON)
 	name_language = null // Use the first-name last-name generator rather than a language scrambler
-	min_age = 17
+	min_age = 18
 	max_age = 100
 	gluttonous = GLUT_TINY
 
 	body_builds = list(
 		new /datum/body_build,
 		new /datum/body_build/slim,
-		new /datum/body_build/slim/alt
+		new /datum/body_build/slim/alt,
+		new /datum/body_build/slim/male
 	)
 
 	spawn_flags = SPECIES_CAN_JOIN
@@ -95,7 +96,7 @@
 	name_language = LANGUAGE_SIIK_MAAS
 	health_hud_intensity = 1.75
 
-	min_age = 19
+	min_age = 18
 	max_age = 140
 
 	blurb = "The Tajaran are a species of furred mammalian bipeds hailing from the chilly planet of Ahdomai \
@@ -164,7 +165,7 @@
 	name_language = null
 	health_hud_intensity = 1.75
 
-	min_age = 19
+	min_age = 18
 	max_age = 90
 
 	body_builds = list(
@@ -199,9 +200,12 @@
 	cold_level_2 = 220 //Default 200
 	cold_level_3 = 130 //Default 120
 
-	heat_level_1 = 460 //Default 400 - Higher is better
+	heat_level_1 = 460 //Default 400 - Higher is better //186.85C lol
 	heat_level_2 = 650 //Default 500
 	heat_level_3 = 1100 //Default 1000
+
+	cold_discomfort_level = 295 //16.85C, not more because they will have a constant messages
+	heat_discomfort_level = 375 //101.85C
 
 	reagent_tag = IS_SKRELL
 
@@ -351,7 +355,7 @@
 	var/lost_limb_count = has_limbs.len - H.organs.len
 	if(lost_limb_count >= DIONA_LIMB_DEATH_COUNT)
 		return TRUE
-	for(var/thing in H.bad_external_organs)
+	for(var/thing in H.organs)
 		var/obj/item/organ/external/E = thing
 		if(E && E.is_stump())
 			lost_limb_count++

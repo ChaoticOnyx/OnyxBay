@@ -21,7 +21,7 @@
 				/spell/aoe_turf/conjure/mirage = 					1,
 				/spell/targeted/shapeshift/corrupt_form = 			1,
 				/spell/radiant_aura =								1,
-				/spell/noclothes = 									1,
+				/spell/noclothes = 									3,
 				/obj/structure/closet/wizard/armor = 				1,
 				/obj/item/weapon/gun/energy/staff/focus = 			1,
 				/obj/item/weapon/dice/d20/cursed = 					1,

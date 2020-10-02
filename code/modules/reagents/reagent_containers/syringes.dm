@@ -23,6 +23,7 @@
 	var/image/filling //holds a reference to the current filling overlay
 	var/visible_name = "a syringe"
 	var/time = 30
+	var/stabby = TRUE
 
 /obj/item/weapon/reagent_containers/dna_sampler
 	name = "dna sampler"
@@ -141,7 +142,7 @@
 		return
 
 	if(user.a_intent == I_HURT)
-		if(ismob(target))
+		if(ismob(target) && stabby)
 			syringestab(target, user)
 			return
 		if(reagents && reagents.total_volume)
@@ -452,3 +453,5 @@
 	reagents.add_reagent(/datum/reagent/adrenaline, 5)
 	reagents.add_reagent(/datum/reagent/hyperzine, 10)
 
+/obj/item/weapon/reagent_containers/syringe/borg
+	stabby = FALSE

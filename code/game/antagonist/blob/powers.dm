@@ -56,7 +56,7 @@
 	set name = "Psionic Message"
 	set desc = "Give a psionic message to all creatures on and around your 'local' vicinity."
 
-	var/text = input(src, "What message should we send?", "Message") as null|text
+	var/text = sanitize(input(src, "What message should we send?", "Message") as null|text)
 
 	if (text)
 		telepathy(text)

@@ -22,6 +22,10 @@
 			to_chat(user, "<span class='notice'>You slot \the [src] into \the [I] and charge its internal uplink.</span>")
 
 /obj/item/stack/telecrystal/attack_self(mob/user)
+	var/turf/Turf = get_turf(src)
+	if(!(Turf.z in GLOB.using_map.player_levels))
+		to_chat(user, SPAN_WARNING("[src] doesn't work on this location!"))
+		return
 	if(use(ceil(DEFAULT_TELECRYSTAL_AMOUNT/20)))
 		user.visible_message("<span class='warning'>\The [user] crushes a crystal!</span>", "<span class='warning'>You crush \a [src]!</span>", "You hear the sound of a crystal breaking just before a sudden crack of electricity.")
 		var/turf/T = get_random_turf_in_range(user, 7, 3)

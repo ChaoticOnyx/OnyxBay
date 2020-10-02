@@ -135,6 +135,7 @@ datum/preferences
 	var/datum/browser/popup = new(user, "Character Setup","Character Setup", 1200, 800, src)
 	popup.set_content(dat)
 	popup.open()
+	SSwarnings.show_warning(user.client, WARNINGS_NEWCOMERS, "window=Warning;size=360x240;can_resize=0;can_minimize=0")
 
 /datum/preferences/proc/process_link(mob/user, list/href_list)
 

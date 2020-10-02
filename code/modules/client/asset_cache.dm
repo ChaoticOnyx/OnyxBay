@@ -23,7 +23,7 @@ You can set verify to TRUE if you want send() to sleep until the client has the 
 
 //This proc sends the asset to the client, but only if it needs it.
 //This proc blocks(sleeps) unless verify is set to false
-/proc/send_asset(client/client, asset_name, verify = TRUE)
+/proc/send_asset(client/client, asset_name, verify = FALSE)
 	ASSERT(client)
 	ASSERT(istype(client))
 
@@ -31,7 +31,6 @@ You can set verify to TRUE if you want send() to sleep until the client has the 
 		return 0
 
 	client << browse_rsc(asset_cache.cache[asset_name], asset_name)
-	log_debug_verbose("\[ASSETS\] Asset \"[asset_name]\" was sended to [client.ckey]! Verify is [verify ? "" : "not "]needed.")
 
 	if(!verify)
 		client.cache += asset_name
@@ -41,8 +40,6 @@ You can set verify to TRUE if you want send() to sleep until the client has the 
 
 	client.sending |= asset_name
 	var/job = ++client.last_asset_job
-
-	log_debug_verbose("\[ASSETS\] Send verification for asset \"[asset_name]\" to client [client.ckey]. Job number is [job].")
 
 	client << browse({"
 	<script>
@@ -64,7 +61,7 @@ You can set verify to TRUE if you want send() to sleep until the client has the 
 	return 1
 
 //This proc blocks(sleeps) unless verify is set to false
-/proc/send_asset_list(client/client, list/asset_list, verify = TRUE)
+/proc/send_asset_list(client/client, list/asset_list, verify = FALSE)
 	ASSERT(client)
 	ASSERT(istype(client))
 
@@ -74,12 +71,9 @@ You can set verify to TRUE if you want send() to sleep until the client has the 
 	if (unreceived.len >= ASSET_CACHE_TELL_CLIENT_AMOUNT)
 		to_chat(client, "Sending Resources...")
 
-	log_debug_verbose("\[ASSETS\] Sending asset list to [client.ckey]... Verify is [verify ? "" : "not "]needed.")
-
 	for(var/asset in unreceived)
 		if (asset in asset_cache.cache)
 			client << browse_rsc(asset_cache.cache[asset], asset)
-			log_debug_verbose("\[ASSETS\] Asset \"[asset]\" was sended to [client.ckey] with list!")
 
 	if(!verify || !winexists(client, "asset_cache_browser")) // Can't access the asset cache browser, rip.
 		client.cache += unreceived
@@ -87,8 +81,6 @@ You can set verify to TRUE if you want send() to sleep until the client has the 
 	ASSERT(client)
 	client.sending |= unreceived
 	var/job = ++client.last_asset_job
-
-	log_debug_verbose("\[ASSETS\] Send verification for assets list to client [client.ckey]. Job number is [job].")
 
 	client << browse({"
 	<script>
@@ -112,10 +104,12 @@ You can set verify to TRUE if you want send() to sleep until the client has the 
 //This proc will download the files without clogging up the browse() queue, used for passively sending files on connection start.
 //The proc calls procs that sleep for long times.
 /proc/getFilesSlow(client/client, list/files)
-	ASSERT(client)
 	for(var/file in files)
+		if(!client)
+			return FALSE
 		send_asset(client, file)
 		sleep(0) //queuing calls like this too quickly can cause issues in some client versions
+	return TRUE
 
 //This proc "registers" an asset, it adds it to the cache for further use, you cannot touch it from this point on or you'll fuck things up.
 //if it's an icon or something be careful, you'll have to copy it before further use.
@@ -175,7 +169,7 @@ You can set verify to TRUE if you want send() to sleep until the client has the 
 /datum/asset/proc/send_slow(client/client)
 	ASSERT(client)
 	ASSERT(istype(client))
-	getFilesSlow(client, assets)
+	return getFilesSlow(client, assets)
 
 // Check if all the assets were already sent
 /datum/asset/proc/check_sent(client/C)
@@ -234,6 +228,7 @@ You can set verify to TRUE if you want send() to sleep until the client has the 
 	)
 
 /datum/asset/group/onyxchat
+	isTrivial = FALSE
 	children = list(
 		/datum/asset/simple/jquery,
 		/datum/asset/simple/onyxchat,
@@ -247,7 +242,8 @@ You can set verify to TRUE if you want send() to sleep until the client has the 
 	)
 
 /datum/asset/simple/onyxchat
-	verify = TRUE
+	isTrivial = FALSE
+	verify = FALSE
 	assets = list(
 		"json2.min.js"             = 'code/modules/onyxchat/browserassets/js/json2.min.js',
 		"browserOutput.js"         = 'code/modules/onyxchat/browserassets/js/browserOutput.js',
@@ -257,6 +253,7 @@ You can set verify to TRUE if you want send() to sleep until the client has the 
 	)
 
 /datum/asset/simple/fontawesome
+	isTrivial = TRUE
 	verify = FALSE
 	assets = list(
 		"fa-regular-400.eot"  = 'html/font-awesome/webfonts/fa-regular-400.eot',
@@ -268,7 +265,7 @@ You can set verify to TRUE if you want send() to sleep until the client has the 
 	)
 
 /datum/asset/simple/tgui
-	verify = TRUE
+	verify = FALSE
 	assets = list(
 		// tgui-next
 		"tgui-main.html" = 'tgui-next/packages/tgui/public/tgui-main.html',

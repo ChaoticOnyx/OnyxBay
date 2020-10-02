@@ -42,17 +42,18 @@
 	return ..()
 
 /obj/item/stack/examine(mob/user)
-	if(..(user, 1))
+	. = ..()
+	if(get_dist(src, user) <= 1)
 		if(!uses_charge)
-			to_chat(user, "There [src.amount == 1 ? "is" : "are"] [src.amount] [src.singular_name]\s in the stack.")
+			. += "\nThere [src.amount == 1 ? "is" : "are"] [src.amount] [src.singular_name]\s in the stack."
 		else
-			to_chat(user, "There is enough charge for [get_amount()].")
+			. += "\nThere is enough charge for [get_amount()]."
 	if(color)
-		to_chat(user, "It's painted.")
+		. += "\nIt's painted."
 	if (istype(src,/obj/item/stack/tile))
 		var/obj/item/stack/tile/T = src
 		if(length(T.stored_decals))
-			to_chat(user, "It's has painted decals on it.")
+			. += "\nIt's has painted decals on it."
 
 /obj/item/stack/attack_self(mob/user as mob)
 	if(uses_charge)
@@ -69,7 +70,7 @@
 	if (recipes_sublist && recipe_list[recipes_sublist] && istype(recipe_list[recipes_sublist], /datum/stack_recipe_list))
 		var/datum/stack_recipe_list/srl = recipe_list[recipes_sublist]
 		recipe_list = srl.recipes
-	var/t1 = text("<HTML><HEAD><title>Constructions from []</title></HEAD><body><TT>Amount Left: []<br>", src, src.get_amount())
+	var/t1 = text("<HTML><meta charset=\"utf-8\"><HEAD><title>Constructions from []</title></HEAD><body><TT>Amount Left: []<br>", src, src.get_amount())
 	for(var/i=1;i<=recipe_list.len,i++)
 		var/E = recipe_list[i]
 		if (isnull(E))

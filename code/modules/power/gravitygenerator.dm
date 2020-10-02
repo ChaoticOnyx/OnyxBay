@@ -122,19 +122,19 @@ GLOBAL_VAR(station_gravity_generator)
 /obj/machinery/gravity_generator/main/examine(mob/user)
 	. = ..()
 	if(panel_open)
-		to_chat(user, "The maintenance hatch is open.")
-	show_broken_info(user)
+		. += "\nThe maintenance hatch is open."
+	. += "[show_broken_info()]"
 
-/obj/machinery/gravity_generator/main/show_broken_info(mob/user)
+/obj/machinery/gravity_generator/main/show_broken_info()
 	switch(broken_state)
 		if(GRAV_NEEDS_PLASTEEL)
-			to_chat(user, "It requires ten plasteel to repair.")
+			. += "\nIt requires ten plasteel to repair."
 		if(GRAV_NEEDS_WELDING)
-			to_chat(user, "It requires a welder to repair.")
+			. += "\nIt requires a welder to repair."
 		if(GRAV_NEEDS_WRENCH)
-			to_chat(user, "It requires a wrench to repair.")
+			. += "\nIt requires a wrench to repair."
 		if(GRAV_NEEDS_SCREWDRIVER)
-			to_chat(user, "It requires a screwdriver to repair.")
+			. += "\nIt requires a screwdriver to repair."
 
 /obj/machinery/gravity_generator/main/ex_act(severity)
 	switch(severity)
@@ -557,7 +557,7 @@ GLOBAL_VAR(station_gravity_generator)
 
 /obj/machinery/gravity_generator/part/examine(mob/user)
 	. = ..()
-	main_part.show_broken_info(user)
+	. += "[main_part.show_broken_info()]"
 
 /obj/machinery/gravity_generator/part/attackby(obj/item/I, mob/user)
 	return main_part.attackby(I, user)

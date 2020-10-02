@@ -144,10 +144,13 @@ var/bomb_set
 				return
 	..()
 
-/obj/machinery/nuclearbomb/attack_ghost(mob/user as mob)
+/obj/machinery/nuclearbomb/attack_ai(mob/user)
+	return
+
+/obj/machinery/nuclearbomb/attack_ghost(mob/user)
 	attack_hand(user)
 
-/obj/machinery/nuclearbomb/attack_hand(mob/user as mob)
+/obj/machinery/nuclearbomb/attack_hand(mob/user)
 	if(extended)
 		if(panel_open)
 			wires.Interact(user)
@@ -164,6 +167,11 @@ var/bomb_set
 			flick("lock", src)
 			update_icon()
 	return
+
+/obj/machinery/nuclearbomb/CanUseTopic(mob/user)
+	if(isrobot(user) && !user.Adjacent(src))
+		return STATUS_CLOSE
+	return ..()
 
 /obj/machinery/nuclearbomb/ui_interact(mob/user, ui_key = "main", datum/nanoui/ui = null, force_open = 1)
 	var/data[0]
@@ -377,9 +385,6 @@ var/bomb_set
 	GLOB.moved_event.register(src, src, /obj/item/weapon/disk/nuclear/proc/check_z_level)
 
 /obj/item/weapon/disk/nuclear/proc/check_z_level()
-	if(!(istype(SSticker.mode, /datum/game_mode/nuclear)))
-		GLOB.moved_event.unregister(src, src, /obj/item/weapon/disk/nuclear/proc/check_z_level) // However, when we are certain unregister if necessary
-		return
 	var/turf/T = get_turf(src)
 	if(!T || isNotStationLevel(T.z))
 		qdel(src)
@@ -407,8 +412,8 @@ var/bomb_set
 	)
 
 /obj/item/weapon/storage/secure/briefcase/nukedisk/examine(user)
-	..()
-	to_chat(user,"On closer inspection, you see \a [GLOB.using_map.company_name] emblem is etched into the front of it.")
+	. = ..()
+	. += "\nOn closer inspection, you see \a [GLOB.using_map.company_name] emblem is etched into the front of it."
 
 /obj/item/weapon/folder/envelope/nuke_instructions
 	name = "instructions envelope"

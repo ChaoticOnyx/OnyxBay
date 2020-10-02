@@ -66,12 +66,8 @@
 
 #define RECOMMENDED_VERSION 511
 /world/New()
-	//logs
 	SetupLogs()
-	var/date_string = time2text(world.realtime, "YYYY/MM-Month/DD-Day")
-	href_logfile = file("data/logs/[date_string] hrefs.htm")
-	diary = file("data/logs/[date_string].log")
-	diary << "[log_end]\n[log_end]\nStarting up. (ID: [game_id]) [time_stamp()][log_end]\n---------------------[log_end]"
+
 	changelog_hash = md5('html/changelog.html')					//used for telling if the changelog has changed recently
 
 	if(byond_version < RECOMMENDED_VERSION)
@@ -84,9 +80,9 @@
 		world.log << (port ? "Changed port to [port]" : "Failed to change port")
 
 	//set window title
-	if(config.server_id)
-		var/serverId = uppertext(copytext(config.server_id, 1, 2)) + copytext(config.server_id, 2)
-		name = "[server_name]: [serverId] - [GLOB.using_map.full_name]"
+	if(config.subserver_name)
+		var/subserver_name = uppertext(copytext(config.subserver_name, 1, 2)) + copytext(config.subserver_name, 2)
+		name = "[server_name]: [subserver_name] - [GLOB.using_map.full_name]"
 	else
 		name = "[server_name] - [GLOB.using_map.full_name]"
 
@@ -122,7 +118,7 @@
 var/world_topic_spam_protect_time = world.timeofday
 
 /world/Topic(T, addr, master, key)
-	diary << "TOPIC: \"[T]\", from:[addr], master:[master][log_end]"
+	log_href("\"[T]\", from:[addr], master:[master][log_end]")
 
 	var/input[] = params2list(T)
 	var/key_valid = config.comms_password && input["key"] == config.comms_password
@@ -344,20 +340,22 @@ var/world_topic_spam_protect_time = world.timeofday
 		var/ckey = input["ckey"]
 		var/message
 		if(!input["isadmin"])  // le costil, remove when discord-bot will be fixed ~HonkyDonky
-			message = rhtml_encode(input["ooc"])
+			message = html_encode(input["ooc"])
 		else
 			message = "<font color='#39034f'>" + strip_html_properly(input["ooc"]) + "</font>"
 		if(!ckey||!message)
 			return
 		if(!config.vars["ooc_allowed"]&&!input["isadmin"])
 			return "globally muted"
+		if(jobban_keylist.Find("[ckey] - OOC"))
+			return "banned from ooc"
 		var/sent_message = "[create_text_tag("DISCORD OOC:")] <EM>[ckey]:</EM> <span class='message linkify'>[message]</span>"
 		for(var/client/target in GLOB.clients)
 			if(!target)
 				continue //sanity
 			if(target.is_key_ignored(ckey) || target.get_preference_value(/datum/client_preference/show_ooc) == GLOB.PREF_HIDE || target.get_preference_value(/datum/client_preference/show_discord_ooc) == GLOB.PREF_HIDE  && !input["isadmin"]) // If we're ignored by this person, then do nothing.
 				continue //if it shouldn't see then it doesn't
-			to_chat(target, "<span class='ooc'><span class='everyone'>[russian_to_cp1251(sent_message)]</span></span>")
+			to_chat(target, "<span class='ooc'><span class='everyone'>[sent_message]</span></span>")
 
 	else if ("asay" in input)
 		return "not supported" //simply no asay on bay
@@ -382,9 +380,9 @@ var/world_topic_spam_protect_time = world.timeofday
 			return "No client with that name on server"
 
 		var/rank = "Discord Admin"
-		var/response = rhtml_encode(russian_to_cp1251(input["response"]))
+		var/response = html_encode(input["response"])
 
-		var/message =	"<font color='red'>[rank] PM from <b>[input["admin"]]</b>: [response]</font>"
+		var/message = "<font color='red'>[rank] PM from <b>[input["admin"]]</b>: [response]</font>"
 		var/amessage =  "<span class='info'>[rank] PM from [input["admin"]] to <b>[key_name(C)]</b> : [response])]</span>"
 		webhook_send_ahelp("[input["admin"]] -> [req_ckey]", response)
 
@@ -529,7 +527,7 @@ var/world_topic_spam_protect_time = world.timeofday
 	return 1
 
 /world/proc/load_motd()
-	join_motd = russian_to_cp1251(file2text("config/motd.txt"))
+	join_motd = file2text("config/motd.txt")
 	load_regular_announcement()
 
 
@@ -640,19 +638,29 @@ var/world_topic_spam_protect_time = world.timeofday
 	if (src.status != s)
 		src.status = s
 
-#define WORLD_LOG_START(X) WRITE_FILE(GLOB.world_##X##_log, "\n\nStarting up round ID [game_id]. [time_stamp()]\n---------------------")
-#define WORLD_SETUP_LOG(X) GLOB.world_##X##_log = file("[GLOB.log_directory]/[#X].log") ; WORLD_LOG_START(X)
+#define WORLD_LOG_START(X) WRITE_FILE(GLOB.world_##X##_log, "\n\nStarting up round ID [game_id]. [time2text(world.realtime, "DD.MM.YY hh:mm")]\n---------------------")
+#define WORLD_SETUP_LOG(X) GLOB.world_##X##_log = file("[log_directory]/[log_prefix][#X].log") ; WORLD_LOG_START(X)
+#define WORLD_SETUP_LOG_DETAILED(X) GLOB.world_##X##_log = file("[log_directory_detailed]/[log_prefix_detailed][#X].log") ; WORLD_LOG_START(X)
+
 /world/proc/SetupLogs()
-	GLOB.log_directory = "data/logs/[time2text(world.realtime, "YYYY/MM/DD")]/round-"
-	if(game_id)
-		GLOB.log_directory += "[game_id]"
-	else
-		GLOB.log_directory += "[replacetext(time_stamp(), ":", ".")]"
+	if (!game_id)
+		crash_with("Unknown game_id!")
 
-	WORLD_SETUP_LOG(runtime)
-	WORLD_SETUP_LOG(qdel)
-	WORLD_SETUP_LOG(debug)
+	var/log_directory = "data/logs/[time2text(world.realtime, "YYYY/MM-Month")]"
+	var/log_prefix = "[time2text(world.realtime, "DD.MM.YY")]_"
 
+	GLOB.log_directory = log_directory // TODO: remove GLOB.log_directory, check initialize.log
+
+	var/log_directory_detailed = "data/logs/[time2text(world.realtime, "YYYY/MM-Month")]/[time2text(world.realtime, "DD.MM.YY")]_detailed"
+	var/log_prefix_detailed = "[time2text(world.realtime, "DD.MM.YY_hh.mm")]_[game_id]_"
+
+	WORLD_SETUP_LOG_DETAILED(runtime)
+	WORLD_SETUP_LOG_DETAILED(qdel)
+	WORLD_SETUP_LOG_DETAILED(debug)
+	WORLD_SETUP_LOG_DETAILED(hrefs)
+	WORLD_SETUP_LOG(common)
+
+#undef WORLD_SETUP_LOG_DETAILED
 #undef WORLD_SETUP_LOG
 #undef WORLD_LOG_START
 

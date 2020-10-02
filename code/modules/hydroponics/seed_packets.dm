@@ -60,7 +60,7 @@ var/global/list/plant_seed_sprites = list()
 /obj/item/seeds/examine(mob/user)
 	. = ..(user)
 	if(seed && !seed.roundstart)
-		to_chat(user, "It's tagged as variety #[seed.uid].")
+		. += "\nIt's tagged as variety #[seed.uid]."
 
 /obj/item/seeds/cutting
 	name = "cuttings"
@@ -117,14 +117,35 @@ var/global/list/plant_seed_sprites = list()
 /obj/item/seeds/bananaseed
 	seed_type = "banana"
 
+/obj/item/seeds/bunanaseed
+	seed_type = "bunana"
+
+/obj/item/seeds/lubananaseed
+	seed_type = "lubanana"
+
+/obj/item/seeds/banbananaseed
+	seed_type = "banbanana"
+
 /obj/item/seeds/eggplantseed
 	seed_type = "eggplant"
+
+/obj/item/seeds/realeggplantseed
+	seed_type = "realeggplant"
 
 /obj/item/seeds/bloodtomatoseed
 	seed_type = "bloodtomato"
 
 /obj/item/seeds/tomatoseed
 	seed_type = "tomato"
+
+/obj/item/seeds/nanotomatoseed
+	seed_type = "nanotomato"
+
+/obj/item/seeds/automatoseed
+	seed_type = "automato"
+
+/obj/item/seeds/tomaccoseed
+	seed_type = "tomacco"
 
 /obj/item/seeds/killertomatoseed
 	seed_type = "killertomato"
@@ -144,8 +165,14 @@ var/global/list/plant_seed_sprites = list()
 /obj/item/seeds/potatoseed
 	seed_type = "potato"
 
+/obj/item/seeds/potatocellseed
+	seed_type = "potatocell"
+
 /obj/item/seeds/icepepperseed
 	seed_type = "icechili"
+
+/obj/item/seeds/flamechiliseed
+	seed_type = "flamechili"
 
 /obj/item/seeds/soyaseed
 	seed_type = "soybean"
@@ -201,6 +228,9 @@ var/global/list/plant_seed_sprites = list()
 /obj/item/seeds/sunflowerseed
 	seed_type = "sunflowers"
 
+/obj/item/seeds/moonflowerseed
+	seed_type = "moonflowers"
+
 /obj/item/seeds/lavenderseed
 	seed_type = "lavender"
 
@@ -210,8 +240,17 @@ var/global/list/plant_seed_sprites = list()
 /obj/item/seeds/appleseed
 	seed_type = "apple"
 
+/obj/item/seeds/greenappleseed
+	seed_type = "greenapple"
+
+/obj/item/seeds/yellowappleseed
+	seed_type = "yellowapple"
+
 /obj/item/seeds/poisonedappleseed
 	seed_type = "poisonapple"
+
+/obj/item/seeds/rappleseed
+	seed_type = "rapple"
 
 /obj/item/seeds/goldappleseed
 	seed_type = "goldapple"
@@ -281,3 +320,12 @@ var/global/list/plant_seed_sprites = list()
 
 /obj/item/seeds/cannabisseed
 	seed_type = "cannabis"
+
+/obj/item/seeds/maneaterseed
+	seed_type = "maneater"
+
+/obj/item/seeds/coconutseed
+	seed_type = "coconut"
+
+/obj/item/seeds/cowcownutseed
+	seed_type = "cowcownut"

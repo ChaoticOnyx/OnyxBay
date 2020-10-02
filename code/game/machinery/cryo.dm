@@ -199,6 +199,11 @@
 			if(M.Victim == G:affecting)
 				to_chat(usr, "[G:affecting:name] will not fit into the cryo because they have a slime latched onto their head.")
 				return
+		user.visible_message(SPAN("notice", "\The [user] begins placing \the [G:affecting] into \the [src]."), SPAN("notice", "You start placing \the [G:affecting] into \the [src]."))
+		if(!do_after(user, 30, src))
+			return
+		if(!ismob(G:affecting))
+			return
 		var/mob/M = G:affecting
 		if(put_mob(M))
 			qdel(G)
@@ -337,21 +342,33 @@
 	occupant = M
 	current_heat_capacity = HEAT_CAPACITY_HUMAN
 	update_use_power(POWER_USE_ACTIVE)
+
+	for(var/obj/item/clothing/mask/smokable/cig in M.contents)
+		cig.die(nomessage = TRUE, nodestroy = TRUE)
+
 	add_fingerprint(usr)
+	occupant.update_icon()
 	update_icon()
+	return 1
+
+/obj/machinery/atmospherics/unary/cryo_cell/proc/check_compatibility(mob/target, mob/user)
+	if(!CanMouseDrop(target, user))
+		return 0
+	if (!istype(target))
+		return 0
+	if (target.buckled)
+		to_chat(user, "<span class='warning'>Unbuckle the subject before attempting to move them.</span>")
+		return 0
 	return 1
 
 	//Like grab-putting, but for mouse-dropping.
 /obj/machinery/atmospherics/unary/cryo_cell/MouseDrop_T(mob/target, mob/user)
-	if(!CanMouseDrop(target, user))
-		return
-	if (!istype(target))
-		return
-	if (target.buckled)
-		to_chat(user, "<span class='warning'>Unbuckle the subject before attempting to move them.</span>")
+	if(!check_compatibility(target, user))
 		return
 	user.visible_message("<span class='notice'>\The [user] begins placing \the [target] into \the [src].</span>", "<span class='notice'>You start placing \the [target] into \the [src].</span>")
 	if(!do_after(user, 30, src))
+		return
+	if(!check_compatibility(target, user))
 		return
 	put_mob(target)
 
@@ -425,7 +442,7 @@
 	spark_system.start()
 	return 1
 
-/obj/machinery/atmospherics/unary/cryo_cell/examine()
+/obj/machinery/atmospherics/unary/cryo_cell/examine(mob/user)
 	. = ..()
 	if(emagged)
-		to_chat(usr, "The panel is loose and circuits is charred.")
+		. += "\nThe panel is loose and circuits is charred."

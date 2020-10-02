@@ -152,6 +152,7 @@ Please contact me on #coderbus IRC. ~Carn x
 //UPDATES OVERLAYS FROM OVERLAYS_LYING/OVERLAYS_STANDING
 /mob/living/carbon/human/update_icons()
 	lying_prev = lying	//so we don't update overlays for lying/standing unless our stance changes again
+	hanging_prev = hanging
 	update_hud()		//TODO: remove the need for this
 
 	var/list/overlays_to_apply = list()
@@ -793,7 +794,7 @@ var/global/list/damage_icon_parts = list()
 /mob/living/carbon/human/update_fire(update_icons=1)
 	overlays_standing[HO_FIRE_LAYER] = null
 	if(on_fire)
-		var/image/standing = overlay_image('icons/mob/OnFire.dmi', "Standing", RESET_COLOR)
+		var/image/standing = overlay_image('icons/mob/onfire.dmi', "Standing", RESET_COLOR)
 		overlays_standing[HO_FIRE_LAYER] = standing
 
 	if(update_icons) queue_icon_update()

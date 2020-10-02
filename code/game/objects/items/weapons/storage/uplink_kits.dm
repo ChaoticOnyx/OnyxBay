@@ -18,10 +18,10 @@
 /obj/item/weapon/storage/box/syndie_kit/imp_freedom
 	name = "box (F)"
 	startswith = list(/obj/item/weapon/implanter/freedom)
-	
+
 /obj/item/weapon/storage/box/syndie_kit/adrenalin
 	name = "box (A)"
-	startswith = list(/obj/item/weapon/implanter/adrenalin)	
+	startswith = list(/obj/item/weapon/implanter/adrenalin)
 
 /obj/item/weapon/storage/box/syndie_kit/imp_uplink
 	name = "box (U)"
@@ -197,6 +197,20 @@
 
 	startswith = list(/obj/item/weapon/spacecash/bundle/c1000 = 10)
 
+/obj/item/weapon/storage/backpack/satchel/syndie_kit/cleaning_kit
+	name="cleaning kit"
+	desc="Used to clean your dirty deeds up."
+	startswith = list(
+		/obj/item/weapon/reagent_containers/spray/cleaner,
+		/obj/item/weapon/reagent_containers/spray/sterilizine,
+		/obj/item/weapon/soap/syndie,
+		/obj/item/weapon/storage/bag/trash,
+		/obj/item/weapon/grenade/chem_grenade/cleaner = 3,
+		/obj/item/weapon/reagent_containers/glass/bucket/full,
+		/obj/item/weapon/mop,
+		/obj/item/weapon/storage/box/bodybags
+		)
+
 /obj/item/weapon/storage/backpack/satchel/syndie_kit/armor
 	name = "armor satchel"
 	desc = "A satchel for when you don't want to try a diplomatic approach."
@@ -220,6 +234,7 @@
 		/obj/item/weapon/surgicaldrill,
 		/obj/item/weapon/bonegel,
 		/obj/item/weapon/FixOVein/clot,
+		/obj/item/weapon/organfixer/advanced,
 		/obj/item/stack/medical/advanced/bruise_pack,
 		/obj/item/stack/nanopaste,
-		)	
+		)

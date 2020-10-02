@@ -65,9 +65,9 @@ var/global/list/obj/item/device/pda/PDAs = list()
 	var/obj/item/device/paicard/pai = null	// A slot for a personal AI device
 
 /obj/item/device/pda/examine(mob/user)
-	. = ..(user, 1)
-	if(.)
-		to_chat(user, "The time [stationtime2text()] is displayed in the corner of the screen.")
+	. = ..()
+	if(get_dist(src, user) <= 1)
+		. += "\nThe time [stationtime2text()] is displayed in the corner of the screen."
 
 /obj/item/device/pda/medical
 	default_cartridge = /obj/item/weapon/cartridge/medical
@@ -291,7 +291,7 @@ var/global/list/obj/item/device/pda/PDAs = list()
 	if(usr.stat == 2)
 		to_chat(usr, "You can't do that because you are dead!")
 		return
-	var/HTML = "<html><head><title>AI PDA Message Log</title></head><body>"
+	var/HTML = "<html><meta charset=\"utf-8\"><head><title>AI PDA Message Log</title></head><body>"
 	for(var/index in tnote)
 		if(index["sent"])
 			HTML += addtext("<i><b>&rarr; To <a href='byond://?src=\ref[src];choice=Message;notap=1;target=",index["src"],"'>", index["owner"],"</a>:</b></i><br>", index["message"], "<br>")
@@ -680,11 +680,11 @@ var/global/list/obj/item/device/pda/PDAs = list()
 //MESSENGER/NOTE FUNCTIONS===================================
 
 		if ("Edit")
-			var/n = input_cp1251(U, "Please enter message", html_decode(name), notehtml)
+			var/n = input(U, "Please enter message", html_decode(name), notehtml)
 			if (in_range(src, U) && loc == U)
 				if (mode == 1)
 					n = sanitize(n)
-					note = rustoutf(rhtml_decode(n))
+					note = html_decode(n)
 					note = replacetext(note, "\n", "<br>")
 					notehtml = n
 			else
@@ -1014,7 +1014,7 @@ var/global/list/obj/item/device/pda/PDAs = list()
 			tempmessage[P] = message
 			return
 
-		var/utf_message = rustoutf(html_decode(message))
+		var/utf_message = html_decode(message)
 		tnote.Add(list(list("sent" = 1, "owner" = "[P.owner]", "job" = "[P.ownjob]", "message" = "[utf_message]", "timestamp" = stationtime2text(), "target" = "\ref[P]")))
 		P.tnote.Add(list(list("sent" = 0, "owner" = "[owner]", "job" = "[ownjob]", "message" = "[utf_message]", "timestamp" = stationtime2text(), "target" = "\ref[src]")))
 
@@ -1051,6 +1051,8 @@ var/global/list/obj/item/device/pda/PDAs = list()
 	var/mob/living/L = null
 	if(loc && isliving(loc))
 		L = loc
+		if(L.mind && L.mind.syndicate_awareness == SYNDICATE_SUSPICIOUSLY_AWARE)
+			reception_message = highlight_codewords(reception_message, GLOB.code_phrase_highlight_rule)  //  Same can be done with code_response or any other list of words, using regex created by generate_code_regex(). You can also add the name of CSS class as argument to change highlight style.
 	//Maybe they are a pAI!
 	else
 		L = get(src, /mob/living/silicon)

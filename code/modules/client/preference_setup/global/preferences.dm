@@ -247,7 +247,7 @@ var/list/_client_preferences_by_type
 	description = "OOC Name Color"
 	key = "OOC_NAME_COLOR"
 
-/datum/client_preference/staff/may_set(client/given_client)
+/datum/client_preference/ooc_name_color/may_set(client/given_client)
 	ASSERT(given_client)
 	return given_client.donator_info && given_client.donator_info.patron_type != PATREON_NONE
 
@@ -258,6 +258,12 @@ var/list/_client_preferences_by_type
 /datum/client_preference/ooc_name_color/get_default_value(client/given_client)
 	ASSERT(given_client)
 	return given_client.donator_info.patron_type
+
+/datum/client_preference/default_hotkey_mode
+	description = "Default Hotkey Mode"
+	key = "DEFAULT_HOTKEY_MODE"
+	default_value = GLOB.PREF_NO
+
 
 /********************
 * General Staff Preferences *

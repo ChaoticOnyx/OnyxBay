@@ -6,9 +6,12 @@
 		var/datum/species/current_species = all_species[species]
 		if(!current_species) current_species = all_species[SPECIES_HUMAN]
 
-		var/datum/body_build/BB = pick(current_species.body_builds)
-		body = BB.name
-		gender = pick(BB.genders)
+		gender = pick(current_species.genders)
+		var/list/available_body_builds = new()
+		for(var/datum/body_build/build in current_species.body_builds)
+			if (gender in build.genders)
+				available_body_builds += build
+		body = pick(available_body_builds).name
 
 		h_style = random_hair_style(gender, species)
 		f_style = random_facial_hair_style(gender, species)
@@ -70,7 +73,13 @@
 	if((equip_preview_mob & EQUIP_PREVIEW_LOADOUT) && !(previewJob && (equip_preview_mob & EQUIP_PREVIEW_JOB) && (previewJob.type == /datum/job/ai || previewJob.type == /datum/job/cyborg)))
 		// Equip custom gear loadout, replacing any job items
 		var/list/loadout_taken_slots = list()
-		for(var/thing in Gear())
+		var/list/accessories = list()
+
+		var/list/gears = Gear().Copy()
+		if(trying_on_gear)
+			gears[trying_on_gear] = trying_on_tweaks.Copy()
+
+		for(var/thing in gears)
 			var/datum/gear/G = gear_datums[thing]
 			if(G)
 				var/permitted = 0
@@ -88,9 +97,21 @@
 				if(!permitted)
 					continue
 
-				if(G.slot && G.slot != slot_tie && !(G.slot in loadout_taken_slots) && G.spawn_on_mob(mannequin, gear_list[gear_slot][G.display_name]))
+				if(G.slot == slot_tie)
+					accessories.Add(G)
+					continue
+
+				if(G.slot && !(G.slot in loadout_taken_slots) && G.spawn_on_mob(mannequin, gears[G.display_name]))
 					loadout_taken_slots.Add(G.slot)
 					update_icon = TRUE
+
+		// equip accessories after other slots so they don't attach to a suit which will be replaced
+		for(var/datum/gear/G in accessories)
+			G.spawn_as_accessory_on_mob(mannequin, gears[G.display_name])
+
+		if(accessories.len)
+			update_icon = TRUE
+
 
 	if(update_icon)
 		mannequin.update_icons()
@@ -103,16 +124,13 @@
 	preview_icon = icon('icons/effects/128x48.dmi', bgstate)
 	preview_icon.Scale(48+32, 16+32)
 
-	mannequin.dir = NORTH
-	var/icon/stamp = getFlatIcon(mannequin, NORTH, always_use_defdir = 1)
+	var/icon/stamp = getFlatIcon(mannequin, NORTH, always_use_defdir = TRUE)
 	preview_icon.Blend(stamp, ICON_OVERLAY, 25, 17)
 
-	mannequin.dir = WEST
-	stamp = getFlatIcon(mannequin, WEST, always_use_defdir = 1)
+	stamp = getFlatIcon(mannequin, WEST, always_use_defdir = TRUE)
 	preview_icon.Blend(stamp, ICON_OVERLAY, 1, 9)
 
-	mannequin.dir = SOUTH
-	stamp = getFlatIcon(mannequin, SOUTH, always_use_defdir = 1)
+	stamp = getFlatIcon(mannequin, SOUTH, always_use_defdir = TRUE)
 	preview_icon.Blend(stamp, ICON_OVERLAY, 49, 1)
 
 	preview_icon.Scale(preview_icon.Width() * 2, preview_icon.Height() * 2) // Scaling here to prevent blurring in the browser.

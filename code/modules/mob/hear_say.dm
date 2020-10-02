@@ -33,8 +33,13 @@
 	if(!(language && (language.flags & INNATE))) // skip understanding checks for INNATE languages
 		if(!say_understands(speaker,language))
 			if(istype(speaker,/mob/living/simple_animal))
-				var/mob/living/simple_animal/S = speaker
-				message = pick(S.speak)
+				var/understand_animals = FALSE
+				if(istype(src, /mob/living/carbon))
+					var/mob/living/carbon/C = src
+					understand_animals = C.is_hallucinating() && prob(15)
+				if(!understand_animals)
+					var/mob/living/simple_animal/S = speaker
+					message = pick(S.speak)
 			else
 				if(language)
 					message = language.scramble(message)
@@ -48,6 +53,16 @@
 	if(istype(speaker, /mob/living/carbon/human))
 		var/mob/living/carbon/human/H = speaker
 		speaker_name = H.GetVoice()
+
+	if(istype(src, /mob/living/carbon))
+		var/mob/living/carbon/C = src
+		var/mob/fake_speaker = C.get_fake_appearance(speaker)
+		if(fake_speaker)
+			if(istype(fake_speaker, /mob/living/carbon/human))
+				var/mob/living/carbon/human/H = fake_speaker
+				speaker_name = H.GetVoice()
+			else
+				speaker_name = fake_speaker.name
 
 	if(italics)
 		message = "<i>[message]</i>"
@@ -67,6 +82,8 @@
 			else if(!is_blind())
 				to_chat(src, "<span class='name'>[speaker_name]</span>[alt_name] talks but you cannot hear \him.")
 	else
+		if(istype(src,/mob/living) && src.mind && src.mind.syndicate_awareness == SYNDICATE_SUSPICIOUSLY_AWARE)
+			message = highlight_codewords(message, GLOB.code_phrase_highlight_rule)  //  Same can be done with code_response or any other list of words, using regex created by generate_code_regex(). You can also add the name of CSS class as argument to change highlight style.
 		if(language)
 			var/nverb = null
 			if(!say_understands(speaker,language) || language.name == LANGUAGE_GALCOM) //Check to see if we can understand what the speaker is saying. If so, add the name of the language after the verb. Don't do this for Galactic Common.
@@ -94,7 +111,7 @@
 	var/time = say_timestamp()
 	to_chat(src, "[time] [message]")
 
-/mob/proc/hear_radio(message, verb="says", datum/language/language=null, part_a, part_b, part_c, mob/speaker = null, hard_to_hear = 0, vname ="")
+/mob/proc/hear_radio(message, verb="says", datum/language/language=null, part_a, part_b, part_c, mob/speaker = null, hard_to_hear = 0, vname ="", loud)
 
 	if(!client)
 		return
@@ -195,6 +212,8 @@
 			speaker_name = "[speaker.real_name] ([speaker_name])"
 		track = "[speaker_name] ([ghost_follow_link(speaker, src)])"
 
+	if(istype(src,/mob/living) && src.mind && src.mind.syndicate_awareness == SYNDICATE_SUSPICIOUSLY_AWARE)
+		message = highlight_codewords(message, GLOB.code_phrase_highlight_rule) //  Same can be done with code_response or any other list of words, using regex created by generate_code_regex(). You can also add the name of CSS class as argument to change highlight style.
 	var/formatted
 	if(language)
 		if(!say_understands(speaker,language) || language.name == LANGUAGE_GALCOM) //Check if we understand the message. If so, add the language name after the verb. Don't do this for Galactic Common.
@@ -214,26 +233,36 @@
 	if(sdisabilities & DEAF || ear_deaf)
 		var/mob/living/carbon/human/H = src
 		if(istype(H) && H.has_headset_in_ears() && prob(20))
-			to_chat(src, "<span class='warning'>You feel your headset vibrate but can hear nothing from it!</span>")
+			to_chat(src, "<span class='warning'>You feel your headset vibrate [loud ? "really hard " : ""]but can hear nothing from it!</span>")
 	else
-		on_hear_radio(part_a, speaker_name, track, part_b, part_c, formatted)
+		on_hear_radio(part_a, speaker_name, track, part_b, part_c, formatted, loud)
 
 /proc/say_timestamp()
 	return "<span class='say_quote'>\[[stationtime2text()]\]</span>"
 
-/mob/proc/on_hear_radio(part_a, speaker_name, track, part_b, part_c, formatted)
-	to_chat(src, "[part_a][speaker_name][part_b][formatted][part_c]")
+/mob/proc/on_hear_radio(part_a, speaker_name, track, part_b, part_c, formatted, loud)
+	var/text = "[part_a][speaker_name][part_b][formatted][part_c]"
+	if(loud)
+		text = FONT_LARGE(text)
+	to_chat(src, text)
 
-/mob/observer/ghost/on_hear_radio(part_a, speaker_name, track, part_b, part_c, formatted)
-	to_chat(src, "[part_a][track][part_b][formatted][part_c]")
+/mob/observer/ghost/on_hear_radio(part_a, speaker_name, track, part_b, part_c, formatted, loud)
+	var/text = "[part_a][track][part_b][formatted][part_c]"
+	if(loud)
+		text = FONT_LARGE(text)
+	to_chat(src, text)
 
-/mob/living/silicon/on_hear_radio(part_a, speaker_name, track, part_b, part_c, formatted)
-	var/time = say_timestamp()
-	to_chat(src, "[time][part_a][speaker_name][part_b][formatted][part_c]")
+/mob/living/silicon/on_hear_radio(part_a, speaker_name, track, part_b, part_c, formatted, loud)
+	var/text = "[say_timestamp()][part_a][speaker_name][part_b][formatted][part_c]"
+	if(loud)
+		text = FONT_LARGE(text)
+	to_chat(src, text)
 
-/mob/living/silicon/ai/on_hear_radio(part_a, speaker_name, track, part_b, part_c, formatted)
-	var/time = say_timestamp()
-	to_chat(src, "[time][part_a][track][part_b][formatted][part_c]")
+/mob/living/silicon/ai/on_hear_radio(part_a, speaker_name, track, part_b, part_c, formatted, loud)
+	var/text = "[say_timestamp()][part_a][track][part_b][formatted][part_c]"
+	if(loud)
+		text = FONT_LARGE(text)
+	to_chat(src, text)
 
 /mob/proc/hear_signlang(message, verb = "gestures", datum/language/language, mob/speaker = null)
 	if(!client)
@@ -280,7 +309,7 @@
 		if(copytext(heardword,1, 1) in punctuation)
 			heardword = copytext(heardword,2)
 		if(copytext(heardword,-1) in punctuation)
-			heardword = copytext(heardword,1,lentext(heardword))
+			heardword = copytext(heardword,1,length(heardword))
 		heard = "<span class = 'game_say'>...You hear something about...[heardword]</span>"
 
 	else

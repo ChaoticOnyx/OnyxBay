@@ -33,30 +33,31 @@
 	usr.visible_message("<b>[src]</b> points to [A]")
 	return 1
 
-/*one proc, four uses
-swapping: if it's 1, the mobs are trying to switch, if 0, non-passive is pushing passive
-default behaviour is:
- - non-passive mob passes the passive version
- - passive mob checks to see if its mob_bump_flag is in the non-passive's mob_bump_flags
- - if si, the proc returns
-*/
-/mob/living/proc/can_move_mob(mob/living/swapped, swapping = 0, passive = 0)
-	if(!swapped)
-		return 1
+// Check if current mob can push other mob or swap with it
+// - other - the other mob to be pushed/swapped with
+// - are_swaping - TRUE if current mob is intenting to swap, FALSE for pushing
+// - passive - TRUE if current mob isn't initiator of swap/push
+// Returns TRUE/FALSE
+/mob/living/proc/can_move_mob(mob/living/other, are_swapping, passive)
+	ASSERT(other)
+	ASSERT(src != other)
+
 	if(!passive)
-		return swapped.can_move_mob(src, swapping, 1)
+		return other.can_move_mob(src, are_swapping, TRUE)
+
+	var/context_flags = 0
+	if(are_swapping)
+		context_flags = other.mob_swap_flags
 	else
-		var/context_flags = 0
-		if(swapping)
-			context_flags = swapped.mob_swap_flags
-		else
-			context_flags = swapped.mob_push_flags
-		if(!mob_bump_flag) //nothing defined, go wild
-			return 1
-		if(mob_bump_flag & context_flags)
-			return 1
-		else
-			return ((a_intent == I_HELP && swapped.a_intent == I_HELP) && swapped.can_move_mob(src, swapping, 1))
+		context_flags = other.mob_push_flags
+
+	if(!mob_bump_flag) //nothing defined, go wild
+		return TRUE
+
+	if(mob_bump_flag & context_flags)
+		return TRUE
+
+	return a_intent == I_HELP && other.a_intent == I_HELP
 
 /mob/living/canface()
 	if(stat)
@@ -137,9 +138,19 @@ default behaviour is:
 			..()
 			if (!istype(AM, /atom/movable) || AM.anchored)
 				if(confused && prob(50) && m_intent=="run")
-					Weaken(2)
-					playsound(loc, "punch", rand(80, 100), 1, -1)
-					visible_message("<span class='warning'>[src] [pick("ran", "slammed")] into \the [AM]!</span>")
+					var/obj/machinery/disposal/D = AM
+					if(istype(D) && !(D.stat & BROKEN))
+						Weaken(6)
+						playsound(get_turf(AM), 'sound/effects/clang.ogg', 75)
+						visible_message(SPAN_WARNING("[src] falls into \the [AM]!"), SPAN_WARNING("You fall into \the [AM]!"))
+						if (client)
+							client.perspective = EYE_PERSPECTIVE
+							client.eye = src
+						forceMove(AM)
+					else
+						Weaken(2)
+						playsound(loc, "punch", rand(80, 100), 1, -1)
+						visible_message(SPAN_WARNING("[src] [pick("ran", "slammed")] into \the [AM]!"))
 					src.apply_damage(5, BRUTE)
 				return
 			if (!now_pushing)
@@ -246,7 +257,8 @@ default behaviour is:
 	return maxHealth - health
 
 /mob/living/proc/adjustBruteLoss(amount)
-	if(status_flags & GODMODE)	return 0	//godmode
+	if(status_flags & GODMODE)
+		return 0
 	health = max(health-amount, 0)
 
 /mob/living/proc/getOxyLoss()
@@ -262,6 +274,8 @@ default behaviour is:
 	return 0
 
 /mob/living/proc/adjustToxLoss(amount)
+	if(status_flags & GODMODE)
+		return 0
 	adjustBruteLoss(amount * 0.5)
 
 /mob/living/proc/setToxLoss(amount)
@@ -271,6 +285,8 @@ default behaviour is:
 	return
 
 /mob/living/proc/adjustFireLoss(amount)
+	if(status_flags & GODMODE)
+		return 0
 	adjustBruteLoss(amount * 0.5)
 
 /mob/living/proc/setFireLoss(amount)
@@ -280,6 +296,8 @@ default behaviour is:
 	return 0
 
 /mob/living/proc/adjustHalLoss(amount)
+	if(status_flags & GODMODE)
+		return 0
 	adjustBruteLoss(amount * 0.5)
 
 /mob/living/proc/setHalLoss(amount)
@@ -389,7 +407,6 @@ default behaviour is:
 
 // damage ONE external organ, organ gets randomly selected from damaged ones.
 /mob/living/proc/take_organ_damage(brute, burn, emp=0)
-	if(status_flags & GODMODE)	return 0	//godmode
 	adjustBruteLoss(brute)
 	adjustFireLoss(burn)
 	src.updatehealth()
@@ -402,7 +419,6 @@ default behaviour is:
 
 // damage MANY external organs, in random order
 /mob/living/proc/take_overall_damage(brute, burn, used_weapon = null)
-	if(status_flags & GODMODE)	return 0	//godmode
 	adjustBruteLoss(brute)
 	adjustFireLoss(burn)
 	src.updatehealth()
@@ -665,10 +681,6 @@ default behaviour is:
 		to_chat(src, "<span class='warning'>You extricate yourself from \the [holster].</span>")
 		H.forceMove(get_turf(H))
 	else if(istype(H.loc,/obj))
-		if(istype(H.loc, /obj/machinery/cooker))
-			var/obj/machinery/cooker/C = H.loc
-			C.cooking_obj = null
-			C.check_cooking_obj()
 		to_chat(src, "<span class='warning'>You struggle free of \the [H.loc].</span>")
 		H.forceMove(get_turf(H))
 

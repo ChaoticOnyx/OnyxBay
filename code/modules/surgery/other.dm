@@ -16,8 +16,7 @@
 	can_infect = 1
 	blood_level = 1
 
-	min_duration = 70
-	max_duration = 90
+	duration = CONNECT_DURATION
 	shock_level = 40
 	delicate = 1
 
@@ -60,8 +59,7 @@
 	can_infect = 1
 	blood_level = 1
 
-	min_duration = 70
-	max_duration = 90
+	duration = CONNECT_DURATION
 	shock_level = 40
 	delicate = 1
 
@@ -107,8 +105,7 @@
 	can_infect = 0
 	blood_level = 0
 
-	min_duration = 120
-	max_duration = 180
+	duration = SAW_DURATION * 2.0
 	clothes_penalty = FALSE
 
 /datum/surgery_step/hardsuit/can_use(mob/living/user, mob/living/carbon/human/target, target_zone, obj/item/tool)
@@ -158,8 +155,7 @@
 	can_infect = 0
 	blood_level = 0
 
-	min_duration = 50
-	max_duration = 60
+	duration = 55
 
 /datum/surgery_step/sterilize/can_use(mob/living/user, mob/living/carbon/human/target, target_zone, obj/item/tool)
 	if(!hasorgans(target))

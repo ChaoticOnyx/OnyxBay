@@ -103,16 +103,17 @@
 	return 0
 
 /obj/item/weapon/reagent_containers/food/snacks/examine(mob/user)
-	if(!..(user, 1))
+	. = ..()
+	if(get_dist(src, user) > 1)
 		return
 	if (bitecount==0)
 		return
 	else if (bitecount==1)
-		to_chat(user, "<span class='notice'>\The [src] was bitten by someone!</span>")
+		. += "\n<span class='notice'>\The [src] was bitten by someone!</span>"
 	else if (bitecount<=3)
-		to_chat(user, "<span class='notice'>\The [src] was bitten [bitecount] time\s!</span>")
+		. += "\n<span class='notice'>\The [src] was bitten [bitecount] time\s!</span>"
 	else
-		to_chat(user, "<span class='notice'>\The [src] was bitten multiple times!</span>")
+		. += "\n<span class='notice'>\The [src] was bitten multiple times!</span>"
 
 /obj/item/weapon/reagent_containers/food/snacks/attackby(obj/item/weapon/W as obj, mob/user as mob)
 	if(istype(W,/obj/item/weapon/storage))
@@ -524,6 +525,11 @@
 		icon_state = "egg-[clr]"
 	else
 		..()
+
+/obj/item/weapon/reagent_containers/food/snacks/egg/randomcolor/New()
+	..()
+	var/clr = pick("blue","green","mime","orange","purple","rainbow","red","yellow")
+	icon_state = "egg-[clr]"
 
 /obj/item/weapon/reagent_containers/food/snacks/egg/blue
 	icon_state = "egg-blue"

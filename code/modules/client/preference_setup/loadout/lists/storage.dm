@@ -1,6 +1,5 @@
-/datum/gear/storage/
-	sort_category = "Storage Accessories"
-	category = /datum/gear/storage/
+/datum/gear/storage
+	sort_category = "Storage"
 	slot = slot_tie
 
 /datum/gear/storage/black_vest
@@ -74,12 +73,9 @@
 	path = /obj/item/weapon/storage/belt/waistpack/big
 	cost = 4
 
-/datum/gear/accessory/wallet
-	display_name = "wallet, colour select"
-	path = /obj/item/weapon/storage/wallet
-	flags = GEAR_HAS_COLOR_SELECTION
-
-/datum/gear/accessory/wallet_poly
-	display_name = "wallet, polychromic"
-	path = /obj/item/weapon/storage/wallet/poly
+/datum/gear/storage/santabag
+	display_name = "santabag"
+	slot = slot_back
+	path = /obj/item/weapon/storage/backpack/santabag/fake
 	cost = 2
+	price = 20

@@ -94,14 +94,15 @@
 				to_chat(user, "<span class='warning'>You must hold \the [P] steady to burn \the [src].</span>")
 
 /obj/item/weapon/paper_bundle/examine(mob/user)
-	if(..(user, 1))
+	. = ..()
+	if(get_dist(src, user) <= 1 && user)
 		src.show_content(user)
 	else
-		to_chat(user, "<span class='notice'>It is too far away.</span>")
+		. += "\n<span class='notice'>It is too far away.</span>"
 	return
 
 /obj/item/weapon/paper_bundle/proc/show_content(mob/user as mob)
-	var/dat
+	var/dat = "<meta charset=\"utf-8\">"
 	var/obj/item/weapon/W = pages[page]
 
 	// first

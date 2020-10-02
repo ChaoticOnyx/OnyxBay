@@ -34,6 +34,7 @@
 	fire = null
 	bodytemp = null
 	healths = null
+	pains = null
 	throw_icon = null
 	block_icon = null
 	blockswitch_icon = null
@@ -242,8 +243,19 @@
 		to_chat(src, "<span class='notice'>Something is there but you can't see it.</span>")
 		return 1
 
+	var/examine_result
+
 	face_atom(A)
-	A.examine(src)
+	if(istype(src, /mob/living/carbon))
+		var/mob/living/carbon/C = src
+		var/mob/fake = C.get_fake_appearance(A)
+		if(fake)
+			examine_result = fake.examine(src)
+
+	if (isnull(examine_result))
+		examine_result = A.examine(src)
+
+	to_chat(usr, examine_result)
 
 /mob/verb/pointed(atom/A as mob|obj|turf in view())
 	set name = "Point To"
@@ -347,7 +359,7 @@
 	set src in usr
 	if(usr != src)
 		to_chat(usr, "No.")
-	var/msg = russian_to_cp1251(sanitize(input(usr,"Set the flavor text in your 'examine' verb. Can also be used for OOC notes about your character.","Flavor Text",rhtml_decode(flavor_text)) as message|null, extra = 0))
+	var/msg = sanitize(input(usr,"Set the flavor text in your 'examine' verb. Can also be used for OOC notes about your character.","Flavor Text",html_decode(flavor_text)) as message|null, extra = 0)
 
 	if(msg != null)
 		flavor_text = msg
@@ -359,8 +371,8 @@
 
 /mob/proc/print_flavor_text()
 	if (flavor_text && flavor_text != "")
-		var/msg = russian_to_cp1251(replacetext(flavor_text, "\n", " "))
-		if(lentext(msg) <= 40)
+		var/msg = replacetext(flavor_text, "\n", " ")
+		if(length(msg) <= 40)
 			return "<span class='notice'>[msg]</span>"
 		else
 			return "<span class='notice'>[copytext_preserve_html(msg, 1, 37)]... <a href='byond://?src=\ref[src];flavor_more=1'>More...</a></span>"
@@ -487,7 +499,7 @@
 		src << browse(null, t1)
 
 	if(href_list["flavor_more"])
-		usr << browse(text("<HTML><HEAD><TITLE>[]</TITLE></HEAD><BODY><TT>[]</TT></BODY></HTML>", name, cp1251_to_utf8(replacetext(flavor_text, "\n", "<BR>"))), text("window=[];size=500x200", name))
+		usr << browse(text("<HTML><meta charset=\"utf-8\"><HEAD><TITLE>[]</TITLE></HEAD><BODY><TT>[]</TT></BODY></HTML>", name, replacetext(flavor_text, "\n", "<BR>")), text("window=[];size=500x200", name))
 		onclose(usr, "[name]")
 	if(href_list["flavor_change"])
 		update_flavor_text()
@@ -723,7 +735,7 @@
 	if( update_icon )	//forces a full overlay update
 		update_icon = 0
 		regenerate_icons()
-	else if( lying != lying_prev )
+	else if( lying != lying_prev || hanging != hanging_prev)
 		update_icons()
 
 	return canmove
@@ -769,53 +781,53 @@
 	return 0
 
 /mob/proc/Stun(amount)
-	if(status_flags & CANSTUN)
+	if((status_flags & CANSTUN) && !(status_flags & GODMODE))
 		facing_dir = null
 		stunned = max(max(stunned,amount),0) //can't go below 0, getting a low amount of stun doesn't lower your current stun
 	return
 
 /mob/proc/SetStunned(amount) //if you REALLY need to set stun to a set amount without the whole "can't go below current stunned"
-	if(status_flags & CANSTUN)
+	if((status_flags & CANSTUN) && !(status_flags & GODMODE))
 		stunned = max(amount,0)
 	return
 
 /mob/proc/AdjustStunned(amount)
-	if(status_flags & CANSTUN)
+	if((status_flags & CANSTUN) && !(status_flags & GODMODE))
 		stunned = max(stunned + amount,0)
 	return
 
 /mob/proc/Weaken(amount)
-	if(status_flags & CANWEAKEN)
+	if((status_flags & CANWEAKEN) && !(status_flags & GODMODE))
 		facing_dir = null
 		weakened = max(max(weakened,amount),0)
 		update_canmove()	//updates lying, canmove and icons
 	return
 
 /mob/proc/SetWeakened(amount)
-	if(status_flags & CANWEAKEN)
+	if((status_flags & CANWEAKEN) && !(status_flags & GODMODE))
 		weakened = max(amount,0)
 		update_canmove()	//updates lying, canmove and icons
 	return
 
 /mob/proc/AdjustWeakened(amount)
-	if(status_flags & CANWEAKEN)
+	if((status_flags & CANWEAKEN) && !(status_flags & GODMODE))
 		weakened = max(weakened + amount,0)
 		update_canmove()	//updates lying, canmove and icons
 	return
 
 /mob/proc/Paralyse(amount)
-	if(status_flags & CANPARALYSE)
+	if((status_flags & CANPARALYSE) && !(status_flags & GODMODE))
 		facing_dir = null
 		paralysis = max(max(paralysis,amount),0)
 	return
 
 /mob/proc/SetParalysis(amount)
-	if(status_flags & CANPARALYSE)
+	if((status_flags & CANPARALYSE) && !(status_flags & GODMODE))
 		paralysis = max(amount,0)
 	return
 
 /mob/proc/AdjustParalysis(amount)
-	if(status_flags & CANPARALYSE)
+	if((status_flags & CANPARALYSE) && !(status_flags & GODMODE))
 		paralysis = max(paralysis + amount,0)
 	return
 

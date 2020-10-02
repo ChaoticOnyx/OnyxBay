@@ -13,9 +13,9 @@
 	to_chat(user, "<span class='notice'>\icon[src] \The [src] flashes <i>[T.x]:[T.y]:[T.z]</i>.</span>")
 
 /obj/item/device/gps/examine(mob/user)
-	..()
+	. = ..()
 	var/turf/T = get_turf(src)
-	to_chat(user, "<span class='notice'>\The [src]'s screen shows: <i>[T.x]:[T.y]:[T.z]</i>.</span>")
+	. += "\n<span class='notice'>\The [src]'s screen shows: <i>[T.x]:[T.y]:[T.z]</i>.</span>"
 
 /obj/item/device/measuring_tape
 	name = "measuring tape"
@@ -175,7 +175,7 @@
 	interact(user)
 
 /obj/item/device/depth_scanner/interact(mob/user as mob)
-	var/dat = "<b>Coordinates with positive matches</b><br>"
+	var/dat = "<meta charset=\"utf-8\"><b>Coordinates with positive matches</b><br>"
 
 	dat += "<A href='?src=\ref[src];clear=0'>== Clear all ==</a><br>"
 
@@ -251,7 +251,7 @@
 	interact(user)
 
 /obj/item/weapon/pinpointer/radio/interact(mob/user)
-	var/dat = "<b>Radio frequency tracker</b><br>"
+	var/dat = "<meta charset=\"utf-8\"><b>Radio frequency tracker</b><br>"
 	dat += {"
 				Tracking: <A href='byond://?src=\ref[src];toggle=1'>[active ? "Enabled" : "Disabled"]</A><BR>
 				<A href='byond://?src=\ref[src];reset_tracking=1'>Reset tracker</A><BR>

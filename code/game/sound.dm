@@ -89,7 +89,7 @@ GLOBAL_LIST_INIT(maintenance_ambient_sound,list('sound/ambience/maintenance/amb1
 												'sound/ambience/maintenance/amb4.ogg','sound/ambience/maintenance/amb5.ogg','sound/ambience/maintenance/amb6.ogg',
 												'sound/ambience/maintenance/amb7.ogg','sound/ambience/maintenance/amb8.ogg','sound/ambience/maintenance/amb9.ogg',
 												'sound/ambience/maintenance/amb10.ogg','sound/ambience/maintenance/amb12.ogg','sound/ambience/maintenance/amb13.ogg',
-												'sound/ambience/maintenance/amb14.ogg','sound/ambience/maintenance/amb15.ogg','sound/ambience/maintenance/amb16.ogg',
+												'sound/ambience/maintenance/amb14.ogg',
 												'sound/ambience/maintenance/amb17.ogg','sound/ambience/maintenance/amb18.ogg','sound/ambience/maintenance/amb19.ogg',
 												'sound/ambience/maintenance/amb20.ogg','sound/ambience/maintenance/amb21.ogg','sound/ambience/maintenance/amb22.ogg',
 												'sound/ambience/maintenance/amb23.ogg','sound/ambience/maintenance/amb24.ogg','sound/ambience/maintenance/amb25.ogg',
@@ -328,6 +328,8 @@ GLOBAL_LIST_INIT(far_explosion_sound,list('sound/effects/explosions/far_explosio
 										'sound/effects/explosions/far_explosion43.ogg', 'sound/effects/explosions/far_explosion44.ogg', 'sound/effects/explosions/far_explosion45.ogg',
 										'sound/effects/explosions/far_explosion46.ogg', 'sound/effects/explosions/far_explosion47.ogg', 'sound/effects/explosions/far_explosion48.ogg',
 										'sound/effects/explosions/far_explosion49.ogg', 'sound/effects/explosions/far_explosion50.ogg'))
+GLOBAL_LIST_INIT(chisel_sound,list('sound/weapons/chisel1.ogg','sound/weapons/chisel2.ogg','sound/weapons/chisel3.ogg',
+								'sound/weapons/chisel4.ogg','sound/weapons/chisel5.ogg','sound/weapons/chisel6.ogg'))
 
 /proc/playsound(atom/source, soundin, vol as num, vary, extrarange as num, falloff, is_global, frequency, is_ambiance = 0)
 
@@ -510,6 +512,7 @@ var/const/FALLOFF_SOUNDS = 0.5
 			if ("button") 				soundin = pick(GLOB.button_sound)
 			if ("chop") 				soundin = pick(GLOB.chop_sound)
 			if ("far_explosion") 		soundin = pick(GLOB.far_explosion_sound)
+			if ("chisel")				soundin = pick(GLOB.chisel_sound)
 			else crash_with("Unknown sound: [soundin]")
 
 	return soundin

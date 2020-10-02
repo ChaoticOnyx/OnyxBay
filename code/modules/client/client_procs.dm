@@ -2,9 +2,8 @@
 	//SECURITY//
 	////////////
 #define UPLOAD_LIMIT		10485760	//Restricts client uploads to the server to 10MB //Boosted this thing. What's the worst that can happen?
-#define MIN_CLIENT_VERSION	512		//Just an ambiguously low version for now, I don't want to suddenly stop people playing.
+#define MIN_CLIENT_VERSION	513		//Just an ambiguously low version for now, I don't want to suddenly stop people playing.
 									//I would just like the code ready should it ever need to be used.
-#define MAX_CLIENT_VERSION	512
 
 #define LIMITER_SIZE	5
 #define CURRENT_SECOND	1
@@ -55,7 +54,6 @@
 
 		if (!(asset_cache_job in completed_asset_jobs))
 			completed_asset_jobs += asset_cache_job
-			log_debug_verbose("\[ASSETS\] Job #[asset_cache_job] is completed (client: [ckey]).")
 			return
 
 	if (config.minutetopiclimit)
@@ -89,8 +87,7 @@
 			return
 
 	//Logs all hrefs
-	if(config && config.log_hrefs && href_logfile)
-		to_chat(href_logfile, "<small>[time2text(world.timeofday,"hh:mm")] [src] (usr:[usr])</small> || [hsrc ? "[hsrc] " : ""][href]<br>")
+	log_href("[src] (usr:[usr]) || [hsrc ? "[hsrc] " : ""][href]")
 
 	// ask BYOND client to stop spamming us with assert arrival confirmations (see byond bug ID:2256651)
 	if (asset_cache_job && (asset_cache_job in completed_asset_jobs))
@@ -172,10 +169,6 @@
 
 	if(!(connection in list("seeker", "web")))					//Invalid connection type.
 		return null
-	if(byond_version < MIN_CLIENT_VERSION)		//Out of date client.
-		alert(src,"Your BYOND version is too out of date. Please update it.","Out of date","OK")
-		qdel(src)
-		return null
 
 	if(!config.guests_allowed && IsGuestKey(key))
 		alert(src,"This server doesn't allow guest accounts to play. Please go to http://www.byond.com/ and register for a key.","Guest","OK")
@@ -199,10 +192,7 @@
 		src.preload_rsc = pick(config.resource_urls)
 	else src.preload_rsc = 1 // If config.resource_urls is not set, preload like normal.
 
-	if(byond_version < DM_VERSION)
-		to_chat(src, "<span class='warning'>You are running an older version of BYOND than the server and may experience issues.</span>")
-		to_chat(src, "<span class='warning'>It is recommended that you update to at least [DM_VERSION] at http://www.byond.com/download/.</span>")
-	to_chat(src, "<span class='warning'>If the title screen is black, resources are still downloading. Please be patient until the title screen appears.</span>")
+	DIRECT_OUTPUT(src, "<span class='warning'>If the title screen is black and chat is broken, resources are still downloading. Please be patient until the title screen appears.</span>")
 	GLOB.clients += src
 	GLOB.ckey_directory[ckey] = src
 
@@ -232,7 +222,7 @@
 		return
 
 	// Load EAMS data
-	EAMS_CollectData()
+	SSeams.CollectDataForClient(src)
 
 	//preferences datum - also holds some persistant data for the client (because we may as well keep these datums to a minimum)
 	prefs = SScharacter_setup.preferences_datums[ckey]
@@ -244,10 +234,11 @@
 
 	. = ..()	//calls mob.Login()
 
-	if(byond_version > MAX_CLIENT_VERSION)
-		to_chat(src, SPAN_WARNING(FONT_GIANT("Your BYOND version is currently unstable. Please downgrade to the last stable version v[MAX_CLIENT_VERSION].")))
+	if(byond_version < MIN_CLIENT_VERSION)
+		to_chat(src, "<b><center><font size='5' color='red'>Your <font color='blue'>BYOND</font> version is too out of date!</font><br>\
+		<font size='3'>Please update it to [MIN_CLIENT_VERSION].</font></center>")
 		qdel(src)
-		return null
+		return
 
 	GLOB.using_map.map_info(src)
 
@@ -271,7 +262,9 @@
 			winset(src, null, "command=\".configure graphics-hwmode on\"")
 
 	log_client_to_db()
-	SSdonations.LogAndLoadPlayerData(src)
+	SSdonations.log_client_to_db(src)
+	SSdonations.update_donator(src)
+	SSdonations.update_donator_items(src)
 
 	send_resources()
 
@@ -279,10 +272,6 @@
 		to_chat(src, "<span class='info'>You have unread updates in the changelog.</span>")
 		if(config.aggressive_changelog)
 			src.changes()
-
-	if(isnum(player_age) && player_age < 7)
-		src.lore_splash()
-		to_chat(src, "<span class = 'notice'>Greetings, and welcome to the server! A link to the beginner's lore page has been opened, please read through it! This window will stop automatically opening once your account here is greater than 7 days old.</span>")
 
 	if(!winexists(src, "asset_cache_browser")) // The client is using a custom skin, tell them.
 		to_chat(src, "<span class='warning'>Unable to access asset cache browser, if you are using a custom skin file, please allow DS to download the updated version, if you are not, then make a bug report. This is not a critical issue but can cause issues with resource downloading, as it is impossible to know when extra resources arrived to you.</span>")
@@ -412,7 +401,6 @@
 
 #undef UPLOAD_LIMIT
 #undef MIN_CLIENT_VERSION
-#undef MAX_CLIENT_VERSION
 
 //checks if a client is afk
 //3000 frames = 5 minutes
@@ -453,7 +441,8 @@
 		)
 
 	spawn (10) //removing this spawn causes all clients to not get verbs.
-		log_debug_verbose("\[ASSETS\] Start sending resources for [ckey].")
+		if(!src) // client disconnected
+			return
 
 		var/list/priority_assets = list()
 		var/list/other_assets = list()
@@ -469,9 +458,8 @@
 				priority_assets += D
 
 		for(var/datum/asset/D in (priority_assets + other_assets))
-			D.send_slow(src) //Precache the client with all other assets slowly, so as to not block other browse() calls
-
-		log_debug_verbose("\[ASSETS\] Resources for [ckey] were sended!")
+			if (!D.send_slow(src)) //Precache the client with all other assets slowly, so as to not block other browse() calls
+				return
 
 mob/proc/MayRespawn()
 	return 0

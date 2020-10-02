@@ -60,17 +60,18 @@
 		set_light(0)
 
 /obj/item/weapon/melee/baton/examine(mob/user)
-	if(!..(user, 1))
-		return 0
-	examine_cell(user)
-	return 1
+	. = ..()
+	if(get_dist(src, user) > 1)
+		return
+	. += "\n[examine_cell()]"
+	return
 
 // Addition made by Techhead0, thanks for fullfilling the todo!
-/obj/item/weapon/melee/baton/proc/examine_cell(mob/user)
+/obj/item/weapon/melee/baton/proc/examine_cell()
 	if(bcell)
-		to_chat(user, "<span class='notice'>The baton is [round(bcell.percent())]% charged.</span>")
-	if(!bcell)
-		to_chat(user, "<span class='warning'>The baton does not have a power source installed.</span>")
+		return "<span class='notice'>The baton is [round(bcell.percent())]% charged.</span>"
+	else
+		return "<span class='warning'>The baton does not have a power source installed.</span>"
 
 /obj/item/weapon/melee/baton/attackby(obj/item/weapon/W, mob/user)
 	if(istype(W, /obj/item/weapon/cell/device))
@@ -201,12 +202,14 @@
 
 // Stunbaton module for Security synthetics
 /obj/item/weapon/melee/baton/robot
+	name = "mounted baton"
 	bcell = null
 	hitcost = 20
+	icon_state = "mounted baton"
 
 // Addition made by Techhead0, thanks for fullfilling the todo!
-/obj/item/weapon/melee/baton/robot/examine_cell(mob/user)
-	to_chat(user, "<span class='notice'>The baton is running off an external power supply.</span>")
+/obj/item/weapon/melee/baton/robot/examine_cell(mob/user, prefix)
+	. += "\n<span class='notice'>The baton is running off an external power supply.</span>"
 
 // Override proc for the stun baton module, found in PC Security synthetics
 // Refactored to fix #14470 - old proc defination increased the hitcost beyond

@@ -1,7 +1,7 @@
 /obj/item/mecha_parts/mecha_equipment/tool/sleeper
 	name = "mounted sleeper"
 	desc = "A sleeper. Mountable to an exosuit. (Can be attached to: Medical Exosuits)"
-	icon = 'icons/obj/Cryogenic2.dmi'
+	icon = 'icons/obj/cryogenic2.dmi'
 	icon_state = "sleeper_0"
 	origin_tech = list(TECH_DATA = 2, TECH_BIO = 3)
 	energy_drain = 20
@@ -111,6 +111,7 @@
 	if(!occupant)
 		return
 	return {"<html>
+				<meta charset=\"utf-8\">
 				<head>
 				<title>[occupant] statistics</title>
 				<script language='javascript' type='text/javascript'>
@@ -360,6 +361,7 @@
 
 /obj/item/mecha_parts/mecha_equipment/tool/syringe_gun/proc/get_reagents_page()
 	var/output = {"<html>
+						<meta charset=\"utf-8\">
 						<head>
 						<title>Reagent Synthesizer</title>
 						<script language='javascript' type='text/javascript'>

@@ -21,6 +21,7 @@
 	fire_sound = 'sound/weapons/kenetic_accel.ogg'
 	var/max_mod_capacity = 100
 	var/list/modkits = list()
+	combustion = FALSE
 
 /obj/item/weapon/gun/energy/kinetic_accelerator/attack_self(mob/living/user as mob)
 	if(power_supply.charge < power_supply.maxcharge)
@@ -35,12 +36,12 @@
 			power_supply.charge = power_supply.maxcharge
 
 /obj/item/weapon/gun/energy/kinetic_accelerator/examine(mob/user)
-	..()
+	. = ..()
 	if(max_mod_capacity)
-		to_chat(user, "<b>[get_remaining_mod_capacity()]%</b> mod capacity remaining.")
+		. += "\n<b>[get_remaining_mod_capacity()]%</b> mod capacity remaining."
 		for(var/A in get_modkits())
 			var/obj/item/borg/upgrade/modkit/M = A
-			to_chat(user, "<span class='notice'>There is a [M.name] mod installed, using <b>[M.cost]%</b> capacity.</span>")
+			. += "\n<span class='notice'>There is a [M.name] mod installed, using <b>[M.cost]%</b> capacity.</span>"
 
 /obj/item/weapon/gun/energy/kinetic_accelerator/attackby(obj/item/A, mob/user)
 	if(isCrowbar(A))
@@ -135,8 +136,8 @@
 	var/modifier = 1 //For use in any mod kit that has numerical modifiers
 
 /obj/item/borg/upgrade/modkit/examine(mob/user)
-	..()
-	to_chat(user, "<span class='notice'>Occupies <b>[cost]%</b> of mod capacity.</span>")
+	. = ..()
+	. += "\n<span class='notice'>Occupies <b>[cost]%</b> of mod capacity.</span>"
 
 /obj/item/borg/upgrade/modkit/attackby(obj/item/A, mob/user)
 	if(istype(A, /obj/item/weapon/gun/energy/kinetic_accelerator) && !issilicon(user))

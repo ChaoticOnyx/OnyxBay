@@ -128,6 +128,7 @@
 	icon_state = "xray"
 	origin_tech = list(TECH_COMBAT = 5, TECH_MAGNET = 4)
 	projectile_type = /obj/item/projectile/beam/mindflayer
+	combustion = FALSE
 
 /obj/item/weapon/gun/energy/toxgun
 	name = "phoron pistol"
@@ -156,6 +157,7 @@
 	self_recharge = 1
 	charge_meter = 0
 	clumsy_unaffected = 1
+	combustion = FALSE
 
 /obj/item/weapon/gun/energy/staff/special_check(mob/user)
 	if((user.mind && !GLOB.wizards.is_antagonist(user.mind)))
@@ -186,6 +188,7 @@ obj/item/weapon/gun/energy/staff/focus
 	slot_flags = SLOT_BELT|SLOT_BACK
 	w_class = ITEM_SIZE_LARGE
 	projectile_type = /obj/item/projectile/forcebolt
+	combustion = FALSE
 	/*
 	attack_self(mob/living/user as mob)
 		if(projectile_type == /obj/item/projectile/forcebolt)
@@ -209,13 +212,35 @@ obj/item/weapon/gun/energy/staff/focus
 	slot_flags = SLOT_BELT|SLOT_BACK
 	w_class = ITEM_SIZE_NORMAL
 	force = 8
-	origin_tech = list(TECH_MATERIAL = 4, TECH_PHORON = 4, TECH_ENGINEERING = 6, TECH_COMBAT = 3)
+	origin_tech = list(TECH_MATERIAL = 6, TECH_PHORON = 5, TECH_ENGINEERING = 6, TECH_COMBAT = 3)
 	matter = list(MATERIAL_STEEL = 4000)
 	projectile_type = /obj/item/projectile/beam/plasmacutter
+	charge_cost = 0
+	fire_delay = 10
 	max_shots = 10
-	self_recharge = 1
+	var/danger_attack = FALSE
 
-/obj/item/weapon/gun/energy/plasmacutter/mounted
-	name = "mounted plasma cutter"
-	use_external_power = 1
-	max_shots = 4
+	firemodes = list(
+		list(mode_name="mining mode", projectile_type = /obj/item/projectile/beam/plasmacutter, charge_cost = 0, fire_delay = 10, danger_attack = FALSE),
+		list(mode_name="battle mode", projectile_type = /obj/item/projectile/beam/plasmacutter/danger, charge_cost = 20, fire_delay = 6, danger_attack = TRUE),
+	)
+
+/obj/item/weapon/gun/energy/plasmacutter/examine(mob/user)
+	. = ..()
+	to_chat(user, "It has a recharge port with a capital letter P.")
+
+/obj/item/weapon/gun/energy/plasmacutter/attackby(obj/item/stack/material/phoron/W, mob/user)
+	if(user.stat || user.restrained() || user.lying)
+		return
+	if(!istype(W))
+		return
+	var/current_power = charge_cost ? round(power_supply.charge / charge_cost) : INFINITY
+	if(current_power < max_shots && danger_attack == TRUE)
+		power_supply.charge = power_supply.charge + charge_cost
+		W.use(1)
+		to_chat(user, SPAN_NOTICE("You insert \the [W.material.use_name] [W.material.sheet_singular_name] into \the [src]."))
+	else
+		to_chat(user, SPAN_WARNING("You can't insert \the [W.material.use_name] [W.material.sheet_singular_name] into \the [src], it's full."))
+
+/obj/item/weapon/gun/energy/plasmacutter/get_temperature_as_from_ignitor()
+	return 3800

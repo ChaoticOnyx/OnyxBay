@@ -1,7 +1,7 @@
 /obj/machinery/sleeper
 	name = "sleeper"
 	desc = "A fancy bed with built-in injectors, a dialysis machine, and a limited health scanner."
-	icon = 'icons/obj/Cryogenic2.dmi'
+	icon = 'icons/obj/cryogenic2.dmi'
 	icon_state = "sleeper_0"
 	density = 1
 	anchored = 1
@@ -55,11 +55,11 @@
 
 /obj/machinery/sleeper/examine(mob/user)
 	. = ..()
-	if (. && user.Adjacent(src))
+	if (user.Adjacent(src))
 		if (beaker)
-			to_chat(user, "It is loaded with a beaker.")
+			. += "\nIt is loaded with a beaker."
 		if(occupant)
-			occupant.examine(user)
+			. += "\n[occupant.examine(user)]"
 
 /obj/machinery/sleeper/Process()
 	if(stat & (NOPOWER|BROKEN))
@@ -369,6 +369,8 @@
 		visible_message("\The [user] starts putting [M] into \the [src].")
 
 	if(do_after(user, 20, src))
+		if(!check_compatibility(M, user))
+			return
 		if(occupant)
 			to_chat(user, "<span class='warning'>\The [src] is already occupied.</span>")
 			return

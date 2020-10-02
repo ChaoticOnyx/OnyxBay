@@ -6,10 +6,23 @@
 	set category = "IC"
 	return
 
-/mob/verb/say_verb(message as text)
+/mob/verb/say_verb(message as text|null)
 	set name = "Say"
-	set category = "IC"
+	set hidden = 1
+
+	ASSERT(client && usr == src)
+
+	client.close_saywindow()
+
 	usr.say(message)
+
+/mob/verb/say_verb_fake()
+	set name = "Say Verb"
+	set category = "IC"
+
+	ASSERT(client && usr == src)
+
+	winset(usr, null, "saywindow.is-visible=true;saywindow-input.focus=true;")
 
 /mob/verb/me_verb(message as text)
 	set name = "Me"
@@ -21,7 +34,7 @@
 		usr.emote("me",usr.emote_type,message)
 	else
 		usr.emote(message)
-	
+
 	var/ckeyname = "[usr.ckey]/[usr.name]"
 	webhook_send_me(ckeyname, message)
 
@@ -92,11 +105,11 @@
 //returns the message mode string or null for no message mode.
 //standard mode is the mode returned for the special ';' radio code.
 /mob/proc/parse_message_mode(message, standard_mode="headset")
-	if(length(message) >= 1 && copytext(message,1,2) == get_prefix_key(/decl/prefix/radio_main_channel))
+	if(length_char(message) >= 1 && copytext_char(message,1,2) == get_prefix_key(/decl/prefix/radio_main_channel))
 		return standard_mode
 
-	if(length(message) >= 2)
-		var/channel_prefix = copytext(message, 1 ,3)
+	if(length_char(message) >= 2)
+		var/channel_prefix = copytext_char(message, 1 ,3)
 		return department_radio_keys[channel_prefix]
 
 	return null
@@ -104,12 +117,12 @@
 //parses the language code (e.g. :j) from text, such as that supplied to say.
 //returns the language object only if the code corresponds to a language that src can speak, otherwise null.
 /mob/proc/parse_language(message)
-	var/prefix = copytext(message,1,2)
+	var/prefix = copytext_char(message,1,2)
 	if(length(message) >= 1 && prefix == get_prefix_key(/decl/prefix/audible_emote))
 		return all_languages["Noise"]
 
 	if(length(message) >= 2 && is_language_prefix(prefix))
-		var/language_prefix = lowertext(copytext(message, 2 ,3))
+		var/language_prefix = lowertext(copytext_char(message, 2 ,3))
 		var/datum/language/L = language_keys[language_prefix]
 		if (can_speak(L))
 			return L

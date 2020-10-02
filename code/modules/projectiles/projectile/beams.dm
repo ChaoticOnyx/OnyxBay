@@ -200,10 +200,10 @@
 	name = "plasma arc"
 	icon_state = "omnilaser"
 	fire_sound = 'sound/effects/weapons/energy/fire3.ogg'
-	damage = 15
+	damage = 7
 	sharp = 1
 	edge = 1
-	damage_type = BURN
+	damage_type = BRUTE
 	check_armour = "laser"
 	kill_count = 5
 	pass_flags = PASS_FLAG_TABLE
@@ -215,9 +215,25 @@
 /obj/item/projectile/beam/plasmacutter/on_impact(atom/A)
 	if(istype(A, /turf/simulated/mineral))
 		var/turf/simulated/mineral/M = A
-		if(prob(33))
+		if(prob(99))
 			M.GetDrilled(1)
 			return
 		else
 			M.emitter_blasts_taken += 2
 	. = ..()
+
+/obj/item/projectile/beam/plasmacutter/danger
+	name = "plasma arc"
+	icon_state = "omnilaser"
+	fire_sound = "sound/effects/weapons/energy/fire3.ogg"
+	damage = 25
+	sharp = 1
+	edge = 1
+	damage_type = BRUTE
+	check_armour = "laser"
+	kill_count = 5
+	pass_flags = PASS_FLAG_TABLE
+	armor_penetration = 10
+	muzzle_type = /obj/effect/projectile/trilaser/muzzle
+	tracer_type = /obj/effect/projectile/trilaser/tracer
+	impact_type = /obj/effect/projectile/trilaser/impact

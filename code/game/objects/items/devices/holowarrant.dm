@@ -15,11 +15,11 @@
 /obj/item/device/holowarrant/examine(mob/user)
 	. = ..()
 	if(active)
-		to_chat(user, "It's a holographic warrant for '[active.fields["namewarrant"]]'.")
+		. += "\nIt's a holographic warrant for '[active.fields["namewarrant"]]'."
 	if(in_range(user, src) || isghost(user))
 		show_content(user)
 	else
-		to_chat(user, "<span class='notice'>You have to be closer if you want to read it.</span>")
+		. += "\n<span class='notice'>You have to be closer if you want to read it.</span>"
 
 //hit yourself with it
 /obj/item/device/holowarrant/attack_self(mob/living/user as mob)
@@ -70,7 +70,7 @@
 		return
 	if(active.fields["arrestsearch"] == "arrest")
 		var/output = {"
-		<HTML><HEAD><TITLE>[active.fields["namewarrant"]]</TITLE></HEAD>
+		<meta charset=\"utf-8\"><HEAD><TITLE>[active.fields["namewarrant"]]</TITLE></HEAD>
 		<BODY bgcolor='#ffffff'><center><large><b>Sol Central Government Colonial Marshal Bureau</b></large></br>
 		in the jurisdiction of the</br>
 		[GLOB.using_map.boss_name] in [GLOB.using_map.system_name]</br>
@@ -82,13 +82,13 @@
 		Vessel or habitat: _<u>[GLOB.using_map.station_name]</u>____</br>
 		</br>_<u>[active.fields["auth"]]</u>____</br>
 		<small>Person authorizing arrest</small></br>
-		</BODY></HTML>
+		</BODY>
 		"}
 
 		show_browser(user, output, "window=Warrant for the arrest of [active.fields["namewarrant"]]")
 	if(active.fields["arrestsearch"] ==  "search")
 		var/output= {"
-		<HTML><HEAD><TITLE>Search Warrant: [active.fields["namewarrant"]]</TITLE></HEAD>
+		<meta charset=\"utf-8\"><HEAD><TITLE>Search Warrant: [active.fields["namewarrant"]]</TITLE></HEAD>
 		<BODY bgcolor='#ffffff'><center>in the jurisdiction of the</br>
 		[GLOB.using_map.boss_name] in [GLOB.using_map.system_name]</br>
 		</br>
@@ -110,6 +110,6 @@
 		<b>Warrant issued by: </b> [active.fields ["auth"]]</br>
 		</br>
 		Vessel or habitat: _<u>[GLOB.using_map.station_name]</u>____</br>
-		</BODY></HTML>
+		</BODY>
 		"}
 		show_browser(user, output, "window=Search warrant for [active.fields["namewarrant"]]")

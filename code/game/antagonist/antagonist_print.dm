@@ -1,7 +1,7 @@
 /datum/antagonist/proc/print_player_summary()
 
 	if(!current_antagonists.len)
-		return 0
+		return
 
 	var/text = list()
 	text += "<br><br><font size = 2><b>The [current_antagonists.len == 1 ? "[role_text] was" : "[role_text_plural] were"]:</b></font>"
@@ -28,6 +28,8 @@
 				text += "<br><font color='red'><B>The [role_text] has failed.</B></font>"
 			else
 				text += "<br><font color='green'><B>The [role_text] was successful!</B></font>"
+			if(P.was_antag_given_by_storyteller)
+				text += "<br><b>This antagonist was spawned by storyteller.</b>"
 
 	if(global_objectives && global_objectives.len)
 		text += "<BR><FONT size = 2>Their objectives were:</FONT>"
@@ -38,7 +40,7 @@
 
 	// Display the results.
 	text += "<br>"
-	to_world(jointext(text,null))
+	return jointext(text,null)
 
 
 /datum/antagonist/proc/print_objective(datum/objective/O, num, append_success)
@@ -51,7 +53,7 @@
 	return text
 
 /datum/antagonist/proc/print_player(datum/mind/ply)
-	var/role = ply.assigned_role ? "\improper[ply.assigned_role]" : (ply.special_role ? "\improper[ply.special_role]" : "unknown role")
+	var/role = ply.assigned_role ? "[ply.assigned_role]" : (ply.special_role ? "[ply.special_role]" : "unknown role")
 	var/text = "<br><b>[ply.name]</b> (<b>[ply.key]</b>) as \a <b>[role]</b> ("
 	if(ply.current)
 		if(ply.current.stat == DEAD)

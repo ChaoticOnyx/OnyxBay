@@ -32,19 +32,32 @@
 
 /datum/gear/flask
 	display_name = "flask"
-	path = /obj/item/weapon/reagent_containers/food/drinks/flask/barflask
+	path = /obj/item/weapon/reagent_containers/food/drinks/flask
+	price = 5
 
 /datum/gear/flask/New()
 	..()
 	gear_tweaks += new /datum/gear_tweak/reagents(lunchables_ethanol_reagents())
 
-/datum/gear/vacflask
+/datum/gear/flask/bar
+	display_name = "bar flask"
+	path = /obj/item/weapon/reagent_containers/food/drinks/flask/barflask
+	price = 0
+
+/datum/gear/flask/vacuum
 	display_name = "vacuum-flask"
 	path = /obj/item/weapon/reagent_containers/food/drinks/flask/vacuumflask
+	price = 0
 
-/datum/gear/vacflask/New()
-	..()
-	gear_tweaks += new /datum/gear_tweak/reagents(lunchables_drink_reagents())
+/datum/gear/flask/lithium
+	display_name = "lithium flask"
+	path = /obj/item/weapon/reagent_containers/food/drinks/flask/lithium
+	price = 8
+
+/datum/gear/flask/shiny
+	display_name = "shiny flask"
+	path = /obj/item/weapon/reagent_containers/food/drinks/flask/shiny
+	price = 10
 
 /datum/gear/coffeecup
 	display_name = "coffee cup"
@@ -55,22 +68,6 @@
 	display_name = "boot knife"
 	path = /obj/item/weapon/material/kitchen/utensil/knife/boot
 	cost = 3
-
-/datum/gear/lunchbox
-	display_name = "lunchbox"
-	description = "A little lunchbox."
-	cost = 2
-	path = /obj/item/weapon/storage/lunchbox
-
-/datum/gear/lunchbox/New()
-	..()
-	var/list/lunchboxes = list()
-	for(var/lunchbox_type in typesof(/obj/item/weapon/storage/lunchbox))
-		var/obj/item/weapon/storage/lunchbox/lunchbox = lunchbox_type
-		if(!initial(lunchbox.filled))
-			lunchboxes[initial(lunchbox.name)] = lunchbox_type
-	gear_tweaks += new /datum/gear_tweak/path(lunchboxes)
-	gear_tweaks += new /datum/gear_tweak/contents(lunchables_lunches(), lunchables_snacks(), lunchables_drinks())
 
 /datum/gear/towel
 	display_name = "towel"
@@ -93,9 +90,8 @@
 	plushes["farwa plush"] = /obj/item/toy/plushie/farwa
 	gear_tweaks += new /datum/gear_tweak/path(plushes)
 
-/datum/gear/mirror/
+/datum/gear/mirror
 	display_name = "handheld mirror"
-	sort_category = "Cosmetics"
 	path = /obj/item/weapon/mirror
 
 /datum/gear/lipstick
@@ -107,11 +103,6 @@
 	display_name = "plastic comb"
 	path = /obj/item/weapon/haircomb
 	flags = GEAR_HAS_COLOR_SELECTION
-
-/datum/gear/mask
-	display_name = "sterile mask"
-	path = /obj/item/clothing/mask/surgical
-	cost = 2
 
 /datum/gear/smokingpipe
 	display_name = "pipe, smoking"
@@ -161,3 +152,69 @@
 	display_name = "electronic cigarette, deluxe"
 	path = /obj/item/clothing/mask/smokable/ecig/deluxe
 	cost = 2
+
+/datum/gear/accessory/wallet
+	display_name = "wallet, colour select"
+	path = /obj/item/weapon/storage/wallet
+	flags = GEAR_HAS_COLOR_SELECTION
+
+/datum/gear/accessory/wallet_poly
+	display_name = "wallet, polychromic"
+	path = /obj/item/weapon/storage/wallet/poly
+	cost = 2
+
+/datum/gear/rubberducky
+	display_name = "bike horn"
+	path = /obj/item/weapon/bikehorn
+	price = 25
+
+/datum/gear/rubberducky
+	display_name = "vuvuzela"
+	path = /obj/item/weapon/bikehorn/vuvuzela
+	price = 25
+
+/datum/gear/rubberducky
+	display_name = "rubber ducky"
+	path = /obj/item/weapon/bikehorn/rubberducky
+	price = 25
+
+/datum/gear/champion
+	display_name = "champion's belt"
+	path = /obj/item/weapon/storage/belt/champion
+	slot = slot_belt
+	price = 20
+
+/datum/gear/bedsheet_clown
+	display_name = "clown's bedsheet"
+	path = /obj/item/weapon/bedsheet/clown
+	price = 10
+
+/datum/gear/bedsheet_mime
+	display_name = "mime's bedsheet"
+	path = /obj/item/weapon/bedsheet/mime
+	price = 10
+
+/datum/gear/bedsheet_rainbow
+	display_name = "rainbow's bedsheet"
+	path = /obj/item/weapon/bedsheet/rainbow
+	price = 10
+
+/datum/gear/bosunwhistle
+	display_name = "bosun's whistle"
+	path = /obj/item/toy/bosunwhistle
+	price = 75
+
+/datum/gear/balloon
+	display_name = "balloon"
+	path = /obj/item/toy/balloon
+	price = 100
+
+/datum/gear/balloon/nanotrasen
+	display_name = "'motivational' balloon"
+	path = /obj/item/toy/balloon/nanotrasen
+	price = 75
+
+/datum/gear/spinningtoy
+	display_name = "gravitational singularity"
+	path = /obj/item/toy/spinningtoy
+	price = 30

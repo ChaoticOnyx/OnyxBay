@@ -56,7 +56,7 @@
 	if(shocked)
 		shock(user, 50)
 
-	var/dat = "<center><h1>Autolathe Control Panel</h1><hr/>"
+	var/dat = "<meta charset=\"utf-8\"><center><h1>Autolathe Control Panel</h1><hr/>"
 
 	if(!disabled)
 		dat += "<table width = '100%'>"
@@ -222,6 +222,7 @@
 			return TOPIC_HANDLED
 		show_category = choice
 		. = TOPIC_REFRESH
+		updateUsrDialog()
 
 	else if(href_list["make"] && machine_recipes)
 		. = TOPIC_REFRESH
@@ -237,13 +238,15 @@
 			log_and_message_admins("tried to exploit an autolathe to duplicate an item!", user)
 			return TOPIC_HANDLED
 
-		busy = 1
+		busy = TRUE
 		update_use_power(POWER_USE_ACTIVE)
 
 		//Check if we still have the materials.
 		for(var/material in making.resources)
 			if(!isnull(stored_material[material]))
 				if(stored_material[material] < round(making.resources[material] * mat_efficiency) * multiplier)
+					busy = FALSE
+					update_use_power(POWER_USE_IDLE)
 					return TOPIC_REFRESH
 
 		//Consume materials.
@@ -251,12 +254,13 @@
 			if(!isnull(stored_material[material]))
 				stored_material[material] = max(0, stored_material[material] - round(making.resources[material] * mat_efficiency) * multiplier)
 
+		updateUsrDialog()
 		//Fancy autolathe animation.
 		flick("autolathe_n", src)
 
 		sleep(build_time)
 
-		busy = 0
+		busy = FALSE
 		update_use_power(POWER_USE_IDLE)
 
 		//Sanity check.
@@ -269,7 +273,6 @@
 			S.amount = multiplier
 			S.update_icon()
 
-	updateUsrDialog()
 
 /obj/machinery/autolathe/update_icon()
 	icon_state = (panel_open ? "autolathe_t" : "autolathe")

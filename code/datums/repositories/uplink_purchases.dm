@@ -14,18 +14,20 @@ var/repository/uplink_purchases/uplink_purchase_repository = new()
 	upe.add_entry(item, cost)
 
 /repository/uplink_purchases/proc/print_entries()
+	var/list/parts = list()
 	if(purchases_by_mind.len)
-		to_world("<b>The following went shopping:</b>")
+		parts += "<b>The following went shopping:</b>"
 
 	var/list/pur_log = list()
 	for(var/datum/mind/ply in purchases_by_mind)
 		pur_log.Cut()
 		var/uplink_purchase_entry/upe = purchases_by_mind[ply]
-		to_world("<b>[ply.name]</b> (<b>[ply.key]</b>) (used [upe.total_cost] TC\s):")
+		parts += "<b>[ply.name]</b> (<b>[ply.key]</b>) (used [upe.total_cost] TC\s):"
 
 		for(var/datum/uplink_item/UI in upe.purchased_items)
 			pur_log += "[upe.purchased_items[UI]]x[UI.log_icon()][UI.name]"
-		to_world(english_list(pur_log, nothing_text = ""))
+		parts += "[english_list(pur_log, nothing_text = "")]"
+	return parts.len ? "<div class='panel stationborder'>[parts.Join("<br>")]</div>" : null
 
 
 /proc/debug_print()

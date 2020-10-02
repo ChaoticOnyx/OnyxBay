@@ -10,8 +10,7 @@
 	var/list/disallowed_species = null
 
 	// duration of the step
-	var/min_duration = 0
-	var/max_duration = 0
+	var/duration = 0
 
 	// evil infection stuff that will make everyone hate me
 	var/can_infect = 0
@@ -136,7 +135,7 @@
 				M.op_stage.in_progress += zone
 				S.begin_step(user, M, zone, src)		//start on it
 				//We had proper tools! (or RNG smiled.) and user did not move or change hands.
-				if(prob(S.success_chance(user, M, src, zone)) &&  do_mob(user, M, rand(S.min_duration, S.max_duration) * surgery_speed))
+				if(prob(S.success_chance(user, M, src, zone)) &&  do_mob(user, M, S.duration * SURGERY_DURATION_DELTA * surgery_speed))
 					S.end_step(user, M, zone, src)		//finish successfully
 				else if ((src in user.contents) && user.Adjacent(M))			//or
 					S.fail_step(user, M, zone, src)		//malpractice~
@@ -147,6 +146,8 @@
 				if (ishuman(M))
 					var/mob/living/carbon/human/H = M
 					H.update_surgery()
+					if(H.op_stage.current_organ)
+						H.op_stage.current_organ = null						//Clearing current surgery target for the sake of internal surgery's consistency
 				return	1	  												//don't want to do weapony things after surgery
 	return 0
 

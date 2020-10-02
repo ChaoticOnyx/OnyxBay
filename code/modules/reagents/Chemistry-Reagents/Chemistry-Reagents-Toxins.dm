@@ -192,7 +192,7 @@
 	. = ..()
 
 /datum/reagent/toxin/fertilizer //Reagents used for plant fertilizers.
-	name = /datum/reagent/toxin/fertilizer
+	name = "Fertilizer"
 	description = "A chemical mix good for growing plants with."
 	taste_description = "plant food"
 	taste_mult = 0.5
@@ -205,9 +205,17 @@
 
 /datum/reagent/toxin/fertilizer/left4zed
 	name = "Left-4-Zed"
+	color = "#515130"
 
 /datum/reagent/toxin/fertilizer/robustharvest
 	name = "Robust Harvest"
+	taste_description = "robust plant food"
+	color = "#4e204b"
+
+/datum/reagent/toxin/fertilizer/compost
+	name = "compost"
+	taste_description = "literal shit"
+	color = "#7f4323"
 
 /datum/reagent/toxin/plantbgone
 	name = "Plant-B-Gone"
@@ -281,6 +289,7 @@
 	taste_mult = 0.9
 	reagent_state = LIQUID
 	color = "#13bc5e"
+	var/mutation_potency = 0.1 // Determines the probability of causing mutations
 
 /datum/reagent/mutagen/affect_touch(mob/living/carbon/M, alien, removed)
 	if(prob(33))
@@ -300,7 +309,7 @@
 		return
 
 	if(M.dna)
-		if(prob(removed * 0.1)) // Approx. one mutation per 10 injected/20 ingested/30 touching units
+		if(prob(removed * mutation_potency)) // Approx. one mutation per 10 injected/20 ingested/30 touching units
 			randmuti(M)
 			if(prob(98))
 				randmutb(M)
@@ -309,6 +318,13 @@
 			domutcheck(M, null)
 			M.UpdateAppearance()
 	M.apply_effect(10 * removed, IRRADIATE, blocked = 0)
+
+/datum/reagent/mutagen/industrial
+	name = "Industrial mutagen"
+	description = "A rather stable form of mutagen usually used for agricultural purposes. However, it's still extremely poisonous."
+	taste_mult = 0.7
+	color = "#4d9e6c"
+	mutation_potency = 0.025
 
 /datum/reagent/slimejelly
 	name = "Slime Jelly"
@@ -375,7 +391,7 @@
 	if(alien == IS_SKRELL)
 		threshold = 1.2
 
-	if(M.chem_doses[type] == metabolism * threshold)
+	if(M.chem_doses[type] < metabolism * threshold)
 		M.confused += 2
 		M.drowsyness += 2
 	else if(M.chem_doses[type] < 2 * threshold)
@@ -399,7 +415,7 @@
 /* Drugs */
 
 /datum/reagent/space_drugs
-	name = "Space drugs"
+	name = "Space Drugs"
 	description = "An illegal chemical compound used as drug."
 	taste_description = "bitterness"
 	taste_mult = 0.4
@@ -622,6 +638,42 @@
 	taste_description = "slimey metal"
 	reagent_state = LIQUID
 	color = "#535e66"
+	overdose = 5
+
+/datum/reagent/nanites/affect_blood(mob/living/carbon/M, alien, removed)
+	if(alien != IS_DIONA)
+		M.heal_organ_damage(15 * removed, 15 * removed)
+		M.add_chemical_effect(CE_OXYGENATED, 2)
+
+/datum/reagent/nanites/affect_ingest(mob/living/carbon/M, alien, removed)
+	affect_blood(M, alien, removed)
+
+/datum/reagent/nanites/overdose(mob/living/carbon/M, alien)
+	if(prob(80))
+		if(prob(50))
+			var/msg = pick("clicking","clanking","beeping","buzzing","pinging")
+			to_chat(M, "<span class='warning'>You can feel something [msg] inside of you!</span>")
+	else
+		if(M.transforming)
+			return
+		to_chat(M, "<span class='danger'>Metal structures rapidly assemble inside of you, tearing your weak flesh, rupturing your skin, and crushing your innards!</span>")
+		M.transforming = 1
+		M.canmove = 0
+		M.icon = null
+		M.overlays.Cut()
+		M.set_invisibility(101)
+		for(var/obj/item/W in M)
+			if(istype(W, /obj/item/weapon/implant))
+				qdel(W)
+				continue
+			M.drop_from_inventory(W)
+		var/mob/living/silicon/robot/new_mob = new /mob/living/silicon/robot(M.loc)
+		new_mob.a_intent = "help"
+		if(M.mind)
+			M.mind.transfer_to(new_mob)
+		else
+			new_mob.key = M.key
+		M.gib()
 
 /datum/reagent/xenomicrobes
 	name = "Xenomicrobes"
@@ -669,6 +721,13 @@
 			H.zombify()
 		else if (prob(10))
 			to_chat(H, "<span class='warning'>You feel terribly ill!</span>")
+
+/datum/reagent/vecuronium_bromide
+	name = "Vecuronium Bromide"
+	description = "A general anaesthetic, provides prolonged paralysis without unconsciousness or pain relief"
+	taste_description = "bitterness"
+	reagent_state = LIQUID
+	color = "#cccccc"
 
 /datum/reagent/vecuronium_bromide/affect_blood(mob/living/carbon/M, alien, removed)
 	if(alien == IS_DIONA)

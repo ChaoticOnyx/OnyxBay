@@ -153,14 +153,10 @@ var/list/robot_hud_colours = list("#ffffff","#cccccc","#aaaaaa","#888888","#6666
 
 /obj/item/organ/external/proc/get_damage_hud_image()
 
-	// Generate the greyscale base icon and cache it for later.
-	// icon_cache_key is set by any get_icon() calls that are made.
-	// This looks convoluted, but it's this way to avoid icon proc calls.
+	// Species-standardized old-school health icon
+	// Probably works faster than the new fancy bodyshape-reflective system
 	if(!hud_damage_image)
-		var/cache_key = "dambase-[icon_cache_key]"
-		if(!icon_cache_key || !limb_icon_cache[cache_key])
-			limb_icon_cache[cache_key] = icon(get_icon(), null, SOUTH)
-		var/image/temp = image(limb_icon_cache[cache_key])
+		var/image/temp = image('icons/mob/screen1_health.dmi',"[icon_name]")
 		if(species)
 			// Calculate the required colour matrix.
 			var/r = 0.30 * species.health_hud_intensity
@@ -173,7 +169,7 @@ var/list/robot_hud_colours = list("#ffffff","#cccccc","#aaaaaa","#888888","#6666
 
 	// Calculate the required color index.
 	var/dam_state = min(1,((brute_dam+burn_dam)/max(1,max_damage)))
-	var/min_dam_state = min(1,(get_pain()/max(1,max_damage)))
+	var/min_dam_state = min(1,(get_full_pain()/max(1,max_damage)))
 	if(min_dam_state && dam_state < min_dam_state)
 		dam_state = min_dam_state
 	// Apply colour and return product.

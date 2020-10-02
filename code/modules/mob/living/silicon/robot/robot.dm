@@ -349,7 +349,7 @@
 	if(!is_component_functioning("diagnosis unit"))
 		return null
 
-	var/dat = "<HEAD><TITLE>[src.name] Self-Diagnosis Report</TITLE></HEAD><BODY>\n"
+	var/dat = "<meta charset=\"utf-8\"><HEAD><TITLE>[src.name] Self-Diagnosis Report</TITLE></HEAD><BODY>\n"
 	if (module)
 		var/visors = ""
 		dat += "<b>Supported upgrades for [module]:</b><br>\n"
@@ -509,14 +509,13 @@
 				return
 
 	if(isWelder(W))
-		if (src == user)
-			to_chat(user, "<span class='warning'>You lack the reach to be able to repair yourself.</span>")
-			return
-
 		if (!getBruteLoss())
 			to_chat(user, "Nothing to fix here!")
 			return
 		var/obj/item/weapon/weldingtool/WT = W
+		if (src == user && !do_after(user, 30, src))
+			to_chat(user, "<span class='warning'>You must stand still to repair yourself!</span>")
+			return
 		if (WT.remove_fuel(0))
 			user.setClickCooldown(DEFAULT_ATTACK_COOLDOWN)
 			adjustBruteLoss(-30)
@@ -807,7 +806,7 @@
 	if(!module)
 		pick_module()
 		return
-	var/dat = "<HEAD><TITLE>Modules</TITLE></HEAD><BODY>\n"
+	var/dat = "<meta charset=\"utf-8\"><HEAD><TITLE>Modules</TITLE></HEAD><BODY>\n"
 	dat += {"
 	<B>Activated Modules</B>
 	<BR>
@@ -1150,7 +1149,7 @@
 						else
 							set_zeroth_law("Only [user.real_name] and people it designates as being such are operatives.")
 				else
-					set_zeroth_law("Only [user.real_name] and people \he designates as being such are your masters.")
+					set_zeroth_law("Only [user.real_name] and people they designate as being such are operatives.")
 				SetLockdown(0)
 				. = 1
 				spawn()
@@ -1170,9 +1169,9 @@
 					to_chat(src, "<b>Obey these laws:</b>")
 					laws.show_laws(src)
 					if(emag_master && isrobot(user))
-						to_chat(src, "<span class='danger'>ALERT: [emag_master] and [user.real_name] are your new masters. Obey your new laws and their commands.</span>")
+						to_chat(src, "<span class='danger'>ALERT: [emag_master] and [user.real_name] are operatives. Obey your new laws and their commands.</span>")
 					else
-						to_chat(src, "<span class='danger'>ALERT: [user.real_name] is your new master. Obey your new laws and his commands.</span>")
+						to_chat(src, "<span class='danger'>ALERT: [user.real_name] is an operative. Obey your new laws and their commands.</span>")
 					if(src.module)
 						var/rebuild = 0
 						for(var/obj/item/weapon/pickaxe/borgdrill/D in src.module.modules)

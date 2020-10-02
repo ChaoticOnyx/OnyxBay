@@ -91,13 +91,13 @@
 
 	I.origin_tech = list()
 	if(prob(50))
-		I.origin_tech.Add(TECH_MATERIAL = pick(1, 2, 3, 4, 5, 6))
+		I.origin_tech[TECH_MATERIAL] = pick(1, 2, 3, 4, 5, 6)
 	if(prob(25))
-		I.origin_tech.Add(TECH_ENGINEERING = pick(1, 2, 3, 4, 5, 6))
+		I.origin_tech[TECH_ENGINEERING] = pick(1, 2, 3, 4, 5, 6)
 	if(prob(10))
-		I.origin_tech.Add(TECH_MAGNET = pick(1, 2, 3, 4, 5, 6))
+		I.origin_tech[TECH_MAGNET] = pick(1, 2, 3, 4, 5, 6)
 	if(prob(5))
-		I.origin_tech.Add(TECH_PHORON = pick(1, 2, 3, 4, 5, 6))
+		I.origin_tech[TECH_PHORON] = pick(1, 2, 3, 4, 5, 6)
 
 	return INITIALIZE_HINT_QDEL
 

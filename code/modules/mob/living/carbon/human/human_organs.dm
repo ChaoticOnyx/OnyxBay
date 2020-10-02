@@ -8,15 +8,6 @@
 	var/obj/item/organ/external/E = get_organ(zone)
 	if(E) . = E.name
 
-/mob/living/carbon/human/proc/recheck_bad_external_organs()
-	var/damage_this_tick = getToxLoss()
-	for(var/obj/item/organ/external/O in organs)
-		damage_this_tick += O.burn_dam + O.brute_dam
-
-	if(damage_this_tick > last_dam)
-		. = TRUE
-	last_dam = damage_this_tick
-
 /mob/living/carbon/human/proc/restore_limb(limb_type, show_message = FALSE)	//only for changling for now
 	var/obj/item/organ/external/E = organs_by_name[limb_type]
 	if(E && E.organ_tag != BP_HEAD && !E.vital && !E.is_usable())	//Skips heads and vital bits...
@@ -72,14 +63,6 @@
 
 // Takes care of organ related updates, such as broken and missing limbs
 /mob/living/carbon/human/proc/handle_organs()
-
-	var/force_process = recheck_bad_external_organs()
-
-	if(force_process)
-		bad_external_organs.Cut()
-		for(var/obj/item/organ/external/Ex in organs)
-			bad_external_organs |= Ex
-
 	//processing internal organs is pretty cheap, do that first.
 	for(var/obj/item/organ/I in internal_organs)
 		I.Process()
@@ -87,14 +70,10 @@
 	handle_stance()
 	handle_grasp()
 
-	if(!force_process && !bad_external_organs.len)
-		return
-
-	for(var/obj/item/organ/external/E in bad_external_organs)
+	for(var/obj/item/organ/external/E in organs)
 		if(!E)
 			continue
 		if(!E.need_process())
-			bad_external_organs -= E
 			continue
 		else
 			E.Process()
@@ -149,7 +128,7 @@
 				spawn(10)
 					qdel(spark_system)
 
-		else if(E.is_broken() || (E.pain >= E.pain_disability_threshold))
+		else if(E.is_broken() || (E.get_pain() >= E.pain_disability_threshold))
 			stance_d_l += 2
 
 		else if(E.is_dislocated())
@@ -177,7 +156,7 @@
 				spawn(10)
 					qdel(spark_system)
 
-		else if(E.is_broken() || (E.pain >= E.pain_disability_threshold))
+		else if(E.is_broken() || (E.get_pain() >= E.pain_disability_threshold))
 			stance_d_r += 2
 
 		else if(E.is_dislocated())

@@ -3,7 +3,7 @@ var/global/list/valid_bloodtypes = list("A+", "A-", "B+", "B-", "AB+", "AB-", "O
 /datum/preferences
 	var/species = SPECIES_HUMAN         //Species datum to use.
 	var/b_type = "A+"					//blood type (not-chooseable)
-	var/h_style = "Bald"				//Hair type
+	var/h_style = "Short Hair"			//Hair type
 	var/r_hair = 0						//Hair color
 	var/g_hair = 0						//Hair color
 	var/b_hair = 0						//Hair color
@@ -658,7 +658,7 @@ var/global/list/valid_bloodtypes = list("A+", "A-", "B+", "B-", "AB+", "AB-", "O
 	if(!pref.species_preview || !(pref.species_preview in all_species))
 		pref.species_preview = SPECIES_HUMAN
 	var/datum/species/current_species = all_species[pref.species_preview]
-	var/dat = "<body>"
+	var/dat = "<meta charset=\"utf-8\"><body>"
 	dat += "<center><h2>[current_species.name] \[<a href='?src=\ref[src];show_species=1'>change</a>\]</h2></center><hr/>"
 	dat += "<table padding='8px'>"
 	dat += "<tr>"

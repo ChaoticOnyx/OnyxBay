@@ -116,7 +116,7 @@ obj/machinery/computer/general_air_control/Destroy()
 	sensor_information[id_tag] = signal.data
 
 /obj/machinery/computer/general_air_control/proc/return_text()
-	var/sensor_data
+	var/sensor_data = "<meta charset=\"utf-8\">"
 	if(sensors.len)
 		for(var/id_tag in sensors)
 			var/long_name = sensors[id_tag]

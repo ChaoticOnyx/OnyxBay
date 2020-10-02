@@ -206,7 +206,7 @@
 
 /obj/machinery/suit_storage_unit/attack_hand(mob/user as mob)
 	..()
-	var/dat
+	var/dat = "<meta charset=\"utf-8\">"
 	if(!user.IsAdvancedToolUser())
 		return 0
 	if(panelopen) //The maintenance panel is open. Time for some shady stuff
@@ -896,7 +896,7 @@
 
 	user.set_machine(src)
 
-	var/dat = "<HEAD><TITLE>Suit Cycler Interface</TITLE></HEAD>"
+	var/dat = "<meta charset=\"utf-8\"><HEAD><TITLE>Suit Cycler Interface</TITLE></HEAD>"
 
 	if(active)
 		dat+= "<br><font color='red'><B>The [model_text ? "[model_text] " : ""]suit cycler is currently in use. Please wait...</b></font>"

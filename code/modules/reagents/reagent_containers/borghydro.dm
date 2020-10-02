@@ -114,12 +114,13 @@
 		return TOPIC_REFRESH
 
 /obj/item/weapon/reagent_containers/borghypo/examine(mob/user)
-	if(!..(user, 2))
+	. = ..()
+	if(get_dist(src, user) > 2)
 		return
 
 	var/datum/reagent/R = reagent_ids[mode]
 
-	to_chat(user, "<span class='notice'>It is currently producing [initial(R.name)] and has [reagent_volumes[reagent_ids[mode]]] out of [volume] units left.</span>")
+	. += "\n<span class='notice'>It is currently producing [initial(R.name)] and has [reagent_volumes[reagent_ids[mode]]] out of [volume] units left.</span>"
 
 /obj/item/weapon/reagent_containers/borghypo/service
 	name = "cyborg drink synthesizer"

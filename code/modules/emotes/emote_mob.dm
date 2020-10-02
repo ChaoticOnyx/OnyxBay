@@ -77,7 +77,7 @@
 	name_anchor = findtext(message, "^")
 	if(name_anchor > 0) // User supplied emote with a carat
 		pretext = copytext(message, 1, name_anchor)
-		subtext = copytext(message, name_anchor + 1, lentext(message) + 1)
+		subtext = copytext(message, name_anchor + 1, length(message) + 1)
 	else
 		// No carat. Just the emote as usual.
 		subtext = message
@@ -91,12 +91,12 @@
 	if(pretext)
 		pretext = capitalize(pretext)
 		// Add a space at the end if we didn't already supply one.
-		end_char = copytext(pretext, lentext(pretext), lentext(pretext) + 1)
+		end_char = copytext(pretext, length(pretext), length(pretext) + 1)
 		if(end_char != " ")
 			pretext += " "
 
 	// Grab the last character of the emote message.
-	end_char = copytext(subtext, lentext(subtext), lentext(subtext) + 1)
+	end_char = copytext(subtext, length(subtext), length(subtext) + 1)
 	if(end_char != "." && end_char != "?" && end_char != "!" && end_char != "\"")
 		// No punctuation supplied. Tack a period on the end.
 		subtext += "."

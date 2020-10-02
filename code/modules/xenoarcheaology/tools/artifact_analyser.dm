@@ -33,7 +33,7 @@
 		user.unset_machine(src)
 		return
 
-	var/dat = "<B>Anomalous material analyser</B><BR>"
+	var/dat = "<meta charset=\"utf-8\"><B>Anomalous material analyser</B><BR>"
 	dat += "<HR>"
 	if(!owned_scanner)
 		reconnect_scanner()

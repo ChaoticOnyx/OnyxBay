@@ -20,9 +20,9 @@
 /obj/item/weapon/card/id/guest/examine(mob/user)
 	. = ..()
 	if (world.time < expiration_time)
-		to_chat(user, "<span class='notice'>This pass expires at [worldtime2stationtime(expiration_time)].</span>")
+		. += "\n<span class='notice'>This pass expires at [worldtime2stationtime(expiration_time)].</span>"
 	else
-		to_chat(user, "<span class='warning'>It expired at [worldtime2stationtime(expiration_time)].</span>")
+		. += "\n<span class='warning'>It expired at [worldtime2stationtime(expiration_time)].</span>"
 
 /obj/item/weapon/card/id/guest/read()
 	if (world.time > expiration_time)
@@ -79,7 +79,7 @@
 		return
 
 	user.set_machine(src)
-	var/dat
+	var/dat = "<meta charset=\"utf-8\">"
 
 	if (mode == 1) //Logs
 		dat += "<h3>Activity log</h3><br>"

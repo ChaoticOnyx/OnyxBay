@@ -25,13 +25,41 @@
 	..()
 	icon_state = "pine_c"
 
-/obj/structure/flora/tree/dead
+/obj/structure/flora/tree/dead/deadtree_0
 	icon = 'icons/obj/flora/deadtrees.dmi'
 	icon_state = "tree_1"
 
-/obj/structure/flora/tree/dead/New()
+/obj/structure/flora/tree/dead/deadtree_1
+	icon = 'icons/obj/flora/deadtrees.dmi'
+	icon_state = "tree_4"
+
+/obj/structure/flora/tree/dead/deadtree_2
+	icon = 'icons/obj/flora/deadtrees.dmi'
+	icon_state = "tree_5"
+
+/obj/structure/flora/tree/dead/deadtree_3
+	icon = 'icons/obj/flora/deadtrees.dmi'
+	icon_state = "tree_6"
+
+/obj/structure/flora/tree/dead/deadtree_4
+	icon = 'icons/obj/flora/deadtrees.dmi'
+	icon_state = "tree_10"
+
+/obj/structure/flora/tree/dead/deadtree_5
+	icon = 'icons/obj/flora/deadtrees.dmi'
+	icon_state = "tree_11"
+
+/obj/structure/flora/tree/dead/deadtree_6
+	icon = 'icons/obj/flora/deadtrees.dmi'
+	icon_state = "tree_12"
+
+/obj/structure/flora/tree/dead/deadtree/New()
 	..()
-	icon_state = "tree_[rand(1, 6)]"
+	icon_state = "tree_[rand(1, 12)]"
+
+/obj/structure/flora/tree/tall/New()
+	icon_state = "tree_[rand(1,6)]"
+	..()
 
 /obj/structure/flora/tree/pine/old_pinteree
 	name = "xmas tree"
@@ -92,6 +120,11 @@
 
 	layer = ABOVE_HUMAN_LAYER
 	var/dead = FALSE
+	var/obj/item/stored_item
+
+/obj/structure/flora/pottedplant/Destroy()
+	stored_item.forceMove(loc)
+	return ..()
 
 /obj/structure/flora/pottedplant/proc/death()
 	if (!dead)
@@ -107,14 +140,45 @@
 /obj/structure/flora/pottedplant/fire_act()
 	death()
 
-/obj/structure/flora/pottedplant/attackby(obj/item/weapon/W, mob/user)
-	if (W.edge)
-		user.visible_message("<span class='warning'>\The [user] cuts down the [src]!</span>")
+/obj/structure/flora/pottedplant/attackby(obj/item/W, mob/user)
+	if (W.edge && user.a_intent == I_HURT)
+		user.visible_message("<span class='warning'>[user] cuts down the [src]!</span>")
 		death()
 		return 1
-	if(W.mod_weight >= 0.75)
+	if(W.mod_weight >= 0.75 && user.a_intent == I_HURT)
 		shake_animation(stime = 4)
+		return 1
+	if(!ishuman(user))
+		return
+	if(istype(W, /obj/item/weapon/holder))
+		return //no hiding mobs in there
+	user.visible_message("[user] begins digging around inside of \the [src].", "You begin digging around in \the [src], trying to hide \the [W].")
+	playsound(loc, 'sound/effects/plantshake.ogg', rand(50, 75), TRUE)
+	if(do_after(user, 20, src))
+		if(!stored_item)
+			if(W.w_class <= ITEM_SIZE_NORMAL)
+				user.drop_from_inventory(W, src)
+				stored_item = W
+				to_chat(user,"<span class='notice'>You hide \the [W] in [src].</span>")
+				return
+			else
+				to_chat(user,"<span class='notice'>\The [W] can't be hidden in [src], it's too big.</span>")
+				return
+		else
+			to_chat(user,"<span class='notice'>Something is already hidden in [src].</span>")
+			return
 	return ..()
+
+/obj/structure/flora/pottedplant/attack_hand(mob/user as mob)
+	user.visible_message("[user] begins digging around inside of \the [src].", "You begin digging around in \the [src], searching it.")
+	playsound(loc, 'sound/effects/plantshake.ogg', rand(50, 75), TRUE)
+	if(do_after(user, 40, src))
+		if(!stored_item)
+			to_chat(user,"<span class='notice'>There is nothing hidden in [src].</span>")
+		else
+			user.put_in_hands(stored_item)
+			to_chat(user,"<span class='notice'>You take \the [stored_item] from [src].</span>")
+			stored_item = null
 
 /obj/structure/flora/pottedplant/bullet_act(obj/item/projectile/Proj)
 	if (prob(Proj.damage*2))
@@ -240,6 +304,41 @@
 	..()
 	icon_state = "fullgrass_[rand(1, 3)]"
 
+/obj/structure/flora/goonbushes
+	name = "shrub"
+	icon = 'icons/obj/flora/goonbushes.dmi'
+	icon_state = ""
+	anchored = 1
+	layer = ABOVE_HUMAN_LAYER
+
+/obj/structure/flora/goonbushes/shrub
+	name = "shrub"
+	icon_state = "shrub"
+
+/obj/structure/flora/goonbushes/leafy
+	name = "shrub"
+	icon_state = "leafy"
+
+/obj/structure/flora/goonbushes/thick
+	name = "shrub"
+	icon_state = "thick"
+
+/obj/structure/flora/goonbushes/fern
+	name = "shrub"
+	icon_state = "fern"
+
+/obj/structure/flora/goonbushes/palm
+	name = "shrub"
+	icon_state = "palm"
+
+/obj/structure/flora/goonbushes/bush
+	name = "shrub"
+	icon_state = "bush"
+
+/obj/structure/flora/goonbushes/sick
+	name = "shrub"
+	icon_state = "sick"
+	layer = BELOW_DOOR_LAYER
 
 //potted plants credit: Flashkirby
 /obj/structure/flora/pottedplant
@@ -436,3 +535,8 @@
 	name = "dead potted plant"
 	desc = "This is the dried up remains of a dead plant. Someone should replace it."
 	icon_state = "plant-dead"
+
+/obj/structure/flora/pottedplant/monkey
+	name = "potted monkey plant"
+	desc = "Perhaps, this is why we no longer have a genetics lab?"
+	icon_state = "monkeyplant"

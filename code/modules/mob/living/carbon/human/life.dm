@@ -45,6 +45,7 @@
 	var/poise_pool = HUMAN_DEFAULT_POISE
 	var/poise = HUMAN_DEFAULT_POISE
 	var/blocking_hand = 0 //0 for main hand, 1 for offhand
+	var/last_block = 0
 
 /mob/living/carbon/human/Life()
 	set invisibility = 0
@@ -567,8 +568,6 @@
 	if(!handle_some_updates())
 		return 0
 
-	if(status_flags & GODMODE)	return 0
-
 	//SSD check, if a logged player is awake put them back to sleep!
 	if(ssd_check() && species.get_ssd(src))
 		Sleeping(2)
@@ -736,6 +735,14 @@
 		else
 			clear_fullscreen("brute")
 
+		if(pains)
+			switch(get_shock())
+				if(150 to INFINITY)		pains.icon_state = "pain5"
+				if(75 to 150)			pains.icon_state = "pain4"
+				if(40 to 75)			pains.icon_state = "pain3"
+				if(25 to 40)			pains.icon_state = "pain2"
+				if(10 to 25)			pains.icon_state = "pain1"
+				else					pains.icon_state = "pain0"
 		if(healths)
 			healths.overlays.Cut()
 			if (chem_effects[CE_PAINKILLER] > 100)
@@ -902,8 +909,6 @@
 		mind.changeling.regenerate()
 
 /mob/living/carbon/human/proc/handle_shock()
-	..()
-	if(status_flags & GODMODE)	return 0	//godmode
 	if(!can_feel_pain())
 		shock_stage = 0
 		return
@@ -963,7 +968,6 @@
 
 // Stance is being used in the Onyx fighting system. I wanted to call it stamina, but screw it.
 /mob/living/carbon/human/proc/handle_poise()
-	if(status_flags & GODMODE)	return 0 // I'm sorry, Kratos. No divine homicide up here.
 	if(poise >= poise_pool) return 0 // Saving every single msecond. Fuck our mob controller *sigh
 	var/pregen = poise_pool/10
 
@@ -978,7 +982,7 @@
 		pregen -= 1.25
 
 	if(blocking)
-		pregen -= 2.0
+		pregen -= 2.5
 
 	if(poise < poise_pool)
 		poise += pregen
@@ -1154,6 +1158,11 @@
 	for(var/obj/item/organ/external/E in organs)
 		if(!(E.body_part & protected_limbs) && prob(40))
 			E.take_external_damage(burn = round(species_heat_mod * log(10, (burn_temperature + 10)), 0.1), used_weapon = fire)
+	
+	var/list/cig_places = list(wear_mask, l_ear, r_ear, r_hand, l_hand)
+	for(var/obj/item/clothing/mask/smokable/cig in cig_places)
+		if(istype(cig))
+			cig.light()
 
 /mob/living/carbon/human/rejuvenate()
 	restore_blood()

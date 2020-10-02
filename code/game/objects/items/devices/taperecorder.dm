@@ -94,9 +94,9 @@
 		if(speaking)
 			if(!speaking.machine_understands)
 				msg = speaking.scramble(msg)
-			mytape.record_speech("[M.name] [speaking.format_message_plain(msg, verb)]")
+			mytape.record_speech("[M.GetVoice()] [speaking.format_message_plain(msg, verb)]")
 		else
-			mytape.record_speech("[M.name] [verb], \"[msg]\"")
+			mytape.record_speech("[M.GetVoice()] [verb], \"[msg]\"")
 
 
 /obj/item/device/taperecorder/see_emote(mob/M as mob, text, emote_type)
@@ -414,7 +414,7 @@
 		return
 	else if(istype(I, /obj/item/weapon/pen))
 		if(loc == user && !user.incapacitated())
-			var/new_name = input(user, "What would you like to label the tape?", "Tape labeling") as null|text
+			var/new_name = sanitize(input(user, "What would you like to label the tape?", "Tape labeling") as null|text)
 			if(isnull(new_name)) return
 			new_name = sanitizeSafe(new_name)
 			if(new_name)

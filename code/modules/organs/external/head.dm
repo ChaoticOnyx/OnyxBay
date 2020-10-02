@@ -16,6 +16,8 @@
 	cavity_name = "cranial"
 	limb_flags = ORGAN_FLAG_CAN_AMPUTATE | ORGAN_FLAG_GENDERED_ICON | ORGAN_FLAG_HEALS_OVERKILL | ORGAN_FLAG_CAN_BREAK
 
+	internal_organs_size = 3
+
 	var/can_intake_reagents = 1
 	var/eye_icon = "eyes_s"
 	var/eye_icon_location = 'icons/mob/human_face.dmi'
@@ -29,7 +31,7 @@
 	. = ..()
 
 	if(forehead_graffiti && graffiti_style)
-		to_chat(user, "<span class='notice'>It has \"[forehead_graffiti]\" written on it in [graffiti_style]!</span>")
+		. += "\n<span class='notice'>It has \"[forehead_graffiti]\" written on it in [graffiti_style]!</span>"
 
 /obj/item/organ/external/head/proc/write_on(mob/penman, style)
 	var/head_name = name

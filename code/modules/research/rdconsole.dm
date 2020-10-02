@@ -304,12 +304,13 @@ won't update every console in existence) but it's more of a hassle to do. Also, 
 			if(being_built)
 				var/n
 				if (href_list["customamt"])
-					n = Clamp(round(input("Queue how many?", "Protolathe Queue") as num|null), 0, 100)
+					n = round(input("Queue how many?", "Protolathe Queue") as num|null)
 					if (!linked_lathe)
 						return //in case the 'lathe gets unlinked or destroyed or someshit while the popup is open
 				else
 					n = text2num(href_list["n"])
-				for(var/i=1;i<=n;i++)
+				n = min(n, (100 - linked_lathe.queue.len))
+				for(var/i in 1 to n)
 					linked_lathe.addToQueue(being_built)
 
 		screen = 3.1
@@ -724,26 +725,25 @@ won't update every console in existence) but it's more of a hassle to do. Also, 
 				if(name_set in filtered["protolathe"])
 					continue
 				dat += "<H2>[name_set]</H2><UL>"
-				if(linked_imprinter)
-					for(var/datum/design/D in files.known_designs)
-						if(!D.build_path || !(D.build_type & PROTOLATHE) || D.category_items != name_set)
-							continue
-						var/temp_dat
-						for(var/M in D.materials)
-							temp_dat += ", [D.materials[M]*linked_imprinter.mat_efficiency] [CallMaterialName(M)]"
-						for(var/T in D.chemicals)
-							temp_dat += ", [D.chemicals[T]*linked_imprinter.mat_efficiency] [CallReagentName(T)]"
-						if(temp_dat)
-							temp_dat = " \[[copytext(temp_dat, 3)]\]"
-						if(linked_lathe.canBuild(D, 1))
-							dat += "<LI><B><A href='?src=\ref[src];build=[D.id];n=1'>[D.name]</A></B>[temp_dat] Queue: "
-							if(linked_lathe.canBuild(D, 5))
-								dat += "<A href='?src=\ref[src];build=[D.id];n=5'>(&times;5)</A>"
-							if(linked_lathe.canBuild(D, 10))
-								dat += "<A href='?src=\ref[src];build=[D.id];n=10'>(&times;10)</A>"
-							dat += "<A href='?src=\ref[src];build=[D.id];customamt=1'>(Custom)</A>"
-						else
-							dat += "<LI><B>[D.name]</B>[temp_dat]"
+				for(var/datum/design/D in files.known_designs)
+					if(!D.build_path || !(D.build_type & PROTOLATHE) || D.category_items != name_set)
+						continue
+					var/temp_dat
+					for(var/M in D.materials)
+						temp_dat += ", [D.materials[M]*linked_lathe.mat_efficiency] [CallMaterialName(M)]"
+					for(var/T in D.chemicals)
+						temp_dat += ", [D.chemicals[T]*linked_lathe.mat_efficiency] [CallReagentName(T)]"
+					if(temp_dat)
+						temp_dat = " \[[copytext(temp_dat, 3)]\]"
+					if(linked_lathe.canBuild(D, 1))
+						dat += "<LI><B><A href='?src=\ref[src];build=[D.id];n=1'>[D.name]</A></B>[temp_dat] Queue: "
+						if(linked_lathe.canBuild(D, 5))
+							dat += "<A href='?src=\ref[src];build=[D.id];n=5'>(&times;5)</A>"
+						if(linked_lathe.canBuild(D, 10))
+							dat += "<A href='?src=\ref[src];build=[D.id];n=10'>(&times;10)</A>"
+						dat += "<A href='?src=\ref[src];build=[D.id];customamt=1'>(Custom)</A>"
+					else
+						dat += "<LI><B>[D.name]</B>[temp_dat]"
 				dat += "</UL>"
 
 		if(3.2) //Protolathe Material Storage Sub-menu
@@ -887,7 +887,7 @@ won't update every console in existence) but it's more of a hassle to do. Also, 
 			dat += "List of Available Designs:"
 			dat += GetResearchListInfo()
 
-	user << browse("<TITLE>Fabrication Control Console</TITLE><HR>[dat]", "window=rdconsole;size=850x600")
+	user << browse("<meta charset=\"utf-8\"><TITLE>Fabrication Control Console</TITLE><HR>[dat]", "window=rdconsole;size=850x600")
 	onclose(user, "rdconsole")
 
 /obj/machinery/computer/rdconsole/robotics

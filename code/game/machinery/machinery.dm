@@ -87,6 +87,7 @@ Class Procs:
 	icon = 'icons/obj/stationobjs.dmi'
 	w_class = ITEM_SIZE_NO_CONTAINER
 	pull_sound = "pull_machine"
+	layer = BELOW_OBJ_LAYER
 
 	var/stat = 0
 	var/emagged = 0
@@ -370,14 +371,14 @@ Class Procs:
 		playsound(src, clicksound, clickvol)
 
 /obj/machinery/proc/display_parts(mob/user)
-	to_chat(user, "<span class='notice'>Following parts detected in the machine:</span>")
+	. = "<span class='notice'>Following parts detected in the machine:</span>"
 	for(var/var/obj/item/C in component_parts)
-		to_chat(user, "<span class='notice'>	[C.name]</span>")
+		. += "\n<span class='notice'>	[C.name]</span>"
 
 /obj/machinery/examine(mob/user)
-	. = ..(user)
+	. = ..()
 	if(component_parts && hasHUD(user, HUD_SCIENCE))
-		display_parts(user)
+		. += "\n[display_parts(user)]"
 
 /obj/machinery/blob_act(destroy, obj/effect/blob/source)
 	if (stat & BROKEN)

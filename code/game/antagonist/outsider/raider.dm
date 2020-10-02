@@ -21,6 +21,8 @@ GLOBAL_DATUM_INIT(raiders, /datum/antagonist/raider, new)
 
 	faction = "pirate"
 
+	station_crew_involved = FALSE
+
 	// Heist overrides check_victory() and doesn't need victory or loss strings/tags.
 	var/list/raider_uniforms = list(
 		/obj/item/clothing/under/soviet,
@@ -136,7 +138,7 @@ GLOBAL_DATUM_INIT(raiders, /datum/antagonist/raider, new)
 	global_objectives |= new /datum/objective/heist/preserve_crew
 	return 1
 
-/datum/antagonist/raider/check_victory()
+/datum/antagonist/raider/print_roundend()
 	// Totally overrides the base proc.
 	var/win_type = "Major"
 	var/win_group = "Crew"
@@ -165,22 +167,19 @@ GLOBAL_DATUM_INIT(raiders, /datum/antagonist/raider, new)
 		win_type = "Major"
 		win_group = "Crew"
 		win_msg += "<B>The Raiders have been wiped out!</B>"
-	else if(is_raider_crew_safe())
+	else if(!is_raider_crew_safe())
 		if(win_group == "Crew" && win_type == "Minor")
 			win_type = "Major"
 		win_group = "Crew"
 		win_msg += "<B>The Raiders have left someone behind!</B>"
 	else
 		if(win_group == "Raider")
-			if(win_type == "Minor")
-				win_type = "Major"
 			win_msg += "<B>The Raiders escaped!</B>"
 		else
 			win_msg += "<B>The Raiders were repelled!</B>"
 
-	to_world("<span class='danger'><font size = 3>[win_type] [win_group] victory!</font></span>")
-	to_world("[win_msg]")
 	feedback_set_details("round_end_result","heist - [win_type] [win_group]")
+	return "<span class='danger'><font size = 3>[win_type] [win_group] victory!</font></span><br>[win_msg]"
 
 /datum/antagonist/raider/proc/is_raider_crew_safe()
 

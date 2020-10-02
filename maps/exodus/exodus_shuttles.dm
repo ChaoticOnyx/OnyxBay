@@ -88,19 +88,6 @@
 /obj/effect/shuttle_landmark/escape_pod/transit/pod5
 	number = 5
 
-//Transport shuttle
-
-/datum/shuttle/autodock/ferry/transport
-	name = "Transport"
-	warmup_time = 10
-	location = 1
-	shuttle_area = /area/shuttle/transport/centcom
-	dock_target = "centcom_transport_shuttle"
-	landmark_transition = "nav_transport_transition"
-	waypoint_offsite = "nav_transport_start"
-	waypoint_station = "nav_transport_station"
-	move_time = 30
-
 /obj/effect/shuttle_landmark/transport/start
 	name = "Centcomm"
 	landmark_tag = "nav_transport_start"
@@ -542,6 +529,7 @@
 	current_location = "nav_merchant_start"
 	dock_target = "merchant_ship_dock"
 	home_waypoint = "nav_merchant_start"
+	cloaked = 1
 	move_time = 60
 	announcer = "NMV Icarus Sensor Array"
 	arrival_message = "Attention, you have an unarmed cargo vessel, which appears to be a merchant ship, approaching the station."
@@ -592,7 +580,7 @@
 	current_location = "nav_skipjack_start"
 	landmark_transition = "nav_skipjack_transition"
 	home_waypoint = "nav_skipjack_start"
-	cloaked = 0
+	cloaked = 1
 	move_time = 120
 	announcer = "NMV Icarus Sensor Array"
 	arrival_message = "Attention, you have a large signature approaching the station - looks unarmed to surface scans. We're too far out to intercept - brace for visitors."

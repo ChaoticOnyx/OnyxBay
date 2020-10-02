@@ -33,11 +33,11 @@
 		/obj/item/clamp,
 		/obj/item/frame
 		)
-		
+
 	var/list/cant_hold = list(
 		/obj/item/weapon/reagent_containers/food/snacks/grown,
 		)
-	
+
 
 	var/obj/item/wrapped = null // Item currently being held.
 
@@ -111,6 +111,14 @@
 	storage_type = list(
 		/obj/item/weapon/storage/
 		)
+/obj/item/weapon/gripper/integrated_circuit
+	name = "integrated circuit assemblies manipulator"
+	desc = "Complex grasping tool for integrated circuit assemblies"
+
+	can_hold = list(
+		/obj/item/device/electronic_assembly,
+		/obj/item/integrated_circuit,
+	)
 
 /obj/item/weapon/gripper/archeologist
 	name = "archeologist gripper"
@@ -135,6 +143,7 @@
 		/obj/item/weapon/storage/lockbox/vials
 		)
 	can_hold = list(
+		/obj/item/organ,
 		/obj/item/weapon/cell,
 		/obj/item/weapon/stock_parts,
 		/obj/item/device/mmi,
@@ -164,6 +173,11 @@
 	icon_state = "gripper-service"
 	desc = "A simple grasping tool used to perform tasks in the service sector, such as handling food, drinks, and seeds."
 
+	storage_type = list(
+		/obj/item/weapon/storage/fancy/egg_box,
+		/obj/item/weapon/storage/lunchbox,
+	)
+
 	can_hold = list(
 		/obj/item/weapon/reagent_containers/glass,
 		/obj/item/weapon/reagent_containers/food,
@@ -171,6 +185,8 @@
 		/obj/item/weapon/grown,
 		/obj/item/weapon/glass_extra
 		)
+
+	cant_hold = list() // understandable, have a great day
 
 /obj/item/weapon/gripper/surgical //Used to handle organs.
 	name = "surgical gripper"
@@ -206,9 +222,20 @@
 /obj/item/weapon/gripper/examine(mob/user)
 	. = ..()
 	if(wrapped)
-		to_chat(user, "It is holding \a [wrapped].")
+		. += "\nIt is holding \a [wrapped]."
 	else if (length(storage_type))
-		to_chat(user, "[src] is currently can [mode == MODE_EMPTY ? "empty" : "open"] containers.")
+		. += "\n[src] is currently can [mode == MODE_EMPTY ? "empty" : "open"] containers."
+
+/obj/item/weapon/gripper/integrated_circuit/attack_self(mob/living/silicon/user)
+	if(wrapped)
+		if (istype(wrapped, /obj/item/device/electronic_assembly))
+			var/obj/item/device/electronic_assembly/O = wrapped
+			O.interact(user)
+
+/obj/item/weapon/gripper/integrated_circuit/afterattack(atom/target, mob/user, proximity)
+	if(proximity && istype(wrapped, /obj/item/integrated_circuit) && istype(target, /obj/item/device/electronic_assembly))
+		var/obj/item/device/electronic_assembly/AS = target
+		AS.try_add_component(wrapped, user, AS)
 
 /obj/item/weapon/gripper/attack_self(mob/user as mob)
 	if(wrapped)
@@ -308,19 +335,19 @@
 							var/turf/T = get_turf(src)
 							S.remove_from_storage(I,T)
 							visible_message("<span class='notice'>\The [I] drops on \the [T].</span>")
-						else 
+						else
 							inuse = 0
 							to_chat(user, "<span class='notice'>\The [target] is empty.</span>")
 					else
 						inuse = 0
 						to_chat(user, "<span class='danger'>The process was interrupted!</span>")
 			return
-			
+
 	for(var/atypepath in cant_hold)
 		if(istype(target,atypepath))
-			to_chat(user, "<span class='danger'>Your gripper cannot hold \the [target].</span>")		
-			return		
-			
+			to_chat(user, "<span class='danger'>Your gripper cannot hold \the [target].</span>")
+			return
+
 	if(istype(target,/obj/item)) //Check that we're not pocketing a mob.
 
 		//...and that the item is not in a container.
@@ -332,7 +359,7 @@
 		//Check if the item is blacklisted.
 		var/grab = 0
 		for(var/typepath in can_hold)
-			if(istype(I,typepath))			
+			if(istype(I,typepath))
 				grab = 1
 				break
 
@@ -375,11 +402,25 @@
 				A.cell = null
 
 				user.visible_message("<span class='danger'>[user] removes the power cell from [A]!</span>", "You remove the power cell.")
-	
+
 	else if(istype(target,/obj/machinery/portable_atmospherics/canister))
 		var/obj/machinery/portable_atmospherics/canister/A = target
 		A.ui_interact(user)
-	
+
+	else if(istype(target, /obj/machinery/cell_charger))
+		var/obj/machinery/cell_charger/charger = target
+		if(charger.charging)
+
+			wrapped = charger.charging
+
+			charger.charging.add_fingerprint(user)
+			charger.charging.update_icon()
+			charger.charging.loc = src
+			charger.charging = null
+			charger.update_icon()
+
+			user.visible_message(SPAN_DANGER("[user] removes the power cell from [charger]!"), "You remove the power cell.")
+
 	else
 		to_chat(user, "<span class='notice'>[src] can't interact with \the [target].</span>")
 
@@ -542,7 +583,7 @@
 	if(!module)
 		module = new /obj/item/weapon/robot_module/drone(src)
 
-	var/dat = "<HEAD><TITLE>Drone modules</TITLE></HEAD><BODY>\n"
+	var/dat = "<meta charset=\"utf-8\"><HEAD><TITLE>Drone modules</TITLE></HEAD><BODY>\n"
 	dat += {"
 	<B>Activated Modules</B>
 	<BR>

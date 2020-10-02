@@ -266,3 +266,10 @@ area/space/atmosalert()
 					sound_to(H, S)
 
 	spawn(60) .()
+
+/area/thunderfield
+	name = "Thunderfield"
+	icon_state = "yellow"
+	luminosity = 1
+	dynamic_lighting = 0
+	requires_power = 0

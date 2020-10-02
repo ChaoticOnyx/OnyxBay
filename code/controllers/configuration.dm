@@ -4,6 +4,7 @@ var/list/gamemode_cache = list()
 	var/server_name = null					// server name (for world name / status)
 	var/server_id = null					// server id (used for separate bans storing)
 	var/server_suffix = 0					// generate numeric suffix based on server port
+	var/subserver_name = null               // subserver name in window title, ignored if null
 
 	var/log_ooc = 0							// Log OOC channel
 	var/log_access = 0						// Log login/logout
@@ -11,6 +12,7 @@ var/list/gamemode_cache = list()
 	var/log_admin = 0						// Log admin actions
 	var/log_asay = 0						// Log admin/mod say
 	var/log_debug = 1						// Log debug output
+	var/log_debug_verbose = 1               // Log verbose debug output
 	var/log_game = 0						// Log game events
 	var/log_vote = 0						// Log voting
 	var/log_whisper = 0						// Log client whisper
@@ -66,6 +68,7 @@ var/list/gamemode_cache = list()
 	var/guest_jobban = 1
 	var/panic_bunker = 0
 	var/eams = 0
+	var/eams_blocks_ooc = 0
 	var/usewhitelist = 0
 	var/kick_inactive = 0				//force disconnect for inactive players after this many minutes, if non-0
 	var/mods_can_tempban = 0
@@ -107,6 +110,7 @@ var/list/gamemode_cache = list()
 	var/forumurl
 	var/discordurl
 	var/githuburl
+	var/patreonurl
 
 	var/minutetopiclimit
 	var/secondtopiclimit
@@ -128,8 +132,6 @@ var/list/gamemode_cache = list()
 	var/bones_can_break = 1
 	var/limbs_can_break = 1
 
-	var/revival_pod_plants = 1
-	var/revival_cloning = 1
 	var/revival_brain_life = -1
 
 	var/use_loyalty_implants = 0
@@ -244,12 +246,15 @@ var/list/gamemode_cache = list()
 	var/server_port
 
 	var/donations = FALSE
+	var/storyteller = FALSE
 
 	var/projectile_basketball
 
 	// Splash screen options
 	var/list/lobby_images = list('icons/splashes/onyx_old.png', 'icons/splashes/onyx_new.png')
 	var/current_lobbyscreen = null
+
+	var/db_uses_cp1251_encoding = FALSE
 
 /datum/configuration/proc/Initialize()
 	var/list/L = typesof(/datum/game_mode) - /datum/game_mode
@@ -354,6 +359,9 @@ var/list/gamemode_cache = list()
 				if ("log_debug")
 					config.log_debug = 1
 
+				if ("log_debug_verbose")
+					config.log_debug_verbose = 1
+
 				if ("log_game")
 					config.log_game = 1
 
@@ -390,7 +398,7 @@ var/list/gamemode_cache = list()
 				if ("no_click_cooldown")
 					config.no_click_cooldown = 1
 
-				if("allow_admin_ooccolor")
+				if ("allow_admin_ooccolor")
 					config.allow_admin_ooccolor = 1
 
 				if ("allow_vote_restart")
@@ -429,14 +437,11 @@ var/list/gamemode_cache = list()
 				if ("vote_autogamemode_timeleft")
 					config.vote_autogamemode_timeleft = text2num(value)
 
-				if("ert_admin_only")
+				if ("ert_admin_only")
 					config.ert_admin_call_only = 1
 
 				if ("allow_ai")
 					config.allow_ai = 1
-
-//				if ("authentication")
-//					config.enable_authentication = 1
 
 				if ("respawn_delay")
 					config.respawn_delay = text2num(value)
@@ -450,6 +455,9 @@ var/list/gamemode_cache = list()
 
 				if ("serversuffix")
 					config.server_suffix = 1
+
+				if ("subserver_name")
+					config.subserver_name = value
 
 				if ("hostedby")
 					config.hostedby = value
@@ -480,6 +488,9 @@ var/list/gamemode_cache = list()
 
 				if ("githuburl")
 					config.githuburl = value
+
+				if ("patreonurl")
+					config.patreonurl = value
 
 				if ("ghosts_can_possess_animals")
 					config.ghosts_can_possess_animals = value
@@ -529,7 +540,7 @@ var/list/gamemode_cache = list()
 				if ("aliens_allowed")
 					config.aliens_allowed = 1
 
-				if("alien_eggs_allowed")
+				if ("alien_eggs_allowed")
 					config.alien_eggs_allowed = 1
 
 				if ("ninjas_allowed")
@@ -767,7 +778,10 @@ var/list/gamemode_cache = list()
 						panic_address = value
 
 				if("eams")
-					config.eams = 1
+					config.eams = TRUE
+
+				if("eams_blocks_ooc")
+					config.eams_blocks_ooc = TRUE
 
 				if("delist_when_no_admins")
 					config.delist_when_no_admins = TRUE
@@ -786,9 +800,6 @@ var/list/gamemode_cache = list()
 
 				if("autostealth")
 					config.autostealth = text2num(value)
-
-				if("radiation_lower_limit")
-					radiation_lower_limit = text2num(value)
 
 				if("projectile_basketball")
 					config.projectile_basketball = 1
@@ -825,57 +836,46 @@ var/list/gamemode_cache = list()
 				if("donations")
 					donations = TRUE
 
-				else
-					log_misc("Unknown setting in configuration: '[name]'")
+				if("storyteller")
+					storyteller = TRUE
 
-		else if(type == "game_options")
-			if(!value)
-				log_misc("Unknown value for setting [name] in [filename].")
-			value = text2num(value)
+				if("db_uses_cp1251_encoding")
+					db_uses_cp1251_encoding = TRUE
 
-			switch(name)
 				if("health_threshold_dead")
-					config.health_threshold_dead = value
-				if("revival_pod_plants")
-					config.revival_pod_plants = value
-				if("revival_cloning")
-					config.revival_cloning = value
+					config.health_threshold_dead = text2num(value)
 				if("revival_brain_life")
-					config.revival_brain_life = value
+					config.revival_brain_life = text2num(value)
 				if("organ_health_multiplier")
-					config.organ_health_multiplier = value / 100
+					config.organ_health_multiplier = text2num(value) / 100
 				if("organ_regeneration_multiplier")
-					config.organ_regeneration_multiplier = value / 100
+					config.organ_regeneration_multiplier = text2num(value) / 100
 				if("organ_damage_spillover_multiplier")
-					config.organ_damage_spillover_multiplier = value / 100
+					config.organ_damage_spillover_multiplier = text2num(value) / 100
 				if("organs_can_decay")
 					config.organs_decay = 1
 				if("bones_can_break")
-					config.bones_can_break = value
+					config.bones_can_break = text2num(value)
 				if("limbs_can_break")
-					config.limbs_can_break = value
-
+					config.limbs_can_break = text2num(value)
 				if("run_speed")
-					config.run_speed = value
+					config.run_speed = text2num(value)
 				if("walk_speed")
-					config.walk_speed = value
-
+					config.walk_speed = text2num(value)
 				if("human_delay")
-					config.human_delay = value
+					config.human_delay = text2num(value)
 				if("robot_delay")
-					config.robot_delay = value
+					config.robot_delay = text2num(value)
 				if("monkey_delay")
-					config.monkey_delay = value
+					config.monkey_delay = text2num(value)
 				if("alien_delay")
-					config.alien_delay = value
+					config.alien_delay = text2num(value)
 				if("slime_delay")
-					config.slime_delay = value
+					config.slime_delay = text2num(value)
 				if("animal_delay")
-					config.animal_delay = value
+					config.animal_delay = text2num(value)
 				if("maximum_mushrooms")
-					config.maximum_mushrooms = value
-
-
+					config.maximum_mushrooms = text2num(value)
 				if("use_loyalty_implants")
 					config.use_loyalty_implants = 1
 

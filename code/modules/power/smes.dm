@@ -487,16 +487,16 @@
 
 /obj/machinery/power/smes/examine(mob/user)
 	. = ..()
-	to_chat(user, "The service hatch is [panel_open ? "open" : "closed"].")
+	. += "\nThe service hatch is [panel_open ? "open" : "closed"]."
 	if(!damage)
 		return
 	var/damage_percentage = round((damage / maxdamage) * 100)
 	switch(damage_percentage)
 		if(75 to INFINITY)
-			to_chat(user, "<span class='danger'>It's casing is severely damaged, and sparking circuitry may be seen through the holes!</span>")
+			. += "\n<span class='danger'>It's casing is severely damaged, and sparking circuitry may be seen through the holes!</span>"
 		if(50 to 74)
-			to_chat(user, "<span class='notice'>It's casing is considerably damaged, and some of the internal circuits appear to be exposed!</span>")
+			. += "\n<span class='notice'>It's casing is considerably damaged, and some of the internal circuits appear to be exposed!</span>"
 		if(25 to 49)
-			to_chat(user, "<span class='notice'>It's casing is quite seriously damaged.</span>")
+			. += "\n<span class='notice'>It's casing is quite seriously damaged.</span>"
 		if(0 to 24)
-			to_chat(user, "It's casing has some minor damage.")
+			. += "\nIt's casing has some minor damage."

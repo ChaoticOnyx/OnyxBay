@@ -79,7 +79,7 @@
 
 	return {"<!DOCTYPE html>
 <html>
-	<meta charset=ISO-8859-1">
+	<meta charset=\"utf-8\">
 	<head>
 		<meta http-equiv="X-UA-Compatible" content="IE=edge" />
 		[head_content]
@@ -109,6 +109,8 @@
 	if (width && height)
 		window_size = "size=[width]x[height];"
 	user << browse(get_content(), "window=[window_id];[window_size][window_options]")
+	spawn()
+		winset(user, "mapwindow.map", "focus=true")
 	if (use_onclose)
 		onclose(user, window_id, ref)
 
@@ -120,6 +122,8 @@
 
 /datum/browser/proc/close()
 	user << browse(null, "window=[window_id]")
+	spawn()
+		winset(user, "mapwindow.map", "focus=true")
 
 // This will allow you to show an icon in the browse window
 // This is added to mob so that it can be used without a reference to the browser object
