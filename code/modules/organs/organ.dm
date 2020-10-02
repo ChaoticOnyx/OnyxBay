@@ -26,6 +26,8 @@ var/list/organ_cache = list()
 	var/rejecting                     // Is this organ already being rejected?
 
 	var/death_time
+	var/foreign = FALSE 			  // special organ tag, that says species.create_organs() to don't delete it.
+
 
 /obj/item/organ/Destroy()
 	owner = null
