@@ -485,6 +485,8 @@ var/global/list/possible_changeling_IDs = list("Alpha","Beta","Gamma","Delta","E
 		status_flags &= ~(FAKEDEATH)
 		// let us move again
 		update_canmove()
+		// re-add changeling powers because somebody have their hands growing out of the place where normal people's hands do not.
+		make_changeling()
 		// sending display messages
 		to_chat(src, SPAN_NOTICE("We have regenerated."))
 		return
@@ -497,10 +499,10 @@ var/global/list/possible_changeling_IDs = list("Alpha","Beta","Gamma","Delta","E
 		to_chat(src, "<span class='notice'>We can not do this. We are really dead.</span>")
 		return
 
-	if(!stat && alert("Are we sure we wish to fake our death?",,"Yes","No") == "No")//Confirmation for living changelings if they want to fake their death
+	if(is_regenerating())
 		return
 
-	if(is_regenerating())
+	if(!stat && alert("Are we sure we wish to fake our death?",,"Yes","No") == "No")//Confirmation for living changelings if they want to fake their death
 		return
 
 	status_flags |= FAKEDEATH
