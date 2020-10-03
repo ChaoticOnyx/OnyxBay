@@ -273,12 +273,11 @@ The slots that you can use are found in items_clothing.dm and are the inventory 
 
 	for(var/obj/item/organ/organ in H.contents)
 		if((organ in H.internal_organs) && organ.foreign)
-			foreign_organs += organ
+			foreign_organs += organ.type
 
-	for(var/obj/item/organ/external/E in H.contents)
-		for(var/obj/item/organ/internal/O in E)
-			if((istype(O) || (O in H.internal_organs)) && !O.foreign)
-				qdel(O)
+	for(var/obj/item/organ/organ in H.contents)
+		if((organ in H.organs) || (organ in H.internal_organs))
+			qdel(organ)
 
 	if(H.organs)                  H.organs.Cut()
 	if(H.internal_organs)         H.internal_organs.Cut()
@@ -303,8 +302,9 @@ The slots that you can use are found in items_clothing.dm and are the inventory 
 			O.organ_tag = organ_tag
 		H.internal_organs_by_name[organ_tag] = O
 
-	for(var/obj/item/organ/internal/organ in foreign_organs)
-		H.internal_organs_by_name[organ.organ_tag] += organ
+	for(var/organ in foreign_organs)
+		var/obj/item/organ/O = new organ(H)
+		H.internal_organs_by_name[O.organ_tag] = O
 
 	for(var/name in H.organs_by_name)
 		H.organs |= H.organs_by_name[name]
