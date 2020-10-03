@@ -1161,6 +1161,11 @@
 	for(var/obj/item/organ/external/E in organs)
 		if(!(E.body_part & protected_limbs) && prob(40))
 			E.take_external_damage(burn = round(species_heat_mod * log(10, (burn_temperature + 10)), 0.1), used_weapon = fire)
+	
+	var/list/cig_places = list(wear_mask, l_ear, r_ear, r_hand, l_hand)
+	for(var/obj/item/clothing/mask/smokable/cig in cig_places)
+		if(istype(cig))
+			cig.light()
 
 /mob/living/carbon/human/rejuvenate()
 	restore_blood()

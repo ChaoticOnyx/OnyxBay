@@ -44,6 +44,13 @@
 		data["id_rank"] = id_card && id_card.assignment ? id_card.assignment : "Unassigned"
 		data["id_owner"] = id_card && id_card.registered_name ? id_card.registered_name : "-----"
 		data["id_name"] = id_card ? id_card.name : "-----"
+		data["sex"] = id_card ? id_card.sex : "UNSET"
+		data["age"] = id_card ? id_card.age : "UNSET"
+		data["dna_hash"] = id_card ? id_card.dna_hash : "UNSET"
+		data["fingerprint_hash"] = id_card ? id_card.fingerprint_hash : "UNSET"
+		data["blood_type"] = id_card ? id_card.blood_type : "UNSET"
+		data["front_photo"] = id_card ? id_card.front : "UNSET"
+		data["side_photo"] = id_card ? id_card.side : "UNSET"
 
 	data["command_jobs"] = format_jobs(GLOB.command_positions)
 	data["support_jobs"] = format_jobs(GLOB.support_positions)
@@ -107,6 +114,28 @@
 /datum/nano_module/program/card_mod/proc/get_accesses(is_centcom = 0)
 	return null
 
+/datum/computer_file/program/card_mod/proc/get_photo(mob/user)
+	if(istype(user.get_active_hand(), /obj/item/weapon/photo))
+		var/obj/item/weapon/photo/photo = user.get_active_hand()
+		return photo.img
+	if(istype(user, /mob/living/silicon))
+		var/mob/living/silicon/tempAI = usr
+		var/obj/item/weapon/photo/selection = tempAI.GetPicture()
+		if (selection)
+			return selection.img
+
+/datum/computer_file/program/card_mod/proc/get_access_by_rank(rank)
+	var/datum/job/jobdatum
+	for(var/jobtype in typesof(/datum/job))
+		var/datum/job/J = new jobtype
+		if(ckey(J.title) == ckey(rank))
+			jobdatum = J
+			break
+	if(!jobdatum)
+		to_chat(usr, SPAN_WARNING("No log exists for this job: [rank]"))
+		return
+
+	return jobdatum.get_access()
 
 /datum/computer_file/program/card_mod/Topic(href, href_list)
 	if(..())
@@ -141,6 +170,8 @@
 									<u>Assignment:</u> [id_card.assignment]<br>
 									<u>Account Number:</u> #[id_card.associated_account_number]<br>
 									<u>Blood Type:</u> [id_card.blood_type]<br><br>
+									<u>Age:</u> [id_card.age]<br><br>
+									<u>Sex:</u> [id_card.sex]<br><br>
 									<u>Access:</u><br>
 								"}
 
@@ -177,6 +208,7 @@
 				callHook("terminate_employee", list(id_card))
 		if("edit")
 			if(computer && can_run(user, 1))
+				var/static/regex/hash_check = regex(@"^[0-9a-fA-F]{32}$")
 				if(href_list["name"])
 					var/temp_name = sanitizeName(input("Enter name.", "Name", id_card.registered_name),allow_numbers=TRUE)
 					if(temp_name)
@@ -186,6 +218,57 @@
 				else if(href_list["account"])
 					var/account_num = text2num(input("Enter account number.", "Account", id_card.associated_account_number))
 					id_card.associated_account_number = account_num
+				else if(href_list["sex"])
+					var/sex = input("Select gender", "Gender") as null|anything in list("Male", "Female") // I'm terf!
+					if(!isnull(sex))
+						id_card.sex = sex
+				else if(href_list["age"])
+					var/sug_age = text2num(input("Enter age.", "Age", id_card.age))
+					if(sug_age > 17)
+						id_card.age = sug_age
+				else if(href_list["fingerprint_hash"])
+					var/sug_fingerprint_hash = sanitize(input("Enter fingerprint hash.", "Fingerprint hash", id_card.fingerprint_hash), 32)
+					if(hash_check.Find(sug_fingerprint_hash))
+						id_card.fingerprint_hash = sug_fingerprint_hash
+				else if(href_list["dna_hash"])
+					var/sug_dna_hash = sanitize(input("Enter DNA hash.", "DNA hash", id_card.dna_hash), 32)
+					if(hash_check.Find(sug_dna_hash))
+						id_card.dna_hash = sug_dna_hash
+				else if(href_list["blood_type"])
+					var/sug_blood_type = input("Select blood type", "Blood type") as null|anything in GLOB.blood_types
+					if(!isnull(sug_blood_type))
+						id_card.blood_type = sug_blood_type
+				else if(href_list["front_photo"])
+					var/photo = get_photo(usr)
+					if(photo)
+						id_card.front = photo
+				else if(href_list["side_photo"])
+					var/photo = get_photo(usr)
+					if(photo)
+						id_card.side = photo
+				else if(href_list["load_data"])
+					var/list/ass_data = list()
+					for(var/datum/computer_file/crew_record/CR in GLOB.all_crew_records)
+						ass_data.Add(list(CR.get_name() = CR))
+					var/selected_CR_name = input("Select crew record for write down to the card", "Crew record selection") as null|anything in ass_data
+					var/datum/computer_file/crew_record/selected_CR = get_crewmember_record(selected_CR_name)
+					if(!isnull(selected_CR))
+						id_card.registered_name = selected_CR.get_name()
+						id_card.assignment = selected_CR.get_job()
+						id_card.rank = selected_CR.get_rank()
+						id_card.dna_hash = selected_CR.get_dna()
+						id_card.fingerprint_hash = selected_CR.get_fingerprint()
+						id_card.sex = selected_CR.get_sex()
+						id_card.age = selected_CR.get_age()
+						id_card.blood_type = selected_CR.get_bloodtype()
+						id_card.front = selected_CR.photo_front
+						id_card.side = selected_CR.photo_side
+						var/list/access = get_access_by_rank(selected_CR.get_job())
+						if(isnull(access))
+							SSnano.update_uis(NM)
+							return 1
+						remove_nt_access(id_card)
+						apply_access(id_card, access)
 		if("assign")
 			if(computer && can_run(user, 1) && id_card)
 				var/t1 = href_list["assign_target"]
@@ -199,17 +282,7 @@
 					if(module.is_centcom)
 						access = get_centcom_access(t1)
 					else
-						var/datum/job/jobdatum
-						for(var/jobtype in typesof(/datum/job))
-							var/datum/job/J = new jobtype
-							if(ckey(J.title) == ckey(t1))
-								jobdatum = J
-								break
-						if(!jobdatum)
-							to_chat(usr, "<span class='warning'>No log exists for this job: [t1]</span>")
-							return
-
-						access = jobdatum.get_access()
+						access = get_access_by_rank(t1)
 
 					remove_nt_access(id_card)
 					apply_access(id_card, access)

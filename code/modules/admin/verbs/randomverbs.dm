@@ -545,7 +545,7 @@ Traitors and the like can also be revived with the previous role mostly intact.
 		to_chat(src, "Only administrators may use this command.")
 		return
 	var/input = sanitize(input(usr, "Please enter anything you want. Anything. Serious.", "What?", "") as message|null, extra = 0)
-	var/customname = sanitizeSafe(input(usr, "Pick a title for the report.", "Title") as text|null)
+	var/customname = sanitize(input(usr, "Pick a title for the report.", "Title") as text|null, encode = 0)
 	if(!input)
 		return
 	if(!customname)

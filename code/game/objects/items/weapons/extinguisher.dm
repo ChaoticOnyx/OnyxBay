@@ -46,8 +46,9 @@
 	..()
 
 /obj/item/weapon/extinguisher/examine(mob/user)
-	if(..(user, 0))
-		to_chat(user, text("\icon[] [] contains [] units of water left!", src, src.name, src.reagents.total_volume))
+	. = ..()
+	if(get_dist(src, user) <= 0)
+		. += "\n[text("\icon[] [] contains [] units of water left!", src, src.name, src.reagents.total_volume)]"
 	return
 
 /obj/item/weapon/extinguisher/attack_self(mob/user as mob)
@@ -113,6 +114,10 @@
 		src.last_use = world.time
 
 		playsound(src.loc, 'sound/effects/extinguish.ogg', 75, 1, -3)
+
+		if(istype(target, /obj/item/clothing/mask/smokable))
+			var/obj/item/clothing/mask/smokable/cig = target
+			cig.die()
 
 		var/direction = get_dir(src,target)
 

@@ -243,14 +243,19 @@
 		to_chat(src, "<span class='notice'>Something is there but you can't see it.</span>")
 		return 1
 
+	var/examine_result
+
 	face_atom(A)
 	if(istype(src, /mob/living/carbon))
 		var/mob/living/carbon/C = src
 		var/mob/fake = C.get_fake_appearance(A)
 		if(fake)
-			fake.examine(src)
-			return
-	A.examine(src)
+			examine_result = fake.examine(src)
+
+	if (isnull(examine_result))
+		examine_result = A.examine(src)
+
+	to_chat(usr, examine_result)
 
 /mob/verb/pointed(atom/A as mob|obj|turf in view())
 	set name = "Point To"
@@ -730,7 +735,7 @@
 	if( update_icon )	//forces a full overlay update
 		update_icon = 0
 		regenerate_icons()
-	else if( lying != lying_prev )
+	else if( lying != lying_prev || hanging != hanging_prev)
 		update_icons()
 
 	return canmove

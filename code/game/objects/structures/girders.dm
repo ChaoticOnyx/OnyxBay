@@ -17,11 +17,10 @@
 
 /obj/structure/girder/examine(mob/user)
 	. = ..()
-	if(.)
-		if(health <= 0.4 * max_health)
-			to_chat(user, SPAN("warning", "It's heavily damaged!"))
-		else if(health < max_health)
-			to_chat(user, SPAN("warning", "It's showing signs of damage."))
+	if(health <= 0.4 * max_health)
+		. += "\n[SPAN("warning", "It's heavily damaged!")]"
+	else if(health < max_health)
+		. += "\n[SPAN("warning", "It's showing signs of damage.")]"
 
 /obj/structure/girder/attack_generic(mob/user, damage, attack_message = "smashes apart", wallbreaker)
 	if(!damage || !wallbreaker)

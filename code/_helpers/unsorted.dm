@@ -432,8 +432,13 @@ Turf and target are seperate in case you want to teleport some distance from a t
 
 	return creatures
 
-/proc/get_follow_targets()
-	return follow_repository.get_follow_targets()
+/proc/get_follow_targets(mobs_only = FALSE)
+	. = follow_repository.get_follow_targets()
+	if(mobs_only)
+		for(var/datum/follow_holder/fh in .)
+			if(!ismob(fh.followed_instance))
+				. -= fh
+	return .
 
 //Orders mobs by type then by name
 /proc/sortmobs()
@@ -892,38 +897,6 @@ var/global/list/common_tools = list(
 /proc/istool(O)
 	if(O && is_type_in_list(O, common_tools))
 		return 1
-	return 0
-
-/proc/is_hot(obj/item/W as obj)
-	switch(W.type)
-		if(/obj/item/weapon/weldingtool)
-			var/obj/item/weapon/weldingtool/WT = W
-			if(WT.isOn())
-				return 3800
-			else
-				return 0
-		if(/obj/item/weapon/flame/lighter)
-			if(W:lit)
-				return 1500
-			else
-				return 0
-		if(/obj/item/weapon/flame/match)
-			if(W:lit)
-				return 1000
-			else
-				return 0
-		if(/obj/item/clothing/mask/smokable/cigarette)
-			if(W:lit)
-				return 1000
-			else
-				return 0
-		if(/obj/item/weapon/gun/energy/plasmacutter)
-			return 3800
-		if(/obj/item/weapon/melee/energy)
-			return 3500
-		else
-			return 0
-
 	return 0
 
 //Whether or not the given item counts as sharp in terms of dealing damage

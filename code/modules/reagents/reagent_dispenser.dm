@@ -2,7 +2,7 @@
 /obj/structure/reagent_dispensers
 	name = "Dispenser"
 	desc = "..."
-	icon = 'icons/obj/objects.dmi'
+	icon = 'icons/obj/reagent_tanks.dmi'
 	icon_state = "watertank"
 	density = 1
 	anchored = 0
@@ -29,14 +29,15 @@
 	..()
 
 /obj/structure/reagent_dispensers/examine(mob/user)
-	if(!..(user, 2))
+	. = ..()
+	if(get_dist(src, user) > 2)
 		return
-	to_chat(user, "<span class='notice'>It contains:</span>")
+	. += "\n<span class='notice'>It contains:</span>"
 	if(reagents && reagents.reagent_list.len)
 		for(var/datum/reagent/R in reagents.reagent_list)
-			to_chat(user, "<span class='notice'>[R.volume] units of [R.name]</span>")
+			. += "\n<span class='notice'>[R.volume] units of [R.name]</span>"
 	else
-		to_chat(user, "<span class='notice'>Nothing.</span>")
+		. += "\n<span class='notice'>Nothing.</span>"
 
 /obj/structure/reagent_dispensers/verb/set_APTFT() //set amount_per_transfer_from_this
 	set name = "Set transfer amount"
@@ -76,7 +77,6 @@
 /obj/structure/reagent_dispensers/watertank
 	name = "watertank"
 	desc = "A tank containing water."
-	icon = 'icons/obj/objects.dmi'
 	icon_state = "watertank"
 	amount_per_transfer_from_this = 10
 	possible_transfer_amounts = "10;25;50;100"
@@ -87,7 +87,6 @@
 /obj/structure/reagent_dispensers/fueltank
 	name = "fueltank"
 	desc = "A tank containing fuel."
-	icon = 'icons/obj/objects.dmi'
 	icon_state = "weldtank"
 	amount_per_transfer_from_this = 10
 	var/modded = 0
@@ -96,12 +95,14 @@
 	atom_flags = ATOM_FLAG_CLIMBABLE
 
 /obj/structure/reagent_dispensers/fueltank/examine(mob/user)
-	if(!..(user, 2))
+	. = ..()
+	if(get_dist(src, user) > 2)
 		return
 	if (modded)
-		to_chat(user, "<span class='warning'>Fuel faucet is wrenched open, leaking the fuel!</span>")
+		. += "\n<span class='warning'>Fuel faucet is wrenched open, leaking the fuel!</span>"
 	if(rig)
-		to_chat(user, "<span class='notice'>There is some kind of device rigged to the tank.</span>")
+		. += "\n<span class='notice'>There is some kind of device rigged to the tank.</span>"
+
 /obj/structure/reagent_dispensers/fueltank/attack_hand()
 	if (rig)
 		usr.visible_message("<span class='notice'>\The [usr] begins to detach [rig] from \the [src].</span>", "<span class='notice'>You begin to detach [rig] from \the [src].</span>")
@@ -143,7 +144,7 @@
 			test.Shift(EAST,6)
 			overlays += test
 
-	else if(isflamesource(W))
+	else if(W.get_temperature_as_from_ignitor())
 		log_and_message_admins("triggered a fueltank explosion with [W].")
 		user.visible_message("<span class='danger'>[user] puts [W] to [src]!</span>", "<span class='danger'>You put \the [W] to \the [src] and with a moment of lucidity you realize, this might not have been the smartest thing you've ever done.</span>")
 		src.explode()
@@ -200,10 +201,28 @@
 	reagents.remove_reagent(/datum/reagent/fuel,amount)
 	new /obj/effect/decal/cleanable/liquid_fuel(src.loc, amount,1)
 
+/obj/structure/reagent_dispensers/composttank
+	name = "compost tank"
+	desc = "A tank containing compost. Can be used to recycle excessive seeds."
+	icon_state = "compost"
+	amount_per_transfer_from_this = 10
+	possible_transfer_amounts = "5;10;25;50"
+	initial_capacity = 500
+	initial_reagent_types = list(/datum/reagent/toxin/fertilizer/compost = 1)
+	atom_flags = ATOM_FLAG_CLIMBABLE
+
+/obj/structure/reagent_dispensers/composttank/attackby(obj/item/W, mob/user)
+	src.add_fingerprint(user)
+	if(istype(W,/obj/item/seeds))
+		user.visible_message("[user] places [W] into \the [src].", \
+							 "You place [W] into \the [src].")
+		reagents.add_reagent(/datum/reagent/toxin/fertilizer/compost, 3)
+		qdel(W)
+	return ..()
+
 /obj/structure/reagent_dispensers/peppertank
 	name = "Pepper Spray Refiller"
 	desc = "Refills pepper spray canisters."
-	icon = 'icons/obj/objects.dmi'
 	icon_state = "peppertank"
 	anchored = 1
 	density = 0
@@ -215,7 +234,6 @@
 	name = "Water-Cooler"
 	desc = "A machine that dispenses water to drink."
 	amount_per_transfer_from_this = 5
-	icon = 'icons/obj/vending.dmi'
 	icon_state = "water_cooler"
 	possible_transfer_amounts = null
 	anchored = 1
@@ -241,7 +259,6 @@
 /obj/structure/reagent_dispensers/beerkeg
 	name = "beer keg"
 	desc = "A beer keg."
-	icon = 'icons/obj/objects.dmi'
 	icon_state = "beertankTEMP"
 	amount_per_transfer_from_this = 10
 	initial_reagent_types = list(/datum/reagent/ethanol/beer = 1)
@@ -250,7 +267,6 @@
 /obj/structure/reagent_dispensers/virusfood
 	name = "Virus Food Dispenser"
 	desc = "A dispenser of virus food."
-	icon = 'icons/obj/objects.dmi'
 	icon_state = "virusfoodtank"
 	amount_per_transfer_from_this = 10
 	anchored = 1
@@ -259,7 +275,6 @@
 /obj/structure/reagent_dispensers/acid
 	name = "Sulphuric Acid Dispenser"
 	desc = "A dispenser of acid for industrial processes."
-	icon = 'icons/obj/objects.dmi'
 	icon_state = "acidtank"
 	amount_per_transfer_from_this = 10
 	anchored = 1

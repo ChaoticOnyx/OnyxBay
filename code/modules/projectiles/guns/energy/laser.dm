@@ -54,6 +54,7 @@
 	icon_state = "laserp"
 	projectile_type = /obj/item/projectile/beam/practice
 	charge_cost = 10 //How much energy is needed to fire.
+	combustion = FALSE
 
 	firemodes = list()
 
@@ -225,6 +226,7 @@ obj/item/weapon/gun/energy/retro
 	matter = list(MATERIAL_STEEL = 2000)
 	projectile_type = /obj/item/projectile/beam/lastertag/blue
 	var/required_vest
+	combustion = FALSE
 
 /obj/item/weapon/gun/energy/lasertag/special_check(mob/living/carbon/human/M)
 	if(ishuman(M))

@@ -51,8 +51,8 @@
 /obj/item/weapon/rcd/examine(user)
 	. = ..()
 	if(src.type == /obj/item/weapon/rcd && loc == user)
-		to_chat(user, "The current mode is '[work_mode]'")
-		to_chat(user, "It currently holds [stored_matter]/[max_stored_matter] matter-units.")
+		. += "\nThe current mode is '[work_mode]'"
+		. += "\nIt currently holds [stored_matter]/[max_stored_matter] matter-units."
 
 /obj/item/weapon/rcd/New()
 	..()
@@ -124,9 +124,9 @@
 	var/remaining = 10
 
 /obj/item/weapon/rcd_ammo/examine(mob/user)
-	. = ..(user,1)
-	if(.)
-		to_chat(user, "<span class='notice'>It has [remaining] unit\s of matter left.</span>")
+	. = ..()
+	if(get_dist(src, user) <= 1)
+		. += "\n<span class='notice'>It has [remaining] unit\s of matter left.</span>"
 
 /obj/item/weapon/rcd_ammo/large
 	name = "high-capacity matter cartridge"

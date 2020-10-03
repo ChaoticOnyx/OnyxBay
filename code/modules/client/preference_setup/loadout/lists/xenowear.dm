@@ -4,6 +4,7 @@
 /datum/gear/suit/unathi
 	sort_category = "Xenowear"
 	whitelisted = list(SPECIES_UNATHI)
+	path = null // Prevents display
 
 /datum/gear/suit/unathi/mantle
 	display_name = "hide mantle (Unathi)"
@@ -24,6 +25,7 @@
 /datum/gear/ears/skrell
 	sort_category = "Xenowear"
 	whitelisted = list(SPECIES_SKRELL)
+	path = null // Prevents display
 
 /datum/gear/ears/skrell/chains
 	display_name = "headtail chain selection (Skrell)"

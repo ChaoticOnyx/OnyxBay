@@ -49,7 +49,7 @@ var/list/gear_datums = list()
 	var/current_tab = "General"
 	var/datum/gear/selected_gear
 	var/list/selected_tweaks = new
-	var/hide_unavailable_gear = 0
+	var/hide_unavailable_gear = FALSE
 	var/flag_not_enough_opyxes = FALSE
 
 /datum/category_item/player_setup_item/loadout/load_character(savefile/S)
@@ -140,7 +140,8 @@ var/list/gear_datums = list()
 	if(config.max_gear_cost < INFINITY)
 		. += "<font color = '[fcolor]'>[total_cost]/[config.max_gear_cost]</font> loadout points spent.<br>"
 	. += "<a href='?src=\ref[src];clear_loadout=1'>Clear Loadout</a><br>"
-	. += "<a href='?src=\ref[src];toggle_hiding=1'>[hide_unavailable_gear ? "Show all" : "Hide unavailable for your jobs"]</a><br>"
+	. += "<a href='?src=\ref[src];random_loadout=1'>Random Loadout</a><br>"
+	. += "<a href='?src=\ref[src];toggle_hiding=1'>[hide_unavailable_gear ? "Show unavailable for your jobs and species" : "Hide unavailable for your jobs and species"]</a><br>"
 	. += "</td>"
 
 	. += "</tr></table>"
@@ -198,12 +199,12 @@ var/list/gear_datums = list()
 	. += "<td style='white-space: nowrap; width: 40px;' class='block'>"
 	. += "<table>"
 	var/datum/loadout_category/LC = loadout_categories[current_tab]
-	var/list/jobs = new
+	var/list/selected_jobs = new
 	if(job_master)
 		for(var/job_title in (pref.job_medium|pref.job_low|pref.job_high))
 			var/datum/job/J = job_master.occupations_by_title[job_title]
 			if(J)
-				dd_insertObjectList(jobs, J)
+				dd_insertObjectList(selected_jobs, J)
 
 	var/purchased_gears = ""
 	var/paid_gears = ""
@@ -213,18 +214,19 @@ var/list/gear_datums = list()
 		if(!(gear_name in valid_gear_choices()))
 			continue
 		var/datum/gear/G = LC.gear[gear_name]
+		if(!G.path)
+			continue
 		var/entry = ""
 		var/ticked = (G.display_name in pref.gear_list[pref.gear_slot])
+		var/allowed_to_see = gear_allowed_to_see(G)
 		var/display_class
 		if(G != selected_gear)
 			if(ticked)
 				display_class = "white"
-			else if(G.patron_tier)
-				if(!user.client.donator_info.patreon_tier_available(G.patron_tier))
-					display_class = "gold"
-			else if(G.price)
-				if(!user.client.donator_info.has_item(G.type))
-					display_class = "gold"
+			else if(!gear_allowed_to_equip(G, user))
+				display_class = "gold"
+			else if(!allowed_to_see)
+				display_class = "red"
 			else
 				display_class = "gray"
 		else
@@ -233,18 +235,7 @@ var/list/gear_datums = list()
 		entry += "<td width=25%><a [display_class ? "class='[display_class]' " : ""]href='?src=\ref[src];select_gear=[html_encode(G.display_name)]'>[G.display_name]</a></td>"
 		entry += "</td></tr>"
 
-		var/allowed = TRUE
-		if(G.allowed_roles)
-			var/good_job = FALSE
-			var/bad_job = FALSE
-			for(var/datum/job/J in jobs)
-				if(J.type in G.allowed_roles)
-					good_job = TRUE
-				else
-					bad_job = TRUE
-			allowed = good_job || !bad_job
-
-		if(!hide_unavailable_gear || allowed || ticked)
+		if(!hide_unavailable_gear || allowed_to_see || ticked)
 			if(user.client.donator_info.has_item(G.type) || (G.patron_tier && user.client.donator_info.patreon_tier_available(G.patron_tier)))
 				purchased_gears += entry
 			else if(G.price || G.patron_tier)
@@ -288,19 +279,40 @@ var/list/gear_datums = list()
 
 		if(selected_gear.allowed_roles)
 			. += "<b>Has jobs restrictions!</b>"
-			if(jobs.len)
-				. += "<br>"
-				. += "<i>"
-				var/ind = 0
-				for(var/datum/job/J in jobs)
-					++ind
-					if(ind > 1)
-						. += ", "
-					if(J.type in selected_gear.allowed_roles)
-						. += "<font color='#55cc55'>[J.title]</font>"
-					else
-						. += "<font color='#cc5555'>[J.title]</font>"
-				. += "</i>"
+			. += "<br>"
+			. += "<i>"
+			var/ind = 0
+			for(var/allowed_type in selected_gear.allowed_roles)
+				if(!ispath(allowed_type, /datum/job))
+					log_warning("There is an object called '[allowed_type]' in the list of whitelisted jobs for a gear '[selected_gear.display_name]'. It's not /datum/job.")
+					continue
+				var/datum/job/J = job_master ? job_master.occupations_by_type[allowed_type] : new allowed_type
+				++ind
+				if(ind > 1)
+					. += ", "
+				if(selected_jobs && length(selected_jobs) && (J in selected_jobs))
+					. += "<font color='#55cc55'>[J.title]</font>"
+				else
+					. += "<font color='#808080'>[J.title]</font>"
+			. += "</i>"
+			. += "<br>"
+		
+		if(selected_gear.whitelisted)
+			. += "<b>Has species restrictions!</b>"
+			. += "<br>"
+			. += "<i>"
+			if(!istype(selected_gear.whitelisted, /list))
+				selected_gear.whitelisted = list(selected_gear.whitelisted)
+			var/ind = 0
+			for(var/allowed_species in selected_gear.whitelisted)
+				++ind
+				if(ind > 1)
+					. += ", "
+				if(pref.species && pref.species == allowed_species)
+					. += "<font color='#55cc55'>[allowed_species]</font>"
+				else
+					. += "<font color='#808080'>[allowed_species]</font>"
+			. += "</i>"
 			. += "<br>"
 
 		var/desc = selected_gear.get_description(selected_tweaks)
@@ -332,19 +344,17 @@ var/list/gear_datums = list()
 			flag_not_enough_opyxes = FALSE
 			. += "<span class='notice'>You don't have enough opyxes!</span><br>"
 
-		var/is_available = TRUE
-		if(selected_gear.price && !user.client.donator_info.has_item(selected_gear.type))
-			is_available = FALSE
-		else if(selected_gear.patron_tier && !user.client.donator_info.patreon_tier_available(selected_gear.patron_tier))
-			is_available = FALSE
-
-		if(is_available)
+		if(gear_allowed_to_equip(selected_gear, user))
 			. += "<a [ticked ? "class='linkOn' " : ""]href='?src=\ref[src];toggle_gear=[html_encode(selected_gear.display_name)]'>[ticked ? "Drop" : "Take"]</a>"
 		else
 			if (selected_gear.price)
 				. += "<a class='gold' href='?src=\ref[src];buy_gear=\ref[selected_gear]'>Buy</a> "
 			var/trying_on = (pref.trying_on_gear == selected_gear.display_name)
 			. += "<a [trying_on ? "class='linkOn' " : ""]href='?src=\ref[src];try_on=1'>Try On</a>"
+
+		if(!gear_allowed_to_see(selected_gear))
+			. += "<br>"
+			. += "<span class='notice'>This item will never spawn with you, using your current preferences.</span>"
 
 		. += "</td>"
 
@@ -469,6 +479,9 @@ var/list/gear_datums = list()
 		pref.trying_on_gear = null
 		pref.trying_on_tweaks.Cut()
 		return TOPIC_REFRESH_UPDATE_PREVIEW
+	if(href_list["random_loadout"])
+		randomize(user)
+		return TOPIC_REFRESH_UPDATE_PREVIEW
 	if(href_list["toggle_hiding"])
 		hide_unavailable_gear = !hide_unavailable_gear
 		return TOPIC_REFRESH
@@ -476,6 +489,29 @@ var/list/gear_datums = list()
 		SSdonations.show_donations_info(user)
 		return TOPIC_NOACTION
 	return ..()
+
+/datum/category_item/player_setup_item/loadout/proc/randomize(mob/user)
+	ASSERT(user)
+	var/list/gear = pref.gear_list[pref.gear_slot]
+	gear.Cut()
+	pref.trying_on_gear = null
+	pref.trying_on_tweaks.Cut()
+	var/list/pool = new
+	for(var/gear_name in gear_datums)
+		var/datum/gear/G = gear_datums[gear_name]
+		if(gear_allowed_to_see(G) && gear_allowed_to_equip(G, user) && G.cost <= config.max_gear_cost)
+			pool += G
+	var/points_left = config.max_gear_cost
+	while (points_left > 0 && length(pool))
+		var/datum/gear/chosen = pick(pool)
+		var/list/chosen_tweaks = new
+		for(var/datum/gear_tweak/tweak in chosen.gear_tweaks)
+			chosen_tweaks["[tweak]"] = tweak.get_random()
+		gear[chosen.display_name] = chosen_tweaks.Copy()
+		points_left -= chosen.cost
+		for(var/datum/gear/G in pool)
+			if(G.cost > points_left || (G.slot && G.slot == chosen.slot))
+				pool -= G
 
 /datum/category_item/player_setup_item/loadout/update_setup(savefile/preferences, savefile/character)
 	if(preferences["version"] < 14)
@@ -499,6 +535,42 @@ var/list/gear_datums = list()
 				var/value = pref.gear_list[key]
 				pref.gear_list[index] = value
 		return 1
+
+/datum/category_item/player_setup_item/loadout/proc/gear_allowed_to_see(datum/gear/G)
+	ASSERT(G)
+	if(!G.path)
+		return FALSE
+	
+	if(G.allowed_roles)
+		ASSERT(job_master)
+		var/list/jobs = new
+		for(var/job_title in (pref.job_medium|pref.job_low|pref.job_high))
+			if(job_master.occupations_by_title[job_title])
+				jobs += job_master.occupations_by_title[job_title]
+		if(!jobs || !length(jobs))
+			return FALSE
+		var/job_ok = FALSE
+		for(var/datum/job/J in jobs)
+			if(J.type in G.allowed_roles)
+				job_ok = TRUE
+				break
+		if(!job_ok)
+			return FALSE
+	
+	if(G.whitelisted && !(pref.species in G.whitelisted))
+		return FALSE
+		
+	return TRUE
+
+/datum/category_item/player_setup_item/loadout/proc/gear_allowed_to_equip(datum/gear/G, mob/user)
+	ASSERT(G)
+	ASSERT(user && user.client)
+	ASSERT(user.client.donator_info)
+	if(G.price && !user.client.donator_info.has_item(G.type))
+		return FALSE
+	if(G.patron_tier && !user.client.donator_info.patreon_tier_available(G.patron_tier))
+		return FALSE
+	return TRUE
 
 /datum/gear
 	var/display_name       //Name/index. Must be unique.

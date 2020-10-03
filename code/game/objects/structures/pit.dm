@@ -136,9 +136,9 @@
 /obj/structure/gravemarker/cross
 	icon_state = "cross"
 
-/obj/structure/gravemarker/examine()
-	..()
-	to_chat(usr,"It says: '[message]'")
+/obj/structure/gravemarker/examine(mob/user)
+	. = ..()
+	. += "\nIt says: '[message]'"
 
 /obj/structure/gravemarker/random/Initialize()
 	generate()

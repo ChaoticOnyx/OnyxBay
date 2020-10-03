@@ -358,6 +358,18 @@ GLOBAL_DATUM_INIT(temp_reagents_holder, /obj, new)
 	if(isliving(target)) //will we ever even need to tranfer reagents to non-living mobs?
 		var/mob/living/L = target
 		perm = L.reagent_permeability()
+
+		if(prob(round(amount * 2)) && ishuman(target)) // Expose clothes
+			var/mob/living/carbon/human/H = target
+			var/list/cig_places = list(H.wear_mask, H.l_ear, H.r_ear, H.r_hand, H.l_hand)
+			for(var/obj/item/clothing/mask/smokable/cig in cig_places)
+				if(cig.lit)
+					if(!get_reagent_amount(/datum/reagent/toxin/phoron) && !get_reagent_amount(/datum/reagent/fuel))
+						cig.die()
+					else
+						H.adjust_fire_stacks(1)
+						H.IgniteMob() // Smoking is bad for your health
+	
 	return trans_to_mob(target, amount * perm, CHEM_TOUCH, 1, copy)
 
 /datum/reagents/proc/trans_to_mob(mob/target, amount = 1, type = CHEM_BLOOD, multiplier = 1, copy = 0) // Transfer after checking into which holder...

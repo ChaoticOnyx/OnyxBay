@@ -63,15 +63,18 @@
 	. = ..()
 
 /obj/item/device/uplink_service/examine(user)
-	. = ..(user, 1)
-	if(.)
-		switch(state)
-			if(AWAITING_ACTIVATION)
-				to_chat(user, "It is labeled '[service_label]' and appears to be awaiting activation.")
-			if(CURRENTLY_ACTIVE)
-				to_chat(user, "It is labeled '[service_label]' and appears to be active.")
-			if(HAS_BEEN_ACTIVATED)
-				to_chat(user, "It is labeled '[service_label]' and appears to be permanently disabled.")
+	. = ..()
+	if(get_dist(src, user) > 1)
+		return
+	var/msg
+	switch(state)
+		if(AWAITING_ACTIVATION)
+			msg = "It is labeled '[service_label]' and appears to be awaiting activation."
+		if(CURRENTLY_ACTIVE)
+			msg = "It is labeled '[service_label]' and appears to be active."
+		if(HAS_BEEN_ACTIVATED)
+			msg = "It is labeled '[service_label]' and appears to be permanently disabled."
+	. += "\n[msg]"
 
 /obj/item/device/uplink_service/attack_self(mob/user)
 	if(state != AWAITING_ACTIVATION)

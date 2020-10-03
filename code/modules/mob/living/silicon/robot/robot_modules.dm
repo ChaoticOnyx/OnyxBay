@@ -193,7 +193,7 @@ var/global/list/robot_modules = list(
 /obj/item/weapon/robot_module/standard/New()
 	src.modules += new /obj/item/device/flash(src)
 	src.modules += new /obj/item/weapon/wrench(src)
-	src.modules += new /obj/item/weapon/melee/baton/loaded(src)
+	src.modules += new /obj/item/weapon/melee/baton/robot(src)
 	src.modules += new /obj/item/weapon/extinguisher(src)
 	src.modules += new /obj/item/weapon/crowbar(src)
 	src.modules += new /obj/item/device/healthanalyzer(src)
@@ -927,7 +927,7 @@ var/global/list/robot_modules = list(
 	..()
 
 /obj/item/weapon/robot_module/research
-	name = "research module"
+	name = "research robot module"
 
 	channels = list("Science" = 1)
 	networks = list(NETWORK_RESEARCH)
@@ -940,7 +940,7 @@ var/global/list/robot_modules = list(
 					)
 
 /obj/item/weapon/robot_module/research/general/New()
-	supported_upgrades += list(/obj/item/borg/upgrade/cargo_managment,/obj/item/borg/upgrade/visor/thermal,/obj/item/borg/upgrade/visor/meson,/obj/item/borg/upgrade/rped,/obj/item/borg/upgrade/paramedic,/obj/item/borg/upgrade/archeologist)
+	supported_upgrades += list(/obj/item/borg/upgrade/cargo_managment,/obj/item/borg/upgrade/visor/thermal,/obj/item/borg/upgrade/visor/meson,/obj/item/borg/upgrade/rped,/obj/item/borg/upgrade/paramedic,/obj/item/borg/upgrade/archeologist,/obj/item/borg/upgrade/integrated_circuit_upgrade)
 
 	src.modules += new /obj/item/device/flash(src)
 	src.modules += new /obj/item/weapon/extinguisher/mini(src)
@@ -956,18 +956,26 @@ var/global/list/robot_modules = list(
 	src.modules += new /obj/item/weapon/crowbar(src)
 	src.modules += new /obj/item/weapon/scalpel/laser3(src)
 	src.modules += new /obj/item/weapon/circular_saw(src)
+	src.modules += new /obj/item/device/multitool(src)
 	src.modules += new /obj/item/weapon/reagent_containers/syringe/borg(src)
 	src.modules += new /obj/item/weapon/gripper/chemistry(src)
 	src.emag = new /obj/item/weapon/card/emag/robot(src)
 
 	var/datum/matter_synth/nanite = new /datum/matter_synth/nanite(10000)
+	var/datum/matter_synth/wire = new /datum/matter_synth/wire(100)
 	synths += nanite
+	synths += wire
 
 	var/obj/item/stack/nanopaste/N = new /obj/item/stack/nanopaste(src)
 	N.uses_charge = 1
 	N.charge_costs = list(1000)
 	N.synths = list(nanite)
 	src.modules += N
+
+	var/obj/item/stack/cable_coil/cyborg/C = new /obj/item/stack/cable_coil/cyborg(src)
+	C.synths = list(wire)
+	src.modules += C
+
 	appointed_huds += list("Science")
 	..()
 

@@ -81,7 +81,7 @@
 		M.update_icon()
 
 /datum/species/machine/sanitize_name(new_name)
-	return sanitizeName(new_name, allow_numbers = 1)
+	return sanitizeName(new_name, allow_numbers = TRUE)
 
 /datum/species/machine/handle_post_spawn(mob/living/carbon/human/H)
 	if(!H)

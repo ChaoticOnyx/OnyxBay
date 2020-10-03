@@ -205,9 +205,17 @@
 
 /datum/reagent/toxin/fertilizer/left4zed
 	name = "Left-4-Zed"
+	color = "#515130"
 
 /datum/reagent/toxin/fertilizer/robustharvest
 	name = "Robust Harvest"
+	taste_description = "robust plant food"
+	color = "#4e204b"
+
+/datum/reagent/toxin/fertilizer/compost
+	name = "compost"
+	taste_description = "literal shit"
+	color = "#7f4323"
 
 /datum/reagent/toxin/plantbgone
 	name = "Plant-B-Gone"
@@ -281,6 +289,7 @@
 	taste_mult = 0.9
 	reagent_state = LIQUID
 	color = "#13bc5e"
+	var/mutation_potency = 0.1 // Determines the probability of causing mutations
 
 /datum/reagent/mutagen/affect_touch(mob/living/carbon/M, alien, removed)
 	if(prob(33))
@@ -300,7 +309,7 @@
 		return
 
 	if(M.dna)
-		if(prob(removed * 0.1)) // Approx. one mutation per 10 injected/20 ingested/30 touching units
+		if(prob(removed * mutation_potency)) // Approx. one mutation per 10 injected/20 ingested/30 touching units
 			randmuti(M)
 			if(prob(98))
 				randmutb(M)
@@ -309,6 +318,13 @@
 			domutcheck(M, null)
 			M.UpdateAppearance()
 	M.apply_effect(10 * removed, IRRADIATE, blocked = 0)
+
+/datum/reagent/mutagen/industrial
+	name = "Industrial mutagen"
+	description = "A rather stable form of mutagen usually used for agricultural purposes. However, it's still extremely poisonous."
+	taste_mult = 0.7
+	color = "#4d9e6c"
+	mutation_potency = 0.025
 
 /datum/reagent/slimejelly
 	name = "Slime Jelly"
@@ -399,7 +415,7 @@
 /* Drugs */
 
 /datum/reagent/space_drugs
-	name = "Space drugs"
+	name = "Space Drugs"
 	description = "An illegal chemical compound used as drug."
 	taste_description = "bitterness"
 	taste_mult = 0.4

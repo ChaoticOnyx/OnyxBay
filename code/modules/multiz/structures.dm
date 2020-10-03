@@ -16,6 +16,7 @@
 	var/obj/structure/ladder/target_down
 
 	var/const/climb_time = 2 SECONDS
+	var/const/drag_time = 15 SECONDS
 	var/static/list/climbsounds = list('sound/effects/ladder.ogg','sound/effects/ladder2.ogg','sound/effects/ladder3.ogg','sound/effects/ladder4.ogg')
 
 /obj/structure/ladder/Initialize()
@@ -71,7 +72,10 @@
 		to_chat(M, "<span class='notice'>You fail to reach \the [src].</span>")
 		return
 
+	var/dragging = FALSE
+
 	for (var/obj/item/grab/G in M)
+		dragging = TRUE
 		G.adjust_position()
 
 	var/direction = target_ladder == target_up ? "up" : "down"
@@ -82,7 +86,9 @@
 
 	target_ladder.audible_message("<span class='notice'>You hear something coming [direction] \the [src]</span>")
 
-	if(do_after(M, climb_time, src))
+	var/time = dragging ? drag_time : climb_time
+
+	if(do_after(M, time, src))
 		climbLadder(M, target_ladder)
 		for (var/obj/item/grab/G in M)
 			G.adjust_position(force = 1)

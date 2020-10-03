@@ -127,6 +127,13 @@
 	containertype = /obj/structure/largecrate
 	containername = "\improper water tank crate"
 
+/decl/hierarchy/supply_pack/hydroponics/composttank
+	name = "Compost tank crate"
+	contains = list(/obj/structure/reagent_dispensers/composttank)
+	cost = 10
+	containertype = /obj/structure/largecrate
+	containername = "\improper compost tank crate"
+
 /decl/hierarchy/supply_pack/hydroponics/bee_keeper
 	name = "Beekeeping crate"
 	contains = list(/obj/item/beehive_assembly,

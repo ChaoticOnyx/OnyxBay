@@ -11,8 +11,8 @@
 	var/survey_data = 0
 
 /obj/item/weapon/mining_scanner/examine(mob/user)
-	..()
-	to_chat(user,"Tiny indicator shows it holds [survey_data] Good Explorer Points worth of data.")
+	. = ..()
+	. += "\nTiny indicator shows it holds [survey_data] Good Explorer Points worth of data."
 
 /obj/item/weapon/mining_scanner/attack_self(mob/user as mob)
 	to_chat(user, "You begin sweeping \the [src] about, scanning for metal deposits.")
@@ -100,8 +100,8 @@
 	var/data
 
 /obj/item/weapon/disk/survey/examine(mob/user)
-	..()
-	to_chat(user,"Tiny indicator shows it holds [data] Good Explorer Points of data.")
+	. = ..()
+	. += "\nTiny indicator shows it holds [data] Good Explorer Points of data."
 
 /obj/item/weapon/disk/survey/Value()
 	if(data < 10000)

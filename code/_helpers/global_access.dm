@@ -19,8 +19,6 @@
 			return global.DEPT_FREQS;
 		if("Debug2")
 			return global.Debug2;
-		if("EAMS_errorsCounter")
-			return global.EAMS_errorsCounter;
 		if("Failsafe")
 			return global.Failsafe;
 		if("GLOB")
@@ -1002,8 +1000,6 @@
 			global.DEPT_FREQS=newval;
 		if("Debug2")
 			global.Debug2=newval;
-		if("EAMS_errorsCounter")
-			global.EAMS_errorsCounter=newval;
 		if("Failsafe")
 			global.Failsafe=newval;
 		if("GLOB")

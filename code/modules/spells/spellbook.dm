@@ -144,7 +144,7 @@ var/list/artefact_feedback = list(/obj/structure/closet/wizard/armor = 		"HS",
 			if(investing_time)
 				dat += "<center><b>Currently investing in a slot...</b></center>"
 			else
-				dat += "<center><A href='byond://?src=\ref[src];invest=1'>Invest a Spell Slot</a><br><i>Investing a spellpoint will return two spellpoints back in 15 minutes.<br>Some say a sacrifice could even shorten the time...</i></center>"
+				dat += "<center><A href='byond://?src=\ref[src];invest=1'>Invest a Spell Slot</a><br><i>Investing a spellpoint will return two spellpoints back in 15 minutes, unless you get out of the station.<br>Some say a sacrifice could even shorten the time...</i></center>"
 		if(!(spellbook.book_flags & NOREVERT))
 			dat += "<center><A href='byond://?src=\ref[src];book=1'>Choose different spellbook.</a></center>"
 		dat += "<center><A href='byond://?src=\ref[src];lock=1'>[spellbook.book_flags & LOCKED ? "Unlock" : "Lock"] the spellbook.</a></center>"
@@ -231,7 +231,24 @@ var/list/artefact_feedback = list(/obj/structure/closet/wizard/armor = 		"HS",
 
 	src.interact(user)
 
+/obj/item/weapon/spellbook/Initialize()
+	. = ..()
+	GLOB.moved_event.register(src, src, /obj/item/weapon/spellbook/proc/check_z_level)
+
+/obj/item/weapon/spellbook/proc/check_z_level()
+	var/turf/T = get_turf(src)
+	if(!T || isNotStationLevel(T.z))
+		if(investing_time)
+			src.visible_message(SPAN_WARNING("<b>\The [src]</b> emits a cranky chime."))
+			if(uses < spellbook.max_uses)
+				uses++
+			investing_time = 0
+			STOP_PROCESSING(SSobj, src)
+
 /obj/item/weapon/spellbook/proc/invest()
+	var/turf/T = get_turf(src)
+	if(!T || isNotStationLevel(T.z))
+		return "Your invest powers don't work in your current location!\n You must be on the station level for the successful investment."
 	if(uses < 1)
 		return "You don't have enough slots to invest!"
 	if(investing_time)
@@ -252,6 +269,7 @@ var/list/artefact_feedback = list(/obj/structure/closet/wizard/armor = 		"HS",
 	return 1
 
 /obj/item/weapon/spellbook/Destroy()
+	GLOB.moved_event.unregister(src, src, /obj/item/weapon/spellbook/proc/check_z_level)
 	STOP_PROCESSING(SSobj, src)
 	. = ..()
 
