@@ -225,9 +225,9 @@
 
 	mode = !mode
 	if (mode)
-		to_chat(usr, "<span class='notice'>Device will announce your visit!</span>")
+		to_chat(usr, SPAN("notice", "Device will announce your visit!"))
 	else
-		to_chat(usr, "<span class='notice'>Device will not announce your visit!</span>") 
+		to_chat(usr, SPAN("notice", "Device will not announce your visit!")) 
 
 /obj/item/device/uplink_service/fake_crew_announcement/enable(mob/user = usr)
 	var/obj/item/weapon/card/id/I = user.GetIdCard()
