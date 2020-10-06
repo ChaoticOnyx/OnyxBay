@@ -105,7 +105,7 @@
 	icon = 'icons/obj/furniture.dmi'
 	icon_state = "folded_chair"
 	item_state = "table_parts"
-	w_class = ITEM_SIZE_NO_CONTAINER // Jesus no
+	w_class = ITEM_SIZE_GARGANTUAN // Jesus no
 	force = 12.5
 	throwforce = 10.0
 	throw_speed = 1
