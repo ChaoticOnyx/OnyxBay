@@ -85,7 +85,7 @@
 	sort_string = "WCEAA"
 
 /datum/design/item/rig/jets
-	name = "maneuvering Jets"
+	name = "maneuvering jets"
 	desc = "A compact gas thruster system, mountable on a RIG."
 	id = "rig_jets"
 	req_tech = list(TECH_MATERIAL = 6,  TECH_ENGINEERING = 7)
