@@ -186,9 +186,9 @@
 /obj/item/weapon/gun/projectile/revolver/m2019/detective/examine(mob/user)
 	. = ..()
 	if(!bcell)
-		to_chat(user, "\The [src] has no power cell installed.")
+		. += "\n\The [src] has no power cell installed."
 	else
-		to_chat(user, "\The [src] is [round(bcell.percent())]% charged.")
+		. += "\n\The [src] is [round(bcell.percent())]% charged."
 
 /obj/item/weapon/gun/projectile/revolver/m2019/detective/consume_next_projectile()
 	if(chamber_offset)

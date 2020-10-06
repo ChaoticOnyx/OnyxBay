@@ -74,5 +74,11 @@
 	reload_fullscreen() // Reload any fullscreen overlays this mob has.
 	add_click_catcher()
 
+	client.mob.update_client_color()
+	
 	//set macro to normal incase it was overriden (like cyborg currently does)
-	winset(src, null, "mainwindow.macro=macro hotkey_toggle.is-checked=false input.focus=true")
+	var/hotkey_mode = client.get_preference_value("DEFAULT_HOTKEY_MODE")
+	if (hotkey_mode == GLOB.PREF_NO)
+		winset(src, null, "mainwindow.macro=macro hotkey_toggle.is-checked=false input.focus=true")
+	else
+		winset(src, null, "mainwindow.macro=hotkeymode hotkey_toggle.is-checked=true input.focus=false")

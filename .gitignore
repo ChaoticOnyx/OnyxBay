@@ -9,6 +9,7 @@ Thumbs.db
 *.before
 *.db
 *.db-*
+*.so
 data/
 cfg/
 # ignore config, but not subdirs

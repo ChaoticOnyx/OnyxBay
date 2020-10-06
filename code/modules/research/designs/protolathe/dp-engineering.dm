@@ -8,17 +8,13 @@
 		var/obj/item/weapon/cell/C = build_path
 		desc = "Allows the construction of power cells that can hold [initial(C.maxcharge)] units of energy."
 
-/datum/design/item/powercell/Fabricate()
-	var/obj/item/weapon/cell/C = ..()
-	C.charge = 0 //shouldn't produce power out of thin air.
-	return C
 
 /datum/design/item/powercell/basic
 	name = "basic cell"
 	id = "basic_cell"
 	req_tech = list(TECH_POWER = 1)
 	materials = list(MATERIAL_STEEL = 700, MATERIAL_GLASS = 50)
-	build_path = /obj/item/weapon/cell
+	build_path = /obj/item/weapon/cell/empty
 	sort_string = "DAAAA"
 
 /datum/design/item/powercell/high
@@ -26,7 +22,7 @@
 	id = "high_cell"
 	req_tech = list(TECH_POWER = 2)
 	materials = list(MATERIAL_STEEL = 700, MATERIAL_GLASS = 60)
-	build_path = /obj/item/weapon/cell/high
+	build_path = /obj/item/weapon/cell/high/empty
 	sort_string = "DAAAB"
 
 /datum/design/item/powercell/super
@@ -34,7 +30,7 @@
 	id = "super_cell"
 	req_tech = list(TECH_POWER = 3, TECH_MATERIAL = 2)
 	materials = list(MATERIAL_STEEL = 700, MATERIAL_GLASS = 70)
-	build_path = /obj/item/weapon/cell/super
+	build_path = /obj/item/weapon/cell/super/empty
 	sort_string = "DAAAC"
 
 /datum/design/item/powercell/hyper
@@ -42,7 +38,7 @@
 	id = "hyper_cell"
 	req_tech = list(TECH_POWER = 5, TECH_MATERIAL = 4)
 	materials = list(MATERIAL_STEEL = 400, MATERIAL_GOLD = 150, MATERIAL_SILVER = 150, MATERIAL_GLASS = 70)
-	build_path = /obj/item/weapon/cell/hyper
+	build_path = /obj/item/weapon/cell/hyper/empty
 	sort_string = "DAAAD"
 
 

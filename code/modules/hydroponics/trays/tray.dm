@@ -44,40 +44,41 @@
 	// Reagent information for process(), consider moving this to a controller along
 	// with cycle information under 'mechanical concerns' at some point.
 	var/global/list/toxic_reagents = list(
-		/datum/reagent/dylovene =     -2,
-		/datum/reagent/toxin =           2,
-		/datum/reagent/hydrazine =       2.5,
-		/datum/reagent/acetone =	        1,
-		/datum/reagent/acid =           1.5,
-		/datum/reagent/acid/hydrochloric =         1.5,
-		/datum/reagent/acid/polyacid =           3,
-		/datum/reagent/toxin/plantbgone =      3,
-		/datum/reagent/cryoxadone =     -3,
-		/datum/reagent/radium =          2
+		/datum/reagent/dylovene =           -2,
+		/datum/reagent/toxin =               2,
+		/datum/reagent/hydrazine =           2.5,
+		/datum/reagent/acetone =             1,
+		/datum/reagent/acid =                1.5,
+		/datum/reagent/acid/hydrochloric =   1.5,
+		/datum/reagent/acid/polyacid =       3,
+		/datum/reagent/toxin/plantbgone =    3,
+		/datum/reagent/cryoxadone =         -3,
+		/datum/reagent/radium =              2
 		)
 	var/global/list/nutrient_reagents = list(
-		/datum/reagent/drink/milk =            0.1,
-		/datum/reagent/ethanol/beer =            0.25,
-		/datum/reagent/phosphorus =      0.1,
-		/datum/reagent/sugar =           0.1,
-		/datum/reagent/drink/sodawater =       0.1,
-		/datum/reagent/ammonia =         1,
-		/datum/reagent/diethylamine =    2,
-		/datum/reagent/nutriment =       1,
-		/datum/reagent/adminordrazine =  1,
-		/datum/reagent/toxin/fertilizer/eznutrient =      1,
-		/datum/reagent/toxin/fertilizer/robustharvest =   1,
-		/datum/reagent/toxin/fertilizer/left4zed =        1
+		/datum/reagent/drink/milk =                      0.1,
+		/datum/reagent/ethanol/beer =                    0.25,
+		/datum/reagent/phosphorus =                      0.1,
+		/datum/reagent/sugar =                           0.1,
+		/datum/reagent/drink/sodawater =                 0.1,
+		/datum/reagent/ammonia =                         1,
+		/datum/reagent/diethylamine =                    2,
+		/datum/reagent/nutriment =                       1,
+		/datum/reagent/adminordrazine =                  1,
+		/datum/reagent/toxin/fertilizer/eznutrient =     1.2,
+		/datum/reagent/toxin/fertilizer/robustharvest =  1,
+		/datum/reagent/toxin/fertilizer/left4zed =       1,
+		/datum/reagent/toxin/fertilizer/compost =        0.5
 		)
 	var/global/list/weedkiller_reagents = list(
-		/datum/reagent/hydrazine =      -4,
-		/datum/reagent/phosphorus =     -2,
-		/datum/reagent/sugar =           2,
-		/datum/reagent/acid =          -2,
-		/datum/reagent/acid/hydrochloric =        -2,
-		/datum/reagent/acid/polyacid =          -4,
-		/datum/reagent/toxin/plantbgone =     -8,
-		/datum/reagent/adminordrazine = -5
+		/datum/reagent/hydrazine =          -4,
+		/datum/reagent/phosphorus =         -2,
+		/datum/reagent/sugar =               2,
+		/datum/reagent/acid =               -2,
+		/datum/reagent/acid/hydrochloric =  -2,
+		/datum/reagent/acid/polyacid =      -4,
+		/datum/reagent/toxin/plantbgone =   -8,
+		/datum/reagent/adminordrazine =     -5
 		)
 	var/global/list/pestkiller_reagents = list(
 		/datum/reagent/sugar =           2,
@@ -85,32 +86,33 @@
 		/datum/reagent/adminordrazine = -5
 		)
 	var/global/list/water_reagents = list(
-		/datum/reagent/water =           1,
-		/datum/reagent/adminordrazine =  1,
-		/datum/reagent/drink/milk =            0.9,
-		/datum/reagent/ethanol/beer =            0.7,
-		/datum/reagent/hydrazine =      -2,
-		/datum/reagent/phosphorus =     -0.5,
-		/datum/reagent/water =           1,
-		/datum/reagent/drink/sodawater =       1,
+		/datum/reagent/water =            1,
+		/datum/reagent/adminordrazine =   1,
+		/datum/reagent/drink/milk =       0.9,
+		/datum/reagent/ethanol/beer =     0.7,
+		/datum/reagent/hydrazine =       -2,
+		/datum/reagent/phosphorus =      -0.5,
+		/datum/reagent/water =            1,
+		/datum/reagent/drink/sodawater =  1,
 		)
 
-	// Beneficial reagents also have values for modifying yield_mod and mut_mod (in that order).
+	// Beneficial reagents also have values for modifying health, yield_mod and mutation_mod (in that order).
 	var/global/list/beneficial_reagents = list(
-		/datum/reagent/ethanol/beer =           list( -0.05, 0,   0  ),
-		/datum/reagent/hydrazine =      list( -2,    0,   0  ),
-		/datum/reagent/phosphorus =     list( -0.75, 0,   0  ),
-		/datum/reagent/drink/sodawater =      list(  0.1,  0,   0  ),
-		/datum/reagent/acid =          list( -1,    0,   0  ),
-		/datum/reagent/acid/hydrochloric =        list( -1,    0,   0  ),
-		/datum/reagent/acid/polyacid =          list( -2,    0,   0  ),
-		/datum/reagent/toxin/plantbgone =     list( -2,    0,   0.2),
-		/datum/reagent/cryoxadone =     list(  3,    0,   0  ),
-		/datum/reagent/ammonia =        list(  0.5,  0,   0  ),
-		/datum/reagent/diethylamine =   list(  1,    0,   0  ),
-		/datum/reagent/nutriment =      list(  0.5,  0.1, 0  ),
-		/datum/reagent/radium =         list( -1.5,  0,   0.2),
-		/datum/reagent/adminordrazine = list(  1,    1,   1  ),
+		/datum/reagent/ethanol/beer =                    list( -0.05, 0,   0  ),
+		/datum/reagent/hydrazine =                       list( -2,    0,   0  ),
+		/datum/reagent/phosphorus =                      list( -0.75, 0,   0  ),
+		/datum/reagent/drink/sodawater =                 list(  0.1,  0,   0  ),
+		/datum/reagent/acid =                            list( -1,    0,   0  ),
+		/datum/reagent/acid/hydrochloric =               list( -1,    0,   0  ),
+		/datum/reagent/acid/polyacid =                   list( -2,    0,   0  ),
+		/datum/reagent/toxin/plantbgone =                list( -2,    0,   0.2),
+		/datum/reagent/cryoxadone =                      list(  3,    0,   0  ),
+		/datum/reagent/ammonia =                         list(  0.5,  0,   0  ),
+		/datum/reagent/diethylamine =                    list(  1,    0,   0  ),
+		/datum/reagent/nutriment =                       list(  0.5,  0.1, 0  ),
+		/datum/reagent/radium =                          list( -1.5,  0,   0.2),
+		/datum/reagent/mutagen/industrial =              list( -0.25, 0,   0.1),
+		/datum/reagent/adminordrazine =                  list(  1,    1,   1  ),
 		/datum/reagent/toxin/fertilizer/robustharvest =  list(  0,    0.2, 0  ),
 		/datum/reagent/toxin/fertilizer/left4zed =       list(  0,    0,   0.2)
 		)
@@ -118,8 +120,9 @@
 	// Mutagen list specifies minimum value for the mutation to take place, rather
 	// than a bound as the lists above specify.
 	var/global/list/mutagenic_reagents = list(
-		/datum/reagent/radium =  8,
-		/datum/reagent/mutagen = 15
+		/datum/reagent/radium =              8,
+		/datum/reagent/mutagen/industrial =  6,
+		/datum/reagent/mutagen =             15
 		)
 
 /obj/machinery/portable_atmospherics/hydroponics/AltClick()
@@ -543,31 +546,31 @@
 	else if(dead)
 		remove_dead(user)
 
-/obj/machinery/portable_atmospherics/hydroponics/examine()
+/obj/machinery/portable_atmospherics/hydroponics/examine(mob/user)
 
 	. = ..()
 
 	if(!seed)
-		to_chat(usr, "[src] is empty.")
+		. += "\n[src] is empty."
 		return
 
-	to_chat(usr, "<span class='notice'>[seed.display_name] are growing here.</span>")
+	. += "\n<span class='notice'>[seed.display_name] are growing here.</span>"
 
 	if(!Adjacent(usr))
 		return
 
-	to_chat(usr, "Water: [round(waterlevel,0.1)]/100")
-	to_chat(usr, "Nutrient: [round(nutrilevel,0.1)]/10")
+	. += "\nWater: [round(waterlevel,0.1)]/100"
+	. += "\nNutrient: [round(nutrilevel,0.1)]/10"
 
 	if(weedlevel >= 5)
-		to_chat(usr, "\The [src] is <span class='danger'>infested with weeds</span>!")
+		. += "\n\The [src] is <span class='danger'>infested with weeds</span>!"
 	if(pestlevel >= 5)
-		to_chat(usr, "\The [src] is <span class='danger'>infested with tiny worms</span>!")
+		. += "\n\The [src] is <span class='danger'>infested with tiny worms</span>!"
 
 	if(dead)
-		to_chat(usr, "<span class='danger'>The plant is dead.</span>")
+		. += "\n<span class='danger'>The plant is dead.</span>"
 	else if(health <= (seed.get_trait(TRAIT_ENDURANCE)/ 2))
-		to_chat(usr, "The plant looks <span class='danger'>unhealthy</span>.")
+		. += "\nThe plant looks <span class='danger'>unhealthy</span>."
 
 	if(mechanical)
 		var/turf/T = loc
@@ -590,7 +593,7 @@
 			var/light_available = T.get_lumcount() * 5
 			light_string = "a light level of [light_available] lumens"
 
-		to_chat(usr, "The tray's sensor suite is reporting [light_string] and a temperature of [environment.temperature]K.")
+		. += "\nThe tray's sensor suite is reporting [light_string] and a temperature of [environment.temperature]K."
 
 /obj/machinery/portable_atmospherics/hydroponics/verb/close_lid_verb()
 	set name = "Toggle Tray Lid"

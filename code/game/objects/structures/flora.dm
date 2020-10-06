@@ -121,7 +121,7 @@
 	layer = ABOVE_HUMAN_LAYER
 	var/dead = FALSE
 	var/obj/item/stored_item
-	
+
 /obj/structure/flora/pottedplant/Destroy()
 	stored_item.forceMove(loc)
 	return ..()
@@ -179,7 +179,7 @@
 			user.put_in_hands(stored_item)
 			to_chat(user,"<span class='notice'>You take \the [stored_item] from [src].</span>")
 			stored_item = null
-	
+
 /obj/structure/flora/pottedplant/bullet_act(obj/item/projectile/Proj)
 	if (prob(Proj.damage*2))
 		death()
@@ -304,6 +304,41 @@
 	..()
 	icon_state = "fullgrass_[rand(1, 3)]"
 
+/obj/structure/flora/goonbushes
+	name = "shrub"
+	icon = 'icons/obj/flora/goonbushes.dmi'
+	icon_state = ""
+	anchored = 1
+	layer = ABOVE_HUMAN_LAYER
+
+/obj/structure/flora/goonbushes/shrub
+	name = "shrub"
+	icon_state = "shrub"
+
+/obj/structure/flora/goonbushes/leafy
+	name = "shrub"
+	icon_state = "leafy"
+
+/obj/structure/flora/goonbushes/thick
+	name = "shrub"
+	icon_state = "thick"
+
+/obj/structure/flora/goonbushes/fern
+	name = "shrub"
+	icon_state = "fern"
+
+/obj/structure/flora/goonbushes/palm
+	name = "shrub"
+	icon_state = "palm"
+
+/obj/structure/flora/goonbushes/bush
+	name = "shrub"
+	icon_state = "bush"
+
+/obj/structure/flora/goonbushes/sick
+	name = "shrub"
+	icon_state = "sick"
+	layer = BELOW_DOOR_LAYER
 
 //potted plants credit: Flashkirby
 /obj/structure/flora/pottedplant
@@ -500,3 +535,8 @@
 	name = "dead potted plant"
 	desc = "This is the dried up remains of a dead plant. Someone should replace it."
 	icon_state = "plant-dead"
+
+/obj/structure/flora/pottedplant/monkey
+	name = "potted monkey plant"
+	desc = "Perhaps, this is why we no longer have a genetics lab?"
+	icon_state = "monkeyplant"

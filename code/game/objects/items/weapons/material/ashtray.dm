@@ -12,13 +12,13 @@
 	var/max_butts = 10
 
 /obj/item/weapon/material/ashtray/examine(mob/user)
-	..()
+	. = ..()
 	if(material)
-		to_chat(user, "It's made of [material.display_name].")
+		. += "\nIt's made of [material.display_name]."
 	if(contents.len >= max_butts)
-		to_chat(user, "It's full.")
+		. += "\nIt's full."
 	else if(contents.len)
-		to_chat(user, "It has [contents.len] cig butts in it.")
+		. += "\nIt has [contents.len] cig butts in it."
 
 /obj/item/weapon/material/ashtray/update_icon()
 	overlays.Cut()
@@ -41,7 +41,7 @@
 			var/obj/item/clothing/mask/smokable/cigarette/cig = W
 			if (cig.lit == 1)
 				visible_message("[user] crushes [cig] in [src], putting it out.")
-				W = cig.die(1)
+				W = cig.die(nomessage = TRUE, nodestroy = FALSE)
 			else if (cig.lit == 0)
 				to_chat(user, "You place [cig] in [src] without even smoking it. Why would you do that?")
 

@@ -50,7 +50,10 @@
 		else
 			. += "<a href='?src=\ref[src];add_special=[antag.id]'>High</a> <span class='linkOn'>Low</span> <a href='?src=\ref[src];add_never=[antag.id]'>Never</a></br>"
 		. += "</td></tr>"
+	. += "</table><br>"
 
+	. += "<b>Offer Ghost Roles:</b><br>"
+	. += "<table>"
 	var/list/ghost_traps = get_ghost_traps()
 	for(var/ghost_trap_key in ghost_traps)
 		var/datum/ghosttrap/ghost_trap = ghost_traps[ghost_trap_key]
@@ -63,12 +66,10 @@
 			. += "<span class='danger'>\[WHITELIST\]</span><br>"
 		else if(bannedReason)
 			. += "<span class='danger'>\[BANNED\]</span><br>"
-		else if(ghost_trap.pref_check in pref.be_special_role)
-			. += "<span class='linkOn'>High</span> <a href='?src=\ref[src];del_special=[ghost_trap.pref_check]'>Low</a> <a href='?src=\ref[src];add_never=[ghost_trap.pref_check]'>Never</a></br>"
 		else if(ghost_trap.pref_check in pref.never_be_special_role)
-			. += "<a href='?src=\ref[src];add_special=[ghost_trap.pref_check]'>High</a> <a href='?src=\ref[src];del_special=[ghost_trap.pref_check]'>Low</a> <span class='linkOn'>Never</span></br>"
+			. += "<a href='?src=\ref[src];del_special=[ghost_trap.pref_check]'>Always</a> <span class='linkOn'>Never</span></br>"
 		else
-			. += "<a href='?src=\ref[src];add_special=[ghost_trap.pref_check]'>High</a> <span class='linkOn'>Low</span> <a href='?src=\ref[src];add_never=[ghost_trap.pref_check]'>Never</a></br>"
+			. += "<span class='linkOn'>Always</span> <a href='?src=\ref[src];add_never=[ghost_trap.pref_check]'>Never</a></br>"
 		. += "</td></tr>"
 	. += "</table>"
 	. = jointext(.,null)

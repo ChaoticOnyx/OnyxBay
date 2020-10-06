@@ -136,8 +136,7 @@ var/global/list/rad_collectors = list()
 /obj/machinery/power/rad_collector/examine(mob/user, distance)
 	. = ..()
 	if (distance <= 3 && !(stat & BROKEN))
-		to_chat(user, "The meter indicates that \the [src] is collecting [last_power] W.")
-		return 1
+		. += "\nThe meter indicates that \the [src] is collecting [last_power] W."
 
 /obj/machinery/power/rad_collector/ex_act(severity)
 	switch(severity)

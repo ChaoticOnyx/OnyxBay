@@ -131,8 +131,8 @@
 
 /obj/item/weapon/cell/examine(mob/user)
 	. = ..()
-	to_chat(user, "The label states it's capacity is [maxcharge] Wh")
-	to_chat(user, "The charge meter reads [round(src.percent(), 0.1)]%")
+	. += "\nThe label states it's capacity is [maxcharge] Wh"
+	. += "\nThe charge meter reads [round(src.percent(), 0.1)]%"
 
 /obj/item/weapon/cell/emp_act(severity)
 	//remove this once emp changes on dev are merged in
@@ -168,6 +168,9 @@
 
 
 // SUBTYPES BELOW
+
+/obj/item/weapon/cell/empty
+	charge = 0
 
 // Smaller variant, used by energy guns and similar small devices.
 /obj/item/weapon/cell/device
@@ -213,10 +216,8 @@
 	maxcharge = 250
 	matter = list(MATERIAL_STEEL = 700, MATERIAL_GLASS = 40)
 
-/obj/item/weapon/cell/crap/empty/New()
-	..()
+/obj/item/weapon/cell/standard/empty
 	charge = 0
-
 
 /obj/item/weapon/cell/apc
 	name = "APC power cell"
@@ -234,8 +235,7 @@
 	maxcharge = 1000
 	matter = list(MATERIAL_STEEL = 700, MATERIAL_GLASS = 60)
 
-/obj/item/weapon/cell/high/empty/New()
-	..()
+/obj/item/weapon/cell/high/empty
 	charge = 0
 
 
@@ -256,8 +256,7 @@
 	maxcharge = 2000
 	matter = list(MATERIAL_STEEL = 700, MATERIAL_GLASS = 70)
 
-/obj/item/weapon/cell/super/empty/New()
-	..()
+/obj/item/weapon/cell/super/empty
 	charge = 0
 
 
@@ -269,8 +268,7 @@
 	maxcharge = 3000
 	matter = list(MATERIAL_STEEL = 700, MATERIAL_GLASS = 80)
 
-/obj/item/weapon/cell/hyper/empty/New()
-	..()
+/obj/item/weapon/cell/hyper/empty
 	charge = 0
 
 

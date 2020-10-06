@@ -44,8 +44,9 @@
 		set_light(2, 0.3, on ? "#82ff4c" : "#f86060")
 
 /obj/machinery/light_switch/examine(mob/user)
-	if(..(user, 1))
-		to_chat(user, "A light switch. It is [on? "on" : "off"].")
+	. = ..()
+	if(get_dist(src, user) <= 1)
+		. += "\nA light switch. It is [on? "on" : "off"]."
 
 /obj/machinery/light_switch/proc/set_state(newstate)
 	if(on != newstate)

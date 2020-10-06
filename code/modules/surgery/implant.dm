@@ -38,8 +38,7 @@
 	/obj/item/stack/rods = 50
 	)
 
-	min_duration = 60
-	max_duration = 80
+	duration = DRILL_DURATION
 
 /datum/surgery_step/cavity/make_space/can_use(mob/living/user, mob/living/carbon/human/target, target_zone, obj/item/tool)
 	if(..())
@@ -71,8 +70,7 @@
 	/obj/item/weapon/weldingtool = 25
 	)
 
-	min_duration = 60
-	max_duration = 80
+	duration = CAUTERIZE_DURATION
 
 /datum/surgery_step/cavity/close_space/can_use(mob/living/user, mob/living/carbon/human/target, target_zone, obj/item/tool)
 	if(..())
@@ -99,8 +97,7 @@
 	priority = 0
 	allowed_tools = list(/obj/item = 100)
 
-	min_duration = 80
-	max_duration = 100
+	duration = ATTACH_DURATION
 
 /datum/surgery_step/cavity/place_item/can_use(mob/living/user, mob/living/carbon/human/target, target_zone, obj/item/tool)
 	if(..())
@@ -108,11 +105,14 @@
 		if(istype(user,/mob/living/silicon/robot))
 			return FALSE
 		if(affected && affected.cavity)
-			var/max_volume = base_storage_capacity(affected.cavity_max_w_class)
+			var/max_volume = base_storage_capacity(affected.cavity_max_w_class) + affected.internal_organs_size
 
-			if(tool.w_class > affected.cavity_max_w_class)
-				to_chat(user, "<span class='warning'>\The [tool] is too big for [affected.cavity_name] cavity.</span>")
-				return FALSE
+			for(var/obj/item/organ/internal/org in affected.internal_organs)
+				max_volume -= org.get_storage_cost()
+
+			if(tool.get_storage_cost() > max_volume)
+				to_chat(user, SPAN_WARNING("\The [tool] is too big for [affected.cavity_name] cavity."))
+				return SURGERY_FAILURE
 
 			var/total_volume = tool.get_storage_cost()
 			for(var/obj/item/I in affected.implants)
@@ -156,8 +156,7 @@
 	/obj/item/weapon/material/kitchen/utensil/fork = 20
 	)
 
-	min_duration = 80
-	max_duration = 100
+	duration = CLAMP_DURATION
 
 /datum/surgery_step/cavity/implant_removal/can_use(mob/living/user, mob/living/carbon/human/target, target_zone, obj/item/tool)
 	var/obj/item/organ/external/affected = target.get_organ(target_zone)

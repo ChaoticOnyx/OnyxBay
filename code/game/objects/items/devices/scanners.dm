@@ -438,9 +438,9 @@ proc/get_wound_severity(damage_ratio, vital = 0)
 		user << browse(dat, "window=scanconsole;size=430x600")
 
 /obj/item/device/healthanalyzer_advanced/examine(mob/user)
-	..()
+	. = ..()
 	if (last_target)
-		to_chat(user, "It contains saved data for [last_target].")
+		. += "\nIt contains saved data for [last_target]."
 
 
 /obj/item/device/healthanalyzer_advanced/attack(mob/living/carbon/human/M, mob/living/user)

@@ -64,7 +64,7 @@
 
 /obj/machinery/organ_printer/examine(mob/user)
 	. = ..()
-	to_chat(user, "<span class='notice'>It is loaded with [stored_matter]/[max_stored_matter] matter units.</span>")
+	. += "\n<span class='notice'>It is loaded with [stored_matter]/[max_stored_matter] matter units.</span>"
 
 /obj/machinery/organ_printer/RefreshParts()
 	print_delay = initial(print_delay)

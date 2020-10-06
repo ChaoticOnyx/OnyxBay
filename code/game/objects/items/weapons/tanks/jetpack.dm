@@ -30,7 +30,7 @@
 /obj/item/weapon/tank/jetpack/examine(mob/living/user)
 	. = ..()
 	if(air_contents.total_moles < 5)
-		to_chat(user, "<span class='danger'>The meter on \the [src] indicates you are almost out of gas!</span>")
+		. += "\n<span class='danger'>The meter on \the [src] indicates you are almost out of gas!</span>"
 
 /obj/item/weapon/tank/jetpack/verb/toggle_rockets()
 	set name = "Toggle Jetpack Stabilization"
@@ -103,9 +103,9 @@
 	name = "jetpack"
 	var/obj/item/weapon/rig/holder
 
-/obj/item/weapon/tank/jetpack/rig/examine()
+/obj/item/weapon/tank/jetpack/rig/examine(mob/user)
 	. = ..()
-	to_chat(usr, "It's a jetpack. If you can see this, report it on the bug tracker.")
+	. += "\nIt's a jetpack. If you can see this, report it on the bug tracker."
 	return 0
 
 /obj/item/weapon/tank/jetpack/rig/allow_thrust(num, mob/living/user as mob)

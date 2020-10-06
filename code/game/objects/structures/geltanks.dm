@@ -1,7 +1,7 @@
 /obj/structure/geltank
 	name = "unknown gel tank"
 	desc = "I'm not supposed to exist. Somebody has done something very wrong."
-	icon = 'icons/obj/objects.dmi'
+	icon = 'icons/obj/reagent_tanks.dmi'
 	icon_state = "watertank"
 	density = 1
 	anchored = 0
@@ -13,11 +13,10 @@
 
 /obj/structure/geltank/examine(mob/user)
 	. = ..()
-	if(.)
-		if(capacity >= 0)
-			to_chat(user, "It contains [capacity]/[capacity_max] units of gel.")
-		else
-			to_chat(user, "It's empty.")
+	if(capacity >= 0)
+		. += "\nIt contains [capacity]/[capacity_max] units of gel."
+	else
+		. += "\nIt's empty."
 
 /obj/structure/geltank/proc/use(amt = 1)
 	capacity -= amt

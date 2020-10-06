@@ -9,6 +9,7 @@
 	projectile_type = /obj/item/projectile/energy/electrode/stunsphere
 	origin_tech = list(TECH_COMBAT = 3, TECH_MAGNET = 2)
 	modifystate = "tasertacticalstun"
+	combustion = FALSE
 
 	firemodes = list(
 		list(mode_name="stun", projectile_type=/obj/item/projectile/energy/electrode/stunsphere, modifystate="tasertacticalstun"),
@@ -146,9 +147,9 @@
 	. = ..()
 	if(. && user.Adjacent(src))
 		if(fail_counter > 30)
-			to_chat(user, SPAN("danger", "It feels burning hot!"))
+			. += "\n[SPAN("danger", "It feels burning hot!")]"
 		else if(fail_counter > 15)
-			to_chat(user, SPAN("warning", "It feels pleasantly warm."))
+			. += "\n[SPAN("warning", "It feels pleasantly warm.")]"
 
 /obj/item/weapon/gun/energy/gun/nuclear/proc/get_charge_overlay()
 	var/ratio = power_supply.percent()
@@ -194,6 +195,7 @@
 	projectile_type = /obj/item/projectile/energy/electrode/stunsphere
 	origin_tech = list(TECH_COMBAT = 4, TECH_MATERIAL = 4, TECH_POWER = 3)
 	modifystate = "egunstun"
+	combustion = FALSE
 
 	firemodes = list(
 		list(mode_name="stun", projectile_type=/obj/item/projectile/energy/electrode/stunsphere, modifystate="egunstun"),
