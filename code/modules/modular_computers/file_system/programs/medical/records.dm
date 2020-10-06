@@ -48,8 +48,8 @@
 	if (F.name == "Recent Records")
 
 		var/new_value = replacetext(input(user,\
-			"Enter information about sentence. You may use HTML paper formatting tags:",
-			"Issued sentence"), "\n", "\[br\]")
+			"Enter medical record data. You may use HTML paper formatting tags:",
+			"Medical Record"), "\n", "\[br\]")
 		if (!new_value)
 			return FALSE
 
