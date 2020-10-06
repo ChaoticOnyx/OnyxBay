@@ -73,7 +73,7 @@
 	icon_state = "survival"
 	startswith = list(/obj/item/clothing/mask/breath = 1,
 					/obj/item/weapon/tank/emergency/oxygen = 1,
-					/obj/item/weapon/reagent_containers/hypospray/autoinjector = 1,
+					/obj/item/weapon/reagent_containers/hypospray/autoinjector/tricordrazine = 1,
 					/obj/item/stack/medical/patches = 1,
 					/obj/item/device/flashlight/glowstick = 1,
 					/obj/item/weapon/reagent_containers/food/snacks/candy/proteinbar = 1)
@@ -94,7 +94,7 @@
 	icon_state = "survivaleng"
 	startswith = list(/obj/item/clothing/mask/breath = 1,
 					/obj/item/weapon/tank/emergency/oxygen/engi = 1,
-					/obj/item/weapon/reagent_containers/hypospray/autoinjector = 1,
+					/obj/item/weapon/reagent_containers/hypospray/autoinjector/tricordrazine = 1,
 					/obj/item/weapon/reagent_containers/hypospray/autoinjector/detox = 1,
 					/obj/item/stack/medical/patches = 1,
 					/obj/item/device/flashlight/glowstick = 1,
