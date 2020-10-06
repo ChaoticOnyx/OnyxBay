@@ -44,7 +44,7 @@
 /obj/item/weapon/corncob/attackby(obj/item/weapon/W as obj, mob/user as mob)
 	..()
 	if(istype(W, /obj/item/weapon/circular_saw) || istype(W, /obj/item/weapon/material/hatchet) || istype(W, /obj/item/weapon/material/kitchen/utensil/knife) || istype(W, /obj/item/weapon/material/knife) || istype(W, /obj/item/weapon/material/knife/ritual))
-		to_chat(user, "<span class='notice'>You use [W] to fashion a pipe out of the corn cob!</span>")
+		to_chat(user, SPAN("notice", "You use [W] to fashion a pipe out of the corn cob!"))
 		new /obj/item/clothing/mask/smokable/pipe/cobpipe (user.loc)
 		qdel(src)
 		return
@@ -63,4 +63,5 @@
 /obj/item/weapon/bananapeel/Crossed(mob/living/M)
 	if(!istype(M))
 		return
-	M.slip("the [src.name]",3)
+	if(!M.m_intent == "walk")
+		M.slip("the [src.name]", 3)
