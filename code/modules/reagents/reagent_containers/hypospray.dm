@@ -126,7 +126,7 @@
 		reagents.add_reagent(T, starts_with[T])
 	update_icon()
 	if(content_desc)
-		desc += " The label reads, \"[content_desc]\""
+		desc += " The label reads, \"[content_desc]\"."
 	return
 
 /obj/item/weapon/reagent_containers/hypospray/autoinjector/attack(mob/M as mob, mob/user as mob)
@@ -154,7 +154,7 @@
 
 /obj/item/weapon/reagent_containers/hypospray/autoinjector/tricordrazine
 	icon_state = "red"
-	content_desc = "Tricordrazine 10u. Use to restore from physical trauma."
+	content_desc = "Tricordrazine 10u. Use to speed up recovery from physical trauma."
 	starts_with = list(/datum/reagent/tricordrazine = 10)
 
 /obj/item/weapon/reagent_containers/hypospray/autoinjector/pain
