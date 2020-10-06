@@ -10,7 +10,7 @@
 	throw_speed = 4
 	throw_range = 20
 	var/key_data
-	var/durability = 50 // consider 100 as maximum possible durability
+	var/durability = 65 // consider 100 as the maximum possible durability
 
 /obj/item/weapon/soap/New()
 	..()
@@ -82,7 +82,7 @@
 
 /obj/item/weapon/soap/deluxe
 	icon_state = "soapdeluxe"
-	durability = 80
+	durability = 85
 
 /obj/item/weapon/soap/deluxe/New()
 	desc = "A deluxe Waffle Co. brand bar of soap. Smells of [pick("lavender", "vanilla", "strawberry", "chocolate" ,"space")]."
