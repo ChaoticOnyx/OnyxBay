@@ -39,8 +39,6 @@
 
 	limb_blend = ICON_MULTIPLY
 
-	blood_mask = 'icons/mob/human_races/masks/blood_nabber.dmi'
-
 	has_floating_eyes = 1
 
 	darksight = 8

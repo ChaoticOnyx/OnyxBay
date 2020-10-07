@@ -7,7 +7,6 @@
 	deform = 'icons/mob/human_races/monkeys/r_monkey.dmi'
 	damage_overlays = 'icons/mob/human_races/masks/dam_monkey.dmi'
 	damage_mask = 'icons/mob/human_races/masks/dam_mask_monkey.dmi'
-	blood_mask = 'icons/mob/human_races/masks/blood_monkey.dmi'
 	language = null
 	default_language = "Chimpanzee"
 	greater_form = SPECIES_HUMAN
@@ -55,21 +54,21 @@
 		BP_L_FOOT = list("path" = /obj/item/organ/external/foot),
 		BP_R_FOOT = list("path" = /obj/item/organ/external/foot/right)
 		)
-		
+
 	var/list/no_touchie = list(
 		/obj/item/weapon/mirror,
 		/obj/item/weapon/paper,
-		/obj/item/device/taperecorder,	
-		/obj/item/modular_computer,	
-	)	
+		/obj/item/device/taperecorder,
+		/obj/item/modular_computer,
+	)
 
 /datum/species/monkey/handle_npc(mob/living/carbon/human/H)
 	if(H.stat != CONSCIOUS)
 		return
-		
+
 	if(prob(25) && isturf(H.loc) && !H.pulledby && H.canmove) //won't move if being pulled
 		step(H, pick(GLOB.cardinal))
-		
+
 	if(prob(25))
 		H.hand = !(H.hand)
 
@@ -85,7 +84,7 @@
 				C.attack(H, H)
 			if(istype(held, /obj/item/) && prob(50))
 				var/obj/item/O = held
-				O.attack_self(H)					
+				O.attack_self(H)
 			else
 				H.throw_item(T)
 		else
@@ -98,7 +97,7 @@
 		if(touchables.len)
 			var/obj/touchy = pick(touchables)
 			touchy.attack_hand(H)
-			
+
 	if(H.buckled && prob(10))
 		H.resist()
 
