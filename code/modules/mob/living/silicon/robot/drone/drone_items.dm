@@ -407,6 +407,17 @@
 		var/obj/machinery/portable_atmospherics/canister/A = target
 		A.ui_interact(user)
 
+	else if(istype(target, /obj/machinery/mining/drill))
+		var/obj/machinery/mining/drill/hdrill = target
+		if(hdrill.panel_open && hdrill.cell && user.Adjacent(hdrill))
+			wrapped = hdrill.cell
+			hdrill.cell.add_fingerprint(user)
+			hdrill.cell.update_icon()
+			hdrill.cell.loc = src
+			hdrill.cell = null
+
+			user.visible_message(SPAN_DANGER("[user] removes the power cell from [hdrill]!"), "You remove the power cell.")
+
 	else if(istype(target, /obj/machinery/cell_charger))
 		var/obj/machinery/cell_charger/charger = target
 		if(charger.charging)

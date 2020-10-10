@@ -19,9 +19,9 @@
 	body_parts_covered = HEAD
 	attack_verb = list("bapped")
 
-	var/info		//What's actually written on the paper.
-	var/info_links	//A different version of the paper which includes html links at fields and EOF
-	var/stamps		//The (text for the) stamps on the paper.
+	var/info = ""   //What's actually written on the paper.
+	var/info_links  //A different version of the paper which includes html links at fields and EOF
+	var/stamps      //The (text for the) stamps on the paper.
 	var/free_space = MAX_PAPER_MESSAGE_LEN
 	var/stamps_generated = TRUE
 	var/list/stamped
@@ -118,9 +118,9 @@
 	if(title)
 		SetName(title)
 	info = html_encode(text)
-	info = parsepencode(text, is_init = TRUE)
+	info = parsepencode(info, is_init = TRUE)
 	update_icon()
-	update_space(info)
+	update_space()
 	generateinfolinks()
 
 /obj/item/weapon/paper/update_icon()
@@ -134,6 +134,9 @@
 /obj/item/weapon/paper/proc/update_space()
 	free_space = initial(free_space)
 	free_space -= length(strip_html_properly(info_links)) //using info_links to also count field prompts
+
+/obj/item/weapon/paper/proc/is_clean()
+	return free_space == initial(free_space)
 
 /obj/item/weapon/paper/examine(mob/user)
 	. = ..()
@@ -309,7 +312,7 @@
 
 	return t
 
-/obj/item/weapon/paper/verb/parse_named_fields()
+/obj/item/weapon/paper/proc/parse_named_fields()
 	var/list/matches = list()
 	named_field_extraction_regex.next = 1
 	while (named_field_extraction_regex.Find(info))
