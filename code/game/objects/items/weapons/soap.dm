@@ -10,7 +10,7 @@
 	throw_speed = 4
 	throw_range = 20
 	var/key_data
-	var/durability = 65 // consider 100 as the maximum possible durability
+	var/smudge_chance = 50
 
 /obj/item/weapon/soap/New()
 	..()
@@ -24,7 +24,7 @@
 	if(istype(AM, /mob/living))
 		var/mob/living/M = AM
 		if(M.slip("the [src.name]", 4))
-			if(prob(100-durability))
+			if(prob(smudge_chance))
 				new /obj/effect/decal/cleanable/soap_smudge(loc)
 				visible_message(SPAN("danger", "[M] smudges \the [src]!"))
 				qdel(src)
@@ -82,7 +82,7 @@
 
 /obj/item/weapon/soap/deluxe
 	icon_state = "soapdeluxe"
-	durability = 85
+	smudge_chance = 15
 
 /obj/item/weapon/soap/deluxe/New()
 	desc = "A deluxe Waffle Co. brand bar of soap. Smells of [pick("lavender", "vanilla", "strawberry", "chocolate" ,"space")]."
@@ -91,13 +91,14 @@
 /obj/item/weapon/soap/syndie
 	desc = "An untrustworthy bar of soap. Smells of fear."
 	icon_state = "soapsyndie"
-	durability = 75
+	smudge_chance = 25
 
 /obj/item/weapon/soap/gold
 	desc = "One true soap to rule them all."
 	icon_state = "soapgold"
-	durability = 95
+	smudge_chance = 5
 
 /obj/item/weapon/soap/brig
 	desc = "Train your security guards!"
 	icon_state = "soapbrig"
+	smudge_chance = 35

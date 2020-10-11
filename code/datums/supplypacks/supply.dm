@@ -35,6 +35,12 @@
 	containertype = /obj/structure/closet/crate/large
 	containername = "\improper Janitorial supplies"
 
+/decl/hierarchy/supply_pack/supply/soap
+	name = "5 soap bars"
+	contains = list(/obj/item/weapon/soap/nanotrasen = 5)
+	cost = 15
+	containername = "\improper Soap bars crate"
+
 /decl/hierarchy/supply_pack/supply/boxes
 	name = "Empty boxes"
 	contains = list(/obj/item/weapon/storage/box = 10)

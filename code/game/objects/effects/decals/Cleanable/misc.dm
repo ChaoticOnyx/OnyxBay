@@ -139,7 +139,7 @@
 	icon = 'icons/effects/effects.dmi'
 	icon_state = "soap"
 
-/obj/effect/decal/cleanable/soap_smudge/Crossed(AM as mob|obj)
+/obj/effect/decal/cleanable/soap_smudge/Crossed(atom/movable/AM)
 	if(istype(AM, /mob/living))
 		var/mob/living/M = AM
 		M.slip("the [src.name]", 4)
