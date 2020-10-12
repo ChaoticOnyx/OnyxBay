@@ -216,15 +216,15 @@
 *********************************/
 /obj/item/device/uplink_service/fake_crew_announcement
 	service_label = "Crew Arrival Announcement and Records"
-	var/mode = 1
+	var/does_announce_visit = 1
 
 /obj/item/device/uplink_service/fake_crew_announcement/verb/verb_toggle_mode()
 	set category = "Object"
 	set name = "Toggle Mode"
 	set src in usr
 
-	mode = !mode
-	if (mode)
+	does_announce_visit = !does_announce_visit
+	if (does_announce_visit)
 		to_chat(usr, SPAN("notice", "Device will announce your visit!"))
 	else
 		to_chat(usr, SPAN("notice", "Device will not announce your visit!")) 
@@ -265,7 +265,7 @@
 		for(var/field in to_copy)
 			new_record.set_field(field, random_record.get_field(field))
 
-	if (mode)
+	if (does_announce_visit)
 		for (var/mob/M in GLOB.player_list)
 			M.playsound_local(M.loc, 'sound/signals/arrival1.ogg', 70)
 
