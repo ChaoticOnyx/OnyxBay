@@ -119,7 +119,7 @@ var/list/wrapped_species_by_ref = list()
 
 	visible_message(SPAN_NOTICE("\The [src]'s form contorts subtly."))
 	change_gender(new_gender)
-	sanitize_body(wrapped=TRUE)
+	shapeshifter_sanitize_body()
 
 /mob/living/carbon/human/proc/shapeshifter_select_shape()
 
@@ -140,7 +140,7 @@ var/list/wrapped_species_by_ref = list()
 		return
 
 	wrapped_species_by_ref["\ref[src]"] = new_species
-	sanitize_body(wrapped=TRUE)
+	shapeshifter_sanitize_body()
 	visible_message("<span class='notice'>\The [src] shifts and contorts, taking the form of \a ["\improper [new_species]"]!</span>")
 	regenerate_icons()
 
@@ -205,3 +205,10 @@ var/list/wrapped_species_by_ref = list()
 			return
 		change_body_build(new_body_build)
 		visible_message(SPAN_NOTICE("\The [src]'s form contorts subtly."))
+
+/mob/living/carbon/human/proc/shapeshifter_sanitize_body()
+	var/datum/species/S = all_species[wrapped_species_by_ref["\ref[src]"]]
+	var/list/body_builds = S.get_body_build_datum_list(src.gender)
+	if(!(body_build in body_builds))
+		body_build = body_builds[1]
+		regenerate_icons()
