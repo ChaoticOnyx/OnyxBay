@@ -63,6 +63,24 @@ CIGARETTES AND STUFF ARE IN 'SMOKABLES' FOLDER
 	desc = "A match. This one has seen better days."
 	STOP_PROCESSING(SSobj, src)
 
+/obj/item/weapon/flame/match/attack(mob/living/carbon/M as mob, mob/living/carbon/user as mob)
+	if(!istype(M, /mob))
+		return
+
+	if(lit)
+		M.IgniteMob()
+
+		if(istype(M.wear_mask, /obj/item/clothing/mask/smokable/cigarette) && user.zone_sel.selecting == BP_MOUTH)
+			var/obj/item/clothing/mask/smokable/cigarette/cig = M.wear_mask
+			if(M == user)
+				cig.attackby(src, user)
+			else
+				visible_message(SPAN_NOTICE("[user] holds the [name] out for [M], and lights the [cig.name]."))
+				cig.light(src, user)
+			return
+
+	..()
+
 /////////
 //ZIPPO//
 /////////
