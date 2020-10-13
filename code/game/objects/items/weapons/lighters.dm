@@ -63,7 +63,7 @@ CIGARETTES AND STUFF ARE IN 'SMOKABLES' FOLDER
 	desc = "A match. This one has seen better days."
 	STOP_PROCESSING(SSobj, src)
 
-/obj/item/weapon/flame/match/attack(mob/living/carbon/M as mob, mob/living/carbon/user as mob)
+/obj/item/weapon/flame/match/attack(mob/living/carbon/M, mob/living/carbon/user)
 	if(!istype(M, /mob))
 		return
 
