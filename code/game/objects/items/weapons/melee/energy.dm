@@ -58,7 +58,7 @@
 
 /obj/item/weapon/melee/energy/dropped()
 	if(isturf(loc))
-		deactivate()	
+		deactivate()
 
 /obj/item/weapon/melee/energy/get_storage_cost()
 	if(active)
@@ -169,7 +169,7 @@
 	icon_state = initial(icon_state)
 
 /obj/item/weapon/melee/energy/sword/attackby(obj/item/sword as obj, mob/user as mob)
-	if(istype(sword, /obj/item/weapon/melee/energy/sword))
+	if(istype(sword, /obj/item/weapon/melee/energy/sword) && !istype(sword, /obj/item/weapon/melee/energy/sword/dualsaber))
 		to_chat(user, "<span class='notice'>You attach the ends of the two energy swords, making a single double-bladed weapon!</span>")
 		new /obj/item/weapon/melee/energy/sword/dualsaber(user.loc)
 		qdel(sword)
@@ -237,6 +237,9 @@
 /obj/item/weapon/melee/energy/sword/dualsaber/activate(mob/living/user)
 	..()
 	icon_state = "dualsaber[blade_color]"
+
+/obj/item/weapon/melee/energy/sword/dualsaber/attackby(obj/item/sword as obj, mob/user as mob)
+	return
 
 /*
  *Energy Blade
