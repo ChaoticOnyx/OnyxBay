@@ -89,7 +89,7 @@
 			if ("cultist")       add_danger = 4
 			if ("renegade")      add_danger = 4
 			if ("raider")        add_danger = 4
-			if ("mercenary")     add_danger = 4
+			if ("syndicate")     add_danger = 4
 			if ("deathsquad")    add_danger = 6
 			if ("changeling")    add_danger = 8
 			if ("ninja")         add_danger = 12

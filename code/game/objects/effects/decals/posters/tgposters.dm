@@ -20,7 +20,7 @@
 	icon_state="poster4"
 
 /datum/poster/tg_5
-	name = "Mercenary Recruitment Poster"
+	name = "Syndicate Recruitment Poster"
 	desc = "See the galaxy! Shatter corrupt megacorporations! Join today!"
 	icon_state="poster5"
 

@@ -111,7 +111,7 @@
 	area_flags = AREA_FLAG_RAD_SHIELDED
 
 /area/shuttle/syndicate_elite
-	name = "\improper Merc Elite Shuttle"
+	name = "\improper Syndicate Elite Shuttle"
 	area_flags = AREA_FLAG_RAD_SHIELDED
 
 /area/shuttle/transport/centcom
@@ -221,7 +221,7 @@
 //SYNDICATES
 
 /area/syndicate_mothership
-	name = "\improper Mercenary Base"
+	name = "\improper Syndicate Base"
 	icon_state = "syndie-ship"
 	requires_power = 0
 	dynamic_lighting = 0
@@ -293,7 +293,7 @@
 	area_flags = AREA_FLAG_RAD_SHIELDED
 
 /area/syndicate_station/start
-	name = "\improper Mercenary Forward Operating Base"
+	name = "\improper Syndicate Forward Operating Base"
 	icon_state = "yellow"
 
 /area/syndicate_station/southwest

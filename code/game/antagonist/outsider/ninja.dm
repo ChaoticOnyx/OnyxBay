@@ -159,7 +159,7 @@ GLOBAL_DATUM_INIT(ninjas, /datum/antagonist/ninja, new)
 		if(11)
 			directive += "Our honor is on the line. Utilize only honorable tactics when dealing with opponents."
 		if(12)
-			directive += "We are currently negotiating with a mercenary leader. Disguise assassinations as suicide or other natural causes."
+			directive += "We are currently negotiating with a Syndicate leader. Disguise assassinations as suicide or other natural causes."
 		if(13)
 			directive += "Some disgruntled [GLOB.using_map.company_name] employees have been supportive of our operations. Be wary of any mistreatment by command staff."
 		if(14)
