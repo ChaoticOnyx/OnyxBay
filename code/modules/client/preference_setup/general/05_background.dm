@@ -16,16 +16,16 @@
 	sort_order = 5
 
 /datum/category_item/player_setup_item/general/background/load_character(savefile/S)
-	from_file(S["med_record"],pref.med_record)
-	from_file(S["sec_record"],pref.sec_record)
-	from_file(S["gen_record"],pref.gen_record)
-	from_file(S["home_system"],pref.home_system)
-	from_file(S["citizenship"],pref.citizenship)
-	from_file(S["faction"],pref.faction)
-	from_file(S["religion"],pref.religion)
-	from_file(S["nanotrasen_relation"],pref.nanotrasen_relation)
+	from_file(S["nanotrasen_relation"], pref.nanotrasen_relation)
+	from_file(S["home_system"], pref.home_system)
+	from_file(S["citizenship"], pref.citizenship)
+	from_file(S["faction"], pref.faction)
+	from_file(S["religion"], pref.religion)
+	from_file(S["med_record"], pref.med_record)
+	from_file(S["gen_record"], pref.gen_record)
+	from_file(S["sec_record"], pref.sec_record)
 	from_file(S["exploit_record"], pref.exploit_record)
-	from_file(S["memory"],pref.memory)
+	from_file(S["memory"], pref.memory)
 
 	// delete factions from old saves
 	var/factionExist = FALSE
@@ -37,22 +37,26 @@
 		pref.faction = "NanoTrasen"
 
 /datum/category_item/player_setup_item/general/background/save_character(savefile/S)
-	to_file(S["med_record"],pref.med_record)
-	to_file(S["sec_record"],pref.sec_record)
-	to_file(S["gen_record"],pref.gen_record)
-	to_file(S["home_system"],pref.home_system)
-	to_file(S["citizenship"],pref.citizenship)
-	to_file(S["faction"],pref.faction)
-	to_file(S["religion"],pref.religion)
-	to_file(S["nanotrasen_relation"],pref.nanotrasen_relation)
+	to_file(S["nanotrasen_relation"], pref.nanotrasen_relation)
+	to_file(S["home_system"], pref.home_system)
+	to_file(S["citizenship"], pref.citizenship)
+	to_file(S["faction"], pref.faction)
+	to_file(S["religion"], pref.religion)
+	to_file(S["med_record"], pref.med_record)
+	to_file(S["gen_record"], pref.gen_record)
+	to_file(S["sec_record"], pref.sec_record)
 	to_file(S["exploit_record"], pref.exploit_record)
-	to_file(S["memory"],pref.memory)
+	to_file(S["memory"], pref.memory)
 
 /datum/category_item/player_setup_item/general/background/sanitize_character()
-	if(!pref.home_system) pref.home_system = "Unset"
-	if(!pref.citizenship) pref.citizenship = "None"
-	if(!pref.faction)     pref.faction =     "NanoTrasen"
-	if(!pref.religion)    pref.religion =    "None"
+	if(!pref.home_system)
+		pref.home_system = "Unset"
+	if(!pref.citizenship)
+		pref.citizenship = "None"
+	if(!pref.faction)
+		pref.faction =     "NanoTrasen"
+	if(!pref.religion)
+		pref.religion =    "None"
 
 	pref.nanotrasen_relation = sanitize_inlist(pref.nanotrasen_relation, COMPANY_ALIGNMENTS, initial(pref.nanotrasen_relation))
 
