@@ -202,6 +202,7 @@ var/list/gamemode_cache = list()
 	var/aliens_allowed = 0
 	var/alien_eggs_allowed = 0
 	var/ninjas_allowed = 0
+	var/blob_disable = 0
 	var/abandon_allowed = 1
 	var/ooc_allowed = 1
 	var/looc_allowed = 1
@@ -545,6 +546,9 @@ var/list/gamemode_cache = list()
 
 				if ("ninjas_allowed")
 					config.ninjas_allowed = 1
+
+				if ("blob_disable")
+					config.blob_disable = 1
 
 				if ("objectives_disabled")
 					if(!value)

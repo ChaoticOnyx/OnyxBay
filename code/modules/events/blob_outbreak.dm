@@ -6,6 +6,11 @@
 	var/datum/antagonist/blob/blob_antag = null
 
 /datum/event/blob/setup()
+	// Do not spawn a blob if it's disabled
+	if(config.blob_disable)
+		kill()
+		return
+
 	blob_antag = get_antag_data("blob")
 
 	var/mills = round_duration_in_ticks

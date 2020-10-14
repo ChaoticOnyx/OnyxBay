@@ -933,6 +933,17 @@ var/global/floorIsLava = 0
 	log_and_message_admins("toggled Space Ninjas [config.ninjas_allowed ? "on" : "off"].")
 	feedback_add_details("admin_verb","TSN") //If you are copy-pasting this, ensure the 2nd parameter is unique to the new proc!
 
+/datum/admins/proc/toggle_blob()
+	set category = "Server"
+	set desc="Toggle blob spawning."
+	set name="Toggle Blob"
+	if(!check_rights(R_ADMIN))
+		return
+
+	config.blob_disable = !config.blob_disable
+	log_and_message_admins("toggled blob [config.blob_disable ? "off" : "on"].")
+	feedback_add_details("admin_verb","BLOB") //If you are copy-pasting this, ensure the 2nd parameter is unique to the new proc!
+
 /datum/admins/proc/delay()
 	set category = "Server"
 	set desc="Delay the game start/end"
