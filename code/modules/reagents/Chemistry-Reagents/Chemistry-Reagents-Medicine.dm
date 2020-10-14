@@ -711,7 +711,7 @@
 	taste_description = "peppery bitterness"
 	reagent_state = LIQUID
 	color = "#efebaa"
-	metabolism = REM * 0.006
+	metabolism = REM * 0.002
 	overdose = 6
 	scannable = 1
 	data = 0
