@@ -402,6 +402,30 @@
 	icon_state = "leather_jacket_nt"
 	body_parts_covered = UPPER_TORSO|ARMS
 
+/obj/item/clothing/suit/storage/punk_jacket_AC
+	name = "black punk jacket"
+	desc = "A black leather jacket with Atomic Cat on the back."
+	icon_state = "punk_jacket_AC"
+	body_parts_covered = UPPER_TORSO|ARMS
+
+/obj/item/clothing/suit/storage/punk_jacket_RD
+	name = "navy punk jacket"
+	desc = "A navy leather jacket with Rusty Devil on the back."
+	icon_state = "punk_jacket_RD"
+	body_parts_covered = UPPER_TORSO|ARMS
+
+/obj/item/clothing/suit/storage/punk_jacket_TS
+	name = "brown punk jacket"
+	desc = "A brown leather jacket with Tunnel Snake on the back."
+	icon_state = "punk_jacket_TS"
+	body_parts_covered = UPPER_TORSO|ARMS
+
+/obj/item/clothing/suit/storage/fashionable_coat
+	name = "fashionable coat"
+	desc = "An expensive coat with a huge lapel."
+	icon_state = "fashionable_coat"
+	body_parts_covered = UPPER_TORSO|ARMS|LEGS
+
 //This one has buttons for some reason
 /obj/item/clothing/suit/storage/toggle/brown_jacket
 	name = "brown jacket"
