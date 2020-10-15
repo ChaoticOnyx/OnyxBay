@@ -171,9 +171,9 @@ SUBSYSTEM_DEF(supply)
 			info +="Order #[SO.ordernum]<br>"
 			info +="Destination: [GLOB.using_map.station_name]<br>"
 			info +="[shoppinglist.len] PACKAGES IN THIS SHIPMENT<br>"
-			info +="CONTENTS:<br><ul>"
+			info +="CONTENTS:<br>"
 
-			slip = new /obj/item/weapon/paper/manifest(A, jointext(info, null))
+			slip = new /obj/item/weapon/paper/manifest(A, info, notpencode = TRUE)
 			slip.is_copy = 0
 
 		//spawn the stuff, finish generating the manifest while you're at it
@@ -188,7 +188,7 @@ SUBSYSTEM_DEF(supply)
 		if(slip)
 			for(var/atom/content in spawned)
 				slip.info += "<li>[content.name]</li>" //add the item to the manifest
-			slip.info += "</ul><br>CHECK CONTENTS AND STAMP BELOW THE LINE TO CONFIRM RECEIPT OF GOODS<hr>"
+			slip.info += "<br>CHECK CONTENTS AND STAMP BELOW THE LINE TO CONFIRM RECEIPT OF GOODS<hr>"
 
 /datum/supply_order
 	var/ordernum
