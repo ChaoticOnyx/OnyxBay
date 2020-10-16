@@ -278,7 +278,7 @@
 	if(client || stat)
 		return //Lets not force players or dead/incap parrots to move
 
-	if(!isturf(src.loc) || !canmove || buckled)
+	if(!isturf(src.loc) || !canmove)
 		icon_state = "parrot_sit"
 		return //If it can't move, dont let it move. (The buckled check probably isn't necessary thanks to canmove)
 
