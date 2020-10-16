@@ -40,7 +40,7 @@
 	emote_hear = list("squawks","bawks")
 	emote_see = list("flutters its wings")
 
-	speak_chance = 2//2% (2 in 100) chance every tick; So about once per 75 seconds, assuming an average tick is 1.5s
+	speak_chance = 3//3% (3 in 100) chance every tick; So about once per 50 seconds, assuming an average tick is 1.5s; (FAKE)
 	turns_per_move = 1
 	meat_type = /obj/item/weapon/reagent_containers/food/snacks/cracker/
 
@@ -49,6 +49,8 @@
 	response_harm   = "swats"
 	stop_automated_movement = 1
 	universal_speak = 1
+
+	var/phrase_chance = 15 // 15% chance every tick to add phrase from buffer to speaklist
 
 	var/parrot_state = PARROT_WANDER //Hunt for a perch when created
 	var/parrot_sleep_max = 25 //The time the parrot sits while perched before looking around. Mosly a way to avoid the parrot's AI in life() being run every single tick.
@@ -278,7 +280,7 @@
 	if(client || stat)
 		return //Lets not force players or dead/incap parrots to move
 
-	if(!isturf(src.loc) || !canmove)
+	if(!isturf(src.loc) || !canmove || buckled)
 		icon_state = "parrot_sit"
 		return //If it can't move, dont let it move. (The buckled check probably isn't necessary thanks to canmove)
 
@@ -288,7 +290,7 @@
 	   Phrases that the parrot hears in mob/living/say() get added to speach_buffer.
 	   Every once in a while, the parrot picks one of the lines from the buffer and replaces an element of the 'speech' list.
 	   Then it clears the buffer to make sure they dont magically remember something from hours ago. */
-	if(speech_buffer.len && prob(10))
+	if(speech_buffer.len && prob(phrase_chance))
 		if(speak.len)
 			speak.Remove(pick(speak))
 
@@ -723,7 +725,7 @@
 
 
 /mob/living/simple_animal/parrot/hear_say(message, verb = "says", datum/language/language = null, alt_name = "",italics = 0, mob/speaker = null)
-	if(prob(50))
+	if(prob(50) && !istype(speaker, /mob/living/simple_animal/parrot/))
 		parrot_hear(message)
 	..()
 
