@@ -39,7 +39,7 @@
 		"What do you get from eating tree decorations?\n\n<i>Tinsilitis!</i>",
 		"What do snowmen wear on their heads?\n\n<i>Ice caps!</i>",
 		"Why is Christmas just like life on ss13?\n\n<i>You do all the work and the fat guy gets all the credit.</i>",
-		"Why doesn�t Santa have any children?\n\n<i>Because he only comes down the chimney.</i>"),
+		"Why doesn't Santa have any children?\n\n<i>Because he only comes down the chimney.</i>"),
 			
 		"[pick("awful","terrible","unfunny")] joke",
 		notpencode = TRUE)
