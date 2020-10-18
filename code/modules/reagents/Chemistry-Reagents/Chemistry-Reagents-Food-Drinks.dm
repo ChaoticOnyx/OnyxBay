@@ -2137,6 +2137,7 @@
 	nutriment_factor = 1
 
 	glass_required = "mug"
+	glass_icon_state = "mead"
 	glass_name = "mead"
 	glass_desc = "A Viking's beverage, though a cheap one."
 	glass_special = list(DRINK_FIZZ)
