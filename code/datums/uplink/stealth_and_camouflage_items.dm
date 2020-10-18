@@ -55,9 +55,3 @@
 	name = "Chameleon Thermal Imaging Glasses"
 	item_cost = 31
 	path = /obj/item/clothing/glasses/thermal/syndi/chameleon
-
-/datum/uplink_item/item/stealth_items/contortionist
-	name = "Contortionist's Jumpsuit"
-	desc = "A highly flexible jumpsuit that will help you navigate the ventilation loops of the station internally. Comes with pockets and ID slot, but can't be used without stripping off most gear, including backpack, belt, helmet, and exosuit. Free hands are also necessary to crawl around inside."
-	path = /obj/item/clothing/under/contortionist
-	item_cost = 75
