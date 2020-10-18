@@ -124,8 +124,8 @@
 			log_debug("[key_name(player)] is not eligible to become a [role_text]: They are already an antagonist!")
 		else if(player.current.stat == UNCONSCIOUS)
 			log_debug("[key_name(player)] is not eligible to become a [role_text]: They are unconscious!")
-		else if(istype(player.current, /mob/living/simple_animal))
-			log_debug("[key_name(player)] is not eligible to become a [role_text]: They are simple animal!")
+		else if(!is_mob_type_allowed(player))
+			log_debug("[key_name(player)] is not eligible to become a [role_text]: '[player.current.type]' is not allowed type of mob!")
 		else
 			log_debug("[key_name(player)] is eligible to become a [role_text]")
 			candidates |= player
@@ -152,8 +152,8 @@
 			log_debug("[key_name(player)] is not eligible to become a [role_text]: They are already an antagonist!")
 		else if(player.current.stat == UNCONSCIOUS)
 			log_debug("[key_name(player)] is not eligible to become a [role_text]: They are unconscious!")
-		else if(istype(player.current, /mob/living/simple_animal))
-			log_debug("[key_name(player)] is not eligible to become a [role_text]: They are simple animal!")
+		else if(!is_mob_type_allowed(player))
+			log_debug("[key_name(player)] is not eligible to become a [role_text]: '[player.current.type]' is not allowed type of mob!")
 		else
 			potential_candidates |= player
 
@@ -189,7 +189,8 @@
 		return 0
 
 	var/datum/mind/player = pending_antagonists[1]
-	if(!add_antagonist(player,0,0,0,1,1))
+	pending_antagonists -= player
+	if(!add_antagonist(player, ignore_role=FALSE, do_not_equip=FALSE, move_to_spawn=FALSE, do_not_announce=TRUE, preserve_appearance=TRUE))
 		log_debug("Could not auto-spawn a [role_text], failed to add antagonist.")
 		return 0
 
@@ -255,7 +256,7 @@
 
 	for(var/datum/mind/player in pending_antagonists)
 		pending_antagonists -= player
-		add_antagonist(player,0,0,1)
+		add_antagonist(player, ignore_role=FALSE, do_not_equip=FALSE, move_to_spawn=TRUE)
 
 	reset_antag_selection()
 
@@ -278,3 +279,18 @@
 	if (!check_rights(R_ADMIN))
 		href_exploit(usr.ckey, href)
 		return TRUE
+
+/datum/antagonist/proc/is_mob_type_allowed(datum/mind/player)
+	ASSERT(player)
+	ASSERT(player.current)
+	if (istype(player.current, /mob/living/carbon/human))
+		return TRUE
+	if (istype(player.current, /mob/living/silicon/robot))
+		return TRUE
+	if (istype(player.current, /mob/living/silicon/ai))
+		return TRUE
+	if (isghostmind(player))
+		return TRUE
+	if (istype(player.current, /mob/new_player))
+		return TRUE
+	return FALSE
