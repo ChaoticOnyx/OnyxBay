@@ -276,6 +276,7 @@
 	mod_handy_a = 1.75
 	origin_tech = list(TECH_MAGNET = 4, TECH_ILLEGAL = 5)
 	var/base_block_chance = 50
+	var/blade_color
 
 /obj/item/weapon/melee/energy/dualsaber/New()
 	blade_color = pick("red", "blue", "green", "purple")
