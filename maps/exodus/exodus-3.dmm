@@ -2686,7 +2686,7 @@
 "mvT" = (/obj/effect/wingrille_spawn/reinforced/crescent,/obj/structure/barricade{layer = 6},/turf/simulated/floor/trim/wood,/area/thunderfield)
 "myt" = (/obj/structure/closet/crate/trashcart,/obj/random/drinkbottle,/turf/unsimulated/floor{icon_state = "dark"},/area/skipjack_station/base)
 "mAU" = (/obj/structure/flora/tree/dead/deadtree_4,/turf/unsimulated/floor{icon_state = "asteroidplating"},/area/thunderfield)
-"mDS" = (/obj/structure/closet/crate,/obj/item/weapon/implanter/freedom,/obj/item/weapon/implantcase/freedom,/obj/item/weapon/implanter/explosive,/obj/item/weapon/implantcase/explosive,/obj/item/weapon/card/emag,/obj/item/weapon/melee/energy/sword/pirate,/obj/item/weapon/melee/energy/sword/pirate,/turf/simulated/floor/shuttle/black,/area/skipjack_station/start)
+"mDS" = (/obj/structure/closet/crate,/obj/item/weapon/implanter/freedom,/obj/item/weapon/implantcase/freedom,/obj/item/weapon/implanter/explosive,/obj/item/weapon/implantcase/explosive,/obj/item/weapon/card/emag,/obj/item/weapon/melee/energy/pirate,/turf/simulated/floor/shuttle/black,/area/skipjack_station/start)
 "mHi" = (/obj/structure/flora/tree/dead/deadtree_5,/turf/unsimulated/floor{icon_state = "asteroid"},/area/thunderfield)
 "mIe" = (/obj/random/closet,/turf/simulated/floor/trim/wood{icon_state = "wood_broken1"},/area/thunderfield)
 "mJN" = (/obj/effect/floor_decal/industrial/warning/dust/corner{dir = 8; icon_state = "warningcorner_dust"},/turf/unsimulated/floor{icon_state = "asteroidfloor"},/area/thunderfield)
