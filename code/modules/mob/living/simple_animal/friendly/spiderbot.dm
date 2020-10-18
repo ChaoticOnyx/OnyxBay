@@ -40,12 +40,34 @@
 	pass_flags = PASS_FLAG_TABLE
 	speak_emote = list("beeps","clicks","chirps")
 
-/mob/living/simple_animal/spiderbot/New()
+/mob/living/simple_animal/spiderbot/Initialize()
 	..()
+
 	add_language(LANGUAGE_GALCOM)
 	default_language = all_languages[LANGUAGE_GALCOM]
+
 	verbs |= /mob/living/proc/ventcrawl
 	verbs |= /mob/living/proc/hide
+
+	radio = new /obj/item/device/radio/borg(src)
+	camera = new /obj/machinery/camera(src)
+	camera.c_tag = "spiderbot-[real_name]"
+	camera.replace_networks(list("SS13"))
+
+	return INITIALIZE_HINT_NORMAL
+
+/mob/living/simple_animal/spiderbot/death()
+	switch_from_living_to_dead_mob_list()
+
+	if(camera)
+		camera.status = 0
+
+	drop_held_item()
+	eject_brain()
+
+	gibs(loc, null, /obj/effect/gibspawner/robot) //TODO: use gib() or refactor spiderbots into synthetics.
+	qdel(src)
+	return
 
 /mob/living/simple_animal/spiderbot/attackby(obj/item/O as obj, mob/user as mob)
 
@@ -125,9 +147,7 @@
 		if(access_robotics in id_card.access)
 			to_chat(user, "<span class='notice'>You swipe your access card and pop the brain out of \the [src].</span>")
 			eject_brain()
-			if(held_item)
-				held_item.loc = src.loc
-				held_item = null
+			drop_held_item()
 			return 1
 		else
 			to_chat(user, "<span class='danger'>You swipe your card with no effect.</span>")
@@ -175,7 +195,7 @@
 	if(mmi)
 		var/turf/T = get_turf(loc)
 		if(T)
-			mmi.loc = T
+			mmi.forceMove(T)
 		if(mind)	mind.transfer_to(mmi.brainmob)
 		mmi = null
 		real_name = initial(real_name)
@@ -183,32 +203,6 @@
 		update_icon()
 	remove_language("Robot Talk")
 	positronic = null
-
-/mob/living/simple_animal/spiderbot/Destroy()
-	eject_brain()
-	..()
-
-/mob/living/simple_animal/spiderbot/New()
-
-	radio = new /obj/item/device/radio/borg(src)
-	camera = new /obj/machinery/camera(src)
-	camera.c_tag = "spiderbot-[real_name]"
-	camera.replace_networks(list("SS13"))
-
-	..()
-
-/mob/living/simple_animal/spiderbot/death()
-	switch_from_living_to_dead_mob_list()
-
-	if(camera)
-		camera.status = 0
-
-	if(held_item)
-		held_item.forceMove(src.loc)
-
-	gibs(loc, null, /obj/effect/gibspawner/robot) //TODO: use gib() or refactor spiderbots into synthetics.
-	qdel(src)
-	return
 
 //Cannibalized from the parrot mob. ~Zuhayr
 /mob/living/simple_animal/spiderbot/verb/drop_held_item()
@@ -228,16 +222,16 @@
 			"<span class='danger'>You launch \the [held_item]!</span>", \
 			"You hear a skittering noise and a thump!")
 		var/obj/item/weapon/grenade/G = held_item
-		G.loc = src.loc
-		G.detonate()
+		held_item.forceMove(loc)
 		held_item = null
+		G.detonate()
 		return 1
 
 	visible_message("<span class='notice'>\The [src] drops \the [held_item].</span>", \
 		"<span class='notice'>You drop \the [held_item].</span>", \
 		"You hear a skittering noise and a soft thump.")
 
-	held_item.loc = src.loc
+	held_item.forceMove(loc)
 	held_item = null
 	return 1
 
