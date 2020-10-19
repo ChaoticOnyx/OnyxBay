@@ -23,7 +23,7 @@
 
 	unsuitable_atoms_damage = 15
 	var/corpse = /obj/effect/landmark/corpse/pirate
-	var/weapon1 = /obj/item/weapon/melee/energy/pirate
+	var/weapon1 = /obj/item/weapon/melee/energy/sword/pirate
 
 	faction = "pirate"
 
