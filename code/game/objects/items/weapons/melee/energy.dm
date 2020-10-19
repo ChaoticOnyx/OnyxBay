@@ -240,9 +240,6 @@
 	..()
 	icon_state = "dualsaber[blade_color]"
 
-/obj/item/weapon/melee/energy/sword/dualsaber/attackby(obj/item/sword as obj, mob/user as mob)
-	return
-
 /*
  *Energy Blade
  */
