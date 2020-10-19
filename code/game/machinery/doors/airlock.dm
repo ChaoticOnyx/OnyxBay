@@ -942,7 +942,7 @@ About the new airlock wires panel:
 		cut_verb = "cutting"
 		cut_sound = 'sound/items/Welder.ogg'
 		cut_delay *= 0.66
-	else if(istype(item,/obj/item/weapon/melee/energy/blade) || istype(item,/obj/item/weapon/melee/energy/sword))
+	else if(istype(item,/obj/item/weapon/melee/energy/blade) || istype(item,/obj/item/weapon/melee/energy/sword/one_hand))
 		cut_verb = "slicing"
 		cut_sound = "spark"
 		cut_delay *= 0.66
@@ -1212,7 +1212,7 @@ About the new airlock wires panel:
 
 /obj/machinery/door/airlock/close(forced=0)
 	if(!can_close(forced))
-		addtimer(CALLBACK(src, .close), next_close_time(), TIMER_UNIQUE|TIMER_OVERRIDE)	
+		addtimer(CALLBACK(src, .close), next_close_time(), TIMER_UNIQUE|TIMER_OVERRIDE)
 		return 0
 
 	if(safe)
@@ -1222,7 +1222,7 @@ About the new airlock wires panel:
 					if(world.time > next_beep_at)
 						playsound(src.loc, close_failure_blocked, 30, 0, -3)
 						next_beep_at = world.time + SecondsToTicks(10)
-					addtimer(CALLBACK(src, .close), next_close_time(), TIMER_UNIQUE|TIMER_OVERRIDE)	
+					addtimer(CALLBACK(src, .close), next_close_time(), TIMER_UNIQUE|TIMER_OVERRIDE)
 					return
 
 	for(var/turf/turf in locs)
