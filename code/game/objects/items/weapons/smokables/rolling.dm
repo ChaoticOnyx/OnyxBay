@@ -26,44 +26,46 @@
 	icon_state = "papers_good"
 	quality = "good"
 
+/obj/item/rollingpaper/proc/roll_smokable(obj/item/weapon/reagent_containers/food/snacks/W, mob/user, is_cig = FALSE)
+	var/obj/item/clothing/mask/smokable/cigarette/roll/R
+	var/R_loc = loc
+	var/roll_in_hands = FALSE
+	if(ishuman(loc))
+		R_loc = user.loc
+		roll_in_hands = TRUE
+	if(is_cig)
+		if(quality == "cheap")
+			R = new /obj/item/clothing/mask/smokable/cigarette/roll(R_loc)
+		else if(quality == "good")
+			R = new /obj/item/clothing/mask/smokable/cigarette/roll/good(R_loc)
+		to_chat(user, SPAN("notice", "You roll a cigarette!"))
+	else
+		if(quality == "cheap")
+			R = new /obj/item/clothing/mask/smokable/cigarette/roll/joint(R_loc)
+		else if(quality == "good")
+			R = new /obj/item/clothing/mask/smokable/cigarette/roll/joint/good(R_loc)
+		R.desc += " Looks like it contains some [W]."
+		to_chat(user, SPAN("notice", "You grind \the [W] and roll a joint!"))
+	if(W.reagents)
+		if(W.reagents.has_reagent(/datum/reagent/nutriment))
+			W.reagents.del_reagent(/datum/reagent/nutriment)
+		W.reagents.trans_to_obj(R, W.reagents.total_volume)
+	R.add_fingerprint(user)
+	qdel(src)
+	qdel(W)
+	if(roll_in_hands)
+		user.put_in_hands(R)
+
 /obj/item/rollingpaper/attackby(obj/item/weapon/W, mob/user)
 	if(istype(W, /obj/item/weapon/reagent_containers/food/snacks/grown))
 		var/obj/item/weapon/reagent_containers/food/snacks/grown/G = W
 		if(!G.dry)
 			to_chat(user, SPAN("notice", "[G] must be dried before you can grind and roll it."))
 			return
-		var/obj/item/clothing/mask/smokable/cigarette/roll/joint/R
-		var/R_loc = loc
-		if(ishuman(loc))
-			R_loc = user.loc
-		if(quality == "cheap")
-			R = new /obj/item/clothing/mask/smokable/cigarette/roll/joint(R_loc)
-		else if(quality == "good")
-			R = new /obj/item/clothing/mask/smokable/cigarette/roll/joint/good(R_loc)
-		if(G.reagents)
-			G.reagents.trans_to_obj(R, G.reagents.total_volume)
-		R.desc += " Looks like it contains some [G]."
-		to_chat(user, SPAN("notice", "You grind \the [G] and roll a joint!"))
-		R.add_fingerprint(user)
-		qdel(src)
-		qdel(G)
+		roll_smokable(W, user)
 		return
 	if(istype(W, /obj/item/weapon/reagent_containers/food/snacks/tobacco))
-		var/obj/item/weapon/reagent_containers/food/snacks/tobacco/G = W
-		var/obj/item/clothing/mask/smokable/cigarette/roll/R
-		var/R_loc = loc
-		if(ishuman(loc))
-			R_loc = user.loc
-		if(quality == "cheap")
-			R = new /obj/item/clothing/mask/smokable/cigarette/roll(R_loc)
-		else if(quality == "good")
-			R = new /obj/item/clothing/mask/smokable/cigarette/roll/good(R_loc)
-		if(G.reagents)
-			G.reagents.trans_to_obj(R, G.reagents.total_volume)
-		to_chat(user, SPAN("notice", "You roll a cigarette!"))
-		R.add_fingerprint(user)
-		qdel(src)
-		qdel(G)
+		roll_smokable(W, user, TRUE)
 		return
 	..()
 
