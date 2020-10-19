@@ -711,7 +711,7 @@
 	taste_description = "peppery bitterness"
 	reagent_state = LIQUID
 	color = "#efebaa"
-	metabolism = REM * 0.002
+	metabolism = REM * 0.004
 	overdose = 6
 	scannable = 1
 	data = 0
@@ -740,7 +740,7 @@
 	reagent_state = SOLID
 	color = "#684b3c"
 	scannable = 1
-	var/nicotine = REM * 0.2
+	var/nicotine = REM * 0.04
 
 /datum/reagent/tobacco/affect_blood(mob/living/carbon/M, alien, removed)
 	..()
@@ -749,10 +749,12 @@
 /datum/reagent/tobacco/fine
 	name = "Fine Tobacco"
 	taste_description = "fine tobacco"
+	nicotine = REM * 0.03
 
 /datum/reagent/tobacco/bad
 	name = "Terrible Tobacco"
 	taste_description = "acrid smoke"
+	nicotine = REM * 0.12
 
 /datum/reagent/tobacco/liquid
 	name = "Nicotine Solution"
@@ -760,7 +762,7 @@
 	reagent_state = LIQUID
 	taste_mult = 0
 	color = "#fcfcfc"
-	nicotine = REM * 0.1
+	nicotine = REM * 0.02
 
 /datum/reagent/menthol
 	name = "Menthol"
