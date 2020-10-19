@@ -58,7 +58,7 @@
 
 /obj/item/weapon/melee/energy/dropped()
 	if(isturf(loc))
-		deactivate()
+		deactivate()	
 
 /obj/item/weapon/melee/energy/get_storage_cost()
 	if(active)
@@ -301,6 +301,7 @@
 	attack_verb = list("attacked", "slashed", "stabbed", "sliced", "torn", "ripped", "diced", "cut")
 	icon_state = "dualsaber[blade_color]"
 
+<<<<<<< HEAD
 /obj/item/weapon/melee/energy/dualsaber/deactivate(mob/living/user)
 	if(active)
 		to_chat(user, "<span class='notice'>\The [src] deactivates!</span>")
@@ -310,6 +311,8 @@
 	icon_state = initial(icon_state)
 
 
+=======
+>>>>>>> parent of 25ba8398b0... fix #2461
 /*
  *Energy Blade
  */
