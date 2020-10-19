@@ -195,6 +195,10 @@
 /obj/item/clothing/head/det/grey
 	icon_state = "detective2"
 	desc = "A grey fedora - either the cornerstone of a detective's style or a poor attempt at looking cool, depending on the person wearing it."
+	item_state_slots = list(
+		slot_l_hand_str = "",
+		slot_r_hand_str = "",
+		)
 
 /obj/item/clothing/head/HoS
 	name = "Head of Security Hat"
