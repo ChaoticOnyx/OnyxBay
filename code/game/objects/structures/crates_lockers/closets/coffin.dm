@@ -27,4 +27,4 @@
 			welded = !welded
 			update_icon()
 	else
-		src.attack_hand(user)
+		attack_hand(user)
