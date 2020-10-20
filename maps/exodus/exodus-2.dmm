@@ -623,7 +623,7 @@
 "alY" = (/obj/structure/table/standard,/obj/effect/floor_decal/corner/red{dir = 10},/obj/item/weapon/storage/box/handcuffs{pixel_x = 3; pixel_y = 3; pixel_z = 0},/obj/item/weapon/handcuffs,/turf/simulated/floor/tiled,/area/security/briefingroom)
 "alZ" = (/obj/structure/table/standard,/obj/item/weapon/reagent_containers/syringe/inaprovaline{pixel_x = 2; pixel_y = 5},/obj/item/weapon/reagent_containers/syringe/inaprovaline{pixel_y = 10},/obj/item/weapon/reagent_containers/syringe/inaprovaline,/obj/machinery/camera/network/security{c_tag = "Security - Equipment North"; dir = 4},/turf/simulated/floor/tiled/white,/area/security/brig)
 "ama" = (/turf/simulated/wall/r_wall,/area/space)
-"amb" = (/obj/structure/table/rack,/obj/item/clothing/suit/space/void/security/alt,/obj/item/clothing/shoes/magboots,/obj/item/clothing/head/helmet/space/void/security/alt,/obj/effect/floor_decal/industrial/warning/red{dir = 10},/turf/simulated/floor/tiled/dark,/area/crew_quarters/heads/hos)
+"amb" = (/obj/structure/table/rack,/obj/effect/floor_decal/industrial/warning/red{dir = 10},/obj/item/clothing/suit/space/void/security/hos/prepared,/obj/item/weapon/tank/emergency/oxygen/double,/turf/simulated/floor/tiled/dark,/area/crew_quarters/heads/hos)
 "amc" = (/obj/structure/table/standard,/obj/item/weapon/storage/box/donut,/turf/simulated/floor/tiled,/area/security/briefingroom)
 "amd" = (/obj/structure/closet/l3closet/security,/obj/effect/floor_decal/industrial/box/red,/turf/simulated/floor/tiled/dark,/area/security/tactical)
 "ame" = (/obj/effect/floor_decal/spline,/obj/effect/floor_decal/corner/red{dir = 9},/obj/item/device/radio/intercom/department/security{dir = 4; pixel_x = -22},/turf/simulated/floor/tiled,/area/security/brig/processing)
