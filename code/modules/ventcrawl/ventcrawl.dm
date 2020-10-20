@@ -41,7 +41,7 @@ var/list/ventcrawl_machinery = list(
 		to_chat(src, "<span class='warning'>You cannot ventcrawl while feeding.</span>")
 		return FALSE
 	. = ..()
-	
+
 /mob/living/carbon/human/can_ventcrawl()
 	if(handcuffed)
 		to_chat(src, "<span class='warning'>You can't vent crawl while you're restrained!</span>")
@@ -50,7 +50,7 @@ var/list/ventcrawl_machinery = list(
 		to_chat(src, "<span class='warning'>You cannot ventcrawl in your current state!</span>")
 		return FALSE
 	if(isMonkey(src))
-		return TRUE				
+		return TRUE
 	return ventcrawl_carry()
 
 /mob/living/carbon/human/ventcrawl_carry()
@@ -82,7 +82,7 @@ var/list/ventcrawl_machinery = list(
 	return ..()
 
 /mob/living/simple_animal/spiderbot/is_allowed_vent_crawl_item(obj/item/carried_item)
-	if(carried_item in list(held_item, radio, connected_ai, cell, camera, mmi))
+	if(carried_item == held_item || carried_item == mmi)
 		return 1
 	return ..()
 
