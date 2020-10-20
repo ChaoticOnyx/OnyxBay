@@ -45,8 +45,8 @@
 	var/cold_damage_per_tick = 2	//same as heat_damage_per_tick, only if the bodytemperature it's lower than minbodytemp
 	var/fire_alert = 0
 	var/oxygen_alert = 0
-	var/toxins_alert = 0	
-	
+	var/toxins_alert = 0
+
 	//Atmos effect - Yes, you can make creatures that require phoron or co2 to survive. N2O is a trace gas and handled separately, hence why it isn't here. It'd be hard to add it. Hard and me don't mix (Yes, yes make all the dick jokes you want with that.) - Errorage
 	var/min_gas = list("oxygen" = 5)
 	var/max_gas = list("phoron" = 1, "carbon_dioxide" = 5)
@@ -74,7 +74,7 @@
 
 /mob/living/simple_animal/Life()
 	..()
-	if(!living_observers_present(GetConnectedZlevels(z)))
+	if(!living_observers_present(GetConnectedZlevels(z)) && !(z == 0))
 		return
 	//Health
 	if(stat == DEAD)
@@ -162,7 +162,7 @@
 					atmos_suitable = 0
 					toxins_alert = 1
 				else
-					toxins_alert = 0					
+					toxins_alert = 0
 
 	//Atmos effect
 	if(bodytemperature < minbodytemp)
