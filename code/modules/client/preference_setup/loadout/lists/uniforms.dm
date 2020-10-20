@@ -158,6 +158,11 @@
 	path = /obj/item/clothing/under/rank/vice
 	price = 18
 
+/datum/gear/uniform/rank/paramedic
+	display_name = "paramedic's jumpsuit"
+	path = /obj/item/clothing/under/rank/medical/paramedic
+	price = 15
+
 /datum/gear/uniform/pirate
 	display_name = "pirate outfit"
 	path = /obj/item/clothing/under/pirate
@@ -408,7 +413,7 @@
 
 /datum/gear/uniform/dress/cheongsam
 	display_name = "cheongsam dress"
-	path = /obj/item/clothing/under/cheongsam 
+	path = /obj/item/clothing/under/cheongsam
 	price = 25
 
 /datum/gear/uniform/frontier
@@ -418,5 +423,5 @@
 
 /datum/gear/uniform/dress/bar_f
 	display_name = "black bartender dress"
-	path = /obj/item/clothing/under/dress/bar_f 
+	path = /obj/item/clothing/under/dress/bar_f
 	price = 25
