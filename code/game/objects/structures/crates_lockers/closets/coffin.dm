@@ -23,7 +23,7 @@
 			welded = !welded
 			update_icon()
 		else
-			user.visible_message("<span class='notice'>[user] screwed bolts in [src].</span>")
+			user.visible_message(SPAN("notice", "[user] screwed bolts in [src]."))
 			welded = !welded
 			update_icon()
 	else
