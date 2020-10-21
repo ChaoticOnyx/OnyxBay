@@ -26,5 +26,19 @@
 			user.visible_message(SPAN("notice", "[user] screwed bolts in [src]."))
 			welded = !welded
 			update_icon()
+	else if (opened)
+		if(istype(W, /obj/item/grab))
+			var/obj/item/grab/G = W
+			src.MouseDrop_T(G.affecting, user)      //act like they were dragged onto the closet
+			return 0
+		if(istype(W,/obj/item/tk_grab))
+			return 0
+		if(usr.drop_item())
+			W.forceMove(loc)
+			W.pixel_x = 0
+			W.pixel_y = 0
+			W.pixel_z = 0
+			W.pixel_w = 0
+		return
 	else
 		attack_hand(user)
