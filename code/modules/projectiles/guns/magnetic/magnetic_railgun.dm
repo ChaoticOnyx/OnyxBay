@@ -72,7 +72,7 @@
 	slowdown_worn = 2
 
 	slot_flags = SLOT_BACK
-	w_class = ITEM_SIZE_NO_CONTAINER
+	w_class = ITEM_SIZE_GARGANTUAN
 
 	firemodes = list(
 		list(mode_name="semiauto",    burst=1, fire_delay=0,    move_delay=null, one_hand_penalty=1, burst_accuracy=null, dispersion=null),

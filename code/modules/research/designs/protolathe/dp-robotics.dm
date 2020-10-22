@@ -8,7 +8,7 @@
 	category_items = "Robotics"
 
 /datum/design/item/synthstorage/intelicard
-	name = "inteliCard"
+	name = "InteliCard"
 	desc = "AI preservation and transportation system."
 	id = "intelicard"
 	req_tech = list(TECH_DATA = 4, TECH_MATERIAL = 4)
@@ -17,7 +17,7 @@
 	sort_string = "VACAA"
 
 /datum/design/item/synthstorage/posibrain
-	name = "Positronic brain"
+	name = "positronic brain"
 	id = "posibrain"
 	req_tech = list(TECH_ENGINEERING = 4, TECH_MATERIAL = 6, TECH_BLUESPACE = 2, TECH_DATA = 4)
 	build_type = PROTOLATHE | MECHFAB

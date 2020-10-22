@@ -414,7 +414,7 @@ var/global/list/damage_icon_parts = list()
 		if(update_icons) queue_icon_update()
 		return
 
-	var/image/standing	= overlay_image('icons/mob/deformities.dmi')
+	var/image/standing = overlay_image('icons/mob/deformities.dmi')
 	var/add_image = 0
 
 	if(head_organ.deformities == 1)
@@ -427,7 +427,7 @@ var/global/list/damage_icon_parts = list()
 		add_image = 1
 
 	if(add_image)
-		overlays_standing[HO_DEFORM_LAYER]	= standing
+		overlays_standing[HO_DEFORM_LAYER] = standing
 
 	if(update_icons) queue_icon_update()
 
@@ -526,13 +526,13 @@ var/global/list/damage_icon_parts = list()
 // Gloves
 /mob/living/carbon/human/update_inv_gloves(update_icons=1)
 	if(gloves && !(wear_suit && wear_suit.flags_inv & HIDEGLOVES))
-		overlays_standing[HO_GLOVES_LAYER]	= gloves.get_mob_overlay(src,slot_gloves_str)
+		overlays_standing[HO_GLOVES_LAYER] = gloves.get_mob_overlay(src,slot_gloves_str)
 	else
-		if(blood_DNA && species.blood_mask)
-			var/image/bloodsies	= overlay_image(species.blood_mask, "bloodyhands", hand_blood_color, RESET_COLOR)
-			overlays_standing[HO_GLOVES_LAYER]	= bloodsies
+		if(blood_DNA && body_build.blood_icon)
+			var/image/bloodsies	= overlay_image(body_build.blood_icon, "bloodyhands", hand_blood_color, RESET_COLOR)
+			overlays_standing[HO_GLOVES_LAYER] = bloodsies
 		else
-			overlays_standing[HO_GLOVES_LAYER]	= null
+			overlays_standing[HO_GLOVES_LAYER] = null
 
 	if(update_icons) queue_icon_update()
 
@@ -566,7 +566,7 @@ var/global/list/damage_icon_parts = list()
 		overlays_standing[HO_EARS_LAYER] = both
 
 	else
-		overlays_standing[HO_EARS_LAYER]	= null
+		overlays_standing[HO_EARS_LAYER] = null
 
 	if(update_icons) queue_icon_update()
 
@@ -575,8 +575,8 @@ var/global/list/damage_icon_parts = list()
 	if(shoes && !((wear_suit && wear_suit.flags_inv & HIDESHOES) || (w_uniform && w_uniform.flags_inv & HIDESHOES)))
 		overlays_standing[HO_SHOES_LAYER] = shoes.get_mob_overlay(src,slot_shoes_str)
 	else
-		if(feet_blood_DNA && species.blood_mask)
-			var/image/bloodsies = overlay_image(species.blood_mask, "shoeblood", hand_blood_color, RESET_COLOR)
+		if(feet_blood_DNA && body_build.blood_icon)
+			var/image/bloodsies = overlay_image(body_build.blood_icon, "shoeblood", hand_blood_color, RESET_COLOR)
 			overlays_standing[HO_SHOES_LAYER] = bloodsies
 		else
 			overlays_standing[HO_SHOES_LAYER] = null
@@ -586,9 +586,9 @@ var/global/list/damage_icon_parts = list()
 // Suit Storage
 /mob/living/carbon/human/update_inv_s_store(update_icons=1)
 	if(s_store)
-		overlays_standing[HO_SUIT_STORE_LAYER]	= s_store.get_mob_overlay(src, slot_s_store_str)
+		overlays_standing[HO_SUIT_STORE_LAYER] = s_store.get_mob_overlay(src, slot_s_store_str)
 	else
-		overlays_standing[HO_SUIT_STORE_LAYER]	= null
+		overlays_standing[HO_SUIT_STORE_LAYER] = null
 
 	if(update_icons) queue_icon_update()
 
@@ -597,7 +597,7 @@ var/global/list/damage_icon_parts = list()
 	if(head)
 		overlays_standing[HO_HEAD_LAYER] = head.get_mob_overlay(src, slot_head_str)
 	else
-		overlays_standing[HO_HEAD_LAYER]	= null
+		overlays_standing[HO_HEAD_LAYER] = null
 
 	if(update_icons) queue_icon_update()
 
@@ -615,10 +615,10 @@ var/global/list/damage_icon_parts = list()
 // Suit
 /mob/living/carbon/human/update_inv_wear_suit(update_icons=1)
 	if(wear_suit)
-		overlays_standing[HO_SUIT_LAYER]	= wear_suit.get_mob_overlay(src, slot_wear_suit_str)
+		overlays_standing[HO_SUIT_LAYER] = wear_suit.get_mob_overlay(src, slot_wear_suit_str)
 		update_tail_showing(0)
 	else
-		overlays_standing[HO_SUIT_LAYER]	= null
+		overlays_standing[HO_SUIT_LAYER] = null
 		update_tail_showing(0)
 		update_inv_w_uniform(0)
 		update_inv_shoes(0)
@@ -636,9 +636,9 @@ var/global/list/damage_icon_parts = list()
 // Mask
 /mob/living/carbon/human/update_inv_wear_mask(update_icons=1)
 	if( wear_mask && ( istype(wear_mask, /obj/item/clothing/mask) || istype(wear_mask, /obj/item/clothing/accessory) || istype(wear_mask, /obj/item/weapon/grenade)) && !(head && head.flags_inv & HIDEMASK))
-		overlays_standing[HO_FACEMASK_LAYER]	= wear_mask.get_mob_overlay(src,slot_wear_mask_str)
+		overlays_standing[HO_FACEMASK_LAYER] = wear_mask.get_mob_overlay(src,slot_wear_mask_str)
 	else
-		overlays_standing[HO_FACEMASK_LAYER]	= null
+		overlays_standing[HO_FACEMASK_LAYER] = null
 
 	if(update_icons) queue_icon_update()
 
@@ -663,7 +663,7 @@ var/global/list/damage_icon_parts = list()
 	if(handcuffed)
 		overlays_standing[HO_HANDCUFF_LAYER] = handcuffed.get_mob_overlay(src,slot_handcuffed_str)
 	else
-		overlays_standing[HO_HANDCUFF_LAYER]	= null
+		overlays_standing[HO_HANDCUFF_LAYER] = null
 
 	if(update_icons) queue_icon_update()
 

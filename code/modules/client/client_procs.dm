@@ -235,8 +235,8 @@
 	. = ..()	//calls mob.Login()
 
 	if(byond_version < MIN_CLIENT_VERSION)
-		to_chat(src, "<b><center><font size='5' color='red'>Your <font color='blue'>BYOND</font> version is too out of date!</font><br>\
-		<font size='3'>Please update it to [MIN_CLIENT_VERSION].</font></center>")
+		src << "<b><center><font size='5' color='red'>Your <font color='blue'>BYOND</font> version is too out of date!</font><br>\
+		<font size='3'>Please update it to [MIN_CLIENT_VERSION].</font></center>"
 		qdel(src)
 		return
 
