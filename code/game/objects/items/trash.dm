@@ -18,9 +18,30 @@
 	name = "candy"
 	icon_state = "candy"
 
-/obj/item/trash/candy/proteinbar
+/obj/item/trash/proteinbar
 	name = "protein bar"
+	desc = "Haven't seen these for a while..."
 	icon_state = "proteinbar"
+
+/obj/item/trash/tweakers
+	name = "Tweakers bar"
+	icon_state = "tweakers"
+
+/obj/item/trash/sweetroid
+	name = "Sweetroid bar"
+	icon_state = "sweetroid"
+
+/obj/item/trash/sugarmatter
+	name = "SugarMatter bar"
+	icon_state = "sugarmatter"
+
+/obj/item/trash/jellaws
+	name = "Jellaw's Jellybaton"
+	icon_state = "jellaws"
+
+/obj/item/trash/nutribar
+	name = "nutrition bar"
+	icon_state = "nutribar"
 
 /obj/item/trash/cheesie
 	name = "\improper Cheesie Honkers"

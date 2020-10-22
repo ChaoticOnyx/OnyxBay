@@ -45,6 +45,10 @@
 		qdel(src)
 		return 0
 
+	if(!is_open_container())
+		to_chat(user, SPAN("danger", "[src] must be opened first!"))
+		return 0
+
 	if(istype(M, /mob/living/carbon))
 		//TODO: replace with standard_feed_mob() call.
 		var/mob/living/carbon/C = M
@@ -257,45 +261,6 @@
 		reagents.add_reagent(/datum/reagent/tricordrazine, 8)
 		bitesize = 3
 
-/obj/item/weapon/reagent_containers/food/snacks/candy
-	name = "candy"
-	desc = "Nougat, love it or hate it."
-	icon_state = "candy"
-	trash = /obj/item/trash/candy
-	filling_color = "#7d5f46"
-	center_of_mass = "x=15;y=15"
-	nutriment_amt = 1
-	nutriment_desc = list("candy" = 1)
-
-	New()
-		..()
-		reagents.add_reagent(/datum/reagent/sugar, 3)
-		bitesize = 2
-
-/obj/item/weapon/reagent_containers/food/snacks/candy/proteinbar
-	name = "protein bar"
-	desc = "SwoleMAX brand protein bars, guaranteed to get you feeling perfectly overconfident."
-	icon_state = "proteinbar"
-	trash = /obj/item/trash/candy/proteinbar
-
-/obj/item/weapon/reagent_containers/food/snacks/candy/proteinbar/New()
-	..()
-	reagents.add_reagent(/datum/reagent/nutriment, 9)
-	reagents.add_reagent(/datum/reagent/nutriment/protein, 4)
-	reagents.add_reagent(/datum/reagent/sugar, 4)
-	bitesize = 6
-
-/obj/item/weapon/reagent_containers/food/snacks/candy/donor
-	name = "Donor Candy"
-	desc = "A little treat for blood donors."
-	trash = /obj/item/trash/candy
-	nutriment_desc = list("candy" = 10)
-	New()
-		..()
-		reagents.add_reagent(/datum/reagent/nutriment, 10)
-		reagents.add_reagent(/datum/reagent/sugar, 3)
-		bitesize = 5
-
 /obj/item/weapon/reagent_containers/food/snacks/candy_corn
 	name = "candy corn"
 	desc = "It's a handful of candy corn. Cannot be stored in a detective's hat, alas."
@@ -309,19 +274,6 @@
 		reagents.add_reagent(/datum/reagent/nutriment, 4)
 		reagents.add_reagent(/datum/reagent/sugar, 2)
 		bitesize = 2
-
-/obj/item/weapon/reagent_containers/food/snacks/chips
-	name = "chips"
-	desc = "Commander Riker's What-The-Crisps."
-	icon_state = "chips"
-	trash = /obj/item/trash/chips
-	filling_color = "#e8c31e"
-	center_of_mass = "x=15;y=15"
-	nutriment_amt = 3
-	nutriment_desc = list("salt" = 1, "chips" = 2)
-	New()
-		..()
-		bitesize = 1
 
 /obj/item/weapon/reagent_containers/food/snacks/cookie
 	name = "cookie"
@@ -1210,30 +1162,6 @@
 			unpopped = max(0, unpopped-1)
 		..()
 
-
-/obj/item/weapon/reagent_containers/food/snacks/sosjerky
-	name = "Scaredy's Private Reserve Beef Jerky"
-	icon_state = "sosjerky"
-	desc = "Beef jerky made from the finest space cows."
-	trash = /obj/item/trash/sosjerky
-	filling_color = "#631212"
-	center_of_mass = "x=15;y=9"
-
-	New()
-		..()
-		reagents.add_reagent(/datum/reagent/nutriment/protein, 4)
-		bitesize = 2
-
-/obj/item/weapon/reagent_containers/food/snacks/no_raisin
-	name = "4no Raisins"
-	icon_state = "4no_raisins"
-	desc = "Best raisins in the universe. Not sure why."
-	trash = /obj/item/trash/raisins
-	filling_color = "#343834"
-	center_of_mass = "x=15;y=4"
-	nutriment_desc = list("raisins" = 6)
-	nutriment_amt = 6
-
 /obj/item/weapon/reagent_containers/food/snacks/spacetwinkie
 	name = "Space Twinkie"
 	icon_state = "space_twinkie"
@@ -1244,19 +1172,6 @@
 	New()
 		..()
 		reagents.add_reagent(/datum/reagent/sugar, 4)
-		bitesize = 2
-
-/obj/item/weapon/reagent_containers/food/snacks/cheesiehonkers
-	name = "Cheesie Honkers"
-	icon_state = "cheesie_honkers"
-	desc = "Bite sized cheesie snacks that will honk all over your mouth."
-	trash = /obj/item/trash/cheesie
-	filling_color = "#ffa305"
-	center_of_mass = "x=15;y=9"
-	nutriment_desc = list("cheese" = 5, "chips" = 2)
-	nutriment_amt = 4
-	New()
-		..()
 		bitesize = 2
 
 /obj/item/weapon/reagent_containers/food/snacks/syndicake
@@ -3384,25 +3299,6 @@
 		reagents.add_reagent(/datum/reagent/sugar, 3)
 		reagents.add_reagent(/datum/reagent/thc, 10)
 		bitesize = 5
-
-/obj/item/weapon/reagent_containers/food/snacks/hematogen
-	name = "Hema-2-Gen"
-	desc = "It's made of blood. It makes you produce blood. Ain't that kind of suspicious?.."
-	icon_state = "hema2gen"
-	trash = /obj/item/trash/hematogen
-	filling_color = "#7d5f46"
-	center_of_mass = "x=15;y=15"
-	nutriment_amt = 2
-	nutriment_desc = list("candy" = 1)
-
-	New()
-		..()
-		reagents.add_reagent(/datum/reagent/nutriment/protein, 3)
-		reagents.add_reagent(/datum/reagent/sugar, 2)
-		reagents.add_reagent(/datum/reagent/albumin, 10)
-		bitesize = 5
-
-
 
 /obj/item/weapon/reagent_containers/food/snacks/smokedsausage
 	name = "Smoked sausage"

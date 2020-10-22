@@ -201,7 +201,12 @@ Loot piles can be depleted, if loot_depleted is turned on.  Note that players wh
 	common_loot = list(
 		/obj/item/trash/candle,
 		/obj/item/trash/candy,
-		/obj/item/trash/candy/proteinbar,
+		/obj/item/trash/proteinbar,
+		/obj/item/trash/tweakers,
+		/obj/item/trash/sweetroid,
+		/obj/item/trash/sugarmatter,
+		/obj/item/trash/jellaws,
+		/obj/item/trash/nutribar,
 		/obj/item/trash/cheesie,
 		/obj/item/trash/chips,
 		/obj/item/trash/liquidfood,
