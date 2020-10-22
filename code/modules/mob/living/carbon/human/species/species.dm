@@ -257,13 +257,23 @@ The slots that you can use are found in items_clothing.dm and are the inventory 
 /datum/species/proc/sanitize_name(name)
 	return sanitizeName(name)
 
-/datum/species/proc/equip_survival_gear(mob/living/carbon/human/H,extendedtank = 1)
+/datum/species/proc/equip_survival_gear(mob/living/carbon/human/H, boxtype = 0)
 	if(istype(H.get_equipped_item(slot_back), /obj/item/weapon/storage/backpack))
-		if (extendedtank)	H.equip_to_slot_or_del(new /obj/item/weapon/storage/box/engineer(H.back), slot_in_backpack)
-		else	H.equip_to_slot_or_del(new /obj/item/weapon/storage/box/survival(H.back), slot_in_backpack)
+		switch(boxtype)
+			if(2)
+				H.equip_to_slot_or_del(new /obj/item/weapon/storage/box/security(H.back), slot_in_backpack)
+			if(1)
+				H.equip_to_slot_or_del(new /obj/item/weapon/storage/box/engineer(H.back), slot_in_backpack)
+			else
+				H.equip_to_slot_or_del(new /obj/item/weapon/storage/box/survival(H.back), slot_in_backpack)
 	else
-		if (extendedtank)	H.equip_to_slot_or_del(new /obj/item/weapon/storage/box/engineer(H), slot_r_hand)
-		else	H.equip_to_slot_or_del(new /obj/item/weapon/storage/box/survival(H), slot_r_hand)
+		switch(boxtype)
+			if(2)
+				H.equip_to_slot_or_del(new /obj/item/weapon/storage/box/security(H), slot_r_hand)
+			if(1)
+				H.equip_to_slot_or_del(new /obj/item/weapon/storage/box/engineer(H), slot_r_hand)
+			else
+				H.equip_to_slot_or_del(new /obj/item/weapon/storage/box/survival(H), slot_r_hand)
 
 /datum/species/proc/create_organs(mob/living/carbon/human/H) //Handles creation of mob organs.
 
@@ -364,7 +374,7 @@ The slots that you can use are found in items_clothing.dm and are the inventory 
 					if(!actor_cig.lit && target_cig.lit)
 						actor_cig.light(target_cig, H)
 					return
-			
+
 			if(actor_mask)
 				to_chat(H, "\A [actor_mask] is in the way!")
 				return
