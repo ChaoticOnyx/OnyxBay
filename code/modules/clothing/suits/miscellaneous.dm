@@ -404,19 +404,19 @@
 
 /obj/item/clothing/suit/storage/punk_jacket_AC
 	name = "black punk jacket"
-	desc = "A black leather jacket with Atomic Cat on the back."
+	desc = "A black leather jacket with Atomic Cats emblem on the back."
 	icon_state = "punk_jacket_AC"
 	body_parts_covered = UPPER_TORSO|ARMS
 
 /obj/item/clothing/suit/storage/punk_jacket_RD
 	name = "navy punk jacket"
-	desc = "A navy leather jacket with Rusty Devil on the back."
+	desc = "A navy leather jacket with Rusty Devils emblem on the back."
 	icon_state = "punk_jacket_RD"
 	body_parts_covered = UPPER_TORSO|ARMS
 
 /obj/item/clothing/suit/storage/punk_jacket_TS
 	name = "brown punk jacket"
-	desc = "A brown leather jacket with Tunnel Snake on the back."
+	desc = "A brown leather jacket with Tunnel Snakes emblem on the back."
 	icon_state = "punk_jacket_TS"
 	body_parts_covered = UPPER_TORSO|ARMS
 
