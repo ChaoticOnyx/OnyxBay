@@ -8,6 +8,7 @@
 	var/list/will_assist_languages = list()
 	var/list/datum/language/assists_languages = list()
 	var/min_bruised_damage = 10       // Damage before considered bruised
+	var/foreign = FALSE 			  // if TRUE, /datum/species/create_organs() won't delete it
 
 /obj/item/organ/internal/New(mob/living/carbon/holder)
 	if(max_damage)

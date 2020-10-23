@@ -5,6 +5,7 @@
 	gloves = /obj/item/clothing/gloves/thick/security
 	shoes = /obj/item/clothing/shoes/jackboots
 	backpack_contents = list(/obj/item/weapon/handcuffs = 1)
+	flags = OUTFIT_HAS_BACKPACK|OUTFIT_COMBAT_SURVIVAL
 
 /decl/hierarchy/outfit/job/security/New()
 	..()
