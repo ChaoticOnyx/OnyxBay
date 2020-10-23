@@ -60,7 +60,7 @@
 
 /obj/item/weapon/reagent_containers/food/snacks/packaged/sugarmatter
 	name = "SugarMatter bar"
-	desc = "Shoud've been called SuperSugar. <span class='danger'>You get toothaches just from looking at it.</span>"
+	desc = "Should've been called SuperSugar. <span class='danger'>You get toothaches just from looking at it.</span>"
 	icon_state = "sugarmatter"
 	trash = /obj/item/trash/sugarmatter
 	filling_color = "#5ba652"
