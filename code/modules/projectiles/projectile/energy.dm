@@ -93,7 +93,7 @@
 
 /obj/item/projectile/energy/electrode/c45
 	name = "stun bullet"
-	icon_state = "c45stun"
+	icon_state = "stunbullet"
 	nodamage = 0
 	agony = 40 // Weaker than the stunsphere la'classique
 	damage_type = BURN
