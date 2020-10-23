@@ -69,8 +69,8 @@
 
 /obj/item/weapon/reagent_containers/food/snacks/packaged/sugarmatter/New()
 	..()
-	reagents.add_reagent(/datum/reagent/sugar, 3)
-	bitesize = 3
+	reagents.add_reagent(/datum/reagent/sugar, 6)
+	bitesize = 4
 
 /obj/item/weapon/reagent_containers/food/snacks/packaged/jellaws
 	name = "Jellaw's Jellybaton"
