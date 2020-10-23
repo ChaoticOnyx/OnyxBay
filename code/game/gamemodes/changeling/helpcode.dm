@@ -122,6 +122,7 @@
 	origin_tech = list(TECH_BIO = 10, TECH_ILLEGAL = 5)
 	attack_verb = list("attacked", "slapped", "whacked")
 	relative_size = 10
+	foreign = TRUE
 	var/mob/living/carbon/brain/brainchan = null 	//notice me, biostructure-kun~ (✿˵•́ ‸ •̀˵)
 	var/const/damage_threshold_count = 10
 	var/last_regen_time = 0

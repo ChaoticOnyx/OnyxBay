@@ -278,6 +278,15 @@ The slots that you can use are found in items_clothing.dm and are the inventory 
 /datum/species/proc/create_organs(mob/living/carbon/human/H) //Handles creation of mob organs.
 
 	H.mob_size = mob_size
+	var/list/obj/item/organ/internal/foreign_organs = list()
+
+	for(var/obj/item/organ/external/E in H.contents)
+		for(var/obj/item/organ/internal/O in E.internal_organs)
+			if(istype(O) && O.foreign)
+				E.internal_organs -= O
+				H.internal_organs -= O
+				foreign_organs |= O
+
 	for(var/obj/item/organ/organ in H.contents)
 		if((organ in H.organs) || (organ in H.internal_organs))
 			qdel(organ)
@@ -304,6 +313,11 @@ The slots that you can use are found in items_clothing.dm and are the inventory 
 			warning("[O.type] has a default organ tag \"[O.organ_tag]\" that differs from the species' organ tag \"[organ_tag]\". Updating organ_tag to match.")
 			O.organ_tag = organ_tag
 		H.internal_organs_by_name[organ_tag] = O
+
+	for(var/obj/item/organ/internal/organ in foreign_organs)
+		var/obj/item/organ/external/E = H.get_organ(organ.parent_organ)
+		E.internal_organs |= organ
+		H.internal_organs_by_name[organ.organ_tag] = organ
 
 	for(var/name in H.organs_by_name)
 		H.organs |= H.organs_by_name[name]
