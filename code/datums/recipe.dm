@@ -77,6 +77,10 @@
 		for(var/obj/O in container.InsertedContents())
 			if(istype(O,/obj/item/weapon/reagent_containers/food/snacks/grown))
 				continue // Fruit is handled in check_fruit().
+			if(istype(O, /obj/item/organ))
+				var/obj/item/organ/org = O
+				if(!org.disable_food_organ)
+					O = org.food_organ
 			var/found = 0
 			for(var/i = 1; i < checklist.len+1; i++)
 				var/item_type = checklist[i]

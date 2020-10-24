@@ -25,6 +25,9 @@ var/list/organ_cache = list()
 	var/max_damage             	  // Damage cap
 	var/rejecting                     // Is this organ already being rejected?
 
+	var/food_organ_type				  // path of food made from organ, ex.
+	var/obj/item/weapon/reagent_containers/food/snacks/food_organ
+	var/disable_food_organ = FALSE // used to override food_organ's creation and using
 	var/death_time
 
 
@@ -40,6 +43,9 @@ var/list/organ_cache = list()
 	return (damage >= min_broken_damage || (status & ORGAN_CUT_AWAY) || (status & ORGAN_BROKEN))
 
 /obj/item/organ/New(mob/living/carbon/holder)
+	if(food_organ_type && !disable_food_organ)
+		food_organ = new food_organ_type(src)
+
 	..(holder)
 
 	if(max_damage)
@@ -123,6 +129,9 @@ var/list/organ_cache = list()
 	if(damage >= max_damage)
 		die()
 
+	if(food_organ)
+		update_food_from_organ()
+
 /obj/item/organ/proc/is_preserved()
 	if(istype(loc,/obj/item/organ))
 		var/obj/item/organ/O = loc
@@ -133,6 +142,9 @@ var/list/organ_cache = list()
 /obj/item/organ/examine(mob/user)
 	. = ..()
 	. += "\n[show_decay_status(user)]"
+	if(get_dist(src, user) > 1)
+		return
+	. += food_organ.get_bitecount_examine()
 
 /obj/item/organ/proc/show_decay_status(mob/user)
 	if(status & ORGAN_DEAD)
@@ -275,31 +287,35 @@ var/list/organ_cache = list()
 		set_dna(owner.dna)
 	return 1
 
+/obj/item/organ/proc/organ_eated(mob/user)
+	qdel(src)
+
+/obj/item/organ/proc/update_food_from_organ()
+	food_organ.SetName(name)
+	food_organ.appearance = src
+	reagents.trans_to(food_organ, reagents.total_volume)
+	if(fingerprints)
+		food_organ.fingerprints = fingerprints.Copy()
+	if(fingerprintshidden)
+		food_organ.fingerprintshidden = fingerprintshidden.Copy()
+	if(fingerprintslast)
+		food_organ.fingerprintslast = fingerprintslast
+
 /obj/item/organ/attack(mob/target, mob/user)
 	if(status & ORGAN_ROBOTIC || !istype(target) || !istype(user) || (user != target && user.a_intent == I_HELP))
 		return ..()
 
-	if(alert("Do you really want to use this organ as food? It will be useless for anything else afterwards.",,"Ew, no.","Bon appetit!") == "Ew, no.")
-		to_chat(user, SPAN_NOTICE("You successfully repress your cannibalistic tendencies."))
-		return
+	if(food_organ.bitecount == 0)
+		if(alert("Do you really want to use this organ as food? It will be useless for anything else afterwards.",,"Ew, no.","Bon appetit!") == "Ew, no.")
+			to_chat(user, SPAN_NOTICE("You successfully repress your cannibalistic tendencies."))
+			return
+		update_food_from_organ()
 
 	if(QDELETED(src))
 		return
 
-	user.drop_from_inventory(src)
-	var/obj/item/weapon/reagent_containers/food/snacks/organ/O = new(get_turf(src))
-	O.SetName(name)
-	O.appearance = src
-	reagents.trans_to(O, reagents.total_volume)
-	if(fingerprints)
-		O.fingerprints = fingerprints.Copy()
-	if(fingerprintshidden)
-		O.fingerprintshidden = fingerprintshidden.Copy()
-	if(fingerprintslast)
-		O.fingerprintslast = fingerprintslast
-	user.put_in_active_hand(O)
-	qdel(src)
-	target.attackby(O, user)
+	die()
+	target.attackby(src.food_organ, user)
 
 /obj/item/organ/proc/can_feel_pain()
 	return (!BP_IS_ROBOTIC(src) && (!species || !(species.species_flags & SPECIES_FLAG_NO_PAIN)))

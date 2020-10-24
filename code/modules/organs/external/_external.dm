@@ -10,6 +10,8 @@
 	organ_tag = "limb"
 	appearance_flags = PIXEL_SCALE
 
+	food_organ_type = /obj/item/weapon/reagent_containers/food/snacks/meat/human
+
 	throwforce = 2.5
 	// Strings
 	var/broken_description             // fracture string if any.
@@ -106,6 +108,10 @@
 	if(owner)
 		replaced(owner)
 		sync_colour_to_human(owner)
+
+	if(food_organ in implants)
+		implants -= food_organ
+
 	get_icon()
 
 /obj/item/organ/external/Destroy()
@@ -172,6 +178,12 @@
 		owner.custom_pain("Something inside your [src] burns a [severity < 2 ? "bit" : "lot"]!", power * 15) //robotic organs won't feel it anyway
 		take_external_damage(0, burn_damage, 0, used_weapon = "Hot metal")
 
+/obj/item/organ/external/organ_eated(mob/user)
+	for(var/obj/item/organ/external/stump_check in children)
+		if(istype(stump_check, /obj/item/organ/external/stump))
+			qdel(stump_check)
+	..()
+
 /obj/item/organ/external/attack_self(mob/user)
 	if(!contents.len)
 		return ..()
@@ -181,6 +193,8 @@
 			continue
 		for(var/obj/item/I in E.contents)
 			if(istype(I,/obj/item/organ))
+				continue
+			if(I == food_organ)
 				continue
 			removable_objects |= I
 	if(removable_objects.len)
@@ -198,6 +212,8 @@
 	if(in_range(user, src) || isghost(user))
 		for(var/obj/item/I in contents)
 			if(istype(I, /obj/item/organ))
+				continue
+			if(I == food_organ)
 				continue
 			. += "\n<span class='danger'>There is \a [I] sticking out of it.</span>"
 		var/ouchies = get_wounds_desc()
@@ -244,15 +260,23 @@
 						user.put_in_hands(removing)
 					user.visible_message("<span class='danger'><b>[user]</b> extracts [removing] from [src] with [W]!</span>")
 				else
-					if(organ_tag == BP_HEAD && W.sharp)
-						user.visible_message("<span class='danger'><b>[user]</b> rips the skin off [src] with [W], revealing a skull.</span>")
-						if(istype(src.loc,/turf))
-							new /obj/item/weapon/skull(src.loc)
-							gibs(src.loc)
+					if(alert("Do you really want to cut meat off \the [src]?",,"No.","Yes") == "Yes" && W.sharp && !QDELETED(src))
+						if(organ_tag == BP_HEAD && W.sharp)
+							user.visible_message(SPAN_DANGER("<b>[user]</b> rips the skin off [src] with [W], revealing a skull."))
+							food_organ.appearance = food_organ_type
+							food_organ.forceMove(get_turf(src))
+							if(istype(src.loc,/turf))
+								new /obj/item/weapon/skull(src.loc)
+								gibs(src.loc)
+							else
+								new /obj/item/weapon/skull(user.loc)
+								gibs(user.loc)
+							qdel(src)
 						else
-							new /obj/item/weapon/skull(user.loc)
-							gibs(user.loc)
-						qdel(src)
+							food_organ.appearance = food_organ_type
+							food_organ.forceMove(get_turf(src))
+							user.visible_message(SPAN_NOTICE("You've cut meat off \the [src]."), SPAN_DANGER("[user] cut meat off \the [src]."))
+							qdel(src)
 					else
 						user.visible_message("<span class='danger'><b>[user]</b> fishes around fruitlessly in [src] with [W].</span>")
 				return
@@ -548,6 +572,13 @@ This function completely restores a damaged organ to perfect condition.
 	if(germ_level)
 		return 1
 	return 0
+
+/obj/item/organ/external/die()
+	for(var/obj/item/organ/internal in internal_organs)
+		internal.die()
+	for(var/obj/item/organ/external/E in children)
+		E.take_external_damage(10, 0, used_weapon="parent organ sepsis")
+	..()
 
 /obj/item/organ/external/Process()
 	if(owner)

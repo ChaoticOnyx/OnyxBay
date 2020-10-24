@@ -29,6 +29,7 @@
 	var/can_burn_food = FALSE		// Can the object burn food that is left inside?
 	var/burn_chance = 10			// How likely is the food to burn?
 	var/atom/movable/thing_inside	// Holder for the currently cooking object.
+	var/atom/movable/thing_inside_parent	// Holder for the currently parent cooking object.
 
 	// If the machine has multiple output modes, define them here.
 	var/selected_option
@@ -41,7 +42,10 @@
 
 /obj/machinery/cooker/Destroy()
 	if(thing_inside)
-		qdel(thing_inside)
+		if(thing_inside_parent)
+			qdel(thing_inside_parent)
+		else
+			qdel(thing_inside)
 		thing_inside = null
 	if(is_cooking)
 		stop()
@@ -67,6 +71,8 @@
 /obj/machinery/cooker/attackby(obj/item/I, mob/user)
 	set waitfor = 0  //So that any remaining parts of calling proc don't have to wait for the long cooking time ahead.
 
+	var/override_check = FALSE
+
 	if(!cook_type || (stat & (NOPOWER|BROKEN)))
 		to_chat(user, SPAN_WARNING("\The [src] is not working."))
 		return 0
@@ -84,6 +90,18 @@
 		if(cook_type in check.cooked_types)
 			to_chat(user, SPAN_WARNING("\The [I] has already been [cook_type]."))
 			return 0
+	else if(istype(I, /obj/item/organ))
+		var/obj/item/organ/O = I
+		var/obj/item/weapon/reagent_containers/food/snacks/check = O.food_organ
+		if(O.disable_food_organ || BP_IS_ROBOTIC(O))
+			to_chat(user, SPAN_WARNING("You can't cook that."))
+			return FALSE
+		if(cook_type in check.cooked_types)
+			to_chat(user, SPAN_WARNING("\The [I] has already been [cook_type]."))
+			return FALSE
+		override_check = TRUE
+		thing_inside = check
+		thing_inside_parent = O
 	else if(istype(I, /obj/item/weapon/reagent_containers/food/condiment))
 		to_chat(user, SPAN_WARNING("You can't make \the [I] [cook_type]."))
 		return 0
@@ -117,9 +135,12 @@
 	if(inserted_mob)
 		thing_inside = inserted_mob
 	else
-		thing_inside = I
+		if(!override_check)
+			thing_inside = I
 	user.visible_message(SPAN_NOTICE("\The [user] puts \the [thing_inside] into \the [src]."))
 	thing_inside.forceMove(src)
+	if(thing_inside_parent)
+		thing_inside_parent.forceMove(src)
 	is_cooking = 1
 	cooking_is_done = FALSE
 	icon_state = on_icon
@@ -148,6 +169,15 @@
 					var/mob/living/L = thing_inside
 					L.death()
 
+				if(istype(thing_inside_parent, /obj/item/organ))
+					var/obj/item/organ/O = thing_inside_parent
+					O.die()
+
+				if(istype(thing_inside_parent, /obj/item/organ/external))
+					var/obj/item/organ/external/E = thing_inside_parent
+					for(var/obj/item/organ/O in E)
+						O.die()
+
 				if(selected_option && output_options.len)
 					var/cook_path = output_options[selected_option]
 					var/obj/item/weapon/reagent_containers/food/snacks/result = new cook_path(src)
@@ -161,9 +191,15 @@
 						var/obj/item/weapon/reagent_containers/food/snacks/I = thing_inside
 						result.cooked_types = I.cooked_types.Copy()
 
-					qdel(thing_inside)
+					if(thing_inside_parent)
+						qdel(thing_inside_parent)
+					else
+						qdel(thing_inside)
 					thing_inside = result
 				else
+					if(thing_inside_parent)
+						thing_inside_parent = change_product_strings(thing_inside_parent)
+						thing_inside_parent = change_product_appearance(thing_inside_parent)
 					thing_inside = change_product_strings(thing_inside)
 					thing_inside = change_product_appearance(thing_inside)
 
@@ -171,6 +207,11 @@
 					var/obj/item/weapon/reagent_containers/food/snacks/I = thing_inside
 					I.cooked_types |= cook_type
 				cooking_is_done = TRUE
+
+				if(!QDELETED(thing_inside_parent))
+					thing_inside.forceMove(thing_inside_parent)
+					thing_inside = thing_inside_parent
+
 
 				src.visible_message(SPAN_NOTICE("\The [src] pings!"))
 				if(cooked_sound)
@@ -183,7 +224,10 @@
 				if(world.time > next_burn_time)
 					next_burn_time += max(Floor(cook_time/5),1)
 					if(prob(burn_chance))
-						qdel(thing_inside)
+						if(thing_inside_parent)
+							qdel(thing_inside_parent)
+						else
+							qdel(thing_inside)
 						thing_inside = new /obj/item/weapon/reagent_containers/food/snacks/badrecipe(src)
 						visible_message(SPAN_DANGER("\The [src] vomits a gout of rancid smoke!"))
 						var/datum/effect/effect/system/smoke_spread/bad/smoke = new /datum/effect/effect/system/smoke_spread/bad()
@@ -209,6 +253,9 @@
 		if(is_cooking)
 			stop()
 		return
+	if(is_cooking && !QDELETED(thing_inside_parent))
+		thing_inside.forceMove(thing_inside_parent)
+		thing_inside = thing_inside_parent
 	if(receiver)
 		if(isliving(thing_inside))
 			var/mob/living/L = thing_inside

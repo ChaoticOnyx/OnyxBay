@@ -27,6 +27,11 @@
 	var/forehead_graffiti
 	var/graffiti_style
 
+/obj/item/organ/external/head/organ_eated(mob/user)
+	. = ..()
+	var/obj/item/weapon/skull/SK = new /obj/item/weapon/skull(get_turf(src))
+	user.put_in_active_hand(SK)
+
 /obj/item/organ/external/head/examine(mob/user)
 	. = ..()
 

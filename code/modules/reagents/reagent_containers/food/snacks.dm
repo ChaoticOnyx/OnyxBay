@@ -32,6 +32,10 @@
 				M.put_in_hands(TrashItem)
 			else if(istype(trash,/obj/item))
 				M.put_in_hands(trash)
+		if(istype(src.loc, /obj/item/organ))
+			var/obj/item/organ/O = src.loc
+			if(!QDELETED(O))
+				O.organ_eated(M)
 		qdel(src)
 	return
 
@@ -102,18 +106,21 @@
 
 	return 0
 
+/obj/item/weapon/reagent_containers/food/snacks/proc/get_bitecount_examine()
+	if (bitecount==0)
+		return
+	else if (bitecount==1)
+		return "\n<span class='notice'>\The [src] was bitten by someone!</span>"
+	else if (bitecount<=3)
+		return "\n<span class='notice'>\The [src] was bitten [bitecount] time\s!</span>"
+	else
+		return "\n<span class='notice'>\The [src] was bitten multiple times!</span>"
+
 /obj/item/weapon/reagent_containers/food/snacks/examine(mob/user)
 	. = ..()
 	if(get_dist(src, user) > 1)
 		return
-	if (bitecount==0)
-		return
-	else if (bitecount==1)
-		. += "\n<span class='notice'>\The [src] was bitten by someone!</span>"
-	else if (bitecount<=3)
-		. += "\n<span class='notice'>\The [src] was bitten [bitecount] time\s!</span>"
-	else
-		. += "\n<span class='notice'>\The [src] was bitten multiple times!</span>"
+	. += get_bitecount_examine()
 
 /obj/item/weapon/reagent_containers/food/snacks/attackby(obj/item/weapon/W as obj, mob/user as mob)
 	if(istype(W,/obj/item/weapon/storage))

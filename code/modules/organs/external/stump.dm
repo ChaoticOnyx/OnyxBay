@@ -2,6 +2,7 @@
 	name = "limb stump"
 	icon_name = ""
 	dislocated = -1
+	disable_food_organ = TRUE
 
 /obj/item/organ/external/stump/New(mob/living/carbon/holder, internal, obj/item/organ/external/limb)
 	if(istype(limb))
