@@ -494,7 +494,7 @@ var/global/list/possible_changeling_IDs = list("Alpha","Beta","Gamma","Delta","E
 		return
 
 	if(mind.changeling.true_dead)
-		to_chat(src, "<span class='notice'>We can not do this. We are really dead.</span>")
+		to_chat(src, SPAN_NOTICE("We can not do this. We are really dead."))
 		return
 
 	if(is_regenerating())
@@ -508,6 +508,8 @@ var/global/list/possible_changeling_IDs = list("Alpha","Beta","Gamma","Delta","E
 	update_canmove()
 
 	emote("gasp")
+
+	to_chat(usr, SPAN_NOTICE("We're start regenerating."))
 
 	addtimer(CALLBACK(src, .revive_ready), rand(80 SECONDS, 200 SECONDS))
 
