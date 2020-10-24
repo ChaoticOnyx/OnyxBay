@@ -323,6 +323,8 @@
 							src.gun = new /obj/item/weapon/gun/projectile/colt/detective(src)
 							new /obj/item/ammo_magazine/c45m/rubber(src)
 							new /obj/item/ammo_magazine/c45m/rubber(src)
+							new /obj/item/ammo_magazine/c45m/stun(src)
+							new /obj/item/ammo_magazine/c45m/stun(src)
 							new /obj/item/ammo_magazine/c45m(src)
 							new /obj/item/ammo_magazine/c45m(src)
 						else if (src.guntype == "S&W Legacy")
