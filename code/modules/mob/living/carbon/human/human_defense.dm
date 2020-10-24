@@ -501,96 +501,96 @@ meteor_act
 /mob/living/touch_with_weapon(obj/item/I, mob/living/user, effective_force, hit_zone)
 	visible_message(SPAN("notice", "[user] touches [src] with [I.name]."))
 
-//Src (defender) gets attacked by user (attacker) and tries to perform parry
-/mob/living/carbon/human/proc/handle_parry(mob/living/user, obj/item/w_atk)
+//Src (defender) gets attacked by attacking_mob (attacker) and tries to perform parry
+/mob/living/carbon/human/proc/handle_parry(mob/living/attacking_mob, obj/item/weapon_atk)
 	var/mob/living/carbon/human/defender = src
 	var/failing = 0
-	if(istype(user,/mob/living/carbon/human))
-		var/mob/living/carbon/human/attacker = user
+	if(istype(attacking_mob,/mob/living/carbon/human))
+		var/mob/living/carbon/human/attacker = attacking_mob
 		if(defender.get_active_hand())
-			var/obj/item/w_def = defender.get_active_hand()
-			if(!w_def.force)
+			var/obj/item/weapon_def = defender.get_active_hand()
+			if(!weapon_def.force)
 				defender.parrying = 0
-				visible_message(SPAN("warning", "[defender] pointlessly attempts to parry [attacker]'s [w_atk.name] with their [w_def]."))
+				visible_message(SPAN("warning", "[defender] pointlessly attempts to parry [attacker]'s [weapon_atk.name] with their [weapon_def]."))
 				return 0  //For the case of candles and dices lmao
 
-			if(w_def.mod_reach > 1.25)
-				if((w_def.mod_reach - w_atk.mod_reach) > 1.0)
+			if(weapon_def.mod_reach > 1.25)
+				if((weapon_def.mod_reach - weapon_atk.mod_reach) > 1.0)
 					failing = 1
-			else if(w_def.mod_reach < 0.75)
-				if((w_atk.mod_reach - w_def.mod_reach) > 1.0)
+			else if(weapon_def.mod_reach < 0.75)
+				if((weapon_atk.mod_reach - weapon_def.mod_reach) > 1.0)
 					failing = 1
 			if(failing)
-				visible_message(SPAN("warning", "[defender] fails to parry [attacker]'s [w_atk.name] with their [w_def.name]."))
+				visible_message(SPAN("warning", "[defender] fails to parry [attacker]'s [weapon_atk.name] with their [weapon_def.name]."))
 				defender.parrying = 0
 				return 0
 			defender.next_move = world.time+1 //Well I'd prefer to use setClickCooldown but it ain't gonna work here.
-			defender.poise -= 2.5+(w_atk.mod_weight*1.5)
-			//visible_message("Debug \[parry\]: Defender [defender] lost [2.5+(w_def.mod_weight*2.5)] poise ([defender.poise]/[defender.poise_pool])") // Debug Message
-			attacker.setClickCooldown(w_atk.update_attack_cooldown()*2)
-			attacker.poise -= 17.5+(w_atk.mod_weight*7.5)
-			//visible_message("Debug \[parry\]: Attacker [attacker] lost [20.0+(w_atk.mod_weight*5.0)] poise ([defender.poise]/[defender.poise_pool])") // Debug Message
-			visible_message(SPAN("warning", "[defender] parries [attacker]'s [w_atk.name] with their [w_def.name]."))
+			defender.poise -= 2.5+(weapon_atk.mod_weight*1.5)
+			//visible_message("Debug \[parry\]: Defender [defender] lost [2.5+(weapon_def.mod_weight*2.5)] poise ([defender.poise]/[defender.poise_pool])") // Debug Message
+			attacker.setClickCooldown(weapon_atk.update_attack_cooldown()*2)
+			attacker.poise -= 17.5+(weapon_atk.mod_weight*7.5)
+			//visible_message("Debug \[parry\]: Attacker [attacker] lost [20.0+(weapon_atk.mod_weight*5.0)] poise ([defender.poise]/[defender.poise_pool])") // Debug Message
+			visible_message(SPAN("warning", "[defender] parries [attacker]'s [weapon_atk.name] with their [weapon_def.name]."))
 
 			if(attacker.poise <= 5)
-				w_atk.knocked_out(attacker, TRUE, 3)
+				weapon_atk.knocked_out(attacker, TRUE, 3)
 			else if(attacker.poise <= 20)
-				w_atk.knocked_out(attacker)
+				weapon_atk.knocked_out(attacker)
 
 			playsound(loc, 'sound/weapons/parry.ogg', 50, 1, -1) // You know what's gonna happen next, eh?
 			defender.parrying = 0
 			return 1
 		else
-			//visible_message("[defender] tries to parry [attacker]'s [w_atk] with their bare hands.") //Debug Message
+			//visible_message("[defender] tries to parry [attacker]'s [weapon_atk] with their bare hands.") //Debug Message
 			defender.parrying = 0
 			return 0
 	return 1
 
-//Src (defender) blocks user's (attacker) w_atk with their w_def
-/mob/living/carbon/human/proc/handle_block_weapon(mob/living/user, obj/item/w_atk)
+//Src (defender) blocks attacking_mob's (attacker) weapon_atk with their weapon_def
+/mob/living/carbon/human/proc/handle_block_weapon(mob/living/attacking_mob, obj/item/weapon_atk)
 	var/mob/living/carbon/human/defender = src
 	var/d_mult = 1
-	if(istype(user,/mob/living/carbon/human))
-		var/mob/living/carbon/human/attacker = user
-		var/obj/item/w_def
+	if(istype(attacking_mob,/mob/living/carbon/human))
+		var/mob/living/carbon/human/attacker = attacking_mob
+		var/obj/item/weapon_def
 		if(defender.blocking_hand && defender.get_inactive_hand())
-			w_def = defender.get_inactive_hand()
+			weapon_def = defender.get_inactive_hand()
 		else if(defender.get_active_hand())
-			w_def = defender.get_active_hand()
-		if(w_def)
-			if(!w_def.force)
+			weapon_def = defender.get_active_hand()
+		if(weapon_def)
+			if(!weapon_def.force)
 				defender.useblock_off()
-				visible_message(SPAN("warning", "[defender] pointlessly attempts to block [attacker]'s [w_atk.name] with [w_def]."))
+				visible_message(SPAN("warning", "[defender] pointlessly attempts to block [attacker]'s [weapon_atk.name] with [weapon_def]."))
 				return 0 //For the case of candles and dices lmao
 
-			if(w_def.mod_reach < w_atk.mod_reach)
-				if(((w_atk.mod_reach + w_atk.mod_weight)/2 - w_def.mod_reach) > 0)
-					d_mult = ((w_atk.mod_reach + w_atk.mod_weight)/2 - w_def.mod_reach)/0.25
-			else if(w_def.mod_weight < w_atk.mod_weight)
-				d_mult = (w_atk.mod_weight - w_def.mod_weight)/0.5
+			if(weapon_def.mod_reach < weapon_atk.mod_reach)
+				if(((weapon_atk.mod_reach + weapon_atk.mod_weight)/2 - weapon_def.mod_reach) > 0)
+					d_mult = ((weapon_atk.mod_reach + weapon_atk.mod_weight)/2 - weapon_def.mod_reach)/0.25
+			else if(weapon_def.mod_weight < weapon_atk.mod_weight)
+				d_mult = (weapon_atk.mod_weight - weapon_def.mod_weight)/0.5
 
-			defender.poise -= (4.0+(w_atk.mod_weight*2.5 + w_atk.mod_reach)) + (w_atk.mod_weight*2.5 + w_atk.mod_reach)*d_mult/w_def.mod_shield
-			//visible_message("Debug \[block\]: [defender] lost [(4.0+(w_atk.mod_weight*2.5 + w_atk.mod_reach)) + (w_atk.mod_weight*2.5 + w_atk.mod_reach)*d_mult/w_def.mod_shield] poise ([defender.poise]/[defender.poise_pool])") // Debug Message
-			attacker.poise -= 2.0+(w_atk.mod_weight*2 + (1-w_atk.mod_handy)*2)
-			//visible_message("Debug \[block\]: [attacker] lost [2.0+(w_atk.mod_weight*2 + (1-w_atk.mod_handy)*2)] poise ([attacker.poise]/[attacker.poise_pool])") // Debug Message
-			visible_message(SPAN("warning", "[defender] blocks [attacker]'s [w_atk.name] with their [w_def.name]!"))
+			defender.poise -= (4.0+(weapon_atk.mod_weight*2.5 + weapon_atk.mod_reach)) + (weapon_atk.mod_weight*2.5 + weapon_atk.mod_reach)*d_mult/weapon_def.mod_shield
+			//visible_message("Debug \[block\]: [defender] lost [(4.0+(weapon_atk.mod_weight*2.5 + weapon_atk.mod_reach)) + (weapon_atk.mod_weight*2.5 + weapon_atk.mod_reach)*d_mult/weapon_def.mod_shield] poise ([defender.poise]/[defender.poise_pool])") // Debug Message
+			attacker.poise -= 2.0+(weapon_atk.mod_weight*2 + (1-weapon_atk.mod_handy)*2)
+			//visible_message("Debug \[block\]: [attacker] lost [2.0+(weapon_atk.mod_weight*2 + (1-weapon_atk.mod_handy)*2)] poise ([attacker.poise]/[attacker.poise_pool])") // Debug Message
+			visible_message(SPAN("warning", "[defender] blocks [attacker]'s [weapon_atk.name] with their [weapon_def.name]!"))
 			defender.last_block = world.time
 
 			if(defender.poise <= 5.0)
-				w_def.knocked_out(defender, TRUE, 3)
+				weapon_def.knocked_out(defender, TRUE, 3)
 			else if(defender.poise <= 12.5)
-				w_def.knocked_out(defender)
+				weapon_def.knocked_out(defender)
 
 			playsound(loc, 'sound/effects/fighting/Genhit.ogg', 50, 1, -1)
 		else
-			defender.poise -= 2.5 + w_atk.mod_weight*10 + w_atk.mod_reach*5
-			attacker.poise -= w_atk.mod_weight*2 + (1-w_atk.mod_handy)*2
-			if((w_atk.sharp || w_atk.edge) && w_atk.force >= 10)
-				visible_message(SPAN("warning", "[defender] blocks [attacker]'s [w_atk.name] with their bare hands! Ouch."))
-				defender.apply_damage((w_atk.force*0.2), w_atk.damtype, BP_R_HAND, 0, 0, used_weapon=w_atk)
-				defender.apply_damage((w_atk.force*0.2), w_atk.damtype, BP_L_HAND, 0, 0, used_weapon=w_atk)
+			defender.poise -= 2.5 + weapon_atk.mod_weight*10 + weapon_atk.mod_reach*5
+			attacker.poise -= weapon_atk.mod_weight*2 + (1-weapon_atk.mod_handy)*2
+			if((weapon_atk.sharp || weapon_atk.edge) && weapon_atk.force >= 10)
+				visible_message(SPAN("warning", "[defender] blocks [attacker]'s [weapon_atk.name] with their bare hands! Ouch."))
+				defender.apply_damage((weapon_atk.force*0.2), weapon_atk.damtype, BP_R_HAND, 0, 0, used_weapon=weapon_atk)
+				defender.apply_damage((weapon_atk.force*0.2), weapon_atk.damtype, BP_L_HAND, 0, 0, used_weapon=weapon_atk)
 			else
-				visible_message(SPAN("warning", "[defender] blocks [attacker]'s [w_atk.name] with their bare hands!"))
+				visible_message(SPAN("warning", "[defender] blocks [attacker]'s [weapon_atk.name] with their bare hands!"))
 			defender.last_block = world.time
 			if(defender.poise <= 10.0)
 				visible_message(SPAN("warning", "[defender] falls down, unable to keep balance!"))
@@ -598,37 +598,37 @@ meteor_act
 				defender.useblock_off()
 	return 1
 
-//Src (defender) blocks user's (attacker) punch/generic attack with their w_def
-/mob/living/carbon/human/proc/handle_block_normal(mob/living/user, atk_dmg = 5.0)
+//Src (defender) blocks attacking_mob's (attacker) punch/generic attack with their weapon_def
+/mob/living/carbon/human/proc/handle_block_normal(mob/living/attacking_mob, atk_dmg = 5.0)
 	var/mob/living/carbon/human/defender = src
-	if(istype(user,/mob/living/carbon/human) || istype(user,/mob/living/simple_animal))
-		var/mob/living/attacker = user
-		var/obj/item/w_def
+	if(istype(attacking_mob,/mob/living/carbon/human) || istype(attacking_mob,/mob/living/simple_animal))
+		var/mob/living/attacker = attacking_mob
+		var/obj/item/weapon_def
 
 		if(defender.blocking_hand && defender.get_inactive_hand())
-			w_def = defender.get_inactive_hand()
+			weapon_def = defender.get_inactive_hand()
 		else if(defender.get_active_hand())
-			w_def = defender.get_active_hand()
+			weapon_def = defender.get_active_hand()
 
-		if(w_def)
-			if(!w_def.force)
+		if(weapon_def)
+			if(!weapon_def.force)
 				defender.useblock_off()
-				visible_message(SPAN("warning", "[defender] pointlessly attempts to block [attacker]'s attack with [w_def]."))
+				visible_message(SPAN("warning", "[defender] pointlessly attempts to block [attacker]'s attack with [weapon_def]."))
 				return 0 //For the case of candles and dices lmao
 
-			defender.poise -= atk_dmg / ((w_def.mod_handy+w_def.mod_reach) / 2)
+			defender.poise -= atk_dmg / ((weapon_def.mod_handy+weapon_def.mod_reach) / 2)
 			if(istype(attacker,/mob/living/carbon/human))
 				var/mob/living/carbon/human/human_attacker = attacker
-				human_attacker.poise -= 5.0 + w_def.mod_weight*2 + w_def.mod_handy*3
+				human_attacker.poise -= 5.0 + weapon_def.mod_weight*2 + weapon_def.mod_handy*3
 
-			visible_message(SPAN("warning", "[defender] blocks [attacker]'s attack with their [w_def.name]!"))
+			visible_message(SPAN("warning", "[defender] blocks [attacker]'s attack with their [weapon_def.name]!"))
 			defender.last_block = world.time
 
 			if(defender.poise < 0)
-				w_def.knocked_out(defender, TRUE, 3)
+				weapon_def.knocked_out(defender, TRUE, 3)
 			else if(defender.poise < 10.0)
-				w_def.knocked_out(defender)
-			//visible_message("Debug \[block\]: [attacker] lost [5.0+w_def.mod_weight*2+w_def.mod_handy*3] poise ([attacker.poise]/[attacker.poise_pool])") // Debug Message
+				weapon_def.knocked_out(defender)
+			//visible_message("Debug \[block\]: [attacker] lost [5.0+weapon_def.mod_weight*2+weapon_def.mod_handy*3] poise ([attacker.poise]/[attacker.poise_pool])") // Debug Message
 			playsound(loc, 'sound/effects/fighting/Genhit.ogg', 50, 1, -1)
 		else
 			if(istype(attacker,/mob/living/carbon/human))
@@ -751,20 +751,20 @@ meteor_act
 		var/throw_damage = O.throwforce*(speed/THROWFORCE_SPEED_DIVISOR)
 
 		if(src.blocking)
-			var/obj/item/w_def
+			var/obj/item/weapon_def
 			if(src.blocking_hand && src.get_inactive_hand())
-				w_def = src.get_inactive_hand()
+				weapon_def = src.get_inactive_hand()
 			else if(src.get_active_hand())
-				w_def = src.get_active_hand()
-			if(w_def)
-				if(w_def.force && w_def.w_class >= O.w_class)
+				weapon_def = src.get_active_hand()
+			if(weapon_def)
+				if(weapon_def.force && weapon_def.w_class >= O.w_class)
 					var/dir = get_dir(src,O)
 					O.throw_at(get_edge_target_turf(src,dir),1)
 
-					visible_message(SPAN("warning", "[src] blocks [O] with [w_def]!"))
+					visible_message(SPAN("warning", "[src] blocks [O] with [weapon_def]!"))
 
-					poise -= throw_damage/w_def.mod_shield
-					if(poise < throw_damage/w_def.mod_shield)
+					poise -= throw_damage/weapon_def.mod_shield
+					if(poise < throw_damage/weapon_def.mod_shield)
 						visible_message(SPAN("warning", "[src] falls down, unable to keep balance!"))
 						apply_effect(2, WEAKEN, 0)
 						src.useblock_off()
