@@ -10,16 +10,15 @@
 	var/transfer_amount = 1
 
 /obj/structure/iv_drip/verb/set_APTFT()
+	set name = "Set IV transfer amount"
+	set category = "Object"
+	set src in range(1)
 	if(!istype(usr, /mob/living))
 		to_chat(usr, "<span class='warning'>You can't do that.</span>")
 		return
-	else
-		set name = "Set IV transfer amount"
-		set category = "Object"
-		set src in range(1)
-		var/N = input("Amount per transfer from this:","[src]") as null|anything in transfer_amounts
-		if(N)
-			transfer_amount = N
+	var/N = input("Amount per transfer from this:","[src]") as null|anything in transfer_amounts
+	if(N)
+		transfer_amount = N
 
 /obj/structure/iv_drip/update_icon()
 	if(attached)
