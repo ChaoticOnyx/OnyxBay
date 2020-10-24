@@ -98,6 +98,10 @@
 	desc = "A .45 flash shell casing."
 	projectile_type = /obj/item/projectile/energy/flash
 
+/obj/item/ammo_casing/c45/stun
+	desc = "A .45 stun cartridge casing."
+	projectile_type = /obj/item/projectile/energy/electrode/c45
+
 /obj/item/ammo_casing/a10mm
 	desc = "A 10mm bullet casing."
 	caliber = "10mm"

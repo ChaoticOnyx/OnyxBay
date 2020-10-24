@@ -781,6 +781,7 @@ obj/random/obstruction/spawn_choices()
 				/obj/item/weapon/storage/box/cups = 3,
 				/obj/item/weapon/storage/box/mousetraps = 5,
 				/obj/item/weapon/storage/box/engineer = 3,
+				/obj/item/weapon/storage/box/security = 3,
 				/obj/item/weapon/storage/box/vox = 1,
 				/obj/item/weapon/storage/box/beakers = 3,
 				/obj/item/weapon/storage/box/syringes = 3,
