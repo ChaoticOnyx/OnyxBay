@@ -318,6 +318,7 @@ The slots that you can use are found in items_clothing.dm and are the inventory 
 		var/obj/item/organ/external/E = H.get_organ(organ.parent_organ)
 		E.internal_organs |= organ
 		H.internal_organs_by_name[organ.organ_tag] = organ
+		organ.after_organ_creation()
 
 	for(var/name in H.organs_by_name)
 		H.organs |= H.organs_by_name[name]

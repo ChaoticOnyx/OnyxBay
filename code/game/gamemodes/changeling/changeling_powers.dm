@@ -509,7 +509,7 @@ var/global/list/possible_changeling_IDs = list("Alpha","Beta","Gamma","Delta","E
 
 	emote("gasp")
 
-	to_chat(usr, SPAN_NOTICE("We're start regenerating."))
+	to_chat(usr, SPAN_NOTICE("We're starting to regenerate."))
 
 	addtimer(CALLBACK(src, .revive_ready), rand(80 SECONDS, 200 SECONDS))
 

@@ -220,6 +220,10 @@
 
 	..()
 
+/obj/item/organ/internal/biostructure/after_organ_creation()
+	. = ..()
+	change_host(owner)
+
 /obj/item/organ/internal/biostructure/proc/change_host(atom/destination)
 	var/atom/source = src.loc
 	//deleteing biostructure from external organ so when that organ is deleted biostructure wont be deleted
