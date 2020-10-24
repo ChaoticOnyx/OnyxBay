@@ -31,12 +31,12 @@
 	..()
 	icon_state = pick(get_valid_states())
 
-/obj/structure/sign/double/barsign/attackby(obj/item/I, mob/living/user = null)
+/obj/structure/sign/double/barsign/attackby(obj/item/I, mob/living/user)
 
 	var/obj/item/weapon/card/id/card = I.GetIdCard()
 	if(istype(card))
 		if(access_bar in card.GetAccess())
-			var/sign_type = input(user, "What would you like to change the barsign to?") as null|anything in get_valid_states(0,user)
+			var/sign_type = input(user, "What would you like to change the barsign to?") as null|anything in get_valid_states(0, user)
 			if(!sign_type)
 				return
 			icon_state = sign_type
