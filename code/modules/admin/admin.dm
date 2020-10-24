@@ -1487,7 +1487,7 @@ var/global/floorIsLava = 0
 			P.admindatum = src
 			P.origin = replyorigin
 			P.destination = sendto
-
+			P.appendable = FALSE//I don't know why, but otherwise it duplicates message with it's "write"
 			P.adminbrowse()
 
 /client/proc/check_fax_history()
