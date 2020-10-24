@@ -5,12 +5,13 @@
 	icon_state = "empty"
 	appearance_flags = 0
 	anchored = 1
-	var/cult = 0
+	var/cult =0
 
 /obj/structure/sign/double/barsign/proc/get_valid_states(initial=1)
 	. = icon_states(icon)
 	. -= "on"
-	. -= "narsiebistro"
+	if (!cult)
+		. -= "narsiebistro"
 	. -= "empty"
 	if(initial)
 		. -= "Off"
@@ -31,10 +32,11 @@
 	..()
 	icon_state = pick(get_valid_states())
 
-/obj/structure/sign/double/barsign/attackby(obj/item/I, mob/user)
-	if(cult)
-		return ..()
-
+/obj/structure/sign/double/barsign/attackby(obj/item/I, mob/living/user as mob)
+	if (iscultist(user))
+		cult = 1
+	else
+		cult = 0
 	var/obj/item/weapon/card/id/card = I.GetIdCard()
 	if(istype(card))
 		if(access_bar in card.GetAccess())
@@ -46,5 +48,5 @@
 		else
 			to_chat(user, "<span class='warning'>Access denied.</span>")
 		return
-
 	return ..()
+
