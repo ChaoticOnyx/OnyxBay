@@ -10,12 +10,16 @@
 	var/transfer_amount = 1
 
 /obj/structure/iv_drip/verb/set_APTFT()
-	set name = "Set IV transfer amount"
-	set category = "Object"
-	set src in range(1)
-	var/N = input("Amount per transfer from this:","[src]") as null|anything in transfer_amounts
-	if(N)
-		transfer_amount = N
+	if(!istype(usr, /mob/living))
+		to_chat(usr, "<span class='warning'>You can't do that.</span>")
+		return
+	else
+		set name = "Set IV transfer amount"
+		set category = "Object"
+		set src in range(1)
+		var/N = input("Amount per transfer from this:","[src]") as null|anything in transfer_amounts
+		if(N)
+			transfer_amount = N
 
 /obj/structure/iv_drip/update_icon()
 	if(attached)
@@ -105,7 +109,7 @@
 	else // Take blood
 		var/amount = beaker.reagents.maximum_volume - beaker.reagents.total_volume
 		amount = min(amount, 4)
-		
+
 		if(amount == 0) // If the beaker is full, ping
 			if(prob(5)) visible_message("\The [src] pings.")
 			return
@@ -150,7 +154,7 @@
 /obj/structure/iv_drip/examine(mob/user)
 	. = ..()
 
-	if (get_dist(src, user) > 2) 
+	if (get_dist(src, user) > 2)
 		return
 
 	. += "\nThe IV drip is [mode ? "injecting" : "taking blood"]."
