@@ -1293,3 +1293,271 @@
 		..()
 		feedback_inc("mecha_odysseus_created",1)
 		return
+
+
+/datum/construction/mecha/honker_chassis
+	steps = list(list("key"=/obj/item/mecha_parts/part/honker_torso),//1
+				 list("key"=/obj/item/mecha_parts/part/honker_head),//2
+				 list("key"=/obj/item/mecha_parts/part/honker_left_arm),//3
+				 list("key"=/obj/item/mecha_parts/part/honker_right_arm),//4
+				 list("key"=/obj/item/mecha_parts/part/honker_left_leg),//5
+				 list("key"=/obj/item/mecha_parts/part/honker_right_leg)//6
+				)
+
+	custom_action(step, atom/used_atom, mob/user)
+		user.visible_message("[user] has connected [used_atom] to [holder].", "You connect [used_atom] to [holder]")
+		holder.overlays += used_atom.icon_state+"+o"
+		qdel(used_atom)
+		return 1
+
+	action(atom/used_atom,mob/user as mob)
+		return check_all_steps(used_atom,user)
+
+	spawn_result()
+		var/obj/item/mecha_parts/chassis/const_holder = holder
+		const_holder.construct = new /datum/construction/reversible/mecha/honker(const_holder)
+		const_holder.icon = 'icons/mecha/mech_construction.dmi'
+		const_holder.icon_state = "honker0"
+		const_holder.set_density(1)
+		const_holder.overlays.len = 0
+		spawn()
+			qdel(src)
+		return
+
+/datum/construction/reversible/mecha/honker
+	result = /obj/mecha/combat/honker
+	steps = list(
+					//1
+					list("key"=/obj/item/clothing/mask/gas/clown_hat,
+							"backkey"=/obj/item/weapon/screwdriver,
+							"desc"="Bike horn is installed."),
+					//2
+					list("key"=/obj/item/weapon/bikehorn,
+							"backkey"=/obj/item/weapon/wrench,
+							"desc"="Clown shoes are installed."),
+					//3
+					list("key"=/obj/item/clothing/shoes/clown_shoes,
+							"backkey"=/obj/item/weapon/crowbar,
+							"desc"="External armor is welded."),
+					//4
+					list("key"=/obj/item/weapon/weldingtool,
+							"backkey"=/obj/item/weapon/wrench,
+							"desc"="External armor is wrenched."),
+					//5
+					 list("key"=/obj/item/weapon/wrench,
+					 		"backkey"=/obj/item/weapon/crowbar,
+					 		"desc"="External armor is installed."),
+					 //6
+					 list("key"=/obj/item/stack/material/plasteel,
+					 		"backkey"=/obj/item/weapon/weldingtool,
+					 		"desc"="Internal armor is welded."),
+					 //7
+					 list("key"=/obj/item/weapon/weldingtool,
+					 		"backkey"=/obj/item/weapon/wrench,
+					 		"desc"="Internal armor is wrenched."),
+					 //8
+					 list("key"=/obj/item/weapon/wrench,
+					 		"backkey"=/obj/item/weapon/crowbar,
+					 		"desc"="Internal armor is installed."),
+					 //9
+					 list("key"=/obj/item/stack/material/steel,
+					 		"backkey"=/obj/item/weapon/screwdriver,
+					 		"desc"="Weapon control and targeting module is secured."),
+					 //10
+					 list("key"=/obj/item/weapon/screwdriver,
+					 		"backkey"=/obj/item/weapon/crowbar,
+					 		"desc"="Weapon control and targeting module is installed."),
+					 //11
+					 list("key"=/obj/item/weapon/circuitboard/mecha/honker/targeting,
+					 		"backkey"=/obj/item/weapon/screwdriver,
+					 		"desc"="Peripherals control module is secured."),
+					 //12
+					 list("key"=/obj/item/weapon/screwdriver,
+					 		"backkey"=/obj/item/weapon/crowbar,
+					 		"desc"="Peripherals control module is installed."),
+					 //13
+					 list("key"=/obj/item/weapon/circuitboard/mecha/honker/peripherals,
+					 		"backkey"=/obj/item/weapon/screwdriver,
+					 		"desc"="Central control module is secured."),
+					 //14
+					 list("key"=/obj/item/weapon/screwdriver,
+					 		"backkey"=/obj/item/weapon/crowbar,
+					 		"desc"="Central control module is installed."),
+					 //15
+					 list("key"=/obj/item/weapon/circuitboard/mecha/honker/main,
+					 		"backkey"=/obj/item/weapon/screwdriver,
+					 		"desc"="The wiring is adjusted."),
+					 //16
+					 list("key"=/obj/item/weapon/wirecutters,
+					 		"backkey"=/obj/item/weapon/screwdriver,
+					 		"desc"="The wiring is added."),
+					 //17
+					 list("key"=/obj/item/stack/cable_coil,
+					 		"backkey"=/obj/item/weapon/screwdriver,
+					 		"desc"="The hydraulic systems are active."),
+					 //18
+					 list("key"=/obj/item/weapon/screwdriver,
+					 		"backkey"=/obj/item/weapon/wrench,
+					 		"desc"="The hydraulic systems are connected."),
+					 //19
+					 list("key"=/obj/item/weapon/wrench,
+					 		"desc"="The hydraulic systems are disconnected.")
+					)
+
+	action(atom/used_atom,mob/user as mob)
+		return check_step(used_atom,user)
+
+	custom_action(index, diff, atom/used_atom, mob/user)
+		if(!..())
+			return 0
+
+		//TODO: better messages.
+		switch(index)
+			if(19)
+				user.visible_message("[user] connects [holder] hydraulic systems", "You connect [holder] hydraulic systems.")
+				holder.icon_state = "honker1"
+			if(18)
+				if(diff==FORWARD)
+					user.visible_message("[user] activates [holder] hydraulic systems.", "You activate [holder] hydraulic systems.")
+					holder.icon_state = "honker2"
+				else
+					user.visible_message("[user] disconnects [holder] hydraulic systems", "You disconnect [holder] hydraulic systems.")
+					holder.icon_state = "honker0"
+			if(17)
+				if(diff==FORWARD)
+					user.visible_message("[user] adds the wiring to [holder].", "You add the wiring to [holder].")
+					holder.icon_state = "honker3"
+				else
+					user.visible_message("[user] deactivates [holder] hydraulic systems.", "You deactivate [holder] hydraulic systems.")
+					holder.icon_state = "honker1"
+			if(16)
+				if(diff==FORWARD)
+					user.visible_message("[user] adjusts the wiring of [holder].", "You adjust the wiring of [holder].")
+					holder.icon_state = "honker4"
+				else
+					user.visible_message("[user] removes the wiring from [holder].", "You remove the wiring from [holder].")
+					var/obj/item/stack/cable_coil/coil = new /obj/item/stack/cable_coil(get_turf(holder))
+					coil.amount = 4
+					holder.icon_state = "honker2"
+			if(15)
+				if(diff==FORWARD)
+					user.visible_message("[user] installs the central control module into [holder].", "You install the central computer mainboard into [holder].")
+					qdel(used_atom)
+					holder.icon_state = "honker5"
+				else
+					user.visible_message("[user] disconnects the wiring of [holder].", "You disconnect the wiring of [holder].")
+					holder.icon_state = "honker3"
+			if(14)
+				if(diff==FORWARD)
+					user.visible_message("[user] secures the mainboard.", "You secure the mainboard.")
+					holder.icon_state = "honker6"
+				else
+					user.visible_message("[user] removes the central control module from [holder].", "You remove the central computer mainboard from [holder].")
+					new /obj/item/weapon/circuitboard/mecha/honker/main(get_turf(holder))
+					holder.icon_state = "honker4"
+			if(13)
+				if(diff==FORWARD)
+					user.visible_message("[user] installs the peripherals control module into [holder].", "You install the peripherals control module into [holder].")
+					qdel(used_atom)
+					holder.icon_state = "honker7"
+				else
+					user.visible_message("[user] unfastens the mainboard.", "You unfasten the mainboard.")
+					holder.icon_state = "honker5"
+			if(12)
+				if(diff==FORWARD)
+					user.visible_message("[user] secures the peripherals control module.", "You secure the peripherals control module.")
+					holder.icon_state = "honker8"
+				else
+					user.visible_message("[user] removes the peripherals control module from [holder].", "You remove the peripherals control module from [holder].")
+					new /obj/item/weapon/circuitboard/mecha/honker/peripherals(get_turf(holder))
+					holder.icon_state = "honker6"
+			if(11)
+				if(diff==FORWARD)
+					user.visible_message("[user] installs the peripherals control module into [holder].", "You install the peripherals control module into [holder].")
+					qdel(used_atom)
+					holder.icon_state = "honker9"
+				else
+					user.visible_message("[user] unfastens the mainboard.", "You unfasten the mainboard.")
+					holder.icon_state = "honker7"
+			if(10)
+				if(diff==FORWARD)
+					user.visible_message("[user] secures the weapon control and targeting control module.", "You secure the weapon control and targeting control module.")
+					holder.icon_state = "honker10"
+				else
+					user.visible_message("[user] removes the weapon control and targeting control module from [holder].", "You remove the weapon control and targeting control module from [holder].")
+					new /obj/item/weapon/circuitboard/mecha/honker/targeting(get_turf(holder))
+					holder.icon_state = "honker8"
+			if(9)
+				if(diff==FORWARD)
+					user.visible_message("[user] installs internal armor layer to [holder].", "You install internal armor layer to [holder].")
+					holder.icon_state = "honker11"
+				else
+					user.visible_message("[user] unfastens the weapon control and targeting control module.", "You unfasten the weapon control and targeting control module.")
+					holder.icon_state = "honker9"
+			if(8)
+				if(diff==FORWARD)
+					user.visible_message("[user] secures internal armor layer.", "You secure internal armor layer.")
+					holder.icon_state = "honker12"
+				else
+					user.visible_message("[user] pries internal armor layer from [holder].", "You prie internal armor layer from [holder].")
+					var/obj/item/stack/material/steel/MS = new /obj/item/stack/material/steel(get_turf(holder))
+					MS.amount = 5
+					holder.icon_state = "honker10"
+			if(7)
+				if(diff==FORWARD)
+					user.visible_message("[user] welds internal armor layer to [holder].", "You weld the internal armor layer to [holder].")
+					holder.icon_state = "honker13"
+				else
+					user.visible_message("[user] unfastens the internal armor layer.", "You unfasten the internal armor layer.")
+					holder.icon_state = "honker11"
+			if(6)
+				if(diff==FORWARD)
+					user.visible_message("[user] installs external reinforced armor layer to [holder].", "You install external reinforced armor layer to [holder].")
+					holder.icon_state = "honker14"
+				else
+					user.visible_message("[user] cuts the internal armor layer from [holder].", "You cut the internal armor layer from [holder].")
+					holder.icon_state = "honker12"
+			if(5)
+				if(diff==FORWARD)
+					user.visible_message("[user] secures the external armor layer.", "You secure the external reinforced armor layer.")
+					holder.icon_state = "honker15"
+				else
+					user.visible_message("[user] pries the external armor layer from [holder].", "You pry the external armor layer from [holder].")
+					var/obj/item/stack/material/plasteel/MS = new /obj/item/stack/material/plasteel(get_turf(holder))
+					MS.amount = 5
+					holder.icon_state = "honker13"
+			if(4)
+				if(diff==FORWARD)
+					user.visible_message("[user] welds the external armor layer to [holder].", "You weld the external armor layer to [holder].")
+					holder.icon_state = "honker16"
+				else
+					user.visible_message("[user] unfastens the external armor layer.", "You unfasten the external armor layer.")
+					holder.icon_state = "honker14"
+			if(3)
+				if(diff==FORWARD)
+					user.visible_message("[user] somehow pulls clown shoes on [holder].", "You pull clown shoes on [holder].")
+					holder.icon_state = "honker17"
+				else
+					user.visible_message("[user] cuts the external armor layer from [holder].", "You cut the external armor layer from [holder].")
+					holder.icon_state = "honker15"
+			if(2)
+				if(diff==FORWARD)
+					user.visible_message("[user] installs bike horn to [holder].", "You install bike horn to [holder].")
+					holder.icon_state = "honker18"
+				else
+					user.visible_message("[user] pries the clown shoes off [holder].", "You pry the clown shoes off [holder].")
+					holder.icon_state = "honker16"
+					new /obj/item/clothing/shoes/clown_shoes(get_turf(holder))
+			if(1)
+				if(diff==FORWARD)
+					user.visible_message("[user] installs a clown mask to [holder].", "You install a clown mask to [holder].")
+				else
+					user.visible_message("[user] unfastens the bike horn from [holder].", "You unfaster the bike horn from [holder].")
+					holder.icon_state = "honker17"
+					new /obj/item/weapon/bikehorn(get_turf(holder))
+		return 1
+
+	spawn_result()
+		..()
+		feedback_inc("mecha_honker_created",1)
+		return

@@ -295,3 +295,47 @@
 	origin_tech = list(TECH_MATERIAL = 3, TECH_ENGINEERING = 3)
 	construction_time = 200
 	construction_cost = list(MATERIAL_STEEL=15000)*/
+
+///////// Honker
+
+/obj/item/mecha_parts/chassis/honker
+	name = "H.O.N.K. Chassis"
+
+	New()
+		..()
+		construct = new /datum/construction/mecha/honker_chassis(src)
+
+/obj/item/mecha_parts/part/honker_head
+	name="H.O.N.K. Head"
+	icon_state = "honker_head"
+	origin_tech = list(TECH_DATA = 2, TECH_MATERIAL = 3, TECH_MAGNET = 3, TECH_ENGINEERING = 3)
+
+/obj/item/mecha_parts/part/honker_torso
+	name="H.O.N.K. Torso"
+	desc="A torso part of Odysseus. Contains power unit, processing core and life support systems."
+	icon_state = "honker_torso"
+	origin_tech = list(TECH_DATA = 2, TECH_MATERIAL = 3, TECH_BIO = 3, TECH_ENGINEERING = 3)
+
+/obj/item/mecha_parts/part/honker_left_arm
+	name="H.O.N.K. Left Arm"
+	desc="An Odysseus left arm. Data and power sockets are compatible with most exosuit tools."
+	icon_state = "honker_l_arm"
+	origin_tech = list(TECH_DATA = 2, TECH_MATERIAL = 2, TECH_ENGINEERING = 3)
+
+/obj/item/mecha_parts/part/honker_right_arm
+	name="H.O.N.K. Right Arm"
+	desc="An Odysseus right arm. Data and power sockets are compatible with most exosuit tools."
+	icon_state = "honker_r_arm"
+	origin_tech = list(TECH_DATA = 2, TECH_MATERIAL = 2, TECH_ENGINEERING = 3)
+
+/obj/item/mecha_parts/part/honker_left_leg
+	name="H.O.N.K. Left Leg"
+	desc="An Odysseus left leg. Contains somewhat complex servodrives and balance maintaining systems."
+	icon_state = "honker_l_leg"
+	origin_tech = list(TECH_DATA = 2, TECH_MATERIAL = 2, TECH_ENGINEERING = 3)
+
+/obj/item/mecha_parts/part/honker_right_leg
+	name="H.O.N.K. Right Leg"
+	desc="A Odysseus right leg. Contains somewhat complex servodrives and balance maintaining systems."
+	icon_state = "honker_r_leg"
+	origin_tech = list(TECH_DATA = 2, TECH_MATERIAL = 2, TECH_ENGINEERING = 3)
