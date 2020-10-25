@@ -257,6 +257,9 @@
 		else
 	return
 
+//Don't Use that code, it has issue, if you trying to climb from railing position it
+//will not work
+
 // OLD code from the very first port to Bay below:
 // can_climb() allows climbing from an adjacent turf onto the src turf.
 // However, railings allow the inverse as well.
@@ -288,19 +291,58 @@
 //			return 0
 //	return 1
 
+
 /obj/structure/railing/can_climb(mob/living/user, post_climb_check=0)
-	if (!can_touch(user) || (!post_climb_check && (user in climbers)))
+	var/turf/OT = get_step(src, src.dir)//opposite turf of railing
+	var/turf/T = get_turf(src)//current turf of railing
+	var/turf/UT = get_turf(user)
+	if (OT==UT)
+		if(T && istype(T))
+			if(T.density == 1)
+				to_chat(usr, "<span class='danger'>There's \a [T] in the way1.</span>")
+				return 0
+			else
+				for(var/obj/O in T.contents)
+
+					if(O == usr) // trying to climb onto yourself? Sure, go ahead bud.
+						continue
+					if(O.density == 0)
+						continue
+					if(istype(O,/obj/structure))
+						var/obj/structure/S = O
+						if(S.atom_flags & ATOM_FLAG_CLIMBABLE)
+							continue
+					// Not entirely sure what this next line does. But it looks important.
+					//if(O && O.density && !(O.atom_flags & ATOM_FLAG_CHECKS_BORDER && !(turn(O.dir, 180) & dir)))
+					//	continue
+					to_chat(usr, "<span class='danger'>There's [O] \a  in the way2.</span>")
+					return 0
+		return 1
+	else if (T==UT)
+		if(OT && istype(OT))
+			if(OT.density == 1)
+				to_chat(usr, "<span class='danger'>There's [OT] \a in the way3.</span>")
+				return 0
+			else
+				for(var/obj/O in OT.contents)
+					if(O == usr) // trying to climb onto yourself? Sure, go ahead bud.
+						continue
+					if(O.density == 0)
+						continue
+					if(istype(O,/obj/structure))
+						var/obj/structure/S = O
+						if(S.atom_flags & ATOM_FLAG_CLIMBABLE)
+							continue
+					// Not entirely sure what this next line does. But it looks important.
+				//	if(O && O.density && !(O.atom_flags & ATOM_FLAG_CHECKS_BORDER && !(turn(O.dir, 180) & dir)))
+				//		continue
+					to_chat(usr, "<span class='danger'>There's \a [O] in the way4.</span>")
+					return 0
+		return 1
+	else
+		to_chat(usr, "<span class='danger'>Wrong position</span>")
 		return 0
 
-	if (!user.Adjacent(src))
-		user.visible_message("<span class='warning'>You can't climb there, the way is blocked.</span>")
-		return 0
-// temporary deleting this. There cant be any obstacles over open space right?
-//	var/obj/occupied = turf_is_crowded()
-//	if(occupied)
-//		user.visible_message("<span class='warning'>There's \a [occupied] in the way.</span>")
-//		return 0
-	return 1
 
 
 
