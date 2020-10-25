@@ -1819,7 +1819,7 @@
 		reagents.add_reagent(/datum/reagent/nutriment/protein, 3)
 		bitesize = 2
 
-obj/item/weapon/reagent_containers/food/snacks/pelmeny
+/obj/item/weapon/reagent_containers/food/snacks/pelmeny
 	name = "Pelmeny"
 	desc = "Raw meat and dough."
 	icon_state = "pelmeny"
@@ -1831,7 +1831,7 @@ obj/item/weapon/reagent_containers/food/snacks/pelmeny
 		reagents.add_reagent(/datum/reagent/nutriment/protein, 1)
 		bitesize = 2
 
-obj/item/weapon/reagent_containers/food/snacks/boiledpelmeny
+/obj/item/weapon/reagent_containers/food/snacks/boiledpelmeny
 	name = "Boiled pelmeny"
 	desc = "Hello from Neorussia!"
 	icon_state = "boiledpelmeny"
@@ -3902,7 +3902,6 @@ obj/item/weapon/reagent_containers/food/snacks/risotto
 
 /obj/item/weapon/reagent_containers/food/snacks/slice/choccherrycake/filled
 	filled = TRUE
-
 
 
 
