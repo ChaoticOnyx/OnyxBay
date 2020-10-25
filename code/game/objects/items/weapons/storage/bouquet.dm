@@ -2,6 +2,7 @@
 	name = "bouquet"
 	desc = "A great gift for your girlfriend. Shotgun to a bouquet should be bought separately."
 	icon_state = "mixedbouquet"
+	item_state = "mixedbouquet"
 	throw_speed = 1
 	throw_range = 5
 	force = 5
@@ -22,3 +23,4 @@
 /obj/item/weapon/storage/bouquet/Initialize()
 	. = ..()
 	icon_state = pick("mixedbouquet", "sunbouquet", "poppybouquet")
+	item_state = icon_state
