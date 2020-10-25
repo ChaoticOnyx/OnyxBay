@@ -1537,6 +1537,7 @@
 				if(diff==FORWARD)
 					user.visible_message("[user] somehow pulls clown shoes on [holder].", "You pull clown shoes on [holder].")
 					holder.icon_state = "honker17"
+					qdel(used_atom)
 				else
 					user.visible_message("[user] cuts the external armor layer from [holder].", "You cut the external armor layer from [holder].")
 					holder.icon_state = "honker15"
@@ -1544,6 +1545,7 @@
 				if(diff==FORWARD)
 					user.visible_message("[user] installs bike horn to [holder].", "You install bike horn to [holder].")
 					holder.icon_state = "honker18"
+					qdel(used_atom)
 				else
 					user.visible_message("[user] pries the clown shoes off [holder].", "You pry the clown shoes off [holder].")
 					holder.icon_state = "honker16"
@@ -1551,6 +1553,7 @@
 			if(1)
 				if(diff==FORWARD)
 					user.visible_message("[user] installs a clown mask to [holder].", "You install a clown mask to [holder].")
+					qdel(used_atom)
 				else
 					user.visible_message("[user] unfastens the bike horn from [holder].", "You unfaster the bike horn from [holder].")
 					holder.icon_state = "honker17"
