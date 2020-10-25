@@ -1819,31 +1819,6 @@
 		reagents.add_reagent(/datum/reagent/nutriment/protein, 3)
 		bitesize = 2
 
-/obj/item/weapon/reagent_containers/food/snacks/pelmeny
-	name = "Pelmeny"
-	desc = "Raw meat and dough."
-	icon_state = "pelmeny"
-	filling_color = "#d9be29"
-	center_of_mass = "x=16;y=4"
-	nutriment_amt = 2
-	New()
-		..()
-		reagents.add_reagent(/datum/reagent/nutriment/protein, 1)
-		bitesize = 2
-
-/obj/item/weapon/reagent_containers/food/snacks/boiledpelmeny
-	name = "Boiled pelmeny"
-	desc = "Hello from Neorussia!"
-	icon_state = "boiledpelmeny"
-	trash = /obj/item/trash/snack_bowl
-	filling_color = "#d9be29"
-	center_of_mass = "x=16;y=4"
-	nutriment_amt = 5
-	New()
-		..()
-		reagents.add_reagent(/datum/reagent/nutriment/protein, 3)
-		bitesize = 3
-
 /obj/item/weapon/reagent_containers/food/snacks/toastedsandwich
 	name = "Toasted Sandwich"
 	desc = "Now if you only had a pepper bar."
@@ -1871,6 +1846,31 @@
 		..()
 		reagents.add_reagent(/datum/reagent/nutriment/protein, 4)
 		bitesize = 2
+
+/obj/item/weapon/reagent_containers/food/snacks/pelmeny
+	name = "Pelmeny"
+	desc = "Raw meat and dough."
+	icon_state = "pelmeny"
+	filling_color = "#d9be29"
+	center_of_mass = "x=16;y=4"
+	nutriment_amt = 2
+	New()
+		..()
+		reagents.add_reagent(/datum/reagent/nutriment/protein, 2)
+		bitesize = 2
+
+/obj/item/weapon/reagent_containers/food/snacks/boiledpelmeny
+	name = "Boiled pelmeny"
+	desc = "Hello from Neorussia!"
+	icon_state = "boiledpelmeny"
+	trash = /obj/item/trash/snack_bowl
+	filling_color = "#d9be29"
+	center_of_mass = "x=16;y=4"
+	nutriment_amt = 5
+	New()
+		..()
+		reagents.add_reagent(/datum/reagent/nutriment/protein, 5)
+		bitesize = 3
 
 /obj/item/weapon/reagent_containers/food/snacks/tomatosoup
 	name = "Tomato Soup"
