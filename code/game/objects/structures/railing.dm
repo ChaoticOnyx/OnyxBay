@@ -299,7 +299,7 @@
 	if (OT==UT)
 		if(T && istype(T))
 			if(T.density == 1)
-				to_chat(usr, "<span class='danger'>There's \a [T] in the way1.</span>")
+				to_chat(usr, "<span class='danger'>There's \a [T] in the way.</span>")
 				return 0
 			else
 				for(var/obj/O in T.contents)
@@ -315,13 +315,13 @@
 					// Not entirely sure what this next line does. But it looks important.
 					//if(O && O.density && !(O.atom_flags & ATOM_FLAG_CHECKS_BORDER && !(turn(O.dir, 180) & dir)))
 					//	continue
-					to_chat(usr, "<span class='danger'>There's [O] \a  in the way2.</span>")
+					to_chat(usr, "<span class='danger'>There's [O] \a  in the way.</span>")
 					return 0
 		return 1
 	else if (T==UT)
 		if(OT && istype(OT))
 			if(OT.density == 1)
-				to_chat(usr, "<span class='danger'>There's [OT] \a in the way3.</span>")
+				to_chat(usr, "<span class='danger'>There's [OT] \a in the way.</span>")
 				return 0
 			else
 				for(var/obj/O in OT.contents)
@@ -336,7 +336,7 @@
 					// Not entirely sure what this next line does. But it looks important.
 				//	if(O && O.density && !(O.atom_flags & ATOM_FLAG_CHECKS_BORDER && !(turn(O.dir, 180) & dir)))
 				//		continue
-					to_chat(usr, "<span class='danger'>There's \a [O] in the way4.</span>")
+					to_chat(usr, "<span class='danger'>There's \a [O] in the way.</span>")
 					return 0
 		return 1
 	else
