@@ -619,6 +619,13 @@ I said no!
 	)
 	result = /obj/item/weapon/reagent_containers/food/snacks/sandwich
 
+/datum/recipe/pelmeny
+	reagents = list(/datum/reagent/water = 5)
+	items = list(
+		/obj/item/weapon/reagent_containers/food/snacks/pelmeny,
+	)
+	result = /obj/item/weapon/reagent_containers/food/snacks/boiledpelmeny
+
 /datum/recipe/toastedsandwich
 	items = list(
 		/obj/item/weapon/reagent_containers/food/snacks/sandwich
