@@ -23,6 +23,9 @@
 	desc = "You fear to wear it for the negligence it brings."
 	icon_state = "capcap"
 
+/obj/item/clothing/head/caphat/cap/capcap_alt
+	icon_state = "capcap_alt"
+
 /obj/item/clothing/head/caphat/formal
 	name = "parade hat"
 	desc = "No one in a commanding position should be without a perfect, white hat of ultimate authority."
