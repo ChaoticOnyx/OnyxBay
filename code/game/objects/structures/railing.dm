@@ -5,7 +5,8 @@
 	icon_state = "railing0"
 	density = 1
 	anchored = 1
-	obj_flags = ATOM_FLAG_CHECKS_BORDER | ATOM_FLAG_CLIMBABLE
+	//obj_flags = ATOM_FLAG_CHECKS_BORDER | ATOM_FLAG_CLIMBABLE
+	atom_flags = ATOM_FLAG_CHECKS_BORDER | ATOM_FLAG_CLIMBABLE
 	layer = 5.2 // Just above doors
 	throwpass = 1
 	can_buckle = 1
@@ -257,41 +258,6 @@
 		else
 	return
 
-//Don't Use that code, it has issue, if you trying to climb from railing position it
-//will not work
-
-// OLD code from the very first port to Bay below:
-// can_climb() allows climbing from an adjacent turf onto the src turf.
-// However, railings allow the inverse as well.
-///obj/structure/railing/can_climb(mob/living/usr, post_climb_check=0)
-//	if(!..())
-//		return 0
-//
-//	if(get_turf(usr) == get_turf(src))
-//		var/occupied
-//		var/turf/T = get_step(src, src.dir)
-//		if(T && istype(T))
-//			if(T.density == 1)
-//				occupied = 1
-//			else
-//				for(var/obj/O in T.contents)
-//					if(O == usr) // trying to climb onto yourself? Sure, go ahead bud.
-//						continue
-//					if(istype(O,/obj/structure))
-//						var/obj/structure/S = O
-//						if(S.atom_flags & ATOM_FLAG_CLIMBABLE)
-//							continue
-//					// Not entirely sure what this next line does. But it looks important.
-//					if(O && O.density && !(O.atom_flags & ATOM_FLAG_CHECKS_BORDER && !(turn(O.dir, 180) & dir)))
-//						continue
-//					occupied = 1
-//
-//		if(occupied)
-//			to_chat(usr, "<span class='danger'>There's \a [occupied] in the way.</span>")
-//			return 0
-//	return 1
-
-
 /obj/structure/railing/can_climb(mob/living/user, post_climb_check=0)
 
 	var/turf/OT = get_step(src, src.dir)//opposite turf of railing
@@ -315,7 +281,8 @@
 						var/obj/structure/S = O
 						if(S.atom_flags & ATOM_FLAG_CLIMBABLE)
 							continue
-					if(O.atom_flags & ATOM_FLAG_CHECKS_BORDER && (turn(O.dir, 180) & src.dir)) //finally undestood what it means, checks if next item is directed
+					if(O.atom_flags & ATOM_FLAG_CHECKS_BORDER && !(turn(O.dir, 180) & src.dir))//checks if next item is directed
+					//allows if not directed towards climber
 						continue
 					to_chat(usr, SPAN_DANGER("There is  [O] \a in the way."))
 					return 0
@@ -336,7 +303,8 @@
 						var/obj/structure/S = O
 						if(S.atom_flags & ATOM_FLAG_CLIMBABLE)
 							continue
-					if(O.atom_flags & ATOM_FLAG_CHECKS_BORDER && !(turn(O.dir, 180) & src.dir)) //finally undestood what it means, checks if next item is directed
+					if(O.atom_flags & ATOM_FLAG_CHECKS_BORDER && !(turn(O.dir, 180) & src.dir)) //checks if next item is directed
+					//allows if not directed towards climber
 						continue
 					to_chat(usr, SPAN_DANGER("There is [O] \a in the way."))
 					return 0
@@ -344,9 +312,6 @@
 	else
 		to_chat(usr, SPAN_DANGER("Wrong position to climb"))
 		return 0
-
-
-
 
 
 // Snowflake do_climb code that handles special railing cases.
@@ -361,7 +326,7 @@
 		climbers -= user
 		return
 
-	if (!can_climb(user, post_climb_check=1))
+	if (!can_climb(user))
 		climbers -= user
 		return
 
