@@ -97,18 +97,41 @@
 	body_parts_covered = UPPER_TORSO|LOWER_TORSO|ARMS
 
 //Detective
-/obj/item/clothing/suit/storage/det_trench
+/obj/item/clothing/suit/storage/toggle/det_trench
 	name = "detective's trenchcoat"
 	desc = "A reinforced canvas trenchcoat, designed and created by TX Fabrication Corp. The coat is externally impact resistant - perfect for your next act of autodefenestration!"
-	icon_state = "detective"
+	icon_state = "detective_open"
+	item_state = "detective_open"
+	icon_open = "detective_open"
+	icon_closed = "detective"
 	valid_accessory_slots = list(ACCESSORY_SLOT_INSIGNIA)
 	blood_overlay_type = "coat"
 	body_parts_covered = UPPER_TORSO|LOWER_TORSO|ARMS
 	allowed = list(/obj/item/weapon/tank/emergency,/obj/item/device/flashlight,/obj/item/weapon/gun/energy,/obj/item/weapon/gun/projectile,/obj/item/ammo_magazine,/obj/item/ammo_casing,/obj/item/weapon/melee/baton,/obj/item/weapon/handcuffs,/obj/item/weapon/storage/fancy/cigarettes,/obj/item/weapon/flame/lighter,/obj/item/device/taperecorder)
 	armor = list(melee = 35, bullet = 35, laser = 35, energy = 20, bomb = 25, bio = 0, rad = 0)
 
-/obj/item/clothing/suit/storage/det_trench/grey
-	icon_state = "detective2"
+/obj/item/clothing/suit/storage/toggle/det_trench/toggle()
+	if(!usr.canmove || usr.stat || usr.restrained())
+		return 0
+
+	if(icon_state == icon_open) //Will check whether icon state is currently set to the "open" or "closed" state and switch it around with a message to the user
+		icon_state = icon_closed
+		item_state = icon_closed
+		to_chat(usr, "You button up the [src].")
+	else if(icon_state == icon_closed)
+		icon_state = icon_open
+		item_state = icon_open
+		to_chat(usr, "You unbutton the [src].")
+	else
+		to_chat(usr, "You attempt to button-up the velcro on your [src], before promptly realising how silly you are.")
+		return
+	update_clothing_icon()
+
+/obj/item/clothing/suit/storage/toggle/det_trench/grey
+	icon_state = "detective2_open"
+	item_state = "detective2_open"
+	icon_open = "detective2_open"
+	icon_closed = "detective2"
 
 /obj/item/clothing/suit/storage/det_trench/ft/
 	desc = "A rugged canvas trenchcoat, designed and created by TX Fabrication Corp. This one wouldn't block much of anything."

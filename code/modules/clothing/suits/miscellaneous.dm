@@ -214,11 +214,30 @@
 
 //coats
 
-/obj/item/clothing/suit/leathercoat
+/obj/item/clothing/suit/storage/toggle/leathercoat
 	name = "leather coat"
 	desc = "A long, thick black leather coat."
-	icon_state = "leathercoat"
-	item_state = "leathercoat"
+	icon_state = "leathercoat_open"
+	item_state = "leathercoat_open"
+	icon_open = "leathercoat_open"
+	icon_closed = "leathercoat"
+
+/obj/item/clothing/suit/storage/toggle/leathercoat/toggle()
+	if(!usr.canmove || usr.stat || usr.restrained())
+		return 0
+
+	if(icon_state == icon_open) //Will check whether icon state is currently set to the "open" or "closed" state and switch it around with a message to the user
+		icon_state = icon_closed
+		item_state = icon_closed
+		to_chat(usr, "You button up the [src].")
+	else if(icon_state == icon_closed)
+		icon_state = icon_open
+		item_state = icon_open
+		to_chat(usr, "You unbutton the [src].")
+	else
+		to_chat(usr, "You attempt to button-up the velcro on your [src], before promptly realising how silly you are.")
+		return
+	update_clothing_icon()
 
 /obj/item/clothing/suit/browncoat
 	name = "brown leather coat"
