@@ -1847,9 +1847,9 @@
 		reagents.add_reagent(/datum/reagent/nutriment/protein, 4)
 		bitesize = 2
 
-/obj/item/weapon/reagent_containers/food/snacks/pelmeny
-	name = "Pelmeny"
-	desc = "Raw meat and dough."
+/obj/item/weapon/reagent_containers/food/snacks/pelmeni
+	name = "Pelmeni"
+	desc = "Meat wrapped in thin uneven dough."
 	icon_state = "pelmeny"
 	filling_color = "#d9be29"
 	center_of_mass = "x=16;y=4"
@@ -1859,9 +1859,9 @@
 		reagents.add_reagent(/datum/reagent/nutriment/protein, 2)
 		bitesize = 2
 
-/obj/item/weapon/reagent_containers/food/snacks/boiledpelmeny
-	name = "Boiled pelmeny"
-	desc = "Hello from Neorussia!"
+/obj/item/weapon/reagent_containers/food/snacks/boiledpelmeni
+	name = "Boiled pelmeni"
+	desc = "Hello from Siberia!"
 	icon_state = "boiledpelmeny"
 	trash = /obj/item/trash/snack_bowl
 	filling_color = "#d9be29"
@@ -3163,8 +3163,8 @@
 		to_chat(user, "You flatten the dough.")
 		qdel(src)
 	else if (istype(W,/obj/item/weapon/reagent_containers/food/snacks/meatball))
-		new /obj/item/weapon/reagent_containers/food/snacks/pelmeny(src)
-		to_chat(user, "You make a pelmeny.")
+		new /obj/item/weapon/reagent_containers/food/snacks/pelmeni(src)
+		to_chat(user, "You make some pelmeni.")
 		qdel(src)
 		qdel(W)
 
