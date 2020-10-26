@@ -575,10 +575,10 @@ var/list/global/slot_flags_enumeration = list(
 			poise_dmg *= 2
 		H.poise -= poise_dmg
 		if(H.poise < poise_dmg)
-			H.useblock_off()
 			shot_out(H, "knocked")
 
-/obj/item/proc/shot_out(mob/living/carbon/human/H, obj/item/projectile/P, msg = "shot", dist = 3)
+/obj/item/proc/shot_out(mob/living/carbon/human/H, obj/item/projectile/P, msg = "shot", dist = 3) // item gets shot out of one's hands w/ a projectile
+	H.useblock_off()
 	H.poise -= 10
 	if(!canremove)
 		visible_message(SPAN("warning", "[H] blocks [P] with \the [src]!"))
@@ -586,7 +586,19 @@ var/list/global/slot_flags_enumeration = list(
 	visible_message(SPAN("danger", "\The [src] gets [msg] out of [H]'s hands by \a [P]!"))
 	H.drop_from_inventory(src)
 	if(src && istype(loc,/turf))
-		throw_at(get_edge_target_turf(src,pick(GLOB.alldirs)),rand(1,dist),30)
+		throw_at(get_edge_target_turf(src,pick(GLOB.alldirs)),rand(1,dist),5)
+
+/obj/item/proc/knocked_out(mob/living/carbon/human/H, strong_knock = FALSE, dist = 2) // item gets knocked out of one's hands
+	H.useblock_off()
+	if(canremove)
+		H.drop_from_inventory(src)
+		if(src && istype(loc,/turf))
+			throw_at(get_edge_target_turf(src,pick(GLOB.alldirs)),rand(1,dist),1)
+		if(!strong_knock)
+			H.visible_message(SPAN("warning", "[H]'s [src] flies off!"))
+			return
+	H.visible_message(SPAN("warning", "[H] falls down, unable to keep balance!"))
+	H.apply_effect(3, WEAKEN, 0)
 
 /obj/item/proc/get_loc_turf()
 	var/atom/L = loc

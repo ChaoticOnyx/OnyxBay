@@ -239,15 +239,15 @@
 						attack_message = "[H] attempted to strike [src], but missed!"
 					else
 						attack_message = "[H] attempted to strike [src], but \he rolled out of the way!"
-						src.set_dir(pick(GLOB.cardinal))
+						set_dir(pick(GLOB.cardinal))
 					miss_type = 1
 
-			if(!miss_type && src.parrying)
-				if(H.get_parried_w(src,null))
+			if(!miss_type && parrying)
+				if(handle_parry(H, null))
 					//attack_message = "[H] went for [src]'s [affecting.name] but was parried!"
 					miss_type = 2
-			if(!miss_type && src.blocking)
-				if(H.get_blocked_h(src))
+			if(!miss_type && blocking)
+				if(handle_block_normal(H))
 					//attack_message = "[H] went for [src]'s [affecting.name] but was blocked!"
 					miss_type = 2
 
@@ -295,17 +295,20 @@
 /mob/living/carbon/human/proc/afterattack(atom/target as mob|obj|turf|area, mob/living/user as mob|obj, inrange, params)
 	return
 
-/mob/living/carbon/human/attack_generic(mob/user, damage, attack_message, environment_smash, damtype = BRUTE, armorcheck = "melee")
-
+/mob/living/carbon/human/attack_generic(mob/user, damage, attack_message, environment_smash, damtype = BRUTE, armorcheck = "melee", blockable = TRUE)
 	if(!damage || !istype(user))
 		return
-	admin_attack_log(user, src, "Attacked their victim", "Was attacked", "has [attack_message]")
-	src.visible_message("<span class='danger'>[user] has [attack_message] [src]!</span>")
 	user.do_attack_animation(src)
+
+	if(blocking && blockable)
+		if(handle_block_normal(user, damage))
+			return 0
 
 	var/dam_zone = pick(organs_by_name)
 	var/obj/item/organ/external/affecting = get_organ(ran_zone(dam_zone))
 	var/armor_block = run_armor_check(affecting, armorcheck)
+	visible_message(SPAN("danger", "[user] has [attack_message] [src]!"))
+	admin_attack_log(user, src, "Attacked their victim", "Was attacked", "has [attack_message]")
 	apply_damage(damage, damtype, affecting, armor_block)
 	updatehealth()
 	return 1
@@ -314,21 +317,24 @@
 /mob/living/carbon/human/proc/break_all_grabs(mob/living/carbon/user,silent = 0)
 	var/success = 0
 	if(pulling)
-		if(!silent) visible_message("<span class='danger'>[user] has broken [src]'s grip on [pulling]!</span>")
+		if(!silent)
+			visible_message("<span class='danger'>[user] has broken [src]'s grip on [pulling]!</span>")
 		success = 1
 		stop_pulling()
 
 	if(istype(l_hand, /obj/item/grab))
 		var/obj/item/grab/lgrab = l_hand
 		if(lgrab.affecting)
-			if(!silent) visible_message("<span class='danger'>[user] has broken [src]'s grip on [lgrab.affecting]!</span>")
+			if(!silent)
+				visible_message("<span class='danger'>[user] has broken [src]'s grip on [lgrab.affecting]!</span>")
 			success = 1
 		spawn(1)
 			qdel(lgrab)
 	if(istype(r_hand, /obj/item/grab))
 		var/obj/item/grab/rgrab = r_hand
 		if(rgrab.affecting)
-			if(!silent) visible_message("<span class='danger'>[user] has broken [src]'s grip on [rgrab.affecting]!</span>")
+			if(!silent)
+				visible_message("<span class='danger'>[user] has broken [src]'s grip on [rgrab.affecting]!</span>")
 			success = 1
 		spawn(1)
 			qdel(rgrab)
