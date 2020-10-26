@@ -293,18 +293,21 @@
 
 
 /obj/structure/railing/can_climb(mob/living/user, post_climb_check=0)
+
 	var/turf/OT = get_step(src, src.dir)//opposite turf of railing
 	var/turf/T = get_turf(src)//current turf of railing
-	var/turf/UT = get_turf(user)
+	var/turf/UT = get_turf(usr)
 	if (OT==UT)
 		if(T && istype(T))
 			if(T.density == 1)
-				to_chat(usr, "<span class='danger'>There's \a [T] in the way.</span>")
+				to_chat(user, SPAN_DANGER("There is [T] \a in the way."))
 				return 0
 			else
 				for(var/obj/O in T.contents)
 
-					if(O == usr) // trying to climb onto yourself? Sure, go ahead bud.
+					if(O == src)
+						continue
+					if(O == usr)
 						continue
 					if(O.density == 0)
 						continue
@@ -312,20 +315,20 @@
 						var/obj/structure/S = O
 						if(S.atom_flags & ATOM_FLAG_CLIMBABLE)
 							continue
-					// Not entirely sure what this next line does. But it looks important.
-					//if(O && O.density && !(O.atom_flags & ATOM_FLAG_CHECKS_BORDER && !(turn(O.dir, 180) & dir)))
-					//	continue
-					to_chat(usr, "<span class='danger'>There's [O] \a  in the way.</span>")
+					if(O.atom_flags & ATOM_FLAG_CHECKS_BORDER && (turn(O.dir, 180) & src.dir)) //finally undestood what it means, checks if next item is directed
+						continue
+					to_chat(usr, SPAN_DANGER("There is  [O] \a in the way."))
 					return 0
 		return 1
 	else if (T==UT)
 		if(OT && istype(OT))
 			if(OT.density == 1)
-				to_chat(usr, "<span class='danger'>There's [OT] \a in the way.</span>")
+				to_chat(usr, SPAN_DANGER("There is  [OT] \a in the way."))
 				return 0
 			else
 				for(var/obj/O in OT.contents)
-					if(O == usr) // trying to climb onto yourself? Sure, go ahead bud.
+
+					if(O == usr)
 						continue
 					if(O.density == 0)
 						continue
@@ -333,14 +336,13 @@
 						var/obj/structure/S = O
 						if(S.atom_flags & ATOM_FLAG_CLIMBABLE)
 							continue
-					// Not entirely sure what this next line does. But it looks important.
-				//	if(O && O.density && !(O.atom_flags & ATOM_FLAG_CHECKS_BORDER && !(turn(O.dir, 180) & dir)))
-				//		continue
-					to_chat(usr, "<span class='danger'>There's \a [O] in the way.</span>")
+					if(O.atom_flags & ATOM_FLAG_CHECKS_BORDER && !(turn(O.dir, 180) & src.dir)) //finally undestood what it means, checks if next item is directed
+						continue
+					to_chat(usr, SPAN_DANGER("There is [O] \a in the way."))
 					return 0
 		return 1
 	else
-		to_chat(usr, "<span class='danger'>Wrong position</span>")
+		to_chat(usr, SPAN_DANGER("Wrong position to climb"))
 		return 0
 
 
