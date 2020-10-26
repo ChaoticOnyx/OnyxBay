@@ -217,10 +217,16 @@
 /obj/item/device/uplink_service/fake_crew_announcement
 	service_label = "Crew Arrival Announcement and Records"
 	var/does_announce_visit = 1
+	var/obj/item/weapon/card/id/id_card = null
+
+/obj/item/device/uplink_service/fake_crew_announcement/attackby(obj/item/I, mob/user = usr)
+	id_card = I.GetIdCard()
+	if(istype(id_card))
+		to_chat(usr, SPAN("notice", "Card saved!"))
 
 /obj/item/device/uplink_service/fake_crew_announcement/verb/verb_toggle_mode()
 	set category = "Object"
-	set name = "Toggle Mode"
+	set name = "Toggle Announce Mode"
 	set src in usr
 
 	does_announce_visit = !does_announce_visit
@@ -230,51 +236,38 @@
 		to_chat(usr, SPAN("notice", "Device will not announce your visit!")) 
 
 /obj/item/device/uplink_service/fake_crew_announcement/enable(mob/user = usr)
-	var/obj/item/weapon/card/id/I = user.GetIdCard()
-	var/datum/computer_file/crew_record/random_record
-
-	if(GLOB.all_crew_records.len)
-		random_record = pick(GLOB.all_crew_records)
+	if(!istype(id_card))
+		to_chat(usr, SPAN("notice", "You have to swipe a card!"))
+		return
 
 	var/datum/computer_file/crew_record/new_record = CreateModularRecord(user)
-	if(I)
-		new_record.set_name(I.registered_name)
-		new_record.set_sex(I.sex)
-		new_record.set_age(I.age)
-		new_record.set_job(I.assignment)
-		new_record.set_fingerprint(I.fingerprint_hash)
-		new_record.set_bloodtype(I.blood_type)
-		new_record.set_dna(I.dna_hash)
-		if(I.military_branch)
-			new_record.set_branch(I.military_branch.name)
-			if(I.military_rank)
-				new_record.set_rank(I.military_rank.name)
-	else
-		var/mob/living/carbon/human/H = user
-		var/age = istype(H) ? H.age : 30
-		var/assignment = GetAssignment(user)
-		new_record.set_name(user.real_name)
-		new_record.set_sex(capitalize(user.gender))
-		new_record.set_age(age)
-		new_record.set_job(assignment)
+
+	new_record.set_name()
+	new_record.set_sex(id_card.sex)
+	new_record.set_age(id_card.age)
+	new_record.set_job(id_card.assignment)
+	new_record.set_fingerprint(id_card.fingerprint_hash)
+	new_record.set_bloodtype(id_card.blood_type)
+	new_record.set_dna(id_card.dna_hash)
 
 	new_record.set_species(user.get_species())
 
-	if(random_record)
-		var/list/to_copy = list(REC_FIELD(citizenship),REC_FIELD(faction),REC_FIELD(religion),REC_FIELD(homeSystem),REC_FIELD(fingerprint),REC_FIELD(dna),REC_FIELD(bloodtype))
-		for(var/field in to_copy)
-			new_record.set_field(field, random_record.get_field(field))
-
-	if (does_announce_visit)
-		for (var/mob/M in GLOB.player_list)
+	if(does_announce_visit)
+		for(var/mob/M in GLOB.player_list)
 			M.playsound_local(M.loc, 'sound/signals/arrival1.ogg', 70)
 
 		var/datum/spawnpoint/spawnpoint = job_master.get_spawnpoint_for(user.client, "Captain")
 
-		AnnounceArrivalSimple(new_record.get_name(), new_record.get_job(), spawnpoint.msg, "Common")
+		if(id_card.assignment == "Captain")
+			var/sound/announce_sound = (GAME_STATE <= RUNLEVEL_SETUP)? null : sound('sound/misc/boatswain.ogg', volume=40)
+			captain_announcement.Announce("All hands, Captain [id_card.registered_name] on deck!", new_sound=announce_sound)
 
-		var/datum/job/job = job_master.GetJob(new_record.get_job())
-		if("Common" != get_announcement_frequency(job))
-			AnnounceArrivalSimple(new_record.get_name(), new_record.get_job(), spawnpoint.msg, get_announcement_frequency(job))
+		AnnounceArrivalSimple(id_card.registered_name, id_card.assignment, spawnpoint.msg, "Common")
+
+		var/datum/job/job = job_master.GetJob(id_card.assignment)
+		if(istype(job))
+			var/announce_freq = get_announcement_frequency(job)
+			if("Common" != announce_freq)
+				AnnounceArrivalSimple(id_card.registered_name, id_card.assignment, spawnpoint.msg, announce_freq)
 
 	. = ..()
