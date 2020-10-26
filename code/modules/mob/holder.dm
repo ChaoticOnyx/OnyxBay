@@ -121,6 +121,7 @@ var/list/holder_mob_icon_cache = list()
 	origin_tech = list(TECH_BIO = 4)
 
 /obj/item/weapon/holder/lizard
+	name = "lizard"
 	w_class = ITEM_SIZE_TINY
 	origin_tech = list(TECH_BIO = 2)
 
