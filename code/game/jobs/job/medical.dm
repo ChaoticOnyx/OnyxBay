@@ -34,8 +34,8 @@
 	supervisors = "the chief medical officer"
 	selection_color = "#013d3b"
 	economic_modifier = 7
-	access = list(access_medical, access_medical_equip, access_morgue, access_surgery, access_chemistry)
-	minimal_access = list(access_medical, access_medical_equip, access_morgue, access_surgery)
+	access = list(access_medical, access_medical_equip, access_morgue, access_surgery, access_chemistry, access_virology)
+	minimal_access = list(access_medical, access_medical_equip, access_morgue, access_surgery, access_virology)
 	alt_titles = list(
 		"Surgeon" = /decl/hierarchy/outfit/job/medical/doctor/surgeon,
 		"Emergency Physician" = /decl/hierarchy/outfit/job/medical/doctor/emergency_physician,
@@ -49,8 +49,8 @@
 	department_flag = MED
 
 	minimal_player_age = 7
-	total_positions = 2
-	spawn_positions = 2
+	total_positions = 1
+	spawn_positions = 1
 	supervisors = "the chief medical officer"
 	selection_color = "#013d3b"
 	economic_modifier = 5
