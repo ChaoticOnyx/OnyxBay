@@ -326,7 +326,7 @@
 		if (findtextEx(printedmessage,"*",1,2)) //replace action sounds
 			printedmessage = "\[[time2text(mytape.timestamp[i]*10,"mm:ss")]\] (Unrecognized sound)"
 		t1 += "[printedmessage]<BR>"
-	new /obj/item/weapon/paper(get_turf(src), t1, "Transcript", notpencode = TRUE)
+	new /obj/item/weapon/paper(get_turf(src), t1, "Transcript", rawhtml = TRUE)
 	canprint = 0
 	sleep(300)
 	canprint = 1

@@ -42,7 +42,7 @@
 		"Why doesn't Santa have any children?\n\n<i>Because he only comes down the chimney.</i>"),
 			
 		"[pick("awful","terrible","unfunny")] joke",
-		notpencode = TRUE)
+		rawhtml = TRUE)
 
 		new /obj/item/clothing/head/festive(target.loc)
 		user.update_icons()

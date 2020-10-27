@@ -268,7 +268,7 @@
 				to_chat(usr, "\icon[src]<span class='warning'>The body scanner cannot scan that lifeform.</span>")
 				return TRUE
 
-			new /obj/item/weapon/paper/(loc, "<tt>[connected.occupant.get_medical_data()]</tt>", "Body scan report - [occupant]", notpencode = TRUE)
+			new /obj/item/weapon/paper/(loc, "<tt>[connected.occupant.get_medical_data()]</tt>", "Body scan report - [occupant]", rawhtml = TRUE)
 			return TRUE
 		if ("eject")
 			if (connected)

@@ -47,11 +47,11 @@
 	var/static/regex/field_regex = regex(@#<!--paper_field_(\w+)-->#, "g")
 	var/static/regex/field_link_regex = regex("<font face=\"[deffont]\"><A href='\\?src=\[^'\]+?;write=\[^'\]+'>write</A></font>", "g")
 
-/obj/item/weapon/paper/New(loc, text, title, notpencode = FALSE, noinit = FALSE)
+/obj/item/weapon/paper/New(loc, text, title, rawhtml = FALSE, noinit = FALSE)
 	..(loc)
 	if (noinit)
 		return
-	set_content(text ? text : info, title, notpencode)
+	set_content(text ? text : info, title, rawhtml)
 
 /obj/item/weapon/paper/proc/copy(loc = src.loc, generate_stamps = TRUE)
 	var/obj/item/weapon/paper/P = new src.type(loc, noinit = TRUE)
@@ -114,11 +114,11 @@
 		overlays += img
 	update_icon()
 
-/obj/item/weapon/paper/proc/set_content(text, title, notpencode = FALSE)
+/obj/item/weapon/paper/proc/set_content(text, title, rawhtml = FALSE)
 	if(title)
 		SetName(title)
 	info = text
-	if(!notpencode)
+	if(!rawhtml)
 		info = html_encode(text)
 	info = parsepencode(info, is_init = TRUE)
 	update_icon()

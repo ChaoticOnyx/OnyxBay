@@ -458,7 +458,7 @@ proc/get_wound_severity(damage_ratio, vital = 0)
 	set name = "Print Data"
 	set category = "Object"
 	if (last_target && dat)
-		new /obj/item/weapon/paper/(get_turf(src), "<tt>[dat]</tt>", "Body scan report - [last_target]", notpencode = TRUE)
+		new /obj/item/weapon/paper/(get_turf(src), "<tt>[dat]</tt>", "Body scan report - [last_target]", rawhtml = TRUE)
 		src.visible_message("<span class='notice'>[src] prints out \the scan result.</span>")
 
 
