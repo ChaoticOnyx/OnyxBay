@@ -5,7 +5,6 @@
 	icon_state = "railing0"
 	density = 1
 	anchored = 1
-	//obj_flags = ATOM_FLAG_CHECKS_BORDER | ATOM_FLAG_CLIMBABLE
 	atom_flags = ATOM_FLAG_CHECKS_BORDER | ATOM_FLAG_CLIMBABLE
 	layer = 5.2 // Just above doors
 	throwpass = 1
@@ -14,7 +13,6 @@
 	var/health = 40
 	var/maxhealth = 40
 	var/check = 0
-
 /obj/structure/railing/constructed // a cheap trick to spawn unanchored railings for construction
 	anchored = 0
 
@@ -257,60 +255,38 @@
 			return
 		else
 	return
-
-/obj/structure/railing/can_climb(mob/living/user, post_climb_check=0)
-
+/obj/structure/railing/proc/check_tile(mob/living/user, turf/T)
+	if(T.density == 1)
+		to_chat(user, SPAN_DANGER("There is [T] \a in the way."))
+		return 0
+	else
+		for(var/obj/O in T.contents)
+			if(O == src)
+				continue
+			if(O == usr)
+				continue
+			if(O.density == 0)
+				continue
+			if(istype(O,/obj/structure))
+				var/obj/structure/S = O
+				if(S.atom_flags & ATOM_FLAG_CLIMBABLE)
+					continue
+			if(O.atom_flags & ATOM_FLAG_CHECKS_BORDER && !(turn(O.dir, 180) & src.dir))//checks if next item is directed
+				//allows if not directed towards climber
+				continue
+			to_chat(user, SPAN_DANGER("There is  [O] \a in the way."))
+			return 0
+	return 1
+/obj/structure/railing/can_climb(mob/living/user)
 	var/turf/OT = get_step(src, src.dir)//opposite turf of railing
 	var/turf/T = get_turf(src)//current turf of railing
 	var/turf/UT = get_turf(usr)
 	if (OT==UT)
-		if(T && istype(T))
-			if(T.density == 1)
-				to_chat(user, SPAN_DANGER("There is [T] \a in the way."))
-				return 0
-			else
-				for(var/obj/O in T.contents)
-
-					if(O == src)
-						continue
-					if(O == usr)
-						continue
-					if(O.density == 0)
-						continue
-					if(istype(O,/obj/structure))
-						var/obj/structure/S = O
-						if(S.atom_flags & ATOM_FLAG_CLIMBABLE)
-							continue
-					if(O.atom_flags & ATOM_FLAG_CHECKS_BORDER && !(turn(O.dir, 180) & src.dir))//checks if next item is directed
-					//allows if not directed towards climber
-						continue
-					to_chat(usr, SPAN_DANGER("There is  [O] \a in the way."))
-					return 0
-		return 1
+		return check_tile(user,T)
 	else if (T==UT)
-		if(OT && istype(OT))
-			if(OT.density == 1)
-				to_chat(usr, SPAN_DANGER("There is  [OT] \a in the way."))
-				return 0
-			else
-				for(var/obj/O in OT.contents)
-
-					if(O == usr)
-						continue
-					if(O.density == 0)
-						continue
-					if(istype(O,/obj/structure))
-						var/obj/structure/S = O
-						if(S.atom_flags & ATOM_FLAG_CLIMBABLE)
-							continue
-					if(O.atom_flags & ATOM_FLAG_CHECKS_BORDER && !(turn(O.dir, 180) & src.dir)) //checks if next item is directed
-					//allows if not directed towards climber
-						continue
-					to_chat(usr, SPAN_DANGER("There is [O] \a in the way."))
-					return 0
-		return 1
+		return check_tile(user,OT)
 	else
-		to_chat(usr, SPAN_DANGER("Wrong position to climb"))
+		to_chat(user, SPAN_DANGER("Too far to climb"))
 		return 0
 
 
