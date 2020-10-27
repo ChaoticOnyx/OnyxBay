@@ -15,7 +15,7 @@
 	var/has_block = 1	  	// Set to draw block button.
 	var/has_blockswitch = 1	// Set to draw blocking hand button.
 	var/has_internals = 1 	// Set to draw the internals toggle button.
-	var/has_rest = 1 // Set to rest
+	var/has_rest = 1 // Set to draw the rest button.
 	var/list/equip_slots = list() // Checked by mob_can_equip().
 
 	// Contains information on the position and tag for all inventory slots
