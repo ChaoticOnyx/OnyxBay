@@ -404,7 +404,7 @@
 		return 0
 	if(slip("the [src.name]", stun_duration))
 		if(slip_dist && !slipped_on.anchored)
-			O.throw_at(get_edge_target_turf(O, turn(dir, 180)), slip_dist, 1)
+			slipped_on.throw_at(get_edge_target_turf(slipped_on, turn(dir, 180)), slip_dist, 1)
 			for(var/i = 1 to slip_dist)
 				step(src, dir)
 			sleep(1)
