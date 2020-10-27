@@ -88,6 +88,8 @@
 	can_pull_size = ITEM_SIZE_SMALL
 	can_pull_mobs = MOB_PULL_SAME
 
+	holder_type = /obj/item/weapon/holder/parrot
+
 
 /mob/living/simple_animal/parrot/New()
 	..()

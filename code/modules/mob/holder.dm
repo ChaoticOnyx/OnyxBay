@@ -124,6 +124,9 @@ var/list/holder_mob_icon_cache = list()
 	w_class = ITEM_SIZE_TINY
 	origin_tech = list(TECH_BIO = 2)
 
+/obj/item/weapon/holder/parrot
+	origin_tech = list(TECH_BIO = 4)
+
 /obj/item/weapon/holder/attackby(obj/item/weapon/W as obj, mob/user as mob)
 	for(var/mob/M in src.contents)
 		M.attackby(W,user)
