@@ -15,6 +15,7 @@
 	var/icon_broken = "spark"
 	var/icon_off
 
+	var/is_wooden = 0
 	var/welded = 0
 	var/large = 1
 	var/wall_mounted = 0 //never solid (You can always pass over it)
@@ -350,7 +351,7 @@
 			return 0
 		if(istype(W,/obj/item/tk_grab))
 			return 0
-		if(isWelder(W))
+		if(isWelder(W) && !is_wooden)
 			var/obj/item/weapon/weldingtool/WT = W
 			if(WT.isOn())
 				slice_into_parts(WT, user)
