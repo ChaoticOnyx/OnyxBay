@@ -65,7 +65,6 @@
 
 
 /obj/item/weapon/paper/admin/proc/adminbrowse()
-	generateinfolinks()
 	generateHeader()
 	generateFooter()
 	updateDisplay()
