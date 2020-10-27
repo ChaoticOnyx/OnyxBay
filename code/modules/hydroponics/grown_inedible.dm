@@ -63,5 +63,5 @@
 /obj/item/weapon/bananapeel/Crossed(mob/living/M)
 	if(!istype(M))
 		return
-	if(!M.m_intent == "walk")
-		M.slip("the [src.name]", 3)
+	if(M.m_intent != "walk")
+		M.slip_on_obj(src, 3, 2)

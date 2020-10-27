@@ -10,12 +10,19 @@
 	throw_speed = 4
 	throw_range = 20
 	var/key_data
-	var/smudge_chance = 50
 
 /obj/item/weapon/soap/New()
 	..()
 	create_reagents(30)
 	wet()
+
+/obj/item/weapon/soap/examine(mob/user)
+	. = ..()
+	if(get_dist(src, user) > 1)
+		return
+	if(reagents.total_volume <= 0)
+		. += "\nIt's dry!"
+	return
 
 /obj/item/weapon/soap/proc/wet()
 	reagents.add_reagent(/datum/reagent/space_cleaner, 15)
@@ -23,16 +30,22 @@
 /obj/item/weapon/soap/Crossed(AM as mob|obj)
 	if(istype(AM, /mob/living))
 		var/mob/living/M = AM
-		if(M.slip("the [src.name]", 4))
-			if(prob(smudge_chance))
-				new /obj/effect/decal/cleanable/soap_smudge(loc)
-				visible_message(SPAN("danger", "[M] smudges \the [src]!"))
-				qdel(src)
+		if(reagents.total_volume <= 0)
+			return
+		if(M.slip_on_obj(src, 3, 2))
+			reagents.remove_any(3)
 
 /obj/item/weapon/soap/afterattack(atom/target, mob/user as mob, proximity)
-	if(!proximity) return
+	if(!proximity)
+		return
 	//I couldn't feasibly  fix the overlay bugs caused by cleaning items we are wearing.
 	//So this is a workaround. This also makes more sense from an IC standpoint. ~Carn
+	if(istype(target,/obj/structure/sink))
+		to_chat(user, SPAN("notice", "You wet \the [src] in the sink."))
+		wet()
+	if(reagents.total_volume <= 0)
+		to_chat(user, SPAN("notice", "\The [src] is dry!"))
+		return
 	if(user.client && (target in user.client.screen))
 		to_chat(user, SPAN("notice", "You need to take that [target.name] off before cleaning it."))
 	else if(istype(target,/obj/effect/decal/cleanable/blood))
@@ -45,9 +58,6 @@
 		to_chat(user, SPAN("notice", "You scrub \the [target.name] clean."))
 		var/turf/T = target
 		T.clean(src, user)
-	else if(istype(target,/obj/structure/sink))
-		to_chat(user, SPAN("notice", "You wet \the [src] in the sink."))
-		wet()
 	else
 		to_chat(user, SPAN("notice", "You clean \the [target.name]."))
 		target.clean_blood() //Clean bloodied atoms. Blood decals themselves need to be handled above.
@@ -82,7 +92,6 @@
 
 /obj/item/weapon/soap/deluxe
 	icon_state = "soapdeluxe"
-	smudge_chance = 15
 
 /obj/item/weapon/soap/deluxe/New()
 	desc = "A deluxe Waffle Co. brand bar of soap. Smells of [pick("lavender", "vanilla", "strawberry", "chocolate" ,"space")]."
@@ -91,14 +100,11 @@
 /obj/item/weapon/soap/syndie
 	desc = "An untrustworthy bar of soap. Smells of fear."
 	icon_state = "soapsyndie"
-	smudge_chance = 25
 
 /obj/item/weapon/soap/gold
 	desc = "One true soap to rule them all."
 	icon_state = "soapgold"
-	smudge_chance = 5
 
 /obj/item/weapon/soap/brig
 	desc = "Train your security guards!"
 	icon_state = "soapbrig"
-	smudge_chance = 35
