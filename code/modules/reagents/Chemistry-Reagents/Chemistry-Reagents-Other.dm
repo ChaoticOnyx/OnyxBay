@@ -186,6 +186,13 @@
 				var/obj/effect/spider/spiderling/S = new /obj/effect/spider/spiderling(M.loc)
 				M.visible_message("<span class='warning'>\The [M] coughs up \the [S]!</span>")
 
+		if(M.mind && M.mind.vampire)
+			M.adjustFireLoss(6)
+			M.adjust_fire_stacks(1)
+			M.IgniteMob()
+			if(prob(20))
+				for (var/mob/V in viewers(src))
+					V.show_message(SPAN_WARNING("[M]'s skin sizzles and burns."), 1)
 /datum/reagent/water/holywater/touch_turf(turf/T)
 	if(volume >= 5)
 		T.holy = 1

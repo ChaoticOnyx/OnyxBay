@@ -8,7 +8,7 @@ GLOBAL_DATUM_INIT(raiders, /datum/antagonist/raider, new)
 	landmark_id = "voxstart"
 	welcome_text = "Use :H to talk on your encrypted channel."
 	mob_path = /mob/living/carbon/human/vox
-	flags = ANTAG_OVERRIDE_MOB | ANTAG_OVERRIDE_JOB | ANTAG_CLEAR_EQUIPMENT | ANTAG_CHOOSE_NAME | ANTAG_VOTABLE | ANTAG_HAS_LEADER
+	flags = ANTAG_OVERRIDE_MOB | ANTAG_OVERRIDE_JOB | ANTAG_CLEAR_EQUIPMENT | ANTAG_VOTABLE | ANTAG_HAS_LEADER
 	antaghud_indicator = "hudmutineer"
 
 	hard_cap = 5
@@ -22,6 +22,8 @@ GLOBAL_DATUM_INIT(raiders, /datum/antagonist/raider, new)
 	faction = "pirate"
 
 	station_crew_involved = FALSE
+
+	var/list/safe_areas = list(/area/skipjack_station/base, /area/skipjack_station/start)
 
 	// Heist overrides check_victory() and doesn't need victory or loss strings/tags.
 	var/list/raider_uniforms = list(
@@ -187,7 +189,11 @@ GLOBAL_DATUM_INIT(raiders, /datum/antagonist/raider, new)
 		return 0
 
 	for(var/datum/mind/player in current_antagonists)
-		if(!player.current || get_area(player.current) != locate(/area/skipjack_station/start))
+		if(!player.current)
+			return 0
+
+		var/area/player_area = get_area(player.current)
+		if(!is_type_in_list(player_area, safe_areas))
 			return 0
 	return 1
 

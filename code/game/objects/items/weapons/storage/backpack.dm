@@ -430,3 +430,13 @@
 	set_invisibility(i ? 101 : 0)
 	anchored = i ? TRUE : FALSE
 	alpha = i ? 128 : initial(alpha)
+
+/obj/item/weapon/storage/backpack/carppack
+	name = "Space carp backpack"
+	desc = "It's a backpack made of real space carp."
+	icon_state = "carppack"
+
+/obj/item/weapon/storage/backpack/messenger/shoulder_bag
+	name = "shoulder bag"
+	desc = "A complex backpack with multiple compartments."
+	icon_state = "shoulder_bag"

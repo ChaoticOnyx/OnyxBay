@@ -32,7 +32,7 @@
 	var/response_help   = "tries to help"
 	var/response_disarm = "tries to disarm"
 	var/response_harm   = "tries to hurt"
-	var/harm_intent_damage = 3
+	var/harm_intent_damage = 3 // How much damage a human deals upon punching
 	var/can_escape = 0 // 'smart' simple animals such as human enemies, or things small, big, sharp or strong enough to power out of a net
 	var/mob/panic_target = null // shy simple animals run away from humans
 	var/turns_since_scan = 0
@@ -45,8 +45,8 @@
 	var/cold_damage_per_tick = 2	//same as heat_damage_per_tick, only if the bodytemperature it's lower than minbodytemp
 	var/fire_alert = 0
 	var/oxygen_alert = 0
-	var/toxins_alert = 0	
-	
+	var/toxins_alert = 0
+
 	//Atmos effect - Yes, you can make creatures that require phoron or co2 to survive. N2O is a trace gas and handled separately, hence why it isn't here. It'd be hard to add it. Hard and me don't mix (Yes, yes make all the dick jokes you want with that.) - Errorage
 	var/min_gas = list("oxygen" = 5)
 	var/max_gas = list("phoron" = 1, "carbon_dioxide" = 5)
@@ -61,6 +61,7 @@
 	var/friendly = "nuzzles"
 	var/environment_smash = 0
 	var/resistance		  = 0	// Damage reduction
+	var/armor_projectile  = 0   // Percentage of projectile damage blocked by a simple animal
 
 	var/damtype = BRUTE
 	var/defense = "melee"
@@ -162,7 +163,7 @@
 					atmos_suitable = 0
 					toxins_alert = 1
 				else
-					toxins_alert = 0					
+					toxins_alert = 0
 
 	//Atmos effect
 	if(bodytemperature < minbodytemp)
@@ -207,7 +208,7 @@
 	if(!Proj || Proj.nodamage)
 		return
 
-	var/damage = Proj.damage
+	var/damage = Proj.damage * ((100 - armor_projectile) / 100)
 	if(Proj.damtype == STUN)
 		damage = (Proj.damage / 8)
 
@@ -303,22 +304,26 @@
 /mob/living/simple_animal/death(gibbed, deathmessage = "dies!", show_dead_message)
 	icon_state = icon_dead
 	density = 0
-	adjustBruteLoss(maxHealth) //Make sure dey dead.
+	health = 0 //Make sure dey dead.
 	walk_to(src,0)
 	return ..(gibbed,deathmessage,show_dead_message)
+
+/mob/living/simple_animal/updatehealth()
+	..()
+	if(health <= 0)
+		death()
 
 /mob/living/simple_animal/ex_act(severity)
 	if(!blinded)
 		flash_eyes()
 
 	var/damage
-	switch (severity)
-		if (1.0)
+	switch(severity)
+		if(1.0)
 			damage = 500
 			if(!prob(getarmor(null, "bomb")))
 				gib()
-
-		if (2.0)
+		if(2.0)
 			damage = 120
 
 		if(3.0)
