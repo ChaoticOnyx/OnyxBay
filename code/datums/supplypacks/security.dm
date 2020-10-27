@@ -249,6 +249,14 @@
 	containername = "\improper .45 rubber ammunition crate"
 	access = access_security
 
+/decl/hierarchy/supply_pack/security/pistolammostun
+	name = "Ammunition - .45 stun"
+	contains = list(/obj/item/ammo_magazine/c45m/stun = 4)
+	cost = 15
+	containertype = /obj/structure/closet/crate/secure/weapon
+	containername = "\improper .45 stun ammunition crate"
+	access = access_security
+
 /decl/hierarchy/supply_pack/security/pistolammopractice
 	name = "Ammunition - .45 practice"
 	contains = list(/obj/item/ammo_magazine/c45m/practice = 8)
