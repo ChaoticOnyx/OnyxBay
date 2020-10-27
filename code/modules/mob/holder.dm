@@ -223,3 +223,8 @@ var/list/holder_mob_icon_cache = list()
 
 	// Handle the rest of sync().
 	..(M)
+
+/obj/item/weapon/holder/parrot/dropped(mob/user as mob)
+	. = ..()
+	for(var/mob/living/simple_animal/parrot/M in src.contents)
+		M.icon_state = "parrot_fly"

@@ -32,6 +32,7 @@
 	icon_state = "parrot_fly"
 	icon_living = "parrot_fly"
 	icon_dead = "parrot_dead"
+	item_state = "parrot_fly"
 	pass_flags = PASS_FLAG_TABLE
 	mob_size = MOB_SMALL
 
