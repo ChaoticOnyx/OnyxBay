@@ -267,8 +267,7 @@
 				A.forceMove(src.connected.loc)
 			src.connected.icon_state = "cremat"
 		else
-			qdel(src.connected)
-			src.connected = null
+			QDEL_NULL(src.connected)
 	src.add_fingerprint(user)
 	update()
 
