@@ -23,7 +23,7 @@
 	var/last_use = 1.0
 	var/safety = 1
 	var/sprite_name = "fire_extinguisher"
-	var/ff_reagent = /datum/reagent/firefoam
+	var/ff_reagent = /datum/reagent/water/firefoam
 
 /obj/item/weapon/extinguisher/mini
 	name = "fire extinguisher"
