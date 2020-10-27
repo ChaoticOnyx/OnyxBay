@@ -130,6 +130,11 @@
 		dat +=	"<br><b>Headset:</b> [ears] (<a href='?src=\ref[src];remove_inv=ears'>Remove</a>)"
 	else
 		dat +=	"<br><b>Headset:</b> <a href='?src=\ref[src];add_inv=ears'>Nothing</a>"
+	if(held_item)
+		dat +=	"<br><b>Claws:</b> [held_item] <a href='?src=\ref[src];remove_inv=claws'>Remove</a>"
+	else
+		dat +=	"<br><b>Claws:</b> <a href='?src=\ref[src];add_inv=claws'>Nothing</a>"
+
 
 	user << browse(dat, text("window=mob[];size=325x500", name))
 	onclose(user, "mob[real_name]")
@@ -162,6 +167,16 @@
 					else
 						to_chat(usr, "<span class='warning'>There is nothing to remove from its [remove_from].</span>")
 						return
+				else if("claws")
+					if(!held_item)
+						to_chat(usr, "<span class='warning'>There is nothing to remove from its [remove_from]!</span>")
+						return
+					if(available_channels.len)
+						src.say("[pick(available_channels)] BAWWWWWK LEAVE THIS THING BAWKKKKK!")
+					else
+						src.say("BAWWWWWK LEAVE THE HEADSET BAWKKKKK!")
+					held_item.loc = src.loc
+					held_item = null
 
 		//Adding things to inventory
 		else if(href_list["add_inv"])
@@ -185,6 +200,7 @@
 
 						var/obj/item/device/radio/headset/headset_to_add = item_to_add
 
+
 						usr.drop_item()
 						headset_to_add.loc = src
 						src.ears = headset_to_add
@@ -207,6 +223,26 @@
 									available_channels.Add(":d")
 								if("Cargo")
 									available_channels.Add(":q")
+				else if("claws")
+					if(held_item)
+						to_chat(usr, "<span class='warning'>It's already wearing something.</span>")
+						return
+					else
+						var/obj/item/item_to_add = usr.get_active_hand()
+						if(!item_to_add)
+							return
+						else
+							usr.drop_item()
+							item_to_add.loc = src
+							src.held_item = item_to_add
+							to_chat(usr, "<span class='notice'>You put the item into claws.</span>")
+							if(prob(50))
+								say("Поли это нравится!")
+							else
+								say("Поли недоволен подарком!")
+
+
+
 		else
 			..()
 
