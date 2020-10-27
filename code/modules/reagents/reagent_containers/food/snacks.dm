@@ -1850,7 +1850,7 @@
 /obj/item/weapon/reagent_containers/food/snacks/pelmeni
 	name = "Pelmeni"
 	desc = "Meat wrapped in thin uneven dough."
-	icon_state = "pelmeny"
+	icon_state = "pelmeni"
 	filling_color = "#d9be29"
 	center_of_mass = "x=16;y=4"
 	nutriment_amt = 2
@@ -1861,8 +1861,8 @@
 
 /obj/item/weapon/reagent_containers/food/snacks/boiledpelmeni
 	name = "Boiled pelmeni"
-	desc = "Hello from Siberia!"
-	icon_state = "boiledpelmeny"
+	desc = "We don't know what was Siberia, but these tasty pelmeni definitely arrived from there."
+	icon_state = "boiledpelmeni"
 	trash = /obj/item/trash/snack_bowl
 	filling_color = "#d9be29"
 	center_of_mass = "x=16;y=4"
