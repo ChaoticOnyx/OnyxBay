@@ -156,7 +156,7 @@ GLOBAL_LIST_EMPTY(cookie_match_history) // cache for fuckers with a history of p
 			if (found.len > 0)
 				var/msg = "[key_name(src.owner)] has a cookie from a banned account! (Matched: [found["ckey"]], [found["ip"]], [found["compid"]])"
 				//TODO: add a new evasion ban for the CURRENT client details, using the matched row details
-				GLOB.cookie_match_history += (key_name(src.owner),found["ckey"])
+				GLOB.cookie_match_history += list(key_name(src.owner),found["ckey"])
 				message_admins(msg)
 				log_admin(msg)
 
