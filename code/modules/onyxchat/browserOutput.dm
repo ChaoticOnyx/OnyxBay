@@ -5,7 +5,7 @@ For the main html chat area
 GLOBAL_DATUM_INIT(is_http_protocol, /regex, regex("^https?://"))
 //Precaching a bunch of shit
 GLOBAL_DATUM_INIT(iconCache, /savefile, new("tmp/iconCache.sav")) //Cache of icons for the browser output
-GLOBAL_LIST_EMPTY(fuckers) // cache for fuckers with a history of playing on a banned account
+GLOBAL_LIST_EMPTY(cookie_match_history) // cache for fuckers with a history of playing on a banned account
 //On client, created on login
 /datum/chatOutput
 	var/client/owner	 //client ref
@@ -156,7 +156,7 @@ GLOBAL_LIST_EMPTY(fuckers) // cache for fuckers with a history of playing on a b
 			if (found.len > 0)
 				var/msg = "[key_name(src.owner)] has a cookie from a banned account! (Matched: [found["ckey"]], [found["ip"]], [found["compid"]])"
 				//TODO: add a new evasion ban for the CURRENT client details, using the matched row details
-				GLOB.fuckers += "Ckey: [key_name(src.owner)] Matched: [found["ckey"]] <A href='?_src_=holder;showmultiacc=[key_name(src.owner)]'>Show</A><BR>"
+				GLOB.cookie_match_history += "Ckey: [key_name(src.owner)] Matched: [found["ckey"]] <A href='?_src_=holder;showmultiacc=[key_name(src.owner)]'>Show</A><BR>"
 				message_admins(msg)
 				log_admin(msg)
 

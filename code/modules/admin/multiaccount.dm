@@ -84,7 +84,7 @@
 
 	output+= "<BR><BR><B>Matching cookies</B><BR><BR>"
 
-	for (var/msg in GLOB.fuckers)
+	for (var/msg in GLOB.cookie_match_history)
 		output+= msg
 
 	usr << browse(output, "window=accauntsall;size=400x800")
