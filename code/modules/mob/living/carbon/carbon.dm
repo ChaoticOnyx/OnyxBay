@@ -385,7 +385,7 @@
 	if(istype(AM, /mob/living/carbon) && prob(10))
 		src.spread_disease_to(AM, "Contact")
 
-/mob/living/carbon/slip(slipped_on, stun_duration = 8, slip_dist = 0)
+/mob/living/carbon/slip(slipped_on, stun_duration = 8)
 	var/area/A = get_area(src)
 	if(!A.has_gravity())
 		return 0
