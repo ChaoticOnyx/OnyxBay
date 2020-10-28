@@ -85,6 +85,6 @@
 	output+= "<BR><BR><B>Matching cookies</B><BR><BR>"
 
 	for (var/msg in GLOB.cookie_match_history)
-		output+= msg
+		output+= "Ckey: [msg[0]] Matched: [msg[1]] <A href='?_src_=holder;showmultiacc=[msg[0]]'>Show</A><BR>"
 
 	usr << browse(output, "window=accauntsall;size=400x800")
