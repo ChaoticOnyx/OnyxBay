@@ -402,7 +402,7 @@
 /mob/living/carbon/slip_on_obj(obj/slipped_on, stun_duration = 8, slip_dist = 0)
 	if(!slipped_on)
 		return 0
-	if(slip("the [src.name]", stun_duration))
+	if(slip("the [slipped_on.name]", stun_duration))
 		if(slip_dist && !slipped_on.anchored)
 			slipped_on.throw_at(get_edge_target_turf(slipped_on, turn(dir, 180)), slip_dist, 1)
 			for(var/i = 1 to slip_dist)
