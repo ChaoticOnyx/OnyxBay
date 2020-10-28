@@ -100,6 +100,10 @@
 		use(1)
 
 	M.updatehealth()
+
+/obj/item/stack/medical/get_storage_cost()
+	return w_class
+
 /obj/item/stack/medical/bruise_pack
 	name = "roll of bandage"
 	singular_name = "bandage length"
