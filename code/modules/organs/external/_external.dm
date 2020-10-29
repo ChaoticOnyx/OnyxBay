@@ -27,6 +27,13 @@
 	var/full_pain = 0                  // Overall pain including damages.
 	var/pain_disability_threshold      // Point at which a limb becomes unusable due to pain.
 
+	// Movement delay vars.
+	var/movement_tally    = 0          // Defines movement speed
+	var/damage_multiplier = 0.5        // Default damage multiplier
+	var/stumped_tally     = 8          //  4  tally if limb stmuped
+	var/splinted_tally    = 1          // 0.5 tally if limb splinted
+	var/broken_tally      = 3          // 1.5 tally if limb broken
+
 	// A bitfield for a collection of limb behavior flags.
 	var/limb_flags = ORGAN_FLAG_CAN_AMPUTATE | ORGAN_FLAG_CAN_BREAK
 
@@ -79,6 +86,7 @@
 	var/cavity = 0
 	var/atom/movable/applied_pressure
 	var/atom/movable/splinted
+	var/internal_organs_size = 0       // Current size cost of internal organs in this body part
 
 	// HUD element variable, see organ_icon.dm get_damage_hud_image()
 	var/image/hud_damage_image
@@ -840,6 +848,7 @@ Note that amputating the affected organ does in fact remove the infection from t
 				stump.robotize()
 			stump.wounds |= W
 			victim.organs |= stump
+			movement_tally += stumped_tally * damage_multiplier
 			if(disintegrate != DROPLIMB_BURN)
 				stump.sever_artery()
 			stump.update_damages()
@@ -1010,6 +1019,7 @@ obj/item/organ/external/proc/remove_clamps()
 
 	playsound(src.loc, "fracture", 100, 1, -2)
 	status |= ORGAN_BROKEN
+	movement_tally += broken_tally * damage_multiplier
 
 	//Kinda difficult to keep standing when your leg's gettin' wrecked, eh?
 	if(limb_flags & ORGAN_FLAG_CAN_STAND)
@@ -1036,11 +1046,13 @@ obj/item/organ/external/proc/remove_clamps()
 		return 0	//will just immediately fracture again
 
 	status &= ~ORGAN_BROKEN
+	movement_tally -= broken_tally * damage_multiplier
 	return 1
 
 /obj/item/organ/external/proc/apply_splint(atom/movable/splint)
 	if(!splinted)
 		splinted = splint
+		movement_tally += splinted_tally * damage_multiplier
 		if(!applied_pressure)
 			applied_pressure = splint
 		return 1
@@ -1053,6 +1065,7 @@ obj/item/organ/external/proc/remove_clamps()
 		if(applied_pressure == splinted)
 			applied_pressure = null
 		splinted = null
+		movement_tally -= splinted_tally * damage_multiplier
 		return 1
 	return 0
 
