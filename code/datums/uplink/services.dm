@@ -242,32 +242,22 @@
 
 	var/datum/computer_file/crew_record/new_record = CreateModularRecord(user)
 
-	new_record.set_name()
+	new_record.set_name(id_card.registered_name)
 	new_record.set_sex(id_card.sex)
 	new_record.set_age(id_card.age)
 	new_record.set_job(id_card.assignment)
 	new_record.set_fingerprint(id_card.fingerprint_hash)
 	new_record.set_bloodtype(id_card.blood_type)
 	new_record.set_dna(id_card.dna_hash)
-
 	new_record.set_species(user.get_species())
 
+	var/datum/job/job = job_master.GetJob(id_card.assignment)
+	if(!job)
+		job = new()
+		job.title = id_card.assignment
+		job.department_flag = CIV
+
 	if(does_announce_visit)
-		for(var/mob/M in GLOB.player_list)
-			M.playsound_local(M.loc, 'sound/signals/arrival1.ogg', 70)
-
-		var/datum/spawnpoint/spawnpoint = job_master.get_spawnpoint_for(user.client, "Captain")
-
-		if(id_card.assignment == "Captain")
-			var/sound/announce_sound = (GAME_STATE <= RUNLEVEL_SETUP)? null : sound('sound/misc/boatswain.ogg', volume=40)
-			captain_announcement.Announce("All hands, Captain [id_card.registered_name] on deck!", new_sound=announce_sound)
-
-		AnnounceArrivalSimple(id_card.registered_name, id_card.assignment, spawnpoint.msg, "Common")
-
-		var/datum/job/job = job_master.GetJob(id_card.assignment)
-		if(istype(job))
-			var/announce_freq = get_announcement_frequency(job)
-			if("Common" != announce_freq)
-				AnnounceArrivalSimple(id_card.registered_name, id_card.assignment, spawnpoint.msg, announce_freq)
-
+		var/datum/spawnpoint/arrivals/spawnpoint = new()
+		AnnounceArrival(id_card.registered_name, job, spawnpoint, arrival_sound_volume = 60, captain_sound_volume = 40)
 	. = ..()
