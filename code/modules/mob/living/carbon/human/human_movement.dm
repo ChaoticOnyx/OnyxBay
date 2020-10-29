@@ -8,19 +8,21 @@
 	if(embedded_flag || (stomach_contents && stomach_contents.len))
 		handle_embedded_and_stomach_objects() //Moving with objects stuck in you can cause bad times.
 
-	for(var/M in mutations)
-		switch(M)
-			if(mRun)
-				return config.human_delay
-			if(MUTATION_FAT)
-				tally += 1.5
-
 	for(var/E in chem_effects)
 		switch(E)
 			if(CE_SPEEDBOOST)
-				return 1
+				return -1
 			if(CE_SLOWDOWN)
 				tally += chem_effects[CE_SLOWDOWN]
+
+	var/human_delay = config.human_delay
+
+	for(var/M in mutations)
+		switch(M)
+			if(mRun)
+				return human_delay
+			if(MUTATION_FAT)
+				tally += 1.5
 
 	for(var/datum/modifier/M in modifiers)
 		if(!isnull(M.haste) && M.haste == TRUE)
@@ -31,8 +33,8 @@
 	if(species.slowdown)
 		tally += species.slowdown
 
-	if(aiming && aiming.aiming_at)
-		tally += 5 // Iron sights make you slower, it's a well-known fact.
+	if(aiming)
+		tally += aiming.movement_tally // Iron sights make you slower, it's a well-known fact.
 
 	if(bodytemperature < 283.222)
 		tally += (283.222 - bodytemperature) / 10 * 1.75
@@ -43,9 +45,9 @@
 	if(health_deficiency >= 40)
 		tally += (health_deficiency / 25)
 
-	if(can_feel_pain())
-		if(get_shock() >= 10)
-			tally += (get_shock() / 10) //pain shouldn't slow you down if you can't even feel it
+	var/shock = get_shock()
+	if(shock >= 10)
+		tally += (shock / 10) //pain shouldn't slow you down if you can't even feel it
 
 	if(!isSynthetic(src))	// are you hungry? I think yes
 		var/nut_level = nutrition / 100
@@ -55,48 +57,22 @@
 			if(450 to INFINITY)
 				tally += nut_level - 4.5
 
-	if(istype(buckled, /obj/structure/bed/chair/wheelchair))
-		for(var/organ_name in list(BP_L_HAND, BP_R_HAND, BP_L_ARM, BP_R_ARM))
-			var/obj/item/organ/external/E = get_organ(organ_name)
-			if(!E || E.is_stump())
-				tally += 4
-			else if(E.splinted)
-				tally += 0.5
-			else if(E.status & ORGAN_BROKEN)
-				tally += 1.5
-	else
-		var/total_item_slowdown = -1
-		for(var/slot = slot_first to slot_last)
-			var/obj/item/I = get_equipped_item(slot)
-			if(I)
-				var/item_slowdown = 0
-				item_slowdown += I.slowdown_general
-				item_slowdown += I.slowdown_per_slot[slot]
-				item_slowdown += I.slowdown_accessory
+	tally += inventory_slowdown
 
-				if(item_slowdown >= 0)
-					var/size_mod = 0
-					if(!(mob_size == MOB_MEDIUM))
-						size_mod = log(2, mob_size / MOB_MEDIUM)
-					if(species.strength + size_mod + 1 > 0)
-						item_slowdown = item_slowdown / (species.strength + size_mod + 1)
-					else
-						item_slowdown = item_slowdown - species.strength - size_mod
-				total_item_slowdown += max(item_slowdown, 0)
-		tally += round(total_item_slowdown)
+	var/list/organ_list = list(BP_L_LEG, BP_R_LEG, BP_L_FOOT, BP_R_FOOT)  // if character use legs
+	if(istype(buckled, /obj/structure/bed/chair/wheelchair))              // if character buckled into wheelchair
+		organ_list = list(BP_L_HAND, BP_R_HAND, BP_L_ARM, BP_R_ARM)
+	else                                                                  // if character use legs
+		tally += max(2 * stance_damage, 0)                                //damaged/missing feet or legs is slow
 
-		tally += max(2 * stance_damage, 0) //damaged/missing feet or legs is slow
+	for(var/organ_name in organ_list)
+		var/obj/item/organ/external/E = get_organ(organ_name)
+		if(!E)
+			tally += 4
+		else
+			tally += E.movement_tally
 
-		for(var/organ_name in list(BP_L_LEG, BP_R_LEG, BP_L_FOOT, BP_R_FOOT))
-			var/obj/item/organ/external/E = get_organ(organ_name)
-			if(!E || E.is_stump())
-				tally += 4
-			else if(E.splinted)
-				tally += 0.5
-			else if(E.status & ORGAN_BROKEN)
-				tally += 1.5
-
-	return (tally+config.human_delay)
+	return (tally+human_delay)
 
 /mob/living/carbon/human/Allow_Spacemove(check_drift = 0)
 	//Can we act?
