@@ -91,9 +91,6 @@
 
 	if(href_list["ready"])
 		if(GAME_STATE <= RUNLEVEL_LOBBY) // Make sure we don't ready up after the round has started
-			if (!client.EAMS_CheckForAccess())
-				return
-
 			if(jobban_isbanned(src, "MALE") && jobban_isbanned(src, "FEMALE"))
 				to_chat(src, "<span class='warning'>Only genderqueers allowed.</span>")
 				return
@@ -105,7 +102,12 @@
 			if(jobban_isbanned(src, "FEMALE") && client.prefs.gender == FEMALE)
 				to_chat(src, "<span class='warning'>No traps allowed.</span>")
 				return
-			ready = text2num(href_list["ready"])
+
+			var/value = text2num(href_list["ready"])
+			if (value && !SSeams.CheckForAccess(client))
+				return
+			
+			ready = value
 		else
 			ready = 0
 
@@ -118,7 +120,7 @@
 			to_chat(src, "<span class='warning'>Please wait for server initialization to complete...</span>")
 			return
 
-		if (!client.EAMS_CheckForAccess())
+		if (!SSeams.CheckForAccess(client))
 			return
 
 		if(!config.respawn_delay || client.holder || alert(src,"Are you sure you wish to observe? You will have to wait [config.respawn_delay] minute\s before being able to respawn!","Player Setup","Yes","No") == "Yes")
@@ -166,7 +168,7 @@
 			to_chat(usr, "<span class='warning'>The round is either not ready, or has already finished...</span>")
 			return
 
-		if (!client.EAMS_CheckForAccess())
+		if (!SSeams.CheckForAccess(client))
 			return
 
 		if(jobban_isbanned(src, "MALE") && jobban_isbanned(src, "FEMALE"))
@@ -193,7 +195,7 @@
 			to_chat(usr, "<span class='danger'>The job '[href_list["SelectedJob"]]' doesn't exist!</span>")
 			return
 
-		if (!client.EAMS_CheckForAccess())
+		if (!SSeams.CheckForAccess(client))
 			return
 
 		//Prevents people rejoining as same character.
@@ -202,7 +204,7 @@
 			if(char_name == C.real_name)
 				to_chat (usr, "<span class='danger'>There is a character that already exists with the same name: <b>[C.real_name]</b>, please join with a different one.</span>")
 				return
-			
+
 		if(!config.enter_allowed)
 			to_chat(usr, "<span class='notice'>There is an administrative lock on entering the game!</span>")
 			return
@@ -399,7 +401,7 @@
 		var/mob/living/silicon/ai/A = character
 		A.on_mob_init()
 
-		AnnounceCyborg(character, job.title, "has been downloaded to the empty core in \the [character.loc.loc]")
+		AnnounceArrival(character.real_name, job)
 		SSticker.mode.handle_latejoin(character)
 
 		qdel(C)
@@ -412,25 +414,12 @@
 		if(character.mind.assigned_role != "Cyborg")
 			CreateModularRecord(character)
 			SSticker.minds += character.mind//Cyborgs and AIs handle this in the transform proc.	//TODO!!!!! ~Carn
-			AnnounceArrival(character, job, spawnpoint.msg)
-		else
-			AnnounceCyborg(character, job, spawnpoint.msg)
-
-		for (var/mob/M in GLOB.player_list)
-			M.playsound_local(M.loc, 'sound/signals/arrival1.ogg', 75)
+			
+		AnnounceArrival(character.real_name, job, spawnpoint)
 
 		matchmaker.do_matchmaking()
 	log_and_message_admins("has joined the round as [character.mind.assigned_role].", character)
 	qdel(src)
-
-
-/mob/new_player/proc/AnnounceCyborg(mob/living/character, rank, join_message)
-	if (GAME_STATE == RUNLEVEL_GAME)
-		if(character.mind.role_alt_title)
-			rank = character.mind.role_alt_title
-		// can't use their name here, since cyborg namepicking is done post-spawn, so we'll just say "A new Cyborg has arrived"/"A new Android has arrived"/etc.
-		GLOB.global_announcer.autosay("A new[rank ? " [rank]" : " visitor" ] [join_message ? join_message : "has arrived"].", "Arrivals Announcement Computer")
-		log_and_message_admins("has joined the round as [character.mind.assigned_role].", character)
 
 /mob/new_player/proc/LateChoices()
 	var/name = client.prefs.be_random_name ? "friend" : client.prefs.real_name
@@ -511,13 +500,13 @@
 		client.prefs.real_name = random_name(new_character.gender)
 		client.prefs.randomize_appearance_and_body_for(new_character)
 	else
-		client.prefs.copy_to(new_character)
-
 		if(jobban_isbanned(src, "NAME"))
 			client.prefs.real_name = random_name(new_character.gender)
 
 		if(jobban_isbanned(src, "APPEARANCE"))
 			client.prefs.randomize_appearance_and_body_for(new_character)
+
+		client.prefs.copy_to(new_character)
 
 	sound_to(src, sound(null, repeat = 0, wait = 0, volume = 85, channel = 1))// MAD JAMS cant last forever yo
 
