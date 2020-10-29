@@ -8,6 +8,7 @@
 	throw_range = 4
 	var/candrop = 1
 
+	var/inventory_slowdown = -1         // Items slowdown movement
 	var/list/hud_list[10]
 	var/embedded_flag	  //To check if we've need to roll for damage on movement while an item is imbedded in us.
 	var/obj/item/weapon/rig/wearing_rig // This is very not good, but it's much much better than calling get_rig() every update_canmove() call.
