@@ -105,21 +105,38 @@ datum/announcement/proc/NewsCast(message as text, message_title as text)
 /proc/ion_storm_announcement()
 	command_announcement.Announce("It has come to our attention that the [station_name()] passed through an ion storm.  Please monitor all electronic equipment for malfunctions.", "Anomaly Alert")
 
-/proc/AnnounceArrival(mob/living/carbon/human/character, datum/job/job, join_message)
-	if(!istype(job) || !job.announced)
-		return
+/proc/AnnounceArrival(name, datum/job/job, var/datum/spawnpoint/spawnpoint = null, arrival_sound_volume = 75, captain_sound_volume = 20)
 	if (GAME_STATE != RUNLEVEL_GAME)
 		return
+
 	var/rank = job.title
-	if(character.mind.role_alt_title)
-		rank = character.mind.role_alt_title
 
-	if("Common" != get_announcement_frequency(job))
-		AnnounceArrivalSimple(character.real_name, rank, join_message, "Common")
-	AnnounceArrivalSimple(character.real_name, rank, join_message, get_announcement_frequency(job))
+	for(var/mob/M in GLOB.player_list)
+		M.playsound_local(M.loc, 'sound/signals/arrival1.ogg', arrival_sound_volume)
 
-/proc/AnnounceArrivalSimple(name, rank = "visitor", join_message = "has arrived on the [station_name()]", frequency)
+	if(rank == "AI")
+		AnnounceArrivalSimple(name, rank, "has been downloaded to the empty core in AI Core", "Common")
+		return
+
+	if(rank in list("Cyborg", "Android", "Robot"))
+		AnnounceArrivalSimple(name, rank, "A new [rank] has arrived", "Common")
+		return
+
+	if(rank == "Captain")
+		AnnounceArrivalCaptain(name, captain_sound_volume)
+
+	AnnounceArrivalSimple(name, rank, spawnpoint.msg, "Common")
+
+	var/announce_freq = get_announcement_frequency(job)
+	if("Common" != announce_freq)
+		AnnounceArrivalSimple(name, rank, spawnpoint.msg, announce_freq)
+
+/proc/AnnounceArrivalSimple(name, rank, join_message, frequency)
 	GLOB.global_announcer.autosay("[name], [rank], [join_message].", "Arrivals Announcement Computer", frequency)
+
+/proc/AnnounceArrivalCaptain(name, captain_sound_volume)
+	var/sound/announce_sound = sound('sound/misc/boatswain.ogg', volume=captain_sound_volume)
+	captain_announcement.Announce("All hands, Captain [name] on deck!", new_sound=announce_sound)
 
 /proc/get_announcement_frequency(datum/job/job)
 	// During red alert all jobs are announced on main frequency.
