@@ -5,7 +5,6 @@
 	icon_closed = "coffin"
 	icon_opened = "coffin_open"
 	var/icon_screwed = "coffin_locked"
-	is_wooden = 1
 	setup = CLOSET_CAN_BE_WELDED
 	dremovable = 0
 
