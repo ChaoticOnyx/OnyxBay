@@ -230,8 +230,9 @@
 			attack_hand(user)
 		return
 	else if((obj_flags & OBJ_FLAG_ANCHORABLE) && isWrench(W))
-		wrench_floor_bolts(user)
-		power_change()
+		if(wrench_floor_bolts(user))
+			update_standing_icon()
+			power_change()
 		return
 	else if(istype(W, /obj/item/weapon/coin) && premium.len > 0)
 		user.drop_item()
@@ -617,8 +618,7 @@
 	else if( !(stat & NOPOWER) )
 		icon_state = base_icon
 	else
-		spawn(rand(0, 15))
-			src.icon_state = "[base_icon]-off"
+		icon_state = "[base_icon]-off"
 
 /obj/machinery/vending/proc/setup_icon_states()
 	if(use_alt_icons)
@@ -626,6 +626,15 @@
 		update_icon()
 	else
 		base_icon = icon_state
+
+/obj/machinery/vending/proc/update_standing_icon()
+	if(!anchored)
+		transform = turn(transform, -90)
+		pixel_y = -3
+	else
+		transform = turn(transform, 90)
+		pixel_y = initial(pixel_y)
+	update_icon()
 
 //Oh no we're malfunctioning!  Dump out some product and break.
 /obj/machinery/vending/proc/malfunction()
