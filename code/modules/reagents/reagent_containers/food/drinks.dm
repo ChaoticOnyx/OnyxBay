@@ -292,6 +292,13 @@
 		else
 			icon_state = "water_cup_e"
 
+	throw_impact(atom/hit_atom)
+		..()
+		if(istype(hit_atom, /mob/living))
+			var/mob/living/M = hit_atom
+			var/datum/job/job = job_master.GetJob(GetAssignment(M))
+			if(job && job.department_flag & SEC)
+				M.gib()
 
 //////////////////////////drinkingglass and shaker//
 //Note by Darem: This code handles the mixing of drinks. New drinks go in three places: In Chemistry-Reagents.dm (for the drink
