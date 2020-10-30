@@ -68,10 +68,11 @@
 /decl/hierarchy/outfit/job/merchant
 	name = OUTFIT_JOB_NAME("Merchant")
 	uniform = /obj/item/clothing/under/color/black
-	l_ear = null
+	l_ear = /obj/item/device/radio/headset
 	shoes = /obj/item/clothing/shoes/black
 	pda_type = /obj/item/device/pda
 	id_type = /obj/item/weapon/card/id/merchant
+	backpack_contents = list(/obj/item/device/price_scanner = 1)
 
 /decl/hierarchy/outfit/job/clown
 	name = OUTFIT_JOB_NAME("Clown")

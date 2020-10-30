@@ -378,6 +378,9 @@
 		)
 	body_parts_covered = UPPER_TORSO|LOWER_TORSO|ARMS
 
+/obj/item/clothing/under/dress/dress_cap/captain_dress_alt
+	icon_state = "captain_dress_alt"
+
 /obj/item/clothing/under/dress/dress_hop
 	name = "head of personnel dress uniform"
 	desc = "Feminine fashion for the style concious HoP."
@@ -418,6 +421,11 @@
 	name = "tango dress"
 	desc = "Por una cabeza..."
 	icon_state = "black_tango"
+
+/obj/item/clothing/under/dress/franziska_dress
+	name = "prosecutor's formal dress"
+	desc = "The most fashionable prosecutor's dress."
+	icon_state = "franziska_dress"
 
 //wedding stuff
 /obj/item/clothing/under/wedding
@@ -490,6 +498,12 @@
 	icon_state = "captain_formal"
 	item_state_slots = list(
 		slot_hand_str = "captain"
+		)
+
+/obj/item/clothing/under/captainformal/captain_formal_alt
+	icon_state = "captain_formal_alt"
+	item_state_slots = list(
+		slot_hand_str = "captain_formal_alt"
 		)
 
 /obj/item/clothing/under/hosformalmale
@@ -689,6 +703,13 @@
 	item_state = "huntress"
 	body_parts_covered = UPPER_TORSO|LOWER_TORSO|LEGS|ARMS
 
+/obj/item/clothing/under/fig_leaf
+	name = "fig leaf"
+	desc = "And the eyes of them both were opened, and they knew that they were naked; and they sewed fig leaves together, and made themselves aprons."
+	icon_state = "fig_leaf"
+	body_parts_covered = LOWER_TORSO
+	has_sensor = 0
+
 // /obj/item/clothing/under/wetsuit
 // 	name = "tactical wetsuit"
 // 	desc = "For when you want to scuba dive your way into an enemy base but still want to show off a little skin."
@@ -700,6 +721,11 @@
 	desc = "A light jumpsuit useful for squeezing through narrow vents."
 	icon_state = "darkholme"
 	item_state = "darkholme"
+
+/obj/item/clothing/under/latex_suit
+	name = "Latex suit"
+	desc = "A shiny and tight suit for a variety of perversions."
+	icon_state = "latex_suit"
 
 /obj/item/clothing/under/contortionist/proc/check_clothing(mob/user as mob)
 	//Allowed to wear: glasses, shoes, gloves, pockets, mask, and jumpsuit (obviously)
