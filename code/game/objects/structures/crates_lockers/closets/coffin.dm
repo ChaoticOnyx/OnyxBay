@@ -18,7 +18,8 @@
 		icon_state = icon_opened
 
 /obj/structure/closet/coffin/attackby(obj/item/weapon/W, mob/user)
-	if(opened)
+
+	if(opened && !isWelder(W))
 		..()
 	else if(istype(W, /obj/item/weapon/screwdriver))
 		if(welded)
