@@ -47,23 +47,23 @@
 			user.last_special = world.time + 50
 			src.visible_message("<span class='danger'>You hear something rumbling inside [src]'s stomach...</span>")
 			var/obj/item/I = user.get_active_hand()
-			var/d = (I && I.force) ? rand(round(I.force / 4), I.force) : rand(1, 6) //give a chance to creatures without hands
+			var/dmg = (I && I.force) ? rand(round(I.force / 4), I.force) : rand(1, 6) //give a chance to creatures without hands
 			if(istype(src, /mob/living/carbon/human))
 				var/mob/living/carbon/human/H = src
 				var/obj/item/organ/external/organ = H.get_organ(BP_GROIN)
 				if (istype(organ))
-					organ.take_external_damage(d, 0)
+					organ.take_external_damage(dmg, 0)
 				H.updatehealth()
 			else
-				src.take_organ_damage(d)
+				take_organ_damage(dmg)
 			user.visible_message("<span class='danger'>[user] attacks [src]'s stomach wall!</span>")
 			playsound(user.loc, 'sound/effects/attackblob.ogg', 50, 1)
 
-			if(prob(src.getBruteLoss() - 50))
+			if(prob(getBruteLoss() - 50))
 				for(var/atom/movable/A in stomach_contents)
 					A.loc = loc
 					stomach_contents.Remove(A)
-				src.gib()
+				gib()
 
 /mob/living/carbon/gib()
 	for(var/mob/M in src)
