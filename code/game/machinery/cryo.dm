@@ -23,6 +23,7 @@
 
 	var/occupant_icon_update_timer = 0
 	var/ejecting = 0
+	var/biochemical_stasis = 0
 
 /obj/machinery/atmospherics/unary/cryo_cell/New()
 	..()
@@ -149,6 +150,8 @@
 		data["beakerLabel"] = beaker.name
 		data["beakerVolume"] = beaker.reagents.total_volume
 
+	data["biochemicalStasis"] = biochemical_stasis
+
 	// update the ui if it exists, returns null if no ui is passed/found
 	ui = SSnano.try_update_ui(user, src, ui_key, ui, data, force_open)
 	if(!ui)
@@ -186,6 +189,14 @@
 		if(!occupant || isslime(user) || ispAI(user))
 			return TOPIC_HANDLED // don't update UIs attached to this object
 		go_out()
+		return TOPIC_REFRESH
+
+	if(href_list["biochemicalStasisOn"])
+		biochemical_stasis = 1
+		return TOPIC_REFRESH
+
+	if(href_list["biochemicalStasisOff"])
+		biochemical_stasis = 0
 		return TOPIC_REFRESH
 
 	. = ..()
@@ -270,7 +281,7 @@
 		var/has_cryo_medicine = occupant.reagents.has_any_reagent(list(/datum/reagent/cryoxadone, /datum/reagent/clonexadone)) >= REM
 		if(beaker && !has_cryo_medicine && !emagged)
 			beaker.reagents.trans_to_mob(occupant, REM, CHEM_BLOOD)
-		if(occupant.InStasis())
+		if(occupant.InStasis() && !biochemical_stasis)
 			occupant.handle_chemicals_in_body(handle_ingested = FALSE)
 		if(emagged)
 			if(prob(5))
