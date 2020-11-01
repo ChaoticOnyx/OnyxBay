@@ -730,7 +730,10 @@
 /mob/living/proc/has_eyes()
 	return 1
 
-/mob/living/proc/slip(slipped_on,stun_duration=8)
+/mob/living/proc/slip(slipped_on, stun_duration = 8)
+	return 0
+
+/mob/living/proc/slip_on_obj(/obj/slipped_on, stun_duration = 8, slip_dist = 0)
 	return 0
 
 /mob/living/carbon/drop_from_inventory(obj/item/W, atom/Target = null, force = null)
