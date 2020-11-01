@@ -594,6 +594,10 @@
 	name = "\improper Underground Engineering Maintenance"
 	icon_state = "uengineering"
 
+/area/maintenance/underground/engineering_lower
+	name = "\improper Underground Engineering"
+	icon_state = "uengineering"
+
 /area/maintenance/underground/research
 	name = "\improper Underground Research Maintenance"
 	icon_state = "uresearch"
