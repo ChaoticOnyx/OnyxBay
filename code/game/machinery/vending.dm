@@ -900,6 +900,7 @@
 	contraband = list(/obj/item/weapon/reagent_containers/food/drinks/cans/thirteenloko = 5,
 					  /obj/item/weapon/reagent_containers/food/drinks/cans/dopecola = 5,
 					  /obj/item/weapon/reagent_containers/food/snacks/liquidfood = 6)
+	premium = list(/obj/item/weapon/reagent_containers/food/drinks/cans/waterbottle/fi4i = 5)
 	prices = list(/obj/item/weapon/reagent_containers/food/drinks/cans/cola = 2,
 				  /obj/item/weapon/reagent_containers/food/drinks/cans/colavanilla = 3,
 				  /obj/item/weapon/reagent_containers/food/drinks/cans/colacherry = 3,
@@ -934,6 +935,7 @@
 	contraband = list(/obj/item/weapon/reagent_containers/food/drinks/cans/thirteenloko = 5,
 					  /obj/item/weapon/reagent_containers/food/drinks/cans/dopecola = 5,
 					  /obj/item/weapon/reagent_containers/food/snacks/liquidfood = 6)
+	premium = list(/obj/item/weapon/reagent_containers/food/drinks/cans/waterbottle/fi4i = 5)
 	prices = list(/obj/item/weapon/reagent_containers/food/drinks/cans/cola = 2,
 				  /obj/item/weapon/reagent_containers/food/drinks/cans/colavanilla = 3,
 				  /obj/item/weapon/reagent_containers/food/drinks/cans/colacherry = 3,
