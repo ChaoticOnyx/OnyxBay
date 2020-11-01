@@ -1847,6 +1847,31 @@
 		reagents.add_reagent(/datum/reagent/nutriment/protein, 4)
 		bitesize = 2
 
+/obj/item/weapon/reagent_containers/food/snacks/pelmeni
+	name = "Pelmeni"
+	desc = "Meat wrapped in thin uneven dough."
+	icon_state = "pelmeni"
+	filling_color = "#d9be29"
+	center_of_mass = "x=16;y=4"
+	nutriment_amt = 2
+	New()
+		..()
+		reagents.add_reagent(/datum/reagent/nutriment/protein, 2)
+		bitesize = 2
+
+/obj/item/weapon/reagent_containers/food/snacks/boiledpelmeni
+	name = "Boiled pelmeni"
+	desc = "We don't know what was Siberia, but these tasty pelmeni definitely arrived from there."
+	icon_state = "boiledpelmeni"
+	trash = /obj/item/trash/snack_bowl
+	filling_color = "#d9be29"
+	center_of_mass = "x=16;y=4"
+	nutriment_amt = 5
+	New()
+		..()
+		reagents.add_reagent(/datum/reagent/nutriment/protein, 5)
+		bitesize = 3
+
 /obj/item/weapon/reagent_containers/food/snacks/tomatosoup
 	name = "Tomato Soup"
 	desc = "Drinking this feels like being a vampire! A tomato vampire..."
@@ -3137,6 +3162,11 @@
 		new /obj/item/weapon/reagent_containers/food/snacks/sliceable/flatdough(src)
 		to_chat(user, "You flatten the dough.")
 		qdel(src)
+	else if (istype(W,/obj/item/weapon/reagent_containers/food/snacks/meatball))
+		new /obj/item/weapon/reagent_containers/food/snacks/pelmeni(src)
+		to_chat(user, "You make some pelmeni.")
+		qdel(src)
+		qdel(W)
 
 // slicable into 3xdoughslices
 /obj/item/weapon/reagent_containers/food/snacks/sliceable/flatdough
@@ -3872,7 +3902,6 @@ obj/item/weapon/reagent_containers/food/snacks/risotto
 
 /obj/item/weapon/reagent_containers/food/snacks/slice/choccherrycake/filled
 	filled = TRUE
-
 
 
 
