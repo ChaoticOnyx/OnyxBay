@@ -189,9 +189,9 @@
 					if(!past_damage_threshold(6) && prob(damprob))
 						take_internal_damage(0.5)
 					if(!owner.paralysis && prob(15))
-						owner.Paralyse(3,5)
 						owner.visible_message("<B>[owner]</B> faints!", \
 											  SPAN("warning", "You feel extremely [pick("dizzy","woozy","faint")]..."))
+						owner.Paralyse(3,5)
 				if(-(INFINITY) to BLOOD_VOLUME_SURVIVE) // Also see heart.dm, being below this point puts you into cardiac arrest.
 					owner.eye_blurry = max(owner.eye_blurry, 6)
 					damprob = owner.chem_effects[CE_STABLE] ? 70 : 100
