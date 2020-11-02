@@ -321,16 +321,9 @@ FIELD_CONTEXT_EDIT(criminalStatus, CONTEXT(security))
 	for(var/datum/computer_file/crew_record/R in GLOB.all_crew_records)
 		if(R.uid == record_id)
 			var/status = "<font color='black'><b>None</b></font>"
-
-			switch(value)
-				if("Arrest")
-					status = "<font color='red'><b>Arrest</b></font>"
-				if("Incarcerated")
-					status = "<font color='orange'><b>Incarcerated</b></font>"
-				if("Parolled")
-					status = "<font color='green'><b>Parolled</b></font>"
-				if("Released")
-					status = "<font color='blue'><b>Released</b></font>"
+			var/clr = criminal_status_color(value)
+			if (clr)
+				status = "<font color='[clr]'><b>[value]</b></font>"
 
 			GLOB.global_announcer.autosay("<font color='black'><b>[R.get_name()]</b> security status is changed to [status]!</font>", "<b>Security Records Announcer</b>", "Security")
 

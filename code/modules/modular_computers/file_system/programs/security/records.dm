@@ -24,7 +24,7 @@
 			if (name == "Criminal Status")
 				var/clr = criminal_status_color(field["val"])
 				if (clr)
-					field["val"] = "<span style='color: [clr]'>[field["val"]]</span>"
+					field["val"] = "<font color='[clr]'>[field["val"]]</font>"
 			sec_fields[name] = field
 
 	var/list/sec_fields_as_array = list()
