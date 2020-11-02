@@ -3,6 +3,7 @@
 	filedesc = "Security Records"
 	extended_desc = "This program allows access to the crew's security records."
 	nanomodule_path = /datum/nano_module/records/security
+	category = PROG_SEC
 
 /datum/nano_module/records/security
 	name = "Security Records"

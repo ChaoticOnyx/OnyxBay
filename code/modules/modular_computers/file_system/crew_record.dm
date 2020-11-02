@@ -157,8 +157,8 @@ var/const/record_field_context_universal   = ~record_field_context_none
 	var/name = "Unknown"
 	var/value = "Unset"
 	var/valtype = EDIT_SHORTTEXT
-	var/acccess
-	var/acccess_edit
+	var/access
+	var/access_edit
 	var/record_id
 	var/hidden = FALSE
 
@@ -167,8 +167,8 @@ var/const/record_field_context_universal   = ~record_field_context_none
 	var/context_view = record_field_context_universal
 
 /record_field/New(datum/computer_file/crew_record/record)
-	if(!acccess_edit)
-		acccess_edit = acccess ? acccess : access_heads
+	if(!access_edit)
+		access_edit = access ? access : access_heads
 	if(record)
 		record_id = record.uid
 		record.fields += src
@@ -204,22 +204,22 @@ var/const/record_field_context_universal   = ~record_field_context_none
 /record_field/proc/can_edit(used_access, used_context = record_field_context_none)
 	if (!(context_edit & used_context))
 		return FALSE
-	if(!acccess_edit)
+	if(!access_edit)
 		return TRUE
 	if(!used_access)
 		return FALSE
-	return islist(used_access) ? (acccess_edit in used_access) : acccess_edit == used_access
+	return islist(used_access) ? (access_edit in used_access) : access_edit == used_access
 
 /record_field/proc/can_see(used_access, used_context = record_field_context_none)
 	if (hidden)
 		return FALSE
 	if (!(context_view & used_context))
 		return FALSE
-	if(!acccess)
+	if(!access)
 		return TRUE
 	if(!used_access)
 		return FALSE
-	return islist(used_access) ? (acccess_edit in used_access) : acccess_edit == used_access
+	return islist(used_access) ? (access_edit in used_access) : access_edit == used_access
 
 /record_field/proc/announce(automatic)
 	return
@@ -231,18 +231,18 @@ var/const/record_field_context_universal   = ~record_field_context_none
 // It will also create getter/setter procs for record datum, named like /get_[key here]() /set_[key_here](value) e.g. get_name() set_name(value)
 // Use getter setters to avoid errors caused by typoing the string key.
 #define FIELD_SHORT(NAME, KEY, HIDDEN) /record_field/##KEY/name = ##NAME; /record_field/##KEY/hidden = ##HIDDEN; GETTER_SETTER(##KEY)
-#define FIELD_SHORT_SECURE(NAME, KEY, HIDDEN, ACCESS) FIELD_SHORT(##NAME, ##KEY, ##HIDDEN); /record_field/##KEY/acccess = ##ACCESS
+#define FIELD_SHORT_SECURE(NAME, KEY, HIDDEN, ACCESS) FIELD_SHORT(##NAME, ##KEY, ##HIDDEN); /record_field/##KEY/access = ##ACCESS
 
 #define FIELD_LONG(NAME, KEY, HIDDEN) FIELD_SHORT(##NAME, ##KEY, ##HIDDEN); /record_field/##KEY/valtype = EDIT_LONGTEXT
-#define FIELD_LONG_SECURE(NAME, KEY, HIDDEN, ACCESS) FIELD_LONG(##NAME, ##KEY, ##HIDDEN); /record_field/##KEY/acccess = ##ACCESS
+#define FIELD_LONG_SECURE(NAME, KEY, HIDDEN, ACCESS) FIELD_LONG(##NAME, ##KEY, ##HIDDEN); /record_field/##KEY/access = ##ACCESS
 
 #define FIELD_NUM(NAME, KEY, HIDDEN) FIELD_SHORT(##NAME, ##KEY, ##HIDDEN); /record_field/##KEY/valtype = EDIT_NUMERIC; /record_field/##KEY/value = 0
-#define FIELD_NUM_SECURE(NAME, KEY, HIDDEN, ACCESS) FIELD_NUM(##NAME, ##KEY, ##HIDDEN); /record_field/##KEY/acccess = ##ACCESS
+#define FIELD_NUM_SECURE(NAME, KEY, HIDDEN, ACCESS) FIELD_NUM(##NAME, ##KEY, ##HIDDEN); /record_field/##KEY/access = ##ACCESS
 
 #define FIELD_LIST(NAME, KEY, HIDDEN, OPTIONS) FIELD_SHORT(##NAME, ##KEY, ##HIDDEN); /record_field/##KEY/valtype = EDIT_LIST; /record_field/##KEY/get_options(){. = ##OPTIONS;}
-#define FIELD_LIST_SECURE(NAME, KEY, HIDDEN, OPTIONS, ACCESS) FIELD_LIST(##NAME, ##KEY, ##HIDDEN, ##OPTIONS); /record_field/##KEY/acccess = ##ACCESS
+#define FIELD_LIST_SECURE(NAME, KEY, HIDDEN, OPTIONS, ACCESS) FIELD_LIST(##NAME, ##KEY, ##HIDDEN, ##OPTIONS); /record_field/##KEY/access = ##ACCESS
 
-#define FIELD_ACCESS_EDIT(KEY, ACCESS) /record_field/##KEY/acccess = ##ACCESS
+#define FIELD_ACCESS_EDIT(KEY, ACCESS) /record_field/##KEY/access = ##ACCESS
 
 #define FIELD_CONTEXT_VIEW(KEY, CONTEXT_VIEW) /record_field/##KEY/context_view = (##CONTEXT_VIEW)
 #define FIELD_CONTEXT_EDIT(KEY, CONTEXT_EDIT) /record_field/##KEY/context_edit = (##CONTEXT_EDIT)
@@ -299,7 +299,9 @@ FIELD_CONTEXT_BOTH(medRecord, CONTEXT(medical))
 
 // SECURITY RECORDS
 FIELD_LIST_SECURE("Criminal Status", criminalStatus, FALSE, GLOB.security_statuses, access_security);
-FIELD_CONTEXT_BOTH(criminalStatus, CONTEXT(security))
+FIELD_CONTEXT_VIEW(criminalStatus, CONTEXT(security) | CONTEXT(crew))
+FIELD_CONTEXT_EDIT(criminalStatus, CONTEXT(security))
+
 /record_field/criminalStatus/announce(automatic)
 	if(automatic)
 		return
