@@ -20,8 +20,12 @@
 	for (var/field in fields_cached)
 		var/name = field["name"]
 		if (name in sec_fields)
-			sec_fields[name] = field
 			data["fields"] -= list(field)
+			if (name == "Criminal Status")
+				var/clr = criminal_status_color(field["val"])
+				if (clr)
+					field["val"] = "<span style='color: [clr]'>[field["val"]]</span>"
+			sec_fields[name] = field
 
 	var/list/sec_fields_as_array = list()
 	for (var/key in sec_fields)

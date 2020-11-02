@@ -302,6 +302,19 @@ FIELD_LIST_SECURE("Criminal Status", criminalStatus, FALSE, GLOB.security_status
 FIELD_CONTEXT_VIEW(criminalStatus, CONTEXT(security) | CONTEXT(crew))
 FIELD_CONTEXT_EDIT(criminalStatus, CONTEXT(security))
 
+/proc/criminal_status_color(status)
+	var/ret = ""
+	switch (status)
+		if ("Arrest")
+			ret = "red"
+		if ("Incarcerated")
+			ret = "orange"
+		if ("Parolled")
+			ret = "green"
+		if ("Released")
+			ret = "blue"
+	return ret
+
 /record_field/criminalStatus/announce(automatic)
 	if(automatic)
 		return
