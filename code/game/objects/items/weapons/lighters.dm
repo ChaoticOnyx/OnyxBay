@@ -169,7 +169,7 @@ CIGARETTES AND STUFF ARE IN 'SMOKABLES' FOLDER
 		icon_state = "[bis.base_icon_state]"
 		item_state = "[bis.base_icon_state]"
 
-/obj/item/weapon/flame/lighter/attack(mob/living/carbon/M as mob, mob/living/carbon/user as mob)
+/obj/item/weapon/flame/attack(mob/living/carbon/M as mob, mob/living/carbon/user as mob)
 	if(!istype(M, /mob))
 		return
 
