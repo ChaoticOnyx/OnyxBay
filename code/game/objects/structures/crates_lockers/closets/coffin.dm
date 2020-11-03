@@ -17,7 +17,6 @@
 		icon_state = icon_opened
 
 /obj/structure/closet/coffin/attackby(obj/item/weapon/W, mob/user)
-
 	if(opened && !isWelder(W))
 		..()
 	else if(istype(W, /obj/item/weapon/screwdriver))
@@ -29,5 +28,6 @@
 			user.visible_message(SPAN("notice", "[user] screwed bolts in [src]."))
 			welded = !welded
 			update_icon()
+		playsound(src.loc, 'sound/items/Screwdriver.ogg', 80, 1)
 	else
 		attack_hand(user)
