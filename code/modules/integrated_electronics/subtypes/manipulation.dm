@@ -276,6 +276,7 @@
 					TR.health = 0
 					if(TR.harvest)
 						TR.harvest = FALSE //To make sure they can't just put in another seed and insta-harvest it
+					TR.sampled = 0
 					qdel(TR.seed)
 					TR.seed = null
 				TR.weedlevel = 0 //Has a side effect of cleaning up those nasty weeds
