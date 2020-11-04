@@ -79,9 +79,9 @@
 									/obj/machinery/computer,			/obj/machinery/telecomms, \
 									/obj/machinery/nuclearbomb,			/obj/machinery/particle_accelerator, \
 									/obj/machinery/recharge_station,	/obj/machinery/smartfridge, \
-									/obj/machinery/suit_storage_unit, /obj/structure/bed/chair/, \
-									/obj/structure/table/, /obj/item/modular_computer/console/, \
-									/obj/item/weapon/stool/)
+									/obj/machinery/suit_storage_unit, /obj/structure/bed/chair, \
+									/obj/structure/table, /obj/item/modular_computer/console, \
+									/obj/item/weapon/stool)
 
 	//Parrots are kleptomaniacs. This variable ... stores the item a parrot is holding.
 	var/obj/item/held_item = null
@@ -159,9 +159,9 @@
 				if("ears")
 					if(ears)
 						if(available_channels.len)
-							src.say("[pick(available_channels)] BAWWWWWK LEAVE THE HEADSET BAWKKKKK!")
+							src.say("[pick(available_channels)] РРРЯЯЯЯ ОСТАВЬ НАУШНИК РРЯЯЯЯЯЯ!")
 						else
-							src.say("BAWWWWWK LEAVE THE HEADSET BAWKKKKK!")
+							src.say("РРЯЯЯЯЯ ОСТАВЬ НАУШНИК РРРЯЯЯЯЯ!")
 						ears.loc = src.loc
 						ears = null
 						for(var/possible_phrase in speak)
@@ -175,9 +175,9 @@
 						to_chat(usr, "<span class='warning'>There is nothing to remove from its [remove_from]!</span>")
 						return
 					if(available_channels.len)
-						src.say("[pick(available_channels)] BAWWWWWK LEAVE THIS THING BAWKKKKK!")
+						src.say("[pick(available_channels)] РРРЯЯЯЯЯ ПОЛОЖИ НА МЕСТО РРЯЯЯЯЯЯ!")
 					else
-						src.say("BAWWWWWK LEAVE THE HEADSET BAWKKKKK!")
+						src.say("РРРЯЯЯЯ ПОЛОЖИ НА МЕСТО РРРЯЯЯЯЯЯ!")
 					held_item.loc = src.loc
 					held_item = null
 
