@@ -41,7 +41,7 @@
 	name = "Parrot crate"
 	contains = list()
 	cost = 100
-	containertype = /obj/structure/largecrate/animal/corgi
+	containertype = /obj/structure/largecrate/animal/parrot
 	containername = "\improper Parrot crate"
 
 //farm animals - useless and annoying, but potentially a good source of food. expensive because they're live animals and their produce is available cheaper
