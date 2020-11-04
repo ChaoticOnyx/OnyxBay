@@ -145,7 +145,7 @@ SUBSYSTEM_DEF(eams)
 
 /datum/controller/subsystem/eams/proc/__LoadResponseFromCache(ip)
 	ASSERT(istext(ip))
-	
+
 	ip = dbcon.Quote(ip)
 	var/DBQuery/query = dbcon.NewQuery("SELECT response FROM eams_cache WHERE ip = [ip] LIMIT 1")
 
@@ -161,7 +161,7 @@ SUBSYSTEM_DEF(eams)
 /datum/controller/subsystem/eams/proc/__CacheResponse(ip, raw_response)
 	ASSERT(istext(ip))
 	ASSERT(istext(raw_response))
-	
+
 	ip = dbcon.Quote(ip)
 	raw_response = dbcon.Quote(raw_response)
 	var/DBQuery/query = dbcon.NewQuery("INSERT INTO eams_cache(ip, response) VALUES ([ip], [raw_response])")
@@ -200,7 +200,7 @@ SUBSYSTEM_DEF(eams)
 
 	if (!C.address || C.address == "127.0.0.1") // host
 		return
-	
+
 	var/list/response = __LoadResponseFromCache(C.address)
 	if (response)
 		log_debug("EAMS data for [C] ([C.address]) is loaded from cache!")
@@ -295,6 +295,6 @@ SUBSYSTEM_DEF(eams)
 	if (!dbcon || !dbcon.IsConnected())
 		to_chat(usr, SPAN("adminnotice", "The Database is not connected!"))
 		return
-	
+
 	var/eams_status = SSeams.Toggle()
 	log_and_message_admins("has [eams_status ? "enabled" : "disabled"] the Epic Anti-Multiaccount System!")
