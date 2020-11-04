@@ -15,7 +15,7 @@
 	brute_mod = 0.8
 	blood_volume = 800
 	num_alternate_languages = 2
-	secondary_langs = list(LANGUAGE_UNATHI)
+	additional_langs = list(LANGUAGE_UNATHI)
 	name_language = LANGUAGE_UNATHI
 	health_hud_intensity = 2
 	hunger_factor = DEFAULT_HUNGER_FACTOR * 3
