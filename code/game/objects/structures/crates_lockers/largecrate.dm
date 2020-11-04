@@ -90,5 +90,5 @@
 
 /obj/structure/largecrate/animal/parrot
 	name = "parrot crate"
-	held_count = 4
+	held_count = 1
 	held_type = /mob/living/simple_animal/parrot

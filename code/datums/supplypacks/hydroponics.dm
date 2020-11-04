@@ -40,7 +40,7 @@
 /decl/hierarchy/supply_pack/hydroponics/parrot
 	name = "Parrot crate"
 	contains = list()
-	cost = 100
+	cost = 40
 	containertype = /obj/structure/largecrate/animal/parrot
 	containername = "\improper Parrot crate"
 
