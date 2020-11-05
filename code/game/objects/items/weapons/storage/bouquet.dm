@@ -9,6 +9,7 @@
 	w_class = ITEM_SIZE_LARGE
 	max_w_class = ITEM_SIZE_NORMAL
 	max_storage_space = 4
+	use_sound = 'sound/effects/using/plantrustle.ogg'
 
 
 /obj/item/weapon/storage/bouquet/shotgun
