@@ -789,6 +789,22 @@
 	..()
 	M.heal_organ_damage(0.5 * removed, 0)
 
+/datum/reagent/drink/coffee/cappuccino
+	name = "Cappuccino"
+	description = "A nice, light coffee beverage made of espresso and steamed milk."
+	taste_description = "creamy coffee"
+	color = "#c65905"
+	adj_temp = 5
+
+	glass_required = "coffeecup"
+	glass_icon_state = "cappuccino"
+	glass_name = "cappuccino"
+	glass_desc = "A nice, light coffee beverage made of espresso and steamed milk."
+
+/datum/reagent/drink/coffee/cappuccino/affect_ingest(mob/living/carbon/M, alien, removed)
+	..()
+	M.heal_organ_damage(0.5 * removed, 0)
+
 /datum/reagent/drink/hot_coco
 	name = "Hot Chocolate"
 	description = "Made with love! And cocoa beans."

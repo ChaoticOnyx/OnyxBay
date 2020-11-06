@@ -1772,6 +1772,12 @@
 	required_reagents = list(/datum/reagent/drink/coffee = 1, /datum/reagent/drink/milk = 1)
 	result_amount = 2
 
+/datum/chemical_reaction/cappuccino
+	name = "Cappuccino"
+	result = /datum/reagent/drink/coffee/cappuccino
+	required_reagents = list(/datum/reagent/drink/coffee = 2, /datum/reagent/drink/milk/cream = 1)
+	result_amount = 3
+
 /datum/chemical_reaction/acidspit
 	name = "Acid Spit"
 	result = /datum/reagent/ethanol/acid_spit
