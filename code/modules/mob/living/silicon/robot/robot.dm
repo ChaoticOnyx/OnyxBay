@@ -259,21 +259,22 @@
 		return
 	sensor_mode = 0
 	active_hud = null
-	var/list/modules = list()
+	var/list/modules = list("Standard")
 	modules.Add(GLOB.robot_module_types)
 	var/decl/security_state/security_state = decls_repository.get_decl(GLOB.using_map.security_state)
 	if((crisis && security_state.current_security_level_is_same_or_higher_than(security_state.high_security_level)) || crisis_override) //Leaving this in until it's balanced appropriately.
-		to_chat(src, "<span class='warning'>Crisis mode active. Combat module available.</span>")
-		modules+="Combat"
+		to_chat(src, SPAN("warning", "Crisis mode active. Combat module available."))
+		modules += "Combat"
 	modtype = input("Please, select a module!", "Robot module", null, null) as null|anything in modules
 	if(module)
 		return
-	if(!(modtype in GLOB.robot_module_types))
+	if(!(modtype in GLOB.robot_module_types) && modtype != "Standard")
 		return
 
 	var/module_type = robot_modules[modtype]
 	new module_type(src)
-	GLOB.robot_module_types.Remove(modtype)
+	if(modtype != "Standard")
+		GLOB.robot_module_types.Remove(modtype)
 	hands.icon_state = lowertext(modtype)
 	feedback_inc("cyborg_[lowertext(modtype)]",1)
 	updatename()
