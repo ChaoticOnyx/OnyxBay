@@ -220,29 +220,6 @@
 			break
 	return ..()
 
-/*
-
-/obj/machinery/body_scanconsole/process() //not really used right now
-	if(stat & (NOPOWER|BROKEN))
-		return
-	//use_power(250) // power stuff
-
-//	var/mob/M //occupant
-//	if (!( src.status )) //remove this
-//		return
-//	if ((src.connected && src.connected.occupant)) //connected & occupant ok
-//		M = src.connected.occupant
-//	else
-//		if (istype(M, /mob))
-//		//do stuff
-//		else
-///			src.temphtml = "Process terminated due to lack of occupant in scanning chamber."
-//			src.status = null
-//	src.updateDialog()
-//	return
-
-*/
-
 /obj/machinery/body_scanconsole/attack_ai(user as mob)
 	return src.attack_hand(user)
 
@@ -270,6 +247,7 @@
 
 			new /obj/item/weapon/paper/(loc, "<tt>[connected.occupant.get_medical_data()]</tt>", "Body scan report - [occupant]")
 			return TRUE
+
 		if ("eject")
 			if (connected)
 				connected.eject()
@@ -281,40 +259,6 @@
 			hide_organs = !hide_organs
 			return TRUE
 
-/obj/machinery/body_scanconsole/ui_data(mob/user)
-	var/list/data = list()
-
-	data["connected"] = connected
-	data["medical_data"] = null
-	data["hide_status"] = hide_status
-	data["hide_organs"] = hide_organs
-
-	if (connected && connected.occupant)
-		data["medical_data"] = connected.occupant.get_medical_data_ui()
-
-	return data
-
-/obj/machinery/body_scanconsole/tg_ui_interact(mob/user, ui_key = "main", datum/tgui/ui = null, force_open = 0, datum/tgui/master_ui = null, datum/ui_state/state = GLOB.default_state)
-	ui = SStgui.try_update_ui(user, src, ui_key, ui, force_open)
-	if(!ui)
-		ui = new(user, src, ui_key, "body_scanner", name , 500, 700, master_ui, state)
-		ui.open()
-
-/obj/machinery/body_scanconsole/attack_hand(mob/user)
-	if(..())
-		return
-	if(stat & (NOPOWER|BROKEN))
-		return
-	if(!connected || (connected.stat & (NOPOWER|BROKEN)))
-		to_chat(user, "<span class='warning'>This console is not connected to a functioning body scanner.</span>")
-		return
-	if (!(connected.occupant in connected))
-		connected.go_out()
-	if(!ishuman(connected.occupant))
-		to_chat(user, "<span class='warning'>This device can only scan compatible lifeforms.</span>")
-		return
-
-	tg_ui_interact(user)
 
 /proc/get_severity(amount)
 	if(!amount)
@@ -327,40 +271,84 @@
 	else if(amount > 10)
 		. = "moderate"
 
+// should_have_organ(BP_BRAIN) already checked when call
+/mob/living/carbon/human/proc/get_brain_activity_status()
+	var/obj/item/organ/internal/brain/activity = src.internal_organs_by_name[BP_BRAIN]
+	if(activity >= 80 && activity <= 120)
+		return "good"
+	if(activity >= 60 && activity <= 140)
+		return "average"
+	return "bad"
+
+/proc/get_brain_status(var/brain_damage_procents)
+	if(brain_damage_procents >= 80)
+		return "good"
+	if(brain_damage_procents >= 50)
+		return "average"
+	return "bad"
+
 /mob/living/carbon/human/proc/get_medical_data_ui()
 	var/list/data = list()
 	var/mob/living/carbon/human/H = src
 
-	data["object"] = H.name
+	data["occupant"] = H.name
 	data["scan_date"] = stationtime2text()
+
 	data["brain_activity"] = null
+	data["brain_activity_status"] = null
+
+	data["brain_damage"] = null
+	data["brain_status"] = null
 	data["pulse"] = null
 
 	if(H.should_have_organ(BP_BRAIN))
 		var/obj/item/organ/internal/brain/brain = H.internal_organs_by_name[BP_BRAIN]
 		if (!brain || H.stat == DEAD || (H.status_flags & FAKEDEATH))
-			data["brain_activity"] = 0
+			data["brain_activity"]    = 0
 		else if (H.stat != DEAD)
-			if (!brain.damage)
-				data["brain_activity"] = 1
-			else
-				data["brain_activity"] = 1 - (brain.damage / brain.max_damage)
-	else
-		data["brain_activity"] = null
+			data["brain_activity"]    = brain.get_activity()
+
+		data["brain_activity_status"] = src.get_brain_activity_status()
+
+		var/brain_damage_procents = 100*(brain.damage / brain.max_damage)
+		data["brain_damage"]     	  = 100-brain_damage_procents
+		data["brain_status"]          = get_brain_status(100-brain_damage_procents)
+
 
 	if(H.should_have_organ(BP_HEART))
 		if(H.status_flags & FAKEDEATH)
+		{
 			data["pulse"] = 0
+			data["pulse_status"] = "bad"
+		}
 		else
-			data["pulse"] = H.get_pulse(1)
-	else
-		data["pulse"] = null
+			var/pulse     = H.get_pulse(1)
+			data["pulse"] = pulse
 
-	data["blood_volume"] = H.get_blood_volume()
-	data["blood_volume_abs"] = H.vessel.get_reagent_amount(/datum/reagent/blood)
+			if(pulse < 20)
+				data["pulse_status"] = "bad"
+			if(pulse < 40)
+				data["pulse_status"] = "average"
+			if(pulse < 90)
+				data["pulse_status"] = "good"
+			if(pulse < 140)
+				data["pulse_status"] = "average"
+			if(pulse >= 140)
+				data["pulse_status"] = "bad"
+
+
+
+	var/blood_volume = H.get_blood_volume()
+	data["blood_volume"] = blood_volume
+
+	if(blood_volume < 40)
+		data["blood_volume_status"] = "bad"
+	if(blood_volume < 70)
+		data["blood_volume_status"] = "average"
+	if(blood_volume >= 70)
+		data["blood_volume_status"] = "good"
+
 	data["blood_volume_max"] = H.species.blood_volume
-
-	data["blood_type"] = null
 
 	if(H.b_type)
 		data["blood_type"] = H.b_type
@@ -373,7 +361,6 @@
 		data["warnings"] += list("Warning: Blood clotting detected, blood transfusion recommended.")
 
 	data["body_temperature_c"] = H.bodytemperature - T0C
-	data["body_temperature_f"] = H.bodytemperature*1.8-459.67
 
 	if(H.nutrition < 150)
 		data["warnings"] += list("Warning: Very low nutrition value detected")
@@ -514,7 +501,7 @@
 	if (H.chem_effects[CE_BLOCKAGE])
 		dat += "<span class='warning'>Warning: Blood clotting detected, blood transfusion recommended.</span>"
 	// Body temperature.
-	dat += "<b>Body temperature:</b> [H.bodytemperature-T0C]&deg;C ([H.bodytemperature*1.8-459.67]&deg;F)"
+	dat += "<b>Body temperature:</b> [H.bodytemperature-T0C]&deg;C"
 	if(H.nutrition < 150)
 		dat += "<span class='warning'>Warning: Very low nutrition value detected.</span>"
 
@@ -598,3 +585,18 @@
 		dat += text("Retinal misalignment detected.")
 
 	. = jointext(dat,"<br>")
+
+
+/obj/machinery/body_scanconsole/attack_hand(mob/user)
+	ASSERT(user)
+	var/list/data  = connected.occupant.get_medical_data_ui()
+	ASSERT(data)
+	var/ui_key = "adv_med"
+	var/datum/nanoui/ui = SSnano.try_update_ui(user, src, ui_key, null, data, force_open=FALSE)
+	if(!ui)
+		ui = new (user, src, ui_key, "adv_med.tmpl", "Advanced Body Scanner",
+			500, 600, state=GLOB.interactive_state)
+		ui.set_initial_data(data)
+		ui.open()
+		ui.set_auto_update(0)
+	return
