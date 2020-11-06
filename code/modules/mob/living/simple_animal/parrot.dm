@@ -239,10 +239,11 @@
 							item_to_add.loc = src
 							src.held_item = item_to_add
 							to_chat(usr, "<span class='notice'>You put the item into claws.</span>")
-							if(prob(50))
-								say("Поли это нравится!")
-							else
-								say("Поли недоволен подарком!")
+							if(istype(src, /mob/living/simple_animal/parrot/Poly))
+								if(prob(50))
+									say("Поли нравится!")
+								else
+									say("Поли недоволен!")
 
 
 
@@ -723,7 +724,7 @@
 /mob/living/simple_animal/parrot/Poly
 	name = "Poly"
 	desc = "Poly the Parrot. An expert on quantum cracker theory."
-	speak = list("Поли хочет крекер!", ":e Проверьте материю, ущербы!",":e Настраивайте СМЕСы, ленивые жопы!",":e КТО СПИЗДИЛ ЧЕРТОВЫ РИГИ?",":e ОНА РАССЛАИВАЕТСЯ ВЫЗЫВАЙТЕ ШАТТЛ!")
+	speak = list("Поли хочет крекер!", ":e Проверьте материю, ущербы!",":e Настраивайте СМЕСы, ленивые жопы!",":e КТО СПИЗДИЛ ЧЕРТОВЫ РИГИ?",":e ОНА СЕЙЧАС ЕБНЕТ ВЫЗЫВАЙТЕ ШАТТЛ!")
 
 /mob/living/simple_animal/parrot/Poly/New()
 	ears = new /obj/item/device/radio/headset/headset_eng(src)
