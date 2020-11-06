@@ -1,0 +1,97 @@
+<!--
+Title: Advanced medical scanner UI
+Used In File: \code\game\machinery\adv_med.dm
+ -->
+
+<h3>Body scanner report</h3>
+
+<div>
+    <div class="item">
+        <div class="itemLabel">
+            Occupant:
+        </div>
+        <div style="float: right">
+            {{:data.occupant}}
+        </div>
+    </div>
+    <div class="item">
+        <div class="itemLabel">
+            Scan Date:
+        </div>
+        <div style="float: right">
+            {{:data.scan_date}}
+        </div>
+    </div>
+</div>
+
+<div>
+    <div class="separatorBorder">
+        <div class="item">
+            <div class="itemLabel">
+                Brain activity:
+            </div>
+            <div class="itemContent">
+                {{:helper.displayBar(data.brain_activity, 0, 100, data.brain_activity_status)}}
+            </div>
+            <div class="{{:data.brain_activity_status}}" style="float: right">
+                {{:data.brain_activity}}
+            </div>
+        </div>
+
+        <div class="item">
+            <div class="itemLabel">
+                Brain status:
+            </div>
+            <div class="itemContent">
+                {{:helper.displayBar(data.brain_damage, 0, 100, data.brain_status)}}
+            </div>
+            <div class="{{:data.brain_status}}" style="float: right">
+                {{:data.brain_damage}}
+            </div>
+        </div>
+    </div>
+
+    <div class="separatorBorder">
+        <div class="item">
+            <div class="itemLabel">
+                Pulse:
+            </div>
+            <div class="{{:data.pulse_status}}" style="float: right">
+                {{:data.pulse}}
+            </div>
+        </div>
+
+        <div class="item">
+            <div class="itemLabel">
+                Blood volume:
+            </div>
+            <div class="itemContent">
+                {{:helper.displayBar(data.blood_volume, 0, data.blood_volume_max, data.blood_volume_status)}}
+            </div>
+            <div class="{{:data.blood_volume_status}}" style="float: right">
+                {{:data.blood_volume}}
+            </div>
+        </div>
+
+        <div class="item">
+            <div class="itemLabel">
+                Blood type:
+            </div>
+            <div class="highlight" style="float: right">
+                {{:data.blood_type}}
+            </div>
+        </div>
+
+
+
+
+    </div>
+</div>
+
+<div class="warnings">
+    {{for data.warnings}}
+        <div class="notice">
+            {{:value}}
+        </div>
+    {{/for}}
+</div>

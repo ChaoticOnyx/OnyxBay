@@ -20,6 +20,14 @@
 	var/damage_threshold_value
 	var/healed_threshold = 1
 
+	// look /obj/item/organ/internal/brain/proc/get_activity()
+	var/stable_activity_value = 100.0
+	var/relative_activity = 0
+
+// in procents
+/obj/item/organ/internal/brain/proc/get_activity()
+	return (stable_activity_value * (1.0-(damage / max_damage)) + relative_activity)/stable_activity_value * 100.0
+
 /obj/item/organ/internal/brain/robotize()
 	replace_self_with(/obj/item/organ/internal/posibrain)
 
