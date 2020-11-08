@@ -1796,6 +1796,12 @@ area/rnd/test_area
 /area/outpost/research/brainstorm
 	name = "Research Outpost Brainstorm Room"
 
+// Merchant outpost
+/area/outpost/merchant/
+	name = "\improper Merchant Outpost Hideout"
+	icon_state = "merch_outpost"
+	requires_power = 0
+
 /area/construction
 	name = "\improper Engineering Construction Area"
 	icon_state = "yellow"
