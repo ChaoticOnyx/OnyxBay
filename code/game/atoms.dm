@@ -374,16 +374,15 @@ its easier to just keep the beam vertical.
 // message is output to anyone who can see, e.g. "The [src] does something!"
 // blind_message (optional) is what blind people will hear e.g. "You hear something!"
 /atom/proc/visible_message(message, blind_message, range = world.view, checkghosts = null)
-	var/turf/T = get_turf(src)
-	var/list/mobs = list()
-	var/list/objs = list()
-	get_mobs_and_objs_in_view_fast(T,range, mobs, objs, checkghosts)
+	var/list/seeing_mobs = list()
+	var/list/seeing_objs = list()
+	get_mobs_and_objs_in_view_fast(get_turf(src), range, seeing_mobs, seeing_objs, checkghosts)
 
-	for(var/o in objs)
+	for(var/o in seeing_objs)
 		var/obj/O = o
 		O.show_message(message, VISIBLE_MESSAGE, blind_message, AUDIBLE_MESSAGE)
 
-	for(var/m in mobs)
+	for(var/m in seeing_mobs)
 		var/mob/M = m
 		if(M.see_invisible >= invisibility)
 			M.show_message(message, VISIBLE_MESSAGE, blind_message, AUDIBLE_MESSAGE)
@@ -396,17 +395,17 @@ its easier to just keep the beam vertical.
 // deaf_message (optional) is what deaf people will see.
 // hearing_distance (optional) is the range, how many tiles away the message can be heard.
 /atom/proc/audible_message(message, deaf_message, hearing_distance = world.view, checkghosts = null)
-	var/turf/T = get_turf(src)
-	var/list/mobs = list()
-	var/list/objs = list()
-	get_mobs_and_objs_in_view_fast(T, hearing_distance, mobs, objs, checkghosts)
+	var/list/hearing_mobs = list()
+	var/list/hearing_objs = list()
+	get_mobs_and_objs_in_view_fast(get_turf(src), hearing_distance, hearing_mobs, hearing_objs, checkghosts)
 
-	for(var/m in mobs)
-		var/mob/M = m
-		M.show_message(message,2,deaf_message,1)
-	for(var/o in objs)
+	for(var/o in hearing_objs)
 		var/obj/O = o
-		O.show_message(message,2,deaf_message,1)
+		O.show_message(message, AUDIBLE_MESSAGE, deaf_message, VISIBLE_MESSAGE)
+
+	for(var/m in hearing_mobs)
+		var/mob/M = m
+		M.show_message(message, AUDIBLE_MESSAGE, deaf_message, VISIBLE_MESSAGE)
 
 /atom/movable/proc/dropInto(atom/destination)
 	while(istype(destination))
