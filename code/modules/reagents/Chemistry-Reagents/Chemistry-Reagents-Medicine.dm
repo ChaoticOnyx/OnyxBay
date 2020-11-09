@@ -1020,7 +1020,7 @@
 	M.hallucination(15, 15)
 	M.drowsyness = max(M.drowsyness, 30)
 	M.add_chemical_effect(CE_PAINKILLER, 120)
-	M.add_chemical_effect(CE_PANIC, 10)
+	M.add_brain_activity(-50)
 
 
 

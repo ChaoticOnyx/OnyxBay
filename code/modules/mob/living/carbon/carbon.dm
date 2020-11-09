@@ -539,3 +539,6 @@
 	// And restore all organs...
 	for (var/obj/item/organ/O in organs)
 		O.rejuvenate()
+
+/mob/living/carbon/proc/add_brain_activity(activity)
+	src.internal_organs_by_name[BP_BRAIN].relative_activity += activity

@@ -160,8 +160,7 @@
 		handle_disabilities()
 		handle_damage_effects()
 
-		relative_activity += owner.chem_effects[CE_PANIC]
-		var/stabilizer = 0.1 + (owner.chem_effects[CE_ANTIEPILEPTIC]*1.2)
+		var/stabilizer = 0.1 + (owner.chem_effects[CE_ANTIEPILEPTIC]*1.5)
 		relative_activity += clamp(-relative_activity, -stabilizer, stabilizer)
 		// Brain damage from low oxygenation or lack of blood.
 		if(owner.should_have_organ(BP_HEART))
@@ -212,7 +211,7 @@
 /obj/item/organ/internal/brain/proc/handle_disabilities()
 	if((owner.disabilities & EPILEPSY) && prob(1))
 		relative_activity = 155 - get_activity()
-	else if((owner.disabilities & TOURETTES) && prob(10))
+	else if((owner.disabilities & TOURETTES) && prob(5))
 		owner.Stun(10)
 		switch(rand(1, 3))
 			if(1)
@@ -223,8 +222,8 @@
 	else if((owner.disabilities & NERVOUS) && prob(10))
 		owner.stuttering = max(10, owner.stuttering)
 	else if((owner.disabilities & SCHIZOPHRENIA) && prob(10))
-		owner.hallucination(15, 60)
-		to_chat(owner, SPAN("warning", "There are strange things around here."))
+		owner.hallucination(15, 15)
+		to_chat(owner, SPAN("warning", "There are strange things around."))
 	if(damage > 0.95*max_damage)
 		owner.disabilities |= pick(EPILEPSY, TOURETTES, NERVOUS, SCHIZOPHRENIA)
 
