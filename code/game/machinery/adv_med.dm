@@ -276,25 +276,37 @@
 	var/activity = src.internal_organs_by_name[BP_BRAIN].get_activity()
 
 	switch(activity)
-		if(80 to 120)
-			return "good"
-		if(60 to 140)
-			return "average"
-	return "bad"
+		if(90 to 110)
+			return "None"
+		if(70 to 130)
+			return "Minor"
+		if(50 to 140)
+			return "Severe"
+		if(30 to 160)
+			return "Significant"
+	return "Moderate"
 
 /proc/get_brain_status(var/brain_damage_procents)
+	if(brain_damage_procents >= 90)
+		return "None"
 	if(brain_damage_procents >= 80)
-		return "good"
+		return "Minor"
+	if(brain_damage_procents >= 70)
+		return "Severe"
 	if(brain_damage_procents >= 50)
-		return "average"
-	return "bad"
+		return "Significant"
+	return "Moderate"
 
 /proc/get_blood_status(var/procents)
+	if(procents < 20)
+		return "Moderate"
 	if(procents < 40)
-		return "bad"
+		return "Significant"
 	if(procents < 70)
-		return "average"
-	return "good"
+		return "Severe"
+	if(procents < 90)
+		return "Minor"
+	return "None"
 
 /mob/living/carbon/human/proc/get_medical_data_ui()
 	var/list/data = list()
@@ -320,25 +332,23 @@
 
 	if(H.should_have_organ(BP_HEART))
 		if(H.status_flags & FAKEDEATH)
-		{
 			data["pulse"] = 0
-			data["pulse_status"] = "bad"
-		}
+			data["pulse_status"] = "Moderate"
 		else
 			var/pulse     = text2num(H.get_pulse(1))
 
 			data["pulse"] = pulse
 
 			if(pulse < 20)
-				data["pulse_status"] = "bad"
+				data["pulse_status"] = "Moderate"
 			else if(pulse < 40)
-				data["pulse_status"] = "average"
+				data["pulse_status"] = "Severe"
 			else if(pulse < 90)
-				data["pulse_status"] = "good"
+				data["pulse_status"] = "None"
 			else if(pulse < 140)
-				data["pulse_status"] = "average"
+				data["pulse_status"] = "Severe"
 			else if(pulse >= 140)
-				data["pulse_status"] = "bad"
+				data["pulse_status"] = "Moderate"
 
 
 
