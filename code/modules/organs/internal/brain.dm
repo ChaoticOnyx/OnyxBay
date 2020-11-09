@@ -211,7 +211,7 @@
 
 /obj/item/organ/internal/brain/proc/handle_disabilities()
 	if((owner.disabilities & EPILEPSY) && prob(1))
-		relative_activity = 140 - get_activity()
+		relative_activity = 155 - get_activity()
 	else if((owner.disabilities & TOURETTES) && prob(10))
 		owner.Stun(10)
 		switch(rand(1, 3))
@@ -222,7 +222,9 @@
 		owner.make_jittery(100)
 	else if((owner.disabilities & NERVOUS) && prob(10))
 		owner.stuttering = max(10, owner.stuttering)
-
+	else if((owner.disabilities & SCHIZOPHRENIA) && prob(10))
+		owner.hallucination(15, 60)
+		to_chat(owner, SPAN("warning", "There are strange things around here."))
 	if(damage > 0.95*max_damage)
 		owner.disabilities |= pick(EPILEPSY, TOURETTES, NERVOUS, SCHIZOPHRENIA)
 
@@ -250,7 +252,7 @@
 		owner.Paralyse(10)
 
 	// From brain activity
-	if(get_activity() >= (owner.disabilities & EPILEPSY ? 140 : 220))
+	if(get_activity() >= (owner.disabilities & EPILEPSY ? 150 : 220))
 		if(!owner.lying)
 			to_chat(owner, SPAN("warning", "You have a seizure!"))
 			owner.visible_message(SPAN("danger", "\The [owner] having a seizure!"))
@@ -258,9 +260,9 @@
 		owner.make_jittery(1000)
 		owner.stuttering = max(10, owner.stuttering)
 		damage += 2.5
-	if(get_activity() >= (owner.disabilities & EPILEPSY ? 110 : 170) && prob(1))
+	if(get_activity() >= (owner.disabilities & EPILEPSY ? 120 : 170) && prob(1))
 		owner.stuttering = max(10, owner.stuttering)
-	if(get_activity() >= (owner.disabilities & EPILEPSY ? 120 : 140) && prob(1))
+	if(get_activity() >= (owner.disabilities & EPILEPSY ? 130 : 140) && prob(1))
 		owner.hallucination(15, 15)
 	if(get_activity() >= 120 && prob(1))
 		owner.custom_pain("Your feel pain.", 10)
