@@ -282,4 +282,4 @@
 	name = "bottle of Glucose pills"
 	desc = "These pills contain lots of nutriments, much needed for natural blood regeneration. 20u doseper pill"
 
-	startswith = list(/obj/item/weapon/reagent_containers/pill/glucose = 21)
+	startswith = list(/obj/item/weapon/reagent_containers/pill/glucose = 10)

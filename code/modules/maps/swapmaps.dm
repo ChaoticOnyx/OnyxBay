@@ -624,46 +624,51 @@ proc/SwapMaps_LoadChunk(chunk_id,turf/locorner)
 	 */
 	S.cd="//.0"
 	M.Read(S,M,locorner)
-	while(M.locked) sleep(1)
+	while(M.locked)
+		sleep(1)
 	qdel(M)
 	return 1
 
-proc/SwapMaps_SaveChunk(chunk_id,turf/corner1,turf/corner2)
+proc/SwapMaps_SaveChunk(chunk_id, turf/corner1, turf/corner2)
 	if(!corner1 || !corner2)
 		world.log << "SwapMaps error in SwapMaps_SaveChunk():"
 		if(!corner1) world.log << "  corner1 turf is null"
 		if(!corner2) world.log << "  corner2 turf is null"
 		return
-	var/swapmap/M=new
-	M.id=chunk_id
-	M.ischunk=1		// this is a chunk
+	var/swapmap/M = new
+	M.id = chunk_id
+	M.ischunk = 1		// this is a chunk
+
 	M.x1=min(corner1.x,corner2.x)
 	M.y1=min(corner1.y,corner2.y)
 	M.z1=min(corner1.z,corner2.z)
+
 	M.x2=max(corner1.x,corner2.x)
 	M.y2=max(corner1.y,corner2.y)
 	M.z2=max(corner1.z,corner2.z)
 	M.mode=swapmaps_mode
 	M.Save()
-	while(M.locked) sleep(1)
+
+	while(M.locked)
+		sleep(1)
 	qdel(M)
 	return 1
 
 proc/SwapMaps_GetSize(id)
 	var/savefile/S
-	var/text=0
-	if(swapmaps_mode==SWAPMAPS_TEXT && fexists("map_[id].txt"))
-		text=1
+	var/text = 0
+	if(swapmaps_mode == SWAPMAPS_TEXT && fexists("map_[id].txt"))
+		text = 1
 	else if(fexists("map_[id].sav"))
-		S=new("map_[id].sav")
-	else if(swapmaps_mode!=SWAPMAPS_TEXT && fexists("map_[id].txt"))
+		S = new("map_[id].sav")
+	else if(swapmaps_mode != SWAPMAPS_TEXT && fexists("map_[id].txt"))
 		text=1
 	else
 		world.log << "SwapMaps error in SwapMaps_GetSize(): map_[id] file not found."
 		return
 	if(text)
-		S=new
-		S.ImportText("/",file("map_[id].txt"))
+		S  =new
+		S.ImportText("/", file("map_[id].txt"))
 	/*
 		The //.0 path should always be the map. There's no other way to
 		read this data.
@@ -675,4 +680,4 @@ proc/SwapMaps_GetSize(id)
 	S["x"] >> x
 	S["y"] >> y
 	S["z"] >> z
-	return list(x,y,z)
+	return list(x, y, z)

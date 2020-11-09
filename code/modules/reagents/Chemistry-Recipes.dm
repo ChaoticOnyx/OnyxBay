@@ -453,6 +453,12 @@
 	required_reagents = list(/datum/reagent/tramadol/oxycodone = 1, /datum/reagent/dylovene = 1)
 	result_amount = 2
 
+/datum/chemical_reaction/psyloxon
+	name = "Psyloxon"
+	result = /datum/reagent/psyloxon
+	required_reagents = list(/datum/reagent/alkysine = 1, /datum/reagent/noexcutite = 1, /datum/reagent/soporific = 2)
+	result_amount = 4
+
 /* Solidification */
 
 /datum/chemical_reaction/phoronsolidification

@@ -262,22 +262,24 @@
 
 /proc/get_severity(amount)
 	if(!amount)
-		return "none"
-	. = "minor"
+		return "None"
+	. = "Minor"
 	if(amount > 50)
-		. = "severe"
+		. = "Severe"
 	else if(amount > 25)
-		. = "significant"
+		. = "Significant"
 	else if(amount > 10)
-		. = "moderate"
+		. = "Moderate"
 
 // should_have_organ(BP_BRAIN) already checked when call
 /mob/living/carbon/human/proc/get_brain_activity_status()
-	var/obj/item/organ/internal/brain/activity = src.internal_organs_by_name[BP_BRAIN]
-	if(activity >= 80 && activity <= 120)
-		return "good"
-	if(activity >= 60 && activity <= 140)
-		return "average"
+	var/activity = src.internal_organs_by_name[BP_BRAIN].get_activity()
+
+	switch(activity)
+		if(80 to 120)
+			return "good"
+		if(60 to 140)
+			return "average"
 	return "bad"
 
 /proc/get_brain_status(var/brain_damage_procents)
@@ -287,6 +289,13 @@
 		return "average"
 	return "bad"
 
+/proc/get_blood_status(var/procents)
+	if(procents < 40)
+		return "bad"
+	if(procents < 70)
+		return "average"
+	return "good"
+
 /mob/living/carbon/human/proc/get_medical_data_ui()
 	var/list/data = list()
 	var/mob/living/carbon/human/H = src
@@ -294,12 +303,6 @@
 	data["occupant"] = H.name
 	data["scan_date"] = stationtime2text()
 
-	data["brain_activity"] = null
-	data["brain_activity_status"] = null
-
-	data["brain_damage"] = null
-	data["brain_status"] = null
-	data["pulse"] = null
 
 	if(H.should_have_organ(BP_BRAIN))
 		var/obj/item/organ/internal/brain/brain = H.internal_organs_by_name[BP_BRAIN]
@@ -322,18 +325,19 @@
 			data["pulse_status"] = "bad"
 		}
 		else
-			var/pulse     = H.get_pulse(1)
+			var/pulse     = text2num(H.get_pulse(1))
+
 			data["pulse"] = pulse
 
 			if(pulse < 20)
 				data["pulse_status"] = "bad"
-			if(pulse < 40)
+			else if(pulse < 40)
 				data["pulse_status"] = "average"
-			if(pulse < 90)
+			else if(pulse < 90)
 				data["pulse_status"] = "good"
-			if(pulse < 140)
+			else if(pulse < 140)
 				data["pulse_status"] = "average"
-			if(pulse >= 140)
+			else if(pulse >= 140)
 				data["pulse_status"] = "bad"
 
 
@@ -341,36 +345,31 @@
 	var/blood_volume = H.get_blood_volume()
 	data["blood_volume"] = blood_volume
 
-	if(blood_volume < 40)
-		data["blood_volume_status"] = "bad"
-	if(blood_volume < 70)
-		data["blood_volume_status"] = "average"
-	if(blood_volume >= 70)
-		data["blood_volume_status"] = "good"
-
-	data["blood_volume_max"] = H.species.blood_volume
+	data["blood_volume_status"] = get_blood_status(blood_volume)
 
 	if(H.b_type)
 		data["blood_type"] = H.b_type
 
-	data["blood_pressure"] = H.get_blood_pressure()
 	data["blood_oxygenation"] = H.get_blood_oxygenation()
+	data["blood_oxygenation_status"] = get_blood_status(H.get_blood_oxygenation())
+	data["blood_pressure"] = H.get_blood_pressure()
 	data["warnings"] = list()
 
 	if (H.chem_effects[CE_BLOCKAGE])
 		data["warnings"] += list("Warning: Blood clotting detected, blood transfusion recommended.")
 
-	data["body_temperature_c"] = H.bodytemperature - T0C
+	data["body_temperature"] = H.bodytemperature - T0C
 
 	if(H.nutrition < 150)
 		data["warnings"] += list("Warning: Very low nutrition value detected")
 
-	data["brute_severity"] = capitalize(get_severity(H.getBruteLoss()))
-	data["burn_severity"] = capitalize(get_severity(H.getFireLoss()))
-	data["tox_severity"] = capitalize(get_severity(H.getToxLoss()))
-	data["oxy_severity"] = capitalize(get_severity(H.getOxyLoss()))
-	data["rad_severity"] = capitalize(get_severity(H.radiation/5))
-	data["clone_severity"] = capitalize(get_severity(H.getCloneLoss()))
+	data["systemStatus"] =  list()
+	data["systemStatus"] += list(list("Physical Trauma"         , get_severity(H.getBruteLoss())))
+	data["systemStatus"] += list(list("Burn Severity"           , get_severity(H.getFireLoss ())))
+	data["systemStatus"] += list(list("Organ Failure"           , get_severity(H.getToxLoss  ())))
+	data["systemStatus"] += list(list("Oxygen Deprivation"      , get_severity(H.getOxyLoss  ())))
+	data["systemStatus"] += list(list("Radiation Level"         , get_severity(H.radiation/5   ))) // 5 - coefficent for convert radiation to standart severity form
+	data["systemStatus"] += list(list("Genetic Damage"          , get_severity(H.getCloneLoss())))
 
 	if (H.paralysis)
 		data["warnings"] += list("Paralysis Summary: approx. [H.paralysis/4] seconds left")
@@ -414,43 +413,40 @@
 	data["external_organs"] = list()
 
 	for (var/obj/item/organ/external/E in H.organs)
-		var/organ_data = list(
-			"name" = capitalize(E.name), "status" = list(), "damage" = list()
-			)
+		var/organd = list(capitalize(E.name))
+		var/damage = ""
 
 		if (E.is_stump())
-			organ_data["status"] = list("Missing")
+			organd += "Missing"
+			damage += "N/A"
 		else
+			organd += "[english_list(E.get_scan_results(), nothing_text = "None", and_text = ", ")] "
 			if (E.brute_dam)
-				organ_data["damage"] += list("[capitalize(get_wound_severity(E.brute_ratio, (E.limb_flags & ORGAN_FLAG_HEALS_OVERKILL)))] physical trauma")
+				damage += "[capitalize(get_wound_severity(E.brute_ratio, (E.limb_flags & ORGAN_FLAG_HEALS_OVERKILL)))] physical trauma "
 
 			if (E.burn_dam)
-				organ_data["damage"] += list("[capitalize(get_wound_severity(E.burn_ratio, (E.limb_flags & ORGAN_FLAG_HEALS_OVERKILL)))] burns")
+				damage += "[capitalize(get_wound_severity(E.burn_ratio, (E.limb_flags & ORGAN_FLAG_HEALS_OVERKILL)))] burns "
 
 			if (E.brute_dam + E.burn_dam == 0)
-				organ_data["damage"] += list("None")
-
-			organ_data["status"] += list("[english_list(E.get_scan_results(), nothing_text = "", and_text = ", ")]")
-
-		data["external_organs"] += list(organ_data)
+				damage += "None"
+		organd += damage
+		data["external_organs"] += list(organd)
 
 	data["internal_organs"] = list()
 
 	for (var/obj/item/organ/internal/I in H.internal_organs)
-		var/organ_data = list(
-			"name" = capitalize(I.name), "status" = list(), "damage" = list()
-		)
+		var/organ_data = list(capitalize(I.name))
 
 		if (I.is_broken())
-			organ_data["damage"] += list("Severe")
+			organ_data += list("Moderate")
 		else if (I.is_bruised())
-			organ_data["damage"] += list("Moderate")
+			organ_data += list("Significant")
 		else if (I.is_damaged())
-			organ_data["damage"] += list("Minor")
+			organ_data += list("Minor")
 		else
-			organ_data["damage"] += list("None")
+			organ_data += list("None")
 
-		organ_data["status"] += list("[english_list(I.get_scan_results(), nothing_text = "", and_text = ", ")]")
+		organ_data += list("[english_list(I.get_scan_results(), nothing_text = "None", and_text = ", ")]")
 		data["internal_organs"] += list(organ_data)
 
 	for (var/organ_name in H.species.has_organ)
@@ -477,9 +473,9 @@
 			brain_result = "<span class='danger'>none, patient is braindead</span>"
 		else if(H.stat != DEAD)
 			brain_result = "[round(max(0,(1 - brain.damage/brain.max_damage)*100))]%"
-	else
-		brain_result = "<span class='danger'>ERROR - Nonstandard biology</span>"
-	dat += "<b>Brain activity:</b> [brain_result]"
+		dat += "<b>Brain status:</b> [brain_result]"
+		dat += "<b>Brain activity:</b> " + num2text(brain.get_activity()) + "%"
+
 
 	var/pulse_result = "normal"
 	if(H.should_have_organ(BP_HEART))
@@ -589,7 +585,8 @@
 
 /obj/machinery/body_scanconsole/attack_hand(mob/user)
 	ASSERT(user)
-	var/list/data  = connected.occupant.get_medical_data_ui()
+	ASSERT(connected.occupant)
+	var/data = connected.occupant.get_medical_data_ui()
 	ASSERT(data)
 	var/ui_key = "adv_med"
 	var/datum/nanoui/ui = SSnano.try_update_ui(user, src, ui_key, null, data, force_open=FALSE)
@@ -598,5 +595,5 @@
 			500, 600, state=GLOB.interactive_state)
 		ui.set_initial_data(data)
 		ui.open()
-		ui.set_auto_update(0)
+		ui.set_auto_update(1)
 	return

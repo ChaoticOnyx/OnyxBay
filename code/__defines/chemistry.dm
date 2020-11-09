@@ -47,7 +47,8 @@
 #define CE_BLOCKAGE	     "blockage"     // Gets in the way of blood circulation, higher the worse
 #define	CE_VOICELOSS     "whispers"     // Lowers the subject's voice to a whisper
 #define CE_SEDATE        "sedate"       // Applies sedation effects, i.e. paralysis, inability to use items, etc.
-
+#define CE_ANTIEPILEPTIC "antiepileptic"// Stabilizes brain activity, Psyloxon
+#define CE_PANIC         "brainpanic"    // Increases brain activity
 //reagent flags
 #define IGNORE_MOB_SIZE 0x1
 #define AFFECTS_DEAD    0x2

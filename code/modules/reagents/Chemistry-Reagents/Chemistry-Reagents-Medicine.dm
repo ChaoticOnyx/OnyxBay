@@ -1,6 +1,5 @@
 #define DRUGS_MESSAGE_DELAY 1*60*10
 #define ANTIDEPRESSANT_MESSAGE_DELAY 5*60*10
-
 /* General medicine */
 
 /datum/reagent/inaprovaline
@@ -18,6 +17,7 @@
 	if(alien != IS_DIONA)
 		M.add_chemical_effect(CE_STABLE)
 		M.add_chemical_effect(CE_PAINKILLER, 10)
+		M.add_chemical_effect(CE_ANTIEPILEPTIC, 2)
 
 /datum/reagent/inaprovaline/overdose(mob/living/carbon/M, alien)
 	M.add_chemical_effect(CE_SLOWDOWN, 1)
@@ -25,6 +25,26 @@
 		M.slurring = max(M.slurring, 10)
 	if(prob(2))
 		M.drowsyness = max(M.drowsyness, 5)
+
+/datum/reagent/psyloxon
+	name = "Psyloxon"
+	description = "Psyloxon is a antiepileptical drug. Stabilize brain activity."
+	taste_description = "bitterness"
+	reagent_state = LIQUID
+	color = "#bf0011"
+	overdose = REAGENTS_OVERDOSE / 2
+	metabolism = REM * 0.5
+	scannable = 1
+	flags = IGNORE_MOB_SIZE
+
+/datum/reagent/psyloxon/affect_blood(mob/living/carbon/M, alien, removed)
+	if(alien != IS_DIONA)
+		M.add_chemical_effect(CE_ANTIEPILEPTIC, 5)
+		M.add_chemical_effect(CE_SEDATE, 10)
+
+/datum/reagent/psyloxon/overdose(mob/living/carbon/M, alien)
+	M.add_chemical_effect(CE_SEDATE, 20)
+	M.Paralyse(10)
 
 /datum/reagent/bicaridine
 	name = "Bicaridine"
@@ -89,9 +109,7 @@
 	scannable = 1
 	flags = IGNORE_MOB_SIZE
 	var/remove_generic = 1
-	var/static/list/remove_toxins = list(
-		/datum/reagent/toxin/zombiepowder
-	)
+	var/static/list/remove_toxins = list(/datum/reagent/toxin/zombiepowder)
 
 /datum/reagent/dylovene/affect_blood(mob/living/carbon/M, alien, removed)
 	if(alien == IS_DIONA)
@@ -635,7 +653,7 @@
 /datum/reagent/leporazine/affect_blood(mob/living/carbon/M, alien, removed)
 	if(M.bodytemperature > 310)
 		M.bodytemperature = max(310, M.bodytemperature - (40 * TEMPERATURE_DAMAGE_COEFFICIENT))
-	else if(M.bodytemperature < 311)
+	else if(M.bodytemperature <= 310)
 		M.bodytemperature = min(310, M.bodytemperature + (40 * TEMPERATURE_DAMAGE_COEFFICIENT))
 
 /* Antidepressants */
@@ -734,7 +752,8 @@
 
 /datum/reagent/nicotine/overdose(mob/living/carbon/M, alien)
 	..()
-	M.add_chemical_effect(CE_PULSE, 2)
+	M.add_chemical_effect(CE_PULSE, 3)
+	M.add_chemical_effect(CE_BREATHLOSS, 2)
 
 /datum/reagent/tobacco
 	name = "Tobacco"
@@ -819,9 +838,9 @@
 	flags = IGNORE_MOB_SIZE
 
 /datum/reagent/noexcutite/affect_blood(mob/living/carbon/M, alien, removed)
-
 	if(alien != IS_DIONA)
 		M.make_jittery(-50)
+		M.add_chemical_effect(CE_ANTIEPILEPTIC, 2)
 
 /datum/reagent/antidexafen
 	name = "Antidexafen"
@@ -1001,6 +1020,7 @@
 	M.hallucination(15, 15)
 	M.drowsyness = max(M.drowsyness, 30)
 	M.add_chemical_effect(CE_PAINKILLER, 120)
+	M.add_chemical_effect(CE_PANIC, 10)
 
 
 

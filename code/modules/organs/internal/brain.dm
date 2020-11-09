@@ -45,9 +45,9 @@
 		tmp_owner = null
 
 /obj/item/organ/internal/brain/xeno
-	name = "thinkpan"
-	desc = "It looks kind of like an enormous wad of purple bubblegum."
-	icon = 'icons/mob/alien.dmi'
+	name       = "thinkpan"
+	desc       = "It looks kind of like an enormous wad of purple bubblegum."
+	icon 	   = 'icons/mob/alien.dmi'
 	icon_state = "chitin"
 
 /obj/item/organ/internal/brain/robotize()
@@ -56,11 +56,10 @@
 
 /obj/item/organ/internal/brain/New(mob/living/carbon/holder)
 	..()
-	max_damage = 100
-	if(species)
-		max_damage = species.total_health/2
+	max_damage         = species? (species.total_health/2) : 100
+
 	min_bruised_damage = max_damage*0.25
-	min_broken_damage = max_damage*0.75
+	min_broken_damage  = max_damage*0.75
 
 	damage_threshold_value = round(max_damage / damage_threshold_count)
 	spawn(5)
@@ -161,6 +160,9 @@
 		handle_disabilities()
 		handle_damage_effects()
 
+		relative_activity += owner.chem_effects[CE_PANIC]
+		var/stabilizer = 0.1 + (owner.chem_effects[CE_ANTIEPILEPTIC]*1.2)
+		relative_activity += clamp(-relative_activity, -stabilizer, stabilizer)
 		// Brain damage from low oxygenation or lack of blood.
 		if(owner.should_have_organ(BP_HEART))
 
@@ -208,13 +210,8 @@
 	..()
 
 /obj/item/organ/internal/brain/proc/handle_disabilities()
-	if(owner.stat)
-		return
 	if((owner.disabilities & EPILEPSY) && prob(1))
-		to_chat(owner, SPAN("warning", "You have a seizure!"))
-		owner.visible_message(SPAN("danger", "\The [owner] starts having a seizure!"))
-		owner.Paralyse(10)
-		owner.make_jittery(1000)
+		relative_activity = 140 - get_activity()
 	else if((owner.disabilities & TOURETTES) && prob(10))
 		owner.Stun(10)
 		switch(rand(1, 3))
@@ -226,20 +223,62 @@
 	else if((owner.disabilities & NERVOUS) && prob(10))
 		owner.stuttering = max(10, owner.stuttering)
 
+	if(damage > 0.95*max_damage)
+		owner.disabilities |= pick(EPILEPSY, TOURETTES, NERVOUS, SCHIZOPHRENIA)
+
 /obj/item/organ/internal/brain/proc/handle_damage_effects()
-	if(owner.stat)
-		return
+	// From brain damage
 	if(damage > 0.1*max_damage && prob(1))
-		owner.custom_pain("Your head feels numb and painful.",10)
+		owner.custom_pain("Your feel pain.", 10)
+	if(damage > 0.3*max_damage && prob(1))
+		owner.custom_pain("Your feel strong pain.", 25)
+	if(damage > 0.5*max_damage && prob(1))
+		owner.custom_pain("Your feel a lot of pain.", 40)
 	if(is_bruised() && prob(1) && owner.eye_blurry <= 0)
-		to_chat(owner, "<span class='warning'>It becomes hard to see for some reason.</span>")
+		to_chat(owner, SPAN("warning", "It becomes hard to see for some reason."))
 		owner.eye_blurry = 10
+	if(is_bruised() && prob(1))
+		owner.hallucination(15, 15)
 	if(damage >= 0.5*max_damage && prob(1) && owner.get_active_hand())
-		to_chat(owner, "<span class='danger'>Your hand won't respond properly, and you drop what you are holding!</span>")
+		to_chat(owner, SPAN("danger", "Your hand won't respond properly, and you drop what you are holding!"))
 		owner.drop_item()
 	if(damage >= 0.6*max_damage)
 		owner.slurring = max(owner.slurring, 2)
 	if(is_broken())
 		if(!owner.lying)
-			to_chat(owner, "<span class='danger'>You black out!</span>")
+			to_chat(owner, SPAN("warning", "You black out!"))
+		owner.Paralyse(10)
+
+	// From brain activity
+	if(get_activity() >= (owner.disabilities & EPILEPSY ? 140 : 220))
+		if(!owner.lying)
+			to_chat(owner, SPAN("warning", "You have a seizure!"))
+			owner.visible_message(SPAN("danger", "\The [owner] having a seizure!"))
+		owner.Paralyse(10)
+		owner.make_jittery(1000)
+		owner.stuttering = max(10, owner.stuttering)
+		damage += 2.5
+	if(get_activity() >= (owner.disabilities & EPILEPSY ? 110 : 170) && prob(1))
+		owner.stuttering = max(10, owner.stuttering)
+	if(get_activity() >= (owner.disabilities & EPILEPSY ? 120 : 140) && prob(1))
+		owner.hallucination(15, 15)
+	if(get_activity() >= 120 && prob(1))
+		owner.custom_pain("Your feel pain.", 10)
+	if(get_activity() >= 140 && prob(1))
+		owner.custom_pain("Your feel strong pain.", 25)
+	if(get_activity() >= 160 && prob(1))
+		owner.custom_pain("Your feel a lot of pain.", 40)
+	if(get_activity() <= 80 && prob(1))
+		owner.eye_blurry = 2
+	if(get_activity() <= 60 && prob(1))
+		to_chat(owner, SPAN("warning", "It becomes hard to see for some reason."))
+		owner.eye_blurry = 10
+	if(get_activity() <= 40 && prob(1))
+		owner.slurring = max(owner.slurring, 2)
+	if(get_activity() <= 30 && prob(1) && owner.get_active_hand())
+		to_chat(owner, SPAN("danger", "Your hand won't respond properly, and you drop what you are holding!"))
+		owner.drop_item()
+	if(get_activity() <= 10)
+		if(!owner.lying)
+			to_chat(owner, SPAN("warning", "You black out!"))
 		owner.Paralyse(10)

@@ -28,14 +28,16 @@ mob/living/carbon/proc/custom_pain(message, power, force, obj/item/organ/externa
 	if(force || (message != last_pain_message) || (world.time >= next_pain_time))
 		last_pain_message = message
 		if(power >= 70)
-			to_chat(src, "<span class='danger'><font size=3>[message]</font></span>")
+			to_chat(src, SPAN("danger", "<font size=3>[message]</font>"))
 		else if(power >= 40)
-			to_chat(src, "<span class='danger'><font size=2>[message]</font></span>")
+			to_chat(src, SPAN("danger", "<font size=2>[message]</font>"))
 		else if(power >= 10)
-			to_chat(src, "<span class='danger'>[message]</span>")
+			to_chat(src, SPAN("danger" , "[message]"))
 		else
-			to_chat(src, "<span class='warning'>[message]</span>")
+			to_chat(src, SPAN("warning", "[message]"))
 	next_pain_time = world.time + (100-power)
+
+	add_chemical_effect(CE_PANIC, power/5)
 
 mob/living/carbon/human/proc/handle_pain()
 	if(stat)

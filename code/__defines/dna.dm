@@ -29,11 +29,12 @@
 #define mSmallsize     110 // Table climbing.
 
 // disabilities
-#define NEARSIGHTED 0x1
-#define EPILEPSY    0x2
-#define COUGHING    0x4
-#define TOURETTES   0x8
-#define NERVOUS     0x10
+#define NEARSIGHTED 1
+#define EPILEPSY    2
+#define COUGHING    4
+#define TOURETTES   8
+#define NERVOUS     16
+#define SCHIZOPHRENIA 32
 
 // sdisabilities
 #define BLIND 0x1

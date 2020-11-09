@@ -61,7 +61,7 @@
 	value = 0.1
 
 /datum/reagent/sugar
-	value = 0.1
+	value = 2
 
 /datum/reagent/sulfur
 	value = 2
@@ -181,7 +181,7 @@
 	value = 0.1
 
 /datum/reagent/ethanol/wine
-	value = 0.1
+	value = 0.05
 
 /datum/reagent/ethanol/acid_spit
 	value = 0.15
@@ -382,7 +382,7 @@
 	value = 3.9
 
 /datum/reagent/dylovene
-	value = 2.1
+	value = 1.5
 
 /datum/reagent/dexalin
 	value = 2.4
@@ -564,7 +564,7 @@
 	value = 1.2
 
 /datum/reagent/soporific
-	value = 2.5
+	value = 3.5
 
 /datum/reagent/chloralhydrate
 	value = 2.6
@@ -601,3 +601,6 @@
 
 /datum/reagent/xenomicrobes
 	value = 5
+
+/datum/reagent/psyloxon
+	value = 3.5

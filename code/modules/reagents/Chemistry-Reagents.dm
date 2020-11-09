@@ -116,14 +116,3 @@
 /datum/reagent/Destroy() // This should only be called by the holder, so it's already handled clearing its references
 	holder = null
 	. = ..()
-
-/* DEPRECATED - TODO: REMOVE EVERYWHERE */
-
-/datum/reagent/proc/reaction_turf(turf/target)
-	touch_turf(target)
-
-/datum/reagent/proc/reaction_obj(obj/target)
-	touch_obj(target)
-
-/datum/reagent/proc/reaction_mob(mob/target)
-	touch_mob(target)

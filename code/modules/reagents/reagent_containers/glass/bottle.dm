@@ -1,6 +1,5 @@
 
 //Not to be confused with /obj/item/weapon/reagent_containers/food/drinks/bottle
-
 /obj/item/weapon/reagent_containers/glass/bottle
 	name = "bottle"
 	desc = "A small bottle."
@@ -332,4 +331,15 @@
 /obj/item/weapon/reagent_containers/glass/bottle/tarine/New()
 	..()
 	reagents.add_reagent(/datum/reagent/tramadol/opium/tarine, 60)
+	update_icon()
+
+/obj/item/weapon/reagent_containers/glass/bottle/psyloxon
+	name = "psyloxon bottle"
+	desc = "A small bottle. Contains psyloxon - antiepileptic."
+	icon = 'icons/obj/chemical.dmi'
+	icon_state = "bottle-1"
+
+/obj/item/weapon/reagent_containers/glass/bottle/psyloxon/New()
+	..()
+	reagents.add_reagent(/datum/reagent/psyloxon, 60)
 	update_icon()

@@ -196,7 +196,7 @@
 		show_image(src, ping_image)
 		spawn(8)
 			qdel(ping_image)
-		var/feedback = list("<span class='notice'>There are noises of movement ")
+		var/feedback = list("<span class='notice'>There are noises of movement</span>")
 		var/direction = get_dir(src, L)
 		if(direction)
 			feedback += "towards the [dir2text(direction)], "
