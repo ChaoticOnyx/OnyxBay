@@ -523,6 +523,7 @@
 		"nav_merchant_out",
 		"nav_merchant_shop",
 		"nav_merchant_space",
+		"nav_merchant_outpost"
 		)
 	shuttle_area = /area/shuttle/merchant/home
 	landmark_transition = "nav_merchant_transition"
