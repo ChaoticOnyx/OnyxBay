@@ -183,8 +183,8 @@ var/const/NO_EMAG_ACT = -50
 	SetName(final_name)
 
 /obj/item/weapon/card/id/proc/set_id_photo(mob/M)
-	front = getFlatIcon(M, SOUTH, always_use_defdir = 1)
-	side = getFlatIcon(M, WEST, always_use_defdir = 1)
+	front = getFlatIcon(M, defdir=SOUTH)
+	side = getFlatIcon(M, defdir=WEST)
 
 /mob/proc/set_id_info(obj/item/weapon/card/id/id_card)
 	id_card.age = 0
