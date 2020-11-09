@@ -562,6 +562,10 @@
 	landmark_tag = "nav_merchant_space"
 	autoset = 1
 
+/obj/effect/shuttle_landmark/merchant/outpost
+	name = "Outpost Hideout"
+	landmark_tag = "nav_merchant_outpost"
+	autoset = 1
 
 //Skipjack
 
