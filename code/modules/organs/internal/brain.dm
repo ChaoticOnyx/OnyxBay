@@ -160,7 +160,7 @@
 		handle_disabilities()
 		handle_damage_effects()
 
-		var/stabilizer = 0.1 + (owner.chem_effects[CE_ANTIEPILEPTIC]*1.5)
+		var/stabilizer = 1 + (owner.chem_effects[CE_ANTIEPILEPTIC]*1.5)
 		relative_activity += clamp(-relative_activity, -stabilizer, stabilizer)
 		// Brain damage from low oxygenation or lack of blood.
 		if(owner.should_have_organ(BP_HEART))

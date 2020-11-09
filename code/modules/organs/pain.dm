@@ -36,7 +36,7 @@ mob/living/carbon/proc/custom_pain(message, power, force, obj/item/organ/externa
 		else
 			to_chat(src, SPAN("warning", "[message]"))
 	next_pain_time = world.time + (100-power)
-	src.add_brain_activity(power)
+	src.add_brain_activity(power/2)
 
 mob/living/carbon/human/proc/handle_pain()
 	if(stat)
