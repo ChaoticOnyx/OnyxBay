@@ -273,7 +273,7 @@
 
 // should_have_organ(BP_BRAIN) already checked when call
 /mob/living/carbon/human/proc/get_brain_activity_status()
-	var/activity = src.internal_organs_by_name[BP_BRAIN].get_activity()
+	var/activity = internal_organs_by_name[BP_BRAIN].get_activity()
 
 	switch(activity)
 		if(80 to 120)
