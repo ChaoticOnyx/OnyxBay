@@ -4,7 +4,7 @@
 	icon = 'icons/obj/device.dmi'
 	icon_state = "batterer"
 	var/uses = 5
-	var/obj/aura/personal_shield/device/shield
+	var/obj/aura/shields/personal_shield/shield
 
 /obj/item/device/personal_shield/attack_self(mob/living/user)
 	if(uses)
