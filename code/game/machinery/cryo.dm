@@ -55,7 +55,7 @@
 		if(beaker)
 			. += "\nIt is loaded with a beaker."
 		if(emagged)
-			. += "\nThe panel is loose and circuits is charred."
+			. += "\nThe panel is loose and the circuitry is charred."
 
 /obj/machinery/atmospherics/unary/cryo_cell/Process()
 	if(stat & (BROKEN|NOPOWER))
