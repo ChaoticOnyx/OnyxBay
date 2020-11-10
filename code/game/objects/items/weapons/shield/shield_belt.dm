@@ -10,7 +10,7 @@
 	attack_verb = "Bashed"
 	var/obj/aura/shields/shield_belt/shield
 	var/max_power = 3000
-	var/current_power =3000
+	var/current_power = 3000
 	var/obj/item/weapon/cell/bcell
 	var/restored_power_per_tick = 5
 /obj/item/weapon/shield/shield_belt/Destroy()
@@ -32,7 +32,7 @@
 /obj/item/weapon/shield/shield_belt/equipped(var/mov/user,var/slot)
 	if(slot != slot_belt)
 		turn_off()
-
+	. = ..()
 /obj/item/weapon/shield/shield_belt/syndicate_shield_belt
 	icon_state = "utilitybelt"
 	item_state = "utility"
@@ -44,7 +44,7 @@
 	icon_state = "utilitybelt"
 	item_state = "utility"
 	name = "experimental shield belt"
-	desc = "Protects user from bullets and lasers, but doesn't allow you to shoot"
+	desc = "Protects user from bullets and lasers, but doesn't allow you to shoot."
 	origin_tech = list(TECH_MATERIAL = 6, TECH_MAGNET = 6)
 	bcell = /obj/item/weapon/cell/high
 /obj/item/weapon/shield/shield_belt/experimental_shield_belt/Initialize()
@@ -93,25 +93,28 @@
 	else
 		turn_off()
 /obj/item/weapon/shield/shield_belt/syndicate_shield_belt/AltClick(mob/living/user)
-	if (loc == user)
+	if(user.get_inventory_slot(src)== slot_belt)
 		if (current_power > 300&&!shield)
 			toggle(user)
 		else if(shield)
 			toggle(user)
 		else
 			to_chat(loc,"<span class='danger'>\The [src] has no energy!</span>")
-
-/obj/item/weapon/shield/shield_belt/experimental_shield_belt/AltClick(mob/living/user)
-	if(bcell)
-		if (bcell.charge > 300&&!shield)
-			toggle(user)
-		else if(shield)
-			toggle(user)
-		else
-			to_chat(loc,"<span class='danger'>\The [src] has no energy!</span>")
 	else
-		to_chat(loc,SPAN_DANGER("\The [src] has no battery!"))
-
+		to_chat(loc,SPAN_DANGER("\The [src] must be weared at belt to be used"))
+/obj/item/weapon/shield/shield_belt/experimental_shield_belt/AltClick(mob/living/user)
+	if(user.get_inventory_slot(src)== slot_belt)
+		if(bcell)
+			if (bcell.charge > 300&&!shield)
+				toggle(user)
+			else if(shield)
+				toggle(user)
+			else
+				to_chat(loc,"<span class='danger'>\The [src] has no energy!</span>")
+		else
+			to_chat(loc,SPAN_DANGER("\The [src] has no battery!"))
+	else
+		to_chat(loc,SPAN_DANGER("\The [src] must be weared at belt to be used"))
 /obj/item/weapon/shield/shield_belt/syndicate_shield_belt/Process(wait)
 	if(current_power >= max_power)
 		return PROCESS_KILL
@@ -146,5 +149,8 @@
 
 /obj/item/weapon/shield/shield_belt/experimental_shield_belt/emp_act(severity)
 	if(bcell)
-		bcell.emp_act(severity)	//let's not duplicate code everywhere if we don't have to please.
-	..()
+		bcell.emp_act(severity)
+		if(shield)
+			visible_message(SPAN_DANGER("\The [src] explodes!"))
+			explosion(src, -1, -1, 1, 2)
+			qdel(src)
