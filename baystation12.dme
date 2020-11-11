@@ -955,6 +955,7 @@
 #include "code\game\objects\items\weapons\melee\energy.dm"
 #include "code\game\objects\items\weapons\melee\misc.dm"
 #include "code\game\objects\items\weapons\melee\telescopic_baton.dm"
+#include "code\game\objects\items\weapons\shield\shield_belt.dm"
 #include "code\game\objects\items\weapons\smokables\cigarettes.dm"
 #include "code\game\objects\items\weapons\smokables\pipes.dm"
 #include "code\game\objects\items\weapons\smokables\rolling.dm"

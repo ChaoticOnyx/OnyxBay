@@ -1,3 +1,4 @@
+//auras for shield effect
 /obj/aura/shields/personal_shield
 	var/obj/item/device/personal_shield/shield
 	name = "personal shield"
