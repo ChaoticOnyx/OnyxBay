@@ -160,6 +160,32 @@
 
 	var/current_mode = null
 
+/obj/machinery/light/vox
+	name = "alien light"
+	icon_state = "voxlight"
+	base_state = "voxlight"
+	desc = "A strange lighting fixture."
+	light_type = /obj/item/weapon/light/tube
+
+/obj/machinery/light/spot
+	name = "spotlight"
+	desc = "A more robust socket for light tubes that demand more power."
+	light_type = /obj/item/weapon/light/tube/large
+
+/obj/machinery/light/he
+	name = "high efficiency light fixture"
+	icon_state = "hetube1"
+	base_state = "hetube"
+	desc = "An efficient lighting fixture used to reduce strain on the station's power grid."
+	light_type = /obj/item/weapon/light/tube/he
+
+/obj/machinery/light/quartz
+	name = "quartz light fixture"
+	icon_state = "qtube1"
+	base_state = "qtube"
+	desc = "Light is almost the same as sunlight."
+	light_type = /obj/item/weapon/light/tube/quartz
+
 // the smaller bulb light fixture
 /obj/machinery/light/small
 	icon_state = "bulb1"
@@ -168,13 +194,19 @@
 	light_type = /obj/item/weapon/light/bulb
 	construct_type = /obj/machinery/light_construct/small
 
-/obj/machinery/light/vox
-	name = "alien light"
-	icon = 'icons/obj/lighting.dmi'
-	icon_state = "voxlight"
-	base_state = "voxlight"
-	desc = "A strange lighting fixture."
-	light_type = /obj/item/weapon/light/tube
+/obj/machinery/light/small/he
+	name = "high efficiency light fixture"
+	icon_state = "hebulb1"
+	base_state = "hebulb"
+	desc = "An efficient small lighting fixture used to reduce strain on the station's power grid."
+	light_type = /obj/item/weapon/light/bulb/he
+
+/obj/machinery/light/small/quartz
+	name = "quartz light fixture"
+	icon_state = "qbulb1"
+	base_state = "qbulb"
+	desc = "Light is almost the same as sunlight."
+	light_type = /obj/item/weapon/light/bulb/quartz
 
 /obj/machinery/light/small/emergency
 	light_type = /obj/item/weapon/light/bulb/red
@@ -182,10 +214,12 @@
 /obj/machinery/light/small/red
 	light_type = /obj/item/weapon/light/bulb/red
 
-/obj/machinery/light/spot
-	name = "spotlight"
-	desc = "A more robust socket for light tubes that demand more power."
-	light_type = /obj/item/weapon/light/tube/large
+/obj/machinery/light/small/hl
+	name = "hanging lantern"
+	icon_state = "hanginglantern1"
+	base_state = "hanginglantern"
+	desc = "Combination of old technologies and electricity."
+	light_type = /obj/item/weapon/light/bulb/old
 
 // create a new lighting fixture
 /obj/machinery/light/Initialize(mapload, obj/machinery/light_construct/construct = null)
@@ -281,7 +315,7 @@
 		if(current_mode == LIGHTMODE_EMERGENCY)
 			set_mode(null)
 			update_power_channel(initial(power_channel))
-		
+
 /obj/machinery/light/proc/set_evacuation_lighting(state)
 	if(state)
 		if(LIGHTMODE_EVACUATION in lightbulb.lighting_modes)
@@ -327,7 +361,6 @@
 /obj/machinery/light/proc/insert_bulb(obj/item/weapon/light/L)
 	L.forceMove(src)
 	lightbulb = L
-
 	on = powered()
 	update_icon()
 
@@ -591,6 +624,23 @@
 	brightness_range = 9
 	brightness_power = 6
 
+/obj/item/weapon/light/tube/he
+	name = "high efficiency light tube"
+	desc = "An efficient light used to reduce strain on the station's power grid."
+	base_state = "lhetube"
+	brightness_range = 9
+	brightness_power = 7
+	brightness_color = "#33cccc"
+	matter = list(MATERIAL_STEEL = 60, MATERIAL_GLASS = 300)
+
+/obj/item/weapon/light/tube/quartz
+	name = "quartz light tube"
+	desc = "Light is almost the same as sunlight."
+	base_state = "lqtube"
+	brightness_range = 7
+	brightness_power = 10
+	brightness_color = "#8A2BE2"
+
 /obj/item/weapon/light/bulb
 	name = "light bulb"
 	desc = "A replacement light bulb."
@@ -608,6 +658,31 @@
 		LIGHTMODE_EVACUATION = list(l_color = "#bf0000"),
 		LIGHTMODE_ALARM = list(l_color = "#ff3333")
 		)
+
+/obj/item/weapon/light/bulb/he
+	name = "high efficiency light bulb"
+	desc = "An efficient light used to reduce strain on the station's power grid."
+	base_state = "lhebulb"
+	brightness_range = 6
+	brightness_power = 5
+	brightness_color = "#33cccc"
+	matter = list(MATERIAL_STEEL = 30, MATERIAL_GLASS = 150)
+
+/obj/item/weapon/light/bulb/quartz
+	name = "quartz light bulb"
+	desc = "Light is almost the same as sunlight."
+	base_state = "lqbulb"
+	brightness_range = 4
+	brightness_power = 8
+	brightness_color = "#8A2BE2"
+
+/obj/item/weapon/light/bulb/old
+	name = "old light bulb"
+	desc = "Old type of light bulbs, almost not being used at the station."
+	base_state = "lold_bulb"
+	brightness_range = 3
+	brightness_power = 3
+	brightness_color = "#ec8b2f"
 
 /obj/item/weapon/light/bulb/red
 	color = "#da0205"
