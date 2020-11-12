@@ -1,3 +1,4 @@
+#define DISABILITY_GIVE_DELAY 2*60*10
 /obj/item/organ/internal/brain
 	name = "brain"
 	desc = "A piece of juicy meat found in a person's head."
@@ -23,6 +24,8 @@
 	// look /obj/item/organ/internal/brain/proc/get_activity()
 	var/stable_activity_value = 100.0
 	var/relative_activity = 0
+	
+	var/last_disability_give = 0
 
 // in procents
 /obj/item/organ/internal/brain/proc/get_activity()
@@ -224,8 +227,9 @@
 	else if((owner.disabilities & SCHIZOPHRENIA) && prob(10))
 		owner.hallucination(15, 15)
 		to_chat(owner, SPAN("warning", "There are strange things around."))
-	if(damage > 0.95*max_damage)
+	if(damage > 0.95*max_damage && world.time > last_disability_give + DISABILITY_GIVE_DELAY)
 		owner.disabilities |= pick(EPILEPSY, TOURETTES, NERVOUS, SCHIZOPHRENIA)
+		last_disability_give = world.time
 
 /obj/item/organ/internal/brain/proc/handle_damage_effects()
 	// From brain damage
