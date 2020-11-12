@@ -40,7 +40,7 @@
 /datum/design/item/weapon/shield/shield_belt/experimental_shield_belt
 	id = "experimental_shield_belt"
 	req_tech= list(TECH_MATERIAL = 4, TECH_MAGNET = 6, TECH_POWER = 5,TECH_COMBAT = 5)
-	materials = list(MATERIAL_STEEL = 5000, MATERIAL_GLASS = 2000, MATERIAL_GOLD = 1000,MATERIAL_URANIUM = 1000, MATERIAL_DIAMOND = 500)
+	materials = list(MATERIAL_STEEL = 5000, MATERIAL_GLASS = 2000, MATERIAL_GOLD = 750,MATERIAL_URANIUM = 750, MATERIAL_DIAMOND = 1500)
 	build_path = /obj/item/weapon/shield/shield_belt/experimental_shield_belt
 	sort_string = "TBAAA"
 /datum/design/item/weapon/anti_photon
