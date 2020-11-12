@@ -63,16 +63,16 @@
 		if(!bcell && user.unEquip(W))
 			W.forceMove(src)
 			bcell = W
-			to_chat(user, "<span class='notice'>You install a cell into the [src].</span>")
+			to_chat(user, SPAN_NOTICE("You install a cell into the [src]."))
 			//update_icon()
 		else
-			to_chat(user, "<span class='notice'>[src] already has a cell.</span>")
+			to_chat(user, SPAN_NOTICE("[src] already has a cell."))
 	else if(isScrewdriver(W))
 		if(bcell)
 			bcell.update_icon()
 			bcell.dropInto(loc)
 			bcell = null
-			to_chat(user, "<span class='notice'>You remove the cell from the [src].</span>")
+			to_chat(user, SPAN_NOTICE("You remove the cell from the [src]"))
 			turn_off()
 
 /obj/item/weapon/shield/shield_belt/syndicate_shield_belt/examine(mob/user, distance)
@@ -95,22 +95,23 @@
 /obj/item/weapon/shield/shield_belt/syndicate_shield_belt/AltClick(mob/living/user)
 	if(user.get_inventory_slot(src)== slot_belt)
 		if (current_power > 300&&!shield)
+			current_power-=300
 			toggle(user)
 		else if(shield)
 			toggle(user)
 		else
-			to_chat(loc,"<span class='danger'>\The [src] has no energy!</span>")
+			to_chat(loc,SPAN_DANGER("The [src] has no energy!"))
 	else
 		to_chat(loc,SPAN_DANGER("\The [src] must be weared at belt to be used"))
 /obj/item/weapon/shield/shield_belt/experimental_shield_belt/AltClick(mob/living/user)
 	if(user.get_inventory_slot(src)== slot_belt)
 		if(bcell)
-			if (bcell.charge > 300&&!shield)
+			if (!shield&&bcell.checked_use(300))
 				toggle(user)
 			else if(shield)
 				toggle(user)
 			else
-				to_chat(loc,"<span class='danger'>\The [src] has no energy!</span>")
+				to_chat(loc,SPAN_DANGER("The [src] has no energy!"))
 		else
 			to_chat(loc,SPAN_DANGER("\The [src] has no battery!"))
 	else
@@ -131,7 +132,7 @@
 	current_power=current_power-P.damage*10
 	if(current_power<0)
 		current_power = 0
-		to_chat(loc,"<span class='danger'>\The [src] begins to spark as it turns off!</span>")
+		to_chat(loc,SPAN_DANGER("The [src] begins to spark as it turns off!</span>"))
 		turn_off()
 
 /obj/item/weapon/shield/shield_belt/proc/take_cell_charge(obj/item/projectile/P)
@@ -140,7 +141,7 @@
 		else
 			bcell.charge=0
 			QDEL_NULL(shield)
-			to_chat(loc,"<span class='danger'>\The [src] begins to spark as it turns off!</span>")
+			to_chat(loc,SPAN_DANGER("The [src] begins to spark as it turns off!"))
 			turn_off()
 
 /obj/item/weapon/shield/shield_belt/syndicate_shield_belt/emp_act(severity)
@@ -149,8 +150,8 @@
 
 /obj/item/weapon/shield/shield_belt/experimental_shield_belt/emp_act(severity)
 	if(bcell)
-		bcell.emp_act(severity)
 		if(shield)
 			visible_message(SPAN_DANGER("\The [src] explodes!"))
-			explosion(src, -1, -1, 1, 2)
+			explosion(src.loc, 1,2,4)
 			qdel(src)
+		bcell.emp_act(severity)
