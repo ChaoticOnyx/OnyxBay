@@ -5,7 +5,7 @@
 	name = "Virus sample crate"
 	contains = list(/obj/item/weapon/virusdish/random = 4)
 	cost = 25
-	containertype = /obj/structure/closet/crate/secure
+	containertype = /obj/structure/closet/crate/secure/science
 	containername = "\improper Virus sample crate"
 	access = access_virology
 
@@ -22,7 +22,7 @@
 					/obj/item/weapon/circuitboard/mecha/ripley/main, //TEMPORARY due to lack of circuitboard printer,
 					/obj/item/weapon/circuitboard/mecha/ripley/peripherals) //TEMPORARY due to lack of circuitboard printer
 	cost = 30
-	containertype = /obj/structure/closet/crate/secure
+	containertype = /obj/structure/closet/crate/secure/science
 	containername = "\improper APLU \"Ripley\" Circuit Crate"
 	access = access_robotics
 
@@ -31,7 +31,7 @@
 	contains = list(/obj/item/weapon/circuitboard/mecha/odysseus/peripherals, //TEMPORARY due to lack of circuitboard printer,
 					/obj/item/weapon/circuitboard/mecha/odysseus/main) //TEMPORARY due to lack of circuitboard printer
 	cost = 25
-	containertype = /obj/structure/closet/crate/secure
+	containertype = /obj/structure/closet/crate/secure/science
 	containername = "\improper \"Odysseus\" Circuit Crate"
 	access = access_robotics
 
