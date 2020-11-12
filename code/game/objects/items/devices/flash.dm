@@ -85,7 +85,8 @@
 						M.drop_r_hand()
 					if(flash_strength > 5)
 						M.Weaken(2)
-					C.add_brain_activity(20)
+					if(C.internal_organs_by_name[BP_BRAIN].get_activity() < 140)
+						C.add_brain_activity(15)
 			else
 				flashfail = 1
 
