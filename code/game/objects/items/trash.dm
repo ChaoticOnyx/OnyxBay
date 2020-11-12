@@ -104,5 +104,9 @@
 	name = "Hema2Gen"
 	icon_state = "hema2gen"
 
+/obj/item/trash/skrellsnacks
+	name = "\improper SkrellSnax"
+	icon_state = "skrellsnacks"
+
 /obj/item/trash/attack(mob/M as mob, mob/living/user as mob)
 	return

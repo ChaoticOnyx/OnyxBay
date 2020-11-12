@@ -802,9 +802,9 @@
 					/obj/item/weapon/reagent_containers/food/snacks/packaged/no_raisin = 6,
 					/obj/item/weapon/reagent_containers/food/snacks/spacetwinkie = 6,
 					/obj/item/weapon/reagent_containers/food/snacks/packaged/cheesiehonkers = 6,
-					/obj/item/weapon/reagent_containers/food/snacks/tastybread = 6)
-	contraband = list(/obj/item/weapon/reagent_containers/food/snacks/syndicake = 6,
-					  /obj/item/weapon/reagent_containers/food/snacks/skrellsnacks = 3)
+					/obj/item/weapon/reagent_containers/food/snacks/packaged/tastybread = 6)
+	contraband = list(/obj/item/weapon/reagent_containers/food/snacks/packaged/syndicake = 6,
+					  /obj/item/weapon/reagent_containers/food/snacks/packaged/skrellsnacks = 3)
 	prices = list(/obj/item/weapon/reagent_containers/food/snacks/packaged/tweakers = 5,
 				  /obj/item/weapon/reagent_containers/food/snacks/packaged/sweetroid = 5,
 				  /obj/item/weapon/reagent_containers/food/snacks/packaged/sugarmatter = 5,
@@ -816,7 +816,7 @@
 				  /obj/item/weapon/reagent_containers/food/snacks/packaged/no_raisin = 15,
 				  /obj/item/weapon/reagent_containers/food/snacks/spacetwinkie = 5,
 				  /obj/item/weapon/reagent_containers/food/snacks/packaged/cheesiehonkers = 10,
-				  /obj/item/weapon/reagent_containers/food/snacks/tastybread = 10)
+				  /obj/item/weapon/reagent_containers/food/snacks/packaged/tastybread = 10)
 
 /obj/machinery/vending/snack/wallsnack
 	name = "Getmore Chocolate Corp"
@@ -837,9 +837,9 @@
 					/obj/item/weapon/reagent_containers/food/snacks/packaged/no_raisin = 6,
 					/obj/item/weapon/reagent_containers/food/snacks/spacetwinkie = 6,
 					/obj/item/weapon/reagent_containers/food/snacks/packaged/cheesiehonkers = 6,
-					/obj/item/weapon/reagent_containers/food/snacks/tastybread = 6)
-	contraband = list(/obj/item/weapon/reagent_containers/food/snacks/syndicake = 6,
-					  /obj/item/weapon/reagent_containers/food/snacks/skrellsnacks = 3)
+					/obj/item/weapon/reagent_containers/food/snacks/packaged/tastybread = 6)
+	contraband = list(/obj/item/weapon/reagent_containers/food/snacks/packaged/syndicake = 6,
+					  /obj/item/weapon/reagent_containers/food/snacks/packaged/skrellsnacks = 3)
 	prices = list(/obj/item/weapon/reagent_containers/food/snacks/packaged/tweakers = 5,
 				  /obj/item/weapon/reagent_containers/food/snacks/packaged/sweetroid = 5,
 				  /obj/item/weapon/reagent_containers/food/snacks/packaged/sugarmatter = 5,
@@ -851,7 +851,7 @@
 				  /obj/item/weapon/reagent_containers/food/snacks/packaged/no_raisin = 15,
 				  /obj/item/weapon/reagent_containers/food/snacks/spacetwinkie = 5,
 				  /obj/item/weapon/reagent_containers/food/snacks/packaged/cheesiehonkers = 10,
-				  /obj/item/weapon/reagent_containers/food/snacks/tastybread = 10)
+				  /obj/item/weapon/reagent_containers/food/snacks/packaged/tastybread = 10)
 
 /obj/machinery/vending/snack/medbay
 	name = "Getmore Healthy Snacks"
@@ -866,15 +866,15 @@
 					/obj/item/weapon/reagent_containers/food/snacks/packaged/nutribar = 10,
 					/obj/item/weapon/reagent_containers/food/snacks/packaged/no_raisin = 10,
 					/obj/item/weapon/reagent_containers/food/snacks/grown/orange = 10,
-					/obj/item/weapon/reagent_containers/food/snacks/tastybread = 10)
+					/obj/item/weapon/reagent_containers/food/snacks/packaged/tastybread = 10)
 	contraband = list(/obj/item/weapon/reagent_containers/food/snacks/cannabar = 3,
-					  /obj/item/weapon/reagent_containers/food/snacks/skrellsnacks = 3)
+					  /obj/item/weapon/reagent_containers/food/snacks/packaged/skrellsnacks = 3)
 	prices = list(/obj/item/weapon/reagent_containers/food/snacks/grown/apple = 1,
 				  /obj/item/weapon/reagent_containers/food/snacks/packaged/hematogen = 10,
 				  /obj/item/weapon/reagent_containers/food/snacks/packaged/nutribar = 5,
 				  /obj/item/weapon/reagent_containers/food/snacks/packaged/no_raisin = 1,
 				  /obj/item/weapon/reagent_containers/food/snacks/grown/orange = 1,
-				  /obj/item/weapon/reagent_containers/food/snacks/tastybread = 3)
+				  /obj/item/weapon/reagent_containers/food/snacks/packaged/tastybread = 3)
 
 
 

@@ -1174,20 +1174,6 @@
 		reagents.add_reagent(/datum/reagent/sugar, 4)
 		bitesize = 2
 
-/obj/item/weapon/reagent_containers/food/snacks/syndicake
-	name = "Syndi-Cakes"
-	icon_state = "syndi_cakes"
-	desc = "An extremely moist snack cake that tastes just as good after being nuked."
-	filling_color = "#ff5d05"
-	center_of_mass = "x=16;y=10"
-	nutriment_desc = list("sweetness" = 3, "cake" = 1)
-	nutriment_amt = 4
-	trash = /obj/item/trash/syndi_cakes
-	New()
-		..()
-		reagents.add_reagent(/datum/reagent/drink/doctor_delight, 5)
-		bitesize = 3
-
 /obj/item/weapon/reagent_containers/food/snacks/loadedbakedpotato
 	name = "Loaded Baked Potato"
 	desc = "Totally baked."
@@ -3287,32 +3273,6 @@
 		..()
 		reagents.add_reagent(/datum/reagent/iron, 3)
 		bitesize = 4
-
-
-/obj/item/weapon/reagent_containers/food/snacks/tastybread
-	name = "bread tube"
-	desc = "Bread in a tube. Chewy...and surprisingly tasty."
-	icon_state = "tastybread"
-	trash = /obj/item/trash/tastybread
-	filling_color = "#a66829"
-	center_of_mass = "x=17;y=16"
-	nutriment_desc = list("bread" = 2, "sweetness" = 3)
-	nutriment_amt = 6
-	New()
-		..()
-		bitesize = 2
-
-/obj/item/weapon/reagent_containers/food/snacks/skrellsnacks
-	name = "\improper SkrellSnax"
-	desc = "Cured fungus shipped all the way from Jargon 4, almost like jerky! Almost."
-	icon_state = "skrellsnacks"
-	filling_color = "#a66829"
-	center_of_mass = "x=15;y=12"
-	nutriment_desc = list("mushroom" = 5, "salt" = 5)
-	nutriment_amt = 10
-	New()
-		..()
-		bitesize = 3
 
 /obj/item/weapon/reagent_containers/food/snacks/cannabar
 	name = "candy"

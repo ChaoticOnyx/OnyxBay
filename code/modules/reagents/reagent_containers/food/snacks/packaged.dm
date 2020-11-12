@@ -28,6 +28,7 @@
 	else
 		icon_state = initial(icon_state)
 
+
 /obj/item/weapon/reagent_containers/food/snacks/packaged/tweakers
 	name = "Tweakers bar"
 	desc = "Nougat, love it or hate it. Along with caramel and peanuts, enrobed in milk chocolate. Technical assistants' favourite!"
@@ -71,6 +72,7 @@
 	..()
 	reagents.add_reagent(/datum/reagent/sugar, 6)
 	bitesize = 4
+
 
 /obj/item/weapon/reagent_containers/food/snacks/packaged/jellaws
 	name = "Jellaw's Jellybaton"
@@ -126,6 +128,7 @@
 	desc = "Beef jerky made from the finest space cows. Or, perhaps, the finest space soy?"
 	trash = /obj/item/trash/sosjerky
 	filling_color = "#631212"
+	nutriment_desc = list("cured meat" = 5, "salt" = 2)
 	nutriment_amt = 2
 
 /obj/item/weapon/reagent_containers/food/snacks/packaged/sosjerky/New()
@@ -148,6 +151,7 @@
 	..()
 	reagents.add_reagent(/datum/reagent/drink/juice/grape, 4)
 	bitesize = 1
+
 
 /obj/item/weapon/reagent_containers/food/snacks/packaged/cheesiehonkers
 	name = "Cheesie Honkers"
@@ -179,3 +183,47 @@
 	reagents.add_reagent(/datum/reagent/sugar, 2)
 	reagents.add_reagent(/datum/reagent/albumin, 10)
 	bitesize = 5
+
+
+/obj/item/weapon/reagent_containers/food/snacks/packaged/tastybread
+	name = "bread tube"
+	desc = "Bread in a tube. Chewy...and surprisingly tasty."
+	icon_state = "tastybread"
+	trash = /obj/item/trash/tastybread
+	filling_color = "#a66829"
+	nutriment_desc = list("bread" = 2, "sweetness" = 3)
+	nutriment_amt = 6
+
+/obj/item/weapon/reagent_containers/food/snacks/packaged/tastybread/New()
+	..()
+	bitesize = 2
+
+
+/obj/item/weapon/reagent_containers/food/snacks/packaged/skrellsnacks
+	name = "\improper SkrellSnax"
+	desc = "Cured fungus shipped all the way from Jargon 4, almost like jerky! Almost."
+	icon_state = "skrellsnacks"
+	filling_color = "#a66829"
+	trash = /obj/item/trash/skrellsnacks
+	nutriment_desc = list("mushroom" = 5, "salt" = 2)
+	nutriment_amt = 9
+
+/obj/item/weapon/reagent_containers/food/snacks/packaged/skrellsnacks/New()
+	..()
+	reagents.add_reagent(/datum/reagent/sodiumchloride, 1)
+	bitesize = 2
+
+
+/obj/item/weapon/reagent_containers/food/snacks/packaged/syndicake
+	name = "Syndi-Cakes"
+	icon_state = "syndi_cakes"
+	desc = "An extremely moist snack cake that tastes just as good after being nuked."
+	filling_color = "#ff5d05"
+	trash = /obj/item/trash/syndi_cakes
+	nutriment_desc = list("sweetness" = 3, "cake" = 1)
+	nutriment_amt = 4
+
+/obj/item/weapon/reagent_containers/food/snacks/packaged/syndicake/New()
+	..()
+	reagents.add_reagent(/datum/reagent/drink/doctor_delight, 5)
+	bitesize = 3
