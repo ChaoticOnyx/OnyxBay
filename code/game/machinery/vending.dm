@@ -1503,6 +1503,7 @@
 					/obj/item/weapon/lipstick/black = 3,
 					/obj/item/weapon/lipstick/purple = 3,
 					/obj/item/weapon/lipstick/jade = 3,
+					/obj/item/weapon/storage/bouquet = 3,
 					/obj/item/weapon/storage/wallet/poly = 2)
 	contraband = list(/obj/item/clothing/glasses/eyepatch = 2,
 					  /obj/item/clothing/accessory/horrible = 2)
@@ -1515,6 +1516,7 @@
 				  /obj/item/weapon/lipstick/black = 100,
 				  /obj/item/weapon/lipstick/purple = 100,
 				  /obj/item/weapon/lipstick/jade = 100,
+				  /obj/item/weapon/storage/bouquet = 800,
 				  /obj/item/weapon/storage/wallet/poly = 600
 					)
 // eliza's attempt at a new vending machine
