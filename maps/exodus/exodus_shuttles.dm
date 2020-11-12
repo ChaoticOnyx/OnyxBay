@@ -566,6 +566,7 @@
 /obj/effect/shuttle_landmark/merchant/outpost
 	name = "Outpost Hideout"
 	landmark_tag = "nav_merchant_outpost"
+	docking_controller = "merchant_shuttle_hideout_dock"
 	autoset = 1
 
 //Skipjack
