@@ -168,7 +168,13 @@
 		QDEL_NULL_LIST(segments)
 
 //called to launch a projectile from a gun
-/obj/item/projectile/proc/launch_from_gun(atom/target, mob/user, obj/item/weapon/gun/launcher, target_zone, x_offset=0, y_offset=0)
+/obj/item/projectile/proc/launch_from_gun(atom/target, mob/living/user, obj/item/weapon/gun/launcher, target_zone, x_offset=0, y_offset=0)
+
+	for (var/obj/O in user.get_auras())
+		to_chat(user,SPAN_DANGER("[user.get_auras()] is here"))
+		if (istype(O,/obj/aura/shields/shield_belt))
+			O.bullet_act(src)
+			return 0
 	if(user == target) //Shooting yourself
 		user.bullet_act(src, target_zone)
 		qdel(src)

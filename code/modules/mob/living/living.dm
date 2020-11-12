@@ -802,6 +802,10 @@
 	else
 		..()
 
+//checks which auras user currently have
+/mob/living/proc/get_auras()
+	return auras
+
 /mob/living/update_icons()
 	if(auras)
 		overlays |= auras
