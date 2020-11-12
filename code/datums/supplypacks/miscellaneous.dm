@@ -318,6 +318,13 @@
 	cost = 10
 	containername = "\improper Pest Control Crate"
 
+/decl/hierarchy/supply_pack/miscellaneous/bouquet
+	name = "Box of bouquets"
+	contains = list(/obj/item/weapon/storage/bouquet/shotgun = 3)
+	cost = 100
+	containername = "\improper crate"
+	hidden = 1
+
 /decl/hierarchy/supply_pack/miscellaneous/tc10
 	name = "Telecrystals - 10"
 	contains = list(/obj/item/stack/telecrystal{amount = 10})
