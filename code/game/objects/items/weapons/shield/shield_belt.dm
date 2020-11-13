@@ -100,8 +100,9 @@ obj/item/weapon/shield/shield_belt/get_mob_overlay(mob/user_mob, slot)
 /obj/item/weapon/shield/shield_belt/syndicate_shield_belt
 	icon_state = "syndi_shield_belt_off"
 	item_state = "shield_sindy_off"
-	name = "syndicate shield belt"
-	desc = "Protects user from bullets and lasers, but doesn't allow you to shoot, looks suspicious"
+	name = "Strange shield belt"
+	desc = "Protects user from bullets and lasers, but doesn't allow you to shoot.This one appears to have mini-reactor and able to restore itself after some time. Looks suspicious"
+	description_info = "ALT+CLICK when weared at belt slot to use the shield"
 	origin_tech = list(TECH_MATERIAL = 6, TECH_MAGNET = 6, TECH_ILLEGAL = 4)
 //RND belt, can change battery, but can't regenerate
 //AND ALSO IT EXPLODES IF EMI HITS IT WHEN IT ACTIVE
@@ -109,7 +110,8 @@ obj/item/weapon/shield/shield_belt/get_mob_overlay(mob/user_mob, slot)
 	icon_state = "science_shield_belt_off_green"
 	item_state = "science_shield_off"
 	name = "experimental shield belt"
-	desc = "Protects user from bullets and lasers, but doesn't allow you to shoot."
+	desc = "Protects user from bullets and lasers, but doesn't allow you to shoot. Powered by battery. This one looks unstable, "
+	description_info = "ALT+CLICK when weared at belt slot to use the shield, use Screwdriver to change battery "
 	origin_tech = list(TECH_MATERIAL = 6, TECH_MAGNET = 6)
 	bcell = /obj/item/weapon/cell/high
 /obj/item/weapon/shield/shield_belt/experimental_shield_belt/Initialize()

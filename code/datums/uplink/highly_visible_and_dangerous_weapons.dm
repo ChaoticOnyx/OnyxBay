@@ -28,7 +28,7 @@
 	item_cost = 32
 	path = /obj/item/weapon/storage/box/syndie_kit/g9mm
 /datum/uplink_item/item/visible_weapons/syndicate_shield_belt
-	name = "Syndicate Shield Belt"
+	name = "Strange Shield Belt"
 	item_cost = 60
 	path = /obj/item/weapon/shield/shield_belt/syndicate_shield_belt
 /datum/uplink_item/item/badassery/money_cannon
