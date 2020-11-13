@@ -169,7 +169,7 @@
 
 /obj/machinery/light/spot
 	name = "spotlight"
-	desc = "A more robust socket for light tubes that demand more power."
+	desc = "A more robust socket for light tubes that demands more power."
 	light_type = /obj/item/weapon/light/tube/large
 
 /obj/machinery/light/he
