@@ -259,7 +259,7 @@
 		return
 	sensor_mode = 0
 	active_hud = null
-	var/list/modules = list("Standard")
+	var/list/modules = list()
 	modules.Add(GLOB.robot_module_types)
 	var/decl/security_state/security_state = decls_repository.get_decl(GLOB.using_map.security_state)
 	if((crisis && security_state.current_security_level_is_same_or_higher_than(security_state.high_security_level)) || crisis_override) //Leaving this in until it's balanced appropriately.
@@ -268,7 +268,7 @@
 	modtype = input("Please, select a module!", "Robot module", null, null) as null|anything in modules
 	if(module)
 		return
-	if(!(modtype in GLOB.robot_module_types) && modtype != "Standard")
+	if(!(modtype in GLOB.robot_module_types))
 		return
 
 	var/module_type = robot_modules[modtype]
