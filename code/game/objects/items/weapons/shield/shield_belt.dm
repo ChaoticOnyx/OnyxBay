@@ -100,7 +100,7 @@ obj/item/weapon/shield/shield_belt/get_mob_overlay(mob/user_mob, slot)
 /obj/item/weapon/shield/shield_belt/syndicate_shield_belt
 	icon_state = "syndi_shield_belt_off"
 	item_state = "shield_sindy_off"
-	name = "Strange shield belt"
+	name = "strange shield belt"
 	desc = "Protects user from bullets and lasers, but doesn't allow you to shoot.This one appears to have mini-reactor and able to restore itself after some time. Looks suspicious"
 	description_info = "ALT+CLICK when weared at belt slot to use the shield"
 	origin_tech = list(TECH_MATERIAL = 6, TECH_MAGNET = 6, TECH_ILLEGAL = 4)
