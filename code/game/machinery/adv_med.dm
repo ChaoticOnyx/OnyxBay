@@ -286,7 +286,7 @@
 			return "Significant"
 	return "Moderate"
 
-/proc/get_brain_status(var/brain_damage_procents)
+/proc/get_brain_status(brain_damage_procents)
 	if(brain_damage_procents >= 90)
 		return "None"
 	if(brain_damage_procents >= 80)
