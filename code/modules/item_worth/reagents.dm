@@ -58,7 +58,7 @@
 	value = 0.2
 
 /datum/reagent/sodium
-	value = 0.1
+	value = 2
 
 /datum/reagent/sugar
 	value = 2
@@ -181,7 +181,7 @@
 	value = 0.1
 
 /datum/reagent/ethanol/wine
-	value = 0.05
+	value = 0.1
 
 /datum/reagent/ethanol/acid_spit
 	value = 0.15
@@ -382,7 +382,7 @@
 	value = 3.9
 
 /datum/reagent/dylovene
-	value = 1.5
+	value = 2.1
 
 /datum/reagent/dexalin
 	value = 2.4
@@ -564,7 +564,7 @@
 	value = 1.2
 
 /datum/reagent/soporific
-	value = 3.5
+	value = 2.5
 
 /datum/reagent/chloralhydrate
 	value = 2.6
@@ -606,7 +606,7 @@
 	value = 3.5
 
 /datum/reagent/galoperidol
-	value = 3.5
+	value = 4
 
 /datum/reagent/calciumxon
-	value = 3.5
+	value = 1.5
