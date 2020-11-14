@@ -25,7 +25,9 @@
 	var/stable_activity_value = 100.0
 	var/relative_activity = 0
 
-	var/last_disability_give = 0
+	var/last_disability_give     = 0
+	var/last_schizophrenia_attack = 0
+	var/schizophrenia_delay       = 0
 
 // in procents
 /obj/item/organ/internal/brain/proc/get_activity()
@@ -187,23 +189,29 @@
 					damprob = owner.chem_effects[CE_STABLE] ? 10 : 40
 					if(!past_damage_threshold(2) && prob(damprob))
 						take_internal_damage(0.5)
+						owner.add_brain_activity(-10)
 				if(BLOOD_VOLUME_BAD to BLOOD_VOLUME_OKAY)
 					owner.eye_blurry = max(owner.eye_blurry, 6)
 					damprob = owner.chem_effects[CE_STABLE] ? 30 : 60
 					if(!past_damage_threshold(4) && prob(damprob))
 						take_internal_damage(0.5)
+						owner.add_brain_activity(-10)
 					if(!owner.weakened && prob(10))
 						owner.Weaken(rand(1,3))
-						to_chat(owner, SPAN("warning", "You feel [pick("dizzy","woozy","faint")]..."))
+						to_chat(owner, SPAN_WARNING("You feel [pick("dizzy","woozy","faint")]..."))
 				if(BLOOD_VOLUME_SURVIVE to BLOOD_VOLUME_BAD)
 					owner.eye_blurry = max(owner.eye_blurry, 6)
 					damprob = owner.chem_effects[CE_STABLE] ? 50 : 80
 					if(!past_damage_threshold(6) && prob(damprob))
 						take_internal_damage(0.5)
+						owner.add_brain_activity(-10)
 					if(!owner.paralysis && prob(15))
 						owner.visible_message("<B>[owner]</B> faints!", \
-											  SPAN("warning", "You feel extremely [pick("dizzy","woozy","faint")]..."))
-						owner.Paralyse(3,5)
+											  SPAN_WARNING("You feel extremely [pick("dizzy","woozy","faint")]..."))
+						if(prob(50))
+							owner.Paralyse(3)
+						else
+							owner.Stun(3)
 				if(-(INFINITY) to BLOOD_VOLUME_SURVIVE) // Also see heart.dm, being below this point puts you into cardiac arrest.
 					owner.eye_blurry = max(owner.eye_blurry, 6)
 					damprob = owner.chem_effects[CE_STABLE] ? 70 : 100
@@ -214,19 +222,35 @@
 /obj/item/organ/internal/brain/proc/handle_disabilities()
 	if((owner.disabilities & EPILEPSY) && prob(1))
 		relative_activity = 155 - get_activity()
-	else if((owner.disabilities & TOURETTES) && prob(owner.chem_effects[CE_ANTIPSYHOTIC] ? 1 : 5))
-		owner.Stun(3)
+	else if((owner.disabilities & TOURETTES) && !owner.chem_effects[CE_ANTIPSYHOTIC])
 		switch(rand(1, 3))
 			if(1)
 				owner.emote("twitch")
 			if(2 to 3)
-				owner.say("[prob(50) ? ";" : ""][pick("Сука", "Блять", "Нахуя", "Нах", "Пиздец")]")
+				owner.say("[prob(50) ? ";" : ""][pick("Сука", "Блять", "Нахуя", "Пиздец")]")
 		owner.make_jittery(100)
+
 	else if((owner.disabilities & NERVOUS) && prob(10) && !owner.chem_effects[CE_MIND])
 		owner.stuttering = max(10, owner.stuttering)
-	else if((owner.disabilities & SCHIZOPHRENIA) && prob(10) && owner.chem_effects[CE_ANTIPSYHOTIC] <= 5)
-		var/strength = owner.chem_effects[CE_ANTIPSYHOTIC] ? (pick(5, 15, 20, 40, 60)/owner.chem_effects[CE_ANTIPSYHOTIC]) : pick(5, 15, 20, 40, 60)
-		owner.hallucination(strength, pick(5, 15, 30))
+
+	else if((owner.disabilities & SCHIZOPHRENIA) && prob(10) && (!owner.chem_effects[CE_ANTIPSYHOTIC] || owner.chem_effects[CE_ANTIPSYHOTIC] <= 5) && world.time > last_schizophrenia_attack + schizophrenia_delay)
+		var/strength = owner.chem_effects[CE_ANTIPSYHOTIC] ? (pick(0, 5, 15, 20, 40, 60, 70)/owner.chem_effects[CE_ANTIPSYHOTIC]) : pick(0, 5, 15, 20, 40, 60, 70)
+		if(strength)
+			schizophrenia_delay = pick(15, 30, 60, 90)
+			owner.hallucination(strength, schizophrenia_delay)
+		else
+			schizophrenia_delay = pick(20, 30)
+		last_schizophrenia_attack = world.time
+
+	else if((owner.disabilities & DEPRESSION) && prob(5) && !owner.chem_effects[CE_MIND])
+		switch(rand(1, 11))
+			if(1 to 2)
+				owner.emote("cry")
+			if(3 to 10)
+				to_chat(owner, SPAN_WARNING("[pick("You feel a sad", "You lost", "Where has happiness gone?")]"))
+			if(11)
+				to_chat(owner, SPAN_DEADSAY("[pick("You want to die", "You want to end a meaningless existence")]"))
+
 
 	if(damage > 0.95*max_damage && world.time > last_disability_give + DISABILITY_GIVE_DELAY)
 		owner.disabilities |= pick(EPILEPSY, TOURETTES, NERVOUS, SCHIZOPHRENIA)

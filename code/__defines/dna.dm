@@ -35,6 +35,7 @@
 #define TOURETTES   8
 #define NERVOUS     16
 #define SCHIZOPHRENIA 32
+#define DEPRESSION    64
 
 // sdisabilities
 #define BLIND 0x1

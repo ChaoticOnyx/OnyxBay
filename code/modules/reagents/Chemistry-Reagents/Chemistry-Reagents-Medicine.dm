@@ -1062,6 +1062,7 @@
 
 /datum/reagent/psyloxon/overdose(mob/living/carbon/M, alien)
 	M.add_chemical_effect(CE_SEDATE, 20)
+	M.add_brain_activity(-50)
 	M.Stun(10)
 
 /datum/reagent/galoperidol
@@ -1100,7 +1101,10 @@
 	M.add_chemical_effect(CE_SLOWDOWN, 20)
 	M.add_chemical_effect(CE_BREATHLOSS, 10)
 	M.Stun(10)
-	M.add_brain_activity(-15)
+	M.add_brain_activity(-35)
+
+	if(prob(5))
+		M.disabilities |= DEPRESSION // ;c
 
 /datum/reagent/calciumxon
 	name = "Calciumxon"
@@ -1116,5 +1120,8 @@
 /datum/reagent/calciumxon/affect_blood(mob/living/carbon/M, alien, removed)
 	var/mob/living/carbon/human/H = M
 	for(var/obj/item/organ/external/E in H.organs)
-		E.damage = max(E.damage - 1, 0)
-		E.brute_dam = max(E.damage - 2, 0)
+		if(BP_IS_ROBOTIC(E))
+			continue
+		if(E.limb_flags & ORGAN_FLAG_CAN_BREAK)
+			E.heal_damage(0.5)
+			E.update_damstate()
