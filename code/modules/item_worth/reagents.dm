@@ -604,3 +604,9 @@
 
 /datum/reagent/psyloxon
 	value = 3.5
+
+/datum/reagent/galoperidol
+	value = 3.5
+
+/datum/reagent/calciumxon
+	value = 3.5

@@ -2104,3 +2104,15 @@
 	required_reagents = list(/datum/reagent/ethanol/beer = 1, /datum/reagent/sugar = 1)
 	catalysts = list(/datum/reagent/enzyme = 5)
 	result_amount = 2
+
+/datum/chemical_reaction/galoperidol
+	name = "Galoperidol"
+	result = /datum/reagent/galoperidol
+	required_reagents = list(/datum/reagent/paroxetine = 1, /datum/reagent/methylphenidate = 1)
+	result_amount = 2
+
+/datum/chemical_reaction/calciumxon
+	name = "Calciumxon"
+	result = /datum/reagent/calciumxon
+	required_reagents = list(/datum/reagent/drink/milk = 5, /datum/reagent/dermaline = 1)
+	result_amount = 2

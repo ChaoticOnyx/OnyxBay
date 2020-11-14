@@ -322,8 +322,37 @@ obj/item/weapon/reagent_containers/pill/noexcutite/New()
 	..()
 	reagents.add_reagent(/datum/reagent/nutriment/glucose, 20)
 	color = reagents.get_color()
-	
-	
+
+/obj/item/weapon/reagent_containers/pill/psyloxon
+	name = "Psyloxon (5u)"
+	desc = "Used to stabilize brain activity"
+	icon_state = "pill4"
+
+/obj/item/weapon/reagent_containers/pill/psyloxon/New()
+	..()
+	reagents.add_reagent(/datum/reagent/psyloxon, 5)
+	color = reagents.get_color()
+
+/obj/item/weapon/reagent_containers/pill/galoperidol
+	name = "Galoperidol (5u)"
+	desc = "Heals schizopreniya"
+	icon_state = "pill4"
+
+/obj/item/weapon/reagent_containers/pill/galoperidol/New()
+	..()
+	reagents.add_reagent(/datum/reagent/galoperidol, 5)
+	color = reagents.get_color()
+
+/obj/item/weapon/reagent_containers/pill/calciumxon
+	name = "Calciumxon (10u)"
+	desc = "Heals bones"
+	icon_state = "pill4"
+
+/obj/item/weapon/reagent_containers/pill/calciumxon/New()
+	..()
+	reagents.add_reagent(/datum/reagent/calciumxon, 10)
+	color = reagents.get_color()
+
 //Mining pills.
 /obj/item/weapon/reagent_containers/pill/leporazine
 	name = "Thermostabilizine"

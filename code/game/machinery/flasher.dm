@@ -91,6 +91,8 @@
 			if(E.is_bruised() && prob(E.damage + 50))
 				H.flash_eyes()
 				E.damage += rand(1, 5)
+			if(H.internal_organs_by_name[BP_BRAIN].get_activity() < 140)
+				H.add_brain_activity(15)
 		if(!O.blinded)
 			if (istype(O,/mob/living/silicon/ai))
 				return
@@ -103,6 +105,7 @@
 			O.confused += (flash_time + 2)
 			O.Stun(flash_time / 2)
 			O.Weaken(3)
+
 
 /obj/machinery/flasher/emp_act(severity)
 	if(stat & (BROKEN|NOPOWER))

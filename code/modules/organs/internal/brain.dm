@@ -24,7 +24,7 @@
 	// look /obj/item/organ/internal/brain/proc/get_activity()
 	var/stable_activity_value = 100.0
 	var/relative_activity = 0
-	
+
 	var/last_disability_give = 0
 
 // in procents
@@ -163,7 +163,7 @@
 		handle_disabilities()
 		handle_damage_effects()
 
-		var/stabilizer = 1.25 + (owner.chem_effects[CE_ANTIEPILEPTIC]*1.5)
+		var/stabilizer = 1.25 + (owner.chem_effects[CE_ANTIEPILEPTIC]*3)
 		relative_activity += clamp(-relative_activity, -stabilizer, stabilizer)
 		// Brain damage from low oxygenation or lack of blood.
 		if(owner.should_have_organ(BP_HEART))
@@ -214,19 +214,20 @@
 /obj/item/organ/internal/brain/proc/handle_disabilities()
 	if((owner.disabilities & EPILEPSY) && prob(1))
 		relative_activity = 155 - get_activity()
-	else if((owner.disabilities & TOURETTES) && prob(5))
-		owner.Stun(10)
+	else if((owner.disabilities & TOURETTES) && prob(owner.chem_effects[CE_ANTIPSYHOTIC] ? 1 : 5))
+		owner.Stun(3)
 		switch(rand(1, 3))
 			if(1)
 				owner.emote("twitch")
 			if(2 to 3)
-				owner.say("[prob(50) ? ";" : ""][pick("SHIT", "PISS", "FUCK", "CUNT", "COCKSUCKER", "MOTHERFUCKER", "TITS")]")
+				owner.say("[prob(50) ? ";" : ""][pick("Сука", "Блять", "Нахуя", "Нах", "Пиздец")]")
 		owner.make_jittery(100)
-	else if((owner.disabilities & NERVOUS) && prob(10))
+	else if((owner.disabilities & NERVOUS) && prob(10) && !owner.chem_effects[CE_MIND])
 		owner.stuttering = max(10, owner.stuttering)
-	else if((owner.disabilities & SCHIZOPHRENIA) && prob(10))
-		owner.hallucination(15, 15)
-		to_chat(owner, SPAN("warning", "There are strange things around."))
+	else if((owner.disabilities & SCHIZOPHRENIA) && prob(10) && owner.chem_effects[CE_ANTIPSYHOTIC] <= 5)
+		var/strength = owner.chem_effects[CE_ANTIPSYHOTIC] ? (pick(5, 15, 20, 40, 60)/owner.chem_effects[CE_ANTIPSYHOTIC]) : pick(5, 15, 20, 40, 60)
+		owner.hallucination(strength, pick(5, 15, 30))
+
 	if(damage > 0.95*max_damage && world.time > last_disability_give + DISABILITY_GIVE_DELAY)
 		owner.disabilities |= pick(EPILEPSY, TOURETTES, NERVOUS, SCHIZOPHRENIA)
 		last_disability_give = world.time
@@ -260,9 +261,9 @@
 			to_chat(owner, SPAN("warning", "You have a seizure!"))
 			owner.visible_message(SPAN("danger", "\The [owner] having a seizure!"))
 		owner.Paralyse(10)
-		owner.make_jittery(1000)
+		owner.make_jittery(100)
 		owner.stuttering = max(10, owner.stuttering)
-		damage += 2.5
+		damage += 1.5
 	if(get_activity() >= (owner.disabilities & EPILEPSY ? 120 : 170) && prob(1))
 		owner.stuttering = max(10, owner.stuttering)
 	if(get_activity() >= (owner.disabilities & EPILEPSY ? 130 : 140) && prob(1))

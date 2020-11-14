@@ -26,26 +26,6 @@
 	if(prob(2))
 		M.drowsyness = max(M.drowsyness, 5)
 
-/datum/reagent/psyloxon
-	name = "Psyloxon"
-	description = "Psyloxon is a antiepileptical drug. Stabilize brain activity."
-	taste_description = "bitterness"
-	reagent_state = LIQUID
-	color = "#bf0011"
-	overdose = REAGENTS_OVERDOSE / 2
-	metabolism = REM * 0.5
-	scannable = 1
-	flags = IGNORE_MOB_SIZE
-
-/datum/reagent/psyloxon/affect_blood(mob/living/carbon/M, alien, removed)
-	if(alien != IS_DIONA)
-		M.add_chemical_effect(CE_ANTIEPILEPTIC, 5)
-		M.add_chemical_effect(CE_SEDATE, 10)
-
-/datum/reagent/psyloxon/overdose(mob/living/carbon/M, alien)
-	M.add_chemical_effect(CE_SEDATE, 20)
-	M.Paralyse(10)
-
 /datum/reagent/bicaridine
 	name = "Bicaridine"
 	description = "Bicaridine is an analgesic medication and can be used to treat blunt trauma."
@@ -839,8 +819,8 @@
 
 /datum/reagent/noexcutite/affect_blood(mob/living/carbon/M, alien, removed)
 	if(alien != IS_DIONA)
-		M.make_jittery(-50)
-		M.add_chemical_effect(CE_ANTIEPILEPTIC, 2)
+		M.make_jittery(-75)
+		M.add_chemical_effect(CE_ANTIEPILEPTIC, 4)
 
 /datum/reagent/antidexafen
 	name = "Antidexafen"
@@ -1063,3 +1043,78 @@
 	..()
 	M.add_chemical_effect(CE_TOXIN, 1)
 	M.immunity -= 0.5 //inverse effects when abused
+
+/datum/reagent/psyloxon
+	name = "Psyloxon"
+	description = "Psyloxon is a antiepileptical drug. Stabilizes brain activity."
+	taste_description = "bitterness"
+	reagent_state = LIQUID
+	color = "#bf0011"
+	overdose = REAGENTS_OVERDOSE / 2
+	metabolism = REM
+	scannable = 1
+	flags = IGNORE_MOB_SIZE
+
+/datum/reagent/psyloxon/affect_blood(mob/living/carbon/M, alien, removed)
+	if(alien != IS_DIONA)
+		M.add_chemical_effect(CE_ANTIEPILEPTIC, 10)
+		M.add_chemical_effect(CE_SEDATE, 10)
+
+/datum/reagent/psyloxon/overdose(mob/living/carbon/M, alien)
+	M.add_chemical_effect(CE_SEDATE, 20)
+	M.Stun(10)
+
+/datum/reagent/galoperidol
+	name = "Galoperidol"
+	description = "Galoperidol is antipsyhotic drug. Used in treatment of schizoprenia and more."
+	taste_description = "bitterness"
+	reagent_state = LIQUID
+	color = "#27474b"
+	overdose = REAGENTS_OVERDOSE / 2
+	metabolism = REM
+	scannable = 1
+	flags = IGNORE_MOB_SIZE
+
+/datum/reagent/galoperidol/proc/isboozed(mob/living/carbon/M)
+	. = 0
+	var/datum/reagents/ingested = M.get_ingested_reagents()
+	if(ingested)
+		var/list/pool = M.reagents.reagent_list | ingested.reagent_list
+		for(var/datum/reagent/ethanol/booze in pool)
+			if(M.chem_doses[booze.type] < 2) //let them experience false security at first
+				continue
+			. = 1
+			if(booze.strength < 40) //liquor stuff hits harder
+				return 2
+
+/datum/reagent/galoperidol/affect_blood(mob/living/carbon/M, alien, removed)
+	if(alien != IS_DIONA)
+		M.add_chemical_effect(CE_ANTIPSYHOTIC, 5)
+		M.add_chemical_effect(CE_SLOWDOWN, 2)
+		var/boozed = isboozed(M)
+		if(boozed)
+			M.add_chemical_effect(CE_ALCOHOL_TOXIC, 2)
+			M.add_chemical_effect(CE_BREATHLOSS, 0.2 * boozed)
+
+/datum/reagent/galoperidol/overdose(mob/living/carbon/M, alien)
+	M.add_chemical_effect(CE_SLOWDOWN, 20)
+	M.add_chemical_effect(CE_BREATHLOSS, 10)
+	M.Stun(10)
+	M.add_brain_activity(-15)
+
+/datum/reagent/calciumxon
+	name = "Calciumxon"
+	description = "Psyloxon is a antiepileptical drug. Stabilizes brain activity."
+	taste_description = "bitterness"
+	reagent_state = LIQUID
+	color = "#eeeeff"
+	overdose = REAGENTS_OVERDOSE
+	metabolism = REM
+	scannable = 1
+	flags = IGNORE_MOB_SIZE
+
+/datum/reagent/calciumxon/affect_blood(mob/living/carbon/M, alien, removed)
+	var/mob/living/carbon/human/H = M
+	for(var/obj/item/organ/external/E in H.organs)
+		E.damage = max(E.damage - 1, 0)
+		E.brute_dam = max(E.damage - 2, 0)
