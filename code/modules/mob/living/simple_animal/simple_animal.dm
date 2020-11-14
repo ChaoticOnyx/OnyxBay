@@ -75,7 +75,7 @@
 
 /mob/living/simple_animal/Life()
 	..()
-	if(!living_observers_present(GetConnectedZlevels(z)))
+	if(!living_observers_present(GetConnectedZlevels(z)) && !(z == 0))
 		return
 	//Health
 	if(stat == DEAD)
