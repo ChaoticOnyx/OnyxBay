@@ -252,7 +252,7 @@
 				to_chat(owner, SPAN_DEADSAY("[pick("You want to die", "You want to end a meaningless existence")]"))
 
 
-	if(damage > 0.95*max_damage && world.time > last_disability_give + DISABILITY_GIVE_DELAY)
+	if(damage > 0.75*max_damage && world.time > last_disability_give + DISABILITY_GIVE_DELAY)
 		owner.disabilities |= pick(EPILEPSY, TOURETTES, NERVOUS, SCHIZOPHRENIA)
 		last_disability_give = world.time
 
