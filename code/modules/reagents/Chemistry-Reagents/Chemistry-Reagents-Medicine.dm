@@ -1097,13 +1097,12 @@
 			M.add_chemical_effect(CE_ALCOHOL_TOXIC, 2)
 			M.add_chemical_effect(CE_BREATHLOSS, 0.2 * boozed)
 
-/datum/reagent/galoperidol/overdose(mob/living/carbon/M, alien)
-	M.add_chemical_effect(CE_SLOWDOWN, 20)
-	M.add_chemical_effect(CE_BREATHLOSS, 10)
+/datum/reagent/galoperidol/overdose(mob/living/carbon/M, alien, remove) 
+	M.add_chemical_effect(CE_BREATHLOSS, 2)
 	M.Stun(10)
 	M.add_brain_activity(-35)
 
-	if(prob(5))
+	if(prob(8))
 		M.disabilities |= DEPRESSION // ;c
 
 /datum/reagent/calciumxon
