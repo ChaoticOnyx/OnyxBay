@@ -168,6 +168,9 @@
 	has_gravity = 0
 	sound_env = SPACE
 
+/area/holodeck/source_chess
+	name = "\improper Holodeck - Chess Field"
+
 // Construction Site
 
 /area/constructionsite
