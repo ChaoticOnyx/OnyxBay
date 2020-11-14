@@ -168,10 +168,10 @@
 		QDEL_NULL_LIST(segments)
 
 //called to launch a projectile from a gun
-/obj/item/projectile/proc/launch_from_gun(atom/target, mob/living/user, obj/item/weapon/gun/launcher, target_zone, x_offset=0, y_offset=0)
+/obj/item/projectile/proc/launch_from_gun(atom/target, mob/living/user, obj/item/weapon/gun/launcher, target_zone, x_offset = 0, y_offset = 0)
 	//checks if you have shield blocking your shots
 	for (var/obj/O in user.get_auras())
-		if (istype(O,/obj/aura/shields/shield_belt))
+		if (istype(O, /obj/aura/shields/shield_belt))
 			O.bullet_act(src)
 			return 0
 	if(user == target) //Shooting yourself

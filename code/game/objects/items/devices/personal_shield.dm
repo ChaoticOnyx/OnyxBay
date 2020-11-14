@@ -23,7 +23,7 @@
 /obj/item/device/personal_shield/proc/take_charge()
 	if(!--uses)
 		QDEL_NULL(shield)
-		to_chat(loc,SPAN_DANGER("\The [src] begins to spark as it breaks"))
+		to_chat(loc, SPAN_DANGER("\The [src] begins to spark as it breaks"))
 		update_icon()
 		return
 

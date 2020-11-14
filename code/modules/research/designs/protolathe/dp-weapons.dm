@@ -37,12 +37,14 @@
 	materials = list(MATERIAL_STEEL = 3000)
 	build_path = /obj/item/weapon/grenade/chem_grenade/large
 	sort_string = "TABAA"
+
 /datum/design/item/weapon/shield/shield_belt/experimental_shield_belt
 	id = "experimental_shield_belt"
-	req_tech= list(TECH_MATERIAL = 4, TECH_MAGNET = 6, TECH_POWER = 5,TECH_COMBAT = 5)
-	materials = list(MATERIAL_STEEL = 5000, MATERIAL_GLASS = 2000, MATERIAL_GOLD = 750,MATERIAL_URANIUM = 750, MATERIAL_DIAMOND = 1500)
+	req_tech= list(TECH_MATERIAL = 4, TECH_MAGNET = 6, TECH_POWER = 5, TECH_COMBAT = 5)
+	materials = list(MATERIAL_STEEL = 5000, MATERIAL_GLASS = 2000, MATERIAL_GOLD = 750, MATERIAL_URANIUM = 750, MATERIAL_DIAMOND = 1500)
 	build_path = /obj/item/weapon/shield/shield_belt/experimental_shield_belt
 	sort_string = "TBAAA"
+
 /datum/design/item/weapon/anti_photon
 	id = "anti_photon"
 	req_tech = list(TECH_BLUESPACE = 4, TECH_MATERIAL = 4)
