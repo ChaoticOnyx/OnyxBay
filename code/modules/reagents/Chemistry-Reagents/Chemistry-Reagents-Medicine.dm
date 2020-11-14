@@ -1107,7 +1107,7 @@
 
 /datum/reagent/calciumxon
 	name = "Calciumxon"
-	description = "Psyloxon is a antiepileptical drug. Stabilizes brain activity."
+	description = "Calciumxon is a bonehealer drug"
 	taste_description = "bitterness"
 	reagent_state = LIQUID
 	color = "#eeeeff"
