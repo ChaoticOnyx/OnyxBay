@@ -106,7 +106,6 @@
 			O.Stun(flash_time / 2)
 			O.Weaken(3)
 
-
 /obj/machinery/flasher/emp_act(severity)
 	if(stat & (BROKEN|NOPOWER))
 		..(severity)

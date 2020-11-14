@@ -667,7 +667,7 @@ proc/SwapMaps_GetSize(id)
 		world.log << "SwapMaps error in SwapMaps_GetSize(): map_[id] file not found."
 		return
 	if(text)
-		S  =new
+		S = new
 		S.ImportText("/", file("map_[id].txt"))
 	/*
 		The //.0 path should always be the map. There's no other way to

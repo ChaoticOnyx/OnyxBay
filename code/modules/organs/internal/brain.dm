@@ -61,7 +61,7 @@
 
 /obj/item/organ/internal/brain/New(mob/living/carbon/holder)
 	..()
-	max_damage         = species? (species.total_health/2) : 100
+	max_damage = species? (species.total_health/2) : 100
 
 	min_bruised_damage = max_damage*0.25
 	min_broken_damage  = max_damage*0.75
@@ -244,9 +244,9 @@
 
 	else if((owner.disabilities & DEPRESSION) && prob(5) && !owner.chem_effects[CE_MIND])
 		switch(rand(1, 11))
-			if(1 to 2)
+			if(1 to 3)
 				owner.emote("cry")
-			if(3 to 10)
+			if(4 to 10)
 				to_chat(owner, SPAN_WARNING("[pick("You feel a sad", "You lost", "Where has happiness gone?")]"))
 			if(11)
 				to_chat(owner, SPAN_DEADSAY("[pick("You want to die", "You want to end a meaningless existence")]"))

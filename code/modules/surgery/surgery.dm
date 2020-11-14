@@ -6,7 +6,6 @@
 	// type path referencing tools that can be used for this step, and how well are they suited for it
 	var/list/allowed_tools = null
 	// type paths referencing races that this step applies to.
-	var/list/allowed_species = null
 	var/list/disallowed_species = null
 
 	// duration of the step
@@ -29,16 +28,7 @@
 
 // Checks if this step applies to the user mob at all
 /datum/surgery_step/proc/is_valid_target(mob/living/carbon/human/target)
-	if(!hasorgans(target))
-		return 0
-
-	if(disallowed_species)
-		for(var/species in disallowed_species)
-			if(target.species.name == species)
-				return 0
-
-	return 1
-
+	return hasorgans(target)
 
 // checks whether this step can be applied with the given user and target
 /datum/surgery_step/proc/can_use(mob/living/user, mob/living/carbon/human/target, target_zone, obj/item/tool)

@@ -315,27 +315,25 @@
 	data["occupant"] = H.name
 	data["scan_date"] = stationtime2text()
 
-
 	if(H.should_have_organ(BP_BRAIN))
 		var/obj/item/organ/internal/brain/brain = H.internal_organs_by_name[BP_BRAIN]
 		if (!brain || H.stat == DEAD || (H.status_flags & FAKEDEATH))
-			data["brain_activity"]    = 0
+			data["brain_activity"] = 0
 		else if (H.stat != DEAD)
-			data["brain_activity"]    = brain.get_activity()
+			data["brain_activity"] = brain.get_activity()
 
 		data["brain_activity_status"] = src.get_brain_activity_status()
 
-		var/brain_damage_procents = 100*(brain.damage / brain.max_damage)
-		data["brain_damage"]     	  = 100-brain_damage_procents
-		data["brain_status"]          = get_brain_status(100-brain_damage_procents)
-
+		var/brain_damage_procents = 100 * (brain.damage / brain.max_damage)
+		data["brain_damage"] = 100-brain_damage_procents
+		data["brain_status"] = get_brain_status(100-brain_damage_procents)
 
 	if(H.should_have_organ(BP_HEART))
 		if(H.status_flags & FAKEDEATH)
 			data["pulse"] = 0
 			data["pulse_status"] = "Moderate"
 		else
-			var/pulse     = text2num(H.get_pulse(1))
+			var/pulse = text2num(H.get_pulse(1))
 
 			data["pulse"] = pulse
 
@@ -591,7 +589,6 @@
 		dat += text("Retinal misalignment detected.")
 
 	. = jointext(dat,"<br>")
-
 
 /obj/machinery/body_scanconsole/attack_hand(mob/user)
 	ASSERT(user)
