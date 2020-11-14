@@ -221,7 +221,7 @@ obj/structure/closet/crate
 
 /obj/structure/closet/crate/engineering
 	name = "engineering crate"
-	desc = "A engineering crate."
+	desc = "An engineering crate."
 	icon_state = "engicrate"
 	icon_opened = "engicrateopen"
 	icon_closed = "engicrate"
