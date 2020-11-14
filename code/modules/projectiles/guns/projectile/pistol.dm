@@ -47,6 +47,7 @@
 	name = "VP78 .45 Tactical"
 	desc = "The VT78 pistol is a common and reliable sidearm, used by security forces and colonial marshalls all over the world. This one is heavily modified and painted in green camo. Uses .45 rounds."
 	icon_state = "VP78tactic"
+	item_state = "vp78"
 	magazine_type = /obj/item/ammo_magazine/c45m/rubber
 	allowed_magazines = /obj/item/ammo_magazine/c45m
 	auto_eject = 1
@@ -66,6 +67,7 @@
 	name = "VP78 .45"
 	desc = "The VT78 pistol is a common and reliable sidearm, used by security forces and colonial marshalls all over the world. Uses .45 rounds."
 	icon_state = "VP78"
+	item_state = "vp78"
 	magazine_type = /obj/item/ammo_magazine/c45m/stun
 	allowed_magazines = /obj/item/ammo_magazine/c45m
 	caliber = ".45"
@@ -84,6 +86,7 @@
 	name = "VP78 .45"
 	desc = "The VT78 pistol is a common and reliable sidearm, used by security forces and colonial marshalls all over the world. This one has a sweet wooden grip, among other modifications. Uses .45 rounds."
 	icon_state = "VP78wood"
+	item_state = "vp78"
 	magazine_type = /obj/item/ammo_magazine/c45m/stun
 	allowed_magazines = /obj/item/ammo_magazine/c45m
 	caliber = ".45"
