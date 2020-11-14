@@ -122,7 +122,7 @@
 
 /obj/item/clothing/suit/storage/civ_trench
 	name = "brown trenchcoat"
-	desc = "A cheap rugged canvas trenchcoat, manufactured by TX Fabrication Corp. May soften a punch, but is literally disabled compared to the detective's coat."
+	desc = "A cheap rugged canvas trenchcoat, manufactured by TX Fabrication Corp. May soften a punch, but is literally disabled compared to the detective's coat. The lock on it was stuck, so it is impossible to unzip it."
 	icon_state = "detective"
 	valid_accessory_slots = list(ACCESSORY_SLOT_INSIGNIA)
 	blood_overlay_type = "coat"
