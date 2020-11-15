@@ -42,7 +42,7 @@
 
 /obj/item/weapon/reagent_containers/food/snacks/packaged/sweetroid
 	name = "Sweetroid bar"
-	desc = "It's green, it's chewy, and it's somehow related to xenoscience. But most definitely it's a candy."
+	desc = "It's green, it's chewy, and it's somehow related to xenoscience. But most definitely it's a candy!"
 	icon_state = "sweetroid"
 	trash = /obj/item/trash/sweetroid
 	filling_color = "#5ba652"
@@ -72,7 +72,7 @@
 
 /obj/item/weapon/reagent_containers/food/snacks/packaged/jellaws
 	name = "Jellaw's Jellybaton"
-	desc = "Not such a robust thing, but it's flavorings are definitely stunning."
+	desc = "Not such a robust thing, but its flavorings are definitely stunning!"
 	icon_state = "jellaws"
 	trash = /obj/item/trash/jellaws
 	filling_color = "#5ba652"
