@@ -83,5 +83,9 @@
 	name = "Hema2Gen"
 	icon_state = "hema2gen"
 
+/obj/item/trash/pan
+	name = "holey pan"
+	icon_state = "pan"
+
 /obj/item/trash/attack(mob/M as mob, mob/living/user as mob)
 	return

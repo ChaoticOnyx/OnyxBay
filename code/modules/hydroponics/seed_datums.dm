@@ -40,6 +40,7 @@
 	display_name = "flame chili plants"
 	mutants = null
 	chems = list(/datum/reagent/fuel = list(5,10))
+	kitchen_tag = "flamechili"
 
 /datum/seed/chili/flame/New()
 	..()
