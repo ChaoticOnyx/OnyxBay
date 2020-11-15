@@ -15,10 +15,6 @@
 		atom_flags |= ATOM_FLAG_OPEN_CONTAINER
 		update_icon()
 
-/obj/item/weapon/reagent_containers/food/snacks/packaged/on_reagent_change()
-	update_icon()
-	return
-
 /obj/item/weapon/reagent_containers/food/snacks/packaged/update_icon()
 	if(is_open_container())
 		if(bitecount)

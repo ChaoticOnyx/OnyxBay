@@ -101,6 +101,7 @@
 				else
 					reagents.trans_to_mob(M, reagents.total_volume, CHEM_INGEST)
 				bitecount++
+				update_icon()
 				On_Consume(M)
 			return 1
 
