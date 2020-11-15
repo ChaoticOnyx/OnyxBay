@@ -281,10 +281,10 @@
 	var/turf/OT = get_step(src, src.dir)//opposite turf of railing
 	var/turf/T = get_turf(src)//current turf of railing
 	var/turf/UT = get_turf(usr)
-	if (OT==UT)
-		return check_tile(user,T)
-	else if (T==UT)
-		return check_tile(user,OT)
+	if (OT == UT)
+		return check_tile(user, T)
+	else if (T == UT)
+		return check_tile(user, OT)
 	else
 		to_chat(user, SPAN_DANGER("Too far to climb"))
 		return 0
