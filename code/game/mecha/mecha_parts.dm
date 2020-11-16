@@ -323,8 +323,8 @@
 	origin_tech = list(TECH_DATA = 2, TECH_MATERIAL = 2, TECH_ENGINEERING = 3)
 
 /obj/item/mecha_parts/part/honker_right_arm
-	name="H.O.N.K. Right Arm"
-	desc="An Odysseus right arm. Data and power sockets are compatible with most exosuit tools."
+	name = "H.O.N.K. Right Arm"
+	desc = "An Odysseus right arm. Data and power sockets are compatible with most exosuit tools."
 	icon_state = "honker_r_arm"
 	origin_tech = list(TECH_DATA = 2, TECH_MATERIAL = 2, TECH_ENGINEERING = 3)
 
