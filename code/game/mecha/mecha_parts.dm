@@ -317,8 +317,8 @@
 	origin_tech = list(TECH_DATA = 2, TECH_MATERIAL = 3, TECH_BIO = 3, TECH_ENGINEERING = 3)
 
 /obj/item/mecha_parts/part/honker_left_arm
-	name="H.O.N.K. Left Arm"
-	desc="An Odysseus left arm. Data and power sockets are compatible with most exosuit tools."
+	name = "H.O.N.K. Left Arm"
+	desc = "An Odysseus left arm. Data and power sockets are compatible with most exosuit tools."
 	icon_state = "honker_l_arm"
 	origin_tech = list(TECH_DATA = 2, TECH_MATERIAL = 2, TECH_ENGINEERING = 3)
 
