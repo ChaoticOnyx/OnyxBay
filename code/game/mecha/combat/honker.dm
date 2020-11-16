@@ -7,7 +7,7 @@
 	health = 200
 	deflect_chance = 60
 	internal_damage_threshold = 60
-	damage_absorption = list("brute"=1.2,"fire"=1.5,"bullet"=1,"laser"=1,"energy"=1,"bomb"=1)
+	damage_absorption = list("brute"=1.2, "fire"=1.5, "bullet"=1, "laser"=1, "energy"=1, "bomb"=1)
 	max_temperature = 25500
 	infra_luminosity = 5
 	operation_req_access = list(access_clown)
