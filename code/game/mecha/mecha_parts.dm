@@ -306,7 +306,7 @@
 		construct = new /datum/construction/mecha/honker_chassis(src)
 
 /obj/item/mecha_parts/part/honker_head
-	name="H.O.N.K. Head"
+	name = "H.O.N.K. Head"
 	icon_state = "honker_head"
 	origin_tech = list(TECH_DATA = 2, TECH_MATERIAL = 3, TECH_MAGNET = 3, TECH_ENGINEERING = 3)
 
