@@ -84,6 +84,17 @@
 		using.alpha = ui_alpha
 		src.hotkeybuttons += using
 
+	if(hud_data.has_rest)
+		using = new /obj/screen()
+		using.SetName("rest")
+		using.icon = ui_style
+		using.icon_state = "rest"
+		using.screen_loc = ui_rest_act
+		using.color = ui_color
+		using.alpha = ui_alpha
+		src.adding += using
+
+
 	if(hud_data.has_hands)
 
 		using = new /obj/screen()

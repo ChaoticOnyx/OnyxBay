@@ -16,15 +16,16 @@
 	sort_order = 5
 
 /datum/category_item/player_setup_item/general/background/load_character(savefile/S)
-	from_file(S["med_record"],pref.med_record)
-	from_file(S["sec_record"],pref.sec_record)
-	from_file(S["gen_record"],pref.gen_record)
-	from_file(S["home_system"],pref.home_system)
-	from_file(S["citizenship"],pref.citizenship)
-	from_file(S["faction"],pref.faction)
-	from_file(S["religion"],pref.religion)
-	from_file(S["nanotrasen_relation"],pref.nanotrasen_relation)
-	from_file(S["memory"],pref.memory)
+	from_file(S["nanotrasen_relation"], pref.nanotrasen_relation)
+	from_file(S["home_system"], pref.home_system)
+	from_file(S["citizenship"], pref.citizenship)
+	from_file(S["faction"], pref.faction)
+	from_file(S["religion"], pref.religion)
+	from_file(S["med_record"], pref.med_record)
+	from_file(S["gen_record"], pref.gen_record)
+	from_file(S["sec_record"], pref.sec_record)
+	from_file(S["exploit_record"], pref.exploit_record)
+	from_file(S["memory"], pref.memory)
 
 	// delete factions from old saves
 	var/factionExist = FALSE
@@ -36,21 +37,26 @@
 		pref.faction = "NanoTrasen"
 
 /datum/category_item/player_setup_item/general/background/save_character(savefile/S)
-	to_file(S["med_record"],pref.med_record)
-	to_file(S["sec_record"],pref.sec_record)
-	to_file(S["gen_record"],pref.gen_record)
-	to_file(S["home_system"],pref.home_system)
-	to_file(S["citizenship"],pref.citizenship)
-	to_file(S["faction"],pref.faction)
-	to_file(S["religion"],pref.religion)
-	to_file(S["nanotrasen_relation"],pref.nanotrasen_relation)
-	to_file(S["memory"],pref.memory)
+	to_file(S["nanotrasen_relation"], pref.nanotrasen_relation)
+	to_file(S["home_system"], pref.home_system)
+	to_file(S["citizenship"], pref.citizenship)
+	to_file(S["faction"], pref.faction)
+	to_file(S["religion"], pref.religion)
+	to_file(S["med_record"], pref.med_record)
+	to_file(S["gen_record"], pref.gen_record)
+	to_file(S["sec_record"], pref.sec_record)
+	to_file(S["exploit_record"], pref.exploit_record)
+	to_file(S["memory"], pref.memory)
 
 /datum/category_item/player_setup_item/general/background/sanitize_character()
-	if(!pref.home_system) pref.home_system = "Unset"
-	if(!pref.citizenship) pref.citizenship = "None"
-	if(!pref.faction)     pref.faction =     "NanoTrasen"
-	if(!pref.religion)    pref.religion =    "None"
+	if(!pref.home_system)
+		pref.home_system = "Unset"
+	if(!pref.citizenship)
+		pref.citizenship = "None"
+	if(!pref.faction)
+		pref.faction =     "NanoTrasen"
+	if(!pref.religion)
+		pref.religion =    "None"
 
 	pref.nanotrasen_relation = sanitize_inlist(pref.nanotrasen_relation, COMPANY_ALIGNMENTS, initial(pref.nanotrasen_relation))
 
@@ -71,7 +77,9 @@
 		. += "Employment Records:<br>"
 		. += "<a href='?src=\ref[src];set_general_records=1'>[TextPreview(pref.gen_record,40)]</a><br><br>"
 		. += "Security Records:<br>"
-		. += "<a href='?src=\ref[src];set_security_records=1'>[TextPreview(pref.sec_record,40)]</a><br>"
+		. += "<a href='?src=\ref[src];set_security_records=1'>[TextPreview(pref.sec_record,40)]</a><br><br>"
+		. += "Exploitable information:<br>"
+		. += "<a href='?src=\ref[src];exploitable_record=1'>[TextPreview(pref.exploit_record,40)]</a><br><br>"
 		. += "Memory:<br>"
 		. += "<a href='?src=\ref[src];set_memory=1'>[TextPreview(pref.memory,40)]</a><br>"
 
@@ -142,6 +150,12 @@
 		if(!isnull(sec_medical) && !jobban_isbanned(user, "Records") && CanUseTopic(user))
 			pref.sec_record = sec_medical
 		return TOPIC_REFRESH
+
+	else if(href_list["exploitable_record"])
+		var/exploitmsg = sanitize(input(user,"Set exploitable information about you here.","Exploitable Information", html_decode(pref.exploit_record)) as message|null, MAX_PAPER_MESSAGE_LEN, extra = 0)
+		if(!isnull(exploitmsg) && !jobban_isbanned(user, "Records") && CanUseTopic(user))
+			pref.exploit_record = exploitmsg
+			return TOPIC_REFRESH
 
 	else if(href_list["set_memory"])
 		var/memes = sanitize(input(user,"Enter memorized information here.","Character Preference", html_decode(pref.memory)) as message|null, MAX_PAPER_MESSAGE_LEN, extra = 0)
