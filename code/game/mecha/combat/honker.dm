@@ -121,7 +121,7 @@
 	return output
 
 /obj/mecha/combat/honker/mechstep(direction)
-	var/result = step(src,direction)
+	var/result = step(src, direction)
 	if(result)
 		if(!squeak)
 			playsound(src, "clownstep", 70, 1)
