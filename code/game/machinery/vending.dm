@@ -832,7 +832,7 @@
 					/obj/item/weapon/reagent_containers/food/snacks/packaged/jellaws = 6,
 					/obj/item/weapon/reagent_containers/food/drinks/dry_ramen = 6,
 					/obj/item/weapon/reagent_containers/food/drinks/chickensoup = 6,
-					/obj/item/weapon/reagent_containers/food/snacks/packaged/chips =6,
+					/obj/item/weapon/reagent_containers/food/snacks/packaged/chips = 6,
 					/obj/item/weapon/reagent_containers/food/snacks/packaged/sosjerky = 6,
 					/obj/item/weapon/reagent_containers/food/snacks/packaged/no_raisin = 6,
 					/obj/item/weapon/reagent_containers/food/snacks/spacetwinkie = 6,
