@@ -335,7 +335,7 @@
 	origin_tech = list(TECH_DATA = 2, TECH_MATERIAL = 2, TECH_ENGINEERING = 3)
 
 /obj/item/mecha_parts/part/honker_right_leg
-	name="H.O.N.K. Right Leg"
-	desc="A Odysseus right leg. Contains somewhat complex servodrives and balance maintaining systems."
+	name = "H.O.N.K. Right Leg"
+	desc = "A Odysseus right leg. Contains somewhat complex servodrives and balance maintaining systems."
 	icon_state = "honker_r_leg"
 	origin_tech = list(TECH_DATA = 2, TECH_MATERIAL = 2, TECH_ENGINEERING = 3)
