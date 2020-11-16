@@ -168,6 +168,9 @@
 	has_gravity = 0
 	sound_env = SPACE
 
+/area/holodeck/source_chess
+	name = "\improper Holodeck - Chess Field"
+
 // Construction Site
 
 /area/constructionsite
@@ -459,6 +462,9 @@
 	name = "\improper Security - Morgue"
 	icon_state = "brigmorgue"
 
+/area/security/brigswstorage
+	name = "\improper Security - S-W Storage"
+	icon_state = "brigswstorage"
 /area/security/evidence
 	name = "\improper Security - Evidence Storage"
 	icon_state = "evidence"

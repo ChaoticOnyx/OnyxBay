@@ -23,7 +23,7 @@
 	projectile_type = pick(/obj/item/projectile/beam/midlaser, /obj/item/projectile/beam/lastertag/red, /obj/item/projectile/beam)
 	return ..()
 
-/obj/item/weapon/gun/projectile/automatic/mini_uzi/usi
+/obj/item/weapon/gun/projectile/automatic/machine_pistol/mini_uzi/usi
 	desc = "An uncommon machine pistol, sometimes refered to as an 'uzi' by the backwater spacers it is often associated with. This one looks especially run-down. Uses .45 rounds."
 	jam_chance = 20
 	fire_sound = 'sound/weapons/gun_colt2.ogg'

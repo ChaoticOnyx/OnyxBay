@@ -1887,6 +1887,9 @@ area/rnd/test_area
 	has_gravity = 0
 	sound_env = SPACE
 
+/area/holodeck/source_chess
+	name = "\improper Holodeck - Chess Field"
+
 /area/prison/solitary
 	name = "Solitary Confinement"
 	icon_state = "brig"
