@@ -312,7 +312,7 @@
 
 /obj/item/mecha_parts/part/honker_torso
 	name = "H.O.N.K. Torso"
-	desc="A torso part of Odysseus. Contains power unit, processing core and life support systems."
+	desc = "A torso part of Odysseus. Contains power unit, processing core and life support systems."
 	icon_state = "honker_torso"
 	origin_tech = list(TECH_DATA = 2, TECH_MATERIAL = 3, TECH_BIO = 3, TECH_ENGINEERING = 3)
 
