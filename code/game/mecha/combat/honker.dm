@@ -31,7 +31,7 @@
 	if(!melee_can_hit)
 		return
 	else if(istype(target, /mob))
-		step_away(target,src,15)
+		step_away(target, src, 15)
 	return
 
 /obj/mecha/combat/honker/get_stats_part()
