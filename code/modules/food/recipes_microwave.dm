@@ -508,7 +508,7 @@ I said no!
 	result = /obj/item/weapon/reagent_containers/food/snacks/meatballsoup
 
 /datum/recipe/fathersoup
-	fruit = list("garlic" = 1, "flamechili" = 1, "tomato" = 1, )
+	fruit = list("garlic" = 1, "flamechili" = 1, "tomato" = 1)
 	reagents = list(/datum/reagent/nutriment/flour = 10, /datum/reagent/blackpepper = 5)
 	items = list(/obj/item/weapon/reagent_containers/food/snacks/tomatosoup)
 	result = /obj/item/weapon/reagent_containers/food/snacks/fathersoup
@@ -1227,7 +1227,6 @@ I said no!
 	/datum/reagent/drink/milk = 5,
 	)
 	result = /obj/item/weapon/reagent_containers/food/snacks/sliceable/choccherrycake
-
 
 
 
