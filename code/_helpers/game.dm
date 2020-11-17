@@ -288,7 +288,7 @@
 			continue
 
 		var/mob/M = mob
-		if(M && M.stat == DEAD && M.get_preference_value(checkghosts) != GLOB.PREF_NEARBY)
+		if(checkghosts && M && M.stat == DEAD && M.get_preference_value(checkghosts) != GLOB.PREF_NEARBY)
 			mobs |= M
 
 	//For objects below the top level who still want to hear
