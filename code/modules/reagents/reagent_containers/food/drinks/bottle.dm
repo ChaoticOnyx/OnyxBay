@@ -240,7 +240,7 @@
 	center_of_mass = "x=16;y=3"
 	New()
 		..()
-		reagents.add_reagent(/datum/reagent/ethanol/specialwhiskey, 100)
+		reagents.add_reagent(/datum/reagent/ethanol/whiskey/specialwhiskey, 100)
 
 /obj/item/weapon/reagent_containers/food/drinks/bottle/vodka
 	name = "Tunguska Triple Distilled"

@@ -76,7 +76,7 @@
 					/obj/item/weapon/reagent_containers/hypospray/autoinjector = 1,
 					/obj/item/stack/medical/patches = 1,
 					/obj/item/device/flashlight/glowstick = 1,
-					/obj/item/weapon/reagent_containers/food/snacks/candy/proteinbar = 1)
+					/obj/item/weapon/reagent_containers/food/snacks/packaged/nutribar = 1)
 
 /obj/item/weapon/storage/box/vox
 	name = "vox survival kit"
@@ -86,7 +86,7 @@
 					/obj/item/weapon/tank/emergency/nitrogen = 1,
 					/obj/item/stack/medical/patches = 1,
 					/obj/item/device/flashlight/glowstick = 1,
-					/obj/item/weapon/reagent_containers/food/snacks/candy/proteinbar = 1)
+					/obj/item/weapon/reagent_containers/food/snacks/packaged/nutribar = 1)
 
 /obj/item/weapon/storage/box/engineer
 	name = "engineer survival kit"
@@ -98,7 +98,7 @@
 					/obj/item/weapon/reagent_containers/hypospray/autoinjector/detox = 1,
 					/obj/item/stack/medical/patches = 1,
 					/obj/item/device/flashlight/glowstick/orange = 1,
-					/obj/item/weapon/reagent_containers/food/snacks/candy/proteinbar = 1)
+					/obj/item/weapon/reagent_containers/food/snacks/packaged/nutribar = 1)
 
 /obj/item/weapon/storage/box/security
 	name = "security survival kit"
@@ -110,7 +110,7 @@
 					/obj/item/weapon/reagent_containers/hypospray/autoinjector/tricordrazine = 1,
 					/obj/item/stack/medical/patches = 1,
 					/obj/item/device/flashlight/glowstick/red = 1,
-					/obj/item/weapon/reagent_containers/food/snacks/candy/proteinbar = 1)
+					/obj/item/weapon/reagent_containers/food/snacks/packaged/nutribar = 1)
 
 /obj/item/weapon/storage/box/gloves
 	name = "box of sterile gloves"
