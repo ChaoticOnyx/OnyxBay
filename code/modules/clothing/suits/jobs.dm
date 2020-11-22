@@ -122,8 +122,9 @@
 
 /obj/item/clothing/suit/storage/civ_trench
 	name = "brown trenchcoat"
-	desc = "A cheap rugged canvas trenchcoat, manufactured by TX Fabrication Corp. May soften a punch, but is literally disabled compared to the detective's coat. The lock on it was stuck, so it is impossible to unzip it."
-	icon_state = "detective"
+	desc = "A cheap rugged canvas trenchcoat, manufactured by TX Fabrication Corp. May soften a punch, but is literally disabled compared to the detective's coat. Its button loops don't seem to match the buttons' size."
+	icon_state = "detective_open"
+	item_state = "detective_open"
 	valid_accessory_slots = list(ACCESSORY_SLOT_INSIGNIA)
 	blood_overlay_type = "coat"
 	body_parts_covered = UPPER_TORSO|LOWER_TORSO|ARMS
@@ -132,7 +133,9 @@
 
 /obj/item/clothing/suit/storage/civ_trench/grey
 	name = "grey trenchcoat"
-	icon_state = "detective2"
+	desc = "A cheap rugged canvas trenchcoat, manufactured by TX Fabrication Corp. May soften a punch, but is literally disabled compared to the detective's coat. Its button loops don't seem to match the buttons' size."
+	icon_state = "detective2_open"
+	item_state = "detective2_open"
 
 //Forensics
 /obj/item/clothing/suit/storage/toggle/forensics
