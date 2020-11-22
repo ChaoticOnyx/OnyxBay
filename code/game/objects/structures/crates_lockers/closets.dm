@@ -392,8 +392,7 @@
 			attach_door(C)
 			return
 
-		if(usr.drop_item())
-			W.forceMove(loc)
+		if(usr.unEquip(W, target = loc))
 			W.pixel_x = 0
 			W.pixel_y = 0
 			W.pixel_z = 0

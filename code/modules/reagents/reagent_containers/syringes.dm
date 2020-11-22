@@ -237,7 +237,7 @@
 			to_chat(user, "<span class='notice'>[target] is empty.</span>")
 			return
 
-		if(!target.is_open_container() && !istype(target, /obj/structure/reagent_dispensers) && !istype(target, /obj/item/slime_extract))
+		if(!target.is_open_container() && !istype(target, /obj/structure/reagent_dispensers) && !istype(target, /obj/item/weapon/backwear/reagent) && !istype(target, /obj/item/slime_extract))
 			to_chat(user, "<span class='notice'>You cannot directly remove reagents from this object.</span>")
 			return
 
