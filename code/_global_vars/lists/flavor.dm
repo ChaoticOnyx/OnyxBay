@@ -1,6 +1,6 @@
 // Used by robots and robot preferences.
 GLOBAL_LIST_INIT(robot_module_types, list(
-	"Standard", "Engineering", "Surgeon",  "Medical",
+	"Standard", "Engineering", "Surgeon", "Medical",
 	"Miner",    "Janitor",     "Service", "Security",
 	"Research"
 )) // This shouldn't be a static list. Am I the only one who cares about extendability around here?
