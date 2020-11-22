@@ -1383,6 +1383,7 @@
 	reagents.add_reagent(/datum/reagent/water, 10)
 	reagents.add_reagent(/datum/reagent/thermite, 2)
 	reagents.add_reagent(/datum/reagent/capsaicin, 5)
+
 /obj/item/weapon/reagent_containers/food/snacks/slimesoup
 	name = "slime soup"
 	desc = "If no water is available, you may substitute tears."
