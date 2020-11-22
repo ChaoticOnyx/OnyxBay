@@ -37,6 +37,13 @@
 	containertype = /obj/structure/largecrate/animal/corgi
 	containername = "\improper Corgi crate"
 
+/decl/hierarchy/supply_pack/hydroponics/parrot
+	name = "Parrot crate"
+	contains = list()
+	cost = 40
+	containertype = /obj/structure/largecrate/animal/parrot
+	containername = "\improper Parrot crate"
+
 //farm animals - useless and annoying, but potentially a good source of food. expensive because they're live animals and their produce is available cheaper
 /decl/hierarchy/supply_pack/hydroponics/cow
 	name = "Cow crate"
