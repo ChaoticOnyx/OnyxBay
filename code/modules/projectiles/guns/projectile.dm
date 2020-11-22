@@ -165,8 +165,14 @@
 		is_jammed = 0
 		playsound(src.loc, 'sound/weapons/flipblade.ogg', 50, 1)
 	if(ammo_magazine)
-		user.put_in_hands(ammo_magazine)
-		user.visible_message("[user] removes [ammo_magazine] from [src].", "<span class='notice'>You remove [ammo_magazine] from [src].</span>")
+		if(allow_dump)
+			user.drop_from_inventory(ammo_magazine)
+			user.visible_message("[user] ejects [ammo_magazine] from [src].",
+			SPAN_NOTICE("You eject [ammo_magazine] from [src]."))
+		else
+			user.put_in_hands(ammo_magazine)
+			user.visible_message("[user] removes [ammo_magazine] from [src].", 
+			SPAN_NOTICE("You remove [ammo_magazine] from [src]."))
 		playsound(src.loc, 'sound/weapons/empty.ogg', 50, 1)
 		ammo_magazine.update_icon()
 		ammo_magazine = null
