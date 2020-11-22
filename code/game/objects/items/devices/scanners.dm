@@ -88,7 +88,7 @@ proc/medical_scan_results(mob/living/carbon/human/H, verbose, separate_result)
 	var/obj/item/organ/internal/brain/brain = H.internal_organs_by_name[BP_BRAIN]
 	if(H.should_have_organ(BP_BRAIN))
 		if(!brain || H.stat == DEAD || (H.status_flags & FAKEDEATH))
-			brain_result = "<span class='danger'>none, patient is braindead</span>"
+			brain_result = "<span class='danger'>braindead</span>"
 		else if(H.stat != DEAD)
 			switch(brain.get_current_damage_threshold())
 				if(0)
@@ -105,7 +105,8 @@ proc/medical_scan_results(mob/living/carbon/human/H, verbose, separate_result)
 					brain_result = "<span class='danger'>ERROR - Hardware fault</span>"
 	else
 		brain_result = "<span class='danger'>ERROR - Nonstandard biology</span>"
-	brain_data += "<span class='notice'>Brain activity:</span> [brain_result]."
+	brain_data += "<span class='notice'>Brain status:</span> [brain_result]."
+	brain_data += "<span class='notice'>Brain activity:</span> [brain.get_activity()]."
 
 	if(brain && (H.stat == DEAD || (H.status_flags & FAKEDEATH)))
 		brain_data += "<span class='notice'><b>Time of Death:</b> [worldtime2stationtime(H.timeofdeath)]</span>"

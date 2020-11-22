@@ -1097,13 +1097,14 @@
 			M.add_chemical_effect(CE_ALCOHOL_TOXIC, 2)
 			M.add_chemical_effect(CE_BREATHLOSS, 0.2 * boozed)
 
-/datum/reagent/galoperidol/overdose(mob/living/carbon/M, alien, remove) 
-	M.add_chemical_effect(CE_BREATHLOSS, 2)
+/datum/reagent/galoperidol/overdose(mob/living/carbon/M, alien, remove)
 	M.Stun(10)
 	M.add_brain_activity(-35)
 
 	if(prob(8))
-		M.disabilities |= DEPRESSION // ;c
+		if(ishuman(M))
+			var/mob/living/carbon/human/H = M
+			H.add_disease(new /obj/psychiatry/disease/depression)
 
 /datum/reagent/calciumxon
 	name = "Calciumxon"

@@ -32,6 +32,10 @@
 
 		handle_viruses()
 
+		if(ishuman(src))
+			var/mob/living/carbon/human/H = src
+			H.handle_psychiatry()
+
 		. = 1
 
 		if(!client && !mind && species)

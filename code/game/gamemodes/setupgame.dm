@@ -39,13 +39,11 @@
 	GLOB.XRAYBLOCK          = getAssignedBlock("XRAY",          numsToAssign, DNA_HARDER_BOUNDS)
 	GLOB.CLUMSYBLOCK        = getAssignedBlock("CLUMSY",        numsToAssign)
 	GLOB.FAKEBLOCK          = getAssignedBlock("FAKE",          numsToAssign)
+	GLOB.EPILEPSYBLOCK      = getAssignedBlock("EPILEPSY",      numsToAssign)
 
 	// UNUSED!
 	//GLOB.COUGHBLOCK         = getAssignedBlock("COUGH",         numsToAssign)
 	//GLOB.GLASSESBLOCK       = getAssignedBlock("GLASSES",       numsToAssign)
-	//GLOB.EPILEPSYBLOCK      = getAssignedBlock("EPILEPSY",      numsToAssign)
-	//GLOB.TWITCHBLOCK        = getAssignedBlock("TWITCH",        numsToAssign)
-	//GLOB.NERVOUSBLOCK       = getAssignedBlock("NERVOUS",       numsToAssign)
 
 	// Bay muts (UNUSED)
 	//GLOB.HEADACHEBLOCK      = getAssignedBlock("HEADACHE",      numsToAssign)

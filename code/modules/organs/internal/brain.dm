@@ -21,8 +21,6 @@
 	var/damage_threshold_value
 	var/healed_threshold = 1
 
-	// look /obj/item/organ/internal/brain/proc/get_activity()
-	var/stable_activity_value = 100.0
 	var/relative_activity = 0
 
 	var/last_disability_give     = 0
@@ -31,7 +29,7 @@
 
 // in procents
 /obj/item/organ/internal/brain/proc/get_activity()
-	return (stable_activity_value * (1.0-(damage / max_damage)) + relative_activity)/stable_activity_value * 100.0
+	return max(100 * (1.0-(damage / max_damage)) + relative_activity, 0)
 
 /obj/item/organ/internal/brain/robotize()
 	replace_self_with(/obj/item/organ/internal/posibrain)
@@ -166,7 +164,8 @@
 		handle_damage_effects()
 
 		var/stabilizer = 1.25 + (owner.chem_effects[CE_ANTIEPILEPTIC]*3)
-		relative_activity += clamp(-relative_activity, -stabilizer, stabilizer)
+		relative_activity -= clamp(get_activity()-100, -stabilizer, stabilizer)
+
 		// Brain damage from low oxygenation or lack of blood.
 		if(owner.should_have_organ(BP_HEART))
 
@@ -221,66 +220,48 @@
 
 /obj/item/organ/internal/brain/proc/handle_disabilities()
 	if((owner.disabilities & EPILEPSY) && prob(1))
-		relative_activity = 155 - get_activity()
-	else if((owner.disabilities & TOURETTES) && !owner.chem_effects[CE_ANTIPSYHOTIC])
-		switch(rand(1, 3))
-			if(1)
-				owner.emote("twitch")
-			if(2 to 3)
-				owner.say("[prob(50) ? ";" : ""][pick("Сука", "Блять", "Нахуя", "Пиздец")]")
-		owner.make_jittery(100)
+		relative_activity += 50
 
-	else if((owner.disabilities & NERVOUS) && prob(10) && !owner.chem_effects[CE_MIND])
-		owner.stuttering = max(10, owner.stuttering)
 
-	else if((owner.disabilities & SCHIZOPHRENIA) && prob(10) && (!owner.chem_effects[CE_ANTIPSYHOTIC] || owner.chem_effects[CE_ANTIPSYHOTIC] <= 5) && world.time > last_schizophrenia_attack + schizophrenia_delay)
-		var/strength = owner.chem_effects[CE_ANTIPSYHOTIC] ? (pick(0, 5, 15, 20, 40, 60, 70)/owner.chem_effects[CE_ANTIPSYHOTIC]) : pick(0, 5, 15, 20, 40, 60, 70)
-		if(strength)
-			schizophrenia_delay = pick(15, 30, 60, 90)
-			owner.hallucination(strength, schizophrenia_delay)
+	if(damage > 0.70*max_damage && world.time > last_disability_give + DISABILITY_GIVE_DELAY)
+		if(prob(15))
+			owner.disabilities |= EPILEPSY
 		else
-			schizophrenia_delay = pick(20, 30)
-		last_schizophrenia_attack = world.time
-
-	else if((owner.disabilities & DEPRESSION) && prob(5) && !owner.chem_effects[CE_MIND])
-		switch(rand(1, 11))
-			if(1 to 3)
-				owner.emote("cry")
-			if(4 to 10)
-				to_chat(owner, SPAN_WARNING("[pick("You feel a sad", "You lost", "Where has happiness gone?")]"))
-			if(11)
-				to_chat(owner, SPAN_DEADSAY("[pick("You want to die", "You want to end a meaningless existence")]"))
-
-
-	if(damage > 0.75*max_damage && world.time > last_disability_give + DISABILITY_GIVE_DELAY)
-		owner.disabilities |= pick(EPILEPSY, TOURETTES, NERVOUS, SCHIZOPHRENIA)
+			owner.add_random_disease()
 		last_disability_give = world.time
 
 /obj/item/organ/internal/brain/proc/handle_damage_effects()
 	// From brain damage
-	if(damage > 0.1*max_damage && prob(1))
-		owner.custom_pain("Your feel pain.", 10)
-	if(damage > 0.3*max_damage && prob(1))
-		owner.custom_pain("Your feel strong pain.", 25)
-	if(damage > 0.5*max_damage && prob(1))
-		owner.custom_pain("Your feel a lot of pain.", 40)
+	if(prob(1))
+		switch(damage/max_damage)
+			if(0.1 to 0.3)
+				owner.custom_pain("Your feel pain.", 10)
+			if(0.3 to 0.5)
+				owner.custom_pain("Your feel strong pain.", 25)
+			if(0.5 to INFINITY)
+				owner.custom_pain("Your feel a lot of pain.", 40)
+
 	if(is_bruised() && prob(1) && owner.eye_blurry <= 0)
 		to_chat(owner, SPAN("warning", "It becomes hard to see for some reason."))
 		owner.eye_blurry = 10
+
 	if(is_bruised() && prob(1))
 		owner.hallucination(15, 15)
+
 	if(damage >= 0.5*max_damage && prob(1) && owner.get_active_hand())
 		to_chat(owner, SPAN("danger", "Your hand won't respond properly, and you drop what you are holding!"))
 		owner.drop_item()
+
 	if(damage >= 0.6*max_damage)
 		owner.slurring = max(owner.slurring, 2)
+
 	if(is_broken())
 		if(!owner.lying)
 			to_chat(owner, SPAN("warning", "You black out!"))
 		owner.Paralyse(10)
 
 	// From brain activity
-	if(get_activity() >= (owner.disabilities & EPILEPSY ? 150 : 220))
+	if(get_activity() > (owner.disabilities & EPILEPSY ? 150 : 220))
 		if(!owner.lying)
 			to_chat(owner, SPAN("warning", "You have a seizure!"))
 			owner.visible_message(SPAN("danger", "\The [owner] having a seizure!"))
@@ -288,27 +269,33 @@
 		owner.make_jittery(100)
 		owner.stuttering = max(10, owner.stuttering)
 		damage += 1.5
-	if(get_activity() >= (owner.disabilities & EPILEPSY ? 120 : 170) && prob(1))
-		owner.stuttering = max(10, owner.stuttering)
-	if(get_activity() >= (owner.disabilities & EPILEPSY ? 130 : 140) && prob(1))
-		owner.hallucination(15, 15)
-	if(get_activity() >= 120 && prob(1))
-		owner.custom_pain("Your feel pain.", 10)
-	if(get_activity() >= 140 && prob(1))
-		owner.custom_pain("Your feel strong pain.", 25)
-	if(get_activity() >= 160 && prob(1))
-		owner.custom_pain("Your feel a lot of pain.", 40)
-	if(get_activity() <= 80 && prob(1))
-		owner.eye_blurry = 2
-	if(get_activity() <= 60 && prob(1))
-		to_chat(owner, SPAN("warning", "It becomes hard to see for some reason."))
-		owner.eye_blurry = 10
-	if(get_activity() <= 40 && prob(1))
-		owner.slurring = max(owner.slurring, 2)
-	if(get_activity() <= 30 && prob(1) && owner.get_active_hand())
-		to_chat(owner, SPAN("danger", "Your hand won't respond properly, and you drop what you are holding!"))
-		owner.drop_item()
 	if(get_activity() <= 10)
 		if(!owner.lying)
 			to_chat(owner, SPAN("warning", "You black out!"))
 		owner.Paralyse(10)
+
+	if(!prob(1))
+		return
+
+	switch(get_activity())
+		if(160 to INFINITY)
+			owner.custom_pain("Your feel a lot of pain.", 40)
+		if(140 to 160)
+			owner.custom_pain("Your feel strong pain.", 25)
+		if(120 to 140)
+			owner.custom_pain("Your feel pain.", 10)
+
+		if(80 to 60)
+			owner.Weaken(5)
+		if(60 to 30)
+			to_chat(owner, SPAN("warning", "It becomes hard to see for some reason."))
+			owner.eye_blurry = 10
+		if(30 to 40)
+			owner.Stun(5)
+		if(40 to 20)
+			if(!owner.get_active_hand())
+				return
+			to_chat(owner, SPAN("danger", "Your hand won't respond properly, and you drop what you are holding!"))
+			owner.drop_item()
+		if(20 to 0)
+			damage += 2

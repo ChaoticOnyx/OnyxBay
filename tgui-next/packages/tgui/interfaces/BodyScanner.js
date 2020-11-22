@@ -31,15 +31,13 @@ export const BodyScanner = props => {
             </LabeledList>
 
             <Section title="Warnings" level={2}>
-              {data.medical_data.warnings.length
-                ? data.medical_data.warnings.map(warning => {
-                  return (
-                    <NoticeBox>
-                      {warning}
-                    </NoticeBox>
-                  ); })
-                : "Nothing"
-              }
+              {data.medical_data.warnings.map(warning => {
+                return (
+                  <NoticeBox>
+                    {warning}
+                  </NoticeBox>
+                ); })}
+
             </Section>
 
             <Section title="Body" level={2} buttons={
@@ -69,6 +67,18 @@ export const BodyScanner = props => {
                       <LabeledList.Item label="Brain Activity">
                         {data.medical_data.brain_activity >= 0
                           ? <ProgressBar value={data.medical_data.brain_activity}
+                            ranges={{
+                              good: [0.7, 1.2],
+                              average: [0.5, 1.7],
+                              bad: [0, 3],
+                            }} />
+                          : "Patient in coma"
+                        }
+                      </LabeledList.Item>
+
+                      <LabeledList.Item label="Brain Status">
+                        {data.medical_data.brain_status >= 0
+                          ? <ProgressBar value={data.medical_data.brain_status}
                             ranges={{
                               good: [0.8, 1.0],
                               average: [0.5, 0.8],
