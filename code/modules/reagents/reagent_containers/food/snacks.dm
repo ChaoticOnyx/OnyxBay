@@ -1368,6 +1368,22 @@
 		reagents.add_reagent(/datum/reagent/water, 5)
 		bitesize = 5
 
+/obj/item/weapon/reagent_containers/food/snacks/fathersoup
+	name = "Father's soup"
+	desc = "A hellish meal. It's better to refuse politely."
+	icon_state = "fathersoup"
+	trash = /obj/item/trash/pan
+	filling_color = "#f85210"
+	center_of_mass = "x=16;y=16"
+	bitesize = 5
+
+/obj/item/weapon/reagent_containers/food/snacks/fathersoup/New()
+	..()
+	reagents.add_reagent(/datum/reagent/nutriment/protein, 8)
+	reagents.add_reagent(/datum/reagent/water, 10)
+	reagents.add_reagent(/datum/reagent/thermite, 2)
+	reagents.add_reagent(/datum/reagent/capsaicin, 5)
+
 /obj/item/weapon/reagent_containers/food/snacks/slimesoup
 	name = "slime soup"
 	desc = "If no water is available, you may substitute tears."
@@ -3759,7 +3775,6 @@ obj/item/weapon/reagent_containers/food/snacks/risotto
 
 /obj/item/weapon/reagent_containers/food/snacks/slice/choccherrycake/filled
 	filled = TRUE
-
 
 
 

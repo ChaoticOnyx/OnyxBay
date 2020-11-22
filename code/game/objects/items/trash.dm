@@ -104,6 +104,10 @@
 	name = "Hema2Gen"
 	icon_state = "hema2gen"
 
+/obj/item/trash/pan
+	name = "holey pan"
+	icon_state = "pan"
+
 /obj/item/trash/skrellsnacks
 	name = "\improper SkrellSnax"
 	icon_state = "skrellsnacks"
