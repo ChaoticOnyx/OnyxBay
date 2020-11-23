@@ -57,7 +57,7 @@
 					break
 			isactive[name] = active ? "Active" : "Inactive"
 		else
-			isactive[name] = CR.get_status()
+			isactive[name] = CR.get_status_physical()
 
 		var/datum/job/job = job_master.occupations_by_title[rank]
 		var/found_place = 0
@@ -118,7 +118,7 @@
 		filtered_entries.Add(list(list(
 			"name" = CR.get_name(),
 			"rank" = CR.get_job(),
-			"status" = CR.get_status(),
+			"status" = CR.get_status_physical(),
 			"branch" = CR.get_branch(),
 			"milrank" = CR.get_rank()
 		)))
