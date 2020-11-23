@@ -14,7 +14,8 @@
 	attack_verb = "Bashed"
 	//aura of shield, if not null you are protected
 	var/obj/aura/shields/shield_belt/shield
-
+	//boolean, checks if device is in sleep(), when you try to toggle it
+	var/not_being_turned = 1
 	var/max_power = 3000
 	var/current_power = 3000
 	//used only in science shield, but added to interface to
@@ -172,35 +173,42 @@ obj/item/weapon/shield/shield_belt/experimental_shield_belt/get_mob_overlay(mob/
 
 //ALT+CLICK the best one i think
 /obj/item/weapon/shield/shield_belt/syndicate_shield_belt/AltClick(mob/living/user)
-	sleep(20)
-	if(user.get_inventory_slot(src) == slot_belt)
-		if (current_power > 300 && !shield)
-			current_power -= 300
-			to_chat(loc,SPAN_DANGER("The [src] starts turning on!"))
-			START_PROCESSING(SSobj, src)
-			toggle(user)
-		else if(shield)
-			toggle(user)
-		else
-			to_chat(loc,SPAN_DANGER("The [src] has no energy!"))
-	else
-		to_chat(loc,SPAN_DANGER("\The [src] must be weared at belt to be used"))
-
-/obj/item/weapon/shield/shield_belt/experimental_shield_belt/AltClick(mob/living/user)
-	sleep(20)
-	if(user.get_inventory_slot(src) == slot_belt)
-		if(bcell)
-			if (!shield && bcell.checked_use(300))
-				to_chat(loc,SPAN_DANGER("The [src] starts turning on!"))
+	if (not_being_turned)
+		to_chat(loc,SPAN_NOTICE("The [user] touches the button on belt!"))
+		not_being_turned = 0
+		sleep(20)
+		not_being_turned = 1
+		if(user.get_inventory_slot(src) == slot_belt)
+			if (current_power > 300 && !shield)
+				current_power -= 300
+				START_PROCESSING(SSobj, src)
 				toggle(user)
 			else if(shield)
 				toggle(user)
 			else
 				to_chat(loc,SPAN_DANGER("The [src] has no energy!"))
 		else
-			to_chat(loc,SPAN_DANGER("\The [src] has no battery!"))
-	else
-		to_chat(loc,SPAN_DANGER("\The [src] must be weared at belt to be used"))
+			to_chat(loc,SPAN_DANGER("\The [src] must be weared at belt to be used"))
+
+/obj/item/weapon/shield/shield_belt/experimental_shield_belt/AltClick(mob/living/user)
+	if(not_being_turned)
+		to_chat(loc,SPAN_NOTICE("The [user] touches the button on belt!"))
+		not_being_turned = 0
+		sleep(20)
+		not_being_turned = 1
+		if(user.get_inventory_slot(src) == slot_belt)
+			if(bcell)
+				if (!shield && bcell.checked_use(300))
+
+					toggle(user)
+				else if(shield)
+					toggle(user)
+				else
+					to_chat(loc,SPAN_DANGER("The [src] has no energy!"))
+			else
+				to_chat(loc,SPAN_DANGER("\The [src] has no battery!"))
+		else
+			to_chat(loc,SPAN_DANGER("\The [src] must be weared at belt to be used"))
 
 /obj/item/weapon/shield/shield_belt/syndicate_shield_belt/Process(wait)
 	if (!shield)
