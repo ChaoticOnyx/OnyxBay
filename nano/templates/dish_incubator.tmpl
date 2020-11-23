@@ -16,17 +16,24 @@
   </div>
 </div>
 <div class='item'>
-  {{:helper.link('Add Radiation', 'radiation', {'rad' : 1})}}
   {{:helper.link('Flush System', 'trash', {'flush' : 1}, data.system_in_use ? null : 'disabled')}}
 </div>
 
-<div class="statusDisplay" style="height: 100px; overflow: auto;">
+<div class="statusDisplay" style="height: 150px; overflow: auto;">
   <div class='item'>
     <div class="itemLabel">
       <span class='good'>Virus Food:</span>
     </div>
     <div class="itemContent">
       {{:helper.displayBar(data.food_supply, 0, 100, 'good', data.food_supply)}}
+    </div>
+  </div>
+  <div class='item'>
+    <div class="itemLabel">
+      <span class='good'>Mutagen:</span>
+    </div>
+    <div class="itemContent">
+      {{:helper.displayBar(data.mutagen, 0, 100, (data.mutagen >= 50) ? 'average' : 'good', data.mutagen)}}
     </div>
   </div>
   <div class='item'>
@@ -44,16 +51,17 @@
       <span class='good'>Toxicity:</span>
     </div>
     <div class="itemContent">
-      {{:helper.displayBar(data.toxins, 0, 100, (data.toxins >= 50) ? 'bad' : (data.toxins >= 25) ? 'average' : 'good', data.toxins + '%')}}
+      {{:helper.displayBar(data.toxins, 0, 100, (data.toxins >= 80) ? 'bad' : (data.toxins >= 50) ? 'average' : 'good', data.toxins + '%')}}
     </div>
   </div>
 </div>
 
 <div class="item">
-  <h2>Chemicals</h2>
+  <h2>External Container</h2>
 </div>
 <div class='item'>
-  {{:helper.link('Eject Chemicals', 'eject', { 'ejectchem' : 1 }, data.chemicals_inserted ? null : 'disabled')}}
+  {{:helper.link('Insert Chemicals', 'arrow-up', {'chem' : 1}, data.chemicals_inserted ? null : 'disabled')}}
+  {{:helper.link('Eject Container', 'eject', { 'ejectchem' : 1 }, data.chemicals_inserted ? null : 'disabled')}}
   {{:helper.link('Breed Virus', 'circle-arrow-s', { 'virus' : 1 }, data.can_breed_virus ? null : 'disabled')}}
 </div>
 

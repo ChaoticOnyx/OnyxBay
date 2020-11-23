@@ -18,6 +18,23 @@
 	effect.multiplier = rand(1,effect.multiplier_max)
 	return effect
 
+/proc/get_mutated_effect(original_effect)
+	var/list/datum/disease2/effect/candidates = list()
+	var/datum/disease2/effect/original = original_effect
+	var/stage = original.stage
+	for(var/T in original.possible_mutations)
+		var/datum/disease2/effect/E = T
+		if(initial(E.stage) <= stage)
+			candidates += T
+	var/type = candidates.len ? pick(candidates) : null
+	if(!type)
+		return 0
+	var/datum/disease2/effect/effect = new type
+	effect.generate()
+	effect.chance = rand(0,effect.chance_max)
+	effect.multiplier = rand(1,effect.multiplier_max)
+	return effect
+
 /datum/disease2/effect
 	var/name = "Blanking effect"
 	var/chance			//probality to fire every tick
@@ -25,6 +42,7 @@
 	var/multiplier = 1	//effect magnitude multiplier
 	var/multiplier_max = 1
 	var/stage = 4		//minimal stage
+	var/list/possible_mutations //Effects that we can get by using mutagen on virus. Radiation mutations dont use this
 	var/badness = VIRUS_MILD	//Used in random generation to limit how bad result should come out.
 	var/list/data = list()	//For semi-procedural effects; this should be generated in generate() if used
 	var/oneshot

@@ -131,6 +131,34 @@ LEGACY_RECORD_STRUCTURE(virus_records, virus_record)
 	var/datum/disease2/effect/E = pick(effects)
 	E.minormutate()
 
+/datum/disease2/disease/proc/mediummutate()
+	var/has_mutable_effects = 0
+	for(var/datum/disease2/effect/T in effects)
+		if(T.possible_mutations.len)
+			has_mutable_effects = 1
+			break
+	if(!has_mutable_effects)
+		return 0
+
+	uniqueID = rand(0,10000)
+	var/datum/disease2/effect/mutating_effect = null
+	while(!mutating_effect)
+		var/datum/disease2/effect/E = pick(effects)
+		if(E.possible_mutations.len)
+			mutating_effect = E
+	var/list/exclude = list()
+	for(var/datum/disease2/effect/D in effects)
+		if(D != mutating_effect)
+			exclude += D.type
+	var/datum/disease2/effect/new_effect = get_mutated_effect(mutating_effect)
+	if(!new_effect)
+		return 0
+	mutating_effect.deactivate()
+	effects -= mutating_effect
+	effects += new_effect
+	qdel(mutating_effect)
+	return 1
+
 /datum/disease2/disease/proc/majormutate(badness = VIRUS_ENGINEERED)
 	uniqueID = rand(0,10000)
 	var/datum/disease2/effect/E = pick(effects)
@@ -152,6 +180,17 @@ LEGACY_RECORD_STRUCTURE(virus_records, virus_record)
 
 	if (prob(5) && all_species.len)
 		affected_species = get_infectable_species()
+
+/datum/disease2/disease/proc/stageshift()
+	uniqueID = rand(0,10000)
+	var/list/exclude = list()
+	for(var/datum/disease2/effect/D in effects)
+		if(!D.stage == 1 || !D.stage == max_stage)
+			exclude += D.type
+		D.stage += 1
+		if(D.stage > max_stage)
+			effects -= D
+	effects += get_random_virus2_effect(1, VIRUS_MILD, exclude)
 
 /datum/disease2/disease/proc/getcopy()
 	var/datum/disease2/disease/disease = new /datum/disease2/disease
