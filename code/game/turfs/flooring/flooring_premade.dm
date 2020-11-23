@@ -349,6 +349,11 @@
 	icon_state = "plating"
 	initial_flooring = null
 
+/turf/simulated/floor/misc/diona
+	name = "biomass"
+	icon = 'icons/turf/floors.dmi'
+	initial_flooring = /decl/flooring/diona
+
 /turf/simulated/floor/misc/cult
 	name = "engraved floor"
 	icon = 'icons/turf/flooring/cult.dmi'
