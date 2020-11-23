@@ -18,9 +18,30 @@
 	name = "candy"
 	icon_state = "candy"
 
-/obj/item/trash/candy/proteinbar
+/obj/item/trash/proteinbar
 	name = "protein bar"
+	desc = "Haven't seen these for a while..."
 	icon_state = "proteinbar"
+
+/obj/item/trash/tweakers
+	name = "Tweakers bar"
+	icon_state = "tweakers"
+
+/obj/item/trash/sweetroid
+	name = "Sweetroid bar"
+	icon_state = "sweetroid"
+
+/obj/item/trash/sugarmatter
+	name = "SugarMatter bar"
+	icon_state = "sugarmatter"
+
+/obj/item/trash/jellaws
+	name = "Jellaw's Jellybaton"
+	icon_state = "jellaws"
+
+/obj/item/trash/nutribar
+	name = "nutrition bar"
+	icon_state = "nutribar"
 
 /obj/item/trash/cheesie
 	name = "\improper Cheesie Honkers"
@@ -82,6 +103,14 @@
 /obj/item/trash/hematogen
 	name = "Hema2Gen"
 	icon_state = "hema2gen"
+
+/obj/item/trash/pan
+	name = "holey pan"
+	icon_state = "pan"
+
+/obj/item/trash/skrellsnacks
+	name = "\improper SkrellSnax"
+	icon_state = "skrellsnacks"
 
 /obj/item/trash/attack(mob/M as mob, mob/living/user as mob)
 	return

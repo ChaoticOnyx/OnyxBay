@@ -130,6 +130,10 @@
 	if(!istype(user))
 		return 0
 
+	// allow to view programm if emagged
+	if(computer.computer_emagged)
+		return 1
+
 	var/obj/item/weapon/card/id/I = user.GetIdCard()
 	if(!I)
 		if(loud)

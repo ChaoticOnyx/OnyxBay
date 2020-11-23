@@ -27,7 +27,7 @@
 	name = ".45 pistol"
 	desc = "The NT Mk58 is a cheap, ubiquitous sidearm, produced by a NanoTrasen subsidiary. Found pretty much everywhere humans are. Uses .45 rounds."
 	icon_state = "secguncomp"
-	magazine_type = /obj/item/ammo_magazine/c45m/flash
+	magazine_type = /obj/item/ammo_magazine/c45m/stun
 	allowed_magazines = /obj/item/ammo_magazine/c45m
 	caliber = ".45"
 	accuracy = -0.35
@@ -46,7 +46,8 @@
 /obj/item/weapon/gun/projectile/sec/VP78tactical
 	name = "VP78 .45 Tactical"
 	desc = "The VT78 pistol is a common and reliable sidearm, used by security forces and colonial marshalls all over the world. This one is heavily modified and painted in green camo. Uses .45 rounds."
-	icon_state = "VP78-tactic"
+	icon_state = "VP78tactic"
+	item_state = "vp78"
 	magazine_type = /obj/item/ammo_magazine/c45m/rubber
 	allowed_magazines = /obj/item/ammo_magazine/c45m
 	auto_eject = 1
@@ -66,7 +67,8 @@
 	name = "VP78 .45"
 	desc = "The VT78 pistol is a common and reliable sidearm, used by security forces and colonial marshalls all over the world. Uses .45 rounds."
 	icon_state = "VP78"
-	magazine_type = /obj/item/ammo_magazine/c45m/rubber
+	item_state = "vp78"
+	magazine_type = /obj/item/ammo_magazine/c45m/stun
 	allowed_magazines = /obj/item/ammo_magazine/c45m
 	caliber = ".45"
 	accuracy = -0.35
@@ -84,7 +86,8 @@
 	name = "VP78 .45"
 	desc = "The VT78 pistol is a common and reliable sidearm, used by security forces and colonial marshalls all over the world. This one has a sweet wooden grip, among other modifications. Uses .45 rounds."
 	icon_state = "VP78wood"
-	magazine_type = /obj/item/ammo_magazine/c45m/rubber
+	item_state = "vp78"
+	magazine_type = /obj/item/ammo_magazine/c45m/stun
 	allowed_magazines = /obj/item/ammo_magazine/c45m
 	caliber = ".45"
 	accuracy = 0
@@ -103,7 +106,7 @@
 	desc = "Corvus C45 pistol is a well-made replica of a good old Colt M1911. Chambered in .45."
 	icon_state = "c45sec"
 	item_state = "c45sec"
-	magazine_type = /obj/item/ammo_magazine/c45m/rubber
+	magazine_type = /obj/item/ammo_magazine/c45m/stun
 	allowed_magazines = /obj/item/ammo_magazine/c45m
 	auto_eject = 1
 	caliber = ".45"
@@ -120,6 +123,7 @@
 
 /obj/item/weapon/gun/projectile/sec/flash
 	name = ".45 signal pistol"
+	magazine_type = /obj/item/ammo_magazine/c45m/flash
 
 /obj/item/weapon/gun/projectile/sec/wood
 	desc = "The NT Mk58 is a cheap, ubiquitous sidearm, produced by a NanoTrasen subsidiary. This one has a sweet wooden grip, among other modifications. Uses .45 rounds."

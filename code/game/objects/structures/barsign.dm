@@ -5,12 +5,12 @@
 	icon_state = "empty"
 	appearance_flags = 0
 	anchored = 1
-	var/cult = 0
 
-/obj/structure/sign/double/barsign/proc/get_valid_states(initial=1)
+/obj/structure/sign/double/barsign/proc/get_valid_states(initial=1, mob/living/user = null)
 	. = icon_states(icon)
 	. -= "on"
-	. -= "narsiebistro"
+	if (!user || !iscultist(user))
+		. -= "narsiebistro"
 	. -= "empty"
 	if(initial)
 		. -= "Off"
@@ -31,14 +31,12 @@
 	..()
 	icon_state = pick(get_valid_states())
 
-/obj/structure/sign/double/barsign/attackby(obj/item/I, mob/user)
-	if(cult)
-		return ..()
+/obj/structure/sign/double/barsign/attackby(obj/item/I, mob/living/user)
 
 	var/obj/item/weapon/card/id/card = I.GetIdCard()
 	if(istype(card))
 		if(access_bar in card.GetAccess())
-			var/sign_type = input(user, "What would you like to change the barsign to?") as null|anything in get_valid_states(0)
+			var/sign_type = input(user, "What would you like to change the barsign to?") as null|anything in get_valid_states(0, user)
 			if(!sign_type)
 				return
 			icon_state = sign_type
@@ -46,5 +44,5 @@
 		else
 			to_chat(user, "<span class='warning'>Access denied.</span>")
 		return
-
 	return ..()
+

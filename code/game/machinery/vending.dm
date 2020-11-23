@@ -791,26 +791,32 @@
 	icon_vend = "snack-vend"
 	vend_delay = 25
 	rand_amount = TRUE
-	products = list(/obj/item/weapon/reagent_containers/food/snacks/candy = 6,
+	products = list(/obj/item/weapon/reagent_containers/food/snacks/packaged/tweakers = 6,
+					/obj/item/weapon/reagent_containers/food/snacks/packaged/sweetroid = 6,
+					/obj/item/weapon/reagent_containers/food/snacks/packaged/sugarmatter = 6,
+					/obj/item/weapon/reagent_containers/food/snacks/packaged/jellaws = 6,
 					/obj/item/weapon/reagent_containers/food/drinks/dry_ramen = 6,
 					/obj/item/weapon/reagent_containers/food/drinks/chickensoup = 6,
-					/obj/item/weapon/reagent_containers/food/snacks/chips =6,
-					/obj/item/weapon/reagent_containers/food/snacks/sosjerky = 6,
-					/obj/item/weapon/reagent_containers/food/snacks/no_raisin = 6,
+					/obj/item/weapon/reagent_containers/food/snacks/packaged/chips = 6,
+					/obj/item/weapon/reagent_containers/food/snacks/packaged/sosjerky = 6,
+					/obj/item/weapon/reagent_containers/food/snacks/packaged/no_raisin = 6,
 					/obj/item/weapon/reagent_containers/food/snacks/spacetwinkie = 6,
-					/obj/item/weapon/reagent_containers/food/snacks/cheesiehonkers = 6,
-					/obj/item/weapon/reagent_containers/food/snacks/tastybread = 6)
-	contraband = list(/obj/item/weapon/reagent_containers/food/snacks/syndicake = 6,
-					  /obj/item/weapon/reagent_containers/food/snacks/skrellsnacks = 3)
-	prices = list(/obj/item/weapon/reagent_containers/food/snacks/candy = 1,
-				  /obj/item/weapon/reagent_containers/food/drinks/dry_ramen = 5,
-				  /obj/item/weapon/reagent_containers/food/drinks/chickensoup = 5,
-				  /obj/item/weapon/reagent_containers/food/snacks/chips = 1,
-				  /obj/item/weapon/reagent_containers/food/snacks/sosjerky = 5,
-				  /obj/item/weapon/reagent_containers/food/snacks/no_raisin = 1,
-				  /obj/item/weapon/reagent_containers/food/snacks/spacetwinkie = 2,
-				  /obj/item/weapon/reagent_containers/food/snacks/cheesiehonkers = 1,
-				  /obj/item/weapon/reagent_containers/food/snacks/tastybread = 3)
+					/obj/item/weapon/reagent_containers/food/snacks/packaged/cheesiehonkers = 6,
+					/obj/item/weapon/reagent_containers/food/snacks/packaged/tastybread = 6)
+	contraband = list(/obj/item/weapon/reagent_containers/food/snacks/packaged/syndicake = 6,
+					  /obj/item/weapon/reagent_containers/food/snacks/packaged/skrellsnacks = 3)
+	prices = list(/obj/item/weapon/reagent_containers/food/snacks/packaged/tweakers = 5,
+				  /obj/item/weapon/reagent_containers/food/snacks/packaged/sweetroid = 5,
+				  /obj/item/weapon/reagent_containers/food/snacks/packaged/sugarmatter = 5,
+				  /obj/item/weapon/reagent_containers/food/snacks/packaged/jellaws = 5,
+				  /obj/item/weapon/reagent_containers/food/drinks/dry_ramen = 10,
+				  /obj/item/weapon/reagent_containers/food/drinks/chickensoup = 20,
+				  /obj/item/weapon/reagent_containers/food/snacks/packaged/chips = 10,
+				  /obj/item/weapon/reagent_containers/food/snacks/packaged/sosjerky = 20,
+				  /obj/item/weapon/reagent_containers/food/snacks/packaged/no_raisin = 15,
+				  /obj/item/weapon/reagent_containers/food/snacks/spacetwinkie = 5,
+				  /obj/item/weapon/reagent_containers/food/snacks/packaged/cheesiehonkers = 10,
+				  /obj/item/weapon/reagent_containers/food/snacks/packaged/tastybread = 10)
 
 /obj/machinery/vending/snack/wallsnack
 	name = "Getmore Chocolate Corp"
@@ -820,26 +826,32 @@
 	icon_state = "snack_wall"
 	icon_vend = "snack_wall"
 	vend_delay = 25
-	products = list(/obj/item/weapon/reagent_containers/food/snacks/candy = 6,
+	products = list(/obj/item/weapon/reagent_containers/food/snacks/packaged/tweakers =6,
+					/obj/item/weapon/reagent_containers/food/snacks/packaged/sweetroid = 6,
+					/obj/item/weapon/reagent_containers/food/snacks/packaged/sugarmatter = 6,
+					/obj/item/weapon/reagent_containers/food/snacks/packaged/jellaws = 6,
 					/obj/item/weapon/reagent_containers/food/drinks/dry_ramen = 6,
 					/obj/item/weapon/reagent_containers/food/drinks/chickensoup = 6,
-					/obj/item/weapon/reagent_containers/food/snacks/chips =6,
-					/obj/item/weapon/reagent_containers/food/snacks/sosjerky = 6,
-					/obj/item/weapon/reagent_containers/food/snacks/no_raisin = 6,
+					/obj/item/weapon/reagent_containers/food/snacks/packaged/chips = 6,
+					/obj/item/weapon/reagent_containers/food/snacks/packaged/sosjerky = 6,
+					/obj/item/weapon/reagent_containers/food/snacks/packaged/no_raisin = 6,
 					/obj/item/weapon/reagent_containers/food/snacks/spacetwinkie = 6,
-					/obj/item/weapon/reagent_containers/food/snacks/cheesiehonkers = 6,
-					/obj/item/weapon/reagent_containers/food/snacks/tastybread = 6)
-	contraband = list(/obj/item/weapon/reagent_containers/food/snacks/syndicake = 6,
-					  /obj/item/weapon/reagent_containers/food/snacks/skrellsnacks = 3)
-	prices = list(/obj/item/weapon/reagent_containers/food/snacks/candy = 1,
-				  /obj/item/weapon/reagent_containers/food/drinks/dry_ramen = 5,
-				  /obj/item/weapon/reagent_containers/food/drinks/chickensoup = 5,
-				  /obj/item/weapon/reagent_containers/food/snacks/chips = 1,
-				  /obj/item/weapon/reagent_containers/food/snacks/sosjerky = 5,
-				  /obj/item/weapon/reagent_containers/food/snacks/no_raisin = 1,
-				  /obj/item/weapon/reagent_containers/food/snacks/spacetwinkie = 2,
-				  /obj/item/weapon/reagent_containers/food/snacks/cheesiehonkers = 1,
-				  /obj/item/weapon/reagent_containers/food/snacks/tastybread = 3)
+					/obj/item/weapon/reagent_containers/food/snacks/packaged/cheesiehonkers = 6,
+					/obj/item/weapon/reagent_containers/food/snacks/packaged/tastybread = 6)
+	contraband = list(/obj/item/weapon/reagent_containers/food/snacks/packaged/syndicake = 6,
+					  /obj/item/weapon/reagent_containers/food/snacks/packaged/skrellsnacks = 3)
+	prices = list(/obj/item/weapon/reagent_containers/food/snacks/packaged/tweakers = 5,
+				  /obj/item/weapon/reagent_containers/food/snacks/packaged/sweetroid = 5,
+				  /obj/item/weapon/reagent_containers/food/snacks/packaged/sugarmatter = 5,
+				  /obj/item/weapon/reagent_containers/food/snacks/packaged/jellaws = 5,
+				  /obj/item/weapon/reagent_containers/food/drinks/dry_ramen = 10,
+				  /obj/item/weapon/reagent_containers/food/drinks/chickensoup = 20,
+				  /obj/item/weapon/reagent_containers/food/snacks/packaged/chips = 10,
+				  /obj/item/weapon/reagent_containers/food/snacks/packaged/sosjerky = 20,
+				  /obj/item/weapon/reagent_containers/food/snacks/packaged/no_raisin = 15,
+				  /obj/item/weapon/reagent_containers/food/snacks/spacetwinkie = 5,
+				  /obj/item/weapon/reagent_containers/food/snacks/packaged/cheesiehonkers = 10,
+				  /obj/item/weapon/reagent_containers/food/snacks/packaged/tastybread = 10)
 
 /obj/machinery/vending/snack/medbay
 	name = "Getmore Healthy Snacks"
@@ -849,22 +861,20 @@
 	icon_state = "snackmed"
 	icon_vend = "snackmed-vend"
 	vend_delay = 25
-	products = list(/obj/item/weapon/reagent_containers/food/snacks/candy = 10,
-					/obj/item/weapon/reagent_containers/food/snacks/grown/apple = 10,
-					/obj/item/weapon/reagent_containers/food/snacks/hematogen = 10,
-					/obj/item/weapon/reagent_containers/food/snacks/candy/proteinbar = 10,
-					/obj/item/weapon/reagent_containers/food/snacks/no_raisin = 10,
+	products = list(/obj/item/weapon/reagent_containers/food/snacks/grown/apple = 10,
+					/obj/item/weapon/reagent_containers/food/snacks/packaged/hematogen = 10,
+					/obj/item/weapon/reagent_containers/food/snacks/packaged/nutribar = 10,
+					/obj/item/weapon/reagent_containers/food/snacks/packaged/no_raisin = 10,
 					/obj/item/weapon/reagent_containers/food/snacks/grown/orange = 10,
-					/obj/item/weapon/reagent_containers/food/snacks/tastybread = 10)
+					/obj/item/weapon/reagent_containers/food/snacks/packaged/tastybread = 10)
 	contraband = list(/obj/item/weapon/reagent_containers/food/snacks/cannabar = 3,
-					  /obj/item/weapon/reagent_containers/food/snacks/skrellsnacks = 3)
-	prices = list(/obj/item/weapon/reagent_containers/food/snacks/candy = 1,
-				  /obj/item/weapon/reagent_containers/food/snacks/grown/apple = 1,
-				  /obj/item/weapon/reagent_containers/food/snacks/hematogen = 10,
-				  /obj/item/weapon/reagent_containers/food/snacks/candy/proteinbar = 5,
-				  /obj/item/weapon/reagent_containers/food/snacks/no_raisin = 1,
+					  /obj/item/weapon/reagent_containers/food/snacks/packaged/skrellsnacks = 3)
+	prices = list(/obj/item/weapon/reagent_containers/food/snacks/grown/apple = 1,
+				  /obj/item/weapon/reagent_containers/food/snacks/packaged/hematogen = 10,
+				  /obj/item/weapon/reagent_containers/food/snacks/packaged/nutribar = 5,
+				  /obj/item/weapon/reagent_containers/food/snacks/packaged/no_raisin = 1,
 				  /obj/item/weapon/reagent_containers/food/snacks/grown/orange = 1,
-				  /obj/item/weapon/reagent_containers/food/snacks/tastybread = 3)
+				  /obj/item/weapon/reagent_containers/food/snacks/packaged/tastybread = 3)
 
 
 
@@ -890,6 +900,7 @@
 	contraband = list(/obj/item/weapon/reagent_containers/food/drinks/cans/thirteenloko = 5,
 					  /obj/item/weapon/reagent_containers/food/drinks/cans/dopecola = 5,
 					  /obj/item/weapon/reagent_containers/food/snacks/liquidfood = 6)
+	premium = list(/obj/item/weapon/reagent_containers/food/drinks/cans/waterbottle/fi4i = 5)
 	prices = list(/obj/item/weapon/reagent_containers/food/drinks/cans/cola = 2,
 				  /obj/item/weapon/reagent_containers/food/drinks/cans/colavanilla = 3,
 				  /obj/item/weapon/reagent_containers/food/drinks/cans/colacherry = 3,
@@ -924,6 +935,7 @@
 	contraband = list(/obj/item/weapon/reagent_containers/food/drinks/cans/thirteenloko = 5,
 					  /obj/item/weapon/reagent_containers/food/drinks/cans/dopecola = 5,
 					  /obj/item/weapon/reagent_containers/food/snacks/liquidfood = 6)
+	premium = list(/obj/item/weapon/reagent_containers/food/drinks/cans/waterbottle/fi4i = 5)
 	prices = list(/obj/item/weapon/reagent_containers/food/drinks/cans/cola = 2,
 				  /obj/item/weapon/reagent_containers/food/drinks/cans/colavanilla = 3,
 				  /obj/item/weapon/reagent_containers/food/drinks/cans/colacherry = 3,
@@ -949,7 +961,7 @@
 					/obj/item/weapon/reagent_containers/food/drinks/milk/smallcarton/chocolate = 8,
 					/obj/item/weapon/reagent_containers/food/drinks/glass2/fitnessflask/proteinshake = 8,
 					/obj/item/weapon/reagent_containers/food/drinks/glass2/fitnessflask = 8,
-					/obj/item/weapon/reagent_containers/food/snacks/candy/proteinbar = 8,
+					/obj/item/weapon/reagent_containers/food/snacks/packaged/nutribar = 8,
 					/obj/item/weapon/reagent_containers/food/snacks/liquidfood = 8,
 					/obj/item/weapon/reagent_containers/pill/diet = 8,
 					/obj/item/weapon/towel/random = 8)
@@ -958,7 +970,7 @@
 					/obj/item/weapon/reagent_containers/food/drinks/milk/smallcarton/chocolate = 3,
 					/obj/item/weapon/reagent_containers/food/drinks/glass2/fitnessflask/proteinshake = 20,
 					/obj/item/weapon/reagent_containers/food/drinks/glass2/fitnessflask = 5,
-					/obj/item/weapon/reagent_containers/food/snacks/candy/proteinbar = 5,
+					/obj/item/weapon/reagent_containers/food/snacks/packaged/nutribar = 5,
 					/obj/item/weapon/reagent_containers/food/snacks/liquidfood = 5,
 					/obj/item/weapon/reagent_containers/pill/diet = 25,
 					/obj/item/weapon/towel/random = 40)
@@ -1501,6 +1513,7 @@
 					/obj/item/weapon/lipstick/black = 3,
 					/obj/item/weapon/lipstick/purple = 3,
 					/obj/item/weapon/lipstick/jade = 3,
+					/obj/item/weapon/storage/bouquet = 3,
 					/obj/item/weapon/storage/wallet/poly = 2)
 	contraband = list(/obj/item/clothing/glasses/eyepatch = 2,
 					  /obj/item/clothing/accessory/horrible = 2)
@@ -1513,6 +1526,7 @@
 				  /obj/item/weapon/lipstick/black = 100,
 				  /obj/item/weapon/lipstick/purple = 100,
 				  /obj/item/weapon/lipstick/jade = 100,
+				  /obj/item/weapon/storage/bouquet = 800,
 				  /obj/item/weapon/storage/wallet/poly = 600
 					)
 // eliza's attempt at a new vending machine

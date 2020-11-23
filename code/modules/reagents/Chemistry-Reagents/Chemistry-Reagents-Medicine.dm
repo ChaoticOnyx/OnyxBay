@@ -162,30 +162,42 @@
 
 /datum/reagent/cryoxadone
 	name = "Cryoxadone"
-	description = "A chemical mixture used in cryo cell to stabilize patient. Its main limitation is that the targets body temperature must be under 170K for it to metabolise correctly."
+	description = "A chemical mixture with almost magical healing powers. Its main limitation is that the targets body temperature must be under 170K for it to metabolise correctly."
 	taste_description = "sludge"
 	reagent_state = LIQUID
 	color = "#8080ff"
-	metabolism = REM * 0.5
+	metabolism = REM * 0.25
 	scannable = 1
 	flags = IGNORE_MOB_SIZE
 
 /datum/reagent/cryoxadone/affect_blood(mob/living/carbon/M, alien, removed)
 	M.add_chemical_effect(CE_CRYO, 1)
 	if(M.bodytemperature < 170)
-		M.adjustCloneLoss(-100 * removed)
+		M.adjustCloneLoss(-50 * removed)
 		M.add_chemical_effect(CE_PAINKILLER, 80)
 		M.add_chemical_effect(CE_OXYGENATED, 1)
 		M.add_chemical_effect(CE_PULSE, -2)
-		if (ishuman(M))
+		if(ishuman(M))
 			var/mob/living/carbon/human/H = M
-			H.adjustToxLoss(max(-1, -12/max(1,H.getToxLoss())) * H.stasis_value)
+			H.adjustToxLoss(max(-1, -12/max(1, H.getToxLoss())) * H.stasis_value)
+
 			for(var/obj/item/organ/external/E in H.organs)
+				if(BP_IS_ROBOTIC(E))
+					continue
 				if(E.status & ORGAN_BLEEDING && prob(50))
 					E.status &= ~ORGAN_BLEEDING
 					for(var/datum/wound/W in E.wounds)
 						W.clamped = 1
 					H.update_surgery()
+
+			for(var/obj/item/organ/internal/I in H.internal_organs)
+				if(BP_IS_ROBOTIC(I))
+					continue
+				if(I.damage >= I.min_bruised_damage)
+					continue
+				I.damage = max(I.damage - (removed * H.stasis_value), 0)
+
+			H.heal_organ_damage((5 * removed * H.stasis_value), (7.5 * removed * H.stasis_value))
 
 /datum/reagent/clonexadone
 	name = "Clonexadone"
@@ -193,27 +205,40 @@
 	taste_description = "slime"
 	reagent_state = LIQUID
 	color = "#80bfff"
-	metabolism = REM * 0.5
+	metabolism = REM * 0.25
 	scannable = 1
 	flags = IGNORE_MOB_SIZE
 
 /datum/reagent/clonexadone/affect_blood(mob/living/carbon/M, alien, removed)
 	M.add_chemical_effect(CE_CRYO, 1)
 	if(M.bodytemperature < 170)
-		M.adjustCloneLoss(-300 * removed)
+		M.adjustCloneLoss(-150 * removed)
 		M.add_chemical_effect(CE_PAINKILLER, 160)
 		M.add_chemical_effect(CE_OXYGENATED, 2)
 		M.add_chemical_effect(CE_PULSE, -2)
-		if (ishuman(M))
+		if(ishuman(M))
 			var/mob/living/carbon/human/H = M
-			H.adjustToxLoss(max(-1, -16/max(1,H.getToxLoss())) * H.stasis_value)
+			H.adjustToxLoss(max(-1, -16/max(1, H.getToxLoss())) * H.stasis_value)
+
 			for(var/obj/item/organ/external/E in H.organs)
+				if(BP_IS_ROBOTIC(E))
+					continue
 				if(E.status & ORGAN_BLEEDING && prob(80))
 					E.status &= ~ORGAN_BLEEDING
 					for(var/datum/wound/W in E.wounds)
 						W.clamped = 1
 					H.update_surgery()
-		M.heal_organ_damage(round((M.getBruteLoss()/50 + (5 * removed)) * M.stasis_value) , round((M.getFireLoss()/50 + (10 * removed)) * M.stasis_value))
+				if(E.status & ORGAN_ARTERY_CUT && prob(8 * removed * H.stasis_value))
+					E.status &= ~ORGAN_ARTERY_CUT
+
+			for(var/obj/item/organ/internal/I in H.internal_organs)
+				if(BP_IS_ROBOTIC(I))
+					continue
+				if(I.damage >= I.min_broken_damage)
+					continue
+				I.damage = max(I.damage - (2 * removed * H.stasis_value), 0)
+
+			H.heal_organ_damage((10 * removed * H.stasis_value), (12.5 * removed * H.stasis_value))
 
 /* Painkillers */
 
@@ -711,7 +736,7 @@
 	taste_description = "peppery bitterness"
 	reagent_state = LIQUID
 	color = "#efebaa"
-	metabolism = REM * 0.002
+	metabolism = REM * 0.025
 	overdose = 6
 	scannable = 1
 	data = 0
@@ -723,11 +748,14 @@
 		M.add_chemical_effect(CE_PULSE, 1)
 	if(volume <= 0.02 && M.chem_doses[type] >= 0.05 && world.time > data + ANTIDEPRESSANT_MESSAGE_DELAY * 0.3)
 		data = world.time
-		to_chat(M, "<span class='warning'>You feel antsy, your concentration wavers...</span>")
+		to_chat(M, SPAN("warning", "You feel antsy, your concentration wavers..."))
 	else
 		if(world.time > data + ANTIDEPRESSANT_MESSAGE_DELAY * 0.3)
 			data = world.time
-			to_chat(M, "<span class='notice'>You feel invigorated and calm.</span>")
+			if(volume <= 4.0)
+				to_chat(M, SPAN("notice", "You feel invigorated and calm."))
+			else
+				to_chat(M, SPAN("warning", "You feel like you should smoke less often..."))
 
 /datum/reagent/nicotine/overdose(mob/living/carbon/M, alien)
 	..()
@@ -740,7 +768,7 @@
 	reagent_state = SOLID
 	color = "#684b3c"
 	scannable = 1
-	var/nicotine = REM * 0.2
+	var/nicotine = REM * 0.1
 
 /datum/reagent/tobacco/affect_blood(mob/living/carbon/M, alien, removed)
 	..()
@@ -749,10 +777,12 @@
 /datum/reagent/tobacco/fine
 	name = "Fine Tobacco"
 	taste_description = "fine tobacco"
+	nicotine = REM * 0.075
 
 /datum/reagent/tobacco/bad
 	name = "Terrible Tobacco"
 	taste_description = "acrid smoke"
+	nicotine = REM * 0.2
 
 /datum/reagent/tobacco/liquid
 	name = "Nicotine Solution"
@@ -760,7 +790,7 @@
 	reagent_state = LIQUID
 	taste_mult = 0
 	color = "#fcfcfc"
-	nicotine = REM * 0.1
+	nicotine = REM * 0.02
 
 /datum/reagent/menthol
 	name = "Menthol"
