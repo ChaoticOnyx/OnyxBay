@@ -166,7 +166,7 @@ SUBSYSTEM_DEF(supply)
 
 		var/obj/item/weapon/paper/manifest/slip
 		if(!SP.contraband)
-			var/info = null
+			var/info = ""
 			info +="<h3>[command_name()] Shipping Manifest</h3><hr><br>"
 			info +="Order #[SO.ordernum]<br>"
 			info +="Destination: [GLOB.using_map.station_name]<br>"
