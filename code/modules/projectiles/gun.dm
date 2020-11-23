@@ -360,7 +360,6 @@
 	var/shot_sound = (istype(P) && P.fire_sound)? P.fire_sound : fire_sound
 
 	if (!silenced)
-		//if (!far_fire_sound)
 		playsound(loc, shot_sound, rand(85,95), extrarange=10, falloff=1) // it should be LOUD // TODO: Normalize all fire sound files so every volume is closely same
 	else
 		playsound(loc, shot_sound, rand(10, 20), extrarange=-3, falloff=0.35) // it should be quiet
