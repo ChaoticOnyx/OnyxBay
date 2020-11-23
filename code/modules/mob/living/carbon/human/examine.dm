@@ -292,7 +292,8 @@
 
 	if(hasHUD(user, HUD_MEDICAL))
 		var/perpname = "wot"
-		var/medical = "None"
+		var/physical = "None"
+		var/mental = "None"
 
 		if(wear_id)
 			if(istype(wear_id,/obj/item/weapon/card/id))
@@ -305,9 +306,11 @@
 
 		var/datum/computer_file/crew_record/R = get_crewmember_record(perpname)
 		if(R)
-			medical = R.get_status()
+			physical = R.get_status_physical()
+			mental = R.get_status_mental()
 
-		msg += "<span class = 'deptradio'>Physical status:</span> <a href='?src=\ref[src];medical=1'>\[[medical]\]</a>\n"
+		msg += "<span class = 'deptradio'>Physical status:</span> <a href='?src=\ref[src];physical=1'>\[[physical]\]</a>\n"
+		msg += "<span class = 'deptradio'>Mental status:</span> <a href='?src=\ref[src];mental=1'>\[[mental]\]</a>\n"
 		msg += "<span class = 'deptradio'>Medical records:</span> <a href='?src=\ref[src];medrecord=`'>\[View\]</a>\n"
 
 
