@@ -58,10 +58,10 @@
 	value = 0.2
 
 /datum/reagent/sodium
-	value = 2
+	value = 0.1
 
 /datum/reagent/sugar
-	value = 2
+	value = 0.1
 
 /datum/reagent/sulfur
 	value = 2
