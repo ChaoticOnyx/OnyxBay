@@ -154,15 +154,15 @@ obj/item/weapon/shield/shield_belt/experimental_shield_belt/get_mob_overlay(mob/
 //procent of charge
 /obj/item/weapon/shield/shield_belt/syndicate_shield_belt/examine(mob/user, distance)
 	. = ..()
-	to_chat(user, "The internal capacitor currently has [round(current_power/max_power * 100)]% charge.")
+	. += "The internal capacitor currently has [round(current_power/max_power * 100)]% charge."
 
 /obj/item/weapon/shield/shield_belt/experimental_shield_belt/examine(mob/user, distance)
 	. = ..()
 	if(bcell)
-		to_chat(user, "There is \a [bcell] in \the [src].")
-		to_chat(user, "The internal capacitor currently has [round(bcell.charge/bcell.maxcharge * 100)]% charge.")
+		. += "There is \a [bcell] in \the [src]."
+		. += "The internal capacitor currently has [round(bcell.charge/bcell.maxcharge * 100)]% charge."
 	else
-		to_chat(user, "There is no cell in \the [src].")
+		. += "There is no cell in \the [src]."
 
 /obj/item/weapon/shield/shield_belt/proc/toggle(var/mob/user)
 	if(!shield)
@@ -172,9 +172,11 @@ obj/item/weapon/shield/shield_belt/experimental_shield_belt/get_mob_overlay(mob/
 
 //ALT+CLICK the best one i think
 /obj/item/weapon/shield/shield_belt/syndicate_shield_belt/AltClick(mob/living/user)
+
 	if(user.get_inventory_slot(src) == slot_belt)
 		if (current_power > 300 && !shield)
 			current_power -= 300
+			sleep(20)
 			START_PROCESSING(SSobj, src)
 			toggle(user)
 		else if(shield)
@@ -188,6 +190,8 @@ obj/item/weapon/shield/shield_belt/experimental_shield_belt/get_mob_overlay(mob/
 	if(user.get_inventory_slot(src) == slot_belt)
 		if(bcell)
 			if (!shield && bcell.checked_use(300))
+				to_chat(loc,SPAN_DANGER("The [src] starts turning on!"))
+				sleep(20)
 				toggle(user)
 			else if(shield)
 				toggle(user)
@@ -199,9 +203,10 @@ obj/item/weapon/shield/shield_belt/experimental_shield_belt/get_mob_overlay(mob/
 		to_chat(loc,SPAN_DANGER("\The [src] must be weared at belt to be used"))
 
 /obj/item/weapon/shield/shield_belt/syndicate_shield_belt/Process(wait)
-	if(current_power >= max_power)
-		return PROCESS_KILL
-	current_power += min(restored_power_per_tick * wait, max_power - current_power)
+	if (!shield)
+		if(current_power >= max_power)
+			return PROCESS_KILL
+		current_power += min(restored_power_per_tick * wait, max_power - current_power)
 
 //when got hit
 /obj/item/weapon/shield/shield_belt/proc/take_charge(obj/item/projectile/P)
