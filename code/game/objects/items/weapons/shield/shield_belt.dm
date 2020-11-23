@@ -154,15 +154,15 @@ obj/item/weapon/shield/shield_belt/experimental_shield_belt/get_mob_overlay(mob/
 //procent of charge
 /obj/item/weapon/shield/shield_belt/syndicate_shield_belt/examine(mob/user, distance)
 	. = ..()
-	. += "The internal capacitor currently has [round(current_power/max_power * 100)]% charge."
+	. += "\nThe internal capacitor currently has [round(current_power/max_power * 100)]% charge."
 
 /obj/item/weapon/shield/shield_belt/experimental_shield_belt/examine(mob/user, distance)
 	. = ..()
 	if(bcell)
-		. += "There is \a [bcell] in \the [src]."
-		. += "The internal capacitor currently has [round(bcell.charge/bcell.maxcharge * 100)]% charge."
+		. += "\nThere is \a [bcell] in \the [src]."
+		. += "\nThe internal capacitor currently has [round(bcell.charge/bcell.maxcharge * 100)]% charge."
 	else
-		. += "There is no cell in \the [src]."
+		. += "\nThere is no cell in \the [src]."
 
 /obj/item/weapon/shield/shield_belt/proc/toggle(var/mob/user)
 	if(!shield)
@@ -172,11 +172,11 @@ obj/item/weapon/shield/shield_belt/experimental_shield_belt/get_mob_overlay(mob/
 
 //ALT+CLICK the best one i think
 /obj/item/weapon/shield/shield_belt/syndicate_shield_belt/AltClick(mob/living/user)
-
+	sleep(20)
 	if(user.get_inventory_slot(src) == slot_belt)
 		if (current_power > 300 && !shield)
 			current_power -= 300
-			sleep(20)
+			to_chat(loc,SPAN_DANGER("The [src] starts turning on!"))
 			START_PROCESSING(SSobj, src)
 			toggle(user)
 		else if(shield)
@@ -187,11 +187,11 @@ obj/item/weapon/shield/shield_belt/experimental_shield_belt/get_mob_overlay(mob/
 		to_chat(loc,SPAN_DANGER("\The [src] must be weared at belt to be used"))
 
 /obj/item/weapon/shield/shield_belt/experimental_shield_belt/AltClick(mob/living/user)
+	sleep(20)
 	if(user.get_inventory_slot(src) == slot_belt)
 		if(bcell)
 			if (!shield && bcell.checked_use(300))
 				to_chat(loc,SPAN_DANGER("The [src] starts turning on!"))
-				sleep(20)
 				toggle(user)
 			else if(shield)
 				toggle(user)
@@ -240,7 +240,7 @@ obj/item/weapon/shield/shield_belt/experimental_shield_belt/get_mob_overlay(mob/
 	current_power=max(current_power / (2 * severity), max_power / (4 * severity))
 	turn_off()
 
-//BOOM
+//explosion if active
 /obj/item/weapon/shield/shield_belt/experimental_shield_belt/emp_act(severity)
 	if(bcell)
 		if(shield)
