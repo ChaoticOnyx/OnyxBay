@@ -132,20 +132,15 @@ LEGACY_RECORD_STRUCTURE(virus_records, virus_record)
 	E.minormutate()
 
 /datum/disease2/disease/proc/mediummutate()
-	var/has_mutable_effects = 0
+	var/list/datum/disease2/effect/mutable_effects = list()
 	for(var/datum/disease2/effect/T in effects)
-		if(T.possible_mutations.len)
-			has_mutable_effects = 1
-			break
-	if(!has_mutable_effects)
+		if(T.possible_mutations && T.possible_mutations.len)
+			mutable_effects += T
+	if(!mutable_effects.len)
 		return 0
 
 	uniqueID = rand(0,10000)
-	var/datum/disease2/effect/mutating_effect = null
-	while(!mutating_effect)
-		var/datum/disease2/effect/E = pick(effects)
-		if(E.possible_mutations.len)
-			mutating_effect = E
+	var/datum/disease2/effect/mutating_effect = pick(mutable_effects)
 	var/list/exclude = list()
 	for(var/datum/disease2/effect/D in effects)
 		if(D != mutating_effect)

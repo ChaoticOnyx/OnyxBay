@@ -63,7 +63,7 @@
 	data["mutagen"] = min(mutagen, 100)
 	data["toxins"] = min(toxins, 100)
 	data["on"] = on
-	data["system_in_use"] = foodsupply > 0 || radiation > 0 || toxins > 0
+	data["system_in_use"] = foodsupply > 0 || radiation > 0 || toxins > 0 || mutagen > 0
 	data["chemical_volume"] = beaker ? beaker.reagents.total_volume : 0
 	data["max_chemical_volume"] = beaker ? beaker.volume : 1
 	data["virus"] = dish ? dish.virus2 : null
@@ -110,10 +110,12 @@
 			icon_state = "incubator"
 
 		if(foodsupply)
+			foodsupply -= 1
+			if(dish.growth >= 100 && dish.virus2.infectionchance < 70)
+				if(prob(5))
+					dish.virus2.infectionchance += 1
 			if(dish.growth + 3 >= 100 && dish.growth < 100)
 				ping("\The [src] pings, \"Sufficient viral growth density achieved.\"")
-
-			foodsupply -= 1
 			dish.growth += 3
 			SSnano.update_uis(src)
 
@@ -218,6 +220,7 @@
 		radiation = 0
 		toxins = 0
 		foodsupply = 0
+		mutagen = 0
 		return TOPIC_REFRESH
 
 	if(href_list["virus"])
