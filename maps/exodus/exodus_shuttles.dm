@@ -369,7 +369,7 @@
 	docking_controller = "admin_shuttle_dock_airlock"
 	autoset = 1
 
-// syndi
+// Syndi
 
 /datum/shuttle/autodock/multi/antag/syndicate
 	name = "Syndicate"
