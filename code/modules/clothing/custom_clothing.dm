@@ -36,9 +36,10 @@
 	icon_state = "policevest"
 	item_state = "policevest"
 	armor = list(melee = 40, bullet = 40, laser = 45, energy = 15, bomb = 30, bio = 0, rad = 0)
+	allowed = list(/obj/item/weapon/gun/energy,/obj/item/device/radio,/obj/item/weapon/reagent_containers/spray/pepper,/obj/item/weapon/gun/projectile,/obj/item/ammo_magazine,/obj/item/ammo_casing,/obj/item/weapon/melee/baton,/obj/item/weapon/handcuffs,/obj/item/weapon/gun/magnetic)
 
-// Items below belong to i-dont-fucking-know-who
-// Please, sign them ASAP
+//Terror
+
 /obj/item/clothing/head/helmet/german
 	name = "stahlhelm"
 	desc = "A simple yet menacing looking steel helmet. Protects the head from bullets."
@@ -48,6 +49,8 @@
 	armor = list(melee = 45, bullet = 60, laser = 45,energy = 10, bomb = 40, bio = 2, rad = 10)
 	siemens_coefficient = 1
 	has_visor = 0
+
+//Schutze88
 
 /obj/item/clothing/head/HoS/german
 	name = "ancient cap"
@@ -68,11 +71,16 @@
 		to_chat(user, SPAN("warning", "You aren't sure you'll fit in this men's cloth..."))
 		return 0
 
+// Item below belong to i-dont-fucking-know-who
+// Please, sign it ASAP
+
 /obj/item/clothing/suit/storage/toggle/forensics/customred
 	name = "red jacket"
 	desc = "A nice red forensics technician jacket."
 	icon_state = "custom_forensics_red_long"
 	item_state = "custom_forensics_red_long"
+
+//NeinAnimas
 
 /obj/item/clothing/suit/armor/hos/jensen/custom
 	name = "stylish trenchcoat"
@@ -80,6 +88,9 @@
 	icon_state = "hostrench"
 	item_state = "hostrench"
 	armor = list(melee = 15, bullet = 10, laser = 10, energy = 10, bomb = 10, bio = 0, rad = 0)
+
+// Item below belong to i-dont-fucking-know-who
+// Please, sign it ASAP
 
 /obj/item/clothing/suit/storage/det_trench/warfare
     name = "comfy greatcoat"
