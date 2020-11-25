@@ -30,7 +30,7 @@
 	name = OUTFIT_JOB_NAME("Detective")
 	head = /obj/item/clothing/head/det
 	uniform = /obj/item/clothing/under/det
-	suit = /obj/item/clothing/suit/storage/det_trench
+	suit = /obj/item/clothing/suit/storage/toggle/det_trench
 	l_pocket = /obj/item/weapon/flame/lighter/zippo
 	shoes = /obj/item/clothing/shoes/laceup
 	r_hand = /obj/item/weapon/storage/briefcase/crimekit

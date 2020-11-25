@@ -104,13 +104,13 @@
 // Item below belong to i-dont-fucking-know-who
 // Please, sign it ASAP
 
-/obj/item/clothing/suit/storage/det_trench/warfare
+/obj/item/clothing/suit/storage/toggle/det_trench/warfare
     name = "comfy greatcoat"
     desc = "A greatcoat that is holding small pieces of dirt and such. It feels underarmored, yet you're absolutely sure that it will keep out the cold."
     icon_state = "redcoat"
     armor = list(melee = 0, bullet = 0, laser = 0, energy = 0, bomb = 0, bio = 0, rad = 0)
 
-/obj/item/clothing/suit/storage/det_trench/warfare/mob_can_equip(mob/user)
+/obj/item/clothing/suit/storage/toggle/det_trench/warfare/mob_can_equip(mob/user)
 	.=..()
 	if(user.gender == FEMALE)
 		to_chat(user, SPAN("warning", "You aren't sure you'll fit in this men's cloth..."))
