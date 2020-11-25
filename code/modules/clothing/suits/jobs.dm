@@ -97,18 +97,24 @@
 	body_parts_covered = UPPER_TORSO|LOWER_TORSO|ARMS
 
 //Detective
-/obj/item/clothing/suit/storage/det_trench
+/obj/item/clothing/suit/storage/toggle/det_trench
 	name = "detective's trenchcoat"
 	desc = "A reinforced canvas trenchcoat, designed and created by TX Fabrication Corp. The coat is externally impact resistant - perfect for your next act of autodefenestration!"
-	icon_state = "detective"
+	icon_state = "detective_open"
+	item_state = "detective_open"
+	icon_open = "detective_open"
+	icon_closed = "detective"
 	valid_accessory_slots = list(ACCESSORY_SLOT_INSIGNIA)
 	blood_overlay_type = "coat"
 	body_parts_covered = UPPER_TORSO|LOWER_TORSO|ARMS
 	allowed = list(/obj/item/weapon/tank/emergency,/obj/item/device/flashlight,/obj/item/weapon/gun/energy,/obj/item/weapon/gun/projectile,/obj/item/ammo_magazine,/obj/item/ammo_casing,/obj/item/weapon/melee/baton,/obj/item/weapon/handcuffs,/obj/item/weapon/storage/fancy/cigarettes,/obj/item/weapon/flame/lighter,/obj/item/device/taperecorder)
 	armor = list(melee = 35, bullet = 35, laser = 35, energy = 20, bomb = 25, bio = 0, rad = 0)
 
-/obj/item/clothing/suit/storage/det_trench/grey
-	icon_state = "detective2"
+/obj/item/clothing/suit/storage/toggle/det_trench/grey
+	icon_state = "detective2_open"
+	item_state = "detective2_open"
+	icon_open = "detective2_open"
+	icon_closed = "detective2"
 
 /obj/item/clothing/suit/storage/det_trench/ft/
 	desc = "A rugged canvas trenchcoat, designed and created by TX Fabrication Corp. This one wouldn't block much of anything."
@@ -116,8 +122,9 @@
 
 /obj/item/clothing/suit/storage/civ_trench
 	name = "brown trenchcoat"
-	desc = "A cheap rugged canvas trenchcoat, manufactured by TX Fabrication Corp. May soften a punch, but is literally disabled compared to the detective's coat."
-	icon_state = "detective"
+	desc = "A cheap rugged canvas trenchcoat, manufactured by TX Fabrication Corp. May soften a punch, but is literally disabled compared to the detective's coat. Its button loops don't seem to match the buttons' size."
+	icon_state = "detective_open"
+	item_state = "detective_open"
 	valid_accessory_slots = list(ACCESSORY_SLOT_INSIGNIA)
 	blood_overlay_type = "coat"
 	body_parts_covered = UPPER_TORSO|LOWER_TORSO|ARMS
@@ -126,7 +133,9 @@
 
 /obj/item/clothing/suit/storage/civ_trench/grey
 	name = "grey trenchcoat"
-	icon_state = "detective2"
+	desc = "A cheap rugged canvas trenchcoat, manufactured by TX Fabrication Corp. May soften a punch, but is literally disabled compared to the detective's coat. Its button loops don't seem to match the buttons' size."
+	icon_state = "detective2_open"
+	item_state = "detective2_open"
 
 //Forensics
 /obj/item/clothing/suit/storage/toggle/forensics
