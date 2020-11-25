@@ -116,7 +116,7 @@
 	icon_open = "detective2_open"
 	icon_closed = "detective2"
 
-/obj/item/clothing/suit/storage/det_trench/ft/
+/obj/item/clothing/suit/storage/toggle/det_trench/ft
 	desc = "A rugged canvas trenchcoat, designed and created by TX Fabrication Corp. This one wouldn't block much of anything."
 	armor = list(melee = 0, bullet = 0, laser = 0, energy = 0, bomb = 0, bio = 0, rad = 0)
 
@@ -133,7 +133,7 @@
 
 /obj/item/clothing/suit/storage/civ_trench/grey
 	name = "grey trenchcoat"
-	desc = "A cheap rugged canvas trenchcoat, manufactured by TX Fabrication Corp. May soften a punch, but is literally disabled compared to the detective's coat. Its button loops don't seem to match the buttons' size."
+	desc = "A cheap rugged canvas trenchcoat, manufactured by TX Fabrication Corp. May soften a punch, but is literally disabled compared to the detective's coat. The lock on it is stuck so it's impossible to zip it."
 	icon_state = "detective2_open"
 	item_state = "detective2_open"
 
