@@ -274,15 +274,13 @@
 		if(istype(thing, /obj)) //Can't use isobj() because /atom/movable returns true in that, and so lighting overlays would be included
 			objs += thing
 			hearturfs |= get_turf(thing)
+			continue
 		if(ismob(thing))
 			mobs += thing
 			hearturfs |= get_turf(thing)
 
 	//A list of every mob with a client
 	for(var/mob in GLOB.player_list)
-		if(!ismob(mob))
-			GLOB.player_list -= mob
-			continue
 		if(get_turf(mob) in hearturfs)
 			mobs |= mob
 			continue
