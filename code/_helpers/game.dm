@@ -260,7 +260,7 @@
 
 	return R // radio, true, false, what's the difference
 
-/mob/observer/dead/can_hear_radio(list/hearturfs)
+/mob/observer/ghost/can_hear_radio(list/hearturfs)
 	return get_preference_value(/datum/client_preference/ghost_radio) == GLOB.PREF_ALL_CHATTER
 
 //Uses dview to quickly return mobs and objects in view,
