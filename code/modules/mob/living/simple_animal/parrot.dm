@@ -41,7 +41,7 @@
 	emote_hear = list("squawks","bawks")
 	emote_see = list("flutters its wings")
 
-	speak_chance = 4//4% (4 in 100) chance every tick; So about once per 37 seconds, assuming an average tick is 1.5s; (FAKE)
+	speak_chance = 5//5% (5 in 100) chance every tick; So about once per 30 seconds, assuming an average tick is 1.5s; (FAKE)
 	turns_per_move = 1
 	meat_type = /obj/item/weapon/reagent_containers/food/snacks/cracker/
 
@@ -79,10 +79,7 @@
 									/obj/machinery/computer,			/obj/machinery/telecomms, \
 									/obj/machinery/nuclearbomb,			/obj/machinery/particle_accelerator, \
 									/obj/machinery/recharge_station,	/obj/machinery/smartfridge, \
-									/obj/machinery/suit_storage_unit, /obj/structure/bed/chair, \
-									/obj/structure/table, /obj/item/modular_computer/console, \
-									/obj/item/weapon/stool)
-
+									/obj/machinery/suit_storage_unit)
 	//Parrots are kleptomaniacs. This variable ... stores the item a parrot is holding.
 	var/obj/item/held_item = null
 
@@ -576,7 +573,7 @@
 /mob/living/simple_animal/parrot/proc/search_for_perch_and_item()
 	for(var/atom/movable/AM in view(src))
 		for(var/perch_path in desired_perches)
-			if(istype(AM, perch_path) && !istype(AM, /obj/item))
+			if(istype(AM, perch_path))
 				return AM
 
 		//Skip items we already stole or are wearing or are too big
@@ -763,7 +760,7 @@
 
 
 /mob/living/simple_animal/parrot/hear_say(message, verb = "says", datum/language/language = null, alt_name = "",italics = 0, mob/speaker = null)
-	if(prob(50) && !istype(speaker, /mob/living/simple_animal/parrot/))
+	if(prob(50) && !istype(speaker, /mob/living/simple_animal/parrot))
 		parrot_hear(message)
 	..()
 
