@@ -719,11 +719,10 @@ GLOBAL_LIST_EMPTY(blood_overlay_cache)
 	if(GLOB.blood_overlay_cache["[icon]" + icon_state])
 		blood_overlay = GLOB.blood_overlay_cache["[icon]" + icon_state]
 		return
-	var/icon/I = new /icon(icon, icon_state)
-	I.Blend(new /icon('icons/effects/blood.dmi', rgb(255,255,255)), ICON_ADD) //fills the icon_state with white (except where it's transparent)
-	I.Blend(new /icon('icons/effects/blood.dmi', "itemblood"), ICON_MULTIPLY) //adds blood and the remaining white areas become transparant
-	blood_overlay = image(I)
-	GLOB.blood_overlay_cache["[icon]" + icon_state] = blood_overlay
+	var/image/blood = image(icon = 'icons/effects/blood.dmi', icon_state = "itemblood")
+	blood.filters += filter(type = "alpha", icon = icon(icon, icon_state))
+	GLOB.blood_overlay_cache["[icon]" + icon_state] = blood
+	blood_overlay = blood
 
 /obj/item/proc/showoff(mob/user)
 	for (var/mob/M in view(user))
