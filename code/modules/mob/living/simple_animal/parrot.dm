@@ -41,7 +41,7 @@
 	emote_hear = list("squawks","bawks")
 	emote_see = list("flutters its wings")
 
-	speak_chance = 4//4% (4 in 100) chance every tick; So about once per 37 seconds, assuming an average tick is 1.5s; (FAKE)
+	speak_chance = 5//5% (5 in 100) chance every tick; So about once per 30 seconds, assuming an average tick is 1.5s; (FAKE)
 	turns_per_move = 1
 	meat_type = /obj/item/weapon/reagent_containers/food/snacks/cracker/
 
