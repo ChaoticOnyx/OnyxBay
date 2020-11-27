@@ -15,7 +15,6 @@
 	var/obj/item/weapon/cell/cell                              // Currently installed powercell.
 	var/obj/item/weapon/stock_parts/capacitor/capacitor        // Installed capacitor. Higher rating == faster charge between shots.
 	var/removable_components = TRUE                            // Whether or not the gun can be dismantled.
-	var/gun_unreliable = 15                                    // Percentage chance of detonating in your hands.
 
 	var/obj/item/loaded                                        // Currently loaded object, for retrieval/unloading.
 	var/load_type = /obj/item/stack/rods                       // Type of stack to load with.
@@ -189,11 +188,5 @@
 	use_ammo()
 	capacitor.use(power_cost)
 	update_icon()
-
-	if(gun_unreliable && prob(gun_unreliable))
-		spawn(3) // So that it will still fire - considered modifying Fire() to return a value but burst fire makes that annoying.
-			visible_message("<span class='danger'>\The [src] explodes with the force of the shot!</span>")
-			explosion(get_turf(src), -1, 0, 2)
-			qdel(src)
 
 	return new projectile_type(src)
