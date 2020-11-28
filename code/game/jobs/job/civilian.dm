@@ -171,6 +171,8 @@
 		return
 	if(.)
 		H.silent += 86400
+		if(all_languages["Sign Language"] in H.languages)
+			H.remove_language("Sign Language")
 
 	// Add "Invisible wall" spell
 	H.add_spell(new /spell/aoe_turf/conjure/forcewall/mime, "grey_spell_ready")
