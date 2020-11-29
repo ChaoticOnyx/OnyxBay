@@ -253,7 +253,7 @@ obj/item/weapon/shield/shield_belt/experimental_shield_belt/get_mob_overlay(mob/
 	if(bcell)
 		if(shield)
 			visible_message(SPAN_DANGER("\The [src] explodes!"))
-			explosion(src.loc, 1, 2, 4)
+			explosion(src.loc, 0, 1, 3)
 			qdel(src)
 		bcell.emp_act(severity)
 		update_icon_state()
