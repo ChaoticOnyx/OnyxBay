@@ -41,7 +41,7 @@
 			user.visible_message(SPAN_WARNING("[user] raises \the [src] up to their mouth and bites into it."), SPAN_NOTICE("You raise \the [src] up to your mouth and bite into it, starting to drain its contents.<br>You need to stand still."))
 			being_feed = TRUE
 			vampire_marks = TRUE
-			while (do_after(user, 25, 5, 1))
+			while (do_after(user, 30, src))
 				if(!user)
 					return
 				var/blood_taken = 0

@@ -525,12 +525,17 @@
 				if(hasHUD(usr, HUD_SECURITY))
 					to_chat(usr, "<b>Name:</b> [E.get_name()]")
 					to_chat(usr, "<b>Criminal Status:</b> [E.get_criminalStatus()]")
-					to_chat(usr, "<b>Details:</b> [pencode2html(E.get_secRecord())]")
+					to_chat(usr, "<b>Major Crimes:</b> [pencode2html(E.get_major_crimes())]")
+					to_chat(usr, "<b>Minor Crimes:</b> [pencode2html(E.get_minor_crimes())]")
+					to_chat(usr, "<b>Crime Details:</b> [pencode2html(E.get_crime_details())]")
+					to_chat(usr, "<b>Important Notes:</b> [pencode2html(E.get_crime_notes())]")
+					to_chat(usr, "<b>Security Background:</b> [pencode2html(E.get_secRecord())]")
 					read = 1
 
 			if(!read)
 				to_chat(usr, "<span class='warning'>Unable to locate a data core entry for this person.</span>")
-	if (href_list["medical"])
+	if (href_list["physical"] || href_list["mental"])
+		var/is_physical = href_list["physical"]
 		if(hasHUD(usr, HUD_MEDICAL))
 			var/perpname = "wot"
 			var/modified = 0
@@ -546,9 +551,16 @@
 
 			var/datum/computer_file/crew_record/E = get_crewmember_record(perpname)
 			if(E)
-				var/setmedical = input(usr, "Specify a new medical status for this person.", "Medical HUD", E.get_status()) as null|anything in GLOB.physical_statuses
-				if(hasHUD(usr, HUD_MEDICAL) && setmedical)
-					E.set_status(setmedical)
+				var/setstatus
+				if (is_physical)
+					setstatus = input(usr, "Specify a new physical status for this person.", "Medical HUD", E.get_status_physical()) as null|anything in GLOB.physical_statuses
+				else
+					setstatus = input(usr, "Specify a new mental status for this person.", "Medical HUD", E.get_status_mental()) as null|anything in GLOB.mental_statuses
+				if(hasHUD(usr, HUD_MEDICAL) && setstatus)
+					if (is_physical)
+						E.set_status_physical(setstatus)
+					else
+						E.set_status_mental(setstatus)
 					modified = 1
 
 					spawn()
@@ -581,7 +593,12 @@
 					to_chat(usr, "<b>Gender:</b> [E.get_sex()]")
 					to_chat(usr, "<b>Species:</b> [E.get_species()]")
 					to_chat(usr, "<b>Blood Type:</b> [E.get_bloodtype()]")
-					to_chat(usr, "<b>Details:</b> [pencode2html(E.get_medRecord())]")
+					to_chat(usr, "<b>Major Disabilities:</b> [pencode2html(E.get_major_disabilities())]")
+					to_chat(usr, "<b>Minor Disabilities:</b> [pencode2html(E.get_minor_disabilities())]")
+					to_chat(usr, "<b>Curent Diseases:</b> [pencode2html(E.get_current_diseases())]")
+					to_chat(usr, "<b>Medical Condition Details:</b> [pencode2html(E.get_medical_details())]")
+					to_chat(usr, "<b>Important Notes:</b> [pencode2html(E.get_medical_notes())]")
+					to_chat(usr, "<b>Medical Background:</b> [pencode2html(E.get_medRecord())]")
 					read = 1
 			if(!read)
 				to_chat(usr, "<span class='warning'>Unable to locate a data core entry for this person.</span>")
