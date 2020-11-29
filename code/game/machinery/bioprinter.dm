@@ -171,7 +171,7 @@
 /obj/machinery/organ_printer/robot/New()
 	..()
 	products.Add(BP_CELL)
-	products[BP_CELL] = list("Cell", /obj/item/organ/internal/cell, 25)
+	products[BP_CELL] = list("Microbattery", /obj/item/organ/internal/cell, 25)
 	component_parts += new /obj/item/weapon/circuitboard/roboprinter
 
 /obj/machinery/organ_printer/robot/print_organ(choice)
