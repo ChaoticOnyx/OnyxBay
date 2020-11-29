@@ -131,10 +131,11 @@ var/list/limb_icon_cache = list()
 			icon_cache_key += "_model_[model]"
 
 		if(force_icon && (status & ORGAN_CUT_AWAY))
-			dir = NORTH
+			dir = SOUTH // Facing towards the screen
 		else
 			dir = EAST
-		icon = mob_icon
+		if(mob_icon)
+			icon = mob_icon
 
 /obj/item/organ/external/proc/update_icon_drop(mob/living/carbon/human/powner)
 	return

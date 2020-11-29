@@ -261,7 +261,7 @@
 		user.unset_machine()
 		return
 
-	var/dat = "<head><meta name='theme-color';content='#5c6572'><title>[src]</title></head><body>"
+	var/dat = "<head><title>[src]</title></head><body>"
 
 	if(!ai)  // AI can't pull flush handle
 		if(flush)
@@ -310,7 +310,6 @@
 	if(href_list["close"])
 		if(disposal_menu)
 			disposal_menu.close()
-			user.unset_machine()
 			return TOPIC_HANDLED
 
 	if(href_list["pump"])
