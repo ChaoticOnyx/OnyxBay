@@ -82,6 +82,28 @@
 	item_state = "hostrench"
 	flags_inv = 0
 
+/obj/item/clothing/suit/armor/capcarapace
+	name = "captain's carapace"
+	desc = "An extremely expensive piece of exclusive, hand-crafted corporate armor. YOU are in charge!"
+	icon_state = "capcarapace"
+	//item_state = "capcarapace"
+	armor = list(melee = 85, bullet = 70, laser = 70, energy = 35, bomb = 55, bio = 20, rad = 10)
+	allowed = list(
+		/obj/item/weapon/gun,
+		/obj/item/device/flashlight,
+		/obj/item/device/radio,
+		/obj/item/weapon/tank,
+		/obj/item/ammo_magazine,
+		/obj/item/ammo_casing,
+		/obj/item/weapon/reagent_containers/spray/pepper,
+		/obj/item/weapon/melee/whip/chainofcommand,
+		/obj/item/weapon/melee/baton,
+		/obj/item/weapon/handcuffs,
+		/obj/item/weapon/disk/nuclear,
+		/obj/item/weapon/grenade,
+		)
+	siemens_coefficient = 0.5
+
 //Non-hardsuit ERT armor.
 //Commander
 /obj/item/clothing/suit/armor/vest/ert
