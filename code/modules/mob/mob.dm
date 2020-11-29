@@ -530,7 +530,7 @@
 	if(!Adjacent(usr)) return
 	if(istype(M,/mob/living/silicon/ai)) return
 	show_inv(usr)
-
+	usr.show_inventory.open()
 
 /mob/verb/stop_pulling()
 
