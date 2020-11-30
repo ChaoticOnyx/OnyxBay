@@ -381,8 +381,9 @@
 	armor = list(melee = 15, bullet = 10, laser = 10, energy = 0, bomb = 0, bio = 0, rad = 0)
 	siemens_coefficient = 0.8
 
-/obj/item/clothing/mask/bandana/clown_soc
+/obj/item/clothing/mask/clown_soc
 	name = "society user mask"
 	desc = "This mask says a lot about society."
 	icon_state = "clown_soc"
 	item_state = "clown_soc"
+	flags_inv = HIDEFACE
