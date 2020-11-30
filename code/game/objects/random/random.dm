@@ -431,7 +431,6 @@
 				/obj/item/remains/xeno = 1,
 				/obj/effect/decal/cleanable/shit = 0.1)
 
-
 obj/random/closet //A couple of random closets to spice up maint
 	name = "random closet"
 	desc = "This is a random closet."
