@@ -31,34 +31,43 @@
 	if(istype(src, /obj/item/weapon/shield/shield_belt/syndicate_shield_belt))
 		if(shield)
 			icon_state = "syndi_shield_belt"
+			M.update_action_buttons()
 		else
 			icon_state = "syndi_shield_belt_off"
+			M.update_action_buttons()
 	else
 		if(shield)
 			switch(round(bcell.charge / bcell.maxcharge * 100))
 				if(50 to 100)
 					icon_state = "science_shield_belt_full"
+					M.update_action_buttons()
 					return
 				if(20 to 49)
 					icon_state = "science_shield_belt_half"
+					M.update_action_buttons()
 					return
 				if(0 to 19)
 					icon_state = "science_shield_belt_almost_empty"
+					M.update_action_buttons()
 					return
 		else
 			if(bcell)
 				if(bcell.charge < 300)
 					icon_state = "science_shield_belt_empty"
+					M.update_action_buttons()
 					return
 				switch (round(bcell.charge / bcell.maxcharge * 100))
 					if(50 to 100)
 						icon_state = "science_shield_belt_off_green"
+						M.update_action_buttons()
 						return
 					if(20 to 49)
 						icon_state = "science_shield_belt_off_yellow"
+						M.update_action_buttons()
 						return
 					if(0 to 20)
 						icon_state = "science_shield_belt_off_red"
+						M.update_action_buttons()
 						return
 			else
 				icon_state = "science_shield_belt_nobattery"
@@ -129,6 +138,7 @@
 	desc = "Protects user from bullets and lasers, but doesn't allow you to shoot. This one appears to have mini-reactor and able to restore itself after some time. Looks suspicious."
 	description_info = "ALT+CLICK when weared at belt slot to use the shield."
 	origin_tech = list(TECH_MATERIAL = 6, TECH_MAGNET = 6, TECH_ILLEGAL = 4)
+	action_button_name = "Toggle Shield"
 
 //how belt looks at mob
 obj/item/weapon/shield/shield_belt/syndicate_shield_belt/get_mob_overlay(mob/user_mob, slot)
@@ -146,8 +156,7 @@ obj/item/weapon/shield/shield_belt/syndicate_shield_belt/get_mob_overlay(mob/use
 	. = ..()
 	. += "\nThe internal capacitor currently has [round(current_power/max_power * 100)]% charge."
 
-//ALT+CLICK the best one i think
-/obj/item/weapon/shield/shield_belt/syndicate_shield_belt/AltClick(mob/living/user)
+/obj/item/weapon/shield/shield_belt/syndicate_shield_belt/proc/change_status(mob/living/user)
 	if (not_being_turned)
 		to_chat(loc,SPAN_NOTICE("The [user] touches the button on belt!"))
 		not_being_turned = 0
@@ -164,6 +173,18 @@ obj/item/weapon/shield/shield_belt/syndicate_shield_belt/get_mob_overlay(mob/use
 				to_chat(loc,SPAN_DANGER("The [src] has no energy!"))
 		else
 			to_chat(loc,SPAN_DANGER("\The [src] must be weared at belt to be used"))
+
+
+/obj/item/weapon/shield/shield_belt/syndicate_shield_belt/ui_action_click()
+	toggle_shield()
+
+obj/item/weapon/shield/shield_belt/syndicate_shield_belt/verb/toggle_shield()
+	set name = "Toggle Shield"
+	set category = "Object"
+	src.change_status(src.loc)
+
+/obj/item/weapon/shield/shield_belt/syndicate_shield_belt/AltClick(mob/living/user)
+	change_status(user)
 
 /obj/item/weapon/shield/shield_belt/syndicate_shield_belt/Process(wait)
 	if (!shield)
@@ -186,6 +207,7 @@ obj/item/weapon/shield/shield_belt/syndicate_shield_belt/get_mob_overlay(mob/use
 	description_info = "ALT+CLICK when weared at belt slot to use the shield, use Screwdriver to change battery "
 	origin_tech = list(TECH_MATERIAL = 6, TECH_MAGNET = 6)
 	bcell = /obj/item/weapon/cell/high/empty
+	action_button_name = "Toggle Shield"
 
 obj/item/weapon/shield/shield_belt/experimental_shield_belt/get_mob_overlay(mob/user_mob, slot)
 	if(shield)
@@ -229,7 +251,7 @@ obj/item/weapon/shield/shield_belt/experimental_shield_belt/get_mob_overlay(mob/
 	else
 		. += "\nThere is no cell in \the [src]."
 
-/obj/item/weapon/shield/shield_belt/experimental_shield_belt/AltClick(mob/living/user)
+/obj/item/weapon/shield/shield_belt/experimental_shield_belt/proc/change_status(mob/living/user)
 	if(not_being_turned)
 		to_chat(loc,SPAN_NOTICE("The [user] touches the button on belt!"))
 		not_being_turned = 0
@@ -248,6 +270,17 @@ obj/item/weapon/shield/shield_belt/experimental_shield_belt/get_mob_overlay(mob/
 				to_chat(loc,SPAN_DANGER("\The [src] has no battery!"))
 		else
 			to_chat(loc,SPAN_DANGER("\The [src] must be weared at belt to be used"))
+
+/obj/item/weapon/shield/shield_belt/experimental_shield_belt/ui_action_click()
+	toggle_shield()
+
+obj/item/weapon/shield/shield_belt/experimental_shield_belt/verb/toggle_shield()
+	set name = "Toggle Shield"
+	set category = "Object"
+	src.change_status(src.loc)
+
+/obj/item/weapon/shield/shield_belt/experimental_shield_belt/AltClick(mob/living/user)
+	change_status(user)
 
 //explosion if active
 /obj/item/weapon/shield/shield_belt/experimental_shield_belt/emp_act(severity)
