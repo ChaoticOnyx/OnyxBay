@@ -25,3 +25,8 @@
 
 /obj/item/clothing/gloves/rainbow/modified
 	item_flags = ITEM_FLAG_PREMODIFIED
+
+/obj/item/clothing/gloves/color/fingerless
+	name = "fingerless gloves"
+	desc = "A pair fingerless gloves for real human being."
+	icon_state = "fingerless"

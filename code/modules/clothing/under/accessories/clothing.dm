@@ -53,6 +53,16 @@
 	desc = "A stylish sweater to keep you warm on those cold days."
 	icon_state = "sweater"
 
+/obj/item/clothing/accessory/driver_coat
+	name = "scorpion coat"
+	desc = "A stylish coat to keep you real human being."
+	icon_state = "driver"
+
+/obj/item/clothing/accessory/cyber_jacket
+	name = "cyber coat"
+	desc = "Never release your beast."
+	icon_state = "cyber_jacket"
+
 /obj/item/clothing/accessory/ubac
 	name = "black ubac"
 	desc = "A flexible, close-fitting shirt with camouflage sleeves designed to be worn under combat equipment. This one is black."

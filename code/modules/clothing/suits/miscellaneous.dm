@@ -428,6 +428,12 @@
 	icon_state = "fashionable_coat"
 	body_parts_covered = UPPER_TORSO|ARMS|LEGS
 
+/obj/item/clothing/suit/storage/great_coat
+	name = "fashionable trenchcoat"
+	desc = "An expensive trenchcoat."
+	icon_state = "great_coat"
+	body_parts_covered = UPPER_TORSO|ARMS|LEGS
+
 //This one has buttons for some reason
 /obj/item/clothing/suit/storage/toggle/brown_jacket
 	name = "brown jacket"

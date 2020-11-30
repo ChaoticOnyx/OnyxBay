@@ -34,6 +34,11 @@
 	desc = "Traditional French maid uniform."
 	icon_state = "maid"
 
+/obj/item/clothing/under/dress/cyber_uni
+	name = "cyber jumpsuit"
+	desc = "That suit makes you punk."
+	icon_state = "cyber_uni"
+
 /obj/item/clothing/under/dress/gothic_d
 	name = "Gothic dress"
 	desc = "It's a gothic dress. Somehow it reminds you of Queen Victoria."
