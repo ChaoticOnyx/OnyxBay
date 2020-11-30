@@ -182,7 +182,7 @@ Frequency:
 			if(vcell)
 				dat += "<A href='byond://?src=\ref[src];attempt_activate=1'>Activate the Vortex Manipulator</A><BR>"
 			else
-				dat += "<B>INSTALL POWER CELL! (vortex power cell recommended)</B><BR>"
+				dat += "<B>INSTALL POWER CELL!</B><BR>"
 
 		dat += "Kind regards,<br>Dominus temporis. <br><br>P.S. Don't forget to ask someone to say something nice.<HR>"
 		user << browse(dat, "window=scroll")
@@ -208,6 +208,11 @@ Frequency:
 				to_chat(user, SPAN_NOTICE("You install a cell in [src]."))
 				icon_state = "vm_open"
 				update_icon()
+				if(istype(W, /obj/item/weapon/cell/quantum))
+					visible_message(SPAN("warning", "The Bluespace interfaces of the two devices catastrophically malfunction!"))
+					explosion(src.loc, 0, 1, 3)
+					log_and_message_admins("detonated a vortex manipulator", user, src.loc)
+					qdel(src)
 			else
 				to_chat(user, SPAN_NOTICE("[src] already has a cell."))
 
