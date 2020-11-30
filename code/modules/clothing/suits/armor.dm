@@ -82,7 +82,7 @@
 	item_state = "hostrench"
 	flags_inv = 0
 
-/obj/item/clothing/suit/armor/capcarapace
+/obj/item/clothing/suit/armor/vest/capcarapace
 	name = "captain's carapace"
 	desc = "An extremely expensive piece of exclusive, hand-crafted corporate armor. YOU are in charge!"
 	icon_state = "capcarapace"
