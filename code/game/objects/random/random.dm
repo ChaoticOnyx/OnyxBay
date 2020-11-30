@@ -428,7 +428,8 @@
 				/obj/effect/decal/cleanable/flour = 2,
 				/obj/effect/decal/cleanable/dirt = 5,
 				/obj/item/remains/robot = 3,
-				/obj/item/remains/xeno = 1)
+				/obj/item/remains/xeno = 1,
+				/obj/effect/decal/cleanable/shit=0.1)
 
 
 obj/random/closet //A couple of random closets to spice up maint

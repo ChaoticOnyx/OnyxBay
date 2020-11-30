@@ -217,6 +217,14 @@
 	taste_description = "literal shit"
 	color = "#7f4323"
 
+/datum/reagent/toxin/fertilizer/compost/touch_turf(turf/simulated/T)
+	if(!istype(T, /turf/space))
+		new /obj/effect/decal/cleanable/shit(T)
+		if(T.wet > 1)
+			T.wet = min(T.wet, 1)
+		else
+			T.wet = 0
+
 /datum/reagent/toxin/plantbgone
 	name = "Plant-B-Gone"
 	description = "A harmful toxic mixture to kill plantlife. Do not ingest!"
