@@ -2241,8 +2241,8 @@
  *  whole item, transferring the reagents and deleting the whole item, which may
  *  have performance implications.
  */
-/obj/item/weapon/reagent_containers/food/snacks/slice/Initialize()
-	. = ..()
+/obj/item/weapon/reagent_containers/food/snacks/slice/New()
+	..()
 	if(filled)
 		var/obj/item/weapon/reagent_containers/food/snacks/whole = new whole_path()
 		if(whole && whole.slices_num)
