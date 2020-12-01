@@ -20,7 +20,7 @@
 
 /obj/aura/shields/Destroy()
 	to_chat(user, SPAN_WARNING("\The [src] goes offline!"))
-	playsound(user, 'sound/mecha/internaldmgalarm.ogg',25,1)
+	playsound(user, 'sound/mecha/internaldmgalarm.ogg', 25, 1)
 	return ..()
 
 /obj/aura/shields/personal_shield/bullet_act()
