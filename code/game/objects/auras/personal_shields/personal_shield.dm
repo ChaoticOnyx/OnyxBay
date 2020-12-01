@@ -9,7 +9,7 @@
 
 /obj/aura/shields/New(mob/living/user)
 	..()
-	playsound(user,'sound/weapons/flash.ogg',35,1)
+	playsound(user,'sound/weapons/flash.ogg', 35, 1)
 	to_chat(user, SPAN_NOTICE("You feel your body prickle as \the [src] comes online."))
 
 /obj/aura/shields/bullet_act(obj/item/projectile/P, def_zone)
