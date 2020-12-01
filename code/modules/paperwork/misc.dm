@@ -38,7 +38,7 @@
 	item_state = "trade_license"
 	var/fake_chance = 15
 	var/dest_station = "NSS Exodus"
-	var/possible_mis = list("nt_code","org_code","date", "dest","department")
+	var/possible_mis = list("nt_code", "org_code", "date", "dest", "department")
 	var/true_departaments = list("NanoTrasen Supply Department", \
 	 "NanoTrasen Trading Department",\
 	 "NanoTrasen External Affairs Department",\
@@ -92,7 +92,7 @@
 			if("org_code")
 				org_code = "[rand(100,999)]-[rand(1000,9999)]-[rand(100,999)]"
 			if("date")
-				date = list("day" = rand(1,37), "month" = rand(1,13), "year" = rand(2565), "dur" = rand(3,10))
+				date = list("day" = rand(1, 37), "month" = rand(1, 13), "year" = rand(2565), "dur" = rand(3, 10))
 			if("dest")
 				dest_station = pick(another_stations)
 			if("department")
