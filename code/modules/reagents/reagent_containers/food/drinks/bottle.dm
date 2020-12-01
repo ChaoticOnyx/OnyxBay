@@ -232,7 +232,7 @@
 	center_of_mass = "x=16;y=3"
 
 /obj/item/weapon/reagent_containers/food/drinks/bottle/whiskey/Initialize()
-	..()
+	. = ..()
 	reagents.add_reagent(/datum/reagent/ethanol/whiskey, 100)
 
 /obj/item/weapon/reagent_containers/food/drinks/bottle/specialwhiskey
