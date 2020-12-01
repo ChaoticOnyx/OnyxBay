@@ -34,8 +34,8 @@
 
 /obj/item/weapon/paper/trade_lic
 	name = "Trade License"
+	desc = "A flimsy piece of laminated cardboard."
 	icon_state = "trade_license"
-	item_state = "trade_license"
 	var/fake_chance = 15
 	var/dest_station = "NSS Exodus"
 	var/possible_mis = list("nt_code", "org_code", "date", "dest", "department")
@@ -99,19 +99,21 @@
 				department = pick(fake_departaments)
 
 	var/message = ""
-	message += "\[center]\[large]Разрешение на торговлю\[/large]\[/center]"
-	message += "\[center]\[large]\[logo]\[/large]\[/center]"
+	message += "\[center]\[large]\[b]Разрешение на торговлю\[/b]\[/large]\[/center]"
+	message += "\[center]\[large]\[bluelogo]\[/large]\[/center]"
 	message += "\[small]Выдана агентом [pick(GLOB.first_names_female)] [pick(GLOB.last_names)] от лица [department]"
 	message += "\[br]Код агента: [nt_code]\[br] Код организации: [org_code]"
-	message += "\[br]Дата выдачи: [date["day"]].[date["month"]].[date["year"]]\[br] Срок действия: [date["dur"]] лет"
+	message += "\[br]Дата выдачи: [date["day"]].[date["month"]].[date["year"]]\[br] Срок действия: [date["dur"]] года\[/small]"
 	message += "\[hr]"
-	message += "Данная лицензия дает разрешение всем сотрудникам торговой \
-	 компании [org_name] обслуживать станцию [dest_station] корпорации НаноТрейзен, осуществляя услуги по \
+	message += "\[small]Данная лицензия дает разрешение всем сотрудникам торговой \
+	 компании \[i][org_name]\[/i] обслуживать станцию \[i][dest_station]\[/i] корпорации НаноТрейзен, осуществляя услуги по \
 	 сбыту и приобретению перечисленных категорий товара:"
-	message += "\[small]"
+	message += "\[list]"
 	for(var/tr_cat in trade_category)
 		if(prob(trade_category[tr_cat]))
-			message += "\[br]\[b][tr_cat]\[/b]"
+			message += "\[item]\[b][tr_cat]\[/b]\[/item]"
+	message += "\[/small]\[/list]"
 	// TODO: Добавить печати
 	set_content(message)
 	make_readonly()
+

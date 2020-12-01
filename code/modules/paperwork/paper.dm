@@ -126,6 +126,8 @@
 /obj/item/weapon/paper/update_icon()
 	if(icon_state == "paper_talisman")
 		return
+	else if(icon_state == "trade_license")
+		return
 	else if(info)
 		icon_state = "paper_words"
 	else
