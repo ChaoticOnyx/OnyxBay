@@ -15,7 +15,7 @@
 /obj/aura/shields/bullet_act(obj/item/projectile/P, def_zone)
 	user.visible_message(SPAN_DANGER("\The [user]'s [src.name] flashes before \the [P] can hit them!"))
 	new /obj/effect/shield_impact(user.loc)
-	playsound(user, 'sound/effects/basscannon.ogg',35,1)
+	playsound(user, 'sound/effects/basscannon.ogg', 35, 1)
 	return AURA_FALSE|AURA_CANCEL
 
 /obj/aura/shields/Destroy()
