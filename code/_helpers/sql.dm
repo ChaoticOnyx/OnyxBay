@@ -1,14 +1,15 @@
+//for db var look in _global_vars\configuration.dm
 //2 ways to call it
 //positional:
-//	sql_query_adv(template, arg1, arg2...)
+//	sql_query_adv(template, db, arg1, arg2...)
 //	$$ and $[number] are useable
 //named:
-//	sql_query_adv(template, list(name1=value1, name2=value2...))
+//	sql_query_adv(template, db, list(name1=value1, name2=value2...))
 //	Only $[name] is useable.
-/proc/sql_query(template, ...)
+/proc/sql_query(template, DBConnection/db, ...)
 	var/static/regex/token_finder = regex(@"\$(\w+|\$)")
 	var/mode_named = FALSE
-	var/list/arguments = args.Copy(2)
+	var/list/arguments = args.Copy(3)
 	if (arguments.len == 1 && islist(arguments[1]))
 		mode_named = TRUE
 		arguments = arguments[1]
@@ -31,13 +32,13 @@
 				ASSERT(token_num > 0 && token_num <= arguments.len)
 				replacement = arguments[token_num]
 		if (!isnum(replacement))
-			replacement = dbcon.Quote("[replacement]")
+			replacement = db.Quote("[replacement]")
 		var/temp = copytext(template, 1, current_ind)
 		temp += "[replacement]"
 		search_from = length(temp) + 1
 		template = temp + copytext(template, current_ind + length(token_finder.match))
 
-	var/DBQuery/query = dbcon.NewQuery(template)
+	var/DBQuery/query = db.NewQuery(template)
 	if (!query.Execute())
 		CRASH("\[DB QUERY ERROR] query: '[template]', error: '[query.ErrorMsg()]'")
 	return query

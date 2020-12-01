@@ -339,6 +339,8 @@
 			return global.dbcon;
 		if("dbcon_old")
 			return global.dbcon_old;
+		if("dbcon_don")
+			return global.dbcon_don;
 		if("debug_verbs")
 			return global.debug_verbs;
 		if("decls_repository")
@@ -823,6 +825,16 @@
 			return global.sqlpass;
 		if("sqlport")
 			return global.sqlport;
+		if("sqldonaddress")
+			return global.sqldonaddress;
+		if("sqldonport")
+			return global.sqldonport;
+		if("sqldondb")
+			return global.sqldondb;
+		if("sqldonlogin")
+			return global.sqldonlogin;
+		if("sqldonpass")
+			return global.sqldonpass;
 		if("station_account")
 			return global.station_account;
 		if("station_date")
@@ -1320,6 +1332,8 @@
 			global.dbcon=newval;
 		if("dbcon_old")
 			global.dbcon_old=newval;
+		if("dbcon_don")
+			global.dbcon_don=newval
 		if("debug_verbs")
 			global.debug_verbs=newval;
 		if("decls_repository")
@@ -1804,6 +1818,16 @@
 			global.sqlpass=newval;
 		if("sqlport")
 			global.sqlport=newval;
+		if("sqldonaddress")
+			global.sqldonaddress=newval;
+		if("sqldonport")
+			global.sqldonport=newval;
+		if("sqldondb")
+			global.sqldondb=newval;
+		if("sqldonlogin")
+			global.sqldonlogin=newval;
+		if("sqldonpass")
+			global.sqldonpass=newval;
 		if("station_account")
 			global.station_account=newval;
 		if("station_date")
@@ -2132,6 +2156,7 @@
 	"damage_icon_parts",
 	"dbcon",
 	"dbcon_old",
+	"dbcon_don",
 	"debug_verbs",
 	"decls_repository",
 	"default_body_build",
@@ -2377,6 +2402,11 @@
 	"sqllogin",
 	"sqlpass",
 	"sqlport",
+	"sqldonaddress",
+	"sqldonport",
+	"sqldondb",
+	"sqldonlogin",
+	"sqldonpass",
 	"station_account",
 	"station_date",
 	"stool_cache",

@@ -37,6 +37,11 @@
 				"sqllogin",
 				"sqlpass",
 				"sqlport",
+				"sqldonaddres",
+				"sqldondb",
+				"sqldonport",
+				"sqldonlogin",
+				"sqldonpass",
 				"comms_password",
 				"ban_comms_password",
 				"login_export_addr"

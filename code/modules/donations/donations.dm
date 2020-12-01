@@ -2,10 +2,7 @@ SUBSYSTEM_DEF(donations)
 	name = "Donations"
 	init_order = SS_INIT_DONATIONS
 	flags = SS_NO_FIRE
-	var/DBConnection/dbconnection = new()
-	var/connected = FALSE
 
-#define DONATIONS_DB_CREDENTIALS_SAVEFILE "data/donations_db_credentials.sav"
 /datum/controller/subsystem/donations/Initialize(timeofday)
 	if(!config.sql_enabled)
 		log_debug("Donations system is disabled with SQL!")
@@ -15,67 +12,12 @@ SUBSYSTEM_DEF(donations)
 		log_debug("Donations system is disabled by configuration!")
 		return
 
-	var/credentials = null
-
-	var/savefile/F = new(DONATIONS_DB_CREDENTIALS_SAVEFILE)
-	if("credentials" in F)
-		F["credentials"] >> credentials
-
-	if(!credentials)
-		return
-
-	Reconnect(credentials)
-
-	if(connected)
+	if(establish_don_db_connection())
 		log_debug("Donations system successfully connected!")
 	else
 		log_debug("Donations system failed to connect with DB!")
 
 	return ..()
-
-
-/datum/controller/subsystem/donations/proc/Reconnect(credentials)
-	var/list/items = splittext(credentials, ";")
-
-	if(items.len != 5)
-		log_debug("Failed to connect with donations DB: bad credentials!")
-		return FALSE
-
-	var/address = items[1]
-	var/port = items[2]
-	var/user = items[3]
-	var/pass = items[4]
-	var/db = items[5]
-
-
-	var/DBConnection/newconnection = new()
-
-	newconnection.Connect("dbi:mysql:[db]:[address]:[port]","[user]","[pass]")
-	if(!newconnection.IsConnected())
-		log_debug("Failed to connect with donations database!")
-		return FALSE
-
-	dbconnection.Disconnect()
-	dbconnection = newconnection
-	connected = TRUE
-
-	UpdateAllClients()
-
-	log_debug("Successfully connected to donators DB!")
-
-	return TRUE
-
-
-/datum/controller/subsystem/donations/proc/UpdateCredentials(credentials)
-	var/result = Reconnect(credentials)
-
-	if(result)
-		var/savefile/F = new(DONATIONS_DB_CREDENTIALS_SAVEFILE)
-		if (F)
-			F["credentials"] << credentials
-		log_debug("Donations DB credentials were updated!")
-#undef DONATIONS_DB_CREDENTIALS_SAVEFILE
-
 
 /datum/controller/subsystem/donations/proc/UpdateAllClients()
 	set waitfor = 0
@@ -89,10 +31,10 @@ SUBSYSTEM_DEF(donations)
 /datum/controller/subsystem/donations/proc/log_client_to_db(client/player)
 	set waitfor = 0
 
-	if(!connected)
+	if(!establish_don_db_connection())
 		return FALSE
 
-	var/DBQuery/query = dbconnection.NewQuery("INSERT IGNORE INTO players(ckey) VALUES (\"[player.ckey]\")")
+	var/DBQuery/query = dbcon_don.NewQuery("INSERT IGNORE INTO players(ckey) VALUES (\"[player.ckey]\")")
 	if(!query.Execute())
 		log_debug("\[Donations DB] failed to log player: [query.ErrorMsg()]")
 		return FALSE
@@ -103,13 +45,13 @@ SUBSYSTEM_DEF(donations)
 /datum/controller/subsystem/donations/proc/update_donator(client/player)
 	set waitfor = 0
 
-	if(!connected)
+	if(!establish_don_db_connection())
 		return FALSE
 	ASSERT(player)
 
 	var/was_donator = player.donator_info.donator
 
-	var/DBQuery/query = dbconnection.NewQuery({"
+	var/DBQuery/query = dbcon_don.NewQuery({"
 		SELECT patron_types.type
 		FROM players
 		JOIN patron_types ON players.patron_type = patron_types.id
@@ -123,7 +65,7 @@ SUBSYSTEM_DEF(donations)
 	if(query.NextRow())
 		player.donator_info.patron_type = query.item[1]
 
-	query = dbconnection.NewQuery({"
+	query = dbcon_don.NewQuery({"
 		SELECT `change`
 		FROM points_transactions
 		JOIN players ON players.id = points_transactions.player
@@ -149,10 +91,10 @@ SUBSYSTEM_DEF(donations)
 /datum/controller/subsystem/donations/proc/update_donator_items(client/player)
 	set waitfor = 0
 
-	if(!connected)
+	if(!establish_don_db_connection())
 		return FALSE
 
-	var/DBQuery/query = dbconnection.NewQuery({"
+	var/DBQuery/query = dbcon_don.NewQuery({"
 		SELECT item_path
 		FROM store_players_items
 		WHERE player = (SELECT id from players WHERE ckey="[player.ckey]")
@@ -167,7 +109,7 @@ SUBSYSTEM_DEF(donations)
 	return TRUE
 
 /datum/controller/subsystem/donations/proc/create_transaction(client/player, change, type, comment)
-	if(!connected)
+	if(!establish_don_db_connection())
 		return FALSE
 	ASSERT(player)
 	ASSERT(isnum(change))
@@ -181,7 +123,7 @@ SUBSYSTEM_DEF(donations)
 	type = sql_sanitize_text(type)
 	comment = sql_sanitize_text(comment)
 
-	var/DBQuery/query = dbconnection.NewQuery({"
+	var/DBQuery/query = dbcon_don.NewQuery({"
 		INSERT INTO
 			points_transactions(player, type, datetime, `change`, comment)
 		VALUES (
@@ -196,7 +138,7 @@ SUBSYSTEM_DEF(donations)
 		return FALSE
 
 	var/transaction_id
-	query = dbconnection.NewQuery({"
+	query = dbcon_don.NewQuery({"
 		SELECT id
 		FROM points_transactions
 		WHERE
@@ -215,13 +157,13 @@ SUBSYSTEM_DEF(donations)
 
 
 /datum/controller/subsystem/donations/proc/remove_transaction(client/player, id)
-	if(!connected)
+	if(!establish_don_db_connection())
 		return FALSE
 	ASSERT(isnum(id))
 
 	log_debug("\[Donations DB] Transaction [id] rollback is called! User is '[player]'.")
 
-	var/DBQuery/query = dbconnection.NewQuery({"
+	var/DBQuery/query = dbcon_don.NewQuery({"
 		DELETE FROM
 			points_transactions
 		WHERE
@@ -237,13 +179,13 @@ SUBSYSTEM_DEF(donations)
 
 
 /datum/controller/subsystem/donations/proc/give_item(client/player, item_type, transaction_id = null)
-	if(!connected)
+	if(!establish_don_db_connection())
 		return FALSE
 	ASSERT(player)
 	ASSERT(item_type)
 	ASSERT(transaction_id == null || isnum(transaction_id))
 
-	var/DBQuery/query = dbconnection.NewQuery({"
+	var/DBQuery/query = dbcon_don.NewQuery({"
 		INSERT INTO
 			store_players_items(player, transaction, obtaining_date, item_path)
 		VALUES (
@@ -262,10 +204,10 @@ SUBSYSTEM_DEF(donations)
 	return TRUE
 
 /datum/controller/subsystem/donations/proc/CheckToken(client/player, token)
-	if(!connected)
+	if(!establish_don_db_connection())
 		return FALSE
 
-	var/DBQuery/query = dbconnection.NewQuery("SELECT token, discord FROM tokens WHERE token = \"[token]\" LIMIT 0,1")
+	var/DBQuery/query = dbcon_don.NewQuery("SELECT token, discord FROM tokens WHERE token = \"[token]\" LIMIT 0,1")
 	if(!query.Execute())
 		log_debug("\[Donations DB] failed to load token: [query.ErrorMsg()]")
 		return FALSE
@@ -275,13 +217,13 @@ SUBSYSTEM_DEF(donations)
 
 	var/discord_id = query.item[2]
 
-	query = dbconnection.NewQuery("UPDATE players SET discord=\"[discord_id]\" WHERE ckey=\"[player.ckey]\"")
+	query = dbcon_don.NewQuery("UPDATE players SET discord=\"[discord_id]\" WHERE ckey=\"[player.ckey]\"")
 
 	if(!query.Execute())
 		log_debug("\[Donations DB] failed to update discord id: [query.ErrorMsg()]")
 		return FALSE
 
-	query = dbconnection.NewQuery("DELETE FROM tokens WHERE token = \"[token]\"")
+	query = dbcon_don.NewQuery("DELETE FROM tokens WHERE token = \"[token]\"")
 	if(!query.Execute())
 		log_debug("\[Donations DB] failed to delete token: [query.ErrorMsg()]")
 
@@ -316,26 +258,6 @@ SUBSYSTEM_DEF(donations)
 			return 1
 
 	return 0
-
-
-/client/proc/update_donations_db_credentials()
-	set name = "Update Donations DB Credentials"
-	set hidden = TRUE
-	if (!check_rights(R_HOST))
-		to_chat(usr, "You have no permissions for donations DB!")
-		return
-
-	if(!config.sql_enabled)
-		to_chat(usr, "Donations system cannot be used, because SQL is disabled by configuration!")
-		return
-
-	if(!config.donations)
-		to_chat(usr, "Donations system is disabled by configuration!")
-		return
-
-	var/credentials = input("Enter Donations DB Credentials:", "Donations DB Credentials", "1.2.3.4;1234;user;password;db_name")
-	SSdonations.UpdateCredentials(credentials)
-
 
 /client/verb/chaotic_token(token as text)
 	set name = ".chaotic-token"
