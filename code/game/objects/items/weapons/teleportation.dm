@@ -134,6 +134,7 @@ Frequency:
 	icon = 'icons/obj/device.dmi'
 	icon_state = "vm_closed"
 	item_state = "electronic"
+	var/bluespace_malf_chance = 40
 	var/possible_malf = list("exp", "potato", "expotato", "carps")
 	var/chargecost_area = 1000
 	var/chargecost_beacon = 100
@@ -336,38 +337,6 @@ Frequency:
 /obj/item/weapon/vortex_manipulator/proc/self_activate(mob/living/carbon/human/user)
 	if(!active)
 		to_chat(user, SPAN_NOTICE("You attempt to activate Vortex Manipulator"))
-		if(istype(vcell, /obj/item/weapon/cell/quantum))
-			visible_message(SPAN_WARNING("The Bluespace interfaces of the two devices catastrophically malfunction!"))
-			var/vrtx_malf = pick(possible_malf)
-			switch(vrtx_malf)
-				if("carps")
-					visible_message(SPAN_WARNING("The Vortex Manipulator violently shakes and extracts Space Carps from local bluespace anomaly!"))
-					playsound(get_turf(src), 'sound/effects/phasein.ogg', 50, 1)
-					explosion(src.loc, 0, 2, 4)
-					var/amount = rand(1,3)
-					for(var/i=0; i<amount; i++)
-						new /mob/living/simple_animal/hostile/carp(get_turf(src))
-					log_and_message_admins("released the carps", user, src.loc)
-					qdel(src)
-				if("expotato")
-					visible_message(SPAN_WARNING("The Vortex Manipulator violently shakes and extracts its hidden energy!"))
-					playsound(get_turf(src), 'sound/effects/phasein.ogg', 50, 1)
-					explosion(src.loc, 0, 2, 4)
-					new /obj/item/weapon/cell/potato(get_turf(src))
-					log_and_message_admins("detonated a vortex manipulator", user, src.loc)
-					qdel(src)
-				if("exp")
-					playsound(get_turf(src), 'sound/effects/phasein.ogg', 50, 1)
-					visible_message(SPAN_WARNING("The Vortex Manipulator violently shakes and extracts its hidden energy!"))
-					explosion(src.loc, 0, 2, 4)
-					log_and_message_admins("detonated a vortex manipulator", user, src.loc)
-					qdel(src)
-				if("potato")
-					playsound(get_turf(src), 'sound/effects/phasein.ogg', 50, 1)
-					visible_message(SPAN_WARNING("The Vortex Manipulator violently shakes and turns into potato!"))
-					new /obj/item/weapon/cell/potato(get_turf(src))
-					qdel(src)
-			return
 		if(!timelord_mode)
 			var/counter = 0
 			for(var/obj/item/weapon/vortex_manipulator/VM in GLOB.vortex_manipulators)
@@ -474,6 +443,41 @@ Frequency:
 			beacon_locations[AR.name] = AR
 	beacon_locations = sortAssoc(beacon_locations)
 
+// Funny events for bluespace cell users
+/obj/item/weapon/vortex_manipulator/proc/bluespace_malfunction()
+	var/mob/living/carbon/human/user = get_owner()
+	if(prob(bluespace_malf_chance))
+		visible_message(SPAN_WARNING("The Bluespace interfaces of the two devices catastrophically malfunction!"))
+		var/vrtx_malf = pick(possible_malf)
+		switch(vrtx_malf)
+			if("carps")
+				visible_message(SPAN_WARNING("The Vortex Manipulator violently shakes and extracts Space Carps from local bluespace anomaly!"))
+				playsound(get_turf(src), 'sound/effects/phasein.ogg', 50, 1)
+				explosion(src.loc, 0, 2, 4)
+				var/amount = rand(1,3)
+				for(var/i=0; i<amount; i++)
+					new /mob/living/simple_animal/hostile/carp(get_turf(src))
+				log_and_message_admins("released the carps", user, src.loc)
+				qdel(src)
+			if("expotato")
+				visible_message(SPAN_WARNING("The Vortex Manipulator violently shakes and extracts its hidden energy!"))
+				playsound(get_turf(src), 'sound/effects/phasein.ogg', 50, 1)
+				explosion(src.loc, 0, 2, 4)
+				new /obj/item/weapon/cell/potato(get_turf(src))
+				log_and_message_admins("detonated a vortex manipulator", user, src.loc)
+				qdel(src)
+			if("exp")
+				playsound(get_turf(src), 'sound/effects/phasein.ogg', 50, 1)
+				visible_message(SPAN_WARNING("The Vortex Manipulator violently shakes and extracts its hidden energy!"))
+				explosion(src.loc, 0, 2, 4)
+				log_and_message_admins("detonated a vortex manipulator", user, src.loc)
+				qdel(src)
+			if("potato")
+				playsound(get_turf(src), 'sound/effects/phasein.ogg', 50, 1)
+				visible_message(SPAN_WARNING("The Vortex Manipulator violently shakes and turns into potato!"))
+				new /obj/item/weapon/cell/potato(get_turf(src))
+				qdel(src)
+
 // phase_in & phase_out are from ninja's teleport mostly.
 /obj/item/weapon/vortex_manipulator/proc/phase_in(mob/M,turf/T)
 	if(!M || !T)
@@ -512,6 +516,8 @@ Frequency:
 	user.forceMove(temp_turf)
 	phase_in(user,get_turf(user))
 	deductcharge(chargecost_area)
+	if(istype(vcell, /obj/item/weapon/cell/quantum))
+		bluespace_malfunction()
 
 /*
  * Vortex Announce
@@ -569,6 +575,8 @@ Frequency:
 			phase_in(G.affecting,get_turf(G.affecting))
 	if(prob(10 - (10 * malf_use)))
 		malfunction()
+	if(istype(vcell, /obj/item/weapon/cell/quantum))
+		bluespace_malfunction()
 
 /*
  * Beacon teleport.
@@ -606,6 +614,8 @@ Frequency:
 			break
 	if(prob(2 + (3 * malf_use)))
 		malfunction()
+	if(istype(vcell, /obj/item/weapon/cell/quantum))
+		bluespace_malfunction()
 
 /*
  * Area teleport.
@@ -652,3 +662,5 @@ Frequency:
 			phase_in(G.affecting,get_turf(G.affecting))
 	if(prob(13 - (malf_use * 13)))
 		malfunction()
+	if(istype(vcell, /obj/item/weapon/cell/quantum))
+		bluespace_malfunction()
