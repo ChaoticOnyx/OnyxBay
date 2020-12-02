@@ -99,7 +99,7 @@
 /obj/item/weapon/gun/energy/gun/nuclear/Process()
 	if(fail_counter > 0)
 		fail_counter--
-		if(fail_counter > 15)
+		if(fail_counter > 20)
 			SSradiation.radiate(src, fail_counter)
 	return ..()
 
@@ -116,7 +116,7 @@
 
 /obj/item/weapon/gun/energy/gun/nuclear/Fire(atom/target, mob/living/user, clickparams, pointblank=0, reflex=0)
 	..()
-	if(fail_counter > 30)
+	if(fail_counter > 35)
 		var/datum/effect/effect/system/spark_spread/spark_system = new /datum/effect/effect/system/spark_spread()
 		spark_system.set_up(2, 0, user.loc)
 		spark_system.start()
@@ -132,7 +132,7 @@
 	if(prob(95))
 		fail_counter += rand(2, 3)
 	else
-		fail_counter += rand(10,15)
+		fail_counter += rand(10, 20)
 		to_chat(loc, SPAN("warning", "\The [src] emits a nasty buzzing sound!"))
 		var/datum/effect/effect/system/spark_spread/spark_system = new /datum/effect/effect/system/spark_spread()
 		spark_system.set_up(2, 0, user.loc)
@@ -160,7 +160,7 @@
 		return "nucgun-crit"
 	if(fail_counter > 15)
 		return "nucgun-medium"
-	if (power_supply.percent() <= 50)
+	if(power_supply.percent() <= 50)
 		return "nucgun-light"
 	return "nucgun-clean"
 
