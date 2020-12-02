@@ -39,7 +39,7 @@
 	nodamage = 0
 	check_armour = "energy"
 	weaken=5
-	
+
 /mob/living/simple_animal/hostile/asteroid/shooter/GiveTarget(new_target)
 	if(!client)
 		target_mob = new_target
@@ -57,13 +57,13 @@
 		if(3.0)
 			adjustBruteLoss(110)
 
-/mob/living/simple_animal/hostile/asteroid/shooter/death(gibbed)
-	var/counter
-	for(counter=0, counter<2, counter++)
-		var/obj/item/weapon/ore/diamond/D = new /obj/item/weapon/ore/diamond(src.loc)
-		D.layer = 4.1
-	..(gibbed)
-
+/mob/living/simple_animal/hostile/asteroid/shooter/death(gibbed, deathmessage, show_dead_message)
+	. = ..()
+	if(.)
+		var/counter
+		for(counter = 0, counter < 2, counter++)
+			var/obj/item/weapon/ore/diamond/D = new /obj/item/weapon/ore/diamond(src.loc)
+			D.layer = 4.1
 
 
 ////////////////Beholder (formerly known as spectator)////////////////
@@ -118,13 +118,14 @@
 			visible_message("<span class='danger'>The [src.name]'s evil gaze chills [L.name] to the bone!</span>")
 	return
 
-/mob/living/simple_animal/hostile/asteroid/shooter/beholder/death(gibbed)
-	var/counter
-	for(counter=0, counter<2, counter++)
-		var/obj/item/weapon/ore/diamond/D = new /obj/item/weapon/ore/diamond(src.loc)
-		D.layer = 4.1
-	new /obj/item/asteroid/beholder_eye(src.loc)
-	..(gibbed)
+/mob/living/simple_animal/hostile/asteroid/shooter/beholder/death(gibbed, deathmessage, show_dead_message)
+	. = ..()
+	if(.)
+		var/counter
+		for(counter = 0, counter < 2, counter++)
+			var/obj/item/weapon/ore/diamond/D = new /obj/item/weapon/ore/diamond(src.loc)
+			D.layer = 4.1
+		new /obj/item/asteroid/beholder_eye(src.loc)
 
 
 ////////////////Item: Beholder eye////////////////
@@ -143,9 +144,9 @@
 	hitsound = 'sound/items/welder2.ogg'
 	w_class = 3
 	layer = 4
-	
-/obj/item/asteroid/beholder_eye/attack_self(mob/user as mob)
-	if (!(MUTATION_XRAY in user.mutations))
+
+/obj/item/asteroid/beholder_eye/attack_self(mob/user)
+	if(!(MUTATION_XRAY in user.mutations))
 		user.mutations.Add(MUTATION_XRAY)
 		user.set_sight(user.sight|SEE_MOBS|SEE_OBJS|SEE_TURFS)
 		user.set_see_in_dark(8)

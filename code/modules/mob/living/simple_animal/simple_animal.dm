@@ -74,9 +74,12 @@
 	var/in_stasis = 0
 
 /mob/living/simple_animal/Life()
-	..()
+	. = ..()
+	if(!.)
+		walk(src, 0)
+		return 0
 	if(!living_observers_present(GetConnectedZlevels(z)) && !(z == 0))
-		return
+		return 0
 	//Health
 	if(stat == DEAD)
 		if(health > 0)
@@ -88,7 +91,7 @@
 
 	if(health <= 0)
 		death()
-		return
+		return 0
 
 	if(health > maxHealth)
 		health = maxHealth
@@ -221,7 +224,7 @@
 	switch(M.a_intent)
 
 		if(I_HELP)
-			if (health > 0)
+			if(health > 0)
 				M.visible_message("<span class='notice'>[M] [response_help] \the [src].</span>")
 
 		if(I_DISARM)
@@ -273,9 +276,9 @@
 		return 2
 
 	var/damage = O.force
-	if (O.damtype == PAIN)
+	if(O.damtype == PAIN)
 		damage = 0
-	if (O.damtype == STUN)
+	if(O.damtype == STUN)
 		damage = (O.force / 8)
 	if(supernatural && istype(O,/obj/item/weapon/nullrod))
 		damage *= 2
@@ -302,11 +305,12 @@
 		stat(null, "Health: [round((health / maxHealth) * 100)]%")
 
 /mob/living/simple_animal/death(gibbed, deathmessage = "dies!", show_dead_message)
-	icon_state = icon_dead
-	density = 0
-	health = 0 //Make sure dey dead.
-	walk_to(src,0)
-	return ..(gibbed,deathmessage,show_dead_message)
+	. = ..()
+	if(.)
+		icon_state = icon_dead
+		density = 0
+		health = 0 //Make sure dey dead.
+		walk_to(src, 0)
 
 /mob/living/simple_animal/updatehealth()
 	..()

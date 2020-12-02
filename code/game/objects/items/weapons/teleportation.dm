@@ -134,8 +134,6 @@ Frequency:
 	icon = 'icons/obj/device.dmi'
 	icon_state = "vm_closed"
 	item_state = "electronic"
-	var/bluespace_malf_chance = 40
-	var/possible_malf = list("exp", "potato", "expotato", "carps")
 	var/chargecost_area = 1000
 	var/chargecost_beacon = 100
 	var/chargecost_local = 100
@@ -184,7 +182,7 @@ Frequency:
 			if(vcell)
 				dat += "<A href='byond://?src=\ref[src];attempt_activate=1'>Activate the Vortex Manipulator</A><BR>"
 			else
-				dat += "<B>INSTALL POWER CELL!</B><BR>"
+				dat += "<B>INSTALL POWER CELL! (vortex power cell recommended)</B><BR>"
 
 		dat += "Kind regards,<br>Dominus temporis. <br><br>P.S. Don't forget to ask someone to say something nice.<HR>"
 		user << browse(dat, "window=scroll")
@@ -443,41 +441,6 @@ Frequency:
 			beacon_locations[AR.name] = AR
 	beacon_locations = sortAssoc(beacon_locations)
 
-// Funny events for bluespace cell users
-/obj/item/weapon/vortex_manipulator/proc/bluespace_malfunction()
-	var/mob/living/carbon/human/user = get_owner()
-	if(prob(bluespace_malf_chance))
-		visible_message(SPAN_WARNING("The Bluespace interfaces of the two devices catastrophically malfunction!"))
-		var/vrtx_malf = pick(possible_malf)
-		switch(vrtx_malf)
-			if("carps")
-				visible_message(SPAN_WARNING("The Vortex Manipulator violently shakes and extracts Space Carps from local bluespace anomaly!"))
-				playsound(get_turf(src), 'sound/effects/phasein.ogg', 50, 1)
-				explosion(src.loc, 0, 2, 4)
-				var/amount = rand(1,3)
-				for(var/i=0; i<amount; i++)
-					new /mob/living/simple_animal/hostile/carp(get_turf(src))
-				log_and_message_admins("released the carps", user, src.loc)
-				qdel(src)
-			if("expotato")
-				visible_message(SPAN_WARNING("The Vortex Manipulator violently shakes and extracts its hidden energy!"))
-				playsound(get_turf(src), 'sound/effects/phasein.ogg', 50, 1)
-				explosion(src.loc, 0, 2, 4)
-				new /obj/item/weapon/cell/potato(get_turf(src))
-				log_and_message_admins("detonated a vortex manipulator", user, src.loc)
-				qdel(src)
-			if("exp")
-				playsound(get_turf(src), 'sound/effects/phasein.ogg', 50, 1)
-				visible_message(SPAN_WARNING("The Vortex Manipulator violently shakes and extracts its hidden energy!"))
-				explosion(src.loc, 0, 2, 4)
-				log_and_message_admins("detonated a vortex manipulator", user, src.loc)
-				qdel(src)
-			if("potato")
-				playsound(get_turf(src), 'sound/effects/phasein.ogg', 50, 1)
-				visible_message(SPAN_WARNING("The Vortex Manipulator violently shakes and turns into potato!"))
-				new /obj/item/weapon/cell/potato(get_turf(src))
-				qdel(src)
-
 // phase_in & phase_out are from ninja's teleport mostly.
 /obj/item/weapon/vortex_manipulator/proc/phase_in(mob/M,turf/T)
 	if(!M || !T)
@@ -502,22 +465,25 @@ Frequency:
  * User returns to his position after everyone's been teleported.
  */
 /obj/item/weapon/vortex_manipulator/proc/localmassiverandom(mob/user)
-	log_and_message_admins("has used Vortex Manipulator's Local Massive Random ability.")
-	user.visible_message(SPAN_WARNING("The Vortex Manipulator announces: Battle function activated. Assembling local space-time anomaly."))
-	var/turf/temp_turf = get_turf(user)
-	for(var/mob/M in range(5, temp_turf))
-		var/vortexchecktemp = 0
-		for(var/obj/item/weapon/vortex_manipulator/VM in M.contents)
-			if(VM.active == 1)
-				vortexchecktemp = 1
-		if(!vortexchecktemp)
-			localteleport(M, 1)
-	phase_out(user,get_turf(user))
-	user.forceMove(temp_turf)
-	phase_in(user,get_turf(user))
-	deductcharge(chargecost_area)
-	if(istype(vcell, /obj/item/weapon/cell/quantum))
-		bluespace_malfunction()
+	if(!istype(vcell, /obj/item/weapon/cell/quantum))
+		log_and_message_admins("has used Vortex Manipulator's Local Massive Random ability.")
+		user.visible_message(SPAN_WARNING("The Vortex Manipulator announces: Battle function activated. Assembling local space-time anomaly."))
+		var/turf/temp_turf = get_turf(user)
+		for(var/mob/M in range(5, temp_turf))
+			var/vortexchecktemp = 0
+			for(var/obj/item/weapon/vortex_manipulator/VM in M.contents)
+				if(VM.active == 1)
+					vortexchecktemp = 1
+			if(!vortexchecktemp)
+				localteleport(M, 1)
+		phase_out(user,get_turf(user))
+		user.forceMove(temp_turf)
+		phase_in(user,get_turf(user))
+		deductcharge(chargecost_area)
+	else
+		user.visible_message(SPAN_WARNING("The Vortex Manipulator announces: Bluespace cell detected. Heading to its pair."))
+		var/obj/item/weapon/cell/quantum/quacell = vcell
+		localteleport(get_turf(quacell.partner), 1)
 
 /*
  * Vortex Announce
@@ -566,7 +532,12 @@ Frequency:
 		deductcharge(chargecost_local * round(sqrt((new_x - starting.x) * (new_x - starting.x) + (new_y - starting.y) * (new_y - starting.y))))
 	var/turf/targetturf = locate(new_x, new_y, user.z)
 	phase_out(user,get_turf(user))
-	user.forceMove(targetturf)
+	if(istype(vcell, /obj/item/weapon/cell/quantum))
+		user.visible_message(SPAN_WARNING("The Vortex Manipulator announces: Bluespace cell detected. Heading to its pair."))
+		var/obj/item/weapon/cell/quantum/quacell = vcell
+		user.forceMove(get_turf(quacell.partner))
+	else
+		user.forceMove(targetturf)
 	phase_in(user,get_turf(user))
 	for(var/obj/item/grab/G in user.contents)
 		if(G.affecting)
@@ -575,8 +546,6 @@ Frequency:
 			phase_in(G.affecting,get_turf(G.affecting))
 	if(prob(10 - (10 * malf_use)))
 		malfunction()
-	if(istype(vcell, /obj/item/weapon/cell/quantum))
-		bluespace_malfunction()
 
 /*
  * Beacon teleport.
@@ -603,7 +572,12 @@ Frequency:
 		if(get_area(R) == thearea)
 			var/turf/T = get_turf(R)
 			phase_out(user,get_turf(user))
-			user.forceMove(T)
+			if(istype(vcell, /obj/item/weapon/cell/quantum))
+				user.visible_message(SPAN_WARNING("The Vortex Manipulator announces: Bluespace cell detected. Heading to its pair."))
+				var/obj/item/weapon/cell/quantum/quacell = vcell
+				user.forceMove(get_turf(quacell.partner))
+			else
+				user.forceMove(T)
 			phase_in(user,get_turf(user))
 			deductcharge(chargecost_beacon)
 			for(var/obj/item/grab/G in user.contents)
@@ -614,8 +588,6 @@ Frequency:
 			break
 	if(prob(2 + (3 * malf_use)))
 		malfunction()
-	if(istype(vcell, /obj/item/weapon/cell/quantum))
-		bluespace_malfunction()
 
 /*
  * Area teleport.
@@ -652,7 +624,12 @@ Frequency:
 		user.buckled.unbuckle_mob()
 	var/turf/T = pick(L)
 	phase_out(user,get_turf(user))
-	user.forceMove(T)
+	if(istype(vcell, /obj/item/weapon/cell/quantum))
+		user.visible_message(SPAN_WARNING("The Vortex Manipulator announces: Bluespace cell detected. Heading to its pair."))
+		var/obj/item/weapon/cell/quantum/quacell = vcell
+		user.forceMove(get_turf(quacell.partner))
+	else
+		user.forceMove(T)
 	phase_in(user,get_turf(user))
 	deductcharge(chargecost_area)
 	for(var/obj/item/grab/G in user.contents)
@@ -662,5 +639,3 @@ Frequency:
 			phase_in(G.affecting,get_turf(G.affecting))
 	if(prob(13 - (malf_use * 13)))
 		malfunction()
-	if(istype(vcell, /obj/item/weapon/cell/quantum))
-		bluespace_malfunction()

@@ -8,13 +8,12 @@
 	var/obj/machinery/teleport/station/station = null
 	var/obj/machinery/teleport/hub/hub = null
 	var/obj/item/locked = null
-	var/calibrated = FALSE
 	var/id = null
 	var/one_time_use = 0 //Used for one-time-use teleport cards (such as clown planet coordinates.)
 						 //Setting this to 1 will set src.locked to null after a player enters the portal and will not allow hand-teles to open portals to that location.
 
 /obj/machinery/computer/teleporter/New()
-	src.id = "[random_id(/obj/machinery/computer/teleporter, 1000, 9999)]"
+	id = "[random_id(/obj/machinery/computer/teleporter, 1000, 9999)]"
 	..()
 	underlays.Cut()
 	underlays += image('icons/obj/stationobjs.dmi', icon_state = "telecomp-wires")
@@ -45,7 +44,7 @@
 	if(istype(I, /obj/item/weapon/card/data/))
 		var/obj/item/weapon/card/data/C = I
 		if(stat & (NOPOWER|BROKEN) & (C.function != "teleporter"))
-			src.attack_hand()
+			attack_hand()
 
 		var/obj/L = null
 
@@ -80,27 +79,23 @@
 			else
 				for(var/mob/O in hearers(src, null))
 					O.show_message("<span class='notice'>Locked In</span>", 2)
-				src.locked = L
+				locked = L
 				one_time_use = 1
 
-			src.add_fingerprint(usr)
+			add_fingerprint(usr)
 	else
 		..()
 
 	return
 
 /obj/machinery/teleport/station/attack_ai()
-	src.attack_hand()
+	attack_hand()
 
-/obj/machinery/computer/teleporter/attack_hand(user as mob)
+/obj/machinery/computer/teleporter/attack_hand(mob/user)
 	if(..()) return
 
 	/* Ghosts can't use this one because it's a direct selection */
 	if(isobserver(user)) return
-
-	if(station.engaged)
-		to_chat(user, SPAN_WARNING("You need to disengage the teleport to use it."))
-		return
 
 	var/list/L = list()
 	var/list/areaindex = list()
@@ -144,15 +139,10 @@
 	if(get_dist(src, usr) > 1 && !issilicon(usr))
 		return
 
-	src.locked = L[desc]
+	locked = L[desc]
 	for(var/mob/O in hearers(src, null))
 		O.show_message("<span class='notice'>Locked In</span>", 2)
 	return
-
-/obj/machinery/computer/teleporter/power_change()
-	. = ..()
-	if(!(stat & NOPOWER))
-		calibrated = FALSE
 
 /obj/machinery/computer/teleporter/verb/set_id(t as text)
 	set category = "Object"
@@ -162,28 +152,9 @@
 
 	if(stat & (NOPOWER|BROKEN) || !istype(usr,/mob/living))
 		return
-	if (t)
+	if(t)
 		src.id = t
 	return
-
-/obj/machinery/computer/teleporter/verb/calibrate()
-	set name = "Calibrate Teleporter"
-	set category = "Object"
-	set src in view(1)
-
-	if(stat & (NOPOWER|BROKEN))
-		return
-	if(!CanPhysicallyInteract(usr))
-		return
-	if(calibrated)
-		to_chat(usr, SPAN_WARNING("It's already calibrated!"))
-		return
-	if(station.engaged)
-		to_chat(usr, SPAN_WARNING("Disengage the teleporter first."))
-		return
-
-	calibrated = TRUE
-	to_chat(usr, SPAN_NOTICE("You calibrated the teleporter."))
 
 /proc/find_loc(obj/R as obj)
 	if (!R)	return null
@@ -218,21 +189,18 @@
 
 /obj/machinery/teleport/hub/Bumped(M as mob|obj)
 	spawn()
-		if (src.icon_state == "tele1")
+		if(src.icon_state == "tele1")
 			teleport(M)
 			use_power_oneoff(5000)
 
 /obj/machinery/teleport/hub/proc/teleport(atom/movable/M as mob|obj)
-	if (!com)
+	if(!com)
 		return
-	if (!com.locked)
+	if(!com.locked)
 		for(var/mob/O in hearers(src, null))
 			O.show_message("<span class='warning'>Failure: Cannot authenticate locked on coordinates. Please reinstate coordinate matrix.</span>")
 		return
-	if(!com.calibrated && prob(5))
-		do_teleport(M, locate(rand(TRANSITIONEDGE, world.maxx - TRANSITIONEDGE), rand(TRANSITIONEDGE, world.maxy -TRANSITIONEDGE), pick(GLOB.using_map.player_levels)), 0)
-	else
-		do_teleport(M, com.locked)
+	do_teleport(M, com.locked)
 	if(com.one_time_use) //Make one-time-use cards only usable one time!
 		com.one_time_use = 0
 		com.locked = null
@@ -341,15 +309,14 @@
 	overlays += image('icons/obj/stationobjs.dmi', icon_state = "controller-wires")
 
 /obj/machinery/teleport/station/attackby(obj/item/weapon/W)
-	src.attack_hand()
+	attack_hand()
 
 /obj/machinery/teleport/station/attack_ai()
-	src.attack_hand()
+	attack_hand()
 
 /obj/machinery/teleport/station/attack_hand()
 	if(engaged)
 		disengage()
-		com.com.calibrated = FALSE
 	else
 		engage()
 
@@ -357,7 +324,7 @@
 	if(stat & (BROKEN|NOPOWER))
 		return
 
-	if (com)
+	if(com)
 		com.icon_state = "tele1"
 		use_power_oneoff(5000)
 		update_use_power(POWER_USE_ACTIVE)
@@ -372,7 +339,7 @@
 	if(stat & (BROKEN|NOPOWER))
 		return
 
-	if (com)
+	if(com)
 		com.icon_state = "tele0"
 		com.update_use_power(POWER_USE_IDLE)
 		update_use_power(POWER_USE_IDLE)
