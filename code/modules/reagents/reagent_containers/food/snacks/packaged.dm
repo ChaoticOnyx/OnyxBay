@@ -9,11 +9,12 @@
 	atom_flags = null
 	nutriment_amt = 1
 
-/obj/item/weapon/reagent_containers/food/snacks/packaged/attack_self(mob/user as mob)
+/obj/item/weapon/reagent_containers/food/snacks/packaged/attack_self(mob/user)
 	if(!is_open_container())
 		to_chat(user, SPAN("notice", "You open \the [src]!"))
 		atom_flags |= ATOM_FLAG_OPEN_CONTAINER
 		update_icon()
+		playsound(loc, 'sound/items/shpshpsh.ogg', 50, 1)
 
 /obj/item/weapon/reagent_containers/food/snacks/packaged/update_icon()
 	if(is_open_container())
