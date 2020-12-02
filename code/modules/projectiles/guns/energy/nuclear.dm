@@ -97,11 +97,10 @@
 
 //override for failcheck behaviour
 /obj/item/weapon/gun/energy/gun/nuclear/Process()
-	if(fail_counter > 15)
-		SSradiation.radiate(src, fail_counter--)
-	else if (fail_counter > 0)
+	if(fail_counter > 0)
 		fail_counter--
-
+		if(fail_counter > 15)
+			SSradiation.radiate(src, fail_counter)
 	return ..()
 
 /obj/item/weapon/gun/energy/gun/nuclear/emp_act(severity)
@@ -130,8 +129,8 @@
 			return
 		else
 			visible_message("\The [src]'s reactor heats up uncontrollably...  But nothing happens.")
-	if(prob(90))
-		fail_counter += rand(2,4)
+	if(prob(95))
+		fail_counter += rand(2, 3)
 	else
 		fail_counter += rand(10,15)
 		to_chat(loc, SPAN("warning", "\The [src] emits a nasty buzzing sound!"))
@@ -183,7 +182,8 @@
 /obj/item/weapon/gun/energy/egun
 	name = "energy gun"
 	desc = "A basic energy-based gun with two settings: Stun and kill."
-	icon_state = "egun"
+	icon_state = "egunstun100"
+	modifystate = "egun"
 	item_state = null	//so the human update icon uses the icon_state instead.
 	max_shots = 10
 	fire_delay = 10 // To balance for the fact that it is a pistol and can be used one-handed without penalty
@@ -201,3 +201,68 @@
 		list(mode_name="stun", projectile_type=/obj/item/projectile/energy/electrode/stunsphere, modifystate="egunstun"),
 		list(mode_name="lethal", projectile_type=/obj/item/projectile/beam, modifystate="egunkill"),
 		)
+
+/obj/item/weapon/gun/energy/rifle
+	name = "energy rifle"
+	desc = "Hephaestus Industries G50XS \"Raijin\", a carbine with lethal and stun settings. Because of its cost, it is rarely seen in use."
+	icon_state = "eriflestun"
+	item_state = "erifle"
+	modifystate = "eriflestun"
+	slot_flags = SLOT_BELT|SLOT_BACK
+	w_class = ITEM_SIZE_LARGE
+	force = 12.5
+	mod_weight = 1.0
+	mod_reach = 0.8
+	mod_handy = 1.0
+	one_hand_penalty = 3
+	accuracy = 2
+	max_shots = 24
+	fire_delay = null
+	burst_accuracy = null
+	charge_cost = 10
+	burst = 2
+	burst_delay = 1
+	origin_tech = list(TECH_COMBAT = 5, TECH_MATERIAL = 5, TECH_POWER = 4, TECH_MAGNET = 3)
+	matter = list(MATERIAL_STEEL = 2500)
+	projectile_type = /obj/item/projectile/energy/electrode/stunsphere
+
+	firemodes = list(
+		list(mode_name = "stun",   modifystate = "eriflestun", projectile_type = /obj/item/projectile/energy/electrode/stunsphere, fire_delay = null, charge_cost = 10, burst = 2),
+		list(mode_name = "lethal", modifystate = "eriflekill", projectile_type = /obj/item/projectile/beam/midlaser,               fire_delay = 8,    charge_cost = 20, burst = 1)
+	)
+
+/obj/item/weapon/gun/energy/rifle/update_icon()
+	var/ratio = 0
+	if(power_supply && power_supply.charge >= charge_cost)
+		ratio = max(round(power_supply.percent(), icon_rounder), icon_rounder)
+
+	icon_state = "[modifystate][ratio]"
+
+	var/mob/living/M = loc
+	if(istype(M))
+		if(M.can_wield_item(src) && is_held_twohanded(M))
+			item_state_slots[slot_l_hand_str] = "[modifystate][ratio]-wielded"
+			item_state_slots[slot_r_hand_str] = "[modifystate][ratio]-wielded"
+		else
+			item_state_slots[slot_l_hand_str] = "[modifystate][ratio]"
+			item_state_slots[slot_r_hand_str] = "[modifystate][ratio]"
+
+/obj/item/weapon/gun/energy/rifle/cheap
+	name = "energy rifle"
+	desc = "Hephaestus Industries G50SE \"Razor\", a cheaper version of G50XS \"Raijin\". It has lethal and stun settings."
+	mod_handy = 1.0
+	accuracy = 1
+	max_shots = 20
+	fire_delay = null
+	burst_accuracy = null
+	charge_cost = 10
+	burst = 2
+	burst_delay = 2
+	origin_tech = list(TECH_COMBAT = 5, TECH_MATERIAL = 4, TECH_POWER = 3, TECH_MAGNET = 2)
+	matter = list(MATERIAL_STEEL = 2500)
+	projectile_type = /obj/item/projectile/energy/electrode/stunsphere
+
+	firemodes = list(
+		list(mode_name = "stun",   modifystate = "eriflestun", projectile_type = /obj/item/projectile/energy/electrode/stunsphere, fire_delay = null, charge_cost = 10, burst = 2),
+		list(mode_name = "lethal", modifystate = "eriflekill", projectile_type = /obj/item/projectile/beam/midlaser,               fire_delay = 10,   charge_cost = 20, burst = 1)
+	)
