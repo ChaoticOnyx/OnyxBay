@@ -481,9 +481,7 @@ Frequency:
 		phase_in(user,get_turf(user))
 		deductcharge(chargecost_area)
 	else
-		user.visible_message(SPAN_WARNING("The Vortex Manipulator announces: Bluespace cell detected. Heading to its pair."))
-		var/obj/item/weapon/cell/quantum/quacell = vcell
-		localteleport(get_turf(quacell.partner), 1)
+		localteleport(get_turf(user), 1)
 
 /*
  * Vortex Announce
@@ -533,9 +531,7 @@ Frequency:
 	var/turf/targetturf = locate(new_x, new_y, user.z)
 	phase_out(user,get_turf(user))
 	if(istype(vcell, /obj/item/weapon/cell/quantum))
-		user.visible_message(SPAN_WARNING("The Vortex Manipulator announces: Bluespace cell detected. Heading to its pair."))
-		var/obj/item/weapon/cell/quantum/quacell = vcell
-		user.forceMove(get_turf(quacell.partner))
+		bluespace_malf(user)
 	else
 		user.forceMove(targetturf)
 	phase_in(user,get_turf(user))
@@ -573,9 +569,7 @@ Frequency:
 			var/turf/T = get_turf(R)
 			phase_out(user,get_turf(user))
 			if(istype(vcell, /obj/item/weapon/cell/quantum))
-				user.visible_message(SPAN_WARNING("The Vortex Manipulator announces: Bluespace cell detected. Heading to its pair."))
-				var/obj/item/weapon/cell/quantum/quacell = vcell
-				user.forceMove(get_turf(quacell.partner))
+				bluespace_malf(user)
 			else
 				user.forceMove(T)
 			phase_in(user,get_turf(user))
@@ -588,6 +582,14 @@ Frequency:
 			break
 	if(prob(2 + (3 * malf_use)))
 		malfunction()
+/*
+ * Bluespace cell malfunction
+ */
+
+obj/item/weapon/vortex_manipulator/proc/bluespace_malf(mob/user)
+	user.visible_message(SPAN_WARNING("The Vortex Manipulator announces: Bluespace cell detected. Heading to its pair."))
+	var/obj/item/weapon/cell/quantum/quacell = vcell
+	user.forceMove(get_turf(quacell.partner))
 
 /*
  * Area teleport.
@@ -625,9 +627,7 @@ Frequency:
 	var/turf/T = pick(L)
 	phase_out(user,get_turf(user))
 	if(istype(vcell, /obj/item/weapon/cell/quantum))
-		user.visible_message(SPAN_WARNING("The Vortex Manipulator announces: Bluespace cell detected. Heading to its pair."))
-		var/obj/item/weapon/cell/quantum/quacell = vcell
-		user.forceMove(get_turf(quacell.partner))
+		bluespace_malf(user)
 	else
 		user.forceMove(T)
 	phase_in(user,get_turf(user))
