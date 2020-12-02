@@ -473,32 +473,7 @@
 			return 1
 
 	else if (istype(O, /obj/item/seeds))
-
-		if(!seed)
-
-			var/obj/item/seeds/S = O
-			user.remove_from_mob(O)
-
-			if(!S.seed)
-				to_chat(user, "The packet seems to be empty. You throw it away.")
-				qdel(O)
-				return
-
-			to_chat(user, "You plant the [S.seed.seed_name] [S.seed.seed_noun].")
-			lastproduce = 0
-			seed = S.seed //Grab the seed datum.
-			dead = 0
-			age = 1
-			//Snowflakey, maybe move this to the seed datum
-			health = (istype(S, /obj/item/seeds/cutting) ? round(seed.get_trait(TRAIT_ENDURANCE)/rand(2,5)) : seed.get_trait(TRAIT_ENDURANCE))
-			lastcycle = world.time
-
-			qdel(O)
-
-			check_health()
-
-		else
-			to_chat(user, "<span class='danger'>\The [src] already has seeds in it!</span>")
+		plant_seed(user, O)
 
 	else if (istype(O, /obj/item/weapon/material/minihoe))  // The minihoe
 
