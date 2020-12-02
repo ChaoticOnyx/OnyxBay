@@ -43,7 +43,7 @@
 		to_chat(usr, "You enable the sound indication on [src].")
 
 /obj/item/weapon/pinpointer/proc/acquire_target()
-	var/obj/item/weapon/disk/nuclear/the_disk = locate()
+	var/obj/item/weapon/disk/nuclear/the_disk = locate() in nuke_disks
 	return weakref(the_disk)
 
 /obj/item/weapon/pinpointer/Process()
