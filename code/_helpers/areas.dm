@@ -50,9 +50,18 @@
 		return pick(turfs)
 
 /proc/pick_area_turf(areatype, list/predicates)
-	var/list/turfs = get_area_turfs(areatype, predicates)
+	var/list/turfs = get_area_turfs(pick_area_by_type(areatype, predicates), predicates)
 	if(turfs && turfs.len)
 		return pick(turfs)
+
+/proc/pick_area_by_type(areatype, list/predicates)
+	. = new /list()
+
+	for(var/area/a)
+		if(istype(a, areatype) && all_predicates_true(list(a), predicates))
+			. |= a
+
+	return pick(.)
 
 /proc/pick_area(list/predicates)
 	var/list/areas = get_filtered_areas(predicates)
