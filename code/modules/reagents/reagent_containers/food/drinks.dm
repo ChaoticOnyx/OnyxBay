@@ -247,6 +247,7 @@
 	desc = "Careful, cold ice, do not chew."
 	icon_state = "coffee"
 	center_of_mass = "x=15;y=10"
+
 /obj/item/weapon/reagent_containers/food/drinks/ice/Initialize()
 	. = ..()
 	reagents.add_reagent(/datum/reagent/drink/ice, 30)
