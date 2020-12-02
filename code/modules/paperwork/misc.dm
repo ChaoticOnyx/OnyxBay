@@ -36,6 +36,7 @@
 	name = "Trade License"
 	desc = "A flimsy piece of laminated cardboard."
 	icon_state = "trade_license"
+	dynamic_icon = TRUE
 	var/fake_chance = 15
 	var/dest_station = "NSS Exodus"
 	var/possible_mis = list("nt_code", "org_code", "date", "dest", "department")
@@ -58,21 +59,30 @@
 	 "Brown Moose Trading Company",\
 	 "Snail Lovers Union")
 	var/another_stations = list("NSV Caduceus",\
-	  "NSV Luna", "NTV Sierra Otago",\
-	  "NTV Millenium","NTV Duke",\
-	  "NTV Verum","NHV Savior",\
-	  "NSV Preserver","NSS Avalon",\
-	  "NSS Orion","NSS Ontigo",\
-	  "NSS Redemption","NSS Zagreus")
-	var/trade_category = list("Продовольствие" = 100,\
-	"Предметы одежды" = 100, "Сырье и материалы" = 100,\
-	"Медикаменты" = 90, "Личные вещи и аксессуары" = 90,\
+	  "NSV Luna",\
+	  "NTV Sierra Otago",\
+	  "NTV Millenium",\
+	  "NTV Duke",\
+	  "NTV Verum",\
+	  "NHV Savior",\
+	  "NSV Preserver",\
+	  "NSS Avalon",\
+	  "NSS Orion",\
+	  "NSS Ontigo",\
+	  "NSS Redemption",\
+	  "NSS Zagreus")
+	var/trade_category = list("Продовольствие" = 100, \
+	"Предметы одежды" = 100,\
+	"Сырье и материалы" = 100,\
+	"Медикаменты" = 90,\
+	"Личные вещи и аксессуары" = 90,\
 	"Инженерное оборудование для работы в пределах станции" = 75,\
 	"Медицинское оборудование для работы в пределах станции" = 75,\
 	"Исследовательское оборудование" = 75,\
 	"Скафандры и иное оборудование, предназначенное для проведения работ в открытом космосе" = 50,\
-	"Антиквариат" = 50, "Домашние питомцы" = 50, \
-	"Мелкокалиберное огнестрельное или слабое энергетическое оружие" = 5, \
+	"Антиквариат" = 50,\
+	"Домашние питомцы" = 50,\
+	"Мелкокалиберное огнестрельное или слабое энергетическое оружие" = 5,\
 	"Крупнокалиберное огнестрельное или мощное энергетическое оружие" = 0.1,\
 	"Взрывчатые или сильногорючие вещества, гранаты, в том числе нестандартного действия" = 0.1)
 
@@ -113,7 +123,7 @@
 		if(prob(trade_category[tr_cat]))
 			message += "\[item]\[b][tr_cat]\[/b]\[/item]"
 	message += "\[/small]\[/list]"
-	// TODO: Добавить печати
+	// TODO: Steal stamps
 	set_content(message)
 	make_readonly()
 

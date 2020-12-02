@@ -32,6 +32,7 @@
 	var/spam_flag = 0
 	var/readonly = FALSE
 	var/appendable = TRUE
+	var/dynamic_icon = FALSE
 
 	var/const/deffont = "Verdana"
 	var/const/signfont = "Times New Roman"
@@ -124,9 +125,7 @@
 	generateinfolinks()
 
 /obj/item/weapon/paper/update_icon()
-	if(icon_state == "paper_talisman")
-		return
-	else if(icon_state == "trade_license")
+	if(dynamic_icon)
 		return
 	else if(info)
 		icon_state = "paper_words"
