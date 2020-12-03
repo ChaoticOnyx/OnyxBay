@@ -37,7 +37,6 @@
 	desc = "A flimsy piece of laminated cardboard."
 	icon_state = "trade_license"
 	dynamic_icon = TRUE
-	var/fake_chance = 15
 	var/dest_station = "NSS Exodus"
 	var/possible_mis = list("nt_code", "org_code", "date", "dest", "department")
 	var/true_departaments = list("NanoTrasen Supply Department", \
@@ -93,8 +92,8 @@
 	var/org_name = pick(org_names)
 	var/date = list("day" = rand(1,30), "month" = rand(1,12), "year" = rand(2562,2564), "dur" = rand(3,5))
 	var/nt_code = "[rand(100,999)]-[rand(100,999)]-[rand(100,999)]"
-	var/org_code = "[rand(1,999)]-[rand(1,999)]-[rand(1,999)]"
-	if(prob(fake_chance))
+	var/org_code = "[rand(100,999)]-[rand(10,999)]-[rand(100,999)]"
+	if(GLOB.merchant_illegalness)
 		var/mistake = pick(possible_mis)
 		switch(mistake)
 			if("nt_code")
@@ -127,3 +126,17 @@
 	set_content(message)
 	make_readonly()
 
+/obj/item/weapon/paper/trade_lic/trade_guide
+	name = "Trade License Template"
+	dynamic_icon = FALSE
+
+/obj/item/weapon/paper/trade_lic/trade_guide/New()
+	. = ..()
+	var/message = ""
+	message += "Departments:\[small]\[list]"
+	for(var/tr_deps in true_departaments)
+		message += "\[item]\[b][tr_deps]\[/b]\[/item]"
+	message += "\[/small]\[/list]"
+	message += "NT departments codes: XXX-XXX-XXX\[br]"
+	message += "Organizations codes: XXX-(XX or XXX)-XXX\[br]"
+	set_content(message)
