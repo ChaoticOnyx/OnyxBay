@@ -55,9 +55,10 @@ var/list/limb_icon_cache = list()
 		return
 
 	SetName("[owner.real_name]'s head")
+	var/mob/living/carbon/human/victim = owner
 	..()
-	update_icon_drop(owner)
-	owner.update_hair()
+	update_icon_drop(victim)
+	victim.update_hair()
 
 	//Head markings, duplicated (sadly) below.
 	for(var/M in markings)
