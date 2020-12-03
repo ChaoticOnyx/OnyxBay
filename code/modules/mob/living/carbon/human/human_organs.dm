@@ -61,8 +61,25 @@
 	else
 		return FALSE
 
+/mob/living/carbon/human/proc/recheck_bad_external_organs()
+	var/damage_this_tick = getToxLoss()
+	for(var/obj/item/organ/external/O in organs)
+		damage_this_tick += O.burn_dam + O.brute_dam
+
+	if(damage_this_tick > last_dam)
+		. = TRUE
+	last_dam = damage_this_tick
+
 // Takes care of organ related updates, such as broken and missing limbs
 /mob/living/carbon/human/proc/handle_organs()
+
+	var/force_process = recheck_bad_external_organs()
+
+	if(force_process)
+		bad_external_organs.Cut()
+		for(var/obj/item/organ/external/Ex in organs)
+			bad_external_organs |= Ex
+
 	//processing internal organs is pretty cheap, do that first.
 	for(var/obj/item/organ/I in internal_organs)
 		I.Process()
@@ -70,31 +87,35 @@
 	handle_stance()
 	handle_grasp()
 
-	for(var/obj/item/organ/external/E in organs)
+	if(!force_process && !bad_external_organs.len)
+		return
+
+	for(var/obj/item/organ/external/E in bad_external_organs)
 		if(!E)
 			continue
 		if(!E.need_process())
+			bad_external_organs -= E
 			continue
 		else
 			E.Process()
 
-			if (!lying && !buckled && world.time - l_move_time < 15)
+			if(!lying && !buckled && world.time - l_move_time < 15)
 			//Moving around with fractured ribs won't do you any good
-				if (prob(10) && !stat && can_feel_pain() && chem_effects[CE_PAINKILLER] < 50 && E.is_broken() && E.internal_organs.len)
+				if(prob(10) && !stat && can_feel_pain() && chem_effects[CE_PAINKILLER] < 50 && E.is_broken() && E.internal_organs.len)
 					custom_pain("Pain jolts through your broken [E.encased ? E.encased : E.name], staggering you!", 50, affecting = E)
 					drop_item(loc)
 					Stun(2)
 
 				//Moving makes open wounds get infected much faster
-				if (E.wounds.len)
+				if(E.wounds.len)
 					for(var/datum/wound/W in E.wounds)
-						if (W.infection_check())
+						if(W.infection_check())
 							W.germ_level += 1
 
 /mob/living/carbon/human/proc/handle_stance()
 	// Don't need to process any of this if they aren't standing anyways
 	// unless their stance is damaged, and we want to check if they should stay down
-	if (!stance_damage && (lying || resting) && (life_tick % 4) != 0)
+	if(!stance_damage && (lying || resting) && (life_tick % 4) != 0)
 		return
 
 	stance_damage = 0
@@ -102,12 +123,12 @@
 	stance_d_r = 0
 
 	// Buckled to a bed/chair. Stance damage is forced to 0 since they're sitting on something solid
-	if (istype(buckled, /obj/structure/bed))
+	if(istype(buckled, /obj/structure/bed))
 		return
 
 	// Can't fall if nothing pulls you down
 	var/area/area = get_area(src)
-	if (!area || !area.has_gravity())
+	if(!area || !area.has_gravity())
 		return
 
 	var/limb_pain
@@ -134,7 +155,8 @@
 		else if(E.is_dislocated())
 			stance_d_l += 1
 
-		if(E) limb_pain = E.can_feel_pain()
+		if(E)
+			limb_pain = E.can_feel_pain()
 
 		if(l_hand && istype(l_hand, /obj/item/weapon/cane))
 			stance_d_l -= 1.5
@@ -162,84 +184,81 @@
 		else if(E.is_dislocated())
 			stance_d_r += 1
 
-		if(E) limb_pain = E.can_feel_pain()
+		if(E)
+			limb_pain = E.can_feel_pain()
 
-		if (r_hand && istype(r_hand, /obj/item/weapon/cane))
+		if(r_hand && istype(r_hand, /obj/item/weapon/cane))
 			stance_d_r -= 1.5
 
 	stance_damage = stance_d_r + stance_d_l
+	if(!stance_damage)
+		return	// We're all good
 	// standing is poor
 	if(!(lying || resting))
-		if(((stance_d_l >= 5) && (stance_d_r >= 5)))
+		if(((stance_d_l >= 5) && (stance_d_r >= 5))) // Both legs are missing, but hey at least there's nothing to ache
 			custom_emote(VISIBLE_MESSAGE, "can't stand without legs!")
 			Weaken(10)
-		else if(((stance_d_l >= 5) && (stance_d_r > 1)) || ((stance_d_l > 1) && (stance_d_r >= 5)))
+		else if(((stance_d_l >= 5) && (stance_d_r > 2)) || ((stance_d_l > 2) && (stance_d_r >= 5))) // One leg is missing and the other one is at least broken
 			if(limb_pain)
 				emote("scream")
 				shock_stage+=5
 			custom_emote(VISIBLE_MESSAGE, "collapses!")
 			Weaken(10)
-		else if(((stance_d_l >= 4) && (stance_d_l > 0)) || ((stance_d_l > 0) && (stance_d_r >= 4)))
+		else if(((stance_d_l >= 4) && (stance_d_l > 0)) || ((stance_d_l > 0) && (stance_d_r >= 4))) // One leg is totally wrecked and the other one is hurt
 			if(prob(60))
 				if(limb_pain)
 					emote("scream")
 					shock_stage+=50
 				custom_emote(VISIBLE_MESSAGE, "collapses!")
 				Weaken(10)
-		else if((stance_d_l >= 2) && (stance_d_r >= 2))
+		else if((stance_d_l >= 2) && (stance_d_r >= 2)) // Both legs are broken
 			if(prob(40))
 				if(limb_pain)
 					emote("scream")
 					shock_stage+=25
 				custom_emote(VISIBLE_MESSAGE, "collapses!")
 				Weaken(10)
-		else if(((stance_d_l >= 2) && (stance_d_r > 0)) || ((stance_d_l > 0) && (stance_d_r >= 2)))
+		else if(((stance_d_l >= 2) && (stance_d_r > 0)) || ((stance_d_l > 0) && (stance_d_r >= 2))) // One leg is broken and the other one is hort
 			if(prob(30))
 				if(limb_pain)
 					emote("scream")
 					shock_stage+=15
 				custom_emote(VISIBLE_MESSAGE, "collapses!")
 				Weaken(7)
-		else if((stance_d_l > 0) && (stance_d_r > 0))
+		else if((stance_d_l > 0) && (stance_d_r > 0)) // Borth legs are hurt
 			if(prob(20))
 				if(limb_pain)
 					emote("scream")
 					shock_stage+=12.5
 				custom_emote(VISIBLE_MESSAGE, "collapses!")
 				Weaken(5)
-		else if((stance_d_l >= 5) || (stance_d_r >= 5))
+		else if((stance_d_l >= 5) || (stance_d_r >= 5)) // One leg is missing and the other one is ok
 			if(prob(10))
 				custom_emote(VISIBLE_MESSAGE, "collapses!")
 				Weaken(3)
-		else if((stance_d_l >= 4) || (stance_d_r >= 4))
+		else if((stance_d_l >= 4) || (stance_d_r >= 4)) // One leg is wrecked and the other one is ok
 			if(prob(8))
 				if(limb_pain)
 					emote("scream")
 					shock_stage+=12.5
 				custom_emote(VISIBLE_MESSAGE, "collapses!")
 				Weaken(5)
-		else if((stance_d_l >= 3) || (stance_d_r >= 3))
-			if(prob(6))
+		else if((stance_d_l >= 3) || (stance_d_r >= 3)) // One leg is broken + dislocated and the other one is ok
+			if(prob(4))
 				if(limb_pain)
 					emote("scream")
 					shock_stage+=10
 				custom_emote(VISIBLE_MESSAGE, "collapses!")
 				Weaken(5)
-		else if((stance_d_l >= 2) || (stance_d_r >= 2))
-			if(prob(4))
-				if(limb_pain)
-					emote("scream")
-					shock_stage+=5
-				custom_emote(VISIBLE_MESSAGE, "collapses!")
-				Weaken(3)
-		else if((stance_d_l >= 1) || (stance_d_r >= 1))
+		else if((stance_d_l >= 2) || (stance_d_r >= 2)) // One leg is broken and the other one is ok
 			if(prob(2))
 				if(limb_pain)
 					emote("scream")
 					shock_stage+=5
 				custom_emote(VISIBLE_MESSAGE, "collapses!")
 				Weaken(3)
-		else return
+		else
+			return
 
 /mob/living/carbon/human/proc/handle_grasp()
 	if(!l_hand && !r_hand)
