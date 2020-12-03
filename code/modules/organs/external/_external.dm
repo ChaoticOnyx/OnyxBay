@@ -1181,6 +1181,8 @@ obj/item/organ/external/proc/remove_clamps()
 
 	..()
 
+	victim.bad_external_organs -= src
+
 	remove_splint()
 	for(var/atom/movable/implant in implants)
 		//large items and non-item objs fall to the floor, everything else stays

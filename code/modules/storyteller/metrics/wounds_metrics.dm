@@ -10,7 +10,7 @@
 	if (!victim.mind)
 		return
 
-	metric._log_debug("Injury reported: victim is '[victim]', type is '[type]', severity is [severity]", verbose=TRUE)
+	//metric._log_debug("Injury reported: victim is '[victim]', type is '[type]', severity is [severity]", verbose=TRUE)
 	metric.injuries_sum += severity
 
 
