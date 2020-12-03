@@ -34,7 +34,7 @@ meteor_act
 			disarm_chance = disarm_chance * (D.w_class/5 + 0.4)  // The bigger an item is, the higher probability of it getting shot
 			if(prob(disarm_chance))
 				playsound(src.loc, 'sound/effects/fighting/Genhit.ogg', 50, 1)
-				D.shot_out(src, P, "shot")
+				D.shot_out(src, P)
 				if(D.w_class > 2)
 					return PROJECTILE_FORCE_BLOCK // Small items don't block the projectile while getting shot out
 

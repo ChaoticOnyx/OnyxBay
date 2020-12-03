@@ -40,10 +40,10 @@
 /mob/living/simple_animal/hostile/asteroid/hoverhead/AttackingTarget()
 	OpenFire()
 
-/mob/living/simple_animal/hostile/asteroid/hoverhead/death(gibbed)
-	new /obj/item/asteroid/anomalous_core(src.loc)
-	mouse_opacity = 1
-	..(gibbed)
+/mob/living/simple_animal/hostile/asteroid/hoverhead/death(gibbed, deathmessage, show_dead_message)
+	. = ..()
+	if(.)
+		new /obj/item/asteroid/anomalous_core(src.loc)
 
 
 

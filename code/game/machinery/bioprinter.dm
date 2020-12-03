@@ -168,8 +168,8 @@
 		new /obj/item/stack/material/steel(get_turf(src), Floor(stored_matter/matter_amount_per_sheet))
 	return ..()
 
-/obj/machinery/organ_printer/robot/New()
-	..()
+/obj/machinery/organ_printer/robot/Initialize()
+	. = ..()
 	products.Add(BP_CELL)
 	products[BP_CELL] = list("Microbattery", /obj/item/organ/internal/cell, 25)
 	component_parts += new /obj/item/weapon/circuitboard/roboprinter

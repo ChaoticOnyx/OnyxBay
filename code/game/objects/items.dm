@@ -575,7 +575,7 @@ var/list/global/slot_flags_enumeration = list(
 			poise_dmg *= 2
 		H.poise -= poise_dmg
 		if(H.poise < poise_dmg)
-			shot_out(H, "knocked")
+			shot_out(H, P)
 
 /obj/item/proc/shot_out(mob/living/carbon/human/H, obj/item/projectile/P, msg = "shot", dist = 3) // item gets shot out of one's hands w/ a projectile
 	H.useblock_off()
