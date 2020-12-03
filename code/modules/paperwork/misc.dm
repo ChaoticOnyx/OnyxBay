@@ -121,8 +121,10 @@
 	for(var/tr_cat in trade_category)
 		if(prob(trade_category[tr_cat]))
 			message += "\[item]\[b][tr_cat]\[/b]\[/item]"
-	message += "\[/small]\[/list]"
-	// TODO: Steal stamps
+	message += "\[/list]"
+	message += "\[i]This paper has been stamped with the [department] stamp.\[/i]"
+	message += "\[br]\[i]This paper has been stamped with the [org_name] stamp.\[/i]"
+	message += "\[/small]"
 	set_content(message)
 	make_readonly()
 
