@@ -482,7 +482,7 @@ Frequency:
 		deductcharge(chargecost_area)
 	else
 		playsound(get_turf(src), 'sound/effects/phasein.ogg', 50, 1)
-		user.visible_message(SPAN_WARNING("The Vortex Manipulator turns into potato!"))
+		user.visible_message(SPAN_WARNING("The Vortex Manipulator turns into a potato!"))
 		new /obj/item/weapon/cell/potato(get_turf(src))
 		qdel(src)
 
