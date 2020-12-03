@@ -481,7 +481,10 @@ Frequency:
 		phase_in(user,get_turf(user))
 		deductcharge(chargecost_area)
 	else
-		localteleport(get_turf(user), 1)
+		playsound(get_turf(src), 'sound/effects/phasein.ogg', 50, 1)
+		user.visible_message(SPAN_WARNING("The Vortex Manipulator turns into potato!"))
+		new /obj/item/weapon/cell/potato(get_turf(src))
+		qdel(src)
 
 /*
  * Vortex Announce
