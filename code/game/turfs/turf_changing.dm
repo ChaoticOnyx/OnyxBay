@@ -66,7 +66,7 @@
 	if(ispath(N, /turf/simulated))
 		if(old_fire)
 			fire = old_fire
-		if(istype(W,/turf/simulated/floor))
+		if(istype(W, /turf/simulated/floor))
 			W.RemoveLattice()
 	else if(old_fire)
 		old_fire.RemoveFire()
