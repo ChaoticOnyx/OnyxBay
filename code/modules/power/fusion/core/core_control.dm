@@ -168,4 +168,10 @@
 
 //Returns 1 if the machine can be interacted with via this console.
 /obj/machinery/computer/fusion_core_control/proc/check_core_status(obj/machinery/power/fusion_core/C)
+	if(isnull(C))
+		return
+	if(C.stat & BROKEN)
+		return
+	if(C.idle_power_usage > C.avail())
+		return
 	. = 1
