@@ -48,7 +48,7 @@
 	var/static/regex/field_regex = regex(@#<!--paper_field_(\w+)-->#, "g")
 	var/static/regex/field_link_regex = regex("<font face=\"[deffont]\"><A href='\\?src=\[^'\]+?;write=\[^'\]+'>write</A></font>", "g")
 
-/obj/item/weapon/paper/New(loc, text, title, noinit = FALSE)
+/obj/item/weapon/paper/Initialize(loc, text, title, noinit = FALSE)
 	..(loc)
 	if (noinit)
 		return

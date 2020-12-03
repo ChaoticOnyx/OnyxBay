@@ -130,7 +130,7 @@
 	name = "Trade License Template"
 	dynamic_icon = FALSE
 
-/obj/item/weapon/paper/trade_lic/trade_guide/New()
+/obj/item/weapon/paper/trade_lic/trade_guide/Initialize()
 	. = ..()
 	var/message = ""
 	message += "Departments:\[small]\[list]"
