@@ -45,8 +45,8 @@
 		/obj/machinery/computer/neuromod_rnd
 	)
 
-/obj/item/weapon/reagent_containers/glass/New()
-	..()
+/obj/item/weapon/reagent_containers/glass/Initialize()
+	. = ..()
 	base_name = name
 
 /obj/item/weapon/reagent_containers/glass/examine(mob/user)
@@ -109,47 +109,47 @@
 	center_of_mass = "x=15;y=10"
 	matter = list(MATERIAL_GLASS = 500)
 
-	New()
-		..()
-		desc += " Can hold up to [volume] units."
+/obj/item/weapon/reagent_containers/glass/beaker/Initialize()
+	. = ..()
+	desc += " Can hold up to [volume] units."
 
-	on_reagent_change()
-		update_icon()
-
-	pickup(mob/user)
-		..()
-		update_icon()
-
-	dropped(mob/user)
-		..()
-		update_icon()
-
-	attack_hand()
-		..()
-		update_icon()
-
+/obj/item/weapon/reagent_containers/glass/beaker/on_reagent_change()
 	update_icon()
-		overlays.Cut()
 
-		if(reagents.total_volume)
-			var/image/filling = image('icons/obj/reagentfillings.dmi', src, "[icon_state]10")
+/obj/item/weapon/reagent_containers/glass/beaker/pickup(mob/user)
+	..()
+	update_icon()
 
-			var/percent = round((reagents.total_volume / volume) * 100)
-			switch(percent)
-				if(0 to 9)		filling.icon_state = "[icon_state]-10"
-				if(10 to 24) 	filling.icon_state = "[icon_state]10"
-				if(25 to 49)	filling.icon_state = "[icon_state]25"
-				if(50 to 74)	filling.icon_state = "[icon_state]50"
-				if(75 to 79)	filling.icon_state = "[icon_state]75"
-				if(80 to 90)	filling.icon_state = "[icon_state]80"
-				if(91 to INFINITY)	filling.icon_state = "[icon_state]100"
+/obj/item/weapon/reagent_containers/glass/beaker/dropped(mob/user)
+	..()
+	update_icon()
 
-			filling.color = reagents.get_color()
-			overlays += filling
+/obj/item/weapon/reagent_containers/glass/beaker/attack_hand()
+	..()
+	update_icon()
 
-		if (!is_open_container())
-			var/image/lid = image(icon, src, "lid_[initial(icon_state)]")
-			overlays += lid
+/obj/item/weapon/reagent_containers/glass/beaker/update_icon()
+	overlays.Cut()
+
+	if(reagents.total_volume)
+		var/image/filling = image('icons/obj/reagentfillings.dmi', src, "[icon_state]10")
+
+		var/percent = round((reagents.total_volume / volume) * 100)
+		switch(percent)
+			if(0 to 9)		filling.icon_state = "[icon_state]-10"
+			if(10 to 24) 	filling.icon_state = "[icon_state]10"
+			if(25 to 49)	filling.icon_state = "[icon_state]25"
+			if(50 to 74)	filling.icon_state = "[icon_state]50"
+			if(75 to 79)	filling.icon_state = "[icon_state]75"
+			if(80 to 90)	filling.icon_state = "[icon_state]80"
+			if(91 to INFINITY)	filling.icon_state = "[icon_state]100"
+
+		filling.color = reagents.get_color()
+		overlays += filling
+
+	if (!is_open_container())
+		var/image/lid = image(icon, src, "lid_[initial(icon_state)]")
+		overlays += lid
 
 /obj/item/weapon/reagent_containers/glass/beaker/large
 	name = "large beaker"
@@ -195,17 +195,15 @@
 	possible_transfer_amounts = "5;10;15;30"
 	atom_flags = ATOM_FLAG_OPEN_CONTAINER
 
-/obj/item/weapon/reagent_containers/glass/beaker/cryoxadone
-	New()
-		..()
-		reagents.add_reagent(/datum/reagent/cryoxadone, 30)
-		update_icon()
+/obj/item/weapon/reagent_containers/glass/beaker/cryoxadone/Initialize()
+	. = ..()
+	reagents.add_reagent(/datum/reagent/cryoxadone, 30)
+	update_icon()
 
-/obj/item/weapon/reagent_containers/glass/beaker/sulphuric
-	New()
-		..()
-		reagents.add_reagent(/datum/reagent/acid, 60)
-		update_icon()
+/obj/item/weapon/reagent_containers/glass/beaker/sulphuric/Initialize()
+	. = ..()
+	reagents.add_reagent(/datum/reagent/acid, 60)
+	update_icon()
 
 /obj/item/weapon/reagent_containers/glass/bucket
 	desc = "It's a bucket."

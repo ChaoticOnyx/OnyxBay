@@ -9,11 +9,12 @@
 	atom_flags = null
 	nutriment_amt = 1
 
-/obj/item/weapon/reagent_containers/food/snacks/packaged/attack_self(mob/user as mob)
+/obj/item/weapon/reagent_containers/food/snacks/packaged/attack_self(mob/user)
 	if(!is_open_container())
 		to_chat(user, SPAN("notice", "You open \the [src]!"))
 		atom_flags |= ATOM_FLAG_OPEN_CONTAINER
 		update_icon()
+		playsound(loc, 'sound/items/shpshpsh.ogg', 50, 1)
 
 /obj/item/weapon/reagent_containers/food/snacks/packaged/update_icon()
 	if(is_open_container())
@@ -34,8 +35,8 @@
 	nutriment_desc = list("nougat-n-nuts" = 6)
 	nutriment_amt = 6
 
-/obj/item/weapon/reagent_containers/food/snacks/packaged/tweakers/New()
-	..()
+/obj/item/weapon/reagent_containers/food/snacks/packaged/tweakers/Initialize()
+	. = ..()
 	reagents.add_reagent(/datum/reagent/sugar, 3)
 	bitesize = 3
 
@@ -49,8 +50,8 @@
 	nutriment_desc = list("chewy sourness" = 6)
 	nutriment_amt = 6
 
-/obj/item/weapon/reagent_containers/food/snacks/packaged/sweetroid/New()
-	..()
+/obj/item/weapon/reagent_containers/food/snacks/packaged/sweetroid/Initialize()
+	. = ..()
 	reagents.add_reagent(/datum/reagent/sugar, 3)
 	bitesize = 3
 
@@ -64,8 +65,8 @@
 	nutriment_desc = list("extreme sweetness" = 6)
 	nutriment_amt = 6
 
-/obj/item/weapon/reagent_containers/food/snacks/packaged/sugarmatter/New()
-	..()
+/obj/item/weapon/reagent_containers/food/snacks/packaged/sugarmatter/Initialize()
+	. = ..()
 	reagents.add_reagent(/datum/reagent/sugar, 6)
 	bitesize = 4
 
@@ -79,8 +80,8 @@
 	nutriment_desc = list("spicy cherry" = 3)
 	nutriment_amt = 3
 
-/obj/item/weapon/reagent_containers/food/snacks/packaged/jellaws/New()
-	..()
+/obj/item/weapon/reagent_containers/food/snacks/packaged/jellaws/Initialize()
+	. = ..()
 	reagents.add_reagent(/datum/reagent/sugar, 3)
 	reagents.add_reagent(/datum/reagent/capsaicin, 1)
 	reagents.add_reagent(/datum/reagent/nutriment/cherryjelly, 2)
@@ -96,8 +97,8 @@
 	filling_color = "#e5bf00"
 	nutriment_desc = list("packaging foam" = 1)
 
-/obj/item/weapon/reagent_containers/food/snacks/packaged/nutribar/New()
-	..()
+/obj/item/weapon/reagent_containers/food/snacks/packaged/nutribar/Initialize()
+	. = ..()
 	reagents.add_reagent(/datum/reagent/nutriment/protein, 7)
 	reagents.add_reagent(/datum/reagent/sugar, 2)
 	bitesize = 4
@@ -112,8 +113,8 @@
 	nutriment_amt = 6
 	nutriment_desc = list("salt" = 1, "chips" = 2)
 
-/obj/item/weapon/reagent_containers/food/snacks/packaged/chips/New()
-	..()
+/obj/item/weapon/reagent_containers/food/snacks/packaged/chips/Initialize()
+	. = ..()
 	reagents.add_reagent(/datum/reagent/sodiumchloride, 2)
 	bitesize = 1
 
@@ -127,8 +128,8 @@
 	nutriment_desc = list("cured meat" = 5, "salt" = 2)
 	nutriment_amt = 2
 
-/obj/item/weapon/reagent_containers/food/snacks/packaged/sosjerky/New()
-	..()
+/obj/item/weapon/reagent_containers/food/snacks/packaged/sosjerky/Initialize()
+	. = ..()
 	reagents.add_reagent(/datum/reagent/nutriment/protein, 7)
 	reagents.add_reagent(/datum/reagent/sodiumchloride, 1)
 	bitesize = 2
@@ -143,8 +144,8 @@
 	nutriment_desc = list("raisins" = 6)
 	nutriment_amt = 6
 
-/obj/item/weapon/reagent_containers/food/snacks/packaged/no_raisin/New()
-	..()
+/obj/item/weapon/reagent_containers/food/snacks/packaged/no_raisin/Initialize()
+	. = ..()
 	reagents.add_reagent(/datum/reagent/drink/juice/grape, 4)
 	bitesize = 1
 
@@ -158,8 +159,8 @@
 	nutriment_desc = list("cheese" = 5, "chips" = 2)
 	nutriment_amt = 6
 
-/obj/item/weapon/reagent_containers/food/snacks/packaged/cheesiehonkers/New()
-	..()
+/obj/item/weapon/reagent_containers/food/snacks/packaged/cheesiehonkers/Initialize()
+	. = ..()
 	reagents.add_reagent(/datum/reagent/sodiumchloride, 2)
 	bitesize = 1
 
@@ -173,8 +174,8 @@
 	nutriment_amt = 2
 	nutriment_desc = list("candy" = 1)
 
-/obj/item/weapon/reagent_containers/food/snacks/packaged/hematogen/New()
-	..()
+/obj/item/weapon/reagent_containers/food/snacks/packaged/hematogen/Initialize()
+	. = ..()
 	reagents.add_reagent(/datum/reagent/nutriment/protein, 1)
 	reagents.add_reagent(/datum/reagent/sugar, 2)
 	reagents.add_reagent(/datum/reagent/albumin, 10)
@@ -190,8 +191,8 @@
 	nutriment_desc = list("bread" = 2, "sweetness" = 3)
 	nutriment_amt = 6
 
-/obj/item/weapon/reagent_containers/food/snacks/packaged/tastybread/New()
-	..()
+/obj/item/weapon/reagent_containers/food/snacks/packaged/tastybread/Initialize()
+	. = ..()
 	bitesize = 2
 
 
@@ -204,8 +205,8 @@
 	nutriment_desc = list("mushroom" = 5, "salt" = 2)
 	nutriment_amt = 9
 
-/obj/item/weapon/reagent_containers/food/snacks/packaged/skrellsnacks/New()
-	..()
+/obj/item/weapon/reagent_containers/food/snacks/packaged/skrellsnacks/Initialize()
+	. = ..()
 	reagents.add_reagent(/datum/reagent/sodiumchloride, 1)
 	bitesize = 2
 
@@ -219,7 +220,7 @@
 	nutriment_desc = list("sweetness" = 3, "cake" = 1)
 	nutriment_amt = 4
 
-/obj/item/weapon/reagent_containers/food/snacks/packaged/syndicake/New()
-	..()
+/obj/item/weapon/reagent_containers/food/snacks/packaged/syndicake/Initialize()
+	. = ..()
 	reagents.add_reagent(/datum/reagent/drink/doctor_delight, 5)
 	bitesize = 3
