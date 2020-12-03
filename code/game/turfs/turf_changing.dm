@@ -17,8 +17,7 @@
 
 //Creates a new turf
 /turf/proc/ChangeTurf(turf/N, tell_universe = TRUE, force_lighting_update = FALSE)
-	if(!N)
-		return
+	ASSERT(N)
 
 	// This makes sure that turfs are not changed to space when one side is part of a zone
 	if(N == /turf/space)
