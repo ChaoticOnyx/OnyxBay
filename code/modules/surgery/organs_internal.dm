@@ -54,9 +54,12 @@
 	var/obj/item/organ/internal/list/damaged_organs = list()
 	for(var/obj/item/organ/internal/I in target.internal_organs)
 		if(I && !(I.status & ORGAN_CUT_AWAY) && I.parent_organ == affected.organ_tag && !BP_IS_ROBOTIC(I))
-			damaged_organs |= I
+			var/image/img = image(icon = I.icon, icon_state = I.icon_state)
+			img.overlays = I.overlays
+			damaged_organs[I] = img
 
-	var/obj/item/organ/internal/organ_to_fix = input(user, "Which organ do you want to repair?") as null|anything in damaged_organs
+	var/obj/item/organ/internal/organ_to_fix = show_radial_menu(user, target, damaged_organs, require_near = TRUE)
+
 	if(!organ_to_fix)
 		return FALSE
 	if(!organ_to_fix.can_recover())
@@ -250,9 +253,12 @@
 	var/obj/item/organ/internal/list/damaged_organs = list()
 	for(var/obj/item/organ/internal/I in target.internal_organs)
 		if(I && !(I.status & ORGAN_CUT_AWAY) && I.parent_organ == affected.organ_tag && !BP_IS_ROBOTIC(I))
-			damaged_organs |= I
+			var/image/img = image(icon = I.icon, icon_state = I.icon_state)
+			img.overlays = I.overlays
+			damaged_organs[I] = img
 
-	var/obj/item/organ/internal/organ_to_fix = input(user, "Which organ do you want to repair?") as null|anything in damaged_organs
+	var/obj/item/organ/internal/organ_to_fix = show_radial_menu(user, target, damaged_organs, require_near = TRUE)
+
 	if(!organ_to_fix)
 		return FALSE
 	if(target.op_stage.current_organ)
@@ -360,9 +366,12 @@
 	var/list/attached_organs = list()
 	for(var/obj/item/organ/organ in target.internal_organs)
 		if(organ && !(organ.status & ORGAN_CUT_AWAY) && organ.parent_organ == target_zone)
-			attached_organs |= organ
+			var/image/img = image(icon = organ.icon, icon_state = organ.icon_state)
+			img.overlays = organ.overlays
+			attached_organs[organ] = img
 
-	var/organ_to_remove = input(user, "Which organ do you want to separate?") as null|anything in attached_organs
+	var/organ_to_remove = show_radial_menu(user, target, attached_organs, require_near = TRUE)
+
 	if(!organ_to_remove)
 		return FALSE
 	if(target.op_stage.current_organ)
@@ -422,9 +431,12 @@
 	var/list/removable_organs = list()
 	for(var/obj/item/organ/internal/I in affected.implants)
 		if(I.status & ORGAN_CUT_AWAY)
-			removable_organs |= I
+			var/image/img = image(icon = I.icon, icon_state = I.icon_state)
+			img.overlays = I.overlays
+			removable_organs[I] = img
 
-	var/organ_to_remove = input(user, "Which organ do you want to remove?") as null|anything in removable_organs
+	var/organ_to_remove = show_radial_menu(user, target, removable_organs, require_near = TRUE)
+
 	if(!organ_to_remove)
 		return FALSE
 	if(target.op_stage.current_organ)
@@ -591,9 +603,12 @@
 	var/list/attachable_organs = list()
 	for(var/obj/item/organ/I in affected.implants)
 		if(I && (I.status & ORGAN_CUT_AWAY))
-			attachable_organs |= I
+			var/image/img = image(icon = I.icon, icon_state = I.icon_state)
+			img.overlays = I.overlays
+			attachable_organs[I] = img
 
-	var/obj/item/organ/organ_to_replace = input(user, "Which organ do you want to reattach?") as null|anything in attachable_organs
+	var/obj/item/organ/organ_to_replace = show_radial_menu(user, target, attachable_organs, require_near = TRUE)
+
 	if(!organ_to_replace)
 		return FALSE
 	if(target.op_stage.current_organ)
@@ -667,9 +682,12 @@
 	var/obj/item/organ/internal/list/dead_organs = list()
 	for(var/obj/item/organ/internal/I in target.internal_organs)
 		if(I && !(I.status & ORGAN_CUT_AWAY) && I.status & ORGAN_DEAD && I.parent_organ == affected.organ_tag && !BP_IS_ROBOTIC(I))
-			dead_organs |= I
+			var/image/img = image(icon = I.icon, icon_state = I.icon_state)
+			img.overlays = I.overlays
+			dead_organs[I] = img
 
-	var/obj/item/organ/internal/organ_to_fix = input(user, "Which organ do you want to regenerate?") as null|anything in dead_organs
+	var/obj/item/organ/internal/organ_to_fix = show_radial_menu(user, target, dead_organs, require_near = TRUE)
+
 	if(!organ_to_fix)
 		return 0
 	if(target.op_stage.current_organ)
