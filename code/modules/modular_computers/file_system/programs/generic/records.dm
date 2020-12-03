@@ -135,7 +135,7 @@
 	if(href_list["print_active"])
 		if(!active_record)
 			return
-		print_text(record_to_html(active_record, get_record_access(usr), records_context), usr)
+		print_text(record_to_html(active_record, get_record_access(usr), records_context), usr, rawhtml = TRUE)
 		return 1
 	if(href_list["search"])
 		var/field = text2path("/record_field/"+href_list["search"])
