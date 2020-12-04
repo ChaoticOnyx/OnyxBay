@@ -11,7 +11,7 @@
 	stage = 1
 	delay = 15 SECONDS
 
-/datum/disease2/effect/sneeze/activate(var/mob/living/carbon/human/mob,var/multiplier)
+/datum/disease2/effect/sneeze/activate(var/mob/living/carbon/human/mob)
 	if (prob(30))
 		to_chat(mob, SNEEZE_EFFECT_WARNING)
 	sleep(5)
@@ -29,7 +29,7 @@
 	stage = 1
 	delay = 25 SECONDS
 
-/datum/disease2/effect/gunck/activate(var/mob/living/carbon/human/mob,var/multiplier)
+/datum/disease2/effect/gunck/activate(var/mob/living/carbon/human/mob)
 	to_chat(mob, GUNCK_EFFECT_WARNING)
 
 
@@ -40,7 +40,7 @@
 	chance_max = 25
 	delay = 25 SECONDS
 
-/datum/disease2/effect/drool/activate(var/mob/living/carbon/human/mob,var/multiplier)
+/datum/disease2/effect/drool/activate(var/mob/living/carbon/human/mob)
 	mob.emote("drool")
 
 
@@ -51,7 +51,7 @@
 	chance_max = 25
 	delay = 25 SECONDS
 
-/datum/disease2/effect/twitch/activate(var/mob/living/carbon/human/mob,var/multiplier)
+/datum/disease2/effect/twitch/activate(var/mob/living/carbon/human/mob)
 	mob.emote("twitch")
 
 
@@ -61,7 +61,7 @@
 	stage = 1
 	delay = 25 SECONDS
 
-/datum/disease2/effect/headache/activate(var/mob/living/carbon/human/mob,var/multiplier)
+/datum/disease2/effect/headache/activate(var/mob/living/carbon/human/mob)
 	mob.custom_pain("Your head hurts a bit.", 20)
 
 
@@ -71,7 +71,7 @@
 	stage = 1
 	delay = 25 SECONDS
 
-/datum/disease2/effect/itch/activate(var/mob/living/carbon/human/mob,var/multiplier)
+/datum/disease2/effect/itch/activate(var/mob/living/carbon/human/mob)
 	var/obj/O = pick(mob.organs)
 	to_chat(mob, ITCH_EFFECT_WARNING(O.name))
 
@@ -82,7 +82,7 @@
 	stage = 1
 	delay = 25 SECONDS
 
-/datum/disease2/effect/stomach/activate(var/mob/living/carbon/human/mob,var/multiplier)
+/datum/disease2/effect/stomach/activate(var/mob/living/carbon/human/mob)
 	to_chat(mob, STOMACH_EFFECT_WARNING)
 
 
@@ -92,7 +92,6 @@
 	stage = 1
 	badness = VIRUS_MILD
 	chance_max = 0
-	allow_multiple = 1
 
 ////////////////////////STAGE 2/////////////////////////////////
 
@@ -101,7 +100,7 @@
 	stage = 2
 	delay = 15 SECONDS
 
-/datum/disease2/effect/disorientation/activate(mob/living/carbon/human/mob, multiplier)
+/datum/disease2/effect/disorientation/activate(mob/living/carbon/human/mob)
 	to_chat(mob, DISORIENTATION_EFFECT_WARNING)
 	if(mob.client)
 		var/client/C = mob.client
@@ -117,7 +116,7 @@
 	stage = 2
 	chance_max = 25
 	delay = 25 SECONDS
-/datum/disease2/effect/fridge/activate(var/mob/living/carbon/human/mob,var/multiplier)
+/datum/disease2/effect/fridge/activate(var/mob/living/carbon/human/mob)
 	mob.emote("shiver")
 
 
@@ -125,7 +124,7 @@
 /datum/disease2/effect/hungry
 	name = "Appetiser Effect"
 	stage = 2
-/datum/disease2/effect/hungry/activate(var/mob/living/carbon/human/mob,var/multiplier)
+/datum/disease2/effect/hungry/activate(var/mob/living/carbon/human/mob)
 	mob.nutrition = max(0, mob.nutrition - 200)
 
 
@@ -135,7 +134,7 @@
 	stage = 2
 	delay = 25 SECONDS
 
-/datum/disease2/effect/cough/activate(var/mob/living/carbon/human/mob,var/multiplier)
+/datum/disease2/effect/cough/activate(var/mob/living/carbon/human/mob)
 	mob.emote("cough")
 	if (mob.wear_mask)
 		return
@@ -150,7 +149,7 @@
 	chance_max = 15
 	delay = 35 SECONDS
 
-/datum/disease2/effect/sleepy/activate(var/mob/living/carbon/human/mob,var/multiplier)
+/datum/disease2/effect/sleepy/activate(var/mob/living/carbon/human/mob)
 	mob.emote("collapse")
 
 
@@ -158,8 +157,8 @@
 /datum/disease2/effect/drowsness
 	name = "Automated Sleeping Syndrome"
 	stage = 2
-	delay = 5 SECONDS
-/datum/disease2/effect/drowsness/activate(var/mob/living/carbon/human/mob,var/multiplier)
+	delay = 15 SECONDS
+/datum/disease2/effect/drowsness/activate(var/mob/living/carbon/human/mob)
 	mob.drowsyness += 10
 
 
@@ -168,8 +167,6 @@
 	name = "Flu Virion"
 	stage = 2
 	delay = 25 SECONDS
-	badness = VIRUS_MILD
-	possible_mutations = list(/datum/disease2/effect/fluspanish)
 
 /datum/disease2/effect/flu/activate(var/mob/living/carbon/human/mob)
 	mob.bodytemperature += 5
@@ -180,14 +177,37 @@
 		mob.bodytemperature += 10
 		to_chat(mob, "<span class='warning'>Your muscles ache.</span>")
 
+
+
+/datum/disease2/effect/aggressive
+	name = "Uncontrolable Agression"
+	stage = 2
+	chance_max = 20
+	possible_mutations = list(/datum/disease2/effect/pacifism)
+
+/datum/disease2/effect/aggressive/activate(var/mob/living/carbon/human/mob)
+	mob.a_intent = I_HURT
+	mob.hud_used.action_intent.icon_state = "intent_harm"
+
+
+datum/disease2/effect/pacifism
+	name = "Pacifist Syndrome"
+	stage = 2
+	chance_max = 20
+	possible_mutations = list(/datum/disease2/effect/aggressive)
+
+datum/disease2/effect/pacifism/activate(var/mob/living/carbon/human/mob)
+	mob.a_intent = I_HELP
+	mob.hud_used.action_intent.icon_state = "intent_help"
+
 ////////////////////////STAGE 3/////////////////////////////////
 
 /datum/disease2/effect/confusion
 	name = "Topographical Cretinism"
 	stage = 3
-	delay = 5 SECONDS
+	delay = 15 SECONDS
 
-/datum/disease2/effect/confusion/activate(var/mob/living/carbon/human/mob,var/multiplier)
+/datum/disease2/effect/confusion/activate(var/mob/living/carbon/human/mob)
 	to_chat(mob, CONFUSION_EFFECT_WARNING)
 	mob.confused += 10
 
@@ -197,7 +217,7 @@
 	name = "Hard of Hearing Syndrome"
 	stage = 3
 
-/datum/disease2/effect/deaf/activate(var/mob/living/carbon/human/mob,var/multiplier)
+/datum/disease2/effect/deaf/activate(var/mob/living/carbon/human/mob)
 	mob.ear_deaf = 5
 
 
@@ -206,7 +226,7 @@
 	name = "Telepathy Syndrome"
 	stage = 3
 
-/datum/disease2/effect/telepathic/activate(var/mob/living/carbon/human/mob,var/multiplier)
+/datum/disease2/effect/telepathic/activate(var/mob/living/carbon/human/mob)
 	mob.dna.SetSEState(GLOB.REMOTETALKBLOCK,1)
 	domutcheck(mob, null, MUTCHK_FORCED)
 
@@ -217,7 +237,16 @@
 	stage = 3
 	multiplier_max = 3
 
-/datum/disease2/effect/shakey/activate(var/mob/living/carbon/human/mob,var/multiplier)
+/datum/disease2/effect/shakey/activate(var/mob/living/carbon/human/mob)
 	shake_camera(mob,5*multiplier)
 
 ////////////////////////STAGE 4/////////////////////////////////
+
+/datum/disease2/effect/hallucinations
+	name = "Disorder of Consciousness"
+	stage = 4
+	multiplier_max = 10
+
+/datum/disease2/effect/hallucinations/activate(mob/living/carbon/human/mob)
+	mob.adjust_hallucination(multiplier, 4*multiplier)
+	

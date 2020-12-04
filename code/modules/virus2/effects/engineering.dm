@@ -2,6 +2,25 @@
 
 ////////////////////////STAGE 2/////////////////////////////////
 
+/datum/disease2/effect/beesease
+	name = "Bee Infestation"
+	stage = 2
+	delay = 15 SECONDS
+	badness = VIRUS_ENGINEERED
+	possible_mutations = list(/datum/disease2/effect/cough)
+
+/datum/disease2/effect/beesease/activate(var/mob/living/carbon/human/mob)
+	mob.emote("cough")
+	var/obj/item/blocked = mob.check_mouth_coverage()
+	if(blocked)
+		to_chat(mob, SPAN_DANGER("Something is trying to escape from your throat, but [blocked] stops them!"))
+		mob.internal_organs["lungs"].take_internal_damage(10)
+		return
+	new /mob/living/simple_animal/bee(mob.loc)
+	var/datum/gender/G = gender_datums[mob.get_visible_gender()]
+	mob.visible_message(SPAN_WARNING("Bees fly out of [mob]'s throat when [G.he] coughs!"),
+						SPAN_DANGER("Bees fly out of your throat when you cough!"))
+
 ////////////////////////STAGE 3/////////////////////////////////
 
 /datum/disease2/effect/cold9
@@ -23,29 +42,43 @@
 			mob.bodytemperature -= rand(85,200)
 			to_chat(mob, "<span class='danger'>You stop feeling your limbs.</span>")
 
-////////////////////////STAGE 4/////////////////////////////////
+
 
 /datum/disease2/effect/bones
 	name = "Fragile Bones Syndrome"
-	stage = 4
+	stage = 3
 	badness = VIRUS_ENGINEERED
 
-/datum/disease2/effect/bones/activate(var/mob/living/carbon/human/mob,var/multiplier)
+/datum/disease2/effect/bones/activate(var/mob/living/carbon/human/mob)
 	for (var/obj/item/organ/external/E in mob.organs)
 		E.min_broken_damage = max(5, E.min_broken_damage - 30)
 
-/datum/disease2/effect/bones/deactivate(var/mob/living/carbon/human/mob,var/multiplier)
+/datum/disease2/effect/bones/deactivate(var/mob/living/carbon/human/mob)
 	for (var/obj/item/organ/external/E in mob.organs)
 		E.min_broken_damage = initial(E.min_broken_damage)
 
 
 
+/datum/disease2/effect/spread_radiation
+	name = "Radioactivity Increase"
+	stage = 3
+	badness = VIRUS_ENGINEERED
+	delay = 15 SECONDS
+	possible_mutations = list(/datum/disease2/effect/radian)
+
+/datum/disease2/effect/spread_radiation/activate(mob/living/carbon/human/mob)
+	SSradiation.radiate(mob, 5*multiplier)
+	
+
+////////////////////////STAGE 4/////////////////////////////////
+
 /datum/disease2/effect/immortal
 	name = "Longevity Syndrome"
 	stage = 4
 	badness = VIRUS_ENGINEERED
+	possible_mutations = list(/datum/disease2/effect/curer)
 
-/datum/disease2/effect/immortal/activate(mob/living/carbon/human/mob, multiplier)
+/datum/disease2/effect/immortal/activate(mob/living/carbon/human/mob)
 	for (var/obj/item/organ/external/E in mob.organs)
 		if (E.status & ORGAN_BROKEN && prob(30))
 			to_chat(mob, IMMORTAL_RECOVER_EFFECT_WARNING(E.name))
@@ -59,7 +92,7 @@
 	var/heal_amt = -5*multiplier
 	mob.apply_damages(heal_amt,heal_amt,heal_amt,heal_amt)
 
-/datum/disease2/effect/immortal/deactivate(var/mob/living/carbon/human/mob,var/multiplier)
+/datum/disease2/effect/immortal/deactivate(var/mob/living/carbon/human/mob)
 	to_chat(mob, IMMORTAL_AGING_EFFECT_WARNING)
 	mob.age += 8
 	var/backlash_amt = 5*multiplier
@@ -74,7 +107,7 @@
 	possible_mutations = list(/datum/disease2/effect/toxins,
 							  /datum/disease2/effect/killertoxins)
 
-/datum/disease2/effect/organs/activate(var/mob/living/carbon/human/mob,var/multiplier)
+/datum/disease2/effect/organs/activate(var/mob/living/carbon/human/mob)
 	var/organ = pick(list(BP_R_ARM,BP_L_ARM,BP_R_LEG,BP_L_LEG))
 	var/obj/item/organ/external/E = mob.organs_by_name[organ]
 	if (!(E.status & ORGAN_DEAD))
@@ -85,7 +118,7 @@
 	mob.update_body(1)
 	mob.adjustToxLoss(15*multiplier)
 
-/datum/disease2/effect/organs/deactivate(var/mob/living/carbon/human/mob,var/multiplier)
+/datum/disease2/effect/organs/deactivate(var/mob/living/carbon/human/mob)
 	for (var/obj/item/organ/external/E in mob.organs)
 		E.status &= ~ORGAN_DEAD
 		for (var/obj/item/organ/external/C in E.children)
@@ -99,7 +132,7 @@
 	stage = 4
 	badness = VIRUS_ENGINEERED
 
-/datum/disease2/effect/dna/activate(var/mob/living/carbon/human/mob,var/multiplier)
+/datum/disease2/effect/dna/activate(var/mob/living/carbon/human/mob)
 	mob.bodytemperature = max(mob.bodytemperature, 350)
 	scramble(0,mob,10)
 	mob.apply_damage(10, CLONE)
@@ -130,3 +163,57 @@
 /datum/disease2/effect/fake_gbs/activate(var/mob/living/carbon/human/mob)
 	to_chat(mob, "<span class='danger'>Your body feels as if it's trying to rip itself open...</span>")
 	mob.weakened += 5
+
+
+
+/datum/disease2/effect/limbreject
+	name = "Limb Rejection"
+	stage = 4
+	delay = 70 SECONDS
+	badness = VIRUS_ENGINEERED
+
+/datum/disease2/effect/limbreject/activate(mob/living/carbon/human/mob)
+	var/list/detachable_limbs = mob.organs.Copy()
+	for (var/obj/item/organ/external/E in detachable_limbs)
+		if (E.organ_tag == BP_R_HAND || E.organ_tag == BP_L_HAND || E.organ_tag == BP_R_FOOT || E.organ_tag == BP_L_FOOT || E.organ_tag == BP_CHEST || E.organ_tag == BP_GROIN || E.organ_tag == BP_HEAD || E.is_stump())
+			detachable_limbs -= E
+	var/obj/item/organ/external/organ_to_remove = pick(detachable_limbs)
+	if(!mob.organs.Find(organ_to_remove))
+		return 0
+	
+	mob.visible_message(SPAN_WARNING("The [organ_to_remove] is ripping off from [mob]."),
+						SPAN_DANGER("Your [organ_to_remove] is ripping off you!"))
+	playsound(mob.loc, 'sound/effects/bonebreak1.ogg', 100, 1)
+	
+	if(organ_to_remove.organ_tag == BP_L_LEG || organ_to_remove.organ_tag == BP_R_LEG)
+		var/mob/living/simple_animal/hostile/little_changeling/leg_chan/disease/L = new /mob/living/simple_animal/hostile/little_changeling/leg_chan/disease(get_turf(mob))
+		for(var/ID in mob.virus2)
+			var/datum/disease2/disease/D = mob.virus2[ID]
+			L.diseases_list += D
+	else if(organ_to_remove.organ_tag == BP_L_ARM || organ_to_remove.organ_tag == BP_R_ARM)
+		var/mob/living/simple_animal/hostile/little_changeling/leg_chan/disease/L = new /mob/living/simple_animal/hostile/little_changeling/arm_chan/disease(get_turf(mob))
+		for(var/ID in mob.virus2)
+			var/datum/disease2/disease/D = mob.virus2[ID]
+			L.diseases_list += D
+	organ_to_remove.droplimb(1)
+	qdel(organ_to_remove)
+
+	var/mob/living/carbon/human/H = mob
+	if(istype(H))
+		H.regenerate_icons()
+	
+/mob/living/simple_animal/hostile/little_changeling/leg_chan/disease
+	var/list/diseases_list
+/mob/living/simple_animal/hostile/little_changeling/leg_chan/disease/AttackingTarget()
+	if(ishuman(target_mob))
+		for(var/datum/disease2/disease/D in diseases_list)
+			infect_virus2(target_mob, D)
+	..()
+
+/mob/living/simple_animal/hostile/little_changeling/arm_chan/disease
+	var/list/diseases_list
+/mob/living/simple_animal/hostile/little_changeling/arm_chan/disease/AttackingTarget()
+	if(ishuman(target_mob))
+		for(var/datum/disease2/disease/D in diseases_list)
+			infect_virus2(target_mob, D)
+	..()

@@ -40,7 +40,7 @@
 	stage = 1
 	badness = VIRUS_EXOTIC
 
-/datum/disease2/effect/musclerace/activate(var/mob/living/carbon/human/mob,var/multiplier)
+/datum/disease2/effect/musclerace/activate(var/mob/living/carbon/human/mob)
 	mob.nutrition = max(0, mob.nutrition - 25)
 	mob.add_modifier(/datum/modifier/musclerace)
 	if(prob(25))
@@ -147,7 +147,7 @@
 	stage = 2
 	badness = VIRUS_EXOTIC
 
-/datum/disease2/effect/hisstarvation/activate(var/mob/living/carbon/human/mob,var/multiplier)
+/datum/disease2/effect/hisstarvation/activate(var/mob/living/carbon/human/mob)
 	mob.nutrition = max(0, mob.nutrition - 1000)
 	mob.custom_emote("hisses")
 	if(prob(25))
@@ -193,63 +193,13 @@
 
 ////////////////////////STAGE 3/////////////////////////////////
 
-/datum/disease2/effect/dnaspread
-	name = "Space Retrovirus Syndrome"
-	stage = 3
-	badness = VIRUS_EXOTIC
-	possible_mutations = list(/datum/disease2/effect/monkey)
-	var/list/original_dna = list()
-	var/transformed = 0
-	var/host = 0
-
-/datum/disease2/effect/dnaspread/generate(c_data)
-	if(c_data)
-		data = c_data
-
-/datum/disease2/effect/dnaspread/activate(var/mob/living/carbon/human/mob,var/multiplier)
-	if(!src.transformed && !src.host)
-		if ((!data["name"]) || (!data["UI"]) || (!data["SE"]))
-			data["name"] = mob.real_name
-			data["UI"] = mob.dna.UI.Copy()
-			data["SE"] = mob.dna.SE.Copy()
-			host = 1
-			return
-
-		src.original_dna["name"] = mob.real_name
-		src.original_dna["UI"] = mob.dna.UI.Copy()
-		src.original_dna["SE"] = mob.dna.SE.Copy()
-
-		to_chat(mob, "<span class='danger'>You don't feel like yourself..</span>")
-		var/list/newUI=data["UI"]
-		var/list/newSE=data["SE"]
-		mob.UpdateAppearance(newUI.Copy())
-		mob.dna.SE = newSE.Copy()
-		mob.dna.UpdateSE()
-		mob.real_name = data["name"]
-		mob.flavor_text = ""
-		domutcheck(mob)
-		src.transformed = 1
-
-/datum/disease2/effect/dnaspread/deactivate(var/mob/living/carbon/human/mob,var/multiplier)
-	if ((!original_dna["name"]) && (!original_dna["UI"]) && (!original_dna["SE"]))
-		var/list/newUI=original_dna["UI"]
-		var/list/newSE=original_dna["SE"]
-		mob.UpdateAppearance(newUI.Copy())
-		mob.dna.SE = newSE.Copy()
-		mob.dna.UpdateSE()
-		mob.real_name = original_dna["name"]
-
-		to_chat(mob, "<span class='notice'>You feel more like yourself.</span>")
-
-
-
 /datum/disease2/effect/brainrot
 	name = "Cryptococcus Cosmosis"
 	stage = 3
 	badness = VIRUS_EXOTIC
 	possible_mutations = list(/datum/disease2/effect/mind)
 
-/datum/disease2/effect/brainrot/activate(var/mob/living/carbon/human/mob, var/multiplier)
+/datum/disease2/effect/brainrot/activate(var/mob/living/carbon/human/mob)
 	if(mob.reagents.get_reagent_amount(/datum/reagent/alkysine) > 5)
 		to_chat(mob, "<span class='notice'>You feel better.</span>")
 	else
@@ -263,6 +213,23 @@
 
 
 
+/datum/disease2/effect/emp
+	name = "Electromagnetic Mismatch Syndrome"
+	stage = 3
+	badness = VIRUS_EXOTIC
+	possible_mutations = list(/datum/disease2/effect/radian)
+
+/datum/disease2/effect/emp/activate(var/mob/living/carbon/human/mob)
+	if(prob(35))
+		to_chat(mob, "<span class='danger'>Your inner energy breaks out!</span>")
+		empulse(mob.loc, 3, 2)
+	if(prob(50))
+		to_chat(mob, "<span class='warning'>You are overwhelmed with electricity from the inside!</span>")
+		var/datum/effect/effect/system/spark_spread/s = new /datum/effect/effect/system/spark_spread
+		s.set_up(5, 1, mob)
+		s.start()
+
+
 //Atom Virus
 /datum/disease2/effect/nuclear_escalation
 	name = "Atomic End"
@@ -271,7 +238,7 @@
 	possible_mutations = list(/datum/disease2/effect/nuclear_exacerbation,
 							  /datum/disease2/effect/nuclear)
 
-/datum/disease2/effect/nuclear_escalation/activate(var/mob/living/carbon/human/mob, var/multiplier)
+/datum/disease2/effect/nuclear_escalation/activate(var/mob/living/carbon/human/mob)
 	if(prob(10))
 		to_chat(mob, "<span class='danger'>The atom was mistaken in you, you received a great gift and could not live up to expectations, good luck.</span>")
 		var/obj/item/organ/internal/brain/B = mob.internal_organs_by_name[BP_BRAIN]
@@ -286,7 +253,7 @@
 	stage = 4
 	badness = VIRUS_EXOTIC
 
-/datum/disease2/effect/gibbingtons/activate(var/mob/living/carbon/human/mob,var/multiplier)
+/datum/disease2/effect/gibbingtons/activate(var/mob/living/carbon/human/mob)
 	// Probabilities have been tweaked to kill in ~2-3 minutes, giving 5-10 messages.
 	// Probably needs more balancing, but it's better than LOL U GIBBED NOW, especially now that viruses can potentially have no signs up until Gibbingtons.
 	mob.adjustBruteLoss(10*multiplier)

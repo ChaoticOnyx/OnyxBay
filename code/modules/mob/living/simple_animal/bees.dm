@@ -174,6 +174,6 @@
 	if(parent == null && prob(10))
 		strength -= 1
 		if(strength <= 0)
-			qdel(src)
+			death()
 		else if(strength <= 5)
 			icon_state = "bees"
