@@ -275,11 +275,12 @@
 
 	if(config.player_limit && is_player_rejected_by_player_limit(usr, ckey))
 		if(config.panic_address && TopicData != "redirect")
-			alert(src,"This server is currently full and not accepting new connections. Sending you to [config.panic_server_name ? config.panic_server_name : config.panic_address].","Server Full","OK")
+			DIRECT_OUTPUT(src, SPAN_WARNING("<h1>This server is currently full and not accepting new connections. Sending you to [config.panic_server_name ? config.panic_server_name : config.panic_address]</h1>"))
 			winset(src, null, "command=.options")
 			src << link("[config.panic_address]?redirect")
+
 		else
-			alert(src, "This server is currently full and not accepting new connections.","Server Full","OK")
+			DIRECT_OUTPUT(src, SPAN_WARNING("<h1>This server is currently full and not accepting new connections.</h1>"))
 
 		log_admin("[ckey] tried to join but the server is full (player_limit=[config.player_limit])")
 		qdel(src)
