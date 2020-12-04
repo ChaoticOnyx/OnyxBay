@@ -31,7 +31,7 @@
 
 	if(!species)
 		if(new_species)
-			set_species(new_species,1)
+			set_species(new_species, 1)
 		else
 			set_species()
 
@@ -139,11 +139,11 @@
 
 	var/b_loss = null
 	var/f_loss = null
-	switch (severity)
-		if (1.0)
+	switch(severity)
+		if(1.0)
 			b_loss = 400
 			f_loss = 100
-			if (!prob(getarmor(null, "bomb")))
+			if(!prob(getarmor(null, "bomb")))
 				gib()
 				return
 			else
@@ -153,22 +153,22 @@
 //				var/atom/target = get_edge_target_turf(user, get_dir(src, get_step_away(user, src)))
 				//user.throw_at(target, 200, 4)
 
-		if (2.0)
+		if(2.0)
 			b_loss = 60
 			f_loss = 60
 
-			if (!istype(l_ear, /obj/item/clothing/ears/earmuffs) && !istype(r_ear, /obj/item/clothing/ears/earmuffs))
+			if(!istype(l_ear, /obj/item/clothing/ears/earmuffs) && !istype(r_ear, /obj/item/clothing/ears/earmuffs))
 				ear_damage += 30
 				ear_deaf += 120
-			if (prob(70))
+			if(prob(70))
 				Paralyse(10)
 
 		if(3.0)
 			b_loss = 30
-			if (!istype(l_ear, /obj/item/clothing/ears/earmuffs) && !istype(r_ear, /obj/item/clothing/ears/earmuffs))
+			if(!istype(l_ear, /obj/item/clothing/ears/earmuffs) && !istype(r_ear, /obj/item/clothing/ears/earmuffs))
 				ear_damage += 15
 				ear_deaf += 60
-			if (prob(50))
+			if(prob(50))
 				Paralyse(10)
 
 	// factor in armour
@@ -196,7 +196,7 @@
 		temp.take_external_damage(b_loss * loss_val, f_loss * loss_val, used_weapon = weapon_message)
 
 /mob/living/carbon/human/blob_act(destroy = 0, obj/effect/blob/source = null)
-	if (is_dead())
+	if(is_dead())
 		return
 
 	var/blocked = run_armor_check(BP_CHEST, "melee")
