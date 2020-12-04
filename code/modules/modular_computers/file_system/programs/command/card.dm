@@ -180,7 +180,7 @@
 							if(A in known_access_rights)
 								contents += "  [get_access_desc(A)]"
 
-						if(!computer.nano_printer.print_text(contents,"access report"))
+						if(!computer.nano_printer.print_text(contents,"access report", rawhtml = TRUE))
 							to_chat(usr, "<span class='notice'>Hardware error: Printer was unable to print the file. It may be out of paper.</span>")
 							return
 						else
@@ -190,7 +190,7 @@
 									<br>
 									[html_crew_manifest()]
 									"}
-					if(!computer.nano_printer.print_text(contents,text("crew manifest ([])", stationtime2text())))
+					if(!computer.nano_printer.print_text(contents,text("crew manifest ([])", stationtime2text()), rawhtml = TRUE))
 						to_chat(usr, "<span class='notice'>Hardware error: Printer was unable to print the file. It may be out of paper.</span>")
 						return
 					else
