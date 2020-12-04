@@ -56,7 +56,10 @@
 	 "Ben-Perzman Tradeband",\
 	 "SteelGoose Supplies",\
 	 "Brown Moose Trading Company",\
-	 "Snail Lovers Union")
+	 "Snail Lovers Union",\
+	 "EpicSeven Supply Company",\
+	 "Do Star Tradeband",\
+	 "Goliath Intergalactic Shop")
 	var/another_stations = list("NSV Caduceus",\
 	  "NSV Luna",\
 	  "NTV Sierra Otago",\
