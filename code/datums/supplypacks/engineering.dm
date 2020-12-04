@@ -264,3 +264,19 @@
 	containername = "\improper Engineering voidsuit crate"
 	containertype = /obj/structure/closet/crate/secure/large
 	access = access_engine
+
+/decl/hierarchy/supply_pack/engineering/rig
+	name = "EVA RIG"
+	contains = list(/obj/item/weapon/rig/eva)
+	cost = 180
+	containername = "\improper EVA RIG crate"
+	containertype = /obj/structure/closet/crate/secure/engineering
+	access = access_engine
+
+/decl/hierarchy/supply_pack/engineering/ce
+	name = "CE RIG"
+	contains = list(/obj/item/weapon/rig/ce)
+	cost = 600
+	containername = "\improper CE RIG crate"
+	containertype = /obj/structure/closet/crate/secure/engineering
+	access = access_ce

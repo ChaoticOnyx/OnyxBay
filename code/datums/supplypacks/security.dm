@@ -113,6 +113,14 @@
 	containertype = /obj/structure/closet/crate/secure/large
 	access = access_brig
 
+/decl/hierarchy/supply_pack/security/rig
+	name = "Armor - Security RIG"
+	contains = list(/obj/item/weapon/rig/security)
+	cost = 480
+	containername = "\improper Security RIG crate"
+	containertype = /obj/structure/closet/crate/secure
+	access = access_brig
+
 /decl/hierarchy/supply_pack/security/weapons
 	name = "Weapons - Security basic"
 	contains = list(/obj/item/device/flash = 4,
