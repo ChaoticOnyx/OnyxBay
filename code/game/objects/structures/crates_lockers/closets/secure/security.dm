@@ -17,7 +17,7 @@
 		/obj/item/clothing/suit/captunic,
 		/obj/item/clothing/suit/captunic/capjacket,
 		/obj/item/clothing/suit/captunic/formal,
-		/obj/item/clothing/suit/armor/vest,
+		/obj/item/clothing/suit/armor/vest/capcarapace,
 		/obj/item/clothing/under/rank/captain,
 		/obj/item/clothing/under/dress/dress_cap,
 		/obj/item/clothing/under/captainformal,

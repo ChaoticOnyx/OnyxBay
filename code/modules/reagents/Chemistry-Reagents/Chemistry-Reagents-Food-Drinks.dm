@@ -847,8 +847,6 @@
 	color = "#ffff00"
 	adj_temp = -5
 
-	glass_required = "square"
-	glass_icon_state = "lemonade"
 	glass_desc = "Oh the nostalgia..."
 	glass_special = list(DRINK_FIZZ, DRINK_ICE)
 

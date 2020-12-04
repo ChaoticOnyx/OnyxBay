@@ -587,7 +587,7 @@ var/list/gear_datums = list()
 	var/path               //Path to item.
 	var/cost = 1           //Number of points used. Items in general cost 1 point, storage/armor/gloves/special use costs 2 points.
 	var/price              //Price of item, opyxes
-	var/discount = 0.5     //Discount to a price
+	var/discount           //Discount to a price
 	var/patron_tier        //Patron tier restriction
 	var/slot               //Slot to equip to.
 	var/list/allowed_roles //Roles that can spawn with this item.

@@ -4,10 +4,10 @@
 
 	..()
 
-	if (transforming)
-		return
+	if(transforming)
+		return 0
 	if(!loc)
-		return
+		return 0
 
 	if(machine && !CanMouseDrop(machine, src))
 		machine = null
