@@ -936,7 +936,7 @@
 				AddBan(M.ckey, M.computer_id, reason, usr.ckey, 1, mins)
 				ban_unban_log_save("[usr.client.ckey] has banned [M.ckey]. - Reason: [reason] - This will be removed in [mins] minutes.")
 				notes_add(M.ckey,"[usr.client.ckey] has banned [M.ckey]. - Reason: [reason] - This will be removed in [mins] minutes.",usr)
-				to_chat(M, "<span class='danger'>You have been banned by [usr.client.ckey].\nReason: [reason].</span>")
+				to_chat(M, "<span class='danger'><font size='6'>You have been banned by [usr.client.ckey].</font>.\nReason: [reason].</span>")
 				to_chat(M, "<span class='warning'>This is a temporary ban, it will be removed in [mins] minutes.</span>")
 				feedback_inc("ban_tmp",1)
 				DB_ban_record(BANTYPE_TEMP, M, mins, reason, ban_everywhere = ban_everywhere)
@@ -966,7 +966,7 @@
 						AddBan(M.ckey, M.computer_id, reason, usr.ckey, 0, 0, M.lastKnownIP)
 					if("No")
 						AddBan(M.ckey, M.computer_id, reason, usr.ckey, 0, 0)
-				to_chat(M, "<span class='danger'>You have been banned by [usr.client.ckey].\nReason: [reason].</span>")
+				to_chat(M, "<span class='danger'><font size='6'>You have been banned by [usr.client.ckey].</font>\nReason: [reason].</span>")
 				to_chat(M, "<span class='warning'>This is a ban until appeal.</span>")
 				if(config.banappeals)
 					to_chat(M, "<span class='warning'>To try to resolve this matter head to [config.banappeals]</span>")
@@ -2028,7 +2028,7 @@
 					to_chat(usr, "Failed to add language '[lang2toggle]' from \the [M]!")
 
 			show_player_panel(M)
-	
+
 	else if(href_list["listen_tape_sound"])
 		var/sound/S = sound(locate(href_list["listen_tape_sound"]))
 		if(!S) return
@@ -2036,7 +2036,7 @@
 		S.channel = 703
 		sound_to(usr, S)
 		to_chat(usr, "<B><A HREF='?_src_=holder;stop_tape_sound=1'>Stop listening</A></B>")
-	
+
 	else if(href_list["stop_tape_sound"])
 		var/sound/S = sound(null)
 		S.channel = 703
