@@ -395,7 +395,7 @@
 		//If attack_hand is updated, this segment won't have to be updated as well.
 		return attack_hand(user)
 
-/obj/machinery/reagentgrinder/interact(mob/user as mob) // The microwave Menu
+/obj/machinery/reagentgrinder/interact(mob/user) // The microwave Menu
 	if(inoperable())
 		return
 	user.set_machine(src)
