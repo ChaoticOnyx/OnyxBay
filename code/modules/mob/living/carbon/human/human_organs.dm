@@ -266,26 +266,22 @@
 
 	// You should not be able to pick anything up, but stranger things have happened.
 	if(l_hand)
-		for(var/limb_tag in list(BP_L_HAND, BP_L_ARM))
-			var/obj/item/organ/external/E = get_organ(limb_tag)
-			if(!E)
-				visible_message("<span class='danger'>Lacking a functioning left hand, \the [src] drops \the [l_hand].</span>")
-				drop_from_inventory(l_hand,force = 1)
-				break
+		var/obj/item/organ/external/E = get_organ(BP_L_HAND) // We don't need to check for arms if we already have no hands
+		if(!E)
+			visible_message("<span class='danger'>Lacking a functioning left hand, \the [src] drops \the [l_hand].</span>")
+			drop_from_inventory(l_hand, force = 1)
 
 	if(r_hand)
-		for(var/limb_tag in list(BP_R_HAND, BP_R_ARM))
-			var/obj/item/organ/external/E = get_organ(limb_tag)
-			if(!E)
-				visible_message("<span class='danger'>Lacking a functioning right hand, \the [src] drops \the [r_hand].</span>")
-				drop_from_inventory(r_hand,force = 1)
-				break
+		var/obj/item/organ/external/E = get_organ(BP_R_HAND)
+		if(!E)
+			visible_message("<span class='danger'>Lacking a functioning right hand, \the [src] drops \the [r_hand].</span>")
+			drop_from_inventory(r_hand, force = 1)
 
 	// Check again...
 	if(!l_hand && !r_hand)
 		return
 
-	for (var/obj/item/organ/external/E in organs)
+	for(var/obj/item/organ/external/E in grasp_limbs)
 		if(!E || !(E.limb_flags & ORGAN_FLAG_CAN_GRASP))
 			continue
 		if(((E.is_broken() || E.is_dislocated()) && !E.splinted) || E.is_malfunctioning())

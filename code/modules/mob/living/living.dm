@@ -487,6 +487,9 @@
 	// restore us to conciousness
 	set_stat(CONSCIOUS)
 
+	// finally update health to make everything work correctly
+	updatehealth()
+
 	// make the icons look correct
 	regenerate_icons()
 

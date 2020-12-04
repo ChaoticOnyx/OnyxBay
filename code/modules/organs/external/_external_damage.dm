@@ -10,7 +10,7 @@ obj/item/organ/external/take_general_damage(amount, silent = FALSE)
 	take_external_damage(amount)
 
 /obj/item/organ/external/proc/take_external_damage(brute, burn, damage_flags, used_weapon = null)
-	if(owner.status_flags & GODMODE)
+	if(owner && owner.status_flags & GODMODE)
 		return 0
 	brute = round(brute * brute_mod, 0.1)
 	burn = round(burn * burn_mod, 0.1)
@@ -25,9 +25,9 @@ obj/item/organ/external/take_general_damage(amount, silent = FALSE)
 	if(used_weapon)
 		add_autopsy_data("[used_weapon]", brute + burn)
 
-	if (brute)
+	if(brute)
 		SSstoryteller.report_wound(owner, BRUTE, brute)
-	if (burn)
+	if(burn)
 		SSstoryteller.report_wound(owner, BURN, burn)
 
 	var/can_cut = (!BP_IS_ROBOTIC(src) && (sharp || prob(brute*2)))
