@@ -41,7 +41,7 @@
 			user.visible_message(SPAN_WARNING("[user] raises \the [src] up to their mouth and bites into it."), SPAN_NOTICE("You raise \the [src] up to your mouth and bite into it, starting to drain its contents.<br>You need to stand still."))
 			being_feed = TRUE
 			vampire_marks = TRUE
-			while (do_after(user, 25, 5, 1))
+			while (do_after(user, 30, src))
 				if(!user)
 					return
 				var/blood_taken = 0
@@ -117,16 +117,16 @@
 	reagents.trans_to_mob(attached, amount_per_transfer_from_this, CHEM_BLOOD)
 	update_icon()
 
-/obj/item/weapon/reagent_containers/ivbag/nanoblood/New()
-	..()
+/obj/item/weapon/reagent_containers/ivbag/nanoblood/Initialize()
+	. = ..()
 	reagents.add_reagent(/datum/reagent/nanoblood, volume)
 
 /obj/item/weapon/reagent_containers/ivbag/blood
 	name = "blood pack"
 	var/blood_type = null
 
-/obj/item/weapon/reagent_containers/ivbag/blood/New()
-	..()
+/obj/item/weapon/reagent_containers/ivbag/blood/Initialize()
+	. = ..()
 	if(blood_type)
 		name = "blood pack [blood_type]"
 		reagents.add_reagent(/datum/reagent/blood, volume, list("donor" = null, "blood_DNA" = null, "blood_type" = blood_type, "trace_chem" = null, "virus2" = list(), "antibodies" = list()))

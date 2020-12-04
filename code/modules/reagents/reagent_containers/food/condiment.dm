@@ -143,7 +143,7 @@
 	desc = "Used in cooking various dishes."
 	icon_state = "enzyme"
 
-/obj/item/weapon/reagent_containers/food/condiment/enzyme/New()
+/obj/item/weapon/reagent_containers/food/condiment/enzyme/Initialize()
 	. = ..()
 	reagents.add_reagent(/datum/reagent/enzyme, 50)
 
@@ -152,11 +152,11 @@
 	desc = "Barbecue sauce, it's labeled 'sweet and spicy'"
 	icon_state = "barbecue"
 
-/obj/item/weapon/reagent_containers/food/condiment/barbecue/New()
+/obj/item/weapon/reagent_containers/food/condiment/barbecue/Initialize()
 	. = ..()
 	reagents.add_reagent(/datum/reagent/nutriment/barbecue, 50)
 
-/obj/item/weapon/reagent_containers/food/condiment/sugar/New()
+/obj/item/weapon/reagent_containers/food/condiment/sugar/Initialize()
 	. = ..()
 	reagents.add_reagent(/datum/reagent/sugar, 50)
 
@@ -174,8 +174,8 @@
 	icon_state = "saltshakersmall"
 	center_of_mass = "x=16;y=9"
 
-/obj/item/weapon/reagent_containers/food/condiment/small/saltshaker/New()
-	..()
+/obj/item/weapon/reagent_containers/food/condiment/small/saltshaker/Initialize()
+	. = ..()
 	reagents.add_reagent(/datum/reagent/sodiumchloride, 20)
 
 /obj/item/weapon/reagent_containers/food/condiment/small/peppermill
@@ -184,8 +184,8 @@
 	icon_state = "peppermillsmall"
 	center_of_mass = "x=16;y=8"
 
-/obj/item/weapon/reagent_containers/food/condiment/small/peppermill/New()
-	..()
+/obj/item/weapon/reagent_containers/food/condiment/small/peppermill/Initialize()
+	. = ..()
 	reagents.add_reagent(/datum/reagent/blackpepper, 20)
 
 /obj/item/weapon/reagent_containers/food/condiment/small/sugar
@@ -194,7 +194,7 @@
 	icon_state = "sugarsmall"
 	center_of_mass = "x=17;y=9"
 
-/obj/item/weapon/reagent_containers/food/condiment/small/sugar/New()
+/obj/item/weapon/reagent_containers/food/condiment/small/sugar/Initialize()
 	. = ..()
 	reagents.add_reagent(/datum/reagent/sugar, 20)
 
@@ -209,6 +209,6 @@
 /obj/item/weapon/reagent_containers/food/condiment/flour/on_reagent_change()
 	return
 
-/obj/item/weapon/reagent_containers/food/condiment/flour/New()
-	..()
+/obj/item/weapon/reagent_containers/food/condiment/flour/Initialize()
+	. = ..()
 	reagents.add_reagent(/datum/reagent/nutriment/flour, 30)
