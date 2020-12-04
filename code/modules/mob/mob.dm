@@ -80,16 +80,15 @@
 // self_message (optional) is what the src mob sees  e.g. "You do something!"
 // blind_message (optional) is what blind people will hear e.g. "You hear something!"
 /mob/visible_message(message, self_message, blind_message, range = world.view, checkghosts = null, narrate = FALSE)
-	var/turf/T = get_turf(src)
-	var/list/mobs = list()
-	var/list/objs = list()
-	get_mobs_and_objs_in_view_fast(T,range, mobs, objs, checkghosts)
+	var/list/seeing_mobs = list()
+	var/list/seeing_objs = list()
+	get_mobs_and_objs_in_view_fast(get_turf(src), range, seeing_mobs, seeing_objs, checkghosts)
 
-	for(var/o in objs)
+	for(var/o in seeing_objs)
 		var/obj/O = o
 		O.show_message(message, VISIBLE_MESSAGE, blind_message, AUDIBLE_MESSAGE)
 
-	for(var/m in mobs)
+	for(var/m in seeing_mobs)
 		var/mob/M = m
 		if(self_message && M == src)
 			M.show_message(self_message, VISIBLE_MESSAGE, blind_message, AUDIBLE_MESSAGE)
@@ -120,12 +119,15 @@
 // deaf_message (optional) is what deaf people will see.
 // hearing_distance (optional) is the range, how many tiles away the message can be heard.
 /mob/audible_message(message, self_message, deaf_message, hearing_distance = world.view, checkghosts = null, narrate = FALSE)
-	var/turf/T = get_turf(src)
-	var/list/mobs = list()
-	var/list/objs = list()
-	get_mobs_and_objs_in_view_fast(T, hearing_distance, mobs, objs, checkghosts)
+	var/list/hearing_mobs = list()
+	var/list/hearing_objs = list()
+	get_mobs_and_objs_in_view_fast(get_turf(src), hearing_distance, hearing_mobs, hearing_objs, checkghosts)
 
-	for(var/m in mobs)
+	for(var/o in hearing_objs)
+		var/obj/O = o
+		O.show_message(message, AUDIBLE_MESSAGE, deaf_message, VISIBLE_MESSAGE)
+
+	for(var/m in hearing_mobs)
 		var/mob/M = m
 		if(self_message && M == src)
 			M.show_message(self_message, AUDIBLE_MESSAGE, deaf_message, VISIBLE_MESSAGE)
@@ -133,10 +135,6 @@
 			M.show_message(message, AUDIBLE_MESSAGE, deaf_message, VISIBLE_MESSAGE)
 		else
 			M.show_message(message, AUDIBLE_MESSAGE)
-
-	for(var/o in objs)
-		var/obj/O = o
-		O.show_message(message, AUDIBLE_MESSAGE, deaf_message, VISIBLE_MESSAGE)
 
 /mob/proc/findname(msg)
 	for(var/mob/M in SSmobs.mob_list)

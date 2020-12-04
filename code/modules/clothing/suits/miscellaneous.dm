@@ -214,11 +214,13 @@
 
 //coats
 
-/obj/item/clothing/suit/leathercoat
+/obj/item/clothing/suit/storage/toggle/leathercoat
 	name = "leather coat"
 	desc = "A long, thick black leather coat."
-	icon_state = "leathercoat"
-	item_state = "leathercoat"
+	icon_state = "leathercoat_open"
+	item_state = "leathercoat_open"
+	icon_open = "leathercoat_open"
+	icon_closed = "leathercoat"
 
 /obj/item/clothing/suit/browncoat
 	name = "brown leather coat"

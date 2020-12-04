@@ -89,6 +89,7 @@
 	desc = "Goggles fitted with a portable analyzer capable of determining the fabricator training potential of an item or components of a machine. Sensitive to EMP."
 	icon_state = "purple"
 	item_state = "glasses"
+	action_button_name = "Toggle Goggles"
 	hud_type = HUD_SCIENCE
 	toggleable = TRUE
 	electric = TRUE

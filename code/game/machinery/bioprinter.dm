@@ -137,15 +137,16 @@
 		new /obj/item/stack/material/steel(get_turf(src), Floor(stored_matter/matter_amount_per_sheet))
 	return ..()
 
-/obj/machinery/organ_printer/robot/New()
-	..()
+/obj/machinery/organ_printer/robot/Initialize()
+	. = ..()
+	products.Add(BP_CELL = list(/obj/item/organ/internal/cell, 25))
 	component_parts += new /obj/item/weapon/circuitboard/roboprinter
 
 /obj/machinery/organ_printer/robot/print_organ(choice)
 	var/obj/item/organ/O = ..()
 	var/obj/item/organ/external/externalOrgan = O
 	if(istype(externalOrgan))
-		externalOrgan.robotize("Hephaestus Industries", just_printed = TRUE)
+		externalOrgan.robotize("Nanotrasen", just_printed = TRUE)
 		// TODO [V] Add other companies and ability to choose from input
 	else
 		O.robotize()

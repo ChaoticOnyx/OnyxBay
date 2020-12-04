@@ -92,7 +92,8 @@ datum/uplink_item/item/tools/cleaning_kit
 
 /datum/uplink_item/item/tools/flashdark
 	name = "Flashdark"
-	item_cost = 28
+	item_cost = 65
+	antag_costs = list(MODE_MERCENARY = 129)
 	path = /obj/item/device/flashlight/flashdark
 
 /datum/uplink_item/item/tools/powersink

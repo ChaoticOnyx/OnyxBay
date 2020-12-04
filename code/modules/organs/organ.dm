@@ -66,6 +66,8 @@ var/list/organ_cache = list()
 	create_reagents(5 * (w_class-1)**2)
 	reagents.add_reagent(/datum/reagent/nutriment/protein, reagents.maximum_volume)
 
+	src.after_organ_creation()
+
 	update_icon()
 
 /obj/item/organ/proc/set_dna(datum/dna/new_dna)
@@ -343,6 +345,10 @@ var/list/organ_cache = list()
 			. +=  "Septic"
 	if(rejecting)
 		. += "Genetic Rejection"
+
+// special organ instruction for correct functional
+/obj/item/organ/proc/after_organ_creation()
+	return
 
 //used by stethoscope
 /obj/item/organ/proc/listen()

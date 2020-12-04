@@ -7,7 +7,7 @@
 	var/mineral_sparse =  /turf/simulated/mineral/random
 	var/mineral_rich = /turf/simulated/mineral/random/high_chance
 	var/list/ore_turfs = list()
-	var/max_mobs_count = 100 //maximum amount of mobs on the map. Some of the numbers lost in "frame" of the map
+	var/max_mobs_count = 125 //maximum amount of mobs on the map. Some of the numbers lost in "frame" of the map
 /datum/random_map/automata/cave_system/get_appropriate_path(value)
 	switch(value)
 		if(DOOR_CHAR)
@@ -91,6 +91,7 @@
 	var/count_hoverhead = 0
 	var/count_cosmopterid = 0
 	var/count_shockzard = 0
+	var/count_alpha_goliath = 0
 	var/count_beholder = 0
 	var/mobs_count = 0
 	for (var/thing in block(locate(origin_x, origin_y, origin_z), locate(limit_x, limit_y, origin_z)))
@@ -113,19 +114,22 @@
 			if(MONSTER_CHAR)
 				new_path = floor_type
 				var/chance = rand(100)
-				if(chance <= 66)
+				if(chance <= 60)
 					new /mob/living/simple_animal/hostile/asteroid/sand_lurker(T)
 					count_cosmopterid++
-				else if(chance <= 82 && chance > 66)
+				else if(chance <= 78 && chance > 60)
 					new /mob/living/simple_animal/hostile/asteroid/hoverhead(T)
 					count_hoverhead++
-				else if(chance <= 90 && chance > 82)
+				else if(chance <= 88 && chance > 78)
 					new /mob/living/simple_animal/hostile/asteroid/goliath(T)
 					count_goliath++
-				else if(chance <= 98 && chance > 90)
+				else if(chance <= 96 && chance > 88)
 					new /mob/living/simple_animal/hostile/asteroid/shooter(T)
 					count_shockzard++
-				else if (chance > 98)
+				else if(chance <= 98 && chance > 96)
+					new /mob/living/simple_animal/hostile/asteroid/goliath/alpha(T)
+					count_alpha_goliath++
+				else if(chance > 98)
 					new /mob/living/simple_animal/hostile/asteroid/shooter/beholder(T)
 					count_beholder++
 				mobs_count++
@@ -145,5 +149,6 @@
 	game_log("ASGEN", "Spawned [count_hoverhead] hoverheads (asteroid).")
 	game_log("ASGEN", "Spawned [count_goliath] goliaths (asteroid).")
 	game_log("ASGEN", "Spawned [count_shockzard] shockzards (asteroid).")
+	game_log("ASGEN", "Spawned [count_alpha_goliath] alpha goliaths (asteroid).")
 	game_log("ASGEN", "Spawned [count_beholder] beholders (asteroid).")
 	log_to_dd("Spawned [mobs_count] monsters (asteroid).")
