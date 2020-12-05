@@ -23,6 +23,11 @@
 /obj/effect/portal/Initialize(mapload, end, delete_after = 300, failure_rate)
 	. = ..()
 	setup_portal(end, delete_after, failure_rate)
+	addtimer(CALLBACK(src,/obj/effect/portal/proc/teleport_everything_on_portal), 1 SECOND)
+
+/obj/effect/portal/proc/teleport_everything_on_portal()
+	for(var/atom/movable/MV in get_turf(src))
+		teleport(MV)
 
 /obj/effect/portal/Destroy()
 	target = null
