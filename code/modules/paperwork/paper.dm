@@ -32,6 +32,7 @@
 	var/spam_flag = 0
 	var/readonly = FALSE
 	var/appendable = TRUE
+	var/dynamic_icon = FALSE
 
 	var/const/deffont = "Verdana"
 	var/const/signfont = "Times New Roman"
@@ -47,7 +48,9 @@
 	var/static/regex/field_regex = regex(@#<!--paper_field_(\w+)-->#, "g")
 	var/static/regex/field_link_regex = regex("<font face=\"[deffont]\"><A href='\\?src=\[^'\]+?;write=\[^'\]+'>write</A></font>", "g")
 
-/obj/item/weapon/paper/New(loc, text, title, rawhtml = FALSE, noinit = FALSE)
+
+/obj/item/weapon/paper/Initialize(loc, text, title, rawhtml = FALSE, noinit = FALSE)
+
 	..(loc)
 	if (noinit)
 		return
@@ -126,7 +129,7 @@
 	generateinfolinks()
 
 /obj/item/weapon/paper/update_icon()
-	if(icon_state == "paper_talisman")
+	if(dynamic_icon)
 		return
 	else if(info)
 		icon_state = "paper_words"
