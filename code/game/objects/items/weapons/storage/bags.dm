@@ -73,10 +73,21 @@
 	icon_state = "plasticbag"
 	item_state = "plasticbag"
 
+	use_sound = 'sound/items/shpshpsh.ogg'
 	w_class = ITEM_SIZE_TINY
 	max_w_class = ITEM_SIZE_NORMAL
 	max_storage_space = DEFAULT_BOX_STORAGE
 	can_hold = list() // any
+
+/obj/item/weapon/storage/bag/plasticbag/attackby(obj/item/W, mob/user)
+	if(W.sharp)
+		quick_empty()
+		user.visible_message(SPAN_WARNING("You cut [src]!"))
+		new /obj/item/clothing/mask/plasticbag(get_turf(src))
+		qdel(src)
+	else
+		..()
+
 
 // -----------------------------
 //           Cash Bag

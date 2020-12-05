@@ -33,6 +33,20 @@
 
 	return filtered
 
+/obj/item/clothing/mask/gas/plasticbag
+	name = "Taped plastic bag"
+	desc = "Not an eco-friendly way to strangle someone."
+	icon_state = "plasticbag_shut"
+	item_state = "plasticbag_shut"
+	flags_inv = HIDEFACE|BLOCKHAIR
+	item_flags = null
+	body_parts_covered = HEAD|FACE|EYES
+	tint = TINT_BLIND
+	voicechange = 1
+	filtered_gases = list("phoron", "sleeping_agent", "oxygen")
+	say_messages = list("Mmfph!", "Mmmf mrrfff!", "Mmmf mnnf!")
+	say_verbs = list("mumbles", "says")
+
 /obj/item/clothing/mask/gas/old
 	name = "old gas mask"
 	desc = "An old face-covering mask that can be connected to an air supply. Not less reliable than the new one, but it doesn't look very good. Filters harmful gases from the air."

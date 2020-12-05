@@ -23,6 +23,7 @@
 	icon_state = "ballgag"
 	item_state = "ballgag"
 
+
 /obj/item/clothing/mask/muzzle/Initialize()
 	. = ..()
 	say_messages = list("Mmfph!", "Mmmf mrrfff!", "Mmmf mnnf!")
@@ -130,6 +131,21 @@
 	item_state = "red_scarf"
 	body_parts_covered = 0
 	w_class = ITEM_SIZE_SMALL
+
+/obj/item/clothing/mask/plasticbag
+	name = "Plastic bag"
+	desc = "Not an eco-friendly way to get your money back."
+	icon_state = "plasticbag"
+	item_state = "plasticbag"
+	flags_inv = HIDEFACE|BLOCKHAIR
+	body_parts_covered = HEAD|FACE|EYES
+	tint = TINT_BLIND
+
+/obj/item/clothing/mask/plasticbag/attackby(obj/item/W, mob/user)
+	if(istype(W, /obj/item/weapon/tape_roll))
+		user.visible_message(SPAN_WARNING("You attach [W] piece to [src]!"))
+		new /obj/item/clothing/mask/gas/plasticbag(get_turf(src))
+		qdel(src)
 
 /obj/item/clothing/mask/pig
 	name = "pig mask"
