@@ -74,6 +74,11 @@ var/list/flooring_types
 	icon_base = "blue1"
 	build_type = /obj/item/stack/tile/carpetblue
 
+/decl/flooring/carpet/gblue
+	name = "blue carpet"
+	icon_base = "gblue"
+	build_type = /obj/item/stack/tile/carpetblue
+
 /decl/flooring/carpet/blue2
 	name = "pale blue carpet"
 	icon_base = "blue2"
@@ -88,6 +93,11 @@ var/list/flooring_types
 	name = "purple carpet"
 	icon_base = "purple"
 	build_type = /obj/item/stack/tile/carpetpurple
+
+/decl/flooring/carpet/gpurple
+	name = "purple carpet"
+	icon_base = "gpurple"
+	build_type = /obj/item/stack/tile/carpetgpurple
 
 /decl/flooring/carpet/orange
 	name = "orange carpet"

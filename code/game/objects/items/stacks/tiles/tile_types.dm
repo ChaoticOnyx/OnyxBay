@@ -184,6 +184,12 @@
 /obj/item/stack/tile/carpetpurple/fifty
 	amount = 50
 
+/obj/item/stack/tile/carpetgpurple
+	name = "purple carpet"
+	desc = "A piece of purple carpet."
+	singular_name = "purple carpet"
+	icon_state = "tile_carpetpurple"
+
 /obj/item/stack/tile/carpetorange
 	name = "orange carpet"
 	desc = "A piece of orange carpet."
