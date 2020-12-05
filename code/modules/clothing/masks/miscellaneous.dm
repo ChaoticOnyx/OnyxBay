@@ -133,7 +133,7 @@
 	w_class = ITEM_SIZE_SMALL
 
 /obj/item/clothing/mask/plasticbag
-	name = "Plastic bag"
+	name = "plastic bag"
 	desc = "Not an eco-friendly way to get your money back."
 	icon_state = "plasticbag"
 	item_state = "plasticbag"

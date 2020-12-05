@@ -34,7 +34,7 @@
 	return filtered
 
 /obj/item/clothing/mask/gas/plasticbag
-	name = "Taped plastic bag"
+	name = "taped plastic bag"
 	desc = "Not an eco-friendly way to strangle someone."
 	icon_state = "plasticbag_shut"
 	item_state = "plasticbag_shut"
