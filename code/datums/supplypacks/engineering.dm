@@ -272,11 +272,3 @@
 	containername = "\improper EVA RIG crate"
 	containertype = /obj/structure/closet/crate/secure/engineering
 	access = access_engine
-
-/decl/hierarchy/supply_pack/engineering/ce
-	name = "CE RIG"
-	contains = list(/obj/item/weapon/rig/ce)
-	cost = 600
-	containername = "\improper CE RIG crate"
-	containertype = /obj/structure/closet/crate/secure/engineering
-	access = access_ce
