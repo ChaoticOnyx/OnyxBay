@@ -80,7 +80,7 @@
 	can_hold = list() // any
 
 /obj/item/weapon/storage/bag/plasticbag/attackby(obj/item/W, mob/user)
-	if(W.sharp)
+	if(W.sharp && user.a_intent == "hurt")
 		quick_empty()
 		user.visible_message(SPAN_WARNING("You cut [src]!"))
 		new /obj/item/clothing/mask/plasticbag(get_turf(src))
