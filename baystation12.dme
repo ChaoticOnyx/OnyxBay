@@ -1016,6 +1016,7 @@
 #include "code\game\objects\structures\musician.dm"
 #include "code\game\objects\structures\noticeboard.dm"
 #include "code\game\objects\structures\onyxawards2018.dm"
+#include "code\game\objects\structures\pew.dm"
 #include "code\game\objects\structures\pit.dm"
 #include "code\game\objects\structures\plasticflaps.dm"
 #include "code\game\objects\structures\railing.dm"

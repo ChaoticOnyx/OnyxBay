@@ -245,6 +245,11 @@
 	icon_state = "blue2"
 	initial_flooring = /decl/flooring/carpet/blue2
 
+/turf/simulated/floor/trim/carpet/gblue
+	name = "pale blue carpet"
+	icon_state = "gblue"
+	initial_flooring = /decl/flooring/carpet/gblue
+
 /turf/simulated/floor/trim/carpet/oldred
 	name = "red carpet"
 	icon = 'icons/turf/flooring/carpet.dmi'
@@ -255,6 +260,11 @@
 	name = "purple carpet"
 	icon_state = "purple"
 	initial_flooring = /decl/flooring/carpet/purple
+
+/turf/simulated/floor/trim/carpet/gpurple
+	name = "purple carpet"
+	icon_state = "gpurple"
+	initial_flooring = /decl/flooring/carpet/gpurple
 
 /turf/simulated/floor/trim/carpet/orange
 	name = "orange carpet"
