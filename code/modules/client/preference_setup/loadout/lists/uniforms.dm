@@ -447,3 +447,4 @@
 	display_name = "fig leaf"
 	path = /obj/item/clothing/under/fig_leaf
 	price = 5
+	
