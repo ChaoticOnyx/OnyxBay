@@ -66,3 +66,4 @@
 	path = /obj/item/clothing/gloves/color/long_evening_gloves
 	price = 8
 	flags = GEAR_HAS_COLOR_SELECTION
+	
