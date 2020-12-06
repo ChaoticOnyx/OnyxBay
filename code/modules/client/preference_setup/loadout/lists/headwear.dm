@@ -233,3 +233,4 @@
 	path = /obj/item/clothing/head/caphat/cap/capcap_alt
 	price = 10
 	allowed_roles = COMMAND_ROLES
+	
