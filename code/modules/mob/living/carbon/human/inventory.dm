@@ -23,10 +23,10 @@ This saves us from having to call add_fingerprint() any time something is put in
 			to_chat(H, "<span class='warning'>You are unable to equip that.</span>")
 
 /mob/living/carbon/human/proc/equip_in_one_of_slots(obj/item/W, list/slots, del_on_fail = 1)
-	for (var/slot in slots)
-		if (equip_to_slot_if_possible(W, slots[slot], del_on_fail = 0))
+	for(var/slot in slots)
+		if(equip_to_slot_if_possible(W, slots[slot], del_on_fail = 0))
 			return slot
-	if (del_on_fail)
+	if(del_on_fail)
 		qdel(W)
 	return null
 
@@ -197,7 +197,7 @@ This saves us from having to call add_fingerprint() any time something is put in
 		update_inv_back()
 	else if (W == handcuffed)
 		if(handcuffed.on_restraint_removal(src)) //If this returns 1, then the unquipping action was interrupted
-			return 0	
+			return 0
 		handcuffed = null
 		if(buckled && buckled.buckle_require_restraints)
 			buckled.unbuckle_mob()
@@ -226,10 +226,14 @@ This saves us from having to call add_fingerprint() any time something is put in
 //set redraw_mob to 0 if you don't wish the hud to be updated - if you're doing it manually in your own proc.
 /mob/living/carbon/human/equip_to_slot(obj/item/W as obj, slot, redraw_mob = 1)
 
-	if(!slot) return
-	if(!istype(W)) return
-	if(!has_organ_for_slot(slot)) return
-	if(!species || !species.hud || !(slot in species.hud.equip_slots)) return
+	if(!slot)
+		return
+	if(!istype(W))
+		return
+	if(!has_organ_for_slot(slot))
+		return
+	if(!species || !species.hud || !(slot in species.hud.equip_slots))
+		return
 	W.forceMove(src)
 
 	var/obj/item/old_item = get_equipped_item(slot)

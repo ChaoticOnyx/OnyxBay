@@ -199,6 +199,15 @@
 	emp_act()
 		return
 
+/obj/machinery/door/blast/regular/retro
+	desc = "That looks like it doesn't open easily. However, it's probably not as durable as the modern ones."
+	icon_state_open = "old_pdoor0"
+	icon_state_opening = "old_pdoorc0"
+	icon_state_closed = "old_pdoor1"
+	icon_state_closing = "old_pdoorc1"
+	icon_state = "old_pdoor1"
+	maxhealth = 300
+
 // SUBTYPE: Shutters
 // Nicer looking, and also weaker, shutters. Found in kitchen and similar areas.
 /obj/machinery/door/blast/shutters

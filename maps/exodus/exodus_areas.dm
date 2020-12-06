@@ -594,6 +594,10 @@
 	name = "\improper Underground Engineering Maintenance"
 	icon_state = "uengineering"
 
+/area/maintenance/underground/engineering_lower
+	name = "\improper Underground Engineering"
+	icon_state = "uengineering"
+
 /area/maintenance/underground/research
 	name = "\improper Underground Research Maintenance"
 	icon_state = "uresearch"
@@ -1170,6 +1174,10 @@
 /area/chapel/office
 	name = "\improper Chapel Office"
 	icon_state = "chapeloffice"
+
+/area/chapel/crematorium
+	name = "\improper Сrematorium"
+	icon_state = "chapelcrematorium"
 
 /area/lawoffice
 	name = "\improper Internal Affairs"
@@ -1882,6 +1890,9 @@ area/rnd/test_area
 	name = "\improper Holodeck - Space"
 	has_gravity = 0
 	sound_env = SPACE
+
+/area/holodeck/source_chess
+	name = "\improper Holodeck - Chess Field"
 
 /area/prison/solitary
 	name = "Solitary Confinement"

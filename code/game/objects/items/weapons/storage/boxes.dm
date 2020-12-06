@@ -67,7 +67,7 @@
 	..()
 	foldable = null //special form fitted boxes should not be foldable.
 
-/obj/item/weapon/storage/box/survival/
+/obj/item/weapon/storage/box/survival
 	name = "crew survival kit"
 	desc = "A box decorated in warning colors that contains a limited supply of survival tools. The panel and white stripe indicate this one contains oxygen."
 	icon_state = "survival"
@@ -76,9 +76,9 @@
 					/obj/item/weapon/reagent_containers/hypospray/autoinjector = 1,
 					/obj/item/stack/medical/patches = 1,
 					/obj/item/device/flashlight/glowstick = 1,
-					/obj/item/weapon/reagent_containers/food/snacks/candy/proteinbar = 1)
+					/obj/item/weapon/reagent_containers/food/snacks/packaged/nutribar = 1)
 
-/obj/item/weapon/storage/box/vox/
+/obj/item/weapon/storage/box/vox
 	name = "vox survival kit"
 	desc = "A box decorated in warning colors that contains a limited supply of survival tools. The panel and black stripe indicate this one contains nitrogen."
 	icon_state = "survivalvox"
@@ -86,9 +86,9 @@
 					/obj/item/weapon/tank/emergency/nitrogen = 1,
 					/obj/item/stack/medical/patches = 1,
 					/obj/item/device/flashlight/glowstick = 1,
-					/obj/item/weapon/reagent_containers/food/snacks/candy/proteinbar = 1)
+					/obj/item/weapon/reagent_containers/food/snacks/packaged/nutribar = 1)
 
-/obj/item/weapon/storage/box/engineer/
+/obj/item/weapon/storage/box/engineer
 	name = "engineer survival kit"
 	desc = "A box decorated in warning colors that contains a limited supply of survival tools. The panel and orange stripe indicate this one as the engineering variant."
 	icon_state = "survivaleng"
@@ -97,8 +97,20 @@
 					/obj/item/weapon/reagent_containers/hypospray/autoinjector = 1,
 					/obj/item/weapon/reagent_containers/hypospray/autoinjector/detox = 1,
 					/obj/item/stack/medical/patches = 1,
-					/obj/item/device/flashlight/glowstick = 1,
-					/obj/item/weapon/reagent_containers/food/snacks/candy/proteinbar = 1)
+					/obj/item/device/flashlight/glowstick/orange = 1,
+					/obj/item/weapon/reagent_containers/food/snacks/packaged/nutribar = 1)
+
+/obj/item/weapon/storage/box/security
+	name = "security survival kit"
+	desc = "A box decorated in warning colors that contains a limited supply of survival tools. The panel and red & black stripe indicate this one as the security variant."
+	icon_state = "survivalsec"
+	startswith = list(/obj/item/clothing/mask/breath = 1,
+					/obj/item/weapon/tank/emergency/oxygen = 1,
+					/obj/item/weapon/reagent_containers/hypospray/autoinjector = 1,
+					/obj/item/weapon/reagent_containers/hypospray/autoinjector/tricordrazine = 1,
+					/obj/item/stack/medical/patches = 1,
+					/obj/item/device/flashlight/glowstick/red = 1,
+					/obj/item/weapon/reagent_containers/food/snacks/packaged/nutribar = 1)
 
 /obj/item/weapon/storage/box/gloves
 	name = "box of sterile gloves"

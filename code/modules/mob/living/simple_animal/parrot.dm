@@ -32,15 +32,16 @@
 	icon_state = "parrot_fly"
 	icon_living = "parrot_fly"
 	icon_dead = "parrot_dead"
+	item_state = "parrot_fly"
 	pass_flags = PASS_FLAG_TABLE
 	mob_size = MOB_SMALL
 
-	speak = list("Hi","Hello!","Cracker?","BAWWWWK george mellons griffing me")
+	speak = list("Привет","Крекер?","РЯЯЯЯ Фрэд Коллон убивает в техах")
 	speak_emote = list("squawks","says","yells")
 	emote_hear = list("squawks","bawks")
 	emote_see = list("flutters its wings")
 
-	speak_chance = 1//1% (1 in 100) chance every tick; So about once per 150 seconds, assuming an average tick is 1.5s
+	speak_chance = 5//5% (5 in 100) chance every tick; So about once per 30 seconds, assuming an average tick is 1.5s; (FAKE)
 	turns_per_move = 1
 	meat_type = /obj/item/weapon/reagent_containers/food/snacks/cracker/
 
@@ -49,6 +50,8 @@
 	response_harm   = "swats"
 	stop_automated_movement = 1
 	universal_speak = 1
+
+	var/phrase_chance = 15 // 15% chance every tick to add phrase from buffer to speaklist
 
 	var/parrot_state = PARROT_WANDER //Hunt for a perch when created
 	var/parrot_sleep_max = 25 //The time the parrot sits while perched before looking around. Mosly a way to avoid the parrot's AI in life() being run every single tick.
@@ -77,9 +80,13 @@
 									/obj/machinery/nuclearbomb,			/obj/machinery/particle_accelerator, \
 									/obj/machinery/recharge_station,	/obj/machinery/smartfridge, \
 									/obj/machinery/suit_storage_unit)
-
 	//Parrots are kleptomaniacs. This variable ... stores the item a parrot is holding.
 	var/obj/item/held_item = null
+
+	can_pull_size = ITEM_SIZE_SMALL
+	can_pull_mobs = MOB_PULL_SAME
+
+	holder_type = /obj/item/weapon/holder/parrot
 
 
 /mob/living/simple_animal/parrot/New()
@@ -123,6 +130,11 @@
 		dat +=	"<br><b>Headset:</b> [ears] (<a href='?src=\ref[src];remove_inv=ears'>Remove</a>)"
 	else
 		dat +=	"<br><b>Headset:</b> <a href='?src=\ref[src];add_inv=ears'>Nothing</a>"
+	if(held_item)
+		dat +=	"<br><b>Claws:</b> [held_item] <a href='?src=\ref[src];remove_inv=claws'>Remove</a>"
+	else
+		dat +=	"<br><b>Claws:</b> <a href='?src=\ref[src];add_inv=claws'>Nothing</a>"
+
 
 	user << browse(dat, text("window=mob[];size=325x500", name))
 	onclose(user, "mob[real_name]")
@@ -144,9 +156,9 @@
 				if("ears")
 					if(ears)
 						if(available_channels.len)
-							src.say("[pick(available_channels)] BAWWWWWK LEAVE THE HEADSET BAWKKKKK!")
+							src.say("[pick(available_channels)] РРРЯЯЯЯ ОСТАВЬ НАУШНИК РРЯЯЯЯЯЯ!")
 						else
-							src.say("BAWWWWWK LEAVE THE HEADSET BAWKKKKK!")
+							src.say("РРЯЯЯЯЯ ОСТАВЬ НАУШНИК РРРЯЯЯЯЯ!")
 						ears.loc = src.loc
 						ears = null
 						for(var/possible_phrase in speak)
@@ -155,6 +167,16 @@
 					else
 						to_chat(usr, "<span class='warning'>There is nothing to remove from its [remove_from].</span>")
 						return
+				else if("claws")
+					if(!held_item)
+						to_chat(usr, "<span class='warning'>There is nothing to remove from its [remove_from]!</span>")
+						return
+					if(available_channels.len)
+						src.say("[pick(available_channels)] РРРЯЯЯЯЯ ПОЛОЖИ НА МЕСТО РРЯЯЯЯЯЯ!")
+					else
+						src.say("РРРЯЯЯЯ ПОЛОЖИ НА МЕСТО РРРЯЯЯЯЯЯ!")
+					held_item.loc = src.loc
+					held_item = null
 
 		//Adding things to inventory
 		else if(href_list["add_inv"])
@@ -178,6 +200,7 @@
 
 						var/obj/item/device/radio/headset/headset_to_add = item_to_add
 
+
 						usr.drop_item()
 						headset_to_add.loc = src
 						src.ears = headset_to_add
@@ -200,6 +223,24 @@
 									available_channels.Add(":d")
 								if("Cargo")
 									available_channels.Add(":q")
+				else if("claws")
+					if(held_item)
+						to_chat(usr, "<span class='warning'>It's already wearing something.</span>")
+						return
+					else
+						var/obj/item/item_to_add = usr.get_active_hand()
+						if(!item_to_add)
+							return
+						else
+							usr.drop_item()
+							item_to_add.loc = src
+							src.held_item = item_to_add
+							to_chat(usr, "<span class='notice'>You put the item into claws.</span>")
+							if(istype(src, /mob/living/simple_animal/parrot/Poly))
+								if(prob(50))
+									say("Поли нравится!")
+								else
+									say("Поли недоволен!")
 		else
 			..()
 
@@ -274,6 +315,7 @@
 		return //Lets not force players or dead/incap parrots to move
 
 	if(!isturf(src.loc) || !canmove || buckled)
+		icon_state = "parrot_sit"
 		return //If it can't move, dont let it move. (The buckled check probably isn't necessary thanks to canmove)
 
 
@@ -282,7 +324,7 @@
 	   Phrases that the parrot hears in mob/living/say() get added to speach_buffer.
 	   Every once in a while, the parrot picks one of the lines from the buffer and replaces an element of the 'speech' list.
 	   Then it clears the buffer to make sure they dont magically remember something from hours ago. */
-	if(speech_buffer.len && prob(10))
+	if(speech_buffer.len && prob(phrase_chance))
 		if(speak.len)
 			speak.Remove(pick(speak))
 
@@ -511,7 +553,7 @@
 
 		if(istype(AM, /obj/item))
 			var/obj/item/I = AM
-			if(I.w_class < ITEM_SIZE_SMALL)
+			if(I.w_class <= ITEM_SIZE_SMALL)
 				return I
 
 		if(iscarbon(AM))
@@ -624,6 +666,7 @@
 
 	return
 
+
 /mob/living/simple_animal/parrot/proc/drop_held_item(drop_gently = 1)
 	set name = "Drop held item"
 	set category = "Parrot"
@@ -633,7 +676,8 @@
 		return -1
 
 	if(!held_item)
-		to_chat(usr, "<span class='warning'>You have nothing to drop!</span>")
+		if(drop_gently)
+			to_chat(src, SPAN("warning", "You have nothing to drop!"))
 		return 0
 
 	if(!drop_gently)
@@ -675,7 +719,7 @@
 /mob/living/simple_animal/parrot/Poly
 	name = "Poly"
 	desc = "Poly the Parrot. An expert on quantum cracker theory."
-	speak = list("Poly wanna cracker!", ":e Check the singlo, you chucklefucks!",":e Wire the solars, you lazy bums!",":e WHO TOOK THE DAMN HARDSUITS?",":e OH GOD ITS FREE CALL THE SHUTTLE")
+	speak = list("Поли хочет крекер!", ":e Проверьте материю, ущербы!",":e Настраивайте СМЕСы, ленивые жопы!",":e КТО СПИЗДИЛ ЧЕРТОВЫ РИГИ?",":e ОНА СЕЙЧАС ЕБНЕТ ВЫЗЫВАЙТЕ ШАТТЛ!")
 
 /mob/living/simple_animal/parrot/Poly/New()
 	ears = new /obj/item/device/radio/headset/headset_eng(src)
@@ -717,7 +761,7 @@
 
 
 /mob/living/simple_animal/parrot/hear_say(message, verb = "says", datum/language/language = null, alt_name = "",italics = 0, mob/speaker = null)
-	if(prob(50))
+	if(prob(50) && !istype(speaker, /mob/living/simple_animal/parrot))
 		parrot_hear(message)
 	..()
 

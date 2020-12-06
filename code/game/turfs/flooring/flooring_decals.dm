@@ -63,6 +63,14 @@ var/list/floor_decals = list()
 	name = "orange carpet"
 	icon_state = "purple_edges"
 
+/obj/effect/floor_decal/carpet/gpurple
+	name = "purple carpet"
+	icon_state = "gpurple_edges"
+
+/obj/effect/floor_decal/carpet/gpurpledecal
+	name = "purple carpet"
+	icon_state = "gpurpledecal_edges"
+
 /obj/effect/floor_decal/carpet/orange
 	name = "orange carpet"
 	icon_state = "orange_edges"
@@ -94,6 +102,14 @@ var/list/floor_decals = list()
 /obj/effect/floor_decal/carpet/purple/corners
 	name = "purple carpet"
 	icon_state = "purple_corners"
+
+/obj/effect/floor_decal/carpet/gpurple/corners
+	name = "purple carpet"
+	icon_state = "gpurple_corners"
+
+/obj/effect/floor_decal/carpet/gpurpledecal/corners
+	name = "purple carpet"
+	icon_state = "gpurpledecal_edges"
 
 /obj/effect/floor_decal/carpet/orange/corners
 	name = "orange carpet"
@@ -732,3 +748,66 @@ var/list/floor_decals = list()
 /obj/effect/floor_decal/ntlogo/sec
 	icon_state = "ntlogo_sec"
 
+/obj/effect/floor_decal/derelict/l1
+	name = "derelict1"
+	icon_state = "derelict1"
+
+/obj/effect/floor_decal/derelict/l2
+	name = "derelict2"
+	icon_state = "derelict2"
+
+/obj/effect/floor_decal/derelict/l3
+	name = "derelict3"
+	icon_state = "derelict3"
+
+/obj/effect/floor_decal/derelict/l4
+	name = "derelict4"
+	icon_state = "derelict4"
+
+/obj/effect/floor_decal/derelict/l5
+	name = "derelict5"
+	icon_state = "derelict5"
+
+/obj/effect/floor_decal/derelict/l6
+	name = "derelict6"
+	icon_state = "derelict6"
+
+/obj/effect/floor_decal/derelict/l7
+	name = "derelict7"
+	icon_state = "derelict7"
+
+/obj/effect/floor_decal/derelict/l8
+	name = "derelict8"
+	icon_state = "derelict8"
+
+/obj/effect/floor_decal/derelict/l9
+	name = "derelict9"
+	icon_state = "derelict9"
+
+/obj/effect/floor_decal/derelict/l10
+	name = "derelict10"
+	icon_state = "derelict10"
+
+/obj/effect/floor_decal/derelict/l11
+	name = "derelict11"
+	icon_state = "derelict11"
+
+/obj/effect/floor_decal/derelict/l12
+	name = "derelict12"
+	icon_state = "derelict12"
+
+/obj/effect/floor_decal/derelict/l13
+	name = "derelict13"
+	icon_state = "derelict13"
+
+/obj/effect/floor_decal/derelict/l14
+	name = "derelict14"
+	icon_state = "derelict14"
+
+/obj/effect/floor_decal/derelict/l15
+	name = "derelict15"
+	icon_state = "derelict15"
+
+/obj/effect/floor_decal/derelict/l16
+	name = "derelict16"
+	icon_state = "derelict16"

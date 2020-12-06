@@ -494,19 +494,22 @@ var/global/list/possible_changeling_IDs = list("Alpha","Beta","Gamma","Delta","E
 		return
 
 	if(mind.changeling.true_dead)
-		to_chat(src, "<span class='notice'>We can not do this. We are really dead.</span>")
-		return
-
-	if(!stat && alert("Are we sure we wish to fake our death?",,"Yes","No") == "No")//Confirmation for living changelings if they want to fake their death
+		to_chat(src, SPAN_NOTICE("We can not do this. We are really dead."))
 		return
 
 	if(is_regenerating())
+		to_chat(usr, SPAN_NOTICE("We're still regenerating."))
+		return
+
+	if(!stat && alert("Are we sure we wish to fake our death?",,"Yes","No") == "No")//Confirmation for living changelings if they want to fake their death
 		return
 
 	status_flags |= FAKEDEATH
 	update_canmove()
 
 	emote("gasp")
+
+	to_chat(usr, SPAN_NOTICE("We're starting to regenerate."))
 
 	addtimer(CALLBACK(src, .revive_ready), rand(80 SECONDS, 200 SECONDS))
 

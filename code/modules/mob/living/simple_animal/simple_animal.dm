@@ -32,7 +32,7 @@
 	var/response_help   = "tries to help"
 	var/response_disarm = "tries to disarm"
 	var/response_harm   = "tries to hurt"
-	var/harm_intent_damage = 3
+	var/harm_intent_damage = 3 // How much damage a human deals upon punching
 	var/can_escape = 0 // 'smart' simple animals such as human enemies, or things small, big, sharp or strong enough to power out of a net
 	var/mob/panic_target = null // shy simple animals run away from humans
 	var/turns_since_scan = 0
@@ -45,8 +45,8 @@
 	var/cold_damage_per_tick = 2	//same as heat_damage_per_tick, only if the bodytemperature it's lower than minbodytemp
 	var/fire_alert = 0
 	var/oxygen_alert = 0
-	var/toxins_alert = 0	
-	
+	var/toxins_alert = 0
+
 	//Atmos effect - Yes, you can make creatures that require phoron or co2 to survive. N2O is a trace gas and handled separately, hence why it isn't here. It'd be hard to add it. Hard and me don't mix (Yes, yes make all the dick jokes you want with that.) - Errorage
 	var/min_gas = list("oxygen" = 5)
 	var/max_gas = list("phoron" = 1, "carbon_dioxide" = 5)
@@ -61,6 +61,7 @@
 	var/friendly = "nuzzles"
 	var/environment_smash = 0
 	var/resistance		  = 0	// Damage reduction
+	var/armor_projectile  = 0   // Percentage of projectile damage blocked by a simple animal
 
 	var/damtype = BRUTE
 	var/defense = "melee"
@@ -73,24 +74,14 @@
 	var/in_stasis = 0
 
 /mob/living/simple_animal/Life()
-	..()
-	if(!living_observers_present(GetConnectedZlevels(z)))
-		return
-	//Health
 	if(stat == DEAD)
-		if(health > 0)
-			icon_state = icon_living
-			switch_from_dead_to_living_mob_list()
-			set_stat(CONSCIOUS)
-			set_density(1)
 		return 0
-
-	if(health <= 0)
-		death()
-		return
-
-	if(health > maxHealth)
-		health = maxHealth
+	. = ..()
+	if(!.)
+		walk(src, 0)
+		return 0
+	if(!living_observers_present(GetConnectedZlevels(z)) && !(z == 0))
+		return 0
 
 	handle_stunned()
 	handle_weakened()
@@ -162,7 +153,7 @@
 					atmos_suitable = 0
 					toxins_alert = 1
 				else
-					toxins_alert = 0					
+					toxins_alert = 0
 
 	//Atmos effect
 	if(bodytemperature < minbodytemp)
@@ -207,7 +198,7 @@
 	if(!Proj || Proj.nodamage)
 		return
 
-	var/damage = Proj.damage
+	var/damage = Proj.damage * ((100 - armor_projectile) / 100)
 	if(Proj.damtype == STUN)
 		damage = (Proj.damage / 8)
 
@@ -220,7 +211,7 @@
 	switch(M.a_intent)
 
 		if(I_HELP)
-			if (health > 0)
+			if(health > 0)
 				M.visible_message("<span class='notice'>[M] [response_help] \the [src].</span>")
 
 		if(I_DISARM)
@@ -272,9 +263,9 @@
 		return 2
 
 	var/damage = O.force
-	if (O.damtype == PAIN)
+	if(O.damtype == PAIN)
 		damage = 0
-	if (O.damtype == STUN)
+	if(O.damtype == STUN)
 		damage = (O.force / 8)
 	if(supernatural && istype(O,/obj/item/weapon/nullrod))
 		damage *= 2
@@ -301,24 +292,40 @@
 		stat(null, "Health: [round((health / maxHealth) * 100)]%")
 
 /mob/living/simple_animal/death(gibbed, deathmessage = "dies!", show_dead_message)
-	icon_state = icon_dead
-	density = 0
-	adjustBruteLoss(maxHealth) //Make sure dey dead.
-	walk_to(src,0)
-	return ..(gibbed,deathmessage,show_dead_message)
+	. = ..()
+	if(.)
+		icon_state = icon_dead
+		density = 0
+		health = 0 //Make sure dey dead.
+		walk_to(src, 0)
+
+/mob/living/simple_animal/rejuvenate()
+	..()
+	icon_state = icon_living
+	set_density(1)
+
+/mob/living/simple_animal/updatehealth()
+	if(stat == DEAD)
+		return
+	if(status_flags & GODMODE)
+		health = maxHealth
+		set_stat(CONSCIOUS)
+	else
+		health = maxHealth - getOxyLoss() - getToxLoss() - getFireLoss() - getBruteLoss() - getCloneLoss() - getHalLoss()
+		if(health <= 0)
+			death()
 
 /mob/living/simple_animal/ex_act(severity)
 	if(!blinded)
 		flash_eyes()
 
 	var/damage
-	switch (severity)
-		if (1.0)
+	switch(severity)
+		if(1.0)
 			damage = 500
 			if(!prob(getarmor(null, "bomb")))
 				gib()
-
-		if (2.0)
+		if(2.0)
 			damage = 120
 
 		if(3.0)

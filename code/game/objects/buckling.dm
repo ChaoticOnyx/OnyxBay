@@ -62,14 +62,14 @@
 			animate(M, pixel_x = M.default_pixel_x, pixel_y = M.default_pixel_y, 4, 1, LINEAR_EASING)
 
 /obj/proc/user_buckle_mob(mob/living/M, mob/user)
-	if(isanimal(user))
+	if(isanimal(user) || istype(M, /mob/living/simple_animal/hostile))
 		return 0
 	if(!user.Adjacent(M) || user.restrained() || user.incapacitated(INCAPACITATION_ALL) || user.stat || istype(user, /mob/living/silicon/pai))
 		return 0
 	if(M == buckled_mob)
 		return 0
 	if(istype(M, /mob/living/carbon/slime))
-		to_chat(user, "<span class='warning'>\The [M] is too squishy to buckle in.</span>")
+		to_chat(user, SPAN("warning", "\The [M] is too squishy to buckle in."))
 		return 0
 
 	add_fingerprint(user)
@@ -77,33 +77,37 @@
 
 	//can't buckle unless you share locs so try to move M to the obj.
 	if(M.loc != src.loc)
+		if(M != user && M.a_intent != I_HELP && !(M.restrained() || M.lying))
+			to_chat(user, SPAN("warning", "\The [M.name] resists buckling!"))
+			to_chat(M, SPAN("warning", "You resist getting buckled by \the [user.name]!"))
+			return 0
 		step_towards(M, src)
 
 	. = buckle_mob(M)
 	if(.)
 		if(M == user)
 			M.visible_message(\
-				"<span class='notice'>\The [M.name] buckles themselves to \the [src].</span>",\
-				"<span class='notice'>You buckle yourself to \the [src].</span>",\
-				"<span class='notice'>You hear metal clanking.</span>")
+				SPAN("notice", "\The [M.name] buckles themselves to \the [src]."),\
+				SPAN("notice", "You buckle yourself to \the [src]."),\
+				SPAN("notice", "You hear metal clanking."))
 		else
 			M.visible_message(\
-				"<span class='danger'>\The [M.name] is buckled to \the [src] by \the [user.name]!</span>",\
-				"<span class='danger'>You are buckled to \the [src] by \the [user.name]!</span>",\
-				"<span class='notice'>You hear metal clanking.</span>")
+				SPAN("danger", "\The [M.name] is buckled to \the [src] by \the [user.name]!"),\
+				SPAN("danger", "You are buckled to \the [src] by \the [user.name]!"),\
+				SPAN("notice", "You hear metal clanking."))
 
 /obj/proc/user_unbuckle_mob(mob/user)
 	var/mob/living/M = unbuckle_mob()
 	if(M)
 		if(M != user)
 			M.visible_message(\
-				"<span class='notice'>\The [M.name] was unbuckled by \the [user.name]!</span>",\
-				"<span class='notice'>You were unbuckled from \the [src] by \the [user.name].</span>",\
-				"<span class='notice'>You hear metal clanking.</span>")
+				SPAN("notice", "\The [M.name] was unbuckled by \the [user.name]!"),\
+				SPAN("notice", "You were unbuckled from \the [src] by \the [user.name]."),\
+				SPAN("notice", "You hear metal clanking."))
 		else
 			M.visible_message(\
-				"<span class='notice'>\The [M.name] unbuckled themselves!</span>",\
-				"<span class='notice'>You unbuckle yourself from \the [src].</span>",\
-				"<span class='notice'>You hear metal clanking.</span>")
+				SPAN("notice", "\The [M.name] unbuckled themselves!"),\
+				SPAN("notice", "You unbuckle yourself from \the [src]."),\
+				SPAN("notice", "You hear metal clanking."))
 		add_fingerprint(user)
 	return M

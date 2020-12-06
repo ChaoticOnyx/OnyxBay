@@ -13,3 +13,9 @@
 	mod_handy = 1.0
 	max_w_class = ITEM_SIZE_NORMAL
 	max_storage_space = DEFAULT_BACKPACK_STORAGE
+
+/obj/item/weapon/storage/briefcase/iaa
+	startswith = list(/obj/item/weapon/paper/trade_lic/trade_guide,\
+	/obj/item/weapon/folder/nt,\
+	/obj/item/weapon/pen,\
+	/obj/item/device/camera)
