@@ -93,3 +93,4 @@
 	path = /obj/item/weapon/storage/backpack/messenger/shoulder_bag
 	cost = 2
 	price = 15
+	
