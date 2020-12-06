@@ -173,7 +173,8 @@ SUBSYSTEM_DEF(supply)
 //			info +="[shoppinglist.len] PACKAGES IN THIS SHIPMENT<br>"
 			info +="CONTENTS:<br><ul>"
 
-			slip = new /obj/item/weapon/paper/manifest(A, info, rawhtml = TRUE)
+			slip = new /obj/item/weapon/paper/manifest(A)
+			slip.set_content(info, TRUE)
 			slip.is_copy = 0
 
 		//spawn the stuff, finish generating the manifest while you're at it
