@@ -6,5 +6,5 @@
 	required_players = 25
 	required_enemies = 6
 	end_on_antag_death = 0
-	antag_tags = list(MODE_RAIDER, MODE_SYNDICATE)
+	antag_tags = list(MODE_RAIDER, MODE_NUKE)
 	require_all_templates = 1

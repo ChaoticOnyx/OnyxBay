@@ -17,7 +17,7 @@ var/list/nuke_disks = list()
 	end_on_antag_death = 1
 	var/nuke_off_station = 0 //Used for tracking if the syndies actually haul the nuke to the station
 	var/syndies_didnt_escape = 0 //Used for tracking if the syndies got the shuttle off of the z-level
-	antag_tags = list(MODE_SYNDICATE)
+	antag_tags = list(MODE_NUKE)
 	cinematic_icon_states = list(
 		"intro_nuke" = 35,
 		"summary_nukewin",
@@ -32,7 +32,7 @@ var/list/nuke_disks = list()
 	return 0
 
 /datum/game_mode/nuclear/special_report()
-	var/datum/antagonist/syndi = GLOB.all_antag_types_[MODE_SYNDICATE]
+	var/datum/antagonist/syndi = GLOB.all_antag_types_[MODE_NUKE]
 	if(config.objectives_disabled == CONFIG_OBJECTIVE_NONE || (syndi && !syndi.global_objectives.len))
 		return ..()
 	var/disk_rescued = 1

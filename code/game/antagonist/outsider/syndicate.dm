@@ -1,7 +1,7 @@
 GLOBAL_DATUM_INIT(syndies, /datum/antagonist/syndicate, new)
 
 /datum/antagonist/syndicate
-	id = MODE_SYNDICATE
+	id = MODE_NUKE
 	role_text = "Syndicate Operative"
 	antag_indicator = "hudsyndicate"
 	role_text_plural = "Syndicate Operatives"
