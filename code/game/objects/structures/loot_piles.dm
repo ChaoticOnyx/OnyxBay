@@ -233,7 +233,23 @@ Loot piles can be depleted, if loot_depleted is turned on.  Note that players wh
 		/obj/item/weapon/contraband/poster,
 		/obj/item/weapon/newspaper,
 		/obj/item/weapon/paper/crumpled,
-		/obj/item/weapon/paper/crumpled/bloody
+		/obj/item/weapon/paper/crumpled/bloody,
+		/obj/item/trash/cans/cola,
+		/obj/item/trash/cans/colavanilla,
+		/obj/item/trash/cans/colacherry,
+		/obj/item/trash/cans/dopecola,
+		/obj/item/trash/cans/space_mountain_wind,
+		/obj/item/trash/cans/thirteenloko,
+		/obj/item/trash/cans/dr_gibb,
+		/obj/item/trash/cans/starkist,
+		/obj/item/trash/cans/space_up,
+		/obj/item/trash/cans/lemon_lime,
+		/obj/item/trash/cans/iced_tea,
+		/obj/item/trash/cans/grape_juice,
+		/obj/item/trash/cans/tonic,
+		/obj/item/trash/cans/sodawater,
+		/obj/item/trash/cans/machpellabeer,
+		/obj/item/trash/cans/applecider
 	)
 
 	uncommon_loot = list(

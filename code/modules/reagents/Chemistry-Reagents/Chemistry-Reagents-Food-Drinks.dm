@@ -812,7 +812,7 @@
 	reagent_state = LIQUID
 	color = "#5B250C"
 	nutrition = 2
-	adj_temp = 5
+	adj_temp = 30
 
 	glass_required = "square"
 	glass_name = "hot chocolate"
