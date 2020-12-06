@@ -44,7 +44,7 @@
 #define MODE_DEATHSQUAD "deathsquad"
 #define MODE_ERT "ert"
 #define MODE_ACTOR "actor"
-#define MODE_NUKE "syndicate"
+#define MODE_NUKE "nuke"
 #define MODE_NINJA "ninja"
 #define MODE_RAIDER "raider"
 #define MODE_WIZARD "wizard"
