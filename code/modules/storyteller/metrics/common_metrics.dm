@@ -89,13 +89,13 @@
 			if (MODE_CULTIST)       add_danger = 4
 			if (MODE_RENEGADE)      add_danger = 4
 			if (MODE_RAIDER)        add_danger = 4
-			if (MODE_NUKE)     add_danger = 4
+			if (MODE_NUKE)          add_danger = 4
 			if (MODE_DEATHSQUAD)    add_danger = 6
 			if (MODE_CHANGELING)    add_danger = 8
 			if (MODE_NINJA)         add_danger = 12
 			if (MODE_WIZARD)        add_danger = 16
 			if (MODE_BLOB)          add_danger = 24
-			if (MODE_MALFUNCTION)          add_danger = 24
+			if (MODE_MALFUNCTION)   add_danger = 24
 
 			// if ("god cultist") - /datum/antagonist/godcultist
 			// if ("xeno") - /datum/antagonist/xenos
