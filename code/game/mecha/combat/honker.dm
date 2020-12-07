@@ -20,7 +20,7 @@
 	if(!melee_can_hit)
 		return
 	else if(istype(target, /mob))
-		step_away(target,src,15)
+		step_away(target, src, 15)
 	return
 
 /obj/mecha/combat/honker/get_stats_part()
@@ -110,7 +110,7 @@
 	return output
 
 /obj/mecha/combat/honker/mechstep(direction)
-	var/result = step(src,direction)
+	var/result = step(src, direction)
 	if(result)
 		if(!squeak)
 			playsound(src, "clownstep", 70, 1)
@@ -130,6 +130,6 @@ obj/mecha/combat/honker/Topic(href, href_list)
 proc/rand_hex_color()
 	var/list/colors = list("0","1","2","3","4","5","6","7","8","9","a","b","c","d","e","f")
 	var/color=""
-	for(var/i=0;i<6;i++)
+	for(var/i in 0 to 5)
 		color = color+pick(colors)
 	return color
