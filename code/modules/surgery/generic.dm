@@ -34,7 +34,7 @@
 	/obj/item/weapon/scalpel/laser3 = 95, \
 	/obj/item/weapon/scalpel/laser2 = 85, \
 	/obj/item/weapon/scalpel/laser1 = 75, \
-	/obj/item/weapon/melee/energy/sword = 50
+	/obj/item/weapon/melee/energy/sword/one_hand = 50
 	)
 	priority = 2
 	duration = CUT_DURATION

@@ -42,7 +42,7 @@
 	gloves = /obj/item/clothing/gloves/thick
 	l_ear = /obj/item/device/radio/headset
 	glasses = /obj/item/clothing/glasses/sunglasses
-	l_pocket = /obj/item/weapon/melee/energy/sword
+	l_pocket = /obj/item/weapon/melee/energy/sword/one_hand
 
 	id_slot = slot_wear_id
 	id_type = /obj/item/weapon/card/id/syndicate/station_access
