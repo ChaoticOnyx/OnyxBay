@@ -430,13 +430,13 @@
 	display_name = "captain's formal uniform"
 	path = /obj/item/clothing/under/captainformal/captain_formal_alt
 	price = 10
-	allowed_roles = COMMAND_ROLES
+	allowed_roles = list(/datum/job/captain)
 
 /datum/gear/uniform/dress/captain_dress_alt
 	display_name = "captain's formal dress"
 	path = /obj/item/clothing/under/dress/dress_cap/captain_dress_alt
 	price = 10
-	allowed_roles = COMMAND_ROLES
+	allowed_roles = list(/datum/job/captain)
 
 /datum/gear/uniform/latex_suit
 	display_name = "latex suit"
@@ -447,4 +447,4 @@
 	display_name = "fig leaf"
 	path = /obj/item/clothing/under/fig_leaf
 	price = 5
-	
+

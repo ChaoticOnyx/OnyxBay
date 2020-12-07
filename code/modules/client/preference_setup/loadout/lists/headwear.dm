@@ -232,5 +232,4 @@
 	display_name = "captain's cap"
 	path = /obj/item/clothing/head/caphat/cap/capcap_alt
 	price = 10
-	allowed_roles = COMMAND_ROLES
-	
+	allowed_roles = list(/datum/job/captain)
