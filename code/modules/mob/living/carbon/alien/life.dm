@@ -9,10 +9,16 @@
 
 	..()
 
+	if (stat != DEAD && can_progress())
+		update_progression()
+
 	blinded = null
 
 	//Status updates, death etc.
 	update_icons()
+
+/mob/living/carbon/alien/proc/can_progress()
+	return 1
 
 
 /mob/living/carbon/alien/handle_mutations_and_radiation()

@@ -63,6 +63,14 @@ var/list/floor_decals = list()
 	name = "orange carpet"
 	icon_state = "purple_edges"
 
+/obj/effect/floor_decal/carpet/gpurple
+	name = "purple carpet"
+	icon_state = "gpurple_edges"
+
+/obj/effect/floor_decal/carpet/gpurpledecal
+	name = "purple carpet"
+	icon_state = "gpurpledecal_edges"
+
 /obj/effect/floor_decal/carpet/orange
 	name = "orange carpet"
 	icon_state = "orange_edges"
@@ -94,6 +102,14 @@ var/list/floor_decals = list()
 /obj/effect/floor_decal/carpet/purple/corners
 	name = "purple carpet"
 	icon_state = "purple_corners"
+
+/obj/effect/floor_decal/carpet/gpurple/corners
+	name = "purple carpet"
+	icon_state = "gpurple_corners"
+
+/obj/effect/floor_decal/carpet/gpurpledecal/corners
+	name = "purple carpet"
+	icon_state = "gpurpledecal_edges"
 
 /obj/effect/floor_decal/carpet/orange/corners
 	name = "orange carpet"

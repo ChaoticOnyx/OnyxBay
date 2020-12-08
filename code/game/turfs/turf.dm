@@ -29,12 +29,14 @@
 
 	var/movement_delay
 
-/turf/New()
-	..()
+/turf/Initialize(mapload, ...)
+	. = ..()
 	if(dynamic_lighting)
 		luminosity = 0
 	else
 		luminosity = 1
+
+	RecalculateOpacity()
 
 /turf/Destroy()
 	remove_cleanables()

@@ -6,7 +6,8 @@
 
 	tally += species.handle_movement_delay_special(src)
 
-	if (istype(loc, /turf/space)) return -1 // It's hard to be slowed down in space by... anything
+	if(istype(loc, /turf/space))
+		return -1 // It's hard to be slowed down in space by... anything
 
 	if(embedded_flag || (stomach_contents && stomach_contents.len))
 		handle_embedded_and_stomach_objects() //Moving with objects stuck in you can cause bad times.
@@ -24,7 +25,8 @@
 			tally += M.slowdown
 
 	var/health_deficiency = (maxHealth - health)
-	if(health_deficiency >= 40) tally += (health_deficiency / 25)
+	if(health_deficiency >= 40)
+		tally += (health_deficiency / 25)
 
 	if(can_feel_pain())
 		if(get_shock() >= 10)
@@ -96,7 +98,8 @@
 
 /mob/living/carbon/human/Allow_Spacemove(check_drift = 0)
 	//Can we act?
-	if(restrained())	return 0
+	if(restrained())
+		return 0
 
 	//Do we have a working jetpack?
 	var/obj/item/weapon/tank/jetpack/thrust

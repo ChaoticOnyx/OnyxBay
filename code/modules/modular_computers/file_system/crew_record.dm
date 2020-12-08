@@ -31,12 +31,12 @@ GLOBAL_VAR_INIT(arrest_security_status, "Arrest")
 
 /datum/computer_file/crew_record/proc/load_from_mob(mob/living/carbon/human/H, automatic = FALSE)
 	if(istype(H))
-		photo_front = getFlatIcon(H, defdir=SOUTH)
-		photo_side = getFlatIcon(H, defdir=WEST)
+		photo_front = getFlatIcon(H, SOUTH, always_use_defdir = 1)
+		photo_side = getFlatIcon(H, WEST, always_use_defdir = 1)
 	else
 		var/mob/living/carbon/human/dummy = new()
-		photo_front = getFlatIcon(dummy, defdir=SOUTH)
-		photo_side = getFlatIcon(dummy, defdir=WEST)
+		photo_front = getFlatIcon(dummy, SOUTH, always_use_defdir = 1)
+		photo_side = getFlatIcon(dummy, WEST, always_use_defdir = 1)
 		qdel(dummy)
 
 	// Generic record
@@ -120,15 +120,14 @@ GLOBAL_VAR_INIT(arrest_security_status, "Arrest")
 // Simple record to HTML (for paper purposes) conversion.
 // Not visually that nice, but it gets the work done, feel free to tweak it visually
 /proc/record_to_html(datum/computer_file/crew_record/CR, access, records_context = record_field_context_none)
-	var/dat = "<tt><H2>RECORD DATABASE DATA DUMP</H2><i>Generated on: [stationdate2text()] [stationtime2text()]</i><br>******************************<br>"
+	var/dat = "<H2>RECORD DATABASE DATA DUMP</H2><i>Generated on: [stationdate2text()] [stationtime2text()]</i><br>******************************<br>"
 	dat += "<table>"
 	for(var/record_field/F in CR.fields)
 		if(F.can_see(access, records_context))
-			dat += "<tr><td><b>[F.name]</b>"
+			dat += "<tr><td><b>[F.name]</b></td>"
 			if(F.valtype == EDIT_LONGTEXT)
 				dat += "<tr>"
-			dat += "<td>[F.get_display_value()]"
-	dat += "</tt>"
+			dat += "<td>[F.get_display_value()]</tr>"
 	return dat
 
 /proc/get_crewmember_record(name)

@@ -74,27 +74,14 @@
 	var/in_stasis = 0
 
 /mob/living/simple_animal/Life()
+	if(stat == DEAD)
+		return 0
 	. = ..()
 	if(!.)
 		walk(src, 0)
 		return 0
 	if(!living_observers_present(GetConnectedZlevels(z)) && !(z == 0))
 		return 0
-	//Health
-	if(stat == DEAD)
-		if(health > 0)
-			icon_state = icon_living
-			switch_from_dead_to_living_mob_list()
-			set_stat(CONSCIOUS)
-			set_density(1)
-		return 0
-
-	if(health <= 0)
-		death()
-		return 0
-
-	if(health > maxHealth)
-		health = maxHealth
 
 	handle_stunned()
 	handle_weakened()
@@ -312,10 +299,21 @@
 		health = 0 //Make sure dey dead.
 		walk_to(src, 0)
 
-/mob/living/simple_animal/updatehealth()
+/mob/living/simple_animal/rejuvenate()
 	..()
-	if(health <= 0)
-		death()
+	icon_state = icon_living
+	set_density(1)
+
+/mob/living/simple_animal/updatehealth()
+	if(stat == DEAD)
+		return
+	if(status_flags & GODMODE)
+		health = maxHealth
+		set_stat(CONSCIOUS)
+	else
+		health = maxHealth - getOxyLoss() - getToxLoss() - getFireLoss() - getBruteLoss() - getCloneLoss() - getHalLoss()
+		if(health <= 0)
+			death()
 
 /mob/living/simple_animal/ex_act(severity)
 	if(!blinded)

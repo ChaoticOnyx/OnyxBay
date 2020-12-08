@@ -89,7 +89,7 @@
 
 /obj/machinery/atmospherics/unary/vent_pump/high_volume/New()
 	..()
-	air_contents.volume = ATMOS_DEFAULT_VOLUME_PUMP + 800
+	air_contents.volume = ATMOS_DEFAULT_VOLUME_PUMP + 650
 
 /obj/machinery/atmospherics/unary/vent_pump/engine
 	name = "Engine Core Vent"
@@ -98,7 +98,7 @@
 
 /obj/machinery/atmospherics/unary/vent_pump/engine/New()
 	..()
-	air_contents.volume = ATMOS_DEFAULT_VOLUME_PUMP + 500 //meant to match air injector
+	air_contents.volume = ATMOS_DEFAULT_VOLUME_PUMP + 350 //meant to match air injector
 
 /obj/machinery/atmospherics/unary/vent_pump/update_icon(safety = 0)
 	if(!check_icon_cache())
@@ -156,10 +156,10 @@
 /obj/machinery/atmospherics/unary/vent_pump/Process()
 	..()
 
-	if (hibernate > world.time)
+	if(hibernate > world.time)
 		return 1
 
-	if (!node)
+	if(!node)
 		update_use_power(POWER_USE_OFF)
 	if(!can_pump())
 		return 0

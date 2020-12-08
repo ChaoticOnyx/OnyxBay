@@ -345,6 +345,11 @@
 	desc = "A warning sign which reads 'BOTANY!'."
 	icon_state = "hydro3"
 
+/obj/structure/sign/departments/holy
+	name = "HOLY"
+	desc = "A sign labelling a <b>holy<b> area."
+	icon_state = "holy"
+
 /obj/structure/sign/hydro
 	name = "\improper HYDROPONICS"
 	desc = "A sign labelling an area as a place where plants are grown."

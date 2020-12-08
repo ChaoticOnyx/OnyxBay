@@ -433,6 +433,10 @@
 	name = "\improper Command Security - Checkpoint"
 	icon_state = "checkpoint1"
 
+/area/security/checkpoint3
+	name = "\improper Escape Shuttle Security - Checkpoint"
+	icon_state = "checkpoint1"
+
 /area/security/detectives_office
 	name = "\improper Security - Forensic Office"
 	icon_state = "detective"
