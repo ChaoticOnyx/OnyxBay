@@ -271,4 +271,4 @@
 	cost = 240
 	containername = "\improper EVA RIG crate"
 	containertype = /obj/structure/closet/crate/secure/engineering
-	access = access_engine
+	access = access_engine_equip
