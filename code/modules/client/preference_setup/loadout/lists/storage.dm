@@ -85,7 +85,7 @@
 	slot = slot_back
 	path = /obj/item/weapon/storage/backpack/carppack
 	cost = 2
-	price = 25
+	price = 50
 
 /datum/gear/storage/shoulder_bag
 	display_name = "shoulder bag"
@@ -93,4 +93,4 @@
 	path = /obj/item/weapon/storage/backpack/messenger/shoulder_bag
 	cost = 2
 	price = 15
-	
+
