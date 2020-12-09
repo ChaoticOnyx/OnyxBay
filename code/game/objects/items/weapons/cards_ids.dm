@@ -57,6 +57,23 @@
 /*
  * ID CARDS
  */
+GLOBAL_LIST_INIT(id_types, list("UNSET" = "id",\
+"HoP" = "silver",\
+"Captain" = "gold",\
+"Medical" = "med",\
+"CMO" = "medGold",\
+"Security" = "sec",\
+"HoS" = "secGold",\
+"Engineering" = "eng",\
+"CE" = "engGold",\
+"Science" = "sci",\
+"RD" = "sciGold",\
+"Cargo" = "cargo",\
+"Quartermaster" = "cargoGold",\
+"Civilian" = "civ",\
+"Clown" = "clown",\
+"Mime" = "mime",\
+"Merchant" = "trader"))
 
 /obj/item/weapon/card/emag_broken
 	desc = "It's a card with a magnetic strip attached to some circuitry. It looks too busted to be used for anything but salvage."

@@ -51,6 +51,12 @@
 		data["blood_type"] = id_card ? id_card.blood_type : "UNSET"
 		data["front_photo"] = id_card ? id_card.front : "UNSET"
 		data["side_photo"] = id_card ? id_card.side : "UNSET"
+		var/found_type = FALSE
+		if(id_card)
+			for(var/icon_cur in GLOB.id_types)
+				if(id_card.icon_state == GLOB.id_types[icon_cur])
+					found_type = TRUE
+		data["card_icon"] = id_card && found_type in GLOB.id_types ? GLOB.id_types[id_card.icon_state] : "UNSET"
 
 	data["command_jobs"] = format_jobs(GLOB.command_positions)
 	data["support_jobs"] = format_jobs(GLOB.support_positions)
@@ -246,6 +252,10 @@
 					var/photo = get_photo(usr)
 					if(photo)
 						id_card.side = photo
+				else if(href_list["card_icon"])
+					var/new_icon = input("Select type", "type") as null|anything in GLOB.id_types
+					if(!isnull(new_icon))
+						id_card.icon_state = new_icon
 				else if(href_list["load_data"])
 					var/list/ass_data = list()
 					for(var/datum/computer_file/crew_record/CR in GLOB.all_crew_records)
