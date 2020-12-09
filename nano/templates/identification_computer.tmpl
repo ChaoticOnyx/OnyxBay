@@ -71,14 +71,6 @@
 		</div>
 	</div>
 
-	<div class='item'>
-		<div class='itemLabel'>
-			Card type:
-		</div>
-		<div class='itemContent'>
-			{{:helper.link(data.sex , 'pencil', {'action' : 'edit', 'card_icon' : 1})}}
-		</div>
-	</div>
 
 	<div class='item'>
 		<div class='itemLabel'>
@@ -148,7 +140,15 @@
 			{{:helper.link('', 'pencil', {'action' : 'edit', 'load_data' : 1})}}
 		</div>
 	</div>
-
+	
+	<div class='item'>
+		<div class='itemLabel'>
+			Card type:
+		</div>
+		<div class='itemContent'>
+			{{:helper.link(data.card_icon , 'pencil', {'action' : 'edit', 'card_icon' : 1})}}
+		</div>
+	</div>
 
 	<div class='item'>
 	  <h2>Assignment</h2>
