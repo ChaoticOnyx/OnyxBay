@@ -18,6 +18,11 @@
 	desc = "Randomly selects a ballon for you!"
 	path = /obj/item/toy/balloon
 
+/datum/uplink_item/item/badassery/lighter
+	name = "For lighting cigarettes in a badass manner (Zippo Lighter)"
+	item_cost = 122
+	path = /obj/item/weapon/flame/lighter/zippo/syndie
+
 /datum/uplink_item/item/badassery/balloon/random/get_goods(obj/item/device/uplink/U, loc)
 	var/balloon_type = pick(typesof(path))
 	var/obj/item/I = new balloon_type(loc)
