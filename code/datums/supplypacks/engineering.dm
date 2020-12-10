@@ -89,6 +89,14 @@
 	containername = "\improper Emitter crate"
 	access = access_engine_equip
 
+/decl/hierarchy/supply_pack/engineering/gyrotron
+	name = "Gyrotron crate"
+	contains = list(/obj/machinery/power/emitter/gyrotron)
+	cost = 20
+	containertype = /obj/structure/closet/crate/secure/large
+	containername = "\improper Gyrotron crate"
+	access = access_engine_equip
+
 /decl/hierarchy/supply_pack/engineering/field_gen
 	name = "Field Generator crate"
 	contains = list(/obj/machinery/field_generator = 2)

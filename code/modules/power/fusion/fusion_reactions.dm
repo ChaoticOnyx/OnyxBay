@@ -35,22 +35,22 @@ proc/get_fusion_reaction(p_react, s_react, m_energy)
 //  deuterium
 //  tritium
 //  phoron
-//  supermatter
+//  oxygen
 
 // Gaseous/reagent fuels
 // hydrogen
 //  helium
 //  lithium
-//  boron
+//  phoron
 
 // Basic power production reactions.
 // This is not necessarily realistic, but it makes a basic failure more spectacular.
 /decl/fusion_reaction/hydrogen_hydrogen
 	p_react = "hydrogen"
-	s_react = "hydrogen"
+	s_react = "oxygen"
 	energy_consumption = 1
 	energy_production = 2
-	products = list("phoron" = 1)
+	products = list("water" = 1)
 
 /decl/fusion_reaction/deuterium_deuterium
 	p_react = "deuterium"
@@ -88,8 +88,8 @@ proc/get_fusion_reaction(p_react, s_react, m_energy)
 /decl/fusion_reaction/oxygen_oxygen
 	p_react = "oxygen"
 	s_react = "oxygen"
-	energy_consumption = 10
-	energy_production = 0
+	energy_consumption = 1
+	energy_production = 2
 	instability = 5
 	radiation = 5
 	products = list("silicon"= 1)
@@ -109,7 +109,7 @@ proc/get_fusion_reaction(p_react, s_react, m_energy)
 	energy_consumption = 10
 	energy_production = 0
 	instability = 5
-	products = list("mydrogen" = 1)
+	products = list("phoron" = 1)
 	minimum_reaction_temperature = 8000
 
 // VERY UNIDEAL REACTIONS.
@@ -152,7 +152,7 @@ proc/get_fusion_reaction(p_react, s_react, m_energy)
 
 // High end reactions.
 /decl/fusion_reaction/boron_hydrogen
-	p_react = "boron"
+	p_react = "nitrogen"
 	s_react = "hydrogen"
 	minimum_energy_level = FUSION_HEAT_CAP * 0.5
 	energy_consumption = 3
