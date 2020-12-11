@@ -95,6 +95,33 @@
 	desc = "Under the painting a plaque reads: 'While the meat grinder may not have spared you, fear not. Not one part of you has gone to waste... You were delicious.'"
 	icon_state = "monkey_painting"
 
+/obj/structure/sign/crime
+	name = "\improper Educational poster"
+	desc = "Or does it?..."
+	icon_state = "crime"
+
+/obj/structure/sign/periodic
+	name = "\improper Periodic table"
+	desc = "Say my name."
+	icon_state = "periodic"
+
+/obj/structure/sign/recruitment
+	name = "\improper Recruitment poster"
+	desc = "No, you don't."
+	icon_state = "you_4_nt"
+
+/obj/structure/sign/highexplosive
+	name = "\improper HIGH EXPLOSIVE"
+	icon_state = "highexplosive"
+
+/obj/structure/sign/eyetest
+	name = "\improper Eye test poster"
+	icon_state = "wall_poster_eyetest"
+
+/obj/structure/sign/firstaid
+	name = "\improper FIRST AID"
+	icon_state = "firstaid"
+
 /obj/structure/sign/warning
 	name = "\improper WARNING"
 	icon_state = "securearea"
@@ -285,6 +312,25 @@
 /obj/structure/sign/double/maltesefalcon/right
 	icon_state = "maltesefalcon-right"
 
+/obj/structure/sign/double/picturemount/left
+	icon_state = "mountain-left"
+
+/obj/structure/sign/double/picturemount/right
+	icon_state = "mountain-right"
+
+/obj/structure/sign/double/picturesky/left
+	icon_state = "sky-left"
+
+/obj/structure/sign/double/picturesky/right
+	icon_state = "sky-right"
+
+/obj/structure/sign/double/pictureplanet/left
+	icon_state = "planet-left"
+
+/obj/structure/sign/double/pictureplanet/right
+	icon_state = "planet-right"
+
+
 /obj/structure/sign/warning/science
 	name = "\improper SCIENCE!"
 	icon_state = "science1"
@@ -363,6 +409,26 @@
 /obj/structure/sign/eva
 	name = "\improper EVA"
 	icon_state = "eva"
+
+/obj/structure/sign/cargo
+	name = "\improper CARGO"
+	icon_state = "cargo"
+
+/obj/structure/sign/security
+	name = "\improper SECURITY"
+	icon_state = "sec"
+
+/obj/structure/sign/evac
+	name = "\improper EVAC"
+	icon_state = "evac"
+
+/obj/structure/sign/engineering
+	name = "\improper ENGINEERING"
+	icon_state = "engi"
+
+/obj/structure/sign/custodian
+	name = "\improper CUSTODIAN"
+	icon_state = "custodian"
 
 /obj/structure/sign/directions
 	name = "direction sign"
