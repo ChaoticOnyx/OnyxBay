@@ -60,6 +60,8 @@ var/global/list/possible_changeling_IDs = list("Alpha","Beta","Gamma","Delta","E
 /mob/proc/is_regenerating()
 	if(status_flags & FAKEDEATH)
 		return TRUE
+	else
+		return FALSE
 
 /mob/proc/absorbDNA(datum/absorbed_dna/newDNA)
 	var/datum/changeling/changeling = null
@@ -598,7 +600,7 @@ var/global/list/possible_changeling_IDs = list("Alpha","Beta","Gamma","Delta","E
 	C.digitalcamo = !C.digitalcamo
 
 	spawn(0)
-		while(C && C.digitalcamo && C.mind && C.mind.changeling)
+		while(C && C.digitalcamo && C.mind && C.mind.changeling && !is_regenerating())
 			C.mind.changeling.chem_charges = max(C.mind.changeling.chem_charges - 1, 0)
 			sleep(40)
 
@@ -740,7 +742,7 @@ var/list/datum/absorbed_dna/hivemind_bank = list()
 	feedback_add_details("changeling_powers","MV")
 
 	spawn(0)
-		while(src && src.mind && src.mind.changeling && src.mind.changeling.mimicing)
+		while(src && src.mind && src.mind.changeling && src.mind.changeling.mimicing && !is_regenerating())
 			src.mind.changeling.chem_charges = max(src.mind.changeling.chem_charges - 1, 0)
 			sleep(40)
 		if(src && src.mind && src.mind.changeling)
@@ -1189,7 +1191,7 @@ var/list/datum/absorbed_dna/hivemind_bank = list()
 			H.set_m_intent("walk")
 
 		var/remain_cloaked = TRUE
-		while(remain_cloaked) //This loop will keep going until the player uncloaks.
+		while(remain_cloaked && !is_regenerating()) //This loop will keep going until the player uncloaks.
 			sleep(1 SECOND) // Sleep at the start so that if something invalidates a cloak, it will drop immediately after the check and not in one second.
 
 			if(H.m_intent != "walk" && must_walk) // Moving too fast uncloaks you.
@@ -1726,7 +1728,7 @@ var/list/datum/absorbed_dna/hivemind_bank = list()
 		to_chat(C, "<span class='notice'>We are unable to feel pain anymore.</span>")
 
 	spawn(0)
-		while(C && !C.can_feel_pain() && C.mind && C.mind.changeling)
+		while(C && !C.can_feel_pain() && C.mind && C.mind.changeling && !is_regenerating())
 			C.mind.changeling.chem_charges = max(C.mind.changeling.chem_charges - 3, 0)
 			if (C.mind.changeling.chem_charges == 0)
 				C.no_pain = !C.no_pain
@@ -1754,7 +1756,7 @@ var/list/datum/absorbed_dna/hivemind_bank = list()
 		to_chat(H, "<span class='notice'>We activate our stemocyte pool and begin intensive fleshmending.</span>")
 
 		spawn(0)
-			while(H && H.mind && H.mind.changeling.heal && H.mind.changeling.damaged)
+			while(H && H.mind && H.mind.changeling.heal && H.mind.changeling.damaged && !is_regenerating())
 				H.mind.changeling.chem_charges = max(H.mind.changeling.chem_charges - 1, 0)
 				if(H.getBruteLoss())
 					H.adjustBruteLoss(-15 * config.organ_regeneration_multiplier)	//Heal brute better than other ouchies.
