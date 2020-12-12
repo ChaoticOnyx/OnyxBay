@@ -33,7 +33,7 @@ var/global/datum/body_build/default_body_build = new
 /datum/body_build/proc/get_mob_icon(slot, icon_state)
 	var/icon/I
 	if(!slot in default_onmob_slots)
-		log_and_message_admins("noticed shitty missing slot:[slot] and icon_state:[icon_state]!!!")
+		world.log << "##ERROR. Wrong sprite group for mob icon \"[slot]\""
 		return I // Nonexistent slot, just give 'em an empty icon
 	for(var/datum/body_build/BB in list(src, default_body_build))
 		switch(slot)
