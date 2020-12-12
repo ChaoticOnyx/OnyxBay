@@ -50,7 +50,7 @@ var/global/datum/body_build/default_body_build = new
 /datum/body_build/slim
 	name                 = "Slim"
 
-	index			     = "_slim"
+	index                = "_slim"
 	roboindex            = "_slim"
 	genders              = list(FEMALE)
 	clothing_icons       = list(
