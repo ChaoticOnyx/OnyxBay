@@ -240,7 +240,7 @@ var/list/gamemode_cache = list()
 	var/error_msg_delay = 50 // How long to wait between messaging admins about occurrences of a unique error
 
 	var/max_gear_cost = 10 // Used in chargen for accessory loadout limit. 0 disables loadout, negative allows infinite points.
-
+	var/max_gear_cost_donator = 20
 	var/allow_ic_printing = TRUE //Whether players should be allowed to print IC circuits from scripts.
 
 	var/server_port
@@ -817,6 +817,8 @@ var/list/gamemode_cache = list()
 					max_gear_cost = text2num(value)
 					if(max_gear_cost < 0)
 						max_gear_cost = INFINITY
+				if("max_gear_cost_donator")
+					max_gear_cost_donator = text2num(value)
 				if("radiation_decay_rate")
 					radiation_decay_rate = text2num(value)
 				if("radiation_resistance_multiplier")
