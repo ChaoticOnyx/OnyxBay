@@ -67,6 +67,7 @@
 	path = /obj/item/weapon/storage/lunchbox/mars/filled
 
 /datum/gear/flask
+	sort_category = "Food and Drinks"
 	display_name = "flask"
 	path = /obj/item/weapon/reagent_containers/food/drinks/flask
 	price = 5
@@ -75,22 +76,22 @@
 	..()
 	gear_tweaks += new /datum/gear_tweak/reagents(lunchables_ethanol_reagents())
 
-/datum/gear/drinks/flask/bar
+/datum/gear/flask/bar
 	display_name = "bar flask"
 	path = /obj/item/weapon/reagent_containers/food/drinks/flask/barflask
 	price = 0
 
-/datum/gear/drinks/flask/vacuum
+/datum/gear/flask/vacuum
 	display_name = "vacuum flask"
 	path = /obj/item/weapon/reagent_containers/food/drinks/flask/vacuumflask
 	price = 0
 
-/datum/gear/drinks/flask/lithium
+/datum/gear/flask/lithium
 	display_name = "lithium flask"
 	path = /obj/item/weapon/reagent_containers/food/drinks/flask/lithium
 	price = 8
 
-/datum/gear/drinks/flask/shiny
+/datum/gear/flask/shiny
 	display_name = "shiny flask"
 	path = /obj/item/weapon/reagent_containers/food/drinks/flask/shiny
 	price = 10
