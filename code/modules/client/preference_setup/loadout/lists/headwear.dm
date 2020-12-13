@@ -227,3 +227,9 @@
 	display_name = "pumpkin head"
 	path = /obj/item/clothing/head/pumpkinhead
 	price = 12
+
+/datum/gear/head/capcap_alt
+	display_name = "captain's cap"
+	path = /obj/item/clothing/head/caphat/cap/capcap_alt
+	price = 10
+	allowed_roles = list(/datum/job/captain)

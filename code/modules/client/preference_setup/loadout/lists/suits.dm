@@ -210,3 +210,23 @@
 	display_name = "ian shirt"
 	path = /obj/item/clothing/suit/ianshirt
 	price = 5
+
+/datum/gear/suit/punk_jacket_AC
+	display_name = "punk jacket black"
+	path = /obj/item/clothing/suit/storage/punk_jacket_AC
+	price = 20
+
+/datum/gear/suit/punk_jacket_RD
+	display_name = "punk jacket navy"
+	path = /obj/item/clothing/suit/storage/punk_jacket_RD
+	price = 20
+
+/datum/gear/suit/punk_jacket_TS
+	display_name = "punk jacket brown"
+	path = /obj/item/clothing/suit/storage/punk_jacket_TS
+	price = 20
+
+/datum/gear/suit/fashionable_coat
+	display_name = "fashionable coat"
+	path = /obj/item/clothing/suit/storage/fashionable_coat
+	price = 20
