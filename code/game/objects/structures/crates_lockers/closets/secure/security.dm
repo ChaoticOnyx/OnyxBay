@@ -261,7 +261,7 @@
 
 /obj/structure/closet/secure_closet/courtroom
 	name = "courtroom locker"
-	req_access = list(access_lawyer)
+	req_access = list(access_iaa, access_lawyer)
 
 /obj/structure/closet/secure_closet/courtroom/WillContain()
 	return list(
@@ -290,7 +290,7 @@
 
 /obj/structure/closet/secure_closet/lawyer
 	name = "internal affairs secure closet"
-	req_access = list(access_lawyer)
+	req_access = list(access_iaa)
 
 /obj/structure/closet/secure_closet/lawyer/WillContain()
 	return list(

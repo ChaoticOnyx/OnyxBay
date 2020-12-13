@@ -7,7 +7,7 @@ GLOBAL_DATUM_INIT(vampires, /datum/antagonist/vampire, new)
 	feedback_tag = "vampire_objective"
 	restricted_jobs = list(/datum/job/captain, /datum/job/hos, /datum/job/hop,
 							/datum/job/rd, /datum/job/chief_engineer, /datum/job/cmo,
-							/datum/job/merchant, /datum/job/lawyer)
+							/datum/job/merchant, /datum/job/iaa)
 	minimum_player_age = 7
 	additional_restricted_jobs = list(/datum/job/officer, /datum/job/warden, /datum/job/detective)
 

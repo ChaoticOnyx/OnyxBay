@@ -18,4 +18,11 @@
 	startswith = list(/obj/item/weapon/paper/trade_lic/trade_guide,\
 	/obj/item/weapon/folder/nt,\
 	/obj/item/weapon/pen,\
-	/obj/item/device/camera)
+	/obj/item/device/camera,\
+	/obj/item/device/taperecorder)
+
+/obj/item/weapon/storage/briefcase/full
+	startswith = list(/obj/item/weapon/folder/nt,\
+	/obj/item/weapon/pen,\
+	/obj/item/device/camera,\
+	/obj/item/device/taperecorder)

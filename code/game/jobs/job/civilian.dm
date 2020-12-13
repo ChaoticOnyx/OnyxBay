@@ -106,7 +106,7 @@
 	alt_titles = list("Journalist")
 	outfit_type = /decl/hierarchy/outfit/job/librarian
 
-/datum/job/lawyer
+/datum/job/iaa
 	title = "Internal Affairs Agent"
 	department = "Support"
 	department_flag = SPT
@@ -116,15 +116,30 @@
 	selection_color = "#515151"
 	economic_modifier = 7
 	faction_restricted = TRUE
-	access = list(access_lawyer, access_security, access_maint_tunnels, access_heads)
-	minimal_access = list(access_lawyer, access_security, access_heads)
+	access = list(access_iaa, access_security, access_maint_tunnels, access_heads, access_sec_doors)
+	minimal_access = list(access_lawyer, access_security, access_heads, access_sec_doors)
 	minimal_player_age = 14
 	outfit_type = /decl/hierarchy/outfit/job/internal_affairs_agent
 
-/datum/job/lawyer/equip(mob/living/carbon/human/H)
+/datum/job/iaa/equip(mob/living/carbon/human/H)
 	. = ..()
 	if(.)
 		H.implant_loyalty(H)
+
+/datum/job/lawyer
+	title = "Lawyer"
+	department = "Support"
+	department_flag = SPT
+	total_positions = 2
+	spawn_positions = 2
+	supervisors = "company officials and Corporate Regulations"
+	selection_color = "#515151"
+	economic_modifier = 7
+	faction_restricted = TRUE
+	access = list(access_lawyer, access_security, access_sec_doors)
+	minimal_access = list(access_lawyer, access_security, access_sec_doors)
+	minimal_player_age = 14
+	outfit_type = /decl/hierarchy/outfit/job/lawyer
 
 /datum/job/clown
 	title = "Clown"

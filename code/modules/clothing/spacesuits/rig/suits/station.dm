@@ -22,7 +22,7 @@
 
 /obj/item/weapon/rig/light/internalaffairs/equipped
 
-	req_access = list(access_lawyer)
+	req_access = list(access_iaa)
 
 	initial_modules = list(
 		/obj/item/rig_module/ai_container,
