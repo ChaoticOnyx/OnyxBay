@@ -321,7 +321,7 @@ CHARACTER_SLOTS 10
 LOADOUT_SLOTS 3
 
 ## How many loadout points are available. Use 0 to disable loadout, and any negative number to indicate infinite points.
-MAX_GEAR_COST 10
+MAX_GEAR_COST 15
 
 ## Uncomment to prevent character spawn without surname.
 # HUMANS_NEED_SURNAMES
