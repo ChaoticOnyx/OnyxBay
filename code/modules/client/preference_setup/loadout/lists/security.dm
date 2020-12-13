@@ -41,5 +41,5 @@
 /datum/gear/storage/bandolier
 	display_name = "bandolier"
 	path = /obj/item/clothing/accessory/storage/bandolier
-	allowed_roles = ARMED_ROLES
+	allowed_roles = list(/datum/job/captain, /datum/job/hop, /datum/job/hos, /datum/job/officer, /datum/job/warden, /datum/job/detective, /datum/job/merchant, /datum/job/bartender)
 	cost = 3
