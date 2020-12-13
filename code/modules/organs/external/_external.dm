@@ -1065,7 +1065,7 @@ obj/item/organ/external/proc/remove_clamps()
 	..()
 	// TODO[V] Investigate why BEEDAUNS made robotize() obliterate all existing flags instead of just adding one
 
-	if (just_printed)
+	if(just_printed)
 		status |= ORGAN_CUT_AWAY
 
 	if(company)
@@ -1180,6 +1180,8 @@ obj/item/organ/external/proc/remove_clamps()
 	var/mob/living/carbon/human/victim = owner
 
 	..()
+
+	victim.bad_external_organs -= src
 
 	remove_splint()
 	for(var/atom/movable/implant in implants)

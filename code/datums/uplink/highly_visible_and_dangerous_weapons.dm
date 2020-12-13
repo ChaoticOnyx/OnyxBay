@@ -3,7 +3,7 @@
 ***************************************/
 /datum/uplink_item/item/visible_weapons
 	category = /datum/uplink_category/visible_weapons
-	
+
 /datum/uplink_item/item/visible_weapons/smallenergy_gun
 	name = "Small Energy Gun"
 	desc = "A pocket-sized energy based sidearm with three different lethality settings."
@@ -13,13 +13,13 @@
 /datum/uplink_item/item/visible_weapons/dartgun
 	name = "Dart Gun"
 	desc = "A gas-powered dart gun capable of delivering chemical payloads across short distances. \
-			Uses a unique cartridge loaded with hollow darts."	
+			Uses a unique cartridge loaded with hollow darts."
 	item_cost = 20
 	path = /obj/item/weapon/gun/projectile/dartgun
 
 /datum/uplink_item/item/visible_weapons/crossbow
 	name = "Energy Crossbow"
-	desc = "A self-recharging, almost silent weapon employed by stealth operatives."	
+	desc = "A self-recharging, almost silent weapon employed by stealth operatives."
 	item_cost = 24
 	path = /obj/item/weapon/gun/energy/crossbow
 
@@ -83,7 +83,7 @@
 /datum/uplink_item/item/visible_weapons/energy_sword
 	name = "Energy Sword"
 	item_cost = 60
-	path = /obj/item/weapon/melee/energy/sword
+	path = /obj/item/weapon/melee/energy/sword/one_hand
 
 /datum/uplink_item/item/visible_weapons/heavysniper
 	name = "Anti-materiel Rifle with ammunition"
@@ -115,14 +115,8 @@
 /datum/uplink_item/item/visible_weapons/pulsecarbine
 	name = "Pulse Carbine"
 	item_cost = 88
-	antag_costs = list(MODE_MERCENARY = 30)
+	antag_costs = list(MODE_MERCENARY = 45)
 	path = /obj/item/weapon/gun/energy/pulse_rifle/carbine
-
-/datum/uplink_item/item/visible_weapons/pulserifle
-	name = "Pulse Rifle"
-	item_cost = 45
-	antag_roles = list(MODE_MERCENARY)
-	path = /obj/item/weapon/gun/energy/pulse_rifle
 
 /datum/uplink_item/item/visible_weapons/rocketlauncher
 	name = "Rocket Launcher"

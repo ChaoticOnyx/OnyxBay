@@ -276,6 +276,7 @@
 					TR.health = 0
 					if(TR.harvest)
 						TR.harvest = FALSE //To make sure they can't just put in another seed and insta-harvest it
+					TR.sampled = 0
 					qdel(TR.seed)
 					TR.seed = null
 				TR.weedlevel = 0 //Has a side effect of cleaning up those nasty weeds
@@ -572,9 +573,7 @@
 		rift_location = get_step(rift_location, step_dir) || rift_location
 
 	if(tporter && tporter.locked && !tporter.one_time_use && tporter.operable())
-		var/obj/effect/portal/P = new (rift_location, get_turf(tporter.locked))
-		P.dangerous = TRUE
-		P.failchance = 20
+		new /obj/effect/portal(rift_location, get_turf(tporter.locked))
 	else
 		var/turf/destination = get_random_turf_in_range(src, 10)
 		if(destination)

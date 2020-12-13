@@ -285,6 +285,9 @@
 	var/obj/item/organ/internal/biostructure/BIO = src.internal_organs_by_name[BP_CHANG]
 	if (!BIO)
 		return
+	if(is_regenerating())
+		to_chat(src, SPAN_NOTICE("We can't do it right now."))
+		return
 	if (!BIO.moving)
 		var/list/available_limbs = src.organs.Copy()
 		for (var/obj/item/organ/external/E in available_limbs)

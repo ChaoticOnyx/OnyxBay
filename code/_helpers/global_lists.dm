@@ -41,6 +41,8 @@ GLOBAL_LIST_EMPTY(body_marking_styles_list)		//stores /datum/sprite_accessory/ma
 
 GLOBAL_DATUM_INIT(underwear, /datum/category_collection/underwear, new())
 
+GLOBAL_LIST_EMPTY(bb_clothing_icon_states) //stores /datum/body_build's icon_state lists
+
 var/global/list/exclude_jobs = list(/datum/job/ai,/datum/job/cyborg)
 
 // Visual nets
@@ -203,6 +205,30 @@ var/global/list/string_slot_flags = list(
 		if(manual.topic)
 			GLOB.premade_manuals[manual.topic] = booktype
 		qdel(manual)
+
+	paths = typesof(/datum/body_build)
+	for(var/T in paths)
+		var/datum/body_build/BB = new T
+		GLOB.bb_clothing_icon_states[BB.type] = list()
+		GLOB.bb_clothing_icon_states[BB.type]["hidden"]            = icon_states(BB.clothing_icons["hidden"])
+		GLOB.bb_clothing_icon_states[BB.type][slot_w_uniform_str]  = icon_states(BB.clothing_icons["slot_w_uniform"])
+		GLOB.bb_clothing_icon_states[BB.type][slot_wear_suit_str]  = icon_states(BB.clothing_icons["slot_suit"])
+		GLOB.bb_clothing_icon_states[BB.type][slot_gloves_str]     = icon_states(BB.clothing_icons["slot_gloves"])
+		GLOB.bb_clothing_icon_states[BB.type][slot_glasses_str]    = icon_states(BB.clothing_icons["slot_glasses"])
+		GLOB.bb_clothing_icon_states[BB.type][slot_l_ear_str]      = icon_states(BB.clothing_icons["slot_ear"])
+		GLOB.bb_clothing_icon_states[BB.type][slot_r_ear_str]      = icon_states(BB.clothing_icons["slot_ear"])
+		GLOB.bb_clothing_icon_states[BB.type][slot_wear_mask_str]  = icon_states(BB.clothing_icons["slot_wear_mask"])
+		GLOB.bb_clothing_icon_states[BB.type][slot_head_str]       = icon_states(BB.clothing_icons["slot_head"])
+		GLOB.bb_clothing_icon_states[BB.type][slot_shoes_str]      = icon_states(BB.clothing_icons["slot_shoes"])
+		GLOB.bb_clothing_icon_states[BB.type][slot_belt_str]       = icon_states(BB.clothing_icons["slot_belt"])
+		GLOB.bb_clothing_icon_states[BB.type][slot_s_store_str]    = icon_states(BB.clothing_icons["slot_s_store"])
+		GLOB.bb_clothing_icon_states[BB.type][slot_back_str]       = icon_states(BB.clothing_icons["slot_back"])
+		GLOB.bb_clothing_icon_states[BB.type][slot_tie_str]        = icon_states(BB.clothing_icons["slot_tie"])
+		GLOB.bb_clothing_icon_states[BB.type][slot_l_hand_str]     = icon_states(BB.clothing_icons["slot_l_hand"])
+		GLOB.bb_clothing_icon_states[BB.type][slot_r_hand_str]     = icon_states(BB.clothing_icons["slot_r_hand"])
+		GLOB.bb_clothing_icon_states[BB.type][slot_wear_id_str]    = icon_states(BB.clothing_icons["slot_wear_id"])
+		GLOB.bb_clothing_icon_states[BB.type][slot_handcuffed_str] = icon_states(BB.misk_icon)
+		GLOB.bb_clothing_icon_states[BB.type][slot_legcuffed_str]  = icon_states(BB.misk_icon)
 
 	return 1
 

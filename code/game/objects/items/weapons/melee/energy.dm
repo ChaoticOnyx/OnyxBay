@@ -58,7 +58,7 @@
 
 /obj/item/weapon/melee/energy/dropped()
 	if(isturf(loc))
-		deactivate()	
+		deactivate()
 
 /obj/item/weapon/melee/energy/get_storage_cost()
 	if(active)
@@ -115,9 +115,6 @@
  */
 /obj/item/weapon/melee/energy/sword
 	color
-	name = "energy sword"
-	desc = "May the force be within you."
-	icon_state = "sword0"
 	active_force = 45
 	active_throwforce = 45
 	force = 3
@@ -137,19 +134,24 @@
 	edge = 1
 	var/blade_color
 
-/obj/item/weapon/melee/energy/sword/New()
+/obj/item/weapon/melee/energy/sword/one_hand
+	name = "energy sword"
+	desc = "May the force be within you."
+	icon_state = "sword0"
+
+/obj/item/weapon/melee/energy/sword/one_hand/New()
 	blade_color = pick("red", "blue", "green", "purple")
 
-/obj/item/weapon/melee/energy/sword/green/New()
+/obj/item/weapon/melee/energy/sword/one_hand/green/New()
 	blade_color = "green"
 
-/obj/item/weapon/melee/energy/sword/red/New()
+/obj/item/weapon/melee/energy/sword/one_hand/red/New()
 	blade_color = "red"
 
-/obj/item/weapon/melee/energy/sword/blue/New()
+/obj/item/weapon/melee/energy/sword/one_hand/blue/New()
 	blade_color = "blue"
 
-/obj/item/weapon/melee/energy/sword/purple/New()
+/obj/item/weapon/melee/energy/sword/one_hand/purple/New()
 	blade_color = "purple"
 
 /obj/item/weapon/melee/energy/sword/activate(mob/living/user)
@@ -168,8 +170,8 @@
 	attack_verb = list()
 	icon_state = initial(icon_state)
 
-/obj/item/weapon/melee/energy/sword/attackby(obj/item/sword as obj, mob/user as mob)
-	if(istype(sword, /obj/item/weapon/melee/energy/sword))
+/obj/item/weapon/melee/energy/sword/one_hand/attackby(obj/item/sword as obj, mob/user as mob)
+	if(istype(sword, /obj/item/weapon/melee/energy/sword/one_hand))
 		to_chat(user, "<span class='notice'>You attach the ends of the two energy swords, making a single double-bladed weapon!</span>")
 		new /obj/item/weapon/melee/energy/sword/dualsaber(user.loc)
 		qdel(sword)

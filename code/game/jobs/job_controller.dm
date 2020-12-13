@@ -200,7 +200,7 @@ var/global/datum/controller/occupations/job_master
 
 			if(job.minimum_character_age && (player.client.prefs.age < job.minimum_character_age))
 				continue
-			
+
 			if(job.faction_restricted && (player.client.prefs.faction != GLOB.using_map.company_name || (player.client.prefs.nanotrasen_relation in COMPANY_OPPOSING)))
 				continue
 
@@ -523,9 +523,12 @@ var/global/datum/controller/occupations/job_master
 
 		to_chat(H, "<b>To speak on your department's radio channel use :h. For the use of other channels, examine your headset.</b>")
 
+		if(rank == "Merchant" && GLOB.merchant_illegalness)
+			to_chat(H, SPAN_DANGER("<b>Your trading license is a forgery. Trading on NSS \"Exodus\" is illegal!</b>"))
+			H.mind.store_memory("Your trading license is a forgery. Trading on NSS \"Exodus\" is illegal.")
+
 		if(job.req_admin_notify)
 			to_chat(H, "<b>You are playing a job that is important for Game Progression. If you have to disconnect, please notify the admins via adminhelp.</b>")
-
 
 		// EMAIL GENERATION
 		var/domain
