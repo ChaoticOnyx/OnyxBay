@@ -141,3 +141,15 @@
 /obj/item/clothing/shoes/swimmingfins/New()
 	..()
 	slowdown_per_slot[slot_shoes] = 1
+
+/obj/item/clothing/shoes/cheapboots
+	name = "cheap jackboots"
+	desc = "Tall cheap-ass leathlike boots with a hint of artificial shine."
+	icon_state = "jackboots"
+	can_hold_knife = 1
+	cold_protection = FEET
+	min_cold_protection_temperature = HELMET_MIN_COLD_PROTECTION_TEMPERATURE
+	cold_protection = FEET
+	min_cold_protection_temperature = SHOE_MIN_COLD_PROTECTION_TEMPERATURE
+	heat_protection = FEET
+	max_heat_protection_temperature = SHOE_MAX_HEAT_PROTECTION_TEMPERATURE

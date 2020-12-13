@@ -40,17 +40,6 @@
 	path = /obj/item/device/camera
 	cost = 2
 
-/datum/gear/utility/stethoscope
-	display_name = "stethoscope (medical)"
-	path = /obj/item/clothing/accessory/stethoscope
-	cost = 2
-
-/datum/gear/mask/gas
-	sort_category = "Utility"
-	display_name = "old gas mask"
-	path = /obj/item/clothing/mask/gas/old
-	cost = 3
-
 /datum/gear/mask/gas/clear
 	display_name = "clear gas mask"
 	path = /obj/item/clothing/mask/gas/clear

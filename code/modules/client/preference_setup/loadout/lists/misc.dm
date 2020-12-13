@@ -30,44 +30,10 @@
 	display_name = "Spaceball booster pack"
 	path = /obj/item/weapon/pack/spaceball
 
-/datum/gear/flask
-	display_name = "flask"
-	path = /obj/item/weapon/reagent_containers/food/drinks/flask
-	price = 5
-
-/datum/gear/flask/New()
-	..()
-	gear_tweaks += new /datum/gear_tweak/reagents(lunchables_ethanol_reagents())
-
-/datum/gear/flask/bar
-	display_name = "bar flask"
-	path = /obj/item/weapon/reagent_containers/food/drinks/flask/barflask
-	price = 0
-
-/datum/gear/flask/vacuum
-	display_name = "vacuum-flask"
-	path = /obj/item/weapon/reagent_containers/food/drinks/flask/vacuumflask
-	price = 0
-
-/datum/gear/flask/lithium
-	display_name = "lithium flask"
-	path = /obj/item/weapon/reagent_containers/food/drinks/flask/lithium
-	price = 8
-
-/datum/gear/flask/shiny
-	display_name = "shiny flask"
-	path = /obj/item/weapon/reagent_containers/food/drinks/flask/shiny
-	price = 10
-
 /datum/gear/coffeecup
 	display_name = "coffee cup"
 	path = /obj/item/weapon/reagent_containers/food/drinks/coffeecup
 	flags = GEAR_HAS_TYPE_SELECTION
-
-/datum/gear/boot_knife
-	display_name = "boot knife"
-	path = /obj/item/weapon/material/kitchen/utensil/knife/boot
-	cost = 3
 
 /datum/gear/towel
 	display_name = "towel"
@@ -123,6 +89,7 @@
 /datum/gear/zippo
 	display_name = "zippo"
 	path = /obj/item/weapon/flame/lighter/zippo
+	cost = 2
 
 /datum/gear/ashtray
 	display_name = "ashtray, plastic"

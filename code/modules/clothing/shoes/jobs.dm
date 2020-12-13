@@ -47,7 +47,7 @@
 	can_hold_knife = 1
 
 /obj/item/clothing/shoes/workboots/toeless
-	name = "toe-less workboots"
+	name = "budget workboots"
 	desc = "A pair of toeless work boots designed for use in industrial settings. Modified for species whose toes have claws."
 	icon_state = "workbootstoeless"
 	siemens_coefficient = 0.6
