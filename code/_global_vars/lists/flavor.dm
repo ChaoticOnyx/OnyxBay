@@ -102,7 +102,8 @@ GLOBAL_LIST_INIT(music_tracks, list(
 	"Reaper & Blues" = 'sound/music/reapernblues.ogg',
 	"Undead Man Walkin`" = 'sound/music/undeadwalking.ogg',
 	"Space Oddity" = 'sound/music/space_oddity.ogg',
-	"Crockett's Theme" = 'sound/music/crokett_39_s_theme.ogg'
+	"Crockett's Theme" = 'sound/music/crokett_39_s_theme.ogg',
+	"Crab Rave" = 'sound/music/crab.ogg'
 ))
 
 /proc/setup_music_tracks(list/tracks)
