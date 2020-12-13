@@ -17,6 +17,12 @@
 	path = /obj/item/clothing/accessory/storage/drop_pouches/white
 	cost = 4
 
+/datum/gear/storage/webbing
+	display_name = "webbing"
+	path = /obj/item/clothing/accessory/storage/webbing
+	allowed_roles = list(/datum/job/hos, /datum/job/warden, /datum/job/detective, /datum/job/officer, /datum/job/chief_engineer, /datum/job/engineer
+	cost = 4
+
 /datum/gear/storage/waistpack
 	display_name = "waist pack"
 	path = /obj/item/weapon/storage/belt/waistpack
