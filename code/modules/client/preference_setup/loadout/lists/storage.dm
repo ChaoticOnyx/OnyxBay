@@ -20,7 +20,7 @@
 /datum/gear/storage/webbing
 	display_name = "webbing"
 	path = /obj/item/clothing/accessory/storage/webbing
-	allowed_roles = list(/datum/job/hos, /datum/job/warden, /datum/job/detective, /datum/job/officer, /datum/job/chief_engineer, /datum/job/engineer
+	allowed_roles = list(/datum/job/hos, /datum/job/warden, /datum/job/detective, /datum/job/officer, /datum/job/chief_engineer, /datum/job/engineer)
 	cost = 5
 
 /datum/gear/storage/waistpack
