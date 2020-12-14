@@ -130,9 +130,9 @@
 	title = "Lawyer"
 	department = "Support"
 	department_flag = SPT
-	total_positions = 2
-	spawn_positions = 2
-	supervisors = "company officials and Corporate Regulations"
+	total_positions = 1
+	spawn_positions = 1
+	supervisors = "conscience and Corporate Laws"
 	selection_color = "#515151"
 	economic_modifier = 7
 	faction_restricted = TRUE

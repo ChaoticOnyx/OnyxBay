@@ -1487,7 +1487,7 @@
 	icon_state = "Tactical"
 
 /area/security/vacantoffice
-	name = "\improper Vacant Office"
+	name = "\improper Lawyer Office"
 	icon_state = "security"
 
 /area/quartermaster
