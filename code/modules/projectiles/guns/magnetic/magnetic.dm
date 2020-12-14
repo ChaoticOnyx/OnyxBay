@@ -20,8 +20,8 @@
 	var/load_type = /obj/item/stack/rods                       // Type of stack to load with.
 	var/projectile_type = /obj/item/projectile/bullet/magnetic // Actual fire type, since this isn't throw_at rod launcher.
 	
-	var/heat_level = 0										   // When a magnetic weapon has too much heat, it malfunctions
-	var/able_to_overheat = TRUE							       // Changes whether it should or should not overheat
+	var/heat_level = 0										   // When a magnetic weapon has too much heat, it malfunctions.
+	var/able_to_overheat = TRUE							       // Changes whether it should or should not overheat.
 	
 	var/power_cost = 950                                       // Cost per fire, should consume almost an entire basic cell.
 	var/power_per_tick                                         // Capacitor charge per process(). Updated based on capacitor rating.
@@ -94,12 +94,11 @@
 			else
 				. += "\n<span class='notice'>The capacitor charge indicator is <font color ='[COLOR_GREEN]'>green</font>.</span>"
 
-		if(able_to_overheat)
-			if(heat_level > 15)
-				if(heat_level > 25)
-					. += "\n<span class='danger'>\The [src]'s wiring is glowing brightly!</span>"
-				else
-					. += "\n<span class='warning'>\The [src]'s wiring glows faintly.</span>"
+		if(able_to_overheat && heat_level > 15)
+			if(heat_level < 25)
+				. += "\n<span class='warning'>\The [src]'s wiring glows faintly.</span>"
+			else
+				. += "\n<span class='danger'>\The [src]'s wiring is glowing brightly!</span>"
 
 		return
 
@@ -211,8 +210,8 @@
 
 	if(able_to_overheat)
 		increase_heat_level()
-		if(heat_level > 10 && prob(5+heat_level))
-			if(heat_level < 15 || prob(90-heat_level))
+		if(heat_level > 10 && prob(5 + heat_level))
+			if(heat_level < 15 || prob(90 - heat_level))
 				to_chat(user, "<span class='warning'>\The [src] misfires!</span>") 
 				capacitor.use(power_cost)
 				emit_sparks()
