@@ -45,7 +45,7 @@ proc/get_fusion_reaction(p_react, s_react, m_energy)
 
 // Basic power production reactions.
 // This is not necessarily realistic, but it makes a basic failure more spectacular.
-/decl/fusion_reaction/hydrogen_hydrogen
+/decl/fusion_reaction/hydrogen_oxygen
 	p_react = "hydrogen"
 	s_react = "oxygen"
 	energy_consumption = 1
@@ -151,7 +151,7 @@ proc/get_fusion_reaction(p_react, s_react, m_energy)
 
 
 // High end reactions.
-/decl/fusion_reaction/boron_hydrogen
+/decl/fusion_reaction/nitrogen_hydrogen
 	p_react = "nitrogen"
 	s_react = "hydrogen"
 	minimum_energy_level = FUSION_HEAT_CAP * 0.5
