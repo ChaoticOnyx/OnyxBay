@@ -210,6 +210,13 @@
 	item_state = "gglasses"
 	body_parts_covered = 0
 
+/obj/item/clothing/glasses/rglasses
+	name = "red glasses"
+	desc = "They make you look like a wannabe elite agent."
+	icon_state = "bigredglasses"
+	item_state = "bigredglasses"
+	body_parts_covered = 0
+
 /obj/item/clothing/glasses/sunglasses
 	name = "sunglasses"
 	desc = "Strangely ancient technology used to help provide rudimentary eye cover. Enhanced shielding blocks many flashes."
