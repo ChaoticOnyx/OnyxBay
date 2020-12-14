@@ -218,7 +218,7 @@
 				update_icon()
 				return
 			else
-				if(heat_level < 30 || prob(100-heat_level))
+				if(heat_level < 30 || prob(100 - heat_level))
 					if(electrocute_mob(user, cell, src))
 						emit_sparks()
 						to_chat(user, "<span class='danger'>You accidentally ground bare wiring of [src]!</span>")
