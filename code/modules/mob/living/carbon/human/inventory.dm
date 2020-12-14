@@ -217,7 +217,7 @@ This saves us from having to call add_fingerprint() any time something is put in
 	else
 		return 0
 
-	update_inventory_slowdown()
+	update_equipment_slowdown()
 	update_action_buttons()
 	return 1
 
@@ -368,11 +368,11 @@ This saves us from having to call add_fingerprint() any time something is put in
 	if(old_item)
 		qdel(old_item)
 
-	update_inventory_slowdown()
+	update_equipment_slowdown()
 
 	return 1
 
-/mob/living/carbon/human/update_inventory_slowdown()
+/mob/living/carbon/human/update_equipment_slowdown()
 	equipment_slowdown = -1
 	for(var/slot = slot_first to slot_last)
 		var/obj/item/I = get_equipped_item(slot)

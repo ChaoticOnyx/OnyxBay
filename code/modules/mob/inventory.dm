@@ -301,5 +301,5 @@ var/list/slot_equipment_priority = list( \
 	if(A && (l_hand == A || r_hand == A))
 		return TRUE
 
-/mob/proc/update_inventory_slowdown()
+/mob/proc/update_equipment_slowdown()
 	return
