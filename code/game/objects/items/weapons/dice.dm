@@ -52,7 +52,9 @@
 /obj/item/weapon/dice/proc/roll_die()
 	var/result = rand(1, sides)
 	return list(result, "")
-
+/obj/item/weapon/dice/d100/roll_die()
+	. = ..()
+	.[1] *= 10
 /obj/item/weapon/dice/d20/roll_die()
 	var/result = rand(1, sides)
 	var/comment = ""
