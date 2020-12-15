@@ -46,3 +46,11 @@
 	containertype = /obj/structure/closet/crate/secure/phoron
 	containername = "\improper Phoron assembly crate"
 	access = access_tox_storage
+
+/decl/hierarchy/supply_pack/science/phoron
+	name = "AMI RIG crate"
+	contains = list(/obj/item/weapon/rig/hazmat)
+	cost = 480
+	containertype = /obj/structure/closet/crate/secure/science
+	containername = "\improper AMI RIG crate"
+	access = access_research

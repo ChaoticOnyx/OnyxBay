@@ -5,7 +5,7 @@
 	icon_state = "railing0"
 	density = 1
 	anchored = 1
-	obj_flags = ATOM_FLAG_CHECKS_BORDER | ATOM_FLAG_CLIMBABLE
+	atom_flags = ATOM_FLAG_CHECKS_BORDER | ATOM_FLAG_CLIMBABLE
 	layer = 5.2 // Just above doors
 	throwpass = 1
 	can_buckle = 1
@@ -13,7 +13,6 @@
 	var/health = 40
 	var/maxhealth = 40
 	var/check = 0
-
 /obj/structure/railing/constructed // a cheap trick to spawn unanchored railings for construction
 	anchored = 0
 
@@ -256,53 +255,39 @@
 			return
 		else
 	return
-
-// OLD code from the very first port to Bay below:
-// can_climb() allows climbing from an adjacent turf onto the src turf.
-// However, railings allow the inverse as well.
-///obj/structure/railing/can_climb(mob/living/usr, post_climb_check=0)
-//	if(!..())
-//		return 0
-//
-//	if(get_turf(usr) == get_turf(src))
-//		var/occupied
-//		var/turf/T = get_step(src, src.dir)
-//		if(T && istype(T))
-//			if(T.density == 1)
-//				occupied = 1
-//			else
-//				for(var/obj/O in T.contents)
-//					if(O == usr) // trying to climb onto yourself? Sure, go ahead bud.
-//						continue
-//					if(istype(O,/obj/structure))
-//						var/obj/structure/S = O
-//						if(S.atom_flags & ATOM_FLAG_CLIMBABLE)
-//							continue
-//					// Not entirely sure what this next line does. But it looks important.
-//					if(O && O.density && !(O.atom_flags & ATOM_FLAG_CHECKS_BORDER && !(turn(O.dir, 180) & dir)))
-//						continue
-//					occupied = 1
-//
-//		if(occupied)
-//			to_chat(usr, "<span class='danger'>There's \a [occupied] in the way.</span>")
-//			return 0
-//	return 1
-
-/obj/structure/railing/can_climb(mob/living/user, post_climb_check=0)
-	if (!can_touch(user) || (!post_climb_check && (user in climbers)))
+/obj/structure/railing/proc/check_tile(mob/living/user, turf/T)
+	if(T.density == 1)
+		to_chat(user, SPAN_DANGER("There is [T] \a in the way."))
 		return 0
-
-	if (!user.Adjacent(src))
-		user.visible_message("<span class='warning'>You can't climb there, the way is blocked.</span>")
-		return 0
-// temporary deleting this. There cant be any obstacles over open space right?
-//	var/obj/occupied = turf_is_crowded()
-//	if(occupied)
-//		user.visible_message("<span class='warning'>There's \a [occupied] in the way.</span>")
-//		return 0
+	else
+		for(var/obj/O in T.contents)
+			if(O == src)
+				continue
+			if(O == usr)
+				continue
+			if(O.density == 0)
+				continue
+			if(istype(O,/obj/structure))
+				var/obj/structure/S = O
+				if(S.atom_flags & ATOM_FLAG_CLIMBABLE)
+					continue
+			if(O.atom_flags & ATOM_FLAG_CHECKS_BORDER && !(turn(O.dir, 180) & src.dir))//checks if next item is directed
+				//allows if not directed towards climber
+				continue
+			to_chat(user, SPAN_DANGER("There is  [O] \a in the way."))
+			return 0
 	return 1
-
-
+/obj/structure/railing/can_climb(mob/living/user)
+	var/turf/OT = get_step(src, src.dir)//opposite turf of railing
+	var/turf/T = get_turf(src)//current turf of railing
+	var/turf/UT = get_turf(usr)
+	if (OT == UT)
+		return check_tile(user, T)
+	else if (T == UT)
+		return check_tile(user, OT)
+	else
+		to_chat(user, SPAN_DANGER("Too far to climb"))
+		return 0
 
 
 // Snowflake do_climb code that handles special railing cases.
@@ -317,7 +302,7 @@
 		climbers -= user
 		return
 
-	if (!can_climb(user, post_climb_check=1))
+	if (!can_climb(user))
 		climbers -= user
 		return
 
