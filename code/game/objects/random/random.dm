@@ -366,7 +366,8 @@
 				/obj/item/toy/figure/warden,
 				/obj/item/toy/figure/psychologist,
 				/obj/item/toy/figure/paramedic,
-				/obj/item/toy/figure/ert)
+				/obj/item/toy/figure/ert,
+				/obj/item/toy/figure/moose)
 
 
 /obj/random/plushie
