@@ -24,3 +24,21 @@
 	glasses["monocle"] = /obj/item/clothing/glasses/monocle
 	glasses["scanning goggles"] = /obj/item/clothing/glasses/regular/scanners
 	gear_tweaks += new /datum/gear_tweak/path(glasses)
+
+/datum/gear/eyes/security/prescription
+	display_name = "security HUD, prescription"
+	path = /obj/item/clothing/glasses/hud/security/prescription
+	cost = 3
+	allowed_roles = SECURITY_ROLES
+
+/datum/gear/eyes/medical/prescription
+	display_name = "medical HUD, prescription"
+	path = /obj/item/clothing/glasses/hud/health/prescription
+	cost = 	3
+	allowed_roles = MEDICAL_ROLES
+
+/datum/gear/eyes/meson/prescription
+	display_name = "meson Goggles, prescription"
+	path = /obj/item/clothing/glasses/meson/prescription
+	cost = 3
+	allowed_roles = TECHNICAL_ROLES
