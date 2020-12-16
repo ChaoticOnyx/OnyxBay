@@ -531,7 +531,10 @@ The slots that you can use are found in items_clothing.dm and are the inventory 
 	if(H.disabilities & NEARSIGHTED)
 		prescriptions += 7
 	if(H.equipment_prescription)
-		prescriptions -= H.equipment_prescription
+		if(H.disabilities & NEARSIGHTED)
+			prescriptions -= H.equipment_prescription
+		else
+			prescriptions += H.equipment_prescription
 
 	var/light = light_sensitive
 	if(light)
