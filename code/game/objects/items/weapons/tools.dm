@@ -662,7 +662,7 @@
 	name = "emergency bar"
 	desc = "A plastic bar with a wedge. Kind of awkward and widdly, yet it may save your life one day."
 	icon_state = "emergbar"
-	item_state = "crowbar_red"
+	item_state = "crowbar_emerg"
 	force = 6.0
 	throwforce = 5.0
 	throw_range = 5

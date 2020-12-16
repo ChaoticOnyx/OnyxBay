@@ -25,7 +25,7 @@
 	icon_state = "box"
 	item_state = "syringe_kit"
 	max_storage_space = DEFAULT_BOX_STORAGE
-	var/foldable = /obj/item/stack/material/cardboard	// BubbleWrap - if set, can be folded (when empty) into a sheet of cardboard
+	var/obj/item/foldable = /obj/item/stack/material/cardboard	// BubbleWrap - if set, can be folded (when empty) into a sheet of cardboard
 	use_sound = "searching_clothes"
 
 /obj/item/weapon/storage/box/large
@@ -36,14 +36,14 @@
 	max_storage_space = DEFAULT_LARGEBOX_STORAGE
 
 // BubbleWrap - A box can be folded up to make card
-/obj/item/weapon/storage/box/attack_self(mob/user as mob)
-	if(..()) return
-
+/obj/item/weapon/storage/box/attack_self(mob/user)
+	if(..())
+		return
 	//try to fold it.
-	if ( contents.len )
+	if(contents.len)
 		return
 
-	if ( !ispath(src.foldable) )
+	if(!ispath(src.foldable))
 		return
 	var/found = 0
 	// Close any open UI windows first
@@ -52,16 +52,19 @@
 			src.close(M)
 		if ( M == user )
 			found = 1
-	if ( !found )	// User is too far away
+	if(!found)	// User is too far away
 		return
 	// Now make the cardboard
-	to_chat(user, "<span class='notice'>You fold [src] flat.</span>")
+	var/obj/item/I
 	if(ispath(foldable, /obj/item/stack))
 		var/stack_amt = max(2**(w_class - 3), 1)
-		new src.foldable(get_turf(src), stack_amt)
+		I = new src.foldable(get_turf(src), stack_amt)
+		to_chat(user, SPAN("notice", "You fold [src] flat."))
 	else
-		new src.foldable(get_turf(src))
+		I = new src.foldable(get_turf(src))
+		to_chat(user, SPAN("notice", "You fold [src] into \a [I]."))
 	qdel(src)
+	user.put_in_hands(I)
 
 /obj/item/weapon/storage/box/make_exact_fit()
 	..()
