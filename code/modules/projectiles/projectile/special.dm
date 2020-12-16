@@ -171,10 +171,11 @@
 /obj/item/projectile/energy/laser
 	name = "laser slug"
 	icon_state = "ibeam"
-	damage = 15
+	damage = 30
 	agony = 10
 	eyeblur = 4
 	damage_type = BURN
+	check_armour = "laser"
 	armor_penetration = 10
 	sharp = 1 //concentrated burns
 	pass_flags = PASS_FLAG_TABLE | PASS_FLAG_GRILLE
@@ -182,14 +183,14 @@
 
 /obj/item/projectile/energy/laser/mid
 	icon_state = "laser"
-	damage = 25
+	damage = 60
 	agony = 20
 	armor_penetration = 20
 
 /obj/item/projectile/energy/laser/heavy
 	name = "heavy laser slug"
 	icon_state = "heavylaser"
-	damage = 35
+	damage = 80
 	agony = 30
 	armor_penetration = 40
 	fire_sound = 'sound/effects/weapons/energy/fire21.ogg'
