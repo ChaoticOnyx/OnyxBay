@@ -58,6 +58,7 @@
 	display_name = "hardhat selection"
 	path = /obj/item/clothing/head/hardhat
 	cost = 2
+	allowed_roles = TECHNICAL_ROLES
 
 /datum/gear/head/hardhat/New()
 	..()
@@ -129,6 +130,7 @@
 /datum/gear/head/welding
 	display_name = "welding mask selection"
 	path = /obj/item/clothing/head/welding
+	allowed_roles = TECHNICAL_ROLES
 
 /datum/gear/head/welding/New()
 	..()
@@ -139,10 +141,6 @@
 	welding_masks += /obj/item/clothing/head/welding/knight
 	welding_masks += /obj/item/clothing/head/welding/carp
 	gear_tweaks += new /datum/gear_tweak/path/specified_types_list(welding_masks)
-
-/datum/gear/head/tankccap
-	display_name = "padded cap"
-	path = /obj/item/clothing/head/tank
 
 //
 // Donator's shop

@@ -64,4 +64,34 @@
 
 /datum/gear/food/lunchbox/mars
 	display_name = "mariner university lunchbox"
-	path = /obj/item/weapon/storage/lunchbox/mars/filled 
+	path = /obj/item/weapon/storage/lunchbox/mars/filled
+
+/datum/gear/flask
+	sort_category = "Food and Drinks"
+	display_name = "flask"
+	path = /obj/item/weapon/reagent_containers/food/drinks/flask
+	price = 5
+
+/datum/gear/drinks/flask/New()
+	..()
+	gear_tweaks += new /datum/gear_tweak/reagents(lunchables_ethanol_reagents())
+
+/datum/gear/flask/bar
+	display_name = "bar flask"
+	path = /obj/item/weapon/reagent_containers/food/drinks/flask/barflask
+	price = 0
+
+/datum/gear/flask/vacuum
+	display_name = "vacuum flask"
+	path = /obj/item/weapon/reagent_containers/food/drinks/flask/vacuumflask
+	price = 0
+
+/datum/gear/flask/lithium
+	display_name = "lithium flask"
+	path = /obj/item/weapon/reagent_containers/food/drinks/flask/lithium
+	price = 8
+
+/datum/gear/flask/shiny
+	display_name = "shiny flask"
+	path = /obj/item/weapon/reagent_containers/food/drinks/flask/shiny
+	price = 10

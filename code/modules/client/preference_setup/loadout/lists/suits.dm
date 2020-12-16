@@ -11,22 +11,27 @@
 /datum/gear/suit/security_poncho
 	display_name = "poncho, security"
 	path = /obj/item/clothing/suit/poncho/roles/security
+	allowed_roles = SECURITY_ROLES
 
 /datum/gear/suit/medical_poncho
 	display_name = "poncho, medical"
 	path = /obj/item/clothing/suit/poncho/roles/medical
+	allowed_roles = MEDICAL_ROLES
 
 /datum/gear/suit/engineering_poncho
 	display_name = "poncho, engineering"
 	path = /obj/item/clothing/suit/poncho/roles/engineering
+	allowed_roles = ENGINEERING_ROLES
 
 /datum/gear/suit/science_poncho
 	display_name = "poncho, science"
 	path = /obj/item/clothing/suit/poncho/roles/science
+	allowed_roles = RESEARCH_ROLES
 
 /datum/gear/suit/cargo_poncho
 	display_name = "poncho, supply"
 	path = /obj/item/clothing/suit/poncho/roles/cargo
+	allowed_roles = SUPPLY_ROLES
 
 /datum/gear/suit/suit_jacket
 	display_name = "standard suit jackets"
