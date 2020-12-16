@@ -105,7 +105,7 @@ datum/uplink_item/item/tools/cleaning_kit
 	name = "Teleporter Circuit Board"
 	item_cost = 40
 	path = /obj/item/weapon/circuitboard/teleporter
-	antag_roles = list(MODE_MERCENARY)
+	antag_roles = list(MODE_NUKE)
 
 /datum/uplink_item/item/tools/ai_module
 	name = "Hacked AI Upload Module"
@@ -120,7 +120,7 @@ datum/uplink_item/item/tools/cleaning_kit
 /datum/uplink_item/item/tools/camera_mask
 	name = "Camera MIU"
 	item_cost = 32
-	antag_costs = list(MODE_MERCENARY = 15)
+	antag_costs = list(MODE_NUKE = 15)
 	path = /obj/item/clothing/mask/ai
 
 /datum/uplink_item/item/tools/interceptor

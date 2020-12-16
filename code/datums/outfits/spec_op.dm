@@ -51,8 +51,8 @@
 	GLOB.commandos.equip(H)
 	return 1
 
-/decl/hierarchy/outfit/mercenary
-	name = "Spec Ops - Mercenary"
+/decl/hierarchy/outfit/syndicate
+	name = "Spec Ops - Syndicate"
 	uniform = /obj/item/clothing/under/syndicate
 	shoes = /obj/item/clothing/shoes/combat
 	l_ear = /obj/item/device/radio/headset/syndicate
@@ -64,22 +64,20 @@
 
 	id_slot = slot_wear_id
 	id_type = /obj/item/weapon/card/id/syndicate
-	id_pda_assignment = "Mercenary"
+	id_pda_assignment = "Syndicate Operative"
 
 	flags = OUTFIT_HAS_BACKPACK|OUTFIT_RESET_EQUIPMENT
 
-/decl/hierarchy/outfit/mercenary/syndicate
-	name = "Spec Ops - Syndicate"
+/decl/hierarchy/outfit/syndicate/armored
 	suit = /obj/item/clothing/suit/armor/vest
 	mask = /obj/item/clothing/mask/gas
 	head = /obj/item/clothing/head/helmet/swat
 	shoes = /obj/item/clothing/shoes/swat
-	id_desc = "Syndicate Operative"
 
-/decl/hierarchy/outfit/mercenary/syndicate/commando
+/decl/hierarchy/outfit/syndicate/armored/commando
 	name = "Spec Ops - Syndicate Commando"
-	suit = /obj/item/clothing/suit/space/void/merc
+	suit = /obj/item/clothing/suit/space/void/syndi
 	mask = /obj/item/clothing/mask/gas/syndicate
-	head = /obj/item/clothing/head/helmet/space/void/merc
+	head = /obj/item/clothing/head/helmet/space/void/syndi
 	back = /obj/item/weapon/tank/jetpack/oxygen
 	l_pocket = /obj/item/weapon/tank/emergency/oxygen
