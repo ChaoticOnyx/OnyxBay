@@ -42,7 +42,7 @@ var/global/defer_powernet_rebuild = 0      // True if net rebuild will be called
 #define NETWORK_ERT                 "ZeEmergencyResponseTeam"
 #define NETWORK_EXODUS              "Exodus"
 #define NETWORK_MEDICAL             "Medical"
-#define NETWORK_MERCENARY           "MercurialNet"
+#define NETWORK_SYNDICATE           "SyndieNet"
 #define NETWORK_MINE                "Mining"
 #define NETWORK_RESEARCH            "Research"
 #define NETWORK_ROBOTS              "Robots"
@@ -64,7 +64,7 @@ var/global/defer_powernet_rebuild = 0      // True if net rebuild will be called
 #define NETWORK_ALARM_POWER "Power Alarms"
 
 // Those networks can only be accessed by pre-existing terminals. AIs and new terminals can't use them.
-var/list/restricted_camera_networks = list(NETWORK_ERT,NETWORK_MERCENARY,"Secret")
+var/list/restricted_camera_networks = list(NETWORK_ERT,NETWORK_SYNDICATE,"Secret")
 
 
 //singularity defines
