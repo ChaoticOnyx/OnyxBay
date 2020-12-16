@@ -143,8 +143,8 @@
 	slowdown_per_slot[slot_shoes] = 1
 
 /obj/item/clothing/shoes/cheapboots
-	name = "cheap jackboots"
-	desc = "Tall cheap-ass leathlike boots with a hint of artificial shine."
+	name = "budget jackboots"
+	desc = "Tall cheap-ass leatherlike boots with a hint of artificial shine."
 	icon_state = "jackboots"
 	can_hold_knife = 1
 	cold_protection = FEET
