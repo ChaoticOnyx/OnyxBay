@@ -1,9 +1,9 @@
 /obj/item/weapon/gun/launcher/money
 	name = "money cannon"
-	desc = "A blocky, plastic novelty launcher that claims to be able to shoot thaler at considerable velocities."
+	desc = "A blocky, plastic novelty launcher that claims to be able to shoot credits at considerable velocities."
 	description_info = "Load money into the cannon by picking it up with the gun, or feeding it directly by hand. Use in your hand to configure how much money you want to fire per shot."
 	description_fluff = "These devices were invented several centuries ago and are a distinctly human cultural infection. They have produced knockoffs as timeless and as insipid as the potato gun and the paddle ball, showing up in all corners of the galaxy. The Money Cannon variation is noteworthy for its sturdiness and build quality, but is, at the end of the day, just another knockoff of the ancient originals."
-	description_antag = "Sliding a cryptographic sequencer into the receptacle will short the motors and override their speed. If you set the cannon to dispense 100 thaler or more, this might make a handy weapon."
+	description_antag = "Sliding a cryptographic sequencer into the receptacle will short the motors and override their speed. If you set the cannon to dispense 100 credits or more, this might make a handy weapon."
 	icon_state = "money_launcher"
 	item_state = "money_launcher"
 	origin_tech = list(TECH_COMBAT = 1, TECH_MATERIAL = 1)
@@ -46,7 +46,7 @@
 		vomit_onto.visible_message("<span class='danger'>\The [vomit_onto] blasts themselves full in the face with \the [src]!</span>")
 		playsound(T, "sound/weapons/gunshot/money_launcher_jackpot.ogg", 100, 1)
 	else
-		vomit_onto.visible_message("<span class='danger'>\The [vomit_onto] ejects a few thaler into their face.</span>")
+		vomit_onto.visible_message("<span class='danger'>\The [vomit_onto] ejects a few credits into their face.</span>")
 		playsound(T, 'sound/weapons/gunshot/money_launcher.ogg', 100, 1)
 
 	receptacle_value = 0
@@ -59,7 +59,7 @@
 		release_force = 0
 		return
 
-	// Must launch at least 100 thaler to incur damage.
+	// Must launch at least 100 credits to incur damage.
 	release_force = dispensing / 100
 
 /obj/item/weapon/gun/launcher/money/proc/unload_receptacle(mob/user)
@@ -71,7 +71,7 @@
 	bling.worth = receptacle_value
 	bling.update_icon()
 	user.put_in_hands(bling)
-	to_chat(user, "<span class='notice'>You eject [receptacle_value] thaler from [src]'s receptacle.</span>")
+	to_chat(user, "<span class='notice'>You eject [receptacle_value] credits from [src]'s receptacle.</span>")
 	receptacle_value = 0
 
 /obj/item/weapon/gun/launcher/money/proc/absorb_cash(obj/item/weapon/spacecash/bling, mob/user)
@@ -106,12 +106,12 @@
 	return bling
 
 /obj/item/weapon/gun/launcher/money/attack_self(mob/user as mob)
-	src.dispensing = min(input(user, "How many thaler do you want to dispense at a time? (1 to [src.receptacle_value])", "Money Cannon Settings", 20) as num, receptacle_value)
+	src.dispensing = min(input(user, "How many credits do you want to dispense at a time? (1 to [src.receptacle_value])", "Money Cannon Settings", 20) as num, receptacle_value)
 	if(dispensing <= 0 || dispensing > src.receptacle_value)
 		dispensing = 1
-		to_chat(user, "<span class='notice'>Your value is not in range (1 to [src.receptacle_value]). Setting to dispense 1 thaler at a time.</span>")
+		to_chat(user, "<span class='notice'>Your value is not in range (1 to [src.receptacle_value]). Setting to dispense 1 credits at a time.</span>")
 	else
-		to_chat(user, "<span class='notice'>You set [src] to dispense [dispensing] thaler at a time.</span>")
+		to_chat(user, "<span class='notice'>You set [src] to dispense [dispensing] credits at a time.</span>")
 
 /obj/item/weapon/gun/launcher/money/attack_hand(mob/user as mob)
 	if(user.get_inactive_hand() == src)
@@ -127,7 +127,7 @@
 			return
 
 		receptacle_value += bling.worth
-		to_chat(user, "<span class='notice'>You slide [bling.worth] thaler into [src]'s receptacle.</span>")
+		to_chat(user, "<span class='notice'>You slide [bling.worth] credits into [src]'s receptacle.</span>")
 		qdel(bling)
 
 	else
@@ -135,10 +135,10 @@
 
 /obj/item/weapon/gun/launcher/money/examine(mob/user)
 	. = ..()
-	. += "\nIt is configured to dispense [dispensing] thaler at a time."
+	. += "\nIt is configured to dispense [dispensing] credits at a time."
 
 	if(receptacle_value >= 1)
-		. += "\nThe receptacle is loaded with [receptacle_value] thaler."
+		. += "\nThe receptacle is loaded with [receptacle_value] credits."
 
 	else
 		. += "\nThe receptacle is empty."
