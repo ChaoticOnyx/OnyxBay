@@ -33,6 +33,11 @@
 	path = /obj/item/clothing/shoes/cheapboots
 	cost = 2
 
+/datum/gear/shoes/workboots
+	display_name = "workboots"
+	path = /obj/item/clothing/shoes/cheapboots/work
+	cost = 2
+
 //
 // Donator's shop
 //
