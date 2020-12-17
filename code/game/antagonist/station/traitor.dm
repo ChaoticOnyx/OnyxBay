@@ -83,7 +83,6 @@ GLOBAL_DATUM_INIT(traitors, /datum/antagonist/traitor, new)
 
 	if(!..())
 		return 0
-	playsound(traitor_mob,'sound/voice/syndicate intro.ogg')
 	spawn_uplink(traitor_mob)
 	give_intel(traitor_mob)
 
