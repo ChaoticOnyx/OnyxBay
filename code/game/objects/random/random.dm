@@ -367,7 +367,8 @@
 				/obj/item/toy/figure/psychologist,
 				/obj/item/toy/figure/paramedic,
 				/obj/item/toy/figure/ert,
-				/obj/item/toy/figure/moose)
+				/obj/item/toy/figure/moose,
+				/obj/item/toy/figure/rin_tata)
 
 
 /obj/random/plushie
@@ -383,7 +384,11 @@
 				/obj/item/toy/plushie/kitten,
 				/obj/item/toy/plushie/lizard,
 				/obj/item/toy/plushie/farwa,
-				/obj/item/toy/plushie/spider)
+				/obj/item/toy/plushie/spider,
+				/obj/item/toy/plushie/toaster,
+				/obj/item/toy/plushie/moth,
+				/obj/item/toy/plushie/slug,
+				/obj/item/toy/plushie/snail)
 
 /obj/random/plushie/large
 	name = "random large plushie"

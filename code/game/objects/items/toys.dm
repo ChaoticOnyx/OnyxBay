@@ -474,6 +474,11 @@
 	desc = "A \"Space Life\" brand Moose action figure."
 	icon_state = "moose"
 
+/obj/item/toy/figure/rin_tata
+	name = "Rin Tata action figure"
+	desc = "A \"Space Life\" brand Rin Tata politician action figure."
+	icon_state = "black_man"
+
 /obj/item/toy/figure/borg
 	name = "Cyborg action figure"
 	desc = "A \"Space Life\" brand Cyborg action figure."
@@ -781,6 +786,26 @@
 	name = "farwa plush"
 	desc = "A farwa plush doll. It's soft and comforting!"
 	icon_state = "farwaplushie"
+
+/obj/item/toy/plushie/snail
+	name = "snail plush"
+	desc = "A plushie of a cute snail!"
+	icon_state = "snail"
+
+/obj/item/toy/plushie/slug
+	name = "slug plush"
+	desc = "A plushie of a cute slug! Ewwww!"
+	icon_state = "s_snail"
+
+/obj/item/toy/plushie/moth
+	name = "moth plush"
+	desc = "A moth plush doll. It's soft!"
+	icon_state = "moth"
+
+/obj/item/toy/plushie/toaster
+	name = "toaster plush"
+	desc = "A toaster plush doll. SHHHHH!"
+	icon_state = "toster"
 
 //Toy cult sword
 /obj/item/toy/cultsword
