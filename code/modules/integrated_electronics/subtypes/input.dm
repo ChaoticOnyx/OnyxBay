@@ -780,12 +780,12 @@
 	var/datum/signal/signal = new()
 	signal.transmission_method = 1
 	signal.data["tag"] = code
-	signal.data["command"] = command
+	signal.data["command"] = url_encode(command)
 	signal.encryption = 0
 	return signal
 
 /obj/item/integrated_circuit/input/signaler/advanced/treat_signal(datum/signal/signal)
-	set_pin_data(IC_OUTPUT,1,signal.data["command"])
+	set_pin_data(IC_OUTPUT,1,url_decode(signal.data["command"]))
 	push_data()
 	..()
 
