@@ -524,6 +524,7 @@
 		R.module.modules += new /obj/item/device/reagent_scanner(R.module)
 		R.module.modules += new /obj/item/weapon/scalpel(R.module)
 		R.module.modules += new /obj/item/weapon/autopsy_scanner(R.module)
+		R.module.modules += new /obj/item/weapon/evidencebag/cyborg(R.module)
 		installed = 1
 		return 1
 
