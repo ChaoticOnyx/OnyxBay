@@ -53,6 +53,9 @@
 /area/shuttle/merchant/ghetto
 	name = "\improper Merchant Van - Station Ghetto Dock"
 
+/area/shuttle/merchant/outpost
+	name = "\improper Merchant Van - Outpost"
+
 // Command
 /area/crew_quarters/heads/chief
 	name = "\improper Engineering - CE's Office"
