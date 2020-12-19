@@ -37,6 +37,18 @@
 	cost = 	3
 	allowed_roles = MEDICAL_ROLES
 
+/datum/gear/eyes/medical/visor
+	display_name = "medical HUD, visor"
+	path = /obj/item/clothing/glasses/hud/health/visor
+	allowed_roles = MEDICAL_ROLES
+	cost = 3
+
+/datum/gear/eyes/meson/ipatch
+	display_name = "meson patch"
+	path = /obj/item/clothing/glasses/eyepatch/hud/meson
+	allowed_roles = TECHNICAL_ROLES
+	cost = 3
+
 /datum/gear/eyes/meson/prescription
 	display_name = "meson Goggles, prescription"
 	path = /obj/item/clothing/glasses/meson/prescription
