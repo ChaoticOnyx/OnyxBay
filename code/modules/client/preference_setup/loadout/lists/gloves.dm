@@ -8,16 +8,6 @@
 	flags = GEAR_HAS_COLOR_SELECTION
 	path = /obj/item/clothing/gloves/color
 
-/datum/gear/gloves/latex
-	display_name = "gloves, latex"
-	path = /obj/item/clothing/gloves/latex
-	cost = 3
-
-/datum/gear/gloves/nitrile
-	display_name = "gloves, nitrile"
-	path = /obj/item/clothing/gloves/latex/nitrile
-	cost = 3
-
 /datum/gear/gloves/rainbow
 	display_name = "gloves, rainbow"
 	path = /obj/item/clothing/gloves/rainbow
@@ -25,7 +15,7 @@
 /datum/gear/ring
 	display_name = "ring"
 	path = /obj/item/clothing/ring
-	cost = 2
+	cost = 1
 
 /datum/gear/ring/New()
 	..()
@@ -45,18 +35,14 @@
 	ringtype["ring, plastic"] = /obj/item/clothing/ring/material/plastic
 	gear_tweaks += new /datum/gear_tweak/path(ringtype)
 
-/datum/gear/gloves/botany
-	display_name = "gloves, botany"
-	path = /obj/item/clothing/gloves/thick/botany
-	cost = 3
-	allowed_roles = list(/datum/job/hydro, /datum/job/xenobiologist, /datum/job/rd, /datum/job/chef, /datum/job/bartender, /datum/job/assistant)
-
-/datum/gear/gloves/work
-	display_name = "gloves, work"
-	path = /obj/item/clothing/gloves/thick
-	cost = 3
-
 /datum/gear/gloves/boxing
 	display_name = "boxing gloves"
 	path = /obj/item/clothing/gloves/boxing
 	price = 12
+
+/datum/gear/gloves/long_evening_gloves
+	display_name = "long evening gloves"
+	path = /obj/item/clothing/gloves/color/long_evening_gloves
+	price = 8
+	flags = GEAR_HAS_COLOR_SELECTION
+	

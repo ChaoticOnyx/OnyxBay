@@ -81,39 +81,49 @@ obj/item/organ/external/take_general_damage(amount, silent = FALSE)
 						droplimb(0, DROPLIMB_EDGE)
 						return
 				else if(force_droplimb)
-					droplimb(0, DROPLIMB_BLUNT)
+					if(edge_eligible)
+						droplimb(0, DROPLIMB_EDGE)
+						return
+					else if(burn)
+						droplimb(0, DROPLIMB_BURN)
+						return
+					else if(prob(25)) // A chance for a limb to be torn off instead of getting gibbed
+						droplimb(0, DROPLIMB_EDGE)
+					else
+						droplimb(0, DROPLIMB_BLUNT)
 					return
 
 	// High brute damage or sharp objects may damage internal organs
-	var/damage_amt = brute
-	var/cur_damage = brute_dam
-	if(laser)
-		damage_amt += burn
-		cur_damage += burn_dam
-	var/organ_damage_threshold = 5
-	if(sharp)
-		organ_damage_threshold *= 0.5
-	var/organ_damage_prob = 6.25 * damage_amt/organ_damage_threshold //more damage, higher chance to damage
-	if(sharp)
-		organ_damage_prob *= 1.5
-	if(cur_damage >= 15)
-		organ_damage_prob *= cur_damage/15
-	if(encased && !(status & ORGAN_BROKEN)) //ribs and skulls protect
-		organ_damage_prob *= 0.5
-	if(internal_organs && internal_organs.len && (cur_damage + damage_amt >= max_damage || damage_amt >= organ_damage_threshold) && prob(organ_damage_prob))
-		// Damage an internal organ
-		var/list/victims = list()
-		for(var/obj/item/organ/internal/I in internal_organs)
-			if(I.damage < I.max_damage && prob(I.relative_size))
-				victims += I
-		if(!victims.len)
-			victims += pick(internal_organs)
-		for(var/obj/item/organ/internal/victim in victims)
-			brute /= 2
-			if(laser)
-				burn /= 3
-			damage_amt /= 2
-			victim.take_internal_damage(damage_amt)
+	if(!istype(used_weapon, /obj/item/projectile)) // Projectiles organ damage is being processed in human_defense.dm
+		var/damage_amt = brute
+		var/cur_damage = brute_dam
+		if(laser)
+			damage_amt += burn
+			cur_damage += burn_dam
+		var/organ_damage_threshold = 5
+		if(sharp)
+			organ_damage_threshold *= 0.5
+		var/organ_damage_prob = 6.25 * damage_amt/organ_damage_threshold //more damage, higher chance to damage
+		if(sharp)
+			organ_damage_prob *= 1.5
+		if(cur_damage >= 15)
+			organ_damage_prob *= cur_damage/15
+		if(encased && !(status & ORGAN_BROKEN)) //ribs and skulls protect
+			organ_damage_prob *= 0.5
+		if(internal_organs && internal_organs.len && (cur_damage + damage_amt >= max_damage || damage_amt >= organ_damage_threshold) && prob(organ_damage_prob))
+			// Damage an internal organ
+			var/list/victims = list()
+			for(var/obj/item/organ/internal/I in internal_organs)
+				if(I.damage < I.max_damage && prob(I.relative_size))
+					victims += I
+			if(!victims.len)
+				victims += pick(internal_organs)
+			for(var/obj/item/organ/internal/victim in victims)
+				brute /= 2
+				if(laser)
+					burn /= 3
+				damage_amt /= 2
+				victim.take_internal_damage(damage_amt)
 
 	if(status & ORGAN_BROKEN && brute)
 		jostle_bone(brute)

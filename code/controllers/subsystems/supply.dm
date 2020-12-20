@@ -174,7 +174,7 @@ SUBSYSTEM_DEF(supply)
 			info +="CONTENTS:<br><ul>"
 
 			slip = new /obj/item/weapon/paper/manifest(A)
-			slip.set_content(info, TRUE)
+			slip.set_content(info, rawhtml = TRUE)
 			slip.is_copy = 0
 
 		//spawn the stuff, finish generating the manifest while you're at it

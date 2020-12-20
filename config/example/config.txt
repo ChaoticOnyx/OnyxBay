@@ -159,7 +159,7 @@ PROBABILITY malfunction 1
 PROBABILITY ninja       1
 PROBABILITY revolution  2
 PROBABILITY cult        2
-PROBABILITY mercenary   1
+PROBABILITY nuke        1
 PROBABILITY meteor      1
 PROBABILITY calamity    2
 PROBABILITY god         1   ## Deity
@@ -171,11 +171,11 @@ PROBABILITY traitorling 3   ## Changeling & traitor
 PROBABILITY unity       1   ## Revolution & wizard
 PROBABILITY uprising    2   ## Cult & revolution
 PROBABILITY visitors    1   ## Ninja & wizard
-PROBABILITY siege       2   ## Mercenary & revolution
+PROBABILITY siege       2   ## Nuke & revolution
 
 ##PROBABILITY heist             0
 ##PROBABILITY bughunt           0 ## Deathsquad & xenophage
-##PROBABILITY crossfire         0 ## Mercenary & heist
+##PROBABILITY crossfire         0 ## Nuke & heist
 ##PROBABILITY infestation       0 ## Borer, changeling & xenophage
 
 ## Uncomment to scale amount of traitors based on amount of players.

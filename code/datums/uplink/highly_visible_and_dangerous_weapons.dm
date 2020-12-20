@@ -47,32 +47,32 @@
 /datum/uplink_item/item/visible_weapons/revolver
 	name = "Revolver, .357"
 	item_cost = 56
-	antag_costs = list(MODE_MERCENARY = 14)
+	antag_costs = list(MODE_NUKE = 14)
 	path = /obj/item/weapon/storage/backpack/satchel/syndie_kit/revolver
 
 /datum/uplink_item/item/visible_weapons/revolver2
 	name = "Revolver, .44"
 	item_cost = 48
-	antag_costs = list(MODE_MERCENARY = 5)
+	antag_costs = list(MODE_NUKE = 5)
 	path = /obj/item/weapon/storage/backpack/satchel/syndie_kit/revolver2
 
 /datum/uplink_item/item/visible_weapons/grenade_launcher
 	name = "Grenade Launcher"
 	item_cost = 12
-	antag_roles = list(MODE_MERCENARY)
+	antag_roles = list(MODE_NUKE)
 	path = /obj/item/weapon/gun/launcher/grenade/loaded
 
-//These are for traitors (or other antags, perhaps) to have the option of purchasing some merc gear.
+//These are for traitors (or other antags, perhaps) to have the option of purchasing some syndi gear.
 /datum/uplink_item/item/visible_weapons/submachinegun
 	name = "Submachine Gun"
 	item_cost = 52
-	antag_costs = list(MODE_MERCENARY = 20)
+	antag_costs = list(MODE_NUKE = 20)
 	path = /obj/item/weapon/gun/projectile/automatic/c20r
 
 /datum/uplink_item/item/visible_weapons/assaultrifle
 	name = "Assault Rifle"
 	item_cost = 28
-	antag_roles = list(MODE_MERCENARY)
+	antag_roles = list(MODE_NUKE)
 	path = /obj/item/weapon/gun/projectile/automatic/sts35
 
 /datum/uplink_item/item/visible_weapons/advanced_energy_gun
@@ -88,13 +88,13 @@
 /datum/uplink_item/item/visible_weapons/heavysniper
 	name = "Anti-materiel Rifle with ammunition"
 	item_cost = 78
-	antag_roles = list(MODE_MERCENARY)
+	antag_roles = list(MODE_NUKE)
 	path = /obj/item/weapon/storage/secure/briefcase/heavysniper
 
 /datum/uplink_item/item/visible_weapons/machine_pistol
 	name = "Machine Pistol"
 	item_cost = 45
-	antag_costs = list(MODE_MERCENARY = 10)
+	antag_costs = list(MODE_NUKE = 10)
 	path = /obj/item/weapon/gun/projectile/automatic/machine_pistol
 
 /datum/uplink_item/item/visible_weapons/combat_shotgun
@@ -115,23 +115,23 @@
 /datum/uplink_item/item/visible_weapons/pulsecarbine
 	name = "Pulse Carbine"
 	item_cost = 88
-	antag_costs = list(MODE_MERCENARY = 45)
+	antag_costs = list(MODE_NUKE = 45)
 	path = /obj/item/weapon/gun/energy/pulse_rifle/carbine
 
 /datum/uplink_item/item/visible_weapons/rocketlauncher
 	name = "Rocket Launcher"
 	item_cost = 40
-	antag_roles = list(MODE_MERCENARY)
+	antag_roles = list(MODE_NUKE)
 	path = /obj/item/weapon/gun/launcher/rocket
 
 /datum/uplink_item/item/visible_weapons/flechetterifle
 	name = "Flechette Rifle"
 	item_cost = 20
-	antag_roles = list(MODE_MERCENARY)
+	antag_roles = list(MODE_NUKE)
 	path = /obj/item/weapon/gun/magnetic/railgun/flechette
 
 /datum/uplink_item/item/visible_weapons/ionrifle
 	name = "Ion pistol"
 	item_cost = 32
-	antag_costs = list(MODE_MERCENARY = 15)
+	antag_costs = list(MODE_NUKE = 15)
 	path = /obj/item/weapon/gun/energy/ionrifle/small
