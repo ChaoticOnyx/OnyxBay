@@ -23,7 +23,6 @@ var/global/list/rad_collectors = list()
 /obj/machinery/power/rad_collector/New()
 	..()
 	rad_collectors += src
-	pulse_coeff = max_power / 28 //get max_power with full tank of phoron
 
 /obj/machinery/power/rad_collector/Destroy()
 	rad_collectors -= src
