@@ -173,6 +173,11 @@
 	icon_state = "gripper-service"
 	desc = "A simple grasping tool used to perform tasks in the service sector, such as handling food, drinks, and seeds."
 
+	storage_type = list(
+		/obj/item/weapon/storage/fancy/egg_box,
+		/obj/item/weapon/storage/lunchbox,
+	)
+
 	can_hold = list(
 		/obj/item/weapon/reagent_containers/glass,
 		/obj/item/weapon/reagent_containers/food,
@@ -180,6 +185,8 @@
 		/obj/item/weapon/grown,
 		/obj/item/weapon/glass_extra
 		)
+
+	cant_hold = list() // understandable, have a great day
 
 /obj/item/weapon/gripper/surgical //Used to handle organs.
 	name = "surgical gripper"
@@ -399,6 +406,17 @@
 	else if(istype(target,/obj/machinery/portable_atmospherics/canister))
 		var/obj/machinery/portable_atmospherics/canister/A = target
 		A.ui_interact(user)
+
+	else if(istype(target, /obj/machinery/mining/drill))
+		var/obj/machinery/mining/drill/hdrill = target
+		if(hdrill.panel_open && hdrill.cell && user.Adjacent(hdrill))
+			wrapped = hdrill.cell
+			hdrill.cell.add_fingerprint(user)
+			hdrill.cell.update_icon()
+			hdrill.cell.loc = src
+			hdrill.cell = null
+
+			user.visible_message(SPAN_DANGER("[user] removes the power cell from [hdrill]!"), "You remove the power cell.")
 
 	else if(istype(target, /obj/machinery/cell_charger))
 		var/obj/machinery/cell_charger/charger = target

@@ -43,7 +43,7 @@
 	category_items = "Misc"
 
 /datum/design/item/tool/light_replacer
-	name = "light leplacer"
+	name = "light replacer"
 	desc = "A device to automatically replace lights. Refill with working lightbulbs."
 	id = "light_replacer"
 	req_tech = list(TECH_MAGNET = 3, TECH_MATERIAL = 4)

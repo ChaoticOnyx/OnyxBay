@@ -23,6 +23,9 @@
 	desc = "You fear to wear it for the negligence it brings."
 	icon_state = "capcap"
 
+/obj/item/clothing/head/caphat/cap/capcap_alt
+	icon_state = "capcap_alt"
+
 /obj/item/clothing/head/caphat/formal
 	name = "parade hat"
 	desc = "No one in a commanding position should be without a perfect, white hat of ultimate authority."
@@ -195,6 +198,10 @@
 /obj/item/clothing/head/det/grey
 	icon_state = "detective2"
 	desc = "A grey fedora - either the cornerstone of a detective's style or a poor attempt at looking cool, depending on the person wearing it."
+	item_state_slots = list(
+		slot_l_hand_str = "det_hat_grey",
+		slot_r_hand_str = "det_hat_grey",
+		)
 
 /obj/item/clothing/head/HoS
 	name = "Head of Security Hat"

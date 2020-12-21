@@ -12,6 +12,13 @@
 /datum/storyteller_character/proc/process_new_cycle_start()
 	_log_debug("New cycle processing begins")
 
+/datum/storyteller_character/proc/get_params_for_ui()
+	var/list/data = list(
+		"name" = name,
+		"description" = desc
+	)
+	return data
+
 /datum/storyteller_character/proc/_log_debug(text, verbose = FALSE)
 	if (!__debug)
 		return

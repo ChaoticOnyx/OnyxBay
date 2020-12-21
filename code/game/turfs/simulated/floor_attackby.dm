@@ -6,6 +6,9 @@
 	if(isCoil(C) || (flooring && istype(C, /obj/item/stack/rods)))
 		return ..(C, user)
 
+	if(user.a_intent != I_HELP)
+		return 0
+
 	if(flooring)
 		if(isCrowbar(C))
 			if(broken || burnt)

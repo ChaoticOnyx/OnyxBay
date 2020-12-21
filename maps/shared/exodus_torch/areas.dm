@@ -80,6 +80,10 @@
 	name = "Waste Disposal"
 	icon_state = "disposal"
 
+/area/maintenance/disposal/underground
+	name = "Underground Waste Disposal"
+	icon_state = "disposal"
+
 /area/maintenance/incinerator
 	name = "\improper Incinerator"
 	icon_state = "disposal"
@@ -163,6 +167,9 @@
 	name = "\improper Holodeck - Space"
 	has_gravity = 0
 	sound_env = SPACE
+
+/area/holodeck/source_chess
+	name = "\improper Holodeck - Chess Field"
 
 // Construction Site
 
@@ -455,6 +462,9 @@
 	name = "\improper Security - Morgue"
 	icon_state = "brigmorgue"
 
+/area/security/brigswstorage
+	name = "\improper Security - S-W Storage"
+	icon_state = "brigswstorage"
 /area/security/evidence
 	name = "\improper Security - Evidence Storage"
 	icon_state = "evidence"

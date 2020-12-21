@@ -121,7 +121,7 @@
 	layer = ABOVE_HUMAN_LAYER
 	var/dead = FALSE
 	var/obj/item/stored_item
-	
+
 /obj/structure/flora/pottedplant/Destroy()
 	stored_item.forceMove(loc)
 	return ..()
@@ -142,44 +142,46 @@
 
 /obj/structure/flora/pottedplant/attackby(obj/item/W, mob/user)
 	if (W.edge && user.a_intent == I_HURT)
-		user.visible_message("<span class='warning'>[user] cuts down the [src]!</span>")
+		user.visible_message(SPAN("warning", "[user] cuts down the [src]!"))
+		user.do_attack_animation(src)
+		user.setClickCooldown(DEFAULT_ATTACK_COOLDOWN)
 		death()
 		return 1
 	if(W.mod_weight >= 0.75 && user.a_intent == I_HURT)
 		shake_animation(stime = 4)
-		return 1
+		return ..()
 	if(!ishuman(user))
-		return
+		return 0
 	if(istype(W, /obj/item/weapon/holder))
-		return //no hiding mobs in there
+		return 0 //no hiding mobs in there
 	user.visible_message("[user] begins digging around inside of \the [src].", "You begin digging around in \the [src], trying to hide \the [W].")
 	playsound(loc, 'sound/effects/plantshake.ogg', rand(50, 75), TRUE)
+	user.setClickCooldown(DEFAULT_QUICK_COOLDOWN)
 	if(do_after(user, 20, src))
 		if(!stored_item)
 			if(W.w_class <= ITEM_SIZE_NORMAL)
 				user.drop_from_inventory(W, src)
 				stored_item = W
-				to_chat(user,"<span class='notice'>You hide \the [W] in [src].</span>")
-				return
+				to_chat(user, SPAN("notice", "You hide \the [W] in \the [src]."))
 			else
-				to_chat(user,"<span class='notice'>\The [W] can't be hidden in [src], it's too big.</span>")
-				return
+				to_chat(user, SPAN("notice", "\The [W] can't be hidden in \the [src], it's too big."))
 		else
-			to_chat(user,"<span class='notice'>Something is already hidden in [src].</span>")
-			return
-	return ..()
+			to_chat(user, SPAN("notice", "Something is already hidden in \the [src]."))
+	return 0
 
 /obj/structure/flora/pottedplant/attack_hand(mob/user as mob)
 	user.visible_message("[user] begins digging around inside of \the [src].", "You begin digging around in \the [src], searching it.")
 	playsound(loc, 'sound/effects/plantshake.ogg', rand(50, 75), TRUE)
+	user.setClickCooldown(DEFAULT_QUICK_COOLDOWN)
 	if(do_after(user, 40, src))
 		if(!stored_item)
-			to_chat(user,"<span class='notice'>There is nothing hidden in [src].</span>")
+			to_chat(user, SPAN("notice", "There is nothing hidden in \the [src]."))
 		else
 			user.put_in_hands(stored_item)
-			to_chat(user,"<span class='notice'>You take \the [stored_item] from [src].</span>")
+			to_chat(user, SPAN("notice", "You take \the [stored_item] from \the [src]."))
 			stored_item = null
-	
+		src.add_fingerprint(usr)
+
 /obj/structure/flora/pottedplant/bullet_act(obj/item/projectile/Proj)
 	if (prob(Proj.damage*2))
 		death()
@@ -304,6 +306,41 @@
 	..()
 	icon_state = "fullgrass_[rand(1, 3)]"
 
+/obj/structure/flora/goonbushes
+	name = "shrub"
+	icon = 'icons/obj/flora/goonbushes.dmi'
+	icon_state = ""
+	anchored = 1
+	layer = ABOVE_HUMAN_LAYER
+
+/obj/structure/flora/goonbushes/shrub
+	name = "shrub"
+	icon_state = "shrub"
+
+/obj/structure/flora/goonbushes/leafy
+	name = "shrub"
+	icon_state = "leafy"
+
+/obj/structure/flora/goonbushes/thick
+	name = "shrub"
+	icon_state = "thick"
+
+/obj/structure/flora/goonbushes/fern
+	name = "shrub"
+	icon_state = "fern"
+
+/obj/structure/flora/goonbushes/palm
+	name = "shrub"
+	icon_state = "palm"
+
+/obj/structure/flora/goonbushes/bush
+	name = "shrub"
+	icon_state = "bush"
+
+/obj/structure/flora/goonbushes/sick
+	name = "shrub"
+	icon_state = "sick"
+	layer = BELOW_DOOR_LAYER
 
 //potted plants credit: Flashkirby
 /obj/structure/flora/pottedplant
@@ -500,3 +537,8 @@
 	name = "dead potted plant"
 	desc = "This is the dried up remains of a dead plant. Someone should replace it."
 	icon_state = "plant-dead"
+
+/obj/structure/flora/pottedplant/monkey
+	name = "potted monkey plant"
+	desc = "Perhaps, this is why we no longer have a genetics lab?"
+	icon_state = "monkeyplant"

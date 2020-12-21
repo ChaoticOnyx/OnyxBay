@@ -47,28 +47,33 @@ I IS TYPIN'!'
 /mob/proc/remove_typing_indicator() // A bit excessive, but goes with the creation of the indicator I suppose
 	QDEL_NULL(typing_indicator)
 
-/mob/verb/say_wrapper()
-	set name = ".Say"
+/client/proc/close_saywindow(return_content = FALSE)
+	winset(src, null, "saywindow.is-visible=false;mapwindow.map.focus=true")
+	if (return_content)
+		. = winget(src, "saywindow.saywindow-input", "text")
+	winset(src, "saywindow.saywindow-input", "text=\"\"")
+
+/mob/verb/add_typing_indicator(is_sayinput as num|null)
+	set name = ".add_typing_indicator"
 	set hidden = 1
 
+	ASSERT(client && src == usr)
 
-	create_typing_indicator()
-	var/message = input("","say (text)") as text
+	if (is_sayinput)
+		create_typing_indicator()
+		return
+
+	var/text = winget(usr, "input", "text")
+	if(findtextEx(text, "Say ", 1, 5))
+		create_typing_indicator()
+
+/mob/verb/remove_typing_indicator_verb()
+	set name = ".remove_typing_indicator"
+	set hidden = 1
+
+	ASSERT(client && src == usr)
+
 	remove_typing_indicator()
-	if(message)
-		say_verb(message)
-
-	/* Well maybe some day. Later.
-	var/dat = ""
-	dat += "<form name='Say' action='?src=\ref[src]' method='get'>"
-	dat += "<input type='hidden' name='src' value='\ref[src]'>"
-	dat += "<input type='hidden' name='choice' value='Say'>"
-	dat += "<input type='submit' value='Say'><input type='text' id='mobsay' name='mobsay' value='' style='width:350px; background-color:white;'>"
-	dat += "</form>"
-	var/datum/browser/popup = new(src, "Say", ntitle = "Say (text)", nwidth = 440, nheight = 90)
-	visible_message("<span class='danger'>[src] uses chat.</span>")
-	popup.set_content(jointext(dat,null))
-	popup.open()*/
 
 /mob/verb/me_wrapper()
 	set name = ".Me"

@@ -169,11 +169,13 @@
 	agony = 35
 	embed = 0
 	sharp = 0
+	fire_sound = 'sound/weapons/gun_revolver44.ogg'
 
 /obj/item/projectile/bullet/pistol/accelerated/c44
 	name = "accelerated bullet"
 	damage = 42.5 //.44 magnum + gauss
 	armor_penetration = 45
+	fire_sound = 'sound/weapons/gun_revolver44.ogg'
 
 
 /* shotgun projectiles */

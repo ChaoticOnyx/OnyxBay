@@ -82,17 +82,17 @@
 		//create a sealed package containing the account details
 		var/obj/item/smallDelivery/P = new /obj/item/smallDelivery(source_db.loc)
 
-		var/obj/item/weapon/paper/R = new /obj/item/weapon/paper(P)
+		var/t1 = "<b>Account details (confidential)</b><br><hr><br>"
+		t1 += "<i>Account holder:</i> [M.owner_name]<br>"
+		t1 += "<i>Account number:</i> [M.account_number]<br>"
+		t1 += "<i>Account pin:</i> [M.remote_access_pin]<br>"
+		t1 += "<i>Starting balance:</i> T[M.money]<br>"
+		t1 += "<i>Date and time:</i> [stationtime2text()], [stationdate2text()]<br><br>"
+		t1 += "<i>Creation terminal ID:</i> [source_db.machine_id]<br>"
+		t1 += "<i>Authorised NT officer overseeing creation:</i> [source_db.held_card.registered_name]<br>"
+
+		var/obj/item/weapon/paper/R = new /obj/item/weapon/paper(P, t1, "Account information: [M.owner_name]", rawhtml = TRUE)
 		P.wrapped = R
-		R.SetName("Account information: [M.owner_name]")
-		R.info = "<b>Account details (confidential)</b><br><hr><br>"
-		R.info += "<i>Account holder:</i> [M.owner_name]<br>"
-		R.info += "<i>Account number:</i> [M.account_number]<br>"
-		R.info += "<i>Account pin:</i> [M.remote_access_pin]<br>"
-		R.info += "<i>Starting balance:</i> T[M.money]<br>"
-		R.info += "<i>Date and time:</i> [stationtime2text()], [stationdate2text()]<br><br>"
-		R.info += "<i>Creation terminal ID:</i> [source_db.machine_id]<br>"
-		R.info += "<i>Authorised NT officer overseeing creation:</i> [source_db.held_card.registered_name]<br>"
 
 		//stamp the paper
 		var/image/stampoverlay = image('icons/obj/bureaucracy.dmi')

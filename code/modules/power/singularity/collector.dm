@@ -20,12 +20,6 @@ var/global/list/rad_collectors = list()
 	var/max_safe_temp = 1000 + T0C
 	var/melted
 
-	var/max_rads = 500 // rad collector will reach max power output at this value, and break at twice this value
-	var/max_power = 5e6
-	var/pulse_coeff
-	var/end_time = 0
-	var/alert_delay = 10 SECONDS
-
 /obj/machinery/power/rad_collector/New()
 	..()
 	rad_collectors += src
@@ -50,23 +44,12 @@ var/global/list/rad_collectors = list()
 	last_power = last_power_new
 	last_power_new = 0
 
-	var/rads = SSradiation.get_rads_at_turf(get_turf(src))
-	if(P && active && rads)
-		if(rads > max_rads)
-			if(world.time > end_time)
-				end_time = world.time + alert_delay
-				visible_message("\icon[src] \the [src] beeps loudly as the radiation reaches dangerous levels, indicating imminent damage.")
-				playsound(src, 'sound/effects/screech.ogg', 100, 1, 1)
-		if(rads > max_rads * 2)
-			collector_break()
-		receive_pulse(min(rads/max_rads, 1)) //get max_power when get max rads but more rads won't compensate for the lack of phoron
-
 	if(P)
 		if(P.air_contents.gas["phoron"] == 0)
 			investigate_log("<font color='red'>out of fuel</font>.","singulo")
 			eject()
 		else
-			P.air_contents.adjust_gas("phoron", -0.01*drainratio*min(rads,max_rads)/max_rads) //fuel cost increases linearly with incoming radiation
+			P.air_contents.adjust_gas("phoron", -0.001 * drainratio)
 	return
 
 
@@ -182,7 +165,6 @@ var/global/list/rad_collectors = list()
 /obj/machinery/power/rad_collector/proc/receive_pulse(pulse_strength)
 	if(P && active)
 		var/power_produced = 0
-		power_produced = min(P.air_contents.gas["phoron"]*pulse_strength*pulse_coeff,max_power)
 		add_avail(power_produced)
 		last_power_new = power_produced
 		return

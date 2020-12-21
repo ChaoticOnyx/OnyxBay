@@ -320,15 +320,13 @@
 		return
 
 	to_chat(usr, "<span class='notice'>Transcript printed.</span>")
-	var/obj/item/weapon/paper/P = new /obj/item/weapon/paper(get_turf(src))
 	var/t1 = "<B>Transcript:</B><BR><BR>"
-	for(var/i=1,mytape.storedinfo.len >= i,i++)
+	for(var/i in 1 to mytape.storedinfo.len)
 		var/printedmessage = mytape.storedinfo[i]
 		if (findtextEx(printedmessage,"*",1,2)) //replace action sounds
 			printedmessage = "\[[time2text(mytape.timestamp[i]*10,"mm:ss")]\] (Unrecognized sound)"
 		t1 += "[printedmessage]<BR>"
-	P.info = t1
-	P.SetName("Transcript")
+	new /obj/item/weapon/paper(get_turf(src), t1, "Transcript", rawhtml = TRUE)
 	canprint = 0
 	sleep(300)
 	canprint = 1

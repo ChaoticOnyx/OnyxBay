@@ -4,6 +4,7 @@ var/list/gamemode_cache = list()
 	var/server_name = null					// server name (for world name / status)
 	var/server_id = null					// server id (used for separate bans storing)
 	var/server_suffix = 0					// generate numeric suffix based on server port
+	var/subserver_name = null               // subserver name in window title, ignored if null
 
 	var/log_ooc = 0							// Log OOC channel
 	var/log_access = 0						// Log login/logout
@@ -454,6 +455,9 @@ var/list/gamemode_cache = list()
 
 				if ("serversuffix")
 					config.server_suffix = 1
+
+				if ("subserver_name")
+					config.subserver_name = value
 
 				if ("hostedby")
 					config.hostedby = value

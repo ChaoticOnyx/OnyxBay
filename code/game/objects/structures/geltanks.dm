@@ -1,7 +1,7 @@
 /obj/structure/geltank
 	name = "unknown gel tank"
 	desc = "I'm not supposed to exist. Somebody has done something very wrong."
-	icon = 'icons/obj/objects.dmi'
+	icon = 'icons/obj/reagent_tanks.dmi'
 	icon_state = "watertank"
 	density = 1
 	anchored = 0

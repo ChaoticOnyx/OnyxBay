@@ -249,7 +249,7 @@
 	icon_state = "rollerbed_folded"
 	item_state = "rbed"
 	slot_flags = SLOT_BACK
-	w_class = ITEM_SIZE_NO_CONTAINER // Can't be put in backpacks. Oh well. For now.
+	w_class = ITEM_SIZE_GARGANTUAN // Not sure if it's actually necessary, I can barely imagine this thing being bigger than a mecha part;
 	var/rollertype = /obj/item/roller
 	var/bedtype = /obj/structure/bed/roller
 

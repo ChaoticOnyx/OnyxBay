@@ -13,9 +13,7 @@
 	var/dat = "<B>Crew Manifest</B>:<BR>"
 	for(var/mob/living/carbon/human/M in SSmobs.mob_list)
 		dat += text("    <B>[]</B> -  []<BR>", M.name, M.get_assignment())
-	var/obj/item/weapon/paper/P = new /obj/item/weapon/paper( src.loc )
-	P.info = dat
-	P.SetName("paper- 'Crew Manifest'")
+	new /obj/item/weapon/paper(loc, dat, "paper- 'Crew Manifest'", rawhtml = TRUE)
 	//SN src = null
 	qdel(src)
 	return

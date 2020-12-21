@@ -122,7 +122,7 @@
 			to_chat(src, SPAN_WARNING("You can't bite while you are hiding!"))
 			return
 
-		var/available_limbs = H.lying ? BP_ALL_LIMBS : BP_BELOW_GROIN
+		var/available_limbs = H.lying ? BP_ALL_LIMBS : BP_FEET
 		var/obj/item/organ/external/limb
 		for(var/L in shuffle(available_limbs))
 			limb = H.get_organ(L)
@@ -130,6 +130,13 @@
 				break
 
 		var/blocked = H.run_armor_check(limb.organ_tag, "melee")
+		for(var/obj/item/clothing/clothes in list(H.head, H.wear_mask, H.wear_suit, H.w_uniform, H.gloves, H.shoes))
+			if(istype(clothes) && (clothes.body_parts_covered & limb.body_part) && ((clothes.item_flags & ITEM_FLAG_THICKMATERIAL) || (blocked >= 30)))
+				visible_message(SPAN_NOTICE("[src] bites [H]'s [clothes] harmlessly."),
+								SPAN_WARNING("You failed to bite through [H]'s [clothes]."))
+				do_attack_animation(H)
+				return
+
 		if(H.apply_damage(rand(1, 2), BRUTE, limb.organ_tag, blocked) && !BP_IS_ROBOTIC(limb) && prob(70 - blocked))
 			limb.germ_level += rand(75, 150)
 			if(virus)

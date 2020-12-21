@@ -92,15 +92,6 @@ modular computers
 	path = /obj/item/modular_computer/tablet/preset/custom_loadout/advanced
 	cost = 4
 
-/datum/gear/utility/customtablet
-	display_name = "tablet computer, custom"
-	path = /obj/item/modular_computer/tablet
-	cost = 4
-
-/datum/gear/utility/customtablet/New()
-	..()
-	gear_tweaks += new /datum/gear_tweak/tablet()
-
 /datum/gear/utility/cheaplaptop
 	display_name = "laptop computer, cheap"
 	path = /obj/item/modular_computer/laptop/preset/custom_loadout/cheap

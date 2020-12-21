@@ -80,9 +80,9 @@
 		world.log << (port ? "Changed port to [port]" : "Failed to change port")
 
 	//set window title
-	if(config.server_id)
-		var/serverId = uppertext(copytext(config.server_id, 1, 2)) + copytext(config.server_id, 2)
-		name = "[server_name]: [serverId] - [GLOB.using_map.full_name]"
+	if(config.subserver_name)
+		var/subserver_name = uppertext(copytext(config.subserver_name, 1, 2)) + copytext(config.subserver_name, 2)
+		name = "[server_name]: [subserver_name] - [GLOB.using_map.full_name]"
 	else
 		name = "[server_name] - [GLOB.using_map.full_name]"
 

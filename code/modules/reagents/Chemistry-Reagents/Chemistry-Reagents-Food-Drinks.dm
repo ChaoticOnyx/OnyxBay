@@ -847,8 +847,6 @@
 	color = "#ffff00"
 	adj_temp = -5
 
-	glass_required = "square"
-	glass_icon_state = "lemonade"
 	glass_desc = "Oh the nostalgia..."
 	glass_special = list(DRINK_FIZZ, DRINK_ICE)
 
@@ -2137,7 +2135,6 @@
 	nutriment_factor = 1
 
 	glass_required = "mug"
-	glass_icon_state = "mead"
 	glass_name = "mead"
 	glass_desc = "A Viking's beverage, though a cheap one."
 	glass_special = list(DRINK_FIZZ)
@@ -2625,3 +2622,17 @@
 	glass_icon_state = "zhenghe"
 	glass_name = "Zheng He cocktail"
 	glass_desc = "A rather bitter blend of vermouth and well-steeped black tea. Named for Zheng He, who travelled from Nanjing in China as far as Mogadishu in the Horn of Africa in the 15th century."
+
+/datum/reagent/ethanol/kvas
+	name = "Kvas"
+	description = "Kvas is a traditional drink of old north nations from earth, commonly made from rye bread."
+	taste_description = "old north valleys"
+	color = "#473000"
+	strength = 1
+	adj_temp = 10
+
+	glass_required = "mug"
+	glass_icon_state = "kvas"
+	glass_name = "kvas"
+	glass_desc = "Tasty kvas, it has BEST antioxidants, it's good for your soul!"
+	glass_special = list(DRINK_FIZZ)

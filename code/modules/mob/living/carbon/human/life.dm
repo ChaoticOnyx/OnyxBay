@@ -98,6 +98,9 @@
 	//Update our name based on whether our face is obscured/disfigured
 	SetName(get_visible_name())
 
+	if(mind && mind.vampire)
+		handle_vampire()
+
 /mob/living/carbon/human/set_stat(new_stat)
 	. = ..()
 	if(stat != new_stat)
@@ -522,7 +525,7 @@
 			. += THERMAL_PROTECTION_HAND_RIGHT
 	return min(1,.)
 
-/mob/living/carbon/human/handle_chemicals_in_body()
+/mob/living/carbon/human/handle_chemicals_in_body(handle_touching = TRUE, handle_bloodstr = TRUE, handle_ingested = TRUE)
 
 	chem_effects.Cut()
 
@@ -535,9 +538,12 @@
 	var/datum/reagents/metabolism/ingested = get_ingested_reagents()
 
 	if(reagents)
-		if(touching) touching.metabolize()
-		if(bloodstr) bloodstr.metabolize()
-		if(ingested) metabolize_ingested_reagents()
+		if(touching && handle_touching)
+			touching.metabolize()
+		if(bloodstr && handle_bloodstr)
+			bloodstr.metabolize()
+		if(ingested && handle_ingested)
+			metabolize_ingested_reagents()
 
 	// Trace chemicals
 	for(var/T in chem_doses)
@@ -1158,7 +1164,7 @@
 	for(var/obj/item/organ/external/E in organs)
 		if(!(E.body_part & protected_limbs) && prob(40))
 			E.take_external_damage(burn = round(species_heat_mod * log(10, (burn_temperature + 10)), 0.1), used_weapon = fire)
-	
+
 	var/list/cig_places = list(wear_mask, l_ear, r_ear, r_hand, l_hand)
 	for(var/obj/item/clothing/mask/smokable/cig in cig_places)
 		if(istype(cig))

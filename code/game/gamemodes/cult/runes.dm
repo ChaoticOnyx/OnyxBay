@@ -926,7 +926,7 @@
 	var/obj/item/weapon/paper/target
 	var/tainted = 0
 	for(var/obj/item/weapon/paper/P in get_turf(src))
-		if(!P.info)
+		if(P.is_clean())
 			target = P
 			break
 		else

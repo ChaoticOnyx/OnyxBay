@@ -22,7 +22,7 @@
 	#include "exodus-6.dmm"
 	#include "exodus-7.dmm"
 	#include "derelicts/snowasteroid.dmm"
-	#include "derelicts/djstation.dmm"
+	#include "derelicts/original/derelict.dmm"
 	#include "derelicts/casino.dmm"
 	#include "derelicts/bearcat/bearcat-1.dmm"
 	#include "derelicts/bearcat/bearcat-2.dmm"

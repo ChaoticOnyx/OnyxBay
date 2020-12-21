@@ -331,6 +331,11 @@ Turf and target are seperate in case you want to teleport some distance from a t
 /proc/ionnum()
 	return "[pick("1","2","3","4","5","6","7","8","9","0")][pick("!","@","#","$","%","^","&","*")][pick("!","@","#","$","%","^","&","*")][pick("!","@","#","$","%","^","&","*")]"
 
+/atom/proc/add_verb(the_verb, datum/callback/callback)
+	if (callback && !callback.Invoke())
+		return
+
+	verbs += the_verb
 //When an AI is activated, it can choose from a list of non-slaved borgs to have as a slave.
 /proc/freeborg()
 	var/select = null
@@ -427,8 +432,13 @@ Turf and target are seperate in case you want to teleport some distance from a t
 
 	return creatures
 
-/proc/get_follow_targets()
-	return follow_repository.get_follow_targets()
+/proc/get_follow_targets(mobs_only = FALSE)
+	. = follow_repository.get_follow_targets()
+	if(mobs_only)
+		for(var/datum/follow_holder/fh in .)
+			if(!ismob(fh.followed_instance))
+				. -= fh
+	return .
 
 //Orders mobs by type then by name
 /proc/sortmobs()

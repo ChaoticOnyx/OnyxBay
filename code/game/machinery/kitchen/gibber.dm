@@ -207,7 +207,9 @@
 
 	slab_nutrition /= slab_count
 
-	var/reagent_transfer_amt = round(occupant.reagents.total_volume/slab_count,1)
+	var/reagent_transfer_amt
+	if (occupant.reagents)
+		reagent_transfer_amt = round(occupant.reagents.total_volume / slab_count, 1)
 
 	for(var/i=1 to slab_count)
 		var/obj/item/weapon/reagent_containers/food/snacks/meat/new_meat = new slab_type(src, rand(3,8))

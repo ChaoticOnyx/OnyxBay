@@ -5,6 +5,9 @@
 ## Server name: This appears at the top of the screen in-game. In this case it will read "tgstation: station_name" where station_name is the randomly generated name of the station for the round. Remove the # infront of SERVERNAME and replace 'tgstation' with the name of your choice
 # SERVERNAME spacestation13
 
+## Subserver name: Only used as part of game's window title name. Leave commented and it won't appear.
+# SUBSERVER_NAME chaotic
+
 ## Server id. This is used, when you have more than one server connected to single DB.
 ## NOTE! You should migrate your DB to schema with server_id applied to each ban record
 ## to actually support this option. Leave this commented, if you have just one server.

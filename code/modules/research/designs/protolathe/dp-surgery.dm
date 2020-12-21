@@ -2,7 +2,7 @@
 	category_items = "Surgery"
 
 /datum/design/item/surgery/scalpel_laser1
-	name = "Basic Laser Scalpel"
+	name = "basic laser scalpel"
 	desc = "A scalpel augmented with a directed laser, for more precise cutting without blood entering the field. This one looks basic and could be improved."
 	id = "scalpel_laser1"
 	req_tech = list(TECH_BIO = 2, TECH_MATERIAL = 2, TECH_MAGNET = 2)
@@ -11,7 +11,7 @@
 	sort_string = "MBEAA"
 
 /datum/design/item/surgery/scalpel_laser2
-	name = "Improved Laser Scalpel"
+	name = "improved laser scalpel"
 	desc = "A scalpel augmented with a directed laser, for more precise cutting without blood entering the field. This one looks somewhat advanced."
 	id = "scalpel_laser2"
 	req_tech = list(TECH_BIO = 3, TECH_MATERIAL = 4, TECH_MAGNET = 4)
@@ -20,7 +20,7 @@
 	sort_string = "MBEAB"
 
 /datum/design/item/surgery/scalpel_laser3
-	name = "Advanced Laser Scalpel"
+	name = "advanced laser scalpel"
 	desc = "A scalpel augmented with a directed laser, for more precise cutting without blood entering the field. This one looks to be the pinnacle of precision energy cutlery!"
 	id = "scalpel_laser3"
 	req_tech = list(TECH_BIO = 4, TECH_MATERIAL = 6, TECH_MAGNET = 5)
@@ -29,7 +29,7 @@
 	sort_string = "MBEAC"
 
 /datum/design/item/surgery/scalpel_manager
-	name = "Incision Management System"
+	name = "incision management system"
 	desc = "A true extension of the surgeon's body, this marvel instantly and completely prepares an incision allowing for the immediate commencement of therapeutic steps."
 	id = "scalpel_manager"
 	req_tech = list(TECH_BIO = 4, TECH_MATERIAL = 7, TECH_MAGNET = 5, TECH_DATA = 4)
@@ -38,7 +38,7 @@
 	sort_string = "MBEAD"
 
 /datum/design/item/surgery/pico_grasper
-	name = "Precision Grasper"
+	name = "precision grasper"
 	desc = "A thin rod with pico manipulators embedded in it allowing for fast and precise extraction."
 	id = "pico_grasper"
 	req_tech = list(TECH_MATERIAL = 4, TECH_ENGINEERING = 3, TECH_BIO = 4)
@@ -47,7 +47,7 @@
 	sort_string = "MBEAE"
 
 /datum/design/item/surgery/plasmasaw
-	name = "Plasma Saw"
+	name = "plasma saw"
 	desc = "Perfect for cutting through ice."
 	id = "plasmasaw"
 	req_tech = list(TECH_MATERIAL = 5, TECH_ENGINEERING = 4, TECH_BIO = 5, TECH_PHORON = 3)
@@ -56,7 +56,7 @@
 	sort_string = "MBEAF"
 
 /datum/design/item/surgery/bonemender
-	name = "Bone Mender"
+	name = "bone mender"
 	desc = "A favorite among skeletons. It even sounds like a skeleton too."
 	id = "bonemender"
 	req_tech = list(TECH_MATERIAL = 5, TECH_ENGINEERING = 4, TECH_BIO = 5)
@@ -66,7 +66,7 @@
 	sort_string = "MBEAG"
 
 /datum/design/item/surgery/clot
-	name = "Capillary Laying Operation Tool"
+	name = "capillary laying operation tool"
 	desc = "A canister like tool that stores synthetic vein."
 	id = "clot"
 	req_tech = list(TECH_MATERIAL = 5, TECH_ENGINEERING = 4, TECH_BIO = 5)

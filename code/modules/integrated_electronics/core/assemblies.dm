@@ -277,7 +277,7 @@
 	if(!check_interactivity(M))
 		return
 	var/input = input("What do you want to name this?", "Rename", src.name) as null|text
-	input = sanitizeName(input,allow_numbers = 1)
+	input = sanitizeName(input,allow_numbers = TRUE)
 	if(!check_interactivity(M))
 		return
 	if(!QDELETED(src) && input)

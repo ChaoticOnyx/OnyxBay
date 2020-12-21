@@ -1,6 +1,6 @@
 // Used by robots and robot preferences.
 GLOBAL_LIST_INIT(robot_module_types, list(
-	"Standard", "Engineering", "Surgeon",  "Medical",
+	"Standard", "Engineering", "Surgeon", "Medical",
 	"Miner",    "Janitor",     "Service", "Security",
 	"Research"
 )) // This shouldn't be a static list. Am I the only one who cares about extendability around here?
@@ -101,7 +101,8 @@ GLOBAL_LIST_INIT(music_tracks, list(
 	"Lone Digger" = 'sound/music/lonedigger.ogg',
 	"Reaper & Blues" = 'sound/music/reapernblues.ogg',
 	"Undead Man Walkin`" = 'sound/music/undeadwalking.ogg',
-	"Space Oddity" = 'sound/music/space_oddity.ogg'
+	"Space Oddity" = 'sound/music/space_oddity.ogg',
+	"Crockett's Theme" = 'sound/music/crokett_39_s_theme.ogg'
 ))
 
 /proc/setup_music_tracks(list/tracks)

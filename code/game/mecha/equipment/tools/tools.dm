@@ -184,28 +184,37 @@
 	range = MELEE|RANGED
 	required_type = /obj/mecha/working
 	var/spray_particles = 5
-	var/spray_amount = 5	//units of liquid per particle. 5 is enough to wet the floor - it's a big fire extinguisher, so should be fine
-	var/max_water = 1000
+	var/spray_amount = 200	//units of liquid per spray
+	var/max_volume = 5000
+	var/ff_reagent = /datum/reagent/water/firefoam
 
 	New()
-		create_reagents(max_water)
-		reagents.add_reagent(/datum/reagent/water, max_water)
+		create_reagents(max_volume)
+		reagents.add_reagent(ff_reagent, max_volume)
 		..()
 
 	action(atom/target) //copypasted from extinguisher. TODO: Rewrite from scratch.
-		if(!action_checks(target) || get_dist(chassis, target)>3) return
-		if(get_dist(chassis, target)>2) return
+		if(!action_checks(target) || get_dist(chassis, target) > 3) return
+		if(get_dist(chassis, target) > 2) return
 		set_ready_state(0)
 		if(do_after_cooldown(target))
-			if( istype(target, /obj/structure/reagent_dispensers/watertank) && get_dist(chassis,target) <= 1)
-				var/obj/o = target
-				var/amount = o.reagents.trans_to_obj(src, 200)
-				occupant_message("<span class='notice'>[amount] units transferred into internal tank.</span>")
+			if(istype(target, /obj/structure/reagent_dispensers/watertank) && get_dist(chassis,target) <= 1)
+				var/obj/O = target
+				var/amount = min((max_volume - reagents.total_volume), O.reagents.total_volume)
+				if(!O.reagents.total_volume)
+					occupant_message(SPAN("warning", "\The [O] is empty."))
+					return
+				if(!amount)
+					occupant_message(SPAN("notice", "\The [src] is full."))
+					return
+				O.reagents.remove_any(amount)
+				reagents.add_reagent(ff_reagent, amount)
+				occupant_message(SPAN("notice", "[amount] units transferred into internal tank."))
 				playsound(chassis, 'sound/effects/refill.ogg', 50, 1, -6)
 				return
 
-			if (src.reagents.total_volume < 1)
-				occupant_message("<span class='warning'>\The [src] is empty.</span>")
+			if(src.reagents.total_volume < 1)
+				occupant_message(SPAN("warning", "\The [src] is empty."))
 				return
 
 			playsound(chassis, 'sound/effects/extinguish.ogg', 75, 1, -3)
@@ -218,6 +227,7 @@
 
 			var/list/the_targets = list(T,T1,T2)
 
+			var/per_particle = min(spray_amount, reagents.total_volume)/spray_particles
 			for(var/a = 1 to 5)
 				spawn(0)
 					var/obj/effect/effect/water/W = new /obj/effect/effect/water(get_turf(chassis))
@@ -230,10 +240,10 @@
 						my_target = T2
 					else
 						my_target = pick(the_targets)
-					W.create_reagents(5)
+					W.create_reagents(per_particle)
 					if(!W || !src)
 						return
-					reagents.trans_to_obj(W, spray_amount)
+					reagents.trans_to_obj(W, per_particle)
 					W.set_color()
 					W.set_up(my_target)
 			return 1

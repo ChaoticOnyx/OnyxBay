@@ -30,7 +30,7 @@
 	icon_state = "byellow"
 
 /obj/item/clothing/head/beanie/white
-	name = "whie beanie"
+	name = "white beanie"
 	desc = "It's a white beanie hat"
 	icon_state = "bwhite"
 

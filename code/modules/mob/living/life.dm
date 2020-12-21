@@ -4,10 +4,10 @@
 
 	..()
 
-	if (transforming)
-		return
+	if(transforming)
+		return 0
 	if(!loc)
-		return
+		return 0
 
 	if(machine && !CanMouseDrop(machine, src))
 		machine = null
@@ -38,6 +38,10 @@
 
 	update_canmove()
 	handle_regular_hud_updates()
+
+	if(mind)
+		for(var/datum/objective/O in mind.objectives)
+			O.update()
 
 	return 1
 

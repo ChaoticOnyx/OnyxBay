@@ -81,7 +81,10 @@ var/list/holder_mob_icon_cache = list()
 	// Devour on click on self with holder
 	if(target == user && istype(user,/mob/living/carbon))
 		var/mob/living/carbon/M = user
-
+		var/obj/item/blocked = M.check_mouth_coverage()
+		if(blocked)
+			to_chat(user, SPAN_WARNING("\The [blocked] is in the way!"))
+			return 1
 		for(var/mob/victim in src.contents)
 			M.devour(victim)
 
@@ -123,6 +126,9 @@ var/list/holder_mob_icon_cache = list()
 /obj/item/weapon/holder/lizard
 	w_class = ITEM_SIZE_TINY
 	origin_tech = list(TECH_BIO = 2)
+
+/obj/item/weapon/holder/parrot
+	origin_tech = list(TECH_BIO = 4)
 
 /obj/item/weapon/holder/attackby(obj/item/weapon/W as obj, mob/user as mob)
 	for(var/mob/M in src.contents)
@@ -220,3 +226,8 @@ var/list/holder_mob_icon_cache = list()
 
 	// Handle the rest of sync().
 	..(M)
+
+/obj/item/weapon/holder/parrot/dropped(mob/user as mob)
+	. = ..()
+	for(var/mob/living/simple_animal/parrot/M in src.contents)
+		M.icon_state = "parrot_fly"

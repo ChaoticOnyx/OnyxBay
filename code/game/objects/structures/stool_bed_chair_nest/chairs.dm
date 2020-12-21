@@ -105,7 +105,7 @@
 	icon = 'icons/obj/furniture.dmi'
 	icon_state = "folded_chair"
 	item_state = "table_parts"
-	w_class = ITEM_SIZE_NO_CONTAINER // Jesus no
+	w_class = ITEM_SIZE_GARGANTUAN // Jesus no
 	force = 12.5
 	throwforce = 10.0
 	throw_speed = 1
@@ -145,7 +145,7 @@
 /obj/structure/bed/chair/MouseDrop(over_object, src_location, over_location)
 	..()
 	if(foldable && (over_object == usr && (in_range(src, usr) || usr.contents.Find(src))))
-		if(!ishuman(usr)) 
+		if(!ishuman(usr))
 			return
 
 		var/mob/living/carbon/human/H = usr
@@ -228,28 +228,6 @@
 
 /obj/structure/bed/chair/comfy/captain/New(newloc,newmaterial)
 	..(newloc, MATERIAL_STEEL,"black")
-
-/obj/structure/bed/chair/sofa
-	name = "comfy sofa"
-	desc = "So lovely, uh."
-	icon_state = "sofa_middle_preview"
-	base_icon = "sofa_middle"
-	material_alteration = MATERIAL_ALTERATION_NONE
-	foldable = FALSE
-
-/obj/structure/bed/chair/sofa/sofa_left
-	name = "comfy sofa"
-	desc = "So lovely, uh."
-	icon_state = "sofa_left_preview"
-	base_icon = "sofa_left"
-	material_alteration = MATERIAL_ALTERATION_NONE
-
-/obj/structure/bed/chair/sofa/sofa_right
-	name = "comfy sofa"
-	desc = "So lovely, uh."
-	icon_state = "sofa_right_preview"
-	base_icon = "sofa_right"
-	material_alteration = MATERIAL_ALTERATION_NONE
 
 /* ======================================================= */
 /* -------------------- Office Chairs -------------------- */
@@ -358,12 +336,6 @@
 	..(newloc, MATERIAL_PLASTIC, MATERIAL_CARPET)
 
 // Colorful chairs
-/obj/structure/bed/chair/comfy
-	desc = "It's a chair. It looks comfy."
-	icon_state = "comfychair_preview"
-	base_icon = "comfychair"
-	foldable = FALSE
-
 /obj/structure/bed/chair/brown/New(newloc,newmaterial)
 	..(newloc, MATERIAL_STEEL, MATERIAL_LEATHER)
 

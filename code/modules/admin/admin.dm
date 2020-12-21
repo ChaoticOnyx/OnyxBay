@@ -102,7 +102,7 @@ var/global/floorIsLava = 0
 		else
 			body += "<A style=\"pointer-events: none; cursor: default;\">Watchlist Disabled (Needs SQL)</A>"
 
-		body += EAMS_GetPlayerPannelButton(src, M.client)
+		body += SSeams.GetPlayerPanelButton(src, M.client)
 		body += SpeciesIngameWhitelist_GetPlayerPannelButton(src, M.client)
 
 	body += {"<br><br>
@@ -1481,7 +1481,7 @@ var/global/floorIsLava = 0
 
 			var/replyorigin = input(src.owner, "Please specify who the fax is coming from", "Origin") as text|null
 
-			var/obj/item/weapon/paper/admin/P = new /obj/item/weapon/paper/admin( null ) //hopefully the null loc won't cause trouble for us
+			var/obj/item/weapon/paper/admin/P = new /obj/item/weapon/paper/admin(null) //hopefully the null loc won't cause trouble for us
 			faxreply = P
 
 			P.admindatum = src

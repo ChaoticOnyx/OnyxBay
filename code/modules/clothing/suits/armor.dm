@@ -1,6 +1,18 @@
 
 /obj/item/clothing/suit/armor
-	allowed = list(/obj/item/weapon/gun/energy,/obj/item/device/radio,/obj/item/weapon/reagent_containers/spray/pepper,/obj/item/weapon/gun/projectile,/obj/item/ammo_magazine,/obj/item/ammo_casing,/obj/item/weapon/melee/baton,/obj/item/weapon/handcuffs,/obj/item/weapon/gun/magnetic)
+	allowed = list(
+		/obj/item/weapon/gun/energy,
+		/obj/item/device/radio,
+		/obj/item/device/flashlight,
+		/obj/item/weapon/reagent_containers/spray/pepper,
+		/obj/item/weapon/gun/projectile,
+		/obj/item/ammo_magazine,
+		/obj/item/ammo_casing,
+		/obj/item/weapon/melee/baton,
+		/obj/item/weapon/handcuffs,
+		/obj/item/weapon/gun/magnetic,
+		/obj/item/weapon/grenade,
+		)
 	body_parts_covered = UPPER_TORSO|LOWER_TORSO
 	item_flags = ITEM_FLAG_THICKMATERIAL
 
@@ -37,6 +49,22 @@
 	cold_protection = UPPER_TORSO|LOWER_TORSO|ARMS|LEGS
 	heat_protection = UPPER_TORSO|LOWER_TORSO|ARMS|LEGS
 
+/obj/item/clothing/suit/armor/vest/warden_heavy
+	name = "warden's armoured vest"
+	desc = "An upgraded version of a regular bulletproof vest, featuring custom shoulder pads and silver rank livery."
+	icon_state = "warden_heavy"
+	//item_state = "armor"
+	armor = list(melee = 55, bullet = 55, laser = 55, energy = 25, bomb = 40, bio = 10, rad = 0)
+	body_parts_covered = UPPER_TORSO|LOWER_TORSO|ARMS
+
+/obj/item/clothing/suit/armor/vest/hos_heavy
+	name = "commander's armoured vest"
+	desc = "A custom-made, expensive bulletproof vest with golden rank livery."
+	icon_state = "hos_heavy"
+	//item_state = "armor"
+	armor = list(melee = 65, bullet = 65, laser = 65, energy = 35, bomb = 55, bio = 20, rad = 10)
+	body_parts_covered = UPPER_TORSO|LOWER_TORSO
+
 /obj/item/clothing/suit/armor/hos
 	name = "armored coat"
 	desc = "A greatcoat enhanced with a special alloy for some protection and style."
@@ -53,6 +81,28 @@
 	icon_state = "hostrench"
 	item_state = "hostrench"
 	flags_inv = 0
+
+/obj/item/clothing/suit/armor/vest/capcarapace
+	name = "captain's carapace"
+	desc = "An extremely expensive piece of exclusive, hand-crafted corporate armor. YOU are in charge!"
+	icon_state = "capcarapace"
+	//item_state = "capcarapace"
+	armor = list(melee = 85, bullet = 70, laser = 70, energy = 35, bomb = 55, bio = 20, rad = 10)
+	allowed = list(
+		/obj/item/weapon/gun,
+		/obj/item/device/flashlight,
+		/obj/item/device/radio,
+		/obj/item/weapon/tank,
+		/obj/item/ammo_magazine,
+		/obj/item/ammo_casing,
+		/obj/item/weapon/reagent_containers/spray/pepper,
+		/obj/item/weapon/melee/whip/chainofcommand,
+		/obj/item/weapon/melee/baton,
+		/obj/item/weapon/handcuffs,
+		/obj/item/weapon/disk/nuclear,
+		/obj/item/weapon/grenade,
+		)
+	siemens_coefficient = 0.5
 
 //Non-hardsuit ERT armor.
 //Commander
