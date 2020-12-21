@@ -128,6 +128,7 @@
 		/obj/item/clothing/under/rank/chief_medical_officer,
 		/obj/item/clothing/suit/storage/toggle/labcoat/cmo,
 		/obj/item/clothing/suit/storage/toggle/labcoat/cmoalt,
+		/obj/item/clothing/accessory/storage/white_vest,
 		/obj/item/weapon/cartridge/cmo,
 		/obj/item/clothing/gloves/latex,
 		/obj/item/clothing/shoes/brown,
