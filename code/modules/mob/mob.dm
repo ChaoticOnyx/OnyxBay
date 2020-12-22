@@ -708,6 +708,8 @@
 			if(buckled.buckle_movable)
 				anchored = 0
 				canmove = 1
+			if(buckled.buckle_relaymove)
+				canmove = 1
 	else
 		lying = incapacitated(INCAPACITATION_KNOCKDOWN)
 		canmove = !incapacitated(INCAPACITATION_DISABLED)
