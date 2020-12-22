@@ -472,7 +472,7 @@ This function completely restores a damaged organ to perfect condition.
 	var/local_damage = brute_dam + burn_dam
 	if(!surgical && (type in list(CUT, PIERCE, BRUISE)) && damage > 15 && local_damage > min_broken_damage)
 		var/internal_damage
-		if(prob(damage/2) && sever_artery())
+		if(prob(ceil(damage/2)) && sever_artery())
 			internal_damage = TRUE
 		if(prob(ceil(damage/4)) && sever_tendon())
 			internal_damage = TRUE
