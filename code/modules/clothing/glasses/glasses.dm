@@ -98,6 +98,13 @@
 	. = ..()
 	overlay = GLOB.global_hud.science
 
+/obj/item/clothing/glasses/science/attack_self(mob/user)
+	..()
+	if(active)
+		hud_type = HUD_SCIENCE
+	else
+		hud_type = null
+
 /obj/item/clothing/glasses/night
 	name = "night vision goggles"
 	desc = "You can totally see in the dark now!"
