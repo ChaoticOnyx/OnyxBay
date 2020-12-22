@@ -72,7 +72,7 @@
 	path = /obj/item/weapon/reagent_containers/food/drinks/flask
 	price = 5
 
-/datum/gear/drinks/flask/New()
+/datum/gear/flask/New()
 	..()
 	gear_tweaks += new /datum/gear_tweak/reagents(lunchables_ethanol_reagents())
 
