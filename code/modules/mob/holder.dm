@@ -109,6 +109,9 @@ var/list/holder_mob_icon_cache = list()
 	update_held_icon()
 
 //Mob specific holders.
+/obj/item/weapon/holder/diona
+	origin_tech = list(TECH_MAGNET = 3, TECH_BIO = 5)
+	slot_flags = SLOT_HEAD | SLOT_OCLOTHING | SLOT_HOLSTER
 
 /obj/item/weapon/holder/drone
 	origin_tech = list(TECH_MAGNET = 3, TECH_ENGINEERING = 5)
@@ -129,6 +132,10 @@ var/list/holder_mob_icon_cache = list()
 
 /obj/item/weapon/holder/parrot
 	origin_tech = list(TECH_BIO = 4)
+
+/obj/item/weapon/holder/chicken
+	origin_tech = list(TECH_BIO = 2)
+	slot_flags = SLOT_HOLSTER
 
 /obj/item/weapon/holder/attackby(obj/item/weapon/W as obj, mob/user as mob)
 	for(var/mob/M in src.contents)

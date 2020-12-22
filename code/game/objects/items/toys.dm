@@ -469,6 +469,11 @@
 	desc = "A \"Space Life\" brand Bartender action figure."
 	icon_state = "bartender"
 
+/obj/item/toy/figure/moose
+	name = "Moose action figure"
+	desc = "A \"Space Life\" brand Moose action figure."
+	icon_state = "moose"
+
 /obj/item/toy/figure/borg
 	name = "Cyborg action figure"
 	desc = "A \"Space Life\" brand Cyborg action figure."

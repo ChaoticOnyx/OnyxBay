@@ -42,7 +42,7 @@ var/global/defer_powernet_rebuild = 0      // True if net rebuild will be called
 #define NETWORK_ERT                 "ZeEmergencyResponseTeam"
 #define NETWORK_EXODUS              "Exodus"
 #define NETWORK_MEDICAL             "Medical"
-#define NETWORK_MERCENARY           "MercurialNet"
+#define NETWORK_SYNDICATE           "SyndieNet"
 #define NETWORK_MINE                "Mining"
 #define NETWORK_RESEARCH            "Research"
 #define NETWORK_ROBOTS              "Robots"
@@ -64,7 +64,7 @@ var/global/defer_powernet_rebuild = 0      // True if net rebuild will be called
 #define NETWORK_ALARM_POWER "Power Alarms"
 
 // Those networks can only be accessed by pre-existing terminals. AIs and new terminals can't use them.
-var/list/restricted_camera_networks = list(NETWORK_ERT,NETWORK_MERCENARY,"Secret")
+var/list/restricted_camera_networks = list(NETWORK_ERT,NETWORK_SYNDICATE,"Secret")
 
 
 //singularity defines
@@ -99,7 +99,7 @@ var/list/restricted_camera_networks = list(NETWORK_ERT,NETWORK_MERCENARY,"Secret
 
 // The flow rate/effectiveness of various atmos devices is limited by their internal volume,
 // so for many atmos devices these will control maximum flow rates in L/s.
-#define ATMOS_DEFAULT_VOLUME_PUMP   200 // Liters.
+#define ATMOS_DEFAULT_VOLUME_PUMP   350 // Liters.
 #define ATMOS_DEFAULT_VOLUME_FILTER 500 // L.
 #define ATMOS_DEFAULT_VOLUME_MIXER  500 // L.
 #define ATMOS_DEFAULT_VOLUME_PIPE   70  // L.

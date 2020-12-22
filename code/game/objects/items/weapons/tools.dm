@@ -658,6 +658,30 @@
 	icon_state = "prybar[pick("","_red","_green","_aubergine","_blue")]"
 	. = ..()
 
+/obj/item/weapon/crowbar/emergency
+	name = "emergency bar"
+	desc = "A plastic bar with a wedge. Kind of awkward and widdly, yet it may save your life one day."
+	icon_state = "emergbar"
+	item_state = "crowbar_emerg"
+	force = 6.0
+	throwforce = 5.0
+	throw_range = 5
+	w_class = ITEM_SIZE_SMALL
+	mod_weight = 0.6
+	mod_reach = 0.75
+	mod_handy = 0.8
+	matter = list(MATERIAL_PLASTIC = 80)
+
+/obj/item/weapon/crowbar/emergency/vox
+	icon_state = "emergbar_vox"
+
+/obj/item/weapon/crowbar/emergency/eng
+	icon_state = "emergbar_eng"
+
+/obj/item/weapon/crowbar/emergency/sec
+	icon_state = "emergbar_sec"
+
+
 /*
  * Combitool
  */

@@ -91,7 +91,8 @@
 		t1 += "<i>Creation terminal ID:</i> [source_db.machine_id]<br>"
 		t1 += "<i>Authorised NT officer overseeing creation:</i> [source_db.held_card.registered_name]<br>"
 
-		var/obj/item/weapon/paper/R = new /obj/item/weapon/paper(P, t1, "Account information: [M.owner_name]", rawhtml = TRUE)
+		var/obj/item/weapon/paper/R = new /obj/item/weapon/paper(P)
+		R.set_content( t1, "Account information: [M.owner_name]", TRUE)
 		P.wrapped = R
 
 		//stamp the paper

@@ -601,9 +601,10 @@
 	object_type = list(
 		/obj/item/weapon/sample/fibers,
 		/obj/item/weapon/forensics/swab,
-		/obj/item/weapon/sample/print
+		/obj/item/weapon/sample/print,
+		/obj/item/weapon/evidencebag
 		)
-	capacity = 8
+	capacity = 12
 
 /obj/item/robot_rack/archeologist
 	name = "archeologist rack"

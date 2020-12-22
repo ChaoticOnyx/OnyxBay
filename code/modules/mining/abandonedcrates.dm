@@ -138,7 +138,7 @@
 		if(97)
 			new /obj/item/weapon/archaeological_find(src)
 		if(98)
-			new /obj/item/weapon/melee/energy/sword(src)
+			new /obj/item/weapon/melee/energy/sword/one_hand(src)
 		if(99)
 			new /obj/item/weapon/storage/belt/champion(src)
 			new /obj/item/clothing/mask/luchador(src)

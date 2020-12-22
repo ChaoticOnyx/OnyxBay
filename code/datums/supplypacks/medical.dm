@@ -328,3 +328,11 @@
 	containername = "\improper Medical voidsuit crate"
 	containertype = /obj/structure/closet/crate/secure/large
 	access = access_medical_equip
+
+/decl/hierarchy/supply_pack/medical/rig
+	name = "Medical RIG"
+	contains = list(/obj/item/weapon/rig/medical)
+	cost = 360
+	containername = "\improper Medical RIG crate"
+	containertype = /obj/structure/closet/crate/secure
+	access = access_medical_equip

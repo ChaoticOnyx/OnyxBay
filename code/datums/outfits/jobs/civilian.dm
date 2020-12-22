@@ -54,7 +54,7 @@
 	suit = /obj/item/clothing/suit/storage/toggle/suit/black
 	shoes = /obj/item/clothing/shoes/brown
 	glasses = /obj/item/clothing/glasses/sunglasses/big
-	l_hand = /obj/item/weapon/storage/briefcase
+	l_hand = /obj/item/weapon/storage/briefcase/iaa
 	id_type = /obj/item/weapon/card/id/civilian/internal_affairs_agent
 	pda_type = /obj/item/device/pda/lawyer
 

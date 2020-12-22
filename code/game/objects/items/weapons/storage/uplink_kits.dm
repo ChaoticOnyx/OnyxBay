@@ -51,8 +51,8 @@
 	//name = "\improper EVA gear pack"
 
 	startswith = list(
-		/obj/item/clothing/suit/space/void/merc,
-		/obj/item/clothing/head/helmet/space/void/merc,
+		/obj/item/clothing/suit/space/void/syndi,
+		/obj/item/clothing/head/helmet/space/void/syndi,
 		/obj/item/clothing/mask/gas/syndicate,
 		/obj/item/weapon/tank/emergency/oxygen/double,
 		)
@@ -215,8 +215,8 @@
 	name = "armor satchel"
 	desc = "A satchel for when you don't want to try a diplomatic approach."
 	startswith = list(
-		/obj/item/clothing/suit/armor/pcarrier/merc,
-		/obj/item/clothing/head/helmet/merc
+		/obj/item/clothing/suit/armor/pcarrier/syndi,
+		/obj/item/clothing/head/helmet/syndi
 	)
 
 /obj/item/weapon/storage/firstaid/surgery/syndie
