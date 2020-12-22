@@ -56,13 +56,48 @@
 
 	wizard_garb = 1
 
-	armor = list(melee = 10, bullet = 10, laser = 10,energy = 5, bomb = 10, bio = 3, rad = 0)
+	armor = list(melee = 10, bullet = 10, laser = 10, energy = 5, bomb = 10, bio = 3, rad = 0)
 
 /obj/item/clothing/shoes/sandal/marisa
 	desc = "A pair of magic, black shoes."
 	name = "magic shoes"
 	icon_state = "black"
 	body_parts_covered = FEET
+
+/obj/item/clothing/shoes/sandal/color
+	name = "sandals"
+	desc = "A pair of plain sandals."
+	icon_state = "sandals"
+	wizard_garb = 0
+
+/obj/item/clothing/shoes/sandal/color/black
+	name = "black sandals"
+	color = "#3d3d3d"
+
+/obj/item/clothing/shoes/sandal/color/grey
+	name = "grey sandals"
+	color = "#c4c4c4"
+
+/obj/item/clothing/shoes/sandal/color/blue
+	name = "blue sandals"
+	color = "#4379cc"
+
+/obj/item/clothing/shoes/sandal/color/pink
+	name = "pink sandals"
+	color = "#df20a6"
+
+/obj/item/clothing/shoes/sandal/color/red
+	name = "red sandals"
+	color = "#ee1511"
+
+/obj/item/clothing/shoes/sandal/color/green
+	name = "green sandals"
+	color = "#42a345"
+
+/obj/item/clothing/shoes/sandal/color/orange
+	name = "orange sandals"
+	color = "#f9863e"
+
 
 /obj/item/clothing/shoes/clown_shoes
 	desc = "The prankster's standard-issue clowning shoes. Damn they're huge!"
