@@ -39,13 +39,17 @@
 	set desc = "Fun when you're bored out of your skull."
 	set category = "Object"
 
-	chamber_offset = 0
+	var/shootable = 0
+	for(var/obj/item/ammo_casing/bul in loaded)
+		if(bul.contents.len)
+			shootable++
 	visible_message("<span class='warning'>\The [usr] spins the cylinder of \the [src]!</span>", \
 	"<span class='notice'>You hear something metallic spin and click.</span>")
 	playsound(src.loc, 'sound/effects/weapons/gun/spin_cylinder1.ogg', 75, FALSE)
-	loaded = shuffle(loaded)
-	if(rand(1,max_shells) > loaded.len)
-		chamber_offset = rand(0,max_shells - loaded.len)
+	if(prob(100 - (100 / max_shells) * shootable))
+		chamber_offset = rand(1,max_shells - shootable)
+	else
+		chamber_offset = 0
 
 /obj/item/weapon/gun/projectile/revolver/consume_next_projectile()
 	if(chamber_offset)
