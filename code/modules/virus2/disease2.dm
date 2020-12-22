@@ -17,6 +17,20 @@ LEGACY_RECORD_STRUCTURE(virus_records, virus_record)
 	uniqueID = rand(0,10000)
 	if(random_severity)
 		makerandom(random_severity)
+	update_disease()
+
+/datum/disease2/disease/proc/update_disease()
+
+	var/list/datum/disease2/effect/effects_sorted = list() //Sort effects by stage
+	for(var/i in 1 to max_stage)
+		for(var/datum/disease2/effect/D in effects)
+			if(D.stage == i)
+				effects_sorted.Add(D)
+	effects = effects_sorted
+
+	for(var/datum/disease2/effect/E in effects) 
+		E.parent_disease = src
+		E.change_parent()
 
 /datum/disease2/disease/proc/makerandom(severity=2)
 	var/list/excludetypes = list()
@@ -26,6 +40,7 @@ LEGACY_RECORD_STRUCTURE(virus_records, virus_record)
 		if(!E.allow_multiple)
 			excludetypes += E.type
 		effects += E
+	update_disease()
 	uniqueID = rand(0,10000)
 	switch(severity)
 		if(1,2)
@@ -151,6 +166,7 @@ LEGACY_RECORD_STRUCTURE(virus_records, virus_record)
 	mutating_effect.deactivate()
 	effects -= mutating_effect
 	effects += new_effect
+	update_disease()
 	qdel(mutating_effect)
 	return 1
 
@@ -175,6 +191,7 @@ LEGACY_RECORD_STRUCTURE(virus_records, virus_record)
 
 	if (prob(5) && all_species.len)
 		affected_species = get_infectable_species()
+	update_disease()
 
 /datum/disease2/disease/proc/stageshift()
 	uniqueID = rand(0,10000)
@@ -186,6 +203,7 @@ LEGACY_RECORD_STRUCTURE(virus_records, virus_record)
 		if(D.stage > max_stage)
 			effects -= D
 	effects += get_random_virus2_effect(1, VIRUS_MILD, exclude)
+	update_disease()
 
 /datum/disease2/disease/proc/getcopy()
 	var/datum/disease2/disease/disease = new /datum/disease2/disease

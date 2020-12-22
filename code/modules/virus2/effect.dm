@@ -37,6 +37,7 @@
 
 /datum/disease2/effect
 	var/name = "Blanking effect"
+	var/datum/disease2/disease/parent_disease //disease causing current effect
 	var/chance			//probality to fire every tick
 	var/chance_max = 50
 	var/multiplier = 1	//effect magnitude multiplier
@@ -73,3 +74,4 @@
 /datum/disease2/effect/proc/activate(mob/living/carbon/human/mob)
 /datum/disease2/effect/proc/deactivate(mob/living/carbon/human/mob)
 /datum/disease2/effect/proc/generate(copy_data) // copy_data will be non-null if this is a copy; it should be used to initialise the data for this effect if present
+/datum/disease2/effect/proc/change_parent()

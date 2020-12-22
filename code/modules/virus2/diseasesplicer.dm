@@ -171,6 +171,7 @@
 					return 1
 				dish.virus2.effects -= target_effect
 				dish.virus2.effects += memorybank
+				dish.virus2.update_disease()
 				qdel(target_effect)
 
 			else if(species_buffer && target == -1)

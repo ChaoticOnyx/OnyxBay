@@ -13,6 +13,32 @@
 	mob.change_facial_hair(facial_hair_style)
 	to_chat(mob, SPAN_WARNING("Your chin itches."))
 
+
+
+/datum/disease2/effect/adaptation_chem
+	name = "-intolerant Adaptation"
+	stage = 1
+	badness = VIRUS_COMMON
+	possible_mutations = list(/datum/disease2/effect/adaptation_chem,
+							  /datum/disease2/effect/chem_synthesis)
+
+/datum/disease2/effect/adaptation_chem/generate(c_data)
+	if(c_data)
+		data = c_data
+	else
+		data = pick(/datum/reagent/bicaridine, /datum/reagent/kelotane, /datum/reagent/dylovene, /datum/reagent/inaprovaline, /datum/reagent/space_drugs, /datum/reagent/sugar,
+					/datum/reagent/tramadol, /datum/reagent/dexalin, /datum/reagent/cryptobiolin, /datum/reagent/impedrezene, /datum/reagent/hyperzine, /datum/reagent/ethylredoxrazine,
+					/datum/reagent/mindbreaker, /datum/reagent/nutriment/glucose)
+	var/datum/reagent/R = data
+	name = "[initial(R.name)][initial(name)]"
+
+/datum/disease2/effect/adaptation_chem/change_parent()
+	parent_disease.antigen = null
+
+/datum/disease2/effect/adaptation_chem/activate(mob/living/carbon/human/mob)
+	if (mob.reagents.get_reagent_amount(data) > multiplier)
+		parent_disease.cure(mob)
+
 ////////////////////////STAGE 2/////////////////////////////////
 
 /datum/disease2/effect/stimulant
@@ -51,6 +77,26 @@
 /datum/disease2/effect/blind/activate(var/mob/living/carbon/human/mob)
 	mob.eye_blind = max(mob.eye_blind, 4)
 
+
+
+/datum/disease2/effect/adaptation_damage
+	name = "Hurt-intolerant Adaptation"
+	stage = 2
+	badness = VIRUS_COMMON
+
+/datum/disease2/effect/adaptation_damage/change_parent()
+	parent_disease.antigen = null
+
+/datum/disease2/effect/adaptation_damage/activate(mob/living/carbon/human/mob)
+	log_debug("Activated")
+	for(var/obj/item/organ/external/E in mob.organs)
+		log_debug("Activated for [E]")
+		var/dmg = E.get_damage()
+		log_debug("dmg is [dmg]")
+		if(dmg > 8*multiplier)
+			log_debug("Cured")
+			parent_disease.cure(mob)
+			
 ////////////////////////STAGE 3/////////////////////////////////
 
 /datum/disease2/effect/chem_synthesis
