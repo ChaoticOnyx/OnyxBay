@@ -45,6 +45,12 @@
 		item_state = "[cover.icon_state]welding"
 	..()
 
+/obj/item/clothing/head/welding/Destroy()
+	if(cover)
+		qdel(cover)
+		cover = null
+	..()
+
 /obj/item/clothing/head/welding/attack_self()
 	toggle()
 
