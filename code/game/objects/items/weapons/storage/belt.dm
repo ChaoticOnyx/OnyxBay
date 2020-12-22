@@ -148,7 +148,10 @@
 		/obj/item/taperoll,
 		/obj/item/device/holowarrant,
 		/obj/item/weapon/magnetic_ammo,
-		/obj/item/device/radio
+		/obj/item/device/radio,
+		/obj/item/weapon/material/knife,
+		/obj/item/weapon/material/butterfly,
+		/obj/item/weapon/material/hatchet/tacknife
 		)
 
 /obj/item/weapon/storage/belt/soulstone
@@ -279,7 +282,10 @@
 		/obj/item/device/radio/uplink,
 		/obj/item/weapon/card/emag,
 		/obj/item/device/multitool/hacktool,
-		/obj/item/stack/telecrystal
+		/obj/item/stack/telecrystal,
+		/obj/item/weapon/material/knife,
+		/obj/item/weapon/material/butterfly,
+		/obj/item/weapon/material/hatchet/tacknife
 		)
 
 /obj/item/weapon/storage/belt/janitor
