@@ -142,7 +142,7 @@
 	siemens_coefficient = 0.4
 	has_visor = 0
 
-/obj/item/clothing/head/helmet/merc
+/obj/item/clothing/head/helmet/syndi
 	name = "heavy helmet"
 	desc = "A heavily reinforced helmet painted with red markings. Feels like it could take a lot of punishment."
 	icon_state = "helmet_merc"

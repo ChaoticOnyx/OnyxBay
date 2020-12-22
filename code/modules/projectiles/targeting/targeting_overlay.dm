@@ -11,6 +11,7 @@
 	simulated = 0
 	mouse_opacity = 0
 
+	var/movement_tally = 0     // Movement slow if aiming
 	var/mob/living/aiming_at   // Who are we currently targeting, if anyone?
 	var/obj/item/aiming_with   // What are we targeting with?
 	var/mob/living/owner       // Who do we belong to?
@@ -174,6 +175,7 @@ obj/aiming_overlay/proc/update_aiming_deferred()
 			playsound(get_turf(owner), 'sound/weapons/TargetOn.ogg', 50,1)
 
 		aiming_at.aimed |= src
+		movement_tally = 5
 		toggle_active(1)
 		update_icon()
 		lock_time = world.time + 35
@@ -228,6 +230,7 @@ obj/aiming_overlay/proc/update_aiming_deferred()
 		GLOB.destroyed_event.unregister(aiming_at, src)
 		aiming_at.aimed -= src
 		aiming_at = null
+		movement_tally = 0
 
 	aiming_with = null
 	loc = null

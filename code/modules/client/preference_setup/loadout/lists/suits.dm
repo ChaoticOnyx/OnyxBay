@@ -11,22 +11,27 @@
 /datum/gear/suit/security_poncho
 	display_name = "poncho, security"
 	path = /obj/item/clothing/suit/poncho/roles/security
+	allowed_roles = SECURITY_ROLES
 
 /datum/gear/suit/medical_poncho
 	display_name = "poncho, medical"
 	path = /obj/item/clothing/suit/poncho/roles/medical
+	allowed_roles = MEDICAL_ROLES
 
 /datum/gear/suit/engineering_poncho
 	display_name = "poncho, engineering"
 	path = /obj/item/clothing/suit/poncho/roles/engineering
+	allowed_roles = ENGINEERING_ROLES
 
 /datum/gear/suit/science_poncho
 	display_name = "poncho, science"
 	path = /obj/item/clothing/suit/poncho/roles/science
+	allowed_roles = RESEARCH_ROLES
 
 /datum/gear/suit/cargo_poncho
 	display_name = "poncho, supply"
 	path = /obj/item/clothing/suit/poncho/roles/cargo
+	allowed_roles = SUPPLY_ROLES
 
 /datum/gear/suit/suit_jacket
 	display_name = "standard suit jackets"
@@ -210,3 +215,23 @@
 	display_name = "ian shirt"
 	path = /obj/item/clothing/suit/ianshirt
 	price = 5
+
+/datum/gear/suit/punk_jacket_AC
+	display_name = "punk jacket black"
+	path = /obj/item/clothing/suit/storage/punk_jacket_AC
+	price = 20
+
+/datum/gear/suit/punk_jacket_RD
+	display_name = "punk jacket navy"
+	path = /obj/item/clothing/suit/storage/punk_jacket_RD
+	price = 20
+
+/datum/gear/suit/punk_jacket_TS
+	display_name = "punk jacket brown"
+	path = /obj/item/clothing/suit/storage/punk_jacket_TS
+	price = 20
+
+/datum/gear/suit/fashionable_coat
+	display_name = "fashionable coat"
+	path = /obj/item/clothing/suit/storage/fashionable_coat
+	price = 20

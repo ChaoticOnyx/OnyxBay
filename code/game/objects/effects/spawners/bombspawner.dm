@@ -142,7 +142,7 @@
 	assembly_type = /obj/item/device/assembly/timer
 
 /obj/effect/spawner/newbomb/timer/syndicate
-	name = "TTV bomb - merc"
+	name = "TTV bomb - Syndicate"
 	//High yield bombs. Yes, it is possible to make these with toxins
 	phoron_amt = 18.5
 	oxygen_amt = 28.5
