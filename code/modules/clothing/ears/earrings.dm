@@ -141,7 +141,7 @@
 /obj/item/clothing/ears/earring/single/stud
 	name = "pearl stud earring"
 	desc = "A small stud earring."
-	icon_state = "ear_stud"
+	icon_state = "ear_stud_single"
 	color = "#eae0c8"
 
 /obj/item/clothing/ears/earring/single/stud/glass
@@ -201,7 +201,7 @@
 	color = "#00ffe1"
 
 /obj/item/clothing/ears/earring/single/dangle
-	icon_state = "ear_dangle"
+	icon_state = "ear_dangle_single"
 
 /obj/item/clothing/ears/earring/single/dangle/glass
 	name = "glass dangle earring"
