@@ -79,7 +79,7 @@
 	var/mob/living/carbon/human/pedaler = buckled_mob
 	user.setClickCooldown(DEFAULT_QUICK_COOLDOWN)
 	if(pedaler.nutrition > 10)
-		playsound(src.loc, 'sound/items/Ratchet.ogg', 20, 1)
+		playsound(src.loc, 'sound/effects/pedalgen.ogg', 20, 1)
 		visible_message(SPAN("notice", "[pedaler] pedals \the [src]!"))
 		generator.Rotated()
 		pedaler.nutrition -= 2.5
