@@ -52,6 +52,8 @@
 	pins["pink pin"] = /obj/item/clothing/head/hairflower/pink
 	pins["red pin"] = /obj/item/clothing/head/hairflower
 	pins["yellow pin"] = /obj/item/clothing/head/hairflower/yellow
+	pins["white pin"] = /obj/item/clothing/head/hairflower/white
+	pins["purple pin"] = /obj/item/clothing/head/hairflower/purple
 	gear_tweaks += new /datum/gear_tweak/path(pins)
 
 /datum/gear/head/hardhat
