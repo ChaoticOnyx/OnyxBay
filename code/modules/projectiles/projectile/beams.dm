@@ -179,6 +179,7 @@
 	agony = 40
 	tasing = 1
 	damage_type = STUN
+	penetration_modifier = 0
 
 	muzzle_type = /obj/effect/projectile/stun/muzzle
 	tracer_type = /obj/effect/projectile/stun/tracer
@@ -193,6 +194,7 @@
 	damage_type = ELECTROCUTE
 	damage = 10
 	agony  = 5
+	penetration_modifier = 0.1
 	fire_sound='sound/effects/weapons/energy/fire2.ogg'
 
 /obj/item/projectile/beam/stun/shock/heavy
