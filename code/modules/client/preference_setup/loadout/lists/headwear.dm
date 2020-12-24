@@ -127,21 +127,6 @@
 	display_name = "surgical cap, colour select"
 	flags = GEAR_HAS_COLOR_SELECTION
 
-/datum/gear/head/welding
-	display_name = "welding mask selection"
-	path = /obj/item/clothing/head/welding
-	allowed_roles = TECHNICAL_ROLES
-
-/datum/gear/head/welding/New()
-	..()
-	var/welding_masks = list()
-	welding_masks += /obj/item/clothing/head/welding/demon
-	welding_masks += /obj/item/clothing/head/welding/engie
-	welding_masks += /obj/item/clothing/head/welding/fancy
-	welding_masks += /obj/item/clothing/head/welding/knight
-	welding_masks += /obj/item/clothing/head/welding/carp
-	gear_tweaks += new /datum/gear_tweak/path/specified_types_list(welding_masks)
-
 //
 // Donator's shop
 //

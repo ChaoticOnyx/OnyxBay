@@ -21,7 +21,7 @@
 		)
 	matter = list(MATERIAL_STEEL = 3000, MATERIAL_GLASS = 1000)
 	var/up = 0
-	armor = list(melee = 40, bullet = 45, laser = 55,energy = 20, bomb = 20, bio = 0, rad = 0)
+	armor = list(melee = 45, bullet = 45, laser = 55, energy = 20, bomb = 20, bio = 0, rad = 0)
 	flags_inv = (HIDEMASK|HIDEEARS|HIDEEYES|HIDEFACE)
 	body_parts_covered = HEAD|FACE|EYES
 	action_button_name = "Flip Welding Mask"
@@ -30,18 +30,47 @@
 	var/base_state
 	flash_protection = FLASH_PROTECTION_MAJOR
 	tint = TINT_HEAVY
+	var/obj/item/welding_cover/cover = null
+
+/obj/item/clothing/head/welding/examine(mob/user)
+	. = ..()
+	if(cover)
+		. += " [cover.cover_desc]"
+
+/obj/item/clothing/head/welding/New()
+	base_state = icon_state
+	if(ispath(cover))
+		cover = new cover(src)
+		icon_state = "[cover.icon_state]welding"
+		item_state = "[cover.icon_state]welding"
+	..()
+
+/obj/item/clothing/head/welding/Destroy()
+	if(cover)
+		qdel(cover)
+		cover = null
+	..()
 
 /obj/item/clothing/head/welding/attack_self()
 	toggle()
 
+/obj/item/clothing/head/welding/attackby(obj/item/weapon/W, mob/user)
+	if(istype(W, /obj/item/welding_cover))
+		if(!cover && user.unEquip(W))
+			attach_cover(user, W)
+		else
+			to_chat(user, SPAN("notice", "[src] already has a cover attached."))
+	else if(isScrewdriver(W))
+		if(cover)
+			detach_cover(user)
+	else
+		..()
 
 /obj/item/clothing/head/welding/verb/toggle()
 	set category = "Object"
 	set name = "Adjust welding mask"
 	set src in usr
 
-	if(!base_state)
-		base_state = icon_state
 	if(usr.canmove && !usr.stat && !usr.restrained())
 		if(src.up)
 			src.up = !src.up
@@ -49,64 +78,69 @@
 			flags_inv |= (HIDEMASK|HIDEEARS|HIDEEYES|HIDEFACE)
 			flash_protection = initial(flash_protection)
 			tint = initial(tint)
-			icon_state = base_state
-			item_state = base_state
+			icon_state = "[cover ? "[cover.icon_state]welding" : base_state]"
+			item_state = "[cover ? "[cover.icon_state]welding" : base_state]"
 			to_chat(usr, "You flip the [src] down to protect your eyes.")
-			armor = list(melee = 45, bullet = 45, laser = 55,energy = 20, bomb = 20, bio = 0, rad = 0)
+			armor = list(melee = 45, bullet = 45, laser = 55, energy = 20, bomb = 20, bio = 0, rad = 0)
 		else
 			src.up = !src.up
 			body_parts_covered &= ~(EYES|FACE)
 			flash_protection = FLASH_PROTECTION_NONE
 			tint = TINT_NONE
 			flags_inv &= ~(HIDEMASK|HIDEEARS|HIDEEYES|HIDEFACE)
-			icon_state = "[base_state]up"
-			item_state = "[base_state]up"
+			icon_state = "[cover ? "[cover.icon_state]welding" : base_state]up"
+			item_state = "[cover ? "[cover.icon_state]welding" : base_state]up"
 			to_chat(usr, "You push the [src] up out of your face.")
-			armor = list(melee = 25, bullet = 25, laser = 30,energy = 10, bomb = 10, bio = 0, rad = 0)
+			armor = list(melee = 25, bullet = 25, laser = 30, energy = 10, bomb = 10, bio = 0, rad = 0)
 		update_clothing_icon()	//so our mob-overlays
 		update_vision()
 		usr.update_action_buttons()
 
+/obj/item/clothing/head/welding/proc/attach_cover(mob/user, obj/item/welding_cover/W)
+	to_chat(user, SPAN("notice", "You clip \the [W] onto \the [src]."))
+	W.forceMove(src)
+	cover = W
+	icon_state = "[cover.icon_state]welding[src.up ? "up" : ""]"
+	item_state = "[cover.icon_state]welding[src.up ? "up" : ""]"
+	update_clothing_icon()
+	user.update_action_buttons()
+
+/obj/item/clothing/head/welding/proc/detach_cover(mob/user)
+	to_chat(user, SPAN("notice", "You detach \the [cover] from \the [src]."))
+	cover.dropInto(get_turf(src))
+	cover = null
+	icon_state = "[base_state][src.up ? "up" : ""]"
+	item_state = "[base_state][src.up ? "up" : ""]"
+	update_clothing_icon()
+	user.update_action_buttons()
+
+
 /obj/item/clothing/head/welding/demon
-	name = "demonic welding helmet"
-	desc = "A painted welding helmet, this one has a demonic face on it."
-	icon_state = "demonwelding"
-	item_state_slots = list(
-		slot_l_hand_str = "demonwelding",
-		slot_r_hand_str = "demonwelding",
-		)
+	cover = /obj/item/welding_cover/demon
 
 /obj/item/clothing/head/welding/knight
-	name = "knightly welding helmet"
-	desc = "A painted welding helmet, this one looks like a knights helmet."
-	icon_state = "knightwelding"
+	cover = /obj/item/welding_cover/knight
 
 /obj/item/clothing/head/welding/fancy
-	name = "fancy welding helmet"
-	desc = "A painted welding helmet, the black and gold make this one look very fancy."
-	icon_state = "fancywelding"
-	item_state_slots = list(
-		slot_l_hand_str = "fancywelding",
-		slot_r_hand_str = "fancywelding",
-		)
+	cover = /obj/item/welding_cover/fancy
 
 /obj/item/clothing/head/welding/engie
-	name = "engineering welding helmet"
-	desc = "A painted welding helmet, this one has been painted the engineering colours."
-	icon_state = "engiewelding"
-	item_state_slots = list(
-		slot_l_hand_str = "engiewelding",
-		slot_r_hand_str = "engiewelding",
-		)
+	cover = /obj/item/welding_cover/engie
 
 /obj/item/clothing/head/welding/carp
-	name = "carp welding helmet"
-	desc = "A painted welding helmet, this one has a carp face on it."
-	icon_state = "carpwelding"
-	item_state_slots = list(
-		slot_l_hand_str = "carpwelding",
-		slot_r_hand_str = "carpwelding",
-		)
+	cover = /obj/item/welding_cover/carp
+
+/obj/item/clothing/head/welding/hockey
+	cover = /obj/item/welding_cover/hockey
+
+/obj/item/clothing/head/welding/blue
+	cover = /obj/item/welding_cover/blue
+
+/obj/item/clothing/head/welding/flame
+	cover = /obj/item/welding_cover/flame
+
+/obj/item/clothing/head/welding/white
+	cover = /obj/item/welding_cover/white
 
 /*
  * Cakehat
