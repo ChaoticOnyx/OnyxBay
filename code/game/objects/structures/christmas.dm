@@ -155,3 +155,4 @@
 	density = 1
 	opacity = 0
 	anchored = 1
+	layer = ABOVE_HUMAN_LAYER
