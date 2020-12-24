@@ -36,8 +36,8 @@
 			overlays += "tank_nitro"
 		else if(istype(tank,/obj/item/weapon/tank/oxygen))
 			overlays += "tank_oxyg"
-		else if(istype(tank,/obj/item/weapon/tank/phoron))
-			overlays += "tank_phoron"
+		else if(istype(tank,/obj/item/weapon/tank/plasma))
+			overlays += "tank_plasma"
 		else if(istype(tank,/obj/item/weapon/tank/hydrogen))
 			overlays += "tank_hydro"
 		else
@@ -105,7 +105,7 @@
 				breather.internal = tank
 				if(breather.internals)
 					breather.internals.icon_state = "internal1"
-			valve_opened = TRUE	
+			valve_opened = TRUE
 			playsound(get_turf(src), 'sound/effects/internals.ogg', 100, 1)
 			update_icon()
 			START_PROCESSING(SSobj,src)

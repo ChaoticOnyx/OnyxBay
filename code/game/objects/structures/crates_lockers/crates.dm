@@ -260,12 +260,12 @@ obj/structure/closet/crate
 	icon_closed = "engisecurecrate"
 	req_access = list(access_engine)
 
-/obj/structure/closet/crate/secure/phoron
-	name = "phoron crate"
-	desc = "A secure phoron crate."
-	icon_state = "phoroncrate"
-	icon_opened = "phoroncrateopen"
-	icon_closed = "phoroncrate"
+/obj/structure/closet/crate/secure/plasma
+	name = "plasma crate"
+	desc = "A secure plasma crate."
+	icon_state = "plasmacrate"
+	icon_opened = "plasmacrateopen"
+	icon_closed = "plasmacrate"
 	req_access = list(access_medical,access_research,access_engine)
 
 /obj/structure/closet/crate/secure/gear
@@ -323,10 +323,10 @@ obj/structure/closet/crate
 	storage_capacity = 2 * MOB_LARGE
 	storage_types = CLOSET_STORAGE_ITEMS|CLOSET_STORAGE_STRUCTURES
 
-/obj/structure/closet/crate/secure/large/phoron
-	icon_state = "phoron_crate_large"
-	icon_opened = "phoron_crate_large_open"
-	icon_closed = "phoron_crate_large"
+/obj/structure/closet/crate/secure/large/plasma
+	icon_state = "plasma_crate_large"
+	icon_opened = "plasma_crate_large_open"
+	icon_closed = "plasma_crate_large"
 	req_access = list(access_mailsorting, access_medical, access_research, access_engine)
 
 //fluff variant

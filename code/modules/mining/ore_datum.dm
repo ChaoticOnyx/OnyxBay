@@ -93,14 +93,14 @@ var/global/list/ores_by_type = list()
 	ore = /obj/item/weapon/ore/glass //Technically not needed since there's no glass ore vein, but consistency is nice
 	worth = 1
 
-/ore/phoron
-	name = "phoron"
-	display_name = "phoron crystals"
-	compresses_to = MATERIAL_PHORON
+/ore/plasma
+	name = "plasma"
+	display_name = "plasma crystals"
+	compresses_to = MATERIAL_PLASMA
 	//smelts_to = something that explodes violently on the conveyor, huhuhuhu
 	result_amount = 5
 	spread_chance = 25
-	ore = /obj/item/weapon/ore/phoron
+	ore = /obj/item/weapon/ore/plasma
 	scan_icon = "mineral_uncommon"
 	xarch_ages = list(
 		"thousand" = 999,
@@ -108,7 +108,7 @@ var/global/list/ores_by_type = list()
 		"billion" = 13,
 		"billion_lower" = 10
 		)
-	xarch_source_mineral = MATERIAL_PHORON
+	xarch_source_mineral = MATERIAL_PLASMA
 	origin_tech = list(TECH_MATERIAL = 2)
 	worth = 4
 

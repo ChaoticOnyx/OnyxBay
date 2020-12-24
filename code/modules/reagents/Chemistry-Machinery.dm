@@ -308,9 +308,9 @@
 	var/list/sheet_reagents = list(
 		/obj/item/stack/material/iron = /datum/reagent/iron,
 		/obj/item/stack/material/uranium = /datum/reagent/uranium,
-		/obj/item/stack/material/phoron = /datum/reagent/toxin/phoron,
-		/obj/item/stack/material/phoron/ten = /datum/reagent/toxin/phoron,
-		/obj/item/stack/material/phoron/fifty = /datum/reagent/toxin/phoron,
+		/obj/item/stack/material/plasma = /datum/reagent/toxin/plasma,
+		/obj/item/stack/material/plasma/ten = /datum/reagent/toxin/plasma,
+		/obj/item/stack/material/plasma/fifty = /datum/reagent/toxin/plasma,
 		/obj/item/stack/material/gold = /datum/reagent/gold,
 		/obj/item/stack/material/silver = /datum/reagent/silver,
 		/obj/item/stack/material/mhydrogen = /datum/reagent/hydrazine
