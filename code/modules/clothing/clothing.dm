@@ -249,6 +249,7 @@ BLIND     // can't see anything
 	w_class = ITEM_SIZE_SMALL
 	icon = 'icons/obj/clothing/gloves.dmi'
 	siemens_coefficient = 0.75
+	var/fg_hide = TRUE // Set to hide fingerprints
 	var/wired = 0
 	var/obj/item/weapon/cell/cell = 0
 	var/clipped = 0

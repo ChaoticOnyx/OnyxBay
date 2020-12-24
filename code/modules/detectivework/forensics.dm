@@ -56,11 +56,10 @@ atom/var/var/fingerprintslast = null
 
 	if(!ignoregloves && ishuman(M))
 		var/mob/living/carbon/human/H = M
-		if (H.gloves && H.gloves.body_parts_covered & HANDS && H.gloves != src)
-			H.gloves.add_fingerprint(M)
-			if(!istype(H.gloves, /obj/item/clothing/gloves/latex))
-				return 0
-			else if(prob(75))
+		var/obj/item/clothing/gloves/gl = H.gloves
+		if (gl && gl.body_parts_covered & HANDS && gl != src)
+			gl.add_fingerprint(M)
+			if(gl.fg_hide)
 				return 0
 
 	// Add the fingerprints
