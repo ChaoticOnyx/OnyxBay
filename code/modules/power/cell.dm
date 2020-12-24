@@ -11,49 +11,11 @@
 	throw_speed = 3
 	throw_range = 5
 	w_class = ITEM_SIZE_NORMAL
-	var/c_uid
-	var/charge			                // Current charge
+	var/c_uid			 // Unique ID
+	var/charge			 // Current charge
 	var/maxcharge = 1000 // Capacity in Wh
 	var/overlay_state
 	matter = list(MATERIAL_STEEL = 700, MATERIAL_GLASS = 50)
-
-/obj/item/weapon/cell/quantum
-	name = "bluespace cell"
-	icon_state = "icell"
-	origin_tech = list(TECH_POWER = 6, TECH_MATERIAL = 6, TECH_BLUESPACE = 3, TECH_MAGNET = 5)
-	var/obj/item/weapon/cell/quantum/partner = null
-	maxcharge = 5000
-
-/obj/item/weapon/cell/quantum/New(loc,obj/item/weapon/cell/quantum/partner)
-	if(istype(partner))
-		src.partner = partner
-	else
-		src.partner = new (src.loc,partner=src)
-	..()
-
-/obj/item/weapon/cell/quantum/add_charge(amount)
-	amount -= partner.give(amount, recurse=FALSE)
-	..(amount)
-
-/obj/item/weapon/cell/quantum/use(amount, recurse=TRUE)
-	if(!recurse)
-		return ..(amount)
-	var/used = partner.use(amount, recurse=FALSE)
-	used += ..(amount-used)
-	return used
-
-/obj/item/weapon/cell/quantum/give(amount, recurse=TRUE)
-	if(!recurse)
-		return ..(amount)
-	var/amount_used = partner.give(amount, recurse=FALSE)
-	amount_used += ..(amount-amount_used)
-	return amount_used
-
-/obj/item/weapon/cell/quantum/Destroy()
-	if(!QDELETED(partner))
-		qdel(partner)
-	partner = null
-	return ..()
 
 /obj/item/weapon/cell/New()
 	if(isnull(charge))
@@ -66,7 +28,6 @@
 	update_icon()
 
 /obj/item/weapon/cell/drain_power(drain_check, surge, power = 0)
-
 	if(drain_check)
 		return 1
 
@@ -78,13 +39,12 @@
 	return use(cell_amt) / CELLRATE
 
 /obj/item/weapon/cell/proc/add_charge(amount)
-	if (charge + amount > maxcharge)
+	if(charge + amount > maxcharge)
 		charge = maxcharge
 	else
 		charge += amount
 
 /obj/item/weapon/cell/update_icon()
-
 	var/new_overlay_state = null
 	if(percent() >= 95)
 		new_overlay_state = "cell-o2"
@@ -98,14 +58,14 @@
 			overlays += image('icons/obj/power.dmi', overlay_state)
 
 /obj/item/weapon/cell/proc/percent()		// return % charge of cell
-	return maxcharge && (100.0*charge/maxcharge)
+	return maxcharge && (100.0 * charge / maxcharge)
 
 /obj/item/weapon/cell/proc/fully_charged()
-	return (charge == maxcharge)
+	return charge == maxcharge
 
 // checks if the power cell is able to provide the specified amount of charge
 /obj/item/weapon/cell/proc/check_charge(amount)
-	return (charge >= amount)
+	return charge >= amount
 
 // use power from a cell, returns the amount actually used
 /obj/item/weapon/cell/proc/use(amount)
@@ -123,8 +83,9 @@
 	return 1
 
 /obj/item/weapon/cell/proc/give(amount)
-	if(maxcharge == charge) return 0
-	var/amount_used = min(maxcharge-charge,amount)
+	if(maxcharge == charge)
+		return 0
+	var/amount_used = min(maxcharge - charge,amount)
 	charge += amount_used
 	update_icon()
 	return amount_used
@@ -141,28 +102,26 @@
 		severity *= R.cell_emp_mult
 
 	// Lose 1/2, 1/4, 1/6 of the current charge per hit or 1/4, 1/8, 1/12 of the max charge per hit, whichever is highest
-	charge -= max(charge / (2 * severity), maxcharge/(4 * severity))
-	if (charge < 0)
-		charge = 0
+	use(max((charge / (2 * severity)), (maxcharge/(4 * severity))))
 	..()
 
 
 /obj/item/weapon/cell/proc/get_electrocute_damage()
-	switch (charge)
-		if (5000000 to INFINITY) //Ave cells
-			return min(rand(300,650),rand(300,650))
-		if (3000000 to 5000000-1)
-			return min(rand(130,320),rand(130,320))
-		if (1000000 to 3000000-1)
-			return min(rand(50,160),rand(50,160))
-		if (200000 to 1000000-1)
-			return min(rand(25,80),rand(25,80))
-		if (100000 to 200000-1)
-			return min(rand(20,60),rand(20,60))
-		if (50000 to 100000-1)
-			return min(rand(15,40),rand(15,40))
-		if (1000 to 50000-1)
-			return min(rand(10,20),rand(10,20))
+	switch(charge)
+		if(5000000 to INFINITY) //Ave cells
+			return min(rand(300, 650),rand(300, 650))
+		if(3000000 to 5000000-1)
+			return min(rand(130, 320),rand(130, 320))
+		if(1000000 to 3000000-1)
+			return min(rand(50, 160),rand(50, 160))
+		if(200000 to 1000000-1)
+			return min(rand(25, 80),rand(25, 80))
+		if(100000 to 200000-1)
+			return min(rand(20, 60),rand(20, 60))
+		if(50000 to 100000-1)
+			return min(rand(15, 40),rand(15, 40))
+		if(1000 to 50000-1)
+			return min(rand(10, 20),rand(10, 20))
 		else
 			return 0
 
@@ -262,13 +221,25 @@
 
 /obj/item/weapon/cell/hyper
 	name = "superior power cell"
-	desc = "Pinnacle of power storage technology, this very expensive power cell provides the best energy density reachable with conventional electrochemical cells."
+	desc = "This very expensive power cell provides the best energy density reachable with conventional electrochemical cells."
 	origin_tech = list(TECH_POWER = 6)
 	icon_state = "hpcell"
 	maxcharge = 3000
 	matter = list(MATERIAL_STEEL = 700, MATERIAL_GLASS = 80)
 
 /obj/item/weapon/cell/hyper/empty
+	charge = 0
+
+
+/obj/item/weapon/cell/apex
+	name = "apex power cell"
+	desc = "Pinnacle of power storage technology, this extremely expensive power cell uses compact superconductors to provide nearly fantastic energy density."
+	origin_tech = list(TECH_POWER = 7, TECH_MATERIAL = 7, TECH_MAGNET = 5, TECH_ENGINEERING = 5)
+	icon_state = "acell"
+	maxcharge = 5000
+	matter = list(MATERIAL_STEEL = 700, MATERIAL_GLASS = 90)
+
+/obj/item/weapon/cell/apex/empty
 	charge = 0
 
 
@@ -291,8 +262,8 @@
 	name = "potato battery"
 	desc = "A rechargable starch based power cell."
 	origin_tech = list(TECH_POWER = 1)
-	icon = 'icons/obj/power.dmi' //'icons/obj/harvest.dmi'
-	icon_state = "potato_cell" //"potato_battery"
+	icon = 'icons/obj/power.dmi'
+	icon_state = "potatocell"
 	maxcharge = 50
 
 
@@ -304,3 +275,103 @@
 	icon_state = "yellow slime extract" //"potato_battery"
 	maxcharge = 200
 	matter = null
+
+
+/obj/item/weapon/cell/quantum
+	name = "bluespace cell"
+	desc = "This special experimental power cell utilizes bluespace manipulation techniques; it can form a recursive quantum connection with another cell of its kind, making them share their charge through virtually any distance."
+	icon_state = "qcell"
+	origin_tech = list(TECH_POWER = 6, TECH_MATERIAL = 6, TECH_BLUESPACE = 3, TECH_MAGNET = 5)
+	var/obj/item/weapon/cell/quantum/partner = null
+	maxcharge = 3000
+	var/quantum_id = 0
+
+/obj/item/weapon/cell/quantum/Initialize()
+	. = ..()
+	quantum_id = rand(10000, 99999)
+
+/obj/item/weapon/cell/quantum/update_icon()
+	var/new_overlay_state = null
+	if(percent() >= 95)
+		new_overlay_state = "qcell-o2"
+	else if(charge >= 0.05)
+		new_overlay_state = "qcell-o1"
+
+	if(new_overlay_state != overlay_state)
+		overlay_state = new_overlay_state
+		overlays.Cut()
+		if(overlay_state)
+			overlays += image('icons/obj/power.dmi', overlay_state)
+
+/obj/item/weapon/cell/quantum/examine(mob/user)
+	. = ..()
+	. += "\nIts quantum ID is: #[quantum_id]"
+	if(partner)
+		. += "\nIt is recursively bound with the bluespace cell #[partner.quantum_id]"
+
+/obj/item/weapon/cell/quantum/attackby(obj/item/weapon/W, mob/user)
+	if(istype(W, /obj/item/weapon/cell/quantum))
+		var/obj/item/weapon/cell/quantum/Q = W
+		if(W == partner)
+			Q.quantum_unbind()
+			quantum_unbind()
+			to_chat(user, SPAN("notice", "\The [Q] (#[Q.quantum_id]) is no longer bound with \the [src] (#[quantum_id])."))
+			return
+		else
+			if(partner)
+				to_chat(user, SPAN("warning", "\The [src] (#[quantum_id]) is already bound with \the [partner] (#[partner.quantum_id])!"))
+				return
+			else if(Q.partner)
+				to_chat(user, SPAN("warning", "\The [Q] (#[Q.quantum_id]) is already bound with \the [Q.partner] (#[Q.partner.quantum_id])!"))
+				return
+			quantum_bind(Q)
+			to_chat(user, SPAN("notice", "\The [Q] (#[Q.quantum_id]) is now bound with \the [src] (#[src.quantum_id])."))
+			return
+	else
+		..()
+
+/obj/item/weapon/cell/quantum/add_charge(amount)
+	. = ..()
+	sync_charge()
+
+/obj/item/weapon/cell/quantum/use(amount)
+	. = ..()
+	sync_charge()
+
+/obj/item/weapon/cell/quantum/give(amount)
+	. = ..()
+	sync_charge()
+
+/obj/item/weapon/cell/quantum/Destroy()
+	if(partner)
+		partner.quantum_unbind(TRUE)
+	partner = null
+	return ..()
+
+/obj/item/weapon/cell/quantum/proc/sync_charge()
+	if(!partner)
+		return
+	partner.charge = charge
+	partner.update_icon()
+
+/obj/item/weapon/cell/quantum/proc/quantum_bind(obj/item/weapon/cell/quantum/Q)
+	partner = Q
+	Q.partner = src
+	var/average_charge = (charge + Q.charge) / 2
+	charge = average_charge
+	Q.charge = average_charge
+	update_icon()
+	Q.update_icon()
+
+/obj/item/weapon/cell/quantum/proc/quantum_unbind(forced = FALSE)
+	if(!partner)
+		return
+	partner = null
+	if(charge)
+		var/datum/effect/effect/system/spark_spread/s = new /datum/effect/effect/system/spark_spread
+		s.set_up(3, 1, get_turf(src))
+		s.start()
+		if(forced)
+			visible_message(SPAN("warning", "All of a sudden, \the [src] quickly discharges!")) // No need to show this if a cell gets manually unbound
+	charge = 0
+	update_icon()

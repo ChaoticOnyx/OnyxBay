@@ -37,10 +37,17 @@
 	name = "hyper-capacity cell"
 	id = "hyper_cell"
 	req_tech = list(TECH_POWER = 5, TECH_MATERIAL = 4)
-	materials = list(MATERIAL_STEEL = 400, MATERIAL_GOLD = 150, MATERIAL_SILVER = 150, MATERIAL_GLASS = 70)
+	materials = list(MATERIAL_STEEL = 400, MATERIAL_GOLD = 150, MATERIAL_SILVER = 150, MATERIAL_GLASS = 80)
 	build_path = /obj/item/weapon/cell/hyper/empty
 	sort_string = "DAAAD"
 
+/datum/design/item/powercell/apex
+	name = "apex-capacity cell"
+	id = "apex_cell"
+	req_tech = list(TECH_POWER = 7, TECH_MATERIAL = 7, TECH_MAGNET = 5, TECH_ENGINEERING = 5)
+	materials = list(MATERIAL_STEEL = 400, MATERIAL_GOLD = 300, MATERIAL_GLASS = 90, MATERIAL_DIAMOND = 100)
+	build_path = /obj/item/weapon/cell/apex/empty
+	sort_string = "DAAAE"
 
 /datum/design/item/powercell/quantum
 	name = "bluespace cell"
@@ -48,7 +55,7 @@
 	req_tech = list(TECH_POWER = 6, TECH_MATERIAL = 6, TECH_BLUESPACE = 3, TECH_MAGNET = 5)
 	materials = list(MATERIAL_STEEL = 400, MATERIAL_GOLD = 150, MATERIAL_SILVER = 150, MATERIAL_GLASS = 70, MATERIAL_DIAMOND = 100)
 	build_path = /obj/item/weapon/cell/quantum
-	sort_string = "DAAAE"
+	sort_string = "DAAAF"
 
 /datum/design/item/tool/airlock_brace
 	name = "airlock brace"

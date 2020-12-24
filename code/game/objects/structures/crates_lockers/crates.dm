@@ -386,3 +386,10 @@ obj/structure/closet/crate
 
 /obj/structure/closet/crate/uranium/WillContain()
 	return list(/obj/item/stack/material/uranium/ten = 5)
+
+/obj/structure/closet/crate/pig
+	name = "pig crate"
+	desc = "A pink crate with a pig's face on it."
+	icon_state = "pigcrate"
+	icon_opened = "pigcrateopen"
+	icon_closed = "pigcrate"
