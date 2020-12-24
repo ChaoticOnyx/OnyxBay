@@ -313,8 +313,7 @@
 
 /decl/hierarchy/supply_pack/miscellaneous/pigs
 	name = "Box of rubber pigs"
-	num_contained = 3
-	contains = list(/obj/item/toy/pig)
+	contains = list(/obj/item/toy/pig = 3)
 	cost = 100
 	containername = "\improper Rubber Pigs Crate"
 	containertype = /obj/structure/closet/crate/pig
