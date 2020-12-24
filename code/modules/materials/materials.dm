@@ -585,7 +585,7 @@ var/list/name_to_material
 	rod_product = null
 
 /material/glass/plass
-	name = "phglass"
+	name = "plass"
 	display_name = "plass"
 	stack_type = /obj/item/stack/material/glass/plass
 	flags = MATERIAL_BRITTLE
@@ -602,11 +602,11 @@ var/list/name_to_material
 	rod_product = /obj/item/stack/material/glass/rplass
 
 /material/glass/plass/reinforced
-	name = "rphglass"
+	name = "rplass"
+	display_name = "reinforced plass"
 	brute_armor = 3
 	burn_armor = 10
 	melting_point = T0C + 4000
-	display_name = "reinforced plass"
 	stack_type = /obj/item/stack/material/glass/rplass
 	resilience = 36
 	reflectance = 35
