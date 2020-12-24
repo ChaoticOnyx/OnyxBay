@@ -311,6 +311,17 @@
 	cost = 10
 	containername = "\improper Chaplain equipment crate"
 
+/decl/hierarchy/supply_pack/miscellaneous/discussions
+	name = "Discussions equipment"
+	contains = list(/obj/item/toy/pig = 2,
+					/obj/item/weapon/reagent_containers/food/drinks/bottle/vodka,
+					/obj/item/weapon/reagent_containers/food/drinks/tea = 4,
+					/obj/item/weapon/reagent_containers/food/drinks/bottle/cream,
+					/obj/item/weapon/storage/fancy/cigar,
+					/obj/item/weapon/flame/lighter/zippo)
+	cost = 100
+	containername = "\improper Demagogue Crate"
+
 /decl/hierarchy/supply_pack/miscellaneous/mousetrap
 	num_contained = 3
 	contains = list(/obj/item/weapon/storage/box/mousetraps)
