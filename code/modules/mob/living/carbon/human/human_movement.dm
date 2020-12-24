@@ -18,13 +18,6 @@
 
 	var/human_delay = config.human_delay
 
-	for(var/M in mutations)
-		switch(M)
-			if(mRun)
-				return human_delay
-			if(MUTATION_FAT)
-				tally += 1.5
-
 	for(var/datum/modifier/M in modifiers)
 		if(!isnull(M.haste) && M.haste == TRUE)
 			return -1 // Returning -1 will actually result in a slowdown for Teshari.
