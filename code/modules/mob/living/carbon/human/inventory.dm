@@ -3,6 +3,34 @@
 Add fingerprints to items when we put them in our hands.
 This saves us from having to call add_fingerprint() any time something is put in a human's hands programmatically.
 */
+/mob/living/carbon/human
+	var/list/null_n_update = list(
+		head      = /mob/living/carbon/human/update_inv_head,
+		l_ear     = /mob/living/carbon/human/update_inv_ears,
+		r_ear     = /mob/living/carbon/human/update_inv_ears,
+		glasses   = /mob/living/carbon/human/update_inv_glasses,
+		wear_mask = /mob/living/carbon/human/update_inv_wear_mask,
+		w_uniform = /mob/living/carbon/human/update_inv_w_uniform,
+		wear_suit = /mob/living/carbon/human/update_inv_wear_suit,
+		gloves    = /mob/living/carbon/human/update_inv_gloves,
+		shoes     = /mob/living/carbon/human/update_inv_shoes,
+
+		s_store    = /mob/living/carbon/human/update_inv_s_store,
+		wear_id    = /mob/living/carbon/human/update_inv_wear_id,
+		belt       = /mob/living/carbon/human/update_inv_belt,
+		back       = /mob/living/carbon/human/update_inv_back,
+		l_hand     = /mob/living/carbon/human/update_inv_l_hand,
+		r_hand     = /mob/living/carbon/human/update_inv_r_hand,
+		l_store    = /mob/living/carbon/human/update_inv_pockets,
+		r_store    = /mob/living/carbon/human/update_inv_pockets,
+		handcuffed = /mob/living/carbon/human/update_inv_handcuffed,
+	)
+	var/list/has_slots_by_organ = list(
+		BP_HEAD   = list(slot_head, slot_glasses, slot_wear_mask, slot_l_ear, slot_r_ear),
+		BP_L_HAND = list(slot_l_hand),
+		BP_R_HAND = list(slot_r_hand),
+		BP_CHEST  = list(slot_w_uniform, slot_wear_suit, slot_s_store, slot_belt, slot_back, slot_l_store, slot_r_store),
+	)
 
 /mob/living/carbon/human/verb/quick_equip()
 	set name = "quick-equip"
@@ -73,77 +101,29 @@ This saves us from having to call add_fingerprint() any time something is put in
 
 /mob/living/carbon/human/proc/has_organ_for_slot(slot)
 	switch(slot)
-		if(slot_back)
-			return has_organ(BP_CHEST)
-		if(slot_wear_mask)
-			return has_organ(BP_HEAD)
-		if(slot_handcuffed)
+		if(slot_gloves, slot_handcuffed)
 			return has_organ(BP_L_HAND) && has_organ(BP_R_HAND)
-		if(slot_legcuffed)
+		if(slot_shoes, slot_legcuffed)
 			return has_organ(BP_L_FOOT) && has_organ(BP_R_FOOT)
-		if(slot_l_hand)
-			return has_organ(BP_L_HAND)
-		if(slot_r_hand)
-			return has_organ(BP_R_HAND)
-		if(slot_belt)
-			return has_organ(BP_CHEST)
-		if(slot_wear_id)
-			// the only relevant check for this is the uniform check
+		if(slot_wear_id, slot_tie, slot_in_backpack)
 			return 1
-		if(slot_l_ear)
-			return has_organ(BP_HEAD)
-		if(slot_r_ear)
-			return has_organ(BP_HEAD)
-		if(slot_glasses)
-			return has_organ(BP_HEAD)
-		if(slot_gloves)
-			return has_organ(BP_L_HAND) || has_organ(BP_R_HAND)
-		if(slot_head)
-			return has_organ(BP_HEAD)
-		if(slot_shoes)
-			return has_organ(BP_L_FOOT) || has_organ(BP_R_FOOT)
-		if(slot_wear_suit)
-			return has_organ(BP_CHEST)
-		if(slot_w_uniform)
-			return has_organ(BP_CHEST)
-		if(slot_l_store)
-			return has_organ(BP_CHEST)
-		if(slot_r_store)
-			return has_organ(BP_CHEST)
-		if(slot_s_store)
-			return has_organ(BP_CHEST)
-		if(slot_in_backpack)
-			return 1
-		if(slot_tie)
-			return 1
+	for(var/organ in has_slots_by_organ)
+		if(slot in has_slots_by_organ[organ])
+			return has_organ(organ)
 
 /mob/living/carbon/human/u_equip(obj/W as obj)
 	if(!W)	return 0
 
-	if (W == wear_suit)
+	// handle speecial droping
+	if(W == wear_suit)
 		if(s_store)
 			drop_from_inventory(s_store)
-		wear_suit = null
-		update_inv_wear_suit()
-	else if (W == w_uniform)
-		if (r_store)
-			drop_from_inventory(r_store)
-		if (l_store)
-			drop_from_inventory(l_store)
-		if (wear_id)
-			drop_from_inventory(wear_id)
-		if (belt)
-			drop_from_inventory(belt)
-		w_uniform = null
-		update_inv_w_uniform()
-	else if (W == gloves)
-		gloves = null
-		update_inv_gloves()
-	else if (W == glasses)
-		glasses = null
-		update_inv_glasses()
-	else if (W == head)
-		head = null
+	else if(W == w_uniform)
+		for(var/slot in list("r_store", "l_store", "wear_id", "belt"))
+			if(src.vars[slot])
+				drop_from_inventory(src.vars[slot])
+				call(src, null_n_update[slot])()
+	else if(W == head)
 		if(istype(W, /obj/item))
 			var/obj/item/I = W
 			if(I.flags_inv & (HIDEMASK|BLOCKHAIR|BLOCKHEADHAIR))
@@ -154,74 +134,36 @@ This saves us from having to call add_fingerprint() any time something is put in
 			var/obj/item/clothing/mask/wear_mask = src.get_equipped_item(slot_wear_mask)
 			if(!(wear_mask && (wear_mask.item_flags & ITEM_FLAG_AIRTIGHT)))
 				REMOVE_INTERNALS
-		update_inv_head()
-	else if (W == l_ear)
-		l_ear = null
-		if(r_ear == W) //check for items that get equipped to both ear slots
-			r_ear = null
-		update_inv_ears()
-	else if (W == r_ear)
-		r_ear = null
-		if(l_ear == W)
-			l_ear = null
-		update_inv_ears()
-	else if (W == shoes)
-		shoes = null
-		update_inv_shoes()
-	else if (W == belt)
-		belt = null
-		update_inv_belt()
-	else if (W == wear_mask)
-		wear_mask = null
+	else if(W == wear_mask)
 		if(istype(W, /obj/item))
 			var/obj/item/I = W
 			if(I.flags_inv & (BLOCKHAIR|BLOCKHEADHAIR))
 				update_hair(0)	//rebuild hair
 				update_inv_ears(0)
 		REMOVE_INTERNALS
-		update_inv_wear_mask()
-	else if (W == wear_id)
-		wear_id = null
-		update_inv_wear_id()
-	else if (W == r_store)
-		r_store = null
-		update_inv_pockets()
-	else if (W == l_store)
-		l_store = null
-		update_inv_pockets()
-	else if (W == s_store)
-		s_store = null
-		update_inv_s_store()
-	else if (W == back)
-		back = null
-		update_inv_back()
-	else if (W == handcuffed)
+	else if(W == handcuffed)
 		if(handcuffed.on_restraint_removal(src)) //If this returns 1, then the unquipping action was interrupted
 			return 0
-		handcuffed = null
 		if(buckled && buckled.buckle_require_restraints)
 			buckled.unbuckle_mob()
-		update_inv_handcuffed()
-	else if (W == r_hand)
-		r_hand = null
+	else if(W == r_hand)
 		if(l_hand)
 			l_hand.update_twohanding()
 			update_inv_l_hand()
-		update_inv_r_hand()
-	else if (W == l_hand)
-		l_hand = null
+	else if(W == l_hand)
 		if(r_hand)
 			r_hand.update_twohanding()
-			update_inv_l_hand()
-		update_inv_l_hand()
-	else
-		return 0
+			update_inv_r_hand()
+	// end handling
 
-	update_equipment_slowdown()
+	for(var/slot in null_n_update)
+		if(W == src.vars[slot])
+			src.vars[slot] = null
+			equipment_slowdown -= get_equipment_slowdown_by_item(W, slot)
+			call(src, null_n_update[slot])()
+
 	update_action_buttons()
 	return 1
-
-
 
 //This is an UNSAFE proc. Use mob_can_equip() before calling this one! Or rather use equip_to_slot_if_possible() or advanced_equip_to_slot_if_possible()
 //set redraw_mob to 0 if you don't wish the hud to be updated - if you're doing it manually in your own proc.
@@ -368,28 +310,28 @@ This saves us from having to call add_fingerprint() any time something is put in
 	if(old_item)
 		qdel(old_item)
 
-	update_equipment_slowdown()
-
+	equipment_slowdown += get_equipment_slowdown_by_item(W, slot)
 	return 1
 
+/mob/living/carbon/human/proc/get_equipment_slowdown_by_item(obj/item/I as obj, slot)
+	var/item_slowdown = I.slowdown_general + I.slowdown_per_slot[slot] + I.slowdown_accessory
+	if(item_slowdown >= 0)
+		var/size_mod = 0
+		if(!(mob_size == MOB_MEDIUM))
+			size_mod = log(2, mob_size / MOB_MEDIUM)
+		if(species.strength + size_mod + 1 > 0)
+			item_slowdown = item_slowdown / (species.strength + size_mod + 1)
+		else
+			item_slowdown = item_slowdown - species.strength - size_mod
+	return item_slowdown
+
+// older verision
 /mob/living/carbon/human/update_equipment_slowdown()
 	equipment_slowdown = -1
 	for(var/slot = slot_first to slot_last)
 		var/obj/item/I = get_equipped_item(slot)
 		if(I)
-			var/item_slowdown = 0
-			item_slowdown += I.slowdown_general
-			item_slowdown += I.slowdown_per_slot[slot]
-			item_slowdown += I.slowdown_accessory
-			if(item_slowdown >= 0)
-				var/size_mod = 0
-				if(!(mob_size == MOB_MEDIUM))
-					size_mod = log(2, mob_size / MOB_MEDIUM)
-				if(species.strength + size_mod + 1 > 0)
-					item_slowdown = item_slowdown / (species.strength + size_mod + 1)
-				else
-					item_slowdown = item_slowdown - species.strength - size_mod
-			equipment_slowdown += item_slowdown
+			equipment_slowdown += get_equipment_slowdown_by_item(I, slot)
 
 //Checks if a given slot can be accessed at this time, either to equip or unequip I
 /mob/living/carbon/human/slot_is_accessible(slot, obj/item/I, mob/user=null)
@@ -435,21 +377,11 @@ This saves us from having to call add_fingerprint() any time something is put in
 
 /mob/living/carbon/human/get_equipped_items(include_carried = 0)
 	. = ..()
-	if(belt)      . += belt
-	if(l_ear)     . += l_ear
-	if(r_ear)     . += r_ear
-	if(glasses)   . += glasses
-	if(gloves)    . += gloves
-	if(head)      . += head
-	if(shoes)     . += shoes
-	if(wear_id)   . += wear_id
-	if(wear_suit) . += wear_suit
-	if(w_uniform) . += w_uniform
-
+	for(var/I in list(head, l_ear, r_ear, glasses, w_uniform, wear_suit, gloves, shoes, wear_id, belt))
+		if(I)
+			. += I
 	if(include_carried)
-		if(l_store)    . += l_store
-		if(r_store)    . += r_store
-		if(handcuffed) . += handcuffed
-		if(s_store)    . += s_store
-
+		for(var/I in list(s_store, l_store, r_store, handcuffed))
+			if(I)
+				. += I
 #undef REMOVE_INTERNALS
