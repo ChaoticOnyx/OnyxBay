@@ -3,6 +3,7 @@
 	desc = "A window."
 	icon = 'icons/obj/structures.dmi'
 	density = 1
+	can_atmos_pass = ATMOS_PASS_PROC
 	w_class = ITEM_SIZE_NORMAL
 
 	layer = SIDE_WINDOW_LAYER
@@ -22,7 +23,6 @@
 	var/silicate = 0 // number of units of silicate
 
 	pull_sound = "pull_stone"
-	atmos_canpass = CANPASS_PROC
 
 /obj/structure/window/examine(mob/user)
 	. = ..()
@@ -131,15 +131,19 @@
 /obj/structure/window/proc/is_full_window()
 	return (dir == SOUTHWEST || dir == SOUTHEAST || dir == NORTHWEST || dir == NORTHEAST)
 
-/obj/structure/window/CanPass(atom/movable/mover, turf/target, height=0, air_group=0)
+/obj/structure/window/CanPass(atom/movable/mover, turf/target)
 	if(istype(mover) && mover.pass_flags & PASS_FLAG_GLASS)
-		return 1
+		return TRUE
 	if(is_full_window())
-		return 0	//full tile window, you can't move into it!
+		return FALSE	//full tile window, you can't move into it!
 	if(get_dir(loc, target) & dir)
 		return !density
-	else
-		return 1
+	return TRUE
+
+/obj/structure/window/CanZASPass(turf/T, is_zone)
+	if(is_fulltile() || get_dir(T, loc) == turn(dir, 180)) // Make sure we're handling the border correctly.
+		return !anchored // If it's anchored, it'll block air.
+	return TRUE // Don't stop airflow from the other sides.
 
 
 /obj/structure/window/CheckExit(atom/movable/O as mob|obj, target as turf)

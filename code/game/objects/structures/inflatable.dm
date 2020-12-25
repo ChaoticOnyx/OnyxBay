@@ -4,8 +4,7 @@
 	icon = 'icons/obj/inflatable.dmi'
 	var/deploy_path = null
 	var/inflatable_health
-
-	atmos_canpass = CANPASS_DENSITY
+	can_atmos_pass = ATMOS_PASS_DENSITY
 
 /obj/item/inflatable/attack_self(mob/user)
 	if(!deploy_path)
@@ -104,9 +103,6 @@
 		. += "\n[SPAN_DANGER("It's heavily damaged!")]"
 	if(taped)
 		. += "\n[SPAN_NOTICE("It's been duct taped in few places.")]"
-
-/obj/structure/inflatable/CanPass(atom/movable/mover, turf/target, height=0, air_group=0)
-	return 0
 
 /obj/structure/inflatable/bullet_act(obj/item/projectile/Proj)
 	take_damage(Proj.get_structure_damage())
@@ -223,9 +219,7 @@
 /obj/structure/inflatable/door/attack_hand(mob/user as mob)
 	return TryToSwitchState(user)
 
-/obj/structure/inflatable/door/CanPass(atom/movable/mover, turf/target, height=0, air_group=0)
-	if(air_group)
-		return state
+/obj/structure/inflatable/door/CanPass(atom/movable/mover, turf/target)
 	if(istype(mover, /obj/effect/beam))
 		return !opacity
 	return !density

@@ -9,12 +9,13 @@
 	icon_state = "wingrille"
 	density = 1
 	anchored = 1.0
+	can_atmos_pass = ATMOS_PASS_NO
 	var/win_path = /obj/structure/window/basic
 	var/activated = FALSE
 	var/fulltile = FALSE
 
 // stops ZAS expanding zones past us, the windows will block the zone anyway
-/obj/effect/wingrille_spawn/CanPass()
+/obj/effect/wingrille_spawn/CanPass(atom/movable/mover, turf/target)
 	return 0
 
 /obj/effect/wingrille_spawn/attack_hand()
