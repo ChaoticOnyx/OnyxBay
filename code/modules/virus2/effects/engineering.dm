@@ -26,7 +26,6 @@
 	name = "Uncontrollable Actions"
 	stage = 2
 	badness = VIRUS_ENGINEERED
-	possible_mutations = list()
 
 /datum/disease2/effect/click/activate(mob/living/carbon/human/mob)
 	var/list/target_list = istype(mob.get_active_hand(), /obj/item/weapon/gun) ? view(mob) : view(1, mob) //Dont put far objects in list unless we can shoot it

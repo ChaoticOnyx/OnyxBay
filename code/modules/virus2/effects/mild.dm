@@ -204,7 +204,8 @@
 	stage = 2
 
 /datum/disease2/effect/drowsness/activate(var/mob/living/carbon/human/mob)
-	mob.drowsyness = max(mob.drowsyness + 10, 40)
+	if(mob.drowsyness < 35)
+		mob.drowsyness += 10
 
 
 
