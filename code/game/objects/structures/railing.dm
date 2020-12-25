@@ -30,7 +30,7 @@
 /obj/structure/railing/CanPass(atom/movable/mover, turf/target)
 	if(istype(mover) && mover.pass_flags & PASS_FLAG_TABLE)
 		return TRUE
-	if(get_dir(mover, target) == turn(dir, 180))
+	if(get_dir(loc, target) == dir)
 		return !density
 	return TRUE
 
