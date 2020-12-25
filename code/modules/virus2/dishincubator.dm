@@ -8,7 +8,6 @@
 	var/obj/item/weapon/reagent_containers/glass/beaker = null
 	var/radiation = 0
 	var/mutagen = 0
-	var/datum/dna/dna_example = null
 
 	var/on = 0
 	var/power = 0
@@ -111,7 +110,7 @@
 
 		if(foodsupply)
 			foodsupply -= 1
-			if(dish.growth >= 100 && dish.virus2.infectionchance < 70)
+			if(foodsupply > 50 && dish.growth >= 100 && dish.virus2.infectionchance < 50)
 				if(prob(5))
 					dish.virus2.infectionchance += 1
 			if(dish.growth + 3 >= 100 && dish.growth < 100)
@@ -166,15 +165,6 @@
 		icon_state = "incubator"
 		SSnano.update_uis(src)
 
-	if(beaker)
-		if (foodsupply < 100 && beaker.reagents.has_reagent(/datum/reagent/nutriment/virus_food))
-			var/food_needed = min(10, 100 - foodsupply) / 2
-			var/food_taken = min(food_needed, beaker.reagents.get_reagent_amount(/datum/reagent/nutriment/virus_food))
-
-			beaker.reagents.remove_reagent(/datum/reagent/nutriment/virus_food, food_taken)
-			foodsupply = min(100, foodsupply+(food_taken * 2))
-			SSnano.update_uis(src)
-
 /obj/machinery/disease2/incubator/OnTopic(user, href_list)
 	if (href_list["close"])
 		SSnano.close_user_uis(user, src, "main")
@@ -201,6 +191,9 @@
 	if (href_list["chem"])
 		if(!beaker.reagents)
 			return TOPIC_REFRESH
+		if(beaker.reagents.has_reagent(/datum/reagent/nutriment/virus_food, 5) && foodsupply < 100)
+			beaker.reagents.remove_reagent(/datum/reagent/nutriment/virus_food, 5)
+			foodsupply = min(100, foodsupply + 10)
 		if(beaker.reagents.has_reagent(/datum/reagent/radium, 5) && radiation < 100)
 			beaker.reagents.remove_reagent(/datum/reagent/radium, 5)
 			radiation = min(100, radiation + 10)

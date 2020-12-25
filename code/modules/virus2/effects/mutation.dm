@@ -41,6 +41,30 @@
 
 ////////////////////////STAGE 2/////////////////////////////////
 
+/datum/disease2/effect/adaptation_kill
+	name = "Psyсhokinetic Connection"
+	stage = 2
+	badness = VIRUS_MUTATION
+	possible_mutations = list(/datum/disease2/effect/adaptation_kill,
+							  /datum/disease2/effect/adaptation_damage,
+							  /datum/disease2/effect/loyalty)
+
+/datum/disease2/effect/adaptation_kill/generate(c_data)
+	if(c_data)
+		data = c_data
+	else
+		data = pick(GLOB.human_mob_list)
+	var/mob/living/carbon/human/H = data
+	name = "[H.real_name] [initial(name)]"
+
+/datum/disease2/effect/adaptation_kill/change_parent()
+	parent_disease.antigen = null
+
+/datum/disease2/effect/adaptation_kill/activate(mob/living/carbon/human/mob)
+	var/mob/living/carbon/human/H = data
+	if(locate(H) in GLOB.dead_mob_list_)
+		parent_disease.cure(mob)
+
 ////////////////////////STAGE 3/////////////////////////////////
 
 /datum/disease2/effect/dnaspread

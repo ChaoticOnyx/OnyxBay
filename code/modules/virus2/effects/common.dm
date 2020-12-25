@@ -45,6 +45,7 @@
 	name = "Adrenaline Extra"
 	stage = 2
 	badness = VIRUS_COMMON
+	possible_mutations = list(/datum/disease2/effect/chem_synthesis)
 
 /datum/disease2/effect/stimulant/activate(var/mob/living/carbon/human/mob)
 	to_chat(mob, STIMULANT_EFFECT_WARNING)
@@ -88,15 +89,24 @@
 	parent_disease.antigen = null
 
 /datum/disease2/effect/adaptation_damage/activate(mob/living/carbon/human/mob)
-	log_debug("Activated")
 	for(var/obj/item/organ/external/E in mob.organs)
-		log_debug("Activated for [E]")
 		var/dmg = E.get_damage()
-		log_debug("dmg is [dmg]")
 		if(dmg > 8*multiplier)
-			log_debug("Cured")
 			parent_disease.cure(mob)
-			
+
+
+
+/datum/disease2/effect/adaptation_rads
+	name = "Radiation-intolerant Adaptation"
+	stage = 2
+	badness = VIRUS_COMMON
+
+/datum/disease2/effect/adaptation_rads/change_parent()
+	parent_disease.antigen = null
+
+/datum/disease2/effect/adaptation_rads/activate(mob/living/carbon/human/mob)
+	if(mob.radiation > 10*multiplier)
+		parent_disease.cure(mob)
 ////////////////////////STAGE 3/////////////////////////////////
 
 /datum/disease2/effect/chem_synthesis

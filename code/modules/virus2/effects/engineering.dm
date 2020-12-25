@@ -94,6 +94,7 @@
 	badness = VIRUS_ENGINEERED
 	delay = 20 SECONDS
 	multiplier_max = 10
+	possible_mutations = list(/datum/disease2/effect/adaptation_kill)
 	var/isking = null
 
 /datum/disease2/effect/loyalty/generate(c_data)

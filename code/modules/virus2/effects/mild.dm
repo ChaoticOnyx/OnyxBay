@@ -9,6 +9,7 @@
 	to_chat(mob, SPAN_WARNING("You suddenly honk."))
 
 
+
 /datum/disease2/effect/invisible
 	name = "Waiting Syndrome"
 	stage = 1
@@ -196,7 +197,7 @@
 
 /datum/disease2/effect/aids/change_parent()
 	parent_disease.spreadtype = "Contact"
-	parent.infectionchance = 110
+	parent_disease.infectionchance = 110
 
 /datum/disease2/effect/drowsness
 	name = "Automated Sleeping Syndrome"
