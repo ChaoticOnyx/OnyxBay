@@ -61,6 +61,8 @@ atom/var/var/fingerprintslast = null
 			gl.add_fingerprint(M)
 			if(gl.fg_hide)
 				return 0
+			else if(prob(50))
+				return 0
 
 	// Add the fingerprints
 	add_partial_print(full_print)

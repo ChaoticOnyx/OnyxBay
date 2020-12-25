@@ -90,6 +90,7 @@
 	name = "latex gloves"
 	desc = "Sterile latex gloves."
 	icon_state = "white"
+	fg_hide = FALSE
 	siemens_coefficient = 1.1 //thin latex gloves, much more conductive than fabric gloves (basically a capacitor for AC)
 	permeability_coefficient = 0.01
 	germ_level = 0
