@@ -36,7 +36,7 @@
 /mob/living/simple_animal/crab/Crossed(AM as mob|obj)
 	if(!client && ishuman(AM) && !stat)
 		var/mob/M = AM
-		to_chat(M, "<span class='warning'>\icon[src] [pick("Click", "Clack")]!</span>")
+		to_chat(M, SPAN("warning", "\icon[src] [pick("Click", "Clack")]!"))
 		if(prob(50))
 			UnarmedAttack(M)
 		set_panic_target(M)
