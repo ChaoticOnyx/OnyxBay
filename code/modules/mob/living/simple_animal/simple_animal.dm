@@ -409,7 +409,7 @@
 			stop_automated_movement = 0
 		else
 			stop_automated_movement = 1
-			walk_away(src, panic_target, 7, 2)
+			walk_away(src, panic_target, 7, 4)
 
 /mob/living/simple_animal/proc/set_panic_target(mob/M)
 	if(M && !ckey)

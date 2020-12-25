@@ -3,6 +3,7 @@
 	desc = "A cute tiny lizard."
 	icon = 'icons/mob/animal.dmi'
 	icon_state = "lizard"
+	item_state = "lizard"
 	icon_living = "lizard"
 	icon_dead = "lizard_dead"
 	speak_emote = list("hisses")

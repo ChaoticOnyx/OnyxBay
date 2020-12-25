@@ -1,9 +1,7 @@
-/mob/CanPass(atom/movable/mover, turf/target, height=0, air_group=0)
-	if(air_group || (height == 0))
-		return TRUE
+/mob/CanPass(atom/movable/mover, turf/target)
 	if(ismob(mover))
 		var/mob/moving_mob = mover
-		if (other_mobs && moving_mob.other_mobs)
+		if(other_mobs && moving_mob.other_mobs)
 			return TRUE
 	return (!mover.density || !density || lying)
 
