@@ -63,9 +63,9 @@
 		return
 	var/string_to_log = "\[Storyteller Metric [name]]: [text]"
 	if (verbose)
-		log_debug(string_to_log) //print in debug chat and save in log
+		log_debug(string_to_log) //print in the debug chat and save in a log file
 	else
-		log_debug_verbose(string_to_log) //only save in log
+		log_debug_verbose(string_to_log) //only save in a log file
 
 /storyteller_metric/proc/print_statistics(user)
 	if (!user)
