@@ -7,6 +7,8 @@ GLOBAL_DATUM_INIT(traitors, /datum/antagonist/traitor, new)
 							/datum/job/merchant, /datum/job/lawyer)
 	additional_restricted_jobs = list(/datum/job/officer, /datum/job/warden, /datum/job/detective)
 	flags = ANTAG_SUSPICIOUS | ANTAG_RANDSPAWN | ANTAG_VOTABLE
+	antag_intro = 'sound/antag/syndicate_intro.ogg'
+	ai_antag_intro = 'sound/antag/AISyndiHack.ogg'
 
 /datum/antagonist/traitor/get_extra_panel_options(datum/mind/player)
 	return "<a href='?src=\ref[player];common=crystals'>\[set crystals\]</a><a href='?src=\ref[src];spawn_uplink=\ref[player.current]'>\[spawn uplink\]</a>"

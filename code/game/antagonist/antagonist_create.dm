@@ -108,6 +108,13 @@
 		create_nuke()
 
 	src.show_objectives_at_creation(player)
+
+	if(antag_intro)
+		if(issilicon(player.original) && ai_antag_intro)
+			sound_to(player.current, ai_antag_intro)
+		else
+			sound_to(player.current, antag_intro)
+
 	return 1
 
 /datum/antagonist/proc/set_antag_name(mob/living/player)

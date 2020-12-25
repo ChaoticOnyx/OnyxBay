@@ -21,6 +21,7 @@ GLOBAL_DATUM_INIT(godcult, /datum/antagonist/godcultist, new)
 	initial_spawn_req = 2
 	initial_spawn_target = 2
 	antaghud_indicator = "hudcultist"
+	antag_intro = 'sound/antag/clockcultalr.ogg'
 
 /datum/antagonist/godcultist/add_antagonist_mind(datum/mind/player, ignore_role, nonstandard_role_type, nonstandard_role_msg, mob/living/deity/specific_god)
 	if(!..())

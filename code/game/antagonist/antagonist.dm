@@ -43,6 +43,8 @@
 	var/spawn_announcement_delay            // Time between initial spawn and round announcement.
 
 	// Misc.
+	var/antag_intro // Antag sfx
+	var/ai_antag_intro
 	var/landmark_id                         // Spawn point identifier.
 	var/mob_path = /mob/living/carbon/human // Mobtype this antag will use if none is provided.
 	var/feedback_tag = "traitor_objective"  // End of round

@@ -18,6 +18,7 @@ GLOBAL_DATUM_INIT(wizards, /datum/antagonist/wizard, new)
 	faction = "wizard"
 
 	station_crew_involved = FALSE
+	antag_intro = 'sound/antag/ragesmages.ogg'
 
 /datum/antagonist/wizard/create_objectives(datum/mind/wizard)
 

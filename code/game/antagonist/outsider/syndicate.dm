@@ -20,6 +20,7 @@ GLOBAL_DATUM_INIT(syndies, /datum/antagonist/syndicate, new)
 	faction = "syndicate"
 
 	station_crew_involved = FALSE
+	antag_intro = 'sound/antag/ops.ogg'
 
 /datum/antagonist/syndicate/create_global_objectives()
 	if(!..())

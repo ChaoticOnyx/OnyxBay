@@ -15,6 +15,7 @@ GLOBAL_DATUM_INIT(changelings, /datum/antagonist/changeling, new)
 	antaghud_indicator = "hudchangeling"
 
 	faction = "changeling"
+	antag_intro = 'sound/antag/ling_aler.ogg'
 
 /datum/antagonist/changeling/get_special_objective_text(datum/mind/player)
 	return "<br><b>Changeling ID:</b> [player.changeling.changelingID].<br><b>Genomes Absorbed:</b> [player.changeling.absorbedcount]"

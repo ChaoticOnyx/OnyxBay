@@ -56,6 +56,7 @@ GLOBAL_DATUM_INIT(cult, /datum/antagonist/cultist, new)
 	var/narsie_summoned = FALSE
 
 	faction = "cult"
+	antag_intro = 'sound/antag/ecult_op.ogg'
 
 /datum/antagonist/cultist/create_global_objectives()
 
