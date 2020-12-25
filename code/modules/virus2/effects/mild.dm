@@ -1,5 +1,14 @@
 ////////////////////////STAGE 1/////////////////////////////////
 
+/datum/disease2/effect/honk
+	name = "Honking Syndrome"
+	stage = 1
+
+/datum/disease2/effect/honk/activate(mob/living/carbon/human/mob)
+	playsound(mob.loc, 'sound/items/bikehorn.ogg', 50, 1)
+	to_chat(mob, SPAN_WARNING("You suddenly honk."))
+
+
 /datum/disease2/effect/invisible
 	name = "Waiting Syndrome"
 	stage = 1
@@ -93,6 +102,29 @@
 	badness = VIRUS_MILD
 	chance_max = 0
 
+
+
+/datum/disease2/effect/voice_change
+	name = "Voice Changer Syndrome"
+	stage = 1
+	badness = VIRUS_MILD
+	oneshot = 1
+	var/special_voice_old
+
+/datum/disease2/effect/voice_change/generate(c_data)
+	if(c_data)
+		data = c_data
+
+/datum/disease2/effect/voice_change/activate(mob/living/carbon/human/mob)
+	if(!data)
+		data = mob.real_name
+	to_chat(mob, (SPAN_WARNING("Your throat hurts.")))
+	special_voice_old = mob.GetSpecialVoice()
+	mob.SetSpecialVoice(data)
+	
+/datum/disease2/effect/voice_change/deactivate(mob/living/carbon/human/mob)
+	mob.SetSpecialVoice(special_voice_old)
+
 ////////////////////////STAGE 2/////////////////////////////////
 
 /datum/disease2/effect/disorientation
@@ -154,12 +186,24 @@
 
 
 
+/datum/disease2/effect/aids
+	name = "Space AIDS"
+	stage = 2
+	delay = 10 SECONDS
+
+/datum/disease2/effect/aids/activate(mob/living/carbon/human/mob)
+	mob.immunity -= 2*multiplier
+
+/datum/disease2/effect/aids/change_parent()
+	parent_disease.spreadtype = "Contact"
+	parent.infectionchance = 110
+
 /datum/disease2/effect/drowsness
 	name = "Automated Sleeping Syndrome"
 	stage = 2
-	delay = 15 SECONDS
+
 /datum/disease2/effect/drowsness/activate(var/mob/living/carbon/human/mob)
-	mob.drowsyness += 10
+	mob.drowsyness = max(mob.drowsyness + 10, 40)
 
 
 
@@ -183,7 +227,8 @@
 	name = "Uncontrolable Agression"
 	stage = 2
 	chance_max = 20
-	possible_mutations = list(/datum/disease2/effect/pacifism)
+	possible_mutations = list(/datum/disease2/effect/pacifism,
+							  /datum/disease2/effect/click)
 
 /datum/disease2/effect/aggressive/activate(var/mob/living/carbon/human/mob)
 	mob.a_intent = I_HURT
@@ -249,4 +294,5 @@ datum/disease2/effect/pacifism/activate(var/mob/living/carbon/human/mob)
 
 /datum/disease2/effect/hallucinations/activate(mob/living/carbon/human/mob)
 	mob.adjust_hallucination(multiplier, 4*multiplier)
+
 	

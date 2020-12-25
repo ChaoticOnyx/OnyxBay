@@ -1,7 +1,5 @@
 ////////////////////////STAGE 1/////////////////////////////////
 
-////////////////////////STAGE 2/////////////////////////////////
-
 /datum/disease2/effect/beesease
 	name = "Bee Infestation"
 	stage = 2
@@ -20,6 +18,25 @@
 	var/datum/gender/G = gender_datums[mob.get_visible_gender()]
 	mob.visible_message(SPAN_WARNING("Bees fly out of [mob]'s throat when [G.he] coughs!"),
 						SPAN_DANGER("Bees fly out of your throat when you cough!"))
+
+
+////////////////////////STAGE 2/////////////////////////////////
+
+/datum/disease2/effect/click
+	name = "Uncontrollable Actions"
+	stage = 2
+	badness = VIRUS_ENGINEERED
+	possible_mutations = list()
+
+/datum/disease2/effect/click/activate(mob/living/carbon/human/mob)
+	var/list/target_list = istype(mob.get_active_hand(), /obj/item/weapon/gun) ? view(mob) : view(1, mob) //Dont put far objects in list unless we can shoot it
+	target_list -= (mob.organs + mob.internal_organs) //exclude organs from target list
+	var/list/target_list_clear = list(/datum/disease2/effect/aggressive)
+	for(var/T in target_list)
+		if(istype(T, /obj) || istype(T, /turf) || istype(T, /mob)) //exclude lighting overlays and other service atoms and areas
+			target_list_clear += T
+	var/target = pick(target_list_clear)
+	mob.ClickOn(target)
 
 ////////////////////////STAGE 3/////////////////////////////////
 
@@ -69,6 +86,44 @@
 /datum/disease2/effect/spread_radiation/activate(mob/living/carbon/human/mob)
 	SSradiation.radiate(mob, 5*multiplier)
 	
+
+
+/datum/disease2/effect/loyalty
+	name = "Loyalty Syndrome"
+	stage = 3
+	badness = VIRUS_ENGINEERED
+	delay = 20 SECONDS
+	multiplier_max = 10
+	var/isking = null
+
+/datum/disease2/effect/loyalty/generate(c_data)
+	if(c_data)
+		data = c_data
+
+/datum/disease2/effect/loyalty/activate(mob/living/carbon/human/mob)
+	if(!istype(data, /mob/living/carbon/human))
+		data = mob
+		isking = 1
+		return
+	if(!isking)
+		for(var/mob/living/carbon/human/dead in GLOB.dead_mob_list_)
+			if(dead == data)
+				to_chat(mob, SPAN_DANGER("You didn't protect your master! Now all you deserve is to die in disgrace."))
+				var/obj/item/organ/internal/brain/B = mob.internal_organs_by_name[BP_BRAIN]
+				if(B && B.damage < B.min_broken_damage)
+					B.take_internal_damage(100)
+				return
+
+		for(var/mob/living/carbon/human/king in view(mob))
+			if(king == data)
+				mob.poise += round(multiplier/2)
+				return
+
+		var/mob/living/carbon/human/king = data
+		var/message = pick("[king.real_name] is your Master. Come to [king.gender == MALE ? "him" : king.gender == FEMALE ? "her" : "them"] and protect [king.gender == MALE ? "him" : king.gender == FEMALE ? "her" : "them"] by your own life!",
+						   "You have to find [king.real_name], your Master, immediately.",
+						   "You have to protect your Master, [king.real_name], so find [king.gender == MALE ? "him" : king.gender == FEMALE ? "her" : "them"] faster!")
+		mob.custom_pain(message, 10)
 
 ////////////////////////STAGE 4/////////////////////////////////
 
@@ -166,6 +221,27 @@
 
 
 
+/datum/disease2/effect/gas_danger
+	name = "Gas Synthesis"
+	stage = 4
+	badness = VIRUS_ENGINEERED
+	possible_mutations = list(/datum/disease2/effect/gas,
+							  /datum/disease2/effect/gas_danger)
+
+/datum/disease2/effect/gas_danger/generate(c_data)
+	if(c_data)
+		data = c_data
+	else
+		data = pick("sleeping_agent", "phoron")
+	var/gas_name = gas_data.name[data]
+	name = "[initial(name)]([gas_name])"
+
+/datum/disease2/effect/gas_danger/activate(mob/living/carbon/human/mob)
+	var/datum/gas_mixture/env = mob.loc.return_air()
+	env.adjust_gas(data, multiplier)
+
+
+
 /datum/disease2/effect/limbreject
 	name = "Limb Rejection"
 	stage = 4
@@ -217,3 +293,16 @@
 		for(var/datum/disease2/disease/D in diseases_list)
 			infect_virus2(target_mob, D)
 	..()
+
+
+
+/datum/disease2/effect/virus_changer
+	name = "Unstable Nucleotide"
+	stage = 4
+	badness = VIRUS_ENGINEERED
+	oneshot = 1
+
+/datum/disease2/effect/virus_changer/activate(mob/living/carbon/human/mob)
+	var/datum/disease2/disease/D = new /datum/disease2/disease
+	D.makerandom(VIRUS_ENGINEERED)
+	infect_virus2(mob, D, 1)

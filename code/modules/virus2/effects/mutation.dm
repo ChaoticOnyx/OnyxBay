@@ -12,11 +12,15 @@
 		data = c_data
 		return
 	data["facial"] = pick(GLOB.facial_hair_styles_list)
+	data["color_facial"] = hex2rgb(rand_hex_color())
 	data["head"] = pick(GLOB.hair_styles_list)
+	data["color_head"] = hex2rgb(rand_hex_color())
 
 /datum/disease2/effect/unified_appearance/activate(var/mob/living/carbon/human/mob)
 	mob.change_facial_hair(data["facial"])
+	mob.change_facial_hair_color(data["color_facial"][1], data["color_facial"][2], data["color_facial"][3])
 	mob.change_hair(data["head"])
+	mob.change_hair_color(data["color_head"][1], data["color_head"][2], data["color_head"][3])
 	to_chat(mob, SPAN_WARNING("You feel like you look different."))
 
 

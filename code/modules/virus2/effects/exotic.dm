@@ -149,7 +149,7 @@
 
 /datum/disease2/effect/hisstarvation/activate(var/mob/living/carbon/human/mob)
 	mob.nutrition = max(0, mob.nutrition - 1000)
-	mob.custom_emote("hisses")
+	mob.custom_emote(message = "hisses")
 	if(prob(25))
 		to_chat(mob, "<span class='danger'>[pick("You want to eat more than anything in this life!", "You feel your stomach begin to devour itself!", "You are ready to kill for food!", "You urgently need to find food!")]</span>")
 

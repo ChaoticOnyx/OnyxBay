@@ -156,6 +156,23 @@
 /datum/disease2/effect/toxins/activate(var/mob/living/carbon/human/mob)
 	mob.adjustToxLoss((2*multiplier))
 
+
+
+/datum/disease2/effect/escaping
+	name = "Forced Freedom Syndrome"
+	stage = 3
+	badness = VIRUS_COMMON
+
+/datum/disease2/effect/escaping/activate(mob/living/carbon/human/mob)
+	if(!mob.handcuffed)
+		return
+	mob.visible_message(
+		SPAN_DANGER("\The [mob] manages to remove \the [mob.handcuffed]!"),
+		SPAN_WARNING("[mob.handcuffed] suddenly fall off you.")
+		)
+	mob.drop_from_inventory(mob.handcuffed)
+
+
 ////////////////////////STAGE 4/////////////////////////////////
 
 /datum/disease2/effect/killertoxins
@@ -189,3 +206,24 @@
 
 /datum/disease2/effect/radian/activate(var/mob/living/carbon/human/mob)
 	mob.apply_effect(2*multiplier, IRRADIATE, blocked = 0)
+
+
+
+/datum/disease2/effect/gas
+	name = "Gas Synthesis"
+	stage = 4
+	badness = VIRUS_COMMON
+	possible_mutations = list(/datum/disease2/effect/gas,
+							  /datum/disease2/effect/gas_danger)
+
+/datum/disease2/effect/gas/generate(c_data)
+	if(c_data)
+		data = c_data
+	else
+		data = pick("oxygen", "nitrogen", "carbon_dioxide", "hydrogen")
+	var/gas_name = gas_data.name[data]
+	name = "[initial(name)]([gas_name])"
+
+/datum/disease2/effect/gas/activate(mob/living/carbon/human/mob)
+	var/datum/gas_mixture/env = mob.loc.return_air()
+	env.adjust_gas(data, multiplier)
