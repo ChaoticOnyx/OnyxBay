@@ -27,15 +27,12 @@
 	for(var/obj/structure/railing/R in orange(location, 1))
 		R.update_icon()
 
-/obj/structure/railing/CanPass(atom/movable/mover, turf/target, height=0, air_group=0)
-	if(!mover)
-		return 1
+/obj/structure/railing/CanPass(atom/movable/mover, turf/target)
 	if(istype(mover) && mover.pass_flags & PASS_FLAG_TABLE)
-		return 1
+		return TRUE
 	if(get_dir(loc, target) == dir)
 		return !density
-	else
-		return 1
+	return TRUE
 
 /obj/structure/railing/examine(mob/user)
 	. = ..()

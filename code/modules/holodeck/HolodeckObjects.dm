@@ -270,19 +270,18 @@
 	density = 1
 	throwpass = 1
 
-/obj/structure/holohoop/CanPass(atom/movable/mover, turf/target, height=0, air_group=0)
-	if (istype(mover,/obj/item) && mover.throwing)
+/obj/structure/holohoop/CanPass(atom/movable/mover, turf/target)
+	if(istype(mover,/obj/item) && mover.throwing)
 		var/obj/item/I = mover
 		if(istype(I, /obj/item/projectile))
-			return
+			return TRUE
 		if(prob(50))
-			I.loc = src.loc
+			I.forceMove(loc)
 			visible_message("<span class='notice'>Swish! \the [I] lands in \the [src].</span>", 3)
 		else
 			visible_message("<span class='warning'>\The [I] bounces off of \the [src]'s rim!</span>", 3)
-		return 0
-	else
-		return ..(mover, target, height, air_group)
+		return FALSE
+	return ..()
 
 
 /obj/machinery/readybutton
