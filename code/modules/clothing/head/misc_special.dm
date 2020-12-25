@@ -236,19 +236,20 @@
 	name = "kitty ears"
 	desc = "A pair of kitty ears. Meow!"
 	icon_state = "kitty"
+	slot_flags = SLOT_HEAD | SLOT_EARS
 	body_parts_covered = 0
 	siemens_coefficient = 1.5
 	item_icons = list()
 
 /obj/item/clothing/head/kitty/equipped(mob/living/carbon/human/user, slot)
 	. = ..()
-	if (slot == slot_head && istype(user))
+	if((slot == slot_head || slot == slot_l_ear || slot == slot_r_ear) && istype(user))
 		var/hairgb = rgb(user.r_hair, user.g_hair, user.b_hair)
 		var/icon/ears = icon('icons/mob/onmob/head.dmi', "kitty")
 		ears.Blend(hairgb, ICON_ADD)
 		ears.Blend(icon('icons/mob/onmob/head.dmi', "kittyinner"), ICON_OVERLAY)
 		icon_override = ears
-	else if (icon_override)
+	else if(icon_override)
 		icon_override = null
 
 /obj/item/clothing/head/kitty/verb/nekomagic()
