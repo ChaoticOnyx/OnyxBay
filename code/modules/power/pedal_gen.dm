@@ -26,6 +26,7 @@
 	var/obj/machinery/power/dynamo/generator = null
 	var/pedaled = 0
 	buckle_relaymove = TRUE
+	foldable = FALSE
 
 /obj/structure/bed/chair/pedalgen/Initialize()
 	. = ..()
