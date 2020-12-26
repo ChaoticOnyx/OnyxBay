@@ -370,6 +370,9 @@ var/const/NO_EMAG_ACT = -50
 /obj/item/weapon/card/id/security/detective
 	job_access_type = /datum/job/detective
 
+/obj/item/weapon/card/id/security/forensic
+	job_access_type = /datum/job/forensic
+
 /obj/item/weapon/card/id/security/head
 	name = "identification card"
 	desc = "A card which represents honor and protection."

@@ -31,7 +31,7 @@
 /var/const/access_forensics_lockers = 4
 /datum/access/forensics_lockers
 	id = access_forensics_lockers
-	desc = "Forensics"
+	desc = "Detective Locker"
 	region = ACCESS_REGION_SECURITY
 
 /var/const/access_medical = 5
@@ -274,7 +274,11 @@
 	desc = "Surgery"
 	region = ACCESS_REGION_MEDBAY
 
-// /var/const/free_access_id = 46
+/var/const/access_detective = 46
+/datum/access/detective
+	id = access_detective
+	desc = "Detective"
+	region = ACCESS_REGION_SECURITY
 
 /var/const/access_research = 47
 /datum/access/research
