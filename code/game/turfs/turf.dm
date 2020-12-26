@@ -158,6 +158,10 @@ var/const/enterloopsanity = 100
 			M.inertia_dir = 0
 			M.make_floating(0) //we know we're not on solid ground so skip the checks to save a bit of processing
 
+	if (isobj(A))
+		var/obj/O = A
+		O.hide(O.hides_under_flooring() && !is_plating())
+
 /turf/proc/adjacent_fire_act(turf/simulated/floor/source, temperature, volume)
 	return
 
