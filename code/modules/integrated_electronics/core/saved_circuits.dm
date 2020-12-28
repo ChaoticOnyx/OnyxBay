@@ -23,6 +23,8 @@
 			var/datum/integrated_io/input = inputs[index]
 
 			// Don't waste space saving the default values
+			if(input.data == inputs_default["[index]"])
+				continue
 			if(input.data == initial(input.data))
 				continue
 
@@ -31,7 +33,7 @@
 			// FALSE is default type used for num/text/list/null
 			// TODO: support for special input types, such as internal refs and maybe typepaths
 
-			if(islist(input.data) || isnum(input.data) || istext(input.data) || isnull(input.data))
+			if(islist(input.data) || isnum_safe(input.data) || istext(input.data) || isnull(input.data))
 				saved_inputs.Add(list(input_value))
 
 		if(saved_inputs.len)
@@ -79,7 +81,7 @@
 			// TODO: support for special input types, such as typepaths and internal refs
 
 			// Input ID is a list index, make sure it's sane.
-			if(!isnum(input_id) || input_id % 1 || input_id > inputs_amt || input_id < 1)
+			if(!isnum_safe(input_id) || input_id % 1 || input_id > inputs_amt || input_id < 1)
 				return "Invalid input index at [init_name]."
 
 
@@ -125,26 +127,19 @@
 	// Save modified description
 	if(initial(desc) != desc)
 		assembly_params["desc"] = desc
-
-	// Save modified color
-	if(initial(detail_color) != detail_color)
-		assembly_params["detail_color"] = detail_color
-
 	return assembly_params
 
 
 // Verifies a list of assembly parameters
 // Returns null on success, error name on failure
 /obj/item/device/electronic_assembly/proc/verify_save(list/assembly_params)
-	// Validate name and color
+	// Validate name, desc and color
 	if(assembly_params["name"])
 		if(sanitizeName(assembly_params["name"], allow_numbers = TRUE) != assembly_params["name"])
 			return "Bad assembly name."
 	if(assembly_params["desc"])
 		if(sanitize(assembly_params["desc"]) != assembly_params["desc"])
 			return "Bad assembly description."
-	if(assembly_params["detail_color"] && !(assembly_params["detail_color"] in color_whitelist))
-		return "Bad assembly color."
 
 // Loads assembly parameters from a list
 // Doesn't verify any of the parameters it loads, this is the job of verify_save()
@@ -156,9 +151,6 @@
 	// Load modified description, if any.
 	if(assembly_params["desc"])
 		desc = assembly_params["desc"]
-
-	if(assembly_params["detail_color"])
-		detail_color = assembly_params["detail_color"]
 
 	update_icon()
 
@@ -193,10 +185,7 @@
 
 	for(var/c in assembly.assembly_components)
 		var/obj/item/integrated_circuit/component = c
-		var/list/all_pins = list()
-		for(var/l in list(component.inputs, component.outputs, component.activators))
-			if(l) //If it isn't null
-				all_pins += l
+		var/list/all_pins = component.inputs + component.outputs + component.activators
 
 		for(var/p in all_pins)
 			var/datum/integrated_io/pin = p
@@ -220,7 +209,7 @@
 	if(wires.len)
 		blocks["wires"] = wires
 
-	return json_encode(blocks)
+	return url_decode(url_encode(json_encode(blocks)))
 
 
 
@@ -230,7 +219,8 @@
 // The following parameters area calculated during validation and added to the returned save list:
 // "requires_upgrades", "unsupported_circuit", "cost", "complexity", "max_complexity", "used_space", "max_space"
 /datum/controller/subsystem/processing/circuit/proc/validate_electronic_assembly(program)
-	var/list/blocks = json_decode(program)
+	// url_encode/decode magik, else this fucking shit won't work
+	var/list/blocks = json_decode(url_decode(url_encode(program)))
 	if(!blocks)
 		return
 
@@ -363,6 +353,4 @@
 			IO.connect_pin(IO2)
 
 	assembly.forceMove(loc)
-	assembly.post_load()
 	return assembly
-
