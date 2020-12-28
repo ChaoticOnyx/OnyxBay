@@ -534,7 +534,8 @@ var/global/list/damage_icon_parts = list()
 		else
 			overlays_standing[HO_GLOVES_LAYER] = null
 
-	if(update_icons) queue_icon_update()
+	if(update_icons)
+		queue_icon_update()
 
 // Glasses
 /mob/living/carbon/human/update_inv_glasses(update_icons=1)
@@ -545,7 +546,8 @@ var/global/list/damage_icon_parts = list()
 		overlays_standing[HO_GLASSES_LAYER]	= null
 		overlays_standing[HO_GOGGLES_LAYER]	= null
 
-	if(update_icons) queue_icon_update()
+	if(update_icons)
+		queue_icon_update()
 
 // Ears
 /mob/living/carbon/human/update_inv_ears(update_icons=1)

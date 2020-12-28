@@ -2,7 +2,7 @@
 	name = "HUD health scanner"
 	id = "health_hud"
 	req_tech = list(TECH_BIO = 2, TECH_MAGNET = 3)
-	build_path = /obj/item/clothing/glasses/hud/health
+	build_path = /obj/item/clothing/glasses/hud/standard/medical
 	sort_string = "GAAAA"
 	category_items = "Medical"
 

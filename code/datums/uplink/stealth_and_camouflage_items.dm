@@ -51,10 +51,17 @@
 	path = /obj/item/device/chameleon
 	desc = "Embedded with a hidden holographic cloaker, allowing it to change it's appearance."
 
+/*  Disabled until fixed
 /datum/uplink_item/item/stealth_items/thermal
 	name = "Chameleon Thermal Imaging Glasses"
 	item_cost = 31
 	path = /obj/item/clothing/glasses/thermal/syndi/chameleon
+*/
+
+/datum/uplink_item/item/stealth_items/thermal
+	name = "Thermal Imaging Goggles"
+	item_cost = 31
+	path = /obj/item/clothing/glasses/hud/standard/thermal/syndie
 
 /datum/uplink_item/item/stealth_items/contortionist
 	name = "Contortionist's Jumpsuit"
