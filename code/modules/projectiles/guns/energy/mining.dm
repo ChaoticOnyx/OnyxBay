@@ -85,7 +85,7 @@
 	var/list/hit_overlays = list()
 
 /obj/item/projectile/kinetic/launch_from_gun(atom/target, mob/user, obj/item/weapon/gun/launcher, target_zone, x_offset=0, y_offset=0)
-	if (istype(launcher, /obj/item/weapon/gun/energy/kinetic_accelerator))
+	if(istype(launcher, /obj/item/weapon/gun/energy/kinetic_accelerator))
 		var/obj/item/weapon/gun/energy/kinetic_accelerator/KA = launcher
 		for(var/obj/item/borg/upgrade/modkit/M in KA.get_modkits())
 			M.modify_projectile(src)
