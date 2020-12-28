@@ -481,6 +481,11 @@
 	matrix_removable = FALSE
 	action_button_name = null
 
+/obj/item/clothing/glasses/hud/plain/Initialize()
+	. = ..()
+	icon_state = initial(icon_state)
+	item_state = initial(item_state)
+
 /obj/item/clothing/glasses/hud/plain/attack_self(mob/user)
 	return
 

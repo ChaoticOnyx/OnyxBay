@@ -69,6 +69,7 @@
 	name = "thermoncle"
 	desc = "A monocle thermal."
 	icon_state = "thermoncle"
+	item_state = "thermoncle"
 	matrix = /obj/item/device/hudmatrix/thermal
 	body_parts_covered = 0 //doesn't protect eyes because it's a monocle, duh
 
@@ -77,7 +78,10 @@
 	gender = PLURAL
 	desc = "A set of implantable lenses designed to augment your vision."
 	icon_state = "thermalimplants"
-	item_state = "syringe_kit"
+	item_state = "thermalimplants"
+	item_state_slots = list(
+		slot_l_hand_str = "syringe_kit",
+		slot_r_hand_str = "syringe_kit"
+		)
 	matrix = /obj/item/device/hudmatrix/thermal
-	body_parts_covered = 0 //doesn't protect eyes because, well, contacts
-
+	body_parts_covered = 0 //don't protect eyes because, well, contacts
