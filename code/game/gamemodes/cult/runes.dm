@@ -120,8 +120,8 @@
 			animate(src)
 
 /obj/effect/rune/examine(mob/user)
-	. = ..()
-	if(iscultist(user))
+	..()
+	if(iscultist(user) || isghost(user))
 		to_chat(user, "This is \a [cultname] rune.")
 
 /obj/effect/rune/attackby(obj/item/I, mob/living/user)
