@@ -1218,6 +1218,7 @@
 					/obj/item/weapon/reagent_containers/glass/bottle/stoxin = 4,
 					/obj/item/weapon/reagent_containers/glass/bottle/toxin = 4,
 					/obj/item/weapon/reagent_containers/glass/bottle/spaceacillin = 2,
+					/obj/item/weapon/reagent_containers/glass/bottle/adrenaline = 2,
 					/obj/item/weapon/reagent_containers/syringe = 12,
 					/obj/item/device/healthanalyzer = 5,
 					/obj/item/weapon/reagent_containers/glass/beaker = 4,

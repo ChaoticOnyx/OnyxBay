@@ -374,7 +374,7 @@
 	//set oxyloss so that the patient is just barely in crit, if possible
 	make_announcement("pings, \"Resuscitation successful.\"", "notice")
 	playsound(get_turf(src), 'sound/machines/defib_success.ogg', 50, 0)
-	H.resuscitate()
+	H.resuscitate(2)
 	var/obj/item/organ/internal/cell/potato = H.internal_organs_by_name[BP_CELL]
 	if(istype(potato) && potato.cell)
 		var/obj/item/weapon/cell/C = potato.cell

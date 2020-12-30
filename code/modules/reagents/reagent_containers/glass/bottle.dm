@@ -333,3 +333,14 @@
 	. = ..()
 	reagents.add_reagent(/datum/reagent/tramadol/opium/tarine, 60)
 	update_icon()
+
+/obj/item/weapon/reagent_containers/glass/bottle/adrenaline
+	name = "adrenaline bottle"
+	desc = "A small bottle. Contains adrenaline - hormone used as a drug to treat cardiac arrest and other cardiac dysrhythmias resulting in diminished or absent cardiac output."
+	icon = 'icons/obj/chemical.dmi'
+	icon_state = "bottle-4"
+
+/obj/item/weapon/reagent_containers/glass/bottle/adrenaline/Initialize()
+	. = ..()
+	reagents.add_reagent(/datum/reagent/adrenaline, 60)
+	update_icon()

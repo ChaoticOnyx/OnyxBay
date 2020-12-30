@@ -16,7 +16,7 @@
 
 /datum/reagent/inaprovaline/affect_blood(mob/living/carbon/M, alien, removed)
 	if(alien != IS_DIONA)
-		M.add_chemical_effect(CE_STABLE)
+		M.add_chemical_effect(CE_STABLE, 2)
 		M.add_chemical_effect(CE_PAINKILLER, 10)
 
 /datum/reagent/inaprovaline/overdose(mob/living/carbon/M, alien)
@@ -876,26 +876,39 @@
 	description = "Adrenaline is a hormone used as a drug to treat cardiac arrest and other cardiac dysrhythmias resulting in diminished or absent cardiac output."
 	taste_description = "rush"
 	reagent_state = LIQUID
-	color = "#c8a5dc"
+	color = "#a8a5dc"
 	scannable = 1
-	overdose = 20
-	metabolism = 0.1
+	metabolism = REM * 0.5
 
 /datum/reagent/adrenaline/affect_blood(mob/living/carbon/human/M, alien, removed)
 	if(alien == IS_DIONA)
 		return
 
-	if(M.chem_doses[type] < 0.2)	//not that effective after initial rush
-		M.add_chemical_effect(CE_PAINKILLER, min(30*volume, 80))
-		M.add_chemical_effect(CE_PULSE, 1)
-	else if(M.chem_doses[type] < 1)
-		M.add_chemical_effect(CE_PAINKILLER, min(10*volume, 20))
+	M.add_chemical_effect(CE_PAINKILLER, 5 * volume)
 	M.add_chemical_effect(CE_PULSE, 2)
-	if(M.chem_doses[type] > 10)
+
+	if(M.chem_doses[type] >= 2.5)
 		M.make_jittery(5)
-	if(volume >= 5 && M.is_asystole())
-		remove_self(5)
-		M.resuscitate()
+		M.add_chemical_effect(CE_PULSE)
+		M.add_chemical_effect(CE_STABLE)
+
+/datum/reagent/adrenaline/overdose(mob/living/carbon/human/M, alien)
+	var/obj/item/organ/internal/heart/H = M.internal_organs_by_name[BP_HEART]
+	M.add_chemical_effect(CE_PULSE, 6)
+	M.make_jittery(20)
+
+	if(volume > 10)
+		M.add_chemical_effect(CE_PULSE, 2)
+		M.make_jittery(20)
+
+		if(volume >= 10 && (M.is_asystole() || H.pulse_modificator == PULSE_FIBRILLATION) && H.last_fibrillation > 10 * TICKS_IN_SECOND)
+			remove_self(10)
+			M.resuscitate(3)
+
+	if(volume > 15 && prob(2))
+		M.shock_stage = 120
+
+
 
 /datum/reagent/nanoblood
 	name = "Nanoblood"

@@ -46,7 +46,7 @@
 	M.setBrainLoss(M.maxHealth)
 	var/obj/item/organ/internal/heart/corpse_heart = M.internal_organs_by_name[BP_HEART]
 	if (corpse_heart)
-		corpse_heart.pulse = PULSE_NONE//actually stops heart to make worried explorers not care too much
+		corpse_heart.pulse_modificator = PULSE_NONE//actually stops heart to make worried explorers not care too much
 	M.update_dna()
 	M.update_icon()
 

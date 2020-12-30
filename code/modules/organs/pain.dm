@@ -66,7 +66,7 @@ mob/living/carbon/human/proc/handle_pain()
 				msg =  "Your [damaged_organ.name] [burning ? "burns" : "hurts"]."
 			if(11 to 90)
 				msg = "Your [damaged_organ.name] [burning ? "burns" : "hurts"] badly!"
-			if(91 to 10000)
+			if(91 to INFINITY)
 				msg = "OH GOD! Your [damaged_organ.name] is [burning ? "on fire" : "hurting terribly"]!"
 		custom_pain(msg, maxdam, prob(10), damaged_organ, TRUE)
 	// Damage to internal organs hurts a lot.

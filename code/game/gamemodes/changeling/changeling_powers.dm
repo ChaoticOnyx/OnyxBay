@@ -1835,7 +1835,7 @@ var/list/datum/absorbed_dna/hivemind_bank = list()
 			H.timeofdeath = 0
 			H.switch_from_dead_to_living_mob_list()
 			var/obj/item/organ/internal/heart/heart = H.internal_organs_by_name[BP_HEART]
-			heart.pulse = 1
+			heart.pulse_modificator = 1
 			H.set_stat(CONSCIOUS)
 			H.failed_last_breath = 0 //So mobs that died of oxyloss don't revive and have perpetual out of breath.
 			H.reload_fullscreen()

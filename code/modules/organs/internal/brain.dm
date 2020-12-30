@@ -156,11 +156,8 @@
 		// Brain damage from low oxygenation or lack of blood.
 		if(owner.should_have_organ(BP_HEART))
 
-			// No heart? You are going to have a very bad time. Not 100% lethal because heart transplants should be a thing.
 			var/blood_volume = owner.get_blood_oxygenation()
 
-			if(owner.is_asystole()) // Heart is missing or isn't beating and we're not breathing (hardcrit)
-				owner.Paralyse(3)
 			var/can_heal = damage && damage < max_damage && (damage % damage_threshold_value || owner.chem_effects[CE_BRAIN_REGEN] || (!past_damage_threshold(3) && owner.chem_effects[CE_STABLE]))
 			var/damprob
 			//Effects of bloodloss
@@ -192,9 +189,10 @@
 						owner.visible_message("<B>[owner]</B> faints!", \
 											  SPAN("warning", "You feel extremely [pick("dizzy","woozy","faint")]..."))
 						owner.Paralyse(3,5)
-				if(-(INFINITY) to BLOOD_VOLUME_SURVIVE) // Also see heart.dm, being below this point puts you into cardiac arrest.
+				if(-(INFINITY) to BLOOD_VOLUME_SURVIVE)
 					owner.eye_blurry = max(owner.eye_blurry, 6)
 					damprob = owner.chem_effects[CE_STABLE] ? 70 : 100
+					owner.Paralyse(3,5)
 					if(prob(damprob))
 						take_internal_damage(1.0)
 	..()

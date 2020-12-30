@@ -90,12 +90,18 @@
 	return null
 
 /* Common reactions */
-
 /datum/chemical_reaction/inaprovaline
 	name = "Inaprovaline"
 	result = /datum/reagent/inaprovaline
 	required_reagents = list(/datum/reagent/acetone = 1, /datum/reagent/carbon = 1, /datum/reagent/sugar = 1)
 	result_amount = 3
+
+/datum/chemical_reaction/adrenaline
+	name = "Adrenaline"
+	result = /datum/reagent/adrenaline
+	required_reagents = list(/datum/reagent/inaprovaline = 1, /datum/reagent/hyperzine = 1, /datum/reagent/copper = 1)
+	catalysts = list(/datum/reagent/toxin/phoron = 5)
+	result_amount = 2
 
 /datum/chemical_reaction/dylovene
 	name = "Dylovene"

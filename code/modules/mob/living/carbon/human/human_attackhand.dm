@@ -64,7 +64,7 @@
 
 	switch(M.a_intent)
 		if(I_HELP)
-			if(istype(H) && (is_asystole() || (status_flags & FAKEDEATH)))
+			if(M != src && istype(H) && (is_asystole() || (status_flags & FAKEDEATH) || internal_organs_by_name[BP_HEART].pulse_modificator == PULSE_FIBRILLATION))
 				if (!cpr_time)
 					return 0
 
@@ -83,8 +83,7 @@
 					if(chest)
 						chest.fracture()
 				if(stat != DEAD)
-					if(prob(15))
-						resuscitate()
+					resuscitate(1)
 
 					if(!H.check_has_mouth())
 						to_chat(H, "<span class='warning'>You don't have a mouth, you cannot do mouth-to-mouth resustication!</span>")

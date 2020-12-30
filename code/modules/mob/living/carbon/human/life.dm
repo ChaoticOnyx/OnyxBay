@@ -1017,7 +1017,7 @@
 			holder.icon_state = "hudhealthy"
 		hud_list[LIFE_HUD] = holder
 
-	if(BITTEST(hud_updateflag, STATUS_HUD) && hud_list[STATUS_HUD] && hud_list[STATUS_HUD_OOC])
+	if(hud_list[STATUS_HUD] && hud_list[STATUS_HUD_OOC])
 		var/foundVirus = 0
 		for(var/ID in virus2)
 			if(ID in virusDB)
@@ -1037,6 +1037,8 @@
 				holder.icon_state = "hudbrainworm"
 			else
 				holder.icon_state = "hudhealthy"
+		else if(is_asystole() || internal_organs_by_name[BP_HEART].pulse_modificator == PULSE_FIBRILLATION)
+			holder.icon_state = "hudcritical"
 		else
 			holder.icon_state = "hudhealthy"
 
@@ -1049,6 +1051,8 @@
 			holder2.icon_state = "hudbrainworm"
 		else if(virus2.len)
 			holder2.icon_state = "hudill"
+		else if(is_asystole() || internal_organs_by_name[BP_HEART].pulse_modificator == PULSE_FIBRILLATION)
+			holder2.icon_state = "hudcritical"
 		else
 			holder2.icon_state = "hudhealthy"
 

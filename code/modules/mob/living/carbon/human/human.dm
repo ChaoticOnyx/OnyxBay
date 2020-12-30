@@ -1450,21 +1450,16 @@
 	if(H.open && !method)
 		return "muddled and unclear; you can't seem to find a vein"
 
-	var/temp = 0
+	var/temp = H.heartbeat
+
 	switch(pulse())
 		if(PULSE_NONE)
 			return "0"
-		if(PULSE_SLOW)
-			temp = rand(40, 60)
-		if(PULSE_NORM)
-			temp = rand(60, 90)
-		if(PULSE_FAST)
-			temp = rand(90, 120)
-		if(PULSE_2FAST)
-			temp = rand(120, 160)
-		if(PULSE_THREADY)
-			return method ? ">250" : "extremely weak and fast, patient's artery feels like a thread"
-	return "[method ? temp : temp + rand(-10, 10)]"
+		if(PULSE_FIBRILLATION)
+			if(!method)
+				return "extremely weak and fast"
+
+	return "[method ? temp : temp + rand(-20, 20)]"
 //			output for machines^	^^^^^^^output for people^^^^^^^^^
 
 /mob/living/carbon/human/proc/pulse()
@@ -1472,7 +1467,7 @@
 	if(!H)
 		return PULSE_NONE
 	else
-		return H.pulse
+		return H.pulse_modificator
 
 /mob/living/carbon/human/can_devour(atom/movable/victim)
 	if(!src.species.gluttonous)
@@ -1613,25 +1608,55 @@
 		if((MUTATION_SKELETON in mutations) && (!w_uniform) && (!wear_suit))
 			play_xylophone()
 
-/mob/living/carbon/human/proc/resuscitate()
-	if(!is_asystole() || !should_have_organ(BP_HEART))
-		return
+// 0 = pure resuscitate
+// 1 = CPR
+// 2 = defibrillator
+// 3 = chemistry
+/mob/living/carbon/human/proc/resuscitate(type=0)
 	var/obj/item/organ/internal/heart/heart = internal_organs_by_name[BP_HEART]
+	if(heart.pulse_modificator != PULSE_NONE && heart.pulse_modificator != PULSE_FIBRILLATION)
+		return
+
 	if(istype(heart) && !BP_IS_ROBOTIC(heart) && !(heart.status & ORGAN_DEAD))
+		switch(type)
+			if(0)
+				heart.pulse_modificator = PULSE_NORM
+
+			if(1)
+				if(getOxyLoss() >= 75)
+					setOxyLoss(75)
+				if(heart.pulse_modificator == PULSE_NONE)
+					if(prob(max(85 - chem_effects[CE_PULSE] * 25 - chem_effects[CE_STABLE] * 10, 0)))
+						return
+					heart.pulse_modificator = PULSE_FIBRILLATION
+					heart.last_asystole = world.time
+				else
+					return
+
+			if(2)
+				switch(heart.pulse_modificator)
+					if(PULSE_NONE)
+						heart.take_internal_damage(5)
+					if(PULSE_FIBRILLATION)
+						heart.pulse_modificator = PULSE_THREADY
+						heart.last_asystole = world.time
+			if(3)
+				if(getOxyLoss() >= 90)
+					setOxyLoss(90)
+
+				if(heart.pulse_modificator == PULSE_NONE)
+					heart.pulse_modificator = PULSE_FIBRILLATION
+
 		var/species_organ = species.breathing_organ
 		var/active_breaths = 0
 		if(species_organ)
 			var/obj/item/organ/internal/lungs/L = internal_organs_by_name[species_organ]
 			if(L)
 				active_breaths = L.active_breathing
-		if(!nervous_system_failure() && active_breaths)
+		if(!nervous_system_failure() && active_breaths && (type == 0 || type == 2))
 			visible_message("\The [src] jerks and gasps for breath!")
 		else
 			visible_message("\The [src] twitches a bit as \his heart restarts!")
-		shock_stage = min(shock_stage, 100) // 120 is the point at which the heart stops.
-		if(getOxyLoss() >= 75)
-			setOxyLoss(75)
-		heart.pulse = PULSE_NORM
 		heart.handle_pulse()
 
 /mob/living/carbon/human/proc/make_adrenaline(amount)
