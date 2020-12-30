@@ -115,6 +115,7 @@
 				take_internal_damage(0.5)
 
 		handle_blood()
+		handle_pulse_effects()
 	..()
 
 /obj/item/organ/internal/heart/proc/handle_pulse()
@@ -130,7 +131,6 @@
 
 	var/should_fibrillation = prob(40) && owner.get_blood_circulation() <= BLOOD_VOLUME_SURVIVE
 	should_fibrillation = should_fibrillation || (owner.shock_stage >= 120)
-	should_fibrillation = should_fibrillation || (prob(2) && heartbeat > 0 && heartbeat < 10 && !BP_IS_ROBOTIC(src))
 	should_fibrillation = should_fibrillation || (heartbeat > 300)
 	should_fibrillation = should_fibrillation || owner.nervous_system_failure()
 
@@ -150,7 +150,7 @@
 
 	set_pulse_fine(owner.chem_effects[CE_PULSE] * 25, "chem_effect")
 
-	set_pulse_fine((owner.shock_stage / 30) * 20, "pain")
+	set_pulse_fine((owner.shock_stage / 30.0) * 20.0, "pain")
 
 	switch(owner.get_blood_oxygenation())
 		if(BLOOD_VOLUME_BAD to BLOOD_VOLUME_OKAY)
@@ -212,9 +212,6 @@
 		else
 			++pulse_modificator
 
-	if(owner.nervous_system_failure())
-		pulse_modificator = PULSE_FIBRILLATION
-
 /obj/item/organ/internal/heart/proc/handle_pulse_effects()
 	switch(pulse_modificator)
 		if(PULSE_SLOW)
@@ -225,7 +222,7 @@
 		if(PULSE_FIBRILLATION)
 			owner.drowsyness = max(owner.drowsyness, 30)
 			if(prob(7))
-				owner.custom_pain("Your heart is hurting terribly!", 70, prob(10), owner.organs_by_name[BP_CHEST])
+				owner.custom_pain("Your heart is hurting terribly!", 50, prob(10), owner.organs_by_name[BP_CHEST])
 
 
 
