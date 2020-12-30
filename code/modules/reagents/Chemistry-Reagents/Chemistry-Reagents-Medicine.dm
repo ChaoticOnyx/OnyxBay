@@ -879,6 +879,7 @@
 	color = "#a8a5dc"
 	scannable = 1
 	metabolism = REM * 0.5
+	overdose = 5
 
 /datum/reagent/adrenaline/affect_blood(mob/living/carbon/human/M, alien, removed)
 	if(alien == IS_DIONA)
