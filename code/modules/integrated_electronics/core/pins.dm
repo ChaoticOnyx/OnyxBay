@@ -47,14 +47,17 @@ D [1]/  ||
 	var/output = w.resolve()
 	return istype(output, as_type) ? output : null
 
-/datum/integrated_io/proc/display_data(var/input)
+/datum/integrated_io/proc/display_data(input)
 	if(isnull(input))
 		return "(null)" // Empty data means nothing to show.
+
+	if(isnum_safe(input))
+		return "([num2text(input)])"
 
 	if(istext(input))
 		return "(\"[input]\")" // Wraps the 'string' in escaped quotes, so that people know it's a 'string'.
 
-	if(islist(input))
+	if(islist(input)) // not working
 		var/list/my_list = input
 		var/result = "list\[[my_list.len]\]("
 		if(my_list.len)
@@ -72,7 +75,7 @@ D [1]/  ||
 	if(isweakref(input))
 		var/weakref/w = input
 		var/atom/A = w.resolve()
-		return A ? "([A.name] \[Ref\])" : "(null)" // For refs, we want just the name displayed.
+		return A ? "([A.name] \[Ref])" : "(null)" // For refs, we want just the name displayed.
 
 	return "([input])" // Nothing special needed for numbers or other stuff.
 

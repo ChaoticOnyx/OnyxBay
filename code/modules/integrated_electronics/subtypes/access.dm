@@ -2,6 +2,7 @@
 /obj/item/integrated_circuit/input/card_reader
 	name = "ID card reader" //To differentiate it from the data card reader
 	desc = "A circuit that can read the registred name, assignment, and PassKey string from an ID card."
+	extended_desc = "The access will be automatically added to assembly."
 	icon_state = "card_reader"
 
 	complexity = 4
@@ -21,7 +22,8 @@
 	var/passkey = strtohex(XorEncrypt(json_encode(access), SScircuit.cipherkey))
 
 	if(assembly)
-		assembly.access_card.access |= access
+		// reset previus card access and add new access
+		assembly.access_card.access = access
 
 	if(card) // An ID card.
 		set_pin_data(IC_OUTPUT, 1, card.registered_name)

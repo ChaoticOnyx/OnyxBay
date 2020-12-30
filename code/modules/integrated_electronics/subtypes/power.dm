@@ -47,13 +47,11 @@
 
 	else if(istype(AM, /obj/machinery/power/apc))
 		var/obj/machinery/power/apc/A = AM
-		if(A.opened)
-			cell = A.cell
+		cell = A.cell
 
 	else if(istype(AM, /obj/machinery/mining/drill))
 		var/obj/machinery/mining/drill/hdrill = AM
-		if(hdrill.panel_open)
-			cell = hdrill.cell
+		cell = hdrill.cell
 
 	return cell
 

@@ -6,7 +6,7 @@
 	obj_flags = OBJ_FLAG_CONDUCTIBLE
 	w_class = ITEM_SIZE_SMALL
 
-/obj/item/device/integrated_electronics/analyzer/afterattack(var/atom/A, var/mob/living/user)
+/obj/item/device/integrated_electronics/analyzer/afterattack(atom/A, mob/living/user)
 	. = ..()
 	if(istype(A, /obj/item/device/electronic_assembly))
 		var/obj/item/device/electronic_assembly/EA = A

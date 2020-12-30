@@ -27,7 +27,7 @@
 	to_chat(F, "<small>[time_stamp()] \ref[src] ([x],[y],[z])</small> || [src] [message]<br>")
 
 //ADMINVERBS
-/client/proc/investigate_show( subject in list("hrefs","notes","watchlist","singulo","telesci") )
+/client/proc/investigate_show( subject in list("hrefs","notes","watchlist","singulo","telesci", INVESTIGATE_CIRCUIT) )
 	set name = "Investigate"
 	set category = "Admin"
 	if(!holder)	return

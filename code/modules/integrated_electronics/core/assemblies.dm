@@ -359,7 +359,7 @@
 		if(href_list["interact"])
 			var/obj/item/I = usr.get_active_hand()
 			if(istype(I))
-				component.attackby(usr, I)
+				component.additem(I, usr)
 			else
 				component.attack_hand(usr)
 

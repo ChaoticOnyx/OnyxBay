@@ -12,7 +12,7 @@
 		to_chat(user, SPAN("notice", "You input [new_data ? "[new_data]" : "NULL"] into the pin."))
 		write_data_to_pin(new_data)
 
-/datum/integrated_io/string/write_data_to_pin(var/new_data)
+/datum/integrated_io/string/write_data_to_pin(new_data)
 	if(isnull(new_data) || istext(new_data))
 		data = new_data
 		holder.on_data_written()

@@ -39,6 +39,13 @@ a creative player the means to solve many problems.  Circuits are held inside an
 	external_examine(user)
 	. = ..()
 
+/obj/item/integrated_circuit/attack_hand(mob/user)
+	// if in assembly override putting src into user hands
+	if(istype(assembly))
+		attack_self(user)
+	else
+		..()
+
 // Can be called via electronic_assembly/attackby()
 /obj/item/integrated_circuit/proc/additem(var/obj/item/I, var/mob/living/user)
 	attackby(I, user)
@@ -68,10 +75,10 @@ a creative player the means to solve many problems.  Circuits are held inside an
 /obj/item/integrated_circuit/proc/any_examine(mob/user)
 	return
 
-/obj/item/integrated_circuit/proc/attackby_react(var/atom/movable/A,mob/user)
+/obj/item/integrated_circuit/proc/attackby_react(atom/movable/A,mob/user)
 	return
 
-/obj/item/integrated_circuit/proc/sense(var/atom/movable/A,mob/user,prox)
+/obj/item/integrated_circuit/proc/sense(atom/movable/A,mob/user,prox)
 	return
 
 /obj/item/integrated_circuit/proc/check_interactivity(mob/user)

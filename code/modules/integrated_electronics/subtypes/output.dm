@@ -187,6 +187,8 @@
 		"i am the law"	= 'sound/voice/biamthelaw.ogg',
 		"radio"			= 'sound/voice/bradio.ogg',
 		"secure day"	= 'sound/voice/bsecureday.ogg',
+		// lol didn't know we have that funny sound
+		"insult"		= 'sound/voice/binsult.ogg',
 		)
 	spawn_flags = IC_SPAWN_RESEARCH
 
@@ -261,7 +263,7 @@
 		if(!isnull(cam_name))
 			camera.c_tag = cam_name
 		if(!isnull(new_network))
-			camera.network = new_network
+			camera.replace_networks(new_network)
 		set_camera_status(cam_active)
 
 /obj/item/integrated_circuit/output/video_camera/power_fail()

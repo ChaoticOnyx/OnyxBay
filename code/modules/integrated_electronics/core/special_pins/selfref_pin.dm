@@ -9,7 +9,7 @@
 /datum/integrated_io/selfref/ask_for_pin_data(mob/user) // You can't clear it, it's self reference.
 
 
-/datum/integrated_io/selfref/write_data_to_pin(var/new_data) // You can't write anything else but itself onto it
+/datum/integrated_io/selfref/write_data_to_pin(new_data) // You can't write anything else but itself onto it
 	if(data)
 		return
 	data = weakref(holder)

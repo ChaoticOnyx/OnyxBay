@@ -27,10 +27,10 @@
 		activate_pin(3)
 	..()
 
-/obj/item/integrated_circuit/logic/binary/proc/do_compare(var/datum/integrated_io/A, var/datum/integrated_io/B)
+/obj/item/integrated_circuit/logic/binary/proc/do_compare(datum/integrated_io/A, datum/integrated_io/B)
 	return FALSE
 
-/obj/item/integrated_circuit/logic/binary/proc/comparable(var/datum/integrated_io/A, var/datum/integrated_io/B)
+/obj/item/integrated_circuit/logic/binary/proc/comparable(datum/integrated_io/A, datum/integrated_io/B)
 	return (isnum_safe(A.data) && isnum_safe(B.data)) || (istext(A.data) && istext(B.data))
 
 /obj/item/integrated_circuit/logic/unary
@@ -44,7 +44,7 @@
 	..()
 	activate_pin(2)
 
-/obj/item/integrated_circuit/logic/unary/proc/do_check(var/datum/integrated_io/A)
+/obj/item/integrated_circuit/logic/unary/proc/do_check(datum/integrated_io/A)
 	return FALSE
 
 /obj/item/integrated_circuit/logic/binary/equals
@@ -53,7 +53,7 @@
 	icon_state = "equal"
 	spawn_flags = IC_SPAWN_DEFAULT|IC_SPAWN_RESEARCH
 
-/obj/item/integrated_circuit/logic/binary/equals/do_compare(var/datum/integrated_io/A, var/datum/integrated_io/B)
+/obj/item/integrated_circuit/logic/binary/equals/do_compare(datum/integrated_io/A, datum/integrated_io/B)
 	return A.data == B.data
 
 /obj/item/integrated_circuit/logic/binary/jklatch
@@ -151,7 +151,7 @@
 	icon_state = "not_equal"
 	spawn_flags = IC_SPAWN_DEFAULT|IC_SPAWN_RESEARCH
 
-/obj/item/integrated_circuit/logic/binary/not_equals/do_compare(var/datum/integrated_io/A, var/datum/integrated_io/B)
+/obj/item/integrated_circuit/logic/binary/not_equals/do_compare(datum/integrated_io/A, datum/integrated_io/B)
 	return A.data != B.data
 
 /obj/item/integrated_circuit/logic/binary/and
@@ -160,7 +160,7 @@
 	icon_state = "and"
 	spawn_flags = IC_SPAWN_DEFAULT|IC_SPAWN_RESEARCH
 
-/obj/item/integrated_circuit/logic/binary/and/do_compare(var/datum/integrated_io/A, var/datum/integrated_io/B)
+/obj/item/integrated_circuit/logic/binary/and/do_compare(datum/integrated_io/A, datum/integrated_io/B)
 	return A.data && B.data
 
 /obj/item/integrated_circuit/logic/binary/or
@@ -169,7 +169,7 @@
 	icon_state = "or"
 	spawn_flags = IC_SPAWN_DEFAULT|IC_SPAWN_RESEARCH
 
-/obj/item/integrated_circuit/logic/binary/or/do_compare(var/datum/integrated_io/A, var/datum/integrated_io/B)
+/obj/item/integrated_circuit/logic/binary/or/do_compare(datum/integrated_io/A, datum/integrated_io/B)
 	return A.data || B.data
 
 /obj/item/integrated_circuit/logic/binary/less_than
@@ -178,7 +178,7 @@
 	icon_state = "less_than"
 	spawn_flags = IC_SPAWN_DEFAULT|IC_SPAWN_RESEARCH
 
-/obj/item/integrated_circuit/logic/binary/less_than/do_compare(var/datum/integrated_io/A, var/datum/integrated_io/B)
+/obj/item/integrated_circuit/logic/binary/less_than/do_compare(datum/integrated_io/A, datum/integrated_io/B)
 	if(comparable(A, B))
 		return A.data < B.data
 
@@ -188,7 +188,7 @@
 	icon_state = "less_than_or_equal"
 	spawn_flags = IC_SPAWN_DEFAULT|IC_SPAWN_RESEARCH
 
-/obj/item/integrated_circuit/logic/binary/less_than_or_equal/do_compare(var/datum/integrated_io/A, var/datum/integrated_io/B)
+/obj/item/integrated_circuit/logic/binary/less_than_or_equal/do_compare(datum/integrated_io/A, datum/integrated_io/B)
 	if(comparable(A, B))
 		return A.data <= B.data
 
@@ -198,7 +198,7 @@
 	icon_state = "greater_than"
 	spawn_flags = IC_SPAWN_DEFAULT|IC_SPAWN_RESEARCH
 
-/obj/item/integrated_circuit/logic/binary/greater_than/do_compare(var/datum/integrated_io/A, var/datum/integrated_io/B)
+/obj/item/integrated_circuit/logic/binary/greater_than/do_compare(datum/integrated_io/A, datum/integrated_io/B)
 	if(comparable(A, B))
 		return A.data > B.data
 
@@ -208,7 +208,7 @@
 	icon_state = "greater_than_or_equal"
 	spawn_flags = IC_SPAWN_DEFAULT|IC_SPAWN_RESEARCH
 
-/obj/item/integrated_circuit/logic/binary/greater_than_or_equal/do_compare(var/datum/integrated_io/A, var/datum/integrated_io/B)
+/obj/item/integrated_circuit/logic/binary/greater_than_or_equal/do_compare(datum/integrated_io/A, datum/integrated_io/B)
 	if(comparable(A, B))
 		return A.data >= B.data
 
@@ -219,5 +219,5 @@
 	spawn_flags = IC_SPAWN_DEFAULT|IC_SPAWN_RESEARCH
 	activators = list("invert" = IC_PINTYPE_PULSE_IN, "on inverted" = IC_PINTYPE_PULSE_OUT)
 
-/obj/item/integrated_circuit/logic/unary/not/do_check(var/datum/integrated_io/A)
+/obj/item/integrated_circuit/logic/unary/not/do_check(datum/integrated_io/A)
   return !A.data

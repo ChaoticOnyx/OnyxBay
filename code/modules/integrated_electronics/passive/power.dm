@@ -95,6 +95,7 @@
 	outputs = list("volume used" = IC_PINTYPE_NUMBER, "self reference" = IC_PINTYPE_SELFREF)
 	activators = list("push ref" = IC_PINTYPE_PULSE_IN)
 	spawn_flags = IC_SPAWN_DEFAULT|IC_SPAWN_RESEARCH
+	atom_flags = ATOM_FLAG_OPEN_CONTAINER
 	var/volume = 60
 	var/list/fuel = list(/datum/reagent/toxin/phoron = 50000, /datum/reagent/fuel = 15000, /datum/reagent/carbon = 10000, /datum/reagent/ethanol = 10000, /datum/reagent/nutriment = 8000)
 	var/multi = 1

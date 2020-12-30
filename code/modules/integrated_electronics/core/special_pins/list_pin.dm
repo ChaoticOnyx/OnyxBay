@@ -25,19 +25,19 @@
 		t += "<a href='?src=\ref[src];remove=1;pos=[i]'>\[Remove\]</a><br>"
 	user << browse(t, "window=list_pin_\ref[src];size=500x400")
 
-/datum/integrated_io/lists/proc/add_to_list(mob/user, var/new_entry)
+/datum/integrated_io/lists/proc/add_to_list(mob/user, new_entry)
 	if(!new_entry && user)
 		new_entry = ask_for_data_type(user)
 	if(is_valid(new_entry))
 		Add(new_entry)
 
-/datum/integrated_io/lists/proc/Add(var/new_entry)
+/datum/integrated_io/lists/proc/Add(new_entry)
 	var/list/my_list = data
 	if(my_list.len > IC_MAX_LIST_LENGTH)
 		my_list.Cut(Start=1,End=2)
 	my_list.Add(new_entry)
 
-/datum/integrated_io/lists/proc/remove_from_list_by_position(mob/user, var/position)
+/datum/integrated_io/lists/proc/remove_from_list_by_position(mob/user, position)
 	var/list/my_list = data
 	if(!my_list.len)
 		to_chat(user, SPAN("warning", "The list is empty, there's nothing to remove."))

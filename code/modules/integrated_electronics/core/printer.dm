@@ -289,7 +289,7 @@
 		playsound(src, 'sound/items/jaws_pry.ogg', 50, TRUE)
 
 	if(href_list["print"])
-		if(!config.allow_ic_printing || !debug)
+		if(!config.allow_ic_printing && !debug)
 			to_chat(usr, SPAN_WARNING("CentCom has disabled printing of custom circuitry due to recent allegations of copyright infringement."))
 			return
 		if(!can_clone) // Copying and printing ICs is cloning
@@ -299,7 +299,9 @@
 			if("load")
 				if(cloning)
 					return
-				var/input = sanitize(input(usr, "Put your code there:", "loading"), max_length = MAX_SIZE_CIRCUIT)
+				var/input = sanitize(input(usr, "Put your code there:", "loading"), max_length = MAX_SIZE_CIRCUIT, encode = FALSE)
+				//since we can't use html_encode, we use url_decode/encode for it, I hope it doesn't cause troubles for us.
+				input = url_decode(url_encode(input))
 				if(!check_interactivity(usr) || cloning)
 					return
 				if(!input)

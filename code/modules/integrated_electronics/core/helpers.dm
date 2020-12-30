@@ -165,6 +165,7 @@
 	return r
 // this is for data validation of stuff like ref encodes and more importantly ID access lists
 
+// for old int code, don't use them:
 /proc/compute_signature(data)
 	return md5(SScircuit.cipherkey + data)
 

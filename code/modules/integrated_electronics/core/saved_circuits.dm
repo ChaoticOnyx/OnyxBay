@@ -133,7 +133,7 @@
 // Verifies a list of assembly parameters
 // Returns null on success, error name on failure
 /obj/item/device/electronic_assembly/proc/verify_save(list/assembly_params)
-	// Validate name, desc and color
+	// Validate name and desc
 	if(assembly_params["name"])
 		if(sanitizeName(assembly_params["name"], allow_numbers = TRUE) != assembly_params["name"])
 			return "Bad assembly name."
@@ -209,7 +209,7 @@
 	if(wires.len)
 		blocks["wires"] = wires
 
-	return url_decode(url_encode(json_encode(blocks)))
+	return json_encode(blocks)
 
 
 
@@ -219,8 +219,7 @@
 // The following parameters area calculated during validation and added to the returned save list:
 // "requires_upgrades", "unsupported_circuit", "cost", "complexity", "max_complexity", "used_space", "max_space"
 /datum/controller/subsystem/processing/circuit/proc/validate_electronic_assembly(program)
-	// url_encode/decode magik, else this fucking shit won't work
-	var/list/blocks = json_decode(url_decode(url_encode(program)))
+	var/list/blocks = json_decode(program)
 	if(!blocks)
 		return
 
@@ -291,7 +290,7 @@
 			blocks["requires_upgrades"] = TRUE
 
 		// Check if the assembly supports the circucit
-		if((component.action_flags & assembly.allowed_circuit_action_flags) != component.action_flags)
+		if(component.action_flags && ((component.action_flags & assembly.allowed_circuit_action_flags) != component.action_flags))
 			blocks["unsupported_circuit"] = TRUE
 
 
