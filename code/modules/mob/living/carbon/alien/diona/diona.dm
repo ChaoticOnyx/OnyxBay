@@ -12,6 +12,7 @@
 	only_species_language = 1
 	death_msg = "expires with a pitiful chirrup..."
 	universal_understand = 0
+	density = 0
 	universal_speak = 0      // Dionaea do not need to speak to people other than other dionaea.
 
 	can_pull_size = ITEM_SIZE_SMALL
@@ -28,15 +29,16 @@
 /mob/living/carbon/alien/diona/examine(mob/user)
 	. = ..()
 	if(holding_item)
-		to_chat(user, "<span class='notice'>It is holding \icon[holding_item] \a [holding_item].</span>")
+		to_chat(user, SPAN("notice", "It is holding \icon[holding_item] \a [holding_item]."))
 	if(hat)
-		to_chat(user, "<span class='notice'>It is wearing \icon[hat] \a [hat].</span>")
+		to_chat(user, SPAN("notice", "It is wearing \icon[hat] \a [hat]."))
 
 /mob/living/carbon/alien/diona/drop_from_inventory(var/obj/item/W, var/atom/Target = null, var/force = null)
 	. = ..()
 	if(W == hat)
 		hat = null
 		update_icons()
+		verbs -= /mob/living/carbon/alien/diona/proc/drop_hat
 	else if(W == holding_item)
 		holding_item = null
 
@@ -44,12 +46,12 @@
 	return FALSE
 
 /mob/living/carbon/alien/diona/New()
-
 	..()
 	species = all_species[SPECIES_DIONA]
 	add_language(LANGUAGE_ROOTGLOBAL)
 	add_language(LANGUAGE_GALCOM)
 	verbs += /mob/living/carbon/alien/diona/proc/merge
+	verbs += /mob/living/carbon/alien/diona/proc/drop_holding_item
 
 /mob/living/carbon/alien/diona/put_in_hands(var/obj/item/W) // No hands. Use mouth.
 	if(can_collect(W))
@@ -64,21 +66,22 @@
 	hat = new_hat
 	new_hat.forceMove(src)
 	update_icons()
+	verbs += /mob/living/carbon/alien/diona/proc/drop_hat
 	return TRUE
 
 /mob/living/carbon/alien/diona/proc/handle_npc(var/mob/living/carbon/alien/diona/D)
 	if(D.stat != CONSCIOUS)
 		return
-	if(prob(33) && D.canmove && isturf(D.loc) && !D.pulledby) //won't move if being pulled
+	if(prob(66) && D.canmove && isturf(D.loc) && !D.pulledby) //won't move if being pulled
 		step(D, pick(GLOB.cardinal))
-	if(prob(1))
+	if(prob(3))
 		D.emote(pick("scratch","jump","chirp","tail"))
 
 /mob/living/carbon/alien/diona/hotkey_drop()
-	if(holding_item || hat)
+	if(holding_item)
 		drop_item()
 	else
-		to_chat(usr, "<span class='warning'>You have nothing to drop.</span>")
+		to_chat(usr, SPAN("warning", "You have nothing to regurgitate."))
 
 /mob/living/carbon/alien/diona/UnarmedAttack(atom/A)
 	if(wear_hat(A))
@@ -94,7 +97,7 @@
 /mob/living/carbon/alien/diona/proc/collect(var/obj/item/collecting)
 	collecting.forceMove(src)
 	holding_item = collecting
-	visible_message("<span class='notice'>\The [src] engulfs \the [holding_item].</span>")
+	visible_message(SPAN("notice", "\The [src] engulfs \the [holding_item]."))
 
 	// This means dionaea can hoover up beakers as a kind of impromptu chem disposal
 	// technique, so long as they're okay with the reagents reacting inside them.
@@ -106,18 +109,44 @@
 	if(istype(holding_item, /obj/item/weapon/reagent_containers/food))
 		var/obj/item/weapon/reagent_containers/food/food = holding_item
 		holding_item = null
-		if(food.trash) holding_item = new food.trash(src)
+		if(food.trash)
+			holding_item = new food.trash(src)
 		qdel(food)
+
+/mob/living/carbon/alien/diona/proc/drop_holding_item()
+
+	set category = "Abilities"
+	set name = "Regurgitate"
+	set desc = "Regurgitate whatever item you hold inside."
+
+	if(stat == DEAD || paralysis || weakened || stunned || restrained())
+		return
+
+	if(holding_item)
+		drop_item()
+	else
+		to_chat(usr, SPAN("warning", "You have nothing to regurgitate."))
+
+/mob/living/carbon/alien/diona/proc/drop_hat()
+
+	set category = "Abilities"
+	set name = "Drop Hat"
+	set desc = "Drop the hat you're wearing."
+
+	if(stat == DEAD || paralysis || weakened || stunned || restrained())
+		return
+
+	if(src.hat)
+		visible_message(SPAN("notice", "\The [src] wriggles out from under \the [hat]."))
+		src.hat.forceMove(get_turf(src))
+		src.hat = null
+		update_icons()
+		verbs -= /mob/living/carbon/alien/diona/proc/drop_hat
 
 /mob/living/carbon/alien/diona/drop_item()
 	if(holding_item)
-		visible_message("<span class='notice'>\The [src] regurgitates \the [holding_item].</span>")
+		visible_message(SPAN("notice", "\The [src] regurgitates \the [holding_item]."))
 		holding_item.forceMove(get_turf(src))
 		holding_item = null
-	else if(hat)
-		visible_message("<span class='notice'>\The [src] wriggles out from under \the [hat].</span>")
-		hat.forceMove(get_turf(src))
-		hat = null
-		update_icons()
 	else
 		. = ..()
