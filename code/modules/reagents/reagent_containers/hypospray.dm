@@ -143,21 +143,31 @@
 		. += "\n<span class='notice'>It is spent.</span>"
 
 /obj/item/weapon/reagent_containers/hypospray/autoinjector/detox
+	name = "dylovene autoinjector"
 	icon_state = "green"
 	content_desc = "Dylovene 10u. Use in case of poisoning."
 	starts_with = list(/datum/reagent/dylovene = 10)
 
 /obj/item/weapon/reagent_containers/hypospray/autoinjector/tricordrazine
+	name = "tricordrazine autoinjector"
 	icon_state = "red"
 	content_desc = "Tricordrazine 10u. Use to speed up recovery from physical trauma."
 	starts_with = list(/datum/reagent/tricordrazine = 10)
 
+/obj/item/weapon/reagent_containers/hypospray/autoinjector/adrenaline
+	name = "adrenaline autoinjector"
+	icon_state = "orange"
+	content_desc = "Adrenaline 10u. Used to treat cardiac arrest and other cardiac dysrhythmias resulting in diminished or absent cardiac output."
+	starts_with = list(/datum/reagent/adrenaline = 10)
+
 /obj/item/weapon/reagent_containers/hypospray/autoinjector/pain
+	name = "tramadol autoinjector"
 	icon_state = "purple"
 	content_desc = "Tramadol 10u. Highly potent painkiller. Warning: Do Not Mix With Alcohol!"
 	starts_with = list(/datum/reagent/tramadol = 10)
 
 /obj/item/weapon/reagent_containers/hypospray/autoinjector/combatpain
+	name = "oxycodone autoinjector"
 	icon_state = "black"
 	content_desc = "Oxycodone 5u"
 	starts_with = list(/datum/reagent/tramadol/oxycodone = 5)
@@ -165,6 +175,7 @@
 	volume = 5
 
 /obj/item/weapon/reagent_containers/hypospray/autoinjector/mindbreaker
+	name = "mindbreaker autoinjector"
 	icon_state = "black"
 	content_desc = ""
 	starts_with = list(/datum/reagent/mindbreaker = 5)

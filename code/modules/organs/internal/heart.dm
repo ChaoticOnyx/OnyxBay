@@ -70,14 +70,14 @@
 		if(PULSE_THREADY)
 			heartbeat = 170 + rand(-20, 20)
 		if(PULSE_FIBRILLATION)
-			heartbeat = 210 + rand(-30, 60)
+			heartbeat = 210 + rand(-10, 50)
 
 	for(var/source in pulse_sources)
 		heartbeat += pulse_sources[source]
 
 
 	if(heartbeat < 10)
-		pulse_modificator = PULSE_FIBRILLATION
+		make_fibrillation()
 		owner.reagents.add_reagent(/datum/reagent/adrenaline, 0.2)
 
 	heartbeat = max(heartbeat, 0)
@@ -118,6 +118,22 @@
 		handle_pulse_effects()
 	..()
 
+/obj/item/organ/internal/heart/proc/make_asystole()
+	if(pulse_modificator == PULSE_NONE)
+		return
+
+	to_chat(owner, SPAN_DANGER("Your heart has stopped!"))
+	pulse_modificator = PULSE_NONE
+	last_asystole = world.time
+
+/obj/item/organ/internal/heart/proc/make_fibrillation()
+	if(pulse_modificator == PULSE_FIBRILLATION)
+		return
+
+	owner.custom_pain("Your heart burns!", 90, prob(10), owner.internal_organs_by_name[BP_CHEST])
+	pulse_modificator = PULSE_FIBRILLATION
+	last_fibrillation = world.time
+
 /obj/item/organ/internal/heart/proc/handle_pulse()
 	pulse_sources = list()
 
@@ -131,21 +147,17 @@
 
 	var/should_fibrillation = prob(40) && owner.get_blood_circulation() <= BLOOD_VOLUME_SURVIVE
 	should_fibrillation = should_fibrillation || (owner.shock_stage >= 120)
-	should_fibrillation = should_fibrillation || (heartbeat > 300)
+	should_fibrillation = should_fibrillation || ((heartbeat > 300) && !owner.chem_effects[CE_STABLE])
 	should_fibrillation = should_fibrillation || owner.nervous_system_failure()
 
 	var/should_stop = (pulse_modificator >= PULSE_FIBRILLATION && world.time - last_fibrillation > 30*TICKS_IN_SECOND)
 
 	if(should_stop && (world.time - last_asystole > 50*TICKS_IN_SECOND))
-		to_chat(owner, SPAN_DANGER("Your heart has stopped!"))
-		pulse_modificator = PULSE_NONE
-		last_asystole = world.time
+		make_asystole()
 		return
 
-	if(should_fibrillation && (world.time - last_fibrillation > 25*TICKS_IN_SECOND) && pulse_modificator != PULSE_NONE && pulse_modificator != PULSE_FIBRILLATION)
-		owner.custom_pain("Your heart burns!", 90, prob(10), owner.internal_organs_by_name[BP_CHEST]);
-		pulse_modificator = PULSE_FIBRILLATION
-		last_fibrillation = world.time
+	if(should_fibrillation && (world.time - last_fibrillation > 25*TICKS_IN_SECOND) && pulse_modificator != PULSE_NONE)
+		make_fibrillation()
 		return
 
 	set_pulse_fine(owner.chem_effects[CE_PULSE] * 25, "chem_effect")
@@ -202,7 +214,7 @@
 	if(is_bruised())
 		set_pulse(-40, "damage_bruised")
 	if(is_broken())
-		pulse_modificator = PULSE_NONE
+		make_asystole()
 
 	var/period = min(25 * TICKS_IN_SECOND - 5 * TICKS_IN_SECOND * owner.chem_effects[CE_STABLE], 5)
 	if(pulse_modificator != PULSE_NORM && world.time - last_pulse_stabilize > period)

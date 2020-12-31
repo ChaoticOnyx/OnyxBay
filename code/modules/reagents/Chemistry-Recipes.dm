@@ -96,10 +96,16 @@
 	required_reagents = list(/datum/reagent/acetone = 1, /datum/reagent/carbon = 1, /datum/reagent/sugar = 1)
 	result_amount = 3
 
+/datum/chemical_reaction/epinephrine
+	name = "Epinephrine"
+	result = /datum/reagent/adrenaline/epinephrine
+	required_reagents = list(/datum/reagent/inaprovaline = 2, /datum/reagent/bicaridine = 1, /datum/reagent/copper = 1)
+	result_amount = 4
+
 /datum/chemical_reaction/adrenaline
 	name = "Adrenaline"
 	result = /datum/reagent/adrenaline
-	required_reagents = list(/datum/reagent/inaprovaline = 1, /datum/reagent/hyperzine = 1, /datum/reagent/copper = 1)
+	required_reagents = list(/datum/reagent/peridaxon = 1, /datum/reagent/hyperzine = 1, /datum/reagent/adrenaline/epinephrine = 1)
 	catalysts = list(/datum/reagent/toxin/phoron = 5)
 	result_amount = 2
 

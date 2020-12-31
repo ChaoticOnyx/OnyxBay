@@ -58,13 +58,13 @@
 #define UNDER 0x4
 
 // Pulse modificators
-#define PULSE_NONE    0
-#define PULSE_SLOW    1
-#define PULSE_NORM    2
-#define PULSE_FAST    3
-#define PULSE_2FAST   4
-#define PULSE_THREADY 5
-#define PULSE_FIBRILLATION 6
+#define PULSE_NONE    0    //  0        bpm
+#define PULSE_SLOW    1    //  10 - 60  bpm
+#define PULSE_NORM    2    //  60 - 100 bpm
+#define PULSE_FAST    3    // 100 - 130 bpm
+#define PULSE_2FAST   4    // 130 - 160 bpm
+#define PULSE_THREADY 5    // 160 - 180 ~ 300 bpm
+#define PULSE_FIBRILLATION 6 // >200    bpm
 
 #define GETPULSE_HAND 0 // Less accurate. (hand)
 #define GETPULSE_TOOL 1 // More accurate. (med scanner, sleeper, etc.)

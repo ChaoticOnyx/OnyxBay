@@ -1641,11 +1641,14 @@
 						heart.pulse_modificator = PULSE_THREADY
 						heart.last_asystole = world.time
 			if(3)
-				if(getOxyLoss() >= 90)
-					setOxyLoss(90)
+				if(getOxyLoss() >= 80)
+					setOxyLoss(80)
 
 				if(heart.pulse_modificator == PULSE_NONE)
 					heart.pulse_modificator = PULSE_FIBRILLATION
+				else
+					return
+
 
 		var/species_organ = species.breathing_organ
 		var/active_breaths = 0

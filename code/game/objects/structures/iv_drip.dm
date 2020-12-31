@@ -8,7 +8,6 @@
 	var/obj/item/weapon/reagent_containers/beaker
 	var/list/transfer_amounts = list(REM*0.25, REM*0.5, REM, 1, 2)
 	var/transfer_amount = 1
-	var/time = 0
 
 /obj/structure/iv_drip/verb/set_APTFT()
 	set name = "Set IV transfer amount"
@@ -104,11 +103,6 @@
 
 	if(mode)
 		if(beaker.volume > 0)
-			if(transfer_amount < 0.1)
-				if(time < 0.1 / transfer_amount)
-					++time
-					return
-			time = 0
 			beaker.reagents.trans_to_mob(attached, transfer_amount, CHEM_BLOOD)
 			update_icon()
 	else // Take blood

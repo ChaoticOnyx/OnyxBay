@@ -878,38 +878,52 @@
 	reagent_state = LIQUID
 	color = "#a8a5dc"
 	scannable = 1
-	metabolism = REM * 0.5
-	overdose = 5
+	metabolism = REM
 
 /datum/reagent/adrenaline/affect_blood(mob/living/carbon/human/M, alien, removed)
 	if(alien == IS_DIONA)
 		return
 
 	M.add_chemical_effect(CE_PAINKILLER, 5 * volume)
-	M.add_chemical_effect(CE_PULSE, 2)
-
-	if(M.chem_doses[type] >= 2.5)
-		M.make_jittery(5)
-		M.add_chemical_effect(CE_PULSE)
-		M.add_chemical_effect(CE_STABLE)
-
-/datum/reagent/adrenaline/overdose(mob/living/carbon/human/M, alien)
-	var/obj/item/organ/internal/heart/H = M.internal_organs_by_name[BP_HEART]
-	M.add_chemical_effect(CE_PULSE, 6)
-	M.make_jittery(20)
+	M.add_chemical_effect(CE_PULSE, 3)
+	M.add_chemical_effect(CE_STABLE)
 
 	if(volume > 10)
 		M.add_chemical_effect(CE_PULSE, 2)
 		M.make_jittery(20)
+		var/obj/item/organ/internal/heart/H = M.internal_organs_by_name[BP_HEART]
 
-		if(volume >= 10 && (M.is_asystole() || H.pulse_modificator == PULSE_FIBRILLATION) && H.last_fibrillation > 10 * TICKS_IN_SECOND)
+		if((M.is_asystole() || H.pulse_modificator == PULSE_FIBRILLATION) && H.last_fibrillation > 10 * TICKS_IN_SECOND)
 			remove_self(10)
 			M.resuscitate(3)
 
-	if(volume > 15 && prob(2))
+/datum/reagent/adrenaline/epinephrine
+	name = "Epinephrine"
+	description = "Artificial version of adrenaline. Unlike adrenaline, it has a low overdose threshold and cannot start the heart on its own."
+	taste_description = "rush"
+	reagent_state = LIQUID
+	color = "#ce2b2b"
+	scannable = 1
+	metabolism = REM * 0.5
+	overdose = 5
+
+/datum/reagent/adrenaline/epinephrine/affect_blood(mob/living/carbon/human/M, alien, removed)
+	if(alien == IS_DIONA)
+		return
+
+	M.add_chemical_effect(CE_PAINKILLER, 5 * volume)
+	M.add_chemical_effect(CE_PULSE, 3)
+
+/datum/reagent/adrenaline/epinephrine/overdose(mob/living/carbon/human/M, alien)
+	if(alien == IS_DIONA)
+		return
+
+	if(volume > 10)
+		M.add_chemical_effect(CE_PULSE, 2)
+		M.make_jittery(20)
+	if(volume > 20)
 		M.shock_stage = 120
-
-
+	M.add_chemical_effect(CE_PULSE, 3)
 
 /datum/reagent/nanoblood
 	name = "Nanoblood"
