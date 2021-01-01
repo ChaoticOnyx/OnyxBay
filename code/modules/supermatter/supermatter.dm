@@ -1,6 +1,6 @@
 #define NITROGEN_RETARDATION_FACTOR 0.15	//Higher == N2 slows reaction more
 #define THERMAL_RELEASE_MODIFIER 10000		//Higher == more heat released during reaction
-#define PHORON_RELEASE_MODIFIER 1500		//Higher == less phoron released by reaction
+#define PLASMA_RELEASE_MODIFIER 1500		//Higher == less plasma released by reaction
 #define OXYGEN_RELEASE_MODIFIER 15000		//Higher == less oxygen released at high temperature/power
 #define REACTION_POWER_MODIFIER 1.1			//Higher == more overall power
 
@@ -207,7 +207,7 @@
 
 		mob.Weaken(DETONATION_MOB_CONCUSSION)
 		to_chat(mob, "<span class='danger'>An invisible force slams you against the ground!</span>")
-		
+
 		if(iscarbon(mob))
 			var/mob/living/carbon/C = mob
 			var/area/A = get_area(TM)
@@ -370,7 +370,7 @@
 
 		//Release reaction gasses
 		var/heat_capacity = removed.heat_capacity()
-		removed.adjust_multi("phoron", max(device_energy / PHORON_RELEASE_MODIFIER, 0), \
+		removed.adjust_multi("plasma", max(device_energy / PLASMA_RELEASE_MODIFIER, 0), \
 		                     "oxygen", max((device_energy + removed.temperature - T0C) / OXYGEN_RELEASE_MODIFIER, 0))
 
 		var/thermal_power = THERMAL_RELEASE_MODIFIER * device_energy
@@ -550,7 +550,7 @@
 
 #undef NITROGEN_RETARDATION_FACTOR
 #undef THERMAL_RELEASE_MODIFIER
-#undef PHORON_RELEASE_MODIFIER
+#undef PLASMA_RELEASE_MODIFIER
 #undef OXYGEN_RELEASE_MODIFIER
 #undef REACTION_POWER_MODIFIER
 #undef POWER_FACTOR

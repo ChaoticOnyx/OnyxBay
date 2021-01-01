@@ -65,15 +65,15 @@
 /turf/simulated/floor/reinforced/oxygen
 	initial_gas = list("oxygen" = ATMOSTANK_OXYGEN)
 
-/turf/simulated/floor/reinforced/phoron
-	initial_gas = list("phoron" = ATMOSTANK_PHORON)
+/turf/simulated/floor/reinforced/plasma
+	initial_gas = list("plasma" = ATMOSTANK_PLASMA)
 
 /turf/simulated/floor/reinforced/nitrogen/engine
 	name = "engine floor"
 	initial_gas = list("nitrogen" = MOLES_N2STANDARD)
 
-/turf/simulated/floor/reinforced/phoron/fuel
-	initial_gas = list("phoron" = ATMOSTANK_PHORON_FUEL)
+/turf/simulated/floor/reinforced/plasma/fuel
+	initial_gas = list("phoron" = ATMOSTANK_PLASMA_FUEL)
 
 /turf/simulated/floor/reinforced/hydrogen
 	initial_gas = list("hydrogen" = ATMOSTANK_HYDROGEN)

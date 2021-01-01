@@ -2689,7 +2689,7 @@
 #include "code\modules\ZAS\Debug.dm"
 #include "code\modules\ZAS\Diagnostic.dm"
 #include "code\modules\ZAS\Fire.dm"
-#include "code\modules\ZAS\Phoron.dm"
+#include "code\modules\ZAS\Plasma.dm"
 #include "code\modules\ZAS\Turf.dm"
 #include "code\modules\ZAS\Variable Settings.dm"
 #include "code\modules\ZAS\Zone.dm"

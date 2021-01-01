@@ -42,7 +42,7 @@
 	desc = "A thin rod with pico manipulators embedded in it allowing for fast and precise extraction."
 	id = "pico_grasper"
 	req_tech = list(TECH_MATERIAL = 4, TECH_ENGINEERING = 3, TECH_BIO = 4)
-	materials = list (MATERIAL_STEEL = 10000, MATERIAL_GLASS = 5000, MATERIAL_PHORON = 80)
+	materials = list (MATERIAL_STEEL = 10000, MATERIAL_GLASS = 5000, MATERIAL_PLASMA = 80)
 	build_path = /obj/item/weapon/hemostat/pico
 	sort_string = "MBEAE"
 
@@ -50,8 +50,8 @@
 	name = "plasma saw"
 	desc = "Perfect for cutting through ice."
 	id = "plasmasaw"
-	req_tech = list(TECH_MATERIAL = 5, TECH_ENGINEERING = 4, TECH_BIO = 5, TECH_PHORON = 3)
-	materials = list (MATERIAL_STEEL = 10000, MATERIAL_GLASS = 5000, MATERIAL_PHORON = 500)
+	req_tech = list(TECH_MATERIAL = 5, TECH_ENGINEERING = 4, TECH_BIO = 5, TECH_PLASMA = 3)
+	materials = list (MATERIAL_STEEL = 10000, MATERIAL_GLASS = 5000, MATERIAL_PLASMA = 500)
 	build_path = /obj/item/weapon/circular_saw/plasmasaw
 	sort_string = "MBEAF"
 
@@ -98,7 +98,7 @@
 	desc = "A more advanced version of the regular roller bed, with inbuilt surgical stabilisers and an improved folding system."
 	id = "roller_bed"
 	req_tech = list(TECH_BIO = 3, TECH_MATERIAL = 3, TECH_MAGNET = 3)
-	materials = list(MATERIAL_STEEL = 4000, MATERIAL_GLASS = 2000, MATERIAL_PHORON = 2000)
+	materials = list(MATERIAL_STEEL = 4000, MATERIAL_GLASS = 2000, MATERIAL_PLASMA = 2000)
 	build_path = /obj/item/roller/adv
 	sort_string = "MBEAK"
 

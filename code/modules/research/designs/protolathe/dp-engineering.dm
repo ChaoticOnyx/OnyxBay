@@ -91,7 +91,7 @@
 	name = "experimental welding tool"
 	desc = "This welding tool feels heavier in your possession than is normal. There appears to be no external fuel port."
 	id = "experimental_welder"
-	req_tech = list(TECH_ENGINEERING = 5, TECH_PHORON = 4)
+	req_tech = list(TECH_ENGINEERING = 5, TECH_PLASMA = 4)
 	materials = list(MATERIAL_STEEL = 120, MATERIAL_GLASS = 50)
 	build_path = /obj/item/weapon/weldingtool/experimental
 	sort_string = "VAGAH"

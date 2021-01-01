@@ -451,27 +451,27 @@
 		last_event = world.time
 	..()
 
-/obj/machinery/door/airlock/phoron
-	name = "Phoron Airlock"
+/obj/machinery/door/airlock/plasma
+	name = "Plasma Airlock"
 	desc = "No way this can end badly."
-	icon = 'icons/obj/doors/doorphoron.dmi'
-	mineral = MATERIAL_PHORON
+	icon = 'icons/obj/doors/doorplasma.dmi'
+	mineral = MATERIAL_PLASMA
 
-/obj/machinery/door/airlock/phoron/fire_act(datum/gas_mixture/air, exposed_temperature, exposed_volume)
+/obj/machinery/door/airlock/plasma/fire_act(datum/gas_mixture/air, exposed_temperature, exposed_volume)
 	if(exposed_temperature > 300)
-		PhoronBurn(exposed_temperature)
+		PlasmaBurn(exposed_temperature)
 
-/obj/machinery/door/airlock/phoron/proc/ignite(exposed_temperature)
+/obj/machinery/door/airlock/plasma/proc/ignite(exposed_temperature)
 	if(exposed_temperature > 300)
-		PhoronBurn(exposed_temperature)
+		PlasmaBurn(exposed_temperature)
 
-/obj/machinery/door/airlock/phoron/proc/PhoronBurn(temperature)
+/obj/machinery/door/airlock/plasma/proc/PlasmaBurn(temperature)
 	for(var/turf/simulated/floor/target_tile in range(2,loc))
-		target_tile.assume_gas("phoron", 35, 400+T0C)
+		target_tile.assume_gas("plasma", 35, 400+T0C)
 		spawn (0) target_tile.hotspot_expose(temperature, 400)
 	for(var/turf/simulated/wall/W in range(3,src))
 		W.burn((temperature/4))//Added so that you can't set off a massive chain reaction with a small flame
-	for(var/obj/machinery/door/airlock/phoron/D in range(3,src))
+	for(var/obj/machinery/door/airlock/plasma/D in range(3,src))
 		D.ignite(temperature/4)
 	new /obj/structure/door_assembly( src.loc )
 	qdel(src)
@@ -1150,7 +1150,7 @@ About the new airlock wires panel:
 	qdel(src)
 
 	return da
-/obj/machinery/door/airlock/phoron/attackby(obj/C, mob/user)
+/obj/machinery/door/airlock/plasma/attackby(obj/C, mob/user)
 	if(C)
 		ignite(C.get_temperature_as_from_ignitor())
 	..()

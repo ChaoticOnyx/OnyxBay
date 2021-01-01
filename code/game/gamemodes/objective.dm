@@ -433,7 +433,7 @@ datum/objective/steal
 		"a pair of magboots" = /obj/item/clothing/shoes/magboots,
 		"the [station_name()] blueprints" = /obj/item/blueprints,
 		"a nasa voidsuit" = /obj/item/clothing/suit/space/void,
-		"28 moles of phoron (full tank)" = /obj/item/weapon/tank,
+		"28 moles of plasma (full tank)" = /obj/item/weapon/tank,
 		"a sample of slime extract" = /obj/item/slime_extract,
 		"a piece of corgi meat" = /obj/item/weapon/reagent_containers/food/snacks/meat/corgi,
 		"a research director's jumpsuit" = /obj/item/clothing/under/rank/research_director,
@@ -502,13 +502,13 @@ datum/objective/steal/check_completion()
 		return 0
 	var/list/all_items = owner.current.get_contents()
 	switch (target_name)
-		if("28 moles of phoron (full tank)","10 diamonds","50 gold bars","25 refined uranium bars")
+		if("28 moles of plasma (full tank)","10 diamonds","50 gold bars","25 refined uranium bars")
 			var/target_amount = text2num(target_name)//Non-numbers are ignored.
 			var/found_amount = 0.0//Always starts as zero.
 
-			for(var/obj/item/I in all_items) //Check for phoron tanks
+			for(var/obj/item/I in all_items) //Check for plasma tanks
 				if(istype(I, steal_target))
-					found_amount += (target_name=="28 moles of phoron (full tank)" ? (I:air_contents:gas["phoron"]) : (I:amount))
+					found_amount += (target_name=="28 moles of plasma (full tank)" ? (I:air_contents:gas["plasma"]) : (I:amount))
 			return found_amount>=target_amount
 
 		if("a functional AI")
@@ -720,7 +720,7 @@ datum/objective/heist/loot
 			var/area/raider_area = get_area(raider.current)
 			if(!is_type_in_list(raider_area, GLOB.raiders.safe_areas))
 				continue
-			
+
 			for(var/obj/O in raider.current.get_contents())
 				if(istype(O, target))
 					total_amount++
@@ -743,7 +743,7 @@ datum/objective/heist/salvage
 				target = MATERIAL_PLASTEEL
 				target_amount = 100
 			if(4)
-				target = MATERIAL_PHORON
+				target = MATERIAL_PLASMA
 				target_amount = 100
 			if(5)
 				target = MATERIAL_SILVER
@@ -769,7 +769,7 @@ datum/objective/heist/salvage
 			var/area/A = locate(i)
 			for(var/obj/O in A)
 				objects_to_check |= O
-	
+
 		for(var/obj/O in objects_to_check)
 			if(istype(O, /obj/item/stack/material))
 				var/obj/item/stack/material/M = O
@@ -787,7 +787,7 @@ datum/objective/heist/salvage
 			var/area/raider_area = get_area(raider.current)
 			if(!is_type_in_list(raider_area, GLOB.raiders.safe_areas))
 				continue
-			
+
 			for(var/obj/item/stack/material/M in raider.current.get_contents())
 				if(M.material.name == target)
 					total_amount += M.get_amount()
