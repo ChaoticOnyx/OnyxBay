@@ -103,7 +103,7 @@
 /datum/chemical_reaction/Biotoxin
 	name = "Strange biotoxin"
 	result = /datum/reagent/toxin/cyanide/change_toxin/biotoxin
-	required_reagents = list(/datum/reagent/toxin/cyanide/change_toxin = 5, /datum/reagent/toxin/phoron = 5, /datum/reagent/mutagen = 5)
+	required_reagents = list(/datum/reagent/toxin/cyanide/change_toxin = 5, /datum/reagent/toxin/plasma = 5, /datum/reagent/mutagen = 5)
 	result_amount = 3
 
 

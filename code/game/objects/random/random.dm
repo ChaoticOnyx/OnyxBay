@@ -486,7 +486,7 @@ obj/random/closet/spawn_choices()
 				/obj/item/weapon/coin/iron = 10,
 				/obj/item/weapon/coin/uranium = 1,
 				/obj/item/weapon/coin/platinum = 3,
-				/obj/item/weapon/coin/phoron = 1)
+				/obj/item/weapon/coin/plasma = 1)
 
 /obj/random/toy
 	name = "random toy"
@@ -1086,9 +1086,9 @@ something, make sure it's not in one of the other lists.*/
 				/obj/item/clothing/head/helmet/syndi = 3,
 				/obj/item/stack/material/diamond/ten = 7,
 				/obj/item/clothing/under/contortionist = 1,
-				/obj/item/stack/material/glass/phoronrglass/ten = 7,
+				/obj/item/stack/material/glass/rplass/ten = 7,
 				/obj/item/stack/material/marble/ten = 8,
-				/obj/item/stack/material/phoron/ten = 7,
+				/obj/item/stack/material/plasma/ten = 7,
 				/obj/item/stack/material/gold/ten = 7,
 				/obj/item/stack/material/silver/ten = 7,
 				/obj/item/stack/material/osmium/ten = 7,

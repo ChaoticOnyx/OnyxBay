@@ -83,7 +83,7 @@
 		/obj/item/weapon/ore/gold,
 		/obj/item/weapon/ore/silver,
 		/obj/item/weapon/ore/slag,
-		/obj/item/weapon/ore/phoron)
+		/obj/item/weapon/ore/plasma)
 
 /obj/random/ammo_magazine_smug
 	name = "Random Ammo Magazine"

@@ -208,7 +208,7 @@
 "dZ" = (/obj/machinery/computer/teleporter,/turf/simulated/floor/tiled/airless,/area/derelict/teleporter)
 "ea" = (/turf/simulated/wall,/area/derelict/singularity_engine)
 "eb" = (/obj/item/weapon/material/shard{icon_state = "medium"},/turf/simulated/floor/plating/airless,/area/space)
-"ec" = (/obj/machinery/portable_atmospherics/canister/phoron,/obj/structure/window/reinforced,/turf/simulated/floor/tiled/airless,/area/derelict/singularity_engine)
+"ec" = (/obj/machinery/portable_atmospherics/canister/plasma,/obj/structure/window/reinforced,/turf/simulated/floor/tiled/airless,/area/derelict/singularity_engine)
 "ed" = (/obj/item/weapon/material/shard,/turf/simulated/floor/plating/airless,/area/space)
 "ee" = (/obj/structure/table,/obj/structure/window/reinforced,/turf/simulated/floor/tiled/airless,/area/derelict/singularity_engine)
 "ef" = (/obj/item/stack/rods,/turf/simulated/floor/plating/airless,/area/space)
