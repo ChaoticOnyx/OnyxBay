@@ -40,7 +40,7 @@ D [1]/  ||
 	holder = null
 	return ..()
 
-/datum/integrated_io/proc/data_as_type(var/as_type)
+/datum/integrated_io/proc/data_as_type(as_type)
 	if(!isweakref(data))
 		return
 	var/weakref/w = data
@@ -57,7 +57,7 @@ D [1]/  ||
 	if(istext(input))
 		return "(\"[input]\")" // Wraps the 'string' in escaped quotes, so that people know it's a 'string'.
 
-	if(islist(input)) // not working
+	if(islist(input))
 		var/list/my_list = input
 		var/result = "list\[[my_list.len]\]("
 		if(my_list.len)
