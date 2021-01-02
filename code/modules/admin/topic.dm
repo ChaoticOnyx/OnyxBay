@@ -916,72 +916,112 @@
 		if(M.client && M.client.holder)	return	//admins cannot be banned. Even if they could, the ban doesn't affect them anyway
 
 		switch(alert("Temporary Ban?",,"Yes","No", "Cancel"))
+			if("Cancel")
+				return
 			if("Yes")
 				var/mins = input(usr,"How long (in minutes)?","Ban time",1440) as num|null
 				if(!mins)
 					return
 				if(check_rights(R_MOD, 0) && !check_rights(R_BAN, 0) && mins > config.mod_tempban_max)
-					to_chat(usr, "<span class='warning'>Moderators can only job tempban up to [config.mod_tempban_max] minutes!</span>")
+					to_chat(usr, SPAN("warning","Moderators can only job tempban up to [config.mod_tempban_max] minutes!"))
 					return
 				if(mins >= 525600) mins = 525599
-				var/reason = sanitize(input(usr,"Reason?","reason","Griefer") as text|null)
+				var/reason = sanitize(input(usr,"Reason?","reason","Жriefer") as text|null)
 				if(!reason)
 					return
 				var/ban_everywhere = FALSE
 				if(!isnull(config.server_id))
 					switch(alert("Ban everywhere or just on [config.server_id]?",, "Everywhere", "Just here", "Cancel"))
-						if("Cancel")	return
+						if("Cancel")
+							return
 						if("Everywhere")
 							ban_everywhere = TRUE
-				AddBan(M.ckey, M.computer_id, reason, usr.ckey, 1, mins)
-				ban_unban_log_save("[usr.client.ckey] has banned [M.ckey]. - Reason: [reason] - This will be removed in [mins] minutes.")
-				notes_add(M.ckey,"[usr.client.ckey] has banned [M.ckey]. - Reason: [reason] - This will be removed in [mins] minutes.",usr)
-				to_chat(M, "<span class='danger'>You have been banned by [usr.client.ckey].\nReason: [reason].</span>")
-				to_chat(M, "<span class='warning'>This is a temporary ban, it will be removed in [mins] minutes.</span>")
-				feedback_inc("ban_tmp",1)
-				DB_ban_record(BANTYPE_TEMP, M, mins, reason, ban_everywhere = ban_everywhere)
-				feedback_inc("ban_tmp_mins",mins)
-				if(config.banappeals)
-					to_chat(M, "<span class='warning'>To try to resolve this matter head to [config.banappeals]</span>")
-				else
-					to_chat(M, "<span class='warning'>No ban appeals URL has been set.</span>")
-				log_and_message_admins("has banned [M.ckey].\nReason: [reason]\nThis will be removed in [mins] minutes.")
+				switch(alert(usr, "Boot user from server?",, "Yes","No","Cancel"))
+					if("Cancel")
+						return
+					if("Yes")
+						AddBan(M.ckey, M.computer_id, reason, usr.ckey, 1, mins)
+						ban_unban_log_save("[usr.client.ckey] has banned and booted [M.ckey]. - Reason: [reason] - This will be removed in [mins] minutes.")
+						notes_add(M.ckey,"[usr.client.ckey] has banned and booted [M.ckey]. - Reason: [reason] - This will be removed in [mins] minutes.",usr)
+						to_chat(M, SPAN("danger","You have been banned by [usr.client.ckey].\nReason: [reason]."))
+						to_chat(M, SPAN("warning","This is a temporary ban, it will be removed in [mins] minutes."))
+						feedback_inc("ban_tmp",1)
+						DB_ban_record(BANTYPE_TEMP, M, mins, reason, ban_everywhere = ban_everywhere)
+						feedback_inc("ban_tmp_mins",mins)
+						if(config.banappeals)
+							to_chat(M, SPAN("warning","To try to resolve this matter head to [config.banappeals]"))
+						else
+							to_chat(M, SPAN("warning","No ban appeals URL has been set."))
+						log_and_message_admins("has banned and booted [M.ckey].\nReason: [reason]\nThis will be removed in [mins] minutes.")
 
-				qdel(M.client)
-				//qdel(M)	// See no reason why to delete mob. Important stuff can be lost. And ban can be lifted before round ends.
+						qdel(M.client)
+						//qdel(M)	//for another time
+						return
+					if("No")
+						AddBan(M.ckey, M.computer_id, reason, usr.ckey, 1, mins)
+						ban_unban_log_save("[usr.client.ckey] has banned [M.ckey]. - Reason: [reason] - This will be removed in [mins] minutes.")
+						notes_add(M.ckey,"[usr.client.ckey] has banned [M.ckey]. - Reason: [reason] - This will be removed in [mins] minutes.",usr)
+						feedback_inc("ban_tmp",1)
+						DB_ban_record(BANTYPE_TEMP, M, mins, reason, ban_everywhere = ban_everywhere)
+						feedback_inc("ban_tmp_mins",mins)
+						log_and_message_admins("has banned [M.ckey].\nReason: [reason]\nThis will be removed in [mins] minutes.")
+						return
 			if("No")
-				if(!check_rights(R_BAN))   return
-				var/reason = sanitize(input(usr,"Reason?","reason","Griefer") as text|null)
+				if(!check_rights(R_BAN))
+					return
+				var/reason = sanitize(input(usr,"Reason?","reason","Жriefer") as text|null)
 				if(!reason)
 					return
 				var/ban_everywhere = FALSE
+				var/IP_ban = FALSE
 				if(!isnull(config.server_id))
-					switch(alert("Ban everywhere or just on [config.server_id]?",, "Everywhere", "Just here", "Cancel"))
-						if("Cancel")	return
+					switch(alert(usr, "Ban everywhere or just on [config.server_id]?",, "Everywhere", "Just here", "Cancel"))
+						if("Cancel")
+							return
 						if("Everywhere")
 							ban_everywhere = TRUE
 				switch(alert(usr,"IP ban?",,"Yes","No","Cancel"))
-					if("Cancel")	return
+					if("Cancel")
+						return
 					if("Yes")
-						AddBan(M.ckey, M.computer_id, reason, usr.ckey, 0, 0, M.lastKnownIP)
-					if("No")
-						AddBan(M.ckey, M.computer_id, reason, usr.ckey, 0, 0)
-				to_chat(M, "<span class='danger'>You have been banned by [usr.client.ckey].\nReason: [reason].</span>")
-				to_chat(M, "<span class='warning'>This is a ban until appeal.</span>")
-				if(config.banappeals)
-					to_chat(M, "<span class='warning'>To try to resolve this matter head to [config.banappeals]</span>")
-				else
-					to_chat(M, "<span class='warning'>No ban appeals URL has been set.</span>")
-				ban_unban_log_save("[usr.client.ckey] has permabanned [M.ckey]. - Reason: [reason] - This is a ban until appeal.")
-				notes_add(M.ckey,"[usr.client.ckey] has permabanned [M.ckey]. - Reason: [reason] - This is a ban until appeal.",usr)
-				log_and_message_admins("has banned [M.ckey].\nReason: [reason]\nThis is a ban until appeal.")
-				feedback_inc("ban_perma",1)
-				DB_ban_record(BANTYPE_PERMA, M, -1, reason, ban_everywhere = ban_everywhere)
+						IP_ban = TRUE
+				switch(alert(usr, "Boot user from server?",, "Yes","No","Cancel"))
+					if("Cancel")
+						return
+					if("Yes")
+						if(IP_ban)
+							AddBan(M.ckey, M.computer_id, reason, usr.ckey, 0, 0, M.lastKnownIP)
+						else
+							AddBan(M.ckey, M.computer_id, reason, usr.ckey, 0, 0)
 
-				qdel(M.client)
-				//qdel(M)
-			if("Cancel")
-				return
+						to_chat(M, SPAN("danger","You have been banned by [usr.client.ckey].\nReason: [reason]."))
+						to_chat(M, SPAN("warning","This is a ban until appeal."))
+						if(config.banappeals)
+							to_chat(M, SPAN("warning","To try to resolve this matter head to [config.banappeals]"))
+						else
+							to_chat(M, SPAN("warning","No ban appeals URL has been set.")
+
+						ban_unban_log_save("[usr.client.ckey] has permabanned and booted [M.ckey]. - Reason: [reason] - This is a ban until appeal.")
+						notes_add(M.ckey,"[usr.client.ckey] has permabanned and booted [M.ckey]. - Reason: [reason] - This is a ban until appeal.",usr)
+						log_and_message_admins("has banned and booted [M.ckey].\nReason: [reason]\nThis is a ban until appeal.")
+						feedback_inc("ban_perma",1)
+						DB_ban_record(BANTYPE_PERMA, M, -1, reason, ban_everywhere = ban_everywhere)
+
+						qdel(M.client)
+						//qdel(M)	//for another time
+						return
+					if("No")
+						if(IP_ban)
+							AddBan(M.ckey, M.computer_id, reason, usr.ckey, 0, 0, M.lastKnownIP)
+						else
+							AddBan(M.ckey, M.computer_id, reason, usr.ckey, 0, 0)
+
+						ban_unban_log_save("[usr.client.ckey] has permabanned [M.ckey]. - Reason: [reason] - This is a ban until appeal.")
+						notes_add(M.ckey,"[usr.client.ckey] has permabanned [M.ckey]. - Reason: [reason] - This is a ban until appeal.",usr)
+						log_and_message_admins("has banned [M.ckey].\nReason: [reason]\nThis is a ban until appeal.")
+						feedback_inc("ban_perma",1)
+						DB_ban_record(BANTYPE_PERMA, M, -1, reason, ban_everywhere = ban_everywhere)
+						return
 
 	else if(href_list["mute"])
 		if(!check_rights(R_MOD,0) && !check_rights(R_ADMIN))  return
