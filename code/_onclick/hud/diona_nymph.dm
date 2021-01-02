@@ -30,5 +30,5 @@
 	mymob.fire.screen_loc = ui_fire
 
 	mymob.client.screen = list()
-	mymob.client.screen += list( mymob.healths, mymob.fire)
+	mymob.client.screen += list(mymob.healths, mymob.fire)
 	mymob.client.screen += adding + other
