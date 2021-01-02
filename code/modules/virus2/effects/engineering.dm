@@ -232,7 +232,7 @@
 	if(c_data)
 		data = c_data
 	else
-		data = pick("sleeping_agent", "phoron")
+		data = pick("sleeping_agent", "plasma")
 	var/gas_name = gas_data.name[data]
 	name = "[initial(name)]([gas_name])"
 
