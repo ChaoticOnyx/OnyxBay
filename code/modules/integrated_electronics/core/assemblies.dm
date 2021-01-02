@@ -467,6 +467,7 @@
 	investigate_log("had [IC]([IC.type]) inserted by [key_name(user)].", INVESTIGATE_CIRCUIT)
 	user.drop_item(IC)
 	add_component(IC)
+	IC.create_moved_event()
 	return TRUE
 
 
@@ -738,15 +739,6 @@
 	if(battery && battery.give(amount * CELLRATE))
 		return TRUE
 	return FALSE
-
-// TODO: investigate how it works before update and fix the code below
-/obj/item/device/electronic_assembly/Move()
-	..()
-	for(var/I in assembly_components)
-		var/obj/item/integrated_circuit/IC = I
-		IC.ext_moved()
-	if(light) //Update lighting objects (From light circuits).
-		update_light()
 
 // /obj/item/device/electronic_assembly/stop_pulling()
 // 	for(var/I in assembly_components)

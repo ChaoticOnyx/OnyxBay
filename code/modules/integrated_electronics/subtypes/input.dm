@@ -1051,7 +1051,7 @@
 	set_pin_data(IC_OUTPUT, 2, null)
 	set_pin_data(IC_OUTPUT, 3, null)
 	if(AM)
-		var/obj/item/weapon/cell/C = AM
+		var/obj/item/weapon/cell/C = get_power_cell(AM)
 		if(istype(C))
 			var/turf/A = get_turf(src)
 			if(get_turf(AM) in view(A))

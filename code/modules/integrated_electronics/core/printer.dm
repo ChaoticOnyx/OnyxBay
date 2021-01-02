@@ -110,14 +110,14 @@
 
 	if(istype(O, /obj/item/device/electronic_assembly))
 		var/obj/item/device/electronic_assembly/EA = O //microtransactions not included
+		if(EA.battery)
+			to_chat(user, SPAN_WARNING("Remove [EA]'s power cell first!"))
+			return
 		if(EA.assembly_components.len)
 			if(recycling)
 				return
 			if(!EA.opened)
 				to_chat(user, SPAN_WARNING("You can't reach [EA]'s components to remove them!"))
-				return
-			if(EA.battery)
-				to_chat(user, SPAN_WARNING("Remove [EA]'s power cell first!"))
 				return
 			for(var/V in EA.assembly_components)
 				var/obj/item/integrated_circuit/IC = V

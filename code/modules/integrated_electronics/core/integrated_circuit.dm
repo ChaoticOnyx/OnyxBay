@@ -27,6 +27,9 @@
 	var/demands_object_input = FALSE
 	var/can_input_object_when_closed = FALSE
 	var/max_allowed = 0				// The maximum amount of components allowed inside an integrated circuit.
+	var/ext_moved_triggerable = FALSE // Used to tell assembly if we need moved event
+	var/moved_event_created = FALSE // check this var on delete and if this var true delete ext_moved event
+	var/atom/movable/moved_object // used for check if we already have moved event
 
 
 /*
@@ -96,6 +99,44 @@ a creative player the means to solve many problems.  Circuits are held inside an
 	if(!matter[MATERIAL_STEEL])
 		matter[MATERIAL_STEEL] = w_class * SScircuit.cost_multiplier // Default cost.
 
+/obj/item/integrated_circuit/proc/get_power_cell(atom/movable/AM)
+	var/obj/item/weapon/cell/cell
+	// add below cell getting code from device to get correct cell
+	if(isrobot(AM))
+		var/mob/living/silicon/robot/R = AM
+		cell = R.cell
+
+	else if(istype(AM, /obj/item/weapon/cell))
+		cell = AM
+
+	else if(istype(AM, /obj/machinery/power/apc))
+		var/obj/machinery/power/apc/A = AM
+		cell = A.cell
+
+	else if(istype(AM, /obj/machinery/mining/drill))
+		var/obj/machinery/mining/drill/hdrill = AM
+		cell = hdrill.cell
+
+	else if(istype(AM, /obj/item/weapon/gun/energy))
+		var/obj/item/weapon/gun/energy/WEP = AM
+		cell = WEP.power_supply
+
+	else if(istype(AM, /mob/living/carbon/human))
+		var/mob/living/carbon/human/H = AM
+		var/obj/item/organ/internal/cell/MB = H.internal_organs_by_name[BP_CELL]
+		if(istype(MB))
+			cell = MB.cell
+
+	return cell
+
+// called when we add component to assembly
+/obj/item/integrated_circuit/proc/create_moved_event()
+	if(moved_event_created) // if moved event already created, rerigester it
+		GLOB.moved_event.unregister(moved_object, src)
+	if(ext_moved_triggerable)
+		moved_event_created = TRUE
+		moved_object = get_object()
+		GLOB.moved_event.register(moved_object, src, .proc/ext_moved)
 
 /obj/item/integrated_circuit/proc/on_data_written() //Override this for special behaviour when new data gets pushed to the circuit.
 	return
@@ -105,7 +146,8 @@ a creative player the means to solve many problems.  Circuits are held inside an
 	QDEL_LIST(inputs)
 	QDEL_LIST(outputs)
 	QDEL_LIST(activators)
-
+	if(ext_moved_triggerable && moved_event_created)
+		GLOB.moved_event.unregister(moved_object, src)
 
 /obj/item/integrated_circuit/emp_act(severity)
 	for(var/k in inputs)
@@ -366,6 +408,8 @@ a creative player the means to solve many problems.  Circuits are held inside an
 		I.disconnect_all()
 
 /obj/item/integrated_circuit/proc/ext_moved()
+	if(assembly)
+		assembly.update_light() //Update lighting objects (From light circuits).
 	return
 
 

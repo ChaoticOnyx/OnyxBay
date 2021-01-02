@@ -35,30 +35,6 @@
 	power_draw_per_use = 2000
 	amount_to_move = 20000
 
-/obj/item/integrated_circuit/power/transmitter/proc/get_power_cell(atom/movable/AM)
-	var/obj/item/weapon/cell/cell
-	// add below cell getting code from device to get correct cell
-	if(isrobot(AM))
-		var/mob/living/silicon/robot/R = AM
-		cell = R.cell
-
-	else if(istype(AM, /obj/item/weapon/cell))
-		cell = AM
-
-	else if(istype(AM, /obj/machinery/power/apc))
-		var/obj/machinery/power/apc/A = AM
-		cell = A.cell
-
-	else if(istype(AM, /obj/machinery/mining/drill))
-		var/obj/machinery/mining/drill/hdrill = AM
-		cell = hdrill.cell
-
-	else if(istype(AM, /obj/item/weapon/gun/energy))
-		var/obj/item/weapon/gun/energy/WEP = AM
-		cell = WEP.power_supply
-
-	return cell
-
 /obj/item/integrated_circuit/power/transmitter/do_work()
 
 	var/atom/movable/AM = get_pin_data_as_type(IC_INPUT, 1, /atom/movable)
@@ -134,6 +110,7 @@
 	complexity = 35
 	power_draw_per_use = 100
 	amount_to_move = 0
+	ext_moved_triggerable = TRUE
 
 	var/obj/structure/cable/connected_cable
 

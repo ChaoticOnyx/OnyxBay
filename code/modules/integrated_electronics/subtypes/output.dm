@@ -280,28 +280,15 @@
 	outputs = list()
 	spawn_flags = IC_SPAWN_DEFAULT|IC_SPAWN_RESEARCH
 	activators = list("moved" = IC_PINTYPE_PULSE_OUT)
-	power_draw_per_use = 10
+	power_draw_idle = 10
+	ext_moved_triggerable = TRUE
 	var/turf/last_location
 
-/obj/item/integrated_circuit/output/move_detector/Destroy()
-	STOP_PROCESSING(SSobj, src)
-	return ..()
-
-/obj/item/integrated_circuit/output/move_detector/Initialize()
-	START_PROCESSING(SSobj, src)
-	. = ..()
-
-/obj/item/integrated_circuit/output/move_detector/Process()
-	..()
-	update_position()
-
-/obj/item/integrated_circuit/output/move_detector/proc/update_position()
-	if(last_location)
-		if(last_location != get_turf(get_object()))
-			activate_pin(1)
-		last_location = get_turf(get_object())
-	else
-		last_location = get_turf(get_object())
+/obj/item/integrated_circuit/output/move_detector/ext_moved()
+	var/turf/T = get_turf(get_object())
+	if(last_location != T)
+		activate_pin(1)
+	last_location = T
 
 /obj/item/integrated_circuit/output/led
 	name = "light-emitting diode"

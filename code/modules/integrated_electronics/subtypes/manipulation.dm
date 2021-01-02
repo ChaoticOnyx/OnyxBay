@@ -463,6 +463,7 @@
 	ext_cooldown = 1
 	var/max_grab = GRAB_NORMAL
 	var/obj/item/pulling
+	ext_moved_triggerable = TRUE
 
 /obj/item/integrated_circuit/manipulation/claw/do_work(ord)
 	var/obj/acting_object = get_object()
@@ -479,7 +480,6 @@
 						acting_object.visible_message("\The [acting_object] starts pulling \the [AM] around.")
 						GLOB.moved_event.register(AM, src, .proc/check_pull) //Whenever the target moves, make sure we can still pull it!
 						GLOB.destroyed_event.register(AM, src, .proc/stop_pulling) //Stop pulling if it gets destroyed
-						GLOB.moved_event.register(acting_object, src, .proc/pull) //Make sure we actually pull it.
 						if(pulling)
 							set_pin_data(IC_OUTPUT, 1, TRUE)
 						else
@@ -501,6 +501,9 @@
 						if(acting_object.Adjacent(F))
 							step_towards(pullee, F)
 	activate_pin(2)
+
+/obj/item/integrated_circuit/manipulation/claw/ext_moved()
+	pull() //Make sure we actually pull it.
 
 /obj/item/integrated_circuit/manipulation/claw/proc/can_pull(obj/item/I)
 	return assembly && I && I.w_class <= assembly.w_class && !I.anchored
@@ -681,15 +684,8 @@
 				if(!container.can_be_inserted(target_obj))
 					return
 
-				// I hope they will not abuse this.
+				// The circuit is smarter than people that does this
 				if(istype(container, /obj/item/weapon/storage/backpack/holding) && istype(target_obj, /obj/item/weapon/storage/backpack/holding))
-					assembly.investigate_log("Created a singularity. Caused by [src], creator - [assembly.creator]", "singulo")
-					assembly.investigate_log("Created a singularity. Caused by [src], creator - [assembly.creator]", INVESTIGATE_CIRCUIT)
-					qdel(container)
-					qdel(target_obj)
-					new /obj/singularity(get_turf(assembly), 300)
-					log_and_message_admins("probably detonated a bag of holding, created by [assembly.creator], visit [INVESTIGATE_CIRCUIT] investigate page for more details", null, get_turf(assembly))
-					qdel(assembly)
 					return
 
 				container.handle_item_insertion(target_obj)
