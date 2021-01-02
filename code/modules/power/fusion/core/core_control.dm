@@ -30,6 +30,9 @@
 
 /obj/machinery/computer/fusion_core_control/interact(mob/user)
 
+	if(..())
+		return
+
 	if(!cur_viewed_device || !check_core_status(cur_viewed_device))
 		cur_viewed_device = null
 

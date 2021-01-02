@@ -18,6 +18,9 @@
 
 /obj/machinery/computer/fusion_fuel_control/interact(mob/user)
 
+	if(..())
+		return
+
 	if(stat & (BROKEN|NOPOWER))
 		user.unset_machine()
 		user << browse(null, "window=fuel_control")

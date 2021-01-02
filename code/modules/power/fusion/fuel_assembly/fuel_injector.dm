@@ -81,6 +81,9 @@ var/list/fuel_injectors = list()
 
 /obj/machinery/fusion_fuel_injector/attack_hand(mob/user)
 
+	if(..())
+		return
+
 	if(injecting)
 		to_chat(user, "<span class='warning'>Shut \the [src] off before playing with the fuel rod!</span>")
 		return
