@@ -45,6 +45,46 @@
 		activate_pin(3)
 
 
+/obj/item/integrated_circuit/mining/mining_satchel
+	name = "mining satchel"
+	desc = "A mining satchel that can collect ores from tile"
+	extended_desc = "Takes a turf ref to take ores from it or accept mining box to give collected ores to it."
+	category_text = "Mining"
+	ext_cooldown = 1
+	complexity = 20
+	cooldown_per_use = 1 SECONDS
+	inputs = list(
+		"target" = IC_PINTYPE_REF
+		)
+	outputs = list()
+	activators = list(
+		"use" = IC_PINTYPE_PULSE_IN,
+		"pulse out" = IC_PINTYPE_PULSE_OUT
+		)
+	spawn_flags = IC_SPAWN_RESEARCH
+	power_draw_per_use = 20
+	var/obj/item/weapon/storage/ore/box
+
+/obj/item/integrated_circuit/mining/mining_satchel/Initialize()
+	. = ..()
+	box = new(src)
+
+/obj/item/integrated_circuit/mining/mining_satchel/do_work()
+	if(assembly)
+		var/atom/movable/AM = get_pin_data(IC_INPUT, 1)
+		if(istype(AM, /obj/structure/ore_box))
+			var/obj/structure/ore_box/OB = AM
+			OB.attackby(box, src)
+
+		if(isturf(AM))
+			var/turf/T = AM
+			for(var/obj/item/weapon/ore/O in T.contents)
+				if(!box.can_be_inserted(O))
+					return
+				box.handle_item_insertion(O)
+
+		activate_pin(2)
+
 /obj/item/integrated_circuit/mining/mining_drill
 	name = "mining drill"
 	desc = "A mining drill that can drill through rocks."
@@ -74,7 +114,7 @@
 /obj/item/integrated_circuit/mining/mining_drill/do_work()
 	rock = get_pin_data(IC_INPUT, 1)
 
-	if(!istype(rock) || rock.Adjacent(assembly) || (busy))
+	if(!istype(rock) || !rock.Adjacent(assembly) || busy)
 		activate_pin(3)
 		return
 

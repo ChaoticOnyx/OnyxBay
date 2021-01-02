@@ -37,7 +37,7 @@
 
 /obj/item/integrated_circuit/power/transmitter/proc/get_power_cell(atom/movable/AM)
 	var/obj/item/weapon/cell/cell
-	// add below code to get correct cell
+	// add below cell getting code from device to get correct cell
 	if(isrobot(AM))
 		var/mob/living/silicon/robot/R = AM
 		cell = R.cell
@@ -53,14 +53,16 @@
 		var/obj/machinery/mining/drill/hdrill = AM
 		cell = hdrill.cell
 
+	else if(istype(AM, /obj/item/weapon/gun/energy))
+		var/obj/item/weapon/gun/energy/WEP = AM
+		cell = WEP.power_supply
+
 	return cell
 
 /obj/item/integrated_circuit/power/transmitter/do_work()
 
 	var/atom/movable/AM = get_pin_data_as_type(IC_INPUT, 1, /atom/movable)
 	if(!AM)
-		return FALSE
-	if(istype(AM, /obj/item/weapon/gun/energy))
 		return FALSE
 	if(!assembly)
 		return FALSE // Pointless to do everything else if there's no battery to draw from.

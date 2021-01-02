@@ -414,7 +414,7 @@
 		"target" = IC_PINTYPE_REF
 		)
 	outputs = list(
-		"located ref" 		= IC_PINTYPE_LIST,
+		"located refs" 		= IC_PINTYPE_LIST,
 		"Written letters" 	= IC_PINTYPE_STRING,
 		"area"				= IC_PINTYPE_STRING
 		)
@@ -430,11 +430,10 @@
 /obj/item/integrated_circuit/input/turfscan/do_work()
 	var/turf/scanned_turf = get_pin_data_as_type(IC_INPUT, 1, /turf)
 	var/turf/circuit_turf = get_turf(src)
-	var/area_name = get_area_name(scanned_turf)
 	if(!istype(scanned_turf)) //Invalid input
 		activate_pin(3)
 		return
-
+	var/area_name = scanned_turf.loc.name
 	if(scanned_turf in view(circuit_turf)) // This is a camera. It can't examine things that it can't see.
 		var/list/turf_contents = new()
 		for(var/obj/U in scanned_turf)
@@ -480,53 +479,6 @@
 		set_pin_data(IC_OUTPUT, 1, weakref(A))
 	push_data()
 	activate_pin(2)
-
-/obj/item/integrated_circuit/input/turfscan
-	name = "tile analyzer"
-	desc = "This machine vision system can analyze contents of desired tile.And can read letters on floor."
-	icon_state = "video_camera"
-	complexity = 5
-	inputs = list(
-		"target" = IC_PINTYPE_REF
-		)
-	outputs = list(
-		"located ref" 		= IC_PINTYPE_LIST,
-		"Written letters" 	= IC_PINTYPE_STRING
-		)
-	activators = list(
-		"scan" = IC_PINTYPE_PULSE_IN,
-		"on scanned" = IC_PINTYPE_PULSE_OUT,
-		"not scanned" = IC_PINTYPE_PULSE_OUT
-		)
-	spawn_flags = IC_SPAWN_RESEARCH
-	power_draw_per_use = 40
-	cooldown_per_use = 10
-
-/obj/item/integrated_circuit/input/turfscan/do_work()
-	var/atom/movable/H = get_pin_data_as_type(IC_INPUT, 1, /atom)
-	var/turf/T = get_turf(src)
-	var/turf/E = get_turf(H)
-	if(!istype(H)) //Invalid input
-		return
-
-	if(H in view(T)) // This is a camera. It can't examine thngs,that it can't see.
-		var/list/cont = new()
-		if(E.contents.len)
-			for(var/i = 1 to E.contents.len)
-				var/atom/U = E.contents[i]
-				cont += weakref(U)
-		set_pin_data(IC_OUTPUT, 1, cont)
-		var/list/St = new()
-		// TODO: add more decals writing to here.
-		for(var/obj/effect/decal/cleanable/blood/writing/I in E.contents)
-			if(istype(I))
-				St.Add(I.message)
-		if(St.len)
-			set_pin_data(IC_OUTPUT, 2, jointext(St, ",", 1, 0))
-		push_data()
-		activate_pin(2)
-	else
-		activate_pin(3)
 
 /obj/item/integrated_circuit/input/local_locator
 	name = "local locator"
@@ -920,7 +872,7 @@
 	extended_desc = "This will automatically translate most languages it hears to Zurich Accord Common. \
 	The first activation pin is always pulsed when the circuit hears someone talk, while the second one \
 	is only triggered if it hears someone speaking a language other than Zurich Accord Common."
-	icon_state = "recorder"
+	//icon_state = "recorder" TODO: make sprite for this icon_state.
 	complexity = 8
 	inputs = list()
 	obj_flags = OBJ_FLAG_CONDUCTIBLE
@@ -958,7 +910,7 @@
 	name = "sensor"
 	desc = "Scans and obtains a reference for any objects or persons near you. All you need to do is shove the machine in their face."
 	extended_desc = "If the 'ignore storage' pin is set to true, the sensor will disregard scanning various storage containers such as backpacks."
-	icon_state = "recorder"
+	//icon_state = "recorder"
 	complexity = 12
 	inputs = list("ignore storage" = IC_PINTYPE_BOOLEAN)
 	outputs = list("scanned" = IC_PINTYPE_REF)
@@ -984,7 +936,7 @@
 	name = "ranged sensor"
 	desc = "Scans and obtains a reference for any objects or persons in range. All you need to do is point the machine towards the target."
 	extended_desc = "If the 'ignore storage' pin is set to true, the sensor will disregard scanning various storage containers such as backpacks."
-	icon_state = "recorder"
+	//icon_state = "recorder"
 	complexity = 36
 	inputs = list("ignore storage" = IC_PINTYPE_BOOLEAN)
 	outputs = list("scanned" = IC_PINTYPE_REF)
@@ -1017,7 +969,7 @@
 	desc = "Scans and obtains a reference for any objects you use on the assembly."
 	extended_desc = "If the 'put down' pin is set to true, the assembly will take the scanned object from your hands to its location. \
 	Useful for interaction with the grabber. The scanner only works using the help intent."
-	icon_state = "recorder"
+	//icon_state = "recorder"
 	complexity = 4
 	inputs = list("put down" = IC_PINTYPE_BOOLEAN)
 	outputs = list("scanned" = IC_PINTYPE_REF)

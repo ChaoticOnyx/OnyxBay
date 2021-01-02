@@ -1,3 +1,7 @@
+#define SURGERY_DURATION_DELTA rand(9,11) / 10 // delta multiplier for all surgeries, from 0.9 to 1.1
+#define SURGERY_FAILURE -1
+#define SURGERY_BLOCKED -2
+
 /obj/item/integrated_circuit/manipulation
 	category_text = "Manipulation"
 
@@ -10,9 +14,8 @@
 	lethal (TRUE) or stun (FALSE) modes. It uses the internal battery of the weapon itself, not the assembly. If you wish to fire the gun while the circuit is in \
 	hand, you will need to use an assembly that is a gun."
 	complexity = 20
-	max_allowed = 1
 	w_class = ITEM_SIZE_SMALL
-	size = 3
+	size = 15
 	inputs = list(
 		"target X rel" = IC_PINTYPE_NUMBER,
 		"target Y rel" = IC_PINTYPE_NUMBER,
@@ -685,18 +688,30 @@
 	if(distance > 1 || distance < 0)
 		return
 
-	var/obj/item/weapon/storage/container = get_pin_data_as_type(IC_INPUT, 2, /obj/item)
+	var/obj/item/weapon/storage/container = get_pin_data_as_type(IC_INPUT, 2, /obj/item/weapon/storage)
 	var/mode = get_pin_data(IC_INPUT, 3)
-	switch(mode)
-		if(1)	//Not working
-			if(!container.can_be_inserted(target_obj))
-				return
+	if(assembly && istype(container) && istype(target_obj) && isnum_safe(mode))
+		switch(mode)
+			if(1)	//Not working
+				if(!container.can_be_inserted(target_obj))
+					return
 
-			container.handle_item_insertion(target_obj)
+				// I hope they will not abuse this.
+				if(istype(container, /obj/item/weapon/storage/backpack/holding) && istype(target_obj, /obj/item/weapon/storage/backpack/holding))
+					assembly.investigate_log("Created a singularity. Caused by [src], creator - [assembly.creator]", "singulo")
+					assembly.investigate_log("Created a singularity. Caused by [src], creator - [assembly.creator]", INVESTIGATE_CIRCUIT)
+					qdel(container)
+					qdel(target_obj)
+					new /obj/singularity(get_turf(assembly), 300)
+					log_and_message_admins("probably detonated a bag of holding, created by [assembly.creator], visit [INVESTIGATE_CIRCUIT] investigate page for more details", null, get_turf(assembly))
+					qdel(assembly)
+					return
 
-		else if(2)
-			if(target_obj in container.contents)
-				container.remove_from_storage(target_obj, get_turf(src))
+				container.handle_item_insertion(target_obj)
+
+			else if(2)
+				if(target_obj in container.contents)
+					container.remove_from_storage(target_obj, get_turf(src))
 
 // Renamer circuit. Renames the assembly it is in. Useful in cooperation with telecomms-based circuits.
 /obj/item/integrated_circuit/manipulation/renamer
@@ -782,3 +797,145 @@
 			push_data()
 
 	activate_pin(3)
+
+/obj/item/integrated_circuit/manipulation/surgery_device
+	name = "surgery device" // help, I don't know, how to name this circuit :(
+	desc = "This circuit contains instructions to use medical instruments. Perhaps it does operation like a surgery instrument inserted in it."
+	extended_desc = "Takes a targer ref to do operation on and bodypart of target to do operation on."
+	ext_cooldown = 1
+	complexity = 20
+	inputs = list(
+		"target" = IC_PINTYPE_REF,
+		"bodypart" = IC_PINTYPE_STRING
+		)
+	outputs = list(
+		"instrument" = IC_PINTYPE_REF
+	)
+	activators = list(
+		"use" = IC_PINTYPE_PULSE_IN,
+		"on success" = IC_PINTYPE_PULSE_OUT,
+		"on failure" = IC_PINTYPE_PULSE_OUT
+		)
+	spawn_flags = IC_SPAWN_RESEARCH
+	power_draw_per_use = 20
+	demands_object_input = TRUE		// You can put stuff in once the circuit is in assembly,passed down from additem and handled by attackby()
+	var/selected_zone
+	var/obj/item/instrument
+
+/obj/item/integrated_circuit/manipulation/surgery_device/Initialize()
+	. = ..()
+	extended_desc += "\nThe avaliable list of bodyparts: "
+	extended_desc += jointext(BP_ALL_LIMBS, ", ")
+
+/obj/item/integrated_circuit/manipulation/surgery_device/attackby(obj/item/O, mob/user)
+	if(instrument)
+		to_chat(user, SPAN("warning", "There's already a instrument installed."))
+		return
+	if(istype(O, /obj/item/weapon/bonegel) || istype(O, /obj/item/weapon/bonesetter) || istype(O, /obj/item/weapon/circular_saw) || istype(O, /obj/item/weapon/scalpel) \
+	|| istype(O, /obj/item/weapon/retractor) || istype(O, /obj/item/weapon/hemostat) || istype(O, /obj/item/weapon/cautery) || istype(O, /obj/item/weapon/surgicaldrill) \
+	|| istype(O, /obj/item/weapon/FixOVein) || istype(O, /obj/item/weapon/organfixer))
+		instrument = O
+		user.drop_item(O)
+		instrument.forceMove(src)
+		set_pin_data(IC_OUTPUT, 1, weakref(instrument))
+		push_data()
+	else
+		..() // instrument not located
+
+/obj/item/integrated_circuit/manipulation/surgery_device/attack_self(mob/user)
+	if(instrument)
+		instrument.forceMove(get_turf(user))
+		to_chat(user, SPAN("notice", "You slide \the [instrument] out of the firing mechanism."))
+		playsound(src, 'sound/items/Crowbar.ogg', 50, 1)
+		instrument = null
+		set_pin_data(IC_OUTPUT, 1, weakref(null))
+		push_data()
+	else
+		to_chat(user, SPAN("notice", "There's no instrument to remove from the mechanism."))
+
+/obj/item/integrated_circuit/manipulation/surgery_device/do_work()
+	if(assembly)
+		var/mob/living/carbon/target = get_pin_data_as_type(IC_INPUT, 1, /mob/living/carbon)
+		if(!istype(target))
+			return
+		selected_zone = sanitize(get_pin_data(IC_INPUT, 2))
+		if(!(selected_zone in BP_ALL_LIMBS))
+			return
+		var/status = do_int_surgery(target)
+		if(status)
+			activate_pin(2)
+		else
+			activate_pin(3)
+
+/obj/item/integrated_circuit/manipulation/surgery_device/proc/wait_check_mob(mob/target, time = 30, target_zone = 0, uninterruptible = FALSE, progress = TRUE, incapacitation_flags = INCAPACITATION_DEFAULT)
+	var/obj/item/device/electronic_assembly/ASS = assembly
+	if(!ASS || !target)
+		return 0
+	var/user_loc = ASS.loc
+	var/target_loc = target.loc
+
+	var/endtime = world.time+time
+	. = TRUE
+	while (world.time < endtime)
+		stoplag()
+
+		if(!ASS || !target)
+			. = FALSE
+			break
+
+		if(uninterruptible)
+			continue
+
+		if(!ASS || ASS.loc != user_loc)
+			. = FALSE
+			break
+
+		if(target.loc != target_loc)
+			. = FALSE
+			break
+
+		if(target_zone && selected_zone != target_zone)
+			. = FALSE
+			break
+
+/obj/item/integrated_circuit/manipulation/surgery_device/proc/do_int_surgery(mob/living/carbon/M)
+	var/obj/item/device/electronic_assembly/user = assembly
+	if(!istype(user))
+		return FALSE
+	var/zone = selected_zone
+	if(!zone || !(selected_zone in BP_ALL_LIMBS))
+		return FALSE
+	if(zone in M.op_stage.in_progress) //Can't operate on someone repeatedly.
+		return FALSE
+	for(var/datum/surgery_step/S in surgery_steps)
+		//check if tool is right or close enough and if this step is possible
+		if(S.tool_quality(instrument))
+			var/status = TRUE
+			var/step_is_valid = S.can_use(user, M, zone, instrument)
+			if(step_is_valid && S.is_valid_target(M))
+				if(S.clothes_penalty && clothes_check(user, M, zone) == SURGERY_BLOCKED)
+					return FALSE
+				if(step_is_valid == SURGERY_FAILURE) // This is a failure that already has a message for failing.
+					return FALSE
+				M.op_stage.in_progress += zone
+				S.begin_step(user, M, zone, instrument)		//start on it
+				//We had proper tools! (or RNG smiled.) and user did not move or change hands.
+				if(prob(S.success_chance(user, M, instrument, zone)) &&  wait_check_mob(M, S.duration * SURGERY_DURATION_DELTA * surgery_speed, zone))
+					S.end_step(user, M, zone, instrument)		//finish successfully
+				else if (user.Adjacent(M))			//or
+					S.fail_step(user, M, zone, instrument)		//malpractice~
+				else // This failing silently was a pain.
+					status = FALSE
+				if (M)
+					M.op_stage.in_progress -= zone 									// Clear the in-progress flag.
+				if (ishuman(M))
+					var/mob/living/carbon/human/H = M
+					H.update_surgery()
+					if(H.op_stage.current_organ)
+						H.op_stage.current_organ = null						//Clearing current surgery target for the sake of internal surgery's consistency
+				return status 												//don't want to do weapony things after surgery
+	return FALSE
+
+#undef SURGERY_FAILURE
+#undef SURGERY_BLOCKED
+#undef SURGERY_DURATION_DELTA

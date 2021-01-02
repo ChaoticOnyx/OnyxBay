@@ -214,12 +214,6 @@
 		installed_brain.forceMove(get_turf(src))
 		set_pin_data(IC_OUTPUT, 1, weakref(null))
 
-/obj/item/integrated_circuit/input/mmi_tank/CanUseTopic(mob/user)
-	if(installed_brain && installed_brain.brainmob && (installed_brain.brainmob == user))
-		return installed_brain.brainmob.check_bot_self
-	else
-		..()
-
 //Brain changes
 /mob/living/carbon/brain/var/check_bot_self = FALSE
 
@@ -246,16 +240,15 @@
 		return
 
 	if(istype(A,/obj/item/device/electronic_assembly))
-		var/obj/item/device/electronic_assembly/CheckedAssembly = A
+		var/obj/item/device/electronic_assembly/holdingassembly = A
 
-		if(brainholder in CheckedAssembly.assembly_components)
-			var/obj/item/device/electronic_assembly/holdingassembly=A
-			check_bot_self=TRUE
+		if(brainholder in holdingassembly.assembly_components)
+			check_bot_self = TRUE
 
 			if(holdingassembly.opened)
 				holdingassembly.ui_interact(src)
 			holdingassembly.attack_self(src)
-			check_bot_self=FALSE
+			check_bot_self = FALSE
 			return
 
 	brainholder.do_work(6)
@@ -339,12 +332,6 @@
 		installed_pai.forceMove(get_turf(src))
 		set_pin_data(IC_OUTPUT, 1, weakref(null))
 
-/obj/item/integrated_circuit/input/pAI_connector/CanUseTopic(mob/user)
-	if(installed_pai && installed_pai.pai && (installed_pai.pai == user))
-		return installed_pai.pai.check_bot_self
-	else
-		..()
-
 
 //pAI changes
 /mob/living/silicon/pai/var/check_bot_self = FALSE
@@ -374,16 +361,15 @@
 		return
 
 	if(istype(A,/obj/item/device/electronic_assembly))
-		var/obj/item/device/electronic_assembly/CheckedAssembly = A
+		var/obj/item/device/electronic_assembly/holdingassembly = A
 
-		if(paiholder in CheckedAssembly.assembly_components)
-			var/obj/item/device/electronic_assembly/holdingassembly=A
-			check_bot_self=TRUE
+		if(paiholder in holdingassembly.assembly_components)
+			check_bot_self = TRUE
 
 			if(holdingassembly.opened)
 				holdingassembly.ui_interact(src)
 			holdingassembly.attack_self(src)
-			check_bot_self=FALSE
+			check_bot_self = FALSE
 			return
 
 	paiholder.do_work(6)

@@ -82,6 +82,12 @@
 /obj/item/device/electronic_assembly/proc/check_interactivity(mob/user)
 	if(!istype(user))
 		return
+	if(istype(user, /mob/living/silicon/pai))
+		var/mob/living/silicon/pai/pai_holder = user
+		return pai_holder.check_bot_self
+	else if(istype(user, /mob/living/carbon/brain))
+		var/mob/living/carbon/brain/brain_holder = user
+		return brain_holder.check_bot_self
 	return (Adjacent(user) && CanUseTopic(user))
 
 /obj/item/device/electronic_assembly/Bump(atom/AM)
