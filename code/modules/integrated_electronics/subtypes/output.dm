@@ -271,6 +271,38 @@
 		set_camera_status(0)
 		set_pin_data(IC_INPUT, 2, FALSE)
 
+/obj/item/integrated_circuit/output/move_detector
+	name = "movement detection"
+	desc = "It's have a complicit gyroscope system, that activates pin if assembly moved"
+	category_text = "Output"
+	complexity = 4
+	inputs = list()
+	outputs = list()
+	spawn_flags = IC_SPAWN_DEFAULT|IC_SPAWN_RESEARCH
+	activators = list("moved" = IC_PINTYPE_PULSE_OUT)
+	power_draw_per_use = 10
+	var/turf/last_location
+
+/obj/item/integrated_circuit/output/move_detector/Destroy()
+	STOP_PROCESSING(SSobj, src)
+	return ..()
+
+/obj/item/integrated_circuit/output/move_detector/Initialize()
+	START_PROCESSING(SSobj, src)
+	. = ..()
+
+/obj/item/integrated_circuit/output/move_detector/Process()
+	..()
+	update_position()
+
+/obj/item/integrated_circuit/output/move_detector/proc/update_position()
+	if(last_location)
+		if(last_location != get_turf(get_object()))
+			activate_pin(1)
+		last_location = get_turf(get_object())
+	else
+		last_location = get_turf(get_object())
+
 /obj/item/integrated_circuit/output/led
 	name = "light-emitting diode"
 	desc = "RGB LED. Takes a boolean value in, and if the boolean value is 'true-equivalent', the LED will be marked as lit on examine."

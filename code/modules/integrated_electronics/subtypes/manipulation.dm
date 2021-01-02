@@ -35,10 +35,6 @@
 	action_flags = IC_ACTION_COMBAT
 	power_draw_per_use = 0
 	ext_cooldown = 1
-	var/mode = FALSE
-
-	var/obj/item/projectile/stun_projectile = null		//stun mode projectile type
-	var/obj/item/projectile/lethal_projectile = null	//lethal mode projectile type
 
 	demands_object_input = TRUE		// You can put stuff in once the circuit is in assembly,passed down from additem and handled by attackby()
 
@@ -95,25 +91,22 @@
 		return
 	set_pin_data(IC_OUTPUT, 1, weakref(installed_gun))
 	push_data()
-	var/datum/integrated_io/xo = inputs[1]
-	var/datum/integrated_io/yo = inputs[2]
-	var/datum/integrated_io/mode1 = inputs[3]
-
-	mode = mode1.data
+	var/x = get_pin_data(IC_INPUT, 1)
+	var/y = get_pin_data(IC_INPUT, 2)
 	if(assembly)
 		switch(ord)
 			if(1)
-				if(isnum_safe(xo.data))
-					xo.data = round(xo.data, 1)
-				if(isnum_safe(yo.data))
-					yo.data = round(yo.data, 1)
+				if(isnum_safe(x))
+					x = round(x, 1)
+				if(isnum_safe(x))
+					y = round(x, 1)
 
 				var/bodypart = sanitize(get_pin_data(IC_INPUT, 3))
 				if(!(bodypart in BP_ALL_LIMBS))
 					bodypart = pick(BP_ALL_LIMBS)
 				var/turf/T = get_turf(assembly)
-				var/target_x = Clamp(T.x + xo.data, 0, world.maxx)
-				var/target_y = Clamp(T.y + yo.data, 0, world.maxy)
+				var/target_x = Clamp(T.x + x, 0, world.maxx)
+				var/target_y = Clamp(T.y + y, 0, world.maxy)
 
 				assembly.visible_message(SPAN("danger", "[assembly] fires [installed_gun]!"))
 				if(shootAt(locate(target_x, target_y, T.z), bodypart))
@@ -122,7 +115,6 @@
 				var/datum/firemode/next_firemode = installed_gun.switch_firemodes()
 				set_pin_data(IC_OUTPUT, 2, next_firemode ? next_firemode.name : null)
 				push_data()
-
 
 /obj/item/integrated_circuit/manipulation/weapon_firing/proc/shootAt(turf/target, bodypart)
 	var/turf/T = get_turf(assembly)
@@ -136,13 +128,6 @@
 	if(installed_gun.power_supply.charge < installed_gun.charge_cost)
 		return
 	update_icon()
-	var/datum/firemode/next_firemode = installed_gun.switch_firemodes()
-	if(!mode)
-		if(next_firemode.name != "stun")
-			installed_gun.switch_firemodes()
-	else
-		if(next_firemode.name != "lethal")
-			installed_gun.switch_firemodes()
 	var/obj/item/projectile/A = installed_gun.consume_next_projectile()
 	if(!A)
 		return

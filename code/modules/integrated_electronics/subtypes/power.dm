@@ -139,6 +139,7 @@
 
 /obj/item/integrated_circuit/power/transmitter/wire_connector/Destroy()
 	connected_cable = null
+	STOP_PROCESSING(SSobj, src)
 	return ..()
 
 /obj/item/integrated_circuit/power/transmitter/wire_connector/Initialize()
