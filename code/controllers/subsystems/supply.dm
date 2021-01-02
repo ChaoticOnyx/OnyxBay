@@ -11,7 +11,7 @@ SUBSYSTEM_DEF(supply)
 	var/points_per_slip = 2
 	var/material_buy_prices = list(
 		/material/platinum = 5,
-		/material/phoron = 5
+		/material/plasma = 5
 	) //Should only contain material datums, with values the profit per sheet sold.
 	var/point_sources = list()
 	var/pointstotalsum = 0

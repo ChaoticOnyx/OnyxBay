@@ -17,12 +17,16 @@
 
 /obj/machinery/cell_charger/update_icon()
 	icon_state = "ccharger[charging ? 1 : 0]"
-	if(charging && !(stat & (BROKEN|NOPOWER)) )
-		var/newlevel = 	round(charging.percent() * 4.0 / 99)
-		if(chargelevel != newlevel)
-			overlays.Cut()
-			overlays += "ccharger-o[newlevel]"
-			chargelevel = newlevel
+	if(charging)
+		overlays.Cut()
+		if(charging.icon == icon)
+			overlays += charging.icon_state
+		else
+			overlays += "cell"
+		overlays += "ccharger-wires"
+		if(!(stat & (BROKEN|NOPOWER)))
+			chargelevel = round(charging.percent() * 4.0 / 99)
+			overlays += "ccharger-o[chargelevel]"
 	else
 		overlays.Cut()
 

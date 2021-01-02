@@ -81,7 +81,7 @@
 		/obj/item/weapon/reagent_containers/glass,
 		/obj/item/weapon/reagent_containers/pill,
 		/obj/item/weapon/reagent_containers/ivbag,
-		/obj/item/stack/material/phoron,
+		/obj/item/stack/material/plasma,
 		/obj/item/weapon/storage/pill_bottle,
 		/obj/item/weapon/reagent_containers/food/snacks/monkeycube,
 		/obj/item/weapon/virusdish,

@@ -465,17 +465,14 @@ This function completely restores a damaged organ to perfect condition.
 	..()
 
 /obj/item/organ/external/proc/createwound(type = CUT, damage, surgical)
-
 	if(damage <= 0)
 		return
-
 	//moved these before the open_wound check so that having many small wounds for example doesn't somehow protect you from taking internal damage (because of the return)
 	//Brute damage can possibly trigger an internal wound, too.
-	var/local_damage = brute_dam + burn_dam + damage
-	if(!surgical && (type in list(CUT, PIERCE, BRUISE)) && damage > 15 && local_damage > 30)
-
+	var/local_damage = brute_dam + burn_dam
+	if(!surgical && (type in list(CUT, PIERCE, BRUISE)) && damage > 15 && local_damage > min_broken_damage)
 		var/internal_damage
-		if(prob(damage/2) && sever_artery())
+		if(prob(ceil(damage/2)) && sever_artery())
 			internal_damage = TRUE
 		if(prob(ceil(damage/4)) && sever_tendon())
 			internal_damage = TRUE

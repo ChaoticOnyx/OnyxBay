@@ -56,9 +56,9 @@
 	target_organ = BP_BRAIN
 	strength = 10
 
-/datum/reagent/toxin/phoron
-	name = "Phoron"
-	description = "Phoron in its liquid form."
+/datum/reagent/toxin/plasma
+	name = "Plasma"
+	description = "Plasma in its liquid form."
 	taste_mult = 1.5
 	reagent_state = LIQUID
 	color = "#ff3300"
@@ -75,38 +75,38 @@
 	strength = 15
 	metabolism = REM
 
-/datum/reagent/toxin/phoron/touch_mob(mob/living/L, amount)
+/datum/reagent/toxin/plasma/touch_mob(mob/living/L, amount)
 	if(istype(L))
 		L.adjust_fire_stacks(amount / fire_mult)
 
-/datum/reagent/toxin/phoron/affect_blood(mob/living/carbon/M, alien, removed)
+/datum/reagent/toxin/plasma/affect_blood(mob/living/carbon/M, alien, removed)
 	if(alien == IS_NABBER)
 		return
 	..()
 
-/datum/reagent/toxin/phoron/affect_touch(mob/living/carbon/M, alien, removed)
-	M.take_organ_damage(0, removed * 0.1) //being splashed directly with phoron causes minor chemical burns
+/datum/reagent/toxin/plasma/affect_touch(mob/living/carbon/M, alien, removed)
+	M.take_organ_damage(0, removed * 0.1) //being splashed directly with plasma causes minor chemical burns
 	if(prob(10 * fire_mult))
 		M.pl_effects()
 
-/datum/reagent/toxin/phoron/touch_turf(turf/simulated/T)
+/datum/reagent/toxin/plasma/touch_turf(turf/simulated/T)
 	if(!istype(T))
 		return
-	T.assume_gas("phoron", volume, T20C)
+	T.assume_gas("plasma", volume, T20C)
 	remove_self(volume)
 
 // Produced during deuterium synthesis. Super poisonous, SUPER flammable (doesn't need oxygen to burn).
-/datum/reagent/toxin/phoron/oxygen
-	name = "Oxyphoron"
+/datum/reagent/toxin/plasma/oxygen
+	name = "Plasmygen"
 	description = "An exceptionally flammable molecule formed from deuterium synthesis."
 	strength = 15
 	fire_mult = 15
 
-/datum/reagent/toxin/phoron/oxygen/touch_turf(turf/simulated/T)
+/datum/reagent/toxin/plasma/oxygen/touch_turf(turf/simulated/T)
 	if(!istype(T))
 		return
 	T.assume_gas("oxygen", ceil(volume/2), T20C)
-	T.assume_gas("phoron", ceil(volume/2), T20C)
+	T.assume_gas("plasma", ceil(volume/2), T20C)
 	remove_self(volume)
 
 /datum/reagent/toxin/cyanide //Fast and Lethal

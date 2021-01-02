@@ -1,9 +1,7 @@
-/mob/CanPass(atom/movable/mover, turf/target, height=0, air_group=0)
-	if(air_group || (height == 0))
-		return TRUE
+/mob/CanPass(atom/movable/mover, turf/target)
 	if(ismob(mover))
 		var/mob/moving_mob = mover
-		if (other_mobs && moving_mob.other_mobs)
+		if(other_mobs && moving_mob.other_mobs)
 			return TRUE
 	return (!mover.density || !density || lying)
 
@@ -281,6 +279,8 @@
 		if(mob.pulledby || mob.buckled) // Wheelchair driving!
 			if(istype(mob.loc, /turf/space))
 				return // No wheelchair driving in space
+			if(istype(mob.buckled, /obj/structure/bed/chair/pedalgen))
+				return mob.buckled.relaymove(mob, direct)
 			if(istype(mob.pulledby, /obj/structure/bed/chair/wheelchair))
 				return mob.pulledby.relaymove(mob, direct)
 			else if(istype(mob.buckled, /obj/structure/bed/chair/wheelchair))

@@ -130,6 +130,26 @@
 	path = /obj/item/weapon/storage/wallet/poly
 	cost = 2
 
+/datum/gear/welding_cover
+	display_name = "welding helmet covers selection"
+	path = /obj/item/welding_cover/knight
+
+/datum/gear/welding_cover/New()
+	..()
+	var/cover_type = list()
+	cover_type["knight"] = /obj/item/welding_cover/knight
+	cover_type["engie"]  = /obj/item/welding_cover/engie
+	cover_type["demon"]  = /obj/item/welding_cover/demon
+	cover_type["fancy"]  = /obj/item/welding_cover/fancy
+	cover_type["carp"]   = /obj/item/welding_cover/carp
+	cover_type["hockey"] = /obj/item/welding_cover/hockey
+	cover_type["blue"]   = /obj/item/welding_cover/blue
+	cover_type["flame"]  = /obj/item/welding_cover/flame
+	cover_type["white"]  = /obj/item/welding_cover/white
+	gear_tweaks += new /datum/gear_tweak/path(cover_type)
+
+//Donator's Shop
+
 /datum/gear/rubberducky
 	display_name = "bike horn"
 	path = /obj/item/weapon/bikehorn
