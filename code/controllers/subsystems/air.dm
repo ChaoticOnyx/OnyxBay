@@ -183,9 +183,7 @@ Total Unsimulated Turfs: [world.maxx*world.maxy*world.maxz - simulated_turf_coun
 			continue
 
 		//check if the turf is self-zone-blocked
-		var/c_airblock
-		ATMOS_CANPASS_TURF(c_airblock, T, T)
-		if(c_airblock & ZONE_BLOCKED)
+		if(T.c_airblock(T) & ZONE_BLOCKED)
 			deferred += T
 			if (no_mc_tick)
 				CHECK_TICK
@@ -291,12 +289,10 @@ Total Unsimulated Turfs: [world.maxx*world.maxy*world.maxz - simulated_turf_coun
 	ASSERT(isturf(A))
 	ASSERT(isturf(B))
 	#endif
-	var/ablock
-	ATMOS_CANPASS_TURF(ablock, A, B)
+	var/ablock = A.c_airblock(B)
 	if(ablock == BLOCKED)
 		return BLOCKED
-	ATMOS_CANPASS_TURF(., B, A)
-	return ablock | .
+	return ablock | B.c_airblock(A)
 
 /datum/controller/subsystem/air/proc/merge(zone/A, zone/B)
 	#ifdef ZASDBG

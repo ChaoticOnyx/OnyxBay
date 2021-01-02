@@ -175,18 +175,6 @@
 		qdel(src)
 		return
 
-	if(config.player_limit && is_player_rejected_by_player_limit(usr, ckey))
-		if(config.panic_address && TopicData != "redirect")
-			alert(src,"This server is currently full and not accepting new connections. Sending you to [config.panic_server_name ? config.panic_server_name : config.panic_address].","Server Full","OK")
-			winset(src, null, "command=.options")
-			src << link("[config.panic_address]?redirect")
-		else
-			alert(src, "This server is currently full and not accepting new connections.","Server Full","OK")
-
-		log_admin("[ckey] tried to join but the server is full (player_limit=[config.player_limit])")
-		qdel(src)
-		return
-
 	// Change the way they should download resources.
 	if(config.resource_urls && config.resource_urls.len)
 		src.preload_rsc = pick(config.resource_urls)
@@ -284,6 +272,19 @@
 
 	if(get_preference_value(/datum/client_preference/fullscreen_mode) != GLOB.PREF_NO)
 		toggle_fullscreen(get_preference_value(/datum/client_preference/fullscreen_mode))
+
+	if(config.player_limit && is_player_rejected_by_player_limit(usr, ckey))
+		if(config.panic_address && TopicData != "redirect")
+			DIRECT_OUTPUT(src, SPAN_WARNING("<h1>This server is currently full and not accepting new connections. Sending you to [config.panic_server_name ? config.panic_server_name : config.panic_address]</h1>"))
+			winset(src, null, "command=.options")
+			src << link("[config.panic_address]?redirect")
+
+		else
+			DIRECT_OUTPUT(src, SPAN_WARNING("<h1>This server is currently full and not accepting new connections.</h1>"))
+
+		log_admin("[ckey] tried to join but the server is full (player_limit=[config.player_limit])")
+		qdel(src)
+		return
 
 /*	if(holder)
 		src.control_freak = 0 //Devs need 0 for profiler access

@@ -136,10 +136,10 @@
 	helmet_type = /obj/item/clothing/head/helmet/space/void/security/alt
 	mask_type = /obj/item/clothing/mask/breath
 
-/obj/machinery/suit_storage_unit/merc
+/obj/machinery/suit_storage_unit/syndi
 	name = "Nonstandard Voidsuit Storage Unit"
-	suit_type = /obj/item/clothing/suit/space/void/merc
-	helmet_type = /obj/item/clothing/head/helmet/space/void/merc
+	suit_type = /obj/item/clothing/suit/space/void/syndi
+	helmet_type = /obj/item/clothing/head/helmet/space/void/syndi
 	boots_type = /obj/item/clothing/shoes/magboots
 	tank_type = /obj/item/weapon/tank/oxygen
 	mask_type = /obj/item/clothing/mask/breath
@@ -685,7 +685,7 @@
 	var/active = 0          // PLEASE HOLD.
 	var/safeties = 1        // The cycler won't start with a living thing inside it unless safeties are off.
 	var/irradiating = 0     // If this is > 0, the cycler is decontaminating whatever is inside it.
-	var/radiation_level = 2 // 1 is removing germs, 2 is removing blood, 3 is removing phoron.
+	var/radiation_level = 2 // 1 is removing germs, 2 is removing blood, 3 is removing plasma.
 	var/model_text = ""     // Some flavour text for the topic box.
 	var/locked = 1          // If locked, nothing can be taken from or added to the cycler.
 	var/can_repair          // If set, the cycler can repair voidsuits.
@@ -757,7 +757,7 @@
 	name = "Nonstandard suit cycler"
 	model_text = "Nonstandard"
 	req_access = list(access_syndicate)
-	departments = list("Mercenary")
+	departments = list("Syndicate")
 	species = list(SPECIES_HUMAN,SPECIES_TAJARA,SPECIES_SKRELL,SPECIES_UNATHI)
 	can_repair = 1
 
@@ -1174,7 +1174,7 @@
 				suit.SetName("exploration voidsuit")
 				suit.icon_state = "void_explorer"
 
-		if("^%###^%$" || "Mercenary")
+		if("^%###^%$" || "Syndicate")
 			if(helmet)
 				helmet.SetName("blood-red voidsuit helmet")
 				helmet.icon_state = "rig0-syndie"

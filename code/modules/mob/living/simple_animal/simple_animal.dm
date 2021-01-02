@@ -47,9 +47,9 @@
 	var/oxygen_alert = 0
 	var/toxins_alert = 0
 
-	//Atmos effect - Yes, you can make creatures that require phoron or co2 to survive. N2O is a trace gas and handled separately, hence why it isn't here. It'd be hard to add it. Hard and me don't mix (Yes, yes make all the dick jokes you want with that.) - Errorage
+	//Atmos effect - Yes, you can make creatures that require plasma or co2 to survive. N2O is a trace gas and handled separately, hence why it isn't here. It'd be hard to add it. Hard and me don't mix (Yes, yes make all the dick jokes you want with that.) - Errorage
 	var/min_gas = list("oxygen" = 5)
-	var/max_gas = list("phoron" = 1, "carbon_dioxide" = 5)
+	var/max_gas = list("plasma" = 1, "carbon_dioxide" = 5)
 	var/unsuitable_atoms_damage = 2	//This damage is taken when atmos doesn't fit all the requirements above
 	var/speed = 0 //LETS SEE IF I CAN SET SPEEDS FOR SIMPLE MOBS WITHOUT DESTROYING EVERYTHING. Higher speed is slower, negative speed is faster
 
@@ -74,27 +74,14 @@
 	var/in_stasis = 0
 
 /mob/living/simple_animal/Life()
+	if(stat == DEAD)
+		return 0
 	. = ..()
 	if(!.)
 		walk(src, 0)
 		return 0
 	if(!living_observers_present(GetConnectedZlevels(z)) && !(z == 0))
 		return 0
-	//Health
-	if(stat == DEAD)
-		if(health > 0)
-			icon_state = icon_living
-			switch_from_dead_to_living_mob_list()
-			set_stat(CONSCIOUS)
-			set_density(1)
-		return 0
-
-	if(health <= 0)
-		death()
-		return 0
-
-	if(health > maxHealth)
-		health = maxHealth
 
 	handle_stunned()
 	handle_weakened()
@@ -312,10 +299,21 @@
 		health = 0 //Make sure dey dead.
 		walk_to(src, 0)
 
-/mob/living/simple_animal/updatehealth()
+/mob/living/simple_animal/rejuvenate()
 	..()
-	if(health <= 0)
-		death()
+	icon_state = icon_living
+	set_density(1)
+
+/mob/living/simple_animal/updatehealth()
+	if(stat == DEAD)
+		return
+	if(status_flags & GODMODE)
+		health = maxHealth
+		set_stat(CONSCIOUS)
+	else
+		health = maxHealth - getOxyLoss() - getToxLoss() - getFireLoss() - getBruteLoss() - getCloneLoss() - getHalLoss()
+		if(health <= 0)
+			death()
 
 /mob/living/simple_animal/ex_act(severity)
 	if(!blinded)
@@ -411,7 +409,7 @@
 			stop_automated_movement = 0
 		else
 			stop_automated_movement = 1
-			walk_away(src, panic_target, 7, 2)
+			walk_away(src, panic_target, 7, 4)
 
 /mob/living/simple_animal/proc/set_panic_target(mob/M)
 	if(M && !ckey)

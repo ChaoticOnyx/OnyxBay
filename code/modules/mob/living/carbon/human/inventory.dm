@@ -23,10 +23,10 @@ This saves us from having to call add_fingerprint() any time something is put in
 			to_chat(H, "<span class='warning'>You are unable to equip that.</span>")
 
 /mob/living/carbon/human/proc/equip_in_one_of_slots(obj/item/W, list/slots, del_on_fail = 1)
-	for (var/slot in slots)
-		if (equip_to_slot_if_possible(W, slots[slot], del_on_fail = 0))
+	for(var/slot in slots)
+		if(equip_to_slot_if_possible(W, slots[slot], del_on_fail = 0))
 			return slot
-	if (del_on_fail)
+	if(del_on_fail)
 		qdel(W)
 	return null
 
@@ -197,7 +197,7 @@ This saves us from having to call add_fingerprint() any time something is put in
 		update_inv_back()
 	else if (W == handcuffed)
 		if(handcuffed.on_restraint_removal(src)) //If this returns 1, then the unquipping action was interrupted
-			return 0	
+			return 0
 		handcuffed = null
 		if(buckled && buckled.buckle_require_restraints)
 			buckled.unbuckle_mob()
@@ -217,6 +217,7 @@ This saves us from having to call add_fingerprint() any time something is put in
 	else
 		return 0
 
+	update_equipment_slowdown()
 	update_action_buttons()
 	return 1
 
@@ -226,10 +227,14 @@ This saves us from having to call add_fingerprint() any time something is put in
 //set redraw_mob to 0 if you don't wish the hud to be updated - if you're doing it manually in your own proc.
 /mob/living/carbon/human/equip_to_slot(obj/item/W as obj, slot, redraw_mob = 1)
 
-	if(!slot) return
-	if(!istype(W)) return
-	if(!has_organ_for_slot(slot)) return
-	if(!species || !species.hud || !(slot in species.hud.equip_slots)) return
+	if(!slot)
+		return
+	if(!istype(W))
+		return
+	if(!has_organ_for_slot(slot))
+		return
+	if(!species || !species.hud || !(slot in species.hud.equip_slots))
+		return
 	W.forceMove(src)
 
 	var/obj/item/old_item = get_equipped_item(slot)
@@ -363,7 +368,28 @@ This saves us from having to call add_fingerprint() any time something is put in
 	if(old_item)
 		qdel(old_item)
 
+	update_equipment_slowdown()
+
 	return 1
+
+/mob/living/carbon/human/update_equipment_slowdown()
+	equipment_slowdown = -1
+	for(var/slot = slot_first to slot_last)
+		var/obj/item/I = get_equipped_item(slot)
+		if(I)
+			var/item_slowdown = 0
+			item_slowdown += I.slowdown_general
+			item_slowdown += I.slowdown_per_slot[slot]
+			item_slowdown += I.slowdown_accessory
+			if(item_slowdown >= 0)
+				var/size_mod = 0
+				if(!(mob_size == MOB_MEDIUM))
+					size_mod = log(2, mob_size / MOB_MEDIUM)
+				if(species.strength + size_mod + 1 > 0)
+					item_slowdown = item_slowdown / (species.strength + size_mod + 1)
+				else
+					item_slowdown = item_slowdown - species.strength - size_mod
+			equipment_slowdown += item_slowdown
 
 //Checks if a given slot can be accessed at this time, either to equip or unequip I
 /mob/living/carbon/human/slot_is_accessible(slot, obj/item/I, mob/user=null)

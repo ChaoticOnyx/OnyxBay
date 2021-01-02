@@ -178,6 +178,20 @@
 				nextstate = FIREDOOR_CLOSED
 				close()
 
+/obj/machinery/door/firedoor/attack_generic(mob/user, damage)
+	if(stat & (BROKEN|NOPOWER))
+		if(damage >= 10)
+			if(src.density)
+				visible_message(SPAN("danger","\The [user] forces \the [src] open!"))
+				open(1)
+			else
+				visible_message(SPAN("danger","\The [user] forces \the [src] closed!"))
+				close(1)
+		else
+			visible_message(SPAN("notice","\The [user] strains fruitlessly to force \the [src] [density ? "open" : "closed"]."))
+		return
+	..()
+
 /obj/machinery/door/firedoor/attackby(obj/item/weapon/C as obj, mob/user as mob)
 	add_fingerprint(user, 0, C)
 	if(operating)
@@ -236,7 +250,8 @@
 		user.visible_message("<span class='danger'>\The [user] starts to force \the [src] [density ? "open" : "closed"] with \a [C]!</span>",\
 				"You start forcing \the [src] [density ? "open" : "closed"] with \the [C]!",\
 				"You hear metal strain.")
-		if(do_after(user,30,src))
+		var/forcing_time = istype(C, /obj/item/weapon/crowbar/emergency) ? 60 : 30
+		if(do_after(user, forcing_time, src))
 			if(isCrowbar(C))
 				if(stat & (BROKEN|NOPOWER) || !density)
 					user.visible_message("<span class='danger'>\The [user] forces \the [src] [density ? "open" : "closed"] with \a [C]!</span>",\

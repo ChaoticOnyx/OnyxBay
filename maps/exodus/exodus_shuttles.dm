@@ -369,10 +369,10 @@
 	docking_controller = "admin_shuttle_dock_airlock"
 	autoset = 1
 
-// Merc
+// Syndi
 
-/datum/shuttle/autodock/multi/antag/mercenary
-	name = "Mercenary"
+/datum/shuttle/autodock/multi/antag/syndicate
+	name = "Syndicate"
 	warmup_time = 10
 	destination_tags = list(
 		"nav_merc_start",
@@ -394,50 +394,50 @@
 	arrival_message = "Attention, you have a large signature approaching the station - looks unarmed to surface scans. We're too far out to intercept - brace for visitors."
 	departure_message = "Your visitors are on their way out of the system, burning delta-v like it's nothing. Good riddance."
 
-/obj/effect/shuttle_landmark/merc/start
-	name = "Mercenary Base"
+/obj/effect/shuttle_landmark/syndi/start
+	name = "Syndicate Base"
 	landmark_tag = "nav_merc_start"
 	docking_controller = "merc_base"
 
-/obj/effect/shuttle_landmark/merc/internim
+/obj/effect/shuttle_landmark/syndi/internim
 	name = "In transit"
 	landmark_tag = "nav_merc_transition"
 	autoset = 1
 
-/obj/effect/shuttle_landmark/merc/dock
+/obj/effect/shuttle_landmark/syndi/dock
 	name = "North West"
 	landmark_tag = "nav_merc_dock"
 	autoset = 1
 
-/obj/effect/shuttle_landmark/merc/coupole
+/obj/effect/shuttle_landmark/syndi/coupole
 	name = "South West"
 	landmark_tag = "nav_merc_coupole"
 	autoset = 1
 
-/obj/effect/shuttle_landmark/merc/minage
+/obj/effect/shuttle_landmark/syndi/minage
 	name = "South East"
 	landmark_tag = "nav_merc_minage"
 	autoset = 1
 
-/obj/effect/shuttle_landmark/merc/residentiel
+/obj/effect/shuttle_landmark/syndi/residentiel
 	name = "North East"
 	landmark_tag = "nav_merc_residentiel"
 	autoset = 1
 
-/obj/effect/shuttle_landmark/merc/north
+/obj/effect/shuttle_landmark/syndi/north
 	name = "North"
 	landmark_tag = "nav_merc_north"
 	autoset = 1
 
-/obj/effect/shuttle_landmark/merc/south
+/obj/effect/shuttle_landmark/syndi/south
 	name = "South"
 	landmark_tag = "nav_merc_south"
 	autoset = 1
 
-// Elite Merc
+// Elite syndi
 
-/datum/shuttle/autodock/multi/antag/elite_mercenary
-	name = "Elite Mercenary"
+/datum/shuttle/autodock/multi/antag/elite_syndicate
+	name = "Elite Syndicate Operative"
 	warmup_time = 10
 	destination_tags = list(
 		"nav_emerc_start",
@@ -453,32 +453,32 @@
 	home_waypoint = "nav_emerc_start"
 	move_time = 120
 
-/obj/effect/shuttle_landmark/elite_mercenary/start
-	name = "Elite Mercenary Base"
+/obj/effect/shuttle_landmark/elite_syndicate/start
+	name = "Elite Syndicate Operative Base"
 	landmark_tag = "nav_emerc_start"
 	docking_controller = "emerc_base"
 
-/obj/effect/shuttle_landmark/elite_mercenary/internim
+/obj/effect/shuttle_landmark/elite_syndicate/internim
 	name = "In transit"
 	landmark_tag = "nav_emerc_transition"
 	autoset = 1
 
-/obj/effect/shuttle_landmark/elite_mercenary/northwest
+/obj/effect/shuttle_landmark/elite_syndicate/northwest
 	name = "North West"
 	landmark_tag = "nav_emerc_nw"
 	autoset = 1
 
-/obj/effect/shuttle_landmark/elite_mercenary/southwest
+/obj/effect/shuttle_landmark/elite_syndicate/southwest
 	name = "South West"
 	landmark_tag = "nav_emerc_sw"
 	autoset = 1
 
-/obj/effect/shuttle_landmark/elite_mercenary/southeast
+/obj/effect/shuttle_landmark/elite_syndicate/southeast
 	name = "South East"
 	landmark_tag = "nav_emerc_se"
 	autoset = 1
 
-/obj/effect/shuttle_landmark/elite_mercenary/northeast
+/obj/effect/shuttle_landmark/elite_syndicate/northeast
 	name = "North East"
 	landmark_tag = "nav_emerc_ne"
 	autoset = 1

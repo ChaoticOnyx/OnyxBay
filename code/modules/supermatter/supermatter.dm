@@ -6,7 +6,7 @@
 #define RADIATION_RELEASE_MODIFIER 1.5
 #define DELTA_RADIATION_RELEASE_MODIFIER 0.7
 
-#define PHORON_RELEASE_MODIFIER 1500		//Higher == less phoron released by reaction
+#define PLASMA_RELEASE_MODIFIER 1500		//Higher == less plasma released by reaction
 #define OXYGEN_RELEASE_MODIFIER 15000		//Higher == less oxygen released at high temperature/power
 
 #define REACTION_POWER_MODIFIER 1.1			//Higher == more overall power
@@ -409,7 +409,7 @@
 
 		//Release reaction gasses
 		var/heat_capacity = removed.heat_capacity()
-		removed.adjust_multi("phoron", max(device_energy / PHORON_RELEASE_MODIFIER, 0), \
+		removed.adjust_multi("plasma", max(device_energy / PLASMA_RELEASE_MODIFIER, 0), \
 		                     "oxygen", max((device_energy + removed.temperature - T0C) / OXYGEN_RELEASE_MODIFIER, 0))
 
 		var/thermal_power = current_thermal_release_modifier * device_energy
@@ -593,7 +593,7 @@
 #undef DELTA_THERMAL_RELEASE_MODIFIER
 #undef RADIATION_RELEASE_MODIFIER
 #undef DELTA_RADIATION_RELEASE_MODIFIER
-#undef PHORON_RELEASE_MODIFIER
+#undef PLASMA_RELEASE_MODIFIER
 #undef OXYGEN_RELEASE_MODIFIER
 #undef REACTION_POWER_MODIFIER
 #undef POWER_FACTOR

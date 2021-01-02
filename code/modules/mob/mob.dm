@@ -233,7 +233,7 @@
 	return
 
 //mob verbs are faster than object verbs. See http://www.byond.com/forum/?post=1326139&page=2#comment8198716 for why this isn't atom/verb/examine()
-/mob/verb/examinate(atom/A as mob|obj|turf in view())
+/mob/verb/examinate(atom/A as mob|obj|turf in view(src.client.eye))
 	set name = "Examine"
 	set category = "IC"
 
@@ -528,7 +528,7 @@
 	if(!Adjacent(usr)) return
 	if(istype(M,/mob/living/silicon/ai)) return
 	show_inv(usr)
-
+	usr.show_inventory.open()
 
 /mob/verb/stop_pulling()
 
@@ -707,6 +707,8 @@
 				lying = buckled.buckle_lying
 			if(buckled.buckle_movable)
 				anchored = 0
+				canmove = 1
+			if(buckled.buckle_relaymove)
 				canmove = 1
 	else
 		lying = incapacitated(INCAPACITATION_KNOCKDOWN)

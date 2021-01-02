@@ -1,5 +1,6 @@
 /obj/item/weapon/paper/talisman
 	icon_state = "paper_talisman"
+	dynamic_icon = TRUE
 	var/imbue = null
 	info = "<center><img src='talisman.png'></center><br/><br/>"
 
@@ -26,7 +27,7 @@
 	user.visible_message("<span class='danger'>\The [user] invokes \the [src] at [target].</span>", "<span class='danger'>You invoke \the [src] at [target].</span>")
 	target.emp_act(1)
 	qdel(src)
-	
+
 /obj/item/weapon/paper/talisman/stun/afterattack(atom/target, mob/user, proximity)
 	if(!iscultist(user))
 		return
@@ -36,7 +37,7 @@
 	user.visible_message("<span class='danger'>\The [user] invokes \the [src] at [target].</span>", "<span class='danger'>You invoke \the [src] at [target].</span>")
 	var/obj/item/weapon/nullrod/N = locate() in target
 	if(N)
-		return	
+		return
 	if(iscarbon(target))
 		var/mob/living/carbon/C = target
 		C.eye_blurry += 50
@@ -45,4 +46,4 @@
 	else if(issilicon(target))
 		var/mob/living/silicon/S = target
 		S.Weaken(10)
-	qdel(src)	
+	qdel(src)

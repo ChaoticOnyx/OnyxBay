@@ -25,7 +25,7 @@
 	icon_state = "box"
 	item_state = "syringe_kit"
 	max_storage_space = DEFAULT_BOX_STORAGE
-	var/foldable = /obj/item/stack/material/cardboard	// BubbleWrap - if set, can be folded (when empty) into a sheet of cardboard
+	var/obj/item/foldable = /obj/item/stack/material/cardboard	// BubbleWrap - if set, can be folded (when empty) into a sheet of cardboard
 	use_sound = "searching_clothes"
 
 /obj/item/weapon/storage/box/large
@@ -36,14 +36,14 @@
 	max_storage_space = DEFAULT_LARGEBOX_STORAGE
 
 // BubbleWrap - A box can be folded up to make card
-/obj/item/weapon/storage/box/attack_self(mob/user as mob)
-	if(..()) return
-
+/obj/item/weapon/storage/box/attack_self(mob/user)
+	if(..())
+		return
 	//try to fold it.
-	if ( contents.len )
+	if(contents.len)
 		return
 
-	if ( !ispath(src.foldable) )
+	if(!ispath(src.foldable))
 		return
 	var/found = 0
 	// Close any open UI windows first
@@ -52,16 +52,19 @@
 			src.close(M)
 		if ( M == user )
 			found = 1
-	if ( !found )	// User is too far away
+	if(!found)	// User is too far away
 		return
 	// Now make the cardboard
-	to_chat(user, "<span class='notice'>You fold [src] flat.</span>")
+	var/obj/item/I
 	if(ispath(foldable, /obj/item/stack))
 		var/stack_amt = max(2**(w_class - 3), 1)
-		new src.foldable(get_turf(src), stack_amt)
+		I = new src.foldable(get_turf(src), stack_amt)
+		to_chat(user, SPAN("notice", "You fold [src] flat."))
 	else
-		new src.foldable(get_turf(src))
+		I = new src.foldable(get_turf(src))
+		to_chat(user, SPAN("notice", "You fold [src] into \a [I]."))
 	qdel(src)
+	user.put_in_hands(I)
 
 /obj/item/weapon/storage/box/make_exact_fit()
 	..()
@@ -69,8 +72,9 @@
 
 /obj/item/weapon/storage/box/survival
 	name = "crew survival kit"
-	desc = "A box decorated in warning colors that contains a limited supply of survival tools. The panel and white stripe indicate this one contains oxygen."
+	desc = "A durable plastic box decorated in warning colors that contains a limited supply of survival tools. The panel and white stripe indicate this one contains oxygen. It has special foldlines, making it able to be folded into an emergency crowbar."
 	icon_state = "survival"
+	foldable = /obj/item/weapon/crowbar/emergency
 	startswith = list(/obj/item/clothing/mask/breath = 1,
 					/obj/item/weapon/tank/emergency/oxygen = 1,
 					/obj/item/weapon/reagent_containers/hypospray/autoinjector = 1,
@@ -80,8 +84,9 @@
 
 /obj/item/weapon/storage/box/vox
 	name = "vox survival kit"
-	desc = "A box decorated in warning colors that contains a limited supply of survival tools. The panel and black stripe indicate this one contains nitrogen."
+	desc = "A durable plastic box decorated in warning colors that contains a limited supply of survival tools. The panel and black stripe indicate this one contains nitrogen. It has special foldlines, making it able to be folded into an emergency crowbar."
 	icon_state = "survivalvox"
+	foldable = /obj/item/weapon/crowbar/emergency/vox
 	startswith = list(/obj/item/clothing/mask/breath = 1,
 					/obj/item/weapon/tank/emergency/nitrogen = 1,
 					/obj/item/stack/medical/patches = 1,
@@ -90,8 +95,9 @@
 
 /obj/item/weapon/storage/box/engineer
 	name = "engineer survival kit"
-	desc = "A box decorated in warning colors that contains a limited supply of survival tools. The panel and orange stripe indicate this one as the engineering variant."
+	desc = "A durable plastic box decorated in warning colors that contains a limited supply of survival tools. The panel and orange stripe indicate this one as the engineering variant. It has special foldlines, making it able to be folded into an emergency crowbar."
 	icon_state = "survivaleng"
+	foldable = /obj/item/weapon/crowbar/emergency/eng
 	startswith = list(/obj/item/clothing/mask/breath = 1,
 					/obj/item/weapon/tank/emergency/oxygen/engi = 1,
 					/obj/item/weapon/reagent_containers/hypospray/autoinjector = 1,
@@ -102,8 +108,9 @@
 
 /obj/item/weapon/storage/box/security
 	name = "security survival kit"
-	desc = "A box decorated in warning colors that contains a limited supply of survival tools. The panel and red & black stripe indicate this one as the security variant."
+	desc = "A durable plastic box decorated in warning colors that contains a limited supply of survival tools. The panel and red & black stripe indicate this one as the security variant. It has special foldlines, making it able to be folded into an emergency crowbar."
 	icon_state = "survivalsec"
+	foldable = /obj/item/weapon/crowbar/emergency/sec
 	startswith = list(/obj/item/clothing/mask/breath = 1,
 					/obj/item/weapon/tank/emergency/oxygen = 1,
 					/obj/item/weapon/reagent_containers/hypospray/autoinjector = 1,

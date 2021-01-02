@@ -212,6 +212,27 @@
 	8 - things that take up an entire turf, like wall girders or door assemblies
 */
 
+var/list/default_onmob_slots = list(
+		slot_l_hand_str,
+		slot_r_hand_str,
+		slot_belt_str,
+		slot_back_str,
+		slot_l_ear_str,
+		slot_r_ear_str,
+		slot_glasses_str,
+		slot_wear_id_str,
+		slot_w_uniform_str,
+		slot_wear_suit_str,
+		slot_head_str,
+		slot_shoes_str,
+		slot_wear_mask_str,
+		slot_handcuffed_str,
+		slot_legcuffed_str,
+		slot_gloves_str,
+		slot_s_store_str,
+		slot_tie_str
+		)
+
 var/list/default_onmob_icons = list(
 		slot_l_hand_str = 'icons/mob/onmob/items/lefthand.dmi',
 		slot_r_hand_str = 'icons/mob/onmob/items/righthand.dmi',

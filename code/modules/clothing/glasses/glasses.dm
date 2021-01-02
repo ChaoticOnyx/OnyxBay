@@ -98,6 +98,13 @@
 	. = ..()
 	overlay = GLOB.global_hud.science
 
+/obj/item/clothing/glasses/science/attack_self(mob/user)
+	..()
+	if(active)
+		hud_type = HUD_SCIENCE
+	else
+		hud_type = null
+
 /obj/item/clothing/glasses/night
 	name = "night vision goggles"
 	desc = "You can totally see in the dark now!"
@@ -208,6 +215,13 @@
 	desc = "Forest green glasses, like the kind you'd wear when hatching a nasty scheme."
 	icon_state = "gglasses"
 	item_state = "gglasses"
+	body_parts_covered = 0
+
+/obj/item/clothing/glasses/rglasses
+	name = "red glasses"
+	desc = "They make you look like a wannabe elite agent."
+	icon_state = "bigredglasses"
+	item_state = "bigredglasses"
 	body_parts_covered = 0
 
 /obj/item/clothing/glasses/sunglasses

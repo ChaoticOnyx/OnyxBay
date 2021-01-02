@@ -30,9 +30,9 @@
 	desc = "The parrot squaks, \"It's a Parrot! BAWWK!\""
 	icon = 'icons/mob/animal.dmi'
 	icon_state = "parrot_fly"
+	item_state = "parrot"
 	icon_living = "parrot_fly"
 	icon_dead = "parrot_dead"
-	item_state = "parrot_fly"
 	pass_flags = PASS_FLAG_TABLE
 	mob_size = MOB_SMALL
 

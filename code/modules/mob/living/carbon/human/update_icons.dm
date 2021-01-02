@@ -550,25 +550,25 @@ var/global/list/damage_icon_parts = list()
 // Ears
 /mob/living/carbon/human/update_inv_ears(update_icons=1)
 	overlays_standing[HO_EARS_LAYER] = null
-	if( (head && (head.flags_inv & (BLOCKHAIR | BLOCKHEADHAIR))) || (wear_mask && (wear_mask.flags_inv & (BLOCKHAIR | BLOCKHEADHAIR))))
-
-		if(update_icons) queue_icon_update()
-
+	if((head && (head.flags_inv & (BLOCKHAIR | BLOCKHEADHAIR))) || (wear_mask && (wear_mask.flags_inv & (BLOCKHAIR | BLOCKHEADHAIR))))
+		if(update_icons)
+			queue_icon_update()
 		return
 
 	if(l_ear || r_ear)
 		// Blank image upon which to layer left & right overlays.
-		var/image/both = image("icon" = 'icons/effects/effects.dmi', "icon_state" = "nothing")
+		var/image/both = image("icon" = 'icons/effects/blank.dmi')
 		if(l_ear)
-			both.overlays += l_ear.get_mob_overlay(src,slot_l_ear_str)
+			both.overlays += l_ear.get_mob_overlay(src, slot_l_ear_str)
 		if(r_ear)
-			both.overlays += r_ear.get_mob_overlay(src,slot_r_ear_str)
+			both.overlays += r_ear.get_mob_overlay(src, slot_r_ear_str)
 		overlays_standing[HO_EARS_LAYER] = both
 
 	else
 		overlays_standing[HO_EARS_LAYER] = null
 
-	if(update_icons) queue_icon_update()
+	if(update_icons)
+		queue_icon_update()
 
 // Shoes
 /mob/living/carbon/human/update_inv_shoes(update_icons=1)

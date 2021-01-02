@@ -494,7 +494,14 @@
 		else if(MUTATION_TK in user.mutations)
 			to_chat(user, "You telekinetically remove the [get_fitting_name()].")
 		else
-			to_chat(user, "You try to remove the [get_fitting_name()], but it's too hot and you don't want to burn your hand.")
+			if(user.a_intent == I_HELP)
+				to_chat(user, "You try to remove the [get_fitting_name()], but it's too hot and you don't want to burn your hand.")
+			else
+				to_chat(user, "You try to remove the [get_fitting_name()], but you burn your hand on it!")
+				var/obj/item/organ/external/E = H.get_organ(user.hand ? BP_L_HAND : BP_R_HAND)
+				if(E)
+					E.take_external_damage(0, rand(3, 7), used_weapon = "hot lightbulb")
+			user.setClickCooldown(DEFAULT_QUICK_COOLDOWN)
 			return				// if burned, don't remove the light
 	else
 		to_chat(user, "You remove the [get_fitting_name()].")
@@ -727,7 +734,7 @@
 	update_icon()
 
 // attack bulb/tube with object
-// if a syringe, can inject phoron to make it explode
+// if a syringe, can inject plasma to make it explode
 /obj/item/weapon/light/attackby(obj/item/I, mob/user)
 	..()
 	if(istype(I, /obj/item/weapon/reagent_containers/syringe))
@@ -735,10 +742,10 @@
 
 		to_chat(user, "You inject the solution into the [src].")
 
-		if(S.reagents.has_reagent(/datum/reagent/toxin/phoron, 5))
+		if(S.reagents.has_reagent(/datum/reagent/toxin/plasma, 5))
 
-			log_admin("LOG: [user.name] ([user.ckey]) injected a light with phoron, rigging it to explode.")
-			message_admins("LOG: [user.name] ([user.ckey]) injected a light with phoron, rigging it to explode.")
+			log_admin("LOG: [user.name] ([user.ckey]) injected a light with plasma, rigging it to explode.")
+			message_admins("LOG: [user.name] ([user.ckey]) injected a light with plasma, rigging it to explode.")
 
 			rigged = 1
 
