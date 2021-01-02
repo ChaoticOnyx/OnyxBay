@@ -903,17 +903,19 @@
 
 	else if(href_list["newban"])
 		if(!check_rights(R_MOD,0) && !check_rights(R_BAN, 0))
-			to_chat(usr, "<span class='warning'>You do not have the appropriate permissions to add bans!</span>")
+			to_chat(usr, SPAN("warning","You do not have the appropriate permissions to add bans!"))
 			return
 
 		if(check_rights(R_MOD,0) && !check_rights(R_ADMIN, 0) && !config.mods_can_job_tempban) // If mod and tempban disabled
-			to_chat(usr, "<span class='warning'>Mod jobbanning is disabled!</span>")
+			to_chat(usr, SPAN("warning","Mod jobbanning is disabled!"))
 			return
 
 		var/mob/M = locate(href_list["newban"])
-		if(!ismob(M)) return
+		if(!ismob(M))
+			return
 
-		if(M.client && M.client.holder)	return	//admins cannot be banned. Even if they could, the ban doesn't affect them anyway
+		if(M.client && M.client.holder)
+			return //admins cannot be banned. Even if they could, the ban doesn't affect them anyway
 
 		switch(alert("Temporary Ban?",,"Yes","No", "Cancel"))
 			if("Cancel")
@@ -999,7 +1001,7 @@
 						if(config.banappeals)
 							to_chat(M, SPAN("warning","To try to resolve this matter head to [config.banappeals]"))
 						else
-							to_chat(M, SPAN("warning","No ban appeals URL has been set.")
+							to_chat(M, SPAN("warning","No ban appeals URL has been set."))
 
 						ban_unban_log_save("[usr.client.ckey] has permabanned and booted [M.ckey]. - Reason: [reason] - This is a ban until appeal.")
 						notes_add(M.ckey,"[usr.client.ckey] has permabanned and booted [M.ckey]. - Reason: [reason] - This is a ban until appeal.",usr)
