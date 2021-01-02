@@ -29,8 +29,6 @@
 		/obj/effect,
 		/obj/structure/cable,
 		/obj/machinery/atmospherics
-		/obj/machinery/hologram/holopad
-		/obj/item/device/radio/intercom
 		)
 
 	var/light_min_range = 2
