@@ -112,5 +112,5 @@
 	icon_state = "shrapnel[pick("large", "medium", "small")]"
 	update_icon()
 
-/obj/item/weapon/material/shard/phoron/New(loc)
-	..(loc, MATERIAL_PHORON_GLASS)
+/obj/item/weapon/material/shard/plasma/New(loc)
+	..(loc, MATERIAL_PLASS)

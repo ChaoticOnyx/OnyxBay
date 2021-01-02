@@ -206,14 +206,14 @@
 	name="Phazon Torso"
 	icon_state = "phazon_harness"
 	//construction_time = 300
-	//construction_cost = list(MATERIAL_STEEL=35000, MATERIAL_GLASS=10000, MATERIAL_PHORON=20000)
+	//construction_cost = list(MATERIAL_STEEL=35000, MATERIAL_GLASS=10000, MATERIAL_PLASMA=20000)
 	origin_tech = list(TECH_DATA = 5, TECH_MATERIAL = 7, TECH_BLUESPACE = 6, TECH_POWER = 6)
 
 /obj/item/mecha_parts/part/phazon_head
 	name="Phazon Head"
 	icon_state = "phazon_head"
 	//construction_time = 200
-	//construction_cost = list(MATERIAL_STEEL=15000, MATERIAL_GLASS=5000, MATERIAL_PHORON=10000)
+	//construction_cost = list(MATERIAL_STEEL=15000, MATERIAL_GLASS=5000, MATERIAL_PLASMA=10000)
 	origin_tech = list(TECH_DATA = 4, TECH_MATERIAL = 5, TECH_MAGNET = 6)
 
 /obj/item/mecha_parts/part/phazon_left_arm
@@ -227,21 +227,21 @@
 	name="Phazon Right Arm"
 	icon_state = "phazon_r_arm"
 	//construction_time = 200
-	//construction_cost = list(MATERIAL_STEEL=20000, MATERIAL_PHORON=10000)
+	//construction_cost = list(MATERIAL_STEEL=20000, MATERIAL_PLASMA=10000)
 	origin_tech = list(TECH_MATERIAL = 5, TECH_BLUESPACE = 2, TECH_MAGNET = 2)
 
 /obj/item/mecha_parts/part/phazon_left_leg
 	name="Phazon Left Leg"
 	icon_state = "phazon_l_leg"
 	//construction_time = 200
-	//construction_cost = list(MATERIAL_STEEL=20000, MATERIAL_PHORON=10000)
+	//construction_cost = list(MATERIAL_STEEL=20000, MATERIAL_PLASMA=10000)
 	origin_tech = list(TECH_MATERIAL = 5, TECH_BLUESPACE = 3, TECH_MAGNET = 3)
 
 /obj/item/mecha_parts/part/phazon_right_leg
 	name="Phazon Right Leg"
 	icon_state = "phazon_r_leg"
 	//construction_time = 200
-	//construction_cost = list(MATERIAL_STEEL=20000, MATERIAL_PHORON=10000)
+	//construction_cost = list(MATERIAL_STEEL=20000, MATERIAL_PLASMA=10000)
 	origin_tech = list(TECH_MATERIAL = 5, TECH_BLUESPACE = 3, TECH_MAGNET = 3)
 
 ///////// Odysseus

@@ -206,13 +206,10 @@
 
 	..()
 
-/obj/machinery/portable_atmospherics/hydroponics/CanPass(atom/movable/mover, turf/target, height=0, air_group=0)
-	if(air_group || (height==0)) return 1
-
+/obj/machinery/portable_atmospherics/hydroponics/CanPass(atom/movable/mover, turf/target)
 	if(istype(mover) && mover.pass_flags & PASS_FLAG_TABLE)
-		return 1
-	else
-		return !density
+		return TRUE
+	return !density
 
 /obj/machinery/portable_atmospherics/hydroponics/proc/check_health(icon_update = 1)
 	if(seed && !dead && health <= 0)

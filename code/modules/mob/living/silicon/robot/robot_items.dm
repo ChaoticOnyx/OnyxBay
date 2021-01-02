@@ -548,7 +548,7 @@
 		/obj/item/weapon/reagent_containers/ivbag,
 		/obj/item/weapon/reagent_containers/pill,
 		/obj/item/weapon/reagent_containers/glass,
-		/obj/item/stack/material/phoron,
+		/obj/item/stack/material/plasma,
 		/obj/item/clothing/mask,
 		/obj/item/clothing/gloves/latex,
 		/obj/item/weapon/cane,

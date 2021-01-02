@@ -36,7 +36,7 @@
 
 /mob/living/carbon/human
 	var/oxygen_alert = 0
-	var/phoron_alert = 0
+	var/plasma_alert = 0
 	var/co2_alert = 0
 	var/fire_alert = 0
 	var/pressure_alert = 0
@@ -650,11 +650,11 @@
 			gloves.germ_level += 1
 
 		if(vsc.plc.CONTAMINATION_LOSS)
-			var/total_phoronloss = 0
+			var/total_plasmaloss = 0
 			for(var/obj/item/I in src)
 				if(I.contaminated)
-					total_phoronloss += vsc.plc.CONTAMINATION_LOSS
-			adjustToxLoss(total_phoronloss)
+					total_plasmaloss += vsc.plc.CONTAMINATION_LOSS
+			adjustToxLoss(total_plasmaloss)
 
 		// nutrition decrease
 		if(nutrition > 0)
@@ -801,7 +801,7 @@
 		if(pressure)
 			pressure.icon_state = "pressure[pressure_alert]"
 		if(toxin)
-			if(phoron_alert)	toxin.icon_state = "tox1"
+			if(plasma_alert)	toxin.icon_state = "tox1"
 			else									toxin.icon_state = "tox0"
 		if(oxygen)
 			if(oxygen_alert)	oxygen.icon_state = "oxy1"

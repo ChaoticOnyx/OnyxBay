@@ -302,46 +302,46 @@ var/list/name_to_material
 	sheet_singular_name = "ingot"
 	sheet_plural_name = "ingots"
 
-/material/phoron
-	name = "phoron"
-	stack_type = /obj/item/stack/material/phoron
-	ignition_point = PHORON_MINIMUM_BURN_TEMPERATURE
+/material/plasma
+	name = "plasma"
+	stack_type = /obj/item/stack/material/plasma
+	ignition_point = PLASMA_MINIMUM_BURN_TEMPERATURE
 	icon_base = "stone"
 	table_icon_base = "stone"
-	icon_colour = "#e37108"
+	icon_colour = "#a109e2"
 	shard_type = SHARD_SHARD
 	hardness = 30
 	resilience = 4
 	reflectance = 25
-	stack_origin_tech = list(TECH_MATERIAL = 2, TECH_PHORON = 2)
+	stack_origin_tech = list(TECH_MATERIAL = 2, TECH_PLASMA = 2)
 	door_icon_base = "stone"
 	sheet_singular_name = "crystal"
 	sheet_plural_name = "crystals"
 	is_fusion_fuel = 1
 
-/material/phoron/supermatter
+/material/plasma/supermatter
 	name = "supermatter"
 	icon_colour = "#ffff00"
 	radioactivity = 20
-	stack_origin_tech = list(TECH_BLUESPACE = 2, TECH_MATERIAL = 6, TECH_PHORON = 4)
+	stack_origin_tech = list(TECH_BLUESPACE = 2, TECH_MATERIAL = 6, TECH_PLASMA = 4)
 	stack_type = null
 	luminescence = 3
 
 
-//Controls phoron and phoron based objects reaction to being in a turf over 200c -- Phoron's flashpoint.
-/material/phoron/combustion_effect(turf/T, temperature, effect_multiplier)
+//Controls plasma and plasma based objects reaction to being in a turf over 200c -- Plasma's flashpoint.
+/material/plasma/combustion_effect(turf/T, temperature, effect_multiplier)
 	if(isnull(ignition_point))
 		return 0
 	if(temperature < ignition_point)
 		return 0
-	var/totalPhoron = 0
+	var/totalPlasma = 0
 	for(var/turf/simulated/floor/target_tile in range(2,T))
-		var/phoronToDeduce = (temperature/30) * effect_multiplier
-		totalPhoron += phoronToDeduce
-		target_tile.assume_gas("phoron", phoronToDeduce, 200+T0C)
+		var/plasmaToDeduce = (temperature/30) * effect_multiplier
+		totalPlasma += plasmaToDeduce
+		target_tile.assume_gas("plasma", plasmaToDeduce, 200+T0C)
 		spawn (0)
 			target_tile.hotspot_expose(temperature, 400)
-	return round(totalPhoron/100)
+	return round(totalPlasma/100)
 
 
 /material/stone
@@ -584,10 +584,10 @@ var/list/name_to_material
 	wire_product = null
 	rod_product = null
 
-/material/glass/phoron
-	name = "phglass"
-	display_name = "borosilicate glass"
-	stack_type = /obj/item/stack/material/glass/phoronglass
+/material/glass/plass
+	name = "plass"
+	display_name = "plass"
+	stack_type = /obj/item/stack/material/glass/plass
 	flags = MATERIAL_BRITTLE
 	integrity = 70
 	brute_armor = 2
@@ -597,22 +597,22 @@ var/list/name_to_material
 	resilience = 0
 	reflectance = 40
 	stack_origin_tech = list(TECH_MATERIAL = 4)
-	created_window = /obj/structure/window/phoronbasic
+	created_window = /obj/structure/window/plasmabasic
 	wire_product = null
-	rod_product = /obj/item/stack/material/glass/phoronrglass
+	rod_product = /obj/item/stack/material/glass/rplass
 
-/material/glass/phoron/reinforced
-	name = "rphglass"
+/material/glass/plass/reinforced
+	name = "rplass"
+	display_name = "reinforced plass"
 	brute_armor = 3
 	burn_armor = 10
 	melting_point = T0C + 4000
-	display_name = "reinforced borosilicate glass"
-	stack_type = /obj/item/stack/material/glass/phoronrglass
+	stack_type = /obj/item/stack/material/glass/rplass
 	resilience = 36
 	reflectance = 35
 	stack_origin_tech = list(TECH_MATERIAL = 5)
 	composite_material = list() //todo
-	created_window = /obj/structure/window/phoronreinforced
+	created_window = /obj/structure/window/plasmareinforced
 	// I think that duplicating lines wasn't the best idea of Bay12 coders
 	//stack_origin_tech = list(TECH_MATERIAL = 2)
 	//composite_material = list() //todo

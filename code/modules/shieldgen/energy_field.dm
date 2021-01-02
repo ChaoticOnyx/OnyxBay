@@ -9,6 +9,7 @@
 	anchored = 1
 	layer = PROJECTILE_LAYER
 	density = 0
+	can_atmos_pass = ATMOS_PASS_DENSITY
 	invisibility = 101
 	var/strength = 0
 	var/ticks_recovering = 10
@@ -58,12 +59,3 @@
 
 	if (density != old_density)
 		update_nearby_tiles()
-
-/obj/effect/energy_field/CanPass(atom/movable/mover, turf/target, height=1.5, air_group = 0)
-	//Purpose: Determines if the object (or airflow) can pass this atom.
-	//Called by: Movement, airflow.
-	//Inputs: The moving atom (optional), target turf, "height" and air group
-	//Outputs: Boolean if can pass.
-
-	//return (!density || !height || air_group)
-	return !density

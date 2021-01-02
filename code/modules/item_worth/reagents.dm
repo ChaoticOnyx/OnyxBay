@@ -527,7 +527,7 @@
 /datum/reagent/toxin/carpotoxin
 	value = 3
 
-/datum/reagent/toxin/phoron
+/datum/reagent/toxin/plasma
 	value = 10
 
 /datum/reagent/toxin/cyanide
