@@ -250,6 +250,9 @@
 		radio.talk_into(M, text)
 	return
 
+/obj/mecha/hides_inside_walls() // Won't let us hide piloted mechas inside walls, the simpliest way for now (and probably for ages)
+	return occupant ? 0 : 1
+
 ////////////////////////////
 ///// Action processing ////
 ////////////////////////////
