@@ -94,6 +94,15 @@ proc/get_fusion_reaction(p_react, s_react, m_energy)
 	radiation = 5
 	products = list("silicon"= 1)
 
+/decl/fusion_reaction/carbon_carbon
+	p_react = "carbon"
+	s_react = "carbon"
+	energy_consumption = 10
+	energy_production = 0
+	instability = 5
+	radiation = 2
+	products = list(MATERIAL_DIAMOND = 1)
+
 /decl/fusion_reaction/iron_iron
 	p_react = "iron"
 	s_react = "iron"
@@ -159,3 +168,12 @@ proc/get_fusion_reaction(p_react, s_react, m_energy)
 	energy_production = 15
 	radiation = 3
 	instability = 3
+
+/decl/fusion_reaction/supermatter_hydrogen
+	p_react = "supermatter"
+	s_react = "hydrogen"
+	minimum_energy_level = FUSION_HEAT_CAP * 0.5
+	energy_consumption = 1
+	energy_production = 20
+	radiation = 40
+	instability = 25
