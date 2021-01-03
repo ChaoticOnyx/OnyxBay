@@ -8,7 +8,7 @@
 	desc = "A coruscating, barely visible field of energy. It is shaped like a slightly flattened torus."
 	icon = 'icons/obj/machines/power/fusion.dmi'
 	icon_state = "emfield_s1"
-	alpha = 50
+	alpha = 0
 	layer = 4
 	light_color = COLOR_BLUE
 
@@ -295,7 +295,6 @@
 			if(skip_obstacle)
 				continue
 
-			AM.visible_message("<span class='danger'>The field buckles visibly around \the [AM]!</span>")
 			tick_instability += rand(30,50)
 			AM.emp_act(empsev)
 

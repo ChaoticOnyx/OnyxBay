@@ -50,7 +50,7 @@ var/list/fusion_cores = list()
 	if(href_list["str"])
 		var/dif = text2num(href_list["str"])
 		field_strength = min(max(field_strength + dif, MIN_FIELD_STR), MAX_FIELD_STR)
-		change_power_consumption(500 * field_strength, POWER_USE_ACTIVE)
+		change_power_consumption(50000 * field_strength, POWER_USE_ACTIVE)
 		if(owned_field)
 			owned_field.ChangeFieldStrength(field_strength)
 
