@@ -884,7 +884,7 @@
 	if(alien == IS_DIONA)
 		return
 
-	M.add_chemical_effect(CE_PAINKILLER, 5 * volume)
+	M.add_chemical_effect(CE_PAINKILLER, 10 * volume)
 	M.add_chemical_effect(CE_PULSE, 3)
 	M.add_chemical_effect(CE_STABLE)
 
@@ -893,7 +893,7 @@
 		M.make_jittery(20)
 		var/obj/item/organ/internal/heart/H = M.internal_organs_by_name[BP_HEART]
 
-		if((M.is_asystole() || H.pulse_modificator == PULSE_FIBRILLATION) && H.last_fibrillation > 10 * TICKS_IN_SECOND)
+		if(istype(H) && (M.is_asystole() || H.pulse_modificator == PULSE_FIBRILLATION) && H.last_fibrillation > 10 * TICKS_IN_SECOND)
 			remove_self(10)
 			M.resuscitate(3)
 
@@ -911,19 +911,21 @@
 	if(alien == IS_DIONA)
 		return
 
-	M.add_chemical_effect(CE_PAINKILLER, 5 * volume)
+	M.add_chemical_effect(CE_PAINKILLER, volume)
 	M.add_chemical_effect(CE_PULSE, 3)
 
 /datum/reagent/adrenaline/epinephrine/overdose(mob/living/carbon/human/M, alien)
 	if(alien == IS_DIONA)
 		return
 
+	M.add_chemical_effect(CE_PULSE, 4)
+
 	if(volume > 10)
-		M.add_chemical_effect(CE_PULSE, 2)
+		M.add_chemical_effect(CE_PULSE, 3)
 		M.make_jittery(20)
 	if(volume > 20)
-		M.shock_stage = 120
-	M.add_chemical_effect(CE_PULSE, 3)
+		M.add_chemical_effect(CE_PULSE, 3)
+		M.make_jittery(40)
 
 /datum/reagent/nanoblood
 	name = "Nanoblood"
