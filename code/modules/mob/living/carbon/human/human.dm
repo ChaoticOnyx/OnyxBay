@@ -1612,13 +1612,13 @@
 // 1 = CPR
 // 2 = defibrillator
 // 3 = chemistry
-/mob/living/carbon/human/proc/resuscitate(type=0)
+/mob/living/carbon/human/proc/resuscitate(method=0)
 	var/obj/item/organ/internal/heart/heart = internal_organs_by_name[BP_HEART]
 	if(heart.pulse_modificator != PULSE_NONE && heart.pulse_modificator != PULSE_FIBRILLATION)
 		return
 
 	if(istype(heart) && !BP_IS_ROBOTIC(heart) && !(heart.status & ORGAN_DEAD))
-		switch(type)
+		switch(method)
 			if(0)
 				heart.pulse_modificator = PULSE_NORM
 
@@ -1656,7 +1656,7 @@
 			var/obj/item/organ/internal/lungs/L = internal_organs_by_name[species_organ]
 			if(L)
 				active_breaths = L.active_breathing
-		if(!nervous_system_failure() && active_breaths && (type == 0 || type == 2))
+		if(!nervous_system_failure() && active_breaths && (method == 0 || method == 2))
 			visible_message("\The [src] jerks and gasps for breath!")
 		else
 			visible_message("\The [src] twitches a bit as \his heart restarts!")
