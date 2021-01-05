@@ -391,7 +391,7 @@ var/list/mining_floors = list()
 			if(6)
 				var/quantity = rand(1,3)
 				for(var/i=0, i<quantity, i++)
-					new /obj/item/weapon/material/shard/phoron(src)
+					new /obj/item/weapon/material/shard/plasma(src)
 
 			if(7)
 				var/obj/item/stack/material/uranium/R = new(src)
@@ -399,7 +399,7 @@ var/list/mining_floors = list()
 
 /turf/simulated/mineral/random
 	name = "Mineral deposit"
-	var/mineralSpawnChanceList = list(MATERIAL_URANIUM = 5, MATERIAL_PLATINUM = 5, MATERIAL_IRON = 35, MATERIAL_CARBON = 35, MATERIAL_DIAMOND = 1, MATERIAL_GOLD = 5, MATERIAL_SILVER = 5, MATERIAL_PHORON = 10)
+	var/mineralSpawnChanceList = list(MATERIAL_URANIUM = 5, MATERIAL_PLATINUM = 5, MATERIAL_IRON = 35, MATERIAL_CARBON = 35, MATERIAL_DIAMOND = 1, MATERIAL_GOLD = 5, MATERIAL_SILVER = 5, MATERIAL_PLASS = 10)
 	var/mineralChance = 100 //10 //means 10% chance of this plot changing to a mineral deposit
 
 /turf/simulated/mineral/random/Initialize()
@@ -414,7 +414,7 @@ var/list/mining_floors = list()
 
 /turf/simulated/mineral/random/high_chance
 	mineralChance = 100 //25
-	mineralSpawnChanceList = list(MATERIAL_URANIUM = 10, MATERIAL_PLATINUM = 10, MATERIAL_IRON = 20, MATERIAL_CARBON = 20, MATERIAL_DIAMOND = 2, MATERIAL_GOLD = 10, MATERIAL_SILVER = 10, MATERIAL_PHORON = 20)
+	mineralSpawnChanceList = list(MATERIAL_URANIUM = 10, MATERIAL_PLATINUM = 10, MATERIAL_IRON = 20, MATERIAL_CARBON = 20, MATERIAL_DIAMOND = 2, MATERIAL_GOLD = 10, MATERIAL_SILVER = 10, MATERIAL_PLASS = 20)
 
 
 /**********************Asteroid**************************/

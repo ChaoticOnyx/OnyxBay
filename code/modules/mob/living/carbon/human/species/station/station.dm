@@ -243,6 +243,7 @@
 	spawns_with_stack = 0
 	health_hud_intensity = 2
 	hunger_factor = 3
+	eye_icon = "blank_eyes"
 
 	min_age = 1
 	max_age = 300
@@ -377,7 +378,7 @@
 		return
 	if(H.nutrition < 10)
 		H.take_overall_damage(2,0)
-	else if (H.innate_heal)
+	else if(H.innate_heal)
 		// Heals normal damage.
 		if(H.getBruteLoss())
 			H.adjustBruteLoss(-4)
@@ -388,7 +389,7 @@
 
 		if(prob(10) && H.nutrition > 200 && !H.getBruteLoss() && !H.getFireLoss())
 			var/obj/item/organ/external/head/D = H.organs_by_name["head"]
-			if (D.status & ORGAN_DISFIGURED)
+			if(D.status & ORGAN_DISFIGURED)
 				D.status &= ~ORGAN_DISFIGURED
 				H.nutrition -= 20
 
@@ -397,9 +398,9 @@
 				I.damage = max(I.damage - 2, 0)
 				H.nutrition -= 2
 				if (prob(5))
-					to_chat(H, "<span class='warning'>You sense your nymphs shifting internally to regenerate your [I.name]...</span>")
+					to_chat(H, SPAN("warning", "You sense your nymphs shifting internally to regenerate your [I.name]..."))
 
-		if (prob(10) && H.nutrition > 70)
+		if(prob(10) && H.nutrition > 70)
 			for(var/limb_type in has_limbs)
 				var/obj/item/organ/external/E = H.organs_by_name[limb_type]
 				if(E && !E.is_usable())
@@ -411,10 +412,10 @@
 					var/limb_path = organ_data["path"]
 					var/obj/item/organ/O = new limb_path(H)
 					organ_data["descriptor"] = O.name
-					to_chat(H, "<span class='warning'>Some of your nymphs split and hurry to reform your [O.name].</span>")
+					to_chat(H, SPAN("notice", "Some of your nymphs split and hurry to reform your [O.name]."))
 					H.nutrition -= 60
 					H.update_body()
 				else
 					for(var/datum/wound/W in E.wounds)
-						if (W.wound_damage() == 0 && prob(50))
+						if(W.wound_damage() == 0 && prob(50))
 							E.wounds -= W

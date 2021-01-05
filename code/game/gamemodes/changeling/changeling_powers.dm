@@ -1066,7 +1066,7 @@ var/list/datum/absorbed_dna/hivemind_bank = list()
 		/datum/reagent/mercury,
 		/datum/reagent/radium,
 		/datum/reagent/acid/hydrochloric,
-		/datum/reagent/toxin/phoron
+		/datum/reagent/toxin/plasma
 		)
 
 	var/datum/reagent/target_chem = input(src, "Choose reagent:") as null|anything in chemistry
@@ -1074,12 +1074,12 @@ var/list/datum/absorbed_dna/hivemind_bank = list()
 	if(changeling.chem_charges <= amount)
 		to_chat(src, "<span class='notice'>Not enough chemicals.</span>")
 		return
-	if(target_chem == /datum/reagent/toxin/phoron)
+	if(target_chem == /datum/reagent/toxin/plasma)
 		if(changeling.chem_charges <= 2*amount)
 			to_chat(src, "<span class='notice'>Not enough chemicals.</span>")
 			return
 	changeling.pick_chemistry.add_reagent(target_chem, amount)
-	if(target_chem == /datum/reagent/toxin/phoron)
+	if(target_chem == /datum/reagent/toxin/plasma)
 		amount *= 2
 	changeling.chem_charges -= amount
 	if(!(/mob/proc/changeling_chemical_sting in src.verbs))

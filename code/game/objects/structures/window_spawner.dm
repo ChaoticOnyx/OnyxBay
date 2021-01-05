@@ -101,20 +101,20 @@
 	name = "Crescent window grille spawner"
 	win_path = /obj/structure/window/reinforced/crescent
 
-/obj/effect/wingrille_spawn/phoron
-	name = "phoron window grille spawner"
+/obj/effect/wingrille_spawn/plasma
+	name = "plass window grille spawner"
 	icon_state = "p-wingrille"
-	win_path = /obj/structure/window/phoronbasic
+	win_path = /obj/structure/window/plasmabasic
 
-/obj/effect/wingrille_spawn/reinforced_phoron
-	name = "reinforced phoron window grille spawner"
+/obj/effect/wingrille_spawn/reinforced_plasma
+	name = "reinforced plass window grille spawner"
 	icon_state = "pr-wingrille"
-	win_path = /obj/structure/window/phoronreinforced
+	win_path = /obj/structure/window/plasmareinforced
 
-/obj/effect/wingrille_spawn/reinforced_phoron/full
-	name = "reinforced phoron window grille spawner - full tile"
+/obj/effect/wingrille_spawn/reinforced_plasma/full
+	name = "reinforced plass grille spawner - full tile"
 	fulltile = TRUE
-	win_path = /obj/structure/window/phoronreinforced/full
+	win_path = /obj/structure/window/plasmareinforced/full
 
 /obj/effect/wingrille_spawn/reinforced/polarized
 	name = "polarized window grille spawner"

@@ -84,7 +84,7 @@
 "bF" = (/obj/structure/table/rack,/obj/item/clothing/shoes/swat,/obj/effect/floor_decal/rust,/turf/simulated/floor/holofloor/tiled/dark,/area/derelict/snowasteroid/bunker)
 "bG" = (/obj/machinery/power/port_gen/pacman{anchored = 0; sheets = 25},/obj/structure/cable{d2 = 2; dir = 2; icon_state = "0-2"},/obj/structure/cable{icon_state = "0-4"; d2 = 4},/obj/effect/floor_decal/industrial/warning,/obj/effect/decal/cleanable/cobweb,/turf/simulated/floor/plating,/area/derelict/snowasteroid)
 "bH" = (/obj/machinery/power/port_gen/pacman{anchored = 0; sheets = 25},/obj/structure/cable{d2 = 8; icon_state = "0-8"},/obj/structure/sign/warning/nosmoking_burned{pixel_y = 30},/obj/effect/floor_decal/industrial/warning,/turf/simulated/floor/plating,/area/derelict/snowasteroid)
-"bI" = (/obj/structure/table/rack,/obj/item/stack/material/phoron/fifty,/obj/item/stack/material/phoron/fifty,/obj/effect/floor_decal/industrial/warning,/turf/simulated/floor/plating,/area/derelict/snowasteroid)
+"bI" = (/obj/structure/table/rack,/obj/item/stack/material/plasma/fifty,/obj/item/stack/material/plasma/fifty,/obj/effect/floor_decal/industrial/warning,/turf/simulated/floor/plating,/area/derelict/snowasteroid)
 "bJ" = (/obj/machinery/door/airlock/highsecurity/bolted,/turf/simulated/floor/reinforced,/area/derelict/snowasteroid/bunker)
 "bK" = (/obj/machinery/door/airlock/highsecurity/bolted,/obj/structure/cable{d1 = 1; d2 = 2; icon_state = "1-2"; pixel_y = 0},/turf/simulated/floor/reinforced,/area/derelict/snowasteroid/bunker)
 "bL" = (/obj/structure/catwalk,/obj/machinery/power/terminal,/obj/structure/cable,/obj/machinery/light/small{dir = 8},/turf/simulated/floor/plating,/area/derelict/snowasteroid)
