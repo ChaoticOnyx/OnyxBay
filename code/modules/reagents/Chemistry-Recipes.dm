@@ -105,9 +105,8 @@
 /datum/chemical_reaction/adrenaline
 	name = "Adrenaline"
 	result = /datum/reagent/adrenaline
-	required_reagents = list(/datum/reagent/peridaxon = 1, /datum/reagent/hyperzine = 1, /datum/reagent/adrenaline/epinephrine = 1)
-	catalysts = list(/datum/reagent/toxin/phoron = 5)
-	result_amount = 2
+	required_reagents = list(/datum/reagent/peridaxon = 1, /datum/reagent/hyperzine = 1, /datum/reagent/adrenaline/epinephrine = 2)
+	result_amount = 4
 
 /datum/chemical_reaction/dylovene
 	name = "Dylovene"
