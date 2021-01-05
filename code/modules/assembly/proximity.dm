@@ -43,7 +43,7 @@
 		return
 	if(AM.move_speed < 12)
 		sense()
-	
+
 /obj/item/device/assembly/prox_sensor/proc/sense()
 	var/turf/mainloc = get_turf(src)
 //		if(scanning && cooldown <= 0)
@@ -113,8 +113,7 @@
 
 
 /obj/item/device/assembly/prox_sensor/Topic(href, href_list, state = GLOB.physical_state)
-	if(..()) return 1
-	if(!usr.canmove || usr.stat || usr.restrained() || !in_range(loc, usr))
+	if((. = ..()))
 		usr << browse(null, "window=prox")
 		onclose(usr, "prox")
 		return
