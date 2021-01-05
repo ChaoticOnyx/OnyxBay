@@ -151,10 +151,11 @@
 	switch(m_intent)
 		if(M_RUN)
 			if(drowsyness > 0)
-				. += 5
-			. += 1 + config.run_speed
+				. += config.walk_speed
+			else
+				. += config.run_speed
 		if(M_WALK)
-			. += 6 + config.walk_speed
+			. += config.walk_speed
 
 	if(lying) //Crawling, it's slower
 		. += 10 + (weakened * 2)

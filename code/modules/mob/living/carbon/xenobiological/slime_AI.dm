@@ -75,7 +75,7 @@
 			if(holding_still)
 				holding_still = max(holding_still - 1, 0)
 			else if(isturf(loc))
-				step_to(src, get_dir(src, Leader))
+				walk_to(src, Leader, 1, src.movement_delay())
 
 		else if(hungry)
 			if(holding_still)

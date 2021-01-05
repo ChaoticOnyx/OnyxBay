@@ -740,7 +740,7 @@ modules/mob/mob_movement.dm if you move you will be zoomed out
 modules/mob/living/carbon/human/life.dm if you die, you will be zoomed out.
 */
 //Looking through a scope or binoculars should /not/ improve your periphereal vision. Still, increase viewsize a tiny bit so that sniping isn't as restricted to NSEW
-/obj/item/proc/zoom(mob/user, var/tileoffset = 14,var/viewsize = 9) //tileoffset is client view offset in the direction the user is facing. viewsize is how far out this thing zooms. 7 is normal view
+/obj/item/proc/zoom(mob/user, tileoffset = 14, viewsize = 9) //tileoffset is client view offset in the direction the user is facing. viewsize is how far out this thing zooms. 7 is normal view
 	if(!user.client)
 		return
 	if(zoom)
@@ -787,10 +787,10 @@ modules/mob/living/carbon/human/life.dm if you die, you will be zoomed out.
 	GLOB.item_unequipped_event.register(src, src, /obj/item/proc/zoom_drop)
 	GLOB.stat_set_event.register(user, src, /obj/item/proc/unzoom)
 
-/obj/item/proc/zoom_drop(var/obj/item/I, var/mob/user)
+/obj/item/proc/zoom_drop(obj/item/I, mob/user)
 	unzoom(user)
 
-/obj/item/proc/unzoom(var/mob/user)
+/obj/item/proc/unzoom(mob/user)
 	if(!zoom)
 		return
 	zoom = 0
