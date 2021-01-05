@@ -1614,10 +1614,14 @@
 // 3 = chemistry
 /mob/living/carbon/human/proc/resuscitate(method=0)
 	var/obj/item/organ/internal/heart/heart = internal_organs_by_name[BP_HEART]
+	
+	if(!istype(heart))
+		return
+
 	if(heart.pulse_modificator != PULSE_NONE && heart.pulse_modificator != PULSE_FIBRILLATION)
 		return
 
-	if(istype(heart) && !BP_IS_ROBOTIC(heart) && !(heart.status & ORGAN_DEAD))
+	if(!BP_IS_ROBOTIC(heart) && !(heart.status & ORGAN_DEAD))
 		switch(method)
 			if(0)
 				heart.pulse_modificator = PULSE_NORM
