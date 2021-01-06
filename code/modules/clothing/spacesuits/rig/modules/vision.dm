@@ -19,23 +19,23 @@
 
 /datum/rig_vision/nvg
 	mode = "night vision"
-	glasses = /obj/item/clothing/glasses/night
+	glasses = /obj/item/clothing/glasses/hud/scanners/night
 
 /datum/rig_vision/thermal
 	mode = "thermal scanner"
-	glasses = /obj/item/clothing/glasses/thermal
+	glasses = /obj/item/clothing/glasses/hud/standard/thermal
 
 /datum/rig_vision/meson
 	mode = "meson scanner"
-	glasses = /obj/item/clothing/glasses/meson
+	glasses = /obj/item/clothing/glasses/hud/standard/meson
 
 /datum/rig_vision/sechud
 	mode = "security HUD"
-	glasses = /obj/item/clothing/glasses/hud/security
+	glasses = /obj/item/clothing/glasses/hud/aviators/security
 
 /datum/rig_vision/medhud
 	mode = "medical HUD"
-	glasses = /obj/item/clothing/glasses/hud/health
+	glasses = /obj/item/clothing/glasses/hud/one_eyed/oneye/medical
 
 /obj/item/rig_module/vision
 

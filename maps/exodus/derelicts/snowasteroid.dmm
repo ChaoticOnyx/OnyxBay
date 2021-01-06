@@ -78,7 +78,7 @@
 "bz" = (/obj/structure/cable{d1 = 1; d2 = 8; icon_state = "1-8"},/obj/structure/cable{d1 = 1; d2 = 4; icon_state = "1-4"},/obj/structure/cable{d1 = 1; d2 = 2; icon_state = "1-2"; pixel_y = 0},/obj/machinery/door/window/brigdoor/northright{req_access = list(3)},/obj/effect/floor_decal/rust,/turf/simulated/floor/holofloor/tiled/dark,/area/derelict/snowasteroid/bunker)
 "bA" = (/obj/effect/wingrille_spawn/reinforced,/obj/structure/cable{d2 = 8; icon_state = "0-8"},/turf/simulated/floor/plating,/area/derelict/snowasteroid/bunker)
 "bB" = (/obj/structure/cable{d1 = 1; d2 = 2; icon_state = "1-2"; pixel_y = 0},/obj/effect/floor_decal/rust,/turf/simulated/floor/holofloor/tiled/dark,/area/derelict/snowasteroid/bunker)
-"bC" = (/obj/structure/table/rack,/obj/item/clothing/glasses/night,/obj/effect/floor_decal/rust,/turf/simulated/floor/holofloor/tiled/dark,/area/derelict/snowasteroid/bunker)
+"bC" = (/obj/structure/table/rack,/obj/item/clothing/glasses/hud/scanners/night,/obj/effect/floor_decal/rust,/turf/simulated/floor/holofloor/tiled/dark,/area/derelict/snowasteroid/bunker)
 "bD" = (/obj/structure/table/rack,/obj/item/stack/material/uranium/ten,/obj/effect/floor_decal/rust,/turf/simulated/floor/holofloor/tiled/dark,/area/derelict/snowasteroid/bunker)
 "bE" = (/obj/machinery/nuclearbomb,/obj/structure/cable{d1 = 1; d2 = 8; icon_state = "1-8"},/obj/structure/cable{d1 = 1; d2 = 4; icon_state = "1-4"},/obj/effect/floor_decal/rust,/turf/simulated/floor/holofloor/tiled/dark,/area/derelict/snowasteroid/bunker)
 "bF" = (/obj/structure/table/rack,/obj/item/clothing/shoes/swat,/obj/effect/floor_decal/rust,/turf/simulated/floor/holofloor/tiled/dark,/area/derelict/snowasteroid/bunker)
