@@ -73,14 +73,20 @@
 		visible_message("<span class='warning'>\The [src] gets an evil-looking gleam in their eye.</span>")
 
 /mob/living/simple_animal/hostile/retaliate/goat/attackby(obj/item/O, mob/user)
-	var/obj/item/weapon/reagent_containers/glass/G = O
+	var/obj/item/weapon/reagent_containers/G = O
+	var/obj/item/weapon/reagent_containers/glass/possibleForMilk
 	if(stat == CONSCIOUS && istype(G) && G.is_open_container())
-		user.visible_message("<span class='notice'>[user] milks [src] using \the [O].</span>")
-		var/transfered = udder.trans_type_to(G, /datum/reagent/drink/milk, rand(5,10))
-		if(G.reagents.total_volume >= G.volume)
-			to_chat(user, "<span class='warning'>\The [O] is full.</span>")
-		if(!transfered)
-			to_chat(user, "<span class='warning'>The udder is dry. Wait a bit longer...</span>")
+		if(G.reagents.has_reagent(/datum/reagent/blackpepper, 10))
+			user.visible_message(SPAN_WARNING("[user] give some pepper to the [src] from \the [O]."))
+			to_chat(user, SPAN_WARNING("Better run anway now!"))
+			Retaliate()
+		else
+			user.visible_message("<span class='notice'>[user] milks [src] using \the [O].</span>")
+			var/transfered = udder.trans_type_to(G, /datum/reagent/drink/milk, rand(5,10))
+			if(G.reagents.total_volume >= G.volume)
+				to_chat(user, "<span class='warning'>\The [O] is full.</span>")
+			if(!transfered)
+				to_chat(user, "<span class='warning'>The udder is dry. Wait a bit longer...</span>")
 	else
 		..()
 
