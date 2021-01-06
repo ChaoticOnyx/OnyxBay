@@ -864,13 +864,11 @@ obj/random/obstruction/spawn_choices()
 				/obj/item/clothing/glasses/regular/hipster = 7,
 				/obj/item/clothing/glasses/regular/scanners = 1,
 				/obj/item/clothing/glasses/threedglasses = 2,
-				/obj/item/clothing/glasses/meson = 8,
-				/obj/item/clothing/glasses/meson/prescription = 6,
-				/obj/item/clothing/glasses/science = 6,
-				/obj/item/clothing/glasses/material = 5,
+				/obj/item/clothing/glasses/hud/standard/meson = 8,
+				/obj/item/clothing/glasses/hud/standard/science = 6,
+				/obj/item/clothing/glasses/hud/standard/material = 5,
 				/obj/item/clothing/glasses/welding = 8,
-				/obj/item/clothing/glasses/hud/health = 4,
-				/obj/item/clothing/glasses/hud/health/prescription = 2,
+				/obj/item/clothing/glasses/hud/one_eyed/oneye/medical = 4,
 				/obj/item/clothing/glasses/tacgoggles = 1)
 
 /obj/random/hat
@@ -1078,8 +1076,8 @@ something, make sure it's not in one of the other lists.*/
 				/obj/item/clothing/mask/muzzle = 7,
 				/obj/item/clothing/mask/gas/vox = 8,
 				/obj/item/clothing/mask/gas/syndicate = 10,
-				/obj/item/clothing/glasses/night = 3,
-				/obj/item/clothing/glasses/thermal = 1,
+				/obj/item/clothing/glasses/hud/scanners/night = 3,
+				/obj/item/clothing/glasses/hud/standard/thermal = 1,
 				/obj/item/clothing/glasses/welding/superior = 7,
 				/obj/item/clothing/head/collectable/petehat = 4,
 				/obj/item/clothing/suit/straight_jacket = 6,

@@ -60,7 +60,7 @@ They sell generic supplies and ask for generic supplies.
 								/obj/item/weapon/storage/photo_album						= TRADER_THIS_TYPE,
 								/obj/item/clothing/glasses									= TRADER_SUBTYPES_ONLY,
 								/obj/item/clothing/glasses/hud								= TRADER_BLACKLIST,
-								/obj/item/clothing/glasses/thermal/syndi					= TRADER_BLACKLIST_ALL,
+								/obj/item/clothing/glasses/hud/standard/thermal/syndie		= TRADER_BLACKLIST_ALL,
 								/obj/item/clothing/glasses/sunglasses/blindfold/tape		= TRADER_BLACKLIST,
 								/obj/item/clothing/glasses/chameleon						= TRADER_BLACKLIST
 								)

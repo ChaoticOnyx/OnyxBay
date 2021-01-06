@@ -194,15 +194,8 @@ BLIND     // can't see anything
 	var/see_invisible = -1
 	var/light_protection = 0
 
-/obj/item/clothing/glasses/get_icon_state(slot)
-	if(item_state_slots && item_state_slots[slot])
-		return item_state_slots[slot]
-	else
-		return icon_state
-	return ..()
-
 /obj/item/clothing/glasses/update_clothing_icon()
-	if (ismob(src.loc))
+	if(ismob(src.loc))
 		var/mob/M = src.loc
 		M.update_inv_glasses()
 

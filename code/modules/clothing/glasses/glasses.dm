@@ -1,25 +1,15 @@
 /obj/item/clothing/glasses
 	name = "glasses"
 	icon = 'icons/obj/clothing/glasses.dmi'
-	var/hud_type
 	var/prescription = FALSE
 	var/toggleable = FALSE
 	var/off_state = "degoggles"
-	var/active = TRUE
+	var/active = FALSE
 	var/activation_sound = 'sound/items/goggles_charge.ogg'
 	var/obj/screen/overlay = null
-	var/obj/item/clothing/glasses/hud/hud = null	// Hud glasses, if any
 	var/electric = FALSE //if the glasses should be disrupted by EMP
-
-/obj/item/clothing/glasses/Initialize()
-	. = ..()
-	if(ispath(hud))
-		hud = new hud(src)
-
-/obj/item/clothing/glasses/Destroy()
-	qdel(hud)
-	hud = null
-	. = ..()
+	var/hud_type
+	var/one_eyed = FALSE
 
 /obj/item/clothing/glasses/needs_vision_update()
 	return ..() || overlay || vision_flags || see_invisible || darkness_view
@@ -28,18 +18,20 @@
 	if(electric)
 		if(istype(src.loc, /mob/living/carbon/human))
 			var/mob/living/carbon/human/M = src.loc
-			to_chat(M, "<span class='danger'>Your [name] malfunction[gender != PLURAL ? "s":""], blinding you!</span>")
 			if(M.glasses == src)
-				M.eye_blind = 2
-				M.eye_blurry = 4
+				if(!one_eyed)
+					to_chat(M, SPAN("danger", "Your [name] malfunction[gender != PLURAL ? "s":""], blinding you!"))
+					M.eye_blind = one_eyed ? 1 : 2
+				else
+					to_chat(M, SPAN("danger", "Your [name] malfunction[gender != PLURAL ? "s":""], briefly blinding you!"))
+				M.eye_blurry = one_eyed ? 2 : 4
 				// Don't cure being nearsighted
 				if(!(M.disabilities & NEARSIGHTED))
 					M.disabilities |= NEARSIGHTED
 					spawn(100)
 						M.disabilities &= ~NEARSIGHTED
 		if(toggleable)
-			if(active)
-				active = FALSE
+			active = FALSE
 
 /obj/item/clothing/glasses/attack_self(mob/user)
 	if(toggleable && !user.incapacitated())
@@ -62,78 +54,8 @@
 			to_chat(usr, "You activate the optical matrix on the [src].")
 		user.update_action_buttons()
 
-/obj/item/clothing/glasses/meson
-	name = "optical meson scanner"
-	desc = "Used for seeing walls, floors, and stuff through anything."
-	gender = NEUTER
-	icon_state = "meson"
-	item_state = "glasses"
-	action_button_name = "Toggle Goggles"
-	origin_tech = list(TECH_MAGNET = 2, TECH_ENGINEERING = 2)
-	toggleable = TRUE
-	vision_flags = SEE_TURFS
-	see_invisible = SEE_INVISIBLE_NOLIGHTING
-	electric = TRUE
-
-/obj/item/clothing/glasses/meson/Initialize()
-	. = ..()
-	overlay = GLOB.global_hud.meson
-
-/obj/item/clothing/glasses/meson/prescription
-	name = "prescription mesons"
-	desc = "Optical Meson Scanner with prescription lenses."
-	prescription = 6
-
-/obj/item/clothing/glasses/science
-	name = "science goggles"
-	desc = "Goggles fitted with a portable analyzer capable of determining the fabricator training potential of an item or components of a machine. Sensitive to EMP."
-	icon_state = "purple"
-	item_state = "glasses"
-	action_button_name = "Toggle Goggles"
-	hud_type = HUD_SCIENCE
-	toggleable = TRUE
-	electric = TRUE
-
-/obj/item/clothing/glasses/science/Initialize()
-	. = ..()
-	overlay = GLOB.global_hud.science
-
-/obj/item/clothing/glasses/science/attack_self(mob/user)
-	..()
-	if(active)
-		hud_type = HUD_SCIENCE
-	else
-		hud_type = null
-
-/obj/item/clothing/glasses/night
-	name = "night vision goggles"
-	desc = "You can totally see in the dark now!"
-	icon_state = "night"
-	item_state = "glasses"
-	origin_tech = list(TECH_MAGNET = 2)
-	darkness_view = 7
-	action_button_name = "Toggle Goggles"
-	toggleable = TRUE
-	see_invisible = SEE_INVISIBLE_NOLIGHTING
-	off_state = "denight"
-	electric = TRUE
-
-/obj/item/clothing/glasses/night/Initialize()
-	. = ..()
-	overlay = GLOB.global_hud.nvg
-
-/obj/item/clothing/glasses/tacgoggles
-	name = "tactical goggles"
-	desc = "Self-polarizing goggles with light amplification for dark environments. Made from durable synthetic."
-	icon_state = "swatgoggles"
-	origin_tech = list(TECH_MAGNET = 2, TECH_COMBAT = 4)
-	darkness_view = 5
-	action_button_name = "Toggle Goggles"
-	toggleable = TRUE
-	see_invisible = SEE_INVISIBLE_NOLIGHTING
-	armor = list(melee = 20, bullet = 20, laser = 20, energy = 15, bomb = 20, bio = 0, rad = 0)
-	siemens_coefficient = 0.6
-	electric = TRUE
+/obj/item/clothing/glasses/proc/process_hud(mob/M)
+	return
 
 /obj/item/clothing/glasses/eyepatch
 	name = "eyepatch"
@@ -141,6 +63,7 @@
 	icon_state = "eyepatch"
 	item_state = "eyepatch"
 	body_parts_covered = 0
+	one_eyed = TRUE
 	var/flipped = FALSE // Indicates left or right eye; 0 = on the right
 
 /obj/item/clothing/glasses/eyepatch/verb/flip_patch()
@@ -165,22 +88,7 @@
 	icon_state = "monocle"
 	item_state = "headset" // lol
 	body_parts_covered = 0
-
-/obj/item/clothing/glasses/material
-	name = "optical material scanner"
-	desc = "Very confusing glasses."
-	gender = NEUTER
-	icon_state = "material"
-	item_state = "glasses"
-	origin_tech = list(TECH_MAGNET = 3, TECH_ENGINEERING = 3)
-	action_button_name = "Toggle Goggles"
-	toggleable = TRUE
-	vision_flags = SEE_OBJS
-	electric = TRUE
-
-/obj/item/clothing/glasses/material/Initialize()
-	. = ..()
-	overlay = GLOB.global_hud.material
+	one_eyed = TRUE
 
 /obj/item/clothing/glasses/regular
 	name = "prescription glasses"
@@ -317,228 +225,15 @@
 	icon_state = "bigsunglasses"
 	item_state = "bigsunglasses"
 
-/obj/item/clothing/glasses/sunglasses/sechud
-	name = "HUD sunglasses"
-	desc = "Sunglasses with a HUD."
-	icon_state = "sunhud"
-	hud = /obj/item/clothing/glasses/hud/security
-	electric = TRUE
-	darktinted = 0
-
-/obj/item/clothing/glasses/sunglasses/sechud/goggles //now just a more "military" set of HUDglasses for the Torch
-	name = "HUD goggles"
-	desc = "Flash-resistant goggles with an inbuilt heads-up display."
-	icon_state = "goggles"
-
-/obj/item/clothing/glasses/sunglasses/sechud/toggle
-	name = "HUD aviators"
-	desc = "Modified aviator glasses that can be switched between HUD and flash protection modes."
-	icon_state = "sec_hud"
-	off_state = "sec_flash"
-	action_button_name = "Toggle Mode"
-	var/on = TRUE
-	toggleable = TRUE
-	activation_sound = 'sound/effects/pop.ogg'
-
-	var/hud_holder
-
-/obj/item/clothing/glasses/sunglasses/sechud/toggle/Initialize()
-	. = ..()
-	hud_holder = hud
-
-/obj/item/clothing/glasses/sunglasses/sechud/toggle/Destroy()
-	qdel(hud_holder)
-	hud_holder = null
-	hud = null
-	. = ..()
-
-/obj/item/clothing/glasses/sunglasses/sechud/toggle/attack_self(mob/user)
-	if(toggleable && !user.incapacitated())
-		on = !on
-		if(on)
-			flash_protection = FLASH_PROTECTION_NONE
-			src.hud = hud_holder
-			to_chat(user, "You switch \the [src] to HUD mode.")
-		else
-			flash_protection = initial(flash_protection)
-			src.hud = null
-			to_chat(user, "You switch \the [src] to flash protection mode.")
-		update_icon()
-		sound_to(user, activation_sound)
-		user.update_inv_glasses()
-		user.update_action_buttons()
-
-/obj/item/clothing/glasses/sunglasses/sechud/toggle/update_icon()
-	if(on)
-		icon_state = initial(icon_state)
-	else
-		icon_state = off_state
-
-/obj/item/clothing/glasses/thermal
-	name = "optical thermal scanner"
-	desc = "Thermals in the shape of glasses."
-	gender = NEUTER
-	icon_state = "thermal"
-	item_state = "glasses"
+/obj/item/clothing/glasses/tacgoggles
+	name = "tactical goggles"
+	desc = "Self-polarizing goggles with light amplification for dark environments. Made from durable synthetic."
+	icon_state = "swatgoggles"
+	origin_tech = list(TECH_MAGNET = 2, TECH_COMBAT = 4)
+	darkness_view = 5
 	action_button_name = "Toggle Goggles"
-	origin_tech = list(TECH_MAGNET = 3)
 	toggleable = TRUE
-	vision_flags = SEE_MOBS
 	see_invisible = SEE_INVISIBLE_NOLIGHTING
+	armor = list(melee = 20, bullet = 20, laser = 20, energy = 15, bomb = 20, bio = 0, rad = 0)
+	siemens_coefficient = 0.6
 	electric = TRUE
-
-/obj/item/clothing/glasses/thermal/Initialize()
-	. = ..()
-	overlay = GLOB.global_hud.thermal
-
-/obj/item/clothing/glasses/thermal/syndi	//These are now a traitor item, concealed as mesons.	-Pete
-	name = "optical meson scanner"
-	desc = "Used for seeing walls, floors, and stuff through anything."
-	icon_state = "meson"
-	origin_tech = list(TECH_MAGNET = 3, TECH_ILLEGAL = 4)
-
-/obj/item/clothing/glasses/thermal/syndi/chameleon
-	var/list/global/clothing_choices
-
-/obj/item/clothing/glasses/thermal/syndi/chameleon/New()
-	..()
-	if(!clothing_choices)
-		clothing_choices = generate_chameleon_choices(/obj/item/clothing/glasses, list(src.type))
-
-/obj/item/clothing/glasses/thermal/syndi/chameleon/emp_act(severity) //Because we don't have psych for all slots right now but still want a downside to EMP.  In this case your cover's blown.
-	SetName(initial(name))
-	desc = initial(desc)
-	icon_state = initial(icon_state)
-	item_state = initial(item_state)
-	update_icon()
-	update_clothing_icon()
-
-/obj/item/clothing/glasses/thermal/syndi/chameleon/verb/change(picked in clothing_choices)
-	set name = "Change Glasses Appearance"
-	set category = "Chameleon Items"
-	set src in usr
-
-	if(!ispath(clothing_choices[picked]))
-		return
-
-	disguise(clothing_choices[picked], usr)
-	update_clothing_icon()	//so our overlays update.
-
-/obj/item/clothing/glasses/thermal/plain
-	toggleable = FALSE
-	activation_sound = null
-	action_button_name = null
-
-/obj/item/clothing/glasses/thermal/plain/monocle
-	name = "thermoncle"
-	desc = "A monocle thermal."
-	icon_state = "thermoncle"
-	body_parts_covered = 0 //doesn't protect eyes because it's a monocle, duh
-
-/obj/item/clothing/glasses/thermal/plain/eyepatch
-	name = "optical thermal eyepatch"
-	desc = "An eyepatch with built-in thermal optics."
-	icon_state = "eyepatch"
-	item_state = "eyepatch"
-	body_parts_covered = 0
-
-/obj/item/clothing/glasses/thermal/plain/jensen
-	name = "optical thermal implants"
-	gender = PLURAL
-	desc = "A set of implantable lenses designed to augment your vision."
-	icon_state = "thermalimplants"
-	item_state = "syringe_kit"
-
-/obj/item/clothing/glasses/eyepatch/hud
-	name = "iPatch"
-	desc = "For the technologically inclined pirate. It connects directly to the optical nerve of the user, replacing the need for that useless eyeball."
-	gender = NEUTER
-	icon_state = "hudpatch"
-	item_state = "hudpatch"
-	off_state = "hudpatch"
-	action_button_name = "Toggle iPatch"
-	toggleable = TRUE
-	var/eye_color = COLOR_WHITE
-	electric = TRUE
-
-/obj/item/clothing/glasses/eyepatch/hud/Initialize()
-	.  = ..()
-	update_icon()
-
-/obj/item/clothing/glasses/eyepatch/hud/attack_self()
-	..()
-	update_icon()
-
-/obj/item/clothing/glasses/eyepatch/hud/update_icon()
-	overlays.Cut()
-	if(active)
-		var/image/eye = overlay_image(icon, "[icon_state]_eye", flags=RESET_COLOR)
-		eye.color = eye_color
-		overlays += eye
-
-/obj/item/clothing/glasses/eyepatch/hud/get_mob_overlay(mob/user_mob, slot)
-	var/image/res = ..()
-	if(active)
-		var/image/eye = overlay_image(res.icon, "[icon_state]_eye", flags=RESET_COLOR)
-		eye.color = eye_color
-		eye.layer = ABOVE_LIGHTING_LAYER
-		eye.plane = EFFECTS_ABOVE_LIGHTING_PLANE
-		res.overlays += eye
-	return res
-
-/obj/item/clothing/glasses/eyepatch/hud/security
-	name = "HUDpatch"
-	desc = "A Security-type heads-up display that connects directly to the optical nerve of the user, replacing the need for that useless eyeball."
-	hud = /obj/item/clothing/glasses/hud/security
-	eye_color = COLOR_RED
-
-/obj/item/clothing/glasses/eyepatch/hud/medical
-	name = "MEDpatch"
-	desc = "A Medical-type heads-up display that connects directly to the ocular nerve of the user, replacing the need for that useless eyeball."
-	hud = /obj/item/clothing/glasses/hud/health
-	eye_color = COLOR_CYAN
-
-/obj/item/clothing/glasses/eyepatch/hud/meson
-	name = "MESpatch"
-	desc = "An optical meson scanner display that connects directly to the ocular nerve of the user, replacing the need for that useless eyeball."
-	vision_flags = SEE_TURFS
-	see_invisible = SEE_INVISIBLE_NOLIGHTING
-	eye_color = COLOR_LIME
-
-/obj/item/clothing/glasses/eyepatch/hud/meson/Initialize()
-	. = ..()
-	overlay = GLOB.global_hud.meson
-
-
-/*---Tajaran-specific Eyewear---*/
-
-/obj/item/clothing/glasses/tajblind
-	name = "embroidered veil"
-	desc = "An Ahdominian made veil that allows the user to see while obscuring their eyes."
-	icon_state = "tajblind"
-	item_state = "tajblind"
-	prescription = 5
-	body_parts_covered = EYES
-
-/obj/item/clothing/glasses/hud/health/tajblind
-	name = "lightweight veil"
-	desc = "An Ahdominian made veil that allows the user to see while obscuring their eyes. This one has an installed medical HUD."
-	icon_state = "tajblind_med"
-	item_state = "tajblind_med"
-	body_parts_covered = EYES
-
-/obj/item/clothing/glasses/sunglasses/sechud/tajblind
-	name = "sleek veil"
-	desc = "An Ahdominian made veil that allows the user to see while obscuring their eyes. This one has an in-built security HUD."
-	icon_state = "tajblind_sec"
-	item_state = "tajblind_sec"
-	prescription = 5
-	body_parts_covered = EYES
-
-/obj/item/clothing/glasses/meson/prescription/tajblind
-	name = "industrial veil"
-	desc = "An Ahdominian made veil that allows the user to see while obscuring their eyes. This one has installed mesons."
-	icon_state = "tajblind_meson"
-	item_state = "tajblind_meson"
-	off_state = "tajblind_meson"
-	body_parts_covered = EYES
