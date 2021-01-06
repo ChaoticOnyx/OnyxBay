@@ -90,6 +90,14 @@
 	else
 		..()
 
+/mob/living/simple_animal/hostile/retaliate/goat/AttackingTarget()
+	. =..()
+	var/mob/living/L = .
+	if(istype(L))
+		if(prob(15))
+			L.Weaken(3)
+			L.visible_message("<span class='danger'>\The [src] knocks down \the [L]!</span>")
+
 //cow
 /mob/living/simple_animal/cow
 	name = "cow"
