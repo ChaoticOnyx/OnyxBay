@@ -74,13 +74,12 @@
 
 /mob/living/simple_animal/hostile/retaliate/goat/attackby(obj/item/O, mob/user)
 	var/obj/item/weapon/reagent_containers/G = O
-	var/obj/item/weapon/reagent_containers/glass/possibleForMilk
 	if(stat == CONSCIOUS && istype(G) && G.is_open_container())
 		if(G.reagents.has_reagent(/datum/reagent/blackpepper, 10))
 			user.visible_message(SPAN_WARNING("[user] give some pepper to the [src] from \the [O]."))
-			to_chat(user, SPAN_WARNING("Better run anway now!"))
+			to_chat(user, SPAN_WARNING("Better run away now!"))
 			Retaliate()
-		else
+		else if(istype(O, /obj/item/weapon/reagent_containers/glass))
 			user.visible_message("<span class='notice'>[user] milks [src] using \the [O].</span>")
 			var/transfered = udder.trans_type_to(G, /datum/reagent/drink/milk, rand(5,10))
 			if(G.reagents.total_volume >= G.volume)
