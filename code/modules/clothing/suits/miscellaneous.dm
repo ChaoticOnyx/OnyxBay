@@ -599,3 +599,9 @@
 	name = "unathi suit"
 	desc = "A Unathi suit made out of rubber."
 	icon_state = "lizsuit"
+
+/obj/item/clothing/suit/goatskincape
+	name = "goat skin cape"
+	desc = "A goat skin, what was brutally butchet from goat. This one with hole for head, what was make not less brutal. You can put it on youself, to look like true barbarian."
+	icon_state = "goatskincape"
+	item_state = "goatskincape"

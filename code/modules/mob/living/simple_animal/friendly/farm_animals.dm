@@ -97,6 +97,11 @@
 			L.Weaken(3)
 			L.visible_message("<span class='danger'>\The [src] knocks down \the [L]!</span>")
 
+/mob/living/simple_animal/hostile/retaliate/goat/harvest(mob/user)
+	new /obj/item/skin/goat(src.loc)
+	..()
+
+
 //cow
 /mob/living/simple_animal/cow
 	name = "cow"
