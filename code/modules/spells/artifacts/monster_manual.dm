@@ -22,7 +22,7 @@
 									"The physical embodiment of flesh and decay, its made from the reanimated corpse of a murdered man.",
 									"A small magical creature known for its healing powers and pacifist ways.",
 									"The more carnivorous and knowledge hungry cousin of the Space Carp. Keep away from books.",
-									"The old symbol of Satan. But this one allmost cannot do nothing special."
+									"The old symbol of Satan. But this one almost cannot do nothing special."
 									)
 
 /obj/item/weapon/monster_manual/attack_self(mob/user as mob)

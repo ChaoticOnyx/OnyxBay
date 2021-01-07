@@ -41,9 +41,9 @@
 	desc = "A goat skin, what was brutally butchet from goat."
 	icon_state = "goatskin"
 
-obj/item/skin/goat/attackby(obj/item/weapon/W as obj, mob/user as mob)
+obj/item/skin/goat/attackby(obj/item/weapon/W, mob/user)
 	..()
-	if(istype(W, /obj/item/weapon/material/kitchen/utensil/knife) || istype(W, /obj/item/weapon/material/knife) || istype(W, /obj/item/weapon/material/knife/ritual))
+	if(W.sharp)
 		to_chat(user, SPAN("notice", "You use [W] to cut a ugly hole in [src]."))
 		new /obj/item/clothing/suit/goatskincape(user.loc)
 		qdel(src)

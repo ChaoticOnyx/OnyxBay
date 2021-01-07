@@ -120,11 +120,11 @@
 
 			switch(action)
 				if("speak")
-					say(pick(speak))
+					say(pickweight(speak))
 				if("emote_hear")
-					audible_emote("[pick(emote_hear)].")
+					audible_emote("[pickweight(emote_hear)].")
 				if("emote_see")
-					visible_emote("[pick(emote_see)].")
+					visible_emote("[pickweight(emote_see)].")
 
 	if(in_stasis)
 		return 1 // return early to skip atmos checks
