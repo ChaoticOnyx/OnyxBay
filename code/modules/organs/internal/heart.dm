@@ -1,3 +1,4 @@
+#define REGULAR_HEARTBEAT 85
 /obj/item/organ/internal/heart
 	name = "heart"
 	icon_state = "heart-on"
@@ -10,9 +11,8 @@
 	var/open
 	var/list/pulse_sources = list()
 	var/pulse_modificator = PULSE_NORM
-	var/regular_pulse = 85
-	var/heartbeat = regular_pulse
-	var/last_heartbeat = regular_pulse // for smoothly pulse changing
+	var/heartbeat = REGULAR_HEARTBEAT 
+	var/last_heartbeat = REGULAR_HEARTBEAT // for smoothly pulse changing
 
 	var/last_fibrillation = 0
 	var/last_asystole = 0
@@ -51,7 +51,7 @@
 
 // set_pulse with correction
 /obj/item/organ/internal/heart/proc/set_pulse_fine(pulse, source="misc")
-	set_pulse(pulse * (regular_pulse / heartbeat), source)
+	set_pulse(pulse * (REGULAR_HEARTBEAT / heartbeat), source)
 
 /obj/item/organ/internal/heart/proc/update_heartbeat()
 	switch(pulse_modificator)
