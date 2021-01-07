@@ -10,8 +10,9 @@
 	var/open
 	var/list/pulse_sources = list()
 	var/pulse_modificator = PULSE_NORM
-	var/heartbeat = 80
-	var/last_heartbeat = 80 // for smoothly pulse changing
+	var/regular_pulse = 85
+	var/heartbeat = regular_pulse
+	var/last_heartbeat = regular_pulse // for smoothly pulse changing
 
 	var/last_fibrillation = 0
 	var/last_asystole = 0
@@ -50,9 +51,9 @@
 
 // set_pulse with correction
 /obj/item/organ/internal/heart/proc/set_pulse_fine(pulse, source="misc")
-	set_pulse(pulse * (85 / heartbeat), source)
+	set_pulse(pulse * (regular_pulse / heartbeat), source)
 
-/obj/item/organ/internal/heart/proc/update_pulse()
+/obj/item/organ/internal/heart/proc/update_heartbeat()
 	switch(pulse_modificator)
 		if(PULSE_NONE)
 			heartbeat = 0
@@ -78,7 +79,7 @@
 
 	if(heartbeat < 10)
 		make_fibrillation()
-		owner.reagents.add_reagent(/datum/reagent/adrenaline, 0.2)
+		owner.reagents.add_reagent(/datum/reagent/adrenaline, 1)
 
 	heartbeat = max(heartbeat, 0)
 
@@ -99,7 +100,7 @@
 /obj/item/organ/internal/heart/Process()
 	if(owner)
 		handle_pulse()
-		update_pulse()
+		update_heartbeat()
 		if(heartbeat)
 			handle_heartbeat()
 			var/chance = 0
