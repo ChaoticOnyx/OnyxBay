@@ -602,6 +602,6 @@
 
 /obj/item/clothing/suit/goatskincape
 	name = "goat skin cape"
-	desc = "A goat skin, what was brutally butchet from goat. This one with hole for head, what was make not less brutal. You can put it on youself, to look like true barbarian."
+	desc = "A goat skin, which was brutally butchered from a goat. This one has a uggly hole for the head. You can put it on yourself, to look like a true barbarian."
 	icon_state = "goatskincape"
 	item_state = "goatskincape"

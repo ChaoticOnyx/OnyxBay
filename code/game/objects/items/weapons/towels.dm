@@ -38,7 +38,7 @@
 
 /obj/item/skin/goat
 	name = "goats skin"
-	desc = "A goat skin, what was brutally butchet from goat."
+	desc = "A goat skin, which was brutally butchered from a goat."
 	icon_state = "goatskin"
 
 obj/item/skin/goat/attackby(obj/item/weapon/W, mob/user)
