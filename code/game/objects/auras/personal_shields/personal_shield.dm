@@ -6,6 +6,9 @@
 /obj/aura/shields/shield_belt
 	var/obj/item/weapon/shield/shield_belt/shield
 	name = "shield belt"
+	icon = 'icons/effects/auras.dmi'
+	icon_state = "shield"
+	mouse_opacity = 0
 
 /obj/aura/shields/New(mob/living/user)
 	..()
@@ -40,6 +43,7 @@
 /obj/aura/shields/shield_belt/New(mob/living/user, user_shield)
 	..()
 	shield = user_shield
+	set_light(6,6, "#1271a7")
 
 /obj/aura/shields/personal_shield/Destroy()
 	shield = null
