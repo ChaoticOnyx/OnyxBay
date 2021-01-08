@@ -65,7 +65,7 @@
 	var/result = ""
 	var/spamprotection
 	for(var/k in 1 to inputs.len)
-		var/I = sanitize(get_pin_data(IC_INPUT, k))
+		var/I = sanitize(html_decode(get_pin_data(IC_INPUT, k)))
 		if(!isnull(I))
 			if((result ? length_char(result) : 0) + length_char(I) > max_string_length)
 				spamprotection = (result ? length_char(result) : 0) + length_char(I)

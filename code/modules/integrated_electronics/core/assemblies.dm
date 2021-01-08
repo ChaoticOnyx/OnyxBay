@@ -500,6 +500,7 @@
 
 // Actually removes the component, doesn't perform any checks.
 /obj/item/device/electronic_assembly/proc/remove_component(obj/item/integrated_circuit/component)
+	component.removed_from_assembly()
 	component.disconnect_all()
 	component.forceMove(get_turf(src))
 	component.assembly = null
@@ -853,6 +854,7 @@
 	icon_state = "setup_medium_gun"
 	item_state = "circuitgun"
 	desc = "It's a case, for building medium-sized electronics with. This one resembles a gun, or some type of tool, if you're feeling optimistic. It can fire guns and throw items while the user is holding it."
+	slot_flags = SLOT_BELT|SLOT_HOLSTER
 	item_icons = list(
 		icon_l_hand = 'icons/mob/onmob/items/lefthand_guns.dmi',
 		icon_r_hand = 'icons/mob/onmob/items/righthand_guns.dmi'

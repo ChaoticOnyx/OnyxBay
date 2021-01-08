@@ -320,7 +320,7 @@
 					return FALSE
 
 				else if(istype(O, /obj/item/seeds) && !istype(O, /obj/item/seeds/cutting))
-					if(!TR.seed)
+					if(TR.seed)
 						// TODO: refact this to OnyxBay code
 						// if(istype(O, /obj/item/seeds/kudzu))
 						// 	investigate_log("had Kudzu planted in it by [acting_object] at [AREACOORD(src)]","kudzu")
@@ -449,86 +449,81 @@
 	name = "pulling claw"
 	desc = "Circuit which can pull things.."
 	icon_state = "pull_claw"
-	extended_desc = "This circuit accepts a reference to a thing to be pulled. Modes: 0 for release. 1 for pull."
+	extended_desc = "This circuit accepts a reference to a thing to be pulled."
 	w_class = ITEM_SIZE_SMALL
 	size = 3
 	cooldown_per_use = 5
 	max_allowed = 1
 	complexity = 10
-	inputs = list("target" = IC_PINTYPE_REF,"mode" = IC_PINTYPE_INDEX,"dir" = IC_PINTYPE_DIR)
+	inputs = list("target" = IC_PINTYPE_REF,"dir" = IC_PINTYPE_DIR)
 	outputs = list("is pulling" = IC_PINTYPE_BOOLEAN)
-	activators = list("pulse in" = IC_PINTYPE_PULSE_IN,"pulse out" = IC_PINTYPE_PULSE_OUT,"released" = IC_PINTYPE_PULSE_OUT,"pull to dir" = IC_PINTYPE_PULSE_OUT)
+	activators = list("pulse in" = IC_PINTYPE_PULSE_IN,"pulse out" = IC_PINTYPE_PULSE_OUT,"release" = IC_PINTYPE_PULSE_IN,"pull to dir" = IC_PINTYPE_PULSE_IN, "released" = IC_PINTYPE_PULSE_OUT, "pulled to dir" = IC_PINTYPE_PULSE_OUT)
 	spawn_flags = IC_SPAWN_RESEARCH
 	power_draw_per_use = 50
 	ext_cooldown = 1
-	var/max_grab = GRAB_NORMAL
-	var/obj/item/pulling
-	ext_moved_triggerable = TRUE
+	var/atom/movable/pulling
+
+/obj/item/integrated_circuit/manipulation/claw/Destroy()
+	stop_pulling()
+	return ..()
 
 /obj/item/integrated_circuit/manipulation/claw/do_work(ord)
 	var/obj/acting_object = get_object()
-	var/atom/movable/AM = get_pin_data_as_type(IC_INPUT, 1, /atom/movable)
-	var/mode = get_pin_data(IC_INPUT, 2)
+	var/atom/movable/to_pull = get_pin_data_as_type(IC_INPUT, 1, /obj/item)
 	switch(ord)
 		if(1)
-			if(can_pull(AM))
-				mode = Clamp(mode, GRAB_NORMAL, max_grab)
-				if(istype(AM))
-					if(check_target(AM, exclude_contents = TRUE))
-						acting_object.investigate_log("grabbed ([AM]) using [src].", INVESTIGATE_CIRCUIT)
-						pulling = AM
-						acting_object.visible_message("\The [acting_object] starts pulling \the [AM] around.")
-						GLOB.moved_event.register(AM, src, .proc/check_pull) //Whenever the target moves, make sure we can still pull it!
-						GLOB.destroyed_event.register(AM, src, .proc/stop_pulling) //Stop pulling if it gets destroyed
-						if(pulling)
-							set_pin_data(IC_OUTPUT, 1, TRUE)
-						else
-							set_pin_data(IC_OUTPUT, 1, FALSE)
-			else
-				set_pin_data(IC_OUTPUT, 1, FALSE)
+			if(can_pull(to_pull))
+				if(check_target(to_pull, exclude_contents = TRUE))
+					set_pin_data(IC_OUTPUT, 1, TRUE)
+					pulling = to_pull
+					acting_object.visible_message("\The [acting_object] starts pulling \the [to_pull] around.")
+					GLOB.moved_event.register(to_pull, src, .proc/check_pull) //Whenever the target moves, make sure we can still pull it!
+					GLOB.destroyed_event.register(to_pull, src, .proc/stop_pulling) //Stop pulling if it gets destroyed
+					GLOB.moved_event.register(acting_object, src, .proc/pull) //Make sure we actually pull it.
 			push_data()
-
+		if(3)
+			if(pulling)
+				stop_pulling()
+				activate_pin(5)
 		if(4)
 			if(pulling)
-				var/dir = get_pin_data(IC_INPUT, 3)
-				var/turf/G = get_step(get_turf(acting_object),dir)
-				var/atom/movable/pullee = pulling
-				var/turf/Pl = get_turf(pullee)
+				var/dir = get_pin_data(IC_INPUT, 2)
+				var/turf/G =get_step(get_turf(acting_object),dir)
+				var/turf/Pl = get_turf(pulling)
 				var/turf/F = get_step_towards(Pl,G)
 				if(acting_object.Adjacent(F))
-					if(!step_towards(pullee, F))
+					if(!step_towards(pulling, F))
 						F = get_step_towards2(Pl,G)
 						if(acting_object.Adjacent(F))
-							step_towards(pullee, F)
+							step_towards(pulling, F)
+							activate_pin(6)
 	activate_pin(2)
 
-/obj/item/integrated_circuit/manipulation/claw/ext_moved()
-	pull() //Make sure we actually pull it.
-
-/obj/item/integrated_circuit/manipulation/claw/proc/can_pull(obj/item/I)
+/obj/item/integrated_circuit/manipulation/claw/proc/can_pull(obj/I)
 	return assembly && I && I.w_class <= assembly.w_class && !I.anchored
 
 /obj/item/integrated_circuit/manipulation/claw/proc/pull()
 	var/obj/acting_object = get_object()
-	if(istype(acting_object.loc, /turf))
+	if(isturf(acting_object.loc))
 		step_towards(pulling,src)
 	else
 		stop_pulling()
 
 /obj/item/integrated_circuit/manipulation/claw/proc/check_pull()
-	if(get_dist(pulling,src) > 1)
+	if(get_dist(pulling,src) > 1 && pulling)
 		stop_pulling()
 
 /obj/item/integrated_circuit/manipulation/claw/proc/stop_pulling()
-	var/atom/movable/AM = get_object()
-	GLOB.moved_event.unregister(pulling, src)
-	GLOB.moved_event.unregister(AM, src)
-	AM.visible_message("\The [AM] stops pulling \the [pulling]")
-	GLOB.destroyed_event.unregister(pulling, src)
-	pulling = null
-	set_pin_data(IC_OUTPUT, 1, FALSE)
-	activate_pin(3)
-	push_data()
+	if(pulling)
+		var/atom/movable/AM = get_object()
+		GLOB.moved_event.unregister(pulling, src)
+		GLOB.moved_event.unregister(AM, src)
+		AM.visible_message("\The [AM] stops pulling \the [pulling]")
+		GLOB.destroyed_event.unregister(pulling, src)
+		pulling = null
+		set_pin_data(IC_OUTPUT, 1, FALSE)
+		activate_pin(3)
+		push_data()
 
 /obj/item/integrated_circuit/manipulation/claw/Destroy()
 	stop_pulling()
@@ -785,6 +780,7 @@
 	extended_desc = "Takes a targer ref to do operation on and bodypart of target to do operation on."
 	ext_cooldown = 1
 	complexity = 20
+	size = 10
 	inputs = list(
 		"target" = IC_PINTYPE_REF,
 		"bodypart" = IC_PINTYPE_STRING
@@ -875,12 +871,20 @@
 			. = FALSE
 			break
 
+		if(get_dist(ASS, target) > 1)
+			. = FALSE
+			break
+
 		if(target_zone && selected_zone != target_zone)
 			. = FALSE
 			break
 
 /obj/item/integrated_circuit/manipulation/surgery_device/proc/do_int_surgery(mob/living/carbon/M)
-	var/obj/item/device/electronic_assembly/user = assembly
+	var/atom/movable/user
+	if(isliving(assembly.loc))
+		user = assembly.loc
+	else
+		user = assembly
 	if(!istype(user))
 		return FALSE
 	var/zone = selected_zone

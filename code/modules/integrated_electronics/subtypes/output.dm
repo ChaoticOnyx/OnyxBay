@@ -32,7 +32,7 @@
 		if(d)
 			stuff_to_display = "[d]"
 	else
-		stuff_to_display = replacetext("[I.data]", eol , "<br>")
+		stuff_to_display = replacetext("[I.data]", eol , "\n")
 
 /obj/item/integrated_circuit/output/screen/large
 	name = "large screen"
@@ -176,6 +176,48 @@
 		)
 	spawn_flags = IC_SPAWN_DEFAULT|IC_SPAWN_RESEARCH
 
+/obj/item/integrated_circuit/output/sound/hev
+	name = "HEV sound circuit"
+	desc = "Takes a sound name as an input, and will play said sound when pulsed. This circuit is similar to those used in some old RIG suit"
+	sounds = list(
+		"bio_warn"						= 'sound/voice/Hevsounds/biohazard_detected.wav',
+		"chem_warn" 					= 'sound/voice/Hevsounds/chemical_detected.wav',
+		"rad_warn" 						= 'sound/voice/Hevsounds/radiation_detected.wav',
+		"near_death"					= 'sound/voice/Hevsounds/near_death.wav',
+		"seek_medic"					= 'sound/voice/Hevsounds/seek_medic.wav',
+		"shock_damage"					= 'sound/voice/Hevsounds/shock_damage.wav',
+		"blood_loss"					= 'sound/voice/Hevsounds/blood_loss.wav',
+		"blood_plasma"					= 'sound/voice/Hevsounds/blood_plasma.wav',
+		"blood_toxins"					= 'sound/voice/Hevsounds/blood_toxins.wav',
+		"health_critical"				= 'sound/voice/Hevsounds/health_critical.wav',
+		"health_dropping"				= 'sound/voice/Hevsounds/health_dropping.wav',
+		"health_dropping2"				= 'sound/voice/Hevsounds/health_dropping2.wav',
+		"minor_fracture"				= 'sound/voice/Hevsounds/minor_fracture.wav',
+		"minor_lacerations"				= 'sound/voice/Hevsounds/minor_lacerations.wav',
+		"major_fracture"				= 'sound/voice/Hevsounds/major_fracture.wav',
+		"major_lacerations"				= 'sound/voice/Hevsounds/major_lacerations.wav',
+		"wound_sterilized"				= 'sound/voice/Hevsounds/wound_sterilized.wav'
+		)
+	spawn_flags = IC_SPAWN_RESEARCH|IC_SPAWN_DEFAULT
+
+/obj/item/integrated_circuit/output/sound/augmented
+	name = "Augmented sound circuit"
+	desc = "Takes a sound name as an input, and will play said sound when pulsed. This circuit is similar to those used in some old AI core"
+	sounds = list(
+		"rad_warn" 				= 'sound/voice/augmented/BB02.wav',
+		"toxin_warn" 			= 'sound/voice/augmented/BB12.wav',
+		"low_health" 			= 'sound/voice/augmented/BB03.wav',
+		"chemical_mutant" 		= 'sound/voice/augmented/BB05.wav',
+		"power_drain" 			= 'sound/voice/augmented/BB07.wav',
+		"ammunition_drain" 		= 'sound/voice/augmented/BB08.wav',
+		"access_needed" 		= 'sound/voice/augmented/BB13.wav',
+		"affinity_activated" 	= 'sound/voice/augmented/BBCYBA_A.wav',
+		"affinity_deactivated" 	= 'sound/voice/augmented/BBCYBA_D.wav',
+		"login" 				= 'sound/voice/augmented/LOGIN.wav',
+		"Medscan" 				= 'sound/voice/augmented/medscan.wav'
+	)
+	spawn_flags = IC_SPAWN_RESEARCH|IC_SPAWN_DEFAULT
+
 /obj/item/integrated_circuit/output/sound/beepsky
 	name = "securitron sound circuit"
 	desc = "Takes a sound name as an input, and will play said sound when pulsed. This circuit is similar to those used in Securitrons."
@@ -209,7 +251,7 @@
 	text = get_pin_data(IC_INPUT, 1)
 	if(!isnull(text))
 		var/atom/movable/A = get_object()
-		var/sanitized_text = sanitize(text)
+		var/sanitized_text = sanitize(html_decode(text))
 		A.audible_message("\The [A] states, \"[sanitized_text]\"")
 		if (assembly)
 			log_say("[assembly] [ref(assembly)] : [sanitized_text]")

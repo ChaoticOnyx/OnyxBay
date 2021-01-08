@@ -141,6 +141,12 @@ a creative player the means to solve many problems.  Circuits are held inside an
 /obj/item/integrated_circuit/proc/on_data_written() //Override this for special behaviour when new data gets pushed to the circuit.
 	return
 
+// called when we are remove src from assembly
+// created for not to use moved_event when we are not in assembly.
+/obj/item/integrated_circuit/proc/removed_from_assembly()
+	if(ext_moved_triggerable && moved_event_created)
+		GLOB.moved_event.unregister(moved_object, src)
+
 /obj/item/integrated_circuit/Destroy()
 	. = ..()
 	QDEL_LIST(inputs)

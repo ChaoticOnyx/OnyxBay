@@ -109,12 +109,33 @@
 	var/busy = FALSE
 	var/usedx
 	var/usedy
-	var/turf/simulated/mineral/rock
+	var/turf/simulated/mineral/mineral
+	var/obj/structure/rock/rock
+	var/obj/structure/boulder/boulder
 
 /obj/item/integrated_circuit/mining/mining_drill/do_work()
-	rock = get_pin_data(IC_INPUT, 1)
+	var/atom/movable/AM = get_pin_data(IC_INPUT, 1)
 
-	if(!istype(rock) || !rock.Adjacent(assembly) || busy)
+	if(istype(AM, /turf/simulated/mineral))
+		mineral = AM
+		if(!istype(mineral) || !mineral.Adjacent(assembly))
+			activate_pin(3)
+			return
+	else if(istype(AM, /obj/structure/rock))
+		rock = AM
+		if(!istype(rock) || !rock.Adjacent(assembly))
+			activate_pin(3)
+			return
+	else if(istype(AM, /obj/structure/boulder))
+		boulder = AM
+		if(!istype(boulder) || !boulder.Adjacent(assembly))
+			activate_pin(3)
+			return
+	else
+		activate_pin(3)
+		return
+
+	if(busy)
 		activate_pin(3)
 		return
 
@@ -128,10 +149,15 @@
 /obj/item/integrated_circuit/mining/mining_drill/proc/drill()
 	busy = FALSE
 	// The assembly was moved, hence stopping the mining OR the rock was mined before
-	if(usedx != assembly.loc.x || usedy != assembly.loc.y || !rock)
+	if(usedx != assembly.loc.x || usedy != assembly.loc.y || !(mineral || rock || boulder))
 		activate_pin(3)
 		return FALSE
 
+	if(mineral)
+		mineral.GetDrilled()
+	else if(boulder)
+		boulder.Destroy()
+	else
+		rock.Destroy()
 	activate_pin(2)
-	rock.GetDrilled()
 	return TRUE

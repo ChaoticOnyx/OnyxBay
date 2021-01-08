@@ -300,8 +300,6 @@
 				if(cloning)
 					return
 				var/input = sanitize(input(usr, "Put your code there:", "loading"), max_length = MAX_SIZE_CIRCUIT, encode = FALSE)
-				//since we can't use html_encode, we use url_decode/encode for it, I hope it doesn't cause troubles for us.
-				input = url_decode(url_encode(input))
 				if(!check_interactivity(usr) || cloning)
 					return
 				if(!input)

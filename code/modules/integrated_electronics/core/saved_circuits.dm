@@ -28,7 +28,7 @@
 			if(input.data == initial(input.data))
 				continue
 
-			var/list/input_value = list(index, FALSE, input.data)
+			var/list/input_value = list(index, FALSE, html_encode(html_decode(input.data)))
 			// Index, Type, Value
 			// FALSE is default type used for num/text/list/null
 			// TODO: support for special input types, such as internal refs and maybe typepaths
