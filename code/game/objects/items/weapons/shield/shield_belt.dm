@@ -105,7 +105,7 @@
 //when got hit
 /obj/item/weapon/shield/shield_belt/proc/take_charge(obj/item/projectile/P)
 	START_PROCESSING(SSobj, src)
-	if (istype(src, /obj/item/weapon/shield/shield_belt/syndicate_shield_belt))
+	if(istype(src, /obj/item/weapon/shield/shield_belt/syndicate_shield_belt))
 		take_internal_charge(P)
 	else
 		take_cell_charge(P)
@@ -142,7 +142,7 @@
 
 //how belt looks at mob
 obj/item/weapon/shield/shield_belt/syndicate_shield_belt/get_mob_overlay(mob/user_mob, slot)
-	if (shield)
+	if(shield)
 		item_state = "shield_sindy_on"
 	else
 		item_state = "shield_sindy_off"
@@ -163,16 +163,16 @@ obj/item/weapon/shield/shield_belt/syndicate_shield_belt/get_mob_overlay(mob/use
 		sleep(20)
 		not_being_turned = 1
 		if(user.get_inventory_slot(src) == slot_belt)
-			if (current_power > 300 && !shield)
+			if(current_power > 300 && !shield)
 				current_power -= 300
 				START_PROCESSING(SSobj, src)
 				toggle(user)
 			else if(shield)
 				toggle(user)
 			else
-				to_chat(loc,SPAN_DANGER("The [src] has no energy!"))
+				to_chat(loc, SPAN_DANGER("The [src] has no energy!"))
 		else
-			to_chat(loc,SPAN_DANGER("\The [src] must be weared at belt to be used"))
+			to_chat(loc, SPAN_DANGER("\The [src] must be weared at belt to be used"))
 
 
 /obj/item/weapon/shield/shield_belt/syndicate_shield_belt/ui_action_click()
@@ -187,14 +187,14 @@ obj/item/weapon/shield/shield_belt/syndicate_shield_belt/verb/toggle_shield()
 	change_status(user)
 
 /obj/item/weapon/shield/shield_belt/syndicate_shield_belt/Process(wait)
-	if (!shield)
+	if(!shield)
 		if(current_power >= max_power)
 			return PROCESS_KILL
 		current_power += min(restored_power_per_tick * wait, max_power - current_power)
 
 //Lose some charge and turn off
 /obj/item/weapon/shield/shield_belt/syndicate_shield_belt/emp_act(severity)
-	current_power=max(current_power / (2 * severity), max_power / (4 * severity))
+	current_power = max(current_power / (2 * severity), max_power / (4 * severity))
 	turn_off()
 
 //RND belt, can change battery, but can't regenerate
@@ -253,23 +253,23 @@ obj/item/weapon/shield/shield_belt/experimental_shield_belt/get_mob_overlay(mob/
 
 /obj/item/weapon/shield/shield_belt/experimental_shield_belt/proc/change_status(mob/living/user)
 	if(not_being_turned)
-		to_chat(loc,SPAN_NOTICE("The [user] touches the button on belt!"))
+		to_chat(loc, SPAN_NOTICE("The [user] touches the button on belt!"))
 		not_being_turned = 0
 		sleep(20)
 		not_being_turned = 1
 		if(user.get_inventory_slot(src) == slot_belt)
 			if(bcell)
-				if (!shield && bcell.checked_use(300))
+				if(!shield && bcell.checked_use(300))
 
 					toggle(user)
 				else if(shield)
 					toggle(user)
 				else
-					to_chat(loc,SPAN_DANGER("The [src] has no energy!"))
+					to_chat(loc, SPAN_DANGER("The [src] has no energy!"))
 			else
-				to_chat(loc,SPAN_DANGER("\The [src] has no battery!"))
+				to_chat(loc, SPAN_DANGER("\The [src] has no battery!"))
 		else
-			to_chat(loc,SPAN_DANGER("\The [src] must be weared at belt to be used"))
+			to_chat(loc, SPAN_DANGER("\The [src] must be weared at belt to be used"))
 
 /obj/item/weapon/shield/shield_belt/experimental_shield_belt/ui_action_click()
 	toggle_shield()
