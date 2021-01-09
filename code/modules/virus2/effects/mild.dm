@@ -296,5 +296,3 @@ datum/disease2/effect/pacifism/activate(var/mob/living/carbon/human/mob)
 
 /datum/disease2/effect/hallucinations/activate(mob/living/carbon/human/mob)
 	mob.adjust_hallucination(multiplier, 4*multiplier)
-
-	
