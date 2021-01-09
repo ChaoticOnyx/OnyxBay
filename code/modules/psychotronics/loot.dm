@@ -1,6 +1,6 @@
 /* Any ready to use items that can be placed on maps */
 
-/obj/item/clothing/glasses/hud/psychoscope/with_battery/Initialize()
+/obj/item/clothing/glasses/psychoscope/with_battery/Initialize()
 	. = ..()
 
 	bcell = new /obj/item/weapon/cell/standard/(src.contents)
@@ -33,5 +33,5 @@
 /obj/item/weapon/storage/secure/briefcase/psychoscope/Initialize()
 	. = ..()
 
-	src.contents += new /obj/item/clothing/glasses/hud/psychoscope/with_battery
+	src.contents += new /obj/item/clothing/glasses/psychoscope/with_battery
 	src.contents += new /obj/item/weapon/paper/psychoscope
