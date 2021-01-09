@@ -30,6 +30,9 @@
 	if(apply_colour)
 		color = material.icon_colour
 
+	if(material.opacity < 1)
+		alpha = 255 * (1 - (1 - material.opacity)*(1 - material.opacity))
+
 	if(material.conductive)
 		obj_flags |= OBJ_FLAG_CONDUCTIBLE
 	else
