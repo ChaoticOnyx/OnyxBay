@@ -711,10 +711,9 @@
 	result = null
 	required_reagents = list(/datum/reagent/nanites = 10, /datum/reagent/iron = 10)
 	result_amount = 1
-	required = /obj/item/slime_extract/metal
 
 /datum/chemical_reaction/nanitestoplastal/on_reaction(datum/reagents/holder)
-	var/obj/item/stack/material/plasteel/P = new /obj/item/stack/material/plasteel
+	var/obj/item/stack/material/plasteel/Pl = new /obj/item/stack/material/plasteel
 	Pl.amount = 5
 	Pl.loc = get_turf(holder.my_atom)
 	..()
