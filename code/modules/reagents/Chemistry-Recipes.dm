@@ -621,6 +621,131 @@
 	s.set_up(created_volume, location, holder, 2)
 	s.start()
 
+/* Nanites */
+/datum/chemical_reaction/combatplate
+	name = "Combat Borg"
+	result = null
+	required_reagents = list(/datum/reagent/nanites = 5, /datum/reagent/toxin/phoron = 5)
+	result_amount = 1
+
+/datum/chemical_reaction/combatplate/on_reaction(datum/reagents/holder, created_volume)
+	new /obj/item/borg/upgrade/remodel/combat(get_turf(holder.my_atom), created_volume)
+
+/datum/chemical_reaction/borguploadplate
+	name = "Upload Borg"
+	result = null
+	required_reagents = list(/datum/reagent/silver = 5, /datum/reagent/nanites = 5)
+	result_amount = 1
+
+/datum/chemical_reaction/borguploadplate/on_reaction(datum/reagents/holder, created_volume)
+	new /obj/item/weapon/circuitboard/borgupload(get_turf(holder.my_atom), created_volume)
+
+/datum/chemical_reaction/freeformplate
+	name = "FreeForm Laws"
+	result = null
+	required_reagents = list(/datum/reagent/gold = 5, /datum/reagent/nanites = 5)
+	result_amount = 1
+
+/datum/chemical_reaction/freeformplate/on_reaction(datum/reagents/holder, created_volume)
+	new /obj/item/weapon/aiModule/freeformcore(get_turf(holder.my_atom), created_volume)
+
+/datum/chemical_reaction/nanitestogold
+	name = "Alchimic Gold"
+	result = null
+	required_reagents = list(/datum/reagent/nanites = 10, /datum/reagent/mercury = 10)
+	result_amount = 1
+
+/datum/chemical_reaction/nanitestogold/on_reaction(datum/reagents/holder, created_volume)
+	new /obj/item/stack/material/gold(get_turf(holder.my_atom), created_volume)
+
+/datum/chemical_reaction/nanitestoplasma
+	name = "Alhimic Plasma"
+	result = null
+	required_reagents = list(/datum/reagent/nanites = 10, /datum/reagent/acetone = 10)
+	result_amount = 1
+
+/datum/chemical_reaction/nanitestoplasma/on_reaction(datum/reagents/holder, created_volume)
+	new /obj/item/stack/material/plasma(get_turf(holder.my_atom), created_volume)
+
+/datum/chemical_reaction/nanitestouran
+	name = "Alhimic Uran"
+	result = null
+	required_reagents = list(/datum/reagent/nanites = 10, /datum/reagent/radium = 10)
+	result_amount = 1
+
+/datum/chemical_reaction/nanitestouran/on_reaction(datum/reagents/holder, created_volume)
+	new /obj/item/stack/material/uranium(get_turf(holder.my_atom), created_volume)
+
+/datum/chemical_reaction/nanitestosilver
+	name = "Alhimic Silver"
+	result = null
+	required_reagents = list(/datum/reagent/nanites = 10, /datum/reagent/copper = 10)
+	result_amount = 1
+
+/datum/chemical_reaction/nanitestosilver/on_reaction(datum/reagents/holder, created_volume)
+	new /obj/item/stack/material/silver(get_turf(holder.my_atom), created_volume)
+
+/datum/chemical_reaction/nanitestoglass
+	name = "Alhimic Glass"
+	result = null
+	required_reagents = list(/datum/reagent/nanites = 10, /datum/reagent/silicon = 10)
+	result_amount = 1
+
+/datum/chemical_reaction/nanitestosilver/on_reaction(datum/reagents/holder, created_volume)
+	var/obj/item/stack/material/plasteel/Ph = new /obj/item/stack/material/glass/phoronglass
+	Ph.amount = 5
+	Ph.loc = get_turf(holder.my_atom)
+	..()
+
+/datum/chemical_reaction/nanitestoalmaz
+	name = "Alhimic Almaz"
+	result = null
+	required_reagents = list(/datum/reagent/nanites = 15, /datum/reagent/carbon = 15)
+	result_amount = 1
+
+/datum/chemical_reaction/nanitestoalmaz/on_reaction(datum/reagents/holder, created_volume)
+	new /obj/item/stack/material/diamond(get_turf(holder.my_atom), created_volume)
+
+/datum/chemical_reaction/nanitestoplastal
+	name = "Alchimic Plastal"
+	result = null
+	required_reagents = list(/datum/reagent/nanites = 10, /datum/reagent/iron = 10)
+	result_amount = 1
+	required = /obj/item/slime_extract/metal
+
+/datum/chemical_reaction/nanitestoplastal/on_reaction(datum/reagents/holder)
+	var/obj/item/stack/material/plasteel/P = new /obj/item/stack/material/plasteel
+	Pl.amount = 5
+	Pl.loc = get_turf(holder.my_atom)
+	..()
+
+/datum/chemical_reaction/naniteshorror
+	name = "Nanit Horror"
+	result = null
+	required_reagents = list(/datum/reagent/nanites = 10, /datum/reagent/mindbreaker = 10)
+	result_amount = 1
+
+/datum/chemical_reaction/naniteshorror/on_reaction(datum/reagents/holder, created_volume)
+	new /mob/living/simple_animal/familiar/horror(get_turf(holder.my_atom), created_volume)
+
+/datum/chemical_reaction/nanittray
+	name = "Nanit Tray"
+	result = null
+	required_reagents = list(/datum/reagent/nanites = 10, /datum/reagent/water = 10)
+	result_amount = 1
+
+/datum/chemical_reaction/nanittray/on_reaction(datum/reagents/holder, created_volume)
+	new /obj/machinery/portable_atmospherics/hydroponics(get_turf(holder.my_atom), created_volume)
+
+/datum/chemical_reaction/nanitesmonkey
+	name = "Nanit Monkey"
+	result = null
+	required_reagents = list(/datum/reagent/nanites = 5, /datum/reagent/blood = 5)
+	result_amount = 1
+
+/datum/chemical_reaction/nanitesmonkey/on_reaction(datum/reagents/holder, created_volume)
+	new /mob/living/carbon/human/monkey(get_turf(holder.my_atom), created_volume)
+
 /* Paint */
 
 /datum/chemical_reaction/red_paint
