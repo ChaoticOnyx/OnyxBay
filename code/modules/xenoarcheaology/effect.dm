@@ -142,7 +142,7 @@
 	if(istype(H.gloves,/obj/item/clothing/gloves/latex))
 		protected += 0.1
 
-	if(istype(H.glasses,/obj/item/clothing/glasses/science))
+	if(istype(H.glasses,/obj/item/clothing/glasses/hud/standard/science))
 		protected += 0.1
 
 	return 1 - protected

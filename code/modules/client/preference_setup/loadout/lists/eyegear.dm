@@ -6,13 +6,14 @@
 /datum/gear/eyes/glasses
 	display_name = "prescription glasses"
 	path = /obj/item/clothing/glasses/regular
+	cost = 1
 
 /datum/gear/eyes/eyepatch
 	display_name = "eyepatch"
 	path = /obj/item/clothing/glasses/eyepatch
 
 /datum/gear/eyes/fashionglasses
-	display_name = "glasses"
+	display_name = "glasses selection"
 	path = /obj/item/clothing/glasses/regular/hipster
 
 /datum/gear/eyes/fashionglasses/New()
@@ -25,32 +26,25 @@
 	glasses["scanning goggles"] = /obj/item/clothing/glasses/regular/scanners
 	gear_tweaks += new /datum/gear_tweak/path(glasses)
 
-/datum/gear/eyes/security/prescription
-	display_name = "security HUD, prescription"
-	path = /obj/item/clothing/glasses/hud/security/prescription
-	cost = 3
-	allowed_roles = SECURITY_ROLES
+/datum/gear/eyes/hud
+	display_name = "HUDs selection"
+	path = /obj/item/clothing/glasses/hud/standard
 
-/datum/gear/eyes/medical/prescription
-	display_name = "medical HUD, prescription"
-	path = /obj/item/clothing/glasses/hud/health/prescription
-	cost = 	3
-	allowed_roles = MEDICAL_ROLES
+/datum/gear/eyes/hud/New()
+	..()
+	var/huds = list()
+	huds["goggles HUD"] = /obj/item/clothing/glasses/hud/standard
+	huds["dual HUD"] = /obj/item/clothing/glasses/hud/dual
+	huds["clear HUD"] = /obj/item/clothing/glasses/hud/monoglass
+	huds["glasses HUD"] = /obj/item/clothing/glasses/hud/glasses
+	huds["aviators HUD"] = /obj/item/clothing/glasses/hud/aviators
+	huds["visor HUD"] = /obj/item/clothing/glasses/hud/visor
+	huds["clip-on HUD"] = /obj/item/clothing/glasses/hud/shades
+	huds["over-eye HUD"] = /obj/item/clothing/glasses/hud/one_eyed/oneye
+	huds["patch HUD"] = /obj/item/clothing/glasses/hud/one_eyed/patch
+	gear_tweaks += new /datum/gear_tweak/path(huds)
 
-/datum/gear/eyes/medical/visor
-	display_name = "medical HUD, visor"
-	path = /obj/item/clothing/glasses/hud/health/visor
-	allowed_roles = MEDICAL_ROLES
-	cost = 3
-
-/datum/gear/eyes/meson/ipatch
-	display_name = "meson patch"
-	path = /obj/item/clothing/glasses/eyepatch/hud/meson
-	allowed_roles = TECHNICAL_ROLES
-	cost = 3
-
-/datum/gear/eyes/meson/prescription
-	display_name = "meson Goggles, prescription"
-	path = /obj/item/clothing/glasses/meson/prescription
-	cost = 3
-	allowed_roles = TECHNICAL_ROLES
+/datum/gear/eyes/prescriptionlenses
+	display_name = "HUD prescription lenses"
+	path = /obj/item/device/hudlenses/prescription
+	cost = 1

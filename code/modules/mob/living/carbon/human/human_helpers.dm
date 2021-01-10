@@ -74,22 +74,22 @@
 /mob/living/carbon/human/proc/process_glasses(obj/item/clothing/glasses/G)
 	if (machine_visual)
 		return
+	if(!G)
+		return
+	equipment_darkness_modifier += G.darkness_view
+	equipment_vision_flags |= G.vision_flags
+	equipment_prescription += G.prescription
+	equipment_light_protection += G.light_protection
+	if(G.overlay)
+		equipment_overlays |= G.overlay
+	if(G.see_invisible >= 0)
+		if(equipment_see_invis)
+			equipment_see_invis = min(equipment_see_invis, G.see_invisible)
+		else
+			equipment_see_invis = G.see_invisible
 
-	if(G && G.active)
-		equipment_darkness_modifier += G.darkness_view
-		equipment_vision_flags |= G.vision_flags
-		equipment_prescription += G.prescription
-		equipment_light_protection += G.light_protection
-		if(G.overlay)
-			equipment_overlays |= G.overlay
-		if(G.see_invisible >= 0)
-			if(equipment_see_invis)
-				equipment_see_invis = min(equipment_see_invis, G.see_invisible)
-			else
-				equipment_see_invis = G.see_invisible
-
-		add_clothing_protection(G)
-		G.process_hud(src)
+	add_clothing_protection(G)
+	G.process_hud(src)
 
 /mob/living/carbon/human/proc/process_rig(obj/item/weapon/rig/O)
 	if(O.visor && O.visor.active && O.visor.vision && O.visor.vision.glasses && (!O.helmet || (head && O.helmet == head)))

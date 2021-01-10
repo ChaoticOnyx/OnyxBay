@@ -331,7 +331,7 @@
 	if(istype(M, /mob/living/carbon/human))
 		var/mob/living/carbon/human/H = M
 		var/obj/item/clothing/glasses/G = H.glasses
-		return istype(G) && ((G.hud_type & hudtype) || (G.hud && (G.hud.hud_type & hudtype)))
+		return istype(G) && (G.hud_type & hudtype)
 	else if(istype(M, /mob/living/silicon))
 		var/mob/living/silicon/R = M
 		if (R.active_hud == hudtype)
