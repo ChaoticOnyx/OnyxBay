@@ -86,7 +86,7 @@ datum/uplink_item/item/tools/cleaning_kit
 	path = /obj/item/weapon/storage/backpack/satchel/syndie_kit/space
 
 /datum/uplink_item/item/tools/thermal
-	name = "Thermal Imaging Glasses"
+	name = "Thermal Imaging Goggles"
 	item_cost = 24
 	path = /obj/item/clothing/glasses/hud/standard/thermal
 
