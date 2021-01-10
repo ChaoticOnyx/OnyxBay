@@ -603,7 +603,7 @@
 													H.vessel.remove_reagent(/datum/reagent/blood, 1)
 
 
-						if(m_intent == "run" && pulling && pulling.pull_sound && (world.time - last_pull_sound) > 1 SECOND)
+						if(m_intent == M_RUN && pulling && pulling.pull_sound && (world.time - last_pull_sound) > 1 SECOND)
 							last_pull_sound = world.time
 							playsound(pulling, pulling.pull_sound, rand(50, 75), TRUE)
 
@@ -826,12 +826,12 @@
 	return ..()
 
 /mob/living/proc/set_m_intent(intent)
-	if (intent != "walk" && intent != "run")
+	if(intent != M_WALK && intent != M_RUN)
 		return 0
 	m_intent = intent
 	if(hud_used)
-		if (hud_used.move_intent)
-			hud_used.move_intent.icon_state = intent == "walk" ? "walking" : "running"
+		if(hud_used.move_intent)
+			hud_used.move_intent.icon_state = (intent == M_WALK ? "walking" : "running")
 
 /mob/living/proc/melee_accuracy_mods()
 	. = 0
