@@ -21,7 +21,7 @@
 		to_chat(usr, "Error: you are not an admin!")
 		return
 
-	var/response = input(usr, "Are you sure? This will start up the engine with selected gas as coolant.", "Engine setup") as null|anything in list("N2", "CO2", "PH", "H2", "Abort")
+	var/response = input(usr, "Are you sure? This will start up the engine with selected gas as coolant.", "Engine setup") as null|anything in list("N2", "CO2", "PL", "H2", "Abort")
 	if(!response || response == "Abort")
 		return
 
@@ -41,7 +41,7 @@
 			if("CO2")
 				C.canister_type = /obj/machinery/portable_atmospherics/canister/carbon_dioxide/engine_setup/
 				continue
-			if("PH")
+			if("PL")
 				C.canister_type = /obj/machinery/portable_atmospherics/canister/plasma/engine_setup/
 				continue
 			if("H2")
@@ -56,7 +56,7 @@
 			if("CO2")
 				C.energy_setting = ENERGY_CARBONDIOXIDE
 				continue
-			if("PH")
+			if("PL")
 				C.energy_setting = ENERGY_PLASMA
 				continue
 			if("H2")
@@ -233,7 +233,7 @@
 		for(var/datum/omni_port/P in F.ports)
 			if(P.mode != ATM_CO2)
 				continue
-			if(coolant == "PH")
+			if(coolant == "PL")
 				P.mode = ATM_P
 				break
 			else if(coolant == "N2")
