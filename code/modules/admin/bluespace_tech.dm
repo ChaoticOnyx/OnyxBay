@@ -152,11 +152,11 @@
 	set popup_menu = 0
 
 	if(usr.HasMovementHandler(/datum/movement_handler/mob/incorporeal))
-		usr.ReplaceMovementHandler(/datum/movement_handler/mob/admin_possess)
-		to_chat(usr, SPAN_NOTICE("You will now phase through solid matter."))
-	else
-		usr.RemoveMovementHandler(/datum/movement_handler/mob/admin_possess)
+		usr.RemoveMovementHandler(/datum/movement_handler/mob/incorporeal)
 		to_chat(usr, SPAN_NOTICE("You will no-longer phase through solid matter."))
+	else
+		usr.ReplaceMovementHandler(/datum/movement_handler/mob/incorporeal)
+		to_chat(usr, SPAN_NOTICE("You will now phase through solid matter."))
 
 /mob/living/carbon/human/bluespace_tech/verb/bstrecover()
 	set name = "Rejuv"
