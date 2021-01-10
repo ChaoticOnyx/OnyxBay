@@ -622,15 +622,6 @@
 	s.start()
 
 /* Nanites */
-/datum/chemical_reaction/combatplate
-	name = "Combat Borg"
-	result = null
-	required_reagents = list(/datum/reagent/nanites = 5, /datum/reagent/toxin/plasma = 5)
-	result_amount = 1
-
-/datum/chemical_reaction/combatplate/on_reaction(datum/reagents/holder, created_volume)
-	new /obj/item/borg/upgrade/remodel/combat(get_turf(holder.my_atom), created_volume)
-
 /datum/chemical_reaction/borguploadplate
 	name = "Upload Borg"
 	result = null
