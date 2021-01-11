@@ -683,7 +683,7 @@
 	result_amount = 1
 
 /datum/chemical_reaction/nanitestoglass/on_reaction(datum/reagents/holder, created_volume)
-	var/obj/item/stack/material/plasteel/Ph = new /obj/item/stack/material/glass/plass
+	var/obj/item/stack/material/glass/plass/Ph = new /obj/item/stack/material/glass/plass
 	Ph.amount = 5
 	Ph.loc = get_turf(holder.my_atom)
 	..()
