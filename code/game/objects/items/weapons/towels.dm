@@ -41,7 +41,7 @@
 	desc = "A goat skin, which was brutally butchered from a goat."
 	icon_state = "goatskin"
 
-obj/item/skin/goat/attackby(obj/item/weapon/W, mob/user)
+/obj/item/skin/goat/attackby(obj/item/weapon/W, mob/user)
 	..()
 	if(W.sharp)
 		to_chat(user, SPAN_NOTICE("You use [W] to cut a ugly hole in [src]."))
