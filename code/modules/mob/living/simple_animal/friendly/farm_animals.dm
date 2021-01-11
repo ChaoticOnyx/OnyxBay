@@ -42,7 +42,7 @@
 		if(enemies.len && prob(10))
 			enemies = list()
 			LoseTarget()
-			src.visible_message("<span class='notice'>\The [src] calms down.</span>")
+			src.visible_message(SPAN_NOTICE("The [src] calms down."))
 
 		if(stat == CONSCIOUS)
 			if(udder && prob(5))
@@ -51,13 +51,13 @@
 		if(locate(/obj/effect/vine) in loc)
 			var/obj/effect/vine/SV = locate() in loc
 			if(prob(60))
-				src.visible_message("<span class='notice'>\The [src] eats the plants.</span>")
+				src.visible_message(SPAN_NOTICE("The [src] eats the plants."))
 				SV.die_off(1)
 				if(locate(/obj/machinery/portable_atmospherics/hydroponics/soil/invisible) in loc)
 					var/obj/machinery/portable_atmospherics/hydroponics/soil/invisible/SP = locate() in loc
 					qdel(SP)
 			else if(prob(20))
-				src.visible_message("<span class='notice'>\The [src] chews on the plants.</span>")
+				src.visible_message(SPAN_NOTICE("The [src] chews on the plants."))
 			return
 
 		if(!pulledby)
@@ -70,7 +70,7 @@
 /mob/living/simple_animal/hostile/retaliate/goat/Retaliate()
 	..()
 	if(stat == CONSCIOUS && prob(50))
-		visible_message("<span class='warning'>\The [src] gets an evil-looking gleam in their eye.</span>")
+		visible_message(SPAN_WARNING("The [src] gets an evil-looking gleam in their eye."))
 
 /mob/living/simple_animal/hostile/retaliate/goat/attackby(obj/item/O, mob/user)
 	var/obj/item/weapon/reagent_containers/G = O
@@ -80,12 +80,12 @@
 			to_chat(user, SPAN_WARNING("Better run away now!"))
 			Retaliate()
 		else if(istype(O, /obj/item/weapon/reagent_containers/glass))
-			user.visible_message("<span class='notice'>[user] milks [src] using \the [O].</span>")
+			user.visible_message(SPAN_NOTICE("[user] milks [src] using \the [O]."))
 			var/transfered = udder.trans_type_to(G, /datum/reagent/drink/milk, rand(5,10))
 			if(G.reagents.total_volume >= G.volume)
-				to_chat(user, "<span class='warning'>\The [O] is full.</span>")
+				to_chat(user, SPAN_NOTICE("The [O] is full."))
 			if(!transfered)
-				to_chat(user, "<span class='warning'>The udder is dry. Wait a bit longer...</span>")
+				to_chat(user, SPAN_NOTICE("The udder is dry. Wait a bit longer..."))
 	else
 		..()
 
@@ -95,7 +95,7 @@
 	if(istype(L))
 		if(prob(15))
 			L.Weaken(3)
-			L.visible_message("<span class='danger'>\The [src] knocks down \the [L]!</span>")
+			L.visible_message(SPAN_DANGER("The [src] knocks down \the [L]!"))
 
 /mob/living/simple_animal/hostile/retaliate/goat/harvest(mob/user)
 	new /obj/item/skin/goat(src.loc)

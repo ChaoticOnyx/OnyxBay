@@ -44,7 +44,7 @@
 obj/item/skin/goat/attackby(obj/item/weapon/W, mob/user)
 	..()
 	if(W.sharp)
-		to_chat(user, SPAN("notice", "You use [W] to cut a ugly hole in [src]."))
-		new /obj/item/clothing/suit/goatskincape(user.loc)
+		to_chat(user, SPAN_NOTICE("You use [W] to cut a ugly hole in [src]."))
+		new /obj/item/clothing/suit/goatskincape(loc)
 		qdel(src)
 		return
