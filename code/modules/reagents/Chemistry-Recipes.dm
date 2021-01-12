@@ -641,7 +641,7 @@
 	new /obj/item/weapon/aiModule/freeformcore(get_turf(holder.my_atom), created_volume)
 
 /datum/chemical_reaction/nanitestogold
-	name = "Alchimic Gold"
+	name = "Mercury Nanitofication"
 	result = null
 	required_reagents = list(/datum/reagent/nanites = 10, /datum/reagent/mercury = 10)
 	result_amount = 1
@@ -650,7 +650,7 @@
 	new /obj/item/stack/material/gold(get_turf(holder.my_atom), created_volume)
 
 /datum/chemical_reaction/nanitestoplasma
-	name = "Alhimic Plasma"
+	name = "Acetone Nanitofication"
 	result = null
 	required_reagents = list(/datum/reagent/nanites = 10, /datum/reagent/acetone = 10)
 	result_amount = 1
@@ -659,7 +659,7 @@
 	new /obj/item/stack/material/plasma(get_turf(holder.my_atom), created_volume)
 
 /datum/chemical_reaction/nanitestouran
-	name = "Alhimic Uran"
+	name = "Radium Nanitofication"
 	result = null
 	required_reagents = list(/datum/reagent/nanites = 10, /datum/reagent/radium = 10)
 	result_amount = 1
@@ -668,7 +668,7 @@
 	new /obj/item/stack/material/uranium(get_turf(holder.my_atom), created_volume)
 
 /datum/chemical_reaction/nanitestosilver
-	name = "Alhimic Silver"
+	name = "Copper Nanitofication"
 	result = null
 	required_reagents = list(/datum/reagent/nanites = 10, /datum/reagent/copper = 10)
 	result_amount = 1
@@ -677,7 +677,7 @@
 	new /obj/item/stack/material/silver(get_turf(holder.my_atom), created_volume)
 
 /datum/chemical_reaction/nanitestoglass
-	name = "Alhimic Glass"
+	name = "Silicon Nanitofication"
 	result = null
 	required_reagents = list(/datum/reagent/nanites = 10, /datum/reagent/silicon = 10)
 	result_amount = 1
@@ -689,7 +689,7 @@
 	..()
 
 /datum/chemical_reaction/nanitestoalmaz
-	name = "Alhimic Almaz"
+	name = "Carbon Nanitofication"
 	result = null
 	required_reagents = list(/datum/reagent/nanites = 15, /datum/reagent/carbon = 15)
 	result_amount = 1
@@ -698,7 +698,7 @@
 	new /obj/item/stack/material/diamond(get_turf(holder.my_atom), created_volume)
 
 /datum/chemical_reaction/nanitestoplastal
-	name = "Alchimic Plastal"
+	name = "Iron Nanitofication"
 	result = null
 	required_reagents = list(/datum/reagent/nanites = 10, /datum/reagent/iron = 10)
 	result_amount = 1
