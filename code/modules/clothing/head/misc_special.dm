@@ -245,9 +245,9 @@
 	. = ..()
 	if((slot == slot_head || slot == slot_l_ear || slot == slot_r_ear) && istype(user))
 		var/hairgb = rgb(user.r_hair, user.g_hair, user.b_hair)
-		var/icon/ears = icon('icons/mob/onmob/head.dmi', "kitty")
+		var/icon/ears = icon('icons/inv_slots/hats/mob.dmi', "kitty")
 		ears.Blend(hairgb, ICON_ADD)
-		ears.Blend(icon('icons/mob/onmob/head.dmi', "kittyinner"), ICON_OVERLAY)
+		ears.Blend(icon('icons/inv_slots/hats/mob.dmi', "kittyinner"), ICON_OVERLAY)
 		icon_override = ears
 	else if(icon_override)
 		icon_override = null

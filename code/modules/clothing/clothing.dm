@@ -640,6 +640,17 @@ BLIND     // can't see anything
 
 /obj/item/clothing/under/New()
 	..()
+	if(worn_state)
+		if(!item_state_slots)
+			item_state_slots = list()
+		item_state_slots[slot_w_uniform_str] = worn_state
+	else
+		if(item_state)
+			worn_state = item_state
+		else
+			worn_state = icon_state
+
+	//autodetect rollability
 	update_rolldown_status()
 	update_rollsleeves_status()
 	if(rolled_down == -1)
@@ -654,28 +665,10 @@ BLIND     // can't see anything
 		return
 	..()
 
-/obj/item/clothing/under/New()
-	..()
-	if(worn_state)
-		if(!item_state_slots)
-			item_state_slots = list()
-		item_state_slots[slot_w_uniform_str] = worn_state
-	else
-		if (item_state)
-			worn_state = item_state
-		else
-			worn_state = icon_state
-
-	//autodetect rollability
-	if(rolled_down < 0)
-		if((worn_state + "_d_s") in icon_states(default_onmob_icons[slot_w_uniform_str])) // TODO: real dmi now depends on body_build, so it's not actual now
-			rolled_down = 0
-
 /obj/item/clothing/under/proc/update_rolldown_status()
 	var/mob/living/carbon/human/H
 	if(istype(src.loc, /mob/living/carbon/human))
 		H = src.loc
-
 
 	var/icon/under_icon
 	if(icon_override)
@@ -686,12 +679,13 @@ BLIND     // can't see anything
 		under_icon = default_onmob_icons[slot_w_uniform_str]
 
 	// The _s is because the icon update procs append it.
-	if(("[worn_state]_d_s") in icon_states(under_icon))
+	if(("[worn_state]_d") in icon_states(under_icon))
 		if(rolled_down != 1)
 			rolled_down = 0
 	else
 		rolled_down = -1
-	if(H) update_clothing_icon()
+	if(H)
+		update_clothing_icon()
 
 /obj/item/clothing/under/proc/update_rollsleeves_status()
 	var/mob/living/carbon/human/H
@@ -707,15 +701,16 @@ BLIND     // can't see anything
 		under_icon = default_onmob_icons[slot_w_uniform_str]
 
 	// The _s is because the icon update procs append it.
-	if(("[worn_state]_r_s") in icon_states(under_icon))
+	if(("[worn_state]_r") in icon_states(under_icon))
 		if(rolled_sleeves != 1)
 			rolled_sleeves = 0
 	else
 		rolled_sleeves = -1
-	if(H) update_clothing_icon()
+	if(H)
+		update_clothing_icon()
 
 /obj/item/clothing/under/update_clothing_icon()
-	if (ismob(src.loc))
+	if(ismob(src.loc))
 		var/mob/M = src.loc
 		M.update_inv_w_uniform(0)
 		M.update_inv_wear_id()
@@ -735,8 +730,10 @@ BLIND     // can't see anything
 
 /obj/item/clothing/under/proc/set_sensors(mob/user as mob)
 	var/mob/M = user
-	if (isobserver(M)) return
-	if (user.incapacitated()) return
+	if(isobserver(M))
+		return
+	if(user.incapacitated())
+		return
 	if(has_sensor >= SUIT_LOCKED_SENSORS)
 		to_chat(user, "The controls are locked.")
 		return 0
@@ -751,7 +748,7 @@ BLIND     // can't see anything
 		return
 	sensor_mode = modes.Find(switchMode) - 1
 
-	if (src.loc == user)
+	if(src.loc == user)
 		switch(sensor_mode)
 			if(0)
 				user.visible_message("[user] adjusts the tracking sensor on \his [src.name].", "You disable your suit's remote sensing equipment.")
@@ -762,7 +759,7 @@ BLIND     // can't see anything
 			if(3)
 				user.visible_message("[user] adjusts the tracking sensor on \his [src.name].", "Your suit will now report your vital lifesigns as well as your coordinate position.")
 
-	else if (ismob(src.loc))
+	else if(ismob(src.loc))
 		if(sensor_mode == 0)
 			user.visible_message("<span class='warning'>[user] disables [src.loc]'s remote sensing equipment.</span>", "You disable [src.loc]'s remote sensing equipment.")
 		else
@@ -793,15 +790,17 @@ BLIND     // can't see anything
 	set name = "Roll Down Jumpsuit"
 	set category = "Object"
 	set src in usr
-	if(!istype(usr, /mob/living)) return
-	if(usr.stat) return
+
+	if(!istype(usr, /mob/living))
+		return
+	if(usr.stat)
+		return
 
 	update_rolldown_status()
 	if(rolled_down == -1)
 		to_chat(usr, "<span class='notice'>You cannot roll down [src]!</span>")
 	if((rolled_sleeves == 1) && !(rolled_down))
 		rolled_sleeves = 0
-		return
 
 	rolled_down = !rolled_down
 	if(rolled_down)
@@ -816,8 +815,11 @@ BLIND     // can't see anything
 	set name = "Roll Up Sleeves"
 	set category = "Object"
 	set src in usr
-	if(!istype(usr, /mob/living)) return
-	if(usr.stat) return
+
+	if(!istype(usr, /mob/living))
+		return
+	if(usr.stat)
+		return
 
 	update_rollsleeves_status()
 	if(rolled_sleeves == -1)
