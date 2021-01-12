@@ -658,13 +658,13 @@
 /datum/chemical_reaction/nanitestoplasma/on_reaction(datum/reagents/holder, created_volume)
 	new /obj/item/stack/material/plasma(get_turf(holder.my_atom), created_volume)
 
-/datum/chemical_reaction/nanitestouran
+/datum/chemical_reaction/nanitestouranium
 	name = "Radium Nanitofication"
 	result = null
 	required_reagents = list(/datum/reagent/nanites = 10, /datum/reagent/radium = 10)
 	result_amount = 1
 
-/datum/chemical_reaction/nanitestouran/on_reaction(datum/reagents/holder, created_volume)
+/datum/chemical_reaction/nanitestouranium/on_reaction(datum/reagents/holder, created_volume)
 	new /obj/item/stack/material/uranium(get_turf(holder.my_atom), created_volume)
 
 /datum/chemical_reaction/nanitestosilver
@@ -688,13 +688,13 @@
 	Ph.loc = get_turf(holder.my_atom)
 	..()
 
-/datum/chemical_reaction/nanitestoalmaz
+/datum/chemical_reaction/nanitestodiamond
 	name = "Carbon Nanitofication"
 	result = null
 	required_reagents = list(/datum/reagent/nanites = 15, /datum/reagent/carbon = 15)
 	result_amount = 1
 
-/datum/chemical_reaction/nanitestoalmaz/on_reaction(datum/reagents/holder, created_volume)
+/datum/chemical_reaction/nanitestodiamond/on_reaction(datum/reagents/holder, created_volume)
 	new /obj/item/stack/material/diamond(get_turf(holder.my_atom), created_volume)
 
 /datum/chemical_reaction/nanitestoplastal
