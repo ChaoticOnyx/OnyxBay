@@ -87,14 +87,6 @@
 		installed = 1
 	return 1
 
-/obj/item/borg/upgrade/remodel/surgeon
-	name = "surgeon model board"
-	module = "Surgeon"
-
-/obj/item/borg/upgrade/remodel/advanced/surgeon
-	name = "advanced surgeon model board"
-	module = "Advanced Surgeon"
-
 /obj/item/borg/upgrade/remodel/service
 	name = "service model board"
 	module = "Service"

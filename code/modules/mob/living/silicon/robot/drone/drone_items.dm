@@ -188,21 +188,29 @@
 
 	cant_hold = list() // understandable, have a great day
 
-/obj/item/weapon/gripper/surgical //Used to handle organs.
-	name = "surgical gripper"
+/obj/item/weapon/gripper/medical //Used to do medical stuff.
+	name = "medical gripper"
 	icon_state = "gripper-medical"
-	desc = "A simple grasping tool for holding surgical utensils as well organs and bodyparts."
+	desc = "A simple grasping tool for holding surgical utensils as well organs and bodyparts, also works fine with other medical stuff."
 	storage_type = list(
-		/obj/item/weapon/storage/box/
+		/obj/item/weapon/storage/box/,
+		/obj/item/weapon/storage/fancy/vials,
+		/obj/item/weapon/storage/lockbox/vials
 		)
 	can_hold = list(
 	/obj/item/organ,
-	/obj/item/weapon/reagent_containers/ivbag,
 	/obj/item/weapon/tank/anesthetic,
 	/obj/item/weapon/reagent_containers/food/snacks/meat,
 	/obj/item/device/mmi,
 	/obj/item/robot_parts,
-	/obj/item/weapon/paper
+	/obj/item/weapon/paper,
+	/obj/item/weapon/reagent_containers/glass,
+	/obj/item/weapon/reagent_containers/pill,
+	/obj/item/weapon/reagent_containers/ivbag,
+	/obj/item/stack/material/plasma,
+	/obj/item/weapon/storage/pill_bottle,
+	/obj/item/weapon/reagent_containers/food/snacks/monkeycube,
+	/obj/item/weapon/virusdish,
 	)
 
 /obj/item/weapon/gripper/no_use //Used when you want to hold and put items in other things, but not able to 'use' the item
