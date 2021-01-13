@@ -222,7 +222,7 @@
 /obj/item/device/uplink_service/fake_crew_announcement/attackby(obj/item/I, mob/user = usr)
 	id_card = I.GetIdCard()
 	if(istype(id_card))
-		to_chat(usr, SPAN("notice", "Card saved!"))
+		to_chat(user, SPAN("notice", "Card saved!"))
 
 /obj/item/device/uplink_service/fake_crew_announcement/verb/verb_toggle_mode()
 	set category = "Object"
@@ -237,7 +237,7 @@
 
 /obj/item/device/uplink_service/fake_crew_announcement/enable(mob/user = usr)
 	if(!istype(id_card))
-		to_chat(usr, SPAN("notice", "You have to swipe a card!"))
+		to_chat(user, SPAN("notice", "You have to swipe a card!"))
 		return
 
 	var/datum/computer_file/crew_record/new_record = CreateModularRecord(user)
