@@ -184,8 +184,8 @@
 	user.visible_message("<span class='notice'>\The [user] activates \the [src].</span>", "<span class='notice'>You activate \the [src].</span>")
 	log_and_message_admins("has activated the service '[service_label]'", user)
 	state = CURRENTLY_ACTIVE
-	var/input = sanitize(input(usr, "Please enter anything you want. Anything. Serious.", "What?", "") as message|null, extra = 0)
-	var/customname = sanitizeSafe(input(usr, "Pick a title for the report.", "Title") as text|null)
+	var/input = sanitize(input(user, "Please enter anything you want. Anything. Serious.", "What?", "") as message|null, extra = 0)
+	var/customname = sanitizeSafe(input(user, "Pick a title for the report.", "Title") as text|null)
 	if(!input)
 		return
 	if(!customname)
