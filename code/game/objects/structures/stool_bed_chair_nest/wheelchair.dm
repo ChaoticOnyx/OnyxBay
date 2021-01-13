@@ -4,6 +4,7 @@
 	icon_state = "wheelchair"
 	anchored = 0
 	buckle_movable = 1
+	movement_handlers = list(/datum/movement_handler/deny_multiz, /datum/movement_handler/delay = list(2), /datum/movement_handler/move_relay_self)
 	foldable = FALSE
 
 	var/driving = 0

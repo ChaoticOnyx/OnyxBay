@@ -190,23 +190,28 @@
 	return ..()
 
 /obj/structure/stairs/Bumped(atom/movable/A)
-	var/turf/target = get_step(GetAbove(A), dir)
-	var/turf/source = A.loc
 	var/turf/above = GetAbove(A)
-	if(above.CanZPass(source, UP) && target.Enter(A, src))
-		A.forceMove(target)
-		if(isliving(A))
-			var/mob/living/L = A
-			if(L.pulling)
-				L.pulling.forceMove(target)
+	if(above)
+		var/turf/target = get_step(above, dir)
+		var/turf/source = A.loc
+		if(above.CanZPass(source, UP) && target.Enter(A, src))
+			A.forceMove(target)
+			if(isliving(A))
+				var/mob/living/L = A
+				if(L.pulling)
+					L.pulling.forceMove(target)
+			if(ishuman(A))
+				var/mob/living/carbon/human/H = A
+				if(!H.species.silent_steps)
+					playsound(source, 'sound/effects/stairs_step.ogg', 50)
+					playsound(target, 'sound/effects/stairs_step.ogg', 50)
+		else
+			to_chat(A, SPAN("warning", "Something blocks the path."))
 	else
-		to_chat(A, "<span class='warning'>Something blocks the path.</span>")
+		to_chat(A, SPAN("notice", "There is nothing of interest in this direction."))
 
 /obj/structure/stairs/proc/upperStep(turf/T)
 	return (T == loc)
-
-/obj/structure/stairs/CanPass(obj/mover, turf/source, height, airflow)
-	return airflow || !density
 
 // type paths to make mapping easier.
 /obj/structure/stairs/north
