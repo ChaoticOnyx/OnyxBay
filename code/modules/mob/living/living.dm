@@ -23,9 +23,9 @@
 
 //mob verbs are faster than object verbs. See above.
 /mob/living/pointed(atom/A as mob|obj|turf in view())
-	if(src.stat || !src.canmove || src.restrained())
+	if(incapacitated())
 		return 0
-	if(src.status_flags & FAKEDEATH)
+	if(status_flags & FAKEDEATH)
 		return 0
 	if(!..())
 		return 0
@@ -137,7 +137,7 @@
 		spawn(0)
 			..()
 			if (!istype(AM, /atom/movable) || AM.anchored)
-				if(confused && prob(50) && m_intent=="run")
+				if(confused && prob(50) && m_intent == M_RUN)
 					var/obj/machinery/disposal/D = AM
 					if(istype(D) && !(D.stat & BROKEN))
 						Weaken(6)
@@ -191,7 +191,7 @@
 	//BubbleWrap: people in handcuffs are always switched around as if they were on 'help' intent to prevent a person being pulled from being seperated from their puller
 	if(!(tmob.mob_always_swap || (tmob.a_intent == I_HELP || tmob.restrained()) && (a_intent == I_HELP || src.restrained())))
 		return 0
-	if(!tmob.canmove || !canmove)
+	if(!tmob.MayMove(src) || incapacitated())
 		return 0
 
 	if(swap_density_check(src, tmob))
@@ -521,24 +521,24 @@
 	return
 
 /mob/living/Move(a, b, flag)
-	if (buckled)
+	if(buckled)
 		return
 
-	if (restrained())
+	if(restrained())
 		stop_pulling()
 
 
-	if (lying)
+	if(lying)
 		pull_sound = "pull_body"
 	else
 		pull_sound = null
 
 	var/t7 = 1
-	if (restrained())
+	if(restrained())
 		for(var/mob/living/M in range(src, 1))
 			if ((M.pulling == src && M.stat == 0 && !( M.restrained() )))
 				t7 = null
-	if ((t7 && (pulling && ((get_dist(src, pulling) <= 1 || pulling.loc == loc) && (client && client.moving)))))
+	if((t7 && (pulling && ((get_dist(src, pulling) <= 1 || pulling.loc == loc) && moving))))
 		var/turf/T = loc
 		. = ..()
 
@@ -552,28 +552,28 @@
 			stop_pulling()
 			return
 
-		if (!restrained())
+		if(!restrained())
 			var/diag = get_dir(src, pulling)
-			if ((diag - 1) & diag)
+			if((diag - 1) & diag)
 			else
 				diag = null
-			if ((get_dist(src, pulling) > 1 || diag))
-				if (isliving(pulling))
+			if((get_dist(src, pulling) > 1 || diag))
+				if(isliving(pulling))
 					var/mob/living/M = pulling
 					var/ok = 1
-					if (locate(/obj/item/grab, M.grabbed_by))
-						if (prob(75))
+					if(locate(/obj/item/grab, M.grabbed_by))
+						if(prob(75))
 							var/obj/item/grab/G = pick(M.grabbed_by)
-							if (istype(G, /obj/item/grab))
+							if(istype(G, /obj/item/grab))
 								for(var/mob/O in viewers(M, null))
 									O.show_message(text("<span class='warning'>[] has been pulled from []'s grip by []</span>", G.affecting, G.assailant, src), 1)
 								//G = null
 								qdel(G)
 						else
 							ok = 0
-						if (locate(/obj/item/grab, M.grabbed_by.len))
+						if(locate(/obj/item/grab, M.grabbed_by.len))
 							ok = 0
-					if (ok)
+					if(ok)
 						var/atom/movable/t = M.pulling
 						M.stop_pulling()
 
@@ -581,9 +581,9 @@
 							var/area/A = get_area(M)
 							if(A.has_gravity)
 								//this is the gay blood on floor shit -- Added back -- Skie
-								if (M.lying && (prob(M.getBruteLoss() / 6)))
+								if(M.lying && (prob(M.getBruteLoss() / 6)))
 									var/turf/location = M.loc
-									if (istype(location, /turf/simulated))
+									if(istype(location, /turf/simulated))
 										location.add_blood(M)
 								//pull damage with injured people
 									if(prob(25))
@@ -594,7 +594,7 @@
 										M.adjustBruteLoss(2)
 										visible_message("<span class='danger'>\The [M]'s [M.isSynthetic() ? "state" : "wounds"] worsen terribly from being dragged!</span>")
 										var/turf/location = M.loc
-										if (istype(location, /turf/simulated))
+										if(istype(location, /turf/simulated))
 											location.add_blood(M)
 											if(ishuman(M))
 												var/mob/living/carbon/human/H = M
@@ -603,7 +603,7 @@
 													H.vessel.remove_reagent(/datum/reagent/blood, 1)
 
 
-						if (m_intent == "run" && pulling && pulling.pull_sound && (world.time - last_pull_sound) > 1 SECOND)
+						if(m_intent == M_RUN && pulling && pulling.pull_sound && (world.time - last_pull_sound) > 1 SECOND)
 							last_pull_sound = world.time
 							playsound(pulling, pulling.pull_sound, rand(50, 75), TRUE)
 
@@ -611,16 +611,16 @@
 						if(t)
 							M.start_pulling(t)
 				else
-					if (pulling)
-						if (istype(pulling, /obj/structure/window))
+					if(pulling)
+						if(istype(pulling, /obj/structure/window))
 							var/obj/structure/window/W = pulling
 							if(W.is_full_window())
 								for(var/obj/structure/window/win in get_step(pulling,get_dir(pulling.loc, T)))
 									stop_pulling()
-					if (pulling)
+					if(pulling)
 						step(pulling, get_dir(pulling.loc, T))
 
-						if (m_intent == "run" && pulling && pulling.pull_sound && (world.time - last_pull_sound) > 1 SECOND)
+						if(m_intent == M_RUN && pulling && pulling.pull_sound && (world.time - last_pull_sound) > 1 SECOND)
 							last_pull_sound = world.time
 							playsound(pulling, pulling.pull_sound, rand(50, 75), TRUE)
 
@@ -826,12 +826,12 @@
 	return ..()
 
 /mob/living/proc/set_m_intent(intent)
-	if (intent != "walk" && intent != "run")
+	if(intent != M_WALK && intent != M_RUN)
 		return 0
 	m_intent = intent
 	if(hud_used)
-		if (hud_used.move_intent)
-			hud_used.move_intent.icon_state = intent == "walk" ? "walking" : "running"
+		if(hud_used.move_intent)
+			hud_used.move_intent.icon_state = (intent == M_WALK ? "walking" : "running")
 
 /mob/living/proc/melee_accuracy_mods()
 	. = 0

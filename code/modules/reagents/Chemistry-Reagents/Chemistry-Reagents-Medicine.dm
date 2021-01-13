@@ -542,7 +542,7 @@
 		return
 	if(prob(5))
 		M.emote(pick("twitch", "blink_r", "shiver"))
-	M.add_chemical_effect(CE_SPEEDBOOST, 1)
+	M.add_chemical_effect(CE_SPEEDBOOST, 2)
 	M.add_chemical_effect(CE_PULSE, 2)
 
 /datum/reagent/ethylredoxrazine

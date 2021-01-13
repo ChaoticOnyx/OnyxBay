@@ -147,6 +147,19 @@
 	if(istype(loc, /turf))
 		var/turf/T = loc
 		. += T.movement_delay
+
+	switch(m_intent)
+		if(M_RUN)
+			if(drowsyness > 0)
+				. += config.walk_speed
+			else
+				. += config.run_speed
+		if(M_WALK)
+			. += config.walk_speed
+
+	if(lying) //Crawling, it's slower
+		. += 10 + (weakened * 2)
+
 	if(pulling)
 		if(istype(pulling, /obj))
 			var/obj/O = pulling
@@ -185,14 +198,13 @@
 	return incapacitated(INCAPACITATION_KNOCKDOWN)
 
 /mob/proc/incapacitated(incapacitation_flags = INCAPACITATION_DEFAULT)
-
-	if ((incapacitation_flags & INCAPACITATION_STUNNED) && stunned)
+	if((incapacitation_flags & INCAPACITATION_STUNNED) && stunned)
 		return 1
 
-	if ((incapacitation_flags & INCAPACITATION_FORCELYING) && (weakened || resting || pinned.len))
+	if((incapacitation_flags & INCAPACITATION_FORCELYING) && (weakened || resting || pinned.len))
 		return 1
 
-	if ((incapacitation_flags & INCAPACITATION_KNOCKOUT) && (stat || paralysis || sleeping || (status_flags & FAKEDEATH)))
+	if((incapacitation_flags & INCAPACITATION_KNOCKOUT) && (stat || paralysis || sleeping || (status_flags & FAKEDEATH)))
 		return 1
 
 	if((incapacitation_flags & INCAPACITATION_RESTRAINED) && restrained())
@@ -682,50 +694,39 @@
 
 // facing verbs
 /mob/proc/canface()
-	if(!canmove)						return 0
-	if(anchored)						return 0
-	if(transforming)					return 0
-	return 1
+	return !incapacitated()
 
 // Not sure what to call this. Used to check if humans are wearing an AI-controlled exosuit and hence don't need to fall over yet.
 /mob/proc/can_stand_overridden()
 	return 0
 
-//Updates canmove, lying and icons. Could perhaps do with a rename but I can't think of anything to describe it.
+//Updates lying and icons. Could perhaps do with a rename but I can't think of anything to describe it. / Now it DEFINITELY needs a new name, but UpdateLyingBuckledAndVerbStatus() is way too retardulous ~Toby
 /mob/proc/update_canmove()
-
 	if(!resting && cannot_stand() && can_stand_overridden())
 		lying = 0
-		canmove = 1
 	else if(buckled)
 		anchored = 1
-		canmove = 0
 		if(istype(buckled))
 			if(buckled.buckle_lying == -1)
 				lying = incapacitated(INCAPACITATION_KNOCKDOWN)
 			else
 				lying = buckled.buckle_lying
-			if(buckled.buckle_movable)
+			if(buckled.buckle_movable || buckled.buckle_relaymove)
 				anchored = 0
-				canmove = 1
-			if(buckled.buckle_relaymove)
-				canmove = 1
 	else
 		lying = incapacitated(INCAPACITATION_KNOCKDOWN)
-		canmove = !incapacitated(INCAPACITATION_DISABLED)
 
 	if(lying)
 		set_density(0)
-		if(l_hand) unEquip(l_hand)
-		if(r_hand) unEquip(r_hand)
+		if(l_hand)
+			unEquip(l_hand)
+		if(r_hand)
+			unEquip(r_hand)
 	else
 		set_density(initial(density))
 	reset_layer()
 
 	for(var/obj/item/grab/G in grabbed_by)
-		if(G.stop_move())
-			canmove = 0
-
 		if(G.force_stand())
 			lying = 0
 
@@ -735,10 +736,8 @@
 	if( update_icon )	//forces a full overlay update
 		update_icon = 0
 		regenerate_icons()
-	else if( lying != lying_prev || hanging != hanging_prev)
+	else if(lying != lying_prev || hanging != hanging_prev)
 		update_icons()
-
-	return canmove
 
 /mob/proc/reset_layer()
 	if(lying)
@@ -747,12 +746,12 @@
 		reset_plane_and_layer()
 
 /mob/proc/facedir(ndir)
-	if(!canface() || client.moving || world.time < client.move_delay)
+	if(!canface() || moving)
 		return 0
 	set_dir(ndir)
 	if(buckled && buckled.buckle_movable)
 		buckled.set_dir(ndir)
-	client.move_delay += movement_delay()
+	setMoveCooldown(movement_delay())
 	return 1
 
 

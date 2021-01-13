@@ -4,7 +4,7 @@
 
 	..()
 
-	if(transforming)
+	if(HAS_TRANSFORMATION_MOVEMENT_HANDLER(src))
 		return 0
 	if(!loc)
 		return 0

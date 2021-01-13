@@ -27,14 +27,9 @@
 
 /mob/living/silicon/sil_brainmob/update_canmove()
 	if(in_contents_of(/obj/mecha))
-		canmove = 1
 		use_me = 1
 	else if(container && istype(container, /obj/item/organ/internal/posibrain) && istype(container.loc, /turf))
-		canmove = 1
 		use_me = 1
-	else
-		canmove = 0
-	return canmove
 
 /mob/living/silicon/sil_brainmob/isSynthetic()
 	return 1
