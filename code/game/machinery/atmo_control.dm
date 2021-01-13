@@ -139,7 +139,7 @@ obj/machinery/computer/general_air_control/Destroy()
 					if(data["hydrogen"])
 						sensor_part += "[data["hydrogen"]]% H2; "
 					if(data["plasma"])
-						sensor_part += "[data["plasma"]]% PH; "
+						sensor_part += "[data["plasma"]]% PL; "
 				sensor_part += "<HR>"
 
 			else
