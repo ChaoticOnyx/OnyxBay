@@ -207,7 +207,7 @@
 		"rad_warn" 				= 'sound/voice/augmented/BB02.wav',
 		"toxin_warn" 			= 'sound/voice/augmented/BB12.wav',
 		"low_health" 			= 'sound/voice/augmented/BB03.wav',
-		"chemical_mutant" 		= 'sound/voice/augmented/BB05.wav',
+		"chemical_need" 		= 'sound/voice/augmented/BB05.wav',
 		"power_drain" 			= 'sound/voice/augmented/BB07.wav',
 		"ammunition_drain" 		= 'sound/voice/augmented/BB08.wav',
 		"access_needed" 		= 'sound/voice/augmented/BB13.wav',
