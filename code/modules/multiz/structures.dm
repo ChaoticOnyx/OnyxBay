@@ -47,13 +47,13 @@
 /obj/structure/ladder/attackby(obj/item/C as obj, mob/user as mob)
 	climb(user)
 
-/obj/structure/ladder/attack_hand(mob/user as mob)
+/obj/structure/ladder/attack_hand(mob/user)
 	climb(user)
 
-/obj/structure/ladder/attack_robot(mob/user as mob)
+/obj/structure/ladder/attack_robot(mob/user)
 	climb(user)
 
-/obj/structure/ladder/attack_ai(mob/user as mob)
+/obj/structure/ladder/attack_ai(mob/user)
 	var/mob/living/silicon/ai/ai = user
 	if(!istype(ai))
 		return
@@ -61,14 +61,14 @@
 	if(istype(AIeye))
 		instant_climb(AIeye)
 
-/obj/structure/ladder/attack_ghost(mob/user as mob)
+/obj/structure/ladder/attack_ghost(mob/user)
 	instant_climb(user)
 
-/obj/structure/ladder/proc/instant_climb(mob/user as mob)
+/obj/structure/ladder/proc/instant_climb(mob/user)
 	var/target_ladder = getTargetLadder(user)
 		user.forceMove(get_turf(target_ladder))
 
-/obj/structure/ladder/proc/climb(mob/user as mob)
+/obj/structure/ladder/proc/climb(mob/user)
 	if(!user.may_climb_ladders(src))
 		return
 
@@ -145,7 +145,7 @@
 /mob/observer/ghost/may_climb_ladders(ladder)
 	return TRUE
 
-/obj/structure/ladder/proc/climbLadder(mob/user as mob, target_ladder)
+/obj/structure/ladder/proc/climbLadder(mob/user, target_ladder)
 	var/turf/T = get_turf(target_ladder)
 	for(var/atom/A in T)
 		if(!A.CanPass(user, user.loc, 1.5, 0))
