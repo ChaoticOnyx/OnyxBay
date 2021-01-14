@@ -166,7 +166,7 @@
 
 	var/obj/item/device/mmi/installed_brain
 
-/obj/item/integrated_circuit/input/mmi_tank/attackby(var/obj/item/device/mmi/O, var/mob/user)
+/obj/item/integrated_circuit/input/mmi_tank/attackby(obj/item/device/mmi/O, mob/user)
 	if(!istype(O,/obj/item/device/mmi))
 		to_chat(user,SPAN("warning", "You can't put that inside."))
 		return
@@ -181,7 +181,7 @@
 	to_chat(O, SPAN("notice", "You are slowly being placed inside the man-machine-interface tank."))
 	set_pin_data(IC_OUTPUT, 1, O)
 
-/obj/item/integrated_circuit/input/mmi_tank/attack_self(var/mob/user)
+/obj/item/integrated_circuit/input/mmi_tank/attack_self(mob/user)
 	if(installed_brain)
 		RemoveBrain()
 		to_chat(user, SPAN("notice", "You slowly lift [installed_brain] out of the MMI tank."))
@@ -196,9 +196,9 @@
 	..()
 
 /obj/item/integrated_circuit/input/mmi_tank/relaymove(mob/user, direction)
-	set_pin_data(IC_OUTPUT, 2, dir)
+	set_pin_data(IC_OUTPUT, 2, direction)
 	do_work(1)
-	switch(dir)
+	switch(direction)
 		if(8)	activate_pin(2)
 		if(4)	activate_pin(3)
 		if(1)	activate_pin(4)
@@ -283,7 +283,7 @@
 
 	var/obj/item/device/paicard/installed_pai
 
-/obj/item/integrated_circuit/input/pAI_connector/attackby(var/obj/item/device/paicard/O, var/mob/user)
+/obj/item/integrated_circuit/input/pAI_connector/attackby(obj/item/device/paicard/O, mob/user)
 	if(!istype(O,/obj/item/device/paicard))
 		to_chat(user,SPAN("warning", "You can't put that inside."))
 		return
@@ -298,7 +298,7 @@
 	to_chat(O, SPAN("notice", "You are slowly being connected to the pAI connector."))
 	set_pin_data(IC_OUTPUT, 1, O)
 
-/obj/item/integrated_circuit/input/pAI_connector/attack_self(var/mob/user)
+/obj/item/integrated_circuit/input/pAI_connector/attack_self(mob/user)
 	if(installed_pai)
 		RemovepAI()
 		to_chat(user, SPAN("notice", "You slowly disconnect the circuit's pins from the [installed_pai]."))
@@ -308,7 +308,7 @@
 	else
 		to_chat(user, SPAN("notice", "The connection port is empty."))
 
-/obj/item/integrated_circuit/input/pAI_connector/relaymove(var/n,var/dir)
+/obj/item/integrated_circuit/input/pAI_connector/relaymove(mob/user, dir)
 	set_pin_data(IC_OUTPUT, 2, dir)
 	do_work(1)
 	switch(dir)
@@ -317,7 +317,7 @@
 		if(1)	activate_pin(4)
 		if(2)	activate_pin(5)
 
-/obj/item/integrated_circuit/input/pAI_connector/do_work(var/n)
+/obj/item/integrated_circuit/input/pAI_connector/do_work(n)
 	push_data()
 	activate_pin(n)
 
