@@ -191,6 +191,8 @@
 	. += "</center></table><center>"
 
 	switch(pref.alternate_option)
+		if(GET_EMPTY_JOB)
+			. += "<u><a href='?src=\ref[src];job_alternative=1'>Get unique job</a></u>"
 		if(GET_RANDOM_JOB)
 			. += "<u><a href='?src=\ref[src];job_alternative=1'>Get random job if preferences unavailable</a></u>"
 		if(BE_ASSISTANT)
@@ -208,9 +210,9 @@
 		return TOPIC_REFRESH
 
 	else if(href_list["job_alternative"])
-		if(pref.alternate_option == GET_RANDOM_JOB || pref.alternate_option == BE_ASSISTANT)
+		if(pref.alternate_option == GET_RANDOM_JOB || pref.alternate_option == BE_ASSISTANT || pref.alternate_option == RETURN_TO_LOBBY)
 			pref.alternate_option += 1
-		else if(pref.alternate_option == RETURN_TO_LOBBY)
+		else if(pref.alternate_option == GET_EMPTY_JOB)
 			pref.alternate_option = 0
 		return TOPIC_REFRESH
 
