@@ -1,5 +1,11 @@
 GLOBAL_DATUM_INIT(traitors, /datum/antagonist/traitor, new)
 
+/proc/istraitor(mob/player)
+	if(!GLOB.traitors || !player.mind)
+		return 0
+	if(player.mind in GLOB.traitors.current_antagonists)
+		return 1
+
 // Inherits most of its vars from the base datum.
 /datum/antagonist/traitor
 	id = MODE_TRAITOR

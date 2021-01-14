@@ -10,7 +10,11 @@
 	. = icon_states(icon)
 	. -= "on"
 	if (!user || !iscultist(user))
-		. -= "narsiebistro"
+		. -= "Nar-sie Bistro"
+	if (!user || !istraitor(user))
+		. -= "The Syndi Cat"
+		. -= "Vlad's Salad Bar"
+		. -= "Combo Cafe"
 	. -= "empty"
 	if(initial)
 		. -= "Off"
@@ -20,7 +24,7 @@
 	switch(icon_state)
 		if("Off")
 			. += "\nIt appears to be switched off."
-		if("narsiebistro")
+		if("Nar-sie Bistro")
 			. += "\nIt shows a picture of a large black and red being. Spooky!"
 		if("on", "empty")
 			. += "\nThe lights are on, but there's no picture."
