@@ -3,7 +3,7 @@
 /obj/machinery/atmospherics/Destroy()
 	for(var/mob/living/M in src) //ventcrawling is serious business
 		M.remove_ventcrawl()
-		M.forceMove(get_turf(src))
+		M.dropInto(loc)
 	if(pipe_image)
 		for(var/mob/living/M in GLOB.player_list)
 			if(M.client)
@@ -20,7 +20,10 @@
 /obj/machinery/atmospherics/relaymove(mob/living/user, direction)
 	if(user.loc != src || !(direction & initialize_directions)) //can't go in a way we aren't connecting to
 		return
-	ventcrawl_to(user,findConnecting(direction),direction)
+	var/datum/movement_handler/mob/delay/delay = user.GetMovementHandler(/datum/movement_handler/mob/delay)
+	if(delay && delay.MayMove(user, FALSE) == MOVEMENT_PROCEED) // Yes, this DOES look fucked up. It shouldn't be used this way. But screw it this whole ventcrawl thing is a mess so who the fuck cares
+		ventcrawl_to(user, findConnecting(direction), direction) // TODO: Make a fucking handler for this piece of VG shit
+		user.setMoveCooldown(user.movement_delay())
 
 /obj/machinery/atmospherics/proc/ventcrawl_to(mob/living/user, obj/machinery/atmospherics/target_move, direction)
 	if(target_move)
@@ -35,16 +38,13 @@
 			user.forceMove(target_move)
 			user.client.eye = target_move //if we don't do this, Byond only updates the eye every tick - required for smooth movement
 			if(world.time > user.next_play_vent)
-				user.next_play_vent = world.time+15
+				user.next_play_vent = world.time + 15
 				playsound(src, "vent", rand(20, 45), FALSE)
 	else
 		if((direction & initialize_directions) || is_type_in_list(src, ventcrawl_machinery) && src.can_crawl_through()) //if we move in a way the pipe can connect, but doesn't - or we're in a vent
 			user.remove_ventcrawl()
 			user.forceMove(src.loc)
 			user.visible_message("You hear something squeezing through the pipes.", "You climb out the ventilation system.")
-	user.canmove = 0
-	spawn(1)
-		user.canmove = 1
 
 /obj/machinery/atmospherics/proc/can_crawl_through()
 	return 1

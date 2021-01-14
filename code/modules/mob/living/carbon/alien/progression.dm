@@ -36,15 +36,9 @@
 
 	transfer_languages(src, adult)
 
+	var/call_namepick = (mind && can_namepick_as_adult) ? TRUE : FALSE
 	if(mind)
 		mind.transfer_to(adult)
-		if (can_namepick_as_adult)
-			var/newname = sanitize(input(adult, "You have become an adult. Choose a name for yourself.", "Adult Name") as null|text, MAX_NAME_LEN)
-
-			if(!newname)
-				adult.fully_replace_character_name("[src.adult_name] ([instance_num])")
-			else
-				adult.fully_replace_character_name(newname)
 	else
 		adult.key = src.key
 
@@ -54,6 +48,12 @@
 	for(var/datum/language/L in languages)
 		adult.add_language(L.name)
 	qdel(src)
+	if(call_namepick)
+		var/newname = sanitize(input(adult, "You have become an adult. Choose a name for yourself.", "Adult Name") as null|text, MAX_NAME_LEN)
+		if(!newname)
+			adult.fully_replace_character_name("[src.adult_name] ([instance_num])")
+		else
+			adult.fully_replace_character_name(newname)
 
 /mob/living/carbon/alien/proc/update_progression()
 	if(amount_grown < max_grown)

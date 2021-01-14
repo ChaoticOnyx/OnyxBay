@@ -171,7 +171,7 @@
 	set desc = "Turn your inate healing on or off."
 	set category = "Abilities"
 	innate_heal = !innate_heal
-	if (innate_heal)
+	if(innate_heal)
 		to_chat(src, "<span class='alium'>You are now using nutrients to regenerate.</span>")
 	else
 		to_chat(src, "<span class='alium'>You are no longer using nutrients to regenerate.</span>")
@@ -182,12 +182,6 @@
 	var/mob/living/carbon/alien/diona/S = new(T)
 	S.set_dir(dir)
 	transfer_languages(src, S)
-
-	if(mind)
-		mind.transfer_to(S)
-
-		message_admins("\The [src] has split into nymphs; player now controls [key_name_admin(S)]")
-		log_admin("\The [src] has split into nymphs; player now controls [key_name(S)]")
 
 	var/nymphs = 1
 	var/mob/living/carbon/alien/diona/L = S
@@ -217,7 +211,20 @@
 		drop_from_inventory(W)
 
 	visible_message("<span class='warning'>\The [src] quivers slightly, then splits apart with a wet slithering noise.</span>")
+
+	if(!mind)
+		qdel(src)
+		return
+
+	mind.transfer_to(S)
+	message_admins("\The [src] has split into nymphs; player now controls [key_name_admin(S)]")
+	log_admin("\The [src] has split into nymphs; player now controls [key_name(S)]")
 	qdel(src)
+
+	var/newname = sanitize(input(S, "You are now a nymph. Choose a name for yourself.", "Nymph Name") as null|text, MAX_NAME_LEN)
+	if(newname)
+		S.fully_replace_character_name(newname)
+
 
 /mob/living/carbon/human/proc/can_nab(mob/living/target)
 	if(QDELETED(src))

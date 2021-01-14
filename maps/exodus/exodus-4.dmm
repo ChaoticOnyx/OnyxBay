@@ -359,7 +359,7 @@
 "gU" = (/obj/machinery/power/smes/buildable{charge = 2.5e+006; input_attempt = 1; input_level = 250000; inputting = 0; output_attempt = 1; output_level = 250000; RCon_tag = "Telecommunications Satellite"},/obj/structure/cable{icon_state = "0-4"; d2 = 4},/turf/simulated/floor/plating,/area/tcommsat/powercontrol)
 "gV" = (/obj/machinery/portable_atmospherics/canister/oxygen,/turf/simulated/floor/shuttle/white,/area/derelict/ship)
 "gW" = (/obj/structure/cable{d1 = 1; d2 = 8; icon_state = "1-8"},/obj/structure/table/standard,/obj/machinery/cell_charger,/turf/simulated/floor/plating,/area/tcommsat/powercontrol)
-"gX" = (/obj/structure/closet/crate,/obj/item/clothing/glasses/night,/obj/effect/floor_decal/industrial/warning{icon_state = "warning"; dir = 10},/turf/simulated/floor/tiled,/area/tcommsat/entrance)
+"gX" = (/obj/structure/closet/crate,/obj/item/clothing/glasses/hud/scanners/night,/obj/effect/floor_decal/industrial/warning{icon_state = "warning"; dir = 10},/turf/simulated/floor/tiled,/area/tcommsat/entrance)
 "gY" = (/obj/effect/floor_decal/industrial/warning/corner{dir = 8},/turf/simulated/floor/tiled,/area/tcommsat/entrance)
 "gZ" = (/obj/machinery/atmospherics/pipe/simple/hidden/scrubbers{dir = 5},/turf/simulated/floor/tiled,/area/tcommsat/entrance)
 "ha" = (/obj/machinery/atmospherics/unary/vent_scrubber/on{dir = 8},/turf/simulated/floor/tiled,/area/tcommsat/entrance)

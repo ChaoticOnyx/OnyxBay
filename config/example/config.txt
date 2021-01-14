@@ -417,9 +417,9 @@ REVIVAL_BRAIN_LIFE -1
 ## These values get directly added to values and totals in-game.
 ## To speed things up make the number negative, to slow things down, make the number positive.
 
-## These modify the run/walk speed of all mobs before the mob-specific modifiers are applied. 
-RUN_SPEED  2
-WALK_SPEED 1
+## These modify the run/walk speed of all mobs before the mob-specific modifiers are applied. Higher values result into lower move speed.
+RUN_SPEED  3
+WALK_SPEED 7
 
 ## The variables below affect the movement of specific mob types.
 HUMAN_DELAY  0
