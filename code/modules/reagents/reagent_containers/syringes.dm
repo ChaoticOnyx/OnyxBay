@@ -374,6 +374,7 @@
 
 /obj/item/weapon/reagent_containers/syringe/ld50_syringe
 	name = "Lethal Injection Syringe"
+	icon = 'icons/obj/syringe.dmi'
 	desc = "A syringe used for lethal injections."
 	amount_per_transfer_from_this = 60
 	volume = 60
