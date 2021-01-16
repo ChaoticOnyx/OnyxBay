@@ -631,7 +631,9 @@
 	onclose(user, "instrument")
 
 /obj/item/instrument/Topic(href, href_list)
-	if((. = ..()))
+	if(..())
+		return 1
+	if(!in_range(src, usr) || issilicon(usr) || !isliving(usr) || !usr.canmove || usr.restrained())
 		usr << browse(null, "window=instrument;size=700x300")
 		onclose(usr, "instrument")
 		return

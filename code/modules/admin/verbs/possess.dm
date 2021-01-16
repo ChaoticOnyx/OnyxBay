@@ -17,7 +17,6 @@
 	usr.SetName(O.name)
 	usr.client.eye = O
 	usr.control_object = O
-	usr.ReplaceMovementHandler(/datum/movement_handler/mob/admin_possess)
 	feedback_add_details("admin_verb","PO") //If you are copy-pasting this, ensure the 2nd parameter is unique to the new proc!
 
 /proc/release(obj/O)
@@ -26,7 +25,6 @@
 	//usr.loc = get_turf(usr)
 
 	if(usr.control_object && usr.name_archive) //if you have a name archived and if you are actually relassing an object
-		usr.RemoveMovementHandler(/datum/movement_handler/mob/admin_possess)
 		usr.real_name = usr.name_archive
 		usr.SetName(usr.real_name)
 		if(ishuman(usr))

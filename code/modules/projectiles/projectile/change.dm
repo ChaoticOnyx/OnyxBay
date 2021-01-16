@@ -11,7 +11,7 @@
 
 /obj/item/projectile/change/proc/wabbajack(mob/M)
 	if(istype(M, /mob/living) && M.stat != DEAD)
-		if(HAS_TRANSFORMATION_MOVEMENT_HANDLER(M))
+		if(M.transforming)
 			return
 		if(M.has_brain_worms())
 			return //Borer stuff - RR

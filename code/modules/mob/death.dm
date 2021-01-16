@@ -4,7 +4,8 @@
 	if(status_flags & GODMODE)
 		return
 	death(1)
-	ADD_TRANSFORMATION_MOVEMENT_HANDLER(src)
+	transforming = 1
+	canmove = 0
 	icon = null
 	set_invisibility(101)
 	update_canmove()
@@ -37,7 +38,8 @@
 		return
 	death(1)
 	var/atom/movable/overlay/animation = null
-	ADD_TRANSFORMATION_MOVEMENT_HANDLER(src)
+	transforming = 1
+	canmove = 0
 	icon = null
 	set_invisibility(101)
 

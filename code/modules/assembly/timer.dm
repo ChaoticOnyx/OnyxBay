@@ -82,7 +82,8 @@
 
 
 /obj/item/device/assembly/timer/Topic(href, href_list, state = GLOB.physical_state)
-	if((. = ..()))
+	if(..()) return 1
+	if(!usr.canmove || usr.stat || usr.restrained() || !in_range(loc, usr))
 		usr << browse(null, "window=timer")
 		onclose(usr, "timer")
 		return

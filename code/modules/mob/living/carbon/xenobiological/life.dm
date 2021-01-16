@@ -2,7 +2,7 @@
 	set invisibility = 0
 	set background = 1
 
-	if(HAS_TRANSFORMATION_MOVEMENT_HANDLER(src))
+	if (src.transforming)
 		return
 
 	..()

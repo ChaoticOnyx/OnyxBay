@@ -433,8 +433,8 @@
 		drug_strength = drug_strength * 0.8
 
 	M.druggy = max(M.druggy, drug_strength)
-	if(prob(10))
-		M.SelfMove(pick(GLOB.cardinal))
+	if(prob(10) && isturf(M.loc) && !istype(M.loc, /turf/space) && M.canmove && !M.restrained())
+		step(M, pick(GLOB.cardinal))
 	if(prob(7))
 		M.emote(pick("twitch", "drool", "moan", "giggle"))
 	M.add_chemical_effect(CE_PULSE, -1)
@@ -610,10 +610,11 @@
 	color = "#13bc5e"
 
 /datum/reagent/aslimetoxin/affect_blood(mob/living/carbon/M, alien, removed) // TODO: check if there's similar code anywhere else
-	if(HAS_TRANSFORMATION_MOVEMENT_HANDLER(M))
+	if(M.transforming)
 		return
 	to_chat(M, "<span class='danger'>Your flesh rapidly mutates!</span>")
-	ADD_TRANSFORMATION_MOVEMENT_HANDLER(M)
+	M.transforming = 1
+	M.canmove = 0
 	M.icon = null
 	M.overlays.Cut()
 	M.set_invisibility(101)
@@ -653,9 +654,26 @@
 			var/msg = pick("clicking","clanking","beeping","buzzing","pinging")
 			to_chat(M, "<span class='warning'>You can feel something [msg] inside of you!</span>")
 	else
-		if(istype(M, /mob/living/carbon/human))
-			var/mob/living/carbon/human/H = M
-			H.Robotize()
+		if(M.transforming)
+			return
+		to_chat(M, "<span class='danger'>Metal structures rapidly assemble inside of you, tearing your weak flesh, rupturing your skin, and crushing your innards!</span>")
+		M.transforming = 1
+		M.canmove = 0
+		M.icon = null
+		M.overlays.Cut()
+		M.set_invisibility(101)
+		for(var/obj/item/W in M)
+			if(istype(W, /obj/item/weapon/implant))
+				qdel(W)
+				continue
+			M.drop_from_inventory(W)
+		var/mob/living/silicon/robot/new_mob = new /mob/living/silicon/robot(M.loc)
+		new_mob.a_intent = "help"
+		if(M.mind)
+			M.mind.transfer_to(new_mob)
+		else
+			new_mob.key = M.key
+		M.gib()
 
 /datum/reagent/xenomicrobes
 	name = "Xenomicrobes"

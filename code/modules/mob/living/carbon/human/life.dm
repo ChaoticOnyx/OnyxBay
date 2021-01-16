@@ -51,7 +51,7 @@
 	set invisibility = 0
 	set background = BACKGROUND_ENABLED
 
-	if(HAS_TRANSFORMATION_MOVEMENT_HANDLER(src))
+	if(transforming)
 		return
 
 	fire_alert = 0 //Reset this here, because both breathe() and handle_environment() have a chance to set it.

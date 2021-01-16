@@ -438,10 +438,15 @@
 
 
 /obj/item/weapon/cartridge/Topic(href, href_list)
-	if((. = ..()))
+	..()
+
+	if (!usr.canmove || usr.stat || usr.restrained() || !in_range(loc, usr))
 		usr.unset_machine()
 		usr << browse(null, "window=pda")
 		return
+
+
+
 
 	switch(href_list["choice"])
 		if("Send Signal")

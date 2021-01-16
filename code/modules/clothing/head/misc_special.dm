@@ -71,7 +71,7 @@
 	set name = "Adjust welding mask"
 	set src in usr
 
-	if(CanPhysicallyInteract(usr))
+	if(usr.canmove && !usr.stat && !usr.restrained())
 		if(src.up)
 			src.up = !src.up
 			body_parts_covered |= (EYES|FACE)
@@ -251,6 +251,15 @@
 		icon_override = ears
 	else if(icon_override)
 		icon_override = null
+
+/obj/item/clothing/head/kitty/verb/nekomagic()
+	set category = "Object"
+	set name = "Neko Magic"
+	set desc = "Adjust your kitty ears to match your hair color."
+	set src in usr
+
+	if(usr.canmove && !usr.stat && !usr.restrained())
+		src.update_icon(usr)
 
 /obj/item/clothing/head/richard
 	name = "chicken mask"
