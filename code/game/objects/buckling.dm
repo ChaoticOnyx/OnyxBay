@@ -56,11 +56,14 @@
 
 /obj/proc/post_buckle_mob(mob/living/M)
 	if(buckle_pixel_shift)
-		if(M == buckled_mob)
-			var/list/pixel_shift = cached_key_number_decode(buckle_pixel_shift)
-			animate(M, pixel_x = M.default_pixel_x + pixel_shift["x"], pixel_y = M.default_pixel_y + pixel_shift["y"], 4, 1, LINEAR_EASING)
+		var/list/pixel_shift = cached_key_number_decode(buckle_pixel_shift)
+		if(M == buckled_mob)	
+			M.default_pixel_y = M.default_pixel_y + pixel_shift["y"]
+			M.default_pixel_x = M.default_pixel_x + pixel_shift["x"]
 		else
-			animate(M, pixel_x = M.default_pixel_x, pixel_y = M.default_pixel_y, 4, 1, LINEAR_EASING)
+			M.default_pixel_x = M.default_pixel_x - pixel_shift["x"]
+			M.default_pixel_y = M.default_pixel_y - pixel_shift["y"]
+		animate(M, pixel_x = M.default_pixel_x, pixel_y = M.default_pixel_y, time = 1, loop = 1, easing = LINEAR_EASING)
 
 /obj/proc/user_buckle_mob(mob/living/M, mob/user)
 	if(isanimal(user) || istype(M, /mob/living/simple_animal/hostile))

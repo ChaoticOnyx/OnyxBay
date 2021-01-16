@@ -101,14 +101,14 @@
 	desc = "The fur feels.....a bit too realistic."
 	icon_state = "kitty"
 	body_parts_covered = 0
-	
+
 /obj/item/clothing/head/collectable/kitty/equipped(mob/living/carbon/human/user, slot)
 	. = ..()
 	if (slot == slot_head && istype(user))
 		var/hairgb = rgb(user.r_hair, user.g_hair, user.b_hair)
-		var/icon/ears = icon('icons/mob/onmob/head.dmi', "kitty")
+		var/icon/ears = icon('icons/inv_slots/hats/mob.dmi', "kitty")
 		ears.Blend(hairgb, ICON_ADD)
-		ears.Blend(icon('icons/mob/onmob/head.dmi', "kittyinner"), ICON_OVERLAY)
+		ears.Blend(icon('icons/inv_slots/hats/mob.dmi', "kittyinner"), ICON_OVERLAY)
 		icon_override = ears
 	else if (icon_override)
 		icon_override = null

@@ -2,7 +2,7 @@
 	name = "HUD security records"
 	id = "security_hud"
 	req_tech = list(TECH_MAGNET = 3, TECH_COMBAT = 2)
-	build_path = /obj/item/clothing/glasses/hud/security
+	build_path = /obj/item/clothing/glasses/hud/aviators/security
 	sort_string = "GAAAB"
 
 /datum/design/item/optical
@@ -14,18 +14,18 @@
 	desc = "Using the meson-scanning technology those glasses allow you to see through walls, floor or anything else."
 	id = "mesons"
 	req_tech = list(TECH_MAGNET = 2, TECH_ENGINEERING = 2)
-	build_path = /obj/item/clothing/glasses/meson
+	build_path = /obj/item/clothing/glasses/hud/standard/meson
 	sort_string = "GBAAA"
 
 /datum/design/item/optical/material
 	name = "optical material scanner"
 	id = "mesons_material"
 	req_tech = list(TECH_MAGNET = 3, TECH_ENGINEERING = 3)
-	build_path = /obj/item/clothing/glasses/material
+	build_path = /obj/item/clothing/glasses/hud/standard/material
 	sort_string = "GBAAB"
 
 /datum/design/item/optical/tactical
-	name = "optical tactical scanner"
+	name = "tactical goggles"
 	id = "tactical_goggles"
 	req_tech = list(TECH_MAGNET = 3, TECH_COMBAT = 5)
 	materials = list(MATERIAL_STEEL = 50, MATERIAL_GLASS = 50, MATERIAL_SILVER = 50, MATERIAL_GOLD = 50)

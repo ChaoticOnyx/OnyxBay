@@ -34,7 +34,7 @@ proc/get_fusion_reaction(p_react, s_react, m_energy)
 // Material fuels
 //  deuterium
 //  tritium
-//  phoron
+//  plasma
 //  supermatter
 
 // Gaseous/reagent fuels
@@ -50,7 +50,7 @@ proc/get_fusion_reaction(p_react, s_react, m_energy)
 	s_react = "hydrogen"
 	energy_consumption = 1
 	energy_production = 2
-	products = list("phoron" = 1)
+	products = list("plasma" = 1)
 
 /decl/fusion_reaction/deuterium_deuterium
 	p_react = "deuterium"
@@ -103,9 +103,9 @@ proc/get_fusion_reaction(p_react, s_react, m_energy)
 	instability = 2
 	minimum_reaction_temperature = 10000
 
-/decl/fusion_reaction/phoron_hydrogen
+/decl/fusion_reaction/plasma_hydrogen
 	p_react = "hydrogen"
-	s_react = "phoron"
+	s_react = "plasma"
 	energy_consumption = 10
 	energy_production = 0
 	instability = 5
@@ -113,15 +113,15 @@ proc/get_fusion_reaction(p_react, s_react, m_energy)
 	minimum_reaction_temperature = 8000
 
 // VERY UNIDEAL REACTIONS.
-/decl/fusion_reaction/phoron_supermatter
+/decl/fusion_reaction/plasma_supermatter
 	p_react = "supermatter"
-	s_react = "phoron"
+	s_react = "plasma"
 	energy_consumption = 0
 	energy_production = 5
 	radiation = 20
 	instability = 20
 
-/decl/fusion_reaction/phoron_supermatter/handle_reaction_special(obj/effect/fusion_em_field/holder)
+/decl/fusion_reaction/plasma_supermatter/handle_reaction_special(obj/effect/fusion_em_field/holder)
 	var/turf/origin = get_turf(holder)
 	holder.Rupture()
 	qdel(holder)

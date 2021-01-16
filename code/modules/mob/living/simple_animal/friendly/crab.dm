@@ -3,42 +3,52 @@
 	name = "crab"
 	desc = "A hard-shelled crustacean. Seems quite content to lounge around all the time."
 	icon_state = "crab"
+	item_state = "crab"
 	icon_living = "crab"
 	icon_dead = "crab_dead"
 	mob_size = MOB_SMALL
-	speak_emote = list("clicks")
-	emote_hear = list("clicks")
-	emote_see = list("clacks")
+	speak_emote = list("clicks", "clacks")
+	emote_hear = list("clicks", "clacks")
+	emote_see = list("clacks", "clacks")
+	pass_flags = PASS_FLAG_TABLE
 	speak_chance = 1
-	turns_per_move = 5
+	turns_per_move = 3
 	meat_type = /obj/item/weapon/reagent_containers/food/snacks/meat
-	response_help  = "pets"
+	response_help = "pets"
 	response_disarm = "gently pushes aside"
-	response_harm   = "stomps"
-	stop_automated_movement = 1
+	response_harm = "stomps"
 	friendly = "pinches"
-	mob_size = 5
-	var/obj/item/inventory_head
-	var/obj/item/inventory_mask
-	possession_candidate = 1
-	can_escape = 1 //snip snip
+	attacktext = "nipped"
+	attack_sound = 'sound/weapons/bite.ogg'
+	density = 0
+	universal_speak = FALSE
+	universal_understand = TRUE
+	holder_type = /obj/item/weapon/holder/crab
+	possession_candidate = TRUE
+	can_escape = TRUE //snip snip
+	controllable = TRUE
+	shy_animal = TRUE
 
-/mob/living/simple_animal/crab/Life()
+	can_pull_size = ITEM_SIZE_TINY
+	can_pull_mobs = MOB_PULL_SAME
+
+
+/mob/living/simple_animal/crab/Crossed(AM as mob|obj)
+	if(!client && ishuman(AM) && !stat)
+		var/mob/M = AM
+		to_chat(M, SPAN("warning", "\icon[src] [pick("Click", "Clack")]!"))
+		if(prob(50))
+			UnarmedAttack(M)
+		set_panic_target(M)
 	..()
-	//CRAB movement
-	if(!ckey && !stat)
-		if(isturf(src.loc) && !resting && !buckled)		//This is so it only moves if it's not inside a closet, gentics machine, etc.
-			turns_since_move++
-			if(turns_since_move >= turns_per_move)
-				Move(get_step(src,pick(4,8)))
-				turns_since_move = 0
-	regenerate_icons()
 
 //COFFEE! SQUEEEEEEEEE!
 /mob/living/simple_animal/crab/Coffee
 	name = "Coffee"
 	real_name = "Coffee"
 	desc = "It's Coffee, the other pet!"
-	response_help  = "pets"
+	response_help = "pets"
 	response_disarm = "gently pushes aside"
-	response_harm   = "stomps"
+	response_harm = "stomps"
+	possession_candidate = FALSE
+	controllable = FALSE

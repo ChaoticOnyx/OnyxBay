@@ -73,6 +73,10 @@
 #define I_GRAB		"grab"
 #define I_HURT		"harm"
 
+// Movement flags. For fuck's sake, we were using "run"s and "walk"s till 2021
+#define M_RUN  "run"
+#define M_WALK "walk"
+
 //These are used Bump() code for living mobs, in the mob_bump_flag, mob_swap_flags, and mob_push_flags vars to determine whom can bump/swap with whom.
 #define HUMAN 1
 #define MONKEY 2
@@ -217,7 +221,7 @@
 #define BP_GBLADDER "gas bladder"
 #define BP_POLYP    "polyp segment"
 #define BP_ANCHOR   "anchoring ligament"
-#define BP_PHORON   "phoron filter"
+#define BP_PLASMA   "plasma filter"
 #define BP_CHANG    "biostructure"
 #define BP_CANCER    "cancer"
 

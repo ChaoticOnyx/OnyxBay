@@ -1463,9 +1463,8 @@
 		message_admins("[key_name(M)] has been hit by Bluespace Artillery fired by [src.owner]")
 
 		var/obj/effect/stop/S
-		S = new /obj/effect/stop
+		S = new /obj/effect/stop(M.loc)
 		S.victim = M
-		S.loc = M.loc
 		spawn(20)
 			qdel(S)
 
@@ -2006,7 +2005,7 @@
 		if(check_rights(R_ADMIN|R_SERVER))
 			if(href_list["vsc"] == "airflow")
 				vsc.ChangeSettingsDialog(usr,vsc.settings)
-			if(href_list["vsc"] == "phoron")
+			if(href_list["vsc"] == "plasma")
 				vsc.ChangeSettingsDialog(usr,vsc.plc.settings)
 			if(href_list["vsc"] == "default")
 				vsc.SetDefault(usr)
@@ -2028,7 +2027,7 @@
 					to_chat(usr, "Failed to add language '[lang2toggle]' from \the [M]!")
 
 			show_player_panel(M)
-	
+
 	else if(href_list["listen_tape_sound"])
 		var/sound/S = sound(locate(href_list["listen_tape_sound"]))
 		if(!S) return
@@ -2036,7 +2035,7 @@
 		S.channel = 703
 		sound_to(usr, S)
 		to_chat(usr, "<B><A HREF='?_src_=holder;stop_tape_sound=1'>Stop listening</A></B>")
-	
+
 	else if(href_list["stop_tape_sound"])
 		var/sound/S = sound(null)
 		S.channel = 703

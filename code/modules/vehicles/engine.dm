@@ -118,7 +118,7 @@
 			actually_flameable = 1
 		else if(istype(R,/datum/reagent/fuel))
 			actually_flameable = 1
-		else if(istype(R,/datum/reagent/toxin/phoron))
+		else if(istype(R,/datum/reagent/toxin/plasma))
 			new_multiplier = 2
 			actually_flameable = 1
 		else if(istype(R,/datum/reagent/frostoil))

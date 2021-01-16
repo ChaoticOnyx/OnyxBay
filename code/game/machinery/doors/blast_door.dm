@@ -175,11 +175,6 @@
 	health = maxhealth
 	set_broken(FALSE)
 
-/obj/machinery/door/blast/CanPass(atom/movable/mover, turf/target, height=0, air_group=0)
-	if(air_group) return 1
-	return ..()
-
-
 
 // SUBTYPE: Regular
 // Your classical blast door, found almost everywhere.

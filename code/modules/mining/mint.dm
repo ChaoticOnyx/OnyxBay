@@ -13,7 +13,7 @@
 	var/amt_gold = 0   //amount of gold
 	var/amt_diamond = 0
 	var/amt_iron = 0
-	var/amt_phoron = 0
+	var/amt_plasma = 0
 	var/amt_uranium = 0
 	var/newCoins = 0   //how many coins the machine made in it's last load
 	var/processing = 0
@@ -43,8 +43,8 @@
 					amt_silver += 100 * O.get_amount()
 				if(MATERIAL_DIAMOND)
 					amt_diamond += 100 * O.get_amount()
-				if(MATERIAL_PHORON)
-					amt_phoron += 100 * O.get_amount()
+				if(MATERIAL_PLASMA)
+					amt_plasma += 100 * O.get_amount()
 				if(MATERIAL_URANIUM)
 					amt_uranium += 100 * O.get_amount()
 				if(MATERIAL_IRON)
@@ -85,11 +85,11 @@
 		dat += text("chosen")
 	else
 		dat += text("<A href='?src=\ref[src];choose=diamond'>Choose</A>")
-	dat += text("<br><font color='#ff8800'><b>Phoron inserted: </b>[amt_phoron]</font> ")
-	if (chosen == MATERIAL_PHORON)
+	dat += text("<br><font color='#ff8800'><b>Plasma inserted: </b>[amt_plasma]</font> ")
+	if (chosen == MATERIAL_PLASMA)
 		dat += text("chosen")
 	else
-		dat += text("<A href='?src=\ref[src];choose=phoron'>Choose</A>")
+		dat += text("<A href='?src=\ref[src];choose=plasma'>Choose</A>")
 	dat += text("<br><font color='#008800'><b>Uranium inserted: </b>[amt_uranium]</font> ")
 	if (chosen == MATERIAL_URANIUM)
 		dat += text("chosen")
@@ -160,10 +160,10 @@
 						newCoins++
 						src.updateUsrDialog()
 						sleep(5);
-				if(MATERIAL_PHORON)
-					while(amt_phoron > 0 && coinsToProduce > 0)
-						new /obj/item/weapon/coin/phoron(M)
-						amt_phoron -= 20
+				if(MATERIAL_PLASMA)
+					while(amt_plasma > 0 && coinsToProduce > 0)
+						new /obj/item/weapon/coin/plasma(M)
+						amt_plasma -= 20
 						coinsToProduce--
 						newCoins++
 						src.updateUsrDialog()

@@ -290,7 +290,7 @@ var/list/datum/power/changeling/powerinstances = list()
 /datum/power/changeling/changeling_chemical_sting
 	name = "Chemical Sting"
 	desc = "We inject synthesized chemicals to the victim."
-	helptext = "Spends more chemicals on phoron synthesis. To use this, we need to have Synthesis of chemistry."
+	helptext = "Spends more chemicals on plasma synthesis. To use this, we need to have Synthesis of chemistry."
 	genomecost = 3
 	verbpath = /mob/proc/changeling_chemical_sting
 */

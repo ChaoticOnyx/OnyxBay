@@ -35,19 +35,19 @@
 	containername = "\improper \"Odysseus\" Circuit Crate"
 	access = access_robotics
 
-/decl/hierarchy/supply_pack/science/phoron
-	name = "Phoron assembly crate"
-	contains = list(/obj/item/weapon/tank/phoron = 3,
+/decl/hierarchy/supply_pack/science/plasma
+	name = "Plasma assembly crate"
+	contains = list(/obj/item/weapon/tank/plasma = 3,
 					/obj/item/device/assembly/igniter = 3,
 					/obj/item/device/assembly/prox_sensor = 3,
 					/obj/item/device/assembly/timer = 3,
 					/obj/item/device/transfer_valve = 3)
 	cost = 10
-	containertype = /obj/structure/closet/crate/secure/phoron
-	containername = "\improper Phoron assembly crate"
+	containertype = /obj/structure/closet/crate/secure/plasma
+	containername = "\improper Plasma assembly crate"
 	access = access_tox_storage
 
-/decl/hierarchy/supply_pack/science/phoron
+/decl/hierarchy/supply_pack/science/amirig
 	name = "AMI RIG crate"
 	contains = list(/obj/item/weapon/rig/hazmat)
 	cost = 480

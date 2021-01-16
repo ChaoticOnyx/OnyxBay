@@ -208,7 +208,7 @@
 
 	for(var/i = 0, i<numticks, i++)
 		sleep(delayfraction)
-		if(!src || !user || !user.canmove || !(user.loc == T))
+		if(!src || !user || user.is_physically_disabled() || !(user.loc == T))
 			return 0
 
 	return 1
@@ -249,6 +249,9 @@
 	if(M==occupant && radio.broadcasting)
 		radio.talk_into(M, text)
 	return
+
+/obj/mecha/hides_inside_walls() // Won't let us hide piloted mechas inside walls, the simpliest way for now (and probably for ages)
+	return occupant ? 0 : 1
 
 ////////////////////////////
 ///// Action processing ////
@@ -1156,7 +1159,6 @@
 			if(mmi.brainmob)
 				occupant.loc = mmi
 			mmi.mecha = null
-			src.occupant.canmove = 0
 			src.verbs += /obj/mecha/verb/eject
 		src.occupant = null
 		src.icon_state = src.reset_icon()+"-open"
