@@ -892,7 +892,6 @@
 	if(malfunctioning)
 		direction = pick(GLOB.cardinal)
 
-	// Why is all this shit in client/Move()? Who knows?
 	if(world.time < wearer_move_delay)
 		return
 
