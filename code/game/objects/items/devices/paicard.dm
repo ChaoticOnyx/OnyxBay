@@ -13,7 +13,7 @@
 /obj/item/device/paicard/relaymove(mob/user, direction)
 	if(user.stat || user.stunned)
 		return
-	var/obj/item/weapon/rig/rig = src.get_rig()
+	var/obj/item/weapon/rig/rig = get_rig()
 	if(istype(rig))
 		rig.forced_move(direction, user)
 
@@ -29,7 +29,7 @@
 	return ..()
 
 /obj/item/device/paicard/attack_self(mob/user)
-	if (!in_range(src, user))
+	if(!in_range(src, user))
 		return
 	user.set_machine(src)
 	var/dat = {"
@@ -225,9 +225,13 @@
 	onclose(user, "paicard")
 	return
 
-/obj/item/device/paicard/Topic(href, href_list)
+/obj/item/device/paicard/CanUseTopic(mob/user, datum/topic_state/state, href_list)
+	. = ..()
+	if(href_list && (href_list["setdna"] || href_list["setlaws"] || href_list["wires"]) && !istype(pai))
+		return FALSE
 
-	if(!usr || usr.stat)
+/obj/item/device/paicard/Topic(href, href_list)
+	if ((. = ..()))
 		return
 
 	if(href_list["setdna"])
