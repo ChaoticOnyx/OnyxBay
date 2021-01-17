@@ -347,8 +347,7 @@
 	update_icon(1)
 
 /obj/item/weapon/rig/proc/r_booting_done(mob/initiator, obj/screen/rig_booting/booting_R)
-	if(wearer && wearer.client)
-		wearer.client.screen -= booting_R
+	wearer?.client?.screen -= booting_R
 	qdel(booting_R)
 
 /obj/item/weapon/rig/proc/update_component_sealed()

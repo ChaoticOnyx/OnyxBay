@@ -39,7 +39,7 @@
 		return
 	. = MOVEMENT_HANDLED
 	if(!mob.client)
-		if(mover && mover != mob)
+		if(mover != mob)
 			. = MOVEMENT_PROCEED
 		return
 	mob.ghostize()

@@ -1223,7 +1223,7 @@
 	if(MUTATION_XRAY in mutations)
 		set_sight(sight|SEE_TURFS|SEE_MOBS|SEE_OBJS)
 
-/mob/living/carbon/human/proc/handle_tase(amount, def_zone)
+/mob/living/carbon/human/proc/handle_tase(amount)
 	if(status_flags & GODMODE)
 		return 0	//godmode
 

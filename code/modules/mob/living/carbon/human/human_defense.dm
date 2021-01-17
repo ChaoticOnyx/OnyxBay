@@ -39,7 +39,7 @@ meteor_act
 	//Tase effect
 	var/siemens_coeff = get_siemens_coefficient_organ(organ)
 	if(P.tasing)
-		handle_tase(P.agony*siemens_coeff, def_zone)
+		handle_tase(P.agony*siemens_coeff)
 
 	var/blocked = ..(P, def_zone) // Unobviously, the external damage applies here
 
