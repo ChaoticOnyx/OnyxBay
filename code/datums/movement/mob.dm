@@ -302,6 +302,9 @@
 	if(!confused)
 		return
 
+	if(lying)
+		return
+
 	switch(m_intent)
 		if(M_RUN)
 			if(prob(25))
