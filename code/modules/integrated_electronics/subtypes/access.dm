@@ -21,13 +21,10 @@
 	var/list/access = I.GetAccess()
 	var/passkey = strtohex(XorEncrypt(json_encode(access), SScircuit.cipherkey))
 
-	if(assembly)
-		// reset previus card access and add new access
-		assembly.access_card.access = access
-
 	if(card) // An ID card.
 		set_pin_data(IC_OUTPUT, 1, card.registered_name)
 		set_pin_data(IC_OUTPUT, 2, card.assignment)
+		to_chat(user, SPAN_NOTICE("You slide ID card into [get_object()]"))
 
 	else if(length(access))	// A non-card object that has access levels.
 		set_pin_data(IC_OUTPUT, 1, null)
@@ -36,8 +33,36 @@
 	else
 		return FALSE
 
+	if(assembly)
+		// reset previus card access and set new access
+		assembly.access_card.access = access
+
 	set_pin_data(IC_OUTPUT, 3, passkey)
 
 	push_data()
 	activate_pin(1)
 	return TRUE
+
+/obj/item/integrated_circuit/output/access_displayer
+	name = "access circuit"
+	desc = "broadcasts access for your assembly via a passkey."
+	extended_desc = "Useful for moving drones through airlocks."
+
+	complexity = 4
+	spawn_flags = IC_SPAWN_DEFAULT|IC_SPAWN_RESEARCH
+	inputs = list("passkey" = IC_PINTYPE_STRING)
+	activators = list(
+		"set passkey" = IC_PINTYPE_PULSE_IN
+	)
+
+/obj/item/integrated_circuit/output/access_displayer/do_work()
+	var/passkey = get_pin_data(IC_INPUT, 1)
+
+	// from hippie_xor_decrypt proc
+	var/list/access = json_decode(XorEncrypt(hextostr(passkey, TRUE), SScircuit.cipherkey))
+	to_world(islist(access))
+	for(var/a in access)
+		to_world(a)
+	if(access && islist(access) && assembly)
+		// reset previus card access and set new access
+		assembly.access_card.access = access

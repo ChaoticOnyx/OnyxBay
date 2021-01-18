@@ -149,7 +149,7 @@
 	complexity = 10
 	max_allowed = 4
 	cooldown_per_use = 1 SECONDS
-	ext_cooldown = 1 SECONDS
+	ext_cooldown = 3 // 0.3 second
 	inputs = list("direction" = IC_PINTYPE_DIR)
 	outputs = list("obstacle" = IC_PINTYPE_REF)
 	activators = list("step towards dir" = IC_PINTYPE_PULSE_IN,"on step"=IC_PINTYPE_PULSE_OUT,"blocked"=IC_PINTYPE_PULSE_OUT)

@@ -64,6 +64,14 @@
 	src.max_components = round(max_components)
 	src.max_complexity = round(max_complexity)
 
+	START_PROCESSING(SScircuit, src)
+	matter[MATERIAL_STEEL] = round((max_complexity + max_components) / 4) * SScircuit.cost_multiplier
+
+	access_card = new(src)
+
+/obj/item/device/electronic_assembly/GetAccess()
+	return access_card ? access_card.GetAccess() : list()
+
 /obj/item/device/electronic_assembly/examine(mob/user)
 	. = ..()
 	if(can_anchor)
@@ -97,13 +105,6 @@
 		var/obj/machinery/door/D = collw
 		if(D.check_access(access_card))
 			D.open()
-
-/obj/item/device/electronic_assembly/Initialize()
-	.=..()
-	START_PROCESSING(SScircuit, src)
-	matter[MATERIAL_STEEL] = round((max_complexity + max_components) / 4) * SScircuit.cost_multiplier
-
-	access_card = new(src)
 
 /obj/item/device/electronic_assembly/Destroy()
 	STOP_PROCESSING(SScircuit, src)

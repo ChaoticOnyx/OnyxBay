@@ -1,6 +1,7 @@
 #define IC_SMOKE_REAGENTS_MINIMUM_UNITS 10
 #define IC_REAGENTS_DRAW 0
 #define IC_REAGENTS_INJECT 1
+#define IC_SPLASH_MAX 3
 
 /obj/item/integrated_circuit/reagent
 	category_text = "Reagent"
@@ -34,12 +35,11 @@
 	inputs = list()
 	outputs = list(
 		"volume used" = IC_PINTYPE_NUMBER,
-		"self reference" = IC_PINTYPE_REF
+		"self reference" = IC_PINTYPE_SELFREF
 		)
 	activators = list(
 		"create smoke" = IC_PINTYPE_PULSE_IN,
-		"on smoked" = IC_PINTYPE_PULSE_OUT,
-		"push ref" = IC_PINTYPE_PULSE_IN
+		"on smoked" = IC_PINTYPE_PULSE_OUT
 		)
 	spawn_flags = IC_SPAWN_RESEARCH
 	power_draw_per_use = 20
@@ -49,25 +49,20 @@
 /obj/item/integrated_circuit/reagent/smoke/on_reagent_change()
 	push_vol()
 
-/obj/item/integrated_circuit/reagent/smoke/do_work(ord)
-	switch(ord)
-		if(1)
-			if(!reagents || (reagents.total_volume < IC_SMOKE_REAGENTS_MINIMUM_UNITS))
-				return
-			var/location = get_turf(src)
-			var/datum/effect/effect/system/smoke_spread/chem/S = new
-			S.attach(location)
-			playsound(location, 'sound/effects/smoke.ogg', 50, 1, -3)
-			if(S)
-				S.set_up(reagents, smoke_radius, 0, location)
-				if(!notified)
-					notified = TRUE
-				S.start()
-			reagents.clear_reagents()
-			activate_pin(2)
-		if(3)
-			set_pin_data(IC_OUTPUT, 2, weakref(src))
-			push_data()
+/obj/item/integrated_circuit/reagent/smoke/do_work()
+	if(!reagents || (reagents.total_volume < IC_SMOKE_REAGENTS_MINIMUM_UNITS))
+		return
+	var/location = get_turf(src)
+	var/datum/effect/effect/system/smoke_spread/chem/S = new
+	S.attach(location)
+	playsound(location, 'sound/effects/smoke.ogg', 50, 1, -3)
+	if(S)
+		S.set_up(reagents, smoke_radius, 0, location)
+		if(!notified)
+			notified = TRUE
+		S.start()
+	reagents.clear_reagents()
+	activate_pin(2)
 
 /obj/item/integrated_circuit/reagent/injector
 	name = "integrated hypo-injector"
@@ -90,14 +85,12 @@
 		)
 	outputs = list(
 		"volume used" = IC_PINTYPE_NUMBER,
-		"self reference" = IC_PINTYPE_REF
+		"self reference" = IC_PINTYPE_SELFREF
 		)
 	activators = list(
 		"inject" = IC_PINTYPE_PULSE_IN,
 		"on injected" = IC_PINTYPE_PULSE_OUT,
-		"on fail" = IC_PINTYPE_PULSE_OUT,
-		"push ref" = IC_PINTYPE_PULSE_IN
-
+		"on fail" = IC_PINTYPE_PULSE_OUT
 		)
 	spawn_flags = IC_SPAWN_DEFAULT|IC_SPAWN_RESEARCH
 	power_draw_per_use = 15
@@ -115,18 +108,13 @@
 		direction_mode = IC_REAGENTS_DRAW
 	else
 		direction_mode = IC_REAGENTS_INJECT
-	if(isnum(new_amount))
+	if(isnum_safe(new_amount))
 		new_amount = Clamp(new_amount, 0, volume)
 		transfer_amount = new_amount
 
 
-/obj/item/integrated_circuit/reagent/injector/do_work(ord)
-	switch(ord)
-		if(1)
-			inject()
-		if(4)
-			set_pin_data(IC_OUTPUT, 2, weakref(src))
-			push_data()
+/obj/item/integrated_circuit/reagent/injector/do_work()
+	inject()
 
 /obj/item/integrated_circuit/reagent/injector/proc/target_nearby(weakref/target)
 	var/mob/living/L = target.resolve()
@@ -260,7 +248,7 @@
 		direction_mode = IC_REAGENTS_DRAW
 	else
 		direction_mode = IC_REAGENTS_INJECT
-	if(isnum(new_amount))
+	if(isnum_safe(new_amount))
 		new_amount = Clamp(new_amount, 0, 50)
 		transfer_amount = new_amount
 
@@ -353,8 +341,7 @@
 	activators = list(
 		"grind" = IC_PINTYPE_PULSE_IN,
 		"on grind" = IC_PINTYPE_PULSE_OUT,
-		"on fail" = IC_PINTYPE_PULSE_OUT,
-		"push ref" = IC_PINTYPE_PULSE_IN
+		"on fail" = IC_PINTYPE_PULSE_OUT
 		)
 	volume = 100
 	power_draw_per_use = 150
@@ -362,13 +349,8 @@
 	spawn_flags = IC_SPAWN_RESEARCH
 
 
-/obj/item/integrated_circuit/reagent/storage/grinder/do_work(ord)
-	switch(ord)
-		if(1)
-			grind()
-		if(4)
-			set_pin_data(IC_OUTPUT, 2, weakref(src))
-			push_data()
+/obj/item/integrated_circuit/reagent/storage/grinder/do_work()
+	grind()
 
 /obj/item/integrated_circuit/reagent/storage/grinder/proc/grind()
 	if(reagents.total_volume >= reagents.maximum_volume)
@@ -522,10 +504,9 @@
 	name = "integrated extinguisher"
 	desc = "This circuit sprays any of its contents out like an extinguisher."
 	icon_state = "injector"
-	extended_desc = "This circuit can hold up to 30 units of any given chemicals. On each use, it sprays these reagents like a fire extinguisher."
-
-	volume = 30
-
+	extended_desc = "This circuit can hold up to 1000 units of any given chemicals. On each use, it sprays these reagents to target coords like a extinguisher, the amount for splash per tile you selected on your own"
+	atom_flags = ATOM_FLAG_OPEN_CONTAINER
+	volume = 1000
 	complexity = 20
 	cooldown_per_use = 6 SECONDS
 	inputs = list(
@@ -539,25 +520,19 @@
 	activators = list(
 		"spray" = IC_PINTYPE_PULSE_IN,
 		"on sprayed" = IC_PINTYPE_PULSE_OUT,
-		"on fail" = IC_PINTYPE_PULSE_OUT,
-		"push ref" = IC_PINTYPE_PULSE_IN
+		"on fail" = IC_PINTYPE_PULSE_OUT
 		)
 	spawn_flags = IC_SPAWN_DEFAULT|IC_SPAWN_RESEARCH
 	power_draw_per_use = 15
 	max_allowed = 2
-	var/busy = FALSE
-
-/obj/item/integrated_circuit/reagent/extinguisher/Initialize()
-	.=..()
-	set_pin_data(IC_OUTPUT,2, src)
 
 /obj/item/integrated_circuit/reagent/extinguisher/on_reagent_change(changetype)
 	push_vol()
 
-/obj/item/integrated_circuit/reagent/extinguisher/do_work()
+/obj/item/integrated_circuit/reagent/extinguisher/do_work(ord)
 	//Check if enough volume
 	set_pin_data(IC_OUTPUT, 1, reagents.total_volume)
-	if(!reagents || reagents.total_volume < 5 || busy)
+	if(!reagents || reagents.total_volume < 5)
 		push_data()
 		activate_pin(3)
 		return
@@ -576,12 +551,31 @@
 		push_data()
 		activate_pin(3)
 		return
+	assembly.visible_message(SPAN("notice", "\The [assembly] sprays their contents to \the [T]."))
+	for(var/a = 1 to IC_SPLASH_MAX)
+		spawn(0)
 
-	busy = TRUE
+			if(reagents.total_volume < 5)
+				// at least one time it splashed, so work done succesfully.
+				push_data()
+				activate_pin(2)
+				return
 
-	reagents.splash(T, min(reagents.total_volume, 15))
+			var/per_particle = min(reagents.total_volume, 15)/IC_SPLASH_MAX
 
-	assembly.visible_message(SPAN("notice", "\The [assembly] sprays \the [T]."))
+			if(!isnum_safe(per_particle))
+				push_data()
+				activate_pin(3)
+				return
+
+			var/obj/effect/effect/water/W = new /obj/effect/effect/water(get_turf(src))
+			W.create_reagents(per_particle)
+			reagents.trans_to_obj(W, per_particle)
+			W.set_color()
+			W.set_up(T)
+
+	push_data()
+	activate_pin(2)
 
 // - Beaker Connector - //
 /obj/item/integrated_circuit/input/beaker_connector
@@ -677,3 +671,4 @@
 
 #undef IC_REAGENTS_DRAW
 #undef IC_REAGENTS_INJECT
+#undef IC_SPLASH_MAX
