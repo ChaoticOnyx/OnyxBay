@@ -71,6 +71,8 @@
 	if(!on && client)
 		ghostize()
 
+	update_icons()
+
 /mob/living/bot/updatehealth()
 	if(status_flags & GODMODE)
 		health = maxHealth

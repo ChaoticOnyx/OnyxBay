@@ -347,7 +347,7 @@
 	update_icon(1)
 
 /obj/item/weapon/rig/proc/r_booting_done(mob/initiator, obj/screen/rig_booting/booting_R)
-	wearer.client.screen -= booting_R
+	wearer?.client?.screen -= booting_R
 	qdel(booting_R)
 
 /obj/item/weapon/rig/proc/update_component_sealed()
@@ -891,7 +891,6 @@
 	if(malfunctioning)
 		direction = pick(GLOB.cardinal)
 
-	// Why is all this shit in client/Move()? Who knows?
 	if(world.time < wearer_move_delay)
 		return
 

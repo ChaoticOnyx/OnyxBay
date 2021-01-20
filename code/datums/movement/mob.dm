@@ -34,11 +34,13 @@
 		control_object.set_dir(direction)
 
 // Death handling
-/datum/movement_handler/mob/death/DoMove()
+/datum/movement_handler/mob/death/DoMove(var/direction, var/mob/mover)
 	if(mob.stat != DEAD)
 		return
 	. = MOVEMENT_HANDLED
 	if(!mob.client)
+		if(mover != mob)
+			. = MOVEMENT_PROCEED
 		return
 	mob.ghostize()
 
@@ -261,7 +263,7 @@
 	mob.moving = 0
 
 /datum/movement_handler/mob/movement/MayMove(var/mob/mover)
-	return IS_SELF(mover) &&  mob.moving ? MOVEMENT_STOP : MOVEMENT_PROCEED
+	return IS_SELF(mover) && mob.moving ? MOVEMENT_STOP : MOVEMENT_PROCEED
 
 /datum/movement_handler/mob/movement/proc/HandleGrabs(var/direction, var/old_turf)
 	. = 0
@@ -300,6 +302,9 @@
 /mob/proc/AdjustMovementDirection(var/direction)
 	. = direction
 	if(!confused)
+		return
+
+	if(lying)
 		return
 
 	switch(m_intent)
