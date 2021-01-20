@@ -288,7 +288,7 @@ FIELD_CONTEXT_BOTH(medical_details, CONTEXT(medical))
 FIELD_LONG_SECURE("Important Notes", medical_notes, FALSE, access_medical);
 FIELD_CONTEXT_BOTH(medical_notes, CONTEXT(medical))
 
-FIELD_LONG_SECURE("Recent Records", medical_records, FALSE, access_medical);
+FIELD_LONG_SECURE("Medical Recent Records", medical_records, FALSE, access_medical);
 FIELD_CONTEXT_BOTH(medical_records, CONTEXT(medical))
 
 
@@ -339,7 +339,7 @@ FIELD_CONTEXT_BOTH(crime_details, CONTEXT(security))
 FIELD_LONG_SECURE("Important Notes", crime_notes, FALSE, access_security);
 FIELD_CONTEXT_BOTH(crime_notes, CONTEXT(security))
 
-FIELD_LONG_SECURE("Recent Records", crime_recent, FALSE, access_security);
+FIELD_LONG_SECURE("Security Recent Records", crime_recent, FALSE, access_security);
 FIELD_CONTEXT_BOTH(crime_recent, CONTEXT(security))
 
 
