@@ -20,4 +20,7 @@
 		return MOVEMENT_HANDLED
 
 /datum/movement_handler/robot/use_power/MayMove()
-	return robot.is_component_functioning("actuator") ? MOVEMENT_PROCEED : MOVEMENT_STOP
+	var/can_move = MOVEMENT_STOP
+	if(robot.is_component_functioning("actuator") && !robot.lockcharge)
+		can_move = MOVEMENT_PROCEED
+	return can_move
