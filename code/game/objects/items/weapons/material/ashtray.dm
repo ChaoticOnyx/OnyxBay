@@ -9,6 +9,7 @@
 	mod_weight = 0.3
 	mod_reach = 0.3
 	mod_handy = 0.5
+	w_class = ITEM_SIZE_SMALL
 	var/max_butts = 10
 
 /obj/item/weapon/material/ashtray/examine(mob/user)
