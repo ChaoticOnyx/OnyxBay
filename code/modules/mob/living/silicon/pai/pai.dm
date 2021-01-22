@@ -267,9 +267,10 @@
 		var/obj/item/device/pda/holder = card.loc
 		holder.pai = null
 
-	src.client.perspective = EYE_PERSPECTIVE
-	src.client.eye = src
-	src.forceMove(get_turf(card))
+	if(client)
+		client.perspective = EYE_PERSPECTIVE
+		client.eye = src
+	dropInto(card.loc)
 
 	card.forceMove(src)
 	card.screen_loc = null
@@ -329,9 +330,9 @@
 	set category = "IC"
 
 	// Pass lying down or getting up to our pet human, if we're in a rig.
-	if(istype(src.loc,/obj/item/device/paicard))
+	if(istype(src.loc, /obj/item/device/paicard))
 		resting = 0
-		var/obj/item/weapon/rig/rig = src.get_rig()
+		var/obj/item/weapon/rig/rig = get_rig()
 		if(istype(rig))
 			rig.force_rest(src)
 	else
@@ -379,8 +380,7 @@
 		var/mob/living/M = H.loc
 		if(istype(M))
 			M.drop_from_inventory(H)
-		H.loc = get_turf(src)
-		src.loc = get_turf(H)
+		H.dropInto(get_turf(M))
 
 	// Move us into the card and move the card to the ground.
 	src.loc = card

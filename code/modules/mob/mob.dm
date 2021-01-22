@@ -701,7 +701,8 @@
 	return 0
 
 //Updates lying and icons. Could perhaps do with a rename but I can't think of anything to describe it. / Now it DEFINITELY needs a new name, but UpdateLyingBuckledAndVerbStatus() is way too retardulous ~Toby
-/mob/proc/update_canmove()
+/mob/proc/update_canmove(prevent_update_icons = FALSE)
+	var/lying_old = lying
 	if(!resting && cannot_stand() && can_stand_overridden())
 		lying = 0
 	else if(buckled)
@@ -730,13 +731,7 @@
 		if(G.force_stand())
 			lying = 0
 
-	//Temporarily moved here from the various life() procs
-	//I'm fixing stuff incrementally so this will likely find a better home.
-	//It just makes sense for now. ~Carn
-	if( update_icon )	//forces a full overlay update
-		update_icon = 0
-		regenerate_icons()
-	else if(lying != lying_prev || hanging != hanging_prev)
+	if(!prevent_update_icons && lying_old != lying)
 		update_icons()
 
 /mob/proc/reset_layer()

@@ -266,7 +266,7 @@
 	w_class = ITEM_SIZE_TINY
 	complexity = 10
 	inputs = list("tray" = IC_PINTYPE_REF,"mode" = IC_PINTYPE_NUMBER,"item" = IC_PINTYPE_REF)
-	outputs = list("result" = IC_PINTYPE_LIST)
+	outputs = list()
 	activators = list("pulse in" = IC_PINTYPE_PULSE_IN,"pulse out" = IC_PINTYPE_PULSE_OUT)
 	spawn_flags = IC_SPAWN_RESEARCH
 	power_draw_per_use = 50
@@ -292,13 +292,7 @@
 	if(istype(TR))
 		switch(get_pin_data(IC_INPUT, 2))
 			if(0)
-				var/list/harvest_output = TR.harvest()
-				for(var/i in 1 to length(harvest_output))
-					harvest_output[i] = weakref(harvest_output[i])
-
-				if(length(harvest_output))
-					set_pin_data(IC_OUTPUT, 1, harvest_output)
-					push_data()
+				TR.harvest()
 			if(1)
 				TR.weedlevel = 0
 				TR.update_icon()
