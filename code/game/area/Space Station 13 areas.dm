@@ -123,6 +123,10 @@ area/space/atmosalert()
 /area/medical
 	ambience = list("global_ambient", "science_ambient")
 
+/area/medical/Initialize()
+	. = ..()
+	GLOB.area_med += src
+
 /area/medical/virology
 	name = "\improper Virology"
 	icon_state = "virology"

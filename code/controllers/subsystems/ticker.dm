@@ -28,6 +28,8 @@ SUBSYSTEM_DEF(ticker)
 	var/list/antag_pool = list()
 	var/looking_for_antags = 0
 
+	var/datum/round_event/eof
+
 /datum/controller/subsystem/ticker/Initialize()
 	to_world("<span class='info'><B>Welcome to the pre-game lobby!</B></span>")
 	to_world("Please, setup your character and select ready. Game will start in [round(pregame_timeleft/10)] seconds")
@@ -82,6 +84,7 @@ SUBSYSTEM_DEF(ticker)
 
 	create_characters() //Create player characters and transfer them
 	collect_minds()
+	pick_eof_event()
 	equip_characters()
 	for(var/mob/living/carbon/human/H in GLOB.player_list)
 		if(!H.mind || player_is_antag(H.mind, only_offstation_roles = 1) || !job_master.ShouldCreateRecords(H.mind.assigned_role))
@@ -94,6 +97,9 @@ SUBSYSTEM_DEF(ticker)
 
 	spawn(0)//Forking here so we dont have to wait for this to finish
 		mode.post_setup()
+
+		apply_eof_event()
+
 		to_world("<span class='info'><B>Enjoy the game!</B></span>")
 
 		for (var/mob/M in GLOB.player_list)

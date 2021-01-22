@@ -194,6 +194,27 @@ TRAITOR_SCALING
 # PROTECT_ROLES_FROM_ANTAGONIST
 
 # # # # # # # # # # # # # # # # # # # # # #
+#             EOF PROBABILITIES           #
+# # # # # # # # # # # # # # # # # # # # # #
+
+# Basically, very rare round events.
+
+##ROUNDSTART_EVENTS # uncomment to enable
+
+EOF_ONE_OUT_OF 1 # sets a value to calculate a chance in one out of X round to drop any event
+
+EOF_PROBABILITY withoutlight       1 # self explanatory
+EOF_PROBABILITY lackofenergy       1 # neither supermatter nor singulo spawns
+EOF_PROBABILITY oldtimes           1 # old light overlays
+EOF_PROBABILITY assclowns          1 # every assistant is a clown
+EOF_PROBABILITY ghettomedbay       1 # underpaid medbay
+EOF_PROBABILITY clumpsydumbasses   1 # 69th chance of any player to be clumpsy
+EOF_PROBABILITY canyouhearmemajtom 1 # no radio headsets
+EOF_PROBABILITY partyhard          1 # colorful neon lighting
+EOF_PROBABILITY randomnames        1 # randomnames
+EOF_PROBABILITY pussyriot          1 # pink brig
+
+# # # # # # # # # # # # # # # # # # # # # #
 #               ADMIN SETTINGS            #
 # # # # # # # # # # # # # # # # # # # # # #
 

@@ -25,12 +25,19 @@
 	bcell = /obj/item/weapon/cell/device/high
 
 /obj/item/weapon/melee/baton/New()
+	. = ..()
+	if(SSticker.eof.id == "pussyriot")
+		color = COLOR_LIGHT_PINK
+
+/obj/item/weapon/melee/baton/Initialize()
+	GLOB.spec_sec_items += src
 	if(ispath(bcell))
 		bcell = new bcell(src)
 		update_icon()
 	..()
 
 /obj/item/weapon/melee/baton/Destroy()
+	GLOB.spec_sec_items -= src
 	if(bcell && !ispath(bcell))
 		qdel(bcell)
 		bcell = null

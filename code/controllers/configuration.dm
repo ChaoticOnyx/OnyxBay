@@ -1,4 +1,5 @@
 var/list/gamemode_cache = list()
+GLOBAL_LIST_EMPTY(eof_cache)
 
 /datum/configuration
 	var/server_name = null					// server name (for world name / status)
@@ -60,6 +61,8 @@ var/list/gamemode_cache = list()
 	var/list/modes = list()				// allowed modes
 	var/list/votable_modes = list()		// votable modes
 	var/list/probabilities = list()		// relative probability of each mode
+	var/list/eof_modes = list()
+	var/list/eof_probabilities = list()
 	var/humans_need_surnames = 0
 	var/allow_random_events = 0			// enables random events mid-round when set to 1
 	var/allow_ai = 1					// allow ai job
@@ -199,6 +202,9 @@ var/list/gamemode_cache = list()
 	// 15, 45, 70 minutes respectively
 	var/list/event_delay_upper = list(EVENT_LEVEL_MUNDANE = 9000,	EVENT_LEVEL_MODERATE = 27000,	EVENT_LEVEL_MAJOR = 42000)
 
+	var/roundstart_events = FALSE // Allow roundstart events to appear. See eof.dm
+	var/eof_one_out_of = 69 // Sets a probability in one out of X rounds to drop any of roundstart event to appear. Value of 1 is 100%, 2 is 50%, 69 is 0,014% and so on. See eof.dm
+
 	var/aliens_allowed = 0
 	var/alien_eggs_allowed = 0
 	var/ninjas_allowed = 0
@@ -273,6 +279,18 @@ var/list/gamemode_cache = list()
 					src.votable_modes += M.config_tag
 	src.votable_modes += "secret"
 
+	log_debug("EoF bullshit enabled")
+	var/list/EL = typesof(/datum/round_event) - /datum/round_event
+	for(var/T in EL)
+		var/datum/round_event/E = new T()
+		if(E.id)
+			GLOB.eof_cache[E.id] = E // So we don't instantiate them repeatedly.
+			if(!(E.id in eof_modes))
+				log_misc("Adding event mode [E.id] to configuration.")
+				log_debug("Adding event mode [E.id] to configuration.")
+				eof_modes += E.id
+				eof_probabilities[E.id] = E.probability
+
 	config.current_lobbyscreen = pick(lobby_images)
 
 /datum/configuration/proc/load(filename, type = "config") //the type can also be game_options, in which case it uses a different switch. not making it separate to not copypaste code - Urist
@@ -334,6 +352,12 @@ var/list/gamemode_cache = list()
 
 				if ("use_recursive_explosions")
 					use_recursive_explosions = 1
+
+				if ("roundstart_events")
+					roundstart_events = 1
+
+				if ("eof_one_out_of")
+					eof_one_out_of = text2num(value)
 
 				if ("log_ooc")
 					config.log_ooc = 1
@@ -582,6 +606,23 @@ var/list/gamemode_cache = list()
 							log_misc("Unknown game mode probability configuration definition: [prob_name].")
 					else
 						log_misc("Incorrect probability configuration definition: [prob_name]  [prob_value].")
+
+				if ("eof_probability")
+					var/prob_pos = findtext(value, " ")
+					var/prob_id = null
+					var/prob_value = null
+
+					if(prob_pos)
+						prob_id = lowertext(copytext(value, 1, prob_pos))
+						prob_value = copytext(value, prob_pos + 1)
+						if (prob_id in config.eof_modes)
+							config.eof_probabilities[prob_id] = text2num(prob_value)
+							log_misc("EoF probability of [prob_id] is [prob_value].")
+							log_debug("EoF probability of [prob_id] is [prob_value]")
+						else
+							log_misc("Unknown eof mode probability configuration definition: [prob_id].")
+					else
+						log_misc("Incorrect eof_probability configuration definition: [prob_id]  [prob_value].")
 
 				if("allow_random_events")
 					config.allow_random_events = 1
@@ -948,6 +989,21 @@ var/list/gamemode_cache = list()
 		if(M && M.isStartRequirementsSatisfied(totalPlayers) && !isnull(config.probabilities[M.config_tag]) && config.probabilities[M.config_tag] > 0)
 			runnable_modes[M.config_tag] = config.probabilities[M.config_tag]
 	return runnable_modes
+
+/datum/configuration/proc/pick_eof(event_name)
+	for (var/event_mode in GLOB.eof_cache)
+		var/datum/round_event/E = GLOB.eof_cache[event_mode]
+		if(E.id && E.id == event_name)
+			return E
+
+/datum/configuration/proc/GetRunnableEoFModes()
+	var/list/runnable_events = list()
+
+	for(var/event_name in GLOB.eof_cache)
+		var/datum/round_event/E = GLOB.eof_cache[event_name]
+		if(E && !isnull(config.eof_probabilities[E.id]) && config.eof_probabilities[E.id] > 0 )
+			runnable_events[E.id] = config.eof_probabilities[E.id]
+	return runnable_events
 
 /datum/configuration/proc/load_event(filename)
 	var/event_info = file2text(filename)

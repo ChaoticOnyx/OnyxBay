@@ -107,6 +107,11 @@
 /obj/machinery/power/supermatter/Initialize()
 	. = ..()
 	uid = gl_uid++
+	GLOB.energy_sources += src
+
+/obj/machinery/power/supermatter/Destroy()
+	. = ..()
+	GLOB.energy_sources -= src
 
 /obj/machinery/power/supermatter/proc/handle_admin_warnings()
 	if(disable_adminwarn)

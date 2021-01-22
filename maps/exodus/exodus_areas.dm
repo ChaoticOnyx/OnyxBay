@@ -1422,6 +1422,10 @@
 
 //Security
 
+/area/security/Initialize()
+	. = ..()
+	GLOB.area_brig += src
+
 /area/security/main
 	name = "\improper Security Office"
 	icon_state = "security"

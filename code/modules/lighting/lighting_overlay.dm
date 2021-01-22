@@ -19,6 +19,7 @@
 	var/needs_update = FALSE
 
 /atom/movable/lighting_overlay/Initialize()
+	GLOB.lighting_overlays += src
 	// doesn't need special init
 	atom_flags |= ATOM_FLAG_INITIALIZED
 	return INITIALIZE_HINT_NORMAL
@@ -123,6 +124,7 @@
 /atom/movable/lighting_overlay/Destroy()
 	total_lighting_overlays--
 	SSlighting.overlay_queue -= src
+	GLOB.lighting_overlays -= src
 
 	var/turf/T = loc
 	if(istype(T))

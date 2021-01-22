@@ -25,6 +25,21 @@
 	var/cuff_sound = "handcuffs"
 	var/cuff_type = "handcuffs"
 
+/obj/item/weapon/handcuffs/New()
+	. = ..()
+	if(SSticker.eof.id == "pussyriot")
+		icon = 'icons/obj/pinkcuffs.dmi'
+		icon_state = "pinkcuffs"
+		update_icon()
+
+/obj/item/weapon/handcuffs/Initialize()
+	. = ..()
+	GLOB.spec_sec_items += src
+
+/obj/item/weapon/handcuffs/Destroy()
+	. = ..()
+	GLOB.spec_sec_items -= src
+
 /obj/item/weapon/handcuffs/get_icon_state(slot)
 	if(slot == slot_handcuffed_str)
 		return "handcuff1"

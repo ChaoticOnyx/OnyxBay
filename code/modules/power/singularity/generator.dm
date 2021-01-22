@@ -9,6 +9,14 @@
 	use_power = POWER_USE_OFF
 	var/energy = 0
 
+/obj/machinery/the_singularitygen/Initialize()
+	. = ..()
+	GLOB.energy_sources += src
+
+/obj/machinery/the_singularitygen/Destroy()
+	. = ..()
+	GLOB.energy_sources -= src
+
 /obj/machinery/the_singularitygen/Process()
 	var/turf/T = get_turf(src)
 	if(src.energy >= 200)

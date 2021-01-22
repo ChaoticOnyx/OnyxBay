@@ -224,7 +224,7 @@
 // create a new lighting fixture
 /obj/machinery/light/Initialize(mapload, obj/machinery/light_construct/construct = null)
 	. = ..(mapload)
-
+	GLOB.lights += src
 	s.set_up(1, 1, src)
 
 	if(construct)
@@ -243,6 +243,7 @@
 	QDEL_NULL(lightbulb)
 	QDEL_NULL(s)
 	. = ..()
+	GLOB.lights -= src
 
 /obj/machinery/light/update_icon(trigger = 1)
 

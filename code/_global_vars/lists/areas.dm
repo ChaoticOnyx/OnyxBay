@@ -1,1 +1,3 @@
 GLOBAL_LIST_EMPTY(hallway)
+GLOBAL_LIST_EMPTY(area_med)
+GLOBAL_LIST_EMPTY(area_brig)
