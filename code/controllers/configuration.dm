@@ -618,7 +618,6 @@ GLOBAL_LIST_EMPTY(eof_cache)
 						if (prob_id in config.eof_modes)
 							config.eof_probabilities[prob_id] = text2num(prob_value)
 							log_misc("EoF probability of [prob_id] is [prob_value].")
-							log_debug("EoF probability of [prob_id] is [prob_value]")
 						else
 							log_misc("Unknown eof mode probability configuration definition: [prob_id].")
 					else
