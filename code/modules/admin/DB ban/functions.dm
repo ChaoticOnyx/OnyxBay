@@ -273,8 +273,16 @@ datum/admins/proc/DB_ban_unban_by_id(id)
 
 	var/sql_update = "UPDATE erro_ban SET unbanned = 1, unbanned_datetime = Now(), unbanned_ckey = '[unban_ckey]', unbanned_computerid = '[unban_computerid]', unbanned_ip = '[unban_ip]' WHERE id = [id]"
 
+	var/server_id_replacement = serverid 	// changing serverid from db to real server name for ADMINLOG
 	if(serverid)
-		message_admins("[key_name_admin(usr)] has lifted [pckey]'s ban of [serverid] server.",1)
+		if(serverid == "main")
+			server_id_replacement = "Eos Orbital Station"
+		if(serverid == "beginners")
+			server_id_replacement = "Chaotic Onyx"
+		if(serverid == "light")
+			server_id_replacement = "Experimental Onyx"
+		message_admins("[key_name_admin(usr)] has lifted [pckey]'s ban of [server_id_replacement] server.",1)
+
 	else
 		message_admins("[key_name_admin(usr)] has lifted [pckey]'s ban.",1)
 
@@ -457,12 +465,21 @@ datum/admins/proc/DB_ban_unban_by_id(id)
 				output += "<tr bgcolor='[dcolor]'>"
 				output += "<td align='center' colspan='2' bgcolor=''><b>IP:</b> [ip]</td>"
 				output += "<td align='center' colspan='2' bgcolor=''><b>CIP:</b> [cid]</td>"
+
+				var/server_id_replacement_for_panel = server_id // changing serverid from db to real server name for Banning Panel
 				if(!isnull(server_id))
-					output += "<td align='center' colspan='1' bgcolor=''><b>SERVER:</b> [server_id]</td>"
+					if(server_id == "main")
+						server_id_replacement_for_panel = "Eos Orbital Station"
+					if(server_id == "beginners")
+						server_id_replacement_for_panel = "Chaotic Onyx"
+					if(server_id == "light")
+						server_id_replacement_for_panel = "Experimental Onyx"
+					output += "<td align='center' colspan='1' bgcolor=''><b>SERVER:</b> [server_id_replacement_for_panel]</td>"
+
 				output += "</tr>"
 				output += "<tr bgcolor='[lcolor]'>"
 				if(!isnull(server_id))
-					output += "<td align='center' colspan='5'><b>Reason: [(unbanned || auto) ? "" : "(<a href=\"byond://?src=\ref[src];dbbanedit=reason;dbbanid=[banid];dbserverid=[server_id]\">Edit</a>)"]</b> <cite>\"[reason]\"</cite></td>"
+					output += "<td align='center' colspan='5'><b>Reason: [(unbanned || auto) ? "" : "(<a href=\"byond://?src=\ref[src];dbbanedit=reason;dbbanid=[banid];dbserverid=[server_id_replacement_for_panel]\">Edit</a>)"]</b> <cite>\"[reason]\"</cite></td>"
 				else
 					output += "<td align='center' colspan='5'><b>Reason: [(unbanned || auto) ? "" : "(<a href=\"byond://?src=\ref[src];dbbanedit=reason;dbbanid=[banid]\">Edit</a>)"]</b> <cite>\"[reason]\"</cite></td>"
 
