@@ -201,7 +201,7 @@ TRAITOR_SCALING
 
 ##ROUNDSTART_EVENTS # uncomment to enable
 
-EOF_ONE_OUT_OF 1 # sets a value to calculate a chance in one out of X round to drop any event
+EOF_ONE_OUT_OF 69 # sets a value to calculate a chance in one out of X round to drop any event
 
 EOF_PROBABILITY withoutlight       1 # self explanatory
 EOF_PROBABILITY lackofenergy       1 # neither supermatter nor singulo spawns
