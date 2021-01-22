@@ -1,7 +1,7 @@
 /datum/controller/subsystem/ticker/proc/eof_drop_chance()
 	if(config.eof_one_out_of)
 		var/chance = 1 / config.eof_one_out_of
-		chance = 100 / chance
+		chance = 100 * chance
 		return chance
 
 /datum/controller/subsystem/ticker/proc/pick_eof_event()
