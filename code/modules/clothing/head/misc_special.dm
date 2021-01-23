@@ -71,7 +71,7 @@
 	set name = "Adjust welding mask"
 	set src in usr
 
-	if(usr.canmove && !usr.stat && !usr.restrained())
+	if(CanPhysicallyInteract(usr))
 		if(src.up)
 			src.up = !src.up
 			body_parts_covered |= (EYES|FACE)
@@ -245,21 +245,12 @@
 	. = ..()
 	if((slot == slot_head || slot == slot_l_ear || slot == slot_r_ear) && istype(user))
 		var/hairgb = rgb(user.r_hair, user.g_hair, user.b_hair)
-		var/icon/ears = icon('icons/mob/onmob/head.dmi', "kitty")
+		var/icon/ears = icon('icons/inv_slots/hats/mob.dmi', "kitty")
 		ears.Blend(hairgb, ICON_ADD)
-		ears.Blend(icon('icons/mob/onmob/head.dmi', "kittyinner"), ICON_OVERLAY)
+		ears.Blend(icon('icons/inv_slots/hats/mob.dmi', "kittyinner"), ICON_OVERLAY)
 		icon_override = ears
 	else if(icon_override)
 		icon_override = null
-
-/obj/item/clothing/head/kitty/verb/nekomagic()
-	set category = "Object"
-	set name = "Neko Magic"
-	set desc = "Adjust your kitty ears to match your hair color."
-	set src in usr
-
-	if(usr.canmove && !usr.stat && !usr.restrained())
-		src.update_icon(usr)
 
 /obj/item/clothing/head/richard
 	name = "chicken mask"

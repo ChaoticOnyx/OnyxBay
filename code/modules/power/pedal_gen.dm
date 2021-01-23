@@ -25,6 +25,7 @@
 	density = 0
 	var/obj/machinery/power/dynamo/generator = null
 	var/pedaled = 0
+	movement_handlers = list(/datum/movement_handler/move_relay_self)
 	buckle_relaymove = TRUE
 	foldable = FALSE
 

@@ -6,7 +6,7 @@
 	mask = /obj/item/clothing/mask/gas/clown_hat
 	head = /obj/item/clothing/head/chaplain_hood
 	l_ear = /obj/item/device/radio/headset
-	glasses = /obj/item/clothing/glasses/thermal/plain/monocle
+	glasses = /obj/item/clothing/glasses/hud/plain/thermal/monocle
 	suit = /obj/item/clothing/suit/chaplain_hoodie
 	r_pocket = /obj/item/weapon/bikehorn
 	r_hand = /obj/item/weapon/material/twohanded/fireaxe
@@ -23,7 +23,7 @@
 	mask = /obj/item/clothing/mask/surgical
 	head = /obj/item/clothing/head/welding
 	l_ear = /obj/item/device/radio/headset
-	glasses = /obj/item/clothing/glasses/thermal/plain/monocle
+	glasses = /obj/item/clothing/glasses/hud/plain/thermal/monocle
 	suit = /obj/item/clothing/suit/apron
 	l_pocket = /obj/item/weapon/material/hatchet/tacknife
 	r_pocket = /obj/item/weapon/scalpel

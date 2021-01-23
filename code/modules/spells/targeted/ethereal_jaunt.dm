@@ -17,13 +17,14 @@
 
 /spell/targeted/ethereal_jaunt/cast(list/targets) //magnets, so mostly hardcoded
 	for(var/mob/living/target in targets)
-		target.transforming = 1 //protects the mob from being transformed (replaced) midjaunt and getting stuck in bluespace
+		if(HAS_TRANSFORMATION_MOVEMENT_HANDLER(target))
+			continue
 		if(target.buckled)
 			target.buckled.unbuckle_mob()
 		spawn(0)
 			var/mobloc = get_turf(target.loc)
-			var/obj/effect/dummy/spell_jaunt/holder = new /obj/effect/dummy/spell_jaunt( mobloc )
-			var/atom/movable/overlay/animation = new /atom/movable/overlay( mobloc )
+			var/obj/effect/dummy/spell_jaunt/holder = new /obj/effect/dummy/spell_jaunt(mobloc)
+			var/atom/movable/overlay/animation = new /atom/movable/overlay(mobloc)
 			animation.SetName("water")
 			animation.set_density(0)
 			animation.anchored = 1
@@ -34,14 +35,12 @@
 			if(target.buckled)
 				target.buckled = null
 			jaunt_disappear(animation, target)
-			target.loc = holder
-			target.transforming=0 //mob is safely inside holder now, no need for protection.
+			target.forceMove(holder)
 			jaunt_steam(mobloc)
 			sleep(duration)
 			mobloc = holder.last_valid_turf
-			animation.loc = mobloc
+			animation.forceMove(mobloc)
 			jaunt_steam(mobloc)
-			target.canmove = 0
 			holder.reappearing = 1
 			sleep(20)
 			jaunt_reappear(animation, target)
@@ -52,11 +51,9 @@
 					if(T)
 						if(target.forceMove(T))
 							break
-			target.canmove = 1
 			target.client.eye = target
 			qdel(animation)
 			qdel(holder)
-
 
 /spell/targeted/ethereal_jaunt/empower_spell()
 	if(!..())
@@ -67,10 +64,10 @@
 
 /spell/targeted/ethereal_jaunt/proc/jaunt_disappear(atom/movable/overlay/animation, mob/living/target)
 	animation.icon_state = "liquify"
-	flick("liquify",animation)
+	flick("liquify", animation)
 
 /spell/targeted/ethereal_jaunt/proc/jaunt_reappear(atom/movable/overlay/animation, mob/living/target)
-	flick("reappear",animation)
+	flick("reappear", animation)
 
 /spell/targeted/ethereal_jaunt/proc/jaunt_steam(mobloc)
 	var/datum/effect/effect/system/steam_spread/steam = new /datum/effect/effect/system/steam_spread()
@@ -91,24 +88,27 @@
 	..()
 	last_valid_turf = get_turf(location)
 
-/obj/effect/dummy/spell_jaunt/Destroy()
-	// Eject contents if deleted somehow
+/obj/effect/dummy/spell_jaunt/Destroy()	// Eject contents if deleted somehow
 	for(var/atom/movable/AM in src)
-		AM.loc = get_turf(src)
+		AM.dropInto(loc)
 	return ..()
 
 /obj/effect/dummy/spell_jaunt/relaymove(mob/user, direction)
-	if (!src.canmove || reappearing) return
-	var/turf/newLoc = get_step(src,direction)
+	if(!canmove || reappearing)
+		return
+	var/turf/newLoc = get_step(src, direction)
 	if(!(newLoc.turf_flags & TURF_FLAG_NOJAUNT))
-		loc = newLoc
+		forceMove(newLoc)
 		var/turf/T = get_turf(loc)
 		if(!T.contains_dense_objects())
 			last_valid_turf = T
 	else
-		to_chat(user, "<span class='warning'>Some strange aura is blocking the way!</span>")
-	src.canmove = 0
-	spawn(2) src.canmove = 1
+		to_chat(user, SPAN("warning", "Some strange aura is blocking the way!"))
+	canmove = 0
+	addtimer(CALLBACK(src, .proc/allow_move), 2)
+
+/obj/effect/dummy/spell_jaunt/proc/allow_move()
+	canmove = TRUE
 
 /obj/effect/dummy/spell_jaunt/ex_act(blah)
 	return

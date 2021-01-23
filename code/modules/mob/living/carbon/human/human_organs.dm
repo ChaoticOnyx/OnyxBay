@@ -61,6 +61,10 @@
 	else
 		return FALSE
 
+/mob/living/carbon/human/proc/handle_organs_pain() // It's more efficient to process it separately from the actual organ processing
+	for(var/obj/item/organ/external/O in organs)
+		O.update_pain()
+
 /mob/living/carbon/human/proc/recheck_bad_external_organs()
 	var/damage_this_tick = getToxLoss()
 	for(var/obj/item/organ/external/O in organs)
@@ -288,16 +292,16 @@
 			grasp_damage_disarm(E)
 
 /mob/living/carbon/human/proc/stance_damage_prone(obj/item/organ/external/affected)
-
 	if(affected)
 		switch(affected.body_part)
 			if(FOOT_LEFT, FOOT_RIGHT)
-				to_chat(src, "<span class='warning'>You lose your footing as your [affected.name] spasms!</span>")
+				to_chat(src, SPAN("warning", "You lose your footing as your [affected.name] spasms!"))
 			if(LEG_LEFT, LEG_RIGHT)
-				to_chat(src, "<span class='warning'>Your [affected.name] buckles from the shock!</span>")
+				to_chat(src, SPAN("warning", "Your [affected.name] buckles from the shock!"))
 			else
 				return
-	Weaken(5)
+		Stun(2)
+		Weaken(5)
 
 /mob/living/carbon/human/proc/grasp_damage_disarm(obj/item/organ/external/affected)
 	var/disarm_slot

@@ -208,7 +208,7 @@
 		light_amount = T.get_lumcount() * 10
 	owner.nutrition   += light_amount
 	owner.shock_stage -= light_amount
-	owner.nutrition    = Clamp(owner.nutrition, 0, 550)
+	owner.nutrition    = Clamp(owner.nutrition, 0, 450)
 
 /obj/item/organ/internal/diona/node/removed(mob/user)
 	return ..(user, 1)
