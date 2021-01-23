@@ -1102,12 +1102,6 @@
 			global.WALLITEMS=newval;
 		if("_all_globals")
 			global._all_globals=newval;
-		if("_client_preferences")
-			global._client_preferences=newval;
-		if("_client_preferences_by_key")
-			global._client_preferences_by_key=newval;
-		if("_client_preferences_by_type")
-			global._client_preferences_by_type=newval;
 		if("account_hack_attempted")
 			global.account_hack_attempted=newval;
 		if("additional_antag_types")
