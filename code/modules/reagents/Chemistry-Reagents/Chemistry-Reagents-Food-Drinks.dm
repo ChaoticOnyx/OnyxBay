@@ -2370,7 +2370,7 @@
 		M.make_jittery(5)
 		M.make_dizzy(5)
 		M.add_chemical_effect(CE_PAINKILLER, 100)
-		M.add_chemical_effect(CE_SPEEDBOOST, 0.75)
+		M.add_chemical_effect(CE_SPEEDBOOST, 1.25)
 		M.add_chemical_effect(CE_PULSE, 3)
 
 		M.druggy = max(M.druggy, 35)
@@ -2383,7 +2383,7 @@
 		M.make_dizzy(10)
 		M.add_chemical_effect(CE_PAINKILLER, 200)
 		M.add_chemical_effect(CE_ALCOHOL_TOXIC, 1)
-		M.add_chemical_effect(CE_SPEEDBOOST, 1)
+		M.add_chemical_effect(CE_SPEEDBOOST, 2)
 		M.add_chemical_effect(CE_PULSE, 4)
 
 		M.druggy = max(M.druggy, 40)

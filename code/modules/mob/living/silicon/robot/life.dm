@@ -2,7 +2,7 @@
 	set invisibility = 0
 	set background = 1
 
-	if (src.transforming)
+	if(HAS_TRANSFORMATION_MOVEMENT_HANDLER(src))
 		return
 
 	src.blinded = null
@@ -326,11 +326,6 @@
 				to_chat(src, "<span class='danger'>Weapon Lock Timed Out!</span>")
 			weapon_lock = 0
 			weaponlock_time = 120
-
-/mob/living/silicon/robot/update_canmove()
-	if(paralysis || stunned || weakened || buckled || lockcharge || !is_component_functioning("actuator")) canmove = 0
-	else canmove = 1
-	return canmove
 
 /mob/living/silicon/robot/update_fire()
 	overlays -= image("icon"='icons/mob/onfire.dmi', "icon_state"="Standing")

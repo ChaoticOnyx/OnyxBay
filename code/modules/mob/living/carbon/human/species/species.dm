@@ -107,7 +107,7 @@
 	var/reagent_tag                                   //Used for metabolizing reagents.
 	var/breath_pressure = 16                          // Minimum partial pressure safe for breathing, kPa
 	var/breath_type = "oxygen"                        // Non-oxygen gas breathed, if any.
-	var/poison_type = "phoron"                        // Poisonous air.
+	var/poison_type = "plasma"                        // Poisonous air.
 	var/exhale_type = "carbon_dioxide"                // Exhaled gas type.
 	var/cold_level_1 = 243                           // Cold damage level 1 below this point. -30 Celsium degrees
 	var/cold_level_2 = 200                            // Cold damage level 2 below this point.
@@ -617,7 +617,7 @@ The slots that you can use are found in items_clothing.dm and are the inventory 
 		playsound(target.loc, 'sound/weapons/thudswoosh.ogg', 50, 1, -1)
 		if(prob(100-target.poise*6.5))
 			target.visible_message("<span class='danger'>[attacker] has pushed [target]!</span>")
-			target.apply_effect(3, WEAKEN, armor_check)
+			target.apply_effect(4, WEAKEN, armor_check)
 		else
 			target.visible_message("<span class='warning'>[attacker] attempted to push [target]!</span>")
 		return

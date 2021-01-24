@@ -352,7 +352,7 @@
 	name = "Jetpack module"
 	desc = "A carbon dioxide jetpack suitable for low-gravity mining operations."
 	id = "borg_jetpack_module"
-	materials = list(MATERIAL_STEEL = 10000, MATERIAL_PHORON = 15000, MATERIAL_URANIUM = 20000)
+	materials = list(MATERIAL_STEEL = 10000, MATERIAL_PLASMA = 15000, MATERIAL_URANIUM = 20000)
 	build_path = /obj/item/borg/upgrade/jetpack
 
 /datum/design/item/robot_upgrade/visor
@@ -404,7 +404,7 @@
 	desc = "A rapid construction device module for use during construction operations."
 	id = "borg_rcd_module"
 	req_tech = list(TECH_ENGINEERING = 3, TECH_MATERIAL = 3, TECH_MAGNET = 2)
-	materials = list(MATERIAL_STEEL = 25000, MATERIAL_PHORON = 10000, MATERIAL_GOLD = 1000, MATERIAL_SILVER = 1000)
+	materials = list(MATERIAL_STEEL = 25000, MATERIAL_PLASMA = 10000, MATERIAL_GOLD = 1000, MATERIAL_SILVER = 1000)
 	build_path = /obj/item/borg/upgrade/rcd
 
 /datum/design/item/robot_upgrade/paperwork
@@ -431,14 +431,14 @@
 /datum/design/item/robot_upgrade/bb_printer
 	name = "Bodybag printer"
 	id = "borg_bb_printer_module"
-	materials = list(MATERIAL_STEEL = 10000, MATERIAL_PHORON = 8000, MATERIAL_SILVER = 2000)
+	materials = list(MATERIAL_STEEL = 10000, MATERIAL_PLASMA = 8000, MATERIAL_SILVER = 2000)
 	req_tech = list(TECH_ENGINEERING = 2, TECH_BIO = 2, TECH_MATERIAL = 3)
 	build_path = /obj/item/borg/upgrade/bb_printer
 
 /datum/design/item/robot_upgrade/organ_printer
 	name = "Organ printer"
 	id = "borg_organ_printer_module"
-	materials = list(MATERIAL_STEEL = 8000, MATERIAL_PHORON = 2000, MATERIAL_SILVER = 8000, MATERIAL_DIAMOND = 500)
+	materials = list(MATERIAL_STEEL = 8000, MATERIAL_PLASMA = 2000, MATERIAL_SILVER = 8000, MATERIAL_DIAMOND = 500)
 	req_tech = list(TECH_ENGINEERING = 2, TECH_BIO = 4, TECH_MATERIAL = 4)
 	build_path = /obj/item/borg/upgrade/organ_printer
 
@@ -674,7 +674,7 @@
 	desc = "An exosuit-mounted rapid construction device."
 	id = "mech_rcd"
 	time = 120
-	materials = list(MATERIAL_STEEL = 30000, MATERIAL_PHORON = 25000, MATERIAL_SILVER = 20000, MATERIAL_GOLD = 20000)
+	materials = list(MATERIAL_STEEL = 30000, MATERIAL_PLASMA = 25000, MATERIAL_SILVER = 20000, MATERIAL_GOLD = 20000)
 	req_tech = list(TECH_MATERIAL = 4, TECH_BLUESPACE = 3, TECH_MAGNET = 4, TECH_POWER = 4, TECH_ENGINEERING = 4)
 	build_path = /obj/item/mecha_parts/mecha_equipment/tool/rcd
 
@@ -693,10 +693,10 @@
 	materials = list(MATERIAL_STEEL = 10000, MATERIAL_GOLD = 1000, MATERIAL_SILVER = 2000, MATERIAL_GLASS = 5000)
 	build_path = /obj/item/mecha_parts/mecha_equipment/repair_droid
 
-/datum/design/item/mecha/phoron_generator
-	desc = "Phoron reactor."
-	id = "mech_phoron_generator"
-	req_tech = list(TECH_PHORON = 2, TECH_POWER= 2, TECH_ENGINEERING = 2)
+/datum/design/item/mecha/plasma_generator
+	desc = "Plasma reactor."
+	id = "mech_plasma_generator"
+	req_tech = list(TECH_PLASMA = 2, TECH_POWER= 2, TECH_ENGINEERING = 2)
 	build_path = /obj/item/mecha_parts/mecha_equipment/generator
 	materials = list(MATERIAL_STEEL = 10000, MATERIAL_SILVER = 500, MATERIAL_GLASS = 1000)
 
@@ -770,7 +770,7 @@
 	name = "Advanced medical cyborg model"
 	id = "remodel_medical_advanced"
 	build_path = /obj/item/borg/upgrade/remodel/advanced/medical
-	materials = list(MATERIAL_STEEL = 10000, MATERIAL_GLASS = 10000, MATERIAL_SILVER = 5000, MATERIAL_PHORON = 2000)
+	materials = list(MATERIAL_STEEL = 10000, MATERIAL_GLASS = 10000, MATERIAL_SILVER = 5000, MATERIAL_PLASMA = 2000)
 	req_tech = list(TECH_ENGINEERING = 5,TECH_POWER = 4,TECH_BIO = 5,TECH_BLUESPACE = 3)
 
 /datum/design/item/robot_upgrade/remodel/surgeon
@@ -799,7 +799,7 @@
 	name = "Advanced engineering cyborg model"
 	id = "remodel_engineering_advanced"
 	build_path = /obj/item/borg/upgrade/remodel/advanced/engineering
-	materials = list(MATERIAL_STEEL = 20000, MATERIAL_GLASS = 10000, MATERIAL_PHORON = 2000, MATERIAL_DIAMOND = 1000)
+	materials = list(MATERIAL_STEEL = 20000, MATERIAL_GLASS = 10000, MATERIAL_PLASMA = 2000, MATERIAL_DIAMOND = 1000)
 	req_tech = list(TECH_ENGINEERING = 6, TECH_MATERIAL = 4,TECH_POWER = 4,TECH_MAGNET = 2)
 
 /datum/design/item/robot_upgrade/remodel/miner
@@ -810,7 +810,7 @@
 /datum/design/item/robot_upgrade/remodel/advanced/miner
 	name = "Advanced miner cyborg model"
 	id = "remodel_miner_advanced"
-	materials = list(MATERIAL_STEEL = 10000, MATERIAL_PHORON = 4000, MATERIAL_DIAMOND = 5000)
+	materials = list(MATERIAL_STEEL = 10000, MATERIAL_PLASMA = 4000, MATERIAL_DIAMOND = 5000)
 	req_tech = list(TECH_ENGINEERING = 4, TECH_MATERIAL = 5,TECH_POWER = 3,TECH_MAGNET = 4)
 	build_path = /obj/item/borg/upgrade/remodel/advanced/miner
 

@@ -178,6 +178,20 @@
 				nextstate = FIREDOOR_CLOSED
 				close()
 
+/obj/machinery/door/firedoor/attack_generic(mob/user, damage)
+	if(stat & (BROKEN|NOPOWER))
+		if(damage >= 10)
+			if(src.density)
+				visible_message(SPAN("danger","\The [user] forces \the [src] open!"))
+				open(1)
+			else
+				visible_message(SPAN("danger","\The [user] forces \the [src] closed!"))
+				close(1)
+		else
+			visible_message(SPAN("notice","\The [user] strains fruitlessly to force \the [src] [density ? "open" : "closed"]."))
+		return
+	..()
+
 /obj/machinery/door/firedoor/attackby(obj/item/weapon/C as obj, mob/user as mob)
 	add_fingerprint(user, 0, C)
 	if(operating)

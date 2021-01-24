@@ -1,64 +1,57 @@
 /mob/living/carbon/human/movement_delay()
-	var/tally = ..()
+	. = ..()
 
-	tally += species.handle_movement_delay_special(src)
+	. += species.handle_movement_delay_special(src)
+
+	var/human_delay = config.human_delay
 
 	if(istype(loc, /turf/space))
-		return -1 // It's hard to be slowed down in space by... anything
+		return (. + human_delay) // It's hard to be slowed down in space by... anything. Except for your shitty physical body restrictions.
 
 	if(embedded_flag || (stomach_contents && stomach_contents.len))
 		handle_embedded_and_stomach_objects() //Moving with objects stuck in you can cause bad times.
-
-	for(var/E in chem_effects)
-		switch(E)
-			if(CE_SPEEDBOOST)
-				return -1
-			if(CE_SLOWDOWN)
-				tally += chem_effects[CE_SLOWDOWN]
-
-	var/human_delay = config.human_delay
 
 	for(var/M in mutations)
 		switch(M)
 			if(mRun)
 				return human_delay
 			if(MUTATION_FAT)
-				tally += 1.5
+				. += 1.5
 
 	for(var/datum/modifier/M in modifiers)
 		if(!isnull(M.haste) && M.haste == TRUE)
 			return -1 // Returning -1 will actually result in a slowdown for Teshari.
 		if(!isnull(M.slowdown))
-			tally += M.slowdown
+			. += M.slowdown
 
 	if(species.slowdown)
-		tally += species.slowdown
+		. += species.slowdown
 
 	if(aiming)
-		tally += aiming.movement_tally // Iron sights make you slower, it's a well-known fact.
+		. += aiming.movement_tally // Iron sights make you slower, it's a well-known fact.
 
 	if(bodytemperature < 283.222)
-		tally += (283.222 - bodytemperature) / 10 * 1.75
+		. += (283.222 - bodytemperature) / 10 * 1.75
 
-	tally += blocking * 1.5
+	. += blocking * 1.5
 
 	var/health_deficiency = (maxHealth - health)
 	if(health_deficiency >= 40)
-		tally += (health_deficiency / 25)
+		. += (health_deficiency / 25)
 
 	var/shock = get_shock()
 	if(shock >= 10)
-		tally += (shock / 10) //pain shouldn't slow you down if you can't even feel it
+		. += (shock / 10) //pain shouldn't slow you down if you can't even feel it
 
 	if(!isSynthetic(src))	// are you hungry? I think yes
 		var/nut_level = nutrition / 100
 		switch(nutrition)
 			if(0 to 150)
-				tally += 1.5 - nut_level
+				. += 1.5 - nut_level
 			if(450 to INFINITY)
-				tally += nut_level - 4.5
+				. += nut_level - 4.5
 
-	tally += equipment_slowdown
+	. += equipment_slowdown
 
 	var/list/organ_list = list(BP_L_LEG, BP_R_LEG, BP_L_FOOT, BP_R_FOOT)  // if character use legs
 	if(istype(buckled, /obj/structure/bed/chair/wheelchair))              // if character buckled into wheelchair
@@ -67,11 +60,18 @@
 	for(var/organ_name in organ_list)
 		var/obj/item/organ/external/E = get_organ(organ_name)
 		if(!E)
-			tally += 4
+			. += 4
 		else
-			tally += E.movement_tally
+			. += E.movement_tally
 
-	return (tally + human_delay)
+	for(var/E in chem_effects)
+		switch(E)
+			if(CE_SPEEDBOOST)
+				. = max((. - chem_effects[CE_SPEEDBOOST]), (config.run_speed/2))
+			if(CE_SLOWDOWN)
+				. += chem_effects[CE_SLOWDOWN]
+
+	return (. + human_delay)
 
 /mob/living/carbon/human/Allow_Spacemove(check_drift = 0)
 	//Can we act?

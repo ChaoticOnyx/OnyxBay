@@ -59,7 +59,7 @@
 "bg" = (/obj/effect/floor_decal/corner/yellow/diagonal,/obj/effect/decal/cleanable/generic,/turf/simulated/floor/tiled,/area/derelict/djstation)
 "bh" = (/obj/effect/floor_decal/corner/yellow/diagonal,/turf/simulated/floor/tiled,/area/derelict/djstation)
 "bi" = (/obj/effect/floor_decal/corner/yellow/diagonal,/obj/machinery/door/airlock/glass,/turf/simulated/floor/tiled,/area/derelict/djstation)
-"bj" = (/obj/structure/table/reinforced,/turf/simulated/floor/trim/wood{icon_state = "wood_broken2"},/area/derelict/djstation)
+"bj" = (/obj/structure/table/reinforced,/obj/item/clothing/glasses/rglasses,/turf/simulated/floor/trim/wood{icon_state = "wood_broken2"},/area/derelict/djstation)
 "bk" = (/obj/structure/table/reinforced,/obj/item/clothing/head/plaguedoctorhat,/turf/simulated/floor/trim/wood,/area/derelict/djstation)
 "bl" = (/obj/effect/floor_decal/spline/fancy/wood{dir = 8},/turf/simulated/floor/tiled,/area/derelict/djstation)
 "bm" = (/obj/machinery/door/airlock/glass,/turf/simulated/floor/trim/lino,/area/derelict/djstation)

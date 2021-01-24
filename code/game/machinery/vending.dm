@@ -1234,7 +1234,7 @@
 
 
 //This one's from bay12
-/obj/machinery/vending/phoronresearch
+/obj/machinery/vending/plasmaresearch
 	name = "Toximate 3000"
 	desc = "All the fine parts you need in one vending machine!"
 	products = list(/obj/item/clothing/suit/bio_suit = 6,
@@ -1433,7 +1433,7 @@
 	use_vend_state = TRUE
 	vend_delay = 21
 	req_one_access = list(access_atmospherics,access_engine_equip)
-	products = list(/obj/item/clothing/glasses/meson = 2,
+	products = list(/obj/item/clothing/glasses/hud/standard/meson = 2,
 					/obj/item/device/multitool = 4,
 					/obj/item/device/geiger = 4,
 					/obj/item/weapon/airlock_electronics = 10,
@@ -1451,7 +1451,7 @@
 	icon_state = "engi"
 	req_one_access = list(access_atmospherics,access_engine_equip)
 	products = list(/obj/item/weapon/storage/belt/utility = 4,
-					/obj/item/clothing/glasses/meson = 4,
+					/obj/item/clothing/glasses/hud/standard/meson = 4,
 					/obj/item/clothing/gloves/insulated = 4,
 					/obj/item/weapon/screwdriver = 12,
 					/obj/item/weapon/crowbar = 12,

@@ -6,6 +6,24 @@
 
 	virtual_mob = /mob/observer/virtual/mob
 
+	movement_handlers = list(
+		/datum/movement_handler/mob/relayed_movement,
+		/datum/movement_handler/mob/death,
+		/datum/movement_handler/mob/conscious,
+		/datum/movement_handler/mob/eye,
+		/datum/movement_handler/move_relay,
+		/datum/movement_handler/mob/buckle_relay,
+		/datum/movement_handler/mob/delay,
+		/datum/movement_handler/mob/stop_effect,
+		/datum/movement_handler/mob/physically_capable,
+		/datum/movement_handler/mob/physically_restrained,
+		/datum/movement_handler/mob/space,
+		/datum/movement_handler/mob/multiz,
+		/datum/movement_handler/mob/movement
+	)
+
+	var/mob_flags
+
 	var/list/client_images = list() // List of images applied to/removed from the client on login/logout
 	var/datum/mind/mind
 
@@ -62,7 +80,6 @@
 	var/atom/movable/pulling = null
 	var/other_mobs = null
 	var/next_move = null
-	var/transforming = null	//Carbon
 	var/hand = null
 	var/real_name = null
 
@@ -76,9 +93,7 @@
 	var/lying_prev = 0
 	var/hanging = FALSE
 	var/hanging_prev = FALSE
-	var/canmove = 1
-	//Allows mobs to move through dense areas without restriction. For instance, in space or out of holder objects.
-	var/incorporeal_move = 0 //0 is off, 1 is normal, 2 is for ninjas.
+
 	var/unacidable = 0
 	var/list/pinned = list()            // List of things pinning this creature to walls (see living_defense.dm)
 	var/list/embedded = list()          // Embedded items, since simple mobs don't have organs.
@@ -99,7 +114,7 @@
 
 	var/shakecamera = 0
 	var/a_intent = I_HELP//Living
-	var/m_intent = "run"//Living
+	var/m_intent = M_RUN//Living
 	var/obj/buckled = null//Living
 	var/obj/item/l_hand = null//Living
 	var/obj/item/r_hand = null//Living

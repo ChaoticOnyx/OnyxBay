@@ -47,9 +47,9 @@
 	alpha = 77 // 0.3 * 255
 	material = MATERIAL_GLASS
 
-/obj/structure/table/glass/pglass
+/obj/structure/table/glass/plass
 	color = "#8f29a3"
-	material = MATERIAL_PHORON_GLASS
+	material = MATERIAL_PLASS
 
 /obj/structure/table/holotable
 	icon_state = "holo_preview"

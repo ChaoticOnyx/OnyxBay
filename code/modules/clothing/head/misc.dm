@@ -28,6 +28,12 @@
 /obj/item/clothing/head/hairflower/yellow
 	icon_state = "hairflower_yellow"
 
+/obj/item/clothing/head/hairflower/white
+	icon_state = "hairflower_white"
+
+/obj/item/clothing/head/hairflower/purple
+	icon_state = "hairflower_purple"
+
 /obj/item/clothing/head/hairflower/bow
 	icon_state = "bow"
 	name = "hair bow"

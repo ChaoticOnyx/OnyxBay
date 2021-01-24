@@ -30,9 +30,9 @@
 	desc = "The parrot squaks, \"It's a Parrot! BAWWK!\""
 	icon = 'icons/mob/animal.dmi'
 	icon_state = "parrot_fly"
+	item_state = "parrot"
 	icon_living = "parrot_fly"
 	icon_dead = "parrot_dead"
-	item_state = "parrot_fly"
 	pass_flags = PASS_FLAG_TABLE
 	mob_size = MOB_SMALL
 
@@ -143,7 +143,7 @@
 /mob/living/simple_animal/parrot/Topic(href, href_list)
 
 	//Can the usr physically do this?
-	if(!usr.canmove || usr.stat || usr.restrained() || !in_range(loc, usr))
+	if(!CanPhysicallyInteract(usr))
 		return
 
 	//Is the usr's mob type able to do this?
@@ -314,9 +314,8 @@
 	if(client || stat)
 		return //Lets not force players or dead/incap parrots to move
 
-	if(!isturf(src.loc) || !canmove || buckled)
-		icon_state = "parrot_sit"
-		return //If it can't move, dont let it move. (The buckled check probably isn't necessary thanks to canmove)
+	if(!isturf(src.loc))
+		return // Let's not bother in nullspace
 
 
 //-----SPEECH
@@ -394,7 +393,7 @@
 		//Wander around aimlessly. This will help keep the loops from searches down
 		//and possibly move the mob into a new are in view of something they can use
 		if(prob(90))
-			step(src, pick(GLOB.cardinal))
+			SelfMove(pick(GLOB.cardinal))
 			return
 
 		if(!held_item && !parrot_perch) //If we've got nothing to do.. look for something to do.
