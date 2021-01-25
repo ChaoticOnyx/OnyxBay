@@ -130,8 +130,14 @@ datum/announcement/proc/NewsCast(message as text, message_title as text)
 		AnnounceArrivalSimple(character.real_name, rank, join_message, "Common")
 	AnnounceArrivalSimple(character.real_name, rank, join_message, get_announcement_frequency(job))
 
+/proc/get_announcement_computer()
+	if(ai_list.len)
+		return pick(ai_list).name
+	else
+		return "Arrivals Announcement Computer"
+
 /proc/AnnounceArrivalSimple(name, rank = "visitor", join_message = "has arrived on the [station_name()]", frequency)
-	GLOB.global_announcer.autosay("[name], [rank], [join_message].", "Arrivals Announcement Computer", frequency)
+	GLOB.global_announcer.autosay("[name], [rank], [join_message].", get_announcement_computer(), frequency)
 
 /proc/get_announcement_frequency(datum/job/job)
 	// During red alert all jobs are announced on main frequency.
