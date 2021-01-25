@@ -523,6 +523,7 @@
 		"nav_merchant_out",
 		"nav_merchant_shop",
 		"nav_merchant_space",
+		"nav_merchant_outpost"
 		)
 	shuttle_area = /area/shuttle/merchant/home
 	landmark_transition = "nav_merchant_transition"
@@ -560,6 +561,11 @@
 /obj/effect/shuttle_landmark/merchant/space
 	name = "Station North East"
 	landmark_tag = "nav_merchant_space"
+	autoset = 1
+
+/obj/effect/shuttle_landmark/merchant/outpost
+	name = "Outpost North East"
+	landmark_tag = "nav_merchant_outpost"
 	autoset = 1
 
 
