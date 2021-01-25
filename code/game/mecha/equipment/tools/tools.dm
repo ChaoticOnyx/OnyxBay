@@ -7,121 +7,133 @@
 	var/obj/mecha/working/ripley/cargo_holder
 	required_type = /obj/mecha/working
 
-	attach(obj/mecha/M as obj)
-		..()
-		cargo_holder = M
+/obj/item/mecha_parts/mecha_equipment/tool/hydraulic_clamp/attach(obj/mecha/M as obj)
+	..()
+	cargo_holder = M
+	return
+
+/obj/item/mecha_parts/mecha_equipment/tool/hydraulic_clamp/action(atom/target)
+	if(!action_checks(target))
+		return
+	if(!cargo_holder)
 		return
 
-	action(atom/target)
-		if(!action_checks(target)) return
-		if(!cargo_holder) return
+	//loading
+	if(istype(target, /obj))
+		var/obj/O = target
+		if(O.buckled_mob)
+			return
+		if(locate(/mob/living) in O)
+			occupant_message(SPAN("warning", "You can't load living things into the cargo compartment."))
+			return
+		if(O.anchored)
+			occupant_message(SPAN("warning", "[target] is firmly secured."))
+			return
+		if(cargo_holder.cargo.len >= cargo_holder.cargo_capacity)
+			occupant_message(SPAN("warning", "Not enough room in cargo compartment."))
+			return
+		if(istype(O, /obj/machinery/power/supermatter))
+			occupant_message(SPAN("warning", "Warning: Safety systems prevent the loading of [target] into the cargo compartment."))
+			return
 
-		//loading
-		if(istype(target,/obj))
-			var/obj/O = target
-			if(O.buckled_mob)
-				return
-			if(locate(/mob/living) in O)
-				occupant_message("<span class='warning'>You can't load living things into the cargo compartment.</span>")
-				return
-			if(O.anchored)
-				occupant_message("<span class='warning'>[target] is firmly secured.</span>")
-				return
-			if(cargo_holder.cargo.len >= cargo_holder.cargo_capacity)
-				occupant_message("<span class='warning'>Not enough room in cargo compartment.</span>")
-				return
-			if(istype(O, /obj/machinery/power/supermatter))
-				occupant_message("<span class='warning'>Warning: Safety systems prevent the loading of [target] into the cargo compartment.</span>")
-				return
-
-			occupant_message("You lift [target] and start to load it into cargo compartment.")
-			chassis.visible_message("[chassis] lifts [target] and starts to load it into cargo compartment.")
-			set_ready_state(0)
-			chassis.use_power(energy_drain)
-			O.anchored = 1
-			var/T = chassis.loc
-			if(do_after_cooldown(target))
-				if(T == chassis.loc && src == chassis.selected)
-					cargo_holder.cargo += O
-					O.loc = chassis
-					O.anchored = 0
-					occupant_message("<span class='notice'>[target] succesfully loaded.</span>")
-					log_message("Loaded [O]. Cargo compartment capacity: [cargo_holder.cargo_capacity - cargo_holder.cargo.len]")
-				else
-					occupant_message("<span class='warning'>You must hold still while handling objects.</span>")
-					O.anchored = initial(O.anchored)
-
-		//attacking
-		else if(istype(target,/mob/living))
-			var/mob/living/M = target
-			if(M.stat>1) return
-			if(chassis.occupant.a_intent == I_HURT)
-				M.take_overall_damage(dam_force)
-				M.adjustOxyLoss(round(dam_force/2))
-				M.updatehealth()
-				occupant_message("<span class='warning'>You squeeze [target] with [src.name]. Something cracks.</span>")
-				chassis.visible_message("<span class='warning'>[chassis] squeezes [target].</span>")
+		occupant_message("You lift [target] and start to load it into cargo compartment.")
+		chassis.visible_message("[chassis] lifts [target] and starts to load it into cargo compartment.")
+		set_ready_state(0)
+		chassis.use_power(energy_drain)
+		O.anchored = 1
+		var/T = chassis.loc
+		if(do_after_cooldown(target))
+			if(T == chassis.loc && src == chassis.selected)
+				cargo_holder.cargo += O
+				O.loc = chassis
+				O.anchored = 0
+				occupant_message(SPAN("notice", "[target] succesfully loaded."))
+				log_message("Loaded [O]. Cargo compartment capacity: [cargo_holder.cargo_capacity - cargo_holder.cargo.len]")
 			else
-				step_away(M,chassis)
-				occupant_message("You push [target] out of the way.")
-				chassis.visible_message("[chassis] pushes [target] out of the way.")
-			set_ready_state(0)
-			chassis.use_power(energy_drain)
-			do_after_cooldown()
-		return 1
+				occupant_message(SPAN("warning", "You must hold still while handling objects."))
+				O.anchored = initial(O.anchored)
+
+	//attacking
+	else if(istype(target, /mob/living))
+		var/mob/living/M = target
+		if(M.stat > 1)
+			return
+		if(chassis.occupant.a_intent == I_HURT)
+			M.take_overall_damage(dam_force)
+			M.adjustOxyLoss(round(dam_force/2))
+			M.updatehealth()
+			occupant_message(SPAN("warning", "You squeeze [target] with [src.name]. Something cracks."))
+			chassis.visible_message(SPAN("warning", "[chassis] squeezes [target]."))
+		else
+			step_away(M, chassis)
+			occupant_message("You push [target] out of the way.")
+			chassis.visible_message("[chassis] pushes [target] out of the way.")
+		set_ready_state(0)
+		chassis.use_power(energy_drain)
+		do_after_cooldown()
+	return 1
+
 
 /obj/item/mecha_parts/mecha_equipment/tool/drill
 	name = "drill"
 	desc = "This is the drill that'll pierce the heavens! (Can be attached to: Combat and Engineering Exosuits)"
 	icon_state = "mecha_drill"
 	equip_cooldown = 30
-	energy_drain = 10
+	energy_drain = 3 KILOWATTS
 	force = 15
 	required_type = list(/obj/mecha/working/ripley, /obj/mecha/combat)
+	var/drillpower = 1
 
 /obj/item/mecha_parts/mecha_equipment/tool/drill/action(atom/target)
-	if(!action_checks(target)) return
+	if(!action_checks(target))
+		return
 	if(isobj(target))
 		var/obj/target_obj = target
-		if(!target_obj.vars.Find("unacidable") || target_obj.unacidable)	return
+		if(!target_obj.vars.Find("unacidable") || target_obj.unacidable)
+			return
+
 	set_ready_state(0)
 	chassis.use_power(energy_drain)
-	chassis.visible_message("<span class='danger'>\The [chassis] starts to drill \the [target]</span>", "<span class='warning'>You hear a large drill.</span>")
-	occupant_message("<span class='danger'>You start to drill \the [target]</span>")
+	chassis.visible_message(SPAN("danger", "\The [chassis] starts to drill \the [target]."), SPAN("warning", "You hear a large drill."))
+	occupant_message(SPAN("danger", "You start to drill \the [target]."))
 	var/T = chassis.loc
 	var/C = target.loc	//why are these backwards? we may never know -Pete
 	if(do_after_cooldown(target))
 		if(T == chassis.loc && src == chassis.selected)
 			if(istype(target, /turf/simulated/wall))
 				var/turf/simulated/wall/W = target
-				if(W.reinf_material)
-					occupant_message("<span class='warning'>\The [target] is too durable to drill through.</span>")
+				if(W.reinf_material && drillpower < 2)
+					occupant_message(SPAN("warning", "\The [target] is too durable to drill through."))
+					return
 				else
 					log_message("Drilled through \the [target]")
 					target.ex_act(2)
 			else if(istype(target, /turf/simulated/mineral) || istype(target, /turf/simulated/floor/asteroid) || istype(target, /obj/structure/rock))
-				if (istype(target, /turf/simulated/mineral))
-					for(var/turf/simulated/mineral/M in range(chassis,1))
-						if(get_dir(chassis,M)&chassis.dir)
+				if(istype(target, /turf/simulated/mineral))
+					for(var/turf/simulated/mineral/M in range(chassis, 1))
+						if(get_dir(chassis, M) & chassis.dir)
 							M.GetDrilled()
-				else if (istype(target, /turf/simulated/floor/asteroid))
-					for(var/turf/simulated/floor/asteroid/M in range(chassis,1))
-						if(get_dir(chassis,M)&chassis.dir)
+				else if(istype(target, /turf/simulated/floor/asteroid))
+					for(var/turf/simulated/floor/asteroid/M in range(chassis, 1))
+						if(get_dir(chassis, M) & chassis.dir)
 							M.gets_dug()
 				else if(istype(target, /obj/structure/rock))
-					for(var/obj/structure/rock/R in range(chassis,1))
-						if(get_dir(chassis,R)&chassis.dir)
+					for(var/obj/structure/rock/R in range(chassis, 1))
+						if(get_dir(chassis, R) & chassis.dir)
 							qdel(R)
 				log_message("Drilled through \the [target]")
 				if(locate(/obj/item/mecha_parts/mecha_equipment/tool/hydraulic_clamp) in chassis.equipment)
 					var/obj/structure/ore_box/ore_box = locate(/obj/structure/ore_box) in chassis:cargo
 					if(ore_box)
-						for(var/obj/item/weapon/ore/ore in range(chassis,1))
-							if(get_dir(chassis,ore)&chassis.dir)
+						for(var/obj/item/weapon/ore/ore in range(chassis, 1))
+							if(get_dir(chassis, ore) & chassis.dir)
 								ore.Move(ore_box)
 			else if(target.loc == C)
 				log_message("Drilled through \the [target]")
 				target.ex_act(2)
+
+			chassis.visible_message(SPAN("danger", "\The [chassis] drills \the [target]."))
+			playsound(chassis, pick('sound/effects/drill1.ogg', 'sound/effects/drill2.ogg', 'sound/effects/drill3.ogg'), 100, 1)
 	return 1
 
 /obj/item/mecha_parts/mecha_equipment/tool/drill/diamonddrill
@@ -130,54 +142,21 @@
 	icon_state = "mecha_diamond_drill"
 	origin_tech = list(TECH_MATERIAL = 4, TECH_ENGINEERING = 3)
 	equip_cooldown = 20
-	force = 15
+	drillpower = 2
 
-/obj/item/mecha_parts/mecha_equipment/tool/drill/diamonddrill/action(atom/target)
-	if(!action_checks(target)) return
-	if(isobj(target))
-		var/obj/target_obj = target
-		if(!target_obj.vars.Find("unacidable") || target_obj.unacidable)	return
-	set_ready_state(0)
-	chassis.use_power(energy_drain)
-	chassis.visible_message("<span class='danger'>\The [chassis] starts to drill \the [target]</span>", "<span class='warning'>You hear a large drill.</span>")
-	occupant_message("<span class='danger'>You start to drill \the [target]</span>")
-	var/T = chassis.loc
-	var/C = target.loc	//why are these backwards? we may never know -Pete
-	if(do_after_cooldown(target))
-		if(T == chassis.loc && src == chassis.selected)
-			if(istype(target, /turf/simulated/wall))
-				var/turf/simulated/wall/W = target
-				if(!W.reinf_material || do_after_cooldown(target))//To slow down how fast mechs can drill through the station
-					log_message("Drilled through \the [target]")
-					target.ex_act(3)
-			else if(istype(target, /turf/simulated/mineral) || istype(target, /turf/simulated/floor/asteroid) || istype(target, /obj/structure/rock))
-				if (istype(target, /turf/simulated/mineral))
-					for(var/turf/simulated/mineral/M in range(chassis,1))
-						if(get_dir(chassis,M)&chassis.dir)
-							M.GetDrilled()
-				else if (istype(target, /turf/simulated/floor/asteroid))
-					for(var/turf/simulated/floor/asteroid/M in range(chassis,1))
-						if(get_dir(chassis,M)&chassis.dir)
-							M.gets_dug()
-				else if(istype(target, /obj/structure/rock))
-					for(var/obj/structure/rock/R in range(chassis,1))
-						if(get_dir(chassis,R)&chassis.dir)
-							qdel(R)
-				log_message("Drilled through \the [target]")
-				if(locate(/obj/item/mecha_parts/mecha_equipment/tool/hydraulic_clamp) in chassis.equipment)
-					var/obj/structure/ore_box/ore_box = locate(/obj/structure/ore_box) in chassis:cargo
-					if(ore_box)
-						for(var/obj/item/weapon/ore/ore in range(chassis,1))
-							if(get_dir(chassis,ore)&chassis.dir)
-								ore.Move(ore_box)
-			else if(target.loc == C)
-				log_message("Drilled through \the [target]")
-				target.ex_act(2)
-	return 1
+/obj/item/mecha_parts/mecha_equipment/tool/drill/resonant
+	name = "resonant drill"
+	desc = "This advanced drill uses bluespace manipulation technologies to form small resonance \"bubbles\", tearing any solid matter apart in a matter of moments. However, it uses a lot of energy to function. (Can be attached to: Combat and Engineering Exosuits)"
+	icon_state = "mecha_resonant_drill"
+	origin_tech = list(TECH_MATERIAL = 6, TECH_POWER = 4, TECH_ENGINEERING = 4, TECH_BLUESPACE = 4)
+	equip_cooldown = 10
+	energy_drain = 10 KILOWATTS
+	drillpower = 3
+
 
 /obj/item/mecha_parts/mecha_equipment/tool/extinguisher
 	name = "extinguisher"
-	desc = "Exosuit-mounted extinguisher (Can be attached to: Engineering exosuits)"
+	desc = "Exosuit-mounted extinguisher. (Can be attached to: Engineering exosuits)"
 	icon_state = "mecha_exting"
 	equip_cooldown = 5
 	energy_drain = 0
@@ -188,71 +167,73 @@
 	var/max_volume = 5000
 	var/ff_reagent = /datum/reagent/water/firefoam
 
-	New()
-		create_reagents(max_volume)
-		reagents.add_reagent(ff_reagent, max_volume)
-		..()
+/obj/item/mecha_parts/mecha_equipment/tool/extinguisher/New()
+	create_reagents(max_volume)
+	reagents.add_reagent(ff_reagent, max_volume)
+	..()
 
-	action(atom/target) //copypasted from extinguisher. TODO: Rewrite from scratch.
-		if(!action_checks(target) || get_dist(chassis, target) > 3) return
-		if(get_dist(chassis, target) > 2) return
-		set_ready_state(0)
-		if(do_after_cooldown(target))
-			if(istype(target, /obj/structure/reagent_dispensers/watertank) && get_dist(chassis,target) <= 1)
-				var/obj/O = target
-				var/amount = min((max_volume - reagents.total_volume), O.reagents.total_volume)
-				if(!O.reagents.total_volume)
-					occupant_message(SPAN("warning", "\The [O] is empty."))
-					return
-				if(!amount)
-					occupant_message(SPAN("notice", "\The [src] is full."))
-					return
-				O.reagents.remove_any(amount)
-				reagents.add_reagent(ff_reagent, amount)
-				occupant_message(SPAN("notice", "[amount] units transferred into internal tank."))
-				playsound(chassis, 'sound/effects/refill.ogg', 50, 1, -6)
-				return
-
-			if(src.reagents.total_volume < 1)
-				occupant_message(SPAN("warning", "\The [src] is empty."))
-				return
-
-			playsound(chassis, 'sound/effects/extinguish.ogg', 75, 1, -3)
-
-			var/direction = get_dir(chassis,target)
-
-			var/turf/T = get_turf(target)
-			var/turf/T1 = get_step(T,turn(direction, 90))
-			var/turf/T2 = get_step(T,turn(direction, -90))
-
-			var/list/the_targets = list(T,T1,T2)
-
-			var/per_particle = min(spray_amount, reagents.total_volume)/spray_particles
-			for(var/a = 1 to 5)
-				spawn(0)
-					var/obj/effect/effect/water/W = new /obj/effect/effect/water(get_turf(chassis))
-					var/turf/my_target
-					if(a == 1)
-						my_target = T
-					else if(a == 2)
-						my_target = T1
-					else if(a == 3)
-						my_target = T2
-					else
-						my_target = pick(the_targets)
-					W.create_reagents(per_particle)
-					if(!W || !src)
-						return
-					reagents.trans_to_obj(W, per_particle)
-					W.set_color()
-					W.set_up(my_target)
-			return 1
-
-	get_equip_info()
-		return "[..()] \[[src.reagents.total_volume]\]"
-
-	on_reagent_change()
+/obj/item/mecha_parts/mecha_equipment/tool/extinguisher/action(atom/target) //copypasted from extinguisher. TODO: Rewrite from scratch.
+	if(!action_checks(target) || get_dist(chassis, target) > 3)
 		return
+	if(get_dist(chassis, target) > 2)
+		return
+	set_ready_state(0)
+	if(do_after_cooldown(target))
+		if(istype(target, /obj/structure/reagent_dispensers/watertank) && get_dist(chassis,target) <= 1)
+			var/obj/O = target
+			var/amount = min((max_volume - reagents.total_volume), O.reagents.total_volume)
+			if(!O.reagents.total_volume)
+				occupant_message(SPAN("warning", "\The [O] is empty."))
+				return
+			if(!amount)
+				occupant_message(SPAN("notice", "\The [src] is full."))
+				return
+			O.reagents.remove_any(amount)
+			reagents.add_reagent(ff_reagent, amount)
+			occupant_message(SPAN("notice", "[amount] units transferred into internal tank."))
+			playsound(chassis, 'sound/effects/refill.ogg', 50, 1, -6)
+			return
+
+		if(src.reagents.total_volume < 1)
+			occupant_message(SPAN("warning", "\The [src] is empty."))
+			return
+
+		playsound(chassis, 'sound/effects/extinguish.ogg', 75, 1, -3)
+
+		var/direction = get_dir(chassis,target)
+
+		var/turf/T = get_turf(target)
+		var/turf/T1 = get_step(T,turn(direction, 90))
+		var/turf/T2 = get_step(T,turn(direction, -90))
+
+		var/list/the_targets = list(T,T1,T2)
+
+		var/per_particle = min(spray_amount, reagents.total_volume)/spray_particles
+		for(var/a = 1 to 5)
+			spawn(0)
+				var/obj/effect/effect/water/W = new /obj/effect/effect/water(get_turf(chassis))
+				var/turf/my_target
+				if(a == 1)
+					my_target = T
+				else if(a == 2)
+					my_target = T1
+				else if(a == 3)
+					my_target = T2
+				else
+					my_target = pick(the_targets)
+				W.create_reagents(per_particle)
+				if(!W || !src)
+					return
+				reagents.trans_to_obj(W, per_particle)
+				W.set_color()
+				W.set_up(my_target)
+		return 1
+
+/obj/item/mecha_parts/mecha_equipment/tool/extinguisher/get_equip_info()
+	return "[..()] \[[src.reagents.total_volume]\]"
+
+/obj/item/mecha_parts/mecha_equipment/tool/extinguisher/on_reagent_change()
+	return
 
 
 /obj/item/mecha_parts/mecha_equipment/tool/rcd
@@ -516,37 +497,38 @@
 	var/damage_coeff = 1
 	var/melee
 
-	attach(obj/mecha/M as obj)
-		..()
+/obj/item/mecha_parts/mecha_equipment/armor_booster/attach(obj/mecha/M as obj)
+	..()
+	activate_boost()
+	return
+
+/obj/item/mecha_parts/mecha_equipment/armor_booster/detach()
+	if(equip_ready)
+		deactivate_boost()
+	..()
+	return
+
+/obj/item/mecha_parts/mecha_equipment/armor_booster/get_equip_info()
+	if(!chassis)
+		return
+	return "<span style=\"color:[equip_ready?"#0f0":"#f00"];\">*</span>&nbsp;[src.name]"
+
+/obj/item/mecha_parts/mecha_equipment/armor_booster/proc/activate_boost()
+	if(!src.chassis)
+		return 0
+	return 1
+
+/obj/item/mecha_parts/mecha_equipment/armor_booster/proc/deactivate_boost()
+	if(!src.chassis)
+		return 0
+	return 1
+
+/obj/item/mecha_parts/mecha_equipment/armor_booster/set_ready_state(state)
+	if(state && !equip_ready)
 		activate_boost()
-		return
-
-	detach()
-		if(equip_ready)
-			deactivate_boost()
-		..()
-		return
-
-	get_equip_info()
-		if(!chassis) return
-		return "<span style=\"color:[equip_ready?"#0f0":"#f00"];\">*</span>&nbsp;[src.name]"
-
-	proc/activate_boost()
-		if(!src.chassis)
-			return 0
-		return 1
-
-	proc/deactivate_boost()
-		if(!src.chassis)
-			return 0
-		return 1
-
-	set_ready_state(state)
-		if(state && !equip_ready)
-			activate_boost()
-		else if(equip_ready)
-			deactivate_boost()
-		..()
+	else if(equip_ready)
+		deactivate_boost()
+	..()
 
 
 /obj/item/mecha_parts/mecha_equipment/armor_booster/anticcw_armor_booster //what is that noise? A BAWWW from TK mutants.
@@ -558,18 +540,17 @@
 	damage_coeff = 0.8
 	melee = 1
 
-	activate_boost()
-		if(..())
-			chassis.m_deflect_coeff *= deflect_coeff
-			chassis.m_damage_coeff *= damage_coeff
-			chassis.mhit_power_use += energy_drain
+/obj/item/mecha_parts/mecha_equipment/armor_booster/anticcw_armor_booster/activate_boost()
+	if(..())
+		chassis.m_deflect_coeff *= deflect_coeff
+		chassis.m_damage_coeff *= damage_coeff
+		chassis.mhit_power_use += energy_drain
 
-
-	deactivate_boost()
-		if(..())
-			chassis.m_deflect_coeff /= deflect_coeff
-			chassis.m_damage_coeff /= damage_coeff
-			chassis.mhit_power_use -= energy_drain
+/obj/item/mecha_parts/mecha_equipment/armor_booster/anticcw_armor_booster/deactivate_boost()
+	if(..())
+		chassis.m_deflect_coeff /= deflect_coeff
+		chassis.m_damage_coeff /= damage_coeff
+		chassis.mhit_power_use -= energy_drain
 
 
 /obj/item/mecha_parts/mecha_equipment/armor_booster/antiproj_armor_booster
@@ -581,17 +562,17 @@
 	damage_coeff = 0.8
 	melee = 0
 
-	activate_boost()
-		if(..())
-			chassis.r_deflect_coeff *= deflect_coeff
-			chassis.r_damage_coeff *= damage_coeff
-			chassis.rhit_power_use += energy_drain
+/obj/item/mecha_parts/mecha_equipment/armor_booster/antiproj_armor_booster/activate_boost()
+	if(..())
+		chassis.r_deflect_coeff *= deflect_coeff
+		chassis.r_damage_coeff *= damage_coeff
+		chassis.rhit_power_use += energy_drain
 
-	deactivate_boost()
-		if(..())
-			chassis.r_deflect_coeff /= deflect_coeff
-			chassis.r_damage_coeff /= damage_coeff
-			chassis.rhit_power_use -= energy_drain
+/obj/item/mecha_parts/mecha_equipment/armor_booster/antiproj_armor_booster/deactivate_boost()
+	if(..())
+		chassis.r_deflect_coeff /= deflect_coeff
+		chassis.r_damage_coeff /= damage_coeff
+		chassis.rhit_power_use -= energy_drain
 
 
 /obj/item/mecha_parts/mecha_equipment/repair_droid
@@ -607,85 +588,81 @@
 	var/icon/droid_overlay
 	var/list/repairable_damage = list(MECHA_INT_TEMP_CONTROL,MECHA_INT_TANK_BREACH)
 
-	New()
-		..()
-		pr_repair_droid = new /datum/global_iterator/mecha_repair_droid(list(src),0)
-		pr_repair_droid.set_delay(equip_cooldown)
-		return
+/obj/item/mecha_parts/mecha_equipment/repair_droid/New()
+	..()
+	pr_repair_droid = new /datum/global_iterator/mecha_repair_droid(list(src),0)
+	pr_repair_droid.set_delay(equip_cooldown)
+	return
 
-	Destroy()
-		qdel(pr_repair_droid)
-		pr_repair_droid = null
-		..()
+/obj/item/mecha_parts/mecha_equipment/repair_droid/Destroy()
+	qdel(pr_repair_droid)
+	pr_repair_droid = null
+	..()
 
-	attach(obj/mecha/M as obj)
-		..()
-		droid_overlay = new(src.icon, icon_state = "repair_droid")
-		M.overlays += droid_overlay
-		return
+/obj/item/mecha_parts/mecha_equipment/repair_droid/attach(obj/mecha/M as obj)
+	..()
+	droid_overlay = new(src.icon, icon_state = "repair_droid")
+	M.overlays += droid_overlay
+	return
 
-	destroy()
+/obj/item/mecha_parts/mecha_equipment/repair_droid/destroy()
+	chassis.overlays -= droid_overlay
+	..()
+	return
+
+/obj/item/mecha_parts/mecha_equipment/repair_droid/detach()
+	chassis.overlays -= droid_overlay
+	pr_repair_droid.stop()
+	..()
+	return
+
+/obj/item/mecha_parts/mecha_equipment/repair_droid/get_equip_info()
+	if(!chassis) return
+	return "<span style=\"color:[equip_ready?"#0f0":"#f00"];\">*</span>&nbsp;[src.name] - <a href='?src=\ref[src];toggle_repairs=1'>[pr_repair_droid.active()?"Dea":"A"]ctivate</a>"
+
+/obj/item/mecha_parts/mecha_equipment/repair_droid/Topic(href, href_list)
+	..()
+	if(href_list["toggle_repairs"])
 		chassis.overlays -= droid_overlay
-		..()
+		if(pr_repair_droid.toggle())
+			droid_overlay = new(src.icon, icon_state = "repair_droid_a")
+			log_message("Activated.")
+		else
+			droid_overlay = new(src.icon, icon_state = "repair_droid")
+			log_message("Deactivated.")
+			set_ready_state(1)
+		chassis.overlays += droid_overlay
+		send_byjax(chassis.occupant,"exosuit.browser","\ref[src]",src.get_equip_info())
+	return
+
+/datum/global_iterator/mecha_repair_droid/process(var/obj/item/mecha_parts/mecha_equipment/repair_droid/RD as obj)
+	if(!RD.chassis)
+		stop()
+		RD.set_ready_state(1)
 		return
-
-	detach()
-		chassis.overlays -= droid_overlay
-		pr_repair_droid.stop()
-		..()
-		return
-
-	get_equip_info()
-		if(!chassis) return
-		return "<span style=\"color:[equip_ready?"#0f0":"#f00"];\">*</span>&nbsp;[src.name] - <a href='?src=\ref[src];toggle_repairs=1'>[pr_repair_droid.active()?"Dea":"A"]ctivate</a>"
-
-
-	Topic(href, href_list)
-		..()
-		if(href_list["toggle_repairs"])
-			chassis.overlays -= droid_overlay
-			if(pr_repair_droid.toggle())
-				droid_overlay = new(src.icon, icon_state = "repair_droid_a")
-				log_message("Activated.")
-			else
-				droid_overlay = new(src.icon, icon_state = "repair_droid")
-				log_message("Deactivated.")
-				set_ready_state(1)
-			chassis.overlays += droid_overlay
-			send_byjax(chassis.occupant,"exosuit.browser","\ref[src]",src.get_equip_info())
-		return
-
-
-/datum/global_iterator/mecha_repair_droid
-
-	process(var/obj/item/mecha_parts/mecha_equipment/repair_droid/RD as obj)
-		if(!RD.chassis)
+	var/health_boost = RD.health_boost
+	var/repaired = 0
+	if(RD.chassis.hasInternalDamage(MECHA_INT_SHORT_CIRCUIT))
+		health_boost *= -2
+	else if(RD.chassis.hasInternalDamage() && prob(15))
+		for(var/int_dam_flag in RD.repairable_damage)
+			if(RD.chassis.hasInternalDamage(int_dam_flag))
+				RD.chassis.clearInternalDamage(int_dam_flag)
+				repaired = 1
+				break
+	if(health_boost<0 || RD.chassis.health < initial(RD.chassis.health))
+		RD.chassis.health += min(health_boost, initial(RD.chassis.health)-RD.chassis.health)
+		repaired = 1
+	if(repaired)
+		if(RD.chassis.use_power(RD.energy_drain))
+			RD.set_ready_state(0)
+		else
 			stop()
 			RD.set_ready_state(1)
 			return
-		var/health_boost = RD.health_boost
-		var/repaired = 0
-		if(RD.chassis.hasInternalDamage(MECHA_INT_SHORT_CIRCUIT))
-			health_boost *= -2
-		else if(RD.chassis.hasInternalDamage() && prob(15))
-			for(var/int_dam_flag in RD.repairable_damage)
-				if(RD.chassis.hasInternalDamage(int_dam_flag))
-					RD.chassis.clearInternalDamage(int_dam_flag)
-					repaired = 1
-					break
-		if(health_boost<0 || RD.chassis.health < initial(RD.chassis.health))
-			RD.chassis.health += min(health_boost, initial(RD.chassis.health)-RD.chassis.health)
-			repaired = 1
-		if(repaired)
-			if(RD.chassis.use_power(RD.energy_drain))
-				RD.set_ready_state(0)
-			else
-				stop()
-				RD.set_ready_state(1)
-				return
-		else
-			RD.set_ready_state(1)
-		return
+	else
+		RD.set_ready_state(1)
+	return
 
 
 /obj/item/mecha_parts/mecha_equipment/tesla_energy_relay
@@ -1286,3 +1263,82 @@
 	//NC.mergeConnectedNetworksOnTurf()
 	last_piece = NC
 	return 1
+
+/obj/item/mecha_parts/mecha_equipment/servo_accelerator
+	name = "servo accelerator"
+	desc = "Powered armor-enhancing mech equipment."
+	desc = "Installing additional servos speeds up an exosuit at the cost of additional energy consumption. (Can be attached to: Engineering exosuits)"
+	icon_state = "servo"
+	equip_cooldown = 10
+	energy_drain = 2 KILOWATTS
+	range = 0
+	required_type = /obj/mecha/working
+	origin_tech = list(TECH_MATERIAL = 3, TECH_POWER = 2)
+	var/consumption_coeff_normal = 1.5
+	var/consumption_coeff_turbo = 4.5
+	var/turbo_mode = FALSE
+
+/obj/item/mecha_parts/mecha_equipment/servo_accelerator/detach()
+	if(equip_ready)
+		deactivate_boost()
+	..()
+	return
+
+/obj/item/mecha_parts/mecha_equipment/servo_accelerator/proc/turbo_boost()
+	if(!chassis)
+		return
+	chassis.step_energy_drain = initial(chassis.step_energy_drain) * consumption_coeff_turbo
+	chassis.step_in = max(2, initial(chassis.step_in) - 2)
+	turbo_mode = TRUE
+
+/obj/item/mecha_parts/mecha_equipment/servo_accelerator/proc/activate_boost()
+	if(!chassis)
+		return
+	chassis.step_energy_drain = initial(chassis.step_energy_drain) * consumption_coeff_normal
+	chassis.step_in = max(2, initial(chassis.step_in) - 1)
+	turbo_mode = FALSE
+
+/obj/item/mecha_parts/mecha_equipment/servo_accelerator/proc/deactivate_boost()
+	if(!chassis)
+		return
+	chassis.step_energy_drain = initial(chassis.step_energy_drain)
+	chassis.step_in = initial(chassis.step_in)
+	turbo_mode = FALSE
+
+/obj/item/mecha_parts/mecha_equipment/servo_accelerator/set_ready_state(state)
+	if(state && !equip_ready)
+		activate_boost()
+	else if(equip_ready)
+		deactivate_boost()
+	..()
+
+/obj/item/mecha_parts/mecha_equipment/servo_accelerator/get_equip_info()
+	if(!chassis)
+		return
+	return "<span style=\"color:[equip_ready? "#0f0" : "#f00"];\">*</span>&nbsp;[src.name] - <a href='?src=\ref[src];toggle_accelerator=1'>[equip_ready?"Dea":"A"]ctivate</a> (<a href='?src=\ref[src];toggle_turbo=1'><span style=\"color:[turbo_mode? "#f00" : "#0f0"];\">TURBO</span></a>)"
+
+/obj/item/mecha_parts/mecha_equipment/servo_accelerator/Topic(href, href_list)
+	..()
+	if(href_list["toggle_accelerator"])
+		set_ready_state(!equip_ready)
+		if(equip_ready)
+			log_message("Acceleration Activated.")
+			occupant_message("Acceleration Activated.")
+		else
+			log_message("Acceleration Deactivated.")
+			occupant_message("Acceleration Deactivated.")
+		send_byjax(chassis.occupant, "exosuit.browser", "\ref[src]", src.get_equip_info())
+		return
+	if(href_list["toggle_turbo"])
+		turbo_mode = !turbo_mode
+		if(turbo_mode)
+			set_ready_state(TRUE)
+			turbo_boost()
+			log_message("Turbo Mode Activated. Warning: extreme energy consumption!")
+			occupant_message(SPAN("warning", "Turbo Mode Activated. Warning: extreme energy consumption!"))
+		else
+			set_ready_state(FALSE)
+			log_message("Turbo Mode Deactivated.")
+			occupant_message("Turbo Mode Deactivated.")
+		send_byjax(chassis.occupant, "exosuit.browser", "\ref[src]", src.get_equip_info())
+		return

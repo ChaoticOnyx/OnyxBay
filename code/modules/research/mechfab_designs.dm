@@ -565,6 +565,12 @@
 	build_path = /obj/item/mecha_parts/mecha_equipment/weapon/ballistic/missile_rack/flare
 	materials = list(MATERIAL_STEEL = 12500)
 
+/datum/design/item/mecha/servo_accelerator
+	name = "Servo accelerator"
+	id = "mech_accelerator"
+	build_path = /obj/item/mecha_parts/mecha_equipment/servo_accelerator
+	materials = list(MATERIAL_STEEL = 7500, MATERIAL_GLASS = 5000, MATERIAL_SILVER = 1500)
+
 /datum/design/item/mecha/sleeper
 	name = "Sleeper"
 	id = "mech_sleeper"
