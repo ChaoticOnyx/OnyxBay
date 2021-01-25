@@ -4,7 +4,7 @@
 	uses_charge = 1
 	charge_costs = list(1000)
 	gender = NEUTER
-	matter = null // Don't shove it in the autholathe.
+	matter = null // Don't shove it in the autolathe.
 
 /obj/item/stack/material/cyborg/New()
 	if(..())
