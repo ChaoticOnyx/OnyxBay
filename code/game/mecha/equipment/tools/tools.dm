@@ -1266,7 +1266,6 @@
 
 /obj/item/mecha_parts/mecha_equipment/servo_accelerator
 	name = "servo accelerator"
-	desc = "Powered armor-enhancing mech equipment."
 	desc = "Installing additional servos speeds up an exosuit at the cost of additional energy consumption. (Can be attached to: Engineering exosuits)"
 	icon_state = "servo"
 	equip_cooldown = 10
