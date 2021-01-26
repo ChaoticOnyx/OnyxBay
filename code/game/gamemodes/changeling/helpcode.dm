@@ -478,6 +478,7 @@
 
 	to_chat(target,"<span class='danger'>Your muscles begin to painfully tighten.</span>")
 	target.Weaken(20)
+	target.Stun(20)
 	src.visible_message("<span class='warning'>[src] has grown out a huge abominable stinger and pierced \the [target] with it!</span>")
 	feedback_add_details("changeling_powers","PB")
 

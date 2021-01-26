@@ -2210,6 +2210,7 @@
 /datum/reagent/ethanol/neurotoxin/affect_ingest(mob/living/carbon/M, alien, removed)
 	..()
 	M.Weaken(3)
+	M.Stun(2)
 	M.add_chemical_effect(CE_PULSE, -1)
 
 /datum/reagent/ethanol/gargle_blaster

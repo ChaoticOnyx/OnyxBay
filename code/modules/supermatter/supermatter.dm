@@ -206,6 +206,7 @@
 			continue
 
 		mob.Weaken(DETONATION_MOB_CONCUSSION)
+		mob.Stun(DETONATION_MOB_CONCUSSION/2)
 		to_chat(mob, "<span class='danger'>An invisible force slams you against the ground!</span>")
 
 		if(iscarbon(mob))

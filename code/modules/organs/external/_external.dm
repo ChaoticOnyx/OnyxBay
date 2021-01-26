@@ -1020,6 +1020,7 @@ obj/item/organ/external/proc/remove_clamps()
 	if(limb_flags & ORGAN_FLAG_CAN_STAND)
 		if(prob(67))
 			owner.Weaken(2)
+			owner.Stun(1)
 
 	broken_description = pick("broken","fracture","hairline fracture")
 

@@ -105,6 +105,7 @@
 					return 0
 				G.affecting.forceMove(src.loc)
 				G.affecting.Weaken(rand(1,4))
+				G.affecting.Stun(1)
 				visible_message("<span class='warning'>[G.assailant] puts [G.affecting] on \the [src].</span>")
 				G.affecting.break_all_grabs(G.assailant)
 				qdel(W)

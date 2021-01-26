@@ -140,6 +140,7 @@
 				H.losebreath = max(10, H.losebreath - 10)
 			H.adjustOxyLoss(2)
 			H.Weaken(10)
+			H.Stun(10)
 		M.add_chemical_effect(CE_NOPULSE, 1)
 
 
@@ -161,6 +162,7 @@
 				H.losebreath = max(10, M.losebreath-10)
 			H.adjustOxyLoss(2)
 			H.Weaken(10)
+			H.Stun(10)
 		M.add_chemical_effect(CE_NOPULSE, 1)
 
 /datum/reagent/toxin/zombiepowder
@@ -180,6 +182,7 @@
 	M.status_flags |= FAKEDEATH
 	M.adjustOxyLoss(3 * removed)
 	M.Weaken(10)
+	M.Stun(10)
 	M.silent = max(M.silent, 10)
 	if(M.chem_doses[type] <= removed) //half-assed attempt to make timeofdeath update only at the onset
 		M.timeofdeath = world.time
@@ -706,7 +709,7 @@
 
 /datum/reagent/vecuronium_bromide
 	name = "Vecuronium Bromide"
-	description = "A general anaesthetic, provides prolonged paralysis without unconsciousness or pain relief"
+	description = "A general anaesthetic, provides prolonged paralysis without unconsciousness or pain relief."
 	taste_description = "bitterness"
 	reagent_state = LIQUID
 	color = "#cccccc"
@@ -725,6 +728,7 @@
 	if(M.chem_doses[type] > threshold * 0.5)
 		M.make_dizzy(3)
 		M.Weaken(2)
+		M.Stun(2)
 	if(M.chem_doses[type] == round(threshold * 0.5, metabolism))
 		to_chat(M, SPAN_WARNING("Your muscles slacken and cease to obey you."))
 	if(M.chem_doses[type] >= threshold)
