@@ -45,3 +45,11 @@
 	build_path = /obj/item/device/mmi/radio_enabled
 	category = "Misc"
 	sort_string = "VACCB"
+
+/datum/design/item/mining/mecha_drill_resonant
+	id = "mecha_drill_resonant"
+	req_tech = list(TECH_MATERIAL = 6, TECH_POWER = 4, TECH_ENGINEERING = 4, TECH_BLUESPACE = 4)
+	materials = list(MATERIAL_STEEL = 5000, MATERIAL_GLASS = 1000, MATERIAL_SILVER = 250, MATERIAL_GOLD = 250, MATERIAL_DIAMOND = 1250, MATERIAL_URANIUM = 500)
+	build_path = /obj/item/mecha_parts/mecha_equipment/tool/drill/resonant
+	sort_string = "VADAA"
+	category_items = "Robotics"
