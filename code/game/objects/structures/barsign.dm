@@ -5,16 +5,20 @@
 	icon_state = "empty"
 	appearance_flags = 0
 	anchored = 1
+	var/emagged = FALSE
 
-/obj/structure/sign/double/barsign/proc/get_valid_states(initial=1, mob/living/user = null)
+/obj/structure/sign/double/barsign/proc/get_valid_states(initial=1, mob/living/user = null, var/roundstart = FALSE)
 	. = icon_states(icon)
 	. -= "on"
-	if (!user || !iscultist(user))
+	if(!user || !iscultist(user))
 		. -= "Nar-sie Bistro"
-	if (!user || !istraitor(user))
+	if(!emagged)
 		. -= "The Syndi Cat"
 		. -= "Vlad's Salad Bar"
 		. -= "Combo Cafe"
+		. -= "???"
+	if(roundstart)
+		. -= "CybersSylph"
 	. -= "empty"
 	if(initial)
 		. -= "Off"
@@ -31,11 +35,24 @@
 		else
 			. += "\nIt says '[icon_state]'"
 
-/obj/structure/sign/double/barsign/New()
-	..()
-	icon_state = pick(get_valid_states())
+/obj/structure/sign/double/barsign/Initialize()
+	. = ..()
+	icon_state = pick(get_valid_states(roundstart = TRUE))
 
 /obj/structure/sign/double/barsign/attackby(obj/item/I, mob/living/user)
+
+	if(istype(I, /obj/item/weapon/card/emag) && !emagged)
+		emagged = TRUE
+		to_chat(user, "<span class='notice'>You overload the access verification system and open access to special propaganda.</span>")
+		return
+
+	if(emagged)
+		var/sign_type = input(user, "What would you like to change the barsign to?") as null|anything in get_valid_states(0, user)
+		if(!sign_type)
+			return
+		icon_state = sign_type
+		to_chat(user, "<span class='notice'>You change the barsign.</span>")
+		return
 
 	var/obj/item/weapon/card/id/card = I.GetIdCard()
 	if(istype(card))
