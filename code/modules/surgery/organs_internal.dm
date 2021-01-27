@@ -56,6 +56,9 @@
 		if(I && !(I.status & ORGAN_CUT_AWAY) && I.parent_organ == affected.organ_tag && !BP_IS_ROBOTIC(I))
 			var/image/img = image(icon = I.icon, icon_state = I.icon_state)
 			img.overlays = I.overlays
+			img.transform *= 1.5
+			img.pixel_y = -5
+			img.pixel_x = 3
 			damaged_organs[I] = img
 
 	var/obj/item/organ/internal/organ_to_fix = show_radial_menu(user, target, damaged_organs, require_near = TRUE)
@@ -255,6 +258,9 @@
 		if(I && !(I.status & ORGAN_CUT_AWAY) && I.parent_organ == affected.organ_tag && !BP_IS_ROBOTIC(I))
 			var/image/img = image(icon = I.icon, icon_state = I.icon_state)
 			img.overlays = I.overlays
+			img.transform *= 1.5
+			img.pixel_y = -5
+			img.pixel_x = 3
 			damaged_organs[I] = img
 
 	var/obj/item/organ/internal/organ_to_fix = show_radial_menu(user, target, damaged_organs, require_near = TRUE)
@@ -368,6 +374,9 @@
 		if(organ && !(organ.status & ORGAN_CUT_AWAY) && organ.parent_organ == target_zone)
 			var/image/img = image(icon = organ.icon, icon_state = organ.icon_state)
 			img.overlays = organ.overlays
+			img.transform *= 1.5
+			img.pixel_y = -5
+			img.pixel_x = 3
 			attached_organs[organ] = img
 
 	var/organ_to_remove = show_radial_menu(user, target, attached_organs, require_near = TRUE)
@@ -433,6 +442,9 @@
 		if(I.status & ORGAN_CUT_AWAY)
 			var/image/img = image(icon = I.icon, icon_state = I.icon_state)
 			img.overlays = I.overlays
+			img.transform *= 1.5
+			img.pixel_y = -5
+			img.pixel_x = 3
 			removable_organs[I] = img
 
 	var/organ_to_remove = show_radial_menu(user, target, removable_organs, require_near = TRUE)
@@ -605,6 +617,9 @@
 		if(I && (I.status & ORGAN_CUT_AWAY))
 			var/image/img = image(icon = I.icon, icon_state = I.icon_state)
 			img.overlays = I.overlays
+			img.transform *= 1.5
+			img.pixel_y = -5
+			img.pixel_x = 3
 			attachable_organs[I] = img
 
 	var/obj/item/organ/organ_to_replace = show_radial_menu(user, target, attachable_organs, require_near = TRUE)
@@ -684,6 +699,9 @@
 		if(I && !(I.status & ORGAN_CUT_AWAY) && I.status & ORGAN_DEAD && I.parent_organ == affected.organ_tag && !BP_IS_ROBOTIC(I))
 			var/image/img = image(icon = I.icon, icon_state = I.icon_state)
 			img.overlays = I.overlays
+			img.transform *= 1.5
+			img.pixel_y = -5
+			img.pixel_x = 3
 			dead_organs[I] = img
 
 	var/obj/item/organ/internal/organ_to_fix = show_radial_menu(user, target, dead_organs, require_near = TRUE)
