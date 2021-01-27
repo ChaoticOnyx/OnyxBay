@@ -563,6 +563,7 @@
 #include "code\game\gamemodes\vampire\vampire_helpers.dm"
 #include "code\game\gamemodes\vampire\vampire_powers.dm"
 #include "code\game\gamemodes\wizard\wizard.dm"
+#include "code\game\gamemodes\wizard\wizard_heals.dm"
 #include "code\game\jobs\_access_defs.dm"
 #include "code\game\jobs\access.dm"
 #include "code\game\jobs\access_datum.dm"

@@ -56,7 +56,8 @@
 	amt_dam_oxy = -14
 	amt_dam_brute = -35
 	amt_dam_fire  = -35
-
+	heal_bones = 1
+	heals_internal_bleeding = 1
 	return "[src] heals more, and heals organ damage and radiation."
 
 /spell/targeted/heal_target/area
