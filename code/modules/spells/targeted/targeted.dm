@@ -27,10 +27,10 @@ Targeted spells have two useful flags: INCLUDEUSER and SELECTABLE. These are exp
 	var/amt_blood = 0 //Positive numbers to add blood
 	var/amt_organ = 0 //Positive numbers for healing
 	var/heals_internal_bleeding = 0 //health of organs go brrrr
+	var/heals_external_bleeding = 0 //You
 	var/heal_bones = 0 //give you healthy dose of calcium to fix you bones
 	var/amt_eye_blind = 0
 	var/amt_eye_blurry = 0
-
 	var/list/compatible_mobs = list()
 
 

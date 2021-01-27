@@ -12,7 +12,7 @@
 	invocation_type = SpI_SHOUT
 	range = 20
 
-	level_max = list(Sp_TOTAL = 0, Sp_SPEED = 0, Sp_POWER = 0)
+	level_max = list(Sp_TOTAL = 1, Sp_SPEED = 0, Sp_POWER = 1)
 
 	duration = 20
 	proj_step_delay = 1
@@ -20,7 +20,12 @@
 	amt_stunned = 6
 
 	hud_state = "wiz_cuff"
-
+/spell/targeted/projectile/dumbfire/stuncuff/empower_spell()
+	. = ..()
+	charge_type = Sp_RECHARGE // becomes rechargable
+	charge_max = 40
+	charge_counter = 40
+	src.process()
 /spell/targeted/projectile/dumbfire/stuncuff/prox_cast(list/targets, spell_holder)
 	for(var/mob/living/M in targets)
 		if(istype(M,/mob/living/carbon/human))

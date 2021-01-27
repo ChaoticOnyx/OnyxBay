@@ -6,18 +6,18 @@
 	regenerate_blood(heal.amt_blood)
 	var/list/organs = get_damaged_organs(1, 1)
 	if (organs.len)
-		heal_organ_damage(heal.amt_organ,heal.amt_organ)
+		heal_organ_damage(heal.amt_organ, heal.amt_organ)
 	for (var/A in organs)
 		var/obj/item/organ/external/E = A
-		if(E.status & ORGAN_ARTERY_CUT)
+		if(E.status & ORGAN_ARTERY_CUT && heal.heals_internal_bleeding)
 			E.status &= ~ORGAN_ARTERY_CUT
-		if(E.status & ORGAN_BLEEDING)
+		if(E.status & ORGAN_BLEEDING && heal.heals_external_bleeding)
 			E.status &= ~ORGAN_BLEEDING
 			for(var/datum/wound/W in E.wounds)
 				W.clamped = 1
-		if(E.status & ORGAN_TENDON_CUT && heal.heals_internal_bleeding)
+		if(E.status & ORGAN_TENDON_CUT && heal.heal_bones)
 			E.status &= ~ORGAN_TENDON_CUT
-		if(E.status & ORGAN_BROKEN && heal.heal_bones)
+		if(E.status & ORGAN_BROKEN && heal.heal_bones) // some calcium
 			E.status &= ~ORGAN_BROKEN
 			E.stage = 0
 d
