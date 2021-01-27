@@ -4,29 +4,50 @@
 	name = "material goggles HUD"
 	matrix = /obj/item/device/hudmatrix/material
 
+/obj/item/clothing/glasses/hud/standard/material/active
+	active = 1
+
 /obj/item/clothing/glasses/hud/standard/meson
 	name = "meson goggles HUD"
 	matrix = /obj/item/device/hudmatrix/meson
+
+/obj/item/clothing/glasses/hud/standard/meson/active
+	active = 1
 
 /obj/item/clothing/glasses/hud/aviators/security
 	name = "security aviators HUD"
 	matrix = /obj/item/device/hudmatrix/security
 
+/obj/item/clothing/glasses/hud/aviators/security/active
+	active = 1
+
 /obj/item/clothing/glasses/hud/standard/thermal
 	name = "thermal goggles HUD"
 	matrix = /obj/item/device/hudmatrix/thermal
+
+/obj/item/clothing/glasses/hud/standard/thermal/active
+	active = 1
 
 /obj/item/clothing/glasses/hud/one_eyed/oneye/medical
 	name = "medical over-eye HUD"
 	matrix = /obj/item/device/hudmatrix/medical
 
+/obj/item/clothing/glasses/hud/one_eyed/oneye/medical/active
+	active = 1
+
 /obj/item/clothing/glasses/hud/standard/science
 	name = "science goggles HUD"
 	matrix = /obj/item/device/hudmatrix/science
 
+/obj/item/clothing/glasses/hud/standard/science/active
+	active = 1
+
 /obj/item/clothing/glasses/hud/scanners/night
 	name = "night vision goggles HUD"
 	matrix = /obj/item/device/hudmatrix/night
+
+/obj/item/clothing/glasses/hud/scanners/night/active
+	active = 1
 
 
 // Misc
@@ -49,10 +70,22 @@
 	name = "medical goggles HUD"
 	matrix = /obj/item/device/hudmatrix/medical
 
-/obj/item/clothing/glasses/hud/medical
-	name = "medical HUD"
+/obj/item/clothing/glasses/hud/standard/medical/active
 	active = 1
-	matrix = /obj/item/device/hudmatrix/medical
+
+/obj/item/clothing/glasses/hud/standard/security
+	name = "security goggles HUD"
+	matrix = /obj/item/device/hudmatrix/security
+
+/obj/item/clothing/glasses/hud/standard/security/active
+	active = 1
+
+/obj/item/clothing/glasses/hud/standard/night
+	name = "night vision goggles HUD"
+	matrix = /obj/item/device/hudmatrix/night
+
+/obj/item/clothing/glasses/hud/standard/night/active
+	active = 1
 
 // HUDs with non-removable matrices
 /obj/item/clothing/glasses/hud/plain/jensenshades

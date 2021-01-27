@@ -347,13 +347,13 @@
 	activate(var/mob/living/carbon/human/mob,var/multiplier)
 		if (prob(30))
 			to_chat(mob, SNEEZE_EFFECT_WARNING)
-		sleep(5)
-		mob.emote("sneeze")
-		for(var/mob/living/carbon/human/M in get_step(mob,mob.dir))
-			mob.spread_disease_to(M)
-		if (prob(50) && !mob.wear_mask)
-			var/obj/effect/decal/cleanable/mucus/M = new(get_turf(mob))
-			M.virus2 = virus_copylist(mob.virus2)
+		spawn(5)
+			mob.emote("sneeze")
+			for(var/mob/living/carbon/human/M in get_step(mob,mob.dir))
+				mob.spread_disease_to(M)
+			if (prob(50) && !mob.wear_mask)
+				var/obj/effect/decal/cleanable/mucus/M = new(get_turf(mob))
+				M.virus2 = virus_copylist(mob.virus2)
 
 /datum/disease2/effect/gunck
 	name = "Flemmingtons"

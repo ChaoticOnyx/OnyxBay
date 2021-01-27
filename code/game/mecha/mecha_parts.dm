@@ -220,7 +220,7 @@
 	name="Phazon Left Arm"
 	icon_state = "phazon_l_arm"
 	//construction_time = 200
-	//construction_cost = list(MATERIAL_STEEL=20000, MATERIAL_PHORON=10000)
+	//construction_cost = list(MATERIAL_STEEL=20000, MATERIAL_PLASMA=10000)
 	origin_tech = list(TECH_MATERIAL = 5, TECH_BLUESPACE = 2, TECH_MAGNET = 2)
 
 /obj/item/mecha_parts/part/phazon_right_arm

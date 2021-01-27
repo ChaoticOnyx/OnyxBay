@@ -31,6 +31,7 @@
 					if(!H.shoes)
 						affecting = H.get_organ(pick(BP_L_LEG, BP_R_LEG))
 						H.Weaken(3)
+						H.Stun(3)
 				if(BP_L_HAND, BP_R_HAND)
 					if(!H.gloves)
 						affecting = H.get_organ(type)
@@ -84,7 +85,7 @@
 		if(armed)
 			if(ishuman(AM))
 				var/mob/living/carbon/H = AM
-				if(H.m_intent == "run")
+				if(H.m_intent == M_RUN)
 					triggered(H)
 					H.visible_message("<span class='warning'>[H] accidentally steps on [src].</span>", \
 									  "<span class='warning'>You accidentally step on [src]</span>")

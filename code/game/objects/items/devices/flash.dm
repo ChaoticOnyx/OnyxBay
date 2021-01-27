@@ -174,7 +174,8 @@
 	return
 
 /obj/item/device/flash/emp_act(severity)
-	if(broken)	return
+	if(broken)
+		return
 	flash_recharge()
 	switch(times_used)
 		if(0 to 5)
@@ -188,6 +189,7 @@
 				var/safety = M.eyecheck()
 				if(safety < FLASH_PROTECTION_MODERATE)
 					M.Weaken(10)
+					M.Stun(5)
 					M.flash_eyes()
 					for(var/mob/O in viewers(M, null))
 						O.show_message("<span class='disarm'>[M] is blinded by the [name]!</span>")

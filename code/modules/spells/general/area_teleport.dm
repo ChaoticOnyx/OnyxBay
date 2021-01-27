@@ -52,7 +52,7 @@
 		return
 
 	if(user && user.buckled)
-		user.buckled = null
+		user.buckled.unbuckle_mob()
 
 	var/attempt = null
 	var/success = 0

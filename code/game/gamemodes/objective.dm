@@ -423,7 +423,7 @@ datum/objective/steal
 	var/target_name
 
 	var/global/possible_items[] = list(
-		"a psychoscope's prototype" = /obj/item/clothing/glasses/hud/psychoscope,
+		"the prototype psychoscope" = /obj/item/clothing/glasses/psychoscope,
 		"the captain's antique laser gun" = /obj/item/weapon/gun/energy/captain,
 		"a bluespace rift generator in hand teleporter" = /obj/item/integrated_circuit/manipulation/bluespace_rift,
 		"an RCD" = /obj/item/weapon/rcd,

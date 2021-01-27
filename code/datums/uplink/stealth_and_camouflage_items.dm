@@ -59,7 +59,8 @@
 */
 
 /datum/uplink_item/item/stealth_items/thermal
-	name = "Thermal Imaging Goggles"
+	name = "Chameleon Thermal Imaging Goggles"
+	desc = "These goggles contain a very special thermal imaging optical matrix that can change its color."
 	item_cost = 31
 	path = /obj/item/clothing/glasses/hud/standard/thermal/syndie
 

@@ -151,12 +151,10 @@ Please contact me on #coderbus IRC. ~Carn x
 
 //UPDATES OVERLAYS FROM OVERLAYS_LYING/OVERLAYS_STANDING
 /mob/living/carbon/human/update_icons()
-	lying_prev = lying	//so we don't update overlays for lying/standing unless our stance changes again
-	hanging_prev = hanging
 	update_hud()		//TODO: remove the need for this
 
 	var/list/overlays_to_apply = list()
-	if (icon_update)
+	if(icon_update)
 		overlays.Cut()
 		var/list/visible_overlays
 		if(is_cloaked())
@@ -466,7 +464,8 @@ var/global/list/damage_icon_parts = list()
 //For legacy support.
 /mob/living/carbon/human/regenerate_icons()
 	..()
-	if(transforming || QDELETED(src))		return
+	if(HasMovementHandler(/datum/movement_handler/mob/transformation) || QDELETED(src))
+		return
 
 	update_mutations(0)
 	update_body(0)

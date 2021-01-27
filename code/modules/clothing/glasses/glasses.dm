@@ -1,6 +1,10 @@
 /obj/item/clothing/glasses
 	name = "glasses"
 	icon = 'icons/obj/clothing/glasses.dmi'
+	item_state_slots = list(
+		slot_l_hand_str = "glasses",
+		slot_r_hand_str = "glasses"
+		)
 	var/prescription = FALSE
 	var/toggleable = FALSE
 	var/off_state = "degoggles"
@@ -61,7 +65,10 @@
 	name = "eyepatch"
 	desc = "Yarr."
 	icon_state = "eyepatch"
-	item_state = "eyepatch"
+	item_state_slots = list(
+		slot_l_hand_str = "blindfold", // Looks kinda close ngl
+		slot_r_hand_str = "blindfold"
+		)
 	body_parts_covered = 0
 	one_eyed = TRUE
 	var/flipped = FALSE // Indicates left or right eye; 0 = on the right
@@ -86,7 +93,10 @@
 	name = "monocle"
 	desc = "Such a dapper eyepiece!"
 	icon_state = "monocle"
-	item_state = "headset" // lol
+	item_state_slots = list(
+		slot_l_hand_str = "headset",
+		slot_r_hand_str = "headset"
+		)
 	body_parts_covered = 0
 	one_eyed = TRUE
 
@@ -94,7 +104,6 @@
 	name = "prescription glasses"
 	desc = "Made by Nerd. Co."
 	icon_state = "glasses"
-	item_state = "glasses"
 	prescription = 7
 	body_parts_covered = 0
 
@@ -109,34 +118,33 @@
 	name = "prescription glasses"
 	desc = "Made by Uncool. Co."
 	icon_state = "hipster_glasses"
-	item_state = "hipster_glasses"
 
 /obj/item/clothing/glasses/threedglasses
 	name = "3D glasses"
 	desc = "A long time ago, people used these glasses to makes images from screens threedimensional."
 	icon_state = "3d"
-	item_state = "3d"
 	body_parts_covered = 0
 
 /obj/item/clothing/glasses/gglasses
 	name = "green glasses"
 	desc = "Forest green glasses, like the kind you'd wear when hatching a nasty scheme."
 	icon_state = "gglasses"
-	item_state = "gglasses"
 	body_parts_covered = 0
 
 /obj/item/clothing/glasses/rglasses
 	name = "red glasses"
 	desc = "They make you look like a wannabe elite agent."
 	icon_state = "bigredglasses"
-	item_state = "bigredglasses"
 	body_parts_covered = 0
 
 /obj/item/clothing/glasses/sunglasses
 	name = "sunglasses"
 	desc = "Strangely ancient technology used to help provide rudimentary eye cover. Enhanced shielding blocks many flashes."
 	icon_state = "sun"
-	item_state = "sunglasses"
+	item_state_slots = list(
+		slot_l_hand_str = "sunglasses",
+		slot_r_hand_str = "sunglasses"
+		)
 	darkness_view = -1
 	flash_protection = FLASH_PROTECTION_MODERATE
 	var/darktinted = 1
@@ -151,11 +159,41 @@
 	desc = "They make you look like an elite agent."
 	icon_state = "bigredglasses"
 
+/obj/item/clothing/glasses/sunglasses/blindfold
+	name = "blindfold"
+	desc = "Covers the eyes, preventing sight."
+	icon_state = "blindfold"
+	item_state_slots = list(
+		slot_l_hand_str = "blindfold",
+		slot_r_hand_str = "blindfold"
+		)
+	tint = TINT_BLIND
+	flash_protection = FLASH_PROTECTION_MAJOR
+
+/obj/item/clothing/glasses/sunglasses/blindfold/tape
+	name = "length of tape"
+	desc = "It's a robust DIY blindfold!"
+	icon = 'icons/obj/bureaucracy.dmi'
+	icon_state = "tape_cross"
+	item_state_slots = list()
+	w_class = ITEM_SIZE_TINY
+
+/obj/item/clothing/glasses/sunglasses/prescription
+	name = "prescription sunglasses"
+	prescription = 5
+
+/obj/item/clothing/glasses/sunglasses/big
+	desc = "Strangely ancient technology used to help provide rudimentary eye cover. Larger than average enhanced shielding blocks many flashes."
+	icon_state = "bigsunglasses"
+
 /obj/item/clothing/glasses/welding
 	name = "welding goggles"
 	desc = "Protects the eyes from welders, approved by the mad scientist association."
 	icon_state = "welding-g"
-	item_state = "welding-g"
+	item_state_slots = list(
+		slot_l_hand_str = "welding-g",
+		slot_r_hand_str = "welding-g"
+		)
 	action_button_name = "Flip Welding Goggles"
 	matter = list(MATERIAL_STEEL = 1500, MATERIAL_GLASS = 1000)
 	use_alt_layer = TRUE
@@ -166,13 +204,12 @@
 /obj/item/clothing/glasses/welding/attack_self()
 	toggle()
 
-
 /obj/item/clothing/glasses/welding/verb/toggle()
 	set category = "Object"
 	set name = "Adjust welding goggles"
 	set src in usr
 
-	if(usr.canmove && !usr.incapacitated())
+	if(!usr.incapacitated())
 		if(src.up)
 			src.up = !src.up
 			flags_inv |= HIDEEYES
@@ -199,33 +236,7 @@
 	name = "superior welding goggles"
 	desc = "Welding goggles made from more expensive materials, strangely smells like potatoes."
 	icon_state = "rwelding-g"
-	item_state = "rwelding-g"
 	tint = TINT_MODERATE
-
-/obj/item/clothing/glasses/sunglasses/blindfold
-	name = "blindfold"
-	desc = "Covers the eyes, preventing sight."
-	icon_state = "blindfold"
-	item_state = "blindfold"
-	tint = TINT_BLIND
-	flash_protection = FLASH_PROTECTION_MAJOR
-
-/obj/item/clothing/glasses/sunglasses/blindfold/tape
-	name = "length of tape"
-	desc = "It's a robust DIY blindfold!"
-	icon = 'icons/obj/bureaucracy.dmi'
-	icon_state = "tape_cross"
-	item_state = null
-	w_class = ITEM_SIZE_TINY
-
-/obj/item/clothing/glasses/sunglasses/prescription
-	name = "prescription sunglasses"
-	prescription = 5
-
-/obj/item/clothing/glasses/sunglasses/big
-	desc = "Strangely ancient technology used to help provide rudimentary eye cover. Larger than average enhanced shielding blocks many flashes."
-	icon_state = "bigsunglasses"
-	item_state = "bigsunglasses"
 
 /obj/item/clothing/glasses/tacgoggles
 	name = "tactical goggles"

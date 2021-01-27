@@ -53,6 +53,9 @@
 /area/shuttle/merchant/ghetto
 	name = "\improper Merchant Van - Station Ghetto Dock"
 
+/area/shuttle/merchant/outpost
+	name = "\improper Merchant Van - Outpost"
+
 // Command
 /area/crew_quarters/heads/chief
 	name = "\improper Engineering - CE's Office"
@@ -1916,6 +1919,10 @@ area/rnd/test_area
 	icon_state = "unexplored"
 	ambience = list('sound/ambience/mine/ambimine.ogg', 'sound/ambience/song_game.ogg')
 
+/area/constructionsite
+	name = "\improper Construction Site"
+	icon_state = "yellow"
+	has_gravity = FALSE
 
 /area/constructionsite/maintenance
 	name = "\improper Construction Site Maintenance"
@@ -1975,23 +1982,28 @@ area/rnd/test_area
 /area/derelict/snowasteroid
 	name = "\improper Hidden Outpost"
 	icon_state = "yellow"
+	has_gravity = TRUE
 
 /area/derelict/snowasteroid/bunker
 	name = "\improper Hidden Outpost Bunker"
 	icon_state = "red"
+	has_gravity = TRUE
 
 /area/derelict/snowasteroid/shuttle
 	name = "\improper Hidden Outpost Shuttle"
 	icon_state = "blue"
+	has_gravity = TRUE
 
 /area/derelict/djstation
 	name = "\improper DJ Station"
 	icon_state = "yellow"
+	has_gravity = TRUE
 
 /area/AIsattele
 	name = "\improper AI Satellite Teleporter Room"
 	icon_state = "teleporter"
 	ambience = list("ai_ambient")
+	has_gravity = FALSE
 
 /area/constructionsite/atmospherics
 	name = "\improper Construction Site Atmospherics"

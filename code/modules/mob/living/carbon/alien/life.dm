@@ -4,12 +4,14 @@
 	set invisibility = 0
 	set background = 1
 
-	if (transforming)	return
-	if(!loc)			return
+	if(HAS_TRANSFORMATION_MOVEMENT_HANDLER(src))
+		return
+	if(!loc)
+		return
 
 	..()
 
-	if (stat != DEAD && can_progress())
+	if(stat != DEAD && can_progress())
 		update_progression()
 
 	blinded = null

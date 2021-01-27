@@ -237,9 +237,11 @@
 
 /obj/item/clothing/glasses/hud/Destroy()
 	if(matrix)
-		matrix.dropInto(get_turf(src))
+		qdel(matrix)
+		matrix = null
 	if(lenses)
-		lenses.dropInto(get_turf(src))
+		qdel(lenses)
+		lenses = null
 	..()
 
 /obj/item/clothing/glasses/hud/process_hud(mob/M)
