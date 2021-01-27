@@ -100,7 +100,7 @@
 		for (var/obj/item/grab/G in user)
 			G.adjust_position(force = 1)
 
-/obj/structure/ladder/proc/getTargetLadder(mob/user as mob)
+/obj/structure/ladder/proc/getTargetLadder(mob/user)
 	if((!target_up && !target_down) || (target_up && !istype(target_up.loc, /turf) || (target_down && !istype(target_down.loc, /turf))))
 		to_chat(user, "<span class='notice'>\The [src] is incomplete and can't be climbed.</span>")
 		return
