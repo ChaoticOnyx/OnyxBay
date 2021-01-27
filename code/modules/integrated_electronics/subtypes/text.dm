@@ -54,7 +54,7 @@
 	activators = list("concatenate" = IC_PINTYPE_PULSE_IN, "on concatenated" = IC_PINTYPE_PULSE_OUT)
 	spawn_flags = IC_SPAWN_DEFAULT|IC_SPAWN_RESEARCH
 	var/number_of_pins = 8
-	var/max_string_length = 512
+	var/max_string_length = 1024
 
 /obj/item/integrated_circuit/text/concatenator/Initialize()
 	for(var/i = 1 to number_of_pins)
@@ -91,14 +91,14 @@
 	desc = "This can join up to 4 strings together to get a string with a maximum of 256 characters."
 	complexity = 2
 	number_of_pins = 4
-	max_string_length = 256
+	max_string_length = 512
 
 /obj/item/integrated_circuit/text/concatenator/large
 	name = "large concatenator"
 	desc = "This can join up to 16 strings together to get a string with a maximum of 1024 characters."
 	complexity = 6
 	number_of_pins = 16
-	max_string_length = 1024
+	max_string_length = 2048
 
 /obj/item/integrated_circuit/text/separator
 	name = "separator"

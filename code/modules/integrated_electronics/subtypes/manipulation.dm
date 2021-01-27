@@ -392,7 +392,7 @@
 				drop(contents[1])
 
 	var/obj/item/AM = get_pin_data_as_type(IC_INPUT, 1, /obj/item)
-	if(!QDELETED(AM) && !istype(AM, /obj/item/device/electronic_assembly) && !istype(AM, /obj/item/device/transfer_valve) && !istype(assembly.loc, /obj/item/weapon/implant/compressed))
+	if(!QDELETED(AM) && !istype(AM, /obj/item/device/electronic_assembly) && !istype(AM, /obj/item/device/transfer_valve) && !istype(assembly.loc, /obj/item/weapon/implant/compressed) || !isturf(assembly.loc))
 		switch(mode)
 			if(1)
 				grab(AM)

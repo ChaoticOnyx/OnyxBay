@@ -86,6 +86,8 @@
 	if(istype(O, /obj/item/stack/material))
 		var/obj/item/stack/material/M = O
 		var/amt = M.amount
+		if(materials[M.material.name] == metal_max)
+			return
 		if(amt * SHEET_MATERIAL_AMOUNT + materials[M.material.name] > metal_max)
 			amt = -round(-(metal_max - materials[M.material.name]) / SHEET_MATERIAL_AMOUNT) //round up
 		if(M.use(amt))

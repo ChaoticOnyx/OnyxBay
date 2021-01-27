@@ -23,7 +23,7 @@
 		t += "#[i] | [display_data(line)]  |  "
 		t += "<a href='?src=\ref[src];edit=1;pos=[i]'>\[Edit\]</a>  |  "
 		t += "<a href='?src=\ref[src];remove=1;pos=[i]'>\[Remove\]</a><br>"
-	user << browse(t, "window=list_pin_\ref[src];size=500x400")
+	show_browser(user, t, "window=list_pin_\ref[src];size=500x400")
 
 /datum/integrated_io/lists/proc/add_to_list(mob/user, new_entry)
 	if(!new_entry && user)
