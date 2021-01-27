@@ -184,9 +184,6 @@
 	GLOB.clients += src
 	GLOB.ckey_directory[ckey] = src
 
-	//This is down here because of the browse() calls in tooltip/New()
-	if(!tooltips)
-		tooltips = new /datum/tooltip(src)
 
 	//Admin Authorisation
 	var/datum/admins/admin_datum = admin_datums[ckey]
