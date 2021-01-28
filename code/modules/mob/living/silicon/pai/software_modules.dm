@@ -88,6 +88,10 @@
 	default = 1
 
 	on_ui_interact(mob/living/silicon/pai/user, datum/nanoui/ui = null, force_open = 1)
+		user.silicon_radio.attack_self(user)
+
+		/*
+		
 		var/data[0]
 
 		data["listening"] = user.silicon_radio.broadcasting
@@ -109,6 +113,8 @@
 			ui = new(user, user, id, "pai_radio.tmpl", "Radio Configuration", 300, 150)
 			ui.set_initial_data(data)
 			ui.open()
+		
+		*/
 
 	Topic(href, href_list)
 		var/mob/living/silicon/pai/P = usr

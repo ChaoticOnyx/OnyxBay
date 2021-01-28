@@ -97,8 +97,9 @@
 
 	if(card)
 		if(!card.radio)
-			card.radio = new /obj/item/device/radio(card)
+			card.radio = new /obj/item/device/radio/pai(card)
 		silicon_radio = card.radio
+		silicon_radio.recalculateChannels(src)
 
 /mob/living/silicon/pai/Destroy()
 	QDEL_NULL(sradio)
@@ -332,8 +333,22 @@
 		icon_state = resting ? "[chassis]_rest" : "[chassis]"
 		to_chat(src, "<span class='notice'>You are now [resting ? "resting" : "getting up"]</span>")
 
+/mob/living/silicon/pai/proc/swipe_card(var/obj/item/weapon/card/id/ID, mob/user as mob)
+	if(ID)
+		var/list/access = ID.GetAccess()
+		if (access && istype(access))
+			idcard.access = access
+			// check master DNA ?
+			silicon_radio.recalculateChannels(src)
+			user.visible_message("<span class='notice'>\The [user] swipes \the [ID] onto [src]'s card reader.</span>")
+		return 1
+	return 0
+
 //Overriding this will stop a number of headaches down the track.
 /mob/living/silicon/pai/attackby(obj/item/weapon/W as obj, mob/user as mob)
+	var/obj/item/weapon/card/id/ID = W.GetIdCard()
+	if (swipe_card(ID, user)) return
+
 	if(W.force)
 		visible_message("<span class='danger'>[user.name] attacks [src] with [W]!</span>")
 		src.adjustBruteLoss(W.force)

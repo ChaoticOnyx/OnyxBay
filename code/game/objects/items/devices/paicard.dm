@@ -7,6 +7,7 @@
 	slot_flags = SLOT_BELT
 	origin_tech = list(TECH_DATA = 2)
 	var/obj/item/device/radio/radio
+	obj/item/weapon/card/id/idcard
 	var/looking_for_personality = 0
 	var/mob/living/silicon/pai/pai
 
@@ -336,3 +337,8 @@
 		var/rendered = "<span class='message'>[msg]</span>"
 		pai.show_message(rendered, type)
 	..()
+
+/obj/item/device/paicard/attackby(obj/item/weapon/W as obj, mob/user as mob)
+	if(pai)
+		var/obj/item/weapon/card/id/ID = W.GetIdCard()
+		if (pai.swipe_card(ID, user)) return

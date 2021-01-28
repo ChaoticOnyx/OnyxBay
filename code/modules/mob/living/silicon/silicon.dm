@@ -1,5 +1,3 @@
-
-
 /mob/living/silicon
 	gender = NEUTER
 	voice_name = "synthesized voice"
