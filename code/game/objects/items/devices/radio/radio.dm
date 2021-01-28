@@ -29,6 +29,8 @@
 	var/const/FREQ_LISTENING = 1
 	var/list/internal_channels
 
+	var/shut_up = null // loudspeaker for borgs and pAI
+
 /obj/item/device/radio
 	var/datum/radio_frequency/radio_connection
 	var/list/datum/radio_frequency/secure_radio_connections = new
@@ -83,6 +85,10 @@
 
 	data["mic_cut"] = (wires.IsIndexCut(WIRE_TRANSMIT) || wires.IsIndexCut(WIRE_SIGNAL))
 	data["spk_cut"] = (wires.IsIndexCut(WIRE_RECEIVE) || wires.IsIndexCut(WIRE_SIGNAL))
+
+	if(shut_up != null)
+		data["has_loudspeaker"] = 1
+		data["loudspeaker"] = !shut_up
 
 	var/list/chanlist = list_channels(user)
 	if(islist(chanlist) && chanlist.len)
@@ -544,7 +550,7 @@
 /obj/item/device/radio/borg
 	var/mob/living/silicon/robot/myborg = null // Cyborg which owns this radio. Used for power checks
 	var/obj/item/device/encryptionkey/keyslot = null//Borg radios can handle a single encryption key
-	var/shut_up = 1
+	shut_up = 1
 	icon = 'icons/obj/robot_component.dmi' // Cyborgs radio icons should look like the component.
 	icon_state = "radio"
 	canhear_range = 0

@@ -170,6 +170,12 @@
 			dat += {"
 				<table class="request">
 					<tr>
+						<td class="radio">Loudspeaker:</td>
+						<td><a href='byond://?src=\ref[src];wires=1'>[!radio.shut_up ? "<font color=#55ff55>En" : "<font color=#ff5555>Dis" ]abled</font></a>
+
+						</td>
+					</tr>
+					<tr>
 						<td class="radio">Transmit:</td>
 						<td><a href='byond://?src=\ref[src];wires=4'>[radio.broadcasting ? "<font color=#55ff55>En" : "<font color=#ff5555>Dis" ]abled</font></a>
 
@@ -266,6 +272,8 @@
 				radio.ToggleBroadcast()
 			if(2)
 				radio.ToggleReception()
+			if(1)
+				radio.ToggleLoudspeaker()
 	if(href_list["setlaws"])
 		var/newlaws = sanitize(input("Enter any additional directives you would like your pAI personality to follow. Note that these directives will not override the personality's allegiance to its imprinted master. Conflicting directives will be ignored.", "pAI Directive Configuration", pai.pai_laws) as message)
 		if(newlaws)
