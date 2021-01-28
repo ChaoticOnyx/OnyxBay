@@ -80,6 +80,47 @@
 				to_chat(P, "[M] does not seem like \he is going to provide a DNA sample willingly.")
 			return 1
 
+/datum/pai_software/reader
+	name = "Card Reader"
+	ram_cost = 0
+	id = "cardreader"
+	toggle = 0
+	default = 1
+
+	on_ui_interact(mob/living/silicon/pai/user, datum/nanoui/ui=null, force_open=1)
+		var/data[0]
+
+		data["toggle"] = user.reader_on
+		data["checkdna"] = user.reader_dna_check
+		data["authname"] = "[user.card_registered_name] ([user.card_assignment])"
+
+		ui = SSnano.try_update_ui(user, user, id, ui, data, force_open)
+		if(!ui)
+			// Don't copy-paste this unless you're making a pAI software module!
+			ui = new(user, user, id, "pai_card_reader.tmpl", "Card Reader", 450, 350)
+			ui.set_initial_data(data)
+			ui.open()
+			ui.set_auto_update(1)
+
+	Topic(href, href_list)
+		var/mob/living/silicon/pai/P = usr
+		if(!istype(P)) return
+
+		if(href_list["toggle"])
+			P.reader_on = !P.reader_on
+			return 1
+		else if(href_list["check_dna"])
+			P.reader_dna_check = !P.reader_dna_check
+			return 1
+		else if(href_list["drop"])
+			P.idcard.access = list()
+			P.card_registered_name = ""
+			P.card_assignment = ""
+			P.silicon_radio.recalculateChannels(P)
+			return 1
+		if(href_list["nowindow"])
+			return 1
+
 /datum/pai_software/radio_config
 	name = "Radio Configuration"
 	ram_cost = 0

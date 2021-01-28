@@ -1,0 +1,43 @@
+<!-- pAI Card Reader
+code/modules/mob/living/silicon/pai/software_modules.dm
+-->
+
+<div class="item">
+	<div class="itemLabel">
+		Last Scanned ID:
+	</div>
+	<div class="itemContent">
+		{{:helper.link(data.authname, 'eject', {"stopic":"cardreader", "drop": 1}, null, 'itemContentWide')}}
+	</div>
+</div>
+
+<div class="item">
+	<div class="itemLabel">
+		ID Scanner:
+	</div>
+	<div class="itemContent">
+		{{if data.toggle}}
+			{{:helper.link("On", '', {"stopic":"cardreader", "toggle":1, "nowindow":1}, 'selected')}}
+			{{:helper.link("Off", '', {"stopic":"cardreader", "toggle":0, "nowindow":1})}}
+		{{else}}
+			{{:helper.link("On", '', {"stopic":"cardreader", "toggle":1, "nowindow":1})}}
+			{{:helper.link("Off", '', {"stopic":"cardreader", "toggle":0, "nowindow":1}, 'selected')}}
+		{{/if}}
+	</div>
+</div>
+
+<div class="item">
+	<div class="itemLabel">
+		Match DNA Hash:
+	</div>
+	<div class="itemContent">
+		{{if data.checkdna}}
+			{{:helper.link("On", '', {"stopic":"cardreader", "check_dna":1, "nowindow":1}, 'selected')}}
+			{{:helper.link("Off", '', {"stopic":"cardreader", "check_dna":0, "nowindow":1})}}
+		{{else}}
+			{{:helper.link("On", '', {"stopic":"cardreader", "check_dna":1, "nowindow":1})}}
+			{{:helper.link("Off", '', {"stopic":"cardreader", "check_dna":0, "nowindow":1}, 'selected')}}
+		{{/if}}
+	</div>
+</div>
+

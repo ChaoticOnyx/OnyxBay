@@ -78,6 +78,11 @@
 
 	var/translator_on = 0 // keeps track of the translator module
 
+	var/reader_dna_check = 1
+	var/reader_on = 1
+	var/card_registered_name = ""
+	var/card_assignment = ""
+
 	var/current_pda_messaging = null
 
 /mob/living/silicon/pai/New(obj/item/device/paicard)
@@ -334,13 +339,19 @@
 		to_chat(src, "<span class='notice'>You are now [resting ? "resting" : "getting up"]</span>")
 
 /mob/living/silicon/pai/proc/swipe_card(var/obj/item/weapon/card/id/ID, mob/user as mob)
+	if(!reader_on) return 0 // reader disabled
+
 	if(ID)
 		var/list/access = ID.GetAccess()
 		if (access && istype(access))
-			idcard.access = access
-			// check master DNA ?
-			silicon_radio.recalculateChannels(src)
-			user.visible_message("<span class='notice'>\The [user] swipes \the [ID] onto [src]'s card reader.</span>")
+			if(!reader_dna_check || ID.dna_hash == master_dna)
+				card_registered_name = ID.registered_name
+				card_assignment = ID.assignment
+				idcard.access = access
+				silicon_radio.recalculateChannels(src)
+				user.visible_message("<span class='notice'>\The [user] swipes \the [ID] onto [src]'s card reader.</span>")
+			else
+				user.visible_message("<span class='warning'>[src] rejects [ID] because ID's DNA Hash does not match stored Master DNA.</span>")
 		return 1
 	return 0
 
