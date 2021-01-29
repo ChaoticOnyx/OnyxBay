@@ -110,7 +110,7 @@
 			for(var/obj/item/organ/internal/org in affected.internal_organs)
 				max_volume -= org.get_storage_cost()
 
-			if(tool.get_storage_cost() > max_volume)
+			if(tool.get_storage_cost() > max_volume || affected.cavity_max_w_class < tool.w_class)
 				to_chat(user, SPAN_WARNING("\The [tool] is too big for [affected.cavity_name] cavity."))
 				return SURGERY_FAILURE
 
