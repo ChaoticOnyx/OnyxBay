@@ -148,7 +148,7 @@ obj/item/weapon/shield/shield_belt/syndicate_shield_belt/get_mob_overlay(mob/use
 		item_state = "shield_sindy_off"
 	var/image/ret = ..()
 	if(slot == slot_belt_str)
-		ret.overlays += image("icon" = 'icons/mob/onmob/belt.dmi', "icon_state" = "[item_state]")
+		ret.overlays += image("icon" = 'icons/inv_slots/belts/mob.dmi', "icon_state" = "[item_state]")
 	return ret
 
 //procent of charge
@@ -216,7 +216,7 @@ obj/item/weapon/shield/shield_belt/experimental_shield_belt/get_mob_overlay(mob/
 		item_state = "science_shield_off"
 	var/image/ret = ..()
 	if(slot == slot_belt_str)
-		ret.overlays += image("icon" = 'icons/mob/onmob/belt.dmi', "icon_state" = "[item_state]")
+		ret.overlays += image("icon" = 'icons/inv_slots/belts/mob.dmi', "icon_state" = "[item_state]")
 	return ret
 
 /obj/item/weapon/shield/shield_belt/experimental_shield_belt/Initialize()
