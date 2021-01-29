@@ -99,6 +99,8 @@
 	hud_type = HUD_SECURITY
 	matrix_type = "night vision"
 	matrix_icon = "night"
+	darkness_view = 7
+	see_invisible = SEE_INVISIBLE_NOLIGHTING
 	origin_tech = list(TECH_MAGNET = 2)
 
 /obj/item/device/hudmatrix/night/Initialize()
