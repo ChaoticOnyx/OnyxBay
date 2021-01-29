@@ -11,13 +11,13 @@ They sell generic supplies and ask for generic supplies.
 	origin = "Trading Beacon"
 	name_language = LANGUAGE_EAL
 	trade_flags = TRADER_MONEY|TRADER_GOODS
-	speech = list("hail_generic"	= "Greetings, I am MERCHANT, Artifical Intelligence onboard ORIGIN, tasked with trading goods in return for thalers and supplies.",
+	speech = list("hail_generic"	= "Greetings, I am MERCHANT, Artifical Intelligence onboard ORIGIN, tasked with trading goods in return for credits and supplies.",
 				"hail_deny"			= "We are sorry, your connection has been blacklisted. Have a nice day.",
 
 				"trade_complete"	= "Thank you for your patronage.",
 				"trade_not_enough"	= "I'm sorry, your offer is not worth what you are asking for.",
 				"trade_blacklisted"	= "You have offered a blacklisted item. My laws do not allow me to trade for that.",
-				"how_much"			= "ITEM will cost you roughly VALUE thalers, or something of equal worth.",
+				"how_much"			= "ITEM will cost you roughly VALUE credits, or something of equal worth.",
 				"what_want"			= "I have logged need for",
 
 				"compliment_deny"	= "I'm sorry, I am not allowed to let compliments affect the trade.",
@@ -31,7 +31,7 @@ They sell generic supplies and ask for generic supplies.
 								/obj/item/device/assembly									= TRADER_BLACKLIST_ALL,
 								/obj/item/device/assembly_holder							= TRADER_BLACKLIST_ALL,
 								/obj/item/device/encryptionkey/syndicate					= TRADER_BLACKLIST,
-								/obj/item/weapon/tank/phoron/onetankbomb					= TRADER_BLACKLIST,
+								/obj/item/weapon/tank/plasma/onetankbomb					= TRADER_BLACKLIST,
 								/obj/item/device/radio										= TRADER_BLACKLIST_ALL,
 								/obj/item/device/pda										= TRADER_BLACKLIST_SUB,
 								/obj/item/device/uplink										= TRADER_BLACKLIST
@@ -60,7 +60,7 @@ They sell generic supplies and ask for generic supplies.
 								/obj/item/weapon/storage/photo_album						= TRADER_THIS_TYPE,
 								/obj/item/clothing/glasses									= TRADER_SUBTYPES_ONLY,
 								/obj/item/clothing/glasses/hud								= TRADER_BLACKLIST,
-								/obj/item/clothing/glasses/thermal/syndi					= TRADER_BLACKLIST_ALL,
+								/obj/item/clothing/glasses/hud/standard/thermal/syndie		= TRADER_BLACKLIST_ALL,
 								/obj/item/clothing/glasses/sunglasses/blindfold/tape		= TRADER_BLACKLIST,
 								/obj/item/clothing/glasses/chameleon						= TRADER_BLACKLIST
 								)
@@ -83,13 +83,13 @@ They sell generic supplies and ask for generic supplies.
 								/obj/item/stack/material/diamond/ten						= TRADER_THIS_TYPE,
 								/obj/item/stack/material/gold/ten							= TRADER_THIS_TYPE,
 								/obj/item/stack/material/glass/fifty						= TRADER_THIS_TYPE,
-								/obj/item/stack/material/glass/phoronrglass/ten				= TRADER_THIS_TYPE,
+								/obj/item/stack/material/glass/rplass/ten					= TRADER_THIS_TYPE,
 								/obj/item/stack/material/glass/reinforced/fifty				= TRADER_THIS_TYPE,
 								/obj/item/stack/material/marble/fifty						= TRADER_THIS_TYPE,
 								/obj/item/stack/material/mhydrogen/ten						= TRADER_THIS_TYPE,
 								/obj/item/stack/material/ocp/ten							= TRADER_THIS_TYPE,
 								/obj/item/stack/material/osmium/ten							= TRADER_THIS_TYPE,
-								/obj/item/stack/material/phoron/fifty						= TRADER_THIS_TYPE,
+								/obj/item/stack/material/plasma/fifty						= TRADER_THIS_TYPE,
 								/obj/item/stack/material/plastic/fifty						= TRADER_THIS_TYPE,
 								/obj/item/stack/material/platinum/ten						= TRADER_THIS_TYPE,
 								/obj/item/stack/material/sandstone/fifty					= TRADER_THIS_TYPE,

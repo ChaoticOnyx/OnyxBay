@@ -17,9 +17,10 @@
 	cost = 1
 
 /datum/gear/suit/unathi/knifeharness
-	display_name = "decorated harness"
+	display_name = "decorated harness (Unathi)"
 	path = /obj/item/clothing/accessory/storage/knifeharness
 	cost = 5
+	whitelisted = list(SPECIES_UNATHI)
 
 //Skrell Chains
 /datum/gear/ears/skrell
@@ -76,7 +77,7 @@
 	cost = 0
 
 /datum/gear/suit/lab_xyn_machine
-	display_name = "Xynergy labcoat"
+	display_name = "Xynergy labcoat (IPC)"
 	path = /obj/item/clothing/suit/storage/toggle/labcoat/xyn_machine
 	slot = slot_wear_suit
 	sort_category = "Xenowear"
@@ -93,31 +94,17 @@
 	display_name = "toeless jackboots"
 	path = /obj/item/clothing/shoes/jackboots/unathi
 	sort_category = "Xenowear"
+	whitelisted = list(SPECIES_TAJARA, SPECIES_UNATHI)
+	allowed_roles = ARMED_ROLES
 
 /datum/gear/shoes/wrk_toeless
 	display_name = "toeless workboots"
 	path = /obj/item/clothing/shoes/workboots/toeless
 	sort_category = "Xenowear"
+	whitelisted = list(SPECIES_TAJARA, SPECIES_UNATHI)
+	allowed_roles = ENGINEERING_ROLES
 
 // Taj clothing
-/datum/gear/eyes/medical/tajblind
-	display_name = "medical veil (Tajara)"
-	path = /obj/item/clothing/glasses/hud/health/tajblind
-	whitelisted = list(SPECIES_TAJARA)
-	sort_category = "Xenowear"
-
-/datum/gear/eyes/meson/tajblind
-	display_name = "industrial veil (Tajara)"
-	path = /obj/item/clothing/glasses/meson/prescription/tajblind
-	whitelisted = list(SPECIES_TAJARA)
-	sort_category = "Xenowear"
-
-/datum/gear/eyes/security/tajblind
-	display_name = "sleek veil (Tajara)"
-	path = /obj/item/clothing/glasses/sunglasses/sechud/tajblind
-	whitelisted = list(SPECIES_TAJARA)
-	sort_category = "Xenowear"
-
 /datum/gear/shoes/caligae
 	display_name = "caligae (Tajara)"
 	path = /obj/item/clothing/shoes/sandal/tajaran/caligae
@@ -161,33 +148,9 @@
 	sort_category = "Xenowear"
 	whitelisted = list(SPECIES_TAJARA, SPECIES_UNATHI)
 
-/datum/gear/gloves/latex/modified
-	display_name = "modified gloves, latex"
-	path = /obj/item/clothing/gloves/latex/modified
-	sort_category = "Xenowear"
-	whitelisted = list(SPECIES_TAJARA, SPECIES_UNATHI)
-
-/datum/gear/gloves/nitrile/modified
-	display_name = "modified gloves, nitrile"
-	path = /obj/item/clothing/gloves/latex/nitrile/modified
-	sort_category = "Xenowear"
-	whitelisted = list(SPECIES_TAJARA, SPECIES_UNATHI)
-
 /datum/gear/gloves/rainbow/modified
 	display_name = "modified gloves, rainbow"
 	path = /obj/item/clothing/gloves/rainbow/modified
-	sort_category = "Xenowear"
-	whitelisted = list(SPECIES_TAJARA, SPECIES_UNATHI)
-
-/datum/gear/gloves/botany/modified
-	display_name = "modified gloves, botany"
-	path = /obj/item/clothing/gloves/thick/botany/modified
-	sort_category = "Xenowear"
-	whitelisted = list(SPECIES_TAJARA, SPECIES_UNATHI)
-
-/datum/gear/gloves/work/modified
-	display_name = "modified gloves, work"
-	path = /obj/item/clothing/gloves/thick/modified
 	sort_category = "Xenowear"
 	whitelisted = list(SPECIES_TAJARA, SPECIES_UNATHI)
 

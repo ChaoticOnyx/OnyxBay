@@ -53,6 +53,9 @@
 /area/shuttle/merchant/ghetto
 	name = "\improper Merchant Van - Station Ghetto Dock"
 
+/area/shuttle/merchant/outpost
+	name = "\improper Merchant Van - Outpost"
+
 // Command
 /area/crew_quarters/heads/chief
 	name = "\improper Engineering - CE's Office"
@@ -111,7 +114,7 @@
 	area_flags = AREA_FLAG_RAD_SHIELDED
 
 /area/shuttle/syndicate_elite
-	name = "\improper Merc Elite Shuttle"
+	name = "\improper Syndicate Elite Shuttle"
 	area_flags = AREA_FLAG_RAD_SHIELDED
 
 /area/shuttle/transport/centcom
@@ -221,7 +224,7 @@
 //SYNDICATES
 
 /area/syndicate_mothership
-	name = "\improper Mercenary Base"
+	name = "\improper Syndicate Base"
 	icon_state = "syndie-ship"
 	requires_power = 0
 	dynamic_lighting = 0
@@ -293,7 +296,7 @@
 	area_flags = AREA_FLAG_RAD_SHIELDED
 
 /area/syndicate_station/start
-	name = "\improper Mercenary Forward Operating Base"
+	name = "\improper Syndicate Forward Operating Base"
 	icon_state = "yellow"
 
 /area/syndicate_station/southwest
@@ -1175,6 +1178,10 @@
 	name = "\improper Chapel Office"
 	icon_state = "chapeloffice"
 
+/area/chapel/crematorium
+	name = "\improper Сrematorium"
+	icon_state = "chapelcrematorium"
+
 /area/lawoffice
 	name = "\improper Internal Affairs"
 	icon_state = "law"
@@ -1887,6 +1894,9 @@ area/rnd/test_area
 	has_gravity = 0
 	sound_env = SPACE
 
+/area/holodeck/source_chess
+	name = "\improper Holodeck - Chess Field"
+
 /area/prison/solitary
 	name = "Solitary Confinement"
 	icon_state = "brig"
@@ -1909,6 +1919,10 @@ area/rnd/test_area
 	icon_state = "unexplored"
 	ambience = list('sound/ambience/mine/ambimine.ogg', 'sound/ambience/song_game.ogg')
 
+/area/constructionsite
+	name = "\improper Construction Site"
+	icon_state = "yellow"
+	has_gravity = FALSE
 
 /area/constructionsite/maintenance
 	name = "\improper Construction Site Maintenance"
@@ -1968,23 +1982,28 @@ area/rnd/test_area
 /area/derelict/snowasteroid
 	name = "\improper Hidden Outpost"
 	icon_state = "yellow"
+	has_gravity = TRUE
 
 /area/derelict/snowasteroid/bunker
 	name = "\improper Hidden Outpost Bunker"
 	icon_state = "red"
+	has_gravity = TRUE
 
 /area/derelict/snowasteroid/shuttle
 	name = "\improper Hidden Outpost Shuttle"
 	icon_state = "blue"
+	has_gravity = TRUE
 
 /area/derelict/djstation
 	name = "\improper DJ Station"
 	icon_state = "yellow"
+	has_gravity = TRUE
 
 /area/AIsattele
 	name = "\improper AI Satellite Teleporter Room"
 	icon_state = "teleporter"
 	ambience = list("ai_ambient")
+	has_gravity = FALSE
 
 /area/constructionsite/atmospherics
 	name = "\improper Construction Site Atmospherics"

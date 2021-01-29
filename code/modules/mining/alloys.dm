@@ -37,10 +37,10 @@
 		)
 	product = /obj/item/stack/material/steel
 
-/datum/alloy/borosilicate
-	metaltag = MATERIAL_PHORON_GLASS
+/datum/alloy/plass
+	metaltag = MATERIAL_PLASS
 	requires = list(
-		MATERIAL_PLATINUM = 1,
+		MATERIAL_PLASMA = 1,
 		MATERIAL_SAND = 2
 		)
-	product = /obj/item/stack/material/glass/phoronglass
+	product = /obj/item/stack/material/glass/plass

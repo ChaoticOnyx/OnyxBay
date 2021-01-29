@@ -46,7 +46,7 @@
 // Walls always hide the stuff below them.
 /turf/simulated/wall/levelupdate()
 	for(var/obj/O in src)
-		O.hide(1)
+		O.hide(O.hides_inside_walls())
 
 /turf/simulated/wall/protects_atom(atom/A)
 	var/obj/O = A
@@ -456,5 +456,5 @@
 			src.ChangeTurf(/turf/simulated/floor)
 			for(var/turf/simulated/wall/W in range(3,src))
 				W.burn((temperature/4))
-			for(var/obj/machinery/door/airlock/phoron/D in range(3,src))
+			for(var/obj/machinery/door/airlock/plasma/D in range(3,src))
 				D.ignite(temperature/4)

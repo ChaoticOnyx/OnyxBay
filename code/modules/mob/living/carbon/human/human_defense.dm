@@ -18,8 +18,6 @@ meteor_act
 		return shield_check
 
 	var/obj/item/organ/external/organ = get_organ(def_zone)
-	var/armor = getarmor_organ(organ, P.check_armour)
-	var/penetrating_damage = ((P.damage + P.armor_penetration) * P.penetration_modifier) - min(armor*1.4, 100)
 
 	var/disarm_slot // Shooting peoples' hands may get them disarmed
 	switch(def_zone)
@@ -34,15 +32,29 @@ meteor_act
 			disarm_chance = disarm_chance * (D.w_class/5 + 0.4)  // The bigger an item is, the higher probability of it getting shot
 			if(prob(disarm_chance))
 				playsound(src.loc, 'sound/effects/fighting/Genhit.ogg', 50, 1)
-				D.shot_out(src, P, "shot")
+				D.shot_out(src, P)
 				if(D.w_class > 2)
 					return PROJECTILE_FORCE_BLOCK // Small items don't block the projectile while getting shot out
 
-	//Organ damage
-	if(organ.internal_organs.len && prob(35 + max(penetrating_damage, -12.5)))
-		var/damage_amt = min((P.damage * P.penetration_modifier), penetrating_damage) //So we don't factor in armor_penetration as additional damage
+	//Tase effect
+	var/siemens_coeff = get_siemens_coefficient_organ(organ)
+	if(P.tasing)
+		handle_tase(P.agony*siemens_coeff)
+
+	var/blocked = ..(P, def_zone) // Unobviously, the external damage applies here
+
+	//Internal damage
+	var/penetrating_damage = ((P.damage + P.armor_penetration) * P.penetration_modifier) - min(blocked, 100)
+	var/internal_damage_prob = 45 + max(penetrating_damage, -20) // The minimal chance to deal internal damage is 25%
+
+	if(organ.encased && !(organ.status & ORGAN_BROKEN)) //ribs and skulls somewhat protect
+		internal_damage_prob *= 0.75
+
+	if(organ.internal_organs.len && internal_damage_prob)
+		var/damage_amt = (P.damage * P.penetration_modifier) * blocked_mult(blocked / 2) //So we don't factor in armor_penetration as additional damage
+		if(blocked >= P.damage) // Armor has absorbed the penetrational power
+			damage_amt = sqrt(damage_amt)
 		if(damage_amt > 0)
-		// Damage an internal organ
 			var/list/victims = list()
 			var/list/possible_victims = shuffle(organ.internal_organs.Copy())
 			for(var/obj/item/organ/internal/I in possible_victims)
@@ -50,23 +62,19 @@ meteor_act
 					victims += I
 			if(victims.len)
 				for(var/obj/item/organ/internal/victim in victims)
-					damage_amt /= 2
 					victim.take_internal_damage(damage_amt)
 
 	//Embed or sever artery
-	if(P.can_embed() && !(species.species_flags & SPECIES_FLAG_NO_EMBED) && prob(22.5 + max(penetrating_damage, -20)) && !(prob(50) && (organ.sever_artery())))
-		var/obj/item/weapon/material/shard/shrapnel/SP = new()
-		SP.SetName((P.name != "shrapnel")? "[P.name] shrapnel" : "shrapnel")
-		SP.desc = "[SP.desc] It looks like it was fired from [P.shot_from]."
-		SP.loc = organ
-		organ.embed(SP)
-
-	//Tase effect
-	var/siemens_coeff = get_siemens_coefficient_organ(organ)
-	if(P.tasing)
-		handle_tase(P.agony*siemens_coeff)
-
-	var/blocked = ..(P, def_zone)
+	if((blocked < P.damage) && P.can_embed() && !(species.species_flags & SPECIES_FLAG_NO_EMBED))
+		if(prob(22.5 + max(penetrating_damage, -20)))
+			if(prob(50))
+				organ.sever_artery()
+			else
+				var/obj/item/weapon/material/shard/shrapnel/SP = new()
+				SP.SetName((P.name != "shrapnel")? "[P.name] shrapnel" : "shrapnel")
+				SP.desc = "[SP.desc] It looks like it was fired from [P.shot_from]."
+				SP.loc = organ
+				organ.embed(SP)
 
 	projectile_hit_bloody(P, P.damage*blocked_mult(blocked), def_zone)
 
@@ -742,7 +750,7 @@ meteor_act
 		var/obj/O = AM
 
 		if(in_throw_mode && !get_active_hand() && speed <= THROWFORCE_SPEED_DIVISOR)	//empty active hand and we're in throw mode
-			if(canmove && !restrained())
+			if(!incapacitated())
 				if(isturf(O.loc))
 					put_in_active_hand(O)
 					visible_message(SPAN("warning", "[src] catches [O]!"))

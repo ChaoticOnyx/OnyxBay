@@ -311,12 +311,26 @@
 	cost = 10
 	containername = "\improper Chaplain equipment crate"
 
+/decl/hierarchy/supply_pack/miscellaneous/pigs
+	name = "Box of rubber pigs"
+	contains = list(/obj/item/toy/pig = 3)
+	cost = 100
+	containername = "\improper Rubber Pigs Crate"
+	containertype = /obj/structure/closet/crate/pig
+
 /decl/hierarchy/supply_pack/miscellaneous/mousetrap
 	num_contained = 3
 	contains = list(/obj/item/weapon/storage/box/mousetraps)
 	name = "\improper Pest Control Crate"
 	cost = 10
 	containername = "\improper Pest Control Crate"
+
+/decl/hierarchy/supply_pack/miscellaneous/bouquet
+	name = "Box of bouquets"
+	contains = list(/obj/item/weapon/storage/bouquet/shotgun = 3)
+	cost = 100
+	containername = "\improper crate"
+	hidden = 1
 
 /decl/hierarchy/supply_pack/miscellaneous/tc10
 	name = "Telecrystals - 10"

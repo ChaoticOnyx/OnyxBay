@@ -103,7 +103,7 @@
 /datum/chemical_reaction/Biotoxin
 	name = "Strange biotoxin"
 	result = /datum/reagent/toxin/cyanide/change_toxin/biotoxin
-	required_reagents = list(/datum/reagent/toxin/cyanide/change_toxin = 5, /datum/reagent/toxin/phoron = 5, /datum/reagent/mutagen = 5)
+	required_reagents = list(/datum/reagent/toxin/cyanide/change_toxin = 5, /datum/reagent/toxin/plasma = 5, /datum/reagent/mutagen = 5)
 	result_amount = 3
 
 
@@ -220,6 +220,10 @@
 
 	..()
 
+/obj/item/organ/internal/biostructure/after_organ_creation()
+	. = ..()
+	change_host(owner)
+
 /obj/item/organ/internal/biostructure/proc/change_host(atom/destination)
 	var/atom/source = src.loc
 	//deleteing biostructure from external organ so when that organ is deleted biostructure wont be deleted
@@ -280,6 +284,9 @@
 /mob/living/carbon/proc/move_biostructure()
 	var/obj/item/organ/internal/biostructure/BIO = src.internal_organs_by_name[BP_CHANG]
 	if (!BIO)
+		return
+	if(is_regenerating())
+		to_chat(src, SPAN_NOTICE("We can't do it right now."))
 		return
 	if (!BIO.moving)
 		var/list/available_limbs = src.organs.Copy()
@@ -471,6 +478,7 @@
 
 	to_chat(target,"<span class='danger'>Your muscles begin to painfully tighten.</span>")
 	target.Weaken(20)
+	target.Stun(20)
 	src.visible_message("<span class='warning'>[src] has grown out a huge abominable stinger and pierced \the [target] with it!</span>")
 	feedback_add_details("changeling_powers","PB")
 

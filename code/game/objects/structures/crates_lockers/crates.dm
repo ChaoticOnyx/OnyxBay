@@ -103,6 +103,13 @@ obj/structure/closet/crate
 	icon_closed = "plasticcrate"
 	points_per_crate = 1
 
+/obj/structure/closet/crate/handmade
+	name = "handmade crate"
+	desc = "Another handmade by a young assistant. How cute!"
+	icon_state = "handmadecrate"
+	icon_opened = "handmadecrateopen"
+	icon_closed = "handmadecrate"
+
 /obj/structure/closet/crate/internals
 	name = "internals crate"
 	desc = "A internals crate."
@@ -205,6 +212,20 @@ obj/structure/closet/crate
 	icon_opened = "radiationopen"
 	icon_closed = "radiation"
 
+/obj/structure/closet/crate/science
+	name = "science crate"
+	desc = "A science crate."
+	icon_state = "scicrate"
+	icon_opened = "scicrateopen"
+	icon_closed = "scicrate"
+
+/obj/structure/closet/crate/engineering
+	name = "engineering crate"
+	desc = "An engineering crate."
+	icon_state = "engicrate"
+	icon_opened = "engicrateopen"
+	icon_closed = "engicrate"
+
 /obj/structure/closet/crate/radiation_gear
 	name = "radioactive gear crate"
 	desc = "A crate with a radiation sign on it."
@@ -223,12 +244,28 @@ obj/structure/closet/crate
 	icon_closed = "weaponcrate"
 	req_access = list(access_security)
 
-/obj/structure/closet/crate/secure/phoron
-	name = "phoron crate"
-	desc = "A secure phoron crate."
-	icon_state = "phoroncrate"
-	icon_opened = "phoroncrateopen"
-	icon_closed = "phoroncrate"
+/obj/structure/closet/crate/secure/science
+	name = "science crate"
+	desc = "A secure science crate."
+	icon_state = "scisecurecrate"
+	icon_opened = "scisecurecrateopen"
+	icon_closed = "scisecurecrate"
+	req_access = list(access_research)
+
+/obj/structure/closet/crate/secure/engineering
+	name = "engineering crate"
+	desc = "A secure engineering crate."
+	icon_state = "engisecurecrate"
+	icon_opened = "engisecurecrateopen"
+	icon_closed = "engisecurecrate"
+	req_access = list(access_engine)
+
+/obj/structure/closet/crate/secure/plasma
+	name = "plasma crate"
+	desc = "A secure plasma crate."
+	icon_state = "plasmacrate"
+	icon_opened = "plasmacrateopen"
+	icon_closed = "plasmacrate"
 	req_access = list(access_medical,access_research,access_engine)
 
 /obj/structure/closet/crate/secure/gear
@@ -273,7 +310,6 @@ obj/structure/closet/crate
 	icon_opened = "hydro_crate_large_open"
 	icon_closed = "hydro_crate_large"
 
-
 /obj/structure/closet/crate/secure/large
 	name = "large crate"
 	desc = "A hefty metal crate with an electronic locking system."
@@ -287,10 +323,10 @@ obj/structure/closet/crate
 	storage_capacity = 2 * MOB_LARGE
 	storage_types = CLOSET_STORAGE_ITEMS|CLOSET_STORAGE_STRUCTURES
 
-/obj/structure/closet/crate/secure/large/phoron
-	icon_state = "phoron_crate_large"
-	icon_opened = "phoron_crate_large_open"
-	icon_closed = "phoron_crate_large"
+/obj/structure/closet/crate/secure/large/plasma
+	icon_state = "plasma_crate_large"
+	icon_opened = "plasma_crate_large_open"
+	icon_closed = "plasma_crate_large"
 	req_access = list(access_mailsorting, access_medical, access_research, access_engine)
 
 //fluff variant
@@ -350,3 +386,10 @@ obj/structure/closet/crate
 
 /obj/structure/closet/crate/uranium/WillContain()
 	return list(/obj/item/stack/material/uranium/ten = 5)
+
+/obj/structure/closet/crate/pig
+	name = "pig crate"
+	desc = "A pink crate with a pig's face on it."
+	icon_state = "pigcrate"
+	icon_opened = "pigcrateopen"
+	icon_closed = "pigcrate"

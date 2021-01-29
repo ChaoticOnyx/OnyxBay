@@ -168,6 +168,9 @@
 	has_gravity = 0
 	sound_env = SPACE
 
+/area/holodeck/source_chess
+	name = "\improper Holodeck - Chess Field"
+
 // Construction Site
 
 /area/constructionsite
@@ -430,6 +433,10 @@
 	name = "\improper Command Security - Checkpoint"
 	icon_state = "checkpoint1"
 
+/area/security/checkpoint3
+	name = "\improper Escape Shuttle Security - Checkpoint"
+	icon_state = "checkpoint1"
+
 /area/security/detectives_office
 	name = "\improper Security - Forensic Office"
 	icon_state = "detective"
@@ -459,6 +466,9 @@
 	name = "\improper Security - Morgue"
 	icon_state = "brigmorgue"
 
+/area/security/brigswstorage
+	name = "\improper Security - S-W Storage"
+	icon_state = "brigswstorage"
 /area/security/evidence
 	name = "\improper Security - Evidence Storage"
 	icon_state = "evidence"

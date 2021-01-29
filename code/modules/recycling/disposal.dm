@@ -28,6 +28,7 @@
 	active_power_usage = 2200	//the pneumatic pump power. 3 HP ~ 2200W
 	idle_power_usage = 100
 	atom_flags = ATOM_FLAG_CLIMBABLE
+	var/datum/browser/disposal_menu
 
 // create a new disposal
 // find the attached trunk (if present) and init gas resvr.
@@ -229,11 +230,12 @@
 	return
 
 // ai as human but can't flush
-/obj/machinery/disposal/attack_ai(mob/user as mob)
+/obj/machinery/disposal/attack_ai(mob/user)
 	interact(user, 1)
+	disposal_menu.open()
 
 // human interact with machine
-/obj/machinery/disposal/attack_hand(mob/user as mob)
+/obj/machinery/disposal/attack_hand(mob/user)
 
 	if(stat & BROKEN)
 		return
@@ -246,19 +248,20 @@
 	if(user.IsAdvancedToolUser(1))
 		playsound(user, 'sound/effects/using/disposal/open1.ogg', rand(60, 80), TRUE)
 		interact(user, 0)
+		disposal_menu.open()
 	else
 		flush = !flush
 		update_icon()
 	return
 
 // user interaction
-/obj/machinery/disposal/interact(mob/user, ai=0)
-	src.add_fingerprint(user)
+/obj/machinery/disposal/interact(mob/user, ai = 0)
+	add_fingerprint(user)
 	if(stat & BROKEN)
 		user.unset_machine()
 		return
 
-	var/dat = "<meta charset=\"utf-8\"><head><title>Waste Disposal Unit</title></head><body><TT><B>Waste Disposal Unit</B><HR>"
+	var/dat = "<head><title>[src]</title></head><body>"
 
 	if(!ai)  // AI can't pull flush handle
 		if(flush)
@@ -275,14 +278,18 @@
 	else
 		dat += "Pump: <A href='?src=\ref[src];pump=0'>Off</A> <B>On</B> (idle)<BR>"
 
-	var/per = 100* air_contents.return_pressure() / (SEND_PRESSURE)
+	var/per = round(100* air_contents.return_pressure() / (SEND_PRESSURE), 1)
 
-	dat += "Pressure: [round(per, 1)]%<BR></body>"
-
+	dat += text("Pressure: []%<BR></body>", (per < 100 ? "<font color=grey>[per]</font>" : "[per]"))
 
 	user.set_machine(src)
-	user << browse(dat, "window=disposal;size=360x170")
-	onclose(user, "disposal")
+	if(!disposal_menu || disposal_menu.user != user)
+		disposal_menu = new /datum/browser(user, "disposal", "<B>Waste Disposal Unit</B>", 360, 190)
+		disposal_menu.set_content(dat)
+	else
+		disposal_menu.set_content(dat)
+		disposal_menu.update()
+	return
 
 // handle machine interaction
 
@@ -301,8 +308,9 @@
 
 /obj/machinery/disposal/OnTopic(user, href_list)
 	if(href_list["close"])
-		close_browser(user, "window=disposal")
-		return TOPIC_HANDLED
+		if(disposal_menu)
+			disposal_menu.close()
+			return TOPIC_HANDLED
 
 	if(href_list["pump"])
 		if(text2num(href_list["pump"]))
@@ -322,7 +330,9 @@
 		. = TOPIC_REFRESH
 
 	if(. == TOPIC_REFRESH)
-		interact(user)
+		for(var/mob/M in viewers(1, src.loc))
+			if((M.client && M.machine == src))
+				interact(M)
 
 // eject the contents of the disposal unit
 /obj/machinery/disposal/proc/eject()
@@ -469,8 +479,8 @@
 		H.vent_gas(loc)
 		qdel(H)
 
-/obj/machinery/disposal/CanPass(atom/movable/mover, turf/target, height=0, air_group=0)
-	if (istype(mover,/obj/item) && mover.throwing)
+/obj/machinery/disposal/CanPass(atom/movable/mover, turf/target)
+	if(istype(mover,/obj/item) && mover.throwing)
 		var/obj/item/I = mover
 		if(istype(I, /obj/item/projectile))
 			return
@@ -483,7 +493,7 @@
 				M.show_message("\The [I] bounces off of \the [src]'s rim!", 3)
 		return 0
 	else
-		return ..(mover, target, height, air_group)
+		return ..(mover, target)
 
 // virtual disposal object
 // travels through pipes in lieu of actual items

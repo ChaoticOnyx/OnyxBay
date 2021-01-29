@@ -130,6 +130,7 @@
 				else if(prob(40))
 					M.visible_message("<span class='danger'>[src] has pounced at [M]!</span>", "<span class='danger'>[src] has pounced at you!</span>")
 					M.Weaken(power)
+					M.Stun(power/2)
 				else
 					M.visible_message("<span class='danger'>[src] has tried to pounce at [M]!</span>", "<span class='danger'>[src] has tried to pounce at you!</span>")
 				M.updatehealth()
@@ -139,6 +140,7 @@
 				if(iscarbon(M) && prob(15))
 					M.visible_message("<span class='danger'>[src] has pounced at [M]!</span>", "<span class='danger'>[src] has pounced at you!</span>")
 					M.Weaken(power)
+					M.Stun(power/2)
 				else
 					A.attack_generic(src, (is_adult ? rand(20,40) : rand(5,25)), "glomped")
 

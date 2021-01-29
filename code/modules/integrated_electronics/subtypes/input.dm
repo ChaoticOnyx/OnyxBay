@@ -780,12 +780,12 @@
 	var/datum/signal/signal = new()
 	signal.transmission_method = 1
 	signal.data["tag"] = code
-	signal.data["command"] = command
+	signal.data["command"] = url_encode(command)
 	signal.encryption = 0
 	return signal
 
 /obj/item/integrated_circuit/input/signaler/advanced/treat_signal(datum/signal/signal)
-	set_pin_data(IC_OUTPUT,1,signal.data["command"])
+	set_pin_data(IC_OUTPUT,1,url_decode(signal.data["command"]))
 	push_data()
 	..()
 
@@ -1025,7 +1025,7 @@
 		MATERIAL_SILVER				= IC_PINTYPE_NUMBER,
 		MATERIAL_GOLD					= IC_PINTYPE_NUMBER,
 		MATERIAL_DIAMOND				= IC_PINTYPE_NUMBER,
-		"Solid Phoron"			= IC_PINTYPE_NUMBER,
+		"Solid Plasma"			= IC_PINTYPE_NUMBER,
 		MATERIAL_URANIUM				= IC_PINTYPE_NUMBER,
 		MATERIAL_PLASTEEL				= IC_PINTYPE_NUMBER,
 		MATERIAL_TITANIUM				= IC_PINTYPE_NUMBER,
@@ -1039,7 +1039,7 @@
 		)
 	spawn_flags = IC_SPAWN_RESEARCH
 	power_draw_per_use = 40
-	var/list/mtypes = list(MATERIAL_STEEL, MATERIAL_GLASS, MATERIAL_SILVER, MATERIAL_GOLD, MATERIAL_DIAMOND, MATERIAL_PHORON, MATERIAL_URANIUM, MATERIAL_PLASTEEL, MATERIAL_TITANIUM, MATERIAL_GLASS, MATERIAL_PLASTIC)
+	var/list/mtypes = list(MATERIAL_STEEL, MATERIAL_GLASS, MATERIAL_SILVER, MATERIAL_GOLD, MATERIAL_DIAMOND, MATERIAL_PLASMA, MATERIAL_URANIUM, MATERIAL_PLASTEEL, MATERIAL_TITANIUM, MATERIAL_GLASS, MATERIAL_PLASTIC)
 
 /obj/item/integrated_circuit/input/matscan/do_work()
 	var/obj/O = get_pin_data_as_type(IC_INPUT, 1, /obj)

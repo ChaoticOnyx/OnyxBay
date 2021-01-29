@@ -4,7 +4,8 @@
 	set category = "Abilities"
 	set src = usr.loc
 	var/obj/machinery/atmospherics/target = check_ventcrawl(GetAbove(loc))
-	if(target) ventcrawl_to(usr, target, UP)
+	if(target)
+		ventcrawl_to(usr, target, UP)
 
 /obj/machinery/atmospherics/pipe/zpipe/down/verb/ventcrawl_move_down()
 	set name = "Ventcrawl Downwards"
@@ -12,7 +13,8 @@
 	set category = "Abilities"
 	set src = usr.loc
 	var/obj/machinery/atmospherics/target = check_ventcrawl(GetBelow(loc))
-	if(target) ventcrawl_to(usr, target, DOWN)
+	if(target)
+		ventcrawl_to(usr, target, DOWN)
 
 /obj/machinery/atmospherics/pipe/zpipe/proc/check_ventcrawl(turf/target)
 	if(!istype(target))

@@ -8,6 +8,7 @@
 	throw_range = 4
 	var/candrop = 1
 
+	var/equipment_slowdown = -1
 	var/list/hud_list[10]
 	var/embedded_flag	  //To check if we've need to roll for damage on movement while an item is imbedded in us.
 	var/obj/item/weapon/rig/wearing_rig // This is very not good, but it's much much better than calling get_rig() every update_canmove() call.
@@ -31,7 +32,7 @@
 
 	if(!species)
 		if(new_species)
-			set_species(new_species,1)
+			set_species(new_species, 1)
 		else
 			set_species()
 
@@ -112,7 +113,7 @@
 
 		var/obj/item/organ/internal/xenos/plasmavessel/P = internal_organs_by_name[BP_PLASMA]
 		if(P)
-			stat(null, "Phoron Stored: [P.stored_plasma]/[P.max_plasma]")
+			stat(null, "Plasma Stored: [P.stored_plasma]/[P.max_plasma]")
 
 		var/obj/item/organ/internal/cell/potato = internal_organs_by_name[BP_CELL]
 		if(potato && potato.cell)
@@ -139,11 +140,11 @@
 
 	var/b_loss = null
 	var/f_loss = null
-	switch (severity)
-		if (1.0)
+	switch(severity)
+		if(1.0)
 			b_loss = 400
 			f_loss = 100
-			if (!prob(getarmor(null, "bomb")))
+			if(!prob(getarmor(null, "bomb")))
 				gib()
 				return
 			else
@@ -153,22 +154,22 @@
 //				var/atom/target = get_edge_target_turf(user, get_dir(src, get_step_away(user, src)))
 				//user.throw_at(target, 200, 4)
 
-		if (2.0)
+		if(2.0)
 			b_loss = 60
 			f_loss = 60
 
-			if (!istype(l_ear, /obj/item/clothing/ears/earmuffs) && !istype(r_ear, /obj/item/clothing/ears/earmuffs))
+			if(!istype(l_ear, /obj/item/clothing/ears/earmuffs) && !istype(r_ear, /obj/item/clothing/ears/earmuffs))
 				ear_damage += 30
 				ear_deaf += 120
-			if (prob(70))
+			if(prob(70))
 				Paralyse(10)
 
 		if(3.0)
 			b_loss = 30
-			if (!istype(l_ear, /obj/item/clothing/ears/earmuffs) && !istype(r_ear, /obj/item/clothing/ears/earmuffs))
+			if(!istype(l_ear, /obj/item/clothing/ears/earmuffs) && !istype(r_ear, /obj/item/clothing/ears/earmuffs))
 				ear_damage += 15
 				ear_deaf += 60
-			if (prob(50))
+			if(prob(50))
 				Paralyse(10)
 
 	// factor in armour
@@ -196,7 +197,7 @@
 		temp.take_external_damage(b_loss * loss_val, f_loss * loss_val, used_weapon = weapon_message)
 
 /mob/living/carbon/human/blob_act(destroy = 0, obj/effect/blob/source = null)
-	if (is_dead())
+	if(is_dead())
 		return
 
 	var/blocked = run_armor_check(BP_CHEST, "melee")
@@ -238,28 +239,29 @@
 /mob/living/carbon/human/var/co2overloadtime = null
 /mob/living/carbon/human/var/temperature_resistance = T0C+75
 
-
-/mob/living/carbon/human/show_inv(mob/user as mob)
-	if(user.incapacitated()  || !user.Adjacent(src) || !user.IsAdvancedToolUser())
+/mob/living/carbon/human/show_inv(mob/user)
+	if(user.incapacitated() || !user.Adjacent(src) || !user.IsAdvancedToolUser())
 		return
-
-	user.set_machine(src)
-	var/dat = "<meta charset=\"utf-8\"><B><HR><FONT size=3>[name]</FONT></B><BR><HR>"
-
+	var/dat = "<B><HR><FONT size=3>[name]</FONT></B><BR><HR>"
+	var/firstline = TRUE
 	for(var/entry in species.hud.gear)
 		var/list/slot_ref = species.hud.gear[entry]
 		if((slot_ref["slot"] in list(slot_l_store, slot_r_store)))
 			continue
 		var/obj/item/thing_in_slot = get_equipped_item(slot_ref["slot"])
-		dat += "<BR><B>[slot_ref["name"]]:</b> <a href='?src=\ref[src];item=[slot_ref["slot"]]'>[istype(thing_in_slot) ? thing_in_slot : "nothing"]</a>"
+		if(firstline)
+			firstline = FALSE
+		else
+			dat += "<BR>"
+		dat += "<B>[slot_ref["name"]]:</b> <a href='?src=\ref[src];item=[slot_ref["slot"]]'>[istype(thing_in_slot) ? thing_in_slot : "nothing"]</a>"
 		if(istype(thing_in_slot, /obj/item/clothing))
 			var/obj/item/clothing/C = thing_in_slot
 			if(C.accessories.len)
 				dat += "<BR><A href='?src=\ref[src];item=tie;holder=\ref[C]'>Remove accessory</A>"
-	dat += "<BR><HR>"
+	dat += "<HR>"
 
 	if(species.hud.has_hands)
-		dat += "<BR><b>Left hand:</b> <A href='?src=\ref[src];item=[slot_l_hand]'>[istype(l_hand) ? l_hand : "nothing"]</A>"
+		dat += "<b>Left hand:</b> <A href='?src=\ref[src];item=[slot_l_hand]'>[istype(l_hand) ? l_hand : "nothing"]</A>"
 		dat += "<BR><b>Right hand:</b> <A href='?src=\ref[src];item=[slot_r_hand]'>[istype(r_hand) ? r_hand : "nothing"]</A>"
 
 	// Do they get an option to set internals?
@@ -281,11 +283,15 @@
 		dat += "<BR><a href='?src=\ref[src];item=\ref[UW]'>Remove \the [UW]</a>"
 
 	dat += "<BR><A href='?src=\ref[src];item=splints'>Remove splints</A>"
-	dat += "<BR><A href='?src=\ref[src];refresh=1'>Refresh</A>"
-	dat += "<BR><A href='?src=\ref[user];mach_close=mob[name]'>Close</A>"
+	dat += "<HR><A href='?src=\ref[src];refresh=1'>Refresh</A>"
+	dat += "<BR><A href='?src=\ref[user];inv_close=1'>Close</A>"
 
-	user << browse(dat, text("window=mob[name];size=340x540"))
-	onclose(user, "mob[name]")
+	if(!user.show_inventory || user.show_inventory.user != user)
+		user.show_inventory = new /datum/browser(user, "mob[name]", "Inventory", 340, 560)
+		user.show_inventory.set_content(dat)
+	else
+		user.show_inventory.set_content(dat)
+		user.show_inventory.update()
 	return
 
 // called when something steps onto a human
@@ -459,14 +465,13 @@
 
 /mob/living/carbon/human/Topic(href, href_list)
 
-	if (href_list["refresh"])
+	if(href_list["refresh"])
 		if(Adjacent(src, usr))
 			show_inv(usr)
 
-	if (href_list["mach_close"])
-		var/t1 = text("window=[]", href_list["mach_close"])
-		unset_machine()
-		src << browse(null, t1)
+	if(href_list["inv_close"])
+		if(usr.show_inventory)
+			usr.show_inventory.close()
 
 	if(href_list["item"])
 		handle_strip(href_list["item"],usr,locate(href_list["holder"]))
@@ -521,12 +526,17 @@
 				if(hasHUD(usr, HUD_SECURITY))
 					to_chat(usr, "<b>Name:</b> [E.get_name()]")
 					to_chat(usr, "<b>Criminal Status:</b> [E.get_criminalStatus()]")
-					to_chat(usr, "<b>Details:</b> [pencode2html(E.get_secRecord())]")
+					to_chat(usr, "<b>Major Crimes:</b> [pencode2html(E.get_major_crimes())]")
+					to_chat(usr, "<b>Minor Crimes:</b> [pencode2html(E.get_minor_crimes())]")
+					to_chat(usr, "<b>Crime Details:</b> [pencode2html(E.get_crime_details())]")
+					to_chat(usr, "<b>Important Notes:</b> [pencode2html(E.get_crime_notes())]")
+					to_chat(usr, "<b>Security Background:</b> [pencode2html(E.get_secRecord())]")
 					read = 1
 
 			if(!read)
 				to_chat(usr, "<span class='warning'>Unable to locate a data core entry for this person.</span>")
-	if (href_list["medical"])
+	if (href_list["physical"] || href_list["mental"])
+		var/is_physical = href_list["physical"]
 		if(hasHUD(usr, HUD_MEDICAL))
 			var/perpname = "wot"
 			var/modified = 0
@@ -542,9 +552,16 @@
 
 			var/datum/computer_file/crew_record/E = get_crewmember_record(perpname)
 			if(E)
-				var/setmedical = input(usr, "Specify a new medical status for this person.", "Medical HUD", E.get_status()) as null|anything in GLOB.physical_statuses
-				if(hasHUD(usr, HUD_MEDICAL) && setmedical)
-					E.set_status(setmedical)
+				var/setstatus
+				if (is_physical)
+					setstatus = input(usr, "Specify a new physical status for this person.", "Medical HUD", E.get_status_physical()) as null|anything in GLOB.physical_statuses
+				else
+					setstatus = input(usr, "Specify a new mental status for this person.", "Medical HUD", E.get_status_mental()) as null|anything in GLOB.mental_statuses
+				if(hasHUD(usr, HUD_MEDICAL) && setstatus)
+					if (is_physical)
+						E.set_status_physical(setstatus)
+					else
+						E.set_status_mental(setstatus)
 					modified = 1
 
 					spawn()
@@ -577,7 +594,12 @@
 					to_chat(usr, "<b>Gender:</b> [E.get_sex()]")
 					to_chat(usr, "<b>Species:</b> [E.get_species()]")
 					to_chat(usr, "<b>Blood Type:</b> [E.get_bloodtype()]")
-					to_chat(usr, "<b>Details:</b> [pencode2html(E.get_medRecord())]")
+					to_chat(usr, "<b>Major Disabilities:</b> [pencode2html(E.get_major_disabilities())]")
+					to_chat(usr, "<b>Minor Disabilities:</b> [pencode2html(E.get_minor_disabilities())]")
+					to_chat(usr, "<b>Curent Diseases:</b> [pencode2html(E.get_current_diseases())]")
+					to_chat(usr, "<b>Medical Condition Details:</b> [pencode2html(E.get_medical_details())]")
+					to_chat(usr, "<b>Important Notes:</b> [pencode2html(E.get_medical_notes())]")
+					to_chat(usr, "<b>Medical Background:</b> [pencode2html(E.get_medRecord())]")
 					read = 1
 			if(!read)
 				to_chat(usr, "<span class='warning'>Unable to locate a data core entry for this person.</span>")

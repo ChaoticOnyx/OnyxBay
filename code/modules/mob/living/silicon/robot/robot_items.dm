@@ -548,7 +548,7 @@
 		/obj/item/weapon/reagent_containers/ivbag,
 		/obj/item/weapon/reagent_containers/pill,
 		/obj/item/weapon/reagent_containers/glass,
-		/obj/item/stack/material/phoron,
+		/obj/item/stack/material/plasma,
 		/obj/item/clothing/mask,
 		/obj/item/clothing/gloves/latex,
 		/obj/item/weapon/cane,
@@ -601,9 +601,10 @@
 	object_type = list(
 		/obj/item/weapon/sample/fibers,
 		/obj/item/weapon/forensics/swab,
-		/obj/item/weapon/sample/print
+		/obj/item/weapon/sample/print,
+		/obj/item/weapon/evidencebag
 		)
-	capacity = 8
+	capacity = 12
 
 /obj/item/robot_rack/archeologist
 	name = "archeologist rack"

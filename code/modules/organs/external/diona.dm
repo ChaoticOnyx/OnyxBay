@@ -115,13 +115,13 @@
 		qdel(src)
 
 // Copypaste due to eye code, RIP.
-/obj/item/organ/external/head/diona
+/obj/item/organ/external/head/no_eyes/diona
 	can_intake_reagents = 0
 	max_damage = 50
 	min_broken_damage = 25
 	limb_flags = ORGAN_FLAG_CAN_AMPUTATE | ORGAN_FLAG_CAN_BREAK
 
-/obj/item/organ/external/head/diona/removed()
+/obj/item/organ/external/head/no_eyes/diona/removed()
 	if(BP_IS_ROBOTIC(src))
 		return ..()
 	var/mob/living/carbon/human/H = owner
@@ -208,7 +208,7 @@
 		light_amount = T.get_lumcount() * 10
 	owner.nutrition   += light_amount
 	owner.shock_stage -= light_amount
-	owner.nutrition    = Clamp(owner.nutrition, 0, 550)
+	owner.nutrition    = Clamp(owner.nutrition, 0, 450)
 
 /obj/item/organ/internal/diona/node/removed(mob/user)
 	return ..(user, 1)
