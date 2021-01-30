@@ -305,6 +305,7 @@ var/const/NO_EMAG_ACT = -50
 	desc = "Access module for pAI."
 	icon_state = "id-robot"
 	item_state = "tdgreen"
+	registered_name = "pAI"
 	assignment = "pAI"
 
 /obj/item/weapon/card/id/centcom
