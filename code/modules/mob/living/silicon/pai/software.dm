@@ -21,7 +21,7 @@ var/global/list/pai_software_by_key = list()
 var/global/list/default_pai_software = list()
 /hook/startup/proc/populate_pai_software_list()
 	var/r = 1 // I would use ., but it'd sacrifice runtime detection
-	for(var/type in typesof(/datum/pai_software) - /datum/pai_software)
+	for(var/type in typesof(/datum/pai_software) - /datum/pai_software - /datum/pai_software/subsystem)
 		var/datum/pai_software/P = new type()
 		if(pai_software_by_key[P.id])
 			var/datum/pai_software/O = pai_software_by_key[P.id]
@@ -73,6 +73,8 @@ var/global/list/default_pai_software = list()
 			bought_software[++bought_software.len] = software_data
 		else
 			software_data["ram"] = S.ram_cost
+			var/obj/item/weapon/card/id/I = GetIdCard()
+			software_data["available"] = has_access(list(), S.req_one_accesses, I ? I.GetAccess() : list())
 			not_bought_software[++not_bought_software.len] = software_data
 
 	data["bought"] = bought_software
@@ -120,9 +122,11 @@ var/global/list/default_pai_software = list()
 		var/soft = href_list["purchase"]
 		var/datum/pai_software/S = pai_software_by_key[soft]
 		if(S && (ram >= S.ram_cost))
-			ram -= S.ram_cost
-			software[S.id] = S
-			S.on_purchase(src)
+			var/obj/item/weapon/card/id/I = GetIdCard()
+			if(has_access(list(), S.req_one_accesses, I ? I.GetAccess() : list()))
+				ram -= S.ram_cost
+				software[S.id] = S
+				S.on_purchase(src)
 		return 1
 
 	else if(href_list["image"])

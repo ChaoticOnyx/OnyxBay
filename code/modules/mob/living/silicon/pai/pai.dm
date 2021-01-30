@@ -10,7 +10,7 @@
 	can_pull_size = ITEM_SIZE_SMALL
 	can_pull_mobs = MOB_PULL_SMALLER
 
-	idcard = /obj/item/weapon/card/id
+	idcard = /obj/item/weapon/card/id/pai
 	silicon_radio = null // pAIs get their radio from the card they belong to.
 
 	var/network = "SS13"

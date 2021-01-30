@@ -39,7 +39,7 @@ code/modules/mob/living/silicon/pai/software.dm
 	</span>
 	<span class="itemContent">
 		{{for data.not_bought}}
-			{{:helper.link(value.name + " (" + value.ram + ")", '', {"purchase" : value.id}, value.ram <= data.available_ram ? null : 'disabled')}}
+			{{:helper.link(value.name + " (" + value.ram + ")", '', {"purchase" : value.id}, value.ram <= data.available_ram && value.available ? null : 'disabled')}}
 		{{/for}}
 	</span>
 </span>

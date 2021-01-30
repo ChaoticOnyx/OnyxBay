@@ -12,6 +12,8 @@
 	// Whether pAIs should automatically receive this module at no cost
 	var/default = 0
 
+	var/req_one_accesses = list()
+
 	proc/on_ui_interact(mob/living/silicon/pai/user, datum/nanoui/ui=null, force_open=1)
 		return
 
@@ -130,32 +132,6 @@
 
 	on_ui_interact(mob/living/silicon/pai/user, datum/nanoui/ui = null, force_open = 1)
 		user.silicon_radio.attack_self(user)
-
-		/*
-		
-		var/data[0]
-
-		data["listening"] = user.silicon_radio.broadcasting
-		data["frequency"] = format_frequency(user.silicon_radio.frequency)
-
-		var/channels[0]
-		for(var/ch_name in user.silicon_radio.channels)
-			var/ch_stat = user.silicon_radio.channels[ch_name]
-			var/ch_dat[0]
-			ch_dat["name"] = ch_name
-			// FREQ_LISTENING is const in /obj/item/device/radio
-			ch_dat["listening"] = !!(ch_stat & user.silicon_radio.FREQ_LISTENING)
-			channels[++channels.len] = ch_dat
-
-		data["channels"] = channels
-
-		ui = SSnano.try_update_ui(user, user, id, ui, data, force_open)
-		if(!ui)
-			ui = new(user, user, id, "pai_radio.tmpl", "Radio Configuration", 300, 150)
-			ui.set_initial_data(data)
-			ui.open()
-		
-		*/
 
 	Topic(href, href_list)
 		var/mob/living/silicon/pai/P = usr
@@ -385,6 +361,7 @@
 	name = "Security HUD"
 	ram_cost = 20
 	id = "sec_hud"
+	req_one_accesses = list(access_security)
 
 	toggle(mob/living/silicon/pai/user)
 		user.secHUD = !user.secHUD
@@ -464,3 +441,93 @@
 			P.sradio.code = min(100, P.sradio.code)
 			P.sradio.code = max(1, P.sradio.code)
 			return 1
+
+/datum/pai_software/subsystem
+	var/nano_module
+
+	on_ui_interact(mob/living/silicon/pai/user, datum/nanoui/ui=null, force_open=1)
+		user.open_subsystem(nano_module)
+
+	on_purchase(mob/living/silicon/pai/user)
+		user.init_subsystem(nano_module)
+
+/datum/pai_software/subsystem/power_monitor
+	nano_module = /datum/nano_module/power_monitor
+
+	name = "Power Monitoring"
+	ram_cost = 10
+	id = "power_monitor"
+	req_one_accesses = list(access_engine_equip)
+	toggle = 0
+
+/datum/pai_software/subsystem/rcon
+	nano_module = /datum/nano_module/rcon
+
+	name = "RCON Remote Control"
+	ram_cost = 10
+	id = "rcon"
+	req_one_accesses = list(access_engine_equip)
+	toggle = 0
+
+/datum/pai_software/subsystem/supermatter_monitor
+	nano_module = /datum/nano_module/supermatter_monitor
+
+	name = "Supermatter Monitoring"
+	ram_cost = 10
+	id = "supermatter_monitor"
+	req_one_accesses = list(access_engine_equip)
+	toggle = 0
+
+/datum/pai_software/subsystem/atmos_control
+	nano_module = /datum/nano_module/atmos_control
+
+	name = "Atmosphere Control"
+	ram_cost = 20
+	id = "atmos_control"
+	req_one_accesses = list(access_atmospherics)
+	toggle = 0
+
+/datum/pai_software/subsystem/crew_monitor
+	nano_module = /datum/nano_module/crew_monitor
+
+	name = "Crew Monitor"
+	ram_cost = 10
+	id = "crew_monitor"
+	req_one_accesses = list(access_security, access_medical)
+	toggle = 0
+
+/datum/pai_software/subsystem/digitalwarrant
+	nano_module = /datum/nano_module/digitalwarrant
+
+	name = "Warrant Assistant"
+	ram_cost = 20
+	id = "digitalwarrant"
+	req_one_accesses = list(access_security)
+	toggle = 0
+
+/datum/pai_software/subsystem/supply
+	nano_module = /datum/nano_module/supply
+
+	name = "Cargo Management program"
+	ram_cost = 20
+	id = "supply"
+	req_one_accesses = list(access_cargo)
+	toggle = 0
+
+/datum/pai_software/subsystem/computer_ntnetmonitor
+	nano_module = /datum/nano_module/computer_ntnetmonitor
+
+	name = "NTNet Diagnostics and Monitoring"
+	ram_cost = 20
+	id = "ntnetmonitor"
+	req_one_accesses = list(access_network)
+	toggle = 0
+
+/datum/pai_software/subsystem/shields_monitor
+	nano_module = /datum/nano_module/shields_monitor
+
+	name = "Shield Generators Monitoring"
+	ram_cost = 10
+	id = "shields_monitor"
+	req_one_accesses = list(access_engine_equip)
+	toggle = 0

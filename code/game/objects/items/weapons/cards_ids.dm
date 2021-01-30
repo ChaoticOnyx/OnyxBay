@@ -300,6 +300,13 @@ var/const/NO_EMAG_ACT = -50
 	access = get_all_station_access() + access_synth
 	..()
 
+/obj/item/weapon/card/id/pai
+	name = "\improper pAI ID"
+	desc = "Access module for pAI."
+	icon_state = "id-robot"
+	item_state = "tdgreen"
+	assignment = "pAI"
+
 /obj/item/weapon/card/id/centcom
 	name = "\improper CentCom. ID"
 	desc = "An ID straight from Cent. Com."
