@@ -86,6 +86,22 @@
 	status_flags = NO_ANTAG
 	universal_understand = 1
 	var/fall_override = TRUE
+	movement_handlers = list(
+		/datum/movement_handler/mob/relayed_movement,
+		/datum/movement_handler/mob/death,
+		/datum/movement_handler/mob/conscious,
+		/datum/movement_handler/mob/eye,
+		/datum/movement_handler/move_relay,
+		/datum/movement_handler/mob/buckle_relay,
+		/datum/movement_handler/mob/delay,
+		/datum/movement_handler/mob/stop_effect,
+		/datum/movement_handler/mob/physically_capable,
+		/datum/movement_handler/mob/physically_restrained,
+		/datum/movement_handler/mob/space,
+		/datum/movement_handler/mob/multiz,
+		/datum/movement_handler/mob/multiz_connected,
+		/datum/movement_handler/mob/movement
+	)
 
 /mob/living/carbon/human/bluespace_tech/can_inject(mob/user, target_zone)
 	to_chat(user, SPAN_DANGER("The [src] disarms you before you can inject them."))
@@ -135,12 +151,12 @@
 	set category = "BST"
 	set popup_menu = 0
 
-	if(!incorporeal_move)
-		incorporeal_move = 2
-		to_chat(usr, SPAN_NOTICE("You will now phase through solid matter."))
-	else
-		incorporeal_move = 0
+	if(usr.HasMovementHandler(/datum/movement_handler/mob/incorporeal))
+		usr.RemoveMovementHandler(/datum/movement_handler/mob/incorporeal)
 		to_chat(usr, SPAN_NOTICE("You will no-longer phase through solid matter."))
+	else
+		usr.ReplaceMovementHandler(/datum/movement_handler/mob/incorporeal)
+		to_chat(usr, SPAN_NOTICE("You will now phase through solid matter."))
 
 /mob/living/carbon/human/bluespace_tech/verb/bstrecover()
 	set name = "Rejuv"
@@ -328,26 +344,5 @@
 /mob/living/carbon/human/bluespace_tech/restrained()
 	return 0
 
-//TODO: Refactor zmove to check incorpmove so bsts don't need an override
-/mob/living/carbon/human/bluespace_tech/zMove(direction)
-	var/turf/destination = (direction == UP) ? GetAbove(src) : GetBelow(src)
-	if(destination)
-		forceMove(destination)
-	else
-		to_chat(src, SPAN_NOTICE("There is nothing of interest in this direction."))
-
 /mob/living/carbon/human/bluespace_tech/can_fall()
 	return fall_override ? FALSE : ..()
-
-//These verbs are temporary, in future they should be available to all mobs with appropriate checks
-/mob/living/carbon/human/bluespace_tech/verb/moveup()
-	set name = "Move Upwards"
-	set category = "BST"
-
-	zMove(UP)
-
-/mob/living/carbon/human/bluespace_tech/verb/movedown()
-	set name = "Move Downwards"
-	set category = "BST"
-
-	zMove(DOWN) 

@@ -22,7 +22,8 @@
 	var/turf/starting = get_turf(user)
 	if(T)
 		if(user.buckled)
-			user.buckled = null
+			user.buckled.unbuckle_mob()
+
 		user.forceMove(T)
 
 		var/datum/effect/effect/system/smoke_spread/smoke = new /datum/effect/effect/system/smoke_spread()

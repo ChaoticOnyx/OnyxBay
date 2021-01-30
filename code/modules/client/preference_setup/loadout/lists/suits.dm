@@ -52,7 +52,7 @@
 
 
 /datum/gear/suit/varsity
-	display_name = "Varsity, various colors"
+	display_name = "varsity, various colors"
 	path = /obj/item/clothing/suit/storage/toggle/varsity
 
 /datum/gear/suit/varsity/New()

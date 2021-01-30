@@ -79,8 +79,8 @@
 					/obj/item/weapon/shovel,
 					/obj/item/weapon/pickaxe,
 					/obj/item/weapon/mining_scanner,
-					/obj/item/clothing/glasses/material,
-					/obj/item/clothing/glasses/meson)
+					/obj/item/clothing/glasses/hud/standard/material,
+					/obj/item/clothing/glasses/hud/standard/meson)
 	cost = 15
 	containertype = /obj/structure/closet/crate/secure
 	containername = "\improper Shaft miner equipment"

@@ -190,6 +190,7 @@
 		if (eyecheck() > FLASH_PROTECTION_NONE)
 			continue
 		H.Weaken(8)
+		H.Stun(6)
 		H.stuttering = 20
 		H.confused = 10
 		to_chat(H, SPAN_DANGER("You are blinded by [src]'s glare!"))
@@ -934,6 +935,7 @@
 				to_chat(T, SPAN_DANGER("A dark force pushes you back into your body. You find yourself somehow still clinging to life."))
 
 	T.Weaken(15)
+	T.Stun(15)
 	GLOB.vampires.add_antagonist(T.mind, 1, 1, 0, 0, 1)
 
 	admin_attack_log(src, T, "successfully embraced [key_name(T)]", "was successfully embraced by [key_name(src)]", "successfully embraced and turned into a vampire")
