@@ -33,11 +33,11 @@
 	select_proc_callback.Invoke(choices_values[choice_id])
 
 
-/datum/radial_menu/persistent/proc/change_choices(list/newchoices, tooltips)
+/datum/radial_menu/persistent/proc/change_choices(list/newchoices)
 	if(!newchoices.len)
 		return
 	Reset()
-	set_choices(newchoices,tooltips)
+	set_choices(newchoices)
 
 /datum/radial_menu/persistent/Destroy()
 	QDEL_NULL(select_proc_callback)
@@ -53,7 +53,7 @@
 	Select_proc is the proc to be called each time an element on the menu is clicked, and should accept the chosen element as its final argument
 	Clicking the center button will return a choice of null
 */
-/proc/show_radial_menu_persistent(mob/user, atom/anchor, list/choices, datum/callback/select_proc, uniqueid, radius, tooltips = FALSE)
+/proc/show_radial_menu_persistent(mob/user, atom/anchor, list/choices, datum/callback/select_proc, uniqueid, radius)
 	if(!user || !anchor || !length(choices) || !select_proc)
 		return
 	if(!uniqueid)
@@ -70,7 +70,7 @@
 	menu.select_proc_callback = select_proc
 	menu.anchor = anchor
 	menu.check_screen_border(user) //Do what's needed to make it look good near borders or on hud
-	menu.set_choices(choices, tooltips)
+	menu.set_choices(choices)
 	menu.show_to(user)
 	return menu
 

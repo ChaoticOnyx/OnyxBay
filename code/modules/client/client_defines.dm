@@ -62,6 +62,3 @@
 
 	//used for initial centering of saywindow
 	var/first_say = TRUE
-
-	/// Datum that controls the displaying and hiding of tooltips
-	var/datum/tooltip/tooltips
