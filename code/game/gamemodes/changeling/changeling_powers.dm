@@ -397,7 +397,11 @@ var/global/list/possible_changeling_IDs = list("Alpha","Beta","Gamma","Delta","E
 	if(is_regenerating())
 		return
 	var/datum/changeling/changeling = changeling_power(1,1,0)
-	if(!changeling)	return
+	if(!changeling)
+		return
+
+	if(HAS_TRANSFORMATION_MOVEMENT_HANDLER(src))
+		return
 
 	var/list/names = list()
 	for(var/datum/dna/DNA in changeling.absorbed_dna)
@@ -421,8 +425,7 @@ var/global/list/possible_changeling_IDs = list("Alpha","Beta","Gamma","Delta","E
 	for (var/obj/item/weapon/implant/I in C) //Still preserving implants
 		implants += I
 
-	C.transforming = 1
-	C.canmove = 0
+	ADD_TRANSFORMATION_MOVEMENT_HANDLER(C)
 	C.icon = null
 	C.overlays.Cut()
 	C.set_invisibility(101)
@@ -1188,13 +1191,13 @@ var/list/datum/absorbed_dna/hivemind_bank = list()
 			to_chat(src, "<span class='notice'>We may move at our normal speed while hidden.</span>")
 
 		if(must_walk)
-			H.set_m_intent("walk")
+			H.set_m_intent(M_WALK)
 
 		var/remain_cloaked = TRUE
 		while(remain_cloaked && !is_regenerating()) //This loop will keep going until the player uncloaks.
 			sleep(1 SECOND) // Sleep at the start so that if something invalidates a cloak, it will drop immediately after the check and not in one second.
 
-			if(H.m_intent != "walk" && must_walk) // Moving too fast uncloaks you.
+			if(H.m_intent != M_WALK && must_walk) // Moving too fast uncloaks you.
 				remain_cloaked = 0
 			if(!H.mind.changeling.cloaked)
 				remain_cloaked = 0
@@ -1212,7 +1215,7 @@ var/list/datum/absorbed_dna/hivemind_bank = list()
 		H.invisibility = initial(invisibility)
 		visible_message("<span class='warning'>[src] suddenly fades in, seemingly from nowhere!</span>",
 		"<span class='notice'>We revert our camouflage, revealing ourselves.</span>")
-		H.set_m_intent("run")
+		H.set_m_intent(M_RUN)
 		H.mind.changeling.cloaked = 0
 		H.mind.changeling.chem_recharge_rate = old_regen_rate
 

@@ -326,10 +326,3 @@
 	return mob_size_difference(A.mob_size, B.mob_size)
 
 /datum/grab/proc/moved_effect(obj/item/grab/G)
-
-/client/proc/Process_Grab()
-	//if we are being grabbed
-	if(isliving(mob))
-		var/mob/living/L = mob
-		if(!L.canmove && L.grabbed_by.len)
-			L.resist() //shortcut for resisting grabs

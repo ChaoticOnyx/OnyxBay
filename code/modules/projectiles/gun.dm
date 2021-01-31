@@ -421,6 +421,10 @@
 	var/view_size = round(world.view + zoom_amount)
 	var/scoped_accuracy_mod = zoom_offset
 
+	if(zoom)
+		unzoom(user)
+		return
+
 	zoom(user, zoom_offset, view_size)
 	if(zoom)
 		accuracy = scoped_accuracy + scoped_accuracy_mod

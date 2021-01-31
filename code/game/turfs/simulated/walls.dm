@@ -46,7 +46,7 @@
 // Walls always hide the stuff below them.
 /turf/simulated/wall/levelupdate()
 	for(var/obj/O in src)
-		O.hide(1)
+		O.hide(O.hides_inside_walls())
 
 /turf/simulated/wall/protects_atom(atom/A)
 	var/obj/O = A

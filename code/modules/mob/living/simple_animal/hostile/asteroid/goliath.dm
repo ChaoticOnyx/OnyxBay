@@ -106,6 +106,7 @@
 	spawn(3)
 		for(var/mob/living/M in src.loc)
 			M.Weaken(3)
+			M.Stun(2)
 			visible_message("<span class='warning'>The [src.name] knocks [M.name] down!</span>")
 		qdel(src)
 

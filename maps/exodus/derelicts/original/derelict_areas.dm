@@ -1,6 +1,7 @@
 /area/derelict
 	name = "\improper Derelict Station"
 	icon_state = "storage"
+	has_gravity = FALSE
 
 /area/derelict/hallway/primary
 	name = "\improper Derelict Primary Hallway"

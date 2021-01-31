@@ -555,8 +555,6 @@ This function completely restores a damaged organ to perfect condition.
 
 /obj/item/organ/external/Process()
 	if(owner)
-		update_pain()
-
 		// Process wounds, doing healing etc. Only do this every few ticks to save processing power
 		if(owner.life_tick % wound_update_accuracy == 0)
 			update_wounds()
@@ -1022,6 +1020,7 @@ obj/item/organ/external/proc/remove_clamps()
 	if(limb_flags & ORGAN_FLAG_CAN_STAND)
 		if(prob(67))
 			owner.Weaken(2)
+			owner.Stun(1)
 
 	broken_description = pick("broken","fracture","hairline fracture")
 

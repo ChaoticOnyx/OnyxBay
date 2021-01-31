@@ -617,7 +617,7 @@ The slots that you can use are found in items_clothing.dm and are the inventory 
 		playsound(target.loc, 'sound/weapons/thudswoosh.ogg', 50, 1, -1)
 		if(prob(100-target.poise*6.5))
 			target.visible_message("<span class='danger'>[attacker] has pushed [target]!</span>")
-			target.apply_effect(3, WEAKEN, armor_check)
+			target.apply_effect(4, WEAKEN, armor_check)
 		else
 			target.visible_message("<span class='warning'>[attacker] attempted to push [target]!</span>")
 		return

@@ -3,6 +3,9 @@
 #define Clamp(value, low, high) 	(value <= low ? low : (value >= high ? high : value))
 #define CLAMP01(x) 		(Clamp(x, 0, 1))
 
+/// Similar to clamp but the bottom rolls around to the top and vice versa. min is inclusive, max is exclusive
+#define WRAP(val, min, max) ( min == max ? min : (val) - (round(((val) - (min))/((max) - (min))) * ((max) - (min))) )
+
 #define get_turf(A) get_step(A,0)
 
 #define isAI(A) istype(A, /mob/living/silicon/ai)
@@ -156,6 +159,8 @@
 #define LAZYREMOVE(L, I) if(L) { L -= I; if(!L.len) { L = null; } }
 // Adds I to L, initalizing L if necessary
 #define LAZYADD(L, I) if(!L) { L = list(); } L += I;
+// Insert I into L at position X, initalizing L if necessary
+#define LAZYINSERT(L, I, X) if(!L) { L = list(); } L.Insert(X, I);
 // Adds I to L, initalizing L if necessary, if I is not already in L
 #define LAZYDISTINCTADD(L, I) if(!L) { L = list(); } L |= I;
 // Sets L[A] to I, initalizing L if necessary

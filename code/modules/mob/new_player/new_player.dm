@@ -13,8 +13,8 @@
 
 	density = 0
 	stat = DEAD
-	canmove = 0
 
+	movement_handlers = list()
 	anchored = 1	//  don't get pushed around
 
 	virtual_mob = null // Hear no evil, speak no evil
@@ -106,7 +106,7 @@
 			var/value = text2num(href_list["ready"])
 			if (value && !SSeams.CheckForAccess(client))
 				return
-			
+
 			ready = value
 		else
 			ready = 0
@@ -431,7 +431,7 @@
 		if(character.mind.role_alt_title)
 			rank = character.mind.role_alt_title
 		// can't use their name here, since cyborg namepicking is done post-spawn, so we'll just say "A new Cyborg has arrived"/"A new Android has arrived"/etc.
-		GLOB.global_announcer.autosay("A new[rank ? " [rank]" : " visitor" ] [join_message ? join_message : "has arrived"].", "Arrivals Announcement Computer")
+		GLOB.global_announcer.autosay("A new[rank ? " [rank]" : " visitor" ] [join_message ? join_message : "has arrived"].", get_announcement_computer())
 		log_and_message_admins("has joined the round as [character.mind.assigned_role].", character)
 
 /mob/new_player/proc/LateChoices()

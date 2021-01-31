@@ -25,6 +25,8 @@
 	attack_hand(user)
 
 /obj/machinery/computer/fusion_core_control/attack_hand(mob/user)
+	if(..())
+		return
 	add_fingerprint(user)
 	interact(user)
 

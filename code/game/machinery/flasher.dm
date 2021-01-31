@@ -118,7 +118,7 @@
 
 	if(iscarbon(AM))
 		var/mob/living/carbon/M = AM
-		if ((M.m_intent != "walk") && (anchored))
+		if ((M.m_intent != M_WALK) && (anchored))
 			flash()
 
 /obj/machinery/flasher/portable/attackby(obj/item/weapon/W, mob/user)
