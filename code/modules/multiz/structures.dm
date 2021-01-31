@@ -19,6 +19,11 @@
 	var/const/drag_time = 15 SECONDS
 	var/static/list/climbsounds = list('sound/effects/ladder.ogg','sound/effects/ladder2.ogg','sound/effects/ladder3.ogg','sound/effects/ladder4.ogg')
 
+	var/static/radial_ladder_down = image(icon = 'icons/mob/radial.dmi', icon_state = "radial_ladder_down")
+	var/static/radial_ladder_up = image(icon = 'icons/mob/radial.dmi', icon_state = "radial_ladder_up")
+
+	var/static/list/radial_options = list("up" = radial_ladder_up, "down" = radial_ladder_down)
+
 /obj/structure/ladder/Initialize()
 	. = ..()
 	// the upper will connect to the lower
@@ -42,45 +47,47 @@
 /obj/structure/ladder/attackby(obj/item/C as obj, mob/user as mob)
 	climb(user)
 
-/obj/structure/ladder/attack_hand(mob/M)
-	climb(M)
+/obj/structure/ladder/attack_hand(mob/user)
+	climb(user)
 
-/obj/structure/ladder/attack_ai(mob/M)
-	var/mob/living/silicon/ai/ai = M
+/obj/structure/ladder/attack_robot(mob/user)
+	climb(user)
+
+/obj/structure/ladder/attack_ai(mob/user)
+	var/mob/living/silicon/ai/ai = user
 	if(!istype(ai))
 		return
 	var/mob/observer/eye/AIeye = ai.eyeobj
 	if(istype(AIeye))
 		instant_climb(AIeye)
 
-/obj/structure/ladder/attack_robot(mob/M)
-	climb(M)
+/obj/structure/ladder/attack_ghost(mob/user)
+	instant_climb(user)
 
-/obj/structure/ladder/proc/instant_climb(mob/M)
-	var/target_ladder = getTargetLadder(M)
-	if(target_ladder)
-		M.forceMove(get_turf(target_ladder))
+/obj/structure/ladder/proc/instant_climb(mob/user)
+	var/target_ladder = getTargetLadder(user)
+		user.forceMove(get_turf(target_ladder))
 
-/obj/structure/ladder/proc/climb(mob/M)
-	if(!M.may_climb_ladders(src))
+/obj/structure/ladder/proc/climb(mob/user)
+	if(!user.may_climb_ladders(src))
 		return
 
-	var/obj/structure/ladder/target_ladder = getTargetLadder(M)
+	var/obj/structure/ladder/target_ladder = getTargetLadder(user)
 	if(!target_ladder)
 		return
-	if(!M.Move(get_turf(src)))
-		to_chat(M, "<span class='notice'>You fail to reach \the [src].</span>")
+	if(!user.Move(get_turf(src)))
+		to_chat(user, "<span class='notice'>You fail to reach \the [src].</span>")
 		return
 
 	var/dragging = FALSE
 
-	for (var/obj/item/grab/G in M)
+	for (var/obj/item/grab/G in user)
 		dragging = TRUE
 		G.adjust_position()
 
 	var/direction = target_ladder == target_up ? "up" : "down"
 
-	M.visible_message("<span class='notice'>\The [M] begins climbing [direction] \the [src]!</span>",
+	user.visible_message("<span class='notice'>\The [user] begins climbing [direction] \the [src]!</span>",
 	"You begin climbing [direction] \the [src]!",
 	"You hear the grunting and clanging of a metal ladder being used.")
 
@@ -88,31 +95,28 @@
 
 	var/time = dragging ? drag_time : climb_time
 
-	if(do_after(M, time, src))
-		climbLadder(M, target_ladder)
-		for (var/obj/item/grab/G in M)
+	if(do_after(user, time, src))
+		climbLadder(user, target_ladder)
+		for (var/obj/item/grab/G in user)
 			G.adjust_position(force = 1)
 
-/obj/structure/ladder/attack_ghost(mob/M)
-	instant_climb(M)
-
-/obj/structure/ladder/proc/getTargetLadder(mob/M)
-	if((!target_up && !target_down) || (target_up && !istype(target_up.loc, /turf) || (target_down && !istype(target_down.loc,/turf))))
-		to_chat(M, "<span class='notice'>\The [src] is incomplete and can't be climbed.</span>")
+/obj/structure/ladder/proc/getTargetLadder(mob/user)
+	if((!target_up && !target_down) || (target_up && !istype(target_up.loc, /turf) || (target_down && !istype(target_down.loc, /turf))))
+		to_chat(user, "<span class='notice'>\The [src] is incomplete and can't be climbed.</span>")
 		return
 	if(target_down && target_up)
-		var/direction = alert(M,"Do you want to go up or down?", "Ladder", "Up", "Down", "Cancel")
+		var/direction = show_radial_menu(user, src,  radial_options, require_near = !(isEye(user) || isobserver(user)))
 
-		if(direction == "Cancel")
+		if(!direction)
 			return
 
-		if(!M.may_climb_ladders(src))
+		if(!user.may_climb_ladders(src))
 			return
 
 		switch(direction)
-			if("Up")
+			if("up")
 				return target_up
-			if("Down")
+			if("down")
 				return target_down
 	else
 		return target_down || target_up
@@ -141,15 +145,15 @@
 /mob/observer/ghost/may_climb_ladders(ladder)
 	return TRUE
 
-/obj/structure/ladder/proc/climbLadder(mob/M, target_ladder)
+/obj/structure/ladder/proc/climbLadder(mob/user, target_ladder)
 	var/turf/T = get_turf(target_ladder)
 	for(var/atom/A in T)
-		if(!A.CanPass(M, M.loc, 1.5, 0))
-			to_chat(M, "<span class='notice'>\The [A] is blocking \the [src].</span>")
+		if(!A.CanPass(user, user.loc, 1.5, 0))
+			to_chat(user, "<span class='notice'>\The [A] is blocking \the [src].</span>")
 			return FALSE
 	playsound(src, pick(climbsounds), 50)
 	playsound(target_ladder, pick(climbsounds), 50)
-	return M.Move(T)
+	return user.Move(T)
 
 /obj/structure/ladder/CanPass(obj/mover, turf/source, height, airflow)
 	return airflow || !density

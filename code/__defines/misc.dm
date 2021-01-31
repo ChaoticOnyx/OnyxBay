@@ -237,3 +237,8 @@
 #define WIKI_MINI   2 // This is a beautiful copy of wiki topic. Beware, font is really small!
 #define WIKI_MOBILE 3 // This is a highly visible variantion. Beware, decoration elements are lost!
 #define WIKI_TEXT	4 // This is a distorted version. Everything is lost except unformatted text!
+
+//https://secure.byond.com/docs/ref/info.html#/atom/var/mouse_opacity
+#define MOUSE_OPACITY_TRANSPARENT 0
+#define MOUSE_OPACITY_ICON 1
+#define MOUSE_OPACITY_OPAQUE 2
