@@ -176,17 +176,31 @@
 	. += "\nThe selected tool is [selected_tool ? selected_tool : "nothing"]!"
 
 /obj/item/weapon/surgical_selector/attack_self(mob/user)
-	selected_tool = input(user, "Select tool", "Tool selector") as null|anything in surgery_items
-	to_chat(user, SPAN_NOTICE("You select to use [selected_tool ? selected_tool : "nothing"]"))
+	select_tool(user)
 
 /obj/item/weapon/surgical_selector/resolve_attackby(atom/target, mob/living/user, params)
 	if(!target)
 		return
 	if(!isturf(target.loc))
 		return
+	if(target == user)
+		select_tool(user)
+		return
 	if(!selected_tool)
 		return
 	target.attackby(selected_tool, user)
+
+/obj/item/weapon/surgical_selector/proc/select_tool(mob/user)
+	var/list/obj/item/weapon/tool_images = list()
+	for(var/obj/item/weapon/tool in surgery_items)
+		var/image/img = image(icon = tool.icon, icon_state = tool.icon_state)
+		img.overlays = tool.overlays
+		tool_images[tool] = img
+	selected_tool = show_radial_menu(user, src, tool_images, radius = 42, require_near = TRUE, in_screen = TRUE)
+	to_chat(user, SPAN_NOTICE("You select to use [selected_tool ? selected_tool : "nothing"]"))
+
+/obj/item/weapon/surgical_selector/return_item()
+	return selected_tool
 
 /obj/item/weapon/surgical_selector/Destroy()
 	QDEL_NULL_LIST(surgery_items)
