@@ -155,8 +155,6 @@
 	if(!growth_type && !floor)
 		src.transform = null
 		var/matrix/M = matrix()
-		// should make the plant flush against the wall it's meant to be growing from.
-		M.Translate(0, -(rand(12,14)))
 		switch(dir)
 			if(WEST)
 				M.Turn(90)
