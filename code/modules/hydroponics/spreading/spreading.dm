@@ -224,9 +224,7 @@
 		health -= rand(3, 5) * 5
 	else
 		..()
-		var/damage = W.force
-		if(W.edge)
-			damage *= 2
+		var/damage = W.edge ? W.force : W.force / 2
 		adjust_health(-damage)
 		playsound(get_turf(src), W.hitsound, 100, 1)
 
@@ -253,7 +251,7 @@
 	aggression -= resiliance
 
 	if(aggression > 0)
-		adjust_health(-aggression*5)
+		adjust_health(-aggression * 5)
 
 /obj/effect/vine/ex_act(severity)
 	switch(severity)
