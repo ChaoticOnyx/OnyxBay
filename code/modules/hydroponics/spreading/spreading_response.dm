@@ -34,7 +34,7 @@
 	if(istype(H) && H.shoes)
 		return
 	seed.do_thorns(victim, src)
-	seed.do_sting(victim, src, pick(BP_R_FOOT,BP_L_FOOT,BP_R_LEG,BP_L_LEG))
+	seed.do_sting(victim, src, pick(BP_R_FOOT, BP_L_FOOT, BP_R_LEG, BP_L_LEG))
 
 /obj/effect/vine/proc/manual_unbuckle(mob/user)
 	if(!buckled_mob)

@@ -58,6 +58,7 @@
 	var/spread_chance = 30
 	var/spread_distance = 4
 	var/evolve_chance = 2
+	var/plant_spawn_eligible = FALSE
 	var/mature_time //minimum maturation time
 	var/obj/machinery/portable_atmospherics/hydroponics/soil/invisible/plant
 
@@ -97,6 +98,9 @@
 		max_growth = seed.growth_stages
 		growth_threshold = max_health/max_growth
 
+	if(prob(max(seed.get_trait(TRAIT_YIELD), 5)))
+		plant_spawn_eligible = TRUE
+
 	if(max_growth > 2 && prob(50))
 		max_growth-- //Ensure some variation in final sprite, makes the carpet of crap look less wonky.
 
@@ -111,18 +115,10 @@
 
 /obj/effect/vine/Destroy()
 	wake_neighbors()
+	if(parent)
+		parent.possible_children++ // The hellish plant sustains its size
 	STOP_PROCESSING(SSvines, src)
 	return ..()
-
-// Plants will sometimes be spawned in the turf adjacent to the one they need to end up in, for the sake of correct dir/etc being set.
-/obj/effect/vine/proc/finish_spreading()
-	set_dir(calc_dir())
-	update_icon()
-	START_PROCESSING(SSvines, src)
-	// Some plants eat through plating.
-	if(islist(seed.chems) && !isnull(seed.chems[/datum/reagent/acid/polyacid]))
-		var/turf/T = get_turf(src)
-		T.ex_act(prob(80) ? 3 : 2)
 
 /obj/effect/vine/update_icon()
 	overlays.Cut()
@@ -214,7 +210,6 @@
 	return 1
 
 /obj/effect/vine/attackby(obj/item/weapon/W, mob/user)
-	user.setClickCooldown(DEFAULT_ATTACK_COOLDOWN)
 	START_PROCESSING(SSvines, src)
 
 	if(W.edge && W.w_class < ITEM_SIZE_NORMAL && user.a_intent != I_HURT)

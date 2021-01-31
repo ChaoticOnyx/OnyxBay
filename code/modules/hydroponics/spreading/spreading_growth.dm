@@ -113,7 +113,7 @@
 
 /obj/effect/vine/proc/can_spawn_plant()
 	var/turf/simulated/T = get_turf(src)
-	return parent == src && health == max_health && !plant && istype(T) && !T.CanZPass(src, DOWN)
+	return (plant_spawn_eligible || parent == src) && health == max_health && !plant && istype(T) && !T.CanZPass(src, DOWN)
 
 /obj/effect/vine/proc/should_sleep()
 	if(buckled_mob) //got a victim to fondle
@@ -133,15 +133,15 @@
 /obj/effect/vine/proc/spread_to(turf/target_turf)
 	var/obj/effect/vine/child = new(get_turf(src), seed, parent) // This should do a little bit of animation.
 	//move out to the destination
-	if(child.forceMove(target_turf))
-		child.update_icon()
-		child.set_dir(child.calc_dir())
-		child.update_icon()
-		// Some plants eat through plating.
-		if(islist(seed.chems) && !isnull(seed.chems[/datum/reagent/acid/polyacid]))
-			target_turf.ex_act(prob(80) ? 3 : 2)
-	else
-		qdel(child)
+	spawn(1)
+		if(child?.forceMove(target_turf))
+			child.set_dir(child.calc_dir())
+			child.update_icon()
+			// Some plants eat through plating.
+			if(islist(seed.chems) && !isnull(seed.chems[/datum/reagent/acid/polyacid]))
+				target_turf.ex_act(prob(80) ? 3 : 2)
+		else
+			qdel(child)
 
 /obj/effect/vine/proc/wake_neighbors()
 	// This turf is clear now, let our buddies know.
