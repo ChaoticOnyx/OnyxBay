@@ -89,25 +89,20 @@
 		pixel_y = rand(-randpixel, randpixel)
 
 /obj/item/Destroy()
-	qdel(hidden_uplink)
-	hidden_uplink = null
+	QDEL_NULL(hidden_uplink)
 	if(ismob(loc))
 		var/mob/m = loc
 		m.drop_from_inventory(src)
-		m.update_inv_r_hand()
-		m.update_inv_l_hand()
-		src.loc = null
 	if(maptext)
 		maptext = ""
+
 	if(istype(src.loc, /obj/item/weapon/storage))
-		var/obj/item/weapon/storage/storage = src.loc
-		storage.prepare_ui()
-		var/datum/storage_ui/s_ui = storage.storage_ui
-		if(s_ui)
-			s_ui.on_pre_remove(usr, src)
-		storage.contents -= src
-		storage.update_ui_after_item_removal()
-	return ..()
+		var/obj/item/weapon/storage/storage = loc // some ui cleanup needs to be done
+		storage.on_item_pre_deletion(src) // must be done before deletion
+		. = ..()
+		storage.on_item_post_deletion() // must be done after deletion
+	else
+		return ..()
 
 /obj/item/device
 	icon = 'icons/obj/device.dmi'

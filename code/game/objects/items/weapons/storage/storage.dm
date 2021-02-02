@@ -34,19 +34,17 @@
 	if(!canremove)
 		return
 
-	if (ishuman(usr) || issmall(usr)) //so monkeys can take off their backpacks -- Urist
+	if((ishuman(usr) || isrobot(usr) || issmall(usr)) && !usr.incapacitated())
 		if(over_object == usr && Adjacent(usr)) // this must come before the screen objects only block
+			src.add_fingerprint(usr)
 			src.open(usr)
-			return
+			return TRUE
 
-		if (!( istype(over_object, /obj/screen) ))
+		if(!(istype(over_object, /obj/screen)))
 			return ..()
 
-		if (usr.incapacitated())
-			return
-
 		//makes sure that the storage is equipped, so that we can't drag it into our hand from miles away.
-		if (!usr.contains(src))
+		if(!usr.contains(src))
 			return
 
 		src.add_fingerprint(usr)
@@ -57,9 +55,16 @@
 				if(BP_L_HAND)
 					usr.put_in_l_hand(src)
 
+/obj/item/weapon/storage/AltClick(var/mob/usr)
+	if(!canremove)
+		return
+
+	if((ishuman(usr) || isrobot(usr) || issmall(usr)) && !usr.incapacitated() && Adjacent(usr))
+		add_fingerprint(usr)
+		open(usr)
+		return TRUE
 
 /obj/item/weapon/storage/proc/return_inv()
-
 	var/list/L = list(  )
 
 	L += src.contents
@@ -72,17 +77,21 @@
 			L += G.gift:return_inv()
 	return L
 
-/obj/item/weapon/storage/proc/show_to(mob/user as mob)
+/obj/item/weapon/storage/proc/show_to(mob/user)
 	if(storage_ui)
 		storage_ui.show_to(user)
 
-/obj/item/weapon/storage/proc/hide_from(mob/user as mob)
+/obj/item/weapon/storage/proc/hide_from(mob/user)
 	if(storage_ui)
 		storage_ui.hide_from(user)
 
-/obj/item/weapon/storage/proc/open(mob/user as mob)
-	if (src.use_sound)
+/obj/item/weapon/storage/proc/open(mob/user)
+	if(src.use_sound)
 		playsound(src.loc, src.use_sound, 50, 1, -5)
+	if(isrobot(user) && user.hud_used)
+		var/mob/living/silicon/robot/robot = user
+		if(robot.shown_robot_modules) //The robot's inventory is open, need to close it first.
+			robot.hud_used.toggle_show_robot_modules()
 
 	prepare_ui()
 	if(storage_ui) // I guess we can afford performing double checks for such procs. Better this than hundreds of runtimes.
@@ -93,16 +102,17 @@
 	if(storage_ui)
 		storage_ui.prepare_ui()
 
-/obj/item/weapon/storage/proc/close(mob/user as mob)
+/obj/item/weapon/storage/proc/close(mob/user)
 	hide_from(user)
 	if(storage_ui)
 		storage_ui.after_close(user)
 
-	if (src.use_sound)
+	if(src.use_sound)
 		playsound(src.loc, src.use_sound, 50, 1, -5)
 
 /obj/item/weapon/storage/proc/close_all()
-	storage_ui.close_all()
+	if(storage_ui)
+		storage_ui.close_all()
 
 /obj/item/weapon/storage/proc/storage_space_used()
 	. = 0
@@ -112,7 +122,8 @@
 //This proc return 1 if the item can be picked up and 0 if it can't.
 //Set the stop_messages to stop it from printing messages
 /obj/item/weapon/storage/proc/can_be_inserted(obj/item/W, mob/user, stop_messages = 0)
-	if(!istype(W)) return //Not an item
+	if(!istype(W))
+		return //Not an item
 
 	if(user && user.isEquipped(W) && !user.canUnEquip(W))
 		return 0
@@ -139,7 +150,7 @@
 			return 0
 
 	//If attempting to lable the storage item, silently fail to allow it
-	if(istype(W, /obj/item/weapon/hand_labeler) && user.a_intent != I_HELP)
+	if(istype(W, /obj/item/weapon/hand_labeler) || istype(W, /obj/item/weapon/forensics) && user.a_intent != I_HELP)
 		return FALSE
 
 	// Don't allow insertion of unsafed compressed matter implants
@@ -180,9 +191,10 @@
 /obj/item/weapon/storage/proc/handle_item_insertion(obj/item/W, prevent_warning = 0, NoUpdate = 0)
 	if(!istype(W))
 		return 0
-	if(istype(W.loc, /mob))
+	if(ismob(W.loc))
 		var/mob/M = W.loc
-		M.remove_from_mob(W)
+		if(!M.unEquip(W))
+			return
 	W.forceMove(src)
 	W.on_enter_storage(src)
 	if(usr)
@@ -200,7 +212,7 @@
 		if(!NoUpdate)
 			update_ui_after_item_insertion()
 
-	if (src.use_sound)
+	if(src.use_sound)
 		playsound(src.loc, src.use_sound, 50, 1, -5)
 
 	update_icon()
@@ -218,8 +230,10 @@
 
 //Call this proc to handle the removal of an item from the storage item. The item will be moved to the atom sent as new_target
 /obj/item/weapon/storage/proc/remove_from_storage(obj/item/W as obj, atom/new_location, NoUpdate = 0)
-	if(!istype(W)) return 0
+	if(!istype(W))
+		return 0
 	new_location = new_location || get_turf(src)
+
 	if(storage_ui)
 		storage_ui.on_pre_remove(usr, W)
 
@@ -240,18 +254,30 @@
 		update_icon()
 	return 1
 
+// Only do ui functions for now; the obj is responsible for anything else.
+/obj/item/weapon/storage/proc/on_item_pre_deletion(obj/item/W)
+	if(storage_ui)
+		storage_ui.on_pre_remove(usr, W)
 
+// Only do ui functions for now; the obj is responsible for anything else.
+/obj/item/weapon/storage/proc/on_item_post_deletion()
+	update_ui_after_item_removal()
+	update_icon()
+
+//Run once after using remove_from_storage with NoUpdate = 1
 /obj/item/weapon/storage/proc/finish_bulk_removal()
 	update_ui_after_item_removal()
 	update_icon()
 
-
 //This proc is called when you want to place an item into the storage item.
-/obj/item/weapon/storage/attackby(obj/item/W as obj, mob/user as mob)
-	..()
+/obj/item/weapon/storage/attackby(obj/item/W, mob/user)
+	. = ..()
 
-	if(isrobot(user))
-		return //Robots can't interact with storage items.
+	if(.)
+		return
+
+	if(isrobot(user) && W == user.get_active_hand())
+		return //Robots can't store their modules.
 
 	if(istype(W, /obj/item/device/lightreplacer))
 		var/obj/item/device/lightreplacer/LP = W
@@ -295,11 +321,12 @@
 			H.r_store = null
 			return
 
-	if (loc == user)
+	if(loc == user)
 		open(user)
 	else
 		..()
-		storage_ui.on_hand_attack(user)
+		if(storage_ui)
+			storage_ui.on_hand_attack(user)
 	add_fingerprint(user)
 	return
 
@@ -363,7 +390,7 @@
 		verbs -= /obj/item/weapon/storage/verb/toggle_gathering_mode
 
 	if(isnull(max_storage_space) && !isnull(storage_slots))
-		max_storage_space = storage_slots*base_storage_cost(max_w_class)
+		max_storage_space = storage_slots * base_storage_cost(max_w_class)
 
 	storage_ui = new storage_ui(src)
 	prepare_ui()
@@ -388,11 +415,11 @@
 			O.emp_act(severity)
 	..()
 
-/obj/item/weapon/storage/attack_self(mob/user as mob)
+/obj/item/weapon/storage/attack_self(mob/user)
 	//Clicking on itself will empty it, if it has the verb to do that.
 	if(user.get_active_hand() == src)
 		if(src.verbs.Find(/obj/item/weapon/storage/verb/quick_empty))
-			src.quick_empty()
+			quick_empty()
 			return 1
 
 /obj/item/weapon/storage/proc/make_exact_fit()
@@ -412,14 +439,14 @@
 	var/depth = 0
 	var/atom/cur_atom = src
 
-	while (cur_atom && !(cur_atom in container.contents))
-		if (isarea(cur_atom))
+	while(cur_atom && !(cur_atom in container.contents))
+		if(isarea(cur_atom))
 			return -1
-		if (istype(cur_atom.loc, /obj/item/weapon/storage))
+		if(istype(cur_atom.loc, /obj/item/weapon/storage))
 			depth++
 		cur_atom = cur_atom.loc
 
-	if (!cur_atom)
+	if(!cur_atom)
 		return -1	//inside something with a null loc.
 
 	return depth
@@ -430,18 +457,17 @@
 	var/depth = 0
 	var/atom/cur_atom = src
 
-	while (cur_atom && !isturf(cur_atom))
-		if (isarea(cur_atom))
+	while(cur_atom && !isturf(cur_atom))
+		if(isarea(cur_atom))
 			return -1
-		if (istype(cur_atom.loc, /obj/item/weapon/storage))
+		if(istype(cur_atom.loc, /obj/item/weapon/storage))
 			depth++
 		cur_atom = cur_atom.loc
 
-	if (!cur_atom)
+	if(!cur_atom)
 		return -1	//inside something with a null loc.
 
 	return depth
 
-/obj/item/proc/get_storage_cost()
-	//If you want to prevent stuff above a certain w_class from being stored, use max_w_class
+/obj/item/proc/get_storage_cost() //If you want to prevent stuff above a certain w_class from being stored, use max_w_class
 	return base_storage_cost(w_class)
