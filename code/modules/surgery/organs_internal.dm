@@ -63,7 +63,7 @@
 
 	var/obj/item/organ/internal/organ_to_fix = show_radial_menu(user, target, damaged_organs, require_near = TRUE)
 
-	if(!organ_to_fix || (user.get_active_hand() != tool))
+	if(!organ_to_fix || (user.get_active_hand().return_item() != tool))
 		return FALSE
 	if(!organ_to_fix.can_recover())
 		to_chat(user, SPAN("notice", "The [organ_to_fix.name] is destroyed and can't be saved."))
@@ -265,7 +265,7 @@
 
 	var/obj/item/organ/internal/organ_to_fix = show_radial_menu(user, target, damaged_organs, require_near = TRUE)
 
-	if(!organ_to_fix || (user.get_active_hand() != tool))
+	if(!organ_to_fix || (user.get_active_hand().return_item() != tool))
 		return FALSE
 	if(target.op_stage.current_organ)
 		to_chat(user, SPAN("warning", "You can't do this right now."))
@@ -381,7 +381,7 @@
 
 	var/organ_to_remove = show_radial_menu(user, target, attached_organs, require_near = TRUE)
 
-	if(!organ_to_remove || (user.get_active_hand() != tool))
+	if(!organ_to_remove || (user.get_active_hand().return_item() != tool))
 		return FALSE
 	if(target.op_stage.current_organ)
 		to_chat(user, SPAN("warning", "You can't do this right now."))
@@ -449,7 +449,7 @@
 
 	var/organ_to_remove = show_radial_menu(user, target, removable_organs, require_near = TRUE)
 
-	if(!organ_to_remove || (user.get_active_hand() != tool))
+	if(!organ_to_remove || (user.get_active_hand().return_item() != tool))
 		return FALSE
 	if(target.op_stage.current_organ)
 		to_chat(user, SPAN("warning", "You can't do this right now."))
@@ -624,7 +624,7 @@
 
 	var/obj/item/organ/organ_to_replace = show_radial_menu(user, target, attachable_organs, require_near = TRUE)
 
-	if(!organ_to_replace || (user.get_active_hand() != tool))
+	if(!organ_to_replace || (user.get_active_hand().return_item() != tool))
 		return FALSE
 	if(target.op_stage.current_organ)
 		to_chat(user, SPAN("warning", "You can't do this right now."))
@@ -706,7 +706,7 @@
 
 	var/obj/item/organ/internal/organ_to_fix = show_radial_menu(user, target, dead_organs, require_near = TRUE)
 
-	if(!organ_to_fix || (user.get_active_hand() != tool))
+	if(!organ_to_fix || (user.get_active_hand().return_item() != tool))
 		return 0
 	if(target.op_stage.current_organ)
 		to_chat(user, SPAN("warning", "You can't do this right now."))

@@ -473,6 +473,9 @@ var/list/global/slot_flags_enumeration = list(
 
 	return 1
 
+/obj/item/proc/return_item()
+	return src
+
 /obj/item/proc/mob_can_unequip(mob/M, slot, disable_warning = 0)
 	if(!slot) return 0
 	if(!M) return 0
