@@ -1291,6 +1291,7 @@
 	desc = "Installing additional servos speeds up an exosuit at the cost of additional energy consumption. (Can be attached to: Engineering exosuits)"
 	icon_state = "servo"
 	equip_cooldown = 10
+	equip_ready = FALSE
 	energy_drain = 2 KILOWATTS
 	range = 0
 	required_type = /obj/mecha/working
