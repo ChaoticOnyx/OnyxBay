@@ -782,7 +782,7 @@ modules/mob/living/carbon/human/life.dm if you die, you will be zoomed out.
 	user.visible_message("\The [user] peers through [zoomdevicename ? "the [zoomdevicename] of [src]" : "[src]"].")
 
 	GLOB.destroyed_event.register(src, src, /obj/item/proc/unzoom)
-	GLOB.moved_event.register(src, src, /obj/item/proc/unzoom)
+	GLOB.moved_event.register(src, src, /obj/item/proc/zoom_move)
 	GLOB.dir_set_event.register(src, src, /obj/item/proc/unzoom)
 	GLOB.item_unequipped_event.register(src, src, /obj/item/proc/zoom_drop)
 	GLOB.stat_set_event.register(user, src, /obj/item/proc/unzoom)
@@ -790,13 +790,18 @@ modules/mob/living/carbon/human/life.dm if you die, you will be zoomed out.
 /obj/item/proc/zoom_drop(obj/item/I, mob/user)
 	unzoom(user)
 
+/obj/item/proc/zoom_move(atom/movable/AM)
+	if(ismob(AM.loc))
+		var/mob/M = AM.loc
+		unzoom(M)
+
 /obj/item/proc/unzoom(mob/user)
 	if(!zoom)
 		return
 	zoom = 0
 
 	GLOB.destroyed_event.unregister(src, src, /obj/item/proc/unzoom)
-	GLOB.moved_event.unregister(src, src, /obj/item/proc/unzoom)
+	GLOB.moved_event.unregister(src, src, /obj/item/proc/zoom_move)
 	GLOB.dir_set_event.unregister(src, src, /obj/item/proc/unzoom)
 	GLOB.item_unequipped_event.unregister(src, src, /obj/item/proc/zoom_drop)
 
