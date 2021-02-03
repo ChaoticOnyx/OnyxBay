@@ -55,7 +55,7 @@
 				if(BP_L_HAND)
 					usr.put_in_l_hand(src)
 
-/obj/item/weapon/storage/AltClick(var/mob/usr)
+/obj/item/weapon/storage/AltClick(mob/usr)
 	if(!canremove)
 		return
 
