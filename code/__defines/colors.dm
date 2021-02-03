@@ -64,6 +64,7 @@
 //Color defines used by the assembly detailer.
 
 #define COLOR_ASSEMBLY_BLACK   "#545454"
+#define COLOR_FLOORTILE_GRAY   "#8D8B8B"
 #define COLOR_ASSEMBLY_BGRAY   "#9497ab"
 #define COLOR_ASSEMBLY_WHITE   "#e2e2e2"
 #define COLOR_ASSEMBLY_RED     "#cc4242"

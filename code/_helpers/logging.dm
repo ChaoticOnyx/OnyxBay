@@ -122,6 +122,10 @@
 		return
 	WRITE_FILE(GLOB.world_hrefs_log, "\[[time_stamp()]] HREF: [text]")
 
+/proc/log_href_exploit(atom/user)
+	WRITE_FILE(GLOB.href_exploit_attempt_log, "HREF: [key_name(user)] has potentially attempted an href exploit.")
+	message_admins("[key_name_admin(user)] has potentially attempted an href exploit.")
+
 /proc/log_error(text)
 	error(text)
 

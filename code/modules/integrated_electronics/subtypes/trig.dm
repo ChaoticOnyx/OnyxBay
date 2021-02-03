@@ -30,7 +30,7 @@
 	pull_data()
 	var/result = null
 	var/A = get_pin_data(IC_INPUT, 1)
-	if(!isnull(A))
+	if(!isnum_safe(A))
 		result = sin(A)
 
 	set_pin_data(IC_OUTPUT, 1, result)
@@ -71,7 +71,7 @@
 	var/result = null
 	var/A = get_pin_data(IC_INPUT, 1)
 	if(!isnull(A))
-		result = sin(A) / cos(A)
+		result = Tan(A)
 
 	set_pin_data(IC_OUTPUT, 1, result)
 	push_data()
@@ -91,7 +91,7 @@
 	var/result = null
 	var/A = get_pin_data(IC_INPUT, 1)
 	if(!isnull(A))
-		result = 1 / sin(A)
+		result = Csc(A)
 
 	set_pin_data(IC_OUTPUT, 1, result)
 	push_data()
@@ -111,7 +111,7 @@
 	var/result = null
 	var/A = get_pin_data(IC_INPUT, 1)
 	if(!isnull(A))
-		result = 1 / cos(A)
+		result = Sec(A)
 
 	set_pin_data(IC_OUTPUT, 1, result)
 	push_data()
@@ -131,7 +131,7 @@
 	var/result = null
 	var/A = get_pin_data(IC_INPUT, 1)
 	if(!isnull(A))
-		result = cos(A) / sin(A)
+		result = Cot(A)
 
 	set_pin_data(IC_OUTPUT, 1, result)
 	push_data()
