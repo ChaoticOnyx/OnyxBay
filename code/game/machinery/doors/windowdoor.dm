@@ -22,17 +22,13 @@
 
 /obj/machinery/door/window/Initialize()
 	. = ..()
-
+	update_nearby_tiles()
+	update_icon()
 	hitsound = pick(
 		'sound/effects/materials/glass/knock1.ogg',
 		'sound/effects/materials/glass/knock2.ogg',
 		'sound/effects/materials/glass/knock3.ogg',
 	)
-
-/obj/machinery/door/window/Initialize()
-	. = ..()
-	update_nearby_tiles()
-	update_icon()
 
 /obj/machinery/door/window/update_icon()
 	if(density)
