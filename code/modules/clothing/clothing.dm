@@ -146,9 +146,11 @@
 	if(accessories.len > ties.len)
 		.+= ". <a href='?src=\ref[src];list_ungabunga=1'>\[See accessories\]</a>"
 
-/obj/item/clothing/CanUseTopic(user)
-	if(user in view(get_turf(src)))
+/obj/item/clothing/CanUseTopic(mob/user, datum/topic_state/state, href_list)
+	if(href_list && href_list["list_ungabunga"] && (user in view(get_turf(src)))) //))))))
 		return STATUS_INTERACTIVE
+	else
+		return ..()
 
 /obj/item/clothing/OnTopic(user, list/href_list, datum/topic_state/state)
 	if(href_list["list_ungabunga"])
