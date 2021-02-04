@@ -533,7 +533,7 @@
 	toggle = 0
 
 /datum/pai_software/subsystem/secrecords
-	nano_module = /datum/nano_module/secrecords
+	nano_module = /datum/nano_module/records/security
 
 	name = "Security Records"
 	ram_cost = 10
@@ -542,7 +542,7 @@
 	toggle = 0
 
 /datum/pai_software/subsystem/medrecords
-	nano_module = /datum/nano_module/medrecords
+	nano_module = /datum/nano_module/records/medical
 
 	name = "Medical Records"
 	ram_cost = 10
