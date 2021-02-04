@@ -790,6 +790,18 @@
 	spawn_flags = IC_SPAWN_RESEARCH
 	power_draw_per_use = 20
 	demands_object_input = TRUE		// You can put stuff in once the circuit is in assembly,passed down from additem and handled by attackby()
+	var/list/obj/item/weapon/surgery_items_type_list = list(
+		/obj/item/weapon/bonegel,
+		/obj/item/weapon/bonesetter,
+		/obj/item/weapon/circular_saw,
+		/obj/item/weapon/scalpel,
+		/obj/item/weapon/retractor,
+		/obj/item/weapon/hemostat,
+		/obj/item/weapon/cautery,
+		/obj/item/weapon/surgicaldrill,
+		/obj/item/weapon/FixOVein,
+		/obj/item/weapon/organfixer
+	)
 	var/selected_zone
 	var/obj/item/instrument
 
@@ -802,9 +814,7 @@
 	if(instrument)
 		to_chat(user, SPAN("warning", "There's already a instrument installed."))
 		return
-	if(istype(O, /obj/item/weapon/bonegel) || istype(O, /obj/item/weapon/bonesetter) || istype(O, /obj/item/weapon/circular_saw) || istype(O, /obj/item/weapon/scalpel) \
-	|| istype(O, /obj/item/weapon/retractor) || istype(O, /obj/item/weapon/hemostat) || istype(O, /obj/item/weapon/cautery) || istype(O, /obj/item/weapon/surgicaldrill) \
-	|| istype(O, /obj/item/weapon/FixOVein) || istype(O, /obj/item/weapon/organfixer))
+	if(surgery_items_type_list.Find(O.type))
 		instrument = O
 		user.drop_item(O)
 		instrument.forceMove(src)
@@ -914,6 +924,43 @@
 						H.op_stage.current_organ = null						//Clearing current surgery target for the sake of internal surgery's consistency
 				return status 												//don't want to do weapony things after surgery
 	return FALSE
+
+/obj/item/integrated_circuit/manipulation/hatchlock
+	name = "maintenance hatch lock"
+	desc = "An electronically controlled lock for the assembly's maintenance hatch."
+	extended_desc = "WARNING: If you lock the hatch with no circuitry to reopen it, there is no way to open the hatch again!"
+	icon_state = "hatch_lock"
+
+	outputs = list(
+		"enabled" = IC_PINTYPE_BOOLEAN
+	)
+	activators = list(
+		"toggle" = IC_PINTYPE_PULSE_IN,
+		"on toggle" = IC_PINTYPE_PULSE_OUT
+	)
+
+	complexity = 4
+	cooldown_per_use = 2 SECOND
+	power_draw_per_use = 50
+	spawn_flags = IC_SPAWN_DEFAULT
+	origin_tech = list(TECH_ENGINEERING = 2)
+
+	var/lock_enabled = FALSE
+
+/obj/item/integrated_circuit/manipulation/hatchlock/do_work(ord)
+	if(ord == 1 && assembly)
+		lock_enabled = !lock_enabled
+		assembly.force_sealed = lock_enabled
+		visible_message(
+			lock_enabled ? \
+			SPAN("notice", "\The [get_object()] whirrs. The screws are now covered.") \
+			: \
+			SPAN("notice","\The [get_object()] whirrs. The screws are now exposed!")
+		)
+
+		set_pin_data(IC_OUTPUT, 1, lock_enabled)
+		push_data()
+		activate_pin(2)
 
 #undef SURGERY_FAILURE
 #undef SURGERY_BLOCKED

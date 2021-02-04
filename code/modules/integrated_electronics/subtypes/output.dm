@@ -25,6 +25,9 @@
 
 	to_chat(user, "There is \a [src][shown_label], which displays [!isnull(stuff_to_display) ? "'[stuff_to_display]'" : "nothing"].")
 
+/obj/item/integrated_circuit/output/screen/get_topic_data()
+	return stuff_to_display ? list(stuff_to_display) : list()
+
 /obj/item/integrated_circuit/output/screen/do_work()
 	var/datum/integrated_io/I = inputs[1]
 	if(isweakref(I.data))
@@ -351,6 +354,9 @@
 	power_draw_idle = 0 // Raises to 1 when lit.
 	spawn_flags = IC_SPAWN_DEFAULT|IC_SPAWN_RESEARCH
 	var/led_color = "#FF0000"
+
+/obj/item/integrated_circuit/output/led/get_topic_data()
+	return list("\An [initial(name)] that is currently [get_pin_data(IC_INPUT, 1) ? "lit" : "unlit."]")
 
 /obj/item/integrated_circuit/output/led/on_data_written()
 	power_draw_idle = get_pin_data(IC_INPUT, 1) ? 1 : 0
