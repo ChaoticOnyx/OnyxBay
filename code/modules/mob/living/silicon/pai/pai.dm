@@ -338,7 +338,7 @@
 		icon_state = resting ? "[chassis]_rest" : "[chassis]"
 		to_chat(src, "<span class='notice'>You are now [resting ? "resting" : "getting up"]</span>")
 
-/mob/living/silicon/pai/proc/swipe_card(var/obj/item/weapon/card/id/ID, mob/user as mob)
+/mob/living/silicon/pai/proc/swipe_card(var/obj/item/weapon/card/id/ID, mob/user)
 	if(!reader_on) return 0 // reader disabled
 
 	if(ID)
