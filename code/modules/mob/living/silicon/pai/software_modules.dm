@@ -532,15 +532,6 @@
 	req_one_accesses = list(access_engine_equip)
 	toggle = 0
 
-/datum/pai_software/subsystem/crew_monitor
-	nano_module = /datum/nano_module/crew_monitor
-
-	name = "Crew Monitor"
-	ram_cost = 10
-	id = "crew_monitor"
-	req_one_accesses = list(access_security, access_medical)
-	toggle = 0
-
 /datum/pai_software/subsystem/secrecords
 	nano_module = /datum/nano_module/secrecords
 
