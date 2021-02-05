@@ -30,6 +30,7 @@
 	var/ext_moved_triggerable = FALSE // Used to tell assembly if we need moved event
 	var/moved_event_created = FALSE // check this var on delete and if this var true delete ext_moved event
 	var/atom/movable/moved_object // used for check if we already have moved event
+	var/radial_menu_icon = "" // used for radial menu selection
 
 
 /*

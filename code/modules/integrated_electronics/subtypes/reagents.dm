@@ -504,7 +504,7 @@
 	name = "integrated extinguisher"
 	desc = "This circuit sprays any of its contents out like an extinguisher."
 	icon_state = "injector"
-	extended_desc = "This circuit can hold up to 1000 units of any given chemicals. On each use, it sprays these reagents to target coords like a extinguisher, the amount for splash per tile you selected on your own"
+	extended_desc = "This circuit can hold up to 1000 units of any given chemicals. On each use, it sprays these reagents to target coords like a extinguisher, the amount for splash per tile is 15 units"
 	atom_flags = ATOM_FLAG_OPEN_CONTAINER
 	volume = 1000
 	complexity = 20
@@ -606,7 +606,7 @@
 	var/obj/item/weapon/reagent_containers/glass/beaker/current_beaker
 
 
-/obj/item/integrated_circuit/input/beaker_connector/attackby(var/obj/item/weapon/reagent_containers/glass/beaker/I, var/mob/living/user)
+/obj/item/integrated_circuit/input/beaker_connector/attackby(obj/item/weapon/reagent_containers/glass/beaker/I, mob/living/user)
 	//Check if it truly is a reagent container
 	if(!istype(I,/obj/item/weapon/reagent_containers/glass/beaker))
 		to_chat(user, SPAN("warning", "The [I] doesn't seem to fit in here."))

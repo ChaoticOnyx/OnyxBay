@@ -742,9 +742,11 @@
 
 	if(!use_ui_window)
 		var/list/input_selection = list()
+		var/list/obj/item/integrated_circuit/input/inputs_list = list()
 		//Check all the components asking for an input
 		for(var/obj/item/integrated_circuit/input/input in assembly_components)
-			if(input.can_be_asked_input)
+			if(input.can_be_asked_input && input.radial_menu_icon)
+				var/image/img = image(icon = 'icons/obj/assemblies/electronic_buttons.dmi', icon_state = input.radial_menu_icon)
 				var/i = 0
 				//Check if there is another component with the same name and append a number for identification
 				for(var/s in input_selection)
@@ -754,21 +756,20 @@
 				var/disp_name= "[input.displayed_name] \[[input]\]"
 				if(i)
 					disp_name += " ([i+1])"
-				//Associative lists prevent me from needing another list and using a Find proc
-				input_selection[disp_name] = input
+				inputs_list[disp_name] = input
+				input_selection[disp_name] = img
 
 		var/obj/item/integrated_circuit/input/choice
 
-
 		if(input_selection)
 			if(input_selection.len == 1)
-				choice = input_selection[input_selection[1]]
+				choice = inputs_list[input_selection[1]]
 			else
-				var/selection = input(user, "What do you want to interact with?", "Interaction") as null|anything in input_selection
 				if(!check_interactivity(user))
 					return
-				if(selection)
-					choice = input_selection[selection]
+				var/selected = show_radial_menu(user, src, input_selection, radius = 24, require_near = TRUE, in_screen = TRUE, use_hudfix_method = FALSE)
+				if(selected && inputs_list[selected])
+					choice = inputs_list[selected]
 
 		if(choice)
 			choice.ask_for_input(user)

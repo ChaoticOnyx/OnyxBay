@@ -16,6 +16,7 @@
 	outputs = list()
 	activators = list("on pressed" = IC_PINTYPE_PULSE_IN)
 	spawn_flags = IC_SPAWN_DEFAULT|IC_SPAWN_RESEARCH
+	radial_menu_icon = "button"
 
 /obj/item/integrated_circuit/input/button/ask_for_input(mob/user) //Bit misleading name for this specific use.
 	to_chat(user, SPAN("notice", "You press the button labeled '[displayed_name]'."))
@@ -40,9 +41,12 @@
 	outputs = list("on" = IC_PINTYPE_BOOLEAN)
 	activators = list("on toggle" = IC_PINTYPE_PULSE_IN)
 	spawn_flags = IC_SPAWN_DEFAULT|IC_SPAWN_RESEARCH
+	radial_menu_icon = "toggle_button_on"
 
 /obj/item/integrated_circuit/input/toggle_button/ask_for_input(mob/user) // Ditto.
-	set_pin_data(IC_OUTPUT, 1, !get_pin_data(IC_OUTPUT, 1))
+	var/state = !get_pin_data(IC_OUTPUT, 1)
+	radial_menu_icon = "toggle_button_[state ? "on" : "off"]"
+	set_pin_data(IC_OUTPUT, 1, state)
 	push_data()
 	activate_pin(1)
 	to_chat(user, SPAN("notice", "You toggle the button labeled \"[displayed_name]\" [get_pin_data(IC_OUTPUT, 1) ? "on" : "off"]."))
@@ -69,6 +73,7 @@
 	activators = list("on entered" = IC_PINTYPE_PULSE_IN)
 	spawn_flags = IC_SPAWN_DEFAULT|IC_SPAWN_RESEARCH
 	power_draw_per_use = 4
+	radial_menu_icon = "numberpad"
 
 /obj/item/integrated_circuit/input/numberpad/ask_for_input(mob/user)
 	var/new_input = input(user, "Enter a number, please.",displayed_name) as null|num
@@ -100,6 +105,7 @@
 	activators = list("on entered" = IC_PINTYPE_PULSE_IN)
 	spawn_flags = IC_SPAWN_DEFAULT|IC_SPAWN_RESEARCH
 	power_draw_per_use = 4
+	radial_menu_icon = "textpad"
 
 /obj/item/integrated_circuit/input/textpad/ask_for_input(mob/user)
 	var/new_input = input(user, "Enter some words, please.", displayed_name)
@@ -108,17 +114,6 @@
 		set_pin_data(IC_OUTPUT, 1, new_input)
 		push_data()
 		activate_pin(1)
-
-/obj/item/integrated_circuit/input/textpad
-	name = "text pad"
-	desc = "This small text pad allows someone to input a string into the system."
-	icon_state = "textpad"
-	complexity = 2
-	inputs = list()
-	outputs = list("string entered" = IC_PINTYPE_STRING)
-	activators = list("on entered" = IC_PINTYPE_PULSE_OUT)
-	spawn_flags = IC_SPAWN_DEFAULT|IC_SPAWN_RESEARCH
-	power_draw_per_use = 4
 
 /obj/item/integrated_circuit/input/textpad/get_topic_data(mob/user)
 	return list("Enter Words" = "enter_words=1")
@@ -144,6 +139,7 @@
 	activators = list("on entered" = IC_PINTYPE_PULSE_IN)
 	spawn_flags = IC_SPAWN_DEFAULT|IC_SPAWN_RESEARCH
 	power_draw_per_use = 4
+	radial_menu_icon = "colorpad"
 
 /obj/item/integrated_circuit/input/colorpad/ask_for_input(mob/user)
 	var/new_color = input(user, "Enter a color, please.", "Color", "#ffffff") as color|null
@@ -870,6 +866,7 @@
 	activators = list("on selected" = IC_PINTYPE_PULSE_OUT)
 	spawn_flags = IC_SPAWN_RESEARCH
 	action_flags = IC_ACTION_LONG_RANGE
+	radial_menu_icon = "teleporter_locator"
 
 /obj/item/integrated_circuit/input/teleporter_locator/Initialize()
 	. = ..()
@@ -1333,6 +1330,7 @@
 		"selected" = IC_PINTYPE_STRING
 	)
 	var/input_selected = FALSE
+	radial_menu_icon = "textpad"
 
 /obj/item/integrated_circuit/input/selection/ask_for_input(mob/user)
 	var/list/selection = list()
