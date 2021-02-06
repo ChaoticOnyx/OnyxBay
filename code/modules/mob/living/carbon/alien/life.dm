@@ -18,7 +18,7 @@
 /mob/living/carbon/alien/proc/can_progress()
 	return 1
 
-/mob/living/simple_animal/updatehealth()
+/mob/living/carbon/alien/updatehealth()
 	if(stat == DEAD)
 		return 0
 
