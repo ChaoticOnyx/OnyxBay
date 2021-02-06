@@ -157,7 +157,8 @@
 		if(!istype(check_turf))
 			continue
 		for(var/mob/living/M in check_turf.contents)
-			targets |= M
+			if(is_valid_target(M))
+				targets |= M
 	if(targets.len)
 		return targets
 
