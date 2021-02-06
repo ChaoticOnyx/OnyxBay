@@ -274,7 +274,6 @@
 			return
 
 		if(!debug && !subtract_material_costs(cost, usr))
-			to_chat(usr, SPAN_WARNING("You need [cost] to build that!"))
 			return
 
 		var/obj/item/built = new build_type(get_turf(src))
@@ -343,12 +342,9 @@
 					if(debug || subtract_material_costs(cost, usr))
 						cloning = TRUE
 						print_program(usr)
-					else
-						to_chat(usr, SPAN_WARNING("You need [program["cost"]] material to build that!"))
 				else
 					var/list/cost = program["cost"]
 					if(!subtract_material_costs(cost, usr))
-						to_chat(usr, SPAN_WARNING("You need [program["cost"]] material to build that!"))
 						return
 					var/cloning_time = 0
 					for(var/material in cost)
@@ -377,7 +373,7 @@
 		if(materials[material] < cost[material])
 			// TODO[V] change that after port of materials subsystem
 			var/material/material_datum = capitalize(material)
-			to_chat(user, SPAN_WARNING(">You need [cost[material]] [material_datum] to build that!"))
+			to_chat(user, SPAN_WARNING("You need [cost[material]] [material_datum] to build that!"))
 			return FALSE
 	for(var/material in cost) //Iterate twice to make sure it's going to work before deducting
 		materials[material] -= cost[material]

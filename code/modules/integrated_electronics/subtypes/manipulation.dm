@@ -9,18 +9,17 @@
 	name = "weapon firing mechanism"
 	desc = "This somewhat complicated system allows one to slot in a gun, direct it towards a position, and remotely fire it."
 	extended_desc = "The firing mechanism can slot in any energy weapon. \
-	The first and second inputs need to be numbers which correspond to coordinates for the gun to fire at relative to the machine itself. \
-	The 'fire' activator will cause the mechanism to attempt to fire the weapon at the coordinates, if possible. Mode will switch between \
+	The first input pin need to be ref which correspond to target for the gun to fire. \
+	The 'fire' activator will cause the mechanism to attempt to fire the weapon at the ref, if possible. Mode will switch between \
 	lethal (TRUE) or stun (FALSE) modes. It uses the internal battery of the weapon itself, not the assembly. If you wish to fire the gun while the circuit is in \
 	hand, you will need to use an assembly that is a gun."
 	complexity = 20
 	w_class = ITEM_SIZE_SMALL
 	size = 15
 	inputs = list(
-		"target X rel" = IC_PINTYPE_NUMBER,
-		"target Y rel" = IC_PINTYPE_NUMBER,
+		"target"       = IC_PINTYPE_REF,
 		"bodypart"	   = IC_PINTYPE_STRING
-		)
+	)
 	outputs = list(
 		"reference to gun"	= IC_PINTYPE_REF,
 		"Weapon mode"		= IC_PINTYPE_STRING
@@ -40,7 +39,7 @@
 
 /obj/item/integrated_circuit/manipulation/weapon_firing/Initialize()
 	. = ..()
-	extended_desc += "\nThe fourth input used for selection of target body part, the list of body parts: "
+	extended_desc += "\nThe second input pin used for selection of target body part, the list of body parts: "
 	extended_desc += jointext(BP_ALL_LIMBS, ", ")
 
 /obj/item/integrated_circuit/manipulation/weapon_firing/Destroy()
@@ -91,35 +90,29 @@
 		return
 	set_pin_data(IC_OUTPUT, 1, weakref(installed_gun))
 	push_data()
-	var/x = get_pin_data(IC_INPUT, 1)
-	var/y = get_pin_data(IC_INPUT, 2)
 	if(assembly)
 		switch(ord)
 			if(1)
-				if(isnum_safe(x))
-					x = round(x, 1)
-				if(isnum_safe(x))
-					y = round(x, 1)
-
-				var/bodypart = sanitize(get_pin_data(IC_INPUT, 3))
+				var/atom/target = get_pin_data(IC_INPUT, 1)
+				if(!istype(target))
+					return
+				var/bodypart = sanitize(get_pin_data(IC_INPUT, 2))
 				if(!(bodypart in BP_ALL_LIMBS))
 					bodypart = pick(BP_ALL_LIMBS)
-				var/turf/T = get_turf(assembly)
-				var/target_x = Clamp(T.x + x, 0, world.maxx)
-				var/target_y = Clamp(T.y + y, 0, world.maxy)
 
 				assembly.visible_message(SPAN("danger", "[assembly] fires [installed_gun]!"))
-				if(shootAt(locate(target_x, target_y, T.z), bodypart))
+				var/obj/item/projectile/P = shootAt(target, bodypart)
+				if(P)
+					installed_gun.play_fire_sound(assembly, P)
 					activate_pin(3)
 			else if(2)
 				var/datum/firemode/next_firemode = installed_gun.switch_firemodes()
 				set_pin_data(IC_OUTPUT, 2, next_firemode ? next_firemode.name : null)
 				push_data()
 
-/obj/item/integrated_circuit/manipulation/weapon_firing/proc/shootAt(turf/target, bodypart)
+/obj/item/integrated_circuit/manipulation/weapon_firing/proc/shootAt(atom/target, bodypart)
 	var/turf/T = get_turf(assembly)
-	var/turf/U = target
-	if(!istype(T) || !istype(U))
+	if(!istype(T) || !istype(target))
 		return
 	if(!installed_gun.power_supply)
 		return
@@ -135,7 +128,7 @@
 	A.shot_from = assembly.name
 	A.firer = assembly
 	A.launch(target, bodypart)
-	log_attack("[assembly] [ref(assembly)] has fired [installed_gun].", notify_admin = FALSE)
+	log_attack("[assembly] [any2ref(assembly)] has fired [installed_gun].", notify_admin = FALSE)
 	return A
 
 /obj/item/integrated_circuit/manipulation/locomotion
@@ -148,7 +141,7 @@
 	w_class = ITEM_SIZE_SMALL
 	complexity = 10
 	max_allowed = 4
-	cooldown_per_use = 1 SECONDS
+	cooldown_per_use = 3
 	ext_cooldown = 3 // 0.3 second
 	inputs = list("direction" = IC_PINTYPE_DIR)
 	outputs = list("obstacle" = IC_PINTYPE_REF)
