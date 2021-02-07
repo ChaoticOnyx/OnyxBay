@@ -159,6 +159,7 @@
 		"altclick" = IC_PINTYPE_PULSE_OUT,
 		"ctrlclick" = IC_PINTYPE_PULSE_OUT
 		)
+	movement_handlers = list(/datum/movement_handler/move_relay_self)
 	spawn_flags = IC_SPAWN_RESEARCH
 	power_draw_per_use = 150
 	can_be_asked_input = TRUE
@@ -276,6 +277,7 @@
 		"ctrlclick" = IC_PINTYPE_PULSE_OUT,
 		"shiftctrlclick" = IC_PINTYPE_PULSE_OUT
 		)
+	movement_handlers = list(/datum/movement_handler/move_relay_self)
 	spawn_flags = IC_SPAWN_RESEARCH
 	power_draw_per_use = 150
 	can_be_asked_input = TRUE
@@ -308,10 +310,10 @@
 	else
 		to_chat(user, SPAN("notice", "The connection port is empty."))
 
-/obj/item/integrated_circuit/input/pAI_connector/relaymove(mob/user, dir)
-	set_pin_data(IC_OUTPUT, 2, dir)
+/obj/item/integrated_circuit/input/pAI_connector/relaymove(mob/user, direction)
+	set_pin_data(IC_OUTPUT, 2, direction)
 	do_work(1)
-	switch(dir)
+	switch(direction)
 		if(8)	activate_pin(2)
 		if(4)	activate_pin(3)
 		if(1)	activate_pin(4)
@@ -343,6 +345,9 @@
 		var/obj/item/device/paicard/H = loc
 		if(istype(H.loc, /obj/item/integrated_circuit/input/pAI_connector))
 			paiholder = H.loc
+
+	if(!istype(paiholder))
+		return
 
 	paiholder.set_pin_data(IC_OUTPUT, 3, A)
 	var/list/modifiers = params2list(params)

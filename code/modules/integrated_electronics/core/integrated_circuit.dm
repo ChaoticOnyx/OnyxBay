@@ -123,7 +123,7 @@ a creative player the means to solve many problems.  Circuits are held inside an
 	else if(istype(AM, /obj/item/weapon/gun/energy) && !istype(AM, /obj/item/weapon/gun/energy/plasmacutter))
 		var/obj/item/weapon/gun/energy/WEP = AM
 		cell = WEP.power_supply
-		efficient = 0.3
+		efficient = 0.6
 
 	else if(istype(AM, /mob/living/carbon/human))
 		var/mob/living/carbon/human/H = AM
