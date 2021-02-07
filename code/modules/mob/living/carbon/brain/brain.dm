@@ -8,13 +8,6 @@
 	use_me = 0 //Can't use the me verb, it's a freaking immobile brain
 	icon = 'icons/obj/surgery.dmi'
 	icon_state = "brain1"
-	movement_handlers = list(
-		/datum/movement_handler/mob/relayed_movement,
-		/datum/movement_handler/mob/death,
-		/datum/movement_handler/mob/conscious,
-		/datum/movement_handler/mob/eye,
-		/datum/movement_handler/move_relay
-	)
 
 /mob/living/carbon/brain/New()
 	create_reagents(1000)
