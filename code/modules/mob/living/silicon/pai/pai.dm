@@ -13,14 +13,6 @@
 	idcard = /obj/item/weapon/card/id
 	silicon_radio = null // pAIs get their radio from the card they belong to.
 
-	movement_handlers = list(
-		/datum/movement_handler/mob/relayed_movement,
-		/datum/movement_handler/mob/death,
-		/datum/movement_handler/mob/conscious,
-		/datum/movement_handler/mob/eye,
-		/datum/movement_handler/move_relay
-	)
-
 	var/network = "SS13"
 	var/obj/machinery/camera/current = null
 
