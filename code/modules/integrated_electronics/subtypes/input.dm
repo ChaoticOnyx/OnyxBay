@@ -14,7 +14,7 @@
 	can_be_asked_input = TRUE
 	inputs = list()
 	outputs = list()
-	activators = list("on pressed" = IC_PINTYPE_PULSE_IN)
+	activators = list("on pressed" = IC_PINTYPE_PULSE_OUT)
 	spawn_flags = IC_SPAWN_DEFAULT|IC_SPAWN_RESEARCH
 	radial_menu_icon = "button"
 
@@ -39,7 +39,7 @@
 	can_be_asked_input = TRUE
 	inputs = list()
 	outputs = list("on" = IC_PINTYPE_BOOLEAN)
-	activators = list("on toggle" = IC_PINTYPE_PULSE_IN)
+	activators = list("on toggle" = IC_PINTYPE_PULSE_OUT)
 	spawn_flags = IC_SPAWN_DEFAULT|IC_SPAWN_RESEARCH
 	radial_menu_icon = "toggle_button_on"
 
@@ -70,7 +70,7 @@
 	can_be_asked_input = TRUE
 	inputs = list()
 	outputs = list("number entered" = IC_PINTYPE_NUMBER)
-	activators = list("on entered" = IC_PINTYPE_PULSE_IN)
+	activators = list("on entered" = IC_PINTYPE_PULSE_OUT)
 	spawn_flags = IC_SPAWN_DEFAULT|IC_SPAWN_RESEARCH
 	power_draw_per_use = 4
 	radial_menu_icon = "numberpad"
@@ -102,7 +102,7 @@
 	can_be_asked_input = TRUE
 	inputs = list()
 	outputs = list("string entered" = IC_PINTYPE_STRING)
-	activators = list("on entered" = IC_PINTYPE_PULSE_IN)
+	activators = list("on entered" = IC_PINTYPE_PULSE_OUT)
 	spawn_flags = IC_SPAWN_DEFAULT|IC_SPAWN_RESEARCH
 	power_draw_per_use = 4
 	radial_menu_icon = "textpad"
@@ -136,7 +136,7 @@
 	can_be_asked_input = TRUE
 	inputs = list()
 	outputs = list("color entered" = IC_PINTYPE_STRING)
-	activators = list("on entered" = IC_PINTYPE_PULSE_IN)
+	activators = list("on entered" = IC_PINTYPE_PULSE_OUT)
 	spawn_flags = IC_SPAWN_DEFAULT|IC_SPAWN_RESEARCH
 	power_draw_per_use = 4
 	radial_menu_icon = "colorpad"
@@ -814,7 +814,6 @@
 		return FALSE
 
 	activate_pin(3)
-	audible_message("[icon2html(src, hearers(src))] *beep* *beep* *beep*", null, hearing_range)
 	for(var/CHM in hearers(hearing_range, src))
 		if(ismob(CHM))
 			var/mob/LM = CHM
@@ -835,7 +834,8 @@
 
 /obj/item/integrated_circuit/input/signaler/advanced/on_data_written()
 	..()
-	command = get_pin_data(IC_INPUT,3)
+	code = get_pin_data(IC_INPUT, 2)
+	command = get_pin_data(IC_INPUT, 3)
 
 /obj/item/integrated_circuit/input/signaler/advanced/signal_good(datum/signal/signal)
 	if(!..() || signal.data["tag"] != code)
@@ -851,9 +851,10 @@
 	return signal
 
 /obj/item/integrated_circuit/input/signaler/advanced/receive_signal(datum/signal/signal)
-	set_pin_data(IC_OUTPUT,1,html_decode(signal.data["command"]))
-	push_data()
-	..()
+	if(signal_good(signal))
+		set_pin_data(IC_OUTPUT,1,html_decode(signal.data["command"]))
+		push_data()
+		..()
 
 /obj/item/integrated_circuit/input/teleporter_locator
 	name = "teleporter locator"
