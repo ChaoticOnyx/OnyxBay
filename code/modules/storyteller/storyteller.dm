@@ -164,3 +164,6 @@ SUBSYSTEM_DEF(storyteller)
 /datum/controller/subsystem/storyteller/proc/__create_all_triggers()
 	for (var/type in subtypesof(/storyteller_trigger))
 		__triggers[type] = new type
+
+/datum/controller/subsystem/storyteller/proc/get_character()
+    return __character

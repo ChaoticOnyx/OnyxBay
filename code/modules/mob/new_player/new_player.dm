@@ -464,14 +464,19 @@
 			for(var/mob/M in GLOB.player_list) if(M.mind && M.client && M.mind.assigned_role == job.title && M.client.inactivity <= 10 * 60 * 10)
 				active++
 
+			var/active_vacancies = 0
+			if(job.open_vacancies && job.open_vacancies - job.filled_vacancies > 0)
+				active_vacancies = job.open_vacancies - job.filled_vacancies
+
 			if(job.is_restricted(client.prefs))
 				if(show_invalid_jobs)
-					dat += "<tr><td><a style='text-decoration: line-through' href='byond://?src=\ref[src];SelectedJob=[job.title]'>[job.title]</a></td><td>[job.current_positions]</td><td>(Active: [active])</td></tr>"
+					dat += "<tr><td><a style='text-decoration: line-through' href='byond://?src=\ref[src];SelectedJob=[job.title]'>[job.title]</a></td><td>[job.current_positions]</td><td>(Active: [active])</td>[active_vacancies ? "<td><font color='[COLOR_CYAN_BLUE]'>(Vacancies: [active_vacancies])</font></td>" : null]</tr>"
 			else
-				dat += "<tr><td><a href='byond://?src=\ref[src];SelectedJob=[job.title]'>[job.title]</a></td><td>[job.current_positions]</td><td>(Active: [active])</td></tr>"
+				dat += "<tr><td><a href='byond://?src=\ref[src];SelectedJob=[job.title]'>[job.title]</a></td><td>[job.current_positions]</td><td>(Active: [active])</td>[active_vacancies ? "<td><font color='[COLOR_CYAN_BLUE]'>(Vacancies: [active_vacancies])</font></td>" : null]</tr>"
 
-	dat += "</table></center>"
-	src << browse(jointext(dat, null), "window=latechoices;size=450x640;can_close=1")
+	var/datum/browser/popup = new(src, "Late Join", "Late Join", 450, 640, src)
+	popup.set_content(jointext(dat, null))
+	popup.open()
 
 /mob/new_player/proc/create_character(turf/spawn_turf)
 	spawning = 1
@@ -575,7 +580,7 @@
 	return 0
 
 /mob/new_player/proc/close_spawn_windows()
-	src << browse(null, "window=latechoices") //closes late choices window
+	src << browse(null, "window=Late Join") //closes late choices window
 	panel.close()
 
 /mob/new_player/has_admin_rights()

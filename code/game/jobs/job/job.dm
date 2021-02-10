@@ -12,6 +12,10 @@
 	var/current_positions = 0             // How many players have this job
 	var/availablity_chance = 100          // Percentage chance job is available each round
 
+	var/open_vacancies   = 0              // How many vacancies were opened by heads
+	var/filled_vacancies = 0              // How many vacancies were filled
+	var/can_be_hired  = TRUE              // Can the Command  open a vacancy for this role?
+
 	var/supervisors = null                // Supervisors, who this person answers to directly
 	var/selection_color = "#ffffff"       // Selection screen color
 	var/list/alt_titles                   // List of alternate titles, if any and any potential alt. outfits as assoc values.
@@ -140,7 +144,7 @@
 			apply_fingerprints_to_item(holder, sub_item)
 
 /datum/job/proc/is_position_available()
-	return (current_positions < total_positions) || (total_positions == -1)
+	return (current_positions < total_positions + open_vacancies) || (total_positions == -1)
 
 /datum/job/proc/has_alt_title(mob/H, supplied_title, desired_title)
 	return (supplied_title == desired_title) || (H.mind && H.mind.role_alt_title == desired_title)
