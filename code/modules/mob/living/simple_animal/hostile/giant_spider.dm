@@ -8,6 +8,7 @@
 /mob/living/simple_animal/hostile/giant_spider
 	name = "giant spider"
 	desc = "Furry and brown, it makes you shudder to look at it. This one has deep red eyes."
+	icon = 'icons/mob/hostile/spider.dmi'
 	icon_state = "guard"
 	icon_living = "guard"
 	icon_dead = "guard_dead"
@@ -36,6 +37,22 @@
 	speed = 3
 	controllable = TRUE
 
+/mob/living/simple_animal/hostile/giant_spider/alt
+	desc = "Furry and brown, it makes you shudder to look at it. This one has deep red eyes. This one looks different from the others."
+	icon_state = "guard_alt"
+	icon_living = "guard_alt"
+	icon_dead = "guard_alt_dead"
+
+/mob/living/simple_animal/hostile/giant_spider/alt/strong
+	desc = "Furry and brown, it makes you shudder to look at it. This one has deep red eyes. His big jaws hint to you that he's a lot more dangerous than the others"
+	icon_state = "tarantula_alt"
+	icon_living = "tarantula_alt"
+	icon_dead = "tarantula_alt_dead"
+	maxHealth = 300
+	health = 300
+	melee_damage_lower = 25
+	melee_damage_upper = 40
+
 //nursemaids - these create webs and eggs
 /mob/living/simple_animal/hostile/giant_spider/nurse
 	desc = "Furry and beige, it makes you shudder to look at it. This one has brilliant green eyes."
@@ -46,10 +63,27 @@
 	health = 40
 	melee_damage_lower = 5
 	melee_damage_upper = 10
-	poison_per_bite = 10
+	poison_per_bite = 8
 	var/atom/cocoon_target
 	poison_type = /datum/reagent/soporific
 	var/fed = 0
+
+/mob/living/simple_animal/hostile/giant_spider/nurse/alt
+	desc = "Furry and black, it makes you shudder to look at it. This one has brilliant green eyes. This one looks different from the others."
+	icon_state = "nurse_alt"
+	icon_living = "nurse_alt"
+	icon_dead = "nurse_alt_dead"
+
+/mob/living/simple_animal/hostile/giant_spider/nurse/alt/strong
+	desc = "Furry and black, it makes you shudder to look at it. This one has brilliant green eyes. The purple stripes hint to you that he is far more dangerous than the others."
+	icon_state = "midwife_alt"
+	icon_living = "midwife_alt"
+	icon_dead = "midwife_alt_dead"
+	maxHealth = 80
+	health = 80
+	melee_damage_lower = 10
+	melee_damage_upper = 15
+	poison_per_bite = 12
 
 //hunters have the most poison and move the fastest, so they can find prey
 /mob/living/simple_animal/hostile/giant_spider/hunter
@@ -61,8 +95,26 @@
 	health = 120
 	melee_damage_lower = 10
 	melee_damage_upper = 20
-	poison_per_bite = 5
+	poison_per_bite = 10
 	move_to_delay = 4
+
+/mob/living/simple_animal/hostile/giant_spider/hunter/alt
+	desc = "Furry and dark purple, it makes you shudder to look at it. This one has sparkling purple eyes. This one looks different from the others."
+	icon_state = "hunter_alt"
+	icon_living = "hunter_alt"
+	icon_dead = "hunter_alt_dead"
+
+/mob/living/simple_animal/hostile/giant_spider/hunter/alt/strong
+	desc = "Furry and black, it makes you shudder to look at it. This one has sparkling purple eyes. His huge red sign hints to you that he is far more dangerous than the others"
+	icon_state = "viper_alt"
+	icon_living = "viper_alt"
+	icon_dead = "viper_alt_dead"
+	maxHealth = 200
+	health = 200
+	melee_damage_lower = 15
+	melee_damage_upper = 25
+	poison_per_bite = 20
+	move_to_delay = 3
 
 /mob/living/simple_animal/hostile/giant_spider/New(location, atom/parent)
 	get_light_and_color(parent)
@@ -181,7 +233,7 @@
 			busy = 0
 			stop_automated_movement = 0
 
-			
+
 /mob/living/simple_animal/hostile/giant_spider/nurse/proc/finalize_cocoon()
 	if(busy == SPINNING_COCOON)
 		if(cocoon_target && istype(cocoon_target.loc, /turf) && get_dist(src,cocoon_target) <= 1)
