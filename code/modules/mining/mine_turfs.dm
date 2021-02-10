@@ -423,6 +423,7 @@ var/list/mining_floors = list()
 // This means you can put grass on the asteroid etc.
 /turf/simulated/floor/asteroid
 	name = "sand"
+	desc = "Gritty and unpleasant."
 	icon = 'icons/turf/flooring/asteroid.dmi'
 	icon_state = "asteroid"
 	base_name = "sand"
