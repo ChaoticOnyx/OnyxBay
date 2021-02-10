@@ -6,7 +6,7 @@
 	var/click_delay
 	var/hand_state = "spell"
 	var/show_message
-
+	var/spell_cast_delay
 /spell/hand/choose_targets(mob/user = usr)
 	return list(user)
 
@@ -32,7 +32,7 @@
 			return
 	return 1
 
-/spell/hand/proc/valid_target(atom/a,mob/user) //we use seperate procs for our target checking for the hand spells.
+/spell/hand/proc/valid_target(atom/a,mob/user) //we use separate procs for our target checking for the hand spells.
 	var/distance = get_dist(a,user)
 	if((min_range && distance < min_range) || (range && distance > range))
 		return 0
