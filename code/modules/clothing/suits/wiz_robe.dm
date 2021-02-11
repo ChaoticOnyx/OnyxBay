@@ -27,7 +27,7 @@
 
 /obj/item/clothing/head/wizard/violetwizard
 	name = "Witch Hat"
-	desc = "Strange-looking hat-wear, makes you want to cast fireballs."
+	desc = "You've dreamed to be a witch ever since you saw that show."
 	icon_state = "violetwizard"
 	siemens_coefficient = 0.8
 
@@ -96,7 +96,7 @@
 
 /obj/item/clothing/suit/wizrobe/violetwizard
 	name = "Witch Robe"
-	desc = "Magic is all about the spell power, ZE!"
+	desc = "Makes you want to wish you were a little girl."
 	icon_state = "violetwizard"
 	item_state = "violetwizard"
 
