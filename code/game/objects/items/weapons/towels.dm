@@ -45,6 +45,6 @@
 	..()
 	if(W.sharp)
 		to_chat(user, SPAN_NOTICE("You use [W] to cut a ugly hole in [src]."))
-		new /obj/item/clothing/suit/goatskincape(loc)
+		new /obj/item/clothing/suit/storage/hooded/goatskincape
 		qdel(src)
 		return
