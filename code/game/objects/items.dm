@@ -89,25 +89,20 @@
 		pixel_y = rand(-randpixel, randpixel)
 
 /obj/item/Destroy()
-	qdel(hidden_uplink)
-	hidden_uplink = null
+	QDEL_NULL(hidden_uplink)
 	if(ismob(loc))
 		var/mob/m = loc
 		m.drop_from_inventory(src)
-		m.update_inv_r_hand()
-		m.update_inv_l_hand()
-		src.loc = null
 	if(maptext)
 		maptext = ""
+
 	if(istype(src.loc, /obj/item/weapon/storage))
-		var/obj/item/weapon/storage/storage = src.loc
-		storage.prepare_ui()
-		var/datum/storage_ui/s_ui = storage.storage_ui
-		if(s_ui)
-			s_ui.on_pre_remove(usr, src)
-		storage.contents -= src
-		storage.update_ui_after_item_removal()
-	return ..()
+		var/obj/item/weapon/storage/storage = loc // some ui cleanup needs to be done
+		storage.on_item_pre_deletion(src) // must be done before deletion
+		. = ..()
+		storage.on_item_post_deletion() // must be done after deletion
+	else
+		return ..()
 
 /obj/item/device
 	icon = 'icons/obj/device.dmi'
@@ -473,6 +468,9 @@ var/list/global/slot_flags_enumeration = list(
 
 	return 1
 
+/obj/item/proc/return_item()
+	return src
+
 /obj/item/proc/mob_can_unequip(mob/M, slot, disable_warning = 0)
 	if(!slot) return 0
 	if(!M) return 0
@@ -782,7 +780,7 @@ modules/mob/living/carbon/human/life.dm if you die, you will be zoomed out.
 	user.visible_message("\The [user] peers through [zoomdevicename ? "the [zoomdevicename] of [src]" : "[src]"].")
 
 	GLOB.destroyed_event.register(src, src, /obj/item/proc/unzoom)
-	GLOB.moved_event.register(src, src, /obj/item/proc/unzoom)
+	GLOB.moved_event.register(src, src, /obj/item/proc/zoom_move)
 	GLOB.dir_set_event.register(src, src, /obj/item/proc/unzoom)
 	GLOB.item_unequipped_event.register(src, src, /obj/item/proc/zoom_drop)
 	GLOB.stat_set_event.register(user, src, /obj/item/proc/unzoom)
@@ -790,13 +788,18 @@ modules/mob/living/carbon/human/life.dm if you die, you will be zoomed out.
 /obj/item/proc/zoom_drop(obj/item/I, mob/user)
 	unzoom(user)
 
+/obj/item/proc/zoom_move(atom/movable/AM)
+	if(ismob(AM.loc))
+		var/mob/M = AM.loc
+		unzoom(M)
+
 /obj/item/proc/unzoom(mob/user)
 	if(!zoom)
 		return
 	zoom = 0
 
 	GLOB.destroyed_event.unregister(src, src, /obj/item/proc/unzoom)
-	GLOB.moved_event.unregister(src, src, /obj/item/proc/unzoom)
+	GLOB.moved_event.unregister(src, src, /obj/item/proc/zoom_move)
 	GLOB.dir_set_event.unregister(src, src, /obj/item/proc/unzoom)
 	GLOB.item_unequipped_event.unregister(src, src, /obj/item/proc/zoom_drop)
 

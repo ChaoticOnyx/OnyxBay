@@ -16,6 +16,9 @@
 	var/obj/item/weapon/rig/rig = get_rig()
 	if(istype(rig))
 		rig.forced_move(direction, user)
+	if(istype(loc, /obj/item/integrated_circuit/input/mmi_tank))
+		var/obj/item/integrated_circuit/input/mmi_tank/tank = loc
+		tank.relaymove(user, direction)
 
 /obj/item/device/paicard/New()
 	..()

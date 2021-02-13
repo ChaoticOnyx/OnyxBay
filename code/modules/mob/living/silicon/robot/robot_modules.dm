@@ -4,12 +4,10 @@ var/global/list/robot_modules = list(
 	"Research" 		= /obj/item/weapon/robot_module/research/general,
 	"Miner" 		= /obj/item/weapon/robot_module/miner/general,
 	"Medical" 		= /obj/item/weapon/robot_module/medical/crisis,
-	"Surgeon" 		= /obj/item/weapon/robot_module/medical/surgeon,
 	"Security" 		= /obj/item/weapon/robot_module/security/general,
 	"Combat" 		= /obj/item/weapon/robot_module/security/combat,
 	"Engineering"	= /obj/item/weapon/robot_module/engineering/general,
 	"Janitor" 		= /obj/item/weapon/robot_module/janitor/general,
-	"Advanced Surgeon"		= /obj/item/weapon/robot_module/medical/surgeon_adv,
 	"Advanced Medical"		= /obj/item/weapon/robot_module/medical/crisis_adv,
 	"Advanced Engineering"	= /obj/item/weapon/robot_module/engineering/adv,
 	"Advanced Miner"		= /obj/item/weapon/robot_module/miner/adv
@@ -221,140 +219,6 @@ var/global/list/robot_modules = list(
 	..()
 	supported_upgrades += list(/obj/item/borg/upgrade/visor/thermal,/obj/item/borg/upgrade/visor/meson, /obj/item/borg/upgrade/bb_printer)
 
-/obj/item/weapon/robot_module/medical/surgeon
-	name = "surgeon robot module"
-	sprites = list(
-					"Default" = "robot-surgeon",
-					"Basic" = "Medbot",
-					"Advanced Droid" = "droid-medical",
-					"Needles" = "medicalrobot",
-					"Drone" = "drone-surgery",
-					"Doot" = "eyebot-medical"
-					)
-
-/obj/item/weapon/robot_module/medical/surgeon/New()
-	supported_upgrades += list(/obj/item/borg/upgrade/organ_printer)
-
-	src.modules += new /obj/item/device/flash(src)
-	src.modules += new /obj/item/weapon/crowbar(src)
-	src.modules += new /obj/item/weapon/extinguisher/mini(src)
-	src.modules += new /obj/item/device/healthanalyzer(src)
-	src.modules += new /obj/item/weapon/reagent_containers/borghypo/surgeon(src)
-	src.modules += new /obj/item/weapon/scalpel/manager(src)
-	src.modules += new /obj/item/weapon/hemostat(src)
-	src.modules += new /obj/item/weapon/retractor(src)
-	src.modules += new /obj/item/weapon/cautery(src)
-	src.modules += new /obj/item/weapon/bonegel(src)
-	src.modules += new /obj/item/weapon/FixOVein(src)
-	src.modules += new /obj/item/weapon/bonesetter(src)
-	src.modules += new /obj/item/weapon/circular_saw(src)
-	src.modules += new /obj/item/weapon/surgicaldrill(src)
-	src.modules += new /obj/item/weapon/organfixer/standard(src)
-	src.modules += new /obj/item/weapon/gripper/surgical(src)
-	src.modules += new /obj/item/weapon/reagent_containers/dna_sampler(src)
-	src.modules += new /obj/item/weapon/reagent_containers/syringe/borg(src)
-	src.modules += new /obj/item/roller_holder(src)
-	src.modules += new /obj/item/weapon/shockpaddles/robot(src)
-	src.modules += new /obj/item/robot_rack/medical/surgical(src)
-	src.emag = new /obj/item/weapon/reagent_containers/spray(src)
-	src.emag.reagents.add_reagent(/datum/reagent/acid/polyacid, 250)
-	src.emag.SetName("Polyacid spray")
-
-	var/datum/matter_synth/medicine = new /datum/matter_synth/medicine(10000)
-	synths += medicine
-
-	var/obj/item/stack/nanopaste/N = new /obj/item/stack/nanopaste(src)
-	var/obj/item/stack/medical/advanced/bruise_pack/B = new /obj/item/stack/medical/advanced/bruise_pack(src)
-	N.uses_charge = 1
-	N.charge_costs = list(1000)
-	N.synths = list(medicine)
-	B.uses_charge = 1
-	B.charge_costs = list(1000)
-	B.synths = list(medicine)
-	src.modules += N
-	src.modules += B
-
-	..()
-
-/obj/item/weapon/robot_module/medical/surgeon/respawn_consumable(mob/living/silicon/robot/R, amount)
-	..()
-	if(src.emag)
-		var/obj/item/weapon/reagent_containers/spray/PS = src.emag
-		PS.reagents.add_reagent(/datum/reagent/acid/polyacid, 5 * amount)
-
-	var/obj/item/weapon/organfixer/standard/OF = locate(/obj/item/weapon/organfixer/standard) in src.modules
-	OF.refill()
-
-/obj/item/weapon/robot_module/medical/surgeon_adv
-	name = "advanced surgeon robot module"
-	sprites = list(
-					"Default" = "robot-surgeon",
-					"Basic" = "Medbot",
-					"Advanced Droid" = "droid-medical",
-					"Needles" = "medicalrobot",
-					"Drone" = "drone-surgery",
-					"Doot" = "eyebot-medical"
-					)
-
-/obj/item/weapon/robot_module/medical/surgeon_adv/New()
-	supported_upgrades += list(/obj/item/borg/upgrade/organ_printer)
-
-	src.modules += new /obj/item/device/flash(src)
-	src.modules += new /obj/item/weapon/crowbar(src)
-	src.modules += new /obj/item/weapon/extinguisher/mini(src)
-	src.modules += new /obj/item/device/healthanalyzer(src)
-	src.modules += new /obj/item/weapon/autopsy_scanner(src)
-	src.modules += new /obj/item/weapon/reagent_containers/borghypo/surgeon_adv(src)
-	src.modules += new /obj/item/weapon/scalpel/manager(src)
-	src.modules += new /obj/item/weapon/hemostat/pico(src)
-	src.modules += new /obj/item/weapon/retractor(src)
-	src.modules += new /obj/item/weapon/cautery(src)
-	src.modules += new /obj/item/weapon/FixOVein/clot(src)
-	src.modules += new /obj/item/weapon/bonesetter/bone_mender(src)
-	src.modules += new /obj/item/weapon/circular_saw/plasmasaw(src)
-	src.modules += new /obj/item/weapon/surgicaldrill(src)
-	src.modules += new /obj/item/weapon/organfixer/advanced(src)
-	src.modules += new /obj/item/weapon/gripper/surgical(src)
-	src.modules += new /obj/item/weapon/reagent_containers/dna_sampler(src)
-	src.modules += new /obj/item/weapon/reagent_containers/syringe/borg(src)
-	src.modules += new /obj/item/weapon/shockpaddles/robot(src)
-	src.modules += new /obj/item/weapon/reagent_containers/dropper/industrial(src)
-	src.modules += new /obj/item/robot_rack/medical/surgical(src)
-	var/obj/item/weapon/reagent_containers/spray/cleaner/drone/SC = new /obj/item/weapon/reagent_containers/spray/cleaner/drone(src)
-	SC.reagents.add_reagent(/datum/reagent/space_cleaner,150)
-	src.modules += SC
-	src.emag = new /obj/item/weapon/reagent_containers/spray(src)
-	src.emag.reagents.add_reagent(/datum/reagent/acid/polyacid, 250)
-	src.emag.SetName("Polyacid spray")
-
-	var/datum/matter_synth/medicine = new /datum/matter_synth/medicine(20000)
-	synths += medicine
-
-	var/obj/item/stack/nanopaste/N = new /obj/item/stack/nanopaste(src)
-	var/obj/item/stack/medical/advanced/bruise_pack/B = new /obj/item/stack/medical/advanced/bruise_pack(src)
-	N.uses_charge = 1
-	N.charge_costs = list(1000)
-	N.synths = list(medicine)
-	B.uses_charge = 1
-	B.charge_costs = list(1000)
-	B.synths = list(medicine)
-	src.modules += N
-	src.modules += B
-	src.modules += new /obj/item/roller_holder(src)
-	..()
-
-/obj/item/weapon/robot_module/medical/surgeon_adv/respawn_consumable(mob/living/silicon/robot/R, amount)
-	..()
-	if(src.emag)
-		var/obj/item/weapon/reagent_containers/spray/PS = src.emag
-		PS.reagents.add_reagent(/datum/reagent/acid/polyacid, 5 * amount)
-
-	var/obj/item/weapon/reagent_containers/spray/cleaner/drone/SC = locate(/obj/item/weapon/reagent_containers/spray/cleaner/drone) in src.modules
-	SC.reagents.add_reagent(/datum/reagent/space_cleaner,10 * amount)
-
-	var/obj/item/weapon/organfixer/advanced/OF = locate(/obj/item/weapon/organfixer/advanced) in src.modules
-	OF.refill()
-
 /obj/item/weapon/robot_module/medical/crisis
 	name = "medical robot module"
 	sprites = list(
@@ -368,6 +232,7 @@ var/global/list/robot_modules = list(
 
 /obj/item/weapon/robot_module/medical/crisis/New()
 	supported_upgrades += list(/obj/item/borg/upgrade/blood_printer)
+	supported_upgrades += list(/obj/item/borg/upgrade/organ_printer)
 	src.modules += new /obj/item/device/flash(src)
 	src.modules += new /obj/item/weapon/crowbar(src)
 	src.modules += new /obj/item/weapon/extinguisher/mini(src)
@@ -377,7 +242,9 @@ var/global/list/robot_modules = list(
 	src.modules += new /obj/item/weapon/shockpaddles/robot(src)
 	src.modules += new /obj/item/weapon/reagent_containers/dropper(src)
 	src.modules += new /obj/item/weapon/reagent_containers/syringe/borg(src)
-	src.modules += new /obj/item/weapon/gripper/chemistry(src)
+	src.modules += new /obj/item/weapon/surgical_selector(src)
+	src.modules += new /obj/item/weapon/gripper/medical(src)
+	src.modules += new /obj/item/weapon/reagent_containers/dna_sampler(src)
 	src.modules += new /obj/item/taperoll/medical(src)
 	src.modules += new /obj/item/robot_rack/medical(src)
 	src.modules += new /obj/item/weapon/inflatable_dispenser/robot(src) // Allows usage of inflatables. Since they are basically robotic alternative to EMTs, they should probably have them.
@@ -391,6 +258,10 @@ var/global/list/robot_modules = list(
 	var/obj/item/stack/medical/ointment/O = new /obj/item/stack/medical/ointment(src)
 	var/obj/item/stack/medical/bruise_pack/B = new /obj/item/stack/medical/bruise_pack(src)
 	var/obj/item/stack/medical/splint/S = new /obj/item/stack/medical/splint(src)
+	var/obj/item/stack/nanopaste/N = new /obj/item/stack/nanopaste(src)
+	N.uses_charge = 1
+	N.charge_costs = list(1000)
+	N.synths = list(medicine)
 	O.uses_charge = 1
 	O.charge_costs = list(1000)
 	O.synths = list(medicine)
@@ -403,6 +274,7 @@ var/global/list/robot_modules = list(
 	src.modules += O
 	src.modules += B
 	src.modules += S
+	src.modules += N
 	src.modules += new /obj/item/roller_holder(src)
 
 	appointed_huds += list("Science")
@@ -420,6 +292,8 @@ var/global/list/robot_modules = list(
 	if(src.emag)
 		var/obj/item/weapon/reagent_containers/spray/PS = src.emag
 		PS.reagents.add_reagent(/datum/reagent/acid/polyacid, 5 * amount)
+	var/obj/item/weapon/surgical_selector/SEL = locate(/obj/item/weapon/surgical_selector) in src.modules
+	SEL.refill()
 
 /obj/item/weapon/robot_module/medical/crisis_adv
 	name = "advanced medical robot module"
@@ -434,7 +308,7 @@ var/global/list/robot_modules = list(
 
 /obj/item/weapon/robot_module/medical/crisis_adv/New()
 	supported_upgrades += list(/obj/item/borg/upgrade/blood_printer)
-
+	supported_upgrades += list(/obj/item/borg/upgrade/organ_printer)
 	src.modules += new /obj/item/device/flash(src)
 	src.modules += new /obj/item/weapon/crowbar(src)
 	src.modules += new /obj/item/weapon/extinguisher/mini(src)
@@ -443,10 +317,13 @@ var/global/list/robot_modules = list(
 	src.modules += new /obj/item/device/reagent_scanner/adv(src)
 	src.modules += new /obj/item/device/mass_spectrometer/adv(src)
 	src.modules += new /obj/item/weapon/reagent_containers/borghypo/crisis_adv(src)
+	src.modules += new /obj/item/weapon/autopsy_scanner(src)
+	src.modules += new /obj/item/weapon/gripper/medical(src)
+	src.modules += new /obj/item/weapon/surgical_selector/advanced(src)
+	src.modules += new /obj/item/weapon/reagent_containers/dna_sampler(src)
 	src.modules += new /obj/item/weapon/shockpaddles/robot(src)
 	src.modules += new /obj/item/weapon/reagent_containers/dropper/industrial(src)
 	src.modules += new /obj/item/weapon/reagent_containers/syringe/borg(src)
-	src.modules += new /obj/item/weapon/gripper/chemistry(src)
 	src.modules += new /obj/item/taperoll/medical(src)
 	src.modules += new /obj/item/robot_rack/medical(src)
 	src.modules += new /obj/item/weapon/inflatable_dispenser/robot(src) // Allows usage of inflatables. Since they are basically robotic alternative to EMTs, they should probably have them.
@@ -463,6 +340,10 @@ var/global/list/robot_modules = list(
 	var/obj/item/stack/medical/advanced/ointment/O = new /obj/item/stack/medical/advanced/ointment(src)
 	var/obj/item/stack/medical/advanced/bruise_pack/B = new /obj/item/stack/medical/advanced/bruise_pack(src)
 	var/obj/item/stack/medical/splint/S = new /obj/item/stack/medical/splint(src)
+	var/obj/item/stack/nanopaste/N = new /obj/item/stack/nanopaste(src)
+	N.uses_charge = 1
+	N.charge_costs = list(1000)
+	N.synths = list(medicine)
 	O.uses_charge = 1
 	O.charge_costs = list(1000)
 	O.synths = list(medicine)
@@ -475,6 +356,7 @@ var/global/list/robot_modules = list(
 	src.modules += O
 	src.modules += B
 	src.modules += S
+	src.modules += N
 	src.modules += new /obj/item/roller_holder(src)
 
 	appointed_huds += list("Science", "Meson")
@@ -495,6 +377,8 @@ var/global/list/robot_modules = list(
 
 	var/obj/item/weapon/reagent_containers/spray/cleaner/drone/SC = locate(/obj/item/weapon/reagent_containers/spray/cleaner/drone) in src.modules
 	SC.reagents.add_reagent(/datum/reagent/space_cleaner,10 * amount)
+	var/obj/item/weapon/surgical_selector/advanced/SEL = locate(/obj/item/weapon/surgical_selector/advanced) in src.modules
+	SEL.refill()
 
 /obj/item/weapon/robot_module/engineering
 	name = "engineering robot module"

@@ -3,10 +3,10 @@
 	name = "char pin"
 
 /datum/integrated_io/char/ask_for_pin_data(mob/user)
-	var/new_data = input(user, "Please type in one character.", "[src] char writing]") as text
+	var/new_data = input(user, "Please type in one character.","[src] char writing") as text
 	new_data = sanitize(new_data, 1, trim=0)
-	if(holder.check_interactivity(user) )
-		to_chat(user, "<span class='notice'>You input [new_data ? "new_data" : "NULL"] into the pin.</span>")
+	if(holder.check_interactivity(user) && new_data)
+		to_chat(user, SPAN("notice", "You input [new_data ? "new_data" : "NULL"] into the pin."))
 		write_data_to_pin(new_data)
 
 /datum/integrated_io/char/write_data_to_pin(new_data)
@@ -25,4 +25,4 @@
 	push_data()
 
 /datum/integrated_io/char/display_pin_type()
-	return IC_FORMAT_CHAR
+  return IC_FORMAT_CHAR

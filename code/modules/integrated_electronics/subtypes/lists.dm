@@ -126,7 +126,7 @@
 /obj/item/integrated_circuit/lists/filter/do_work()
 	var/list/input_list = get_pin_data(IC_INPUT, 1)
 	var/sample = get_pin_data(IC_INPUT, 2)
-	var/list/sample_list = islist(sample) ? sample : null
+	var/list/sample_list = islist(sample) ? uniquelist(sample) : null
 	var/list/output_list1 = input_list.Copy()
 	var/list/output_list2 = list()
 	var/list/output = list()
@@ -163,7 +163,7 @@
 	set_pin_data(IC_OUTPUT, 2, output_list2)
 	push_data()
 
-	!length(output_list1 ^ input_list) ? activate_pin(2) : activate_pin(3)
+	output_list1 ~! input_list ? activate_pin(2) : activate_pin(3)
 
 /obj/item/integrated_circuit/lists/listset
 	name = "list set circuit"
@@ -180,13 +180,9 @@
 
 /obj/item/integrated_circuit/lists/listset/do_work()
 	var/list/input_list = get_pin_data(IC_INPUT, 1)
-	var/list/output_list = list()
-	for(var/e in input_list)
-		if(e in output_list)
-			continue
-		output_list.Add(e)	
+	input_list = uniquelist(input_list)
 
-	set_pin_data(IC_OUTPUT, 1, output_list)
+	set_pin_data(IC_OUTPUT, 1, input_list)
 	push_data()
 	activate_pin(2)
 
@@ -281,7 +277,7 @@
 	var/item = get_pin_data(IC_INPUT, 3)
 
 	// Check if index is valid
-	if(!is_valid_index(index, input_list))
+	if(index > input_list.len)
 		set_pin_data(IC_OUTPUT, 1, input_list)
 		push_data()
 		activate_pin(3)
@@ -439,3 +435,27 @@
 	name = "medium list deconstructor"
 	desc = "This circuit will write the first eight entries of its input list, starting with the index, into the output values."
 	number_of_pins = 8
+
+
+// - Join circuit - //
+/obj/item/integrated_circuit/lists/join
+	name = "join circuit"
+	desc = "This circuit is a huge fan of shipping. It joins 2 lists together."
+	extended_desc = "Elements found in both lists will not be removed and can be found twice in the list."
+	inputs = list(
+		"first list" = IC_PINTYPE_LIST,
+		"second list" = IC_PINTYPE_LIST
+		)
+	outputs = list(
+		"joined list" = IC_PINTYPE_LIST
+		)
+	icon_state = "addition"
+	spawn_flags = IC_SPAWN_DEFAULT|IC_SPAWN_RESEARCH
+
+/obj/item/integrated_circuit/lists/join/do_work()
+	var/list/input_list = get_pin_data(IC_INPUT, 1)
+	var/list/input_list2 = get_pin_data(IC_INPUT, 2)
+
+	set_pin_data(IC_OUTPUT, 1, input_list+input_list2)
+	push_data()
+	activate_pin(2)

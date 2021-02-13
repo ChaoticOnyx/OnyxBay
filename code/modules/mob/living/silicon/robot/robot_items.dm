@@ -141,6 +141,84 @@
 	else
 		to_chat(user, "Harvesting \a [target] is not the purpose of this tool. \The [src] is for plants being grown.")
 
+// A special medical instrument for medical droid. Allow droid to do all operations by selecting "surgery tool" mode, e.g. IMS
+/obj/item/weapon/surgical_selector
+	name = "surgery tools selector"
+	desc = "An integrated system to do some kind of operation on living... something"
+	icon = 'icons/obj/surgery.dmi'
+	icon_state = "autoclave"
+	var/list/obj/item/weapon/surgery_items = list()
+	var/list/surgery_item_paths = list(
+		/obj/item/weapon/scalpel/manager,
+		/obj/item/weapon/hemostat,
+		/obj/item/weapon/retractor,
+		/obj/item/weapon/cautery,
+		/obj/item/weapon/bonegel,
+		/obj/item/weapon/FixOVein,
+		/obj/item/weapon/bonesetter,
+		/obj/item/weapon/circular_saw,
+		/obj/item/weapon/surgicaldrill,
+		/obj/item/weapon/organfixer/standard,
+	)
+	var/obj/item/weapon/selected_tool
+
+/obj/item/weapon/surgical_selector/proc/refill()
+	var/obj/item/weapon/organfixer/OF = locate(/obj/item/weapon/organfixer) in surgery_items
+	OF.refill()
+
+/obj/item/weapon/surgical_selector/Initialize()
+	. = ..()
+	for(var/path in surgery_item_paths)
+		surgery_items.Add(new path(src))
+
+/obj/item/weapon/surgical_selector/examine(mob/user)
+	. = ..()
+	. += "\nThe selected tool is [selected_tool ? selected_tool : "nothing"]!"
+
+/obj/item/weapon/surgical_selector/attack_self(mob/user)
+	select_tool(user)
+
+/obj/item/weapon/surgical_selector/resolve_attackby(atom/target, mob/living/user, params)
+	if(!target)
+		return
+	if(!isturf(target.loc))
+		return
+	if(target == user)
+		select_tool(user)
+		return
+	if(!selected_tool)
+		return
+	target.attackby(selected_tool, user)
+
+/obj/item/weapon/surgical_selector/proc/select_tool(mob/user)
+	var/list/obj/item/weapon/tool_images = list()
+	for(var/obj/item/weapon/tool in surgery_items)
+		var/image/img = image(icon = tool.icon, icon_state = tool.icon_state)
+		img.overlays = tool.overlays
+		tool_images[tool] = img
+	selected_tool = show_radial_menu(user, src, tool_images, radius = 42, require_near = TRUE, in_screen = TRUE)
+	to_chat(user, SPAN_NOTICE("You select to use [selected_tool ? selected_tool : "nothing"]"))
+
+/obj/item/weapon/surgical_selector/return_item()
+	return selected_tool
+
+/obj/item/weapon/surgical_selector/Destroy()
+	QDEL_NULL_LIST(surgery_items)
+	return ..()
+
+/obj/item/weapon/surgical_selector/advanced
+	surgery_item_paths = list(
+		/obj/item/weapon/scalpel/manager,
+		/obj/item/weapon/hemostat/pico,
+		/obj/item/weapon/retractor,
+		/obj/item/weapon/cautery,
+		/obj/item/weapon/FixOVein/clot,
+		/obj/item/weapon/bonesetter/bone_mender,
+		/obj/item/weapon/circular_saw/plasmasaw,
+		/obj/item/weapon/surgicaldrill,
+		/obj/item/weapon/organfixer/advanced,
+	)
+
 // A special tray for the service droid. Allow droid to pick up and drop items as if they were using the tray normally
 // Click on table to unload, click on item to load. Otherwise works identically to a tray.
 // Unlike the base item "tray", robotrays ONLY pick up food, drinks and condiments.
@@ -554,13 +632,11 @@
 		/obj/item/weapon/cane,
 		/obj/item/clothing/glasses/regular,
 		/obj/item/device/mmi,
-		/obj/item/weapon/paper
+		/obj/item/weapon/paper,
+		/obj/item/organ
 		)
 	interact_type = /obj/item/bodybag
 	capacity = 3
-/obj/item/robot_rack/medical/surgical/New()
-	..()
-	object_type += list(/obj/item/organ)
 
 /obj/item/robot_rack/general
 	name = "item rack"

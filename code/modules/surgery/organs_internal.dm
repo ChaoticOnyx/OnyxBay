@@ -54,10 +54,16 @@
 	var/obj/item/organ/internal/list/damaged_organs = list()
 	for(var/obj/item/organ/internal/I in target.internal_organs)
 		if(I && !(I.status & ORGAN_CUT_AWAY) && I.parent_organ == affected.organ_tag && !BP_IS_ROBOTIC(I))
-			damaged_organs |= I
+			var/image/img = image(icon = I.icon, icon_state = I.icon_state)
+			img.overlays = I.overlays
+			img.transform *= 1.5
+			img.pixel_y = -5
+			img.pixel_x = 3
+			damaged_organs[I] = img
 
-	var/obj/item/organ/internal/organ_to_fix = input(user, "Which organ do you want to repair?") as null|anything in damaged_organs
-	if(!organ_to_fix)
+	var/obj/item/organ/internal/organ_to_fix = show_radial_menu(user, target, damaged_organs, require_near = TRUE)
+
+	if(!organ_to_fix || (user.get_active_hand().return_item() != tool))
 		return FALSE
 	if(!organ_to_fix.can_recover())
 		to_chat(user, SPAN("notice", "The [organ_to_fix.name] is destroyed and can't be saved."))
@@ -250,10 +256,16 @@
 	var/obj/item/organ/internal/list/damaged_organs = list()
 	for(var/obj/item/organ/internal/I in target.internal_organs)
 		if(I && !(I.status & ORGAN_CUT_AWAY) && I.parent_organ == affected.organ_tag && !BP_IS_ROBOTIC(I))
-			damaged_organs |= I
+			var/image/img = image(icon = I.icon, icon_state = I.icon_state)
+			img.overlays = I.overlays
+			img.transform *= 1.5
+			img.pixel_y = -5
+			img.pixel_x = 3
+			damaged_organs[I] = img
 
-	var/obj/item/organ/internal/organ_to_fix = input(user, "Which organ do you want to repair?") as null|anything in damaged_organs
-	if(!organ_to_fix)
+	var/obj/item/organ/internal/organ_to_fix = show_radial_menu(user, target, damaged_organs, require_near = TRUE)
+
+	if(!organ_to_fix || (user.get_active_hand().return_item() != tool))
 		return FALSE
 	if(target.op_stage.current_organ)
 		to_chat(user, SPAN("warning", "You can't do this right now."))
@@ -360,10 +372,16 @@
 	var/list/attached_organs = list()
 	for(var/obj/item/organ/organ in target.internal_organs)
 		if(organ && !(organ.status & ORGAN_CUT_AWAY) && organ.parent_organ == target_zone)
-			attached_organs |= organ
+			var/image/img = image(icon = organ.icon, icon_state = organ.icon_state)
+			img.overlays = organ.overlays
+			img.transform *= 1.5
+			img.pixel_y = -5
+			img.pixel_x = 3
+			attached_organs[organ] = img
 
-	var/organ_to_remove = input(user, "Which organ do you want to separate?") as null|anything in attached_organs
-	if(!organ_to_remove)
+	var/organ_to_remove = show_radial_menu(user, target, attached_organs, require_near = TRUE)
+
+	if(!organ_to_remove || (user.get_active_hand().return_item() != tool))
 		return FALSE
 	if(target.op_stage.current_organ)
 		to_chat(user, SPAN("warning", "You can't do this right now."))
@@ -422,10 +440,16 @@
 	var/list/removable_organs = list()
 	for(var/obj/item/organ/internal/I in affected.implants)
 		if(I.status & ORGAN_CUT_AWAY)
-			removable_organs |= I
+			var/image/img = image(icon = I.icon, icon_state = I.icon_state)
+			img.overlays = I.overlays
+			img.transform *= 1.5
+			img.pixel_y = -5
+			img.pixel_x = 3
+			removable_organs[I] = img
 
-	var/organ_to_remove = input(user, "Which organ do you want to remove?") as null|anything in removable_organs
-	if(!organ_to_remove)
+	var/organ_to_remove = show_radial_menu(user, target, removable_organs, require_near = TRUE)
+
+	if(!organ_to_remove || (user.get_active_hand().return_item() != tool))
 		return FALSE
 	if(target.op_stage.current_organ)
 		to_chat(user, SPAN("warning", "You can't do this right now."))
@@ -591,10 +615,16 @@
 	var/list/attachable_organs = list()
 	for(var/obj/item/organ/I in affected.implants)
 		if(I && (I.status & ORGAN_CUT_AWAY))
-			attachable_organs |= I
+			var/image/img = image(icon = I.icon, icon_state = I.icon_state)
+			img.overlays = I.overlays
+			img.transform *= 1.5
+			img.pixel_y = -5
+			img.pixel_x = 3
+			attachable_organs[I] = img
 
-	var/obj/item/organ/organ_to_replace = input(user, "Which organ do you want to reattach?") as null|anything in attachable_organs
-	if(!organ_to_replace)
+	var/obj/item/organ/organ_to_replace = show_radial_menu(user, target, attachable_organs, require_near = TRUE)
+
+	if(!organ_to_replace || (user.get_active_hand().return_item() != tool))
 		return FALSE
 	if(target.op_stage.current_organ)
 		to_chat(user, SPAN("warning", "You can't do this right now."))
@@ -667,10 +697,16 @@
 	var/obj/item/organ/internal/list/dead_organs = list()
 	for(var/obj/item/organ/internal/I in target.internal_organs)
 		if(I && !(I.status & ORGAN_CUT_AWAY) && I.status & ORGAN_DEAD && I.parent_organ == affected.organ_tag && !BP_IS_ROBOTIC(I))
-			dead_organs |= I
+			var/image/img = image(icon = I.icon, icon_state = I.icon_state)
+			img.overlays = I.overlays
+			img.transform *= 1.5
+			img.pixel_y = -5
+			img.pixel_x = 3
+			dead_organs[I] = img
 
-	var/obj/item/organ/internal/organ_to_fix = input(user, "Which organ do you want to regenerate?") as null|anything in dead_organs
-	if(!organ_to_fix)
+	var/obj/item/organ/internal/organ_to_fix = show_radial_menu(user, target, dead_organs, require_near = TRUE)
+
+	if(!organ_to_fix || (user.get_active_hand().return_item() != tool))
 		return 0
 	if(target.op_stage.current_organ)
 		to_chat(user, SPAN("warning", "You can't do this right now."))
