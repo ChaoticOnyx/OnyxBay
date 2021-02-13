@@ -17,7 +17,7 @@
 	var/filter_type
 	complexity = 4
 	inputs = list( "input" = IC_PINTYPE_REF )
-	outputs = list("result" = IC_PINTYPE_BOOLEAN)
+	outputs = list("result" = IC_PINTYPE_BOOLEAN, "self ref" = IC_PINTYPE_SELFREF)
 
 /obj/item/integrated_circuit/filter/ref/may_pass(weakref/data)
 	if(!(filter_type && isweakref(data)))

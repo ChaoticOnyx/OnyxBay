@@ -75,7 +75,7 @@
 	activators = list("toggle light" = IC_PINTYPE_PULSE_IN)
 	spawn_flags = IC_SPAWN_DEFAULT|IC_SPAWN_RESEARCH
 	var/light_toggled = FALSE
-	var/light_brightness = 3
+	var/light_brightness = 6
 	var/light_rgb = "#FFFFFF"
 	power_draw_idle = 0 // Adjusted based on brightness.
 
@@ -156,13 +156,16 @@
 		var/selected_sound = sounds[ID]
 		if(!selected_sound)
 			return
-		vol = Clamp(vol ,0 , 100)
+		vol = Clamp(vol, 0, 100)
 		playsound(get_turf(src), selected_sound, vol, freq, -1)
 		var/atom/A = get_object()
 		A.investigate_log("played a sound ([selected_sound]) as [type].", INVESTIGATE_CIRCUIT)
 
 /obj/item/integrated_circuit/output/sound/on_data_written()
-	power_draw_per_use =  get_pin_data(IC_INPUT, 2) * 15
+	var/volume = get_pin_data(IC_INPUT, 2)
+	volume = Clamp(volume, 0, 100)
+	set_pin_data(IC_INPUT, 2, volume)
+	power_draw_per_use =  volume * 15
 
 /obj/item/integrated_circuit/output/sound/beeper
 	name = "beeper circuit"

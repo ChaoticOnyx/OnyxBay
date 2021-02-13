@@ -345,6 +345,31 @@
 	push_data()
 	activate_pin(2)
 
+/obj/item/integrated_circuit/input/view_filter
+	name = "view filter"
+	desc = "This circuit will filter every object in assembly view."
+	extended_desc = "The first pin is ref to filter, to see avaliable filters go to Filter category. The output will contents everything with filtering type"
+	inputs = list(
+		"filter" = IC_PINTYPE_REF
+	)
+	outputs = list(
+		"objects" = IC_PINTYPE_LIST
+	)
+	activators = list("scan" = IC_PINTYPE_PULSE_IN, "on scanned" = IC_PINTYPE_PULSE_OUT)
+	spawn_flags = IC_SPAWN_RESEARCH
+	power_draw_per_use = 30
+
+/obj/item/integrated_circuit/input/view_filter/do_work(ord)
+	var/list/objects = list()
+	var/obj/item/integrated_circuit/filter/ref/filter = get_pin_data(IC_INPUT, 1)
+	if(istype(filter) && assembly && (filter in assembly.assembly_components))
+		for(var/atom/A in view(get_turf(assembly)))
+			if(istype(A, filter.filter_type))
+				objects.Add(weakref(A))
+		set_pin_data(IC_OUTPUT, 1, objects)
+		push_data()
+		activate_pin(2)
+
 /obj/item/integrated_circuit/input/gene_scanner
 	name = "gene scanner"
 	desc = "This circuit will scan the target plant for traits and reagent genes. Output is non-associative."
@@ -411,7 +436,7 @@
 	var/atom/H = get_pin_data_as_type(IC_INPUT, 1, /atom)
 	var/turf/T = get_turf(src)
 
-	if(!istype(H) || !(H in view(T)))
+	if(!istype(H) || (!(H in view(T) || (H in assembly.loc)))) // if assembly located in same loc with object, we can scan it.
 		activate_pin(3)
 	else
 		set_pin_data(IC_OUTPUT, 1, H.name)
