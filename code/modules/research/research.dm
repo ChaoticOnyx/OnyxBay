@@ -48,6 +48,8 @@ research holder datum.
 	var/list/known_tech = list()			//List of locally known tech. Datum/tech go here.
 	var/list/possible_designs = list()		//List of all designs.
 	var/list/known_designs = list()			//List of available designs.
+	var/resc = 0                            //Research Score
+	var/researched_items = list()           //List of researched items.
 
 /datum/research/New()		//Insert techs into possible_tech here. Known_tech automatically updated.
 	for(var/T in typesof(/datum/tech) - /datum/tech)
@@ -116,10 +118,11 @@ research holder datum.
 
 //Refreshes the levels of a given tech.
 //Input: Tech's ID and Level; Output: null
-/datum/research/proc/UpdateTech(ID, level)
+/datum/research/proc/UpdateTech(ID, level, diresc=0)
 	for(var/datum/tech/KT in known_tech)
 		if(KT.id == ID && KT.level <= level)
 			KT.level = max(KT.level + 1, level - 1)
+			KT.diresc += round(diresc)
 	return
 
 // A simple helper proc to find the name of a tech with a given ID.
@@ -139,6 +142,7 @@ research holder datum.
 	var/desc = "description"			//General description of what it does and what it makes.
 	var/id = "id"						//An easily referenced ID. Must be alphanumeric, lower-case, and no symbols.
 	var/level = 1						//A simple number scale of the research level. Level 0 = Secret tech.
+	var/diresc = 0						//A simple number of the direction research scores aka DiReSc
 
 /datum/tech/materials
 	name = "Materials"

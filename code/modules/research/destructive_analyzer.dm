@@ -71,6 +71,11 @@ Note: Must be placed within 3 tiles of the R&D Console
 			to_chat(user, "<span class='notice'>You cannot deconstruct this item.</span>")
 			return
 
+		var/obj/item/weapon/I = O
+		if(linked_console.files.researched_items[I.name] >= 3)
+			to_chat(user, "<span class='notice'>This item is already researched totally.</span>")
+			return
+
 		busy = 1
 		loaded_item = O
 		user.drop_item()

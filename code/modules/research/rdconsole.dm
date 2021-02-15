@@ -435,6 +435,7 @@ won't update every console in existence) but it's more of a hassle to do. Also, 
 			PR.info = "<center><b>[station_name()] Fabricator Laboratory</b>"
 			PR.info += "<h2>[ (text2num(href_list["print"]) == 2) ? "Detailed" : null ] Fabricator Status Report</h2>"
 			PR.info += "<i>report prepared at [stationtime2text()] local time</i></center><br>"
+			PR.info += "ReSc: [files.resc]<HR>"
 			if(text2num(href_list["print"]) == 2)
 				PR.info += GetResearchListInfo()
 			else
@@ -453,14 +454,30 @@ won't update every console in existence) but it's more of a hassle to do. Also, 
 	CHECK_DESTROY
 	var/mob/user = W.resolve()
 	linked_destroy.busy = 0
-	if(!linked_destroy.loaded_item)
+	var/obj/item/weapon/loaded_item = linked_destroy.loaded_item
+	if(!loaded_item)
 		to_chat(user, "<span class='notice'>The destructive analyzer appears to be empty.</span>")
 		screen = 1.0
 		return
-	for(var/T in linked_destroy.loaded_item.origin_tech)
-		files.UpdateTech(T, linked_destroy.loaded_item.origin_tech[T])
-	if(linked_lathe && linked_destroy.loaded_item.matter) // Also sends salvaged materials to a linked protolathe, if any.
-		for(var/t in linked_destroy.loaded_item.matter)
+
+	var/k = 0.5
+	switch(files.researched_items[loaded_item.name])
+		if(1)
+			k = 0.3
+		if(2)
+			k = 0.2
+
+	var/average_origin_tech = 0
+	for(var/T in loaded_item.origin_tech)
+		files.UpdateTech(T, loaded_item.origin_tech[T], 2 ** loaded_item.origin_tech[T] * 10 * k)
+		average_origin_tech += loaded_item.origin_tech[T]
+
+	average_origin_tech /= loaded_item.origin_tech.len
+	files.resc += 2 ** average_origin_tech * 10 * k
+	++files.researched_items[loaded_item.name]
+
+	if(linked_lathe && loaded_item.matter) // Also sends salvaged materials to a linked protolathe, if any.
+		for(var/t in loaded_item.matter)
 			if(t in linked_lathe.materials)
 				linked_lathe.materials[t] += min(linked_lathe.max_material_storage - linked_lathe.TotalMaterials(), linked_destroy.loaded_item.matter[t] * linked_destroy.decon_mod)
 
@@ -497,6 +514,7 @@ won't update every console in existence) but it's more of a hassle to do. Also, 
 		dat += "<UL>"
 		dat +=  "<LI>Level: [T.level]"
 		dat +=  "<LI>Summary: [T.desc]"
+		dat +=  "<LI>DiReSc: [T.diresc]"
 		dat += "</UL>"
 	return dat
 
@@ -578,6 +596,7 @@ won't update every console in existence) but it's more of a hassle to do. Also, 
 		if(1.1) //Research viewer
 			dat += "<A href='?src=\ref[src];menu=1.0'>Main Menu</A> || "
 			dat += "<A href='?src=\ref[src];print=1'>Print This Page</A><HR>"
+			dat += "ReSc: [files.resc]<HR>"
 			dat += "Fabricator Learning Matrix Proficiency Levels:<BR><BR>"
 			dat += GetResearchLevelsInfo()
 			dat += "</UL>"
