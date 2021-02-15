@@ -376,6 +376,11 @@
 	icon_state = "sand_gray"
 	base_icon_state = "sand_gray"
 
+/turf/simulated/floor/natural/sand/darksand
+	rand_state = FALSE
+	icon_state = "asteroidplating"
+	icon = 'icons/turf/floors.dmi'
+
 /turf/simulated/floor/sand_floor
 	name = "sand floor"
 	icon = 'icons/turf/flooring/sand.dmi'
