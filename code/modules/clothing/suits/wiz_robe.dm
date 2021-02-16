@@ -22,11 +22,19 @@
 	desc = "It has WIZZARD written across it in sequins. Comes with a cool beard."
 	icon_state = "wizard-fake"
 	body_parts_covered = HEAD|FACE
+	wizard_garb = 0
+	siemens_coefficient = 1.0
+
+/obj/item/clothing/head/wizard/violetwizard
+	name = "Witch Hat"
+	desc = "You've dreamed to be a witch ever since you saw that show."
+	icon_state = "violetwizard"
+	siemens_coefficient = 0.8
 
 /obj/item/clothing/head/wizard/marisa
 	name = "Witch Hat"
 	desc = "Strange-looking hat-wear, makes you want to cast fireballs."
-	icon_state = "violetwizard"
+	icon_state = "marisa"
 	siemens_coefficient = 0.8
 
 /obj/item/clothing/head/wizard/magus
@@ -65,7 +73,7 @@
 	name = "wizard robe"
 	desc = "A magnificant, gem-lined robe that seems to radiate power."
 	icon_state = "wizard"
-	item_state = "wizrobe"
+	item_state = "wizard"
 	gas_transfer_coefficient = 0.01 // IT'S MAGICAL OKAY JEEZ +1 TO NOT DIE
 	permeability_coefficient = 0.01
 	armor = list(melee = 30, bullet = 20, laser = 20,energy = 20, bomb = 20, bio = 20, rad = 20)
@@ -77,14 +85,20 @@
 	name = "red wizard robe"
 	desc = "A magnificant, red, gem-lined robe that seems to radiate power."
 	icon_state = "redwizard"
-	item_state = "redwizrobe"
+	item_state = "redwizard"
 
 
 /obj/item/clothing/suit/wizrobe/marisa
 	name = "Witch Robe"
 	desc = "Magic is all about the spell power, ZE!"
+	icon_state = "marisa"
+	item_state = "marisa"
+
+/obj/item/clothing/suit/wizrobe/violetwizard
+	name = "Witch Robe"
+	desc = "Makes you want to wish you were a little girl."
 	icon_state = "violetwizard"
-	item_state = "marisarobe"
+	item_state = "violetwizard"
 
 /obj/item/clothing/suit/wizrobe/magusblue
 	name = "Magus Robe"
@@ -117,9 +131,10 @@
 	name = "wizard robe"
 	desc = "A rather dull, blue robe meant to mimick real wizard robes."
 	icon_state = "wizard-fake"
-	item_state = "wizrobe"
+	item_state = "wizard-fake"
 	armor = list(melee = 0, bullet = 0, laser = 0,energy = 0, bomb = 0, bio = 0, rad = 0)
 	siemens_coefficient = 1.0
+	wizard_garb = 0
 
 /obj/item/clothing/head/wizard/marisa/fake
 	name = "Witch Hat"
@@ -127,13 +142,14 @@
 	icon_state = "marisa"
 	armor = list(melee = 0, bullet = 0, laser = 0,energy = 0, bomb = 0, bio = 0, rad = 0)
 	siemens_coefficient = 1.0
+	wizard_garb = 0
 
 /obj/item/clothing/suit/wizrobe/marisa/fake
 	name = "Witch Robe"
 	desc = "Magic is all about the spell power, ZE!"
 	icon_state = "marisa"
-	item_state = "marisarobe"
+	item_state = "marisa"
 	body_parts_covered = UPPER_TORSO|LOWER_TORSO|ARMS|LEGS
 	armor = list(melee = 0, bullet = 0, laser = 0,energy = 0, bomb = 0, bio = 0, rad = 0)
 	siemens_coefficient = 1.0
-
+	wizard_garb = 0
