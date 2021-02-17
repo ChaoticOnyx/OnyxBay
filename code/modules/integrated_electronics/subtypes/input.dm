@@ -871,13 +871,13 @@
 	var/datum/signal/signal = new()
 	signal.transmission_method = 1
 	signal.data["tag"] = code
-	signal.data["command"] = html_encode(html_decode(command))
+	signal.data["command"] = json_encode(command)
 	signal.encryption = 0
 	return signal
 
 /obj/item/integrated_circuit/input/signaler/advanced/receive_signal(datum/signal/signal)
 	if(signal_good(signal))
-		set_pin_data(IC_OUTPUT,1,html_decode(signal.data["command"]))
+		set_pin_data(IC_OUTPUT,1,json_decode(signal.data["command"]))
 		push_data()
 		..()
 

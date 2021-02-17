@@ -128,6 +128,8 @@
 	A.shot_from = assembly.name
 	A.firer = assembly
 	A.launch(target, bodypart)
+	var/atom/AM = get_object()
+	AM.investigate_log("fired [installed_gun] to [A] with [src].", INVESTIGATE_CIRCUIT)
 	log_attack("[assembly] [any2ref(assembly)] has fired [installed_gun].", notify_admin = FALSE)
 	return A
 
@@ -231,6 +233,8 @@
 			dt = 15
 		addtimer(CALLBACK(attached_grenade, /obj/item/weapon/grenade.proc/activate), dt)
 		var/atom/holder = loc
+		var/atom/A = get_object()
+		A.investigate_log("activated grenade with [src].", INVESTIGATE_CIRCUIT)
 		log_and_message_admins("activated a grenade assembly. Last touches: Assembly: [holder.fingerprintslast] Circuit: [fingerprintslast] Grenade: [attached_grenade.fingerprintslast]")
 
 // These procs do not relocate the grenade, that's the callers responsibility
@@ -286,9 +290,13 @@
 		switch(get_pin_data(IC_INPUT, 2))
 			if(0)
 				TR.harvest()
+				var/atom/A = get_object()
+				A.investigate_log("harvested [TR] with [src].", INVESTIGATE_CIRCUIT)
 			if(1)
 				TR.weedlevel = 0
 				TR.update_icon()
+				var/atom/A = get_object()
+				A.investigate_log("uproot weeds [TR] with [src].", INVESTIGATE_CIRCUIT)
 			if(2)
 				if(TR.seed) //Could be that they're just using it as a de-weeder
 					TR.age = 0
@@ -301,6 +309,8 @@
 				TR.weedlevel = 0 //Has a side effect of cleaning up those nasty weeds
 				TR.dead = 0
 				TR.update_icon()
+				var/atom/A = get_object()
+				A.investigate_log("uproot plant [TR] with [src].", INVESTIGATE_CIRCUIT)
 			if(3)
 				if(!check_target(O))
 					activate_pin(2)
@@ -319,6 +329,8 @@
 						TR.lastcycle = world.time
 						O.forceMove(TR)
 						TR.update_icon()
+						var/atom/A = get_object()
+						A.investigate_log("plant [O] in [TR] with [src].", INVESTIGATE_CIRCUIT)
 	activate_pin(2)
 
 /obj/item/integrated_circuit/manipulation/seed_extractor
@@ -347,6 +359,8 @@
 		seeds.seed_type = SSplants.seeds[O.seed.name]
 		seeds.update_seed()
 		seed_output += weakref(seeds)
+	var/atom/A = get_object()
+	A.investigate_log("extracted seeds from [O] with [src].", INVESTIGATE_CIRCUIT)
 	qdel(O)
 
 	if(seed_output.len)
@@ -467,6 +481,8 @@
 					GLOB.moved_event.register(to_pull, src, .proc/check_pull) //Whenever the target moves, make sure we can still pull it!
 					GLOB.destroyed_event.register(to_pull, src, .proc/stop_pulling) //Stop pulling if it gets destroyed
 					GLOB.moved_event.register(acting_object, src, .proc/pull) //Make sure we actually pull it.
+					var/atom/A = get_object()
+					A.investigate_log("started pulling [pulling] with [src].", INVESTIGATE_CIRCUIT)
 			push_data()
 		if(3)
 			if(pulling)
@@ -507,6 +523,8 @@
 		GLOB.moved_event.unregister(AM, src)
 		AM.visible_message("\The [AM] stops pulling \the [pulling]")
 		GLOB.destroyed_event.unregister(pulling, src)
+		var/atom/A = get_object()
+		A.investigate_log("stopped pulling [pulling] with [src].", INVESTIGATE_CIRCUIT)
 		pulling = null
 		set_pin_data(IC_OUTPUT, 1, FALSE)
 		activate_pin(3)
@@ -588,6 +606,8 @@
 	log_attack("[assembly] \ref[assembly] has thrown [A].")
 	A.forceMove(get_turf(assembly))
 	A.throw_at(locate(x_abs, y_abs, T.z), range, 3)
+	var/atom/AM = get_object()
+	AM.investigate_log("threw [A] with [src] at X: [x_abs], y: [y_abs].", INVESTIGATE_CIRCUIT)
 
 /obj/item/integrated_circuit/manipulation/bluespace_rift
 	name = "bluespace rift generator"
@@ -631,6 +651,8 @@
 			new /obj/effect/portal(rift_location, destination, 30 SECONDS, 33)
 		else
 			playsound(src, get_sfx("spark"), 50, 1)
+	var/atom/A = get_object()
+	A.investigate_log("was opened rift with [src].", INVESTIGATE_CIRCUIT)
 
 // - inserter circuit - //
 /obj/item/integrated_circuit/manipulation/inserter
@@ -695,7 +717,9 @@
 		if(1)
 			var/new_name = sanitize(get_pin_data(IC_INPUT, 1))
 			if(new_name)
-				get_object().SetName(new_name)
+				var/atom/A = get_object()
+				A.investigate_log("was renamed with [src] into [new_name].", INVESTIGATE_CIRCUIT)
+				A.SetName(new_name)
 
 		else
 			set_pin_data(IC_OUTPUT, 1, assembly.name)
@@ -726,6 +750,8 @@
 		if(1)
 			var/new_desc = sanitize(get_pin_data(IC_INPUT, 1))
 			if(new_desc)
+				var/atom/A = get_object()
+				A.investigate_log("was redescribed with [src] into [new_desc].", INVESTIGATE_CIRCUIT)
 				assembly.desc = new_desc
 
 		else
@@ -752,6 +778,8 @@
 
 	switch(ord)
 		if(1)
+			var/atom/A = get_object()
+			A.investigate_log("was repained with [src].", INVESTIGATE_CIRCUIT)
 			assembly.detail_color = get_pin_data(IC_INPUT, 1)
 			assembly.update_icon()
 
@@ -837,6 +865,8 @@
 			return
 		var/status = do_int_surgery(target)
 		if(status)
+			var/atom/A = get_object()
+			A.investigate_log("made some operation on ([target]) with [src].", INVESTIGATE_CIRCUIT)
 			activate_pin(2)
 		else
 			activate_pin(3)
@@ -950,6 +980,9 @@
 			: \
 			SPAN("notice","\The [get_object()] whirrs. The screws are now exposed!")
 		)
+
+		var/atom/A = get_object()
+		A.investigate_log("The [A] was [lock_enabled ? "locked" : "unlocked"] with [src].", INVESTIGATE_CIRCUIT)
 
 		set_pin_data(IC_OUTPUT, 1, lock_enabled)
 		push_data()
