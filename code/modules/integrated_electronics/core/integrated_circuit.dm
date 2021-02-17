@@ -43,6 +43,11 @@ a creative player the means to solve many problems.  Circuits are held inside an
 	external_examine(user)
 	. = ..()
 
+/obj/item/integrated_circuit/attack_self(mob/user)
+	if(isrobot(user))
+		interact(user)
+	..()
+
 /obj/item/integrated_circuit/attack_hand(mob/user)
 	// if in assembly override putting src into user hands
 	if(istype(assembly))
@@ -51,7 +56,7 @@ a creative player the means to solve many problems.  Circuits are held inside an
 		..()
 
 // Can be called via electronic_assembly/attackby()
-/obj/item/integrated_circuit/proc/additem(var/obj/item/I, var/mob/living/user)
+/obj/item/integrated_circuit/proc/additem(obj/item/I, mob/living/user)
 	attackby(I, user)
 
 // This should be used when someone is examining while the case is opened.
@@ -89,6 +94,8 @@ a creative player the means to solve many problems.  Circuits are held inside an
 	if(assembly)
 		return assembly.check_interactivity(user)
 	else
+		if(isrobot(user))
+			return TRUE
 		return CanUseTopic(user)
 
 /obj/item/integrated_circuit/Initialize()
