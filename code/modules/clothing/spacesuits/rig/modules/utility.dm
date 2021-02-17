@@ -123,7 +123,7 @@
 
 	charges = list(
 		list("tricordrazine", "tricordrazine", /datum/reagent/tricordrazine,     80),
-		list("dramadol",      "tramadol",      /datum/reagent/tramadol,          80),
+		list("tramadol",      "tramadol",      /datum/reagent/tramadol,          80),
 		list("dexalin plus",  "dexalin plus",  /datum/reagent/dexalinp,          80),
 		list("antibiotics",   "antibiotics",   /datum/reagent/spaceacillin,      80),
 		list("antitoxins",    "antitoxins",    /datum/reagent/dylovene,          80),
