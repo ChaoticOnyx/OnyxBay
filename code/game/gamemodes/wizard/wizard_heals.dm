@@ -20,4 +20,3 @@
 		if(E.status & ORGAN_BROKEN && heal.heal_bones) // some calcium
 			E.status &= ~ORGAN_BROKEN
 			E.stage = 0
-d

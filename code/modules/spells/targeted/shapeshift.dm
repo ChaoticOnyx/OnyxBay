@@ -102,7 +102,8 @@
 	/mob/living/simple_animal/mouse,
 	/mob/living/simple_animal/corgi,
 	/mob/living/simple_animal/parrot,
-	/mob/living/simple_animal/hostile/giant_spider
+	/mob/living/simple_animal/hostile/giant_spider,
+	/mob/living/simple_animal/hostile/asteroid/goliath/alpha
 	)
 
 	share_damage = 0

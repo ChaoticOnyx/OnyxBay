@@ -7,6 +7,8 @@
 	invocation_type = SpI_SHOUT
 	time_between_channels = 150
 	range = 1
+	hand_state = "domination_spell"
+	hud_state = "wiz_dominate"
 	show_message = " puts his hand on target head"
 	spell_flags = NEEDSCLOTHES
 	level_max = list(Sp_TOTAL = 3, Sp_SPEED = 3, Sp_POWER = 0)
@@ -17,7 +19,7 @@
 /spell/hand/mind_control/cast(list/targets, mob/user, channel)
 	for(var/mob/M in targets)
 		if(M.get_active_hand())
-			to_chat(user, "<span class='warning'>You need an empty hand to cast this spell.</span>")
+			to_chat(user, SPAN_WARNING("You need an empty hand to cast this spell."))
 			return
 		var/obj/item/magic_hand/control_hand/H = new (src)
 		if(!M.put_in_active_hand(H))
@@ -28,6 +30,7 @@
 /spell/hand/mind_control/cast_hand(atom/a, mob/user)
 	var/mob/living/target = a
 	if (target == user)
+		to_chat(user,SPAN_DANGER("You tried to control yourself, thankfully spell didn't worked!"))
 		return // Prevents you from stupid thing
 	var/obj/item/weapon/implant/magical_imprint/magical_imprint = new(instructions)
 	magical_imprint.implant_in_mob(target, BP_HEAD)
@@ -116,7 +119,6 @@
 		var/obj/item/organ/external/affected = H.get_organ(target_zone)
 		if(affected)
 			part = affected
-			affected.implants += src
 		BITSET(H.hud_updateflag, IMPLOYAL_HUD)
 	forceMove(M)
 	imp_in = M
