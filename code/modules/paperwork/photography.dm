@@ -149,7 +149,12 @@ var/global/photo_count = 0
 	var/next_shot_time
 	var/icon_on = "camera"
 	var/icon_off = "camera_off"
+	var/photo_focuses = list(1, 3)
 	var/size = 3
+
+/obj/item/device/camera/detective
+	name = "detective camera"
+	photo_focuses = list(1, 3, 5, 7)
 
 /obj/item/device/camera/update_icon()
 	var/datum/extension/base_icon_state/bis = get_extension(src, /datum/extension/base_icon_state)
@@ -166,7 +171,7 @@ var/global/photo_count = 0
 /obj/item/device/camera/verb/change_size()
 	set name = "Set Photo Focus"
 	set category = "Object"
-	var/new_size = input("Photo Size", "Pick a size of resulting photo.") as null|anything in list(1,3)
+	var/new_size = input("Photo Size", "Pick a size of resulting photo.") as null|anything in photo_focuses
 	if(new_size)
 		size = new_size
 		to_chat(usr, "<span class='notice'>Camera will now take [size]x[size] photos.</span>")
