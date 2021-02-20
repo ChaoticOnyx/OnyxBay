@@ -119,7 +119,7 @@
 		stat("Hardware integrity", "[hardware_integrity()]%")
 		stat("Internal capacitor", "[backup_capacitor()]%")
 		
-		if(eyeobj):
+		if(eyeobj)
 			var/turf/T = get_turf(eyeobj)
 			stat("Current location", "([T.x]:[T.y]:[T.z])")
 	else
