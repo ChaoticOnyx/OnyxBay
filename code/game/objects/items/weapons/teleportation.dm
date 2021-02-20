@@ -229,11 +229,12 @@ Frequency:
 	var/mob/living/carbon/human/H = usr
 	if(..())
 		return 1
-	if (H.incapacitated() || loc != H)
+	if(H.incapacitated() || loc != H)
 		return
-	if (!ishuman(H))
+	if(!ishuman(H))
 		return 1
-	if ((H == src.loc || (in_range(src, H) && istype(src.loc, /turf))))
+
+	if((H == src.loc || (in_range(src, H) && istype(src.loc, /turf))))
 		H.set_machine(src)
 		if(!vcell)
 			return
@@ -453,6 +454,18 @@ Frequency:
 		return
 	playsound(T, 'sound/effects/phasein.ogg', 50, 1)
 	anim(T,M,'icons/mob/mob.dmi',,"phaseout",,M.dir)
+	
+/obj/item/weapon/vortex_manipulator/proc/check_unnallow_use(mob/user)
+	var/turf/T = get_turf(user)
+	for(var/obj/machinery/power/shield_generator/SG in world)
+		if(SG.check_flag(MODEFLAG_VORTEX_SUPPRESSOR) && SG.current_energy > 0)
+			var/turf/SG_turf = get_turf(SG)
+			if(T.z == SG_turf.z)
+				if(T.x in SG_turf.x - SG.field_radius to SG_turf.x + SG.field_radius)
+					if(T.y in SG_turf.y - SG.field_radius to SG_turf.y + SG.field_radius)
+						to_chat(usr, SPAN_WARNING("Your manipulator does not work in this area!"))
+						return 1
+
 /*
  * Special VM abilities:
  * - Local massive random (COMBAT)
@@ -465,6 +478,9 @@ Frequency:
  * User returns to his position after everyone's been teleported.
  */
 /obj/item/weapon/vortex_manipulator/proc/localmassiverandom(mob/user)
+	if(check_unnallow_use(user))
+		return
+
 	if(istype(vcell, /obj/item/weapon/cell/quantum))
 		var/obj/item/weapon/cell/quantum/Q = vcell
 		if(Q.partner)
@@ -496,6 +512,9 @@ Frequency:
 
 /obj/item/weapon/vortex_manipulator/proc/vortexannounce(mob/user, nonactive_announce = 0)
 	var/input = sanitize(input(user, "Enter what you want to announce"))
+	if(check_unnallow_use(user))
+		return
+
 	for(var/obj/item/weapon/vortex_manipulator/VM in GLOB.vortex_manipulators)
 		var/H = VM.get_owner()
 		if (ishuman(H) && (VM.active || nonactive_announce))
@@ -519,6 +538,7 @@ Frequency:
 /obj/item/weapon/vortex_manipulator/proc/localteleport(mob/user, malf_use, new_x = 0, new_y = 0)
 	if(!active)
 		malf_use = 1
+
 	var/list/possible_x = list(-5, -4, -3, -2, -1, 0, 1, 2, 3, 4, 5)
 	var/list/possible_y = list(-5, -4, -3, -2, -1, 0, 1, 2, 3, 4, 5)
 	var/A = pick(possible_x)
@@ -526,6 +546,9 @@ Frequency:
 	if(!malf_use)
 		A = input(user, "X-coordinate shift", "JEEROOONIMOOO") in possible_x
 		B = input(user, "Y-coordinate shift", "JEEROOONIMOOO") in possible_y
+	if(check_unnallow_use(user))
+		return
+
 	var/turf/starting = get_turf(user)
 	if((new_x + new_y) == 0)
 		new_x = starting.x + A
@@ -564,6 +587,9 @@ Frequency:
 	var/A = pick(beacon_locations)
 	if(!malf_use)
 		A = input(user, "Beacon to jump to", "JEEROOONIMOOO") in beacon_locations
+	if(check_unnallow_use(user))
+		return
+
 	var/area/thearea = beacon_locations[A]
 	if (user.incapacitated())
 		return
@@ -613,6 +639,9 @@ obj/item/weapon/vortex_manipulator/proc/bluespace_malf(mob/user)
 	var/A = pick(teleportlocs)
 	if(!malf_use)
 		A = input(user, "Area to jump to", "JEEROOONIMOOO") in teleportlocs
+	if(check_unnallow_use(user))
+		return
+
 	var/area/thearea = teleportlocs[A]
 	if (user.incapacitated())
 		return
