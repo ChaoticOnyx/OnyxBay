@@ -42,9 +42,12 @@
 	if(H)
 		if(H.gloves && (H.l_hand == loc || H.r_hand == loc))
 			var/obj/item/clothing/G = H.gloves
-			G.gunshot_residue = caliber
+			G.gunshot_residue += caliber
+		if(H.w_uniform)
+			var/obj/item/clothing/G = H.w_uniform
+			G.gunshot_residue += caliber
 		else
-			H.gunshot_residue = caliber
+			H.gunshot_residue += caliber
 
 	pixel_x = rand(-randpixel, randpixel)
 	pixel_y = rand(-randpixel, randpixel)
