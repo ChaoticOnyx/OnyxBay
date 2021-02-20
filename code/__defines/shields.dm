@@ -41,6 +41,7 @@
 #define MODEFLAG_MODULATE 256
 #define MODEFLAG_MULTIZ 512
 #define MODEFLAG_EM 1024
+#define MODEFLAG_VORTEX_SUPPRESSOR 2048
 
 // Return codes for shield hits.
 #define SHIELD_ABSORBED 1			// The shield has completely absorbed the hit
