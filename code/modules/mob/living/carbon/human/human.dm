@@ -961,7 +961,7 @@
 
 /mob/living/carbon/human/clean_blood(clean_feet)
 	.=..()
-	gunshot_residue = null
+	gunshot_residue = list()
 	if(clean_feet && !shoes)
 		feet_blood_color = null
 		feet_blood_DNA = null
