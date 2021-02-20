@@ -4,7 +4,7 @@
 	var/flash_protection = FLASH_PROTECTION_NONE	// Sets the item's level of flash protection.
 	var/tint = TINT_NONE							// Sets the item's level of visual impairment tint.
 	var/list/species_restricted = list("exclude", SPECIES_NABBER) //Only these species can wear this kit.
-	var/gunshot_residue //Used by forensics.
+	var/list/gunshot_residue = list() //Used by forensics.
 
 	var/list/accessories = list()
 	var/list/valid_accessory_slots
@@ -47,7 +47,7 @@
 // Aurora forensics port.
 /obj/item/clothing/clean_blood()
 	. = ..()
-	gunshot_residue = null
+	gunshot_residue = list()
 
 /obj/item/clothing/proc/get_fibers()
 	. = "material from \a [name]"
