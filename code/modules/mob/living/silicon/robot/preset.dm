@@ -11,6 +11,7 @@
 	spawn_sound = 'sound/mecha/nominalsyndi.ogg'
 	cell = /obj/item/weapon/cell/super
 	pitch_toggle = 0
+	custom_sprite = FALSE // presets robots must not have custom sprites.
 
 /mob/living/silicon/robot/combat
 	lawupdate = 0
@@ -20,8 +21,10 @@
 	spawn_sound = 'sound/mecha/nominalsyndi.ogg'
 	cell = /obj/item/weapon/cell/super
 	pitch_toggle = 0
+	custom_sprite = FALSE // presets robots must not have custom sprites.
 
 /mob/living/silicon/robot/combat/nt
 	laws = /datum/ai_laws/nanotrasen_aggressive
 	idcard = /obj/item/weapon/card/id/centcom/ERT
 	silicon_radio = /obj/item/device/radio/borg/ert
+	custom_sprite = FALSE // presets robots must not have custom sprites.

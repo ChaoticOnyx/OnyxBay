@@ -1,86 +1,120 @@
 /* Used for whether the AI can use a hologram. Mostly self-documenting.
 * requires_malf: will display the malf hologram overlay and requires malf mode to be active.
 * icon_colorize: if false, the hologram will be decolorized.
+* ckey: ckey of player that allows to use this hologram. None makes it allowed to all players.
 */
-/decl/ai_holo
+
+GLOBAL_LIST_INIT(AI_holos, init_subtypes(/datum/ai_holo))
+/datum/ai_holo
 	var/requires_malf = FALSE
 	var/icon = 'icons/mob/hologram.dmi'
 	var/icon_state = "icon_state"
 	var/icon_colorize = FALSE
 	var/name
+	var/ckey
 
 
-/decl/ai_holo/proc/may_be_used_by_ai(mob/living/silicon/ai/AI)
-	return !requires_malf || AI.is_malf_or_traitor()
+/datum/ai_holo/proc/may_be_used_by_ai(mob/living/silicon/ai/AI)
+	var/allowed = !requires_malf || AI.is_malf_or_traitor()
+	if(ckey)
+		if(AI.ckey && AI.ckey != ckey)
+			allowed = FALSE
+	return allowed
 
-/decl/ai_holo/New()
-	..()
-	name = icon_state
+/datum/ai_holo/New(name, icon, icon_state, icon_colorize = FALSE, requires_malf = FALSE)
+	src.icon = icon || src.icon
+	src.icon_state = icon_state || src.icon_state
+	src.name = name || src.icon_state
+	src.icon_colorize = icon_colorize
+	src.requires_malf = src.requires_malf || requires_malf
 
-/decl/ai_holo/default
+/hook/startup/proc/load_ai_holos_custom_sprites()
+	if(CUSTOM_ITEM_AI_HOLO)
+		var/config_file = file2text("config/custom_sprites.txt")
+		var/list/lines = splittext(config_file, "\n")
+
+		robot_custom_icons = list()
+		for(var/line in lines)
+			if(findtext(line, "#")) // don't mess with comms.
+				continue
+			//split entry into ckey and real_name
+			var/split_idx = findtext(line, "|") //this works if ckey cannot contain dashes, and findtext starts from the beginning
+			if(!split_idx || split_idx == length(line))
+				continue //bad entry
+
+			var/ckey = copytext(line, 1, split_idx)
+			var/real_name = copytext(line, split_idx+1)
+
+			var/datum/ai_holo/H = new(real_name, CUSTOM_ITEM_AI_HOLO, real_name, TRUE, FALSE)
+			H.ckey = ckey
+
+			GLOB.AI_holos.Add(H)
+	return 1
+
+/datum/ai_holo/default
 	icon_state = "Default"
 
-/decl/ai_holo/default_slim
+/datum/ai_holo/default_slim
 	icon_state = "Default-Slim"
 
-/decl/ai_holo/face
+/datum/ai_holo/face
 	icon_state = "Face"
 
-/decl/ai_holo/carp
+/datum/ai_holo/carp
 	icon_state = "Carp"
 
-/decl/ai_holo/solgov
+/datum/ai_holo/solgov
 	icon_state = "SolGov"
 
-/decl/ai_holo/cursor
+/datum/ai_holo/cursor
 	icon_state = "Cursor"
 
-/decl/ai_holo/caution
+/datum/ai_holo/caution
 	icon_state = "Caution"
 
-/decl/ai_holo/chevrons
+/datum/ai_holo/chevrons
 	icon_state = "Chevrons"
 
-/decl/ai_holo/dronum
+/datum/ai_holo/dronum
 	icon_state = "Dronum"
 
-/decl/ai_holo/dronus
+/datum/ai_holo/dronus
 	icon_state = "Dronus"
 
-/decl/ai_holo/question
+/datum/ai_holo/question
 	icon_state = "Question"
 
-/decl/ai_holo/singularity
+/datum/ai_holo/singularity
 	icon_state = "Singularity"
 
-/decl/ai_holo/clippy
+/datum/ai_holo/clippy
 	requires_malf = TRUE
 	icon_state = "malf-clippy"
 
-/decl/ai_holo/malfcursor
+/datum/ai_holo/malfcursor
 	requires_malf = TRUE
 	icon_state = "malf-cursor"
 
-/decl/ai_holo/malfdronus
+/datum/ai_holo/malfdronus
 	requires_malf = TRUE
 	icon_colorize = TRUE
 	icon_state = "malf-Dronus"
 
-/decl/ai_holo/missingno
+/datum/ai_holo/missingno
 	requires_malf = TRUE
 	icon_colorize = TRUE
 	icon_state = "malf-missingno"
 
-/decl/ai_holo/malfsingularity
+/datum/ai_holo/malfsingularity
 	icon_state = "malf-singularity"
 	requires_malf = TRUE
 	icon_colorize = TRUE
 
-/decl/ai_holo/malftcc
+/datum/ai_holo/malftcc
 	icon_state = "malf-TCC"
 	requires_malf = TRUE
 	icon_colorize = TRUE
 
-/decl/ai_holo/catalyst
+/datum/ai_holo/catalyst
 	icon_state = "malf-catalyst"
 	requires_malf = TRUE

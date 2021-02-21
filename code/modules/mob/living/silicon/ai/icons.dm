@@ -15,7 +15,7 @@
 	src.dead_icon     = dead_icon  || src.dead_icon
 	src.dead_light    = dead_light || src.dead_light
 
-/datum/ai_icon/proc/may_used_by_ai(mob/user)
+/datum/ai_icon/proc/may_used_by_ai(mob/living/silicon/ai/AI)
 	return TRUE
 
 /datum/ai_icon/malf

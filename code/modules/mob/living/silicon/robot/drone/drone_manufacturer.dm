@@ -62,6 +62,19 @@
 	if(produce_drones && drone_progress >= 100 && isghost(user) && config.allow_drone_spawn && count_drones() < config.max_maint_drones)
 		. += "\n<BR><B>A drone is prepared. Select 'Join As Drone' from the Ghost tab to spawn as a maintenance drone.</B>"
 
+/obj/machinery/drone_fabricator/proc/handle_customs(/mob/living/silicon/robot/drone/D, client/player)
+	/*
+	* How to use this thing.
+	* 1. make check if player.ckey equals with player ckey
+	* 2. if true then change D.icon_state to custom sprite (I recomend you to name it in dmi like repairbot-N, where N - player ckey) and then call proc D.update_icon()
+	* That's all, folks!
+	* Have a very safe day.
+	*/
+	// there're start custom sprites code.
+
+	// there're end custom sprites code.
+	return TRUE
+
 /obj/machinery/drone_fabricator/proc/create_drone(client/player)
 
 	if(stat & NOPOWER)
@@ -84,6 +97,7 @@
 		if(player.mob && player.mob.mind) player.mob.mind.reset()
 		new_drone.transfer_personality(player)
 
+	handle_customs(new_drone, player)
 	return new_drone
 
 /mob/observer/ghost/verb/join_as_drone()

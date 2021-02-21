@@ -91,7 +91,9 @@
 
 #define CUSTOM_ITEM_OBJ 'icons/obj/custom_items_obj.dmi'
 #define CUSTOM_ITEM_MOB null
-#define CUSTOM_ITEM_SYNTH null
+#define CUSTOM_ITEM_ROBOTS null
+#define CUSTOM_ITEM_AI null
+#define CUSTOM_ITEM_AI_HOLO null
 
 #define WALL_CAN_OPEN 1
 #define WALL_OPENING 2

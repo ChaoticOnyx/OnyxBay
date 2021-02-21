@@ -55,7 +55,7 @@ var/list/ai_verbs_default = list(
 	var/list/connected_robots = list()
 	var/aiRestorePowerRoutine = 0
 	var/viewalerts = 0
-	var/icon/holo_icon//Blue hologram. Face is assigned when AI is created.
+	var/icon/holo_icon //Blue hologram. Face is assigned when AI is created.
 	var/icon/holo_icon_longrange //Yellow hologram.
 	var/holo_icon_malf = FALSE // for new hologram system
 	var/obj/item/device/pda/ai/aiPDA = null
@@ -237,36 +237,36 @@ var/list/ai_verbs_default = list(
 	var/list/custom_icons = list()
 	LAZYSET(custom_ai_icons_by_ckey_and_name, "[ckey][real_name]", custom_icons)
 
-	if (CUSTOM_ITEM_SYNTH)
+	if (CUSTOM_ITEM_AI)
 		var/file = file2text("config/custom_sprites.txt")
 		var/lines = splittext(file, "\n")
 
 		var/custom_index = 1
-		var/custom_icon_states = icon_states(CUSTOM_ITEM_SYNTH)
+		var/list/custom_icon_states = icon_states(CUSTOM_ITEM_AI)
 
 		for(var/line in lines)
-		// split & clean up
+			if(findtext(line, "#")) // don't mess with comms.
+				continue
+			// split & clean up
 			var/list/Entry = splittext(line, ":")
 			for(var/i = 1 to Entry.len)
 				Entry[i] = trim(Entry[i])
 
 			if(Entry.len < 2)
 				continue
-			if(Entry.len == 2) // This is to handle legacy entries
-				Entry[++Entry.len] = Entry[1]
 
-			if(Entry[1] == src.ckey && Entry[2] == src.real_name)
-				var/alive_icon_state = "[Entry[3]]-ai"
-				var/dead_icon_state = "[Entry[3]]-ai-crash"
+			if(Entry[1] == src.ckey)
+				var/alive_icon_state = "[Entry[2]]-ai"
+				var/dead_icon_state = "[Entry[2]]-ai-crash"
 
 				if(!(alive_icon_state in custom_icon_states))
-					to_chat(src, "<span class='warning'>Custom display entry found but the icon state '[alive_icon_state]' is missing!</span>")
+					to_chat(src, SPAN_WARNING("Custom display entry found but the icon state '[alive_icon_state]' is missing! Please report this to local developer."))
 					continue
 
 				if(!(dead_icon_state in custom_icon_states))
 					dead_icon_state = ""
 
-				selected_sprite = new /datum/ai_icon("Custom Icon [custom_index++]", alive_icon_state, dead_icon_state, COLOR_WHITE, CUSTOM_ITEM_SYNTH)
+				selected_sprite = new /datum/ai_icon("Custom Icon [custom_index++]", alive_icon_state, dead_icon_state, COLOR_WHITE, CUSTOM_ITEM_AI)
 				custom_icons += selected_sprite
 	update_icon()
 
@@ -555,12 +555,11 @@ var/list/ai_verbs_default = list(
 
 	else
 		var/list/hologramsAICanUse = list()
-		var/holograms_by_type = decls_repository.get_decls_of_subtype(/decl/ai_holo)
-		for (var/holo_type in holograms_by_type)
-			var/decl/ai_holo/holo = holograms_by_type[holo_type]
-			if (holo.may_be_used_by_ai(src))
-				hologramsAICanUse.Add(holo)
-		var/decl/ai_holo/choice = input("Please select a hologram:") as null|anything in hologramsAICanUse
+		for(var/datum/ai_holo/holo in GLOB.AI_holos)
+			if(holo.may_be_used_by_ai(src))
+				hologramsAICanUse[holo.name] = holo
+		var/choiced = input("Please select a hologram:") as null|anything in hologramsAICanUse
+		var/datum/ai_holo/choice = hologramsAICanUse[choiced]
 		if(choice)
 			qdel(holo_icon)
 			qdel(holo_icon_longrange)
