@@ -1226,7 +1226,7 @@
 	icon_state = "chapeloffice"
 
 /area/chapel/crematorium
-	name = "\improper Сrematorium"
+	name = "\improper Crematorium"
 	icon_state = "chapelcrematorium"
 
 /area/lawoffice
