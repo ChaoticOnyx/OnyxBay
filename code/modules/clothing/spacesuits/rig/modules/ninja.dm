@@ -89,11 +89,19 @@
 		to_chat(H, "<span class='warning'>You cannot teleport out of your current location.</span>")
 		return 0
 
-	var/turf/T
+
+
+	var/turf/T = get_turf(H)
+	if(T.check_unallow_outgoing())
+		return
+
 	if(target)
 		T = get_turf(target)
 	else
 		T = get_teleport_loc(get_turf(H), H, 6, 1, 1, 1)
+
+	if(T.check_unallow_incoming())
+		return
 
 	if(!T)
 		to_chat(H, "<span class='warning'>No valid teleport target found.</span>")
