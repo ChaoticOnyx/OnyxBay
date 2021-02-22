@@ -142,8 +142,6 @@
 	mitigation_physical = between(0, mitigation_physical - MITIGATION_LOSS_PASSIVE, mitigation_max)
 
 	upkeep_power_usage = round((field_segments.len - damaged_segments.len) * ENERGY_UPKEEP_PER_TILE * upkeep_multiplier)
-	if(check_flag(MODEFLAG_VORTEX_SUPPRESSOR))
-		upkeep_power_usage += round((((field_radius * 2) ** 2) / 2) * ENERGY_UPKEEP_PER_TILE * 50)
 
 	if(powernet && (running == SHIELD_RUNNING) && !input_cut)
 		var/energy_buffer = 0
