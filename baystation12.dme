@@ -2633,7 +2633,6 @@
 #include "code\modules\vortex_suppressor\datum\modes.dm"
 #include "code\modules\vortex_suppressor\obj\circuitboard.dm"
 #include "code\modules\vortex_suppressor\obj\machinery.dm"
-#include "code\modules\vortex_suppressor\obj\supply_pack.dm"
 #include "code\modules\vortex_suppressor\obj\turf.dm"
 #include "code\modules\VR\VR_field.dm"
 #include "code\modules\VR\vr_gamepad.dm"
