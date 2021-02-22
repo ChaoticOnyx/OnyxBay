@@ -93,7 +93,7 @@
 #define CUSTOM_ITEM_MOB null
 #define CUSTOM_ITEM_ROBOTS null
 #define CUSTOM_ITEM_AI null
-#define CUSTOM_ITEM_AI_HOLO null
+#define CUSTOM_ITEM_AI_HOLO 'icons/mob/ai_custom/ai_holos.dmi'
 
 #define WALL_CAN_OPEN 1
 #define WALL_OPENING 2
