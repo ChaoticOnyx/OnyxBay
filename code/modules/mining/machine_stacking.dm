@@ -62,6 +62,11 @@
 
 	return
 
+/obj/machinery/mineral/stacking_unit_console/east
+	name = "stacking machine console"
+	icon_state = "console"
+	machinedir = EAST
+
 /**********************Mineral stacking unit**************************/
 
 

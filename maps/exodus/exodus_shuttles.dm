@@ -152,6 +152,44 @@
 	landmark_tag = "nav_cargo_elevator_bottom"
 	autoset = 1
 
+//Mining Mothership
+
+/datum/shuttle/autodock/multi/antag/mining
+	name = "Creaker"
+	warmup_time = 15
+	destination_tags = list(
+		"nav_creaker_station",
+		"nav_creaker_north",
+		"nav_creaker_west",
+		"nav_creaker_east",
+		)
+	shuttle_area = /area/creaker/station
+	dock_target = "mining_vessel"
+	current_location = "nav_creaker_station"
+	home_waypoint = "nav_creaker_station"
+
+/obj/effect/shuttle_landmark/creaker/station
+	name = "Mining Ship Dock"
+	landmark_tag = "nav_creaker_station"
+	docking_controller = "creaker_dock_airlock"
+	base_area = /area/space
+	base_turf = /turf/simulated/floor/asteroid
+
+/obj/effect/shuttle_landmark/creaker/north
+	name = "northern asteroid field"
+	landmark_tag = "nav_creaker_north"
+	autoset = 1
+
+/obj/effect/shuttle_landmark/creaker/west
+	name = "western asteroid field"
+	landmark_tag = "nav_creaker_west"
+	autoset = 1
+
+/obj/effect/shuttle_landmark/creaker/east
+	name = "eastern asteroid field"
+	landmark_tag = "nav_creaker_east"
+	autoset = 1
+
 //Research Shuttle
 
 /datum/shuttle/autodock/ferry/research

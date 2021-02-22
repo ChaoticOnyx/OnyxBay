@@ -706,7 +706,7 @@
 	name = "old light bulb"
 	desc = "Old type of light bulbs, almost not being used at the station."
 	base_state = "lold_bulb"
-	brightness_range = 3
+	brightness_range = 5
 	brightness_power = 3
 	brightness_color = "#ec8b2f"
 	random_tone = FALSE
