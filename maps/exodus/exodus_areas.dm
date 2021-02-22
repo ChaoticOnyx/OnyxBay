@@ -967,6 +967,45 @@
 	name = "\improper Central Primary Hallway"
 	icon_state = "hallC3"
 
+/area/hallway/primary/frontier
+	name = "\improper Central Hallway"
+	icon_state = "hallC1"
+
+/area/hallway/primary/frontier/ring_north
+	name = "\improper Ring Hallway - North"
+	icon_state = "hallF"
+
+/area/hallway/primary/frontier/ring_south
+	name = "\improper Ring Hallway - South"
+	icon_state = "hallP"
+
+/area/hallway/primary/frontier/central_mideast
+	name = "\improper Central Hallway - Mideast"
+	icon_state = "hallC2"
+
+/area/hallway/primary/frontier/central_east
+	name = "\improper Central Hallway - East"
+	icon_state = "hallC2"
+
+/area/hallway/primary/frontier/central_midwest
+	name = "\improper Central Hallway - Midwest"
+	icon_state = "hallC3"
+
+/area/hallway/primary/frontier/central_west
+	name = "\improper Central Hallway - West"
+	icon_state = "hallC3"
+
+/area/hallway/primary/frontier/brighall
+	name = "\improper Brig Hallway"
+	icon_state = "security"
+
+/area/hallway/primary/frontier/dormhall
+	name = "\improper Dormitory Hallway"
+	icon_state = "Sleep"
+
+
+
+
 /area/hallway/secondary/exit
 	name = "\improper Escape Shuttle Hallway"
 	icon_state = "escape"
@@ -1024,6 +1063,14 @@
 /area/crew_quarters/sleep3
 	name = "\improper Dormitories Hallway West"
 	icon_state = "Sleep"
+
+/area/crew_quarters/sleep/lobby
+	name = "\improper Dormitory Lobby"
+	icon_state = "Sleep"
+
+/area/crew_quarters/sleep/cave
+	name = "\improper Dormitory Cave"
+	icon_state = "explored"
 
 /area/crew_quarters/underdorm
 	name = "\improper Underground Dormitories"
@@ -1255,6 +1302,10 @@
 	name = "\improper Atmospherics"
 	icon_state = "engineering_break"
 
+/area/engineering/eva_airlock
+	name = "\improper Engineering Airlock"
+	icon_state = "engineering_break"
+
 /area/engineering/atmos_monitoring
 	name = "\improper Atmospherics Monitoring Room"
 	icon_state = "engine_monitoring"
@@ -1473,6 +1524,9 @@
 	name = "\improper Security - Prison Wing Dormitory"
 	icon_state = "sec_prison"
 
+/area/security/prison/monitoring
+	name = "\improper Security - Prison Wing Monitoring"
+
 /area/security/prison/prison_break()
 	for(var/obj/structure/closet/secure_closet/brig/temp_closet in src)
 		temp_closet.locked = 0
@@ -1528,6 +1582,10 @@
 
 /area/hydroponics/lower
 	name = "\improper Lower Hydroponics"
+	icon_state = "garden"
+
+/area/hydroponics/biodome
+	name = "\improper Central Biodome"
 	icon_state = "garden"
 
 

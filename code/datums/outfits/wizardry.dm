@@ -25,3 +25,9 @@
 	head = /obj/item/clothing/head/wizard/marisa
 	suit = /obj/item/clothing/suit/wizrobe/marisa
 	shoes = /obj/item/clothing/shoes/sandal/marisa
+
+/decl/hierarchy/outfit/wizard/violetwizard
+	name = "Wizard - Akko"
+	head = /obj/item/clothing/head/wizard/violetwizard
+	suit = /obj/item/clothing/suit/wizrobe/violetwizard
+	shoes = /obj/item/clothing/shoes/sandal/marisa

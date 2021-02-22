@@ -196,9 +196,9 @@
 
 /decl/hierarchy/supply_pack/miscellaneous/witch
 	name = "Witch costume"
-	contains = list(/obj/item/clothing/suit/wizrobe/marisa,
+	contains = list(/obj/item/clothing/suit/wizrobe/marisa/fake,
 					/obj/item/clothing/shoes/sandal,
-					/obj/item/clothing/head/wizard/marisa,
+					/obj/item/clothing/head/wizard/marisa/fake,
 					/obj/item/weapon/staff/broom)
 	cost = 20
 	containername = "\improper Witch costume"
