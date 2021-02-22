@@ -9,7 +9,7 @@
 	range = 1
 	hand_state = "domination_spell"
 	hud_state = "wiz_dominate"
-	show_message = " puts his hand on target head"
+	show_message = "<span class = 'danger'> puts his hand on target head</span>"
 	spell_flags = NEEDSCLOTHES
 	level_max = list(Sp_TOTAL = 3, Sp_SPEED = 3, Sp_POWER = 0)
 	spell_delay = 3000

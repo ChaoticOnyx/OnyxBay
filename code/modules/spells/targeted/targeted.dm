@@ -142,7 +142,7 @@ Targeted spells have two useful flags: INCLUDEUSER and SELECTABLE. These are exp
 	to_chat(target, "sda")
 	if(ishuman(target))
 		var/mob/living/carbon/human/H = target
-		H.shizard_heal(src)
+		H.wizard_heal(src)
 		H.adjustToxLoss(amt_dam_tox)
 		//H.heal_organ_damage(amt_organ, amt_organ)
 		//H.regenerate_blood(amt_blood)
