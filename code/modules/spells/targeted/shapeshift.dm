@@ -98,12 +98,11 @@
 	name = "Baleful Polymorth"
 	desc = "This spell transforms its target into a small, furry animal."
 	feedback = "BP"
+	critfailchance = 10
 	possible_transformations = list(/mob/living/simple_animal/lizard,
 	/mob/living/simple_animal/mouse,
 	/mob/living/simple_animal/corgi,
 	/mob/living/simple_animal/parrot,
-	/mob/living/simple_animal/hostile/giant_spider,
-	/mob/living/simple_animal/hostile/asteroid/goliath/alpha
 	)
 
 	share_damage = 0
@@ -120,6 +119,11 @@
 
 	hud_state = "wiz_poly"
 
+/spell/targeted/shapeshift/baleful_polymorph/critfail(list/targets, mob/user)
+	possible_transformations = list (
+	/mob/living/simple_animal/hostile/giant_spider,
+	/mob/living/simple_animal/hostile/asteroid/goliath/alpha)
+	cast(targets, user)
 
 /spell/targeted/shapeshift/baleful_polymorph/empower_spell()
 	if(!..())
