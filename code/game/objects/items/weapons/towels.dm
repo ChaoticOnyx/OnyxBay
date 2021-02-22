@@ -42,7 +42,7 @@
 	..()
 	if(W.sharp && W.edge)
 		to_chat(user, SPAN_NOTICE("You use [W] to cut ugly hole in [src]."))
-		new /obj/item/clothing/suit/storage/hooded/goatskincape(loc)
+		new /obj/item/clothing/suit/storage/hooded/goatskincape(get_turf(loc))
 		qdel(src)
 		return
 
