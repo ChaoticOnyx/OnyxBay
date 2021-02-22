@@ -74,9 +74,3 @@
 	mode_desc = "Recalibrates the field projection array to increase the vertical height of the field, allowing it's usage on multi-deck stations or ships."
 	mode_flag = MODEFLAG_MULTIZ
 	multiplier = 1
-
-/datum/shield_mode/vortex_suppressor
-	mode_name = "Vortex Suppressor"
-	mode_desc = "This mode blocks outgoing vortex flow."
-	mode_flag = MODEFLAG_VORTEX_SUPPRESSOR
-	multiplier = 1
