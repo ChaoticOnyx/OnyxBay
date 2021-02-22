@@ -31,10 +31,7 @@
 /obj/item/skin
 	icon = 'icons/obj/items.dmi'
 	w_class = ITEM_SIZE_NORMAL
-	desc = "That a skin of the some animal."
-	mod_reach = 0.25
-	mod_weight = 0.25
-	mod_handy = 0.25
+	desc = "That is skin of some animal."
 
 /obj/item/skin/goat
 	name = "goats skin"
@@ -43,8 +40,9 @@
 
 /obj/item/skin/goat/attackby(obj/item/weapon/W, mob/user)
 	..()
-	if(W.sharp)
-		to_chat(user, SPAN_NOTICE("You use [W] to cut a ugly hole in [src]."))
-		new /obj/item/clothing/suit/storage/hooded/goatskincape
+	if(W.sharp && W.edge)
+		to_chat(user, SPAN_NOTICE("You use [W] to cut ugly hole in [src]."))
+		new /obj/item/clothing/suit/storage/hooded/goatskincape(loc)
 		qdel(src)
 		return
+

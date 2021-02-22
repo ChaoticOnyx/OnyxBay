@@ -179,7 +179,7 @@
 
 /mob/living/simple_animal/familiar/goat
 	name = "goat"
-	desc = "A goat. This one look more satanistic"
+	desc = "A goat. This one look more satanically."
 	icon = 'icons/mob/animal.dmi'
 	icon_state = "goat"
 	icon_living = "goat"

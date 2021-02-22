@@ -5,7 +5,7 @@
 	icon_state = "goat"
 	icon_living = "goat"
 	icon_dead = "goat_dead"
-	speak = list("EHEHEHEHEH","eh?", "Me.", "MEEEEEEEEEEEEEE", "Me?", "Me!", "Beeee!", "Be!", "BEEEEEEEEEE", "Bee!", "Be?", "Eh!", "Meeee...", "Beeeee...", "Beedaun." = 0.0000001)
+	speak = list("EHEHEHEHEH", "eh?", "Me.", "MEEEEEEEEEEEEEE", "Me?", "Me!", "Beeee!", "Be!", "BEEEEEEEEEE", "Bee!", "Be?", "Eh!", "Meeee...", "Beeeee...", "Beedaun." = 0.0000001)
 	speak_emote = list("brays")
 	emote_hear = list("brays")
 	emote_see = list("shakes its head", "stamps a foot", "glares around")
@@ -43,7 +43,7 @@
 		if(enemies.len && prob(10))
 			enemies = list()
 			LoseTarget()
-			src.visible_message(SPAN_NOTICE("The [src] calms down."))
+			src.visible_message(SPAN_NOTICE("calms down."))
 			isRageMode = 0
 
 		if(stat == CONSCIOUS)
@@ -53,13 +53,13 @@
 		if(locate(/obj/effect/vine) in loc)
 			var/obj/effect/vine/SV = locate() in loc
 			if(prob(60))
-				src.visible_message(SPAN_NOTICE("The [src] eats the plants."))
+				visible_message(SPAN_NOTICE("The [src] eats the plants."))
 				SV.die_off(1)
 				if(locate(/obj/machinery/portable_atmospherics/hydroponics/soil/invisible) in loc)
 					var/obj/machinery/portable_atmospherics/hydroponics/soil/invisible/SP = locate() in loc
 					qdel(SP)
 			else if(prob(20))
-				src.visible_message(SPAN_NOTICE("The [src] chews on the plants."))
+				visible_message(SPAN_NOTICE("The [src] chews on the plants."))
 			return
 
 		if(!pulledby)
@@ -80,14 +80,14 @@
 	if(stat == CONSCIOUS && istype(G) && G.is_open_container())
 		if(G.reagents.has_reagent(/datum/reagent/blackpepper, 10) || G.reagents.has_reagent(/datum/reagent/capsaicin, 3))
 			if(isRageMode)
-				to_chat(user, SPAN_NOTICE("[src] allready angry."))
+				to_chat(user, SPAN_NOTICE("[src] already angry."))
 				return
 			user.visible_message(SPAN_WARNING("[user] give some [G.reagents.get_master_reagent()] to the [src] from \the [O]."))
 			to_chat(user, SPAN_WARNING("Better run away now!"))
 			Retaliate()
 		else if(istype(O, /obj/item/weapon/reagent_containers/glass))
 			if (isRageMode && prob(50))
-				user.visible_message(SPAN_NOTICE("[user] tried to milks [src] using \the [O], but [src] hit him."))
+				user.visible_message(SPAN_NOTICE("tries to milk, but [src] hits \him"))
 				user.attack_generic(src, rand(melee_damage_lower * 2, melee_damage_upper * 2), attacktext, environment_smash, damtype, defense)
 				return
 			user.visible_message(SPAN_NOTICE("[user] milks [src] using \the [O]."))
