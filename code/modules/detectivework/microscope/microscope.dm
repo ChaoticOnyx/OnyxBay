@@ -50,7 +50,7 @@
 
 		if(swab.gsr)
 			for(var/caliber in swab.gsr)
-				report.info += "* [caliber] bullet detected."
+				report.info += "* Residue from a [caliber] bullet detected."
 		else
 			report.info += "No gunpowder residue found."
 
