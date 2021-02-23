@@ -56,10 +56,12 @@
 	amt_dam_oxy += -14
 	amt_dam_brute += -20
 	amt_dam_fire  += -30
-	if (heal_bones) //for second empower
+	if (!heal_bones)
+		heal_bones = 1
+		return "[src] now heals more and can fix bones"
+	else
 		heals_internal_bleeding = 1
-	heal_bones = 1
-	return "[src] heals more, on first upgrade allows to heal bones, on second internal bleedings"
+		return "[src] now heals more and stops internal bleeding"
 
 /spell/targeted/heal_target/area
 	name = "Cure Area"

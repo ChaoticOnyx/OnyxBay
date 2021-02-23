@@ -9,12 +9,13 @@
 	range = 1
 	hand_state = "domination_spell"
 	hud_state = "wiz_dominate"
-	show_message = "<span class = 'danger'> puts his hand on target head</span>"
+	show_message = " puts his hand on target head, it's starting to glow brightly."
 	spell_flags = NEEDSCLOTHES
 	level_max = list(Sp_TOTAL = 3, Sp_SPEED = 3, Sp_POWER = 0)
 	spell_delay = 3000
 	compatible_targets = list(/mob/living/carbon/human)
 	var/list/instructions = list("Serve the Wizard Federation!.")
+	spell_cast_delay = 50
 
 /spell/hand/mind_control/cast(list/targets, mob/user, channel)
 	for(var/mob/M in targets)
@@ -32,7 +33,7 @@
 	if (target == user)
 		to_chat(user,SPAN_DANGER("You tried to control yourself, thankfully spell didn't worked!"))
 		return // Prevents you from stupid thing
-	var/obj/item/weapon/implant/magical_imprint/magical_imprint = new(instructions)
+	var/obj/item/magical_imprint/magical_imprint = new(instructions)
 	magical_imprint.implant_in_mob(target, BP_HEAD)
 
 /spell/hand/mind_control/proc/interact(user)
@@ -67,24 +68,25 @@
 		instructions -= instructions[text2num(href_list["del"])]
 		interact(usr)
 
-/obj/item/weapon/implant/magical_imprint
+/obj/item/magical_imprint
 	var/message = "<span class='danger'>Something crumbles through your brain, changing you, chaining you!</span>"
 	var/brainwashing = 0
 	var/confirmed = 0
 	var/list/instructions
 	var/last_reminder
+	var/mob/living/carbon/human/imp_in
 
-/obj/item/weapon/implant/magical_imprint/New(list/inst)
+/obj/item/magical_imprint/New(list/inst)
 	instructions = inst
 
-/obj/item/weapon/implant/magical_imprint/implanted(mob/target)
+/obj/item/magical_imprint/proc/implanted(mob/target)
 	var/mob/living/carbon/human/H = target
 	to_chat(H, message)
 	var/msg = ""
 	if (!H.reagents.has_reagent(/datum/reagent/water/holywater))
 		msg += "<span class='danger'>The fog in your head clears, and you remember some important things. You hold following things as deep convictions, almost like synthetics' laws:</span><br>"
 	else
-		msg += "<span class='notice'>Something tried to crawl into you mind, but you protected yourself!:</span><br>"
+		msg = "<span class='notice'>Something tried to crawl into you mind, but you protected yourself!</span><br>"
 		to_chat(H, msg)
 		Destroy()
 		return FALSE
@@ -97,30 +99,30 @@
 	START_PROCESSING(SSobj, src)
 	return TRUE
 
-/obj/item/weapon/implant/magical_imprint/Process()
+/obj/item/magical_imprint/Process()
+	if (imp_in.reagents.has_reagent(/datum/reagent/water/holywater))
+		var/message_ender = "<span class='danger'>Water frees you from magical influence, you are free now:<br> You no longer have to follow any previous laws!</span>"
+		to_chat(imp_in, message_ender)
+		Destroy()
+		if (imp_in.mind)
+			imp_in.mind.store_memory(message_ender)
+		return
 	if(world.time < last_reminder + 5 MINUTES)
 		return
 	last_reminder = world.time
 	var/instruction = pick(instructions)
-	if (imp_in.reagents.has_reagent(/datum/reagent/water/holywater))
-		to_chat(imp_in, "Water frees you from magical influence, you are free now!")
-		Destroy()
-		return
-	instruction = "<span class='warning'>You recall one of your beliefs: \"[instructions]\"</span>"
+
+	instruction = "<span class='warning'>You recall one of your beliefs: \"[instruction]\"</span>"
 	to_chat(imp_in, instruction)
 
-/obj/item/weapon/implant/magical_imprint/Destroy()
+/obj/item/magical_imprint/Destroy()
 	STOP_PROCESSING(SSobj, src)
 	. = ..()
 
-/obj/item/weapon/implant/magical_imprint/implant_in_mob(mob/M, target_zone)
+/obj/item/magical_imprint/proc/implant_in_mob(mob/M, target_zone)
 	if (ishuman(M))
 		var/mob/living/carbon/human/H = M
-		var/obj/item/organ/external/affected = H.get_organ(target_zone)
-		if(affected)
-			part = affected
 		BITSET(H.hud_updateflag, IMPLOYAL_HUD)
-	forceMove(M)
-	imp_in = M
-	implanted = 1
-	implanted(M)
+		forceMove(M)
+		imp_in = M
+		implanted(M)

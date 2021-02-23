@@ -23,8 +23,8 @@ Basically: I can use it to target things where I click. I can then pass these ta
 
 /obj/item/magic_hand/attack(mob/living/M, mob/living/user)
 	if(hand_spell && hand_spell.valid_target(M, user))
-		if (hand_spell.spell_cast_delay !=0)
-			if (do_after(user, 100, M))
+		if (hand_spell.spell_cast_delay)
+			if (do_after(user, hand_spell.spell_cast_delay, M))
 				fire_spell(M, user)
 				return 0
 			else

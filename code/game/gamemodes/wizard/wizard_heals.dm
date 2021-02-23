@@ -1,7 +1,8 @@
 
 //heal spell of magical magical boy
 /mob/living/carbon/human/proc/wizard_heal(spell/targeted/heal)
-	to_chat(src, "[src] is beign healed")
+	if (!heal)
+		return
 	radiation += min(radiation, heal.amt_radiation)
 	regenerate_blood(heal.amt_blood)
 	var/list/organs = get_damaged_organs(1, 1)
