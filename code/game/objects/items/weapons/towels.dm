@@ -31,17 +31,17 @@
 /obj/item/skin
 	icon = 'icons/obj/items.dmi'
 	w_class = ITEM_SIZE_NORMAL
-	desc = "That is skin of some animal."
+	desc = "That is a skin of an animal."
 
 /obj/item/skin/goat
 	name = "goats skin"
-	desc = "A goat skin, which was brutally butchered from a goat."
+	desc = "A goat skin."
 	icon_state = "goatskin"
 
 /obj/item/skin/goat/attackby(obj/item/weapon/W, mob/user)
 	..()
 	if(W.sharp && W.edge)
-		to_chat(user, SPAN_NOTICE("You use [W] to cut ugly hole in [src]."))
+		to_chat(user, SPAN_NOTICE("You use [W] to make [src] more wearable."))
 		new /obj/item/clothing/suit/storage/hooded/goatskincape(get_turf(loc))
 		qdel(src)
 		return

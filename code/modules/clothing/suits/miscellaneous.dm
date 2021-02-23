@@ -603,7 +603,7 @@
 
 /obj/item/clothing/suit/storage/hooded/goatskincape
 	name = "goat skin cape"
-	desc = "A goat skin, which was brutally butchered from a goat. This one has a uggly hole for the head. You can put it on yourself, to look like a true barbarian."
+	desc = "A goat skin. You can put it on yourself to look like a true barbarian."
 	icon_state = "goatskincape"
 	item_state = "goatskincape"
 	body_parts_covered = UPPER_TORSO|LOWER_TORSO
@@ -616,7 +616,7 @@
 
 /obj/item/clothing/head/goatskinhood
 	name = "Goat Head Hood"
-	desc = "A goat head attached to goat skin"
+	desc = "A goat head attached to the goat skin"
 	icon_state = "goatskincape_hood"
 	item_state = "goatskincape_hood"
 	body_parts_covered = HEAD
