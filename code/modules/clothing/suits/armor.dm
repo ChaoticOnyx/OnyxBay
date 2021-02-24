@@ -184,7 +184,13 @@
 		var/obj/item/projectile/P = damage_source
 
 		var/reflectchance = 100 - damage
-		if(!(def_zone in list(BP_CHEST, BP_GROIN))) //not changing this so arm and leg shots reflect, gives some incentive to not aim center-mass
+		var/def_list = list(BP_CHEST, BP_GROIN)
+
+		var/mob/living/carbon/human/H = user
+		if(H && istype(H.head, /obj/item/clothing/head/helmet/ablative))
+			def_list += BP_HEAD
+
+		if(!(def_zone in def_list)) //not changing this so arm and leg shots reflect, gives some incentive to not aim center-mass
 			reflectchance /= 2
 		if(P.starting && prob(reflectchance))
 			visible_message("<span class='danger'>\The [user]'s [src.name] reflects [attack_text]!</span>")
