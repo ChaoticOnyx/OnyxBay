@@ -183,7 +183,7 @@
 	if(istype(damage_source, /obj/item/projectile/energy) || istype(damage_source, /obj/item/projectile/beam))
 		var/obj/item/projectile/P = damage_source
 
-		var/reflectchance = 40 - round(damage/3)
+		var/reflectchance = 100 - damage
 		if(!(def_zone in list(BP_CHEST, BP_GROIN))) //not changing this so arm and leg shots reflect, gives some incentive to not aim center-mass
 			reflectchance /= 2
 		if(P.starting && prob(reflectchance))
