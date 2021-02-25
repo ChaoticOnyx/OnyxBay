@@ -62,7 +62,7 @@
 					if(prob(30))
 						P.info = "<font face=\"[P.crayonfont]\" color=\"red\"><b>HONK HONK HONK HONK HONK HONK HONK<br>HOOOOOOOOOOOOOOOOOOOOOONK<br>APRIL FOOLS</b></font>"
 						P.rigged = 1
-						P.updateinfolinks()
+						P.generateinfolinks()
 			else if (response == "Carbon-Copy")
 				P = new /obj/item/weapon/paper/carbon
 

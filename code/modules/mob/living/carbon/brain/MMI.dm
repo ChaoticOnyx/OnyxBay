@@ -132,6 +132,9 @@
 	var/obj/item/weapon/rig/rig = src.get_rig()
 	if(rig)
 		rig.forced_move(direction, user)
+	if(istype(loc, /obj/item/integrated_circuit/input/pAI_connector))
+		var/obj/item/integrated_circuit/input/pAI_connector/connector = loc
+		connector.relaymove(user, direction)
 
 /obj/item/device/mmi/Destroy()
 	if(isrobot(loc))

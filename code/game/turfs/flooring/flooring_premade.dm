@@ -65,15 +65,15 @@
 /turf/simulated/floor/reinforced/oxygen
 	initial_gas = list("oxygen" = ATMOSTANK_OXYGEN)
 
-/turf/simulated/floor/reinforced/phoron
-	initial_gas = list("phoron" = ATMOSTANK_PHORON)
+/turf/simulated/floor/reinforced/plasma
+	initial_gas = list("plasma" = ATMOSTANK_PLASMA)
 
 /turf/simulated/floor/reinforced/nitrogen/engine
 	name = "engine floor"
 	initial_gas = list("nitrogen" = MOLES_N2STANDARD)
 
-/turf/simulated/floor/reinforced/phoron/fuel
-	initial_gas = list("phoron" = ATMOSTANK_PHORON_FUEL)
+/turf/simulated/floor/reinforced/plasma/fuel
+	initial_gas = list("plasma" = ATMOSTANK_PLASMA_FUEL)
 
 /turf/simulated/floor/reinforced/hydrogen
 	initial_gas = list("hydrogen" = ATMOSTANK_HYDROGEN)
@@ -245,6 +245,11 @@
 	icon_state = "blue2"
 	initial_flooring = /decl/flooring/carpet/blue2
 
+/turf/simulated/floor/trim/carpet/gblue
+	name = "pale blue carpet"
+	icon_state = "gblue"
+	initial_flooring = /decl/flooring/carpet/gblue
+
 /turf/simulated/floor/trim/carpet/oldred
 	name = "red carpet"
 	icon = 'icons/turf/flooring/carpet.dmi'
@@ -255,6 +260,11 @@
 	name = "purple carpet"
 	icon_state = "purple"
 	initial_flooring = /decl/flooring/carpet/purple
+
+/turf/simulated/floor/trim/carpet/gpurple
+	name = "purple carpet"
+	icon_state = "gpurple"
+	initial_flooring = /decl/flooring/carpet/gpurple
 
 /turf/simulated/floor/trim/carpet/orange
 	name = "orange carpet"
@@ -340,6 +350,42 @@
 	..()
 	overlays += image("icon"='icons/misc/beach.dmi',"icon_state"="water5","layer"=MOB_LAYER+0.1)
 
+//SAND
+
+/turf/simulated/floor/natural/sand
+	name = "sand"
+	desc = "Crumbly."
+	icon = 'icons/turf/flooring/sand.dmi'
+	icon_state = "sand0"
+	base_name = "sand"
+	base_desc = "Crumbly."
+	base_icon = 'icons/turf/flooring/sand.dmi'
+	base_icon_state = "sand0"
+	var/rand_state = TRUE
+
+/turf/simulated/floor/natural/sand/New()
+	if(rand_state)
+		icon_state = "sand[rand(0, 12)]"
+	..()
+
+/turf/simulated/floor/natural/sand/pure
+	rand_state = FALSE
+
+/turf/simulated/floor/natural/sand/gray
+	rand_state = FALSE
+	icon_state = "sand_gray"
+	base_icon_state = "sand_gray"
+
+/turf/simulated/floor/natural/sand/darksand
+	rand_state = FALSE
+	icon_state = "asteroidplating"
+	icon = 'icons/turf/floors.dmi'
+
+/turf/simulated/floor/sand_floor
+	name = "sand floor"
+	icon = 'icons/turf/flooring/sand.dmi'
+	icon_state = "sand_floor"
+	initial_flooring = /decl/flooring/sand_tile
 
 //MISCELLANEOUS FLOORING
 
@@ -348,6 +394,11 @@
 	icon = 'icons/turf/flooring/plating.dmi'
 	icon_state = "plating"
 	initial_flooring = null
+
+/turf/simulated/floor/misc/diona
+	name = "biomass"
+	icon = 'icons/turf/floors.dmi'
+	initial_flooring = /decl/flooring/diona
 
 /turf/simulated/floor/misc/cult
 	name = "engraved floor"

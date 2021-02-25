@@ -458,7 +458,8 @@ proc/get_wound_severity(damage_ratio, vital = 0)
 	set name = "Print Data"
 	set category = "Object"
 	if (last_target && dat)
-		new /obj/item/weapon/paper/(get_turf(src), "<tt>[dat]</tt>", "Body scan report - [last_target]")
+		var/obj/item/weapon/paper/P = new /obj/item/weapon/paper/(get_turf(src))
+		P.set_content("<tt>[dat]</tt>", "Body scan report - [last_target]", TRUE)
 		src.visible_message("<span class='notice'>[src] prints out \the scan result.</span>")
 
 
@@ -644,7 +645,7 @@ proc/get_wound_severity(damage_ratio, vital = 0)
 
 	var/value = get_value(target)
 	user.visible_message("\The [user] scans \the [target] with \the [src]")
-	user.show_message("Price estimation of \the [target]: [value ? value : "N/A"] Thalers")
+	user.show_message("Price estimation of \the [target]: [value ? value : "N/A"] credits")
 
 /obj/item/device/slime_scanner
 	name = "xenolife scanner"

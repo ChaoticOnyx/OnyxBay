@@ -206,42 +206,42 @@
 	name="Phazon Torso"
 	icon_state = "phazon_harness"
 	//construction_time = 300
-	//construction_cost = list(MATERIAL_STEEL=35000, MATERIAL_GLASS=10000, MATERIAL_PHORON=20000)
+	//construction_cost = list(MATERIAL_STEEL=35000, MATERIAL_GLASS=10000, MATERIAL_PLASMA=20000)
 	origin_tech = list(TECH_DATA = 5, TECH_MATERIAL = 7, TECH_BLUESPACE = 6, TECH_POWER = 6)
 
 /obj/item/mecha_parts/part/phazon_head
 	name="Phazon Head"
 	icon_state = "phazon_head"
 	//construction_time = 200
-	//construction_cost = list(MATERIAL_STEEL=15000, MATERIAL_GLASS=5000, MATERIAL_PHORON=10000)
+	//construction_cost = list(MATERIAL_STEEL=15000, MATERIAL_GLASS=5000, MATERIAL_PLASMA=10000)
 	origin_tech = list(TECH_DATA = 4, TECH_MATERIAL = 5, TECH_MAGNET = 6)
 
 /obj/item/mecha_parts/part/phazon_left_arm
 	name="Phazon Left Arm"
 	icon_state = "phazon_l_arm"
 	//construction_time = 200
-	//construction_cost = list(MATERIAL_STEEL=20000, MATERIAL_PHORON=10000)
+	//construction_cost = list(MATERIAL_STEEL=20000, MATERIAL_PLASMA=10000)
 	origin_tech = list(TECH_MATERIAL = 5, TECH_BLUESPACE = 2, TECH_MAGNET = 2)
 
 /obj/item/mecha_parts/part/phazon_right_arm
 	name="Phazon Right Arm"
 	icon_state = "phazon_r_arm"
 	//construction_time = 200
-	//construction_cost = list(MATERIAL_STEEL=20000, MATERIAL_PHORON=10000)
+	//construction_cost = list(MATERIAL_STEEL=20000, MATERIAL_PLASMA=10000)
 	origin_tech = list(TECH_MATERIAL = 5, TECH_BLUESPACE = 2, TECH_MAGNET = 2)
 
 /obj/item/mecha_parts/part/phazon_left_leg
 	name="Phazon Left Leg"
 	icon_state = "phazon_l_leg"
 	//construction_time = 200
-	//construction_cost = list(MATERIAL_STEEL=20000, MATERIAL_PHORON=10000)
+	//construction_cost = list(MATERIAL_STEEL=20000, MATERIAL_PLASMA=10000)
 	origin_tech = list(TECH_MATERIAL = 5, TECH_BLUESPACE = 3, TECH_MAGNET = 3)
 
 /obj/item/mecha_parts/part/phazon_right_leg
 	name="Phazon Right Leg"
 	icon_state = "phazon_r_leg"
 	//construction_time = 200
-	//construction_cost = list(MATERIAL_STEEL=20000, MATERIAL_PHORON=10000)
+	//construction_cost = list(MATERIAL_STEEL=20000, MATERIAL_PLASMA=10000)
 	origin_tech = list(TECH_MATERIAL = 5, TECH_BLUESPACE = 3, TECH_MAGNET = 3)
 
 ///////// Odysseus
@@ -295,3 +295,47 @@
 	origin_tech = list(TECH_MATERIAL = 3, TECH_ENGINEERING = 3)
 	construction_time = 200
 	construction_cost = list(MATERIAL_STEEL=15000)*/
+
+///////// Honker
+
+/obj/item/mecha_parts/chassis/honker
+	name = "H.O.N.K. Chassis"
+
+/obj/item/mecha_parts/chassis/honker/New()
+	..()
+	construct = new /datum/construction/mecha/honker_chassis(src)
+
+/obj/item/mecha_parts/part/honker_head
+	name = "H.O.N.K. Head"
+	icon_state = "honker_head"
+	origin_tech = list(TECH_DATA = 2, TECH_MATERIAL = 3, TECH_MAGNET = 3, TECH_ENGINEERING = 3)
+
+/obj/item/mecha_parts/part/honker_torso
+	name = "H.O.N.K. Torso"
+	desc = "A torso part of H.O.N.K., contains honks, banana cream and rage-inducing systems."
+	icon_state = "honker_torso"
+	origin_tech = list(TECH_DATA = 2, TECH_MATERIAL = 3, TECH_BIO = 3, TECH_ENGINEERING = 3)
+
+/obj/item/mecha_parts/part/honker_left_arm
+	name = "H.O.N.K. Left Arm"
+	desc = "A H.O.N.K. left arm. Data and power sockets are compatible with only the most extravagant of exosuit tools."
+	icon_state = "honker_l_arm"
+	origin_tech = list(TECH_DATA = 2, TECH_MATERIAL = 2, TECH_ENGINEERING = 3)
+
+/obj/item/mecha_parts/part/honker_right_arm
+	name = "H.O.N.K. Right Arm"
+	desc = "A H.O.N.K. right arm. Data and power sockets are compatible with only the most extravagant of exosuit tools."
+	icon_state = "honker_r_arm"
+	origin_tech = list(TECH_DATA = 2, TECH_MATERIAL = 2, TECH_ENGINEERING = 3)
+
+/obj/item/mecha_parts/part/honker_left_leg
+	name = "H.O.N.K. Left Leg"
+	desc = "A H.O.N.K. left leg. Contains somewhat messy servodrives and (dis)balance maintaining systems."
+	icon_state = "honker_l_leg"
+	origin_tech = list(TECH_DATA = 2, TECH_MATERIAL = 2, TECH_ENGINEERING = 3)
+
+/obj/item/mecha_parts/part/honker_right_leg
+	name = "H.O.N.K. Right Leg"
+	desc = "A H.O.N.K. right leg. Contains somewhat messy servodrives and (dis)balance maintaining systems."
+	icon_state = "honker_r_leg"
+	origin_tech = list(TECH_DATA = 2, TECH_MATERIAL = 2, TECH_ENGINEERING = 3)

@@ -52,12 +52,15 @@
 	pins["pink pin"] = /obj/item/clothing/head/hairflower/pink
 	pins["red pin"] = /obj/item/clothing/head/hairflower
 	pins["yellow pin"] = /obj/item/clothing/head/hairflower/yellow
+	pins["white pin"] = /obj/item/clothing/head/hairflower/white
+	pins["purple pin"] = /obj/item/clothing/head/hairflower/purple
 	gear_tweaks += new /datum/gear_tweak/path(pins)
 
 /datum/gear/head/hardhat
 	display_name = "hardhat selection"
 	path = /obj/item/clothing/head/hardhat
 	cost = 2
+	allowed_roles = TECHNICAL_ROLES
 
 /datum/gear/head/hardhat/New()
 	..()
@@ -125,24 +128,6 @@
 /datum/gear/head/surgical/custom
 	display_name = "surgical cap, colour select"
 	flags = GEAR_HAS_COLOR_SELECTION
-
-/datum/gear/head/welding
-	display_name = "welding mask selection"
-	path = /obj/item/clothing/head/welding
-
-/datum/gear/head/welding/New()
-	..()
-	var/welding_masks = list()
-	welding_masks += /obj/item/clothing/head/welding/demon
-	welding_masks += /obj/item/clothing/head/welding/engie
-	welding_masks += /obj/item/clothing/head/welding/fancy
-	welding_masks += /obj/item/clothing/head/welding/knight
-	welding_masks += /obj/item/clothing/head/welding/carp
-	gear_tweaks += new /datum/gear_tweak/path/specified_types_list(welding_masks)
-
-/datum/gear/head/tankccap
-	display_name = "padded cap"
-	path = /obj/item/clothing/head/tank
 
 //
 // Donator's shop
@@ -227,3 +212,9 @@
 	display_name = "pumpkin head"
 	path = /obj/item/clothing/head/pumpkinhead
 	price = 12
+
+/datum/gear/head/capcap_alt
+	display_name = "captain's cap"
+	path = /obj/item/clothing/head/caphat/cap/capcap_alt
+	price = 10
+	allowed_roles = list(/datum/job/captain)

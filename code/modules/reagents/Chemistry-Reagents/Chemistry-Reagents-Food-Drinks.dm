@@ -789,6 +789,22 @@
 	..()
 	M.heal_organ_damage(0.5 * removed, 0)
 
+/datum/reagent/drink/coffee/cappuccino
+	name = "Cappuccino"
+	description = "A nice, light coffee beverage made of espresso and steamed milk."
+	taste_description = "creamy coffee"
+	color = "#c65905"
+	adj_temp = 5
+
+	glass_required = "coffeecup"
+	glass_icon_state = "cappuccino"
+	glass_name = "cappuccino"
+	glass_desc = "A nice, light coffee beverage made of espresso and steamed milk."
+
+/datum/reagent/drink/coffee/cappuccino/affect_ingest(mob/living/carbon/M, alien, removed)
+	..()
+	M.heal_organ_damage(0.5 * removed, 0)
+
 /datum/reagent/drink/hot_coco
 	name = "Hot Chocolate"
 	description = "Made with love! And cocoa beans."
@@ -796,7 +812,7 @@
 	reagent_state = LIQUID
 	color = "#5B250C"
 	nutrition = 2
-	adj_temp = 5
+	adj_temp = 30
 
 	glass_required = "square"
 	glass_name = "hot chocolate"
@@ -847,8 +863,6 @@
 	color = "#ffff00"
 	adj_temp = -5
 
-	glass_required = "square"
-	glass_icon_state = "lemonade"
 	glass_desc = "Oh the nostalgia..."
 	glass_special = list(DRINK_FIZZ, DRINK_ICE)
 
@@ -2137,7 +2151,6 @@
 	nutriment_factor = 1
 
 	glass_required = "mug"
-	glass_icon_state = "mead"
 	glass_name = "mead"
 	glass_desc = "A Viking's beverage, though a cheap one."
 	glass_special = list(DRINK_FIZZ)
@@ -2197,6 +2210,7 @@
 /datum/reagent/ethanol/neurotoxin/affect_ingest(mob/living/carbon/M, alien, removed)
 	..()
 	M.Weaken(3)
+	M.Stun(2)
 	M.add_chemical_effect(CE_PULSE, -1)
 
 /datum/reagent/ethanol/gargle_blaster
@@ -2357,7 +2371,7 @@
 		M.make_jittery(5)
 		M.make_dizzy(5)
 		M.add_chemical_effect(CE_PAINKILLER, 100)
-		M.add_chemical_effect(CE_SPEEDBOOST, 0.75)
+		M.add_chemical_effect(CE_SPEEDBOOST, 1.25)
 		M.add_chemical_effect(CE_PULSE, 3)
 
 		M.druggy = max(M.druggy, 35)
@@ -2370,7 +2384,7 @@
 		M.make_dizzy(10)
 		M.add_chemical_effect(CE_PAINKILLER, 200)
 		M.add_chemical_effect(CE_ALCOHOL_TOXIC, 1)
-		M.add_chemical_effect(CE_SPEEDBOOST, 1)
+		M.add_chemical_effect(CE_SPEEDBOOST, 2)
 		M.add_chemical_effect(CE_PULSE, 4)
 
 		M.druggy = max(M.druggy, 40)
@@ -2625,3 +2639,17 @@
 	glass_icon_state = "zhenghe"
 	glass_name = "Zheng He cocktail"
 	glass_desc = "A rather bitter blend of vermouth and well-steeped black tea. Named for Zheng He, who travelled from Nanjing in China as far as Mogadishu in the Horn of Africa in the 15th century."
+
+/datum/reagent/ethanol/kvas
+	name = "Kvas"
+	description = "Kvas is a traditional drink of old north nations from earth, commonly made from rye bread."
+	taste_description = "old north valleys"
+	color = "#473000"
+	strength = 1
+	adj_temp = 10
+
+	glass_required = "mug"
+	glass_icon_state = "kvas"
+	glass_name = "kvas"
+	glass_desc = "Tasty kvas, it has BEST antioxidants, it's good for your soul!"
+	glass_special = list(DRINK_FIZZ)

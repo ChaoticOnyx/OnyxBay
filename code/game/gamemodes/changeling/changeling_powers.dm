@@ -30,6 +30,7 @@ var/global/list/possible_changeling_IDs = list("Alpha","Beta","Gamma","Delta","E
 	var/isdetachingnow = FALSE
 	var/FLP_last_time_used = 0
 	var/rapidregen_active = FALSE
+	var/is_revive_ready = FALSE
 
 /datum/changeling/New()
 	..()
@@ -55,6 +56,12 @@ var/global/list/possible_changeling_IDs = list("Alpha","Beta","Gamma","Delta","E
 	for(var/datum/absorbed_dna/DNA in absorbed_dna)
 		if(dna_owner == DNA.name)
 			return DNA
+
+/mob/proc/is_regenerating()
+	if(status_flags & FAKEDEATH)
+		return TRUE
+	else
+		return FALSE
 
 /mob/proc/absorbDNA(datum/absorbed_dna/newDNA)
 	var/datum/changeling/changeling = null
@@ -291,7 +298,8 @@ var/global/list/possible_changeling_IDs = list("Alpha","Beta","Gamma","Delta","E
 /mob/proc/changeling_transform()
 	set category = "Changeling"
 	set name = "Transform (5)"
-
+	if(is_regenerating())
+		return
 	var/datum/changeling/changeling = changeling_power(5,1,0)
 	if(!changeling)	return
 
@@ -356,6 +364,8 @@ var/global/list/possible_changeling_IDs = list("Alpha","Beta","Gamma","Delta","E
 /mob/proc/changeling_lesser_form()
 	set category = "Changeling"
 	set name = "Lesser Form (1)"
+	if(is_regenerating())
+		return
 
 	var/datum/changeling/changeling = changeling_power(1,0,0)
 	if(!changeling)	return
@@ -384,9 +394,14 @@ var/global/list/possible_changeling_IDs = list("Alpha","Beta","Gamma","Delta","E
 /mob/proc/changeling_lesser_transform()
 	set category = "Changeling"
 	set name = "Transform (1)"
-
+	if(is_regenerating())
+		return
 	var/datum/changeling/changeling = changeling_power(1,1,0)
-	if(!changeling)	return
+	if(!changeling)
+		return
+
+	if(HAS_TRANSFORMATION_MOVEMENT_HANDLER(src))
+		return
 
 	var/list/names = list()
 	for(var/datum/dna/DNA in changeling.absorbed_dna)
@@ -410,8 +425,7 @@ var/global/list/possible_changeling_IDs = list("Alpha","Beta","Gamma","Delta","E
 	for (var/obj/item/weapon/implant/I in C) //Still preserving implants
 		implants += I
 
-	C.transforming = 1
-	C.canmove = 0
+	ADD_TRANSFORMATION_MOVEMENT_HANDLER(C)
 	C.icon = null
 	C.overlays.Cut()
 	C.set_invisibility(101)
@@ -465,66 +479,64 @@ var/global/list/possible_changeling_IDs = list("Alpha","Beta","Gamma","Delta","E
 	set category = "Changeling"
 	set name = "Regenerative Stasis (20)"
 
+	if(mind.changeling.is_revive_ready)
+		if(mind.changeling.true_dead)
+			to_chat(src, SPAN_NOTICE("We can not do this. We are really dead."))
+			return
+		mind.changeling.is_revive_ready = FALSE
+		// restore us to health
+		revive(ignore_prosthetic_prefs = TRUE)
+		// remove our fake death flag
+		status_flags &= ~(FAKEDEATH)
+		// let us move again
+		update_canmove()
+		// sending display messages
+		to_chat(src, SPAN_NOTICE("We have regenerated."))
+		return
+
 	var/datum/changeling/changeling = changeling_power(20,1,100,DEAD)
 	if(!changeling)
 		return
 
 	if(mind.changeling.true_dead)
-		to_chat(src, "<span class='notice'>We can not do this. We are really dead.</span>")
+		to_chat(src, SPAN_NOTICE("We can not do this. We are really dead."))
+		return
+
+	if(is_regenerating())
+		to_chat(usr, SPAN_NOTICE("We're still regenerating."))
 		return
 
 	if(!stat && alert("Are we sure we wish to fake our death?",,"Yes","No") == "No")//Confirmation for living changelings if they want to fake their death
 		return
 
-	if(status_flags & FAKEDEATH)
-		return
-
 	status_flags |= FAKEDEATH
 	update_canmove()
-	remove_changeling_powers()
 
 	emote("gasp")
 
-	addtimer(CALLBACK(src, .end_fakedeath), rand(80 SECONDS, 200 SECONDS))
+	to_chat(usr, SPAN_NOTICE("We're starting to regenerate."))
 
-/mob/living/carbon/human/proc/end_fakedeath()
+	addtimer(CALLBACK(src, .revive_ready), rand(80 SECONDS, 200 SECONDS))
+
+/mob/living/carbon/human/proc/revive_ready()
 	if(QDELETED(src))
 		return
 	if(changeling_power(20,1,100,DEAD))
 		// charge the changeling chemical cost for stasis
 		mind.changeling.chem_charges -= 20
-
-		to_chat(src, "<span class='notice'><font size='5'>We are ready to rise.  Use the <b>Revive</b> verb when you are ready.</font></span>")
-		verbs += /mob/living/carbon/human/proc/changeling_revive
-		addtimer(CALLBACK(src, .changeling_revive), 10 SECONDS)
+		mind.changeling.is_revive_ready = TRUE
+		to_chat(src, SPAN_NOTICE("<font size='5'>We are ready to rise.  Use the <b>Regenerative Stasis (20)</b> verb when you are ready.</font>"))
 
 	feedback_add_details("changeling_powers","FD")
-
-/mob/living/carbon/human/proc/changeling_revive()
-	set category = "Changeling"
-	set name = "Revive"
-
-	if(mind.changeling.true_dead)
-		to_chat(src, "<span class='notice'>We can not do this. We are really dead.</span>")
-		return
-
-	// restore us to health
-	revive(ignore_prosthetic_prefs = TRUE)
-	// remove our fake death flag
-	status_flags &= ~(FAKEDEATH)
-	// let us move again
-	update_canmove()
-	// re-add out changeling powers
-	make_changeling()
-	// sending display messages
-	to_chat(src, "<span class='notice'>We have regenerated.</span>")
-	verbs -= /mob/living/carbon/human/proc/changeling_revive
 
 //Boosts the range of your next sting attack by 1
 /mob/proc/changeling_boost_range()
 	set category = "Changeling"
 	set name = "Ranged Sting (10)"
 	set desc="Your next sting ability can be used against targets 2 squares away."
+
+	if(is_regenerating())
+		return
 
 	var/datum/changeling/changeling = changeling_power(10)
 	if(!changeling)	return 0
@@ -542,7 +554,8 @@ var/global/list/possible_changeling_IDs = list("Alpha","Beta","Gamma","Delta","E
 	set category = "Changeling"
 	set name = "Epinephrine Sacs (45)"
 	set desc = "Removes all stuns"
-
+	if(is_regenerating())
+		return
 	var/datum/changeling/changeling = changeling_power(45,0,100,UNCONSCIOUS)
 	if(!changeling)	return 0
 	changeling.chem_charges -= 45
@@ -579,7 +592,8 @@ var/global/list/possible_changeling_IDs = list("Alpha","Beta","Gamma","Delta","E
 	set category = "Changeling"
 	set name = "Toggle Digital Camoflague"
 	set desc = "The AI can no longer track us, but we will look different if examined.  Has a constant cost while active."
-
+	if(is_regenerating())
+		return
 	var/datum/changeling/changeling = changeling_power()
 	if(!changeling)	return 0
 
@@ -589,7 +603,7 @@ var/global/list/possible_changeling_IDs = list("Alpha","Beta","Gamma","Delta","E
 	C.digitalcamo = !C.digitalcamo
 
 	spawn(0)
-		while(C && C.digitalcamo && C.mind && C.mind.changeling)
+		while(C && C.digitalcamo && C.mind && C.mind.changeling && !is_regenerating())
 			C.mind.changeling.chem_charges = max(C.mind.changeling.chem_charges - 1, 0)
 			sleep(40)
 
@@ -604,6 +618,9 @@ var/global/list/possible_changeling_IDs = list("Alpha","Beta","Gamma","Delta","E
 	set category = "Changeling"
 	set name = "Rapid Regeneration (30)"
 	set desc = "Begins rapidly regenerating.  Does not effect stuns or chemicals."
+
+	if(is_regenerating())
+		return
 
 	var/datum/changeling/changeling = changeling_power(30,0,100,UNCONSCIOUS)
 	if(!changeling)
@@ -627,6 +644,9 @@ var/list/datum/absorbed_dna/hivemind_bank = list()
 	set category = "Changeling"
 	set name = "Hive Channel (10)"
 	set desc = "Allows you to channel DNA in the airwaves to allow other changelings to absorb it."
+
+	if(is_regenerating())
+		return
 
 	var/datum/changeling/changeling = changeling_power(10,1)
 	if(!changeling)	return
@@ -669,6 +689,9 @@ var/list/datum/absorbed_dna/hivemind_bank = list()
 	set name = "Hive Absorb (20)"
 	set desc = "Allows you to absorb DNA that is being channeled in the airwaves."
 
+	if(is_regenerating())
+		return
+
 	var/datum/changeling/changeling = changeling_power(20,1)
 	if(!changeling)	return
 
@@ -700,6 +723,8 @@ var/list/datum/absorbed_dna/hivemind_bank = list()
 	set name = "Mimic Voice"
 	set desc = "Shape our vocal glands to form a voice of someone we choose. We cannot regenerate chemicals when mimicing."
 
+	if(is_regenerating())
+		return
 
 	var/datum/changeling/changeling = changeling_power()
 	if(!changeling)	return
@@ -720,7 +745,7 @@ var/list/datum/absorbed_dna/hivemind_bank = list()
 	feedback_add_details("changeling_powers","MV")
 
 	spawn(0)
-		while(src && src.mind && src.mind.changeling && src.mind.changeling.mimicing)
+		while(src && src.mind && src.mind.changeling && src.mind.changeling.mimicing && !is_regenerating())
 			src.mind.changeling.chem_charges = max(src.mind.changeling.chem_charges - 1, 0)
 			sleep(40)
 		if(src && src.mind && src.mind.changeling)
@@ -793,6 +818,9 @@ var/list/datum/absorbed_dna/hivemind_bank = list()
 	set name = "Hallucination Sting (15)"
 	set desc = "Causes terror in the target"
 
+	if(is_regenerating())
+		return
+
 	change_ctate(/datum/click_handler/changeling/changeling_lsdsting)
 	return
 
@@ -811,6 +839,9 @@ var/list/datum/absorbed_dna/hivemind_bank = list()
 	set name = "Silence sting (10)"
 	set desc = "Sting target"
 
+	if(is_regenerating())
+		return
+
 	change_ctate(/datum/click_handler/changeling/changeling_silence_sting)
 	return
 
@@ -826,6 +857,9 @@ var/list/datum/absorbed_dna/hivemind_bank = list()
 	set category = "Changeling"
 	set name = "Blind sting (20)"
 	set desc = "Sting target"
+
+	if(is_regenerating())
+		return
 
 	change_ctate(/datum/click_handler/changeling/changeling_blind_sting)
 	return
@@ -847,7 +881,8 @@ var/list/datum/absorbed_dna/hivemind_bank = list()
 	set category = "Changeling"
 	set name = "Deaf sting (5)"
 	set desc = "Sting target"
-
+	if(is_regenerating())
+		return
 	change_ctate(/datum/click_handler/changeling/changeling_deaf_sting)
 	return
 
@@ -866,7 +901,8 @@ var/list/datum/absorbed_dna/hivemind_bank = list()
 	set category = "Changeling"
 	set name = "Vomit Sting (15)"
 	set desc = "Urges target to vomit."
-
+	if(is_regenerating())
+		return
 	change_ctate(/datum/click_handler/changeling/changeling_vomit_sting)
 	return
 
@@ -883,7 +919,8 @@ var/list/datum/absorbed_dna/hivemind_bank = list()
 	set category = "Changeling"
 	set name = "Death Sting (40)"
 	set desc = "Causes spasms to death."
-
+	if(is_regenerating())
+		return
 	change_ctate(/datum/click_handler/changeling/changeling_death_sting)
 	return
 
@@ -907,7 +944,8 @@ var/list/datum/absorbed_dna/hivemind_bank = list()
 	set category = "Changeling"
 	set name = "Extract DNA Sting (40)"
 	set desc="Stealthily sting a target to extract their DNA."
-
+	if(is_regenerating())
+		return
 	change_ctate(/datum/click_handler/changeling/changeling_extract_dna_sting)
 	return
 
@@ -932,7 +970,8 @@ var/list/datum/absorbed_dna/hivemind_bank = list()
 	set category = "Changeling"
 	set name = "Fake arm Blade (30)"
 	set desc = "We reform victims arm into a fake armblade."
-
+	if(is_regenerating())
+		return
 	change_ctate(/datum/click_handler/changeling/changeling_fake_arm_blade_sting)
 	return
 
@@ -974,7 +1013,8 @@ var/list/datum/absorbed_dna/hivemind_bank = list()
 	set category = "Changeling"
 	set name = "Chemical Sting (5)"
 	set desc = "We inject synthesized chemicals into the victim."
-
+	if(is_regenerating())
+		return
 	change_ctate(/datum/click_handler/changeling/changeling_chemical_sting)
 	return
 
@@ -1029,7 +1069,7 @@ var/list/datum/absorbed_dna/hivemind_bank = list()
 		/datum/reagent/mercury,
 		/datum/reagent/radium,
 		/datum/reagent/acid/hydrochloric,
-		/datum/reagent/toxin/phoron
+		/datum/reagent/toxin/plasma
 		)
 
 	var/datum/reagent/target_chem = input(src, "Choose reagent:") as null|anything in chemistry
@@ -1037,12 +1077,12 @@ var/list/datum/absorbed_dna/hivemind_bank = list()
 	if(changeling.chem_charges <= amount)
 		to_chat(src, "<span class='notice'>Not enough chemicals.</span>")
 		return
-	if(target_chem == /datum/reagent/toxin/phoron)
+	if(target_chem == /datum/reagent/toxin/plasma)
 		if(changeling.chem_charges <= 2*amount)
 			to_chat(src, "<span class='notice'>Not enough chemicals.</span>")
 			return
 	changeling.pick_chemistry.add_reagent(target_chem, amount)
-	if(target_chem == /datum/reagent/toxin/phoron)
+	if(target_chem == /datum/reagent/toxin/plasma)
 		amount *= 2
 	changeling.chem_charges -= amount
 	if(!(/mob/proc/changeling_chemical_sting in src.verbs))
@@ -1122,6 +1162,8 @@ var/list/datum/absorbed_dna/hivemind_bank = list()
 	set name = "Visible Camouflage (10)"
 	set desc = "Turns yourself almost invisible, as long as you move slowly."
 
+	if(is_regenerating())
+		return
 
 	if(istype(src,/mob/living/carbon/human))
 		var/mob/living/carbon/human/H = src
@@ -1149,13 +1191,13 @@ var/list/datum/absorbed_dna/hivemind_bank = list()
 			to_chat(src, "<span class='notice'>We may move at our normal speed while hidden.</span>")
 
 		if(must_walk)
-			H.set_m_intent("walk")
+			H.set_m_intent(M_WALK)
 
 		var/remain_cloaked = TRUE
-		while(remain_cloaked) //This loop will keep going until the player uncloaks.
+		while(remain_cloaked && !is_regenerating()) //This loop will keep going until the player uncloaks.
 			sleep(1 SECOND) // Sleep at the start so that if something invalidates a cloak, it will drop immediately after the check and not in one second.
 
-			if(H.m_intent != "walk" && must_walk) // Moving too fast uncloaks you.
+			if(H.m_intent != M_WALK && must_walk) // Moving too fast uncloaks you.
 				remain_cloaked = 0
 			if(!H.mind.changeling.cloaked)
 				remain_cloaked = 0
@@ -1173,7 +1215,7 @@ var/list/datum/absorbed_dna/hivemind_bank = list()
 		H.invisibility = initial(invisibility)
 		visible_message("<span class='warning'>[src] suddenly fades in, seemingly from nowhere!</span>",
 		"<span class='notice'>We revert our camouflage, revealing ourselves.</span>")
-		H.set_m_intent("run")
+		H.set_m_intent(M_RUN)
 		H.mind.changeling.cloaked = 0
 		H.mind.changeling.chem_recharge_rate = old_regen_rate
 
@@ -1186,6 +1228,9 @@ var/list/datum/absorbed_dna/hivemind_bank = list()
 	set category = "Changeling"
 	set name = "Electric Lockpick (5 + 10/use)"
 	set desc = "Bruteforces open most electrical locking systems, at 10 chemicals per use."
+
+	if(is_regenerating())
+		return
 
 	var/datum/changeling/changeling = changeling_power(5)
 	if(!changeling)
@@ -1278,6 +1323,9 @@ var/list/datum/absorbed_dna/hivemind_bank = list()
 /mob/proc/changeling_claw()
 	set category = "Changeling"
 	set name = "Claw (15)"
+
+	if(is_regenerating())
+		return
 
 	if(src.mind.changeling.recursive_enhancement)
 		if(changeling_generic_weapon(/obj/item/weapon/melee/changeling/claw/greater, 1, 15))
@@ -1388,6 +1436,8 @@ var/list/datum/absorbed_dna/hivemind_bank = list()
 /mob/proc/changeling_arm_blade()
 	set category = "Changeling"
 	set name = "Arm Blade (20)"
+	if(is_regenerating())
+		return
 	visible_message("<span class='warning'>The flesh is torn around the [src.name]\'s arm!</span>",
 		"<span class='warning'>The flesh of our hand is transforming.</span>",
 		"<span class='italics'>You hear organic matter ripping and tearing!</span>")
@@ -1428,7 +1478,8 @@ var/list/datum/absorbed_dna/hivemind_bank = list()
 	set category = "Changeling"
 	set name = "Division (20)"
 	set desc = "You will be like us."
-
+	if(is_regenerating())
+		return
 	var/datum/changeling/changeling = changeling_power()
 	if(!changeling)
 		return
@@ -1517,7 +1568,8 @@ var/list/datum/absorbed_dna/hivemind_bank = list()
 	set category = "Changeling"
 	set name = "Detach Limb (10)"
 	set desc = "We tear off our limb, turning it into an aggressive biomass."
-
+	if(is_regenerating())
+		return
 	var/datum/changeling/changeling = changeling_power(10, max_stat = DEAD)
 	if(!changeling)	return
 	if(changeling.isdetachingnow)	return
@@ -1573,7 +1625,8 @@ var/list/datum/absorbed_dna/hivemind_bank = list()
 	set category = "Changeling"
 	set name = "Body Disjunction (40)"
 	set desc = "Tear apart your human disguise, revealing your little form."
-
+	if(is_regenerating())
+		return
 	var/datum/changeling/changeling = changeling_power(40,0,0,DEAD)
 	if(!changeling)	return 0
 
@@ -1649,7 +1702,8 @@ var/list/datum/absorbed_dna/hivemind_bank = list()
 	set category = "Changeling"
 	set name = "Runaway form"
 	set desc = "We take our weakest form."
-
+	if(is_regenerating())
+		return
 	var/mob/living/simple_animal/hostile/little_changeling/headcrab/HC = new (get_turf(src))
 	var/obj/item/organ/internal/biostructure/BIO = src.loc
 
@@ -1662,7 +1716,8 @@ var/list/datum/absorbed_dna/hivemind_bank = list()
 	set category = "Changeling"
 	set name = "Toggle feel pain (10)"
 	set desc = "We choose whether or not to fell pain."
-
+	if(is_regenerating())
+		return
 	var/datum/changeling/changeling = changeling_power(10, 0, 0, UNCONSCIOUS)
 	if(!changeling)
 		return FALSE
@@ -1676,7 +1731,7 @@ var/list/datum/absorbed_dna/hivemind_bank = list()
 		to_chat(C, "<span class='notice'>We are unable to feel pain anymore.</span>")
 
 	spawn(0)
-		while(C && !C.can_feel_pain() && C.mind && C.mind.changeling)
+		while(C && !C.can_feel_pain() && C.mind && C.mind.changeling && !is_regenerating())
 			C.mind.changeling.chem_charges = max(C.mind.changeling.chem_charges - 3, 0)
 			if (C.mind.changeling.chem_charges == 0)
 				C.no_pain = !C.no_pain
@@ -1687,7 +1742,8 @@ var/list/datum/absorbed_dna/hivemind_bank = list()
 	set category = "Changeling"
 	set name = "Passive Regeneration (10)"
 	set desc = "Allows you to passively regenerate when activated."
-
+	if(is_regenerating())
+		return
 	if(istype(src,/mob/living/carbon/human))
 		var/mob/living/carbon/human/H = src
 		if(H.mind.changeling.heal)
@@ -1703,7 +1759,7 @@ var/list/datum/absorbed_dna/hivemind_bank = list()
 		to_chat(H, "<span class='notice'>We activate our stemocyte pool and begin intensive fleshmending.</span>")
 
 		spawn(0)
-			while(H && H.mind && H.mind.changeling.heal && H.mind.changeling.damaged)
+			while(H && H.mind && H.mind.changeling.heal && H.mind.changeling.damaged && !is_regenerating())
 				H.mind.changeling.chem_charges = max(H.mind.changeling.chem_charges - 1, 0)
 				if(H.getBruteLoss())
 					H.adjustBruteLoss(-15 * config.organ_regeneration_multiplier)	//Heal brute better than other ouchies.
@@ -1795,7 +1851,8 @@ var/list/datum/absorbed_dna/hivemind_bank = list()
 	set category = "Changeling"
 	set name = "Bioelectrogenesis (20)"
 	set desc = "We create an electromagnetic pulse against synthetics."
-
+	if(is_regenerating())
+		return
 	change_ctate(/datum/click_handler/changeling/changeling_bioelectrogenesis)
 	return
 

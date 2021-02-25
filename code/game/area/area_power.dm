@@ -21,9 +21,11 @@
 
 // called when power status changes
 /area/proc/power_change()
-	for(var/obj/machinery/M in src)	// for each machine in the area
-		M.power_change()			// reverify power status (to update icons etc.)
-	if (fire || eject || party)
+	for(var/obj/machinery/M in src) // for each machine in the area
+		M.power_change()            // reverify power status (to update icons etc.)
+	for(var/obj/item/device/radio/intercom/I in src) // better than processing hundreds of those each tick
+		I.power_change()
+	if(fire || eject || party)
 		update_icon()
 
 /area/proc/usage(chan)

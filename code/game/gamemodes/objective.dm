@@ -36,7 +36,7 @@ datum/objective
 				target = possible_target
 				break
 
-
+	proc/update()
 
 datum/objective/assassinate
 	find_target()
@@ -111,17 +111,12 @@ datum/objective/anti_revolution/brig
 		return target
 
 	check_completion()
-		if(already_completed)
-			return 1
+		return already_completed
 
-		if(target && target.current)
-			if(target.current.stat == DEAD)
-				return 0
-			if(target.is_brigged(10 * 60 * 10))
+	update()
+		if(!already_completed && target && target.current && target.current.stat != DEAD)
+			if(target.is_brigged(10 MINUTES))
 				already_completed = 1
-				return 1
-			return 0
-		return 0
 
 datum/objective/anti_revolution/demote
 	find_target()
@@ -338,18 +333,12 @@ datum/objective/brig
 		return target
 
 	check_completion()
-		if(already_completed)
-			return 1
+		return already_completed
 
-		if(target && target.current)
-			if(target.current.stat == DEAD)
-				return 0
-			// Make the actual required time a bit shorter than the official time
-			if(target.is_brigged(10 * 60 * 5))
+	update()
+		if(!already_completed && target && target.current && target.current.stat != DEAD)
+			if(target.is_brigged(10 MINUTES))
 				already_completed = 1
-				return 1
-			return 0
-		return 0
 
 // Harm a crew member, making an example of them
 datum/objective/harm
@@ -434,7 +423,7 @@ datum/objective/steal
 	var/target_name
 
 	var/global/possible_items[] = list(
-		"a psychoscope's prototype" = /obj/item/clothing/glasses/hud/psychoscope,
+		"the prototype psychoscope" = /obj/item/clothing/glasses/psychoscope,
 		"the captain's antique laser gun" = /obj/item/weapon/gun/energy/captain,
 		"a bluespace rift generator in hand teleporter" = /obj/item/integrated_circuit/manipulation/bluespace_rift,
 		"an RCD" = /obj/item/weapon/rcd,
@@ -444,7 +433,7 @@ datum/objective/steal
 		"a pair of magboots" = /obj/item/clothing/shoes/magboots,
 		"the [station_name()] blueprints" = /obj/item/blueprints,
 		"a nasa voidsuit" = /obj/item/clothing/suit/space/void,
-		"28 moles of phoron (full tank)" = /obj/item/weapon/tank,
+		"28 moles of plasma (full tank)" = /obj/item/weapon/tank,
 		"a sample of slime extract" = /obj/item/slime_extract,
 		"a piece of corgi meat" = /obj/item/weapon/reagent_containers/food/snacks/meat/corgi,
 		"a research director's jumpsuit" = /obj/item/clothing/under/rank/research_director,
@@ -513,13 +502,13 @@ datum/objective/steal/check_completion()
 		return 0
 	var/list/all_items = owner.current.get_contents()
 	switch (target_name)
-		if("28 moles of phoron (full tank)","10 diamonds","50 gold bars","25 refined uranium bars")
+		if("28 moles of plasma (full tank)","10 diamonds","50 gold bars","25 refined uranium bars")
 			var/target_amount = text2num(target_name)//Non-numbers are ignored.
 			var/found_amount = 0.0//Always starts as zero.
 
-			for(var/obj/item/I in all_items) //Check for phoron tanks
+			for(var/obj/item/I in all_items) //Check for plasma tanks
 				if(istype(I, steal_target))
-					found_amount += (target_name=="28 moles of phoron (full tank)" ? (I:air_contents:gas["phoron"]) : (I:amount))
+					found_amount += (target_name=="28 moles of plasma (full tank)" ? (I:air_contents:gas["plasma"]) : (I:amount))
 			return found_amount>=target_amount
 
 		if("a functional AI")
@@ -660,10 +649,9 @@ datum/objective/heist/kidnap
 			//if (!target.current.restrained())
 			//	return 0 // They're loose. Close but no cigar.
 
-			var/area/skipjack_station/start/A = locate()
-			for(var/mob/living/carbon/human/M in A)
-				if(target.current == M)
-					return 1 //They're restrained on the shuttle. Success.
+			var/area/target_area = get_area(target.current)
+			if(is_type_in_list(target_area, GLOB.raiders.safe_areas))
+				return 1
 		else
 			return 0
 
@@ -679,7 +667,7 @@ datum/objective/heist/loot
 			if(2)
 				target = /obj/machinery/the_singularitygen
 				target_amount = 1
-				loot = "a gravitational generator"
+				loot = "a gravitational singularity generator"
 			if(3)
 				target = /obj/machinery/power/emitter
 				target_amount = 4
@@ -711,18 +699,34 @@ datum/objective/heist/loot
 
 		var/total_amount = 0
 
-		for(var/obj/O in locate(/area/skipjack_station/start))
-			if(istype(O,target)) total_amount++
-			for(var/obj/I in O.contents)
-				if(istype(I,target)) total_amount++
-			if(total_amount >= target_amount) return 1
+		var/list/objects_to_check = list()
+		for(var/i in GLOB.raiders.safe_areas)
+			var/area/A = locate(i)
+			for(var/obj/O in A)
+				objects_to_check |= O
+
+		for(var/obj/O in objects_to_check)
+			if(istype(O, target))
+				total_amount++
+			else
+				for(var/obj/C in O.contents)
+					if(istype(C, target))
+						total_amount++
 
 		for(var/datum/mind/raider in GLOB.raiders.current_antagonists)
-			if(raider.current)
-				for(var/obj/O in raider.current.get_contents())
-					if(istype(O,target)) total_amount++
-					if(total_amount >= target_amount) return 1
+			if(!raider.current)
+				continue
 
+			var/area/raider_area = get_area(raider.current)
+			if(!is_type_in_list(raider_area, GLOB.raiders.safe_areas))
+				continue
+
+			for(var/obj/O in raider.current.get_contents())
+				if(istype(O, target))
+					total_amount++
+
+		if(total_amount >= target_amount)
+			return 1
 		return 0
 
 datum/objective/heist/salvage
@@ -739,7 +743,7 @@ datum/objective/heist/salvage
 				target = MATERIAL_PLASTEEL
 				target_amount = 100
 			if(4)
-				target = MATERIAL_PHORON
+				target = MATERIAL_PLASMA
 				target_amount = 100
 			if(5)
 				target = MATERIAL_SILVER
@@ -760,30 +764,37 @@ datum/objective/heist/salvage
 
 		var/total_amount = 0
 
-		for(var/obj/item/O in locate(/area/skipjack_station/start))
+		var/list/objects_to_check = list()
+		for(var/i in GLOB.raiders.safe_areas)
+			var/area/A = locate(i)
+			for(var/obj/O in A)
+				objects_to_check |= O
 
-			var/obj/item/stack/material/S
-			if(istype(O,/obj/item/stack/material))
-				if(O.name == target)
-					S = O
-					total_amount += S.get_amount()
-			for(var/obj/I in O.contents)
-				if(istype(I,/obj/item/stack/material))
-					if(I.name == target)
-						S = I
-						total_amount += S.get_amount()
+		for(var/obj/O in objects_to_check)
+			if(istype(O, /obj/item/stack/material))
+				var/obj/item/stack/material/M = O
+				if(M.material.name == target)
+					total_amount += M.get_amount()
+			else
+				for(var/obj/item/stack/material/M in O.contents)
+					if(M.material.name == target)
+						total_amount += M.get_amount()
 
 		for(var/datum/mind/raider in GLOB.raiders.current_antagonists)
-			if(raider.current)
-				for(var/obj/item/O in raider.current.get_contents())
-					if(istype(O,/obj/item/stack/material))
-						if(O.name == target)
-							var/obj/item/stack/material/S = O
-							total_amount += S.get_amount()
+			if(!raider.current)
+				continue
 
-		if(total_amount >= target_amount) return 1
+			var/area/raider_area = get_area(raider.current)
+			if(!is_type_in_list(raider_area, GLOB.raiders.safe_areas))
+				continue
+
+			for(var/obj/item/stack/material/M in raider.current.get_contents())
+				if(M.material.name == target)
+					total_amount += M.get_amount()
+
+		if(total_amount >= target_amount)
+			return 1
 		return 0
-
 
 /datum/objective/heist/preserve_crew
 	explanation_text = "Do not leave anyone behind, alive or dead."

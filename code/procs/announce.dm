@@ -40,7 +40,7 @@
 
 	var/msg = FormMessage(message, message_title)
 	for(var/mob/M in GLOB.player_list)
-		if((M.z in (zlevels | GLOB.using_map.admin_levels)) && !istype(M,/mob/new_player) && !isdeaf(M))
+		if(should_recieve_announce(M, zlevels))
 			M.playsound_local(M.loc, pick('sound/signals/anounce1.ogg', 'sound/signals/anounce2.ogg', 'sound/signals/anounce3.ogg'), 75)
 
 			spawn (2)
@@ -54,6 +54,18 @@
 
 	if(log)
 		log_game("[key_name(usr)] has made \a [announcement_type]: [message_title] - [message] - [announcer]", notify_admin = TRUE)
+
+proc/should_recieve_announce(mob/M, list/contact_levels)
+	if (istype(M,/mob/new_player) || isdeaf(M))
+		return 0
+	if (M.z in (contact_levels | GLOB.using_map.admin_levels))
+		return 1
+	var/turf/loc_turf = get_turf(M.loc) // for mobs in lockers, sleepers, etc.
+	if (!loc_turf)
+		return 0
+	if (loc_turf.z in (contact_levels | GLOB.using_map.admin_levels))
+		return 1
+	return 0
 
 datum/announcement/proc/FormMessage(message as text, message_title as text)
 	. = "<h2 class='alert'>[message_title]</h2>"
@@ -131,8 +143,14 @@ datum/announcement/proc/NewsCast(message as text, message_title as text)
 	if("Common" != announce_freq)
 		AnnounceArrivalSimple(name, rank, spawnpoint.msg, announce_freq)
 
-/proc/AnnounceArrivalSimple(name, rank, join_message, frequency)
-	GLOB.global_announcer.autosay("[name], [rank], [join_message].", "Arrivals Announcement Computer", frequency)
+/proc/get_announcement_computer()
+	if(ai_list.len)
+		return pick(ai_list).name
+	else
+		return "Arrivals Announcement Computer"
+
+/proc/AnnounceArrivalSimple(name, rank = "visitor", join_message = "has arrived on the [station_name()]", frequency)
+	GLOB.global_announcer.autosay("[name], [rank], [join_message].", get_announcement_computer(), frequency)
 
 /proc/AnnounceArrivalCaptain(name, captain_sound_volume)
 	var/sound/announce_sound = sound('sound/misc/boatswain.ogg', volume=captain_sound_volume)

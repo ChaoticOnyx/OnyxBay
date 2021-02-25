@@ -39,12 +39,11 @@
 		return
 
 	if(max_length)
-		//testing shows that just looking for > max_length alone will actually cut off the final character if message is precisely max_length, so >= instead
-		if(length_char(input) >= max_length)
-			var/overflow = ((length_char(input)+1) - max_length)
-			to_chat(usr, "<span class='warning'>Your message is too long by [overflow] character\s.</span>")
+		var/input_length = length_char(input)
+		if(input_length > max_length)
+			to_chat(usr, SPAN_WARNING("Your message is too long by [input_length - max_length] character\s."))
 			return
-		input = copytext_char(input, 1, max_length)
+		input = copytext_char(input, 1, max_length+1)
 
 	if(extra)
 		input = replace_characters(input, list("\n"=" ","\t"=" "))
@@ -104,7 +103,7 @@
   * * allow_numbers - allows numbers and common special characters - used for silicon/other weird things names
   */
 
-/proc/sanitizeName(input, max_length = MAX_NAME_LEN, allow_numbers = 0, force_first_letter_uppercase = TRUE)
+/proc/sanitizeName(input, max_length = MAX_NAME_LEN, allow_numbers = FALSE)
 	if(!input)
 		return //Rejects the input if it is null
 
@@ -123,42 +122,38 @@
 		var/char_code = text2ascii_char(char)
 		switch(char_code)
 			// A  .. Z
-			if(65 to 90)   //Uppercase Letters	
+			if(65 to 90)   //Uppercase Letters
 				number_of_alphanumeric++
 				last_char_group = LETTERS_DETECTED
-				
+
 			// a  .. z
 			if(97 to 122)   //Lowercase Letters
-				if(last_char_group == NO_CHARS_DETECTED || last_char_group == SPACES_DETECTED || last_char_group == SYMBOLS_DETECTED) //start of a word
-					char = uppertext(char)
 				number_of_alphanumeric++
 				last_char_group = LETTERS_DETECTED
-				
+
 			// 0  .. 9
 			if(48 to 57)   //Numbers
-				if(last_char_group == NO_CHARS_DETECTED || !allow_numbers) //suppress at start of string
+				if(!allow_numbers)
 					continue
 				number_of_alphanumeric++
 				last_char_group = NUMBERS_DETECTED
-				
-			// '  -  .
+
+			// '   -   .
 			if(39, 45, 46)   //Common name punctuation
-				if(last_char_group == NO_CHARS_DETECTED)
-					continue
 				last_char_group = SYMBOLS_DETECTED
-				
+
 			// ~    |    @   :   #   $   %   &   *   +
 			if(126, 124, 64, 58, 35, 36, 37, 38, 42, 43)			//Other symbols that we'll allow (mainly for AI)
-				if(last_char_group == NO_CHARS_DETECTED || !allow_numbers) //suppress at start of string
+				if(!allow_numbers)
 					continue
 				last_char_group = SYMBOLS_DETECTED
-				
+
 			//Space
 			if(32)
 				if(last_char_group == NO_CHARS_DETECTED || last_char_group == SPACES_DETECTED) //suppress double-spaces and spaces at start of string
 					continue
 				last_char_group = SPACES_DETECTED
-				
+
 			if(127 to INFINITY) // cyrillic, chinese, and other unicode stuff
 				return
 			else
@@ -419,6 +414,10 @@ proc/TextPreview(string, len=40)
 	t = replacetext(t, "\n", "<BR>")
 	t = replacetext(t, "\[center\]", "<center>")
 	t = replacetext(t, "\[/center\]", "</center>")
+	t = replacetext(t, "\[right\]", "<div style=\"text-align:right\">")
+	t = replacetext(t, "\[/right\]", "</div>")
+	t = replacetext(t, "\[left\]", "<div style=\"text-align:left\">")
+	t = replacetext(t, "\[/left\]", "</div>")
 	t = replacetext(t, "\[br\]", "<BR>")
 	t = replacetext(t, "\[b\]", "<B>")
 	t = replacetext(t, "\[/b\]", "</B>")
@@ -430,7 +429,7 @@ proc/TextPreview(string, len=40)
 	t = replacetext(t, "\[date\]", "[stationdate2text()]")
 	t = replacetext(t, "\[large\]", "<font size=\"4\">")
 	t = replacetext(t, "\[/large\]", "</font>")
-	t = replacetext(t, "\[field\]", "<span class=\"paper_field\"></span>")
+	t = replacetext(t, "\[field\]", "<!--paper_field-->")
 	t = replacetext(t, "\[h1\]", "<H1>")
 	t = replacetext(t, "\[/h1\]", "</H1>")
 	t = replacetext(t, "\[h2\]", "<H2>")
@@ -441,8 +440,14 @@ proc/TextPreview(string, len=40)
 	t = replacetext(t, "\[hr\]", "<HR>")
 	t = replacetext(t, "\[small\]", "<font size = \"1\">")
 	t = replacetext(t, "\[/small\]", "</font>")
+	t = replacetext(t, "\[medium\]", "<font size = \"2\">")
+	t = replacetext(t, "\[/medium\]", "</font>")
 	t = replacetext(t, "\[list\]", "<ul>")
 	t = replacetext(t, "\[/list\]", "</ul>")
+	t = replacetext(t, "\[item\]", "<li>")
+	t = replacetext(t, "\[/item\]", "</li>")
+	t = replacetext(t, "\[ord\]", "<ol>")
+	t = replacetext(t, "\[/ord\]", "</ol>")
 	t = replacetext(t, "\[table\]", "<table border=1 cellspacing=0 cellpadding=3 style='border: 1px solid black;'>")
 	t = replacetext(t, "\[/table\]", "</td></tr></table>")
 	t = replacetext(t, "\[grid\]", "<table>")
@@ -528,3 +533,8 @@ proc/TextPreview(string, len=40)
 		if (text2ascii(A, i) != text2ascii(B, i))
 			return FALSE
 	return TRUE
+
+/proc/counttext(haystack, needle, start = 0)
+	. = 0
+	while ((start = findtext(haystack, needle, start + 1)))
+		.++

@@ -122,7 +122,7 @@
 // This only works on broken doors or doors without power. Also allows repair with Plasteel.
 /obj/machinery/door/blast/attackby(obj/item/weapon/C as obj, mob/user as mob)
 	src.add_fingerprint(user, 0, C)
-	if(isCrowbar(C) || (istype(C, /obj/item/weapon/material/twohanded/fireaxe) && C:wielded == 1))
+	if((isCrowbar(C) && !istype(C, /obj/item/weapon/crowbar/emergency)) || (istype(C, /obj/item/weapon/material/twohanded/fireaxe) && C:wielded == 1))
 		if(((stat & NOPOWER) || (stat & BROKEN)) && !( src.operating ))
 			force_toggle()
 		else
@@ -175,11 +175,6 @@
 	health = maxhealth
 	set_broken(FALSE)
 
-/obj/machinery/door/blast/CanPass(atom/movable/mover, turf/target, height=0, air_group=0)
-	if(air_group) return 1
-	return ..()
-
-
 
 // SUBTYPE: Regular
 // Your classical blast door, found almost everywhere.
@@ -198,6 +193,15 @@
 /obj/machinery/door/blast/regular/singulo
 	emp_act()
 		return
+
+/obj/machinery/door/blast/regular/retro
+	desc = "That looks like it doesn't open easily. However, it's probably not as durable as the modern ones."
+	icon_state_open = "old_pdoor0"
+	icon_state_opening = "old_pdoorc0"
+	icon_state_closed = "old_pdoor1"
+	icon_state_closing = "old_pdoorc1"
+	icon_state = "old_pdoor1"
+	maxhealth = 300
 
 // SUBTYPE: Shutters
 // Nicer looking, and also weaker, shutters. Found in kitchen and similar areas.

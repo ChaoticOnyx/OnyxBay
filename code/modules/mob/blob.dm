@@ -79,7 +79,7 @@ mob/blob/DblClickOn(atom/A) //Teleport view to another blob
 /mob/blob/airflow_stun()
 	return FALSE
 
-/mob/blob/CanPass(atom/movable/mover, turf/target, height, air_group)
+/mob/blob/CanPass(atom/movable/mover, turf/target)
 	return TRUE
 
 /mob/blob/check_airflow_movable(n)
@@ -114,8 +114,10 @@ mob/blob/DblClickOn(atom/A) //Teleport view to another blob
 	else
 		B = locate() in range("3x3", src.loc)
 
-/mob/blob/say_wrapper()
-	say(input("","say (text)"))
+/mob/blob/add_typing_indicator(is_sayinput as num|null)
+	set name = ".add_typing_indicator"
+	set hidden = 1
+	//no typing indicator for blob
 
 /mob/blob/say(message)
 	if (!message)
@@ -152,10 +154,10 @@ mob/blob/DblClickOn(atom/A) //Teleport view to another blob
 	if (is_dead())
 		return
 
-	var/datum/hud/blob/H = hud_used
-
-	if (!H)
+	if (!hud_used)
 		InitializeHud()
+
+	var/datum/hud/blob/H = hud_used
 
 	var/number_of_cores = blob_cores.len
 	var/matrix/M = matrix()

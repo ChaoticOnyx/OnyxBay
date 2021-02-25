@@ -131,6 +131,7 @@
 #define PROG_ADMIN		"NTNet Administration"
 #define PROG_UTIL		"Utility"
 #define PROG_SEC		"Security"
+#define PROG_MED		"Medical"
 #define PROG_MONITOR	"Monitoring"
 
 // Caps for NTNet logging. Less than 10 would make logging useless anyway, more than 500 may make the log browser too laggy. Defaults to 100 unless user changes it.
@@ -228,8 +229,16 @@
 #define CLIENT_FROM_VAR(I) (ismob(I) ? I:client : (istype(I, /client) ? I : (istype(I, /datum/mind) ? I:current?:client : null)))
 #define GRAYSCALE list(0.3,0.3,0.3,0,0.59,0.59,0.59,0,0.11,0.11,0.11,0,0,0,0,1,0,0,0,0)
 
+#define ADD_VERB_IN(the_atom,time,verb) addtimer(CALLBACK(the_atom, /atom/proc/add_verb, verb), time, TIMER_UNIQUE | TIMER_OVERRIDE | TIMER_NO_HASH_WAIT)
+#define ADD_VERB_IN_IF(the_atom,time,verb,callback) addtimer(CALLBACK(the_atom, /atom/proc/add_verb, verb, callback), time, TIMER_UNIQUE | TIMER_OVERRIDE | TIMER_NO_HASH_WAIT)
+
 //Wiki book styles
 #define WIKI_FULL   1 // This is a standart web page. Beware, navigaton throw the internet is allowed!
 #define WIKI_MINI   2 // This is a beautiful copy of wiki topic. Beware, font is really small!
 #define WIKI_MOBILE 3 // This is a highly visible variantion. Beware, decoration elements are lost!
 #define WIKI_TEXT	4 // This is a distorted version. Everything is lost except unformatted text!
+
+//https://secure.byond.com/docs/ref/info.html#/atom/var/mouse_opacity
+#define MOUSE_OPACITY_TRANSPARENT 0
+#define MOUSE_OPACITY_ICON 1
+#define MOUSE_OPACITY_OPAQUE 2

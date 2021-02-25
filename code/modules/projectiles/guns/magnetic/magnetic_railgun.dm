@@ -1,7 +1,7 @@
 /obj/item/weapon/gun/magnetic/railgun
 	name = "railgun"
 	desc = "The Mars Military Industries MI-76 Thunderclap. A man-portable mass driver for squad support anti-armour and destruction of fortifications and emplacements."
-	gun_unreliable = 0
+	able_to_overheat = FALSE
 	icon_state = "railgun"
 	removable_components = FALSE
 	load_type = /obj/item/weapon/rcd_ammo
@@ -72,7 +72,7 @@
 	slowdown_worn = 2
 
 	slot_flags = SLOT_BACK
-	w_class = ITEM_SIZE_NO_CONTAINER
+	w_class = ITEM_SIZE_GARGANTUAN
 
 	firemodes = list(
 		list(mode_name="semiauto",    burst=1, fire_delay=0,    move_delay=null, one_hand_penalty=1, burst_accuracy=null, dispersion=null),

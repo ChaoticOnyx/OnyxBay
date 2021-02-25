@@ -43,11 +43,10 @@
 		return
 
 	var/temp = client.close_saywindow(return_content = TRUE)
-	remove_typing_indicator()
 
 	if (!temp)
 		temp = winget(client, "input", "text")
-		if(findtextEx(temp, "Say ", 1, 5) && length(temp) > 4)
+		if(length(temp) > 4 && findtextEx(temp, "Say ", 1, 5))
 			temp = copytext(temp, 5)
 			if (text2ascii(temp, 1) == text2ascii("\""))
 				temp = copytext(temp, 2)
@@ -56,7 +55,7 @@
 				return
 		else
 			return
-		winset(client, "input", "text=[null]")
+		winset(client, "input", "text=\"Say \\\"\"")
 	temp = trim_left(temp)
 
 	if(length(temp))
@@ -153,7 +152,8 @@
 			message_data[1] = pick(M.say_messages)
 			message_data[2] = pick(M.say_verbs)
 			. = 1
-
+		else
+			. = ..(message_data)
 	else
 		. = ..(message_data)
 

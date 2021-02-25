@@ -19,8 +19,6 @@
 			return global.DEPT_FREQS;
 		if("Debug2")
 			return global.Debug2;
-		if("EAMS_errorsCounter")
-			return global.EAMS_errorsCounter;
 		if("Failsafe")
 			return global.Failsafe;
 		if("GLOB")
@@ -129,12 +127,6 @@
 			return global.WALLITEMS;
 		if("_all_globals")
 			return global._all_globals;
-		if("_client_preferences")
-			return global._client_preferences;
-		if("_client_preferences_by_key")
-			return global._client_preferences_by_key;
-		if("_client_preferences_by_type")
-			return global._client_preferences_by_type;
 		if("account_hack_attempted")
 			return global.account_hack_attempted;
 		if("additional_antag_types")
@@ -693,6 +685,10 @@
 			return global.powerinstances;
 		if("powers")
 			return global.powers;
+		if("vampirepower_types")
+			return global.vampirepower_types
+		if("vampirepowers")
+			return global.vampirepowers		
 		if("priority_air_alarms")
 			return global.priority_air_alarms;
 		if("priority_announcement")
@@ -998,8 +994,6 @@
 			global.DEPT_FREQS=newval;
 		if("Debug2")
 			global.Debug2=newval;
-		if("EAMS_errorsCounter")
-			global.EAMS_errorsCounter=newval;
 		if("Failsafe")
 			global.Failsafe=newval;
 		if("GLOB")
@@ -1108,12 +1102,6 @@
 			global.WALLITEMS=newval;
 		if("_all_globals")
 			global._all_globals=newval;
-		if("_client_preferences")
-			global._client_preferences=newval;
-		if("_client_preferences_by_key")
-			global._client_preferences_by_key=newval;
-		if("_client_preferences_by_type")
-			global._client_preferences_by_type=newval;
 		if("account_hack_attempted")
 			global.account_hack_attempted=newval;
 		if("additional_antag_types")
@@ -1672,6 +1660,10 @@
 			global.powerinstances=newval;
 		if("powers")
 			global.powers=newval;
+		if("vampirepower_types")
+			global.vampirepower_types=newval;
+		if("vampirepowers")
+			global.vampirepowers=newval;
 		if("priority_air_alarms")
 			global.priority_air_alarms=newval;
 		if("priority_announcement")
@@ -2305,6 +2297,8 @@
 	"power_alarm",
 	"powerinstances",
 	"powers",
+	"vampirepower_types",
+	"vampirepowers",
 	"priority_air_alarms",
 	"priority_announcement",
 	"priv_all_access",

@@ -5,8 +5,6 @@
 	var/deploy_path = null
 	var/inflatable_health
 
-	atmos_canpass = CANPASS_DENSITY
-
 /obj/item/inflatable/attack_self(mob/user)
 	if(!deploy_path)
 		return
@@ -14,7 +12,7 @@
 	if(!do_after(user, 1 SECOND, src))
 		return
 	playsound(loc, 'sound/items/zip.ogg', 75, 1)
-	user.visible_message(SPAN_NOTICE("[user] inflates \the [src]."), SPAN_NOTICE("You inflate \the [src]."))
+	user.visible_message(SPAN("notice", "[user] inflates \the [src]."), SPAN("notice", "You inflate \the [src]."))
 	var/obj/structure/inflatable/R = new deploy_path(user.loc)
 	transfer_fingerprints_to(R)
 	R.add_fingerprint(user)
@@ -43,6 +41,7 @@
 	opacity = 0
 	icon = 'icons/obj/inflatable.dmi'
 	icon_state = "wall"
+	can_atmos_pass = ATMOS_PASS_DENSITY
 
 	var/undeploy_path = null
 	var/health = 10
@@ -64,11 +63,11 @@
 
 /obj/structure/inflatable/Initialize()
 	. = ..()
-	START_PROCESSING(SSobj,src)
+	START_PROCESSING(SSobj, src)
 
 /obj/structure/inflatable/Destroy()
 	update_nearby_tiles()
-	STOP_PROCESSING(SSobj,src)
+	STOP_PROCESSING(SSobj, src)
 	return ..()
 
 /obj/structure/inflatable/Process()
@@ -104,9 +103,6 @@
 		. += "\n[SPAN_DANGER("It's heavily damaged!")]"
 	if(taped)
 		. += "\n[SPAN_NOTICE("It's been duct taped in few places.")]"
-
-/obj/structure/inflatable/CanPass(atom/movable/mover, turf/target, height=0, air_group=0)
-	return 0
 
 /obj/structure/inflatable/bullet_act(obj/item/projectile/Proj)
 	take_damage(Proj.get_structure_damage())
@@ -223,9 +219,7 @@
 /obj/structure/inflatable/door/attack_hand(mob/user as mob)
 	return TryToSwitchState(user)
 
-/obj/structure/inflatable/door/CanPass(atom/movable/mover, turf/target, height=0, air_group=0)
-	if(air_group)
-		return state
+/obj/structure/inflatable/door/CanPass(atom/movable/mover, turf/target)
 	if(istype(mover, /obj/effect/beam))
 		return !opacity
 	return !density

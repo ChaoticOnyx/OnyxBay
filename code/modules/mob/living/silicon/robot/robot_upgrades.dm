@@ -87,14 +87,6 @@
 		installed = 1
 	return 1
 
-/obj/item/borg/upgrade/remodel/surgeon
-	name = "surgeon model board"
-	module = "Surgeon"
-
-/obj/item/borg/upgrade/remodel/advanced/surgeon
-	name = "advanced surgeon model board"
-	module = "Advanced Surgeon"
-
 /obj/item/borg/upgrade/remodel/service
 	name = "service model board"
 	module = "Service"
@@ -524,6 +516,7 @@
 		R.module.modules += new /obj/item/device/reagent_scanner(R.module)
 		R.module.modules += new /obj/item/weapon/scalpel(R.module)
 		R.module.modules += new /obj/item/weapon/autopsy_scanner(R.module)
+		R.module.modules += new /obj/item/weapon/evidencebag/cyborg(R.module)
 		installed = 1
 		return 1
 

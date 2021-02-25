@@ -1463,9 +1463,8 @@
 		message_admins("[key_name(M)] has been hit by Bluespace Artillery fired by [src.owner]")
 
 		var/obj/effect/stop/S
-		S = new /obj/effect/stop
+		S = new /obj/effect/stop(M.loc)
 		S.victim = M
-		S.loc = M.loc
 		spawn(20)
 			qdel(S)
 
@@ -1540,6 +1539,19 @@
 				data += "<A href='?src=\ref[src];AdminFaxViewPage=[page];paper_bundle=\ref[B]'>Page [page] - [pageobj.name]</A><BR>"
 
 			usr << browse(data, "window=[B.name]")
+		else if (istype(fax, /obj/item/weapon/complaint_folder))
+			var/data = "<meta charset=\"utf-8\">"
+			var/obj/item/weapon/complaint_folder/CF = fax
+			data += "<A href='?src=\ref[src];AdminFaxViewPaper=\ref[CF.main_form]'>Main form ([CF?.main_form?.signed_ckey])</A><BR>"
+			for (var/obj/item/weapon/paper/complaint_form/cf in CF.contents)
+				if (cf == CF.main_form)
+					continue
+				data += "<A href='?src=\ref[src];AdminFaxViewPaper=\ref[cf]'>[cf] ([cf.signed_ckey])</A><BR>"
+			if (CF.target_ckey == "???")
+				data += "<HR><BR>"
+				data += "<A href='?src=\ref[src];AdminFaxComplaintCkey=\ref[CF]'>Set target ckey manually</A><BR>"
+
+			usr << browse(data, "window=[CF.name]")
 		else
 			to_chat(usr, "<span class='warning'>The faxed item is not viewable. This is probably a bug, and should be reported on the tracker: [fax.type]</span>")
 	else if (href_list["AdminFaxViewPage"])
@@ -1555,14 +1567,28 @@
 			var/obj/item/weapon/photo/H = bundle.pages[page]
 			H.show(src.owner)
 		return
-
-	else if(href_list["FaxReply"])
+	else if (href_list["AdminFaxViewPaper"])
+		var/obj/item/weapon/paper/P = locate(href_list["AdminFaxViewPaper"])
+		ASSERT(istype(P))
+		P.show_content(src.owner, 1)
+		return
+	else if (href_list["AdminFaxComplaintCkey"])
+		var/obj/item/weapon/complaint_folder/CF = locate(href_list["AdminFaxComplaintCkey"])
+		ASSERT(istype(CF))
+		var/key = sanitize(input(usr, "Enter target ckey:", "Complaint ckey manual fix", "???") as text|null)
+		var/rank = sanitize(input(usr, "Enter target rank:", "Complaint rank manual fix", "???") as text|null)
+		if (key && rank)
+			CF.target_ckey = ckey(key)
+			CF.target_rank = rank
+			CF.postvalidate()
+		return
+	else if (href_list["FaxReply"])
 		var/mob/sender = locate(href_list["FaxReply"])
 		var/obj/machinery/photocopier/faxmachine/fax = locate(href_list["originfax"])
 		var/replyorigin = href_list["replyorigin"]
 
 
-		var/obj/item/weapon/paper/admin/P = new /obj/item/weapon/paper/admin( null ) //hopefully the null loc won't cause trouble for us
+		var/obj/item/weapon/paper/admin/P = new /obj/item/weapon/paper/admin(null) //hopefully the null loc won't cause trouble for us
 		faxreply = P
 
 		P.admindatum = src
@@ -1979,7 +2005,7 @@
 		if(check_rights(R_ADMIN|R_SERVER))
 			if(href_list["vsc"] == "airflow")
 				vsc.ChangeSettingsDialog(usr,vsc.settings)
-			if(href_list["vsc"] == "phoron")
+			if(href_list["vsc"] == "plasma")
 				vsc.ChangeSettingsDialog(usr,vsc.plc.settings)
 			if(href_list["vsc"] == "default")
 				vsc.SetDefault(usr)
@@ -2001,7 +2027,7 @@
 					to_chat(usr, "Failed to add language '[lang2toggle]' from \the [M]!")
 
 			show_player_panel(M)
-	
+
 	else if(href_list["listen_tape_sound"])
 		var/sound/S = sound(locate(href_list["listen_tape_sound"]))
 		if(!S) return
@@ -2009,7 +2035,7 @@
 		S.channel = 703
 		sound_to(usr, S)
 		to_chat(usr, "<B><A HREF='?_src_=holder;stop_tape_sound=1'>Stop listening</A></B>")
-	
+
 	else if(href_list["stop_tape_sound"])
 		var/sound/S = sound(null)
 		S.channel = 703
@@ -2104,7 +2130,7 @@
 		return
 
 	watchlist.AdminTopicProcess(src, href_list)
-	EAMS_AdminTopicProcess(src, href_list)
+	IAAJ_AdminTopicProcess(src, href_list)
 	SpeciesIngameWhitelist_AdminTopicProcess(src, href_list)
 
 

@@ -40,6 +40,7 @@
 	display_name = "flame chili plants"
 	mutants = null
 	chems = list(/datum/reagent/fuel = list(5,10))
+	kitchen_tag = "flamechili"
 
 /datum/seed/chili/flame/New()
 	..()
@@ -637,8 +638,9 @@
 	name = "poppies"
 	seed_name = "poppy"
 	display_name = "poppies"
-	chems = list(/datum/reagent/nutriment = list(1,20), /datum/reagent/tramadol = list(1,10))
+	chems = list(/datum/reagent/nutriment = list(1,20))
 	kitchen_tag = "poppy"
+	mutants = list("opiumpoppies")
 
 /datum/seed/flower/poppy/New()
 	..()
@@ -649,6 +651,26 @@
 	set_trait(TRAIT_PRODUCT_ICON,"flower3")
 	set_trait(TRAIT_PRODUCT_COLOUR,"#b33715")
 	set_trait(TRAIT_PLANT_ICON,"flower3")
+	set_trait(TRAIT_IDEAL_LIGHT, 6)
+	set_trait(TRAIT_WATER_CONSUMPTION, 0.5)
+	set_trait(TRAIT_NUTRIENT_CONSUMPTION, 0.15)
+
+/datum/seed/flower/poppy/opium
+	name = "opiumpoppies"
+	seed_name = "somniferum poppy"
+	display_name = "somniferum poppies"
+	mutants = null
+	chems = list(/datum/reagent/nutriment = list(1,20), /datum/reagent/tramadol/opium = list(1,10))
+
+/datum/seed/flower/poppy/opium/New()
+	..()
+	set_trait(TRAIT_POTENCY,20)
+	set_trait(TRAIT_MATURATION,8)
+	set_trait(TRAIT_PRODUCTION,6)
+	set_trait(TRAIT_YIELD,6)
+	set_trait(TRAIT_PRODUCT_ICON,"bulbflower")
+	set_trait(TRAIT_PRODUCT_COLOUR,"#7d9b55")
+	set_trait(TRAIT_PLANT_ICON,"bulbflower")
 	set_trait(TRAIT_IDEAL_LIGHT, 6)
 	set_trait(TRAIT_WATER_CONSUMPTION, 0.5)
 	set_trait(TRAIT_NUTRIENT_CONSUMPTION, 0.15)
@@ -1409,7 +1431,7 @@
 	seed_name = "alien weed"
 	display_name = "alien weeds"
 	force_layer = OBJ_LAYER
-	chems = list(/datum/reagent/toxin/phoron = list(1,3))
+	chems = list(/datum/reagent/toxin/plasma = list(1,3))
 
 /datum/seed/xenomorph/New()
 	..()

@@ -19,54 +19,136 @@
 	body_parts_covered = HEAD
 	attack_verb = list("bapped")
 
-	var/info		//What's actually written on the paper.
-	var/info_links	//A different version of the paper which includes html links at fields and EOF
-	var/stamps		//The (text for the) stamps on the paper.
-	var/fields		//Amount of user created fields
+	var/info = ""   //What's actually written on the paper.
+	var/info_links  //A different version of the paper which includes html links at fields and EOF
+	var/stamps      //The (text for the) stamps on the paper.
 	var/free_space = MAX_PAPER_MESSAGE_LEN
+	var/stamps_generated = TRUE
 	var/list/stamped
 	var/list/ico[0]      //Icons and
 	var/list/offset_x[0] //offsets stored for later
 	var/list/offset_y[0] //usage by the photocopier
 	var/rigged = 0
 	var/spam_flag = 0
+	var/readonly = FALSE
+	var/appendable = TRUE
+	var/dynamic_icon = FALSE
+	var/rawhtml = FALSE
 
 	var/const/deffont = "Verdana"
 	var/const/signfont = "Times New Roman"
 	var/const/crayonfont = "Comic Sans MS"
 	var/const/fancyfont = "Segoe Script"
+	var/text_color = COLOR_BLACK
 
-/obj/item/weapon/paper/New(loc, text,title)
-	..(loc)
-	set_content(text ? text : info, title)
+	//static because these can't be const
+	var/static/regex/named_field_tag_regex = regex(@"\[field=(\w+)\]", "g")
+	var/static/regex/named_sign_field_tag_regex = regex(@"\[signfield=(\w+)\]", "g")
+	var/static/regex/sign_field_regex = regex(@"<I><span class='sign_field_(\w+)'>sign here</span></I>", "g")
+	var/static/regex/named_field_extraction_regex = regex(@#<!--paper_fieldstart_N(\w+)-->(.*?)(?:<!--paper_field_N\1-->)?<!--paper_fieldend_N\1-->#, "g")
+	var/static/regex/field_regex = regex(@#<!--paper_field_(\w+)-->#, "g")
+	var/static/regex/field_link_regex = regex("<font face=\"[deffont]\"><A href='\\?src=\[^'\]+?;write=\[^'\]+'>write</A></font>", "g")
 
-/obj/item/weapon/paper/proc/set_content(text,title)
+/obj/item/weapon/paper/Initialize(mapload, text, title, rawhtml = TRUE, noinit = FALSE)
+	. = ..()
+
+	if (noinit)
+		return
+	set_content(text ? text : info, title, rawhtml || src.rawhtml)
+
+/obj/item/weapon/paper/proc/copy(loc = src.loc, generate_stamps = TRUE)
+	var/obj/item/weapon/paper/P = new src.type(loc)
+	P.name = name
+	P.info = info
+	P.info_links = info_links
+	P.migrateinfolinks(src)
+	P.stamps = stamps
+	P.free_space = free_space
+	P.stamped = stamped
+	P.ico = ico
+	P.offset_x = offset_x
+	P.offset_y = offset_y
+	P.rigged = rigged
+	P.readonly = readonly
+	P.appendable = appendable
+	P.color = color
+	P.text_color = text_color
+	if (generate_stamps)
+		P.generate_stamps()
+	else
+		P.stamps_generated = FALSE
+	return P
+
+/obj/item/weapon/paper/proc/recolorize(saturation = 1, grayscale = FALSE)
+	var/static/regex/color_regex = regex("color=(#\[0-9a-fA-F\]+)", "g")
+	text_color = BlendRGB(color ? color : COLOR_WHITE, text_color, saturation)
+	if (grayscale)
+		if (color)
+			color = GrayScale(color)
+		text_color = GrayScale(text_color)
+
+	var/list/found_colors = list()
+	color_regex.next = 1
+	while (color_regex.Find(info))
+		var/found_color = color_regex.group[1]
+		found_colors |= found_color
+
+	for (var/found_color in found_colors)
+		var/result_color = BlendRGB(color ? color : COLOR_WHITE, found_color, saturation)
+		if (grayscale)
+			result_color = GrayScale(result_color)
+		info = replacetext(info, "color=[found_color]", "color=[result_color]")
+		info_links = replacetext(info_links, "color=[found_color]", "color=[result_color]")
+
+	if (!stamps_generated) //not sure how to remove merged stamps, so limiting it to generation (no regeneration) for now
+		generate_stamps(saturation, grayscale)
+
+/obj/item/weapon/paper/proc/generate_stamps(saturation = 1, grayscale = FALSE)
+	stamps_generated = TRUE
+	var/image/img
+	for (var/j = 1, j <= min(ico.len), j++) //gray overlay onto the copy
+		var/chosen_stamp = ico[j]
+		img = image('icons/obj/bureaucracy.dmi', chosen_stamp)
+		img.pixel_x = offset_x[j]
+		img.pixel_y = offset_y[j]
+		if (grayscale)
+			img.color = list(0.3,0.3,0.3, 59,59,59, 11,11,11)
+		img.alpha = saturation * 255
+		overlays += img
+	update_icon()
+
+/obj/item/weapon/paper/proc/set_content(text, title, rawhtml = FALSE)
 	if(title)
 		SetName(title)
-	info = html_encode(text)
-	info = parsepencode(text)
+	info = text
+	if(!rawhtml)
+		info = html_encode(text)
+	info = parsepencode(info, is_init = TRUE)
 	update_icon()
-	update_space(info)
-	updateinfolinks()
+	update_space()
+	generateinfolinks()
 
 /obj/item/weapon/paper/update_icon()
-	if(icon_state == "paper_talisman")
+	if(dynamic_icon)
 		return
 	else if(info)
 		icon_state = "paper_words"
 	else
 		icon_state = "paper"
 
-/obj/item/weapon/paper/proc/update_space(new_text)
-	if(new_text)
-		free_space -= length(strip_html_properly(new_text))
+/obj/item/weapon/paper/proc/update_space()
+	free_space = initial(free_space)
+	free_space -= length(strip_html_properly(info_links)) //using info_links to also count field prompts
+
+/obj/item/weapon/paper/proc/is_clean()
+	return free_space == initial(free_space)
 
 /obj/item/weapon/paper/examine(mob/user)
 	. = ..()
 	if(name != "sheet of paper")
 		. += "\nIt's titled '[name]'."
 	if(user && (in_range(user, src) || isghost(user)))
-		show_content(usr)
+		show_content(user)
 	else
 		. += "\n<span class='notice'>You have to go closer if you want to read it.</span>"
 
@@ -75,7 +157,7 @@
 	if(!forceshow && istype(user,/mob/living/silicon/ai))
 		var/mob/living/silicon/ai/AI = user
 		can_read = get_dist(src, AI.camera) < 2
-	user << browse("<HTML><meta charset=\"utf-8\"><HEAD><TITLE>[name]</TITLE></HEAD><BODY bgcolor='[color]'>[can_read ? info : stars(info)][stamps]</BODY></HTML>", "window=[name]")
+	user << browse("<HTML><meta charset=\"utf-8\"><HEAD><TITLE>[name]</TITLE></HEAD><BODY bgcolor='[color ? color : COLOR_WHITE]' text='[text_color]'>[can_read ? info : stars(info)][stamps]</BODY></HTML>", "window=[name]")
 	onclose(user, "[name]")
 
 /obj/item/weapon/paper/verb/rename()
@@ -138,49 +220,35 @@
 					H.lip_style = null
 					H.update_body()
 
-/obj/item/weapon/paper/proc/addtofield(id, text, links = 0)
-	var/locid = 0
-	var/laststart = 1
-	var/textindex = 1
-	while(1) // I know this can cause infinite loops and fuck up the whole server, but the if(istart==0) should be safe as fuck
-		var/istart = 0
-		if(links)
-			istart = findtext(info_links, "<span class=\"paper_field\">", laststart)
-		else
-			istart = findtext(info, "<span class=\"paper_field\">", laststart)
+/obj/item/weapon/paper/proc/addtofield(id, text, terminate = FALSE)
+	var/token = "<!--paper_field_[id]-->"
+	var/token_link = "<font face=\"[deffont]\"><A href='?src=\ref[src];write=[id]'>write</A></font>"
+	var/text_with_links = field_regex.Replace(text, "<font face=\"[deffont]\"><A href='?src=\ref[src];write=$1'>write</A></font>")
+	text_with_links = sign_field_regex.Replace(text_with_links, " <I><A href='?src=\ref[src];signfield=$1'>sign here</A></I> ")
+	info = replacetext(info, token, "[text][terminate ? "" : token]")
+	info_links = replacetext(info_links, token_link, "[text_with_links][terminate ? "" : token_link]")
 
-		if(istart==0)
-			return // No field found with matching id
 
-		laststart = istart+1
-		locid++
-		if(locid == id)
-			var/iend = 1
-			if(links)
-				iend = findtext(info_links, "</span>", istart)
-			else
-				iend = findtext(info, "</span>", istart)
-
-			textindex = iend
-			break
-
-	if(links)
-		var/before = copytext(info_links, 1, textindex)
-		var/after = copytext(info_links, textindex)
-		info_links = before + text + after
-	else
-		var/before = copytext(info, 1, textindex)
-		var/after = copytext(info, textindex)
-		info = before + text + after
-		updateinfolinks()
-
-/obj/item/weapon/paper/proc/updateinfolinks()
+/obj/item/weapon/paper/proc/generateinfolinks()
 	info_links = info
-	var/i = 0
-	for(i=1,i<=fields,i++)
-		addtofield(i, "<font face=\"[deffont]\"><A href='?src=\ref[src];write=[i]'>write</A></font>", 1)
-	info_links = info_links + "<font face=\"[deffont]\"><A href='?src=\ref[src];write=end'>write</A></font>"
+	if (readonly)
+		return
 
+	info_links = field_regex.Replace(info_links, "<font face=\"[deffont]\"><A href='?src=\ref[src];write=$1'>write</A></font>")
+	info_links = sign_field_regex.Replace(info_links, " <I><A href='?src=\ref[src];signfield=$1'>sign here</A></I> ")
+
+	if (appendable)
+		info += "<!--paper_field_end-->"
+		info_links += "<font face=\"[deffont]\"><A href='?src=\ref[src];write=end'>write</A></font>"
+
+/obj/item/weapon/paper/proc/migrateinfolinks(from)
+	info_links = replacetext(info_links, "\ref[from]", "\ref[src]")
+
+/obj/item/weapon/paper/proc/make_readonly()
+	if (readonly)
+		return
+	info_links = field_link_regex.Replace(info_links, "")
+	readonly = TRUE
 
 /obj/item/weapon/paper/proc/clearpaper()
 	info = null
@@ -188,20 +256,42 @@
 	free_space = MAX_PAPER_MESSAGE_LEN
 	stamped = list()
 	overlays.Cut()
-	updateinfolinks()
+	generateinfolinks()
 	update_icon()
 
-/obj/item/weapon/paper/proc/get_signature(obj/item/weapon/pen/P, mob/user as mob)
+/obj/item/weapon/paper/proc/get_signature(obj/item/weapon/pen/P, mob/user, signfield)
 	if(P && istype(P, /obj/item/weapon/pen))
 		return P.get_signature(user)
 	return (user && user.real_name) ? user.real_name : "Anonymous"
 
-/obj/item/weapon/paper/proc/parsepencode(t, obj/item/weapon/pen/P, mob/user, iscrayon, isfancy)
+/proc/new_unnamed_field(to_replace)
+	var/static/counter
+	if (!counter)
+		counter = 0
+	return "<!--paper_field_[counter++]-->"
+
+/proc/new_sign_field(to_replace)
+	var/static/counter
+	if (!counter)
+		counter = 0
+	return " <I><span class='sign_field_[counter++]'>sign here</span></I> "
+
+/obj/item/weapon/paper/proc/parsepencode(t, obj/item/weapon/pen/P, mob/user, iscrayon, isfancy, is_init = FALSE)
 	if(length(t) == 0)
 		return ""
 
 	if(findtext(t, "\[sign\]"))
 		t = replacetext(t, "\[sign\]", "<font face=\"[signfont]\"><i>[get_signature(P, user)]</i></font>")
+
+	t = replacetext(t, @"[signfield]", /proc/new_sign_field)
+	t = replacetext(t, @"[field]", /proc/new_unnamed_field)
+	//TODO: check if there's any way to sneak old fields there and add converter if there is
+	//shouldn't allow users to create named fields because a) they're useless for them b) they'll (users) fuck you up
+	if (is_init)
+		//prefixed with N to prevent unnamed-named collisions
+		//start and end tags for cases when you want to extract info from named fields
+		t = replacetext(t, named_field_tag_regex, "<!--paper_fieldstart_N$1--><!--paper_field_N$1--><!--paper_fieldend_N$1-->")
+		t = replacetext(t, named_sign_field_tag_regex, " <I><span class='sign_field_N$1'>sign here</span></I> ")
 
 	if(iscrayon) // If it is a crayon, and he still tries to use these, make them empty!
 		t = replacetext(t, "\[*\]", "")
@@ -217,25 +307,22 @@
 		t = replacetext(t, "\[logo\]", "")
 
 	if(iscrayon)
-		t = "<font face=\"[crayonfont]\" color=[P ? P.colour : "black"]><b>[t]</b></font>"
+		t = "<font face=\"[crayonfont]\" color=[P ? P.colour : COLOR_BLACK]><b>[t]</b></font>"
 	else if(isfancy)
-		t = "<font face=\"[fancyfont]\" color=[P ? P.colour : "black"]><i>[t]</i></font>"
+		t = "<font face=\"[fancyfont]\" color=[P ? P.colour : COLOR_BLACK]><i>[t]</i></font>"
 	else
-		t = "<font face=\"[deffont]\" color=[P ? P.colour : "black"]>[t]</font>"
+		t = "<font face=\"[deffont]\" color=[P ? P.colour : COLOR_BLACK]>[t]</font>"
 
 	t = pencode2html(t)
 
-	//Count the fields
-	var/laststart = 1
-	while(1)
-		var/i = findtext(t, "<span class=\"paper_field\">", laststart)	//</span>
-		if(i==0)
-			break
-		laststart = i+1
-		fields++
-
 	return t
 
+/obj/item/weapon/paper/proc/parse_named_fields()
+	var/list/matches = list()
+	named_field_extraction_regex.next = 1
+	while (named_field_extraction_regex.Find(info))
+		matches[named_field_extraction_regex.group[1]] = named_field_extraction_regex.group[2]
+	return matches
 
 /obj/item/weapon/paper/proc/burnpaper(obj/item/weapon/flame/P, mob/user)
 	var/class = "warning"
@@ -262,12 +349,52 @@
 				to_chat(user, "<span class='warning'>You must hold \the [P] steady to burn \the [src].</span>")
 
 
+/obj/item/weapon/paper/proc/get_pen()
+	var/obj/item/i = usr.get_active_hand()
+	if(istype(i, /obj/item/weapon/pen))
+		return i
+	if(usr.back && istype(usr.back,/obj/item/weapon/rig))
+		var/obj/item/weapon/rig/r = usr.back
+		var/obj/item/rig_module/device/pen/m = locate(/obj/item/rig_module/device/pen) in r.installed_modules
+		if(!r.offline && m)
+			return m.device
+		else
+			return
+	else
+		return
+
+/obj/item/weapon/paper/proc/check_proximity()
+	// if paper is not in usr, then it must be near them, or in a clipboard or folder, which must be in or near usr
+	return !(src.loc != usr && !src.Adjacent(usr)\
+		&& !((istype(src.loc, /obj/item/weapon/clipboard) || istype(src.loc, /obj/item/weapon/folder))\
+		&& (src.loc.loc == usr || src.loc.Adjacent(usr)) ) )
+
+
 /obj/item/weapon/paper/Topic(href, href_list)
 	..()
 	if(!usr || (usr.stat || usr.restrained()))
 		return
+	if (href_list["signfield"])
+		var/signfield = href_list["signfield"]
+		var/obj/item/weapon/pen/P = get_pen()
+		if (!P || !check_proximity())
+			return
+		var/signfield_name
+		if (copytext(signfield, 1, 2) == "N")
+			signfield_name = copytext(signfield, 2)
 
+		var/signature = get_signature(P, usr, signfield_name)
+		if(istype(P, /obj/item/weapon/pen/crayon))
+			signature = "<b>[signature]</b>"
+		info = replacetext(info, "<I><span class='sign_field_[signfield]'>sign here</span></I>", "<font face=\"[signfont]\" color=[P.colour]><i>[signature]</i></font>")
+		info_links = replacetext(info_links, "<I><A href='?src=\ref[src];signfield=[signfield]'>sign here</A></I>", "<font face=\"[signfont]\" color=[P.colour]><i>[signature]</i></font>")
+		update_space()
+		usr << browse("<HTML><meta charset=\"utf-8\"><HEAD><TITLE>[name]</TITLE></HEAD><BODY bgcolor='[color]'>[info_links][stamps]</BODY></HTML>", "window=[name]") // Update the window
+		return
 	if(href_list["write"])
+		if (readonly)
+			to_chat(usr, SPAN_WARNING("Your pen fails to leave any trace on \the [src]!"))
+			return
 		var/id = href_list["write"]
 		//var/t = strip_html_simple(input(usr, "What text do you wish to add to " + (id=="end" ? "the end of the paper" : "field "+id) + "?", "[name]", null),8192) as message
 
@@ -280,19 +407,11 @@
 		if(!t)
 			return
 
-		var/obj/item/i = usr.get_active_hand() // Check to see if he still got that darn pen, also check what type of pen
+		var/obj/item/i = get_pen()
+		if (!i)
+			return
 		var/iscrayon = 0
 		var/isfancy = 0
-		if(!istype(i, /obj/item/weapon/pen))
-			if(usr.back && istype(usr.back,/obj/item/weapon/rig))
-				var/obj/item/weapon/rig/r = usr.back
-				var/obj/item/rig_module/device/pen/m = locate(/obj/item/rig_module/device/pen) in r.installed_modules
-				if(!r.offline && m)
-					i = m.device
-				else
-					return
-			else
-				return
 
 		if(istype(i, /obj/item/weapon/pen/crayon))
 			iscrayon = 1
@@ -300,28 +419,25 @@
 		if(istype(i, /obj/item/weapon/pen/fancy))
 			isfancy = 1
 
-
-		// if paper is not in usr, then it must be near them, or in a clipboard or folder, which must be in or near usr
-		if(src.loc != usr && !src.Adjacent(usr) && !((istype(src.loc, /obj/item/weapon/clipboard) || istype(src.loc, /obj/item/weapon/folder)) && (src.loc.loc == usr || src.loc.Adjacent(usr)) ) )
+		if (!check_proximity())
 			return
 
-		var/last_fields_value = fields
+		if (counttext(t, @"[field]") > 50)
+			to_chat(usr, SPAN_WARNING("Too many fields. Sorry, you can't do this."))
+			return
 
 		t = parsepencode(t, i, usr, iscrayon, isfancy) // Encode everything from pencode to html
 
+		var/terminated = FALSE
+		if (findtext(t, @"[end]"))
+			t = replacetext(t, @"[end]", "")
+			terminated = TRUE
 
-		if(fields > 50)//large amount of fields creates a heavy load on the server, see updateinfolinks() and addtofield()
-			to_chat(usr, "<span class='warning'>Too many fields. Sorry, you can't do this.</span>")
-			fields = last_fields_value
-			return
+		addtofield(id, t, terminated) // He wants to edit a field, let him.
+		if (id == "end" && terminated)
+			appendable = FALSE
 
-		if(id!="end")
-			addtofield(text2num(id), t) // He wants to edit a field, let him.
-		else
-			info += t // Oh, he wants to edit to the end of the file, let him.
-			updateinfolinks()
-
-		update_space(t)
+		update_space()
 
 		usr << browse("<HTML><meta charset=\"utf-8\"><HEAD><TITLE>[name]</TITLE></HEAD><BODY bgcolor='[color]'>[info_links][stamps]</BODY></HTML>", "window=[name]") // Update the window
 
@@ -421,6 +537,30 @@
 		attacking_bundle.insert_sheet_at(user, (attacking_bundle.pages.len)+1, src)
 		attacking_bundle.update_icon()
 
+	else if(istype(P, /obj/item/weapon/reagent_containers/food/snacks/grown))
+		var/obj/item/weapon/reagent_containers/food/snacks/grown/G = P
+		if(!G.dry)
+			to_chat(user, SPAN("notice", "[G] must be dried before you can grind and roll it."))
+			return
+		var/R_loc = loc
+		var/roll_in_hands = FALSE
+		if(ishuman(loc))
+			R_loc = user.loc
+			roll_in_hands = TRUE
+		var/obj/item/clothing/mask/smokable/cigarette/roll/joint/big/R = new(R_loc)
+		if(G.reagents)
+			if(G.reagents.has_reagent(/datum/reagent/nutriment))
+				G.reagents.del_reagent(/datum/reagent/nutriment)
+			G.reagents.trans_to_obj(R, G.reagents.total_volume)
+		R.desc += " Looks like it contains some [G]."
+		to_chat(user, SPAN("notice", "You grind \the [G] and roll a big joint!"))
+		R.add_fingerprint(user)
+		qdel(src)
+		qdel(G)
+		if(roll_in_hands)
+			user.put_in_hands(R)
+		return
+
 	add_fingerprint(user)
 	return
 
@@ -428,44 +568,3 @@
 /obj/item/weapon/paper/manifest
 	name = "supply manifest"
 	var/is_copy = 1
-/*
- * Premade paper
- */
-/obj/item/weapon/paper/Court
-	name = "Judgement"
-	info = "For crimes as specified, the offender is sentenced to:<BR>\n<BR>\n"
-
-/obj/item/weapon/paper/crumpled
-	name = "paper scrap"
-	icon_state = "scrap"
-
-/obj/item/weapon/paper/crumpled/update_icon()
-	return
-
-/obj/item/weapon/paper/crumpled/bloody
-	icon_state = "scrap_bloodied"
-
-/obj/item/weapon/paper/exodus_armory
-	name = "armory inventory"
-	info = "<center>\[logo]<BR><b><large>NSS Exodus</large></b><BR><i><date></i><BR><i>Armoury Inventory - Revision <field></i></center><hr><center>Armoury</center><list>\[*]<b>Deployable barriers</b>: 4\[*]<b>Biohazard suit(s)</b>: 1\[*]<b>Biohazard hood(s)</b>: 1\[*]<b>Face Mask(s)</b>: 1\[*]<b>Extended-capacity emergency oxygen tank(s)</b>: 1\[*]<b>Bomb suit(s)</b>: 1\[*]<b>Bomb hood(s)</b>: 1\[*]<b>Security officer's jumpsuit(s)</b>: 1\[*]<b>Brown shoes</b>: 1\[*]<b>Handcuff(s)</b>: 14\[*]<b>R.O.B.U.S.T. cartridges</b>: 7\[*]<b>Flash(s)</b>: 4\[*]<b>Can(s) of pepperspray</b>: 4\[*]<b>Gas mask(s)</b>: 6<field></list><hr><center>Secure Armoury</center><list>\[*]<b>LAEP90 Perun energy guns</b>: 4\[*]<b>Stun Revolver(s)</b>: 1\[*]<b>Taser Gun(s)</b>: 4\[*]<b>Stun baton(s)</b>: 4\[*]<b>Airlock Brace</b>: 3\[*]<b>Maintenance Jack</b>: 1\[*]<b>Stab Vest(s)</b>: 3\[*]<b>Riot helmet(s)</b>: 3\[*]<b>Riot shield(s)</b>: 3\[*]<b>Corporate security heavy armoured vest(s)</b>: 4\[*]<b>NanoTrasen helmet(s)</b>: 4\[*]<b>Portable flasher(s)</b>: 3\[*]<b>Tracking implant(s)</b>: 4\[*]<b>Chemical implant(s)</b>: 5\[*]<b>Implanter(s)</b>: 2\[*]<b>Implant pad(s)</b>: 2\[*]<b>Locator(s)</b>: 1<field></list><hr><center>Tactical Equipment</center><list>\[*]<b>Implanter</b>: 1\[*]<b>Death Alarm implant(s)</b>: 7\[*]<b>Security radio headset(s)</b>: 4\[*]<b>Ablative vest(s)</b>: 2\[*]<b>Ablative helmet(s)</b>: 2\[*]<b>Ballistic vest(s)</b>: 2\[*]<b>Ballistic helmet(s)</b>: 2\[*]<b>Tear Gas Grenade(s)</b>: 7\[*]<b>Flashbang(s)</b>: 7\[*]<b>Beanbag Shell(s)</b>: 7\[*]<b>Stun Shell(s)</b>: 7\[*]<b>Illumination Shell(s)</b>: 7\[*]<b>W-T Remmington 29x shotgun(s)</b>: 2\[*]<b>NT Mk60 EW Halicon ion rifle(s)</b>: 2\[*]<b>Hephaestus Industries G40E laser carbine(s)</b>: 4\[*]<b>Flare(s)</b>: 4<field></list><hr><b>Warden (print)</b>:<field><b>Signature</b>:<br>"
-
-/obj/item/weapon/paper/exodus_cmo
-	name = "outgoing CMO's notes"
-	info = "<I><center>To the incoming CMO of Exodus:</I></center><BR><BR>I wish you and your crew well. Do take note:<BR><BR><BR>The Medical Emergency Red Phone system has proven itself well. Take care to keep the phones in their designated places as they have been optimised for broadcast. The two handheld green radios (I have left one in this office, and one near the Emergency Entrance) are free to be used. The system has proven effective at alerting Medbay of important details, especially during power outages.<BR><BR>I think I may have left the toilet cubicle doors shut. It might be a good idea to open them so the staff and patients know they are not engaged.<BR><BR>The new syringe gun has been stored in secondary storage. I tend to prefer it stored in my office, but 'guidelines' are 'guidelines'.<BR><BR>Also in secondary storage is the grenade equipment crate. I've just realised I've left it open - you may wish to shut it.<BR><BR>There were a few problems with their installation, but the Medbay Quarantine shutters should now be working again  - they lock down the Emergency and Main entrances to prevent travel in and out. Pray you shan't have to use them.<BR><BR>The new version of the Medical Diagnostics Manual arrived. I distributed them to the shelf in the staff break room, and one on the table in the corner of this room.<BR><BR>The exam/triage room has the walking canes in it. I'm not sure why we'd need them - but there you have it.<BR><BR>Emergency Cryo bags are beside the emergency entrance, along with a kit.<BR><BR>Spare paper cups for the reception are on the left side of the reception desk.<BR><BR>I've fed Runtime. She should be fine.<BR><BR><BR><center>That should be all. Good luck!</center>"
-
-/obj/item/weapon/paper/exodus_bartender
-	name = "shotgun permit"
-	info = "This permit signifies that the Bartender is permitted to posess this firearm in the bar, and ONLY the bar. Failure to adhere to this permit will result in confiscation of the weapon and possibly arrest."
-
-/obj/item/weapon/paper/exodus_holodeck
-	name = "holodeck disclaimer"
-	info = "Bruises sustained in the holodeck can be healed simply by sleeping."
-
-/obj/item/weapon/paper/workvisa
-	name = "Sol Work Visa"
-	info = "<center><b><large>Work Visa of the Sol Central Government</large></b></center><br><center><img src = sollogo.png><br><br><i><small>Issued on behalf of the Secretary-General.</small></i></center><hr><BR>This paper hereby permits the carrier to travel unhindered through Sol territories, colonies, and space for the purpose of work and labor."
-	desc = "A flimsy piece of laminated cardboard issued by the Sol Central Government."
-
-/obj/item/weapon/paper/workvisa/New()
-	..()
-	icon_state = "workvisa" //Has to be here or it'll assume default paper sprites.

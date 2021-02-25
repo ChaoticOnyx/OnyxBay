@@ -145,7 +145,6 @@
 /datum/species/tajaran/equip_survival_gear(mob/living/carbon/human/H)
 	..()
 	H.equip_to_slot_or_del(new /obj/item/clothing/shoes/sandal(H),slot_shoes)
-	H.equip_to_slot_or_del(new /obj/item/clothing/glasses/tajblind(H),slot_glasses)
 
 /datum/species/skrell
 	name = SPECIES_SKRELL
@@ -226,8 +225,8 @@
 /datum/species/diona
 	name = SPECIES_DIONA
 	name_plural = "Dionaea"
-	icobase = 'icons/mob/human_races/diona/body.dmi'
-	deform = 'icons/mob/human_races/diona/deformed_body.dmi'
+	icobase = 'icons/mob/human_races/r_diona.dmi'
+	deform = 'icons/mob/human_races/r_def_plant.dmi'
 	language = LANGUAGE_ROOTLOCAL
 	unarmed_types = list(/datum/unarmed_attack/stomp, /datum/unarmed_attack/kick, /datum/unarmed_attack/diona)
 	//primitive_form = "Nymph"
@@ -243,6 +242,7 @@
 	spawns_with_stack = 0
 	health_hud_intensity = 2
 	hunger_factor = 3
+	eye_icon = "blank_eyes"
 
 	min_age = 1
 	max_age = 300
@@ -271,7 +271,7 @@
 	has_limbs = list(
 		BP_CHEST =  list("path" = /obj/item/organ/external/diona/chest),
 		BP_GROIN =  list("path" = /obj/item/organ/external/diona/groin),
-		BP_HEAD =   list("path" = /obj/item/organ/external/head/diona),
+		BP_HEAD =   list("path" = /obj/item/organ/external/head/no_eyes/diona),
 		BP_L_ARM =  list("path" = /obj/item/organ/external/diona/arm),
 		BP_R_ARM =  list("path" = /obj/item/organ/external/diona/arm/right),
 		BP_L_LEG =  list("path" = /obj/item/organ/external/diona/leg),
@@ -283,6 +283,7 @@
 		)
 
 	inherent_verbs = list(
+		/mob/living/carbon/human/proc/diona_split_nymph,
 		/mob/living/carbon/human/proc/diona_heal_toggle
 		)
 
@@ -299,7 +300,7 @@
 
 	body_temperature = T0C + 15		//make the plant people have a bit lower body temperature, why not
 
-	species_flags = SPECIES_FLAG_NO_SCAN | SPECIES_FLAG_IS_PLANT | SPECIES_FLAG_NO_PAIN | SPECIES_FLAG_NO_SLIP
+	species_flags = SPECIES_FLAG_NO_SCAN | SPECIES_FLAG_IS_PLANT | SPECIES_FLAG_NO_PAIN | SPECIES_FLAG_NO_SLIP | SPECIES_FLAG_NO_BLOOD
 	appearance_flags = 0
 	spawn_flags = SPECIES_IS_RESTRICTED | SPECIES_NO_FBP_CONSTRUCTION | SPECIES_NO_FBP_CHARGEN | SPECIES_NO_LACE
 
@@ -327,28 +328,6 @@
 				if(!D.ckey || !D.client)
 					D.death()
 		return 1
-
-// Dionaea spawned by hand or by joining will not have any
-// nymphs passed to them. This should take care of that.
-
-/datum/species/diona/handle_post_spawn(mob/living/carbon/human/H)
-	H.gender = NEUTER
-	. = ..()
-	addtimer(CALLBACK(src, .proc/fill_with_nymphs, H), 0)
-
-/datum/species/diona/proc/fill_with_nymphs(mob/living/carbon/human/H)
-	if(!H || H.species.name != name)
-		return
-
-	var/nymph_count = 0
-	for(var/mob/living/carbon/alien/diona/nymph in H)
-		nymph_count++
-		if(nymph_count >= 3)
-			return
-
-	while(nymph_count < 3)
-		new /mob/living/carbon/alien/diona/sterile(H)
-		nymph_count++
 
 #define DIONA_LIMB_DEATH_COUNT 9
 /datum/species/diona/handle_death_check(mob/living/carbon/human/H)
@@ -388,7 +367,7 @@
 		H.visible_message("<span class='danger'>\The [H] collapses into parts, revealing a solitary diona nymph at the core.</span>")
 		return
 	else
-		split_into_nymphs(H)
+		H.diona_split_nymph()
 
 /datum/species/diona/get_blood_name()
 	return "sap"
@@ -398,7 +377,7 @@
 		return
 	if(H.nutrition < 10)
 		H.take_overall_damage(2,0)
-	else if (H.innate_heal)
+	else if(H.innate_heal)
 		// Heals normal damage.
 		if(H.getBruteLoss())
 			H.adjustBruteLoss(-4)
@@ -409,7 +388,7 @@
 
 		if(prob(10) && H.nutrition > 200 && !H.getBruteLoss() && !H.getFireLoss())
 			var/obj/item/organ/external/head/D = H.organs_by_name["head"]
-			if (D.status & ORGAN_DISFIGURED)
+			if(D.status & ORGAN_DISFIGURED)
 				D.status &= ~ORGAN_DISFIGURED
 				H.nutrition -= 20
 
@@ -418,9 +397,9 @@
 				I.damage = max(I.damage - 2, 0)
 				H.nutrition -= 2
 				if (prob(5))
-					to_chat(H, "<span class='warning'>You sense your nymphs shifting internally to regenerate your [I.name]...</span>")
+					to_chat(H, SPAN("warning", "You sense your nymphs shifting internally to regenerate your [I.name]..."))
 
-		if (prob(10) && H.nutrition > 70)
+		if(prob(10) && H.nutrition > 70)
 			for(var/limb_type in has_limbs)
 				var/obj/item/organ/external/E = H.organs_by_name[limb_type]
 				if(E && !E.is_usable())
@@ -432,10 +411,10 @@
 					var/limb_path = organ_data["path"]
 					var/obj/item/organ/O = new limb_path(H)
 					organ_data["descriptor"] = O.name
-					to_chat(H, "<span class='warning'>Some of your nymphs split and hurry to reform your [O.name].</span>")
+					to_chat(H, SPAN("notice", "Some of your nymphs split and hurry to reform your [O.name]."))
 					H.nutrition -= 60
 					H.update_body()
 				else
 					for(var/datum/wound/W in E.wounds)
-						if (W.wound_damage() == 0 && prob(50))
+						if(W.wound_damage() == 0 && prob(50))
 							E.wounds -= W

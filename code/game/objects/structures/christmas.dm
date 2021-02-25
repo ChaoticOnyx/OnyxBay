@@ -44,8 +44,8 @@
 
 /obj/structure/christmas/snowman/update_icon()
 	overlays.Cut()
-	if (istype(my_hat, /obj/item/clothing/head))
-		overlays += image('icons/mob/onmob/head.dmi',"[my_hat.icon_state]")
+	if(istype(my_hat, /obj/item/clothing/head))
+		overlays += image('icons/inv_slots/hats/mob.dmi', "[my_hat.icon_state]")
 
 /obj/structure/sign/christmas
 	name = "CHRISTMAS"
@@ -155,3 +155,4 @@
 	density = 1
 	opacity = 0
 	anchored = 1
+	layer = ABOVE_HUMAN_LAYER

@@ -202,7 +202,7 @@
 		if(!C.status)
 			continue
 		else
-			if(C.network != "CREED" && C.network != "thunder" && C.network != "RD" && C.network != "phoron" && C.network != "Prison") COMPILE ERROR! This will have to be updated as camera.network is no longer a string, but a list instead
+			if(C.network != "CREED" && C.network != "thunder" && C.network != "RD" && C.network != "plasma" && C.network != "Prison") COMPILE ERROR! This will have to be updated as camera.network is no longer a string, but a list instead
 				cameralist[C.network] = C.network
 
 	src.network = input(usr, "Which network would you like to view?") as null|anything in cameralist
@@ -241,7 +241,7 @@
 	last_special = world.time + 100
 
 	//I'm not sure how much of this is necessary, but I would rather avoid issues.
-	if(istype(card.loc,/obj/item/rig_module) || istype(card.loc,/obj/item/integrated_circuit/manipulation/ai/))
+	if(istype(card.loc, /obj/item/rig_module) || istype(card.loc, /obj/item/integrated_circuit/input/pAI_connector))
 		to_chat(src, "There is no room to unfold inside \the [card.loc]. You're good and stuck.")
 		return 0
 	else if(istype(card.loc,/mob))
@@ -259,9 +259,10 @@
 		var/obj/item/device/pda/holder = card.loc
 		holder.pai = null
 
-	src.client.perspective = EYE_PERSPECTIVE
-	src.client.eye = src
-	src.forceMove(get_turf(card))
+	if(client)
+		client.perspective = EYE_PERSPECTIVE
+		client.eye = src
+	dropInto(card.loc)
 
 	card.forceMove(src)
 	card.screen_loc = null
@@ -321,17 +322,15 @@
 	set category = "IC"
 
 	// Pass lying down or getting up to our pet human, if we're in a rig.
-	if(istype(src.loc,/obj/item/device/paicard))
+	if(istype(src.loc, /obj/item/device/paicard))
 		resting = 0
-		var/obj/item/weapon/rig/rig = src.get_rig()
+		var/obj/item/weapon/rig/rig = get_rig()
 		if(istype(rig))
 			rig.force_rest(src)
 	else
 		resting = !resting
 		icon_state = resting ? "[chassis]_rest" : "[chassis]"
 		to_chat(src, "<span class='notice'>You are now [resting ? "resting" : "getting up"]</span>")
-
-	canmove = !resting
 
 //Overriding this will stop a number of headaches down the track.
 /mob/living/silicon/pai/attackby(obj/item/weapon/W as obj, mob/user as mob)
@@ -373,15 +372,13 @@
 		var/mob/living/M = H.loc
 		if(istype(M))
 			M.drop_from_inventory(H)
-		H.loc = get_turf(src)
-		src.loc = get_turf(H)
+		H.dropInto(get_turf(M))
 
 	// Move us into the card and move the card to the ground.
 	src.loc = card
 	card.loc = get_turf(card)
 	src.forceMove(card)
 	card.forceMove(card.loc)
-	canmove = 1
 	resting = 0
 	icon_state = "[chassis]"
 

@@ -112,6 +112,9 @@
 /obj/proc/hides_under_flooring()
 	return level == 1
 
+/obj/proc/hides_inside_walls()
+	return 1
+
 /obj/proc/hear_talk(mob/M as mob, text, verb, datum/language/speaking)
 	if(talking_atom)
 		talking_atom.catchMessage(text, M)
@@ -153,16 +156,18 @@
 	else
 		user.visible_message("\The [user] begins securing \the [src] to the floor.", "You start securing \the [src] to the floor.")
 	if(do_after(user, delay, src))
-		if(!src) return
+		if(!src)
+			return 0
 		to_chat(user, "<span class='notice'>You [anchored? "un" : ""]secured \the [src]!</span>")
 		anchored = !anchored
-	return 1
+		return 1
+	return 0
 
 /obj/attack_hand(mob/living/user)
 	if(Adjacent(user))
 		add_fingerprint(user)
 	..()
-	
+
 // If object can not be used to start fire, return 0.
 /obj/proc/get_temperature_as_from_ignitor()
 	return 0

@@ -89,25 +89,20 @@
 		pixel_y = rand(-randpixel, randpixel)
 
 /obj/item/Destroy()
-	qdel(hidden_uplink)
-	hidden_uplink = null
+	QDEL_NULL(hidden_uplink)
 	if(ismob(loc))
 		var/mob/m = loc
 		m.drop_from_inventory(src)
-		m.update_inv_r_hand()
-		m.update_inv_l_hand()
-		src.loc = null
 	if(maptext)
 		maptext = ""
+
 	if(istype(src.loc, /obj/item/weapon/storage))
-		var/obj/item/weapon/storage/storage = src.loc
-		storage.prepare_ui()
-		var/datum/storage_ui/s_ui = storage.storage_ui
-		if(s_ui)
-			s_ui.on_pre_remove(usr, src)
-		storage.contents -= src
-		storage.update_ui_after_item_removal()
-	return ..()
+		var/obj/item/weapon/storage/storage = loc // some ui cleanup needs to be done
+		storage.on_item_pre_deletion(src) // must be done before deletion
+		. = ..()
+		storage.on_item_post_deletion() // must be done after deletion
+	else
+		return ..()
 
 /obj/item/device
 	icon = 'icons/obj/device.dmi'
@@ -310,8 +305,6 @@
 /obj/item/proc/dropped(mob/user as mob)
 	if(randpixel)
 		pixel_z = randpixel //an idea borrowed from some of the older pixel_y randomizations. Intended to make items appear to drop at a character
-	if(zoom)
-		zoom(user) //binoculars, scope, etc
 
 	update_twohanding()
 	if(user)
@@ -475,6 +468,9 @@ var/list/global/slot_flags_enumeration = list(
 
 	return 1
 
+/obj/item/proc/return_item()
+	return src
+
 /obj/item/proc/mob_can_unequip(mob/M, slot, disable_warning = 0)
 	if(!slot) return 0
 	if(!M) return 0
@@ -492,7 +488,7 @@ var/list/global/slot_flags_enumeration = list(
 
 	if(!(usr)) //BS12 EDIT
 		return
-	if(!usr.canmove || usr.stat || usr.restrained() || !Adjacent(usr))
+	if(!CanPhysicallyInteract(usr))
 		return
 	if((!istype(usr, /mob/living/carbon)) || (istype(usr, /mob/living/carbon/brain)))//Is humanoid, and is not a brain
 		to_chat(usr, SPAN("warning", "You can't pick things up!"))
@@ -575,10 +571,10 @@ var/list/global/slot_flags_enumeration = list(
 			poise_dmg *= 2
 		H.poise -= poise_dmg
 		if(H.poise < poise_dmg)
-			H.useblock_off()
-			shot_out(H, "knocked")
+			shot_out(H, P)
 
-/obj/item/proc/shot_out(mob/living/carbon/human/H, obj/item/projectile/P, msg = "shot", dist = 3)
+/obj/item/proc/shot_out(mob/living/carbon/human/H, obj/item/projectile/P, msg = "shot", dist = 3) // item gets shot out of one's hands w/ a projectile
+	H.useblock_off()
 	H.poise -= 10
 	if(!canremove)
 		visible_message(SPAN("warning", "[H] blocks [P] with \the [src]!"))
@@ -586,7 +582,19 @@ var/list/global/slot_flags_enumeration = list(
 	visible_message(SPAN("danger", "\The [src] gets [msg] out of [H]'s hands by \a [P]!"))
 	H.drop_from_inventory(src)
 	if(src && istype(loc,/turf))
-		throw_at(get_edge_target_turf(src,pick(GLOB.alldirs)),rand(1,dist),30)
+		throw_at(get_edge_target_turf(src,pick(GLOB.alldirs)),rand(1,dist),5)
+
+/obj/item/proc/knocked_out(mob/living/carbon/human/H, strong_knock = FALSE, dist = 2) // item gets knocked out of one's hands
+	H.useblock_off()
+	if(canremove)
+		H.drop_from_inventory(src)
+		if(src && istype(loc,/turf))
+			throw_at(get_edge_target_turf(src,pick(GLOB.alldirs)),rand(1,dist),1)
+		if(!strong_knock)
+			H.visible_message(SPAN("warning", "[H]'s [src] flies off!"))
+			return
+	H.visible_message(SPAN("warning", "[H] falls down, unable to keep balance!"))
+	H.apply_effect(3, WEAKEN, 0)
 
 /obj/item/proc/get_loc_turf()
 	var/atom/L = loc
@@ -707,11 +715,10 @@ GLOBAL_LIST_EMPTY(blood_overlay_cache)
 	if(GLOB.blood_overlay_cache["[icon]" + icon_state])
 		blood_overlay = GLOB.blood_overlay_cache["[icon]" + icon_state]
 		return
-	var/icon/I = new /icon(icon, icon_state)
-	I.Blend(new /icon('icons/effects/blood.dmi', rgb(255,255,255)), ICON_ADD) //fills the icon_state with white (except where it's transparent)
-	I.Blend(new /icon('icons/effects/blood.dmi', "itemblood"), ICON_MULTIPLY) //adds blood and the remaining white areas become transparant
-	blood_overlay = image(I)
-	GLOB.blood_overlay_cache["[icon]" + icon_state] = blood_overlay
+	var/image/blood = image(icon = 'icons/effects/blood.dmi', icon_state = "itemblood")
+	blood.filters += filter(type = "alpha", icon = icon(icon, icon_state))
+	GLOB.blood_overlay_cache["[icon]" + icon_state] = blood
+	blood_overlay = blood
 
 /obj/item/proc/showoff(mob/user)
 	for (var/mob/M in view(user))
@@ -731,70 +738,88 @@ modules/mob/mob_movement.dm if you move you will be zoomed out
 modules/mob/living/carbon/human/life.dm if you die, you will be zoomed out.
 */
 //Looking through a scope or binoculars should /not/ improve your periphereal vision. Still, increase viewsize a tiny bit so that sniping isn't as restricted to NSEW
-/obj/item/proc/zoom(mob/user, tileoffset = 14,viewsize = 9) //tileoffset is client view offset in the direction the user is facing. viewsize is how far out this thing zooms. 7 is normal view
+/obj/item/proc/zoom(mob/user, tileoffset = 14, viewsize = 9) //tileoffset is client view offset in the direction the user is facing. viewsize is how far out this thing zooms. 7 is normal view
 	if(!user.client)
 		return
+	if(zoom)
+		return
 
-	var/devicename
-	if(zoomdevicename)
-		devicename = zoomdevicename
-	else
-		devicename = src.name
-
-	var/cannotzoom
+	var/devicename = zoomdevicename || name
 
 	var/mob/living/carbon/human/H = user
 	if(user.incapacitated(INCAPACITATION_DISABLED))
 		to_chat(user, SPAN("warning", "You are unable to focus through the [devicename]."))
-		cannotzoom = 1
+		return
 	else if(!zoom && istype(H) && H.equipment_tint_total >= TINT_MODERATE)
 		to_chat(user, SPAN("warning", "Your visor gets in the way of looking through the [devicename]."))
-		cannotzoom = 1
-	else if(!zoom && usr.get_active_hand() != src)
+		return
+	else if(!zoom && user.get_active_hand() != src)
 		to_chat(user, SPAN("warning", "You are too distracted to look through the [devicename], perhaps if it was in your active hand this might work better."))
-		cannotzoom = 1
-	else if (!zoom && H.machine_visual)
-		to_chat(user, SPAN("warning", "You are unable to focus through the monitor."))
-		cannotzoom = 1
+		return
 
-	if(!zoom && !cannotzoom)
-		if(user.hud_used.hud_shown)
-			user.toggle_zoom_hud()	// If the user has already limited their HUD this avoids them having a HUD when they zoom in
-		user.client.view = viewsize
-		zoom = 1
+	if(user.hud_used.hud_shown)
+		user.toggle_zoom_hud()	// If the user has already limited their HUD this avoids them having a HUD when they zoom in
+	user.client.view = viewsize
+	zoom = 1
 
-		var/tilesize = 32
-		var/viewoffset = tilesize * tileoffset
+	var/viewoffset = WORLD_ICON_SIZE * tileoffset
+	switch(user.dir)
+		if (NORTH)
+			user.client.pixel_x = 0
+			user.client.pixel_y = viewoffset
+		if (SOUTH)
+			user.client.pixel_x = 0
+			user.client.pixel_y = -viewoffset
+		if (EAST)
+			user.client.pixel_x = viewoffset
+			user.client.pixel_y = 0
+		if (WEST)
+			user.client.pixel_x = -viewoffset
+			user.client.pixel_y = 0
 
-		switch(user.dir)
-			if (NORTH)
-				user.client.pixel_x = 0
-				user.client.pixel_y = viewoffset
-			if (SOUTH)
-				user.client.pixel_x = 0
-				user.client.pixel_y = -viewoffset
-			if (EAST)
-				user.client.pixel_x = viewoffset
-				user.client.pixel_y = 0
-			if (WEST)
-				user.client.pixel_x = -viewoffset
-				user.client.pixel_y = 0
+	user.visible_message("\The [user] peers through [zoomdevicename ? "the [zoomdevicename] of [src]" : "[src]"].")
 
-		user.visible_message("\The [user] peers through the [zoomdevicename ? "[zoomdevicename] of [src]" : "[src]"].")
+	GLOB.destroyed_event.register(src, src, /obj/item/proc/unzoom)
+	GLOB.moved_event.register(src, src, /obj/item/proc/zoom_move)
+	GLOB.dir_set_event.register(src, src, /obj/item/proc/unzoom)
+	GLOB.item_unequipped_event.register(src, src, /obj/item/proc/zoom_drop)
+	GLOB.stat_set_event.register(user, src, /obj/item/proc/unzoom)
 
-	else
-		user.client.view = world.view
-		if(!user.hud_used.hud_shown)
-			user.toggle_zoom_hud()
-		zoom = 0
+/obj/item/proc/zoom_drop(obj/item/I, mob/user)
+	unzoom(user)
 
-		user.client.pixel_x = 0
-		user.client.pixel_y = 0
+/obj/item/proc/zoom_move(atom/movable/AM)
+	if(ismob(AM.loc))
+		var/mob/M = AM.loc
+		unzoom(M)
 
-		if(!cannotzoom)
-			user.visible_message("[zoomdevicename ? "\The [user] looks up from [src]" : "\The [user] lowers [src]"].")
+/obj/item/proc/unzoom(mob/user)
+	if(!zoom)
+		return
+	zoom = 0
 
-	return
+	GLOB.destroyed_event.unregister(src, src, /obj/item/proc/unzoom)
+	GLOB.moved_event.unregister(src, src, /obj/item/proc/zoom_move)
+	GLOB.dir_set_event.unregister(src, src, /obj/item/proc/unzoom)
+	GLOB.item_unequipped_event.unregister(src, src, /obj/item/proc/zoom_drop)
+
+	user = user == src ? loc : (user || loc)
+	if(!istype(user))
+		crash_with("[log_info_line(src)]: Zoom user lost]")
+		return
+
+	GLOB.stat_set_event.unregister(user, src, /obj/item/proc/unzoom)
+
+	if(!user.client)
+		return
+
+	user.client.view = world.view
+	if(!user.hud_used.hud_shown)
+		user.toggle_zoom_hud()
+
+	user.client.pixel_x = 0
+	user.client.pixel_y = 0
+	user.visible_message("[zoomdevicename ? "\The [user] looks up from [src]" : "\The [user] lowers [src]"].")
 
 /obj/item/proc/pwr_drain()
 	return 0 // Process Kill

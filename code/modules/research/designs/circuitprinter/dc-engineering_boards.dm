@@ -1,7 +1,7 @@
 /datum/design/circuit/pacman
 	name = "PACMAN-type generator"
 	id = "pacman"
-	req_tech = list(TECH_DATA = 3, TECH_PHORON = 3, TECH_POWER = 3, TECH_ENGINEERING = 3)
+	req_tech = list(TECH_DATA = 3, TECH_PLASMA = 3, TECH_POWER = 3, TECH_ENGINEERING = 3)
 	build_path = /obj/item/weapon/circuitboard/pacman
 	sort_string = "JBAAA"
 	category_items = "Engineering Boards"

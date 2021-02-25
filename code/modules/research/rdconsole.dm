@@ -80,8 +80,8 @@ won't update every console in existence) but it's more of a hassle to do. Also, 
 			return_name = "Gold"
 		if(MATERIAL_SILVER)
 			return_name = "Silver"
-		if(MATERIAL_PHORON)
-			return_name = "Solid Phoron"
+		if(MATERIAL_PLASMA)
+			return_name = "Solid Plasma"
 		if(MATERIAL_URANIUM)
 			return_name = "Uranium"
 		if(MATERIAL_DIAMOND)
@@ -725,26 +725,25 @@ won't update every console in existence) but it's more of a hassle to do. Also, 
 				if(name_set in filtered["protolathe"])
 					continue
 				dat += "<H2>[name_set]</H2><UL>"
-				if(linked_imprinter)
-					for(var/datum/design/D in files.known_designs)
-						if(!D.build_path || !(D.build_type & PROTOLATHE) || D.category_items != name_set)
-							continue
-						var/temp_dat
-						for(var/M in D.materials)
-							temp_dat += ", [D.materials[M]*linked_imprinter.mat_efficiency] [CallMaterialName(M)]"
-						for(var/T in D.chemicals)
-							temp_dat += ", [D.chemicals[T]*linked_imprinter.mat_efficiency] [CallReagentName(T)]"
-						if(temp_dat)
-							temp_dat = " \[[copytext(temp_dat, 3)]\]"
-						if(linked_lathe.canBuild(D, 1))
-							dat += "<LI><B><A href='?src=\ref[src];build=[D.id];n=1'>[D.name]</A></B>[temp_dat] Queue: "
-							if(linked_lathe.canBuild(D, 5))
-								dat += "<A href='?src=\ref[src];build=[D.id];n=5'>(&times;5)</A>"
-							if(linked_lathe.canBuild(D, 10))
-								dat += "<A href='?src=\ref[src];build=[D.id];n=10'>(&times;10)</A>"
-							dat += "<A href='?src=\ref[src];build=[D.id];customamt=1'>(Custom)</A>"
-						else
-							dat += "<LI><B>[D.name]</B>[temp_dat]"
+				for(var/datum/design/D in files.known_designs)
+					if(!D.build_path || !(D.build_type & PROTOLATHE) || D.category_items != name_set)
+						continue
+					var/temp_dat
+					for(var/M in D.materials)
+						temp_dat += ", [D.materials[M]*linked_lathe.mat_efficiency] [CallMaterialName(M)]"
+					for(var/T in D.chemicals)
+						temp_dat += ", [D.chemicals[T]*linked_lathe.mat_efficiency] [CallReagentName(T)]"
+					if(temp_dat)
+						temp_dat = " \[[copytext(temp_dat, 3)]\]"
+					if(linked_lathe.canBuild(D, 1))
+						dat += "<LI><B><A href='?src=\ref[src];build=[D.id];n=1'>[D.name]</A></B>[temp_dat] Queue: "
+						if(linked_lathe.canBuild(D, 5))
+							dat += "<A href='?src=\ref[src];build=[D.id];n=5'>(&times;5)</A>"
+						if(linked_lathe.canBuild(D, 10))
+							dat += "<A href='?src=\ref[src];build=[D.id];n=10'>(&times;10)</A>"
+						dat += "<A href='?src=\ref[src];build=[D.id];customamt=1'>(Custom)</A>"
+					else
+						dat += "<LI><B>[D.name]</B>[temp_dat]"
 				dat += "</UL>"
 
 		if(3.2) //Protolathe Material Storage Sub-menu

@@ -366,7 +366,8 @@
 				/obj/item/toy/figure/warden,
 				/obj/item/toy/figure/psychologist,
 				/obj/item/toy/figure/paramedic,
-				/obj/item/toy/figure/ert)
+				/obj/item/toy/figure/ert,
+				/obj/item/toy/figure/moose)
 
 
 /obj/random/plushie
@@ -485,7 +486,7 @@ obj/random/closet/spawn_choices()
 				/obj/item/weapon/coin/iron = 10,
 				/obj/item/weapon/coin/uranium = 1,
 				/obj/item/weapon/coin/platinum = 3,
-				/obj/item/weapon/coin/phoron = 1)
+				/obj/item/weapon/coin/plasma = 1)
 
 /obj/random/toy
 	name = "random toy"
@@ -733,16 +734,19 @@ obj/random/obstruction/spawn_choices()
 
 /obj/random/snack/spawn_choices()
 	return list(/obj/item/weapon/reagent_containers/food/snacks/liquidfood,
-				/obj/item/weapon/reagent_containers/food/snacks/candy,
+				/obj/item/weapon/reagent_containers/food/snacks/packaged/tweakers,
+				/obj/item/weapon/reagent_containers/food/snacks/packaged/sweetroid,
+				/obj/item/weapon/reagent_containers/food/snacks/packaged/sugarmatter,
+				/obj/item/weapon/reagent_containers/food/snacks/packaged/jellaws,
 				/obj/item/weapon/reagent_containers/food/drinks/dry_ramen,
-				/obj/item/weapon/reagent_containers/food/snacks/chips,
-				/obj/item/weapon/reagent_containers/food/snacks/sosjerky,
-				/obj/item/weapon/reagent_containers/food/snacks/no_raisin,
+				/obj/item/weapon/reagent_containers/food/snacks/packaged/chips,
+				/obj/item/weapon/reagent_containers/food/snacks/packaged/sosjerky,
+				/obj/item/weapon/reagent_containers/food/snacks/packaged/no_raisin,
 				/obj/item/weapon/reagent_containers/food/snacks/spacetwinkie,
-				/obj/item/weapon/reagent_containers/food/snacks/cheesiehonkers,
-				/obj/item/weapon/reagent_containers/food/snacks/tastybread,
-				/obj/item/weapon/reagent_containers/food/snacks/candy/proteinbar,
-				/obj/item/weapon/reagent_containers/food/snacks/syndicake,
+				/obj/item/weapon/reagent_containers/food/snacks/packaged/cheesiehonkers,
+				/obj/item/weapon/reagent_containers/food/snacks/packaged/tastybread,
+				/obj/item/weapon/reagent_containers/food/snacks/packaged/nutribar,
+				/obj/item/weapon/reagent_containers/food/snacks/packaged/syndicake,
 				/obj/item/weapon/reagent_containers/food/snacks/donut,
 				/obj/item/weapon/reagent_containers/food/snacks/donut/cherryjelly,
 				/obj/item/weapon/reagent_containers/food/snacks/donut/jelly,
@@ -751,7 +755,7 @@ obj/random/obstruction/spawn_choices()
 				/obj/item/pizzabox/margherita,
 				/obj/item/pizzabox/mushroom,
 				/obj/item/weapon/reagent_containers/food/snacks/plumphelmetbiscuit,
-				/obj/item/weapon/reagent_containers/food/snacks/skrellsnacks,
+				/obj/item/weapon/reagent_containers/food/snacks/packaged/skrellsnacks,
 				/obj/item/weapon/reagent_containers/food/snacks/tortilla,
 				/obj/item/weapon/reagent_containers/food/snacks/popcorn,
 				/obj/item/weapon/reagent_containers/food/snacks/cookie)
@@ -781,6 +785,7 @@ obj/random/obstruction/spawn_choices()
 				/obj/item/weapon/storage/box/cups = 3,
 				/obj/item/weapon/storage/box/mousetraps = 5,
 				/obj/item/weapon/storage/box/engineer = 3,
+				/obj/item/weapon/storage/box/security = 3,
 				/obj/item/weapon/storage/box/vox = 1,
 				/obj/item/weapon/storage/box/beakers = 3,
 				/obj/item/weapon/storage/box/syringes = 3,
@@ -859,13 +864,11 @@ obj/random/obstruction/spawn_choices()
 				/obj/item/clothing/glasses/regular/hipster = 7,
 				/obj/item/clothing/glasses/regular/scanners = 1,
 				/obj/item/clothing/glasses/threedglasses = 2,
-				/obj/item/clothing/glasses/meson = 8,
-				/obj/item/clothing/glasses/meson/prescription = 6,
-				/obj/item/clothing/glasses/science = 6,
-				/obj/item/clothing/glasses/material = 5,
+				/obj/item/clothing/glasses/hud/standard/meson = 8,
+				/obj/item/clothing/glasses/hud/standard/science = 6,
+				/obj/item/clothing/glasses/hud/standard/material = 5,
 				/obj/item/clothing/glasses/welding = 8,
-				/obj/item/clothing/glasses/hud/health = 4,
-				/obj/item/clothing/glasses/hud/health/prescription = 2,
+				/obj/item/clothing/glasses/hud/one_eyed/oneye/medical = 4,
 				/obj/item/clothing/glasses/tacgoggles = 1)
 
 /obj/random/hat
@@ -1073,17 +1076,17 @@ something, make sure it's not in one of the other lists.*/
 				/obj/item/clothing/mask/muzzle = 7,
 				/obj/item/clothing/mask/gas/vox = 8,
 				/obj/item/clothing/mask/gas/syndicate = 10,
-				/obj/item/clothing/glasses/night = 3,
-				/obj/item/clothing/glasses/thermal = 1,
+				/obj/item/clothing/glasses/hud/scanners/night = 3,
+				/obj/item/clothing/glasses/hud/standard/thermal = 1,
 				/obj/item/clothing/glasses/welding/superior = 7,
 				/obj/item/clothing/head/collectable/petehat = 4,
 				/obj/item/clothing/suit/straight_jacket = 6,
-				/obj/item/clothing/head/helmet/merc = 3,
+				/obj/item/clothing/head/helmet/syndi = 3,
 				/obj/item/stack/material/diamond/ten = 7,
 				/obj/item/clothing/under/contortionist = 1,
-				/obj/item/stack/material/glass/phoronrglass/ten = 7,
+				/obj/item/stack/material/glass/rplass/ten = 7,
 				/obj/item/stack/material/marble/ten = 8,
-				/obj/item/stack/material/phoron/ten = 7,
+				/obj/item/stack/material/plasma/ten = 7,
 				/obj/item/stack/material/gold/ten = 7,
 				/obj/item/stack/material/silver/ten = 7,
 				/obj/item/stack/material/osmium/ten = 7,
@@ -1129,7 +1132,7 @@ something, make sure it's not in one of the other lists.*/
 				/obj/item/clothing/head/helmet/space/void/security/alt,
 				/obj/item/clothing/head/helmet/space/void/atmos,
 				/obj/item/clothing/head/helmet/space/void/atmos/alt,
-				/obj/item/clothing/head/helmet/space/void/merc,
+				/obj/item/clothing/head/helmet/space/void/syndi,
 				/obj/item/clothing/head/helmet/space/void/medical,
 				/obj/item/clothing/head/helmet/space/void/medical/alt)
 
@@ -1150,7 +1153,7 @@ something, make sure it's not in one of the other lists.*/
 				/obj/item/clothing/suit/space/void/security/alt,
 				/obj/item/clothing/suit/space/void/atmos,
 				/obj/item/clothing/suit/space/void/atmos/alt,
-				/obj/item/clothing/suit/space/void/merc,
+				/obj/item/clothing/suit/space/void/syndi,
 				/obj/item/clothing/suit/space/void/medical,
 				/obj/item/clothing/suit/space/void/medical/alt)
 

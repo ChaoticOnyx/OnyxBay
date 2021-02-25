@@ -41,8 +41,6 @@
 	amount -= used
 	if(get_amount() <= 0)
 		if(!stack_empty)
-			if(usr)
-				usr.remove_from_mob(src)
 			qdel(src) //should be safe to qdel immediately since if someone is still using this stack it will persist for a little while longer
 			return 1
 		else
@@ -100,6 +98,10 @@
 		use(1)
 
 	M.updatehealth()
+
+/obj/item/stack/medical/get_storage_cost()
+	return w_class
+
 /obj/item/stack/medical/bruise_pack
 	name = "roll of bandage"
 	singular_name = "bandage length"

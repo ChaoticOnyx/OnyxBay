@@ -102,7 +102,9 @@ SUBSYSTEM_DEF(event)
 	if(!report_at_round_end)
 		return
 
-	to_world("<br><br><br><font size=3><b>Random Events This Round:</b></font>")
+	var/list/parts = list()
+
+	parts += "<font size=3><b>Random Events This Round:</b></font>"
 	for(var/datum/event/E in active_events|finished_events)
 		var/datum/event_meta/EM = E.event_meta
 		if(EM.name == "Nothing")
@@ -116,7 +118,9 @@ SUBSYSTEM_DEF(event)
 			else
 				message += "and ran to completion."
 
-		to_world(message)
+		parts += message
+
+	return parts.len ? "<div class='panel stationborder'>[parts.Join("<br>")]</div>" : null
 
 //Event manager UI 
 /datum/controller/subsystem/event/proc/GetInteractWindow()

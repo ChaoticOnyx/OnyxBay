@@ -201,6 +201,25 @@
 	reagents.remove_reagent(/datum/reagent/fuel,amount)
 	new /obj/effect/decal/cleanable/liquid_fuel(src.loc, amount,1)
 
+/obj/structure/reagent_dispensers/composttank
+	name = "compost tank"
+	desc = "A tank containing compost. Can be used to recycle excessive seeds."
+	icon_state = "compost"
+	amount_per_transfer_from_this = 10
+	possible_transfer_amounts = "5;10;25;50"
+	initial_capacity = 500
+	initial_reagent_types = list(/datum/reagent/toxin/fertilizer/compost = 1)
+	atom_flags = ATOM_FLAG_CLIMBABLE
+
+/obj/structure/reagent_dispensers/composttank/attackby(obj/item/W, mob/user)
+	src.add_fingerprint(user)
+	if(istype(W,/obj/item/seeds))
+		user.visible_message("[user] places [W] into \the [src].", \
+							 "You place [W] into \the [src].")
+		reagents.add_reagent(/datum/reagent/toxin/fertilizer/compost, 3)
+		qdel(W)
+	return ..()
+
 /obj/structure/reagent_dispensers/peppertank
 	name = "Pepper Spray Refiller"
 	desc = "Refills pepper spray canisters."

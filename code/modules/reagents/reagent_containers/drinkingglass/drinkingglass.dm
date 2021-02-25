@@ -78,8 +78,8 @@
 				return 1
 	return 0
 
-/obj/item/weapon/reagent_containers/food/drinks/glass2/New()
-	..()
+/obj/item/weapon/reagent_containers/food/drinks/glass2/Initialize()
+	. = ..()
 	unacidable = 1
 	icon_state = base_icon
 

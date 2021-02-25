@@ -35,7 +35,7 @@
 			return
 
 	if(P.stored_plasma < cost)
-		to_chat(src, "<span class='danger'>You don't have enough phoron stored to do that.</span>")
+		to_chat(src, "<span class='danger'>You don't have enough plasma stored to do that.</span>")
 		return 0
 
 	if(needs_foundation)

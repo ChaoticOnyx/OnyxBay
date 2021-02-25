@@ -207,14 +207,18 @@
 			if(isliving(usr))
 				var/mob/living/L = usr
 				L.resist()
+		if("rest")
+			if(isliving(usr))
+				var/mob/living/L = usr
+				L.lay_down()
 
 		if("mov_intent")
 			switch(usr.m_intent)
-				if("run")
-					usr.m_intent = "walk"
+				if(M_RUN)
+					usr.m_intent = M_WALK
 					usr.hud_used.move_intent.icon_state = "walking"
-				if("walk")
-					usr.m_intent = "run"
+				if(M_WALK)
+					usr.m_intent = M_RUN
 					usr.hud_used.move_intent.icon_state = "running"
 
 		if("Reset Machine")
@@ -280,14 +284,14 @@
 												contents.Add(0)
 
 										if ("oxygen")
-											if(t.air_contents.gas["oxygen"] && !t.air_contents.gas["phoron"])
+											if(t.air_contents.gas["oxygen"] && !t.air_contents.gas["plasma"])
 												contents.Add(t.air_contents.gas["oxygen"])
 											else
 												contents.Add(0)
 
 										// No races breath this, but never know about downstream servers.
 										if ("carbon dioxide")
-											if(t.air_contents.gas["carbon_dioxide"] && !t.air_contents.gas["phoron"])
+											if(t.air_contents.gas["carbon_dioxide"] && !t.air_contents.gas["plasma"])
 												contents.Add(t.air_contents.gas["carbon_dioxide"])
 											else
 												contents.Add(0)

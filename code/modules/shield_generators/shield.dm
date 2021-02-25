@@ -23,6 +23,8 @@
 	layer = ABOVE_HUMAN_LAYER
 	density = 1
 	invisibility = 0
+	can_atmos_pass = ATMOS_PASS_PROC
+
 	var/obj/machinery/power/shield_generator/gen = null
 	var/disabled_for = 0
 	var/diffused_for = 0
@@ -150,26 +152,21 @@
 
 
 // As we have various shield modes, this handles whether specific things can pass or not.
-/obj/effect/shield/CanPass(atom/movable/mover, turf/target, height=0, air_group=0)
-	// Somehow we don't have a generator. This shouldn't happen. Delete the shield.
+/obj/effect/shield/CanPass(atom/movable/mover, turf/target)
 	if(!gen)
 		qdel(src)
-		return 1
+		return TRUE // Somehow we don't have a generator. This shouldn't happen. Delete the shield.
 
 	if(disabled_for || diffused_for)
 		return 1
-
-	// Atmosphere containment.
-	if(air_group)
-		return !gen.check_flag(MODEFLAG_ATMOSPHERIC)
 
 	if(mover)
 		return mover.can_pass_shield(gen)
 	return 1
 
 
-/obj/effect/shield/c_airblock(turf/other)
-	return gen.check_flag(MODEFLAG_ATMOSPHERIC) ? BLOCKED : 0
+/obj/effect/shield/CanZASPass(turf/T, is_zone)
+	return !gen.check_flag(MODEFLAG_ATMOSPHERIC)
 
 
 // EMP. It may seem weak but keep in mind that multiple shield segments are likely to be affected.
@@ -229,6 +226,7 @@
 /obj/effect/shield/proc/overcharge_shock(mob/living/M)
 	M.adjustFireLoss(rand(20, 40))
 	M.Weaken(5)
+	M.Stun(3)
 	to_chat(M, "<span class='danger'>As you come into contact with \the [src] a surge of energy paralyses you!</span>")
 	take_damage(10, SHIELD_DAMTYPE_EM)
 

@@ -24,7 +24,7 @@ turf/proc/hotspot_expose(exposed_temperature, exposed_volume, soh = 0)
 	if(locate(/obj/fire) in src)
 		return 1
 	var/datum/gas_mixture/air_contents = return_air()
-	if(!air_contents || exposed_temperature < PHORON_MINIMUM_BURN_TEMPERATURE)
+	if(!air_contents || exposed_temperature < PLASMA_MINIMUM_BURN_TEMPERATURE)
 		return 0
 
 	var/igniting = 0
@@ -223,7 +223,7 @@ turf/proc/hotspot_expose(exposed_temperature, exposed_volume, soh = 0)
 //Returns the firelevel
 /datum/gas_mixture/proc/zburn(zone/zone, force_burn, no_check = 0)
 	. = 0
-	if((temperature > PHORON_MINIMUM_BURN_TEMPERATURE || force_burn) && (no_check ||check_recombustability(zone? zone.fuel_objs : null)))
+	if((temperature > PLASMA_MINIMUM_BURN_TEMPERATURE || force_burn) && (no_check ||check_recombustability(zone? zone.fuel_objs : null)))
 
 		#ifdef FIREDBG
 		log_debug("***************** FIREDBG *****************")

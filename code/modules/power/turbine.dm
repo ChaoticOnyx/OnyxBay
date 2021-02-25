@@ -34,6 +34,7 @@
 	circuit = /obj/item/weapon/circuitboard/turbine_control
 	anchored = 1
 	density = 1
+	can_atmos_pass = ATMOS_PASS_PROC
 	var/obj/machinery/compressor/compressor
 	var/list/obj/machinery/door/blast/doors
 	var/id = 0
@@ -114,6 +115,10 @@
 		compressor.set_broken(TRUE)
 		compressor = null
 	return ..()
+
+// When anchored, don't let air past us
+/obj/machinery/compressor/CanZASPass(turf/T, is_zone)
+	return !anchored
 
 #define TURBPRES 9000000
 #define TURBGENQ 20000

@@ -22,6 +22,7 @@
 	cavity_name = "thoracic"
 	limb_flags = ORGAN_FLAG_GENDERED_ICON | ORGAN_FLAG_HEALS_OVERKILL | ORGAN_FLAG_CAN_BREAK
 	var/butchering_capacity = 1
+	internal_organs_size = 7
 
 /obj/item/organ/external/chest/robotize()
 	if(..())
@@ -52,6 +53,7 @@
 	artery_name = "iliac artery"
 	cavity_name = "abdominal"
 	limb_flags = ORGAN_FLAG_CAN_AMPUTATE | ORGAN_FLAG_GENDERED_ICON | ORGAN_FLAG_CAN_BREAK
+	internal_organs_size = 3
 
 /obj/item/organ/external/arm
 	organ_tag = BP_L_ARM
@@ -66,7 +68,7 @@
 	amputation_point = "left shoulder"
 	tendon_name = "palmaris longus tendon"
 	artery_name = "basilic vein"
-	arterial_bleed_severity = 0.75
+	arterial_bleed_severity = 0.65
 	limb_flags = ORGAN_FLAG_CAN_AMPUTATE | ORGAN_FLAG_CAN_GRASP | ORGAN_FLAG_HAS_TENDON | ORGAN_FLAG_CAN_BREAK
 
 /obj/item/organ/external/arm/right
@@ -117,7 +119,7 @@
 	joint = "left ankle"
 	amputation_point = "left ankle"
 	tendon_name = "Achilles tendon"
-	arterial_bleed_severity = 0.5
+	arterial_bleed_severity = 0.45
 	limb_flags = ORGAN_FLAG_CAN_AMPUTATE | ORGAN_FLAG_CAN_STAND | ORGAN_FLAG_HAS_TENDON | ORGAN_FLAG_CAN_BREAK
 
 /obj/item/organ/external/foot/right
@@ -143,7 +145,7 @@
 	joint = "left wrist"
 	amputation_point = "left wrist"
 	tendon_name = "carpal ligament"
-	arterial_bleed_severity = 0.5
+	arterial_bleed_severity = 0.35
 	limb_flags = ORGAN_FLAG_CAN_AMPUTATE | ORGAN_FLAG_CAN_GRASP | ORGAN_FLAG_FINGERPRINT | ORGAN_FLAG_HAS_TENDON | ORGAN_FLAG_CAN_BREAK
 
 /obj/item/organ/external/hand/right

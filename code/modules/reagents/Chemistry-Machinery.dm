@@ -25,10 +25,11 @@
 	var/pillsprite = "1"
 	var/client/has_sprites = list()
 	var/max_pill_count = 20
+	var/capacity = 120
 	atom_flags = ATOM_FLAG_OPEN_CONTAINER
 
 /obj/machinery/chem_master/New()
-	create_reagents(120)
+	create_reagents(capacity)
 	..()
 
 /obj/machinery/chem_master/ex_act(severity)
@@ -107,7 +108,7 @@
 			if(href_list["amount"])
 				var/datum/reagent/their_reagent = locate(href_list["add"]) in R.reagent_list
 				if(their_reagent)
-					var/amount = Clamp((text2num(href_list["amount"])), 0, 200)
+					var/amount = Clamp((text2num(href_list["amount"])), 0, capacity)
 					R.trans_type_to(src, their_reagent.type, amount)
 
 		else if (href_list["addcustom"])
@@ -115,14 +116,14 @@
 			if(their_reagent)
 				useramount = input("Select the amount to transfer.", 30, useramount) as null|num
 				if(useramount)
-					useramount = Clamp(useramount, 0, 200)
+					useramount = Clamp(useramount, 0, capacity)
 					src.Topic(href, list("amount" = "[useramount]", "add" = href_list["addcustom"]), state)
 
 		else if (href_list["remove"])
 			if(href_list["amount"])
 				var/datum/reagent/my_reagents = locate(href_list["remove"]) in reagents.reagent_list
 				if(my_reagents)
-					var/amount = Clamp((text2num(href_list["amount"])), 0, 200)
+					var/amount = Clamp((text2num(href_list["amount"])), 0, capacity)
 					if(mode)
 						reagents.trans_type_to(beaker, my_reagents.type, amount)
 					else
@@ -307,8 +308,9 @@
 	var/list/sheet_reagents = list(
 		/obj/item/stack/material/iron = /datum/reagent/iron,
 		/obj/item/stack/material/uranium = /datum/reagent/uranium,
-		/obj/item/stack/material/phoron = /datum/reagent/toxin/phoron,
-		/obj/item/stack/material/phoron/fifty = /datum/reagent/toxin/phoron,
+		/obj/item/stack/material/plasma = /datum/reagent/toxin/plasma,
+		/obj/item/stack/material/plasma/ten = /datum/reagent/toxin/plasma,
+		/obj/item/stack/material/plasma/fifty = /datum/reagent/toxin/plasma,
 		/obj/item/stack/material/gold = /datum/reagent/gold,
 		/obj/item/stack/material/silver = /datum/reagent/silver,
 		/obj/item/stack/material/mhydrogen = /datum/reagent/hydrazine
@@ -393,7 +395,7 @@
 		//If attack_hand is updated, this segment won't have to be updated as well.
 		return attack_hand(user)
 
-/obj/machinery/reagentgrinder/interact(mob/user as mob) // The microwave Menu
+/obj/machinery/reagentgrinder/interact(mob/user) // The microwave Menu
 	if(inoperable())
 		return
 	user.set_machine(src)

@@ -5,7 +5,7 @@
 	name = "head"
 	slot_flags = SLOT_BELT
 	max_damage = 75
-	min_broken_damage = 35
+	min_broken_damage = 40
 	w_class = ITEM_SIZE_NORMAL
 	body_part = HEAD
 	parent_organ = BP_CHEST
@@ -15,6 +15,8 @@
 	artery_name = "cartoid artery"
 	cavity_name = "cranial"
 	limb_flags = ORGAN_FLAG_CAN_AMPUTATE | ORGAN_FLAG_GENDERED_ICON | ORGAN_FLAG_HEALS_OVERKILL | ORGAN_FLAG_CAN_BREAK
+
+	internal_organs_size = 3
 
 	var/can_intake_reagents = 1
 	var/eye_icon = "eyes_s"

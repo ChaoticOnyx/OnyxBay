@@ -69,11 +69,10 @@
 		desc = initial(desc)
 		desc += padding_material ? " It's made of [material.use_name] and covered with [padding_material.use_name]." : " It's made of [material.use_name]."
 
-/obj/structure/bed/CanPass(atom/movable/mover, turf/target, height=0, air_group=0)
+/obj/structure/bed/CanPass(atom/movable/mover, turf/target)
 	if(istype(mover) && mover.pass_flags & PASS_FLAG_TABLE)
-		return 1
-	else
-		return ..()
+		return TRUE
+	return ..()
 
 /obj/structure/bed/ex_act(severity)
 	switch(severity)
@@ -249,7 +248,7 @@
 	icon_state = "rollerbed_folded"
 	item_state = "rbed"
 	slot_flags = SLOT_BACK
-	w_class = ITEM_SIZE_NO_CONTAINER // Can't be put in backpacks. Oh well. For now.
+	w_class = ITEM_SIZE_GARGANTUAN // Not sure if it's actually necessary, I can barely imagine this thing being bigger than a mecha part;
 	var/rollertype = /obj/item/roller
 	var/bedtype = /obj/structure/bed/roller
 

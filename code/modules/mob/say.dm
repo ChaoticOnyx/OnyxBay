@@ -13,9 +13,16 @@
 	ASSERT(client && usr == src)
 
 	client.close_saywindow()
-	remove_typing_indicator()
 
 	usr.say(message)
+
+/mob/verb/say_verb_fake()
+	set name = "Say Verb"
+	set category = "IC"
+
+	ASSERT(client && usr == src)
+
+	winset(usr, null, "saywindow.is-visible=true;saywindow-input.focus=true;")
 
 /mob/verb/me_verb(message as text)
 	set name = "Me"

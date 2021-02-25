@@ -23,33 +23,34 @@
 	throw_speed = 7
 	throw_range = 15
 	matter = list(MATERIAL_STEEL = 10)
-	var/colour = "black"	//what colour the ink is!
+	var/colour = COLOR_BLACK	//what colour the ink is!
 	var/color_description = "black ink"
 
 
 /obj/item/weapon/pen/blue
 	desc = "It's a normal blue ink pen."
 	icon_state = "pen_blue"
-	colour = "blue"
+	colour = COLOR_BLUE
 	color_description = "blue ink"
 
 /obj/item/weapon/pen/red
 	desc = "It's a normal red ink pen."
 	icon_state = "pen_red"
-	colour = "red"
+	colour = COLOR_RED
 	color_description = "red ink"
 
 /obj/item/weapon/pen/multi
 	desc = "It's a pen with multiple colors of ink!"
 	var/selectedColor = 1
 	var/colors = list("black","blue","red")
+	var/colors_code = list(COLOR_BLACK, COLOR_BLUE, COLOR_RED)
 	var/color_descriptions = list("black ink", "blue ink", "red ink")
 
 /obj/item/weapon/pen/multi/attack_self(mob/user)
 	if(++selectedColor > 3)
 		selectedColor = 1
 
-	colour = colors[selectedColor]
+	colour = colors_code[selectedColor]
 	color_description = color_descriptions[selectedColor]
 
 	if(colour == "black")
@@ -62,7 +63,7 @@
 /obj/item/weapon/pen/invisible
 	desc = "It's an invisble pen marker."
 	icon_state = "pen"
-	colour = "white"
+	colour = COLOR_WHITE
 	color_description = "transluscent ink"
 
 

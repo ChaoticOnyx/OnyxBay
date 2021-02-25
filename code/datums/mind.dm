@@ -55,7 +55,7 @@
 
 	var/datum/faction/faction 			//associated faction
 	var/datum/changeling/changeling		//changeling holder
-
+	var/datum/vampire/vampire 			//vampire holder
 	var/rev_cooldown = 0
 
 	// the world.time since the mob has been brigged, or -1 if not at all
@@ -91,6 +91,8 @@
 		if(changeling)
 			current.remove_changeling_powers()
 			current.verbs -= /datum/changeling/proc/EvolutionMenu
+		if(vampire)
+			current.remove_vampire_powers()
 		current.mind = null
 
 		SSnano.user_transferred(current, new_character) // transfer active NanoUI instances to new user
@@ -105,6 +107,9 @@
 
 	if(changeling)
 		new_character.make_changeling()
+
+	if(vampire)
+		new_character.make_vampire()
 
 	if(active)
 		new_character.key = key		//now transfer the key to link the client to our new body
@@ -235,7 +240,7 @@
 			if(!def_value)//If it's a custom objective, it will be an empty string.
 				def_value = "custom"
 
-		var/new_obj_type = input("Select objective type:", "Objective type", def_value) as null|anything in list("assassinate", "debrain", "protect", "prevent", "harm", "brig", "hijack", "escape", "survive", "steal", "download", "mercenary", "capture", "absorb", "custom")
+		var/new_obj_type = input("Select objective type:", "Objective type", def_value) as null|anything in list("assassinate", "debrain", "protect", "prevent", "harm", "brig", "hijack", "escape", "survive", "steal", "download", "nuke", "capture", "absorb", "custom")
 		if (!new_obj_type) return
 
 		var/datum/objective/new_objective = null
@@ -289,7 +294,7 @@
 				new_objective = new /datum/objective/survive
 				new_objective.owner = src
 
-			if ("mercenary")
+			if ("nuke")
 				new_objective = new /datum/objective/nuclear
 				new_objective.owner = src
 
@@ -491,6 +496,7 @@
 	//faction =       null //Uncommenting this causes a compile error due to 'undefined type', fucked if I know.
 	changeling =      null
 	initial_account = null
+	vampire =         null
 	objectives =      list()
 	special_verbs =   list()
 	has_been_rev =    0

@@ -20,7 +20,6 @@
 	// Damage overlay and masks.
 	var/damage_overlays = 'icons/mob/human_races/masks/dam_human.dmi'
 	var/damage_mask = 'icons/mob/human_races/masks/dam_mask_human.dmi'
-	var/blood_mask = 'icons/mob/human_races/masks/blood_human.dmi'
 
 	var/prone_icon                            // If set, draws this from icobase when mob is prone.
 	var/has_floating_eyes                     // Eyes will overlay over darkness (glow)
@@ -108,7 +107,7 @@
 	var/reagent_tag                                   //Used for metabolizing reagents.
 	var/breath_pressure = 16                          // Minimum partial pressure safe for breathing, kPa
 	var/breath_type = "oxygen"                        // Non-oxygen gas breathed, if any.
-	var/poison_type = "phoron"                        // Poisonous air.
+	var/poison_type = "plasma"                        // Poisonous air.
 	var/exhale_type = "carbon_dioxide"                // Exhaled gas type.
 	var/cold_level_1 = 243                           // Cold damage level 1 below this point. -30 Celsium degrees
 	var/cold_level_2 = 200                            // Cold damage level 2 below this point.
@@ -258,17 +257,36 @@ The slots that you can use are found in items_clothing.dm and are the inventory 
 /datum/species/proc/sanitize_name(name)
 	return sanitizeName(name)
 
-/datum/species/proc/equip_survival_gear(mob/living/carbon/human/H,extendedtank = 1)
+/datum/species/proc/equip_survival_gear(mob/living/carbon/human/H, boxtype = 0)
 	if(istype(H.get_equipped_item(slot_back), /obj/item/weapon/storage/backpack))
-		if (extendedtank)	H.equip_to_slot_or_del(new /obj/item/weapon/storage/box/engineer(H.back), slot_in_backpack)
-		else	H.equip_to_slot_or_del(new /obj/item/weapon/storage/box/survival(H.back), slot_in_backpack)
+		switch(boxtype)
+			if(2)
+				H.equip_to_slot_or_del(new /obj/item/weapon/storage/box/security(H.back), slot_in_backpack)
+			if(1)
+				H.equip_to_slot_or_del(new /obj/item/weapon/storage/box/engineer(H.back), slot_in_backpack)
+			else
+				H.equip_to_slot_or_del(new /obj/item/weapon/storage/box/survival(H.back), slot_in_backpack)
 	else
-		if (extendedtank)	H.equip_to_slot_or_del(new /obj/item/weapon/storage/box/engineer(H), slot_r_hand)
-		else	H.equip_to_slot_or_del(new /obj/item/weapon/storage/box/survival(H), slot_r_hand)
+		switch(boxtype)
+			if(2)
+				H.equip_to_slot_or_del(new /obj/item/weapon/storage/box/security(H), slot_r_hand)
+			if(1)
+				H.equip_to_slot_or_del(new /obj/item/weapon/storage/box/engineer(H), slot_r_hand)
+			else
+				H.equip_to_slot_or_del(new /obj/item/weapon/storage/box/survival(H), slot_r_hand)
 
 /datum/species/proc/create_organs(mob/living/carbon/human/H) //Handles creation of mob organs.
 
 	H.mob_size = mob_size
+	var/list/obj/item/organ/internal/foreign_organs = list()
+
+	for(var/obj/item/organ/external/E in H.contents)
+		for(var/obj/item/organ/internal/O in E.internal_organs)
+			if(istype(O) && O.foreign)
+				E.internal_organs -= O
+				H.internal_organs -= O
+				foreign_organs |= O
+
 	for(var/obj/item/organ/organ in H.contents)
 		if((organ in H.organs) || (organ in H.internal_organs))
 			qdel(organ)
@@ -295,6 +313,12 @@ The slots that you can use are found in items_clothing.dm and are the inventory 
 			warning("[O.type] has a default organ tag \"[O.organ_tag]\" that differs from the species' organ tag \"[organ_tag]\". Updating organ_tag to match.")
 			O.organ_tag = organ_tag
 		H.internal_organs_by_name[organ_tag] = O
+
+	for(var/obj/item/organ/internal/organ in foreign_organs)
+		var/obj/item/organ/external/E = H.get_organ(organ.parent_organ)
+		E.internal_organs |= organ
+		H.internal_organs_by_name[organ.organ_tag] = organ
+		organ.after_organ_creation()
 
 	for(var/name in H.organs_by_name)
 		H.organs |= H.organs_by_name[name]
@@ -365,7 +389,7 @@ The slots that you can use are found in items_clothing.dm and are the inventory 
 					if(!actor_cig.lit && target_cig.lit)
 						actor_cig.light(target_cig, H)
 					return
-			
+
 			if(actor_mask)
 				to_chat(H, "\A [actor_mask] is in the way!")
 				return
@@ -507,7 +531,10 @@ The slots that you can use are found in items_clothing.dm and are the inventory 
 	if(H.disabilities & NEARSIGHTED)
 		prescriptions += 7
 	if(H.equipment_prescription)
-		prescriptions -= H.equipment_prescription
+		if(H.disabilities & NEARSIGHTED)
+			prescriptions -= H.equipment_prescription
+		else
+			prescriptions += H.equipment_prescription
 
 	var/light = light_sensitive
 	if(light)
@@ -556,10 +583,10 @@ The slots that you can use are found in items_clothing.dm and are the inventory 
 	attacker.do_attack_animation(target)
 
 	if(target.parrying)
-		if(attacker.get_parried_w(target,w_atk=null))
+		if(target.handle_parry(attacker, w_atk=null))
 			return
 	if(target.blocking)
-		if(attacker.get_blocked_h(target))
+		if(target.handle_block_normal(attacker))
 			return
 
 	if(target.w_uniform)
@@ -590,7 +617,7 @@ The slots that you can use are found in items_clothing.dm and are the inventory 
 		playsound(target.loc, 'sound/weapons/thudswoosh.ogg', 50, 1, -1)
 		if(prob(100-target.poise*6.5))
 			target.visible_message("<span class='danger'>[attacker] has pushed [target]!</span>")
-			target.apply_effect(3, WEAKEN, armor_check)
+			target.apply_effect(4, WEAKEN, armor_check)
 		else
 			target.visible_message("<span class='warning'>[attacker] attempted to push [target]!</span>")
 		return

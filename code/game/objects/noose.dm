@@ -152,6 +152,7 @@ GLOBAL_LIST_INIT(standing_objects, list(/obj/item/weapon/stool, /obj/structure/t
 				SPAN_WARNING("[M] unties the noose over their neck!"),\
 				SPAN_NOTICE("You untie the noose over your neck!"))
 			M.Weaken(3)
+			M.Stun(2)
 		unbuckle_mob()
 		add_fingerprint(user)
 

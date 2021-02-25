@@ -175,18 +175,6 @@
 		qdel(src)
 		return
 
-	if(config.player_limit && is_player_rejected_by_player_limit(usr, ckey))
-		if(config.panic_address && TopicData != "redirect")
-			alert(src,"This server is currently full and not accepting new connections. Sending you to [config.panic_server_name ? config.panic_server_name : config.panic_address].","Server Full","OK")
-			winset(src, null, "command=.options")
-			src << link("[config.panic_address]?redirect")
-		else
-			alert(src, "This server is currently full and not accepting new connections.","Server Full","OK")
-
-		log_admin("[ckey] tried to join but the server is full (player_limit=[config.player_limit])")
-		qdel(src)
-		return
-
 	// Change the way they should download resources.
 	if(config.resource_urls && config.resource_urls.len)
 		src.preload_rsc = pick(config.resource_urls)
@@ -195,6 +183,7 @@
 	DIRECT_OUTPUT(src, "<span class='warning'>If the title screen is black and chat is broken, resources are still downloading. Please be patient until the title screen appears.</span>")
 	GLOB.clients += src
 	GLOB.ckey_directory[ckey] = src
+
 
 	//Admin Authorisation
 	var/datum/admins/admin_datum = admin_datums[ckey]
@@ -222,7 +211,7 @@
 		return
 
 	// Load EAMS data
-	EAMS_CollectData()
+	SSeams.CollectDataForClient(src)
 
 	//preferences datum - also holds some persistant data for the client (because we may as well keep these datums to a minimum)
 	prefs = SScharacter_setup.preferences_datums[ckey]
@@ -235,8 +224,8 @@
 	. = ..()	//calls mob.Login()
 
 	if(byond_version < MIN_CLIENT_VERSION)
-		to_chat(src, "<b><center><font size='5' color='red'>Your <font color='blue'>BYOND</font> version is too out of date!</font><br>\
-		<font size='3'>Please update it to [MIN_CLIENT_VERSION].</font></center>")
+		src << "<b><center><font size='5' color='red'>Your <font color='blue'>BYOND</font> version is too out of date!</font><br>\
+		<font size='3'>Please update it to [MIN_CLIENT_VERSION].</font></center>"
 		qdel(src)
 		return
 
@@ -284,6 +273,19 @@
 
 	if(get_preference_value(/datum/client_preference/fullscreen_mode) != GLOB.PREF_NO)
 		toggle_fullscreen(get_preference_value(/datum/client_preference/fullscreen_mode))
+
+	if(config.player_limit && is_player_rejected_by_player_limit(usr, ckey))
+		if(config.panic_address && TopicData != "redirect")
+			DIRECT_OUTPUT(src, SPAN_WARNING("<h1>This server is currently full and not accepting new connections. Sending you to [config.panic_server_name ? config.panic_server_name : config.panic_address]</h1>"))
+			winset(src, null, "command=.options")
+			src << link("[config.panic_address]?redirect")
+
+		else
+			DIRECT_OUTPUT(src, SPAN_WARNING("<h1>This server is currently full and not accepting new connections.</h1>"))
+
+		log_admin("[ckey] tried to join but the server is full (player_limit=[config.player_limit])")
+		qdel(src)
+		return
 
 /*	if(holder)
 		src.control_freak = 0 //Devs need 0 for profiler access

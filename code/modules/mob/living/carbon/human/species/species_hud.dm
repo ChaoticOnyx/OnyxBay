@@ -15,6 +15,7 @@
 	var/has_block = 1	  	// Set to draw block button.
 	var/has_blockswitch = 1	// Set to draw blocking hand button.
 	var/has_internals = 1 	// Set to draw the internals toggle button.
+	var/has_rest = 1 // Set to draw the rest button.
 	var/list/equip_slots = list() // Checked by mob_can_equip().
 
 	// Contains information on the position and tag for all inventory slots
@@ -58,6 +59,7 @@
 
 /datum/hud_data/diona
 	has_internals = 0
+	has_rest = 0
 	gear = list(
 		"i_clothing" =   list("loc" = ui_iclothing, "name" = "Uniform",      "slot" = slot_w_uniform, "state" = "center", "toggle" = 1),
 		"o_clothing" =   list("loc" = ui_shoes,     "name" = "Suit",         "slot" = slot_wear_suit, "state" = "suit",   "toggle" = 1),
@@ -74,6 +76,7 @@
 
 /datum/hud_data/nabber
 	has_internals = 0
+	has_rest = 0
 	gear = list(
 		"i_clothing" =   list("loc" = ui_iclothing, "name" = "Uniform",      "slot" = slot_w_uniform, "state" = "center", "toggle" = 1),
 		"o_clothing" =   list("loc" = ui_shoes,     "name" = "Suit",         "slot" = slot_wear_suit, "state" = "suit",   "toggle" = 1),

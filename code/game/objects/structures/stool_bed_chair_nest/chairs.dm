@@ -105,7 +105,7 @@
 	icon = 'icons/obj/furniture.dmi'
 	icon_state = "folded_chair"
 	item_state = "table_parts"
-	w_class = ITEM_SIZE_NO_CONTAINER // Jesus no
+	w_class = ITEM_SIZE_GARGANTUAN // Jesus no
 	force = 12.5
 	throwforce = 10.0
 	throw_speed = 1
@@ -114,7 +114,7 @@
 	mod_reach = 1.15
 	mod_handy = 0.3
 	obj_flags = OBJ_FLAG_CONDUCTIBLE
-	matter = list(MATERIAL_STEEL = 1000)
+	matter = list(MATERIAL_STEEL = 2000)
 	var/material/padding_material
 	var/material/material
 
