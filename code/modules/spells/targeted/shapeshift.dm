@@ -128,7 +128,7 @@
 	hud_state = "wiz_poly"
 
 /spell/targeted/shapeshift/baleful_polymorph/critfail(list/targets, mob/user)
-	possible_transformations = list (
+	possible_transformations = list(
 	/mob/living/simple_animal/hostile/giant_spider,
 	/mob/living/simple_animal/hostile/asteroid/goliath/alpha
 	)
