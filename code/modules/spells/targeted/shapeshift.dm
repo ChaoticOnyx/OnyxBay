@@ -99,12 +99,15 @@
 	desc = "This spell transforms its target into a small, furry animal."
 	feedback = "BP"
 	critfailchance = 10
-	possible_transformations = list(/mob/living/simple_animal/lizard,
+	possible_transformations = list(
+	/mob/living/simple_animal/lizard,
 	/mob/living/simple_animal/mouse,
 	/mob/living/simple_animal/corgi,
 	/mob/living/simple_animal/parrot,
 	)
-	var/list/basic_transformations =  list(/mob/living/simple_animal/lizard,
+
+	var/list/basic_transformations =  list(
+	/mob/living/simple_animal/lizard,
 	/mob/living/simple_animal/mouse,
 	/mob/living/simple_animal/corgi,
 	/mob/living/simple_animal/parrot,
@@ -127,9 +130,11 @@
 /spell/targeted/shapeshift/baleful_polymorph/critfail(list/targets, mob/user)
 	possible_transformations = list (
 	/mob/living/simple_animal/hostile/giant_spider,
-	/mob/living/simple_animal/hostile/asteroid/goliath/alpha)
+	/mob/living/simple_animal/hostile/asteroid/goliath/alpha
+	)
 	cast(targets, user)
 	possible_transformations = basic_transformations
+
 /spell/targeted/shapeshift/baleful_polymorph/empower_spell()
 	if(!..())
 		return 0

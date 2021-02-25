@@ -56,7 +56,7 @@
 	amt_dam_oxy += -14
 	amt_dam_brute += -20
 	amt_dam_fire  += -30
-	if (!heal_bones)
+	if(!heal_bones)
 		heal_bones = 1
 		return "[src] now heals more and can fix bones"
 	else

@@ -26,9 +26,9 @@ Targeted spells have two useful flags: INCLUDEUSER and SELECTABLE. These are exp
 	var/amt_radiation = 0
 	var/amt_blood = 0 //Positive numbers to add blood
 	var/amt_organ = 0 //Positive numbers for healing
-	var/heals_internal_bleeding = 0 //health of organs go brrrr
-	var/heals_external_bleeding = 0 //You
-	var/heal_bones = 0 //give you healthy dose of calcium to fix you bones
+	var/heals_internal_bleeding = 0
+	var/heals_external_bleeding = 0
+	var/heal_bones = 0
 	var/amt_eye_blind = 0
 	var/amt_eye_blurry = 0
 	var/list/compatible_mobs = list()
@@ -120,7 +120,6 @@ Targeted spells have two useful flags: INCLUDEUSER and SELECTABLE. These are exp
 		for(var/mob/living/target in targets) //filters out all the non-compatible mobs
 			if(!is_type_in_list(target, compatible_mobs))
 				targets -= target
-	to_chat(user, targets)
 	return targets
 
 /spell/targeted/cast(list/targets, mob/user, channel)
@@ -139,15 +138,9 @@ Targeted spells have two useful flags: INCLUDEUSER and SELECTABLE. These are exp
 	target.adjustFireLoss(amt_dam_fire)
 	target.adjustToxLoss(amt_dam_tox)
 	target.adjustOxyLoss(amt_dam_oxy)
-	to_chat(target, "sda")
 	if(ishuman(target))
 		var/mob/living/carbon/human/H = target
 		H.wizard_heal(src)
-		H.adjustToxLoss(amt_dam_tox)
-		//H.heal_organ_damage(amt_organ, amt_organ)
-		//H.regenerate_blood(amt_blood)
-		H.adjustBrainLoss(amt_brain)
-		//H.radiation += min(H.radiation, amt_radiation)
 	target.regenerate_icons()
 	//disabling
 	target.Weaken(amt_weakened)

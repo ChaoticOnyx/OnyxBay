@@ -14,7 +14,7 @@
 	level_max = list(Sp_TOTAL = 3, Sp_SPEED = 3, Sp_POWER = 0)
 	spell_delay = 3000
 	compatible_targets = list(/mob/living/carbon/human)
-	var/list/instructions = list("Serve the Wizard Federation!.")
+	var/list/instructions = list("Serve the Wizard Federation!")
 	spell_cast_delay = 50
 
 /spell/hand/mind_control/cast(list/targets, mob/user, channel)
@@ -28,10 +28,10 @@
 			return
 	return 1
 
-/spell/hand/mind_control/cast_hand(atom/a, mob/user)
-	var/mob/living/target = a
-	if (target == user)
-		to_chat(user,SPAN_DANGER("You tried to control yourself, thankfully spell didn't worked!"))
+/spell/hand/mind_control/cast_hand(atom/A, mob/user)
+	var/mob/living/target = A
+	if(target == user)
+		to_chat(user, SPAN_DANGER("You tried to control yourself, thankfully spell didn't worked!"))
 		return // Prevents you from stupid thing
 	var/obj/item/magical_imprint/magical_imprint = new(instructions)
 	magical_imprint.implant_in_mob(target, BP_HEAD)
@@ -53,18 +53,18 @@
 
 /spell/hand/mind_control/Topic(href, href_list)
 	..()
-	if (href_list["add"])
+	if(href_list["add"])
 		var/mod = sanitize(input("Add an instruction", "Instructions") as text|null)
 		if(mod)
 			instructions += mod
 		interact(usr)
-	if (href_list["edit"])
+	if(href_list["edit"])
 		var/idx = text2num(href_list["edit"])
 		var/mod = sanitize(input("Edit the instruction", "Instruction Editing", instructions[idx]) as text|null)
 		if(mod)
 			instructions[idx] = mod
 			interact(usr)
-	if (href_list["del"])
+	if(href_list["del"])
 		instructions -= instructions[text2num(href_list["del"])]
 		interact(usr)
 
@@ -100,11 +100,11 @@
 	return TRUE
 
 /obj/item/magical_imprint/Process()
-	if (imp_in.reagents.has_reagent(/datum/reagent/water/holywater))
+	if(imp_in.reagents.has_reagent(/datum/reagent/water/holywater))
 		var/message_ender = "<span class='danger'>Water frees you from magical influence, you are free now:<br> You no longer have to follow any previous laws!</span>"
 		to_chat(imp_in, message_ender)
 		Destroy()
-		if (imp_in.mind)
+		if(imp_in.mind)
 			imp_in.mind.store_memory(message_ender)
 		return
 	if(world.time < last_reminder + 5 MINUTES)
@@ -120,7 +120,7 @@
 	. = ..()
 
 /obj/item/magical_imprint/proc/implant_in_mob(mob/M, target_zone)
-	if (ishuman(M))
+	if(ishuman(M))
 		var/mob/living/carbon/human/H = M
 		BITSET(H.hud_updateflag, IMPLOYAL_HUD)
 		forceMove(M)
