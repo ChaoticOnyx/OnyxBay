@@ -287,8 +287,6 @@
 	push_data()
 	activate_pin(2)
 
-// Hi, Doster-d components retractor script. How are you?
-
 /obj/item/integrated_circuit/input/plant_scanner
 	name = "integrated plant analyzer"
 	desc = "A very small version of the plant analyser. This allows the machine to know all valuable parameters of plants in trays. \
@@ -896,14 +894,14 @@
 
 /obj/item/integrated_circuit/input/teleporter_locator/Initialize()
 	. = ..()
-	set_pin_data(IC_OUTPUT, 1, )
+	set_pin_data(IC_OUTPUT, 1, weakref(null))
 
 /obj/item/integrated_circuit/input/teleporter_locator/ask_for_input(mob/user)
 	var/list/teleporters_id = list()
 	var/list/teleporters = list()
 	for(var/obj/machinery/teleport/hub/R in SSmachines.machinery)
 		var/obj/machinery/computer/teleporter/com = R.com
-		if (istype(com, /obj/machinery/computer/teleporter) && com.locked && !com.one_time_use && com.operable())
+		if(istype(com, /obj/machinery/computer/teleporter) && com.locked && !com.one_time_use && com.operable())
 			teleporters_id.Add(com.id)
 			teleporters[com.id] = com
 
@@ -925,7 +923,7 @@
 	output += "\nList of avaliable teleporters:"
 	for(var/obj/machinery/teleport/hub/R in SSmachines.machinery)
 		var/obj/machinery/computer/teleporter/com = R.com
-		if (istype(com, /obj/machinery/computer/teleporter) && com.locked && !com.one_time_use && com.operable())
+		if(istype(com, /obj/machinery/computer/teleporter) && com.locked && !com.one_time_use && com.operable())
 			output += "\n[com.id] ([R.icon_state == "tele1" ? "Active" : "Inactive"])"
 	to_chat(user, output)
 
@@ -938,7 +936,7 @@
 	. += "Please select a teleporter to lock in on:"
 	for(var/obj/machinery/teleport/hub/R in SSmachines.machinery)
 		var/obj/machinery/computer/teleporter/com = R.com
-		if (istype(com, /obj/machinery/computer/teleporter) && com.locked && !com.one_time_use && com.operable())
+		if(istype(com, /obj/machinery/computer/teleporter) && com.locked && !com.one_time_use && com.operable())
 			.["[com.id] ([R.icon_state == "tele1" ? "Active" : "Inactive"])"] = "tport=[any2ref(com)]"
 	.["None (Dangerous)"] = "tport=random"
 

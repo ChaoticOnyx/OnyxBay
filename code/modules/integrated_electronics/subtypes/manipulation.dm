@@ -567,7 +567,7 @@
 	if(!A || A.anchored || A.throwing || A == assembly || istype(A, /obj/item/weapon/material/twohanded) || istype(A, /obj/item/device/transfer_valve))
 		return
 
-	if (istype(assembly.loc, /obj/item/weapon/implant/compressed)) //Prevents the more abusive form of chestgun.
+	if(istype(assembly.loc, /obj/item/weapon/implant/compressed)) //Prevents the more abusive form of chestgun.
 		return
 
 	if(A.w_class > assembly.w_class)
@@ -934,13 +934,13 @@
 				//We had proper tools! (or RNG smiled.) and user did not move or change hands.
 				if(prob(S.success_chance(user, M, instrument, zone)) &&  wait_check_mob(M, S.duration * SURGERY_DURATION_DELTA * surgery_speed, zone))
 					S.end_step(user, M, zone, instrument)		//finish successfully
-				else if (user.Adjacent(M))			//or
+				else if(user.Adjacent(M))			//or
 					S.fail_step(user, M, zone, instrument)		//malpractice~
 				else // This failing silently was a pain.
 					status = FALSE
-				if (M)
+				if(M)
 					M.op_stage.in_progress -= zone 									// Clear the in-progress flag.
-				if (ishuman(M))
+				if(ishuman(M))
 					var/mob/living/carbon/human/H = M
 					H.update_surgery()
 					if(H.op_stage.current_organ)

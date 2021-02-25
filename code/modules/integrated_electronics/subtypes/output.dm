@@ -259,7 +259,7 @@
 		var/atom/movable/A = get_object()
 		var/sanitized_text = sanitize(html_decode(text))
 		A.audible_message("\The [A] states, \"[sanitized_text]\"")
-		if (assembly)
+		if(assembly)
 			log_say("[assembly] [ref(assembly)] : [sanitized_text]")
 		else
 			log_say("[name] ([type]) : [sanitized_text]")
