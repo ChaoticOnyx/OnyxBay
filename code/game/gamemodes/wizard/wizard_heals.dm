@@ -5,8 +5,8 @@
 		return
 	radiation += min(radiation, heal.amt_radiation)
 	regenerate_blood(heal.amt_blood)
-	adjustToxLoss(amt_dam_tox)
-	adjustBrainLoss(amt_brain)
+	adjustToxLoss(heal.amt_dam_tox)
+	adjustBrainLoss(heal.amt_brain)
 	var/list/organs = get_damaged_organs(1, 1)
 	if(organs.len)
 		heal_organ_damage(heal.amt_organ, heal.amt_organ)
