@@ -426,24 +426,15 @@ datum/objective/steal
 		"the prototype psychoscope" = /obj/item/clothing/glasses/psychoscope,
 		"the captain's antique laser gun" = /obj/item/weapon/gun/energy/captain,
 		"a bluespace rift generator in hand teleporter" = /obj/item/integrated_circuit/manipulation/bluespace_rift,
-		"an RCD" = /obj/item/weapon/rcd,
-		"a jetpack" = /obj/item/weapon/tank/jetpack,
-		"a captain's jumpsuit" = /obj/item/clothing/under/rank/captain,
 		"a functional AI" = /obj/item/weapon/aicard,
-		"a pair of magboots" = /obj/item/clothing/shoes/magboots,
 		"the [station_name()] blueprints" = /obj/item/blueprints,
 		"a nasa voidsuit" = /obj/item/clothing/suit/space/void,
 		"28 moles of plasma (full tank)" = /obj/item/weapon/tank,
 		"a sample of slime extract" = /obj/item/slime_extract,
-		"a piece of corgi meat" = /obj/item/weapon/reagent_containers/food/snacks/meat/corgi,
-		"a research director's jumpsuit" = /obj/item/clothing/under/rank/research_director,
-		"a chief engineer's jumpsuit" = /obj/item/clothing/under/rank/chief_engineer,
-		"a chief medical officer's jumpsuit" = /obj/item/clothing/under/rank/chief_medical_officer,
-		"a head of security's jumpsuit" = /obj/item/clothing/under/rank/head_of_security,
-		"a head of personnel's jumpsuit" = /obj/item/clothing/under/rank/head_of_personnel,
-		"the hypospray" = /obj/item/weapon/reagent_containers/hypospray,
-		"the captain's pinpointer" = /obj/item/weapon/pinpointer,
-		"an ablative armor vest" = /obj/item/clothing/suit/armor/laserproof,
+
+		"a research director's hardsuit" = /obj/item/weapon/rig/hazmat,
+		"a head of security's hardsuit" = /obj/item/weapon/rig/security,
+		"a head of security's swat boots" = /obj/item/clothing/shoes/swat,
 	)
 
 	var/global/possible_items_special[] = list(
@@ -475,6 +466,13 @@ datum/objective/steal/proc/select_target()
 	var/list/possible_items_all = possible_items+possible_items_special+"custom"
 	if(!(/mob/living/silicon/ai in SSmobs.mob_list))
 		possible_items_all -= "a functional AI"
+	
+	for(var/datum/mind/possible_target in SSticker.minds)
+		if(possible_target != owner && ishuman(possible_target.current) && (possible_target.current.stat != 2))
+			if(possible_target.assigned_role == "Clown")
+				possible_items_all["Clown PDA"] = /obj/item/device/pda/clown
+				break
+
 	var/new_target = input("Select target:", "Objective target", steal_target) as null|anything in possible_items_all
 	if(!new_target)
 		return
@@ -619,7 +617,7 @@ datum/objective/heist
 
 datum/objective/heist/kidnap
 	choose_target()
-		var/list/roles = list("Chief Engineer","Research Director","Roboticist","Chemist","Engineer")
+		var/list/roles = list("Chief Engineer","Research Director","Captain","Chief Medical Officer")
 		var/list/possible_targets = list()
 		var/list/priority_targets = list()
 
@@ -659,36 +657,24 @@ datum/objective/heist/loot
 
 	choose_target()
 		var/loot = "an object"
-		switch(rand(1,8))
+		switch(rand(1,5))
 			if(1)
-				target = /obj/structure/particle_accelerator
-				target_amount = 6
-				loot = "a complete particle accelerator"
-			if(2)
-				target = /obj/machinery/the_singularitygen
-				target_amount = 1
-				loot = "a gravitational singularity generator"
-			if(3)
 				target = /obj/machinery/power/emitter
 				target_amount = 4
 				loot = "four emitters"
-			if(4)
-				target = /obj/machinery/nuclearbomb
-				target_amount = 1
-				loot = "a nuclear bomb"
-			if(5)
+			if(2)
 				target = /obj/item/weapon/gun
 				target_amount = 6
 				loot = "six guns"
-			if(6)
+			if(3)
 				target = /obj/item/weapon/gun/energy
 				target_amount = 4
 				loot = "four energy guns"
-			if(7)
+			if(4)
 				target = /obj/item/weapon/gun/energy/laser
 				target_amount = 2
 				loot = "two laser guns"
-			if(8)
+			if(5)
 				target = /obj/item/weapon/gun/energy/ionrifle
 				target_amount = 1
 				loot = "an ion gun"
