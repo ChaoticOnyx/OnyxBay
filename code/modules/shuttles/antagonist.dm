@@ -28,4 +28,8 @@
 	req_access = list(access_merchant)
 	shuttle_tag = "Merchant"
 
+/obj/machinery/computer/shuttle_control/multi/mining_ship
+	name = "Creaker control console"
+	req_access = list(access_mining)
+	shuttle_tag = "Creaker"
 
