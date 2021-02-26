@@ -401,7 +401,7 @@
 		var/mob/living/silicon/ai/A = character
 		A.on_mob_init()
 
-		AnnounceCyborg(character, job.title, "has been downloaded to the empty core in \the [character.loc.loc]")
+		AnnounceArrival(character.real_name, job)
 		SSticker.mode.handle_latejoin(character)
 
 		qdel(C)
@@ -414,17 +414,12 @@
 		if(character.mind.assigned_role != "Cyborg")
 			CreateModularRecord(character)
 			SSticker.minds += character.mind//Cyborgs and AIs handle this in the transform proc.	//TODO!!!!! ~Carn
-			AnnounceArrival(character, job, spawnpoint.msg)
-		else
-			AnnounceCyborg(character, job, spawnpoint.msg)
-
-		for (var/mob/M in GLOB.player_list)
-			M.playsound_local(M.loc, 'sound/signals/arrival1.ogg', 75)
+			
+		AnnounceArrival(character.real_name, job, spawnpoint)
 
 		matchmaker.do_matchmaking()
 	log_and_message_admins("has joined the round as [character.mind.assigned_role].", character)
 	qdel(src)
-
 
 /mob/new_player/proc/AnnounceCyborg(mob/living/character, rank, join_message)
 	if (GAME_STATE == RUNLEVEL_GAME)

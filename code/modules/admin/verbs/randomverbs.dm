@@ -479,11 +479,14 @@ Traitors and the like can also be revived with the previous role mostly intact.
 	else
 		job_master.EquipRank(new_character, new_character.mind.assigned_role, 1)
 
+	var/datum/job/job = job_master.GetJob(new_character.mind.assigned_role)
+
 	//Announces the character on all the systems, based on the record.
 	if(!issilicon(new_character))//If they are not a cyborg/AI.
 		if(!record_found && !player_is_antag(new_character.mind, only_offstation_roles = 1)) //If there are no records for them. If they have a record, this info is already in there. MODE people are not announced anyway.
 			if(alert(new_character,"Would you like an active AI to announce this character?",,"No","Yes")=="Yes")
-				call(/proc/AnnounceArrival)(new_character, new_character.mind.assigned_role)
+				var/datum/spawnpoint/arrivals/spawnpoint = new()
+				call(/proc/AnnounceArrival)(new_character.real_name, job, spawnpoint)
 
 	log_and_message_admins("has respawned [player_key] as [new_character.real_name].")
 
