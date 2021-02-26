@@ -221,13 +221,11 @@ GLOBAL_DATUM_INIT(raiders, /datum/antagonist/raider, new)
 		player.equip_to_slot_or_del(new new_suit(player),slot_wear_suit)
 		equip_weapons(player)
 
-	var/obj/item/weapon/card/id/id = create_id("Visitor", player, equip = 0)
+	var/obj/item/weapon/card/id/id = create_id("Visitor", player)
 	id.SetName("[player.real_name]'s Passport")
-	id.assignment = "Visitor"
-	player.equip_to_slot_or_del(id, slot_belt)
 
 	var/obj/item/weapon/storage/wallet/W = new(player)
-	player.equip_to_slot_or_del(W, slot_wear_id)
+	player.equip_to_slot_or_del(W, slot_l_store)
 	spawn_money(rand(50,150)*10,W)
 	create_radio(RAID_FREQ, player)
 
