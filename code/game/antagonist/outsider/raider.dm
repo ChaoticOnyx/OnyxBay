@@ -225,7 +225,7 @@ GLOBAL_DATUM_INIT(raiders, /datum/antagonist/raider, new)
 	var/obj/item/weapon/card/id/id = create_id("Visitor", player, equip = 0)
 	id.SetName("[player.real_name]'s Passport")
 	id.assignment = "Visitor"
-	player.equip_to_slot_or_del(W, slot_wear_belt)
+	player.equip_to_slot_or_del(id, slot_wear_belt)
 
 	var/obj/item/weapon/storage/wallet/W = new(player)
 	player.equip_to_slot_or_del(W, slot_wear_id)
