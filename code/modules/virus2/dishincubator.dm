@@ -7,6 +7,7 @@
 	var/obj/item/weapon/virusdish/dish
 	var/obj/item/weapon/reagent_containers/glass/beaker = null
 	var/radiation = 0
+	var/mutagen = 0
 
 	var/on = 0
 	var/power = 0
@@ -58,9 +59,10 @@
 	data["dish_inserted"] = !!dish
 	data["food_supply"] = foodsupply
 	data["radiation"] = radiation
+	data["mutagen"] = min(mutagen, 100)
 	data["toxins"] = min(toxins, 100)
 	data["on"] = on
-	data["system_in_use"] = foodsupply > 0 || radiation > 0 || toxins > 0
+	data["system_in_use"] = foodsupply > 0 || radiation > 0 || toxins > 0 || mutagen > 0
 	data["chemical_volume"] = beaker ? beaker.reagents.total_volume : 0
 	data["max_chemical_volume"] = beaker ? beaker.volume : 1
 	data["virus"] = dish ? dish.virus2 : null
@@ -107,15 +109,17 @@
 			icon_state = "incubator"
 
 		if(foodsupply)
+			foodsupply -= 1
+			if(foodsupply > 50 && dish.growth >= 100 && dish.virus2.infectionchance < 50)
+				if(prob(5))
+					dish.virus2.infectionchance += 1
 			if(dish.growth + 3 >= 100 && dish.growth < 100)
 				ping("\The [src] pings, \"Sufficient viral growth density achieved.\"")
-
-			foodsupply -= 1
 			dish.growth += 3
 			SSnano.update_uis(src)
 
 		if(radiation)
-			if(radiation > 50 & prob(5))
+			if(radiation > 50 && prob(5))
 				dish.virus2.majormutate()
 				if(dish.info)
 					dish.info = "OUTDATED : [dish.info]"
@@ -126,35 +130,40 @@
 				dish.virus2.minormutate()
 			radiation -= 1
 			SSnano.update_uis(src)
-		if(toxins && prob(5))
-			dish.virus2.infectionchance -= 1
+		if(toxins)
+			if(prob(5))
+				dish.virus2.infectionchance -= 1
+			if(toxins > 50 && prob(5))
+				dish.virus2.stageshift()
+				if(dish.info)
+					dish.info = "OUTDATED : [dish.info]"
+					dish.basic_info = "OUTDATED: [dish.basic_info]"
+					dish.analysed = 0
+				ping("\The [src] pings, \"The nucleotide sequence of virus has been displaced due to partial destruction.\"")
+			if(toxins > 80)
+				dish.growth = 0
+				dish.virus2 = null
+				ping("\The [src] pings, \"Virus sample has been destroyed\"")
+			toxins -= 1
 			SSnano.update_uis(src)
-		if(toxins > 50)
-			dish.growth = 0
-			dish.virus2 = null
+		if(mutagen)
+			if(mutagen > 50 && prob(5))
+				if(dish.virus2.mediummutate())
+					ping("\The [src] pings, \"Mutant viral strain detected.\"")
+					if(dish.info)
+						dish.info = "OUTDATED : [dish.info]"
+						dish.basic_info = "OUTDATED: [dish.basic_info]"
+						dish.analysed = 0
+			else if(prob(10))
+				dish.virus2.minormutate()
+			mutagen -= 1
 			SSnano.update_uis(src)
+
+
 	else if(!dish)
 		on = 0
 		icon_state = "incubator"
 		SSnano.update_uis(src)
-
-	if(beaker)
-		if (foodsupply < 100 && beaker.reagents.has_reagent(/datum/reagent/nutriment/virus_food))
-			var/food_needed = min(10, 100 - foodsupply) / 2
-			var/food_taken = min(food_needed, beaker.reagents.get_reagent_amount(/datum/reagent/nutriment/virus_food))
-
-			beaker.reagents.remove_reagent(/datum/reagent/nutriment/virus_food, food_taken)
-			foodsupply = min(100, foodsupply+(food_taken * 2))
-			SSnano.update_uis(src)
-
-		if (locate(/datum/reagent/toxin) in beaker.reagents.reagent_list && toxins < 100)
-			for(var/datum/reagent/toxin/T in beaker.reagents.reagent_list)
-				toxins += max(T.strength,1)
-				beaker.reagents.remove_reagent(T.type,1)
-				if(toxins > 100)
-					toxins = 100
-					break
-			SSnano.update_uis(src)
 
 /obj/machinery/disease2/incubator/OnTopic(user, href_list)
 	if (href_list["close"])
@@ -179,14 +188,32 @@
 			dish = null
 		return TOPIC_REFRESH
 
-	if (href_list["rad"])
-		radiation = min(100, radiation + 10)
+	if (href_list["chem"])
+		if(!beaker.reagents)
+			return TOPIC_REFRESH
+		if(beaker.reagents.has_reagent(/datum/reagent/nutriment/virus_food, 5) && foodsupply < 100)
+			beaker.reagents.remove_reagent(/datum/reagent/nutriment/virus_food, 5)
+			foodsupply = min(100, foodsupply + 10)
+		if(beaker.reagents.has_reagent(/datum/reagent/radium, 5) && radiation < 100)
+			beaker.reagents.remove_reagent(/datum/reagent/radium, 5)
+			radiation = min(100, radiation + 10)
+		if(mutagen < 100)
+			for(var/datum/reagent/mutagen/T in beaker.reagents.reagent_list)
+				if(T.volume >= 5)
+					beaker.reagents.remove_reagent(/datum/reagent/mutagen, 5)
+					mutagen = min(100, mutagen + 10)
+		if(toxins < 100)
+			for(var/datum/reagent/toxin/T in beaker.reagents.reagent_list)
+				if(T.volume >= 5)
+					beaker.reagents.remove_reagent(T.type, 5)
+					toxins = min(100, toxins + T.strength)
 		return TOPIC_REFRESH
 
 	if (href_list["flush"])
 		radiation = 0
 		toxins = 0
 		foodsupply = 0
+		mutagen = 0
 		return TOPIC_REFRESH
 
 	if(href_list["virus"])
