@@ -217,9 +217,9 @@ LEGACY_RECORD_STRUCTURE(virus_records, virus_record)
 		neweffect.generate(effect.data)
 		neweffect.chance = effect.chance
 		neweffect.multiplier = effect.multiplier
-		neweffect.oneshot = effect.oneshot
 		neweffect.stage = effect.stage
 		disease.effects += neweffect
+	disease.update_disease()
 	return disease
 
 /datum/disease2/disease/proc/issame(datum/disease2/disease/disease)
