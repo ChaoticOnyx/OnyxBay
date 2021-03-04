@@ -1941,7 +1941,7 @@
 "aLq" = (/obj/machinery/atmospherics/binary/pump{dir = 1; name = "CO2 to Connector"},/turf/simulated/floor/tiled,/area/engineering/atmos)
 "aLr" = (/obj/machinery/computer/general_air_control/large_tank_control{frequency = 1441; input_tag = "tox_in"; name = "Plasma Supply Control"; output_tag = "tox_out"; sensors = list("tox_sensor" = "Tank")},/turf/simulated/floor/tiled,/area/engineering/atmos)
 "aLs" = (/obj/machinery/atmospherics/valve/digital{name = "Plasma Outlet Valve"},/obj/machinery/light,/turf/simulated/floor/tiled{icon_state = "steel_dirty"},/area/engineering/atmos)
-"aLt" = (/obj/machinery/atmospherics/binary/pump{dir = 1; name = "Phoron to Connector"},/obj/machinery/camera/network/engineering{c_tag = "Atmospherics Tank - Plasma"; dir = 1},/turf/simulated/floor/tiled,/area/engineering/atmos)
+"aLt" = (/obj/machinery/atmospherics/binary/pump{dir = 1; name = "Plasma to Connector"},/obj/machinery/camera/network/engineering{c_tag = "Atmospherics Tank - Plasma"; dir = 1},/turf/simulated/floor/tiled,/area/engineering/atmos)
 "aLu" = (/obj/machinery/atmospherics/valve/digital{name = "Gas Mix Inlet Valve"},/turf/simulated/floor/tiled,/area/engineering/atmos)
 "aLv" = (/obj/machinery/computer/general_air_control/large_tank_control{frequency = 1441; input_tag = "waste_in"; name = "Gas Mix Tank Control"; output_tag = "waste_out"; sensors = list("waste_sensor" = "Tank")},/turf/simulated/floor/tiled,/area/engineering/atmos)
 "aLw" = (/obj/machinery/atmospherics/valve/digital{name = "Gas Mix Outlet Valve"},/obj/machinery/light,/turf/simulated/floor/tiled{icon_state = "steel_dirty"},/area/engineering/atmos)

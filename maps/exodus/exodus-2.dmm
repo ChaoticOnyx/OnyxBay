@@ -4876,7 +4876,7 @@
 "bPN" = (/obj/effect/wingrille_spawn/reinforced,/obj/machinery/door/firedoor/border_only,/turf/simulated/floor/plating,/area/rnd/docking)
 "bPO" = (/turf/simulated/shuttle/wall/corner/research/nw,/area/shuttle/research/station)
 "bPP" = (/turf/simulated/shuttle/wall/research{dir = 8},/area/shuttle/research/station)
-"bPQ" = (/obj/machinery/atmospherics/binary/pump{dir = 1; name = "Phoron to Connector"},/obj/machinery/camera/network/engineering{c_tag = "Atmospherics Tank - Plasma"; dir = 1},/turf/simulated/floor/tiled,/area/engineering/atmos)
+"bPQ" = (/obj/machinery/atmospherics/binary/pump{dir = 1; name = "Plasma to Connector"},/obj/machinery/camera/network/engineering{c_tag = "Atmospherics Tank - Plasma"; dir = 1},/turf/simulated/floor/tiled,/area/engineering/atmos)
 "bPR" = (/turf/simulated/shuttle/wall/corner/research/ne,/area/shuttle/research/station)
 "bPS" = (/obj/machinery/door/airlock/external{frequency = 1379; icon_state = "door_locked"; id_tag = "merchant_shuttle_shop_exterior"; locked = 1; name = "Docking Port Airlock"; req_access = list(13)},/obj/machinery/shield_diffuser,/turf/simulated/floor/plating,/area/hallway/secondary/entry/aft)
 "bPT" = (/obj/machinery/conveyor{dir = 4; id = "QMLoad2"},/obj/machinery/door/firedoor/border_only,/obj/machinery/door/airlock/external{frequency = 1380; icon_state = "door_locked"; id_tag = "cargo_bay_door"; locked = 1; name = "Cargo Docking Hatch"; req_access = list(13)},/obj/machinery/shield_diffuser,/turf/simulated/floor/plating,/area/quartermaster/storage)
