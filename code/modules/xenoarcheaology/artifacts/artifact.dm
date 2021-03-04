@@ -41,7 +41,7 @@
 	else if(icon_num == 10)
 		desc = "A large alien device, there appear to be some kind of vents in the side."
 		if(prob(50))
-			my_effect.trigger = pick(TRIGGER_ENERGY, TRIGGER_HEAT, TRIGGER_COLD, TRIGGER_PHORON, TRIGGER_OXY, TRIGGER_CO2, TRIGGER_NITRO)
+			my_effect.trigger = pick(TRIGGER_ENERGY, TRIGGER_HEAT, TRIGGER_COLD, TRIGGER_PLASMA, TRIGGER_OXY, TRIGGER_CO2, TRIGGER_NITRO)
 	else if(icon_num == 11)
 		name = "sealed alien pod"
 		desc = "A strange alien device."
@@ -69,7 +69,7 @@
 	//if either of our effects rely on environmental factors, work that out
 	var/trigger_cold = 0
 	var/trigger_hot = 0
-	var/trigger_phoron = 0
+	var/trigger_plasma = 0
 	var/trigger_oxy = 0
 	var/trigger_co2 = 0
 	var/trigger_nitro = 0
@@ -84,8 +84,8 @@
 			else if(env.temperature > 375)
 				trigger_hot = 1
 
-			if(env.gas["phoron"] >= 10)
-				trigger_phoron = 1
+			if(env.gas["plasma"] >= 10)
+				trigger_plasma = 1
 			if(env.gas["oxygen"] >= 10)
 				trigger_oxy = 1
 			if(env.gas["carbon_dioxide"] >= 10)
@@ -145,16 +145,16 @@
 		if(secondary_effect && secondary_effect.trigger == TRIGGER_HEAT && !secondary_effect.activated)
 			secondary_effect.ToggleActivate(0)
 
-	//PHORON GAS ACTIVATION
-	if(trigger_phoron)
-		if(my_effect.trigger == TRIGGER_PHORON && !my_effect.activated)
+	//PLASMA GAS ACTIVATION
+	if(trigger_plasma)
+		if(my_effect.trigger == TRIGGER_PLASMA && !my_effect.activated)
 			my_effect.ToggleActivate()
-		if(secondary_effect && secondary_effect.trigger == TRIGGER_PHORON && !secondary_effect.activated)
+		if(secondary_effect && secondary_effect.trigger == TRIGGER_PLASMA && !secondary_effect.activated)
 			secondary_effect.ToggleActivate(0)
 	else
-		if(my_effect.trigger == TRIGGER_PHORON && my_effect.activated)
+		if(my_effect.trigger == TRIGGER_PLASMA && my_effect.activated)
 			my_effect.ToggleActivate()
-		if(secondary_effect && secondary_effect.trigger == TRIGGER_PHORON && !secondary_effect.activated)
+		if(secondary_effect && secondary_effect.trigger == TRIGGER_PLASMA && !secondary_effect.activated)
 			secondary_effect.ToggleActivate(0)
 
 	//OXYGEN GAS ACTIVATION
@@ -231,7 +231,7 @@
 				my_effect.ToggleActivate()
 			if(secondary_effect && secondary_effect.trigger == TRIGGER_ACID && prob(25))
 				secondary_effect.ToggleActivate(0)
-		else if(W.reagents.has_reagent(/datum/reagent/toxin/phoron, 1) || W.reagents.has_reagent(/datum/reagent/thermite, 1))
+		else if(W.reagents.has_reagent(/datum/reagent/toxin/plasma, 1) || W.reagents.has_reagent(/datum/reagent/thermite, 1))
 			if(my_effect.trigger == TRIGGER_VOLATILE)
 				my_effect.ToggleActivate()
 			if(secondary_effect && secondary_effect.trigger == TRIGGER_VOLATILE && prob(25))

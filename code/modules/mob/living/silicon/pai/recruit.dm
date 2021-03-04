@@ -31,7 +31,7 @@ var/datum/paiController/paiController			// Global handler for pAI candidates
 		var/obj/item/device/paicard/card = locate(href_list["device"])
 		if(card.pai)
 			return
-		if(istype(card,/obj/item/device/paicard) && istype(candidate,/datum/paiCandidate))
+		if(istype(card, /obj/item/device/paicard) && istype(candidate, /datum/paiCandidate))
 			var/mob/living/silicon/pai/pai = new(card)
 			if(!candidate.name)
 				pai.SetName(pick(GLOB.ninja_names))
@@ -43,13 +43,16 @@ var/datum/paiController/paiController			// Global handler for pAI candidates
 			card.setPersonality(pai)
 			card.looking_for_personality = 0
 
-			if(pai.mind) update_antag_icons(pai.mind)
+			if(pai.mind)
+				update_antag_icons(pai.mind)
 
 			pai_candidates -= candidate
 			usr << browse(null, "window=findPai")
 
 	if(href_list["new"])
 		var/datum/paiCandidate/candidate = locate(href_list["candidate"])
+		if(!istype(candidate))
+			return
 		var/option = href_list["option"]
 		var/t = ""
 
@@ -358,17 +361,19 @@ var/datum/paiController/paiController			// Global handler for pAI candidates
 			else
 				asked.Remove(O.key)
 		if(O.client)
-			if(BE_PAI in O.client.prefs.be_special_role)
+			if(O.client.wishes_to_be_role(BE_PAI))
 				question(O.client)
 
 /datum/paiController/proc/question(client/C)
 	spawn(0)
-		if(!C)	return
+		if(!C)
+			return
 		asked.Add(C.key)
 		asked[C.key] = world.time
 		var/response = alert(C, "[inquirer] is requesting a pAI personality. Would you like to play as a personal AI?", "pAI Request", "Yes", "No", "Never for this round")
-		if(!C)	return		//handle logouts that happen whilst the alert is waiting for a response.
+		if(!C)
+			return		//handle logouts that happen whilst the alert is waiting for a response.
 		if(response == "Yes")
 			recruitWindow(C.mob)
 		else if (response == "Never for this round")
-			C.prefs.be_special_role -= BE_PAI
+			C.prefs.never_be_special_role.Add(BE_PAI)

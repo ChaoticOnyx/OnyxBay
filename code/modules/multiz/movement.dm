@@ -2,57 +2,40 @@
 	set name = "Move Upwards"
 	set category = "IC"
 
-	if(zMove(UP))
-		to_chat(src, "<span class='notice'>You move upwards.</span>")
+	SelfMove(UP)
 
 /mob/verb/down()
 	set name = "Move Down"
 	set category = "IC"
 
-	if(zMove(DOWN))
-		to_chat(src, "<span class='notice'>You move down.</span>")
+	SelfMove(DOWN)
 
-/mob/proc/zMove(direction)
-	if(eyeobj)
-		return eyeobj.zMove(direction)
-	if(!can_ztravel())
-		to_chat(src, "<span class='warning'>You lack means of travel in that direction.</span>")
-		return
-
-	var/turf/start = loc
-	if(!istype(start))
-		to_chat(src, "<span class='notice'>You are unable to move from here.</span>")
+/mob/proc/zPull(direction)
+	//checks and handles pulled items across z levels
+	if(!pulling)
 		return 0
 
-	var/turf/destination = (direction == UP) ? GetAbove(src) : GetBelow(src)
-	if(!destination)
-		to_chat(src, "<span class='notice'>There is nothing of interest in this direction.</span>")
+	var/turf/start = pulling.loc
+	var/turf/destination = (direction == UP) ? GetAbove(pulling) : GetBelow(pulling)
+
+	if(!start.CanZPass(pulling, direction))
+		to_chat(src, "<span class='warning'>\The [start] blocked your pulled object!</span>")
+		stop_pulling()
 		return 0
 
-	if(!start.CanZPass(src, direction))
-		to_chat(src, "<span class='warning'>\The [start] is in the way.</span>")
-		return 0
-	if(!destination.CanZPass(src, direction))
-		to_chat(src, "<span class='warning'>You bump against \the [destination].</span>")
-		return 0
-
-	var/area/area = get_area(src)
-	if(direction == UP && area.has_gravity() && !can_overcome_gravity())
-		to_chat(src, "<span class='warning'>Gravity stops you from moving upward.</span>")
+	if(!destination.CanZPass(pulling, direction))
+		to_chat(src, "<span class='warning'>The [pulling] you were pulling bumps up against \the [destination].</span>")
+		stop_pulling()
 		return 0
 
 	for(var/atom/A in destination)
-		if(!A.CanMoveOnto(src, start, 1.5, direction))
-			to_chat(src, "<span class='warning'>\The [A] blocks you.</span>")
+		if(!A.CanMoveOnto(pulling, start, 1.5, direction))
+			to_chat(src, "<span class='warning'>\The [A] blocks the [pulling] you were pulling.</span>")
+			stop_pulling()
 			return 0
 
-	if(direction == UP && area.has_gravity() && can_fall(FALSE, destination))
-		to_chat(src, "<span class='warning'>You see nothing to hold on to.</span>")
-		return 0
-
-	forceMove(destination)
+	pulling.forceMove(destination)
 	return 1
-
 
 /atom/proc/CanMoveOnto(atom/movable/mover, turf/target, height=1.5, direction = 0)
 	//Purpose: Determines if the object can move through this
@@ -64,7 +47,7 @@
 	return FALSE
 
 /mob/living/carbon/human/can_overcome_gravity()
-	if(incorporeal_move)
+	if(HasMovementHandler(/datum/movement_handler/mob/incorporeal))
 		return TRUE
 	//First do species check
 	if(species && species.can_overcome_gravity(src))
@@ -84,30 +67,10 @@
 				return 1
 	return 0
 
-/mob/observer/zMove(direction)
-	var/turf/destination = (direction == UP) ? GetAbove(src) : GetBelow(src)
-	if(destination)
-		forceMove(destination)
-	else
-		to_chat(src, "<span class='notice'>There is nothing of interest in this direction.</span>")
-
-/mob/observer/eye/zMove(direction)
-	var/turf/destination = (direction == UP) ? GetAbove(src) : GetBelow(src)
-	if(destination)
-		setLoc(destination)
-	else
-		to_chat(src, "<span class='notice'>There is nothing of interest in this direction.</span>")
-
 /mob/proc/can_ztravel()
 	return 0
 
-/mob/observer/can_ztravel()
-	return 1
-
 /mob/living/carbon/human/can_ztravel()
-	if(incapacitated())
-		return 0
-
 	if(Allow_Spacemove())
 		return 1
 
@@ -117,9 +80,6 @@
 				return 1
 
 /mob/living/silicon/robot/can_ztravel()
-	if(incapacitated() || is_dead())
-		return 0
-
 	if(Allow_Spacemove()) //Checks for active jetpack
 		return 1
 
@@ -155,11 +115,13 @@
 		// Entered() which is part of Move(), by spawn()ing we let that complete.  But we want to preserve if we were in client movement
 		// or normal movement so other move behavior can continue.
 		var/mob/M = src
-		var/is_client_moving = (ismob(M) && M.client && M.client.moving)
+		var/is_client_moving = (ismob(M) && M.moving)
 		spawn(0)
-			if(is_client_moving) M.client.moving = 1
+			if(is_client_moving)
+				M.moving = 1
 			handle_fall(below)
-			if(is_client_moving) M.client.moving = 0
+			if(is_client_moving)
+				M.moving = 0
 
 //For children to override
 /atom/movable/proc/can_fall(anchor_bypass = FALSE, turf/location_override = src.loc)

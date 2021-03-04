@@ -89,7 +89,12 @@
 
 
 /obj/item/grab/proc/force_drop()
-	assailant.drop_from_inventory(src)
+	if(assailant)
+		assailant.drop_from_inventory(src)
+	else
+		loc = null
+		if(!QDELETED(src))
+			qdel(src)
 
 /obj/item/grab/proc/can_grab()
 
@@ -204,7 +209,8 @@
 	current_grab.handle_resist(src)
 
 /obj/item/grab/proc/adjust_position(force = 0)
-	if(force)	affecting.forceMove(assailant.loc)
+	if(force)
+		affecting.forceMove(assailant.loc)
 
 	if(!assailant || !affecting || !assailant.Adjacent(affecting))
 		qdel(src)

@@ -5,6 +5,7 @@ var/list/organ_cache = list()
 	icon = 'icons/obj/surgery.dmi'
 	germ_level = 0
 	w_class = ITEM_SIZE_TINY
+	dir = SOUTH
 
 	// Strings.
 	var/organ_tag = "organ"           // Unique identifier.

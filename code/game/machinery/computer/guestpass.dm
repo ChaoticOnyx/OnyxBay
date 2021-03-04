@@ -155,7 +155,8 @@
 				var/dat = "<h3>Activity log of guest pass terminal #[uid]</h3><br>"
 				for (var/entry in internal_log)
 					dat += "[entry]<br><hr>"
-				new /obj/item/weapon/paper(loc, dat, "activity log", rawhtml = TRUE)
+				var/obj/item/weapon/paper/P = new /obj/item/weapon/paper(loc)
+				P.set_content(dat, "activity log", TRUE)
 				. = TOPIC_REFRESH
 
 			if ("issue")

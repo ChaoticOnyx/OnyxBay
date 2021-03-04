@@ -112,5 +112,79 @@
 	name = "\improper SkrellSnax"
 	icon_state = "skrellsnacks"
 
+/obj/item/trash/cans
+	var/base_state = ""
+
+/obj/item/trash/cans/Initialize()
+	. = ..()
+	base_state = icon_state
+	if(prob(42))
+		icon_state = "[base_state]2"
+	item_state = base_state
+
+/obj/item/trash/cans/cola
+	name = "\improper Space Cola"
+	icon_state = "cola"
+
+/obj/item/trash/cans/colavanilla
+	name = "\improper Vanilla Space Cola"
+	icon_state = "colavanilla"
+
+/obj/item/trash/cans/colacherry
+	name = "\improper Cherry Space Cola"
+	icon_state = "colacherry"
+
+/obj/item/trash/cans/dopecola
+	name = "\improper Dope Cola"
+	icon_state = "dopecola"
+
+/obj/item/trash/cans/space_mountain_wind
+	name = "\improper Space Mountain Wind"
+	icon_state = "space_mountain_wind"
+
+/obj/item/trash/cans/thirteenloko
+	name = "\improper Thirteen Loko"
+	icon_state = "thirteen_loko"
+
+/obj/item/trash/cans/dr_gibb
+	name = "\improper Dr. Gibb"
+	icon_state = "dr_gibb"
+
+/obj/item/trash/cans/starkist
+	name = "\improper Star-kist"
+	icon_state = "starkist"
+
+/obj/item/trash/cans/space_up
+	name = "\improper Space-Up"
+	icon_state = "space-up"
+
+/obj/item/trash/cans/lemon_lime
+	name = "\improper Lemon-Lime"
+	icon_state = "lemon-lime"
+
+/obj/item/trash/cans/iced_tea
+	name = "\improper Vrisk Serket Iced Tea"
+	icon_state = "ice_tea_can"
+
+/obj/item/trash/cans/grape_juice
+	name = "\improper Grapel Juice"
+	icon_state = "purple_can"
+
+/obj/item/trash/cans/tonic
+	name = "\improper T-Borg's Tonic Water"
+	icon_state = "tonic"
+
+/obj/item/trash/cans/sodawater
+	name = "soda water"
+	icon_state = "sodawater"
+
+/obj/item/trash/cans/machpellabeer
+	name = "\improper Machpella Dark Beer"
+	icon_state = "machpellabeer"
+
+/obj/item/trash/cans/applecider
+	name = "\improper MeadBy Apple Cider"
+	icon_state = "applecider"
+
 /obj/item/trash/attack(mob/M as mob, mob/living/user as mob)
 	return

@@ -97,7 +97,7 @@
 		/obj/item/clothing/suit/armor/hos/jensen,
 		/obj/item/clothing/under/rank/head_of_security/jensen,
 		/obj/item/clothing/under/rank/head_of_security/corp,
-		/obj/item/clothing/glasses/sunglasses/sechud,
+		/obj/item/clothing/glasses/hud/aviators/security,
 		/obj/item/clothing/accessory/storage/black_vest,
 		/obj/item/clothing/shoes/swat,
 		/obj/item/clothing/mask/gas/clear,
@@ -135,7 +135,7 @@
 		/obj/item/clothing/suit/armor/vest/warden,
 		/obj/item/clothing/under/rank/warden,
 		/obj/item/clothing/under/rank/warden/corp,
-		/obj/item/clothing/glasses/sunglasses/sechud,
+		/obj/item/clothing/glasses/hud/aviators/security,
 		/obj/item/clothing/accessory/storage/black_vest,
 		/obj/item/clothing/accessory/holster/waist,
 		/obj/item/weapon/melee/baton/loaded,
@@ -169,7 +169,7 @@
 		/obj/item/clothing/head/soft/sec/corp,
 		/obj/item/clothing/suit/armor/vest,
 		/obj/item/clothing/under/rank/security/corp,
-		/obj/item/clothing/glasses/sunglasses/sechud,
+		/obj/item/clothing/glasses/hud/aviators/security,
 		/obj/item/weapon/gun/energy/classictaser,
 		/obj/item/weapon/melee/baton/loaded,
 		/obj/item/weapon/storage/belt/security,
@@ -216,7 +216,7 @@
 
 /obj/structure/closet/secure_closet/detective/WillContain()
 	return list(
-		/obj/item/clothing/glasses/thermal,
+		/obj/item/clothing/glasses/hud/standard/thermal,
 		/obj/item/clothing/head/det,
 		/obj/item/clothing/head/det/grey,
 		/obj/item/clothing/under/det,

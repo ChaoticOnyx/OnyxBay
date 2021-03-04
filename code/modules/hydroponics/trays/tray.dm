@@ -142,6 +142,27 @@
 	if(response == "Yes")
 		harvest()
 
+/obj/machinery/portable_atmospherics/hydroponics/attack_generic(var/mob/user)
+
+	// Why did I ever think this was a good idea. TODO: move this onto the nymph mob.
+	if(istype(user,/mob/living/carbon/alien/diona))
+		var/mob/living/carbon/alien/diona/nymph = user
+
+		if(nymph.stat == DEAD || nymph.paralysis || nymph.weakened || nymph.stunned || nymph.restrained())
+			return
+
+		if(weedlevel > 0)
+			nymph.reagents.add_reagent(/datum/reagent/nutriment/glucose, weedlevel)
+			weedlevel = 0
+			nymph.visible_message("<span class='info'><b>[nymph]</b> begins rooting through [src], ripping out weeds and eating them noisily.</span>","<span class='info'>You begin rooting through [src], ripping out weeds and eating them noisily.</span>")
+		else if(nymph.nutrition > 100 && nutrilevel < 10)
+			nymph.nutrition -= ((10-nutrilevel)*5)
+			nutrilevel = 10
+			nymph.visible_message("<span class='info'><b>[nymph]</b> secretes a trickle of green liquid, refilling [src].</span>","<span class='info'>You secrete a trickle of green liquid, refilling [src].</span>")
+		else
+			nymph.visible_message("<span class='info'><b>[nymph]</b> rolls around in [src] for a bit.</span>","<span class='info'>You roll around in [src] for a bit.</span>")
+		return
+
 /obj/machinery/portable_atmospherics/hydroponics/Initialize()
 	. = ..()
 	temp_chem_holder = new()
@@ -185,13 +206,10 @@
 
 	..()
 
-/obj/machinery/portable_atmospherics/hydroponics/CanPass(atom/movable/mover, turf/target, height=0, air_group=0)
-	if(air_group || (height==0)) return 1
-
+/obj/machinery/portable_atmospherics/hydroponics/CanPass(atom/movable/mover, turf/target)
 	if(istype(mover) && mover.pass_flags & PASS_FLAG_TABLE)
-		return 1
-	else
-		return !density
+		return TRUE
+	return !density
 
 /obj/machinery/portable_atmospherics/hydroponics/proc/check_health(icon_update = 1)
 	if(seed && !dead && health <= 0)
@@ -267,7 +285,7 @@
 
 	if(closed_system)
 		if(user) to_chat(user, "You can't harvest from the plant while the lid is shut.")
-		return FALSE
+		return
 
 	if(user)
 		seed.harvest(user,yield_mod)
@@ -286,7 +304,7 @@
 		mutation_mod = 0
 
 	check_health()
-	return TRUE
+	return
 
 //Clears out a dead plant.
 /obj/machinery/portable_atmospherics/hydroponics/proc/remove_dead(mob/user, silent)
@@ -294,7 +312,7 @@
 
 	if(closed_system)
 		to_chat(user, "You can't remove the dead plant while the lid is shut.")
-		return FALSE
+		return
 
 	seed = null
 	dead = 0
@@ -303,11 +321,10 @@
 	yield_mod = 0
 	mutation_mod = 0
 
-	if(!silent)
-		to_chat(user, "You remove the dead plant.")
+	to_chat(user, "You remove the dead plant.")
 	lastproduce = 0
 	check_health()
-	return TRUE
+	return
 
 // If a weed growth is sufficient, this proc is called.
 /obj/machinery/portable_atmospherics/hydroponics/proc/weed_invasion()
@@ -453,7 +470,6 @@
 			return 1
 
 	else if (istype(O, /obj/item/seeds))
-
 		plant_seed(user, O)
 
 	else if (istype(O, /obj/item/weapon/material/minihoe))  // The minihoe

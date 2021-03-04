@@ -16,6 +16,7 @@
 	var/affected_area = 3
 
 /obj/item/weapon/grenade/chem_grenade/Initialize()
+	. = ..()
 	create_reagents(1000)
 
 /obj/item/weapon/grenade/chem_grenade/attack_self(mob/user as mob)
@@ -222,7 +223,7 @@
 
 	B1.reagents.add_reagent(/datum/reagent/aluminum, 15)
 	B1.reagents.add_reagent(/datum/reagent/fuel,20)
-	B2.reagents.add_reagent(/datum/reagent/toxin/phoron, 15)
+	B2.reagents.add_reagent(/datum/reagent/toxin/plasma, 15)
 	B2.reagents.add_reagent(/datum/reagent/acid, 15)
 	B1.reagents.add_reagent(/datum/reagent/fuel,20)
 
@@ -297,4 +298,3 @@
 	beakers += B1
 	beakers += B2
 	icon_state = initial(icon_state) +"_locked"
-

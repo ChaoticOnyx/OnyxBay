@@ -42,9 +42,6 @@
 	if(atom_flags & ATOM_FLAG_CLIMBABLE)
 		verbs += /atom/proc/climb_on
 
-	if(opacity)
-		updateVisibility(src)
-
 //Called after New if the map is being loaded. mapload = TRUE
 //Called from base of New if the map is not being loaded. mapload = FALSE
 //This base must be called or derivatives must set initialized to TRUE
@@ -59,6 +56,12 @@
 
 	if(light_power && light_range)
 		update_light()
+
+	if(opacity)
+		updateVisibility(src)
+		var/turf/T = loc
+		if(istype(T))
+			T.RecalculateOpacity()
 
 	return INITIALIZE_HINT_NORMAL
 

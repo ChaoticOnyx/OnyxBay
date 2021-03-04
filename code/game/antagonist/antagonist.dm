@@ -110,24 +110,24 @@
 		if (!player.current.client)
 			continue
 		if(ghosts_only && !(isghostmind(player) || isnewplayer(player.current)))
-			log_debug("[key_name(player)] is not eligible to become a [role_text]: Only ghosts may join as this role!")
+			log_debug_verbose("[key_name(player)] is not eligible to become a [role_text]: Only ghosts may join as this role!")
 		else if(config.use_age_restriction_for_antags && player.current.client.player_age < minimum_player_age)
-			log_debug("[key_name(player)] is not eligible to become a [role_text]: Is only [player.current.client.player_age] day\s old, has to be [minimum_player_age] day\s!")
+			log_debug_verbose("[key_name(player)] is not eligible to become a [role_text]: Is only [player.current.client.player_age] day\s old, has to be [minimum_player_age] day\s!")
 		else if(player.special_role)
-			log_debug("[key_name(player)] is not eligible to become a [role_text]: They already have a special role ([player.special_role])!")
+			log_debug_verbose("[key_name(player)] is not eligible to become a [role_text]: They already have a special role ([player.special_role])!")
 		else if (player in pending_antagonists)
-			log_debug("[key_name(player)] is not eligible to become a [role_text]: They have already been selected for this role!")
+			log_debug_verbose("[key_name(player)] is not eligible to become a [role_text]: They have already been selected for this role!")
 		else if(!can_become_antag(player))
-			log_debug("[key_name(player)], can_become_antag returned FALSE!")
-			log_debug("[key_name(player)] is not eligible to become a [role_text]: They are blacklisted for this role!")
+			log_debug_verbose("[key_name(player)], can_become_antag returned FALSE!")
+			log_debug_verbose("[key_name(player)] is not eligible to become a [role_text]: They are blacklisted for this role!")
 		else if(player_is_antag(player))
-			log_debug("[key_name(player)] is not eligible to become a [role_text]: They are already an antagonist!")
+			log_debug_verbose("[key_name(player)] is not eligible to become a [role_text]: They are already an antagonist!")
 		else if(player.current.stat == UNCONSCIOUS)
-			log_debug("[key_name(player)] is not eligible to become a [role_text]: They are unconscious!")
+			log_debug_verbose("[key_name(player)] is not eligible to become a [role_text]: They are unconscious!")
 		else if(!is_mob_type_allowed(player))
-			log_debug("[key_name(player)] is not eligible to become a [role_text]: '[player.current.type]' is not allowed type of mob!")
+			log_debug_verbose("[key_name(player)] is not eligible to become a [role_text]: '[player.current.type]' is not allowed type of mob!")
 		else
-			log_debug("[key_name(player)] is eligible to become a [role_text]")
+			log_debug_verbose("[key_name(player)] is eligible to become a [role_text]")
 			candidates |= player
 
 	return candidates
@@ -139,21 +139,21 @@
 	// Keeping broken up for readability
 	for(var/datum/mind/player in mode.get_players_for_role(id))
 		if(ghosts_only && !(isghostmind(player) || isnewplayer(player.current)))
-			log_debug("[key_name(player)] is not eligible to become a [role_text]: Only ghosts may join as this role!")
+			log_debug_verbose("[key_name(player)] is not eligible to become a [role_text]: Only ghosts may join as this role!")
 		else if(config.use_age_restriction_for_antags && player.current.client.player_age < minimum_player_age)
-			log_debug("[key_name(player)] is not eligible to become a [role_text]: Is only [player.current.client.player_age] day\s old, has to be [minimum_player_age] day\s!")
+			log_debug_verbose("[key_name(player)] is not eligible to become a [role_text]: Is only [player.current.client.player_age] day\s old, has to be [minimum_player_age] day\s!")
 		else if(player.special_role)
-			log_debug("[key_name(player)] is not eligible to become a [role_text]: They already have a special role ([player.special_role])!")
+			log_debug_verbose("[key_name(player)] is not eligible to become a [role_text]: They already have a special role ([player.special_role])!")
 		else if (player in pending_antagonists)
-			log_debug("[key_name(player)] is not eligible to become a [role_text]: They have already been selected for this role!")
+			log_debug_verbose("[key_name(player)] is not eligible to become a [role_text]: They have already been selected for this role!")
 		else if(!can_become_antag(player))
-			log_debug("[key_name(player)] is not eligible to become a [role_text]: They are blacklisted for this role!")
+			log_debug_verbose("[key_name(player)] is not eligible to become a [role_text]: They are blacklisted for this role!")
 		else if(player_is_antag(player))
-			log_debug("[key_name(player)] is not eligible to become a [role_text]: They are already an antagonist!")
+			log_debug_verbose("[key_name(player)] is not eligible to become a [role_text]: They are already an antagonist!")
 		else if(player.current.stat == UNCONSCIOUS)
-			log_debug("[key_name(player)] is not eligible to become a [role_text]: They are unconscious!")
+			log_debug_verbose("[key_name(player)] is not eligible to become a [role_text]: They are unconscious!")
 		else if(!is_mob_type_allowed(player))
-			log_debug("[key_name(player)] is not eligible to become a [role_text]: '[player.current.type]' is not allowed type of mob!")
+			log_debug_verbose("[key_name(player)] is not eligible to become a [role_text]: '[player.current.type]' is not allowed type of mob!")
 		else
 			potential_candidates |= player
 
@@ -172,26 +172,26 @@
 
 	update_current_antag_max(SSticker.mode)
 	var/active_antags = get_active_antag_count()
-	log_debug("[uppertext(id)]: Found [active_antags]/[cur_max] active [role_text_plural].")
+	log_debug_verbose("[uppertext(id)]: Found [active_antags]/[cur_max] active [role_text_plural].")
 
 	if(active_antags >= cur_max && !called_by_storyteller)
-		log_debug("Could not auto-spawn a [role_text], active antag limit reached.")
+		log_debug_verbose("Could not auto-spawn a [role_text], active antag limit reached.")
 		return 0
 
 	build_candidate_list(SSticker.mode, flags & (ANTAG_OVERRIDE_MOB|ANTAG_OVERRIDE_JOB))
 	if(!candidates.len)
-		log_debug("Could not auto-spawn a [role_text], no candidates found.")
+		log_debug_verbose("Could not auto-spawn a [role_text], no candidates found.")
 		return 0
 
 	attempt_spawn(1) //auto-spawn antags one at a time
 	if(!pending_antagonists.len)
-		log_debug("Could not auto-spawn a [role_text], none of the available candidates could be selected.")
+		log_debug_verbose("Could not auto-spawn a [role_text], none of the available candidates could be selected.")
 		return 0
 
 	var/datum/mind/player = pending_antagonists[1]
 	pending_antagonists -= player
 	if(!add_antagonist(player, ignore_role=FALSE, do_not_equip=FALSE, move_to_spawn=FALSE, do_not_announce=TRUE, preserve_appearance=TRUE))
-		log_debug("Could not auto-spawn a [role_text], failed to add antagonist.")
+		log_debug_verbose("Could not auto-spawn a [role_text], failed to add antagonist.")
 		return 0
 
 	if(called_by_storyteller)
@@ -225,20 +225,20 @@
 /datum/antagonist/proc/draft_antagonist(datum/mind/player)
 	//Check if the player can join in this antag role, or if the player has already been given an antag role.
 	if(!can_become_antag(player))
-		log_debug("[player.key] was selected for [role_text] by lottery, but is not allowed to be that role.")
+		log_debug_verbose("[player.key] was selected for [role_text] by lottery, but is not allowed to be that role.")
 		return 0
 	if(player.special_role)
-		log_debug("[player.key] was selected for [role_text] by lottery, but they already have a special role.")
+		log_debug_verbose("[player.key] was selected for [role_text] by lottery, but they already have a special role.")
 		return 0
 	if(!(flags & ANTAG_OVERRIDE_JOB) && (!player.current || istype(player.current, /mob/new_player)))
-		log_debug("[player.key] was selected for [role_text] by lottery, but they have not joined the game.")
+		log_debug_verbose("[player.key] was selected for [role_text] by lottery, but they have not joined the game.")
 		return 0
 	if(GAME_STATE >= RUNLEVEL_GAME && (isghostmind(player) || isnewplayer(player.current)) && !(player in SSticker.antag_pool))
-		log_debug("[player.key] was selected for [role_text] by lottery, but they are a ghost not in the antag pool.")
+		log_debug_verbose("[player.key] was selected for [role_text] by lottery, but they are a ghost not in the antag pool.")
 		return 0
 
 	pending_antagonists |= player
-	log_debug("[player.key] has been selected for [role_text] by lottery.")
+	log_debug_verbose("[player.key] has been selected for [role_text] by lottery.")
 
 	//Ensure that antags with ANTAG_OVERRIDE_JOB do not occupy job slots.
 	if(flags & ANTAG_OVERRIDE_JOB)

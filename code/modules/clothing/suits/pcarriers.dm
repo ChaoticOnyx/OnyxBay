@@ -45,5 +45,5 @@
 	desc = "A lightweight tan plate carrier vest. It can be equipped with armor plates, but provides no protection of its own."
 	icon_state = "pcarrier_tan"
 
-/obj/item/clothing/suit/armor/pcarrier/merc
-	starting_accessories = list(/obj/item/clothing/accessory/armorplate/merc, /obj/item/clothing/accessory/armguards/merc, /obj/item/clothing/accessory/legguards/merc, /obj/item/clothing/accessory/storage/pouches/large)
+/obj/item/clothing/suit/armor/pcarrier/syndi
+	starting_accessories = list(/obj/item/clothing/accessory/armorplate/syndi, /obj/item/clothing/accessory/armguards/syndi, /obj/item/clothing/accessory/legguards/syndi, /obj/item/clothing/accessory/storage/pouches/large)

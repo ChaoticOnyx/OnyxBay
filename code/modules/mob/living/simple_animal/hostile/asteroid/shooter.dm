@@ -95,7 +95,7 @@
 									/obj/item/projectile/energy/declone,
 									/obj/item/projectile/energy/dart,
 									/obj/item/projectile/energy/neurotoxin,
-									/obj/item/projectile/energy/phoron,
+									/obj/item/projectile/energy/plasma,
 									/obj/item/projectile/energy/electrode,
 									/obj/item/projectile/energy/flash,
 									/obj/item/projectile/energy/flash/flare,

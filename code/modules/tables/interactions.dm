@@ -1,15 +1,14 @@
 
-/obj/structure/table/CanPass(atom/movable/mover, turf/target, height=0, air_group=0)
-	if(air_group || (height==0)) return 1
+/obj/structure/table/CanPass(atom/movable/mover, turf/target)
 	if(istype(mover,/obj/item/projectile))
 		return (check_cover(mover,target))
-	if (flipped == 1)
-		if (get_dir(loc, target) == dir)
+	if(flipped == 1)
+		if(get_dir(loc, target) == dir)
 			return !density
 		else
-			return 1
+			return TRUE
 	if(istype(mover) && mover.pass_flags & PASS_FLAG_TABLE)
-		return 1
+		return TRUE
 	var/obj/structure/table/T = (locate() in get_turf(mover))
 	return (T && !T.flipped) 	//If we are moving from a table, check if it is flipped.
 								//If the table we are standing on is not flipped, then we can move freely to another table.
@@ -106,6 +105,7 @@
 					return 0
 				G.affecting.forceMove(src.loc)
 				G.affecting.Weaken(rand(1,4))
+				G.affecting.Stun(1)
 				visible_message("<span class='warning'>[G.assailant] puts [G.affecting] on \the [src].</span>")
 				G.affecting.break_all_grabs(G.assailant)
 				qdel(W)

@@ -535,7 +535,7 @@
 	var/turf/simulated/location = get_turf(holder)
 	ASSERT(istype(location))
 	var/zone/room = location.zone
-	var/list/available_effects = list("icons/effects/tile_effects.dmi" = "phoron", "icons/effects/tile_effects.dmi" = "sleeping_agent", "icons/effects/tile_effects.dmi" = "plasma-purple", "icons/effects/effects.dmi" = "electricity", "icons/effects/fire.dmi" = "real_fire") // Kinda ironic to use real_fire for non-real fire
+	var/list/available_effects = list("icons/effects/tile_effects.dmi" = "plasma", "icons/effects/tile_effects.dmi" = "sleeping_agent", "icons/effects/tile_effects.dmi" = "plasma-purple", "icons/effects/effects.dmi" = "electricity", "icons/effects/fire.dmi" = "real_fire") // Kinda ironic to use real_fire for non-real fire
 	var/chosen = rand(1, available_effects.len)
 	for(var/turf/simulated/T in room.contents)
 		effects.Add(image(icon = file(available_effects[chosen]), loc = T, icon_state = available_effects[available_effects[chosen]], layer = FLY_LAYER))

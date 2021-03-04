@@ -1,22 +1,15 @@
 /*
 	Pins both hold data for circuits, as well move data between them.  Some also cause circuits to do their function.  DATA_CHANNEL pins are the data holding/moving kind,
 where as PULSE_CHANNEL causes circuits to work() when their pulse hits them.
-
-
 A visualization of how pins work is below.  Imagine the below image involves an addition circuit.
 When the bottom pin, the activator, receives a pulse, all the numbers on the left (input) get added, and the answer goes on the right side (output).
-
 Inputs      Outputs
-
 A [2]\      /[8] result
 B [1]-\|++|/
 C [4]-/|++|
 D [1]/  ||
-	    ||
-	 Activator
-
-
-
+        ||
+     Activator
 */
 /datum/integrated_io
 	var/name = "input/output"
@@ -29,7 +22,7 @@ D [1]/  ||
 
 /datum/integrated_io/New(loc, _name, _data, _pin_type,_ord)
 	name = _name
-	if(_data)
+	if(!isnull(_data))
 		data = _data
 	if(_pin_type)
 		pin_type = _pin_type
@@ -58,6 +51,9 @@ D [1]/  ||
 	if(isnull(input))
 		return "(null)" // Empty data means nothing to show.
 
+	if(isnum_safe(input))
+		return "([num2text(input)])"
+
 	if(istext(input))
 		return "(\"[input]\")" // Wraps the 'string' in escaped quotes, so that people know it's a 'string'.
 
@@ -79,7 +75,7 @@ D [1]/  ||
 	if(isweakref(input))
 		var/weakref/w = input
 		var/atom/A = w.resolve()
-		return A ? "([A.name] \[Ref\])" : "(null)" // For refs, we want just the name displayed.
+		return A ? "([A.name] \[Ref])" : "(null)" // For refs, we want just the name displayed.
 
 	return "([input])" // Nothing special needed for numbers or other stuff.
 
@@ -95,7 +91,7 @@ D [1]/  ||
 /datum/integrated_io/proc/scramble()
 	if(isnull(data))
 		return
-	if(isnum(data))
+	if(isnum_safe(data))
 		write_data_to_pin(rand(-10000, 10000))
 	if(istext(data))
 		write_data_to_pin("ERROR")
@@ -121,7 +117,7 @@ D [1]/  ||
 	return FALSE
 
 /datum/integrated_io/proc/write_data_to_pin(new_data)
-	if(isnull(new_data) || isnum(new_data) || istext(new_data) || isweakref(new_data))
+	if(isnull(new_data) || isnum_safe(new_data) || istext(new_data) || isweakref(new_data))
 		data = new_data
 		holder.on_data_written()
 	else if(islist(new_data))
@@ -137,7 +133,7 @@ D [1]/  ||
 /datum/integrated_io/activate/push_data()
 	for(var/k in 1 to linked.len)
 		var/datum/integrated_io/io = linked[k]
-		SScircuit_components.queue_component(io.holder, TRUE, io.ord)
+		io.holder.check_then_do_work(io.ord)
 
 /datum/integrated_io/proc/pull_data()
 	for(var/k in 1 to linked.len)
@@ -164,7 +160,7 @@ D [1]/  ||
 	linked.Remove(pin)
 
 
-/datum/integrated_io/proc/ask_for_data_type(mob/user, default, list/allowed_data_types = list("string","number","null"))
+/datum/integrated_io/proc/ask_for_data_type(mob/user, var/default, var/list/allowed_data_types = list("string","number","null"))
 	var/type_to_use = input("Please choose a type to use.","[src] type setting") as null|anything in allowed_data_types
 	if(!holder.check_interactivity(user))
 		return
@@ -172,14 +168,13 @@ D [1]/  ||
 	var/new_data = null
 	switch(type_to_use)
 		if("string")
-			var/input_text = input(user, "Now type in a string.", "[src] string writing", istext(default) ? default : null) as null|text
-			new_data = sanitize(input_text, trim = 0)
+			new_data = sanitize(input(user, "Now type in a string.", "[src] string writing", istext(default) ? default : null) as null|text, trim = 0)
 			if(istext(new_data) && holder.check_interactivity(user) )
 				to_chat(user, "<span class='notice'>You input "+new_data+" into the pin.</span>")
 				return new_data
 		if("number")
-			new_data = input("Now type in a number.","[src] number writing", isnum(default) ? default : null) as null|num
-			if(isnum(new_data) && holder.check_interactivity(user) )
+			new_data = input("Now type in a number.","[src] number writing", isnum_safe(default) ? default : null) as null|num
+			if(isnum_safe(new_data) && holder.check_interactivity(user) )
 				to_chat(user, "<span class='notice'>You input [new_data] into the pin.</span>")
 				return new_data
 		if("null")
@@ -197,6 +192,7 @@ D [1]/  ||
 	write_data_to_pin(new_data)
 
 /datum/integrated_io/activate/ask_for_pin_data(mob/user) // This just pulses the pin.
+	holder.investigate_log(" was manually pulsed by [key_name(user)].", INVESTIGATE_CIRCUIT)
 	holder.check_then_do_work(ord,ignore_power = TRUE)
 	to_chat(user, "<span class='notice'>You pulse \the [holder]'s [src] pin.</span>")
 

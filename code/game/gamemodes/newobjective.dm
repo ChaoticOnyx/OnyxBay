@@ -310,7 +310,7 @@ datum
 				target = targeta
 				job = joba
 				weight = get_points(job)
-				explanation_text = "[target.current.real_name], the [target.assigned_role] is a [pick("relative of a","friend of a","") + pick("high ranking","important","well-liked")] mercenary [pick("Leader","Officer","Agent","sympathiser")].  Make sure they get off the [station_name()] safely, while minimizing intervention."
+				explanation_text = "[target.current.real_name], the [target.assigned_role] is a [pick("relative of a","friend of a","") + pick("high ranking","important","well-liked")] Syndicate [pick("Leader","Officer","Agent","sympathiser")].  Make sure they get off the [station_name()] safely, while minimizing intervention."
 
 			check_completion()
 				if(!emergency_shuttle.returned())
@@ -604,7 +604,7 @@ datum
 					var/list/all_items = owner.current.get_contents()
 					for(var/obj/item/I in all_items)
 						if(!istype(I, steal_target))	continue//If it's not actually that item.
-						if(I:air_contents:phoron) return 1 //If they got one with plasma
+						if(I:air_contents:plasma) return 1 //If they got one with plasma
 					return 0
 
 

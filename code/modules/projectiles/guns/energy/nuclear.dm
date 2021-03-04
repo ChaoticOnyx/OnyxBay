@@ -218,7 +218,7 @@
 	accuracy = 2
 	max_shots = 24
 	fire_delay = null
-	burst_accuracy = null
+	burst_accuracy = list(0)
 	charge_cost = 10
 	burst = 2
 	burst_delay = 1
@@ -254,7 +254,6 @@
 	accuracy = 1
 	max_shots = 20
 	fire_delay = null
-	burst_accuracy = null
 	charge_cost = 10
 	burst = 2
 	burst_delay = 2

@@ -111,6 +111,10 @@
 	path = /obj/item/clothing/under/shorts/
 	flags = GEAR_HAS_COLOR_SELECTION
 
+/datum/gear/uniform/tacticool_turtleneck
+	display_name = "tacticool turtleneck"
+	path = /obj/item/clothing/under/syndicate/tacticool
+
 // /datum/gear/uniform/turtleneck
 // 	display_name = "sweater, colour select"
 // 	path = /obj/item/clothing/under/rank/psych/turtleneck/sweater
@@ -408,7 +412,7 @@
 
 /datum/gear/uniform/dress/cheongsam
 	display_name = "cheongsam dress"
-	path = /obj/item/clothing/under/cheongsam 
+	path = /obj/item/clothing/under/cheongsam
 	price = 25
 
 /datum/gear/uniform/frontier
@@ -418,5 +422,38 @@
 
 /datum/gear/uniform/dress/bar_f
 	display_name = "black bartender dress"
-	path = /obj/item/clothing/under/dress/bar_f 
+	path = /obj/item/clothing/under/dress/bar_f
 	price = 25
+
+/datum/gear/uniform/tactical/jumpsuit
+	sort_category = "Uniforms" // Since we don't want those who's bought this POS to lose it due to path change;
+	display_name = "tactical jumpsuit"
+	path = /obj/item/clothing/under/tactical
+	price = 15
+
+/datum/gear/uniform/dress/franziska_dress
+	display_name = "prosecutor's dress"
+	path = /obj/item/clothing/under/dress/franziska_dress
+	price = 25
+
+/datum/gear/uniform/captain_formal_alt
+	display_name = "captain's formal uniform"
+	path = /obj/item/clothing/under/captainformal/captain_formal_alt
+	price = 10
+	allowed_roles = list(/datum/job/captain)
+
+/datum/gear/uniform/dress/captain_dress_alt
+	display_name = "captain's formal dress"
+	path = /obj/item/clothing/under/dress/dress_cap/captain_dress_alt
+	price = 10
+	allowed_roles = list(/datum/job/captain)
+
+/datum/gear/uniform/latex_suit
+	display_name = "latex suit"
+	path = /obj/item/clothing/under/latex_suit
+	price = 10
+
+/datum/gear/uniform/fig_leaf
+	display_name = "fig leaf"
+	path = /obj/item/clothing/under/fig_leaf
+	price = 5

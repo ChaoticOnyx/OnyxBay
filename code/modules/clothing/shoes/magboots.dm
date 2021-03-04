@@ -42,6 +42,7 @@
 	user.update_inv_shoes()	//so our mob-overlays update
 	user.update_action_buttons()
 	user.update_floating()
+	user.update_equipment_slowdown()
 
 /obj/item/clothing/shoes/magboots/mob_can_equip(mob/user)
 	var/mob/living/carbon/human/H = user

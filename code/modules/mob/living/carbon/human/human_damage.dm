@@ -64,7 +64,7 @@
 	return amount
 
 /mob/living/carbon/human/setHalLoss(amount)
-	adjustHalLoss(getHalLoss()-amount)
+	adjustHalLoss(getHalLoss() - amount)
 
 /mob/living/carbon/human/adjustHalLoss(amount)
 	if(!amount)

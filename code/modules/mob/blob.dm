@@ -79,7 +79,7 @@ mob/blob/DblClickOn(atom/A) //Teleport view to another blob
 /mob/blob/airflow_stun()
 	return FALSE
 
-/mob/blob/CanPass(atom/movable/mover, turf/target, height, air_group)
+/mob/blob/CanPass(atom/movable/mover, turf/target)
 	return TRUE
 
 /mob/blob/check_airflow_movable(n)

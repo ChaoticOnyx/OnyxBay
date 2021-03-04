@@ -93,8 +93,8 @@
 
 		var/explosion_amount = 0
 
-		if(reagents.get_reagent_amount(/datum/reagent/toxin/phoron))
-			explosion_amount += reagents.get_reagent_amount(/datum/reagent/toxin/phoron)
+		if(reagents.get_reagent_amount(/datum/reagent/toxin/plasma))
+			explosion_amount += reagents.get_reagent_amount(/datum/reagent/toxin/plasma)
 		if(reagents.get_reagent_amount(/datum/reagent/fuel))
 			explosion_amount += reagents.get_reagent_amount(/datum/reagent/fuel) / 2
 

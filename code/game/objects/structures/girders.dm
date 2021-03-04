@@ -275,6 +275,8 @@
 	return
 
 /obj/structure/girder/cult
+	name = "strange girder"
+	desc = "This one is strange, looks like it is made from stone"
 	icon= 'icons/obj/cult.dmi'
 	icon_state= "cultgirder"
 	max_health = 250

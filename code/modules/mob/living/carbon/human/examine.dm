@@ -169,7 +169,7 @@
 		distance = 1
 	else
 		distance = get_dist(user,src)
-	if (src.stat)
+	if(src.stat)
 		msg += "<span class='warning'>[T.He] [T.is]n't responding to anything around [T.him] and seems to be unconscious.</span>\n"
 		if((stat == DEAD || is_asystole() || src.losebreath) && distance <= 3)
 			msg += "<span class='warning'>[T.He] [T.does] not appear to be breathing.</span>\n"
@@ -331,7 +331,7 @@
 	if(istype(M, /mob/living/carbon/human))
 		var/mob/living/carbon/human/H = M
 		var/obj/item/clothing/glasses/G = H.glasses
-		return istype(G) && ((G.hud_type & hudtype) || (G.hud && (G.hud.hud_type & hudtype)))
+		return istype(G) && (G.hud_type & hudtype)
 	else if(istype(M, /mob/living/silicon))
 		var/mob/living/silicon/R = M
 		if (R.active_hud == hudtype)

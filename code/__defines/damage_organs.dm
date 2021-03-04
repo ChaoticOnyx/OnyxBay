@@ -68,7 +68,7 @@
 // proportion of their max blood volume to be lost
 // (e.g. 0.6 == 60% lost if 200 burn damage is taken).
 #define FLUIDLOSS_WIDE_BURN 0.6 //for burns from heat applied over a wider area, like from fire
-#define FLUIDLOSS_CONC_BURN 0.4 //for concentrated burns, like from lasers
+#define FLUIDLOSS_CONC_BURN 0.3 //for concentrated burns, like from lasers
 
 // Damage above this value must be repaired with surgery.
 #define ROBOLIMB_SELF_REPAIR_CAP 30

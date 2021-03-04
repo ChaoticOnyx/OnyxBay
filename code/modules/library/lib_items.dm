@@ -62,7 +62,7 @@
 			titles[item_name] = item
 		var/title = input("Which book would you like to remove from the shelf?") as null|anything in titles
 		if(title)
-			if(!usr.canmove || usr.stat || usr.restrained() || !in_range(loc, usr))
+			if(!CanPhysicallyInteract(user))
 				return
 			var/obj/choice = titles[title]
 			ASSERT(choice)

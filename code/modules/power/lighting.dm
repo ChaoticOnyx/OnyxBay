@@ -494,7 +494,14 @@
 		else if(MUTATION_TK in user.mutations)
 			to_chat(user, "You telekinetically remove the [get_fitting_name()].")
 		else
-			to_chat(user, "You try to remove the [get_fitting_name()], but it's too hot and you don't want to burn your hand.")
+			if(user.a_intent == I_HELP)
+				to_chat(user, "You try to remove the [get_fitting_name()], but it's too hot and you don't want to burn your hand.")
+			else
+				to_chat(user, "You try to remove the [get_fitting_name()], but you burn your hand on it!")
+				var/obj/item/organ/external/E = H.get_organ(user.hand ? BP_L_HAND : BP_R_HAND)
+				if(E)
+					E.take_external_damage(0, rand(3, 7), used_weapon = "hot lightbulb")
+			user.setClickCooldown(DEFAULT_QUICK_COOLDOWN)
 			return				// if burned, don't remove the light
 	else
 		to_chat(user, "You remove the [get_fitting_name()].")
@@ -599,6 +606,19 @@
 	var/brightness_color = "#ffffff"
 	var/list/lighting_modes = list()
 	var/sound_on
+	var/random_tone = FALSE
+	var/list/random_tone_options = list(
+		"#fffee0",
+		"#eafeff",
+		"#fefefe",
+		"#fef6ea"
+	)
+
+/obj/item/weapon/light/Initialize()
+	. = ..()
+	if(random_tone)
+		brightness_color = pick(random_tone_options)
+		update_icon()
 
 /obj/item/weapon/light/tube
 	name = "light tube"
@@ -617,6 +637,7 @@
 		LIGHTMODE_ALARM = list(l_color = "#ff3333")
 		)
 	sound_on = 'sound/machines/lightson.ogg'
+	random_tone = TRUE
 
 /obj/item/weapon/light/tube/large
 	w_class = ITEM_SIZE_SMALL
@@ -632,6 +653,7 @@
 	brightness_power = 7
 	brightness_color = "#33cccc"
 	matter = list(MATERIAL_STEEL = 60, MATERIAL_GLASS = 300)
+	random_tone = FALSE
 
 /obj/item/weapon/light/tube/quartz
 	name = "quartz light tube"
@@ -640,6 +662,7 @@
 	brightness_range = 7
 	brightness_power = 10
 	brightness_color = "#8A2BE2"
+	random_tone = FALSE
 
 /obj/item/weapon/light/bulb
 	name = "light bulb"
@@ -658,6 +681,7 @@
 		LIGHTMODE_EVACUATION = list(l_color = "#bf0000"),
 		LIGHTMODE_ALARM = list(l_color = "#ff3333")
 		)
+	random_tone = TRUE
 
 /obj/item/weapon/light/bulb/he
 	name = "high efficiency light bulb"
@@ -667,6 +691,7 @@
 	brightness_power = 5
 	brightness_color = "#33cccc"
 	matter = list(MATERIAL_STEEL = 30, MATERIAL_GLASS = 150)
+	random_tone = FALSE
 
 /obj/item/weapon/light/bulb/quartz
 	name = "quartz light bulb"
@@ -675,18 +700,21 @@
 	brightness_range = 4
 	brightness_power = 8
 	brightness_color = "#8A2BE2"
+	random_tone = FALSE
 
 /obj/item/weapon/light/bulb/old
 	name = "old light bulb"
 	desc = "Old type of light bulbs, almost not being used at the station."
 	base_state = "lold_bulb"
-	brightness_range = 3
+	brightness_range = 5
 	brightness_power = 3
 	brightness_color = "#ec8b2f"
+	random_tone = FALSE
 
 /obj/item/weapon/light/bulb/red
 	color = "#da0205"
 	brightness_color = "#da0205"
+	random_tone = FALSE
 
 /obj/item/weapon/light/bulb/red/readylight
 	brightness_range = 5
@@ -708,6 +736,7 @@
 	matter = list(MATERIAL_GLASS = 100)
 	brightness_range = 4
 	brightness_power = 4
+	random_tone = FALSE
 
 // update the icon state and description of the light
 /obj/item/weapon/light/update_icon()
@@ -727,7 +756,7 @@
 	update_icon()
 
 // attack bulb/tube with object
-// if a syringe, can inject phoron to make it explode
+// if a syringe, can inject plasma to make it explode
 /obj/item/weapon/light/attackby(obj/item/I, mob/user)
 	..()
 	if(istype(I, /obj/item/weapon/reagent_containers/syringe))
@@ -735,10 +764,10 @@
 
 		to_chat(user, "You inject the solution into the [src].")
 
-		if(S.reagents.has_reagent(/datum/reagent/toxin/phoron, 5))
+		if(S.reagents.has_reagent(/datum/reagent/toxin/plasma, 5))
 
-			log_admin("LOG: [user.name] ([user.ckey]) injected a light with phoron, rigging it to explode.")
-			message_admins("LOG: [user.name] ([user.ckey]) injected a light with phoron, rigging it to explode.")
+			log_admin("LOG: [user.name] ([user.ckey]) injected a light with plasma, rigging it to explode.")
+			message_admins("LOG: [user.name] ([user.ckey]) injected a light with plasma, rigging it to explode.")
 
 			rigged = 1
 

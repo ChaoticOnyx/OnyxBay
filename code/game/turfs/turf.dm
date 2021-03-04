@@ -29,12 +29,14 @@
 
 	var/movement_delay
 
-/turf/New()
-	..()
+/turf/Initialize(mapload, ...)
+	. = ..()
 	if(dynamic_lighting)
 		luminosity = 0
 	else
 		luminosity = 1
+
+	RecalculateOpacity()
 
 /turf/Destroy()
 	remove_cleanables()
@@ -68,11 +70,10 @@
 
 /turf/attack_hand(mob/user)
 	user.setClickCooldown(DEFAULT_QUICK_COOLDOWN)
-	handle_crawling(user)
 
-	if(!(user.canmove) || user.restrained() || !(user.pulling))
+	if(user.restrained())
 		return 0
-	if(user.pulling.anchored || !isturf(user.pulling.loc))
+	if(isnull(user.pulling) || user.pulling.anchored || !isturf(user.pulling.loc))
 		return 0
 	if(user.pulling.loc != user.loc && get_dist(user, user.pulling) > 1)
 		return 0

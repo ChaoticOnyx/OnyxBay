@@ -80,8 +80,8 @@ won't update every console in existence) but it's more of a hassle to do. Also, 
 			return_name = "Gold"
 		if(MATERIAL_SILVER)
 			return_name = "Silver"
-		if(MATERIAL_PHORON)
-			return_name = "Solid Phoron"
+		if(MATERIAL_PLASMA)
+			return_name = "Solid Plasma"
 		if(MATERIAL_URANIUM)
 			return_name = "Uranium"
 		if(MATERIAL_DIAMOND)

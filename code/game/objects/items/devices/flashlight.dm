@@ -43,6 +43,11 @@
 	user.update_action_buttons()
 	return 1
 
+/obj/item/device/flashlight/AltClick(mob/user)
+	if(CanPhysicallyInteract(user))
+		return attack_self(user)
+	else
+		return ..()
 
 /obj/item/device/flashlight/attack(mob/living/M as mob, mob/living/user as mob)
 	add_fingerprint(user)

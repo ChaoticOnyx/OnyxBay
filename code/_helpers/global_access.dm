@@ -127,12 +127,6 @@
 			return global.WALLITEMS;
 		if("_all_globals")
 			return global._all_globals;
-		if("_client_preferences")
-			return global._client_preferences;
-		if("_client_preferences_by_key")
-			return global._client_preferences_by_key;
-		if("_client_preferences_by_type")
-			return global._client_preferences_by_type;
 		if("account_hack_attempted")
 			return global.account_hack_attempted;
 		if("additional_antag_types")
@@ -1108,12 +1102,6 @@
 			global.WALLITEMS=newval;
 		if("_all_globals")
 			global._all_globals=newval;
-		if("_client_preferences")
-			global._client_preferences=newval;
-		if("_client_preferences_by_key")
-			global._client_preferences_by_key=newval;
-		if("_client_preferences_by_type")
-			global._client_preferences_by_type=newval;
 		if("account_hack_attempted")
 			global.account_hack_attempted=newval;
 		if("additional_antag_types")

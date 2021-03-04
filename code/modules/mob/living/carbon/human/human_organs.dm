@@ -61,6 +61,10 @@
 	else
 		return FALSE
 
+/mob/living/carbon/human/proc/handle_organs_pain() // It's more efficient to process it separately from the actual organ processing
+	for(var/obj/item/organ/external/O in organs)
+		O.update_pain()
+
 /mob/living/carbon/human/proc/recheck_bad_external_organs()
 	var/damage_this_tick = getToxLoss()
 	for(var/obj/item/organ/external/O in organs)
@@ -266,42 +270,38 @@
 
 	// You should not be able to pick anything up, but stranger things have happened.
 	if(l_hand)
-		for(var/limb_tag in list(BP_L_HAND, BP_L_ARM))
-			var/obj/item/organ/external/E = get_organ(limb_tag)
-			if(!E)
-				visible_message("<span class='danger'>Lacking a functioning left hand, \the [src] drops \the [l_hand].</span>")
-				drop_from_inventory(l_hand,force = 1)
-				break
+		var/obj/item/organ/external/E = get_organ(BP_L_HAND) // We don't need to check for arms if we already have no hands
+		if(!E)
+			visible_message("<span class='danger'>Lacking a functioning left hand, \the [src] drops \the [l_hand].</span>")
+			drop_from_inventory(l_hand, force = 1)
 
 	if(r_hand)
-		for(var/limb_tag in list(BP_R_HAND, BP_R_ARM))
-			var/obj/item/organ/external/E = get_organ(limb_tag)
-			if(!E)
-				visible_message("<span class='danger'>Lacking a functioning right hand, \the [src] drops \the [r_hand].</span>")
-				drop_from_inventory(r_hand,force = 1)
-				break
+		var/obj/item/organ/external/E = get_organ(BP_R_HAND)
+		if(!E)
+			visible_message("<span class='danger'>Lacking a functioning right hand, \the [src] drops \the [r_hand].</span>")
+			drop_from_inventory(r_hand, force = 1)
 
 	// Check again...
 	if(!l_hand && !r_hand)
 		return
 
-	for (var/obj/item/organ/external/E in organs)
+	for(var/obj/item/organ/external/E in grasp_limbs)
 		if(!E || !(E.limb_flags & ORGAN_FLAG_CAN_GRASP))
 			continue
 		if(((E.is_broken() || E.is_dislocated()) && !E.splinted) || E.is_malfunctioning())
 			grasp_damage_disarm(E)
 
 /mob/living/carbon/human/proc/stance_damage_prone(obj/item/organ/external/affected)
-
 	if(affected)
 		switch(affected.body_part)
 			if(FOOT_LEFT, FOOT_RIGHT)
-				to_chat(src, "<span class='warning'>You lose your footing as your [affected.name] spasms!</span>")
+				to_chat(src, SPAN("warning", "You lose your footing as your [affected.name] spasms!"))
 			if(LEG_LEFT, LEG_RIGHT)
-				to_chat(src, "<span class='warning'>Your [affected.name] buckles from the shock!</span>")
+				to_chat(src, SPAN("warning", "Your [affected.name] buckles from the shock!"))
 			else
 				return
-	Weaken(5)
+		Stun(2)
+		Weaken(5)
 
 /mob/living/carbon/human/proc/grasp_damage_disarm(obj/item/organ/external/affected)
 	var/disarm_slot

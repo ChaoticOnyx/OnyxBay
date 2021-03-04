@@ -81,7 +81,9 @@ var/list/lunchables_ethanol_reagents_ = list(
 												/datum/reagent/ethanol/neurotoxin,
 												/datum/reagent/ethanol/pwine,
 												/datum/reagent/ethanol/threemileisland,
-												/datum/reagent/ethanol/toxins_special
+												/datum/reagent/ethanol/toxins_special,
+												/datum/reagent/ethanol/siegbrau,
+												/datum/reagent/ethanol/shroombeer
 											)
 
 /proc/lunchables_lunches()

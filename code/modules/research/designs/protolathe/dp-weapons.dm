@@ -131,10 +131,10 @@
 	build_path = /obj/item/weapon/gun/magnetic/railgun/flechette
 	sort_string = "TAHAB"
 
-/datum/design/item/weapon/phoronpistol
+/datum/design/item/weapon/plasmapistol
 	id = "ppistol"
-	req_tech = list(TECH_COMBAT = 5, TECH_PHORON = 4)
-	materials = list(MATERIAL_STEEL = 5000, MATERIAL_GLASS = 1000, MATERIAL_PHORON = 3000)
+	req_tech = list(TECH_COMBAT = 5, TECH_PLASMA = 4)
+	materials = list(MATERIAL_STEEL = 5000, MATERIAL_GLASS = 1000, MATERIAL_PLASMA = 3000)
 	build_path = /obj/item/weapon/gun/energy/toxgun
 	sort_string = "TAJAA"
 

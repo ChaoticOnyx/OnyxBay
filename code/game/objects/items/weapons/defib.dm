@@ -432,6 +432,7 @@
 
 	M.emote("gasp")
 	M.Weaken(rand(10,25))
+	M.Stun(10)
 	M.updatehealth()
 	apply_brain_damage(M, deadtime)
 

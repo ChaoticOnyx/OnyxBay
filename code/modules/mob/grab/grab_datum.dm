@@ -100,6 +100,9 @@
 	G.force_drop()
 
 /datum/grab/proc/process(obj/item/grab/G)
+	if(!G.affecting) // In case if the grab wants to process, but there's no longer a mob grabbed by this exact grab
+		let_go(G)
+		return
 	var/diff_zone = G.target_change()
 	if(diff_zone && G.special_target_functional)
 		special_target_change(G, diff_zone)
@@ -323,10 +326,3 @@
 	return mob_size_difference(A.mob_size, B.mob_size)
 
 /datum/grab/proc/moved_effect(obj/item/grab/G)
-
-/client/proc/Process_Grab()
-	//if we are being grabbed
-	if(isliving(mob))
-		var/mob/living/L = mob
-		if(!L.canmove && L.grabbed_by.len)
-			L.resist() //shortcut for resisting grabs

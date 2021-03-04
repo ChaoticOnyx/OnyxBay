@@ -10,6 +10,7 @@
 	eyeblur = 4
 	hitscan = 1
 	invisibility = 101	//beam projectiles are invisible as they are rendered by the effect engine
+	penetration_modifier = 0.5
 
 	muzzle_type = /obj/effect/projectile/laser/muzzle
 	tracer_type = /obj/effect/projectile/laser/tracer
@@ -49,7 +50,7 @@
 	fire_sound = 'sound/effects/weapons/energy/fire16.ogg'
 	damage = 30
 	armor_penetration = 30
-	penetration_modifier = 0.8
+	penetration_modifier = 0.85
 
 	muzzle_type = /obj/effect/projectile/laser/xray/muzzle
 	tracer_type = /obj/effect/projectile/laser/xray/tracer
@@ -64,6 +65,7 @@
 	icon_state = "u_laser"
 	fire_sound='sound/effects/weapons/energy/fire26.ogg'
 	damage = 15 //lower damage, but fires in bursts
+	penetration_modifier = 0.75
 
 	muzzle_type = /obj/effect/projectile/laser/pulse/muzzle
 	tracer_type = /obj/effect/projectile/laser/pulse/tracer
@@ -81,6 +83,7 @@
 	name = "destroyer pulse"
 	damage = 100 //badmins be badmins I don't give a fuck
 	armor_penetration = 100
+	penetration_modifier = 100
 
 /obj/item/projectile/beam/pulse/destroy/on_hit(atom/target, blocked = 0)
 	if(isturf(target))
@@ -115,6 +118,7 @@
 		var/mob/living/carbon/human/M = target
 		if(istype(M.wear_suit, /obj/item/clothing/suit/redtag))
 			M.Weaken(5)
+			M.Stun(5)
 	return 1
 
 /obj/item/projectile/beam/lastertag/red
@@ -131,6 +135,7 @@
 		var/mob/living/carbon/human/M = target
 		if(istype(M.wear_suit, /obj/item/clothing/suit/bluetag))
 			M.Weaken(5)
+			M.Stun(5)
 	return 1
 
 /obj/item/projectile/beam/lastertag/omni//A laser tag bolt that stuns EVERYONE
@@ -150,6 +155,7 @@
 		var/mob/living/carbon/human/M = target
 		if((istype(M.wear_suit, /obj/item/clothing/suit/bluetag))||(istype(M.wear_suit, /obj/item/clothing/suit/redtag)))
 			M.Weaken(5)
+			M.Stun(5)
 	return 1
 
 /obj/item/projectile/beam/sniper
@@ -161,6 +167,7 @@
 	stun = 3
 	weaken = 3
 	stutter = 3
+	penetration_modifier = 1.0
 
 	muzzle_type = /obj/effect/projectile/laser/xray/muzzle
 	tracer_type = /obj/effect/projectile/laser/xray/tracer
@@ -175,6 +182,7 @@
 	agony = 40
 	tasing = 1
 	damage_type = STUN
+	penetration_modifier = 0
 
 	muzzle_type = /obj/effect/projectile/stun/muzzle
 	tracer_type = /obj/effect/projectile/stun/tracer
@@ -189,6 +197,7 @@
 	damage_type = ELECTROCUTE
 	damage = 10
 	agony  = 5
+	penetration_modifier = 0.1
 	fire_sound='sound/effects/weapons/energy/fire2.ogg'
 
 /obj/item/projectile/beam/stun/shock/heavy

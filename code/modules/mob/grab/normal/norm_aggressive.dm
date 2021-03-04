@@ -33,6 +33,7 @@
 	// Keeps those who are on the ground down
 	if(affecting.lying)
 		affecting.Weaken(4)
+		affecting.Stun(2)
 
 /datum/grab/normal/aggressive/can_upgrade(obj/item/grab/G)
 	if(!(G.target_zone in list(BP_CHEST, BP_HEAD)))

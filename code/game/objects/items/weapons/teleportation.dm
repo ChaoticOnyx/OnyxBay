@@ -465,26 +465,28 @@ Frequency:
  * User returns to his position after everyone's been teleported.
  */
 /obj/item/weapon/vortex_manipulator/proc/localmassiverandom(mob/user)
-	if(!istype(vcell, /obj/item/weapon/cell/quantum))
-		log_and_message_admins("has used Vortex Manipulator's Local Massive Random ability.")
-		user.visible_message(SPAN_WARNING("The Vortex Manipulator announces: Battle function activated. Assembling local space-time anomaly."))
-		var/turf/temp_turf = get_turf(user)
-		for(var/mob/M in range(5, temp_turf))
-			var/vortexchecktemp = 0
-			for(var/obj/item/weapon/vortex_manipulator/VM in M.contents)
-				if(VM.active == 1)
-					vortexchecktemp = 1
-			if(!vortexchecktemp)
-				localteleport(M, 1)
-		phase_out(user,get_turf(user))
-		user.forceMove(temp_turf)
-		phase_in(user,get_turf(user))
-		deductcharge(chargecost_area)
-	else
-		playsound(get_turf(src), 'sound/effects/phasein.ogg', 50, 1)
-		user.visible_message(SPAN_WARNING("The Vortex Manipulator turns into a potato!"))
-		new /obj/item/weapon/cell/potato(get_turf(src))
-		qdel(src)
+	if(istype(vcell, /obj/item/weapon/cell/quantum))
+		var/obj/item/weapon/cell/quantum/Q = vcell
+		if(Q.partner)
+			playsound(get_turf(src), 'sound/effects/phasein.ogg', 50, 1)
+			user.visible_message(SPAN_WARNING("The Vortex Manipulator turns into a potato!"))
+			new /obj/item/weapon/cell/potato(get_turf(src))
+			qdel(src)
+			return
+	log_and_message_admins("has used Vortex Manipulator's Local Massive Random ability.")
+	user.visible_message(SPAN_WARNING("The Vortex Manipulator announces: Battle function activated. Assembling local space-time anomaly."))
+	var/turf/temp_turf = get_turf(user)
+	for(var/mob/M in range(5, temp_turf))
+		var/vortexchecktemp = 0
+		for(var/obj/item/weapon/vortex_manipulator/VM in M.contents)
+			if(VM.active == 1)
+				vortexchecktemp = 1
+		if(!vortexchecktemp)
+			localteleport(M, 1)
+	phase_out(user, get_turf(user))
+	user.forceMove(temp_turf)
+	phase_in(user, get_turf(user))
+	deductcharge(chargecost_area)
 
 /*
  * Vortex Announce
@@ -534,7 +536,9 @@ Frequency:
 	var/turf/targetturf = locate(new_x, new_y, user.z)
 	phase_out(user,get_turf(user))
 	if(istype(vcell, /obj/item/weapon/cell/quantum))
-		bluespace_malf(user)
+		var/obj/item/weapon/cell/quantum/Q = vcell
+		if(Q.partner)
+			bluespace_malf(user)
 	else
 		user.forceMove(targetturf)
 	phase_in(user,get_turf(user))
@@ -572,7 +576,9 @@ Frequency:
 			var/turf/T = get_turf(R)
 			phase_out(user,get_turf(user))
 			if(istype(vcell, /obj/item/weapon/cell/quantum))
-				bluespace_malf(user)
+				var/obj/item/weapon/cell/quantum/Q = vcell
+				if(Q.partner)
+					bluespace_malf(user)
 			else
 				user.forceMove(T)
 			phase_in(user,get_turf(user))
@@ -630,7 +636,9 @@ obj/item/weapon/vortex_manipulator/proc/bluespace_malf(mob/user)
 	var/turf/T = pick(L)
 	phase_out(user,get_turf(user))
 	if(istype(vcell, /obj/item/weapon/cell/quantum))
-		bluespace_malf(user)
+		var/obj/item/weapon/cell/quantum/Q = vcell
+		if(Q.partner)
+			bluespace_malf(user)
 	else
 		user.forceMove(T)
 	phase_in(user,get_turf(user))

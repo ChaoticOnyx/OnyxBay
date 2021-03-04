@@ -123,6 +123,16 @@
 	if(istype(O,/obj/item/weapon/reagent_containers/glass) || istype(O,/obj/item/weapon/reagent_containers/food/drinks) || istype(O,/obj/item/weapon/reagent_containers/food/condiment))
 		return 1
 
+/obj/machinery/smartfridge/secure/food
+	name = "\improper Refrigerated Food Showcase"
+	desc = "A refrigerated storage unit for tasty tasty food."
+	req_access = list(access_kitchen)
+
+/obj/machinery/smartfridge/secure/food/accept_check(obj/item/O as obj)
+	if(istype(O,/obj/item/weapon/reagent_containers/food/snacks))
+		return 1
+	return 0
+
 /obj/machinery/smartfridge/drying_rack
 	name = "\improper Drying Rack"
 	desc = "A machine for drying plants."

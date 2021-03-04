@@ -28,7 +28,7 @@
 	var/image/ret = ..()
 	if(slot == slot_belt_str && contents.len)
 		for(var/obj/item/I in contents)
-			ret.overlays += image("icon" = 'icons/mob/onmob/belt.dmi', "icon_state" = "[I.item_state ? I.item_state : I.icon_state]")
+			ret.overlays += image("icon" = 'icons/inv_slots/belts/mob.dmi', "icon_state" = "[I.item_state ? I.item_state : I.icon_state]")
 	return ret
 
 /obj/item/weapon/storage/belt/utility
@@ -105,7 +105,7 @@
 		/obj/item/clothing/head/surgery,
 		/obj/item/clothing/gloves/latex,
 		/obj/item/weapon/reagent_containers/hypospray,
-		/obj/item/clothing/glasses/hud/health,
+		/obj/item/clothing/glasses/hud/one_eyed,
 		/obj/item/weapon/crowbar,
 		/obj/item/device/flashlight,
 		/obj/item/taperoll,
@@ -137,7 +137,7 @@
 		/obj/item/weapon/gun/energy/taser,
 		/obj/item/weapon/gun/energy/stunrevolver,
 		/obj/item/weapon/flame/lighter,
-		/obj/item/clothing/glasses/hud/security,
+		/obj/item/clothing/glasses/hud,
 		/obj/item/device/flashlight,
 		/obj/item/device/pda,
 		/obj/item/device/radio/headset,
@@ -148,7 +148,10 @@
 		/obj/item/taperoll,
 		/obj/item/device/holowarrant,
 		/obj/item/weapon/magnetic_ammo,
-		/obj/item/device/radio
+		/obj/item/device/radio,
+		/obj/item/weapon/material/knife,
+		/obj/item/weapon/material/butterfly,
+		/obj/item/weapon/material/hatchet/tacknife
 		)
 
 /obj/item/weapon/storage/belt/soulstone
@@ -234,7 +237,7 @@
 		/obj/item/weapon/extinguisher/mini,
 		/obj/item/device/radio,
 		/obj/item/clothing/gloves,
-		/obj/item/clothing/glasses/material,
+		/obj/item/clothing/glasses/hud,
 		/obj/item/stack/material/animalhide,
 		/obj/item/weapon/flame/lighter,
 		/obj/item/weapon/storage/fancy/cigarettes,
@@ -279,7 +282,10 @@
 		/obj/item/device/radio/uplink,
 		/obj/item/weapon/card/emag,
 		/obj/item/device/multitool/hacktool,
-		/obj/item/stack/telecrystal
+		/obj/item/stack/telecrystal,
+		/obj/item/weapon/material/knife,
+		/obj/item/weapon/material/butterfly,
+		/obj/item/weapon/material/hatchet/tacknife
 		)
 
 /obj/item/weapon/storage/belt/janitor

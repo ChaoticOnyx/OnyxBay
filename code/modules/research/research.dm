@@ -150,10 +150,10 @@ research holder datum.
 	desc = "Development of new and improved engineering parts."
 	id = TECH_ENGINEERING
 
-/datum/tech/phorontech
-	name = "Phoron Technology"
-	desc = "Manipulation of the mysterious substance colloqually known as 'phoron'."
-	id = TECH_PHORON
+/datum/tech/plasmatech
+	name = "Plasma Technology"
+	desc = "Manipulation of the mysterious substance colloqually known as 'plasma'."
+	id = TECH_PLASMA
 
 /datum/tech/powerstorage
 	name = "Power Manipulation Technology"

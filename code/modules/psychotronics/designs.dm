@@ -5,7 +5,7 @@
 	desc = "Use psychoscope for researching lifeforms (carbon/silicon), lifeforms must be alive."
 	id = "psychoscope"
 	req_tech = list(TECH_MAGNET = 6, TECH_BIO = 6, TECH_DATA = 4)
-	build_path = /obj/item/clothing/glasses/hud/psychoscope
+	build_path = /obj/item/clothing/glasses/psychoscope
 	sort_string = "GBAAA"
 	category_items = "Misc"
 	materials = list(MATERIAL_STEEL = 6000, MATERIAL_REINFORCED_GLASS = 1000, MATERIAL_GOLD = 4000, MATERIAL_DIAMOND = 500)

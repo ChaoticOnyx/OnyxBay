@@ -7,11 +7,11 @@
 	matter = list()				// To be filled later
 	var/obj/item/device/electronic_assembly/assembly // Reference to the assembly holding this circuit, if any.
 	var/extended_desc
-	var/list/inputs
-	var/list/inputs_default// Assoc list which will fill a pin with data upon creation.  e.g. "2" = 0 will set input pin 2 to equal 0 instead of null.
-	var/list/outputs
-	var/list/outputs_default// Ditto, for output.
-	var/list/activators
+	var/list/inputs = list()
+	var/list/inputs_default = list()// Assoc list which will fill a pin with data upon creation.  e.g. "2" = 0 will set input pin 2 to equal 0 instead of null.
+	var/list/outputs = list()
+	var/list/outputs_default =list()// Ditto, for output.
+	var/list/activators = list()
 	var/next_use = 0 				// Uses world.time
 	var/complexity = 1 				// This acts as a limitation on building machines, more resource-intensive components cost more 'space'.
 	var/size = 1					// This acts as a limitation on building machines, bigger components cost more 'space'. -1 for size 0
@@ -20,10 +20,17 @@
 	var/power_draw_per_use = 0 		// How much power is drawn when work()'d.
 	var/power_draw_idle = 0			// How much power is drawn when doing nothing.
 	var/spawn_flags					// Used for world initializing, see the #defines above.
-	var/action_flags = 0			// Used for telling circuits that can do certain actions from other circuits.
+	var/action_flags = null			// Used for telling circuits that can do certain actions from other circuits.
 	var/category_text = "NO CATEGORY THIS IS A BUG"	// To show up on circuit printer, and perhaps other places.
 	var/removable = TRUE 			// Determines if a circuit is removable from the assembly.
 	var/displayed_name = ""
+	var/demands_object_input = FALSE
+	var/can_input_object_when_closed = FALSE
+	var/max_allowed = 0				// The maximum amount of components allowed inside an integrated circuit.
+	var/ext_moved_triggerable = FALSE // Used to tell assembly if we need moved event
+	var/moved_event_created = FALSE // check this var on delete and if this var true delete ext_moved event
+	var/atom/movable/moved_object // used for check if we already have moved event
+
 
 /*
 	Integrated circuits are essentially modular machines.  Each circuit has a specific function, and combining them inside Electronic Assemblies allows
@@ -31,13 +38,36 @@ a creative player the means to solve many problems.  Circuits are held inside an
 */
 
 /obj/item/integrated_circuit/examine(mob/user)
+	interact(user)
+	external_examine(user)
 	. = ..()
-	if(.)
-		interact(user)
-		external_examine(user)
+
+/obj/item/integrated_circuit/attack_hand(mob/user)
+	// if in assembly override putting src into user hands
+	if(istype(assembly))
+		attack_self(user)
+	else
+		..()
+
+// Can be called via electronic_assembly/attackby()
+/obj/item/integrated_circuit/proc/additem(var/obj/item/I, var/mob/living/user)
+	attackby(I, user)
 
 // This should be used when someone is examining while the case is opened.
 /obj/item/integrated_circuit/proc/internal_examine(mob/user)
+	to_chat(user, "This board has [inputs.len] input pin\s, [outputs.len] output pin\s and [activators.len] activation pin\s.")
+	for(var/k in inputs)
+		var/datum/integrated_io/I = k
+		if(I.linked.len)
+			to_chat(user, "The '[I]' is connected to [I.get_linked_to_desc()].")
+	for(var/k in outputs)
+		var/datum/integrated_io/O = k
+		if(O.linked.len)
+			to_chat(user, "The '[O]' is connected to [O.get_linked_to_desc()].")
+	for(var/k in activators)
+		var/datum/integrated_io/activate/A = k
+		if(A.linked.len)
+			to_chat(user, "The '[A]' is connected to [A.get_linked_to_desc()].")
 	any_examine(user)
 	interact(user)
 
@@ -54,12 +84,6 @@ a creative player the means to solve many problems.  Circuits are held inside an
 /obj/item/integrated_circuit/proc/sense(atom/movable/A,mob/user,prox)
 	return
 
-/obj/item/integrated_circuit/proc/OnICTopic(href_list, user)
-	return
-
-/obj/item/integrated_circuit/proc/get_topic_data(mob/user)
-	return
-
 /obj/item/integrated_circuit/proc/check_interactivity(mob/user)
 	if(assembly)
 		return assembly.check_interactivity(user)
@@ -67,35 +91,79 @@ a creative player the means to solve many problems.  Circuits are held inside an
 		return CanUseTopic(user)
 
 /obj/item/integrated_circuit/Initialize()
+	. = ..()
 	displayed_name = name
 	setup_io(inputs, /datum/integrated_io, inputs_default, IC_INPUT)
-	inputs_default = null
 	setup_io(outputs, /datum/integrated_io, outputs_default, IC_OUTPUT)
-	outputs_default = null
 	setup_io(activators, /datum/integrated_io/activate, null, IC_ACTIVATOR)
 	if(!matter[MATERIAL_STEEL])
 		matter[MATERIAL_STEEL] = w_class * SScircuit.cost_multiplier // Default cost.
-	. = ..()
+
+/obj/item/integrated_circuit/proc/get_power_cell(atom/movable/AM)
+	var/obj/item/weapon/cell/cell
+	// add below cell getting code from device to get correct cell
+	if(isrobot(AM))
+		var/mob/living/silicon/robot/R = AM
+		cell = R.cell
+
+	else if(istype(AM, /obj/item/weapon/cell))
+		cell = AM
+
+	else if(istype(AM, /obj/machinery/power/apc))
+		var/obj/machinery/power/apc/A = AM
+		cell = A.cell
+
+	else if(istype(AM, /obj/machinery/mining/drill))
+		var/obj/machinery/mining/drill/hdrill = AM
+		cell = hdrill.cell
+
+	else if(istype(AM, /obj/item/weapon/gun/energy))
+		var/obj/item/weapon/gun/energy/WEP = AM
+		cell = WEP.power_supply
+
+	else if(istype(AM, /mob/living/carbon/human))
+		var/mob/living/carbon/human/H = AM
+		var/obj/item/organ/internal/cell/MB = H.internal_organs_by_name[BP_CELL]
+		if(istype(MB))
+			cell = MB.cell
+
+	return cell
+
+// called when we add component to assembly
+/obj/item/integrated_circuit/proc/create_moved_event()
+	if(moved_event_created) // if moved event already created, rerigester it
+		GLOB.moved_event.unregister(moved_object, src)
+	if(ext_moved_triggerable)
+		moved_event_created = TRUE
+		moved_object = get_object()
+		GLOB.moved_event.register(moved_object, src, .proc/ext_moved)
 
 /obj/item/integrated_circuit/proc/on_data_written() //Override this for special behaviour when new data gets pushed to the circuit.
 	return
 
+// called when we are remove src from assembly
+// created for not to use moved_event when we are not in assembly.
+/obj/item/integrated_circuit/proc/removed_from_assembly()
+	if(ext_moved_triggerable && moved_event_created)
+		GLOB.moved_event.unregister(moved_object, src)
+
 /obj/item/integrated_circuit/Destroy()
-	QDEL_NULL_LIST(inputs)
-	QDEL_NULL_LIST(outputs)
-	QDEL_NULL_LIST(activators)
-	SScircuit_components.dequeue_component(src)
 	. = ..()
+	QDEL_LIST(inputs)
+	QDEL_LIST(outputs)
+	QDEL_LIST(activators)
+	if(ext_moved_triggerable && moved_event_created)
+		GLOB.moved_event.unregister(moved_object, src)
 
 /obj/item/integrated_circuit/emp_act(severity)
-	for(var/k in 1 to LAZYLEN(inputs))
-		var/datum/integrated_io/I = inputs[k]
+	for(var/k in inputs)
+		var/datum/integrated_io/I = k
 		I.scramble()
-	for(var/k in 1 to LAZYLEN(outputs))
-		var/datum/integrated_io/O = outputs[k]
+	for(var/k in outputs)
+		var/datum/integrated_io/O = k
 		O.scramble()
-	for(var/k in 1 to LAZYLEN(activators))
-		var/datum/integrated_io/activate/A = activators[k]
+	for(var/k in activators)
+		var/datum/integrated_io/activate/A = k
 		A.scramble()
 
 
@@ -112,135 +180,145 @@ a creative player the means to solve many problems.  Circuits are held inside an
 	if(check_interactivity(M))
 		if(!input)
 			input = name
-		to_chat(M, "<span class='notice'>The circuit '[name]' is now labeled '[input]'.</span>")
+		to_chat(M, SPAN_NOTICE("The circuit '[name]' is now labeled '[input]'."))
 		displayed_name = input
 
-/obj/item/integrated_circuit/nano_host()
-	if(istype(src.loc, /obj/item/device/electronic_assembly))
-		return loc
-	return ..()
-
 /obj/item/integrated_circuit/interact(mob/user)
+	ui_interact(user)
+
+/obj/item/integrated_circuit/ui_interact(mob/user)
 	. = ..()
 	if(!check_interactivity(user))
 		return
 
-	var/window_height = 350
-	var/window_width = 655
+	if(assembly)
+		assembly.ui_interact(user, src)
+		return
 
 	var/table_edge_width = "30%"
 	var/table_middle_width = "40%"
-	var/list/HTML = list()
-	HTML += "<meta charset=\"utf-8\"><head><title>[src.displayed_name]</title></head><body>"
-	HTML += "<div align='center'>"
-	HTML += "<table border='1' style='undefined;table-layout: fixed; width: 80%'>"
+
+	var/datum/browser/popup = new(user, "scannernew", name, 800, 630) // Set up the popup browser window
+	popup.add_stylesheet("scannernew", 'html/browser/assembly_ui.css')
+
+	var/HTML = "<html><head><title>[src.displayed_name]</title></head><body> \
+		<div align='center'> \
+		<table border='1' style='undefined;table-layout: fixed; width: 80%'>"
 
 	if(assembly)
-		HTML += "<a href='?src=\ref[src];return=1'>\[Return to Assembly\]</a><br>"
+		HTML += "<a href='?src=\ref[src];return=1'>Return to Assembly</a><br>"
 
-	HTML += "<a href='?src=\ref[src];refresh=1'>\[Refresh\]</a>  |  "
-	HTML += "<a href='?src=\ref[src];rename=1'>\[Rename\]</a>  |  "
-	HTML += "<a href='?src=\ref[src];scan=1'>\[Copy Ref\]</a>"
+	HTML += "<a href='?src=\ref[src]'>Refresh</a>  |  \
+		<a href='?src=\ref[src];rename=1'>Rename</a>  |  \
+		<a href='?src=\ref[src];scan=1'>Copy Ref</a>"
+
 	if(assembly && removable)
-		HTML += "  |  <a href='?src=\ref[assembly];component=\ref[src];remove=1'>\[Remove\]</a>"
-	HTML += "<br>"
+		HTML += "  |  <a href='?src=\ref[assembly];component=\ref[src];remove=1'>Remove</a>"
 
-	HTML += "<colgroup>"
-	HTML += "<col style='width: [table_edge_width]'>"
-	HTML += "<col style='width: [table_middle_width]'>"
-	HTML += "<col style='width: [table_edge_width]'>"
-	HTML += "</colgroup>"
+	HTML += "<br><colgroup> \
+		<col style='width: [table_edge_width]'> \
+		<col style='width: [table_middle_width]'> \
+		<col style='width: [table_edge_width]'> \
+		</colgroup>"
 
 	var/column_width = 3
-	var/row_height = max(LAZYLEN(inputs), LAZYLEN(outputs), 1)
+	var/row_height = max(inputs.len, outputs.len, 1)
 
 	for(var/i = 1 to row_height)
 		HTML += "<tr>"
 		for(var/j = 1 to column_width)
 			var/datum/integrated_io/io = null
-			var/words = list()
+			var/words
 			var/height = 1
 			switch(j)
 				if(1)
 					io = get_pin_ref(IC_INPUT, i)
 					if(io)
 						words += "<b><a href='?src=\ref[src];act=wire;pin=\ref[io]'>[io.display_pin_type()] [io.name]</a> \
-						<a href='?src=\ref[src];act=data;pin=\ref[io]'>[io.display_data(io.data)]</a></b><br>"
+							<a href='?src=\ref[src];act=data;pin=\ref[io]'>[io.display_data(io.data)]</a></b><br>"
 						if(io.linked.len)
-							for(var/k in 1 to io.linked.len)
-								var/datum/integrated_io/linked = io.linked[k]
-								words += "<a href='?src=\ref[src];act=unwire;pin=\ref[io];link=\ref[linked]'>[linked]</a> \
-								@ <a href='?src=\ref[linked.holder]'>[linked.holder.displayed_name]</a><br>"
+							words += "<ul>"
+							for(var/k in io.linked)
+								var/datum/integrated_io/linked = k
+								words += "<li><a href='?src=\ref[src];act=unwire;pin=\ref[io];link=\ref[linked]'>[linked]</a> \
+									@ <a href='?src=\ref[linked.holder]'>[linked.holder.displayed_name]</a></li>"
+							words += "</ul>"
 
-						if(LAZYLEN(outputs) > LAZYLEN(inputs))
+						if(outputs.len > inputs.len)
 							height = 1
 				if(2)
 					if(i == 1)
-						words += "[src.displayed_name]<br>[src.name != src.displayed_name ? "([src.name])":""]<hr>[src.desc]"
+						words += "[displayed_name]<br>[name != displayed_name ? "([name])":""]<hr>[desc]"
 						height = row_height
-					else
-						continue
 				if(3)
 					io = get_pin_ref(IC_OUTPUT, i)
 					if(io)
 						words += "<b><a href='?src=\ref[src];act=wire;pin=\ref[io]'>[io.display_pin_type()] [io.name]</a> \
-						<a href='?src=\ref[src];act=data;pin=\ref[io]'>[io.display_data(io.data)]</a></b><br>"
+							<a href='?src=\ref[src];act=data;pin=\ref[io]'>[io.display_data(io.data)]</a></b><br>"
 						if(io.linked.len)
-							for(var/k in 1 to io.linked.len)
-								var/datum/integrated_io/linked = io.linked[k]
-								words += "<a href='?src=\ref[src];act=unwire;pin=\ref[io];link=\ref[linked]'>[linked]</a> \
-								@ <a href='?src=\ref[linked.holder]'>[linked.holder.displayed_name]</a><br>"
+							words += "<ul>"
+							for(var/k in io.linked)
+								var/datum/integrated_io/linked = k
+								words += "<li><a href='?src=\ref[src];act=unwire;pin=\ref[io];link=\ref[linked]'>[linked]</a> \
+									@ <a href='?src=\ref[linked.holder]'>[linked.holder.displayed_name]</a></li>"
+							words += "</ul>"
 
-						if(LAZYLEN(inputs) > LAZYLEN(outputs))
+						if(inputs.len > outputs.len)
 							height = 1
-			HTML += "<td align='center' rowspan='[height]'>[jointext(words, null)]</td>"
+			HTML += "<td align='center' rowspan='[height]'>[words]</td>"
 		HTML += "</tr>"
 
-	for(var/i in 1 to LAZYLEN(activators))
-		var/datum/integrated_io/io = activators[i]
-		var/words = list()
+	for(var/activator in activators)
+		var/datum/integrated_io/io = activator
+		var/words
 
-		words += "<b><a href='?src=\ref[src];act=wire;pin=\ref[io]'><font color='FF0000'>[io]</font></a> "
-		words += "<a href='?src=\ref[src];act=data;pin=\ref[io]'><font color='FF0000'>[io.data?"\<PULSE OUT\>":"\<PULSE IN\>"]</font></a></b><br>"
+		words += "<b><a href='?src=\ref[src];act=wire;pin=\ref[io]'>[io]</a> \
+			<a href='?src=\ref[src];act=data;pin=\ref[io]'>[io.data?"\<PULSE OUT\>":"\<PULSE IN\>"]</a></b><br>"
+
 		if(io.linked.len)
-			for(var/k in 1 to io.linked.len)
-				var/datum/integrated_io/linked = io.linked[k]
-				words += "<a href='?src=\ref[src];act=unwire;pin=\ref[io];link=\ref[linked]'><font color='FF0000'>[linked]</font></a> \
-				@ <a href='?src=\ref[linked.holder]'><font color='FF0000'>[linked.holder.displayed_name]</font></a><br>"
+			words += "<ul>"
+			for(var/k in io.linked)
+				var/datum/integrated_io/linked = k
+				words += "<li><a href='?src=\ref[src];act=unwire;pin=\ref[io];link=\ref[linked]'>[linked]</a> \
+					@ <a href='?src=\ref[linked.holder]'>[linked.holder.displayed_name]</a></li>"
+			words += "<ul>"
 
-		HTML += "<tr>"
-		HTML += "<td colspan='3' align='center'>[jointext(words, null)]</td>"
-		HTML += "</tr>"
+		HTML += "<tr><td colspan='3' align='center'>[words]</td></tr>"
 
-	HTML += "</table>"
-	HTML += "</div>"
+	HTML += "</table></div> \
+		<br>Complexity: [complexity] \
+		<br>Cooldown per use: [cooldown_per_use/10] sec \
+		[max_allowed ? "<br>Maximum per circuit: [max_allowed]" : ""]"
 
-	HTML += "<br><font color='0000AA'>Complexity: [complexity]</font>"
-	HTML += "<br><font color='0000AA'>Cooldown per use: [cooldown_per_use/10] sec</font>"
 	if(ext_cooldown)
-		HTML += "<br><font color='0000AA'>External manipulation cooldown: [ext_cooldown/10] sec</font>"
+		HTML += "<br>External manipulation cooldown: [ext_cooldown/10] sec"
 	if(power_draw_idle)
-		HTML += "<br><font color='0000AA'>Power Draw: [power_draw_idle] W (Idle)</font>"
+		HTML += "<br>Power Draw: [power_draw_idle] W (Idle)"
 	if(power_draw_per_use)
-		HTML += "<br><font color='0000AA'>Power Draw: [power_draw_per_use] W (Active)</font>" // Borgcode says that powercells' checked_use() takes joules as input.
-	HTML += "<br><font color='0000AA'>[extended_desc]</font>"
+		HTML += "<br>Power Draw: [power_draw_per_use] W (Active)" // Borgcode says that powercells' checked_use() takes joules as input.
 
-	HTML += "</body>"
-	var/HTML_merged = jointext(HTML, null)
-	if(assembly)
-		show_browser(user, HTML_merged, "window=assembly-\ref[assembly];size=[window_width]x[window_height];border=1;can_resize=1;can_close=1;can_minimize=1")
-	else
-		show_browser(user, HTML_merged, "window=circuit-\ref[src];size=[window_width]x[window_height];border=1;can_resize=1;can_close=1;can_minimize=1")
+	HTML += "<br>[extended_desc]</body></html>"
 
-	onclose(user, "assembly-\ref[src.assembly]")
+	popup.set_content(HTML)
+	popup.open()
 
-/obj/item/integrated_circuit/Topic(href, href_list, state = GLOB.physical_state)
+/obj/item/integrated_circuit/Topic(href, href_list)
+	if(!check_interactivity(usr))
+		return
 	if(..())
-		return 1
+		return TRUE
 
-	. = IC_TOPIC_HANDLED
-	var/obj/held_item = usr.get_active_hand()
-	if(href_list["pin"] && assembly)
+	var/update = TRUE
+	var/update_to_assembly = FALSE
+
+	var/obj/item/held_item = usr.get_active_hand()
+
+	if(href_list["rename"])
+		rename_component(usr)
+		if(assembly)
+			assembly.add_allowed_scanner(usr.ckey)
+
+	if(href_list["pin"])
 		var/datum/integrated_io/pin = locate(href_list["pin"]) in inputs + outputs + activators
 		if(pin)
 			var/datum/integrated_io/linked
@@ -248,68 +326,42 @@ a creative player the means to solve many problems.  Circuits are held inside an
 			if(href_list["link"])
 				linked = locate(href_list["link"]) in pin.linked
 
-			if(istype(held_item, /obj/item/device/integrated_electronics))
-				pin.handle_wire(linked, held_item, href_list["act"], usr)
-				. = IC_TOPIC_REFRESH
+			if(istype(held_item, /obj/item/device/integrated_electronics) || isMultitool(held_item))
+				update_to_assembly = pin.handle_wire(linked, held_item, href_list["act"], usr)
 			else
-				to_chat(usr, "<span class='warning'>You can't do a whole lot without the proper tools.</span>")
+				to_chat(usr, SPAN_WARNING("You can't do a whole lot without the proper tools."))
 				success = FALSE
 			if(success && assembly)
 				assembly.add_allowed_scanner(usr.ckey)
 
-	else if(href_list["scan"])
+	if(href_list["scan"])
 		if(istype(held_item, /obj/item/device/integrated_electronics/debugger))
 			var/obj/item/device/integrated_electronics/debugger/D = held_item
 			if(D.accepting_refs)
 				D.afterattack(src, usr, TRUE)
-				. = IC_TOPIC_REFRESH
 			else
-				to_chat(usr, "<span class='warning'>The debugger's 'ref scanner' needs to be on.</span>")
+				to_chat(usr, SPAN_WARNING("The debugger's 'ref scanner' needs to be on."))
 		else
-			to_chat(usr, "<span class='warning'>You need a debugger set to 'ref' mode to do that.</span>")
+			to_chat(usr, SPAN_WARNING("You need a debugger set to 'ref' mode to do that."))
 
-	else if(href_list["refresh"])
-		internal_examine(usr)
-	else if(href_list["return"] && assembly)
-		assembly.interact(usr)
-	else if(href_list["examine"] && assembly)
-		internal_examine(usr)
+	if(href_list["return"])
+		update_to_assembly = TRUE
 
-	else if(href_list["rename"])
-		rename_component(usr)
-		. = IC_TOPIC_REFRESH
 
-	else if(href_list["remove"] && assembly)
-		if(istype(held_item, /obj/item/weapon/screwdriver))
-			disconnect_all()
-			dropInto(loc)
-			playsound(src, 'sound/items/Crowbar.ogg', 50, 1)
-			to_chat(usr, "<span class='notice'>You pop \the [src] out of the case, and slide it out.</span>")
+	if(update)
+		if(assembly && update_to_assembly)
+			assembly.interact(usr, src)
 		else
-			to_chat(usr, "<span class='warning'>You need a screwdriver to remove components.</span>")
-		interact_with_assembly(usr)
-		. = IC_TOPIC_REFRESH
-
-	else
-		. = OnICTopic(href_list, usr)
-
-	if(. == IC_TOPIC_REFRESH)
-		interact_with_assembly(usr)
-
-/obj/item/integrated_circuit/proc/interact_with_assembly(mob/user)
-	if(assembly)
-		assembly.interact(user)
-		if(assembly.opened)
-			interact(user)
+			interact(usr) // To refresh the UI.
 
 /obj/item/integrated_circuit/proc/push_data()
-	for(var/k in 1 to LAZYLEN(outputs))
-		var/datum/integrated_io/O = outputs[k]
+	for(var/k in outputs)
+		var/datum/integrated_io/O = k
 		O.push_data()
 
 /obj/item/integrated_circuit/proc/pull_data()
-	for(var/k in 1 to LAZYLEN(inputs))
-		var/datum/integrated_io/I = inputs[k]
+	for(var/k in inputs)
+		var/datum/integrated_io/I = k
 		I.push_data()
 
 /obj/item/integrated_circuit/proc/draw_idle_power()
@@ -328,7 +380,7 @@ a creative player the means to solve many problems.  Circuits are held inside an
 		return TRUE // Battery has enough.
 	return FALSE // Not enough power.
 
-/obj/item/integrated_circuit/proc/check_then_do_work(ord,ignore_power = FALSE)
+/obj/item/integrated_circuit/proc/check_then_do_work(ord,var/ignore_power = FALSE)
 	if(world.time < next_use) 	// All intergrated circuits have an internal cooldown, to protect from spam.
 		return FALSE
 	if(assembly && ext_cooldown && (world.time < assembly.ext_next_use)) 	// Some circuits have external cooldown, to protect from spam.
@@ -361,6 +413,13 @@ a creative player the means to solve many problems.  Circuits are held inside an
 		I = i
 		I.disconnect_all()
 
+/obj/item/integrated_circuit/proc/ext_moved()
+	if(assembly)
+		assembly.update_light() //Update lighting objects (From light circuits).
+	return
+
+
+// Returns the object that is supposed to be used in attack messages, location checks, etc.
 /obj/item/integrated_circuit/proc/get_object()
 	// If the component is located in an assembly, let assembly determine it.
 	if(assembly)
@@ -396,9 +455,3 @@ a creative player the means to solve many problems.  Circuits are held inside an
 		return TRUE
 
 	return FALSE
-
-/obj/item/integrated_circuit/proc/added_to_assembly(obj/item/device/electronic_assembly/assembly)
-	return
-
-/obj/item/integrated_circuit/proc/removed_from_assembly(obj/item/device/electronic_assembly/assembly)
-	return

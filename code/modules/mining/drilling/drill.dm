@@ -24,7 +24,7 @@
 		MATERIAL_GOLD =     /obj/item/weapon/ore/gold,
 		MATERIAL_SILVER =   /obj/item/weapon/ore/silver,
 		MATERIAL_DIAMOND =  /obj/item/weapon/ore/diamond,
-		MATERIAL_PHORON =   /obj/item/weapon/ore/phoron,
+		MATERIAL_PLASMA =   /obj/item/weapon/ore/plasma,
 		MATERIAL_OSMIUM =   /obj/item/weapon/ore/osmium,
 		MATERIAL_HYDROGEN = /obj/item/weapon/ore/hydrogen,
 		MATERIAL_SAND =     /obj/item/weapon/ore/glass,

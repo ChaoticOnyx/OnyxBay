@@ -86,7 +86,7 @@ PROCESSING_SUBSYSTEM_DEF(plants)
 
 	if(survive_on_station)
 		if(seed.consume_gasses)
-			seed.consume_gasses["phoron"] = null
+			seed.consume_gasses["plasma"] = null
 			seed.consume_gasses["carbon_dioxide"] = null
 		if(seed.chems && !isnull(seed.chems[/datum/reagent/acid/polyacid]))
 			seed.chems[/datum/reagent/acid/polyacid] = null // Eating through the hull will make these plants completely inviable, albeit very dangerous.

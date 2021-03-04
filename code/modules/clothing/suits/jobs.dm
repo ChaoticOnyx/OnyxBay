@@ -148,7 +148,7 @@
 	armor = list(melee = 10, bullet = 10, laser = 15, energy = 10, bomb = 0, bio = 0, rad = 0)
 
 /obj/item/clothing/suit/storage/toggle/forensics/toggle()
-	if(!usr.canmove || usr.stat || usr.restrained())
+	if(!CanPhysicallyInteract(usr))
 		return 0
 
 	if(icon_state == icon_open) //Will check whether icon state is currently set to the "open" or "closed" state and switch it around with a message to the user

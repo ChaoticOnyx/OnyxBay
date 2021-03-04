@@ -94,7 +94,8 @@
 	return code
 
 /datum/antagonist/proc/greet(datum/mind/player)
-
+	if (role_text == "Traitor" || role_text == "Mercenary")
+		sound_to(player.current,'sound/voice/syndicate_intro.ogg')
 	// Basic intro text.
 	to_chat(player.current, "<span class='danger'><font size=3>You are a [role_text]!</font></span>")
 	if(leader_welcome_text && player == leader)

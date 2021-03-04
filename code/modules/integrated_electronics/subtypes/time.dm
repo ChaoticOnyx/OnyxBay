@@ -11,7 +11,7 @@
 	desc = "This sends a pulse signal out after a delay, critical for ensuring proper control flow in a complex machine.  \
 	This circuit is set to send a pulse after a delay of two seconds."
 	icon_state = "delay-20"
-	var/delay = 20
+	var/delay = 2 SECONDS
 	activators = list("incoming"= IC_PINTYPE_PULSE_IN,"outgoing" = IC_PINTYPE_PULSE_OUT)
 	spawn_flags = IC_SPAWN_DEFAULT|IC_SPAWN_RESEARCH
 	power_draw_per_use = 2
@@ -24,7 +24,7 @@
 	desc = "This sends a pulse signal out after a delay, critical for ensuring proper control flow in a complex machine.  \
 	This circuit is set to send a pulse after a delay of five seconds."
 	icon_state = "delay-50"
-	delay = 50
+	delay = 5 SECONDS
 	spawn_flags = IC_SPAWN_DEFAULT|IC_SPAWN_RESEARCH
 
 /obj/item/integrated_circuit/time/delay/one_sec
@@ -32,7 +32,7 @@
 	desc = "This sends a pulse signal out after a delay, critical for ensuring proper control flow in a complex machine.  \
 	This circuit is set to send a pulse after a delay of one second."
 	icon_state = "delay-10"
-	delay = 10
+	delay = 1 SECONDS
 	spawn_flags = IC_SPAWN_DEFAULT|IC_SPAWN_RESEARCH
 
 /obj/item/integrated_circuit/time/delay/half_sec
@@ -40,7 +40,7 @@
 	desc = "This sends a pulse signal out after a delay, critical for ensuring proper control flow in a complex machine.  \
 	This circuit is set to send a pulse after a delay of half a second."
 	icon_state = "delay-5"
-	delay = 5
+	delay = 0.5 SECONDS
 	spawn_flags = IC_SPAWN_DEFAULT|IC_SPAWN_RESEARCH
 
 /obj/item/integrated_circuit/time/delay/tenth_sec
@@ -48,7 +48,7 @@
 	desc = "This sends a pulse signal out after a delay, critical for ensuring proper control flow in a complex machine.  \
 	This circuit is set to send a pulse after a delay of 1/10th of a second."
 	icon_state = "delay-1"
-	delay = 1
+	delay = 0.1 SECONDS
 	spawn_flags = IC_SPAWN_DEFAULT|IC_SPAWN_RESEARCH
 
 /obj/item/integrated_circuit/time/delay/custom
@@ -61,13 +61,15 @@
 	inputs = list("delay time" = IC_PINTYPE_NUMBER)
 	spawn_flags = IC_SPAWN_RESEARCH
 
-/obj/item/integrated_circuit/time/delay/custom/do_work()
-	var/delay_input = get_pin_data(IC_INPUT, 1)
-	if(delay_input && isnum(delay_input) )
-		var/new_delay = Clamp(delay_input ,1 ,36000) //An hour.
-		delay = new_delay
-
+/obj/item/integrated_circuit/time/delay/custom/on_data_written()
 	..()
+	var/delay_input = get_pin_data(IC_INPUT, 1)
+	if(!isnum_safe(delay_input))
+		return
+	if(delay_input < 1 || delay_input > 1 HOURS) // Value had to be clamped, update the pin. Check's here to avoid infinitely setting the pin.
+		set_pin_data(IC_INPUT, 1, Clamp(delay_input, 1, 1 HOURS))
+		return
+	delay = delay_input
 
 /obj/item/integrated_circuit/time/ticker
 	name = "ticker circuit"
@@ -83,25 +85,22 @@
 	power_draw_per_use = 4
 
 /obj/item/integrated_circuit/time/ticker/Destroy()
-	if(is_running)
-		STOP_PROCESSING(SSfastprocess, src)
+	STOP_PROCESSING(SSfastprocess, src)
 	return ..()
 
 /obj/item/integrated_circuit/time/ticker/on_data_written()
 	var/do_tick = get_pin_data(IC_INPUT, 1)
 	if(do_tick && !is_running)
 		is_running = TRUE
-		tick()
+		START_PROCESSING(SSfastprocess, src)
 	else if(!do_tick && is_running)
 		is_running = FALSE
+		STOP_PROCESSING(SSfastprocess, src)
 
-
-/obj/item/integrated_circuit/time/ticker/proc/tick()
-	if(is_running)
-		addtimer(CALLBACK(src, .proc/tick), delay)
-		if(world.time > next_fire)
-			next_fire = world.time + delay
-			activate_pin(1)
+/obj/item/integrated_circuit/time/ticker/Process()
+	if(world.time > next_fire)
+		next_fire = world.time + delay
+		activate_pin(1)
 
 
 /obj/item/integrated_circuit/time/ticker/custom
@@ -117,11 +116,14 @@
 	power_draw_per_use = 8
 
 /obj/item/integrated_circuit/time/ticker/custom/on_data_written()
-	var/delay_input = get_pin_data(IC_INPUT, 2)
-	if(delay_input && isnum(delay_input) )
-		var/new_delay = Clamp(delay_input ,1 ,1 HOURS)
-		delay = new_delay
 	..()
+	var/delay_input = get_pin_data(IC_INPUT, 2)
+	if(!isnum_safe(delay_input))
+		return
+	if(delay_input < 1 || delay_input > 1 HOURS)
+		set_pin_data(IC_INPUT, 2, Clamp(delay_input ,1 ,1 HOURS))
+		return
+	delay = delay_input
 
 /obj/item/integrated_circuit/time/ticker/fast
 	name = "fast ticker"
@@ -142,8 +144,8 @@
 	power_draw_per_use = 2
 
 /obj/item/integrated_circuit/time/clock
-	name = "integrated clock (Sol Common Time)"
-	desc = "Tells you what the time is, in Sol Common Time."				//round time
+	name = "integrated clock (NT Common Time)"
+	desc = "Tells you what the time is, in Nanotrasen Common Time."				//round time
 	icon_state = "clock"
 	inputs = list()
 	outputs = list(

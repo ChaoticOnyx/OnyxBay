@@ -55,6 +55,7 @@
 			G.attacking = 0
 			G.action_used()
 			affecting.Weaken(2)
+			affecting.Stun(2)
 			affecting.visible_message("<span class='notice'>[assailant] pins [affecting] to the ground!</span>")
 			affecting.poise = 0
 
@@ -405,6 +406,7 @@
 			affecting.eye_blurry += 10
 			affecting.Paralyse(1)
 			affecting.Weaken(4)
+			affecting.Stun(4)
 		if (eyes.damage >= eyes.min_broken_damage)
 			if(affecting.stat != 2)
 				to_chat(affecting, "<span class='warning'>You go blind!</span>")

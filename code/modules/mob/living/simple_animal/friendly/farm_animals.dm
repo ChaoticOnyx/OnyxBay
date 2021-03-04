@@ -207,6 +207,7 @@ var/global/chicken_count = 0
 	icon_state = "chicken"
 	icon_living = "chicken"
 	icon_dead = "chicken_dead"
+	item_state = "chicken"
 	speak = list("Cluck!","BWAAAAARK BWAK BWAK BWAK!","Bwaak bwak.")
 	speak_emote = list("clucks","croons")
 	emote_hear = list("clucks")
@@ -224,6 +225,7 @@ var/global/chicken_count = 0
 	var/body_color
 	pass_flags = PASS_FLAG_TABLE
 	mob_size = MOB_SMALL
+	holder_type = /obj/item/weapon/holder/chicken
 
 /mob/living/simple_animal/chicken/New()
 	..()
@@ -232,6 +234,7 @@ var/global/chicken_count = 0
 	icon_state = "chicken_[body_color]"
 	icon_living = "chicken_[body_color]"
 	icon_dead = "chicken_[body_color]_dead"
+	item_state = "chicken_[body_color]"
 	pixel_x = rand(-6, 6)
 	pixel_y = rand(0, 10)
 	chicken_count += 1

@@ -114,7 +114,7 @@
 	mod_reach = 1.15
 	mod_handy = 0.3
 	obj_flags = OBJ_FLAG_CONDUCTIBLE
-	matter = list(MATERIAL_STEEL = 1000)
+	matter = list(MATERIAL_STEEL = 2000)
 	var/material/padding_material
 	var/material/material
 

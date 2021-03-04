@@ -131,12 +131,12 @@
 	combustion = FALSE
 
 /obj/item/weapon/gun/energy/toxgun
-	name = "phoron pistol"
-	desc = "A specialized firearm designed to fire lethal bolts of phoron."
+	name = "plasma pistol"
+	desc = "A specialized firearm designed to fire lethal bolts of plasma."
 	icon_state = "toxgun"
 	w_class = ITEM_SIZE_NORMAL
-	origin_tech = list(TECH_COMBAT = 5, TECH_PHORON = 4)
-	projectile_type = /obj/item/projectile/energy/phoron
+	origin_tech = list(TECH_COMBAT = 5, TECH_PLASMA = 4)
+	projectile_type = /obj/item/projectile/energy/plasma
 
 /* Staves */
 
@@ -212,7 +212,7 @@ obj/item/weapon/gun/energy/staff/focus
 	slot_flags = SLOT_BELT|SLOT_BACK
 	w_class = ITEM_SIZE_NORMAL
 	force = 8
-	origin_tech = list(TECH_MATERIAL = 6, TECH_PHORON = 5, TECH_ENGINEERING = 6, TECH_COMBAT = 3)
+	origin_tech = list(TECH_MATERIAL = 6, TECH_PLASMA = 5, TECH_ENGINEERING = 6, TECH_COMBAT = 3)
 	matter = list(MATERIAL_STEEL = 4000)
 	projectile_type = /obj/item/projectile/beam/plasmacutter
 	charge_cost = 0
@@ -229,7 +229,7 @@ obj/item/weapon/gun/energy/staff/focus
 	. = ..()
 	to_chat(user, "It has a recharge port with a capital letter P.")
 
-/obj/item/weapon/gun/energy/plasmacutter/attackby(obj/item/stack/material/phoron/W, mob/user)
+/obj/item/weapon/gun/energy/plasmacutter/attackby(obj/item/stack/material/plasma/W, mob/user)
 	if(user.stat || user.restrained() || user.lying)
 		return
 	if(!istype(W))

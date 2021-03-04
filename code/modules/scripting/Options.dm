@@ -2,15 +2,15 @@
 File: Options
 */
 var/const  //Ascii values of characters
-	ascii_A  =65
-	ascii_Z  =90
-	ascii_a  =97
-	ascii_z  =122
-	ascii_DOLLAR = 36 // $
-	ascii_ZERO=48
-	ascii_THALER = 254
-	ascii_NINE=57
-	ascii_UNDERSCORE=95	// _
+	ascii_A  = 65
+	ascii_Z  = 90
+	ascii_a  = 97
+	ascii_z  = 122
+	ascii_DOLLAR = 36
+	ascii_ZERO = 48
+	ascii_CREDIT = 162
+	ascii_NINE = 57
+	ascii_UNDERSCORE = 95
 
 /*
 	Class: n_scriptOptions

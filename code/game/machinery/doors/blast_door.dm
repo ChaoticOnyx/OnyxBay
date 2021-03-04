@@ -122,7 +122,7 @@
 // This only works on broken doors or doors without power. Also allows repair with Plasteel.
 /obj/machinery/door/blast/attackby(obj/item/weapon/C as obj, mob/user as mob)
 	src.add_fingerprint(user, 0, C)
-	if(isCrowbar(C) || (istype(C, /obj/item/weapon/material/twohanded/fireaxe) && C:wielded == 1))
+	if((isCrowbar(C) && !istype(C, /obj/item/weapon/crowbar/emergency)) || (istype(C, /obj/item/weapon/material/twohanded/fireaxe) && C:wielded == 1))
 		if(((stat & NOPOWER) || (stat & BROKEN)) && !( src.operating ))
 			force_toggle()
 		else
@@ -174,11 +174,6 @@
 /obj/machinery/door/blast/proc/repair()
 	health = maxhealth
 	set_broken(FALSE)
-
-/obj/machinery/door/blast/CanPass(atom/movable/mover, turf/target, height=0, air_group=0)
-	if(air_group) return 1
-	return ..()
-
 
 
 // SUBTYPE: Regular
