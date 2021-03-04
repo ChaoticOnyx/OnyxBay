@@ -242,7 +242,7 @@
 	if(sdisabilities & DEAF || ear_deaf)
 		var/mob/living/carbon/human/H = src
 		if(istype(H) && H.has_headset_in_ears() && prob(20))
-			to_chat(src, SPAN("warning", "You feel your headset vibrate [loud ? "really hard " : ""]but can hear nothing from it!</span>"))
+			to_chat(src, SPAN("warning", "You feel your headset vibrate [loud ? "really hard " : ""]but can hear nothing from it!"))
 	else
 		on_hear_radio(part_a, speaker_name, track, part_b, part_c, formatted, loud)
 
