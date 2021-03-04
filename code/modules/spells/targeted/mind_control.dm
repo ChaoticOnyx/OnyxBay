@@ -33,7 +33,7 @@
 	if(target == user)
 		to_chat(user, SPAN_DANGER("You tried to control yourself, thankfully spell didn't worked!"))
 		return // Prevents you from stupid thing
-	var/obj/item/magical_imprint/magical_imprint = new(instructions)
+	var/datum/magical_imprint/magical_imprint = new(instructions)
 	magical_imprint.implant_in_mob(target, BP_HEAD)
 
 /spell/hand/mind_control/proc/interact(user)
@@ -68,7 +68,7 @@
 		instructions -= instructions[text2num(href_list["del"])]
 		interact(usr)
 
-/obj/item/magical_imprint
+/datum/magical_imprint
 	var/message = "<span class='danger'>Something crumbles through your brain, changing you, chaining you!</span>"
 	var/brainwashing = 0
 	var/confirmed = 0
@@ -76,10 +76,10 @@
 	var/last_reminder
 	var/mob/living/carbon/human/imp_in
 
-/obj/item/magical_imprint/New(list/inst)
+/datum/magical_imprint/New(list/inst)
 	instructions = inst
 
-/obj/item/magical_imprint/proc/implanted(mob/target)
+/datum/magical_imprint/proc/implanted(mob/target)
 	var/mob/living/carbon/human/H = target
 	to_chat(H, message)
 	var/msg = ""
@@ -99,7 +99,7 @@
 	START_PROCESSING(SSobj, src)
 	return TRUE
 
-/obj/item/magical_imprint/Process()
+/datum/magical_imprint/Process()
 	if(imp_in.reagents.has_reagent(/datum/reagent/water/holywater))
 		var/message_ender = "<span class='danger'>Water frees you from magical influence, you are free now:<br> You no longer have to follow any previous laws!</span>"
 		to_chat(imp_in, message_ender)
@@ -115,14 +115,13 @@
 	instruction = "<span class='warning'>You recall one of your beliefs: \"[instruction]\"</span>"
 	to_chat(imp_in, instruction)
 
-/obj/item/magical_imprint/Destroy()
+/datum/magical_imprint/Destroy()
 	STOP_PROCESSING(SSobj, src)
 	. = ..()
 
-/obj/item/magical_imprint/proc/implant_in_mob(mob/M, target_zone)
+/datum/magical_imprint/proc/implant_in_mob(mob/M, target_zone)
 	if(ishuman(M))
 		var/mob/living/carbon/human/H = M
 		BITSET(H.hud_updateflag, IMPLOYAL_HUD)
-		forceMove(M)
 		imp_in = M
 		implanted(M)
