@@ -10,6 +10,8 @@ GLOBAL_DATUM_INIT(commandos, /datum/antagonist/deathsquad/syndicate, new)
 	flags = ANTAG_RANDOM_EXCEPTED | ANTAG_CLEAR_EQUIPMENT | ANTAG_CHOOSE_NAME | ANTAG_OVERRIDE_JOB | ANTAG_SET_APPEARANCE
 	antaghud_indicator = "hudoperative"
 
+	valid_species = list(SPECIES_HUMAN) // Syndicate Comms don't like xenos.
+
 	hard_cap = 4
 	hard_cap_round = 8
 	initial_spawn_req = 4

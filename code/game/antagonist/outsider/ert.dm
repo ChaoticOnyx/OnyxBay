@@ -18,6 +18,8 @@ GLOBAL_DATUM_INIT(ert, /datum/antagonist/ert, new)
 	flags = ANTAG_OVERRIDE_JOB | ANTAG_SET_APPEARANCE | ANTAG_HAS_LEADER | ANTAG_CHOOSE_NAME | ANTAG_RANDOM_EXCEPTED
 	antaghud_indicator = "hudloyalist"
 
+	valid_species = list(SPECIES_HUMAN) // NT don't like xenos.
+
 	hard_cap = 4
 	hard_cap_round = 6
 	initial_spawn_req = 3
