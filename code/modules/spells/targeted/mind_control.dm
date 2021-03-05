@@ -103,10 +103,13 @@
 	if(imp_in.reagents.has_reagent(/datum/reagent/water/holywater))
 		var/message_ender = "<span class='danger'>Water frees you from magical influence, you are free now:<br> You no longer have to follow any previous laws!</span>"
 		to_chat(imp_in, message_ender)
-		Destroy()
 		if(imp_in.mind)
 			imp_in.mind.store_memory(message_ender)
+		Destroy()
 		return
+	if (imp_in.stat == DEAD)
+		Destroy()
+
 	if(world.time < last_reminder + 5 MINUTES)
 		return
 	last_reminder = world.time
