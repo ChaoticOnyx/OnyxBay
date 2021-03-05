@@ -113,20 +113,8 @@
 			to_chat(src, "Shutting down APU... DONE")
 		log_ability_use(src, "Switched to external power", null, 0)
 
-// Shows capacitor charge and hardware integrity information to the AI in Status tab.
-/mob/living/silicon/ai/show_system_integrity()
-	if(!src.stat)
-		stat("Hardware integrity", "[hardware_integrity()]%")
-		stat("Internal capacitor", "[backup_capacitor()]%")
-		
-		if(eyeobj)
-			var/turf/T = get_turf(eyeobj)
-			stat("Current location", "([T.x]:[T.y]:[T.z])")
-	else
-		stat("Systems nonfunctional")
-
 // Shows AI Malfunction related information to the AI.
-/mob/living/silicon/ai/show_malf_ai()
+/mob/living/silicon/ai/proc/show_malf_ai()
 	if(src.is_malf())
 		if(src.hacked_apcs)
 			stat("Hacked APCs", "[src.hacked_apcs.len]")
@@ -142,3 +130,8 @@
 				stat("SYSTEM OVERRIDE INITIATED")
 			else if(system_override == 2)
 				stat("SYSTEM OVERRIDE COMPLETED")
+
+/mob/living/silicon/ai/Stat()
+	. = ..()
+	if(statpanel("Status"))
+		show_malf_ai()

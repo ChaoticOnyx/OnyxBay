@@ -191,6 +191,13 @@ var/list/mob_hat_cache = list()
 	new_hat.forceMove(src)
 	update_icon()
 
+/mob/living/silicon/robot/drone/show_cell_power()
+	stat("Charge Left:", "[round(cell.percent())]%")
+
+/mob/living/silicon/robot/drone/show_gps()
+	var/turf/T = get_turf(src)
+	stat("Current location:", "[T.x]:[T.y]:[T.z]")
+
 //Drones cannot be upgraded with borg modules so we need to catch some items before they get used in ..().
 /mob/living/silicon/robot/drone/attackby(obj/item/weapon/W, mob/user)
 

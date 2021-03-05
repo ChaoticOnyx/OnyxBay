@@ -134,34 +134,35 @@
 		return 1
 	return 0
 
-
-// this function shows the health of the AI in the Status panel
+// this function shows the health in the Status panel
 /mob/living/silicon/proc/show_system_integrity()
 	if(!src.stat)
-		stat(null, text("System integrity: [round((health/maxHealth)*100)]%"))
+		stat("System integrity:", "[round((health/maxHealth)*100)]%")
 	else
-		stat(null, text("Systems nonfunctional"))
-
-
-// This is a pure virtual function, it should be overwritten by all subclasses
-/mob/living/silicon/proc/show_malf_ai()
-	return 0
+		stat("<font color='#8a0808'>Systems nonfunctional</font>")
 
 // this function displays the shuttles ETA in the status panel if the shuttle has been called
 /mob/living/silicon/proc/show_emergency_shuttle_eta()
 	if(evacuation_controller)
 		var/eta_status = evacuation_controller.get_status_panel_eta()
 		if(eta_status)
-			stat(null, eta_status)
+			stat("ETA:", eta_status)
 
+/mob/living/silicon/proc/show_gps()
+	var/turf/T = get_turf(src)
+	if (T.z != 1 && T.z != 2)
+		stat("Current location:", "Unknown")
+	else
+		stat("Current location:", "[T.x]:[T.y]:[T.z]")
 
-// This adds the basic clock, shuttle recall timer, and malf_ai info to all silicon lifeforms
+// This adds the basic clock, shuttle recall timer, gps info to all silicon lifeforms
 /mob/living/silicon/Stat()
+	. = ..()
 	if(statpanel("Status"))
+		stat("<br>")
 		show_emergency_shuttle_eta()
 		show_system_integrity()
-		show_malf_ai()
-	. = ..()
+		show_gps()
 
 // this function displays the stations manifest in a separate window
 /mob/living/silicon/proc/show_station_manifest()

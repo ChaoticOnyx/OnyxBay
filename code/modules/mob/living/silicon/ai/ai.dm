@@ -270,6 +270,19 @@ var/list/ai_verbs_default = list(
 				custom_icons += selected_sprite
 	update_icon()
 
+/mob/living/silicon/ai/show_gps()
+	if(eyeobj)
+		var/turf/T = get_turf(eyeobj)
+		stat("Current location", "([T.x]:[T.y]:[T.z])")
+
+// Shows capacitor charge and hardware integrity information to the AI in Status tab.
+/mob/living/silicon/ai/show_system_integrity()
+	if(!src.stat)
+		stat("Hardware integrity", "[hardware_integrity()]%")
+		stat("Internal capacitor", "[backup_capacitor()]%")
+	else
+		stat("<font color='#8a0808'>Systems nonfunctional</font>")
+
 /mob/living/silicon/ai/pointed(atom/A as mob|obj|turf in view())
 	set popup_menu = 0
 	set src = usr.contents
