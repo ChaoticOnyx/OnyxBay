@@ -196,7 +196,10 @@
 /datum/reagent/water/holywater/touch_turf(turf/T)
 	if(volume >= 5)
 		T.holy = 1
-	return
+
+		var/area/A = get_area(T)
+		if(A && !isspace(A))
+			A.holy = TRUE
 
 /datum/reagent/diethylamine
 	name = "Diethylamine"

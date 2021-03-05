@@ -440,6 +440,11 @@
 			T.holy = 0
 		else
 			T.cultify()
+		
+	var/area/A = get_area(src)
+	if(A && !isspace(A))
+		A.holy = FALSE
+
 	visible_message("<span class='warning'>\The [src] embeds into the floor and walls around it, changing them!</span>", "You hear liquid flow.")
 	qdel(src)
 
@@ -698,6 +703,11 @@
 				T.holy = 0
 			else
 				T.cultify()
+
+	var/area/A = get_area(src)
+	if(A && !isspace(A))
+		A.holy = FALSE
+
 	visible_message("<span class='warning'>\The [src] embeds into the floor and walls around it, changing them!</span>", "You hear liquid flow.")
 	qdel(src)
 
