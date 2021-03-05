@@ -164,6 +164,8 @@
 		return ..() //Pistolwhippin'
 
 /obj/item/weapon/gun/proc/Fire(atom/target, mob/living/user, clickparams, pointblank=0, reflex=0)
+	set background = TRUE
+
 	if(!user || !target) return
 	if(target.z != user.z) return
 
@@ -178,39 +180,40 @@
 		return
 
 	var/shoot_time = (burst - 1)* burst_delay
-	user.setClickCooldown(shoot_time) //no clicking on things while shooting
-	user.setMoveCooldown(shoot_time) //no moving while shooting either
+	//user.setClickCooldown(shoot_time) //no clicking on things while shooting
+	//user.setMoveCooldown(shoot_time) //no moving while shooting either
 	next_fire_time = world.time + shoot_time
 
 	var/held_twohanded = (user.can_wield_item(src) && src.is_held_twohanded(user))
 
 	//actually attempt to shoot
-	var/turf/targloc = get_turf(target) //cache this in case target gets deleted during shooting, e.g. if it was a securitron that got destroyed.
 	for(var/i in 1 to burst)
+		user.face_atom(user.last_mouse_target)
 		var/obj/projectile = consume_next_projectile(user)
 		if(!projectile)
 			handle_click_empty(user)
 			break
 
-		process_accuracy(projectile, user, target, i, held_twohanded)
+		process_accuracy(projectile, user, user.last_mouse_target, i, held_twohanded)
 
 		if(pointblank)
-			process_point_blank(projectile, user, target)
+			process_point_blank(projectile, user, user.last_mouse_target)
 
-		if(process_projectile(projectile, user, target, user.zone_sel?.selecting, clickparams))
-			handle_post_fire(user, target, pointblank, reflex)
+		if(process_projectile(projectile, user, user.last_mouse_target, user.zone_sel?.selecting, clickparams))
+			handle_post_fire(user, user.last_mouse_target, pointblank, reflex)
 			update_icon()
 
 		if(i < burst)
 			sleep(burst_delay)
 
-		if(!(target && target.loc))
-			target = targloc
+		if(!(user.last_mouse_target && user.last_mouse_target.loc))
+			user.last_mouse_target = get_turf(user.last_mouse_target)
 			pointblank = 0
 
+
 	//update timing
-	user.setClickCooldown(DEFAULT_QUICK_COOLDOWN)
-	user.setMoveCooldown(move_delay)
+	//user.setClickCooldown(DEFAULT_QUICK_COOLDOWN)
+	//user.setMoveCooldown(move_delay)
 	next_fire_time = world.time + fire_delay
 
 //obtains the next projectile to fire
@@ -460,4 +463,3 @@
 	var/datum/firemode/new_mode = switch_firemodes(user)
 	if(new_mode)
 		to_chat(user, "<span class='notice'>\The [src] is now set to [new_mode.name].</span>")
-
