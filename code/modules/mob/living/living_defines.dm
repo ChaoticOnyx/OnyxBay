@@ -57,3 +57,4 @@
 	var/evasion = 0 // Makes attacks harder to land. Negative numbers increase hit chance.
 
 	var/controllable = FALSE // If ghosts can possess a mob without permissions
+	var/atom/last_mouse_target
