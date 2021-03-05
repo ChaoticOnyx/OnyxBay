@@ -390,8 +390,9 @@
 			return
 
 /obj/item/weapon/lazarus_injector/attackby(obj/item/I, mob/living/user)
-
 	if(istype(I, /obj/item/weapon/card/emag) && !emagged)
+		if(!emag_card.uses)
+			return
 		var/obj/item/weapon/card/emag/emag_card = I
 		emagged = TRUE
 		emag_card.uses -= 1
