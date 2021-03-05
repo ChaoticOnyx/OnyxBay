@@ -74,7 +74,7 @@
 	var/confirmed = 0
 	var/list/instructions
 	var/last_reminder
-	var/mob/living/carbon/human/imp_in
+	var/mob/living/carbon/human/implanted_in
 
 /datum/magical_imprint/New(list/inst)
 	instructions = inst
@@ -96,18 +96,18 @@
 	if(target.mind)
 		target.mind.store_memory("<hr>[msg]")
 
-	START_PROCESSING(SSobj, src)
+	START_PROCESSING(SSprocessing, src)
 	return TRUE
 
 /datum/magical_imprint/Process()
-	if(imp_in.reagents.has_reagent(/datum/reagent/water/holywater))
+	if(implanted_in.reagents.has_reagent(/datum/reagent/water/holywater))
 		var/message_ender = "<span class='danger'>Water frees you from magical influence, you are free now:<br> You no longer have to follow any previous laws!</span>"
-		to_chat(imp_in, message_ender)
-		if(imp_in.mind)
-			imp_in.mind.store_memory(message_ender)
+		to_chat(implanted_in, message_ender)
+		if(implanted_in.mind)
+			implanted_in.mind.store_memory(message_ender)
 		Destroy()
 		return
-	if (imp_in.stat == DEAD)
+	if (implanted_in.stat == DEAD)
 		Destroy()
 
 	if(world.time < last_reminder + 5 MINUTES)
@@ -116,15 +116,15 @@
 	var/instruction = pick(instructions)
 
 	instruction = "<span class='warning'>You recall one of your beliefs: \"[instruction]\"</span>"
-	to_chat(imp_in, instruction)
+	to_chat(implanted_in, instruction)
 
 /datum/magical_imprint/Destroy()
-	STOP_PROCESSING(SSobj, src)
+	STOP_PROCESSING(SSprocessing, src)
 	. = ..()
 
 /datum/magical_imprint/proc/implant_in_mob(mob/M, target_zone)
 	if(ishuman(M))
 		var/mob/living/carbon/human/H = M
 		BITSET(H.hud_updateflag, IMPLOYAL_HUD)
-		imp_in = M
+		implanted_in = M
 		implanted(M)
