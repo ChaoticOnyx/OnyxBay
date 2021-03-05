@@ -53,7 +53,7 @@
 	var/station_crew_involved = TRUE
 
 	// Used for setting appearance.
-	var/list/valid_species =       list(SPECIES_UNATHI,SPECIES_TAJARA,SPECIES_SKRELL,SPECIES_HUMAN,SPECIES_VOX)
+	var/list/valid_species = list(SPECIES_UNATHI,SPECIES_TAJARA,SPECIES_SKRELL,SPECIES_HUMAN,SPECIES_VOX)
 	var/min_player_age = 14
 
 	// Runtime vars.

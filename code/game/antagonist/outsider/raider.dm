@@ -11,6 +11,7 @@ GLOBAL_DATUM_INIT(raiders, /datum/antagonist/raider, new)
 	flags = ANTAG_OVERRIDE_MOB | ANTAG_OVERRIDE_JOB | ANTAG_CLEAR_EQUIPMENT | ANTAG_VOTABLE | ANTAG_HAS_LEADER
 	antaghud_indicator = "hudmutineer"
 
+	valid_species = list(SPECIES_VOX)
 	hard_cap = 5
 	hard_cap_round = 6
 	initial_spawn_req = 3
