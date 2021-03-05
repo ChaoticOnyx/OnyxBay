@@ -460,7 +460,6 @@
 	if(cell)
 		stat(null, text("Charge Left: [round(cell.percent())]%"))
 		stat(null, text("Cell Rating: [round(cell.maxcharge)]")) // Round just in case we somehow get crazy values
-		stat(null, text("Power Cell Load: [round(used_power_this_tick)]W"))
 	else
 		stat(null, text("No Cell Inserted!"))
 
