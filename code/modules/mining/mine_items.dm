@@ -391,9 +391,9 @@
 
 /obj/item/weapon/lazarus_injector/attackby(obj/item/I, mob/living/user)
 	if(istype(I, /obj/item/weapon/card/emag) && !emagged)
+		var/obj/item/weapon/card/emag/emag_card = I
 		if(!emag_card.uses)
 			return
-		var/obj/item/weapon/card/emag/emag_card = I
 		emagged = TRUE
 		emag_card.uses -= 1
 		to_chat(user, SPAN_WARNING("You overload \the [src]'s injection matrix."))
