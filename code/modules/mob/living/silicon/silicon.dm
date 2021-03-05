@@ -146,7 +146,7 @@
 	if(evacuation_controller)
 		var/eta_status = evacuation_controller.get_status_panel_eta()
 		if(eta_status)
-			stat("ETA:", eta_status)
+			stat(eta_status)
 
 /mob/living/silicon/proc/show_gps()
 	var/turf/T = get_turf(src)
