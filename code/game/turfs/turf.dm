@@ -7,7 +7,7 @@
 
 	var/turf_flags
 
-	var/holy = 0
+	var/holy = FALSE
 
 	// Initial air contents (in moles)
 	var/list/initial_gas

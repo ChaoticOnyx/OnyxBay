@@ -53,7 +53,7 @@
 /turf/simulated/New()
 	..()
 	if(istype(loc, /area/chapel))
-		holy = 1
+		holy = TRUE
 	levelupdate()
 
 /turf/simulated/Destroy()
