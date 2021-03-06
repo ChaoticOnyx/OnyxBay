@@ -11,7 +11,7 @@
 	var/obj/item/weapon/cell/device/bcell
 
 /obj/item/clothing/gloves/stun/Initialize(loc, obj/item/clothing/gloves/G)
-	..()
+	. = ..()
 	if(!istype(G))
 		return
 	base_gloves = G
@@ -75,7 +75,7 @@
 /obj/item/clothing/gloves/stun/emp_act(severity)
 	if(bcell)
 		bcell.charge -= 100 / severity
-		if (bcell.charge < 0)
+		if(bcell.charge < 0)
 			bcell.charge = 0
 	..()
 

@@ -232,8 +232,7 @@ BLIND     // can't see anything
 
 /obj/item/clothing/gloves/update_icon(needs_updating=FALSE)
 	if(!needs_updating)
-		..()
-		return
+		return ..()
 
 	overlays.Cut()
 
