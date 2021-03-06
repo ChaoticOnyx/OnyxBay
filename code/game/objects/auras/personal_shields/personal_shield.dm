@@ -9,6 +9,7 @@
 	icon = 'icons/effects/auras.dmi'
 	icon_state = "shield"
 	mouse_opacity = 0
+	layer = ABOVE_HUMAN_LAYER
 
 /obj/aura/shields/New(mob/living/user)
 	..()
