@@ -366,6 +366,9 @@ The slots that you can use are found in items_clothing.dm and are the inventory 
 			if(target.a_intent == I_HELP)
 				H.visible_message("<span class='notice'>[H] and [target] shake hands!</span>", \
 								"<span class='notice'>You shake [target]'s hand!</span>")
+				if(istype(H.gloves, /obj/item/clothing/gloves/stun))
+					var/obj/item/clothing/gloves/stun/SG = H.gloves
+					SG.stun_attack(H, target)
 			else
 				H.visible_message("<span class='warning'>[target] refuses to shake [H]'s hand!</span>", \
 								"<span class='warning'>[target] refuses to shake your hand!</span>")
