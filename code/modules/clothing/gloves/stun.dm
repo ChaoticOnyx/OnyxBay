@@ -86,7 +86,7 @@
 	if(ishuman(A) && ishuman(src.loc))
 		var/mob/living/carbon/human/user = src.loc
 		var/mob/living/carbon/human/victim = A
-		if(user.a_intent != I_HURT)
+		if(user.a_intent != I_DISARM)
 			return 0
 		stun_attack(user, victim)
 		return 1
