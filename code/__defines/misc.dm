@@ -195,7 +195,8 @@
 #define VIRUS_MILD			1
 #define VIRUS_COMMON		2	//Random events don't go higher (mutations aside)
 #define VIRUS_ENGINEERED	3
-#define VIRUS_EXOTIC		4	//Usually adminbus only
+#define VIRUS_MUTATION		4
+#define VIRUS_EXOTIC		5	//Usually adminbus only
 
 //Error handler defines
 #define ERROR_USEFUL_LEN 2

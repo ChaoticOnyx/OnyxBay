@@ -286,6 +286,29 @@
 	icon_state = "shuttle"
 	base_turf = /turf/space/transit/north
 
+//MINING MOTHERSHIP
+
+/area/creaker
+	name = "\improper Mining Ship 'Creaker'"
+	icon_state = "yellow"
+	area_flags = AREA_FLAG_RAD_SHIELDED
+
+/area/creaker/station
+	name = "\improper Mining Ship 'Creaker'"
+	icon_state = "shuttlered"
+
+/area/creaker/north
+	name = "northern asteroid field"
+	icon_state = "southwest"
+
+/area/creaker/west
+	name = "western asteroid field"
+	icon_state = "northwest"
+
+/area/creaker/east
+	name = "eastern asteroid field"
+	icon_state = "northeast"
+
 //ENEMY
 
 //names are used
@@ -1052,6 +1075,9 @@
 	icon_state = "toilet"
 	sound_env = SMALL_ENCLOSED
 
+/area/crew_quarters/toilet/bar
+	name = "\improper Bar Toilet"
+
 /area/crew_quarters/sleep
 	name = "\improper Dormitories"
 	icon_state = "Sleep"
@@ -1226,7 +1252,7 @@
 	icon_state = "chapeloffice"
 
 /area/chapel/crematorium
-	name = "\improper Сrematorium"
+	name = "\improper Crematorium"
 	icon_state = "chapelcrematorium"
 
 /area/lawoffice
