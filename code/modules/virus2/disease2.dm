@@ -17,7 +17,6 @@ LEGACY_RECORD_STRUCTURE(virus_records, virus_record)
 	uniqueID = rand(0,10000)
 	if(random_severity)
 		makerandom(random_severity)
-	update_disease()
 
 /datum/disease2/disease/proc/update_disease()
 
@@ -40,7 +39,6 @@ LEGACY_RECORD_STRUCTURE(virus_records, virus_record)
 		if(!E.allow_multiple)
 			excludetypes += E.type
 		effects += E
-	update_disease()
 	uniqueID = rand(0,10000)
 	switch(severity)
 		if(1,2)
@@ -54,6 +52,7 @@ LEGACY_RECORD_STRUCTURE(virus_records, virus_record)
 
 	if(all_species.len)
 		affected_species = get_infectable_species()
+	update_disease()
 
 /proc/get_infectable_species()
 	var/list/meat = list()
@@ -218,9 +217,9 @@ LEGACY_RECORD_STRUCTURE(virus_records, virus_record)
 		neweffect.generate(effect.data)
 		neweffect.chance = effect.chance
 		neweffect.multiplier = effect.multiplier
-		neweffect.oneshot = effect.oneshot
 		neweffect.stage = effect.stage
 		disease.effects += neweffect
+	disease.update_disease()
 	return disease
 
 /datum/disease2/disease/proc/issame(datum/disease2/disease/disease)

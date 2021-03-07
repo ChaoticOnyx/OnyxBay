@@ -536,6 +536,7 @@
 	to_chat(user, "You plant the [S.seed.seed_name] [S.seed.seed_noun].")
 	lastproduce = 0
 	seed = S.seed //Grab the seed datum.
+	seed.planter_ckey = user.ckey
 	dead = 0
 	age = 1
 

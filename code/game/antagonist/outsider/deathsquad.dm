@@ -15,6 +15,8 @@ GLOBAL_DATUM_INIT(deathsquad, /datum/antagonist/deathsquad, new)
 	initial_spawn_req = 4
 	initial_spawn_target = 6
 
+	valid_species = list(SPECIES_HUMAN) // NT don't like xenos.
+
 	faction = "deathsquad"
 
 	var/deployed = 0

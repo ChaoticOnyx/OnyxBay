@@ -117,14 +117,17 @@
 		data = c_data
 
 /datum/disease2/effect/voice_change/activate(mob/living/carbon/human/mob)
-	if(!data)
-		data = mob.real_name
+	if(!data["name"])
+		data["name"] = mob.real_name
 	to_chat(mob, (SPAN_WARNING("Your throat hurts.")))
 	special_voice_old = mob.GetSpecialVoice()
-	mob.SetSpecialVoice(data)
+	mob.SetSpecialVoice(data["name"])
 	
 /datum/disease2/effect/voice_change/deactivate(mob/living/carbon/human/mob)
-	mob.SetSpecialVoice(special_voice_old)
+	if(special_voice_old)
+		mob.SetSpecialVoice(special_voice_old)
+	else
+		mob.UnsetSpecialVoice()
 
 ////////////////////////STAGE 2/////////////////////////////////
 
