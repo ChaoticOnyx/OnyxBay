@@ -15,11 +15,12 @@
 	if(!istype(G))
 		return
 	base_gloves = G
-	if(base_gloves.clipped)
-		cut_fingertops()
 	appearance = base_gloves.appearance
 	name = "stun gloves"
 	desc = "[desc]<br>They have some wires with exposed ends at the fingers taped to them."
+	if(base_gloves.clipped)
+		cut_fingertops()
+	wire_color = base_gloves.wire_color
 	siemens_coefficient = base_gloves.siemens_coefficient
 	armor = base_gloves.armor
 	base_gloves.forceMove(src)
@@ -51,26 +52,21 @@
 			qdel(src)
 		base_gloves.wired = FALSE
 		base_gloves.update_icon(TRUE)
-		new /obj/item/stack/cable_coil(user.loc, 15, color)
+		new /obj/item/stack/cable_coil(user.loc, 15, wire_color)
 		user.drop_from_inventory(base_gloves)
 		qdel(src)
 		return
 
 	if(istype(W, /obj/item/weapon/cell/device))
-		insert_cell(W, user)
-		return
-
-/obj/item/clothing/gloves/stun/proc/insert_cell(obj/item/weapon/cell/device/DC, mob/user)
-	if(!istype(DC))
-		return
-	if(bcell)
-		to_chat(user, SPAN("notice", "The [src] already have \the [bcell] installed."))
-		return
-	if(user.unEquip(DC))
-		to_chat(user, SPAN("notice", "You connect \the [DC] to the wires on \the [src]."))
-		bcell = DC
-		bcell.forceMove(src)
-		update_icon(TRUE)
+		if(bcell)
+			to_chat(user, SPAN("notice", "The [src] already have \the [bcell] installed."))
+			return
+		if(user.unEquip(W))
+			bcell = W
+			bcell.forceMove(src)
+			update_icon(TRUE)
+			to_chat(user, SPAN("notice", "You connect \the [bcell] to the wires on \the [src]."))
+			return
 
 /obj/item/clothing/gloves/stun/emp_act(severity)
 	if(bcell)
@@ -81,22 +77,23 @@
 
 /obj/item/clothing/gloves/stun/Touch(atom/A, proximity)
 	if(!proximity || !bcell)
-		return 0
+		return FALSE
 
 	if(ishuman(A) && ishuman(src.loc))
 		var/mob/living/carbon/human/user = src.loc
 		var/mob/living/carbon/human/victim = A
 		if(user.a_intent != I_DISARM)
-			return 0
+			return FALSE
 		stun_attack(user, victim)
-		return 1
-	return 0
+		return TRUE
+	return FALSE
 
 /obj/item/clothing/gloves/stun/proc/check_aim(zone)
 	var/restricted_bps = list(BP_R_LEG, BP_L_LEG, BP_R_FOOT, BP_L_FOOT)
 	check_zone(zone)
 	if(zone in restricted_bps)
 		zone = BP_GROIN // To avoid stunning people with one stun attack
+		to_chat(src.loc, SPAN("notice", "The target will dodge your attack on the legs, so you go for their lower body instead!"))
 	return zone
 
 /obj/item/clothing/gloves/stun/proc/stun_attack(mob/living/carbon/human/user, mob/living/carbon/human/victim)

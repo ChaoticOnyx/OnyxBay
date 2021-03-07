@@ -210,6 +210,7 @@ BLIND     // can't see anything
 	icon = 'icons/obj/clothing/gloves.dmi'
 	siemens_coefficient = 0.75
 	var/wired = FALSE
+	var/wire_color
 	var/clipped = FALSE
 	var/obj/item/clothing/ring/ring = null		//Covered ring
 	var/mob/living/carbon/human/wearer = null	//Used for covered rings when dropping
@@ -244,14 +245,14 @@ BLIND     // can't see anything
 
 // Called just before an attack_hand(), in mob/UnarmedAttack()
 /obj/item/clothing/gloves/proc/Touch(atom/A, proximity)
-	return 0 // return 1 to cancel attack_hand()
+	return FALSE // return TRUE to cancel attack_hand()
 
 /obj/item/clothing/gloves/attackby(obj/item/weapon/W, mob/user)
 	if(isWirecutter(W) || istype(W, /obj/item/weapon/scalpel))
 		if(wired)
 			wired = FALSE
 			update_icon(TRUE)
-			new /obj/item/stack/cable_coil(user.loc, 15, color)
+			new /obj/item/stack/cable_coil(user.loc, 15, wire_color)
 			playsound(src.loc, 'sound/items/Wirecutter.ogg', 100, 1)
 			to_chat(user, SPAN("notice", "You remove the wires from \the [src]."))
 			return
@@ -274,6 +275,7 @@ BLIND     // can't see anything
 		var/obj/item/stack/cable_coil/C = W
 		if(C.use(15))
 			wired = TRUE
+			wire_color = C.color
 			update_icon(TRUE)
 			user.visible_message(SPAN("warning", "\The [user] attaches some wires to \the [W]."), SPAN("notice", "You attach some wires to \the [src]."))
 			return
