@@ -9,7 +9,7 @@
 	speak_emote = list("brays")
 	emote_hear = list("brays")
 	emote_see = list("shakes its head", "stamps a foot", "glares around")
-	speak_chance = 5
+	speak_chance = 1
 	turns_per_move = 5
 	see_in_dark = 6
 	meat_type = /obj/item/weapon/reagent_containers/food/snacks/meat/goat
@@ -23,7 +23,7 @@
 	melee_damage_lower = 1
 	melee_damage_upper = 5
 	var/datum/reagents/udder = null
-	var/isRageMode = 0
+	var/isragemode = FALSE
 
 /mob/living/simple_animal/hostile/retaliate/goat/New()
 	udder = new(50, src)
@@ -43,8 +43,8 @@
 		if(enemies.len && prob(10))
 			enemies = list()
 			LoseTarget()
-			src.visible_message(SPAN_NOTICE("calms down."))
-			isRageMode = 0
+			visible_message(SPAN_NOTICE("calms down."))
+			isragemode = TRUE
 
 		if(stat == CONSCIOUS)
 			if(udder && prob(5))
@@ -53,13 +53,13 @@
 		if(locate(/obj/effect/vine) in loc)
 			var/obj/effect/vine/SV = locate() in loc
 			if(prob(60))
-				visible_message(SPAN_NOTICE("The [src] eats the plants."))
+				visible_message(SPAN_NOTICE("\The [src] eats the plants."))
 				SV.die_off(1)
 				if(locate(/obj/machinery/portable_atmospherics/hydroponics/soil/invisible) in loc)
 					var/obj/machinery/portable_atmospherics/hydroponics/soil/invisible/SP = locate() in loc
 					qdel(SP)
 			else if(prob(20))
-				visible_message(SPAN_NOTICE("The [src] chews on the plants."))
+				visible_message(SPAN_NOTICE("\The [src] chews on the plants."))
 			return
 
 		if(!pulledby)
@@ -72,23 +72,23 @@
 /mob/living/simple_animal/hostile/retaliate/goat/Retaliate()
 	..()
 	if(stat == CONSCIOUS && prob(50))
-		visible_message(SPAN_WARNING("The [src] gets an evil-looking gleam in their eye."))
-	isRageMode = 1
+		visible_message(SPAN_WARNING("\The [src] gets an evil-looking gleam in their eye."))
+	isragemode = FALSE
 
 /mob/living/simple_animal/hostile/retaliate/goat/attackby(obj/item/O, mob/user)
 	var/obj/item/weapon/reagent_containers/G = O
 	if(stat == CONSCIOUS && istype(G) && G.is_open_container())
 		if(G.reagents.has_reagent(/datum/reagent/blackpepper, 10) || G.reagents.has_reagent(/datum/reagent/capsaicin, 3))
-			if(isRageMode)
-				to_chat(user, SPAN_NOTICE("[src] already angry."))
+			if(isragemode)
+				to_chat(user, SPAN_NOTICE("\The [src] already angry."))
 				return
-			user.visible_message(SPAN_WARNING("[user] give some [G.reagents.get_master_reagent()] to the [src] from \the [O]."))
+			user.visible_message(SPAN_WARNING("[user] gives some something to \the [src]."))
 			to_chat(user, SPAN_WARNING("Better run away now!"))
 			Retaliate()
 		else if(istype(O, /obj/item/weapon/reagent_containers/glass))
-			if (isRageMode && prob(50))
-				user.visible_message(SPAN_NOTICE("tries to milk, but [src] hits \him"))
-				user.attack_generic(src, rand(melee_damage_lower * 2, melee_damage_upper * 2), attacktext, environment_smash, damtype, defense)
+			if (isragemode && prob(50))
+				user.visible_message(SPAN_NOTICE("tries to milk [src], but [src] hits \him"))
+				user.attack_generic(src, rand(melee_damage_lower, melee_damage_upper) * 2, attacktext, environment_smash, damtype, defense)
 				return
 			user.visible_message(SPAN_NOTICE("[user] milks [src] using \the [O]."))
 			var/transfered = udder.trans_type_to(G, /datum/reagent/drink/milk, rand(5,10))

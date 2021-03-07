@@ -34,14 +34,14 @@
 	desc = "That is a skin of an animal."
 
 /obj/item/skin/goat
-	name = "goats skin"
-	desc = "A goat skin."
+	name = "goat hide"
+	desc = "A goat hide."
 	icon_state = "goatskin"
 
 /obj/item/skin/goat/attackby(obj/item/weapon/W, mob/user)
 	..()
 	if(W.sharp && W.edge)
-		to_chat(user, SPAN_NOTICE("You use [W] to make [src] more wearable."))
+		to_chat(user, SPAN_NOTICE("You use /the [W] to make [src] more wearable."))
 		new /obj/item/clothing/suit/storage/hooded/goatskincape(get_turf(loc))
 		qdel(src)
 		return

@@ -602,21 +602,21 @@
 
 
 /obj/item/clothing/suit/storage/hooded/goatskincape
-	name = "goat skin cape"
-	desc = "A goat skin. You can put it on yourself to look like a true barbarian."
+	name = "goat hide cape"
+	desc = "A goat hide. You can put it on to look like a true barbarian."
 	icon_state = "goatskincape"
 	item_state = "goatskincape"
 	body_parts_covered = UPPER_TORSO|LOWER_TORSO
 	cold_protection = UPPER_TORSO|LOWER_TORSO
 	min_cold_protection_temperature = ARMOR_MIN_COLD_PROTECTION_TEMPERATURE
 	armor = list(melee = 25, bullet = 10, laser = 0, energy = 40, bomb = 0, bio = 10, rad = 0)
-	action_button_name = "Toggle Goat Head Hood"
+	action_button_name = "Toggle hood"
 	hoodtype = /obj/item/clothing/head/goatskinhood
 	siemens_coefficient = 0.6
 
 /obj/item/clothing/head/goatskinhood
-	name = "Goat Head Hood"
-	desc = "A goat head attached to the goat skin"
+	name = "goat head hood"
+	desc = "A goat head."
 	icon_state = "goatskincape_hood"
 	item_state = "goatskincape_hood"
 	body_parts_covered = HEAD
