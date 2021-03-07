@@ -26,10 +26,11 @@ Targeted spells have two useful flags: INCLUDEUSER and SELECTABLE. These are exp
 	var/amt_radiation = 0
 	var/amt_blood = 0 //Positive numbers to add blood
 	var/amt_organ = 0 //Positive numbers for healing
-
+	var/heals_internal_bleeding = 0
+	var/heals_external_bleeding = 0
+	var/heal_bones = 0
 	var/amt_eye_blind = 0
 	var/amt_eye_blurry = 0
-
 	var/list/compatible_mobs = list()
 
 
@@ -119,16 +120,14 @@ Targeted spells have two useful flags: INCLUDEUSER and SELECTABLE. These are exp
 		for(var/mob/living/target in targets) //filters out all the non-compatible mobs
 			if(!is_type_in_list(target, compatible_mobs))
 				targets -= target
-
 	return targets
 
-/spell/targeted/cast(list/targets, mob/user)
-
-	if(!src.cast_check())
+/spell/targeted/cast(list/targets, mob/user, channel)
+	if(!src.cast_check(1, user, targets))
 		return
 
 	for(var/mob/living/target in targets)
-		if(range >= 0)
+		if(range > 0)
 			if(!(target in view_or_range(range, holder, selection_type))) //filter at time of casting
 				targets -= target
 				continue
@@ -141,13 +140,7 @@ Targeted spells have two useful flags: INCLUDEUSER and SELECTABLE. These are exp
 	target.adjustOxyLoss(amt_dam_oxy)
 	if(ishuman(target))
 		var/mob/living/carbon/human/H = target
-		for(var/obj/item/organ/external/affecting in H.organs)
-			if(affecting && istype(affecting))
-				affecting.heal_damage(amt_organ, amt_organ)
-		H.vessel.add_reagent(/datum/reagent/blood,amt_blood)
-		H.adjustBrainLoss(amt_brain)
-		H.radiation += min(H.radiation, amt_radiation)
-		H.fixblood()
+		H.wizard_heal(src)
 	target.regenerate_icons()
 	//disabling
 	target.Weaken(amt_weakened)

@@ -171,7 +171,7 @@ turf/proc/hotspot_expose(exposed_temperature, exposed_volume, soh = 0)
 					continue
 
 				//Spread the fire.
-				if(prob( 50 + 50 * (firelevel/vsc.fire_firelevel_multiplier) ) && my_tile.CanPass(null, enemy_tile, 0,0) && enemy_tile.CanPass(null, my_tile, 0,0))
+				if(prob(50 + 50 * (firelevel / vsc.fire_firelevel_multiplier)) && my_tile.CanPass(src, enemy_tile) && enemy_tile.CanPass(src, my_tile))
 					enemy_tile.create_fire(firelevel)
 
 			else

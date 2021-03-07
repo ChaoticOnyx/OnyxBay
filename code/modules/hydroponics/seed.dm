@@ -25,6 +25,7 @@
 	var/has_custom_product		   // Spawns a custom item instead of regular harvest (i.e. real egg plants).
 	var/force_layer
 	var/customsprite = 0		   // Set to 1 if you want to use a non-paintable harvest icon.
+	var/planter_ckey			   // ckey of player that plant seed.
 
 /datum/seed/New()
 
