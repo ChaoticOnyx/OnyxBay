@@ -437,7 +437,7 @@
 	var/result = null
 
 	if(input_list.len && delimiter && !isnull(start) && !isnull(end))
-		result = jointext(input_list, delimiter, start, end)
+		result = input_list.Join(delimiter, start, end)
 
 	set_pin_data(IC_OUTPUT, 1, result)
 	push_data()

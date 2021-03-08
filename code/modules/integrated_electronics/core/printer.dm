@@ -19,7 +19,7 @@
 	var/weakref/idlock = null
 
 /obj/item/device/integrated_circuit_printer/proc/check_interactivity(mob/user)
-	return CanUseTopic(user)
+	return CanUseTopic(user) && (get_dist(src, user) < 2)
 
 /obj/item/device/integrated_circuit_printer/upgraded
 	upgraded = TRUE

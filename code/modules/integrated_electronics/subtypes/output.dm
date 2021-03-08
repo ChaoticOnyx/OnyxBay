@@ -173,12 +173,12 @@
 	sounds = list(
 		"beep"			= 'sound/machines/twobeep.ogg',
 		"chime"			= 'sound/machines/chime.ogg',
-		"buzz sigh"		= 'sound/machines/buzz-sigh.ogg',
-		"buzz twice"	= 'sound/machines/buzz-two.ogg',
+		"buzz_sigh"		= 'sound/machines/buzz-sigh.ogg',
+		"buzz_twice"	= 'sound/machines/buzz-two.ogg',
 		"ping"			= 'sound/machines/ping.ogg',
-		"synth yes"		= 'sound/machines/synth_yes.ogg',
-		"synth no"		= 'sound/machines/synth_no.ogg',
-		"warning buzz"	= 'sound/machines/warning-buzzer.ogg'
+		"synth_yes"		= 'sound/machines/synth_yes.ogg',
+		"synth_no"		= 'sound/machines/synth_no.ogg',
+		"warning_buzz"	= 'sound/machines/warning-buzzer.ogg'
 		)
 	spawn_flags = IC_SPAWN_DEFAULT|IC_SPAWN_RESEARCH
 
@@ -220,7 +220,7 @@
 		"affinity_activated" 	= 'sound/voice/augmented/BBCYBA_A.wav',
 		"affinity_deactivated" 	= 'sound/voice/augmented/BBCYBA_D.wav',
 		"login" 				= 'sound/voice/augmented/LOGIN.wav',
-		"Medscan" 				= 'sound/voice/augmented/medscan.wav'
+		"medscan" 				= 'sound/voice/augmented/medscan.wav'
 	)
 	spawn_flags = IC_SPAWN_RESEARCH|IC_SPAWN_DEFAULT
 

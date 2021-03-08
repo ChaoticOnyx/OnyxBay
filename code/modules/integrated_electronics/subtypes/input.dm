@@ -1354,6 +1354,7 @@
 		"selected" = IC_PINTYPE_STRING
 	)
 	var/input_selected = FALSE
+	var/selected_value = "None"
 	radial_menu_icon = "textpad"
 
 /obj/item/integrated_circuit/input/selection/ask_for_input(mob/user)
@@ -1372,11 +1373,8 @@
 	activate_pin(1)
 
 /obj/item/integrated_circuit/input/selection/get_topic_data(mob/user)
-	var/selected = "None"
-	if(input_selected)
-		selected = input_selected
 	. = list()
-	. += "Last Selected: [selected]"
+	. += "Last Selected: [selected_value]"
 	. += "Please select string:"
 	for(var/k in 1 to inputs.len)
 		var/I = get_pin_data(IC_INPUT, k)
@@ -1387,6 +1385,7 @@
 	if(href_list["select"] && user.IsAdvancedToolUser())
 		var/selected = sanitize(href_list["select"])
 		if(selected)
+			selected_value = selected
 			set_pin_data(IC_OUTPUT, 1, selected)
 			push_data()
 			activate_pin(1)

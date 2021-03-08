@@ -362,6 +362,9 @@ a creative player the means to solve many problems.  Circuits are held inside an
 	if(href_list["ic_window"] && assembly && assembly.use_ui_window)
 		. = OnICTopic(href_list, usr)
 
+	if(assembly && !assembly.opened && update)
+		update = FALSE
+
 	if(update)
 		if(assembly && (update_to_assembly || . == IC_TOPIC_REFRESH))
 			assembly.interact(usr, src)
