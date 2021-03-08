@@ -179,6 +179,9 @@
 			to_chat(user, "<span class='warning'>[src] is not ready to fire again!</span>")
 		return
 
+	var/shoot_time = (burst - 1)* burst_delay
+	next_fire_time = world.time + shoot_time
+
 	var/held_twohanded = (user.can_wield_item(src) && src.is_held_twohanded(user))
 
 	//actually attempt to shoot
