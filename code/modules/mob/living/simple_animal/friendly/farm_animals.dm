@@ -5,7 +5,7 @@
 	icon_state = "goat"
 	icon_living = "goat"
 	icon_dead = "goat_dead"
-	speak = list("EHEHEHEHEH", "eh?", "Me.", "MEEEEEEEEEEEEEE", "Me?", "Me!", "Beeee!", "Be!", "BEEEEEEEEEE", "Bee!", "Be?", "Eh!", "Meeee...", "Beeeee...", "Beedaun." = 0.0000001)
+	speak = list("EHEHEHEHEH", "eh?", "Me.", "MEEEEEEEEEEEEEE", "Me?", "Me!", "Beeee!", "Be!", "BEEEEEEEEEE", "Bee!", "Be?", "Eh!", "Meeee...", "Beeeee...", "Eh-meeeed..." = 0.01,"Beedaun." = 0.0000001)
 	speak_emote = list("brays")
 	emote_hear = list("brays")
 	emote_see = list("shakes its head", "stamps a foot", "glares around")
@@ -72,7 +72,7 @@
 /mob/living/simple_animal/hostile/retaliate/goat/Retaliate()
 	..()
 	if(stat == CONSCIOUS && prob(50))
-		visible_message(SPAN_WARNING("\The [src] gets an evil-looking gleam in their eye."))
+		visible_message(SPAN_WARNING("\The [src] gets an evil-looking gleam in his eye."))
 	isragemode = FALSE
 
 /mob/living/simple_animal/hostile/retaliate/goat/attackby(obj/item/O, mob/user)
@@ -82,7 +82,7 @@
 			if(isragemode)
 				to_chat(user, SPAN_NOTICE("\The [src] already angry."))
 				return
-			user.visible_message(SPAN_WARNING("[user] gives some something to \the [src]."))
+			user.visible_message(SPAN_WARNING("[user] gives something to \the [src]."))
 			to_chat(user, SPAN_WARNING("Better run away now!"))
 			Retaliate()
 		else if(istype(O, /obj/item/weapon/reagent_containers/glass))
