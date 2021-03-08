@@ -175,14 +175,9 @@
 		return
 
 	if(world.time < next_fire_time)
-		if (world.time % 3) //to prevent spam
+		if(world.time % 3) //to prevent spam
 			to_chat(user, "<span class='warning'>[src] is not ready to fire again!</span>")
 		return
-
-	var/shoot_time = (burst - 1)* burst_delay
-	//user.setClickCooldown(shoot_time) //no clicking on things while shooting
-	//user.setMoveCooldown(shoot_time) //no moving while shooting either
-	next_fire_time = world.time + shoot_time
 
 	var/held_twohanded = (user.can_wield_item(src) && src.is_held_twohanded(user))
 
@@ -210,10 +205,6 @@
 			user.last_mouse_target = get_turf(user.last_mouse_target)
 			pointblank = 0
 
-
-	//update timing
-	//user.setClickCooldown(DEFAULT_QUICK_COOLDOWN)
-	//user.setMoveCooldown(move_delay)
 	next_fire_time = world.time + fire_delay
 
 //obtains the next projectile to fire
