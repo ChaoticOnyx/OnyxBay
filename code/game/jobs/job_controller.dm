@@ -398,21 +398,20 @@ var/global/datum/controller/occupations/job_master
 					AssignRole(player, "Assistant")
 
 	//Final pass - first deal with the empty job group, otherwise send any leftovers to the lobby
-		final_pass: //this is a loop label
-			for(var/mob/new_player/player in unassigned)
-				if(player.client.prefs.alternate_option == GET_EMPTY_JOB)
-					for(var/level = 1 to 3)
-						for(var/datum/job/job in shuffledoccupations)
-							if(job.current_positions) //already someone in this job title
-								continue
-							if(AssignRole(player, job))
-								unassigned -= player
-								continue final_pass //move on to the next player entirely
-				if(player.client.prefs.alternate_option == RETURN_TO_LOBBY)
-					player.ready = 0
-					player.new_player_panel_proc()
-					unassigned -= player
-			return 1
+		for(var/mob/new_player/player in unassigned)
+			if(player.client.prefs.alternate_option == GET_EMPTY_JOB)
+				for(var/level = 1 to 3)
+					for(var/datum/job/job in shuffledoccupations)
+						if(job.current_positions) //already someone in this job title
+							continue
+						if(AssignRole(player, job))
+							unassigned -= player
+							break
+			if(player.client.prefs.alternate_option == RETURN_TO_LOBBY)
+				player.ready = 0
+				player.new_player_panel_proc()
+				unassigned -= player
+		return 1
 
 
 	proc/EquipRank(var/mob/living/carbon/human/H, var/rank, var/joined_late = 0)
