@@ -7,7 +7,7 @@
 		return
 	if(!islist(predicates))
 		predicates = list(predicates)
-	for(var/area/A)
+	for(var/area/A in world)
 		if(all_predicates_true(list(A), predicates))
 			. += A
 
@@ -49,10 +49,19 @@
 	if(turfs && turfs.len)
 		return pick(turfs)
 
-/proc/pick_area_turf(areatype, list/predicates)
-	var/list/turfs = get_area_turfs(areatype, predicates)
+/proc/pick_area_turf(area/A, list/predicates)
+	var/list/turfs = get_area_turfs(A, predicates)
 	if(turfs && turfs.len)
 		return pick(turfs)
+
+/proc/pick_area_by_type(areatype, list/predicates)
+	. = new /list()
+
+	for(var/area/A in world)
+		if(istype(A, areatype) && all_predicates_true(list(A), predicates))
+			. |= A
+
+	return pick(.)
 
 /proc/pick_area(list/predicates)
 	var/list/areas = get_filtered_areas(predicates)
