@@ -71,16 +71,16 @@
 
 /datum/recipe/proc/check_items(obj/container as obj)
 	. = 1
-	if (items && items.len)
+	if (length(items))
 		var/list/checklist = list()
 		checklist = items.Copy() // You should really trust Copy
-		for(var/obj/O in container.InsertedContents())
-			if(istype(O,/obj/item/weapon/reagent_containers/food/snacks/grown))
+		for(var/obj/item/I in container.InsertedContents())
+			if(istype(I,/obj/item/weapon/reagent_containers/food/snacks/grown))
 				continue // Fruit is handled in check_fruit().
 			var/found = 0
-			for(var/i = 1; i < checklist.len+1; i++)
+			for(var/i in 1 to length(checklist))
 				var/item_type = checklist[i]
-				if (istype(O,item_type))
+				if (istype(I.return_item(),item_type))
 					checklist.Cut(i, i+1)
 					found = 1
 					break
@@ -93,9 +93,9 @@
 //general version
 /datum/recipe/proc/make(obj/container as obj)
 	var/obj/result_obj = new result(container)
-	for (var/obj/O in (container.InsertedContents()-result_obj))
-		O.reagents.trans_to_obj(result_obj, O.reagents.total_volume)
-		qdel(O)
+	for (var/obj/item/I in (container.InsertedContents()-result_obj))
+		I.return_item().reagents.trans_to_obj(result_obj, I.return_item().reagents.total_volume)
+		qdel(I)
 	container.reagents.clear_reagents()
 	return result_obj
 
@@ -106,15 +106,16 @@
 
 		return
 	var/obj/result_obj = new result(container)
-	for (var/obj/O in (container.InsertedContents()-result_obj))
+	for (var/obj/item/I in (container.InsertedContents()-result_obj))
+		var/obj/item/O = I.return_item()
 		if (O.reagents)
 			O.reagents.del_reagent(/datum/reagent/nutriment)
 			O.reagents.update_total()
 			O.reagents.trans_to_obj(result_obj, O.reagents.total_volume)
-		if(istype(O,/obj/item/weapon/holder/))
-			var/obj/item/weapon/holder/H = O
+		if(istype(I,/obj/item/weapon/holder/))
+			var/obj/item/weapon/holder/H = I
 			H.destroy_all()
-		qdel(O)
+		qdel(I)
 	container.reagents.clear_reagents()
 	return result_obj
 
