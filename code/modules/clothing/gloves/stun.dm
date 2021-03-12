@@ -25,6 +25,11 @@
 	armor = base_gloves.armor
 	base_gloves.forceMove(src)
 
+/obj/item/clothing/gloves/stun/Destroy()
+	QDEL_NULL(bcell)
+	QDEL_NULL(base_gloves)
+	return ..()
+
 /obj/item/clothing/gloves/stun/update_icon(needs_updating=FALSE)
 	..()
 	if(bcell)
@@ -54,6 +59,7 @@
 		base_gloves.update_icon(TRUE)
 		new /obj/item/stack/cable_coil(user.loc, 15, wire_color)
 		user.drop_from_inventory(base_gloves)
+		base_gloves = null
 		qdel(src)
 		return
 
