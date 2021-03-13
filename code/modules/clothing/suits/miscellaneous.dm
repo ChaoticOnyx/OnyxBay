@@ -601,7 +601,7 @@
 	icon_state = "lizsuit"
 
 
-/obj/item/clothing/suit/storage/hooded/goatskincape
+/obj/item/clothing/suit/storage/hooded/goathidecape
 	name = "goat hide cape"
 	desc = "A goat hide. You can put it on to look like a true barbarian."
 	icon_state = "goatskincape"
@@ -611,10 +611,10 @@
 	min_cold_protection_temperature = ARMOR_MIN_COLD_PROTECTION_TEMPERATURE
 	armor = list(melee = 25, bullet = 10, laser = 0, energy = 40, bomb = 0, bio = 10, rad = 0)
 	action_button_name = "Toggle hood"
-	hoodtype = /obj/item/clothing/head/goatskinhood
+	hoodtype = /obj/item/clothing/head/goatcapehood
 	siemens_coefficient = 0.6
 
-/obj/item/clothing/head/goatskinhood
+/obj/item/clothing/head/goatcapehood
 	name = "goat head hood"
 	desc = "A goat head."
 	icon_state = "goatskincape_hood"
