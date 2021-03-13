@@ -1,0 +1,25 @@
+tags:
+    bugfix: bugfix
+    tweak: tweak
+    soundadd: soundadd
+    sounddel: sounddel
+    rscdel: rscdel
+    rscadd: rscadd
+    imageadd: imageadd
+    imagedel: imagedel
+    maptweak: maptweak
+    spellcheck: spellcheck
+    balance: balance
+
+defaults:
+    bugfix: исправлено несколько вещей
+    tweak: подправлено несколько вещей
+    soundadd: добавлены новые звуки
+    sounddel: удалены старые звуки
+    rscdel: удалено что-то старое
+    rscadd: добавлено что-то новое
+    imageadd: добавены новые иконки
+    imagedel: удалены старые иконки
+    maptweak: изменено несколько карт
+    spellcheck: исправлено несколько опечяток
+    balance: перебалансировано что-то

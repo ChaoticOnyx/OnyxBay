@@ -209,7 +209,7 @@ function run_code_tests {
     run_test "check tags" "python2 tools/TagMatcher/tag-matcher.py ."
     run_test "check punctuation" "python2 tools/PunctuationChecker/punctuation-checker.py ."
     run_test "check icon state limit" "python2 tools/dmitool/check_icon_state_limit.py ."
-    run_test_ci "check changelog builds" "python2 tools/GenerateChangelog/ss13_genchangelog.py html/changelog.html html/changelogs"
+    run_test_ci "check changelog builds" "python2 tools/changelog/ss13_genchangelog.py html/changelog.html html/changelogs"
 }
 
 function run_web_tests {
