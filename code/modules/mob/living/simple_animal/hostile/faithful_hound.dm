@@ -11,10 +11,7 @@
 	attacktext = "bites"
 	attack_sound = 'sound/weapons/bite.ogg'
 	faction = "neutral"
-	density = 0
-	stop_automated_movement = 1
-	wander = 0
-	anchored = 1
+
 	var/password
 	var/list/allowed_mobs = list() //Who we allow past us
 	var/last_check = 0
