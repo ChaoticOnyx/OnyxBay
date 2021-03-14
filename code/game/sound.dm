@@ -40,7 +40,11 @@ GLOBAL_LIST_INIT(far_shot_sound,list('sound/effects/weapons/gun/far_fire1.ogg','
 
 GLOBAL_LIST_INIT(f_cheavyb_sound,list('sound/effects/emotes/f_cheavyb1.ogg'))
 
-GLOBAL_LIST_INIT(f_cough_sound,list('sound/effects/emotes/f_cough1.ogg','sound/effects/emotes/f_cough2.ogg'))
+GLOBAL_LIST_INIT(f_cough_sound,list('sound/effects/emotes/f_cough1.ogg','sound/effects/emotes/f_cough2.ogg','sound/effects/emotes/f_cough3.ogg',
+									'sound/effects/emotes/f_cough4.ogg','sound/effects/emotes/f_cough5.ogg','sound/effects/emotes/f_cough6.ogg',
+									'sound/effects/emotes/f_cough7.ogg'))
+
+GLOBAL_LIST_INIT(f_sneeze_sound,list('sound/effects/emotes/f_sneeze1.ogg','sound/effects/emotes/f_sneeze2.ogg','sound/effects/emotes/f_sneeze3.ogg'))
 
 GLOBAL_LIST_INIT(f_heavyb_sound,list('sound/effects/emotes/f_heavyb1.ogg','sound/effects/emotes/f_heavyb2.ogg','sound/effects/emotes/f_heavyb3.ogg',
 									'sound/effects/emotes/f_heavyb4.ogg','sound/effects/emotes/f_heavyb5.ogg','sound/effects/emotes/f_heavyb6.ogg',
@@ -55,7 +59,11 @@ GLOBAL_LIST_INIT(f_pain_sound,list('sound/effects/emotes/f_pain1.ogg','sound/eff
 
 GLOBAL_LIST_INIT(m_cheavyb_sound,list('sound/effects/emotes/m_cheavyb1.ogg','sound/effects/emotes/m_cheavyb2.ogg'))
 
-GLOBAL_LIST_INIT(m_cough_sound,list('sound/effects/emotes/m_cough1.ogg','sound/effects/emotes/m_cough2.ogg'))
+GLOBAL_LIST_INIT(m_sneeze_sound,list('sound/effects/emotes/m_sneeze1.ogg'))
+
+GLOBAL_LIST_INIT(m_cough_sound,list('sound/effects/emotes/m_cough1.ogg','sound/effects/emotes/m_cough2.ogg','sound/effects/emotes/m_cough3.ogg',
+									'sound/effects/emotes/m_cough4.ogg','sound/effects/emotes/m_cough5.ogg','sound/effects/emotes/m_cough6.ogg',
+									'sound/effects/emotes/m_cough7.ogg','sound/effects/emotes/m_cough8.ogg'))
 
 GLOBAL_LIST_INIT(m_heavyb_sound,list('sound/effects/emotes/m_heavyb1.ogg','sound/effects/emotes/m_heavyb2.ogg','sound/effects/emotes/m_heavyb3.ogg',
 									'sound/effects/emotes/m_heavyb4.ogg','sound/effects/emotes/m_heavyb5.ogg','sound/effects/emotes/m_heavyb6.ogg',
@@ -451,10 +459,12 @@ var/const/FALLOFF_SOUNDS = 0.5
 			if ("far_fire")				soundin = pick(GLOB.far_fire_sound)
 			if ("female_closed_breath")	soundin = pick(GLOB.f_cheavyb_sound)
 			if ("female_cough")			soundin = pick(GLOB.f_cough_sound)
+			if ("female_sneeze")		soundin = pick(GLOB.f_sneeze_sound)
 			if ("female_breath")		soundin = pick(GLOB.f_heavyb_sound)
 			if ("female_pain")			soundin = pick(GLOB.f_pain_sound)
 			if ("male_closed_breath")	soundin = pick(GLOB.m_cheavyb_sound)
 			if ("male_cough")			soundin = pick(GLOB.m_cough_sound)
+			if ("male_sneeze")			soundin = pick(GLOB.m_sneeze_sound)
 			if ("male_breath")			soundin = pick(GLOB.m_heavyb_sound)
 			if ("male_pain")			soundin = pick(GLOB.m_pain_sound)
 			if ("ai_ambient")			soundin = pick(GLOB.ai_ambient_sound)
