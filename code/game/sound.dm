@@ -83,7 +83,9 @@ GLOBAL_LIST_INIT(science_ambient_sound,list('sound/ambience/science/amb1.ogg','s
 GLOBAL_LIST_INIT(ai_ambient_sound,list('sound/ambience/ai/amb1.ogg','sound/ambience/ai/amb2.ogg','sound/ambience/ai/amb3.ogg',
 										'sound/ambience/ai/amb4.ogg','sound/ambience/ai/amb5.ogg','sound/ambience/ai/amb6.ogg',
 										'sound/ambience/ai/amb7.ogg','sound/ambience/ai/amb8.ogg','sound/ambience/ai/amb9.ogg',
-										'sound/ambience/ai/amb10.ogg','sound/ambience/ai/amb12.ogg'))
+										'sound/ambience/ai/amb10.ogg','sound/ambience/ai/amb12.ogg','sound/ambience/ai/amb13.ogg',
+										'sound/ambience/ai/amb14.ogg','sound/ambience/ai/amb15.ogg','sound/ambience/ai/amb16.ogg',
+										'sound/ambience/ai/amb17.ogg','sound/ambience/ai/amb18.ogg','sound/ambience/ai/amb19.ogg'))
 
 GLOBAL_LIST_INIT(maintenance_ambient_sound,list('sound/ambience/maintenance/amb1.ogg','sound/ambience/maintenance/amb2.ogg','sound/ambience/maintenance/amb3.ogg',
 												'sound/ambience/maintenance/amb4.ogg','sound/ambience/maintenance/amb5.ogg','sound/ambience/maintenance/amb6.ogg',
