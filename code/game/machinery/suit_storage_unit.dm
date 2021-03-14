@@ -975,6 +975,7 @@
 		if(allowed(usr))
 			locked = !locked
 			to_chat(usr, "You [locked ? "lock" : "unlock"] [src].")
+			playsound(src.loc, "[locked ? 'sound/effects/suit cycler/close1.ogg' : 'sound/effects/suit cycler/open1.ogg']", 70, 1)
 		else
 			to_chat(usr, FEEDBACK_ACCESS_DENIED)
 
