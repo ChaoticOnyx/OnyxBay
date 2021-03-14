@@ -337,9 +337,22 @@ GLOBAL_LIST_INIT(far_explosion_sound,list('sound/effects/explosions/far_explosio
 										'sound/effects/explosions/far_explosion40.ogg', 'sound/effects/explosions/far_explosion41.ogg', 'sound/effects/explosions/far_explosion42.ogg',
 										'sound/effects/explosions/far_explosion43.ogg', 'sound/effects/explosions/far_explosion44.ogg', 'sound/effects/explosions/far_explosion45.ogg',
 										'sound/effects/explosions/far_explosion46.ogg', 'sound/effects/explosions/far_explosion47.ogg', 'sound/effects/explosions/far_explosion48.ogg',
-										'sound/effects/explosions/far_explosion49.ogg', 'sound/effects/explosions/far_explosion50.ogg'))
+										'sound/effects/explosions/far_explosion49.ogg', 'sound/effects/explosions/far_explosion50.ogg','sound/effects/explosions/far_explosion51.ogg',
+										'sound/effects/explosions/far_explosion52.ogg','sound/effects/explosions/far_explosion53.ogg','sound/effects/explosions/far_explosion54.ogg',
+										'sound/effects/explosions/far_explosion55.ogg','sound/effects/explosions/far_explosion56.ogg','sound/effects/explosions/far_explosion57.ogg',
+										'sound/effects/explosions/far_explosion58.ogg','sound/effects/explosions/far_explosion59.ogg','sound/effects/explosions/far_explosion60.ogg',
+										'sound/effects/explosions/far_explosion61.ogg','sound/effects/explosions/far_explosion62.ogg','sound/effects/explosions/far_explosion63.ogg',
+										'sound/effects/explosions/far_explosion64.ogg','sound/effects/explosions/far_explosion65.ogg','sound/effects/explosions/far_explosion66.ogg',
+										'sound/effects/explosions/far_explosion67.ogg','sound/effects/explosions/far_explosion68.ogg','sound/effects/explosions/far_explosion69.ogg',
+										'sound/effects/explosions/far_explosion70.ogg','sound/effects/explosions/far_explosion71.ogg','sound/effects/explosions/far_explosion72.ogg',
+										'sound/effects/explosions/far_explosion73.ogg','sound/effects/explosions/far_explosion74.ogg','sound/effects/explosions/far_explosion75.ogg',
+										'sound/effects/explosions/far_explosion76.ogg','sound/effects/explosions/far_explosion77.ogg','sound/effects/explosions/far_explosion78.ogg',
+										'sound/effects/explosions/far_explosion79.ogg'))
 GLOBAL_LIST_INIT(chisel_sound,list('sound/weapons/chisel1.ogg','sound/weapons/chisel2.ogg','sound/weapons/chisel3.ogg',
 								'sound/weapons/chisel4.ogg','sound/weapons/chisel5.ogg','sound/weapons/chisel6.ogg'))
+
+GLOBAL_LIST_INIT(fuel_explosion_sound,list('sound/effects/explosions/fuel_explosion1.ogg','sound/effects/explosions/fuel_explosion2.ogg','sound/effects/explosions/fuel_explosion3.ogg',
+											'sound/effects/explosions/fuel_explosion4.ogg','sound/effects/explosions/fuel_explosion5.ogg','sound/effects/explosions/fuel_explosion6.ogg'))
 
 /proc/playsound(atom/source, soundin, vol as num, vary, extrarange as num, falloff, is_global, frequency, is_ambiance = 0)
 
@@ -525,6 +538,7 @@ var/const/FALLOFF_SOUNDS = 0.5
 			if ("chop") 				soundin = pick(GLOB.chop_sound)
 			if ("far_explosion") 		soundin = pick(GLOB.far_explosion_sound)
 			if ("chisel")				soundin = pick(GLOB.chisel_sound)
+			if ("fuel_explosion")		soundin = pick(GLOB.fuel_explosion_sound)
 			else crash_with("Unknown sound: [soundin]")
 
 	return soundin
