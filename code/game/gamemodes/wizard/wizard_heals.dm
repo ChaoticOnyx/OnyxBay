@@ -21,7 +21,7 @@
 			E.status &= ~ORGAN_BROKEN
 			E.stage = 0
 	for(var/A in internal_organs)
-		if(BP_IS_ROBOTIC(regen_organ))
-			continue
 		var/obj/item/organ/internal/E = A
+		if(BP_IS_ROBOTIC(E))
+			continue
 		E.damage = max(0, E.damage - heal.amt_organ)
