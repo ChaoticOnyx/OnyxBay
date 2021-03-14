@@ -82,11 +82,13 @@ GLOBAL_LIST_INIT(m_pain_sound,list('sound/effects/emotes/m_pain1.ogg','sound/eff
 GLOBAL_LIST_INIT(global_ambient_sound,list('sound/ambience/global/amb1.ogg','sound/ambience/global/amb2.ogg','sound/ambience/global/amb3.ogg',
 										'sound/ambience/global/amb4.ogg','sound/ambience/global/amb5.ogg','sound/ambience/global/amb6.ogg',
 										'sound/ambience/global/amb7.ogg','sound/ambience/global/amb8.ogg','sound/ambience/global/amb9.ogg',
-										'sound/ambience/global/amb10.ogg'))
+										'sound/ambience/global/amb10.ogg','sound/ambience/global/amb11.ogg','sound/ambience/global/amb12.ogg',
+										'sound/ambience/global/amb13.ogg','sound/ambience/global/amb14.ogg'))
 
 GLOBAL_LIST_INIT(science_ambient_sound,list('sound/ambience/science/amb1.ogg','sound/ambience/science/amb2.ogg','sound/ambience/science/amb3.ogg',
 										'sound/ambience/science/amb4.ogg','sound/ambience/science/amb5.ogg','sound/ambience/science/amb6.ogg',
-										'sound/ambience/science/amb7.ogg','sound/ambience/science/amb8.ogg'))
+										'sound/ambience/science/amb7.ogg','sound/ambience/science/amb8.ogg','sound/ambience/science/amb9.ogg',
+										'sound/ambience/science/amb10.ogg'))
 
 GLOBAL_LIST_INIT(ai_ambient_sound,list('sound/ambience/ai/amb1.ogg','sound/ambience/ai/amb2.ogg','sound/ambience/ai/amb3.ogg',
 										'sound/ambience/ai/amb4.ogg','sound/ambience/ai/amb5.ogg','sound/ambience/ai/amb6.ogg',
@@ -104,7 +106,14 @@ GLOBAL_LIST_INIT(maintenance_ambient_sound,list('sound/ambience/maintenance/amb1
 												'sound/ambience/maintenance/amb20.ogg','sound/ambience/maintenance/amb21.ogg','sound/ambience/maintenance/amb22.ogg',
 												'sound/ambience/maintenance/amb23.ogg','sound/ambience/maintenance/amb24.ogg','sound/ambience/maintenance/amb25.ogg',
 												'sound/ambience/maintenance/amb26.ogg','sound/ambience/maintenance/amb27.ogg','sound/ambience/maintenance/amb28.ogg',
-												'sound/ambience/maintenance/amb29.ogg'))
+												'sound/ambience/maintenance/amb29.ogg','sound/ambience/maintenance/amb30.ogg','sound/ambience/maintenance/amb31.ogg',
+												'sound/ambience/maintenance/amb32.ogg','sound/ambience/maintenance/amb33.ogg','sound/ambience/maintenance/amb34.ogg',
+												'sound/ambience/maintenance/amb35.ogg','sound/ambience/maintenance/amb36.ogg','sound/ambience/maintenance/amb37.ogg',
+												'sound/ambience/maintenance/amb38.ogg','sound/ambience/maintenance/amb39.ogg','sound/ambience/maintenance/amb40.ogg',
+												'sound/ambience/maintenance/amb42.ogg','sound/ambience/maintenance/amb43.ogg','sound/ambience/maintenance/amb44.ogg',
+												'sound/ambience/maintenance/amb45.ogg','sound/ambience/maintenance/amb46.ogg','sound/ambience/maintenance/amb47.ogg',
+												'sound/ambience/maintenance/amb48.ogg','sound/ambience/maintenance/amb49.ogg','sound/ambience/maintenance/amb50.ogg',
+												'sound/ambience/maintenance/amb51.ogg'))
 
 GLOBAL_LIST_INIT(engineering_ambient_sound,list('sound/ambience/engineering/amb1.ogg','sound/ambience/engineering/amb2.ogg','sound/ambience/engineering/amb3.ogg',
 												'sound/ambience/engineering/amb4.ogg','sound/ambience/engineering/amb5.ogg','sound/ambience/engineering/amb6.ogg',
@@ -115,7 +124,8 @@ GLOBAL_LIST_INIT(engineering_ambient_sound,list('sound/ambience/engineering/amb1
 												'sound/ambience/engineering/amb20.ogg','sound/ambience/engineering/amb21.ogg','sound/ambience/engineering/amb22.ogg',
 												'sound/ambience/engineering/amb23.ogg','sound/ambience/engineering/amb24.ogg','sound/ambience/engineering/amb25.ogg',
 												'sound/ambience/engineering/amb26.ogg','sound/ambience/engineering/amb27.ogg','sound/ambience/engineering/amb28.ogg',
-												'sound/ambience/engineering/amb29.ogg','sound/ambience/engineering/amb30.ogg'))
+												'sound/ambience/engineering/amb29.ogg','sound/ambience/engineering/amb30.ogg','sound/ambience/engineering/amb31.ogg',
+												'sound/ambience/engineering/amb32.ogg','sound/ambience/engineering/amb33.ogg','sound/ambience/engineering/amb34.ogg'))
 
 GLOBAL_LIST_INIT(space_ambient_sound,list('sound/ambience/space/exterior1.ogg','sound/ambience/space/exterior2.ogg','sound/ambience/space/exterior3.ogg',
 										'sound/ambience/space/exterior4.ogg','sound/ambience/space/exterior5.ogg','sound/ambience/space/exterior6.ogg',
