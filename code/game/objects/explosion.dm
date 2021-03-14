@@ -29,8 +29,8 @@ proc/explosion(turf/epicenter, devastation_range, heavy_impact_range, light_impa
 		// Calculate far explosion sound range. Only allow the sound effect for heavy/devastating explosions.
 		// 3/7/14 will calculate to 80 + 35
 		var/far_dist = 0
-		far_dist += heavy_impact_range * 40
-		far_dist += devastation_range * 60
+		far_dist += heavy_impact_range * 20
+		far_dist += devastation_range * 30
 		for(var/mob/M in GLOB.player_list)
 			if(M.z == epicenter.z)
 				var/turf/M_turf = get_turf(M)

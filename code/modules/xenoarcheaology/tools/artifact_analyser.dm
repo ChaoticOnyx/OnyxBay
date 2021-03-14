@@ -89,6 +89,7 @@
 		if(!owned_scanner)
 			reconnect_scanner()
 		if(owned_scanner)
+			playsound(src.loc, 'sound/signals/processing7.ogg', 50)
 			var/artifact_in_use = 0
 			for(var/obj/O in owned_scanner.loc)
 				if(O == owned_scanner)

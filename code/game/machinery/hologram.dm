@@ -77,6 +77,7 @@ var/const/HOLOPAD_MODE = RANGE_BASED
 		return
 	switch(alert(user,"Would you like to request an AI's presence or establish communications with another pad?", "Holopad","AI","Holocomms","Cancel"))
 		if("AI")
+			playsound(src.loc, 'sound/signals/processing19.ogg', 50)
 			if(last_request + 200 < world.time) //don't spam the AI with requests you jerk!
 				last_request = world.time
 				to_chat(user, "<span class='notice'>You request an AI's presence.</span>")
@@ -111,6 +112,7 @@ var/const/HOLOPAD_MODE = RANGE_BASED
 					to_chat(user, "<span class='info'>The pad flashes a busy sign. Maybe you should try again later..</span>")
 					return
 				if(targetpad)
+					playsound(src.loc, 'sound/signals/processing19.ogg', 50)
 					make_call(targetpad, user)
 			else
 				to_chat(user, "<span class='notice'>A request for holographic communication was already sent recently.</span>")
@@ -121,7 +123,7 @@ var/const/HOLOPAD_MODE = RANGE_BASED
 	targetpad.sourcepad = src //This marks the holopad you are making the call from
 	targetpad.caller_id = user //This marks you as the caller
 	targetpad.incoming_connection = 1
-	playsound(targetpad.loc, 'sound/machines/chime.ogg', 25, 5)
+	playsound(targetpad.loc, 'sound/signals/processing19.ogg', 50)
 	targetpad.icon_state = "[targetpad.base_icon]1"
 	targetpad.audible_message("<b>\The [src]</b> announces, \"Incoming communications request from [targetpad.sourcepad.loc.loc].\"")
 	to_chat(user, "<span class='notice'>Trying to establish a connection to the holopad in [targetpad.loc.loc]... Please await confirmation from recipient.</span>")

@@ -88,14 +88,16 @@ GLOBAL_LIST_INIT(global_ambient_sound,list('sound/ambience/global/amb1.ogg','sou
 GLOBAL_LIST_INIT(science_ambient_sound,list('sound/ambience/science/amb1.ogg','sound/ambience/science/amb2.ogg','sound/ambience/science/amb3.ogg',
 										'sound/ambience/science/amb4.ogg','sound/ambience/science/amb5.ogg','sound/ambience/science/amb6.ogg',
 										'sound/ambience/science/amb7.ogg','sound/ambience/science/amb8.ogg','sound/ambience/science/amb9.ogg',
-										'sound/ambience/science/amb10.ogg'))
+										'sound/ambience/science/amb10.ogg','sound/ambience/science/amb11.ogg','sound/ambience/science/amb12.ogg'))
 
 GLOBAL_LIST_INIT(ai_ambient_sound,list('sound/ambience/ai/amb1.ogg','sound/ambience/ai/amb2.ogg','sound/ambience/ai/amb3.ogg',
 										'sound/ambience/ai/amb4.ogg','sound/ambience/ai/amb5.ogg','sound/ambience/ai/amb6.ogg',
 										'sound/ambience/ai/amb7.ogg','sound/ambience/ai/amb8.ogg','sound/ambience/ai/amb9.ogg',
 										'sound/ambience/ai/amb10.ogg','sound/ambience/ai/amb12.ogg','sound/ambience/ai/amb13.ogg',
 										'sound/ambience/ai/amb14.ogg','sound/ambience/ai/amb15.ogg','sound/ambience/ai/amb16.ogg',
-										'sound/ambience/ai/amb17.ogg','sound/ambience/ai/amb18.ogg','sound/ambience/ai/amb19.ogg'))
+										'sound/ambience/ai/amb17.ogg','sound/ambience/ai/amb18.ogg','sound/ambience/ai/amb19.ogg',
+										'sound/ambience/ai/amb20.ogg','sound/ambience/ai/amb21.ogg','sound/ambience/ai/amb22.ogg',
+										'sound/ambience/ai/amb23.ogg'))
 
 GLOBAL_LIST_INIT(maintenance_ambient_sound,list('sound/ambience/maintenance/amb1.ogg','sound/ambience/maintenance/amb2.ogg','sound/ambience/maintenance/amb3.ogg',
 												'sound/ambience/maintenance/amb4.ogg','sound/ambience/maintenance/amb5.ogg','sound/ambience/maintenance/amb6.ogg',
@@ -364,6 +366,16 @@ GLOBAL_LIST_INIT(chisel_sound,list('sound/weapons/chisel1.ogg','sound/weapons/ch
 GLOBAL_LIST_INIT(fuel_explosion_sound,list('sound/effects/explosions/fuel_explosion1.ogg','sound/effects/explosions/fuel_explosion2.ogg','sound/effects/explosions/fuel_explosion3.ogg',
 											'sound/effects/explosions/fuel_explosion4.ogg','sound/effects/explosions/fuel_explosion5.ogg','sound/effects/explosions/fuel_explosion6.ogg'))
 
+GLOBAL_LIST_INIT(device_trr_sound,list('sound/signals/trr1.ogg','sound/signals/trr2.ogg','sound/signals/trr3.ogg',
+										'sound/signals/trr4.ogg','sound/signals/trr5.ogg','sound/signals/trr6.ogg',
+										'sound/signals/trr7.ogg','sound/signals/trr8.ogg'))
+
+GLOBAL_LIST_INIT(compbeep_sound,list('sound/effects/compbeep1.ogg','sound/effects/compbeep2.ogg','sound/effects/compbeep3.ogg',
+									'sound/effects/compbeep4.ogg','sound/effects/compbeep5.ogg'))
+
+GLOBAL_LIST_INIT(radio_sound,list('sound/signals/radio1.ogg','sound/signals/radio2.ogg','sound/signals/radio3.ogg',
+									'sound/signals/radio4.ogg','sound/signals/radio5.ogg'))
+
 /proc/playsound(atom/source, soundin, vol as num, vary, extrarange as num, falloff, is_global, frequency, is_ambiance = 0)
 
 	soundin = get_sfx(soundin) // same sound for everyone
@@ -549,6 +561,9 @@ var/const/FALLOFF_SOUNDS = 0.5
 			if ("far_explosion") 		soundin = pick(GLOB.far_explosion_sound)
 			if ("chisel")				soundin = pick(GLOB.chisel_sound)
 			if ("fuel_explosion")		soundin = pick(GLOB.fuel_explosion_sound)
+			if ("device_trr")			soundin = pick(GLOB.device_trr_sound)
+			if ("compbeep")				soundin = pick(GLOB.compbeep_sound)
+			if ("radio")				soundin = pick(GLOB.radio_sound)
 			else crash_with("Unknown sound: [soundin]")
 
 	return soundin
