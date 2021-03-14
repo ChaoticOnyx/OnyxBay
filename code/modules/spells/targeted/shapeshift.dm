@@ -179,7 +179,7 @@
 	share_damage = 0
 	level_max = list(Sp_TOTAL = 3, Sp_SPEED = 2, Sp_POWER = 2)
 
-	newVars = list("name" = "corrupted soul")
+	newVars = list("name" = "corrupted soul", "speed" = -10, "maxHealth" = 200, "health" = 200)
 
 	hud_state = "wiz_corrupt"
 
@@ -194,8 +194,9 @@
 		if(2)
 			newVars = list("name" = "\proper corruption incarnate",
 						"melee_damage_upper" = 80,
-						"resistance" = 15,
-						"health" = 200,
-						"maxHealth" = 200)
+						"resistance" = 25,
+						"health" = 400,
+						"speed" = -20,
+						"maxHealth" = 400)
 			duration = 0
 			return "You revel in the corruption. There is no turning back."

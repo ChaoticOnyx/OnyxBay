@@ -56,15 +56,17 @@
 	level_max = list(Sp_TOTAL = 4, Sp_SPEED = 2, Sp_POWER = 3)
 
 	summon_type = list(/mob/living/simple_animal/hostile/carp)
-
+	/var/health = 50
 	hud_state = "wiz_carp"
 
-	newVars = list("melee_damage_lower" = 0, "melee_damage_upper" = 0, "break_stuff_probability" = 0)
+	newVars = list("melee_damage_lower" = 0, "melee_damage_upper" = 0,"maxHealth" = 100, "health" = 100)
 
 /spell/aoe_turf/conjure/mirage/empower_spell()
 	if(!..())
 		return 0
 
 	summon_amt++
+	health = health + 50
+	newVars = list("melee_damage_lower" = 0, "melee_damage_upper" = 0, "break_stuff_probability" = 0, "maxHealth" = health, "health" = health)
 
 	return "You now summon [summon_amt] mirages per spellcast."
