@@ -210,9 +210,9 @@ BLIND     // can't see anything
 	w_class = ITEM_SIZE_SMALL
 	icon = 'icons/obj/clothing/gloves.dmi'
 	siemens_coefficient = 0.75
-	var/wired = 0
-	var/obj/item/weapon/cell/cell = 0
-	var/clipped = 0
+	var/wired = FALSE
+	var/wire_color
+	var/clipped = FALSE
 	var/obj/item/clothing/ring/ring = null		//Covered ring
 	var/mob/living/carbon/human/wearer = null	//Used for covered rings when dropping
 	body_parts_covered = HANDS
@@ -228,45 +228,72 @@ BLIND     // can't see anything
 	. = ..()
 
 /obj/item/clothing/gloves/update_clothing_icon()
-	if (ismob(src.loc))
+	if(ismob(src.loc))
 		var/mob/M = src.loc
 		M.update_inv_gloves()
 
-/obj/item/clothing/gloves/emp_act(severity)
-	if(cell)
-		//why is this not part of the powercell code?
-		cell.charge -= 1000 / severity
-		if (cell.charge < 0)
-			cell.charge = 0
-	..()
+/obj/item/clothing/gloves/update_icon(needs_updating=FALSE)
+	if(!needs_updating)
+		return ..()
+
+	overlays.Cut()
+
+	if(wired)
+		overlays += image(icon, "gloves_wire")
 
 /obj/item/clothing/gloves/get_fibers()
 	return "material from a pair of [name]."
 
 // Called just before an attack_hand(), in mob/UnarmedAttack()
 /obj/item/clothing/gloves/proc/Touch(atom/A, proximity)
-	return 0 // return 1 to cancel attack_hand()
+	return FALSE // return TRUE to cancel attack_hand()
 
 /obj/item/clothing/gloves/attackby(obj/item/weapon/W, mob/user)
-	if(istype(W, /obj/item/weapon/wirecutters) || istype(W, /obj/item/weapon/scalpel))
-		if (clipped)
-			to_chat(user, "<span class='notice'>\The [src] have already been modified!</span>")
+	if(isWirecutter(W) || istype(W, /obj/item/weapon/scalpel))
+		if(wired)
+			wired = FALSE
+			update_icon(TRUE)
+			new /obj/item/stack/cable_coil(user.loc, 15, wire_color)
+			playsound(src.loc, 'sound/items/Wirecutter.ogg', 100, 1)
+			to_chat(user, SPAN("notice", "You remove the wires from \the [src]."))
+			return
+
+		if(clipped)
+			to_chat(user, SPAN("notice", "\The [src] have already been modified!"))
 			update_icon()
 			return
 
 		playsound(src.loc, 'sound/items/Wirecutter.ogg', 100, 1)
-		user.visible_message("<span class='warning'>\The [user] modifies \the [src] with \the [W].</span>","<span class='warning'>You modify \the [src] with \the [W].</span>")
+		user.visible_message(SPAN("warning", "\The [user] modifies \the [src] with \the [W]."), SPAN("warning", "You modify \the [src] with \the [W]."))
 
 		cut_fingertops() // apply change, so relevant xenos can wear these
+		return
+
+	if(isCoil(W) && !wired)
+		if(istype(src, /obj/item/clothing/gloves/rig))
+			to_chat(user, SPAN("notice", "That definitely won't work."))
+			return
+		var/obj/item/stack/cable_coil/C = W
+		if(C.use(15))
+			wired = TRUE
+			wire_color = C.color
+			update_icon(TRUE)
+			user.visible_message(SPAN("warning", "\The [user] attaches some wires to \the [W]."), SPAN("notice", "You attach some wires to \the [src]."))
+			return
+
+	if(istype(W, /obj/item/weapon/tape_roll) && wired)
+		user.visible_message(SPAN("warning", "\The [user] secures the wires on \the [src] with \the [W]."), SPAN("notice", "You secure the wires on \the [src] with \the [W]."))
+		user.drop_from_inventory(src)
+		new /obj/item/clothing/gloves/stun(src.loc, src)
 		return
 
 // Applies "clipped" and removes relevant restricted species from the list,
 // making them wearable by the specified species, does nothing if already cut
 /obj/item/clothing/gloves/proc/cut_fingertops()
-	if (clipped)
+	if(clipped)
 		return
 
-	clipped = 1
+	clipped = TRUE
 	name = "modified [name]"
 	desc = "[desc]<br>They have been modified to accommodate a different shape."
 	if("exclude" in species_restricted)
