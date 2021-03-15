@@ -1678,7 +1678,7 @@ area/rnd/test_area
 // Telecommunications Satellite
 
 /area/tcommsat
-	ambience = list("ai_ambient", "science_ambient")
+	ambience = list("ai_ambient", "comms_ambient")
 
 /area/tcommsat/entrance
 	name = "\improper Telecoms Teleporter"

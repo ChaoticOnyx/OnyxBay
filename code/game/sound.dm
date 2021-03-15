@@ -111,6 +111,13 @@ GLOBAL_LIST_INIT(ai_ambient_sound,list('sound/ambience/ai/amb1.ogg','sound/ambie
 										'sound/ambience/ai/amb20.ogg','sound/ambience/ai/amb21.ogg','sound/ambience/ai/amb22.ogg',
 										'sound/ambience/ai/amb23.ogg'))
 
+GLOBAL_LIST_INIT(comms_ambient_sound, list('sound/ambience/comms/amb1.ogg','sound/ambience/comms/amb2.ogg','sound/ambience/comms/amb3.ogg',
+										'sound/ambience/comms/amb4.ogg','sound/ambience/comms/amb5.ogg','sound/ambience/comms/amb6.ogg',
+										'sound/ambience/comms/amb7.ogg','sound/ambience/comms/amb8.ogg','sound/ambience/comms/amb9.ogg',
+										'sound/ambience/comms/amb10.ogg','sound/ambience/comms/amb12.ogg','sound/ambience/comms/amb13.ogg',
+										'sound/ambience/comms/amb14.ogg','sound/ambience/comms/amb15.ogg','sound/ambience/comms/amb16.ogg',
+										'sound/ambience/comms/amb17.ogg','sound/ambience/comms/amb18.ogg'))
+
 GLOBAL_LIST_INIT(maintenance_ambient_sound,list('sound/ambience/maintenance/amb1.ogg','sound/ambience/maintenance/amb2.ogg','sound/ambience/maintenance/amb3.ogg',
 												'sound/ambience/maintenance/amb4.ogg','sound/ambience/maintenance/amb5.ogg','sound/ambience/maintenance/amb6.ogg',
 												'sound/ambience/maintenance/amb7.ogg','sound/ambience/maintenance/amb8.ogg','sound/ambience/maintenance/amb9.ogg',
@@ -525,8 +532,9 @@ var/const/FALLOFF_SOUNDS = 0.5
 			if ("male_sneeze")			soundin = pick(GLOB.m_sneeze_sound)
 			if ("male_breath")			soundin = pick(GLOB.m_heavyb_sound)
 			if ("male_pain")			soundin = pick(GLOB.m_pain_sound)
-			if ("male_long_scream")	soundin = pick(GLOB.m_long_scream_sound)
+			if ("male_long_scream")		soundin = pick(GLOB.m_long_scream_sound)
 			if ("ai_ambient")			soundin = pick(GLOB.ai_ambient_sound)
+			if ("comms_ambient")		soundin = pick(GLOB.comms_ambient_sound)
 			if ("science_ambient")		soundin = pick(GLOB.science_ambient_sound)
 			if ("maintenance_ambient")	soundin = pick(GLOB.maintenance_ambient_sound)
 			if ("engineering_ambient")	soundin = pick(GLOB.engineering_ambient_sound)
