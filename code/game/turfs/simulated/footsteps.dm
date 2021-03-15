@@ -146,7 +146,7 @@
 	if (MUTATION_HULK in mutations)
 		chance += 15
 
-	if (!prob(25))
+	if (!prob(chance))
 		return
 
 	if (!(get_area(src).type in typesof(/area/maintenance)))
