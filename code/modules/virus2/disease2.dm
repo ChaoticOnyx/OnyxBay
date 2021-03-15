@@ -26,6 +26,9 @@ LEGACY_RECORD_STRUCTURE(virus_records, virus_record)
 			if(D.stage == i)
 				effects_sorted.Add(D)
 	effects = effects_sorted
+	if(!antigen)
+		antigen = list(pick(ALL_ANTIGENS))
+		antigen |= pick(ALL_ANTIGENS)
 
 	for(var/datum/disease2/effect/E in effects) 
 		E.parent_disease = src
