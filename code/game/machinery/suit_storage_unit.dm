@@ -295,7 +295,6 @@
 		updateUsrDialog()
 		update_icon()
 	if (href_list["toggle_open"])
-		playsound(src.loc, "[isopen ? 'sound/effects/suit cycler/close1.ogg' : 'sound/effects/suit cycler/open1.ogg']", 70, 1)
 		toggle_open(usr)
 		updateUsrDialog()
 		update_icon()
@@ -374,8 +373,8 @@
 	if(occupant)
 		eject_occupant(user)
 		return  // eject_occupant opens the door, so we need to return
+	playsound(src.loc, "[isopen ? 'sound/effects/suit cycler/close1.ogg' : 'sound/effects/suit cycler/open1.ogg']", 70, 1)
 	isopen = !isopen
-	playsound(src, 'sound/machines/suitstorage_cycledoor.ogg', 50, 0)
 	return
 
 
