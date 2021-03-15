@@ -154,10 +154,10 @@
 
 	for (var/mob/M in GLOB.player_list)
 		if (M == src)
-			return
+			continue
 
 		if (!(get_area(M).type in typesof(/area/maintenance)) || M.loc.z != src.loc.z)
-			return
+			continue
 
 		var/dist = get_dist(get_turf(M), T)
 
