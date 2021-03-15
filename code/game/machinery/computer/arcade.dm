@@ -285,6 +285,7 @@
 
 /obj/machinery/computer/arcade/battle/emag_act(charges, mob/user)
 	if(!emagged)
+		playsound(src.loc, 'sound/effects/computer_emag.ogg', 25)
 		temp = "If you die in the game, you die for real!"
 		player_hp = 30
 		player_mp = 10

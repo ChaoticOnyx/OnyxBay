@@ -468,6 +468,7 @@
 /obj/machinery/atmospherics/unary/cryo_cell/emag_act(remaining_charges, mob/user)
 	if(emagged)
 		return
+	playsound(src.loc, 'sound/effects/computer_emag.ogg', 25)
 	emagged = 1
 	to_chat(user, "<span class='danger'>You short out \the [src]'s circuits.</span>")
 	var/datum/effect/effect/system/spark_spread/spark_system = new /datum/effect/effect/system/spark_spread()

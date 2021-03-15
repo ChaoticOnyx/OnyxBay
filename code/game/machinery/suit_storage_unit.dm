@@ -875,6 +875,7 @@
 		return
 
 	//Clear the access reqs, disable the safeties, and open up all paintjobs.
+	playsound(src.loc, 'sound/effects/computer_emag.ogg', 25)
 	to_chat(user, "<span class='danger'>You run the sequencer across the interface, corrupting the operating protocols.</span>")
 	departments = list("Engineering","Mining","Medical","Security","Atmos","^%###^%$")
 	emagged = 1

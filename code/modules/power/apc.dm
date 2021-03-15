@@ -686,6 +686,7 @@
 			flick("apc-spark", src)
 			if (do_after(user,6,src))
 				if(prob(50))
+					playsound(src.loc, 'sound/effects/computer_emag.ogg', 25)
 					emagged = 1
 					locked = 0
 					to_chat(user, "<span class='notice'>You emag the APC interface.</span>")

@@ -163,6 +163,7 @@
 
 /obj/machinery/computer/shuttle_control/emergency/emag_act(remaining_charges, mob/user)
 	if (!emagged)
+		playsound(src.loc, 'sound/effects/computer_emag.ogg', 25)
 		to_chat(user, "<span class='notice'>You short out \the [src]'s authorization protocols.</span>")
 		emagged = 1
 		return 1

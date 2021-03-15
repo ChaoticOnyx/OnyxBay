@@ -322,6 +322,7 @@
 	spark_system.set_up(5, 0, src.loc)
 
 	if(!emagged)
+		playsound(src.loc, 'sound/effects/computer_emag.ogg', 25)
 		to_chat(user, "<span class='danger'>You short out safety system turning it off.</span>")
 		emagged = 1
 		available_chemicals += list("Lexorin" = /datum/reagent/lexorin)

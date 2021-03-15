@@ -76,6 +76,7 @@
 		to_chat(user, "\The [src] was already emagged.")
 		return NO_EMAG_ACT
 	else
+		playsound(src.loc, 'sound/effects/computer_emag.ogg', 25)
 		computer_emagged = 1
 		to_chat(user, "You emag \the [src]. It's screen briefly shows a \"OVERRIDE ACCEPTED: New software downloads available.\" message.")
 		return 1

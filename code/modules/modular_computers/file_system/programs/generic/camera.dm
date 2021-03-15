@@ -93,6 +93,7 @@
 		if(!(current_network in C.network))
 			return
 
+		playsound(nano_host().loc, 'sound/effects/cctv_switch.ogg', 25)
 		switch_to_camera(usr, C)
 		apply_visual(usr)
 		return 1

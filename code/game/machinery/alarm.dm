@@ -416,6 +416,7 @@
 				send_signal(device_id, list("power"= 1, "checks"= "default", "set_external_pressure"= "default") )
 
 		if(AALARM_MODE_PANIC, AALARM_MODE_CYCLE)
+			playsound(src.loc, 'sound/signals/alarm14.ogg', 25)
 			for(var/device_id in alarm_area.air_scrub_names)
 				send_signal(device_id, list("power"= 1, "panic_siphon"= 1) )
 			for(var/device_id in alarm_area.air_vent_names)
@@ -788,9 +789,11 @@
 					return
 				else
 					if(allowed(usr) && !wires.IsIndexCut(AALARM_WIRE_IDSCAN))
+						playsound(src.loc, 'sound/signals/warning10.ogg', 25)
 						locked = !locked
 						to_chat(user, "<span class='notice'>You [ locked ? "lock" : "unlock"] the Air Alarm interface.</span>")
 					else
+						playsound(src.loc, 'sound/signals/error21.ogg', 25)
 						to_chat(user, "<span class='warning'>Access denied.</span>")
 			return
 
