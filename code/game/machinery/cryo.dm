@@ -25,6 +25,15 @@
 	var/ejecting = 0
 	var/biochemical_stasis = 0
 
+	beepsounds = list(
+		'sound/effects/machinery/medical/beep1.ogg',
+		'sound/effects/machinery/medical/beep2.ogg',
+		'sound/effects/machinery/medical/beep3.ogg',
+		'sound/effects/machinery/medical/beep4.ogg',
+		'sound/effects/machinery/medical/beep5.ogg',
+		'sound/effects/machinery/medical/beep6.ogg'
+	)
+
 /obj/machinery/atmospherics/unary/cryo_cell/New()
 	..()
 	icon = 'icons/obj/cryogenics_split.dmi'
@@ -66,6 +75,8 @@
 		return
 	if(!on)
 		return
+
+	play_beep()
 
 	if(occupant)
 		if(occupant.stat != DEAD)

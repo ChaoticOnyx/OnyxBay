@@ -29,6 +29,8 @@
 	idle_power_usage = 15
 	active_power_usage = 200 //builtin health analyzer, dialysis machine, injectors.
 
+	beepsounds = "medical_beep"
+
 /obj/machinery/sleeper/verb/eject()
 	set src in oview(1)
 	set category = "Object"
@@ -67,6 +69,8 @@
 
 	if (!(occupant in src))
 		go_out()
+
+	play_beep()
 
 	if(filtering > 0)
 		if(beaker)

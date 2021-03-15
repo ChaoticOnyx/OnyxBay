@@ -18,7 +18,7 @@
 	var/base_idle_power_usage = 5							// Power usage when the computer is idle and screen is off (currently only applies to laptops)
 	var/bsod = FALSE										// Error screen displayed
 	var/ambience_last_played								// Last time sound was played
-	var/beepsounds = list('sound/effects/compbeep1.ogg','sound/effects/compbeep2.ogg','sound/effects/compbeep3.ogg','sound/effects/compbeep4.ogg','sound/effects/compbeep5.ogg')
+	var/beepsounds = "compbeep"
 	var/runsound = 'sound/signals/on1.ogg'
 	var/offsound = 'sound/signals/off1.ogg'
 
