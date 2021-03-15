@@ -368,7 +368,9 @@ GLOBAL_LIST_INIT(fuel_explosion_sound,list('sound/effects/explosions/fuel_explos
 
 GLOBAL_LIST_INIT(device_trr_sound,list('sound/signals/trr1.ogg','sound/signals/trr2.ogg','sound/signals/trr3.ogg',
 										'sound/signals/trr4.ogg','sound/signals/trr5.ogg','sound/signals/trr6.ogg',
-										'sound/signals/trr7.ogg','sound/signals/trr8.ogg'))
+										'sound/signals/trr7.ogg','sound/signals/trr8.ogg','sound/signals/trr9.ogg',
+										'sound/signals/trr10.ogg','sound/signals/trr11.ogg','sound/signals/trr12.ogg',
+										'sound/signals/trr13.ogg'))
 
 GLOBAL_LIST_INIT(compbeep_sound,list('sound/effects/compbeep1.ogg','sound/effects/compbeep2.ogg','sound/effects/compbeep3.ogg',
 									'sound/effects/compbeep4.ogg','sound/effects/compbeep5.ogg'))

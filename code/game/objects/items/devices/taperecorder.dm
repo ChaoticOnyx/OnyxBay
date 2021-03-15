@@ -157,6 +157,7 @@
 		to_chat(usr, "<span class='notice'>You can't record when playing!</span>")
 		return
 	if(mytape.used_capacity < mytape.max_capacity)
+		playsound(src.loc, 'sound/effects/recorder/start1.ogg', 15)
 		to_chat(usr, "<span class='notice'>Recording started.</span>")
 		recording = 1
 		update_icon()
@@ -197,9 +198,11 @@
 	if(usr.incapacitated())
 		return
 	if(recording)
+		playsound(src.loc, 'sound/effects/recorder/stop1.ogg', 15)
 		stop_recording()
 		return
 	else if(playing)
+		playsound(src.loc, 'sound/effects/recorder/stop1.ogg', 15)
 		playing = 0
 		update_icon()
 		to_chat(usr, "<span class='notice'>Playback stopped.</span>")
@@ -221,6 +224,8 @@
 		to_chat(usr, "<span class='notice'>You can't wipe the tape while playing or recording!</span>")
 		return
 	else
+		playsound(src.loc, 'sound/effects/recorder/stop1.ogg', 15)
+		playsound(src.loc, 'sound/effects/recorder/wipe1.ogg', 15)
 		if(mytape.storedinfo)	mytape.storedinfo.Cut()
 		if(mytape.timestamp)	mytape.timestamp.Cut()
 		mytape.used_capacity = 0
@@ -246,6 +251,8 @@
 	if(playing)
 		to_chat(usr, "<span class='notice'>You're already playing!</span>")
 		return
+	playsound(src.loc, 'sound/effects/recorder/start1.ogg', 15)
+	playsound(src.loc, 'sound/effects/recorder/playback1.ogg', 15)
 	playing = 1
 	update_icon()
 	to_chat(usr, "<span class='notice'>Audio playback started.</span>")
