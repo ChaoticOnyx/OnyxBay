@@ -376,6 +376,11 @@ GLOBAL_LIST_INIT(compbeep_sound,list('sound/effects/compbeep1.ogg','sound/effect
 GLOBAL_LIST_INIT(radio_sound,list('sound/signals/radio1.ogg','sound/signals/radio2.ogg','sound/signals/radio3.ogg',
 									'sound/signals/radio4.ogg','sound/signals/radio5.ogg'))
 
+GLOBAL_LIST_INIT(distant_movement_sound,list('sound/effects/footstep/distant/distant1.ogg','sound/effects/footstep/distant/distant2.ogg','sound/effects/footstep/distant/distant3.ogg',
+											'sound/effects/footstep/distant/distant4.ogg','sound/effects/footstep/distant/distant5.ogg','sound/effects/footstep/distant/distant6.ogg',
+											'sound/effects/footstep/distant/distant7.ogg','sound/effects/footstep/distant/distant8.ogg','sound/effects/footstep/distant/distant9.ogg',
+											'sound/effects/footstep/distant/distant10.ogg','sound/effects/footstep/distant/distant11.ogg','sound/effects/footstep/distant/distant12.ogg'))
+
 /proc/playsound(atom/source, soundin, vol as num, vary, extrarange as num, falloff, is_global, frequency, is_ambiance = 0)
 
 	soundin = get_sfx(soundin) // same sound for everyone
@@ -564,6 +569,7 @@ var/const/FALLOFF_SOUNDS = 0.5
 			if ("device_trr")			soundin = pick(GLOB.device_trr_sound)
 			if ("compbeep")				soundin = pick(GLOB.compbeep_sound)
 			if ("radio")				soundin = pick(GLOB.radio_sound)
+			if ("distant_movement")		soundin = pick(GLOB.distant_movement_sound)
 			else crash_with("Unknown sound: [soundin]")
 
 	return soundin
