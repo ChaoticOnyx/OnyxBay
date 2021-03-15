@@ -46,12 +46,12 @@ GLOBAL_LIST_INIT(f_heavyb_sound,list('sound/effects/emotes/f_heavyb1.ogg','sound
 									'sound/effects/emotes/f_heavyb4.ogg','sound/effects/emotes/f_heavyb5.ogg','sound/effects/emotes/f_heavyb6.ogg',
 									'sound/effects/emotes/f_heavyb7.ogg','sound/effects/emotes/f_heavyb8.ogg','sound/effects/emotes/f_heavyb9.ogg'))
 
-GLOBAL_LIST_INIT(f_pain_sound,list('sound/effects/emotes/f_pain1.ogg','sound/effects/emotes/f_pain2.ogg','sound/effects/emotes/f_pain3.ogg',
-									'sound/effects/emotes/f_pain4.ogg','sound/effects/emotes/f_pain5.ogg','sound/effects/emotes/f_pain6.ogg',
-									'sound/effects/emotes/f_pain7.ogg','sound/effects/emotes/f_pain8.ogg','sound/effects/emotes/f_pain9.ogg',
-									'sound/effects/emotes/f_pain10.ogg','sound/effects/emotes/f_pain11.ogg','sound/effects/emotes/f_pain12.ogg',
-									'sound/effects/emotes/f_pain13.ogg','sound/effects/emotes/f_pain14.ogg','sound/effects/emotes/f_pain15.ogg',
-									'sound/effects/emotes/f_pain16.ogg','sound/effects/emotes/f_pain17.ogg','sound/effects/emotes/f_pain18.ogg'))
+GLOBAL_LIST_INIT(f_pain_sound,list('sound/effects/emotes/f_pain1.ogg','sound/effects/emotes/f_pain3.ogg','sound/effects/emotes/f_pain4.ogg',
+									'sound/effects/emotes/f_pain5.ogg','sound/effects/emotes/f_pain6.ogg','sound/effects/emotes/f_pain7.ogg',
+									'sound/effects/emotes/f_pain8.ogg','sound/effects/emotes/f_pain9.ogg','sound/effects/emotes/f_pain11.ogg',
+									'sound/effects/emotes/f_pain12.ogg','sound/effects/emotes/f_pain13.ogg','sound/effects/emotes/f_pain14.ogg',
+									'sound/effects/emotes/f_pain15.ogg','sound/effects/emotes/f_pain16.ogg','sound/effects/emotes/f_pain17.ogg',
+									'sound/effects/emotes/f_pain18.ogg'))
 
 GLOBAL_LIST_INIT(m_cheavyb_sound,list('sound/effects/emotes/m_cheavyb1.ogg','sound/effects/emotes/m_cheavyb2.ogg'))
 
@@ -63,13 +63,12 @@ GLOBAL_LIST_INIT(m_heavyb_sound,list('sound/effects/emotes/m_heavyb1.ogg','sound
 									'sound/effects/emotes/m_heavyb10.ogg','sound/effects/emotes/m_heavyb11.ogg','sound/effects/emotes/m_heavyb12.ogg',
 									'sound/effects/emotes/m_heavyb13.ogg','sound/effects/emotes/m_heavyb14.ogg'))
 
-GLOBAL_LIST_INIT(m_pain_sound,list('sound/effects/emotes/m_pain1.ogg','sound/effects/emotes/m_pain2.ogg','sound/effects/emotes/m_pain3.ogg',
+GLOBAL_LIST_INIT(m_pain_sound,list('sound/effects/emotes/m_pain1.ogg','sound/effects/emotes/m_pain3.ogg',
 									'sound/effects/emotes/m_pain4.ogg','sound/effects/emotes/m_pain5.ogg','sound/effects/emotes/m_pain6.ogg',
-									'sound/effects/emotes/m_pain7.ogg','sound/effects/emotes/m_pain8.ogg','sound/effects/emotes/m_pain9.ogg',
-									'sound/effects/emotes/m_pain10.ogg','sound/effects/emotes/m_pain11.ogg','sound/effects/emotes/m_pain12.ogg',
-									'sound/effects/emotes/m_pain13.ogg','sound/effects/emotes/m_pain14.ogg','sound/effects/emotes/m_pain15.ogg',
-									'sound/effects/emotes/m_pain16.ogg','sound/effects/emotes/m_pain17.ogg','sound/effects/emotes/m_pain18.ogg',
-									'sound/effects/emotes/m_pain19.ogg','sound/effects/emotes/m_pain20.ogg','sound/effects/emotes/m_pain21.ogg'))
+									'sound/effects/emotes/m_pain8.ogg','sound/effects/emotes/m_pain10.ogg','sound/effects/emotes/m_pain11.ogg',
+									'sound/effects/emotes/m_pain12.ogg','sound/effects/emotes/m_pain13.ogg','sound/effects/emotes/m_pain15.ogg',
+									'sound/effects/emotes/m_pain17.ogg','sound/effects/emotes/m_pain18.ogg','sound/effects/emotes/m_pain19.ogg',
+									'sound/effects/emotes/m_pain20.ogg','sound/effects/emotes/m_pain21.ogg'))
 
 GLOBAL_LIST_INIT(global_ambient_sound,list('sound/ambience/global/amb1.ogg','sound/ambience/global/amb2.ogg','sound/ambience/global/amb3.ogg',
 										'sound/ambience/global/amb4.ogg','sound/ambience/global/amb5.ogg','sound/ambience/global/amb6.ogg',
