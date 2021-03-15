@@ -400,7 +400,10 @@ GLOBAL_LIST_INIT(radio_sound,list('sound/signals/radio1.ogg','sound/signals/radi
 GLOBAL_LIST_INIT(distant_movement_sound,list('sound/effects/footstep/distant/distant1.ogg','sound/effects/footstep/distant/distant2.ogg','sound/effects/footstep/distant/distant3.ogg',
 											'sound/effects/footstep/distant/distant4.ogg','sound/effects/footstep/distant/distant5.ogg','sound/effects/footstep/distant/distant6.ogg',
 											'sound/effects/footstep/distant/distant7.ogg','sound/effects/footstep/distant/distant8.ogg','sound/effects/footstep/distant/distant9.ogg',
-											'sound/effects/footstep/distant/distant10.ogg','sound/effects/footstep/distant/distant11.ogg','sound/effects/footstep/distant/distant12.ogg'))
+											'sound/effects/footstep/distant/distant10.ogg','sound/effects/footstep/distant/distant11.ogg','sound/effects/footstep/distant/distant12.ogg',
+											'sound/effects/footstep/distant/distant13.ogg','sound/effects/footstep/distant/distant14.ogg','sound/effects/footstep/distant/distant15.ogg',
+											'sound/effects/footstep/distant/distant16.ogg','sound/effects/footstep/distant/distant17.ogg','sound/effects/footstep/distant/distant18.ogg',
+											'sound/effects/footstep/distant/distant19.ogg','sound/effects/footstep/distant/distant20.ogg'))
 
 GLOBAL_LIST_INIT(medical_beep_sound,list('sound/effects/machinery/medical/beep1.ogg','sound/effects/machinery/medical/beep2.ogg','sound/effects/machinery/medical/beep3.ogg',
 										'sound/effects/machinery/medical/beep4.ogg','sound/effects/machinery/medical/beep5.ogg','sound/effects/machinery/medical/beep6.ogg'))
