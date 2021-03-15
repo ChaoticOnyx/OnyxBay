@@ -71,10 +71,10 @@
 				target = thing
 				break
 
-	var/datum/gender/user_gender = gender_datums[user.get_visible_gender()]
+	var/datum/gender/user_gender = gender_datums[user.gender]
 	var/datum/gender/target_gender
 	if(target)
-		target_gender = gender_datums[target.get_visible_gender()]
+		target_gender = gender_datums[target.gender]
 
 	var/use_3p
 	var/use_1p
