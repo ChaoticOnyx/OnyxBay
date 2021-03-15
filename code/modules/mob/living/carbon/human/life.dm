@@ -454,6 +454,8 @@
 		return //fuck this precision
 
 	if(on_fire)
+		if (stat == CONSCIOUS)
+			src.emote("long_scream")
 		return //too busy for pesky metabolic regulation
 
 	if(bodytemperature < species.cold_level_1) //260.15 is 310.15 - 50, the temperature where you start to feel effects.

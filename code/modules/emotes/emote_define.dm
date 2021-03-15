@@ -54,6 +54,8 @@
 			playsound(user, "[gender_prefix]_breath", rand(25, 40), FALSE)
 		if ("sneeze")
 			playsound(user, "[gender_prefix]_sneeze", rand(25, 40), FALSE)
+		if ("long_scream")
+			playsound(user, "[gender_prefix]_long_scream", rand(25, 40), FALSE)
 
 /decl/emote/proc/do_emote(atom/user, extra_params)
 

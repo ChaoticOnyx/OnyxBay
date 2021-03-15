@@ -57,6 +57,12 @@ GLOBAL_LIST_INIT(f_pain_sound,list('sound/effects/emotes/f_pain1.ogg','sound/eff
 									'sound/effects/emotes/f_pain13.ogg','sound/effects/emotes/f_pain14.ogg','sound/effects/emotes/f_pain15.ogg',
 									'sound/effects/emotes/f_pain16.ogg','sound/effects/emotes/f_pain17.ogg','sound/effects/emotes/f_pain18.ogg'))
 
+GLOBAL_LIST_INIT(f_long_scream_sound,list('sound/effects/emotes/f_long_scream1.ogg','sound/effects/emotes/f_long_scream2.ogg','sound/effects/emotes/f_long_scream3.ogg',
+											'sound/effects/emotes/f_long_scream4.ogg','sound/effects/emotes/f_long_scream5.ogg','sound/effects/emotes/f_long_scream6.ogg',
+											'sound/effects/emotes/f_long_scream7.ogg','sound/effects/emotes/f_long_scream8.ogg','sound/effects/emotes/f_long_scream9.ogg',
+											'sound/effects/emotes/f_long_scream10.ogg','sound/effects/emotes/f_long_scream11.ogg','sound/effects/emotes/f_long_scream12.ogg',
+											'sound/effects/emotes/f_long_scream13.ogg','sound/effects/emotes/f_long_scream14.ogg','sound/effects/emotes/f_long_scream15.ogg'))
+
 GLOBAL_LIST_INIT(m_cheavyb_sound,list('sound/effects/emotes/m_cheavyb1.ogg','sound/effects/emotes/m_cheavyb2.ogg'))
 
 GLOBAL_LIST_INIT(m_sneeze_sound,list('sound/effects/emotes/m_sneeze1.ogg'))
@@ -78,6 +84,12 @@ GLOBAL_LIST_INIT(m_pain_sound,list('sound/effects/emotes/m_pain1.ogg','sound/eff
 									'sound/effects/emotes/m_pain13.ogg','sound/effects/emotes/m_pain14.ogg','sound/effects/emotes/m_pain15.ogg',
 									'sound/effects/emotes/m_pain16.ogg','sound/effects/emotes/m_pain17.ogg','sound/effects/emotes/m_pain18.ogg',
 									'sound/effects/emotes/m_pain19.ogg','sound/effects/emotes/m_pain20.ogg','sound/effects/emotes/m_pain21.ogg'))
+
+GLOBAL_LIST_INIT(m_long_scream_sound,list('sound/effects/emotes/m_long_scream1.ogg','sound/effects/emotes/m_long_scream2.ogg','sound/effects/emotes/m_long_scream3.ogg',
+											'sound/effects/emotes/m_long_scream4.ogg','sound/effects/emotes/m_long_scream5.ogg','sound/effects/emotes/m_long_scream6.ogg',
+											'sound/effects/emotes/m_long_scream7.ogg','sound/effects/emotes/m_long_scream8.ogg','sound/effects/emotes/m_long_scream9.ogg',
+											'sound/effects/emotes/m_long_scream10.ogg','sound/effects/emotes/m_long_scream11.ogg','sound/effects/emotes/m_long_scream12.ogg',
+											'sound/effects/emotes/m_long_scream13.ogg','sound/effects/emotes/m_long_scream14.ogg'))
 
 GLOBAL_LIST_INIT(global_ambient_sound,list('sound/ambience/global/amb1.ogg','sound/ambience/global/amb2.ogg','sound/ambience/global/amb3.ogg',
 										'sound/ambience/global/amb4.ogg','sound/ambience/global/amb5.ogg','sound/ambience/global/amb6.ogg',
@@ -507,11 +519,13 @@ var/const/FALLOFF_SOUNDS = 0.5
 			if ("female_sneeze")		soundin = pick(GLOB.f_sneeze_sound)
 			if ("female_breath")		soundin = pick(GLOB.f_heavyb_sound)
 			if ("female_pain")			soundin = pick(GLOB.f_pain_sound)
+			if ("female_long_scream")	soundin = pick(GLOB.f_long_scream_sound)
 			if ("male_closed_breath")	soundin = pick(GLOB.m_cheavyb_sound)
 			if ("male_cough")			soundin = pick(GLOB.m_cough_sound)
 			if ("male_sneeze")			soundin = pick(GLOB.m_sneeze_sound)
 			if ("male_breath")			soundin = pick(GLOB.m_heavyb_sound)
 			if ("male_pain")			soundin = pick(GLOB.m_pain_sound)
+			if ("male_long_scream")	soundin = pick(GLOB.m_long_scream_sound)
 			if ("ai_ambient")			soundin = pick(GLOB.ai_ambient_sound)
 			if ("science_ambient")		soundin = pick(GLOB.science_ambient_sound)
 			if ("maintenance_ambient")	soundin = pick(GLOB.maintenance_ambient_sound)
