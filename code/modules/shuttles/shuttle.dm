@@ -145,8 +145,6 @@
 		if (M.loc.z != destination.loc.z)
 			continue
 
-		log_admin("Dist: [get_dist(destination, M)] Shuttle size: [shuttle_size]", null, TRUE)
-
 		if (get_dist(destination, M) <= shuttle_size)
 			M.playsound_local(M.loc, 'sound/effects/vessel_passby.ogg', 50, TRUE)
 
