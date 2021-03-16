@@ -79,13 +79,13 @@
 	return sanitize(replace_characters(input, list(">"=" ","<"=" ", "\""="'")), max_length, encode, trim, extra)
 
 //Removes a few problematic characters
-/proc/sanitize_simple(t,list/repl_chars = list("\n"="#","\t"="#"))
-	for(var/char in repl_chars)
-		var/index = findtext_char(t, char)
-		while(index)
-			t = copytext(t, 1, index) + repl_chars[char] + copytext(t, index+1)
-			index = findtext_char(t, char, index+1)
-	return t
+/proc/sanitize_simple(var/t, var/list/repl_chars = list("\n"=" ","\t"=" ","�"="�"))
+    for(var/char in repl_chars)
+        var/index = findtext(t, char)
+        while(index)
+            t = copytext(t, 1, index) + repl_chars[char] + copytext(t, index+1)
+            index = findtext(t, char)
+    return t
 
 /proc/sanitize_filename(t)
 	return sanitize_simple(t, list("\n"="", "\t"="", "/"="", "\\"="", "?"="", "%"="", "*"="", ":"="", "|"="", "\""="", "<"="", ">"=""))
