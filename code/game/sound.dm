@@ -410,6 +410,31 @@ GLOBAL_LIST_INIT(medical_beep_sound,list('sound/effects/machinery/medical/beep1.
 
 GLOBAL_LIST_INIT(outpost_ambient_sound,list('sound/ambience/outpost/amb1.ogg','sound/ambience/outpost/amb2.ogg','sound/ambience/outpost/amb3.ogg'))
 
+GLOBAL_LIST_INIT(f_fall_alive_sound,list('sound/effects/damage/falling/f_fall_alive1.ogg','sound/effects/damage/falling/f_fall_alive2.ogg','sound/effects/damage/falling/f_fall_alive3.ogg',
+										'sound/effects/damage/falling/f_fall_alive4.ogg','sound/effects/damage/falling/f_fall_alive5.ogg','sound/effects/damage/falling/f_fall_alive6.ogg',
+										'sound/effects/damage/falling/f_fall_alive7.ogg','sound/effects/damage/falling/f_fall_alive8.ogg','sound/effects/damage/falling/f_fall_alive9.ogg',
+										'sound/effects/damage/falling/f_fall_alive10.ogg','sound/effects/damage/falling/f_fall_alive11.ogg','sound/effects/damage/falling/f_fall_alive12.ogg',
+										'sound/effects/damage/falling/f_fall_alive13.ogg','sound/effects/damage/falling/f_fall_alive14.ogg'))
+
+GLOBAL_LIST_INIT(f_fall_dead_sound,list('sound/effects/damage/falling/f_fall_dead1.ogg','sound/effects/damage/falling/f_fall_dead2.ogg','sound/effects/damage/falling/f_fall_dead3.ogg',
+										'sound/effects/damage/falling/f_fall_dead4.ogg','sound/effects/damage/falling/f_fall_dead5.ogg','sound/effects/damage/falling/f_fall_dead6.ogg',
+										'sound/effects/damage/falling/f_fall_dead7.ogg','sound/effects/damage/falling/f_fall_dead8.ogg','sound/effects/damage/falling/f_fall_dead9.ogg',
+										'sound/effects/damage/falling/f_fall_dead10.ogg','sound/effects/damage/falling/f_fall_dead11.ogg'))
+
+GLOBAL_LIST_INIT(m_fall_alive_sound,list('sound/effects/damage/falling/m_fall_alive1.ogg','sound/effects/damage/falling/m_fall_alive2.ogg','sound/effects/damage/falling/m_fall_alive3.ogg',
+										'sound/effects/damage/falling/m_fall_alive4.ogg','sound/effects/damage/falling/m_fall_alive5.ogg','sound/effects/damage/falling/m_fall_alive6.ogg',
+										'sound/effects/damage/falling/m_fall_alive7.ogg','sound/effects/damage/falling/m_fall_alive8.ogg','sound/effects/damage/falling/m_fall_alive9.ogg',
+										'sound/effects/damage/falling/m_fall_alive10.ogg','sound/effects/damage/falling/m_fall_alive11.ogg','sound/effects/damage/falling/m_fall_alive12.ogg',
+										'sound/effects/damage/falling/m_fall_alive13.ogg','sound/effects/damage/falling/m_fall_alive14.ogg','sound/effects/damage/falling/m_fall_alive15.ogg',
+										'sound/effects/damage/falling/m_fall_alive16.ogg','sound/effects/damage/falling/m_fall_alive17.ogg','sound/effects/damage/falling/m_fall_alive18.ogg',
+										'sound/effects/damage/falling/m_fall_alive19.ogg','sound/effects/damage/falling/m_fall_alive20.ogg','sound/effects/damage/falling/m_fall_alive21.ogg',
+										'sound/effects/damage/falling/m_fall_alive22.ogg'))
+
+GLOBAL_LIST_INIT(m_fall_dead_sound,list('sound/effects/damage/falling/m_fall_dead1.ogg','sound/effects/damage/falling/m_fall_dead2.ogg','sound/effects/damage/falling/m_fall_dead3.ogg',
+										'sound/effects/damage/falling/m_fall_dead4.ogg','sound/effects/damage/falling/m_fall_dead5.ogg','sound/effects/damage/falling/m_fall_dead6.ogg',
+										'sound/effects/damage/falling/m_fall_dead7.ogg','sound/effects/damage/falling/m_fall_dead8.ogg','sound/effects/damage/falling/m_fall_dead9.ogg',
+										'sound/effects/damage/falling/m_fall_dead10.ogg','sound/effects/damage/falling/m_fall_dead11.ogg'))
+
 /proc/playsound(atom/source, soundin, vol as num, vary, extrarange as num, falloff, is_global, frequency, is_ambiance = 0)
 
 	soundin = get_sfx(soundin) // same sound for everyone
@@ -604,6 +629,10 @@ var/const/FALLOFF_SOUNDS = 0.5
 			if ("distant_movement")		soundin = pick(GLOB.distant_movement_sound)
 			if ("medical_beep")			soundin = pick(GLOB.medical_beep_sound)
 			if ("outpost_ambient")		soundin = pick(GLOB.outpost_ambient_sound)
+			if ("female_fall_alive")	soundin = pick(GLOB.f_fall_alive_sound)
+			if ("female_fall_dead")		soundin = pick(GLOB.f_fall_dead_sound)
+			if ("male_fall_alive")		soundin = pick(GLOB.m_fall_alive_sound)
+			if ("male_fall_dead")		soundin = pick(GLOB.m_fall_dead_sound)
 			else crash_with("Unknown sound: [soundin]")
 
 	return soundin
