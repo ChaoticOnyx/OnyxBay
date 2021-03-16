@@ -38,7 +38,7 @@ var/global/list/obj/machinery/telecomms/telecomms_list = list()
 	var/overloaded_for = 0
 	var/outage_probability = 75			// Probability of failing during a ionospheric storm
 
-	beepsounds = "trr_sound"
+	beepsounds = "device_trr"
 
 
 /obj/machinery/telecomms/proc/relay_information(datum/signal/signal, filter, copysig, amount = 20)

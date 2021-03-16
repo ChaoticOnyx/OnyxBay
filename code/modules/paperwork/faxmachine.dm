@@ -105,6 +105,7 @@ GLOBAL_LIST_EMPTY(adminfaxes)	//cache for faxes that have been sent to admins
 		return
 	if(href_list["print_complaint"])
 		if (print_cooldown_check())
+			playsound(src.loc, 'sound/signals/processing20.ogg', 25)
 			var/id = IAAJ_generate_fake_id()
 			ASSERT(id)
 			new /obj/item/weapon/complaint_folder(src.loc, id)
@@ -112,8 +113,10 @@ GLOBAL_LIST_EMPTY(adminfaxes)	//cache for faxes that have been sent to admins
 	if(href_list["send"])
 		if(copyitem)
 			if (destination in admin_departments)
+				playsound(src.loc, 'sound/signals/processing19.ogg', 25)
 				send_admin_fax(usr, destination)
 			else
+				playsound(src.loc, 'sound/signals/processing19.ogg', 25)
 				sendfax(destination)
 
 			if (sendcooldown)

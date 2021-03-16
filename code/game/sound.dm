@@ -408,6 +408,8 @@ GLOBAL_LIST_INIT(distant_movement_sound,list('sound/effects/footstep/distant/dis
 GLOBAL_LIST_INIT(medical_beep_sound,list('sound/effects/machinery/medical/beep1.ogg','sound/effects/machinery/medical/beep2.ogg','sound/effects/machinery/medical/beep3.ogg',
 										'sound/effects/machinery/medical/beep4.ogg','sound/effects/machinery/medical/beep5.ogg','sound/effects/machinery/medical/beep6.ogg'))
 
+GLOBAL_LIST_INIT(outpost_ambient_sound,list('sound/ambience/outpost/amb1.ogg','sound/ambience/outpost/amb2.ogg','sound/ambience/outpost/amb3.ogg'))
+
 /proc/playsound(atom/source, soundin, vol as num, vary, extrarange as num, falloff, is_global, frequency, is_ambiance = 0)
 
 	soundin = get_sfx(soundin) // same sound for everyone
@@ -601,6 +603,7 @@ var/const/FALLOFF_SOUNDS = 0.5
 			if ("radio")				soundin = pick(GLOB.radio_sound)
 			if ("distant_movement")		soundin = pick(GLOB.distant_movement_sound)
 			if ("medical_beep")			soundin = pick(GLOB.medical_beep_sound)
+			if ("outpost_ambient")		soundin = pick(GLOB.outpost_ambient_sound)
 			else crash_with("Unknown sound: [soundin]")
 
 	return soundin
