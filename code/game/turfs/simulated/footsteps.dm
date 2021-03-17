@@ -135,6 +135,9 @@
 
 	// Playing far movement sound with small chance when someone make step in maintenance area
 	// These sounds another players can hear only in the same maintenance area
+	if (m_intent == M_WALK)
+		return
+
 	var/chance = 25
 
 	if (MUTATION_FAT in mutations)
