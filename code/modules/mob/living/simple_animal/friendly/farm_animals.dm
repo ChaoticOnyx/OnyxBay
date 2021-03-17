@@ -43,7 +43,7 @@
 		if(enemies.len && prob(10))
 			enemies = list()
 			LoseTarget()
-			visible_message(SPAN_NOTICE("calms down."))
+			visible_message(SPAN_NOTICE("\The [src] calms down."))
 			isragemode = TRUE
 
 		if(stat == CONSCIOUS)
@@ -86,7 +86,7 @@
 			to_chat(user, SPAN_WARNING("Better run away now!"))
 			Retaliate()
 		else if(istype(O, /obj/item/weapon/reagent_containers/glass))
-			if (isragemode && prob(50))
+			if(isragemode && prob(50))
 				user.visible_message(SPAN_NOTICE("tries to milk [src], but [src] hits \him."))
 				user.attack_generic(src, rand(melee_damage_lower, melee_damage_upper) * 2, attacktext, environment_smash, damtype, defense)
 				return

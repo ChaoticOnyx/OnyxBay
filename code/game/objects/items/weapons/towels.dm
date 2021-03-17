@@ -27,7 +27,3 @@
 	color = "#ffd700"
 	force = 1
 	attack_verb = list("smote")
-
-
-
-
