@@ -216,10 +216,15 @@
 		channel = null
 	if (!istype(connection))
 		return
-	var/mob/living/silicon/ai/A = new /mob/living/silicon/ai(src, null, null, 1)
-	A.fully_replace_character_name(from)
-	talk_into(A, message, channel,"states")
-	qdel(A)
+	var/mob/living/silicon/ai/A
+	if(istext(from))
+		A = new /mob/living/silicon/ai(src, null, null, 1)
+		A.fully_replace_character_name(from)
+	else
+		A = from
+	talk_into(A, message, channel, "states")
+	if(istext(from))
+		qdel(A)
 
 // Interprets the message mode when talking into a radio, possibly returning a connection datum
 /obj/item/device/radio/proc/handle_message_mode(mob/living/M as mob, message, message_mode)
@@ -244,11 +249,11 @@
 	if(!M || !message) return 0
 
 	if(speaking && (speaking.flags & (NONVERBAL|SIGNLANG))) return 0
-	
+
 	var/mob/living/carbon/C = M
 	if((istype(C)) && (C.chem_effects[CE_SEDATE]))
 		to_chat(M, SPAN_WARNING("You're unable to reach \the [src]."))
-		return 0	
+		return 0
 
 	if(istype(M)) M.trigger_aiming(TARGET_CAN_RADIO)
 
