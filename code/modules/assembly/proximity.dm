@@ -45,8 +45,6 @@
 		return
 	if(isobserver(AM))
 		return
-	if(isvirtualmob(AM))
-		return
 	if(AM.move_speed < 12)
 		sense()
 
