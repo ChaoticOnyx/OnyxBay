@@ -19,7 +19,7 @@
 	var/weakref/idlock = null
 
 /obj/item/device/integrated_circuit_printer/proc/check_interactivity(mob/user)
-	return CanUseTopic(user)
+	return CanUseTopic(user) && (get_dist(src, user) < 2)
 
 /obj/item/device/integrated_circuit_printer/upgraded
 	upgraded = TRUE
@@ -274,7 +274,6 @@
 			return
 
 		if(!debug && !subtract_material_costs(cost, usr))
-			to_chat(usr, SPAN_WARNING("You need [cost] to build that!"))
 			return
 
 		var/obj/item/built = new build_type(get_turf(src))
@@ -343,12 +342,9 @@
 					if(debug || subtract_material_costs(cost, usr))
 						cloning = TRUE
 						print_program(usr)
-					else
-						to_chat(usr, SPAN_WARNING("You need [program["cost"]] material to build that!"))
 				else
 					var/list/cost = program["cost"]
 					if(!subtract_material_costs(cost, usr))
-						to_chat(usr, SPAN_WARNING("You need [program["cost"]] material to build that!"))
 						return
 					var/cloning_time = 0
 					for(var/material in cost)
@@ -356,7 +352,7 @@
 					cloning_time = round(cloning_time/15)
 					cloning_time = min(cloning_time, MAX_CIRCUIT_CLONE_TIME)
 					cloning = TRUE
-					to_chat(usr, SPAN_NOTICE("You begin printing a custom assembly. This will take approximately [round(cloning_time/10)]. You can still print off normal parts during this time."))
+					to_chat(usr, SPAN_NOTICE("You begin printing a custom assembly. This will take approximately [round(cloning_time/10)] seconds. You can still print off normal parts during this time."))
 					playsound(src, 'sound/items/poster_being_created.ogg', 50, TRUE)
 					addtimer(CALLBACK(src, .proc/print_program, usr), cloning_time)
 
@@ -377,7 +373,7 @@
 		if(materials[material] < cost[material])
 			// TODO[V] change that after port of materials subsystem
 			var/material/material_datum = capitalize(material)
-			to_chat(user, SPAN_WARNING(">You need [cost[material]] [material_datum] to build that!"))
+			to_chat(user, SPAN_WARNING("You need [cost[material]] [material_datum] to build that!"))
 			return FALSE
 	for(var/material in cost) //Iterate twice to make sure it's going to work before deducting
 		materials[material] -= cost[material]

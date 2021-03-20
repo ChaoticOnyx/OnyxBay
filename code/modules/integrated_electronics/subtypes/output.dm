@@ -25,6 +25,9 @@
 
 	to_chat(user, "There is \a [src][shown_label], which displays [!isnull(stuff_to_display) ? "'[stuff_to_display]'" : "nothing"].")
 
+/obj/item/integrated_circuit/output/screen/get_topic_data()
+	return stuff_to_display ? list(stuff_to_display) : list()
+
 /obj/item/integrated_circuit/output/screen/do_work()
 	var/datum/integrated_io/I = inputs[1]
 	if(isweakref(I.data))
@@ -72,7 +75,7 @@
 	activators = list("toggle light" = IC_PINTYPE_PULSE_IN)
 	spawn_flags = IC_SPAWN_DEFAULT|IC_SPAWN_RESEARCH
 	var/light_toggled = FALSE
-	var/light_brightness = 3
+	var/light_brightness = 6
 	var/light_rgb = "#FFFFFF"
 	power_draw_idle = 0 // Adjusted based on brightness.
 
@@ -153,13 +156,16 @@
 		var/selected_sound = sounds[ID]
 		if(!selected_sound)
 			return
-		vol = Clamp(vol ,0 , 100)
+		vol = Clamp(vol, 0, 100)
 		playsound(get_turf(src), selected_sound, vol, freq, -1)
 		var/atom/A = get_object()
 		A.investigate_log("played a sound ([selected_sound]) as [type].", INVESTIGATE_CIRCUIT)
 
 /obj/item/integrated_circuit/output/sound/on_data_written()
-	power_draw_per_use =  get_pin_data(IC_INPUT, 2) * 15
+	var/volume = get_pin_data(IC_INPUT, 2)
+	volume = Clamp(volume, 0, 100)
+	set_pin_data(IC_INPUT, 2, volume)
+	power_draw_per_use =  volume * 15
 
 /obj/item/integrated_circuit/output/sound/beeper
 	name = "beeper circuit"
@@ -167,12 +173,12 @@
 	sounds = list(
 		"beep"			= 'sound/machines/twobeep.ogg',
 		"chime"			= 'sound/machines/chime.ogg',
-		"buzz sigh"		= 'sound/machines/buzz-sigh.ogg',
-		"buzz twice"	= 'sound/machines/buzz-two.ogg',
+		"buzz_sigh"		= 'sound/machines/buzz-sigh.ogg',
+		"buzz_twice"	= 'sound/machines/buzz-two.ogg',
 		"ping"			= 'sound/machines/ping.ogg',
-		"synth yes"		= 'sound/machines/synth_yes.ogg',
-		"synth no"		= 'sound/machines/synth_no.ogg',
-		"warning buzz"	= 'sound/machines/warning-buzzer.ogg'
+		"synth_yes"		= 'sound/machines/synth_yes.ogg',
+		"synth_no"		= 'sound/machines/synth_no.ogg',
+		"warning_buzz"	= 'sound/machines/warning-buzzer.ogg'
 		)
 	spawn_flags = IC_SPAWN_DEFAULT|IC_SPAWN_RESEARCH
 
@@ -214,7 +220,7 @@
 		"affinity_activated" 	= 'sound/voice/augmented/BBCYBA_A.wav',
 		"affinity_deactivated" 	= 'sound/voice/augmented/BBCYBA_D.wav',
 		"login" 				= 'sound/voice/augmented/LOGIN.wav',
-		"Medscan" 				= 'sound/voice/augmented/medscan.wav'
+		"medscan" 				= 'sound/voice/augmented/medscan.wav'
 	)
 	spawn_flags = IC_SPAWN_RESEARCH|IC_SPAWN_DEFAULT
 
@@ -253,7 +259,7 @@
 		var/atom/movable/A = get_object()
 		var/sanitized_text = sanitize(html_decode(text))
 		A.audible_message("\The [A] states, \"[sanitized_text]\"")
-		if (assembly)
+		if(assembly)
 			log_say("[assembly] [ref(assembly)] : [sanitized_text]")
 		else
 			log_say("[name] ([type]) : [sanitized_text]")
@@ -351,6 +357,9 @@
 	power_draw_idle = 0 // Raises to 1 when lit.
 	spawn_flags = IC_SPAWN_DEFAULT|IC_SPAWN_RESEARCH
 	var/led_color = "#FF0000"
+
+/obj/item/integrated_circuit/output/led/get_topic_data()
+	return list("\An [initial(name)] that is currently [get_pin_data(IC_INPUT, 1) ? "lit" : "unlit."]")
 
 /obj/item/integrated_circuit/output/led/on_data_written()
 	power_draw_idle = get_pin_data(IC_INPUT, 1) ? 1 : 0
