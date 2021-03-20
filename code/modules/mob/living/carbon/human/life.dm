@@ -759,7 +759,7 @@
 				healths.icon_state = "health_numb"
 			else
 				// Generate a by-limb health display.
-				healths.icon_state = "blank"
+				healths.icon_state = "health"
 
 				var/no_damage = 1
 				var/trauma_val = 0 // Used in calculating softcrit/hardcrit indicators.
