@@ -190,7 +190,6 @@
 	else
 		src.listening_levels = GLOB.using_map.contact_levels
 		return 1
-	return 0
 
 // Returns a multitool from a user depending on their mobtype.
 
