@@ -28,8 +28,6 @@
 		A.attackby(I, user)
 	return
 
-	..()
-
 /obj/item/clothing/attack_hand(mob/user)
 	//only forward to the attached accessory if the clothing is equipped (not in a storage)
 	if(accessories.len && src.loc == user)

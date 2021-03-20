@@ -1189,7 +1189,6 @@
 				to_chat(user, "You fail to hack [src]'s interface.")
 				to_chat(src, "Hack attempt detected.")
 			return 1
-		return
 
 /mob/living/silicon/robot/blob_act(destroy, obj/effect/blob/source)
 	if (is_dead())
