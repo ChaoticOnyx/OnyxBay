@@ -73,7 +73,7 @@
 
 /obj/item/integrated_circuit/mining/mining_satchel/Destroy()
 	. = ..()
-	qdel(box)
+	QDEL_NULL(box)
 
 /obj/item/integrated_circuit/mining/mining_satchel/do_work()
 	if(assembly)

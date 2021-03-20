@@ -87,7 +87,7 @@
 
 /obj/item/integrated_circuit/input/numberpad/OnICTopic(href_list, mob/user)
 	if(href_list["enter_number"])
-		var/new_input = input(user, "Enter a number, please.", displayed_name)
+		var/new_input = input(user, "Enter a number, please.", displayed_name) as num|null
 		if(isnum_safe(new_input) && user.IsAdvancedToolUser())
 			set_pin_data(IC_OUTPUT, 1, new_input)
 			push_data()
@@ -108,8 +108,7 @@
 	radial_menu_icon = "textpad"
 
 /obj/item/integrated_circuit/input/textpad/ask_for_input(mob/user)
-	var/new_input = input(user, "Enter some words, please.", displayed_name)
-	new_input = sanitize(new_input)
+	var/new_input = sanitize(input(user, "Enter some words, please.", displayed_name) as text|null)
 	if(istext(new_input) && user.IsAdvancedToolUser())
 		set_pin_data(IC_OUTPUT, 1, new_input)
 		push_data()
