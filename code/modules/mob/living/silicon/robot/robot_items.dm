@@ -27,7 +27,7 @@
 			if(confirm == "Yes") //This is pretty copypasta-y
 				to_chat(user, "You activate the analyzer's microlaser, analyzing \the [loaded_item] and breaking it down.")
 				flick("portable_analyzer_scan", src)
-				playsound(src.loc, 'sound/items/Welder2.ogg', 50, 1)
+				playsound(src.loc, 'sound/signals/processing22.ogg', 50)
 				for(var/T in loaded_item.origin_tech)
 					files.UpdateTech(T, loaded_item.origin_tech[T])
 					to_chat(user, "\The [loaded_item] had level [loaded_item.origin_tech[T]] in [CallTechName(T)].")
@@ -63,10 +63,10 @@
 			files.RefreshResearch()
 		if(success)
 			to_chat(user, "You connect to the research server, push your data upstream to it, then pull the resulting merged data from the master branch.")
-			playsound(src.loc, 'sound/signals/ping6.ogg', 50, 0)
+			playsound(src.loc, 'sound/signals/processing13.ogg', 50)
 		else
 			to_chat(user, "Reserch server ping response timed out.  Unable to connect.  Please contact the system administrator.")
-			playsound(src.loc, 'sound/signals/warning3.ogg', 50, 0)
+			playsound(src.loc, 'sound/signals/error30.ogg', 50, 0)
 	if(response == "Eject")
 		if(loaded_item)
 			loaded_item.loc = get_turf(src)

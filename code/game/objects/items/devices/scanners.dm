@@ -43,6 +43,7 @@ REAGENT SCANNER
 		to_chat(user, "<span class='warning'>\The [src] is designed for organic humanoid patients only.</span>")
 		return
 	//user << browse(medical_scan_results(H, mode), "window=scanconsole;size=550x400")
+	playsound(src.loc, 'sound/signals/processing21.ogg', 50)
 	ui_interact(user,target = C)
 
 /obj/item/device/healthanalyzer/ui_interact(mob/user, ui_key = "main", datum/nanoui/ui = null, force_open = 1,mob/living/carbon/human/target)

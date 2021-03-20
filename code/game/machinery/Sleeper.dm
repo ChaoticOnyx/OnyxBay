@@ -29,6 +29,8 @@
 	idle_power_usage = 15
 	active_power_usage = 200 //builtin health analyzer, dialysis machine, injectors.
 
+	beepsounds = "medical_beep"
+
 /obj/machinery/sleeper/verb/eject()
 	set src in oview(1)
 	set category = "Object"
@@ -67,6 +69,8 @@
 
 	if (!(occupant in src))
 		go_out()
+
+	play_beep()
 
 	if(filtering > 0)
 		if(beaker)
@@ -318,6 +322,7 @@
 	spark_system.set_up(5, 0, src.loc)
 
 	if(!emagged)
+		playsound(src.loc, 'sound/effects/computer_emag.ogg', 25)
 		to_chat(user, "<span class='danger'>You short out safety system turning it off.</span>")
 		emagged = 1
 		available_chemicals += list("Lexorin" = /datum/reagent/lexorin)

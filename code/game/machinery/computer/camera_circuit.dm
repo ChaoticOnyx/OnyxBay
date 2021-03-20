@@ -107,6 +107,7 @@
 
 /obj/item/weapon/circuitboard/camera/emag_act(remaining_charges, mob/user)
 	if(network)
+		playsound(src.loc, 'sound/effects/computer_emag.ogg', 25)
 		authorised = 1
 		to_chat(user, "<span class='notice'>You authorised the circuit network!</span>")
 		updateDialog()

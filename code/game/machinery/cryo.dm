@@ -25,6 +25,15 @@
 	var/ejecting = 0
 	var/biochemical_stasis = 0
 
+	beepsounds = list(
+		'sound/effects/machinery/medical/beep1.ogg',
+		'sound/effects/machinery/medical/beep2.ogg',
+		'sound/effects/machinery/medical/beep3.ogg',
+		'sound/effects/machinery/medical/beep4.ogg',
+		'sound/effects/machinery/medical/beep5.ogg',
+		'sound/effects/machinery/medical/beep6.ogg'
+	)
+
 /obj/machinery/atmospherics/unary/cryo_cell/New()
 	..()
 	icon = 'icons/obj/cryogenics_split.dmi'
@@ -66,6 +75,8 @@
 		return
 	if(!on)
 		return
+
+	play_beep()
 
 	if(occupant)
 		if(occupant.stat != DEAD)
@@ -457,6 +468,7 @@
 /obj/machinery/atmospherics/unary/cryo_cell/emag_act(remaining_charges, mob/user)
 	if(emagged)
 		return
+	playsound(src.loc, 'sound/effects/computer_emag.ogg', 25)
 	emagged = 1
 	to_chat(user, "<span class='danger'>You short out \the [src]'s circuits.</span>")
 	var/datum/effect/effect/system/spark_spread/spark_system = new /datum/effect/effect/system/spark_spread()

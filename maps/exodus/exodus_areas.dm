@@ -1678,7 +1678,7 @@ area/rnd/test_area
 // Telecommunications Satellite
 
 /area/tcommsat
-	ambience = list("ai_ambient", "science_ambient")
+	ambience = list("ai_ambient", "comms_ambient")
 
 /area/tcommsat/entrance
 	name = "\improper Telecoms Teleporter"
@@ -1741,6 +1741,7 @@ area/rnd/test_area
 // Main Outpost
 /area/outpost/main_outpost
 	icon_state = "green"
+	ambience = list("global_ambient", "maintenance_ambient", "outpost_ambient")
 
 /area/outpost/main_outpost/shallway
 	name = "Outpost Southern Hallway"
@@ -1757,6 +1758,7 @@ area/rnd/test_area
 
 /area/outpost/main_outpost/infirmary
 	name = "Outpost Infirmary"
+	ambience = list("global_ambient", "science", "outpost_ambient")
 
 /area/outpost/main_outpost/canteen
 	name = "Outpost Canteen"
@@ -1789,10 +1791,12 @@ area/rnd/test_area
 /area/outpost/mining_north
 	name = "North Mining Outpost"
 	icon_state = "outpost_mine_north"
+	ambience = list("global_ambient", "maintenance_ambient", "outpost_ambient")
 
 /area/outpost/mining_west
 	name = "West Mining Outpost"
 	icon_state = "outpost_mine_west"
+	ambience = list("global_ambient", "maintenance_ambient", "outpost_ambient")
 
 /area/outpost/abandoned
 	name = "Abandoned Outpost"
@@ -1810,6 +1814,7 @@ area/rnd/test_area
 
 /area/outpost/engineering
 	icon_state = "outpost_engine"
+	ambience = list("global_ambient", "maintenance_ambient", "engineering_ambient")
 
 /area/outpost/engineering/atmospherics
 	name = "Engineering Outpost Atmospherics"

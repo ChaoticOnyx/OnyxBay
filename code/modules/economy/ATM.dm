@@ -55,6 +55,7 @@
 
 /obj/machinery/atm/emag_act(remaining_charges, mob/user)
 	if(!emagged)
+		playsound(src.loc, 'sound/effects/computer_emag.ogg', 25)
 		//short out the machine, shoot sparks, spew money!
 		emagged = 1
 		spark_system.start()

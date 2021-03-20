@@ -65,15 +65,19 @@
 				break
 			use_power_oneoff(active_power_usage)
 			if (istype(copyitem, /obj/item/weapon/paper))
+				playsound(src.loc, 'sound/signals/processing20.ogg', 25)
 				copy(copyitem)
 				sleep(15)
 			else if (istype(copyitem, /obj/item/weapon/photo))
+				playsound(src.loc, 'sound/signals/processing20.ogg', 25)
 				photocopy(copyitem)
 				sleep(15)
 			else if (istype(copyitem, /obj/item/weapon/paper_bundle))
+				playsound(src.loc, 'sound/signals/processing20.ogg', 25)
 				var/obj/item/weapon/paper_bundle/B = bundlecopy(copyitem)
 				sleep(15*B.pages.len)
 			else if (istype(copyitem, /obj/item/weapon/complaint_folder))
+				playsound(src.loc, 'sound/signals/processing20.ogg', 25)
 				var/obj/item/weapon/complaint_folder/CF = complaintcopy(copyitem)
 				sleep(15 * CF.contents.len)
 			else
@@ -225,7 +229,7 @@
 	p.icon_state = "paper_words"
 	p.SetName(bundle.name)
 	return p
-	
+
 /obj/item/device/toner
 	name = "toner cartridge"
 	icon_state = "tonercartridge"

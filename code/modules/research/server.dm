@@ -296,6 +296,7 @@
 
 /obj/machinery/computer/rdservercontrol/emag_act(remaining_charges, mob/user)
 	if(!emagged)
+		playsound(src.loc, 'sound/effects/computer_emag.ogg', 25)
 		playsound(src.loc, get_sfx("spark"), 75, 1)
 		emagged = 1
 		to_chat(user, "<span class='notice'>You you disable the security protocols.</span>")

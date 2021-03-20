@@ -260,6 +260,7 @@
 		explode() //if they're foolish enough to emag while it's running
 
 	if (!emagged)
+		playsound(src.loc, 'sound/effects/computer_emag.ogg', 25)
 		emagged = 1
 		return 1
 

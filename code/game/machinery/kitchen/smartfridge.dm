@@ -243,6 +243,7 @@
 
 /obj/machinery/smartfridge/secure/emag_act(remaining_charges, mob/user)
 	if(!emagged)
+		playsound(src.loc, 'sound/effects/computer_emag.ogg', 25)
 		emagged = 1
 		locked = -1
 		to_chat(user, "You short out the product lock on [src].")

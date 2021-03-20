@@ -194,6 +194,7 @@
 /obj/machinery/mecha_part_fabricator/emag_act(remaining_charges, mob/user)
 	switch(emagged)
 		if(0)
+			playsound(src.loc, 'sound/effects/computer_emag.ogg', 25)
 			emagged = 0.5
 			visible_message("\icon[src] <b>[src]</b> beeps: \"DB error \[Code 0x00F1\]\"")
 			sleep(10)

@@ -72,6 +72,8 @@
 		grown_seed = H.seed
 		grown_reagents = H.reagents
 
+	playsound(src.loc, 'sound/signals/processing21.ogg', 50)
+
 	if(!grown_seed)
 		to_chat(user, "<span class='danger'>[src] can tell you nothing about \the [target].</span>")
 		return

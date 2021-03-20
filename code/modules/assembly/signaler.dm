@@ -101,6 +101,7 @@
 /obj/item/device/assembly/signaler/proc/signal()
 	if(!radio_connection) return
 
+	playsound(src.loc, 'sound/signals/signaler.ogg', 35)
 	var/datum/signal/signal = new
 	signal.source = src
 	signal.encryption = code
