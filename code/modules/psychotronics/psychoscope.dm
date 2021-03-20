@@ -18,9 +18,7 @@
 
 // Psychoscope scanning on Shift + LMB
 /mob/ShiftClick(mob/user)
-	. = ..()
-	if(!.)
-		return
+	..()
 
 	if(src != user && istype(src, /mob))
 		var/mob/M = src

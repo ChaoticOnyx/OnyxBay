@@ -57,6 +57,11 @@
 	S.attach(location)
 	playsound(location, 'sound/effects/smoke.ogg', 50, 1, -3)
 	if(S)
+		var/list/reagent_names_list = list()
+		for(var/datum/reagent/R in reagents)
+			reagent_names_list.Add(R.name)
+		var/atom/AM = get_object()
+		AM.investigate_log("smokes these reagents: [jointext(reagent_names_list, ", ")] with [src].", INVESTIGATE_CIRCUIT)
 		S.set_up(reagents, smoke_radius, 0, location)
 		if(!notified)
 			notified = TRUE
@@ -152,7 +157,11 @@
 /obj/item/integrated_circuit/reagent/injector/proc/inject()
 	set waitfor = FALSE // Don't sleep in a proc that is called by a processor without this set, otherwise it'll delay the entire thing
 	var/atom/movable/AM = get_pin_data_as_type(IC_INPUT, 1, /atom/movable)
-	var/atom/movable/acting_object = get_object()
+	var/atom/acting_object = get_object()
+
+	var/list/reagent_names_list = list()
+	for(var/datum/reagent/R in reagents)
+		reagent_names_list.Add(R.name)
 
 	if(busy || !check_target(AM))
 		activate_pin(3)
@@ -219,6 +228,7 @@
 				return
 			tramount = min(tramount, AM.reagents.total_volume)
 			AM.reagents.trans_to(src, tramount)
+	acting_object.investigate_log("injected reagents: [jointext(reagent_names_list, ", ")] with [src].", INVESTIGATE_CIRCUIT)
 	activate_pin(2)
 
 
@@ -274,6 +284,12 @@
 
 	if(!source.is_open_container())
 		return
+
+	var/list/reagent_names_list = list()
+	for(var/datum/reagent/R in reagents)
+		reagent_names_list.Add(R.name)
+	var/atom/AM = get_object()
+	AM.investigate_log("transfer reagents: [jointext(reagent_names_list, ", ")] with [src].", INVESTIGATE_CIRCUIT)
 
 	source.reagents.trans_to(target, transfer_amount)
 	activate_pin(2)
@@ -358,6 +374,11 @@
 		return FALSE
 	var/obj/item/I = get_pin_data_as_type(IC_INPUT, 1, /obj/item)
 	if(istype(I) && (I.reagents.total_volume) && check_target(I))
+		var/list/reagent_names_list = list()
+		for(var/datum/reagent/R in reagents)
+			reagent_names_list.Add(R.name)
+		var/atom/AM = get_object()
+		AM.investigate_log("grinded reagents: [jointext(reagent_names_list, ", ")] with [src].", INVESTIGATE_CIRCUIT)
 		I.reagents.trans_to(src,I.reagents.total_volume)
 		qdel(I)
 		activate_pin(2)
@@ -381,21 +402,19 @@
 		)
 	activators = list(
 		"scan" = IC_PINTYPE_PULSE_IN,
-		"push ref" = IC_PINTYPE_PULSE_IN
+		"scanned" = IC_PINTYPE_PULSE_OUT
 		)
 	spawn_flags = IC_SPAWN_RESEARCH
 
 /obj/item/integrated_circuit/reagent/storage/scan/do_work(ord)
-	switch(ord)
-		if(1)
-			var/cont[0]
-			for(var/datum/reagent/RE in reagents.reagent_list)
-				cont += RE.name
-			set_pin_data(IC_OUTPUT, 3, cont)
-			push_data()
-		if(2)
-			set_pin_data(IC_OUTPUT, 2, weakref(src))
-			push_data()
+	var/list/cont = list()
+	for(var/datum/reagent/RE in reagents.reagent_list)
+		cont += RE.name
+	var/atom/AM = get_object()
+	AM.investigate_log("scanned reagents: [jointext(cont, ", ")] with [src].", INVESTIGATE_CIRCUIT)
+	set_pin_data(IC_OUTPUT, 3, cont)
+	push_data()
+	activate_pin(2)
 
 /obj/item/integrated_circuit/reagent/filter
 	name = "reagent filter"
@@ -456,12 +475,15 @@
 	if(target.reagents.maximum_volume - target.reagents.total_volume <= 0)
 		return
 
+	var/atom/AM = get_object()
 	for(var/datum/reagent/G in source.reagents.reagent_list)
 		if(!direction_mode)
 			if(G.name in demand)
+				AM.investigate_log("transfered [G.type] to [target], amount [transfer_amount] with [src]", INVESTIGATE_CIRCUIT)
 				source.reagents.trans_type_to(target, G.type, transfer_amount)
 		else
 			if(!(G.name in demand))
+				AM.investigate_log("transfered [G.type] to [target], amount [transfer_amount] with [src]", INVESTIGATE_CIRCUIT)
 				source.reagents.trans_type_to(target, G.type, transfer_amount)
 	activate_pin(2)
 	push_data()
@@ -504,7 +526,7 @@
 	name = "integrated extinguisher"
 	desc = "This circuit sprays any of its contents out like an extinguisher."
 	icon_state = "injector"
-	extended_desc = "This circuit can hold up to 1000 units of any given chemicals. On each use, it sprays these reagents to target coords like a extinguisher, the amount for splash per tile you selected on your own"
+	extended_desc = "This circuit can hold up to 1000 units of any given chemicals. On each use, it sprays these reagents to target coords like a extinguisher, the amount for splash per tile is 15 units"
 	atom_flags = ATOM_FLAG_OPEN_CONTAINER
 	volume = 1000
 	complexity = 20
@@ -574,6 +596,12 @@
 			W.set_color()
 			W.set_up(T)
 
+	var/list/reagent_names_list = list()
+	for(var/datum/reagent/R in reagents)
+		reagent_names_list.Add(R.name)
+	var/atom/AM = get_object()
+	AM.investigate_log("extinguished reagents: [jointext(reagent_names_list, ", ")] with [src].", INVESTIGATE_CIRCUIT)
+
 	push_data()
 	activate_pin(2)
 
@@ -606,7 +634,7 @@
 	var/obj/item/weapon/reagent_containers/glass/beaker/current_beaker
 
 
-/obj/item/integrated_circuit/input/beaker_connector/attackby(var/obj/item/weapon/reagent_containers/glass/beaker/I, var/mob/living/user)
+/obj/item/integrated_circuit/input/beaker_connector/attackby(obj/item/weapon/reagent_containers/glass/beaker/I, mob/living/user)
 	//Check if it truly is a reagent container
 	if(!istype(I,/obj/item/weapon/reagent_containers/glass/beaker))
 		to_chat(user, SPAN("warning", "The [I] doesn't seem to fit in here."))

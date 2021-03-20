@@ -139,6 +139,8 @@
 	if(get_dist(src, usr) > 1 && !issilicon(usr))
 		return
 
+	playsound(src.loc, 'sound/signals/typing3.ogg', 25)
+
 	locked = L[desc]
 	for(var/mob/O in hearers(src, null))
 		O.show_message("<span class='notice'>Locked In</span>", 2)

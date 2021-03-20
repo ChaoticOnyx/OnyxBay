@@ -143,17 +143,17 @@
 	return
 
 /obj/machinery/computer/HolodeckControl/emag_act(remaining_charges, mob/user as mob)
-	playsound(src.loc, get_sfx("spark"), 75, 1)
 	last_to_emag = user //emag again to change the owner
 	if (!emagged)
+		playsound(src.loc, 'sound/effects/computer_emag.ogg', 25)
 		emagged = 1
 		safety_disabled = 1
 		update_projections()
 		to_chat(user, "<span class='notice'>You vastly increase projector power and override the safety and security protocols.</span>")
 		to_chat(user, "Warning.  Automatic shutoff and derezing protocols have been corrupted.  Please call [GLOB.using_map.company_name] maintenance and do not use the simulator.")
 		log_game("[key_name(usr)] emagged the Holodeck Control Computer")
-		return 1
 		src.updateUsrDialog()
+		return 1
 	else
 		..()
 

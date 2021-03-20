@@ -30,6 +30,7 @@
 	var/ext_moved_triggerable = FALSE // Used to tell assembly if we need moved event
 	var/moved_event_created = FALSE // check this var on delete and if this var true delete ext_moved event
 	var/atom/movable/moved_object // used for check if we already have moved event
+	var/radial_menu_icon = "" // used for radial menu selection
 
 
 /*
@@ -42,6 +43,11 @@ a creative player the means to solve many problems.  Circuits are held inside an
 	external_examine(user)
 	. = ..()
 
+/obj/item/integrated_circuit/attack_self(mob/user)
+	if(isrobot(user))
+		interact(user)
+	..()
+
 /obj/item/integrated_circuit/attack_hand(mob/user)
 	// if in assembly override putting src into user hands
 	if(istype(assembly))
@@ -50,7 +56,7 @@ a creative player the means to solve many problems.  Circuits are held inside an
 		..()
 
 // Can be called via electronic_assembly/attackby()
-/obj/item/integrated_circuit/proc/additem(var/obj/item/I, var/mob/living/user)
+/obj/item/integrated_circuit/proc/additem(obj/item/I, mob/living/user)
 	attackby(I, user)
 
 // This should be used when someone is examining while the case is opened.
@@ -88,6 +94,8 @@ a creative player the means to solve many problems.  Circuits are held inside an
 	if(assembly)
 		return assembly.check_interactivity(user)
 	else
+		if(isrobot(user))
+			return TRUE
 		return CanUseTopic(user)
 
 /obj/item/integrated_circuit/Initialize()
@@ -100,10 +108,12 @@ a creative player the means to solve many problems.  Circuits are held inside an
 		matter[MATERIAL_STEEL] = w_class * SScircuit.cost_multiplier // Default cost.
 
 /obj/item/integrated_circuit/proc/get_power_cell(atom/movable/AM)
+	var/efficient = 1
 	var/obj/item/weapon/cell/cell
 	// add below cell getting code from device to get correct cell
 	if(isrobot(AM))
 		var/mob/living/silicon/robot/R = AM
+		efficient = 0.9
 		cell = R.cell
 
 	else if(istype(AM, /obj/item/weapon/cell))
@@ -117,17 +127,19 @@ a creative player the means to solve many problems.  Circuits are held inside an
 		var/obj/machinery/mining/drill/hdrill = AM
 		cell = hdrill.cell
 
-	else if(istype(AM, /obj/item/weapon/gun/energy))
+	else if(istype(AM, /obj/item/weapon/gun/energy) && !istype(AM, /obj/item/weapon/gun/energy/plasmacutter))
 		var/obj/item/weapon/gun/energy/WEP = AM
 		cell = WEP.power_supply
+		efficient = 0.6
 
 	else if(istype(AM, /mob/living/carbon/human))
 		var/mob/living/carbon/human/H = AM
 		var/obj/item/organ/internal/cell/MB = H.internal_organs_by_name[BP_CELL]
 		if(istype(MB))
 			cell = MB.cell
+			efficient = 0.8
 
-	return cell
+	return list(cell, efficient)
 
 // called when we add component to assembly
 /obj/item/integrated_circuit/proc/create_moved_event()
@@ -347,9 +359,14 @@ a creative player the means to solve many problems.  Circuits are held inside an
 	if(href_list["return"])
 		update_to_assembly = TRUE
 
+	if(href_list["ic_window"] && assembly && assembly.use_ui_window)
+		. = OnICTopic(href_list, usr)
+
+	if(assembly && !assembly.opened && update)
+		update = FALSE
 
 	if(update)
-		if(assembly && update_to_assembly)
+		if(assembly && (update_to_assembly || . == IC_TOPIC_REFRESH))
 			assembly.interact(usr, src)
 		else
 			interact(usr) // To refresh the UI.
@@ -367,6 +384,12 @@ a creative player the means to solve many problems.  Circuits are held inside an
 /obj/item/integrated_circuit/proc/draw_idle_power()
 	if(assembly)
 		return assembly.draw_power(power_draw_idle)
+
+/obj/item/integrated_circuit/proc/OnICTopic(href_list, user)
+	return
+
+/obj/item/integrated_circuit/proc/get_topic_data(mob/user)
+	return
 
 // Override this for special behaviour when there's no power left.
 /obj/item/integrated_circuit/proc/power_fail()

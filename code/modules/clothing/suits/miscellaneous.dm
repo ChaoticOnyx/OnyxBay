@@ -353,7 +353,7 @@
 	cold_protection = UPPER_TORSO|ARMS
 	min_cold_protection_temperature = T0C - 20
 	siemens_coefficient = 0.7
-
+	initial_closed = TRUE
 
 /obj/item/clothing/suit/storage/toggle/varsity
 	name = "black varsity"
@@ -364,6 +364,7 @@
 	cold_protection = UPPER_TORSO|ARMS
 	min_cold_protection_temperature = T0C - 20
 	siemens_coefficient = 0.7
+	initial_closed = TRUE
 
 /obj/item/clothing/suit/storage/toggle/varsity/blue
 	name = "blue varsity"
@@ -390,6 +391,7 @@
 	icon_state = "leather_jacket"
 	item_state = "leather_jacket"
 	body_parts_covered = UPPER_TORSO|ARMS
+	initial_closed = TRUE
 
 /obj/item/clothing/suit/storage/black_jacket_long
 	name = "long black jacket"
@@ -397,12 +399,14 @@
 	icon_state = "black_jacket_long"
 	item_state = "black_jacket_long"
 	body_parts_covered = UPPER_TORSO|ARMS
+	initial_closed = TRUE
 
 /obj/item/clothing/suit/storage/black_jacket_NT
 	name = "black leather jacket NT"
 	desc = "A black leather coat. A corporate logo is proudly displayed on the back."
 	icon_state = "leather_jacket_nt"
 	body_parts_covered = UPPER_TORSO|ARMS
+	initial_closed = TRUE
 
 /obj/item/clothing/suit/storage/punk_jacket_AC
 	name = "black punk jacket"
@@ -437,6 +441,7 @@
 	icon_open = "brown_jacket_open"
 	icon_closed = "brown_jacket"
 	body_parts_covered = UPPER_TORSO|ARMS
+	initial_closed = TRUE
 
 /obj/item/clothing/suit/storage/toggle/brown_jacket_NT
 	name = "brown jacket NT"
@@ -445,6 +450,7 @@
 	icon_open = "brown_jacket_nt_open"
 	icon_closed = "brown_jacket_nt"
 	body_parts_covered = UPPER_TORSO|ARMS
+	initial_closed = TRUE
 
 /obj/item/clothing/suit/storage/toggle/marshal_jacket
 	name = "colonial marshal jacket"
@@ -455,6 +461,7 @@
 	icon_closed = "marshal_jacket"
 	valid_accessory_slots = list(ACCESSORY_SLOT_INSIGNIA)
 	body_parts_covered = UPPER_TORSO|ARMS
+	initial_closed = TRUE
 
 /obj/item/clothing/suit/storage/toggle/hoodie
 	name = "hoodie"
@@ -465,6 +472,7 @@
 	icon_closed = "hoodie"
 	min_cold_protection_temperature = T0C - 20
 	cold_protection = UPPER_TORSO|LOWER_TORSO|ARMS
+	initial_closed = TRUE
 
 /obj/item/clothing/suit/storage/toggle/hoodie/cti
 	name = "\improper CTI hoodie"
@@ -504,6 +512,7 @@
 	desc = "A green jacket bearing the logo of Major Bill's Shipping."
 	icon_state = "mbill"
 	item_state = "mbill"
+	initial_closed = TRUE
 
 /obj/item/clothing/suit/poncho/roles/security
 	name = "security poncho"
@@ -544,6 +553,7 @@
 	icon_state = "trackjacket"
 	icon_open = "trackjacket_open"
 	icon_closed = "trackjacket"
+	initial_closed = TRUE
 
 /obj/item/clothing/suit/storage/toggle/track/blue
 	name = "blue track jacket"

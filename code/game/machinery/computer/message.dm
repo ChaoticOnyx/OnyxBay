@@ -49,6 +49,7 @@
 	// It'll take more time if there's more characters in the password..
 	if(!emag && operable())
 		if(!isnull(src.linkedServer))
+			playsound(src.loc, 'sound/effects/computer_emag.ogg', 25)
 			emag = 1
 			screen = 2
 			spark_system.set_up(5, 0, src)

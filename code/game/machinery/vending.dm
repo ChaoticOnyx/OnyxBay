@@ -169,6 +169,7 @@
 
 /obj/machinery/vending/emag_act(remaining_charges, mob/user)
 	if (!emagged)
+		playsound(src.loc, 'sound/effects/computer_emag.ogg', 25)
 		src.emagged = 1
 		to_chat(user, "You short out the product lock on \the [src]")
 		return 1

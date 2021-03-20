@@ -38,13 +38,13 @@
 	if(!t.requires_power) // We assume areas that don't use power are some sort of special zones
 		var/area/default = world.area
 		location = initial(default.name)
-	var/death_message = "[mobname] has died in [location]!"
+	var/death_message = "Message from [name] acquired successful. [mobname] has died in [location]!"
 	if(!cause)
-		death_message = "[mobname] has died-zzzzt in-in-in..."
+		death_message = "Message from [name] acquired successful. [mobname] has died-zzzzt in-in-in..."
 	STOP_PROCESSING(SSobj, src)
 
 	for(var/channel in list("Security", "Medical", "Command"))
-		GLOB.global_headset.autosay(death_message, "[mobname]'s Death Alarm", channel)
+		GLOB.global_headset.autosay(death_message, get_announcement_computer("[mobname]'s Death Alarm"), channel)
 
 /obj/item/weapon/implant/death_alarm/emp_act(severity)			//for some reason alarms stop going off in case they are emp'd, even without this
 	if (malfunction)		//so I'm just going to add a meltdown chance here

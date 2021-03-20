@@ -454,6 +454,8 @@
 		return //fuck this precision
 
 	if(on_fire)
+		if (stat == CONSCIOUS)
+			src.emote("long_scream")
 		return //too busy for pesky metabolic regulation
 
 	if(bodytemperature < species.cold_level_1) //260.15 is 310.15 - 50, the temperature where you start to feel effects.
@@ -759,7 +761,7 @@
 				healths.icon_state = "health_numb"
 			else
 				// Generate a by-limb health display.
-				healths.icon_state = "blank"
+				healths.icon_state = "health"
 
 				var/no_damage = 1
 				var/trauma_val = 0 // Used in calculating softcrit/hardcrit indicators.

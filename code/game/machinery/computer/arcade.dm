@@ -91,6 +91,19 @@
 	var/gameover = 0
 	var/blocked = 0 //Player cannot attack/heal while set
 	var/turtle = 0
+	var/list/attack_sounds = list(
+			'sound/effects/arcade/attack1.ogg',
+			'sound/effects/arcade/attack2.ogg',
+			'sound/effects/arcade/attack3.ogg',
+			'sound/effects/arcade/attack4.ogg',
+			'sound/effects/arcade/attack5.ogg'
+		)
+
+	var/list/damage_sounds = list(
+		'sound/effects/arcade/damage1.ogg',
+		'sound/effects/arcade/damage2.ogg',
+		'sound/effects/arcade/damage3.ogg',
+	)
 
 /obj/machinery/computer/arcade/battle/Initialize()
 	. = ..()
@@ -147,6 +160,7 @@
 		return TOPIC_HANDLED
 
 	if (href_list["attack"])
+		playsound(src.loc, pick(attack_sounds), 15, TRUE)
 		src.blocked = 1
 		var/attackamt = rand(2,6)
 		src.temp = "You attack for [attackamt] damage!"
@@ -159,6 +173,7 @@
 		src.arcade_action(user)
 
 	else if (href_list["heal"])
+		playsound(src.loc, 'sound/effects/arcade/heal1.ogg', 15, TRUE)
 		src.blocked = 1
 		var/pointamt = rand(1,3)
 		var/healamt = rand(6,8)
@@ -174,6 +189,7 @@
 		src.arcade_action(user)
 
 	else if (href_list["charge"])
+		playsound(src.loc, 'sound/effects/arcade/recharge1.ogg', 15, TRUE)
 		src.blocked = 1
 		var/chargeamt = rand(4,7)
 		src.temp = "You regain [chargeamt] points"
@@ -186,6 +202,7 @@
 		src.arcade_action(user)
 
 	else if (href_list["newgame"]) //Reset everything
+		playsound(src.loc, 'sound/effects/arcade/start1.ogg', 15, TRUE)
 		temp = "New Round"
 		player_hp = 30
 		player_mp = 10
@@ -219,6 +236,7 @@
 				src.prizevend()
 
 	else if (emagged && (turtle >= 4))
+		playsound(src.loc, pick(damage_sounds), 15, TRUE)
 		var/boomamt = rand(5,10)
 		src.temp = "[src.enemy_name] throws a bomb, exploding you for [boomamt] damage!"
 		src.player_hp -= boomamt
@@ -246,6 +264,7 @@
 
 	else
 		var/attackamt = rand(3,6)
+		playsound(src.loc, pick(damage_sounds), 15, TRUE)
 		src.temp = "[src.enemy_name] attacks for [attackamt] damage!"
 		src.player_hp -= attackamt
 
@@ -266,6 +285,7 @@
 
 /obj/machinery/computer/arcade/battle/emag_act(charges, mob/user)
 	if(!emagged)
+		playsound(src.loc, 'sound/effects/computer_emag.ogg', 25)
 		temp = "If you die in the game, you die for real!"
 		player_hp = 30
 		player_mp = 10

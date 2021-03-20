@@ -226,7 +226,7 @@ obj/item/weapon/board/attackby(obj/item/I as obj, mob/user as mob)
 
 /obj/item/weapon/reagent_containers/food/snacks/checker/king/red
 	piece_color ="red"
-	
+
 /*
 CONTAINS:
 THAT STUPID GAME KIT
@@ -240,7 +240,7 @@ THAT STUPID GAME KIT
 	var/board_stat = null
 	var/data = ""
 	item_state = "sheet-metal"
-	
+
 /datum/asset/simple/chess
 	assets = list(
 		"board_BI.png"			= 'icons/chess/board_BI.png',
@@ -254,9 +254,9 @@ THAT STUPID GAME KIT
 		"board_WN.png"			= 'icons/chess/board_WN.png',
 		"board_WP.png"			= 'icons/chess/board_WP.png',
 		"board_WQ.png"			= 'icons/chess/board_WQ.png',
-		"board_WR.png"			= 'icons/chess/board_WR.png',	
-		"board_none.png"		= 'icons/chess/board_none.png',			
-	)	
+		"board_WR.png"			= 'icons/chess/board_WR.png',
+		"board_none.png"		= 'icons/chess/board_none.png',
+	)
 
 /obj/item/weapon/game_kit/New()
 	src.board_stat = "BBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBB"
@@ -319,7 +319,6 @@ THAT STUPID GAME KIT
 		user << browse(src.data, "window=game_kit;size=600x748")
 		onclose(user, "game_kit")
 		return
-	return
 
 /obj/item/weapon/game_kit/Topic(href, href_list)
 	..()
@@ -389,4 +388,4 @@ THAT STUPID GAME KIT
 		update()
 		for(var/mob/M in viewers(1, src))
 			if ((M.client && M.machine == src))
-				src.attack_hand(M)	
+				src.attack_hand(M)

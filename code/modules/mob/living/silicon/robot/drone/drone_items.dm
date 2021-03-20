@@ -234,17 +234,6 @@
 	else if (length(storage_type))
 		. += "\n[src] is currently can [mode == MODE_EMPTY ? "empty" : "open"] containers."
 
-/obj/item/weapon/gripper/integrated_circuit/attack_self(mob/living/silicon/user)
-	if(wrapped)
-		if (istype(wrapped, /obj/item/device/electronic_assembly))
-			var/obj/item/device/electronic_assembly/O = wrapped
-			O.interact(user)
-
-/obj/item/weapon/gripper/integrated_circuit/afterattack(atom/target, mob/user, proximity)
-	if(proximity && istype(wrapped, /obj/item/integrated_circuit) && istype(target, /obj/item/device/electronic_assembly))
-		var/obj/item/device/electronic_assembly/AS = target
-		AS.try_add_component(wrapped, user, AS)
-
 /obj/item/weapon/gripper/attack_self(mob/user as mob)
 	if(wrapped)
 		return wrapped.attack_self(user)
@@ -298,6 +287,12 @@
 	user.do_attack_animation(src)
 
 	if(wrapped)
+		if(istype(target, /obj/item/device/electronic_assembly) && istype(wrapped, /obj/item/integrated_circuit))
+			var/obj/item/device/electronic_assembly/AS = target
+			wrapped.forceMove(user, params)
+			AS.try_add_component(wrapped, user, AS)
+			wrapped = null
+			return
 		if(istype(target,/obj/structure/table)) //Putting item on the table if any
 			var/obj/structure/table/T = target
 			to_chat(src.loc, "<span class='notice'>You place \the [wrapped] on \the [target].</span>")

@@ -90,6 +90,7 @@
 					screen = !screen
 				else
 					to_chat(usr, "Unauthorized Access.")
+					playsound(src.loc, 'sound/signals/error29.ogg', 50, 0)
 
 			else if(href_list["warn"])
 				var/warning = sanitize(input(usr,"Message:","Enter your message here!",""))
