@@ -584,3 +584,8 @@ client/verb/character_setup()
 
 		pct += delta
 		winset(src, "mainwindow.mainvsplit", "splitter=[pct]")
+
+/client/verb/release_shift()
+	set name = ".release_shift"
+
+	shift_released_at = world.time
