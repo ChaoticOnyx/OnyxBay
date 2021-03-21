@@ -464,10 +464,18 @@
 	else
 		stat(null, text("No Cell Inserted!"))
 
+/mob/living/silicon/robot/proc/show_gps()
+	var/turf/T = get_turf(src)
+	if (T.z != 1 && T.z != 2)
+		stat(null, text("Current location: Unknown"))
+	else
+		stat(null, text("Current location: [T.x]:[T.y]:[T.z], [get_area(T).name]"))
+
 // update the status screen display
 /mob/living/silicon/robot/Stat()
 	. = ..()
 	if (statpanel("Status"))
+		show_gps()
 		show_cell_power()
 		show_jetpack_pressure()
 		stat(null, text("Lights: [lights_on ? "ON" : "OFF"]"))
