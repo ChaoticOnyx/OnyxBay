@@ -44,7 +44,7 @@
 			enemies = list()
 			LoseTarget()
 			visible_message(SPAN_NOTICE("\The [src] calms down."))
-			isragemode = TRUE
+			isragemode = FALSE
 
 		if(stat == CONSCIOUS)
 			if(udder && prob(5))
@@ -73,7 +73,7 @@
 	..()
 	if(stat == CONSCIOUS && prob(50))
 		visible_message(SPAN_WARNING("\The [src] gets an evil-looking gleam in his eye."))
-	isragemode = FALSE
+	isragemode = TRUE
 
 /mob/living/simple_animal/hostile/retaliate/goat/attackby(obj/item/O, mob/user)
 	var/obj/item/weapon/reagent_containers/G = O
@@ -82,6 +82,7 @@
 			if(isragemode)
 				to_chat(user, SPAN_NOTICE("\The [src] is already angry."))
 				return
+			G.reagents.remove_any(1)
 			user.visible_message(SPAN_WARNING("[user] gives something to \the [src]."))
 			to_chat(user, SPAN_WARNING("Better run away now!"))
 			Retaliate()
