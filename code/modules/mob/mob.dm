@@ -655,8 +655,13 @@
 			stat("Local Time", stationtime2text())
 			stat("Local Date", stationdate2text())
 			stat("Round Duration", roundduration2text())
-		if(client.holder || isghost(client.mob))
-			stat("Location:", "([x], [y], [z]) [loc]")
+		if(isAI(client.mob))
+			var/mob/living/silicon/ai/AI = client.mob
+			var/mob/observer/eye/eye = AI.eyeobj
+			if(istype(eye))
+				stat("AI Eye Location:", "([eye.x], [eye.y], [eye.z]), [get_area(get_turf(eye.loc)).name]")
+		else if(client.holder || isghost(client.mob))
+			stat("Location:", "([x], [y], [z]), [get_area(get_turf(loc)).name]")
 
 	if(client.holder)
 		if(statpanel("MC"))
