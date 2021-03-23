@@ -1227,3 +1227,5 @@
 
 /mob/living/silicon/robot/lay_down()
 	set category = null
+
+	return
