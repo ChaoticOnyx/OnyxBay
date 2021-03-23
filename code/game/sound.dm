@@ -110,7 +110,7 @@ GLOBAL_LIST_INIT(ai_ambient_sound,list('sound/ambience/ai/amb1.ogg','sound/ambie
 										'sound/ambience/ai/amb20.ogg','sound/ambience/ai/amb21.ogg','sound/ambience/ai/amb22.ogg',
 										'sound/ambience/ai/amb23.ogg'))
 
-GLOBAL_LIST_INIT(comms_ambient_sound, list('sound/ambience/comms/amb1.ogg','sound/ambience/comms/amb2.ogg','sound/ambience/comms/amb3.ogg',
+GLOBAL_LIST_INIT(comms_ambient_sound, list('sound/ambience/comms/amb1.ogg','sound/ambience/comms/amb3.ogg',
 										'sound/ambience/comms/amb4.ogg','sound/ambience/comms/amb5.ogg','sound/ambience/comms/amb6.ogg',
 										'sound/ambience/comms/amb7.ogg','sound/ambience/comms/amb8.ogg','sound/ambience/comms/amb9.ogg',
 										'sound/ambience/comms/amb10.ogg','sound/ambience/comms/amb12.ogg','sound/ambience/comms/amb13.ogg',
@@ -132,8 +132,7 @@ GLOBAL_LIST_INIT(maintenance_ambient_sound,list('sound/ambience/maintenance/amb1
 												'sound/ambience/maintenance/amb38.ogg','sound/ambience/maintenance/amb39.ogg','sound/ambience/maintenance/amb40.ogg',
 												'sound/ambience/maintenance/amb42.ogg','sound/ambience/maintenance/amb43.ogg','sound/ambience/maintenance/amb44.ogg',
 												'sound/ambience/maintenance/amb45.ogg','sound/ambience/maintenance/amb46.ogg','sound/ambience/maintenance/amb47.ogg',
-												'sound/ambience/maintenance/amb48.ogg','sound/ambience/maintenance/amb49.ogg','sound/ambience/maintenance/amb50.ogg',
-												'sound/ambience/maintenance/amb51.ogg'))
+												'sound/ambience/maintenance/amb49.ogg','sound/ambience/maintenance/amb50.ogg','sound/ambience/maintenance/amb51.ogg'))
 
 GLOBAL_LIST_INIT(engineering_ambient_sound,list('sound/ambience/engineering/amb1.ogg','sound/ambience/engineering/amb2.ogg','sound/ambience/engineering/amb3.ogg',
 												'sound/ambience/engineering/amb4.ogg','sound/ambience/engineering/amb5.ogg','sound/ambience/engineering/amb6.ogg',
