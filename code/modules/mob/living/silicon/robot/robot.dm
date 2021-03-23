@@ -145,6 +145,7 @@
 		cell_component.installed = 1
 
 	add_robot_verbs()
+	
 
 	hud_list[HEALTH_HUD]      = new /image/hud_overlay('icons/mob/hud.dmi', src, "hudblank")
 	hud_list[STATUS_HUD]      = new /image/hud_overlay('icons/mob/hud.dmi', src, "hudhealth100")
@@ -1224,3 +1225,6 @@
 		ion_trail.stop()
 		qdel(ion_trail)
 		ion_trail = null
+
+/mob/living/silicon/robot/lay_down()
+	set category = null
