@@ -122,7 +122,7 @@ var/list/blob_overminds = list()
 		B.update_icon()
 
 		if(!spawning)
-			anim(target = B.loc, a_icon = icon, flick_anim = "connect_die", sleeptime = 50, direction = get_dir(B,src), plane = src.plane)
+			anim(target = B.loc, a_icon = icon, flick_anim = "connect_die", sleeptime = 50, direction = get_dir(B,src))
 
 	..()
 
