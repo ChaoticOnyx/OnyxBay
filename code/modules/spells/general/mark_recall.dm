@@ -29,7 +29,7 @@
 		return 0
 	var/target = targets[1]
 	if(istext(target))
-		mark = new /obj/effect/cleanable/wizard_mark(get_turf(user),src)
+		mark = new /obj/effect/decal/cleanable/wizard_mark(get_turf(user),src)
 		return 1
 	if(!istype(target,/obj)) //something went wrong
 		return 0
@@ -47,7 +47,7 @@
 
 	return "You no longer have to be conscious to activate this spell."
 
-/obj/effect/cleanable/wizard_mark
+/obj/effect/decal/cleanable/wizard_mark
 	name = "\improper Mark of the Wizard"
 	desc = "A strange rune said to be made by wizards. Or its just some shmuck playing with crayons again."
 	icon = 'icons/obj/rune.dmi'
@@ -59,22 +59,22 @@
 
 	var/spell/mark_recall/spell
 
-/obj/effect/cleanable/wizard_mark/New(newloc,mrspell)
+/obj/effect/decal/cleanable/wizard_mark/New(newloc,mrspell)
 	..()
 	spell = mrspell
 
-/obj/effect/cleanable/wizard_mark/Destroy()
+/obj/effect/decal/cleanable/wizard_mark/Destroy()
 	spell.mark = null //dereference pls.
 	spell = null
 	..()
 
-/obj/effect/cleanable/wizard_mark/attack_hand(mob/user)
+/obj/effect/decal/cleanable/wizard_mark/attack_hand(mob/user)
 	if(user == spell.holder)
 		user.visible_message("\The [user] mutters an incantation and \the [src] disappears!")
 		qdel(src)
 	..()
 
-/obj/effect/cleanable/wizard_mark/attackby(obj/item/I, mob/user)
+/obj/effect/decal/cleanable/wizard_mark/attackby(obj/item/I, mob/user)
 	if(istype(I, /obj/item/weapon/nullrod) || istype(I, /obj/item/weapon/spellbook))
 		user.setClickCooldown(DEFAULT_ATTACK_COOLDOWN)
 		src.visible_message("\The [src] fades away!")
