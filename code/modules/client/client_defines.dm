@@ -62,3 +62,6 @@
 
 	//used for initial centering of saywindow
 	var/first_say = TRUE
+
+	//For tracking shift key (world.time)
+	var/shift_released_at = 0 
