@@ -85,8 +85,10 @@
 #undef MIN_OXIDIZER_PRESSURE_TO_SMOKE
 
 /obj/item/clothing/mask/smokable/proc/light(atom/used_tool, mob/holder) // both arguments are optional
-	if(!src.lit)
-		src.lit = 1
+  if(src.lit)
+      return
+    
+  src.lit = TRUE
 		if(istype(src,/obj/item/clothing/mask/smokable/cigarette/syndi_cigs))
 			atom_flags = 48
 
