@@ -86,9 +86,9 @@
 
 /obj/item/clothing/mask/smokable/proc/light(atom/used_tool, mob/holder) // both arguments are optional
 	if(!src.lit)
-		src.lit = 1
-		if(istype(src,/obj/item/clothing/mask/smokable/cigarette/syndi_cigs))
-			atom_flags = 48
+		src.lit = TRUE
+		if(atom_flags & ATOM_FLAG_NO_REACT)
+			atom_flags &= ~ATOM_FLAG_NO_REACT
 
 		damtype = BURN
 		force = initial(force) + 2
