@@ -85,12 +85,12 @@
 #undef MIN_OXIDIZER_PRESSURE_TO_SMOKE
 
 /obj/item/clothing/mask/smokable/proc/light(atom/used_tool, mob/holder) // both arguments are optional
-  	if(src.lit)
-     	return
+	if(src.lit)
+		return
 
-  	src.lit = TRUE
-	if(atom_flags & ATOM_FLAG_NO_REACT)
-		atom_flags &= ~ATOM_FLAG_NO_REACT
+	src.lit = TRUE
+	if(src.atom_flags & ATOM_FLAG_NO_REACT)
+		src.atom_flags &= ~ATOM_FLAG_NO_REACT
 
 	damtype = BURN
 	force = initial(force) + 2
