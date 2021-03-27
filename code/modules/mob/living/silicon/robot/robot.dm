@@ -1223,3 +1223,8 @@
 		ion_trail.stop()
 		qdel(ion_trail)
 		ion_trail = null
+
+/mob/living/silicon/robot/lay_down()
+	set category = null
+
+	return
