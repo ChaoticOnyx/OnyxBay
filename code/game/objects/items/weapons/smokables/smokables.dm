@@ -88,7 +88,7 @@
 	if(!src.lit)
 		src.lit = 1
 		if(istype(src,/obj/item/clothing/mask/smokable/cigarette/syndi_cigs))
-			atom_flags=48
+			atom_flags = 48
 
 		damtype = BURN
 		force = initial(force) + 2

@@ -329,7 +329,7 @@
 ////////////////////
 //SYNDI CIGARETTES//
 ////////////////////
-/obj/item/clothing/mask/smokable/cigarette/syndi_cigs/
+/obj/item/clothing/mask/smokable/cigarette/syndi_cigs
 	chem_volume = 15
 /obj/item/clothing/mask/smokable/cigarette/syndi_cigs/flash
 	atom_flags = ATOM_FLAG_NO_REACT
