@@ -1,6 +1,6 @@
 body {
 	src: url(whitney-bedium.ttf);
-	font-family: Whitney;
+	font-family: "Whitney", "Arial";
 	background-color: #22272E;
 	color: white;
 	font-weight: 500;
@@ -58,6 +58,7 @@ li.spellcheck,
 li.balance,
 li.maptweak {
 	border-left-color: #57AB5A;
+	background-color: rgba(87, 171, 90, 0.2);
 	background: linear-gradient(90deg, rgba(87, 171, 90, 0.2) 0%, rgba(71, 139, 73, 0) 100%);
 	-pie-background: linear-gradient(rgba(87, 171, 90, 0.2) 0%, rgba(71, 139, 73, 0) 100%);
 }
@@ -66,6 +67,7 @@ li.rscdel,
 li.sounddel,
 li.imagedel {
 	border-left-color: #E5534B;
+	background-color: rgba(229, 83, 75, 0.2);
 	background: linear-gradient(90deg, rgba(229, 83, 75, 0.2) 0%, rgba(158, 57, 52, 0) 100%);
 	-pie-background: linear-gradient(rgba(229, 83, 75, 0.2) 0%, rgba(158, 57, 52, 0) 100%);
 }
@@ -73,6 +75,7 @@ li.imagedel {
 li.wip,
 li.experiment {
 	border-left-color: #DAAA3F;
+	background-color: rgba(218, 170, 63, 0.2);
 	background: linear-gradient(90deg, rgba(218, 170, 63, 0.2) 0%, rgba(150, 117, 44, 0) 100%);
 	-pie-background: linear-gradient(rgba(218, 170, 63, 0.2) 0%, rgba(150, 117, 44, 0) 100%);
 }
@@ -89,7 +92,6 @@ li.experiment {
 }
 
 .date {
-	font-family: Whitney;
 	margin: 10px 0;
 	color: #6B89DA;
 	border-bottom: 2px solid #6B89DA;
