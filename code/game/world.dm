@@ -493,10 +493,11 @@ var/world_topic_spam_protect_time = world.timeofday
 		return GLOB.prometheus_metrics.collect()
 
 
-/world/Reboot(reason)
+/world/Reboot(reason, hard_reboot = FALSE)
 	// sound_to(world, sound('sound/AI/newroundsexy.ogg')
 
-	Master.Shutdown()
+	if(!hard_reboot)
+		Master.Shutdown()
 
 	for(var/client/C in GLOB.clients)
 		var/datum/chatOutput/co = C.chatOutput
@@ -510,6 +511,11 @@ var/world_topic_spam_protect_time = world.timeofday
 		text2file("foo", "reboot_called")
 		to_world("<span class=danger>World reboot waiting for external scripts. Please be patient.</span>")
 		return
+
+	game_log("World rebooted at [time_stamp()]")
+
+	if(blackbox)
+		blackbox.save_all_data_to_sql()
 
 	..(reason)
 

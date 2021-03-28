@@ -154,8 +154,6 @@ SUBSYSTEM_DEF(ticker)
 				if(!delay_end)
 					to_world("<span class='notice'><b>Restarting in [restart_timeout/10] seconds</b></span>")
 
-			if(blackbox)
-				blackbox.save_all_data_to_sql()
 			handle_tickets()
 			SSstoryteller.collect_statistics()
 		if(END_GAME_ENDING)
