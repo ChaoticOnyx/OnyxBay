@@ -50,12 +50,12 @@ GLOBAL_LIST_INIT(f_heavyb_sound,list('sound/effects/emotes/f_heavyb1.ogg','sound
 									'sound/effects/emotes/f_heavyb4.ogg','sound/effects/emotes/f_heavyb5.ogg','sound/effects/emotes/f_heavyb6.ogg',
 									'sound/effects/emotes/f_heavyb7.ogg','sound/effects/emotes/f_heavyb8.ogg','sound/effects/emotes/f_heavyb9.ogg'))
 
-GLOBAL_LIST_INIT(f_pain_sound,list('sound/effects/emotes/f_pain1.ogg','sound/effects/emotes/f_pain2.ogg','sound/effects/emotes/f_pain3.ogg',
-									'sound/effects/emotes/f_pain4.ogg','sound/effects/emotes/f_pain5.ogg','sound/effects/emotes/f_pain6.ogg',
-									'sound/effects/emotes/f_pain7.ogg','sound/effects/emotes/f_pain8.ogg','sound/effects/emotes/f_pain9.ogg',
-									'sound/effects/emotes/f_pain10.ogg','sound/effects/emotes/f_pain11.ogg','sound/effects/emotes/f_pain12.ogg',
-									'sound/effects/emotes/f_pain13.ogg','sound/effects/emotes/f_pain14.ogg','sound/effects/emotes/f_pain15.ogg',
-									'sound/effects/emotes/f_pain16.ogg','sound/effects/emotes/f_pain17.ogg','sound/effects/emotes/f_pain18.ogg'))
+GLOBAL_LIST_INIT(f_pain_sound,list('sound/effects/emotes/f_pain1.ogg','sound/effects/emotes/f_pain3.ogg','sound/effects/emotes/f_pain4.ogg',
+									'sound/effects/emotes/f_pain5.ogg','sound/effects/emotes/f_pain6.ogg','sound/effects/emotes/f_pain7.ogg',
+									'sound/effects/emotes/f_pain8.ogg','sound/effects/emotes/f_pain9.ogg','sound/effects/emotes/f_pain11.ogg',
+									'sound/effects/emotes/f_pain12.ogg','sound/effects/emotes/f_pain13.ogg','sound/effects/emotes/f_pain14.ogg',
+									'sound/effects/emotes/f_pain15.ogg','sound/effects/emotes/f_pain16.ogg','sound/effects/emotes/f_pain17.ogg',
+									'sound/effects/emotes/f_pain18.ogg'))
 
 GLOBAL_LIST_INIT(f_long_scream_sound,list('sound/effects/emotes/f_long_scream1.ogg','sound/effects/emotes/f_long_scream2.ogg','sound/effects/emotes/f_long_scream3.ogg',
 											'sound/effects/emotes/f_long_scream4.ogg','sound/effects/emotes/f_long_scream5.ogg','sound/effects/emotes/f_long_scream6.ogg',
@@ -77,13 +77,12 @@ GLOBAL_LIST_INIT(m_heavyb_sound,list('sound/effects/emotes/m_heavyb1.ogg','sound
 									'sound/effects/emotes/m_heavyb10.ogg','sound/effects/emotes/m_heavyb11.ogg','sound/effects/emotes/m_heavyb12.ogg',
 									'sound/effects/emotes/m_heavyb13.ogg','sound/effects/emotes/m_heavyb14.ogg'))
 
-GLOBAL_LIST_INIT(m_pain_sound,list('sound/effects/emotes/m_pain1.ogg','sound/effects/emotes/m_pain2.ogg','sound/effects/emotes/m_pain3.ogg',
+GLOBAL_LIST_INIT(m_pain_sound,list('sound/effects/emotes/m_pain1.ogg','sound/effects/emotes/m_pain3.ogg',
 									'sound/effects/emotes/m_pain4.ogg','sound/effects/emotes/m_pain5.ogg','sound/effects/emotes/m_pain6.ogg',
-									'sound/effects/emotes/m_pain7.ogg','sound/effects/emotes/m_pain8.ogg','sound/effects/emotes/m_pain9.ogg',
-									'sound/effects/emotes/m_pain10.ogg','sound/effects/emotes/m_pain11.ogg','sound/effects/emotes/m_pain12.ogg',
-									'sound/effects/emotes/m_pain13.ogg','sound/effects/emotes/m_pain14.ogg','sound/effects/emotes/m_pain15.ogg',
-									'sound/effects/emotes/m_pain16.ogg','sound/effects/emotes/m_pain17.ogg','sound/effects/emotes/m_pain18.ogg',
-									'sound/effects/emotes/m_pain19.ogg','sound/effects/emotes/m_pain20.ogg','sound/effects/emotes/m_pain21.ogg'))
+									'sound/effects/emotes/m_pain8.ogg','sound/effects/emotes/m_pain10.ogg','sound/effects/emotes/m_pain11.ogg',
+									'sound/effects/emotes/m_pain12.ogg','sound/effects/emotes/m_pain13.ogg','sound/effects/emotes/m_pain15.ogg',
+									'sound/effects/emotes/m_pain17.ogg','sound/effects/emotes/m_pain18.ogg','sound/effects/emotes/m_pain19.ogg',
+									'sound/effects/emotes/m_pain20.ogg','sound/effects/emotes/m_pain21.ogg'))
 
 GLOBAL_LIST_INIT(m_long_scream_sound,list('sound/effects/emotes/m_long_scream1.ogg','sound/effects/emotes/m_long_scream2.ogg','sound/effects/emotes/m_long_scream3.ogg',
 											'sound/effects/emotes/m_long_scream4.ogg','sound/effects/emotes/m_long_scream5.ogg','sound/effects/emotes/m_long_scream6.ogg',
@@ -111,7 +110,7 @@ GLOBAL_LIST_INIT(ai_ambient_sound,list('sound/ambience/ai/amb1.ogg','sound/ambie
 										'sound/ambience/ai/amb20.ogg','sound/ambience/ai/amb21.ogg','sound/ambience/ai/amb22.ogg',
 										'sound/ambience/ai/amb23.ogg'))
 
-GLOBAL_LIST_INIT(comms_ambient_sound, list('sound/ambience/comms/amb1.ogg','sound/ambience/comms/amb2.ogg','sound/ambience/comms/amb3.ogg',
+GLOBAL_LIST_INIT(comms_ambient_sound, list('sound/ambience/comms/amb1.ogg','sound/ambience/comms/amb3.ogg',
 										'sound/ambience/comms/amb4.ogg','sound/ambience/comms/amb5.ogg','sound/ambience/comms/amb6.ogg',
 										'sound/ambience/comms/amb7.ogg','sound/ambience/comms/amb8.ogg','sound/ambience/comms/amb9.ogg',
 										'sound/ambience/comms/amb10.ogg','sound/ambience/comms/amb12.ogg','sound/ambience/comms/amb13.ogg',
@@ -133,8 +132,7 @@ GLOBAL_LIST_INIT(maintenance_ambient_sound,list('sound/ambience/maintenance/amb1
 												'sound/ambience/maintenance/amb38.ogg','sound/ambience/maintenance/amb39.ogg','sound/ambience/maintenance/amb40.ogg',
 												'sound/ambience/maintenance/amb42.ogg','sound/ambience/maintenance/amb43.ogg','sound/ambience/maintenance/amb44.ogg',
 												'sound/ambience/maintenance/amb45.ogg','sound/ambience/maintenance/amb46.ogg','sound/ambience/maintenance/amb47.ogg',
-												'sound/ambience/maintenance/amb48.ogg','sound/ambience/maintenance/amb49.ogg','sound/ambience/maintenance/amb50.ogg',
-												'sound/ambience/maintenance/amb51.ogg'))
+												'sound/ambience/maintenance/amb49.ogg','sound/ambience/maintenance/amb50.ogg','sound/ambience/maintenance/amb51.ogg'))
 
 GLOBAL_LIST_INIT(engineering_ambient_sound,list('sound/ambience/engineering/amb1.ogg','sound/ambience/engineering/amb2.ogg','sound/ambience/engineering/amb3.ogg',
 												'sound/ambience/engineering/amb4.ogg','sound/ambience/engineering/amb5.ogg','sound/ambience/engineering/amb6.ogg',
