@@ -120,6 +120,23 @@
 	else
 		. += "\n<span class='notice'>\The [src] was bitten multiple times!</span>"
 
+/obj/item/weapon/reagent_containers/food/snacks/throw_impact(atom/hit_atom, speed, throwed_with, target_zone)
+	var/mob/living/carbon/human/H = hit_atom
+	if(!istype(H) || !istype(throwed_with, /obj/item/weapon/gun/launcher) || !(target_zone in list(BP_HEAD, BP_MOUTH)) || !reagents.total_volume || !is_open_container() || !H.check_has_mouth() || H.check_mouth_coverage())
+		return ..(hit_atom, speed)
+
+	if(reagents.total_volume > bitesize * 2)
+		reagents.trans_to_mob(H, bitesize * 2, CHEM_INGEST)
+	else
+		reagents.trans_to_mob(H, reagents.total_volume, CHEM_INGEST)
+	bitecount++
+	throwing = FALSE
+	On_Consume(H)
+
+	playsound(H.loc, "eat", rand(45, 60), FALSE)
+	if(H.stat == CONSCIOUS)
+		to_chat(H, SPAN("notice", "You take a bite of [src]."))
+
 /obj/item/weapon/reagent_containers/food/snacks/attackby(obj/item/weapon/W as obj, mob/user as mob)
 	if(istype(W,/obj/item/weapon/storage))
 		..() // -> item/attackby()
