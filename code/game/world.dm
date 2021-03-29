@@ -1,4 +1,7 @@
-/var/server_name = "OnyxBay"
+#define REBOOT_HARD 1
+#define REBOOT_REALLY_HARD 2
+
+var/server_name = "OnyxBay"
 
 /var/game_id = null
 /hook/global_init/proc/generate_gameid()
@@ -493,10 +496,14 @@ var/world_topic_spam_protect_time = world.timeofday
 		return GLOB.prometheus_metrics.collect()
 
 
-/world/Reboot(reason, hard_reboot = FALSE)
+/world/Reboot(reason, reboot_hardness = 0)
 	// sound_to(world, sound('sound/AI/newroundsexy.ogg')
 
-	if(!hard_reboot)
+	if(reboot_hardness == REBOOT_REALLY_HARD)
+		..(reason)
+		return
+
+	if(!reboot_hardness == REBOOT_HARD)
 		Master.Shutdown()
 
 	for(var/client/C in GLOB.clients)

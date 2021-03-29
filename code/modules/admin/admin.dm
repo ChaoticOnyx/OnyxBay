@@ -686,7 +686,7 @@ var/global/floorIsLava = 0
 	if (!usr.client.holder)
 		return
 
-	var/list/options = list("Regular Restart", "Hard Restart (Skip MC Shutdown)")
+	var/list/options = list("Regular Restart", "Hard Restart (Skip MC Shutdown)", "Hardest Restart (Direct world.Reboot) \[Dangerous\]")
 
 	var/result = input(usr, "Select reboot method", "World Reboot", options[1]) as null|anything in options
 	if(result)
@@ -701,7 +701,11 @@ var/global/floorIsLava = 0
 			if("Hard Restart (Skip MC Shutdown)")
 				to_world("<span class='boldannounce'>Hard world restart.</span> [init_by]")
 				log_admin("[key_name(usr)] initiated a hard reboot.")
-				world.Reboot(hard_reboot = TRUE)
+				world.Reboot(reboot_hardness = REBOOT_HARD)
+			if("Hardest Restart (Direct world.Reboot) \[Dangerous\]")
+				to_world("<span class='boldannounce'>Hardest world restart.</span> [init_by]")
+				log_admin("[key_name(usr)] initiated a hardest reboot.")
+				world.Reboot(reboot_hardness = REBOOT_REALLY_HARD)
 
 /datum/admins/proc/end_round()
 	set category = "Server"
