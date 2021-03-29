@@ -23,20 +23,18 @@
 	adjustBruteLoss(b_loss)
 	adjustFireLoss(f_loss)
 
-	updatehealth()
-
-/mob/living/simple_animal/adjustBruteLoss(damage)
+/mob/living/carbon/alien/adjustBruteLoss(damage)
 	..()
 	updatehealth()
 
-/mob/living/simple_animal/adjustFireLoss(damage)
+/mob/living/carbon/alien/adjustFireLoss(damage)
 	..()
 	updatehealth()
 
-/mob/living/simple_animal/adjustToxLoss(damage)
+/mob/living/carbon/alien/adjustToxLoss(damage)
 	..()
 	updatehealth()
 
-/mob/living/simple_animal/adjustOxyLoss(damage)
+/mob/living/carbon/alien/adjustOxyLoss(damage)
 	..()
 	updatehealth()
