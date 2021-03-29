@@ -204,10 +204,12 @@
 
 	if(href_list["biochemicalStasisOn"])
 		biochemical_stasis = 1
+		update_icon()
 		return TOPIC_REFRESH
 
 	if(href_list["biochemicalStasisOff"])
 		biochemical_stasis = 0
+		update_icon()
 		return TOPIC_REFRESH
 
 	. = ..()
