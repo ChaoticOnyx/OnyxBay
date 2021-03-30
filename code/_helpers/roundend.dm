@@ -220,6 +220,12 @@ GLOBAL_LIST_EMPTY(common_report)
 	R.Grant(C.mob)
 	to_chat(C,"<a href='?src=\ref[R];report=1'>Show roundend report again</a>")
 
+/mob/verb/show_round_end()
+	set name = "Show roundend report"
+	set category = "OOC"
+	if(SSticker.end_game_state != END_GAME_NOT_OVER && GLOB.common_report)
+		SSticker.show_roundend_report(usr.client, TRUE)
+
 /datum/action/report
 	name = "Show roundend report"
 	button_icon_state = "round_end"
