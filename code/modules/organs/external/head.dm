@@ -141,15 +141,15 @@
 					HI.Blend(rgb(h_col[1], h_col[2], h_col[3]), H.blend)
 		if(HI)
 			var/list/sorted_hair_markings = list()
-			for (var/E in markings)
+			for(var/E in markings)
 				var/datum/sprite_accessory/marking/M = E
-				if (M.draw_target == MARKING_TARGET_HAIR)
+				if(M.draw_target == MARKING_TARGET_HAIR)
 					var/color = markings[E]
 					var/icon/I = icon(M.icon, M.icon_state)
 					I.Blend(HI, ICON_AND)
 					I.Blend(color, ICON_MULTIPLY)
 					ADD_SORTED(sorted_hair_markings, list(list(M.draw_order, I)), /proc/cmp_marking_order)
-			for (var/entry in sorted_hair_markings)
+			for(var/entry in sorted_hair_markings)
 				HI.Blend(entry[2], ICON_OVERLAY)
 			res.overlays |= HI
 
@@ -176,24 +176,10 @@
 /obj/item/organ/external/head/update_icon_drop(mob/living/carbon/human/powner)
 	if(!powner)
 		return
-
-	overlays.Cut()
-	if(powner.f_style)
-		var/datum/sprite_accessory/facial_hair_style = GLOB.facial_hair_styles_list[powner.f_style]
-		if(facial_hair_style && facial_hair_style.species_allowed && (species.name in facial_hair_style.species_allowed))
-			var/icon/facial_s = new /icon("icon" = facial_hair_style.icon, "icon_state" = "[facial_hair_style.icon_state]_s")
-			if(facial_hair_style.do_coloration)
-				facial_s.Blend(rgb(powner.r_facial, powner.g_facial, powner.b_facial), facial_hair_style.blend)
-			src.overlays += facial_s
-
-	if(powner.h_style)
-		var/style = powner.h_style
-		var/datum/sprite_accessory/hair/hair_style = GLOB.hair_styles_list[style]
-		if(hair_style && (species.name in hair_style.species_allowed))
-			var/icon/hair_s = new /icon("icon" = hair_style.icon, "icon_state" = "[hair_style.icon_state]_s")
-			if(hair_style.do_coloration && islist(h_col) && h_col.len >= 3)
-				hair_s.Blend(rgb(h_col[1], h_col[2], h_col[3]), hair_style.blend)
-			src.overlays += hair_s
+	owner = powner // This is kinda hackly ngl
+	get_hair_icon()
+	update_icon()
+	owner = null
 
 /obj/item/weapon/skull
 	name = "skull"
