@@ -491,10 +491,16 @@
 
 /obj/structure/closet/attack_hand(mob/user)
 	add_fingerprint(user)
-	user.setClickCooldown(max(2, open_delay))
+	user.setClickCooldown(2)
+	if(in_use)
+		to_chat(user, SPAN("warning", "You can't do this right now."))
+		return
+	in_use = TRUE
 	if(open_delay && !do_after(user, open_delay))
+		in_use = FALSE
 		return
 	toggle(user)
+	in_use = FALSE
 
 // tk grab then use on self
 /obj/structure/closet/attack_self_tk(mob/user as mob)
