@@ -209,7 +209,7 @@
 
 	//done throwing, either because it hit something or it finished moving
 	if(isobj(src))
-		throw_impact(get_turf(src),speed)
+		throw_impact(get_turf(src), speed)
 	src.throwing = 0
 	src.thrower = null
 	src.throw_source = null
