@@ -304,7 +304,7 @@ datum/preferences
 		for(var/BP in mark_datum.body_parts)
 			var/obj/item/organ/external/O = character.organs_by_name[BP]
 			if(O)
-				O.markings[M] = list("color" = mark_color, "datum" = mark_datum)
+				O.markings[mark_datum] = mark_color
 
 	character.force_update_limbs()
 	character.update_mutations(0)
