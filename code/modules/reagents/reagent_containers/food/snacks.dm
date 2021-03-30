@@ -120,9 +120,9 @@
 	else
 		. += "\n<span class='notice'>\The [src] was bitten multiple times!</span>"
 
-/obj/item/weapon/reagent_containers/food/snacks/throw_impact(atom/hit_atom, speed, throwed_with, target_zone)
+/obj/item/weapon/reagent_containers/food/snacks/throw_impact(atom/hit_atom, speed, thrown_with, target_zone)
 	var/mob/living/carbon/human/H = hit_atom
-	if(!istype(H) || !istype(throwed_with, /obj/item/weapon/gun/launcher) || !(target_zone in list(BP_HEAD, BP_MOUTH)) || !reagents.total_volume || !is_open_container() || !H.check_has_mouth() || H.check_mouth_coverage())
+	if(!istype(H) || !istype(thrown_with, /obj/item/weapon/gun/launcher) || target_zone != BP_MOUTH || !reagents.total_volume || !is_open_container() || !H.check_has_mouth() || H.check_mouth_coverage())
 		return ..(hit_atom, speed)
 
 	if(reagents.total_volume > bitesize * 2)

@@ -91,7 +91,7 @@
 		T.hitby(src, speed)
 
 //decided whether a movable atom being thrown can pass through the turf it is in.
-/atom/movable/proc/hit_check(speed, throwed_with, target_zone)
+/atom/movable/proc/hit_check(speed, thrown_with, target_zone)
 	if(!throwing)
 		return
 
@@ -103,13 +103,13 @@
 			var/mob/living/L = A
 			if(L.lying)
 				continue
-			throw_impact(A, speed, throwed_with, target_zone)
+			throw_impact(A, speed, thrown_with, target_zone)
 			
 		if(isobj(A))
 			if(A.density && !A.throwpass)	// **TODO: Better behaviour for windows which are dense, but shouldn't always stop movement
 				throw_impact(A, speed)
 
-/atom/movable/proc/throw_at(atom/target, range, speed, thrower, throwed_with, target_zone)
+/atom/movable/proc/throw_at(atom/target, range, speed, thrower, thrown_with, target_zone)
 	if(!target || !src)
 		return 0
 	if(target.z != src.z)
@@ -152,7 +152,7 @@
 				if(!step) // going off the edge of the map makes get_step return null, don't let things go off the edge
 					break
 				src.Move(step)
-				hit_check(speed, throwed_with, target_zone)
+				hit_check(speed, thrown_with, target_zone)
 				error += dist_x
 				dist_travelled++
 				dist_since_sleep++
@@ -164,7 +164,7 @@
 				if(!step) // going off the edge of the map makes get_step return null, don't let things go off the edge
 					break
 				src.Move(step)
-				hit_check(speed, throwed_with, target_zone)
+				hit_check(speed, thrown_with, target_zone)
 				error -= dist_y
 				dist_travelled++
 				dist_since_sleep++
@@ -181,7 +181,7 @@
 				if(!step) // going off the edge of the map makes get_step return null, don't let things go off the edge
 					break
 				src.Move(step)
-				hit_check(speed, throwed_with, target_zone)
+				hit_check(speed, thrown_with, target_zone)
 				error += dist_y
 				dist_travelled++
 				dist_since_sleep++
@@ -193,7 +193,7 @@
 				if(!step) // going off the edge of the map makes get_step return null, don't let things go off the edge
 					break
 				src.Move(step)
-				hit_check(speed, throwed_with, target_zone)
+				hit_check(speed, thrown_with, target_zone)
 				error -= dist_x
 				dist_travelled++
 				dist_since_sleep++
