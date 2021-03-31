@@ -27,7 +27,7 @@
 		return 1
 	return 0
 
-/obj/machinery/status_display/supply_display/receive_signal/(datum/signal/signal)
+/obj/machinery/status_display/supply_display/receive_signal(datum/signal/signal)
 	if(signal.data["command"] == "supply")
 		mode = STATUS_DISPLAY_CUSTOM
 	else

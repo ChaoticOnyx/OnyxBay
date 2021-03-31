@@ -6,7 +6,7 @@
 	name = "ZAS: Cargo Maintenance"
 	area_path = /area/maintenance/cargo
 
-datum/unit_test/zas_area_test/emergency_shuttle
+/datum/unit_test/zas_area_test/emergency_shuttle
 	name = "ZAS: Emergency Shuttle"
 	area_path = /area/shuttle/escape/centcom
 

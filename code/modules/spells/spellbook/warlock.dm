@@ -1,4 +1,4 @@
-obj/item/weapon/spellbook/warlock
+/obj/item/weapon/spellbook/warlock
 	spellbook_type = /datum/spellbook/warlock
 
 /datum/spellbook/warlock

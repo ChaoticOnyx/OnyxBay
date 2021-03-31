@@ -140,7 +140,7 @@
 
 	//limit transfer_moles based on available power
 	if (!isnull(available_power) && total_specific_power > 0)
-		total_transfer_moles = min(total_transfer_moles, available_power/total_specific_power)
+		total_transfer_moles = min(total_transfer_moles, available_power / total_specific_power)
 
 	if (total_transfer_moles < MINIMUM_MOLES_TO_FILTER) //if we cant transfer enough gas just stop to avoid further processing
 		return -1
@@ -209,7 +209,7 @@
 
 	//limit transfer_moles based on available power
 	if (!isnull(available_power) && total_specific_power > 0)
-		total_transfer_moles = min(total_transfer_moles, available_power/total_specific_power)
+		total_transfer_moles = min(total_transfer_moles, available_power / total_specific_power)
 
 	if (total_transfer_moles < MINIMUM_MOLES_TO_FILTER) //if we cant transfer enough gas just stop to avoid further processing
 		return -1
@@ -282,7 +282,7 @@
 
 	//limit transfer_moles based on available power
 	if (!isnull(available_power) && total_specific_power > 0)
-		total_transfer_moles = min(total_transfer_moles, available_power/total_specific_power)
+		total_transfer_moles = min(total_transfer_moles, available_power / total_specific_power)
 
 	if (total_transfer_moles < MINIMUM_MOLES_TO_FILTER) //if we cant transfer enough gas just stop to avoid further processing
 		return -1
@@ -454,7 +454,7 @@
 	var/source_pressure = source.return_pressure()
 	var/sink_pressure = sink.return_pressure()
 
-	return (source_pressure - sink_pressure)/(R_IDEAL_GAS_EQUATION * (source.temperature/source_volume + sink.temperature/sink_volume))
+	return (source_pressure - sink_pressure) / (R_IDEAL_GAS_EQUATION * (source.temperature / source_volume + sink.temperature / sink_volume))
 
 //Determines if the atmosphere is safe (for humans). Safe atmosphere:
 // - Is between 80 and 120kPa

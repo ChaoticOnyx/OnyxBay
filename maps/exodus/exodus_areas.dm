@@ -1629,7 +1629,7 @@
 	name = "\improper Toxins Storage"
 	icon_state = "toxstorage"
 
-area/rnd/test_area
+/area/rnd/test_area
 	name = "\improper Toxins Test Area"
 	icon_state = "toxtest"
 

@@ -579,7 +579,7 @@ meteor_act
 			else if(weapon_def.mod_weight < weapon_atk.mod_weight)
 				d_mult = (weapon_atk.mod_weight - weapon_def.mod_weight)/0.5
 
-			defender.poise -= (4.0+(weapon_atk.mod_weight*2.5 + weapon_atk.mod_reach)) + (weapon_atk.mod_weight*2.5 + weapon_atk.mod_reach)*d_mult/weapon_def.mod_shield
+			defender.poise -= (4.0+(weapon_atk.mod_weight*2.5 + weapon_atk.mod_reach)) + (weapon_atk.mod_weight*2.5 + weapon_atk.mod_reach)*d_mult / weapon_def.mod_shield
 			//visible_message("Debug \[block\]: [defender] lost [(4.0+(weapon_atk.mod_weight*2.5 + weapon_atk.mod_reach)) + (weapon_atk.mod_weight*2.5 + weapon_atk.mod_reach)*d_mult/weapon_def.mod_shield] poise ([defender.poise]/[defender.poise_pool])") // Debug Message
 			attacker.poise -= 2.0+(weapon_atk.mod_weight*2 + (1-weapon_atk.mod_handy)*2)
 			//visible_message("Debug \[block\]: [attacker] lost [2.0+(weapon_atk.mod_weight*2 + (1-weapon_atk.mod_handy)*2)] poise ([attacker.poise]/[attacker.poise_pool])") // Debug Message
@@ -773,8 +773,8 @@ meteor_act
 
 					visible_message(SPAN("warning", "[src] blocks [O] with [weapon_def]!"))
 
-					poise -= throw_damage/weapon_def.mod_shield
-					if(poise < throw_damage/weapon_def.mod_shield)
+					poise -= throw_damage / weapon_def.mod_shield
+					if(poise < throw_damage / weapon_def.mod_shield)
 						visible_message(SPAN("warning", "[src] falls down, unable to keep balance!"))
 						apply_effect(2, WEAKEN, 0)
 						src.useblock_off()

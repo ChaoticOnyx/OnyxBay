@@ -21,7 +21,7 @@
 	path = /obj/item/weapon/storage/secure/briefcase/money
 	desc = "A briefcase with 10,000 untraceable credits for funding your sneaky activities."
 
-datum/uplink_item/item/tools/cleaning_kit
+/datum/uplink_item/item/tools/cleaning_kit
 	name = "Cleaning Kit"
 	item_cost = 15
 	path = /obj/item/weapon/storage/backpack/satchel/syndie_kit/cleaning_kit

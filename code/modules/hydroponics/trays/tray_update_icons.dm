@@ -91,5 +91,5 @@
 	if(age >= seed_maturation)
 		. = seed.growth_stages
 	else
-		var/maturation = max(seed_maturation/seed.growth_stages, 1)
-		. = max(1, round(age/maturation))
+		var/maturation = max(seed_maturation / seed.growth_stages, 1)
+		. = max(1, round(age / maturation))
