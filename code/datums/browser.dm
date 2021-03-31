@@ -17,7 +17,6 @@
 
 
 /datum/browser/New(nuser, nwindow_id, ntitle = 0, nwidth = 0, nheight = 0, atom/nref = null)
-
 	user = nuser
 	window_id = nwindow_id
 	if (ntitle)
