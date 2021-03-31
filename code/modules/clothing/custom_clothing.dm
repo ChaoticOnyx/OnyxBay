@@ -2,6 +2,16 @@
 // Some SPECIAL clothes for the exceptionally important onyx residents //
 /////////////////////////////////////////////////////////////////////////
 
+// HentaiStorm
+/obj/item/clothing/suit/storage/toggle/det_trench/gilded
+	name = "detective gilded trenchcoat"
+	desc = "A gilded trenchcoat sewn for especially distinguished detectives with stronger titanium inserts."
+	icon_state  = "detectivegold_open"
+	item_state  = "detectivegold_open"
+	icon_open   = "detectivegold_open"
+	icon_closed = "detectivegold"
+	armor = list(melee = 40, bullet = 40, laser = 35, energy = 20, bomb = 25, bio = 0, rad = 0)
+
 // Schutze88
 /obj/item/clothing/suit/armor/hos/jensen/fieldcoat
 	name = "military trenchcoat"
