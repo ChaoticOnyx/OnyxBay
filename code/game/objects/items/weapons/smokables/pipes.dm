@@ -32,7 +32,7 @@
 			M.update_inv_l_hand(0)
 			M.update_inv_r_hand(1)
 
-/obj/item/clothing/mask/smokable/pipe/die(nomessage = FALSE)
+/obj/item/clothing/mask/smokable/pipe/die(nomessage = FALSE, nodestroy = FALSE)
 	..()
 	new /obj/effect/decal/cleanable/ash(get_turf(src))
 	if(ismob(loc))
