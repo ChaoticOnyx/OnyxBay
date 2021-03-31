@@ -204,7 +204,7 @@ mob/blob/DblClickOn(atom/A) //Teleport view to another blob
 
 	M.Scale(1,blob_core.health/blob_core.maxhealth)
 
-	total_offset = (60 + (100*(blob_core.health/blob_core.maxhealth))) * PIXEL_MULTIPLIER
+	total_offset = (60 + (100*(blob_core.health / blob_core.maxhealth))) * PIXEL_MULTIPLIER
 
 	H.blob_healthbar.transform = M
 	H.blob_healthbar.screen_loc = "EAST:[14*PIXEL_MULTIPLIER],CENTER-[8-round(total_offset/WORLD_ICON_SIZE)]:[total_offset%WORLD_ICON_SIZE]"

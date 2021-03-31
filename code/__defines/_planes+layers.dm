@@ -229,19 +229,17 @@ What is the naming convention for planes or layers?
 	screen_loc = "CENTER,CENTER"
 	globalscreen = 1
 
-	proc
-		backdrop(mob/mymob)
-
+/obj/screen/plane_master/proc/backdrop(mob/mymob)
 /obj/screen/plane_master/ambient_occlusion
 	appearance_flags = KEEP_TOGETHER | PLANE_MASTER
 	blend_mode = BLEND_OVERLAY
 	plane = DEFAULT_PLANE
 
-	backdrop(mob/mymob)
-		filters = list()
+/obj/screen/plane_master/ambient_occlusion/backdrop(mob/mymob)
+	filters = list()
 
-		if (istype(mymob) && mymob.client && mymob.get_preference_value("AMBIENT_OCCLUSION") == GLOB.PREF_YES)
-			filters += filter(type="drop_shadow", x=0, y=-2, size=4, color="#04080FAA")
+	if (istype(mymob) && mymob.client && mymob.get_preference_value("AMBIENT_OCCLUSION") == GLOB.PREF_YES)
+		filters += filter(type="drop_shadow", x=0, y=-2, size=4, color="#04080FAA")
 
 /obj/screen/plane_master/mouse_invisible
 	appearance_flags = PLANE_MASTER

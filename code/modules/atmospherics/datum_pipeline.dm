@@ -168,10 +168,10 @@
 				var/delta_temperature = air.temperature - modeled_location.temperature
 
 				var/heat = thermal_conductivity*delta_temperature* \
-					(partial_heat_capacity*modeled_location.heat_capacity/(partial_heat_capacity+modeled_location.heat_capacity))
+					(partial_heat_capacity*modeled_location.heat_capacity / (partial_heat_capacity+modeled_location.heat_capacity))
 
-				air.temperature -= heat/total_heat_capacity
-				modeled_location.temperature += heat/modeled_location.heat_capacity
+				air.temperature -= heat / total_heat_capacity
+				modeled_location.temperature += heat / modeled_location.heat_capacity
 
 		else
 			var/delta_temperature = 0
@@ -189,17 +189,17 @@
 
 			if((sharer_heat_capacity>0) && (partial_heat_capacity>0))
 				var/heat = thermal_conductivity*delta_temperature* \
-					(partial_heat_capacity*sharer_heat_capacity/(partial_heat_capacity+sharer_heat_capacity))
+					(partial_heat_capacity*sharer_heat_capacity / (partial_heat_capacity+sharer_heat_capacity))
 
-				self_temperature_delta = -heat/total_heat_capacity
-				sharer_temperature_delta = heat/sharer_heat_capacity
+				self_temperature_delta = -heat / total_heat_capacity
+				sharer_temperature_delta = heat / sharer_heat_capacity
 			else
 				return 1
 
 			air.temperature += self_temperature_delta
 
 			if(modeled_location.zone)
-				modeled_location.zone.air.temperature += sharer_temperature_delta/modeled_location.zone.air.group_multiplier
+				modeled_location.zone.air.temperature += sharer_temperature_delta / modeled_location.zone.air.group_multiplier
 			else
 				modeled_location.air.temperature += sharer_temperature_delta
 
@@ -211,7 +211,7 @@
 			var/heat = thermal_conductivity*delta_temperature* \
 				(partial_heat_capacity*target.heat_capacity/(partial_heat_capacity+target.heat_capacity))
 
-			air.temperature -= heat/total_heat_capacity
+			air.temperature -= heat / total_heat_capacity
 	if(network)
 		network.update = 1
 
