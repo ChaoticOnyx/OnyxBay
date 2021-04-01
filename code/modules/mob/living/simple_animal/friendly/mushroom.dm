@@ -18,6 +18,7 @@
 	controllable = TRUE
 	universal_speak = 0
 	universal_understand = 1
+	faction = "floral"
 	var/datum/seed/seed
 	var/harvest_time
 	var/min_explode_time = 1200
