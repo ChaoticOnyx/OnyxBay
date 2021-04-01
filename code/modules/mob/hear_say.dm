@@ -4,7 +4,7 @@
 	if(!client)
 		return
 
-	var/near = view(src)
+	var/near = RANGE_TURFS(world.view, src)
 	var/dist_speech = get_dist(speaker, src)
 
 	if(speaker && !speaker.client && isghost(src) && get_preference_value(/datum/client_preference/ghost_ears) == GLOB.PREF_ALL_SPEECH && !(speaker in near))
