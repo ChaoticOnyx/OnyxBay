@@ -331,6 +331,10 @@
 #define MOB_INPUT_MESSAGE "message"
 #define MOB_INPUT_NUM "num"
 
+#define MARKING_TARGET_SKIN 0 // Draw a datum/sprite_accessory/marking to the mob's body, eg. tattoos
+#define MARKING_TARGET_HAIR 1 // Draw a datum/sprite_accessory/marking to the mob's hair, eg. color fades
+#define MARKING_TARGET_HEAD 2 // Draw a datum/sprite_accessory/marking to the mob's head after their hair, eg. ears, horns (To Be Implemented since tajarans dropping ears because of radiation is cringe)
+
 #define STOMACH_FULLNESS_SUPER_LOW 50
 #define STOMACH_FULLNESS_LOW 150
 #define STOMACH_FULLNESS_MEDIUM 350
