@@ -1569,4 +1569,3 @@ datum/admins/var/obj/item/weapon/paper/admin/faxreply // var to hold fax replies
 		qdel(P)
 		faxreply = null
 	return
-
