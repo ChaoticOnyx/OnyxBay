@@ -52,7 +52,7 @@
 	if(istype(M, /mob/living/carbon))
 		//TODO: replace with standard_feed_mob() call.
 		var/mob/living/carbon/C = M
-		var/fullness = C.nutrition + (C.reagents.get_reagent_amount(/datum/reagent/nutriment) * 10)
+		var/fullness = C.get_fullness()
 		if(C == user)								//If you're eating it yourself
 			if(istype(C,/mob/living/carbon/human))
 				var/mob/living/carbon/human/H = M
@@ -65,22 +65,22 @@
 					return
 
 			user.setClickCooldown(DEFAULT_ATTACK_COOLDOWN) //puts a limit on how fast people can eat/drink things
-			if (fullness <= 50)
+			if (fullness <= STOMACH_FULLNESS_SUPER_LOW)
 				to_chat(C, "<span class='danger'>You hungrily chew out a piece of [src] and gobble it!</span>")
-			if (fullness > 50 && fullness <= 150)
+			if (fullness > STOMACH_FULLNESS_SUPER_LOW && fullness <= STOMACH_FULLNESS_LOW)
 				to_chat(C, "<span class='notice'>You hungrily begin to eat [src].</span>")
-			if (fullness > 150 && fullness <= 350)
+			if (fullness > STOMACH_FULLNESS_LOW && fullness <= STOMACH_FULLNESS_MEDIUM)
 				to_chat(C, "<span class='notice'>You take a bite of [src].</span>")
-			if (fullness > 350 && fullness <= 550)
+			if (fullness > STOMACH_FULLNESS_MEDIUM && fullness <= STOMACH_FULLNESS_HIGH)
 				to_chat(C, "<span class='notice'>You unwillingly chew a bit of [src].</span>")
-			if (fullness > 550)
+			if (fullness > STOMACH_FULLNESS_HIGH)
 				to_chat(C, "<span class='danger'>You cannot force any more of [src] to go down your throat.</span>")
 				return 0
 		else
 			if(!M.can_force_feed(user, src))
 				return
 
-			if (fullness <= 550)
+			if (fullness <= STOMACH_FULLNESS_HIGH)
 				user.visible_message("<span class='danger'>[user] attempts to feed [M] [src].</span>")
 			else
 				user.visible_message("<span class='danger'>[user] cannot force anymore of [src] down [M]'s throat.</span>")
@@ -119,6 +119,24 @@
 		. += "\n<span class='notice'>\The [src] was bitten [bitecount] time\s!</span>"
 	else
 		. += "\n<span class='notice'>\The [src] was bitten multiple times!</span>"
+
+/obj/item/weapon/reagent_containers/food/snacks/throw_impact(atom/hit_atom, speed, thrown_with, target_zone)
+	var/mob/living/carbon/human/H = hit_atom
+	if(!istype(H) || !istype(thrown_with, /obj/item/weapon/gun/launcher) || target_zone != BP_MOUTH || !reagents.total_volume || !is_open_container() || !H.check_has_mouth() || H.check_mouth_coverage() || H.get_fullness() >= STOMACH_FULLNESS_SUPER_HIGH)
+		return ..(hit_atom, speed)
+
+	if(reagents.total_volume > bitesize * 2)
+		reagents.trans_to_mob(H, bitesize * 2, CHEM_INGEST)
+	else
+		reagents.trans_to_mob(H, reagents.total_volume, CHEM_INGEST)
+	bitecount++
+	throwing = FALSE
+	update_icon()
+	On_Consume(H)
+
+	playsound(H.loc, "eat", rand(45, 60), FALSE)
+	if(H.stat == CONSCIOUS)
+		to_chat(H, SPAN("notice", "You take a bite of [src]."))
 
 /obj/item/weapon/reagent_containers/food/snacks/attackby(obj/item/weapon/W as obj, mob/user as mob)
 	if(istype(W,/obj/item/weapon/storage))
