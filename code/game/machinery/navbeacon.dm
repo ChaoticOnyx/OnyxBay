@@ -230,6 +230,89 @@ Transponder Codes:<UL>"}
 	location = "CH_NORTH2"
 	codes = list("patrol" = 1, "next_patrol" = "Sec") // And the cycle is finished
 
+// Frontier patrol beacons.
+
+/obj/machinery/navbeacon/FrontierSec
+	location = "FrontierSec"
+	codes = list("patrol" = 1, "next_patrol" = "FrontierSE1")
+
+/obj/machinery/navbeacon/FrontierSE1
+	location = "FrontierSE1"
+	codes = list("patrol" = 1, "next_patrol" = "FrontierDomeE1")
+
+/obj/machinery/navbeacon/FrontierDomeE1
+	location = "FrontierDomeE1"
+	codes = list("patrol" = 1, "next_patrol" = "FrontierDomeSE")
+
+/obj/machinery/navbeacon/FrontierDomeSE
+	location = "FrontierDomeSE"
+	codes = list("patrol" = 1, "next_patrol" = "FrontierDomeS1")
+
+/obj/machinery/navbeacon/FrontierDomeS1
+	location = "FrontierDomeS1"
+	codes = list("patrol" = 1, "next_patrol" = "FrontierArrivals1")
+
+/obj/machinery/navbeacon/FrontierArrivals1
+	location = "FrontierArrivals1"
+	codes = list("patrol" = 1, "next_patrol" = "FrontierDepartures")
+
+/obj/machinery/navbeacon/FrontierDepartures
+	location = "FrontierDepartures"
+	codes = list("patrol" = 1, "next_patrol" = "FrontierArrivals2")
+
+/obj/machinery/navbeacon/FrontierArrivals2
+	location = "FrontierArrivals2"
+	codes = list("patrol" = 1, "next_patrol" = "FrontierDomeS2")
+
+/obj/machinery/navbeacon/FrontierDomeS2
+	location = "FrontierDomeS2"
+	codes = list("patrol" = 1, "next_patrol" = "FrontierDomeSW")
+
+/obj/machinery/navbeacon/FrontierDomeSW
+	location = "FrontierDomeSW"
+	codes = list("patrol" = 1, "next_patrol" = "FrontierDomeW1")
+
+/obj/machinery/navbeacon/FrontierDomeW1
+	location = "FrontierDomeW1"
+	codes = list("patrol" = 1, "next_patrol" = "FrontierEngineering")
+
+/obj/machinery/navbeacon/FrontierEngineering
+	location = "FrontierEngineering"
+	codes = list("patrol" = 1, "next_patrol" = "FrontierDomeW2")
+
+/obj/machinery/navbeacon/FrontierDomeW2
+	location = "FrontierDomeW2"
+	codes = list("patrol" = 1, "next_patrol" = "FrontierDomeNW")
+
+/obj/machinery/navbeacon/FrontierDomeNW
+	location = "FrontierDomeNW"
+	codes = list("patrol" = 1, "next_patrol" = "FrontierDomeN")
+
+/obj/machinery/navbeacon/FrontierDomeN
+	location = "FrontierDomeN"
+	codes = list("patrol" = 1, "next_patrol" = "FrontierDomeNE")
+
+/obj/machinery/navbeacon/FrontierDomeNE
+	location = "FrontierDomeNE"
+	codes = list("patrol" = 1, "next_patrol" = "FrontierDomeE2")
+
+/obj/machinery/navbeacon/FrontierDomeE2
+	location = "FrontierDomeE2"
+	codes = list("patrol" = 1, "next_patrol" = "FrontierBar")
+
+/obj/machinery/navbeacon/FrontierBar
+	location = "FrontierBar"
+	codes = list("patrol" = 1, "next_patrol" = "FrontierCryo")
+
+/obj/machinery/navbeacon/FrontierCryo
+	location = "FrontierCryo"
+	codes = list("patrol" = 1, "next_patrol" = "FrontierBHallway")
+
+/obj/machinery/navbeacon/FrontierBHallway
+	location = "FrontierBHallway"
+	codes = list("patrol" = 1, "next_patrol" = "FrontierSec") // And the cycle is finished
+
+
 // Delivery types below.
 
 /obj/machinery/navbeacon/QM1
