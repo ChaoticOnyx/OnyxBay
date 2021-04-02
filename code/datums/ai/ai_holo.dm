@@ -28,29 +28,6 @@ GLOBAL_LIST_INIT(AI_holos, init_subtypes(/datum/ai_holo))
 	src.icon_colorize = icon_colorize
 	src.requires_malf = src.requires_malf || requires_malf
 
-/hook/startup/proc/load_ai_holos_custom_sprites()
-	if(CUSTOM_ITEM_AI_HOLO)
-		var/config_file = file2text("config/custom_sprites.txt")
-		var/list/lines = splittext(config_file, "\n")
-
-		robot_custom_icons = list()
-		for(var/line in lines)
-			if(findtext(line, "#")) // don't mess with comms.
-				continue
-			//split entry into ckey and real_name
-			var/split_idx = findtext(line, "|") //this works if ckey cannot contain dashes, and findtext starts from the beginning
-			if(!split_idx || split_idx == length(line))
-				continue //bad entry
-
-			var/ckey = copytext(line, 1, split_idx)
-			var/real_name = copytext(line, split_idx+1)
-
-			var/datum/ai_holo/H = new(real_name, CUSTOM_ITEM_AI_HOLO, real_name, TRUE, FALSE)
-			H.ckey = ckey
-
-			GLOB.AI_holos.Add(H)
-	return 1
-
 /datum/ai_holo/default
 	icon_state = "Default"
 

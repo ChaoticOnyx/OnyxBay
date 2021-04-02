@@ -1,3 +1,0 @@
-#ckey-modtype for robots
-#ckey:state for AI core sprites
-#ckey|state for AI holo sprites

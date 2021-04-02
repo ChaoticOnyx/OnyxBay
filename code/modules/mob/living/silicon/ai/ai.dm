@@ -234,40 +234,8 @@ var/list/ai_verbs_default = list(
 /mob/living/silicon/ai/proc/setup_icon()
 	if(LAZYACCESS(custom_ai_icons_by_ckey_and_name, "[ckey][real_name]"))
 		return
-	var/list/custom_icons = list()
-	LAZYSET(custom_ai_icons_by_ckey_and_name, "[ckey][real_name]", custom_icons)
-
-	if (CUSTOM_ITEM_AI)
-		var/file = file2text("config/custom_sprites.txt")
-		var/lines = splittext(file, "\n")
-
-		var/custom_index = 1
-		var/list/custom_icon_states = icon_states(CUSTOM_ITEM_AI)
-
-		for(var/line in lines)
-			if(findtext(line, "#")) // don't mess with comms.
-				continue
-			// split & clean up
-			var/list/Entry = splittext(line, ":")
-			for(var/i = 1 to Entry.len)
-				Entry[i] = trim(Entry[i])
-
-			if(Entry.len < 2)
-				continue
-
-			if(Entry[1] == src.ckey)
-				var/alive_icon_state = "[Entry[2]]-ai"
-				var/dead_icon_state = "[Entry[2]]-ai-crash"
-
-				if(!(alive_icon_state in custom_icon_states))
-					to_chat(src, SPAN_WARNING("Custom display entry found but the icon state '[alive_icon_state]' is missing! Please report this to local developer."))
-					continue
-
-				if(!(dead_icon_state in custom_icon_states))
-					dead_icon_state = ""
-
-				selected_sprite = new /datum/ai_icon("Custom Icon [custom_index++]", alive_icon_state, dead_icon_state, COLOR_WHITE, CUSTOM_ITEM_AI)
-				custom_icons += selected_sprite
+	//var/list/custom_icons = list()
+	LAZYSET(custom_ai_icons_by_ckey_and_name, "[ckey][real_name]", GLOB.ai_custom_icons)
 	update_icon()
 
 /mob/living/silicon/ai/pointed(atom/A as mob|obj|turf in view())

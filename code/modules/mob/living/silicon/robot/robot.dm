@@ -242,35 +242,16 @@
 	if(new_sprites && new_sprites.len)
 		module_sprites = new_sprites.Copy()
 		//Custom_sprite check and entry
-
 		if(custom_sprite && CUSTOM_ITEM_ROBOTS)
-			var/config_file = file2text("config/custom_sprites.txt")
-			var/list/lines = splittext(config_file, "\n")
-
-			var/c_key
-			var/real_name
-
-			robot_custom_icons = list()
-			for(var/line in lines)
-				if(findtext(line, "#")) // don't mess with comms.
-					continue
-				//split entry into ckey and real_name
-				var/split_idx = findtext(line, "-") //this works if ckey cannot contain dashes, and findtext starts from the beginning
-				if(!split_idx || split_idx == length(line))
-					continue //bad entry
-
-				c_key = copytext(line, 1, split_idx)
-				real_name = copytext(line, split_idx+1)
+			var/sprite_state = GLOB.robot_custom_icons[ckey]
 			var/list/valid_states = icon_states(CUSTOM_ITEM_ROBOTS)
-			if("[ckey]-[modtype]" in valid_states)
-				module_sprites["Custom"] = "[src.ckey]-[modtype]"
+			if(sprite_state && sprite_state in valid_states)
+				module_sprites["Custom"] = sprite_state
 				icon = CUSTOM_ITEM_ROBOTS
 				icontype = "Custom"
 			else
 				icontype = module_sprites[1]
-				icon = 'icons/mob/robots.dmi'
-				if(ckey == c_key && modtype == real_name)
-					to_chat(src, SPAN_WARNING("Custom Sprite Sheet does not contain a valid icon_state for [ckey]-[modtype]. Please report this to local developer"))
+				icon = original_icon
 		else
 			icontype = module_sprites[1]
 		icon_state = module_sprites[icontype]
