@@ -163,6 +163,5 @@
 		qdel(network3)
 		node3 = null
 
-	update_underlays()
-
-		return null
+/obj/machinery/atmospherics/trinary/update_underlays()
+	return null

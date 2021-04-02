@@ -31,7 +31,7 @@
 	return 1
 
 
-	attack_self(mob/user as mob)
-		activate()
-		add_fingerprint(user)
-		return
+/obj/item/device/assembly/igniter/attack_self(mob/user as mob)
+	activate()
+	add_fingerprint(user)
+	return
