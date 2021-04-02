@@ -120,6 +120,9 @@
 		window_size = "size=[width]x[height];"
 	user << browse(get_content(), "window=[window_id];[window_size][window_options]")
 	spawn()
+		if (!user.client)
+			return
+
 		winset(user, "mapwindow.map", "focus=true")
 	if (use_onclose)
 		onclose(user, window_id, ref)
@@ -132,7 +135,11 @@
 
 /datum/browser/proc/close()
 	user << browse(null, "window=[window_id]")
+
 	spawn()
+		if (!user.client)
+			return
+
 		winset(user, "mapwindow.map", "focus=true")
 
 // This will allow you to show an icon in the browse window
