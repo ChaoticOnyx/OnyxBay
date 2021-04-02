@@ -53,7 +53,7 @@
 		update_icon()
 	else
 		if(busy)
-			visible_message("<span class='notice'>\icon [src] flashes: insufficient materials: [getLackingMaterials(D)].</span>")
+			visible_message(SPAN_NOTICE("\icon [src] flashes: insufficient materials: [getLackingMaterials(D)]."))
 			busy = 0
 			update_icon()
 
@@ -82,53 +82,73 @@
 
 /obj/machinery/r_n_d/protolathe/attackby(obj/item/O as obj, mob/user as mob)
 	if(busy)
-		to_chat(user, "<span class='notice'>\The [src] is busy. Please wait for completion of previous operation.</span>")
+		to_chat(user, SPAN_NOTICE("\The [src] is busy. Please wait for completion of previous operation."))
 		return 1
 	if(default_deconstruction_screwdriver(user, O))
 		if(linked_console)
 			linked_console.linked_lathe = null
 			linked_console = null
 		return
-	if(default_deconstruction_crowbar(user, O))
+
+	if(default_deconstruction_crowbar(user, O) || default_part_replacement(user, O) || is_robot_module(O))
 		return
-	if(default_part_replacement(user, O))
-		return
-	if(O.is_open_container())
+	if(O.is_open_container() || stat)
 		return 1
+
 	if(panel_open)
-		to_chat(user, "<span class='notice'>You can't load \the [src] while it's opened.</span>")
+		to_chat(user, SPAN_NOTICE("You can't load \the [src] while it's opened."))
 		return 1
 	if(!linked_console)
-		to_chat(user, "<span class='notice'>\The [src] must be linked to an R&D console first!</span>")
-		return 1
-	if(is_robot_module(O))
-		return 0
-	if(!istype(O, /obj/item/stack/material))
-		to_chat(user, "<span class='notice'>You cannot insert this item into \the [src]!</span>")
-		return 0
-	if(stat)
+		to_chat(user, SPAN_NOTICE("\The [src] must be linked to an R&D console first!"))
 		return 1
 
-	if(TotalMaterials() + SHEET_MATERIAL_AMOUNT > max_material_storage)
-		to_chat(user, "<span class='notice'>\The [src]'s material bin is full. Please remove material before adding more.</span>")
-		return 1
+	if(istype(O, /obj/item/stack/material))
+		if(TotalMaterials() + SHEET_MATERIAL_AMOUNT > max_material_storage)
+			to_chat(user, SPAN_NOTICE("\The [src]'s material bin is full. Please remove material before adding more."))
+			return 1
 
-	var/obj/item/stack/material/stack = O
-	var/amount = min(stack.get_amount(), round((max_material_storage - TotalMaterials()) / SHEET_MATERIAL_AMOUNT))
+		var/obj/item/stack/material/stack = O
+		var/amount = min(stack.get_amount(), round((max_material_storage - TotalMaterials()) / SHEET_MATERIAL_AMOUNT))
 
-	var/t = stack.material.name
-	overlays += "protolathe_[t]"
-	spawn(10)
-		overlays -= "protolathe_[t]"
+		var/t = stack.material.name
+		overlays += "protolathe_[t]"
+		spawn(10)
+			overlays -= "protolathe_[t]"
 
-	busy = 1
-	use_power_oneoff(max(1000, (SHEET_MATERIAL_AMOUNT * amount / 10)))
-	if(t)
-		if(do_after(user, 16,src))
-			if(stack.use(amount))
-				to_chat(user, "<span class='notice'>You add [amount] sheet\s to \the [src].</span>")
-				materials[t] += amount * SHEET_MATERIAL_AMOUNT
-	busy = 0
+		busy = 1
+		use_power_oneoff(max(1000, (SHEET_MATERIAL_AMOUNT * amount / 10)))
+		if(t)
+			if(do_after(user, 16,src))
+				if(stack.use(amount))
+					to_chat(user, SPAN_NOTICE("You add [amount] sheet\s to \the [src]."))
+					materials[t] += amount * SHEET_MATERIAL_AMOUNT
+		busy = 0
+
+	else if(O.matter)
+		var/amount = 0
+		for(var/material in O.matter)
+			amount += O.matter[material]
+
+		if(TotalMaterials() + amount > max_material_storage)
+			to_chat(user, SPAN_NOTICE("\The [src]'s material bin is full. Please remove material before adding more."))
+			return 1
+
+		icon_state = "protolathe_n"
+		busy = 1
+
+		if(do_after(user, amount / 50, src))
+			use_power_oneoff(amount)
+			to_chat(user, SPAN_NOTICE("You disassemble [O.name] to \the [src]."))
+			for(var/material in O.matter)
+				materials[material] += O.matter[material]
+			qdel(O)
+
+		busy = 0
+		icon_state = "protolathe"
+
+	else
+		to_chat(user, SPAN_NOTICE("You cannot insert this item into \the [src]!"))
+
 	updateUsrDialog()
 	return
 
