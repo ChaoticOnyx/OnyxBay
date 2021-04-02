@@ -10,6 +10,7 @@
 	item_state  = "detectivegold_open"
 	icon_open   = "detectivegold_open"
 	icon_closed = "detectivegold"
+	matter = list(MATERIAL_GOLD = 1000)
 
 // Schutze88
 /obj/item/clothing/suit/armor/hos/jensen/fieldcoat
