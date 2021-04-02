@@ -526,3 +526,4 @@ proc/TextPreview(string, len=40)
 	. = 0
 	while ((start = findtext(haystack, needle, start + 1)))
 		.++
+
