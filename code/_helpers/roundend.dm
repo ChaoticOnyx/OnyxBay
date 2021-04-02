@@ -242,7 +242,7 @@ GLOBAL_LIST_EMPTY(common_report)
 	return "data/roundend_reports/[ckey].html"
 
 /datum/controller/subsystem/ticker/proc/show_roundend_report(client/C, previous = FALSE)
-	var/datum/browser/roundend_report = new(C, "roundend")
+	var/datum/browser/roundend_report = new(C.mob, "roundend")
 	roundend_report.width = 800
 	roundend_report.height = 600
 	var/content
