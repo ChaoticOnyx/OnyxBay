@@ -54,6 +54,9 @@
 			if(!req_pref || (C.get_preference_value(req_pref) == GLOB.PREF_SHOW))
 				to_chat(C, rendered)
 
+/proc/log_roundend(text)
+	log_generic("ROUNDEND", text, null, config.log_game)
+
 /proc/log_admin(text, location, notify_admin)
 	log_generic("ADMIN", text, location, config.log_admin, notify_admin)
 
