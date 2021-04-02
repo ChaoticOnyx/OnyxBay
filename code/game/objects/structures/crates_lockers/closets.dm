@@ -37,6 +37,8 @@
 	var/dremovable = 1	//	some closets' doors cannot be removed
 	var/nodoor = 0	// for crafting
 
+	var/open_delay = 0
+
 /obj/structure/closet/nodoor
 	nodoor = 1
 	opened = TRUE
@@ -487,10 +489,18 @@
 	if(!src.open())
 		to_chat(user, "<span class='notice'>It won't budge!</span>")
 
-/obj/structure/closet/attack_hand(mob/user as mob)
-	src.add_fingerprint(user)
-	src.toggle(user)
+/obj/structure/closet/attack_hand(mob/user)
+	add_fingerprint(user)
 	user.setClickCooldown(2)
+	if(in_use)
+		to_chat(user, SPAN("warning", "You can't do this right now."))
+		return
+	in_use = TRUE
+	if(open_delay && !do_after(user, open_delay))
+		in_use = FALSE
+		return
+	toggle(user)
+	in_use = FALSE
 
 // tk grab then use on self
 /obj/structure/closet/attack_self_tk(mob/user as mob)
@@ -513,8 +523,7 @@
 		return
 
 	if(ishuman(usr))
-		src.add_fingerprint(usr)
-		src.toggle(usr)
+		attack_hand(usr)
 	else
 		to_chat(usr, "<span class='warning'>This mob type can't use this verb.</span>")
 
