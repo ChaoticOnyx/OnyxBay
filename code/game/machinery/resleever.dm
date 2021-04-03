@@ -218,7 +218,7 @@ obj/machinery/resleever/Process()
 
 /obj/machinery/resleever/MouseDrop_T(mob/target, mob/user)
 	if(occupant)
-		to_chat(user, "<span class='notice'>\The [src] is in use.</span>")
+		to_chat(user, SPAN_WARNING("\The [src] is in use."))
 		return
 
 	if(!ismob(target))

@@ -126,4 +126,4 @@
 
 /datum/antagonist/proc/add_overrides(mob/living/silicon/robot/R)
 	R.add_robot_verbs()
-	to_chat(R, "<span class='notice'>ATTENTION! Your safety protocols are still active, override is avaliable.</span>")
+	to_chat(R, SPAN_WARNING("ATTENTION! Your safety protocols are still active, override is avaliable."))
