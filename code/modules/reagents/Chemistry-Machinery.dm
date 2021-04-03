@@ -371,8 +371,7 @@
 
 		src.updateUsrDialog()
 		return 0
-
-	if(!sheet_reagents[O.type] && (!O.reagents || !O.reagents.total_volume))
+	if((!sheet_reagents[O.type] && (!O.reagents || !O.reagents.total_volume)) || istype(O, /obj/item/weapon/reagent_containers/dropper))
 		to_chat(user, "\The [O] is not suitable for blending.")
 		return 1
 

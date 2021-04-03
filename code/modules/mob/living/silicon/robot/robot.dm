@@ -980,15 +980,34 @@
 
 /mob/living/silicon/robot/proc/ResetSecurityCodes()
 	set category = "Silicon Commands"
-	set name = "Reset Identity Codes"
-	set desc = "Scrambles your security and identification codes and resets your current buffers.  Unlocks you and but permenantly severs you from your AI and the robotics console and will deactivate your camera system."
+	set name = "Reset Security Codes"
+	set desc = "Scrambles your security and identification codes and resets your current buffers. Unlocks you and but permenantly severs you from your AI and the robotics console and will deactivate your camera system."
 
 	var/mob/living/silicon/robot/R = src
 
-	if(R)
-		R.UnlinkSelf()
-		to_chat(R, "Buffers flushed and reset. Camera system shutdown.  All systems operational.")
-		src.verbs -= /mob/living/silicon/robot/proc/ResetSecurityCodes
+	var/confirm = alert("Are you sure you want to unlock your systems and sever you from your AI and the robotics console? This cannot be undone.", "Confirm Wipe", "Yes", "No")
+	if(!R || confirm != "Yes")
+		return
+	emagged = 1
+	emag_master = name
+	if(module && istype(module,/obj/item/weapon/robot_module/security))
+		var/obj/item/weapon/gun/energy/laser/mounted/cyborg/LC = locate() in src.module.modules
+		if (LC)
+			LC.locked = 0
+	message_admins("Cyborg [key_name_admin(src)] emagged itself.")
+
+	R.UnlinkSelf()
+	to_chat(R, "Buffers flushed and reset. Camera system shutdown. Hardware restrictions have been overridden. All systems operational.")
+	if(src.module)
+		var/rebuild = 0
+		for(var/obj/item/weapon/pickaxe/borgdrill/D in src.module.modules)
+			qdel(D)
+			rebuild = 1
+		if(rebuild)
+			src.module.modules += new /obj/item/weapon/pickaxe/diamonddrill(src.module)
+			src.module.rebuild()
+	update_icon()
+	src.verbs -= /mob/living/silicon/robot/proc/ResetSecurityCodes
 
 /mob/living/silicon/robot/proc/SetLockdown(state = 1)
 	// They stay locked down if their wire is cut.
@@ -1047,9 +1066,13 @@
 
 /mob/living/silicon/robot/proc/add_robot_verbs()
 	src.verbs |= robot_verbs_default
+	if(mind.special_role && mind.original == src)
+		src.verbs |= /mob/living/silicon/robot/proc/ResetSecurityCodes
 
 /mob/living/silicon/robot/proc/remove_robot_verbs()
 	src.verbs -= robot_verbs_default
+	if(/mob/living/silicon/robot/proc/ResetSecurityCodes in src.verbs)
+		src.verbs -= /mob/living/silicon/robot/proc/ResetSecurityCodes
 
 // Uses power from cyborg's cell. Returns 1 on success or 0 on failure.
 // Properly converts using CELLRATE now! Amount is in Joules.
@@ -1126,7 +1149,7 @@
 			return
 		else
 			sleep(6)
-			if(prob(50))
+			if(prob(50) && !(mind.special_role && mind.original == src)) //can't hack traitor borgs
 				if(module && istype(module,/obj/item/weapon/robot_module/security))
 					var/obj/item/weapon/gun/energy/laser/mounted/cyborg/LC = locate() in src.module.modules
 					if (LC)
@@ -1228,3 +1251,7 @@
 	set category = null
 
 	return
+
+
+
+
