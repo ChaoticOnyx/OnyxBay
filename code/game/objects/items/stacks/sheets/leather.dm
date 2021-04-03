@@ -34,6 +34,21 @@
 	singular_name = "alien hide piece"
 	icon_state = "sheet-xeno"
 
+/obj/item/stack/material/animalhide/goat
+	name = "goat hide"
+	desc = "A goat hide."
+	singular_name = "goat hide piece"
+	icon_state = "goatskin"
+
+obj/item/stack/material/animalhide/goat/attackby(obj/item/weapon/W, mob/user)
+	if(W.sharp && W.edge && user.a_intent == I_HELP)
+		to_chat(user, SPAN_NOTICE("You use /the [W] to make [src] more wearable."))
+		new /obj/item/clothing/suit/storage/hooded/goathidecape(get_turf(loc))
+		qdel(src)
+		return
+	..()
+
+
 //don't see anywhere else to put these, maybe together they could be used to make the xenos suit?
 /obj/item/stack/material/xenochitin
 	name = "alien chitin"
