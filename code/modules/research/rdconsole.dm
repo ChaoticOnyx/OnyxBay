@@ -467,8 +467,10 @@ won't update every console in existence) but it's more of a hassle to do. Also, 
 		to_chat(user, "<span class='notice'>The destructive analyzer appears to be empty.</span>")
 		screen = 1.0
 		return
-	for(var/T in linked_destroy.loaded_item.origin_tech)
-		files.UpdateTech(T, linked_destroy.loaded_item.origin_tech[T])
+
+	log_admin("before function call")
+	files.AddItemToDatabase(linked_destroy.loaded_item)
+
 	if(linked_lathe && linked_destroy.loaded_item.matter) // Also sends salvaged materials to a linked protolathe, if any.
 		for(var/t in linked_destroy.loaded_item.matter)
 			if(t in linked_lathe.materials)
@@ -707,6 +709,13 @@ won't update every console in existence) but it's more of a hassle to do. Also, 
 						dat += " (Current: [F.level])"
 						break
 			dat += "</UL>"
+			var/count = files.CheckItemInDatabase(linked_destroy.loaded_item)
+			if(!count)
+				dat += "This item wasn't deconstructed before."
+			else if (count == 3)
+				dat += "This item was deconstructed [count] times. Deconstruction will not give you any new research data."
+			else
+				dat += "This item was deconstructed [count] times."
 			dat += "<HR><A href='?src=\ref[src];deconstruct=1'>Deconstruct Item</A> || "
 			dat += "<A href='?src=\ref[src];eject_item=1'>Eject Item</A> || "
 

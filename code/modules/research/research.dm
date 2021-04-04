@@ -44,10 +44,11 @@ research holder datum.
 **	Includes all the helper procs and basic tech processing.  **
 ***************************************************************/
 
-/datum/research								//Holder for all the existing, archived, and known tech. Individual to console.
-	var/list/known_tech = list()			//List of locally known tech. Datum/tech go here.
-	var/list/possible_designs = list()		//List of all designs.
-	var/list/known_designs = list()			//List of available designs.
+/datum/research												//Holder for all the existing, archived, and known tech. Individual to console.
+	var/list/possible_designs = list()						//List of all designs.
+	var/list/known_designs = list()							//List of available designs.
+	var/list/known_tech = list()							//List of locally known tech gain by destruction items in destructive analyzers. Datum/tech go here.
+	var/list/destructed_items = list()						//Associative list of destructed items and times it was destructed; destructed_items["var/obj/item/weapon/lasergun"] = 2
 
 /datum/research/New()		//Insert techs into possible_tech here. Known_tech automatically updated.
 	for(var/T in typesof(/datum/tech) - /datum/tech)
@@ -75,7 +76,7 @@ research holder datum.
 		k_tech[known.id] = known.level
 
 	for(var/req in D.req_tech)
-		if(isnull(k_tech[req]) || k_tech[req] < D.req_tech[req])
+		if(isnull(k_tech[req]) || (100*(2**k_tech[req])) < D.req_tech[req])
 			return 0
 
 	return 1
@@ -110,8 +111,6 @@ research holder datum.
 	for(var/datum/design/PD in possible_designs)
 		if(DesignHasReqs(PD))
 			AddDesign2Known(PD)
-	for(var/datum/tech/T in known_tech)
-		T = between(0, T.level, 20)
 	return
 
 //Refreshes the levels of a given tech.
@@ -128,6 +127,39 @@ research holder datum.
 		var/datum/tech/check_tech = T
 		if(initial(check_tech.id) == ID)
 			return  initial(check_tech.name)
+
+// Returns 0 if item was't destructed before, or how many times it was, if was
+/datum/research/proc/CheckItemInDatabase(var/obj/item/weapon/item)
+	var/count = destructed_items[item.type]
+	if(!count)
+		return 0
+	else
+		return count
+
+// Adds item to destructed items list and add science levels
+/datum/research/proc/AddItemToDatabase(var/obj/item/weapon/item)
+	log_admin("after function call")
+	var/count = destructed_items[item.type]
+	log_admin("item is here111, [count] is [item.type]")
+	var/coeff = 0.0
+	if(!count)
+		count = 1
+		coeff = 0.5
+	else if(count == 1)
+		count = 2
+		coeff = 0.3
+	else if(count == 2)
+		count = 3
+		coeff = 0.2
+	else
+		return
+	destructed_items[item.type] = count
+	log_admin("item is here, [count] is [item.type], [coeff]")
+	for(var/datum/tech/T in item.origin_tech)
+		for(var/datum/tech/L in known_tech)
+			if(T.id == L.id)
+				L.level += (100*coeff)*(2**T.level)
+	return
 
 /***************************************************************
 **						Technology Datums					  **

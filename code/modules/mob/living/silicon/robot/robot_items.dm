@@ -28,8 +28,8 @@
 				to_chat(user, "You activate the analyzer's microlaser, analyzing \the [loaded_item] and breaking it down.")
 				flick("portable_analyzer_scan", src)
 				playsound(src.loc, 'sound/signals/processing22.ogg', 50)
-				for(var/T in loaded_item.origin_tech)
-					files.UpdateTech(T, loaded_item.origin_tech[T])
+				files.AddItemToDatabase(loaded_item)
+				for(var/datum/tech/T in loaded_item.origin_tech)
 					to_chat(user, "\The [loaded_item] had level [loaded_item.origin_tech[T]] in [CallTechName(T)].")
 				loaded_item = null
 				for(var/obj/I in contents)
