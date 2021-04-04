@@ -32,7 +32,7 @@
 
 	if (copied == 0)
 		var/obj/item/weapon/paper/carbon/copy = copy(usr.loc, generate_stamps = FALSE)
-		copy.recolorize(saturation = 1, greyscale = TRUE)
+		copy.recolorize(saturation = 1, grayscale = TRUE)
 		copy.SetName("Copy - " + copy.name)
 		to_chat(usr, "<span class='notice'>You tear off the carbon-copy!</span>")
 		copied = 1

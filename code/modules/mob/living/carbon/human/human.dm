@@ -83,14 +83,6 @@
 		if(stomach)
 			stomach.metabolize()
 
-/mob/living/carbon/human/get_fullness()
-	if(!should_have_organ(BP_STOMACH))
-		return ..()
-	var/obj/item/organ/internal/stomach/stomach = internal_organs_by_name[BP_STOMACH]
-	if(stomach)
-		return nutrition + (stomach.ingested.total_volume * 10)
-	return 0 //Always hungry, but you can't actually eat. :(
-
 /mob/living/carbon/human/Stat()
 	. = ..()
 	if(statpanel("Status"))

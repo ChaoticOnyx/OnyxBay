@@ -86,8 +86,9 @@
 		return
 
 	if(usr.stat == DEAD)
-		if(!round_is_spooky())
-			to_chat(src, "<span class='warning'>The veil is not thin enough for you to do that.</span>")
+		var/area/A = get_area(src)
+		if(A?.holy)
+			to_chat(usr, SPAN("warning", "\The [src] is on sacred ground, you cannot turn it."))
 			return
 	else if(usr.incapacitated())
 		return

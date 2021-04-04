@@ -4,6 +4,7 @@
 	icon_state = "securecrate"
 	icon_opened = "securecrateopen"
 	icon_closed = "securecrate"
+	req_access = list()
 	var/list/code = list()
 	var/list/lastattempt = list()
 	var/attempts = 10

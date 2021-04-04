@@ -66,6 +66,7 @@
 		else
 			if(bloodsamp)
 				if(closed == 1)
+					playsound(src.loc, 'sound/signals/processing12.ogg', 25)
 					scanner_progress = 0
 					scanning = 1
 					to_chat(usr, "<span class='notice'>Scan initiated.</span>")
@@ -91,6 +92,7 @@
 			bloodsamp = null
 			scanning = 0
 		else if(scanner_progress >= 100)
+			playsound(src.loc, 'sound/signals/warning16.ogg', 25)
 			complete_scan()
 			return
 		else

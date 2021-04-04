@@ -43,6 +43,7 @@ REAGENT SCANNER
 		to_chat(user, "<span class='warning'>\The [src] is designed for organic humanoid patients only.</span>")
 		return
 	//user << browse(medical_scan_results(H, mode), "window=scanconsole;size=550x400")
+	playsound(src.loc, 'sound/signals/processing21.ogg', 50)
 	ui_interact(user,target = C)
 
 /obj/item/device/healthanalyzer/ui_interact(mob/user, ui_key = "main", datum/nanoui/ui = null, force_open = 1,mob/living/carbon/human/target)
@@ -158,7 +159,7 @@ proc/medical_scan_results(mob/living/carbon/human/H, verbose, separate_result)
 	if(H.getOxyLoss() > 50)
 		status_data += "<span class='info'><b>Severe oxygen deprivation detected.</b></span>"
 	if(H.getToxLoss() > 50)
-		status_data += "<font color='green'><b>Major systemic organ failure detected.</b></font>"
+		status_data += "<font color='black'><b>Major systemic organ failure detected.</b></font>"
 	if(H.getFireLoss() > 50)
 		status_data += "<font color='#ffa500'><b>Severe burn damage detected.</b></font>"
 	if(H.getBruteLoss() > 50)

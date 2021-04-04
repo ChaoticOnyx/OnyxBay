@@ -143,11 +143,14 @@ datum/announcement/proc/NewsCast(message as text, message_title as text)
 	if("Common" != announce_freq)
 		AnnounceArrivalSimple(name, rank, spawnpoint.msg, announce_freq)
 
-/proc/get_announcement_computer()
+/proc/get_announcement_computer(announcer = "Arrivals Announcement Computer")
 	if(ai_list.len)
-		return pick(ai_list).name
-	else
-		return "Arrivals Announcement Computer"
+		var/list/mob/living/silicon/ai/valid_AIs = list()
+		for(var/mob/living/silicon/ai/AI in ai_list)
+			if(AI.stat != DEAD)
+				valid_AIs.Add(AI)
+		announcer = pick(valid_AIs)
+	return announcer
 
 /proc/AnnounceArrivalSimple(name, rank = "visitor", join_message = "has arrived on the [station_name()]", frequency)
 	GLOB.global_announcer.autosay("[name], [rank], [join_message].", get_announcement_computer(), frequency)

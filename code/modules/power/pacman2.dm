@@ -165,6 +165,7 @@
 				usr.machine = null
 
 /obj/machinery/power/port_gen/pacman2/emag_act(remaining_uses, mob/user)
+	playsound(src.loc, 'sound/effects/computer_emag.ogg', 25)
 	emagged = 1
 	emp_act(1)
 	return 1

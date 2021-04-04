@@ -38,6 +38,8 @@ var/global/list/obj/machinery/telecomms/telecomms_list = list()
 	var/overloaded_for = 0
 	var/outage_probability = 75			// Probability of failing during a ionospheric storm
 
+	beepsounds = "device_trr"
+
 
 /obj/machinery/telecomms/proc/relay_information(datum/signal/signal, filter, copysig, amount = 20)
 	// relay signal to all linked machinery that are of type [filter]. If signal has been sent [amount] times, stop sending
@@ -172,6 +174,9 @@ var/global/list/obj/machinery/telecomms/telecomms_list = list()
 
 /obj/machinery/telecomms/Process()
 	update_power()
+
+	if (on)
+		play_beep()
 
 	if(overloaded_for)
 		overloaded_for--

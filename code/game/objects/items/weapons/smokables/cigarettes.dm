@@ -326,6 +326,26 @@
 	icon_state = "cigarelloOr"
 	filling = list(/datum/reagent/tobacco/fine = 6, /datum/reagent/drink/juice/orange = 2)
 
+////////////////////
+//SYNDI CIGARETTES//
+////////////////////
+/obj/item/clothing/mask/smokable/cigarette/syndi_cigs
+	chem_volume = 15
+
+/obj/item/clothing/mask/smokable/cigarette/syndi_cigs/flash
+	atom_flags = ATOM_FLAG_NO_REACT
+	filling = list(/datum/reagent/aluminum = 5, /datum/reagent/potassium = 5, /datum/reagent/sulfur = 5)
+
+/obj/item/clothing/mask/smokable/cigarette/syndi_cigs/mind_breaker
+	filling = list(/datum/reagent/mindbreaker = 15)
+
+/obj/item/clothing/mask/smokable/cigarette/syndi_cigs/smoke
+	atom_flags = ATOM_FLAG_NO_REACT
+	filling = list(/datum/reagent/potassium = 5, /datum/reagent/sugar = 5, /datum/reagent/phosphorus = 5)
+
+/obj/item/clothing/mask/smokable/cigarette/syndi_cigs/tricordrazine
+	filling = list(/datum/reagent/tricordrazine = 15)
+
 ////////////
 // CIGARS //
 ////////////

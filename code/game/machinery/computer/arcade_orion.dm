@@ -463,6 +463,7 @@
 
 /obj/machinery/computer/arcade/orion_trail/emag_act(mob/user)
 	if(!emagged)
+		playsound(src.loc, 'sound/effects/computer_emag.ogg', 25)
 		newgame(1)
 		src.updateUsrDialog()
 

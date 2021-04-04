@@ -172,6 +172,8 @@ GLOBAL_LIST_EMPTY(cookie_match_history)
 
 //Global chat procs
 /proc/to_chat(target, message, handle_whitespace=TRUE)
+	set background = TRUE
+
 	if(!target)
 		return
 
@@ -195,40 +197,26 @@ GLOBAL_LIST_EMPTY(cookie_match_history)
 
 	//'
 
-	if(islist(target))
-		// Do the double-encoding outside the loop to save nanoseconds
-		var/twiceEncoded = url_encode(url_encode(message))
-		for(var/I in target)
-			var/client/C = CLIENT_FROM_VAR(I) //Grab us a client if possible
+	if(!islist(target))
+		target = list(target)
 
-			if (!C)
-				continue
-
-			if(!C.chatOutput || C.chatOutput.broken) // A player who hasn't updated his skin file.
-				continue
-
-			if(!C.chatOutput.loaded)
-				//Client still loading, put their messages in a queue
-				C.chatOutput.messageQueue += message
-				continue
-
-			C << output(twiceEncoded, "browseroutput:output")
-	else
-		var/client/C = CLIENT_FROM_VAR(target) //Grab us a client if possible
+	// Do the double-encoding outside the loop to save nanoseconds
+	var/twiceEncoded = url_encode(url_encode(message))
+	for(var/I in target)
+		var/client/C = CLIENT_FROM_VAR(I) //Grab us a client if possible
 
 		if (!C)
-			return
+			continue
 
 		if(!C.chatOutput || C.chatOutput.broken) // A player who hasn't updated his skin file.
-			return
+			continue
 
 		if(!C.chatOutput.loaded)
 			//Client still loading, put their messages in a queue
 			C.chatOutput.messageQueue += message
-			return
+			continue
 
-		// url_encode it TWICE, this way any UTF-8 characters are able to be decoded by the Javascript.
-		C << output(url_encode(url_encode(message)), "browseroutput:output")
+		C << output(twiceEncoded, "browseroutput:output")
 
 /proc/to_world(message)
 	to_chat(world, message)

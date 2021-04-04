@@ -8,6 +8,7 @@ obj/structure/closet/crate
 	atom_flags = ATOM_FLAG_CLIMBABLE
 	pull_sound = "pull_box"
 	setup = 0
+	open_delay = 3
 
 	dremovable = 0
 

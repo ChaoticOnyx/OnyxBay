@@ -41,6 +41,10 @@
 		return
 	if(istype(AM, /obj/effect/beam))
 		return
+	if(istype(AM, /obj/effect/dummy/spell_jaunt))
+		return
+	if(isobserver(AM))
+		return
 	if(AM.move_speed < 12)
 		sense()
 

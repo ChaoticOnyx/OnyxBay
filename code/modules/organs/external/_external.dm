@@ -822,7 +822,8 @@ Note that amputating the affected organ does in fact remove the infection from t
 	var/use_flesh_colour = species.get_flesh_colour(owner)
 	var/use_blood_colour = species.get_blood_colour(owner)
 
-	removed(null, ignore_children)
+	removed(null, 0, ignore_children, (disintegrate != DROPLIMB_EDGE))
+
 	adjust_pain(60)
 	if(!clean)
 		victim.shock_stage += min_broken_damage
@@ -848,11 +849,12 @@ Note that amputating the affected organ does in fact remove the infection from t
 				stump.sever_artery()
 			stump.update_damages()
 	spawn(1)
-		victim.updatehealth()
-		victim.UpdateDamageIcon()
-		victim.regenerate_icons()
-		dir = 2
+		if(victim) // Since the victim can misteriously vanish during that spawn(1) causing runtimes
+			victim.updatehealth()
+			victim.UpdateDamageIcon()
+			victim.regenerate_icons()
 
+	dir = 2
 	switch(disintegrate)
 		if(DROPLIMB_EDGE)
 			compile_icon()
@@ -864,39 +866,32 @@ Note that amputating the affected organ does in fact remove the infection from t
 				M.Turn(rand(180))
 			src.transform = M
 			update_icon_drop(victim)
-			forceMove(get_turf(src))
-			if(!clean)
-				// Throw limb around.
-				if(src && istype(loc,/turf))
-					throw_at(get_edge_target_turf(src,pick(GLOB.alldirs)),rand(1,3),30)
+			forceMove(victim.loc)
+			if(!clean) // Throw limb around.
+				if(src && isturf(loc))
+					throw_at(get_edge_target_turf(src, pick(GLOB.alldirs)), rand(1, 3), rand(2, 4))
 				dir = 2
 		if(DROPLIMB_BURN)
-			new /obj/effect/decal/cleanable/ash(get_turf(victim))
+			new /obj/effect/decal/cleanable/ash(loc)
 			for(var/obj/item/I in src)
-				if(I.w_class > ITEM_SIZE_SMALL && !istype(I,/obj/item/organ))
-					I.loc = get_turf(src)
+				if(I.w_class > ITEM_SIZE_SMALL && !istype(I, /obj/item/organ))
+					I.forceMove(victim.loc)
 			qdel(src)
 		if(DROPLIMB_BLUNT)
 			var/obj/effect/decal/cleanable/blood/gibs/gore
 			if(BP_IS_ROBOTIC(src))
-				gore = new /obj/effect/decal/cleanable/blood/gibs/robot(get_turf(victim))
+				gore = new /obj/effect/decal/cleanable/blood/gibs/robot(victim.loc)
 			else
-				gore = new /obj/effect/decal/cleanable/blood/gibs(get_turf(victim))
+				gore = new /obj/effect/decal/cleanable/blood/gibs(victim.loc)
 				if(species)
 					gore.fleshcolor = use_flesh_colour
 					gore.basecolor = use_blood_colour
 					gore.update_icon()
 
-			gore.throw_at(get_edge_target_turf(src,pick(GLOB.alldirs)),rand(1,3),30)
-
-			for(var/obj/item/organ/I in internal_organs)
-				I.removed()
-				if(istype(loc,/turf))
-					I.throw_at(get_edge_target_turf(src,pick(GLOB.alldirs)),rand(1,3),30)
-
 			for(var/obj/item/I in src)
-				I.loc = get_turf(src)
-				I.throw_at(get_edge_target_turf(src,pick(GLOB.alldirs)),rand(1,3),30)
+				I.forceMove(victim.loc)
+				if(isturf(I.loc))
+					I.throw_at(get_edge_target_turf(I, pick(GLOB.alldirs)), rand(1, 2), rand(2, 4))
 
 			qdel(src)
 
@@ -1166,7 +1161,7 @@ obj/item/organ/external/proc/remove_clamps()
 		H.drop_from_inventory(W)
 	W.loc = owner
 
-/obj/item/organ/external/removed(mob/living/user, ignore_children = 0)
+/obj/item/organ/external/removed(mob/living/user, drop_organ = 1, ignore_children = 0, detach_children_and_internals = 0)
 	if(!owner)
 		return
 
@@ -1210,7 +1205,7 @@ obj/item/organ/external/proc/remove_clamps()
 	if(!ignore_children)
 		for(var/obj/item/organ/external/O in children)
 			O.removed()
-			if(O)
+			if(O && !detach_children_and_internals)
 				O.forceMove(src)
 
 				// if we didn't lose the organ we still want it as a child
@@ -1219,7 +1214,7 @@ obj/item/organ/external/proc/remove_clamps()
 
 	// Grab all the internal giblets too.
 	for(var/obj/item/organ/organ in internal_organs)
-		organ.removed(user, 0, 0)  // Organ stays inside and connected
+		organ.removed(user, 0, detach_children_and_internals)  // Organ stays inside and connected
 		organ.forceMove(src)
 
 	// Remove parent references
@@ -1237,7 +1232,7 @@ obj/item/organ/external/proc/remove_clamps()
 			"<span class='danger'>\The [victim]'s [src.name] explodes violently!</span>",\
 			"<span class='danger'>Your [src.name] explodes!</span>",\
 			"<span class='danger'>You hear an explosion!</span>")
-		explosion(get_turf(owner),-1,-1,2,3)
+		explosion(get_turf(owner), -1, -1, 2, 3)
 		var/datum/effect/effect/system/spark_spread/spark_system = new /datum/effect/effect/system/spark_spread()
 		spark_system.set_up(5, 0, victim)
 		spark_system.attach(owner)

@@ -311,7 +311,7 @@ FIELD_CONTEXT_EDIT(criminalStatus, CONTEXT(security))
 		if ("Parolled")
 			ret = "green"
 		if ("Released")
-			ret = "blue"
+			ret = "darkcyan"
 	return ret
 
 /record_field/criminalStatus/announce(automatic)
@@ -319,12 +319,12 @@ FIELD_CONTEXT_EDIT(criminalStatus, CONTEXT(security))
 		return
 	for(var/datum/computer_file/crew_record/R in GLOB.all_crew_records)
 		if(R.uid == record_id)
-			var/status = "<font color='black'><b>None</b></font>"
+			var/status = "<b>None</b>"
 			var/clr = criminal_status_color(value)
 			if (clr)
 				status = "<font color='[clr]'><b>[value]</b></font>"
 
-			GLOB.global_announcer.autosay("<font color='black'><b>[R.get_name()]</b> security status is changed to [status]!</font>", "<b>Security Records Announcer</b>", "Security")
+			GLOB.global_announcer.autosay("<b>[R.get_name()]</b> security status is changed to [status]!", "<b>Security Records Announcer</b>", "Security")
 
 
 FIELD_LONG_SECURE("Major Crimes", major_crimes, FALSE, access_security);
@@ -350,7 +350,7 @@ FIELD_CONTEXT_BOTH(secRecord, CONTEXT(security))
 		return
 	for(var/datum/computer_file/crew_record/R in GLOB.all_crew_records)
 		if(R.uid == record_id)
-			GLOB.global_announcer.autosay("<font color='black'><b>[R.get_name()]</b> security record was changed!</font>", "<b>Security Records Announcer</b>", "Security")
+			GLOB.global_announcer.autosay("<b>[R.get_name()]</b> security record was changed!", "<b>Security Records Announcer</b>", "Security")
 
 
 FIELD_SHORT_SECURE("DNA", dna, FALSE, access_medical);
