@@ -646,9 +646,9 @@ var/global/list/all_objectives = list()
 		"four emitters"    = list(/obj/machinery/power/emitter, 4),
 		"six guns"         = list(/obj/item/weapon/gun, 6),
 		"four energy guns" = list(/obj/item/weapon/gun/energy, 4),
-		"two laser guns"   = list(/obj/item/weapon/gun/energy/laser, 2)
-		"an ion gun"       = list(/obj/item/weapon/gun/energy/ionrifle, 2)
-		"two RIG's"        = list(/obj/item/weapon/rig, 2)
+		"two laser guns"   = list(/obj/item/weapon/gun/energy/laser, 2),
+		"an ion gun"       = list(/obj/item/weapon/gun/energy/ionrifle, 2),
+		"two RIG's"        = list(/obj/item/weapon/rig, 2),
 	)
 
 	choose_target()
