@@ -759,7 +759,7 @@ var/global/list/all_objectives = list()
 
 
 /datum/objective/ninja_highlander
-   explanation_text = "You aspire to be a Grand Master of the Spider Clan. Kill all of your fellow acolytes."
+	explanation_text = "You aspire to be a Grand Master of the Spider Clan. Kill all of your fellow acolytes."
 	check_completion()
 		if(owner)
 			for(var/datum/mind/ninja in get_antags("ninja"))
