@@ -32,7 +32,7 @@ var/global/list/all_objectives = list()
 
 	proc/find_target_by_role(role, role_type=0)//Option sets either to check assigned role or special role. Default to assigned.
 		for(var/datum/mind/possible_target in SSticker.minds)
-			if((possible_target != owner) && ishuman(possible_target.current) && ((role_type ? possible_target.special_role : possible_target.assigned_role) == role) )
+			if((possible_target != owner) && ishuman(possible_target.current) && ((role_type ? possible_target.special_role : possible_target.assigned_role) == role))
 				target = possible_target
 				break
 
@@ -161,16 +161,15 @@ var/global/list/all_objectives = list()
 	check_completion()
 		if(!target)//If it's a free objective.
 			return 1
-		if(!owner.current || owner.current.stat==DEAD )//If you're otherwise dead.
+		if(!owner.current || owner.current.stat==DEAD)//If you're otherwise dead.
 			return 0
-		if(!target.current || !isbrain(target.current) )
+		if(!target.current || !isbrain(target.current))
 			return 0
 		var/atom/A = target.current
 		while(A.loc)			//check to see if the brainmob is on our person
 			A = A.loc
 			if(A == owner.current)
 				return 1
-		return 0
 
 
 /datum/objective/protect//The opposite of killing a dude.
@@ -194,8 +193,7 @@ var/global/list/all_objectives = list()
 		if(!target)			//If it's a free objective.
 			return 1
 		if(target.current)
-			return target.current.stat == DEAD || issilicon(target.current) || isbrain(target.current)
-		return 0
+			return target.current.stat != DEAD || !issilicon(target.current) || !isbrain(target.current)
 
 
 /datum/objective/hijack
@@ -766,7 +764,7 @@ var/global/list/all_objectives = list()
 		if(owner)
 			for(var/datum/mind/ninja in get_antags("ninja"))
 				if(ninja != owner)
-					return ninja.current.stat < DEAD
+					return ninja.current.stat == DEAD
 			return 1
 
 
@@ -784,7 +782,7 @@ var/global/list/all_objectives = list()
 		return 0
 	for(var/datum/mind/cult_mind in GLOB.cult.current_antagonists)
 		if(cult_mind.current && cult_mind.current.stat != DEAD)
-			var/area/A = get_area(cult_mind.current )
+			var/area/A = get_area(cult_mind.current)
 			if(is_type_in_list(A, GLOB.using_map.post_round_safe_areas))
 				acolytes_survived++
 	return acolytes_survived >= target_amount
