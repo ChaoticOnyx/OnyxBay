@@ -119,7 +119,7 @@
 			if(istype(A, T.item_type))
 				inuse = 1
 				user.visible_message(SPAN("notice", "[user] starts recycling \the [A]..."))
-				if(do_after(user,recycling_time,src))
+				if(do_after(user, recycling_time, src))
 					to_chat(user, SPAN("notice", "\The [src] consumes [A] and you get some energy back."))
 					qdel(A)
 					BC.add_charge(T.energy / 2)

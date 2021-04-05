@@ -11,6 +11,7 @@
 	hitsound = 'sound/effects/fighting/smash.ogg'
 	gear_detachable = FALSE
 	gear = /obj/item/weapon/weldingtool/linked
+	atom_flags = null
 	initial_capacity = 500
 	initial_reagent_types = list(/datum/reagent/fuel = 1)
 	origin_tech = list(TECH_ENGINEERING = 3)
