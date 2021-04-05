@@ -53,9 +53,7 @@
 	var/mob/M = loc
 	if(!istype(M))
 		return 0
-	if(M.get_equipped_item(slot_back) == src)
-		return 1
-	return 0
+	return 1
 
 /obj/item/weapon/backwear/proc/reattach_gear(mob/user)
 	if(!gear)
@@ -145,6 +143,14 @@
 	. = ..()
 	QDEL_NULL(bcell)
 
+/obj/item/weapon/backwear/powered/examine(mob/user)
+	. = ..()
+	if(bcell)
+		. += "\nIt has \the [bcell] installed."
+		. += "\nThe charge meter reads [round(bcell.percent(), 0.1)]%"
+	else
+		. += "\nIt has no power cell installed!"
+
 /obj/item/weapon/backwear/powered/attackby(obj/item/weapon/W, mob/user, params)
 	if(istype(W, /obj/item/weapon/cell))
 		if(bcell)
@@ -154,7 +160,7 @@
 				return
 			W.forceMove(src)
 			bcell = W
-			to_chat(user, SPAN("notice", "You install a cell in \the [src]."))
+			to_chat(user, SPAN("notice", "You install \the [W] into \the [src]."))
 			update_icon()
 
 	else if(isScrewdriver(W))
@@ -162,7 +168,7 @@
 			bcell.update_icon()
 			bcell.forceMove(get_turf(src.loc))
 			bcell = null
-			to_chat(user, SPAN("notice", "You remove the cell from \the [src]."))
+			to_chat(user, SPAN("notice", "You remove \the [W] from \the [src]."))
 			update_icon()
 	else
 		return ..()
@@ -175,32 +181,25 @@
 	var/initial_reagent_types  // A list of reagents and their ratio relative the initial capacity. list(/datum/reagent/water = 0.5) would fill the dispenser halfway to capacity.
 	var/amount_per_transfer_from_this = 10
 	var/possible_transfer_amounts = "5;10;25;50;100"
-	var/obj/item/weapon/reagent_containers/backwear_container/reservoir
 
 /obj/item/weapon/backwear/reagent/Initialize()
 	. = ..()
-	reservoir = new /obj/item/weapon/reagent_containers/backwear_container(src)
-	reservoir.volume = initial_capacity
-	reservoir.create_reagents(initial_capacity)
+	create_reagents(initial_capacity)
 
 	for(var/reagent_type in initial_reagent_types)
 		var/reagent_ratio = initial_reagent_types[reagent_type]
-		reservoir.reagents.add_reagent(reagent_type, reagent_ratio * initial_capacity)
+		reagents.add_reagent(reagent_type, reagent_ratio * initial_capacity)
 
 	if(!possible_transfer_amounts)
-		src.verbs -= /obj/structure/reagent_dispensers/verb/set_APTFT
-
-/obj/item/weapon/backwear/reagent/Destroy()
-	. = ..()
-	QDEL_NULL(reservoir)
+		src.verbs -= /obj/item/weapon/backwear/reagent/verb/set_APTFT
 
 /obj/item/weapon/backwear/reagent/examine(mob/user)
 	. = ..()
 	if(get_dist(src, user) > 2)
 		return
 	. += "\n<span class='notice'>It contains:</span>"
-	if(reservoir?.reagents?.reagent_list.len) // OOP be cool
-		for(var/datum/reagent/R in reservoir.reagents.reagent_list)
+	if(reagents.reagent_list.len) // OOP be cool
+		for(var/datum/reagent/R in reagents.reagent_list)
 			. += "\n<span class='notice'>[R.volume] units of [R.name]</span>"
 	else
 		. += "\n<span class='notice'>Nothing.</span>"
@@ -220,11 +219,19 @@
 	else
 		return ..()
 
-/obj/item/weapon/reagent_containers/backwear_container
-	name = "reservoir"
-	desc = "You are not supposed to ever see this."
-	icon = 'icons/obj/chemical.dmi'
-	icon_state = "backwear_holder"
-	w_class = ITEM_SIZE_HUGE
-	atom_flags = ATOM_FLAG_OPEN_CONTAINER
-	unacidable = 1
+/obj/item/weapon/backwear/reagent/proc/standard_dispenser_refill(mob/user, obj/structure/reagent_dispensers/target)
+	if(!istype(target))
+		return 0
+
+	if(!target.reagents || !target.reagents.total_volume)
+		to_chat(user, SPAN("notice", "[target] is empty."))
+		return 1
+
+	if(reagents && !reagents.get_free_space())
+		to_chat(user, SPAN("notice", "[src] is full."))
+		return 1
+
+	var/trans = target.reagents.trans_to_obj(src, target.amount_per_transfer_from_this)
+	playsound(target, 'sound/effects/using/sink/fast_filling1.ogg', 75, TRUE)
+	to_chat(user, SPAN("notice", "You fill [src] with [trans] units of the contents of [target]."))
+	return 1

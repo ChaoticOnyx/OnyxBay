@@ -23,10 +23,10 @@
 		if(!O.reagents.total_volume)
 			to_chat(user, SPAN("notice", "\The [O] is empty."))
 			return
-		if(reservoir.reagents.total_volume >= initial_capacity)
+		if(reagents.total_volume >= initial_capacity)
 			to_chat(user, SPAN("notice", "\The [src] is already full!"))
 			return
-		O.reagents.trans_to_obj(reservoir, initial_capacity)
+		O.reagents.trans_to_obj(src, initial_capacity)
 		to_chat(user, SPAN("notice", "You crack the cap off the top of your [src] and fill it back up again from \the [O]."))
 		playsound(src.loc, 'sound/effects/refill.ogg', 50, 1, -6)
 		return
@@ -39,7 +39,7 @@
 
 /obj/item/weapon/backwear/reagent/welding/attackby(obj/item/weapon/W, mob/user)
 	if(W.get_temperature_as_from_ignitor())
-		if(!reservoir.reagents.total_volume)
+		if(!reagents.total_volume)
 			to_chat(user, SPAN("danger", "You put \the [W] to \the [src] and with a moment of lucidity you realize, this might not have been the smartest thing you've ever done. Luckily, \the [src] is empty."))
 			return
 		else
@@ -49,9 +49,6 @@
 			if(src)
 				qdel(src)
 			return
-	if(istype(W, /obj/item/weapon/weldingtool) && W != gear)
-		var/obj/item/weapon/weldingtool/WT = W
-		WT.refuel_from_obj(reservoir, user)
 	return ..()
 
 
@@ -66,6 +63,7 @@
 	mod_weight = 0.55
 	mod_reach = 0.6
 	mod_handy = 0.75
+	canremove = 0
 	unacidable = 1 //TODO: make these replaceable so we won't need such ducttaping
 	slot_flags = null
 	tank = null
@@ -90,7 +88,7 @@
 		base_unit.reattach_gear(user)
 
 /obj/item/weapon/weldingtool/linked/get_fuel()
-	return base_unit ? base_unit.reservoir.reagents.get_reagent_amount(/datum/reagent/fuel) : 0
+	return base_unit ? base_unit.reagents.get_reagent_amount(/datum/reagent/fuel) : 0
 
 /obj/item/weapon/weldingtool/linked/remove_fuel(amount = 1, mob/M = null)
 	if(!welding)
@@ -119,11 +117,11 @@
 
 	if(in_mob)
 		amount = max(amount, 2)
-		base_unit.reservoir.reagents.trans_type_to(in_mob, /datum/reagent/fuel, amount)
+		base_unit.reagents.trans_type_to(in_mob, /datum/reagent/fuel, amount)
 		in_mob.IgniteMob()
 
 	else
-		base_unit.reservoir.reagents.remove_reagent(/datum/reagent/fuel, amount)
+		base_unit.reagents.remove_reagent(/datum/reagent/fuel, amount)
 		var/turf/location = get_turf(src.loc)
 		if(location)
 			location.hotspot_expose(700, 5)

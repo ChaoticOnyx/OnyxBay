@@ -907,6 +907,7 @@
 #include "code\game\objects\items\weapons\backwear\backwear.dm"
 #include "code\game\objects\items\weapons\backwear\extinguisher.dm"
 #include "code\game\objects\items\weapons\backwear\pepper.dm"
+#include "code\game\objects\items\weapons\backwear\rpd.dm"
 #include "code\game\objects\items\weapons\backwear\welding.dm"
 #include "code\game\objects\items\weapons\circuitboards\broken.dm"
 #include "code\game\objects\items\weapons\circuitboards\circuitboard.dm"

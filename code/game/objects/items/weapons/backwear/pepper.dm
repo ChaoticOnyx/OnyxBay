@@ -18,14 +18,14 @@
 	if(!proximity)
 		return
 	if(istype(O, /obj/structure/reagent_dispensers/peppertank))
-		var/amount = min((initial_capacity - reservoir.reagents.total_volume), O.reagents.total_volume)
+		var/amount = min((initial_capacity - reagents.total_volume), O.reagents.total_volume)
 		if(!O.reagents.total_volume)
 			to_chat(user, SPAN("warning", "\The [O] is empty."))
 			return
 		if(!amount)
 			to_chat(user, SPAN("notice", "\The [src] is already full."))
 			return
-		O.reagents.trans_to_obj(reservoir, amount)
+		O.reagents.trans_to_obj(src, amount)
 		to_chat(user, SPAN("notice", "You crack the cap off the top of your [src] and fill it with [amount] units of the contents of \the [O]."))
 		playsound(src.loc, 'sound/effects/refill.ogg', 50, 1, -6)
 		return
@@ -34,7 +34,10 @@
 	. = ..()
 	if(. && gear)
 		var/obj/item/weapon/reagent_containers/spray/chemsprayer/crowdbuster/C = gear
-		C.external_container = reservoir // Sadly it's safer and easier to do it this way since New/Initialize sequences are a shitmaze
+		C.external_container = src // Sadly it's safer and easier to do it this way since New/Initialize sequences are a shitmaze
+
+/obj/item/weapon/backwear/reagent/standard_dispenser_refill(mob/user, obj/structure/reagent_dispensers/target)
+	return 0
 
 /obj/item/weapon/reagent_containers/spray/chemsprayer/crowdbuster
 	name = "crowdbuster"
@@ -48,6 +51,7 @@
 	step_delay = 1
 	atom_flags = null
 	slot_flags = null
+	canremove = 0
 	unacidable = 1 //TODO: make these replaceable so we won't need such ducttaping
 	matter = null
 	var/obj/item/weapon/backwear/reagent/base_unit

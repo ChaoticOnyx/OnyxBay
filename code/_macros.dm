@@ -80,7 +80,7 @@
 
 #define isopenspace(A) istype(A, /turf/simulated/open)
 
-#define isWrench(A) istype(A, /obj/item/weapon/wrench)
+#define isWrench(A) (istype(A, /obj/item/weapon/wrench) || (istype(A, /obj/item/weapon/rpd) && A:interaction_mode == "wrench"))
 
 #define isWelder(A) istype(A, /obj/item/weapon/weldingtool)
 

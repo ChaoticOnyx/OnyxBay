@@ -302,7 +302,7 @@
 /obj/item/weapon/weldingtool/afterattack(obj/O, mob/user, proximity)
 	if(!proximity)
 		return
-	if(istype(O, /obj/structure/reagent_dispensers/fueltank) && get_dist(src, O) <= 1 && !welding)
+	if((istype(O, /obj/structure/reagent_dispensers/fueltank) || istype(O, /obj/item/weapon/backwear/reagent/welding)) && get_dist(src, O) <= 1 && !welding)
 		refuel_from_obj(O, user)
 		return
 	if(welding)
