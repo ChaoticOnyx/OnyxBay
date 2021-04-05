@@ -1,7 +1,7 @@
 //This file was auto-corrected by findeclaration.exe on 25.5.2012 20:42:31
 var/global/list/all_objectives = list()
 
-datum/objective
+/datum/objective
 	var/datum/mind/owner = null			//Who owns the objective.
 	var/explanation_text = "Nothing"	//What that person is supposed to do.
 	var/datum/mind/target = null		//If they are focused on a particular person.
@@ -24,7 +24,7 @@ datum/objective
 	proc/find_target()
 		var/list/possible_targets = list()
 		for(var/datum/mind/possible_target in SSticker.minds)
-			if(possible_target != owner && ishuman(possible_target.current) && (possible_target.current.stat != 2))
+			if(possible_target != owner && ishuman(possible_target.current) && (possible_target.current.stat != DEAD))
 				possible_targets += possible_target
 		if(possible_targets.len > 0)
 			target = pick(possible_targets)
@@ -38,7 +38,8 @@ datum/objective
 
 	proc/update()
 
-datum/objective/assassinate
+
+/datum/objective/assassinate
 	find_target()
 		..()
 		if(target && target.current)
@@ -46,7 +47,6 @@ datum/objective/assassinate
 		else
 			explanation_text = "Free Objective"
 		return target
-
 
 	find_target_by_role(role, role_type=0)
 		..(role, role_type)
@@ -56,16 +56,13 @@ datum/objective/assassinate
 			explanation_text = "Free Objective"
 		return target
 
-
 	check_completion()
 		if(target && target.current)
-			if(target.current.stat == DEAD || issilicon(target.current) || isbrain(target.current) || target.current.z > 6 || !target.current.ckey) //Borgs/brains/AIs count as dead for traitor objectives. --NeoFite
-				return 1
-			return 0
+			return target.current.stat == DEAD || issilicon(target.current) || isbrain(target.current) || target.current.z > 6 || !target.current.ckey //Borgs/brains/AIs count as dead for traitor objectives. --NeoFite
 		return 1
 
 
-datum/objective/anti_revolution/execute
+/datum/objective/anti_revolution/execute
 	find_target()
 		..()
 		if(target && target.current)
@@ -73,7 +70,6 @@ datum/objective/anti_revolution/execute
 		else
 			explanation_text = "Free Objective"
 		return target
-
 
 	find_target_by_role(role, role_type=0)
 		..(role, role_type)
@@ -85,12 +81,10 @@ datum/objective/anti_revolution/execute
 
 	check_completion()
 		if(target && target.current)
-			if(target.current.stat == DEAD || !ishuman(target.current))
-				return 1
-			return 0
+			return target.current.stat == DEAD || !ishuman(target.current)
 		return 1
 
-datum/objective/anti_revolution/brig
+/datum/objective/anti_revolution/brig
 	var/already_completed = 0
 
 	find_target()
@@ -100,7 +94,6 @@ datum/objective/anti_revolution/brig
 		else
 			explanation_text = "Free Objective"
 		return target
-
 
 	find_target_by_role(role, role_type=0)
 		..(role, role_type)
@@ -118,7 +111,7 @@ datum/objective/anti_revolution/brig
 			if(target.is_brigged(10 MINUTES))
 				already_completed = 1
 
-datum/objective/anti_revolution/demote
+/datum/objective/anti_revolution/demote
 	find_target()
 		..()
 		if(target && target.current)
@@ -144,13 +137,11 @@ datum/objective/anti_revolution/demote
 
 			if(!istype(I)) return 1
 
-			if(I.assignment == "Assistant")
-				return 1
-			else
-				return 0
+			return I.assignment == "Assistant"
 		return 1
 
-datum/objective/debrain//I want braaaainssss
+
+/datum/objective/debrain//I want braaaainssss
 	find_target()
 		..()
 		if(target && target.current)
@@ -158,7 +149,6 @@ datum/objective/debrain//I want braaaainssss
 		else
 			explanation_text = "Free Objective"
 		return target
-
 
 	find_target_by_role(role, role_type=0)
 		..(role, role_type)
@@ -171,9 +161,9 @@ datum/objective/debrain//I want braaaainssss
 	check_completion()
 		if(!target)//If it's a free objective.
 			return 1
-		if( !owner.current || owner.current.stat==DEAD )//If you're otherwise dead.
+		if(!owner.current || owner.current.stat==DEAD )//If you're otherwise dead.
 			return 0
-		if( !target.current || !isbrain(target.current) )
+		if(!target.current || !isbrain(target.current) )
 			return 0
 		var/atom/A = target.current
 		while(A.loc)			//check to see if the brainmob is on our person
@@ -183,7 +173,7 @@ datum/objective/debrain//I want braaaainssss
 		return 0
 
 
-datum/objective/protect//The opposite of killing a dude.
+/datum/objective/protect//The opposite of killing a dude.
 	find_target()
 		..()
 		if(target && target.current)
@@ -191,7 +181,6 @@ datum/objective/protect//The opposite of killing a dude.
 		else
 			explanation_text = "Free Objective"
 		return target
-
 
 	find_target_by_role(role, role_type=0)
 		..(role, role_type)
@@ -205,16 +194,14 @@ datum/objective/protect//The opposite of killing a dude.
 		if(!target)			//If it's a free objective.
 			return 1
 		if(target.current)
-			if(target.current.stat == DEAD || issilicon(target.current) || isbrain(target.current))
-				return 0
-			return 1
+			return target.current.stat == DEAD || issilicon(target.current) || isbrain(target.current)
 		return 0
 
 
-datum/objective/hijack
+/datum/objective/hijack
 	explanation_text = "Hijack a shuttle or pod by escaping alone."
 
-datum/objective/hijack/check_completion()
+/datum/objective/hijack/check_completion()
 	if(!owner.current || owner.current.stat)
 		return 0
 	if(!evacuation_controller.has_evacuated())
@@ -229,16 +216,15 @@ datum/objective/hijack/check_completion()
 	for(var/mob/living/player in GLOB.player_list)
 		if(is_type_in_list(player.type, list(/mob/living/silicon/ai, /mob/living/silicon/pai)))
 			continue
-		if (!player.mind || player.mind == owner)
+		if(!player.mind || player.mind == owner)
 			continue
 		if(get_area(player) == shuttle_area)
 			return 0
 	return 1
 
 
-datum/objective/block
+/datum/objective/block
 	explanation_text = "Do not allow any organic lifeforms to escape on the shuttle alive."
-
 
 	check_completion()
 		if(!istype(owner.current, /mob/living/silicon))
@@ -251,13 +237,14 @@ datum/objective/block
 		var/protected_mobs[] = list(/mob/living/silicon/ai, /mob/living/silicon/pai, /mob/living/silicon/robot)
 		for(var/mob/living/player in GLOB.player_list)
 			if(player.type in protected_mobs)	continue
-			if (player.mind)
-				if (player.stat != 2)
-					if (get_turf(player) in shuttle)
+			if(player.mind)
+				if(player.stat != DEAD)
+					if(get_turf(player) in shuttle)
 						return 0
 		return 1
 
-datum/objective/silence
+
+/datum/objective/silence
 	explanation_text = "Do not allow anyone to escape.  Only allow the shuttle to be called when everyone is dead and your story is the only one left."
 
 	check_completion()
@@ -275,19 +262,17 @@ datum/objective/silence
 		return 1
 
 
-datum/objective/escape
+/datum/objective/escape
 	explanation_text = "Escape on the shuttle or an escape pod alive and free."
 
-
 	check_completion()
-		if(issilicon(owner.current))
+		if(!owner.current || owner.current.stat == DEAD)
 			return 0
-		if(isbrain(owner.current))
+		if(issilicon(owner.current) || isbrain(owner.current))
 			return 0
 		if(!evacuation_controller.has_evacuated())
 			return 0
-		if(!owner.current || owner.current.stat ==2)
-			return 0
+
 		var/turf/location = get_turf(owner.current.loc)
 		if(!location)
 			return 0
@@ -300,8 +285,7 @@ datum/objective/escape
 		return check_area && is_type_in_list(check_area, GLOB.using_map.post_round_safe_areas)
 
 
-
-datum/objective/survive
+/datum/objective/survive
 	explanation_text = "Stay alive until the end."
 
 	check_completion()
@@ -311,8 +295,9 @@ datum/objective/survive
 			return 0
 		return 1
 
+
 // Similar to the anti-rev objective, but for traitors
-datum/objective/brig
+/datum/objective/brig
 	var/already_completed = 0
 
 	find_target()
@@ -322,7 +307,6 @@ datum/objective/brig
 		else
 			explanation_text = "Free Objective"
 		return target
-
 
 	find_target_by_role(role, role_type=0)
 		..(role, role_type)
@@ -340,8 +324,9 @@ datum/objective/brig
 			if(target.is_brigged(10 MINUTES))
 				already_completed = 1
 
+
 // Harm a crew member, making an example of them
-datum/objective/harm
+/datum/objective/harm
 	var/already_completed = 0
 
 	find_target()
@@ -351,7 +336,6 @@ datum/objective/harm
 		else
 			explanation_text = "Free Objective"
 		return target
-
 
 	find_target_by_role(role, role_type=0)
 		..(role, role_type)
@@ -385,9 +369,7 @@ datum/objective/harm
 					return 1
 
 			var/obj/item/organ/external/head/head = H.get_organ(BP_HEAD)
-			if(!head || (head.status & ORGAN_DISFIGURED))
-				return 1
-		return 0
+			return !head || (head.status & ORGAN_DISFIGURED)
 
 /datum/objective/ert_station_save
 
@@ -414,11 +396,10 @@ datum/objective/harm
 
 /datum/objective/nuclear
 	explanation_text = "Cause mass destruction with a nuclear device."
+	check_completion()
+		return SSticker.mode.station_was_nuked
 
-/datum/objective/nuclear/check_completion()
-	return SSticker.mode.station_was_nuked
-
-datum/objective/steal
+/datum/objective/steal
 	var/obj/item/steal_target
 	var/target_name
 
@@ -432,9 +413,17 @@ datum/objective/steal
 		"28 moles of plasma (full tank)" = /obj/item/weapon/tank,
 		"a sample of slime extract" = /obj/item/slime_extract,
 
+		"a piece of corgi meat" = /obj/item/weapon/reagent_containers/food/snacks/meat/corgi, //Facepalm
+
+		"Ian the сorgi" = /mob/living/simple_animal/corgi/Ian,
+		"Poly the parrot" = /mob/living/simple_animal/parrot/Poly,
+		"Runtime the cat" = /mob/living/simple_animal/cat/fluff/Runtime,
+
 		"a research director's hardsuit" = /obj/item/weapon/rig/hazmat,
 		"a head of security's hardsuit" = /obj/item/weapon/rig/security,
 		"a head of security's swat boots" = /obj/item/clothing/shoes/swat,
+
+		//"Clown PDA" = /obj/item/device/pda/clown    SEE select_target
 	)
 
 	var/global/possible_items_special[] = list(
@@ -448,27 +437,24 @@ datum/objective/steal
 		"25 refined uranium bars" = /obj/item/stack/material/uranium,
 	)
 
-
-datum/objective/steal/proc/set_target(item_name)
+/datum/objective/steal/proc/set_target(item_name)
 	target_name = item_name
 	steal_target = possible_items[target_name]
-	if (!steal_target)
+	if(!steal_target)
 		steal_target = possible_items_special[target_name]
 	explanation_text = "Steal [target_name]."
 	return steal_target
 
-
-datum/objective/steal/find_target()
+/datum/objective/steal/find_target()
 	return set_target(pick(possible_items))
 
-
-datum/objective/steal/proc/select_target()
+/datum/objective/steal/proc/select_target()
 	var/list/possible_items_all = possible_items+possible_items_special+"custom"
 	if(!(/mob/living/silicon/ai in SSmobs.mob_list))
 		possible_items_all -= "a functional AI"
-	
+
 	for(var/datum/mind/possible_target in SSticker.minds)
-		if(possible_target != owner && ishuman(possible_target.current) && (possible_target.current.stat != 2))
+		if(possible_target != owner && ishuman(possible_target.current) && (possible_target.current.stat != DEAD))
 			if(possible_target.assigned_role == "Clown")
 				possible_items_all["Clown PDA"] = /obj/item/device/pda/clown
 				break
@@ -478,7 +464,7 @@ datum/objective/steal/proc/select_target()
 		return
 	if(new_target == "custom")
 		var/obj/item/custom_target = input("Select type:","Type") as null|anything in typesof(/obj/item)
-		if (!custom_target)
+		if(!custom_target)
 			return
 		var/tmp_obj = new custom_target
 		var/custom_name = tmp_obj:name
@@ -493,20 +479,36 @@ datum/objective/steal/proc/select_target()
 		set_target(new_target)
 	return steal_target
 
-datum/objective/steal/check_completion()
-	if(!steal_target || !owner.current)
+/datum/objective/steal/check_completion()
+	if(!steal_target || !owner.current || !isliving(owner.current))
 		return 0
-	if(!isliving(owner.current))
-		return 0
+
 	var/list/all_items = owner.current.get_contents()
+
+	if(ismob(steal_target))  //Any mob, eg: Ian, Poly, Runtime
+		for(var/mob/M in all_items)
+			if(istype(M, steal_target))
+				return M.stat != DEAD
+
+	if(isstack(steal_target))  // eg: "10 diamonds", "50 gold bars", "25 refined uranium bars"
+		var/target_amount = text2num(target_name)
+		var/found_amount = 0
+
+		for(var/obj/item/stack/S in all_items)
+			if(istype(S, steal_target))
+				found_amount += S.amount
+
+		return found_amount >= target_amount
+
 	switch (target_name)
-		if("28 moles of plasma (full tank)","10 diamonds","50 gold bars","25 refined uranium bars")
+		if("28 moles of plasma (full tank)")
 			var/target_amount = text2num(target_name)//Non-numbers are ignored.
 			var/found_amount = 0.0//Always starts as zero.
 
 			for(var/obj/item/I in all_items) //Check for plasma tanks
 				if(istype(I, steal_target))
-					found_amount += (target_name=="28 moles of plasma (full tank)" ? (I:air_contents:gas["plasma"]) : (I:amount))
+					found_amount += I:air_contents:gas["plasma"]
+
 			return found_amount>=target_amount
 
 		if("a functional AI")
@@ -516,26 +518,21 @@ datum/objective/steal/check_completion()
 				var/turf/T = get_turf(ai)
 				if(owner.current.contains(ai) || (T && is_type_in_list(T.loc, GLOB.using_map.post_round_safe_areas)))
 					return 1
-		else
 
+		else
 			for(var/obj/I in all_items) //Check for items
 				if(istype(I, steal_target))
 					return 1
-	return 0
 
 
-
-datum/objective/download
+/datum/objective/download
 	proc/gen_amount_goal()
 		target_amount = rand(10,20)
 		explanation_text = "Download [target_amount] research levels."
 		return target_amount
 
-
 	check_completion()
-		if(!ishuman(owner.current))
-			return 0
-		if(!owner.current || owner.current.stat == 2)
+		if(!ishuman(owner.current) || !owner.current || owner.current.stat == DEAD)
 			return 0
 
 		var/current_amount
@@ -557,12 +554,11 @@ datum/objective/download
 
 		return (current_amount<target_amount) ? 0 : 1
 
-datum/objective/capture
+/datum/objective/capture
 	proc/gen_amount_goal()
 		target_amount = rand(5,10)
 		explanation_text = "Accumulate [target_amount] capture points."
 		return target_amount
-
 
 	check_completion()//Basically runs through all the mobs in the area to determine how much they are worth.
 		var/captured_amount = 0
@@ -570,34 +566,31 @@ datum/objective/capture
 
 		for(var/mob/living/carbon/human/M in A) // Humans (and subtypes).
 			var/worth = M.species.rarity_value
-			if(M.stat==DEAD)//Dead folks are worth less.
+			if(M.stat == DEAD)//Dead folks are worth less.
 				worth*=0.5
 				continue
 			captured_amount += worth
 
 		for(var/mob/living/carbon/alien/larva/M in A)//Larva are important for research.
-			if(M.stat==DEAD)
+			if(M.stat == DEAD)
 				captured_amount+=0.5
 				continue
 			captured_amount+=1
 
-
-		if(captured_amount<target_amount)
-			return 0
-		return 1
+		return captured_amount > target_amount
 
 
 /datum/objective/absorb
 	proc/gen_amount_goal(var/lowbound = 4, var/highbound = 6)
 		target_amount = rand (lowbound,highbound)
 		var/n_p = 1 //autowin
-		if (GAME_STATE == RUNLEVEL_SETUP)
+		if(GAME_STATE == RUNLEVEL_SETUP)
 			for(var/mob/new_player/P in GLOB.player_list)
-				if(P.client && P.ready && P.mind!=owner)
+				if(P.client && P.ready && P.mind != owner)
 					n_p ++
-		else if (GAME_STATE == RUNLEVEL_GAME)
+		else if(GAME_STATE == RUNLEVEL_GAME)
 			for(var/mob/living/carbon/human/P in GLOB.player_list)
-				if(P.client && !(P.mind.changeling) && P.mind!=owner)
+				if(P.client && !(P.mind.changeling) && P.mind != owner)
 					n_p ++
 		target_amount = min(target_amount, n_p)
 
@@ -605,24 +598,22 @@ datum/objective/capture
 		return target_amount
 
 	check_completion()
-		if(owner && owner.changeling && owner.changeling.absorbed_dna && (owner.changeling.absorbedcount >= target_amount))
-			return 1
-		else
-			return 0
+		return owner && owner.changeling && owner.changeling.absorbed_dna && (owner.changeling.absorbedcount >= target_amount)
+
 
 // Heist objectives.
-datum/objective/heist
+/datum/objective/heist
 	proc/choose_target()
 		return
 
-datum/objective/heist/kidnap
+/datum/objective/heist/kidnap
 	choose_target()
 		var/list/roles = list("Chief Engineer","Research Director","Captain","Chief Medical Officer")
 		var/list/possible_targets = list()
 		var/list/priority_targets = list()
 
 		for(var/datum/mind/possible_target in SSticker.minds)
-			if(possible_target != owner && ishuman(possible_target.current) && (possible_target.current.stat != 2) && (!possible_target.special_role))
+			if(possible_target != owner && ishuman(possible_target.current) && (possible_target.current.stat != DEAD) && (!possible_target.special_role))
 				possible_targets += possible_target
 				for(var/role in roles)
 					if(possible_target.assigned_role == role)
@@ -642,47 +633,31 @@ datum/objective/heist/kidnap
 
 	check_completion()
 		if(target && target.current)
-			if (target.current.stat == 2)
+			if(target.current.stat == DEAD)
 				return 0 // They're dead. Fail.
 			//if (!target.current.restrained())
 			//	return 0 // They're loose. Close but no cigar.
 
 			var/area/target_area = get_area(target.current)
-			if(is_type_in_list(target_area, GLOB.raiders.safe_areas))
-				return 1
-		else
-			return 0
+			return is_type_in_list(target_area, GLOB.raiders.safe_areas)
 
-datum/objective/heist/loot
+/datum/objective/heist/loot
+	var/possible_obj = list(
+		"four emitters"    = list(/obj/machinery/power/emitter, 4),
+		"six guns"         = list(/obj/item/weapon/gun, 6),
+		"four energy guns" = list(/obj/item/weapon/gun/energy, 4),
+		"two laser guns"   = list(/obj/item/weapon/gun/energy/laser, 2)
+		"an ion gun"       = list(/obj/item/weapon/gun/energy/ionrifle, 2)
+		"two RIG's"        = list(/obj/item/weapon/rig, 2)
+	)
 
 	choose_target()
-		var/loot = "an object"
-		switch(rand(1,5))
-			if(1)
-				target = /obj/machinery/power/emitter
-				target_amount = 4
-				loot = "four emitters"
-			if(2)
-				target = /obj/item/weapon/gun
-				target_amount = 6
-				loot = "six guns"
-			if(3)
-				target = /obj/item/weapon/gun/energy
-				target_amount = 4
-				loot = "four energy guns"
-			if(4)
-				target = /obj/item/weapon/gun/energy/laser
-				target_amount = 2
-				loot = "two laser guns"
-			if(5)
-				target = /obj/item/weapon/gun/energy/ionrifle
-				target_amount = 1
-				loot = "an ion gun"
-
+		var/loot = pick(possible_obj)
+		target = possible_obj[loot][1]
+		target_amount = possible_obj[loot][2]
 		explanation_text = "It's a buyer's market out here. Steal [loot] for resale."
 
 	check_completion()
-
 		var/total_amount = 0
 
 		var/list/objects_to_check = list()
@@ -711,43 +686,26 @@ datum/objective/heist/loot
 				if(istype(O, target))
 					total_amount++
 
-		if(total_amount >= target_amount)
-			return 1
-		return 0
+		return total_amount >= target_amount
 
-datum/objective/heist/salvage
+/datum/objective/heist/salvage
+	var/possible_stacks = list(
+		MATERIAL_STEEL    = 300,
+		MATERIAL_GLASS    = 200,
+		MATERIAL_PLASTEEL = 100,
+		MATERIAL_PLASMA   = 100,
+		MATERIAL_SILVER   = 50,
+		MATERIAL_GOLD     = 20,
+		MATERIAL_URANIUM  = 20,
+		MATERIAL_DIAMOND  = 20,
+	)
 
 	choose_target()
-		switch(rand(1,8))
-			if(1)
-				target = MATERIAL_STEEL
-				target_amount = 300
-			if(2)
-				target = MATERIAL_GLASS
-				target_amount = 200
-			if(3)
-				target = MATERIAL_PLASTEEL
-				target_amount = 100
-			if(4)
-				target = MATERIAL_PLASMA
-				target_amount = 100
-			if(5)
-				target = MATERIAL_SILVER
-				target_amount = 50
-			if(6)
-				target = MATERIAL_GOLD
-				target_amount = 20
-			if(7)
-				target = MATERIAL_URANIUM
-				target_amount = 20
-			if(8)
-				target = MATERIAL_DIAMOND
-				target_amount = 20
-
+		target = pick(possible_stacks)
+		target_amount = possible_stacks[target]
 		explanation_text = "Ransack the [station_name()] and escape with [target_amount] [target]."
 
 	check_completion()
-
 		var/total_amount = 0
 
 		var/list/objects_to_check = list()
@@ -778,46 +736,39 @@ datum/objective/heist/salvage
 				if(M.material.name == target)
 					total_amount += M.get_amount()
 
-		if(total_amount >= target_amount)
-			return 1
-		return 0
+		return total_amount >= target_amount
 
 /datum/objective/heist/preserve_crew
 	explanation_text = "Do not leave anyone behind, alive or dead."
-
 	check_completion()
-		if(GLOB.raiders && GLOB.raiders.is_raider_crew_safe()) return 1
-		return 0
+		return GLOB.raiders && GLOB.raiders.is_raider_crew_safe()
+
 
 //Borer objective(s).
 /datum/objective/borer_survive
 	explanation_text = "Survive in a host until the end of the round."
-
-/datum/objective/borer_survive/check_completion()
-	if(owner)
-		var/mob/living/simple_animal/borer/B = owner
-		if(istype(B) && B.stat < 2 && B.host && B.host.stat < 2) return 1
-	return 0
+	check_completion()
+		if(owner)
+			var/mob/living/simple_animal/borer/B = owner
+			return istype(B) && B.stat < DEAD && B.host && B.host.stat < DEAD
 
 /datum/objective/borer_reproduce
 	explanation_text = "Reproduce at least once."
+	check_completion()
+		if(owner && owner.current)
+			var/mob/living/simple_animal/borer/B = owner.current
+			return istype(B) && B.has_reproduced
 
-/datum/objective/borer_reproduce/check_completion()
-	if(owner && owner.current)
-		var/mob/living/simple_animal/borer/B = owner.current
-		if(istype(B) && B.has_reproduced) return 1
-	return 0
 
 /datum/objective/ninja_highlander
    explanation_text = "You aspire to be a Grand Master of the Spider Clan. Kill all of your fellow acolytes."
+	check_completion()
+		if(owner)
+			for(var/datum/mind/ninja in get_antags("ninja"))
+				if(ninja != owner)
+					return ninja.current.stat < DEAD
+			return 1
 
-/datum/objective/ninja_highlander/check_completion()
-	if(owner)
-		for(var/datum/mind/ninja in get_antags("ninja"))
-			if(ninja != owner)
-				if(ninja.current.stat < 2) return 0
-		return 1
-	return 0
 
 /datum/objective/cult/survive
 	explanation_text = "Our knowledge must live on."
@@ -832,22 +783,21 @@ datum/objective/heist/salvage
 	if(!GLOB.cult)
 		return 0
 	for(var/datum/mind/cult_mind in GLOB.cult.current_antagonists)
-		if (cult_mind.current && cult_mind.current.stat!=2)
+		if(cult_mind.current && cult_mind.current.stat != DEAD)
 			var/area/A = get_area(cult_mind.current )
-			if (is_type_in_list(A, GLOB.using_map.post_round_safe_areas))
+			if(is_type_in_list(A, GLOB.using_map.post_round_safe_areas))
 				acolytes_survived++
-	if(acolytes_survived >= target_amount)
-		return 1
-	return 0
+	return acolytes_survived >= target_amount
 
 /datum/objective/cult/eldergod
 	explanation_text = "Summon Nar-Sie via the use of the Tear Reality rune. It will only work if five or more cultists stand on and around it. Use the Convert rune to recruit new cultists."
-
-/datum/objective/cult/eldergod/check_completion()
-	return GLOB.cult.narsie_summoned
+	check_completion()
+		return GLOB.cult.narsie_summoned
 
 /datum/objective/cult/sacrifice
 	explanation_text = "Conduct a ritual sacrifice for the glory of Nar-Sie."
+	check_completion()
+		return target && GLOB.cult && !GLOB.cult.sacrificed.Find(target)
 
 /datum/objective/cult/sacrifice/find_target()
 	var/list/possible_targets = list()
@@ -859,8 +809,6 @@ datum/objective/heist/salvage
 		target = pick(possible_targets)
 	if(target) explanation_text = "Sacrifice [target.name], the [target.assigned_role]. You will need the Offering rune and three acolytes to do so."
 
-/datum/objective/cult/sacrifice/check_completion()
-	return (target && GLOB.cult && !GLOB.cult.sacrificed.Find(target))
 
 /datum/objective/rev/find_target()
 	..()
@@ -869,7 +817,6 @@ datum/objective/heist/salvage
 	else
 		explanation_text = "Free Objective"
 	return target
-
 
 /datum/objective/rev/find_target_by_role(role, role_type=0)
 	..(role, role_type)
