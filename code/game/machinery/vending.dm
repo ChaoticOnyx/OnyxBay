@@ -13,6 +13,7 @@
 	obj_flags = OBJ_FLAG_ANCHORABLE
 	clicksound = "button"
 	clickvol = 40
+	pull_slowdown = PULL_SLOWDOWN_HEAVY
 
 	var/max_health = 100
 	var/health = 100

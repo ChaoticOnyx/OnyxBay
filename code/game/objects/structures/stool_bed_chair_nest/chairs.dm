@@ -239,6 +239,7 @@
 	buckle_movable = 1
 	material_alteration = MATERIAL_ALTERATION_NONE
 	foldable = FALSE
+	pull_slowdown = PULL_SLOWDOWN_TINY
 
 /obj/structure/bed/chair/office/attackby(obj/item/weapon/W as obj, mob/user as mob)
 	if(istype(W,/obj/item/stack) || isWirecutter(W))

@@ -163,7 +163,10 @@
 	if(pulling)
 		if(istype(pulling, /obj))
 			var/obj/O = pulling
-			. += between(0, O.w_class, ITEM_SIZE_GARGANTUAN) / 5
+			if(O.pull_slowdown == PULL_SLOWDOWN_WEIGHT)
+				. += between(0, O.w_class, ITEM_SIZE_GARGANTUAN) / 5
+			else
+				. += O.pull_slowdown
 		else if(istype(pulling, /mob))
 			var/mob/M = pulling
 			. += max(0, M.mob_size) / MOB_MEDIUM

@@ -131,6 +131,7 @@ obj/structure/closet/crate
 	icon_state = "trashcart"
 	icon_opened = "trashcartopen"
 	icon_closed = "trashcart"
+	pull_slowdown = PULL_SLOWDOWN_LIGHT
 
 /obj/structure/closet/crate/medical
 	name = "medical crate"
@@ -364,6 +365,7 @@ obj/structure/closet/crate
 	close_sound = 'sound/items/Deconstruct.ogg'
 	req_access = list(access_mailsorting, access_xenobiology ,access_virology)
 	storage_types = CLOSET_STORAGE_ITEMS|CLOSET_STORAGE_MOBS
+	pull_slowdown = PULL_SLOWDOWN_LIGHT
 
 /obj/structure/closet/crate/secure/biohazard/blanks/WillContain()
 	return list(/mob/living/carbon/human/blank, /obj/item/usedcryobag)
