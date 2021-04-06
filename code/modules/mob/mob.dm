@@ -169,7 +169,7 @@
 				. += O.pull_slowdown
 		else if(istype(pulling, /mob))
 			var/mob/M = pulling
-			. += max(0, M.mob_size) / MOB_MEDIUM
+			. += max(0, M.mob_size) / MOB_MEDIUM * (M.lying ? 2 : 0.5)
 		else
 			. += 1
 

@@ -551,102 +551,6 @@
 		for(var/mob/living/carbon/slime/M in view(1, src))
 			M.UpdateFeed()
 
-	/*
-	var/t7 = 1
-	if(restrained())
-		for(var/mob/living/M in range(src, 1))
-			if(M.pulling == src && M.stat == 0 && !M.restrained())
-				t7 = null
-	if(t7 && (pulling && ((get_dist(src, pulling) <= 1 || pulling.loc == loc) && moving)))
-		var/turf/T = loc
-		. = ..()
-
-		if (pulling && pulling.loc)
-			if(!isturf(pulling.loc))
-				stop_pulling()
-				return
-
-		/////
-		if(pulling && pulling.anchored)
-			stop_pulling()
-			return
-
-		if(!restrained())
-			var/diag = get_dir(src, pulling)
-			if((diag - 1) & diag)
-			else
-				diag = null
-			if(get_dist(src, pulling) > 1 || diag)
-				if(isliving(pulling))
-					var/mob/living/M = pulling
-					var/ok = 1
-					if(locate(/obj/item/grab, M.grabbed_by))
-						if(prob(75))
-							var/obj/item/grab/G = pick(M.grabbed_by)
-							if(istype(G, /obj/item/grab))
-								for(var/mob/O in viewers(M, null))
-									O.show_message(text("<span class='warning'>[] has been pulled from []'s grip by []</span>", G.affecting, G.assailant, src), 1)
-								qdel(G)
-						else
-							ok = 0
-						if(locate(/obj/item/grab, M.grabbed_by.len))
-							ok = 0
-					if(ok)
-						var/atom/movable/t = M.pulling
-						M.stop_pulling()
-
-						if(!istype(M.loc, /turf/space))
-							var/area/A = get_area(M)
-							if(A.has_gravity)
-								//this is the gay blood on floor shit -- Added back -- Skie
-								if(M.lying && (prob(M.getBruteLoss() / 6)))
-									var/turf/location = M.loc
-									if(istype(location, /turf/simulated))
-										location.add_blood(M)
-								//pull damage with injured people
-									if(prob(25))
-										M.adjustBruteLoss(1)
-										visible_message("<span class='danger'>\The [M]'s [M.isSynthetic() ? "state worsens": "wounds open more"] from being dragged!</span>")
-								if(M.pull_damage())
-									if(prob(25))
-										M.adjustBruteLoss(2)
-										visible_message("<span class='danger'>\The [M]'s [M.isSynthetic() ? "state" : "wounds"] worsen terribly from being dragged!</span>")
-										var/turf/location = M.loc
-										if(istype(location, /turf/simulated))
-											location.add_blood(M)
-											if(ishuman(M))
-												var/mob/living/carbon/human/H = M
-												var/blood_volume = round(H.vessel.get_reagent_amount(/datum/reagent/blood))
-												if(blood_volume > 0)
-													H.vessel.remove_reagent(/datum/reagent/blood, 1)
-
-
-						if(m_intent == M_RUN && pulling && pulling.pull_sound && (world.time - last_pull_sound) > 1 SECOND)
-							last_pull_sound = world.time
-							playsound(pulling, pulling.pull_sound, rand(50, 75), TRUE)
-
-						step(pulling, get_dir(pulling.loc, T))
-						if(t)
-							M.start_pulling(t)
-				else
-					if(pulling)
-						if(istype(pulling, /obj/structure/window))
-							var/obj/structure/window/W = pulling
-							if(W.is_full_window())
-								for(var/obj/structure/window/win in get_step(pulling, get_dir(pulling.loc, T)))
-									stop_pulling()
-					if(pulling)
-						step(pulling, get_dir(pulling.loc, T))
-
-						if(m_intent == M_RUN && pulling && pulling.pull_sound && (world.time - last_pull_sound) > 1 SECOND)
-							last_pull_sound = world.time
-							playsound(pulling, pulling.pull_sound, rand(50, 75), TRUE)
-
-	else
-		stop_pulling()
-		. = ..()
-	*/
-
 /mob/living/proc/can_pull()
 	if(!moving)
 		return FALSE
@@ -714,7 +618,7 @@
 			return set_dir(get_dir(src, pulling))
 		if(O.pull_slowdown >= PULL_SLOWDOWN_MEDIUM)
 			return set_dir(get_dir(src, pulling))
-		else if(O.w_class >= ITEM_SIZE_HUGE)
+		else if(O.pull_slowdown == PULL_SLOWDOWN_WEIGHT && O.w_class >= ITEM_SIZE_HUGE)
 			return set_dir(get_dir(src, pulling))
 	if(isliving(pulling))
 		var/mob/living/L = pulling
