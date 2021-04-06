@@ -658,7 +658,9 @@ var/world_topic_spam_protect_time = world.timeofday
 	WORLD_SETUP_LOG_DETAILED(qdel)
 	WORLD_SETUP_LOG_DETAILED(debug)
 	WORLD_SETUP_LOG_DETAILED(hrefs)
+	WORLD_SETUP_LOG_DETAILED(integrated_circuits)
 	WORLD_SETUP_LOG(common)
+	WORLD_SETUP_LOG(story)
 
 #undef WORLD_SETUP_LOG_DETAILED
 #undef WORLD_SETUP_LOG

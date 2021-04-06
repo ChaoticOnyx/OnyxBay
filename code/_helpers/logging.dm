@@ -8,6 +8,9 @@
 // will get logs that are one big line if the system is Linux and they are using notepad.  This solves it by adding CR to every line ending
 // in the logs.  ascii character 13 = CR
 
+var/list/hidded_ckeys = list() // structure: key = hidded_key, hidded_key - the number belove + 1
+var/ckey_encounter = 0
+
 /var/global/log_end= world.system_type == UNIX ? ascii2text(13) : ""
 
 /proc/log_to_dd(text)
@@ -54,6 +57,19 @@
 			if(!req_pref || (C.get_preference_value(req_pref) == GLOB.PREF_SHOW))
 				to_chat(C, rendered)
 
+/proc/log_story(type, text, location)
+	//sanitize text, remove ckey from text
+	for(var/mob/C in GLOB.player_list)
+		//I'm sorry for O(n)
+		text = replacetext(text, C.key, hide_my_ckey(C.key))
+	// the real logging goes here
+	var/turf/T = get_turf(location)
+	var/log = "\[[time_stamp()]] [game_id] [type]: [text]"
+	if(T)
+		log += " ([T.x],[T.y],[T.z])"
+	log += "[log_end]"
+	WRITE_FILE(GLOB.world_story_log, log)
+
 /proc/log_roundend(text)
 	log_generic("ROUNDEND", text, null, config.log_game)
 
@@ -78,22 +94,27 @@
 	log_generic("VOTE", text, null, config.log_vote)
 
 /proc/log_access(text, notify_admin)
-	log_generic("ACCESS", text, null, config.log_vote, notify_admin)
+	log_generic("ACCESS", text, null, config.log_access, notify_admin)
 
 /proc/log_say(text)
 	log_generic("SAY", text, null, config.log_say)
+	log_story("SAY", text)
 
 /proc/log_ooc(text)
 	log_generic("OOC", text, null, config.log_ooc)
+	log_story("OOC", text)
 
 /proc/log_whisper(text)
 	log_generic("WHISPER", text, null, config.log_whisper)
+	log_story("WHISPER", text)
 
 /proc/log_emote(text)
 	log_generic("EMOTE", text, null, config.log_emote)
+	log_story("EMOTE", text)
 
 /proc/log_attack(text, location, notify_admin)
 	log_generic("ATTACK", text, location, config.log_attack, notify_admin, /datum/client_preference/staff/show_attack_logs)
+	log_story("ATTACK", text, location)
 
 /proc/log_adminsay(text)
 	log_generic("ADMINSAY", text, null, config.log_adminchat)
@@ -103,6 +124,7 @@
 
 /proc/log_pda(text)
 	log_generic("PDA", text, null, config.log_pda)
+	log_story("PDA", text)
 
 /proc/log_misc(text) //Replace with log_game ?
 	log_generic("MISC", text)
@@ -119,6 +141,9 @@
 
 /proc/log_qdel(text)
 	WRITE_FILE(GLOB.world_qdel_log, "\[[time_stamp()]]QDEL: [text]")
+
+/proc/log_integrated_circuits(text)
+	WRITE_FILE(GLOB.world_integrated_circuits_log, text)
 
 /proc/log_href(text)
 	if(!config.log_hrefs)
@@ -157,6 +182,17 @@
 	if(dir & DOWN) comps += "DOWN"
 
 	return english_list(comps, nothing_text="0", and_text="|", comma_text="|")
+
+// get unique number from ckey
+/proc/hide_my_ckey(ckey)
+	if(!ckey)
+		return "CKEY NOT FOUND"
+	var/hidded_ckey = hidded_ckeys[ckey]
+	if(!hidded_ckey)
+		ckey_encounter++
+		hidded_ckeys[ckey] = ckey_encounter
+		hidded_ckey = ckey_encounter
+	return hidded_ckey
 
 //more or less a logging utility
 /proc/key_name(whom, include_link = null, include_name = 1, highlight_special_characters = 1, datum/ticket/ticket = null)
