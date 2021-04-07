@@ -103,7 +103,7 @@ obj/item/weapon/gun/energy/retro
 	mod_weight = 0.8
 	mod_reach = 0.5
 	mod_handy = 1.1
-	slot_flags = SLOT_BELT //too unusually shaped to fit in a holster
+	slot_flags = SLOT_BELT|SLOT_HOLSTER
 	w_class = ITEM_SIZE_NORMAL
 	projectile_type = /obj/item/projectile/beam
 	origin_tech = null
