@@ -76,7 +76,7 @@ research holder datum.
 		k_tech[known.id] = known.level
 
 	for(var/req in D.req_tech)
-		if(isnull(k_tech[req]) || (100*(2**k_tech[req])) < D.req_tech[req])
+		if(isnull(k_tech[req]) || (RESEARCH_REQUIREMENTS_COEFF_MUL*(RESEARCH_REQUIREMENTS_COEFF_POW**k_tech[req])) < D.req_tech[req])
 			return 0
 
 	return 1
@@ -138,27 +138,28 @@ research holder datum.
 
 // Adds item to destructed items list and add science levels
 /datum/research/proc/AddItemToDatabase(var/obj/item/weapon/item)
-	log_admin("after function call")
+	to_world("after function call")
 	var/count = destructed_items[item.type]
-	log_admin("item is here111, [count] is [item.type]")
+	to_world("item is here111, [count] is [item.type]")
 	var/coeff = 0.0
 	if(!count)
 		count = 1
-		coeff = 0.5
+		coeff = DECONSTRUCT_COEFF1
 	else if(count == 1)
 		count = 2
-		coeff = 0.3
+		coeff = DECONSTRUCT_COEFF2
 	else if(count == 2)
 		count = 3
-		coeff = 0.2
+		coeff = DECONSTRUCT_COEFF3
 	else
 		return
+
 	destructed_items[item.type] = count
-	log_admin("item is here, [count] is [item.type], [coeff]")
-	for(var/datum/tech/T in item.origin_tech)
+
+	for(var/T in item.origin_tech)
 		for(var/datum/tech/L in known_tech)
-			if(T.id == L.id)
-				L.level += (100*coeff)*(2**T.level)
+			if(T == L.id)
+				L.level += (DECONSTRUCT_POINTS_COEFF_MUL*coeff)*(DECONSTRUCT_POINTS_COEFF_POW**item.origin_tech[T])
 	return
 
 /***************************************************************

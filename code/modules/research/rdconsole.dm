@@ -468,7 +468,6 @@ won't update every console in existence) but it's more of a hassle to do. Also, 
 		screen = 1.0
 		return
 
-	log_admin("before function call")
 	files.AddItemToDatabase(linked_destroy.loaded_item)
 
 	if(linked_lathe && linked_destroy.loaded_item.matter) // Also sends salvaged materials to a linked protolathe, if any.
@@ -703,10 +702,10 @@ won't update every console in existence) but it's more of a hassle to do. Also, 
 			dat += "Origin Tech:"
 			dat += "<UL>"
 			for(var/T in linked_destroy.loaded_item.origin_tech)
-				dat += "<LI>[CallTechName(T)] [linked_destroy.loaded_item.origin_tech[T]]"
+				dat += "<LI>[CallTechName(T)] tier [linked_destroy.loaded_item.origin_tech[T]]"
 				for(var/datum/tech/F in files.known_tech)
 					if(F.name == CallTechName(T))
-						dat += " (Current: [F.level])"
+						dat += " (Current science points of this type: [F.level])"
 						break
 			dat += "</UL>"
 			var/count = files.CheckItemInDatabase(linked_destroy.loaded_item)
@@ -715,7 +714,7 @@ won't update every console in existence) but it's more of a hassle to do. Also, 
 			else if (count == 3)
 				dat += "This item was deconstructed [count] times. Deconstruction will not give you any new research data."
 			else
-				dat += "This item was deconstructed [count] times."
+				dat += "This item was deconstructed [count] times. Further deconstruction will give you less research data"
 			dat += "<HR><A href='?src=\ref[src];deconstruct=1'>Deconstruct Item</A> || "
 			dat += "<A href='?src=\ref[src];eject_item=1'>Eject Item</A> || "
 
@@ -906,8 +905,11 @@ won't update every console in existence) but it's more of a hassle to do. Also, 
 			dat += "List of Available Designs:"
 			dat += GetResearchListInfo()
 
-	user << browse("<meta charset=\"utf-8\"><TITLE>Fabrication Control Console</TITLE><HR>[dat]", "window=rdconsole;size=850x600")
-	onclose(user, "rdconsole")
+	//user << browse("<meta charset=\"utf-8\"><TITLE>Fabrication Control Console</TITLE><HR>[dat]", "window=rdconsole;size=850x600")
+	//_absonclose(user, "rdconsole")
+	var/datum/browser/popup = new(user, "rdconsole", "Fabrication Control Console", 850, 600) // Set up the popup browser window
+	popup.set_content(dat)
+	popup.open()
 
 /obj/machinery/computer/rdconsole/robotics
 	name = "robotics fabrication console"
