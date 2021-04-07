@@ -120,3 +120,8 @@
 #define VAMP_FRENZIED   0x8
 #define VAMP_ISTHRALL   0x10
 #define VAMP_FULLPOWER  0x20
+
+//suspicion weight
+#define SUSPICION_COMPANY_OPPOSED 50
+#define SUSPICION_SKEPTICAL 20
+#define SUSPICION_NORMAL 10

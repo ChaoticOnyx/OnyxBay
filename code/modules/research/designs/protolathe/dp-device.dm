@@ -18,14 +18,6 @@
 	build_path = /obj/item/weapon/cell/device/high
 	sort_string = "DAAAF"
 
-/datum/design/item/modularcomponent/interceptor
-	id = "interceptor"
-	name = "Interceptor"
-	req_tech = list(TECH_DATA = 5, TECH_BLUESPACE = 4)
-	materials = list(MATERIAL_STEEL = 2000, MATERIAL_GLASS = 500)
-	build_path = /obj/item/weapon/computer_hardware/interceptor
-	sort_string = "DAAAG"
-
 // Modular computer components
 // Hard drives
 /datum/design/item/modularcomponent

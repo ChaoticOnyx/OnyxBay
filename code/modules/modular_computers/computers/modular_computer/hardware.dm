@@ -55,12 +55,6 @@
 			return
 		found = 1
 		tesla_link = H
-	else if(istype(H, /obj/item/weapon/computer_hardware/interceptor))
-		if(interceptor)
-			to_chat(user, "This computer's interceptor slot is already occupied by \the [interceptor].")
-			return
-		found = 1
-		interceptor = H
 	if(found)
 		to_chat(user, "You install \the [H] into \the [src]")
 		H.holder2 = src
@@ -99,8 +93,6 @@
 	if(tesla_link == H)
 		tesla_link = null
 		found = 1
-	if(interceptor == H)
-		interceptor = null
 		found = 1
 	if(found)
 		if(user)
@@ -135,8 +127,6 @@
 		return ai_slot
 	if(tesla_link && (tesla_link.name == name))
 		return tesla_link
-	if(interceptor && (interceptor.name == name))
-		return interceptor
 	return null
 
 // Returns list of all components
@@ -160,6 +150,4 @@
 		all_components.Add(ai_slot)
 	if(tesla_link)
 		all_components.Add(tesla_link)
-	if(interceptor)
-		all_components.Add(interceptor)
 	return all_components

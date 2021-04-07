@@ -285,3 +285,6 @@
 	new /datum/random_map/noise/ore(seed, min_x, min_y, src.z, max_x, max_y)
 
 	GLOB.using_map.refresh_mining_turfs(src.z)
+
+/obj/effect/landmark/intercepted_message
+	name = "intercepted_message"

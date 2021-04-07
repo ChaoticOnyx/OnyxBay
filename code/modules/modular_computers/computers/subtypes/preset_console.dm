@@ -84,10 +84,6 @@
 	hard_drive.store_file(new /datum/computer_file/program/wordprocessor())
 	hard_drive.store_file(new /datum/computer_file/program/docking())
 
-/obj/item/modular_computer/console/preset/command/bridge/install_default_hardware()
-	..()
-	interceptor = new /obj/item/weapon/computer_hardware/interceptor(src)
-
 // Security
 /obj/item/modular_computer/console/preset/security/install_default_hardware()
 	..()

@@ -37,8 +37,8 @@ var/global/list/additional_antag_types = list()
 	var/event_delay_mod_moderate             // Modifies the timing of random events.
 	var/event_delay_mod_major                // As above.
 
-	var/const/waittime_l = 10 MINUTES        //lower bound on time before intercept arrives
-	var/const/waittime_h = 30 MINUTES        //upper bound on time before intercept arrives
+	var/const/waittime_l = 5 MINUTES         //lower bound on time before intercept arrives
+	var/const/waittime_h = 15 MINUTES        //upper bound on time before intercept arrives
 
 	//Format: list(start_animation = duration, hit_animation, miss_animation). null means animation is skipped.
 	var/cinematic_icon_states = list(
@@ -308,11 +308,16 @@ var/global/list/additional_antag_types = list()
 /datum/game_mode/proc/check_win() //universal trigger to be called at mob death, nuke explosion, etc. To be called from everywhere.
 	return 0
 
+/client/verb/test()
+	set category = "test"
+
+	SSticker.mode.send_intercept()
+
 /datum/game_mode/proc/send_intercept()
 	var/intercepttext = "<FONT size = 3><B>Cent. Com. Update</B> Requested status information:</FONT><HR>"
 	intercepttext += "<B> In case you have misplaced your copy, attached is a list of personnel whom reliable sources&trade; suspect may be affiliated with the Syndicate:</B><br>"
 
-	var/list/suspects = list()
+	var/list/possibly_suspects = list()
 	for(var/mob/living/carbon/human/H in GLOB.human_mob_list)
 		if(!H.client || !H.mind)
 			continue
@@ -321,18 +326,27 @@ var/global/list/additional_antag_types = list()
 		if(antag)
 			if(antag.flags & ANTAG_OVERRIDE_JOB)  // off-station roles
 				continue
-			if((antag.flags & ANTAG_SUSPICIOUS) && prob(antag.suspicion_chance))
-				suspects |= H
+			if((antag.flags & ANTAG_SUSPICIOUS))
+				possibly_suspects[H] = antag.suspicion_weight
+		else if(H.client.prefs.nanotrasen_relation == COMPANY_OPPOSED)
+			possibly_suspects[H] = SUSPICION_COMPANY_OPPOSED
+		else if(H.client.prefs.nanotrasen_relation == COMPANY_SKEPTICAL)
+			possibly_suspects[H] = SUSPICION_SKEPTICAL
+		else
+			possibly_suspects[H] = SUSPICION_NORMAL
 
-		else if((H.client.prefs.nanotrasen_relation == COMPANY_OPPOSED && prob(50)) || (H.client.prefs.nanotrasen_relation == COMPANY_SKEPTICAL && prob(20)))
-			suspects |= H
-
-		// Some poor people who were just in the wrong place at the wrong time..
-		else if(prob(10))
-			suspects |= H
-
-	if(!length(suspects))
+	if(!length(possibly_suspects))
 		return
+
+	var/max_suspects = min(5, round(length(GLOB.player_list)/10) + rand(-1, 1))
+	if(max_suspects < 1)
+		return
+
+	var/list/suspects = list()
+	for(var/i = 1 to max_suspects)
+		var/pick = pickweight(possibly_suspects)
+		possibly_suspects -= pick
+		suspects |= pick
 
 	for(var/mob/M in suspects)
 		switch(rand(1, 100))
@@ -341,26 +355,14 @@ var/global/list/additional_antag_types = list()
 			else
 				intercepttext += "<b>[M.name]</b>, the <b>[M.mind.assigned_role]</b> <br>"
 
-	var/report_created = FALSE
-	for(var/obj/item/modular_computer/console/C in GLOB.modular_consoles)
-		var/area/A = get_area(C)
-		if(!A?.power_equip)
-			continue
-		if(C.damage >= C.broken_damage)
-			continue
-		if(!C.interceptor || C.interceptor.damage >= C.interceptor.damage_failure)
-			continue
-
-		var/obj/item/weapon/paper/intercept = new /obj/item/weapon/paper(C.loc)
-		intercept.name = "Cent. Com. Status Summary"
-		intercept.info = intercepttext
-		if(C.interceptor.damage > C.interceptor.damage_malfunction)
-			intercept.info = stars(intercept.info, 100 - C.interceptor.malfunction_probability)
-
-		report_created = TRUE
-	
-	if(!report_created)
-		return
+	post_comm_message("Cent. Com. Status Summary", intercepttext)
+	for(var/obj/effect/landmark/intercepted_message/IM in landmarks_list)
+		var/obj/item/modular_computer/console/C = locate() in get_turf(IM)
+		if(C)
+			var/obj/item/weapon/paper/intercept = new /obj/item/weapon/paper(C.loc)
+			intercept.name = "Cent. Com. Status Summary"
+			intercept.info = intercepttext
+			break
 
 	var/security_level_changed = FALSE
 	var/decl/security_state/security_state = decls_repository.get_decl(GLOB.using_map.security_state)
@@ -385,7 +387,7 @@ var/global/list/additional_antag_types = list()
 			to_chat(M, SPAN("danger", "We have received notice that enemy intelligence suspects you to be linked with us. We have thus invested significant resources to increase your uplink's capacity."))
 		else
 			// Give them a warning!
-			to_chat(M, SPAN("danger", "They are on to you!"))
+			to_chat(M, SPAN("danger", "Nanotrasen' employees have information about you."))
 
 /datum/game_mode/proc/get_players_for_role(antag_id)
 	var/list/players = list()
