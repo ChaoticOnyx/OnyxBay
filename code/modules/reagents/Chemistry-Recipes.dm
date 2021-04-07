@@ -854,14 +854,14 @@
 		T.desc = "This extract has been used up."
 
 //Grey
-/datum/chemical_reaction/slime/spawn
+/datum/chemical_reaction/slime/create
 	name = "Slime Spawn"
 	result = null
 	required_reagents = list(/datum/reagent/toxin/plasma = 1)
 	result_amount = 1
 	required = /obj/item/slime_extract/grey
 
-/datum/chemical_reaction/slime/spawn/on_reaction(datum/reagents/holder)
+/datum/chemical_reaction/slime/create/on_reaction(datum/reagents/holder)
 	holder.my_atom.visible_message("<span class='warning'>Infused with plasma, the core begins to quiver and grow, and soon a new baby slime emerges from it!</span>")
 	var/mob/living/carbon/slime/S = new /mob/living/carbon/slime
 	S.loc = get_turf(holder.my_atom)
@@ -879,6 +879,13 @@
 		var /obj/item/weapon/reagent_containers/food/snacks/monkeycube/M = new /obj/item/weapon/reagent_containers/food/snacks/monkeycube
 		M.loc = get_turf(holder.my_atom)
 	..()
+
+/datum/chemical_reaction/slime/heal
+	name = "Slime heal"
+	result = /datum/reagent/tricordrazine
+	required_reagents = list(/datum/reagent/water = 1)
+	result_amount = 15
+	required = /obj/item/slime_extract/grey
 
 //Green
 /datum/chemical_reaction/slime/mutate
@@ -905,11 +912,40 @@
 	P.loc = get_turf(holder.my_atom)
 	..()
 
-//Gold
-/datum/chemical_reaction/slime/crit
-	name = "Slime Crit"
+/datum/chemical_reaction/slime/glass
+	name = "Slime Glass"
 	result = null
-	required_reagents = list(/datum/reagent/toxin/plasma = 1)
+	required_reagents = list(/datum/reagent/water = 1)
+	result_amount = 1
+	required = /obj/item/slime_extract/metal
+
+/datum/chemical_reaction/slime/glass/on_reaction(datum/reagents/holder)
+	var/obj/item/stack/material/glass/M = new /obj/item/stack/material/glass
+	M.amount = 15
+	M.loc = get_turf(holder.my_atom)
+	var/obj/item/stack/material/glass/reinforced/P = new /obj/item/stack/material/glass/reinforced
+	P.amount = 5
+	P.loc = get_turf(holder.my_atom)
+	..()
+
+/datum/chemical_reaction/slime/marble
+	name = "Slime marble"
+	result = null
+	required_reagents = list(/datum/reagent/blood = 1)
+	result_amount = 1
+	required = /obj/item/slime_extract/metal
+
+/datum/chemical_reaction/slime/glass/on_reaction(datum/reagents/holder)
+	var/obj/item/stack/material/marble/M = new /obj/item/stack/material/marble
+	M.amount = 30
+	M.loc = get_turf(holder.my_atom)
+	..()
+
+//Gold
+/datum/chemical_reaction/slime/f_crit
+	name = "Slime Friendly Crit"
+	result = null
+	required_reagents = list(/datum/reagent/water = 1)
 	result_amount = 1
 	required = /obj/item/slime_extract/gold
 	var/list/possible_mobs = list(
@@ -922,9 +958,53 @@
 							/mob/living/simple_animal/chicken
 							)
 
-/datum/chemical_reaction/slime/crit/on_reaction(datum/reagents/holder)
+/datum/chemical_reaction/slime/f_crit/on_reaction(datum/reagents/holder)
 	var/type = pick(possible_mobs)
 	new type(get_turf(holder.my_atom))
+	..()
+
+/datum/chemical_reaction/slime/n_crit
+	name = "Slime Neutral Crit"
+	result = null
+	required_reagents = list(/datum/reagent/blood = 1)
+	result_amount = 1
+	required = /obj/item/slime_extract/gold
+	var/list/possible_mobs = list(
+							/mob/living/simple_animal/hostile/asteroid/goliath,
+							/mob/living/simple_animal/hostile/asteroid/sand_lurker,
+							/mob/living/simple_animal/hostile/asteroid/shooter,
+							/mob/living/simple_animal/hostile/asteroid/hoverhead
+							)
+
+/datum/chemical_reaction/slime/n_crit/on_reaction(datum/reagents/holder)
+	for(var/i = 1, i <= 3, i++)
+		var/mob/living/simple_animal/hostile/asteroid/type = pick(possible_mobs)
+		new type(get_turf(holder.my_atom))
+		type.faction = "neutral"
+	..()
+
+/datum/chemical_reaction/slime/d_crit
+	name = "Slime Dangerous Crit"
+	result = null
+	required_reagents = list(/datum/reagent/toxin/plasma = 1)
+	result_amount = 1
+	required = /obj/item/slime_extract/gold
+	var/list/possible_mobs = list(
+							/mob/living/simple_animal/hostile/faithless,
+							/mob/living/simple_animal/hostile/creature,
+							/mob/living/simple_animal/hostile/bear,
+							/mob/living/simple_animal/hostile/maneater,
+							/mob/living/simple_animal/hostile/mimic,
+							/mob/living/simple_animal/hostile/carp/pike,
+							/mob/living/simple_animal/hostile/tree,
+							/mob/living/simple_animal/hostile/vagrant,
+							/mob/living/simple_animal/hostile/voxslug
+							)
+
+/datum/chemical_reaction/slime/d_crit/on_reaction(datum/reagents/holder)
+	for(var/i = 1, i <= 5, i++)
+		var/type = pick(possible_mobs)
+		new type(get_turf(holder.my_atom))
 	..()
 
 //Silver
@@ -960,6 +1040,23 @@
 	result_amount = 10
 	required = /obj/item/slime_extract/blue
 
+/datum/chemical_reaction/slime/foam
+	name = "Slime Foam"
+	result = /datum/reagent/surfactant
+	required_reagents = list(/datum/reagent/water = 1)
+	result_amount = 10
+	required = /obj/item/slime_extract/blue
+
+/datum/chemical_reaction/slime/stabilizer
+	name = "Slime Stabilizer"
+	result = null
+	required_reagents = list(/datum/reagent/blood = 1)
+	required = /obj/item/slime_extract/blue
+
+/datum/chemical_reaction/slime/stabilizer/on_reaction(datum/reagents/holder)
+	new /obj/item/weapon/slime_stabilizer(get_turf(holder.my_atom))
+	..()
+
 //Dark Blue
 /datum/chemical_reaction/slime/freeze
 	name = "Slime Freeze"
@@ -977,6 +1074,16 @@
 	for(var/mob/living/M in range (get_turf(holder.my_atom), 7))
 		M.bodytemperature -= 140
 		to_chat(M, "<span class='warning'>You feel a chill!</span>")
+
+/datum/chemical_reaction/slime/chill_potion
+	name = "Slime Сhill Potion"
+	result = null
+	required_reagents = list(/datum/reagent/water = 1)
+	required = /obj/item/slime_extract/darkblue
+
+/datum/chemical_reaction/slime/chill_potion/on_reaction(datum/reagents/holder)
+	new /obj/item/weapon/chill_potion(get_turf(holder.my_atom))
+	..()
 
 //Orange
 /datum/chemical_reaction/slime/casp
@@ -1056,7 +1163,7 @@
 /datum/chemical_reaction/slime/jam
 	name = "Slime Jam"
 	result = /datum/reagent/slimejelly
-	required_reagents = list(/datum/reagent/sugar = 1)
+	required_reagents = list(/datum/reagent/blood = 5)
 	result_amount = 10
 	required = /obj/item/slime_extract/purple
 
@@ -1071,16 +1178,19 @@
 /datum/chemical_reaction/slime/plasma/on_reaction(datum/reagents/holder)
 	..()
 	var/obj/item/stack/material/plasma/P = new /obj/item/stack/material/plasma
-	P.amount = 10
+	P.amount = 3
 	P.loc = get_turf(holder.my_atom)
 
 //Red
-/datum/chemical_reaction/slime/glycerol
-	name = "Slime Glycerol"
-	result = /datum/reagent/glycerol
+/datum/chemical_reaction/slime/mutation
+	name = "Slime Mutation"
+	result = null
 	required_reagents = list(/datum/reagent/toxin/plasma = 1)
-	result_amount = 8
 	required = /obj/item/slime_extract/red
+
+/datum/chemical_reaction/slime/mutation/on_reaction(datum/reagents/holder)
+	new /obj/item/weapon/slime_mutation(get_turf(holder.my_atom))
+	..()
 
 /datum/chemical_reaction/slime/bloodlust
 	name = "Bloodlust"
@@ -1096,8 +1206,8 @@
 		slime.visible_message("<span class='warning'>The [slime] is driven into a frenzy!</span>")
 
 //Pink
-/datum/chemical_reaction/slime/ppotion
-	name = "Slime Potion"
+/datum/chemical_reaction/slime/docility
+	name = "Slime Docility"
 	result = null
 	required_reagents = list(/datum/reagent/toxin/plasma = 1)
 	result_amount = 1
@@ -1207,6 +1317,16 @@
 
 /datum/chemical_reaction/slime/paint/on_reaction(datum/reagents/holder)
 	new /obj/item/weapon/reagent_containers/glass/paint/random(get_turf(holder.my_atom))
+	..()
+
+/datum/chemical_reaction/slime/crayon
+	name = "Slime Paint"
+	result = null
+	required_reagents = list(/datum/reagent/blood = 1)
+	required = /obj/item/slime_extract/pyrite
+
+/datum/chemical_reaction/slime/crayon/on_reaction(datum/reagents/holder)
+	new /obj/item/weapon/pen/crayon/random(get_turf(holder.my_atom))
 	..()
 
 //cerulean

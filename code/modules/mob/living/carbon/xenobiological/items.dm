@@ -125,7 +125,7 @@
 	name = "docility potion"
 	desc = "A potent chemical mix that will nullify a slime's powers, causing it to become docile and tame."
 	icon = 'icons/obj/chemical.dmi'
-	icon_state = "bottle19"
+	icon_state = "potpink"
 
 	attack(mob/living/carbon/slime/M as mob, mob/user as mob)
 		if(!istype(M, /mob/living/carbon/slime))//If target is not a slime.
@@ -159,7 +159,7 @@
 	name = "advanced docility potion"
 	desc = "A potent chemical mix that will nullify a slime's powers, causing it to become docile and tame. This one is meant for adult slimes."
 	icon = 'icons/obj/chemical.dmi'
-	icon_state = "bottle19"
+	icon_state = "potlightpink"
 
 	attack(mob/living/carbon/slime/M as mob, mob/user as mob)
 		if(!istype(M, /mob/living/carbon/slime/))//If target is not a slime.
@@ -191,25 +191,25 @@
 	name = "slime steroid"
 	desc = "A potent chemical mix that will cause a slime to generate more extract."
 	icon = 'icons/obj/chemical.dmi'
-	icon_state = "bottle16"
+	icon_state = "potpurple"
 
-	attack(mob/living/carbon/slime/M as mob, mob/user as mob)
-		if(!istype(M, /mob/living/carbon/slime))//If target is not a slime.
-			to_chat(user, "<span class='warning'> The steroid only works on baby slimes!</span>")
-			return ..()
-		if(M.is_adult) //Can't tame adults
-			to_chat(user, "<span class='warning'> Only baby slimes can use the steroid!</span>")
-			return..()
-		if(M.stat)
-			to_chat(user, "<span class='warning'> The slime is dead!</span>")
-			return..()
-		if(M.cores == 3)
-			to_chat(user, "<span class='warning'> The slime already has the maximum amount of extract!</span>")
-			return..()
+/obj/item/weapon/slimesteroid/attack(mob/living/carbon/slime/M as mob, mob/user as mob)
+	if(!istype(M, /mob/living/carbon/slime))//If target is not a slime.
+		to_chat(user, "<span class='warning'> The steroid only works on baby slimes!</span>")
+		return ..()
+	if(M.is_adult) //Can't tame adults
+		to_chat(user, "<span class='warning'> Only baby slimes can use the steroid!</span>")
+		return..()
+	if(M.stat)
+		to_chat(user, "<span class='warning'> The slime is dead!</span>")
+		return..()
+	if(M.cores == 3)
+		to_chat(user, "<span class='warning'> The slime already has the maximum amount of extract!</span>")
+		return..()
 
-		to_chat(user, "You feed the slime the steroid. It now has triple the amount of extract.")
-		M.cores = 3
-		qdel(src)
+	to_chat(user, "You feed the slime the steroid. It now has triple the amount of extract.")
+	M.cores = 3
+	qdel(src)
 
 /obj/item/weapon/slimesteroid2
 	name = "extract enhancer"
@@ -231,9 +231,66 @@
 		extract.enhanced = 1
 		qdel(src)
 
+/obj/item/weapon/slime_stabilizer
+	name = "slime stabilizer"
+	desc = "A potent chemical mix that will reduce a slime's mutation chance."
+	icon = 'icons/obj/chemical.dmi'
+	icon_state = "potcyan"
+
+/obj/item/weapon/slime_stabilizer/attack(mob/living/carbon/slime/M as mob, mob/user as mob)
+	if(!istype(M, /mob/living/carbon/slime))//If target is not a slime.
+		to_chat(user, "<span class='warning'> The stabilizer only works on slimes!</span>")
+		return ..()
+	if(M.stat)
+		to_chat(user, "<span class='warning'> The slime is dead!</span>")
+		return..()
+	to_chat(user, "You feed the slime the stabilizer.")
+	M.mutation_chance -= 15
+	if(M.mutation_chance < 0)
+		M.mutation_chance = 0
+	qdel(src)
+
+/obj/item/weapon/chill_potion
+	name = "slime chill potion"
+	desc = "A potent chemical mix that will fireproofs anything it's used on."
+	icon = 'icons/obj/chemical.dmi'
+	icon_state = "potblue"
+	var/uses = 3
+
+/obj/item/weapon/chill_potion/afterattack(obj/target, mob/user, flag)
+	if(istype(target, /obj/item/clothing))
+		var/obj/item/clothing/clothing = target
+		if(clothing.max_heat_protection_temperature == FIRESUIT_MAX_HEAT_PROTECTION_TEMPERATURE)
+			to_chat(user, SPAN_WARNING("This clothing has already been protected!"))
+			return ..()
+		to_chat(user, "You apply the potion.")
+		clothing.max_heat_protection_temperature = FIRESUIT_MAX_HEAT_PROTECTION_TEMPERATURE
+		uses -= 1
+		if(!uses)
+			qdel(src)
+
+/obj/item/weapon/slime_mutation
+	name = "slime mutation potion"
+	desc = "A potent chemical mix that will increase a slime's mutation chance."
+	icon = 'icons/obj/chemical.dmi'
+	icon_state = "potred"
+
+/obj/item/weapon/slime_stabilizer/attack(mob/living/carbon/slime/M as mob, mob/user as mob)
+	if(!istype(M, /mob/living/carbon/slime))//If target is not a slime.
+		to_chat(user, "<span class='warning'> The mutation potion only works on slimes!</span>")
+		return ..()
+	if(M.stat)
+		to_chat(user, "<span class='warning'> The slime is dead!</span>")
+		return..()
+	to_chat(user, "You feed the slime the mutation potion.")
+	M.mutation_chance += 15
+	if(M.mutation_chance > 100)
+		M.mutation_chance = 100
+	qdel(src)
+
 /obj/effect/golemrune
 	anchored = 1
-	desc = "a strange rune used to create golems. It glows when spirits are nearby."
+	desc = "A strange rune used to create golems. It glows when spirits are nearby."
 	name = "rune"
 	icon = 'icons/obj/rune.dmi'
 	icon_state = "golem"
@@ -247,8 +304,10 @@
 /obj/effect/golemrune/Process()
 	var/mob/observer/ghost/ghost
 	for(var/mob/observer/ghost/O in src.loc)
-		if(!O.client)	continue
-		if(O.mind && O.mind.current && O.mind.current.stat != DEAD)	continue
+		if(!O.client)
+			continue
+		if(O.mind && O.mind.current && O.mind.current.stat != DEAD)
+			continue
 		ghost = O
 		break
 	if(ghost)
@@ -259,8 +318,10 @@
 /obj/effect/golemrune/attack_hand(mob/living/user as mob)
 	var/mob/observer/ghost/ghost
 	for(var/mob/observer/ghost/O in src.loc)
-		if(!O.client)	continue
-		if(O.mind && O.mind.current && O.mind.current.stat != DEAD)	continue
+		if(!O.client)
+			continue
+		if(O.mind && O.mind.current && O.mind.current.stat != DEAD)
+			continue
 		ghost = O
 		break
 	if(!ghost)
