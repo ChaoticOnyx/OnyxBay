@@ -7,6 +7,7 @@ obj/structure/closet/crate
 	icon_closed = "crate"
 	atom_flags = ATOM_FLAG_CLIMBABLE
 	pull_sound = "pull_box"
+	pull_slowdown = PULL_SLOWDOWN_MEDIUM
 	setup = 0
 	open_delay = 3
 
