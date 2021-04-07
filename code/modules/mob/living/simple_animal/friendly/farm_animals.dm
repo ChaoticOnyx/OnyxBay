@@ -114,7 +114,6 @@
 	new /obj/item/stack/material/animalhide/goat(src.loc)
 	..()
 
-
 //cow
 /mob/living/simple_animal/cow
 	name = "cow"
