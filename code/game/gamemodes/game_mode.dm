@@ -313,7 +313,7 @@ var/global/list/additional_antag_types = list()
 	intercepttext += "<B> In case you have misplaced your copy, attached is a list of personnel whom reliable sources&trade; suspect may be affiliated with the Syndicate:</B><br>"
 
 	var/list/suspects = list()
-	for(var/mob/living/carbon/human/H in GLOB.player_list)
+	for(var/mob/living/carbon/human/H in GLOB.human_mob_list)
 		if(!H.client || !H.mind)
 			continue
 
@@ -331,15 +331,15 @@ var/global/list/additional_antag_types = list()
 		else if(prob(10))
 			suspects |= H
 
+	if(!length(suspects))
+		return
+
 	for(var/mob/M in suspects)
 		switch(rand(1, 100))
 			if(1 to 50)
 				intercepttext += "Someone with the job of <b>[M.mind.assigned_role]</b> <br>"
 			else
 				intercepttext += "<b>[M.name]</b>, the <b>[M.mind.assigned_role]</b> <br>"
-
-	if(!length(suspects))
-		return
 
 	var/report_created = FALSE
 	for(var/obj/item/modular_computer/console/C in GLOB.modular_consoles)
