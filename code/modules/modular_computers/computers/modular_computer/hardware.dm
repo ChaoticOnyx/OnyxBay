@@ -93,7 +93,6 @@
 	if(tesla_link == H)
 		tesla_link = null
 		found = 1
-		found = 1
 	if(found)
 		if(user)
 			to_chat(user, "You remove \the [H] from \the [src].")
