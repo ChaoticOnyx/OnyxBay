@@ -19,6 +19,14 @@
 	atom_flags = ATOM_FLAG_CLIMBABLE
 	beepsounds = "device_trr"
 
+/obj/item/modular_computer/console/Initialize()
+	. = ..()
+	GLOB.modular_consoles |= src
+
+/obj/item/modular_computer/console/Destroy()
+	GLOB.modular_consoles -= src
+	return ..()
+
 /obj/item/modular_computer/console/CouldUseTopic(mob/user)
 	..()
 	if(istype(user, /mob/living/carbon))

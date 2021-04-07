@@ -6,6 +6,7 @@ GLOBAL_DATUM_INIT(traitors, /datum/antagonist/traitor, new)
 	restricted_jobs = list(/datum/job/captain, /datum/job/hos,
 							/datum/job/merchant, /datum/job/lawyer)
 	additional_restricted_jobs = list(/datum/job/officer, /datum/job/warden, /datum/job/detective)
+	suspicion_chance = 40
 	flags = ANTAG_SUSPICIOUS | ANTAG_RANDSPAWN | ANTAG_VOTABLE
 
 /datum/antagonist/traitor/get_extra_panel_options(datum/mind/player)

@@ -37,8 +37,8 @@ var/global/list/additional_antag_types = list()
 	var/event_delay_mod_moderate             // Modifies the timing of random events.
 	var/event_delay_mod_major                // As above.
 
-	var/waittime_l = 60 SECONDS				 // Lower bound on time before start of shift report
-	var/waittime_h = 180 SECONDS		     // Upper bounds on time before start of shift report
+	var/const/waittime_l = 10 MINUTES        //lower bound on time before intercept arrives
+	var/const/waittime_h = 30 MINUTES        //upper bound on time before intercept arrives
 
 	//Format: list(start_animation = duration, hit_animation, miss_animation). null means animation is skipped.
 	var/cinematic_icon_states = list(
@@ -222,10 +222,7 @@ var/global/list/additional_antag_types = list()
 	spawn (ROUNDSTART_LOGOUT_REPORT_TIME)
 		display_roundstart_logout_report()
 
-	spawn (rand(waittime_l, waittime_h))
-		GLOB.using_map.send_welcome()
-		sleep(rand(100,150))
-		announce_ert_disabled()
+	addtimer(CALLBACK(src, .proc/send_intercept), rand(waittime_l, waittime_h), TIMER_UNIQUE)
 
 	//Assign all antag types for this game mode. Any players spawned as antags earlier should have been removed from the pending list, so no need to worry about those.
 	for(var/datum/antagonist/antag in antag_templates)
@@ -310,6 +307,85 @@ var/global/list/additional_antag_types = list()
 
 /datum/game_mode/proc/check_win() //universal trigger to be called at mob death, nuke explosion, etc. To be called from everywhere.
 	return 0
+
+/datum/game_mode/proc/send_intercept()
+	var/intercepttext = "<FONT size = 3><B>Cent. Com. Update</B> Requested status information:</FONT><HR>"
+	intercepttext += "<B> In case you have misplaced your copy, attached is a list of personnel whom reliable sources&trade; suspect may be affiliated with the Syndicate:</B><br>"
+
+	var/list/suspects = list()
+	for(var/mob/living/carbon/human/H in GLOB.player_list)
+		if(!H.client || !H.mind)
+			continue
+
+		var/datum/antagonist/antag = get_antag_data(H.mind.special_role)
+		if(antag)
+			if(antag.flags & ANTAG_OVERRIDE_JOB)  // off-station roles
+				continue
+			if((antag.flags & ANTAG_SUSPICIOUS) && prob(antag.suspicion_chance))
+				suspects |= H
+
+		else if((H.client.prefs.nanotrasen_relation == COMPANY_OPPOSED && prob(50)) || (H.client.prefs.nanotrasen_relation == COMPANY_SKEPTICAL && prob(20)))
+			suspects |= H
+
+		// Some poor people who were just in the wrong place at the wrong time..
+		else if(prob(10))
+			suspects |= H
+
+	for(var/mob/M in suspects)
+		switch(rand(1, 100))
+			if(1 to 50)
+				intercepttext += "Someone with the job of <b>[M.mind.assigned_role]</b> <br>"
+			else
+				intercepttext += "<b>[M.name]</b>, the <b>[M.mind.assigned_role]</b> <br>"
+
+	if(!length(suspects))
+		return
+
+	var/report_created = FALSE
+	for(var/obj/item/modular_computer/console/C in GLOB.modular_consoles)
+		var/area/A = get_area(C)
+		if(!A?.power_equip)
+			continue
+		if(C.damage >= C.broken_damage)
+			continue
+		if(!C.interceptor || C.interceptor.damage >= C.interceptor.damage_failure)
+			continue
+
+		var/obj/item/weapon/paper/intercept = new /obj/item/weapon/paper(C.loc)
+		intercept.name = "Cent. Com. Status Summary"
+		intercept.info = intercepttext
+		if(C.interceptor.damage > C.interceptor.damage_malfunction)
+			intercept.info = stars(intercept.info, 100 - C.interceptor.malfunction_probability)
+
+		report_created = TRUE
+	
+	if(!report_created)
+		return
+
+	var/security_level_changed = FALSE
+	var/decl/security_state/security_state = decls_repository.get_decl(GLOB.using_map.security_state)
+	if(!security_state.current_security_level_is_same_or_higher_than(security_state.all_security_levels[2]))
+		security_state.set_security_level(security_state.all_security_levels[2], TRUE)
+		security_level_changed = TRUE
+
+	var/sound/S = security_level_changed ? sound('sound/AI/intercept_level.ogg') : sound('sound/AI/intercept.ogg')
+	for(var/mob/M in GLOB.player_list)
+		if(isliving(M) && !(M.z in GLOB.using_map.station_levels))
+			continue
+		sound_to(M, S)
+
+	for(var/mob/M in suspects)
+		if(!M.mind.special_role)
+			continue
+
+		// If they're a traitor or likewise, give them extra TC in exchange.
+		var/obj/item/device/uplink/U = M.mind.find_syndicate_uplink()
+		if(U)
+			U.uses += 20
+			to_chat(M, SPAN("danger", "We have received notice that enemy intelligence suspects you to be linked with us. We have thus invested significant resources to increase your uplink's capacity."))
+		else
+			// Give them a warning!
+			to_chat(M, SPAN("danger", "They are on to you!"))
 
 /datum/game_mode/proc/get_players_for_role(antag_id)
 	var/list/players = list()

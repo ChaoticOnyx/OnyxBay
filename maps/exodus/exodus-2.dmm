@@ -3175,7 +3175,7 @@
 "bjc" = (/obj/structure/table/reinforced,/obj/item/weapon/storage/box/PDAs{pixel_x = 4; pixel_y = 4},/obj/item/weapon/storage/box/ids,/turf/simulated/floor/tiled,/area/bridge)
 "bjd" = (/obj/structure/table/reinforced,/obj/item/weapon/storage/secure/briefcase,/obj/effect/floor_decal/corner/blue{dir = 6},/turf/simulated/floor/tiled,/area/bridge)
 "bje" = (/obj/effect/floor_decal/corner/blue/three_quarters{dir = 8},/obj/item/modular_computer/console/preset/research,/turf/simulated/floor/tiled,/area/bridge)
-"bjf" = (/obj/item/modular_computer/console/preset/command,/obj/structure/cable/green{d1 = 1; d2 = 2; icon_state = "1-2"},/turf/simulated/floor/tiled,/area/bridge)
+"bjf" = (/obj/structure/cable/green{d1 = 1; d2 = 2; icon_state = "1-2"},/obj/item/modular_computer/console/preset/command/bridge,/turf/simulated/floor/tiled,/area/bridge)
 "bjg" = (/obj/effect/floor_decal/corner/blue/three_quarters{dir = 1},/obj/item/modular_computer/console/preset/research,/turf/simulated/floor/tiled,/area/bridge)
 "bjh" = (/obj/structure/table/reinforced,/obj/machinery/recharger{pixel_y = 0},/obj/effect/floor_decal/corner/blue{dir = 9},/turf/simulated/floor/tiled,/area/bridge)
 "bji" = (/obj/structure/table/reinforced,/obj/item/device/flash,/obj/item/device/flash,/obj/item/weapon/aicard,/turf/simulated/floor/tiled,/area/bridge)
