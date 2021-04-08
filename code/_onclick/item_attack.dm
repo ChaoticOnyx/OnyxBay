@@ -94,6 +94,15 @@ avoid code duplication. This includes items that may sometimes act as a standard
 			if(I_HURT)
 				if(hitsound) playsound(loc, hitsound, 50, 1, -1)
 				return target.hit_with_weapon(src, user, power, hit_zone)
+	if(istype(user, /mob/living/silicon/robot))
+		var/mob/living/silicon/robot/A = user
+		switch(A.a_intent)
+			if(I_HELP)
+				return target.touch_with_weapon(src, user, power, hit_zone)
+			if(I_HURT)
+				if(hitsound)
+					playsound(loc, hitsound, 50, 1, -1)
+				return target.hit_with_weapon(src, user, power, hit_zone)
 	else
 		if(hitsound) playsound(loc, hitsound, 50, 1, -1)
 		return target.hit_with_weapon(src, user, power, hit_zone)
