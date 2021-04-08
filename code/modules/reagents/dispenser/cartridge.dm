@@ -63,10 +63,10 @@
 		atom_flags |= ATOM_FLAG_OPEN_CONTAINER
 
 /obj/item/weapon/reagent_containers/chem_disp_cartridge/afterattack(obj/target, mob/user , flag)
-	if (!is_open_container() || !flag)
+	if(!is_open_container() || !flag)
 		return
 
-	else if(istype(target, /obj/structure/reagent_dispensers)) //A dispenser. Transfer FROM it TO us.
+	else if(istype(target, /obj/structure/reagent_dispensers) || istype(target, /obj/item/weapon/backwear/reagent)) //A dispenser. Transfer FROM it TO us.
 		target.add_fingerprint(user)
 
 		if(!target.reagents.total_volume && target.reagents)

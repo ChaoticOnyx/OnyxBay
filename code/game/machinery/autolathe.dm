@@ -151,9 +151,16 @@
 
 	//Resources are being loaded.
 	var/obj/item/eating = O
+	if(!user.canUnEquip(eating))
+		to_chat(user, "You can't place that item inside \the [src].")
+		return
 	if(!eating.matter)
 		to_chat(user, "\The [eating] does not contain significant amounts of useful materials and cannot be accepted.")
 		return
+	if(!istype(eating, /obj/item/stack))
+		user.unEquip(eating, target = loc)
+		if(eating.loc != loc)
+			return
 
 	var/filltype = 0       // Used to determine message.
 	var/total_used = 0     // Amount of material used.
@@ -198,7 +205,6 @@
 		var/obj/item/stack/stack = eating
 		stack.use(max(1, round(total_used/mass_per_sheet))) // Always use at least 1 to prevent infinite materials.
 	else
-		user.remove_from_mob(O)
 		qdel(O)
 
 	updateUsrDialog()

@@ -13,13 +13,13 @@
 	var/amount_per_transfer_from_this = 10
 	var/possible_transfer_amounts = "10;25;50;100;500"
 
-	attackby(obj/item/weapon/W as obj, mob/user as mob)
-		return
+/obj/structure/reagent_dispensers/attackby(obj/item/weapon/W, mob/user)
+	return
 
 /obj/structure/reagent_dispensers/New()
 	create_reagents(initial_capacity)
 
-	if (!possible_transfer_amounts)
+	if(!possible_transfer_amounts)
 		src.verbs -= /obj/structure/reagent_dispensers/verb/set_APTFT
 
 	for(var/reagent_type in initial_reagent_types)
@@ -98,7 +98,7 @@
 	. = ..()
 	if(get_dist(src, user) > 2)
 		return
-	if (modded)
+	if(modded)
 		. += "\n<span class='warning'>Fuel faucet is wrenched open, leaking the fuel!</span>"
 	if(rig)
 		. += "\n<span class='notice'>There is some kind of device rigged to the tank.</span>"
