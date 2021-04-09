@@ -243,3 +243,12 @@
 #define MOUSE_OPACITY_TRANSPARENT 0
 #define MOUSE_OPACITY_ICON 1
 #define MOUSE_OPACITY_OPAQUE 2
+
+//How pulling an object affects mob's movement speed.
+#define PULL_SLOWDOWN_WEIGHT   -1  // Default value, slowdown's handled by an object's w_class.
+#define PULL_SLOWDOWN_EXTREME 4.5
+#define PULL_SLOWDOWN_HEAVY   3.5
+#define PULL_SLOWDOWN_MEDIUM  2.5
+#define PULL_SLOWDOWN_LIGHT   1.5
+#define PULL_SLOWDOWN_TINY    0.5
+#define PULL_SLOWDOWN_NONE    0

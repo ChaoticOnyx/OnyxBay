@@ -80,11 +80,20 @@
 	return ..()
 
 /obj/item/weapon/extinguisher/proc/propel_object(obj/O, mob/user, movementdirection)
-	if(O.anchored) return
+	if(O.anchored)
+		return
 
 	var/obj/structure/bed/chair/C
 	if(istype(O, /obj/structure/bed/chair))
 		C = O
+
+	var/area/A = get_area(src)
+	if(A.has_gravity) // No gravity? Your chair is a space ship then.
+		if(C?.foldable)
+			C.fold(null)
+			return
+		if(O.pull_slowdown > PULL_SLOWDOWN_MEDIUM)
+			return // Too much friction, not enough wheels
 
 	var/list/move_speed = list(1, 1, 1, 2, 2, 3)
 	for(var/i in 1 to 6)

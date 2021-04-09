@@ -4,6 +4,7 @@
 	icon = 'icons/obj/closet.dmi'
 	icon_state = "closed"
 	pull_sound = "pull_closet"
+	pull_slowdown = PULL_SLOWDOWN_HEAVY
 	density = 1
 	w_class = ITEM_SIZE_NO_CONTAINER
 	layer = STRUCTURE_LAYER

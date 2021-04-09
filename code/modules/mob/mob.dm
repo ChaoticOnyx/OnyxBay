@@ -161,14 +161,19 @@
 		. += 10 + (weakened * 2)
 
 	if(pulling)
-		if(istype(pulling, /obj))
-			var/obj/O = pulling
-			. += between(0, O.w_class, ITEM_SIZE_GARGANTUAN) / 5
-		else if(istype(pulling, /mob))
-			var/mob/M = pulling
-			. += max(0, M.mob_size) / MOB_MEDIUM
-		else
-			. += 1
+		var/area/A = get_area(src)
+		if(A.has_gravity)
+			if(istype(pulling, /obj))
+				var/obj/O = pulling
+				if(O.pull_slowdown == PULL_SLOWDOWN_WEIGHT)
+					. += between(0, O.w_class, ITEM_SIZE_GARGANTUAN) / 5
+				else
+					. += O.pull_slowdown
+			else if(istype(pulling, /mob))
+				var/mob/M = pulling
+				. += max(0, M.mob_size) / MOB_MEDIUM * (M.lying ? 2 : 0.5)
+			else
+				. += 1
 
 /mob/proc/Life()
 //	if(organStructure)

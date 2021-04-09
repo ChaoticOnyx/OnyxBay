@@ -7,6 +7,7 @@
 	density = 1
 	anchored = 0
 	pull_sound = "pull_machine"
+	pull_slowdown = PULL_SLOWDOWN_LIGHT
 
 	var/initial_capacity = 1000
 	var/initial_reagent_types  // A list of reagents and their ratio relative the initial capacity. list(/datum/reagent/water = 0.5) would fill the dispenser halfway to capacity.
@@ -263,6 +264,7 @@
 	amount_per_transfer_from_this = 10
 	initial_reagent_types = list(/datum/reagent/ethanol/beer = 1)
 	atom_flags = ATOM_FLAG_CLIMBABLE
+	pull_slowdown = PULL_SLOWDOWN_MEDIUM
 
 /obj/structure/reagent_dispensers/virusfood
 	name = "Virus Food Dispenser"
