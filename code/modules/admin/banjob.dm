@@ -16,6 +16,10 @@ var/jobban_keylist[0]		//to store the keys & ranks
 var/const/IAA_ban_reason = "Restricted by CentComm"
 //returns a reason if M is banned from rank, returns 0 otherwise
 /proc/jobban_isbanned(mob/M, rank)
+	//ckech if jobs subsystem doesn't runned yet.
+	if(!job_master)
+		return FALSE
+
 	if(M && rank)
 		/*
 		if(_jobban_isbanned(M, rank)) return "Reason Unspecified"	//for old jobban
