@@ -37,6 +37,41 @@
 
 <div class='statusDisplay'>
 	<div style="text-align: center">
+		<h3>SECURITY DATA</h3>
+	</div>
+	{{for data.sec_fields}}
+		{{if value.name == "Security Recent Records"}}
+			<div class='statusDisplay'>
+				<div style = "text-align: center">
+					<h3>SECURITY RECENT RECORDS</h3>
+				</div>
+		{{/if}}
+		<div class='item'>
+			{{if value.editable}}
+				{{if value.name == "Security Recent Records"}}
+					<div class='itemLabel'>{{:helper.link("Archivate current status", 'plus', {'edit_field' : value.key}, null)}}</div>
+				{{else}}
+					<div class='itemLabel'>{{:helper.link(value.name, 'pencil', {'edit_field' : value.key}, null)}}</div>
+				{{/if}}
+			{{else}}
+				<div class='itemLabel'>{{:value.name}}:</div>
+			{{/if}}
+			{{if value.large}}
+				<div style="display: inline-block;">
+				{{:value.val}}
+				</div>
+			{{else}}
+				<div class='itemBody'>{{:value.val}}</div>
+			{{/if}}
+		</div>
+		{{if value.name == "Security Recent Records"}}
+			</div>
+		{{/if}}
+	{{/for}}
+</div>
+
+<div class='statusDisplay'>
+	<div style="text-align: center">
 		<h3>MEDICAL DATA</h3>
 	</div>
 	{{for data.med_fields}}

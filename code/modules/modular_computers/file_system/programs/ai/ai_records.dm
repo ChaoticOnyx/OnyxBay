@@ -1,24 +1,29 @@
-/datum/computer_file/program/records/security
-	filename = "secrecords"
-	filedesc = "Security Records"
-	extended_desc = "This program allows access to the crew's security records."
-	nanomodule_path = /datum/nano_module/records/security
-	category = PROG_SEC
+/datum/computer_file/program/records/ai
+	filename = "airecords"
+	filedesc = "AI Records"
+	extended_desc = "This program allows access to the crew's records."
+	available_on_ntnet = FALSE
+	nanomodule_path = /datum/nano_module/records/ai
 
-/datum/nano_module/records/security
-	name = "Security Records"
-	records_context = record_field_context_security
-	template_file = "sec_records.tmpl"
+/datum/nano_module/records/ai
+	name = "AI Records"
+	records_context = record_field_context_medical | record_field_context_crew | record_field_context_security
+	template_file = "ai_records.tmpl"
 
-/datum/nano_module/records/security/generate_updated_data()
+/datum/nano_module/records/ai/generate_updated_data()
 	var/list/data = ..()
 	ASSERT(istype(data))
+	var/static/list/med_fields = list("Major Disabilities", "Minor Disabilities", "Current Diseases",\
+		"Medical Condition Details", "Important Notes", "Medical Recent Records", "Medical Background")
 	var/static/list/sec_fields = list("Criminal Status", "Major Crimes", "Minor Crimes", "Crime Details", "Important Notes", "Security Recent Records", "Security Background")
 	var/fields_cached = data["fields"]
 	if (!fields_cached)
 		return data
 	for (var/field in fields_cached)
 		var/name = field["name"]
+		if (name in med_fields)
+			med_fields[name] = field
+			data["fields"] -= list(field)
 		if (name in sec_fields)
 			data["fields"] -= list(field)
 			if (name == "Criminal Status")
@@ -27,6 +32,14 @@
 					field["val"] = "<font color='[clr]'>[field["val"]]</font>"
 			sec_fields[name] = field
 
+	var/list/med_fields_as_array = list()
+	for (var/key in med_fields)
+		if (isnull(med_fields[key]))
+			med_fields_as_array.Add(list(list(editable = FALSE, name = key, val = "**INTERFACE ERROR**")))
+			crash_with("Medical Records: field `[key]` missing from records data structure.") //non-crashing runtime error message
+		else
+			med_fields_as_array.Add(list(med_fields[key]))
+	data["med_fields"] = med_fields_as_array
 	var/list/sec_fields_as_array = list()
 	for (var/key in sec_fields)
 		if (isnull(sec_fields[key]))
@@ -37,7 +50,7 @@
 	data["sec_fields"] = sec_fields_as_array
 	return data
 
-/datum/nano_module/records/security/edit_field(mob/user, field)
+/datum/nano_module/records/ai/edit_field(mob/user, field)
 	var/datum/computer_file/crew_record/R = active_record
 	if (!R)
 		return FALSE
@@ -49,7 +62,24 @@
 		to_chat(user, "<span class='notice'>\The [nano_host()] flashes an \"Access Denied\" warning.</span>")
 		return FALSE
 
-	if (F.name == "Security Recent Records")
+	if (F.name == "Medical Recent Records")
+
+		// med...
+		var/new_value = replacetext(input(user,\
+			"Enter medical record data. You may use HTML paper formatting tags:",
+			"Medical Record"), "\n", "\[br\]")
+		if (!new_value)
+			return FALSE
+
+		var/new_entry = "\[i\]Added [stationtime2text()] [stationdate2text()] :\[/i\]\[br\] [new_value]"
+
+		var/prev = F.get_value()
+		if (F.get_value() == "None")
+			return F.set_value(new_entry)
+		return F.set_value("[new_entry]\[br\]\[hr\][prev]")
+
+	if(F.name == "Security Recent Records")
+		// sec...
 		var/record_field/major_crimes/major_crimes = locate() in R.fields; ASSERT(istype(major_crimes))
 		var/record_field/minor_crimes/minor_crimes = locate() in R.fields; ASSERT(istype(minor_crimes))
 		var/record_field/crime_details/crime_details = locate() in R.fields; ASSERT(istype(crime_details))
@@ -82,6 +112,5 @@
 			return F.set_value(new_entry)
 		return F.set_value("[new_entry]\[br\]\[hr\][prev]")
 
+
 	return ..()
-
-
