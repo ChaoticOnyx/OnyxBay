@@ -3,7 +3,7 @@
 
 /mob/living/silicon/handle_message_mode(message_mode, message, verb, speaking, used_radios, alt_name)
 	log_say("[key_name(src)] : [message]")
-	log_story("SAY", "[hide_my_ckey(key_name(src))] : [message]")
+	log_story("SAY", "[key_name(src, hide_ckey = TRUE)] : [message]")
 
 /mob/living/silicon/robot/handle_message_mode(message_mode, message, verb, speaking, used_radios, alt_name)
 	..()
@@ -74,7 +74,7 @@
 /mob/living/silicon/ai/proc/holopad_talk(message, verb, datum/language/speaking)
 
 	log_say("[key_name(src)] : [message]")
-	log_story("SAY", "[hide_my_ckey(key_name(src))] : [message]")
+	log_story("SAY", "[key_name(src, hide_ckey = TRUE)] : [message]")
 
 	message = trim(message)
 

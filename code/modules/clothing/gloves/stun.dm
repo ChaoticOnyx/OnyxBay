@@ -135,4 +135,4 @@
 		user.visible_message(SPAN("danger", "\The [user] accidentally shocks themself with their [src]!"), SPAN("danger", "You accidentally shock yourself with your [src]!"))
 
 	msg_admin_attack("[key_name(user)] stun gripped [key_name(victim)] with the [src].")
-	log_story("ATTACK", "[hide_my_ckey(key_name(user))] stun gripped [hide_my_ckey(key_name(victim))] with the [src].")
+	log_story("ATTACK", "[key_name(user, hide_ckey = TRUE)] stun gripped [key_name(victim, hide_ckey = TRUE)] with the [src].")

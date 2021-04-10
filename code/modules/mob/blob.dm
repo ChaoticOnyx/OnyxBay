@@ -137,7 +137,7 @@ mob/blob/DblClickOn(atom/A) //Teleport view to another blob
 	var/turf/T = get_turf(src)
 
 	log_say("[key_name(src)] (@[T.x],[T.y],[T.z]) Blob Hivemind: [message]")
-	log_story("SAY", "[hide_my_ckey(key_name(src))] (@[T.x],[T.y],[T.z]) Blob Hivemind: [message]")
+	log_story("SAY", "[key_name(src, hide_ckey = TRUE)] (@[T.x],[T.y],[T.z]) Blob Hivemind: [message]")
 
 	message = trim(copytext(sanitize(message), 1, MAX_MESSAGE_LEN))
 

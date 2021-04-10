@@ -1,4 +1,5 @@
 #define plain_key_name(A) key_name(A, highlight_special_characters = 0)
+#define plain_key_name_hide(A) key_name(A, hide_ckey = 1, highlight_special_characters = 0)
 
 /decl/communication_channel
 	var/name
@@ -15,7 +16,7 @@
 /decl/communication_channel/proc/communicate(datum/communicator, message)
 	if(can_communicate(arglist(args)))
 		call(log_proc)("[(flags&COMMUNICATION_LOG_CHANNEL_NAME) ? "([name]) " : ""][communicator.communication_identifier()] : [message]")
-		call(/proc/log_story)("[name]", "[(flags&COMMUNICATION_LOG_CHANNEL_NAME) ? "([name]) " : ""][usr != src ? "[hide_my_ckey(plain_key_name(src))] - usr: [hide_my_ckey(plain_key_name(usr))]" : hide_my_ckey(plain_key_name(src))] : [message]")
+		call(/proc/log_story)("[name]", "[(flags&COMMUNICATION_LOG_CHANNEL_NAME) ? "([name]) " : ""][communicator.communication_identifier_story()] : [message]")
 		return do_communicate(arglist(args))
 	return FALSE
 
@@ -82,9 +83,16 @@
 /datum/proc/communication_identifier()
 	return usr ? "[src] - usr: [plain_key_name(usr)]" : "[src]"
 
+/datum/proc/communication_identifier_story()
+	return usr ? "[key_name(src, hide_ckey = TRUE, highlight_special_characters = FALSE, include_name = FALSE)] - usr: [plain_key_name_hide(usr)]" : "[key_name(src, hide_ckey = TRUE, highlight_special_characters = FALSE, include_name = FALSE)]"
+
 /mob/communication_identifier()
 	var/key_name = plain_key_name(src)
 	return usr != src ? "[key_name] - usr: [plain_key_name(usr)]" : key_name
+
+/mob/communication_identifier_story()
+	var/key_name = plain_key_name_hide(src)
+	return usr != src ? "[key_name] - usr: [plain_key_name_hide(usr)]" : key_name
 
 /proc/sanitize_and_communicate(channel_type, communicator, message)
 	message = sanitize(message)
@@ -100,3 +108,4 @@
 	return channel.communicate(arglist(new_args))
 
 #undef plain_key_name
+#undef plain_key_name_hide

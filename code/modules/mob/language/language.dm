@@ -101,7 +101,7 @@
 
 /datum/language/proc/broadcast(mob/living/speaker,message,speaker_mask)
 	log_say("[key_name(speaker)] : ([name]) [message]")
-	log_story("SAY", "[hide_my_ckey(key_name(speaker))] : ([name]) [message]")
+	log_story("SAY", "[key_name(speaker, hide_ckey = TRUE)] : ([name]) [message]")
 
 	if(!speaker_mask) speaker_mask = speaker.name
 	message = format_message(message, get_spoken_verb(message))

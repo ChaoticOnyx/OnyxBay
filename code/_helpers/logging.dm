@@ -192,10 +192,11 @@ var/ckey_counter = 0
 	return hidded_ckey
 
 //more or less a logging utility
-/proc/key_name(whom, include_link = null, include_name = 1, highlight_special_characters = 1, datum/ticket/ticket = null)
+/proc/key_name(whom, include_link = null, include_name = 1, highlight_special_characters = 1, datum/ticket/ticket = null, hide_ckey = FALSE)
 	var/mob/M
 	var/client/C
 	var/key
+	var/original_ckey
 
 	if(!whom)	return "*null*"
 	if(istype(whom, /client))
@@ -221,8 +222,12 @@ var/ckey_counter = 0
 	. = ""
 
 	if(key)
+		original_ckey = key
 		if(include_link && C)
 			. += "<a href='?priv_msg=\ref[C];ticket=\ref[ticket]'>"
+
+		if(hide_ckey)
+			key = hide_my_ckey(key)
 
 		. += key
 
@@ -240,6 +245,8 @@ var/ckey_counter = 0
 		else if(M.name)
 			name = M.name
 
+		if(hide_ckey && name == original_ckey)
+			name = hide_my_ckey(name)
 
 		if(include_link && is_special_character(M) && highlight_special_characters)
 			. += "/(<font color='#ffa500'>[name]</font>)" //Orange

@@ -179,7 +179,7 @@
 			stun = rand(2,5)
 		target.stun_effect_act(stun, agony, hit_zone, src)
 		msg_admin_attack("[key_name(user)] stunned [key_name(target)] with the [src].")
-		log_story("ATTACK", "[hide_my_ckey(key_name(user))] stunned [hide_my_ckey(key_name(target))] with the [src]")
+		log_story("ATTACK", "[key_name(user, hide_ckey = TRUE)] stunned [hide_my_ckey(key_name(target))] with the [src]")
 
 		deductcharge(hitcost)
 

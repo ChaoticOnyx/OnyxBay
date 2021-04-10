@@ -389,7 +389,7 @@ var/list/ai_verbs_default = list(
 	Centcomm_announce(input, usr)
 	to_chat(usr, "<span class='notice'>Message transmitted.</span>")
 	log_say("[key_name(usr)] has made an IA [GLOB.using_map.boss_short] announcement: [input]")
-	log_story("SAY", "[hide_my_ckey(key_name(src))] has made an IA [GLOB.using_map.boss_short] announcement: [input]")
+	log_story("SAY", "[key_name(src, hide_ckey = TRUE)] has made an IA [GLOB.using_map.boss_short] announcement: [input]")
 	emergency_message_cooldown = 1
 	spawn(300)
 		emergency_message_cooldown = 0
