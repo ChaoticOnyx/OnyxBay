@@ -185,6 +185,7 @@
 		visible_message("<span class='danger'>>\The [src] ran over [H]!</span>")
 		attack_log += text("\[[time_stamp()]\] <font color='red'>ran over [H.name] ([H.ckey]), driven by [D.name] ([D.ckey])</font>")
 		msg_admin_attack("[D.name] ([D.ckey]) ran over [H.name] ([H.ckey]). (<A HREF='?_src_=holder;adminplayerobservecoodjump=1;X=[src.x];Y=[src.y];Z=[src.z]'>JMP</a>)")
+		log_story("ATTACK", "[D.name] ([hide_my_ckey(D.ckey)]) ran over [H.name] ([H.ckey]).")
 	else
 		attack_log += text("\[[time_stamp()]\] <font color='red'>ran over [H.name] ([H.ckey])</font>")
 

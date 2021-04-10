@@ -128,6 +128,7 @@
 
 	if (message)
 		log_emote("[name]/[key] : [message]")
+		log_story("EMOTE", "[name]/[hide_my_ckey(key)] : [message]")
 	//do not show NPC animal emotes to ghosts, it turns into hellscape
 	var/check_ghosts = client ? /datum/client_preference/ghost_sight : null
 	if(m_type == VISIBLE_MESSAGE)

@@ -159,6 +159,7 @@
 						Syndicate_announce(input, usr)
 						to_chat(usr, "<span class='notice'>Message transmitted.</span>")
 						log_say("[key_name(usr)] has made an illegal announcement: [input]")
+						log_story("SAY", "[hide_my_ckey(key_name(src))] has made an illegal announcement: [input]")
 						centcomm_message_cooldown = 1
 						spawn(300)//30 second cooldown
 							centcomm_message_cooldown = 0
@@ -177,6 +178,7 @@
 					Centcomm_announce(input, usr)
 					to_chat(usr, "<span class='notice'>Message transmitted.</span>")
 					log_say("[key_name(usr)] has made an IA [GLOB.using_map.boss_short] announcement: [input]")
+					log_story("SAY", "[hide_my_ckey(key_name(src))] has made an IA [GLOB.using_map.boss_short] announcement: [input]")
 					centcomm_message_cooldown = 1
 					spawn(300) //30 second cooldown
 						centcomm_message_cooldown = 0

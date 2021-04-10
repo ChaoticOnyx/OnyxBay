@@ -16,6 +16,7 @@
 		if (!message)
 			return
 		log_say("[key_name(src)] : [message]")
+		log_story("SAY", "[hide_my_ckey(key_name(src))] : [message]")
 		if (stat == 2)
 			return say_dead(message)
 

@@ -130,7 +130,7 @@
 	A.launch(target, bodypart)
 	var/atom/AM = get_object()
 	AM.investigate_log("fired [installed_gun] to [A] with [src].", INVESTIGATE_CIRCUIT)
-	log_attack("[assembly] [any2ref(assembly)] has fired [installed_gun].", notify_admin = FALSE)
+	log_attack("[assembly] [any2ref(assembly)] has fired [installed_gun].", notify_admin = FALSE, to_story = TRUE)
 	return A
 
 /obj/item/integrated_circuit/manipulation/locomotion
@@ -603,7 +603,7 @@
 	var/range = round(Clamp(sqrt(target_x_rel*target_x_rel+target_y_rel*target_y_rel),0,8),1)
 
 	assembly.visible_message(SPAN("danger", "[assembly] has thrown [A]!"))
-	log_attack("[assembly] \ref[assembly] has thrown [A].")
+	log_attack("[assembly] \ref[assembly] has thrown [A].", to_story = TRUE)
 	A.forceMove(get_turf(assembly))
 	A.throw_at(locate(x_abs, y_abs, T.z), range, 3)
 	var/atom/AM = get_object()

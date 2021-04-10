@@ -122,6 +122,7 @@
 		return
 
 	log_say("[key_name(src)] communed to [key_name(M)]: [text]")
+	log_story("SAY", "[name]/[hide_my_ckey(key_name(src))] : communed to [hide_my_ckey(key_name(M))]: [text]")
 
 	to_chat(M, "<span class='notice'>Like lead slabs crashing into the ocean, alien thoughts drop into your mind: <i>[text]</i></span>")
 	if(istype(M,/mob/living/carbon/human))
@@ -153,6 +154,7 @@
 	var/msg = sanitize(input("Message:", "Psychic Whisper") as text|null)
 	if(msg)
 		log_say("PsychicWhisper: [key_name(src)]->[M.key] : [msg]")
+		log_story("SAY", "PsychicWhisper: [hide_my_ckey(key_name(src))]->[hide_my_ckey(M.key)] : [msg]")
 		to_chat(M, "<span class='alium'>You hear a strange, alien voice in your head... <i>[msg]</i></span>")
 		to_chat(src, "<span class='alium'>You channel a message: \"[msg]\" to [M]</span>")
 	return

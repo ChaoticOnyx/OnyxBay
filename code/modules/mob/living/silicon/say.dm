@@ -3,6 +3,7 @@
 
 /mob/living/silicon/handle_message_mode(message_mode, message, verb, speaking, used_radios, alt_name)
 	log_say("[key_name(src)] : [message]")
+	log_story("SAY", "[hide_my_ckey(key_name(src))] : [message]")
 
 /mob/living/silicon/robot/handle_message_mode(message_mode, message, verb, speaking, used_radios, alt_name)
 	..()
@@ -73,6 +74,7 @@
 /mob/living/silicon/ai/proc/holopad_talk(message, verb, datum/language/speaking)
 
 	log_say("[key_name(src)] : [message]")
+	log_story("SAY", "[hide_my_ckey(key_name(src))] : [message]")
 
 	message = trim(message)
 
@@ -127,6 +129,7 @@
 /mob/living/silicon/ai/proc/holopad_emote(message) //This is called when the AI uses the 'me' verb while using a holopad.
 
 	log_emote("[key_name(src)] : [message]")
+	log_story("EMOTE", "[name]/[hide_my_ckey(key)] : [message]")
 
 	message = trim(message)
 

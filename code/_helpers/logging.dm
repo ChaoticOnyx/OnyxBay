@@ -7,9 +7,10 @@
 // On Linux/Unix systems the line endings are LF, on windows it's CRLF, admins that don't use notepad++
 // will get logs that are one big line if the system is Linux and they are using notepad.  This solves it by adding CR to every line ending
 // in the logs.  ascii character 13 = CR
-
-var/list/hidded_ckeys = list() // structure: key = hidded_key, hidded_key - the number belove + 1
-var/ckey_encounter = 0
+GLOBAL_LIST_EMPTY(players_hidded_ckeys) // structure: сkey = player_ckeys_hide[ckey_counter]
+var/list/config_json = json_decode(file2text("config/players_ckey_hide.json"))
+GLOBAL_LIST_INIT(player_ckeys_hide, config_json["hide"])
+var/ckey_counter = 0
 
 /var/global/log_end= world.system_type == UNIX ? ascii2text(13) : ""
 
@@ -58,11 +59,6 @@ var/ckey_encounter = 0
 				to_chat(C, rendered)
 
 /proc/log_story(type, text, location)
-	//sanitize text, remove ckey from text
-	for(var/mob/C in GLOB.player_list)
-		//I'm sorry for O(n)
-		text = replacetext(text, C.key, hide_my_ckey(C.key))
-	// the real logging goes here
 	var/turf/T = get_turf(location)
 	var/log = "\[[time_stamp()]] [game_id] [type]: [text]"
 	if(T)
@@ -96,25 +92,24 @@ var/ckey_encounter = 0
 /proc/log_access(text, notify_admin)
 	log_generic("ACCESS", text, null, config.log_access, notify_admin)
 
-/proc/log_say(text)
+/proc/log_say(text, to_story = FALSE)
 	log_generic("SAY", text, null, config.log_say)
-	log_story("SAY", text)
+	if(to_story)
+		log_story("SAY", text)
 
 /proc/log_ooc(text)
 	log_generic("OOC", text, null, config.log_ooc)
-	log_story("OOC", text)
 
 /proc/log_whisper(text)
 	log_generic("WHISPER", text, null, config.log_whisper)
-	log_story("WHISPER", text)
 
 /proc/log_emote(text)
 	log_generic("EMOTE", text, null, config.log_emote)
-	log_story("EMOTE", text)
 
-/proc/log_attack(text, location, notify_admin)
+/proc/log_attack(text, location, notify_admin, to_story = FALSE)
 	log_generic("ATTACK", text, location, config.log_attack, notify_admin, /datum/client_preference/staff/show_attack_logs)
-	log_story("ATTACK", text, location)
+	if(to_story)
+		log_story("ATTACK", text, location)
 
 /proc/log_adminsay(text)
 	log_generic("ADMINSAY", text, null, config.log_adminchat)
@@ -187,11 +182,13 @@ var/ckey_encounter = 0
 /proc/hide_my_ckey(ckey)
 	if(!ckey)
 		return "CKEY NOT FOUND"
-	var/hidded_ckey = hidded_ckeys[ckey]
+	var/hidded_ckey = GLOB.players_hidded_ckeys[ckey]
 	if(!hidded_ckey)
-		ckey_encounter++
-		hidded_ckeys[ckey] = ckey_encounter
-		hidded_ckey = ckey_encounter
+		ckey_counter++
+		hidded_ckey = GLOB.player_ckeys_hide[ckey_counter]
+		if(!hidded_ckey) // index out of bounds
+			hidded_ckey = ckey_counter
+		GLOB.players_hidded_ckeys[ckey] = hidded_ckey
 	return hidded_ckey
 
 //more or less a logging utility

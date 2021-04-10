@@ -239,6 +239,7 @@ proc/get_radio_key_from_channel(channel)
 
 		if (speaking.flags & SIGNLANG)
 			log_say("[name]/[key] : SIGN: [message]")
+			log_story("SAY", "[name]/[hide_my_ckey(key)] : SIGN: [message]")
 			log_message(message, INDIVIDUAL_SAY_LOG)
 			return say_signlang(message, pick(speaking.signlang_verb), speaking)
 
@@ -309,9 +310,11 @@ proc/get_radio_key_from_channel(channel)
 
 	if(whispering)
 		log_whisper("[name]/[key] : [message]")
+		log_story("WHISPER", "[name]/[hide_my_ckey(key)] : [message]")
 		log_message(message, INDIVIDUAL_SAY_LOG)
 	else
 		log_say("[name]/[key] : [message]")
+		log_story("SAY", "[name]/[hide_my_ckey(key)] : [message]")
 		log_message(message, INDIVIDUAL_SAY_LOG)
 	return 1
 

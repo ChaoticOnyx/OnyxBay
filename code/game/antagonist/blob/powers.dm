@@ -76,6 +76,7 @@
 		spawn(5)
 			to_chat(M, "<span class='blob'>[message]</span>") //Only sends messages to things on its own z level
 			log_say(src, "used blob telepathy to convey \"[message]\"")
+			log_story("SAY", "[src] used blob telepathy to convey \"[message]\"")
 
 /mob/blob/proc/create_shield(turf/T)
 	var/obj/effect/blob/B = (locate(/obj/effect/blob) in T)

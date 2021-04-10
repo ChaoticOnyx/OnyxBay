@@ -212,7 +212,7 @@
 			last_use = world.time
 			unleash_flame(target, user)
 			targloc.hotspot_expose(700,125)
-			log_attack("[user] start spreadding fire with \ref[src].")
+			log_attack("[user] start spreadding fire with \ref[src].", to_story = TRUE)
 			return
 		else
 			to_chat(user, SPAN_WARNING("[src] is not ready to fire again!"))

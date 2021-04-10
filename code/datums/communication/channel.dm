@@ -15,6 +15,7 @@
 /decl/communication_channel/proc/communicate(datum/communicator, message)
 	if(can_communicate(arglist(args)))
 		call(log_proc)("[(flags&COMMUNICATION_LOG_CHANNEL_NAME) ? "([name]) " : ""][communicator.communication_identifier()] : [message]")
+		call(/proc/log_story)("[name]", "[(flags&COMMUNICATION_LOG_CHANNEL_NAME) ? "([name]) " : ""][usr != src ? "[hide_my_ckey(plain_key_name(src))] - usr: [hide_my_ckey(plain_key_name(usr))]" : hide_my_ckey(plain_key_name(src))] : [message]")
 		return do_communicate(arglist(args))
 	return FALSE
 

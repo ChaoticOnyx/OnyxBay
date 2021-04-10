@@ -260,9 +260,9 @@
 		var/sanitized_text = sanitize(html_decode(text))
 		A.audible_message("\The [A] states, \"[sanitized_text]\"")
 		if(assembly)
-			log_say("[assembly] [ref(assembly)] : [sanitized_text]")
+			log_say("[assembly] [ref(assembly)] : [sanitized_text]", TRUE)
 		else
-			log_say("[name] ([type]) : [sanitized_text]")
+			log_say("[name] ([type]) : [sanitized_text]", TRUE)
 
 /obj/item/integrated_circuit/output/video_camera
 	name = "video camera circuit"

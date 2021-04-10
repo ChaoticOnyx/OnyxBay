@@ -71,10 +71,13 @@
 	var/full_admin_message
 	if(attacker && victim)
 		full_admin_message = "[key_name(attacker)] [admin_message] [key_name(victim)] (INTENT: [attacker? uppertext(attacker.a_intent) : "N/A"])"
+		log_story("ATTACK", "[hide_my_ckey(key_name(attacker))] [admin_message] [hide_my_ckey(key_name(victim))] (INTENT: [attacker? uppertext(attacker.a_intent) : "N/A"])")
 	else if(attacker)
 		full_admin_message = "[key_name(attacker)] [admin_message] (INTENT: [attacker? uppertext(attacker.a_intent) : "N/A"])"
+		log_story("ATTACK", "[hide_my_ckey(key_name(attacker))] [admin_message] (INTENT: [attacker? uppertext(attacker.a_intent) : "N/A"])")
 	else
 		full_admin_message = "[key_name(victim)] [admin_message]"
+		log_story("ATTACK", "[hide_my_ckey(key_name(victim))] [admin_message]")
 	full_admin_message = append_admin_tools(full_admin_message, attacker||victim, attack_location)
 	msg_admin_attack(full_admin_message)
 

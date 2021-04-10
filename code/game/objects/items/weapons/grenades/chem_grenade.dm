@@ -38,6 +38,7 @@
 		to_chat(user, "<span class='warning'>You prime \the [name]!</span>")
 
 		msg_admin_attack("[user.name] ([user.ckey]) primed \a [src]. (<A HREF='?_src_=holder;adminplayerobservecoodjump=1;X=[user.x];Y=[user.y];Z=[user.z]'>JMP</a>)")
+		log_story("[user.name] ([hide_my_ckey(user.ckey)]) primed \a [src].")
 
 		activate()
 		add_fingerprint(user)
@@ -129,6 +130,7 @@
 
 		if(user)
 			msg_admin_attack("[user.name] ([user.ckey]) primed \a [src] (<A HREF='?_src_=holder;adminplayerobservecoodjump=1;X=[user.x];Y=[user.y];Z=[user.z]'>JMP</a>)")
+			log_story("ATTACK", "[user.name] ([hide_my_ckey(user.ckey)]) primed \a [src].")
 
 	return
 
