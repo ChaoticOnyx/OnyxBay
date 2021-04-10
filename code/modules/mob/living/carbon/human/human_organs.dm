@@ -69,6 +69,8 @@
 	var/damage_this_tick = getToxLoss()
 	for(var/obj/item/organ/external/O in organs)
 		damage_this_tick += O.burn_dam + O.brute_dam
+		if(O.germ_level >= INFECTION_LEVEL_ONE/2) // If germs level on some limb is higher than INFECTION_LEVEL_ONE/2 make force recheck on external organs
+			. = TRUE
 
 	if(damage_this_tick > last_dam)
 		. = TRUE

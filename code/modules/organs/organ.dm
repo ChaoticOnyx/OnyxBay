@@ -119,7 +119,11 @@ var/list/organ_cache = list()
 	else if(owner && owner.bodytemperature >= 170)	//cryo stops germs from moving and doing their bad stuffs
 		//** Handle antibiotics and curing infections
 		handle_antibiotics()
+
+		//** Process unsuitable transplants
 		handle_rejection()
+
+		//** Handle the effects of infections
 		handle_germ_effects()
 
 	//check if we've hit max_damage
@@ -141,8 +145,29 @@ var/list/organ_cache = list()
 	if(status & ORGAN_DEAD)
 		return SPAN_NOTICE("\The [src] looks severely damaged.")
 
+/*
+The INFECTION_LEVEL values defined in damage_organs.dm control the time it takes to reach the different
+infection levels. Since infection growth is exponential, you can adjust the time it takes to get
+from one germ_level to another using the rough formula:
+
+desired_germ_level = initial_germ_level*e^(desired_time_in_seconds/1000)
+
+So if I wanted it to take an average of 15 minutes to get from level one (100) to level two
+I would set INFECTION_LEVEL_TWO to 100*e^(15*60/1000) = 245. Note that this is the average time,
+the actual time is dependent on RNG.
+
+INFECTION_LEVEL_ONE		below this germ level nothing happens, and the infection doesn't grow
+INFECTION_LEVEL_TWO		above this germ level the infection will start to spread to internal and adjacent organs
+INFECTION_LEVEL_THREE	above this germ level the player will take additional toxin damage per second, and will die in minutes without
+						antitox. also, above this germ level you will need to overdose on spaceacillin to reduce the germ_level.
+
+Note that amputating the affected organ does in fact remove the infection from the player's body.
+*/
 /obj/item/organ/proc/handle_germ_effects()
 	//** Handle the effects of infections
+
+	if(germ_level == 0) // we don't want to trigger these, when there is no germs
+		return
 
 	var/virus_immunity = owner.virus_immunity()
 
@@ -153,13 +178,14 @@ var/list/organ_cache = list()
 
 	if (germ_level >= INFECTION_LEVEL_ONE/2)
 		//aiming for germ level to go from ambient to INFECTION_LEVEL_TWO in an average of 15 minutes
-		if(antibiotics < 5 && prob(round(germ_level/6 * owner.immunity_weakness() * 0.01)))
+		if(antibiotics < 5 && prob(round(germ_level/(INFECTION_LEVEL_TWO*0.01) * owner.immunity_weakness())))
 			if(virus_immunity > 0)
-				germ_level += round(1/virus_immunity, 1) // Immunity starts at 100. This doubles infection rate at 50% immunity. Rounded to nearest whole.
+				germ_level += round(2.71**(germ_level/1000) * owner.immunity_weakness())
 			else // Will only trigger if immunity has hit zero. Once it does, 10x infection rate.
-				germ_level += 10
+				germ_level += round(2.71**(germ_level/1000) * owner.immunity_weakness()) * 10
 
 	if(germ_level >= INFECTION_LEVEL_ONE)
+		//raise temperature
 		var/fever_temperature = (owner.species.heat_level_1 - owner.species.body_temperature - 5)* min(germ_level/INFECTION_LEVEL_TWO, 1) + owner.species.body_temperature
 		owner.bodytemperature += between(0, (fever_temperature - T20C)/BODYTEMP_COLD_DIVISOR + 1, fever_temperature - owner.bodytemperature)
 
@@ -169,7 +195,7 @@ var/list/organ_cache = list()
 		if (antibiotics < 5 && parent.germ_level < germ_level && ( parent.germ_level < INFECTION_LEVEL_ONE*2 || prob(owner.immunity_weakness() * 0.3) ))
 			parent.germ_level++
 
-		if (prob(3))	//about once every 30 seconds
+		if (prob(10))	//about once every 10 seconds
 			take_general_damage(1,silent=prob(30))
 
 /obj/item/organ/proc/handle_rejection()
@@ -217,16 +243,20 @@ var/list/organ_cache = list()
 /obj/item/organ/proc/handle_antibiotics()
 	if(!owner || !germ_level)
 		return
+
 	var/antibiotics = owner.chem_effects[CE_ANTIBIOTIC]
 	if (!antibiotics)
 		return
 
 	if (germ_level < INFECTION_LEVEL_ONE)
 		germ_level = 0	//cure instantly
-	else if (germ_level < INFECTION_LEVEL_TWO)
-		germ_level -= 5	//at germ_level == 500, this should cure the infection in 5 minutes
+	else if(germ_level < INFECTION_LEVEL_THREE)
+		germ_level -= round(antibiotics/2, 1) // at germ_level < 1500 small dose(CE_ANTIBIOTIC=2) is enough to stop the spread
+											//moderate dose(CE_ANTIBIOTIC=5) will cure you in an average of 5 minutes or less
 	else
-		germ_level -= 3 //at germ_level == 1000, this will cure the infection in 10 minutes
+		germ_level -= round(antibiotics/3, 1) // at germ_level > 1500 small dose(CE_ANTIBIOTIC=2) slows down the spread, but doesn`t stop it
+											//moderate dose(CE_ANTIBIOTIC=5) slows it down even more, but still doesn`t stop it
+											//overdose(CE_ANTIBIOTIC=10) will cure you in an average of8 minutes or less
 
 /obj/item/organ/proc/take_general_damage(amount, silent = FALSE)
 	CRASH("Not Implemented")
