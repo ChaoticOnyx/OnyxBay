@@ -149,19 +149,19 @@
 	if (MUTATION_HULK in mutations)
 		chance += 15
 
-	var/list/zones = typesof(/area/maintenance)
-
 	if (!prob(chance))
 		return
 
-	if (!(get_area(src).type in zones))
+	var/area/maintenance/A = get_area(src)
+
+	if (!istype(A))
 		return
 
-	for (var/mob/living/M in GLOB.player_list)
-		if (!istype(M) || M == src)
+	for (var/mob/M in GLOB.player_list)
+		if (M == src)
 			continue
 
-		if (M.loc.z != src.loc.z || !(get_area(M).type in zones))
+		if (M.loc.z != src.loc.z || !istype(get_area(M), /area/maintenance))
 			continue
 
 		var/dist = get_dist(get_turf(M), T)
