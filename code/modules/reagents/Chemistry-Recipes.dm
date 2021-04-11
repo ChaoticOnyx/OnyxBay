@@ -2098,9 +2098,15 @@
 	required_reagents = list(/datum/reagent/ethanol = 1, /datum/reagent/mercury = 2, /datum/reagent/luminol = 2)
 	result_amount = 1
 
-/datum/chemical_reaction/kvas
-	name = "Kvas"
-	result = /datum/reagent/ethanol/kvas
+/datum/chemical_reaction/kvass
+	name = "Kvass"
+	result = /datum/reagent/ethanol/kvass
 	required_reagents = list(/datum/reagent/ethanol/beer = 1, /datum/reagent/sugar = 1)
 	catalysts = list(/datum/reagent/enzyme = 5)
 	result_amount = 2
+
+/datum/chemical_reaction/quas
+	name = "Quas"
+	result = /datum/reagent/ethanol/quas
+	required_reagents = list(/datum/reagent/ethanol/kvass = 3, /datum/reagent/frostoil = 1, /datum/reagent/drink/ice = 1)
+	result_amount = 3

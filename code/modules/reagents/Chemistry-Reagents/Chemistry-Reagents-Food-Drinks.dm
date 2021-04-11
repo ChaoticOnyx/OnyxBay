@@ -415,6 +415,7 @@
 	var/adj_drowsy = 0
 	var/adj_sleepy = 0
 	var/adj_temp = 0
+	var/adj_speed = 0
 
 /datum/reagent/drink/affect_blood(mob/living/carbon/M, alien, removed)
 	M.adjustToxLoss(removed) // Probably not a good idea; not very deadly though
@@ -429,6 +430,8 @@
 		M.bodytemperature = min(310, M.bodytemperature + (adj_temp * TEMPERATURE_DAMAGE_COEFFICIENT))
 	if(adj_temp < 0 && M.bodytemperature > 310)
 		M.bodytemperature = min(310, M.bodytemperature - (adj_temp * TEMPERATURE_DAMAGE_COEFFICIENT))
+	if(adj_speed)
+		M.add_up_to_chemical_effect(adj_speed < 0 ? CE_SLOWDOWN : CE_SPEEDBOOST, adj_speed)
 
 // Juices
 /datum/reagent/drink/juice/affect_ingest(mob/living/carbon/M, alien, removed)
@@ -709,6 +712,7 @@
 	adj_drowsy = -3
 	adj_sleepy = -2
 	adj_temp = 25
+	adj_speed = 0.5
 	overdose = 45
 
 	glass_name = "coffee"
@@ -743,6 +747,7 @@
 		M.apply_effect(3, STUTTER)
 	M.make_jittery(5)
 	M.add_chemical_effect(CE_PULSE, 2)
+	M.add_up_to_chemical_effect(CE_SPEEDBOOST, 1)
 
 /datum/reagent/drink/coffee/icecoffee
 	name = "Iced Coffee"
@@ -838,6 +843,7 @@
 	taste_description = "grape soda"
 	color = "#421c52"
 	adj_drowsy = -3
+	adj_speed = 0.3
 
 	glass_name = "grape soda"
 	glass_desc = "Looks like a delicious drink!"
@@ -852,6 +858,7 @@
 	adj_drowsy = -3
 	adj_sleepy = -2
 	adj_temp = -5
+	adj_speed = 0.3
 
 	glass_name = "tonic water"
 	glass_desc = "Quinine tastes funny, but at least it'll keep that Space Malaria away."
@@ -885,6 +892,7 @@
 	taste_description = "orange and cola soda"
 	color = "#9f3400"
 	adj_temp = -2
+	adj_speed = 0.3
 
 	glass_required = "pint"
 	glass_name = "Brown Star"
@@ -942,6 +950,7 @@
 	color = "#006600"
 	adj_temp = -5
 	adj_sleepy = -2
+	adj_speed = 1.0
 
 	glass_name = "Nuka-Cola"
 	glass_desc = "Don't cry, Don't raise your eye, It's only nuclear wasteland"
@@ -949,7 +958,6 @@
 
 /datum/reagent/drink/nuka_cola/affect_ingest(mob/living/carbon/M, alien, removed)
 	..()
-	M.add_chemical_effect(CE_SPEEDBOOST, 1)
 	M.make_jittery(20)
 	M.druggy = max(M.druggy, 30)
 	M.dizziness += 5
@@ -974,6 +982,7 @@
 	color = "#100800"
 	adj_drowsy = -3
 	adj_temp = -5
+	adj_speed = 0.5
 
 	glass_name = "Space Cola"
 	glass_desc = "A glass of refreshing Space Cola"
@@ -987,6 +996,7 @@
 	adj_drowsy = -7
 	adj_sleepy = -1
 	adj_temp = -5
+	adj_speed = 0.5
 
 	glass_name = "Space Mountain Wind"
 	glass_desc = "Space Mountain Wind. As you know, there are no mountains in space, only wind."
@@ -999,6 +1009,7 @@
 	color = "#800000"
 	adj_drowsy = -6
 	adj_temp = -5
+	adj_speed = 0.5
 
 	glass_name = "Dr. Gibb"
 	glass_desc = "Dr. Gibb. Not as dangerous as the name might imply."
@@ -1009,6 +1020,7 @@
 	taste_description = "a hull breach"
 	color = "#202800"
 	adj_temp = -8
+	adj_speed = 0.5
 
 	glass_name = "Space-up"
 	glass_desc = "Space-up. It helps keep your cool."
@@ -1020,10 +1032,47 @@
 	taste_description = "tangy lime and lemon soda"
 	color = "#878f00"
 	adj_temp = -8
+	adj_speed = 0.5
 
 	glass_name = "lemon lime soda"
 	glass_desc = "A tangy substance made of 0.5% natural citrus!"
 	glass_special = list(DRINK_FIZZ)
+
+/datum/reagent/drink/energy
+	name = "energy drink"
+	description = "Contains high levels of caffeine. Prohibited for use by children, pregnant women, people sensitive to caffeine, people not sensitive to caffeine, tajaran, animals and medical bots."
+	taste_description = "energy"
+	taste_mult = 1.3
+	color = "#ffc823"
+	adj_drowsy = -6
+	adj_sleepy = -2
+	adj_temp = -8
+	adj_speed = 0.8
+	overdose = 45
+
+	glass_name = "energy drink"
+	glass_desc = "Looks like a liquid power cell."
+	glass_special = list(DRINK_FIZZ)
+
+/datum/reagent/drink/energy/affect_ingest(mob/living/carbon/M, alien, removed)
+	if(alien == IS_DIONA)
+		return
+	..()
+	if(alien == IS_TAJARA)
+		M.adjustToxLoss(0.5 * removed)
+		M.make_jittery(4) //extra sensitive to caffine, taurine, and all the kinds of shit in nrg drinks
+	if(volume > 15)
+		M.add_chemical_effect(CE_PULSE, 1)
+
+/datum/reagent/drink/energy/overdose(mob/living/carbon/M, alien)
+	if(alien == IS_DIONA)
+		return
+	if(alien == IS_TAJARA)
+		M.adjustToxLoss(4 * REM)
+		M.apply_effect(3, STUTTER)
+	M.make_jittery(5)
+	M.add_chemical_effect(CE_PULSE, 2)
+	M.add_up_to_chemical_effect(CE_SPEEDBOOST, 1.2)
 
 /datum/reagent/drink/dry_ramen
 	name = "Dry Ramen"
@@ -1335,6 +1384,7 @@
 		M.bodytemperature = max(310, M.bodytemperature - (5 * TEMPERATURE_DAMAGE_COEFFICIENT))
 	M.make_jittery(5)
 	M.add_chemical_effect(CE_PULSE, 2)
+	M.add_up_to_chemical_effect(CE_SPEEDBOOST, 0.8)
 
 /datum/reagent/ethanol/vermouth
 	name = "Vermouth"
@@ -1398,9 +1448,9 @@
 	glass_name = "red wine"
 	glass_desc = "A very classy looking drink."
 
-/datum/reagent/ethanol/hurricane/affect_ingest(mob/living/carbon/M, alien, removed)
+/datum/reagent/ethanol/wine/affect_ingest(mob/living/carbon/M, alien, removed)
 	..()
-	M.apply_effect(max(M.radiation - 1 * removed * 0.5, 0), IRRADIATE, blocked = 0)
+	M.radiation = max(M.radiation - 5 * removed, 0)
 
 /datum/reagent/ethanol/wine/premium
 	name = "White Wine"
@@ -1745,7 +1795,7 @@
 	name = "Chacha"
 	description = "favorite drink of mountain people."
 	color = "#FCD18D"
-	strength = 100
+	strength = 10
 	taste_description = "one feels the taste of a distant mountainous country"
 
 	glass_required = "shot"
@@ -2318,7 +2368,7 @@
 	strength = 35
 	taste_description = "malty flavor and something extremely dear and familiar"
 
-	glass_required = "bigmug"
+	glass_required = "hurricane"
 	glass_icon_state = "sigbrau"
 	glass_name = "Siegbrau"
 	glass_desc = "A drink that even an Undead can enjoy."
@@ -2360,7 +2410,7 @@
 		M.apply_effect(3, STUTTER)
 		M.make_dizzy(5)
 		M.add_chemical_effect(CE_PAINKILLER, 50)
-		M.add_chemical_effect(CE_SPEEDBOOST, 0.5)
+		M.add_up_to_chemical_effect(CE_SPEEDBOOST, 0.5)
 		M.add_chemical_effect(CE_PULSE, 2)
 		if(prob(5))
 			M.emote(pick("twitch", "blink_r"))
@@ -2370,7 +2420,7 @@
 		M.make_jittery(5)
 		M.make_dizzy(5)
 		M.add_chemical_effect(CE_PAINKILLER, 100)
-		M.add_chemical_effect(CE_SPEEDBOOST, 1.25)
+		M.add_up_to_chemical_effect(CE_SPEEDBOOST, 1.25)
 		M.add_chemical_effect(CE_PULSE, 3)
 
 		M.druggy = max(M.druggy, 35)
@@ -2383,7 +2433,7 @@
 		M.make_dizzy(10)
 		M.add_chemical_effect(CE_PAINKILLER, 200)
 		M.add_chemical_effect(CE_ALCOHOL_TOXIC, 1)
-		M.add_chemical_effect(CE_SPEEDBOOST, 2)
+		M.add_up_to_chemical_effect(CE_SPEEDBOOST, 2)
 		M.add_chemical_effect(CE_PULSE, 4)
 
 		M.druggy = max(M.druggy, 40)
@@ -2639,16 +2689,37 @@
 	glass_name = "Zheng He cocktail"
 	glass_desc = "A rather bitter blend of vermouth and well-steeped black tea. Named for Zheng He, who travelled from Nanjing in China as far as Mogadishu in the Horn of Africa in the 15th century."
 
-/datum/reagent/ethanol/kvas
-	name = "Kvas"
-	description = "Kvas is a traditional drink of old north nations from earth, commonly made from rye bread."
+/datum/reagent/ethanol/kvass
+	name = "Kvass"
+	description = "Kvass is a traditional drink of old north nations from the Earth, commonly made from rye bread."
 	taste_description = "old north valleys"
 	color = "#473000"
-	strength = 1
+	strength = 60
 	adj_temp = 10
 
 	glass_required = "mug"
-	glass_icon_state = "kvas"
-	glass_name = "kvas"
-	glass_desc = "Tasty kvas, it has BEST antioxidants, it's good for your soul!"
+	glass_icon_state = "kvass"
+	glass_name = "kvass"
+	glass_desc = "Tasty kvass, it has BEST antioxidants, it's good for your soul!"
 	glass_special = list(DRINK_FIZZ)
+
+/datum/reagent/ethanol/quas
+	name = "Quas"
+	description = "Sadron's Summer Refreshment. Cold snap in a liquid form. Or, perhaps, just a bad pun."
+	taste_description = "cold snap"
+	color = "#0099cc"
+	strength = 20
+	adj_temp = -30
+	targ_temp = 260
+
+	glass_required = "shot"
+	glass_icon_state = "quas"
+	glass_name = "quas"
+	glass_desc = "Sadron's Summer Refreshment. Cold snap in a liquid form. Or, perhaps, just a bad pun."
+	glass_special = list(DRINK_FIZZ, DRINK_ICE)
+
+/datum/reagent/ethanol/quas/affect_ingest(mob/living/carbon/M, alien, removed)
+	..()
+	if(alien == IS_DIONA)
+		return
+	M.heal_organ_damage(3 * removed, 3 * removed)
