@@ -217,6 +217,14 @@
 	holder.playsound_local(holder, 'sound/effects/Evacuation.ogg', 35)
 	to_chat(holder, "<h1 class='alert'>Priority Announcement</h1><br>[SPAN("alert", replacetext(GLOB.using_map.emergency_shuttle_docked_message, "%ETD%", "3 minutes"))]")
 
+/datum/hallucination/evacuation/can_affect()
+	return prob(5)
+
+/datum/hallucination/evacuation/start()
+	holder.playsound_local(holder, 'sound/effects/Evacuation.ogg', 35)
+	to_chat(holder, "<h1 class='alert'>Priority Announcement</h1><br>[SPAN("alert", replacetext(GLOB.using_map.emergency_shuttle_docked_message, "%ETD%", "3 minutes"))]")
+
+
 //Seeing stuff
 /datum/hallucination/mirage
 	duration = 30 SECONDS

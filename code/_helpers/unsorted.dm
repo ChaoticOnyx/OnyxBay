@@ -531,6 +531,10 @@ Turf and target are seperate in case you want to teleport some distance from a t
 /proc/between(low, middle, high)
 	return max(min(middle, high), low)
 
+//Searches a point t between a and b.
+/proc/lerp(a, b, t)
+	return a + t*(b - a)
+
 //returns random gauss number
 proc/GaussRand(sigma)
 	var/x,y,rsq

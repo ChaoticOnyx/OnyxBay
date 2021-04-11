@@ -11,10 +11,12 @@
 	var/ingest_met = 0
 	var/touch_met = 0
 	var/overdose = INFINITY
+	var/additiction = INFINITY
 	var/scannable = 0 // Shows up on health analyzers.
 	var/color = "#000000"
 	var/color_weight = 1
 	var/flags = 0
+	var/can_be_dialysed = TRUE
 
 	var/glass_icon = DRINK_ICON_DEFAULT
 	var/glass_name = "something"

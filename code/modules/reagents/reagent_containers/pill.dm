@@ -320,10 +320,10 @@ obj/item/weapon/reagent_containers/pill/noexcutite/Initialize()
 	icon_state = "pill4"
 /obj/item/weapon/reagent_containers/pill/glucose/Initialize()
 	. = ..()
-	reagents.add_reagent(/datum/reagent/nutriment/glucose, 20)
+	reagents.add_reagent(/datum/reagent/gormone/glucose, 20)
 	color = reagents.get_color()
-	
-	
+
+
 //Mining pills.
 /obj/item/weapon/reagent_containers/pill/leporazine
 	name = "Thermostabilizine"
@@ -332,4 +332,14 @@ obj/item/weapon/reagent_containers/pill/noexcutite/Initialize()
 /obj/item/weapon/reagent_containers/pill/leporazine/Initialize()
 	. = ..()
 	reagents.add_reagent(/datum/reagent/leporazine, 15)
+	color = reagents.get_color()
+
+//Gormone pills.
+/obj/item/weapon/reagent_containers/pill/insulin
+	name = "Insulin (5u)"
+	desc = "Used to decrease glucose level"
+	icon_state = "pill4"
+/obj/item/weapon/reagent_containers/pill/insulin/Initialize()
+	. = ..()
+	reagents.add_reagent(/datum/reagent/gormone/insulin, 5)
 	color = reagents.get_color()

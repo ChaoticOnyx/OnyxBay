@@ -22,7 +22,6 @@
 
 	var/cpr_time = 1.0
 	var/lastpuke = 0
-	var/nutrition = 400
 
 	var/obj/item/weapon/tank/internal = null//Human/Monkey
 
@@ -42,3 +41,5 @@
 	var/stasis_value
 	var/does_not_breathe = FALSE
 	var/seeDarkness = FALSE
+
+	var/nutrition = 400
