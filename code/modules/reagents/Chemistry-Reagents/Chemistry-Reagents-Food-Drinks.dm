@@ -2712,7 +2712,7 @@
 	adj_temp = -30
 	targ_temp = 260
 
-	glass_required = "shot"
+	glass_required = "vodkaglass"
 	glass_icon_state = "quas"
 	glass_name = "quas"
 	glass_desc = "Sadron's Summer Refreshment. Cold snap in a liquid form. Or, perhaps, just a bad pun."
