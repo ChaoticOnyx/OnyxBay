@@ -118,11 +118,7 @@
 	if (width && height)
 		window_size = "size=[width]x[height];"
 	show_browser(user, get_content(), "window=[window_id];[window_size][window_options]")
-	spawn()
-		if(!user.client)
-			return
-
-		winset(user, "mapwindow.map", "focus=true")
+	winset(user, "mapwindow.map", "focus=true")
 	if(use_onclose)
 		onclose(user, window_id, ref)
 
@@ -134,12 +130,14 @@
 
 /datum/browser/proc/close()
 	close_browser(user, "window=[window_id]")
+	winset(user, "mapwindow.map", "focus=true")
+	qdel(src)
 
-	spawn()
-		if(!user.client)
-			return
+/datum/browser/Destroy()
+	ref = null
+	user = null
 
-		winset(user, "mapwindow.map", "focus=true")
+	. = ..()
 
 // This will allow you to show an icon in the browse window
 // This is added to mob so that it can be used without a reference to the browser object
@@ -179,9 +177,7 @@
 	if(ref)
 		param = "\ref[ref]"
 
-	spawn(2)
-		if(!user.client) return
-		winset(user, windowid, "on-close=\".windowclose [param]\"")
+	winset(user, windowid, "on-close=\".windowclose [param]\"")
 
 //	log_debug("OnClose [user]: [windowid] : ["on-close=\".windowclose [param]\""]")
 
