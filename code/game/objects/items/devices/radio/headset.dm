@@ -262,7 +262,8 @@
 	name = "Tactical earmuffs"
 	desc = "The headset of the cool."
 	icon_state = "tac_earmuffs"
-	item_state = "headset"
+	item_state = "tac_earmuffs"
+	slot_flags = SLOT_EARS | SLOT_TWOEARS
 	ear_protection = 1
 
 /obj/item/device/radio/headset/attackby(obj/item/weapon/W as obj, mob/user as mob)
