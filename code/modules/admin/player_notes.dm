@@ -5,7 +5,7 @@
 #define NOTESFILE "data/player_notes.sav"	//where the player notes are saved
 
 datum/admins/proc/notes_show(ckey)
-	show_browser(usr, "<head><title>Player Notes</title></head><body>[notes_gethtml(ckey)]</body>","window=player_notes;size=700x400")
+	usr << browse("<head><title>Player Notes</title></head><body>[notes_gethtml(ckey)]</body>","window=player_notes;size=700x400")
 
 
 datum/admins/proc/notes_gethtml(ckey)
@@ -17,7 +17,7 @@ datum/admins/proc/notes_gethtml(ckey)
 		var/index = 1
 		while( !notesfile.eof )
 			var/note
-			from_file(notesfile, note)
+			notesfile >> note
 			. += "[note] <a href='?src=\ref[src];notes=remove;ckey=[ckey];from=[index]'>\[-\]</a><br>"
 			index++
 	else
@@ -45,7 +45,7 @@ datum/admins/proc/notes_gethtml(ckey)
 		while( !notesfile.eof )
 			index++
 			var/temp
-			from_file(notesfile, temp)
+			notesfile >> temp
 			if( (start_index <= index) && (index <= end_index) )
 				continue
 			noteslist += temp
@@ -53,7 +53,7 @@ datum/admins/proc/notes_gethtml(ckey)
 		notesfile.eof = -2		//Move to the start of the buffer and then erase.
 
 		for( var/note in noteslist )
-			to_file(notesfile, note)
+			notesfile << note
 	else
 		notesfile.cd = "/"
 		if(alert(usr,"Are you sure you want to remove all their notes?","Confirmation","No","Yes - Remove all notes") == "Yes - Remove all notes")
@@ -72,9 +72,8 @@ datum/admins/proc/notes_gethtml(ckey)
 	//Loading list of notes for this key
 	var/savefile/info = new("data/player_saves/[copytext(key, 1, 2)]/[key]/info.sav")
 	var/list/infos
-	from_file(info, infos)
-	if(!infos)
-		infos = list()
+	info >> infos
+	if(!infos) infos = list()
 
 	//Overly complex timestamp creation
 	var/modifyer = "th"
@@ -105,7 +104,7 @@ datum/admins/proc/notes_gethtml(ckey)
 	P.timestamp = "[copytext(full_date,1,day_loc)][day_string][copytext(full_date,day_loc+2)]"
 
 	infos += P
-	to_file(info, infos)
+	info << infos
 
 	message_staff("<span class='notice'>[P.author] has edited [key]'s notes.</span>")
 	log_admin("[P.author] has edited [key]'s notes.")
@@ -115,25 +114,22 @@ datum/admins/proc/notes_gethtml(ckey)
 	//Updating list of keys with notes on them
 	var/savefile/note_list = new("data/player_notes.sav")
 	var/list/note_keys
-	from_file(note_list, note_keys)
-	if(!note_keys)
-		note_keys = list()
-	if(!note_keys.Find(key))
-		note_keys += key
-	to_file(note_list, note_keys)
+	note_list >> note_keys
+	if(!note_keys) note_keys = list()
+	if(!note_keys.Find(key)) note_keys += key
+	note_list << note_keys
 	del(note_list) // savefile, so NOT qdel
 
 
 /proc/notes_del(key, index)
 	var/savefile/info = new("data/player_saves/[copytext(key, 1, 2)]/[key]/info.sav")
 	var/list/infos
-	from_file(info, infos)
-	if(!infos || infos.len < index)
-		return
+	info >> infos
+	if(!infos || infos.len < index) return
 
 	var/datum/player_info/item = infos[index]
 	infos.Remove(item)
-	to_file(info, infos)
+	info << infos
 
 	message_staff("<span class='notice'>[key_name_admin(usr)] deleted one of [key]'s notes.</span>")
 	log_admin("[key_name(usr)] deleted one of [key]'s notes.")
@@ -144,7 +140,7 @@ datum/admins/proc/notes_gethtml(ckey)
 	var/dat = "          Info on [key]\n"
 	var/savefile/info = new("data/player_saves/[copytext(key, 1, 2)]/[key]/info.sav")
 	var/list/infos
-	from_file(info, infos)
+	info >> infos
 	if(!infos)
 		dat = "No information found on the given key."
 	else

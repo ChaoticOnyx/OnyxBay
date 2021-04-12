@@ -112,7 +112,7 @@ var/list/gear_datums = list()
 	. = list()
 	if(!pref.preview_icon)
 		pref.update_preview_icon()
-	send_rsc(user, pref.preview_icon, "previewicon.png")
+	user << browse_rsc(pref.preview_icon, "previewicon.png")
 
 	if(!user.client)
 		return
@@ -299,7 +299,7 @@ var/list/gear_datums = list()
 					. += "<font color='#808080'>[J.title]</font>"
 			. += "</i>"
 			. += "<br>"
-
+		
 		if(selected_gear.whitelisted)
 			. += "<b>Has species restrictions!</b>"
 			. += "<br>"
@@ -549,7 +549,7 @@ var/list/gear_datums = list()
 	ASSERT(G)
 	if(!G.path)
 		return FALSE
-
+	
 	if(G.allowed_roles)
 		ASSERT(job_master)
 		var/list/jobs = new
@@ -565,10 +565,10 @@ var/list/gear_datums = list()
 				break
 		if(!job_ok)
 			return FALSE
-
+	
 	if(G.whitelisted && !(pref.species in G.whitelisted))
 		return FALSE
-
+		
 	return TRUE
 
 /datum/category_item/player_setup_item/loadout/proc/gear_allowed_to_equip(datum/gear/G, mob/user)

@@ -17,7 +17,7 @@
 		return
 
 	if(user.incapacitated()  || !user.Adjacent(src))
-		close_browser(user, "window=mob[src.name]")
+		show_browser(user, null, "window=mob[src.name]")
 		return
 
 	if(user.strippingActions > 1 && !isAggresiveStrip(user))

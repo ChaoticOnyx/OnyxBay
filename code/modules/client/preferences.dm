@@ -144,7 +144,7 @@ datum/preferences
 
 	if(href_list["preference"] == "open_whitelist_forum")
 		if(config.forumurl)
-			send_link(user, config.forumurl)
+			user << link(config.forumurl)
 		else
 			to_chat(user, "<span class='danger'>The forum URL is not set in the server configuration.</span>")
 			return
@@ -304,7 +304,7 @@ datum/preferences
 		for(var/BP in mark_datum.body_parts)
 			var/obj/item/organ/external/O = character.organs_by_name[BP]
 			if(O)
-				O.markings[mark_datum] = mark_color
+				O.markings[M] = list("color" = mark_color, "datum" = mark_datum)
 
 	character.force_update_limbs()
 	character.update_mutations(0)
@@ -360,9 +360,8 @@ datum/preferences
 		var/name
 		for(var/i=1, i<= config.character_slots, i++)
 			S.cd = GLOB.using_map.character_load_path(S, i)
-			from_file(S["real_name"], name)
-			if(!name)
-				name = "Character[i]"
+			S["real_name"] >> name
+			if(!name)	name = "Character[i]"
 			if(i==default_slot)
 				name = "<b>[name]</b>"
 			dat += "<a href='?src=\ref[src];changeslot=[i]'>[name]</a><br>"
@@ -374,5 +373,5 @@ datum/preferences
 	panel.open()
 
 /datum/preferences/proc/close_load_dialog(mob/user)
-	close_browser(user, "window=saves")
+	user << browse(null, "window=saves")
 	panel.close()

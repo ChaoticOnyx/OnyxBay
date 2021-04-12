@@ -249,7 +249,7 @@
 	if((get_dist(src, user) > 1) || (stat & (BROKEN|NOPOWER)))
 		if(!istype(user, /mob/living/silicon/ai))
 			user.unset_machine()
-			close_browser(user, "window=AMcontrol")
+			user << browse(null, "window=AMcontrol")
 			return
 	user.set_machine(src)
 
@@ -279,7 +279,7 @@
 		dat += "- <A href='?src=\ref[src];strengthdown=1'>--</A>|<A href='?src=\ref[src];strengthup=1'>++</A><BR><BR>"
 
 
-	show_browser(user, dat, "window=AMcontrol;size=420x500")
+	user << browse(dat, "window=AMcontrol;size=420x500")
 	onclose(user, "AMcontrol")
 	return
 
@@ -289,11 +289,11 @@
 	//Ignore input if we are broken or guy is not touching us, AI can control from a ways away
 	if(stat & (BROKEN|NOPOWER) || (get_dist(src, usr) > 1 && !istype(usr, /mob/living/silicon/ai)))
 		usr.unset_machine()
-		close_browser(usr, "window=AMcontrol")
+		usr << browse(null, "window=AMcontrol")
 		return
 
 	if(href_list["close"])
-		close_browser(usr, "window=AMcontrol")
+		usr << browse(null, "window=AMcontrol")
 		usr.unset_machine()
 		return
 

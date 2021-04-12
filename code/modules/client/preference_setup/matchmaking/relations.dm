@@ -7,16 +7,16 @@
 	sort_order = 1
 
 /datum/category_item/player_setup_item/relations/load_character(savefile/S)
-	from_file(S["relations"], pref.relations)
-	from_file(S["relations_info"], pref.relations_info)
+	S["relations"]	>> pref.relations
+	S["relations_info"]	>> pref.relations_info
 
 	for (var/T in pref.relations)
 		if (!matchmaker.relation_types.Find(T))
 			pref.relations.Remove(T)
 
 /datum/category_item/player_setup_item/relations/save_character(savefile/S)
-	to_file(S["relations"], pref.relations)
-	to_file(S["relations_info"], pref.relations_info)
+	S["relations"]	<< pref.relations
+	S["relations_info"]	<< pref.relations_info
 
 /datum/category_item/player_setup_item/relations/sanitize_character()
 	if(!pref.relations)

@@ -376,7 +376,7 @@ proc/listclearnulls(list/list)
 
 //Don't use this on lists larger than half a dozen or so
 /proc/insertion_sort_numeric_list_ascending(list/L)
-	//to_world_log("ascending len input: [L.len]")
+	//world.log << "ascending len input: [L.len]"
 	var/list/out = list(pop(L))
 	for(var/entry in L)
 		if(isnum(entry))
@@ -389,13 +389,13 @@ proc/listclearnulls(list/list)
 			if(!success)
 				out.Add(entry)
 
-	//to_world_log("	output: [out.len]")
+	//world.log << "	output: [out.len]"
 	return out
 
 /proc/insertion_sort_numeric_list_descending(list/L)
-	//to_world_log("descending len input: [L.len]")
+	//world.log << "descending len input: [L.len]"
 	var/list/out = insertion_sort_numeric_list_ascending(L)
-	//to_world_log("	output: [out.len]")
+	//world.log << "	output: [out.len]"
 	return reverselist(out)
 
 

@@ -50,7 +50,7 @@
 
 
 
-	show_browser(usr, output, "window=accaunts;size=600x[size*50+100]")
+	usr << browse(output, "window=accaunts;size=600x[size*50+100]")
 
 /datum/admins/proc/checkAllAccounts()
 	var/DBQuery/query
@@ -87,4 +87,4 @@
 	for (var/msg in GLOB.cookie_match_history)
 		output+= "Ckey: [msg["ckey"]] Matched: [msg["banned"]] <A href='?_src_=holder;showmultiacc=[msg["ckey"]]'>Show</A><BR>"
 
-	show_browser(usr, output, "window=accauntsall;size=400x800")
+	usr << browse(output, "window=accauntsall;size=400x800")

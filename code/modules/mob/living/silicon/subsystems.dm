@@ -3,7 +3,7 @@
 	var/list/silicon_subsystems = list(
 		/datum/nano_module/alarm_monitor/all,
 		/datum/nano_module/law_manager,
-		/datum/nano_module/records/ai
+		/datum/nano_module/records
 	)
 
 /mob/living/silicon/ai/New()

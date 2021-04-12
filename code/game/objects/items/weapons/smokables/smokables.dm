@@ -85,36 +85,32 @@
 #undef MIN_OXIDIZER_PRESSURE_TO_SMOKE
 
 /obj/item/clothing/mask/smokable/proc/light(atom/used_tool, mob/holder) // both arguments are optional
-	if(src.lit)
-		return
+	if(!src.lit)
+		src.lit = 1
 
-	src.lit = TRUE
-	if(src.atom_flags & ATOM_FLAG_NO_REACT)
-		src.atom_flags &= ~ATOM_FLAG_NO_REACT
+		damtype = BURN
+		force = initial(force) + 2
 
-	damtype = BURN
-	force = initial(force) + 2
+		var/explosion_amount = 0
 
-	var/explosion_amount = 0
+		if(reagents.get_reagent_amount(/datum/reagent/toxin/plasma))
+			explosion_amount += reagents.get_reagent_amount(/datum/reagent/toxin/plasma)
+		if(reagents.get_reagent_amount(/datum/reagent/fuel))
+			explosion_amount += reagents.get_reagent_amount(/datum/reagent/fuel) / 2
 
-	if(reagents.get_reagent_amount(/datum/reagent/toxin/plasma))
-		explosion_amount += reagents.get_reagent_amount(/datum/reagent/toxin/plasma)
-	if(reagents.get_reagent_amount(/datum/reagent/fuel))
-		explosion_amount += reagents.get_reagent_amount(/datum/reagent/fuel) / 2
+		if(explosion_amount)
+			var/datum/effect/effect/system/reagents_explosion/e = new()
+			e.set_up(explosion_amount, src, 0, 0)
+			e.start()
+			qdel(src)
+			return
 
-	if(explosion_amount)
-		var/datum/effect/effect/system/reagents_explosion/e = new()
-		e.set_up(explosion_amount, src, 0, 0)
-		e.start()
-		qdel(src)
-		return
-
-	update_icon()
-	var/turf/T = get_turf(src)
-	T.visible_message(generate_lighting_message(used_tool, holder))
-	set_light(2, 0.25, "#e38f46")
-	smokeamount = reagents.total_volume / smoketime
-	START_PROCESSING(SSobj, src)
+		update_icon()
+		var/turf/T = get_turf(src)
+		T.visible_message(generate_lighting_message(used_tool, holder))
+		set_light(2, 0.25, "#e38f46")
+		smokeamount = reagents.total_volume / smoketime
+		START_PROCESSING(SSobj, src)
 
 /obj/item/clothing/mask/smokable/proc/die(nomessage = FALSE, nodestroy = FALSE)
 	set_light(0)

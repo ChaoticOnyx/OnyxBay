@@ -593,11 +593,7 @@
 	M.radiation = max(M.radiation - 70 * removed, 0)
 	M.adjustToxLoss(-10 * removed)
 	if(prob(60))
-		if(ishuman(M))
-			var/mob/living/carbon/human/human = M
-			human.take_organic_organ_damage(4 * removed, 0)
-		else
-			M.take_organ_damage(4 * removed, 0)
+		M.take_organ_damage(4 * removed, 0)
 
 /datum/reagent/spaceacillin
 	name = "Spaceacillin"

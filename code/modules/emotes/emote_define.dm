@@ -106,9 +106,9 @@
 	if(message_type == AUDIBLE_MESSAGE)
 		play_emote_sound(user, key, user_gender)
 
-		user.audible_message(message = use_3p, deaf_message = emote_message_impaired, checkghosts = /datum/client_preference/ghost_sight)
+		user.audible_message(message = use_3p, self_message = use_1p, deaf_message = emote_message_impaired, checkghosts = /datum/client_preference/ghost_sight)
 	else
-		user.visible_message(message = use_3p, blind_message = emote_message_impaired, checkghosts = /datum/client_preference/ghost_sight)
+		user.visible_message(message = use_3p, self_message = use_1p, blind_message = emote_message_impaired, checkghosts = /datum/client_preference/ghost_sight)
 
 	do_extra(user, target)
 

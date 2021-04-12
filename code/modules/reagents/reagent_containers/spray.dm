@@ -17,93 +17,60 @@
 	var/spray_size = 3
 	var/list/spray_sizes = list(1,3)
 	var/step_delay = 10 // lower is faster
-	var/widespray = FALSE
 	volume = 250
-	var/obj/item/weapon/reagent_containers/external_container = null // Using an external reagent container (i.e. backwear spray)
 
 /obj/item/weapon/reagent_containers/spray/Initialize()
 	. = ..()
 	src.verbs -= /obj/item/weapon/reagent_containers/verb/set_APTFT
 
-/obj/item/weapon/reagent_containers/spray/afterattack(atom/A as mob|obj, mob/user, proximity)
-	if(istype(A, /obj/item/weapon/storage) || istype(A, /obj/structure/table) || istype(A, /obj/structure/closet) || istype(A, /obj/item/weapon/reagent_containers) || istype(A, /obj/structure/sink) || istype(A, /obj/structure/janitorialcart) || istype(A, /obj/item/weapon/backwear/reagent))
+/obj/item/weapon/reagent_containers/spray/afterattack(atom/A as mob|obj, mob/user as mob, proximity)
+	if(istype(A, /obj/item/weapon/storage) || istype(A, /obj/structure/table) || istype(A, /obj/structure/closet) || istype(A, /obj/item/weapon/reagent_containers) || istype(A, /obj/structure/sink) || istype(A, /obj/structure/janitorialcart))
 		return
 
 	if(istype(A, /spell))
 		return
 
-	var/obj/item/weapon/reagent_containers/actual_container = external_container ? external_container : src
-
 	if(proximity)
-		if(actual_container.standard_dispenser_refill(user, A))
+		if(standard_dispenser_refill(user, A))
 			return
 
-	if(actual_container.reagents.total_volume < amount_per_transfer_from_this)
-		to_chat(user, SPAN("notice", "\The [actual_container] is empty!"))
+	if(reagents.total_volume < amount_per_transfer_from_this)
+		to_chat(user, "<span class='notice'>\The [src] is empty!</span>")
 		return
 
 	if(!user.canClick()) // yeah there we go year 2019...
 		return
 
-	if(widespray)
-		Spray_at_wide(A, user)
-	else
-		Spray_at(A, user, proximity)
+	Spray_at(A, user, proximity)
 
 	user.setClickCooldown(DEFAULT_ATTACK_COOLDOWN)
 
-	if(actual_container.reagents.has_reagent(/datum/reagent/acid))
+	if(reagents.has_reagent(/datum/reagent/acid))
 		message_admins("[key_name_admin(user)] fired sulphuric acid from \a [src].")
 		log_game("[key_name(user)] fired sulphuric acid from \a [src].")
-	if(actual_container.reagents.has_reagent(/datum/reagent/acid/polyacid))
+	if(reagents.has_reagent(/datum/reagent/acid/polyacid))
 		message_admins("[key_name_admin(user)] fired Polyacid from \a [src].")
 		log_game("[key_name(user)] fired Polyacid from \a [src].")
-	if(actual_container.reagents.has_reagent(/datum/reagent/lube))
+	if(reagents.has_reagent(/datum/reagent/lube))
 		message_admins("[key_name_admin(user)] fired Space lube from \a [src].")
 		log_game("[key_name(user)] fired Space lube from \a [src].")
 	return
 
-/obj/item/weapon/reagent_containers/spray/proc/Spray_at(atom/A as mob|obj, mob/user, proximity)
-	var/obj/item/weapon/reagent_containers/actual_container = external_container ? external_container : src
-
+/obj/item/weapon/reagent_containers/spray/proc/Spray_at(atom/A as mob|obj, mob/user as mob, proximity)
 	playsound(src.loc, 'sound/effects/spray2.ogg', 50, 1, -6)
-	if(A.density && proximity)
+	if (A.density && proximity)
 		A.visible_message("[usr] sprays [A] with [src].")
-		actual_container.reagents.splash(A, amount_per_transfer_from_this)
+		reagents.splash(A, amount_per_transfer_from_this)
 	else
 		spawn(0)
 			var/obj/effect/effect/water/chempuff/D = new /obj/effect/effect/water/chempuff(get_turf(src))
 			var/turf/my_target = get_turf(A)
 			D.create_reagents(amount_per_transfer_from_this)
-			if(!src || !actual_container)
+			if(!src)
 				return
-			actual_container.reagents.trans_to_obj(D, amount_per_transfer_from_this)
+			reagents.trans_to_obj(D, amount_per_transfer_from_this)
 			D.set_color()
 			D.set_up(my_target, spray_size, step_delay)
-	return
-
-/obj/item/weapon/reagent_containers/spray/proc/Spray_at_wide(atom/A as mob|obj, mob/user)
-	var/obj/item/weapon/reagent_containers/actual_container = external_container ? external_container : src
-
-	playsound(src.loc, 'sound/effects/spray2.ogg', 75, 1, -3)
-	var/direction = get_dir(src, A)
-	var/turf/T = get_turf(A)
-	var/turf/T1 = get_step(T,turn(direction, 90))
-	var/turf/T2 = get_step(T,turn(direction, -90))
-	var/list/the_targets = list(T, T1, T2)
-
-	for(var/a = 1 to 3)
-		spawn(0)
-			if(actual_container.reagents.total_volume < 1)
-				break
-			var/obj/effect/effect/water/chempuff/D = new /obj/effect/effect/water/chempuff(get_turf(src))
-			var/turf/my_target = the_targets[a]
-			D.create_reagents(amount_per_transfer_from_this)
-			if(!src || !actual_container)
-				return
-			actual_container.reagents.trans_to_obj(D, amount_per_transfer_from_this)
-			D.set_color()
-			D.set_up(my_target, rand(6, 8), 2)
 	return
 
 /obj/item/weapon/reagent_containers/spray/attack_self(mob/user)
@@ -116,7 +83,7 @@
 /obj/item/weapon/reagent_containers/spray/examine(mob/user)
 	. = ..()
 	if(get_dist(src, user) <= 0 && loc == user)
-		. += "\n[round(external_container ? external_container.reagents.total_volume : reagents.total_volume)] unit\s left."
+		. += "\n[round(reagents.total_volume)] unit\s left."
 	return
 
 /obj/item/weapon/reagent_containers/spray/verb/empty()
@@ -213,7 +180,26 @@
 	volume = 600
 	origin_tech = list(TECH_COMBAT = 3, TECH_MATERIAL = 3, TECH_ENGINEERING = 3)
 	step_delay = 8
-	widespray = TRUE
+
+/obj/item/weapon/reagent_containers/spray/chemsprayer/Spray_at(atom/A as mob|obj)
+	var/direction = get_dir(src, A)
+	var/turf/T = get_turf(A)
+	var/turf/T1 = get_step(T,turn(direction, 90))
+	var/turf/T2 = get_step(T,turn(direction, -90))
+	var/list/the_targets = list(T, T1, T2)
+
+	for(var/a = 1 to 3)
+		spawn(0)
+			if(reagents.total_volume < 1) break
+			var/obj/effect/effect/water/chempuff/D = new /obj/effect/effect/water/chempuff(get_turf(src))
+			var/turf/my_target = the_targets[a]
+			D.create_reagents(amount_per_transfer_from_this)
+			if(!src)
+				return
+			reagents.trans_to_obj(D, amount_per_transfer_from_this)
+			D.set_color()
+			D.set_up(my_target, rand(6, 8), 2)
+	return
 
 /obj/item/weapon/reagent_containers/spray/plantbgone
 	name = "Plant-B-Gone"

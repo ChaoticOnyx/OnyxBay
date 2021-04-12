@@ -448,11 +448,11 @@ var/list/solars_list = list()
 
 /obj/machinery/power/solar_control/Topic(href, href_list)
 	if(..())
-		close_browser(usr, "window=solcon")
+		usr << browse(null, "window=solcon")
 		usr.unset_machine()
 		return 0
 	if(href_list["close"] )
-		close_browser(usr, "window=solcon")
+		usr << browse(null, "window=solcon")
 		usr.unset_machine()
 		return 0
 

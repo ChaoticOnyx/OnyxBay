@@ -117,4 +117,4 @@
 	if(!mob)
 		return
 
-	sound_to(mob, null)
+	mob << sound(null)

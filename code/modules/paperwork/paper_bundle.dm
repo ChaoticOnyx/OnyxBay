@@ -46,7 +46,7 @@
 		if(istype(W, /obj/item/weapon/tape_roll))
 			return 0
 		if(istype(W, /obj/item/weapon/pen))
-			close_browser(usr, "window=[name]") //Closes the dialog
+			usr << browse("", "window=[name]") //Closes the dialog
 		var/obj/P = pages[page]
 		P.attackby(W, user)
 
@@ -127,16 +127,15 @@
 			dat+= "<HTML><HEAD><TITLE>[P.name]</TITLE></HEAD><BODY>[stars(P.info)][P.stamps]</BODY></HTML>"
 		else
 			dat+= "<HTML><HEAD><TITLE>[P.name]</TITLE></HEAD><BODY>[P.info][P.stamps]</BODY></HTML>"
-		show_browser(user, dat, "window=[name]")
+		user << browse(dat, "window=[name]")
 	else if(istype(pages[page], /obj/item/weapon/photo))
 		var/obj/item/weapon/photo/P = W
-		send_rsc(user, P.img, "tmp_photo.png")
-		dat += "<html><head><title>[P.name]</title></head>" \
+		user << browse_rsc(P.img, "tmp_photo.png")
+		user << browse(dat + "<html><head><title>[P.name]</title></head>" \
 		+ "<body style='overflow:hidden'>" \
 		+ "<div> <img src='tmp_photo.png' width = '180'" \
 		+ "[P.scribble ? "<div> Written on the back:<br><i>[P.scribble]</i>" : null ]"\
-		+ "</body></html>"
-		show_browser(user, dat, "window=[name]")
+		+ "</body></html>", "window=[name]")
 
 /obj/item/weapon/paper_bundle/attack_self(mob/user as mob)
 	src.show_content(user)

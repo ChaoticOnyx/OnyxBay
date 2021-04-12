@@ -65,14 +65,14 @@
 		<A href='byond://?src=\ref[src];code=5'>+</A><BR>
 		[t1]
 		</TT>"}
-	show_browser(user, dat, "window=radio")
+	user << browse(dat, "window=radio")
 	onclose(user, "radio")
 	return
 
 
 /obj/item/device/assembly/signaler/Topic(href, href_list, state = GLOB.physical_state)
 	if((. = ..()))
-		close_browser(usr, "window=radio")
+		usr << browse(null, "window=radio")
 		onclose(usr, "radio")
 		return
 

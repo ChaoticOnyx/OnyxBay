@@ -22,7 +22,7 @@ var/list/gamemode_cache = list()
 	var/log_adminwarn = 0					// Log warnings admins get about bomb construction and such
 	var/log_pda = 0							// Log pda messages
 	var/log_hrefs = 0						// Log all links clicked in-game. Could be used for debugging and tracking down exploits
-	var/log_world_output = 0				// Log to_world_log(messages)
+	var/log_world_output = 0				// Log world.log << messages
 
 	var/sql_enabled = FALSE					// SQL storage. If you want to enable it, use sql_enabled var in config file
 

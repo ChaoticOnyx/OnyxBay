@@ -271,7 +271,7 @@
 		dat += "Moving: <a href='?src=\ref[src];operation=togglemoving'>[moving ? "Enabled":"Disabled"]</a>"
 
 
-		show_browser(user, dat, "window=magnet;size=400x500")
+		user << browse(dat, "window=magnet;size=400x500")
 		onclose(user, "magnet")
 
 	Topic(href, href_list)

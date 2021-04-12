@@ -6,14 +6,11 @@
 	if(!istype(M))
 		return
 
-	if(!is_valid_target(M))
-		return
-
-	if(issmall(M) || prob(round(seed.get_trait(TRAIT_POTENCY) / 6)))
+	if(issmall(M) || prob(round(seed.get_trait(TRAIT_POTENCY)/6)))
 		//wait a tick for the Entered() proc that called HasProximity() to finish (and thus the moving animation),
 		//so we don't appear to teleport from two tiles away when moving into a turf adjacent to vines.
 		spawn(1)
-			if(prob(seed.get_trait(((TRAIT_POTENCY) / 2) * 3)))
+			if(prob(seed.get_trait(((TRAIT_POTENCY)/2)*3)))
 				entangle(M)
 
 /obj/effect/vine/attack_hand(mob/user)
@@ -28,12 +25,10 @@
 		trodden_on(O)
 
 /obj/effect/vine/proc/trodden_on(mob/living/victim)
-	if(!is_valid_target(victim)) // Aight man ye good
-		return
 	wake_neighbors()
 	if(!is_mature())
 		return
-	if(prob(seed.get_trait(((TRAIT_POTENCY) / 2) * 3)))
+	if(prob(seed.get_trait(((TRAIT_POTENCY)/2)*3)))
 		entangle(victim)
 	var/mob/living/carbon/human/H = victim
 	if(istype(H) && H.shoes)
@@ -99,10 +94,3 @@
 	. = ..()
 	if(.)
 		START_PROCESSING(SSvines, src)
-
-/obj/effect/vine/proc/is_valid_target(mob/living/M)
-	if(!M)
-		return 0
-	if(M.faction == "floral")
-		return 0
-	return 1

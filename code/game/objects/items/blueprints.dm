@@ -86,7 +86,7 @@ move an amendment</a> to the drawing, or <a href='?src=\ref[src];action=delete_a
 		else
 			return
 	text += "</BODY></HTML>"
-	show_browser(user, text, "window=blueprints")
+	user << browse(text, "window=blueprints")
 	onclose(user, "blueprints")
 
 

@@ -143,7 +143,7 @@
 
 	dat += "</b></center>"
 
-	show_browser(user, dat, "window=arcade")
+	user << browse(dat, "window=arcade")
 	onclose(user, "arcade")
 	return
 

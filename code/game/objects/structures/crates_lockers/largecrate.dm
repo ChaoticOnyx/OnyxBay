@@ -5,7 +5,6 @@
 	icon_state = "densecrate"
 	density = 1
 	atom_flags = ATOM_FLAG_CLIMBABLE
-	pull_slowdown = PULL_SLOWDOWN_HEAVY
 
 /obj/structure/largecrate/Initialize()
 	. = ..()

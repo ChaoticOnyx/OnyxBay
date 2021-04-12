@@ -440,7 +440,7 @@
 /obj/item/weapon/cartridge/Topic(href, href_list)
 	if((. = ..()))
 		usr.unset_machine()
-		close_browser(usr, "window=pda")
+		usr << browse(null, "window=pda")
 		return
 
 	switch(href_list["choice"])

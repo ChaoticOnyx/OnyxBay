@@ -36,8 +36,8 @@ proc/make_report(body, author, okey, cid)
 	var/list/reports
 	var/lastID
 
-	from_file(Reports["reports"], reports)
-	from_file(Reports["lastID"], lastID)
+	Reports["reports"]   >> reports
+	Reports["lastID"] >> lastID
 
 	if(!reports) 	reports = list()
 	if(!lastID) 	lastID = 0
@@ -60,10 +60,9 @@ proc/load_reports()
 	var/savefile/Reports = new("data/reports.sav")
 	var/list/reports
 
-	from_file(Reports["reports"], reports)
+	Reports["reports"] >> reports
 
-	if(!reports)
-		reports = list()
+	if(!reports) reports = list()
 
 	return reports
 
@@ -115,7 +114,7 @@ client/proc/display_admin_reports()
 	else
 		output += "Whoops, no reports!"
 
-	show_browser(usr, output, "window=news;size=600x400")
+	usr << browse(output, "window=news;size=600x400")
 
 
 client/proc/Report(mob/M as mob in mob_list)
@@ -143,7 +142,7 @@ client/proc/mark_report_done(ID as num)
 	var/savefile/Reports = new("data/reports.sav")
 	var/list/reports
 
-	from_file(Reports["reports"], reports)
+	Reports["reports"]   >> reports
 
 	var/datum/admin_report/found
 	for(var/datum/admin_report/N in reports)
@@ -162,7 +161,7 @@ client/proc/edit_report(ID as num)
 	var/savefile/Reports = new("data/reports.sav")
 	var/list/reports
 
-	from_file(Reports["reports"], reports)
+	Reports["reports"]   >> reports
 
 	var/datum/admin_report/found
 	for(var/datum/admin_report/N in reports)

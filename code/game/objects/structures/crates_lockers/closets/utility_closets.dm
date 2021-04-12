@@ -79,7 +79,6 @@
 	new /obj/item/weapon/tank/oxygen/red(src)
 	new /obj/item/weapon/extinguisher(src)
 	new /obj/item/clothing/head/hardhat/red(src)
-	new /obj/item/weapon/backwear/reagent/extinguisher(src)
 
 /obj/structure/closet/firecloset/full/New()
 	..()
@@ -90,7 +89,6 @@
 	new /obj/item/weapon/tank/oxygen/red(src)
 	new /obj/item/weapon/extinguisher(src)
 	new /obj/item/clothing/head/hardhat/red(src)
-	new /obj/item/weapon/backwear/reagent/extinguisher(src)
 
 /obj/structure/closet/firecloset/update_icon()
 	if(!opened)
@@ -220,7 +218,6 @@
 	new /obj/item/weapon/tank/oxygen/red(src)
 	new /obj/item/weapon/extinguisher(src)
 	new /obj/item/clothing/head/hardhat/red(src)
-	new /obj/item/weapon/backwear/reagent/extinguisher(src)
 
 /*
  * First Aid

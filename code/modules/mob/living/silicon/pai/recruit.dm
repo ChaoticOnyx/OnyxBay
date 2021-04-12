@@ -47,7 +47,7 @@ var/datum/paiController/paiController			// Global handler for pAI candidates
 				update_antag_icons(pai.mind)
 
 			pai_candidates -= candidate
-			close_browser(usr, "window=findPai")
+			usr << browse(null, "window=findPai")
 
 	if(href_list["new"])
 		var/datum/paiCandidate/candidate = locate(href_list["candidate"])
@@ -93,7 +93,7 @@ var/datum/paiController/paiController			// Global handler for pAI candidates
 					for(var/obj/item/device/paicard/p in world)
 						if(p.looking_for_personality == 1)
 							p.alertUpdate()
-				close_browser(usr, "window=paiRecruit")
+				usr << browse(null, "window=paiRecruit")
 				return
 
 		recruitWindow(usr, href_list["allow_submit"] != "0")
@@ -228,7 +228,7 @@ var/datum/paiController/paiController			// Global handler for pAI candidates
 	<body>
 	"}
 
-	show_browser(M, dat, "window=paiRecruit;size=580x580;")
+	M << browse(dat, "window=paiRecruit;size=580x580;")
 
 /datum/paiController/proc/findPAI(obj/item/device/paicard/p, mob/user)
 	requestRecruits(user)
@@ -345,7 +345,7 @@ var/datum/paiController/paiController			// Global handler for pAI candidates
 		</html>
 	"}
 
-	show_browser(user, dat, "window=findPai")
+	user << browse(dat, "window=findPai")
 
 
 /datum/paiController/proc/requestRecruits(mob/user)

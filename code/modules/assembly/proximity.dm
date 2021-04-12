@@ -41,10 +41,6 @@
 		return
 	if(istype(AM, /obj/effect/beam))
 		return
-	if(istype(AM, /obj/effect/dummy/spell_jaunt))
-		return
-	if(isobserver(AM))
-		return
 	if(AM.move_speed < 12)
 		sense()
 
@@ -111,14 +107,14 @@
 	dat += "<BR><A href='?src=\ref[src];scanning=1'>[scanning?"Armed":"Unarmed"]</A> (Movement sensor active when armed!)"
 	dat += "<BR><BR><A href='?src=\ref[src];refresh=1'>Refresh</A>"
 	dat += "<BR><BR><A href='?src=\ref[src];close=1'>Close</A>"
-	show_browser(user, dat, "window=prox")
+	user << browse(dat, "window=prox")
 	onclose(user, "prox")
 	return
 
 
 /obj/item/device/assembly/prox_sensor/Topic(href, href_list, state = GLOB.physical_state)
 	if((. = ..()))
-		close_browser(usr, "window=prox")
+		usr << browse(null, "window=prox")
 		onclose(usr, "prox")
 		return
 
@@ -143,7 +139,7 @@
 			proximity_monitor.SetRange(range)
 
 	if(href_list["close"])
-		close_browser(usr, "window=prox")
+		usr << browse(null, "window=prox")
 		return
 
 	if(usr)

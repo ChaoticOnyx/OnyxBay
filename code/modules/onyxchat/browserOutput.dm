@@ -49,7 +49,7 @@ GLOBAL_LIST_EMPTY(cookie_match_history)
 	var/datum/asset/stuff = get_asset_datum(/datum/asset/group/onyxchat)
 	stuff.send(owner)
 
-	show_browser(owner, file('code/modules/onyxchat/browserassets/html/browserOutput.html'), "window=browseroutput")
+	owner << browse(file('code/modules/onyxchat/browserassets/html/browserOutput.html'), "window=browseroutput")
 
 /datum/chatOutput/Topic(href, list/href_list)
 	if(usr.client != owner)
@@ -108,7 +108,7 @@ GLOBAL_LIST_EMPTY(cookie_match_history)
 	sendClientData()
 
 	//do not convert to to_chat()
-	to_target(owner, "<span class=\"userdanger\">Failed to load fancy chat, reverting to old chat. Certain features won't work.</span>")
+	owner << "<span class=\"userdanger\">Failed to load fancy chat, reverting to old chat. Certain features won't work.</span>"
 
 /datum/chatOutput/proc/showChat()
 	winset(owner, "output", "is-visible=false")
@@ -117,7 +117,7 @@ GLOBAL_LIST_EMPTY(cookie_match_history)
 /datum/chatOutput/proc/ehjax_send(client/C = owner, window = "browseroutput", data)
 	if(islist(data))
 		data = json_encode(data)
-	to_target(C, output("[data]", "[window]:ehjaxCallback"))
+	C << output("[data]", "[window]:ehjaxCallback")
 
 //Sends client connection details to the chat to handle and save
 /datum/chatOutput/proc/sendClientData()
@@ -171,14 +171,14 @@ GLOBAL_LIST_EMPTY(cookie_match_history)
 	log_to_dd("\[[time2text(world.realtime, "YYYY-MM-DD hh:mm:ss")]\] Client: [(src.owner.key ? src.owner.key : src.owner)] triggered JS error: [error]")
 
 //Global chat procs
-/proc/to_chat(target, message, handle_whitespace = TRUE)
+/proc/to_chat(target, message, handle_whitespace=TRUE)
 	set background = TRUE
 
 	if(!target)
 		return
 
 	if (isfile(target))
-		to_target(target, message)
+		target << message
 		return
 
 	if(target == world)
@@ -216,7 +216,10 @@ GLOBAL_LIST_EMPTY(cookie_match_history)
 			C.chatOutput.messageQueue += message
 			continue
 
-		send_output(C, twiceEncoded, "browseroutput:output")
+		C << output(twiceEncoded, "browseroutput:output")
+
+/proc/to_world(message)
+	to_chat(world, message)
 
 /datum/chatOutput/proc/swaptolightmode() //Dark mode light mode stuff. Yell at KMC if this breaks! (See darkmode.dm for documentation)
 	owner.force_white_theme()

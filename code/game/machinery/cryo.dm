@@ -204,12 +204,10 @@
 
 	if(href_list["biochemicalStasisOn"])
 		biochemical_stasis = 1
-		update_icon()
 		return TOPIC_REFRESH
 
 	if(href_list["biochemicalStasisOff"])
 		biochemical_stasis = 0
-		update_icon()
 		return TOPIC_REFRESH
 
 	. = ..()
@@ -244,15 +242,15 @@
 
 /obj/machinery/atmospherics/unary/cryo_cell/update_icon()
 	overlays.Cut()
-	var/overlays_state = 0
 	if(stat & (BROKEN|NOPOWER))
-		overlays_state = 0
+		icon_state = "pod0"
 	else
-		overlays_state = !on ? 0 : biochemical_stasis ? 2 : 1
-
-	icon_state = "pod[overlays_state]"
+		icon_state = "pod[on]"
 	var/image/I
-	I = image(icon, "pod[overlays_state]_top")
+	if(stat & (BROKEN|NOPOWER))
+		I = image(icon, "pod0_top")
+	else
+		I = image(icon, "pod[on]_top")
 
 	I.pixel_z = 32
 	overlays += I
@@ -265,10 +263,16 @@
 		overlays += pickle
 		occupant_icon_update_timer = world.time + 30
 
-	I = image(icon, "lid[overlays_state]")
+	if(stat & (BROKEN|NOPOWER))
+		I = image(icon, "lid0")
+	else
+		I = image(icon, "lid[on]")
 	overlays += I
 
-	I = image(icon, "lid[overlays_state]_top")
+	if(stat & (BROKEN|NOPOWER))
+		I = image(icon, "lid0_top")
+	else
+		I = image(icon, "lid[on]_top")
 	I.pixel_z = 32
 	overlays += I
 

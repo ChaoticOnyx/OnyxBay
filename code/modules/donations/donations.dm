@@ -19,7 +19,7 @@ SUBSYSTEM_DEF(donations)
 
 	var/savefile/F = new(DONATIONS_DB_CREDENTIALS_SAVEFILE)
 	if("credentials" in F)
-		from_file(F["credentials"], credentials)
+		F["credentials"] >> credentials
 
 	if(!credentials)
 		return
@@ -71,8 +71,8 @@ SUBSYSTEM_DEF(donations)
 
 	if(result)
 		var/savefile/F = new(DONATIONS_DB_CREDENTIALS_SAVEFILE)
-		if(F)
-			to_file(F["credentials"], credentials)
+		if (F)
+			F["credentials"] << credentials
 		log_debug("Donations DB credentials were updated!")
 #undef DONATIONS_DB_CREDENTIALS_SAVEFILE
 
@@ -308,11 +308,11 @@ SUBSYSTEM_DEF(donations)
 	switch(href_list["action"])
 		if("go_to_patreon")
 			log_debug("\[Donations] patreon link used by '[user]'")
-			send_link(user, config.patreonurl)
+			user << link(config.patreonurl)
 			return 1
 		if("go_to_discord")
 			log_debug("\[Donations] discord link used by '[user]'")
-			send_link(user, config.discordurl)
+			user << link(config.discordurl)
 			return 1
 
 	return 0

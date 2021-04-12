@@ -35,7 +35,7 @@
 		dat += "<A href='?src=\ref[src];refresh=1'>(Refresh)</A><BR>"
 		dat += "</body></html>"
 
-		show_browser(user, dat, "window=computer;size=400x500")
+		user << browse(dat, "window=computer;size=400x500")
 		onclose(user, "computer")
 		return
 

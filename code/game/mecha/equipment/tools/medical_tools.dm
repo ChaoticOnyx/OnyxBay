@@ -100,11 +100,11 @@
 	if(F.get("eject"))
 		go_out()
 	if(F.get("view_stats"))
-		show_browser(chassis.occupant, get_occupant_stats(), "window=msleeper")
+		chassis.occupant << browse(get_occupant_stats(),"window=msleeper")
 		onclose(chassis.occupant, "msleeper")
 		return
 	if(F.get("inject"))
-		inject_reagent(F.getType("inject", /datum/reagent), F.getObj("source"))
+		inject_reagent(F.getType("inject",/datum/reagent),F.getObj("source"))
 	return
 
 /obj/item/mecha_parts/mecha_equipment/tool/sleeper/proc/get_occupant_stats()
@@ -348,7 +348,7 @@
 			log_message("Reagent processing started.")
 		return
 	if(F.get("show_reagents"))
-		show_browser(chassis.occupant, get_reagents_page(), "window=msyringegun")
+		chassis.occupant << browse(get_reagents_page(),"window=msyringegun")
 	if(F.get("purge_reagent"))
 		var/datum/reagent/R = locate(F.get("purge_reagent")) in reagents.reagent_list
 		if(R)

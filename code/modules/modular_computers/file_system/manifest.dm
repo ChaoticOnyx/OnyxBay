@@ -59,12 +59,14 @@
 		else
 			isactive[name] = CR.get_status_physical()
 
-		var/found_place = FALSE
-		for(var/list/department in dept_data)
-			var/list/names = department["names"]
-			if(CR.get_department() && (GLOB.text_to_department_flags[CR.get_department()] & department["flag"]))
-				names[name] = rank
-				found_place = TRUE
+		var/datum/job/job = job_master.occupations_by_title[rank]
+		var/found_place = 0
+		if(job)
+			for(var/list/department in dept_data)
+				var/list/names = department["names"]
+				if(job.department_flag & department["flag"])
+					names[name] = rank
+					found_place = 1
 		if(!found_place)
 			misc[name] = rank
 

@@ -17,6 +17,7 @@
 
 
 /datum/browser/New(nuser, nwindow_id, ntitle = 0, nwidth = 0, nheight = 0, atom/nref = null)
+
 	user = nuser
 	window_id = nwindow_id
 	if (ntitle)
@@ -74,12 +75,12 @@
 	var/filename
 	for (key in stylesheets)
 		filename = "[ckey(key)].css"
-		send_rsc(user, stylesheets[key], filename)
+		user << browse_rsc(stylesheets[key], filename)
 		head_content += "<link rel='stylesheet' type='text/css' href='[filename]'>"
 
 	for (key in scripts)
 		filename = "[ckey(key)].js"
-		send_rsc(user, scripts[key], filename)
+		user << browse_rsc(scripts[key], filename)
 		head_content += "<script type='text/javascript' src='[filename]'></script>"
 
 	var/title_attributes = "class='uiTitle'"
@@ -117,13 +118,10 @@
 	var/window_size = ""
 	if (width && height)
 		window_size = "size=[width]x[height];"
-	show_browser(user, get_content(), "window=[window_id];[window_size][window_options]")
+	user << browse(get_content(), "window=[window_id];[window_size][window_options]")
 	spawn()
-		if(!user.client)
-			return
-
 		winset(user, "mapwindow.map", "focus=true")
-	if(use_onclose)
+	if (use_onclose)
 		onclose(user, window_id, ref)
 
 /datum/browser/proc/update(force_open = 0, use_onclose = 1)
@@ -133,12 +131,8 @@
 		send_output(user, get_content(), "[window_id].browser")
 
 /datum/browser/proc/close()
-	close_browser(user, "window=[window_id]")
-
+	user << browse(null, "window=[window_id]")
 	spawn()
-		if(!user.client)
-			return
-
 		winset(user, "mapwindow.map", "focus=true")
 
 // This will allow you to show an icon in the browse window
@@ -154,7 +148,7 @@
 		dir = "default"
 
 	var/filename = "[ckey("[icon]_[icon_state]_[dir]")].png"
-	send_rsc(src, I, filename)
+	src << browse_rsc(I, filename)
 	return filename
 	*/
 
@@ -166,7 +160,7 @@
 // e.g. canisters, timers, etc.
 //
 // windowid should be the specified window name
-// e.g. code is	: show_browser(user, text, "window=fred")
+// e.g. code is	: user << browse(text, "window=fred")
 // then use 	: onclose(user, "fred")
 //
 // Optionally, specify the "ref" parameter as the controlled atom (usually src)

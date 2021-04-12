@@ -404,7 +404,7 @@
 		to_chat(src, "<span class='warning'>Low Power.</span>")
 		return
 	var/dat = self_diagnosis()
-	show_browser(src, dat, "window=robotdiagnosis")
+	src << browse(dat, "window=robotdiagnosis")
 
 
 /mob/living/silicon/robot/verb/toggle_component()
@@ -840,7 +840,7 @@
 		else
 			dat += text("[obj]: \[<A HREF=?src=\ref[src];act=\ref[obj]>Activate</A> | <B>Deactivated</B>\]<BR>")
 */
-	show_browser(src, dat, "window=robotmod")
+	src << browse(dat, "window=robotmod")
 
 
 /mob/living/silicon/robot/Topic(href, href_list)
@@ -1223,8 +1223,3 @@
 		ion_trail.stop()
 		qdel(ion_trail)
 		ion_trail = null
-
-/mob/living/silicon/robot/lay_down()
-	set category = null
-
-	return

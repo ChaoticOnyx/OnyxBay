@@ -78,7 +78,7 @@ var/list/wireColours = list("red", "blue", "green", "darkred", "orange", "brown"
 	else
 		user.unset_machine()
 		// No content means no window.
-		close_browser(user, "window=wires")
+		user << browse(null, "window=wires")
 		return
 
 	var/datum/browser/popup = new(user, "wires", holder.name, window_x, window_y)
@@ -151,7 +151,7 @@ var/list/wireColours = list("red", "blue", "green", "darkred", "orange", "brown"
 			Interact(usr)
 
 	if(href_list["close"])
-		close_browser(usr, "window=wires")
+		usr << browse(null, "window=wires")
 		usr.unset_machine(holder)
 
 //

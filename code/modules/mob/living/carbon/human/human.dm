@@ -83,6 +83,14 @@
 		if(stomach)
 			stomach.metabolize()
 
+/mob/living/carbon/human/get_fullness()
+	if(!should_have_organ(BP_STOMACH))
+		return ..()
+	var/obj/item/organ/internal/stomach/stomach = internal_organs_by_name[BP_STOMACH]
+	if(stomach)
+		return nutrition + (stomach.ingested.total_volume * 10)
+	return 0 //Always hungry, but you can't actually eat. :(
+
 /mob/living/carbon/human/Stat()
 	. = ..()
 	if(statpanel("Status"))
@@ -613,7 +621,7 @@
 
 		switch(href_list["flavor_change"])
 			if("done")
-				show_browser(src, null, "window=flavor_changes")
+				src << browse(null, "window=flavor_changes")
 				return
 			if("general")
 				var/msg = sanitize(input(usr,"Update the general description of your character. This will be shown regardless of clothing, and may NOT include OOC notes and preferences.","Flavor Text",html_decode(flavor_texts[href_list["flavor_change"]])) as message, extra = 0)
@@ -1176,7 +1184,7 @@
 		if(gender in BB.genders)
 			body_build = BB
 			return 1
-	to_world_log("Can't find possible body_build. Gender = [gender], Species = [species]")
+	world.log << "Can't find possible body_build. Gender = [gender], Species = [species]"
 	return 0
 
 /mob/living/carbon/human/proc/bloody_doodle()

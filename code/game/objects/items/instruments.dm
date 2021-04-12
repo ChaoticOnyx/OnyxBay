@@ -627,12 +627,12 @@
 		else
 			dat += "<A href='?src=\ref[src];help=2'>Show Help</A><BR>"
 	dat += "</BODY></HTML>"
-	show_browser(user, dat, "window=instrument;size=700x300")
+	user << browse(dat, "window=instrument;size=700x300")
 	onclose(user, "instrument")
 
 /obj/item/instrument/Topic(href, href_list)
 	if((. = ..()))
-		close_browser(usr, "window=instrument;size=700x300")
+		usr << browse(null, "window=instrument;size=700x300")
 		onclose(usr, "instrument")
 		return
 

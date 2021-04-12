@@ -12,4 +12,4 @@
 	var/dat = "<meta charset=\"utf-8\"><B>Showing last [length(GLOB.lastsignalers)] signalers.</B><HR>"
 	for(var/sig in GLOB.lastsignalers)
 		dat += "[sig]<BR>"
-	show_browser(user, dat, "window=lastsignalers;size=800x500")
+	user << browse(dat, "window=lastsignalers;size=800x500")

@@ -245,7 +245,7 @@
 			if("nostats")
 				option = "NOSTATS"
 			if("later")
-				close_browser(usr, "window=privacypoll")
+				usr << browse(null,"window=privacypoll")
 				return
 			if("abstain")
 				option = "ABSTAIN"
@@ -258,7 +258,7 @@
 			var/DBQuery/query_insert = dbcon.NewQuery(sql)
 			query_insert.Execute()
 			to_chat(usr, "<b>Thank you for your vote!</b>")
-			close_browser(usr, "window=privacypoll")
+			usr << browse(null,"window=privacypoll")
 
 	if(!ready && href_list["preference"])
 		if(client)
@@ -414,7 +414,7 @@
 		if(character.mind.assigned_role != "Cyborg")
 			CreateModularRecord(character)
 			SSticker.minds += character.mind//Cyborgs and AIs handle this in the transform proc.	//TODO!!!!! ~Carn
-
+			
 		AnnounceArrival(character.real_name, job, spawnpoint)
 
 		matchmaker.do_matchmaking()
@@ -466,7 +466,7 @@
 				dat += "<tr><td><a href='byond://?src=\ref[src];SelectedJob=[job.title]'>[job.title]</a></td><td>[job.current_positions]</td><td>(Active: [active])</td></tr>"
 
 	dat += "</table></center>"
-	show_browser(src, jointext(dat, null), "window=latechoices;size=450x640;can_close=1")
+	src << browse(jointext(dat, null), "window=latechoices;size=450x640;can_close=1")
 
 /mob/new_player/proc/create_character(turf/spawn_turf)
 	spawning = 1
@@ -561,7 +561,7 @@
 /mob/new_player/proc/ViewManifest()
 	var/dat = "<div align='center'>"
 	dat += html_crew_manifest(OOC = 1)
-	//show_browser(src, dat, "window=manifest;size=370x420;can_close=1")
+	//src << browse(dat, "window=manifest;size=370x420;can_close=1")
 	var/datum/browser/popup = new(src, "Crew Manifest", "Crew Manifest", 370, 420, src)
 	popup.set_content(dat)
 	popup.open()
@@ -570,7 +570,7 @@
 	return 0
 
 /mob/new_player/proc/close_spawn_windows()
-	show_browser(src, null, "window=latechoices") //closes late choices window
+	src << browse(null, "window=latechoices") //closes late choices window
 	panel.close()
 
 /mob/new_player/has_admin_rights()

@@ -70,12 +70,12 @@
 	dat += text("<TT><B>Infrared Laser</B>\n<B>Status</B>: []<BR>\n<B>Visibility</B>: []<BR>\n</TT>", (on ? text("<A href='?src=\ref[];state=0'>On</A>", src) : text("<A href='?src=\ref[];state=1'>Off</A>", src)), (src.visible ? text("<A href='?src=\ref[];visible=0'>Visible</A>", src) : text("<A href='?src=\ref[];visible=1'>Invisible</A>", src)))
 	dat += "<BR><BR><A href='?src=\ref[src];refresh=1'>Refresh</A>"
 	dat += "<BR><BR><A href='?src=\ref[src];close=1'>Close</A>"
-	show_browser(user, jointext(dat,null), "window=infra")
+	user << browse(jointext(dat,null), "window=infra")
 	onclose(user, "infra")
 
 /obj/item/device/assembly/infra/Topic(href, href_list, state = GLOB.physical_state)
 	if(..())
-		close_browser(usr, "window=infra")
+		usr << browse(null, "window=infra")
 		onclose(usr, "infra")
 		return 1
 
@@ -87,7 +87,7 @@
 		update_icon()
 
 	if(href_list["close"])
-		close_browser(usr, "window=infra")
+		usr << browse(null, "window=infra")
 		return
 
 	if(usr)

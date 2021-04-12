@@ -19,7 +19,7 @@
 	return
 
 /datum/extension/interactive/multitool/proc/close_window(mob/user)
-	close_browser(user, "window=multitool")
+	user << browse(null, "window=multitool")
 
 /datum/extension/interactive/multitool/proc/buffer(obj/item/device/multitool/multitool)
 	. += "<b>Buffer Memory:</b><br>"

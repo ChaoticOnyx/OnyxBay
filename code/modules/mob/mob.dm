@@ -161,19 +161,14 @@
 		. += 10 + (weakened * 2)
 
 	if(pulling)
-		var/area/A = get_area(src)
-		if(A.has_gravity)
-			if(istype(pulling, /obj))
-				var/obj/O = pulling
-				if(O.pull_slowdown == PULL_SLOWDOWN_WEIGHT)
-					. += between(0, O.w_class, ITEM_SIZE_GARGANTUAN) / 5
-				else
-					. += O.pull_slowdown
-			else if(istype(pulling, /mob))
-				var/mob/M = pulling
-				. += max(0, M.mob_size) / MOB_MEDIUM * (M.lying ? 2 : 0.5)
-			else
-				. += 1
+		if(istype(pulling, /obj))
+			var/obj/O = pulling
+			. += between(0, O.w_class, ITEM_SIZE_GARGANTUAN) / 5
+		else if(istype(pulling, /mob))
+			var/mob/M = pulling
+			. += max(0, M.mob_size) / MOB_MEDIUM
+		else
+			. += 1
 
 /mob/proc/Life()
 //	if(organStructure)
@@ -287,9 +282,10 @@
 
 	var/obj/P = new /obj/effect/decal/point(tile)
 	P.set_invisibility(invisibility)
-	P.pixel_x = A.pixel_x
-	P.pixel_y = A.pixel_y
-	QDEL_IN(P, 2 SECONDS)
+	spawn (20)
+		if(P)
+			qdel(P)	// qdel
+
 	face_atom(A)
 	return 1
 
@@ -334,7 +330,7 @@
 	for(var/t in typesof(/area))
 		master += text("[]\n", t)
 		//Foreach goto(26)
-	show_browser(src, master, null)
+	src << browse(master)
 	return
 */
 
@@ -394,7 +390,7 @@
 /*
 /mob/verb/help()
 	set name = "Help"
-	show_browser(src, 'html/help.html', "window=help")
+	src << browse('html/help.html', "window=help")
 	return
 */
 
@@ -421,7 +417,7 @@
 		'html/changelog.css',
 		'html/changelog.html'
 		)
-	show_browser(src, 'html/changelog.html', "window=changes;size=675x650")
+	src << browse('html/changelog.html', "window=changes;size=675x650")
 	if(prefs.lastchangelog != changelog_hash)
 		prefs.lastchangelog = changelog_hash
 		SScharacter_setup.queue_preferences_save(prefs)
@@ -510,10 +506,10 @@
 	if(href_list["mach_close"])
 		var/t1 = text("window=[href_list["mach_close"]]")
 		unset_machine()
-		show_browser(src, null, t1)
+		src << browse(null, t1)
 
 	if(href_list["flavor_more"])
-		show_browser(usr, text("<HTML><meta charset=\"utf-8\"><HEAD><TITLE>[]</TITLE></HEAD><BODY><TT>[]</TT></BODY></HTML>", name, replacetext(flavor_text, "\n", "<BR>")), text("window=[];size=500x200", name))
+		usr << browse(text("<HTML><meta charset=\"utf-8\"><HEAD><TITLE>[]</TITLE></HEAD><BODY><TT>[]</TT></BODY></HTML>", name, replacetext(flavor_text, "\n", "<BR>")), text("window=[];size=500x200", name))
 		onclose(usr, "[name]")
 	if(href_list["flavor_change"])
 		update_flavor_text()

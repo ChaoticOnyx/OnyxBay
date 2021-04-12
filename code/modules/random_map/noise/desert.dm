@@ -38,4 +38,3 @@
 				new /obj/structure/flora/bush(T)
 			else if(prob(20))
 				new /obj/structure/flora/tree/dead(T)
-

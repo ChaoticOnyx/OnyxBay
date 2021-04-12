@@ -156,7 +156,6 @@
 	icon_dead = "cowcownut_dead"
 	emote_see = list("shakes its nuts")
 	health = 100
-	faction = "floral"
 
 	milktype = /datum/reagent/drink/juice/coconut
 

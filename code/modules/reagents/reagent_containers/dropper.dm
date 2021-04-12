@@ -74,7 +74,7 @@
 
 		else // Taking from something
 
-			if(!target.is_open_container() && !istype(target, /obj/structure/reagent_dispensers) && !istype(target, /obj/item/weapon/backwear/reagent))
+			if(!target.is_open_container() && !istype(target,/obj/structure/reagent_dispensers))
 				to_chat(user, "<span class='notice'>You cannot directly remove reagents from [target].</span>")
 				return
 

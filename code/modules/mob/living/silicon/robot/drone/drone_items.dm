@@ -639,4 +639,4 @@
 
 	dat += resources
 
-	show_browser(src, dat, "window=robotmod")
+	src << browse(dat, "window=robotmod")

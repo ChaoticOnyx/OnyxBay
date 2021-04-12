@@ -168,7 +168,7 @@
 			to_chat(user, "<span class='notice'>The pages of [title] have been cut out!</span>")
 			return
 	if(src.dat)
-		show_browser(user, dat, "window=book_[title];size=[window_width]x[window_height]")
+		user << browse(dat, "window=book_[title];size=[window_width]x[window_height]")
 		user.visible_message("[user] opens a book titled \"[src.title]\" and begins reading intently.")
 		onclose(user, "book")
 	else
@@ -233,7 +233,7 @@
 	if(user.zone_sel.selecting == BP_EYES)
 		user.visible_message("<span class='notice'>You open up the book and show it to [M]. </span>", \
 			"<span class='notice'> [user] opens up a book and shows it to [M]. </span>")
-		show_browser(M, dat, "window=book_[title];size=[window_width]x[window_height]")
+		M << browse(dat, "window=book_[title];size=[window_width]x[window_height]")
 		user.setClickCooldown(DEFAULT_QUICK_COOLDOWN) //to prevent spam
 
 /obj/item/weapon/book/wiki
@@ -282,12 +282,12 @@
 		if(WIKI_TEXT)
 			script = file2text('code/js/wiki_text.js');
 			if(source)
-				show_browser(usr, icon(source.icon, source.icon_state), "file=wiki_paper.png&display=0")
+				usr << browse(icon(source.icon, source.icon_state), "file=wiki_paper.png&display=0")
 			else
-				show_browser(usr, icon('icons/obj/bureaucracy.dmi', "paper"), "file=wiki_paper.png&display=0")
-			show_browser(usr, icon('icons/misc/mark.dmi', "rt"), "file=right_arrow.png&display=0")
-			show_browser(usr, icon('icons/obj/library.dmi', "binder"), "file=bookbinder.png&display=0")
-			show_browser(usr, icon('icons/obj/library.dmi', "book1"), "file=book1.png&display=0")
+				usr << browse(icon('icons/obj/bureaucracy.dmi', "paper"), "file=wiki_paper.png&display=0")
+			usr << browse(icon('icons/misc/mark.dmi', "rt"), "file=right_arrow.png&display=0")
+			usr << browse(icon('icons/obj/library.dmi', "binder"), "file=bookbinder.png&display=0")
+			usr << browse(icon('icons/obj/library.dmi', "book1"), "file=book1.png&display=0")
 			preamble = {"<div style='text-align:center;border-style: dashed;'><b>This is a book template. Process it through a bookbinder to get a proper book.</b><br>
 						<img src='wiki_paper.png' style='width: 32px; height: 32px;'/><img src='right_arrow.png' style='width: 32px; height: 32px;'/><img src='bookbinder.png' style='width: 32px; height: 32px;'/><img src='right_arrow.png' style='width: 32px; height: 32px;'/><img src='book1.png' style='width: 32px; height: 32px;'/>
 						</div><br>"}

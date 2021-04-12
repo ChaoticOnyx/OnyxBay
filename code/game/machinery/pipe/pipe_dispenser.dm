@@ -76,13 +76,13 @@
 ///// Z-Level stuff
 //What number the make points to is in the define # at the top of construction.dm in same folder
 
-	show_browser(user, "<meta charset=\"utf-8\"><HEAD><TITLE>[src]</TITLE></HEAD><TT>[dat]</TT>", "window=pipedispenser")
+	user << browse("<meta charset=\"utf-8\"><HEAD><TITLE>[src]</TITLE></HEAD><TT>[dat]</TT>", "window=pipedispenser")
 	onclose(user, "pipedispenser")
 	return
 
 /obj/machinery/pipedispenser/Topic(href, href_list)
 	if((. = ..()) || unwrenched)
-		close_browser(usr, "window=pipedispenser")
+		usr << browse(null, "window=pipedispenser")
 		return
 	if(href_list["make"])
 		if(!wait)
@@ -110,7 +110,7 @@
 		return
 	else if(isWrench(W))
 		add_fingerprint(usr)
-		if(unwrenched==0)
+		if (unwrenched==0)
 			playsound(src.loc, 'sound/items/Ratchet.ogg', 50, 1)
 			to_chat(user, "<span class='notice'>You begin to unfasten \the [src] from the floor...</span>")
 			if (do_after(user, 40, src))
@@ -121,8 +121,8 @@
 				src.anchored = 0
 				src.stat |= MAINT
 				src.unwrenched = 1
-				if(usr.machine==src)
-					close_browser(usr, "window=pipedispenser")
+				if (usr.machine==src)
+					usr << browse(null, "window=pipedispenser")
 		else /*if (unwrenched==1)*/
 			playsound(src.loc, 'sound/items/Ratchet.ogg', 50, 1)
 			to_chat(user, "<span class='notice'>You begin to fasten \the [src] to the floor...</span>")
@@ -193,7 +193,7 @@ Nah
 "}
 ///// Z-Level stuff
 
-	show_browser(user, "<meta charset=\"utf-8\"><HEAD><TITLE>[src]</TITLE></HEAD><TT>[dat]</TT>", "window=pipedispenser")
+	user << browse("<meta charset=\"utf-8\"><HEAD><TITLE>[src]</TITLE></HEAD><TT>[dat]</TT>", "window=pipedispenser")
 	return
 
 // 0=straight, 1=bent, 2=junction-j1, 3=junction-j2, 4=junction-y, 5=trunk
@@ -201,7 +201,7 @@ Nah
 
 /obj/machinery/pipedispenser/disposal/Topic(href, href_list)
 	if((. = ..()) || unwrenched)
-		close_browser(usr, "window=pipedispenser")
+		usr << browse(null, "window=pipedispenser")
 		return
 	if(href_list["dmake"])
 		if(!wait)

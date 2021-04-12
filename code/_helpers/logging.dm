@@ -11,7 +11,7 @@
 /var/global/log_end= world.system_type == UNIX ? ascii2text(13) : ""
 
 /proc/log_to_dd(text)
-	to_world_log(text)
+	world.log << text
 	if(config && config.log_world_output)
 		log_debug("\[DD]: [text]")
 
@@ -53,9 +53,6 @@
 		for(var/client/C in GLOB.admins)
 			if(!req_pref || (C.get_preference_value(req_pref) == GLOB.PREF_SHOW))
 				to_chat(C, rendered)
-
-/proc/log_roundend(text)
-	log_generic("ROUNDEND", text, null, config.log_game)
 
 /proc/log_admin(text, location, notify_admin)
 	log_generic("ADMIN", text, location, config.log_admin, notify_admin)

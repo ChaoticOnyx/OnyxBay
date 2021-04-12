@@ -16,10 +16,6 @@ var/jobban_keylist[0]		//to store the keys & ranks
 var/const/IAA_ban_reason = "Restricted by CentComm"
 //returns a reason if M is banned from rank, returns 0 otherwise
 /proc/jobban_isbanned(mob/M, rank)
-	//ckech if jobs subsystem doesn't runned yet.
-	if(!job_master)
-		return FALSE
-
 	if(M && rank)
 		/*
 		if(_jobban_isbanned(M, rank)) return "Reason Unspecified"	//for old jobban
@@ -81,9 +77,9 @@ DEBUG
 /proc/jobban_loadbanfile()
 	if(config.ban_legacy_system)
 		var/savefile/S=new("data/job_full.ban")
-		from_file(S["keys[0]"], jobban_keylist)
+		S["keys[0]"] >> jobban_keylist
 		log_admin("Loading jobban_rank")
-		from_file(S["runonce"], jobban_runonce)
+		S["runonce"] >> jobban_runonce
 
 		if (!length(jobban_keylist))
 			jobban_keylist=list()
@@ -126,7 +122,7 @@ DEBUG
 
 /proc/jobban_savebanfile()
 	var/savefile/S=new("data/job_full.ban")
-	to_file(S["keys[0]"], jobban_keylist)
+	S["keys[0]"] << jobban_keylist
 
 /proc/jobban_unban(mob/M, rank)
 	jobban_remove("[M.ckey] - [rank]")

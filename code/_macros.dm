@@ -80,7 +80,7 @@
 
 #define isopenspace(A) istype(A, /turf/simulated/open)
 
-#define isWrench(A) (istype(A, /obj/item/weapon/wrench) || (istype(A, /obj/item/weapon/rpd) && A:interaction_mode == "wrench"))
+#define isWrench(A) istype(A, /obj/item/weapon/wrench)
 
 #define isWelder(A) istype(A, /obj/item/weapon/weldingtool)
 
@@ -114,20 +114,13 @@
 
 #define random_id(key,min_id,max_id) uniqueness_repository.Generate(/datum/uniqueness_generator/id_random, key, min_id, max_id)
 
-/// General I/O helpers
-#define to_target(target, payload)            target << (payload)
-#define from_target(target, receiver)         target >> (receiver)
-
-/// Common use
-#define to_world(message)                     to_chat(world, message)
-#define to_world_log(message)                 to_target(world.log, message)
-#define sound_to(target, title)               to_target(target, sound(title))
-#define image_to(target, image)               to_target(target, image)
-#define show_browser(target, content, title)  to_target(target, browse(content, title))
-#define close_browser(target, title)          to_target(target, browse(null, title))
-#define send_rsc(target, content, title)      to_target(target, browse_rsc(content, title))
-#define to_file(handle, value)                to_target(handle, value)
-#define from_file(handle, target_var)         from_target(handle, target_var)
+#define sound_to(target, sound)                             target << sound
+#define to_file(file_entry, source_var)                     file_entry << source_var
+#define from_file(file_entry, target_var)                   file_entry >> target_var
+#define show_browser(target, browser_content, browser_name) target << browse(browser_content, browser_name)
+#define close_browser(target, browser_name)                 target << browse(null, browser_name)
+#define show_image(target, image)                           target << image
+#define send_rsc(target, rsc_content, rsc_name)             target << browse_rsc(rsc_content, rsc_name)
 
 #define MAP_IMAGE_PATH "nano/images/[GLOB.using_map.path]/"
 
@@ -189,8 +182,8 @@
 #define ADD_SORTED(list, A, cmp_proc) if(!list.len) {list.Add(A)} else {list.Insert(FindElementIndex(A, list, cmp_proc), A)}
 
 //Currently used in SDQL2 stuff
-#define send_link(target, url)                to_target(target, link(url))
-#define send_output(target, msg, control)     to_target(target, output(msg, control))
+#define send_output(target, msg, control) target << output(msg, control)
+#define send_link(target, url) target << link(url)
 
 // Spawns multiple objects of the same type
 #define cast_new(type, num, args...) if((num) == 1) { new type(args) } else { for(var/i=0;i<(num),i++) { new type(args) } }

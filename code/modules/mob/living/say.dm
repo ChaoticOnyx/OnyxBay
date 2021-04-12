@@ -298,7 +298,7 @@ proc/get_radio_key_from_channel(channel)
 		eavesdroping_obj -= listening_obj
 		for(var/mob/M in eavesdroping)
 			if(M)
-				image_to(M, speech_bubble)
+				show_image(M, speech_bubble)
 				M.hear_say(stars(message), verb, speaking, alt_name, italics, src, speech_sound, sound_vol)
 
 		for(var/obj/O in eavesdroping)

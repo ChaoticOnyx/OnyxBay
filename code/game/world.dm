@@ -71,13 +71,13 @@
 	changelog_hash = md5('html/changelog.html')					//used for telling if the changelog has changed recently
 
 	if(byond_version < RECOMMENDED_VERSION)
-		to_world_log("Your server's byond version does not meet the recommended requirements for this server. Please update BYOND")
+		world.log << "Your server's byond version does not meet the recommended requirements for this server. Please update BYOND"
 
 	load_configuration()
 
 	if(config.server_port)
 		var/port = OpenPort(config.server_port)
-		to_world_log(port ? "Changed port to [port]" : "Failed to change port")
+		world.log << (port ? "Changed port to [port]" : "Failed to change port")
 
 	//set window title
 	if(config.subserver_name)
@@ -504,7 +504,7 @@ var/world_topic_spam_protect_time = world.timeofday
 			co.ehjax_send(data = "roundrestart")
 
 		if(config.server) //if you set a server location in config.txt, it sends you there instead of trying to reconnect to the same world address. -- NeoFite
-			send_link(C, "byond://[config.server]")
+			C << link("byond://[config.server]")
 
 	if(config.wait_for_sigusr1_reboot && reason != 3)
 		text2file("foo", "reboot_called")
@@ -520,7 +520,7 @@ var/world_topic_spam_protect_time = world.timeofday
 /world/proc/save_mode(the_mode)
 	var/F = file("data/mode.txt")
 	fdel(F)
-	to_file(F, the_mode)
+	F << the_mode
 
 /hook/startup/proc/loadMOTD()
 	world.load_motd()
@@ -670,11 +670,11 @@ var/failed_old_db_connections = 0
 
 /hook/startup/proc/connectDB()
 	if(!config.sql_enabled)
-		to_world_log("SQL disabled. Your server will not use feedback database.")
+		world.log << "SQL disabled. Your server will not use feedback database."
 	else if(!setup_database_connection())
-		to_world_log("Your server failed to establish a connection with the feedback database.")
+		world.log << "Your server failed to establish a connection with the feedback database."
 	else
-		to_world_log("Feedback database connection established.")
+		world.log << "Feedback database connection established."
 	return TRUE
 
 proc/setup_database_connection()
@@ -697,7 +697,7 @@ proc/setup_database_connection()
 		failed_db_connections = 0	//If this connection succeeded, reset the failed connections counter.
 	else
 		failed_db_connections++		//If it failed, increase the failed connections counter.
-		to_world_log(dbcon.ErrorMsg())
+		world.log << dbcon.ErrorMsg()
 
 	return .
 
@@ -714,11 +714,11 @@ proc/establish_db_connection()
 
 /hook/startup/proc/connectOldDB()
 	if(!config.sql_enabled)
-		to_world_log("SQL disabled. Your server configured to use legacy admin and ban system.")
+		world.log << "SQL disabled. Your server configured to use legacy admin and ban system."
 	else if(!setup_old_database_connection())
-		to_world_log("Your server failed to establish a connection with the SQL database.")
+		world.log << "Your server failed to establish a connection with the SQL database."
 	else
-		to_world_log("SQL database connection established.")
+		world.log << "SQL database connection established."
 	return TRUE
 
 //These two procs are for the old database, while it's being phased out. See the tgstation.sql file in the SQL folder for more information.
@@ -742,7 +742,7 @@ proc/setup_old_database_connection()
 		failed_old_db_connections = 0	//If this connection succeeded, reset the failed connections counter.
 	else
 		failed_old_db_connections++		//If it failed, increase the failed connections counter.
-		to_world_log(dbcon.ErrorMsg())
+		world.log << dbcon.ErrorMsg()
 
 	return .
 

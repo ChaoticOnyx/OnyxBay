@@ -72,13 +72,13 @@
 		else
 			t += "<A href='?src=\ref[src];auth=1'>*Authenticate*</A> (Requires an appropriate access ID)<BR>"
 		t += "<A href='?src=\ref[src];close=1'>Close</A><BR>"
-		show_browser(user, t, "window=camcircuit;size=500x400")
+		user << browse(t, "window=camcircuit;size=500x400")
 		onclose(user, "camcircuit")
 
 	Topic(href, href_list)
 		..()
 		if( href_list["close"] )
-			close_browser(usr, "window=camcircuit")
+			usr << browse(null, "window=camcircuit")
 			usr.machine = null
 			return
 		else if(href_list["net"])

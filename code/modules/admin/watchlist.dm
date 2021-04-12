@@ -164,7 +164,7 @@
 			output += " <font size='2'>Last edit by [last_editor] <a href='?_src_=holder;watcheditlog=[ckey]'>(Click here to see edit log)</a></font>"
 		output += "<br>[reason]<hr style='background:#000000; border:0; height:1px'>"
 
-	show_browser(usr, output, "window=watchwin;size=900x500")
+	usr << browse(output, "window=watchwin;size=900x500")
 
 /datum/watchlist/proc/OnLogin(client/C)
 	if (!C)
@@ -224,4 +224,4 @@
 
 		if(query_watchedits.NextRow())
 			var/edit_log = decode_from_db(query_watchedits.item[1])
-			show_browser(usr, edit_log,"window=watchedits")
+			usr << browse(edit_log,"window=watchedits")
