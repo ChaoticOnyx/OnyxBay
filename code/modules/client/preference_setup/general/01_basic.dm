@@ -12,24 +12,24 @@ datum/preferences
 	sort_order = 1
 
 /datum/category_item/player_setup_item/general/basic/load_character(savefile/S)
-	S["real_name"]				>> pref.real_name
-	S["name_is_always_random"]	>> pref.be_random_name
-	S["gender"]					>> pref.gender
-	S["body"]					>> pref.body
-	if (!pref.body)
+	from_file(S["real_name"],             pref.real_name)
+	from_file(S["name_is_always_random"], pref.be_random_name)
+	from_file(S["gender"],                pref.gender)
+	from_file(S["body"],                  pref.body)
+	if(!pref.body)
 		pref.body = "Default" // fucking crutch for hot fix
-	S["age"]					>> pref.age
-	S["spawnpoint"]				>> pref.spawnpoint
-	S["OOC_Notes"]				>> pref.metadata
+	from_file(S["age"],                   pref.age)
+	from_file(S["spawnpoint"],            pref.spawnpoint)
+	from_file(S["OOC_Notes"],             pref.metadata)
 
 /datum/category_item/player_setup_item/general/basic/save_character(savefile/S)
-	S["real_name"]				<< pref.real_name
-	S["name_is_always_random"]	<< pref.be_random_name
-	S["gender"]					<< pref.gender
-	S["body"]					<< pref.body
-	S["age"]					<< pref.age
-	S["spawnpoint"]				<< pref.spawnpoint
-	S["OOC_Notes"]				<< pref.metadata
+	to_file(S["real_name"],             pref.real_name)
+	to_file(S["name_is_always_random"], pref.be_random_name)
+	to_file(S["gender"],                pref.gender)
+	to_file(S["body"],                  pref.body)
+	to_file(S["age"],                   pref.age)
+	to_file(S["spawnpoint"],            pref.spawnpoint)
+	to_file(S["OOC_Notes"],             pref.metadata)
 
 /datum/category_item/player_setup_item/general/basic/proc/sanitize_body()
 	var/datum/species/S = all_species[pref.species]

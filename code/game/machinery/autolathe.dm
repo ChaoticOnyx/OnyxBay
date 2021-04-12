@@ -117,7 +117,7 @@
 
 		dat += "<hr>"
 
-	user << browse(dat, "window=autolathe")
+	show_browser(user, dat, "window=autolathe")
 	onclose(user, "autolathe")
 
 /obj/machinery/autolathe/attackby(obj/item/O as obj, mob/user as mob)

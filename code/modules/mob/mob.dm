@@ -334,7 +334,7 @@
 	for(var/t in typesof(/area))
 		master += text("[]\n", t)
 		//Foreach goto(26)
-	src << browse(master)
+	show_browser(src, master, null)
 	return
 */
 
@@ -394,7 +394,7 @@
 /*
 /mob/verb/help()
 	set name = "Help"
-	src << browse('html/help.html', "window=help")
+	show_browser(src, 'html/help.html', "window=help")
 	return
 */
 
@@ -421,7 +421,7 @@
 		'html/changelog.css',
 		'html/changelog.html'
 		)
-	src << browse('html/changelog.html', "window=changes;size=675x650")
+	show_browser(src, 'html/changelog.html', "window=changes;size=675x650")
 	if(prefs.lastchangelog != changelog_hash)
 		prefs.lastchangelog = changelog_hash
 		SScharacter_setup.queue_preferences_save(prefs)
@@ -510,10 +510,10 @@
 	if(href_list["mach_close"])
 		var/t1 = text("window=[href_list["mach_close"]]")
 		unset_machine()
-		src << browse(null, t1)
+		show_browser(src, null, t1)
 
 	if(href_list["flavor_more"])
-		usr << browse(text("<HTML><meta charset=\"utf-8\"><HEAD><TITLE>[]</TITLE></HEAD><BODY><TT>[]</TT></BODY></HTML>", name, replacetext(flavor_text, "\n", "<BR>")), text("window=[];size=500x200", name))
+		show_browser(usr, text("<HTML><meta charset=\"utf-8\"><HEAD><TITLE>[]</TITLE></HEAD><BODY><TT>[]</TT></BODY></HTML>", name, replacetext(flavor_text, "\n", "<BR>")), text("window=[];size=500x200", name))
 		onclose(usr, "[name]")
 	if(href_list["flavor_change"])
 		update_flavor_text()

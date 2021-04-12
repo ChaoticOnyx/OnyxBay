@@ -613,7 +613,7 @@
 
 		switch(href_list["flavor_change"])
 			if("done")
-				src << browse(null, "window=flavor_changes")
+				show_browser(src, null, "window=flavor_changes")
 				return
 			if("general")
 				var/msg = sanitize(input(usr,"Update the general description of your character. This will be shown regardless of clothing, and may NOT include OOC notes and preferences.","Flavor Text",html_decode(flavor_texts[href_list["flavor_change"]])) as message, extra = 0)
@@ -1176,7 +1176,7 @@
 		if(gender in BB.genders)
 			body_build = BB
 			return 1
-	world.log << "Can't find possible body_build. Gender = [gender], Species = [species]"
+	to_world_log("Can't find possible body_build. Gender = [gender], Species = [species]")
 	return 0
 
 /mob/living/carbon/human/proc/bloody_doodle()

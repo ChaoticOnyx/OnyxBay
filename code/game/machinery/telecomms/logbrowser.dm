@@ -104,7 +104,7 @@
 
 
 
-		user << browse(dat, "window=comm_monitor;size=575x400")
+		show_browser(user, dat, "window=comm_monitor;size=575x400")
 		onclose(user, "server_control")
 
 		temp = ""

@@ -341,7 +341,7 @@
 		if((isobserver(usr) && ckeys_allowed_to_scan[usr.ckey]) || is_admin(usr))
 			if(assembly_components.len)
 				var/saved = "On circuit printers with cloning enabled, you may use the code below to clone the circuit:<br><br><code>[SScircuit.save_electronic_assembly(src)]</code>"
-				usr << browse(saved, "window=circuit_scan;size=500x600;border=1;can_resize=1;can_close=1;can_minimize=1")
+				show_browser(usr, saved, "window=circuit_scan;size=500x600;border=1;can_resize=1;can_close=1;can_minimize=1")
 			else
 				to_chat(usr, SPAN_WARNING("The circuit is empty!"))
 		return

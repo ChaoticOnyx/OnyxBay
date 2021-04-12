@@ -843,7 +843,7 @@
 	var/output = {"<b>Assume direct control over [src]?</b>
 						<a href='?src=\ref[src];ai_take_control=\ref[user];duration=3000'>Yes</a><br>
 						"}
-	user << browse(output, "window=mecha_attack_ai")
+	show_browser(user, output, "window=mecha_attack_ai")
 	return
 */
 
@@ -1080,7 +1080,7 @@
 	if(usr!=src.occupant)
 		return
 	//pr_update_stats.start()
-	src.occupant << browse(src.get_stats_html(), "window=exosuit")
+	show_browser(src.occupant, src.get_stats_html(), "window=exosuit")
 	return
 
 /*
@@ -1147,7 +1147,7 @@
 			src.occupant.client.eye = src.occupant.client.mob
 			src.occupant.client.perspective = MOB_PERSPECTIVE
 		*/
-		src.occupant << browse(null, "window=exosuit")
+		show_browser(src.occupant, null, "window=exosuit")
 		if(istype(mob_container, /obj/item/device/mmi))
 			var/obj/item/device/mmi/mmi = mob_container
 			if(mmi.brainmob)
@@ -1380,7 +1380,7 @@
 		output += "[a_name] - <a href='?src=\ref[src];add_req_access=[a];user=\ref[user];id_card=\ref[id_card]'>Add</a><br>"
 	output += "<hr><a href='?src=\ref[src];finish_req_access=1;user=\ref[user]'>Finish</a> <font color='red'>(Warning! The ID upload panel will be locked. It can be unlocked only through Exosuit Interface.)</font>"
 	output += "</body></html>"
-	user << browse(output, "window=exosuit_add_access")
+	show_browser(user, output, "window=exosuit_add_access")
 	onclose(user, "exosuit_add_access")
 	return
 
@@ -1405,7 +1405,7 @@
 						[(state>0) ? maint_options : ""]
 						</body>
 						</html>"}
-	user << browse(output, "window=exosuit_maint_console")
+	show_browser(user, output, "window=exosuit_maint_console")
 	onclose(user, "exosuit_maint_console")
 	return
 
@@ -1495,7 +1495,7 @@
 		return
 	if (href_list["view_log"])
 		if(usr != src.occupant)	return
-		src.occupant << browse(src.get_log_html(), "window=exosuit_log")
+		show_browser(src.occupant, src.get_log_html(), "window=exosuit_log")
 		onclose(occupant, "exosuit_log")
 		return
 	if (href_list["change_name"])
@@ -1584,7 +1584,7 @@
 		if(!in_range(src, usr))	return
 		add_req_access = 0
 		var/mob/user = F.getMob("user")
-		user << browse(null,"window=exosuit_add_access")
+		close_browser(user, "window=exosuit_add_access")
 		return
 	if(href_list["dna_lock"])
 		if(usr != src.occupant)	return
@@ -1851,7 +1851,7 @@
  					   </body>
 						</html>"}
 
-	occupant << browse(output, "window=ex_debug")
+	show_browser(occupant, output, "window=ex_debug")
 	//src.health = initial(src.health)/2.2
 	//src.check_for_internal_damage(list(MECHA_INT_FIRE,MECHA_INT_TEMP_CONTROL,MECHA_INT_TANK_BREACH,MECHA_INT_CONTROL_LOST))
 	return

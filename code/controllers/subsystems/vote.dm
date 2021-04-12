@@ -71,7 +71,7 @@ SUBSYSTEM_DEF(vote)
 		var/next_allowed_time = (last_started_time + config.vote_delay)
 		if(next_allowed_time > world.time)
 			return FALSE
-	
+
 	var/datum/vote/new_vote = new vote_type
 	if(!new_vote.setup(creator, automatic))
 		return FALSE
@@ -120,10 +120,10 @@ SUBSYSTEM_DEF(vote)
 	var/datum/browser/popup = new(user, "vote", "Voting Panel", win_x, win_y)
 	popup.set_content(interface(user.client))
 	popup.open(use_onclose = TRUE)
-	onclose(user, "vote", src)	
+	onclose(user, "vote", src)
 
 /datum/controller/subsystem/vote/proc/close_panel(mob/user)
-	show_browser(user, null, "window=vote")
+	close_browser(user, "window=vote")
 	if(user)
 		voting -= user.client
 
