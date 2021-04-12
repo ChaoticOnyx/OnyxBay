@@ -110,7 +110,7 @@
 					dat += "<a href='?src=\ref[src];operation=togglerun'>NEVER</a>"
 
 
-		user << browse(dat, "window=traffic_control;size=575x400")
+		show_browser(user, dat, "window=traffic_control;size=575x400")
 		onclose(user, "server_control")
 
 		temp = ""

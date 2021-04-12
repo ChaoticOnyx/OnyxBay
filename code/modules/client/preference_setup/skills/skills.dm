@@ -7,12 +7,12 @@
 	sort_order = 1
 
 /datum/category_item/player_setup_item/skills/load_character(savefile/S)
-	S["skills"]					>> pref.skills
-	S["used_skillpoints"]		>> pref.used_skillpoints
+	from_file(S["skills"], pref.skills)
+	from_file(S["used_skillpoints"], pref.used_skillpoints)
 
 /datum/category_item/player_setup_item/skills/save_character(savefile/S)
-	S["skills"]					<< pref.skills
-	S["used_skillpoints"]		<< pref.used_skillpoints
+	to_file(S["skills"], pref.skills)
+	to_file(S["used_skillpoints"], pref.used_skillpoints)
 
 /datum/category_item/player_setup_item/skills/sanitize_character()
 	if(SKILLS == null)				setup_skills()
@@ -58,7 +58,7 @@
 			HTML += "<b>Amateur</b>: [S.desc_amateur]<br>"
 		HTML += "<b>Trained</b>: [S.desc_trained]<br><b>Professional</b>: [S.desc_professional]"
 
-		user << browse(HTML, "window=\ref[user]skillinfo")
+		show_browser(user, HTML, "window=\ref[user]skillinfo")
 		return TOPIC_HANDLED
 
 	else if(href_list["setskill"])
