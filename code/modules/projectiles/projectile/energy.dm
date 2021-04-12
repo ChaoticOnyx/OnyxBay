@@ -193,7 +193,6 @@
 
 	to_chat(M, "<span class='danger'>You hear a loud roar.</span>")
 	var/ear_safety = 0
-	var/mob/living/carbon/human/H = M
 	if(iscarbon(M))
 		if(ishuman(M))
 			ear_safety = M.get_ear_protection()
