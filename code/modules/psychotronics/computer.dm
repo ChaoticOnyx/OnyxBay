@@ -146,7 +146,7 @@
 		data["selected_neuromod"] = NeuromodToList(selected_neuromod)
 
 	if (selected_lifeform)
-		data["selected_lifeform"] = LifeformToList(user, selected_lifeform)
+		data["selected_lifeform"] = LifeformToList(selected_lifeform)
 
 	data["is_researching"] = is_researching
 	data["research_progress"] = research_progress
@@ -175,7 +175,7 @@
 /*
 	Checks all requirements for development a neuromod:
 	There is must be a beaker with `NEUROMODRND_MUTAGEN_NEEDED` unstable mutagen
-	There is must be a researched and selected lifeform with `scan_count` > `neuromod_prod_scans`
+	There is must be a selected lifeform
 	There is must be a inserted neuromod shell
 	There is must be a researched and selected neuromod
 
@@ -192,11 +192,8 @@
 
 	if (selected_neuromod && selected_lifeform && GetNeuromodShell() && M.volume >= NEUROMODRND_MUTAGEN_NEEDED)
 		var/list/neuromod_data = NeuromodToList(selected_neuromod)
-		var/list/lifeform_data = LifeformToList(selected_lifeform)
 
-		if (CheckBeakerContent() &&\
-			lifeform_data["scan_count"] >= lifeform_data["neuromod_prod_scans"] &&\
-			neuromod_data["researched"])
+		if (CheckBeakerContent() && neuromod_data["researched"])
 			return TRUE
 
 /* NEUROMODS LIST PROCS */
