@@ -614,7 +614,7 @@
 /obj/machinery/computer/neuromod_rnd/proc/InsertNeuromodShell()
 	var/obj/item/weapon/reagent_containers/neuromod_shell/neuromod_shell = usr.get_active_hand()
 
-	if (!neuromod_shell) return
+	if (!neuromod_shell || !istype(neuromod_shell)) return
 
 	if (GetNeuromodShell())
 		to_chat(usr, "Console's neuromod shell slot is already occupied.")
