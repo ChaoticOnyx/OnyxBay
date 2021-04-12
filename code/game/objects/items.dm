@@ -82,6 +82,8 @@
 
 	var/pickup_sound = null
 
+	var/ear_protection = 0
+
 /obj/item/New()
 	..()
 	if(randpixel && (!pixel_x && !pixel_y) && isturf(loc)) //hopefully this will prevent us from messing with mapper-set pixel_x/y

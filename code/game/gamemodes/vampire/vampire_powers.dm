@@ -354,7 +354,7 @@
 	for (var/mob/living/carbon/human/T in hearers(4, src))
 		if (T == src)
 			continue
-		if (istype(T) && (T.l_ear || T.r_ear) && istype((T.l_ear || T.r_ear), /obj/item/clothing/ears/earmuffs))
+		if (T.get_ear_protection() >= 2)
 			continue
 		if (!vampire_can_affect_target(T, 0))
 			continue

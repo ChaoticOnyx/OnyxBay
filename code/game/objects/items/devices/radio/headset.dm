@@ -258,6 +258,13 @@
 	item_state = "headset"
 	ks2type = /obj/item/device/encryptionkey/specops
 
+/obj/item/device/radio/headset/headset_sec/tactical
+	name = "Tactical earmuffs"
+	desc = "The headset of the cool."
+	icon_state = "tac_earmuffs"
+	item_state = "headset"
+	ear_protection = 1
+
 /obj/item/device/radio/headset/attackby(obj/item/weapon/W as obj, mob/user as mob)
 //	..()
 	user.set_machine(src)

@@ -314,3 +314,10 @@
 
 	UNSETEMPTY(cloaking_sources)
 	return !cloaking_sources // If cloaking_sources wasn't initially null but is now, we've uncloaked
+
+/mob/living/carbon/human/proc/get_ear_protection()
+	var/p = 0
+	for(var/obj/item/clothing/C in list(l_ear, r_ear, head))
+		if(istype(C))
+			p += C.ear_protection
+	return p
