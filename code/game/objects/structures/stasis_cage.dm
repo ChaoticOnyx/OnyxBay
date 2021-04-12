@@ -4,6 +4,7 @@
 	icon = 'icons/obj/storage.dmi'
 	icon_state = "critter"
 	density = 1
+	pull_slowdown = PULL_SLOWDOWN_HEAVY
 
 	var/mob/living/simple_animal/contained
 

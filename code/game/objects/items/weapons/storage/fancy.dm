@@ -243,6 +243,25 @@
 	item_state = "Dpacket"
 	startswith = list(/obj/item/clothing/mask/smokable/cigarette/professionals = 10)
 
+////////////////////
+//SYNDI CIGARETTES//
+////////////////////
+/obj/item/weapon/storage/fancy/cigarettes/syndi_cigs/flash
+	startswith = list(/obj/item/clothing/mask/smokable/cigarette/syndi_cigs/flash = 10)
+	desc = "A ubiquitous brand of cigarettes, found in the facilities of every major spacefaring corporation in the universe. As mild and flavorless as it gets. 'F' has been scribbled on it."
+
+/obj/item/weapon/storage/fancy/cigarettes/syndi_cigs/smoke
+	startswith = list(/obj/item/clothing/mask/smokable/cigarette/syndi_cigs/smoke = 10)
+	desc = "A ubiquitous brand of cigarettes, found in the facilities of every major spacefaring corporation in the universe. As mild and flavorless as it gets. 'S' has been scribbled on it."
+
+/obj/item/weapon/storage/fancy/cigarettes/syndi_cigs/mind_breaker
+	startswith = list(/obj/item/clothing/mask/smokable/cigarette/syndi_cigs/mind_breaker = 10)
+	desc = "A ubiquitous brand of cigarettes, found in the facilities of every major spacefaring corporation in the universe. As mild and flavorless as it gets. 'MB' has been scribbled on it."
+
+/obj/item/weapon/storage/fancy/cigarettes/syndi_cigs/tricordrazine
+	startswith = list(/obj/item/clothing/mask/smokable/cigarette/syndi_cigs/tricordrazine = 10)
+	desc = "A ubiquitous brand of cigarettes, found in the facilities of every major spacefaring corporation in the universe. As mild and flavorless as it gets. 'T' has been scribbled on it."
+
 //cigarellos
 /obj/item/weapon/storage/fancy/cigarettes/cigarello
 	name = "pack of Trident Original cigars"

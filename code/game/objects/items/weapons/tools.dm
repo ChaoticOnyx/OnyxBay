@@ -216,22 +216,20 @@
 		else
 			. += "\nThere is no tank attached."
 
-/obj/item/weapon/weldingtool/MouseDrop(atom/over)
-	if(!CanMouseDrop(over, usr))
-		return
+/obj/item/weapon/weldingtool/attack(mob/living/M, mob/living/user, target_zone)
+	if(ishuman(M))
+		var/mob/living/carbon/human/H = M
+		var/obj/item/organ/external/S = H.organs_by_name[target_zone]
 
-	if(istype(over, /obj/item/weapon/weldpack))
-		var/obj/item/weapon/weldpack/wp = over
-		if(wp.welder)
-			to_chat(usr, "\The [wp] already has \a [wp.welder] attached.")
-		else
-			usr.drop_from_inventory(src, wp)
-			wp.welder = src
-			usr.visible_message("[usr] attaches \the [src] to \the [wp].", "You attach \the [src] to \the [wp].")
-			wp.update_icon()
-		return
-
-	..()
+		if(!S || !BP_IS_ROBOTIC(S) || user.a_intent != I_HELP)
+			return ..()
+		if(!welding)
+			to_chat(user, "<span class='warning'>You'll need to turn [src] on to patch the damage on [M]'s [S.name]!</span>")
+			return 1
+		if(S.robo_repair(15, BRUTE, "some dents", src, user))
+			remove_fuel(1, user)
+	else
+		return ..()
 
 /obj/item/weapon/weldingtool/attackby(obj/item/W as obj, mob/user as mob)
 	if(welding)
@@ -280,7 +278,6 @@
 
 	..()
 
-
 /obj/item/weapon/weldingtool/attack_hand(mob/user as mob)
 	if(tank && user.get_inactive_hand() == src)
 		if(!welding)
@@ -297,35 +294,48 @@
 	else
 		..()
 
-
 /obj/item/weapon/weldingtool/Process()
 	if(welding)
 		if(!remove_fuel(0.05))
 			setWelding(0)
 
-/obj/item/weapon/weldingtool/afterattack(obj/O as obj, mob/user as mob, proximity)
-	if(!proximity) return
-	if (istype(O, /obj/structure/reagent_dispensers/fueltank) && get_dist(src,O) <= 1 && !src.welding)
-		if(!tank)
-			to_chat(user, "\The [src] has no tank attached!")
-			return
-		O.reagents.trans_to_obj(tank, tank.max_fuel)
-		to_chat(user, "<span class='notice'>You refuel \the [tank].</span>")
-		playsound(src.loc, 'sound/effects/refill.ogg', 50, 1, -6)
+/obj/item/weapon/weldingtool/afterattack(obj/O, mob/user, proximity)
+	if(!proximity)
 		return
-	if (src.welding)
+	if((istype(O, /obj/structure/reagent_dispensers/fueltank) || istype(O, /obj/item/weapon/backwear/reagent/welding)) && get_dist(src, O) <= 1 && !welding)
+		refuel_from_obj(O, user)
+		return
+	if(welding)
 		remove_fuel(1)
 		var/turf/location = get_turf(user)
 		if(isliving(O))
 			var/mob/living/L = O
 			L.IgniteMob()
-		if (istype(location, /turf))
+		if(istype(location, /turf))
 			location.hotspot_expose(700, 50, 1)
 	return
 
 
 /obj/item/weapon/weldingtool/attack_self(mob/user as mob)
 	setWelding(!welding, usr)
+	return
+
+/obj/item/weapon/weldingtool/proc/refuel_from_obj(obj/O, mob/user)
+	if(!O.reagents)
+		return
+	if(!tank)
+		to_chat(user, "\The [src] has no tank attached!")
+		return
+	var/amount = min((tank.max_fuel - tank.reagents.total_volume), O.reagents.total_volume)
+	if(!O.reagents.total_volume)
+		to_chat(user, SPAN("warning", "\The [O] is empty."))
+		return
+	if(!amount)
+		to_chat(user, SPAN("notice", "\The [src] is full."))
+		return
+	O.reagents.trans_to_obj(tank, amount)
+	to_chat(user, SPAN("notice", "You refill \the [src] with [amount] units of fuel from \the [O]."))
+	playsound(src.loc, 'sound/effects/refill.ogg', 50, 1, -6)
 	return
 
 //Returns the amount of fuel in the welder
@@ -493,7 +503,7 @@
 
 /obj/item/weapon/welder_tank/afterattack(obj/O as obj, mob/user as mob, proximity)
 	if(!proximity) return
-	if (istype(O, /obj/structure/reagent_dispensers/fueltank) && get_dist(src,O) <= 1)
+	if((istype(O, /obj/structure/reagent_dispensers/fueltank) || istype(O, /obj/item/weapon/backwear/reagent/welding)) && get_dist(src,O) <= 1)
 		O.reagents.trans_to_obj(src, max_fuel)
 		to_chat(user, "<span class='notice'>You refuel \the [src].</span>")
 		playsound(src.loc, 'sound/effects/refill.ogg', 50, 1, -6)
@@ -589,25 +599,6 @@
 		var/gen_amount = ((world.time-last_gen)/25)
 		reagents.add_reagent(/datum/reagent/fuel, gen_amount)
 		last_gen = world.time
-
-/obj/item/weapon/weldingtool/attack(mob/living/M, mob/living/user, target_zone)
-
-	if(ishuman(M))
-		var/mob/living/carbon/human/H = M
-		var/obj/item/organ/external/S = H.organs_by_name[target_zone]
-
-		if(!S || !BP_IS_ROBOTIC(S) || user.a_intent != I_HELP)
-			return ..()
-
-		if(!welding)
-			to_chat(user, "<span class='warning'>You'll need to turn [src] on to patch the damage on [M]'s [S.name]!</span>")
-			return 1
-
-		if(S.robo_repair(15, BRUTE, "some dents", src, user))
-			remove_fuel(1, user)
-
-	else
-		return ..()
 
 /*
  * Crowbar

@@ -277,6 +277,7 @@
 	density = 1
 	icon_opened = "miningcaropen"
 	icon_closed = "miningcar"
+	pull_slowdown = PULL_SLOWDOWN_LIGHT
 
 /**********************Pinpointer**********************/
 

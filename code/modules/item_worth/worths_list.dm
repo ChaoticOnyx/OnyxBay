@@ -262,7 +262,7 @@ var/list/worths = list(
 					/obj/item/weapon/crowbar = 10,
 					/obj/item/weapon/beartrap = 35,
 					/obj/item/weapon/nullrod = 60,
-					/obj/item/weapon/weldpack = 300,
+					/obj/item/weapon/backwear/reagent/welding = 450,
 					/obj/item/weapon/circuitboard/aicore = 6000,
 					/obj/item/weapon/circuitboard = 1000,
 //GRENADES,

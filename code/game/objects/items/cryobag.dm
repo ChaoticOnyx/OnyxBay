@@ -25,7 +25,7 @@
 
 	storage_types = CLOSET_STORAGE_MOBS
 	var/datum/gas_mixture/airtank
-	
+
 	var/syndi
 
 	var/stasis_power = 20
@@ -114,7 +114,7 @@
 	desc = "Pretty useless now.."
 	icon_state = "bodybag_used"
 	icon = 'icons/obj/cryobag.dmi'
-	
+
 /obj/item/bodybag/cryobag/syndi
 	name = "modified stasis bag"
 	icon = 'icons/obj/syndi_cryobag.dmi'
@@ -134,20 +134,20 @@
 	item_path = /obj/item/bodybag/cryobag/syndi
 	stasis_power = 10
 	degradation_time = 300
-	
+
 /obj/structure/closet/body_bag/cryobag/syndi/fold(user)
 	var/obj/item/bodybag/cryobag/syndi/folded = ..()
 	if(istype(folded))
 		folded.stasis_power = stasis_power
-		folded.color = color_saturation(get_saturation())	
-		
+		folded.color = color_saturation(get_saturation())
+
 /obj/structure/closet/body_bag/cryobag/syndi/Process()
 	..()
-	
+
 	var/mob/living/carbon/human/H = locate() in src
 	if(!H)
 		return PROCESS_KILL
-	
+
 	H.add_chemical_effect(CE_CRYO, 2)
 	H.add_chemical_effect(CE_STABLE)
 	H.add_chemical_effect(CE_OXYGENATED, 1)

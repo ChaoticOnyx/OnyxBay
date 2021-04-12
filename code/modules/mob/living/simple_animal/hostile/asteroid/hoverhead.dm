@@ -119,5 +119,6 @@
 			else
 				to_chat(user, "<span class='notice'>You start to smear [src] on yourself. You feel burst of energy coming through your whole body. At first it feels like torture, but then it feels good.</span>")
 			H.revive()
+			make_inert(src)
 			qdel(src)
 	..()

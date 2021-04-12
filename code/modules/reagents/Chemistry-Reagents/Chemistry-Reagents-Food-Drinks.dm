@@ -2027,7 +2027,6 @@
 	targ_temp = 270
 
 	glass_required = "pint"
-	glass_icon_state = "icedbeer"
 	glass_name = "iced beer"
 	glass_desc = "A beer so frosty, the air around it freezes."
 	glass_special = list(DRINK_ICE, DRINK_FIZZ)

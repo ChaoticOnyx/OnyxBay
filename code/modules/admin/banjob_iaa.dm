@@ -323,7 +323,7 @@ GLOBAL_LIST_EMPTY(IAA_approved_list)
 			<td> [IAAJ_status_colorize(JB.status, JB.status)] </td> \
 			</tr>")
 	dat += "</table>"
-	usr << browse(dat, "window=iaaj_ban;size=400x400")
+	show_browser(usr, dat, "window=iaaj_ban;size=400x400")
 
 /datum/admins/proc/IAAJ_list_all_bans(startfrom = 0)
 	var/const/results_per_page = 10
@@ -371,7 +371,7 @@ GLOBAL_LIST_EMPTY(IAA_approved_list)
 			<td> [IAAJ_status_colorize(JB.status, JB.status)] </td> \
 			</tr>")
 	dat += "</table>"
-	usr << browse(dat, "window=iaaj_ban;size=400x400")
+	show_browser(usr, dat, "window=iaaj_ban;size=400x400")
 
 /datum/admins/proc/IAAJ_inspect_ban(id)
 	if(!check_rights(R_BAN))
@@ -409,7 +409,7 @@ GLOBAL_LIST_EMPTY(IAA_approved_list)
 	var/other_ckeys       = query.item[ 5]
 	var/reason            = query.item[ 6]
 	var/job               = query.item[ 7]
-	var/creation_time     = query.item[ 8] 
+	var/creation_time     = query.item[ 8]
 	var/resolve_time      = query.item[ 9]
 	var/resolve_comment   = query.item[10]
 	var/resolve_ckey      = query.item[11]
@@ -436,7 +436,7 @@ GLOBAL_LIST_EMPTY(IAA_approved_list)
 		dat += "Expires at [expiration_time] <BR>"
 	dat += "<HR>"
 	dat += "Reason (everything below): <BR><BR> [reason]"
-	usr << browse(dat, "window=iaaj_ban_inspect;size=400x400")
+	show_browser(usr, dat, "window=iaaj_ban_inspect;size=400x400")
 	return
 
 /proc/IAAJ_AdminTopicProcess(datum/admins/source, list/href_list)
@@ -470,7 +470,7 @@ GLOBAL_LIST_EMPTY(IAA_approved_list)
 		source.IAAJ_inspect_ban(id)
 		return
 
-	if (href_list["iaaj_close"])			
+	if (href_list["iaaj_close"])
 		var/id = href_list["iaaj_close"]
 		var/comment = input(usr, "Enter comment:", "IAA closing comment") as text|null
 		if (!comment)

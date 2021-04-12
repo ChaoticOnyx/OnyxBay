@@ -74,35 +74,42 @@
 	return 1
 
 //called when src is thrown into hit_atom
-/atom/movable/proc/throw_impact(atom/hit_atom, speed)
-	if(istype(hit_atom,/mob/living))
+/atom/movable/proc/throw_impact(atom/hit_atom, speed, target_zone)
+	if(isliving(hit_atom))
 		var/mob/living/M = hit_atom
-		M.hitby(src,speed)
+		M.hitby(src, speed)
 
 	else if(isobj(hit_atom))
 		var/obj/O = hit_atom
 		if(!O.anchored)
 			step(O, src.last_move)
-		O.hitby(src,speed)
+		O.hitby(src, speed)
 
 	else if(isturf(hit_atom))
-		src.throwing = 0
+		throwing = 0
 		var/turf/T = hit_atom
-		T.hitby(src,speed)
+		T.hitby(src, speed)
 
 //decided whether a movable atom being thrown can pass through the turf it is in.
-/atom/movable/proc/hit_check(speed)
-	if(src.throwing)
-		for(var/atom/A in get_turf(src))
-			if(A == src) continue
-			if(istype(A,/mob/living))
-				if(A:lying) continue
-				src.throw_impact(A,speed)
-			if(isobj(A))
-				if(A.density && !A.throwpass)	// **TODO: Better behaviour for windows which are dense, but shouldn't always stop movement
-					src.throw_impact(A,speed)
+/atom/movable/proc/hit_check(speed, thrown_with, target_zone)
+	if(!throwing)
+		return
 
-/atom/movable/proc/throw_at(atom/target, range, speed, thrower)
+	for(var/atom/movable/A in get_turf(src))
+		if(A == src)
+			continue
+
+		if(isliving(A))
+			var/mob/living/L = A
+			if(L.lying)
+				continue
+			throw_impact(A, speed, thrown_with, target_zone)
+			
+		if(isobj(A))
+			if(A.density && !A.throwpass)	// **TODO: Better behaviour for windows which are dense, but shouldn't always stop movement
+				throw_impact(A, speed)
+
+/atom/movable/proc/throw_at(atom/target, range, speed, thrower, thrown_with, target_zone)
 	if(!target || !src)
 		return 0
 	if(target.z != src.z)
@@ -145,7 +152,7 @@
 				if(!step) // going off the edge of the map makes get_step return null, don't let things go off the edge
 					break
 				src.Move(step)
-				hit_check(speed)
+				hit_check(speed, thrown_with, target_zone)
 				error += dist_x
 				dist_travelled++
 				dist_since_sleep++
@@ -157,7 +164,7 @@
 				if(!step) // going off the edge of the map makes get_step return null, don't let things go off the edge
 					break
 				src.Move(step)
-				hit_check(speed)
+				hit_check(speed, thrown_with, target_zone)
 				error -= dist_y
 				dist_travelled++
 				dist_since_sleep++
@@ -174,7 +181,7 @@
 				if(!step) // going off the edge of the map makes get_step return null, don't let things go off the edge
 					break
 				src.Move(step)
-				hit_check(speed)
+				hit_check(speed, thrown_with, target_zone)
 				error += dist_y
 				dist_travelled++
 				dist_since_sleep++
@@ -186,7 +193,7 @@
 				if(!step) // going off the edge of the map makes get_step return null, don't let things go off the edge
 					break
 				src.Move(step)
-				hit_check(speed)
+				hit_check(speed, thrown_with, target_zone)
 				error -= dist_x
 				dist_travelled++
 				dist_since_sleep++
@@ -196,8 +203,13 @@
 
 			a = get_area(src.loc)
 
+
+	if(!src)
+		return
+
 	//done throwing, either because it hit something or it finished moving
-	if(isobj(src)) src.throw_impact(get_turf(src),speed)
+	if(isobj(src))
+		throw_impact(get_turf(src), speed)
 	src.throwing = 0
 	src.thrower = null
 	src.throw_source = null

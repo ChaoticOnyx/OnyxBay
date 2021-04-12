@@ -13,7 +13,7 @@
 /datum/nano_module/records/security/generate_updated_data()
 	var/list/data = ..()
 	ASSERT(istype(data))
-	var/static/list/sec_fields = list("Criminal Status", "Major Crimes", "Minor Crimes", "Crime Details", "Important Notes", "Recent Records", "Security Background")
+	var/static/list/sec_fields = list("Criminal Status", "Major Crimes", "Minor Crimes", "Crime Details", "Important Notes", "Security Recent Records", "Security Background")
 	var/fields_cached = data["fields"]
 	if (!fields_cached)
 		return data
@@ -49,7 +49,7 @@
 		to_chat(user, "<span class='notice'>\The [nano_host()] flashes an \"Access Denied\" warning.</span>")
 		return FALSE
 
-	if (F.name == "Recent Records")
+	if (F.name == "Security Recent Records")
 		var/record_field/major_crimes/major_crimes = locate() in R.fields; ASSERT(istype(major_crimes))
 		var/record_field/minor_crimes/minor_crimes = locate() in R.fields; ASSERT(istype(minor_crimes))
 		var/record_field/crime_details/crime_details = locate() in R.fields; ASSERT(istype(crime_details))
