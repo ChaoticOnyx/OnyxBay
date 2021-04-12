@@ -407,7 +407,7 @@ Min Core Pressure: [pressure_limit] kPa<BR>"}
 	icon_screen = "alert:0"
 
 	var/device_tag
-	var/list/device_info
+	var/list/device_info = list()
 
 	var/automation = 0
 

@@ -342,6 +342,10 @@
 // This function can not be undone; do not call this unless you are sure
 // Also make sure there is a valid control computer
 /obj/machinery/cryopod/proc/despawn_occupant()
+	if(!occupant)
+		log_and_message_admins("A mob was deleted while in a cryopod. This may cause errors!")
+		return
+
 	//Drop all items into the pod.
 	for(var/obj/item/W in occupant)
 		occupant.drop_from_inventory(W)
