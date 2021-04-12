@@ -836,7 +836,7 @@
 		var/new_power_light = (lighting >= POWERCHAN_ON)
 		if(area.power_light != new_power_light)
 			area.power_light = new_power_light
-			area.set_emergency_lighting(lighting == POWERCHAN_OFF_AUTO) //if lights go auto-off, emergency lights go on
+			area.set_lighting_mode(LIGHTMODE_EMERGENCY, lighting == POWERCHAN_OFF_AUTO) //if lights go auto-off, emergency lights go on
 
 		area.power_equip = (equipment >= POWERCHAN_ON)
 		area.power_environ = (environ >= POWERCHAN_ON)
