@@ -524,7 +524,7 @@
 		var/list/turf_contents = new()
 		for(var/obj/U in scanned_turf)
 			turf_contents += weakref(U)
-		for(var/mob/U in scanned_turf)
+		for(var/mob/living/U in scanned_turf)
 			turf_contents += weakref(U)
 		set_pin_data(IC_OUTPUT, 1, turf_contents)
 		set_pin_data(IC_OUTPUT, 3, area_name)
