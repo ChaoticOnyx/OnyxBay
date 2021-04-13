@@ -9,17 +9,18 @@
 	name = "weapon firing mechanism"
 	desc = "This somewhat complicated system allows one to slot in a gun, direct it towards a position, and remotely fire it."
 	extended_desc = "The firing mechanism can slot in any energy weapon. \
-	The first input pin need to be ref which correspond to target for the gun to fire. \
-	The 'fire' activator will cause the mechanism to attempt to fire the weapon at the ref, if possible. Mode will switch between \
+	The first and second inputs need to be numbers which correspond to coordinates for the gun to fire at relative to the machine itself. \
+	The 'fire' activator will cause the mechanism to attempt to fire the weapon at the coordinates, if possible. Mode will switch between \
 	lethal (TRUE) or stun (FALSE) modes. It uses the internal battery of the weapon itself, not the assembly. If you wish to fire the gun while the circuit is in \
 	hand, you will need to use an assembly that is a gun."
 	complexity = 20
 	w_class = ITEM_SIZE_SMALL
 	size = 15
 	inputs = list(
-		"target"       = IC_PINTYPE_REF,
+		"target X rel" = IC_PINTYPE_NUMBER,
+		"target Y rel" = IC_PINTYPE_NUMBER,
 		"bodypart"	   = IC_PINTYPE_STRING
-	)
+		)
 	outputs = list(
 		"reference to gun"	= IC_PINTYPE_REF,
 		"Weapon mode"		= IC_PINTYPE_STRING
@@ -39,7 +40,7 @@
 
 /obj/item/integrated_circuit/manipulation/weapon_firing/Initialize()
 	. = ..()
-	extended_desc += "\nThe second input pin used for selection of target body part, the list of body parts: "
+	extended_desc += "\nThe fourth input used for selection of target body part, the list of body parts: "
 	extended_desc += jointext(BP_ALL_LIMBS, ", ")
 
 /obj/item/integrated_circuit/manipulation/weapon_firing/Destroy()
@@ -90,29 +91,35 @@
 		return
 	set_pin_data(IC_OUTPUT, 1, weakref(installed_gun))
 	push_data()
+	var/x = get_pin_data(IC_INPUT, 1)
+	var/y = get_pin_data(IC_INPUT, 2)
 	if(assembly)
 		switch(ord)
 			if(1)
-				var/atom/target = get_pin_data(IC_INPUT, 1)
-				if(!istype(target))
-					return
-				var/bodypart = sanitize(get_pin_data(IC_INPUT, 2))
+				if(isnum_safe(x))
+					x = round(x, 1)
+				if(isnum_safe(x))
+					y = round(x, 1)
+
+				var/bodypart = sanitize(get_pin_data(IC_INPUT, 3))
 				if(!(bodypart in BP_ALL_LIMBS))
 					bodypart = pick(BP_ALL_LIMBS)
+				var/turf/T = get_turf(assembly)
+				var/target_x = Clamp(T.x + x, 0, world.maxx)
+				var/target_y = Clamp(T.y + y, 0, world.maxy)
 
 				assembly.visible_message(SPAN("danger", "[assembly] fires [installed_gun]!"))
-				var/obj/item/projectile/P = shootAt(target, bodypart)
-				if(P)
-					installed_gun.play_fire_sound(assembly, P)
+				if(shootAt(locate(target_x, target_y, T.z), bodypart))
 					activate_pin(3)
 			else if(2)
 				var/datum/firemode/next_firemode = installed_gun.switch_firemodes()
 				set_pin_data(IC_OUTPUT, 2, next_firemode ? next_firemode.name : null)
 				push_data()
 
-/obj/item/integrated_circuit/manipulation/weapon_firing/proc/shootAt(atom/target, bodypart)
+/obj/item/integrated_circuit/manipulation/weapon_firing/proc/shootAt(turf/target, bodypart)
 	var/turf/T = get_turf(assembly)
-	if(!istype(T) || !istype(target))
+	var/turf/U = target
+	if(!istype(T) || !istype(U))
 		return
 	if(!installed_gun.power_supply)
 		return
@@ -128,9 +135,7 @@
 	A.shot_from = assembly.name
 	A.firer = assembly
 	A.launch(target, bodypart)
-	var/atom/AM = get_object()
-	AM.investigate_log("fired [installed_gun] to [A] with [src].", INVESTIGATE_CIRCUIT)
-	log_attack("[assembly] [any2ref(assembly)] has fired [installed_gun].", notify_admin = FALSE)
+	log_attack("[assembly] [ref(assembly)] has fired [installed_gun].", notify_admin = FALSE)
 	return A
 
 /obj/item/integrated_circuit/manipulation/locomotion
@@ -143,7 +148,7 @@
 	w_class = ITEM_SIZE_SMALL
 	complexity = 10
 	max_allowed = 4
-	cooldown_per_use = 3
+	cooldown_per_use = 1 SECONDS
 	ext_cooldown = 3 // 0.3 second
 	inputs = list("direction" = IC_PINTYPE_DIR)
 	outputs = list("obstacle" = IC_PINTYPE_REF)
@@ -233,8 +238,6 @@
 			dt = 15
 		addtimer(CALLBACK(attached_grenade, /obj/item/weapon/grenade.proc/activate), dt)
 		var/atom/holder = loc
-		var/atom/A = get_object()
-		A.investigate_log("activated grenade with [src].", INVESTIGATE_CIRCUIT)
 		log_and_message_admins("activated a grenade assembly. Last touches: Assembly: [holder.fingerprintslast] Circuit: [fingerprintslast] Grenade: [attached_grenade.fingerprintslast]")
 
 // These procs do not relocate the grenade, that's the callers responsibility
@@ -290,13 +293,9 @@
 		switch(get_pin_data(IC_INPUT, 2))
 			if(0)
 				TR.harvest()
-				var/atom/A = get_object()
-				A.investigate_log("harvested [TR] with [src].", INVESTIGATE_CIRCUIT)
 			if(1)
 				TR.weedlevel = 0
 				TR.update_icon()
-				var/atom/A = get_object()
-				A.investigate_log("uproot weeds [TR] with [src].", INVESTIGATE_CIRCUIT)
 			if(2)
 				if(TR.seed) //Could be that they're just using it as a de-weeder
 					TR.age = 0
@@ -309,8 +308,6 @@
 				TR.weedlevel = 0 //Has a side effect of cleaning up those nasty weeds
 				TR.dead = 0
 				TR.update_icon()
-				var/atom/A = get_object()
-				A.investigate_log("uproot plant [TR] with [src].", INVESTIGATE_CIRCUIT)
 			if(3)
 				if(!check_target(O))
 					activate_pin(2)
@@ -329,8 +326,6 @@
 						TR.lastcycle = world.time
 						O.forceMove(TR)
 						TR.update_icon()
-						var/atom/A = get_object()
-						A.investigate_log("plant [O] in [TR] with [src].", INVESTIGATE_CIRCUIT)
 	activate_pin(2)
 
 /obj/item/integrated_circuit/manipulation/seed_extractor
@@ -359,8 +354,6 @@
 		seeds.seed_type = SSplants.seeds[O.seed.name]
 		seeds.update_seed()
 		seed_output += weakref(seeds)
-	var/atom/A = get_object()
-	A.investigate_log("extracted seeds from [O] with [src].", INVESTIGATE_CIRCUIT)
 	qdel(O)
 
 	if(seed_output.len)
@@ -481,8 +474,6 @@
 					GLOB.moved_event.register(to_pull, src, .proc/check_pull) //Whenever the target moves, make sure we can still pull it!
 					GLOB.destroyed_event.register(to_pull, src, .proc/stop_pulling) //Stop pulling if it gets destroyed
 					GLOB.moved_event.register(acting_object, src, .proc/pull) //Make sure we actually pull it.
-					var/atom/A = get_object()
-					A.investigate_log("started pulling [pulling] with [src].", INVESTIGATE_CIRCUIT)
 			push_data()
 		if(3)
 			if(pulling)
@@ -523,8 +514,6 @@
 		GLOB.moved_event.unregister(AM, src)
 		AM.visible_message("\The [AM] stops pulling \the [pulling]")
 		GLOB.destroyed_event.unregister(pulling, src)
-		var/atom/A = get_object()
-		A.investigate_log("stopped pulling [pulling] with [src].", INVESTIGATE_CIRCUIT)
 		pulling = null
 		set_pin_data(IC_OUTPUT, 1, FALSE)
 		activate_pin(3)
@@ -567,7 +556,7 @@
 	if(!A || A.anchored || A.throwing || A == assembly || istype(A, /obj/item/weapon/material/twohanded) || istype(A, /obj/item/device/transfer_valve))
 		return
 
-	if(istype(assembly.loc, /obj/item/weapon/implant/compressed)) //Prevents the more abusive form of chestgun.
+	if (istype(assembly.loc, /obj/item/weapon/implant/compressed)) //Prevents the more abusive form of chestgun.
 		return
 
 	if(A.w_class > assembly.w_class)
@@ -606,8 +595,6 @@
 	log_attack("[assembly] \ref[assembly] has thrown [A].")
 	A.forceMove(get_turf(assembly))
 	A.throw_at(locate(x_abs, y_abs, T.z), range, 3)
-	var/atom/AM = get_object()
-	AM.investigate_log("threw [A] with [src] at X: [x_abs], y: [y_abs].", INVESTIGATE_CIRCUIT)
 
 /obj/item/integrated_circuit/manipulation/bluespace_rift
 	name = "bluespace rift generator"
@@ -651,8 +638,6 @@
 			new /obj/effect/portal(rift_location, destination, 30 SECONDS, 33)
 		else
 			playsound(src, get_sfx("spark"), 50, 1)
-	var/atom/A = get_object()
-	A.investigate_log("was opened rift with [src].", INVESTIGATE_CIRCUIT)
 
 // - inserter circuit - //
 /obj/item/integrated_circuit/manipulation/inserter
@@ -717,9 +702,7 @@
 		if(1)
 			var/new_name = sanitize(get_pin_data(IC_INPUT, 1))
 			if(new_name)
-				var/atom/A = get_object()
-				A.investigate_log("was renamed with [src] into [new_name].", INVESTIGATE_CIRCUIT)
-				A.SetName(new_name)
+				get_object().SetName(new_name)
 
 		else
 			set_pin_data(IC_OUTPUT, 1, assembly.name)
@@ -750,8 +733,6 @@
 		if(1)
 			var/new_desc = sanitize(get_pin_data(IC_INPUT, 1))
 			if(new_desc)
-				var/atom/A = get_object()
-				A.investigate_log("was redescribed with [src] into [new_desc].", INVESTIGATE_CIRCUIT)
 				assembly.desc = new_desc
 
 		else
@@ -778,8 +759,6 @@
 
 	switch(ord)
 		if(1)
-			var/atom/A = get_object()
-			A.investigate_log("was repained with [src].", INVESTIGATE_CIRCUIT)
 			assembly.detail_color = get_pin_data(IC_INPUT, 1)
 			assembly.update_icon()
 
@@ -811,18 +790,6 @@
 	spawn_flags = IC_SPAWN_RESEARCH
 	power_draw_per_use = 20
 	demands_object_input = TRUE		// You can put stuff in once the circuit is in assembly,passed down from additem and handled by attackby()
-	var/list/obj/item/weapon/surgery_items_type_list = list(
-		/obj/item/weapon/bonegel,
-		/obj/item/weapon/bonesetter,
-		/obj/item/weapon/circular_saw,
-		/obj/item/weapon/scalpel,
-		/obj/item/weapon/retractor,
-		/obj/item/weapon/hemostat,
-		/obj/item/weapon/cautery,
-		/obj/item/weapon/surgicaldrill,
-		/obj/item/weapon/FixOVein,
-		/obj/item/weapon/organfixer
-	)
 	var/selected_zone
 	var/obj/item/instrument
 
@@ -835,7 +802,9 @@
 	if(instrument)
 		to_chat(user, SPAN("warning", "There's already a instrument installed."))
 		return
-	if(surgery_items_type_list.Find(O.type))
+	if(istype(O, /obj/item/weapon/bonegel) || istype(O, /obj/item/weapon/bonesetter) || istype(O, /obj/item/weapon/circular_saw) || istype(O, /obj/item/weapon/scalpel) \
+	|| istype(O, /obj/item/weapon/retractor) || istype(O, /obj/item/weapon/hemostat) || istype(O, /obj/item/weapon/cautery) || istype(O, /obj/item/weapon/surgicaldrill) \
+	|| istype(O, /obj/item/weapon/FixOVein) || istype(O, /obj/item/weapon/organfixer))
 		instrument = O
 		user.drop_item(O)
 		instrument.forceMove(src)
@@ -865,8 +834,6 @@
 			return
 		var/status = do_int_surgery(target)
 		if(status)
-			var/atom/A = get_object()
-			A.investigate_log("made some operation on ([target]) with [src].", INVESTIGATE_CIRCUIT)
 			activate_pin(2)
 		else
 			activate_pin(3)
@@ -934,59 +901,19 @@
 				//We had proper tools! (or RNG smiled.) and user did not move or change hands.
 				if(prob(S.success_chance(user, M, instrument, zone)) &&  wait_check_mob(M, S.duration * SURGERY_DURATION_DELTA * surgery_speed, zone))
 					S.end_step(user, M, zone, instrument)		//finish successfully
-				else if(user.Adjacent(M))			//or
+				else if (user.Adjacent(M))			//or
 					S.fail_step(user, M, zone, instrument)		//malpractice~
 				else // This failing silently was a pain.
 					status = FALSE
-				if(M)
+				if (M)
 					M.op_stage.in_progress -= zone 									// Clear the in-progress flag.
-				if(ishuman(M))
+				if (ishuman(M))
 					var/mob/living/carbon/human/H = M
 					H.update_surgery()
 					if(H.op_stage.current_organ)
 						H.op_stage.current_organ = null						//Clearing current surgery target for the sake of internal surgery's consistency
 				return status 												//don't want to do weapony things after surgery
 	return FALSE
-
-/obj/item/integrated_circuit/manipulation/hatchlock
-	name = "maintenance hatch lock"
-	desc = "An electronically controlled lock for the assembly's maintenance hatch."
-	extended_desc = "WARNING: If you lock the hatch with no circuitry to reopen it, there is no way to open the hatch again!"
-	icon_state = "hatch_lock"
-
-	outputs = list(
-		"enabled" = IC_PINTYPE_BOOLEAN
-	)
-	activators = list(
-		"toggle" = IC_PINTYPE_PULSE_IN,
-		"on toggle" = IC_PINTYPE_PULSE_OUT
-	)
-
-	complexity = 4
-	cooldown_per_use = 2 SECOND
-	power_draw_per_use = 50
-	spawn_flags = IC_SPAWN_DEFAULT
-	origin_tech = list(TECH_ENGINEERING = 2)
-
-	var/lock_enabled = FALSE
-
-/obj/item/integrated_circuit/manipulation/hatchlock/do_work(ord)
-	if(ord == 1 && assembly)
-		lock_enabled = !lock_enabled
-		assembly.force_sealed = lock_enabled
-		visible_message(
-			lock_enabled ? \
-			SPAN("notice", "\The [get_object()] whirrs. The screws are now covered.") \
-			: \
-			SPAN("notice","\The [get_object()] whirrs. The screws are now exposed!")
-		)
-
-		var/atom/A = get_object()
-		A.investigate_log("The [A] was [lock_enabled ? "locked" : "unlocked"] with [src].", INVESTIGATE_CIRCUIT)
-
-		set_pin_data(IC_OUTPUT, 1, lock_enabled)
-		push_data()
-		activate_pin(2)
 
 #undef SURGERY_FAILURE
 #undef SURGERY_BLOCKED

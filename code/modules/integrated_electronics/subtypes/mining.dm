@@ -56,9 +56,7 @@
 	inputs = list(
 		"target" = IC_PINTYPE_REF
 		)
-	outputs = list(
-		"collected len" = IC_PINTYPE_NUMBER
-	)
+	outputs = list()
 	activators = list(
 		"use" = IC_PINTYPE_PULSE_IN,
 		"pulse out" = IC_PINTYPE_PULSE_OUT
@@ -70,10 +68,6 @@
 /obj/item/integrated_circuit/mining/mining_satchel/Initialize()
 	. = ..()
 	box = new(src)
-
-/obj/item/integrated_circuit/mining/mining_satchel/Destroy()
-	. = ..()
-	QDEL_NULL(box)
 
 /obj/item/integrated_circuit/mining/mining_satchel/do_work()
 	if(assembly)
@@ -88,8 +82,7 @@
 				if(!box.can_be_inserted(O))
 					return
 				box.handle_item_insertion(O)
-		set_pin_data(IC_OUTPUT, 1, box.contents.len)
-		push_data()
+
 		activate_pin(2)
 
 /obj/item/integrated_circuit/mining/mining_drill

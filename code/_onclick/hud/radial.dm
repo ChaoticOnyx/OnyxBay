@@ -283,7 +283,7 @@ GLOBAL_LIST_EMPTY(radial_menus)
 	Choices should be a list where list keys are movables or text used for element names and return value
 	and list values are movables/icons/images used for element icons
 */
-/proc/show_radial_menu(mob/user, atom/anchor, list/choices, uniqueid, radius, datum/callback/custom_check, require_near = FALSE, in_screen = FALSE, use_hudfix_method = TRUE)
+/proc/show_radial_menu(mob/user, atom/anchor, list/choices, uniqueid, radius, datum/callback/custom_check, require_near = FALSE, in_screen = FALSE)
 	if(!user || !anchor || !length(choices))
 		return
 	if(!uniqueid)
@@ -298,7 +298,6 @@ GLOBAL_LIST_EMPTY(radial_menus)
 		menu.radius = radius
 	if(istype(custom_check))
 		menu.custom_check_callback = custom_check
-	menu.hudfix_method = use_hudfix_method
 	menu.anchor = anchor
 	menu.need_in_screen = in_screen
 	menu.check_screen_border(user) //Do what's needed to make it look good near borders or on hud

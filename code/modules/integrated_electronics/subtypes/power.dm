@@ -20,7 +20,6 @@
 	activators = list("transmit" = IC_PINTYPE_PULSE_IN, "on transmit" = IC_PINTYPE_PULSE_OUT)
 	spawn_flags = IC_SPAWN_RESEARCH
 	power_draw_per_use = 500 // Inefficency has to come from somewhere.
-	cooldown_per_use = 1 SECONDS
 	var/amount_to_move = 5000
 
 /obj/item/integrated_circuit/power/transmitter/large
@@ -34,7 +33,6 @@
 	w_class = ITEM_SIZE_NORMAL
 	complexity = 32
 	power_draw_per_use = 2000
-	cooldown_per_use = 3 SECONDS
 	amount_to_move = 20000
 
 /obj/item/integrated_circuit/power/transmitter/do_work()
@@ -42,10 +40,9 @@
 	var/atom/movable/AM = get_pin_data_as_type(IC_INPUT, 1, /atom/movable)
 	if(!AM)
 		return FALSE
-	if(!assembly && !assembly.battery)
+	if(!assembly)
 		return FALSE // Pointless to do everything else if there's no battery to draw from.
-	var/list/power_cell_list = get_power_cell(AM)
-	var/obj/item/weapon/cell/cell = power_cell_list[1]
+	var/obj/item/weapon/cell/cell = get_power_cell(AM)
 	if(istype(cell))
 		var/transfer_amount = amount_to_move
 		var/turf/A = get_turf(src)
@@ -53,18 +50,17 @@
 		if(A.Adjacent(B))
 			if(AM.loc != assembly)
 				transfer_amount *= 0.8 // Losses due to distance.
-			transfer_amount *= power_cell_list[2] // Losses due to transmission efficient
 			var/list/U = list(A.contents)
 			transfer_amount *= 1 / U.len
+			set_pin_data(IC_OUTPUT, 1, cell.charge)
+			set_pin_data(IC_OUTPUT, 2, cell.maxcharge)
+			set_pin_data(IC_OUTPUT, 3, cell.percent())
+			activate_pin(2)
+			push_data()
 			if(cell.charge == cell.maxcharge)
 				return FALSE
 			if(transfer_amount && assembly.draw_power(amount_to_move)) // CELLRATE is already handled in draw_power()
 				cell.give(transfer_amount * CELLRATE)
-				set_pin_data(IC_OUTPUT, 1, cell.charge)
-				set_pin_data(IC_OUTPUT, 2, cell.maxcharge)
-				set_pin_data(IC_OUTPUT, 3, cell.percent())
-				activate_pin(2)
-				push_data()
 				if(istype(AM, /obj/item))
 					var/obj/item/I = AM
 					I.update_icon()
