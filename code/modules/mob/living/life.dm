@@ -12,11 +12,12 @@
 	if(machine && !CanMouseDrop(machine, src))
 		machine = null
 
-	//Handle temperature/pressure differences between body and environment
-	var/datum/gas_mixture/environment = loc.return_air()
 	handle_modifiers() // Do this early since it might affect other things later.
-	if(environment)
-		handle_environment(environment)
+	if (do_check_environment())
+		//Handle temperature/pressure differences between body and environment
+		var/datum/gas_mixture/environment = loc.return_air()
+		if(environment)
+			handle_environment(environment)
 
 	blinded = 0 // Placing this here just show how out of place it is.
 	// human/handle_regular_status_updates() needs a cleanup, as blindness should be handled in handle_disabilities()
@@ -59,6 +60,9 @@
 			return
 
 		N.Handle(src)
+
+/mob/living/proc/do_check_environment()
+	return TRUE
 
 /mob/living/proc/handle_breathing()
 	return

@@ -123,33 +123,40 @@
 					visible_emote("[pick(emote_see)].")
 
 	if(in_stasis)
-		return 1 // return early to skip atmos checks
+		return 1
 
-	//Atmos
+	if(shy_animal)
+		turns_since_scan++
+		if(turns_since_scan > 5)
+			walk_to(src,0)
+			turns_since_scan = 0
+			handle_panic_target()
+
+	return 1
+
+/mob/living/simple_animal/do_check_environment()
+	return !in_stasis
+
+/mob/living/simple_animal/handle_environment(datum/gas_mixture/environment)
+	. = ..()
 	var/atmos_suitable = 1
 
-	var/atom/A = loc
-	if(!loc)
-		return 1
-	var/datum/gas_mixture/environment = A.return_air()
-
-	if(environment)
-		if( abs(environment.temperature - bodytemperature) > 40 )
-			bodytemperature += (environment.temperature - bodytemperature) / 5
-		if(min_gas)
-			for(var/gas in min_gas)
-				if(environment.gas[gas] < min_gas[gas])
-					atmos_suitable = 0
-					oxygen_alert = 1
-				else
-					oxygen_alert = 0
-		if(max_gas)
-			for(var/gas in max_gas)
-				if(environment.gas[gas] > max_gas[gas])
-					atmos_suitable = 0
-					toxins_alert = 1
-				else
-					toxins_alert = 0
+	if( abs(environment.temperature - bodytemperature) > 40 )
+		bodytemperature += (environment.temperature - bodytemperature) / 5
+	if(min_gas)
+		for(var/gas in min_gas)
+			if(environment.gas[gas] < min_gas[gas])
+				atmos_suitable = 0
+				oxygen_alert = 1
+			else
+				oxygen_alert = 0
+	if(max_gas)
+		for(var/gas in max_gas)
+			if(environment.gas[gas] > max_gas[gas])
+				atmos_suitable = 0
+				toxins_alert = 1
+			else
+				toxins_alert = 0
 
 	//Atmos effect
 	if(bodytemperature < minbodytemp)
@@ -163,15 +170,6 @@
 
 	if(!atmos_suitable)
 		adjustBruteLoss(unsuitable_atoms_damage)
-
-	if(shy_animal)
-		turns_since_scan++
-		if(turns_since_scan > 5)
-			walk_to(src,0)
-			turns_since_scan = 0
-			handle_panic_target()
-
-	return 1
 
 /mob/living/simple_animal/proc/escape(mob/living/M, obj/O)
 	O.unbuckle_mob(M)
