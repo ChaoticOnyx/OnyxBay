@@ -566,8 +566,6 @@
 	if(sealed || force_sealed)
 		to_chat(user,SPAN_NOTICE("The assembly is sealed. Any attempt to force it open would break it."))
 		return FALSE
-	if(..())
-		return TRUE
 	// some prefabs have invalid sprite after unscrewing
 	if(icon != 'icons/obj/assemblies/electronic_setups.dmi')
 		icon = 'icons/obj/assemblies/electronic_setups.dmi'

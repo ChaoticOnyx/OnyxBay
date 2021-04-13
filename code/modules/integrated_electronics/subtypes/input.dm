@@ -1060,7 +1060,7 @@
 /obj/item/integrated_circuit/input/sensor/ranged/sense(atom/A, mob/user)
 	if(!user || !A || (ismob(A) && !isliving(A)))
 		return FALSE
-	if(user.client)
+	if(user.client && A != user)
 		if(!(A in view(user.client)))
 			return FALSE
 	else

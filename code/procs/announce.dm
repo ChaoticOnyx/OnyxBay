@@ -144,12 +144,13 @@ datum/announcement/proc/NewsCast(message as text, message_title as text)
 		AnnounceArrivalSimple(name, rank, spawnpoint.msg, announce_freq)
 
 /proc/get_announcement_computer(announcer = "Arrivals Announcement Computer")
-	if(ai_list.len)
+	if(length(ai_list))
 		var/list/mob/living/silicon/ai/valid_AIs = list()
 		for(var/mob/living/silicon/ai/AI in ai_list)
 			if(AI.stat != DEAD)
 				valid_AIs.Add(AI)
-		announcer = pick(valid_AIs)
+		if(length(valid_AIs))
+			announcer = pick(valid_AIs)
 	return announcer
 
 /proc/AnnounceArrivalSimple(name, rank = "visitor", join_message = "has arrived on the [station_name()]", frequency)
