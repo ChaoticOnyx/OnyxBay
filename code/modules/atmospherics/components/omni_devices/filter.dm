@@ -92,18 +92,21 @@
 	return 1
 
 /obj/machinery/atmospherics/omni/filter/ui_interact(mob/user, ui_key = "main", datum/nanoui/ui = null, force_open = 1)
-	usr.set_machine(src)
+	if(!user)
+		if(ui)
+			ui.close()
+		return
+
+	user.set_machine(src)
 
 	var/list/data = new()
-
 	data = build_uidata()
 
 	ui = SSnano.try_update_ui(user, src, ui_key, ui, data, force_open)
 
-	if (!ui)
+	if(!ui)
 		ui = new(user, src, ui_key, "omni_filter.tmpl", "Omni Filter Control", 330, 330)
 		ui.set_initial_data(data)
-
 		ui.open()
 
 /obj/machinery/atmospherics/omni/filter/proc/build_uidata()
