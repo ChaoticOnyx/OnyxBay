@@ -1,5 +1,3 @@
-/* PROTOLATHE */
-
 /datum/design/item/optical/psychoscope
 	name = "psychoscope"
 	desc = "Use psychoscope for researching lifeforms (carbon/silicon), lifeforms must be alive."
@@ -21,6 +19,7 @@
 /datum/design/item/implant/neuromod
 	name = "neuromod shell"
 	desc = "Fill this shell in a 'Neuromod RnD Console'."
+	id = "neuromod_shell"
 	materials = list(MATERIAL_STEEL = 8000, MATERIAL_GOLD = 4000)
 	req_tech = list(TECH_DATA = 4, TECH_BIO = 5, TECH_MAGNET = 4)
 	build_path = /obj/item/weapon/reagent_containers/neuromod_shell
