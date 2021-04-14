@@ -1226,6 +1226,9 @@
 					/obj/item/stack/medical/advanced/bruise_pack = 3,
 					/obj/item/stack/medical/advanced/ointment = 3,
 					/obj/item/stack/medical/splint = 2,
+					/obj/item/weapon/reagent_containers/pill/glucose = 3,
+					/obj/item/weapon/reagent_containers/pill/insulin = 6,
+					/obj/item/device/glucose = 1
 					/obj/item/weapon/reagent_containers/hypospray/autoinjector/pain = 4)
 	contraband = list(/obj/item/weapon/reagent_containers/pill/tox = 3,
 					  /obj/item/weapon/reagent_containers/pill/stox = 4,

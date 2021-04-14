@@ -80,7 +80,7 @@
 
 		// Insulin secretion
 		var/G = owner.reagents.get_reagent_amount(/datum/reagent/hormone/glucose)
-		var/number = max(0, G - BLOOD_SUGAR_NORMAL)
+		var/number = max(0, G - (BLOOD_SUGAR_NORMAL - lerp(0, BLOOD_SUGAR_LCRITICAL+10, min(400 / owner.nutrition, 15))))
 		if(number > 0.0001)
 			number /= 10.0 //1 insulin dose metabolize 10 glucose
 			owner.set_secretion(BP_STOMACH, /datum/reagent/hormone/insulin, round(number, 0.1), TRUE)
