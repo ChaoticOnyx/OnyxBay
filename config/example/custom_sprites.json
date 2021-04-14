@@ -1,0 +1,23 @@
+{
+    "robot":
+    [
+        {
+            "ckey": "ckey",
+            "sprite": "sprite"
+        }
+    ],
+    "aiholo":
+    [
+        {
+            "ckey": "ckey",
+            "sprite": "sprite"
+        }
+    ],
+    "aicore":
+    [
+        {
+            "ckey": "ckey",
+            "sprite": "sprite name without -ai and -ai-crash"
+        }
+    ]
+}
