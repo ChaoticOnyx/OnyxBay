@@ -52,11 +52,7 @@ SUBSYSTEM_DEF(machines)
 	var/list/power_objects = list()
 
 	var/list/processing  = list() // These are the machines which are processing.
-	var/list/current_run_pipenets = list()
-	var/list/current_run_machinery = list()
-	var/list/current_run_powernets = list()
-	var/list/current_run_power = list()
-	var/list/type_cost = list()
+	var/list/current_run = list()
 
 /datum/controller/subsystem/machines/Initialize(timeofday)
 	makepowernets()
@@ -77,10 +73,12 @@ if(current_step == this_step || (check_resumed && !resumed)) {\
 }
 
 /datum/controller/subsystem/machines/fire(resumed = 0)
-	process_pipenets(resumed)
-	process_machinery(resumed)
-	process_powernets(resumed)
-	process_power_objects(resumed)
+	var/timer = TICK_USAGE_REAL
+
+	INTERNAL_PROCESS_STEP(SSMACHINES_PIPENETS,TRUE,process_pipenets,cost_pipenets,SSMACHINES_MACHINERY)
+	INTERNAL_PROCESS_STEP(SSMACHINES_MACHINERY,FALSE,process_machinery,cost_machinery,SSMACHINES_POWERNETS)
+	INTERNAL_PROCESS_STEP(SSMACHINES_POWERNETS,FALSE,process_powernets,cost_powernets,SSMACHINES_POWER_OBJECTS)
+	INTERNAL_PROCESS_STEP(SSMACHINES_POWER_OBJECTS,FALSE,process_power_objects,cost_power_objects,SSMACHINES_PIPENETS)
 
 #undef INTERNAL_PROCESS_STEP
 
@@ -138,9 +136,9 @@ datum/controller/subsystem/machines/proc/setup_atmos_machinery(list/machines)
 
 /datum/controller/subsystem/machines/proc/process_pipenets(resumed = 0)
 	if (!resumed)
-		src.current_run_pipenets = pipenets.Copy()
+		src.current_run = pipenets.Copy()
 	//cache for sanic speed (lists are references anyways)
-	var/list/current_run = src.current_run_pipenets
+	var/list/current_run = src.current_run
 	while(current_run.len)
 		var/datum/pipe_network/PN = current_run[current_run.len]
 		current_run.len--
@@ -154,27 +152,23 @@ datum/controller/subsystem/machines/proc/setup_atmos_machinery(list/machines)
 
 /datum/controller/subsystem/machines/proc/process_machinery(resumed = 0)
 	if (!resumed)
-		type_cost.Cut()
-		src.current_run_machinery = processing.Copy()
+		src.current_run = processing.Copy()
 
-	var/list/current_run = src.current_run_machinery
+	var/list/current_run = src.current_run
 	while(current_run.len)
 		var/obj/machinery/M = current_run[current_run.len]
 		current_run.len--
 		if(!QDELETED(M) && (M.Process(wait) == PROCESS_KILL))
 			processing.Remove(M)
 			M.is_processing = null
-
-		var/count = type_cost["[M.type]"]
-		type_cost["[M.type]"] = count + 1
 		if(MC_TICK_CHECK)
 			return
 
 /datum/controller/subsystem/machines/proc/process_powernets(resumed = 0)
 	if (!resumed)
-		src.current_run_powernets = powernets.Copy()
+		src.current_run = powernets.Copy()
 
-	var/list/current_run = src.current_run_powernets
+	var/list/current_run = src.current_run
 	while(current_run.len)
 		var/datum/powernet/PN = current_run[current_run.len]
 		current_run.len--
@@ -188,9 +182,9 @@ datum/controller/subsystem/machines/proc/setup_atmos_machinery(list/machines)
 
 /datum/controller/subsystem/machines/proc/process_power_objects(resumed = 0)
 	if (!resumed)
-		src.current_run_power = power_objects.Copy()
+		src.current_run = power_objects.Copy()
 
-	var/list/current_run = src.current_run_power
+	var/list/current_run = src.current_run
 	while(current_run.len)
 		var/obj/item/I = current_run[current_run.len]
 		current_run.len--
