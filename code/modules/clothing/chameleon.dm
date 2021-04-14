@@ -1,8 +1,22 @@
 //*****************
 //**Cham Jumpsuit**
 //*****************
+/obj/item/clothing/under/chameleon/attackby(obj/item/weapon/card/id/W as obj, mob/user as mob)
+	..()
+	if(!istype(W, /obj/item/weapon/card/id))
+		return
+	check_job(W, user)
+
+proc/check_job(obj/item/weapon/card/id/W as obj, mob/user as mob)
+	var/obj/item/weapon/card/id/id = W
+	var/datum/job/job = job_master.GetJob(id.rank)
+	var/mob/living/carbon/human/H = usr
+	var/datum/job/outfit = job.get_outfit(H,job)
+	to_chat(user, "[outfit]")
+	to_chat(user, "lox!")
 
 /obj/item/proc/disguise(newtype, mob/user)
+	to_chat(user, "[newtype]")
 	if(!user || user.incapacitated())
 		return
 	//this is necessary, unfortunately, as initial() does not play well with list vars
@@ -67,7 +81,7 @@
 
 	if(!ispath(clothing_choices[picked]))
 		return
-
+	to_chat(usr, "[picked]")
 	disguise(clothing_choices[picked], usr)
 	update_clothing_icon()	//so our overlays update.
 
