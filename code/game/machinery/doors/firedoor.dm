@@ -286,51 +286,6 @@
 
 	return FA
 
-// CHECK PRESSURE
-/obj/machinery/door/firedoor/Process()
-	..()
-
-	if(density && next_process_time <= world.time)
-		next_process_time = world.time + 100		// 10 second delays between process updates
-		var/changed = 0
-		lockdown=0
-		// Pressure alerts
-		pdiff = getOPressureDifferential(src.loc)
-		if(pdiff >= FIREDOOR_MAX_PRESSURE_DIFF)
-			lockdown = 1
-			if(!pdiff_alert)
-				pdiff_alert = 1
-				changed = 1 // update_icon()
-		else
-			if(pdiff_alert)
-				pdiff_alert = 0
-				changed = 1 // update_icon()
-
-		tile_info = getCardinalAirInfo(src.loc,list("temperature","pressure"))
-		var/old_alerts = dir_alerts
-		for(var/index = 1; index <= 4; index++)
-			var/list/tileinfo=tile_info[index]
-			if(tileinfo==null)
-				continue // Bad data.
-			var/celsius = convert_k2c(tileinfo[1])
-
-			var/alerts=0
-
-			// Temperatures
-			if(celsius >= FIREDOOR_MAX_TEMP)
-				alerts |= FIREDOOR_ALERT_HOT
-				lockdown = 1
-			else if(celsius <= FIREDOOR_MIN_TEMP)
-				alerts |= FIREDOOR_ALERT_COLD
-				lockdown = 1
-
-			dir_alerts[index]=alerts
-
-		if(dir_alerts != old_alerts)
-			changed = 1
-		if(changed)
-			update_icon()
-
 /obj/machinery/door/firedoor/proc/latetoggle()
 	if(operating || !nextstate)
 		return
