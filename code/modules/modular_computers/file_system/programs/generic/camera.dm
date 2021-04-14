@@ -94,7 +94,7 @@
 		if(!(current_network in C.network))
 			return
 
-		if (world.time > last_sound + 2 SECONDS)
+		if (last_sound + 2 SECONDS < world.time)
 			last_sound = world.time
 			playsound(nano_host().loc, 'sound/effects/cctv_switch.ogg', 25)
 
