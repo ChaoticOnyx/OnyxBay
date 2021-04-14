@@ -210,7 +210,7 @@
 	var/list/prone_overlay_offset = list(0, 0) // amount to shift overlays when lying
 	var/icon_scale = 1
 
-	var/nutrition_gormone = null
+	var/nutrition_hormone = null
 /*
 These are all the things that can be adjusted for equipping stuff and
 each one can be in the NORTH, SOUTH, EAST, and WEST direction. Specify

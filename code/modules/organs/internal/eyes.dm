@@ -71,6 +71,8 @@
 	if(is_broken())
 		owner.eye_blind = 20
 
+	handle_robotic()
+
 /obj/item/organ/internal/eyes/proc/get_total_protection(flash_protection = FLASH_PROTECTION_NONE)
 	return (flash_protection + innate_flash_protection)
 

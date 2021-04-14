@@ -67,6 +67,16 @@
 #define GETPULSE_HAND 0 // Less accurate. (hand)
 #define GETPULSE_TOOL 1 // More accurate. (med scanner, sleeper, etc.)
 
+#define BLOOD_SUGAR_LCRITICAL 15
+#define BLOOD_SUGAR_LBAD      30
+#define BLOOD_SUGAR_NORMAL    40
+#define BLOOD_SUGAR_HBAD      60
+#define BLOOD_SUGAR_HCRITICAL 70
+
+#define HORMONE_LEVEL_NORMAL   1
+#define HORMONE_LEVEL_BAD      2
+#define HORMONE_LEVEL_CRITICAL 3
+
 //intent flags, why wasn't this done the first time?
 #define I_HELP		"help"
 #define I_DISARM	"disarm"

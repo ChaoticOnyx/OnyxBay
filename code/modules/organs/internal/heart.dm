@@ -31,6 +31,7 @@
 			if(pulse == PULSE_THREADY && prob(5))
 				take_internal_damage(0.5)
 		handle_blood()
+		handle_robotic()
 	..()
 
 /obj/item/organ/internal/heart/proc/handle_pulse()

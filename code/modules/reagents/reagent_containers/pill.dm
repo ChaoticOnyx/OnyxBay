@@ -316,11 +316,11 @@ obj/item/weapon/reagent_containers/pill/noexcutite/Initialize()
 
 /obj/item/weapon/reagent_containers/pill/glucose
 	name = "Glucose (20u)"
-	desc = "Used to treat blood loss"
+	desc = "Used to treat blood loss and hypoglycemia"
 	icon_state = "pill4"
 /obj/item/weapon/reagent_containers/pill/glucose/Initialize()
 	. = ..()
-	reagents.add_reagent(/datum/reagent/gormone/glucose, 20)
+	reagents.add_reagent(/datum/reagent/hormone/glucose, 20)
 	color = reagents.get_color()
 
 
@@ -334,12 +334,12 @@ obj/item/weapon/reagent_containers/pill/noexcutite/Initialize()
 	reagents.add_reagent(/datum/reagent/leporazine, 15)
 	color = reagents.get_color()
 
-//Gormone pills.
+//Hormone pills.
 /obj/item/weapon/reagent_containers/pill/insulin
 	name = "Insulin (5u)"
-	desc = "Used to decrease glucose level"
+	desc = "Used to assimilate glucose into nutrients. Assimilates nearly 10 Gu by 1 unit."
 	icon_state = "pill4"
 /obj/item/weapon/reagent_containers/pill/insulin/Initialize()
 	. = ..()
-	reagents.add_reagent(/datum/reagent/gormone/insulin, 5)
+	reagents.add_reagent(/datum/reagent/hormone/insulin, 5)
 	color = reagents.get_color()

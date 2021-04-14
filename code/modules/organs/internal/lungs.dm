@@ -99,6 +99,7 @@
 				to_chat(owner, "<span class='danger'>You're having trouble getting enough [breath_type]!</span>")
 
 			owner.losebreath += round(damage/2)
+	handle_robotic()
 
 /obj/item/organ/internal/lungs/proc/handle_breath(datum/gas_mixture/breath, forced)
 	if(!owner)

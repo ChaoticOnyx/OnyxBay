@@ -112,10 +112,11 @@
 
 /datum/reagent/ethanol/affect_blood(mob/living/carbon/M, alien, removed)
 	M.adjustToxLoss(removed * 2 * toxicity)
+	M.remove_glucose(0.2)
 	return
 
 /datum/reagent/ethanol/affect_ingest(mob/living/carbon/M, alien, removed)
-	M.nutrition += nutriment_factor * removed
+	M.add_glucose(nutriment_factor * removed)
 	var/strength_mod = 1
 	if(alien == IS_SKRELL)
 		strength_mod *= 5
@@ -124,6 +125,8 @@
 
 	M.add_chemical_effect(CE_ALCOHOL, 1)
 	var/effective_dose = M.chem_doses[type] * strength_mod * (1 + volume/60) //drinking a LOT will make you go down faster
+
+	M.remove_glucose(0.2)
 
 	if(effective_dose >= strength) // Early warning
 		M.make_dizzy(6) // It is decreased at the speed of 3 per tick
@@ -397,7 +400,7 @@
 	glass_icon = DRINK_ICON_NOISY
 
 /datum/reagent/sugar/affect_blood(mob/living/carbon/M, alien, removed)
-	M.nutrition += removed * 3
+	M.add_glucose(removed / 3)
 
 	if(alien == IS_UNATHI)
 		if(M.chem_doses[type] < 2)

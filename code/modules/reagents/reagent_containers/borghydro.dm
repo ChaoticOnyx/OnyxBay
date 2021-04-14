@@ -36,7 +36,7 @@
 						/datum/reagent/kelotane,
 						/datum/reagent/dexalinp,
 						/datum/reagent/dylovene,
-						/datum/reagent/nutriment/glucose)
+						/datum/reagent/hormone/glucose)
 
 /obj/item/weapon/reagent_containers/borghypo/Initialize()
 	. = ..()

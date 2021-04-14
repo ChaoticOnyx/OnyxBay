@@ -260,6 +260,19 @@ proc/medical_scan_results(mob/living/carbon/human/H, verbose, separate_result)
 		if (found_tendon)
 			overall_limbs_data += "<span class='warning'>Tendon or ligament damage detected. Advanced scanner required for location.</span>"
 
+	var/hormones_data = list()
+	if(H.reagents.total_volume)
+		hormones_data += SPAN_NOTICE("<b>Hormone scan:</b>")
+		for(var/datum/reagent/hormone/R in H.reagents.reagent_list)
+			var/msg = R.get_msg(H)
+			switch(R.get_level(H))
+				if(HORMONE_LEVEL_NORMAL)
+					hormones_data += SPAN_NOTICE(msg)
+				if(HORMONE_LEVEL_BAD)
+					hormones_data += SPAN_WARNING(msg)
+				if(HORMONE_LEVEL_CRITICAL)
+					hormones_data += SPAN_DANGER(msg)
+
 	var/reagents_data = list()
 	// Reagent data.
 	reagents_data += "<span class='notice'><b>Reagent scan:</b></span>"
@@ -271,6 +284,10 @@ proc/medical_scan_results(mob/living/carbon/human/H, verbose, separate_result)
 		var/is_overdosed = 0
 		for(var/A in H.reagents.reagent_list)
 			var/datum/reagent/R = A
+
+			if(istype(R, /datum/reagent/hormone))
+				continue
+
 			if(R.scannable)
 				print_reagent_default_message = FALSE
 				if (R.volume >= R.overdose)
@@ -342,6 +359,7 @@ proc/medical_scan_results(mob/living/carbon/human/H, verbose, separate_result)
 	status_data = jointext(status_data,"<br>")
 	specific_limb_data = jointext(specific_limb_data,"<br>")
 	overall_limbs_data = jointext(overall_limbs_data,"<br>")
+	hormones_data = jointext(hormones_data, "<br>")
 	reagents_data = jointext(reagents_data,"<br>")
 	virus_data = jointext(virus_data,"<br>")
 	if(separate_result) 	//return as list
@@ -352,6 +370,7 @@ proc/medical_scan_results(mob/living/carbon/human/H, verbose, separate_result)
 		if(verbose)
 			. += specific_limb_data
 			. += overall_limbs_data
+		. += hormones_data
 		. += reagents_data
 		. += virus_data
 	else 	//return as text
@@ -368,6 +387,8 @@ proc/medical_scan_results(mob/living/carbon/human/H, verbose, separate_result)
 			. += "<br>"
 			. += overall_limbs_data
 			. += "<hr>"
+		. += hormones_data
+		. += "<hr>"
 		. += reagents_data
 		. += "<hr>"
 		. += virus_data

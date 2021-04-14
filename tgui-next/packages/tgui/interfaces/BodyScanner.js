@@ -175,6 +175,38 @@ export const BodyScanner = props => {
               }
             </Section>
 
+            <Section title="Hormones" level={2}>
+                <Table>
+                  <Table.Row>
+                    <Table.Cell bold>
+                      Hormone
+                    </Table.Cell>
+                    <Table.Cell bold>
+                      Amount
+                    </Table.Cell>
+                    <Table.Cell bold>
+                      Status
+                    </Table.Cell>
+                  </Table.Row>
+
+                  {data.medical_data.hormones.map(hormone => {
+                    return (
+                      <Table.Row>
+                      <Table.Cell bold>
+                        {hormone.name}
+                      </Table.Cell>
+                      <Table.Cell bold>
+                        {hormone.volume}
+                      </Table.Cell>
+                      <Table.Cell bold>
+                        {hormone.status}
+                      </Table.Cell>
+                    </Table.Row>
+                    )
+                  })}
+                </Table>
+            </Section>
+
             <Section title="Organs" level={2}
               buttons={
                 data.hide_organs

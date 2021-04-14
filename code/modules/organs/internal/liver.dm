@@ -10,6 +10,9 @@
 	max_damage = 70
 	relative_size = 60
 
+/obj/item/organ/internal/liver/get_secretion_speed(var/T)
+	return 1
+
 /obj/item/organ/internal/liver/robotize()
 	. = ..()
 	icon_state = "liver-prosthetic"
@@ -66,3 +69,6 @@
 			owner.nutrition -= 10
 		else if(owner.nutrition >= 200)
 			owner.nutrition -= 3
+
+	process_secretion()
+	handle_robotic()

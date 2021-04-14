@@ -86,7 +86,6 @@
 		handle_shock()
 		handle_pain()
 		handle_medical_side_effects()
-		handle_additictions()
 		handle_poise()
 		update_canmove(TRUE) // Otherwise we'll have a 1 tick latency between actual getting-up and the animation update
 

@@ -12,6 +12,8 @@
 					/obj/item/weapon/reagent_containers/glass/bottle/antitoxin,
 					/obj/item/weapon/reagent_containers/glass/bottle/inaprovaline,
 					/obj/item/weapon/reagent_containers/glass/bottle/stoxin,
+					/obj/item/weapon/storage/pill_bottle/insulin,
+					/obj/item/weapon/storage/pill_bottle/glucose,
 					/obj/item/weapon/storage/box/syringes,
 					/obj/item/weapon/storage/box/autoinjectors)
 	cost = 10
@@ -57,7 +59,8 @@
 					/obj/item/weapon/storage/pill_bottle/antidexafen,
 					/obj/item/weapon/storage/pill_bottle/paracetamol,
 					/obj/item/weapon/storage/pill_bottle/hyronalin,
-					/obj/item/weapon/storage/pill_bottle/glucose)
+					/obj/item/weapon/storage/pill_bottle/glucose,
+					/obj/item/weapon/storage/pill_bottle/insulin)
 	name = "Surplus medical drugs"
 	cost = 30
 	containername = "\improper Medical drugs crate"

@@ -47,13 +47,7 @@
 /datum/reagent/nutriment/proc/adjust_nutrition(mob/living/carbon/M, alien, removed)
 	switch(alien)
 		if(IS_UNATHI) removed *= 0.1 // Unathi get most of their nutrition from meat.
-	M.reagents.add_reagent(/datum/reagent/gormone/glucose, nutriment_factor * removed / 4.)
-
-/datum/reagent/nutriment/glucose
-	name = "Glucose"
-	color = "#ffffff"
-
-	injectable = 1
+	M.add_glucose(nutriment_factor * removed / 4.)
 
 /datum/reagent/nutriment/protein // Bad for Skrell!
 	name = "animal protein"
@@ -70,7 +64,7 @@
 /datum/reagent/nutriment/protein/adjust_nutrition(mob/living/carbon/M, alien, removed)
 	switch(alien)
 		if(IS_UNATHI) removed *= 2.25
-	M.reagents.add_reagent(/datum/reagent/gormone/glucose, nutriment_factor * removed / 4.)
+	M.add_glucose(nutriment_factor * removed / 4.)
 
 /datum/reagent/nutriment/protein/affect_blood(mob/living/carbon/M, alien, removed)
 	if(alien && alien == IS_SKRELL)

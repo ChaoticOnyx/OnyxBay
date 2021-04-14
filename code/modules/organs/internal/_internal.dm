@@ -9,6 +9,31 @@
 	var/list/datum/language/assists_languages = list()
 	var/min_bruised_damage = 10       // Damage before considered bruised
 	var/foreign = FALSE 			  // foreign organs shouldn't be removed or recreated on revive
+	var/list/secretion = list()       // Secretion list(typically for hormones)
+
+/obj/item/organ/internal/proc/get_secretion_speed(var/type)
+	return 0
+
+/obj/item/organ/internal/proc/process_secretion()
+	if(!owner || owner.InStasis() || owner.stat == DEAD || owner.bodytemperature < 170 || is_broken())
+		return
+
+	for(var/T in secretion)
+		var/R = secretion[T]
+		var/N = min(R, get_secretion_speed(T))
+
+		secretion[T] -= N
+		owner.reagents.add_reagent(T, N)
+
+/obj/item/organ/internal/proc/handle_robotic()
+	if(!BP_IS_ROBOTIC(src))
+		return
+
+	owner.remove_glucose(0.2)
+
+	if(owner.nutrition < 20)
+		if(prob(1))
+			take_internal_damage(0.1)
 
 /obj/item/organ/internal/New(mob/living/carbon/holder)
 	if(max_damage)

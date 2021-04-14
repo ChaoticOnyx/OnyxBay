@@ -116,6 +116,10 @@
 		return "Full Body Prosthetics do not have a metabolism."
 	return ..()
 
+/datum/trait/modifier/physical/diabetic
+	name = "Diabetic"
+	modifier_type = /datum/modifier/trait/diabetic
+
 // 'Mental' traits are just those that only sapients can have, for now, and generally involves fears.
 // So far, all of them are just for fluff/don't have mechanical effects.
 /datum/trait/modifier/mental
@@ -145,7 +149,6 @@
 	name = "Claustrophobic"
 	desc = "Small spaces and tight quarters makes you feel distressed.  Unfortunately both are rather common when living in space."
 	modifier_type = /datum/modifier/trait/phobia/claustrophobe
-
 /*
 
 /datum/trait/modifier/physical/cloned

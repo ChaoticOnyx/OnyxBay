@@ -152,7 +152,7 @@
 			return
 
 		if(weedlevel > 0)
-			nymph.reagents.add_reagent(/datum/reagent/nutriment/glucose, weedlevel)
+			nymph.reagents.add_reagent(/datum/reagent/hormone/glucose, weedlevel)
 			weedlevel = 0
 			nymph.visible_message("<span class='info'><b>[nymph]</b> begins rooting through [src], ripping out weeds and eating them noisily.</span>","<span class='info'>You begin rooting through [src], ripping out weeds and eating them noisily.</span>")
 		else if(nymph.nutrition > 100 && nutrilevel < 10)

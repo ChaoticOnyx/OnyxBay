@@ -75,6 +75,26 @@
 				N.show_message(text("<span class='danger'>[M] bursts out of [src]!</span>"), 2)
 	..()
 
+/mob/living/carbon/proc/set_secretion(organ, reagent, amount, force=FALSE)
+	if(organ in internal_organs_by_name)
+		var/obj/item/organ/internal/I = internal_organs_by_name[organ]
+		var/r = chem_doses[reagent] + I.secretion[reagent]
+		I.secretion[reagent] = force ? amount : max(r, amount)
+
+/mob/living/carbon/proc/add_secretion(organ, reagent, amount)
+	if(organ in internal_organs_by_name)
+		var/obj/item/organ/internal/I = internal_organs_by_name[organ]
+		I.secretion[reagent] = I.secretion[reagent] + amount
+
+/mob/living/carbon/proc/add_glucose(amount, force=FALSE)
+	if(force)
+		reagents.add_reagent(/datum/reagent/hormone/glucose, amount)
+	else
+		add_secretion(BP_LIVER, /datum/reagent/hormone/glucose, amount)
+
+/mob/living/carbon/proc/remove_glucose(amount)
+	reagents.remove_reagent(/datum/reagent/hormone/glucose, amount)
+
 /mob/living/carbon/attack_hand(mob/M as mob)
 	if(!istype(M, /mob/living/carbon)) return
 	if (ishuman(M))

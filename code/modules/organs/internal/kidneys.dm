@@ -36,4 +36,6 @@
 			if(status & ORGAN_DEAD)
 				owner.adjustToxLoss(1)
 
+	handle_robotic()
+
 

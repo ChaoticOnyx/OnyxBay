@@ -35,6 +35,7 @@
 #define TOURETTES   0x8
 #define NERVOUS     0x10
 
+
 // sdisabilities
 #define BLIND 0x1
 #define MUTE  0x2

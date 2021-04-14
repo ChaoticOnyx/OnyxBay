@@ -46,7 +46,7 @@
 		/obj/item/stack/medical/ointment = 1,
 		/obj/item/device/healthanalyzer,
 		/obj/item/weapon/reagent_containers/hypospray/autoinjector,
-		/obj/item/weapon/storage/pill_bottle/antidexafen,
+		/obj/item/weapon/storage/pill_bottle/insulin,
 		/obj/item/weapon/storage/pill_bottle/paracetamol
 		)
 
@@ -280,6 +280,12 @@
 
 /obj/item/weapon/storage/pill_bottle/glucose
 	name = "bottle of Glucose pills"
-	desc = "These pills contain lots of nutriments, much needed for natural blood regeneration. 20u doseper pill"
+	desc = "These pills contain main energy hormone - glucose. 20u doseper pill"
 
 	startswith = list(/obj/item/weapon/reagent_containers/pill/glucose = 21)
+
+/obj/item/weapon/storage/pill_bottle/insulin
+	name = "bottle of Insulin pills"
+	desc = "These pills contain hormone used to assimilate glucose into nutrients. 1u each pill."
+
+	startswith = list(/obj/item/weapon/reagent_containers/pill/insulin = 21)

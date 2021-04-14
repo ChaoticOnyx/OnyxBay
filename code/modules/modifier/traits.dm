@@ -129,3 +129,24 @@
 	desc = "A lisp is a speech impediment in which a person misarticulates sibilants."
 
 	lisping = TRUE
+
+/datum/modifier/trait/diabetic
+	name = "Diabetic"
+	desc = "The inability of stomach to produce insulin, which leads to non-assimilation of glucose, which can lead to coma and death without receiving insulin from outside."
+
+/datum/modifier/trait/diabetic/on_applied()
+	var/mob/living/carbon/human/H = holder
+
+	spawn()
+		H.internal_organs_by_name[BP_STOMACH].is_diabetic = TRUE
+
+		var/turf/T = get_turf(H)
+		H.equip_to_storage_or_drop(new /obj/item/weapon/storage/pill_bottle/insulin(T))
+		H.equip_to_storage_or_drop(new /obj/item/weapon/reagent_containers/pill/glucose(T))
+		H.equip_to_storage_or_drop(new /obj/item/weapon/reagent_containers/pill/glucose(T))
+		H.equip_to_storage_or_drop(new /obj/item/device/glucose(T))
+
+/datum/modifier/trait/diabetic/on_expire()
+	var/mob/living/carbon/human/H = holder
+	spawn()
+		H.internal_organs_by_name[BP_STOMACH].is_diabetic = FALSE

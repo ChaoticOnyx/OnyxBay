@@ -405,11 +405,31 @@
 	if(H.has_brain_worms())
 		data["warnings"] += list("Large growth detected in frontal lobe, possibly cancerous. Surgical removal is recommended.")
 
+
+	data["hormones"] = list()
+	if(H.reagents.total_volume)
+		for(var/datum/reagent/hormone/G in H.reagents.reagent_list)
+			var/msg = G.get_msg(H)
+			switch(G.get_level(H))
+				if(HORMONE_LEVEL_NORMAL)
+					msg = SPAN_NOTICE(msg)
+				if(HORMONE_LEVEL_BAD)
+					msg = SPAN_WARNING(msg)
+				if(HORMONE_LEVEL_CRITICAL)
+					msg = SPAN_DANGER(msg)
+					data["warnings"] += list("Critical [G.name] level.")
+
+			data["hormones"] += list("name" = G.name, "volume" = G.volume, "status" = msg)
+
 	var/is_overdosed = 0
 	if(H.reagents.total_volume)
 		var/reagentdata[0]
 		for(var/A in H.reagents.reagent_list)
 			var/datum/reagent/R = A
+
+			if(istype(R, /datum/reagent/hormone))
+				continue
+
 			if(R.scannable)
 				reagentdata[R.type] = "[round(H.reagents.get_reagent_amount(R.type), 1)]u [R.name]"
 				if (R.volume >= R.overdose)
@@ -547,11 +567,21 @@
 
 	if(H.has_brain_worms())
 		dat += "Large growth detected in frontal lobe, possibly cancerous. Surgical removal is recommended."
+
+	if(H.reagents.total_volume)
+		dat += SPAN_NOTICE("Hormone scan:")
+		for(var/datum/reagent/hormone/G in H.reagents)
+			dat += G.get_msg(H)
+
 	var/is_overdosed = 0
 	if(H.reagents.total_volume)
 		var/reagentdata[0]
 		for(var/A in H.reagents.reagent_list)
 			var/datum/reagent/R = A
+
+			if(istype(R, /datum/reagent/hormone))
+				continue
+
 			if(R.scannable)
 				reagentdata[R.type] = "[round(H.reagents.get_reagent_amount(R.type), 1)]u [R.name]"
 				if (R.volume >= R.overdose)

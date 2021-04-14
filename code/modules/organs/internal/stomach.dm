@@ -7,6 +7,10 @@
 	parent_organ = BP_GROIN
 	var/datum/reagents/metabolism/ingested
 	var/next_cramp = 0
+	var/is_diabetic = FALSE
+
+/obj/item/organ/internal/stomach/get_secretion_speed(var/T)
+	return 1
 
 /obj/item/organ/internal/stomach/Destroy()
 	QDEL_NULL(ingested)
@@ -70,5 +74,18 @@
 		var/vomit_probability = (effective_volume / STOMACH_VOLUME) ** 6
 		if(prob(vomit_probability))
 			owner.vomit()
+
+		if(is_diabetic || BP_IS_ROBOTIC(src)) // robotic stomach cannot secrete
+			return
+
+		// Insulin secretion
+		var/G = owner.reagents.get_reagent_amount(/datum/reagent/hormone/glucose)
+		var/number = max(0, G - BLOOD_SUGAR_NORMAL)
+		if(number > 0.0001)
+			number /= 10.0 //1 insulin dose metabolize 10 glucose
+			owner.set_secretion(BP_STOMACH, /datum/reagent/hormone/insulin, round(number, 0.1), TRUE)
+
+		process_secretion()
+		handle_robotic()
 
 #undef STOMACH_VOLUME

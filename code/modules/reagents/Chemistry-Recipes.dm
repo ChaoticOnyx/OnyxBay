@@ -2104,3 +2104,15 @@
 	required_reagents = list(/datum/reagent/ethanol/beer = 1, /datum/reagent/sugar = 1)
 	catalysts = list(/datum/reagent/enzyme = 5)
 	result_amount = 2
+
+/datum/chemical_reaction/insulin
+	name = "Insulin"
+	result = /datum/reagent/hormone/insulin
+	required_reagents = list(/datum/reagent/hormone/glucose = 1, /datum/reagent/acetone = 1)
+	result_amount = 2
+
+/datum/chemical_reaction/glucose
+	name = "Glucose"
+	result = /datum/reagent/hormone/glucose
+	required_reagents = list(/datum/reagent/sugar = 1, /datum/reagent/carbon = 1)
+	result_amount = 2
