@@ -1349,6 +1349,7 @@
 #include "code\modules\client\preference_setup\loadout\lists\footwear.dm"
 #include "code\modules\client\preference_setup\loadout\lists\gloves.dm"
 #include "code\modules\client\preference_setup\loadout\lists\headwear.dm"
+#include "code\modules\client\preference_setup\loadout\lists\lighters.dm"
 #include "code\modules\client\preference_setup\loadout\lists\masks.dm"
 #include "code\modules\client\preference_setup\loadout\lists\misc.dm"
 #include "code\modules\client\preference_setup\loadout\lists\security.dm"

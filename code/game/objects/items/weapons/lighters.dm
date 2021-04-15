@@ -320,7 +320,7 @@ CIGARETTES AND STUFF ARE IN 'SMOKABLES' FOLDER
 
 /obj/item/weapon/flame/lighter/zippo/eng
 	name = "\improper Engineering lighter"
-	desc = "Its owner must be trusted. Should be trusted. May be trusted. Probably. In fact, shouldn't."
+	desc = "Its owner must be trusted. Should be trusted. May be trusted. Probably. In fact, shouldn't be."
 	icon_state = "zippo-eng"
 
 /obj/item/weapon/flame/lighter/zippo/med
