@@ -320,3 +320,4 @@
 		if(istype(C))
 			. += C.ear_protection
 	return .
+	
