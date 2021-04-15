@@ -80,8 +80,6 @@
 	if(!.)
 		walk(src, 0)
 		return 0
-	if(!living_observers_present(GetConnectedZlevels(z)) && !(z == 0))
-		return 0
 
 	handle_stunned()
 	handle_weakened()
@@ -138,7 +136,6 @@
 	return !in_stasis
 
 /mob/living/simple_animal/handle_environment(datum/gas_mixture/environment)
-	. = ..()
 	var/atmos_suitable = 1
 
 	if( abs(environment.temperature - bodytemperature) > 40 )

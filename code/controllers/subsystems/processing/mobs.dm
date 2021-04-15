@@ -20,11 +20,8 @@ PROCESSING_SUBSYSTEM_DEF(mobs)
 		player_levels.Cut()
 
 		for(var/mob/living/player in GLOB.player_list)
-			if (!player_levels.len)
-				player_levels.Add(player.z)
-			else
-				if (!player_levels.Find(player.z))
-					player_levels.Add(player.z)
+			if (!(player.z in player_levels))
+				player_levels += player.z
 
 	//cache for sanic speed (lists are references anyways)
 	var/list/current_run = src.current_run
@@ -39,7 +36,7 @@ PROCESSING_SUBSYSTEM_DEF(mobs)
 			processing -= thing
 			continue
 
-		if (thing.client || player_levels.Find(thing.z))
+		if (thing.client || (thing.z in player_levels))
 			if (call(thing, process_proc)(wait, times_fired, src) == PROCESS_KILL)
 				thing?.is_processing = null
 				processing -= thing
