@@ -25,7 +25,7 @@
 	item_state = "wrench"
 	obj_flags = OBJ_FLAG_CONDUCTIBLE
 	slot_flags = SLOT_BELT
-	force = 8.0
+	force = 8.5
 	throwforce = 7.0
 	w_class = ITEM_SIZE_SMALL
 	mod_weight = 0.8
@@ -614,7 +614,7 @@
 	icon_state = "crowbar"
 	obj_flags = OBJ_FLAG_CONDUCTIBLE
 	slot_flags = SLOT_BELT
-	force = 9.5
+	force = 10.0
 	throwforce = 7.0
 	throw_range = 3
 	item_state = "crowbar"
@@ -636,7 +636,7 @@
 	desc = "A steel bar with a wedge. It comes in a variety of configurations - collect them all."
 	icon_state = "prybar"
 	item_state = "crowbar"
-	force = 6.5
+	force = 7.5
 	throwforce = 6.0
 	throw_range = 5
 	w_class = ITEM_SIZE_SMALL

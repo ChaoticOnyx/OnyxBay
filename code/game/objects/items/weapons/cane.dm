@@ -5,7 +5,7 @@
 	icon_state = "cane"
 	item_state = "stick"
 	obj_flags = OBJ_FLAG_CONDUCTIBLE
-	force = 7.5
+	force = 8.5
 	throwforce = 7.0
 	mod_reach = 1.5
 	mod_weight = 1.0

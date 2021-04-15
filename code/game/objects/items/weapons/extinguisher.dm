@@ -32,7 +32,7 @@
 	icon_state = "miniFE0"
 	item_state = "miniFE"
 	hitsound = null	//it is much lighter, after all.
-	force = 6.5
+	force = 7.5
 	throwforce = 2
 	mod_handy = 0.7
 	mod_weight = 0.65
