@@ -58,7 +58,7 @@
 	playsound(location, 'sound/effects/smoke.ogg', 50, 1, -3)
 	if(S)
 		var/list/reagent_names_list = list()
-		for(var/datum/reagent/R in reagents)
+		for(var/datum/reagent/R in reagents.reagent_list)
 			reagent_names_list.Add(R.name)
 		var/atom/AM = get_object()
 		AM.investigate_log("smokes these reagents: [jointext(reagent_names_list, ", ")] with [src].", INVESTIGATE_CIRCUIT)
@@ -160,7 +160,7 @@
 	var/atom/acting_object = get_object()
 
 	var/list/reagent_names_list = list()
-	for(var/datum/reagent/R in reagents)
+	for(var/datum/reagent/R in reagents.reagent_list)
 		reagent_names_list.Add(R.name)
 
 	if(busy || !check_target(AM))
@@ -286,7 +286,7 @@
 		return
 
 	var/list/reagent_names_list = list()
-	for(var/datum/reagent/R in reagents)
+	for(var/datum/reagent/R in reagents.reagent_list)
 		reagent_names_list.Add(R.name)
 	var/atom/AM = get_object()
 	AM.investigate_log("transfer reagents: [jointext(reagent_names_list, ", ")] with [src].", INVESTIGATE_CIRCUIT)
@@ -375,7 +375,7 @@
 	var/obj/item/I = get_pin_data_as_type(IC_INPUT, 1, /obj/item)
 	if(istype(I) && (I.reagents.total_volume) && check_target(I))
 		var/list/reagent_names_list = list()
-		for(var/datum/reagent/R in reagents)
+		for(var/datum/reagent/R in reagents.reagent_list)
 			reagent_names_list.Add(R.name)
 		var/atom/AM = get_object()
 		AM.investigate_log("grinded reagents: [jointext(reagent_names_list, ", ")] with [src].", INVESTIGATE_CIRCUIT)
@@ -597,7 +597,7 @@
 			W.set_up(T)
 
 	var/list/reagent_names_list = list()
-	for(var/datum/reagent/R in reagents)
+	for(var/datum/reagent/R in reagents.reagent_list)
 		reagent_names_list.Add(R.name)
 	var/atom/AM = get_object()
 	AM.investigate_log("extinguished reagents: [jointext(reagent_names_list, ", ")] with [src].", INVESTIGATE_CIRCUIT)

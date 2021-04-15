@@ -133,7 +133,7 @@ D [1]/  ||
 /datum/integrated_io/activate/push_data()
 	for(var/k in 1 to linked.len)
 		var/datum/integrated_io/io = linked[k]
-		io.holder.check_then_do_work(io.ord)
+		SScircuit_components.queue_component(io.holder, TRUE, io.ord)
 
 /datum/integrated_io/proc/pull_data()
 	for(var/k in 1 to linked.len)
@@ -193,7 +193,7 @@ D [1]/  ||
 
 /datum/integrated_io/activate/ask_for_pin_data(mob/user) // This just pulses the pin.
 	holder.investigate_log(" was manually pulsed by [key_name(user)].", INVESTIGATE_CIRCUIT)
-	holder.check_then_do_work(ord,ignore_power = TRUE)
+	SScircuit_components.queue_component(holder, TRUE, ord, TRUE) //gnore_power = TRUE
 	to_chat(user, "<span class='notice'>You pulse \the [holder]'s [src] pin.</span>")
 
 /datum/integrated_io/activate

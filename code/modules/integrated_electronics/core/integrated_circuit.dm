@@ -164,6 +164,7 @@ a creative player the means to solve many problems.  Circuits are held inside an
 	QDEL_LIST(inputs)
 	QDEL_LIST(outputs)
 	QDEL_LIST(activators)
+	SScircuit_components.dequeue_component(src)
 	if(ext_moved_triggerable && moved_event_created)
 		GLOB.moved_event.unregister(moved_object, src)
 
