@@ -7,6 +7,7 @@
 	for(var/obj/item/grab/G in grabbed_by)
 		qdel(G)
 	clear_fullscreen()
+	if(ability_master) QDEL_NULL(ability_master)
 	if(client)
 		remove_screen_obj_references()
 		for(var/atom/movable/AM in client.screen)
