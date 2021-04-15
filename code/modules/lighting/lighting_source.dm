@@ -196,6 +196,8 @@
 	applied_lum_b = lum_b
 
 	FOR_DVIEW(var/turf/T, light_range, source_turf, INVISIBILITY_LIGHTING)
+		if(!T)
+			continue
 		if(!T.lighting_corners_initialised)
 			T.generate_missing_corners()
 
@@ -289,6 +291,8 @@
 	var/list/datum/lighting_corner/corners = list()
 	var/list/turf/turfs                    = list()
 	FOR_DVIEW(var/turf/T, light_range, source_turf, 0)
+		if(!T)
+			continue
 		if(!T.lighting_corners_initialised)
 			T.generate_missing_corners()
 		corners |= T.get_corners()

@@ -3,6 +3,7 @@
 	icon = 'icons/obj/gas_stand.dmi'
 	desc = "Gas stand with retractable gas mask."
 	icon_state = "gas_stand_idle"
+	pull_slowdown = PULL_SLOWDOWN_TINY
 
 	var/obj/item/weapon/tank/tank
 	var/mob/living/carbon/breather

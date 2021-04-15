@@ -1396,7 +1396,7 @@ obj/item/organ/external/proc/remove_clamps()
 		. += "Bleeding"
 	if(status & ORGAN_BROKEN)
 		. += capitalize(broken_description)
-	if (implants.len)
+	if(length(implants))
 		var/unknown_body = 0
 		for(var/I in implants)
 			var/obj/item/weapon/implant/imp = I

@@ -77,7 +77,7 @@
 		if(!M.unEquip(src))
 			return
 		src.add_fingerprint(usr)
-		M.put_in_any_hand_if_possible(src)
+		M.put_in_hands(src)
 
 
 /obj/item/weapon/defibrillator/attackby(obj/item/weapon/W, mob/user, params)
@@ -507,6 +507,7 @@
 */
 /obj/item/weapon/shockpaddles/linked
 	var/obj/item/weapon/defibrillator/base_unit
+	unacidable = 1 //TODO: make these replaceable so we won't need such ducttaping
 
 /obj/item/weapon/shockpaddles/linked/New(newloc, obj/item/weapon/defibrillator/defib)
 	base_unit = defib

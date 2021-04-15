@@ -7,6 +7,33 @@ GLOBAL_VAR_INIT(default_mental_status, "Stable")
 GLOBAL_LIST_INIT(security_statuses, list("None", "Released", "Parolled", "Incarcerated", "Arrest"))
 GLOBAL_VAR_INIT(default_security_status, "None")
 GLOBAL_VAR_INIT(arrest_security_status, "Arrest")
+GLOBAL_LIST_INIT(text_to_department_flags, list(
+	"Heads of Staff" = COM,
+	"Command Support" = SPT,
+	"Research" = SCI,
+	"Security" = SEC,
+	"Medical" = MED,
+	"Engineering" = ENG,
+	"Supply" = SUP,
+	"Exploration" = EXP,
+	"Service" = SRV,
+	"Civilian" = CIV,
+	"Miscellaneous" = MSC
+))
+GLOBAL_LIST_INIT(department_flags_to_text, list(
+	num2text(COM) = "Heads of Staff",
+	num2text(SPT) = "Command Support",
+	num2text(SCI) = "Research",
+	num2text(SEC) = "Security",
+	num2text(MED) = "Medical",
+	num2text(ENG) = "Engineering",
+	num2text(SUP) = "Supply",
+	num2text(EXP) = "Exploration",
+	num2text(SRV) = "Service",
+	num2text(CIV) = "Civilian",
+	num2text(MSC) = "Miscellaneous",
+))
+
 
 // Kept as a computer file for possible future expansion into servers.
 /datum/computer_file/crew_record
@@ -44,6 +71,7 @@ GLOBAL_VAR_INIT(arrest_security_status, "Arrest")
 	set_job(H ? GetAssignment(H) : "Unset")
 	set_sex(H ? gender2text(H.gender) : "Unset")
 	set_age(H ? H.age : 30)
+	set_department(GLOB.department_flags_to_text[num2text(GetDepartmentFlag(H))])
 	set_species(H ? H.get_species() : SPECIES_HUMAN)
 	set_branch(H ? (H.char_branch && H.char_branch.name) : "None")
 	set_rank(H ? (H.char_rank && H.char_rank.name) : "None")
@@ -97,6 +125,17 @@ GLOBAL_VAR_INIT(arrest_security_status, "Arrest")
 		return F.set_value(value)
 
 // Global methods
+// get departament flag from human
+/proc/GetDepartmentFlag(mob/living/carbon/human/H)
+	var/job_flag
+	if(H)
+		var/datum/job/job = job_master.occupations_by_title[H.job]
+		if(job)
+			job_flag = job.department_flag
+	if(!job_flag)
+		job_flag = MSC
+	return job_flag
+
 // Used by character creation to create a record for new arrivals.
 /proc/CreateModularRecord(mob/living/carbon/human/H)
 	var/datum/computer_file/crew_record/CR = new /datum/computer_file/crew_record()
@@ -256,6 +295,7 @@ FIELD_LIST("Sex", sex, FALSE, record_genders())
 FIELD_NUM("Age", age, FALSE)
 
 
+FIELD_LIST_SECURE("Department", department, FALSE, GLOB.text_to_department_flags, access_hop)
 FIELD_SHORT("Species",species, FALSE)
 FIELD_LIST("Branch", branch, TRUE, record_branches()) // hidden field
 FIELD_LIST("Rank", rank, TRUE, record_ranks()) // hidden field
@@ -288,7 +328,7 @@ FIELD_CONTEXT_BOTH(medical_details, CONTEXT(medical))
 FIELD_LONG_SECURE("Important Notes", medical_notes, FALSE, access_medical);
 FIELD_CONTEXT_BOTH(medical_notes, CONTEXT(medical))
 
-FIELD_LONG_SECURE("Recent Records", medical_records, FALSE, access_medical);
+FIELD_LONG_SECURE("Medical Recent Records", medical_records, FALSE, access_medical);
 FIELD_CONTEXT_BOTH(medical_records, CONTEXT(medical))
 
 
@@ -339,7 +379,7 @@ FIELD_CONTEXT_BOTH(crime_details, CONTEXT(security))
 FIELD_LONG_SECURE("Important Notes", crime_notes, FALSE, access_security);
 FIELD_CONTEXT_BOTH(crime_notes, CONTEXT(security))
 
-FIELD_LONG_SECURE("Recent Records", crime_recent, FALSE, access_security);
+FIELD_LONG_SECURE("Security Recent Records", crime_recent, FALSE, access_security);
 FIELD_CONTEXT_BOTH(crime_recent, CONTEXT(security))
 
 

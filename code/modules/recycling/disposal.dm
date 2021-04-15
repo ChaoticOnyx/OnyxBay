@@ -96,10 +96,6 @@
 				to_chat(user, "You need more welding fuel to complete this task.")
 				return
 
-	if(istype(I, /obj/item/weapon/melee/energy/blade))
-		to_chat(user, "You can't place that item inside the disposal unit.")
-		return
-
 	if(istype(I, /obj/item/weapon/storage/bag/trash))
 		var/obj/item/weapon/storage/bag/trash/T = I
 		to_chat(user, "<span class='notice'>You empty the bag.</span>")
@@ -118,11 +114,11 @@
 				V.show_message("[usr] starts putting [GM.name] into the disposal.", 3)
 			if(do_after(usr, 20, src))
 				playsound(src, "disposal", 75, 0)
-				if (GM.client)
+				if(GM.client)
 					GM.client.perspective = EYE_PERSPECTIVE
 					GM.client.eye = src
 				GM.forceMove(src)
-				for (var/mob/C in viewers(src))
+				for(var/mob/C in viewers(src))
 					C.show_message("<span class='warning'>[GM.name] has been placed in the [src] by [user].</span>", 3)
 				qdel(G)
 				admin_attack_log(usr, GM, "Placed the victim into \the [src].", "Was placed into \the [src] by the attacker.", "stuffed \the [src] with")
@@ -130,12 +126,13 @@
 
 	if(isrobot(user))
 		return
-	if(!I)
+	if(!user.canUnEquip(I))
+		to_chat(user, "You can't place that item inside \the [src].")
 		return
 
-	user.drop_item()
-	if(I)
-		I.forceMove(src)
+	user.drop_from_inventory(I, src)
+	if(I.loc != src)
+		return
 
 	playsound(src, "disposal", 75, 0)
 	to_chat(user, "You place \the [I] into the [src].")

@@ -999,11 +999,10 @@
 		return 0
 
 /obj/machinery/power/apc/Process()
-
 	if(stat & (BROKEN|MAINT))
 		return
 	if(!area.requires_power)
-		return
+		return PROCESS_KILL
 	if(failure_timer)
 		if (!--failure_timer)
 			update()
@@ -1038,8 +1037,7 @@
 
 	if(cell && !shorted)
 		// draw power from cell as before to power the area
-		var/cellused = min(cell.charge, CELLRATE * lastused_total)	// clamp deduction to a max, amount left in cell
-		cell.use(cellused)
+		var/cellused = cell.use(CELLRATE * lastused_total)
 
 		if(excess > lastused_total)		// if power excess recharge the cell
 										// by the same amount just used
@@ -1058,7 +1056,6 @@
 				lighting = autoset(lighting, 0)
 				environ = autoset(environ, 0)
 				autoflag = 0
-
 
 		// Set channels depending on how much charge we have left
 		update_channels()
@@ -1091,7 +1088,6 @@
 					chargecount = 0
 
 				if(chargecount >= 10)
-
 					chargecount = 0
 					charging = 1
 

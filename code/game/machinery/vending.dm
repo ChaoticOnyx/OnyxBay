@@ -13,6 +13,7 @@
 	obj_flags = OBJ_FLAG_ANCHORABLE
 	clicksound = "button"
 	clickvol = 40
+	pull_slowdown = PULL_SLOWDOWN_HEAVY
 
 	var/max_health = 100
 	var/health = 100
@@ -1373,10 +1374,10 @@
 	use_vend_state = TRUE
 	products = list(
 	/obj/item/weapon/tray = 8,
-	/obj/item/weapon/material/kitchen/utensil/fork = 6,
-	/obj/item/weapon/material/kitchen/utensil/knife = 6,
-	/obj/item/weapon/material/kitchen/utensil/spoon = 6,
-	/obj/item/weapon/material/knife = 3,
+	/obj/item/weapon/material/kitchen/utensil/fork = 8,
+	/obj/item/weapon/material/kitchen/utensil/knife = 8,
+	/obj/item/weapon/material/kitchen/utensil/spoon = 8,
+	/obj/item/weapon/material/knife/kitchen = 3,
 	/obj/item/weapon/material/kitchen/rollingpin = 2,
 	/obj/item/weapon/reagent_containers/food/drinks/pitcher = 2,
 	/obj/item/weapon/reagent_containers/food/drinks/coffeecup = 8,
@@ -1393,7 +1394,7 @@
 	/obj/item/weapon/storage/lunchbox/syndicate = 3)
 
 
-	contraband = list(/obj/item/weapon/material/knife/butch = 2)
+	contraband = list(/obj/item/weapon/material/knife/butch/kitchen = 2)
 
 /obj/machinery/vending/sovietsoda
 	name = "BODA"

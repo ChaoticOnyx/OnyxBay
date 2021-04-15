@@ -213,7 +213,7 @@ GLOBAL_LIST_EMPTY(common_report)
 		show_roundend_report(C)
 		give_show_report_button(C)
 		CHECK_TICK
-
+	log_roundend(GLOB.common_report)
 
 /datum/controller/subsystem/ticker/proc/give_show_report_button(client/C)
 	var/datum/action/report/R = new
@@ -259,5 +259,4 @@ GLOBAL_LIST_EMPTY(common_report)
 	roundend_report.add_stylesheet("roundend", 'html/browser/roundend.css')
 	roundend_report.add_stylesheet("font-awesome", 'html/font-awesome/css/all.min.css')
 	to_chat(C, content)
-	log_roundend(GLOB.common_report)
 	roundend_report.open(FALSE)

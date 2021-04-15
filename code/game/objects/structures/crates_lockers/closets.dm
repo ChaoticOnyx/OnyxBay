@@ -4,6 +4,7 @@
 	icon = 'icons/obj/closet.dmi'
 	icon_state = "closed"
 	pull_sound = "pull_closet"
+	pull_slowdown = PULL_SLOWDOWN_HEAVY
 	density = 1
 	w_class = ITEM_SIZE_NO_CONTAINER
 	layer = STRUCTURE_LAYER
@@ -392,8 +393,7 @@
 			attach_door(C)
 			return
 
-		if(usr.drop_item())
-			W.forceMove(loc)
+		if(usr.unEquip(W, target = loc))
 			W.pixel_x = 0
 			W.pixel_y = 0
 			W.pixel_z = 0
