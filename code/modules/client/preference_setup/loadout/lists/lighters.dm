@@ -1,5 +1,4 @@
 /datum/gear/lighters
-	cost = 2
 	sort_category = "Lighters"
 
 /datum/gear/lighters/matchbook
