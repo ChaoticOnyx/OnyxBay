@@ -1,7 +1,18 @@
 //*****************
 //**Cham Jumpsuit**
 //*****************
+/obj/item/clothing/under/chameleon/attackby(obj/item/weapon/card/id/W as obj, mob/user as mob)
+	..()
+	if(!istype(W, /obj/item/weapon/card/id))
+		return
+	check_job(W, user)
 
+proc/check_job(obj/item/weapon/card/id/W as obj, mob/user as mob)
+	var/obj/item/weapon/card/id/id = W
+	var/datum/job/job = job_master.GetJob(id.rank)
+	var/mob/living/carbon/human/H = usr
+	var/datum/job/outfit = job.get_outfit(H,job)
+	to_chat(user, "[outfit]")
 /obj/item/proc/disguise(newtype, mob/user)
 	if(!user || user.incapacitated())
 		return
