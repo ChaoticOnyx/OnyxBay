@@ -184,6 +184,9 @@ proc/get_radio_key_from_channel(channel)
 		else
 			verb = say_quote(message, speaking)
 
+	if(client?.get_preference_value(/datum/client_preference/spell_checking) == GLOB.PREF_YES && client.chatOutput)
+		client.chatOutput.spell_check(message)
+
 	message = trim_left(message)
 
 	message = handle_autohiss(message, speaking)

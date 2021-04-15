@@ -106,6 +106,7 @@ GLOBAL_LIST_EMPTY(cookie_match_history)
 
 	messageQueue = null
 	sendClientData()
+	sendSpellcheckerTerms()
 
 	//do not convert to to_chat()
 	to_target(owner, "<span class=\"userdanger\">Failed to load fancy chat, reverting to old chat. Certain features won't work.</span>")
@@ -169,6 +170,15 @@ GLOBAL_LIST_EMPTY(cookie_match_history)
 //Called by js client on js error
 /datum/chatOutput/proc/debug(error)
 	log_to_dd("\[[time2text(world.realtime, "YYYY-MM-DD hh:mm:ss")]\] Client: [(src.owner.key ? src.owner.key : src.owner)] triggered JS error: [error]")
+
+
+GLOBAL_VAR_INIT(spellcheckerTerms, file2text("config/names/spellcheсker_terms.txt"))
+/datum/chatOutput/proc/sendSpellcheckerTerms()
+	owner << output(GLOB.spellcheckerTerms, "browseroutput:setSpellcheckerTerms")
+
+/datum/chatOutput/proc/spell_check(text)
+	if(text)
+		owner << output(text, "browseroutput:spellCheck")
 
 //Global chat procs
 /proc/to_chat(target, message, handle_whitespace = TRUE)
