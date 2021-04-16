@@ -3,7 +3,7 @@
 //*****************
 /obj/item/proc/check_job(obj/item/weapon/card/id/W, mob/user, element)
 	var/datum/job/job = job_master.GetJob(W.rank)
-	var/decl/hierarchy/outfit/outfit = job.get_outfit(user ,job)
+	var/decl/hierarchy/outfit/outfit = job.get_outfit(user, job)
 	switch (element)
 		if(slot_w_uniform_str)
 			outfit.uniform ? disguise(outfit.uniform, user) : to_chat(user, "No standard uniform for [W.assignment ]")
