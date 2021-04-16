@@ -1,7 +1,7 @@
 //*****************
 //**Cham Jumpsuit**
 //*****************
-/obj/item/proc/check_job(obj/item/weapon/card/id/W as obj, mob/user as mob, element)
+/obj/item/proc/check_job(obj/item/weapon/card/id/W, mob/user, element)
 	var/obj/item/weapon/card/id/id = W
 	var/datum/job/job = job_master.GetJob(id.rank)
 	var/decl/hierarchy/outfit/outfit = job.get_outfit(user ,job)
@@ -57,7 +57,6 @@
 			.[name] = typepath
 
 /obj/item/clothing/under/chameleon/attackby(obj/item/weapon/card/id/W as obj, mob/user as mob)
-	..()
 	if(!istype(W, /obj/item/weapon/card/id))
 		return
 	check_job(W, user, "uniform")
@@ -100,7 +99,6 @@
 //**Chameleon Hat**
 //*****************
 /obj/item/clothing/head/chameleon/attackby(obj/item/weapon/card/id/W as obj, mob/user as mob)
-	..()
 	if(!istype(W, /obj/item/weapon/card/id))
 		return
 	check_job(W, user, "head")
@@ -141,7 +139,6 @@
 //**Chameleon Suit**
 //******************
 /obj/item/clothing/suit/chameleon/attackby(obj/item/weapon/card/id/W as obj, mob/user as mob)
-	..()
 	if(!istype(W, /obj/item/weapon/card/id))
 		return
 	check_job(W, user, "suit")
@@ -182,7 +179,6 @@
 //**Chameleon Shoes**
 //*******************
 /obj/item/clothing/shoes/chameleon/attackby(obj/item/weapon/card/id/W as obj, mob/user as mob)
-	..()
 	if(!istype(W, /obj/item/weapon/card/id))
 		return
 	check_job(W, user, "shoes")
@@ -266,7 +262,6 @@
 //**Chameleon Gloves**
 //********************
 /obj/item/clothing/gloves/chameleon/attackby(obj/item/weapon/card/id/W as obj, mob/user as mob)
-	..()
 	if(!istype(W, /obj/item/weapon/card/id))
 		return
 	check_job(W, user, "gloves")
@@ -307,7 +302,6 @@
 //**Chameleon Mask**
 //******************
 /obj/item/clothing/mask/chameleon/attackby(obj/item/weapon/card/id/W as obj, mob/user as mob)
-	..()
 	if(!istype(W, /obj/item/weapon/card/id))
 		return
 	check_job(W, user, "mask")
@@ -348,7 +342,6 @@
 //**Chameleon Glasses**
 //*********************
 /obj/item/clothing/glasses/chameleon/attackby(obj/item/weapon/card/id/W as obj, mob/user as mob)
-	..()
 	if(!istype(W, /obj/item/weapon/card/id))
 		return
 	check_job(W, user, "glasses")
