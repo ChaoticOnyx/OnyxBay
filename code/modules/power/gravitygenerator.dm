@@ -329,7 +329,7 @@ GLOBAL_VAR(station_gravity_generator)
 	return ..()
 
 // Interaction
-/obj/machinery/gravity_generator/main/ui_interact(mob/user, ui_key, datum/nanoui/ui, force_open, datum/nano_ui/master_ui, datum/topic_state/state)
+/obj/machinery/gravity_generator/main/ui_interact(mob/user, ui_key, datum/nanoui/ui, force_open, datum/nanoui/master_ui, datum/topic_state/state)
 	var/data[0]
 
 	data["enabled"] = enabled
