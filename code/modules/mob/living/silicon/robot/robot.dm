@@ -245,7 +245,7 @@
 		if(custom_sprite && CUSTOM_ITEM_ROBOTS)
 			var/sprite_state = GLOB.robot_custom_icons[ckey]
 			var/list/valid_states = icon_states(CUSTOM_ITEM_ROBOTS)
-			if(sprite_state && sprite_state in valid_states)
+			if(sprite_state && (sprite_state in valid_states))
 				module_sprites["Custom"] = sprite_state
 				icon = CUSTOM_ITEM_ROBOTS
 				icontype = "Custom"

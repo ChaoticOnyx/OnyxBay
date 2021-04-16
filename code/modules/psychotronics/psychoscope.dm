@@ -83,7 +83,7 @@
 		for(var/neuromod_reward in neuromod_rewards)
 			var/datum/neuromod/N = neuromod_reward
 
-			if(!N || neuromod_reward in scanned[lifeform_type]["opened_neuromods"])
+			if(!N || (neuromod_reward in scanned[lifeform_type]["opened_neuromods"]))
 				continue
 
 			var/opened = prob(initial(N.chance))

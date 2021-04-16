@@ -206,7 +206,7 @@
 	sleep(1 MINUTE)
 	// Hack all APCs, including those built during hack sequence.
 	for(var/obj/machinery/power/apc/A in SSmachines.machinery)
-		if((!A.hacker || A.hacker != src) && !A.aidisabled && A.z in GLOB.using_map.station_levels)
+		if((!A.hacker || A.hacker != src) && !A.aidisabled && (A.z in GLOB.using_map.station_levels))
 			A.ai_hack(src)
 
 	log_ability_use(user, "system override (FINISHED)")

@@ -1057,7 +1057,7 @@
 	return
 
 /obj/mecha/proc/moved_inside(mob/living/carbon/human/H as mob)
-	if(H && H.client && H in range(1))
+	if(H && H.client && (H in range(1)))
 		H.reset_view(src)
 		/*
 		H.client.perspective = EYE_PERSPECTIVE
