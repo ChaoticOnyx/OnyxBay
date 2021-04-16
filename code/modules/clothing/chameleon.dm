@@ -6,7 +6,7 @@
 	var/decl/hierarchy/outfit/outfit = job.get_outfit(user, job)
 	switch (element)
 		if(slot_w_uniform_str)
-			outfit.uniform ? disguise(outfit.uniform, user) : to_chat(user, "No standard uniform for [W.assignment ]")
+			outfit.uniform ? disguise(outfit.uniform, user) : to_chat(user, "No standard uniform for [W.assignment]")
 		if(slot_wear_suit_str)
 			outfit.suit ? disguise(outfit.suit, user) : to_chat(user, "No standard suit for [W.assignment]")
 		if(slot_gloves_str)
