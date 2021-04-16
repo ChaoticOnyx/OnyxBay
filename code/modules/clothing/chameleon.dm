@@ -14,7 +14,7 @@
 		if(slot_shoes_str)
 			outfit.shoes ? disguise(outfit.shoes, user) : to_chat(user, "No standard shoes for [W.assignment ]")
 		if(slot_wear_mask_str)
-			outfit.mask ? disguise(outfit.mask, user) : to_chat(user, "No standard mask for [W.assignment ]")
+			outfit.mask ? disguise(outfit.mask, user) : to_chat(user, "No standard mask for [W.assignment]")
 		if(slot_head_str)
 			outfit.head ? disguise(outfit.head, user) : to_chat(user, "No standard hat for [W.assignment]")
 		if(slot_glasses_str)
