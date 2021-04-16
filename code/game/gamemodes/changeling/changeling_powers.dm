@@ -1140,8 +1140,6 @@ var/list/datum/absorbed_dna/hivemind_bank = list()
 	if(!ishuman(src))
 		return FALSE
 
-	..()
-
 	var/mob/living/M = src
 
 	if(M.l_hand && M.r_hand)

@@ -268,7 +268,3 @@
 				playsound(src, 'sound/machines/chime.ogg', 50, 1)
 				src.visible_message("\icon[src] \The [src] chimes.")
 				transaction_paid = 1
-	else
-		..()
-
-	//emag?
