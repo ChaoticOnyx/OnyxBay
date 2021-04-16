@@ -273,7 +273,6 @@
 	desc = "These ones seem even more tactical than usual."
 	ks2type = /obj/item/device/encryptionkey/heads/hos
 
-
 /obj/item/device/radio/headset/tactical/emp_act(severity)
 	if(istype(src.loc, /mob/living/carbon/human))
 		var/mob/living/carbon/human/M = src.loc
