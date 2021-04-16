@@ -385,7 +385,7 @@
 	operating = 0
 
 	if(autoclose)
-		addtimer(CALLBACK(src, .close), next_close_time(), TIMER_UNIQUE|TIMER_OVERRIDE)
+		addtimer(CALLBACK(src, .proc/close), next_close_time(), TIMER_UNIQUE|TIMER_OVERRIDE)
 
 	return 1
 
@@ -395,7 +395,7 @@
 /obj/machinery/door/proc/close(forced = 0)
 	if(!can_close(forced))
 		if(autoclose)
-			addtimer(CALLBACK(src, .close), next_close_time(), TIMER_UNIQUE|TIMER_OVERRIDE)
+			addtimer(CALLBACK(src, .proc/close), next_close_time(), TIMER_UNIQUE|TIMER_OVERRIDE)
 		return
 	operating = 1
 
