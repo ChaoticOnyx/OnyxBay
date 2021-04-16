@@ -1,18 +1,27 @@
 //*****************
 //**Cham Jumpsuit**
 //*****************
-/obj/item/clothing/under/chameleon/attackby(obj/item/weapon/card/id/W as obj, mob/user as mob)
-	..()
-	if(!istype(W, /obj/item/weapon/card/id))
-		return
-	check_job(W, user)
-
-proc/check_job(obj/item/weapon/card/id/W as obj, mob/user as mob)
+/obj/item/proc/check_job(obj/item/weapon/card/id/W as obj, mob/user as mob, element)
 	var/obj/item/weapon/card/id/id = W
 	var/datum/job/job = job_master.GetJob(id.rank)
-	var/mob/living/carbon/human/H = usr
-	var/datum/job/outfit = job.get_outfit(H,job)
-	to_chat(user, "[outfit]")
+	var/decl/hierarchy/outfit/outfit = job.get_outfit(user ,job)
+	switch (element)
+		if("uniform")
+			outfit.uniform ? disguise(outfit.uniform, user) : to_chat(user, "No standart [element] for [id.assignment ]")
+		if("suit")
+			outfit.suit ? disguise(outfit.suit, user) : to_chat(user, "No standart [element] for [id.assignment ]")
+		if("gloves")
+			outfit.gloves ? disguise(outfit.gloves, user) : to_chat(user, "No standart [element] for [id.assignment ]")
+		if("shoes")
+			outfit.shoes ? disguise(outfit.shoes, user) : to_chat(user, "No standart [element] for [id.assignment ]")
+		if("mask")
+			outfit.mask ? disguise(outfit.mask, user) : to_chat(user, "No standart [element] for [id.assignment ]")
+		if("head")
+			outfit.head ? disguise(outfit.head, user) : to_chat(user, "No standart hat for [id.assignment ]")
+		if("glasses")
+			outfit.glasses ? disguise(outfit.glasses, user) : to_chat(user, "No standart [element] for [id.assignment ]")
+	user.regenerate_icons()
+
 /obj/item/proc/disguise(newtype, mob/user)
 	if(!user || user.incapacitated())
 		return
@@ -47,6 +56,12 @@ proc/check_job(obj/item/weapon/card/id/W as obj, mob/user as mob)
 				name += " \[[i++]\]"
 			.[name] = typepath
 
+/obj/item/clothing/under/chameleon/attackby(obj/item/weapon/card/id/W as obj, mob/user as mob)
+	..()
+	if(!istype(W, /obj/item/weapon/card/id))
+		return
+	check_job(W, user, "uniform")
+
 /obj/item/clothing/under/chameleon
 //starts off as black
 	name = "black jumpsuit"
@@ -75,7 +90,6 @@ proc/check_job(obj/item/weapon/card/id/W as obj, mob/user as mob)
 	set name = "Change Jumpsuit Appearance"
 	set category = "Chameleon Items"
 	set src in usr
-
 	if(!ispath(clothing_choices[picked]))
 		return
 
@@ -85,6 +99,11 @@ proc/check_job(obj/item/weapon/card/id/W as obj, mob/user as mob)
 //*****************
 //**Chameleon Hat**
 //*****************
+/obj/item/clothing/head/chameleon/attackby(obj/item/weapon/card/id/W as obj, mob/user as mob)
+	..()
+	if(!istype(W, /obj/item/weapon/card/id))
+		return
+	check_job(W, user, "head")
 
 /obj/item/clothing/head/chameleon
 	name = "grey cap"
@@ -121,6 +140,11 @@ proc/check_job(obj/item/weapon/card/id/W as obj, mob/user as mob)
 //******************
 //**Chameleon Suit**
 //******************
+/obj/item/clothing/suit/chameleon/attackby(obj/item/weapon/card/id/W as obj, mob/user as mob)
+	..()
+	if(!istype(W, /obj/item/weapon/card/id))
+		return
+	check_job(W, user, "suit")
 
 /obj/item/clothing/suit/chameleon
 	name = "armor"
@@ -157,6 +181,12 @@ proc/check_job(obj/item/weapon/card/id/W as obj, mob/user as mob)
 //*******************
 //**Chameleon Shoes**
 //*******************
+/obj/item/clothing/shoes/chameleon/attackby(obj/item/weapon/card/id/W as obj, mob/user as mob)
+	..()
+	if(!istype(W, /obj/item/weapon/card/id))
+		return
+	check_job(W, user, "shoes")
+
 /obj/item/clothing/shoes/chameleon
 	name = "black shoes"
 	icon_state = "black"
@@ -235,6 +265,11 @@ proc/check_job(obj/item/weapon/card/id/W as obj, mob/user as mob)
 //********************
 //**Chameleon Gloves**
 //********************
+/obj/item/clothing/gloves/chameleon/attackby(obj/item/weapon/card/id/W as obj, mob/user as mob)
+	..()
+	if(!istype(W, /obj/item/weapon/card/id))
+		return
+	check_job(W, user, "gloves")
 
 /obj/item/clothing/gloves/chameleon
 	name = "black gloves"
@@ -271,6 +306,11 @@ proc/check_job(obj/item/weapon/card/id/W as obj, mob/user as mob)
 //******************
 //**Chameleon Mask**
 //******************
+/obj/item/clothing/mask/chameleon/attackby(obj/item/weapon/card/id/W as obj, mob/user as mob)
+	..()
+	if(!istype(W, /obj/item/weapon/card/id))
+		return
+	check_job(W, user, "mask")
 
 /obj/item/clothing/mask/chameleon
 	name = "gas mask"
@@ -307,6 +347,11 @@ proc/check_job(obj/item/weapon/card/id/W as obj, mob/user as mob)
 //*********************
 //**Chameleon Glasses**
 //*********************
+/obj/item/clothing/glasses/chameleon/attackby(obj/item/weapon/card/id/W as obj, mob/user as mob)
+	..()
+	if(!istype(W, /obj/item/weapon/card/id))
+		return
+	check_job(W, user, "glasses")
 
 /obj/item/clothing/glasses/chameleon
 	name = "Optical Meson Scanner"
