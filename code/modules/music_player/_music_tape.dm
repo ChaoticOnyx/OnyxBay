@@ -14,7 +14,7 @@
 	var/random_color = TRUE
 	var/ruined = 0
 
-	var/list/datum/track/track
+	var/datum/track/track
 	var/uploader_ckey
 
 /obj/item/music_tape/Initialize()
