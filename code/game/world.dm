@@ -386,7 +386,7 @@ var/world_topic_spam_protect_time = world.timeofday
 		var/amessage =  "<span class='info'>[rank] PM from [input["admin"]] to <b>[key_name(C)]</b> : [response])]</span>"
 		webhook_send_ahelp("[input["admin"]] -> [req_ckey]", response)
 
-		sound_to(C, 'sound/effects/adminhelp.ogg')
+		sound_to(C, sound('sound/effects/adminhelp.ogg'))
 		to_chat(C, message)
 
 		for(var/client/A in GLOB.admins)
