@@ -18,7 +18,7 @@
 		if(slot_head_str)
 			outfit.head ? disguise(outfit.head, user) : to_chat(user, "No standard hat for [W.assignment ]")
 		if(slot_glasses_str)
-			outfit.glasses ? disguise(outfit.glasses, user) : to_chat(user, "No standard glasses for [W.assignment ]")
+			outfit.glasses ? disguise(outfit.glasses, user) : to_chat(user, "No standard glasses for [W.assignment]")
 	user.regenerate_icons()
 
 /obj/item/proc/disguise(newtype, mob/user)
