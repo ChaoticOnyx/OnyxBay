@@ -277,7 +277,7 @@
 	if(istype(src.loc, /mob/living/carbon/human))
 		var/mob/living/carbon/human/M = src.loc
 		if(M.l_ear == src || M.r_ear == src)
-			to_chat(M, SPAN("danger", "You hear a loud screech!"))
+			to_chat(M, SPAN("danger", "You hear a loud deafening screech!"))
 			M.Stun(10)
 			M.Weaken(3)
 			M.ear_damage += rand(0, 5)
