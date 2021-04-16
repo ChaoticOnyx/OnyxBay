@@ -270,7 +270,7 @@
 	ks2type = /obj/item/device/encryptionkey/headset_sec
 
 /obj/item/device/radio/headset/tactical/hos
-	desc = "Theese one seem even more tactical than usual."
+	desc = "These ones seem even more tactical than usual."
 	ks2type = /obj/item/device/encryptionkey/heads/hos
 
 
