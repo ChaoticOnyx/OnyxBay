@@ -12,7 +12,7 @@
 		if(slot_gloves_str)
 			outfit.gloves ? disguise(outfit.gloves, user) : to_chat(user, "No standard gloves for [W.assignment]")
 		if(slot_shoes_str)
-			outfit.shoes ? disguise(outfit.shoes, user) : to_chat(user, "No standard shoes for [W.assignment ]")
+			outfit.shoes ? disguise(outfit.shoes, user) : to_chat(user, "No standard shoes for [W.assignment]")
 		if(slot_wear_mask_str)
 			outfit.mask ? disguise(outfit.mask, user) : to_chat(user, "No standard mask for [W.assignment]")
 		if(slot_head_str)
