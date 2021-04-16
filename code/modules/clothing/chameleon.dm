@@ -2,24 +2,23 @@
 //**Cham Jumpsuit**
 //*****************
 /obj/item/proc/check_job(obj/item/weapon/card/id/W, mob/user, element)
-	var/obj/item/weapon/card/id/id = W
-	var/datum/job/job = job_master.GetJob(id.rank)
+	var/datum/job/job = job_master.GetJob(W.rank)
 	var/decl/hierarchy/outfit/outfit = job.get_outfit(user ,job)
 	switch (element)
 		if(slot_w_uniform_str)
-			outfit.uniform ? disguise(outfit.uniform, user) : to_chat(user, "No standard uniform for [id.assignment ]")
+			outfit.uniform ? disguise(outfit.uniform, user) : to_chat(user, "No standard uniform for [W.assignment ]")
 		if(slot_wear_suit_str)
-			outfit.suit ? disguise(outfit.suit, user) : to_chat(user, "No standard suit for [id.assignment ]")
+			outfit.suit ? disguise(outfit.suit, user) : to_chat(user, "No standard suit for [W.assignment ]")
 		if(slot_gloves_str)
-			outfit.gloves ? disguise(outfit.gloves, user) : to_chat(user, "No standard gloves for [id.assignment ]")
+			outfit.gloves ? disguise(outfit.gloves, user) : to_chat(user, "No standard gloves for [W.assignment ]")
 		if(slot_shoes_str)
-			outfit.shoes ? disguise(outfit.shoes, user) : to_chat(user, "No standard shoes for [id.assignment ]")
+			outfit.shoes ? disguise(outfit.shoes, user) : to_chat(user, "No standard shoes for [W.assignment ]")
 		if(slot_wear_mask_str)
-			outfit.mask ? disguise(outfit.mask, user) : to_chat(user, "No standard mask for [id.assignment ]")
+			outfit.mask ? disguise(outfit.mask, user) : to_chat(user, "No standard mask for [W.assignment ]")
 		if(slot_head_str)
-			outfit.head ? disguise(outfit.head, user) : to_chat(user, "No standard hat for [id.assignment ]")
+			outfit.head ? disguise(outfit.head, user) : to_chat(user, "No standard hat for [W.assignment ]")
 		if(slot_glasses_str)
-			outfit.glasses ? disguise(outfit.glasses, user) : to_chat(user, "No standard glasses for [id.assignment ]")
+			outfit.glasses ? disguise(outfit.glasses, user) : to_chat(user, "No standard glasses for [W.assignment ]")
 	user.regenerate_icons()
 
 /obj/item/proc/disguise(newtype, mob/user)
@@ -56,7 +55,7 @@
 				name += " \[[i++]\]"
 			.[name] = typepath
 
-/obj/item/clothing/under/chameleon/attackby(obj/item/weapon/card/id/W as obj, mob/user as mob)
+/obj/item/clothing/under/chameleon/attackby(obj/item/weapon/card/id/W, mob/user)
 	if(!istype(W, /obj/item/weapon/card/id))
 		return
 	check_job(W, user, slot_w_uniform_str)
@@ -98,7 +97,7 @@
 //*****************
 //**Chameleon Hat**
 //*****************
-/obj/item/clothing/head/chameleon/attackby(obj/item/weapon/card/id/W as obj, mob/user as mob)
+/obj/item/clothing/head/chameleon/attackby(obj/item/weapon/card/id/W, mob/user)
 	if(!istype(W, /obj/item/weapon/card/id))
 		return
 	check_job(W, user, slot_head_str)
@@ -138,7 +137,7 @@
 //******************
 //**Chameleon Suit**
 //******************
-/obj/item/clothing/suit/chameleon/attackby(obj/item/weapon/card/id/W as obj, mob/user as mob)
+/obj/item/clothing/suit/chameleon/attackby(obj/item/weapon/card/id/W, mob/user)
 	if(!istype(W, /obj/item/weapon/card/id))
 		return
 	check_job(W, user, slot_wear_suit_str)
@@ -178,7 +177,7 @@
 //*******************
 //**Chameleon Shoes**
 //*******************
-/obj/item/clothing/shoes/chameleon/attackby(obj/item/weapon/card/id/W as obj, mob/user as mob)
+/obj/item/clothing/shoes/chameleon/attackby(obj/item/weapon/card/id/W, mob/user)
 	if(!istype(W, /obj/item/weapon/card/id))
 		return
 	check_job(W, user, slot_shoes_str)
@@ -261,7 +260,7 @@
 //********************
 //**Chameleon Gloves**
 //********************
-/obj/item/clothing/gloves/chameleon/attackby(obj/item/weapon/card/id/W as obj, mob/user as mob)
+/obj/item/clothing/gloves/chameleon/attackby(obj/item/weapon/card/id/W, mob/user)
 	if(!istype(W, /obj/item/weapon/card/id))
 		return
 	check_job(W, user, slot_gloves_str)
@@ -301,7 +300,7 @@
 //******************
 //**Chameleon Mask**
 //******************
-/obj/item/clothing/mask/chameleon/attackby(obj/item/weapon/card/id/W as obj, mob/user as mob)
+/obj/item/clothing/mask/chameleon/attackby(obj/item/weapon/card/id/W, mob/user)
 	if(!istype(W, /obj/item/weapon/card/id))
 		return
 	check_job(W, user, slot_wear_mask_str)
@@ -341,7 +340,7 @@
 //*********************
 //**Chameleon Glasses**
 //*********************
-/obj/item/clothing/glasses/chameleon/attackby(obj/item/weapon/card/id/W as obj, mob/user as mob)
+/obj/item/clothing/glasses/chameleon/attackby(obj/item/weapon/card/id/W, mob/user)
 	if(!istype(W, /obj/item/weapon/card/id))
 		return
 	check_job(W, user, slot_glasses_str)
