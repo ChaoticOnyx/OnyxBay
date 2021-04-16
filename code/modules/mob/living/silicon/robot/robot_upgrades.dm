@@ -87,14 +87,6 @@
 		installed = 1
 	return 1
 
-/obj/item/borg/upgrade/remodel/surgeon
-	name = "surgeon model board"
-	module = "Surgeon"
-
-/obj/item/borg/upgrade/remodel/advanced/surgeon
-	name = "advanced surgeon model board"
-	module = "Advanced Surgeon"
-
 /obj/item/borg/upgrade/remodel/service
 	name = "service model board"
 	module = "Service"
@@ -524,6 +516,7 @@
 		R.module.modules += new /obj/item/device/reagent_scanner(R.module)
 		R.module.modules += new /obj/item/weapon/scalpel(R.module)
 		R.module.modules += new /obj/item/weapon/autopsy_scanner(R.module)
+		R.module.modules += new /obj/item/weapon/evidencebag/cyborg(R.module)
 		installed = 1
 		return 1
 
@@ -673,14 +666,14 @@
 		var/area/default = world.area
 		location = initial(default.name)
 
-	var/death_message = "[host] has been destroyed in [location]!"
+	var/death_message = "Message from [name] acquired successful. [host] has been destroyed in [location]!"
 	if(!cause)
-		death_message = "[host] has been destroyed-zzzzt in-in-in..."
+		death_message = "Message from [name] acquired successful. [host] has been destroyed-zzzzt in-in-in..."
 	var/obj/item/weapon/robot_module/CH = host.module
 	for(var/channel in CH.channels)
 		if (channel != "Science")
-			GLOB.global_headset.autosay(death_message, "[host]'s Death Alarm", channel)
-	GLOB.global_headset.autosay(death_message, "[host]'s Death Alarm", "Science")
+			GLOB.global_headset.autosay(death_message, get_announcement_computer("[host]'s Death Alarm"), channel)
+	GLOB.global_headset.autosay(death_message, get_announcement_computer("[host]'s Death Alarm"), "Science")
 
 /obj/item/borg/upgrade/death_alarm/Process()
 	if (!installed) return

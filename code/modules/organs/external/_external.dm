@@ -27,6 +27,13 @@
 	var/full_pain = 0                  // Overall pain including damages.
 	var/pain_disability_threshold      // Point at which a limb becomes unusable due to pain.
 
+	// Movement delay vars.
+	var/movement_tally    = 0          // Defines movement speed
+	var/damage_multiplier = 0.5        // Default damage multiplier
+	var/stumped_tally     = 8          // 4.0  tally if limb stmuped
+	var/splinted_tally    = 1          // 0.5 tally if limb splinted
+	var/broken_tally      = 3          // 1.5 tally if limb broken
+
 	// A bitfield for a collection of limb behavior flags.
 	var/limb_flags = ORGAN_FLAG_CAN_AMPUTATE | ORGAN_FLAG_CAN_BREAK
 
@@ -458,17 +465,14 @@ This function completely restores a damaged organ to perfect condition.
 	..()
 
 /obj/item/organ/external/proc/createwound(type = CUT, damage, surgical)
-
 	if(damage <= 0)
 		return
-
 	//moved these before the open_wound check so that having many small wounds for example doesn't somehow protect you from taking internal damage (because of the return)
 	//Brute damage can possibly trigger an internal wound, too.
-	var/local_damage = brute_dam + burn_dam + damage
-	if(!surgical && (type in list(CUT, PIERCE, BRUISE)) && damage > 15 && local_damage > 30)
-
+	var/local_damage = brute_dam + burn_dam
+	if(!surgical && (type in list(CUT, PIERCE, BRUISE)) && damage > 15 && local_damage > min_broken_damage)
 		var/internal_damage
-		if(prob(damage) && sever_artery())
+		if(prob(ceil(damage/2)) && sever_artery())
 			internal_damage = TRUE
 		if(prob(ceil(damage/4)) && sever_tendon())
 			internal_damage = TRUE
@@ -551,8 +555,6 @@ This function completely restores a damaged organ to perfect condition.
 
 /obj/item/organ/external/Process()
 	if(owner)
-		update_pain()
-
 		// Process wounds, doing healing etc. Only do this every few ticks to save processing power
 		if(owner.life_tick % wound_update_accuracy == 0)
 			update_wounds()
@@ -820,7 +822,8 @@ Note that amputating the affected organ does in fact remove the infection from t
 	var/use_flesh_colour = species.get_flesh_colour(owner)
 	var/use_blood_colour = species.get_blood_colour(owner)
 
-	removed(null, ignore_children)
+	removed(null, 0, ignore_children, (disintegrate != DROPLIMB_EDGE))
+
 	adjust_pain(60)
 	if(!clean)
 		victim.shock_stage += min_broken_damage
@@ -841,15 +844,17 @@ Note that amputating the affected organ does in fact remove the infection from t
 				stump.robotize()
 			stump.wounds |= W
 			victim.organs |= stump
+			movement_tally += stumped_tally * damage_multiplier
 			if(disintegrate != DROPLIMB_BURN)
 				stump.sever_artery()
 			stump.update_damages()
 	spawn(1)
-		victim.updatehealth()
-		victim.UpdateDamageIcon()
-		victim.regenerate_icons()
-		dir = 2
+		if(victim) // Since the victim can misteriously vanish during that spawn(1) causing runtimes
+			victim.updatehealth()
+			victim.UpdateDamageIcon()
+			victim.regenerate_icons()
 
+	dir = 2
 	switch(disintegrate)
 		if(DROPLIMB_EDGE)
 			compile_icon()
@@ -861,39 +866,32 @@ Note that amputating the affected organ does in fact remove the infection from t
 				M.Turn(rand(180))
 			src.transform = M
 			update_icon_drop(victim)
-			forceMove(get_turf(src))
-			if(!clean)
-				// Throw limb around.
-				if(src && istype(loc,/turf))
-					throw_at(get_edge_target_turf(src,pick(GLOB.alldirs)),rand(1,3),30)
+			forceMove(victim.loc)
+			if(!clean) // Throw limb around.
+				if(src && isturf(loc))
+					throw_at(get_edge_target_turf(src, pick(GLOB.alldirs)), rand(1, 3), rand(2, 4))
 				dir = 2
 		if(DROPLIMB_BURN)
-			new /obj/effect/decal/cleanable/ash(get_turf(victim))
+			new /obj/effect/decal/cleanable/ash(loc)
 			for(var/obj/item/I in src)
-				if(I.w_class > ITEM_SIZE_SMALL && !istype(I,/obj/item/organ))
-					I.loc = get_turf(src)
+				if(I.w_class > ITEM_SIZE_SMALL && !istype(I, /obj/item/organ))
+					I.forceMove(victim.loc)
 			qdel(src)
 		if(DROPLIMB_BLUNT)
 			var/obj/effect/decal/cleanable/blood/gibs/gore
 			if(BP_IS_ROBOTIC(src))
-				gore = new /obj/effect/decal/cleanable/blood/gibs/robot(get_turf(victim))
+				gore = new /obj/effect/decal/cleanable/blood/gibs/robot(victim.loc)
 			else
-				gore = new /obj/effect/decal/cleanable/blood/gibs(get_turf(victim))
+				gore = new /obj/effect/decal/cleanable/blood/gibs(victim.loc)
 				if(species)
 					gore.fleshcolor = use_flesh_colour
 					gore.basecolor = use_blood_colour
 					gore.update_icon()
 
-			gore.throw_at(get_edge_target_turf(src,pick(GLOB.alldirs)),rand(1,3),30)
-
-			for(var/obj/item/organ/I in internal_organs)
-				I.removed()
-				if(istype(loc,/turf))
-					I.throw_at(get_edge_target_turf(src,pick(GLOB.alldirs)),rand(1,3),30)
-
 			for(var/obj/item/I in src)
-				I.loc = get_turf(src)
-				I.throw_at(get_edge_target_turf(src,pick(GLOB.alldirs)),rand(1,3),30)
+				I.forceMove(victim.loc)
+				if(isturf(I.loc))
+					I.throw_at(get_edge_target_turf(I, pick(GLOB.alldirs)), rand(1, 2), rand(2, 4))
 
 			qdel(src)
 
@@ -1011,11 +1009,13 @@ obj/item/organ/external/proc/remove_clamps()
 
 	playsound(src.loc, "fracture", 100, 1, -2)
 	status |= ORGAN_BROKEN
+	movement_tally += broken_tally * damage_multiplier
 
 	//Kinda difficult to keep standing when your leg's gettin' wrecked, eh?
 	if(limb_flags & ORGAN_FLAG_CAN_STAND)
 		if(prob(67))
 			owner.Weaken(2)
+			owner.Stun(1)
 
 	broken_description = pick("broken","fracture","hairline fracture")
 
@@ -1037,11 +1037,13 @@ obj/item/organ/external/proc/remove_clamps()
 		return 0	//will just immediately fracture again
 
 	status &= ~ORGAN_BROKEN
+	movement_tally -= broken_tally * damage_multiplier
 	return 1
 
 /obj/item/organ/external/proc/apply_splint(atom/movable/splint)
 	if(!splinted)
 		splinted = splint
+		movement_tally += splinted_tally * damage_multiplier
 		if(!applied_pressure)
 			applied_pressure = splint
 		return 1
@@ -1054,6 +1056,7 @@ obj/item/organ/external/proc/remove_clamps()
 		if(applied_pressure == splinted)
 			applied_pressure = null
 		splinted = null
+		movement_tally -= splinted_tally * damage_multiplier
 		return 1
 	return 0
 
@@ -1065,7 +1068,7 @@ obj/item/organ/external/proc/remove_clamps()
 	..()
 	// TODO[V] Investigate why BEEDAUNS made robotize() obliterate all existing flags instead of just adding one
 
-	if (just_printed)
+	if(just_printed)
 		status |= ORGAN_CUT_AWAY
 
 	if(company)
@@ -1158,7 +1161,7 @@ obj/item/organ/external/proc/remove_clamps()
 		H.drop_from_inventory(W)
 	W.loc = owner
 
-/obj/item/organ/external/removed(mob/living/user, ignore_children = 0)
+/obj/item/organ/external/removed(mob/living/user, drop_organ = 1, ignore_children = 0, detach_children_and_internals = 0)
 	if(!owner)
 		return
 
@@ -1181,6 +1184,8 @@ obj/item/organ/external/proc/remove_clamps()
 
 	..()
 
+	victim.bad_external_organs -= src
+
 	remove_splint()
 	for(var/atom/movable/implant in implants)
 		//large items and non-item objs fall to the floor, everything else stays
@@ -1200,7 +1205,7 @@ obj/item/organ/external/proc/remove_clamps()
 	if(!ignore_children)
 		for(var/obj/item/organ/external/O in children)
 			O.removed()
-			if(O)
+			if(O && !detach_children_and_internals)
 				O.forceMove(src)
 
 				// if we didn't lose the organ we still want it as a child
@@ -1209,7 +1214,7 @@ obj/item/organ/external/proc/remove_clamps()
 
 	// Grab all the internal giblets too.
 	for(var/obj/item/organ/organ in internal_organs)
-		organ.removed(user, 0, 0)  // Organ stays inside and connected
+		organ.removed(user, 0, detach_children_and_internals)  // Organ stays inside and connected
 		organ.forceMove(src)
 
 	// Remove parent references
@@ -1227,7 +1232,7 @@ obj/item/organ/external/proc/remove_clamps()
 			"<span class='danger'>\The [victim]'s [src.name] explodes violently!</span>",\
 			"<span class='danger'>Your [src.name] explodes!</span>",\
 			"<span class='danger'>You hear an explosion!</span>")
-		explosion(get_turf(owner),-1,-1,2,3)
+		explosion(get_turf(owner), -1, -1, 2, 3)
 		var/datum/effect/effect/system/spark_spread/spark_system = new /datum/effect/effect/system/spark_spread()
 		spark_system.set_up(5, 0, victim)
 		spark_system.attach(owner)
@@ -1391,7 +1396,7 @@ obj/item/organ/external/proc/remove_clamps()
 		. += "Bleeding"
 	if(status & ORGAN_BROKEN)
 		. += capitalize(broken_description)
-	if (implants.len)
+	if(length(implants))
 		var/unknown_body = 0
 		for(var/I in implants)
 			var/obj/item/weapon/implant/imp = I

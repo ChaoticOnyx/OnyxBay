@@ -56,7 +56,7 @@
 				dat += "********************************<BR>"
 			dat += "<HR><A href='?src=\ref[src];lock=1'>Lock Console</A>"
 
-		user << browse(dat, "window=computer;size=400x500")
+		show_browser(user, dat, "window=computer;size=400x500")
 		onclose(user, "computer")
 		return
 
@@ -90,6 +90,7 @@
 					screen = !screen
 				else
 					to_chat(usr, "Unauthorized Access.")
+					playsound(src.loc, 'sound/signals/error29.ogg', 50, 0)
 
 			else if(href_list["warn"])
 				var/warning = sanitize(input(usr,"Message:","Enter your message here!",""))

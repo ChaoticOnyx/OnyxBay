@@ -170,8 +170,8 @@
 	check_armour = "bio"
 	armor_penetration = 25	// It's acid
 
-/obj/item/projectile/energy/phoron
-	name = "phoron bolt"
+/obj/item/projectile/energy/plasma
+	name = "plasma bolt"
 	icon_state = "energy"
 	fire_sound = 'sound/effects/stealthoff.ogg'
 	damage = 20

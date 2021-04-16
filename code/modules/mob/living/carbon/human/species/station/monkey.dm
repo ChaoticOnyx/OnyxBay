@@ -66,8 +66,8 @@
 	if(H.stat != CONSCIOUS)
 		return
 
-	if(prob(25) && isturf(H.loc) && !H.pulledby && H.canmove) //won't move if being pulled
-		step(H, pick(GLOB.cardinal))
+	if(prob(25) && isturf(H.loc) && !H.pulledby) //won't move if being pulled
+		H.SelfMove(pick(GLOB.cardinal))
 
 	if(prob(25))
 		H.hand = !(H.hand)

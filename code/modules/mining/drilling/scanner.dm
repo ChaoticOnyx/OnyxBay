@@ -45,7 +45,7 @@
 				if(MATERIAL_URANIUM)
 					ore_type = "nuclear fuel"
 					data_value = 3
-				if(MATERIAL_PHORON, MATERIAL_OSMIUM, MATERIAL_HYDROGEN)
+				if(MATERIAL_PLASMA, MATERIAL_OSMIUM, MATERIAL_HYDROGEN)
 					ore_type = "exotic matter"
 					data_value = 4
 

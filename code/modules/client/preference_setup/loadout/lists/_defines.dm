@@ -10,7 +10,7 @@
 #define STERILE_ROLES list(/datum/job/cmo, /datum/job/doctor, /datum/job/chemist, /datum/job/psychiatrist, /datum/job/paramedic, /datum/job/roboticist, /datum/job/rd)
 
 //For members of the engineering department
-#define ENGINEERING_ROLES list(/datum/job/chief_engineer, /datum/job/engineer, /datum/job/roboticist)
+#define ENGINEERING_ROLES list(/datum/job/chief_engineer, /datum/job/engineer)
 
 //For members of Engineering, Cargo, and Research
 #define TECHNICAL_ROLES list(/datum/job/engineer, /datum/job/roboticist, /datum/job/qm, /datum/job/cargo_tech, /datum/job/mining, /datum/job/merchant, /datum/job/rd, /datum/job/scientist, /datum/job/chief_engineer)

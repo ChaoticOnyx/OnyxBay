@@ -69,11 +69,10 @@
 		desc = initial(desc)
 		desc += padding_material ? " It's made of [material.use_name] and covered with [padding_material.use_name]." : " It's made of [material.use_name]."
 
-/obj/structure/bed/CanPass(atom/movable/mover, turf/target, height=0, air_group=0)
+/obj/structure/bed/CanPass(atom/movable/mover, turf/target)
 	if(istype(mover) && mover.pass_flags & PASS_FLAG_TABLE)
-		return 1
-	else
-		return ..()
+		return TRUE
+	return ..()
 
 /obj/structure/bed/ex_act(severity)
 	switch(severity)
@@ -217,14 +216,17 @@
 	icon_state = "rollerbed"
 	anchored = 0
 	buckle_pixel_shift = "x=0;y=6"
+	pull_slowdown = PULL_SLOWDOWN_TINY
 	var/bedtype = /obj/structure/bed/roller
 	var/rollertype = /obj/item/roller
 
 /obj/structure/bed/roller/adv
 	name = "advanced roller bed"
+	desc = "An advanced bed-on-wheels made for transporting medical patients with maximum speed."
 	icon_state = "rollerbedadv"
 	bedtype = /obj/structure/bed/roller/adv
 	rollertype = /obj/item/roller/adv
+	pull_slowdown = PULL_SLOWDOWN_NONE
 
 /obj/structure/bed/roller/update_icon()
 	return // Doesn't care about material or anything else.
@@ -331,6 +333,7 @@
 	icon_state = "wheelbed"
 	base_icon = "wheelbed"
 	buckle_pixel_shift = "x=0;y=3"
+	pull_slowdown = PULL_SLOWDOWN_LIGHT
 
 /obj/structure/bed/wheel/padded/New(newloc)
 	..(newloc, MATERIAL_PLASTIC, MATERIAL_COTTON)

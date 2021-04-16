@@ -140,16 +140,13 @@
 /obj/item/device/kit/paint/ripley/random
 	name = "quantum ripley kit"
 
-/obj/item/device/kit/paint/ripley/random/New()
-	..()
-	var/list/ripleys = typesof(/obj/item/device/kit/paint/ripley)
-	var/build_path = pick(ripleys)
-	new build_path(src.loc)
-
 // Make InitAtom QDEL our creation kit as we already have ripley by now
 // TODO [V] Refactor this random ripley generator using factory
 /obj/item/device/kit/paint/ripley/random/Initialize()
 	. = ..()
+	var/list/ripleys = typesof(/obj/item/device/kit/paint/ripley)
+	var/build_path = pick(ripleys)
+	new build_path(src.loc)
 	return INITIALIZE_HINT_QDEL
 
 // Durand kits.

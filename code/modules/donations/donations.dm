@@ -250,11 +250,11 @@ SUBSYSTEM_DEF(donations)
 	switch(href_list["action"])
 		if("go_to_patreon")
 			log_debug("\[Donations] patreon link used by '[user]'")
-			user << link(config.patreonurl)
+			send_link(user, config.patreonurl)
 			return 1
 		if("go_to_discord")
 			log_debug("\[Donations] discord link used by '[user]'")
-			user << link(config.discordurl)
+			send_link(user, config.discordurl)
 			return 1
 
 	return 0

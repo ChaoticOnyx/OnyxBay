@@ -7,7 +7,7 @@
 
 	var/turf_flags
 
-	var/holy = 0
+	var/holy = FALSE
 
 	// Initial air contents (in moles)
 	var/list/initial_gas
@@ -29,12 +29,14 @@
 
 	var/movement_delay
 
-/turf/New()
-	..()
+/turf/Initialize(mapload, ...)
+	. = ..()
 	if(dynamic_lighting)
 		luminosity = 0
 	else
 		luminosity = 1
+
+	RecalculateOpacity()
 
 /turf/Destroy()
 	remove_cleanables()
@@ -68,11 +70,10 @@
 
 /turf/attack_hand(mob/user)
 	user.setClickCooldown(DEFAULT_QUICK_COOLDOWN)
-	handle_crawling(user)
 
-	if(!(user.canmove) || user.restrained() || !(user.pulling))
+	if(user.restrained())
 		return 0
-	if(user.pulling.anchored || !isturf(user.pulling.loc))
+	if(isnull(user.pulling) || user.pulling.anchored || !isturf(user.pulling.loc))
 		return 0
 	if(user.pulling.loc != user.loc && get_dist(user, user.pulling) > 1)
 		return 0
@@ -85,6 +86,9 @@
 		M.start_pulling(t)
 	else
 		step(user.pulling, get_dir(user.pulling.loc, src))
+		if(isobj(user.pulling))
+			var/obj/O = user.pulling
+			user.setClickCooldown(DEFAULT_QUICK_COOLDOWN + O.pull_slowdown)
 	return 1
 
 /turf/attackby(obj/item/weapon/W as obj, mob/user as mob)

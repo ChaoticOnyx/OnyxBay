@@ -60,8 +60,8 @@
 /obj/item/weapon/fuel_assembly/tritium/New(newloc)
 	..(newloc, MATERIAL_TRITIUM)
 
-/obj/item/weapon/fuel_assembly/phoron/New(newloc)
-	..(newloc, MATERIAL_PHORON)
+/obj/item/weapon/fuel_assembly/plasma/New(newloc)
+	..(newloc, MATERIAL_PLASMA)
 
 /obj/item/weapon/fuel_assembly/supermatter/New(newloc)
 	..(newloc, MATERIAL_SUPERMATTER)

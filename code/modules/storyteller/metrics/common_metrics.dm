@@ -80,22 +80,22 @@
 		var/datum/antagonist/antag = GLOB.all_antag_types_[role_id]
 		var/add_danger = 0
 		switch (role_id)
-			if ("ert")           add_danger = -6
-			if ("loyalist")      add_danger = -2
-			if ("borer")         add_danger = 2
-			if ("revolutionary") add_danger = 2
-			if ("commando")      add_danger = 4
-			if ("traitor")       add_danger = 4
-			if ("cultist")       add_danger = 4
-			if ("renegade")      add_danger = 4
-			if ("raider")        add_danger = 4
-			if ("mercenary")     add_danger = 4
-			if ("deathsquad")    add_danger = 6
-			if ("changeling")    add_danger = 8
-			if ("ninja")         add_danger = 12
-			if ("wizard")        add_danger = 16
-			if ("blob")          add_danger = 24
-			if ("malf")          add_danger = 24
+			if (MODE_ERT)           add_danger = -6
+			if (MODE_LOYALIST)      add_danger = -2
+			if (MODE_BORER)         add_danger = 2
+			if (MODE_REVOLUTIONARY) add_danger = 2
+			if (MODE_COMMANDO)      add_danger = 4
+			if (MODE_TRAITOR)       add_danger = 4
+			if (MODE_CULTIST)       add_danger = 4
+			if (MODE_RENEGADE)      add_danger = 4
+			if (MODE_RAIDER)        add_danger = 4
+			if (MODE_NUKE)          add_danger = 4
+			if (MODE_DEATHSQUAD)    add_danger = 6
+			if (MODE_CHANGELING)    add_danger = 8
+			if (MODE_NINJA)         add_danger = 12
+			if (MODE_WIZARD)        add_danger = 16
+			if (MODE_BLOB)          add_danger = 24
+			if (MODE_MALFUNCTION)   add_danger = 24
 
 			// if ("god cultist") - /datum/antagonist/godcultist
 			// if ("xeno") - /datum/antagonist/xenos

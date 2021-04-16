@@ -62,6 +62,7 @@
 	var/blood = 0
 	var/blood_total = 0
 	var/blood_usable = 0
+	var/blood_drained = 0
 
 	vampire.status |= VAMP_DRAINING
 
@@ -73,12 +74,8 @@
 		remembrance = "remembered"
 	admin_attack_log(src, T, "drained blood from [key_name(T)], who [remembrance] the encounter.", "had their blood drained by [key_name(src)] and [remembrance] the encounter.", "is draining blood from")
 
-	if(vampire.stealth)
-		to_chat(T, SPAN_WARNING("You are unable to resist or even move. Your mind blanks as you're being fed upon."))
-		T.paralysis = 3400
-	else
-		to_chat(T, SPAN_WARNING("You are unable to resist or even move. Your mind is acutely aware of what's occuring."))
-		T.paralysis = 3400
+	to_chat(T, SPAN_WARNING("You feel yourself falling into a pleasant dream, from which even a smile appeared on your face."))
+	T.paralysis = 3400
 
 	playsound(src.loc, 'sound/effects/drain_blood.ogg', 50, 1)
 
@@ -87,7 +84,9 @@
 		if (!mind.vampire)
 			to_chat(src, SPAN_DANGER("Your fangs have disappeared!"))
 			return
-
+		if (blood_drained >= 115)
+			to_chat(src, SPAN_DANGER("You can't drink even more blood!"))
+			break
 		blood_total = vampire.blood_total
 		blood_usable = vampire.blood_usable
 
@@ -105,6 +104,7 @@
 			blood = min(15, T.vessel.get_reagent_amount(/datum/reagent/blood))
 			vampire.blood_total += blood
 			vampire.blood_usable += blood
+			blood_drained += blood
 
 			frenzy_lower_chance = 40
 
@@ -122,6 +122,7 @@
 		else
 			blood = min(5, T.vessel.get_reagent_amount(/datum/reagent/blood))
 			vampire.blood_usable += blood
+			blood_drained += blood
 
 			frenzy_lower_chance = 40
 
@@ -134,10 +135,14 @@
 				update_msg += SPAN_NOTICE(" and have [vampire.blood_usable] left to use.")
 			else
 				update_msg += SPAN_NOTICE(".")
-
 			to_chat(src, update_msg)
+
+		if (blood_drained >= 70 && blood_drained < 85)
+			to_chat(src, SPAN_WARNING("You have enough amount of drained blood."))
+
+
 		check_vampire_upgrade()
-		T.vessel.remove_reagent(/datum/reagent/blood, 5)
+		T.vessel.remove_reagent(/datum/reagent/blood, 15)
 
 	vampire.status &= ~VAMP_DRAINING
 
@@ -148,9 +153,15 @@
 	if(target_aware)
 		T.paralysis = 0
 		if(T.stat != DEAD && vampire.stealth)
-			to_chat(T, SPAN_WARNING("You remember nothing about being fed upon. Instead, you simply remember having a pleasant encounter with [src.name]."))
+			to_chat(T, SPAN_WARNING("You remember nothing about the cause of blacked out. Instead, you simply remember having a pleasant encounter with [src.name]"))
 		else if(T.stat != DEAD)
-			to_chat(T, SPAN_WARNING("You remember everything about being fed upon. How you react to [src.name]'s actions is up to you."))
+			to_chat(T, SPAN_WARNING("You remember everything that happened. Remember how blood was sucked from your neck. It gave you pleasure, like a pleasant dream. You feel great. How you react to [src.name]'s actions is up to you."))
+	verbs -= /mob/living/carbon/human/proc/vampire_drain_blood
+	if(blood_drained <= 85)
+
+		ADD_VERB_IN_IF(src, 1800, /mob/living/carbon/human/proc/vampire_drain_blood, CALLBACK(src, .proc/finish_vamp_timeout))
+	else
+		ADD_VERB_IN_IF(src, 2400, /mob/living/carbon/human/proc/vampire_drain_blood, CALLBACK(src, .proc/finish_vamp_timeout))
 
 // Check that our target is alive, logged in, and any other special cases
 /mob/living/carbon/human/proc/check_drain_target_state(mob/living/carbon/human/T)
@@ -179,6 +190,7 @@
 		if (eyecheck() > FLASH_PROTECTION_NONE)
 			continue
 		H.Weaken(8)
+		H.Stun(6)
 		H.stuttering = 20
 		H.confused = 10
 		to_chat(H, SPAN_DANGER("You are blinded by [src]'s glare!"))
@@ -923,6 +935,7 @@
 				to_chat(T, SPAN_DANGER("A dark force pushes you back into your body. You find yourself somehow still clinging to life."))
 
 	T.Weaken(15)
+	T.Stun(15)
 	GLOB.vampires.add_antagonist(T.mind, 1, 1, 0, 0, 1)
 
 	admin_attack_log(src, T, "successfully embraced [key_name(T)]", "was successfully embraced by [key_name(src)]", "successfully embraced and turned into a vampire")
@@ -931,7 +944,7 @@
 	to_chat(src, SPAN_WARNING("You have corrupted another mortal with the taint of the Veil. Beware: they will awaken hungry and maddened; not bound to any master."))
 
 	T.mind.vampire.blood_usable = 0
-	T.mind.vampire.frenzy = 250
+	T.mind.vampire.frenzy = 50
 	T.vampire_check_frenzy()
 
 	vampire.status &= ~VAMP_DRAINING

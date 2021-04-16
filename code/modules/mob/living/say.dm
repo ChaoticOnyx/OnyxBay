@@ -10,7 +10,7 @@ var/list/department_radio_keys = list(
 	  ":e" = "Engineering", ":у" = "Engineering",
 	  ":s" = "Security",	":ы" = "Security",
 	  ":w" = "whisper",		":ц" = "whisper",
-	  ":t" = "Mercenary",	":е" = "Mercenary",
+	  ":t" = "Syndicate",	":е" = "Syndicate",
 	  ":x" = "Raider",		":ч" = "Raider",
 	  ":u" = "Supply",		":г" = "Supply",
 	  ":v" = "Service",		":м" = "Service",
@@ -28,7 +28,7 @@ var/list/department_radio_keys = list(
 	  ":E" = "Engineering",	":У" = "Engineering",
 	  ":S" = "Security",	":Ы" = "Security",
 	  ":W" = "whisper",		":Ц" = "whisper",
-	  ":T" = "Mercenary",	":Е" = "Mercenary",
+	  ":T" = "Syndicate",	":Е" = "Syndicate",
 	  ":X" = "Raider",		":Ч" = "Raider",
 	  ":U" = "Supply",		":Г" = "Supply",
 	  ":V" = "Service",		":М" = "Service",
@@ -184,6 +184,9 @@ proc/get_radio_key_from_channel(channel)
 		else
 			verb = say_quote(message, speaking)
 
+	if(client?.get_preference_value(/datum/client_preference/spell_checking) == GLOB.PREF_YES && client.chatOutput)
+		client.chatOutput.spell_check(message)
+
 	message = trim_left(message)
 
 	message = handle_autohiss(message, speaking)
@@ -298,7 +301,7 @@ proc/get_radio_key_from_channel(channel)
 		eavesdroping_obj -= listening_obj
 		for(var/mob/M in eavesdroping)
 			if(M)
-				show_image(M, speech_bubble)
+				image_to(M, speech_bubble)
 				M.hear_say(stars(message), verb, speaking, alt_name, italics, src, speech_sound, sound_vol)
 
 		for(var/obj/O in eavesdroping)

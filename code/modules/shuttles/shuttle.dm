@@ -6,6 +6,7 @@
 	var/moving_status = SHUTTLE_IDLE
 
 	var/area/shuttle_area //can be both single area type or a list of areas
+	var/shuttle_size = 0
 	var/obj/effect/shuttle_landmark/current_location //This variable is type-abused initially: specify the landmark_tag, not the actual landmark.
 
 	var/arrive_time = 0	//the time at which the shuttle arrives when long jumping
@@ -36,6 +37,8 @@
 		if(!istype(A))
 			CRASH("Shuttle \"[name]\" couldn't locate area [T].")
 		// A.base_turf = current_location.base_turf
+		for (var/turf/B in A)
+			shuttle_size++
 		areas += A
 	shuttle_area = areas
 
@@ -111,6 +114,7 @@
 			while (world.time < arrive_time)
 				if(!fwooshed && (arrive_time - world.time) < 100)
 					fwooshed = 1
+					play_arrive_sound(destination)
 					playsound(destination, sound_landing, 30, 0, 7)
 				sleep(5)
 			if(!attempt_move(destination))
@@ -135,6 +139,14 @@
 	shuttle_moved(destination, translation)
 	return TRUE
 
+
+/datum/shuttle/proc/play_arrive_sound(obj/effect/shuttle_landmark/destination)
+	for (var/mob/M in GLOB.player_list)
+		if (M.loc.z != destination.loc.z)
+			continue
+
+		if (get_dist(destination, M) <= shuttle_size)
+			M.playsound_local(M.loc, 'sound/effects/vessel_passby.ogg', 50, TRUE)
 
 //just moves the shuttle from A to B, if it can be moved
 //A note to anyone overriding move in a subtype. shuttle_moved() must absolutely not, under any circumstances, fail to move the shuttle.

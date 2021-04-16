@@ -3,20 +3,8 @@
 	sort_category = "Shoes"
 	slot = slot_shoes
 
-/datum/gear/shoes/boots
-	display_name = "boot selection"
-	path = /obj/item/clothing/shoes
-	cost = 2
-
-/datum/gear/shoes/boots/New()
-	..()
-	var/boots = list()
-	boots += /obj/item/clothing/shoes/jackboots
-	boots += /obj/item/clothing/shoes/workboots
-	gear_tweaks += new /datum/gear_tweak/path/specified_types_list(boots)
-
 /datum/gear/shoes/color
-	display_name = "shoe selection"
+	display_name = "shoes selection"
 	path = /obj/item/clothing/shoes
 
 /datum/gear/shoes/color/New()
@@ -37,8 +25,31 @@
 	gear_tweaks += new /datum/gear_tweak/path/specified_types_list(shoes)
 
 /datum/gear/shoes/sandal
-	display_name = "wooden sandals"
+	display_name = "sandals selection"
 	path = /obj/item/clothing/shoes/sandal
+
+/datum/gear/shoes/sandal/New()
+	..()
+	var/sandals = list()
+	sandals += /obj/item/clothing/shoes/sandal
+	sandals += /obj/item/clothing/shoes/sandal/color/black
+	sandals += /obj/item/clothing/shoes/sandal/color/grey
+	sandals += /obj/item/clothing/shoes/sandal/color/blue
+	sandals += /obj/item/clothing/shoes/sandal/color/pink
+	sandals += /obj/item/clothing/shoes/sandal/color/red
+	sandals += /obj/item/clothing/shoes/sandal/color/green
+	sandals += /obj/item/clothing/shoes/sandal/color/orange
+	gear_tweaks += new /datum/gear_tweak/path/specified_types_list(sandals)
+
+/datum/gear/shoes/jackboots
+	display_name = "jackboots"
+	path = /obj/item/clothing/shoes/cheapboots
+	cost = 2
+
+/datum/gear/shoes/workboots
+	display_name = "workboots"
+	path = /obj/item/clothing/shoes/cheapboots/work
+	cost = 2
 
 //
 // Donator's shop

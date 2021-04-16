@@ -171,39 +171,40 @@
 						damage--
 				if(BLOOD_VOLUME_OKAY to BLOOD_VOLUME_SAFE)
 					if(prob(1))
-						to_chat(owner, "<span class='warning'>You feel [pick("dizzy","woozy","faint")]...</span>")
-					damprob = owner.chem_effects[CE_STABLE] ? 30 : 60
+						to_chat(owner, SPAN("warning", "You feel a bit [pick("dizzy","woozy","faint")]..."))
+					damprob = owner.chem_effects[CE_STABLE] ? 10 : 40
 					if(!past_damage_threshold(2) && prob(damprob))
 						take_internal_damage(0.5)
 				if(BLOOD_VOLUME_BAD to BLOOD_VOLUME_OKAY)
-					owner.eye_blurry = max(owner.eye_blurry,6)
-					damprob = owner.chem_effects[CE_STABLE] ? 40 : 80
+					owner.eye_blurry = max(owner.eye_blurry, 6)
+					damprob = owner.chem_effects[CE_STABLE] ? 30 : 60
 					if(!past_damage_threshold(4) && prob(damprob))
 						take_internal_damage(0.5)
-					if(!owner.paralysis && prob(10))
-						owner.Paralyse(rand(1,3))
-						to_chat(owner, "<span class='warning'>You feel extremely [pick("dizzy","woozy","faint")]...</span>")
+					if(!owner.weakened && prob(10))
+						owner.Weaken(rand(1,3))
+						to_chat(owner, SPAN("warning", "You feel [pick("dizzy","woozy","faint")]..."))
 				if(BLOOD_VOLUME_SURVIVE to BLOOD_VOLUME_BAD)
-					owner.eye_blurry = max(owner.eye_blurry,6)
-					damprob = owner.chem_effects[CE_STABLE] ? 60 : 100
+					owner.eye_blurry = max(owner.eye_blurry, 6)
+					damprob = owner.chem_effects[CE_STABLE] ? 50 : 80
 					if(!past_damage_threshold(6) && prob(damprob))
 						take_internal_damage(0.5)
 					if(!owner.paralysis && prob(15))
+						owner.visible_message("<B>[owner]</B> faints!", \
+											  SPAN("warning", "You feel extremely [pick("dizzy","woozy","faint")]..."))
 						owner.Paralyse(3,5)
-						to_chat(owner, "<span class='warning'>You feel extremely [pick("dizzy","woozy","faint")]...</span>")
 				if(-(INFINITY) to BLOOD_VOLUME_SURVIVE) // Also see heart.dm, being below this point puts you into cardiac arrest.
-					owner.eye_blurry = max(owner.eye_blurry,6)
-					damprob = owner.chem_effects[CE_STABLE] ? 80 : 100
+					owner.eye_blurry = max(owner.eye_blurry, 6)
+					damprob = owner.chem_effects[CE_STABLE] ? 70 : 100
 					if(prob(damprob))
-						take_internal_damage(0.5)
+						take_internal_damage(1.0)
 	..()
 
 /obj/item/organ/internal/brain/proc/handle_disabilities()
 	if(owner.stat)
 		return
 	if((owner.disabilities & EPILEPSY) && prob(1))
-		to_chat(owner, "<span class='warning'>You have a seizure!</span>")
-		owner.visible_message("<span class='danger'>\The [owner] starts having a seizure!</span>")
+		to_chat(owner, SPAN("warning", "You have a seizure!"))
+		owner.visible_message(SPAN("danger", "\The [owner] starts having a seizure!"))
 		owner.Paralyse(10)
 		owner.make_jittery(1000)
 	else if((owner.disabilities & TOURETTES) && prob(10))
@@ -220,7 +221,7 @@
 /obj/item/organ/internal/brain/proc/handle_damage_effects()
 	if(owner.stat)
 		return
-	if(damage > 0 && prob(1))
+	if(damage > 0.1*max_damage && prob(1))
 		owner.custom_pain("Your head feels numb and painful.",10)
 	if(is_bruised() && prob(1) && owner.eye_blurry <= 0)
 		to_chat(owner, "<span class='warning'>It becomes hard to see for some reason.</span>")

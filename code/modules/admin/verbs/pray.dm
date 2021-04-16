@@ -12,7 +12,7 @@
 		if(R_ADMIN & C.holder.rights)
 			to_chat(C, msg)
 			if(!C.get_preference_value(/datum/client_preference/staff/govnozvuki) == GLOB.PREF_NO)
-				sound_to(C, 'sound/machines/signal.ogg')
+				sound_to(C, sound('sound/machines/signal.ogg'))
 
 /proc/Syndicate_announce(msg, mob/Sender)
 	var/mob/intercepted = check_for_interception()
@@ -21,4 +21,4 @@
 		if(R_ADMIN & C.holder.rights)
 			to_chat(C, msg)
 			if(!C.get_preference_value(/datum/client_preference/staff/govnozvuki) == GLOB.PREF_NO)
-				sound_to(C, 'sound/machines/signal.ogg')
+				sound_to(C, sound('sound/machines/signal.ogg'))

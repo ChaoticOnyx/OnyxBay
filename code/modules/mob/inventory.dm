@@ -300,3 +300,6 @@ var/list/slot_equipment_priority = list( \
 /mob/proc/is_item_in_hands(atom/A)
 	if(A && (l_hand == A || r_hand == A))
 		return TRUE
+
+/mob/proc/update_equipment_slowdown()
+	return

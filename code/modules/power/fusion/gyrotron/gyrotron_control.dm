@@ -13,6 +13,8 @@
 	attack_hand(user)
 
 /obj/machinery/computer/gyrotron_control/attack_hand(mob/user)
+	if(..())
+		return
 	add_fingerprint(user)
 	interact(user)
 

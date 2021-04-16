@@ -34,12 +34,6 @@
 		w_class = initial(w_class)
 		attack_verb = initial(attack_verb)
 
-/obj/item/weapon/material/butterfly/switchblade
-	name = "switchblade"
-	desc = "A classic switchblade with gold engraving. Just holding it makes you feel like a gangster."
-	icon_state = "switchblade"
-	unbreakable = 1
-
 /obj/item/weapon/material/butterfly/attack_self(mob/user)
 	active = !active
 	if(active)
@@ -50,14 +44,20 @@
 	update_force()
 	add_fingerprint(user)
 
+/obj/item/weapon/material/butterfly/switchblade
+	name = "switchblade"
+	desc = "A classic switchblade with gold engraving. Just holding it makes you feel like a gangster."
+	icon_state = "switchblade"
+	unbreakable = 1
+
 /*
  * Kitchen knives
  */
 /obj/item/weapon/material/knife
-	name = "kitchen knife"
+	name = "knife"
 	icon = 'icons/obj/kitchen.dmi'
 	icon_state = "knife"
-	desc = "A general purpose Chef's Knife made by SpaceCook Incorporated. Guaranteed to stay sharp for years to come."
+	desc = "A sharpened piece of metal. Probably, one of the eldest technologies to be present at the station."
 	obj_flags = OBJ_FLAG_CONDUCTIBLE
 	sharp = 1
 	edge = 1
@@ -90,6 +90,17 @@
 	mod_handy = 1.1
 	applies_material_colour = 0
 
+/obj/item/weapon/material/knife/kitchen
+	name = "kitchen knife"
+	icon_state = "kitchenknife"
+	item_state = "knife"
+	desc = "A general purpose Chef's Knife made by SpaceCook Incorporated. Guaranteed to stay sharp for years to come."
+	mod_weight = 0.5
+	mod_reach = 0.4
+	mod_handy = 1.1
+	applies_material_colour = 0
+	unbreakable = 1 // "Guaranteed to stay sharp for years to come"
+
 /obj/item/weapon/material/knife/butch
 	name = "butcher's cleaver"
 	icon = 'icons/obj/kitchen.dmi'
@@ -102,9 +113,14 @@
 	force_divisor = 0.125 // 7.5 when wielded with hardness 60 (steel)
 	attack_verb = list("cleaved", "slashed", "stabbed", "sliced", "torn", "ripped", "diced", "cut")
 
+/obj/item/weapon/material/knife/butch/kitchen
+	desc = "A huge thing used for chopping and chopping up meat. This includes clowns and clown-by-products. Made by SpaceCook Incorporated. Guaranteed to be shinier than your average steel cleaver."
+	applies_material_colour = 0
+	unbreakable = 1
+
 ///
 /obj/item/weapon/material/knife/shiv
-	name = "blade"
+	name = "shiv blade"
 	icon = 'icons/obj/weapons.dmi'
 	icon_state = "shiv"
 	item_state = "shiv"

@@ -5,10 +5,10 @@
 	armor = list(melee = 15, bullet = 10, laser = 10, energy = 5, bomb = 0, bio = 0, rad = 0)
 
 /obj/item/clothing/gloves/boxing/attackby(obj/item/weapon/W, mob/user)
-	if(isWirecutter(W) || istype(W, /obj/item/weapon/scalpel))
-		to_chat(user, "<span class='notice'>That won't work.</span>")//Nope
-	else
-		..()
+	if(isWirecutter(W) || istype(W, /obj/item/weapon/scalpel) || isCoil(W))
+		to_chat(user, SPAN("notice", "That won't work."))//Nope
+		return
+	..()
 
 /obj/item/clothing/gloves/boxing/green
 	icon_state = "boxinggreen"

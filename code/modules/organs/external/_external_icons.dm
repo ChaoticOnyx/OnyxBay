@@ -55,18 +55,23 @@ var/list/limb_icon_cache = list()
 		return
 
 	SetName("[owner.real_name]'s head")
+	var/mob/living/carbon/human/victim = owner
 	..()
-	update_icon_drop(owner)
-	owner.update_hair()
+	update_icon_drop(victim)
+	victim.update_hair()
 
-	//Head markings, duplicated (sadly) below.
-	for(var/M in markings)
-		var/datum/sprite_accessory/marking/mark_style = markings[M]["datum"]
-		var/icon/mark_s = new /icon("icon" = mark_style.icon, "icon_state" = "[mark_style.icon_state]-[organ_tag]")
-		mark_s.Blend(markings[M]["color"], mark_style.blend)
-		overlays |= mark_s //So when it's not on your body, it has icons
-		mob_icon.Blend(mark_s, mark_style.layer_blend) //So when it's on your body, it has icons
-		icon_cache_key += "[M][markings[M]["color"]]"
+	var/list/sorted = list()
+	for(var/E in markings)
+		var/datum/sprite_accessory/marking/M = E
+		if (M.draw_target == MARKING_TARGET_SKIN)
+			var/color = markings[E]
+			var/icon/I = icon(M.icon, "[M.icon_state]-[organ_tag]")
+			I.Blend(color, M.blend)
+			icon_cache_key += "[M.name][color]"
+			ADD_SORTED(sorted, list(list(M.draw_order, I, M)), /proc/cmp_marking_order)
+	for (var/entry in sorted)
+		overlays |= entry[2]
+		mob_icon.Blend(entry[2], entry[3]["layer_blend"])
 
 /obj/item/organ/external/var/icon_cache_key
 
@@ -110,14 +115,18 @@ var/list/limb_icon_cache = list()
 
 		mob_icon = apply_colouration(new /icon(icon, icon_state))
 
-		//Body markings, does not include head, duplicated (sadly) above.
-		for(var/M in markings)
-			var/datum/sprite_accessory/marking/mark_style = markings[M]["datum"]
-			var/icon/mark_s = new /icon("icon" = mark_style.icon, "icon_state" = "[mark_style.icon_state]-[organ_tag]")
-			mark_s.Blend(markings[M]["color"], ICON_ADD)
-			overlays |= mark_s //So when it's not on your body, it has icons
-			mob_icon.Blend(mark_s, ICON_OVERLAY) //So when it's on your body, it has icons
-			icon_cache_key += "[M][markings[M]["color"]]"
+		var/list/sorted = list()
+		for(var/E in markings)
+			var/datum/sprite_accessory/marking/M = E
+			if(M.draw_target == MARKING_TARGET_SKIN)
+				var/color = markings[E]
+				var/icon/I = icon(M.icon, "[M.icon_state]-[organ_tag]")
+				I.Blend(color, M.blend)
+				icon_cache_key += "[M.name][color]"
+				ADD_SORTED(sorted, list(list(M.draw_order, I, M)), /proc/cmp_marking_order)
+		for(var/entry in sorted)
+			overlays |= entry[2]
+			mob_icon.Blend(entry[2], entry[3]["layer_blend"])
 
 		if(body_hair && islist(h_col) && h_col.len >= 3)
 			var/cache_key = "[body_hair]-[icon_name]-[h_col[1]][h_col[2]][h_col[3]]"
@@ -131,10 +140,11 @@ var/list/limb_icon_cache = list()
 			icon_cache_key += "_model_[model]"
 
 		if(force_icon && (status & ORGAN_CUT_AWAY))
-			dir = NORTH
+			dir = SOUTH // Facing towards the screen
 		else
 			dir = EAST
-		icon = mob_icon
+		if(mob_icon)
+			icon = mob_icon
 
 /obj/item/organ/external/proc/update_icon_drop(mob/living/carbon/human/powner)
 	return

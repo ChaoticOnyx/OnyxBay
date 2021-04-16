@@ -9,10 +9,12 @@
 	density = 1
 	opacity = 0
 	anchored = 1
+	can_atmos_pass = ATMOS_PASS_NO
 
-	CanPass(atom/movable/mover, turf/target, height, air_group)
-		if(!height || air_group) return 0
-		else return ..()
+/obj/structure/shuttle/window/CanPass(atom/movable/mover, turf/target)
+	if(istype(mover) && mover.pass_flags & PASS_FLAG_GLASS)
+		return TRUE
+	return ..()
 
 /obj/structure/shuttle/engine
 	name = "engine"

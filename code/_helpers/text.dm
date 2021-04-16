@@ -78,18 +78,6 @@
 /proc/sanitizeSafe(input, max_length = MAX_MESSAGE_LEN, encode = 1, trim = 1, extra = 1)
 	return sanitize(replace_characters(input, list(">"=" ","<"=" ", "\""="'")), max_length, encode, trim, extra)
 
-//Removes a few problematic characters
-/proc/sanitize_simple(t,list/repl_chars = list("\n"="#","\t"="#"))
-	for(var/char in repl_chars)
-		var/index = findtext_char(t, char)
-		while(index)
-			t = copytext(t, 1, index) + repl_chars[char] + copytext(t, index+1)
-			index = findtext_char(t, char, index+1)
-	return t
-
-/proc/sanitize_filename(t)
-	return sanitize_simple(t, list("\n"="", "\t"="", "/"="", "\\"="", "?"="", "%"="", "*"="", ":"="", "|"="", "\""="", "<"="", ">"=""))
-
 #define NO_CHARS_DETECTED 0
 #define SPACES_DETECTED 1
 #define SYMBOLS_DETECTED 2
@@ -440,8 +428,14 @@ proc/TextPreview(string, len=40)
 	t = replacetext(t, "\[hr\]", "<HR>")
 	t = replacetext(t, "\[small\]", "<font size = \"1\">")
 	t = replacetext(t, "\[/small\]", "</font>")
+	t = replacetext(t, "\[medium\]", "<font size = \"2\">")
+	t = replacetext(t, "\[/medium\]", "</font>")
 	t = replacetext(t, "\[list\]", "<ul>")
 	t = replacetext(t, "\[/list\]", "</ul>")
+	t = replacetext(t, "\[item\]", "<li>")
+	t = replacetext(t, "\[/item\]", "</li>")
+	t = replacetext(t, "\[ord\]", "<ol>")
+	t = replacetext(t, "\[/ord\]", "</ol>")
 	t = replacetext(t, "\[table\]", "<table border=1 cellspacing=0 cellpadding=3 style='border: 1px solid black;'>")
 	t = replacetext(t, "\[/table\]", "</td></tr></table>")
 	t = replacetext(t, "\[grid\]", "<table>")
@@ -532,3 +526,4 @@ proc/TextPreview(string, len=40)
 	. = 0
 	while ((start = findtext(haystack, needle, start + 1)))
 		.++
+

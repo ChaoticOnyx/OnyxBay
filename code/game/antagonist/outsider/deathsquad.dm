@@ -15,6 +15,8 @@ GLOBAL_DATUM_INIT(deathsquad, /datum/antagonist/deathsquad, new)
 	initial_spawn_req = 4
 	initial_spawn_target = 6
 
+	valid_species = list(SPECIES_HUMAN) // NT don't like xenos.
+
 	faction = "deathsquad"
 
 	var/deployed = 0
@@ -34,7 +36,7 @@ GLOBAL_DATUM_INIT(deathsquad, /datum/antagonist/deathsquad, new)
 		player.equip_to_slot_or_del(new /obj/item/clothing/under/color/green(player), slot_w_uniform)
 
 	player.equip_to_slot_or_del(new /obj/item/clothing/shoes/swat(player), slot_shoes)
-	player.equip_to_slot_or_del(new /obj/item/clothing/glasses/thermal(player), slot_glasses)
+	player.equip_to_slot_or_del(new /obj/item/clothing/glasses/hud/standard/thermal(player), slot_glasses)
 	player.equip_to_slot_or_del(new /obj/item/clothing/mask/gas/swat(player), slot_wear_mask)
 	if (player.mind == leader)
 		player.equip_to_slot_or_del(new /obj/item/weapon/pinpointer(player), slot_l_store)
@@ -44,7 +46,7 @@ GLOBAL_DATUM_INIT(deathsquad, /datum/antagonist/deathsquad, new)
 	player.equip_to_slot_or_del(new /obj/item/weapon/gun/projectile/revolver/mateba(player), slot_belt)
 	player.equip_to_slot_or_del(new /obj/item/weapon/gun/energy/pulse_rifle(player), slot_r_hand)
 	player.equip_to_slot_or_del(new /obj/item/weapon/rig/ert/assetprotection(player), slot_back)
-	player.equip_to_slot_or_del(new /obj/item/weapon/melee/energy/sword(player), slot_l_hand)
+	player.equip_to_slot_or_del(new /obj/item/weapon/melee/energy/sword/one_hand(player), slot_l_hand)
 	player.implant_loyalty(player)
 
 	var/obj/item/weapon/card/id/id = create_id("Asset Protection", player)

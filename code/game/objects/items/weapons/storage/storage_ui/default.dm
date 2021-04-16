@@ -73,22 +73,24 @@
 	user.s_active = null
 
 /datum/storage_ui/default/on_insertion(mob/user)
-	if(user.s_active)
-		user.s_active.show_to(user)
+	for(var/mob/M in range(1, storage.loc))
+		if(M.s_active == storage)
+			M.s_active.show_to(M)
 
 /datum/storage_ui/default/on_pre_remove(mob/user, obj/item/W)
 	for(var/mob/M in range(1, storage.loc))
-		if (M.s_active == storage)
-			if (M.client)
+		if(M.s_active == storage)
+			if(M.client)
 				M.client.screen -= W
 
 /datum/storage_ui/default/on_post_remove(mob/user)
-	if(user.s_active)
-		user.s_active.show_to(user)
+	for(var/mob/M in range(1, storage.loc))
+		if(M.s_active == storage)
+			M.s_active.show_to(M)
 
 /datum/storage_ui/default/on_hand_attack(mob/user)
-	for(var/mob/M in range(1))
-		if (M.s_active == storage)
+	for(var/mob/M in range(1, storage.loc))
+		if(M.s_active == storage)
 			storage.close(M)
 
 /datum/storage_ui/default/show_to(mob/user)

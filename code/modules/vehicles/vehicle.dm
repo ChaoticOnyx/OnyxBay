@@ -163,6 +163,9 @@
 	if(load == .)
 		unload(.)
 
+/obj/vehicle/hides_inside_walls()
+	return istype(load, /mob/living) ? 0 : 1
+
 //-------------------------------------------
 // Vehicle procs
 //-------------------------------------------
@@ -183,6 +186,7 @@
 
 /obj/vehicle/emag_act(remaining_charges, mob/user as mob)
 	if(!emagged)
+		playsound(src.loc, 'sound/effects/computer_emag.ogg', 25)
 		emagged = 1
 		if(locked)
 			locked = 0

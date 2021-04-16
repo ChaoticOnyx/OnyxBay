@@ -25,9 +25,7 @@
 	desc += " It has [number_of_pins] input pins."
 	extended_desc += " This multiplexer has a range from 1 to [inputs.len - 1]."
 
-/obj/item/integrated_circuit/transfer/multiplexer/do_work(ord)
-	if(ord != 1)
-		return
+/obj/item/integrated_circuit/transfer/multiplexer/do_work()
 	var/input_index = get_pin_data(IC_INPUT, 1)
 
 	if(!isnull(input_index) && (input_index >= 1 && input_index < inputs.len))
@@ -75,15 +73,11 @@
 	desc += " It has [number_of_pins] output pins."
 	extended_desc += " This demultiplexer has a range from 1 to [outputs.len]."
 
-/obj/item/integrated_circuit/transfer/demultiplexer/do_work(ord)
-	if(ord != 1)
-		return
+/obj/item/integrated_circuit/transfer/demultiplexer/do_work()
 	var/output_index = get_pin_data(IC_INPUT, 1)
 	if(!isnull(output_index) && (output_index >= 1 && output_index <= outputs.len))
-		for(var/i in 1 to LAZYLEN(outputs)) //Clear everything out
-			set_pin_data(IC_OUTPUT,i,null)
 		var/datum/integrated_io/O = outputs[output_index]
-		set_pin_data(IC_OUTPUT, output_index,get_pin_data(IC_INPUT, 2))
+		O.data = get_pin_data(IC_INPUT, 2)
 		O.push_data()
 
 	activate_pin(2)
@@ -147,6 +141,55 @@
 
 /obj/item/integrated_circuit/transfer/pulsedemultiplexer/huge
 	name = "sixteen pulse demultiplexer"
+	icon_state = "dmux16"
+	w_class = ITEM_SIZE_SMALL
+	number_of_pins = 16
+
+/obj/item/integrated_circuit/transfer/pulsemultiplexer
+	name = "two pulse multiplexer"
+	desc = "Pulse in pins to choose the pin value to be sent."
+	extended_desc = "The input pulses are used to select which of the input pins has its data moved to the output."
+	complexity = 2
+	icon_state = "dmux2"
+	inputs = list()
+	outputs = list("output" = IC_PINTYPE_ANY)
+	activators = list("on selected" = IC_PINTYPE_PULSE_OUT)
+	spawn_flags = IC_SPAWN_DEFAULT|IC_SPAWN_RESEARCH
+	power_draw_per_use = 4
+	var/number_of_pins = 2
+
+/obj/item/integrated_circuit/transfer/pulsemultiplexer/Initialize()
+	for(var/i = 1 to number_of_pins)
+		inputs["input [i]"] = IC_PINTYPE_ANY
+	for(var/i = 1 to number_of_pins)
+		activators["input [i]"] = IC_PINTYPE_PULSE_IN
+	complexity = number_of_pins
+
+	. = ..()
+	desc += " It has [number_of_pins] pulse in pins and [number_of_pins] output pins."
+	extended_desc += " This pulse multiplexer has a range from 1 to [activators.len - 1]."
+
+/obj/item/integrated_circuit/transfer/pulsemultiplexer/do_work(ord)
+	var/input_index = ord - 2
+
+	if(!isnull(input_index) && (input_index >= 0 && input_index < inputs.len))
+		set_pin_data(IC_OUTPUT, 1,get_pin_data(IC_INPUT, input_index + 1))
+		push_data()
+	activate_pin(1)
+
+/obj/item/integrated_circuit/transfer/pulsemultiplexer/medium
+	name = "four pulse multiplexer"
+	icon_state = "dmux4"
+	number_of_pins = 4
+
+/obj/item/integrated_circuit/transfer/pulsemultiplexer/large
+	name = "eight pulse multiplexer"
+	icon_state = "dmux8"
+	w_class = ITEM_SIZE_SMALL
+	number_of_pins = 8
+
+/obj/item/integrated_circuit/transfer/pulsemultiplexer/huge
+	name = "sixteen pulse multiplexer"
 	icon_state = "dmux16"
 	w_class = ITEM_SIZE_SMALL
 	number_of_pins = 16

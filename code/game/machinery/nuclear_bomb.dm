@@ -76,9 +76,14 @@ var/bomb_set
 		if(istype(O, /obj/item/weapon/disk/nuclear))
 			if(!user.unEquip(O, src))
 				return
+			O.forceMove(src)
 			auth = O
 			add_fingerprint(user)
 			return attack_hand(user)
+		if(istype(O, /obj/item/weapon/flame/lighter/zippo/nuke))
+			add_fingerprint(user)
+			to_chat(user, "You feel a little bit dumber now.")
+			return
 
 	if(anchored)
 		switch(removal_stage)
@@ -393,7 +398,7 @@ var/bomb_set
 	GLOB.moved_event.unregister(src, src, /obj/item/weapon/disk/nuclear/proc/check_z_level)
 	nuke_disks -= src
 	if(!nuke_disks.len)
-		var/turf/T = pick_area_turf(/area/maintenance, list(/proc/is_station_turf, /proc/not_turf_contains_dense_objects))
+		var/turf/T = pick_area_turf(pick_area_by_type(/area/maintenance, list(/proc/is_station_area)), list(/proc/not_turf_contains_dense_objects))
 		if(T)
 			var/obj/D = new /obj/item/weapon/disk/nuclear(T)
 			log_and_message_admins("[src], the last authentication disk, has been destroyed. Spawning [D] at ([D.x], [D.y], [D.z]).", location = T)
@@ -478,8 +483,19 @@ var/bomb_set
 	for(var/obj/machinery/self_destruct/ch in get_area(src))
 		inserters += ch
 
-/obj/machinery/nuclearbomb/station/attackby(obj/item/weapon/O as obj, mob/user as mob)
+/obj/machinery/nuclearbomb/station/attackby(obj/item/weapon/O, mob/user)
 	if(isWrench(O))
+		return
+	if(istype(O, /obj/item/weapon/disk/nuclear))
+		if(!user.unEquip(O, src))
+			return
+		O.forceMove(src)
+		auth = O
+		add_fingerprint(user)
+		return attack_hand(user)
+	if(istype(O, /obj/item/weapon/flame/lighter/zippo/nuke))
+		add_fingerprint(user)
+		to_chat(user, "You feel a little bit dumber now.")
 		return
 
 /obj/machinery/nuclearbomb/station/Topic(href, href_list)

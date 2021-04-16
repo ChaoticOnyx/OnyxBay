@@ -70,7 +70,7 @@ var/can_call_ert
 	out += "<hr>"
 	out += "<b>Maximum avaliable players in ERT squad:</b> [GLOB.ert.hard_cap] "
 	out += "<a href='?src=\ref[src];max_cap_change=1;ert_action=1'>\[Change\]</a>"
-	usr << browse(out, "window=edit_mission[src]")
+	show_browser(usr, out, "window=edit_mission[src]")
 
 /mob/proc/join_response_team()
 	set name = "Join Response Team"

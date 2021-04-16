@@ -56,13 +56,48 @@
 
 	wizard_garb = 1
 
-	armor = list(melee = 10, bullet = 10, laser = 10,energy = 5, bomb = 10, bio = 3, rad = 0)
+	armor = list(melee = 10, bullet = 10, laser = 10, energy = 5, bomb = 10, bio = 3, rad = 0)
 
 /obj/item/clothing/shoes/sandal/marisa
 	desc = "A pair of magic, black shoes."
 	name = "magic shoes"
 	icon_state = "black"
 	body_parts_covered = FEET
+
+/obj/item/clothing/shoes/sandal/color
+	name = "sandals"
+	desc = "A pair of plain sandals."
+	icon_state = "sandals"
+	wizard_garb = 0
+
+/obj/item/clothing/shoes/sandal/color/black
+	name = "black sandals"
+	color = "#3d3d3d"
+
+/obj/item/clothing/shoes/sandal/color/grey
+	name = "grey sandals"
+	color = "#c4c4c4"
+
+/obj/item/clothing/shoes/sandal/color/blue
+	name = "blue sandals"
+	color = "#4379cc"
+
+/obj/item/clothing/shoes/sandal/color/pink
+	name = "pink sandals"
+	color = "#df20a6"
+
+/obj/item/clothing/shoes/sandal/color/red
+	name = "red sandals"
+	color = "#ee1511"
+
+/obj/item/clothing/shoes/sandal/color/green
+	name = "green sandals"
+	color = "#42a345"
+
+/obj/item/clothing/shoes/sandal/color/orange
+	name = "orange sandals"
+	color = "#f9863e"
+
 
 /obj/item/clothing/shoes/clown_shoes
 	desc = "The prankster's standard-issue clowning shoes. Damn they're huge!"
@@ -141,3 +176,20 @@
 /obj/item/clothing/shoes/swimmingfins/New()
 	..()
 	slowdown_per_slot[slot_shoes] = 1
+
+/obj/item/clothing/shoes/cheapboots
+	name = "budget jackboots"
+	desc = "Tall cheap-ass leatherlike boots with a hint of artificial shine."
+	icon_state = "jackboots"
+	can_hold_knife = 1
+	cold_protection = FEET
+	min_cold_protection_temperature = HELMET_MIN_COLD_PROTECTION_TEMPERATURE
+	cold_protection = FEET
+	min_cold_protection_temperature = SHOE_MIN_COLD_PROTECTION_TEMPERATURE
+	heat_protection = FEET
+	max_heat_protection_temperature = SHOE_MAX_HEAT_PROTECTION_TEMPERATURE
+
+/obj/item/clothing/shoes/cheapboots/work
+	name = "workboots"
+	icon_state = "workbootscheap"
+	desc = "A pair of sham work boots. These have never been designed for use in industrial settings."

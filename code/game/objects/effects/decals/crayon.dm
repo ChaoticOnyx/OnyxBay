@@ -37,5 +37,5 @@
 		return mainOverlay
 	else
 		var/resourse_name = "[drawing]-crayon-[copytext(main,2)]-[copytext(shade,2)].png"
-		receiver << browse(mainOverlay, "file=[resourse_name];display=0")
+		show_browser(receiver, mainOverlay, "file=[resourse_name];display=0")
 		return resourse_name

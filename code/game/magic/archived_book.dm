@@ -81,22 +81,22 @@ datum/archived_book/New(path)
 	var/savefile/F = new(path)
 
 	var/version
-	F["version"] >> version
+	from_file(F["version"], version)
 
 	if (isnull(version) || version < BOOK_VERSION_MIN || version > BOOK_VERSION_MAX)
 		fdel(path)
 		to_chat(usr, "What book?")
 		return 0
 
-	F["author"] >> author
-	F["title"] >> title
-	F["category"] >> category
-	F["id"] >> id
-	F["dat"] >> dat
+	from_file(F["author"],      author)
+	from_file(F["title"],       title)
+	from_file(F["category"],    category)
+	from_file(F["id"],          id)
+	from_file(F["dat"],         dat)
 
-	F["author_real"] >> author_real
-	F["author_key"] >> author_key
-	F["photos"] >> photos
+	from_file(F["author_real"], author_real)
+	from_file(F["author_key"],  author_key)
+	from_file(F["photos"],      photos)
 	if(!photos)
 		photos = new()
 
@@ -110,16 +110,16 @@ datum/archived_book/New(path)
 datum/archived_book/proc/save()
 	var/savefile/F = new(book_mgr.path(id))
 
-	F["version"] << BOOK_VERSION_MAX
-	F["author"] << author
-	F["title"] << title
-	F["category"] << category
-	F["id"] << id
-	F["dat"] << dat
+	to_file(F["version"],     BOOK_VERSION_MAX)
+	to_file(F["author"],      author)
+	to_file(F["title"],       title)
+	to_file(F["category"],    category)
+	to_file(F["id"],          id)
+	to_file(F["dat"],         dat)
 
-	F["author_real"] << author_real
-	F["author_key"] << author_key
-	F["photos"] << photos
+	to_file(F["author_real"], author_real)
+	to_file(F["author_key"],  author_key)
+	to_file(F["photos"],      photos)
 
 #undef BOOK_VERSION_MIN
 #undef BOOK_VERSION_MAX

@@ -115,7 +115,7 @@
 	name = "hurricane glass"
 	base_name = "glass"
 	base_icon = "hurricane"
-	filling_states = "50;100"
+	filling_states = "20;40;60;80;100"
 	volume = 30
 	possible_transfer_amounts = "5;10;15;30;45;60"
 	rim_pos = "y=25;x_left=13;x_right=20"

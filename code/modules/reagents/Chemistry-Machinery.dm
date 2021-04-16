@@ -25,10 +25,11 @@
 	var/pillsprite = "1"
 	var/client/has_sprites = list()
 	var/max_pill_count = 20
+	var/capacity = 120
 	atom_flags = ATOM_FLAG_OPEN_CONTAINER
 
 /obj/machinery/chem_master/New()
-	create_reagents(120)
+	create_reagents(capacity)
 	..()
 
 /obj/machinery/chem_master/ex_act(severity)
@@ -77,7 +78,7 @@
 			loaded_pill_bottle.loc = src.loc
 			loaded_pill_bottle = null
 	else if(href_list["close"])
-		usr << browse(null, "window=chemmaster")
+		close_browser(usr, "window=chemmaster")
 		usr.unset_machine()
 		return
 
@@ -100,14 +101,14 @@
 					dat += "<TITLE>Chemmaster 3000</TITLE>Chemical infos:<BR><BR>Name:<BR>[href_list["name"]]<BR><BR>Description:<BR>[href_list["desc"]]<BR><BR><BR><A href='?src=\ref[src];main=1'>(Back)</A>"
 			else
 				dat += "<TITLE>Condimaster 3000</TITLE>Condiment infos:<BR><BR>Name:<BR>[href_list["name"]]<BR><BR>Description:<BR>[href_list["desc"]]<BR><BR><BR><A href='?src=\ref[src];main=1'>(Back)</A>"
-			usr << browse(dat, "window=chem_master;size=575x400")
+			show_browser(usr, dat, "window=chem_master;size=575x400")
 			return
 
 		else if (href_list["add"])
 			if(href_list["amount"])
 				var/datum/reagent/their_reagent = locate(href_list["add"]) in R.reagent_list
 				if(their_reagent)
-					var/amount = Clamp((text2num(href_list["amount"])), 0, 200)
+					var/amount = Clamp((text2num(href_list["amount"])), 0, capacity)
 					R.trans_type_to(src, their_reagent.type, amount)
 
 		else if (href_list["addcustom"])
@@ -115,14 +116,14 @@
 			if(their_reagent)
 				useramount = input("Select the amount to transfer.", 30, useramount) as null|num
 				if(useramount)
-					useramount = Clamp(useramount, 0, 200)
+					useramount = Clamp(useramount, 0, capacity)
 					src.Topic(href, list("amount" = "[useramount]", "add" = href_list["addcustom"]), state)
 
 		else if (href_list["remove"])
 			if(href_list["amount"])
 				var/datum/reagent/my_reagents = locate(href_list["remove"]) in reagents.reagent_list
 				if(my_reagents)
-					var/amount = Clamp((text2num(href_list["amount"])), 0, 200)
+					var/amount = Clamp((text2num(href_list["amount"])), 0, capacity)
 					if(mode)
 						reagents.trans_type_to(beaker, my_reagents.type, amount)
 					else
@@ -200,14 +201,14 @@
 			for(var/i = 1 to MAX_PILL_SPRITE)
 				dat += "<tr><td><a href=\"?src=\ref[src]&pill_sprite=[i]\"><img src=\"pill[i].png\" /></a></td></tr>"
 			dat += "</table>"
-			usr << browse(dat, "window=chem_master")
+			show_browser(usr, dat, "window=chem_master")
 			return
 		else if(href_list["change_bottle"])
 			var/dat = "<meta charset=\"utf-8\"><table>"
 			for(var/sprite in BOTTLE_SPRITES)
 				dat += "<tr><td><a href=\"?src=\ref[src]&bottle_sprite=[sprite]\"><img src=\"[sprite].png\" /></a></td></tr>"
 			dat += "</table>"
-			usr << browse(dat, "window=chem_master")
+			show_browser(usr, dat, "window=chem_master")
 			return
 		else if(href_list["pill_sprite"])
 			pillsprite = href_list["pill_sprite"]
@@ -228,9 +229,9 @@
 		spawn()
 			has_sprites += user.client
 			for(var/i = 1 to MAX_PILL_SPRITE)
-				usr << browse_rsc(icon('icons/obj/chemical.dmi', "pill" + num2text(i)), "pill[i].png")
+				send_rsc(usr, icon('icons/obj/chemical.dmi', "pill" + num2text(i)), "pill[i].png")
 			for(var/sprite in BOTTLE_SPRITES)
-				usr << browse_rsc(icon('icons/obj/chemical.dmi', sprite), "[sprite].png")
+				send_rsc(usr, icon('icons/obj/chemical.dmi', sprite), "[sprite].png")
 	var/dat = ""
 	if(!beaker)
 		dat = "Please insert beaker.<BR>"
@@ -278,9 +279,9 @@
 		else
 			dat += "<A href='?src=\ref[src];createbottle=1'>Create bottle (50 units max)</A>"
 	if(!condi)
-		user << browse("<meta charset=\"utf-8\"><TITLE>Chemmaster 3000</TITLE>Chemmaster menu:<BR><BR>[dat]", "window=chem_master;size=575x400")
+		show_browser(user, "<meta charset=\"utf-8\"><TITLE>Chemmaster 3000</TITLE>Chemmaster menu:<BR><BR>[dat]", "window=chem_master;size=575x400")
 	else
-		user << browse("<meta charset=\"utf-8\"><TITLE>Condimaster 3000</TITLE>Condimaster menu:<BR><BR>[dat]", "window=chem_master;size=575x400")
+		show_browser(user, "<meta charset=\"utf-8\"><TITLE>Condimaster 3000</TITLE>Condimaster menu:<BR><BR>[dat]", "window=chem_master;size=575x400")
 	onclose(user, "chem_master")
 	return
 
@@ -307,9 +308,9 @@
 	var/list/sheet_reagents = list(
 		/obj/item/stack/material/iron = /datum/reagent/iron,
 		/obj/item/stack/material/uranium = /datum/reagent/uranium,
-		/obj/item/stack/material/phoron = /datum/reagent/toxin/phoron,
-		/obj/item/stack/material/phoron/ten = /datum/reagent/toxin/phoron,
-		/obj/item/stack/material/phoron/fifty = /datum/reagent/toxin/phoron,
+		/obj/item/stack/material/plasma = /datum/reagent/toxin/plasma,
+		/obj/item/stack/material/plasma/ten = /datum/reagent/toxin/plasma,
+		/obj/item/stack/material/plasma/fifty = /datum/reagent/toxin/plasma,
 		/obj/item/stack/material/gold = /datum/reagent/gold,
 		/obj/item/stack/material/silver = /datum/reagent/silver,
 		/obj/item/stack/material/mhydrogen = /datum/reagent/hydrazine
@@ -394,7 +395,7 @@
 		//If attack_hand is updated, this segment won't have to be updated as well.
 		return attack_hand(user)
 
-/obj/machinery/reagentgrinder/interact(mob/user as mob) // The microwave Menu
+/obj/machinery/reagentgrinder/interact(mob/user) // The microwave Menu
 	if(inoperable())
 		return
 	user.set_machine(src)
@@ -437,7 +438,7 @@
 			dat += "<A href='?src=\ref[src];action=detach'>Detach the beaker</a><BR>"
 	else
 		dat += "Please wait..."
-	user << browse("<meta charset=\"utf-8\"><HEAD><TITLE>All-In-One Grinder</TITLE></HEAD><TT>[dat]</TT>", "window=reagentgrinder")
+	show_browser(user, "<meta charset=\"utf-8\"><HEAD><TITLE>All-In-One Grinder</TITLE></HEAD><TT>[dat]</TT>", "window=reagentgrinder")
 	onclose(user, "reagentgrinder")
 	return
 

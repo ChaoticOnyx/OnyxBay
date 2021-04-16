@@ -25,7 +25,7 @@
 	possible_trading_items = list(/obj/item/clothing/head/helmet						= TRADER_THIS_TYPE,
 								/obj/item/clothing/head/helmet/ablative					= TRADER_THIS_TYPE,
 								/obj/item/clothing/head/helmet/ballistic				= TRADER_THIS_TYPE,
-								/obj/item/clothing/head/helmet/merc						= TRADER_THIS_TYPE,
+								/obj/item/clothing/head/helmet/syndi						= TRADER_THIS_TYPE,
 								/obj/item/clothing/head/helmet/nt						= TRADER_ALL,
 								/obj/item/clothing/head/helmet/riot						= TRADER_THIS_TYPE,
 								/obj/item/clothing/head/helmet/swat						= TRADER_THIS_TYPE,

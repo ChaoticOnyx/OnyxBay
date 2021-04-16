@@ -52,6 +52,10 @@
 			playsound(user, "[gender_prefix]_pain", rand(25, 40), FALSE)
 		if ("gasp","choke")
 			playsound(user, "[gender_prefix]_breath", rand(25, 40), FALSE)
+		if ("sneeze")
+			playsound(user, "[gender_prefix]_sneeze", rand(25, 40), FALSE)
+		if ("long_scream")
+			playsound(user, "[gender_prefix]_long_scream", rand(25, 40), FALSE)
 
 /decl/emote/proc/do_emote(atom/user, extra_params)
 
@@ -69,10 +73,10 @@
 				target = thing
 				break
 
-	var/datum/gender/user_gender = gender_datums[user.get_visible_gender()]
+	var/datum/gender/user_gender = gender_datums[user.gender]
 	var/datum/gender/target_gender
 	if(target)
-		target_gender = gender_datums[target.get_visible_gender()]
+		target_gender = gender_datums[target.gender]
 
 	var/use_3p
 	var/use_1p
@@ -102,9 +106,9 @@
 	if(message_type == AUDIBLE_MESSAGE)
 		play_emote_sound(user, key, user_gender)
 
-		user.audible_message(message = use_3p, self_message = use_1p, deaf_message = emote_message_impaired, checkghosts = /datum/client_preference/ghost_sight)
+		user.audible_message(message = use_3p, deaf_message = emote_message_impaired, checkghosts = /datum/client_preference/ghost_sight)
 	else
-		user.visible_message(message = use_3p, self_message = use_1p, blind_message = emote_message_impaired, checkghosts = /datum/client_preference/ghost_sight)
+		user.visible_message(message = use_3p, blind_message = emote_message_impaired, checkghosts = /datum/client_preference/ghost_sight)
 
 	do_extra(user, target)
 

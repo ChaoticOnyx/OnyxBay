@@ -151,12 +151,10 @@ Please contact me on #coderbus IRC. ~Carn x
 
 //UPDATES OVERLAYS FROM OVERLAYS_LYING/OVERLAYS_STANDING
 /mob/living/carbon/human/update_icons()
-	lying_prev = lying	//so we don't update overlays for lying/standing unless our stance changes again
-	hanging_prev = hanging
 	update_hud()		//TODO: remove the need for this
 
 	var/list/overlays_to_apply = list()
-	if (icon_update)
+	if(icon_update)
 		overlays.Cut()
 		var/list/visible_overlays
 		if(is_cloaked())
@@ -278,8 +276,10 @@ var/global/list/damage_icon_parts = list()
 		if(isnull(part) || part.is_stump())
 			icon_key += "0"
 			continue
-		for(var/M in part.markings)
-			icon_key += "[M][part.markings[M]["color"]]"
+		for(var/E in part.markings)
+			var/datum/sprite_accessory/marking/M = E
+			var/color = part.markings[E]
+			icon_key += "[M.name][color]"
 		if(part)
 			icon_key += "[part.species.get_race_key(part.owner)]"
 			icon_key += "[part.dna.GetUIState(DNA_UI_GENDER)]"
@@ -292,8 +292,10 @@ var/global/list/damage_icon_parts = list()
 				icon_key += "[rgb(part.h_col[1],part.h_col[2],part.h_col[3])]"
 			else
 				icon_key += "#000000"
-			for(var/M in part.markings)
-				icon_key += "[M][part.markings[M]["color"]]"
+			for(var/E in part.markings)
+				var/datum/sprite_accessory/marking/M = E
+				var/color = part.markings[E]
+				icon_key += "[M.name][color]"
 		if(BP_IS_ROBOTIC(part))
 			icon_key += "2[part.model ? "-[part.model]": ""]"
 		else if(part.status & ORGAN_DEAD)
@@ -466,7 +468,8 @@ var/global/list/damage_icon_parts = list()
 //For legacy support.
 /mob/living/carbon/human/regenerate_icons()
 	..()
-	if(transforming || QDELETED(src))		return
+	if(HasMovementHandler(/datum/movement_handler/mob/transformation) || QDELETED(src))
+		return
 
 	update_mutations(0)
 	update_body(0)
@@ -534,7 +537,8 @@ var/global/list/damage_icon_parts = list()
 		else
 			overlays_standing[HO_GLOVES_LAYER] = null
 
-	if(update_icons) queue_icon_update()
+	if(update_icons)
+		queue_icon_update()
 
 // Glasses
 /mob/living/carbon/human/update_inv_glasses(update_icons=1)
@@ -545,30 +549,31 @@ var/global/list/damage_icon_parts = list()
 		overlays_standing[HO_GLASSES_LAYER]	= null
 		overlays_standing[HO_GOGGLES_LAYER]	= null
 
-	if(update_icons) queue_icon_update()
+	if(update_icons)
+		queue_icon_update()
 
 // Ears
 /mob/living/carbon/human/update_inv_ears(update_icons=1)
 	overlays_standing[HO_EARS_LAYER] = null
-	if( (head && (head.flags_inv & (BLOCKHAIR | BLOCKHEADHAIR))) || (wear_mask && (wear_mask.flags_inv & (BLOCKHAIR | BLOCKHEADHAIR))))
-
-		if(update_icons) queue_icon_update()
-
+	if((head && (head.flags_inv & (BLOCKHAIR | BLOCKHEADHAIR))) || (wear_mask && (wear_mask.flags_inv & (BLOCKHAIR | BLOCKHEADHAIR))))
+		if(update_icons)
+			queue_icon_update()
 		return
 
 	if(l_ear || r_ear)
 		// Blank image upon which to layer left & right overlays.
-		var/image/both = image("icon" = 'icons/effects/effects.dmi', "icon_state" = "nothing")
+		var/image/both = image("icon" = 'icons/effects/blank.dmi')
 		if(l_ear)
-			both.overlays += l_ear.get_mob_overlay(src,slot_l_ear_str)
+			both.overlays += l_ear.get_mob_overlay(src, slot_l_ear_str)
 		if(r_ear)
-			both.overlays += r_ear.get_mob_overlay(src,slot_r_ear_str)
+			both.overlays += r_ear.get_mob_overlay(src, slot_r_ear_str)
 		overlays_standing[HO_EARS_LAYER] = both
 
 	else
 		overlays_standing[HO_EARS_LAYER] = null
 
-	if(update_icons) queue_icon_update()
+	if(update_icons)
+		queue_icon_update()
 
 // Shoes
 /mob/living/carbon/human/update_inv_shoes(update_icons=1)

@@ -86,7 +86,7 @@
 
 /obj/item/weapon/gun/energy/crossbow
 	name = "mini energy-crossbow"
-	desc = "A weapon favored by many mercenary stealth specialists."
+	desc = "A crossbow that doesn't seem to have space for bolts."
 	icon_state = "crossbow"
 	w_class = ITEM_SIZE_NORMAL
 	item_state = "crossbow"
@@ -108,7 +108,7 @@
 
 /obj/item/weapon/gun/energy/crossbow/largecrossbow
 	name = "energy crossbow"
-	desc = "A weapon favored by mercenary infiltration teams."
+	desc = "A weapon favored by syndicate infiltration teams."
 	w_class = ITEM_SIZE_LARGE
 	force = 10
 	one_hand_penalty = 1

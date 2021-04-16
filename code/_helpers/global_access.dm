@@ -127,12 +127,6 @@
 			return global.WALLITEMS;
 		if("_all_globals")
 			return global._all_globals;
-		if("_client_preferences")
-			return global._client_preferences;
-		if("_client_preferences_by_key")
-			return global._client_preferences_by_key;
-		if("_client_preferences_by_type")
-			return global._client_preferences_by_type;
 		if("account_hack_attempted")
 			return global.account_hack_attempted;
 		if("additional_antag_types")
@@ -696,7 +690,7 @@
 		if("vampirepower_types")
 			return global.vampirepower_types
 		if("vampirepowers")
-			return global.vampirepowers		
+			return global.vampirepowers
 		if("priority_air_alarms")
 			return global.priority_air_alarms;
 		if("priority_announcement")
@@ -751,8 +745,6 @@
 			return global.restricted_camera_networks;
 		if("revdata")
 			return global.revdata;
-		if("robot_custom_icons")
-			return global.robot_custom_icons;
 		if("robot_hud_colours")
 			return global.robot_hud_colours;
 		if("robot_inventory")
@@ -1120,12 +1112,6 @@
 			global.WALLITEMS=newval;
 		if("_all_globals")
 			global._all_globals=newval;
-		if("_client_preferences")
-			global._client_preferences=newval;
-		if("_client_preferences_by_key")
-			global._client_preferences_by_key=newval;
-		if("_client_preferences_by_type")
-			global._client_preferences_by_type=newval;
 		if("account_hack_attempted")
 			global.account_hack_attempted=newval;
 		if("additional_antag_types")
@@ -1744,8 +1730,6 @@
 			global.restricted_camera_networks=newval;
 		if("revdata")
 			global.revdata=newval;
-		if("robot_custom_icons")
-			global.robot_custom_icons=newval;
 		if("robot_hud_colours")
 			global.robot_hud_colours=newval;
 		if("robot_inventory")
@@ -2365,7 +2349,6 @@
 	"restricted_camera_networks",
 	"revdata",
 	"rkeys",
-	"robot_custom_icons",
 	"robot_hud_colours",
 	"robot_inventory",
 	"robot_modules",

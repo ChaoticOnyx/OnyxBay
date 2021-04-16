@@ -1,13 +1,13 @@
 // At minimum every mob has a hear_say proc.
 
-/mob/proc/hear_say(message, verb = "says", datum/language/language = null, alt_name = "",italics = 0, mob/speaker = null, sound/speech_sound, sound_vol)
+/mob/proc/hear_say(message, verb = "says", datum/language/language = null, alt_name = "", italics = 0, mob/speaker = null, sound/speech_sound, sound_vol)
 	if(!client)
 		return
 
-	var/near = view(src)
 	var/dist_speech = get_dist(speaker, src)
+	var/near = dist_speech <= world.view
 
-	if(speaker && !speaker.client && isghost(src) && get_preference_value(/datum/client_preference/ghost_ears) == GLOB.PREF_ALL_SPEECH && !(speaker in near))
+	if(speaker && !speaker.client && isghost(src) && get_preference_value(/datum/client_preference/ghost_ears) == GLOB.PREF_ALL_SPEECH && !near)
 			//Does the speaker have a client?  It's either random stuff that observers won't care about (Experiment 97B says, 'EHEHEHEHEHEHEHE')
 			//Or someone snoring.  So we make it where they won't hear it.
 		return
@@ -30,7 +30,7 @@
 
 	//non-verbal languages are garbled if you can't see the speaker. Yes, this includes if they are inside a closet.
 	if (language && (language.flags & NONVERBAL))
-		if (!speaker || (src.sdisabilities & BLIND || src.blinded) || !(speaker in near))
+		if (!speaker || (src.sdisabilities & BLIND || src.blinded) || !near)
 			message = stars(message)
 
 	if(!(language && (language.flags & INNATE))) // skip understanding checks for INNATE languages
@@ -70,18 +70,21 @@
 	if(italics)
 		message = "<i>[message]</i>"
 
+	if(copytext_char(message, -2) == "!!") // two or more exclamation marks make them yell
+		message = "<b>[message]</b>"
+
 	var/track = null
 	if(isghost(src))
 		if(speaker_name != speaker.real_name && speaker.real_name)
 			speaker_name = "[speaker.real_name] ([speaker_name])"
 		track = "([ghost_follow_link(speaker, src)]) "
-		if(get_preference_value(/datum/client_preference/ghost_ears) == GLOB.PREF_ALL_SPEECH && (speaker in near))
+		if(get_preference_value(/datum/client_preference/ghost_ears) == GLOB.PREF_ALL_SPEECH && near)
 			message = "<b>[message]</b>"
 
 	if(is_deaf())
 		if(!language || !(language.flags & INNATE)) // INNATE is the flag for audible-emote-language, so we don't want to show an "x talks but you cannot hear them" message if it's set
 			if(speaker == src)
-				to_chat(src, "<span class='warning'>You cannot hear yourself speak!</span>")
+				to_chat(src, SPAN("warning", "You cannot hear yourself speak!"))
 			else if(!is_blind())
 				to_chat(src, "<span class='name'>[speaker_name]</span>[alt_name] talks but you cannot hear \him.")
 	else
@@ -149,6 +152,9 @@
 				message = stars(message)
 			else // Used for compression
 				message = RadioChat(null, message, 80, 1+(hard_to_hear/10))
+
+	if(copytext_char(message, -2) == "!!")
+		message = "<b>[message]</b>"
 
 	var/speaker_name = vname ? vname : speaker.name
 
@@ -236,7 +242,7 @@
 	if(sdisabilities & DEAF || ear_deaf)
 		var/mob/living/carbon/human/H = src
 		if(istype(H) && H.has_headset_in_ears() && prob(20))
-			to_chat(src, "<span class='warning'>You feel your headset vibrate [loud ? "really hard " : ""]but can hear nothing from it!</span>")
+			to_chat(src, SPAN("warning", "You feel your headset vibrate [loud ? "really hard " : ""]but can hear nothing from it!"))
 	else
 		on_hear_radio(part_a, speaker_name, track, part_b, part_c, formatted, loud)
 

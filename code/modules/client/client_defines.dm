@@ -14,8 +14,6 @@
 	var/datum/click_handler/click_handler
 
 	var/datum/preferences/prefs = null
-	var/move_delay = 1
-	var/moving = null
 	var/species_ingame_whitelisted = FALSE
 
 	var/datum/donator_info/donator_info = new
@@ -64,3 +62,6 @@
 
 	//used for initial centering of saywindow
 	var/first_say = TRUE
+
+	//For tracking shift key (world.time)
+	var/shift_released_at = 0 

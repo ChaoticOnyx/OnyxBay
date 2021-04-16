@@ -9,7 +9,8 @@
 
 /mob/living/carbon/proc/breathe(active_breathe = 1)
 	//if(istype(loc, /obj/machinery/atmospherics/unary/cryo_cell)) return
-	if(!need_breathe()) return
+	if(!need_breathe())
+		return
 
 	var/datum/gas_mixture/breath = null
 
@@ -17,45 +18,46 @@
 	if(is_asystole() && !(CE_STABLE in chem_effects) && active_breathe) //crit aka circulatory shock
 		losebreath = max(2, losebreath + 1)
 
-	if(losebreath>0) //Suffocating so do not take a breath
+	if(losebreath > 0) //Suffocating so do not take a breath
 		losebreath--
-		if (prob(10) && !is_asystole() && active_breathe) //Gasp per 10 ticks? Sounds about right.
+		if(prob(10) && !is_asystole() && active_breathe) //Gasp per 10 ticks? Sounds about right.
 			emote("gasp")
 	else
 		//Okay, we can breathe, now check if we can get air
 		breath = get_breath_from_internal() //First, check for air from internals
-		if (breath && src.type == /mob/living/carbon/human && prob(5))
-			if (gender == "male")
-				sound_to(src, sound(get_sfx("male_closed_breath"), volume=5))
+		if(breath && src.type == /mob/living/carbon/human && prob(5))
+			if(gender == "male")
+				sound_to(src, sound(get_sfx("male_closed_breath"), volume = 5))
 			else
-				sound_to(src, sound(get_sfx("female_closed_breath"), volume=5))
+				sound_to(src, sound(get_sfx("female_closed_breath"), volume = 5))
 		if(!breath)
 			breath = get_breath_from_environment() //No breath from internals so let's try to get air from our location
 		if(!breath)
 			var/static/datum/gas_mixture/vacuum //avoid having to create a new gas mixture for each breath in space
-			if(!vacuum) vacuum = new
+			if(!vacuum)
+				vacuum = new
 
 			breath = vacuum //still nothing? must be vacuum
 
 	handle_breath(breath)
 	handle_post_breath(breath)
 
-/mob/living/carbon/proc/get_breath_from_internal(volume_needed=BREATH_VOLUME) //hopefully this will allow overrides to specify a different default volume without breaking any cases where volume is passed in.
+/mob/living/carbon/proc/get_breath_from_internal(volume_needed = BREATH_VOLUME) //hopefully this will allow overrides to specify a different default volume without breaking any cases where volume is passed in.
 	if(internal)
-		if (!contents.Find(internal))
+		if(!contents.Find(internal))
 			internal = null
-		if (!(wear_mask && (wear_mask.item_flags & ITEM_FLAG_AIRTIGHT)))
+		if(!(wear_mask && (wear_mask.item_flags & ITEM_FLAG_AIRTIGHT)))
 			internal = null
 		if(internal)
-			if (internals)
+			if(internals)
 				internals.icon_state = "internal1"
 			return internal.remove_air_volume(volume_needed)
 		else
-			if (internals)
+			if(internals)
 				internals.icon_state = "internal0"
 	return null
 
-/mob/living/carbon/proc/get_breath_from_environment(volume_needed=BREATH_VOLUME)
+/mob/living/carbon/proc/get_breath_from_environment(volume_needed = BREATH_VOLUME)
 	var/datum/gas_mixture/breath = null
 
 	var/datum/gas_mixture/environment

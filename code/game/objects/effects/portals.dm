@@ -50,6 +50,7 @@
 		return
 
 	if(dangerous && prob(failchance))
-		do_teleport(M, locate(rand(TRANSITIONEDGE, world.maxx - TRANSITIONEDGE), rand(TRANSITIONEDGE, world.maxy -TRANSITIONEDGE), pick(GLOB.using_map.player_levels)), 0)
+		var/destination_z = GLOB.using_map.get_transit_zlevel(src.z)
+		do_teleport(M, locate(rand(TRANSITIONEDGE, world.maxx - TRANSITIONEDGE), rand(TRANSITIONEDGE, world.maxy -TRANSITIONEDGE), destination_z), 0)
 	else
 		do_teleport(M, target, 1)

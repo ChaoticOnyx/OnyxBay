@@ -54,7 +54,7 @@
 	suit = /obj/item/clothing/suit/storage/toggle/suit/black
 	shoes = /obj/item/clothing/shoes/brown
 	glasses = /obj/item/clothing/glasses/sunglasses/big
-	l_hand = /obj/item/weapon/storage/briefcase
+	l_hand = /obj/item/weapon/storage/briefcase/iaa
 	id_type = /obj/item/weapon/card/id/civilian/internal_affairs_agent
 	pda_type = /obj/item/device/pda/lawyer
 
@@ -68,10 +68,11 @@
 /decl/hierarchy/outfit/job/merchant
 	name = OUTFIT_JOB_NAME("Merchant")
 	uniform = /obj/item/clothing/under/color/black
-	l_ear = null
+	l_ear = /obj/item/device/radio/headset
 	shoes = /obj/item/clothing/shoes/black
 	pda_type = /obj/item/device/pda
 	id_type = /obj/item/weapon/card/id/merchant
+	backpack_contents = list(/obj/item/device/price_scanner = 1)
 
 /decl/hierarchy/outfit/job/clown
 	name = OUTFIT_JOB_NAME("Clown")

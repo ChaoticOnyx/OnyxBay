@@ -178,6 +178,20 @@
 				nextstate = FIREDOOR_CLOSED
 				close()
 
+/obj/machinery/door/firedoor/attack_generic(mob/user, damage)
+	if(stat & (BROKEN|NOPOWER))
+		if(damage >= 10)
+			if(src.density)
+				visible_message(SPAN("danger","\The [user] forces \the [src] open!"))
+				open(1)
+			else
+				visible_message(SPAN("danger","\The [user] forces \the [src] closed!"))
+				close(1)
+		else
+			visible_message(SPAN("notice","\The [user] strains fruitlessly to force \the [src] [density ? "open" : "closed"]."))
+		return
+	..()
+
 /obj/machinery/door/firedoor/attackby(obj/item/weapon/C as obj, mob/user as mob)
 	add_fingerprint(user, 0, C)
 	if(operating)
@@ -236,7 +250,8 @@
 		user.visible_message("<span class='danger'>\The [user] starts to force \the [src] [density ? "open" : "closed"] with \a [C]!</span>",\
 				"You start forcing \the [src] [density ? "open" : "closed"] with \the [C]!",\
 				"You hear metal strain.")
-		if(do_after(user,30,src))
+		var/forcing_time = istype(C, /obj/item/weapon/crowbar/emergency) ? 60 : 30
+		if(do_after(user, forcing_time, src))
 			if(isCrowbar(C))
 				if(stat & (BROKEN|NOPOWER) || !density)
 					user.visible_message("<span class='danger'>\The [user] forces \the [src] [density ? "open" : "closed"] with \a [C]!</span>",\
@@ -271,51 +286,6 @@
 
 	return FA
 
-// CHECK PRESSURE
-/obj/machinery/door/firedoor/Process()
-	..()
-
-	if(density && next_process_time <= world.time)
-		next_process_time = world.time + 100		// 10 second delays between process updates
-		var/changed = 0
-		lockdown=0
-		// Pressure alerts
-		pdiff = getOPressureDifferential(src.loc)
-		if(pdiff >= FIREDOOR_MAX_PRESSURE_DIFF)
-			lockdown = 1
-			if(!pdiff_alert)
-				pdiff_alert = 1
-				changed = 1 // update_icon()
-		else
-			if(pdiff_alert)
-				pdiff_alert = 0
-				changed = 1 // update_icon()
-
-		tile_info = getCardinalAirInfo(src.loc,list("temperature","pressure"))
-		var/old_alerts = dir_alerts
-		for(var/index = 1; index <= 4; index++)
-			var/list/tileinfo=tile_info[index]
-			if(tileinfo==null)
-				continue // Bad data.
-			var/celsius = convert_k2c(tileinfo[1])
-
-			var/alerts=0
-
-			// Temperatures
-			if(celsius >= FIREDOOR_MAX_TEMP)
-				alerts |= FIREDOOR_ALERT_HOT
-				lockdown = 1
-			else if(celsius <= FIREDOOR_MIN_TEMP)
-				alerts |= FIREDOOR_ALERT_COLD
-				lockdown = 1
-
-			dir_alerts[index]=alerts
-
-		if(dir_alerts != old_alerts)
-			changed = 1
-		if(changed)
-			update_icon()
-
 /obj/machinery/door/firedoor/proc/latetoggle()
 	if(operating || !nextstate)
 		return
@@ -327,13 +297,19 @@
 		if(FIREDOOR_CLOSED)
 			nextstate = null
 			close()
+
 	return
 
 /obj/machinery/door/firedoor/close()
+	if (!is_processing)
+		START_PROCESSING(SSmachines, src)
+
 	latetoggle()
 	return ..()
 
 /obj/machinery/door/firedoor/open(forced = 0)
+	lockdown = 0
+
 	if(hatch_open)
 		hatch_open = 0
 		visible_message("The maintenance hatch of \the [src] closes.")
@@ -407,6 +383,54 @@
 
 	if(do_set_light)
 		set_light(1.5, 0.5, COLOR_SUN)
+
+// CHECK PRESSURE
+/obj/machinery/door/firedoor/Process()
+	if (!density)
+		return PROCESS_KILL
+
+	if(next_process_time > world.time)
+		return
+
+	next_process_time = world.time + 100		// 10 second delays between process updates
+	var/changed = 0
+	lockdown=0
+	// Pressure alerts
+	pdiff = getOPressureDifferential(src.loc)
+	if(pdiff >= FIREDOOR_MAX_PRESSURE_DIFF)
+		lockdown = 1
+		if(!pdiff_alert)
+			pdiff_alert = 1
+			changed = 1 // update_icon()
+	else
+		if(pdiff_alert)
+			pdiff_alert = 0
+			changed = 1 // update_icon()
+
+	tile_info = getCardinalAirInfo(src.loc,list("temperature","pressure"))
+	var/old_alerts = dir_alerts
+	for(var/index = 1; index <= 4; index++)
+		var/list/tileinfo=tile_info[index]
+		if(tileinfo==null)
+			continue // Bad data.
+		var/celsius = convert_k2c(tileinfo[1])
+
+		var/alerts=0
+
+		// Temperatures
+		if(celsius >= FIREDOOR_MAX_TEMP)
+			alerts |= FIREDOOR_ALERT_HOT
+			lockdown = 1
+		else if(celsius <= FIREDOOR_MIN_TEMP)
+			alerts |= FIREDOOR_ALERT_COLD
+			lockdown = 1
+
+		dir_alerts[index]=alerts
+
+	if(dir_alerts != old_alerts)
+		changed = 1
+	if(changed)
+		update_icon()
 
 //These are playing merry hell on ZAS.  Sorry fellas :(
 

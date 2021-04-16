@@ -4,6 +4,7 @@
 	density = 1
 	layer = BELOW_OBJ_LAYER
 	w_class = ITEM_SIZE_NO_CONTAINER
+	pull_slowdown = PULL_SLOWDOWN_HEAVY
 	var/state = 0
 	var/max_health = 150
 	var/health = 150
@@ -275,6 +276,8 @@
 	return
 
 /obj/structure/girder/cult
+	name = "strange girder"
+	desc = "This one is strange, looks like it is made from stone"
 	icon= 'icons/obj/cult.dmi'
 	icon_state= "cultgirder"
 	max_health = 250

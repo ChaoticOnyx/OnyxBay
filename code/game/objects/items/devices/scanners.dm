@@ -42,7 +42,8 @@ REAGENT SCANNER
 	if (!istype(C) || C.isSynthetic())
 		to_chat(user, "<span class='warning'>\The [src] is designed for organic humanoid patients only.</span>")
 		return
-	//user << browse(medical_scan_results(H, mode), "window=scanconsole;size=550x400")
+	//show_browser(user, medical_scan_results(H, mode), "window=scanconsole;size=550x400")
+	playsound(src.loc, 'sound/signals/processing21.ogg', 50)
 	ui_interact(user,target = C)
 
 /obj/item/device/healthanalyzer/ui_interact(mob/user, ui_key = "main", datum/nanoui/ui = null, force_open = 1,mob/living/carbon/human/target)
@@ -158,7 +159,7 @@ proc/medical_scan_results(mob/living/carbon/human/H, verbose, separate_result)
 	if(H.getOxyLoss() > 50)
 		status_data += "<span class='info'><b>Severe oxygen deprivation detected.</b></span>"
 	if(H.getToxLoss() > 50)
-		status_data += "<font color='green'><b>Major systemic organ failure detected.</b></font>"
+		status_data += "<font color='black'><b>Major systemic organ failure detected.</b></font>"
 	if(H.getFireLoss() > 50)
 		status_data += "<font color='#ffa500'><b>Severe burn damage detected.</b></font>"
 	if(H.getBruteLoss() > 50)
@@ -430,12 +431,12 @@ proc/get_wound_severity(damage_ratio, vital = 0)
 	if (istype(M,/mob/living/carbon/human))
 		dat = M.get_medical_data()
 		last_target = M
-		user << browse(dat, "window=scanconsole;size=430x600")
+		show_browser(user, dat, "window=scanconsole;size=430x600")
 	return 1
 
 /obj/item/device/healthanalyzer_advanced/attack_self(mob/user)
 	if (last_target && dat)
-		user << browse(dat, "window=scanconsole;size=430x600")
+		show_browser(user, dat, "window=scanconsole;size=430x600")
 
 /obj/item/device/healthanalyzer_advanced/examine(mob/user)
 	. = ..()
@@ -448,7 +449,7 @@ proc/get_wound_severity(damage_ratio, vital = 0)
 	if (istype(M,/mob/living/carbon/human))
 		dat = M.get_medical_data()
 		last_target = M
-		user << browse(dat, "window=scanconsole;size=430x600")
+		show_browser(user, dat, "window=scanconsole;size=430x600")
 		if(isrobot(user))
 			var/mob/living/silicon/robot/R = user
 			if(R.cell)
@@ -458,7 +459,8 @@ proc/get_wound_severity(damage_ratio, vital = 0)
 	set name = "Print Data"
 	set category = "Object"
 	if (last_target && dat)
-		new /obj/item/weapon/paper/(get_turf(src), "<tt>[dat]</tt>", "Body scan report - [last_target]")
+		var/obj/item/weapon/paper/P = new /obj/item/weapon/paper/(get_turf(src))
+		P.set_content("<tt>[dat]</tt>", "Body scan report - [last_target]", TRUE)
 		src.visible_message("<span class='notice'>[src] prints out \the scan result.</span>")
 
 
@@ -644,7 +646,7 @@ proc/get_wound_severity(damage_ratio, vital = 0)
 
 	var/value = get_value(target)
 	user.visible_message("\The [user] scans \the [target] with \the [src]")
-	user.show_message("Price estimation of \the [target]: [value ? value : "N/A"] Thalers")
+	user.show_message("Price estimation of \the [target]: [value ? value : "N/A"] credits")
 
 /obj/item/device/slime_scanner
 	name = "xenolife scanner"

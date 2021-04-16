@@ -32,5 +32,6 @@
 
 	if(affecting.lying)
 		affecting.Weaken(4)
+		affecting.Stun(2)
 
 	affecting.adjustOxyLoss(1)
