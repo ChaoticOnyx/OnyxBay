@@ -151,7 +151,7 @@
 	for(var/mob/living/carbon/M in ohearers(6, chassis))
 		if(istype(M, /mob/living/carbon/human))
 			var/mob/living/carbon/human/H = M
-			if(H.get_ear_protection() >= 2)
+			if(H.get_ear_protection() > 2)
 				continue
 		to_chat(M, "<font color='red' size='7'>HONK</font>")
 		M.sleeping = 0

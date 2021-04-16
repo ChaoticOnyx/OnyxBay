@@ -152,7 +152,7 @@
 	playsound(loc, 'sound/items/AirHorn.ogg', 100, 1)
 	for(var/mob/living/carbon/M in ohearers(6, src))
 		if(istype(M, /mob/living/carbon/human))
-			if(M.get_ear_protection() >= 2)
+			if(M.get_ear_protection() > 2)
 				continue
 		M.sleeping = 0
 		M.stuttering += 20

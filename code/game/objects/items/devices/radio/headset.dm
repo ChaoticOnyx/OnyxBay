@@ -258,13 +258,32 @@
 	item_state = "headset"
 	ks2type = /obj/item/device/encryptionkey/specops
 
-/obj/item/device/radio/headset/headset_sec/tactical
+/obj/item/device/radio/headset/tactical
 	name = "Tactical earmuffs"
-	desc = "The headset of the cool."
+	desc = "The earmuffs of the cool."
 	icon_state = "tac_earmuffs"
 	item_state = "tac_earmuffs"
 	slot_flags = SLOT_EARS | SLOT_TWOEARS
-	ear_protection = 1
+	ear_protection = 0.5
+
+/obj/item/device/radio/headset/tactical/sec
+	ks2type = /obj/item/device/encryptionkey/headset_sec
+
+/obj/item/device/radio/headset/tactical/hos
+	desc = "Theese one seem even more tactical than usual."
+	ks2type = /obj/item/device/encryptionkey/heads/hos
+
+
+/obj/item/device/radio/headset/tactical/emp_act(severity)
+	if(istype(src.loc, /mob/living/carbon/human))
+		var/mob/living/carbon/human/M = src.loc
+		if(M.l_ear == src || M.r_ear == src)
+			to_chat(M, SPAN("danger", "You hear a loud screech!"))
+			M.Stun(10)
+			M.Weaken(3)
+			M.ear_damage += rand(0, 5)
+			M.ear_deaf = max(M.ear_deaf,15)
+	..()
 
 /obj/item/device/radio/headset/attackby(obj/item/weapon/W as obj, mob/user as mob)
 //	..()

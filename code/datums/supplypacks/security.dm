@@ -22,8 +22,9 @@
 /decl/hierarchy/supply_pack/security/armor
 	name = "Armor - Unmarked"
 	contains = list(/obj/item/clothing/suit/armor/pcarrier/medium = 2,
-					/obj/item/clothing/head/helmet =2)
-	cost = 20
+					/obj/item/clothing/head/helmet =2,
+					/obj/item/device/radio/headset/tactical =2)
+	cost = 25
 	containertype = /obj/structure/closet/crate/secure
 	containername = "\improper Armor crate"
 	access = access_security
