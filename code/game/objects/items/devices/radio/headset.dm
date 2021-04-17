@@ -259,7 +259,7 @@
 	ks2type = /obj/item/device/encryptionkey/specops
 
 /obj/item/device/radio/headset/tactical
-	name = "Tactical earmuffs"
+	name = "tactical earmuffs"
 	desc = "The earmuffs of the cool."
 	icon_state = "tac_earmuffs"
 	item_state = "tac_earmuffs"
