@@ -298,7 +298,7 @@ var/global/list/obj/item/device/pda/PDAs = list()
 		else
 			HTML += addtext("<i><b>&larr; From <a href='byond://?src=\ref[src];choice=Message;notap=1;target=",index["target"],"'>", index["owner"],"</a>:</b></i><br>", index["message"], "<br>")
 	HTML +="</body></html>"
-	usr << browse(HTML, "window=log;size=400x444;border=1;can_resize=1;can_close=1;can_minimize=0")
+	show_browser(usr, HTML, "window=log;size=400x444;border=1;can_resize=1;can_close=1;can_minimize=0")
 
 
 /obj/item/device/pda/ai/can_use()
@@ -1038,6 +1038,9 @@ var/global/list/obj/item/device/pda/PDAs = list()
 				// Allows other AIs to intercept the message but the AI won't intercept their own message.
 				if(ai.aiPDA != P && ai.aiPDA != src)
 					ai.show_message("<i>Intercepted message from <b>[who]</b>: [message]</i>")
+
+		if(U.client?.get_preference_value(/datum/client_preference/spell_checking) == GLOB.PREF_YES && U.client.chatOutput)
+			U.client.chatOutput.spell_check(message)
 
 		P.new_message_from_pda(src, message)
 		SSnano.update_user_uis(U, src) // Update the sending user's PDA UI so that they can see the new message

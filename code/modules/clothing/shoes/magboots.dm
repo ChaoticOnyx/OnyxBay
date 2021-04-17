@@ -9,6 +9,7 @@
 	overshoes = 1
 	var/magpulse = 0
 	var/icon_base = "magboots"
+	var/traction_system = "mag-pulse"
 	action_button_name = "Toggle Magboots"
 	var/obj/item/clothing/shoes/shoes = null	//Undershoes
 	var/mob/living/carbon/human/wearer = null	//For shoe procs
@@ -30,7 +31,7 @@
 		set_slowdown()
 		force = 3
 		if(icon_base) icon_state = "[icon_base]0"
-		to_chat(user, "You disable the mag-pulse traction system.")
+		to_chat(user, "You disable the [traction_system] traction system.")
 	else
 		item_flags |= ITEM_FLAG_NOSLIP
 		magpulse = 1
@@ -38,7 +39,7 @@
 		force = 5
 		if(icon_base) icon_state = "[icon_base]1"
 		playsound(get_turf(src), 'sound/effects/magnetclamp.ogg', 20)
-		to_chat(user, "You enable the mag-pulse traction system.")
+		to_chat(user, "You enable the [traction_system] traction system.")
 	user.update_inv_shoes()	//so our mob-overlays update
 	user.update_action_buttons()
 	user.update_floating()
@@ -92,4 +93,4 @@
 	var/state = "disabled"
 	if(item_flags & ITEM_FLAG_NOSLIP)
 		state = "enabled"
-	. += "\nIts mag-pulse traction system appears to be [state]."
+	. += "\nIts [traction_system] traction system appears to be [state]."

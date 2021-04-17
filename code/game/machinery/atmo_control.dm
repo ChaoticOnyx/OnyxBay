@@ -99,7 +99,7 @@ obj/machinery/computer/general_air_control/Destroy()
 /obj/machinery/computer/general_air_control/attack_hand(mob/user)
 	if(..(user))
 		return
-	user << browse(return_text(),"window=computer")
+	show_browser(user, return_text(), "window=computer")
 	user.set_machine(src)
 	onclose(user, "computer")
 
@@ -407,7 +407,7 @@ Min Core Pressure: [pressure_limit] kPa<BR>"}
 	icon_screen = "alert:0"
 
 	var/device_tag
-	var/list/device_info
+	var/list/device_info = list()
 
 	var/automation = 0
 

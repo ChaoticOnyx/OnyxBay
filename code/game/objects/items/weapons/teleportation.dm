@@ -40,7 +40,7 @@ Frequency:
 <A href='byond://?src=\ref[src];freq=10'>+</A><BR>
 
 <A href='?src=\ref[src];refresh=1'>Refresh</A>"}
-	user << browse(dat, "window=radio")
+	show_browser(user, dat, "window=radio")
 	onclose(user, "radio")
 	return
 
@@ -185,7 +185,7 @@ Frequency:
 				dat += "<B>INSTALL POWER CELL! (vortex power cell recommended)</B><BR>"
 
 		dat += "Kind regards,<br>Dominus temporis. <br><br>P.S. Don't forget to ask someone to say something nice.<HR>"
-		user << browse(dat, "window=scroll")
+		show_browser(user, dat, "window=scroll")
 		onclose(user, "scroll")
 		return
 	else

@@ -320,6 +320,13 @@ var/list/floor_decals = list()
 	icon_state = "oldfloor"
 	alpha = 120
 
+/obj/effect/floor_decal/sandfloordec
+	name = "sandfloor"
+	icon = 'icons/turf/floors.dmi'
+	icon_state = "asteroidfloor"
+	alpha = 209
+
+
 /obj/effect/floor_decal/stairs
 	name = "stairs"
 	icon_state = "stairs"

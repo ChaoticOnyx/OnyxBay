@@ -173,6 +173,9 @@ var/global/list/obj/machinery/telecomms/telecomms_list = list()
 /obj/machinery/telecomms/Process()
 	update_power()
 
+	if (on)
+		play_beep()
+
 	if(overloaded_for)
 		overloaded_for--
 

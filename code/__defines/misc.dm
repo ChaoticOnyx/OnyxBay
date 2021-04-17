@@ -91,7 +91,9 @@
 
 #define CUSTOM_ITEM_OBJ 'icons/obj/custom_items_obj.dmi'
 #define CUSTOM_ITEM_MOB null
-#define CUSTOM_ITEM_SYNTH null
+#define CUSTOM_ITEM_ROBOTS 'icons/mob/robots_custom.dmi'
+#define CUSTOM_ITEM_AI null
+#define CUSTOM_ITEM_AI_HOLO 'icons/mob/ai_custom/ai_holos.dmi'
 
 #define WALL_CAN_OPEN 1
 #define WALL_OPENING 2
@@ -195,7 +197,8 @@
 #define VIRUS_MILD			1
 #define VIRUS_COMMON		2	//Random events don't go higher (mutations aside)
 #define VIRUS_ENGINEERED	3
-#define VIRUS_EXOTIC		4	//Usually adminbus only
+#define VIRUS_MUTATION		4
+#define VIRUS_EXOTIC		5	//Usually adminbus only
 
 //Error handler defines
 #define ERROR_USEFUL_LEN 2
@@ -242,6 +245,15 @@
 #define MOUSE_OPACITY_TRANSPARENT 0
 #define MOUSE_OPACITY_ICON 1
 #define MOUSE_OPACITY_OPAQUE 2
+
+//How pulling an object affects mob's movement speed.
+#define PULL_SLOWDOWN_WEIGHT   -1  // Default value, slowdown's handled by an object's w_class.
+#define PULL_SLOWDOWN_EXTREME 4.5
+#define PULL_SLOWDOWN_HEAVY   3.5
+#define PULL_SLOWDOWN_MEDIUM  2.5
+#define PULL_SLOWDOWN_LIGHT   1.5
+#define PULL_SLOWDOWN_TINY    0.5
+#define PULL_SLOWDOWN_NONE    0
 
 #define JOB_VACANCY_STATUS_OPEN "Open"
 #define JOB_VACANCY_STATUS_COMPLETED "Completed"

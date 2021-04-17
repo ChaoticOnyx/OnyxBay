@@ -55,7 +55,7 @@
 				if(BP_L_HAND)
 					usr.put_in_l_hand(src)
 
-/obj/item/weapon/storage/AltClick(var/mob/usr)
+/obj/item/weapon/storage/AltClick(mob/usr)
 	if(!canremove)
 		return
 
@@ -138,7 +138,7 @@
 	if(W.anchored)
 		return 0
 
-	if(can_hold.len)
+	if(length(can_hold))
 		if(!is_type_in_list(W, can_hold))
 			if(!stop_messages && ! istype(W, /obj/item/weapon/hand_labeler))
 				to_chat(user, "<span class='notice'>\The [src] cannot hold \the [W].</span>")

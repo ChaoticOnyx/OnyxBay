@@ -24,7 +24,7 @@
 		return 0
 	amt_dam_brute -= 15
 	amt_dam_fire -= 15
-
+	heals_external_bleeding = 1
 	return "[src] will now heal more."
 
 /spell/targeted/heal_target/major
@@ -35,10 +35,10 @@
 	spell_flags = INCLUDEUSER | SELECTABLE | NEEDSCLOTHES
 	invocation = "Borv Di'Nath!"
 	range = 1
-	level_max = list(Sp_TOTAL = 2, Sp_SPEED = 1, Sp_POWER = 1)
+	level_max = list(Sp_TOTAL = 2, Sp_SPEED = 1, Sp_POWER = 2)
 	cooldown_reduc = 100
 	hud_state = "heal_major"
-
+	heals_external_bleeding = 1
 	amt_dam_brute = -75
 	amt_dam_fire  = -50
 	amt_blood  = 28
@@ -48,16 +48,20 @@
 /spell/targeted/heal_target/major/empower_spell()
 	if(!..())
 		return 0
-	amt_blood  = 28
-	amt_organ = 5
-	amt_brain  = -5
-	amt_radiation  = -25
-	amt_dam_tox = -20
-	amt_dam_oxy = -14
-	amt_dam_brute = -35
-	amt_dam_fire  = -35
-
-	return "[src] heals more, and heals organ damage and radiation."
+	amt_blood  += 12
+	amt_organ += 5
+	amt_brain  += -5
+	amt_radiation  += -25
+	amt_dam_tox += -20
+	amt_dam_oxy += -14
+	amt_dam_brute += -20
+	amt_dam_fire  += -30
+	if(!heal_bones)
+		heal_bones = 1
+		return "[src] now heals more and can fix bones"
+	else
+		heals_internal_bleeding = 1
+		return "[src] now heals more and stops internal bleeding"
 
 /spell/targeted/heal_target/area
 	name = "Cure Area"
@@ -95,13 +99,14 @@
 	holder_var_type = "fireloss"
 	holder_var_amount = 100
 	level_max = list(Sp_TOTAL = 1, Sp_SPEED = 0, Sp_POWER = 1)
-
+	heals_external_bleeding = 1
 	amt_dam_brute = -1000
 	amt_dam_fire = -1000
 	amt_dam_oxy = -100
 	amt_dam_tox = -100
 	amt_blood  = 280
-
+	heals_internal_bleeding = 1
+	heal_bones = 1
 	hud_state = "gen_dissolve"
 
 /spell/targeted/heal_target/sacrifice/empower_spell()

@@ -13,6 +13,8 @@
 
 	var/obj/machinery/computer/operating/computer = null
 
+	beepsounds = "medical_beep"
+
 /obj/machinery/optable/Initialize()
 	. = ..()
 	for(dir in list(NORTH,EAST,SOUTH,WEST))
@@ -106,6 +108,7 @@
 
 /obj/machinery/optable/proc/check_victim()
 	if(locate(/mob/living/carbon/human, src.loc))
+		play_beep()
 		var/mob/living/carbon/human/M = locate(/mob/living/carbon/human, src.loc)
 		if(M.lying)
 			src.victim = M

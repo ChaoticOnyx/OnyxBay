@@ -201,6 +201,16 @@ var/global/list/robot_modules = list(
 	src.modules += new /obj/item/weapon/soap/nanotrasen(src)
 	src.modules += new /obj/item/weapon/matter_decompiler(src)
 	src.emag = new /obj/item/weapon/melee/energy/sword/one_hand(src)
+
+	var/datum/matter_synth/medicine = new /datum/matter_synth/medicine(5000)
+	synths += medicine
+
+	var/obj/item/stack/medical/bruise_pack/B = new /obj/item/stack/medical/bruise_pack(src)
+	B.uses_charge = 1
+	B.charge_costs = list(1000)
+	B.synths = list(medicine)
+	modules += B
+	
 	..()
 
 /obj/item/weapon/robot_module/standard/respawn_consumable(mob/living/silicon/robot/R, amount)
@@ -958,8 +968,8 @@ var/global/list/robot_modules = list(
 
 	var/datum/matter_synth/metal = new /datum/matter_synth/metal(25000)
 	var/datum/matter_synth/glass = new /datum/matter_synth/glass(25000)
-	var/datum/matter_synth/wood = new /datum/matter_synth/wood(2000)
-	var/datum/matter_synth/plastic = new /datum/matter_synth/plastic(1000)
+	var/datum/matter_synth/wood = new /datum/matter_synth/wood(20000)
+	var/datum/matter_synth/plastic = new /datum/matter_synth/plastic(10000)
 	var/datum/matter_synth/wire = new /datum/matter_synth/wire(30)
 	synths += metal
 	synths += glass

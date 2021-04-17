@@ -523,7 +523,6 @@
 
 	if(!target.species)
 		CRASH("Target ([target]) of surgery [type] has no species!")
-		return SURGERY_FAILURE
 
 	var/o_is = (O.gender == PLURAL) ? "are" : "is"
 	var/o_a =  (O.gender == PLURAL) ? "" : "a "

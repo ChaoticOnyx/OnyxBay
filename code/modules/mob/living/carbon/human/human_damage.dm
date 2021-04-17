@@ -355,6 +355,21 @@ In most cases it makes more sense to use apply_damage() instead! And make sure t
 
 	updatehealth()
 
+// damage ONE organic external organ, organ gets randomly selected from all damagable
+/mob/living/carbon/human/proc/take_organic_organ_damage(brute, burn)
+	var/list/organic_organs = list()
+
+	for(var/obj/item/organ/external/organ in get_damageable_organs())
+		if(!BP_IS_ROBOTIC(organ))
+			organic_organs += organ
+
+	if(organic_organs.len == 0) return
+
+	var/obj/item/organ/external/damaged_organ = pick(organic_organs)
+	if(damaged_organ.take_external_damage(brute, burn))
+		BITSET(hud_updateflag, HEALTH_HUD)
+
+	updatehealth()
 
 //Heal MANY external organs, in random order
 /mob/living/carbon/human/heal_overall_damage(brute, burn)

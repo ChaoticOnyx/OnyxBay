@@ -213,6 +213,7 @@
 
 /obj/machinery/media/jukebox/emag_act(remaining_charges, mob/user)
 	if(!emagged)
+		playsound(src.loc, 'sound/effects/computer_emag.ogg', 25)
 		emagged = 1
 		StopPlaying()
 		visible_message(SPAN_DANGER("\The [src] makes a fizzling sound."))

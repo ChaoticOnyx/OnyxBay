@@ -4,6 +4,7 @@
 	density = 1
 	layer = BELOW_OBJ_LAYER
 	w_class = ITEM_SIZE_NO_CONTAINER
+	pull_slowdown = PULL_SLOWDOWN_HEAVY
 	var/state = 0
 	var/max_health = 150
 	var/health = 150

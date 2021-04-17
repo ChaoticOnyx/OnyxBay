@@ -200,6 +200,8 @@
 	if(species && species.handle_fall_special(src, landing))
 		return
 
+	var/old_stat = stat
+
 	..()
 	var/damage = 10
 	apply_damage(rand(0, damage), BRUTE, BP_HEAD)
@@ -210,3 +212,12 @@
 	apply_damage(rand(0, damage), BRUTE, BP_R_ARM)
 	weakened = max(weakened,2)
 	updatehealth()
+
+	if (old_stat != CONSCIOUS)
+		return
+
+	var/gender_prefix = gender_datums[gender].key
+	if (stat == CONSCIOUS)
+		playsound(loc, "[gender_prefix]_fall_alive", 25)
+	else
+		playsound(loc, "[gender_prefix]_fall_dead", 25)

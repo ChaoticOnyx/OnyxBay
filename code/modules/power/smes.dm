@@ -51,6 +51,15 @@
 	var/list/terminals = list()
 	var/should_be_mapped = 0 // If this is set to 0 it will send out warning on New()
 
+	beepsounds = list(
+		'sound/effects/machinery/engineer/beep1.ogg',
+		'sound/effects/machinery/engineer/beep2.ogg',
+		'sound/effects/machinery/engineer/beep3.ogg',
+		'sound/effects/machinery/engineer/beep4.ogg',
+		'sound/effects/machinery/engineer/beep5.ogg',
+		'sound/effects/machinery/engineer/beep6.ogg'
+	)
+
 /obj/machinery/power/smes/drain_power(drain_check, surge, amount = 0)
 
 	if(drain_check)
@@ -145,6 +154,8 @@
 	if(failure_timer)	// Disabled by gridcheck.
 		failure_timer--
 		return
+
+	play_beep()
 
 	// only update icon if state changed
 	if(last_disp != chargedisplay() || last_chrg != inputting || last_onln != outputting)

@@ -264,6 +264,7 @@
 	mod_reach_a = 1.5
 	mod_handy_a = 1.75
 	atom_flags = ATOM_FLAG_NO_BLOOD
+	canremove = 0
 	attack_verb = list("attacked", "slashed", "stabbed", "sliced", "torn", "ripped", "diced", "cut")
 	var/mob/living/creator
 	var/datum/effect/effect/system/spark_spread/spark_system

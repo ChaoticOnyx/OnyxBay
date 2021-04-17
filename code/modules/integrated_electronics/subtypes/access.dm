@@ -33,10 +33,6 @@
 	else
 		return FALSE
 
-	if(assembly)
-		// reset previus card access and set new access
-		assembly.access_card.access = access
-
 	set_pin_data(IC_OUTPUT, 3, passkey)
 
 	push_data()

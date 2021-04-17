@@ -3,6 +3,7 @@
 	icon = 'icons/obj/iv_drip.dmi'
 	anchored = 0
 	density = 0
+	pull_slowdown = PULL_SLOWDOWN_TINY
 	var/mob/living/carbon/human/attached
 	var/mode = 1 // 1 is injecting, 0 is taking blood.
 	var/obj/item/weapon/reagent_containers/beaker

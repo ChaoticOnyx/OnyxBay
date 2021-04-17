@@ -150,56 +150,59 @@ proc/dmp2swapmap(filename)
 
 	fdel("map_[mapname].txt")
 	var/F = file("map_[mapname].txt")
-	F << ". = object(\".0\")\n.0\n\ttype = /swapmap\n\tid = \"[mapname]\"\n\tz = [Z]\n\ty = [Y]\n\tx = [X]"
+	to_file(F, ". = object(\".0\")\n.0\n\ttype = /swapmap\n\tid = \"[mapname]\"\n\tz = [Z]\n\ty = [Y]\n\tx = [X]")
 	if(areas)
 		txt=""
 		for(i=0,i<areas.len,++i)
 			txt+="[i?", ":""]object(\".[i]\")"
-		F << "\tareas = list([txt])"
+		to_file(F, "\tareas = list([txt])")
 		for(i=0,i<areas.len,++i)
-			F << "\t\t.[i]"
+			to_file(F, "\t\t.[i]")
 			txt=d2sm_ConvertType(areas[i+1],"\t\t\t")
-			F << copytext(txt,1,length(txt))
+			to_file(F, copytext(txt, 1, length(txt)))
 
 	// 2nd pass
 	txt=d2sm_prepmap(filename)
 	while(txt)
 		// skip all non-data sections
-		if(text2ascii(txt)!=40)
-			i=findText(txt,"\n")
-			if(i) txt=copytext(txt,i+1)
-			else txt=null
+		if(text2ascii(txt)! = 40)
+			i = findText(txt, "\n")
+			if(i)
+				txt = copytext(txt, i+1)
+			else
+				txt = null
 			continue
-		i=d2sm_MatchBrace(txt,1,40)
-		var/list/coords=d2sm_ParseCommaList(copytext(txt,2,i))
-		j=findtext(txt,"{",i+1)
-		k=d2sm_MatchBrace(txt,j,123)
-		var/mtxt=copytext(txt,j+2,k-1)
-		var/_x=0,_y=0
-		for(i=1,,++_y)
-			j=findText(mtxt,"\n",i+1)
-			if(!j) break
-			_x=max(_x,(j-i-1)/codelen)
-			i=j
+		i = d2sm_MatchBrace(txt, 1, 40)
+		var/list/coords = d2sm_ParseCommaList(copytext(txt, 2, i))
+		j = findtext(txt, "{", i+1)
+		k = d2sm_MatchBrace(txt, j, 123)
+		var/mtxt = copytext(txt, j+2, k-1)
+		var/_x=0, _y=0
+		for(i=1,, ++_y)
+			j=findText(mtxt, "\n", i+1)
+			if(!j)
+				break
+			_x = max(_x, (j-i-1) / codelen)
+			i = j
 		// print out this z-level now
-		F << "\t[coords[3]]"
+		to_file(F, "\t[coords[3]]")
 		i=1
-		for(var/y=_y,y>0,--y)	// map is top-down
+		for(var/y=_y, y>0, --y)	// map is top-down
 			++i
-			F << "\t\t[y]"
+			to_file(F, "\t\t[y]")
 			for(var/x in 1 to _x)
-				F << "\t\t\t[x]"
-				j=i+codelen
-				F << codes[copytext(mtxt,i,j)]
-				i=j
-		txt=copytext(txt,k+1)
+				to_file(F, "\t\t\t[x]")
+				j = i + codelen
+				to_file(F, codes[copytext(mtxt, i, j)])
+				i = j
+		txt = copytext(txt, k+1)
 	/* for(z in 1 to Z)
-		F << "\t[z]"
+		to_file(F, "\t[z]")
 		for(var/y in 1 to Y)
-			F << "\t\t[y]"
+			to_file(F, "\t\t[y]")
 			for(var/x in 1 to X)
-				F << "\t\t\t[x]"
-				F << codes[pick(codes)] */
+				to_file(F, "\t\t\t[x]")
+				to_file(F, codes[pick(codes)]) */
 
 proc/d2sm_ParseCommaList(txt)
 	var/list/L=new

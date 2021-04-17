@@ -155,6 +155,9 @@
 	icon = 'icons/obj/doors/doorele.dmi'
 	opacity = 0
 
+/obj/machinery/door/airlock/centcom/Process()
+	return PROCESS_KILL
+
 /obj/machinery/door/airlock/vault
 	name = "Vault"
 	icon = 'icons/obj/doors/vault.dmi'

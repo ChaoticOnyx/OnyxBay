@@ -14,6 +14,7 @@
 	universal_understand = 0
 	density = 0
 	universal_speak = 0      // Dionaea do not need to speak to people other than other dionaea.
+	faction = "floral" // Humans' hatred is enough, no need to get bullied by fellow tomatoes and vines
 
 	can_pull_size = ITEM_SIZE_SMALL
 	can_pull_mobs = MOB_PULL_SMALLER

@@ -103,7 +103,7 @@
 
 	//If the pin can only be pulsed
 	else if(io.io_type == PULSE_CHANNEL)
-		io.holder.check_then_do_work(io.ord,ignore_power = TRUE)
+		SScircuit_components.queue_component(io.holder, TRUE, io.ord, TRUE) //ignore_power = TRUE
 		to_chat(user, SPAN_NOTICE("You pulse \the [io.holder]'s [io]."))
 
   io.holder.interact(user) // This is to update the UI.
