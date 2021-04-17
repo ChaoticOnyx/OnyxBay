@@ -651,6 +651,7 @@ BLIND     // can't see anything
 	armor = list(melee = 5, bullet = 5, laser = 5,energy = 0, bomb = 0, bio = 0, rad = 0)
 	w_class = ITEM_SIZE_NORMAL
 	force = 0
+	species_restricted = list("exclude", SPECIES_NABBER, SPECIES_MONKEY)
 	var/has_sensor = SUIT_HAS_SENSORS //For the crew computer 2 = unable to change mode
 	var/sensor_mode = 0
 		/*
