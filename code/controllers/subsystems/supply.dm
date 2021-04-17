@@ -11,7 +11,7 @@ SUBSYSTEM_DEF(supply)
 	var/points_per_slip = 2
 	var/material_buy_prices = list(
 		/material/platinum = 5,
-		/material/phoron = 5
+		/material/plasma = 5
 	) //Should only contain material datums, with values the profit per sheet sold.
 	var/point_sources = list()
 	var/pointstotalsum = 0
@@ -166,14 +166,15 @@ SUBSYSTEM_DEF(supply)
 
 		var/obj/item/weapon/paper/manifest/slip
 		if(!SP.contraband)
-			var/info = list()
+			var/info = ""
 			info +="<h3>[command_name()] Shipping Manifest</h3><hr><br>"
 			info +="Order #[SO.ordernum]<br>"
 			info +="Destination: [GLOB.using_map.station_name]<br>"
-			info +="[shoppinglist.len] PACKAGES IN THIS SHIPMENT<br>"
+//			info +="[shoppinglist.len] PACKAGES IN THIS SHIPMENT<br>"
 			info +="CONTENTS:<br><ul>"
 
-			slip = new /obj/item/weapon/paper/manifest(A, jointext(info, null))
+			slip = new /obj/item/weapon/paper/manifest(A)
+			slip.set_content(info, rawhtml = TRUE)
 			slip.is_copy = 0
 
 		//spawn the stuff, finish generating the manifest while you're at it

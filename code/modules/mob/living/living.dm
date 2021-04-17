@@ -23,9 +23,9 @@
 
 //mob verbs are faster than object verbs. See above.
 /mob/living/pointed(atom/A as mob|obj|turf in view())
-	if(src.stat || !src.canmove || src.restrained())
+	if(incapacitated())
 		return 0
-	if(src.status_flags & FAKEDEATH)
+	if(status_flags & FAKEDEATH)
 		return 0
 	if(!..())
 		return 0
@@ -33,30 +33,31 @@
 	usr.visible_message("<b>[src]</b> points to [A]")
 	return 1
 
-/*one proc, four uses
-swapping: if it's 1, the mobs are trying to switch, if 0, non-passive is pushing passive
-default behaviour is:
- - non-passive mob passes the passive version
- - passive mob checks to see if its mob_bump_flag is in the non-passive's mob_bump_flags
- - if si, the proc returns
-*/
-/mob/living/proc/can_move_mob(mob/living/swapped, swapping = 0, passive = 0)
-	if(!swapped)
-		return 1
+// Check if current mob can push other mob or swap with it
+// - other - the other mob to be pushed/swapped with
+// - are_swaping - TRUE if current mob is intenting to swap, FALSE for pushing
+// - passive - TRUE if current mob isn't initiator of swap/push
+// Returns TRUE/FALSE
+/mob/living/proc/can_move_mob(mob/living/other, are_swapping, passive)
+	ASSERT(other)
+	ASSERT(src != other)
+
 	if(!passive)
-		return swapped.can_move_mob(src, swapping, 1)
+		return other.can_move_mob(src, are_swapping, TRUE)
+
+	var/context_flags = 0
+	if(are_swapping)
+		context_flags = other.mob_swap_flags
 	else
-		var/context_flags = 0
-		if(swapping)
-			context_flags = swapped.mob_swap_flags
-		else
-			context_flags = swapped.mob_push_flags
-		if(!mob_bump_flag) //nothing defined, go wild
-			return 1
-		if(mob_bump_flag & context_flags)
-			return 1
-		else
-			return ((a_intent == I_HELP && swapped.a_intent == I_HELP) && swapped.can_move_mob(src, swapping, 1))
+		context_flags = other.mob_push_flags
+
+	if(!mob_bump_flag) //nothing defined, go wild
+		return TRUE
+
+	if(mob_bump_flag & context_flags)
+		return TRUE
+
+	return a_intent == I_HELP && other.a_intent == I_HELP
 
 /mob/living/canface()
 	if(stat)
@@ -135,11 +136,22 @@ default behaviour is:
 		now_pushing = 0
 		spawn(0)
 			..()
+			var/saved_dir = AM.dir
 			if (!istype(AM, /atom/movable) || AM.anchored)
-				if(confused && prob(50) && m_intent=="run")
-					Weaken(2)
-					playsound(loc, "punch", rand(80, 100), 1, -1)
-					visible_message("<span class='warning'>[src] [pick("ran", "slammed")] into \the [AM]!</span>")
+				if(confused && prob(50) && m_intent == M_RUN && !lying)
+					var/obj/machinery/disposal/D = AM
+					if(istype(D) && !(D.stat & BROKEN))
+						Weaken(6)
+						playsound(get_turf(AM), 'sound/effects/clang.ogg', 75)
+						visible_message(SPAN_WARNING("[src] falls into \the [AM]!"), SPAN_WARNING("You fall into \the [AM]!"))
+						if (client)
+							client.perspective = EYE_PERSPECTIVE
+							client.eye = src
+						forceMove(AM)
+					else
+						Weaken(2)
+						playsound(loc, "punch", rand(80, 100), 1, -1)
+						visible_message(SPAN_WARNING("[src] [pick("ran", "slammed")] into \the [AM]!"))
 					src.apply_damage(5, BRUTE)
 				return
 			if (!now_pushing)
@@ -161,6 +173,8 @@ default behaviour is:
 					for(var/obj/item/grab/G in M.grabbed_by)
 						step(G.assailant, get_dir(G.assailant, AM))
 						G.adjust_position()
+				if(saved_dir)
+					AM.set_dir(saved_dir)
 				now_pushing = 0
 
 /proc/swap_density_check(mob/swapper, mob/swapee)
@@ -175,12 +189,14 @@ default behaviour is:
 				return 1
 
 /mob/living/proc/can_swap_with(mob/living/tmob)
-	if(tmob.buckled || buckled)
+	if(!tmob)
+		return 0
+	if(tmob.buckled || buckled || tmob.anchored)
 		return 0
 	//BubbleWrap: people in handcuffs are always switched around as if they were on 'help' intent to prevent a person being pulled from being seperated from their puller
 	if(!(tmob.mob_always_swap || (tmob.a_intent == I_HELP || tmob.restrained()) && (a_intent == I_HELP || src.restrained())))
 		return 0
-	if(!tmob.canmove || !canmove)
+	if(!tmob.MayMove(src) || incapacitated())
 		return 0
 
 	if(swap_density_check(src, tmob))
@@ -476,6 +492,9 @@ default behaviour is:
 	// restore us to conciousness
 	set_stat(CONSCIOUS)
 
+	// finally update health to make everything work correctly
+	updatehealth()
+
 	// make the icons look correct
 	regenerate_icons()
 
@@ -507,119 +526,128 @@ default behaviour is:
 	return
 
 /mob/living/Move(a, b, flag)
-	if (buckled)
+	if(buckled)
 		return
 
-	if (restrained())
+	if(get_dist(src, pulling) > 1)
 		stop_pulling()
 
+	var/turf/old_loc = get_turf(src)
 
-	if (lying)
+	if(lying)
 		pull_sound = "pull_body"
 	else
 		pull_sound = null
 
-	var/t7 = 1
-	if (restrained())
-		for(var/mob/living/M in range(src, 1))
-			if ((M.pulling == src && M.stat == 0 && !( M.restrained() )))
-				t7 = null
-	if ((t7 && (pulling && ((get_dist(src, pulling) <= 1 || pulling.loc == loc) && (client && client.moving)))))
-		var/turf/T = loc
-		. = ..()
+	. = ..()
 
-		if (pulling && pulling.loc)
-			if(!( isturf(pulling.loc) ))
-				stop_pulling()
-				return
+	if(. && pulling)
+		handle_pulling_after_move(old_loc)
 
-		/////
-		if(pulling && pulling.anchored)
-			stop_pulling()
-			return
-
-		if (!restrained())
-			var/diag = get_dir(src, pulling)
-			if ((diag - 1) & diag)
-			else
-				diag = null
-			if ((get_dist(src, pulling) > 1 || diag))
-				if (isliving(pulling))
-					var/mob/living/M = pulling
-					var/ok = 1
-					if (locate(/obj/item/grab, M.grabbed_by))
-						if (prob(75))
-							var/obj/item/grab/G = pick(M.grabbed_by)
-							if (istype(G, /obj/item/grab))
-								for(var/mob/O in viewers(M, null))
-									O.show_message(text("<span class='warning'>[] has been pulled from []'s grip by []</span>", G.affecting, G.assailant, src), 1)
-								//G = null
-								qdel(G)
-						else
-							ok = 0
-						if (locate(/obj/item/grab, M.grabbed_by.len))
-							ok = 0
-					if (ok)
-						var/atom/movable/t = M.pulling
-						M.stop_pulling()
-
-						if(!istype(M.loc, /turf/space))
-							var/area/A = get_area(M)
-							if(A.has_gravity)
-								//this is the gay blood on floor shit -- Added back -- Skie
-								if (M.lying && (prob(M.getBruteLoss() / 6)))
-									var/turf/location = M.loc
-									if (istype(location, /turf/simulated))
-										location.add_blood(M)
-								//pull damage with injured people
-									if(prob(25))
-										M.adjustBruteLoss(1)
-										visible_message("<span class='danger'>\The [M]'s [M.isSynthetic() ? "state worsens": "wounds open more"] from being dragged!</span>")
-								if(M.pull_damage())
-									if(prob(25))
-										M.adjustBruteLoss(2)
-										visible_message("<span class='danger'>\The [M]'s [M.isSynthetic() ? "state" : "wounds"] worsen terribly from being dragged!</span>")
-										var/turf/location = M.loc
-										if (istype(location, /turf/simulated))
-											location.add_blood(M)
-											if(ishuman(M))
-												var/mob/living/carbon/human/H = M
-												var/blood_volume = round(H.vessel.get_reagent_amount(/datum/reagent/blood))
-												if(blood_volume > 0)
-													H.vessel.remove_reagent(/datum/reagent/blood, 1)
-
-
-						if (m_intent == "run" && pulling && pulling.pull_sound && (world.time - last_pull_sound) > 1 SECOND)
-							last_pull_sound = world.time
-							playsound(pulling, pulling.pull_sound, rand(50, 75), TRUE)
-
-						step(pulling, get_dir(pulling.loc, T))
-						if(t)
-							M.start_pulling(t)
-				else
-					if (pulling)
-						if (istype(pulling, /obj/structure/window))
-							var/obj/structure/window/W = pulling
-							if(W.is_full_window())
-								for(var/obj/structure/window/win in get_step(pulling,get_dir(pulling.loc, T)))
-									stop_pulling()
-					if (pulling)
-						step(pulling, get_dir(pulling.loc, T))
-
-						if (m_intent == "run" && pulling && pulling.pull_sound && (world.time - last_pull_sound) > 1 SECOND)
-							last_pull_sound = world.time
-							playsound(pulling, pulling.pull_sound, rand(50, 75), TRUE)
-
-	else
-		stop_pulling()
-		. = ..()
-
-	if (s_active && !( s_active in contents ) && get_turf(s_active) != get_turf(src))	//check !( s_active in contents ) first so we hopefully don't have to call get_turf() so much.
+	if(s_active && !(s_active in contents) && get_turf(s_active) != get_turf(src))
 		s_active.close(src)
 
 	if(update_slimes)
-		for(var/mob/living/carbon/slime/M in view(1,src))
+		for(var/mob/living/carbon/slime/M in view(1, src))
 			M.UpdateFeed()
+
+/mob/living/proc/can_pull()
+	if(!moving)
+		return FALSE
+	if(pulling.anchored)
+		return FALSE
+	if(!isturf(pulling.loc))
+		return FALSE
+	if(restrained())
+		return FALSE
+
+	if(get_dist(src, pulling) > 2)
+		return FALSE
+
+	if(pulling.z != z)
+		if(pulling.z < z)
+			return FALSE
+		var/turf/T = GetAbove(src)
+		if(!isopenspace(T))
+			return FALSE
+	return TRUE
+
+/mob/living/proc/handle_pulling_after_move(turf/old_loc)
+	if(!pulling)
+		return
+
+	if(!can_pull())
+		stop_pulling()
+		return
+
+	if(pulling.loc == loc || pulling.loc == old_loc)
+		return
+
+	if(!isliving(pulling))
+		step(pulling, get_dir(pulling.loc, old_loc))
+	else
+		var/mob/living/M = pulling
+		if(M.grabbed_by.len)
+			if(prob(75))
+				var/obj/item/grab/G = pick(M.grabbed_by)
+				if(istype(G))
+					M.visible_message(SPAN_WARNING("[G.affecting] has been pulled from [G.assailant]'s grip by [src]!"), SPAN_WARNING("[G.affecting] has been pulled from your grip by [src]!"))
+					qdel(G)
+		if(!M.grabbed_by.len)
+			M.handle_pull_damage(src)
+
+			var/atom/movable/t = M.pulling
+			M.stop_pulling()
+			step(M, get_dir(pulling.loc, old_loc))
+			if(t)
+				M.start_pulling(t)
+
+	handle_dir_after_pull()
+
+	if(m_intent == M_RUN && pulling.pull_sound && (world.time - last_pull_sound) > 1 SECOND)
+		last_pull_sound = world.time
+		playsound(pulling, pulling.pull_sound, rand(50, 75), TRUE)
+
+/mob/living/proc/handle_dir_after_pull()
+	if(!pulling)
+		return
+	if(isobj(pulling))
+		var/obj/O = pulling
+		// Hacky check to know if you can pass through the closet
+		if(istype(O, /obj/structure/closet) && !O.density)
+			return set_dir(get_dir(src, pulling))
+		if(O.pull_slowdown >= PULL_SLOWDOWN_MEDIUM)
+			return set_dir(get_dir(src, pulling))
+		else if(O.pull_slowdown == PULL_SLOWDOWN_WEIGHT && O.w_class >= ITEM_SIZE_HUGE)
+			return set_dir(get_dir(src, pulling))
+	if(isliving(pulling))
+		var/mob/living/L = pulling
+		// If pulled mob was bigger than us, we morelike will turn
+		// I made additional check in case if someone want a hand walk
+		if(L.mob_size > mob_size || L.lying)
+			return set_dir(get_dir(src, pulling))
+
+/mob/living/proc/handle_pull_damage(mob/living/puller)
+	var/area/A = get_area(src)
+	if(!A.has_gravity)
+		return
+	var/turf/location = get_turf(src)
+	if(lying && prob(getBruteLoss() / 6))
+		location.add_blood(src)
+		if(prob(25))
+			adjustBruteLoss(1)
+			visible_message(SPAN("danger", "\The [src]'s [src.isSynthetic() ? "state worsens": "wounds open more"] from being dragged!"))
+			. = TRUE
+	if(pull_damage())
+		if(prob(25))
+			adjustBruteLoss(2)
+			visible_message(SPAN("danger", "\The [src]'s [src.isSynthetic() ? "state worsens" : "wounds worsen"] terribly from being dragged!"))
+			location.add_blood(src)
+			if(ishuman(src))
+				var/mob/living/carbon/human/H = src
+				if(round(H.vessel.get_reagent_amount(/datum/reagent/blood)) > 0)
+					H.vessel.remove_reagent(/datum/reagent/blood, 1)
+			. = TRUE
 
 /mob/living/verb/resist()
 	set name = "Resist"
@@ -670,10 +698,6 @@ default behaviour is:
 		to_chat(src, "<span class='warning'>You extricate yourself from \the [holster].</span>")
 		H.forceMove(get_turf(H))
 	else if(istype(H.loc,/obj))
-		if(istype(H.loc, /obj/machinery/cooker))
-			var/obj/machinery/cooker/C = H.loc
-			C.cooking_obj = null
-			C.check_cooking_obj()
 		to_chat(src, "<span class='warning'>You struggle free of \the [H.loc].</span>")
 		H.forceMove(get_turf(H))
 
@@ -700,8 +724,11 @@ default behaviour is:
 	set name = "Rest"
 	set category = "IC"
 
-	resting = !resting
-	to_chat(src, "<span class='notice'>You are now [resting ? "resting" : "getting up"]</span>")
+	if(!incapacitated(INCAPACITATION_KNOCKOUT) && canClick())
+		setClickCooldown(3)
+		resting = !resting
+		update_canmove()
+		to_chat(src, SPAN("notice", "You are now [resting ? "resting" : "getting up"]."))
 
 //called when the mob receives a bright flash
 /mob/living/flash_eyes(intensity = FLASH_PROTECTION_MODERATE, override_blindness_check = FALSE, affect_silicon = FALSE, visual = FALSE, type = /obj/screen/fullscreen/flash)
@@ -723,7 +750,10 @@ default behaviour is:
 /mob/living/proc/has_eyes()
 	return 1
 
-/mob/living/proc/slip(slipped_on,stun_duration=8)
+/mob/living/proc/slip(slipped_on, stun_duration = 8)
+	return 0
+
+/mob/living/proc/slip_on_obj(/obj/slipped_on, stun_duration = 8, slip_dist = 0)
 	return 0
 
 /mob/living/carbon/drop_from_inventory(obj/item/W, atom/Target = null, force = null)
@@ -813,12 +843,12 @@ default behaviour is:
 	return ..()
 
 /mob/living/proc/set_m_intent(intent)
-	if (intent != "walk" && intent != "run")
+	if(intent != M_WALK && intent != M_RUN)
 		return 0
 	m_intent = intent
 	if(hud_used)
-		if (hud_used.move_intent)
-			hud_used.move_intent.icon_state = intent == "walk" ? "walking" : "running"
+		if(hud_used.move_intent)
+			hud_used.move_intent.icon_state = (intent == M_WALK ? "walking" : "running")
 
 /mob/living/proc/melee_accuracy_mods()
 	. = 0

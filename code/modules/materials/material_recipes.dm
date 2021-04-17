@@ -99,7 +99,7 @@
 /material/plasteel/generate_recipes()
 	..()
 	recipes += new /datum/stack_recipe("AI core", /obj/structure/AIcore, 8, time = 50, one_per_turf = 1)
-	recipes += new /datum/stack_recipe("Metal crate", /obj/structure/closet/crate, 5, time = 30, one_per_turf = 1)
+	recipes += new /datum/stack_recipe("Metal crate", /obj/structure/closet/crate/handmade, 5, time = 30, one_per_turf = 1)
 
 /material/stone/generate_recipes()
 	..()

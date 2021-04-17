@@ -10,7 +10,7 @@ var/list/department_radio_keys = list(
 	  ":e" = "Engineering", ":у" = "Engineering",
 	  ":s" = "Security",	":ы" = "Security",
 	  ":w" = "whisper",		":ц" = "whisper",
-	  ":t" = "Mercenary",	":е" = "Mercenary",
+	  ":t" = "Syndicate",	":е" = "Syndicate",
 	  ":x" = "Raider",		":ч" = "Raider",
 	  ":u" = "Supply",		":г" = "Supply",
 	  ":v" = "Service",		":м" = "Service",
@@ -28,7 +28,7 @@ var/list/department_radio_keys = list(
 	  ":E" = "Engineering",	":У" = "Engineering",
 	  ":S" = "Security",	":Ы" = "Security",
 	  ":W" = "whisper",		":Ц" = "whisper",
-	  ":T" = "Mercenary",	":Е" = "Mercenary",
+	  ":T" = "Syndicate",	":Е" = "Syndicate",
 	  ":X" = "Raider",		":Ч" = "Raider",
 	  ":U" = "Supply",		":Г" = "Supply",
 	  ":V" = "Service",		":М" = "Service",
@@ -89,25 +89,25 @@ proc/get_radio_key_from_channel(channel)
 		verb = pick("yells","roars","hollers")
 		message_data[3] = 0
 		. = TRUE
-	if(slurring)
-		message = slur(message)
-		verb = pick("slobbers","slurs")
-		. = TRUE
-	if(stuttering)
-		message = stutter(message)
-		verb = pick("stammers","stutters")
-		. = TRUE
-	if(stammering)
-		message = NewStutter(message)
-		verb = pick("stammers","stutters")
+	if(lisping)
+		message = lisp(message)
+		verb = pick("lisps","croups")
 		. = TRUE
 	if(burrieng)
 		message = burr(message)
 		verb = pick("burrs","croups")
 		. = TRUE
-	if(lisping)
-		message = lisp(message)
-		verb = pick("lisps","croups")
+	if(slurring)
+		message = slur(message)
+		verb = pick("slobbers","slurs")
+		. = TRUE
+	if(stammering)
+		message = stammer(message)
+		verb = pick("stammers","stutters")
+		. = TRUE
+	if(stuttering)
+		message = stutter(message)
+		verb = pick("stammers","stutters")
 		. = TRUE
 
 	message_data[1] = message
@@ -174,7 +174,7 @@ proc/get_radio_key_from_channel(channel)
 		speaking.broadcast(src,trim(message))
 		return 1
 
-	if(is_muzzled())
+	if(is_muzzled() && !(speaking.flags & NONVERBAL|SIGNLANG))
 		to_chat(src, "<span class='danger'>You're muzzled and cannot speak!</span>")
 		return
 
@@ -183,6 +183,9 @@ proc/get_radio_key_from_channel(channel)
 			verb = speaking.whisper_verb ? speaking.whisper_verb : speaking.speech_verb
 		else
 			verb = say_quote(message, speaking)
+
+	if(client?.get_preference_value(/datum/client_preference/spell_checking) == GLOB.PREF_YES && client.chatOutput)
+		client.chatOutput.spell_check(message)
 
 	message = trim_left(message)
 
@@ -298,7 +301,7 @@ proc/get_radio_key_from_channel(channel)
 		eavesdroping_obj -= listening_obj
 		for(var/mob/M in eavesdroping)
 			if(M)
-				show_image(M, speech_bubble)
+				image_to(M, speech_bubble)
 				M.hear_say(stars(message), verb, speaking, alt_name, italics, src, speech_sound, sound_vol)
 
 		for(var/obj/O in eavesdroping)

@@ -56,6 +56,7 @@ NOTE: there are two lists of areas in the end of this file: centcom and station 
 	var/list/forced_ambience = null
 	var/sound_env = STANDARD_STATION
 	var/turf/base_turf //The base turf type of the area, which can be used to override the z-level's base turf
+	var/holy = FALSE
 
 /*-----------------------------------------------------------------------------*/
 
@@ -109,6 +110,7 @@ area/space/atmosalert()
 /area/chapel
 	name = "\improper Chapel"
 	icon_state = "chapel"
+	holy = TRUE
 
 /area/centcom/specops
 	name = "\improper Centcom Special Ops"
@@ -190,7 +192,7 @@ area/space/atmosalert()
 	icon_state = "shuttle3"
 
 /area/syndicate_mothership/elite_squad
-	name = "\improper Elite Mercenary Squad"
+	name = "\improper Syndicate Elite Squad"
 	icon_state = "syndie-elite"
 
 ////////////

@@ -73,6 +73,10 @@
 #define I_GRAB		"grab"
 #define I_HURT		"harm"
 
+// Movement flags. For fuck's sake, we were using "run"s and "walk"s till 2021
+#define M_RUN  "run"
+#define M_WALK "walk"
+
 //These are used Bump() code for living mobs, in the mob_bump_flag, mob_swap_flags, and mob_push_flags vars to determine whom can bump/swap with whom.
 #define HUMAN 1
 #define MONKEY 2
@@ -94,12 +98,13 @@
 #define APPEARANCE_UPDATE_DNA  0x1
 #define APPEARANCE_RACE       (0x2|APPEARANCE_UPDATE_DNA)
 #define APPEARANCE_GENDER     (0x4|APPEARANCE_UPDATE_DNA)
-#define APPEARANCE_SKIN        0x8
-#define APPEARANCE_HAIR        0x10
-#define APPEARANCE_HAIR_COLOR  0x20
-#define APPEARANCE_FACIAL_HAIR 0x40
-#define APPEARANCE_FACIAL_HAIR_COLOR 0x80
-#define APPEARANCE_EYE_COLOR 0x100
+#define APPEARANCE_BODY_BUILD  0x8
+#define APPEARANCE_SKIN        0x10
+#define APPEARANCE_HAIR        0x20
+#define APPEARANCE_HAIR_COLOR  0x40
+#define APPEARANCE_FACIAL_HAIR 0x80
+#define APPEARANCE_FACIAL_HAIR_COLOR 0x100
+#define APPEARANCE_EYE_COLOR 0x200
 #define APPEARANCE_ALL_HAIR (APPEARANCE_HAIR|APPEARANCE_HAIR_COLOR|APPEARANCE_FACIAL_HAIR|APPEARANCE_FACIAL_HAIR_COLOR)
 #define APPEARANCE_ALL       0xFFFF
 
@@ -128,6 +133,12 @@
 
 #define COMPANY_OPPOSING		list(COMPANY_SKEPTICAL,COMPANY_OPPOSED)
 #define COMPANY_ALIGNMENTS		list(COMPANY_LOYAL,COMPANY_SUPPORTATIVE,COMPANY_NEUTRAL,COMPANY_SKEPTICAL,COMPANY_OPPOSED)
+
+// Awareness about syndicate, it`s agents and equipment
+#define SYNDICATE_UNAWARE            0
+#define SYNDICATE_AWARE              1
+#define SYNDICATE_GREATLY_AWARE      2
+#define SYNDICATE_SUSPICIOUSLY_AWARE 3
 
 // Defines mob sizes, used by lockers and to determine what is considered a small sized mob, etc.
 #define MOB_LARGE  		40
@@ -210,7 +221,7 @@
 #define BP_GBLADDER "gas bladder"
 #define BP_POLYP    "polyp segment"
 #define BP_ANCHOR   "anchoring ligament"
-#define BP_PHORON   "phoron filter"
+#define BP_PLASMA   "plasma filter"
 #define BP_CHANG    "biostructure"
 #define BP_CANCER    "cancer"
 
@@ -234,7 +245,7 @@
 #define BP_GROIN  "groin"
 #define BP_ALL_LIMBS list(BP_CHEST, BP_GROIN, BP_HEAD, BP_L_ARM, BP_R_ARM, BP_L_HAND, BP_R_HAND, BP_L_LEG, BP_R_LEG, BP_L_FOOT, BP_R_FOOT)
 #define BP_BY_DEPTH list(BP_HEAD, BP_L_HAND, BP_R_HAND, BP_L_ARM, BP_R_ARM, BP_L_FOOT, BP_R_FOOT, BP_L_LEG, BP_R_LEG, BP_GROIN, BP_CHEST)
-#define BP_BELOW_GROIN list(BP_GROIN, BP_L_FOOT, BP_R_FOOT, BP_L_LEG, BP_R_LEG)
+#define BP_FEET list(BP_L_FOOT, BP_R_FOOT)
 
 // Prosthetic helpers.
 #define BP_IS_ROBOTIC(org)  (org.status & ORGAN_ROBOTIC)
@@ -319,3 +330,13 @@
 #define MOB_INPUT_TEXT "text"
 #define MOB_INPUT_MESSAGE "message"
 #define MOB_INPUT_NUM "num"
+
+#define MARKING_TARGET_SKIN 0 // Draw a datum/sprite_accessory/marking to the mob's body, eg. tattoos
+#define MARKING_TARGET_HAIR 1 // Draw a datum/sprite_accessory/marking to the mob's hair, eg. color fades
+#define MARKING_TARGET_HEAD 2 // Draw a datum/sprite_accessory/marking to the mob's head after their hair, eg. ears, horns (To Be Implemented since tajarans dropping ears because of radiation is cringe)
+
+#define STOMACH_FULLNESS_SUPER_LOW 50
+#define STOMACH_FULLNESS_LOW 150
+#define STOMACH_FULLNESS_MEDIUM 350
+#define STOMACH_FULLNESS_HIGH 550
+#define STOMACH_FULLNESS_SUPER_HIGH 850

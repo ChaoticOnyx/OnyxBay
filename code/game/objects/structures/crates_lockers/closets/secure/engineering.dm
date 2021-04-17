@@ -40,7 +40,6 @@
 
 /obj/structure/closet/secure_closet/engineering_electrical/WillContain()
 	return list(
-		/obj/item/clothing/gloves/nabber = 2,
 		/obj/item/clothing/gloves/insulated = 3,
 		/obj/item/weapon/storage/toolbox/electrical = 3,
 		/obj/item/weapon/module/power_control = 3,
@@ -60,7 +59,7 @@
 	return list(
 		/obj/item/clothing/head/welding = 3,
 		/obj/item/weapon/weldingtool/largetank = 3,
-		/obj/item/weapon/weldpack = 3,
+		/obj/item/weapon/backwear/reagent/welding = 3,
 		/obj/item/clothing/glasses/welding = 3,
 		/obj/item/weapon/welder_tank = 6
 	)
@@ -83,7 +82,7 @@
 		/obj/item/device/radio/headset/headset_eng,
 		/obj/item/clothing/suit/storage/hazardvest,
 		/obj/item/clothing/mask/gas,
-		/obj/item/clothing/glasses/meson,
+		/obj/item/clothing/glasses/hud/standard/meson,
 		/obj/item/weapon/cartridge/engineering,
 		/obj/item/taperoll/engineering
 	)

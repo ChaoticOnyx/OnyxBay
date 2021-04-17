@@ -126,21 +126,22 @@
 /* short-casing projectiles, like the kind used in pistols or SMGs */
 
 /obj/item/projectile/bullet/pistol
-	damage = 25 //9mm, .38, etc
+	damage = 27.5 //9mm, .38, etc
 	armor_penetration = 13.5
 
 /obj/item/projectile/bullet/pistol/medium
-	damage = 26.5 //.45
+	damage = 30 //.45
 	armor_penetration = 14.5
 
 /obj/item/projectile/bullet/pistol/medium/smg
 	fire_sound = 'sound/weapons/gunshot/gunshot_smg.ogg'
-	damage = 28 //10mm
-	armor_penetration = 18
+	damage = 32.5 //10mm
+	armor_penetration = 19.5
 
 /obj/item/projectile/bullet/pistol/medium/revolver
 	fire_sound = 'sound/weapons/gun_revolver44.ogg'
-	damage = 30 //.44 magnum or something
+	damage = 37.5 //.44 magnum or something
+	armor_penetration = 20
 
 /obj/item/projectile/bullet/pistol/strong //matebas
 	fire_sound = 'sound/weapons/gun_mateba.ogg'
@@ -168,11 +169,13 @@
 	agony = 35
 	embed = 0
 	sharp = 0
+	fire_sound = 'sound/weapons/gun_revolver44.ogg'
 
 /obj/item/projectile/bullet/pistol/accelerated/c44
 	name = "accelerated bullet"
-	damage = 42.5 //.44 magnum + gauss
+	damage = 40 //.44 magnum + gauss
 	armor_penetration = 45
+	fire_sound = 'sound/weapons/gun_revolver44.ogg'
 
 
 /* shotgun projectiles */

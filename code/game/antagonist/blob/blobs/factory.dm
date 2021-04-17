@@ -114,7 +114,7 @@
 
 /mob/living/simple_animal/hostile/blobspore/Destroy()
 	//creating a pathogenic cloud upon death
-	anim(target = loc, a_icon = icon, flick_anim = "blob_act", sleeptime = 15, direction = SOUTH, plane = DEFAULT_PLANE)
+	anim(target = loc, a_icon = icon, flick_anim = "blob_act", sleeptime = 15, direction = SOUTH)
 
 	if(factory)
 		factory.spores -= src

@@ -1,7 +1,7 @@
 /obj/item/mecha_parts/mecha_equipment/tool/sleeper
 	name = "mounted sleeper"
 	desc = "A sleeper. Mountable to an exosuit. (Can be attached to: Medical Exosuits)"
-	icon = 'icons/obj/Cryogenic2.dmi'
+	icon = 'icons/obj/cryogenic2.dmi'
 	icon_state = "sleeper_0"
 	origin_tech = list(TECH_DATA = 2, TECH_BIO = 3)
 	energy_drain = 20
@@ -100,11 +100,11 @@
 	if(F.get("eject"))
 		go_out()
 	if(F.get("view_stats"))
-		chassis.occupant << browse(get_occupant_stats(),"window=msleeper")
+		show_browser(chassis.occupant, get_occupant_stats(), "window=msleeper")
 		onclose(chassis.occupant, "msleeper")
 		return
 	if(F.get("inject"))
-		inject_reagent(F.getType("inject",/datum/reagent),F.getObj("source"))
+		inject_reagent(F.getType("inject", /datum/reagent), F.getObj("source"))
 	return
 
 /obj/item/mecha_parts/mecha_equipment/tool/sleeper/proc/get_occupant_stats()
@@ -348,7 +348,7 @@
 			log_message("Reagent processing started.")
 		return
 	if(F.get("show_reagents"))
-		chassis.occupant << browse(get_reagents_page(),"window=msyringegun")
+		show_browser(chassis.occupant, get_reagents_page(), "window=msyringegun")
 	if(F.get("purge_reagent"))
 		var/datum/reagent/R = locate(F.get("purge_reagent")) in reagents.reagent_list
 		if(R)

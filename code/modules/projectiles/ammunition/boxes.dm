@@ -92,6 +92,12 @@
 	name = "magazine (.45, flash)"
 	ammo_type = /obj/item/ammo_casing/c45/flash
 
+/obj/item/ammo_magazine/c45m/stun
+	name = "magazine (.45, stun)"
+	icon_state = "45s"
+	desc = "A magazine for some kind of gun. This one has yellow strips on its sides."
+	ammo_type = /obj/item/ammo_casing/c45/stun
+
 /obj/item/ammo_magazine/c45uzi
 	name = "stick magazine (.45)"
 	icon_state = "uzi45"

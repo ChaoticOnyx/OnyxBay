@@ -69,7 +69,7 @@
 	var/list/dispersion = list(0)
 	var/one_hand_penalty
 	var/wielded_item_state
-	var/combustion	//whether it creates hotspot when fired
+	var/combustion = TRUE //whether it creates hotspot when fired
 	var/clumsy_unaffected
 
 	var/next_fire_time = 0
@@ -360,22 +360,9 @@
 	var/shot_sound = (istype(P) && P.fire_sound)? P.fire_sound : fire_sound
 
 	if (!silenced)
-		if (!far_fire_sound)
-			playsound(user, shot_sound, rand(50, 70))
-			return
-
-		var/list/mob/mobs = view(world.view, user)
-
-		for (var/mob/M in mobs)
-			M.playsound_local(user, shot_sound, rand(50, 70))
-
-		var/list/mob/far_mobs = (orange(world.view * 3, user) - mobs)
-
-		for (var/mob/M in far_mobs)
-			M.playsound_local(user, far_fire_sound, rand(20, 50))
+		playsound(loc, shot_sound, rand(85, 95), extrarange = 10, falloff = 1) // it should be LOUD // TODO: Normalize all fire sound files so every volume is closely same
 	else
-		for (var/mob/M in view(world.view, user))
-			M.playsound_local(user, shot_sound, rand(10, 30), FALSE)
+		playsound(loc, shot_sound, rand(10, 20), extrarange = -3, falloff = 0.35) // it should be quiet
 
 //Suicide handling.
 /obj/item/weapon/gun/var/mouthshoot = 0 //To stop people from suiciding twice... >.>
@@ -434,6 +421,10 @@
 	var/view_size = round(world.view + zoom_amount)
 	var/scoped_accuracy_mod = zoom_offset
 
+	if(zoom)
+		unzoom(user)
+		return
+
 	zoom(user, zoom_offset, view_size)
 	if(zoom)
 		accuracy = scoped_accuracy + scoped_accuracy_mod
@@ -451,7 +442,7 @@
 	. = ..()
 	if(firemodes.len > 1)
 		var/datum/firemode/current_mode = firemodes[sel_mode]
-		to_chat(user, "The fire selector is set to [current_mode.name].")
+		. += "\nThe fire selector is set to [current_mode.name]."
 
 /obj/item/weapon/gun/proc/switch_firemodes()
 	if(firemodes.len <= 1)

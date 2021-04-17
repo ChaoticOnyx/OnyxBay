@@ -3,6 +3,7 @@
 	desc = "A window."
 	icon = 'icons/obj/structures.dmi'
 	density = 1
+	can_atmos_pass = ATMOS_PASS_PROC
 	w_class = ITEM_SIZE_NORMAL
 
 	layer = SIDE_WINDOW_LAYER
@@ -22,30 +23,29 @@
 	var/silicate = 0 // number of units of silicate
 
 	pull_sound = "pull_stone"
-	atmos_canpass = CANPASS_PROC
 
 /obj/structure/window/examine(mob/user)
-	. = ..(user)
+	. = ..()
 
 	if(health == maxhealth)
-		to_chat(user, "<span class='notice'>It looks fully intact.</span>")
+		. += "\n<span class='notice'>It looks fully intact.</span>"
 	else
 		var/perc = health / maxhealth
 		if(perc > 0.75)
-			to_chat(user, "<span class='notice'>It has a few cracks.</span>")
+			. += "\n<span class='notice'>It has a few cracks.</span>"
 		else if(perc > 0.5)
-			to_chat(user, "<span class='warning'>It looks slightly damaged.</span>")
+			. += "\n<span class='warning'>It looks slightly damaged.</span>"
 		else if(perc > 0.25)
-			to_chat(user, "<span class='warning'>It looks moderately damaged.</span>")
+			. += "\n<span class='warning'>It looks moderately damaged.</span>"
 		else
-			to_chat(user, "<span class='danger'>It looks heavily damaged.</span>")
+			. += "\n<span class='danger'>It looks heavily damaged.</span>"
 	if(silicate)
 		if (silicate < 30)
-			to_chat(user, "<span class='notice'>It has a thin layer of silicate.</span>")
+			. += "\n<span class='notice'>It has a thin layer of silicate.</span>"
 		else if (silicate < 70)
-			to_chat(user, "<span class='notice'>It is covered in silicate.</span>")
+			. += "\n<span class='notice'>It is covered in silicate.</span>"
 		else
-			to_chat(user, "<span class='notice'>There is a thick layer of silicate covering it.</span>")
+			. += "\n<span class='notice'>There is a thick layer of silicate covering it.</span>"
 
 /obj/structure/window/proc/take_damage(damage = 0,  sound_effect = 1)
 	var/initialhealth = health
@@ -131,15 +131,19 @@
 /obj/structure/window/proc/is_full_window()
 	return (dir == SOUTHWEST || dir == SOUTHEAST || dir == NORTHWEST || dir == NORTHEAST)
 
-/obj/structure/window/CanPass(atom/movable/mover, turf/target, height=0, air_group=0)
+/obj/structure/window/CanPass(atom/movable/mover, turf/target)
 	if(istype(mover) && mover.pass_flags & PASS_FLAG_GLASS)
-		return 1
+		return TRUE
 	if(is_full_window())
-		return 0	//full tile window, you can't move into it!
+		return FALSE	//full tile window, you can't move into it!
 	if(get_dir(loc, target) & dir)
 		return !density
-	else
-		return 1
+	return TRUE
+
+/obj/structure/window/CanZASPass(turf/T, is_zone)
+	if(is_fulltile() || get_dir(T, loc) == turn(dir, 180)) // Make sure we're handling the border correctly.
+		return !anchored // If it's anchored, it'll block air.
+	return TRUE // Don't stop airflow from the other sides.
 
 
 /obj/structure/window/CheckExit(atom/movable/O as mob|obj, target as turf)
@@ -256,22 +260,23 @@
 			P.state = state
 			qdel(src)
 	else
-		user.setClickCooldown(DEFAULT_ATTACK_COOLDOWN)
-		if(W.damtype == BRUTE || W.damtype == BURN)
-			user.do_attack_animation(src)
+		user.setClickCooldown(W.update_attack_cooldown())
+		user.do_attack_animation(src)
+		if((W.damtype == BRUTE || W.damtype == BURN) && W.force >= 3)
+			visible_message(SPAN("danger", "[src] has been hit by [user] with [W]."))
 			hit(W.force)
 			if(health <= 7)
 				set_anchored(FALSE)
 				step(src, get_dir(user, src))
 				update_verbs()
 		else
+			visible_message(SPAN("danger", "[user] hits [src] with [W], but it bounces off!"))
 			playsound(loc, get_sfx("glass_hit"), 75, 1)
-		..()
 	return
 
 /obj/structure/window/proc/hit(damage, sound_effect = 1)
 	if(reinf) damage *= 0.5
-	take_damage(damage)
+	take_damage(damage, sound_effect)
 	return
 
 
@@ -418,32 +423,32 @@
 	damage_per_fire_tick = 2.0
 	maxhealth = 12.0
 
-/obj/structure/window/phoronbasic
-	name = "phoron window"
-	desc = "A borosilicate alloy window. It seems to be quite strong."
-	basestate = "phoronwindow"
-	icon_state = "phoronwindow"
-	shardtype = /obj/item/weapon/material/shard/phoron
-	glasstype = /obj/item/stack/material/glass/phoronglass
+/obj/structure/window/plasmabasic
+	name = "plass window"
+	desc = "A plasmasilicate alloy window. It seems to be quite strong."
+	basestate = "plasmawindow"
+	icon_state = "plasmawindow"
+	shardtype = /obj/item/weapon/material/shard/plasma
+	glasstype = /obj/item/stack/material/glass/plass
 	maximal_heat = T0C + 2000
 	damage_per_fire_tick = 1.0
 	maxhealth = 40.0
 
-/obj/structure/window/phoronreinforced
-	name = "reinforced borosilicate window"
-	desc = "A borosilicate alloy window, with rods supporting it. It seems to be very strong."
-	basestate = "phoronrwindow"
-	icon_state = "phoronrwindow"
-	shardtype = /obj/item/weapon/material/shard/phoron
-	glasstype = /obj/item/stack/material/glass/phoronrglass
+/obj/structure/window/plasmareinforced
+	name = "reinforced plass window"
+	desc = "A plasmasilicate alloy window, with rods supporting it. It seems to be very strong."
+	basestate = "plasmarwindow"
+	icon_state = "plasmarwindow"
+	shardtype = /obj/item/weapon/material/shard/plasma
+	glasstype = /obj/item/stack/material/glass/rplass
 	reinf = 1
 	maximal_heat = T0C + 4000
-	damage_per_fire_tick = 1.0 // This should last for 80 fire ticks if the window is not damaged at all. The idea is that borosilicate windows have something like ablative layer that protects them for a while.
+	damage_per_fire_tick = 1.0 // This should last for 80 fire ticks if the window is not damaged at all. The idea is that plass windows have something like ablative layer that protects them for a while.
 	maxhealth = 80.0
 
-/obj/structure/window/phoronreinforced/full
+/obj/structure/window/plasmareinforced/full
 	dir = 5
-	icon_state = "phoronwindow0"
+	icon_state = "plasmawindow0"
 
 /obj/structure/window/reinforced
 	name = "reinforced window"

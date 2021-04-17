@@ -17,6 +17,8 @@ GLOBAL_DATUM_INIT(wizards, /datum/antagonist/wizard, new)
 
 	faction = "wizard"
 
+	station_crew_involved = FALSE
+
 /datum/antagonist/wizard/create_objectives(datum/mind/wizard)
 
 	if(!..())
@@ -71,14 +73,14 @@ GLOBAL_DATUM_INIT(wizards, /datum/antagonist/wizard, new)
 
 	if(!..())
 		return 0
-			
+
 	var/outfit_type = pick(subtypesof(/decl/hierarchy/outfit/wizard))
 	var/decl/hierarchy/outfit/wizard_outfit = outfit_by_type(outfit_type)
 	wizard_outfit.equip(wizard_mob)
 
 	return 1
 
-/datum/antagonist/wizard/check_victory()
+/datum/antagonist/wizard/print_roundend()
 	var/survivor
 	for(var/datum/mind/player in current_antagonists)
 		if(!player.current || player.current.stat)
@@ -87,11 +89,11 @@ GLOBAL_DATUM_INIT(wizards, /datum/antagonist/wizard, new)
 		break
 	if(!survivor)
 		feedback_set_details("round_end_result","loss - wizard killed")
-		to_world("<span class='danger'><font size = 3>The [(current_antagonists.len>1)?"[role_text_plural] have":"[role_text] has"] been killed by the crew! The Space Wizards Federation has been taught a lesson they will not soon forget!</font></span>")
+		return "<span class='danger'><font size = 3>The [(current_antagonists.len>1)?"[role_text_plural] have":"[role_text] has"] been killed by the crew! The Space Wizards Federation has been taught a lesson they will not soon forget!</font></span>"
 
 
 /datum/antagonist/wizard/print_player_summary()
-	..()
+	. += ..()
 	for(var/p in current_antagonists)
 		var/datum/mind/player = p
 		var/text = "<b>[player.name]'s spells were:</b>"
@@ -103,7 +105,7 @@ GLOBAL_DATUM_INIT(wizards, /datum/antagonist/wizard, new)
 				text += "<br><b>[spell.name]</b> - "
 				text += "Speed: [spell.spell_levels["speed"]] Power: [spell.spell_levels["power"]]"
 		text += "<br>"
-		to_world(text)
+		. += "<br>[text]"
 
 
 //To batch-remove wizard spells. Linked to mind.dm.

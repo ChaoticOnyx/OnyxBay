@@ -67,7 +67,6 @@
 			if(!T.dna)
 				to_chat(user, "<span class='warning'>You are unable to locate any blood.</span>")
 				CRASH("[T] \[[T.type]\] was missing their dna datum!")
-				return
 
 			user.setClickCooldown(DEFAULT_QUICK_COOLDOWN)
 			user.do_attack_animation(target)
@@ -211,7 +210,6 @@
 			if(!T.dna)
 				to_chat(user, "<span class='warning'>You are unable to locate any blood.</span>")
 				CRASH("[T] \[[T.type]\] was missing their dna datum!")
-				return
 
 			var/injtime = time //Taking a blood sample through a hardsuit takes longer due to needing to find a port.
 			var/allow = T.can_inject(user, check_zone(user.zone_sel.selecting))
@@ -239,7 +237,7 @@
 			to_chat(user, "<span class='notice'>[target] is empty.</span>")
 			return
 
-		if(!target.is_open_container() && !istype(target, /obj/structure/reagent_dispensers) && !istype(target, /obj/item/slime_extract))
+		if(!target.is_open_container() && !istype(target, /obj/structure/reagent_dispensers) && !istype(target, /obj/item/weapon/backwear/reagent) && !istype(target, /obj/item/slime_extract))
 			to_chat(user, "<span class='notice'>You cannot directly remove reagents from this object.</span>")
 			return
 
@@ -259,7 +257,7 @@
 	if(istype(target, /obj/item/weapon/implantcase/chem))
 		return
 
-	if((!target.is_open_container() && !ismob(target) && !istype(target, /obj/item/weapon/reagent_containers/food) && !istype(target, /obj/item/slime_extract) && !istype(target, /obj/item/clothing/mask/smokable/cigarette) && !istype(target, /obj/item/weapon/storage/fancy/cigarettes)) || istype(target, /obj/item/weapon/reagent_containers/hypospray/autoinjector))
+	if(!target.is_open_container() && !ismob(target) && !istype(target, /obj/item/weapon/reagent_containers/food) && !istype(target, /obj/item/slime_extract) && !istype(target, /obj/item/clothing/mask/smokable/cigarette) && !istype(target, /obj/item/weapon/storage/fancy/cigarettes))
 		to_chat(user, "<span class='notice'>You cannot directly fill this object.</span>")
 		return
 	if(!target.reagents.get_free_space())
@@ -398,8 +396,8 @@
 	name = "Syringe (inaprovaline)"
 	desc = "Contains inaprovaline - used to stabilize patients."
 
-/obj/item/weapon/reagent_containers/syringe/inaprovaline/New()
-	..()
+/obj/item/weapon/reagent_containers/syringe/inaprovaline/Initialize()
+	. = ..()
 	reagents.add_reagent(/datum/reagent/inaprovaline, 15)
 	mode = SYRINGE_INJECT
 	update_icon()
@@ -408,8 +406,8 @@
 	name = "Syringe (anti-toxin)"
 	desc = "Contains anti-toxins."
 
-/obj/item/weapon/reagent_containers/syringe/antitoxin/New()
-	..()
+/obj/item/weapon/reagent_containers/syringe/antitoxin/Initialize()
+	. = ..()
 	reagents.add_reagent(/datum/reagent/dylovene, 15)
 	mode = SYRINGE_INJECT
 	update_icon()
@@ -418,8 +416,8 @@
 	name = "Syringe (spaceacillin)"
 	desc = "Contains antiviral agents."
 
-/obj/item/weapon/reagent_containers/syringe/antiviral/New()
-	..()
+/obj/item/weapon/reagent_containers/syringe/antiviral/Initialize()
+	. = ..()
 	reagents.add_reagent(/datum/reagent/spaceacillin, 15)
 	mode = SYRINGE_INJECT
 	update_icon()
@@ -428,8 +426,8 @@
 	name = "Syringe (drugs)"
 	desc = "Contains aggressive drugs meant for torture."
 
-/obj/item/weapon/reagent_containers/syringe/drugs/New()
-	..()
+/obj/item/weapon/reagent_containers/syringe/drugs/Initialize()
+	. = ..()
 	reagents.add_reagent(/datum/reagent/space_drugs, 5)
 	reagents.add_reagent(/datum/reagent/mindbreaker, 5)
 	reagents.add_reagent(/datum/reagent/cryptobiolin, 5)
@@ -438,8 +436,8 @@
 
 /obj/item/weapon/reagent_containers/syringe/ld50_syringe/choral
 
-/obj/item/weapon/reagent_containers/syringe/ld50_syringe/choral/New()
-	..()
+/obj/item/weapon/reagent_containers/syringe/ld50_syringe/choral/Initialize()
+	. = ..()
 	reagents.add_reagent(/datum/reagent/chloralhydrate, 60)
 	mode = SYRINGE_INJECT
 	update_icon()
@@ -448,8 +446,8 @@
 	name = "Syringe (anabolic steroids)"
 	desc = "Contains drugs for muscle growth."
 
-/obj/item/weapon/reagent_containers/syringe/steroid/New()
-	..()
+/obj/item/weapon/reagent_containers/syringe/steroid/Initialize()
+	. = ..()
 	reagents.add_reagent(/datum/reagent/adrenaline, 5)
 	reagents.add_reagent(/datum/reagent/hyperzine, 10)
 

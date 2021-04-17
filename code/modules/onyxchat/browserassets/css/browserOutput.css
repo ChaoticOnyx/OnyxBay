@@ -13,7 +13,6 @@ body {
 	background: #171717;
 	font-family: Verdana, sans-serif;
 	font-size: 13px;
-	font-color: #a4bad6;
 	line-height: 1.2;
 	overflow-x: hidden;
 	overflow-y: scroll;
@@ -195,6 +194,16 @@ a.popt {text-decoration: none;}
 .highlightPopup input[type=text] {display: block; width: 215px; text-align: left; margin-top: 5px;}
 .highlightPopup input.highlightColor {background-color: #FFFF00;}
 .highlightPopup input.highlightTermSubmit {margin-top: 5px;}
+
+.spellcheckPopup {padding: 10px; text-align: center; color: black;}
+.spellcheckPopup input[type=text] {width: 90%; text-align: center; margin-top: 5px;}
+.spellcheckPopup input.spellcheckSubmit {margin-top: 5px;}
+
+.spellChecker{color: white; border-left: 2px solid red; padding-left: 5px; font-weight: bold;}
+
+.line-good {border-bottom: 2px solid green;}
+.line-sugg {border-bottom: 2px solid orange;}
+.line-bad  {border-bottom: 2px solid red;}
 
 /* ADMIN CONTEXT MENU */
 .contextMenu {

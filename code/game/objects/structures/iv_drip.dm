@@ -3,6 +3,7 @@
 	icon = 'icons/obj/iv_drip.dmi'
 	anchored = 0
 	density = 0
+	pull_slowdown = PULL_SLOWDOWN_TINY
 	var/mob/living/carbon/human/attached
 	var/mode = 1 // 1 is injecting, 0 is taking blood.
 	var/obj/item/weapon/reagent_containers/beaker
@@ -13,6 +14,9 @@
 	set name = "Set IV transfer amount"
 	set category = "Object"
 	set src in range(1)
+	if(!istype(usr, /mob/living))
+		to_chat(usr, "<span class='warning'>You can't do that.</span>")
+		return
 	var/N = input("Amount per transfer from this:","[src]") as null|anything in transfer_amounts
 	if(N)
 		transfer_amount = N
@@ -105,7 +109,7 @@
 	else // Take blood
 		var/amount = beaker.reagents.maximum_volume - beaker.reagents.total_volume
 		amount = min(amount, 4)
-		
+
 		if(amount == 0) // If the beaker is full, ping
 			if(prob(5)) visible_message("\The [src] pings.")
 			return
@@ -148,20 +152,20 @@
 	to_chat(usr, "The IV drip is now [mode ? "injecting" : "taking blood"].")
 
 /obj/structure/iv_drip/examine(mob/user)
-	. = ..(user)
+	. = ..()
 
-	if (get_dist(src, user) > 2) 
+	if (get_dist(src, user) > 2)
 		return
 
-	to_chat(user, "The IV drip is [mode ? "injecting" : "taking blood"].")
-	to_chat(user, "It is set to transfer [transfer_amount]u of chemicals per cycle.")
+	. += "\nThe IV drip is [mode ? "injecting" : "taking blood"]."
+	. += "\nIt is set to transfer [transfer_amount]u of chemicals per cycle."
 
 	if(beaker)
 		if(beaker.reagents && beaker.reagents.total_volume)
-			to_chat(usr, "<span class='notice'>Attached is \a [beaker] with [beaker.reagents.total_volume] units of liquid.</span>")
+			. += "\n<span class='notice'>Attached is \a [beaker] with [beaker.reagents.total_volume] units of liquid.</span>"
 		else
-			to_chat(usr, "<span class='notice'>Attached is an empty [beaker].</span>")
+			. += "\n<span class='notice'>Attached is an empty [beaker].</span>"
 	else
-		to_chat(usr, "<span class='notice'>No chemicals are attached.</span>")
+		. += "\n<span class='notice'>No chemicals are attached.</span>"
 
-	to_chat(usr, "<span class='notice'>[attached ? attached : "No one"] is hooked up to it.</span>")
+	. += "\n<span class='notice'>[attached ? attached : "No one"] is hooked up to it.</span>"

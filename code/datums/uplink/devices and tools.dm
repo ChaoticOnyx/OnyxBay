@@ -8,18 +8,23 @@
 	name = "Fully Loaded Toolbox"
 	item_cost = 8
 	path = /obj/item/weapon/storage/toolbox/syndicate
-	
+
 /datum/uplink_item/item/tools/ductape
 	name = "Duct Tape"
 	desc = "A roll of duct tape. changes \"HELP\" in to sexy \"mmm\"."
 	item_cost = 8
-	path = /obj/item/weapon/tape_roll	
+	path = /obj/item/weapon/tape_roll
 
 /datum/uplink_item/item/tools/money
 	name = "Operations Funding"
 	item_cost = 8
 	path = /obj/item/weapon/storage/secure/briefcase/money
-	desc = "A briefcase with 10,000 untraceable thalers for funding your sneaky activities."
+	desc = "A briefcase with 10,000 untraceable credits for funding your sneaky activities."
+
+datum/uplink_item/item/tools/cleaning_kit
+	name = "Cleaning Kit"
+	item_cost = 15
+	path = /obj/item/weapon/storage/backpack/satchel/syndie_kit/cleaning_kit
 
 /datum/uplink_item/item/tools/clerical
 	name = "Morphic Clerical Kit"
@@ -45,7 +50,7 @@
 	name = "Handheld Shield Diffuser"
 	item_cost = 16
 	path = /obj/item/weapon/shield_diffuser
-	
+
 /datum/uplink_item/item/tools/sindicuffs
 	name = "Explosive Handcuffs"
 	item_cost = 16
@@ -81,13 +86,14 @@
 	path = /obj/item/weapon/storage/backpack/satchel/syndie_kit/space
 
 /datum/uplink_item/item/tools/thermal
-	name = "Thermal Imaging Glasses"
+	name = "Thermal Imaging Goggles"
 	item_cost = 24
-	path = /obj/item/clothing/glasses/thermal
+	path = /obj/item/clothing/glasses/hud/standard/thermal
 
 /datum/uplink_item/item/tools/flashdark
 	name = "Flashdark"
-	item_cost = 28
+	item_cost = 65
+	antag_costs = list(MODE_MERCENARY = 129)
 	path = /obj/item/device/flashlight/flashdark
 
 /datum/uplink_item/item/tools/powersink
@@ -99,7 +105,7 @@
 	name = "Teleporter Circuit Board"
 	item_cost = 40
 	path = /obj/item/weapon/circuitboard/teleporter
-	antag_roles = list(MODE_MERCENARY)
+	antag_roles = list(MODE_NUKE)
 
 /datum/uplink_item/item/tools/ai_module
 	name = "Hacked AI Upload Module"
@@ -114,7 +120,7 @@
 /datum/uplink_item/item/tools/camera_mask
 	name = "Camera MIU"
 	item_cost = 32
-	antag_costs = list(MODE_MERCENARY = 15)
+	antag_costs = list(MODE_NUKE = 15)
 	path = /obj/item/clothing/mask/ai
 
 /datum/uplink_item/item/tools/interceptor
@@ -122,3 +128,13 @@
 	item_cost = 30
 	path = /obj/item/device/radio/intercept
 	desc = "A radio that can intercept secure radio channels. Doesn't fit in pockets."
+
+/datum/uplink_item/item/tools/c4explosive
+	name = "Small Package Bomb"
+	item_cost = 25
+	path = /obj/item/weapon/syndie/c4explosive
+
+/datum/uplink_item/item/tools/c4explosive/heavy
+	name = "Large Package Bomb"
+	item_cost = 50
+	path = /obj/item/weapon/syndie/c4explosive/heavy

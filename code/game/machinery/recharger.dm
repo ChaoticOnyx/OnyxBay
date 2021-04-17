@@ -41,6 +41,9 @@ obj/machinery/recharger/attackby(obj/item/weapon/G as obj, mob/user as mob)
 			return
 		if (istype(G, /obj/item/weapon/gun/energy/staff))
 			return
+		if (istype(G, /obj/item/weapon/gun/energy/plasmacutter))
+			to_chat(user, SPAN("notice", "It seems like \the [G] has another type of charging port, so it doesn't fit into \the [src]."))
+			return
 		if(istype(G, /obj/item/modular_computer))
 			var/obj/item/modular_computer/C = G
 			if(!C.battery_module)

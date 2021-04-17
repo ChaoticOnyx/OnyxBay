@@ -48,11 +48,12 @@
 	update_icon()
 
 /obj/item/weapon/gun/launcher/grenade/examine(mob/user)
-	if(..(user, 2))
+	. = ..()
+	if(get_dist(src, user) <= 2)
 		var/grenade_count = grenades.len + (chambered? 1 : 0)
-		to_chat(user, "Has [grenade_count] grenade\s remaining.")
+		. += "\nHas [grenade_count] grenade\s remaining."
 		if(chambered)
-			to_chat(user, "\A [chambered] is chambered.")
+			. += "\n\A [chambered] is chambered."
 
 /obj/item/weapon/gun/launcher/grenade/proc/load(obj/item/weapon/grenade/G, mob/user)
 	if(!can_load_grenade_type(G, user))

@@ -106,7 +106,7 @@
 	if(is_cloaked())
 		return
 
-	if(m_intent == "run")
+	if(m_intent == M_RUN)
 		if(step_count % 2) //every other turf makes a sound
 			return
 
@@ -124,7 +124,7 @@
 	if(S)
 		var/range = -(world.view - 2)
 		var/volume = 70
-		if(m_intent == "walk")
+		if(m_intent == M_WALK)
 			volume -= 45
 			range -= 0.333
 		if(!shoes)
@@ -132,3 +132,40 @@
 			range -= 0.333
 
 		playsound(T, S, volume, 1, range)
+
+	// Playing far movement sound with small chance when someone make step in maintenance area
+	// These sounds another players can hear only in the same maintenance area
+	if (m_intent == M_WALK)
+		return
+
+	var/chance = 25
+
+	if (MUTATION_FAT in mutations)
+		chance += 5
+
+	if (MUTATION_CLUMSY in mutations)
+		chance += 10
+
+	if (MUTATION_HULK in mutations)
+		chance += 15
+
+	if (!prob(chance))
+		return
+
+	var/area/maintenance/A = get_area(src)
+
+	if (!istype(A))
+		return
+
+	for (var/mob/M in GLOB.player_list)
+		if (M == src)
+			continue
+
+		if (M.loc.z != src.loc.z || !istype(get_area(M), /area/maintenance))
+			continue
+
+		var/dist = get_dist(get_turf(M), T)
+
+		if (dist >= world.view && dist <= world.view * 3)
+			M.playsound_local(src.loc, "distant_movement", 100)
+

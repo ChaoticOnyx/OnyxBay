@@ -29,10 +29,10 @@
 	radio.set_frequency(ENT_FREQ)
 	update_icon()
 
-/obj/item/device/tvcamera/examine()
+/obj/item/device/tvcamera/examine(mob/user)
 	. = ..()
-	to_chat(usr, "Video feed is currently: [camera.status ? "Online" : "Offline"]")
-	to_chat(usr, "Audio feed is currently: [radio.broadcasting ? "Online" : "Offline"]")
+	. += "\nVideo feed is currently: [camera.status ? "Online" : "Offline"]"
+	. += "\nAudio feed is currently: [radio.broadcasting ? "Online" : "Offline"]"
 
 /obj/item/device/tvcamera/attack_self(mob/user)
 	add_fingerprint(user)

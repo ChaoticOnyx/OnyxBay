@@ -17,6 +17,32 @@
 	cost = 10
 	containername = "\improper Medical crate"
 
+/decl/hierarchy/supply_pack/medical/somaticgel
+	name = "Somatic gel crate"
+	contains = list(/obj/item/stack/medical/advanced/bruise_pack = 5)
+	cost = 10
+	containername = "\improper Somatic gel crate"
+
+/decl/hierarchy/supply_pack/medical/burngel
+	name = "Burn gel crate"
+	contains = list(/obj/item/stack/medical/advanced/ointment = 5)
+	cost = 10
+	containername = "\improper Burn gel crate"
+
+/decl/hierarchy/supply_pack/medical/somaticgeltank
+	name = "Somatic gel tank"
+	contains = list(/obj/structure/geltank/somatic)
+	cost = 10
+	containername = "\improper Somatic gel crate"
+	containertype = /obj/structure/largecrate
+
+/decl/hierarchy/supply_pack/medical/burngeltank
+	name = "Burn gel tank"
+	contains = list(/obj/structure/geltank/burn)
+	cost = 10
+	containername = "\improper Burn gel crate"
+	containertype = /obj/structure/largecrate
+
 /decl/hierarchy/supply_pack/medical/pills
 	num_contained = 5
 	contains = list(/obj/item/weapon/storage/pill_bottle/antitox,
@@ -81,7 +107,7 @@
 /decl/hierarchy/supply_pack/medical/medicalextragear
 	name = "Medical surplus equipment"
 	contains = list(/obj/item/weapon/storage/belt/medical = 3,
-					/obj/item/clothing/glasses/hud/health = 3)
+					/obj/item/clothing/glasses/hud/one_eyed/oneye/medical = 3)
 	cost = 15
 	containertype = /obj/structure/closet/crate/secure
 	containername = "\improper Medical surplus equipment"
@@ -94,7 +120,7 @@
 					/obj/item/clothing/under/rank/chief_medical_officer,
 					/obj/item/weapon/reagent_containers/hypospray/vial,
 					/obj/item/clothing/accessory/stethoscope,
-					/obj/item/clothing/glasses/hud/health,
+					/obj/item/clothing/glasses/hud/one_eyed/oneye/medical,
 					/obj/item/clothing/suit/storage/toggle/labcoat/cmo,
 					/obj/item/clothing/suit/storage/toggle/labcoat/cmoalt,
 					/obj/item/clothing/mask/surgical,
@@ -115,7 +141,7 @@
 					/obj/item/device/radio/headset/headset_med,
 					/obj/item/clothing/under/rank/medical,
 					/obj/item/clothing/accessory/stethoscope,
-					/obj/item/clothing/glasses/hud/health,
+					/obj/item/clothing/glasses/hud/one_eyed/oneye/medical,
 					/obj/item/clothing/suit/storage/toggle/labcoat,
 					/obj/item/clothing/mask/surgical,
 					/obj/item/weapon/storage/firstaid/adv,
@@ -136,7 +162,7 @@
 					/obj/item/device/radio/headset/headset_med,
 					/obj/item/weapon/storage/box/autoinjectors,
 					/obj/item/clothing/under/rank/chemist,
-					/obj/item/clothing/glasses/science,
+					/obj/item/clothing/glasses/hud/standard/science,
 					/obj/item/clothing/suit/storage/toggle/labcoat/chemist,
 					/obj/item/clothing/mask/surgical,
 					/obj/item/clothing/shoes/white,
@@ -157,7 +183,7 @@
 					/obj/item/device/radio/headset/headset_med,
 					/obj/item/clothing/under/rank/medical/scrubs/black,
 					/obj/item/clothing/accessory/armband/medgreen,
-					/obj/item/clothing/glasses/hud/health,
+					/obj/item/clothing/glasses/hud/one_eyed/oneye/medical,
 					/obj/item/clothing/suit/storage/toggle/labcoat,
 					/obj/item/clothing/under/rank/medical/paramedic,
 					/obj/item/clothing/suit/storage/toggle/fr_jacket,
@@ -301,4 +327,12 @@
 	cost = 120
 	containername = "\improper Medical voidsuit crate"
 	containertype = /obj/structure/closet/crate/secure/large
+	access = access_medical_equip
+
+/decl/hierarchy/supply_pack/medical/rig
+	name = "Medical RIG"
+	contains = list(/obj/item/weapon/rig/medical)
+	cost = 360
+	containername = "\improper Medical RIG crate"
+	containertype = /obj/structure/closet/crate/secure
 	access = access_medical_equip

@@ -74,32 +74,23 @@
 	if(stat & (NOPOWER|BROKEN))
 		return
 	if(operating)
-		to_chat(user, "<span class='danger'>\The [src] is locked and running, wait for it to finish.</span>")
+		to_chat(user, SPAN("danger","\The [src] is locked and running, wait for it to finish."))
 		return
 	else
 		src.startgibbing(user)
-
-/obj/machinery/gibber/examine()
-	. = ..()
-	to_chat(usr, "The safety guard is [emagged ? "<span class='danger'>disabled</span>" : "enabled"].")
-
-/obj/machinery/gibber/emag_act(remaining_charges, mob/user)
-	emagged = !emagged
-	to_chat(user, "<span class='danger'>You [emagged ? "disable" : "enable"] \the [src]'s safety guard.</span>")
-	return 1
 
 /obj/machinery/gibber/attackby(obj/item/W, mob/user)
 	if(istype(W, /obj/item/grab))
 		var/obj/item/grab/G = W
 		if(!G.force_danger())
-			to_chat(user, "<span class='danger'>You need a better grip to do that!</span>")
+			to_chat(user, SPAN("danger","You need a better grip to do that!"))
 			return
 		move_into_gibber(user,G.affecting)
 		user.drop_from_inventory(G)
 	else if(istype(W, /obj/item/organ))
 		user.drop_from_inventory(W)
 		qdel(W)
-		user.visible_message("<span class='danger'>\The [user] feeds \the [W] into \the [src], obliterating it.</span>")
+		user.visible_message(SPAN("danger","\The [user] feeds \the [W] into \the [src], obliterating it."))
 	else
 		return ..()
 
@@ -111,30 +102,25 @@
 /obj/machinery/gibber/proc/move_into_gibber(mob/user,mob/living/victim)
 
 	if(src.occupant)
-		to_chat(user, "<span class='danger'>\The [src] is full, empty it first!</span>")
+		to_chat(user, SPAN("danger","\The [src] is full, empty it first!"))
 		return
 
 	if(operating)
-		to_chat(user, "<span class='danger'>\The [src] is locked and running, wait for it to finish.</span>")
+		to_chat(user, SPAN("danger","\The [src] is locked and running, wait for it to finish."))
 		return
 
 	if(!(istype(victim, /mob/living/carbon)) && !(istype(victim, /mob/living/simple_animal)) )
-		to_chat(user, "<span class='danger'>This is not suitable for \the [src]!</span>")
+		to_chat(user, SPAN("danger","This is not suitable for \the [src]!"))
 		return
-
-	if(istype(victim,/mob/living/carbon/human) && !emagged)
-		to_chat(user, "<span class='danger'>\The [src] safety guard is engaged!</span>")
-		return
-
 
 	if(victim.abiotic(1))
-		to_chat(user, "<span class='danger'>\The [victim] may not have any abiotic items on.</span>")
+		to_chat(user, SPAN("danger","\The [victim] may not have any abiotic items on."))
 		return
 
-	user.visible_message("<span class='danger'>\The [user] starts to put \the [victim] into \the [src]!</span>")
+	user.visible_message(SPAN("danger","\The [user] starts to put \the [victim] into \the [src]!"))
 	src.add_fingerprint(user)
 	if(do_after(user, 30, src) && victim.Adjacent(src) && user.Adjacent(src) && victim.Adjacent(user) && !occupant)
-		user.visible_message("<span class='danger'>\The [user] stuffs \the [victim] into \the [src]!</span>")
+		user.visible_message(SPAN("danger","\The [user] stuffs \the [victim] into \the [src]!"))
 		if(victim.client)
 			victim.client.perspective = EYE_PERSPECTIVE
 			victim.client.eye = src
@@ -170,17 +156,19 @@
 	if(src.operating)
 		return
 	if(!src.occupant)
-		visible_message("<span class='danger'>You hear a loud metallic grinding sound.</span>")
+		visible_message(SPAN("danger","You hear a loud metallic grinding sound."))
 		return
 
 	use_power_oneoff(1000)
-	visible_message("<span class='danger'>You hear a loud [occupant.isSynthetic() ? "metallic" : "squelchy"] grinding sound.</span>")
+	visible_message(SPAN("danger","You hear a loud [occupant.isSynthetic() ? "metallic" : "squelchy"] grinding sound."))
 	src.operating = 1
 	update_icon()
 
 	var/slab_name = occupant.name
 	var/slab_count = 3
+	var/robotic_slab_count = 0
 	var/slab_type = /obj/item/weapon/reagent_containers/food/snacks/meat
+	var/const/robotic_slab_type = /obj/item/stack/material/steel
 	var/slab_nutrition = 20
 	if(iscarbon(occupant))
 		var/mob/living/carbon/C = occupant
@@ -196,12 +184,32 @@
 	else if(istype(src.occupant,/mob/living/carbon/human))
 		var/mob/living/carbon/human/H = occupant
 		slab_name = src.occupant.real_name
-		slab_type = H.isSynthetic() ? /obj/item/stack/material/steel : H.species.meat_type
+		slab_type = H.species.meat_type
+		slab_count = 0
+		for (var/obj/item/organ/external/O in H.organs)
+			if (O.is_stump())
+				continue
+			var/obj/item/organ/external/chest/C = O
+			if (istype(C))
+				if (BP_IS_ROBOTIC(O))
+					robotic_slab_count += C.butchering_capacity
+				else
+					slab_count += C.butchering_capacity
+				continue
+			if (BP_IS_ROBOTIC(O))
+				robotic_slab_count++
+			else
+				slab_count++
 
 	// Small mobs don't give as much nutrition.
 	if(issmall(src.occupant))
 		slab_nutrition *= 0.5
+
 	slab_nutrition /= slab_count
+
+	var/reagent_transfer_amt
+	if (occupant.reagents)
+		reagent_transfer_amt = round(occupant.reagents.total_volume / slab_count, 1)
 
 	for(var/i=1 to slab_count)
 		var/obj/item/weapon/reagent_containers/food/snacks/meat/new_meat = new slab_type(src, rand(3,8))
@@ -209,10 +217,13 @@
 			new_meat.SetName("[slab_name] [new_meat.name]")
 			new_meat.reagents.add_reagent(/datum/reagent/nutriment,slab_nutrition)
 			if(src.occupant.reagents)
-				src.occupant.reagents.trans_to_obj(new_meat, round(occupant.reagents.total_volume/slab_count,1))
+				src.occupant.reagents.trans_to_obj(new_meat, reagent_transfer_amt)
+
+	for (var/i = 1 to robotic_slab_count)
+		new robotic_slab_type(src, rand(3,8))
+
 
 	admin_attack_log(user, occupant, "Gibbed the victim", "Was gibbed", "gibbed")
-	src.occupant.ghostize()
 
 	spawn(gib_time)
 
@@ -228,7 +239,7 @@
 				qdel(thing)
 				continue
 			thing.dropInto(loc) // Attempts to drop it onto the turf for throwing.
-			thing.throw_at(get_edge_target_turf(src,gib_throw_dir),rand(0,3),emagged ? 100 : 50) // Being pelted with bits of meat and bone would hurt.
+			thing.throw_at(get_edge_target_turf(src,gib_throw_dir),rand(0,3),100) // Being pelted with bits of meat and bone would hurt.
 		update_icon()
 
 

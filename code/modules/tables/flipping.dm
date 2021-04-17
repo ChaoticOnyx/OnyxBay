@@ -18,7 +18,7 @@
 	set category = "Object"
 	set src in oview(1)
 
-	if (!can_touch(usr) || ismouse(usr))
+	if (!can_touch(usr) || isanimal(usr))
 		return
 
 	if(flipped < 0 || !flip(get_cardinal_dir(usr,src)))
@@ -78,15 +78,9 @@
 	verbs -=/obj/structure/table/verb/do_flip
 	verbs +=/obj/structure/table/proc/do_put
 
-	var/list/targets = list(get_step(src,dir),get_step(src,turn(dir, 45)),get_step(src,turn(dir, -45)))
-	for (var/atom/movable/A in get_turf(src))
-		if (!A.anchored)
-			spawn(0)
-				A.throw_at(pick(targets),1,1)
-
+	throw_contents_around()
 	set_dir(direction)
 	if(dir != NORTH)
-
 		layer = ABOVE_HUMAN_LAYER
 	atom_flags &= ~ATOM_FLAG_CLIMBABLE //flipping tables allows them to be used as makeshift barriers
 	flipped = 1

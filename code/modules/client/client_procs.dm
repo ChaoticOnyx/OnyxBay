@@ -54,7 +54,6 @@
 
 		if (!(asset_cache_job in completed_asset_jobs))
 			completed_asset_jobs += asset_cache_job
-			log_debug_verbose("\[ASSETS\] Job #[asset_cache_job] is completed (client: [ckey]).")
 			return
 
 	if (config.minutetopiclimit)
@@ -88,17 +87,16 @@
 			return
 
 	//Logs all hrefs
-	if(config && config.log_hrefs && href_logfile)
-		to_chat(href_logfile, "<small>[time2text(world.timeofday,"hh:mm")] [src] (usr:[usr])</small> || [hsrc ? "[hsrc] " : ""][href]<br>")
+	log_href("[src] (usr:[usr]) || [hsrc ? "[hsrc] " : ""][href]")
 
 	// ask BYOND client to stop spamming us with assert arrival confirmations (see byond bug ID:2256651)
 	if (asset_cache_job && (asset_cache_job in completed_asset_jobs))
 		to_chat(src, SPAN_DANGER("An error has been detected in how your client is receiving resources. Attempting to correct.... (If you keep seeing these messages you might want to close byond and reconnect)"))
-		src << browse("...", "window=asset_cache_browser")
+		show_browser(src, "...", "window=asset_cache_browser")
 
 	//search the href for script injection
 	if( findtext(href,"<script",1,0) )
-		world.log << "Attempted use of scripts within a topic call, by [src]"
+		to_world_log("Attempted use of scripts within a topic call, by [src]")
 		message_admins("Attempted use of scripts within a topic call, by [src]")
 		//qdel(usr)
 		return
@@ -141,7 +139,7 @@
 
 	switch(href_list["action"])
 		if("openLink")
-			src << link(href_list["link"])
+			send_link(src, href_list["link"])
 
 	..()	//redirect to hsrc.Topic()
 
@@ -177,26 +175,15 @@
 		qdel(src)
 		return
 
-	if(config.player_limit && is_player_rejected_by_player_limit(usr, ckey))
-		if(config.panic_address && TopicData != "redirect")
-			alert(src,"This server is currently full and not accepting new connections. Sending you to [config.panic_server_name ? config.panic_server_name : config.panic_address].","Server Full","OK")
-			winset(src, null, "command=.options")
-			src << link("[config.panic_address]?redirect")
-		else
-			alert(src, "This server is currently full and not accepting new connections.","Server Full","OK")
-
-		log_admin("[ckey] tried to join but the server is full (player_limit=[config.player_limit])")
-		qdel(src)
-		return
-
 	// Change the way they should download resources.
 	if(config.resource_urls && config.resource_urls.len)
 		src.preload_rsc = pick(config.resource_urls)
 	else src.preload_rsc = 1 // If config.resource_urls is not set, preload like normal.
 
-	to_chat(src, "<span class='warning'>If the title screen is black, resources are still downloading. Please be patient until the title screen appears.</span>")
+	DIRECT_OUTPUT(src, "<span class='warning'>If the title screen is black and chat is broken, resources are still downloading. Please be patient until the title screen appears.</span>")
 	GLOB.clients += src
 	GLOB.ckey_directory[ckey] = src
+
 
 	//Admin Authorisation
 	var/datum/admins/admin_datum = admin_datums[ckey]
@@ -216,7 +203,7 @@
 			message_admins("<span class='adminnotice'>Panic Bunker: ([key] | age [player_age]) - attempted to connect. Redirected to [config.panic_server_name ? config.panic_server_name : config.panic_address]</span>")
 			to_chat(src, "<span class='notice'>Server is already full. Sending you to [config.panic_server_name ? config.panic_server_name : config.panic_address].</span>")
 			winset(src, null, "command=.options")
-			src << link("[config.panic_address]?redirect")
+			send_link(src, "[config.panic_address]?redirect")
 		else
 			log_access("Panic Bunker: ([key] | age [player_age]) - attempted to connect. Redirecting is not configured.")
 			message_admins("<span class='adminnotice'>Panic Bunker: ([key] | age [player_age]) - Redirecting is not configured.</span>")
@@ -224,7 +211,7 @@
 		return
 
 	// Load EAMS data
-	EAMS_CollectData()
+	SSeams.CollectDataForClient(src)
 
 	//preferences datum - also holds some persistant data for the client (because we may as well keep these datums to a minimum)
 	prefs = SScharacter_setup.preferences_datums[ckey]
@@ -286,6 +273,19 @@
 
 	if(get_preference_value(/datum/client_preference/fullscreen_mode) != GLOB.PREF_NO)
 		toggle_fullscreen(get_preference_value(/datum/client_preference/fullscreen_mode))
+
+	if(config.player_limit && is_player_rejected_by_player_limit(usr, ckey))
+		if(config.panic_address && TopicData != "redirect")
+			DIRECT_OUTPUT(src, SPAN_WARNING("<h1>This server is currently full and not accepting new connections. Sending you to [config.panic_server_name ? config.panic_server_name : config.panic_address]</h1>"))
+			winset(src, null, "command=.options")
+			send_link(src, "[config.panic_address]?redirect")
+
+		else
+			DIRECT_OUTPUT(src, SPAN_WARNING("<h1>This server is currently full and not accepting new connections.</h1>"))
+
+		log_admin("[ckey] tried to join but the server is full (player_limit=[config.player_limit])")
+		qdel(src)
+		return
 
 /*	if(holder)
 		src.control_freak = 0 //Devs need 0 for profiler access
@@ -445,7 +445,6 @@
 	spawn (10) //removing this spawn causes all clients to not get verbs.
 		if(!src) // client disconnected
 			return
-		log_debug_verbose("\[ASSETS\] Start sending resources for [ckey].")
 
 		var/list/priority_assets = list()
 		var/list/other_assets = list()
@@ -462,10 +461,7 @@
 
 		for(var/datum/asset/D in (priority_assets + other_assets))
 			if (!D.send_slow(src)) //Precache the client with all other assets slowly, so as to not block other browse() calls
-				log_debug_verbose("\[ASSETS\] Failed to sent resources to [ckey]![src ? " Reason is client was disconnected!" : ""]")
 				return
-
-		log_debug_verbose("\[ASSETS\] Resources for [ckey] were sended!")
 
 mob/proc/MayRespawn()
 	return 0
@@ -588,3 +584,8 @@ client/verb/character_setup()
 
 		pct += delta
 		winset(src, "mainwindow.mainvsplit", "splitter=[pct]")
+
+/client/verb/release_shift()
+	set name = ".release_shift"
+
+	shift_released_at = world.time

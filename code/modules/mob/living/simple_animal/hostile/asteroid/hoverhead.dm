@@ -40,10 +40,10 @@
 /mob/living/simple_animal/hostile/asteroid/hoverhead/AttackingTarget()
 	OpenFire()
 
-/mob/living/simple_animal/hostile/asteroid/hoverhead/death(gibbed)
-	new /obj/item/asteroid/anomalous_core(src.loc)
-	mouse_opacity = 1
-	..(gibbed)
+/mob/living/simple_animal/hostile/asteroid/hoverhead/death(gibbed, deathmessage, show_dead_message)
+	. = ..()
+	if(.)
+		new /obj/item/asteroid/anomalous_core(src.loc)
 
 
 
@@ -119,5 +119,6 @@
 			else
 				to_chat(user, "<span class='notice'>You start to smear [src] on yourself. You feel burst of energy coming through your whole body. At first it feels like torture, but then it feels good.</span>")
 			H.revive()
+			make_inert(src)
 			qdel(src)
 	..()

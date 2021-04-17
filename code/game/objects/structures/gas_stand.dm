@@ -3,6 +3,7 @@
 	icon = 'icons/obj/gas_stand.dmi'
 	desc = "Gas stand with retractable gas mask."
 	icon_state = "gas_stand_idle"
+	pull_slowdown = PULL_SLOWDOWN_TINY
 
 	var/obj/item/weapon/tank/tank
 	var/mob/living/carbon/breather
@@ -36,8 +37,8 @@
 			overlays += "tank_nitro"
 		else if(istype(tank,/obj/item/weapon/tank/oxygen))
 			overlays += "tank_oxyg"
-		else if(istype(tank,/obj/item/weapon/tank/phoron))
-			overlays += "tank_phoron"
+		else if(istype(tank,/obj/item/weapon/tank/plasma))
+			overlays += "tank_plasma"
 		else if(istype(tank,/obj/item/weapon/tank/hydrogen))
 			overlays += "tank_hydro"
 		else
@@ -53,7 +54,7 @@
 		qdel(tank)
 	if(breather)
 		breather.remove_from_mob(contained)
-		src.visible_message("<span class='notice'>The mask rapidly retracts just before /the [src] is destroyed!</span>")
+		src.visible_message("<span class='notice'>The mask rapidly retracts just before \the [src] is destroyed!</span>")
 	qdel(contained)
 	contained = null
 	breather = null
@@ -105,7 +106,7 @@
 				breather.internal = tank
 				if(breather.internals)
 					breather.internals.icon_state = "internal1"
-			valve_opened = TRUE	
+			valve_opened = TRUE
 			playsound(get_turf(src), 'sound/effects/internals.ogg', 100, 1)
 			update_icon()
 			START_PROCESSING(SSobj,src)
@@ -187,12 +188,12 @@
 	. = ..()
 	if(tank)
 		if (!is_loosen)
-			to_chat(user, "\The [tank] connected to it.")
-		to_chat(user, "The meter shows [round(tank.air_contents.return_pressure())]. The valve is [valve_opened == TRUE ? "open" : "closed"].")
+			. += "\n\The [tank] connected to it."
+		. += "\nThe meter shows [round(tank.air_contents.return_pressure())]. The valve is [valve_opened == TRUE ? "open" : "closed"]."
 		if (tank.distribute_pressure == 0)
-			to_chat(user, "Use wrench to replace tank.")
+			. += "\nUse wrench to replace tank."
 	else
-		to_chat(user, "<span class='warning'>It is missing a tank!</span>")
+		. += "\n<span class='warning'>It is missing a tank!</span>"
 
 /obj/structure/gas_stand/Process()
 	if(breather)

@@ -176,7 +176,7 @@
 		ram_turf(get_turf(A))
 		get_hit() //should only get hit once per move attempt
 
-/obj/effect/meteor/CanPass(atom/movable/mover, turf/target, height=0, air_group=0)
+/obj/effect/meteor/CanPass(atom/movable/mover, turf/target)
 	return istype(mover, /obj/effect/meteor) ? 1 : ..()
 
 /obj/effect/meteor/proc/ram_turf(turf/T)
@@ -263,7 +263,7 @@
 	icon_state = "flaming"
 	hits = 5
 	heavy = 1
-	meteordrop = /obj/item/weapon/ore/phoron
+	meteordrop = /obj/item/weapon/ore/plasma
 
 /obj/effect/meteor/flaming/meteor_effect()
 	..()

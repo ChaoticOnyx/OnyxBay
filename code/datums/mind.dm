@@ -49,12 +49,13 @@
 
 	var/list/datum/objective/objectives = list()
 	var/list/datum/objective/special_verbs = list()
+	var/syndicate_awareness = SYNDICATE_UNAWARE
 
 	var/has_been_rev = 0//Tracks if this mind has been a rev or not
 
 	var/datum/faction/faction 			//associated faction
 	var/datum/changeling/changeling		//changeling holder
-
+	var/datum/vampire/vampire 			//vampire holder
 	var/rev_cooldown = 0
 
 	// the world.time since the mob has been brigged, or -1 if not at all
@@ -65,6 +66,7 @@
 
 	//used for optional self-objectives that antagonists can give themselves, which are displayed at the end of the round.
 	var/ambitions
+	var/was_antag_given_by_storyteller = FALSE
 
 	//used to store what traits the player had picked out in their preferences before joining, in text form.
 	var/list/traits = list()
@@ -84,11 +86,13 @@
 
 /datum/mind/proc/transfer_to(mob/living/new_character)
 	if(!istype(new_character))
-		world.log << "## DEBUG: transfer_to(): Some idiot has tried to transfer_to() a non mob/living mob. Please inform Carn"
+		to_world_log("## DEBUG: transfer_to(): Some idiot has tried to transfer_to() a non mob/living mob. Please inform developers.")
 	if(current)					//remove ourself from our old body's mind variable
 		if(changeling)
 			current.remove_changeling_powers()
 			current.verbs -= /datum/changeling/proc/EvolutionMenu
+		if(vampire)
+			current.remove_vampire_powers()
 		current.mind = null
 
 		SSnano.user_transferred(current, new_character) // transfer active NanoUI instances to new user
@@ -103,6 +107,9 @@
 
 	if(changeling)
 		new_character.make_changeling()
+
+	if(vampire)
+		new_character.make_vampire()
 
 	if(active)
 		new_character.key = key		//now transfer the key to link the client to our new body
@@ -123,7 +130,7 @@
 			obj_count++
 	if(ambitions)
 		output += "<HR><B>Ambitions:</B> [ambitions]<br>"
-	recipient << browse(output,"window=memory")
+	show_browser(recipient, output,"window=memory")
 
 /datum/mind/proc/edit_memory()
 	if(GAME_STATE <= RUNLEVEL_SETUP)
@@ -159,7 +166,7 @@
 		out += "None."
 	out += "<br><a href='?src=\ref[src];obj_add=1'>\[add\]</a><br><br>"
 	out += "<b>Ambitions:</b> [ambitions ? ambitions : "None"] <a href='?src=\ref[src];amb_edit=\ref[src]'>\[edit\]</a></br>"
-	usr << browse(out, "window=edit_memory[src]")
+	show_browser(usr, out, "window=edit_memory[src]")
 
 /datum/mind/Topic(href, href_list)
 	if(!check_rights(R_ADMIN))	return
@@ -233,7 +240,7 @@
 			if(!def_value)//If it's a custom objective, it will be an empty string.
 				def_value = "custom"
 
-		var/new_obj_type = input("Select objective type:", "Objective type", def_value) as null|anything in list("assassinate", "debrain", "protect", "prevent", "harm", "brig", "hijack", "escape", "survive", "steal", "download", "mercenary", "capture", "absorb", "custom")
+		var/new_obj_type = input("Select objective type:", "Objective type", def_value) as null|anything in list("assassinate", "debrain", "protect", "prevent", "harm", "brig", "hijack", "escape", "survive", "steal", "download", "nuke", "capture", "absorb", "custom")
 		if (!new_obj_type) return
 
 		var/datum/objective/new_objective = null
@@ -287,7 +294,7 @@
 				new_objective = new /datum/objective/survive
 				new_objective.owner = src
 
-			if ("mercenary")
+			if ("nuke")
 				new_objective = new /datum/objective/nuclear
 				new_objective.owner = src
 
@@ -454,26 +461,32 @@
 	var/turf/T = current.loc
 	if(!istype(T))
 		brigged_since = -1
-		return 0
-	var/is_currently_brigged = 0
-	if(istype(T.loc,/area/security/brig))
-		is_currently_brigged = 1
+		return FALSE
+
+	var/is_currently_brigged = FALSE
+	if(istype(T.loc, /area/security/brig) || istype(T.loc, /area/security/prison))
+		is_currently_brigged = TRUE
 		for(var/obj/item/weapon/card/id/card in current)
-			is_currently_brigged = 0
-			break // if they still have ID they're not brigged
+			is_currently_brigged = FALSE
+			break
 		for(var/obj/item/device/pda/P in current)
 			if(P.id)
-				is_currently_brigged = 0
-				break // if they still have ID they're not brigged
+				is_currently_brigged = FALSE
+				break
+		if (player_is_antag(src) && find_syndicate_uplink())
+			is_currently_brigged = FALSE
 
-	if(!is_currently_brigged)
+	if (!is_currently_brigged)
 		brigged_since = -1
-		return 0
+		return FALSE
 
-	if(brigged_since == -1)
+	if (is_currently_brigged && brigged_since == -1)
 		brigged_since = world.time
 
-	return (duration <= world.time - brigged_since)
+	if (!duration)
+		return TRUE
+	else
+		return duration <= world.time - brigged_since
 
 /datum/mind/proc/reset()
 	assigned_role =   null
@@ -483,6 +496,7 @@
 	//faction =       null //Uncommenting this causes a compile error due to 'undefined type', fucked if I know.
 	changeling =      null
 	initial_account = null
+	vampire =         null
 	objectives =      list()
 	special_verbs =   list()
 	has_been_rev =    0

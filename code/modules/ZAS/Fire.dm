@@ -24,7 +24,7 @@ turf/proc/hotspot_expose(exposed_temperature, exposed_volume, soh = 0)
 	if(locate(/obj/fire) in src)
 		return 1
 	var/datum/gas_mixture/air_contents = return_air()
-	if(!air_contents || exposed_temperature < PHORON_MINIMUM_BURN_TEMPERATURE)
+	if(!air_contents || exposed_temperature < PLASMA_MINIMUM_BURN_TEMPERATURE)
 		return 0
 
 	var/igniting = 0
@@ -171,7 +171,7 @@ turf/proc/hotspot_expose(exposed_temperature, exposed_volume, soh = 0)
 					continue
 
 				//Spread the fire.
-				if(prob( 50 + 50 * (firelevel/vsc.fire_firelevel_multiplier) ) && my_tile.CanPass(null, enemy_tile, 0,0) && enemy_tile.CanPass(null, my_tile, 0,0))
+				if(prob(50 + 50 * (firelevel / vsc.fire_firelevel_multiplier)) && my_tile.CanPass(src, enemy_tile) && enemy_tile.CanPass(src, my_tile))
 					enemy_tile.create_fire(firelevel)
 
 			else
@@ -195,6 +195,9 @@ turf/proc/hotspot_expose(exposed_temperature, exposed_volume, soh = 0)
 
 	firelevel = fl
 	SSair.active_hotspots.Add(src)
+
+	if (fl >= 2)
+		playsound(src.loc, "fuel_explosion", 50, FALSE, 15)
 
 /obj/fire/proc/fire_color(env_temperature)
 	var/temperature = max(4000*sqrt(firelevel/vsc.fire_firelevel_multiplier), env_temperature)
@@ -223,7 +226,7 @@ turf/proc/hotspot_expose(exposed_temperature, exposed_volume, soh = 0)
 //Returns the firelevel
 /datum/gas_mixture/proc/zburn(zone/zone, force_burn, no_check = 0)
 	. = 0
-	if((temperature > PHORON_MINIMUM_BURN_TEMPERATURE || force_burn) && (no_check ||check_recombustability(zone? zone.fuel_objs : null)))
+	if((temperature > PLASMA_MINIMUM_BURN_TEMPERATURE || force_burn) && (no_check ||check_recombustability(zone? zone.fuel_objs : null)))
 
 		#ifdef FIREDBG
 		log_debug("***************** FIREDBG *****************")

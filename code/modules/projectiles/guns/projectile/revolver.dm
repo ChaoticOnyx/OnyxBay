@@ -186,9 +186,9 @@
 /obj/item/weapon/gun/projectile/revolver/m2019/detective/examine(mob/user)
 	. = ..()
 	if(!bcell)
-		to_chat(user, "\The [src] has no power cell installed.")
+		. += "\n\The [src] has no power cell installed."
 	else
-		to_chat(user, "\The [src] is [round(bcell.percent())]% charged.")
+		. += "\n\The [src] is [round(bcell.percent())]% charged."
 
 /obj/item/weapon/gun/projectile/revolver/m2019/detective/consume_next_projectile()
 	if(chamber_offset)
@@ -232,7 +232,7 @@
 	insert_cell(C, user)
 	return 1
 /obj/item/weapon/gun/projectile/revolver/m2019/detective/proc/usecharge(UC)
-	if(bcell)
+	if(bcell && chambered?.BB)
 		if(bcell.checked_use(UC))
 			return 1
 		else

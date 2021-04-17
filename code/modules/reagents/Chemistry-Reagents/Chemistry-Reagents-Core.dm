@@ -131,6 +131,7 @@
 	taste_description = "water"
 	glass_name = "water"
 	glass_desc = "The father of all refreshments."
+	var/slippery = 1
 
 /datum/reagent/water/affect_blood(mob/living/carbon/M, alien, removed)
 	if(!istype(M, /mob/living/carbon/slime) && alien != IS_SLIME)
@@ -161,13 +162,13 @@
 	if(flamer && !istype(T, /turf/space))
 		qdel(flamer)
 
-	if (environment && environment.temperature > min_temperature) // Abstracted as steam or something
+	if(environment && environment.temperature > min_temperature) // Abstracted as steam or something
 		var/removed_heat = between(0, volume * WATER_LATENT_HEAT, -environment.get_thermal_energy_change(min_temperature))
 		environment.add_thermal_energy(-removed_heat)
-		if (prob(5))
+		if(prob(5))
 			T.visible_message("<span class='warning'>The water sizzles as it lands on \the [T]!</span>")
 
-	else if(volume >= 10)
+	else if(volume >= 10 && slippery)
 		var/turf/simulated/S = T
 		S.wet_floor(1, TRUE)
 
@@ -202,6 +203,13 @@
 	if(M.chem_doses[type] == removed)
 		M.visible_message("<span class='warning'>[S]'s flesh sizzles where the water touches it!</span>", "<span class='danger'>Your flesh burns in the water!</span>")
 		M.confused = max(M.confused, 2)
+
+/datum/reagent/water/firefoam
+	name = "Firefighting foam"
+	description = "A substance used for fire suppression. Its role is to cool the fire and to coat the fuel, preventing its contact with oxygen, resulting in suppression of the combustion."
+	taste_description = "foamy dryness"
+	color = "#e2e2e2"
+	slippery = 0
 
 /datum/reagent/fuel
 	name = "Welding fuel"

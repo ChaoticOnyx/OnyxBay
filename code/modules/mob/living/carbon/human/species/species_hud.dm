@@ -4,6 +4,7 @@
 	var/has_m_intent = 1  	// Set to draw move intent box.
 	var/has_warnings = 1  	// Set to draw environment warnings.
 	var/has_health = 1      // Set to draw health.
+	var/has_pain = 1		// Draw the pain indicator.
 	var/has_pressure = 1  	// Draw the pressure indicator.
 	var/has_nutrition = 1 	// Draw the nutrition indicator.
 	var/has_bodytemp = 1  	// Draw the bodytemp indicator.
@@ -14,6 +15,7 @@
 	var/has_block = 1	  	// Set to draw block button.
 	var/has_blockswitch = 1	// Set to draw blocking hand button.
 	var/has_internals = 1 	// Set to draw the internals toggle button.
+	var/has_rest = 1 // Set to draw the rest button.
 	var/list/equip_slots = list() // Checked by mob_can_equip().
 
 	// Contains information on the position and tag for all inventory slots
@@ -57,6 +59,7 @@
 
 /datum/hud_data/diona
 	has_internals = 0
+	has_rest = 0
 	gear = list(
 		"i_clothing" =   list("loc" = ui_iclothing, "name" = "Uniform",      "slot" = slot_w_uniform, "state" = "center", "toggle" = 1),
 		"o_clothing" =   list("loc" = ui_shoes,     "name" = "Suit",         "slot" = slot_wear_suit, "state" = "suit",   "toggle" = 1),
@@ -73,6 +76,7 @@
 
 /datum/hud_data/nabber
 	has_internals = 0
+	has_rest = 0
 	gear = list(
 		"i_clothing" =   list("loc" = ui_iclothing, "name" = "Uniform",      "slot" = slot_w_uniform, "state" = "center", "toggle" = 1),
 		"o_clothing" =   list("loc" = ui_shoes,     "name" = "Suit",         "slot" = slot_wear_suit, "state" = "suit",   "toggle" = 1),
@@ -93,6 +97,6 @@
 		"storage2" =     list("loc" = ui_storage2,  "name" = "Right Pocket", "slot" = slot_r_store,   "state" = "pocket"),
 		"head" =         list("loc" = ui_head,      "name" = "Hat",          "slot" = slot_head,      "state" = "hair",   "toggle" = 1),
 		"mask" =         list("loc" = ui_shoes,     "name" = "Mask", "slot" = slot_wear_mask, "state" = "mask",  "toggle" = 1),
-		"eyes" =         list("loc" = ui_glasses,   "name" = "Glasses",      "slot" = slot_glasses,   "state" = "glasses","toggle" = 1),		
+		"eyes" =         list("loc" = ui_glasses,   "name" = "Glasses",      "slot" = slot_glasses,   "state" = "glasses","toggle" = 1),
 		"back" =         list("loc" = ui_sstore1,   "name" = "Back", "slot" = slot_back,      "state" = "back"),
 		)

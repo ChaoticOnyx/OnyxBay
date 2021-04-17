@@ -37,6 +37,13 @@
 	containertype = /obj/structure/largecrate/animal/corgi
 	containername = "\improper Corgi crate"
 
+/decl/hierarchy/supply_pack/hydroponics/parrot
+	name = "Parrot crate"
+	contains = list()
+	cost = 40
+	containertype = /obj/structure/largecrate/animal/parrot
+	containername = "\improper Parrot crate"
+
 //farm animals - useless and annoying, but potentially a good source of food. expensive because they're live animals and their produce is available cheaper
 /decl/hierarchy/supply_pack/hydroponics/cow
 	name = "Cow crate"
@@ -126,6 +133,13 @@
 	cost = 8
 	containertype = /obj/structure/largecrate
 	containername = "\improper water tank crate"
+
+/decl/hierarchy/supply_pack/hydroponics/composttank
+	name = "Compost tank crate"
+	contains = list(/obj/structure/reagent_dispensers/composttank)
+	cost = 10
+	containertype = /obj/structure/largecrate
+	containername = "\improper compost tank crate"
 
 /decl/hierarchy/supply_pack/hydroponics/bee_keeper
 	name = "Beekeeping crate"

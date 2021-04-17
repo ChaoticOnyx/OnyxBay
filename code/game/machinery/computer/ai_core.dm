@@ -2,7 +2,7 @@
 	density = 1
 	anchored = 0
 	name = "\improper AI core"
-	icon = 'icons/mob/AI.dmi'
+	icon = 'icons/mob/ai.dmi'
 	icon_state = "0"
 	var/state = 0
 	var/datum/ai_laws/laws = new /datum/ai_laws/nanotrasen
@@ -12,6 +12,7 @@
 
 /obj/structure/AIcore/emag_act(remaining_charges, mob/user, emag_source)
 	if(!authorized)
+		playsound(src.loc, 'sound/effects/computer_emag.ogg', 25)
 		to_chat(user, "<span class='warning'>You swipe [emag_source] at [src] and jury rig it into the systems of [GLOB.using_map.full_name]!</span>")
 		authorized = 1
 		return 1
@@ -203,7 +204,7 @@
 
 /obj/structure/AIcore/deactivated
 	name = "inactive AI"
-	icon = 'icons/mob/AI.dmi'
+	icon = 'icons/mob/ai.dmi'
 	icon_state = "ai-empty"
 	anchored = 1
 	state = 20//So it doesn't interact based on the above. Not really necessary.

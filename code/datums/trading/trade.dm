@@ -33,7 +33,7 @@
 
 	*/
 	var/want_multiplier = 2                                     //How much wanted items are multiplied by when traded for
-	var/margin = 1.2											//Multiplier to price when selling to player
+	var/margin = 1  											//Multiplier to price when selling to player
 	var/insult_drop = 5                                         //How far disposition drops on insult
 	var/compliment_increase = 5                                 //How far compliments increase disposition
 	var/refuse_comms = 0                                        //Whether they refuse further communication
@@ -52,7 +52,7 @@
 	if(possible_origins && possible_origins.len)
 		origin = pick(possible_origins)
 
-	for(var/i in 3 to 6)
+	for(var/i in 5 to 8)
 		add_to_pool(trading_items, possible_trading_items, force = 1)
 		add_to_pool(wanted_items, possible_wanted_items, force = 1)
 
@@ -120,7 +120,7 @@
 	if(!trading_items[trading_items[trading_num]])
 		var/type = trading_items[trading_num]
 		var/value = get_value(type)
-		value = round(rand(90,110)/100 * value) //For some reason rand doesn't like decimals.
+		value = round(rand(80,100)/100 * value) //For some reason rand doesn't like decimals.
 		trading_items[type] = margin*value
 	return trading_items[trading_items[trading_num]]
 
@@ -203,16 +203,16 @@
 	return get_response("compliment_accept", "Thank you!")
 
 /datum/trader/proc/trade(list/offers, num, turf/location)
-	if(offers && offers.len)
-		for(var/offer in offers)
-			if(istype(offer,/mob))
-				var/text = mob_transfer_message
-				to_chat(offer, replacetext(text, "ORIGIN", origin))
-			if(istype(offer, /obj/mecha))
-				var/obj/mecha/M = offer
-				M.wreckage = null //So they don't ruin the illusion
-			qdel(offer)
+	for(var/offer in offers)
+		if(istype(offer, /mob))
+			var/text = mob_transfer_message
+			to_chat(offer, replacetext(text, "ORIGIN", origin))
+		if(istype(offer, /obj/mecha))
+			var/obj/mecha/M = offer
+			M.wreckage = null //So they don't ruin the illusion
+		qdel(offer)
 
+	num = Clamp(num, 1, trading_items.len)
 	var/type = trading_items[num]
 
 	var/atom/movable/M = new type(location)
@@ -223,8 +223,9 @@
 	return M
 
 /datum/trader/proc/how_much_do_you_want(num)
+	num = Clamp(num, 1, trading_items.len)
 	var/atom/movable/M = trading_items[num]
-	. = get_response("how_much", "Hmm.... how about VALUE thalers?")
+	. = get_response("how_much", "Hmm.... how about VALUE credits?")
 	. = replacetext(.,"VALUE",get_item_value(num))
 	. = replacetext(.,"ITEM", initial(M.name))
 

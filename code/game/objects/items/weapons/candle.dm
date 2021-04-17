@@ -26,12 +26,12 @@
 
 /obj/item/weapon/flame/candle/attackby(obj/item/weapon/W, mob/user)
 	..()
-	if(isflamesource(W) || is_hot(W))
-		light()
+	if(W.get_temperature_as_from_ignitor())
+		light(user)
 
 /obj/item/weapon/flame/candle/resolve_attackby(atom/A, mob/user)
 	. = ..()
-	if(istype(A, /obj/item/weapon/flame/candle/) && is_hot(src))
+	if(istype(A, /obj/item/weapon/flame/candle) && get_temperature_as_from_ignitor())
 		var/obj/item/weapon/flame/candle/other_candle = A
 		other_candle.light()
 

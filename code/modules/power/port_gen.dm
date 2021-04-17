@@ -54,12 +54,14 @@
 		return
 
 /obj/machinery/power/port_gen/examine(mob/user)
-	if(!..(user,1 ))
+	. = ..()
+	if(get_dist(src, user) > 1)
 		return
 	if(active)
-		to_chat(usr, "<span class='notice'>The generator is on.</span>")
+		. += "\n<span class='notice'>The generator is on.</span>"
 	else
-		to_chat(usr, "<span class='notice'>The generator is off.</span>")
+		. += "\n<span class='notice'>The generator is off.</span>"
+
 /obj/machinery/power/port_gen/emp_act(severity)
 	if(!active)
 		return
@@ -90,15 +92,15 @@
 //A power generator that runs on solid plasma sheets.
 /obj/machinery/power/port_gen/pacman
 	name = "\improper P.A.C.M.A.N.-type Portable Generator"
-	desc = "A power generator that runs on solid phoron sheets. Rated for 80 kW max safe output."
+	desc = "A power generator that runs on solid plasma sheets. Rated for 80 kW max safe output."
 
-	var/sheet_name = "Phoron Sheets"
-	var/sheet_path = /obj/item/stack/material/phoron
+	var/sheet_name = "Plasma Sheets"
+	var/sheet_path = /obj/item/stack/material/plasma
 	var/board_path = /obj/item/weapon/circuitboard/pacman
 
 	/*
 		These values were chosen so that the generator can run safely up to 80 kW
-		A full 50 phoron sheet stack should last 20 minutes at power_output = 4
+		A full 50 plasma sheet stack should last 20 minutes at power_output = 4
 		temperature_gain and max_temperature are set so that the max safe power level is 4.
 		Setting to 5 or higher can only be done temporarily before the generator overheats.
 	*/
@@ -147,11 +149,14 @@
 	power_gen = round(initial(power_gen) * (max(2, temp_rating) / 2))
 
 /obj/machinery/power/port_gen/pacman/examine(mob/user)
-	. = ..(user)
-	to_chat(user, "\The [src] appears to be producing [power_gen*power_output] W.")
-	to_chat(user, "There [sheets == 1 ? "is" : "are"] [sheets] sheet\s left in the hopper.")
-	if(IsBroken()) to_chat(user, "<span class='warning'>\The [src] seems to have broken down.</span>")
-	if(overheating) to_chat(user, "<span class='danger'>\The [src] is overheating!</span>")
+	. = ..()
+	. += "\n\The [src] appears to be producing [power_gen*power_output] W."
+	. += "\nThere [sheets == 1 ? "is" : "are"] [sheets] sheet\s left in the hopper."
+	if(IsBroken())
+		. += "\n<span class='warning'>\The [src] seems to have broken down.</span>"
+	if(overheating)
+		. += "\n<span class='danger'>\The [src] is overheating!</span>"
+
 /obj/machinery/power/port_gen/pacman/HasFuel()
 	var/needed_sheets = power_output / time_per_sheet
 	if(sheets >= needed_sheets - sheet_left)
@@ -238,13 +243,13 @@
 		explode()
 
 /obj/machinery/power/port_gen/pacman/explode()
-	//Vapourize all the phoron
-	//When ground up in a grinder, 1 sheet produces 20 u of phoron -- Chemistry-Machinery.dm
+	//Vapourize all the plasma
+	//When ground up in a grinder, 1 sheet produces 20 u of plasma -- Chemistry-Machinery.dm
 	//1 mol = 10 u? I dunno. 1 mol of carbon is definitely bigger than a pill
-	var/phoron = (sheets+sheet_left)*20
+	var/plasma = (sheets+sheet_left)*20
 	var/datum/gas_mixture/environment = loc.return_air()
 	if (environment)
-		environment.adjust_gas_temp("phoron", phoron/10, temperature + T0C)
+		environment.adjust_gas_temp("plasma", plasma/10, temperature + T0C)
 
 	sheets = 0
 	sheet_left = 0
@@ -255,6 +260,7 @@
 		explode() //if they're foolish enough to emag while it's running
 
 	if (!emagged)
+		playsound(src.loc, 'sound/effects/computer_emag.ogg', 25)
 		emagged = 1
 		return 1
 
@@ -353,7 +359,7 @@
 	if (get_dist(src, user) > 1 )
 		if (!istype(user, /mob/living/silicon/ai))
 			user.unset_machine()
-			user << browse(null, "window=port_gen")
+			close_browser(user, "window=port_gen")
 			return
 
 	user.set_machine(src)
@@ -372,7 +378,7 @@
 	var/tempstr = "Temperature: [temperature]&deg;C<br>"
 	dat += (overheating)? "<span class='danger'>[tempstr]</span>" : tempstr
 	dat += "<br><A href='?src=\ref[src];action=close'>Close</A>"
-	user << browse("[dat]", "window=port_gen")
+	show_browser(user, "[dat]", "window=port_gen")
 	onclose(user, "port_gen")
 */
 
@@ -459,8 +465,8 @@
 	..()
 
 /obj/machinery/power/port_gen/pacman/super/potato/examine(mob/user)
-	..()
-	to_chat(user, "Auxilary tank shows [reagents.total_volume]u of liquid in it.")
+	. = ..()
+	. += "\nAuxilary tank shows [reagents.total_volume]u of liquid in it."
 
 /obj/machinery/power/port_gen/pacman/super/potato/UseFuel()
 	if(reagents.has_reagent("vodka"))

@@ -566,11 +566,11 @@ obj/structure/cable/proc/cableColor(colorC)
 		return
 
 	if(get_amount() == 1)
-		to_chat(user, "A short piece of power cable.")
+		. += "\nA short piece of power cable."
 	else if(get_amount() == 2)
-		to_chat(user, "A piece of power cable.")
+		. += "\nA piece of power cable."
 	else
-		to_chat(user, "A coil of power cable. There are [get_amount()] lengths of cable in the coil.")
+		. += "\nA coil of power cable. There are [get_amount()] lengths of cable in the coil."
 
 
 /obj/item/stack/cable_coil/verb/make_restraint()

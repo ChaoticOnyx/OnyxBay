@@ -34,6 +34,7 @@
 	circuit = /obj/item/weapon/circuitboard/turbine_control
 	anchored = 1
 	density = 1
+	can_atmos_pass = ATMOS_PASS_PROC
 	var/obj/machinery/compressor/compressor
 	var/list/obj/machinery/door/blast/doors
 	var/id = 0
@@ -115,6 +116,10 @@
 		compressor = null
 	return ..()
 
+// When anchored, don't let air past us
+/obj/machinery/compressor/CanZASPass(turf/T, is_zone)
+	return !anchored
+
 #define TURBPRES 9000000
 #define TURBGENQ 20000
 #define TURBGENG 0.8
@@ -152,7 +157,7 @@
 
 	if ( (get_dist(src, user) > 1 ) || (stat & (NOPOWER|BROKEN)) && (!istype(user, /mob/living/silicon/ai)) )
 		user.machine = null
-		user << browse(null, "window=turbine")
+		close_browser(user, "window=turbine")
 		return
 
 	user.machine = src
@@ -168,7 +173,7 @@
 	t += "</PRE><HR><A href='?src=\ref[src];close=1'>Close</A>"
 
 	t += "</TT>"
-	user << browse(t, "window=turbine")
+	show_browser(user, t, "window=turbine")
 	onclose(user, "turbine")
 
 	return
@@ -181,7 +186,7 @@
 
 /obj/machinery/power/turbine/OnTopic(user, href_list)
 	if(href_list["close"])
-		usr << browse(null, "window=turbine")
+		close_browser(usr, "window=turbine")
 		return TOPIC_HANDLED
 
 	if(href_list["str"])
@@ -230,7 +235,7 @@
 	else
 		dat += "<span class='danger'>No compatible attached compressor found.</span>"
 
-	user << browse(dat, "window=computer;size=400x500")
+	show_browser(user, dat, "window=computer;size=400x500")
 	onclose(user, "computer")
 	return
 
@@ -255,7 +260,7 @@
 					door_status = 0
 		. = TOPIC_REFRESH
 	else if( href_list["close"] )
-		user << browse(null, "window=computer")
+		close_browser(user, "window=computer")
 		return TOPIC_HANDLED
 
 	if(. == TOPIC_REFRESH)

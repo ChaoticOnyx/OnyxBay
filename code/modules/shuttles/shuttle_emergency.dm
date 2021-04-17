@@ -8,10 +8,8 @@
 	emergency_controller = evacuation_controller
 	if(!istype(emergency_controller))
 		CRASH("Escape shuttle created without the appropriate controller type.")
-		return
 	if(emergency_controller.shuttle)
 		CRASH("An emergency shuttle has already been created.")
-		return
 	emergency_controller.shuttle = src
 
 /datum/shuttle/autodock/ferry/emergency/arrived()
@@ -163,6 +161,7 @@
 
 /obj/machinery/computer/shuttle_control/emergency/emag_act(remaining_charges, mob/user)
 	if (!emagged)
+		playsound(src.loc, 'sound/effects/computer_emag.ogg', 25)
 		to_chat(user, "<span class='notice'>You short out \the [src]'s authorization protocols.</span>")
 		emagged = 1
 		return 1

@@ -92,18 +92,21 @@
 	return 1
 
 /obj/machinery/atmospherics/omni/filter/ui_interact(mob/user, ui_key = "main", datum/nanoui/ui = null, force_open = 1)
-	usr.set_machine(src)
+	if(!user)
+		if(ui)
+			ui.close()
+		return
+
+	user.set_machine(src)
 
 	var/list/data = new()
-
 	data = build_uidata()
 
 	ui = SSnano.try_update_ui(user, src, ui_key, ui, data, force_open)
 
-	if (!ui)
+	if(!ui)
 		ui = new(user, src, ui_key, "omni_filter.tmpl", "Omni Filter Control", 330, 330)
 		ui.set_initial_data(data)
-
 		ui.open()
 
 /obj/machinery/atmospherics/omni/filter/proc/build_uidata()
@@ -154,7 +157,7 @@
 		if(ATM_CO2)
 			return "Carbon Dioxide"
 		if(ATM_P)
-			return "Phoron" //*cough* Plasma *cough*
+			return "Plasma"
 		if(ATM_N2O)
 			return "Nitrous Oxide"
 		if(ATM_H2)
@@ -184,7 +187,7 @@
 			if("switch_mode")
 				switch_mode(dir_flag(href_list["dir"]), mode_return_switch(href_list["mode"]))
 			if("switch_filter")
-				var/new_filter = input(usr,"Select filter mode:","Change filter",href_list["mode"]) in list("None", "Oxygen", "Nitrogen", "Carbon Dioxide", "Phoron", "Nitrous Oxide", "Hydrogen")
+				var/new_filter = input(usr,"Select filter mode:","Change filter",href_list["mode"]) in list("None", "Oxygen", "Nitrogen", "Carbon Dioxide", "Plasma", "Nitrous Oxide", "Hydrogen")
 				switch_filter(dir_flag(href_list["dir"]), mode_return_switch(new_filter))
 
 	update_icon()
@@ -199,7 +202,7 @@
 			return ATM_N2
 		if("Carbon Dioxide")
 			return ATM_CO2
-		if("Phoron")
+		if("Plasma")
 			return ATM_P
 		if("Nitrous Oxide")
 			return ATM_N2O

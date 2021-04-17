@@ -5,6 +5,7 @@ var/list/organ_cache = list()
 	icon = 'icons/obj/surgery.dmi'
 	germ_level = 0
 	w_class = ITEM_SIZE_TINY
+	dir = SOUTH
 
 	// Strings.
 	var/organ_tag = "organ"           // Unique identifier.
@@ -26,6 +27,7 @@ var/list/organ_cache = list()
 	var/rejecting                     // Is this organ already being rejected?
 
 	var/death_time
+
 
 /obj/item/organ/Destroy()
 	owner = null
@@ -64,6 +66,8 @@ var/list/organ_cache = list()
 
 	create_reagents(5 * (w_class-1)**2)
 	reagents.add_reagent(/datum/reagent/nutriment/protein, reagents.maximum_volume)
+
+	src.after_organ_creation()
 
 	update_icon()
 
@@ -130,12 +134,12 @@ var/list/organ_cache = list()
 		return (istype(loc,/obj/item/device/mmi) || istype(loc,/obj/structure/closet/body_bag/cryobag) || istype(loc,/obj/structure/closet/crate/freezer) || istype(loc,/obj/item/weapon/storage/box/freezer) || istype(loc,/mob/living/simple_animal/hostile/little_changeling))
 
 /obj/item/organ/examine(mob/user)
-	. = ..(user)
-	show_decay_status(user)
+	. = ..()
+	. += "\n[show_decay_status(user)]"
 
 /obj/item/organ/proc/show_decay_status(mob/user)
 	if(status & ORGAN_DEAD)
-		to_chat(user, "<span class='notice'>The decay has set into \the [src].</span>")
+		return SPAN_NOTICE("\The [src] looks severely damaged.")
 
 /obj/item/organ/proc/handle_germ_effects()
 	//** Handle the effects of infections
@@ -322,9 +326,9 @@ var/list/organ_cache = list()
 		. += "Genetic Deformation"
 	if(status & ORGAN_DEAD)
 		if(can_recover())
-			. += "Decaying"
+			. += "Critical"
 		else
-			. += "Necrotic"
+			. += "Destroyed"
 	switch (germ_level)
 		if (INFECTION_LEVEL_ONE to INFECTION_LEVEL_ONE + 200)
 			. +=  "Mild Infection"
@@ -342,6 +346,10 @@ var/list/organ_cache = list()
 			. +=  "Septic"
 	if(rejecting)
 		. += "Genetic Rejection"
+
+// special organ instruction for correct functional
+/obj/item/organ/proc/after_organ_creation()
+	return
 
 //used by stethoscope
 /obj/item/organ/proc/listen()

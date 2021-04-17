@@ -215,7 +215,7 @@ var/list/mob/living/forced_ambiance_list = new
 	var/area/newarea = get_area(L.loc)
 	var/area/oldarea = L.lastarea
 	if(oldarea.has_gravity != newarea.has_gravity)
-		if(newarea.has_gravity == 1 && L.m_intent == "run") // Being ready when you change areas allows you to avoid falling.
+		if(newarea.has_gravity == 1 && L.m_intent == M_RUN) // Being ready when you change areas allows you to avoid falling.
 			thunk(L)
 		L.update_floating()
 
@@ -255,12 +255,12 @@ var/list/mob/living/forced_ambiance_list = new
 		if(forced_ambience.len)
 			var/S = get_sfx(pick(forced_ambience))
 			forced_ambiance_list |= L
-			L.playsound_local(T,sound(S, repeat = 1, wait = 0, volume = 60, channel = 1))
+			L.playsound_local(T,sound(S, repeat = 1, wait = 0, volume = 30, channel = 1))
 		else
 			sound_to(L, sound(null, channel = 1))
 	else if(src.ambience.len && prob(35) && (world.time >= L.client.played + custom_period))
 		var/S = get_sfx(pick(ambience))
-		L.playsound_local(T, sound(S, repeat = 0, wait = 0, volume = 60, channel = 1))
+		L.playsound_local(T, sound(S, repeat = 0, wait = 0, volume = 30, channel = 1))
 		L.client.played = world.time
 
 /area/proc/gravitychange(new_state = 0)

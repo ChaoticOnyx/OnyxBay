@@ -25,7 +25,7 @@ var $messages, $subTheme, $subOptions, $subFont, $selectedSub, $contextMenu, $fi
 var opts = {
 	//General
 	'messageCount': 0, //A count...of messages...
-	'messageLimit': 2053, //A limit...for the messages...
+	'messageLimit': 5000, //A limit...for the messages...
 	'scrollSnapTolerance': 10, //If within x pixels of bottom
 	'clickTolerance': 10, //Keep focus if outside x pixels of mousedown position on mouseup
 	'imageRetryDelay': 50, //how long between attempts to reload images (in ms)
@@ -43,6 +43,10 @@ var opts = {
 	'highlightLimit': 5,
 	'highlightColor': '#FFFF00', //The color of the highlighted message
 	'pingDisabled': false, //Has the user disabled the ping counter
+
+	//Spellchecker
+	'spellcheckTerms': '',
+	'spellcheckBlacklist': '',
 
 	//Clicks
 	'mouseDownX': null,
@@ -138,79 +142,6 @@ function linkify_fallback(text) {
 			return $1 ? $0: '<a href="http://'+$0+'">'+$0+'</a>';
 		}
 	});
-}
-
-function rustoutf(str)
-{
-	str = str.replace(/à/g, "&#x430;")
-	str = str.replace(/á/g, "&#x431;")
-	str = str.replace(/â/g, "&#x432;")
-	str = str.replace(/ã/g, "&#x433;")
-	str = str.replace(/ä/g, "&#x434;")
-	str = str.replace(/å/g, "&#x435;")
-	str = str.replace(/¸/g, "&#x451;")
-	str = str.replace(/æ/g, "&#x436;")
-	str = str.replace(/ç/g, "&#x437;")
-	str = str.replace(/è/g, "&#x438;")
-	str = str.replace(/é/g, "&#x439;")
-	str = str.replace(/ê/g, "&#x43A;")
-	str = str.replace(/ë/g, "&#x43B;")
-	str = str.replace(/ì/g, "&#x43C;")
-	str = str.replace(/í/g, "&#x43D;")
-	str = str.replace(/î/g, "&#x43E;")
-	str = str.replace(/ï/g, "&#x43F;")
-	str = str.replace(/ð/g, "&#x440;")
-	str = str.replace(/ñ/g, "&#x441;")
-	str = str.replace(/ò/g, "&#x442;")
-	str = str.replace(/ó/g, "&#x443;")
-	str = str.replace(/ô/g, "&#x444;")
-	str = str.replace(/õ/g, "&#x445;")
-	str = str.replace(/ö/g, "&#x446;")
-	str = str.replace(/÷/g, "&#x447;")
-	str = str.replace(/ø/g, "&#x448;")
-	str = str.replace(/ù/g, "&#x449;")
-	str = str.replace(/ú/g, "&#x44A;")
-	str = str.replace(/û/g, "&#x44B;")
-	str = str.replace(/ü/g, "&#x44C;")
-	str = str.replace(/ý/g, "&#x44D;")
-	str = str.replace(/þ/g, "&#x44E;")
-	str = str.replace(/&#255;/g, "&#1103;")
-	str = str.replace(/À/g, "&#x410;")
-	str = str.replace(/Á/g, "&#x411;")
-	str = str.replace(/Â/g, "&#x412;")
-	str = str.replace(/Ã/g, "&#x413;")
-	str = str.replace(/Ä/g, "&#x414;")
-	str = str.replace(/Å/g, "&#x415;")
-	str = str.replace(/¨/g, "&#x401;")
-	str = str.replace(/Æ/g, "&#x416;")
-	str = str.replace(/Ç/g, "&#x417;")
-	str = str.replace(/È/g, "&#x418;")
-	str = str.replace(/É/g, "&#x419;")
-	str = str.replace(/Ê/g, "&#x41A;")
-	str = str.replace(/Ë/g, "&#x41B;")
-	str = str.replace(/Ì/g, "&#x41C;")
-	str = str.replace(/Í/g, "&#x41D;")
-	str = str.replace(/Î/g, "&#x41E;")
-	str = str.replace(/Ï/g, "&#x41F;")
-	str = str.replace(/Ð/g, "&#x420;")
-	str = str.replace(/Ñ/g, "&#x421;")
-	str = str.replace(/Ò/g, "&#x422;")
-	str = str.replace(/Ó/g, "&#x423;")
-	str = str.replace(/Ô/g, "&#x424;")
-	str = str.replace(/Õ/g, "&#x425;")
-	str = str.replace(/Ö/g, "&#x426;")
-	str = str.replace(/×/g, "&#x427;")
-	str = str.replace(/Ø/g, "&#x428;")
-	str = str.replace(/Ù/g, "&#x429;")
-	str = str.replace(/Ú/g, "&#x42A;")
-	str = str.replace(/Û/g, "&#x42B;")
-	str = str.replace(/Ü/g, "&#x42C;")
-	str = str.replace(/Ý/g, "&#x42D;")
-	str = str.replace(/Þ/g, "&#x42E;")
-	str = str.replace(/ß/g, "&#x42F;")
-	str = str.replace(/׸/g, "Чё")
-
-	return str;
 }
 
 function byondDecode(message) {
@@ -323,7 +254,6 @@ function output(message, flag) {
 	}
 
 	message = byondDecode(message).trim();
-	message = rustoutf(message);
 
 	//The behemoth of filter-code (for Admin message filters)
 	//Note: This is proooobably hella inefficient
@@ -381,10 +311,10 @@ function output(message, flag) {
 
 	//Stuff we do along with appending a message
 	var atBottom = false;
+	var scrollPos = $('body,html').scrollTop();
 	if (!filteredOut) {
 		var bodyHeight = $('body').height();
 		var messagesHeight = $messages.outerHeight();
-		var scrollPos = $('body,html').scrollTop();
 
 		//Should we snap the output to the bottom?
 		if (bodyHeight + scrollPos >= messagesHeight - opts.scrollSnapTolerance) {
@@ -409,9 +339,11 @@ function output(message, flag) {
 	}
 
 	opts.messageCount++;
+	var trimmedHeight = 0;
 
 	//Pop the top message off if history limit reached
 	if (opts.messageCount >= opts.messageLimit) {
+		trimmedHeight = $messages.children('div.entry:first-child').outerHeight();
 		$messages.children('div.entry:first-child').remove();
 		opts.messageCount--; //I guess the count should only ever equal the limit
 	}
@@ -424,7 +356,7 @@ function output(message, flag) {
 	var trimmed_message = entry.textContent || entry.innerText || "";
 
 	var handled = false;
-	if (opts.messageCombining) {
+	if (opts.messageCombining && flag !== 'internal') {
 		var lastmessages = $messages.children('div.entry:last-child').last();
 		if (lastmessages.length && $last_message && $last_message == trimmed_message) {
 			var badge = lastmessages.children('.r').last();
@@ -482,13 +414,15 @@ function output(message, flag) {
 
 		//Actually do the snap
 		//Stuff we can do after the message shows can go here, in the interests of responsiveness
-		if (opts.highlightTerms && opts.highlightTerms.length > 0) {
+		if (opts.highlightTerms && opts.highlightTerms.length > 0 && flag !== 'internal') {
 			highlightTerms(entry);
 		}
 	}
 
 	if (!filteredOut && atBottom) {
 		$('body,html').scrollTop($messages.outerHeight());
+	} else if (trimmedHeight) {
+		$('body,html').scrollTop(scrollPos - trimmedHeight);
 	}
 }
 
@@ -707,6 +641,7 @@ $(function() {
 		'sfont': getCookie('font'),
 		'smessagecombining': getCookie('messagecombining'),
 		'stheme': getCookie('theme'),
+		'sspellBlacklist': getCookie('spellcheckBlacklist'),
 	};
 
 	if (savedConfig.fontsize) {
@@ -743,6 +678,11 @@ $(function() {
 		opts.highlightColor = savedConfig.shighlightColor;
 		internalOutput('<span class="internal boldnshit">Loaded highlight color of: '+savedConfig.shighlightColor+'</span>', 'internal');
 	}
+
+	if (savedConfig.sspellBlacklist) {
+		opts.spellcheckBlacklist = savedConfig.sspellBlacklist;
+	}
+
 	if (savedConfig.sfont) {
 		$('body').css({'font-family': savedConfig.sfont});
 		internalOutput('<span class="internal boldnshit">Loaded font: '+savedConfig.sfont+'</span>', 'internal');
@@ -1081,6 +1021,48 @@ $(function() {
 		setCookie('highlightcolor', opts.highlightColor, 365);
 	});
 
+	$('#spellcheckBlacklist').click(function(e) {
+		if ($('.popup .spellcheckBlacklist').is(':visible')) {return;}
+		var popupContent = '<div class="head">Spellcheck blacklist</div>' +
+			'<div class="spellcheckPopup" id="spellcheckPopup">' +
+				'<div>Написанные здесь слова не будут проверяться на орфогр. ошибки.</div>' +
+				'<div><font size="1">Пример: "цига, карп" - "цигане" и "карпоеб" в вашем сообщении проигнорируются.</font></div>' +
+				'<form id="spellcheckForm">' +
+					'<div><input type="text" name="spellcheckInput" id="spellcheckInput" class="spellcheckInput" maxlength="255" value="'+ opts.spellcheckBlacklist +'" /></div>' +
+					'<div><input type="submit" text-align="center" name="spellcheckSubmit" id="spellcheckSubmit" class="spellcheckSubmit" value="Save" /></div>' +
+				'</form>' +
+			'</div>';
+		createPopup(popupContent, 500);
+	});
+
+	$('body').on('submit', '#spellcheckForm', function(e) {
+		e.preventDefault();
+
+		var term = $('#spellcheckInput').val();
+		if (term) {
+			term = term.trim();
+			if (term === '') {
+				opts.spellcheckBlacklist = '';
+			} else {
+				term = term.toLowerCase().replace(/[^а-яА-Я ]/g, ' ').trim().split(' ');
+				var exceps = [];
+				for (var i = 0, len = term.length; i < len; i++) {
+					if(exceps.indexOf(term[i]) > -1) continue;
+					if(term[i].length >= 3) exceps.push(term[i]);
+				}
+				opts.spellcheckBlacklist = exceps.join(', ');
+			}
+		} else {
+			opts.spellcheckBlacklist = '';
+		}
+
+
+		var $popup = $('#spellcheckPopup').closest('.popup');
+		$popup.remove();
+
+		setCookie('spellcheckBlacklist', opts.spellcheckBlacklist, 365);
+	});
+
 	$('#clearMessages').click(function() {
 		$messages.empty();
 		opts.messageCount = 0;
@@ -1123,3 +1105,95 @@ $(function() {
 	$('#userBar').show();
 	opts.priorChatHeight = $(window).height();
 });
+
+	/*****************************************
+	*
+	* SPELL CHECKER
+	*
+	******************************************/
+
+function setSpellcheckerTerms (data) {
+	if(!data) return;
+	data = byondDecode(data).trim().replace(new RegExp(/\s/g), '|');
+	opts.spellcheckTerms = data;
+}
+
+function spellCheck(text) {
+	if(!text) return;
+
+	text = filterText(text);
+
+	if(text.length > 3) {
+		sendYandexSpellerRequest(encodeURIComponent(text));
+	}
+}
+
+function filterText(text) {
+	text = byondDecode(text);
+	text = text.toLowerCase();
+	text = text.replace(/[^а-яА-Я ]/g, ' ');
+	text = text.replace(/\s+/g, ' ');
+	text = getUniqueWords(text);
+	text = removeBlacklistedWords(text);
+	return text;
+}
+
+function getUniqueWords(text) {
+	var words = text.split(' ');
+	var uniqueWords = [];
+
+	for (var i=0; i < words.length; i++){
+		if(words[i].length <= 3) continue;
+		if(uniqueWords.indexOf(words[i]) > -1) continue; 
+
+		uniqueWords.push(words[i]);
+	}
+	return uniqueWords.join(' ');
+}
+
+function removeBlacklistedWords(text) {
+	var blackList = opts.spellcheckTerms;
+	if (opts.spellcheckBlacklist) {
+		blackList += '|' + opts.spellcheckBlacklist.replace(new RegExp(/,\s*/g), '|');
+	}
+	var regex = '(?:\\s|^)(?:' + blackList + ')\\S*';
+	return text.replace(new RegExp(regex, 'g'), '');
+}
+
+function sendYandexSpellerRequest(text) {
+	var xhr = new XMLHttpRequest();
+	xhr.onreadystatechange = function() {
+		if (this.readyState == 4) {
+			if (xhr.status == 200) {
+				markWords(JSON.parse(xhr.responseText));
+			}
+		}
+	}
+	xhr.open("GET", "http://speller.yandex.net/services/spellservice.json/checkText?options=7&lang=ru&text=" + text, true);
+	xhr.send();
+}
+
+function markWords(data) {
+	if (!data || data === '[]') return;
+	var ToShow = ''; 
+
+	for (var i = 0, len = data.length; i < len; i++) {
+		var subst = data[i];
+		if (subst.s.length === 0) continue;
+
+		var replacement = '';
+		if (ToShow.length) replacement += ', ';
+
+		if(subst.s.length === 1) {
+			replacement += '<span class="line-good">'+subst.s[0]+'</span>';
+		} else {
+			replacement += '<span class="line-sugg">'+subst.s.join(', ')+'</span>';
+		}
+
+		ToShow += replacement+' - <span class="line-bad">'+subst.word+'</span>';
+	}
+
+	if (ToShow.length) {
+		internalOutput('<span class="spellChecker">Возможные орфографические ошибки: '+ToShow+'</span>', 'internal');
+	}
+}

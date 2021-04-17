@@ -25,6 +25,7 @@
 	var/has_custom_product		   // Spawns a custom item instead of regular harvest (i.e. real egg plants).
 	var/force_layer
 	var/customsprite = 0		   // Set to 1 if you want to use a non-paintable harvest icon.
+	var/planter_ckey			   // ckey of player that plant seed.
 
 /datum/seed/New()
 
@@ -425,12 +426,12 @@
 
 	if(prob(5))
 		consume_gasses = list()
-		var/gas = pick("oxygen","nitrogen","phoron","carbon_dioxide")
+		var/gas = pick("oxygen","nitrogen","plasma","carbon_dioxide")
 		consume_gasses[gas] = rand(3,9)
 
 	if(prob(5))
 		exude_gasses = list()
-		var/gas = pick("oxygen","nitrogen","phoron","carbon_dioxide")
+		var/gas = pick("oxygen","nitrogen","plasma","carbon_dioxide")
 		exude_gasses[gas] = rand(3,9)
 
 	chems = list()
@@ -696,7 +697,7 @@
 		if(istype(user)) to_chat(user, "You [harvest_sample ? "take a sample" : "harvest"] from the [display_name].")
 		//This may be a new line. Update the global if it is.
 		if(name == "new line" || !(name in SSplants.seeds))
-			uid = SSplants.seeds.len + 1
+			uid = sequential_id(/datum/seed/)
 			name = "[uid]"
 			SSplants.seeds[name] = src
 

@@ -140,7 +140,7 @@
 
 /obj/machinery/icecream_vat/OnTopic(user, href_list)
 	if(href_list["close"])
-		usr << browse(null,"window=icecreamvat")
+		close_browser(usr, "window=icecreamvat")
 		return TOPIC_HANDLED
 
 	if(href_list["select"])
@@ -188,7 +188,7 @@
 	var/ice_creamed = 0
 	var/cone_type
 
-/obj/item/weapon/reagent_containers/food/snacks/icecream/New()
+/obj/item/weapon/reagent_containers/food/snacks/icecream/Initialize()
 	create_reagents(20)
 	reagents.add_reagent(/datum/reagent/nutriment, 5)
 

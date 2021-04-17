@@ -87,14 +87,6 @@
 		installed = 1
 	return 1
 
-/obj/item/borg/upgrade/remodel/surgeon
-	name = "surgeon model board"
-	module = "Surgeon"
-
-/obj/item/borg/upgrade/remodel/advanced/surgeon
-	name = "advanced surgeon model board"
-	module = "Advanced Surgeon"
-
 /obj/item/borg/upgrade/remodel/service
 	name = "service model board"
 	module = "Service"
@@ -109,15 +101,15 @@
 
 /obj/item/borg/upgrade/remodel/medical
 	name = "medical model board"
-	module = "Medical"	
+	module = "Medical"
 
 /obj/item/borg/upgrade/remodel/security
 	name = "security model board"
-	module = "Security"	
+	module = "Security"
 
 /obj/item/borg/upgrade/remodel/combat
 	name = "combat model board"
-	module = "Combat"	
+	module = "Combat"
 
 /obj/item/borg/upgrade/remodel/engineering
 	name = "engineering model board"
@@ -476,7 +468,7 @@
 		R.module.modules += new /obj/item/weapon/hand_labeler(R.module)
 		R.module.modules += new /obj/item/weapon/stamp(R.module)
 		R.module.modules += new /obj/item/weapon/stamp/denied(R.module)
-		
+
 		installed = 1
 		return 1
 
@@ -496,7 +488,7 @@
 		R.module.modules += new /obj/item/weapon/packageWrap(R.module)
 		R.module.modules += new /obj/item/weapon/robot_item_dispenser/crates(R.module)
 		R.module.modules += new /obj/item/robot_rack/cargo(R.module)
-		
+
 		installed = 1
 		return 1
 
@@ -524,6 +516,7 @@
 		R.module.modules += new /obj/item/device/reagent_scanner(R.module)
 		R.module.modules += new /obj/item/weapon/scalpel(R.module)
 		R.module.modules += new /obj/item/weapon/autopsy_scanner(R.module)
+		R.module.modules += new /obj/item/weapon/evidencebag/cyborg(R.module)
 		installed = 1
 		return 1
 
@@ -673,14 +666,14 @@
 		var/area/default = world.area
 		location = initial(default.name)
 
-	var/death_message = "[host] has been destroyed in [location]!"
+	var/death_message = "Message from [name] acquired successful. [host] has been destroyed in [location]!"
 	if(!cause)
-		death_message = "[host] has been destroyed-zzzzt in-in-in..."
+		death_message = "Message from [name] acquired successful. [host] has been destroyed-zzzzt in-in-in..."
 	var/obj/item/weapon/robot_module/CH = host.module
 	for(var/channel in CH.channels)
 		if (channel != "Science")
-			GLOB.global_headset.autosay(death_message, "[host]'s Death Alarm", channel)
-	GLOB.global_headset.autosay(death_message, "[host]'s Death Alarm", "Science")
+			GLOB.global_headset.autosay(death_message, get_announcement_computer("[host]'s Death Alarm"), channel)
+	GLOB.global_headset.autosay(death_message, get_announcement_computer("[host]'s Death Alarm"), "Science")
 
 /obj/item/borg/upgrade/death_alarm/Process()
 	if (!installed) return
@@ -694,7 +687,7 @@
 		activate("death")
 	else if (broken)
 		qdel(src)
-	else if(host.stat != DEAD)		
+	else if(host.stat != DEAD)
 		active = 1
 
 
@@ -718,3 +711,27 @@
 		installed = 1
 		START_PROCESSING(SSobj, src)
 		return 1
+
+/obj/item/borg/upgrade/integrated_circuit_upgrade
+	name = "integrated circuit module"
+	desc = "A system that allows cyborgs to create and use integrated circuit assemblies."
+	icon_state = "cyborg_upgrade1"
+	origin_tech = list(TECH_DATA = 3, TECH_MATERIAL = 5)
+	require_module = 1
+
+/obj/item/borg/upgrade/integrated_circuit_upgrade/action(mob/living/silicon/robot/R)
+	if(..())
+		return FALSE
+
+	if(!can_install(src, R))
+		return FALSE
+	else
+		R.module.modules += new /obj/item/device/integrated_circuit_printer/cyborg(R.module)
+		R.module.modules += new /obj/item/weapon/gripper/integrated_circuit(R.module)
+		R.module.modules += new /obj/item/device/integrated_electronics/wirer(R.module)
+		R.module.modules += new /obj/item/device/integrated_electronics/debugger(R.module)
+		R.module.modules += new /obj/item/device/integrated_electronics/analyzer(R.module)
+		R.module.modules += new /obj/item/device/integrated_electronics/detailer(R.module)
+
+		installed = TRUE
+		return TRUE

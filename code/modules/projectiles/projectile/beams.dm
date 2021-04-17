@@ -3,13 +3,14 @@
 	icon_state = "laser"
 	fire_sound = 'sound/effects/weapons/energy/fire8.ogg'
 	pass_flags = PASS_FLAG_TABLE | PASS_FLAG_GLASS | PASS_FLAG_GRILLE
-	damage = 40
+	damage = 35
 	damage_type = BURN
 	sharp = 1 //concentrated burns
 	check_armour = "laser"
 	eyeblur = 4
 	hitscan = 1
 	invisibility = 101	//beam projectiles are invisible as they are rendered by the effect engine
+	penetration_modifier = 0.5
 
 	muzzle_type = /obj/effect/projectile/laser/muzzle
 	tracer_type = /obj/effect/projectile/laser/tracer
@@ -29,14 +30,14 @@
 	damage = 25
 
 /obj/item/projectile/beam/midlaser
-	damage = 50
+	damage = 45
 	armor_penetration = 10
 
 /obj/item/projectile/beam/heavylaser
 	name = "heavy laser"
 	icon_state = "heavylaser"
 	fire_sound = 'sound/effects/weapons/energy/fire21.ogg'
-	damage = 60
+	damage = 55
 	armor_penetration = 30
 
 	muzzle_type = /obj/effect/projectile/laser/heavy/muzzle
@@ -49,7 +50,7 @@
 	fire_sound = 'sound/effects/weapons/energy/fire16.ogg'
 	damage = 30
 	armor_penetration = 30
-	penetration_modifier = 0.8
+	penetration_modifier = 0.85
 
 	muzzle_type = /obj/effect/projectile/laser/xray/muzzle
 	tracer_type = /obj/effect/projectile/laser/xray/tracer
@@ -64,6 +65,7 @@
 	icon_state = "u_laser"
 	fire_sound='sound/effects/weapons/energy/fire26.ogg'
 	damage = 15 //lower damage, but fires in bursts
+	penetration_modifier = 0.75
 
 	muzzle_type = /obj/effect/projectile/laser/pulse/muzzle
 	tracer_type = /obj/effect/projectile/laser/pulse/tracer
@@ -81,6 +83,7 @@
 	name = "destroyer pulse"
 	damage = 100 //badmins be badmins I don't give a fuck
 	armor_penetration = 100
+	penetration_modifier = 100
 
 /obj/item/projectile/beam/pulse/destroy/on_hit(atom/target, blocked = 0)
 	if(isturf(target))
@@ -115,6 +118,7 @@
 		var/mob/living/carbon/human/M = target
 		if(istype(M.wear_suit, /obj/item/clothing/suit/redtag))
 			M.Weaken(5)
+			M.Stun(5)
 	return 1
 
 /obj/item/projectile/beam/lastertag/red
@@ -131,6 +135,7 @@
 		var/mob/living/carbon/human/M = target
 		if(istype(M.wear_suit, /obj/item/clothing/suit/bluetag))
 			M.Weaken(5)
+			M.Stun(5)
 	return 1
 
 /obj/item/projectile/beam/lastertag/omni//A laser tag bolt that stuns EVERYONE
@@ -150,6 +155,7 @@
 		var/mob/living/carbon/human/M = target
 		if((istype(M.wear_suit, /obj/item/clothing/suit/bluetag))||(istype(M.wear_suit, /obj/item/clothing/suit/redtag)))
 			M.Weaken(5)
+			M.Stun(5)
 	return 1
 
 /obj/item/projectile/beam/sniper
@@ -161,6 +167,7 @@
 	stun = 3
 	weaken = 3
 	stutter = 3
+	penetration_modifier = 1.0
 
 	muzzle_type = /obj/effect/projectile/laser/xray/muzzle
 	tracer_type = /obj/effect/projectile/laser/xray/tracer
@@ -175,6 +182,7 @@
 	agony = 40
 	tasing = 1
 	damage_type = STUN
+	penetration_modifier = 0
 
 	muzzle_type = /obj/effect/projectile/stun/muzzle
 	tracer_type = /obj/effect/projectile/stun/tracer
@@ -189,6 +197,7 @@
 	damage_type = ELECTROCUTE
 	damage = 10
 	agony  = 5
+	penetration_modifier = 0.1
 	fire_sound='sound/effects/weapons/energy/fire2.ogg'
 
 /obj/item/projectile/beam/stun/shock/heavy
@@ -200,11 +209,10 @@
 	name = "plasma arc"
 	icon_state = "omnilaser"
 	fire_sound = 'sound/effects/weapons/energy/fire3.ogg'
-	armor_penetration = 10
-	damage = 30
+	damage = 7
 	sharp = 1
 	edge = 1
-	damage_type = BURN
+	damage_type = BRUTE
 	check_armour = "laser"
 	kill_count = 5
 	pass_flags = PASS_FLAG_TABLE
@@ -221,17 +229,20 @@
 			return
 		else
 			M.emitter_blasts_taken += 2
-	if(istype(A, /mob/living/carbon/human))
-		var/mob/living/carbon/human/H = A
-		if(!H.wearing_rig)
-			var/obj/item/organ/external/LIMP = H.get_organ(src.def_zone)
-			var/block = H.run_armor_check(src.def_zone, src.check_armour, src.armor_penetration)
-			var/chance = 33
-			if(block > 0)
-				chance = round((100 - block) / 3)
-			if(prob(chance))
-				if (istype(LIMP, /obj/item/organ/external/chest) ||	istype(LIMP, /obj/item/organ/external/groin))
-					LIMP.take_external_damage(30, used_weapon = "Plasma arc")
-				else
-					LIMP.droplimb(0, DROPLIMB_EDGE)
 	. = ..()
+
+/obj/item/projectile/beam/plasmacutter/danger
+	name = "plasma arc"
+	icon_state = "omnilaser"
+	fire_sound = "sound/effects/weapons/energy/fire3.ogg"
+	damage = 25
+	sharp = 1
+	edge = 1
+	damage_type = BRUTE
+	check_armour = "laser"
+	kill_count = 5
+	pass_flags = PASS_FLAG_TABLE
+	armor_penetration = 10
+	muzzle_type = /obj/effect/projectile/trilaser/muzzle
+	tracer_type = /obj/effect/projectile/trilaser/tracer
+	impact_type = /obj/effect/projectile/trilaser/impact

@@ -245,27 +245,28 @@
 	update_icon()
 
 /obj/machinery/power/apc/examine(mob/user)
-	if(..(user, 1))
+	. = ..()
+	if(get_dist(src, user) <= 1)
 		if(stat & BROKEN)
-			to_chat(user, "Looks broken.")
+			. += "\nLooks broken."
 			return
 		if(opened)
 			if(has_electronics && terminal)
-				to_chat(user, "The cover is [opened==2?"removed":"open"] and the power cell is [ cell ? "installed" : "missing"].")
+				. += "\nThe cover is [opened==2?"removed":"open"] and the power cell is [ cell ? "installed" : "missing"]."
 			else if (!has_electronics && terminal)
-				to_chat(user, "There are some wires but no any electronics.")
+				. += "\nThere are some wires but no any electronics."
 			else if (has_electronics && !terminal)
-				to_chat(user, "Electronics installed but not wired.")
+				. += "\nElectronics installed but not wired."
 			else /* if (!has_electronics && !terminal) */
-				to_chat(user, "There is no electronics nor connected wires.")
+				. += "\nThere is no electronics nor connected wires."
 
 		else
 			if (stat & MAINT)
-				to_chat(user, "The cover is closed. Something wrong with it: it doesn't work.")
+				. += "\nThe cover is closed. Something wrong with it: it doesn't work."
 			else if (hacker && !hacker.hacked_apcs_hidden)
-				to_chat(user, "The cover is locked.")
+				. += "\nThe cover is locked."
 			else
-				to_chat(user, "The cover is closed.")
+				. += "\nThe cover is closed."
 
 
 // update the APC icon to show the three base states
@@ -515,13 +516,16 @@
 		else if(stat & (BROKEN|MAINT))
 			to_chat(user, "Nothing happens.")
 		else if(hacker && !hacker.hacked_apcs_hidden)
+			playsound(src.loc, 'sound/signals/error7.ogg', 25)
 			to_chat(user, "<span class='warning'>Access denied.</span>")
 		else
 			if(src.allowed(usr) && !isWireCut(APC_WIRE_IDSCAN))
+				playsound(src.loc, 'sound/signals/warning9.ogg', 25)
 				locked = !locked
 				to_chat(user, "You [ locked ? "lock" : "unlock"] the APC interface.")
 				update_icon()
 			else
+				playsound(src.loc, 'sound/signals/error7.ogg', 25)
 				to_chat(user, "<span class='warning'>Access denied.</span>")
 	else if (istype(W, /obj/item/stack/cable_coil) && !terminal && opened && has_electronics!=2)
 		var/turf/T = loc
@@ -685,6 +689,7 @@
 			flick("apc-spark", src)
 			if (do_after(user,6,src))
 				if(prob(50))
+					playsound(src.loc, 'sound/effects/computer_emag.ogg', 25)
 					emagged = 1
 					locked = 0
 					to_chat(user, "<span class='notice'>You emag the APC interface.</span>")
@@ -994,11 +999,10 @@
 		return 0
 
 /obj/machinery/power/apc/Process()
-
 	if(stat & (BROKEN|MAINT))
 		return
 	if(!area.requires_power)
-		return
+		return PROCESS_KILL
 	if(failure_timer)
 		if (!--failure_timer)
 			update()
@@ -1033,8 +1037,7 @@
 
 	if(cell && !shorted)
 		// draw power from cell as before to power the area
-		var/cellused = min(cell.charge, CELLRATE * lastused_total)	// clamp deduction to a max, amount left in cell
-		cell.use(cellused)
+		var/cellused = cell.use(CELLRATE * lastused_total)
 
 		if(excess > lastused_total)		// if power excess recharge the cell
 										// by the same amount just used
@@ -1053,7 +1056,6 @@
 				lighting = autoset(lighting, 0)
 				environ = autoset(environ, 0)
 				autoflag = 0
-
 
 		// Set channels depending on how much charge we have left
 		update_channels()
@@ -1086,7 +1088,6 @@
 					chargecount = 0
 
 				if(chargecount >= 10)
-
 					chargecount = 0
 					charging = 1
 

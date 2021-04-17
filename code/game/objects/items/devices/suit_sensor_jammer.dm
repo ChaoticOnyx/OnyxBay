@@ -100,15 +100,15 @@
 	set_range(new_range)
 
 obj/item/device/suit_sensor_jammer/examine(user)
-	. = ..(user, 3)
-	if(.)
+	. = ..()
+	if(get_dist(src, user) <= 3)
 		var/list/message = list()
 		message += "This device appears to be [active ? "" : "in"]active and "
 		if(bcell)
 			message += "displays a charge level of [bcell.percent()]%."
 		else
 			message += "is lacking a cell."
-		to_chat(user, jointext(message,.))
+		. += "\n[jointext(message, " ")]"
 
 obj/item/device/suit_sensor_jammer/ui_status(mob/user, datum/ui_state/state)
 	if(!bcell || bcell.charge <= 0)

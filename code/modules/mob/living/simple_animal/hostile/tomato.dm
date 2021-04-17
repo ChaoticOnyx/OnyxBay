@@ -21,7 +21,7 @@
 	universal_speak = 0
 	universal_understand = 1
 
-	faction = "creature"
+	faction = "floral"
 
 /mob/living/simple_animal/hostile/tomato/Initialize()
 	. = ..()

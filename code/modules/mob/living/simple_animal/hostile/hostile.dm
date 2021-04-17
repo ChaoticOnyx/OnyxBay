@@ -15,6 +15,7 @@
 	stop_automated_movement_when_pulled = 0
 	var/destroy_surroundings = 1
 	a_intent = I_HURT
+	armor_projectile = 25
 
 	mouse_opacity = 2 //This makes it easier to hit hostile mobs, you only need to click on their tile, and is set back to 1 when they die
 	var/vision_range = 7 //How big of an area to search for targets in, a vision of 7 attempts to find targets as soon as they walk into screen view
@@ -152,11 +153,17 @@
 		return M
 
 /mob/living/simple_animal/hostile/proc/Aggro()
+	if(stat == DEAD)
+		return 0
 	vision_range = aggro_vision_range
+	return 1
 
 /mob/living/simple_animal/hostile/proc/LoseAggro()
+	if(stat == DEAD)
+		return 0
 	stop_automated_movement = 0
 	vision_range = idle_vision_range
+	return 1
 
 /mob/living/simple_animal/hostile/proc/LoseTarget()
 	stance = HOSTILE_STANCE_IDLE
@@ -179,10 +186,10 @@
 	return L
 
 /mob/living/simple_animal/hostile/death(gibbed, deathmessage, show_dead_message)
-	LoseAggro()
-	mouse_opacity = 1
-	..(gibbed, deathmessage, show_dead_message)
-	walk(src, 0)
+	. = ..()
+	if(.)
+		LoseAggro()
+		mouse_opacity = 1
 
 /mob/living/simple_animal/hostile/Life()
 	. = ..()

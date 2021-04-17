@@ -56,6 +56,9 @@
 	health -= amount
 	if(health <= 0)
 		visible_message("<span class='warning'>\The [src] breaks down!</span>")
+		if(atom_flags & ATOM_FLAG_CLIMBABLE)
+			object_shaken()
+		throw_contents_around()
 		return break_to_parts() // if we break and form shards, return them to the caller to do !FUN! things with
 
 /obj/structure/table/Initialize()
@@ -90,11 +93,12 @@
 	if(health < maxhealth)
 		switch(health / maxhealth)
 			if(0.0 to 0.5)
-				to_chat(user, "<span class='warning'>It looks severely damaged!</span>")
+				. += "\n<span class='warning'>It looks severely damaged!</span>"
 			if(0.25 to 0.5)
-				to_chat(user, "<span class='warning'>It looks damaged!</span>")
+				. += "\n<span class='warning'>It looks damaged!</span>"
 			if(0.5 to 1.0)
-				to_chat(user, "<span class='notice'>It has a few scrapes and dents.</span>")
+				. += "\n<span class='notice'>It has a few scrapes and dents.</span>"
+
 /obj/structure/table/attackby(obj/item/weapon/W, mob/user)
 
 	if(reinforced && istype(W, /obj/item/weapon/screwdriver))
@@ -260,6 +264,20 @@
 	new /obj/item/stack/material/steel(src.loc)
 	qdel(src)
 	return
+
+/obj/structure/table/proc/throw_contents_around(var/max_size = ITEM_SIZE_HUGE, var/dropchance = -1)
+	var/list/targets = list(get_step(src,dir),get_step(src,turn(dir, 45)),get_step(src,turn(dir, -45)))
+	for(var/atom/movable/A in get_turf(src))
+		if(!A.anchored)
+			if(dropchance == -1)
+				A.throw_at(pick(targets),1,1)
+			else
+				if(istype(A,/obj))
+					var/obj/O = A
+					if(O.w_class)
+						dropchance = (max_size+1 - O.w_class) * 20
+				if(prob(dropchance))
+					A.throw_at(pick(targets),1,1)
 
 // Returns a list of /obj/item/weapon/material/shard objects that were created as a result of this table's breakage.
 // Used for !fun! things such as embedding shards in the faces of tableslammed people.

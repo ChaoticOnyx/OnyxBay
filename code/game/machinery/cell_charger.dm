@@ -17,22 +17,27 @@
 
 /obj/machinery/cell_charger/update_icon()
 	icon_state = "ccharger[charging ? 1 : 0]"
-	if(charging && !(stat & (BROKEN|NOPOWER)) )
-		var/newlevel = 	round(charging.percent() * 4.0 / 99)
-		if(chargelevel != newlevel)
-			overlays.Cut()
-			overlays += "ccharger-o[newlevel]"
-			chargelevel = newlevel
+	if(charging)
+		overlays.Cut()
+		if(charging.icon == icon)
+			overlays += charging.icon_state
+		else
+			overlays += "cell"
+		overlays += "ccharger-wires"
+		if(!(stat & (BROKEN|NOPOWER)))
+			chargelevel = round(charging.percent() * 4.0 / 99)
+			overlays += "ccharger-o[chargelevel]"
 	else
 		overlays.Cut()
 
 /obj/machinery/cell_charger/examine(mob/user)
-	if(!..(user, 5))
+	. = ..()
+	if(get_dist(src, user) > 5)
 		return
 
-	to_chat(user, "There's [charging ? "a" : "no"] cell in the charger.")
+	. += "\nThere's [charging ? "a" : "no"] cell in the charger."
 	if(charging)
-		to_chat(user, "Current charge: [charging.charge]")
+		. += "\nCurrent charge: [charging.charge]"
 
 /obj/machinery/cell_charger/attackby(obj/item/weapon/W, mob/user)
 	if(stat & BROKEN)
@@ -47,8 +52,8 @@
 			if(a.power_equip == 0) // There's no APC in this area, don't try to cheat power!
 				to_chat(user, "<span class='warning'>The [name] blinks red as you try to insert the cell!</span>")
 				return
-			if(!user.unEquip(W, FALSE, src))
-				return
+			user.drop_item()
+			W.forceMove(src)
 			charging = W
 			set_power()
 			START_PROCESSING(SSmachines, src)

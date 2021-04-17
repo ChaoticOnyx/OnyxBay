@@ -46,7 +46,7 @@
 // Walls always hide the stuff below them.
 /turf/simulated/wall/levelupdate()
 	for(var/obj/O in src)
-		O.hide(1)
+		O.hide(O.hides_inside_walls())
 
 /turf/simulated/wall/protects_atom(atom/A)
 	var/obj/O = A
@@ -155,7 +155,7 @@
 		return
 
 /turf/simulated/wall/blob_act(destroy, obj/effect/blob/source)
-	if (destroy)
+	if(destroy)
 		dismantle_wall(TRUE)
 	else
 		take_damage(25)
@@ -288,7 +288,6 @@
 			plant.update_icon()
 			plant.pixel_x = 0
 			plant.pixel_y = 0
-		plant.update_neighbors()
 
 /turf/simulated/wall/ChangeTurf(newtype)
 	clear_plants()
@@ -296,21 +295,21 @@
 
 //Appearance
 /turf/simulated/wall/examine(mob/user)
-	. = ..(user)
+	. = ..()
 
 	if(!damage)
-		to_chat(user, "<span class='notice'>It looks fully intact.</span>")
+		. += "\n<span class='notice'>It looks fully intact.</span>"
 	else
 		var/dam = damage / material.integrity
 		if(dam <= 0.3)
-			to_chat(user, "<span class='warning'>It looks slightly damaged.</span>")
+			. += "\n<span class='warning'>It looks slightly damaged.</span>"
 		else if(dam <= 0.6)
-			to_chat(user, "<span class='warning'>It looks moderately damaged.</span>")
+			. += "\n<span class='warning'>It looks moderately damaged.</span>"
 		else
-			to_chat(user, "<span class='danger'>It looks heavily damaged.</span>")
+			. += "\n<span class='danger'>It looks heavily damaged.</span>"
 
 	if(locate(/obj/effect/overlay/wallrot) in src)
-		to_chat(user, "<span class='warning'>There is fungus growing on [src].</span>")
+		. += "\n<span class='warning'>There is fungus growing on [src].</span>"
 
 //Damage
 
@@ -362,7 +361,7 @@
 
 /turf/simulated/wall/proc/dismantle_wall(devastated, explode, no_product)
 
-	playsound(src, 'sound/items/Welder.ogg', 100, 1)
+	playsound(src, 'sound/items/Deconstruct.ogg', 100, 1)
 	if(!no_product)
 		if(reinf_material)
 			reinf_material.place_dismantled_girder(src, reinf_material)
@@ -456,5 +455,5 @@
 			src.ChangeTurf(/turf/simulated/floor)
 			for(var/turf/simulated/wall/W in range(3,src))
 				W.burn((temperature/4))
-			for(var/obj/machinery/door/airlock/phoron/D in range(3,src))
+			for(var/obj/machinery/door/airlock/plasma/D in range(3,src))
 				D.ignite(temperature/4)

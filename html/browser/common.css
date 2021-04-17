@@ -43,7 +43,14 @@ a.white, a.white:link, a.white:visited, a.white:active
 	cursor:default;
 }
 
-a.white:hover
+a.red, a.red:link, a.red:visited, a.red:active
+{
+	color: #444444;
+	background: #dd7c7c;
+	border-color: #444444;
+}
+
+a.white:hover, a.red:hover
 {
 	color: #ffffff;
 	background: #40628a;

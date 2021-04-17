@@ -87,6 +87,7 @@ Class Procs:
 	icon = 'icons/obj/stationobjs.dmi'
 	w_class = ITEM_SIZE_NO_CONTAINER
 	pull_sound = "pull_machine"
+	layer = BELOW_OBJ_LAYER
 
 	var/stat = 0
 	var/emagged = 0
@@ -120,6 +121,8 @@ Class Procs:
 	var/clicksound			// sound played on succesful interface use by a carbon lifeform
 	var/clickvol = 40		// sound played on succesful interface use
 	var/life_tick = 0		// O P T I M I Z A T I O N
+	var/beep_last_played = 0
+	var/beepsounds = null
 
 /obj/machinery/Initialize(mapload, d=0, populate_components = TRUE)
 	. = ..()
@@ -141,6 +144,14 @@ Class Procs:
 
 	START_PROCESSING(SSmachines, src) // It's safe to remove machines from here.
 	SSmachines.machinery += src // All machines should remain in this list, always.
+
+/obj/machinery/proc/play_beep()
+	if (beepsounds == null)
+		return
+
+	if(!stat && world.time > beep_last_played + 60 SECONDS && prob(10))
+		beep_last_played = world.time
+		playsound(src.loc, beepsounds, 30)
 
 /obj/machinery/Destroy()
 	SSmachines.machinery -= src
@@ -370,14 +381,14 @@ Class Procs:
 		playsound(src, clicksound, clickvol)
 
 /obj/machinery/proc/display_parts(mob/user)
-	to_chat(user, "<span class='notice'>Following parts detected in the machine:</span>")
+	. = "<span class='notice'>Following parts detected in the machine:</span>"
 	for(var/var/obj/item/C in component_parts)
-		to_chat(user, "<span class='notice'>	[C.name]</span>")
+		. += "\n<span class='notice'>	[C.name]</span>"
 
 /obj/machinery/examine(mob/user)
-	. = ..(user)
+	. = ..()
 	if(component_parts && hasHUD(user, HUD_SCIENCE))
-		display_parts(user)
+		. += "\n[display_parts(user)]"
 
 /obj/machinery/blob_act(destroy, obj/effect/blob/source)
 	if (stat & BROKEN)

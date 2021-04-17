@@ -19,6 +19,8 @@
 	var/glass_icon = DRINK_ICON_DEFAULT
 	var/glass_name = "something"
 	var/glass_desc = "It's a glass of... what, exactly?"
+	var/glass_icon_state = null
+	var/glass_required = null // Required glass for current cocktail
 	var/list/glass_special = null // null equivalent to list()
 
 /datum/reagent/New(datum/reagents/holder)

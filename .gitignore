@@ -9,10 +9,12 @@ Thumbs.db
 *.before
 *.db
 *.db-*
+*.so
 data/
 cfg/
 # ignore config, but not subdirs
 config/*
+!config/names/
 !config/example/
 !config/warnings_templates/
 build_log.txt

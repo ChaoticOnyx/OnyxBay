@@ -214,8 +214,8 @@
 
 /datum/reagent/lithium/affect_blood(mob/living/carbon/M, alien, removed)
 	if(alien != IS_DIONA)
-		if(M.canmove && !M.restrained() && istype(M.loc, /turf/space))
-			step(M, pick(GLOB.cardinal))
+		if(istype(M.loc, /turf/space))
+			M.SelfMove(pick(GLOB.cardinal))
 		if(prob(5))
 			M.emote(pick("twitch", "drool", "moan"))
 
@@ -228,8 +228,8 @@
 
 /datum/reagent/mercury/affect_blood(mob/living/carbon/M, alien, removed)
 	if(alien != IS_DIONA)
-		if(M.canmove && !M.restrained() && istype(M.loc, /turf/space))
-			step(M, pick(GLOB.cardinal))
+		if(istype(M.loc, /turf/space))
+			M.SelfMove(pick(GLOB.cardinal))
 		if(prob(5))
 			M.emote(pick("twitch", "drool", "moan"))
 		M.adjustBrainLoss(0.1)
@@ -350,7 +350,6 @@
 				if(!screamed && affecting.can_feel_pain())
 					screamed = 1
 					H.emote("scream")
-				affecting.status |= ORGAN_DISFIGURED
 
 /datum/reagent/acid/touch_obj(obj/O)
 	if(O.unacidable)

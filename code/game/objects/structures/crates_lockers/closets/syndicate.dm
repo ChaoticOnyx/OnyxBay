@@ -14,8 +14,8 @@
 	new /obj/item/weapon/tank/jetpack/oxygen(src)
 	new /obj/item/clothing/mask/gas/syndicate(src)
 	new /obj/item/clothing/under/syndicate(src)
-	new /obj/item/clothing/head/helmet/space/void/merc(src)
-	new /obj/item/clothing/suit/space/void/merc(src)
+	new /obj/item/clothing/head/helmet/space/void/syndi(src)
+	new /obj/item/clothing/suit/space/void/syndi(src)
 	new /obj/item/weapon/crowbar/red(src)
 	new /obj/item/weapon/cell/high(src)
 	new /obj/item/weapon/card/id/syndicate(src)
@@ -31,9 +31,9 @@
 	..()
 	new /obj/item/weapon/tank/jetpack/oxygen(src)
 	new /obj/item/clothing/shoes/magboots(src)
-	new /obj/item/clothing/suit/space/void/merc(src)
+	new /obj/item/clothing/suit/space/void/syndi(src)
 	new /obj/item/clothing/mask/gas/syndicate(src)
-	new /obj/item/clothing/head/helmet/space/void/merc(src)
+	new /obj/item/clothing/head/helmet/space/void/syndi(src)
 
 
 /obj/structure/closet/syndicate/nuclear
@@ -80,9 +80,7 @@
 
 		//Sad trombone
 		if(pickednum == 1)
-			var/obj/item/weapon/paper/P = new /obj/item/weapon/paper(src)
-			P.SetName("IOU")
-			P.info = "Sorry man, we needed the money so we sold your stash. It's ok, we'll double our money for sure this time!"
+			new /obj/item/weapon/paper(src, "Sorry man, we needed the money so we sold your stash. It's ok, we'll double our money for sure this time!", "IOU")
 
 		//Metal (common ore)
 		if(pickednum >= 2)
@@ -92,13 +90,13 @@
 		if(pickednum >= 5)
 			new /obj/item/stack/material/glass(src, rand(common_min, common_max))
 
-		//Plasteel (common ore) Because it has a million more uses then phoron
+		//Plasteel (common ore) Because it has a million more uses then plasma
 		if(pickednum >= 10)
 			new /obj/item/stack/material/plasteel(src, rand(common_min, common_max))
 
-		//Phoron (rare ore)
+		//Plasma (rare ore)
 		if(pickednum >= 15)
-			new /obj/item/stack/material/phoron(src, rand(rare_min, rare_max))
+			new /obj/item/stack/material/plasma(src, rand(rare_min, rare_max))
 
 		//Silver (rare ore)
 		if(pickednum >= 20)
@@ -131,7 +129,7 @@
 		/obj/item/stack/material/glass,
 		/obj/item/stack/material/gold,
 		/obj/item/stack/material/silver,
-		/obj/item/stack/material/phoron,
+		/obj/item/stack/material/plasma,
 		/obj/item/stack/material/uranium,
 		/obj/item/stack/material/diamond,
 		/obj/item/stack/material/plasteel,

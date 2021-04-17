@@ -131,7 +131,7 @@ var/list/adminhelp_ignored_words = list("unknown","the","a","an","of","monkey","
 			if(X.is_afk())
 				admin_number_afk++
 			if(X.get_preference_value(/datum/client_preference/staff/play_adminhelp_ping) == GLOB.PREF_HEAR)
-				sound_to(X, 'sound/effects/adminhelp.ogg')
+				sound_to(X, sound('sound/effects/adminhelp.ogg'))
 			if(X.holder.rights == R_MENTOR)
 				to_chat(X, mentor_msg)// Mentors won't see coloring of names on people with special_roles (Antags, etc.)
 			else

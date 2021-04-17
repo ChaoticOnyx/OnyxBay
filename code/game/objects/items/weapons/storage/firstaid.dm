@@ -128,6 +128,7 @@
 		/obj/item/weapon/surgicaldrill,
 		/obj/item/weapon/bonegel,
 		/obj/item/weapon/FixOVein,
+		/obj/item/weapon/organfixer,
 		/obj/item/stack/medical/advanced/bruise_pack,
 		/obj/item/stack/nanopaste
 		)
@@ -142,6 +143,7 @@
 		/obj/item/weapon/surgicaldrill,
 		/obj/item/weapon/bonegel,
 		/obj/item/weapon/FixOVein,
+		/obj/item/weapon/organfixer/standard,
 		/obj/item/stack/medical/advanced/bruise_pack,
 		)
 

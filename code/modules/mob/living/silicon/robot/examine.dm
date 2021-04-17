@@ -3,6 +3,9 @@
 	. = ..(user, infix = custom_infix)
 
 	var/msg = ""
+	msg += "\n"
+	msg += examine_all_modules()
+	
 	msg += "<span class='warning'>"
 	if (src.getBruteLoss())
 		if (src.getBruteLoss() < 75)
@@ -54,6 +57,6 @@
 			msg += "<b><span class='notice'>Supported visors:</b></span>\n"
 			msg += visors
 
-	to_chat(user, msg)
+	. += "\n[msg]"
 	user.showLaws(src)
 	return

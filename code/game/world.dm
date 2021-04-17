@@ -66,27 +66,23 @@
 
 #define RECOMMENDED_VERSION 511
 /world/New()
-	//logs
 	SetupLogs()
-	var/date_string = time2text(world.realtime, "YYYY/MM-Month/DD-Day")
-	href_logfile = file("data/logs/[date_string] hrefs.htm")
-	diary = file("data/logs/[date_string].log")
-	diary << "[log_end]\n[log_end]\nStarting up. (ID: [game_id]) [time_stamp()][log_end]\n---------------------[log_end]"
+
 	changelog_hash = md5('html/changelog.html')					//used for telling if the changelog has changed recently
 
 	if(byond_version < RECOMMENDED_VERSION)
-		world.log << "Your server's byond version does not meet the recommended requirements for this server. Please update BYOND"
+		to_world_log("Your server's byond version does not meet the recommended requirements for this server. Please update BYOND")
 
 	load_configuration()
 
 	if(config.server_port)
 		var/port = OpenPort(config.server_port)
-		world.log << (port ? "Changed port to [port]" : "Failed to change port")
+		to_world_log(port ? "Changed port to [port]" : "Failed to change port")
 
 	//set window title
-	if(config.server_id)
-		var/serverId = uppertext(copytext(config.server_id, 1, 2)) + copytext(config.server_id, 2)
-		name = "[server_name]: [serverId] - [GLOB.using_map.full_name]"
+	if(config.subserver_name)
+		var/subserver_name = uppertext(copytext(config.subserver_name, 1, 2)) + copytext(config.subserver_name, 2)
+		name = "[server_name]: [subserver_name] - [GLOB.using_map.full_name]"
 	else
 		name = "[server_name] - [GLOB.using_map.full_name]"
 
@@ -122,7 +118,7 @@
 var/world_topic_spam_protect_time = world.timeofday
 
 /world/Topic(T, addr, master, key)
-	diary << "TOPIC: \"[T]\", from:[addr], master:[master][log_end]"
+	log_href("\"[T]\", from:[addr], master:[master][log_end]")
 
 	var/input[] = params2list(T)
 	var/key_valid = config.comms_password && input["key"] == config.comms_password
@@ -351,6 +347,8 @@ var/world_topic_spam_protect_time = world.timeofday
 			return
 		if(!config.vars["ooc_allowed"]&&!input["isadmin"])
 			return "globally muted"
+		if(jobban_keylist.Find("[ckey] - OOC"))
+			return "banned from ooc"
 		var/sent_message = "[create_text_tag("DISCORD OOC:")] <EM>[ckey]:</EM> <span class='message linkify'>[message]</span>"
 		for(var/client/target in GLOB.clients)
 			if(!target)
@@ -388,7 +386,7 @@ var/world_topic_spam_protect_time = world.timeofday
 		var/amessage =  "<span class='info'>[rank] PM from [input["admin"]] to <b>[key_name(C)]</b> : [response])]</span>"
 		webhook_send_ahelp("[input["admin"]] -> [req_ckey]", response)
 
-		sound_to(C, 'sound/effects/adminhelp.ogg')
+		sound_to(C, sound('sound/effects/adminhelp.ogg'))
 		to_chat(C, message)
 
 		for(var/client/A in GLOB.admins)
@@ -479,21 +477,6 @@ var/world_topic_spam_protect_time = world.timeofday
 		notes_add(target,"[input["id"]] has permabanned [C.ckey]. - Reason: [input["reason"]] - This is a ban until appeal.",input["id"])
 		qdel(C)
 
-	else if(copytext(T,1,19) == "prometheus_metrics")
-		if(input["key"] != config.comms_password)
-			if(abs(world_topic_spam_protect_time - world.time) < 50)
-				sleep(50)
-				world_topic_spam_protect_time = world.time
-				return "Bad Key (Throttled)"
-
-			world_topic_spam_protect_time = world.time
-			return "Bad Key"
-
-		if(!GLOB || !GLOB.prometheus_metrics)
-			return "Metrics not ready"
-
-		return GLOB.prometheus_metrics.collect()
-
 
 /world/Reboot(reason)
 	// sound_to(world, sound('sound/AI/newroundsexy.ogg')
@@ -506,7 +489,7 @@ var/world_topic_spam_protect_time = world.timeofday
 			co.ehjax_send(data = "roundrestart")
 
 		if(config.server) //if you set a server location in config.txt, it sends you there instead of trying to reconnect to the same world address. -- NeoFite
-			C << link("byond://[config.server]")
+			send_link(C, "byond://[config.server]")
 
 	if(config.wait_for_sigusr1_reboot && reason != 3)
 		text2file("foo", "reboot_called")
@@ -522,7 +505,7 @@ var/world_topic_spam_protect_time = world.timeofday
 /world/proc/save_mode(the_mode)
 	var/F = file("data/mode.txt")
 	fdel(F)
-	F << the_mode
+	to_file(F, the_mode)
 
 /hook/startup/proc/loadMOTD()
 	world.load_motd()
@@ -640,19 +623,29 @@ var/world_topic_spam_protect_time = world.timeofday
 	if (src.status != s)
 		src.status = s
 
-#define WORLD_LOG_START(X) WRITE_FILE(GLOB.world_##X##_log, "\n\nStarting up round ID [game_id]. [time_stamp()]\n---------------------")
-#define WORLD_SETUP_LOG(X) GLOB.world_##X##_log = file("[GLOB.log_directory]/[#X].log") ; WORLD_LOG_START(X)
+#define WORLD_LOG_START(X) WRITE_FILE(GLOB.world_##X##_log, "\n\nStarting up round ID [game_id]. [time2text(world.realtime, "DD.MM.YY hh:mm")]\n---------------------")
+#define WORLD_SETUP_LOG(X) GLOB.world_##X##_log = file("[log_directory]/[log_prefix][#X].log") ; WORLD_LOG_START(X)
+#define WORLD_SETUP_LOG_DETAILED(X) GLOB.world_##X##_log = file("[log_directory_detailed]/[log_prefix_detailed][#X].log") ; WORLD_LOG_START(X)
+
 /world/proc/SetupLogs()
-	GLOB.log_directory = "data/logs/[time2text(world.realtime, "YYYY/MM/DD")]/round-"
-	if(game_id)
-		GLOB.log_directory += "[game_id]"
-	else
-		GLOB.log_directory += "[replacetext(time_stamp(), ":", ".")]"
+	if (!game_id)
+		crash_with("Unknown game_id!")
 
-	WORLD_SETUP_LOG(runtime)
-	WORLD_SETUP_LOG(qdel)
-	WORLD_SETUP_LOG(debug)
+	var/log_directory = "data/logs/[time2text(world.realtime, "YYYY/MM-Month")]"
+	var/log_prefix = "[time2text(world.realtime, "DD.MM.YY")]_"
 
+	GLOB.log_directory = log_directory // TODO: remove GLOB.log_directory, check initialize.log
+
+	var/log_directory_detailed = "data/logs/[time2text(world.realtime, "YYYY/MM-Month")]/[time2text(world.realtime, "DD.MM.YY")]_detailed"
+	var/log_prefix_detailed = "[time2text(world.realtime, "DD.MM.YY_hh.mm")]_[game_id]_"
+
+	WORLD_SETUP_LOG_DETAILED(runtime)
+	WORLD_SETUP_LOG_DETAILED(qdel)
+	WORLD_SETUP_LOG_DETAILED(debug)
+	WORLD_SETUP_LOG_DETAILED(hrefs)
+	WORLD_SETUP_LOG(common)
+
+#undef WORLD_SETUP_LOG_DETAILED
 #undef WORLD_SETUP_LOG
 #undef WORLD_LOG_START
 
@@ -662,11 +655,11 @@ var/failed_old_db_connections = 0
 
 /hook/startup/proc/connectDB()
 	if(!config.sql_enabled)
-		world.log << "SQL disabled. Your server will not use feedback database."
+		to_world_log("SQL disabled. Your server will not use feedback database.")
 	else if(!setup_database_connection())
-		world.log << "Your server failed to establish a connection with the feedback database."
+		to_world_log("Your server failed to establish a connection with the feedback database.")
 	else
-		world.log << "Feedback database connection established."
+		to_world_log("Feedback database connection established.")
 	return TRUE
 
 proc/setup_database_connection()
@@ -689,7 +682,7 @@ proc/setup_database_connection()
 		failed_db_connections = 0	//If this connection succeeded, reset the failed connections counter.
 	else
 		failed_db_connections++		//If it failed, increase the failed connections counter.
-		world.log << dbcon.ErrorMsg()
+		to_world_log(dbcon.ErrorMsg())
 
 	return .
 
@@ -706,11 +699,11 @@ proc/establish_db_connection()
 
 /hook/startup/proc/connectOldDB()
 	if(!config.sql_enabled)
-		world.log << "SQL disabled. Your server configured to use legacy admin and ban system."
+		to_world_log("SQL disabled. Your server configured to use legacy admin and ban system.")
 	else if(!setup_old_database_connection())
-		world.log << "Your server failed to establish a connection with the SQL database."
+		to_world_log("Your server failed to establish a connection with the SQL database.")
 	else
-		world.log << "SQL database connection established."
+		to_world_log("SQL database connection established.")
 	return TRUE
 
 //These two procs are for the old database, while it's being phased out. See the tgstation.sql file in the SQL folder for more information.
@@ -734,7 +727,7 @@ proc/setup_old_database_connection()
 		failed_old_db_connections = 0	//If this connection succeeded, reset the failed connections counter.
 	else
 		failed_old_db_connections++		//If it failed, increase the failed connections counter.
-		world.log << dbcon.ErrorMsg()
+		to_world_log(dbcon.ErrorMsg())
 
 	return .
 

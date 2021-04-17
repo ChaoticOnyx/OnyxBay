@@ -71,7 +71,7 @@
 	for(var/cp in get_client_preferences())
 		var/datum/client_preference/client_pref = cp
 
-		if(!client_pref.may_set(pref_mob))
+		if(!client_pref.may_set(pref_mob.client))
 			continue
 
 		. += "<tr><td>[client_pref.description]: </td>"
@@ -99,14 +99,22 @@
 	return ..()
 
 /client/proc/get_preference_value(preference)
-	if(prefs)
-		var/datum/client_preference/cp = get_client_preference(preference)
-		if(cp)
-			return prefs.preference_values[cp.key]
-		else
-			return null
+	if (!prefs)
+		log_error("[ckey]'s preferences did not load. Trying to fix.")
+		prefs = SScharacter_setup.preferences_datums[ckey]
+
+	if (!prefs)
+		log_error("[ckey]'s preferences are broken. Creating new one.")
+		prefs = new /datum/preferences(src)
+
+	if (!prefs)
+		CRASH("Can't create preferences for [ckey].")
+
+	var/datum/client_preference/cp = get_client_preference(preference)
+	if(cp)
+		return prefs.preference_values[cp.key]
 	else
-		log_error("Client is lacking preferences: [log_info_line(src)]")
+		return null
 
 /client/proc/set_preference(preference, set_preference)
 	var/datum/client_preference/cp = get_client_preference(preference)

@@ -52,7 +52,8 @@ var/global/list/narsie_list = list()
 		if(cause_hell)
 			SetUniversalState(/datum/universal_state/hell)
 		narsie_cometh = 1
-
+		GLOB.cult.narsie_summoned = TRUE
+		GLOB.ert.is_station_secure = FALSE
 		spawn(10 SECONDS)
 			if(evacuation_controller)
 				evacuation_controller.call_evacuation(null, TRUE, 1)
@@ -187,7 +188,12 @@ var/global/list/narsie_list = list()
 		if (dist <= consume_range && !istype(A, /turf/space))
 			var/turf/T = A
 			if(T.holy)
-				T.holy = 0 //Nar-Sie doesn't give a shit about sacred grounds.
+				T.holy = FALSE //Nar-Sie doesn't give a shit about sacred grounds.
+		
+			var/area/TA = get_area(T)
+			if(TA && !isspace(TA))
+				TA.holy = FALSE
+
 			T.cultify()
 
 /obj/singularity/narsie/proc/old_narsie(const/atom/A)

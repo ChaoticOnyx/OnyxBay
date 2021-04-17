@@ -19,4 +19,4 @@
 		for(var/entry in M.logging[type])
 			dat += "<font size=2px>[entry]: [M.logging[type][entry]]</font><hr>"
 
-	usr << browse(dat, "window=invidual_logging;size=600x480")
+	show_browser(usr, dat, "window=invidual_logging;size=600x480")

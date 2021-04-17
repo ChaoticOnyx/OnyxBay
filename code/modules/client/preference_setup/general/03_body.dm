@@ -3,7 +3,7 @@ var/global/list/valid_bloodtypes = list("A+", "A-", "B+", "B-", "AB+", "AB-", "O
 /datum/preferences
 	var/species = SPECIES_HUMAN         //Species datum to use.
 	var/b_type = "A+"					//blood type (not-chooseable)
-	var/h_style = "Bald"				//Hair type
+	var/h_style = "Short Hair"			//Hair type
 	var/r_hair = 0						//Hair color
 	var/g_hair = 0						//Hair color
 	var/b_hair = 0						//Hair color
@@ -134,7 +134,7 @@ var/global/list/valid_bloodtypes = list("A+", "A-", "B+", "B-", "AB+", "AB-", "O
 	. = list()
 	if(!pref.preview_icon)
 		pref.update_preview_icon()
-	user << browse_rsc(pref.preview_icon, "previewicon.png")
+	send_rsc(user, pref.preview_icon, "previewicon.png")
 
 	var/datum/species/mob_species = all_species[pref.species]
 	. += "<table><tr style='vertical-align:top'><td><b>Body</b> "
@@ -199,7 +199,7 @@ var/global/list/valid_bloodtypes = list("A+", "A-", "B+", "B-", "AB+", "AB-", "O
 			if(BP_KIDNEYS)
 				organ_name = BP_KIDNEYS
 			if(BP_STOMACH)
-				organ_name = BP_STOMACH				
+				organ_name = BP_STOMACH
 			if(BP_CHEST)
 				organ_name = "upper body"
 			if(BP_GROIN)
@@ -314,7 +314,7 @@ var/global/list/valid_bloodtypes = list("A+", "A-", "B+", "B-", "AB+", "AB-", "O
 		return TOPIC_HANDLED
 
 	else if(href_list["set_species"])
-		user << browse(null, "window=species")
+		close_browser(user, "window=species")
 		if(!pref.species_preview || !(pref.species_preview in all_species))
 			return TOPIC_NOACTION
 
@@ -450,12 +450,16 @@ var/global/list/valid_bloodtypes = list("A+", "A-", "B+", "B-", "AB+", "AB-", "O
 			return TOPIC_REFRESH_UPDATE_PREVIEW
 
 	else if(href_list["marking_style"])
+		var/list/disallowed_markings = list()
+		for(var/M in pref.body_markings)
+			var/datum/sprite_accessory/marking/mark_style = GLOB.body_marking_styles_list[M]
+			disallowed_markings |= mark_style.disallows
 		var/list/usable_markings = pref.body_markings.Copy() ^ GLOB.body_marking_styles_list.Copy()
 		for(var/M in usable_markings)
 			var/datum/sprite_accessory/S = usable_markings[M]
 			if(!S.species_allowed.len)
 				continue
-			else if(!(pref.species in S.species_allowed))
+			else if(is_type_in_list(S, disallowed_markings) || !(pref.species in S.species_allowed))
 				usable_markings -= M
 
 		var/new_marking = input(user, "Choose a body marking:", CHARACTER_PREFERENCE_INPUT_TITLE)  as null|anything in usable_markings
@@ -616,7 +620,7 @@ var/global/list/valid_bloodtypes = list("A+", "A-", "B+", "B-", "AB+", "AB-", "O
 			if("Kidneys")
 				organ = BP_KIDNEYS
 			if("Stomach")
-				organ = BP_STOMACH				
+				organ = BP_STOMACH
 
 		var/list/organ_choices = list("Normal","Assisted","Synthetic")
 		if(pref.organ_data[BP_CHEST] == "cyborg")
@@ -665,7 +669,7 @@ var/global/list/valid_bloodtypes = list("A+", "A-", "B+", "B-", "AB+", "AB-", "O
 	dat += "<td width = 400>[current_species.blurb]</td>"
 	dat += "<td width = 200 align='center'>"
 	if("preview" in icon_states(current_species.get_icobase()))
-		usr << browse_rsc(icon(current_species.get_icobase(),"preview"), "species_preview_[current_species.name].png")
+		send_rsc(usr, icon(current_species.get_icobase(), "preview"), "species_preview_[current_species.name].png")
 		dat += "<img src='species_preview_[current_species.name].png' width='64px' height='64px'><br/><br/>"
 	dat += "<b>Language:</b> [current_species.language]<br/>"
 	dat += "<small>"
@@ -717,7 +721,7 @@ var/global/list/valid_bloodtypes = list("A+", "A-", "B+", "B-", "AB+", "AB-", "O
 		dat += "\[<a href='?src=\ref[src];set_species=[pref.species_preview]'>select</a>\]"
 	dat += "</center></body>"
 
-	user << browse(dat, "window=species;size=700x400")
+	show_browser(user, dat, "window=species;size=700x400")
 
 /datum/category_item/player_setup_item/proc/ResetAllHair()
 	ResetHair()

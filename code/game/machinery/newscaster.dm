@@ -428,11 +428,11 @@ var/list/obj/machinery/newscaster/allCasters = list() //Global list that will co
 			if(16)
 				dat+="<B><FONT COLOR='maroon'>ERROR: Wanted Issue rejected by Network.</B></FONT><HR><BR>"
 				if(src.channel_name=="" || src.channel_name == "\[REDACTED\]")
-					dat+="<FONT COLOR='maroon'>�Invalid name for person wanted.</FONT><BR>"
+					dat+="<FONT COLOR='maroon'>Invalid name for person wanted.</FONT><BR>"
 				if(src.scanned_user=="Unknown")
-					dat+="<FONT COLOR='maroon'>�Issue author unverified.</FONT><BR>"
+					dat+="<FONT COLOR='maroon'>Issue author unverified.</FONT><BR>"
 				if(src.msg == "" || src.msg == "\[REDACTED\]")
-					dat+="<FONT COLOR='maroon'>�Invalid description.</FONT><BR>"
+					dat+="<FONT COLOR='maroon'>Invalid description.</FONT><BR>"
 				dat+="<BR><A href='?src=\ref[src];setScreen=[0]'>Return</A><BR>"
 			if(17)
 				dat+="<B>Wanted Issue successfully deleted from Circulation</B><BR>"
@@ -443,7 +443,7 @@ var/list/obj/machinery/newscaster/allCasters = list() //Global list that will co
 				dat+="<B>Description</B>: [news_network.wanted_issue.body]<BR>"
 				dat+="<B>Photo:</B>: "
 				if(news_network.wanted_issue.img)
-					usr << browse_rsc(news_network.wanted_issue.img, "tmp_photow.png")
+					send_rsc(usr, news_network.wanted_issue.img, "tmp_photow.png")
 					dat+="<BR><img src='tmp_photow.png' width = '180'>"
 				else
 					dat+="None"
@@ -461,7 +461,7 @@ var/list/obj/machinery/newscaster/allCasters = list() //Global list that will co
 				dat+="I'm sorry to break your immersion. This shit's bugged. Report this bug to Agouri, polyxenitopalidou@gmail.com"
 
 
-		human_or_robot_user << browse(dat, "window=newscaster_main;size=400x600")
+		show_browser(human_or_robot_user, dat, "window=newscaster_main;size=400x600")
 		onclose(human_or_robot_user, "newscaster_main")
 
 /obj/machinery/newscaster/Topic(href, href_list)
@@ -808,7 +808,7 @@ obj/item/weapon/newspaper/attack_self(mob/user as mob)
 		switch(screen)
 			if(0) //Cover
 				dat+="<DIV ALIGN='center'><B><FONT SIZE=6>The Griffon</FONT></B></div>"
-				dat+="<DIV ALIGN='center'><FONT SIZE=2>[GLOB.using_map.company_name]-standard newspaper, for use on [GLOB.using_map.company_name]� Space Facilities</FONT></div><HR>"
+				dat+="<DIV ALIGN='center'><FONT SIZE=2>[GLOB.using_map.company_name]-standard newspaper, for use on [GLOB.using_map.company_name] Space Facilities</FONT></div><HR>"
 				if(isemptylist(src.news_content))
 					if(src.important_message)
 						dat+="Contents:<BR><ul><B><FONT COLOR='red'>**</FONT>Important Security Announcement<FONT COLOR='red'>**</FONT></B> <FONT SIZE=2>\[page [src.pages+2]\]</FONT><BR></ul>"
@@ -863,7 +863,7 @@ obj/item/weapon/newspaper/attack_self(mob/user as mob)
 					dat+="<B>Description</B>: [important_message.body]<BR>"
 					dat+="<B>Photo:</B>: "
 					if(important_message.img)
-						user << browse_rsc(important_message.img, "tmp_photow.png")
+						send_rsc(user, important_message.img, "tmp_photow.png")
 						dat+="<BR><img src='tmp_photow.png' width = '180'>"
 					else
 						dat+="None"
@@ -876,7 +876,7 @@ obj/item/weapon/newspaper/attack_self(mob/user as mob)
 				dat+="I'm sorry to break your immersion. This shit's bugged. Report this bug to Agouri, polyxenitopalidou@gmail.com"
 
 		dat+="<BR><HR><div align='center'>[src.curr_page+1]</div>"
-		human_user << browse(dat, "window=newspaper_main;size=300x400")
+		show_browser(human_user, dat, "window=newspaper_main;size=300x400")
 		onclose(human_user, "newspaper_main")
 	else
 		to_chat(user, "The paper is full of intelligible symbols!")

@@ -186,7 +186,12 @@ var/list/outfits_decls_by_type_
 				H.equip_to_slot_or_del(backpack, slot_back)
 
 	if(H.species && !(OUTFIT_ADJUSTMENT_SKIP_SURVIVAL_GEAR & equip_adjustments))
-		H.species.equip_survival_gear(H, flags&OUTFIT_EXTENDED_SURVIVAL)
+		if(flags & OUTFIT_COMBAT_SURVIVAL)
+			H.species.equip_survival_gear(H, 2)
+		else if(flags & OUTFIT_EXTENDED_SURVIVAL)
+			H.species.equip_survival_gear(H, 1)
+		else
+			H.species.equip_survival_gear(H)
 	check_and_try_equip_xeno(H)
 
 /decl/hierarchy/outfit/proc/equip_id(mob/living/carbon/human/H, rank, assignment, equip_adjustments)

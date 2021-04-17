@@ -9,6 +9,7 @@ GLOBAL_DATUM_INIT(ninjas, /datum/antagonist/ninja, new)
 	flags = ANTAG_OVERRIDE_JOB | ANTAG_CLEAR_EQUIPMENT | ANTAG_CHOOSE_NAME | ANTAG_RANDSPAWN | ANTAG_VOTABLE | ANTAG_SET_APPEARANCE
 	antaghud_indicator = "hudninja"
 
+	valid_species = list(SPECIES_UNATHI, SPECIES_HUMAN) // Spider Clan don't like weakness.
 	initial_spawn_req = 1
 	initial_spawn_target = 1
 	hard_cap = 1
@@ -18,6 +19,8 @@ GLOBAL_DATUM_INIT(ninjas, /datum/antagonist/ninja, new)
 	id_type = /obj/item/weapon/card/id/syndicate
 
 	faction = "ninja"
+
+	station_crew_involved = FALSE
 
 /datum/antagonist/ninja/attempt_random_spawn()
 	if(config.ninjas_allowed) ..()

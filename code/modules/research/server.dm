@@ -290,12 +290,13 @@
 			for(var/obj/machinery/r_n_d/server/S in servers)
 				dat += "[S.name] <A href='?src=\ref[src];send_to=[S.server_id]'> (Transfer)</A><BR>"
 			dat += "<HR><A href='?src=\ref[src];main=1'>Main Menu</A>"
-	user << browse("<meta charset=\"utf-8\"><TITLE>R&D Server Control</TITLE><HR>[dat]", "window=server_control;size=575x400")
+	show_browser(user, "<meta charset=\"utf-8\"><TITLE>R&D Server Control</TITLE><HR>[dat]", "window=server_control;size=575x400")
 	onclose(user, "server_control")
 	return
 
 /obj/machinery/computer/rdservercontrol/emag_act(remaining_charges, mob/user)
 	if(!emagged)
+		playsound(src.loc, 'sound/effects/computer_emag.ogg', 25)
 		playsound(src.loc, get_sfx("spark"), 75, 1)
 		emagged = 1
 		to_chat(user, "<span class='notice'>You you disable the security protocols.</span>")

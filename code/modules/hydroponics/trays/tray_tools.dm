@@ -32,9 +32,7 @@
 	if(!last_data)
 		to_chat(user, "There is no scan data to print.")
 		return
-	var/obj/item/weapon/paper/P = new /obj/item/weapon/paper(get_turf(src))
-	P.SetName("paper - [form_title]")
-	P.info = "[last_data]"
+	var/obj/item/weapon/paper/P = new /obj/item/weapon/paper(get_turf(src), "[last_data]", "paper - [form_title]")
 	if(istype(user,/mob/living/carbon/human) && !(user.l_hand && user.r_hand))
 		user.put_in_hands(P)
 	user.visible_message("\The [src] spits out a piece of paper.")
@@ -73,6 +71,8 @@
 		var/obj/machinery/portable_atmospherics/hydroponics/H = target
 		grown_seed = H.seed
 		grown_reagents = H.reagents
+
+	playsound(src.loc, 'sound/signals/processing21.ogg', 50)
 
 	if(!grown_seed)
 		to_chat(user, "<span class='danger'>[src] can tell you nothing about \the [target].</span>")
@@ -208,6 +208,6 @@
 	if(dat)
 		last_data = dat
 		dat += "<br><br>\[<a href='?src=\ref[src];print=1'>print report</a>\]"
-		user << browse(dat,"window=plant_analyzer")
+		show_browser(user, dat,"window=plant_analyzer")
 
 	return

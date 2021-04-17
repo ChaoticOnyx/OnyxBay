@@ -1,0 +1,11 @@
+<!-- 
+Title: Knowledge base
+Used In File(s): \code\modules\modular_computers\file_system\programs\generic\library.dm
+Variable "titles" is declared in wiki_topics.js
+ -->
+<h3>Choose a topic to print template:</h3>
+<table>
+{{for titles}}
+    <tr><td>{{:helper.link(value.title, null, {"topic" : value.title})}}
+{{/for}}
+</table>

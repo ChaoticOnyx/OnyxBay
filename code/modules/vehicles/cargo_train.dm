@@ -182,7 +182,7 @@
 	if(is_train_head() && istype(load, /mob/living/carbon/human))
 		var/mob/living/carbon/human/D = load
 		to_chat(D, "<span class='danger'>You ran over [H]!</span>")
-		visible_message("<span class='danger'>>\The [src] ran over [H]!</span>")
+		visible_message("<span class='danger'>\The [src] ran over [H]!</span>")
 		attack_log += text("\[[time_stamp()]\] <font color='red'>ran over [H.name] ([H.ckey]), driven by [D.name] ([D.ckey])</font>")
 		msg_admin_attack("[D.name] ([D.ckey]) ran over [H.name] ([H.ckey]). (<A HREF='?_src_=holder;adminplayerobservecoodjump=1;X=[src.x];Y=[src.y];Z=[src.z]'>JMP</a>)")
 	else
@@ -206,14 +206,15 @@
 		return ..()
 
 /obj/vehicle/train/cargo/engine/examine(mob/user)
-	if(!..(user, 1))
+	. = ..()
+	if(get_dist(src, user) > 1)
 		return
 
 	if(!istype(usr, /mob/living/carbon/human))
 		return
 
-	to_chat(user, "The power light is [on ? "on" : "off"].\nThere are[key ? "" : " no"] keys in the ignition.")
-	to_chat(user, "The charge meter reads [cell? round(cell.percent(), 0.01) : 0]%")
+	. += "\nThe power light is [on ? "on" : "off"].\nThere are[key ? "" : " no"] keys in the ignition."
+	. += "\nThe charge meter reads [cell? round(cell.percent(), 0.01) : 0]%"
 
 /obj/vehicle/train/cargo/engine/verb/start_engine()
 	set name = "Start engine"

@@ -7,20 +7,23 @@
 
 /obj/machinery/power/debug_items/examine(mob/user)
 	. = ..()
-	if(show_extended_information)
-		show_info(user)
+	if(!show_extended_information)
+		return
+	. += "\n[show_info(user)]"
+
 
 /obj/machinery/power/debug_items/proc/show_info(mob/user)
+	. = ""
 	if(!powernet)
-		to_chat(user, "This device is not connected to a powernet")
+		. += "This device is not connected to a powernet"
 		return
 
-	to_chat(user, "Connected to powernet: [powernet]")
-	to_chat(user, "Available power: [num2text(powernet.avail, 20)] W")
-	to_chat(user, "Load: [num2text(powernet.viewload, 20)] W")
-	to_chat(user, "Has alert: [powernet.problem ? "YES" : "NO"]")
-	to_chat(user, "Cables: [powernet.cables.len]")
-	to_chat(user, "Nodes: [powernet.nodes.len]")
+	. += "Connected to powernet: [powernet]"
+	. += "\nAvailable power: [num2text(powernet.avail, 20)] W"
+	. += "\nLoad: [num2text(powernet.viewload, 20)] W"
+	. += "\nHas alert: [powernet.problem ? "YES" : "NO"]"
+	. += "\nCables: [powernet.cables.len]"
+	. += "\nNodes: [powernet.nodes.len]"
 
 
 // An infinite power generator. Adds energy to connected cable.
@@ -33,8 +36,8 @@
 	add_avail(power_generation_rate)
 
 /obj/machinery/power/debug_items/infinite_generator/show_info(mob/user)
-	..()
-	to_chat(user, "Generator is providing [num2text(power_generation_rate, 20)] W")
+	. = ..()
+	. += "\nGenerator is providing [num2text(power_generation_rate, 20)] W"
 
 
 // A cable powersink, without the explosion/network alarms normal powersink causes.
@@ -48,9 +51,9 @@
 	last_used = draw_power(power_usage_rate)
 
 /obj/machinery/power/debug_items/infinite_cable_powersink/show_info(mob/user)
-	..()
-	to_chat(user, "Power sink is demanding [num2text(power_usage_rate, 20)] W")
-	to_chat(user, "[num2text(last_used, 20)] W was actually used last tick")
+	. = ..()
+	. += "\nPower sink is demanding [num2text(power_usage_rate, 20)] W"
+	. += "\n[num2text(last_used, 20)] W was actually used last tick"
 
 
 /obj/machinery/power/debug_items/infinite_apc_powersink
@@ -60,6 +63,6 @@
 	active_power_usage = 0
 
 /obj/machinery/power/debug_items/infinite_apc_powersink/show_info(mob/user)
-	..()
-	to_chat(user, "Dummy load is using [num2text(active_power_usage, 20)] W")
-	to_chat(user, "Powered: [powered() ? "YES" : "NO"]")
+	. = ..()
+	. += "\nDummy load is using [num2text(active_power_usage, 20)] W"
+	. += "\nPowered: [powered() ? "YES" : "NO"]"

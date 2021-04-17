@@ -7,8 +7,8 @@
 /obj/machinery/camera/network/medbay
 	network = list(NETWORK_MEDICAL, NETWORK_MASTER)
 
-/obj/machinery/camera/network/mercenary
-	network = list(NETWORK_MERCENARY)
+/obj/machinery/camera/network/syndicate
+	network = list(NETWORK_SYNDICATE)
 
 /obj/machinery/camera/network/mining
 	network = list(NETWORK_MINE)

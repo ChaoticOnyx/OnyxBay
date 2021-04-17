@@ -627,14 +627,12 @@
 		else
 			dat += "<A href='?src=\ref[src];help=2'>Show Help</A><BR>"
 	dat += "</BODY></HTML>"
-	user << browse(dat, "window=instrument;size=700x300")
+	show_browser(user, dat, "window=instrument;size=700x300")
 	onclose(user, "instrument")
 
 /obj/item/instrument/Topic(href, href_list)
-	if(..())
-		return 1
-	if(!in_range(src, usr) || issilicon(usr) || !isliving(usr) || !usr.canmove || usr.restrained())
-		usr << browse(null, "window=instrument;size=700x300")
+	if((. = ..()))
+		close_browser(usr, "window=instrument;size=700x300")
 		onclose(usr, "instrument")
 		return
 
@@ -758,7 +756,7 @@
 	desc = "Sretch and squeeze it to make music."
 	icon_state = "accordion"
 	item_state = "accordion"
-	force = 0
+	force = 3
 	InstrumentId  = "accordion"
 
 /obj/item/instrument/recorder
@@ -766,7 +764,7 @@
 	desc = "Wooden stick with holes. Blow into it to make some music."
 	icon_state = "recorder"
 	item_state = "recorder"
-	force = 3
+	force = 0
 	InstrumentId  = "recorder"
 	attack_verb = list("played hard", "blowed", "played")
 
@@ -784,7 +782,7 @@
 	desc = "A wooden musical instrument with four strings and a bow."
 	icon_state = "violin"
 	item_state = "violin"
-	force = 4
+	force = 3
 	InstrumentId  = "violin"
 	attack_verb = list("played hard", "bowed", "played")
 

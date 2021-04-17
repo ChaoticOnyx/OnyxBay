@@ -30,60 +30,10 @@
 	display_name = "Spaceball booster pack"
 	path = /obj/item/weapon/pack/spaceball
 
-/datum/gear/flask
-	display_name = "flask"
-	path = /obj/item/weapon/reagent_containers/food/drinks/flask
-	price = 5
-
-/datum/gear/flask/New()
-	..()
-	gear_tweaks += new /datum/gear_tweak/reagents(lunchables_ethanol_reagents())
-
-/datum/gear/flask/bar
-	display_name = "bar flask"
-	path = /obj/item/weapon/reagent_containers/food/drinks/flask/barflask
-	price = 0
-
-/datum/gear/flask/vacuum
-	display_name = "vacuum-flask"
-	path = /obj/item/weapon/reagent_containers/food/drinks/flask/vacuumflask
-	price = 0
-
-/datum/gear/flask/lithium
-	display_name = "lithium flask"
-	path = /obj/item/weapon/reagent_containers/food/drinks/flask/lithium
-	price = 8
-
-/datum/gear/flask/shiny
-	display_name = "shiny flask"
-	path = /obj/item/weapon/reagent_containers/food/drinks/flask/shiny
-	price = 10
-
 /datum/gear/coffeecup
 	display_name = "coffee cup"
 	path = /obj/item/weapon/reagent_containers/food/drinks/coffeecup
 	flags = GEAR_HAS_TYPE_SELECTION
-
-/datum/gear/boot_knife
-	display_name = "boot knife"
-	path = /obj/item/weapon/material/kitchen/utensil/knife/boot
-	cost = 3
-
-/datum/gear/lunchbox
-	display_name = "lunchbox"
-	description = "A little lunchbox."
-	cost = 2
-	path = /obj/item/weapon/storage/lunchbox
-
-/datum/gear/lunchbox/New()
-	..()
-	var/list/lunchboxes = list()
-	for(var/lunchbox_type in typesof(/obj/item/weapon/storage/lunchbox))
-		var/obj/item/weapon/storage/lunchbox/lunchbox = lunchbox_type
-		if(!initial(lunchbox.filled))
-			lunchboxes[initial(lunchbox.name)] = lunchbox_type
-	gear_tweaks += new /datum/gear_tweak/path(lunchboxes)
-	gear_tweaks += new /datum/gear_tweak/contents(lunchables_lunches(), lunchables_snacks(), lunchables_drinks())
 
 /datum/gear/towel
 	display_name = "towel"
@@ -128,18 +78,6 @@
 	display_name = "pipe, corn"
 	path = /obj/item/clothing/mask/smokable/pipe/cobpipe
 
-/datum/gear/matchbook
-	display_name = "matchbook"
-	path = /obj/item/weapon/storage/box/matches
-
-/datum/gear/lighter
-	display_name = "cheap lighter"
-	path = /obj/item/weapon/flame/lighter
-
-/datum/gear/zippo
-	display_name = "zippo"
-	path = /obj/item/weapon/flame/lighter/zippo
-
 /datum/gear/ashtray
 	display_name = "ashtray, plastic"
 	path = /obj/item/weapon/material/ashtray/plastic
@@ -179,10 +117,40 @@
 	path = /obj/item/weapon/storage/wallet/poly
 	cost = 2
 
+/datum/gear/welding_cover
+	display_name = "welding helmet covers selection"
+	path = /obj/item/welding_cover/knight
+
+/datum/gear/welding_cover/New()
+	..()
+	var/cover_type = list()
+	cover_type["knight"] = /obj/item/welding_cover/knight
+	cover_type["engie"]  = /obj/item/welding_cover/engie
+	cover_type["demon"]  = /obj/item/welding_cover/demon
+	cover_type["fancy"]  = /obj/item/welding_cover/fancy
+	cover_type["carp"]   = /obj/item/welding_cover/carp
+	cover_type["hockey"] = /obj/item/welding_cover/hockey
+	cover_type["blue"]   = /obj/item/welding_cover/blue
+	cover_type["flame"]  = /obj/item/welding_cover/flame
+	cover_type["white"]  = /obj/item/welding_cover/white
+	gear_tweaks += new /datum/gear_tweak/path(cover_type)
+
+//Donator's Shop
+
+/datum/gear/rubberducky
+	display_name = "bike horn"
+	path = /obj/item/weapon/bikehorn
+	price = 25
+
+/datum/gear/rubberducky
+	display_name = "vuvuzela"
+	path = /obj/item/weapon/bikehorn/vuvuzela
+	price = 25
+
 /datum/gear/rubberducky
 	display_name = "rubber ducky"
 	path = /obj/item/weapon/bikehorn/rubberducky
-	price = 20
+	price = 25
 
 /datum/gear/champion
 	display_name = "champion's belt"
@@ -208,19 +176,19 @@
 /datum/gear/bosunwhistle
 	display_name = "bosun's whistle"
 	path = /obj/item/toy/bosunwhistle
-	price = 100
+	price = 75
 
 /datum/gear/balloon
 	display_name = "balloon"
 	path = /obj/item/toy/balloon
-	price = 75
+	price = 100
 
 /datum/gear/balloon/nanotrasen
 	display_name = "'motivational' balloon"
 	path = /obj/item/toy/balloon/nanotrasen
-	price = 50
+	price = 75
 
 /datum/gear/spinningtoy
 	display_name = "gravitational singularity"
 	path = /obj/item/toy/spinningtoy
-	price = 25
+	price = 30

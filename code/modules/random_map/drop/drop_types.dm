@@ -77,8 +77,6 @@ var/global/list/datum/supply_drop_loot/supply_drop
 		/obj/item/clothing/suit/armor/riot,
 		/obj/item/clothing/suit/armor/vest,
 		/obj/item/clothing/suit/armor/vest,
-		/obj/item/clothing/suit/storage/vest,
-		/obj/item/clothing/suit/storage/vest,
 		/obj/item/clothing/suit/armor/laserproof,
 		/obj/item/clothing/suit/armor/bulletproof)
 

@@ -117,7 +117,7 @@
 
 		dat += "<hr>"
 
-	user << browse(dat, "window=autolathe")
+	show_browser(user, dat, "window=autolathe")
 	onclose(user, "autolathe")
 
 /obj/machinery/autolathe/attackby(obj/item/O as obj, mob/user as mob)
@@ -151,9 +151,16 @@
 
 	//Resources are being loaded.
 	var/obj/item/eating = O
+	if(!user.canUnEquip(eating))
+		to_chat(user, "You can't place that item inside \the [src].")
+		return
 	if(!eating.matter)
 		to_chat(user, "\The [eating] does not contain significant amounts of useful materials and cannot be accepted.")
 		return
+	if(!istype(eating, /obj/item/stack))
+		user.unEquip(eating, target = loc)
+		if(eating.loc != loc)
+			return
 
 	var/filltype = 0       // Used to determine message.
 	var/total_used = 0     // Amount of material used.
@@ -198,7 +205,6 @@
 		var/obj/item/stack/stack = eating
 		stack.use(max(1, round(total_used/mass_per_sheet))) // Always use at least 1 to prevent infinite materials.
 	else
-		user.remove_from_mob(O)
 		qdel(O)
 
 	updateUsrDialog()
@@ -222,6 +228,7 @@
 			return TOPIC_HANDLED
 		show_category = choice
 		. = TOPIC_REFRESH
+		updateUsrDialog()
 
 	else if(href_list["make"] && machine_recipes)
 		. = TOPIC_REFRESH
@@ -237,13 +244,15 @@
 			log_and_message_admins("tried to exploit an autolathe to duplicate an item!", user)
 			return TOPIC_HANDLED
 
-		busy = 1
+		busy = TRUE
 		update_use_power(POWER_USE_ACTIVE)
 
 		//Check if we still have the materials.
 		for(var/material in making.resources)
 			if(!isnull(stored_material[material]))
 				if(stored_material[material] < round(making.resources[material] * mat_efficiency) * multiplier)
+					busy = FALSE
+					update_use_power(POWER_USE_IDLE)
 					return TOPIC_REFRESH
 
 		//Consume materials.
@@ -251,12 +260,13 @@
 			if(!isnull(stored_material[material]))
 				stored_material[material] = max(0, stored_material[material] - round(making.resources[material] * mat_efficiency) * multiplier)
 
+		updateUsrDialog()
 		//Fancy autolathe animation.
 		flick("autolathe_n", src)
 
 		sleep(build_time)
 
-		busy = 0
+		busy = FALSE
 		update_use_power(POWER_USE_IDLE)
 
 		//Sanity check.
@@ -269,7 +279,6 @@
 			S.amount = multiplier
 			S.update_icon()
 
-	updateUsrDialog()
 
 /obj/machinery/autolathe/update_icon()
 	icon_state = (panel_open ? "autolathe_t" : "autolathe")

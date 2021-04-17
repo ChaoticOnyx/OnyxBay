@@ -80,8 +80,8 @@ won't update every console in existence) but it's more of a hassle to do. Also, 
 			return_name = "Gold"
 		if(MATERIAL_SILVER)
 			return_name = "Silver"
-		if(MATERIAL_PHORON)
-			return_name = "Solid Phoron"
+		if(MATERIAL_PLASMA)
+			return_name = "Solid Plasma"
 		if(MATERIAL_URANIUM)
 			return_name = "Uranium"
 		if(MATERIAL_DIAMOND)
@@ -175,6 +175,7 @@ won't update every console in existence) but it's more of a hassle to do. Also, 
 		. = TOPIC_REFRESH
 
 	else if(href_list["updt_tech"]) //Update the research holder with information from the technology disk.
+		playsound(src.loc, 'sound/signals/processing9.ogg', 50)
 		screen = 0.0
 		. = TOPIC_REFRESH
 		spawn(50)
@@ -184,6 +185,7 @@ won't update every console in existence) but it's more of a hassle to do. Also, 
 			griefProtection() //Update centcomm too
 
 	else if(href_list["clear_tech"]) //Erase data on the technology disk.
+		playsound(src.loc, 'sound/signals/processing9.ogg', 50)
 		t_disk.stored = null
 		. = TOPIC_REFRESH
 
@@ -194,6 +196,7 @@ won't update every console in existence) but it's more of a hassle to do. Also, 
 		. = TOPIC_REFRESH
 
 	else if(href_list["copy_tech"]) //Copys some technology data from the research holder to the disk.
+		playsound(src.loc, 'sound/signals/processing9.ogg', 50)
 		for(var/datum/tech/T in files.known_tech)
 			if(href_list["copy_tech_ID"] == T.id)
 				t_disk.stored = T
@@ -202,6 +205,7 @@ won't update every console in existence) but it's more of a hassle to do. Also, 
 		. = TOPIC_REFRESH
 
 	else if(href_list["updt_design"]) //Updates the research holder with design data from the design disk.
+		playsound(src.loc, 'sound/signals/processing9.ogg', 50)
 		screen = 0.0
 		. = TOPIC_REFRESH
 		spawn(50)
@@ -220,6 +224,7 @@ won't update every console in existence) but it's more of a hassle to do. Also, 
 		screen = 1.0
 
 	else if(href_list["copy_design"]) //Copy design data from the research holder to the design disk.
+		playsound(src.loc, 'sound/signals/processing9.ogg', 50)
 		for(var/datum/design/D in files.known_designs)
 			if(href_list["copy_design_ID"] == D.id)
 				d_disk.blueprint = D
@@ -248,6 +253,7 @@ won't update every console in existence) but it's more of a hassle to do. Also, 
 		if(alert("Proceeding will destroy loaded item. Continue?", "Destructive analyzer confirmation", "Yes", "No") == "No")
 			return TOPIC_HANDLED
 		CHECK_DESTROY
+		playsound(src.loc, 'sound/signals/processing22.ogg', 50)
 		linked_destroy.busy = 1
 		screen = 0.1
 		flick("d_analyzer_process", linked_destroy)
@@ -265,6 +271,7 @@ won't update every console in existence) but it's more of a hassle to do. Also, 
 		if(!sync)
 			to_chat(usr, "<span class='notice'>You must connect to the network first.</span>")
 		else
+			playsound(src.loc, 'sound/signals/processing13.ogg', 50)
 			. = TOPIC_HANDLED
 			griefProtection() //Putting this here because I dont trust the sync process
 			spawn(30)
@@ -296,6 +303,7 @@ won't update every console in existence) but it's more of a hassle to do. Also, 
 
 	else if(href_list["build"]) //Causes the Protolathe to build something.
 		if(linked_lathe)
+			playsound(src.loc, 'sound/signals/processing23.ogg', 50)
 			var/datum/design/being_built = null
 			for(var/datum/design/D in files.known_designs)
 				if(D.id == href_list["build"])
@@ -319,6 +327,7 @@ won't update every console in existence) but it's more of a hassle to do. Also, 
 	else if(href_list["imprint"]) //Causes the Circuit Imprinter to build something.
 		. = TOPIC_REFRESH
 		CHECK_IMPRINTER
+		playsound(src.loc, 'sound/signals/processing23.ogg', 50)
 		var/datum/design/being_built = null
 		for(var/datum/design/D in files.known_designs)
 			if(D.id == href_list["imprint"])
@@ -368,6 +377,7 @@ won't update every console in existence) but it's more of a hassle to do. Also, 
 		linked_imprinter.eject(href_list["imprinter_ejectsheet"], text2num(href_list["amount"]))
 
 	else if(href_list["find_device"]) //The R&D console looks for devices nearby to link up with.
+		playsound(src.loc, 'sound/signals/processing19.ogg', 50)
 		screen = 0.0
 		. = TOPIC_HANDLED
 		spawn(10)
@@ -725,26 +735,25 @@ won't update every console in existence) but it's more of a hassle to do. Also, 
 				if(name_set in filtered["protolathe"])
 					continue
 				dat += "<H2>[name_set]</H2><UL>"
-				if(linked_imprinter)
-					for(var/datum/design/D in files.known_designs)
-						if(!D.build_path || !(D.build_type & PROTOLATHE) || D.category_items != name_set)
-							continue
-						var/temp_dat
-						for(var/M in D.materials)
-							temp_dat += ", [D.materials[M]*linked_imprinter.mat_efficiency] [CallMaterialName(M)]"
-						for(var/T in D.chemicals)
-							temp_dat += ", [D.chemicals[T]*linked_imprinter.mat_efficiency] [CallReagentName(T)]"
-						if(temp_dat)
-							temp_dat = " \[[copytext(temp_dat, 3)]\]"
-						if(linked_lathe.canBuild(D, 1))
-							dat += "<LI><B><A href='?src=\ref[src];build=[D.id];n=1'>[D.name]</A></B>[temp_dat] Queue: "
-							if(linked_lathe.canBuild(D, 5))
-								dat += "<A href='?src=\ref[src];build=[D.id];n=5'>(&times;5)</A>"
-							if(linked_lathe.canBuild(D, 10))
-								dat += "<A href='?src=\ref[src];build=[D.id];n=10'>(&times;10)</A>"
-							dat += "<A href='?src=\ref[src];build=[D.id];customamt=1'>(Custom)</A>"
-						else
-							dat += "<LI><B>[D.name]</B>[temp_dat]"
+				for(var/datum/design/D in files.known_designs)
+					if(!D.build_path || !(D.build_type & PROTOLATHE) || D.category_items != name_set)
+						continue
+					var/temp_dat
+					for(var/M in D.materials)
+						temp_dat += ", [D.materials[M]*linked_lathe.mat_efficiency] [CallMaterialName(M)]"
+					for(var/T in D.chemicals)
+						temp_dat += ", [D.chemicals[T]*linked_lathe.mat_efficiency] [CallReagentName(T)]"
+					if(temp_dat)
+						temp_dat = " \[[copytext(temp_dat, 3)]\]"
+					if(linked_lathe.canBuild(D, 1))
+						dat += "<LI><B><A href='?src=\ref[src];build=[D.id];n=1'>[D.name]</A></B>[temp_dat] Queue: "
+						if(linked_lathe.canBuild(D, 5))
+							dat += "<A href='?src=\ref[src];build=[D.id];n=5'>(&times;5)</A>"
+						if(linked_lathe.canBuild(D, 10))
+							dat += "<A href='?src=\ref[src];build=[D.id];n=10'>(&times;10)</A>"
+						dat += "<A href='?src=\ref[src];build=[D.id];customamt=1'>(Custom)</A>"
+					else
+						dat += "<LI><B>[D.name]</B>[temp_dat]"
 				dat += "</UL>"
 
 		if(3.2) //Protolathe Material Storage Sub-menu
@@ -888,7 +897,7 @@ won't update every console in existence) but it's more of a hassle to do. Also, 
 			dat += "List of Available Designs:"
 			dat += GetResearchListInfo()
 
-	user << browse("<meta charset=\"utf-8\"><TITLE>Fabrication Control Console</TITLE><HR>[dat]", "window=rdconsole;size=850x600")
+	show_browser(user, "<meta charset=\"utf-8\"><TITLE>Fabrication Control Console</TITLE><HR>[dat]", "window=rdconsole;size=850x600")
 	onclose(user, "rdconsole")
 
 /obj/machinery/computer/rdconsole/robotics

@@ -346,6 +346,12 @@ var/const/EXTRA_COST_FACTOR = 1.25
 	hidden = 1
 	category = "Arms and Ammunition"
 
+/datum/autolathe/recipe/magazine_c45mstun
+	name = "ammunition (.45, stun)"
+	path = /obj/item/ammo_magazine/c45m/stun
+	hidden = 1
+	category = "Arms and Ammunition"
+
 /datum/autolathe/recipe/magazine_smg_rubber
 	name = "ammunition (9mm rubber top mounted)"
 	path = /obj/item/ammo_magazine/mc9mmt/rubber
@@ -361,7 +367,7 @@ var/const/EXTRA_COST_FACTOR = 1.25
 	name = "igniter"
 	path = /obj/item/device/assembly/igniter
 	category = "Devices and Components"
-	
+
 /datum/autolathe/recipe/voice
 	name = "voice analyzer"
 	path = /obj/item/device/assembly/voice

@@ -37,11 +37,12 @@
 	uniform = /obj/item/clothing/under/rank/medical/scrubs/blue
 	head = /obj/item/clothing/head/surgery/blue
 
-/decl/hierarchy/outfit/job/medical/doctor/virologist
+/decl/hierarchy/outfit/job/medical/virologist
 	name = OUTFIT_JOB_NAME("Virologist")
 	uniform = /obj/item/clothing/under/rank/virologist
 	suit = /obj/item/clothing/suit/storage/toggle/labcoat/virologist
 	mask = /obj/item/clothing/mask/surgical
+	id_type = /obj/item/weapon/card/id/medical/virologist
 /decl/hierarchy/outfit/job/medical/doctor/virologist/New()
 	..()
 	BACKPACK_OVERRIDE_VIROLOGY
@@ -72,14 +73,6 @@
 /decl/hierarchy/outfit/job/medical/chemist/New()
 	..()
 	BACKPACK_OVERRIDE_CHEMISTRY
-
-/decl/hierarchy/outfit/job/medical/geneticist
-	name = OUTFIT_JOB_NAME("Geneticist")
-	uniform = /obj/item/clothing/under/rank/geneticist
-	suit = /obj/item/clothing/suit/storage/toggle/labcoat/genetics
-	r_pocket = /obj/item/device/flashlight/pen
-	id_type = /obj/item/weapon/card/id/medical/geneticist
-	pda_type = /obj/item/device/pda/geneticist
 
 /decl/hierarchy/outfit/job/medical/geneticist/New()
 	..()

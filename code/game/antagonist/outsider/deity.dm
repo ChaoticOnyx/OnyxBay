@@ -14,3 +14,5 @@ GLOBAL_DATUM_INIT(deity, /datum/antagonist/deity, new)
 	hard_cap_round = 2
 	initial_spawn_req = 1
 	initial_spawn_target = 1
+
+	station_crew_involved = FALSE

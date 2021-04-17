@@ -6,10 +6,23 @@
 	set category = "IC"
 	return
 
-/mob/verb/say_verb(message as text)
+/mob/verb/say_verb(message as text|null)
 	set name = "Say"
-	set category = "IC"
+	set hidden = 1
+
+	ASSERT(client && usr == src)
+
+	client.close_saywindow()
+
 	usr.say(message)
+
+/mob/verb/say_verb_fake()
+	set name = "Say Verb"
+	set category = "IC"
+
+	ASSERT(client && usr == src)
+
+	winset(usr, null, "saywindow.is-visible=true;saywindow-input.focus=true;")
 
 /mob/verb/me_verb(message as text)
 	set name = "Me"
@@ -21,6 +34,9 @@
 		usr.emote("me",usr.emote_type,message)
 	else
 		usr.emote(message)
+
+	if(client?.get_preference_value(/datum/client_preference/spell_checking) == GLOB.PREF_YES && client.chatOutput)
+		client.chatOutput.spell_check(message)
 
 	var/ckeyname = "[usr.ckey]/[usr.name]"
 	webhook_send_me(ckeyname, message)

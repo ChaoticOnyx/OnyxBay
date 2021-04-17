@@ -7,20 +7,12 @@
 /datum/category_item/player_setup_item/player_global/pai/load_preferences(savefile/S)
 	if(!candidate)
 		candidate = new()
-
-	if(!preference_mob())
-		return
-
-	candidate.savefile_load(preference_mob())
+	candidate.savefile_load(pref.client)
 
 /datum/category_item/player_setup_item/player_global/pai/save_preferences(savefile/S)
 	if(!candidate)
 		return
-
-	if(!preference_mob())
-		return
-
-	candidate.savefile_save(preference_mob())
+	candidate.savefile_save(pref.client)
 
 /datum/category_item/player_setup_item/player_global/pai/content(mob/user)
 	if(!candidate)
@@ -40,7 +32,7 @@
 		var/t
 		switch(href_list["option"])
 			if("name")
-				t = sanitizeName(input(user, "Enter a name for your pAI", "Global Preference", candidate.name) as text|null, MAX_NAME_LEN, 1)
+				t = sanitizeName(input(user, "Enter a name for your pAI", "Global Preference", candidate.name) as text|null, MAX_NAME_LEN, TRUE)
 				if(t && CanUseTopic(user))
 					candidate.name = t
 			if("desc")

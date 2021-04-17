@@ -7,6 +7,6 @@
 	"'icons/obj/doors/doorsciglass.dmi'" = 'icons/obj/doors/doorsciglass.dmi',
 	"'icons/obj/doors/doorviroglass.dmi'" = 'icons/obj/doors/doorviroglass.dmi',
 	"'icons/obj/doors/rapid_pdoor.dmi'" = 'icons/obj/doors/rapid_pdoor.dmi',
-	"'icons/obj/doors/doorele.dmi'" = 'icons/obj/doors/Doorele.dmi',
+	"'icons/obj/doors/doorele.dmi'" = 'icons/obj/doors/doorele.dmi',
 	"'icons/turf/shuttle.dmi'" = 'icons/turf/shuttle.dmi'
 )

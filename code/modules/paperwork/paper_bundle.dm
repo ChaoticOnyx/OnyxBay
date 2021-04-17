@@ -46,7 +46,7 @@
 		if(istype(W, /obj/item/weapon/tape_roll))
 			return 0
 		if(istype(W, /obj/item/weapon/pen))
-			usr << browse("", "window=[name]") //Closes the dialog
+			close_browser(usr, "window=[name]") //Closes the dialog
 		var/obj/P = pages[page]
 		P.attackby(W, user)
 
@@ -94,10 +94,11 @@
 				to_chat(user, "<span class='warning'>You must hold \the [P] steady to burn \the [src].</span>")
 
 /obj/item/weapon/paper_bundle/examine(mob/user)
-	if(..(user, 1))
+	. = ..()
+	if(get_dist(src, user) <= 1 && user)
 		src.show_content(user)
 	else
-		to_chat(user, "<span class='notice'>It is too far away.</span>")
+		. += "\n<span class='notice'>It is too far away.</span>"
 	return
 
 /obj/item/weapon/paper_bundle/proc/show_content(mob/user as mob)
@@ -126,15 +127,16 @@
 			dat+= "<HTML><HEAD><TITLE>[P.name]</TITLE></HEAD><BODY>[stars(P.info)][P.stamps]</BODY></HTML>"
 		else
 			dat+= "<HTML><HEAD><TITLE>[P.name]</TITLE></HEAD><BODY>[P.info][P.stamps]</BODY></HTML>"
-		user << browse(dat, "window=[name]")
+		show_browser(user, dat, "window=[name]")
 	else if(istype(pages[page], /obj/item/weapon/photo))
 		var/obj/item/weapon/photo/P = W
-		user << browse_rsc(P.img, "tmp_photo.png")
-		user << browse(dat + "<html><head><title>[P.name]</title></head>" \
+		send_rsc(user, P.img, "tmp_photo.png")
+		dat += "<html><head><title>[P.name]</title></head>" \
 		+ "<body style='overflow:hidden'>" \
 		+ "<div> <img src='tmp_photo.png' width = '180'" \
 		+ "[P.scribble ? "<div> Written on the back:<br><i>[P.scribble]</i>" : null ]"\
-		+ "</body></html>", "window=[name]")
+		+ "</body></html>"
+		show_browser(user, dat, "window=[name]")
 
 /obj/item/weapon/paper_bundle/attack_self(mob/user as mob)
 	src.show_content(user)

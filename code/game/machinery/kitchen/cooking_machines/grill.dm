@@ -8,3 +8,4 @@
 	on_icon = "grill_on"
 	off_icon = "grill_off"
 	can_burn_food = 1
+	cooked_sound = 'sound/machines/ding.ogg'

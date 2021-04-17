@@ -262,3 +262,101 @@
 	desc = "A favorite among skeletons. It even sounds like a skeleton too."
 	icon_state = "bone-mender"
 	surgery_speed = 0.5
+
+/obj/item/weapon/organfixer
+	name = "organ fixer"
+	desc = "A device used to fix internal organs."
+	icon = 'icons/obj/surgery.dmi'
+	item_state = "scientology" // TODO: Draw a proper handheld sprite; For now it looks fine ~Toby
+	force = 8.0
+	throwforce = 8.0
+	w_class = ITEM_SIZE_NORMAL
+	mod_weight = 0.9
+	mod_reach = 0.6
+	mod_handy = 1.0
+	origin_tech = list(TECH_MATERIAL = 2, TECH_BIO = 3)
+	matter = list(MATERIAL_STEEL = 10000, MATERIAL_GLASS = 5000)
+	var/gel_amt_max = 10
+	var/gel_amt = 10
+	var/emagged = 0 // Emagged organ fixer destroys organs for good
+
+/obj/item/weapon/organfixer/New()
+	..()
+	update_icon()
+
+/obj/item/weapon/organfixer/update_icon()
+	if(gel_amt == 0)
+		icon_state = "[initial(icon_state)]-empty"
+	else
+		icon_state = "[initial(icon_state)]"
+
+/obj/item/weapon/organfixer/attackby(obj/item/I, mob/user)
+	if(istype(I, /obj/item/stack/medical/advanced/bruise_pack))
+		if(gel_amt_max == -1)
+			to_chat(user, SPAN("notice", "\The [src] doesn't seem to be reloadable."))
+			return
+		var/obj/item/stack/medical/advanced/bruise_pack/O = I
+		if(!O.get_amount())
+			to_chat(user, SPAN("warning", "You are trying to refill \the [src] using an empty container."))
+			return
+		if(refill())
+			to_chat(user, SPAN("notice", "You load some [O] into the [src]."))
+			O.use(1)
+		else
+			to_chat(user, SPAN("notice", "\The [src] is full."))
+		return
+	else
+		..()
+
+/obj/item/weapon/organfixer/examine(mob/user)
+	. = ..()
+	if(. && user.Adjacent(src))
+		if(gel_amt_max > 0)
+			if(gel_amt == 0)
+				to_chat(user, "It's empty.")
+			else
+				to_chat(user, "It has [gel_amt] doses of gel left.")
+
+/obj/item/weapon/organfixer/emag_act(remaining_charges, mob/user)
+	if(emagged)
+		return
+	emagged = 1
+	to_chat(user, "<span class='danger'>You overload \the [src]'s circuits.</span>")
+	return 1
+
+/obj/item/weapon/organfixer/proc/refill(amt = 1)
+	if(gel_amt >= gel_amt_max)
+		return 0
+	gel_amt += amt
+	update_icon()
+	return 1
+
+/obj/item/weapon/organfixer/standard
+	desc = "QROF-26 produced by Vey-Med. This easy-to-use device utilizes somatic gel in order to repair even severely damaged internal organs."
+	icon_state = "organ-fixer"
+
+/obj/item/weapon/organfixer/standard/empty
+	gel_amt = 0
+
+/obj/item/weapon/organfixer/advanced
+	name = "advanced organ fixer"
+	desc = "A modified version of QROF-26. This model uses a cluster of advanced manipulators, which allows it to fix multiple organs at once, as well as an enlarged gel storage tank."
+	icon_state = "organ-fixer-up"
+	gel_amt_max = 20
+	gel_amt = 20
+	origin_tech = list(TECH_MATERIAL = 4, TECH_ENGINEERING = 3, TECH_BIO = 4)
+
+/obj/item/weapon/organfixer/advanced/empty
+	gel_amt = 0
+
+/obj/item/weapon/organfixer/advanced/bluespace
+	name = "bluespace organ fixer"
+	desc = "A heavyly modified device, resembling QROF-26 produced by Vey-Med. This prototype has some sort of bluespace-related device attached, and doesn't seem to have any gel injection ports."
+	icon_state = "organ-fixer-bs"
+	gel_amt_max = -1
+	gel_amt = -1
+	surgery_speed = 0.6
+	origin_tech = list(TECH_MATERIAL = 5, TECH_ENGINEERING = 3, TECH_BIO = 5, TECH_BLUESPACE = 2)
+
+/obj/item/weapon/organfixer/advanced/bluespace/refill()
+	return 0

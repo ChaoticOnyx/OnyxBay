@@ -26,8 +26,7 @@ var/global/floorIsLava = 0
 				to_chat(C, msg)
 /proc/href_exploit(suspect_ckey, href)
 	var/rendered = "<span class=\"log_message\"><span class=\"prefix\">HREF EXPLOIT POSSIBLE:</span> <span class=\"message\">Suspect: '[suspect_ckey]' || Href: '[href]'</span></span><br>"
-	if (config && config.log_hrefs && href_logfile)
-		to_chat(href_logfile, rendered)
+	log_href(rendered)
 	for(var/client/C in GLOB.admins)
 		if(check_rights(R_INVESTIGATE, 0, C))
 			var/msg = rendered
@@ -103,7 +102,7 @@ var/global/floorIsLava = 0
 		else
 			body += "<A style=\"pointer-events: none; cursor: default;\">Watchlist Disabled (Needs SQL)</A>"
 
-		body += EAMS_GetPlayerPannelButton(src, M.client)
+		body += SSeams.GetPlayerPanelButton(src, M.client)
 		body += SpeciesIngameWhitelist_GetPlayerPannelButton(src, M.client)
 
 	body += {"<br><br>
@@ -230,7 +229,7 @@ var/global/floorIsLava = 0
 		</body></html>
 	"}
 
-	usr << browse(body, "window=adminplayeropts;size=550x515")
+	show_browser(usr, body, "window=adminplayeropts;size=550x515")
 	feedback_add_details("admin_verb","SPP") //If you are copy-pasting this, ensure the 2nd parameter is unique to the new proc!
 
 
@@ -255,7 +254,7 @@ var/global/floorIsLava = 0
 	dat += "<B>Player notes</B><HR>"
 	var/savefile/S=new("data/player_notes.sav")
 	var/list/note_keys
-	S >> note_keys
+	from_file(S, note_keys)
 
 	if(filter_term)
 		for(var/t in note_keys)
@@ -282,7 +281,7 @@ var/global/floorIsLava = 0
 /datum/admins/proc/player_has_info(key as text)
 	var/savefile/info = new("data/player_saves/[copytext(key, 1, 2)]/[key]/info.sav")
 	var/list/infos
-	info >> infos
+	from_file(info, infos)
 	if(!infos || !infos.len) return 0
 	else return 1
 
@@ -308,7 +307,7 @@ var/global/floorIsLava = 0
 
 	var/savefile/info = new("data/player_saves/[copytext(key, 1, 2)]/[key]/info.sav")
 	var/list/infos
-	info >> infos
+	from_file(info, infos)
 	if(!infos)
 		dat += "No information found on the given key.<br>"
 	else
@@ -326,7 +325,8 @@ var/global/floorIsLava = 0
 			if(I.author == usr.key || I.author == "Adminbot" || ishost(usr))
 				dat += "<A href='?src=\ref[src];remove_player_info=[key];remove_index=[i]'>Remove</A>"
 			dat += "<hr></li>"
-		if(update_file) info << infos
+		if(update_file)
+			to_file(info, infos)
 
 	dat += "</ul><br><A href='?src=\ref[src];add_player_info=[key]'>Add Comment</A><br>"
 
@@ -476,7 +476,7 @@ var/global/floorIsLava = 0
 						i++
 						dat+="-[MESSAGE.body] <BR>"
 						if(MESSAGE.img)
-							usr << browse_rsc(MESSAGE.img, "tmp_photo[i].png")
+							send_rsc(usr, MESSAGE.img, "tmp_photo[i].png")
 							dat+="<img src='tmp_photo[i].png' width = '180'><BR><BR>"
 						dat+="<FONT SIZE=1>\[Story by <FONT COLOR='maroon'>[MESSAGE.author]</FONT>\]</FONT><BR>"
 			dat+={"
@@ -589,7 +589,7 @@ var/global/floorIsLava = 0
 				<B>Photo:</B>:
 			"}
 			if(news_network.wanted_issue.img)
-				usr << browse_rsc(news_network.wanted_issue.img, "tmp_photow.png")
+				send_rsc(usr, news_network.wanted_issue.img, "tmp_photow.png")
 				dat+="<BR><img src='tmp_photow.png' width = '180'>"
 			else
 				dat+="None"
@@ -605,7 +605,7 @@ var/global/floorIsLava = 0
 //	log_debug("Channelname: [src.admincaster_feed_channel.channel_name] [src.admincaster_feed_channel.author]")
 //	log_debug("Msg: [src.admincaster_feed_message.author] [src.admincaster_feed_message.body]")
 
-	usr << browse(dat, "window=admincaster_main;size=400x600")
+	show_browser(usr, dat, "window=admincaster_main;size=400x600")
 	onclose(usr, "admincaster_main")
 
 
@@ -620,7 +620,7 @@ var/global/floorIsLava = 0
 			r = copytext( r, 1, findtext(r,"##") )//removes the description
 		dat += text("<tr><td>[t] (<A href='?src=\ref[src];removejobban=[r]'>unban</A>)</td></tr>")
 	dat += "</table>"
-	usr << browse(dat, "window=ban;size=400x400")
+	show_browser(usr, dat, "window=ban;size=400x400")
 
 /datum/admins/proc/Game()
 	if(!check_rights(0))	return
@@ -640,11 +640,11 @@ var/global/floorIsLava = 0
 		<A href='?src=\ref[src];create_turf=1'>Create Turf</A><br>
 		<A href='?src=\ref[src];create_mob=1'>Create Mob</A><br>
 		<br><A href='?src=\ref[src];vsc=airflow'>Edit Airflow Settings</A><br>
-		<A href='?src=\ref[src];vsc=phoron'>Edit Phoron Settings</A><br>
+		<A href='?src=\ref[src];vsc=plasma'>Edit Plasma Settings</A><br>
 		<A href='?src=\ref[src];vsc=default'>Choose a default ZAS setting</A><br>
 		"}
 
-	usr << browse(dat, "window=admin2;size=210x280")
+	show_browser(usr, dat, "window=admin2;size=210x280")
 	return
 
 /datum/admins/proc/Secrets(datum/admin_secret_category/active_category = null)
@@ -1221,7 +1221,7 @@ var/global/floorIsLava = 0
 		out += " None."
 	out += " <a href='?src=\ref[SSticker.mode];add_antag_type=1'>\[+\]</a><br/>"
 
-	usr << browse(out, "window=edit_mode[src]")
+	show_browser(usr, out, "window=edit_mode[src]")
 	feedback_add_details("admin_verb","SGM")
 
 
@@ -1482,7 +1482,7 @@ var/global/floorIsLava = 0
 
 			var/replyorigin = input(src.owner, "Please specify who the fax is coming from", "Origin") as text|null
 
-			var/obj/item/weapon/paper/admin/P = new /obj/item/weapon/paper/admin( null ) //hopefully the null loc won't cause trouble for us
+			var/obj/item/weapon/paper/admin/P = new /obj/item/weapon/paper/admin(null) //hopefully the null loc won't cause trouble for us
 			faxreply = P
 
 			P.admindatum = src
@@ -1491,6 +1491,20 @@ var/global/floorIsLava = 0
 
 			P.adminbrowse()
 
+/client/proc/check_fax_history()
+	set category = "Special Verbs"
+	set name = "Check Fax History"
+	set desc = "Look up the faxes sent this round."
+
+	var/data = "<center><b>Fax History:</b></center><br>"
+
+	if (GLOB.adminfaxes)
+		for (var/obj/item/item in GLOB.adminfaxes)
+			data += "[item.name] - <a href='?_src_=holder;AdminFaxView=\ref[item]'>view message</a><br>"
+	else
+		data += "<center>No faxes yet.</center>"
+
+	show_browser(usr, "<HTML><HEAD><TITLE>Centcomm Fax History</TITLE></HEAD><BODY>[data]</BODY></HTML>", "window=Centcomm Fax History")
 
 datum/admins/var/obj/item/weapon/paper/admin/faxreply // var to hold fax replies in
 
@@ -1556,4 +1570,3 @@ datum/admins/var/obj/item/weapon/paper/admin/faxreply // var to hold fax replies
 		qdel(P)
 		faxreply = null
 	return
-

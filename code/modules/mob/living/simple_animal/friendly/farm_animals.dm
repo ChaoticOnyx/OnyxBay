@@ -109,12 +109,10 @@
 	var/milktype = /datum/reagent/drink/milk
 	var/datum/reagents/udder = null
 
-/mob/living/simple_animal/cow/New()
+/mob/living/simple_animal/cow/Initialize()
+	. = ..()
 	udder = milktype
-	udder = new(50)
-	udder.my_atom = src
-
-	..()
+	udder = new(50, src)
 
 /mob/living/simple_animal/cow/attackby(obj/item/O, mob/user)
 	var/obj/item/weapon/reagent_containers/glass/G = O
@@ -158,6 +156,7 @@
 	icon_dead = "cowcownut_dead"
 	emote_see = list("shakes its nuts")
 	health = 100
+	faction = "floral"
 
 	milktype = /datum/reagent/drink/juice/coconut
 
@@ -209,6 +208,7 @@ var/global/chicken_count = 0
 	icon_state = "chicken"
 	icon_living = "chicken"
 	icon_dead = "chicken_dead"
+	item_state = "chicken"
 	speak = list("Cluck!","BWAAAAARK BWAK BWAK BWAK!","Bwaak bwak.")
 	speak_emote = list("clucks","croons")
 	emote_hear = list("clucks")
@@ -226,6 +226,7 @@ var/global/chicken_count = 0
 	var/body_color
 	pass_flags = PASS_FLAG_TABLE
 	mob_size = MOB_SMALL
+	holder_type = /obj/item/weapon/holder/chicken
 
 /mob/living/simple_animal/chicken/New()
 	..()
@@ -234,6 +235,7 @@ var/global/chicken_count = 0
 	icon_state = "chicken_[body_color]"
 	icon_living = "chicken_[body_color]"
 	icon_dead = "chicken_[body_color]_dead"
+	item_state = "chicken_[body_color]"
 	pixel_x = rand(-6, 6)
 	pixel_y = rand(0, 10)
 	chicken_count += 1

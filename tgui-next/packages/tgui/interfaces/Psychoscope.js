@@ -262,12 +262,6 @@ export const Psychoscope = props => {
                     scan_count={data.selected_lifeform.scan_count} />
                 </LabeledList>
               </Section>
-              <NoticeBox>
-                {(selected_lifeform.scan_count >= selected_lifeform.lifeform.neuromod_prod_scans
-                && 'You can produce the neuromods for this lifeform.')
-                || 'You can not produce the neuromods for this lifeform.'
-                }
-              </NoticeBox>
             </Fragment>
             : <NoticeBox>
               No Selected Lifeform.

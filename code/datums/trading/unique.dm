@@ -37,7 +37,7 @@
 
 	possible_trading_items = list(/obj/mecha/combat                                                    = TRADER_SUBTYPES_ONLY,
 							/obj/item/weapon/gun/projectile/automatic                                  = TRADER_SUBTYPES_ONLY,
-							/obj/item/weapon/gun/projectile/automatic/mini_uzi/usi                     = TRADER_BLACKLIST,
+							/obj/item/weapon/gun/projectile/automatic/machine_pistol/mini_uzi/usi      = TRADER_BLACKLIST,
 							/obj/item/weapon/gun/projectile/automatic/l6_saw/mag                       = TRADER_BLACKLIST
 							)
 
@@ -68,7 +68,6 @@
 	possible_wanted_items  = list(/obj/item/weapon/ore                        = TRADER_ALL)
 	possible_trading_items = list(/obj/machinery/power/supermatter            = TRADER_ALL,
 								/obj/item/weapon/aiModule                     = TRADER_SUBTYPES_ONLY)
-	want_multiplier = 5000
 
 	speech = list("hail_generic"     = "Blub am MERCHANT. Blub hunger for things. Boo bring them to blub, yes?",
 				"hail_deny"          = "Blub does not want to speak to boo.",

@@ -5,7 +5,7 @@
 #define MATERIAL_GOLD                    "gold"
 #define MATERIAL_SILVER                  "silver"
 #define MATERIAL_DIAMOND                 "diamond"
-#define MATERIAL_PHORON                  "phoron"
+#define MATERIAL_PLASMA                  "plasma"
 #define MATERIAL_URANIUM                 "uranium"
 #define MATERIAL_COTTON                  "cotton"
 #define MATERIAL_CARBON                  "carbon"
@@ -16,8 +16,8 @@
 #define MATERIAL_PLATINUM                "platinum"
 #define MATERIAL_BRONZE                  "bronze"
 #define MATERIAL_REINFORCED_GLASS        "rglass"
-#define MATERIAL_PHORON_GLASS            "phglass"
-#define MATERIAL_REINFORCED_PHORON_GLASS "rphglass"
+#define MATERIAL_PLASS                   "plass"
+#define MATERIAL_REINFORCED_PLASS        "rplass"
 #define MATERIAL_MARBLE                  "marble"
 #define MATERIAL_RESIN                   "resin"
 #define MATERIAL_CULT                    "cult"
@@ -53,6 +53,7 @@
 #define SHARD_SHRAPNEL "shrapnel"
 #define SHARD_STONE_PIECE "piece"
 #define SHARD_SPLINTER "splinters"
+#define SHARD_SCRAP "scrap"
 #define SHARD_NONE ""
 
 #define MATERIAL_UNMELTABLE 0x1

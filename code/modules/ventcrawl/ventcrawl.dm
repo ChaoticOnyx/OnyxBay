@@ -41,7 +41,7 @@ var/list/ventcrawl_machinery = list(
 		to_chat(src, "<span class='warning'>You cannot ventcrawl while feeding.</span>")
 		return FALSE
 	. = ..()
-	
+
 /mob/living/carbon/human/can_ventcrawl()
 	if(handcuffed)
 		to_chat(src, "<span class='warning'>You can't vent crawl while you're restrained!</span>")
@@ -50,7 +50,7 @@ var/list/ventcrawl_machinery = list(
 		to_chat(src, "<span class='warning'>You cannot ventcrawl in your current state!</span>")
 		return FALSE
 	if(isMonkey(src))
-		return TRUE				
+		return TRUE
 	return ventcrawl_carry()
 
 /mob/living/carbon/human/ventcrawl_carry()
@@ -112,7 +112,7 @@ var/list/ventcrawl_machinery = list(
 		pipe = pipes[1]
 	else
 		pipe = input("Crawl Through Vent", "Pick a pipe") as null|anything in pipes
-	if(canmove && pipe)
+	if(!is_physically_disabled() && pipe)
 		return pipe
 
 /mob/living/carbon/alien/ventcrawl_carry()
@@ -177,6 +177,7 @@ var/list/ventcrawl_machinery = list(
 			to_chat(src, "This vent is not connected to anything.")
 	else
 		to_chat(src, "You must be standing on or beside an air vent to enter it.")
+
 /mob/living/proc/add_ventcrawl(obj/machinery/atmospherics/starting_machine)
 	is_ventcrawling = 1
 	//candrop = 0

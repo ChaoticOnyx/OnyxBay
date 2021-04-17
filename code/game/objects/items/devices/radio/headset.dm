@@ -37,11 +37,12 @@
 	return list_secure_channels()
 
 /obj/item/device/radio/headset/examine(mob/user)
-	if(!(..(user, 1) && radio_desc))
+	. = ..()
+	if(!(get_dist(src, user) <= 1 && radio_desc))
 		return
 
-	to_chat(user, "The following channels are available:")
-	to_chat(user, radio_desc)
+	. += "\nThe following channels are available:"
+	. += "\n[radio_desc]"
 
 /obj/item/device/radio/headset/handle_message_mode(mob/living/M as mob, message, channel)
 	if (channel == "special")
@@ -134,6 +135,25 @@
 	icon_state = "com_headset"
 	item_state = "headset"
 	ks2type = /obj/item/device/encryptionkey/headset_com
+
+/obj/item/device/radio/headset/heads/verb/try_to_toggle_mode()
+	set name = "Toggle Command Mode"
+	set category = "Object"
+	set src in usr
+
+	toggle_mode(usr)
+
+/obj/item/device/radio/headset/heads/AltClick(mob/user)
+	toggle_mode(user)
+
+/obj/item/device/radio/headset/heads/proc/toggle_mode(mob/user)
+	if(!user)
+		return
+	if(!CanPhysicallyInteract(user))
+		return
+
+	loud = !loud
+	to_chat(user, SPAN("notice", "You have [loud ? "enabled" : "disabled"] command mode for [src]."))
 
 /obj/item/device/radio/headset/heads/captain
 	name = "captain's headset"

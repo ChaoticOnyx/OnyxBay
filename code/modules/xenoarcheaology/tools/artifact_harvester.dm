@@ -65,7 +65,7 @@
 	//
 	dat += "<HR>"
 	dat += "<A href='?src=\ref[src];refresh=1'>Refresh</A> <A href='?src=\ref[src];close=1'>Close<BR>"
-	user << browse(dat, "window=artharvester;size=450x500")
+	show_browser(user, dat, "window=artharvester;size=450x500")
 	onclose(user, "artharvester")
 
 /obj/machinery/artifact_harvester/Process()
@@ -154,6 +154,7 @@
 						//delete it when the ids match to account for duplicate ids having different effects
 						if(inserted_battery.battery_effect && inserted_battery.stored_charge <= 0)
 							qdel(inserted_battery.battery_effect)
+							return
 
 						//
 						var/datum/artifact_effect/source_effect

@@ -6,6 +6,7 @@
 	damage_type = BURN
 	nodamage = 1
 	check_armour = "energy"
+	blockable = FALSE
 	var/heavy_effect_range = 1
 	var/light_effect_range = 2
 
@@ -63,6 +64,7 @@
 	damage_type = BRUTE
 	nodamage = 1
 	check_armour = "bullet"
+	blockable = FALSE
 
 	Bump(atom/A as mob|obj|turf|area)
 		if(A == firer)
@@ -102,6 +104,7 @@
 				if(prob(15))
 					H.apply_effect((rand(30,80)),IRRADIATE,blocked = H.getarmor(null, "rad"))
 					H.Weaken(5)
+					H.Stun(5)
 					for (var/mob/V in viewers(src))
 						V.show_message("<span class='warning'>[M] writhes in pain as \his vacuoles boil.</span>", 3, "<span class='warning'>You hear the crunching of leaves.</span>", 2)
 				if(prob(35))
@@ -166,3 +169,29 @@
 	damage_type = PAIN
 	muzzle_type = /obj/effect/projectile/bullet/muzzle
 
+/obj/item/projectile/energy/laser
+	name = "laser slug"
+	icon_state = "ibeam"
+	damage = 30
+	agony = 10
+	eyeblur = 4
+	damage_type = BURN
+	check_armour = "laser"
+	armor_penetration = 10
+	sharp = 1 //concentrated burns
+	pass_flags = PASS_FLAG_TABLE | PASS_FLAG_GRILLE
+	fire_sound = 'sound/effects/weapons/energy/fire8.ogg'
+
+/obj/item/projectile/energy/laser/mid
+	icon_state = "laser"
+	damage = 60
+	agony = 20
+	armor_penetration = 20
+
+/obj/item/projectile/energy/laser/heavy
+	name = "heavy laser slug"
+	icon_state = "heavylaser"
+	damage = 80
+	agony = 30
+	armor_penetration = 40
+	fire_sound = 'sound/effects/weapons/energy/fire21.ogg'

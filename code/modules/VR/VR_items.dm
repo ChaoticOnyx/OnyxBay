@@ -122,12 +122,12 @@ GLOBAL_LIST_EMPTY(thunderfield_items)
 
 /datum/thunderfield_item/thermal
 	name = "Thermal glasses"
-	item = /obj/item/clothing/glasses/thermal/syndi
+	item = /obj/item/clothing/glasses/hud/standard/thermal/syndie
 	cost = 9
 
 /datum/thunderfield_item/armor
 	name = "Armor"
-	item = /obj/item/clothing/suit/armor/vest/csivest
+	item = /obj/item/clothing/suit/armor/vest
 	cost = 3
 
 /datum/thunderfield_item/helmet

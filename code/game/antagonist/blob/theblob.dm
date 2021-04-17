@@ -1,5 +1,6 @@
 //Few global vars to track the blob
-var/blob_tiles_grown_total = 0
+
+GLOBAL_VAR_INIT(blob_tiles_grown_total, 0)
 var/list/blobs = list()
 var/list/blob_cores = list()
 var/list/blob_nodes = list()
@@ -106,7 +107,7 @@ var/list/blob_overminds = list()
 	for(var/atom/A in loc)
 		A.blob_act(0,src)
 
-	blob_tiles_grown_total++
+	GLOB.blob_tiles_grown_total++
 
 	if (!(src in SSobj.processing))
 		START_PROCESSING(SSobj, src)
@@ -114,14 +115,14 @@ var/list/blob_overminds = list()
 	return
 
 /obj/effect/blob/Destroy()
-	blob_tiles_grown_total--
+	GLOB.blob_tiles_grown_total--
 	blobs -= src
 
 	for(var/obj/effect/blob/B in orange(loc,1))
 		B.update_icon()
 
 		if(!spawning)
-			anim(target = B.loc, a_icon = icon, flick_anim = "connect_die", sleeptime = 50, direction = get_dir(B,src), plane = src.plane)
+			anim(target = B.loc, a_icon = icon, flick_anim = "connect_die", sleeptime = 50, direction = get_dir(B,src))
 
 	..()
 

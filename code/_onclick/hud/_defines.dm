@@ -53,6 +53,7 @@
 #define ui_drop_throw "EAST-1:28,SOUTH+1:7"
 #define ui_pull_resist "EAST-2:26,SOUTH+1:7"
 #define ui_acti "EAST-2:26,SOUTH:5"
+#define ui_rest_act "EAST-3:24,SOUTH+1:5"
 #define ui_movi "EAST-3:24,SOUTH:5"
 #define ui_zonesel "EAST-1:28,SOUTH:5"
 #define ui_acti_alt "EAST-1:28,SOUTH:5" //alternative intent switcher for when the interface is hidden (F12)
@@ -148,3 +149,39 @@
 #define ui_vrhuman_main "WEST:-2,SOUTH+4:20"
 #define ui_vrhuman_cleanup "WEST+3:-2,SOUTH+4:20"
 #define ui_vrhuman_dienow "WEST+4:-2,SOUTH+4:20"
+
+// AI
+#define ui_ai_core "SOUTH:6,WEST"
+#define ui_ai_core_display "SOUTH:6,WEST+1"
+#define ui_ai_status "SOUTH:6,WEST+2"
+#define ui_ai_change_hologram "SOUTH:6,WEST+3"
+#define ui_ai_crew_manifest "SOUTH:6,WEST+4"
+//#define ui_ai_null "SOUTH:6,WEST+5"
+#define ui_ai_announcement "SOUTH:6,WEST+6"
+#define ui_ai_shuttle "SOUTH:6,WEST+7"
+#define ui_ai_state_laws "SOUTH:6,WEST+8"
+//#define ui_ai_null "SOUTH:6,WEST+9"
+#define ui_ai_multitool "SOUTH:6,WEST+10"
+
+#define ui_ai_pda_ringer "SOUTH:6,WEST+11"
+#define ui_ai_pda_send "SOUTH:6,WEST+12"
+#define ui_ai_pda_log "SOUTH:6,WEST+13"
+#define ui_ai_pda_sr "SOUTH:6,WEST+14"
+
+#define ui_ai_camera_list "SOUTH:6+1,WEST"
+#define ui_ai_track_with_camera "SOUTH:6+1,WEST+1"
+#define ui_ai_camera_light "SOUTH:6+1,WEST+2"
+#define ui_ai_sensor "SOUTH:6+1,WEST+3"
+
+#define ui_ai_radio "SOUTH:6+1,WEST+4"
+#define ui_ai_scl "SOUTH:6+1,WEST+6"
+#define ui_ai_gcl "SOUTH:6+1,WEST+7"
+//#define ui_ai_null "SOUTH:6+1,WEST+5"
+#define ui_ai_dcl "SOUTH:6+1,WEST+8"
+//#define ui_ai_null "SOUTH:6+1,WEST+9"
+#define ui_ai_shutdown "SOUTH:6+1,WEST+10"
+#define ui_ai_override "SOUTH:6+1,WEST+11"
+
+#define ui_ai_take_picture "SOUTH:6+1,WEST+12"
+#define ui_ai_view_images "SOUTH:6+1,WEST+13"
+#define ui_ai_del_picture "SOUTH:6+1,WEST+14"

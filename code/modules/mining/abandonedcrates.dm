@@ -4,6 +4,7 @@
 	icon_state = "securecrate"
 	icon_opened = "securecrateopen"
 	icon_closed = "securecrate"
+	req_access = list()
 	var/list/code = list()
 	var/list/lastattempt = list()
 	var/attempts = 10
@@ -72,7 +73,7 @@
 		if(63 to 64)
 			var/t = rand(4,7)
 			for(var/i = 0, i < t, ++i)
-				var/newcoin = pick(/obj/item/weapon/coin/silver, /obj/item/weapon/coin/silver, /obj/item/weapon/coin/silver, /obj/item/weapon/coin/iron, /obj/item/weapon/coin/iron, /obj/item/weapon/coin/iron, /obj/item/weapon/coin/gold, /obj/item/weapon/coin/diamond, /obj/item/weapon/coin/phoron, /obj/item/weapon/coin/uranium, /obj/item/weapon/coin/platinum)
+				var/newcoin = pick(/obj/item/weapon/coin/silver, /obj/item/weapon/coin/silver, /obj/item/weapon/coin/silver, /obj/item/weapon/coin/iron, /obj/item/weapon/coin/iron, /obj/item/weapon/coin/iron, /obj/item/weapon/coin/gold, /obj/item/weapon/coin/diamond, /obj/item/weapon/coin/plasma, /obj/item/weapon/coin/uranium, /obj/item/weapon/coin/platinum)
 				new newcoin(src)
 		if(65 to 66)
 			new /obj/item/clothing/suit/ianshirt(src)
@@ -138,7 +139,7 @@
 		if(97)
 			new /obj/item/weapon/archaeological_find(src)
 		if(98)
-			new /obj/item/weapon/melee/energy/sword(src)
+			new /obj/item/weapon/melee/energy/sword/one_hand(src)
 		if(99)
 			new /obj/item/weapon/storage/belt/champion(src)
 			new /obj/item/clothing/mask/luchador(src)

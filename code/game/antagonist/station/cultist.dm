@@ -27,7 +27,7 @@ GLOBAL_DATUM_INIT(cult, /datum/antagonist/cultist, new)
 	restricted_jobs = list(/datum/job/captain, /datum/job/hos, /datum/job/hop,
 							/datum/job/rd, /datum/job/chief_engineer, /datum/job/cmo,
 							/datum/job/merchant, /datum/job/lawyer)
-	protected_jobs = list(/datum/job/officer, /datum/job/warden, /datum/job/detective)
+	additional_restricted_jobs = list(/datum/job/officer, /datum/job/warden, /datum/job/detective)
 	blacklisted_jobs = list(/datum/job/ai, /datum/job/cyborg, /datum/job/chaplain, /datum/job/psychiatrist)
 	feedback_tag = "cult_objective"
 	antag_indicator = "hudcultist"
@@ -53,6 +53,7 @@ GLOBAL_DATUM_INIT(cult, /datum/antagonist/cultist, new)
 	var/list/cult_rating_bounds = list(CULT_RUNES_1, CULT_RUNES_2, CULT_RUNES_3, CULT_GHOSTS_1, CULT_GHOSTS_2, CULT_GHOSTS_3)
 	var/max_cult_rating = 0
 	var/conversion_blurb = "You catch a glimpse of the Realm of Nar-Sie, the Geometer of Blood. You now see how flimsy the world is, you see that it should be open to the knowledge of That Which Waits. Assist your new compatriots in their dark dealings. Their goals are yours, and yours are theirs. You serve the Dark One above all else. Bring It back."
+	var/narsie_summoned = FALSE
 
 	faction = "cult"
 

@@ -91,13 +91,25 @@
 	stutter = 10
 	armor_penetration = 10
 
+/obj/item/projectile/energy/electrode/c45
+	name = "stun bullet"
+	icon_state = "stunbullet"
+	nodamage = 0
+	agony = 40 // Weaker than the stunsphere la'classique
+	damage_type = BURN
+	damage = 3 //A little ouchie.
+	armor_penetration = 10
+	fire_sound = 'sound/weapons/gunshot/gunshot.ogg'
+
 /obj/item/projectile/energy/electrode/c44
 	name = "shock bullet"
 	icon_state = "shockbullet"
 	nodamage = 0
 	agony = 60
+	damage_type = BRUTE
 	damage = 5 //It's still a bullet
 	armor_penetration = 10
+	fire_sound = 'sound/weapons/gun_revolver44.ogg'
 
 /obj/item/projectile/energy/c44
 	name = "overheated bullet"
@@ -107,6 +119,7 @@
 	eyeblur = 4
 	damage_type = BURN
 	armor_penetration = 15
+	fire_sound = 'sound/weapons/gun_revolver44.ogg'
 
 /obj/item/projectile/energy/declone
 	name = "decloner beam"
@@ -157,8 +170,8 @@
 	check_armour = "bio"
 	armor_penetration = 25	// It's acid
 
-/obj/item/projectile/energy/phoron
-	name = "phoron bolt"
+/obj/item/projectile/energy/plasma
+	name = "plasma bolt"
 	icon_state = "energy"
 	fire_sound = 'sound/effects/stealthoff.ogg'
 	damage = 20

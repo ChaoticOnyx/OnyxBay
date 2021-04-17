@@ -155,6 +155,12 @@ proc/listclearnulls(list/list)
 		return picked
 	return null
 
+/// Returns the bottom(first) element from the list and removes it from the list (typical stack function)
+/proc/popleft(list/L)
+	if(L.len)
+		. = L[1]
+		L.Cut(1, 2)
+
 //Returns the next element in parameter list after first appearance of parameter element. If it is the last element of the list or not present in list, returns first element.
 /proc/next_in_list(element, list/L)
 	for(var/i=1, i<L.len, i++)
@@ -370,7 +376,7 @@ proc/listclearnulls(list/list)
 
 //Don't use this on lists larger than half a dozen or so
 /proc/insertion_sort_numeric_list_ascending(list/L)
-	//world.log << "ascending len input: [L.len]"
+	//to_world_log("ascending len input: [L.len]")
 	var/list/out = list(pop(L))
 	for(var/entry in L)
 		if(isnum(entry))
@@ -383,13 +389,13 @@ proc/listclearnulls(list/list)
 			if(!success)
 				out.Add(entry)
 
-	//world.log << "	output: [out.len]"
+	//to_world_log("	output: [out.len]")
 	return out
 
 /proc/insertion_sort_numeric_list_descending(list/L)
-	//world.log << "descending len input: [L.len]"
+	//to_world_log("descending len input: [L.len]")
 	var/list/out = insertion_sort_numeric_list_ascending(L)
-	//world.log << "	output: [out.len]"
+	//to_world_log("	output: [out.len]")
 	return reverselist(out)
 
 

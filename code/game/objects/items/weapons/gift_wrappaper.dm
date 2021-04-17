@@ -63,8 +63,8 @@
 		/obj/item/weapon/grenade/smokebomb,
 		/obj/item/weapon/corncob,
 		/obj/item/weapon/contraband/poster,
-		/obj/item/weapon/book/manual/barman_recipes,
-		/obj/item/weapon/book/manual/chef_recipes,
+		/obj/item/weapon/book/wiki/barman_recipes,
+		/obj/item/weapon/book/wiki/chef_recipes,
 		/obj/item/weapon/bikehorn,
 		/obj/item/weapon/beach_ball,
 		/obj/item/weapon/beach_ball/holoball,
@@ -185,8 +185,9 @@
 
 
 /obj/item/weapon/wrapping_paper/examine(mob/user)
-	if(..(user, 1))
-		to_chat(user, text("There is about [] square units of paper left!", src.amount))
+	. = ..()
+	if(get_dist(src, user) <= 1)
+		. += "\n[text("There is about [] square units of paper left!", src.amount)]"
 
 /obj/item/weapon/wrapping_paper/attack(mob/target as mob, mob/user as mob)
 	if (!istype(target, /mob/living/carbon/human)) return

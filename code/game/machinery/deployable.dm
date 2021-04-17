@@ -132,13 +132,10 @@ for reference:
 				dismantle()
 			return
 
-/obj/structure/barricade/CanPass(atom/movable/mover, turf/target, height=0, air_group=0)//So bullets will fly over and stuff.
-	if(air_group || (height==0))
-		return 1
+/obj/structure/barricade/CanPass(atom/movable/mover, turf/target) //So bullets will fly over and stuff.
 	if(istype(mover) && mover.pass_flags & PASS_FLAG_TABLE)
-		return 1
-	else
-		return 0
+		return TRUE
+	return FALSE
 
 //Actual Deployable machinery stuff
 /obj/machinery/deployable
@@ -226,13 +223,10 @@ for reference:
 			anchored = !anchored
 			icon_state = "barrier[src.locked]"
 
-	CanPass(atom/movable/mover, turf/target, height=0, air_group=0)//So bullets will fly over and stuff.
-		if(air_group || (height==0))
-			return 1
+	CanPass(atom/movable/mover, turf/target) //So bullets will fly over and stuff.
 		if(istype(mover) && mover.pass_flags & PASS_FLAG_TABLE)
-			return 1
-		else
-			return 0
+			return TRUE
+		return FALSE
 
 	proc/explode()
 
@@ -251,6 +245,7 @@ for reference:
 
 /obj/machinery/deployable/barrier/emag_act(remaining_charges, mob/user)
 	if (src.emagged == 0)
+		playsound(src.loc, 'sound/effects/computer_emag.ogg', 25)
 		src.emagged = 1
 		src.req_access.Cut()
 		src.req_one_access.Cut()
@@ -261,6 +256,7 @@ for reference:
 		visible_message("<span class='warning'>BZZzZZzZZzZT</span>")
 		return 1
 	else if (src.emagged == 1)
+		playsound(src.loc, 'sound/effects/computer_emag.ogg', 25)
 		src.emagged = 2
 		to_chat(user, "You short out the anchoring mechanism on \the [src].")
 		var/datum/effect/effect/system/spark_spread/s = new /datum/effect/effect/system/spark_spread
