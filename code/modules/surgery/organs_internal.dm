@@ -51,7 +51,7 @@
 
 	target.op_stage.current_organ = null
 
-	var/obj/item/organ/internal/list/damaged_organs = list()
+	var/list/damaged_organs = list()
 	for(var/obj/item/organ/internal/I in target.internal_organs)
 		if(I && !(I.status & ORGAN_CUT_AWAY) && I.parent_organ == affected.organ_tag && !BP_IS_ROBOTIC(I))
 			var/image/img = image(icon = I.icon, icon_state = I.icon_state)
@@ -253,7 +253,7 @@
 			to_chat(user, SPAN("warning", "\The [M] is empty!"))
 			return SURGERY_FAILURE
 
-	var/obj/item/organ/internal/list/damaged_organs = list()
+	var/list/damaged_organs = list()
 	for(var/obj/item/organ/internal/I in target.internal_organs)
 		if(I && !(I.status & ORGAN_CUT_AWAY) && I.parent_organ == affected.organ_tag && !BP_IS_ROBOTIC(I))
 			var/image/img = image(icon = I.icon, icon_state = I.icon_state)
@@ -693,7 +693,7 @@
 		to_chat(user, SPAN("warning", "You can't do this right now."))
 		return SURGERY_FAILURE
 
-	var/obj/item/organ/internal/list/dead_organs = list()
+	var/list/dead_organs = list()
 	for(var/obj/item/organ/internal/I in target.internal_organs)
 		if(I && !(I.status & ORGAN_CUT_AWAY) && I.status & ORGAN_DEAD && I.parent_organ == affected.organ_tag && !BP_IS_ROBOTIC(I))
 			var/image/img = image(icon = I.icon, icon_state = I.icon_state)
