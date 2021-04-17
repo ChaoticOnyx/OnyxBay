@@ -19,3 +19,88 @@
 	/obj/item/weapon/folder/nt,\
 	/obj/item/weapon/pen,\
 	/obj/item/device/camera)
+
+// Syndicate Transfer Teleport Device
+
+/obj/item/weapon/storage/briefcase/sttd
+	name = "unknown briefcase"
+	desc = "It's old looking briefcase but have some advanced tech marks"
+	origin_tech = list(TECH_BLUESPACE = 3, TECH_ILLEGAL = 3)
+	var/obj/item/device/uplink/uplink
+	var/authentication_complete = FALSE
+	var/del_on_send = TRUE
+
+/obj/item/weapon/storage/briefcase/sttd/attackby(obj/item/I, mob/user)
+	if(!authentication_complete && I.hidden_uplink)
+		uplink = I.hidden_uplink
+		authentication_complete = TRUE
+	..()
+
+/obj/item/weapon/storage/briefcase/sttd/proc/can_launch()
+	return authentication_complete && (locate(/turf/space) in view(get_turf(src)))
+
+/obj/item/weapon/storage/briefcase/sttd/attack_self(mob/user)
+	ui_interact(user)
+
+/obj/item/weapon/storage/briefcase/sttd/interact(mob/user)
+	ui_interact(user)
+
+/obj/item/weapon/storage/briefcase/sttd/ui_data(mob/user)
+	var/list/list/data = list()
+
+	data["can_launch"] = can_launch()
+	data["fixer"] = GLOB.traitors.fixer.name
+	data["owner"] = uplink.uplink_owner ? uplink.uplink_owner.name : "Unknown"
+	data["is_owner"] = uplink.uplink_owner && (uplink.uplink_owner == user.mind)
+	data["contracts"] = list()
+
+	for(var/datum/antag_contract/item/C in GLOB.traitors.fixer.return_contracts())
+		if(!C.check(src))
+			continue
+		data["contracts"].Add(list(list(
+			"name" = C.name,
+			"desc" = C.desc,
+			"reward" = C.reward
+		)))
+
+	return data
+
+/obj/item/weapon/storage/briefcase/sttd/ui_interact(mob/user, ui_key = "main", datum/nanoui/ui = null, force_open = 1)
+	if(!authentication_complete)
+		audible_message("[src] blinks red.")
+		return
+	var/list/data = ui_data(user)
+
+	ui = SSnano.try_update_ui(user, src, ui_key, ui, data, force_open)
+	if(!ui)
+		ui = new(user, src, ui_key, "sttd.tmpl", "[name]", 400, 430)
+		ui.set_initial_data(data)
+		ui.open()
+
+/obj/item/weapon/storage/briefcase/sttd/Topic(href, href_list)
+	if(..())
+		return TRUE
+
+	if(!authentication_complete)
+		return FALSE
+
+	if(href_list["launch"])
+		if(!can_launch())
+			return FALSE
+
+		for(var/datum/antag_contract/item/C in GLOB.all_contracts)
+			if(C.completed)
+				continue
+			C.on_container(src)
+		for(var/datum/D in contents)
+			qdel(D)
+		contents = list()
+		if(del_on_send)
+			if(ishuman(loc))
+				var/mob/living/carbon/human/H = loc
+				H.drop_item(src, TRUE)
+				to_chat(loc, SPAN_NOTICE("[src] flickers away in a brief flash of light."))
+			qdel(src)
+
+	if(.)
+		SSnano.update_uis(src)

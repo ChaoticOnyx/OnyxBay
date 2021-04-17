@@ -1,0 +1,34 @@
+{{:helper.syndicateMode()}}
+
+<b>Glad to hear you, {{:data.owner}}. I am {{:data.fixer}}, there are currentrly known contracts, that will be closed by send STTD:</b>
+<table style="width:100%">
+	<tr>
+		<th>Title</th>
+		<th style="width:68%">Description</th>
+		<th style="width:12%">Reward</th>
+	</tr>
+	{{for data.contracts}}
+		<tr class="candystripe">
+			<td style="text-align: center;">{{:value.name}}</td>
+			<td style="text-indent: 20px; padding: 5px;">{{:value.desc}}</td>
+			<td style="text-align: center;">{{:value.reward}}</td>
+		</tr>
+	{{/for}}
+</table>
+
+<div class="item">
+	<div class="itemLabel">
+		<b>Reward will be paid to</b>:
+	</div>
+	<div class="itemContent">
+		{{if data.is_owner}}
+			{{:data.owner}}
+		{{else}}
+			{{:data.owner}} (use your uplink device to change it)
+		{{/if}}
+	</div>
+</div>
+
+<div class="item">
+	{{:helper.link('Launch', 'plus', {'launch' : 1}, data.can_launch ? null : 'disabled')}}
+</div>
