@@ -1537,7 +1537,8 @@
 					/obj/item/weapon/storage/bouquet = 3,
 					/obj/item/weapon/storage/wallet/poly = 2)
 	contraband = list(/obj/item/clothing/glasses/eyepatch = 2,
-					  /obj/item/clothing/accessory/horrible = 2)
+					  /obj/item/clothing/accessory/horrible = 2,
+					  /obj/item/clothing/under/monkey/color/random = 3)
 	premium = list(/obj/item/clothing/mask/smokable/pipe = 3)
 	prices = list(/obj/item/weapon/mirror = 60,
 				  /obj/item/weapon/haircomb = 40,

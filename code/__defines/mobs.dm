@@ -299,6 +299,7 @@
 #define SPECIES_NABBER      "Giant Armoured Serpentid"
 #define SPECIES_PROMETHEAN  "Promethean"
 #define SPECIES_EGYNO       "Egyno"
+#define SPECIES_MONKEY      "Monkey"
 
 // Ayyy IDs.
 #define SPECIES_XENO			"Xenomorph"

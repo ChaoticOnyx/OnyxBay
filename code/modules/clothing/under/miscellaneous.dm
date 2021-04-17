@@ -538,18 +538,6 @@
 		slot_hand_str = "blue"
 		)
 
-/obj/item/clothing/under/punpun
-	name = "fancy uniform"
-	desc = "It looks like it was tailored for a monkey."
-	icon_state = "punpun"
-	species_restricted = list("Monkey")
-
-/obj/item/clothing/under/punpants
-	name = "monkey pants"
-	desc = "It looks like it was tailored for a monkey."
-	icon_state = "jeansmustang"
-	species_restricted = list("Monkey")
-
 // /obj/item/clothing/under/rank/psych/turtleneck/sweater
 // 	desc = "A warm looking sweater and a pair of dark blue slacks."
 // 	name = "sweater"
