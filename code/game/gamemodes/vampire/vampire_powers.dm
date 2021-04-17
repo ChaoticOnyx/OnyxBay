@@ -1,6 +1,6 @@
 // Contains all /mob/procs that relate to vampire.
 /mob/living/carbon/human/AltClickOn(atom/A)
-	if(mind && mind.vampire && istype(A , /turf/simulated/floor) && /mob/living/carbon/human/proc/vampire_veilstep in verbs)
+	if(mind && mind.vampire && istype(A , /turf/simulated/floor) && (/mob/living/carbon/human/proc/vampire_veilstep in verbs))
 		vampire_veilstep(A)
 	..()
 

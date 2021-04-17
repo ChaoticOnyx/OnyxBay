@@ -208,7 +208,7 @@
 				return TOPIC_REFRESH
 	if(href_list["stasis"])
 		var/nstasis = text2num(href_list["stasis"])
-		if(stasis != nstasis && nstasis in stasis_settings)
+		if(stasis != nstasis && (nstasis in stasis_settings))
 			stasis = text2num(href_list["stasis"])
 			return TOPIC_REFRESH
 
