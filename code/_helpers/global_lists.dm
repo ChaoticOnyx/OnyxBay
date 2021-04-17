@@ -210,7 +210,7 @@ var/global/list/string_slot_flags = list(
 	for(var/T in paths)
 		var/datum/body_build/BB = new T
 		GLOB.bb_clothing_icon_states[BB.type] = list()
-		GLOB.bb_clothing_icon_states[BB.type]["hidden"]            = icon_states(BB.clothing_icons["hidden"])
+		GLOB.bb_clothing_icon_states[BB.type][slot_hidden]         = icon_states(BB.clothing_icons["slot_hidden"])
 		GLOB.bb_clothing_icon_states[BB.type][slot_w_uniform_str]  = icon_states(BB.clothing_icons["slot_w_uniform"])
 		GLOB.bb_clothing_icon_states[BB.type][slot_wear_suit_str]  = icon_states(BB.clothing_icons["slot_suit"])
 		GLOB.bb_clothing_icon_states[BB.type][slot_gloves_str]     = icon_states(BB.clothing_icons["slot_gloves"])
