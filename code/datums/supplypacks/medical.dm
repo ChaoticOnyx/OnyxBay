@@ -337,14 +337,14 @@
 	containertype = /obj/structure/closet/crate/secure
 	access = access_medical_equip
 
-/decl/hierarchy/supply_pack/medical/vatgrownbody/male
+/decl/hierarchy/supply_pack/medical/vatgrownbodymale
 	name = "Blank vat-grown male body"
-	cost = 360
+	cost = 300
 	containername = "\improper Vat-grown body crate"
 	containertype = /obj/structure/largecrate/animal/vatgrownbody/male
 
-/decl/hierarchy/supply_pack/medical/vatgrownbody/female
+/decl/hierarchy/supply_pack/medical/vatgrownbodyfemale
 	name = "Blank vat-grown female body"
-	cost = 360
+	cost = 300
 	containername = "\improper Vat-grown body crate"
 	containertype = /obj/structure/largecrate/animal/vatgrownbody/female
