@@ -4,7 +4,7 @@
 	nanomodule_path = /datum/nano_module/program/hire_tool
 	program_icon_state = "id"
 	program_key_state = "id_key"
-	program_menu_icon = "key"
+	program_menu_icon = "suitcase"
 	extended_desc = "The official NanoTrasen application that allows head command to hire new employees."
 	required_access = access_change_ids
 	requires_ntnet = 1
@@ -47,7 +47,7 @@
 	data["current_vacancies"] = job_vacancies.len ? job_vacancies : 0
 
 	ui = SSnano.try_update_ui(user, src, ui_key, ui, data, force_open)
-	if (!ui)
+	if(!ui)
 		ui = new(user, src, ui_key, "hire_tool.tmpl", name, 600, 700, state = state)
 		ui.auto_update_layout = 1
 		ui.set_initial_data(data)
@@ -86,13 +86,14 @@
 	if(href_list["open_hiring_menu"])
 		hiring_menu = TRUE
 		return 1
-	if(href_list["close_hiring_menu"])
+
+	else if(href_list["close_hiring_menu"])
 		hiring_menu = FALSE
 		hiring_job = null
 		message = ""
 		return 1
 
-	if(href_list["vacancy_confirmation"])
+	else if(href_list["vacancy_confirmation"])
 		var/datum/storyteller_character/ST = SSstoryteller.get_character()
 		var/available_vacancies = ST ? ST.get_available_vacancies() : job_master.get_available_vacancies()
 		if(length(GLOB.vacancies) >= available_vacancies)
@@ -102,18 +103,18 @@
 		hiring_job = href_list["vacancy_confirmation"]
 		return 1
 
-	if(href_list["close_message"])
+	else if(href_list["close_message"])
 		hiring_job = null
 		message = ""
 		return 1
 
-	if(href_list["open_vacancy"])
+	else if(href_list["open_vacancy"])
 		if(job_master.open_vacancy(hiring_job))
 			message = "Vacancy successfully opened for: '[hiring_job]'"
 		else
 			message = "Failed to open vacancy for: '[hiring_job]'"
 		return 1
 
-	if(href_list["delete_vacancy"])
+	else if(href_list["delete_vacancy"])
 		job_master.delete_vacancy(text2num(href_list["delete_vacancy"]))
 		return 1

@@ -77,13 +77,13 @@
 	..()
 	hard_drive.store_file(new /datum/computer_file/program/chatclient())
 	hard_drive.store_file(new /datum/computer_file/program/card_mod())
+	hard_drive.store_file(new /datum/computer_file/program/hire_tool())
 	hard_drive.store_file(new /datum/computer_file/program/comm())
 	hard_drive.store_file(new /datum/computer_file/program/camera_monitor())
 	hard_drive.store_file(new /datum/computer_file/program/email_client())
 	hard_drive.store_file(new /datum/computer_file/program/records())
 	hard_drive.store_file(new /datum/computer_file/program/wordprocessor())
 	hard_drive.store_file(new /datum/computer_file/program/docking())
-	hard_drive.store_file(new /datum/computer_file/program/hire_tool())
 
 // Security
 /obj/item/modular_computer/console/preset/security/install_default_hardware()
