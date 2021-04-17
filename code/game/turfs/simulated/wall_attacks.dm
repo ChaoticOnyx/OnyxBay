@@ -76,8 +76,6 @@
 			dismantle_wall()
 			return 1
 
-	if(..()) return 1
-
 	if(!can_open)
 		if(user.a_intent == I_HURT)
 			user.visible_message("<span class='danger'>\The [user] bangs against \the [src]!</span>",
