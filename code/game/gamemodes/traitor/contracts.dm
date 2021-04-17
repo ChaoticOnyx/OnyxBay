@@ -9,7 +9,6 @@ GLOBAL_LIST_INIT(contracts_steal_items, list(
 	"a pair of magboots" = /obj/item/clothing/shoes/magboots,
 	"the [station_name()] blueprints" = /obj/item/blueprints,
 	"a nasa voidsuit" = /obj/item/clothing/suit/space/void,
-	"28 moles of plasma (full tank)" = /obj/item/weapon/tank,
 	"a sample of slime extract" = /obj/item/slime_extract,
 	"a piece of corgi meat" = /obj/item/weapon/reagent_containers/food/snacks/meat/corgi,
 	"a research director's jumpsuit" = /obj/item/clothing/under/rank/research_director,
@@ -45,7 +44,7 @@ GLOBAL_LIST_INIT(syndicate_factions, list(
 /datum/antag_contract/proc/create_explain_text(target_and_task)
 	organization = pick(GLOB.syndicate_factions)
 	desc = "My client is [organization], [reason]. They have information that target located on [GLOB.using_map.station_name]. \
-	Your mission [prob(25) ? ", should you choose to accept it, is to" : "is to"] [target_and_task] The reward for close this contarct is [reward] TC"
+	Your mission [prob(25) ? ", should you choose to accept it, is to" : "is to"] [target_and_task] The reward for close this contract is [reward] TC"
 
 /datum/antag_contract/proc/can_place()
 	if(unique)
@@ -67,6 +66,8 @@ GLOBAL_LIST_INIT(syndicate_factions, list(
 	return
 
 /datum/antag_contract/proc/complete(obj/item/device/uplink/close_uplink)
+	if(!close_uplink)
+		return
 	if(completed)
 		warning("Contract completed twice: [name] [desc]")
 	var/datum/mind/M = close_uplink.uplink_owner
@@ -258,6 +259,11 @@ GLOBAL_LIST_INIT(syndicate_factions, list(
 	for(var/design_path in subtypesof(/datum/design))
 		var/datum/design/D = new design_path
 		if(D.name)
+			if(!length(D.req_tech))
+				continue
+			for(var/tech_name in D.req_tech)
+				if(D.req_tech[tech_name] <= 2)
+					continue
 			candidates.Add(D)
 	var/list/targets_name = list()
 	for(var/datum/antag_contract/item/research/C in GLOB.all_contracts)

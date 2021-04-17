@@ -24,7 +24,7 @@
 
 /obj/item/weapon/storage/briefcase/sttd
 	name = "unknown briefcase"
-	desc = "It's old looking briefcase but have some advanced tech marks"
+	desc = "It's old looking briefcase but have some advanced tech marks. It has label, that said: \"WORKS ONLY NEAR SPACE\""
 	origin_tech = list(TECH_BLUESPACE = 3, TECH_ILLEGAL = 3)
 	var/obj/item/device/uplink/uplink
 	var/authentication_complete = FALSE
@@ -32,6 +32,7 @@
 
 /obj/item/weapon/storage/briefcase/sttd/attackby(obj/item/I, mob/user)
 	if(!authentication_complete && I.hidden_uplink)
+		src.visible_message("\The [src] blinks green!")
 		uplink = I.hidden_uplink
 		authentication_complete = TRUE
 	..()

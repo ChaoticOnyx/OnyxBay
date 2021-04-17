@@ -1,6 +1,6 @@
 /obj/item/weapon/implant/spy
 	name = "spying implant"
-	desc = "Uses for spying purpose."
+	desc = "Uses for spying purpose. It has small label \"Use your uplink on it to authorization\""
 	origin_tech = list(TECH_MATERIAL = 1, TECH_BIO = 2, TECH_ILLEGAL = 2)
 	var/activated = FALSE
 	var/timer
@@ -21,6 +21,7 @@
 
 /obj/item/weapon/implanter/spy
 	name = "implanter-spy"
+	desc = "It has small label \"Use your uplink on it to authorization\""
 	imp = /obj/item/weapon/implant/spy
 
 /obj/item/weapon/implanter/spy/attackby(obj/item/I, mob/user)
