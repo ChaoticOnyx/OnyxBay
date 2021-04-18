@@ -393,8 +393,8 @@ datum/objective/harm
 	var/amount = 1
 
 /datum/objective/contracts/New()
-	amount = rand(2, 5)
-	explanation_text = "Complete at least [amount] contracts"
+	amount = rand(3, 5)
+	explanation_text = "Complete at least [amount] contracts."
 
 /datum/objective/contracts/check_completion()
 	if(owner.completed_contracts >= amount)

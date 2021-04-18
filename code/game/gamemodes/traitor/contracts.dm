@@ -1,24 +1,28 @@
+#define CONTRACT_STEAL_MILITARY 1
+#define CONTRACT_STEAL_OPERATION 2
+#define CONTRACT_STEAL_SCIENCE 3
+#define CONTRACT_STEAL_UNDERPANTS 4
 GLOBAL_LIST_EMPTY(all_contracts)
 GLOBAL_LIST_INIT(contracts_steal_items, list(
-	"the prototype psychoscope" = /obj/item/clothing/glasses/psychoscope,
-	"the captain's antique laser gun" = /obj/item/weapon/gun/energy/captain,
-	"a bluespace rift generator in hand teleporter" = /obj/item/integrated_circuit/manipulation/bluespace_rift,
-	"an RCD" = /obj/item/weapon/rcd,
-	"a jetpack" = /obj/item/weapon/tank/jetpack,
-	"a captain's jumpsuit" = /obj/item/clothing/under/rank/captain,
-	"a pair of magboots" = /obj/item/clothing/shoes/magboots,
-	"the [station_name()] blueprints" = /obj/item/blueprints,
-	"a nasa voidsuit" = /obj/item/clothing/suit/space/void,
-	"a sample of slime extract" = /obj/item/slime_extract,
-	"a piece of corgi meat" = /obj/item/weapon/reagent_containers/food/snacks/meat/corgi,
-	"a research director's jumpsuit" = /obj/item/clothing/under/rank/research_director,
-	"a chief engineer's jumpsuit" = /obj/item/clothing/under/rank/chief_engineer,
-	"a chief medical officer's jumpsuit" = /obj/item/clothing/under/rank/chief_medical_officer,
-	"a head of security's jumpsuit" = /obj/item/clothing/under/rank/head_of_security,
-	"a head of personnel's jumpsuit" = /obj/item/clothing/under/rank/head_of_personnel,
-	"the hypospray" = /obj/item/weapon/reagent_containers/hypospray,
-	"the captain's pinpointer" = /obj/item/weapon/pinpointer,
-	"an ablative armor vest" = /obj/item/clothing/suit/armor/laserproof,
+	"the prototype psychoscope" = 						list(CONTRACT_STEAL_SCIENCE, /obj/item/clothing/glasses/psychoscope),
+	"the captain's antique laser gun" = 				list(CONTRACT_STEAL_MILITARY, /obj/item/weapon/gun/energy/captain),
+	"a bluespace rift generator in hand teleporter" =	list(CONTRACT_STEAL_SCIENCE, /obj/item/integrated_circuit/manipulation/bluespace_rift),
+	"an RCD" = 											list(CONTRACT_STEAL_OPERATION, /obj/item/weapon/rcd),
+	"a jetpack" = 										list(CONTRACT_STEAL_OPERATION, /obj/item/weapon/tank/jetpack),
+	"a captain's jumpsuit" = 							list(CONTRACT_STEAL_UNDERPANTS, /obj/item/clothing/under/rank/captain),
+	"a pair of magboots" = 								list(CONTRACT_STEAL_OPERATION, /obj/item/clothing/shoes/magboots),
+	"the [station_name()] blueprints" = 				list(CONTRACT_STEAL_OPERATION, /obj/item/blueprints),
+	"a nasa voidsuit" = 								list(CONTRACT_STEAL_OPERATION, /obj/item/clothing/suit/space/void),
+	"a sample of slime extract" = 						list(CONTRACT_STEAL_SCIENCE, /obj/item/slime_extract),
+	"a piece of corgi meat" = 							list(CONTRACT_STEAL_OPERATION, /obj/item/weapon/reagent_containers/food/snacks/meat/corgi),
+	"a research director's jumpsuit" = 					list(CONTRACT_STEAL_UNDERPANTS, /obj/item/clothing/under/rank/research_director),
+	"a chief engineer's jumpsuit" = 					list(CONTRACT_STEAL_UNDERPANTS, /obj/item/clothing/under/rank/chief_engineer),
+	"a chief medical officer's jumpsuit" = 				list(CONTRACT_STEAL_UNDERPANTS, /obj/item/clothing/under/rank/chief_medical_officer),
+	"a head of security's jumpsuit" = 					list(CONTRACT_STEAL_UNDERPANTS, /obj/item/clothing/under/rank/head_of_security),
+	"a head of personnel's jumpsuit" = 					list(CONTRACT_STEAL_UNDERPANTS, /obj/item/clothing/under/rank/head_of_personnel),
+	"the hypospray" = 									list(CONTRACT_STEAL_SCIENCE, /obj/item/weapon/reagent_containers/hypospray),
+	"the captain's pinpointer" = 						list(CONTRACT_STEAL_OPERATION, /obj/item/weapon/pinpointer),
+	"an ablative armor vest" = 							list(CONTRACT_STEAL_MILITARY, /obj/item/clothing/suit/armor/laserproof)
 ))
 GLOBAL_LIST_INIT(syndicate_factions, list(
 	"\The Trauma Team Interspace",
@@ -43,8 +47,8 @@ GLOBAL_LIST_INIT(syndicate_factions, list(
 
 /datum/antag_contract/proc/create_explain_text(target_and_task)
 	organization = pick(GLOB.syndicate_factions)
-	desc = "My client is [organization], [reason]. They have information that target located on [GLOB.using_map.station_name]. \
-	Your mission [prob(25) ? ", should you choose to accept it, is to" : "is to"] [target_and_task] The reward for close this contract is [reward] TC"
+	desc = "My client is [organization], [reason]. They have information the target is located on [GLOB.using_map.station_name]. \
+	Your mission [prob(25) ? ", should you choose to accept it, is to" : "is to"] [target_and_task] The reward for closing this contract is [reward] TC"
 
 /datum/antag_contract/proc/can_place()
 	if(unique)
@@ -149,14 +153,23 @@ GLOBAL_LIST_INIT(syndicate_factions, list(
 
 /datum/antag_contract/item/steal/New()
 	..()
-	reason = pick("they want to reverse engineering this item", "they want to repaint some item for their job")
 	if(!target_type)
 		var/list/candidates = GLOB.contracts_steal_items.Copy()
 		for(var/datum/antag_contract/item/steal/C in GLOB.all_contracts)
 			candidates.Remove(C.target_desc)
 		if(candidates.len)
 			target_desc = pick(candidates)
-			target_type = candidates[target_desc]
+			var/list/target_data = candidates[target_desc]
+			switch(target_data[1])
+				if(CONTRACT_STEAL_MILITARY)
+					reason = pick("they want this item to reverse engineer it for combat extraction mission", "they want this item to use in combat extraction missions")
+				if(CONTRACT_STEAL_OPERATION)
+					reason = pick("they want this item for their operation on [GLOB.using_map.company_name]'s objects", "they need to use this item for their important spy mission")
+				if(CONTRACT_STEAL_SCIENCE)
+					reason = pick("they want to reverse engineer this item", "they need to use this item for their important scientific work")
+				if(CONTRACT_STEAL_UNDERPANTS)
+					reason = pick("they want this item for their spy operation on [GLOB.using_map.company_name]'s stations", "they want this item to confuse loyal [GLOB.using_map.company_name]'s employees")
+			target_type = target_data[2]
 			name += " [target_desc]"
 			create_explain_text("steal [target_desc] and send it via STTD.")
 
@@ -254,7 +267,7 @@ GLOBAL_LIST_INIT(syndicate_factions, list(
 
 /datum/antag_contract/item/research/New()
 	..()
-	reason = pick("some scientist lost their data disk, so company need you to find some designs on station", "they have high-likely rumors about some designs located on [GLOB.using_map.station_name]")
+	reason = pick("a foreigh research division needs your help in acquiring valuable scientific data", "they have high-likely rumors about some designs located on [GLOB.using_map.station_name]")
 	var/list/datum/design/candidates = list()
 	for(var/design_path in subtypesof(/datum/design))
 		var/datum/design/D = new design_path
@@ -289,3 +302,8 @@ GLOBAL_LIST_INIT(syndicate_factions, list(
 		if(D.blueprint.type in targets)
 			return TRUE
 	return FALSE
+
+#undef CONTRACT_STEAL_MILITARY
+#undef CONTRACT_STEAL_OPERATION
+#undef CONTRACT_STEAL_SCIENCE
+#undef CONTRACT_STEAL_UNDERPANTS

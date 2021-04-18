@@ -24,7 +24,7 @@
 
 /obj/item/weapon/storage/briefcase/sttd
 	name = "unknown briefcase"
-	desc = "It's old looking briefcase but have some advanced tech marks. It has label, that said: \"WORKS ONLY NEAR SPACE\""
+	desc = "It's an old looking briefcase with some high-tech markings. It has a label on it that says, \"WORKS ONLY NEAR SPACE\""
 	origin_tech = list(TECH_BLUESPACE = 3, TECH_ILLEGAL = 3)
 	var/obj/item/device/uplink/uplink
 	var/authentication_complete = FALSE
