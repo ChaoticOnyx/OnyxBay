@@ -224,6 +224,11 @@ Class Procs:
 	if(!interact_offline && (stat & NOPOWER))
 		return STATUS_CLOSE
 
+	if(ishuman(user))
+		var/mob/living/carbon/human/H = user
+		if(H.IsAdvancedToolUser(TRUE) == FALSE)
+			return STATUS_CLOSE
+
 	return ..()
 
 /obj/machinery/CouldUseTopic(mob/user)
@@ -260,11 +265,14 @@ Class Procs:
 */
 	if (ishuman(user))
 		var/mob/living/carbon/human/H = user
+		if(H.IsAdvancedToolUser(TRUE) == FALSE)
+			to_chat(user, SPAN("warning", "I'm not smart enough to do that!"))
+			return 1
 		if(H.getBrainLoss() >= 55)
-			visible_message("<span class='warning'>[H] stares cluelessly at \the [src].</span>")
+			visible_message(SPAN("warning", "[H] stares cluelessly at \the [src]."))
 			return 1
 		else if(prob(H.getBrainLoss()))
-			to_chat(user, "<span class='warning'>You momentarily forget how to use \the [src].</span>")
+			to_chat(user, SPAN("warning", "You momentarily forget how to use \the [src]."))
 			return 1
 
 	return ..()

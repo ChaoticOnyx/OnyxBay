@@ -9,22 +9,22 @@ proc/create_new_xenomorph(alien_caste,target)
 
 /mob/living/carbon/human/xenos/xdrone/New(new_loc)
 	h_style = "Bald"
-	faction = "xeno"
+	faction = "xenomorph"
 	..(new_loc, SPECIES_XENO_DRONE)
 
 /mob/living/carbon/human/xenos/xsentinel/New(new_loc)
 	h_style = "Bald"
-	faction = "xeno"
+	faction = "xenomorph"
 	..(new_loc, SPECIES_XENO_SENTINEL)
 
 /mob/living/carbon/human/xenos/xhunter/New(new_loc)
 	h_style = "Bald"
-	faction = "xeno"
+	faction = "xenomorph"
 	..(new_loc, SPECIES_XENO_HUNTER)
 
 /mob/living/carbon/human/xenos/xqueen/New(new_loc)
 	h_style = "Bald"
-	faction = "xeno"
+	faction = "xenomorph"
 	..(new_loc, SPECIES_XENO_QUEEN)
 
 // I feel like we should generalize/condense down all the various icon-rendering antag procs.

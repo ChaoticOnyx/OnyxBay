@@ -4,9 +4,11 @@
 
 	default_language = "Xenomorph"
 	language = "Hivemind"
+	genders = list(NEUTER)
 	assisted_langs = list()
 	unarmed_types = list(/datum/unarmed_attack/claws/strong/xeno, /datum/unarmed_attack/bite/strong/xeno)
 	hud_type = /datum/hud_data/alien
+	meat_type = /obj/item/weapon/reagent_containers/food/snacks/meat/xeno
 	rarity_value = 3
 
 	has_fine_manipulation = 0
@@ -35,7 +37,7 @@
 	death_message = "lets out a waning guttural screech, green blood bubbling from its maw."
 	death_sound = 'sound/voice/hiss6.ogg'
 
-	speech_sounds = list('sound/voice/hiss1.ogg','sound/voice/hiss2.ogg','sound/voice/hiss3.ogg','sound/voice/hiss4.ogg')
+	speech_sounds = list('sound/voice/hiss1.ogg', 'sound/voice/hiss2.ogg', 'sound/voice/hiss3.ogg', 'sound/voice/hiss4.ogg')
 	speech_chance = 100
 
 	virus_immune = 1
@@ -44,14 +46,19 @@
 	poison_type = null
 
 	vision_flags = SEE_SELF|SEE_MOBS
+	eye_icon = "blank_eyes"
+	darksight = 8
 
 	has_organ = list(
-		O_HEART =    /obj/item/organ/internal/heart,
 		O_BRAIN =    /obj/item/organ/internal/brain/xeno,
 		O_PLASMA =   /obj/item/organ/internal/xenos/plasmavessel,
 		O_HIVE =     /obj/item/organ/internal/xenos/hivenode,
 		O_NUTRIENT = /obj/item/organ/internal/diona/nutrients
 		)
+
+	body_builds = list(
+		new /datum/body_build/xenomorph
+	)
 
 	bump_flag = ALIEN
 	swap_flags = ~HEAVY
@@ -59,55 +66,55 @@
 
 	var/alien_number = 0
 	var/caste_name = "creature" // Used to update alien name.
-	var/weeds_heal_rate = 1     // Health regen on weeds.
+	var/weeds_heal_rate = 3     // Health regen on weeds.
 	var/weeds_plasma_rate = 5   // Plasma regen on weeds.
 
 	has_limbs = list(
-		BP_TORSO =  list("path" = /obj/item/organ/external/chest),
-		BP_GROIN =  list("path" = /obj/item/organ/external/groin),
-		BP_HEAD =   list("path" = /obj/item/organ/external/head/no_eyes),
-		BP_L_ARM =  list("path" = /obj/item/organ/external/arm),
-		BP_R_ARM =  list("path" = /obj/item/organ/external/arm/right),
-		BP_L_LEG =  list("path" = /obj/item/organ/external/leg),
-		BP_R_LEG =  list("path" = /obj/item/organ/external/leg/right),
-		BP_L_HAND = list("path" = /obj/item/organ/external/hand),
-		BP_R_HAND = list("path" = /obj/item/organ/external/hand/right),
-		BP_L_FOOT = list("path" = /obj/item/organ/external/foot),
-		BP_R_FOOT = list("path" = /obj/item/organ/external/foot/right)
+		BP_CHEST =  list("path" = /obj/item/organ/external/chest/xeno),
+		BP_GROIN =  list("path" = /obj/item/organ/external/groin/xeno),
+		BP_HEAD =   list("path" = /obj/item/organ/external/head/xeno),
+		BP_L_ARM =  list("path" = /obj/item/organ/external/arm/xeno),
+		BP_R_ARM =  list("path" = /obj/item/organ/external/arm/right/xeno),
+		BP_L_LEG =  list("path" = /obj/item/organ/external/leg/xeno),
+		BP_R_LEG =  list("path" = /obj/item/organ/external/leg/right/xeno),
+		BP_L_HAND = list("path" = /obj/item/organ/external/hand/xeno),
+		BP_R_HAND = list("path" = /obj/item/organ/external/hand/right/xeno),
+		BP_L_FOOT = list("path" = /obj/item/organ/external/foot/xeno),
+		BP_R_FOOT = list("path" = /obj/item/organ/external/foot/right/xeno)
 		)
 
 /datum/species/xenos/get_random_name()
 	return "alien [caste_name] ([alien_number])"
 
 /datum/species/xenos/can_understand(mob/other)
-
 	if(istype(other,/mob/living/carbon/alien/larva))
 		return 1
-
 	return 0
 
 /datum/species/xenos/hug(mob/living/carbon/human/H,mob/living/target)
 	H.visible_message("<span class='notice'>[H] caresses [target] with its scythe-like arm.</span>", \
-					"<span class='notice'>You caress [target] with your scythe-like arm.</span>")
+					"<span class='notice'>I caress [target] with my scythe-like arm.</span>")
 
 /datum/species/xenos/handle_post_spawn(mob/living/carbon/human/H)
-
 	if(H.mind)
-		H.mind.assigned_role = "Alien"
-		H.mind.special_role = "Alien"
+		GLOB.xenomorphs.add_antagonist(H.mind, 1)
 
 	alien_number++ //Keep track of how many aliens we've had so far.
-	H.real_name = "alien [caste_name] ([alien_number])"
-	H.name = H.real_name
+	H.real_name = "alien [caste_name] ([rand(100,999)])"
+	H.SetName(H.real_name)
 
 	..()
 
-/datum/species/xenos/handle_environment_special(mob/living/carbon/human/H)
+/datum/species/xenos/get_random_name()
+	return "alien [caste_name] ([rand(100,999)])"
 
+/datum/species/xenos/handle_environment_special(mob/living/carbon/human/H)
 	var/turf/T = H.loc
-	if(!T) return
+	if(!T)
+		return
 	var/datum/gas_mixture/environment = T.return_air()
-	if(!environment) return
+	if(!environment)
+		return
 
 	if(environment.gas["plasma"] > 0 || locate(/obj/effect/alien/weeds) in T)
 		if(!regenerate(H))
@@ -119,37 +126,68 @@
 /datum/species/xenos/proc/regenerate(mob/living/carbon/human/H)
 	var/heal_rate = weeds_heal_rate
 	var/mend_prob = 10
-	if (!H.resting)
+	if(!H.resting)
 		heal_rate = weeds_heal_rate / 3
 		mend_prob = 1
 
 	//first heal damages
-	if (H.getBruteLoss() || H.getFireLoss() || H.getOxyLoss() || H.getToxLoss())
+	if(H.getBruteLoss() || H.getFireLoss() || H.getOxyLoss() || H.getToxLoss())
 		H.adjustBruteLoss(-heal_rate)
 		H.adjustFireLoss(-heal_rate)
 		H.adjustOxyLoss(-heal_rate)
 		H.adjustToxLoss(-heal_rate)
-		if (prob(5))
-			to_chat(H, "<span class='alium'>You feel a soothing sensation come over you...</span>")
+		if(prob(5))
+			to_chat(H, "<span class='alium'>I feel a soothing sensation come over me...</span>")
 		return 1
 
 	//next internal organs
 	for(var/obj/item/organ/I in H.internal_organs)
 		if(I.damage > 0)
 			I.damage = max(I.damage - heal_rate, 0)
-			if (prob(5))
-				to_chat(H, "<span class='alium'>You feel a soothing sensation within your [I.parent_organ]...</span>")
+			if(prob(5))
+				to_chat(H, "<span class='alium'>I feel a soothing sensation within my [I.parent_organ]...</span>")
+			if(!I.damage && (I.status & ORGAN_DEAD))
+				to_chat(H, "<span class='alium'>I feel invigorated as my [I.parent_organ] appears to be functioning again!</span>")
+				I.status &= ~ORGAN_DEAD
 			return 1
 
-	//next mend broken bones, approx 10 ticks each
-	for(var/obj/item/organ/external/E in H.organs)
-		if (E.status & ORGAN_BROKEN)
-			if (prob(mend_prob))
-				if (E.mend_fracture())
-					to_chat(H, "<span class='alium'>You feel something mend itself inside your [E.name].</span>")
+	//next regrow lost limbs, approx 10 ticks each
+	if(H.resting && prob(mend_prob))
+		for(var/limb_type in has_limbs)
+			var/obj/item/organ/external/E = H.organs_by_name[limb_type]
+			if(E && E.organ_tag != BP_HEAD && !E.vital && !E.is_usable())
+				E.removed()
+				qdel(E)
+				E= null
+			if(!E)
+				var/list/organ_data = has_limbs[limb_type]
+				var/limb_path = organ_data["path"]
+				var/obj/item/organ/external/O = new limb_path(H)
+				organ_data["descriptor"] = O.name
+				H.visible_message(SPAN("warning", "A fresh carapace growth through [H]'s [O.amputation_point], forming a new [O.name]!"))
+				O.set_dna(H.dna)
+				H.update_body()
+			else
+				for(var/datum/wound/W in E.wounds)
+					if(W.wound_damage() == 0)
+						E.wounds -= W
 			return 1
-
 	return 0
+
+/datum/species/xenos/can_overcome_gravity(mob/living/carbon/human/H)
+	var/turf/T = H.loc
+	if(!T || istype(T, /turf/space))
+		return FALSE
+	return TRUE // Claws and stuff
+
+/datum/species/xenos/get_blood_name()
+	return "xenoblood"
+
+/datum/species/xenos/handle_vision(mob/living/carbon/human/H)
+	. = ..()
+	process_xeno_hud(H)
+	return 1
+
 /*
 /datum/species/xenos/handle_login_special(mob/living/carbon/human/H)
 	H.AddInfectionImages()
@@ -167,6 +205,7 @@
 	slowdown = 1
 	tail = "xenos_drone_tail"
 	rarity_value = 5
+	strength = STR_MEDIUM
 
 	icobase = 'icons/mob/human_races/xenos/r_xenos_drone.dmi'
 	deform =  'icons/mob/human_races/xenos/r_xenos_drone.dmi'
@@ -192,13 +231,6 @@
 		/mob/living/carbon/human/proc/toggle_darksight
 		)
 
-/datum/species/xenos/drone/handle_post_spawn(mob/living/carbon/human/H)
-
-	var/mob/living/carbon/human/A = H
-	if(!istype(A))
-		return ..()
-	..()
-
 /datum/species/xenos/hunter
 	name = SPECIES_XENO_HUNTER
 	weeds_plasma_rate = 5
@@ -206,12 +238,12 @@
 	slowdown = -1
 	total_health = 150
 	tail = "xenos_hunter_tail"
+	strength = STR_HIGH
 
 	icobase = 'icons/mob/human_races/xenos/r_xenos_hunter.dmi'
 	deform =  'icons/mob/human_races/xenos/r_xenos_hunter.dmi'
 
 	has_organ = list(
-		BP_HEART =    /obj/item/organ/internal/heart,
 		BP_BRAIN =    /obj/item/organ/internal/brain/xeno,
 		BP_PLASMA =   /obj/item/organ/internal/xenos/plasmavessel/hunter,
 		BP_HIVE =     /obj/item/organ/internal/xenos/hivenode,
@@ -234,13 +266,14 @@
 	caste_name = "sentinel"
 	slowdown = 0
 	total_health = 200
+	weeds_heal_rate = 6
 	tail = "xenos_sentinel_tail"
+	strength = STR_VHIGH
 
 	icobase = 'icons/mob/human_races/xenos/r_xenos_sentinel.dmi'
 	deform =  'icons/mob/human_races/xenos/r_xenos_sentinel.dmi'
 
 	has_organ = list(
-		BP_HEART =    /obj/item/organ/internal/heart,
 		BP_BRAIN =    /obj/item/organ/internal/brain/xeno,
 		BP_PLASMA =   /obj/item/organ/internal/xenos/plasmavessel/sentinel,
 		BP_ACID =     /obj/item/organ/internal/xenos/acidgland,
@@ -264,12 +297,13 @@
 
 	name = SPECIES_XENO_QUEEN
 	total_health = 250
-	weeds_heal_rate = 5
+	weeds_heal_rate = 9
 	weeds_plasma_rate = 20
 	caste_name = "queen"
 	slowdown = 4
 	tail = "xenos_queen_tail"
 	rarity_value = 10
+	strength = STR_VHIGH
 
 	icobase = 'icons/mob/human_races/xenos/r_xenos_queen.dmi'
 	deform =  'icons/mob/human_races/xenos/r_xenos_queen.dmi'
@@ -277,7 +311,6 @@
 	unarmed_types = list(/datum/unarmed_attack/claws/strong/xeno/queen, /datum/unarmed_attack/bite/strong/xeno)
 
 	has_organ = list(
-		BP_HEART =    /obj/item/organ/internal/heart,
 		BP_BRAIN =    /obj/item/organ/internal/brain/xeno,
 		BP_EGG =      /obj/item/organ/internal/xenos/eggsac,
 		BP_PLASMA =   /obj/item/organ/internal/xenos/plasmavessel/queen,

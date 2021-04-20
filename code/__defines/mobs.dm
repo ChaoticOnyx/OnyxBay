@@ -223,7 +223,8 @@
 #define BP_ANCHOR   "anchoring ligament"
 #define BP_PLASMA   "plasma filter"
 #define BP_CHANG    "biostructure"
-#define BP_CANCER    "cancer"
+#define BP_CANCER   "cancer"
+#define BP_EMBRYO   "alien embryo"
 
 // Robo Organs.
 #define BP_POSIBRAIN	"posibrain"

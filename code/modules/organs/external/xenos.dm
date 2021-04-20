@@ -73,16 +73,18 @@
 	owner.b_eyes = 153
 	..()
 
+process_sec_hud
+
 /obj/item/organ/internal/xenos/hivenode/removed(mob/living/user)
 	if(owner && ishuman(owner))
 		var/mob/living/carbon/human/H = owner
-		to_chat(H, "<span class='alium'>You feel your connection to the hivemind fray and fade away...</span>")
+		to_chat(H, "<span class='alium'>I feel my connection to the hivemind fray and fade away...</span>")
 		H.remove_language("Hivemind")
 		if(H.mind && H.species.name != "Xenomorph")
 			GLOB.xenomorphs.remove_antagonist(H.mind)
 	..(user)
 
-/obj/item/organ/internal/xenos/hivenode/replaced(mob/living/carbon/human/target,obj/item/organ/external/affected)
+/obj/item/organ/internal/xenos/hivenode/replaced(mob/living/carbon/human/target, obj/item/organ/external/affected)
 	if(!..()) return 0
 
 	if(owner && ishuman(owner))
@@ -90,10 +92,115 @@
 		H.add_language("Hivemind")
 		if(H.mind && H.species.name != "Xenomorph")
 			to_chat(H, "<span class='alium'>You feel a sense of pressure as a vast intelligence meshes with your thoughts...</span>")
-			GLOB.xenomorphs.add_antagonist_mind(H.mind,1, GLOB.xenomorphs.faction_role_text, GLOB.xenomorphs.faction_welcome)
+			GLOB.xenomorphs.add_antagonist_mind(H.mind, 1, GLOB.xenomorphs.faction_role_text, GLOB.xenomorphs.faction_welcome)
 
 	return 1
 
-/obj/item/organ/external/head/unbreakable/xeno
-	eye_icon = "eyes"
-	eye_icon_location = 'icons/mob/human_races/xenos/r_xenos_drone.dmi'
+/obj/item/organ/external/head/xeno
+	eye_icon = "blank_eyes"
+	dislocated = -1
+	arterial_bleed_severity = 0
+	limb_flags = ORGAN_FLAG_HEALS_OVERKILL
+
+// Xenolimbs.
+/obj/item/organ/external/chest/xeno
+	dislocated = -1
+	arterial_bleed_severity = 0
+	limb_flags = ORGAN_FLAG_HEALS_OVERKILL
+
+/obj/item/organ/external/groin/xeno
+	dislocated = -1
+	arterial_bleed_severity = 0
+	limb_flags = ORGAN_FLAG_CAN_AMPUTATE
+
+/obj/item/organ/external/arm/xeno
+	dislocated = -1
+	arterial_bleed_severity = 0
+	limb_flags = ORGAN_FLAG_CAN_AMPUTATE | ORGAN_FLAG_CAN_GRASP
+
+/obj/item/organ/external/arm/right/xeno
+	dislocated = -1
+	arterial_bleed_severity = 0
+	limb_flags = ORGAN_FLAG_CAN_AMPUTATE | ORGAN_FLAG_CAN_GRASP
+
+/obj/item/organ/external/leg/xeno
+	dislocated = -1
+	arterial_bleed_severity = 0
+	limb_flags = ORGAN_FLAG_CAN_AMPUTATE | ORGAN_FLAG_CAN_STAND
+
+/obj/item/organ/external/leg/right/xeno
+	dislocated = -1
+	arterial_bleed_severity = 0
+	limb_flags = ORGAN_FLAG_CAN_AMPUTATE | ORGAN_FLAG_CAN_STAND
+
+/obj/item/organ/external/foot/xeno
+	dislocated = -1
+	arterial_bleed_severity = 0
+	limb_flags = ORGAN_FLAG_CAN_AMPUTATE | ORGAN_FLAG_CAN_STAND
+
+/obj/item/organ/external/foot/right/xeno
+	dislocated = -1
+	arterial_bleed_severity = 0
+	limb_flags = ORGAN_FLAG_CAN_AMPUTATE | ORGAN_FLAG_CAN_STAND
+
+/obj/item/organ/external/hand/xeno
+	dislocated = -1
+	arterial_bleed_severity = 0
+	limb_flags = ORGAN_FLAG_CAN_AMPUTATE | ORGAN_FLAG_CAN_GRASP
+
+/obj/item/organ/external/hand/right/xeno
+	dislocated = -1
+	arterial_bleed_severity = 0
+	limb_flags = ORGAN_FLAG_CAN_AMPUTATE | ORGAN_FLAG_CAN_GRASP
+
+// RIP /datum/disease/alien_embryo, no more shall you be cured with gargle blaster
+/obj/item/organ/internal/alien_embryo
+	name = "alien embryo"
+	desc = "A small worm-like creature caged in a half-transparent caviar-like thingy. Whatever this thing is, it doesn't look like it should be found in a living being by default."
+	icon = 'icons/mob/alien.dmi'
+	organ_tag = BP_EMBRYO
+	parent_organ = BP_CHEST
+	vital = 0
+	icon_state = "embryo"
+	dead_icon = "embryo_dead"
+	force = 1.0
+	w_class = ITEM_SIZE_SMALL
+	throwforce = 1.0
+	throw_speed = 3
+	throw_range = 5
+	origin_tech = list(TECH_BIO = 8, TECH_ILLEGAL = 2)
+	attack_verb = list("attacked", "slapped", "whacked")
+	relative_size = 10
+	foreign = TRUE
+	max_damage = 66
+	var/growth = 0
+	var/growth_max = 240
+
+/obj/item/organ/internal/alien_embryo/die()
+	if(dead_icon)
+		icon_state = dead_icon
+	..()
+
+/obj/item/organ/internal/alien_embryo/CanUseTopic(mob/user)
+	return isghost(user) ? STATUS_INTERACTIVE : STATUS_CLOSE
+
+/obj/item/organ/internal/alien_embryo/Topic(href, href_list)
+	if(..())
+		return 1
+
+	if(href_list["spawn"])
+		attack_ghost(usr)
+
+/obj/item/organ/internal/alien_embryo/Process()
+	if(owner && !(status & ORGAN_DEAD))
+		growth++
+		if(growth > growth_max)
+			var/mob/living/carbon/alien/larva/larva = new(get_turf(src))
+			for(var/mob/observer/ghost/O in GLOB.ghost_mob_list)
+				if(O.client && !jobban_isbanned(O, MODE_XENOMORPH))
+					to_chat(O, SPAN("notice", "A new alien larva has been born! ([ghost_follow_link(larva, O)]) (<a href='byond://?larva=\ref[src];occupy=1'>OCCUPY</a>)"))
+			die()
+			owner.gib()
+			qdel(src)
+			return PROCESS_KILL
+	..()

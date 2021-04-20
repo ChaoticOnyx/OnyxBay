@@ -195,3 +195,42 @@
 	agony = 30
 	armor_penetration = 40
 	fire_sound = 'sound/effects/weapons/energy/fire21.ogg'
+
+/obj/item/projectile/facehugger_proj // Yes, it's dirty, and hacky, and so on. But it works and works fucking perfectly.
+	name = "alien"
+	icon = 'icons/mob/alien.dmi'
+	icon_state = "facehugger_thrown"
+	embed = 0 // nope nope nope nope nope
+	damage_type = PAIN
+	pass_flags = PASS_FLAG_TABLE
+	var/mob/living/simple_animal/hostile/facehugger/holder = null
+
+/obj/item/projectile/facehugger_proj/Bump(atom/A as mob|obj|turf|area)
+	if(A == firer)
+		loc = A.loc
+		return
+
+	if(!holder)
+		return
+
+	if(bumped)
+		return
+	bumped = 1
+
+	if(istype(A, /mob/living/carbon/human))
+		var/mob/living/carbon/human/H = A
+		if(H.faction != holder.faction && holder.facefuck(H))
+			holder = null
+			qdel(src)
+			return 1
+
+	var/turf/bump_loc = get_turf(A)
+	holder.forceMove(bump_loc)
+	if(istype(bump_loc, /turf/simulated/wall))
+		var/direction = turn(src.dir, 180)
+		holder.forceMove(get_step(holder, direction), direction) // Get us out of the wall
+	holder.FindTarget()
+	holder.MoveToTarget() // Calling these two to make sure the facehugger will try to keep distance upon missing
+	holder = null
+	qdel(src)
+	return 1

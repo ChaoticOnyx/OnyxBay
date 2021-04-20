@@ -1133,6 +1133,23 @@
 			else
 				holder.icon_state = "hudsyndicate"
 			hud_list[SPECIALROLE_HUD] = holder
+
+	if(BITTEST(hud_updateflag, XENO_HUD) && hud_list[XENO_HUD])
+		var/image/holder = hud_list[XENO_HUD]
+		var/obj/item/organ/internal/alien_embryo/AE = internal_organs_by_name[BP_EMBRYO]
+		if(!AE)
+			holder.icon_state = "hudblank"
+		else
+			if(AE.damage >= AE.max_damage)
+				holder.icon_state = "hudblank"
+			else if(AE.growth < AE.growth_max*0.33)
+				holder.icon_state = "hudxeno1"
+			else if(AE.growth < AE.growth_max*0.67)
+				holder.icon_state = "hudxeno2"
+			else
+				holder.icon_state = "hudxeno3"
+		hud_list[XENO_HUD] = holder
+
 	hud_updateflag = 0
 
 /mob/living/carbon/human/handle_stunned()

@@ -1,6 +1,6 @@
 /mob/living/carbon/alien/Stat()
 	. = ..()
-	if(. && statpanel("Status"))
+	if(. && statpanel("Status") && adult_form)
 		stat("Growth", "[round(amount_grown)]/[max_grown]")
 
 /mob/living/carbon/alien/verb/evolve()
@@ -29,8 +29,9 @@
 	if(!new_species || !adult_form )
 		return
 
-	var/mob/living/carbon/human/adult = new adult_form(get_turf(src))
+	var/mob/living/carbon/adult = new adult_form(get_turf(src))
 	adult.set_species(new_species)
+	adult.faction = faction
 	show_evolution_blurb()
 	// TODO: drop a moulted skin. Ew.
 

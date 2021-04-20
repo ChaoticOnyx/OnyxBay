@@ -538,3 +538,6 @@
 	// And restore all organs...
 	for (var/obj/item/organ/O in organs)
 		O.rejuvenate()
+
+/mob/living/carbon/proc/set_species()
+	return 0
