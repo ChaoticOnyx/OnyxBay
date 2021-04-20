@@ -133,7 +133,7 @@
 	if(ishuman(user))
 		var/mob/living/carbon/human/H = user
 		if(H.species?.can_shred(H) && H.a_intent == "harm")
-			attack_generic(H, rand(7.5, 15), "slashes at")
+			attack_generic(H, rand(10, 20), "slashes at")
 			return
 	Interact(user)
 

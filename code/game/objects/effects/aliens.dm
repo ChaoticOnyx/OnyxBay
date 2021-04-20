@@ -96,7 +96,7 @@
 	if(M.faction != "xenomorph")
 		to_chat(M, "You touch \the [src]... And it starts moving.")
 	else
-		to_chat(M, "<span class='alium'>You caress \the [src] and hatches at your command.</alium>")
+		to_chat(M, "<span class='alium'>You caress \the [src] as it hatches at your command.</alium>")
 	hatch()
 
 /obj/structure/alien/egg/examine(mob/user)
