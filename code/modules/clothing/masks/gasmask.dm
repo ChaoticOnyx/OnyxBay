@@ -175,3 +175,5 @@
 	body_parts_covered = 0
 	species_restricted = list(SPECIES_VOX)
 	filtered_gases = list("plasma", "sleeping_agent", "oxygen")
+	icon_state = "plasticbag_taped"
+	item_state = "plasticbag_taped"
