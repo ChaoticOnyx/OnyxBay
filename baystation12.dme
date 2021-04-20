@@ -1028,6 +1028,7 @@
 #include "code\game\objects\structures\iv_drip.dm"
 #include "code\game\objects\structures\janicart.dm"
 #include "code\game\objects\structures\kitchen_spike.dm"
+#include "code\game\objects\structures\lamarr.dm"
 #include "code\game\objects\structures\lattice.dm"
 #include "code\game\objects\structures\loot_piles.dm"
 #include "code\game\objects\structures\mirror.dm"

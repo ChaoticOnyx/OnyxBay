@@ -9,6 +9,7 @@
 	health = 30
 	faction = "xenomorph"
 	species_language = "Xenomorph"
+	density = 0
 
 /mob/living/carbon/alien/larva/Initialize()
 	. = ..()

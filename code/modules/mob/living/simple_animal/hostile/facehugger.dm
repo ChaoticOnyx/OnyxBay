@@ -90,7 +90,8 @@
 	H.equip_to_slot(holder, slot_wear_mask)
 	if(impregnate(H))
 		holder.kill_holder()
-	H.Paralyse(20)
+	if(!is_sterile) // Lamarr is one hell of a bioweapon even without stuns
+		H.Paralyse(20)
 	return 1
 
 /mob/living/simple_animal/hostile/facehugger/proc/impregnate(mob/living/carbon/human/H)
@@ -99,6 +100,8 @@
 
 	var/obj/item/organ/internal/alien_embryo/AE = H.internal_organs_by_name[BP_EMBRYO]
 	if(!AE)
+		if(is_sterile)
+			return 0
 		AE = new /obj/item/organ/internal/alien_embryo(H)
 		H.internal_organs_by_name[BP_EMBRYO] = AE
 		is_sterile = TRUE
@@ -163,3 +166,9 @@
 			H.visible_message(SPAN("warning", "[user] latches \the [F] onto [H]'s face!"))
 		return
 	..()
+
+
+/mob/living/simple_animal/hostile/facehugger/lamarr
+	name = "Lamarr"
+	desc = "For years, she kept hiding somewhere aboard Exodus. One hell of a tenacious creature, isn't she?"
+	is_sterile = TRUE
