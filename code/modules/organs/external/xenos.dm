@@ -199,7 +199,7 @@ process_sec_hud
 			var/mob/living/carbon/alien/larva/larva = new(get_turf(src))
 			for(var/mob/observer/ghost/O in GLOB.ghost_mob_list)
 				if(O.client && !jobban_isbanned(O, MODE_XENOMORPH))
-					to_chat(O, SPAN("notice", "A new alien larva has been born! ([ghost_follow_link(larva, O)]) (<a href='byond://?larva=\ref[src];occupy=1'>OCCUPY</a>)"))
+					to_chat(O, SPAN("notice", "A new alien larva has been born! ([ghost_follow_link(larva, O)]) (<a href='byond://?src=\ref[larva];occupy=1'>OCCUPY</a>)"))
 			die()
 			owner.gib()
 			qdel(src)

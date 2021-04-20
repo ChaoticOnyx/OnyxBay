@@ -82,6 +82,8 @@
 		hatch()
 
 /obj/structure/alien/egg/attack_hand(mob/user)
+	if(progress == -1)
+		return ..()
 	if(!isliving(user))
 		return ..()
 	var/mob/living/M = user

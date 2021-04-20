@@ -153,16 +153,13 @@
 
 	//next regrow lost limbs, approx 10 ticks each
 	if(prob(mend_prob))
-		to_chat(H, "PROB(MEND_PROB ([mend_prob]%) - SUCCESS")
 		for(var/limb_type in has_limbs)
 			var/obj/item/organ/external/E = H.organs_by_name[limb_type]
 			if(E && E.organ_tag != BP_HEAD && !E.vital && !E.is_usable())
 				E.removed()
 				qdel(E)
-				E= null
-				to_chat(H, "E REMOVED")
+				E = null
 			if(!E)
-				to_chat(H, "NO E FOUND GROWING NEW ONE")
 				var/list/organ_data = has_limbs[limb_type]
 				var/limb_path = organ_data["path"]
 				var/obj/item/organ/external/O = new limb_path(H)
@@ -170,12 +167,12 @@
 				H.visible_message(SPAN("warning", "A fresh carapace growth through [H]'s [O.amputation_point], forming a new [O.name]!"))
 				O.set_dna(H.dna)
 				H.update_body()
+				return 1
 			else
 				for(var/datum/wound/W in E.wounds)
 					if(W.wound_damage() == 0)
 						E.wounds -= W
-						to_chat(H, "WOUND HEALED")
-			return 1
+						return 1
 	return 0
 
 /datum/species/xenos/can_overcome_gravity(mob/living/carbon/human/H)
@@ -207,7 +204,6 @@
 	deform =  'icons/mob/human_races/xenos/r_xenos_drone.dmi'
 
 	has_organ = list(
-		BP_HEART =		/obj/item/organ/internal/heart,
 		BP_BRAIN =		/obj/item/organ/internal/brain/xeno,
 		BP_PLASMA =		/obj/item/organ/internal/xenos/plasmavessel/queen,
 		BP_ACID =		/obj/item/organ/internal/xenos/acidgland,

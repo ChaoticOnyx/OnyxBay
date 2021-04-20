@@ -132,6 +132,18 @@
 		to_chat(user, "<span class='warning'>\The [src] is welded solid!</span>")
 		return
 
+	if(ishuman(user))
+		var/mob/living/carbon/human/H = user
+		if(H.species?.can_shred(H))
+			if(do_after(user, 30, src))
+				if(density)
+					visible_message(SPAN("danger","\The [user] forces \the [src] open!"))
+					open(1)
+				else
+					visible_message(SPAN("danger","\The [user] forces \the [src] closed!"))
+					close(1)
+			return
+
 	var/alarmed = lockdown
 	for(var/area/A in areas_added)		//Checks if there are fire alarms in any areas associated with that firedoor
 		if(A.fire || A.air_doors_activated)

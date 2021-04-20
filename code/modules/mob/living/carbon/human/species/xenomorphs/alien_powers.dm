@@ -84,11 +84,6 @@
 	set desc = "Lay an egg to produce huggers to impregnate prey with."
 	set category = "Abilities"
 
-	if(!config.aliens_allowed)
-		to_chat(src, "I begin to lay an egg, but something stops me. I suspect it isn't allowed.")
-		verbs -= /mob/living/carbon/human/proc/lay_egg
-		return
-
 	if(locate(/obj/structure/alien/egg) in get_turf(src))
 		to_chat(src, "There's already an egg here.")
 		return

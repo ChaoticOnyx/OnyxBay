@@ -1,6 +1,3 @@
-/*VOX SLUG
-Small, little HP, poisonous.
-*/
 
 /mob/living/simple_animal/hostile/facehugger
 	name = "alien"
@@ -139,12 +136,6 @@ Small, little HP, poisonous.
 	icon_state = "facehugger"
 	item_state = "facehugger"
 	var/wasted = FALSE
-
-/*obj/item/weapon/holder/facehugger/get_mob_overlay(mob/user_mob, slot)
-	var/image/ret = ..()
-	if(slot == slot_wear_mask_str)
-		ret.overlays += image("icon" = 'icons/inv_slots/masks/mob.dmi', "icon_state" = "facehugger") // TODO: Find out why I couldn't find any other way to make it render at all
-	return ret*/
 
 /obj/item/weapon/holder/facehugger/proc/kill_holder()
 	var/mob/living/simple_animal/hostile/facehugger/F = contents[1]

@@ -49,7 +49,6 @@
 	for(var/datum/language/L in languages)
 		adult.add_language(L.name)
 
-	post_evolution(adult)
 	qdel(src)
 	if(call_namepick)
 		var/newname = sanitize(input(adult, "You have become an adult. Choose a name for yourself.", "Adult Name") as null|text, MAX_NAME_LEN)
@@ -67,7 +66,4 @@
 	return
 
 /mob/living/carbon/alien/proc/show_evolution_blurb()
-	return
-
-/mob/living/carbon/alien/proc/post_evolution(mob/living/carbon/C)
 	return

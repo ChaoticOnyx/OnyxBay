@@ -233,10 +233,12 @@ Class Procs:
 
 /obj/machinery/CouldUseTopic(mob/user)
 	..()
-	user.set_machine(src)
+	if(user)
+		user.set_machine(src)
 
 /obj/machinery/CouldNotUseTopic(mob/user)
-	user.unset_machine()
+	if(user)
+		user.unset_machine()
 
 ////////////////////////////////////////////////////////////////////////////////////////////
 
