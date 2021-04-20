@@ -139,9 +139,7 @@
 				if(density)
 					visible_message(SPAN("danger","\The [user] forces \the [src] open!"))
 					open(1)
-				else
-					visible_message(SPAN("danger","\The [user] forces \the [src] closed!"))
-					close(1)
+					shake_animation(2, 2)
 			return
 
 	var/alarmed = lockdown

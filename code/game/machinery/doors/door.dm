@@ -181,21 +181,6 @@
 	return src.attack_hand(user)
 
 /obj/machinery/door/attack_hand(mob/user as mob)
-	if(ishuman(user))
-		var/mob/living/carbon/human/H = user
-		if(H.species?.can_shred(H))
-			if(stat & BROKEN)
-				if(do_after(user, 30, src))
-					open(1)
-					shake_animation(2, 2)
-				return
-			playsound(loc, get_sfx("glass_hit"), 75, 1)
-			visible_message(SPAN("danger", "[user] slashes \the [name]."), 1)
-			take_damage(5)
-			user.do_attack_animation(src)
-			user.setClickCooldown(DEFAULT_QUICK_COOLDOWN)
-			shake_animation(2, 2)
-			return
 	return src.attackby(user, user)
 
 /obj/machinery/door/attack_tk(mob/user as mob)
