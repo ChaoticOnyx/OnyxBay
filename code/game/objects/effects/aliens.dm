@@ -124,7 +124,7 @@
 	flick("egg_opening", src)
 	sleep(5)
 	if(get_turf(src))
-		new/mob/living/simple_animal/hostile/facehugger(get_turf(src))
+		new /mob/living/simple_animal/hostile/facehugger(get_turf(src))
 
 /*
  * Weeds
