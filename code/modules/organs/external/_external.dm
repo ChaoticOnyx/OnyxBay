@@ -265,8 +265,11 @@
 						user.put_in_hands(removing)
 					user.visible_message("<span class='danger'><b>[user]</b> extracts [removing] from [src] with [W]!</span>")
 				else
-					if(organ_tag == BP_HEAD && W.sharp)
-						user.visible_message("<span class='danger'><b>[user]</b> rips the skin off [src] with [W], revealing a skull.</span>")
+					if(organ_tag == BP_HEAD && W.sharp && alert("Do you really want to rips the skin off [src] with [W]?",,"Ew, no.","MEAT!") == "MEAT!")
+						user.visible_message("<span class='danger'><b>[user]</b> rips the skin off [src] with [W], revealing a skull and meat.</span>")
+						food_organ.appearance = food_organ_type
+						food_organ.forceMove(get_turf(loc))
+						food_organ = null
 						if(istype(src.loc,/turf))
 							new /obj/item/weapon/skull(src.loc)
 							gibs(src.loc)
@@ -275,6 +278,12 @@
 							gibs(user.loc)
 						qdel(src)
 					else
+						if(alert("Do you really want to rips the skin off [src] with [W]?",,"Ew, no.","MEAT!") == "MEAT!")
+							if(src && !QDELETED(src))
+								food_organ.appearance = food_organ_type
+								food_organ.forceMove(get_turf(loc))
+								food_organ = null
+								qdel(src)
 						user.visible_message("<span class='danger'><b>[user]</b> fishes around fruitlessly in [src] with [W].</span>")
 				return
 	..()
