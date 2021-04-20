@@ -104,7 +104,6 @@ Small, little HP, poisonous.
 	if(!AE)
 		AE = new /obj/item/organ/internal/alien_embryo(H)
 		H.internal_organs_by_name[BP_EMBRYO] = AE
-		BITSET(H.hud_updateflag, XENO_HUD)
 		is_sterile = TRUE
 		to_chat(H, "You feel something going down your throat!")
 		return 1

@@ -9,4 +9,12 @@
 	return alien_caste ? "Xenomorph [alien_caste]" : null
 
 /mob/living/carbon/alien/larva/show_evolution_blurb()
+	if(mind)
+		GLOB.xenomorphs.remove_antagonist(mind, 1)
+	return
+
+
+/mob/living/carbon/alien/larva/post_evolution(mob/living/carbon/C)
+	if(C.mind)
+		GLOB.xenomorphs.add_antagonist(C.mind, 1)
 	return

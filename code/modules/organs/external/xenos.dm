@@ -194,6 +194,7 @@ process_sec_hud
 /obj/item/organ/internal/alien_embryo/Process()
 	if(owner && !(status & ORGAN_DEAD))
 		growth++
+		BITSET(owner.hud_updateflag, XENO_HUD)
 		if(growth > growth_max)
 			var/mob/living/carbon/alien/larva/larva = new(get_turf(src))
 			for(var/mob/observer/ghost/O in GLOB.ghost_mob_list)

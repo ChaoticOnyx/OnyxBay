@@ -248,5 +248,5 @@ var/global/datum/body_build/default_body_build = new
 
 /datum/body_build/xenomorph
 	name                 = "Xenomorph"
-	genders              = list(NEUTER)
+	genders              = list(MALE, FEMALE, NEUTER)
 	blood_icon           = null // Fuck it, I ain't gonna spend all day showering if I'm an apex predator

@@ -66,7 +66,7 @@
 
 	var/alien_number = 0
 	var/caste_name = "creature" // Used to update alien name.
-	var/weeds_heal_rate = 3     // Health regen on weeds.
+	var/weeds_heal_rate = 10     // Health regen on weeds.
 	var/weeds_plasma_rate = 5   // Plasma regen on weeds.
 
 	has_limbs = list(
@@ -144,7 +144,7 @@
 	for(var/obj/item/organ/I in H.internal_organs)
 		if(I.damage > 0)
 			I.damage = max(I.damage - heal_rate, 0)
-			if(prob(5))
+			if(mend_prob)
 				to_chat(H, "<span class='alium'>I feel a soothing sensation within my [I.parent_organ]...</span>")
 			if(!I.damage && (I.status & ORGAN_DEAD))
 				to_chat(H, "<span class='alium'>I feel invigorated as my [I.parent_organ] appears to be functioning again!</span>")
@@ -152,14 +152,17 @@
 			return 1
 
 	//next regrow lost limbs, approx 10 ticks each
-	if(H.resting && prob(mend_prob))
+	if(prob(mend_prob))
+		to_chat(H, "PROB(MEND_PROB ([mend_prob]%) - SUCCESS")
 		for(var/limb_type in has_limbs)
 			var/obj/item/organ/external/E = H.organs_by_name[limb_type]
 			if(E && E.organ_tag != BP_HEAD && !E.vital && !E.is_usable())
 				E.removed()
 				qdel(E)
 				E= null
+				to_chat(H, "E REMOVED")
 			if(!E)
+				to_chat(H, "NO E FOUND GROWING NEW ONE")
 				var/list/organ_data = has_limbs[limb_type]
 				var/limb_path = organ_data["path"]
 				var/obj/item/organ/external/O = new limb_path(H)
@@ -171,6 +174,7 @@
 				for(var/datum/wound/W in E.wounds)
 					if(W.wound_damage() == 0)
 						E.wounds -= W
+						to_chat(H, "WOUND HEALED")
 			return 1
 	return 0
 
@@ -188,16 +192,8 @@
 	process_xeno_hud(H)
 	return 1
 
-/*
-/datum/species/xenos/handle_login_special(mob/living/carbon/human/H)
-	H.AddInfectionImages()
-	..()
 
-/datum/species/xenos/handle_logout_special(mob/living/carbon/human/H)
-	H.RemoveInfectionImages()
-	..()
-*/
-
+// Caste species
 /datum/species/xenos/drone
 	name = SPECIES_XENO_DRONE
 	caste_name = "drone"
@@ -266,7 +262,7 @@
 	caste_name = "sentinel"
 	slowdown = 0
 	total_health = 200
-	weeds_heal_rate = 6
+	weeds_heal_rate = 15
 	tail = "xenos_sentinel_tail"
 	strength = STR_VHIGH
 
@@ -297,7 +293,7 @@
 
 	name = SPECIES_XENO_QUEEN
 	total_health = 250
-	weeds_heal_rate = 9
+	weeds_heal_rate = 20
 	weeds_plasma_rate = 20
 	caste_name = "queen"
 	slowdown = 4
