@@ -1301,7 +1301,7 @@
 	trash = /obj/item/trash/plate
 	filling_color = "#c4bf76"
 	center_of_mass = "x=16;y=10"
-	nutriment_desc = list("metroid" = 2, "soy" = 2)
+	nutriment_desc = list("slime" = 2, "soy" = 2)
 	nutriment_amt = 2
 
 /obj/item/weapon/reagent_containers/food/snacks/soydope/Initialize()
@@ -2529,7 +2529,7 @@
 	slices_num = 5
 	filling_color = "#e6aedb"
 	center_of_mass = "x=16;y=10"
-	nutriment_desc = list("cake" = 10, "sweetness" = 10, "metroid" = 15)
+	nutriment_desc = list("cake" = 10, "sweetness" = 10, "slime" = 15)
 	nutriment_amt = 5
 
 /obj/item/weapon/reagent_containers/food/snacks/sliceable/braincake/Initialize()
