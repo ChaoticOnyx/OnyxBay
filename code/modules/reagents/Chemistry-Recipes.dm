@@ -935,7 +935,7 @@
 	result_amount = 1
 	required = /obj/item/metroid_extract/metal
 
-/datum/chemical_reaction/metroid/glass/on_reaction(datum/reagents/holder)
+/datum/chemical_reaction/metroid/marble/on_reaction(datum/reagents/holder)
 	var/obj/item/stack/material/marble/M = new /obj/item/stack/material/marble
 	M.amount = 30
 	M.loc = get_turf(holder.my_atom)
