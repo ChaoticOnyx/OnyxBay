@@ -82,7 +82,7 @@
 	A.attack_generic(src,rand(5,6),"bitten")
 
 /*
-	metroids
+	Metroids
 	Nothing happening here
 */
 
