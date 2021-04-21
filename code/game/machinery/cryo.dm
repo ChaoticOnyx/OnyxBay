@@ -197,7 +197,7 @@
 		return TOPIC_REFRESH
 
 	if(href_list["ejectOccupant"])
-		if(!occupant || isslime(user) || ispAI(user))
+		if(!occupant || ismetroid(user) || ispAI(user))
 			return TOPIC_HANDLED // don't update UIs attached to this object
 		go_out()
 		return TOPIC_REFRESH
@@ -227,9 +227,9 @@
 	else if(istype(G, /obj/item/grab))
 		if(!ismob(G:affecting))
 			return
-		for(var/mob/living/carbon/slime/M in range(1, G:affecting))
+		for(var/mob/living/carbon/metroid/M in range(1, G:affecting))
 			if(M.Victim == G:affecting)
-				to_chat(usr, "[G:affecting:name] will not fit into the cryo because they have a slime latched onto their head.")
+				to_chat(usr, "[G:affecting:name] will not fit into the cryo because they have a metroid latched onto their head.")
 				return
 		user.visible_message(SPAN("notice", "\The [user] begins placing \the [G:affecting] into \the [src]."), SPAN("notice", "You start placing \the [G:affecting] into \the [src]."))
 		if(!do_after(user, 30, src))
@@ -426,7 +426,7 @@
 	set name = "Move Inside"
 	set category = "Object"
 	set src in oview(1)
-	for(var/mob/living/carbon/slime/M in range(1,usr))
+	for(var/mob/living/carbon/metroid/M in range(1,usr))
 		if(M.Victim == usr)
 			to_chat(usr, "You're too busy getting your life sucked out of you.")
 			return

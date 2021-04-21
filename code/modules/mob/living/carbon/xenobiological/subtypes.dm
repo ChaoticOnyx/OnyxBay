@@ -1,4 +1,4 @@
-/mob/living/carbon/slime/proc/GetMutations()
+/mob/living/carbon/metroid/proc/GetMutations()
 	switch(src.colour)
 		if("grey")
 			return list("orange", "metal", "blue", "purple")
@@ -32,53 +32,53 @@
 		else
 			return list()
 
-/mob/living/carbon/slime/proc/GetCoreType()
+/mob/living/carbon/metroid/proc/GetCoreType()
 	switch(src.colour)
 		// Tier 1
 		if("grey")
-			return /obj/item/slime_extract/grey
+			return /obj/item/metroid_extract/grey
 		// Tier 2
 		if("purple")
-			return /obj/item/slime_extract/purple
+			return /obj/item/metroid_extract/purple
 		if("metal")
-			return /obj/item/slime_extract/metal
+			return /obj/item/metroid_extract/metal
 		if("orange")
-			return /obj/item/slime_extract/orange
+			return /obj/item/metroid_extract/orange
 		if("blue")
-			return /obj/item/slime_extract/blue
+			return /obj/item/metroid_extract/blue
 		// Tier 3
 		if("dark blue")
-			return /obj/item/slime_extract/darkblue
+			return /obj/item/metroid_extract/darkblue
 		if("dark purple")
-			return /obj/item/slime_extract/darkpurple
+			return /obj/item/metroid_extract/darkpurple
 		if("yellow")
-			return /obj/item/slime_extract/yellow
+			return /obj/item/metroid_extract/yellow
 		if("silver")
-			return /obj/item/slime_extract/silver
+			return /obj/item/metroid_extract/silver
 		// Tier 4
 		if("pink")
-			return /obj/item/slime_extract/pink
+			return /obj/item/metroid_extract/pink
 		if("red")
-			return /obj/item/slime_extract/red
+			return /obj/item/metroid_extract/red
 		if("gold")
-			return /obj/item/slime_extract/gold
+			return /obj/item/metroid_extract/gold
 		if("green")
-			return /obj/item/slime_extract/green
+			return /obj/item/metroid_extract/green
 		if("sepia")
-			return /obj/item/slime_extract/sepia
+			return /obj/item/metroid_extract/sepia
 		if("bluespace")
-			return /obj/item/slime_extract/bluespace
+			return /obj/item/metroid_extract/bluespace
 		if("cerulean")
-			return /obj/item/slime_extract/cerulean
+			return /obj/item/metroid_extract/cerulean
 		if("pyrite")
-			return /obj/item/slime_extract/pyrite
+			return /obj/item/metroid_extract/pyrite
 		//Tier 5
 		if("light pink")
-			return /obj/item/slime_extract/lightpink
+			return /obj/item/metroid_extract/lightpink
 		if("oil")
-			return /obj/item/slime_extract/oil
+			return /obj/item/metroid_extract/oil
 		if("adamantine")
-			return /obj/item/slime_extract/adamantine
+			return /obj/item/metroid_extract/adamantine
 		if("black")
-			return /obj/item/slime_extract/black
-	return /obj/item/slime_extract/grey
+			return /obj/item/metroid_extract/black
+	return /obj/item/metroid_extract/grey

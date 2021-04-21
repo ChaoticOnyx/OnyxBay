@@ -447,7 +447,7 @@ datum/objective/harm
 		"the [station_name()] blueprints" = /obj/item/blueprints,
 		"a nasa voidsuit" = /obj/item/clothing/suit/space/void,
 		"28 moles of plasma (full tank)" = /obj/item/weapon/tank,
-		"a sample of slime extract" = /obj/item/slime_extract,
+		"a sample of metroid extract" = /obj/item/metroid_extract,
 		"a piece of corgi meat" = /obj/item/weapon/reagent_containers/food/snacks/meat/corgi,
 		"a research director's jumpsuit" = /obj/item/clothing/under/rank/research_director,
 		"a chief engineer's jumpsuit" = /obj/item/clothing/under/rank/chief_engineer,
