@@ -392,6 +392,6 @@
 
 /obj/item/clothing/mask/plasticbag/attackby(obj/item/W, mob/user)
 	if(istype(W, /obj/item/weapon/tape_roll))
-		to_chat(user, "You attach [W] piece to [src]!")
+		to_chat(user, "You attach a piece of [W] to [src]!")
 		new /obj/item/clothing/mask/gas/plasticbag(get_turf(src))
 		qdel(src)
