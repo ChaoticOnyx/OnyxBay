@@ -1,0 +1,9 @@
+{
+  "script": {
+    "enableScriptNuGetReferences": true,
+    "defaultTargetFramework": "net5.0"
+  },
+  "FormattingOptions": {
+    "enableEditorConfigSupport": true
+  }
+}
