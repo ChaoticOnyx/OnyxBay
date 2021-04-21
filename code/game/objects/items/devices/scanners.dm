@@ -690,7 +690,7 @@ REAGENT SCANNER
 		user.show_message("Temperature comfort zone:\t[A.minbodytemp] K to [A.maxbodytemp] K")
 	else if(istype(target, /mob/living/carbon/metroid/))
 		var/mob/living/carbon/metroid/T = target
-		user.show_message("<span class='notice'>metroid scan result for \the [T]:</span>")
+		user.show_message("<span class='notice'>Metroid scan result for \the [T]:</span>")
 		user.show_message("[T.colour] [T.is_adult ? "adult" : "baby"] metroid")
 		user.show_message("Nutrition:\t[T.nutrition]/[T.get_max_nutrition()]")
 		if(T.nutrition < T.get_starve_nutrition())
