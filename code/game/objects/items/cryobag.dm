@@ -173,15 +173,16 @@
 	a hostile enviroment. This one is marked with big \"VAT\" letters and has some sort of document glued to it."
 	icon = 'icons/obj/vat_cryobag.dmi'
 	item_path = /obj/item/bodybag/cryobag/vatgrownbody
+	var/mobpath = /mob/living/carbon/human
 
-/obj/structure/closet/body_bag/cryobag/vatgrownbody/male/New()
+/obj/structure/closet/body_bag/cryobag/vatgrownbody/Initialize()
 	..()
-	new /mob/living/carbon/human/vatgrown(src)
+	new mobpath(src)
 	contains_body = 1
 	update_icon()
 
-/obj/structure/closet/body_bag/cryobag/vatgrownbody/female/New()
-	..()
-	new /mob/living/carbon/human/vatgrown/female(src)
-	contains_body = 1
-	update_icon()
+/obj/structure/closet/body_bag/cryobag/vatgrownbody/male
+	mobpath = /mob/living/carbon/human/vatgrown
+
+/obj/structure/closet/body_bag/cryobag/vatgrownbody/female
+	mobpath = /mob/living/carbon/human/vatgrown/female
