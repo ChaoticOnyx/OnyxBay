@@ -61,7 +61,7 @@
 	return 0
 
 /obj/machinery/smartfridge/secure/extract
-	name = "\improper metroid Extract Storage"
+	name = "\improper Metroid Extract Storage"
 	desc = "A refrigerated storage unit for metroid extracts."
 	req_access = list(access_research)
 
