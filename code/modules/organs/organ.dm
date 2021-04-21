@@ -180,9 +180,9 @@ Note that amputating the affected organ does in fact remove the infection from t
 		//aiming for germ level to go from ambient to INFECTION_LEVEL_TWO in an average of 15 minutes
 		if(antibiotics < 5 && prob(round(germ_level/(INFECTION_LEVEL_TWO*0.01) * owner.immunity_weakness())))
 			if(virus_immunity > 0)
-				germ_level += round(2.71**(germ_level/1000) * owner.immunity_weakness())
+				germ_level += round(M_EULER**(germ_level/1000) * owner.immunity_weakness())
 			else // Will only trigger if immunity has hit zero. Once it does, 10x infection rate.
-				germ_level += round(2.71**(germ_level/1000) * owner.immunity_weakness()) * 10
+				germ_level += round(M_EULER**(germ_level/1000) * owner.immunity_weakness()) * 10
 
 	if(germ_level >= INFECTION_LEVEL_ONE)
 		//raise temperature
