@@ -178,17 +178,19 @@
 	if(!linked_node || (get_dist(linked_node, src) > linked_node.node_range) )
 		return
 
-	direction_loop:
-		for(var/dirn in GLOB.cardinal)
-			var/turf/T = get_step(src, dirn)
+	for(var/dirn in GLOB.cardinal)
+		var/turf/T = get_step(src, dirn)
 
-			if (!istype(T) || T.density || locate(/obj/effect/alien/weeds) in T || istype(T, /turf/space))
-				continue
+		if(!istype(T) || T.density || locate(/obj/effect/alien/weeds) in T || istype(T, /turf/space))
+			continue
 
-			for(var/obj/O in T)
-				if(O.density)
-					continue direction_loop
+		var/turf_eligible = TRUE
+		for(var/obj/O in T)
+			if(!O.CanZASPass(T)) // So it will grow through the stuff like consoles and disposal units, but will get blocked by airlocks and inflatable walls
+				turf_eligible = FALSE
+				break
 
+		if(turf_eligible)
 			new /obj/effect/alien/weeds(T, linked_node)
 
 
