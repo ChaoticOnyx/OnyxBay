@@ -62,31 +62,21 @@ a {
 	margin-right: 10px;
 }
 
-li.rscadd,
-li.bugfix,
-li.tweak,
-li.soundadd,
-li.imageadd,
-li.spellcheck,
-li.balance,
-li.maptweak {
+li.green{
 	border-left-color: #57AB5A;
 	background-color: rgba(87, 171, 90, 0.2);
 	background: linear-gradient(90deg, rgba(87, 171, 90, 0.2) 0%, rgba(71, 139, 73, 0) 100%);
 	-pie-background: linear-gradient(rgba(87, 171, 90, 0.2) 0%, rgba(71, 139, 73, 0) 100%);
 }
 
-li.rscdel,
-li.sounddel,
-li.imagedel {
+li.red {
 	border-left-color: #E5534B;
 	background-color: rgba(229, 83, 75, 0.2);
 	background: linear-gradient(90deg, rgba(229, 83, 75, 0.2) 0%, rgba(158, 57, 52, 0) 100%);
 	-pie-background: linear-gradient(rgba(229, 83, 75, 0.2) 0%, rgba(158, 57, 52, 0) 100%);
 }
 
-li.wip,
-li.experiment {
+li.yellow {
 	border-left-color: #DAAA3F;
 	background-color: rgba(218, 170, 63, 0.2);
 	background: linear-gradient(90deg, rgba(218, 170, 63, 0.2) 0%, rgba(150, 117, 44, 0) 100%);
