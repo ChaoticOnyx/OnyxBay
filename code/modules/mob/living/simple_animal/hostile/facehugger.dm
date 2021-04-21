@@ -46,6 +46,9 @@
 			var/mob/living/carbon/human/H = a
 			if(H.faction == faction) // No need to attack our fellow queens of blades
 				continue
+			var/obj/item/organ/internal/alien_embryo/AE = H.internal_organs_by_name[BP_EMBRYO]
+			if(AE)
+				continue // No need to leap onto infected faces
 			var/obj/item/mask = H.get_equipped_item(slot_wear_mask)
 			if(istype(mask, /obj/item/weapon/holder/facehugger)) // No need to interrupt our allies
 				var/obj/item/weapon/holder/facehugger/F = mask

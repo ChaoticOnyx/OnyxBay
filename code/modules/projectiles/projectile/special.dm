@@ -226,9 +226,19 @@
 
 	var/turf/bump_loc = get_turf(A)
 	holder.forceMove(bump_loc)
+
 	if(istype(bump_loc, /turf/simulated/wall))
 		var/direction = turn(src.dir, 180)
 		holder.forceMove(get_step(holder, direction), direction) // Get us out of the wall
+	else
+		for(var/obj/O in bump_loc)
+			if(!O.density || !O.anchored)
+				continue
+			if(O.CanZASPass(bump_loc)) // If it doesn't block gases, it also doesn't prevent us from getting through
+				continue
+			var/direction = turn(src.dir, 180)
+			holder.forceMove(get_step(holder, direction), direction) // Otherwise we failed to pass
+
 	holder.FindTarget()
 	holder.MoveToTarget() // Calling these two to make sure the facehugger will try to keep distance upon missing
 	holder = null

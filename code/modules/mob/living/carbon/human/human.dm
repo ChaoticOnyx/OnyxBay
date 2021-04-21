@@ -672,7 +672,7 @@
 	if(species.has_fine_manipulation && !nabbing)
 		return 1
 	if(!silent)
-		to_chat(src, "<span class='warning'>You don't have the dexterity to use that!</span>")
+		to_chat(src, FEEDBACK_YOU_LACK_DEXTERITY)
 	return 0
 
 /mob/living/carbon/human/abiotic(full_body = TRUE)

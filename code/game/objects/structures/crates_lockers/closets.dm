@@ -664,7 +664,7 @@
 
 	add_fingerprint(user)
 
-	if(!user.IsAdvancedToolUser())
+	if(!user.IsAdvancedToolUser(1))
 		to_chat(user, FEEDBACK_YOU_LACK_DEXTERITY)
 		return FALSE
 
