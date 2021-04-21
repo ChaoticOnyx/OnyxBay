@@ -82,7 +82,7 @@
 	quick_empty()
 	to_chat(user, "You turned everything out of [src]!")
 	user.drop_from_inventory(src)
-	user.put_in_hands(new /obj/item/clothing/mask/plasticbag)
+	user.put_in_any_hand_if_possible(new /obj/item/clothing/mask/plasticbag)
 	qdel(src)
 
 // -----------------------------
