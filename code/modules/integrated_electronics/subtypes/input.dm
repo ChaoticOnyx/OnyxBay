@@ -247,7 +247,7 @@
 
 /obj/item/integrated_circuit/input/metroid_scanner
 	name = "metroid scanner"
-	desc = "A very small version of the xenobio analyser. This allows the machine to know every needed properties of metroid. Output mutation list is non-associative."
+	desc = "A very small version of the xenobio analyser. This allows the machine to know every needed properties of a metroid. Output mutation list is non-associative."
 	icon_state = "medscan_adv"
 	complexity = 12
 	inputs = list("target" = IC_PINTYPE_REF)
