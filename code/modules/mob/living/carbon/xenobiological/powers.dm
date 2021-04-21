@@ -121,7 +121,7 @@
 		forceMove(Victim.loc) // simple "attach to head" effect!
 
 /mob/living/carbon/metroid/verb/Evolve()
-	set category = "metroid"
+	set category = "Metroid"
 	set desc = "This will let you evolve from baby to adult metroid."
 
 	if(stat)
@@ -141,7 +141,7 @@
 		to_chat(src, "<span class='notice'>I have already evolved...</span>")
 
 /mob/living/carbon/metroid/verb/Reproduce()
-	set category = "metroid"
+	set category = "Metroid"
 	set desc = "This will make you split into four metroids."
 
 	if(stat)
