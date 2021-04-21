@@ -93,8 +93,6 @@
 	H.equip_to_slot(holder, slot_wear_mask)
 	if(impregnate(H))
 		holder.kill_holder()
-	if(!is_sterile) // Lamarr is one hell of a bioweapon even without stuns
-		H.Paralyse(20)
 	return 1
 
 /mob/living/simple_animal/hostile/facehugger/proc/impregnate(mob/living/carbon/human/H)
@@ -109,6 +107,7 @@
 		H.internal_organs_by_name[BP_EMBRYO] = AE
 		is_sterile = TRUE
 		to_chat(H, "You feel something going down your throat!")
+		H.Paralyse(20)
 		return 1
 	to_chat(H, "You feel something going down your throat and rapidly ejecting a few moments later.")
 	return 0

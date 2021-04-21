@@ -468,7 +468,9 @@
 
 	if(istype(user,/mob/living/carbon/human))
 		var/mob/living/carbon/human/H = user
-		if(H.species.can_shred(H) && get_status() == LIGHT_BROKEN)
+		if(H.species.can_shred(H))
+			if(get_status() == LIGHT_BROKEN)
+				return
 			playsound(src.loc, 'sound/weapons/slash.ogg', 100, 1)
 			user.do_attack_animation(src)
 			user.setClickCooldown(DEFAULT_QUICK_COOLDOWN)

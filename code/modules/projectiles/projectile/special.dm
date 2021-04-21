@@ -234,10 +234,13 @@
 		for(var/obj/O in bump_loc)
 			if(!O.density || !O.anchored)
 				continue
-			if(O.CanZASPass(bump_loc)) // If it doesn't block gases, it also doesn't prevent us from getting through
-				continue
 			var/direction = turn(src.dir, 180)
+			var/atom/previous_loc = get_step(src, direction) // required to properly check for window panes and windoors
+			if(O.CanZASPass(previous_loc)) // If it doesn't block gases, it also doesn't prevent us from getting through
+				continue
 			holder.forceMove(get_step(holder, direction), direction) // Otherwise we failed to pass
+			holder.visible_message(SPAN("danger", "\The [holder] smacks against \the [O]!"))
+			break
 
 	holder.FindTarget()
 	holder.MoveToTarget() // Calling these two to make sure the facehugger will try to keep distance upon missing
