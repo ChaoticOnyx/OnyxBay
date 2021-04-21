@@ -21,22 +21,22 @@
 	//if(user != M)
 	if(M.mind && LAZYLEN(M.mind.learned_spells))
 		M.silence_spells(300) //30 seconds
-		to_chat(M, "<span class='danger'>You've been silenced!</span>")
+		to_chat(M, SPAN_DANGER("You've been silenced!"))
 		return
 
-	if (!user.IsAdvancedToolUser())
-		to_chat(user, "<span class='danger'>You don't have the dexterity to do this!</span>")
+	if(!user.IsAdvancedToolUser())
+		to_chat(user, SPAN_WARNING("You don't have the dexterity to do this!</span>"))
 		return
 
-	if ((MUTATION_CLUMSY in user.mutations) && prob(50))
-		to_chat(user, "<span class='danger'>The rod slips out of your hand and hits your head.</span>")
+	if((MUTATION_CLUMSY in user.mutations) && prob(50))
+		to_chat(user, SPAN_DANGER("The rod slips out of your hand and hits your head."))
 		user.take_organ_damage(10)
 		user.Paralyse(20)
 		return
 
 	if(GLOB.cult && iscultist(M))
-		M.visible_message("<span class='notice'>\The [user] waves \the [src] over \the [M]'s head.</span>")
-		GLOB.cult.offer_uncult(M)
+		M.visible_message(SPAN_NOTICE("\The [user] waves \the [src] over \the [M]'s head."))
+		GLOB.cult.remove_antagonist(usr.mind, 1)
 		return
 
 	..()
