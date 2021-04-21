@@ -6,6 +6,15 @@ body {
 	font-weight: 500;
 	line-height: 1.5;
 	behavior: url(pie.htc);
+
+	scrollbar-base-color: #444d5c;
+	scrollbar-face-color: #444d5c;
+	scrollbar-3dlight-color: #22272E;
+	scrollbar-highlight-color: #22272E;
+	scrollbar-track-color: #22272E;
+	scrollbar-arrow-color: #22272E;
+	scrollbar-shadow-color: #444d5c;
+	scrollbar-dark-shadow-color: #22272E;
 }
 
 a {
@@ -42,11 +51,15 @@ a {
 }
 
 .changes li {
-	padding: 2px 10px 2px 30px;
+	padding: 2px 10px 2px 10px;
 	background-position: 6px center;
 	background-repeat: no-repeat;
 	border-left: 4px solid #999;
 	margin-bottom: 10px;
+}
+
+.changes li i {
+	margin-right: 10px;
 }
 
 li.rscadd,
