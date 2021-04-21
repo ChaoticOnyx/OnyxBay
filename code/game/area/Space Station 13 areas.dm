@@ -28,7 +28,8 @@ NOTE: there are two lists of areas in the end of this file: centcom and station 
 	luminosity = 0
 	mouse_opacity = 0
 	var/lightswitch = 1
-
+	var/lighting_mode = ""
+	var/list/enabled_lighting_modes = list()
 	var/eject = null
 
 	var/debug = 0
