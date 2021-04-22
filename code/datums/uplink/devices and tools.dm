@@ -15,11 +15,11 @@
 	item_cost = 8
 	path = /obj/item/weapon/tape_roll
 
-/datum/uplink_item/item/tools/sttd
-	name = "Syndicate Transfer Teleport Device"
+/datum/uplink_item/item/tools/std
+	name = "Syndicate Teleportation Device"
 	desc = "Litteraly a worm in bed... I mean wormhole for in space teleportation, yeah, space teleportation, just try to put your uplink device in it for authorization."
 	item_cost = 1
-	path = /obj/item/weapon/storage/briefcase/sttd
+	path = /obj/item/weapon/storage/briefcase/std
 
 /datum/uplink_item/item/tools/money
 	name = "Operations Funding"

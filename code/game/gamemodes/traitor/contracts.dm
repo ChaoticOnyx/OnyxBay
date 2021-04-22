@@ -89,7 +89,7 @@ GLOBAL_LIST_INIT(syndicate_factions, list(
 // A contract to steal a specific item - allows you to check all contents (recursively) for the target item
 /datum/antag_contract/item
 
-/datum/antag_contract/item/proc/on_container(obj/item/weapon/storage/briefcase/sttd/container)
+/datum/antag_contract/item/proc/on_container(obj/item/weapon/storage/briefcase/std/container)
 	if(check(container))
 		complete(container.uplink)
 

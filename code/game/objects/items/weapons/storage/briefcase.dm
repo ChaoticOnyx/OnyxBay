@@ -22,7 +22,7 @@
 
 // Syndicate Transfer Teleport Device
 
-/obj/item/weapon/storage/briefcase/sttd
+/obj/item/weapon/storage/briefcase/std
 	name = "unknown briefcase"
 	desc = "It's an old looking briefcase with some high-tech markings. It has a label on it that says, \"WORKS ONLY NEAR SPACE\""
 	origin_tech = list(TECH_BLUESPACE = 3, TECH_ILLEGAL = 3)
@@ -30,23 +30,23 @@
 	var/authentication_complete = FALSE
 	var/del_on_send = TRUE
 
-/obj/item/weapon/storage/briefcase/sttd/attackby(obj/item/I, mob/user)
+/obj/item/weapon/storage/briefcase/std/attackby(obj/item/I, mob/user)
 	if(!authentication_complete && I.hidden_uplink)
 		src.visible_message("\The [src] blinks green!")
 		uplink = I.hidden_uplink
 		authentication_complete = TRUE
 	..()
 
-/obj/item/weapon/storage/briefcase/sttd/proc/can_launch()
+/obj/item/weapon/storage/briefcase/std/proc/can_launch()
 	return authentication_complete && (locate(/turf/space) in view(get_turf(src)))
 
-/obj/item/weapon/storage/briefcase/sttd/attack_self(mob/user)
+/obj/item/weapon/storage/briefcase/std/attack_self(mob/user)
 	ui_interact(user)
 
-/obj/item/weapon/storage/briefcase/sttd/interact(mob/user)
+/obj/item/weapon/storage/briefcase/std/interact(mob/user)
 	ui_interact(user)
 
-/obj/item/weapon/storage/briefcase/sttd/ui_data(mob/user)
+/obj/item/weapon/storage/briefcase/std/ui_data(mob/user)
 	var/list/list/data = list()
 
 	data["can_launch"] = can_launch()
@@ -66,7 +66,7 @@
 
 	return data
 
-/obj/item/weapon/storage/briefcase/sttd/ui_interact(mob/user, ui_key = "main", datum/nanoui/ui = null, force_open = 1)
+/obj/item/weapon/storage/briefcase/std/ui_interact(mob/user, ui_key = "main", datum/nanoui/ui = null, force_open = 1)
 	if(!authentication_complete)
 		audible_message("[src] blinks red.")
 		return
@@ -74,11 +74,11 @@
 
 	ui = SSnano.try_update_ui(user, src, ui_key, ui, data, force_open)
 	if(!ui)
-		ui = new(user, src, ui_key, "sttd.tmpl", "[name]", 400, 430)
+		ui = new(user, src, ui_key, "std.tmpl", "[name]", 400, 430)
 		ui.set_initial_data(data)
 		ui.open()
 
-/obj/item/weapon/storage/briefcase/sttd/Topic(href, href_list)
+/obj/item/weapon/storage/briefcase/std/Topic(href, href_list)
 	if(..())
 		return TRUE
 
