@@ -276,6 +276,7 @@
 	set desc = "While grabbing someone aggressively, rip their guts out or tear them apart."
 
 	if(last_special > world.time)
+		to_chat(src, SPAN("warning", "You cannot gut so soon!"))
 		return
 
 	if(stat || paralysis || stunned || weakened || lying)

@@ -50,7 +50,7 @@
 	if(!src || src.stat) // Who knows right?
 		return
 	active_ability = HUMAN_POWER_NONE
-	to_chat(src, "Selected special ability: <b>[active_ability]</b>.")
+	to_chat(src, SPAN("notice", "<i>Selected special ability: <b>[active_ability]</b>.</i>"))
 
 /mob/living/carbon/human/proc/toggle_tackle()
 	set category = "Abilities"
@@ -60,7 +60,7 @@
 	if(!src || src.stat)
 		return
 	active_ability = HUMAN_POWER_TACKLE
-	to_chat(src, "Selected special ability: <b>[active_ability]</b>.")
+	to_chat(src, SPAN("notice", "<i>Selected special ability: <b>[active_ability]</b>.</i>"))
 
 /mob/living/carbon/human/proc/tackle(mob/living/T = null)
 	set category = "Abilities"
@@ -113,7 +113,7 @@
 	if(!src || src.stat)
 		return
 	active_ability = HUMAN_POWER_LEAP
-	to_chat(src, "Selected special ability: <b>[active_ability]</b>.")
+	to_chat(src, SPAN("notice", "<i>Selected special ability: <b>[active_ability]</b>.</i>"))
 
 /mob/living/carbon/human/proc/leap(mob/living/T = null)
 	set category = "Abilities"
