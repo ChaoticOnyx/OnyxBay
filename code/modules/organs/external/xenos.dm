@@ -85,7 +85,8 @@ process_sec_hud
 	..(user)
 
 /obj/item/organ/internal/xenos/hivenode/replaced(mob/living/carbon/human/target, obj/item/organ/external/affected)
-	if(!..()) return 0
+	if(!..())
+		return FALSE
 
 	if(owner && ishuman(owner))
 		var/mob/living/carbon/human/H = owner
