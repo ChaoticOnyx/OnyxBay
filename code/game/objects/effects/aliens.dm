@@ -185,8 +185,9 @@
 			continue
 
 		var/turf_eligible = TRUE
+		var/atom/previous_loc = get_step(src, get_dir(src, linked_node))
 		for(var/obj/O in T)
-			if(!O.CanZASPass(T)) // So it will grow through the stuff like consoles and disposal units, but will get blocked by airlocks and inflatable walls
+			if(!O.CanZASPass(previous_loc)) // So it will grow through the stuff like consoles and disposal units, but will get blocked by airlocks and inflatable walls
 				turf_eligible = FALSE
 				break
 
