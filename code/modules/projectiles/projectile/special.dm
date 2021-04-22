@@ -228,22 +228,31 @@
 	holder.forceMove(bump_loc)
 
 	if(istype(bump_loc, /turf/simulated/wall))
-		var/direction = turn(src.dir, 180)
+		var/direction = get_dir(src.loc, starting)
 		holder.forceMove(get_step(holder, direction), direction) // Get us out of the wall
 	else
 		for(var/obj/O in bump_loc)
 			if(!O.density || !O.anchored)
 				continue
-			var/direction = turn(src.dir, 180)
+			var/direction = get_dir(src.loc, starting)
 			var/atom/previous_loc = get_step(src, direction) // required to properly check for window panes and windoors
-			if(O.CanZASPass(previous_loc)) // If it doesn't block gases, it also doesn't prevent us from getting through
+			if(istype(O, /obj/structure/window)) // Yeah those fuckers require different processing, did I mention FUCK glass panes
+				var/obj/structure/window/W = O
+				if(!W.CanPass(src, previous_loc))
+					W.take_damage(10)
+					continue
+			else if(O.CanZASPass(previous_loc)) // If it doesn't block gases, it also doesn't prevent us from getting through
 				continue
-			holder.forceMove(get_step(holder, direction), direction) // Otherwise we failed to pass
+			holder.forceMove(previous_loc) // Otherwise we failed to pass
 			holder.visible_message(SPAN("danger", "\The [holder] smacks against \the [O]!"))
 			break
 
 	holder.FindTarget()
 	holder.MoveToTarget() // Calling these two to make sure the facehugger will try to keep distance upon missing
 	holder = null
+
+
+	set_density(0)
+	set_invisibility(101)
 	qdel(src)
 	return 1
