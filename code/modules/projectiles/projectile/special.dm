@@ -215,14 +215,14 @@
 
 	if(bumped)
 		return
-	bumped = 1
+	bumped = TRUE
 
 	if(istype(A, /mob/living/carbon/human))
 		var/mob/living/carbon/human/H = A
 		if(H.faction != holder.faction && holder.facefuck(H))
 			holder = null
 			qdel(src)
-			return 1
+			return TRUE
 
 	var/turf/bump_loc = get_turf(A)
 	holder.forceMove(bump_loc)
@@ -255,4 +255,4 @@
 	set_density(0)
 	set_invisibility(101)
 	qdel(src)
-	return 1
+	return TRUE

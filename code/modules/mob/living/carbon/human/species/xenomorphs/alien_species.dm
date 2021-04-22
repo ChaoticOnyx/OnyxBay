@@ -88,8 +88,8 @@
 
 /datum/species/xenos/can_understand(mob/other)
 	if(istype(other,/mob/living/carbon/alien/larva))
-		return 1
-	return 0
+		return TRUE
+	return FALSE
 
 /datum/species/xenos/hug(mob/living/carbon/human/H,mob/living/target)
 	H.visible_message("<span class='notice'>[H] caresses [target] with its scythe-like arm.</span>", \
@@ -139,7 +139,7 @@
 		H.adjustToxLoss(-heal_rate)
 		if(prob(5))
 			to_chat(H, "<span class='alium'>I feel a soothing sensation come over me...</span>")
-		return 1
+		return TRUE
 
 	//next internal organs
 	for(var/obj/item/organ/I in H.internal_organs)
@@ -150,7 +150,7 @@
 			if(!I.damage && (I.status & ORGAN_DEAD))
 				to_chat(H, "<span class='alium'>I feel invigorated as my [I.parent_organ] appears to be functioning again!</span>")
 				I.status &= ~ORGAN_DEAD
-			return 1
+			return TRUE
 
 	//next regrow lost limbs, approx 10 ticks each
 	if(prob(mend_prob))
@@ -168,13 +168,13 @@
 				H.visible_message(SPAN("warning", "A fresh carapace growth through [H]'s [O.amputation_point], forming a new [O.name]!"))
 				O.set_dna(H.dna)
 				H.update_body()
-				return 1
+				return TRUE
 			else
 				for(var/datum/wound/W in E.wounds)
 					if(W.wound_damage() == 0)
 						E.wounds -= W
-						return 1
-	return 0
+						return TRUE
+	return FALSE
 
 /datum/species/xenos/can_overcome_gravity(mob/living/carbon/human/H)
 	var/turf/T = H.loc
@@ -188,7 +188,7 @@
 /datum/species/xenos/handle_vision(mob/living/carbon/human/H)
 	. = ..()
 	process_xeno_hud(H)
-	return 1
+	return TRUE
 
 
 // Caste species

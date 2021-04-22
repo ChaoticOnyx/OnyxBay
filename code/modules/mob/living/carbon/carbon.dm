@@ -540,4 +540,4 @@
 		O.rejuvenate()
 
 /mob/living/carbon/proc/set_species()
-	return 0
+	return FALSE

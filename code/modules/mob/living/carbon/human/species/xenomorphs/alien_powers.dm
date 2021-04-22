@@ -7,8 +7,8 @@
 			continue
 		if(!Q.key || !Q.client || Q.stat)
 			continue
-		return 1
-	return 0
+		return TRUE
+	return FALSE
 
 /mob/living/carbon/human/proc/gain_plasma(amount)
 
@@ -42,7 +42,7 @@
 	if(P.stored_plasma < cost)
 		if(!silent)
 			to_chat(src, SPAN("danger", "I don't have enough plasma stored to do that."))
-		return 0
+		return FALSE
 
 	if(needs_foundation)
 		var/turf/T = get_turf(src)
@@ -54,10 +54,10 @@
 		if(!has_foundation)
 			if(!silent)
 				to_chat(src, SPAN("danger", "I need a solid foundation to do that on."))
-			return 0
+			return FALSE
 
 	P.stored_plasma -= cost
-	return 1
+	return TRUE
 
 // Free abilities.
 /mob/living/carbon/human/proc/transfer_plasma(mob/living/carbon/human/M = null)

@@ -21,7 +21,7 @@
 
 /mob/living/carbon/alien/larva/Topic(href, href_list)
 	if(..())
-		return 1
+		return TRUE
 
 	if(href_list["occupy"])
 		attack_ghost(usr)

@@ -76,15 +76,15 @@
 	var/obj/item/organ/external/chest/VC = H.organs_by_name["chest"]
 	var/obj/item/organ/external/head/VH = H.organs_by_name["head"]
 	if(!VC || !VH)
-		return 0
+		return FALSE
 	var/obj/item/helmet = H.get_equipped_item(slot_head)
 	if(helmet && ((helmet.item_flags & ITEM_FLAG_AIRTIGHT) || !helmet.knocked_out(H, dist = 0)))
 		H.visible_message(SPAN("notice", "\The [src] [pick("smacks", "smashes", "blops", "bonks")] against [H]'s [helmet] harmlessly!"))
-		return 0
+		return FALSE
 	var/obj/item/mask = H.get_equipped_item(slot_wear_mask)
 	if(mask && !mask.knocked_out(H, dist = 0))
 		H.visible_message(SPAN("warning", "\The [src] tries to rip [H]'s [mask] off, but fails."))
-		return 0
+		return FALSE
 	var/obj/item/weapon/holder/facehugger/holder = new()
 	src.forceMove(holder)
 	if(!silent)
@@ -93,24 +93,24 @@
 	H.equip_to_slot(holder, slot_wear_mask)
 	if(impregnate(H))
 		holder.kill_holder()
-	return 1
+	return TRUE
 
 /mob/living/simple_animal/hostile/facehugger/proc/impregnate(mob/living/carbon/human/H)
 	if(!H)
-		return 0
+		return FALSE
 
 	var/obj/item/organ/internal/alien_embryo/AE = H.internal_organs_by_name[BP_EMBRYO]
 	if(!AE)
 		if(is_sterile)
-			return 0
+			return FALSE
 		AE = new /obj/item/organ/internal/alien_embryo(H)
 		H.internal_organs_by_name[BP_EMBRYO] = AE
 		is_sterile = TRUE
 		to_chat(H, "You feel something going down your throat!")
 		H.Paralyse(20)
-		return 1
+		return TRUE
 	to_chat(H, "You feel something going down your throat and rapidly ejecting a few moments later.")
-	return 0
+	return FALSE
 
 /mob/living/simple_animal/hostile/facehugger/AttackingTarget()
 	. = ..()

@@ -3,10 +3,10 @@
 
 /mob/living/carbon/human/proc/use_human_ability(atom/A)
 	if(!isliving(A))
-		return 0
+		return FALSE
 	switch(active_ability)
 		if(HUMAN_POWER_NONE)
-			return 0
+			return FALSE
 		if(HUMAN_POWER_SPIT)
 			var/mob/living/M = A
 			Spit(M)
@@ -16,7 +16,7 @@
 		if(HUMAN_POWER_TACKLE)
 			var/mob/living/M = A
 			tackle(M)
-	return 1
+	return TRUE
 
 /mob/living/carbon/human/MiddleClickOn(atom/A)
 	if(get_preference_value(/datum/client_preference/special_ability_key) == GLOB.PREF_MIDDLE_CLICK)

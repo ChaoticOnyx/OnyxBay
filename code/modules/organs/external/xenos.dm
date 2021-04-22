@@ -95,7 +95,7 @@ process_sec_hud
 			to_chat(H, "<span class='alium'>You feel a sense of pressure as a vast intelligence meshes with your thoughts...</span>")
 			GLOB.xenomorphs.add_antagonist_mind(H.mind, 1, GLOB.xenomorphs.faction_role_text, GLOB.xenomorphs.faction_welcome)
 
-	return 1
+	return TRUE
 
 /obj/item/organ/external/head/xeno
 	eye_icon = "blank_eyes"
@@ -192,16 +192,6 @@ process_sec_hud
 	if(dead_icon)
 		icon_state = dead_icon
 	..()
-
-/obj/item/organ/internal/alien_embryo/CanUseTopic(mob/user)
-	return isghost(user) ? STATUS_INTERACTIVE : STATUS_CLOSE
-
-/obj/item/organ/internal/alien_embryo/Topic(href, href_list)
-	if(..())
-		return 1
-
-	if(href_list["spawn"])
-		attack_ghost(usr)
 
 /obj/item/organ/internal/alien_embryo/Process()
 	if(owner && !(status & ORGAN_DEAD))

@@ -858,7 +858,7 @@ About the new airlock wires panel:
 						to_chat(user, SPAN("danger", "The door bolts are down!"))
 					else if(density)
 						visible_message(SPAN("danger","\The [user] forces \the [src] open!"))
-						open(1)
+						open(TRUE)
 						shake_animation(2, 2)
 				return
 			playsound(src.loc, 'sound/weapons/slash.ogg', 100, 1)

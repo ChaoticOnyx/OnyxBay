@@ -592,10 +592,10 @@ var/list/global/slot_flags_enumeration = list(
 			throw_at(get_edge_target_turf(src,pick(GLOB.alldirs)),rand(1,dist),1)
 		if(!strong_knock)
 			H.visible_message(SPAN("warning", "[H]'s [src] flies off!"))
-			return 1
+			return TRUE
 	H.visible_message(SPAN("warning", "[H] falls down, unable to keep balance!"))
 	H.apply_effect(3, WEAKEN, 0)
-	return canremove ? 1 : 0
+	return canremove ? TRUE : FALSE
 
 /obj/item/proc/get_loc_turf()
 	var/atom/L = loc

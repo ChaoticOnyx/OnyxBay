@@ -138,7 +138,7 @@
 			if(do_after(user, 30, src))
 				if(density)
 					visible_message(SPAN("danger","\The [user] forces \the [src] open!"))
-					open(1)
+					open(TRUE)
 					shake_animation(2, 2)
 			return
 
