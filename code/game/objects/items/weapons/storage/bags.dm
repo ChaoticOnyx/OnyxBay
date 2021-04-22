@@ -78,7 +78,7 @@
 	max_storage_space = DEFAULT_BOX_STORAGE
 	can_hold = list() // any
 
-/obj/item/weapon/storage/bag/plasticbag/attack_self(mob/user as mob)
+/obj/item/weapon/storage/bag/plasticbag/attack_self(mob/user)
 	quick_empty()
 	to_chat(user, "You turned everything out of [src]!")
 	user.drop_from_inventory(src)
