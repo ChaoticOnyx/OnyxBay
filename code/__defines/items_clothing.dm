@@ -103,7 +103,7 @@
 #define slot_glasses_str  	"slot_glasses"
 #define slot_s_store_str	"slot_s_store"
 #define slot_tie_str		"slot_tie"
-#define slot_hidden         "slot_hidden"
+#define slot_hidden_str     "slot_hidden"
 
 // Bitflags for clothing parts.
 #define HEAD        0x1
@@ -234,7 +234,7 @@ var/list/default_onmob_slots = list(
 		slot_gloves_str,
 		slot_s_store_str,
 		slot_tie_str,
-		slot_hidden
+		slot_hidden_str
 		)
 
 var/list/default_onmob_icons = list(
@@ -256,7 +256,7 @@ var/list/default_onmob_icons = list(
 		slot_gloves_str = 'icons/inv_slots/gloves/mob.dmi',
 		slot_s_store_str = 'icons/inv_slots/belts/mirror/mob.dmi',
 		slot_tie_str = 'icons/inv_slots/acessories/mob.dmi',
-		slot_hidden = 'icons/inv_slots/hidden/mob.dmi'
+		slot_hidden_str = 'icons/inv_slots/hidden/mob.dmi'
 		)
 
 /proc/slot_to_description(slot)
