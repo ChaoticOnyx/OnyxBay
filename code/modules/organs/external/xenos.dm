@@ -101,57 +101,68 @@ process_sec_hud
 	dislocated = -1
 	arterial_bleed_severity = 0
 	limb_flags = ORGAN_FLAG_HEALS_OVERKILL
+	max_damage = 100
 
 // Xenolimbs.
 /obj/item/organ/external/chest/xeno
 	dislocated = -1
 	arterial_bleed_severity = 0
 	limb_flags = ORGAN_FLAG_HEALS_OVERKILL
+	max_damage = 175
 
 /obj/item/organ/external/groin/xeno
 	dislocated = -1
 	arterial_bleed_severity = 0
 	limb_flags = ORGAN_FLAG_CAN_AMPUTATE
+	max_damage = 125
 
 /obj/item/organ/external/arm/xeno
 	dislocated = -1
 	arterial_bleed_severity = 0
 	limb_flags = ORGAN_FLAG_CAN_AMPUTATE | ORGAN_FLAG_CAN_GRASP
+	max_damage = 75
 
 /obj/item/organ/external/arm/right/xeno
 	dislocated = -1
 	arterial_bleed_severity = 0
 	limb_flags = ORGAN_FLAG_CAN_AMPUTATE | ORGAN_FLAG_CAN_GRASP
+	max_damage = 75
 
 /obj/item/organ/external/leg/xeno
 	dislocated = -1
 	arterial_bleed_severity = 0
 	limb_flags = ORGAN_FLAG_CAN_AMPUTATE | ORGAN_FLAG_CAN_STAND
+	max_damage = 85
 
 /obj/item/organ/external/leg/right/xeno
 	dislocated = -1
 	arterial_bleed_severity = 0
 	limb_flags = ORGAN_FLAG_CAN_AMPUTATE | ORGAN_FLAG_CAN_STAND
+	max_damage = 85
 
 /obj/item/organ/external/foot/xeno
 	dislocated = -1
 	arterial_bleed_severity = 0
 	limb_flags = ORGAN_FLAG_CAN_AMPUTATE | ORGAN_FLAG_CAN_STAND
+	max_damage = 65
 
 /obj/item/organ/external/foot/right/xeno
 	dislocated = -1
 	arterial_bleed_severity = 0
 	limb_flags = ORGAN_FLAG_CAN_AMPUTATE | ORGAN_FLAG_CAN_STAND
+	max_damage = 65
 
 /obj/item/organ/external/hand/xeno
 	dislocated = -1
 	arterial_bleed_severity = 0
 	limb_flags = ORGAN_FLAG_CAN_AMPUTATE | ORGAN_FLAG_CAN_GRASP
+	max_damage = 55
 
 /obj/item/organ/external/hand/right/xeno
 	dislocated = -1
 	arterial_bleed_severity = 0
 	limb_flags = ORGAN_FLAG_CAN_AMPUTATE | ORGAN_FLAG_CAN_GRASP
+	max_damage = 55
 
 // RIP /datum/disease/alien_embryo, no more shall you be cured with gargle blaster
 /obj/item/organ/internal/alien_embryo

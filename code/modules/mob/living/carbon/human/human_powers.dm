@@ -62,7 +62,7 @@
 	active_ability = HUMAN_POWER_TACKLE
 	to_chat(src, "Selected special ability: <b>[active_ability]</b>.")
 
-/mob/living/carbon/human/proc/tackle(mob/living/T)
+/mob/living/carbon/human/proc/tackle(mob/living/T = null)
 	set category = "Abilities"
 	set name = "Tackle"
 	set desc = "Tackle someone down."
@@ -115,7 +115,7 @@
 	active_ability = HUMAN_POWER_LEAP
 	to_chat(src, "Selected special ability: <b>[active_ability]</b>.")
 
-/mob/living/carbon/human/proc/leap(mob/living/T)
+/mob/living/carbon/human/proc/leap(mob/living/T = null)
 	set category = "Abilities"
 	set name = "Leap"
 	set desc = "Leap at a target and grab them aggressively."

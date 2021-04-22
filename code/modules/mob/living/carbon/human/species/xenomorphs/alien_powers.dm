@@ -60,7 +60,7 @@
 	return 1
 
 // Free abilities.
-/mob/living/carbon/human/proc/transfer_plasma(mob/living/carbon/human/M)
+/mob/living/carbon/human/proc/transfer_plasma(mob/living/carbon/human/M = null)
 	set name = "Transfer Plasma"
 	set desc = "Transfer Plasma to another alien"
 	set category = "Abilities"
@@ -74,7 +74,7 @@
 		choices -= src
 		M = input(src, "Whom do I wish to share plasma with?") as null|anything in choices
 
-	if(!M)
+	if(!M || !ishuman(M))
 		return
 
 	if(!Adjacent(M))
@@ -147,7 +147,7 @@
 	active_ability = HUMAN_POWER_SPIT
 	to_chat(src, "Selected special ability: <b>[active_ability]</b>.")
 
-/mob/living/carbon/human/proc/Spit(mob/T)
+/mob/living/carbon/human/proc/Spit(mob/T = null)
 	set name = "Spit (25)"
 	set desc = "Spit of your choice to be launched at someone."
 	set category = "Abilities"

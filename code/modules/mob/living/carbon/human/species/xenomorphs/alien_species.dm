@@ -15,8 +15,8 @@
 	siemens_coefficient = 0
 	gluttonous = 2
 
-	brute_mod = 0.5 // Hardened carapace.
-	burn_mod = 2    // Weak to fire.
+	brute_mod = 0.75  // Hardened carapace.
+	burn_mod  = 1.5   // Weak to fire.
 
 	warning_low_pressure = 50
 	hazard_low_pressure = -1
@@ -200,6 +200,8 @@
 	tail = "xenos_drone_tail"
 	rarity_value = 5
 	strength = STR_MEDIUM
+	brute_mod = 0.85
+	burn_mod  = 1.75
 
 	icobase = 'icons/mob/human_races/xenos/r_xenos_drone.dmi'
 	deform =  'icons/mob/human_races/xenos/r_xenos_drone.dmi'
@@ -232,6 +234,8 @@
 	total_health = 150
 	tail = "xenos_hunter_tail"
 	strength = STR_HIGH
+	brute_mod = 0.75
+	burn_mod  = 1.65
 
 	icobase = 'icons/mob/human_races/xenos/r_xenos_hunter.dmi'
 	deform =  'icons/mob/human_races/xenos/r_xenos_hunter.dmi'
@@ -265,6 +269,8 @@
 	weeds_heal_rate = 15
 	tail = "xenos_sentinel_tail"
 	strength = STR_VHIGH
+	brute_mod = 0.65
+	burn_mod  = 1.55
 
 	icobase = 'icons/mob/human_races/xenos/r_xenos_sentinel.dmi'
 	deform =  'icons/mob/human_races/xenos/r_xenos_sentinel.dmi'
@@ -302,6 +308,8 @@
 	tail = "xenos_queen_tail"
 	rarity_value = 10
 	strength = STR_VHIGH
+	brute_mod = 0.5
+	burn_mod  = 1.25
 
 	icobase = 'icons/mob/human_races/xenos/r_xenos_queen.dmi'
 	deform =  'icons/mob/human_races/xenos/r_xenos_queen.dmi'
