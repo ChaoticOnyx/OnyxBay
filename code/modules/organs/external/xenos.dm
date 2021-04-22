@@ -34,7 +34,7 @@
 	name = "bloated plasma vessel"
 	stored_plasma = 200
 	max_plasma = 500
-	associated_power = /mob/living/carbon/human/proc/neurotoxin
+	associated_power = /mob/living/carbon/human/proc/toggle_neurotoxin
 
 /obj/item/organ/internal/xenos/plasmavessel/sentinel
 	stored_plasma = 100

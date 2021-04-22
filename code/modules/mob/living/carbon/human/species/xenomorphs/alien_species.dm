@@ -245,9 +245,12 @@
 
 	inherent_verbs = list(
 		/mob/living/proc/ventcrawl,
+		/mob/living/carbon/human/proc/toggle_powers,
+		/mob/living/carbon/human/proc/toggle_tackle,
+		/mob/living/carbon/human/proc/toggle_leap,
 		/mob/living/carbon/human/proc/tackle,
-		/mob/living/carbon/human/proc/gut,
 		/mob/living/carbon/human/proc/leap,
+		/mob/living/carbon/human/proc/gut,
 		/mob/living/carbon/human/proc/psychic_whisper,
 		/mob/living/carbon/human/proc/regurgitate,
 		/mob/living/carbon/human/proc/toggle_darksight
@@ -276,13 +279,15 @@
 
 	inherent_verbs = list(
 		/mob/living/proc/ventcrawl,
+		/mob/living/carbon/human/proc/toggle_powers,
+		/mob/living/carbon/human/proc/toggle_tackle,
+		/mob/living/carbon/human/proc/toggle_neurotoxin,
+		/mob/living/carbon/human/proc/toggle_acidspit,
 		/mob/living/carbon/human/proc/tackle,
+		/mob/living/carbon/human/proc/Spit,
 		/mob/living/carbon/human/proc/regurgitate,
 		/mob/living/carbon/human/proc/transfer_plasma,
 		/mob/living/carbon/human/proc/corrosive_acid,
-		/mob/living/carbon/human/proc/neurotoxin,
-		/mob/living/carbon/human/proc/acidspit,
-		/mob/living/carbon/human/proc/Spit,
 		/mob/living/carbon/human/proc/toggle_darksight
 		)
 
@@ -315,23 +320,27 @@
 
 	inherent_verbs = list(
 		/mob/living/proc/ventcrawl,
+		/mob/living/carbon/human/proc/toggle_powers,
+		/mob/living/carbon/human/proc/toggle_tackle,
+		/mob/living/carbon/human/proc/toggle_neurotoxin,
+		/mob/living/carbon/human/proc/toggle_acidspit,
+		/mob/living/carbon/human/proc/tackle,
+		/mob/living/carbon/human/proc/Spit,
+		/mob/living/carbon/human/proc/gut,
 		/mob/living/carbon/human/proc/psychic_whisper,
 		/mob/living/carbon/human/proc/regurgitate,
 		/mob/living/carbon/human/proc/lay_egg,
 		/mob/living/carbon/human/proc/plant,
 		/mob/living/carbon/human/proc/transfer_plasma,
 		/mob/living/carbon/human/proc/corrosive_acid,
-		/mob/living/carbon/human/proc/neurotoxin,
-		/mob/living/carbon/human/proc/acidspit,
 		/mob/living/carbon/human/proc/resin,
-		/mob/living/carbon/human/proc/Spit,
 		/mob/living/carbon/human/proc/toggle_darksight
 		)
 
 /datum/species/xenos/queen/handle_login_special(mob/living/carbon/human/H)
 	..()
 	// Make sure only one official queen exists at any point.
-	if(!alien_queen_exists(1,H))
+	if(!alien_queen_exists(1, H))
 		H.real_name = "alien queen ([alien_number])"
 		H.name = H.real_name
 	else
