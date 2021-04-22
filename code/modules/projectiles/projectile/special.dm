@@ -66,7 +66,7 @@
 	check_armour = "bullet"
 	blockable = FALSE
 
-	Bump(atom/A as mob|obj|turf|area)
+	Bump(atom/A, forced = FALSE)
 		if(A == firer)
 			loc = A.loc
 			return
