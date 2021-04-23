@@ -19,6 +19,7 @@
 	siemens_coefficient = 0.6
 	w_class = ITEM_SIZE_NORMAL
 	var/has_visor = 1
+	ear_protection = 1
 
 /obj/item/clothing/head/helmet/attack_self(mob/user)
 	if(has_visor)
