@@ -686,21 +686,27 @@ var/global/floorIsLava = 0
 	set desc="Restarts the world"
 	if (!usr.client.holder)
 		return
-	var/confirm = alert("Restart the game world?", "Restart", "Yes", "Cancel")
-	if(confirm == "Cancel")
-		return
-	if(confirm == "Yes")
-		to_world("<span class='danger'>Restarting world!</span> <span class='notice'>Initiated by [usr.key]!</span>")
-		log_admin("[key_name(usr)] initiated a reboot.")
 
+	var/list/options = list("Regular Restart", "Hard Restart (Skip MC Shutdown)", "Hardest Restart (Direct world.Reboot) \[Dangerous\]")
+
+	var/result = input(usr, "Select reboot method", "World Reboot", options[1]) as null|anything in options
+	if(result)
 		feedback_set_details("end_error","admin reboot - by [usr.key]")
 		feedback_add_details("admin_verb","R") //If you are copy-pasting this, ensure the 2nd parameter is unique to the new proc!
-
-		if(blackbox)
-			blackbox.save_all_data_to_sql()
-
-		sleep(50)
-		world.Reboot()
+		var/init_by = "<span class='notice'>Initiated by [usr.key].</span>"
+		switch(result)
+			if("Regular Restart")
+				to_world("<span class='danger'>Restarting world!</span> [init_by]")
+				log_admin("[key_name(usr)] initiated a reboot.")
+				world.Reboot()
+			if("Hard Restart (Skip MC Shutdown)")
+				to_world("<span class='boldannounce'>Hard world restart.</span> [init_by]")
+				log_admin("[key_name(usr)] initiated a hard reboot.")
+				world.Reboot(reboot_hardness = REBOOT_HARD)
+			if("Hardest Restart (Direct world.Reboot) \[Dangerous\]")
+				to_world("<span class='boldannounce'>Hardest world restart.</span> [init_by]")
+				log_admin("[key_name(usr)] initiated a hardest reboot.")
+				world.Reboot(reboot_hardness = REBOOT_REALLY_HARD)
 
 /datum/admins/proc/end_round()
 	set category = "Server"
@@ -976,24 +982,6 @@ var/global/floorIsLava = 0
 	config.allow_admin_rev = !(config.allow_admin_rev)
 	log_and_message_admins("toggled reviving to [config.allow_admin_rev].")
 	feedback_add_details("admin_verb","TAR") //If you are copy-pasting this, ensure the 2nd parameter is unique to the new proc!
-
-/datum/admins/proc/immreboot()
-	set category = "Server"
-	set desc="Reboots the server post haste"
-	set name="Immediate Reboot"
-	if(!usr.client.holder)	return
-	if( alert("Reboot server?",,"Yes","No") == "No")
-		return
-	to_world("<span class='danger'>Rebooting world!</span> <span class='notice'>Initiated by [usr.key]!</span>")
-	log_admin("[key_name(usr)] initiated an immediate reboot.")
-
-	feedback_set_details("end_error","immediate admin reboot - by [usr.key]")
-	feedback_add_details("admin_verb","IR") //If you are copy-pasting this, ensure the 2nd parameter is unique to the new proc!
-
-	if(blackbox)
-		blackbox.save_all_data_to_sql()
-
-	world.Reboot()
 
 /datum/admins/proc/unprison(mob/M in SSmobs.mob_list)
 	set category = "Admin"

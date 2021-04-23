@@ -80,6 +80,7 @@ CIGARETTES AND STUFF ARE IN 'SMOKABLES' FOLDER
 	var/max_fuel = 5
 	var/flame_overlay = "cheapoverlay"
 	var/spam_flag = 0
+	var/requires_hold = TRUE
 
 /obj/item/weapon/flame/lighter/Initialize()
 	. = ..()
@@ -107,13 +108,14 @@ CIGARETTES AND STUFF ARE IN 'SMOKABLES' FOLDER
 		user.visible_message(SPAN("notice", "After a few attempts, [user] manages to light the [src], they however burn their finger in the process."))
 	playsound(src.loc, "light_bic", 100, 1, -4)
 
-/obj/item/weapon/flame/lighter/proc/shutoff(mob/user)
+/obj/item/weapon/flame/lighter/proc/shutoff(mob/user, silent = FALSE)
 	lit = 0
 	update_icon()
-	if(user)
-		shutoff_effects(user)
-	else
-		visible_message(SPAN("notice", "[src] goes out."))
+	if(!silent)
+		if(user)
+			shutoff_effects(user)
+		else
+			visible_message(SPAN("notice", "[src] goes out."))
 	set_light(0)
 	STOP_PROCESSING(SSobj, src)
 
@@ -188,6 +190,10 @@ CIGARETTES AND STUFF ARE IN 'SMOKABLES' FOLDER
 	if(location)
 		location.hotspot_expose(700, 5)
 
+/obj/item/weapon/flame/lighter/dropped()
+	if(requires_hold)
+		shutoff(silent = TRUE)
+
 
 /obj/item/weapon/flame/lighter/random/Initialize()
 	if(prob(99.5))
@@ -208,6 +214,7 @@ CIGARETTES AND STUFF ARE IN 'SMOKABLES' FOLDER
 	item_state = "zippo"
 	max_fuel = 10
 	flame_overlay = "zippooverlay"
+	requires_hold = FALSE
 
 /obj/item/weapon/flame/lighter/zippo/light_effects(mob/user)
 	user.visible_message(SPAN("rose", "Without even breaking stride, [user] flips open and lights [src] in one smooth movement."))

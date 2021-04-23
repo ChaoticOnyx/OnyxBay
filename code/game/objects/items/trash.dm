@@ -186,5 +186,9 @@
 	name = "\improper MeadBy Apple Cider"
 	icon_state = "applecider"
 
+/obj/item/trash/cans/red_mule
+	name = "\improper Red MULE"
+	icon_state = "red_mule"
+
 /obj/item/trash/attack(mob/M as mob, mob/living/user as mob)
 	return
