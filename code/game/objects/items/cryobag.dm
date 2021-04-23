@@ -7,9 +7,10 @@
 	icon_state = "bodybag_folded"
 	origin_tech = list(TECH_BIO = 4)
 	var/stasis_power
+	var/bag_structure = /obj/structure/closet/body_bag/cryobag
 
 /obj/item/bodybag/cryobag/attack_self(mob/user)
-	var/obj/structure/closet/body_bag/cryobag/R = new /obj/structure/closet/body_bag/cryobag(user.loc)
+	var/obj/structure/closet/body_bag/cryobag/R = new bag_structure(user.loc)
 	if(stasis_power)
 		R.stasis_power = stasis_power
 	R.update_icon()
@@ -118,14 +119,7 @@
 /obj/item/bodybag/cryobag/syndi
 	name = "modified stasis bag"
 	icon = 'icons/obj/syndi_cryobag.dmi'
-
-/obj/item/bodybag/cryobag/syndi/attack_self(mob/user)
-	var/obj/structure/closet/body_bag/cryobag/syndi/R = new /obj/structure/closet/body_bag/cryobag/syndi(user.loc)
-	if(stasis_power)
-		R.stasis_power = stasis_power
-	R.update_icon()
-	R.add_fingerprint(user)
-	qdel(src)
+	bag_structure = /obj/structure/closet/body_bag/cryobag/syndi
 
 /obj/structure/closet/body_bag/cryobag/syndi
 	name = "modified stasis bag"
@@ -158,14 +152,7 @@
 /obj/item/bodybag/cryobag/vatgrownbody
 	name = "VAT stasis bag"
 	icon = 'icons/obj/vat_cryobag.dmi'
-
-/obj/item/bodybag/cryobag/vatgrownbody/attack_self(mob/user)
-	var/obj/structure/closet/body_bag/cryobag/vatgrownbody/R = new /obj/structure/closet/body_bag/cryobag/vatgrownbody(user.loc)
-	if(stasis_power)
-		R.stasis_power = stasis_power
-	R.update_icon()
-	R.add_fingerprint(user)
-	qdel(src)
+	bag_structure = /obj/structure/closet/body_bag/cryobag/vatgrownbody
 
 /obj/structure/closet/body_bag/cryobag/vatgrownbody
 	name = "VAT stasis bag"
