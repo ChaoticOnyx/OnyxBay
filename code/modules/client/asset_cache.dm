@@ -266,24 +266,6 @@ You can set verify to TRUE if you want send() to sleep until the client has the 
 		"v4shim.css"          = 'html/font-awesome/css/v4-shims.min.css'
 	)
 
-/datum/asset/simple/fontwhitney
-	isTrivial = TRUE
-	verify = FALSE
-	assets = list(
-		"whitney-bedium.ttf"  = 'html/font-whitney/whitney-bedium.ttf',
-		"whitney-bediumItalic.ttf"  = 'html/font-whitney/whitney-bediumItalic.ttf',
-		"whitney-bemibold.ttf"  = 'html/font-whitney/whitney-bemibold.ttf',
-		"whitney-bemibolditalic.ttf"  = 'html/font-whitney/whitney-bemibolditalic.ttf',
-		"whitney-bight.ttf"  = 'html/font-whitney/whitney-bight.ttf',
-		"whitney-bightitalic.ttf"  = 'html/font-whitney/whitney-bightitalic.ttf',
-		"whitney-black.ttf"  = 'html/font-whitney/whitney-black.ttf',
-		"whitney-blackItalic.ttf"  = 'html/font-whitney/whitney-blackItalic.ttf',
-		"whitney-bold.ttf"  = 'html/font-whitney/whitney-bold.ttf',
-		"whitney-bolditalic.ttf"  = 'html/font-whitney/whitney-bolditalic.ttf',
-		"whitney-book.ttf"  = 'html/font-whitney/whitney-book.ttf',
-		"whitney-bookItalic.ttf"  = 'html/font-whitney/whitney-bookItalic.ttf',
-	)
-
 /datum/asset/simple/tgui
 	verify = FALSE
 	assets = list(
