@@ -344,8 +344,8 @@
 //Used in preferences' SetFlavorText and human's set_flavor verb
 //Previews a string of len or less length
 proc/TextPreview(string, len=40)
-	if(length(string) <= len)
-		if(!length(string))
+	if(length_char(string) <= len)
+		if(!length_char(string))
 			return "\[...\]"
 		else
 			return string
@@ -354,7 +354,7 @@ proc/TextPreview(string, len=40)
 
 //alternative copytext() for encoded text, doesn't break html entities (&#34; and other)
 /proc/copytext_preserve_html(text, first, last)
-	return html_encode(copytext(html_decode(text), first, last))
+	return html_encode(copytext_char(html_decode(text), first, last))
 
 //For generating neat chat tag-images
 //The icon var could be local in the proc, but it's a waste of resources
