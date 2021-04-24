@@ -93,3 +93,13 @@
 	name = "parrot crate"
 	held_count = 1
 	held_type = /mob/living/simple_animal/parrot
+
+/obj/structure/largecrate/animal/vatgrownbody/male
+	name = "vat-grown body crate"
+	icon_state = "vatgrowncrate_male"
+	held_type = /obj/structure/closet/body_bag/cryobag/vatgrownbody/male
+
+/obj/structure/largecrate/animal/vatgrownbody/female
+	name = "vat-grown body crate"
+	icon_state = "vatgrowncrate_female"
+	held_type = /obj/structure/closet/body_bag/cryobag/vatgrownbody/female
