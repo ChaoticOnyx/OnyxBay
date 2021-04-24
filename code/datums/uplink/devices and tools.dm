@@ -21,6 +21,20 @@
 	item_cost = 1
 	path = /obj/item/weapon/storage/briefcase/std
 
+/datum/uplink_item/item/tools/spy_sensor
+	name = "Spying Sensor (3x)"
+	desc = "A set of sensor packages designed to collect some information for your client. \
+			Place the sensors in target area, make sure to activate each one and do not move or otherwise disturb them."
+	item_cost = 2
+	path = /obj/item/weapon/storage/box/syndie_kit/spy_sensor
+
+/datum/uplink_item/item/tools/spy_sensor/buy(obj/item/device/uplink/U)
+	. = ..()
+	if(.)
+		var/obj/item/weapon/storage/box/syndie_kit/spy_sensor/B = .
+		for(var/obj/item/device/spy_sensor/S in B)
+			S.uplink = U
+
 /datum/uplink_item/item/tools/money
 	name = "Operations Funding"
 	item_cost = 8

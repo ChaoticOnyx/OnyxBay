@@ -306,6 +306,35 @@ GLOBAL_LIST_INIT(syndicate_factions, list(
 			return TRUE
 	return FALSE
 
+/datum/antag_contract/recon
+	name = "Recon"
+	reward = 12
+	var/list/area/targets = list()
+
+/datum/antag_contract/recon/New()
+	var/list/candidates = get_filtered_areas(GLOB.is_station_but_not_space_or_shuttle_area)
+	for(var/datum/antag_contract/recon/C in GLOB.all_contracts)
+		if(C.completed)
+			continue
+		candidates -= C.targets
+	while(candidates.len && targets.len < GLOB.contract_recon_target_count)
+		var/area/target = pick(candidates)
+		if(target.area_flags & AREA_FLAG_RAD_SHIELDED)
+			candidates -= target
+			continue
+		targets += target
+	desc = "Activate 3 spying sensors in [english_list(targets, and_text = " or ")] and let them work without interruption for 10 minutes."
+	..()
+
+/datum/antag_contract/recon/can_place()
+	return ..() && targets.len
+
+/datum/antag_contract/recon/proc/check(obj/item/device/spy_sensor/sensor)
+	if(completed)
+		return
+	if(get_area(sensor) in targets)
+		complete(sensor.uplink)
+
 #undef CONTRACT_STEAL_MILITARY
 #undef CONTRACT_STEAL_OPERATION
 #undef CONTRACT_STEAL_SCIENCE
