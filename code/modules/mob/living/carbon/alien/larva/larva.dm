@@ -10,6 +10,7 @@
 	faction = "xenomorph"
 	species_language = "Xenomorph"
 	density = 0
+	max_grown = 180
 
 /mob/living/carbon/alien/larva/Initialize()
 	. = ..()

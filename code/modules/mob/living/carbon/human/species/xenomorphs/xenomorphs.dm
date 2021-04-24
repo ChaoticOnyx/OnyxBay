@@ -1,28 +1,30 @@
-proc/create_new_xenomorph(alien_caste,target)
+proc/create_new_xenomorph(alien_caste, target)
 
 	target = get_turf(target)
-	if(!target || !alien_caste) return
+	if(!target || !alien_caste)
+		return
 
 	var/mob/living/carbon/human/new_alien = new(target)
 	new_alien.set_species("Xenomorph [alien_caste]")
+	new_alien.faction = "xenomorph"
 	return new_alien
 
-/mob/living/carbon/human/xenos/xdrone/New(new_loc)
+/mob/living/carbon/human/xenos/drone/New(new_loc)
 	h_style = "Bald"
 	faction = "xenomorph"
 	..(new_loc, SPECIES_XENO_DRONE)
 
-/mob/living/carbon/human/xenos/xsentinel/New(new_loc)
+/mob/living/carbon/human/xenos/sentinel/New(new_loc)
 	h_style = "Bald"
 	faction = "xenomorph"
 	..(new_loc, SPECIES_XENO_SENTINEL)
 
-/mob/living/carbon/human/xenos/xhunter/New(new_loc)
+/mob/living/carbon/human/xenos/hunter/New(new_loc)
 	h_style = "Bald"
 	faction = "xenomorph"
 	..(new_loc, SPECIES_XENO_HUNTER)
 
-/mob/living/carbon/human/xenos/xqueen/New(new_loc)
+/mob/living/carbon/human/xenos/queen/New(new_loc)
 	h_style = "Bald"
 	faction = "xenomorph"
 	..(new_loc, SPECIES_XENO_QUEEN)

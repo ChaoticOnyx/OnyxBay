@@ -26,7 +26,7 @@
 	cold_level_3 = -1
 
 	species_flags =  SPECIES_FLAG_NO_SCAN | SPECIES_FLAG_NO_PAIN | SPECIES_FLAG_NO_SLIP | SPECIES_FLAG_NO_POISON | SPECIES_FLAG_NO_MINOR_CUT | SPECIES_FLAG_NO_EMBED
-	spawn_flags = SPECIES_IS_RESTRICTED
+	spawn_flags = SPECIES_IS_RESTRICTED | SPECIES_NO_FBP_CONSTRUCTION | SPECIES_NO_FBP_CHARGEN | SPECIES_NO_LACE
 
 	reagent_tag = IS_XENOS
 
@@ -83,9 +83,6 @@
 		BP_R_FOOT = list("path" = /obj/item/organ/external/foot/right/xeno)
 		)
 
-/datum/species/xenos/get_random_name()
-	return "alien [caste_name] ([alien_number])"
-
 /datum/species/xenos/can_understand(mob/other)
 	if(istype(other,/mob/living/carbon/alien/larva))
 		return TRUE
@@ -100,7 +97,7 @@
 		GLOB.xenomorphs.add_antagonist(H.mind, 1)
 
 	alien_number++ //Keep track of how many aliens we've had so far.
-	H.real_name = "alien [caste_name] ([rand(100,999)])"
+	H.real_name = get_random_name()
 	H.SetName(H.real_name)
 
 	..()

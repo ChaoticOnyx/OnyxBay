@@ -1246,6 +1246,8 @@ obj/item/organ/external/proc/remove_clamps()
 /obj/item/organ/external/head/proc/disfigure(type = "brute")
 	if(status & ORGAN_DISFIGURED)
 		return
+	if(!(limb_flags & ORGAN_FLAG_CAN_BREAK)) // No need to disfigure xenomorphs and dionaea, right?
+		return
 	if(owner)
 		if(type == "brute")
 			owner.visible_message("<span class='danger'>You hear a sickening cracking sound coming from \the [owner]'s [name].</span>",	\

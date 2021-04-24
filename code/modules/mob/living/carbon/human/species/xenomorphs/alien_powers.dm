@@ -123,7 +123,7 @@
 
 	if(check_alien_ability(500))
 		visible_message("<span class='alium'><B>[src] begins to twist and contort!</B></span>", "<span class='alium'>I begin to evolve!</span>")
-		src.set_species("Xenomorph Queen")
+		set_species(SPECIES_XENO_QUEEN)
 
 	return
 
@@ -165,17 +165,15 @@
 	if(!T || !src || src.stat)
 		return
 
-	if((last_spit + 1 SECONDS) > world.time) //To prevent YATATATATATAT spitting.
+	if((last_spit + 2 SECONDS) > world.time) //To prevent YATATATATATAT spitting.
 		to_chat(src, "<span class='warning'>I have not yet prepared my chemical glands. I must wait before spitting again.</span>")
 		return
 
 	if(spitting && incapacitated(INCAPACITATION_DISABLED))
 		to_chat(src, "I cannot spit in my current state.")
-		spitting = 0
 		return
 	else if(spitting)
 		if(!check_alien_ability(25, BP_ACID))
-			spitting = 0
 			return
 		last_spit = world.time
 		visible_message("<span class='warning'>[src] spits [spit_name] at \the [T]!</span>", "<span class='alium'>You spit [spit_name] at \the [T].</span>")
