@@ -12,11 +12,6 @@
 #define LIGHT_BULB_TEMPERATURE 400 //K - used value for a 60W bulb
 #define LIGHTING_POWER_FACTOR 5		//5W per luminosity * range
 
-#define LIGHTMODE_EMERGENCY "emergency_lighting"
-#define LIGHTMODE_EVACUATION "evacuation_lighting"
-#define LIGHTMODE_ALARM "alarm"
-#define LIGHTMODE_READY "ready"
-
 /obj/machinery/light_construct
 	name = "light fixture frame"
 	desc = "A light fixture under construction."
@@ -302,35 +297,16 @@
 	return 1
 
 /obj/machinery/light/proc/set_mode(new_mode)
-	if(current_mode != new_mode)
+	if(current_mode == new_mode || !lightbulb)
+		return
+
+	if(new_mode in lightbulb.lighting_modes)
 		current_mode = new_mode
-		update_icon(0)
 
-/obj/machinery/light/proc/set_emergency_lighting(state as num)
-	if(state)
-		if(LIGHTMODE_EMERGENCY in lightbulb.lighting_modes)
-			set_mode(LIGHTMODE_EMERGENCY)
-			update_power_channel(ENVIRON)
-	else
-		if(current_mode == LIGHTMODE_EMERGENCY)
-			set_mode(null)
-			update_power_channel(initial(power_channel))
+	else if(new_mode == null)
+		current_mode = null
 
-/obj/machinery/light/proc/set_evacuation_lighting(state)
-	if(state)
-		if(LIGHTMODE_EVACUATION in lightbulb.lighting_modes)
-			set_mode(LIGHTMODE_EVACUATION)
-	else
-		if(current_mode == LIGHTMODE_EVACUATION)
-			set_mode(null)
-
-/obj/machinery/light/proc/set_alert_lighting(state as num)
-	if(state)
-		if(LIGHTMODE_ALARM in lightbulb.lighting_modes)
-			set_mode(LIGHTMODE_ALARM)
-	else
-		if(current_mode == LIGHTMODE_ALARM)
-			set_mode(null)
+	update_icon(0)
 
 // attempt to set the light's on/off status
 // will not switch on if broken/burned/empty
@@ -361,6 +337,11 @@
 /obj/machinery/light/proc/insert_bulb(obj/item/weapon/light/L)
 	L.forceMove(src)
 	lightbulb = L
+
+	var/area/A = get_area(src)
+	if(A && (A.lighting_mode in lightbulb.lighting_modes))
+		current_mode = A.lighting_mode
+
 	on = powered()
 	update_icon()
 
@@ -369,6 +350,7 @@
 	lightbulb.dropInto(loc)
 	lightbulb.update_icon()
 	lightbulb = null
+	current_mode = null
 	update_icon()
 
 /obj/machinery/light/attackby(obj/item/W, mob/user)
@@ -633,8 +615,8 @@
 	brightness_color = "#fffee0"
 	lighting_modes = list(
 		LIGHTMODE_EMERGENCY = list(l_range = 4, l_power = 1, l_color = "#da0205"),
-		LIGHTMODE_EVACUATION = list(l_color = "#bf0000"),
-		LIGHTMODE_ALARM = list(l_color = "#ff3333")
+		LIGHTMODE_EVACUATION = list(l_range = 7, l_power = 6, l_color = "#bf0000"),
+		LIGHTMODE_ALARM = list(l_range = 7, l_power = 6, l_color = "#ff3333")
 		)
 	sound_on = 'sound/machines/lightson.ogg'
 	random_tone = TRUE
@@ -678,8 +660,8 @@
 	brightness_color = "#a0a080"
 	lighting_modes = list(
 		LIGHTMODE_EMERGENCY = list(l_range = 3, l_power = 1, l_color = "#da0205"),
-		LIGHTMODE_EVACUATION = list(l_color = "#bf0000"),
-		LIGHTMODE_ALARM = list(l_color = "#ff3333")
+		LIGHTMODE_EVACUATION = list(l_range = 4, l_power = 4, l_color = "#bf0000"),
+		LIGHTMODE_ALARM = list(l_range = 4, l_power = 4, l_color = "#ff3333")
 		)
 	random_tone = TRUE
 

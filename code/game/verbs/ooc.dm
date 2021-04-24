@@ -117,7 +117,7 @@
 	if(!mob)
 		return
 
-	sound_to(mob, null)
+	sound_to(mob, sound(null))
 
 /client/verb/fix_hotkeys()
 	set name = "Fix hotkeys"
