@@ -8,10 +8,10 @@
 	var/enable_roundstart_proc = TRUE // set FALSE when roundstart proc replaced with storyteller
 	var/time_to_nex_contract = 5 MINUTES
 
-/datum/fixer/proc/return_contracts()
+/datum/fixer/proc/return_contracts(datum/mind/M)
 	var/list/datum/antag_contract/avaliable_contracts = list()
 	for(var/datum/antag_contract/contract in contracts)
-		if(!contract.completed)
+		if(!contract.completed && !(M && (contract?.target_mind == M)))
 			avaliable_contracts.Add(contract)
 	return avaliable_contracts
 

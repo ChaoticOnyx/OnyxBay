@@ -190,7 +190,7 @@
 		nanoui_data["exploit_records"] = permanentData
 	else if(nanoui_menu == 3)
 		var/list/contracts = list()
-		for(var/datum/antag_contract/AC in GLOB.traitors.fixer.return_contracts())
+		for(var/datum/antag_contract/AC in GLOB.traitors.fixer.return_contracts(src?.uplink_owner))
 			contracts.Add(list(list(AC.name, AC.desc, AC.reward)))
 		nanoui_data["contracts"] = contracts
 	else if(nanoui_menu == 21)

@@ -2,6 +2,7 @@
 #define CONTRACT_STEAL_OPERATION 2
 #define CONTRACT_STEAL_SCIENCE 3
 #define CONTRACT_STEAL_UNDERPANTS 4
+GLOBAL_VAR_INIT(contract_recon_target_count, 3)
 GLOBAL_LIST_EMPTY(all_contracts)
 GLOBAL_LIST_INIT(contracts_steal_items, list(
 	"the prototype psychoscope" = 						list(CONTRACT_STEAL_SCIENCE, /obj/item/clothing/glasses/psychoscope),
@@ -41,6 +42,8 @@ GLOBAL_LIST_INIT(syndicate_factions, list(
 	var/completed = FALSE
 	var/datum/mind/completed_by
 	var/unique = FALSE
+
+	var/datum/mind/target_mind
 
 	var/reason
 	var/organization
@@ -103,10 +106,9 @@ GLOBAL_LIST_INIT(syndicate_factions, list(
 /datum/antag_contract/implant
 	name = "Implant"
 	reward = 14
-	var/datum/mind/target_mind
 
 /datum/antag_contract/implant/New()
-	reason = pick("they want to known target patterns", "they want to know status of target importance for Nanotrasen", "they want to know what the target do on [GLOB.using_map.station_name]")
+	reason = pick("they want to known the target's patterns", "they want to know the status of the target's importance for [GLOB.using_map.company_name]", "they want to know what the target does on [GLOB.using_map.station_name]")
 
 	var/list/candidates = SSticker.minds.Copy()
 
@@ -119,8 +121,9 @@ GLOBAL_LIST_INIT(syndicate_factions, list(
 		candidates -= candidate_mind
 
 		// Implant contracts are 75% less likely to target contract-based antags to reduce the amount of cheesy self-implants
-		if(GLOB.traitors.is_antagonist(target_mind) && prob(75))
-			continue
+		if(GLOB.traitors.is_antagonist(target_mind) && prob(95))
+			reason = "they want to check the target's loylity to the Syndicate"
+			reward = reward * 1.5
 
 		var/mob/living/carbon/human/H = candidate_mind.current
 		if(!istype(H) || H.stat == DEAD || !is_station_turf(get_turf(H)))
@@ -162,16 +165,16 @@ GLOBAL_LIST_INIT(syndicate_factions, list(
 			var/list/target_data = candidates[target_desc]
 			switch(target_data[1])
 				if(CONTRACT_STEAL_MILITARY)
-					reason = pick("they want this item to reverse engineer it for combat extraction mission", "they want this item to use in combat extraction missions")
+					reason = pick("they want to use this item to reverse engineer it for combat extraction mission", "they want to use this item to use in combat extraction missions")
 				if(CONTRACT_STEAL_OPERATION)
-					reason = pick("they want this item for their operation on [GLOB.using_map.company_name]'s objects", "they need to use this item for their important spy mission")
+					reason = pick("they want to use this item for their operation on [GLOB.using_map.company_name]'s objects", "they need to use this item for their important spy mission")
 				if(CONTRACT_STEAL_SCIENCE)
 					reason = pick("they want to reverse engineer this item", "they need to use this item for their important scientific work")
 				if(CONTRACT_STEAL_UNDERPANTS)
-					reason = pick("they want this item for their spy operation on [GLOB.using_map.company_name]'s stations", "they want this item to confuse loyal [GLOB.using_map.company_name]'s employees")
+					reason = pick("they want to use this item for their spy operation on [GLOB.using_map.company_name]'s stations", "they want to use this item to confuse loyal [GLOB.using_map.company_name]'s employees")
 			target_type = target_data[2]
 			name += " [target_desc]"
-			create_explain_text("steal [target_desc] and send it via STTD.")
+			create_explain_text("steal [target_desc] and send it via STD.")
 
 /datum/antag_contract/item/steal/can_place()
 	return ..() && target_type
@@ -189,13 +192,13 @@ GLOBAL_LIST_INIT(syndicate_factions, list(
 	..()
 	reason = pick("they want to research the NT employee genome")
 	count = rand(3, 6)
-	create_explain_text("send blood samples of [count] different people in separate containers via STTD.")
+	create_explain_text("send blood samples of [count] different people in separate containers via STD.")
 
 /datum/antag_contract/item/blood/check_contents(list/contents)
 	var/list/samples = list()
 	for(var/obj/item/weapon/reagent_containers/C in contents)
 		var/list/data = C.reagents?.get_data(/datum/reagent/blood)
-		if(!data || data["species"] != SPECIES_HUMAN || (data["blood_DNA"] in samples))
+		if(!data || (data["blood_DNA"] in samples))
 			continue
 		samples += data["blood_DNA"]
 		if(samples.len >= count)
@@ -206,7 +209,6 @@ GLOBAL_LIST_INIT(syndicate_factions, list(
 	name = "Assasinate"
 	reward = 12
 	var/obj/item/organ/external/head/target
-	var/datum/mind/target_mind
 
 /datum/antag_contract/item/assasinate/New()
 	..()
@@ -224,9 +226,10 @@ GLOBAL_LIST_INIT(syndicate_factions, list(
 		if(!target)
 			continue
 		name += " [target_mind.current.real_name]"
-		create_explain_text("assasinate [target_mind.current.real_name] and send [gender_datums[target_mind.current.get_gender()].his] [target.name] via STTD as a proof.")
 		if(GLOB.traitors.is_antagonist(target_mind))
+			reason = "the target has betrayed the Syndicate and must be eliminated"
 			reward *= 1.5
+		create_explain_text("assasinate [target_mind.current.real_name] and send [gender_datums[target_mind.current.get_gender()].his] [target.name] via STD as a proof.")
 		break
 
 /datum/antag_contract/item/assasinate/can_place()
@@ -250,7 +253,7 @@ GLOBAL_LIST_INIT(syndicate_factions, list(
 	reason = pick("they want to finance their agent on another object of [GLOB.using_map.company_name]'s station", "they want to update their stocks on local [GLOB.using_map.company_name]'s market")
 	sum = rand(30, 40) * 500
 	name += " [sum] cash"
-	create_explain_text("extract a sum of [sum] credits from [GLOB.using_map.company_name] economy and send it via STTD.")
+	create_explain_text("extract a sum of [sum] credits from [GLOB.using_map.company_name] economy and send it via STD.")
 
 /datum/antag_contract/item/dump/check_contents(list/contents)
 	var/received = 0
@@ -288,7 +291,7 @@ GLOBAL_LIST_INIT(syndicate_factions, list(
 			targets_name.Add(D.name)
 		candidates.Remove(D)
 	QDEL_NULL_LIST(candidates)
-	create_explain_text("send a fabricator data disk with one of the following designs via STTD:<br>[english_list(targets_name, and_text = " or ")].")
+	create_explain_text("send a fabricator data disk with one of the following designs via STD:<br>[english_list(targets_name, and_text = " or ")].")
 
 /datum/antag_contract/item/research/can_place()
 	return ..() && targets.len && counter < 3
