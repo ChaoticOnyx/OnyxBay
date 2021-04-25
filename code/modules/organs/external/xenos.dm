@@ -206,10 +206,8 @@ process_sec_hud
 			if(!larva_path) // Something went very wrong, the host cannot give birth
 				die()
 				return PROCESS_KILL
-			var/mob/living/carbon/alien/larva/larva = new larva_path(get_turf(src))
-			for(var/mob/observer/ghost/O in GLOB.ghost_mob_list)
-				if(O.client && !jobban_isbanned(O, MODE_XENOMORPH))
-					to_chat(O, SPAN("notice", "A new alien larva has been born! ([ghost_follow_link(larva, O)]) (<a href='byond://?src=\ref[larva];occupy=1'>OCCUPY</a>)"))
+			var/mob/living/carbon/alien/larva/L = new larva_path(get_turf(src))
+			L.larva_announce_to_ghosts()
 			die()
 			owner.gib()
 			QDEL_NULL(src)

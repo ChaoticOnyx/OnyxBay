@@ -53,3 +53,8 @@
 	spawn(-1)
 		if(user)
 			qdel(user) // Remove the keyless ghost if it exists.
+
+/mob/living/carbon/alien/larva/proc/larva_announce_to_ghosts()
+	for(var/mob/observer/ghost/O in GLOB.ghost_mob_list)
+		if(O.client && !jobban_isbanned(O, MODE_XENOMORPH))
+			to_chat(O, SPAN("notice", "A new alien larva has been born! ([ghost_follow_link(src, O)]) (<a href='byond://?src=\ref[src];occupy=1'>OCCUPY</a>)"))
