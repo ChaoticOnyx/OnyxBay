@@ -587,9 +587,12 @@ This function completely restores a damaged organ to perfect condition.
 	else
 		remove_all_pain()
 		..()
-/obj/item/organ/external/die()
+/obj/item/organ/external/cook_organ()
+	..()
 	for(var/obj/item/organ/internal in internal_organs)
-		internal.die()
+		internal.cook_organ()
+
+/obj/item/organ/external/die()
 	for(var/obj/item/organ/external/E in children)
 		E.take_external_damage(10, 0, used_weapon="parent organ sepsis")
 	..()

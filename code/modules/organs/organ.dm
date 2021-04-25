@@ -147,6 +147,9 @@ var/list/organ_cache = list()
 	if(food_organ)
 		update_food_from_organ()
 
+/obj/item/organ/proc/cook_organ()
+	die()
+
 /obj/item/organ/proc/is_preserved()
 	if(istype(loc,/obj/item/organ))
 		var/obj/item/organ/O = loc
@@ -311,7 +314,7 @@ var/list/organ_cache = list()
 			to_chat(user, SPAN_NOTICE("You successfully repress your cannibalistic tendencies."))
 			return
 		update_food_from_organ()
-		die()
+		cook_organ()
 
 	if(QDELETED(src))
 		return
