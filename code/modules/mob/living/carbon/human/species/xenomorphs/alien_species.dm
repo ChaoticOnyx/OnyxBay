@@ -225,6 +225,27 @@
 		/mob/living/carbon/human/proc/toggle_darksight
 		)
 
+/datum/species/xenos/drone/vile
+	name = SPECIES_XENO_DRONE_VILE
+	caste_name = "vile drone"
+	weeds_plasma_rate = 20
+	icobase = 'icons/mob/human_races/xenos/r_xenos_drone_vile.dmi'
+	deform =  'icons/mob/human_races/xenos/r_xenos_drone_vile.dmi'
+
+	inherent_verbs = list(
+		/mob/living/proc/ventcrawl,
+		/mob/living/carbon/human/proc/toggle_powers,
+		/mob/living/carbon/human/proc/toggle_acidspit,
+		/mob/living/carbon/human/proc/Spit,
+		/mob/living/carbon/human/proc/regurgitate,
+		/mob/living/carbon/human/proc/plant,
+		/mob/living/carbon/human/proc/transfer_plasma,
+		/mob/living/carbon/human/proc/evolve,
+		/mob/living/carbon/human/proc/resin,
+		/mob/living/carbon/human/proc/corrosive_acid,
+		/mob/living/carbon/human/proc/toggle_darksight
+		)
+
 /datum/species/xenos/hunter
 	name = SPECIES_XENO_HUNTER
 	weeds_plasma_rate = 5
@@ -258,6 +279,14 @@
 		/mob/living/carbon/human/proc/regurgitate,
 		/mob/living/carbon/human/proc/toggle_darksight
 		)
+
+/datum/species/xenos/hunter/feral
+	name = SPECIES_XENO_HUNTER_FERAL
+	caste_name = "feral hunter"
+	unarmed_types = list(/datum/unarmed_attack/claws/strong/xeno/feral, /datum/unarmed_attack/bite/strong/xeno)
+	icobase = 'icons/mob/human_races/xenos/r_xenos_hunter_feral.dmi'
+	deform =  'icons/mob/human_races/xenos/r_xenos_hunter_feral.dmi'
+	tail = "xenos_hunter_feral_tail"
 
 /datum/species/xenos/sentinel
 	name = SPECIES_XENO_SENTINEL
@@ -296,6 +325,15 @@
 		/mob/living/carbon/human/proc/toggle_darksight
 		)
 
+/datum/species/xenos/sentinel/primal
+	name = SPECIES_XENO_SENTINEL_PRIMAL
+	caste_name = "primal sentinel"
+	weeds_heal_rate = 20
+	burn_mod  = 1.4
+	icobase = 'icons/mob/human_races/xenos/r_xenos_sentinel_primal.dmi'
+	deform =  'icons/mob/human_races/xenos/r_xenos_sentinel_primal.dmi'
+	tail = "xenos_sentinel_primal_tail"
+
 /datum/species/xenos/queen
 
 	name = SPECIES_XENO_QUEEN
@@ -309,6 +347,7 @@
 	strength = STR_VHIGH
 	brute_mod = 0.5
 	burn_mod  = 1.25
+	icon_scale = 1.3
 
 	icobase = 'icons/mob/human_races/xenos/r_xenos_queen.dmi'
 	deform =  'icons/mob/human_races/xenos/r_xenos_queen.dmi'

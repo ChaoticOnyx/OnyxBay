@@ -837,6 +837,7 @@ var/list/name_to_material
 	sheet_singular_name = "blob"
 	sheet_plural_name = "blobs"
 	conductive = 0
+	integrity = 20
 
 /material/resin/can_open_material_door(mob/living/user)
 	var/mob/living/carbon/M = user

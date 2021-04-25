@@ -303,11 +303,14 @@
 #define SPECIES_MONKEY      "Monkey"
 
 // Ayyy IDs.
-#define SPECIES_XENO			"Xenomorph"
-#define SPECIES_XENO_DRONE		"Xenomorph Drone"
-#define SPECIES_XENO_HUNTER		"Xenomorph Hunter"
-#define SPECIES_XENO_SENTINEL	"Xenomorph Sentinel"
-#define SPECIES_XENO_QUEEN		"Xenomorph Queen"
+#define SPECIES_XENO                 "Xenomorph"
+#define SPECIES_XENO_DRONE           "Xenomorph Drone"
+#define SPECIES_XENO_HUNTER          "Xenomorph Hunter"
+#define SPECIES_XENO_SENTINEL        "Xenomorph Sentinel"
+#define SPECIES_XENO_QUEEN           "Xenomorph Queen"
+#define SPECIES_XENO_DRONE_VILE      "Xenomorph Vile Drone"
+#define SPECIES_XENO_HUNTER_FERAL    "Xenomorph Feral Hunter"
+#define SPECIES_XENO_SENTINEL_PRIMAL "Xenomorph Primal Sentinel"
 
 #define SURGERY_CLOSED 0
 #define SURGERY_OPEN 1

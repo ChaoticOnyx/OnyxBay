@@ -1782,6 +1782,7 @@
 #include "code\modules\mob\living\carbon\alien\larva\larva.dm"
 #include "code\modules\mob\living\carbon\alien\larva\life.dm"
 #include "code\modules\mob\living\carbon\alien\larva\progression.dm"
+#include "code\modules\mob\living\carbon\alien\larva\subtypes.dm"
 #include "code\modules\mob\living\carbon\brain\brain.dm"
 #include "code\modules\mob\living\carbon\brain\death.dm"
 #include "code\modules\mob\living\carbon\brain\life.dm"

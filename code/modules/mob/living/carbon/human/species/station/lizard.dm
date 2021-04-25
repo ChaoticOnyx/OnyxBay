@@ -68,7 +68,7 @@
 		)
 	breathing_sound = 'sound/voice/lizard.ogg'
 
-	//xenomorph_type = /mob/living/carbon/alien/larva/primal
+	xenomorph_type = /mob/living/carbon/alien/larva/primal
 
 //	prone_overlay_offset = list(-4, -4)
 

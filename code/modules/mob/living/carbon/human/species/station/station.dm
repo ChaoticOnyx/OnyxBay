@@ -142,7 +142,7 @@
 
 	sexybits_location = BP_GROIN
 
-	//xenomorph_type = /mob/living/carbon/alien/larva/feral
+	xenomorph_type = /mob/living/carbon/alien/larva/feral
 
 /datum/species/tajaran/equip_survival_gear(mob/living/carbon/human/H)
 	..()
@@ -224,7 +224,7 @@
 		BP_R_FOOT = list("path" = /obj/item/organ/external/foot/right)
 		)
 
-	//xenomorph_type = /mob/living/carbon/alien/larva/vile
+	xenomorph_type = /mob/living/carbon/alien/larva/vile
 
 /datum/species/diona
 	name = SPECIES_DIONA

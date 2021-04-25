@@ -24,6 +24,21 @@ proc/create_new_xenomorph(alien_caste, target)
 	faction = "xenomorph"
 	..(new_loc, SPECIES_XENO_HUNTER)
 
+/mob/living/carbon/human/xenos/vile_drone/New(new_loc)
+	h_style = "Bald"
+	faction = "xenomorph"
+	..(new_loc, SPECIES_XENO_DRONE_VILE)
+
+/mob/living/carbon/human/xenos/primal_sentinel/New(new_loc)
+	h_style = "Bald"
+	faction = "xenomorph"
+	..(new_loc, SPECIES_XENO_SENTINEL_PRIMAL)
+
+/mob/living/carbon/human/xenos/feral_hunter/New(new_loc)
+	h_style = "Bald"
+	faction = "xenomorph"
+	..(new_loc, SPECIES_XENO_HUNTER_FERAL)
+
 /mob/living/carbon/human/xenos/queen/New(new_loc)
 	h_style = "Bald"
 	faction = "xenomorph"
