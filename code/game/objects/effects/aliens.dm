@@ -181,7 +181,7 @@
 	for(var/dirn in GLOB.cardinal)
 		var/turf/T = get_step(src, dirn)
 
-		if(!istype(T) || T.density || locate(/obj/effect/alien/weeds) in T || istype(T, /turf/space))
+		if(!istype(T) || T.density || (locate(/obj/effect/alien/weeds) in T) || istype(T, /turf/space))
 			continue
 
 		var/turf_eligible = TRUE
