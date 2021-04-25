@@ -616,7 +616,8 @@
 	lighting_modes = list(
 		LIGHTMODE_EMERGENCY = list(l_range = 4, l_power = 1, l_color = "#da0205"),
 		LIGHTMODE_EVACUATION = list(l_range = 7, l_power = 6, l_color = "#bf0000"),
-		LIGHTMODE_ALARM = list(l_range = 7, l_power = 6, l_color = "#ff3333")
+		LIGHTMODE_ALARM = list(l_range = 7, l_power = 6, l_color = "#ff3333"),
+		LIGHTMODE_RADSTORM = list(l_range = 7, l_power = 6, l_color = COLOR_PAKISTAN_GREEN)
 		)
 	sound_on = 'sound/machines/lightson.ogg'
 	random_tone = TRUE
@@ -661,7 +662,8 @@
 	lighting_modes = list(
 		LIGHTMODE_EMERGENCY = list(l_range = 3, l_power = 1, l_color = "#da0205"),
 		LIGHTMODE_EVACUATION = list(l_range = 4, l_power = 4, l_color = "#bf0000"),
-		LIGHTMODE_ALARM = list(l_range = 4, l_power = 4, l_color = "#ff3333")
+		LIGHTMODE_ALARM = list(l_range = 4, l_power = 4, l_color = "#ff3333"),
+		LIGHTMODE_RADSTORM = list(l_range = 4, l_power = 4, l_color = COLOR_PAKISTAN_GREEN)
 		)
 	random_tone = TRUE
 

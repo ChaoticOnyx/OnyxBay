@@ -205,6 +205,8 @@
 	if(LIGHTMODE_EMERGENCY in enabled_lighting_modes)
 		lighting_mode = LIGHTMODE_EMERGENCY
 		power_channel = ENVIRON
+	else if(LIGHTMODE_RADSTORM in enabled_lighting_modes)
+		lighting_mode = LIGHTMODE_RADSTORM
 	else if(LIGHTMODE_EVACUATION in enabled_lighting_modes)
 		lighting_mode = LIGHTMODE_EVACUATION
 	else if(LIGHTMODE_ALARM in enabled_lighting_modes)
