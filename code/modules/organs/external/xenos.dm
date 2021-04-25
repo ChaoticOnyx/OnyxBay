@@ -198,12 +198,20 @@ process_sec_hud
 		growth++
 		BITSET(owner.hud_updateflag, XENO_HUD)
 		if(growth > growth_max)
-			var/mob/living/carbon/alien/larva/larva = new(get_turf(src))
+			var/larva_path = null
+			if(ishuman(owner))
+				var/mob/living/carbon/human/H = owner
+				if(H.species)
+					larva_path = H.species.xenomorph_type
+			if(!larva_path) // Something went very wrong, the host cannot give birth
+				die()
+				return PROCESS_KILL
+			var/mob/living/carbon/alien/larva/larva = new larva_path(get_turf(src))
 			for(var/mob/observer/ghost/O in GLOB.ghost_mob_list)
 				if(O.client && !jobban_isbanned(O, MODE_XENOMORPH))
 					to_chat(O, SPAN("notice", "A new alien larva has been born! ([ghost_follow_link(larva, O)]) (<a href='byond://?src=\ref[larva];occupy=1'>OCCUPY</a>)"))
 			die()
 			owner.gib()
-			qdel(src)
+			QDEL_NULL(src)
 			return PROCESS_KILL
 	..()

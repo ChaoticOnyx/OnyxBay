@@ -17,9 +17,8 @@
 	health = 15
 	maxHealth = 15
 	harm_intent_damage = 7.5
-	speed = 0
-	move_to_delay = 0
-	density = 0
+	speed = 4
+	move_to_delay = 4
 	min_gas = null
 	mob_size = MOB_MINISCULE
 	can_escape = 1
@@ -49,6 +48,9 @@
 			var/obj/item/organ/internal/alien_embryo/AE = H.internal_organs_by_name[BP_EMBRYO]
 			if(AE)
 				continue // No need to leap onto infected faces
+			var/obj/item/organ/internal/xenos/hivenode/HN = H.internal_organs_by_name[BP_HIVE]
+			if(HN)
+				continue // Don't facefuck our fellow xenohumans
 			var/obj/item/mask = H.get_equipped_item(slot_wear_mask)
 			if(istype(mask, /obj/item/weapon/holder/facehugger)) // No need to interrupt our allies
 				var/obj/item/weapon/holder/facehugger/F = mask
@@ -70,13 +72,14 @@
 	else
 		return ..()
 
-/mob/living/simple_animal/hostile/facehugger/proc/facefuck(mob/living/carbon/human/H, silent = FALSE) // rude
+/mob/living/simple_animal/hostile/facehugger/proc/facefuck(mob/living/carbon/human/H, silent = FALSE, forced = FALSE) // Returns FALSE if the facehugger can't latch on one's face, TRUE if it latches
 	if(stat)
 		return
 	var/obj/item/organ/external/chest/VC = H.organs_by_name["chest"]
 	var/obj/item/organ/external/head/VH = H.organs_by_name["head"]
 	if(!VC || !VH)
 		return FALSE
+
 	var/obj/item/helmet = H.get_equipped_item(slot_head)
 	if(helmet && ((helmet.item_flags & ITEM_FLAG_AIRTIGHT) || !helmet.knocked_out(H, dist = 0)))
 		H.visible_message(SPAN("notice", "\The [src] [pick("smacks", "smashes", "blops", "bonks")] against [H]'s [helmet] harmlessly!"))
@@ -85,12 +88,23 @@
 	if(mask && !mask.knocked_out(H, dist = 0))
 		H.visible_message(SPAN("warning", "\The [src] tries to rip [H]'s [mask] off, but fails."))
 		return FALSE
+
 	var/obj/item/weapon/holder/facehugger/holder = new()
-	src.forceMove(holder)
+	forceMove(holder)
 	if(!silent)
 		H.visible_message(SPAN("warning", "\The [src] latches itself onto [H]'s face!"))
 	holder.sync(src)
-	H.equip_to_slot(holder, slot_wear_mask)
+	if(!H.equip_to_slot_if_possible(holder, slot_wear_mask, FALSE, TRUE)) // So we won't simply get deleted upon trying to latch at a mob w/ no mask slot (i.e. diona)
+		holder.forceMove(H.loc)
+
+	if(BP_IS_ROBOTIC(VC))
+		return TRUE
+
+	if(!forced)
+		var/obj/item/organ/internal/xenos/hivenode/HN = H.internal_organs_by_name[BP_HIVE]
+		if(HN)
+			return TRUE // Don't infect xenohumans in case of friendly fire, still allows manual infection
+
 	if(impregnate(H))
 		holder.kill_holder()
 	return TRUE
@@ -98,7 +112,8 @@
 /mob/living/simple_animal/hostile/facehugger/proc/impregnate(mob/living/carbon/human/H)
 	if(!H)
 		return FALSE
-
+	if(!H.species?.xenomorph_type)
+		return FALSE // Oh no, they can not become a host
 	var/obj/item/organ/internal/alien_embryo/AE = H.internal_organs_by_name[BP_EMBRYO]
 	if(!AE)
 		if(is_sterile)
@@ -164,7 +179,7 @@
 		if(!do_mob(user, H, 20))
 			return
 		user.drop_from_inventory(src)
-		if(F.facefuck(H, TRUE))
+		if(F.facefuck(H, TRUE, TRUE))
 			H.visible_message(SPAN("warning", "[user] latches \the [F] onto [H]'s face!"))
 		return
 	..()

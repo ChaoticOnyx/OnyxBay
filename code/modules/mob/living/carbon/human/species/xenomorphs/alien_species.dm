@@ -83,6 +83,8 @@
 		BP_R_FOOT = list("path" = /obj/item/organ/external/foot/right/xeno)
 		)
 
+	xenomorph_type = null // No larvae spawn from xenomorphs themselves
+
 /datum/species/xenos/can_understand(mob/other)
 	if(istype(other,/mob/living/carbon/alien/larva))
 		return TRUE
@@ -176,8 +178,8 @@
 /datum/species/xenos/can_overcome_gravity(mob/living/carbon/human/H)
 	var/turf/T = H.loc
 	if(!T || istype(T, /turf/space))
-		return FALSE
-	return TRUE // Claws and stuff
+		return TRUE
+	return FALSE // Claws and stuff
 
 /datum/species/xenos/get_blood_name()
 	return "xenoblood"

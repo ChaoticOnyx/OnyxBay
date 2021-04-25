@@ -11,6 +11,7 @@
 	species_language = "Xenomorph"
 	density = 0
 	max_grown = 180
+	see_in_dark = 8
 
 /mob/living/carbon/alien/larva/Initialize()
 	. = ..()

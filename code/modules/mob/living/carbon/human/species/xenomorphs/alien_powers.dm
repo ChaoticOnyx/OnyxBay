@@ -45,11 +45,15 @@
 		return FALSE
 
 	if(needs_foundation)
+		if(!isturf(loc))
+			if(!silent)
+				to_chat(src, SPAN("danger", "I cannot do it here!"))
+			return FALSE
 		var/turf/T = get_turf(src)
 		var/has_foundation
 		if(T)
 			//TODO: Work out the actual conditions this needs.
-			if(!(istype(T,/turf/space)))
+			if(!(istype(T, /turf/space)))
 				has_foundation = 1
 		if(!has_foundation)
 			if(!silent)
@@ -96,13 +100,12 @@
 
 // Queen verbs.
 /mob/living/carbon/human/proc/lay_egg()
-
 	set name = "Lay Egg (75)"
 	set desc = "Lay an egg to produce huggers to impregnate prey with."
 	set category = "Abilities"
 
 	if(locate(/obj/structure/alien/egg) in get_turf(src))
-		to_chat(src, "There's already an egg here.")
+		to_chat(src, "<span class='alium'>There's already an egg here.</span>")
 		return
 
 	if(check_alien_ability(75, BP_EGG, TRUE))

@@ -225,21 +225,25 @@
 			return TRUE
 
 	var/turf/bump_loc = get_turf(A)
+	var/turf/previous_loc = get_turf(previous)
 	holder.forceMove(bump_loc)
 
-	if(istype(bump_loc, /turf/simulated/wall))
-		var/direction = get_dir(src.loc, starting)
-		holder.forceMove(get_step(holder, direction), direction) // Get us out of the wall
+	if(istype(bump_loc, /turf/simulated/wall) || istype(bump_loc, /turf/simulated/shuttle/wall))
+		holder.forceMove(previous_loc) // Get us out of the wall
 	else
 		for(var/obj/O in bump_loc)
 			if(!O.density || !O.anchored)
 				continue
-			var/direction = get_dir(src.loc, starting)
-			var/atom/previous_loc = get_step(src, direction) // required to properly check for window panes and windoors
 			if(istype(O, /obj/structure/window)) // Yeah those fuckers require different processing, did I mention FUCK glass panes
 				var/obj/structure/window/W = O
-				if(!W.CanPass(src, previous_loc))
+				if(get_turf(W) == starting)
+					if(!W.CheckDiagonalExit(src, get_turf(original)))
+						W.take_damage(10)
+					else
+						continue
+				else if(!W.CanDiagonalPass(src, previous_loc))
 					W.take_damage(10)
+				else
 					continue
 			else if(O.CanZASPass(previous_loc)) // If it doesn't block gases, it also doesn't prevent us from getting through
 				continue
