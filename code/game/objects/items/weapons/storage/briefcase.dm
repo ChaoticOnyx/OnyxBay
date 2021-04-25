@@ -20,7 +20,7 @@
 	/obj/item/weapon/pen,\
 	/obj/item/device/camera)
 
-// Syndicate Transfer Teleport Device
+// Syndicate Teleportation Device
 
 /obj/item/weapon/storage/briefcase/std
 	name = "unknown briefcase"

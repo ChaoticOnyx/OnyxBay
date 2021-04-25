@@ -73,7 +73,7 @@ GLOBAL_LIST_INIT(syndicate_factions, list(
 	return
 
 /datum/antag_contract/proc/complete(obj/item/device/uplink/close_uplink)
-	if(!close_uplink)
+	if(!istype(close_uplink))
 		return
 	if(completed)
 		warning("Contract completed twice: [name] [desc]")
