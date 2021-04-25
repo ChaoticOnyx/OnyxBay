@@ -79,8 +79,8 @@
 		ui.open()
 
 /obj/item/weapon/storage/briefcase/std/Topic(href, href_list)
-	if(..())
-		return TRUE
+	if(usr.incapacitated() || !Adjacent(usr) || !isobserver(usr))
+		return
 
 	if(!authentication_complete)
 		return FALSE

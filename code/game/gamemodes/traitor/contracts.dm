@@ -290,7 +290,6 @@ GLOBAL_LIST_INIT(syndicate_factions, list(
 			targets.Add(D.type)
 			targets_name.Add(D.name)
 		candidates.Remove(D)
-	QDEL_NULL_LIST(candidates)
 	create_explain_text("send a fabricator data disk with one of the following designs via STD:<br>[english_list(targets_name, and_text = " or ")].")
 
 /datum/antag_contract/item/research/can_place()
