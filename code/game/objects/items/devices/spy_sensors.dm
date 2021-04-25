@@ -36,7 +36,7 @@
 	set name = "Activate"
 	set category = "Object"
 	set src in oview(1)
-	if(usr.incapacitated() || !Adjacent(usr) || !isturf(loc))
+	if(ishuman(usr) && (usr.incapacitated() || !Adjacent(usr) || !isturf(loc)))
 		return
 	if(locate(/obj/item/device/spy_sensor) in orange(src,1))
 		to_chat(usr, SPAN_WARNING("Another sensor in proximity prevents activation."))
