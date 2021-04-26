@@ -55,8 +55,6 @@
 	. = ..()
 	var/obj/item/mecha_parts/mecha_equipment/ME = new /obj/item/mecha_parts/mecha_equipment/tool/safety_clamp
 	ME.attach(src)
-	for(var/obj/item/mecha_parts/mecha_tracking/B in src.contents) //Deletes the beacon so it can't be found easily
-		qdel (B)
 	return
 
 /obj/mecha/working/ripley/mining
