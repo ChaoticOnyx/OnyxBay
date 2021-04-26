@@ -31,7 +31,7 @@
 	var/time = ""
 	var/source_terminal = ""
 
-/datum/transaction/New(_target, _purpose, _amount, _source, _off_station)
+/datum/transaction/New(_target, _purpose, _amount, _source)
 	..()
 	date = stationdate2text()
 	time = stationtime2text()
@@ -54,7 +54,7 @@
 		R.Find(text)
 		amount = -text2num(R.match)
 
-/proc/create_account(new_owner_name = "Default user", starting_funds = 0, obj/machinery/computer/account_database/source_db)
+/proc/create_account(new_owner_name = "Default user", starting_funds = 0, obj/machinery/computer/account_database/source_db, _off_station)
 
 	//create a new account
 	var/datum/money_account/M = new()
