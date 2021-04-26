@@ -55,7 +55,7 @@ Changelog changelog = new()
 foreach (Match match in matches)
 {
     string[] parts = match.Value.Split(':');
-    
+
     if (parts.Length != 2)
     {
         throw new InvalidOperationException($"Неверный формат изменения: '{match.Value}'");
