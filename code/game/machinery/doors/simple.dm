@@ -238,7 +238,7 @@
 /obj/machinery/door/unpowered/simple/resin/New(newloc,material_name,complexity)
 	..(newloc, MATERIAL_RESIN, complexity)
 
-/obj/machinery/door/attack_hand(mob/user)
+/obj/machinery/door/unpowered/simple/resin/attack_hand(mob/user)
 	if(istype(user, /mob/living/carbon/alien/larva))
 		return ..()
 	if(ishuman(user))
