@@ -4,7 +4,7 @@ GLOBAL_DATUM_INIT(deathsquad, /datum/antagonist/deathsquad, new)
 	id = MODE_DEATHSQUAD
 	role_text = "Death Commando"
 	role_text_plural = "Death Commandos"
-	welcome_text = "You work in the service of corporate Asset Protection, answering directly to the Board of Directors."
+	welcome_text = "You are sent to blow the station sky-high to kingdom come."
 	landmark_id = "Commando"
 	flags = ANTAG_OVERRIDE_JOB | ANTAG_OVERRIDE_MOB | ANTAG_HAS_NUKE | ANTAG_HAS_LEADER | ANTAG_RANDOM_EXCEPTED
 	default_access = list(access_cent_general, access_cent_specops, access_cent_living, access_cent_storage)
@@ -49,7 +49,7 @@ GLOBAL_DATUM_INIT(deathsquad, /datum/antagonist/deathsquad, new)
 	player.equip_to_slot_or_del(new /obj/item/weapon/melee/energy/sword/one_hand(player), slot_l_hand)
 	player.implant_loyalty(player)
 
-	var/obj/item/weapon/card/id/id = create_id("Asset Protection", player)
+	var/obj/item/weapon/card/id/id = create_id("Death Squad Officer", player)
 	if(id)
 		id.access |= get_all_station_access()
 		id.icon_state = "centcom"
