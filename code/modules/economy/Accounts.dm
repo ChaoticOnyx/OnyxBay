@@ -6,6 +6,7 @@
 	var/money = 0
 	var/list/transaction_log = list()
 	var/suspended = 0
+	var/off_station = FALSE
 	var/security_level = 0	//0 - auto-identify from worn ID, require only account number
 							//1 - require manual login / account number and pin
 							//2 - require card and manual login
@@ -30,7 +31,7 @@
 	var/time = ""
 	var/source_terminal = ""
 
-/datum/transaction/New(_target, _purpose, _amount, _source)
+/datum/transaction/New(_target, _purpose, _amount, _source, _off_station)
 	..()
 	date = stationdate2text()
 	time = stationtime2text()
@@ -66,6 +67,7 @@
 	T.target_name = new_owner_name
 	T.purpose = "Account creation"
 	T.amount = starting_funds
+	M.off_station = _off_station
 	if(!source_db)
 		//set a random date, time and location some time over the past few decades
 		T.date = "[num2text(rand(1,31))] [pick("January","February","March","April","May","June","July","August","September","October","November","December")], [game_year-rand(8,18)]"
