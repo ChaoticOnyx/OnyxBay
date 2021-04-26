@@ -22,7 +22,7 @@
             "args": [
                 "${workspaceFolder}/tools/ChangelogGenerator/Program.csx"
             ],
-            "cwd": "${workspaceFolder}/tools/ChangelogGenerator/",
+            "cwd": "${workspaceFolder}",
             "stopAtEntry": false,
             "console": "internalConsole"
         }

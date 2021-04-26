@@ -1,0 +1,36 @@
+name: Make changelogs
+
+on:
+  push:
+    branches:
+    - dev
+
+jobs:
+  MakeCL:
+    runs-on: ubuntu-latest
+    if: github.repository == 'ChaoticOnyx/OnyxBay' # to prevent this running on forks
+    steps:
+      - name: Checkout
+        uses: actions/checkout@5a4ac9002d0be2fb38bd78e4b4dbde5606d7042f
+        with:
+          persist-credentials: true
+          fetch-depth: 25
+      - name: .NET SDK setup
+        uses: actions/setup-dotnet@v1
+        with:
+          dotnet-version: 5.0.x
+      - name: Install depends
+        run: dotnet tool install -g dotnet-script
+      - name: Make changelog from PR
+        run: dotnet script tools/ChangelogGenerator/Cl.csx
+      - name: Generate changelog
+        run: dotnet script tools/ChangelogGenerator/Program.csx
+      - name: Get current date
+        id: date
+        run: echo "::set-output name=date::$(date +'%Y-%m-%d')"
+      - name: Commit & Push
+        uses: igorsaux/push@6f4ce828db490493f3481d28485e11ec38f3f606
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          message: Генерация чейнджлога на ${{ steps.date.outputs.date }}
+          branch: dev

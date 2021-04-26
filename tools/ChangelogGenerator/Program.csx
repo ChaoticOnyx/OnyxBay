@@ -1,5 +1,6 @@
 #!/usr/bin/env dotnet-script
 #nullable enable
+#load "Settings.csx"
 #load "Models.csx"
 
 #r "nuget:Scriban, 3.6.0"
@@ -9,69 +10,13 @@ using System.Text.Json;
 using Scriban;
 using Console = System.Console;
 
-/// <summary>
-///     Настройки скрипта.
-/// </summary>
-private static class Settings
-{
-    /// <summary>
-    ///     Корень билда.
-    /// </summary>
-    public static readonly string WorkspaceFolder = Path.GetFullPath("../../");
-    /// <summary>
-    ///     Папка с чейнджлогами.
-    /// </summary>
-    public static readonly string ChangelogsFolder = Path.GetFullPath("./html/changelogs/", WorkspaceFolder);
-    /// <summary>
-    ///     Кэш чейнджлогов.
-    /// </summary>
-    public static readonly string ChangelogsCache = Path.GetFullPath("./html/changelogs/.all_changelog.json", WorkspaceFolder);
-    /// <summary>
-    ///     HTML файл чейнджлога.
-    /// </summary>
-    /// <returns></returns>
-    public static readonly string HtmlChangelog = Path.GetFullPath("./html/changelog.html", WorkspaceFolder);
-    /// <summary>
-    ///     Шаблон HTML чейнджлога.
-    /// </summary>
-    public static readonly string ChangelogTemplate = Path.GetFullPath("./html/templates/changelog.tmpl", WorkspaceFolder);
-    /// <summary>
-    ///     Список допустимых префиксов.
-    /// </summary>
-    public static readonly List<string> ValidPrefixes = new()
-    {
-        "bugfix",
-        "wip",
-        "tweak",
-        "soundadd",
-        "sounddel",
-        "rscadd",
-        "rscdel",
-        "imageadd",
-        "imagedel",
-        "maptweak",
-        "spellcheck",
-        "experiment",
-        "admin"
-    };
-    /// <summary>
-    ///     Настройки JSON сериализатора.
-    /// </summary>
-    public static readonly JsonSerializerOptions JsonOptions = new()
-    {
-        PropertyNamingPolicy = JsonNamingPolicy.CamelCase,
-        Encoder = System.Text.Encodings.Web.JavaScriptEncoder.UnsafeRelaxedJsonEscaping,
-        WriteIndented = true
-    };
-}
-
 // Поиск и парсинг чейнджлогов.
 var _files = (from file in Directory.GetFiles(Settings.ChangelogsFolder)
               where Path.GetFileName(file)[0] != '.' && Path.GetExtension(file) == ".json"
               select file).ToList();
 
 var _changelogs = _files.Select(f => JsonSerializer.Deserialize<Changelog>(File.ReadAllText(f), Settings.JsonOptions)
-                                     ?? throw new InvalidOperationException($"Can't parse {f}"))
+                                     ?? throw new InvalidOperationException($"Невозможно запарсить {f}"))
                         .ToList();
 
 _changelogs = Changelog.Merge(_changelogs);
@@ -85,7 +30,7 @@ if (_changelogs.Count == 0)
 
 // Парсинг кэша.
 var _cache = JsonSerializer.Deserialize<List<Changelog>>(File.ReadAllText(Settings.ChangelogsCache), Settings.JsonOptions)
-                            ?? throw new InvalidOperationException($"Can't parse {Settings.ChangelogsCache}");
+                            ?? throw new InvalidOperationException($"Невозможно запарсить {Settings.ChangelogsCache}");
 _cache.AddRange(_changelogs);
 _cache = Changelog.Merge(_cache);
 _cache = _cache.OrderByDescending(c => c.Date).ToList();
@@ -130,7 +75,7 @@ foreach (var changelog in _cache)
 
 if (_anyErrors)
 {
-    return -1;
+    return 1;
 }
 
 // Создание и рендеринг HTML шаблона
