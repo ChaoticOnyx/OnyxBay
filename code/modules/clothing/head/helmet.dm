@@ -90,7 +90,7 @@
 //Commander
 /obj/item/clothing/head/helmet/ert
 	name = "ERT commander helmet"
-	desc = "An in-atmosphere helmet worn by Nanotrasen's elite Emergency Response Teams. Has blue highlights."
+	desc = "An in-atmosphere helmet worn by NanoTrasen's elite Emergency Response Teams. Has blue highlights."
 	icon_state = "erthelmet_cmd"
 	valid_accessory_slots = null
 	item_state_slots = list(
@@ -104,19 +104,19 @@
 //Security
 /obj/item/clothing/head/helmet/ert/security
 	name = "ERT security helmet"
-	desc = "An in-atmosphere helmet worn by Nanotrasen's elite Emergency Response Teams. Has red highlights."
+	desc = "An in-atmosphere helmet worn by NanoTrasen's elite Emergency Response Teams. Has red highlights."
 	icon_state = "erthelmet_sec"
 
 //Engineer
 /obj/item/clothing/head/helmet/ert/engineer
 	name = "ERT engineering helmet"
-	desc = "An in-atmosphere helmet worn by Nanotrasen's elite Emergency Response Teams. Has orange highlights."
+	desc = "An in-atmosphere helmet worn by NanoTrasen's elite Emergency Response Teams. Has orange highlights."
 	icon_state = "erthelmet_eng"
 
 //Medical
 /obj/item/clothing/head/helmet/ert/medical
 	name = "ERT medical helmet"
-	desc = "An in-atmosphere helmet worn by Nanotrasen's elite Emergency Response Teams. Has red and white highlights."
+	desc = "An in-atmosphere helmet worn by NanoTrasen's elite Emergency Response Teams. Has red and white highlights."
 	icon_state = "erthelmet_med"
 
 //All of the armor below is mostly unused

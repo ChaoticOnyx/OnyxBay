@@ -118,19 +118,19 @@
 //Security
 /obj/item/clothing/suit/armor/vest/ert/security
 	name = "ERT security armor"
-	desc = "A set of armor worn by Nanotrasen's elite Emergency Response Teams. Has red highlights."
+	desc = "A set of armor worn by NanoTrasen's elite Emergency Response Teams. Has red highlights."
 	icon_state = "ertarmor_sec"
 
 //Engineer
 /obj/item/clothing/suit/armor/vest/ert/engineer
 	name = "ERT engineering armor"
-	desc = "A set of armor worn by Nanotrasen's elite Emergency Response Teams. Has orange highlights."
+	desc = "A set of armor worn by NanoTrasen's elite Emergency Response Teams. Has orange highlights."
 	icon_state = "ertarmor_eng"
 
 //Medical
 /obj/item/clothing/suit/armor/vest/ert/medical
 	name = "ERT medical armor"
-	desc = "A set of armor worn by Nanotrasen's elite Emergency Response Teams. Has red and white highlights."
+	desc = "A set of armor worn by NanoTrasen's elite Emergency Response Teams. Has red and white highlights."
 	icon_state = "ertarmor_med"
 
 //Modular specialty armor

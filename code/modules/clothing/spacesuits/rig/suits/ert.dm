@@ -1,6 +1,6 @@
 /obj/item/weapon/rig/ert
 	name = "ERT commander hardsuit control module"
-	desc = "A hardsuit used by Nanotrasen's elite Emergency Response Teams. Has blue highlights. Armored and space ready."
+	desc = "A hardsuit used by NanoTrasen's elite Emergency Response Teams. Has blue highlights. Armored and space ready."
 	suit_type = "ERT commander"
 	icon_state = "ert_commander_rig"
 
@@ -41,7 +41,7 @@
 
 /obj/item/weapon/rig/ert/engineer
 	name = "ERT engineering hardsuit control module"
-	desc = "A hardsuit used by Nanotrasen's elite Emergency Response Teams. Has orange highlights. Armored and space ready."
+	desc = "A hardsuit used by NanoTrasen's elite Emergency Response Teams. Has orange highlights. Armored and space ready."
 	suit_type = "ERT engineer"
 	icon_state = "ert_engineer_rig"
 	armor = list(melee = 60, bullet = 50, laser = 50,energy = 15, bomb = 30, bio = 100, rad = 100)
@@ -60,7 +60,7 @@
 
 /obj/item/weapon/rig/ert/janitor
 	name = "ERT sanitation hardsuit control module"
-	desc = "A hardsuit used by Nanotrasen's elite Emergency Response Teams. Has purple highlights. Armored and space ready."
+	desc = "A hardsuit used by NanoTrasen's elite Emergency Response Teams. Has purple highlights. Armored and space ready."
 	suit_type = "ERT sanitation"
 	icon_state = "ert_janitor_rig"
 	armor = list(melee = 60, bullet = 50, laser = 50,energy = 40, bomb = 40, bio = 100, rad = 100)
@@ -76,7 +76,7 @@
 
 /obj/item/weapon/rig/ert/medical
 	name = "ERT medical hardsuit control module"
-	desc = "A hardsuit used by Nanotrasen's elite Emergency Response Teams. Has white highlights. Armored and space ready."
+	desc = "A hardsuit used by NanoTrasen's elite Emergency Response Teams. Has white highlights. Armored and space ready."
 	suit_type = "ERT medic"
 	icon_state = "ert_medical_rig"
 
@@ -90,7 +90,7 @@
 
 /obj/item/weapon/rig/ert/security
 	name = "ERT security hardsuit control module"
-	desc = "A hardsuit used by Nanotrasen's elite Emergency Response Teams. Has red highlights. Armored and space ready."
+	desc = "A hardsuit used by NanoTrasen's elite Emergency Response Teams. Has red highlights. Armored and space ready."
 	suit_type = "ERT security"
 	icon_state = "ert_security_rig"
 
@@ -103,9 +103,9 @@
 		)
 
 /obj/item/weapon/rig/ert/assetprotection
-	name = "heavy ERT suit control module"
-	desc = "A heavy, modified version of a common Emergency Response Team hardsuit. Has blood red highlights. Armored and space ready."
-	suit_type = "ERT protection"
+	name = "Death Squad suit control module"
+	desc = "That's not red pain. That's real blood."
+	suit_type = "Death Squad"
 	icon_state = "asset_protection_rig"
 	armor = list(melee = 70, bullet = 55, laser = 55,energy = 40, bomb = 70, bio = 100, rad = 100)
 

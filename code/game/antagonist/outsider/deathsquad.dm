@@ -30,26 +30,30 @@ GLOBAL_DATUM_INIT(deathsquad, /datum/antagonist/deathsquad, new)
 	if(!..())
 		return
 
-	if (player.mind == leader)
+	if(player.mind == leader)
 		player.equip_to_slot_or_del(new /obj/item/clothing/under/rank/centcom/officer(player), slot_w_uniform)
 	else
 		player.equip_to_slot_or_del(new /obj/item/clothing/under/color/green(player), slot_w_uniform)
 
+	player.equip_to_slot_or_del(new /obj/item/clothing/suit/space/void/swat(player), slot_suit)
+	player.equip_to_slot_or_del(new /obj/item/clothing/head/helmet/space/deathsquad(player), slot_head)
 	player.equip_to_slot_or_del(new /obj/item/clothing/shoes/swat(player), slot_shoes)
-	player.equip_to_slot_or_del(new /obj/item/clothing/glasses/hud/standard/thermal(player), slot_glasses)
+	player.equip_to_slot_or_del(new /obj/item/clothing/glasses/hud/shades/thermal/sunshield(player), slot_glasses)
 	player.equip_to_slot_or_del(new /obj/item/clothing/mask/gas/swat(player), slot_wear_mask)
-	if (player.mind == leader)
+	if(player.mind == leader)
 		player.equip_to_slot_or_del(new /obj/item/weapon/pinpointer(player), slot_l_store)
 		player.equip_to_slot_or_del(new /obj/item/weapon/disk/nuclear(player), slot_r_store)
 	else
 		player.equip_to_slot_or_del(new /obj/item/weapon/plastique(player), slot_l_store)
 	player.equip_to_slot_or_del(new /obj/item/weapon/gun/projectile/revolver/mateba(player), slot_belt)
 	player.equip_to_slot_or_del(new /obj/item/weapon/gun/energy/pulse_rifle(player), slot_r_hand)
-	player.equip_to_slot_or_del(new /obj/item/weapon/rig/ert/assetprotection(player), slot_back)
+	player.equip_to_slot_or_del(new /obj/item/weapon/storage/backpack/security(player), slot_back)
+	player.equip_to_slot_or_del(new /obj/item/ammo_magazine/c50(player), slot_in_backpack)
+	player.equip_to_slot_or_del(new /obj/item/ammo_magazine/c50(player), slot_in_backpack)
 	player.equip_to_slot_or_del(new /obj/item/weapon/melee/energy/sword/one_hand(player), slot_l_hand)
 	player.implant_loyalty(player)
 
-	var/obj/item/weapon/card/id/id = create_id("Death Squad Officer", player)
+	var/obj/item/weapon/card/id/id = create_id("Death Commando", player)
 	if(id)
 		id.access |= get_all_station_access()
 		id.icon_state = "centcom"

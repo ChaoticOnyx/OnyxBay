@@ -152,17 +152,17 @@
 
 /obj/item/clothing/head/beret/centcom/officer
 	name = "ERT beret"
-	desc = "A navy blue beret adorned with the crest of Nanotrasen's elite Emergency Response Teams. For ERT officers that are more inclined towards style than safety."
+	desc = "A navy blue beret adorned with the crest of NanoTrasen's elite Emergency Response Teams. For ERT officers that are more inclined towards style than safety."
 	icon_state = "beret_corporate_navy"
 
 /obj/item/clothing/head/beret/centcom/captain
 	name = "ERT commander beret"
-	desc = "A white beret adorned with the crest of Nanotrasen's elite Emergency Response Teams. For ERT commanders that are more inclined towards style than safety."
+	desc = "A white beret adorned with the crest of NanoTrasen's elite Emergency Response Teams. For ERT commanders that are more inclined towards style than safety."
 	icon_state = "beret_corporate_white"
 
 /obj/item/clothing/head/beret/deathsquad
 	name = "Death Squad beret"
-	desc = "An armored red beret adorned with the crest of Nanotrasen's infamous Death Squad. Doesn't sacrifice style or safety."
+	desc = "An armored red beret adorned with the crest of NanoTrasen's infamous Death Squad. Doesn't sacrifice style or safety."
 	icon_state = "beret_corporate_red"
 	armor = list(melee = 55, bullet = 55, laser = 35,energy = 20, bomb = 30, bio = 30, rad = 30)
 	siemens_coefficient = 0.9
