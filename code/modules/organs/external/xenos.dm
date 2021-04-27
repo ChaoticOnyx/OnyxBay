@@ -186,11 +186,6 @@
 	var/growth = 0
 	var/growth_max = 240
 
-/obj/item/organ/internal/alien_embryo/die()
-	if(dead_icon)
-		icon_state = dead_icon
-	..()
-
 /obj/item/organ/internal/alien_embryo/Process()
 	if(owner && !(status & ORGAN_DEAD))
 		growth++

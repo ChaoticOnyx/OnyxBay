@@ -157,12 +157,8 @@
 
 	if(!T)
 		var/list/choices = list()
-		for(var/mob/M in view(1, src))
-			if(!isliving(M))
-				continue
-			if(!istype(M, /mob/living/silicon) && Adjacent(M))
-				choices += M
-		choices -= src
+		for(var/mob/living/L in oview(7, src))
+			choices += L
 		T = input(src, "Who do you wish to spit at?") as null|anything in choices
 
 	if(!T || !src || src.stat)

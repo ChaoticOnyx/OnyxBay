@@ -12,6 +12,3 @@
 	spawn()
 		log_and_message_admins("Stray facehugger spawned in \the [T.loc]")
 		new /mob/living/simple_animal/hostile/facehugger(T)
-
-/datum/event/stray_facehugger/announce()
-	return // TODO: Decide whether this even should have an announce at all

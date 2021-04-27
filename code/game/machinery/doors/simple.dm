@@ -243,8 +243,7 @@
 		return ..()
 	if(ishuman(user))
 		var/mob/living/carbon/human/H = user
-		var/obj/item/organ/internal/xenos/hivenode/HN = H.internal_organs_by_name[BP_HIVE]
-		if(HN)
+		if(H.internal_organs_by_name[BP_HIVE])
 			return ..()
 	return FALSE
 
