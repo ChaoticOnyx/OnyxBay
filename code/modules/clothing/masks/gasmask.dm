@@ -175,3 +175,17 @@
 	body_parts_covered = 0
 	species_restricted = list(SPECIES_VOX)
 	filtered_gases = list("plasma", "sleeping_agent", "oxygen")
+
+/obj/item/clothing/mask/gas/plasticbag
+	name = "plastic bag"
+	desc = "Not an eco-friendly way to strangle someone."
+	icon_state = "plasticbag_taped"
+	item_state = "plasticbag_taped"
+	flags_inv = HIDEFACE|BLOCKHAIR
+	item_flags = ITEM_FLAG_BLOCK_GAS_SMOKE_EFFECT & ITEM_FLAG_THICKMATERIAL
+	body_parts_covered = HEAD|FACE|EYES
+	tint = TINT_BLIND
+	voicechange = 1
+	filtered_gases = list("phoron", "sleeping_agent", "oxygen")
+	say_messages = list("Mmfph!", "Mmmf mrrfff!", "Mmmf mnnf!")
+	say_verbs = list("mumbles")

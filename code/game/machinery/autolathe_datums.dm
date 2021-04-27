@@ -414,6 +414,26 @@ var/const/EXTRA_COST_FACTOR = 1.25
 	path = /obj/item/weapon/light/bulb
 	category = "General"
 
+/datum/autolathe/recipe/tube
+	name = "high efficiency light tube"
+	path = /obj/item/weapon/light/tube/he
+	category = "General"
+
+/datum/autolathe/recipe/bulb
+	name = "high efficiency light bulb"
+	path = /obj/item/weapon/light/bulb/he
+	category = "General"
+
+/datum/autolathe/recipe/tube
+	name = "quartz light tube"
+	path = /obj/item/weapon/light/tube/quartz
+	category = "General"
+
+/datum/autolathe/recipe/bulb
+	name = "quartz light bulb"
+	path = /obj/item/weapon/light/bulb/quartz
+	category = "General"
+
 /datum/autolathe/recipe/ashtray_glass
 	name = "glass ashtray"
 	path = /obj/item/weapon/material/ashtray/glass

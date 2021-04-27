@@ -153,7 +153,7 @@
 			b_loss = 60
 			f_loss = 60
 
-			if(!istype(l_ear, /obj/item/clothing/ears/earmuffs) && !istype(r_ear, /obj/item/clothing/ears/earmuffs))
+			if(get_ear_protection() < 2)
 				ear_damage += 30
 				ear_deaf += 120
 			if(prob(70))
@@ -161,7 +161,7 @@
 
 		if(3.0)
 			b_loss = 30
-			if(!istype(l_ear, /obj/item/clothing/ears/earmuffs) && !istype(r_ear, /obj/item/clothing/ears/earmuffs))
+			if(get_ear_protection() < 2)
 				ear_damage += 15
 				ear_deaf += 60
 			if(prob(50))

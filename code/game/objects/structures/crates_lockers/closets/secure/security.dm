@@ -112,7 +112,8 @@
 		/obj/item/taperoll/police,
 		/obj/item/device/holowarrant,
 		/obj/item/weapon/cartridge/hos,
-		/obj/item/device/radio/headset/heads/hos
+		/obj/item/device/radio/headset/heads/hos,
+		/obj/item/device/radio/headset/tactical/hos
 	)
 
 /obj/structure/closet/secure_closet/warden
@@ -149,7 +150,8 @@
 		/obj/item/taperoll/police,
 		/obj/item/device/holowarrant,
 		/obj/item/weapon/cartridge/security,
-		/obj/item/device/radio/headset/headset_sec
+		/obj/item/device/radio/headset/headset_sec,
+		/obj/item/device/radio/headset/tactical/sec
 	)
 
 /obj/structure/closet/secure_closet/security

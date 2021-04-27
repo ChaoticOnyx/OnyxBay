@@ -59,7 +59,7 @@ SUBSYSTEM_DEF(event)
 			return
 
 	while (pos <= EVENT_LEVEL_MAJOR)
-		var/list/datum/event_container/EC = event_containers[pos]
+		var/datum/event_container/EC = event_containers[pos]
 		EC.process()
 		pos++
 		
