@@ -12,12 +12,12 @@ using Console = System.Console;
 
 // Поиск и парсинг чейнджлогов.
 var files = (from file in Directory.GetFiles(Settings.ChangelogsFolder)
-              where Path.GetFileName(file)[0] != '.' && Path.GetExtension(file) == ".json"
-              select file).ToList();
+             where Path.GetFileName(file)[0] != '.' && Path.GetExtension(file) == ".json"
+             select file).ToList();
 
 var changelogs = files.Select(f => JsonSerializer.Deserialize<Changelog>(File.ReadAllText(f), Settings.JsonOptions)
-                                     ?? throw new InvalidOperationException($"Невозможно запарсить {f}"))
-                        .ToList();
+                                   ?? throw new InvalidOperationException($"Невозможно запарсить {f}"))
+                      .ToList();
 
 changelogs = Changelog.Merge(changelogs);
 
@@ -30,7 +30,8 @@ if (changelogs.Count == 0)
 
 // Парсинг кэша.
 var cache = JsonSerializer.Deserialize<List<Changelog>>(File.ReadAllText(Settings.ChangelogsCache), Settings.JsonOptions)
-                            ?? throw new InvalidOperationException($"Невозможно запарсить {Settings.ChangelogsCache}");
+                           ?? throw new InvalidOperationException($"Невозможно запарсить {Settings.ChangelogsCache}");
+
 cache.AddRange(changelogs);
 cache = Changelog.Merge(cache);
 cache = cache.OrderByDescending(c => c.Date).ToList();

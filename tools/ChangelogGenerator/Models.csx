@@ -127,11 +127,6 @@ public static class Github
         /// </summary>
         public string Body { get; init; } = string.Empty;
         /// <summary>
-        ///     Состояние PR.
-        /// </summary>
-        [JsonConverter(typeof(JsonStringEnumConverter))]
-        public State State { get; init; } = State.Open;
-        /// <summary>
         ///     Автор PR.
         /// </summary>
         public User User { get; init; } = new();
@@ -146,14 +141,5 @@ public static class Github
         ///     Логин пользователя.
         /// </summary>
         public string Login { get; init; } = string.Empty;
-    }
-
-    /// <summary>
-    ///     Состояние PR.
-    /// </summary>
-    public enum State
-    {
-        Open = 0,
-        Closed
     }
 }
