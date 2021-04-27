@@ -56,13 +56,13 @@ foreach (Match match in matches)
 {
     string[] parts = match.Value.Split(':');
 
-    if (parts.Length != 2)
+    if (parts.Length < 2)
     {
         throw new InvalidOperationException($"Неверный формат изменения: '{match.Value}'");
     }
 
     var prefix = parts[0].Trim();
-    var message = parts[1].Trim();
+    var message = string.Join(':', parts[1..]).Trim();
     var anyErrors = false;
 
     if (!Settings.ValidPrefixes.Contains(prefix))
