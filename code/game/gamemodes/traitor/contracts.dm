@@ -311,6 +311,7 @@ GLOBAL_LIST_INIT(syndicate_factions, list(
 	var/list/area/targets = list()
 
 /datum/antag_contract/recon/New()
+	reason = pick("they want to know what objects located in this area")
 	var/list/candidates = get_filtered_areas(GLOB.is_station_but_not_space_or_shuttle_area)
 	for(var/datum/antag_contract/recon/C in GLOB.all_contracts)
 		if(C.completed)
@@ -322,7 +323,7 @@ GLOBAL_LIST_INIT(syndicate_factions, list(
 			candidates -= target
 			continue
 		targets += target
-	desc = "Activate 3 spying sensors in [english_list(targets, and_text = " or ")] and let them work without interruption for 10 minutes."
+	create_explain_text("Activate 3 spying sensors in one of [english_list(targets, and_text = " or ")] and let them work without interruption for 10 minutes.")
 	..()
 
 /datum/antag_contract/recon/can_place()

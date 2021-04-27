@@ -11,7 +11,7 @@
 /datum/contract_fixer/proc/return_contracts(datum/mind/M)
 	var/list/datum/antag_contract/avaliable_contracts = list()
 	for(var/datum/antag_contract/contract in contracts)
-		if(!contract.completed && !(M && (contract?.target_mind == M)))
+		if(!contract.completed && !(M && (contract?.target_mind == M) && prob(95))) // 5 percent to show contract to contract target
 			avaliable_contracts.Add(contract)
 	return avaliable_contracts
 
