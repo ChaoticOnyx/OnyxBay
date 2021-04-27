@@ -104,7 +104,7 @@
 
 /obj/item/weapon/rig/ert/assetprotection
 	name = "Death Squad suit control module"
-	desc = "That's not red pain. That's real blood."
+	desc = "That's not red paint. That's real blood."
 	suit_type = "Death Squad"
 	icon_state = "asset_protection_rig"
 	armor = list(melee = 70, bullet = 55, laser = 55,energy = 40, bomb = 70, bio = 100, rad = 100)
