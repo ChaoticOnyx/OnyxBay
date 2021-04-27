@@ -20,6 +20,8 @@
 	var/phasing_energy_drain = 5 KILOWATTS
 	max_equip = 4
 
+	create_tracker = 0
+
 
 /obj/mecha/combat/phazon/Initialize()
 	. = ..()

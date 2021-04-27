@@ -72,6 +72,7 @@
 	var/datum/global_iterator/pr_give_air //moves air from tank to cabin
 	var/datum/global_iterator/pr_internal_damage //processes internal damage
 
+	var/create_tracker // 1 - mecha can be tracked / 0 - mecha can not be tracked
 
 	var/wreckage
 

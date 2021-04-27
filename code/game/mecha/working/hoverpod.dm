@@ -15,6 +15,8 @@
 	var/datum/effect/effect/system/trail/ion_trail
 	var/stabilization_enabled = 1
 
+	create_tracker = 1
+
 /obj/mecha/working/hoverpod/Initialize()
 	. = ..()
 	ion_trail = new /datum/effect/effect/system/trail/ion()
@@ -82,6 +84,8 @@
 	internal_damage_threshold = 35
 	cargo_capacity = 2
 	max_equip = 2
+
+	create_tracker = 1
 
 /obj/mecha/working/hoverpod/combatpod/Initialize()
 	. = ..()

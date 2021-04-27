@@ -14,6 +14,8 @@
 	var/def_boost = 15
 	wreckage = /obj/effect/decal/mecha_wreckage/durand
 
+	create_tracker = 1
+
 /*
 /obj/mecha/combat/durand/Initialize()
 	..()
