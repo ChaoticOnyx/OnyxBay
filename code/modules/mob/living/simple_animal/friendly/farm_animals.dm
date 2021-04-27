@@ -292,3 +292,25 @@ var/global/chicken_count = 0
 			qdel(src)
 	else
 		return PROCESS_KILL
+
+//cow
+/mob/living/simple_animal/pig
+	name = "pig"
+	desc = "An oinking bacon tank."
+	icon_state = "pig"
+	icon_living = "pig"
+	icon_dead = "pig_dead"
+	speak = list("oink?","oink","OINK")
+	speak_emote = list("oinks","grunts")
+	emote_hear = list("oinks")
+	emote_see = list("shakes its head")
+	speak_chance = 1
+	turns_per_move = 5
+	see_in_dark = 6
+	meat_type = /obj/item/weapon/reagent_containers/food/snacks/meat
+	meat_amount = 6
+	response_help  = "pets"
+	response_disarm = "gently pushes aside"
+	response_harm   = "kicks"
+	attacktext = "kicked"
+	health = 75
