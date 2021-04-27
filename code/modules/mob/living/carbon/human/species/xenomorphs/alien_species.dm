@@ -178,8 +178,8 @@
 /datum/species/xenos/can_overcome_gravity(mob/living/carbon/human/H)
 	var/turf/T = H.loc
 	if(!T || istype(T, /turf/space))
-		return TRUE
-	return FALSE // Claws and stuff
+		return FALSE
+	return TRUE // Claws and stuff
 
 /datum/species/xenos/get_blood_name()
 	return "xenoblood"
