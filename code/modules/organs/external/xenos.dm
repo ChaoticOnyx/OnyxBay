@@ -73,8 +73,6 @@
 	owner.b_eyes = 153
 	..()
 
-process_sec_hud
-
 /obj/item/organ/internal/xenos/hivenode/removed(mob/living/user)
 	if(owner && ishuman(owner))
 		var/mob/living/carbon/human/H = owner
