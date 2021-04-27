@@ -14,18 +14,16 @@
 	switch(severity)
 		if(1)
 			new /obj/item/weapon/material/shard(get_turf(src))
-			if(occupied)
+			if(prob(50) && occupied)
 				new /mob/living/simple_animal/hostile/facehugger/lamarr(get_turf(src))
 				occupied = 0
 			qdel(src)
 		if(2)
-			if(prob(50))
-				health -= 15
-				healthcheck()
+			health -= rand(15, 30)
+			healthcheck()
 		if(3)
-			if(prob(50))
-				health -= 5
-				healthcheck()
+			health -= rand(5, 10)
+			healthcheck()
 
 
 /obj/structure/lamarr/bullet_act(obj/item/projectile/Proj)
@@ -66,6 +64,7 @@
 /obj/structure/lamarr/attack_hand(mob/user)
 	if(destroyed)
 		return
+	user.setClickCooldown(DEFAULT_ATTACK_COOLDOWN)
 	visible_message(SPAN("warning", "[usr] kicks the display case."))
 	health -= 2
 	healthcheck()
