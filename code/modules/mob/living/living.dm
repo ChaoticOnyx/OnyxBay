@@ -142,7 +142,7 @@
 					var/obj/machinery/disposal/D = AM
 					if(istype(D) && !(D.stat & BROKEN))
 						Weaken(6)
-						playsound(get_turf(AM), 'sound/effects/clang.ogg', 75)
+						playsound(AM, 'sound/effects/clang.ogg', 75)
 						visible_message(SPAN_WARNING("[src] falls into \the [AM]!"), SPAN_WARNING("You fall into \the [AM]!"))
 						if (client)
 							client.perspective = EYE_PERSPECTIVE

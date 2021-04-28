@@ -59,8 +59,8 @@
 	if(check_blacklist(target))
 		to_chat(user, SPAN("warning", "\The [src] is unable to scan \the [target]!"))
 		return
-	var/obj/object = target 
-	playsound(get_turf(src), 'sound/weapons/flash.ogg', 100, 1, -6)
+	var/obj/object = target
+	playsound(src, 'sound/weapons/flash.ogg', 100, 1, -6)
 	to_chat(user, SPAN("notice","Scanned \the [target]."))
 	saved_appearance = object.appearance
 	saved_dir = object.dir
@@ -70,7 +70,7 @@
 /obj/item/device/chameleonholo/proc/activate(obj/saved_item)
 	if(active || !saved_appearance)
 		return
-	playsound(get_turf(src), 'sound/effects/pop.ogg', 100, 1, -6)
+	playsound(src, 'sound/effects/pop.ogg', 100, 1, -6)
 	appearance = saved_appearance
 	dir = saved_dir
 	density = saved_density
@@ -80,7 +80,7 @@
 /obj/item/device/chameleonholo/proc/deactivate()
 	if (!active)
 		return
-	playsound(get_turf(src), 'sound/effects/pop.ogg', 100, 1, -6)
+	playsound(src, 'sound/effects/pop.ogg', 100, 1, -6)
 	appearance = initial(appearance)
 	dir = initial(dir)
 	density = initial(density)

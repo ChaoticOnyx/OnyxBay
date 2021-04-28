@@ -81,7 +81,7 @@
 		target.mind.transfer_to(transformer)
 	else
 		transformer.key = target.key
-	playsound(get_turf(target), revert_sound, 50, 1)
+	playsound(target, revert_sound, 50, 1)
 	transformer.forceMove(get_turf(target))
 	remove_target(target)
 	qdel(target)

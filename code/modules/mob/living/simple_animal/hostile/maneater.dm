@@ -56,7 +56,7 @@
 		return null // Don't just return 0 or i'll beat you with a stick
 	. = ..()
 	if(.)
-		playsound(get_turf(src), 'sound/voice/MEraaargh.ogg', 70, 1)
+		playsound(src, 'sound/voice/MEraaargh.ogg', 70, 1)
 		custom_emote(1, "roars at [.]")
 
 /mob/living/simple_animal/hostile/maneater/AttackingTarget()

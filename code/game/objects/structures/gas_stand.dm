@@ -107,7 +107,7 @@
 				if(breather.internals)
 					breather.internals.icon_state = "internal1"
 			valve_opened = TRUE
-			playsound(get_turf(src), 'sound/effects/internals.ogg', 100, 1)
+			playsound(src, 'sound/effects/internals.ogg', 100, 1)
 			update_icon()
 			START_PROCESSING(SSobj,src)
 
