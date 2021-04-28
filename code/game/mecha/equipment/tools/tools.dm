@@ -935,7 +935,7 @@
 
 //This is pretty much just for the death-ripley so that it is harmless
 /obj/item/mecha_parts/mecha_equipment/tool/safety_clamp
-	name = "\improper KILL CLAMP"
+	name = "\improper Kill Clamp"
 	icon_state = "mecha_clamp"
 	equip_cooldown = 15
 	energy_drain = 0

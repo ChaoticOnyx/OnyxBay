@@ -73,7 +73,7 @@
 
 	proc/get_mecha_info()
 		var/obj/mecha/M = src.loc
-		if(!in_mecha() || M.create_tracker==0)
+		if(!in_mecha())
 			return 0
 		var/cell_charge = M.get_charge()
 		var/answer = {"<b>Name:</b> [M.name]<br>

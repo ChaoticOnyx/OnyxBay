@@ -85,7 +85,7 @@
 	cargo_capacity = 2
 	max_equip = 2
 
-	create_tracker = 1
+	create_tracker = 0
 
 /obj/mecha/working/hoverpod/combatpod/Initialize()
 	. = ..()
