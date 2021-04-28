@@ -167,22 +167,21 @@ var/global/list/severity_to_string = list(EVENT_LEVEL_MUNDANE = "Mundane", EVENT
 		new /datum/event_meta(EVENT_LEVEL_MODERATE, "Virology Breach",                    /datum/event/prison_break/virology,      0,      list(ASSIGNMENT_MEDICAL = 20)),
 		new /datum/event_meta(EVENT_LEVEL_MODERATE, "Xenobiology Breach",                 /datum/event/prison_break/xenobiology,   0,      list(ASSIGNMENT_SCIENCE = 20)),
 		new /datum/event_meta(EVENT_LEVEL_MODERATE, "Viral Infection",                    /datum/event/virus_minor,                0,      list(ASSIGNMENT_MEDICAL = 40)),
+		new /datum/event_meta(EVENT_LEVEL_MODERATE, "Stray Facehugger",                   /datum/event/stray_facehugger,           30,     list(ASSIGNMENT_SECURITY = 10), 1),
 		new /datum/event_meta(EVENT_LEVEL_MODERATE, "Wormholes",                          /datum/event/wormholes,                  10)
 	)
 
 /datum/event_container/major
 	severity = EVENT_LEVEL_MAJOR
 	available_events = list(
-		new /datum/event_meta(EVENT_LEVEL_MAJOR, "Nothing",                     /datum/event/nothing,              1320),
-		// TODO [V] Return this back when lighting problem will be fixed
-		// new /datum/event_meta(EVENT_LEVEL_MAJOR, "Blob",                        /datum/event/blob,                 0,     list(ASSIGNMENT_ENGINEER = 40), 1),
-		new /datum/event_meta/no_overmap(EVENT_LEVEL_MAJOR, "Carp Migration",   /datum/event/carp_migration,       0,     list(ASSIGNMENT_SECURITY =  5), 1),
-		new /datum/event_meta(EVENT_LEVEL_MAJOR, "Containment Breach",          /datum/event/prison_break/station, 0,     list(ASSIGNMENT_ANY = 5)),
-		new /datum/event_meta/no_overmap(EVENT_LEVEL_MAJOR, "Meteor Wave",      /datum/event/meteor_wave,          0,     list(ASSIGNMENT_ENGINEER = 10), 1),
-		new /datum/event_meta(EVENT_LEVEL_MAJOR, "Space Vines",                 /datum/event/spacevine,            0,     list(ASSIGNMENT_ENGINEER = 25), 1),
-		new /datum/event_meta/no_overmap(EVENT_LEVEL_MAJOR, "Electrical Storm", /datum/event/electrical_storm,     0,     list(ASSIGNMENT_ENGINEER = 10, ASSIGNMENT_JANITOR = 5)),
-		new /datum/event_meta(EVENT_LEVEL_MAJOR, "Plague Infection",            /datum/event/virus_major,          0,     list(ASSIGNMENT_MEDICAL = 35)),
-		// new /datum/event_meta(EVENT_LEVEL_MAJOR, "Blob Outbreak",               /datum/event/blob,                 0,     list(ASSIGNMENT_ANY = 1), is_one_shot = TRUE)
+		new /datum/event_meta(EVENT_LEVEL_MAJOR, "Nothing",                          /datum/event/nothing,               1320),
+		new /datum/event_meta/no_overmap(EVENT_LEVEL_MAJOR, "Carp Migration",        /datum/event/carp_migration,        0,     list(ASSIGNMENT_SECURITY =  5), is_one_shot = 1),
+		new /datum/event_meta(EVENT_LEVEL_MAJOR, "Containment Breach",               /datum/event/prison_break/station,  0,     list(ASSIGNMENT_ANY = 5)),
+		new /datum/event_meta/no_overmap(EVENT_LEVEL_MAJOR, "Meteor Wave",           /datum/event/meteor_wave,           0,     list(ASSIGNMENT_ENGINEER = 10), is_one_shot = 1),
+		new /datum/event_meta(EVENT_LEVEL_MAJOR, "Space Vines",                      /datum/event/spacevine,             0,     list(ASSIGNMENT_ENGINEER = 25), is_one_shot = 1),
+		new /datum/event_meta/no_overmap(EVENT_LEVEL_MAJOR, "Electrical Storm",      /datum/event/electrical_storm,      0,     list(ASSIGNMENT_ENGINEER = 10, ASSIGNMENT_JANITOR = 5)),
+		new /datum/event_meta(EVENT_LEVEL_MAJOR, "Plague Infection",                 /datum/event/virus_major,           0,     list(ASSIGNMENT_MEDICAL = 35)),
+		new /datum/event_meta/no_overmap(EVENT_LEVEL_MAJOR, "Xenomorph Infestation", /datum/event/xenomorph_infestation, 0,     list(ASSIGNMENT_SECURITY =  3), is_one_shot = 1)
 	)
 
 

@@ -195,3 +195,68 @@
 	agony = 30
 	armor_penetration = 40
 	fire_sound = 'sound/effects/weapons/energy/fire21.ogg'
+
+/obj/item/projectile/facehugger_proj // Yes, it's dirty, and hacky, and so on. But it works and works fucking perfectly.
+	name = "alien"
+	icon = 'icons/mob/alien.dmi'
+	icon_state = "facehugger_thrown"
+	embed = 0 // nope nope nope nope nope
+	damage_type = PAIN
+	pass_flags = PASS_FLAG_TABLE
+	var/mob/living/simple_animal/hostile/facehugger/holder = null
+
+/obj/item/projectile/facehugger_proj/Bump(atom/A as mob|obj|turf|area)
+	if(A == firer)
+		loc = A.loc
+		return
+
+	if(!holder)
+		return
+
+	if(bumped)
+		return
+	bumped = TRUE
+
+	if(istype(A, /mob/living/carbon/human))
+		var/mob/living/carbon/human/H = A
+		if(H.faction != holder.faction && holder.facefuck(H))
+			holder = null
+			qdel(src)
+			return TRUE
+
+	var/turf/bump_loc = get_turf(A)
+	var/turf/previous_loc = get_turf(previous)
+	holder.forceMove(bump_loc)
+
+	if(istype(bump_loc, /turf/simulated/wall) || istype(bump_loc, /turf/simulated/shuttle/wall))
+		holder.forceMove(previous_loc) // Get us out of the wall
+	else
+		for(var/obj/O in bump_loc)
+			if(!O.density || !O.anchored)
+				continue
+			if(istype(O, /obj/structure/window)) // Yeah those fuckers require different processing, did I mention FUCK glass panes
+				var/obj/structure/window/W = O
+				if(get_turf(W) == starting)
+					if(!W.CheckDiagonalExit(src, get_turf(original)))
+						W.take_damage(10)
+					else
+						continue
+				else if(!W.CanDiagonalPass(src, previous_loc))
+					W.take_damage(10)
+				else
+					continue
+			else if(O.CanZASPass(previous_loc)) // If it doesn't block gases, it also doesn't prevent us from getting through
+				continue
+			holder.forceMove(previous_loc) // Otherwise we failed to pass
+			holder.visible_message(SPAN("danger", "\The [holder] smacks against \the [O]!"))
+			break
+
+	holder.FindTarget()
+	holder.MoveToTarget() // Calling these two to make sure the facehugger will try to keep distance upon missing
+	holder = null
+
+
+	set_density(0)
+	set_invisibility(101)
+	qdel(src)
+	return TRUE

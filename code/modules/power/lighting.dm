@@ -451,7 +451,12 @@
 	if(istype(user,/mob/living/carbon/human))
 		var/mob/living/carbon/human/H = user
 		if(H.species.can_shred(H))
-			visible_message("<span class='warning'>[user.name] smashed the light!</span>", 3, "You hear a tinkle of breaking glass")
+			if(get_status() == LIGHT_BROKEN)
+				return
+			playsound(src.loc, 'sound/weapons/slash.ogg', 100, 1)
+			user.do_attack_animation(src)
+			user.setClickCooldown(DEFAULT_QUICK_COOLDOWN)
+			visible_message(SPAN("warning", "[user.name] smashes the light!"))
 			broken()
 			return
 

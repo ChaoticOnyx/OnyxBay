@@ -198,7 +198,7 @@
 		enabled_lighting_modes |= mode
 	else if(mode in enabled_lighting_modes)
 		enabled_lighting_modes -= mode
-	
+
 	var/power_channel = LIGHT
 	var/old_lighting_mode = lighting_mode
 
@@ -298,7 +298,8 @@ var/list/mob/living/forced_ambiance_list = new
 		var/mob/living/carbon/human/H = mob
 		if(istype(H.shoes, /obj/item/clothing/shoes/magboots) && (H.shoes.item_flags & ITEM_FLAG_NOSLIP))
 			return
-
+		if(H.species?.can_overcome_gravity(H))
+			return
 		H.AdjustStunned(1)
 		H.AdjustWeakened(1)
 		to_chat(mob, SPAN_WARNING("The sudden appearance of gravity makes you fall to the floor!"))

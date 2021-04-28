@@ -231,15 +231,15 @@
 	return ..(user, "", desc_comp)
 
 /obj/item/attack_hand(mob/user as mob)
-	if (!user)
+	if(!user)
 		return
-	if (anchored)
+	if(anchored)
 		return ..()
-	if(istype(user, /mob/living/carbon/human/xenos))
-		to_chat(user, SPAN("notice", "You're not smart enough to do that!"))
-		return
-	if (hasorgans(user))
+	if(hasorgans(user))
 		var/mob/living/carbon/human/H = user
+		if(H.IsAdvancedToolUser(TRUE) == FALSE)
+			to_chat(user, SPAN("notice", "I'm not smart enough to do that!"))
+			return
 		var/obj/item/organ/external/temp = H.organs_by_name[BP_R_HAND]
 		if (user.hand)
 			temp = H.organs_by_name[BP_L_HAND]
@@ -594,9 +594,10 @@ var/list/global/slot_flags_enumeration = list(
 			throw_at(get_edge_target_turf(src,pick(GLOB.alldirs)),rand(1,dist),1)
 		if(!strong_knock)
 			H.visible_message(SPAN("warning", "[H]'s [src] flies off!"))
-			return
+			return TRUE
 	H.visible_message(SPAN("warning", "[H] falls down, unable to keep balance!"))
 	H.apply_effect(3, WEAKEN, 0)
+	return canremove ? TRUE : FALSE
 
 /obj/item/proc/get_loc_turf()
 	var/atom/L = loc

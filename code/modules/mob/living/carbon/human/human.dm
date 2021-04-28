@@ -9,14 +9,15 @@
 	var/candrop = 1
 
 	var/equipment_slowdown = -1
-	var/list/hud_list[10]
+	var/list/hud_list[11]
 	var/embedded_flag	  //To check if we've need to roll for damage on movement while an item is imbedded in us.
 	var/obj/item/weapon/rig/wearing_rig // This is very not good, but it's much much better than calling get_rig() every update_canmove() call.
 
-	var/spitting = 0 					//Spitting and spitting related things. Any human based ranged attacks, be it innate or added abilities.
-	var/spit_projectile = null			//Projectile type.
-	var/spit_name = null 				//String
-	var/last_spit = 0 					//Timestamp.
+	var/spitting = 0                     //Spitting and spitting related things. Any human based ranged attacks, be it innate or added abilities.
+	var/spit_projectile = null           //Projectile type.
+	var/spit_name = "none"               //String
+	var/last_spit = 0                    //Timestamp.
+	var/active_ability = HUMAN_POWER_NONE  //Active "special power" like spits or leap/tackle
 
 	var/list/stance_limbs
 	var/list/grasp_limbs
@@ -52,6 +53,7 @@
 	hud_list[IMPTRACK_HUD]     = new /image/hud_overlay('icons/mob/hud.dmi', src, "hudblank")
 	hud_list[SPECIALROLE_HUD]  = new /image/hud_overlay('icons/mob/hud.dmi', src, "hudblank")
 	hud_list[STATUS_HUD_OOC]   = new /image/hud_overlay('icons/mob/hud.dmi', src, "hudhealthy")
+	hud_list[XENO_HUD]         = new /image/hud_overlay('icons/mob/hud.dmi', src, "hudblank")
 
 	GLOB.human_mob_list |= src
 	..()
@@ -89,6 +91,7 @@
 		stat("Intent:", "[a_intent]")
 		stat("Move Mode:", "[m_intent]")
 		stat("Poise:", "[round(100/poise_pool*poise)]%")
+		stat("Special Ability:", "[active_ability]")
 
 		if(evacuation_controller)
 			var/eta_status = evacuation_controller.get_status_panel_eta()
@@ -99,9 +102,9 @@
 			if (!internal.air_contents)
 				qdel(internal)
 			else
-				stat("Internal Atmosphere Info", internal.name)
-				stat("Tank Pressure", internal.air_contents.return_pressure())
-				stat("Distribution Pressure", internal.distribute_pressure)
+				stat("Internal Atmosphere Info: ", internal.name)
+				stat("Tank Pressure: ", internal.air_contents.return_pressure())
+				stat("Distribution Pressure: ", internal.distribute_pressure)
 
 		var/obj/item/organ/internal/xenos/plasmavessel/P = internal_organs_by_name[BP_PLASMA]
 		if(P)
@@ -119,12 +122,12 @@
 
 		if(mind)
 			if(mind.vampire)
-				stat("Usable Blood", mind.vampire.blood_usable)
-				stat("Total Blood", mind.vampire.blood_total)
+				stat("Usable Blood: ", mind.vampire.blood_usable)
+				stat("Total Blood: ", mind.vampire.blood_total)
 
 			if(mind.changeling)
-				stat("Chemical Storage", mind.changeling.chem_charges)
-				stat("Genetic Damage Time", mind.changeling.geneticdamage)
+				stat("Chemical Storage: ", mind.changeling.chem_charges)
+				stat("Genetic Damage Time: ", mind.changeling.geneticdamage)
 
 /mob/living/carbon/human/ex_act(severity)
 	if(!blinded)
@@ -671,7 +674,7 @@
 	if(species.has_fine_manipulation && !nabbing)
 		return 1
 	if(!silent)
-		to_chat(src, "<span class='warning'>You don't have the dexterity to use that!</span>")
+		to_chat(src, FEEDBACK_YOU_LACK_DEXTERITY)
 	return 0
 
 /mob/living/carbon/human/abiotic(full_body = TRUE)
@@ -1064,7 +1067,7 @@
 		to_chat(src, "<span class='notice'>You can't look up right now.</span>")
 	return
 
-/mob/living/carbon/human/proc/set_species(new_species, default_colour)
+/mob/living/carbon/human/set_species(new_species, default_colour)
 	if(!dna)
 		if(!new_species)
 			new_species = SPECIES_HUMAN

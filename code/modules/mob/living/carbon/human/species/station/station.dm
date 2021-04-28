@@ -142,6 +142,8 @@
 
 	sexybits_location = BP_GROIN
 
+	xenomorph_type = /mob/living/carbon/alien/larva/feral
+
 /datum/species/tajaran/equip_survival_gear(mob/living/carbon/human/H)
 	..()
 	H.equip_to_slot_or_del(new /obj/item/clothing/shoes/sandal(H),slot_shoes)
@@ -221,6 +223,8 @@
 		BP_L_FOOT = list("path" = /obj/item/organ/external/foot),
 		BP_R_FOOT = list("path" = /obj/item/organ/external/foot/right)
 		)
+
+	xenomorph_type = /mob/living/carbon/alien/larva/vile
 
 /datum/species/diona
 	name = SPECIES_DIONA
@@ -309,6 +313,8 @@
 
 	reagent_tag = IS_DIONA
 	genders = list(PLURAL)
+
+	xenomorph_type = null
 
 /proc/spawn_diona_nymph(turf/target)
 	if(!istype(target))

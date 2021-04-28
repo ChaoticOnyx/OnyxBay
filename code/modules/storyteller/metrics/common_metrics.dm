@@ -98,7 +98,7 @@
 			if (MODE_MALFUNCTION)   add_danger = 24
 
 			// if ("god cultist") - /datum/antagonist/godcultist
-			// if ("xeno") - /datum/antagonist/xenos
+			// if ("xenomorph") - /datum/antagonist/xenos
 			// if ("actor") - /datum/antagonist/actor
 			// if ("deity") - /datum/antagonist/deity
 

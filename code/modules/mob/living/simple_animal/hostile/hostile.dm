@@ -4,6 +4,7 @@
 	var/mob/living/target_mob
 	var/attack_same = 0
 	var/ranged = 0
+	var/pointblank_shooter = 0
 	var/rapid = 0
 	var/projectiletype
 	var/projectilesound
@@ -101,7 +102,7 @@
 	if(target_mob in ListTargets(10))
 		var/target_distance = get_dist(src, target_mob)
 		if(ranged)
-			if(target_distance >= 2 && ranged_cooldown <= 0)
+			if(target_distance >= (pointblank_shooter ? 0 : 2) && ranged_cooldown <= 0)
 				OpenFire(target_mob)
 		if(retreat_distance != null)//If we have a retreat distance, check if we need to run from our target
 			if(target_distance <= retreat_distance)//If target's closer than our retreat distance, run
@@ -133,7 +134,7 @@
 	if(next_move >= world.time)
 		return 0
 	if(ranged)
-		if(get_dist(src, target_mob) >= 2 && ranged_cooldown <= 0)
+		if(get_dist(src, target_mob) >= (pointblank_shooter ? 0 : 2) && ranged_cooldown <= 0)
 			OpenFire(target_mob)
 	if(get_dist(src, target_mob) <= 1)	//Attacking
 		AttackingTarget()

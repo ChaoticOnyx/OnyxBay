@@ -245,3 +245,8 @@ var/global/datum/body_build/default_body_build = new
 		"slot_r_hand"    = 'icons/mob/onmob/items/righthand.dmi'
 		)
 	blood_icon           = 'icons/mob/human_races/masks/blood_monkey.dmi'
+
+/datum/body_build/xenomorph
+	name                 = "Xenomorph"
+	genders              = list(MALE, FEMALE, NEUTER)
+	blood_icon           = null // Fuck it, I ain't gonna spend all day showering if I'm an apex predator
