@@ -177,7 +177,7 @@ GLOBAL_LIST_INIT(syndicate_factions, list(
 					reason = pick("they want to use this item for their spy operation on [GLOB.using_map.company_name]'s stations", "they want to use this item to confuse loyal [GLOB.using_map.company_name]'s employees")
 			target_type = target_data[2]
 			name += " [target_desc]"
-			create_explain_text("steal [target_desc] and send it via STD.")
+			create_explain_text("steal [target_desc] and send it via STD (find out in Devices and Tools).")
 
 /datum/antag_contract/item/steal/can_place()
 	return ..() && target_type
@@ -195,7 +195,7 @@ GLOBAL_LIST_INIT(syndicate_factions, list(
 	..()
 	reason = pick("they want to research the NT employee genome")
 	count = rand(3, 6)
-	create_explain_text("send blood samples of [count] different people in separate containers via STD.")
+	create_explain_text("send blood samples of [count] different people in separate containers via STD (find out in Devices and Tools).")
 
 /datum/antag_contract/item/blood/check_contents(list/contents)
 	var/list/samples = list()
@@ -235,7 +235,7 @@ GLOBAL_LIST_INIT(syndicate_factions, list(
 			else
 				continue
 		name = "[name] [target_mind.current.real_name]"
-		create_explain_text("assasinate [target_mind.current.real_name] and send [gender_datums[target_mind.current.get_gender()].his] [target.name] via STD as a proof.")
+		create_explain_text("assasinate [target_mind.current.real_name] and send [gender_datums[target_mind.current.get_gender()].his] [target.name] via STD (find out in Devices and Tools) as a proof.")
 		break
 	if(!desc)
 		remove()
@@ -261,7 +261,7 @@ GLOBAL_LIST_INIT(syndicate_factions, list(
 	reason = pick("they want to finance their agent on another object of [GLOB.using_map.company_name]'s station", "they want to update their stocks on local [GLOB.using_map.company_name]'s market")
 	sum = rand(30, 40) * 500
 	name += " [sum] cash"
-	create_explain_text("extract a sum of [sum] credits from [GLOB.using_map.company_name] economy and send it via STD.")
+	create_explain_text("extract a sum of [sum] credits from [GLOB.using_map.company_name] economy and send it via STD (find out in Devices and Tools).")
 
 /datum/antag_contract/item/dump/check_contents(list/contents)
 	var/received = 0
@@ -298,7 +298,7 @@ GLOBAL_LIST_INIT(syndicate_factions, list(
 			targets.Add(D.type)
 			targets_name.Add(D.name)
 		candidates.Remove(D)
-	create_explain_text("send a fabricator data disk with one of the following designs via STD:<br>[english_list(targets_name, and_text = " or ")].")
+	create_explain_text("send a fabricator data disk with one of the following designs via STD (find out in Devices and Tools):<br>[english_list(targets_name, and_text = " or ")].")
 
 /datum/antag_contract/item/research/can_place()
 	return ..() && targets.len && counter < 3
