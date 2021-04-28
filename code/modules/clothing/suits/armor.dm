@@ -108,8 +108,8 @@
 //Non-hardsuit ERT armor.
 //Commander
 /obj/item/clothing/suit/armor/vest/ert
-	name = "asset protection command armor"
-	desc = "A set of armor worn by many corporate and private asset protection forces. Has blue highlights."
+	name = "ERT commander armor"
+	desc = "A set of armor worn by Nanotrasen's elite Emergency Response Teams. Has blue highlights."
 	icon_state = "ertarmor_cmd"
 	item_state = "armor"
 	body_parts_covered = UPPER_TORSO|LOWER_TORSO|ARMS
@@ -117,20 +117,20 @@
 
 //Security
 /obj/item/clothing/suit/armor/vest/ert/security
-	name = "asset protection security armor"
-	desc = "A set of armor worn by many corporate and private asset protection forces. Has red highlights."
+	name = "ERT security armor"
+	desc = "A set of armor worn by NanoTrasen's elite Emergency Response Teams. Has red highlights."
 	icon_state = "ertarmor_sec"
 
 //Engineer
 /obj/item/clothing/suit/armor/vest/ert/engineer
-	name = "asset protection engineering armor"
-	desc = "A set of armor worn by many corporate and private asset protection forces. Has orange highlights."
+	name = "ERT engineering armor"
+	desc = "A set of armor worn by NanoTrasen's elite Emergency Response Teams. Has orange highlights."
 	icon_state = "ertarmor_eng"
 
 //Medical
 /obj/item/clothing/suit/armor/vest/ert/medical
-	name = "asset protection medical armor"
-	desc = "A set of armor worn by many corporate and private asset protection forces. Has red and white highlights."
+	name = "ERT medical armor"
+	desc = "A set of armor worn by NanoTrasen's elite Emergency Response Teams. Has red and white highlights."
 	icon_state = "ertarmor_med"
 
 //Modular specialty armor

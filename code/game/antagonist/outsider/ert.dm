@@ -57,7 +57,7 @@ GLOBAL_DATUM_INIT(ert, /datum/antagonist/ert, new)
 /datum/antagonist/ert/greet(datum/mind/player)
 	if(!..())
 		return
-	to_chat(player.current, "The Emergency Response Team works for Asset Protection; your job is to protect [GLOB.using_map.company_name]'s ass-ets. There is a code red alert on [station_name()], you are tasked to go and fix the problem.")
+	to_chat(player.current, "As a member of one of Nanotrasen's elite Emergency Response Teams, you are tasked with being deployed to [station_name()] in distress and attempt to bring it back to a functional status. Theres no telling what you might encounter in your mission. Good luck. You're gonna need it.")
 	to_chat(player.current, "You should first gear up and discuss a plan with your team. More members may be joining, don't move out before you're ready.")
 
 /datum/antagonist/ert/equip(mob/living/carbon/human/player)
