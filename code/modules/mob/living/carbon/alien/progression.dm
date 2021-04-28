@@ -17,11 +17,11 @@
 		return
 
 	if(handcuffed)
-		to_chat(src, "<span class='warning'>You cannot evolve when you are cuffed.</span>")
+		to_chat(src, SPAN("warning", "You cannot evolve when you are cuffed."))
 		return
 
 	if(amount_grown < max_grown)
-		to_chat(src, "<span class='warning'>You are not fully grown.</span>")
+		to_chat(src, SPAN("warning", "You are not fully grown."))
 		return
 
 	// confirm_evolution() handles choices and other specific requirements.
@@ -29,7 +29,7 @@
 	if(!new_species || !adult_form )
 		return
 
-	var/mob/living/carbon/adult = new adult_form(get_turf(src))
+	var/mob/living/carbon/adult = new adult_form(src.loc)
 	adult.set_species(new_species)
 	adult.faction = faction
 	show_evolution_blurb()
