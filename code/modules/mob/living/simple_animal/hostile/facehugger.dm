@@ -50,7 +50,7 @@
 			if(H.faction == faction) // No need to attack our fellow queens of blades
 				continue
 			var/obj/item/organ/internal/alien_embryo/AE = H.internal_organs_by_name[BP_EMBRYO]
-			if(AE)
+			if(AE && !(AE.status & ORGAN_DEAD))
 				continue // No need to leap onto infected faces
 			var/obj/item/organ/internal/xenos/hivenode/HN = H.internal_organs_by_name[BP_HIVE]
 			if(HN)
