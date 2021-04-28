@@ -121,18 +121,19 @@ GLOBAL_LIST_INIT(syndicate_factions, list(
 		candidates -= candidate_mind
 
 		// Implant contracts are 75% less likely to target contract-based antags to reduce the amount of cheesy self-implants
-		if(GLOB.traitors.is_antagonist(target_mind) && prob(25))
-			reason = "they want to check the target's loylity to the Syndicate"
-			reward = reward * 1.5
-		else
-			continue
+		if(GLOB.traitors.is_antagonist(target_mind))
+			if(prob(25))
+				reason = "they want to check the target's loylity to the Syndicate"
+				reward = reward * 1.5
+			else
+				continue
 
 		var/mob/living/carbon/human/H = candidate_mind.current
 		if(!istype(H) || H.stat == DEAD || !is_station_turf(get_turf(H)))
 			continue
 
 		target_mind = candidate_mind
-		name += " [H.real_name]"
+		name = "[name] [H.real_name]"
 		create_explain_text("implant [H.real_name] with a spying implant.")
 		break
 	..()
@@ -227,15 +228,17 @@ GLOBAL_LIST_INIT(syndicate_factions, list(
 		target = H.organs_by_name[BP_HEAD]
 		if(!target)
 			continue
-		name += " [target_mind.current.real_name]"
 		if(GLOB.traitors.is_antagonist(target_mind))
 			if(prob(25))
 				reason = "the target has betrayed the Syndicate and must be eliminated"
 				reward = reward * 1.5
 			else
 				continue
+		name = "[name] [target_mind.current.real_name]"
 		create_explain_text("assasinate [target_mind.current.real_name] and send [gender_datums[target_mind.current.get_gender()].his] [target.name] via STD as a proof.")
 		break
+	if(!desc)
+		remove()
 
 /datum/antag_contract/item/assasinate/can_place()
 	return ..() && target

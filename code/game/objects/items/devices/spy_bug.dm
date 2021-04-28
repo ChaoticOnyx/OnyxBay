@@ -113,8 +113,7 @@
 	deltimer(timer)
 
 /obj/item/device/spy_monitor/proc/start()
-	if(!timer && length(active_recon_areas_list))
-		timer = addtimer(CALLBACK(src, .proc/finish), 1 MINUTES, TIMER_STOPPABLE)
+	timer = addtimer(CALLBACK(src, .proc/finish), 1 MINUTES, TIMER_STOPPABLE)
 
 /obj/item/device/spy_monitor/proc/finish()
 	if(length(active_recon_areas_list) && !finish)
