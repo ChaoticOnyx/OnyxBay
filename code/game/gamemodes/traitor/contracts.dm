@@ -228,11 +228,12 @@ GLOBAL_LIST_INIT(syndicate_factions, list(
 		if(!target)
 			continue
 		name += " [target_mind.current.real_name]"
-		if(GLOB.traitors.is_antagonist(target_mind) && prob(25))
-			reason = "the target has betrayed the Syndicate and must be eliminated"
-			reward = reward * 1.5
-		else
-			continue
+		if(GLOB.traitors.is_antagonist(target_mind))
+			if(prob(25))
+				reason = "the target has betrayed the Syndicate and must be eliminated"
+				reward = reward * 1.5
+			else
+				continue
 		create_explain_text("assasinate [target_mind.current.real_name] and send [gender_datums[target_mind.current.get_gender()].his] [target.name] via STD as a proof.")
 		break
 
