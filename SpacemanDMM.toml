@@ -3,3 +3,7 @@ dreamchecker = true
 
 [debugger]
 engine = "auxtools"
+
+[diagnostics]
+field_access_static_type = "off"
+proc_call_static_type = "off"
