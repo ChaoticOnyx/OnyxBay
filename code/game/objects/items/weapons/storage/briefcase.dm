@@ -31,7 +31,7 @@
 	var/del_on_send = TRUE
 
 /obj/item/weapon/storage/briefcase/std/attackby(obj/item/I, mob/user)
-	if(!authentication_complete && I.hidden_uplink)
+	if(I.hidden_uplink)
 		src.visible_message("\The [src] blinks green!")
 		uplink = I.hidden_uplink
 		authentication_complete = TRUE
@@ -93,8 +93,11 @@
 			if(C.completed)
 				continue
 			C.on_container(src)
-		for(var/datum/D in contents)
-			qdel(D)
+		for(var/obj/item/I in contents)
+			if(I.hidden_uplink == uplink)
+				src.remove_from_storage(I, get_turf(src))
+				continue
+			qdel(I)
 		contents = list()
 		if(del_on_send)
 			if(ishuman(loc))

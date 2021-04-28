@@ -21,6 +21,13 @@
 	item_cost = 1
 	path = /obj/item/weapon/storage/briefcase/std
 
+/datum/uplink_item/item/tools/std/buy(obj/item/device/uplink/U)
+	. = ..()
+	if(.)
+		var/obj/item/weapon/storage/briefcase/std/STD = .
+		if(istype(STD))
+			STD.uplink = U
+
 /datum/uplink_item/item/tools/money
 	name = "Operations Funding"
 	item_cost = 8
