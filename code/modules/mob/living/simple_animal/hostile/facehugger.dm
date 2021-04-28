@@ -26,6 +26,10 @@
 	melee_damage_lower = 5
 	melee_damage_upper = 7.5
 
+	min_gas = null
+	max_gas = null
+	minbodytemp = 0
+
 	ranged = 1
 	pointblank_shooter = 1
 	projectiletype = /obj/item/projectile/facehugger_proj
@@ -81,7 +85,7 @@
 		return FALSE
 
 	var/obj/item/helmet = H.get_equipped_item(slot_head)
-	if(helmet && ((helmet.item_flags & ITEM_FLAG_AIRTIGHT) || !helmet.knocked_out(H, dist = 0)))
+	if(helmet && (((helmet.item_flags & ITEM_FLAG_AIRTIGHT) && !forced) || !helmet.knocked_out(H, dist = 0)))
 		H.visible_message(SPAN("notice", "\The [src] [pick("smacks", "smashes", "blops", "bonks")] against [H]'s [helmet] harmlessly!"))
 		return FALSE
 	var/obj/item/mask = H.get_equipped_item(slot_wear_mask)
@@ -100,10 +104,8 @@
 	if(BP_IS_ROBOTIC(VC))
 		return TRUE
 
-	if(!forced)
-		var/obj/item/organ/internal/xenos/hivenode/HN = H.internal_organs_by_name[BP_HIVE]
-		if(HN)
-			return TRUE // Don't infect xenohumans in case of friendly fire, still allows manual infection
+	if(!forced && H.internal_organs_by_name[BP_HIVE])
+		return TRUE // Don't infect xenohumans in case of friendly fire, still allows manual infection
 
 	if(impregnate(H))
 		holder.kill_holder()
@@ -114,14 +116,21 @@
 		return FALSE
 	if(!H.species?.xenomorph_type)
 		return FALSE // Oh no, they can not become a host
+	if(is_sterile)
+		return FALSE
+
+	var/continue_impregnation = FALSE
 	var/obj/item/organ/internal/alien_embryo/AE = H.internal_organs_by_name[BP_EMBRYO]
 	if(!AE)
-		if(is_sterile)
-			return FALSE
+		continue_impregnation = TRUE
+	else if(AE.status & ORGAN_DEAD)
+		qdel(AE)
+		continue_impregnation = TRUE
+
+	if(continue_impregnation)
 		AE = new /obj/item/organ/internal/alien_embryo(H)
 		H.internal_organs_by_name[BP_EMBRYO] = AE
 		is_sterile = TRUE
-		to_chat(H, "You feel something going down your throat!")
 		H.Paralyse(20)
 		return TRUE
 	to_chat(H, "You feel something going down your throat and rapidly ejecting a few moments later.")
