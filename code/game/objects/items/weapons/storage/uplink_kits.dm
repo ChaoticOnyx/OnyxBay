@@ -27,15 +27,6 @@
 	name = "box (U)"
 	startswith = list(/obj/item/weapon/implanter/uplink)
 
-/obj/item/weapon/storage/box/syndie_kit/spy_sensor
-	name = "sensor kit"
-
-/obj/item/weapon/storage/box/syndie_kit/spy_sensor/Initialize()
-	. = ..()
-	new /obj/item/device/spy_sensor(src)
-	new /obj/item/device/spy_sensor(src)
-	new /obj/item/device/spy_sensor(src)
-
 /obj/item/weapon/storage/box/syndie_kit/imp_compress
 	name = "box (C)"
 	startswith = list(/obj/item/weapon/implanter/compressed)

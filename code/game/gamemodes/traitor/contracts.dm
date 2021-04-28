@@ -51,7 +51,7 @@ GLOBAL_LIST_INIT(syndicate_factions, list(
 /datum/antag_contract/proc/create_explain_text(target_and_task)
 	organization = pick(GLOB.syndicate_factions)
 	desc = "My client is [organization], [reason]. They have information the target is located on [GLOB.using_map.station_name]. \
-	Your mission [prob(25) ? ", should you choose to accept it, is to" : "is to"] [target_and_task] The reward for closing this contract is [reward] TC"
+	Your mission[prob(25) ? ", should you choose to accept it, is to" : " is to"] [target_and_task] The reward for closing this contract is [reward] TC"
 
 /datum/antag_contract/proc/can_place()
 	if(unique)
@@ -121,9 +121,11 @@ GLOBAL_LIST_INIT(syndicate_factions, list(
 		candidates -= candidate_mind
 
 		// Implant contracts are 75% less likely to target contract-based antags to reduce the amount of cheesy self-implants
-		if(GLOB.traitors.is_antagonist(target_mind) && prob(95))
+		if(GLOB.traitors.is_antagonist(target_mind) && prob(25))
 			reason = "they want to check the target's loylity to the Syndicate"
 			reward = reward * 1.5
+		else
+			continue
 
 		var/mob/living/carbon/human/H = candidate_mind.current
 		if(!istype(H) || H.stat == DEAD || !is_station_turf(get_turf(H)))
@@ -218,17 +220,19 @@ GLOBAL_LIST_INIT(syndicate_factions, list(
 		candidates -= C.target_mind
 	while(candidates.len)
 		target_mind = pick(candidates)
+		candidates -= target_mind
 		var/mob/living/carbon/human/H = target_mind.current
 		if(!istype(H) || H.stat == DEAD || !is_station_turf(get_turf(H)))
-			candidates -= target_mind
 			continue
 		target = H.organs_by_name[BP_HEAD]
 		if(!target)
 			continue
 		name += " [target_mind.current.real_name]"
-		if(GLOB.traitors.is_antagonist(target_mind))
+		if(GLOB.traitors.is_antagonist(target_mind) && prob(25))
 			reason = "the target has betrayed the Syndicate and must be eliminated"
-			reward *= 1.5
+			reward = reward * 1.5
+		else
+			continue
 		create_explain_text("assasinate [target_mind.current.real_name] and send [gender_datums[target_mind.current.get_gender()].his] [target.name] via STD as a proof.")
 		break
 
@@ -323,16 +327,16 @@ GLOBAL_LIST_INIT(syndicate_factions, list(
 			candidates -= target
 			continue
 		targets += target
-	create_explain_text("Activate 3 spying sensors in one of [english_list(targets, and_text = " or ")] and let them work without interruption for 10 minutes.")
+	create_explain_text("activate 3 spy bug by spy monitor (Bug kit) in one of the following locations: [english_list(targets, and_text = " or ")] and let them work without interruption for 10 minutes.")
 	..()
 
 /datum/antag_contract/recon/can_place()
 	return ..() && targets.len
 
-/datum/antag_contract/recon/proc/check(obj/item/device/spy_sensor/sensor)
+/datum/antag_contract/recon/proc/check(obj/item/device/spy_monitor/sensor)
 	if(completed)
 		return
-	if(get_area(sensor) in targets)
+	if(sensor.spy_area in targets)
 		complete(sensor.uplink)
 
 #undef CONTRACT_STEAL_MILITARY

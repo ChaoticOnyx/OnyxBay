@@ -19,6 +19,14 @@
 	item_cost = 8
 	path = /obj/item/weapon/storage/box/syndie_kit/spy
 
+/datum/uplink_item/item/stealth_items/spy/buy(obj/item/device/uplink/U)
+	. = ..()
+	if(.)
+		var/obj/item/weapon/storage/box/syndie_kit/spy/B = .
+		var/obj/item/device/spy_monitor/SM = locate() in B
+		if(SM)
+			SM.uplink = U
+
 /datum/uplink_item/item/stealth_items/id
 	name = "Agent ID card"
 	item_cost = 12

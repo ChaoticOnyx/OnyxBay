@@ -16,24 +16,10 @@
 	path = /obj/item/weapon/tape_roll
 
 /datum/uplink_item/item/tools/std
-	name = "Syndicate Teleportation Device"
-	desc = "Litteraly a worm in bed... I mean wormhole for in space teleportation, yeah, space teleportation, just try to put your uplink device in it for authorization."
+	name = "Syndicate Teleportation Device (STD)"
+	desc = "It's contain an unstable wormhole, that used to teleport all items inside to our base, on complete of teleportation sequances the device self destroyed to safety reasons, just try to put your uplink device in it for authorization, remove uplink, put items inside and follow instructions that writed down on device."
 	item_cost = 1
 	path = /obj/item/weapon/storage/briefcase/std
-
-/datum/uplink_item/item/tools/spy_sensor
-	name = "Spying Sensor (3x)"
-	desc = "A set of sensor packages designed to collect some information for your client. \
-			Place the sensors in target area, make sure to activate each one and do not move or otherwise disturb them."
-	item_cost = 2
-	path = /obj/item/weapon/storage/box/syndie_kit/spy_sensor
-
-/datum/uplink_item/item/tools/spy_sensor/buy(obj/item/device/uplink/U)
-	. = ..()
-	if(.)
-		var/obj/item/weapon/storage/box/syndie_kit/spy_sensor/B = .
-		for(var/obj/item/device/spy_sensor/S in B)
-			S.uplink = U
 
 /datum/uplink_item/item/tools/money
 	name = "Operations Funding"

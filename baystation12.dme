@@ -837,7 +837,6 @@
 #include "code\game\objects\items\devices\powersink.dm"
 #include "code\game\objects\items\devices\scanners.dm"
 #include "code\game\objects\items\devices\spy_bug.dm"
-#include "code\game\objects\items\devices\spy_sensors.dm"
 #include "code\game\objects\items\devices\suit_cooling.dm"
 #include "code\game\objects\items\devices\suit_sensor_jammer.dm"
 #include "code\game\objects\items\devices\t_scanner.dm"

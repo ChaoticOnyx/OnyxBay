@@ -16,6 +16,7 @@
 
 	origin_tech = list(TECH_DATA = 1, TECH_ENGINEERING = 1, TECH_ILLEGAL = 3)
 
+	var/obj/item/device/spy_monitor/paired_with
 	var/obj/item/device/radio/spy/radio
 	var/obj/machinery/camera/spy/camera
 
@@ -50,6 +51,21 @@
 /obj/item/device/spy_bug/hear_talk(mob/M, msg, verb, datum/language/speaking)
 	radio.hear_talk(M, msg, speaking)
 
+/obj/item/device/spy_bug/proc/pair_with(obj/item/device/spy_monitor/SM)
+	paired_with = SM
+
+/obj/item/device/spy_bug/proc/unpair()
+	paired_with = null
+
+/obj/item/device/spy_bug/Move()
+	. = ..()
+	if(. && paired_with)
+		paired_with.bug_moved()
+
+/obj/item/device/spy_bug/forceMove()
+	. = ..()
+	if(. && paired_with)
+		paired_with.bug_moved()
 
 /obj/item/device/spy_monitor
 	name = "\improper PDA"
@@ -62,10 +78,17 @@
 
 	origin_tech = list(TECH_DATA = 1, TECH_ENGINEERING = 1, TECH_ILLEGAL = 3)
 
-	var/operating = 0
+	var/obj/item/device/uplink/uplink
+	var/cam_spy_active = FALSE
+	var/timer
+	var/area/spy_area
+	var/finish = FALSE // to protect user anus from picking bugs in finish check tick.
+
+	var/operating = FALSE
 	var/obj/item/device/radio/spy/radio
 	var/obj/machinery/camera/spy/selected_camera
-	var/list/obj/machinery/camera/spy/cameras = new()
+	var/list/obj/item/device/spy_bug/bugs = list()
+	var/list/obj/machinery/camera/spy/cameras = list()
 
 /obj/item/device/spy_monitor/New()
 	..()
@@ -80,6 +103,82 @@
 	. = ..()
 	if(get_dist(src, user) <= 1)
 		. += "\nThe time '12:00' is blinking in the corner of the screen and \the [src] looks very cheaply made."
+
+/obj/item/device/spy_monitor/proc/bug_moved()
+	if(!timer || !length(cameras) || !spy_area || finish)
+		return
+	if(ishuman(uplink?.uplink_owner?.current))
+		to_chat(uplink.uplink_owner.current, SPAN_NOTICE("It's seems your spy network ([spy_area.name]) are disabled, please check avability of bugs, your current progress are flushed."))
+	spy_area = null
+	deltimer(timer)
+	QDEL_NULL(timer) // just to be sure
+
+/obj/item/device/spy_monitor/proc/start()
+	if(!timer && spy_area)
+		timer = addtimer(CALLBACK(src, .proc/finish), 10 MINUTES, TIMER_STOPPABLE)
+
+/obj/item/device/spy_monitor/proc/finish()
+	if(spy_area && !finish)
+		finish = TRUE
+		for(var/datum/antag_contract/recon/C in GLOB.all_contracts)
+			if(C.completed)
+				continue
+			C.check(src)
+		finish = FALSE
+
+/obj/item/device/spy_monitor/verb/activate()
+	set name = "Activate Spy System"
+	set category = "Object"
+	if(usr.incapacitated() || !Adjacent(usr) || !ishuman(usr))
+		return
+	if(timer)
+		to_chat(usr, SPAN_NOTICE("It's seams like spy network are located in [spy_area.name] and active.\nYou can deactivate the network by picking up camera bugs."))
+		return
+	if(spy_area)
+		spy_area = null
+	var/sensor_amount = 0
+	var/list/messages = list()
+	var/list/obj/item/device/spy_bug/spy_net = bugs.Copy()
+	while(length(spy_net))
+		var/obj/item/device/spy_bug/S = pick(spy_net)
+		spy_net.Remove(S)
+		if(!isturf(S.loc))
+			messages += "Camera bug ([S.camera.name]) are not located on floor."
+			continue
+		var/obj/item/device/spy_bug/AS = locate(/obj/item/device/spy_bug) in orange(1, get_turf(S))
+
+		if(AS)
+			messages += "Another camera bug (current bug: ([S.camera.name]), confilct bug: [AS.camera.name]) in proximity prevents activation."
+			if(AS in spy_net)
+				spy_net.Remove(AS)
+			continue
+
+		var/turf/T = S.loc
+		var/area/S_area = T.loc
+		if(!S_area)
+			messages += "Can't obtain area of camera bug ([S.camera.name])"
+		if(!spy_area)
+			spy_area = S_area
+		if(spy_area == S_area)
+			sensor_amount++
+		else
+			messages += "The area of camera bug ([S.camera.name], [S_area.name]) are not matched with selected area ([spy_area.name])"
+
+	if(sensor_amount >= 3)
+		to_chat(usr, SPAN_NOTICE("Data collection initiated."))
+		start()
+		if(uplink?.uplink_owner == usr.mind)
+			for(var/datum/antag_contract/recon/C in GLOB.all_contracts)
+				if(C.completed)
+					continue
+				if(get_area(src) in C.targets)
+					to_chat(usr, SPAN_NOTICE("Recon contract locked in."))
+					start()
+					return
+	else
+		if(!length(messages))
+			messages += "Data collection initialization failure, not enough bugs."
+		to_chat(usr, SPAN_WARNING("Data collection initialization failed, there're some reasons: [english_list(messages, nothing_text = "ERROR BLUAD!", and_text = " or ")]"))
 
 /obj/item/device/spy_monitor/attack_self(mob/user)
 	if(operating)
@@ -96,10 +195,14 @@
 
 /obj/item/device/spy_monitor/proc/pair(obj/item/device/spy_bug/SB, mob/living/user)
 	if(SB.camera in cameras)
-		to_chat(user, "<span class='notice'>\The [SB] has been unpaired from \the [src].</span>")
+		to_chat(user, SPAN_NOTICE("\The [SB] has been unpaired from \the [src]."))
+		SB.unpair()
+		bugs -= SB
 		cameras -= SB.camera
 	else
-		to_chat(user, "<span class='notice'>\The [SB] has been paired with \the [src].</span>")
+		to_chat(user, SPAN_NOTICE("\The [SB] has been paired with \the [src]."))
+		SB.pair_with(src)
+		bugs += SB
 		cameras += SB.camera
 
 /obj/item/device/spy_monitor/proc/view_cameras(mob/user)
