@@ -24,6 +24,10 @@
 		to_chat(src, SPAN("warning", "You are not fully grown."))
 		return
 
+	if(istype(src.loc, /obj/machinery/atmospherics/pipe))
+		to_chat(src, SPAN("warning", "You cannot evolve right here."))
+		return
+
 	// confirm_evolution() handles choices and other specific requirements.
 	var/new_species = confirm_evolution()
 	if(!new_species || !adult_form )
