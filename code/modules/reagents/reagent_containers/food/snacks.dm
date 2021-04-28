@@ -1620,6 +1620,64 @@
 	reagents.add_reagent(/datum/reagent/drink/juice/tomato, 2)
 	bitesize = 5
 
+//Chicken cube
+/obj/item/weapon/reagent_containers/food/snacks/chickcube
+	name = "Chicken cube"
+	desc = "Just add water!"
+	atom_flags = ATOM_FLAG_OPEN_CONTAINER
+	icon_state = "chickcube"
+	bitesize = 12
+	filling_color = "#adac7f"
+	center_of_mass = "x=16;y=14"
+
+	var/wrapped = 0
+	var/growing = 0
+	var/chick_cube = /mob/living/simple_animal/chicken
+
+/obj/item/weapon/reagent_containers/food/snacks/chickcube/Initialize()
+	. = ..()
+	reagents.add_reagent(/datum/reagent/nutriment/protein, 10)
+
+/obj/item/weapon/reagent_containers/food/snacks/chickcube/attack_self(mob/user)
+	if(wrapped)
+		Unwrap(user)
+
+/obj/item/weapon/reagent_containers/food/snacks/chickcube/proc/Expand()
+	if(!growing)
+		growing = 1
+		src.visible_message("<span class='notice'>\The [src] expands!</span>")
+		var/mob/living/simple_animal/chicken/chick = new /mob/living/simple_animal/chicken
+		chick.dropInto(src.loc)
+		qdel(src)
+
+/obj/item/weapon/reagent_containers/food/snacks/chickcube/proc/Unwrap(mob/user)
+	icon_state = "chickcube"
+	desc = "Just add water!"
+	to_chat(user, "You unwrap the cube.")
+	playsound(src, 'sound/effects/using/wrapper/unwrap1.ogg', rand(50, 75), TRUE)
+	wrapped = 0
+	atom_flags |= ATOM_FLAG_OPEN_CONTAINER
+
+/obj/item/weapon/reagent_containers/food/snacks/chickcube/On_Consume(mob/M)
+	if(ishuman(M))
+		var/mob/living/carbon/human/H = M
+		H.visible_message("<span class='warning'>A screeching creature bursts out of [M]'s chest!</span>")
+		var/obj/item/organ/external/organ = H.get_organ(BP_CHEST)
+		organ.take_external_damage(50, 0, 0, "Animal escaping the ribcage")
+	Expand()
+
+/obj/item/weapon/reagent_containers/food/snacks/chickcube/on_reagent_change()
+	if(reagents.has_reagent(/datum/reagent/water))
+		Expand()
+
+/obj/item/weapon/reagent_containers/food/snacks/chickcube/wrapped
+	desc = "Still wrapped in some paper."
+	icon_state = "chickcubewrap"
+	item_flags = 0
+	obj_flags = 0
+	wrapped = 1
+
+//Monkey cube
 /obj/item/weapon/reagent_containers/food/snacks/monkeycube
 	name = "monkey cube"
 	desc = "Just add water!"
