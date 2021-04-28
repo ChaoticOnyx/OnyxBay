@@ -336,8 +336,9 @@ GLOBAL_LIST_INIT(syndicate_factions, list(
 /datum/antag_contract/recon/proc/check(obj/item/device/spy_monitor/sensor)
 	if(completed)
 		return
-	if(sensor.spy_area in targets)
-		complete(sensor.uplink)
+	for(var/area/A in sensor.active_recon_areas_list)
+		if(A in targets)
+			complete(sensor.uplink)
 
 #undef CONTRACT_STEAL_MILITARY
 #undef CONTRACT_STEAL_OPERATION

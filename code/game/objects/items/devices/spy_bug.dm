@@ -81,7 +81,7 @@
 	var/obj/item/device/uplink/uplink
 	var/cam_spy_active = FALSE
 	var/timer
-	var/area/spy_area
+	var/list/area/active_recon_areas_list = list()
 	var/finish = FALSE // to protect user anus from picking bugs in finish check tick.
 
 	var/operating = FALSE
@@ -105,20 +105,19 @@
 		. += "\nThe time '12:00' is blinking in the corner of the screen and \the [src] looks very cheaply made."
 
 /obj/item/device/spy_monitor/proc/bug_moved()
-	if(!timer || !length(cameras) || !spy_area || finish)
+	if(!timer || !length(cameras) || !length(active_recon_areas_list) || finish)
 		return
 	if(ishuman(uplink?.uplink_owner?.current))
-		to_chat(uplink.uplink_owner.current, SPAN_NOTICE("It's seems your spy network ([spy_area.name]) are disabled, please check avability of bugs, your current progress are flushed."))
-	spy_area = null
+		to_chat(uplink.uplink_owner.current, SPAN_NOTICE("It's seems your spy network ([english_list(active_recon_areas_list, and_text = " or ")]) are disabled, please check avability of bugs, your current progress are flushed."))
+	active_recon_areas_list = list()
 	deltimer(timer)
-	QDEL_NULL(timer) // just to be sure
 
 /obj/item/device/spy_monitor/proc/start()
-	if(!timer && spy_area)
-		timer = addtimer(CALLBACK(src, .proc/finish), 10 MINUTES, TIMER_STOPPABLE)
+	if(!timer && length(active_recon_areas_list))
+		timer = addtimer(CALLBACK(src, .proc/finish), 1 MINUTES, TIMER_STOPPABLE)
 
 /obj/item/device/spy_monitor/proc/finish()
-	if(spy_area && !finish)
+	if(length(active_recon_areas_list) && !finish)
 		finish = TRUE
 		for(var/datum/antag_contract/recon/C in GLOB.all_contracts)
 			if(C.completed)
@@ -132,53 +131,61 @@
 	if(usr.incapacitated() || !Adjacent(usr) || !ishuman(usr))
 		return
 	if(timer)
-		to_chat(usr, SPAN_NOTICE("It's seams like spy network are located in [spy_area.name] and active.\nYou can deactivate the network by picking up camera bugs."))
+		to_chat(usr, SPAN_NOTICE("It's seams like spy network are located in [english_list(active_recon_areas_list, and_text = " or ")] and active.\nYou can deactivate the network by picking up camera bugs."))
 		return
-	if(spy_area)
-		spy_area = null
-	var/sensor_amount = 0
+	var/list/sensor_list = list()
+	if(length(active_recon_areas_list))
+		active_recon_areas_list = list()
 	var/list/messages = list()
 	var/list/obj/item/device/spy_bug/spy_net = bugs.Copy()
 	while(length(spy_net))
 		var/obj/item/device/spy_bug/S = pick(spy_net)
 		spy_net.Remove(S)
+
 		if(!isturf(S.loc))
 			messages += "Camera bug ([S.camera.name]) are not located on floor."
 			continue
-		var/obj/item/device/spy_bug/AS = locate(/obj/item/device/spy_bug) in orange(1, get_turf(S))
 
-		if(AS)
-			messages += "Another camera bug (current bug: ([S.camera.name]), confilct bug: [AS.camera.name]) in proximity prevents activation."
+		var/detected_AS = FALSE
+		for(var/obj/item/device/spy_bug/AS in range(1, S))
+			if(AS == S)
+				continue
+			detected_AS = TRUE
+			messages += "Another camera bug in proximity prevents activation. (current bug: ([S.camera.name]), confilct bug: [AS.camera.name])"
 			if(AS in spy_net)
 				spy_net.Remove(AS)
+		if(detected_AS)
 			continue
 
 		var/turf/T = S.loc
 		var/area/S_area = T.loc
 		if(!S_area)
-			messages += "Can't obtain area of camera bug ([S.camera.name])"
-		if(!spy_area)
-			spy_area = S_area
-		if(spy_area == S_area)
-			sensor_amount++
+			continue
+		if(!sensor_list[S_area.name])
+			sensor_list[S_area.name] = 1
 		else
-			messages += "The area of camera bug ([S.camera.name], [S_area.name]) are not matched with selected area ([spy_area.name])"
+			sensor_list[S_area.name] = sensor_list[S_area.name] + 1
 
-	if(sensor_amount >= 3)
-		to_chat(usr, SPAN_NOTICE("Data collection initiated."))
-		start()
-		if(uplink?.uplink_owner == usr.mind)
-			for(var/datum/antag_contract/recon/C in GLOB.all_contracts)
-				if(C.completed)
-					continue
-				if(get_area(src) in C.targets)
-					to_chat(usr, SPAN_NOTICE("Recon contract locked in."))
-					start()
-					return
-	else
+	var/sensor_active = FALSE
+	for(var/area_name in sensor_list)
+		if(sensor_list[area_name] >= 3)
+			sensor_active = TRUE
+			to_chat(usr, SPAN_NOTICE("Data collection initiated."))
+			start()
+			if(uplink?.uplink_owner == usr.mind)
+				var/area/A = get_area_name(area_name)
+				active_recon_areas_list += A
+				for(var/datum/antag_contract/recon/C in GLOB.all_contracts)
+					if(C.completed)
+						continue
+					if(A in C.targets)
+						to_chat(usr, SPAN_NOTICE("Recon contract locked in."))
+						return
+
+	if(!sensor_active)
 		if(!length(messages))
 			messages += "Data collection initialization failure, not enough bugs."
-		to_chat(usr, SPAN_WARNING("Data collection initialization failed, there're some reasons: [english_list(messages, nothing_text = "ERROR BLUAD!", and_text = " or ")]"))
+		to_chat(usr, SPAN_WARNING("Data collection initialization failed, there're some reasons: [english_list(messages, and_text = " or ")]"))
 
 /obj/item/device/spy_monitor/attack_self(mob/user)
 	if(operating)
