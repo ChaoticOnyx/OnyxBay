@@ -161,7 +161,7 @@ GLOBAL_LIST_INIT(syndicate_factions, list(
 			return
 		target_mind = target
 		name = "[name] [H.real_name]"
-	create_explain_text("implant [H.real_name] with a spying implant.")
+	create_explain_text("implant [H.real_name] with a spying implant (don't forget to link it).")
 
 /datum/antag_contract/implant/can_place()
 	return ..() && target_mind
@@ -252,14 +252,14 @@ GLOBAL_LIST_INIT(syndicate_factions, list(
 	if(target)
 		AI = target
 	else
+		var/list/mob/living/silicon/ai/valid_AIs = list()
 		if(length(ai_list))
-			var/list/mob/living/silicon/ai/valid_AIs = list()
 			for(var/mob/living/silicon/ai/AI in ai_list)
 				if(AI.stat != DEAD)
 					valid_AIs.Add(AI)
-	for(var/datum/antag_contract/item/steal_ai/s_AI in GLOB.all_contracts)
-		valid_AIs.Remove(s_AI.AI)
-	AI = pick(valid_AIs)
+		for(var/datum/antag_contract/item/steal_ai/s_AI in GLOB.all_contracts)
+			valid_AIs.Remove(s_AI.AI)
+		AI = pick(valid_AIs)
 	target_desc = "[target_desc] [AI.name]"
 	create_explain_text("steal [target_desc] and send it via STD (find out in Devices and Tools).")
 
