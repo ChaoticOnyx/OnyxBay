@@ -257,7 +257,9 @@ GLOBAL_LIST_INIT(syndicate_factions, list(
 			for(var/mob/living/silicon/ai/AI in ai_list)
 				if(AI.stat != DEAD)
 					valid_AIs.Add(AI)
-			AI = pick(valid_AIs)
+	for(var/datum/antag_contract/item/steal_ai/s_AI in GLOB.all_contracts)
+		valid_AIs.Remove(s_AI.AI)
+	AI = pick(valid_AIs)
 	target_desc = "[target_desc] [AI.name]"
 	create_explain_text("steal [target_desc] and send it via STD (find out in Devices and Tools).")
 
