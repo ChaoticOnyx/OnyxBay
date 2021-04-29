@@ -57,8 +57,8 @@
 	while(candidates.len)
 		var/contract_type = pick(candidates)
 		var/datum/antag_contract/C = new contract_type(src)
-		var/avaliable = (intents ^ C.intent || prob(25))
-		if(!C.can_place() && avaliable)
+		var/not_avaliable = (intents ^ C.intent || prob(75))
+		if(!C.can_place() && not_avaliable)
 			candidates -= contract_type
 			qdel(C)
 			continue
