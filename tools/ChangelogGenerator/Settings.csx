@@ -29,24 +29,10 @@ private static class Settings
     /// </summary>
     public static readonly string ChangelogTemplate = Path.GetFullPath("./html/templates/changelog.tmpl", WorkspaceFolder);
     /// <summary>
-    ///     Список допустимых префиксов.
+    ///     Файл с указанием на последний PR для которого был сделан чейнджлог.
     /// </summary>
-    public static readonly List<string> ValidPrefixes = new()
-    {
-        "bugfix",
-        "wip",
-        "tweak",
-        "soundadd",
-        "sounddel",
-        "rscadd",
-        "rscdel",
-        "imageadd",
-        "imagedel",
-        "maptweak",
-        "spellcheck",
-        "experiment",
-        "admin"
-    };
+    /// <returns></returns>
+    public static readonly string LastPrFile = Path.GetFullPath("./tools/ChangelogGenerator/last_pr.txt", WorkspaceFolder);
     /// <summary>
     ///     Настройки JSON сериализатора.
     /// </summary>
@@ -56,4 +42,24 @@ private static class Settings
         Encoder = System.Text.Encodings.Web.JavaScriptEncoder.UnsafeRelaxedJsonEscaping,
         WriteIndented = true
     };
+}
+
+/// <summary>
+///     Префиксы изменении.
+/// </summary>
+public enum ChangePrefix
+{
+    BugFix = 0,
+    Wip,
+    Tweak,
+    SoundAdd,
+    SoundDel,
+    RscAdd,
+    RscDel,
+    ImageAdd,
+    ImageDel,
+    MapTweak,
+    SpellCheck,
+    Experiment,
+    Admin
 }

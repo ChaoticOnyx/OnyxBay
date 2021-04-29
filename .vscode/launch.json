@@ -15,7 +15,7 @@
             "dmb": "${workspaceFolder}/${command:CurrentDMB}"
         },
         {
-            "name": "Generate Changelog",
+            "name": "Generate Changelogs (Debug)",
             "type": "coreclr",
             "request": "launch",
             "program": "dotnet-script",

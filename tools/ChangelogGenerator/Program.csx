@@ -24,8 +24,6 @@ changelogs = Changelog.Merge(changelogs);
 if (changelogs.Count == 0)
 {
     WriteLine("Нет новых чейнджлогов.");
-
-    return 0;
 }
 
 // Парсинг кэша.
@@ -43,33 +41,21 @@ foreach (var changelog in cache)
     if (string.IsNullOrEmpty(changelog.Author))
     {
         anyErrors = true;
-        WriteLine($"Имя автора не должно быть пустым:\n{changelog}");
+        WriteLine($"🚫 Имя автора не должно быть пустым:\n{changelog}");
     }
 
     if (changelog.Changes.Count == 0)
     {
         anyErrors = true;
-        WriteLine($"Список изменении не должен быть пустым:\n{changelog}");
+        WriteLine($"🚫 Список изменении не должен быть пустым:\n{changelog}");
     }
 
     foreach (var change in changelog.Changes)
     {
-        if (string.IsNullOrEmpty(change.Prefix))
-        {
-            anyErrors = true;
-            WriteLine($"Префикс не должен быть пустым:\n{changelog}");
-        }
-
         if (string.IsNullOrEmpty(change.Message))
         {
             anyErrors = true;
-            WriteLine($"Сообщение не должно быть пустым:\n{changelog}");
-        }
-
-        if (!Settings.ValidPrefixes.Contains(change.Prefix))
-        {
-            anyErrors = true;
-            WriteLine($"Недопустимый префикс `{change.Prefix}`:\n{changelog}");
+            WriteLine($"🚫 Сообщение не должно быть пустым:\n{changelog}");
         }
     }
 }
@@ -88,13 +74,13 @@ var context = new
 };
 
 // Сохранение и удаление
-WriteLine("Сохранение HTML.");
+WriteLine("✅ Сохранение HTML.");
 File.WriteAllText(Settings.HtmlChangelog, template.Render(context));
 
-WriteLine("Сохранение кэша.");
+WriteLine("✅ Сохранение кэша.");
 File.WriteAllText(Settings.ChangelogsCache, JsonSerializer.Serialize(cache, Settings.JsonOptions));
 
-WriteLine("Удаление чейнджлог файлов.");
+WriteLine("✅ Удаление чейнджлог файлов.");
 files.ForEach(f => File.Delete(f));
 
 return 0;

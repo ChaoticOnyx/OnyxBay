@@ -69,19 +69,19 @@
                         "type": "string",
                         "description": "Префикс изменения.",
                         "enum": [
-                            "bugfix",
-                            "wip",
-                            "tweak",
-                            "soundadd",
-                            "sounddel",
-                            "rscadd",
-                            "rscdel",
-                            "imageadd",
-                            "imagedel",
-                            "maptweak",
-                            "spellcheck",
-                            "experiment",
-                            "admin"
+                            "BugFix",
+                            "Wip",
+                            "Tweak",
+                            "SoundAdd",
+                            "SoundDel",
+                            "RscAdd",
+                            "RscDel",
+                            "ImageAdd",
+                            "ImageDel",
+                            "MapTweak",
+                            "SpellCheck",
+                            "Experiment",
+                            "Admin"
                         ]
                     },
                     "message": {

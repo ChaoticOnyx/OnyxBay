@@ -1,9 +1,12 @@
-name: Make changelogs
+name: Make Changelogs
 
 on:
   push:
     branches:
-    - dev
+    - release/chaotic
+    - release/eos
+    - release/experimental
+    - release/lawful
 
 jobs:
   MakeCL:
@@ -22,15 +25,19 @@ jobs:
       - name: Install depends
         run: dotnet tool install -g dotnet-script
       - name: Make changelog from PR
-        run: dotnet script tools/ChangelogGenerator/Cl.csx
+        run: dotnet script tools/ChangelogGenerator/ClCreate.csx
       - name: Generate changelog
         run: dotnet script tools/ChangelogGenerator/Program.csx
       - name: Get current date
         id: date
         run: echo "::set-output name=date::$(date +'%Y-%m-%d')"
+      - name: Extract branch name
+        shell: bash
+        run: echo "##[set-output name=branch;]$(echo ${GITHUB_REF#refs/heads/})"
+        id: extract_branch
       - name: Commit & Push
         uses: igorsaux/push@6f4ce828db490493f3481d28485e11ec38f3f606
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
           message: Генерация чейнджлога на ${{ steps.date.outputs.date }}
-          branch: dev
+          branch: ${{ steps.extract_branch.outputs.branch }}

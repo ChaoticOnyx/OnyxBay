@@ -1,3 +1,4 @@
+#load "Settings.csx"
 #nullable enable
 
 using System;
@@ -5,6 +6,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Runtime.Serialization;
 using System.Text.Json.Serialization;
+using System.Text.RegularExpressions;
 
 public sealed class Changelog
 {
@@ -75,12 +77,24 @@ public sealed class Changelog
         /// <summary>
         ///     Префикс изменения.
         /// </summary>
-        public string Prefix { get; init; } = string.Empty;
+        [JsonConverter(typeof(JsonStringEnumConverter))]
+        public ChangePrefix Prefix { get; init; } = ChangePrefix.BugFix;
 
         /// <summary>
         ///     Описание изменения.
         /// </summary>
         public string Message { get; init; } = string.Empty;
+
+        /// <summary>
+        ///     Font Awesome классы для иконки в HTML.
+        /// </summary>
+        [JsonIgnore]
+        public string Icon { get => IconBinding(Prefix); }
+        /// <summary>
+        ///     Цвет отображения в HTML.
+        /// </summary>
+        [JsonIgnore]
+        public string Color { get => ColorBinding(Prefix); }
 
         public override string ToString() => $"{Prefix} - {Message}";
 
@@ -99,6 +113,58 @@ public sealed class Changelog
             }
 
             return false;
+        }
+
+
+        /// <summary>
+        ///     Возвращает класс FontAwesome инконки соответствующий для префикса.
+        /// </summary>
+        /// <param name="prefix">Префикс изменения.</param>
+        public static string IconBinding(ChangePrefix prefix)
+        {
+            return prefix switch
+            {
+                ChangePrefix.BugFix => "fas fa-bug",
+                ChangePrefix.Wip => "fas fa-hard-hat",
+                ChangePrefix.Tweak => "fas fa-balance-scale",
+                ChangePrefix.SoundAdd => "fas fa-music",
+                ChangePrefix.SoundDel => "fas fa-minus",
+                ChangePrefix.RscAdd => "fas fa-plus",
+                ChangePrefix.RscDel => "fas fa-minus",
+                ChangePrefix.ImageAdd => "fas fa-palette",
+                ChangePrefix.ImageDel => "fas fa-minus",
+                ChangePrefix.MapTweak => "far fa-compass",
+                ChangePrefix.SpellCheck => "fas fa-spell-check",
+                ChangePrefix.Experiment => "fas fa-hard-hat",
+                ChangePrefix.Admin => "fas fa-crown",
+                _ => throw new NotImplementedException($"🚫 Для {prefix} не определена иконка.")
+            };
+        }
+
+        /// <summary>
+        ///     Возвращает цвет соответствующий префиксу.
+        /// </summary>
+        /// <param name="prefix"></param>
+        /// <returns></returns>
+        public static string ColorBinding(ChangePrefix prefix)
+        {
+            return prefix switch
+            {
+                ChangePrefix.BugFix
+                or ChangePrefix.Tweak
+                or ChangePrefix.SoundAdd
+                or ChangePrefix.RscAdd
+                or ChangePrefix.ImageAdd
+                or ChangePrefix.MapTweak
+                or ChangePrefix.SpellCheck
+                or ChangePrefix.Admin => "green",
+                ChangePrefix.Wip
+                or ChangePrefix.Experiment => "yellow",
+                ChangePrefix.SoundDel
+                or ChangePrefix.RscDel
+                or ChangePrefix.ImageDel => "red",
+                _ => throw new NotImplementedException($"🚫 Для {prefix} не определён цвет.")
+            };
         }
     }
 }
@@ -130,6 +196,51 @@ public static class Github
         ///     Автор PR.
         /// </summary>
         public User User { get; init; } = new();
+
+        private static readonly Regex s_clBody = new(@"(:cl:|🆑)(.+)?\r\n((.|\n|\r)+?)\r\n\/(:cl:|🆑)", RegexOptions.Multiline);
+        private static readonly Regex s_clSplit = new(@"(^\w+):\s+(\w.+)", RegexOptions.Multiline);
+
+        /// <summary>
+        ///     Парсит чейнджлог из тела PR.
+        /// </summary>
+        /// <returns>Чейнджлог</returns>
+        public Changelog ParseChangelog()
+        {
+            var changesBody = s_clBody.Match(Body).Value;
+            var matches = s_clSplit.Matches(changesBody);
+
+            if (matches.Count == 0)
+            {
+                throw new InvalidOperationException($"🚫 Чейнджлог не обнаружен.");
+            }
+
+            Changelog changelog = new()
+            {
+                Author = User.Login,
+                Date = DateTime.Now
+            };
+
+            foreach (Match match in matches)
+            {
+                string[] parts = match.Value.Split(':');
+
+                if (parts.Length < 2)
+                {
+                    throw new InvalidOperationException($"🚫 Неверный формат изменения: '{match.Value}'");
+                }
+
+                var prefix = parts[0].Trim();
+                var message = string.Join(':', parts[1..]).Trim();
+
+                changelog.Changes.Add(new()
+                {
+                    Prefix = Enum.Parse<ChangePrefix>(prefix, true),
+                    Message = message
+                });
+            }
+
+            return changelog;
+        }
     }
 
     /// <summary>
@@ -141,5 +252,30 @@ public static class Github
         ///     Логин пользователя.
         /// </summary>
         public string Login { get; init; } = string.Empty;
+    }
+
+    /// <summary>
+    ///     Github Event Payload
+    /// </summary>
+    public sealed class Event
+    {
+        public string Action { get; init; } = string.Empty;
+        [JsonPropertyName("pull_request")]
+        public PullRequest? PullRequest { get; init; }
+    }
+
+    /// <summary>
+    ///     Github Search Query
+    /// </summary>
+    public sealed class Search<T> where T : class
+    {
+        /// <summary>
+        ///     Общее количество элементов.
+        /// </summary>
+        public int TotalCount { get; init; }
+        /// <summary>
+        ///     Элементы.
+        /// </summary>
+        public List<T> Items { get; init; } = new();
     }
 }
