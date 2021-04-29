@@ -403,6 +403,7 @@
 	set name = "Changelog"
 	set category = "OOC"
 	getFiles(
+		'html/pie.htc',
 		'html/88x31.png',
 		'html/bug-minus.png',
 		'html/burn-exclamation.png',
