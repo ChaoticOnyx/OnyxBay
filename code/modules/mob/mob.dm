@@ -404,22 +404,6 @@
 	set category = "OOC"
 	getFiles(
 		'html/pie.htc',
-		'html/88x31.png',
-		'html/bug-minus.png',
-		'html/burn-exclamation.png',
-		'html/chevron.png',
-		'html/chevron-expand.png',
-		'html/cross-circle.png',
-		'html/hard-hat-exclamation.png',
-		'html/image-minus.png',
-		'html/image-plus.png',
-		'html/map-pencil.png',
-		'html/music-minus.png',
-		'html/music-plus.png',
-		'html/tick-circle.png',
-		'html/scales.png',
-		'html/spell-check.png',
-		'html/wrench-screwdriver.png',
 		'html/changelog.css',
 		'html/changelog.html'
 		)
