@@ -111,6 +111,7 @@
 		to_chat(uplink.uplink_owner.current, SPAN_NOTICE("It's seems your spy network ([english_list(active_recon_areas_list, and_text = " or ")]) are disabled, please check avability of bugs, your current progress are flushed."))
 	active_recon_areas_list = list()
 	deltimer(timer)
+	timer = null
 
 /obj/item/device/spy_monitor/proc/start()
 	timer = addtimer(CALLBACK(src, .proc/finish), 1 MINUTES, TIMER_STOPPABLE)
