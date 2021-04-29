@@ -309,9 +309,9 @@ GLOBAL_LIST_INIT(syndicate_factions, list(
 	var/obj/item/organ/external/head/target
 
 /datum/antag_contract/item/assasinate/New(datum/contract_organization/contract_organization, reason, datum/mind/target)
-	..()
 	organization = contract_organization
 	create_contract(reason, target)
+	..()
 
 /datum/antag_contract/item/assasinate/create_contract(Creason, datum/mind/target)
 	if(!Creason)
