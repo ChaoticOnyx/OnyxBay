@@ -390,7 +390,7 @@ GLOBAL_LIST_INIT(syndicate_factions, list(
 	var/received = 0
 	for(var/obj/item/weapon/spacecash/cash in contents)
 		received += cash.worth
-	return received >= sum
+	return received == sum
 
 /datum/antag_contract/item/research
 	name = "Steal research"
