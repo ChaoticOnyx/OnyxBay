@@ -39,27 +39,24 @@
 	response_disarm = "bops"
 	response_harm   = "kicks"
 
-/mob/living/simple_animal/corgi/Ian/proc/rename()
-	var/mob/M = usr //user as mob interacts with corgi
-	var/input = sanitize(input("How do you want to name this pet?", "Rename", src.name) as null|text)
-	if(src && input)
-		to_chat(M, SPAN_NOTICE("The corgi is now named as '[input]'."))
+/mob/living/simple_animal/corgi/proc/rename()
+	var/input = sanitize(input("How do you want to name this pet?", "Rename \the [src]", name) as null|text)
+	if(!QDELETED(src) && input && (get_dist(usr, src) <= 1))
+		to_chat(usr, SPAN_NOTICE("The corgi is now named as '[input]'."))
 		name = input
 
-/mob/living/simple_animal/corgi/Ian/verb/name_pet()
+/mob/living/simple_animal/corgi/verb/name_pet()
 	set src in oview(1)
 	set category = "Object"
 	set name = "Name pet"
-	if(src in range(3))
-		src.rename()
-	else
-		return
+	if(get_dist(usr, src) <= 1)
+		rename()
 
 /mob/living/simple_animal/corgi/Life()
 	..()
 
 	regular_hud_updates()
-		
+
 	//Feeding, chasing food, FOOOOODDDD
 	if(!stat && !resting && !buckled)
 		turns_since_scan++
@@ -106,12 +103,12 @@
 				for(var/i in list(1,2,4,8,4,2,1,2,4,8,4,2,1,2,4,8,4,2))
 					set_dir(i)
 					sleep(1)
-					
+
 /mob/living/simple_animal/corgi/proc/regular_hud_updates()
 	if(pullin)
-		if(pulling)								
+		if(pulling)
 			pullin.icon_state = "pull1"
-		else									
+		else
 			pullin.icon_state = "pull0"
 	if(fire)
 		if(fire_alert)
@@ -123,13 +120,13 @@
 			oxygen.icon_state = "oxy1"
 		else
 			oxygen.icon_state = "oxy0"
-			
+
 	if(toxin)
 		if(toxins_alert)
 			toxin.icon_state = "tox1"
 		else
 			toxin.icon_state = "tox0"
-			
+
 	if (healths)
 		switch(health)
 			if(30 to INFINITY)
@@ -147,7 +144,7 @@
 			if(1 to 5)
 				healths.icon_state = "health6"
 			else
-				healths.icon_state = "health7"					
+				healths.icon_state = "health7"
 
 /obj/item/weapon/reagent_containers/food/snacks/meat/corgi
 	name = "Corgi meat"
