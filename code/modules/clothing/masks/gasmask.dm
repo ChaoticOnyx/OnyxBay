@@ -68,12 +68,21 @@
 	item_state = "fullgas"
 
 /obj/item/clothing/mask/gas/clear
-	name = "gas mask"
+	name = "clear gas mask"
 	desc = "A close-fitting, panoramic gas mask that can be connected to an air supply."
 	icon_state = "gasmask-clear"
 	item_state = "gasmask-clear"
+	flags_inv = HIDEEARS
 	istinted = 0
 	siemens_coefficient = 0.9
+
+/obj/item/clothing/mask/gas/captain
+	name = "captain's gas mask"
+	desc = "NanoTrasen cut corners and repainted a spare atmospheric gas mask, but don't tell anyone."
+	icon_state = "gas_cap"
+	item_state = "gas_cap"
+	istinted = 0
+	siemens_coefficient = 0.7
 
 /obj/item/clothing/mask/gas/police
 	name = "police gas mask"
