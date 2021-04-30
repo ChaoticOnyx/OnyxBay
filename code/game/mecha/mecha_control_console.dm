@@ -72,9 +72,9 @@
 	origin_tech = list(TECH_DATA = 2, TECH_MAGNET = 2)
 
 	proc/get_mecha_info()
-		var/obj/mecha/M = src.loc
 		if(!in_mecha())
 			return 0
+		var/obj/mecha/M = src.loc
 		var/cell_charge = M.get_charge()
 		var/answer = {"<b>Name:</b> [M.name]<br>
 							<b>Integrity:</b> [M.health/initial(M.health)*100]%<br>

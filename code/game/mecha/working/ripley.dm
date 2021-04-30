@@ -45,8 +45,8 @@
 	create_tracker = 1
 
 /obj/mecha/working/ripley/deathripley
-	desc = "Is that blood on its armor plating?"
-	name = "Death-Ripley"
+	desc = "OH SHIT IT'S THE DEATHSQUAD WE'RE ALL GONNA DIE!"
+	name = "DEATH-RIPLEY"
 	icon_state = "deathripley"
 	initial_icon = "deathripley"
 	step_in = 2
@@ -80,7 +80,5 @@
 	//Attach hydrolic clamp
 	var/obj/item/mecha_parts/mecha_equipment/tool/hydraulic_clamp/HC = new /obj/item/mecha_parts/mecha_equipment/tool/hydraulic_clamp
 	HC.attach(src)
-	/* for(var/obj/item/mecha_parts/mecha_tracking/B in src.contents)//Deletes the beacon so it can't be found easily
-		qdel (B) */
 
 
