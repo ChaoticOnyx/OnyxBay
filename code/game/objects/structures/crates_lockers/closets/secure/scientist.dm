@@ -52,8 +52,8 @@
 
 /obj/structure/closet/secure_closet/RD/WillContain()
 	return list(
-		/obj/item/clothing/suit/bio_suit/scientist = 1,
-		/obj/item/clothing/head/bio_hood/scientist = 1,
+		/obj/item/clothing/suit/bio_suit/scientist,
+		/obj/item/clothing/head/bio_hood/scientist,
 		/obj/item/clothing/under/rank/research_director,
 		/obj/item/clothing/under/rank/research_director/rdalt,
 		/obj/item/clothing/under/rank/research_director/dress_rd,
