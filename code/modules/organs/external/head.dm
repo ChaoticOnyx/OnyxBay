@@ -73,7 +73,7 @@
 /obj/item/organ/external/head/get_agony_multiplier()
 	return (owner && owner.headcheck(organ_tag)) ? 1.50 : 1
 
-/obj/item/organ/external/head/robotize(company, skip_prosthetics, keep_organs)
+/obj/item/organ/external/head/robotize(company, skip_prosthetics = FALSE, keep_organs = FALSE, just_printed = FALSE)
 	if(company)
 		var/datum/robolimb/R = all_robolimbs[company]
 		if(R)
