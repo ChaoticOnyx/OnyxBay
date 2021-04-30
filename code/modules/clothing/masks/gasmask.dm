@@ -75,6 +75,7 @@
 	flags_inv = HIDEEARS
 	istinted = 0
 	siemens_coefficient = 0.9
+	armor = list(melee = 5, bullet = 2.5, laser = 5, energy = 0, bomb = 0, bio = 75, rad = 25)
 
 /obj/item/clothing/mask/gas/captain
 	name = "captain's gas mask"
