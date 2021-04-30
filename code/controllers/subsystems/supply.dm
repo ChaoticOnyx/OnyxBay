@@ -5,6 +5,7 @@ SUBSYSTEM_DEF(supply)
 	//Initializes at default time
 	flags = SS_NO_TICK_CHECK
 
+	var/crew_illegal_noticed = FALSE
 	//supply points
 	var/points = 50
 	var/points_per_process = 1
@@ -131,6 +132,20 @@ SUBSYSTEM_DEF(supply)
 			var/profit = material_count[material_type] * material_buy_prices[material_type]
 			var/material/material = material_type //False typing.
 			add_points_from_source(profit, initial(material.name))
+// Alert crew to illegal items
+/datum/controller/subsystem/supply/proc/alert_crew(illegal = FALSE, force = FALSE)
+	//New message handling
+	var/announce = FALSE
+	if(illegal)
+		announce = prob(15)
+	else
+		announce = prob(95)
+	announce = announce && (force || !crew_illegal_noticed)
+	if(announce)
+		var/message = "The illegal action detected in cargo bay. Security forces highly recommented to check the area immediately."
+		var/customname = "[GLOB.using_map.company_name] Security Cargo Departament"
+		command_announcement.Announce(message, customname, new_sound = GLOB.using_map.command_report_sound, msg_sanitized = 1)
+		crew_illegal_noticed = TRUE
 
 //Buyin
 /datum/controller/subsystem/supply/proc/buy()
@@ -160,6 +175,7 @@ SUBSYSTEM_DEF(supply)
 		var/datum/supply_order/SO = S
 		var/decl/hierarchy/supply_pack/SP = SO.object
 
+		alert_crew(SP.hidden)
 		var/obj/A = new SP.containertype(pickedloc)
 		A.SetName("[SP.containername][SO.comment ? " ([SO.comment])":"" ]")
 		//supply manifest generation begin
@@ -190,6 +206,7 @@ SUBSYSTEM_DEF(supply)
 			for(var/atom/content in spawned)
 				slip.info += "<li>[content.name]</li>" //add the item to the manifest
 			slip.info += "</ul><br>CHECK CONTENTS AND STAMP BELOW THE LINE TO CONFIRM RECEIPT OF GOODS<hr>"
+	crew_illegal_noticed = FALSE // reset to default
 
 /datum/supply_order
 	var/ordernum
