@@ -195,7 +195,20 @@ public static class Github
         /// <summary>
         ///     Автор PR.
         /// </summary>
-        public User User { get; init; } = new();
+        [JsonPropertyName("user")]
+        public User Author { get; init; } = new();
+        /// <summary>
+        ///     Время открытия PR.
+        /// </summary>
+        /// <value></value>
+        [JsonPropertyName("created_at")]
+        public DateTime Opened { get; init; } = DateTime.Now;
+        /// <summary>
+        ///     Время закрытия PR.
+        /// </summary>
+        /// <value></value>
+        [JsonPropertyName("closed_at")]
+        public DateTime? Closed { get; init; } = null;
 
         private static readonly Regex s_clBody = new(@"(:cl:|🆑)(.+)?\r\n((.|\n|\r)+?)\r\n\/(:cl:|🆑)", RegexOptions.Multiline);
         private static readonly Regex s_clSplit = new(@"(^\w+):\s+(\w.+)", RegexOptions.Multiline);
@@ -216,7 +229,7 @@ public static class Github
 
             Changelog changelog = new()
             {
-                Author = User.Login,
+                Author = Author.Login,
                 Date = DateTime.Now
             };
 

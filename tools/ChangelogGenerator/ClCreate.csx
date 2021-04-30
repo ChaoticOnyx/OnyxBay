@@ -2,6 +2,7 @@
 #load "Settings.csx"
 #load "Models.csx"
 
+using System.Globalization;
 using System.Net.Http;
 using System.Net.Http.Json;
 using System.Text.Json;
@@ -10,43 +11,47 @@ using System.Threading;
 // Получение переменных среды.
 var githubRepository = Environment.GetEnvironmentVariable("GITHUB_REPOSITORY")
                        ?? throw new InvalidOperationException("🚫 Переменная среды GITHUB_REPOSITORY не найдена.");
-var githubSha = Environment.GetEnvironmentVariable("GITHUB_SHA")
-                ?? throw new InvalidOperationException("🚫 Переменная среды GITHUB_SHA не найдена.");
 
-// Настройка HTTP клиента, получение и отправка запроса.
+// Настройка HTTP клиента
 var client = new HttpClient();
 client.DefaultRequestHeaders.UserAgent.ParseAdd("PostmanRuntime/7.28.0");
 client.DefaultRequestHeaders.Accept.ParseAdd("application/vnd.github.groot-preview+json");
 var page = 0;
-var lastPrNumber = int.Parse(File.ReadAllLines(Settings.LastPrFile)[0]);
-var newLastPrNumber = lastPrNumber;
+var lastClosedPrDate = DateTime.Parse(File.ReadAllLines(Settings.LastClosedPrDateFile)[0], CultureInfo.InvariantCulture);
+var newLastClosedPrDate = lastClosedPrDate;
 
 // Парсинг PR.
 while (true)
 {
     page++;
-    var response = await client.GetAsync($"https://api.github.com/search/issues?q=repo:{githubRepository} is:pr is:merged&order=desc&per_page=100&page={page}");
+    var response = await client.GetAsync($"https://api.github.com/search/issues?q=repo:{githubRepository} is:pr is:merged&order=desc&per_page=100&sort=created&page={page}");
     var searchResponse = await response.Content.ReadFromJsonAsync<Github.Search<Github.PullRequest>>(Settings.JsonOptions)
                          ?? throw new InvalidOperationException("🚫 Невозможно распарсить ответ от Github.");
 
     if (searchResponse.Items.Count == 0)
     {
-        File.WriteAllText(Settings.LastPrFile, newLastPrNumber.ToString());
+        WriteLine("✅ Больше PR не обнаружено.");
+        File.WriteAllText(Settings.LastClosedPrDateFile, newLastClosedPrDate.ToString(CultureInfo.InvariantCulture));
 
         return 0;
     }
 
     foreach (var pullRequest in searchResponse.Items)
     {
-        if (pullRequest.Number > newLastPrNumber)
+        if (pullRequest.Closed is null)
         {
-            newLastPrNumber = pullRequest.Number;
+            continue;
         }
 
-        if (pullRequest.Number <= lastPrNumber)
+        if (pullRequest.Closed > newLastClosedPrDate)
+        {
+            newLastClosedPrDate = (DateTime)pullRequest.Closed;
+        }
+
+        if (pullRequest.Closed <= lastClosedPrDate)
         {
             WriteLine("✅ Больше PR не обнаружено.");
-            File.WriteAllText(Settings.LastPrFile, newLastPrNumber.ToString());
+            File.WriteAllText(Settings.LastClosedPrDateFile, newLastClosedPrDate.ToString(CultureInfo.InvariantCulture));
 
             return 0;
         }

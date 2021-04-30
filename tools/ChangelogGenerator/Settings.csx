@@ -29,10 +29,10 @@ private static class Settings
     /// </summary>
     public static readonly string ChangelogTemplate = Path.GetFullPath("./html/templates/changelog.tmpl", WorkspaceFolder);
     /// <summary>
-    ///     Файл с указанием на последний PR для которого был сделан чейнджлог.
+    ///     Файл с указанием на дату закрытия последнего PR для которого был сделан чейнджлог.
     /// </summary>
     /// <returns></returns>
-    public static readonly string LastPrFile = Path.GetFullPath("./tools/ChangelogGenerator/last_pr.txt", WorkspaceFolder);
+    public static readonly string LastClosedPrDateFile = Path.GetFullPath("./tools/ChangelogGenerator/last_pr.txt", WorkspaceFolder);
     /// <summary>
     ///     Настройки JSON сериализатора.
     /// </summary>
@@ -42,6 +42,10 @@ private static class Settings
         Encoder = System.Text.Encodings.Web.JavaScriptEncoder.UnsafeRelaxedJsonEscaping,
         WriteIndented = true
     };
+    /// <summary>
+    ///     Название плашки, которая будет добавляться к PR если отсутствует чейнджлог или он с ошибками.
+    /// </summary>
+    public static readonly string ChangelogRequiredLabel = ":scroll: Требуется чейнджлог";
 }
 
 /// <summary>
