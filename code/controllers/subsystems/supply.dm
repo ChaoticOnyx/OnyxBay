@@ -175,7 +175,7 @@ SUBSYSTEM_DEF(supply)
 		var/datum/supply_order/SO = S
 		var/decl/hierarchy/supply_pack/SP = SO.object
 
-		alert_crew(SP.hidden)
+		alert_crew(SP.contraband)
 		var/obj/A = new SP.containertype(pickedloc)
 		A.SetName("[SP.containername][SO.comment ? " ([SO.comment])":"" ]")
 		//supply manifest generation begin

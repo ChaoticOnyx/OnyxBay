@@ -338,6 +338,7 @@
 	cost = 100
 	containername = "\improper crate"
 	hidden = 1
+	contraband = 1
 
 /decl/hierarchy/supply_pack/miscellaneous/tc25
 	name = "Telecrystals - 25"
@@ -345,6 +346,7 @@
 	cost = 200
 	containername = "\improper crate"
 	hidden = 1
+	contraband = 1
 
 /decl/hierarchy/supply_pack/miscellaneous/tc60
 	name = "Telecrystals - 60"
@@ -352,6 +354,7 @@
 	cost = 400
 	containername = "\improper crate"
 	hidden = 1
+	contraband = 1
 
 /decl/hierarchy/supply_pack/miscellaneous/tc150
 	name = "Telecrystals - 150"
@@ -359,3 +362,4 @@
 	cost = 800
 	containername = "\improper crate"
 	hidden = 1
+	contraband = 1
