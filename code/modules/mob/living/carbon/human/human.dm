@@ -1535,7 +1535,7 @@
 	if(no_pain)
 		return 0
 		// TODO [V] Remove this dirty hack
-	if(isSynthetic())
+	if(full_prosthetic) // Not using isSynthetic() to prevent huge overhead
 		return 0
 	if(check_organ)
 		if(!istype(check_organ))

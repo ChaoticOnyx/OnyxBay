@@ -46,12 +46,12 @@
 */
 /proc/pick_subarea_turf(areatype, list/predicates)
 	var/list/turfs = get_subarea_turfs(areatype, predicates)
-	if(turfs && turfs.len)
+	if(length(turfs))
 		return pick(turfs)
 
 /proc/pick_area_turf(area/A, list/predicates)
 	var/list/turfs = get_area_turfs(A, predicates)
-	if(turfs && turfs.len)
+	if(length(turfs))
 		return pick(turfs)
 
 /proc/pick_area_by_type(areatype, list/predicates)
@@ -65,7 +65,7 @@
 
 /proc/pick_area(list/predicates)
 	var/list/areas = get_filtered_areas(predicates)
-	if(areas && areas.len)
+	if(length(areas))
 		. = pick(areas)
 
 /proc/pick_area_and_turf(list/area_predicates, list/turf_predicates)
