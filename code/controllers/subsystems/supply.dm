@@ -136,7 +136,7 @@ SUBSYSTEM_DEF(supply)
 /datum/controller/subsystem/supply/proc/alert_crew(illegal = FALSE, force = FALSE)
 	//New message handling
 	var/announce = FALSE
-	if(illegal)
+	if(!illegal)
 		announce = prob(15)
 	else
 		announce = prob(95)
