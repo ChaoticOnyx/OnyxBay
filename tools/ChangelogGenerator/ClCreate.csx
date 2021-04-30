@@ -4,6 +4,7 @@
 
 using System.Globalization;
 using System.Net.Http;
+using System.Net.Http.Headers;
 using System.Net.Http.Json;
 using System.Text.Json;
 using System.Threading;
@@ -12,15 +13,20 @@ using System.Threading;
 var githubRepository = Environment.GetEnvironmentVariable("GITHUB_REPOSITORY")
                        ?? throw new InvalidOperationException("🚫 Переменная среды GITHUB_REPOSITORY не найдена.");
 
+var token = Environment.GetEnvironmentVariable("TOKEN")
+                ?? throw new InvalidOperationException("🚫 Переменная среды TOKEN не найдена.");
+
 // Настройка HTTP клиента
 var client = new HttpClient();
 client.DefaultRequestHeaders.UserAgent.ParseAdd("PostmanRuntime/7.28.0");
 client.DefaultRequestHeaders.Accept.ParseAdd("application/vnd.github.groot-preview+json");
+client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
+
+// Парсинг PR.
 var page = 0;
 var lastClosedPrDate = DateTime.Parse(File.ReadAllLines(Settings.LastClosedPrDateFile)[0], CultureInfo.InvariantCulture);
 var newLastClosedPrDate = lastClosedPrDate;
 
-// Парсинг PR.
 while (true)
 {
     page++;
@@ -38,7 +44,7 @@ while (true)
 
     foreach (var pullRequest in searchResponse.Items)
     {
-        if (pullRequest.Closed is null)
+        if (pullRequest.Closed is null || pullRequest.Closed <= lastClosedPrDate)
         {
             continue;
         }
@@ -48,15 +54,7 @@ while (true)
             newLastClosedPrDate = (DateTime)pullRequest.Closed;
         }
 
-        if (pullRequest.Closed <= lastClosedPrDate)
-        {
-            WriteLine("✅ Больше PR не обнаружено.");
-            File.WriteAllText(Settings.LastClosedPrDateFile, newLastClosedPrDate.ToString(CultureInfo.InvariantCulture));
-
-            return 0;
-        }
-
-        // Парсинг ченйджлога.
+        // Парсинг чейнджлога.
         try
         {
             Changelog changelog = pullRequest.ParseChangelog();
@@ -71,5 +69,5 @@ while (true)
     }
 
     // Задержка для ограничения запросов.
-    Thread.Sleep(TimeSpan.FromSeconds(7));
+    Thread.Sleep(TimeSpan.FromMilliseconds(700));
 }

@@ -26,6 +26,8 @@ jobs:
         run: dotnet tool install -g dotnet-script
       - name: Make changelog from PR
         run: dotnet script tools/ChangelogGenerator/ClCreate.csx
+        env:
+          TOKEN: ${{ secrets.GITHUB_TOKEN }}
       - name: Generate changelog
         run: dotnet script tools/ChangelogGenerator/Program.csx
       - name: Get current date

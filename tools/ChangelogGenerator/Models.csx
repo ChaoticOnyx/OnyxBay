@@ -230,7 +230,7 @@ public static class Github
             Changelog changelog = new()
             {
                 Author = Author.Login,
-                Date = DateTime.Now
+                Date = Closed?.Date ?? Opened.Date
             };
 
             foreach (Match match in matches)
