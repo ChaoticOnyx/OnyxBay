@@ -52,14 +52,13 @@
 
 /obj/structure/closet/secure_closet/RD/WillContain()
 	return list(
-		/obj/item/clothing/suit/bio_suit/scientist = 2,
+		/obj/item/clothing/suit/bio_suit/scientist = 1,
+		/obj/item/clothing/head/bio_hood/scientist = 1,
 		/obj/item/clothing/under/rank/research_director,
 		/obj/item/clothing/under/rank/research_director/rdalt,
 		/obj/item/clothing/under/rank/research_director/dress_rd,
-		/obj/item/clothing/suit/storage/toggle/labcoat,
 		/obj/item/clothing/glasses/hud/standard/science,
 		/obj/item/weapon/cartridge/rd,
-		/obj/item/clothing/shoes/white,
 		/obj/item/clothing/shoes/leather,
 		/obj/item/clothing/gloves/latex,
 		/obj/item/device/radio/headset/heads/rd,
