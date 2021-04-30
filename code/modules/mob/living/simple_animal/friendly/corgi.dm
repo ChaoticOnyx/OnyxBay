@@ -39,6 +39,22 @@
 	response_disarm = "bops"
 	response_harm   = "kicks"
 
+/mob/living/simple_animal/corgi/Ian/proc/rename()
+	var/mob/M = usr //user as mob interacts with corgi
+	var/input = sanitize(input("How do you want to name this pet?", "Rename", src.name) as null|text)
+	if(src && input)
+		to_chat(M, SPAN_NOTICE("The corgi is now named as '[input]'."))
+		name = input
+
+/mob/living/simple_animal/corgi/Ian/verb/name_pet()
+	set src in oview(1)
+	set category = "Object"
+	set name = "Name pet"
+	if(src in range(3))
+		src.rename()
+	else
+		return
+
 /mob/living/simple_animal/corgi/Life()
 	..()
 
