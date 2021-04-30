@@ -102,7 +102,7 @@
 		if(del_on_send)
 			if(ishuman(loc))
 				var/mob/living/carbon/human/H = loc
-				H.drop_item(src, TRUE)
+				H.drop_from_inventory(src, get_turf(src), TRUE)
 				to_chat(loc, SPAN_NOTICE("[src] flickers away in a brief flash of light."))
 			qdel(src)
 

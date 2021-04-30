@@ -161,6 +161,8 @@ GLOBAL_LIST_INIT(syndicate_factions, list(
 			return
 		target_mind = target
 		name = "[name] [H.real_name]"
+	if(!istype(H))
+		return
 	create_explain_text("implant [H.real_name] with a spying implant (don't forget to link it).")
 
 /datum/antag_contract/implant/can_place()
@@ -257,6 +259,8 @@ GLOBAL_LIST_INIT(syndicate_factions, list(
 			for(var/mob/living/silicon/ai/AI in ai_list)
 				if(AI.stat != DEAD)
 					valid_AIs.Add(AI)
+		if(!length(valid_AIs))
+			return
 		for(var/datum/antag_contract/item/steal_ai/s_AI in GLOB.all_contracts)
 			valid_AIs.Remove(s_AI.AI)
 		AI = pick(valid_AIs)
@@ -315,45 +319,52 @@ GLOBAL_LIST_INIT(syndicate_factions, list(
 	create_contract(reason, target)
 	..()
 
-/datum/antag_contract/item/assasinate/create_contract(Creason, datum/mind/target)
+/datum/antag_contract/item/assasinate/create_contract(Creason, datum/mind/Ctarget)
 	if(!Creason)
 		reason = pick("the target shut down their agent on mission", "the target important to NanoTransen")
 	else
 		reason = Creason
 
 	var/mob/living/carbon/human/H
-	if(target)
-		H = target.current
-		if(!istype(H))
-			remove()
-			return
-		target = H.organs_by_name[BP_HEAD]
-		if(!target)
-			remove()
-			return
-	else
+	if(!Ctarget)
 		var/list/candidates = SSticker.minds.Copy()
-		for(var/datum/antag_contract/item/assasinate/C in GLOB.all_contracts)
+
+		// Don't target the same player twice
+		for(var/datum/antag_contract/implant/C in GLOB.all_contracts)
 			candidates -= C.target_mind
+
 		while(candidates.len)
-			target_mind = pick(candidates)
-			candidates -= target_mind
-			H = target_mind.current
-			if(!istype(H) || H.stat == DEAD || !is_station_turf(get_turf(H)))
-				continue
-			target = H.organs_by_name[BP_HEAD]
-			if(!target)
-				continue
+			var/datum/mind/candidate_mind = pick(candidates)
+			candidates -= candidate_mind
+
+			// Implant contracts are 75% less likely to target contract-based antags to reduce the amount of cheesy self-implants
 			if(GLOB.traitors.is_antagonist(target_mind))
 				if(prob(25))
-					reason = "the target has betrayed the Syndicate and must be eliminated"
+					reason = "they want to check the target's loylity to the Syndicate"
 					reward = reward * 1.5
 				else
 					continue
+
+			H = candidate_mind.current
+			if(!istype(H) || H.stat == DEAD || !is_station_turf(get_turf(H)))
+				continue
+
+			target = H.organs_by_name[BP_HEAD]
+
+			target_mind = candidate_mind
+			name = "[name] [H.real_name]"
 			break
-	name = "[name] [target_mind.current.real_name]"
-	var/datum/gender/T = gender_datums[target_mind.current.get_gender()]
-	create_explain_text("assasinate [target_mind.current.real_name] and send [T.his] [target.name] via STD (find out in Devices and Tools) as a proof.")
+	else
+		target_mind = Ctarget
+		H = target_mind.current
+		if(!istype(H))
+			remove()
+			return
+		name = "[name] [H.real_name]"
+	if(!istype(H))
+		return
+	var/datum/gender/T = gender_datums[H.get_gender()]
+	create_explain_text("assasinate [H.real_name] and send [T.his] [target.name] via STD (find out in Devices and Tools) as a proof.")
 
 /datum/antag_contract/item/assasinate/can_place()
 	return ..() && target
@@ -477,7 +488,7 @@ GLOBAL_LIST_INIT(syndicate_factions, list(
 			candidates -= C.targets
 		while(candidates.len && targets.len < GLOB.contract_recon_target_count)
 			var/area/area_target = pick(candidates)
-			if((area_target.area_flags & AREA_FLAG_RAD_SHIELDED) && !(area_target.area_flags & AREA_FLAG_EXTERNAL))
+			if((area_target.area_flags & AREA_FLAG_RAD_SHIELDED) && (area_target.area_flags & AREA_FLAG_EXTERNAL))
 				candidates -= area_target
 				continue
 			targets += area_target
