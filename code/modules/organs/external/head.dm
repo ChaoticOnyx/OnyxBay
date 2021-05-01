@@ -64,6 +64,8 @@
 			penman.visible_message("<span class='warning'>[penman] writes something on [head_name]!</span>", "You write something on [head_name].")
 			forehead_graffiti = graffiti
 			graffiti_style = style
+			if(owner)
+				log_and_message_admins("has written something on [owner]'s ([owner.ckey]) head: \"[graffiti]\".", penman)
 
 /obj/item/organ/external/head/set_dna(datum/dna/new_dna)
 	..()
