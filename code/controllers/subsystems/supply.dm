@@ -137,7 +137,7 @@ SUBSYSTEM_DEF(supply)
 	//New message handling
 	var/announce = FALSE
 	if(!illegal)
-		announce = prob(15)
+		announce = prob(10)
 	else
 		announce = prob(95)
 	announce = announce && (force || !crew_illegal_noticed)
