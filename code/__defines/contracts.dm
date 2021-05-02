@@ -1,21 +1,3 @@
-//coder help:
-//0x1
-//0x2
-//0x4
-//0x8
-//0x10
-//0x20
-//0x40
-//0x80
-//0x100
-//0x200
-//0x400
-//0x800
-//0x1000
-//0x2000
-//0x4000
-//0x8000 //16th bit - higher than this will overflow
-
 // defines for contract type of impact to station
 #define CONTRACT_IMPACT_OPERATION 	0x1 // misc value, steal items
 #define CONTRACT_IMPACT_MILITARY	0x2 // high likely to meet antagonist with crew, e.g. implant, kill
