@@ -37,7 +37,7 @@ GLOBAL_LIST_EMPTY(clothing_blood_icons)
 
 	if(ishuman(user_mob))
 		var/mob/living/carbon/human/user_human = user_mob
-		if(blood_DNA && user_human.body_build.blood_icon)
+		if(blood_overlay_type && blood_DNA && user_human.body_build.blood_icon)
 			var/mob_state = get_icon_state(slot)
 			var/mob_icon = user_human.body_build.get_mob_icon(slot, mob_state)
 			var/cache_index = "[mob_icon]/[mob_state]/[blood_color]"
@@ -178,6 +178,7 @@ GLOBAL_LIST_EMPTY(clothing_blood_icons)
 	w_class = ITEM_SIZE_TINY
 	throwforce = 2
 	slot_flags = SLOT_EARS
+	blood_overlay_type = null // These are small anyways
 
 /obj/item/clothing/ears/update_clothing_icon()
 	if (ismob(src.loc))
@@ -205,6 +206,7 @@ BLIND     // can't see anything
 	var/darkness_view = 0//Base human is 2
 	var/see_invisible = -1
 	var/light_protection = 0
+	blood_overlay_type = null // These are too small to bother, no need to waste CPU time
 
 /obj/item/clothing/glasses/update_clothing_icon()
 	if(ismob(src.loc))
@@ -895,3 +897,4 @@ BLIND     // can't see anything
 	gender = NEUTER
 	species_restricted = list("exclude", SPECIES_NABBER, SPECIES_DIONA)
 	var/undergloves = 1
+	blood_overlay_type = null
