@@ -257,7 +257,7 @@
 			return TRADER_FOUND_UNWANTED
 		. += get_value(offer) * mult
 
-	playsound(get_turf(offers[1]), 'sound/effects/teleport.ogg', 50, 1)
+	playsound(offers[1], 'sound/effects/teleport.ogg', 50, 1)
 	for(var/offer in offers)
 		qdel(offer)
 

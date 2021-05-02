@@ -937,7 +937,7 @@
 
 /datum/chemical_reaction/slime/bork/on_reaction(datum/reagents/holder)
 	var/list/borks = typesof(/obj/item/weapon/reagent_containers/food/snacks) - /obj/item/weapon/reagent_containers/food/snacks
-	playsound(get_turf(holder.my_atom), 'sound/effects/phasein.ogg', 100, 1)
+	playsound(holder.my_atom, 'sound/effects/phasein.ogg', 100, 1)
 	for(var/mob/living/carbon/human/M in viewers(get_turf(holder.my_atom), null))
 		if(M.eyecheck() < FLASH_PROTECTION_MODERATE)
 			M.flash_eyes()
@@ -973,7 +973,7 @@
 	set waitfor = 0
 	..()
 	sleep(50)
-	playsound(get_turf(holder.my_atom), 'sound/effects/phasein.ogg', 100, 1)
+	playsound(holder.my_atom, 'sound/effects/phasein.ogg', 100, 1)
 	for(var/mob/living/M in range (get_turf(holder.my_atom), 7))
 		M.bodytemperature -= 140
 		to_chat(M, "<span class='warning'>You feel a chill!</span>")
