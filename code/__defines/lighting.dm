@@ -29,3 +29,4 @@
 #define LIGHTMODE_EVACUATION "evacuation_lighting"
 #define LIGHTMODE_ALARM "alarm"
 #define LIGHTMODE_READY "ready"
+#define LIGHTMODE_RADSTORM "radiation_storm"
