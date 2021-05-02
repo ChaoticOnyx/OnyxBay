@@ -2103,7 +2103,7 @@
 				if("resolve emergency")
 					var/datum/objective/ert_station_save/basic = new()
 					GLOB.ert.add_global_objective(basic)
-				else if("custom")
+				if("custom")
 					var/text = input("Write down the ERT mission", "ERT mission", null)
 					if(text)
 						var/datum/objective/ert_custom/custom = new
