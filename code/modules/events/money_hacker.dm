@@ -54,8 +54,10 @@
 		var/time = pick("", stationtime2text(), t2)
 
 		//create a taunting log entry
-		spawn(0)
-			for(var/datum/money_account/affected_account in affected_accounts)
+		spawn()
+			var/amount = rand(1, length(affected_accounts))
+			while(amount)
+				var/datum/money_account/affected_account = pick_n_take(affected_accounts)
 				var/datum/transaction/T = new()
 				T.target_name = target_name
 				T.purpose = purpose
@@ -64,6 +66,7 @@
 				T.time = time
 				T.source_terminal = pick("","[pick("Biesel","New Gibson")] GalaxyNet Terminal #[rand(111,999)]","your mums place","nantrasen high CommanD")
 				affected_account.do_transaction(T)
+				amount--
 
 	else
 		//crew wins
