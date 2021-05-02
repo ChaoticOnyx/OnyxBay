@@ -338,6 +338,7 @@
 	if(next_alarm_notice && (world.time > next_alarm_notice))
 		next_alarm_notice = 0
 
+		var/text = ""
 		var/alarm_raised = 0
 		for(var/datum/alarm_handler/AH in queued_alarms)
 			var/list/alarms = queued_alarms[AH]
@@ -347,8 +348,8 @@
 					alarm_raised = 1
 					if(!reported)
 						reported = 1
-						to_chat(src, "<span class='warning'>--- [AH.category] Detected ---</span>")
-					raised_alarm(A)
+						text += SPAN("warning", "--- [AH.category] Detected ---\n")
+					text += raised_alarm(A)
 
 		for(var/datum/alarm_handler/AH in queued_alarms)
 			var/list/alarms = queued_alarms[AH]
@@ -357,24 +358,27 @@
 				if(alarms[A] == -1)
 					if(!reported)
 						reported = 1
-						to_chat(src, "<span class='notice'>--- [AH.category] Cleared ---</span>")
-					to_chat(src, "\The [A.alarm_name()].")
+						text += SPAN("notice", "--- [AH.category] Cleared ---\n")
+					text += "\The [A.alarm_name()].\n"
 
 		if(alarm_raised)
-			to_chat(src, "<A HREF=?src=\ref[src];showalerts=1>\[Show Alerts\]</A>")
+			text += "<A HREF=?src=\ref[src];showalerts=1>\[Show Alerts\]</A>"
+		
+		if(text)
+			to_chat(src, text)
 
 		for(var/datum/alarm_handler/AH in queued_alarms)
 			var/list/alarms = queued_alarms[AH]
 			alarms.Cut()
 
 /mob/living/silicon/proc/raised_alarm(datum/alarm/A)
-	to_chat(src, "[A.alarm_name()]!")
+	return "[A.alarm_name()]!\n"
 
 /mob/living/silicon/ai/raised_alarm(datum/alarm/A)
 	var/cameratext = ""
 	for(var/obj/machinery/camera/C in A.cameras())
 		cameratext += "[(cameratext == "")? "" : "|"]<A HREF=?src=\ref[src];switchcamera=\ref[C]>[C.c_tag]</A>"
-	to_chat(src, "[A.alarm_name()]! ([(cameratext)? cameratext : "No Camera"])")
+	return "[A.alarm_name()]! ([(cameratext)? cameratext : "No Camera"])\n"
 
 
 /mob/living/silicon/proc/is_traitor()
