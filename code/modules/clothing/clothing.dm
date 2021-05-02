@@ -27,6 +27,8 @@
 /obj/item/clothing/proc/needs_vision_update()
 	return flash_protection || tint
 
+GLOBAL_LIST_EMPTY(clothing_blood_icons)
+
 /obj/item/clothing/get_mob_overlay(mob/user_mob, slot)
 	var/image/ret = ..()
 
@@ -36,7 +38,15 @@
 	if(ishuman(user_mob))
 		var/mob/living/carbon/human/user_human = user_mob
 		if(blood_DNA && user_human.body_build.blood_icon)
-			ret.overlays += overlay_image(user_human.body_build.blood_icon, blood_overlay_type, color = blood_color, appearance_flags = RESET_COLOR)
+			var/mob_state = get_icon_state(slot)
+			var/mob_icon = user_human.body_build.get_mob_icon(slot, mob_state)
+			var/cache_index = "[mob_icon]/[mob_state]/[blood_color]"
+			if(!GLOB.clothing_blood_icons[cache_index])
+				var/image/bloodover = image(icon = user_human.body_build.blood_icon, icon_state = blood_overlay_type)
+				bloodover.color = blood_color
+				bloodover.filters += filter(type = "alpha", icon = icon(mob_icon, mob_state))
+				GLOB.clothing_blood_icons[cache_index] = bloodover
+			ret.overlays |= GLOB.clothing_blood_icons[cache_index]
 
 	if(accessories.len)
 		for(var/obj/item/clothing/accessory/A in accessories)
