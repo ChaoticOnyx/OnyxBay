@@ -36,8 +36,7 @@
 	if(ishuman(user_mob))
 		var/mob/living/carbon/human/user_human = user_mob
 		if(blood_DNA && user_human.body_build.blood_icon)
-			var/image/bloodsies	= overlay_image(user_human.body_build.blood_icon, blood_overlay_type, blood_color, RESET_COLOR)
-			ret.overlays += bloodsies
+			ret.overlays += overlay_image(user_human.body_build.blood_icon, blood_overlay_type, color = blood_color, appearance_flags = RESET_COLOR)
 
 	if(accessories.len)
 		for(var/obj/item/clothing/accessory/A in accessories)
@@ -613,7 +612,7 @@ BLIND     // can't see anything
 	allowed = list(/obj/item/weapon/tank/emergency)
 	armor = list(melee = 5, bullet = 5, laser = 5,energy = 0, bomb = 0, bio = 0, rad = 0)
 	slot_flags = SLOT_OCLOTHING
-	blood_overlay_type = "suit"
+	blood_overlay_type = "suitblood"
 	siemens_coefficient = 0.9
 	w_class = ITEM_SIZE_NORMAL
 
