@@ -188,7 +188,7 @@
 			to_chat(user, "<span class='warning'>Insufficient resources.</span>")
 			return FALSE
 
-		playsound(get_turf(user), 'sound/machines/click.ogg', 50, 1)
+		playsound(user, 'sound/machines/click.ogg', 50, 1)
 		rcdm.work_message(target, user, rcd)
 
 		if(rcdm.delay)
@@ -197,7 +197,7 @@
 				return FALSE
 
 		rcdm.do_handle_work(target)
-		playsound(get_turf(user), 'sound/items/Deconstruct.ogg', 50, 1)
+		playsound(user, 'sound/items/Deconstruct.ogg', 50, 1)
 		return TRUE
 
 	return FALSE

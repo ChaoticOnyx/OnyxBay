@@ -213,7 +213,7 @@ var/list/artefact_feedback = list(/obj/structure/closet/wizard/armor = 		"HS",
 					uses -= spellbook.spells[path]
 					spellbook.max_uses -= spellbook.spells[path]
 					//finally give it a bit of an oomf
-					playsound(get_turf(user),'sound/effects/phasein.ogg',50,1)
+					playsound(user,'sound/effects/phasein.ogg',50,1)
 		. = TOPIC_REFRESH
 
 	else if(href_list["reset"])
