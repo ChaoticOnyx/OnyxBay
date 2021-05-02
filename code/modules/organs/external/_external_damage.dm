@@ -270,9 +270,6 @@ obj/item/organ/external/take_general_damage(amount, silent = FALSE)
 /obj/item/organ/external/proc/get_pain()
 	return pain
 
-/obj/item/organ/external/proc/get_full_pain() // Epicus what the actual fuck
-	return full_pain                          // <- THIS is how you get a monstrous overhead out of nowhere for no raisin
-
 /obj/item/organ/external/proc/adjust_pain(change)
 	if(!can_feel_pain())
 		return 0
