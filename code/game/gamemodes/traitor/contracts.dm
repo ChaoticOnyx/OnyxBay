@@ -56,8 +56,8 @@ GLOBAL_LIST_INIT(syndicate_factions, list(
 	return
 
 /datum/antag_contract/proc/create_explain_text(target_and_task)
-	desc = "My client is [organization.name], [reason]. They have information the target is located on [GLOB.using_map.station_name]. \
-	Your mission[prob(25) ? ", should you choose to accept it, is to" : " is to"] [target_and_task] The reward for closing this contract is [reward] TC"
+	desc = "My client is [organization.name], [reason]. They have information that the target is located somwhere aboard [GLOB.using_map.station_name]. \
+	Your mission[prob(25) ? ", should you choose to accept it, is to" : " is to"] [target_and_task] The reward for closing this contract is [reward] TC."
 
 /datum/antag_contract/proc/can_place()
 	if(unique)
@@ -92,7 +92,7 @@ GLOBAL_LIST_INIT(syndicate_factions, list(
 	if(M)
 		M.completed_contracts++
 		if(M.current)
-			to_chat(M.current, SPAN_NOTICE("Contract completed: [name] ([reward] TC). Nice work, [M.current]."))
+			to_chat(M.current, SPAN("notice", "Contract completed: [name] ([reward] TC). [pick("Nice work", "Good job", "Great job", "Well done", "Nicely done")], [M.current]."))
 
 	close_uplink.uses += reward
 
@@ -142,7 +142,7 @@ GLOBAL_LIST_INIT(syndicate_factions, list(
 			// Implant contracts are 75% less likely to target contract-based antags to reduce the amount of cheesy self-implants
 			if(GLOB.traitors.is_antagonist(target_mind))
 				if(prob(25))
-					reason = "they want to check the target's loylity to the Syndicate"
+					reason = "they want to make sure of the target's loyalty to the Syndicate"
 					reward = reward * 1.5
 				else
 					continue
@@ -163,7 +163,7 @@ GLOBAL_LIST_INIT(syndicate_factions, list(
 		name = "[name] [H.real_name]"
 	if(!istype(H))
 		return
-	create_explain_text("implant [H.real_name] with a spying implant (don't forget to link it).")
+	create_explain_text("implant [H.real_name] with a spying implant (don't forget to authorize it first).")
 
 /datum/antag_contract/implant/can_place()
 	return ..() && target_mind
@@ -226,7 +226,7 @@ GLOBAL_LIST_INIT(syndicate_factions, list(
 		target_desc = I.name
 		qdel(I)
 	name += " [target_desc]"
-	create_explain_text("steal [target_desc] and send it via STD (find out in Devices and Tools).")
+	create_explain_text("steal <b>[target_desc]</b> and send it via STD (found in <b>Devices and Tools</b>).")
 
 /datum/antag_contract/item/steal/can_place()
 	return ..() && target_type
@@ -265,7 +265,7 @@ GLOBAL_LIST_INIT(syndicate_factions, list(
 			valid_AIs.Remove(s_AI.AI)
 		AI = pick(valid_AIs)
 	target_desc = "[target_desc] [AI.name]"
-	create_explain_text("steal [target_desc] and send it via STD (find out in Devices and Tools).")
+	create_explain_text("steal <b>[target_desc]<b> and send it via STD (found in <b>Devices and Tools</b>).")
 
 /datum/antag_contract/item/steal_ai/can_place()
 	return ..() && istype(AI)
@@ -288,14 +288,14 @@ GLOBAL_LIST_INIT(syndicate_factions, list(
 
 /datum/antag_contract/item/blood/create_contract(Creason, target)
 	if(!Creason)
-		reason = pick("they want to research the NT employee genome")
+		reason = pick("they want to research a NanoTrasen employee's genome")
 	else
 		reason = Creason
 	if(!isnum_safe(target))
 		count = rand(3, 6)
 	else
 		count = target
-	create_explain_text("send blood samples of [count] different people in separate containers via STD (find out in Devices and Tools).")
+	create_explain_text("send blood samples of <b>[count]<b> different people in separate containers via STD (found in <b>Devices and Tools</b>).")
 
 /datum/antag_contract/item/blood/check_contents(list/contents)
 	var/list/samples = list()
@@ -364,7 +364,7 @@ GLOBAL_LIST_INIT(syndicate_factions, list(
 	if(!istype(H))
 		return
 	var/datum/gender/T = gender_datums[H.get_gender()]
-	create_explain_text("assasinate [H.real_name] and send [T.his] [target.name] via STD (find out in Devices and Tools) as a proof.")
+	create_explain_text("assasinate <b>[H.real_name]</b> and send <b>[T.his] [target.name]</b> via STD (found in <b>Devices and Tools</b>) as a proof.")
 
 /datum/antag_contract/item/assasinate/can_place()
 	return ..() && target
@@ -397,7 +397,7 @@ GLOBAL_LIST_INIT(syndicate_factions, list(
 	else
 		sum = target
 	name += " [sum] cash"
-	create_explain_text("extract a sum of [sum] credits from [GLOB.using_map.company_name] economy and send it via STD (find out in Devices and Tools).")
+	create_explain_text("extract a sum of <b>[sum] credits</b> from [GLOB.using_map.company_name] economics and send it via STD (found in <b>Devices and Tools</b>).")
 
 /datum/antag_contract/item/dump/check_contents(list/contents)
 	var/received = 0
@@ -447,7 +447,7 @@ GLOBAL_LIST_INIT(syndicate_factions, list(
 			if(R?.build_path)
 				targets.Add(R)
 				targets_name.Add(R.name)
-	create_explain_text("send a fabricator data disk with one of the following designs via STD (find out in Devices and Tools):<br>[english_list(targets_name, and_text = " or ")].")
+	create_explain_text("send a <b>fabricator data disk</b> with one of the following designs via STD (found in <b>Devices and Tools</b>):<br><i>[english_list(targets_name, and_text = " or ")]</i>.")
 
 /datum/antag_contract/item/research/can_place()
 	return ..() && targets.len && counter < 3
@@ -474,7 +474,7 @@ GLOBAL_LIST_INIT(syndicate_factions, list(
 
 /datum/antag_contract/recon/create_contract(Creason, list/area/target)
 	if(!Creason)
-		reason = pick("they want to know what objects located in this area")
+		reason = pick("they want to know what objects are located in this area")
 	else
 		reason = Creason
 	if(islist(target))
@@ -492,7 +492,7 @@ GLOBAL_LIST_INIT(syndicate_factions, list(
 				candidates -= area_target
 				continue
 			targets += area_target
-	create_explain_text("activate 3 spy bug by spy monitor (Bug kit) in one of the following locations: [english_list(targets, and_text = " or ")] and let them work without interruption for 10 minutes.")
+	create_explain_text("activate <b>3 spy bugs</b> with a <b>Bug kit</b> and ensure they work without interruption for 10 minutes in one of the following locations:<br><i>[english_list(targets, and_text = " or ")]</i>.")
 
 /datum/antag_contract/recon/can_place()
 	return ..() && targets.len
