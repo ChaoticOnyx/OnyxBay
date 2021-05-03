@@ -43,7 +43,7 @@
 	if(shock >= 10)
 		. += (shock / 10) //pain shouldn't slow you down if you can't even feel it
 
-	if(!isSynthetic(src))	// are you hungry? I think yes
+	if(!full_prosthetic)	// not using isSynthetic cuz of overhead
 		var/nut_level = nutrition / 100
 		switch(nutrition)
 			if(0 to 150)

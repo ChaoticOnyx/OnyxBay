@@ -91,6 +91,7 @@
 		health -= amount
 
 /mob/living/bot/death()
+	resetTarget()
 	stat = DEAD
 	explode()
 
@@ -229,9 +230,11 @@
 	return 0
 
 /mob/living/bot/proc/handleAI()
+	set waitfor = 0
+
 	if(client)
 		return
-	if(ignore_list.len)
+	if(length(ignore_list))
 		for(var/atom/A in ignore_list)
 			if(!A || !A.loc || prob(1))
 				ignore_list -= A
