@@ -56,7 +56,7 @@
 		tox_filtering = max(damage, (tox_filtering - filter_effect*0.1))
 
 	if(owner.chem_effects[CE_ALCOHOL_TOXIC])
-		take_internal_damage(owner.chem_effects[CE_ALCOHOL_TOXIC], prob(90)) // Chance to warn them
+		take_internal_damage(store_tox(owner.chem_effects[CE_ALCOHOL_TOXIC]/2), prob(90)) // Chance to warn them
 
 	// Heal a bit if needed and we're not busy. This allows recovery from low amounts of toxloss.
 	if(!owner.chem_effects[CE_ALCOHOL] && !owner.chem_effects[CE_TOXIN] && !owner.radiation && damage > 0)
