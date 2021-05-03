@@ -1,6 +1,6 @@
 /obj/item/weapon/implant/spy
 	name = "spying implant"
-	desc = "Used for spying purposes. It has a small label: \"Use your uplink on it for authorization\"."
+	desc = "Used for spying purposes."
 	origin_tech = list(TECH_MATERIAL = 1, TECH_BIO = 2, TECH_ILLEGAL = 2)
 	var/activated = FALSE
 	var/timer

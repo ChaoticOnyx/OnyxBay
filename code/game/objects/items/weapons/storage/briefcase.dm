@@ -23,7 +23,6 @@
 // Syndicate Teleportation Device
 
 /obj/item/weapon/storage/briefcase/std
-	name = "unknown briefcase"
 	desc = "It's an old looking briefcase with some high-tech markings. It has a label on it that says, \"WORKS ONLY NEAR SPACE\"."
 	origin_tech = list(TECH_BLUESPACE = 3, TECH_ILLEGAL = 3)
 	var/obj/item/device/uplink/uplink
@@ -32,7 +31,7 @@
 
 /obj/item/weapon/storage/briefcase/std/attackby(obj/item/I, mob/user)
 	if(I.hidden_uplink)
-		src.visible_message("\The [src] blinks green!")
+		visible_message("\The [src] blinks green!")
 		uplink = I.hidden_uplink
 		authentication_complete = TRUE
 	..()
@@ -95,7 +94,7 @@
 			C.on_container(src)
 		for(var/obj/item/I in contents)
 			if(I.hidden_uplink == uplink)
-				src.remove_from_storage(I, get_turf(src))
+				remove_from_storage(I, get_turf(src))
 				continue
 			qdel(I)
 		contents = list()

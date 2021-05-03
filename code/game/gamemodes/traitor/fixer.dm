@@ -17,9 +17,6 @@
 	var/list/datum/antag_contract/avaliable_contracts = list()
 	for(var/datum/contract_organization/CO in organizations)
 		avaliable_contracts += CO.get_contracts(M)
-	// for(var/datum/antag_contract/contract in contracts)
-	// 	if(!contract.completed && !(M && (contract?.target_mind == M) && prob(85))) // 15 percent to show contract to contract target
-	// 		avaliable_contracts.Add(contract)
 	return avaliable_contracts
 
 /datum/contract_fixer/proc/roundstart()
@@ -74,23 +71,23 @@
 	contracts.Remove(AC)
 
 /datum/contract_organization/syndicate/tti
-	name = "\The Trauma Team Interspace"
+	name = "Trauma Team Interspace"
 	intents = CONTRACT_IMPACT_SOCIAL & CONTRACT_IMPACT_OPERATION
 /datum/contract_organization/syndicate/ms
-	name = "\The MiliSpace"
+	name = "MiliSpace"
 	intents = CONTRACT_IMPACT_MILITARY & CONTRACT_IMPACT_HIJACK
 /datum/contract_organization/syndicate/bs
-	name = "\The Biospacenica"
+	name = "Biospacenica"
 	intents = CONTRACT_IMPACT_SOCIAL
 /datum/contract_organization/syndicate/kt
-	name = "\The Kang Too"
+	name = "Kang Too"
 	intents = CONTRACT_IMPACT_SOCIAL & CONTRACT_IMPACT_OPERATION & CONTRACT_IMPACT_MILITARY
 /datum/contract_organization/syndicate/nv
-	name = "\The NovaPlasma"
+	name = "NovaPlasma"
 	intents = CONTRACT_IMPACT_SOCIAL & CONTRACT_IMPACT_OPERATION
 /datum/contract_organization/syndicate/dt
-	name = "\The Dynamoon Technologies"
+	name = "Dynamoon Technologies"
 	intents = CONTRACT_IMPACT_SOCIAL & CONTRACT_IMPACT_HIJACK
 /datum/contract_organization/syndicate/ns
-	name = "\The NanoSaka"
+	name = "NanoSaka"
 	intents = CONTRACT_IMPACT_SOCIAL & CONTRACT_IMPACT_OPERATION & CONTRACT_IMPACT_MILITARY & CONTRACT_IMPACT_HIJACK
