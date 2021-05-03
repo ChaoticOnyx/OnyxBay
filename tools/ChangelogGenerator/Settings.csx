@@ -1,6 +1,7 @@
 #nullable enable
 
 using System.Text.Json;
+using System.IO;
 
 /// <summary>
 ///     Настройки скрипта.
@@ -10,29 +11,29 @@ private static class Settings
     /// <summary>
     ///     Корень билда.
     /// </summary>
-    public static readonly string WorkspaceFolder = Path.GetFullPath("./", Directory.GetCurrentDirectory());
+    public static readonly DirectoryInfo WorkspaceFolder = new(Path.GetFullPath("./", Directory.GetCurrentDirectory()));
     /// <summary>
     ///     Папка с чейнджлогами.
     /// </summary>
-    public static readonly string ChangelogsFolder = Path.GetFullPath("./html/changelogs/", WorkspaceFolder);
+    public static readonly DirectoryInfo ChangelogsFolder = new(Path.GetFullPath("./html/changelogs/", WorkspaceFolder.FullName));
     /// <summary>
     ///     Кэш чейнджлогов.
     /// </summary>
-    public static readonly string ChangelogsCache = Path.GetFullPath("./html/changelogs/.all_changelog.json", WorkspaceFolder);
+    public static readonly DirectoryInfo ChangelogsCache = new(Path.GetFullPath("./html/changelogs/.all_changelog.json", WorkspaceFolder.FullName));
     /// <summary>
     ///     HTML файл чейнджлога.
     /// </summary>
     /// <returns></returns>
-    public static readonly string HtmlChangelog = Path.GetFullPath("./html/changelog.html", WorkspaceFolder);
+    public static readonly FileInfo HtmlChangelog = new(Path.GetFullPath("./html/changelog.html", WorkspaceFolder.FullName));
     /// <summary>
     ///     Шаблон HTML чейнджлога.
     /// </summary>
-    public static readonly string ChangelogTemplate = Path.GetFullPath("./html/templates/changelog.tmpl", WorkspaceFolder);
+    public static readonly FileInfo ChangelogTemplate = new(Path.GetFullPath("./html/templates/changelog.tmpl", WorkspaceFolder.FullName));
     /// <summary>
     ///     Файл с указанием на дату закрытия последнего PR для которого был сделан чейнджлог.
     /// </summary>
     /// <returns></returns>
-    public static readonly string LastClosedPrDateFile = Path.GetFullPath("./tools/ChangelogGenerator/last_pr.txt", WorkspaceFolder);
+    public static readonly FileInfo LastClosedPrDateFile = new(Path.GetFullPath("./tools/ChangelogGenerator/last_pr.txt", WorkspaceFolder.FullName));
     /// <summary>
     ///     Настройки JSON сериализатора.
     /// </summary>

@@ -24,7 +24,7 @@ client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bear
 
 // Парсинг PR.
 var page = 0;
-var lastClosedPrDate = DateTime.Parse(File.ReadAllLines(Settings.LastClosedPrDateFile)[0], CultureInfo.InvariantCulture);
+var lastClosedPrDate = DateTime.Parse(File.ReadAllLines(Settings.LastClosedPrDateFile.FullName)[0], CultureInfo.InvariantCulture);
 var newLastClosedPrDate = lastClosedPrDate;
 
 while (true)
@@ -37,7 +37,7 @@ while (true)
     if (searchResponse.Items.Count == 0)
     {
         WriteLine("✅ Больше PR не обнаружено.");
-        File.WriteAllText(Settings.LastClosedPrDateFile, newLastClosedPrDate.ToString(CultureInfo.InvariantCulture));
+        File.WriteAllText(Settings.LastClosedPrDateFile.FullName, newLastClosedPrDate.ToString(CultureInfo.InvariantCulture));
 
         return 0;
     }
@@ -58,7 +58,7 @@ while (true)
         try
         {
             Changelog changelog = pullRequest.ParseChangelog();
-            var changelogPath = Path.GetFullPath($"PR-{pullRequest.Number}.json", Settings.ChangelogsFolder);
+            var changelogPath = Path.GetFullPath($"PR-{pullRequest.Number}.json", Settings.ChangelogsFolder.FullName);
             File.WriteAllText(changelogPath, JsonSerializer.Serialize(changelog, Settings.JsonOptions));
             WriteLine($"✅ Чейнджлог PR #{pullRequest.Number} сохранён.");
         }

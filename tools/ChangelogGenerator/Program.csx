@@ -10,11 +10,11 @@ using System.Text.Json;
 using Scriban;
 
 // Поиск и парсинг чейнджлогов.
-var files = (from file in Directory.GetFiles(Settings.ChangelogsFolder)
-             where Path.GetFileName(file)[0] != '.' && Path.GetExtension(file) == ".json"
+var files = (from file in Settings.ChangelogsFolder.GetFiles()
+             where !file.Name.StartsWith('.') && file.Extension == ".json"
              select file).ToList();
 
-var changelogs = files.Select(f => JsonSerializer.Deserialize<Changelog>(File.ReadAllText(f), Settings.JsonOptions)
+var changelogs = files.Select(f => JsonSerializer.Deserialize<Changelog>(File.ReadAllText(f.FullName), Settings.JsonOptions)
                                    ?? throw new InvalidOperationException($"Невозможно запарсить {f}"))
                       .ToList();
 
@@ -26,7 +26,7 @@ if (changelogs.Count == 0)
 }
 
 // Парсинг кэша.
-var cache = JsonSerializer.Deserialize<List<Changelog>>(File.ReadAllText(Settings.ChangelogsCache), Settings.JsonOptions)
+var cache = JsonSerializer.Deserialize<List<Changelog>>(File.ReadAllText(Settings.ChangelogsCache.FullName), Settings.JsonOptions)
                            ?? throw new InvalidOperationException($"Невозможно запарсить {Settings.ChangelogsCache}");
 
 cache.AddRange(changelogs);
@@ -65,7 +65,7 @@ if (anyErrors)
 }
 
 // Создание и рендеринг HTML шаблона
-Template template = Template.Parse(File.ReadAllText(Settings.ChangelogTemplate));
+Template template = Template.Parse(File.ReadAllText(Settings.ChangelogTemplate.FullName));
 var context = new
 {
     GeneratingTime = DateTime.Now,
@@ -74,12 +74,12 @@ var context = new
 
 // Сохранение и удаление
 WriteLine("✅ Сохранение HTML.");
-File.WriteAllText(Settings.HtmlChangelog, template.Render(context));
+File.WriteAllText(Settings.HtmlChangelog.FullName, template.Render(context));
 
 WriteLine("✅ Сохранение кэша.");
-File.WriteAllText(Settings.ChangelogsCache, JsonSerializer.Serialize(cache, Settings.JsonOptions));
+File.WriteAllText(Settings.ChangelogsCache.FullName, JsonSerializer.Serialize(cache, Settings.JsonOptions));
 
 WriteLine("✅ Удаление чейнджлог файлов.");
-files.ForEach(f => File.Delete(f));
+files.ForEach(f => f.Delete());
 
 return 0;
