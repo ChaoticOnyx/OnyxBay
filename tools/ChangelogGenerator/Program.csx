@@ -8,7 +8,6 @@ using System.IO;
 using System.Linq;
 using System.Text.Json;
 using Scriban;
-using Console = System.Console;
 
 // Поиск и парсинг чейнджлогов.
 var files = (from file in Directory.GetFiles(Settings.ChangelogsFolder)
