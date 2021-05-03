@@ -868,9 +868,10 @@ Note that amputating the affected organ does in fact remove the infection from t
 			update_icon_drop(victim)
 			forceMove(victim.loc)
 			if(!clean) // Throw limb around.
-				if(src && isturf(loc))
-					throw_at(get_edge_target_turf(src, pick(GLOB.alldirs)), rand(1, 3), rand(2, 4))
-				dir = 2
+				spawn()
+					if(src && isturf(loc))
+						throw_at(get_edge_target_turf(src, pick(GLOB.alldirs)), rand(1, 3), rand(2, 4))
+					dir = 2
 		if(DROPLIMB_BURN)
 			new /obj/effect/decal/cleanable/ash(loc)
 			for(var/obj/item/I in src)
@@ -891,7 +892,8 @@ Note that amputating the affected organ does in fact remove the infection from t
 			for(var/obj/item/I in src)
 				I.forceMove(victim.loc)
 				if(isturf(I.loc))
-					I.throw_at(get_edge_target_turf(I, pick(GLOB.alldirs)), rand(1, 2), rand(2, 4))
+					spawn()
+						I.throw_at(get_edge_target_turf(I, pick(GLOB.alldirs)), rand(1, 2), rand(2, 4))
 
 			qdel(src)
 

@@ -186,7 +186,7 @@ var/list/spells = typesof(/spell) //needed for the badmin verb for now
 
 /spell/proc/after_cast(list/targets)
 	if(cast_sound)
-		playsound(get_turf(holder),cast_sound,50,1)
+		playsound(holder, cast_sound, 50, 1)
 	for(var/atom/target in targets)
 		var/location = get_turf(target)
 		if(istype(target,/mob/living) && message)

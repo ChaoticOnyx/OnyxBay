@@ -623,7 +623,7 @@
 	if(isWrench(I) && istype(loc, /turf) && can_anchor)
 		if(do_after(user, time))
 			user.visible_message("\The [user] wrenches \the [src]'s anchoring bolts [anchored ? "back" : "into position"].")
-			playsound(get_turf(user), 'sound/items/Ratchet.ogg',50)
+			playsound(user, 'sound/items/Ratchet.ogg',50)
 			anchored = !anchored
 
 /obj/item/device/electronic_assembly/attackby(obj/item/I, mob/living/user)
@@ -691,7 +691,7 @@
 		user.drop_item(I)
 		I.forceMove(src)
 		battery = I
-		playsound(get_turf(src), 'sound/items/Deconstruct.ogg', 50, 1)
+		playsound(src, 'sound/items/Deconstruct.ogg', 50, 1)
 		to_chat(user, SPAN_NOTICE("You slot the [I] inside \the [src]'s power supplier."))
 		return TRUE
 

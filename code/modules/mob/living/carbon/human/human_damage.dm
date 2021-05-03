@@ -60,7 +60,7 @@
 /mob/living/carbon/human/getHalLoss()
 	var/amount = 0
 	for(var/obj/item/organ/external/E in organs)
-		amount += E.get_full_pain()
+		amount += E.full_pain
 	return amount
 
 /mob/living/carbon/human/setHalLoss(amount)
@@ -506,7 +506,7 @@ This function restores all organs.
 
 // Find out in how much pain the mob is at the moment.
 /mob/living/carbon/human/proc/get_shock()
-	if (!can_feel_pain())
+	if(!can_feel_pain())
 		return 0
 
 	var/traumatic_shock = getHalLoss()                 // Pain.
@@ -514,7 +514,7 @@ This function restores all organs.
 
 	if(stat == UNCONSCIOUS)
 		traumatic_shock *= 0.6
-	return max(0,traumatic_shock)
+	return max(0, traumatic_shock)
 
 /mob/living/carbon/human/apply_effect(effect = 0,effecttype = STUN, blocked = 0)
 	if(effecttype == IRRADIATE && (effect * blocked_mult(blocked) <= RAD_LEVEL_LOW))
