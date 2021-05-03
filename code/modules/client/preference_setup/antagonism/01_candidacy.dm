@@ -109,14 +109,14 @@
 		for(var/id in roles)
 			switch(selection)
 				if(0)
+					pref.may_be_special_role -= id
 					pref.be_special_role -= id
-					pref.never_be_special_role |= id
 				if(1)
+					pref.may_be_special_role |= id
 					pref.be_special_role -= id
-					pref.never_be_special_role -= id
 				if(2)
+					pref.may_be_special_role -= id
 					pref.be_special_role |= id
-					pref.never_be_special_role -= id
 		return TOPIC_REFRESH
 
 	return ..()
