@@ -28,7 +28,7 @@
 	desc = "An armored vest that protects against some damage."
 	icon_state = "onyxvest"
 	//item_state = "armor"
-	blood_overlay_type = "armor"
+	blood_overlay_type = "armorblood"
 	body_parts_covered = UPPER_TORSO|LOWER_TORSO
 	cold_protection = UPPER_TORSO|LOWER_TORSO
 	heat_protection = UPPER_TORSO|LOWER_TORSO
@@ -208,7 +208,7 @@
 	var/active = 0.0
 	icon_state = "reactiveoff"
 	item_state = "reactiveoff"
-	blood_overlay_type = "armor"
+	blood_overlay_type = "armorblood"
 	armor = list(melee = 0, bullet = 0, laser = 0, energy = 0, bomb = 0, bio = 0, rad = 0)
 
 /obj/item/clothing/suit/armor/reactive/New()
@@ -278,7 +278,7 @@
 	desc = "An armored jacket used in special operations."
 	icon_state = "detective"
 	//item_state = "det_suit"
-	blood_overlay_type = "coat"
+	blood_overlay_type = "coatblood"
 	body_parts_covered = UPPER_TORSO|LOWER_TORSO|ARMS
 	cold_protection = UPPER_TORSO|LOWER_TORSO|ARMS
 	heat_protection = UPPER_TORSO|LOWER_TORSO|ARMS

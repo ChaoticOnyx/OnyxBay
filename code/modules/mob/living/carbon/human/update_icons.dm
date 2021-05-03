@@ -193,11 +193,11 @@ var/global/list/damage_icon_parts = list()
 
 //DAMAGE OVERLAYS
 //constructs damage icon for each organ from mask * damage field and saves it in our overlays_ lists
-/mob/living/carbon/human/UpdateDamageIcon(update_icons=1)
+/mob/living/carbon/human/UpdateDamageIcon(update_icons = 1)
 	// first check whether something actually changed about damage appearance
 	var/damage_appearance = ""
 
-	if(!species.damage_overlays || !species.damage_mask)
+	if(!species.damage_overlays || !body_build?.dam_mask)
 		return
 
 	for(var/obj/item/organ/external/O in organs)
@@ -220,13 +220,14 @@ var/global/list/damage_icon_parts = list()
 
 		O.update_damstate()
 		O.update_icon()
-		if(O.damage_state == "00") continue
+		if(O.damage_state == "00")
+			continue
 		var/icon/DI
 		var/use_colour = (BP_IS_ROBOTIC(O) ? SYNTH_BLOOD_COLOUR : O.species.get_blood_colour(src))
-		var/cache_index = "[O.damage_state]/[O.icon_name]/[use_colour]/[species.name]"
+		var/cache_index = "[O.damage_state]/[O.icon_name]/[use_colour]/[species.name]/[body_build.name]"
 		if(damage_icon_parts[cache_index] == null)
 			DI = new /icon(species.get_damage_overlays(src), O.damage_state)			// the damage icon for whole human
-			DI.Blend(new /icon(species.get_damage_mask(src), "[O.icon_name]"), ICON_MULTIPLY)	// mask with this organ's pixels
+			DI.Blend(new /icon(body_build.dam_mask, "[O.icon_name]"), ICON_MULTIPLY)	// mask with this organ's pixels
 			DI.Blend(use_colour, ICON_MULTIPLY)
 			damage_icon_parts[cache_index] = DI
 		else
@@ -236,7 +237,8 @@ var/global/list/damage_icon_parts = list()
 
 	overlays_standing[HO_DAMAGE_LAYER]	= standing_image
 
-	if(update_icons) queue_icon_update()
+	if(update_icons)
+		queue_icon_update()
 
 //BASE MOB SPRITE
 /mob/living/carbon/human/proc/update_body(update_icons=1)
