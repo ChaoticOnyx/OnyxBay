@@ -1,32 +1,32 @@
 GLOBAL_VAR_INIT(contract_recon_target_count, 3)
 GLOBAL_LIST_EMPTY(all_contracts)
 GLOBAL_LIST_INIT(contracts_steal_items, list(
-	"the prototype psychoscope" = 						list(CONTRACT_STEAL_SCIENCE, /obj/item/clothing/glasses/psychoscope),
-	"the captain's antique laser gun" = 				list(CONTRACT_STEAL_MILITARY, /obj/item/weapon/gun/energy/captain),
-	"a bluespace rift generator in hand teleporter" =	list(CONTRACT_STEAL_SCIENCE, /obj/item/integrated_circuit/manipulation/bluespace_rift),
-	"an RCD" = 											list(CONTRACT_STEAL_OPERATION, /obj/item/weapon/rcd),
-	// "a jetpack" = 										list(CONTRACT_STEAL_OPERATION, /obj/item/weapon/tank/jetpack), // jetpack doesn't stuff in STD, redo STD then uncomment this.
-	"a captain's jumpsuit" = 							list(CONTRACT_STEAL_UNDERPANTS, /obj/item/clothing/under/rank/captain),
-	"a pair of magboots" = 								list(CONTRACT_STEAL_OPERATION, /obj/item/clothing/shoes/magboots),
-	"the [station_name()] blueprints" = 				list(CONTRACT_STEAL_OPERATION, /obj/item/blueprints),
-	// "a nasa voidsuit" = 								list(CONTRACT_STEAL_OPERATION, /obj/item/clothing/suit/space/void),
-	"a sample of slime extract" = 						list(CONTRACT_STEAL_SCIENCE, /obj/item/slime_extract),
-	"a piece of corgi meat" = 							list(CONTRACT_STEAL_OPERATION, /obj/item/weapon/reagent_containers/food/snacks/meat/corgi),
-	"a research director's jumpsuit" = 					list(CONTRACT_STEAL_UNDERPANTS, /obj/item/clothing/under/rank/research_director),
-	"a chief engineer's jumpsuit" = 					list(CONTRACT_STEAL_UNDERPANTS, /obj/item/clothing/under/rank/chief_engineer),
-	"a chief medical officer's jumpsuit" = 				list(CONTRACT_STEAL_UNDERPANTS, /obj/item/clothing/under/rank/chief_medical_officer),
-	"a head of security's jumpsuit" = 					list(CONTRACT_STEAL_UNDERPANTS, /obj/item/clothing/under/rank/head_of_security),
-	"a head of personnel's jumpsuit" = 					list(CONTRACT_STEAL_UNDERPANTS, /obj/item/clothing/under/rank/head_of_personnel),
-	"the hypospray" = 									list(CONTRACT_STEAL_SCIENCE, /obj/item/weapon/reagent_containers/hypospray),
-	"the captain's pinpointer" = 						list(CONTRACT_STEAL_OPERATION, /obj/item/weapon/pinpointer),
-	"an ion pistol" = 									list(CONTRACT_STEAL_MILITARY, /obj/item/weapon/gun/energy/ionrifle/small),
-	"a 9mm submachine gun" = 							list(CONTRACT_STEAL_MILITARY, /obj/item/weapon/gun/projectile/automatic/wt550),
-	"an riot helmet" = 									list(CONTRACT_STEAL_OPERATION, /obj/item/clothing/head/helmet/riot),
-	"an riot armor vest" = 								list(CONTRACT_STEAL_OPERATION, /obj/item/clothing/suit/armor/riot),
-	"an ballistic helmet" = 							list(CONTRACT_STEAL_MILITARY, /obj/item/clothing/head/helmet/ballistic),
-	"an ballistic armor vest" = 						list(CONTRACT_STEAL_MILITARY, /obj/item/clothing/suit/armor/bulletproof),
-	"an ablative helmet" = 								list(CONTRACT_STEAL_MILITARY, /obj/item/clothing/head/helmet/ablative),
-	"an ablative armor vest" = 							list(CONTRACT_STEAL_MILITARY, /obj/item/clothing/suit/armor/laserproof)
+	"the prototype psychoscope" =                       list(CONTRACT_STEAL_SCIENCE, /obj/item/clothing/glasses/psychoscope),
+	"the captain's antique laser gun" =                 list(CONTRACT_STEAL_MILITARY, /obj/item/weapon/gun/energy/captain),
+	"a bluespace rift generator in hand teleporter" =   list(CONTRACT_STEAL_SCIENCE, /obj/item/integrated_circuit/manipulation/bluespace_rift),
+	"an RCD" =                                          list(CONTRACT_STEAL_OPERATION, /obj/item/weapon/rcd),
+	// "a jetpack" =                                    list(CONTRACT_STEAL_OPERATION, /obj/item/weapon/tank/jetpack), // jetpack doesn't stuff in STD, redo STD then uncomment this.
+	"a captain's jumpsuit" =                            list(CONTRACT_STEAL_UNDERPANTS, /obj/item/clothing/under/rank/captain),
+	"a pair of magboots" =                              list(CONTRACT_STEAL_OPERATION, /obj/item/clothing/shoes/magboots),
+	"the [station_name()] blueprints" =                 list(CONTRACT_STEAL_OPERATION, /obj/item/blueprints),
+	// "a nasa voidsuit" =                              list(CONTRACT_STEAL_OPERATION, /obj/item/clothing/suit/space/void),
+	"a sample of slime extract" =                       list(CONTRACT_STEAL_SCIENCE, /obj/item/slime_extract),
+	"a piece of corgi meat" =                           list(CONTRACT_STEAL_OPERATION, /obj/item/weapon/reagent_containers/food/snacks/meat/corgi),
+	"a research director's jumpsuit" =                  list(CONTRACT_STEAL_UNDERPANTS, /obj/item/clothing/under/rank/research_director),
+	"a chief engineer's jumpsuit" =                     list(CONTRACT_STEAL_UNDERPANTS, /obj/item/clothing/under/rank/chief_engineer),
+	"a chief medical officer's jumpsuit" =              list(CONTRACT_STEAL_UNDERPANTS, /obj/item/clothing/under/rank/chief_medical_officer),
+	"a head of security's jumpsuit" =                   list(CONTRACT_STEAL_UNDERPANTS, /obj/item/clothing/under/rank/head_of_security),
+	"a head of personnel's jumpsuit" =                  list(CONTRACT_STEAL_UNDERPANTS, /obj/item/clothing/under/rank/head_of_personnel),
+	"the hypospray" =                                   list(CONTRACT_STEAL_SCIENCE, /obj/item/weapon/reagent_containers/hypospray),
+	"the captain's pinpointer" =                        list(CONTRACT_STEAL_OPERATION, /obj/item/weapon/pinpointer),
+	"an ion pistol" =                                   list(CONTRACT_STEAL_MILITARY, /obj/item/weapon/gun/energy/ionrifle/small),
+	"a 9mm submachine gun" =                            list(CONTRACT_STEAL_MILITARY, /obj/item/weapon/gun/projectile/automatic/wt550),
+	"an riot helmet" =                                  list(CONTRACT_STEAL_OPERATION, /obj/item/clothing/head/helmet/riot),
+	"an riot armor vest" =                              list(CONTRACT_STEAL_OPERATION, /obj/item/clothing/suit/armor/riot),
+	"an ballistic helmet" =                             list(CONTRACT_STEAL_MILITARY, /obj/item/clothing/head/helmet/ballistic),
+	"an ballistic armor vest" =                         list(CONTRACT_STEAL_MILITARY, /obj/item/clothing/suit/armor/bulletproof),
+	"an ablative helmet" =                              list(CONTRACT_STEAL_MILITARY, /obj/item/clothing/head/helmet/ablative),
+	"an ablative armor vest" =                          list(CONTRACT_STEAL_MILITARY, /obj/item/clothing/suit/armor/laserproof)
 ))
 GLOBAL_LIST_INIT(syndicate_factions, list(
 	"\The Trauma Team Interspace",
@@ -50,7 +50,35 @@ GLOBAL_LIST_INIT(syndicate_factions, list(
 	var/datum/mind/target_mind
 
 	var/reason
+	var/list/reason_list = list()
 	var/datum/contract_organization/organization
+
+/datum/antag_contract/proc/ban_non_crew_antag()
+	for(var/antag_type in list(MODE_MEME, MODE_BLOB, MODE_DEITY, MODE_WIZARD, MODE_RAIDER, MODE_NINJA, MODE_NUKE, MODE_ACTOR, MODE_XENOMORPH, MODE_COMMANDO))
+		reason_list[antag_type] = list("NA", "NA", 0)
+
+/datum/antag_contract/proc/generate_antag_reasons() // call this first!
+    for(var/antag_type in GLOB.all_antag_types_)
+        reason_list[antag_type] = list() // 1 - reason, 2 - reward mod, 3 - chance to pick
+
+/datum/antag_contract/proc/handle_antag_role()
+	var/return_value = TRUE // return TRUE if you need to delete contract
+	if(length(reason_list) && target_mind && player_is_antag(target_mind))
+		for(var/antag_type in GLOB.all_antag_types_)
+			var/datum/antagonist/antag = GLOB.all_antag_types_[antag_type]
+			if(antag.is_antagonist(target_mind))
+				var/list/params = reason_list[antag_type]
+				if(params)
+					if(prob(params[3]))
+						reason = params[1]
+						reward = reward * params[2]
+					else
+						return TRUE
+			break
+		return_value = FALSE
+	else
+		return_value = FALSE
+	return return_value
 
 /datum/antag_contract/proc/create_contract(Creason, target)
 	return
@@ -121,7 +149,14 @@ GLOBAL_LIST_INIT(syndicate_factions, list(
 	create_contract(reason, target)
 	..()
 
+/datum/antag_contract/implant/generate_antag_reasons()
+	..()
+	reason_list[MODE_TRAITOR] = list("they want to make sure of the target's loyalty to the Syndicate", 1.5, 25)
+	reason_list[MODE_ERT] = list("they want to get location of ERT base and [GLOB.using_map.company_name] objects security codes", 2, 80)
+	ban_non_crew_antag()
+
 /datum/antag_contract/implant/create_contract(Creason, datum/mind/target)
+	generate_antag_reasons()
 	if(!Creason)
 		reason = pick("they want to known the target's patterns", "they want to know the status of the target's importance for [GLOB.using_map.company_name]", "they want to know what the target does on [GLOB.using_map.station_name]")
 	else
@@ -139,13 +174,7 @@ GLOBAL_LIST_INIT(syndicate_factions, list(
 			var/datum/mind/candidate_mind = pick(candidates)
 			candidates -= candidate_mind
 
-			// Implant contracts are 75% less likely to target contract-based antags to reduce the amount of cheesy self-implants
-			if(GLOB.traitors.is_antagonist(target_mind))
-				if(prob(25))
-					reason = "they want to make sure of the target's loyalty to the Syndicate"
-					reward = reward * 1.5
-				else
-					continue
+			handle_antag_role()
 
 			H = candidate_mind.current
 			if(!istype(H) || H.stat == DEAD || !is_station_turf(get_turf(H)))
@@ -248,7 +277,7 @@ GLOBAL_LIST_INIT(syndicate_factions, list(
 
 /datum/antag_contract/item/steal_ai/create_contract(Creason, mob/living/silicon/ai/target)
 	if(!Creason)
-		reason = pick("they want to execute intelligence virus on main [GLOB.using_map.company_name]'s AI using local AI core")
+		reason = pick("they want to spread virus to the main [GLOB.using_map.company_name]'s AI module responsible for creating a personality for new AI core using the AI ​​you stole")
 	else
 		reason = Creason
 	if(target)
@@ -312,20 +341,31 @@ GLOBAL_LIST_INIT(syndicate_factions, list(
 	name = "Assasinate"
 	reward = 12
 	intent = CONTRACT_IMPACT_MILITARY
-	var/obj/item/organ/external/head/target
+	var/target_real_name
+	var/target_detected_in_STD = FALSE
+	var/obj/item/organ/internal/brain/brain
+	var/obj/item/organ/target
+	var/obj/item/alternative_target
+	var/mob/living/carbon/human/H
 
 /datum/antag_contract/item/assasinate/New(datum/contract_organization/contract_organization, reason, datum/mind/target)
 	organization = contract_organization
 	create_contract(reason, target)
 	..()
 
+/datum/antag_contract/item/assasinate/generate_antag_reasons()
+	..()
+	reason_list[MODE_TRAITOR] = list("the target has possibly double-crossed us", 2, 10)
+	reason_list[MODE_ERT] = list("the target is very dangerous for the current operations at this object", 4, 85)
+	ban_non_crew_antag()
+
 /datum/antag_contract/item/assasinate/create_contract(Creason, datum/mind/Ctarget)
+	generate_antag_reasons()
 	if(!Creason)
 		reason = pick("the target shut down their agent on mission", "the target important to NanoTransen")
 	else
 		reason = Creason
 
-	var/mob/living/carbon/human/H
 	if(!Ctarget)
 		var/list/candidates = SSticker.minds.Copy()
 
@@ -337,40 +377,68 @@ GLOBAL_LIST_INIT(syndicate_factions, list(
 			var/datum/mind/candidate_mind = pick(candidates)
 			candidates -= candidate_mind
 
-			// Implant contracts are 75% less likely to target contract-based antags to reduce the amount of cheesy self-implants
-			if(GLOB.traitors.is_antagonist(target_mind))
-				if(prob(25))
-					reason = "they want to check the target's loylity to the Syndicate"
-					reward = reward * 1.5
-				else
-					continue
+			handle_antag_role()
 
 			H = candidate_mind.current
 			if(!istype(H) || H.stat == DEAD || !is_station_turf(get_turf(H)))
 				continue
 
-			target = H.organs_by_name[BP_HEAD]
-
+			target_real_name = H.real_name
 			target_mind = candidate_mind
-			name = "[name] [H.real_name]"
+			name = "[name] [target_real_name]"
 			break
 	else
 		target_mind = Ctarget
 		H = target_mind.current
 		if(!istype(H))
-			remove()
 			return
-		name = "[name] [H.real_name]"
+		target_real_name = H.real_name
+		name = "[name] [target_real_name]"
 	if(!istype(H))
 		return
+
+	brain = H.organs_by_name[BP_BRAIN]
+	target = H.organs_by_name[BP_STACK]
+	if(!target)
+		target = H.organs_by_name[BP_HEAD]
+
 	var/datum/gender/T = gender_datums[H.get_gender()]
-	create_explain_text("assasinate <b>[H.real_name]</b> and send <b>[T.his] [target.name]</b> via STD (found in <b>Devices and Tools</b>) as a proof.")
+	create_explain_text("assasinate <b>[target_real_name]</b> and send <b>[T.his] [target.name]</b> or <b></b>, but you get less TC via STD (found in <b>Devices and Tools</b>) as a proof. You must make sure that the target is completely, irreversibly dead.")
 
 /datum/antag_contract/item/assasinate/can_place()
 	return ..() && target
 
 /datum/antag_contract/item/assasinate/check_contents(list/contents)
-	return target in contents
+	var/target_detected = FALSE
+	var/detected_less_tc = FALSE
+	target_detected = (target in contents)
+	var/obj/item/device/mmi/MMI = brain.loc
+	if(istype(MMI)) // for some reason IF BODY DIE BY FUCKING BP_STACK, BRAIN DON'T DIE!!!!!
+		target_detected = (MMI in contents)
+		detected_less_tc = TRUE // well, it's not BP_STACK or BP_HEAD, so less TC
+	if(brain in contents)
+		target_detected = TRUE
+		detected_less_tc = TRUE
+
+	if(target_detected)
+		target_detected_in_STD = TRUE
+
+	if(!target_detected)
+		target_detected = (alternative_target in contents)
+		detected_less_tc = TRUE
+
+	if(detected_less_tc)
+		reward = reward * 0.5
+
+	return target_detected
+
+/datum/antag_contract/item/assasinate/complete(obj/item/device/uplink/close_uplink)
+	var/datum/mind/M = close_uplink.uplink_owner
+	if(H.stat != DEAD && !target_detected_in_STD)
+		if(M)
+			to_chat(M, SPAN("danger", "According to our information, the target ([target_real_name]) specified in the contract is still alive, don't try to deceive us or the consequences will be... Inevitable."))
+		return
+	..(close_uplink)
 
 /datum/antag_contract/item/assasinate/on_mob_despawned(datum/mind/M)
 	if(M == target_mind)
