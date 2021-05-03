@@ -108,7 +108,7 @@
 	if(!timer || !length(cameras) || !length(active_recon_areas_list) || finish)
 		return
 	if(ishuman(uplink?.uplink_owner?.current))
-		to_chat(uplink.uplink_owner.current, SPAN_NOTICE("It's seems your spy network ([english_list(active_recon_areas_list, and_text = " or ")]) are disabled, please check avability of bugs, your current progress are flushed."))
+		to_chat(uplink.uplink_owner.current, SPAN_NOTICE("It looks like there are problems with your spy network in one the following areas:\n[english_list(active_recon_areas_list, and_text = "\n")]\nBugs maintenance required. Your current progress has been zeroed out."))
 	active_recon_areas_list = list()
 	deltimer(timer)
 	timer = null
@@ -131,7 +131,7 @@
 	if(usr.incapacitated() || !Adjacent(usr) || !ishuman(usr))
 		return
 	if(timer)
-		to_chat(usr, SPAN_NOTICE("It's seams like spy network are located in [english_list(active_recon_areas_list, and_text = " or ")] and active.\nYou can deactivate the network by picking up camera bugs."))
+		to_chat(usr, SPAN_NOTICE("Active spy network detected in the following areas:\n[english_list(active_recon_areas_list, and_text = "\n")]\nYou can deactivate the network by picking up the camera bugs."))
 		return
 	var/list/sensor_list = list()
 	if(length(active_recon_areas_list))
@@ -143,7 +143,7 @@
 		spy_net.Remove(S)
 
 		if(!isturf(S.loc))
-			messages += "Camera bug ([S.camera.name]) are not located on floor."
+			messages += "Camera bug ([S.camera.name]) is not located on floor."
 			continue
 
 		var/detected_AS = FALSE
@@ -151,7 +151,7 @@
 			if(AS == S)
 				continue
 			detected_AS = TRUE
-			messages += "Another camera bug in proximity prevents activation. (current bug: ([S.camera.name]), confilct bug: [AS.camera.name])"
+			messages += "Another camera bug in proximity prevents activation. (current bug: ([S.camera.name]), conflicting bug: [AS.camera.name])"
 			if(AS in spy_net)
 				spy_net.Remove(AS)
 		if(detected_AS)
@@ -183,8 +183,8 @@
 
 	if(!sensor_active)
 		if(!length(messages))
-			messages += "Data collection initialization failure, not enough bugs."
-		to_chat(usr, SPAN_WARNING("Data collection initialization failed, there're some reasons: [english_list(messages, and_text = " or ")]"))
+			messages += "Data collection initialization failed:\Not enough bugs."
+		to_chat(usr, SPAN_WARNING("Data collection initialization failed:\n[english_list(messages, and_text = "\n")]"))
 
 /obj/item/device/spy_monitor/attack_self(mob/user)
 	if(operating)

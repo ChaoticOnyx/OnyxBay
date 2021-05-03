@@ -23,7 +23,7 @@
 // Syndicate Teleportation Device
 
 /obj/item/weapon/storage/briefcase/std
-	desc = "It's an old looking briefcase with some high-tech markings. It has a label on it that says, \"WORKS ONLY NEAR SPACE\"."
+	desc = "It's an old-looking briefcase with some high-tech markings. It has a label on it, which reads: \"ONLY WORKS NEAR SPACE\"."
 	origin_tech = list(TECH_BLUESPACE = 3, TECH_ILLEGAL = 3)
 	var/obj/item/device/uplink/uplink
 	var/authentication_complete = FALSE
@@ -67,7 +67,7 @@
 
 /obj/item/weapon/storage/briefcase/std/ui_interact(mob/user, ui_key = "main", datum/nanoui/ui = null, force_open = 1)
 	if(!authentication_complete)
-		audible_message("[src] blinks red.")
+		audible_message("\The [src] blinks red.")
 		return
 	var/list/data = ui_data(user)
 
@@ -102,7 +102,7 @@
 			if(ishuman(loc))
 				var/mob/living/carbon/human/H = loc
 				H.drop_from_inventory(src, get_turf(src), TRUE)
-				to_chat(loc, SPAN_NOTICE("[src] flickers away in a brief flash of light."))
+				to_chat(loc, SPAN("notice", "\The [src] fades away in a brief flash of light."))
 			qdel(src)
 
 	if(.)

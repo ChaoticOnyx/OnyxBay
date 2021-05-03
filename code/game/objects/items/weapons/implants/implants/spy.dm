@@ -20,14 +20,14 @@
 	deltimer(timer)
 
 /obj/item/weapon/implanter/spy
-	name = "implanter-spy"
-	desc = "It has a small label \"Use your uplink on it for authorization\"."
+	name = "implanter (S)"
+	desc = "It has a small label: \"Use your uplink for authorization\"."
 	imp = /obj/item/weapon/implant/spy
 
 /obj/item/weapon/implanter/spy/attackby(obj/item/I, mob/user)
 	if(imp && istype(imp, /obj/item/weapon/implant/spy) && I.hidden_uplink)
 		imp.hidden_uplink = I.hidden_uplink
-		to_chat(user, SPAN_NOTICE("You connect [I]'s uplink to implant auth subsystem."))
+		to_chat(user, SPAN("notice", "You authorize the [src] with \the [I]."))
 
 /obj/item/weapon/implantcase/spy
 	name = "glass case - 'spy'"
