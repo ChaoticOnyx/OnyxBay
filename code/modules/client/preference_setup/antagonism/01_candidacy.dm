@@ -50,6 +50,7 @@
 		else
 			. += "<a href='?src=\ref[src];add_special=[antag.id]'>High</a> <span class='linkOn'>Low</span> <a href='?src=\ref[src];add_never=[antag.id]'>Never</a></br>"
 		. += "</td></tr>"
+	. += "<tr><td>Select All: </td><td><a href='?src=\ref[src];select_all=2'>High</a> <a href='?src=\ref[src];select_all=1'>Low</a> <a href='?src=\ref[src];select_all=0'>Never</a></td></tr>"
 	. += "</table><br>"
 
 	. += "<b>Offer Ghost Roles:</b><br>"
@@ -99,6 +100,23 @@
 	if(href_list["add_never"])
 		pref.be_special_role -= href_list["add_never"]
 		pref.never_be_special_role |= href_list["add_never"]
+		return TOPIC_REFRESH
+
+	if(href_list["select_all"])
+		var/selection = text2num(href_list["select_all"])
+		var/list/roles = valid_special_roles()
+
+		for(var/id in roles)
+			switch(selection)
+				if(0)
+					pref.be_special_role -= id
+					pref.never_be_special_role |= id
+				if(1)
+					pref.be_special_role -= id
+					pref.never_be_special_role -= id
+				if(2)
+					pref.be_special_role |= id
+					pref.never_be_special_role -= id
 		return TOPIC_REFRESH
 
 	return ..()
