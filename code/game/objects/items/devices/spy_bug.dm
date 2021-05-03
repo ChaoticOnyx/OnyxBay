@@ -183,7 +183,7 @@
 
 	if(!sensor_active)
 		if(!length(messages))
-			messages += "Data collection initialization failed:\Not enough bugs."
+			messages += "Not enough bugs."
 		to_chat(usr, SPAN_WARNING("Data collection initialization failed:\n[english_list(messages, and_text = "\n")]"))
 
 /obj/item/device/spy_monitor/attack_self(mob/user)
