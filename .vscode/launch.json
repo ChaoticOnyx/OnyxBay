@@ -25,6 +25,21 @@
             "cwd": "${workspaceFolder}",
             "stopAtEntry": false,
             "console": "internalConsole"
+        },
+        {
+            "name": "Fetch Changelogs (Debug)",
+            "type": "coreclr",
+            "request": "launch",
+            "program": "dotnet-script",
+            "env": {
+                "GITHUB_REPOSITORY": "ChaoticOnyx/OnyxBay"
+            },
+            "args": [
+                "${workspaceFolder}/tools/ChangelogGenerator/ClCreate.csx"
+            ],
+            "cwd": "${workspaceFolder}",
+            "stopAtEntry": false,
+            "console": "internalConsole"
         }
     ]
 }
