@@ -61,7 +61,7 @@ GLOBAL_LIST_INIT(syndicate_factions, list(
     for(var/antag_type in GLOB.all_antag_types_)
         reason_list[antag_type] = list() // 1 - reason, 2 - reward mod, 3 - chance to pick
 
-/datum/antag_contract/proc/handle_antag_role()
+/datum/antag_contract/proc/skip_antag_role()
 	var/return_value = TRUE // return TRUE if you need to delete contract
 	if(length(reason_list) && target_mind && player_is_antag(target_mind))
 		for(var/antag_type in GLOB.all_antag_types_)
@@ -174,7 +174,7 @@ GLOBAL_LIST_INIT(syndicate_factions, list(
 			var/datum/mind/candidate_mind = pick(candidates)
 			candidates -= candidate_mind
 
-			handle_antag_role()
+			skip_antag_role()
 
 			H = candidate_mind.current
 			if(!istype(H) || H.stat == DEAD || !is_station_turf(get_turf(H)))
@@ -337,8 +337,8 @@ GLOBAL_LIST_INIT(syndicate_factions, list(
 			return TRUE
 	return FALSE
 
-/datum/antag_contract/item/assasinate
-	name = "Assasinate"
+/datum/antag_contract/item/assassinate
+	name = "Assassinate"
 	reward = 12
 	intent = CONTRACT_IMPACT_MILITARY
 	var/target_real_name
@@ -348,18 +348,18 @@ GLOBAL_LIST_INIT(syndicate_factions, list(
 	var/obj/item/alternative_target
 	var/mob/living/carbon/human/H
 
-/datum/antag_contract/item/assasinate/New(datum/contract_organization/contract_organization, reason, datum/mind/target)
+/datum/antag_contract/item/assassinate/New(datum/contract_organization/contract_organization, reason, datum/mind/target)
 	organization = contract_organization
 	create_contract(reason, target)
 	..()
 
-/datum/antag_contract/item/assasinate/generate_antag_reasons()
+/datum/antag_contract/item/assassinate/generate_antag_reasons()
 	..()
-	reason_list[MODE_TRAITOR] = list("the target has possibly double-crossed us", 2, 10)
+	reason_list[MODE_TRAITOR] = list("the target has possibly double-crossed us", 2, 5)
 	reason_list[MODE_ERT] = list("the target is very dangerous for the current operations at this object", 4, 85)
 	ban_non_crew_antag()
 
-/datum/antag_contract/item/assasinate/create_contract(Creason, datum/mind/Ctarget)
+/datum/antag_contract/item/assassinate/create_contract(Creason, datum/mind/Ctarget)
 	generate_antag_reasons()
 	if(!Creason)
 		reason = pick("the target shut down their agent on mission", "the target important to NanoTransen")
@@ -377,7 +377,7 @@ GLOBAL_LIST_INIT(syndicate_factions, list(
 			var/datum/mind/candidate_mind = pick(candidates)
 			candidates -= candidate_mind
 
-			handle_antag_role()
+			skip_antag_role()
 
 			H = candidate_mind.current
 			if(!istype(H) || H.stat == DEAD || !is_station_turf(get_turf(H)))
@@ -396,19 +396,22 @@ GLOBAL_LIST_INIT(syndicate_factions, list(
 		name = "[name] [target_real_name]"
 	if(!istype(H))
 		return
-
+	var/alternative_message = ""
+	alternative_target = H.get_idcard()
+	if(alternative_message)
+		alternative_message = " (or <b>[alternative_target], brain in MMI</b>, but your reward will get reduced)"
 	brain = H.organs_by_name[BP_BRAIN]
 	target = H.organs_by_name[BP_STACK]
 	if(!target)
 		target = H.organs_by_name[BP_HEAD]
 
 	var/datum/gender/T = gender_datums[H.get_gender()]
-	create_explain_text("assasinate <b>[target_real_name]</b> and send <b>[T.his] [target.name]</b> or <b></b>, but you get less TC via STD (found in <b>Devices and Tools</b>) as a proof. You must make sure that the target is completely, irreversibly dead.")
+	create_explain_text("assassinate <b>[target_real_name]</b> and send <b>[T.his] [target.name]</b>[alternative_message] via STD (found in <b>Devices and Tools</b>) as a proof. You must make sure that the target is completely, irreversibly dead.")
 
-/datum/antag_contract/item/assasinate/can_place()
+/datum/antag_contract/item/assassinate/can_place()
 	return ..() && target
 
-/datum/antag_contract/item/assasinate/check_contents(list/contents)
+/datum/antag_contract/item/assassinate/check_contents(list/contents)
 	var/target_detected = FALSE
 	var/detected_less_tc = FALSE
 	target_detected = (target in contents)
@@ -432,7 +435,7 @@ GLOBAL_LIST_INIT(syndicate_factions, list(
 
 	return target_detected
 
-/datum/antag_contract/item/assasinate/complete(obj/item/device/uplink/close_uplink)
+/datum/antag_contract/item/assassinate/complete(obj/item/device/uplink/close_uplink)
 	var/datum/mind/M = close_uplink.uplink_owner
 	if(H.stat != DEAD && !target_detected_in_STD)
 		if(M)
@@ -440,7 +443,7 @@ GLOBAL_LIST_INIT(syndicate_factions, list(
 		return
 	..(close_uplink)
 
-/datum/antag_contract/item/assasinate/on_mob_despawned(datum/mind/M)
+/datum/antag_contract/item/assassinate/on_mob_despawned(datum/mind/M)
 	if(M == target_mind)
 		remove()
 
