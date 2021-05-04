@@ -1,1 +1,0 @@
-powershell "& ""./run.ps1"""

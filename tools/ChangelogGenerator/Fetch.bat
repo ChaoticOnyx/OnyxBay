@@ -1,0 +1,1 @@
+powershell "& ""./Fetch.ps1"""

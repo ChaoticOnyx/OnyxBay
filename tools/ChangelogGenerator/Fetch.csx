@@ -1,3 +1,4 @@
+#!/usr/bin/env dotnet-script
 #nullable enable
 #load "Settings.csx"
 #load "Models.csx"
@@ -13,14 +14,22 @@ using System.Threading;
 var githubRepository = Environment.GetEnvironmentVariable("GITHUB_REPOSITORY")
                        ?? throw new InvalidOperationException("🚫 Переменная среды GITHUB_REPOSITORY не найдена.");
 
-var token = Environment.GetEnvironmentVariable("TOKEN")
-                ?? throw new InvalidOperationException("🚫 Переменная среды TOKEN не найдена.");
+var token = Environment.GetEnvironmentVariable("TOKEN");
 
 // Настройка HTTP клиента
 var client = new HttpClient();
 client.DefaultRequestHeaders.UserAgent.ParseAdd("PostmanRuntime/7.28.0");
 client.DefaultRequestHeaders.Accept.ParseAdd("application/vnd.github.groot-preview+json");
-client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
+
+if (token is not null)
+{
+    WriteLine("Используется токен авторизации.");
+    client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
+}
+else
+{
+    WriteLine("Токен авторизации не обнаружен.");
+}
 
 // Парсинг PR.
 var page = 0;
@@ -30,7 +39,7 @@ var newLastClosedPrDate = lastClosedPrDate;
 while (true)
 {
     page++;
-    var response = await client.GetAsync($"https://api.github.com/search/issues?q=repo:{githubRepository} is:pr is:merged&order=desc&per_page=100&sort=created&page={page}");
+    var response = await client.GetAsync($"https://api.github.com/search/issues?q=repo:{githubRepository} is:pr is:merged label:\"{Uri.EscapeUriString(Settings.ChangelogCheckedLabel)}\"&order=desc&per_page=100&sort=created&page={page}");
     var searchResponse = await response.Content.ReadFromJsonAsync<Github.Search<Github.PullRequest>>(Settings.JsonOptions)
                          ?? throw new InvalidOperationException("🚫 Невозможно распарсить ответ от Github.");
 
@@ -69,5 +78,5 @@ while (true)
     }
 
     // Задержка для ограничения запросов.
-    Thread.Sleep(TimeSpan.FromMilliseconds(700));
+    Thread.Sleep(TimeSpan.FromSeconds(token is null ? 7 : 3));
 }

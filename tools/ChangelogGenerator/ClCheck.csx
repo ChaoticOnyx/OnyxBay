@@ -17,6 +17,7 @@ var githubEventPath = Environment.GetEnvironmentVariable("GITHUB_EVENT_PATH")
 
 // Настройка HTTP клиента
 var client = new HttpClient();
+client.BaseAddress = new("https://api.github.com/");
 client.DefaultRequestHeaders.UserAgent.ParseAdd("PostmanRuntime/7.28.0");
 client.DefaultRequestHeaders.Accept.ParseAdd("application/vnd.github.groot-preview+json");
 client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
@@ -34,6 +35,12 @@ if (pullRequest is null)
     return 1;
 }
 
+if (pullRequest.Labels.Any(l => l.Name == Settings.ChangelogNotRequiredLabel))
+{
+    WriteLine("✅ Чейнджлог не требуется.");
+    return 0;
+}
+
 try
 {
     var changelog = pullRequest.ParseChangelog();
@@ -41,13 +48,21 @@ try
 catch (Exception e)
 {
     WriteLine($"🚫 Ошибка при парсинге чейнджлога:\n\t{e.Message}");
-    var response = await client.PutAsync($"https://api.github.com/repos/{githubRepository}/issues/{pullRequest.Number}/labels", new StringContent($"{{ \"labels\": [\"{Settings.ChangelogRequiredLabel}\"] }}"));
-    response.EnsureSuccessStatusCode();
+    // Удаление плашки проверенного чейнджлога.
+    await client.DeleteAsync($"repos/{githubRepository}/issues/{pullRequest.Number}/labels/{Uri.EscapeUriString(Settings.ChangelogCheckedLabel)}");
+    // Добавление плашки о требовании чейнджлога.
+    var putResponse = await client.PutAsync($"repos/{githubRepository}/issues/{pullRequest.Number}/labels", new StringContent($"{{ \"labels\": [\"{Settings.ChangelogRequiredLabel}\"] }}"));
+    putResponse.EnsureSuccessStatusCode();
 
     return 1;
 }
 
 WriteLine($"✅ Чейнджлог корректный.");
-var response = await client.DeleteAsync($"https://api.github.com/repos/{githubRepository}/issues/{pullRequest.Number}/labels/{Uri.EscapeUriString(Settings.ChangelogRequiredLabel)}");
+
+// Удаление плашки о требовании чейнджлога.
+await client.DeleteAsync($"repos/{githubRepository}/issues/{pullRequest.Number}/labels/{Uri.EscapeUriString(Settings.ChangelogRequiredLabel)}");
+// Добавление плашки о наличии чейнджлога.
+var putResponse = await client.PutAsync($"repos/{githubRepository}/issues/{pullRequest.Number}/labels", new StringContent($"{{ \"labels\": [\"{Settings.ChangelogCheckedLabel}\"] }}"));
+putResponse.EnsureSuccessStatusCode();
 
 return 0;

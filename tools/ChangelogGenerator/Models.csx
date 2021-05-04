@@ -209,6 +209,10 @@ public static class Github
         /// <value></value>
         [JsonPropertyName("closed_at")]
         public DateTime? Closed { get; init; } = null;
+        /// <summary>
+        ///     Плашки.
+        /// </summary>
+        public Label[] Labels { get; init; } = Array.Empty<Label>();
 
         private static readonly Regex s_clBody = new(@"(:cl:|🆑)(.+)?\r\n((.|\n|\r)+?)\r\n\/(:cl:|🆑)", RegexOptions.Multiline);
         private static readonly Regex s_clSplit = new(@"(^\w+):\s+(\w.+)", RegexOptions.Multiline);
@@ -290,5 +294,24 @@ public static class Github
         ///     Элементы.
         /// </summary>
         public List<T> Items { get; init; } = new();
+    }
+
+    /// <summary>
+    ///     Github Label.
+    /// </summary>
+    public sealed class Label
+    {
+        /// <summary>
+        ///     Название плашки.
+        /// </summary>
+        public string Name { get; init; } = string.Empty;
+        /// <summary>
+        ///     Описание плашки.
+        /// </summary>
+        public string Description { get; init; } = string.Empty;
+        /// <summary>
+        ///     Цвет плашки.
+        /// </summary>
+        public string Color { get; init; } = string.Empty;
     }
 }
