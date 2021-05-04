@@ -223,17 +223,24 @@ public static class Github
         /// <returns>Чейнджлог</returns>
         public Changelog ParseChangelog()
         {
-            var changesBody = s_clBody.Match(Body).Value;
-            var matches = s_clSplit.Matches(changesBody);
+            var changesBody = s_clBody.Match(Body);
+            var matches = s_clSplit.Matches(changesBody.Value);
 
             if (matches.Count == 0)
             {
                 throw new InvalidOperationException($"🚫 Чейнджлог не обнаружен.");
             }
 
+            var author = changesBody.Groups[2].Value.Trim();
+
+            if (string.IsNullOrEmpty(author))
+            {
+                author = Author.Login;
+            }
+
             Changelog changelog = new()
             {
-                Author = Author.Login,
+                Author = author,
                 Date = Closed?.Date ?? Opened.Date
             };
 

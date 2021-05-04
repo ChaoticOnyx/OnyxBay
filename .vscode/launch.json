@@ -35,7 +35,7 @@
                 "GITHUB_REPOSITORY": "ChaoticOnyx/OnyxBay"
             },
             "args": [
-                "${workspaceFolder}/tools/ChangelogGenerator/ClCreate.csx"
+                "${workspaceFolder}/tools/ChangelogGenerator/Fetch.csx"
             ],
             "cwd": "${workspaceFolder}",
             "stopAtEntry": false,
