@@ -5,6 +5,7 @@
 /datum/contract_fixer
 	var/name = "\The Syndicate Operations System"
 	var/list/datum/contract_organization/organizations = list()
+	var/list/organizations_by_name = list()
 	var/enable_roundstart_proc = TRUE // set FALSE when roundstart proc replaced with storyteller
 	var/time_to_nex_contract = 5 MINUTES
 
@@ -12,6 +13,7 @@
 	for(var/org_path in subtypesof(/datum/contract_organization/syndicate))
 		var/datum/contract_organization/syndicate = new org_path(src)
 		organizations.Add(syndicate)
+		organizations_by_name[syndicate.name] = syndicate
 
 /datum/contract_fixer/proc/return_contracts(datum/mind/M)
 	var/list/datum/antag_contract/avaliable_contracts = list()
@@ -65,10 +67,36 @@
 		break
 
 /datum/contract_organization/proc/add_contract(datum/antag_contract/AC)
-	contracts.Add(AC)
+	AC.place()
 
 /datum/contract_organization/proc/remove_conract(datum/antag_contract/AC)
-	contracts.Remove(AC)
+	AC.remove()
+
+/client/proc/edit_traitor_contracts()
+	set name = "Syndicate Contracts Menu"
+	set category = "Special Verbs"
+	set desc = "Add/remove/redact traitor contracts"
+
+	if(!check_rights(R_ADMIN))
+		return
+	holder.edit_contracts()
+
+/datum/admins/proc/edit_contracts()
+	if(GAME_STATE <= RUNLEVEL_SETUP)
+		to_chat(usr, SPAN_DANGER("The game hasn't started yet!"))
+		return
+
+	var/out = "<meta charset=\"utf-8\"><b>The Syndicate Operations Menu</b>"
+	out += "<hr><b>Contracts (Operations|Objectives)</b></br>"
+	for(var/datum/antag_contract/contract in GLOB.traitors.fixer.return_contracts())
+		out += "<br><b>Contract [contract.name]:</b> <small>[contract.desc]</small> "
+		if(contract.completed)
+			out += "(<font color='green'>completed</font>)"
+		else
+			out += "(<font color='red'>incompleted</font>)"
+		out += " <a href='?src=\ref[src];obj_remove=\ref[contract];contract_action=1'>\[remove contract]</a>"
+	out += "<hr><a href='?src=\ref[src];obj_add=1;contract_action=1'>\[add contract]</a><br><br>"
+	show_browser(usr, out, "window=edit_contracts[src]")
 
 /datum/contract_organization/syndicate/tti
 	name = "Trauma Team Interspace"

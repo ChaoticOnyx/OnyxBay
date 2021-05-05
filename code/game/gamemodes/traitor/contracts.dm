@@ -61,7 +61,7 @@ GLOBAL_LIST_INIT(syndicate_factions, list(
     for(var/antag_type in GLOB.all_antag_types_)
         reason_list[antag_type] = list() // 1 - reason, 2 - reward mod, 3 - chance to pick
 
-/datum/antag_contract/proc/skip_antag_role()
+/datum/antag_contract/proc/skip_antag_role(skip_third_param = FALSE)
 	var/return_value = TRUE // return TRUE if you need to delete contract
 	if(length(reason_list) && target_mind && player_is_antag(target_mind))
 		for(var/antag_type in GLOB.all_antag_types_)
@@ -69,13 +69,16 @@ GLOBAL_LIST_INIT(syndicate_factions, list(
 			if(antag.is_antagonist(target_mind))
 				var/list/params = reason_list[antag_type]
 				if(params)
-					if(prob(params[3]))
+					var/chance = params[3]
+					if(skip_third_param)
+						chance = 100
+					if(prob(chance))
 						reason = params[1]
 						reward = reward * params[2]
+						return_value = FALSE
 					else
-						return TRUE
-			break
-		return_value = FALSE
+						return_value = TRUE
+					break
 	else
 		return_value = FALSE
 	return return_value
@@ -95,14 +98,14 @@ GLOBAL_LIST_INIT(syndicate_factions, list(
 	return !!name && !!desc
 
 /datum/antag_contract/proc/place()
-	GLOB.all_contracts += src
+	GLOB.all_contracts |= src
 	if(organization)
-		organization.add_contract(src)
+		organization.contracts |= src
 
 /datum/antag_contract/proc/remove()
 	GLOB.all_contracts -= src
 	if(organization)
-		organization.remove_conract(src)
+		organization.contracts -= src
 
 // Called on every contract when a mob is despawned - currently, this can only happen when someone cryos
 /datum/antag_contract/proc/on_mob_despawned(datum/mind/M)
@@ -174,16 +177,21 @@ GLOBAL_LIST_INIT(syndicate_factions, list(
 			var/datum/mind/candidate_mind = pick(candidates)
 			candidates -= candidate_mind
 
-			skip_antag_role()
-
 			H = candidate_mind.current
 			if(!istype(H) || H.stat == DEAD || !is_station_turf(get_turf(H)))
 				continue
 
 			target_mind = candidate_mind
+			var/skipped = skip_antag_role()
+			if(skipped)
+				target_mind = null
+				H = null
+				continue
 			name = "[name] [H.real_name]"
 			break
 	else
+		if(!Creason)
+			skip_antag_role(TRUE)
 		H = target.current
 		if(!istype(H))
 			remove()
@@ -237,6 +245,10 @@ GLOBAL_LIST_INIT(syndicate_factions, list(
 
 /datum/antag_contract/item/steal/create_contract(Creason, target)
 	target_type = target
+	if(Creason)
+		reason = Creason
+	else
+		reason = get_steal_reason()
 	if(!target_type)
 		var/list/candidates = GLOB.contracts_steal_items.Copy()
 		for(var/datum/antag_contract/item/steal/C in GLOB.all_contracts)
@@ -247,10 +259,6 @@ GLOBAL_LIST_INIT(syndicate_factions, list(
 			reason = get_steal_reason(target_data[1])
 			target_type = target_data[2]
 	else
-		if(Creason)
-			reason = Creason
-		else
-			reason = get_steal_reason()
 		var/obj/item/I = new target_type()
 		target_desc = I.name
 		qdel(I)
@@ -342,6 +350,7 @@ GLOBAL_LIST_INIT(syndicate_factions, list(
 	reward = 12
 	intent = CONTRACT_IMPACT_MILITARY
 	var/target_real_name
+	var/detected_less_tc = FALSE
 	var/target_detected_in_STD = FALSE
 	var/obj/item/organ/internal/brain/brain
 	var/obj/item/organ/target
@@ -370,14 +379,12 @@ GLOBAL_LIST_INIT(syndicate_factions, list(
 		var/list/candidates = SSticker.minds.Copy()
 
 		// Don't target the same player twice
-		for(var/datum/antag_contract/implant/C in GLOB.all_contracts)
+		for(var/datum/antag_contract/item/assassinate/C in GLOB.all_contracts)
 			candidates -= C.target_mind
 
 		while(candidates.len)
 			var/datum/mind/candidate_mind = pick(candidates)
 			candidates -= candidate_mind
-
-			skip_antag_role()
 
 			H = candidate_mind.current
 			if(!istype(H) || H.stat == DEAD || !is_station_turf(get_turf(H)))
@@ -385,10 +392,17 @@ GLOBAL_LIST_INIT(syndicate_factions, list(
 
 			target_real_name = H.real_name
 			target_mind = candidate_mind
+			var/skipped = skip_antag_role(TRUE)
+			if(skipped)
+				target_mind = null
+				H = null
+				continue
 			name = "[name] [target_real_name]"
 			break
 	else
 		target_mind = Ctarget
+		if(!Creason)
+			skip_antag_role(TRUE)
 		H = target_mind.current
 		if(!istype(H))
 			return
@@ -398,7 +412,7 @@ GLOBAL_LIST_INIT(syndicate_factions, list(
 		return
 	var/alternative_message = ""
 	alternative_target = H.get_idcard()
-	if(alternative_message)
+	if(alternative_target)
 		alternative_message = " (or <b>[alternative_target], brain in MMI</b>, but your reward will get reduced)"
 	brain = H.organs_by_name[BP_BRAIN]
 	target = H.organs_by_name[BP_STACK]
@@ -413,7 +427,6 @@ GLOBAL_LIST_INIT(syndicate_factions, list(
 
 /datum/antag_contract/item/assassinate/check_contents(list/contents)
 	var/target_detected = FALSE
-	var/detected_less_tc = FALSE
 	target_detected = (target in contents)
 	var/obj/item/device/mmi/MMI = brain.loc
 	if(istype(MMI)) // for some reason IF BODY DIE BY FUCKING BP_STACK, BRAIN DON'T DIE!!!!!
@@ -430,17 +443,16 @@ GLOBAL_LIST_INIT(syndicate_factions, list(
 		target_detected = (alternative_target in contents)
 		detected_less_tc = TRUE
 
-	if(detected_less_tc)
-		reward = reward * 0.5
-
 	return target_detected
 
 /datum/antag_contract/item/assassinate/complete(obj/item/device/uplink/close_uplink)
 	var/datum/mind/M = close_uplink.uplink_owner
-	if(H.stat != DEAD && !target_detected_in_STD)
+	if(H.stat != DEAD || !target_detected_in_STD)
 		if(M)
 			to_chat(M, SPAN("danger", "According to our information, the target ([target_real_name]) specified in the contract is still alive, don't try to deceive us or the consequences will be... Inevitable."))
 		return
+	if(detected_less_tc)
+		reward = reward * 0.5
 	..(close_uplink)
 
 /datum/antag_contract/item/assassinate/on_mob_despawned(datum/mind/M)
