@@ -347,7 +347,7 @@ GLOBAL_LIST_INIT(syndicate_factions, list(
 
 /datum/antag_contract/item/assassinate
 	name = "Assassinate"
-	reward = 12
+	reward = 8
 	intent = CONTRACT_IMPACT_MILITARY
 	var/target_real_name
 	var/detected_less_tc = FALSE
@@ -444,8 +444,8 @@ GLOBAL_LIST_INIT(syndicate_factions, list(
 		if(M)
 			to_chat(M, SPAN("danger", "According to our information, the target ([target_real_name]) specified in the contract is still alive, don't try to deceive us or the consequences will be... Inevitable."))
 		return
-	if(detected_less_tc)
-		reward = reward * 0.5
+	if(!detected_less_tc)
+		reward = reward * 2
 	..(close_uplink)
 
 /datum/antag_contract/item/assassinate/on_mob_despawned(datum/mind/M)
