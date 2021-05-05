@@ -196,9 +196,10 @@
 	icon_state = "soymilk"
 	item_state = "carton"
 	center_of_mass = "x=16;y=9"
-	New()
-		..()
-		reagents.add_reagent(/datum/reagent/drink/milk/soymilk, 50)
+
+/obj/item/weapon/reagent_containers/food/drinks/soymilk/Initialize()
+	. = ..()
+	reagents.add_reagent(/datum/reagent/drink/milk/soymilk, 50)
 
 /obj/item/weapon/reagent_containers/food/drinks/milk/smallcarton
 	name = "small milk carton"
