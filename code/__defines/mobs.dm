@@ -208,7 +208,6 @@
 #define BP_LIVER    "liver"
 #define BP_KIDNEYS  "kidneys"
 #define BP_STOMACH  "stomach"
-#define BP_PLASMA   "plasma vessel"
 #define BP_APPENDIX "appendix"
 #define BP_CELL     "cell"
 #define BP_HIVE     "hive node"
