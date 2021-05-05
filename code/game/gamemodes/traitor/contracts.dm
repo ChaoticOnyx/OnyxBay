@@ -445,7 +445,7 @@ GLOBAL_LIST_INIT(syndicate_factions, list(
 			to_chat(M, SPAN("danger", "According to our information, the target ([target_real_name]) specified in the contract is still alive, don't try to deceive us or the consequences will be... Inevitable."))
 		return
 	if(!detected_less_tc)
-		reward = reward * 2
+		reward = reward * 1.5
 	..(close_uplink)
 
 /datum/antag_contract/item/assassinate/on_mob_despawned(datum/mind/M)
