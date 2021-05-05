@@ -60,9 +60,9 @@
 	var/incoming = get_pin_data(IC_INPUT, 1)
 	var/position = get_pin_data(IC_INPUT, 2)
 	if(!istext(incoming))
-		if(!isnum_safe(position) || position > length(incoming))
+		if(!isnum_safe(position) || position > length_char(incoming))
 			position = null
-		result = text2ascii(incoming, position)
+		result = text2ascii_char(incoming, position)
 
 	set_pin_data(IC_OUTPUT, 1, result)
 	push_data()
