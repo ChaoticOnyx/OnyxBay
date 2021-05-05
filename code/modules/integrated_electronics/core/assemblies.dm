@@ -334,9 +334,6 @@
 	if(..())
 		return 1
 
-	if(!check_interactivity(usr))
-		return
-
 	if(href_list["ghostscan"])
 		if((isobserver(usr) && ckeys_allowed_to_scan[usr.ckey]) || is_admin(usr))
 			if(assembly_components.len)
