@@ -75,7 +75,7 @@
 /client/proc/edit_traitor_contracts()
 	set name = "Syndicate Contracts Menu"
 	set category = "Special Verbs"
-	set desc = "Add/remove/redact traitor contracts"
+	set desc = "Add/remove/edit traitor contracts"
 
 	if(!check_rights(R_ADMIN))
 		return
