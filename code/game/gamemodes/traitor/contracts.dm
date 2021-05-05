@@ -272,7 +272,7 @@ GLOBAL_LIST_INIT(syndicate_factions, list(
 	return locate(target_type) in contents
 
 /datum/antag_contract/item/steal_ai
-	name = "Steal active AI"
+	name = "Steal an active AI"
 	reward = 20
 	intent = CONTRACT_IMPACT_HIJACK
 	var/target_desc = "a functional AI"
@@ -285,7 +285,7 @@ GLOBAL_LIST_INIT(syndicate_factions, list(
 
 /datum/antag_contract/item/steal_ai/create_contract(Creason, mob/living/silicon/ai/target)
 	if(!Creason)
-		reason = pick("they want to spread virus to the main [GLOB.using_map.company_name]'s AI module responsible for creating a personality for new AI core using the AI ​​you stole")
+		reason = pick("they want to spread a virus to the main [GLOB.using_map.company_name]'s AI module responsible for creating new AI personalities using the AI ​​you will steal")
 	else
 		reason = Creason
 	if(target)
@@ -413,7 +413,7 @@ GLOBAL_LIST_INIT(syndicate_factions, list(
 	var/alternative_message = ""
 	alternative_target = H.get_idcard()
 	if(alternative_target)
-		alternative_message = " <b>[alternative_target], [target_real_name] brain in MMI, [target_real_name] brain</b>"
+		alternative_message = " <b>[alternative_target], [target_real_name]'s brain in MMI, [target_real_name]'s brain</b>"
 	brain = H.organs_by_name[BP_BRAIN]
 	target = H.organs_by_name[BP_HEAD]
 	if(H.organs_by_name[BP_STACK])
