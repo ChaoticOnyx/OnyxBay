@@ -49,7 +49,7 @@
 	name = "text to ascii converter"
 	desc = "This circuit will translate ascii to character"
 	icon_state = "lowercase"
-	inputs = list("input" = IC_PINTYPE_TEXT, "pos" = IC_PINTYPE_NUMBER)
+	inputs = list("input" = IC_PINTYPE_STRING, "pos" = IC_PINTYPE_NUMBER)
 	outputs = list("output" = IC_PINTYPE_NUMBER)
 	activators = list("to text" = IC_PINTYPE_PULSE_IN, "on converted" = IC_PINTYPE_PULSE_OUT)
 	spawn_flags = IC_SPAWN_DEFAULT|IC_SPAWN_RESEARCH
