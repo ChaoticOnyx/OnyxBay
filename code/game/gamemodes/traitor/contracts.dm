@@ -392,7 +392,7 @@ GLOBAL_LIST_INIT(syndicate_factions, list(
 
 			target_real_name = H.real_name
 			target_mind = candidate_mind
-			var/skipped = skip_antag_role(TRUE)
+			var/skipped = skip_antag_role()
 			if(skipped)
 				target_mind = null
 				H = null
@@ -415,9 +415,9 @@ GLOBAL_LIST_INIT(syndicate_factions, list(
 	if(alternative_target)
 		alternative_message = " (or <b>[alternative_target], brain in MMI</b>, but your reward will get reduced)"
 	brain = H.organs_by_name[BP_BRAIN]
-	target = H.organs_by_name[BP_STACK]
-	if(!target)
-		target = H.organs_by_name[BP_HEAD]
+	target = H.organs_by_name[BP_HEAD]
+	if(H.organs_by_name[BP_STACK])
+		target = H.organs_by_name[BP_STACK]
 
 	var/datum/gender/T = gender_datums[H.get_gender()]
 	create_explain_text("assassinate <b>[target_real_name]</b> and send <b>[T.his] [target.name]</b>[alternative_message] via STD (found in <b>Devices and Tools</b>) as a proof. You must make sure that the target is completely, irreversibly dead.")
@@ -426,28 +426,16 @@ GLOBAL_LIST_INIT(syndicate_factions, list(
 	return ..() && target
 
 /datum/antag_contract/item/assassinate/check_contents(list/contents)
-	var/target_detected = FALSE
-	target_detected = (target in contents)
-	var/obj/item/device/mmi/MMI = brain.loc
-	if(istype(MMI)) // for some reason IF BODY DIE BY FUCKING BP_STACK, BRAIN DON'T DIE!!!!!
-		target_detected = (MMI in contents)
-		detected_less_tc = TRUE // well, it's not BP_STACK or BP_HEAD, so less TC
-	if(brain in contents)
-		target_detected = TRUE
-		detected_less_tc = TRUE
-
-	if(target_detected)
+	var/obj/item/device/mmi/MMI = brain?.loc
+	detected_less_tc = ((istype(MMI) && (MMI in contents)) || (brain in contents) || (alternative_target in contents))
+	if(detected_less_tc)
 		target_detected_in_STD = TRUE
 
-	if(!target_detected)
-		target_detected = (alternative_target in contents)
-		detected_less_tc = TRUE
-
-	return target_detected
+	return ((target in contents) || (MMI in contents) || (alternative_target in contents) || (brain in contents))
 
 /datum/antag_contract/item/assassinate/complete(obj/item/device/uplink/close_uplink)
 	var/datum/mind/M = close_uplink.uplink_owner
-	if(H.stat != DEAD || !target_detected_in_STD)
+	if(H.stat != DEAD || ((istype(brain?.loc, /obj/item/device/mmi)) && !target_detected_in_STD))
 		if(M)
 			to_chat(M, SPAN("danger", "According to our information, the target ([target_real_name]) specified in the contract is still alive, don't try to deceive us or the consequences will be... Inevitable."))
 		return
