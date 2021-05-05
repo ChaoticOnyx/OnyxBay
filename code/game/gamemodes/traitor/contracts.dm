@@ -433,6 +433,9 @@ GLOBAL_LIST_INIT(syndicate_factions, list(
 	if(alternative_target in contents)
 		detected_less_tc = TRUE
 
+	if(target in contents)
+		detected_less_tc = FALSE
+
 	return ((target in contents) || (MMI in contents) || (alternative_target in contents) || (brain in contents))
 
 /datum/antag_contract/item/assassinate/complete(obj/item/device/uplink/close_uplink)
