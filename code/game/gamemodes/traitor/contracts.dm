@@ -413,14 +413,14 @@ GLOBAL_LIST_INIT(syndicate_factions, list(
 	var/alternative_message = ""
 	alternative_target = H.get_idcard()
 	if(alternative_target)
-		alternative_message = " (or <b>[alternative_target], brain in MMI</b>, but your reward will get reduced)"
+		alternative_message = " <b>[alternative_target], [target_real_name] brain in MMI, [target_real_name] brain</b>"
 	brain = H.organs_by_name[BP_BRAIN]
 	target = H.organs_by_name[BP_HEAD]
 	if(H.organs_by_name[BP_STACK])
 		target = H.organs_by_name[BP_STACK]
 
 	var/datum/gender/T = gender_datums[H.get_gender()]
-	create_explain_text("assassinate <b>[target_real_name]</b> and send <b>[T.his] [target.name]</b>[alternative_message] via STD (found in <b>Devices and Tools</b>) as a proof. You must make sure that the target is completely, irreversibly dead.")
+	create_explain_text("assassinate <b>[target_real_name]</b> and send[alternative_message] or <b>[T.his] [target.name]</b> for double pay via STD (found in <b>Devices and Tools</b>) as a proof. You must make sure that the target is completely, irreversibly dead.")
 
 /datum/antag_contract/item/assassinate/can_place()
 	return ..() && target
