@@ -427,9 +427,11 @@ GLOBAL_LIST_INIT(syndicate_factions, list(
 
 /datum/antag_contract/item/assassinate/check_contents(list/contents)
 	var/obj/item/device/mmi/MMI = brain?.loc
-	detected_less_tc = ((istype(MMI) && (MMI in contents)) || (brain in contents) || (alternative_target in contents))
+	detected_less_tc = ((istype(MMI) && (MMI in contents)) || (brain in contents))
 	if(detected_less_tc)
 		target_detected_in_STD = TRUE
+	if(alternative_target in contents)
+		detected_less_tc = TRUE
 
 	return ((target in contents) || (MMI in contents) || (alternative_target in contents) || (brain in contents))
 
