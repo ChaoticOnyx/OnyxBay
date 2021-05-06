@@ -1,3 +1,4 @@
+#r "nuget:Markdig, 0.24.0"
 #load "Settings.csx"
 #nullable enable
 
@@ -7,6 +8,7 @@ using System.Linq;
 using System.Runtime.Serialization;
 using System.Text.Json.Serialization;
 using System.Text.RegularExpressions;
+using Markdig;
 
 public sealed class Changelog
 {
@@ -84,6 +86,13 @@ public sealed class Changelog
         ///     Описание изменения.
         /// </summary>
         public string Message { get; init; } = string.Empty;
+
+        /// <summary>
+        ///     Message в формате HTML.
+        /// </summary>
+        /// <returns></returns>
+        [JsonIgnore()]
+        public string MessageMdToHtml { get => Markdig.Markdown.ToHtml(Message, Settings.MdPipeline); }
 
         /// <summary>
         ///     Font Awesome классы для иконки в HTML.

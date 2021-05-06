@@ -1,7 +1,9 @@
+#r "nuget:Markdig, 0.24.0"
 #nullable enable
 
 using System.Text.Json;
 using System.IO;
+using Markdig;
 
 /// <summary>
 ///     Настройки скрипта.
@@ -43,6 +45,14 @@ private static class Settings
         Encoder = System.Text.Encodings.Web.JavaScriptEncoder.UnsafeRelaxedJsonEscaping,
         WriteIndented = true
     };
+    /// <summary>
+    ///     Настройки для Markdown.
+    /// </summary>
+    /// <returns></returns>
+    public static readonly MarkdownPipeline MdPipeline = new MarkdownPipelineBuilder()
+                                                             .UseAdvancedExtensions()
+                                                             .UseEmojiAndSmiley()
+                                                             .Build();
     /// <summary>
     ///     Название плашки, которая будет добавляться к PR если отсутствует чейнджлог или он с ошибками.
     /// </summary>
