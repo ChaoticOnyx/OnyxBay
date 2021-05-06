@@ -16,6 +16,4 @@ FetchMakeCommit.bat - комбинирование fetch.csx и make.csx, так
 - dotnet-script - `dotnet tool install -g dotnet-script`
 
 ## Запуск
-- Unix: `./<script-name>.csx` или `dotnet-script <script-name>.csx`
-- Windows: `<script-name>.bat` или `dotnet-script <script-name>.csx`
-- VSCode: F5 `Fetch Changelogs` или `Generate Changelogs`
+- VSCode: F5 `<script-name>`

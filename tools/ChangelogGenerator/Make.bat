@@ -1,1 +1,0 @@
-powershell "& ""./Make.ps1"""

@@ -1,1 +1,0 @@
-powershell "& ""./FetchMakeCommit.ps1"""

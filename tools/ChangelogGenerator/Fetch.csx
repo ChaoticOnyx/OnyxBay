@@ -16,6 +16,8 @@ var githubRepository = Environment.GetEnvironmentVariable("GITHUB_REPOSITORY")
 
 var token = Environment.GetEnvironmentVariable("TOKEN");
 
+WriteLine($"Используется репозитории {githubRepository}");
+
 // Настройка HTTP клиента
 var client = new HttpClient();
 client.DefaultRequestHeaders.UserAgent.ParseAdd("PostmanRuntime/7.28.0");

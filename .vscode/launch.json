@@ -15,19 +15,26 @@
             "dmb": "${workspaceFolder}/${command:CurrentDMB}"
         },
         {
-            "name": "Generate Changelogs (Debug)",
+            "name": "Fetch, Make and commit changelogs",
+            "type": "PowerShell",
+            "request": "launch",
+            "script": "${workspaceFolder}/tools/ChangelogGenerator/FetchMakeCommit.ps1",
+            "cwd": "${workspaceFolder}"
+        },
+        {
+            "name": "Make Changelogs",
             "type": "coreclr",
             "request": "launch",
             "program": "dotnet-script",
             "args": [
-                "${workspaceFolder}/tools/ChangelogGenerator/Program.csx"
+                "${workspaceFolder}/tools/ChangelogGenerator/Make.csx"
             ],
             "cwd": "${workspaceFolder}",
             "stopAtEntry": false,
             "console": "internalConsole"
         },
         {
-            "name": "Fetch Changelogs (Debug)",
+            "name": "Fetch Changelogs",
             "type": "coreclr",
             "request": "launch",
             "program": "dotnet-script",

@@ -1,4 +1,4 @@
-﻿$scriptRoot = Split-Path $MyInvocation.MyCommand.Path -Parent
-Push-Location -Path ../../
-dotnet script "$scriptRoot\Make.csx"
+﻿$RepositoryRoot = Split-Path $PSScriptRoot | Split-Path
+Push-Location -Path $RepositoryRoot
+dotnet script "$PSScriptRoot\Make.csx"
 Pop-Location
