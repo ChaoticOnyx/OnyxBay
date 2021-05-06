@@ -23,7 +23,7 @@
 /obj/item/device/flashlight/Initialize()
 	. = ..()
 	if(on)
-		switch_light(1)
+		switch_light(TRUE)
 
 /obj/item/device/flashlight/update_icon()
 	overlays.Cut()
@@ -38,7 +38,7 @@
 	else
 		icon_state = "[initial(icon_state)]"
 
-/obj/item/device/flashlight/proc/switch_light(state = 0)
+/obj/item/device/flashlight/proc/switch_light(state = FALSE)
 	on = state
 	if(on)
 		set_light(brightness_range, brightness_power, brightness_color)
@@ -285,10 +285,9 @@
 		STOP_PROCESSING(SSobj, src)
 
 /obj/item/device/flashlight/flare/proc/turn_off()
-	on = 0
 	force = initial(src.force)
 	damtype = initial(src.damtype)
-	update_icon()
+	switch_light(FALSE)
 
 /obj/item/device/flashlight/flare/attack_self(mob/user)
 	if(turn_on(user))
@@ -301,11 +300,10 @@
 		if(user)
 			to_chat(user, "<span class='notice'>It's out of fuel.</span>")
 		return FALSE
-	on = TRUE
 	force = on_damage
 	damtype = "fire"
 	START_PROCESSING(SSobj, src)
-	update_icon()
+	switch_light(TRUE)
 	return 1
 
 //Glowsticks
