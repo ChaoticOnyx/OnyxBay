@@ -22,7 +22,7 @@ a {
 
 .commit a {
     color: #14d0ff;
-    text-decoration: underline;
+    border-bottom: 2px dashed #14d0ff
 }
 
 .links a {
