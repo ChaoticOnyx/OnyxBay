@@ -215,7 +215,7 @@ public static class Github
         public Label[] Labels { get; init; } = Array.Empty<Label>();
 
         private static readonly Regex s_clBody = new(@"(:cl:|🆑)(.+)?\r\n((.|\n|\r)+?)\r\n\/(:cl:|🆑)", RegexOptions.Multiline);
-        private static readonly Regex s_clSplit = new(@"(^\w+):\s+(\w.+)", RegexOptions.Multiline);
+        private static readonly Regex s_clSplit = new(@"(^\w+):\s*(.*)", RegexOptions.Multiline);
 
         /// <summary>
         ///     Парсит чейнджлог из тела PR.
