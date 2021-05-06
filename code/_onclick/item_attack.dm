@@ -112,6 +112,8 @@ avoid code duplication. This includes items that may sometimes act as a standard
 ////////////////////
 
 /atom/proc/attackby(obj/item/W, mob/user, click_params)
+	CAN_BE_REDEFINED(TRUE)
+
 	return
 
 /atom/movable/attackby(obj/item/W, mob/user)
