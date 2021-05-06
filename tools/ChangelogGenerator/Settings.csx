@@ -46,15 +46,15 @@ private static class Settings
     /// <summary>
     ///     Название плашки, которая будет добавляться к PR если отсутствует чейнджлог или он с ошибками.
     /// </summary>
-    public static readonly string ChangelogRequiredLabel = ":scroll: Требуется чейнджлог";
+    public static readonly string ChangelogRequiredLabel = ":scroll: Требуется CL";
     /// <summary>
     ///     Название плашки, где чейнджлог не требуется.
     /// </summary>
-    public static readonly string ChangelogNotRequiredLabel = ":scroll: Чейнджлог не требуется";
+    public static readonly string ChangelogNotRequiredLabel = ":scroll: CL не требуется";
     /// <summary>
     ///     Название плашки, которая будет добавлена к PR с правильным чейнджлогом.
     /// </summary>
-    public static readonly string ChangelogCheckedLabel = ":scroll: Есть чейнджлог";
+    public static readonly string ChangelogCheckedLabel = ":scroll: Есть CL";
 }
 
 /// <summary>
