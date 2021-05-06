@@ -72,7 +72,7 @@
 	var/datum/global_iterator/pr_give_air //moves air from tank to cabin
 	var/datum/global_iterator/pr_internal_damage //processes internal damage
 
-	var/create_tracker // 1 - mecha can be tracked / 0 - mecha can not be tracked
+	var/create_tracker
 
 	var/wreckage
 
@@ -109,7 +109,7 @@
 	mechas_list += src //global mech list
 
 	var/turf/T = get_turf(src)
-	if(isPlayerLevel(T.z) && src.create_tracker == 1)
+	if(isPlayerLevel(T.z) && src.create_tracker)
 		new /obj/item/mecha_parts/mecha_tracking(src)
 
 	return
