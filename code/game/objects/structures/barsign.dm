@@ -7,15 +7,7 @@
 	anchored = 1
 	var/emagged = FALSE
 
-<<<<<<< Updated upstream
-<<<<<<< HEAD
-/obj/structure/sign/double/barsign/proc/get_valid_states(initial=1, mob/living/user = null, var/roundstart = FALSE)
-=======
 /obj/structure/sign/double/barsign/proc/get_valid_states(initial = FALSE, mob/living/user = null)
->>>>>>> d41e202dedf4092eefdb3d8ce6d6b25048dcaa13
-=======
-/obj/structure/sign/double/barsign/proc/get_valid_states(initial = FALSE, mob/living/user = null)
->>>>>>> Stashed changes
 	. = icon_states(icon)
 	. -= "on"
 	if(!user || !iscultist(user))
@@ -24,18 +16,8 @@
 		. -= "The Syndi Cat"
 		. -= "Vlad's Salad Bar"
 		. -= "Combo Cafe"
-<<<<<<< Updated upstream
-		. -= "???"
-<<<<<<< HEAD
-	if(roundstart)
-		. -= "CybersSylph"
-=======
->>>>>>> d41e202dedf4092eefdb3d8ce6d6b25048dcaa13
-	. -= "empty"
-=======
-	. -= "empty"
 	. -= "???"
->>>>>>> Stashed changes
+	. -= "empty"
 	if(initial)  // We don't want this to be picked by random
 		. -= "Off"
 		. -= "CybersSylph"
@@ -54,39 +36,11 @@
 
 /obj/structure/sign/double/barsign/Initialize()
 	. = ..()
-<<<<<<< Updated upstream
-<<<<<<< HEAD
-	icon_state = pick(get_valid_states(roundstart = TRUE))
-=======
-	icon_state = pick(get_valid_states(initial = TRUE))
->>>>>>> d41e202dedf4092eefdb3d8ce6d6b25048dcaa13
-
-/obj/structure/sign/double/barsign/attackby(obj/item/I, mob/living/user)
-
-	if(istype(I, /obj/item/weapon/card/emag) && !emagged)
-<<<<<<< HEAD
-		emagged = TRUE
-		to_chat(user, "<span class='notice'>You overload the access verification system and open access to special propaganda.</span>")
-		return
-
-=======
 	icon_state = pick(get_valid_states(initial = TRUE))
 
 /obj/structure/sign/double/barsign/attackby(obj/item/I, mob/living/user)
->>>>>>> Stashed changes
-	if(emagged)
-		var/sign_type = input(user, "What would you like to change the barsign to?") as null|anything in get_valid_states(FALSE, user)
-		if(!sign_type || !Adjacent(user))
-			return
-		icon_state = sign_type
-<<<<<<< Updated upstream
-		to_chat(user, "<span class='notice'>You change the barsign.</span>")
-=======
-		var/obj/item/weapon/card/emag/emag_card = I
-		emagged = TRUE
-		emag_card.uses -= 1
-		to_chat(user, SPAN("notice", "You overload the access verification system and open access to special propaganda."))
-		return
+
+
 
 	if(emagged)
 		var/sign_type = input(user, "What would you like to change the barsign to?") as null|anything in get_valid_states(FALSE, user)
@@ -94,10 +48,6 @@
 			return
 		icon_state = sign_type
 		to_chat(user, SPAN("notice", "You change the barsign."))
->>>>>>> d41e202dedf4092eefdb3d8ce6d6b25048dcaa13
-=======
-		to_chat(user, SPAN("notice", "You change the barsign."))
->>>>>>> Stashed changes
 		return
 
 	var/obj/item/weapon/card/id/card = I.GetIdCard()
@@ -114,12 +64,12 @@
 	return ..()
 
 /obj/structure/sign/double/barsign/emag_act(remaining_charges, mob/user)
-	if(emagged)
-		return
-	emagged = TRUE
-	to_chat(user, SPAN("notice", "You overload the access verification system and open access to special propaganda."))
-	return 1
+	if(!emagged)
+		emagged = TRUE
+		to_chat(user, SPAN("notice", "You overload the access verification system and open access to special propaganda."))
+		return 1
+	return
 
 /obj/structure/sign/double/barsign/emp_act(severity)
-	icon_state = "???"
+icon_state = "???"
 	..(severity)
