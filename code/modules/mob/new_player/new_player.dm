@@ -245,7 +245,7 @@
 			if("nostats")
 				option = "NOSTATS"
 			if("later")
-				usr << browse(null,"window=privacypoll")
+				close_browser(usr, "window=privacypoll")
 				return
 			if("abstain")
 				option = "ABSTAIN"
@@ -258,7 +258,7 @@
 			var/DBQuery/query_insert = dbcon.NewQuery(sql)
 			query_insert.Execute()
 			to_chat(usr, "<b>Thank you for your vote!</b>")
-			usr << browse(null,"window=privacypoll")
+			close_browser(usr, "window=privacypoll")
 
 	if(!ready && href_list["preference"])
 		if(client)
@@ -401,7 +401,7 @@
 		var/mob/living/silicon/ai/A = character
 		A.on_mob_init()
 
-		AnnounceCyborg(character, job.title, "has been downloaded to the empty core in \the [character.loc.loc]")
+		AnnounceArrival(character.real_name, job)
 		SSticker.mode.handle_latejoin(character)
 
 		qdel(C)
@@ -414,24 +414,19 @@
 		if(character.mind.assigned_role != "Cyborg")
 			CreateModularRecord(character)
 			SSticker.minds += character.mind//Cyborgs and AIs handle this in the transform proc.	//TODO!!!!! ~Carn
-			AnnounceArrival(character, job, spawnpoint.msg)
-		else
-			AnnounceCyborg(character, job, spawnpoint.msg)
 
-		for (var/mob/M in GLOB.player_list)
-			M.playsound_local(M.loc, 'sound/signals/arrival1.ogg', 75)
+		AnnounceArrival(character.real_name, job, spawnpoint)
 
 		matchmaker.do_matchmaking()
 	log_and_message_admins("has joined the round as [character.mind.assigned_role].", character)
 	qdel(src)
-
 
 /mob/new_player/proc/AnnounceCyborg(mob/living/character, rank, join_message)
 	if (GAME_STATE == RUNLEVEL_GAME)
 		if(character.mind.role_alt_title)
 			rank = character.mind.role_alt_title
 		// can't use their name here, since cyborg namepicking is done post-spawn, so we'll just say "A new Cyborg has arrived"/"A new Android has arrived"/etc.
-		GLOB.global_announcer.autosay("A new[rank ? " [rank]" : " visitor" ] [join_message ? join_message : "has arrived"].", "Arrivals Announcement Computer")
+		GLOB.global_announcer.autosay("A new[rank ? " [rank]" : " visitor" ] [join_message ? join_message : "has arrived"].", get_announcement_computer())
 		log_and_message_admins("has joined the round as [character.mind.assigned_role].", character)
 
 /mob/new_player/proc/LateChoices()
@@ -471,7 +466,7 @@
 				dat += "<tr><td><a href='byond://?src=\ref[src];SelectedJob=[job.title]'>[job.title]</a></td><td>[job.current_positions]</td><td>(Active: [active])</td></tr>"
 
 	dat += "</table></center>"
-	src << browse(jointext(dat, null), "window=latechoices;size=450x640;can_close=1")
+	show_browser(src, jointext(dat, null), "window=latechoices;size=450x640;can_close=1")
 
 /mob/new_player/proc/create_character(turf/spawn_turf)
 	spawning = 1
@@ -566,7 +561,7 @@
 /mob/new_player/proc/ViewManifest()
 	var/dat = "<div align='center'>"
 	dat += html_crew_manifest(OOC = 1)
-	//src << browse(dat, "window=manifest;size=370x420;can_close=1")
+	//show_browser(src, dat, "window=manifest;size=370x420;can_close=1")
 	var/datum/browser/popup = new(src, "Crew Manifest", "Crew Manifest", 370, 420, src)
 	popup.set_content(dat)
 	popup.open()
@@ -575,7 +570,7 @@
 	return 0
 
 /mob/new_player/proc/close_spawn_windows()
-	src << browse(null, "window=latechoices") //closes late choices window
+	show_browser(src, null, "window=latechoices") //closes late choices window
 	panel.close()
 
 /mob/new_player/has_admin_rights()

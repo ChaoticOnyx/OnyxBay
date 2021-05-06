@@ -117,7 +117,7 @@
 			if (get_dist(src, user) > 1 )
 				if (!istype(user, /mob/living/silicon/ai))
 					user.machine = null
-					user << browse(null, "window=port_gen")
+					close_browser(user, "window=port_gen")
 					return
 
 			user.machine = src
@@ -134,7 +134,7 @@
 			dat += text("Power output: <A href='?src=\ref[src];action=lower_power'>-</A> [power_gen * power_output] <A href='?src=\ref[src];action=higher_power'>+</A><br>")
 			dat += text("Heat: [heat]<br>")
 			dat += "<br><A href='?src=\ref[src];action=close'>Close</A>"
-			user << browse("[dat]", "window=port_gen")
+			show_browser(user, "[dat]", "window=port_gen")
 
 	Topic(href, href_list)
 		if(..())
@@ -161,10 +161,11 @@
 					power_output++
 					src.updateUsrDialog()
 			if (href_list["action"] == "close")
-				usr << browse(null, "window=port_gen")
+				close_browser(usr, "window=port_gen")
 				usr.machine = null
 
 /obj/machinery/power/port_gen/pacman2/emag_act(remaining_uses, mob/user)
+	playsound(src.loc, 'sound/effects/computer_emag.ogg', 25)
 	emagged = 1
 	emp_act(1)
 	return 1

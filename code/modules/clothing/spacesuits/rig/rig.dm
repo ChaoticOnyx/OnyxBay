@@ -347,7 +347,7 @@
 	update_icon(1)
 
 /obj/item/weapon/rig/proc/r_booting_done(mob/initiator, obj/screen/rig_booting/booting_R)
-	wearer.client.screen -= booting_R
+	wearer?.client?.screen -= booting_R
 	qdel(booting_R)
 
 /obj/item/weapon/rig/proc/update_component_sealed()
@@ -891,15 +891,14 @@
 	if(malfunctioning)
 		direction = pick(GLOB.cardinal)
 
-	// Why is all this shit in client/Move()? Who knows?
 	if(world.time < wearer_move_delay)
-		return
-
-	if(!wearer || !wearer.loc || !ai_can_move_suit(user, check_user_module = 1))
 		return
 
 	// AIs are a bit slower than regular and ignore move intent.
 	wearer_move_delay = world.time + ai_controlled_move_delay
+
+	if(!wearer || !wearer.loc || !ai_can_move_suit(user, check_user_module = 1)) // Moving it below the delay reset to prevent spam
+		return
 
 	cell.use(aimove_power_usage * CELLRATE)
 	wearer.DoMove(direction, user)

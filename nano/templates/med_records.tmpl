@@ -42,8 +42,8 @@
 	{{for data.med_fields}}
 		<div class='item'>
 			{{if value.editable}}
-				{{if value.name == "Recent Records"}}
-					<div class='itemLabel'>{{:helper.link(value.name, 'plus', {'edit_field' : value.key}, null)}}</div>				
+				{{if value.name == "Medical Recent Records"}}
+					<div class='itemLabel'>{{:helper.link(value.name, 'plus', {'edit_field' : value.key}, null)}}</div>
 				{{else}}
 					<div class='itemLabel'>{{:helper.link(value.name, 'pencil', {'edit_field' : value.key}, null)}}</div>
 				{{/if}}

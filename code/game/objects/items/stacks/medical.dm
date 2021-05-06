@@ -41,8 +41,6 @@
 	amount -= used
 	if(get_amount() <= 0)
 		if(!stack_empty)
-			if(usr)
-				usr.remove_from_mob(src)
 			qdel(src) //should be safe to qdel immediately since if someone is still using this stack it will persist for a little while longer
 			return 1
 		else
@@ -398,6 +396,7 @@
 	animal_heal = 5
 	stack_full = 1
 	stack_empty = 1
+	splittable = 0
 
 /obj/item/stack/medical/patches/attack(mob/living/carbon/M as mob, mob/user as mob)
 	if(..())

@@ -51,7 +51,7 @@
 			icon_state = initial(icon_state)
 			user.update_inv_glasses()
 			if(activation_sound)
-				sound_to(usr, activation_sound)
+				sound_to(usr, sound(activation_sound, volume = 50))
 
 			flash_protection = initial(flash_protection)
 			tint = initial(tint)

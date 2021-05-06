@@ -135,7 +135,7 @@
 								/obj/item/clothing/under/swimsuit			= TRADER_BLACKLIST,
 								/obj/item/clothing/under/vox				= TRADER_BLACKLIST_ALL,
 								/obj/item/clothing/under/wedding			= TRADER_BLACKLIST,
-								/obj/item/clothing/under/punpun				= TRADER_BLACKLIST,
+								/obj/item/clothing/under/monkey				= TRADER_BLACKLIST,
 								/obj/item/clothing/suit						= TRADER_SUBTYPES_ONLY,
 								/obj/item/clothing/suit/armor				= TRADER_BLACKLIST_ALL,
 								/obj/item/clothing/suit/bio_suit			= TRADER_BLACKLIST_ALL,

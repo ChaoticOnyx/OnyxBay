@@ -295,17 +295,17 @@ obj/item/organ/external/take_general_damage(amount, silent = FALSE)
 		if((limb_flags & ORGAN_FLAG_CAN_GRASP) && prob(25))
 			owner.grasp_damage_disarm(src)
 
-		if((limb_flags & ORGAN_FLAG_CAN_STAND) && prob(min(agony_amount * ((body_part == LEG_LEFT || body_part == LEG_RIGHT)? 1 : 2),70)))
+		if((limb_flags & ORGAN_FLAG_CAN_STAND) && prob(min(agony_amount * ((body_part == LEG_LEFT || body_part == LEG_RIGHT)? 1 : 2), 70)))
 			owner.stance_damage_prone(src)
 
 		if(vital && get_full_pain() > 0.5 * max_damage)
-			owner.visible_message("<span class='warning'>[owner] reels in pain!</span>")
+			owner.visible_message("<b>[owner]</b> reels in pain!")
 			if(has_genitals() || get_full_pain() + agony_amount > max_damage)
 				owner.Weaken(6)
 			else
-				owner.Stun(6)
 				owner.drop_l_hand()
 				owner.drop_r_hand()
+			owner.Stun(6)
 			return 1
 
 /obj/item/organ/external/proc/get_agony_multiplier()

@@ -169,7 +169,7 @@
 	dat += "<h4>Crew Manifest</h4>"
 	dat += html_crew_manifest(1) // make it monochrome
 	dat += "<br>"
-	src << browse(dat, "window=airoster")
+	show_browser(src, dat, "window=airoster")
 	onclose(src, "airoster")
 
 //can't inject synths
@@ -184,7 +184,7 @@
 	return universal_speak || (speaking in src.speech_synthesizer_langs)	//need speech synthesizer support to vocalize a language
 
 /mob/living/silicon/add_language(language, can_speak=1)
-	var/var/datum/language/added_language = all_languages[language]
+	var/datum/language/added_language = all_languages[language]
 	if(!added_language)
 		return
 
@@ -194,7 +194,7 @@
 		return 1
 
 /mob/living/silicon/remove_language(rem_language)
-	var/var/datum/language/removed_language = all_languages[rem_language]
+	var/datum/language/removed_language = all_languages[rem_language]
 	if(!removed_language)
 		return
 
@@ -222,7 +222,7 @@
 			var/synth = (L in speech_synthesizer_langs)
 			dat += "<b>[L.name] ([get_language_prefix()][L.key])</b>[synth ? default_str : null]<br/>Speech Synthesizer: <i>[synth ? "YES" : "NOT SUPPORTED"]</i><br/>[L.desc]<br/><br/>"
 
-	src << browse(dat, "window=checklanguage")
+	show_browser(src, dat, "window=checklanguage")
 	return
 
 /mob/living/silicon/proc/toggle_sensor_mode()

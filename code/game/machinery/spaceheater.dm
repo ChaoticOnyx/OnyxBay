@@ -78,7 +78,7 @@
 		user.visible_message("<span class='notice'>[user] [panel_open ? "opens" : "closes"] the hatch on the [src].</span>", "<span class='notice'>You [panel_open ? "open" : "close"] the hatch on the [src].</span>")
 		update_icon(1)
 		if(!panel_open && user.machine == src)
-			show_browser(user, null, "window=spaceheater")
+			close_browser(user, "window=spaceheater")
 			user.unset_machine()
 	else
 		..()
@@ -123,7 +123,7 @@
 
 /obj/machinery/space_heater/Topic(href, href_list, state = GLOB.physical_state)
 	if (..())
-		show_browser(usr, null, "window=spaceheater")
+		close_browser(usr, "window=spaceheater")
 		usr.unset_machine()
 		return 1
 

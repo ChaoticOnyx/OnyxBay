@@ -24,3 +24,8 @@
 		LIGHTING_SOFT_THRESHOLD, LIGHTING_SOFT_THRESHOLD, LIGHTING_SOFT_THRESHOLD, 0, \
 		0, 0, 0, 1           \
 	)
+
+#define LIGHTMODE_EMERGENCY "emergency_lighting"
+#define LIGHTMODE_EVACUATION "evacuation_lighting"
+#define LIGHTMODE_ALARM "alarm"
+#define LIGHTMODE_READY "ready"

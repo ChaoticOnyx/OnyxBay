@@ -33,7 +33,7 @@
 			animation.master = holder
 			target.ExtinguishMob()
 			if(target.buckled)
-				target.buckled = null
+				target.buckled.unbuckle_mob()
 			jaunt_disappear(animation, target)
 			target.forceMove(holder)
 			jaunt_steam(mobloc)

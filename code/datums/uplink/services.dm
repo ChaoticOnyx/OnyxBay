@@ -184,8 +184,8 @@
 	user.visible_message("<span class='notice'>\The [user] activates \the [src].</span>", "<span class='notice'>You activate \the [src].</span>")
 	log_and_message_admins("has activated the service '[service_label]'", user)
 	state = CURRENTLY_ACTIVE
-	var/input = sanitize(input(usr, "Please enter anything you want. Anything. Serious.", "What?", "") as message|null, extra = 0)
-	var/customname = sanitizeSafe(input(usr, "Pick a title for the report.", "Title") as text|null)
+	var/input = sanitize(input(user, "Please enter anything you want. Anything. Serious.", "What?", "") as message|null, extra = 0)
+	var/customname = sanitizeSafe(input(user, "Pick a title for the report.", "Title") as text|null)
 	if(!input)
 		return
 	if(!customname)
@@ -216,43 +216,48 @@
 *********************************/
 /obj/item/device/uplink_service/fake_crew_announcement
 	service_label = "Crew Arrival Announcement and Records"
+	var/does_announce_visit = 1
+	var/obj/item/weapon/card/id/id_card = null
+
+/obj/item/device/uplink_service/fake_crew_announcement/attackby(obj/item/I, mob/user = usr)
+	id_card = I.GetIdCard()
+	if(istype(id_card))
+		to_chat(user, SPAN("notice", "Card saved!"))
+
+/obj/item/device/uplink_service/fake_crew_announcement/verb/verb_toggle_mode()
+	set category = "Object"
+	set name = "Toggle Announce Mode"
+	set src in usr
+
+	does_announce_visit = !does_announce_visit
+	if (does_announce_visit)
+		to_chat(usr, SPAN("notice", "Device will announce your visit!"))
+	else
+		to_chat(usr, SPAN("notice", "Device will not announce your visit!")) 
 
 /obj/item/device/uplink_service/fake_crew_announcement/enable(mob/user = usr)
-	var/obj/item/weapon/card/id/I = user.GetIdCard()
-	var/datum/computer_file/crew_record/random_record
-
-	if(GLOB.all_crew_records.len)
-		random_record = pick(GLOB.all_crew_records)
+	if(!istype(id_card))
+		to_chat(user, SPAN("notice", "You have to swipe a card!"))
+		return
 
 	var/datum/computer_file/crew_record/new_record = CreateModularRecord(user)
-	if(I)
-		new_record.set_name(I.registered_name)
-		new_record.set_sex(I.sex)
-		new_record.set_age(I.age)
-		new_record.set_job(I.assignment)
-		new_record.set_fingerprint(I.fingerprint_hash)
-		new_record.set_bloodtype(I.blood_type)
-		new_record.set_dna(I.dna_hash)
-		if(I.military_branch)
-			new_record.set_branch(I.military_branch.name)
-			if(I.military_rank)
-				new_record.set_rank(I.military_rank.name)
-	else
-		var/mob/living/carbon/human/H = user
-		var/age = istype(H) ? H.age : 30
-		var/assignment = GetAssignment(user)
-		new_record.set_name(user.real_name)
-		new_record.set_sex(capitalize(user.gender))
-		new_record.set_age(age)
-		new_record.set_job(assignment)
+
+	new_record.set_name(id_card.registered_name)
+	new_record.set_sex(id_card.sex)
+	new_record.set_age(id_card.age)
+	new_record.set_job(id_card.assignment)
+	new_record.set_fingerprint(id_card.fingerprint_hash)
+	new_record.set_bloodtype(id_card.blood_type)
+	new_record.set_dna(id_card.dna_hash)
 	new_record.set_species(user.get_species())
 
-	if(random_record)
-		var/list/to_copy = list(REC_FIELD(citizenship),REC_FIELD(faction),REC_FIELD(religion),REC_FIELD(homeSystem),REC_FIELD(fingerprint),REC_FIELD(dna),REC_FIELD(bloodtype))
-		for(var/field in to_copy)
-			new_record.set_field(field, random_record.get_field(field))
+	var/datum/job/job = job_master.GetJob(id_card.assignment)
+	if(!job)
+		job = new()
+		job.title = id_card.assignment
+		job.department_flag = CIV
 
-	var/datum/job/job = job_master.GetJob(new_record.get_job())
-	if(istype(job) && job.announced)
-		AnnounceArrivalSimple(new_record.get_name(), new_record.get_job(), get_announcement_frequency(job))
+	if(does_announce_visit)
+		var/datum/spawnpoint/arrivals/spawnpoint = new()
+		AnnounceArrival(id_card.registered_name, job, spawnpoint, arrival_sound_volume = 60, captain_sound_volume = 40)
 	. = ..()

@@ -11,7 +11,7 @@
 	var/detail_color = COLOR_ASSEMBLY_WHITE
 	var/list/color_list = list(
 		"black" = COLOR_ASSEMBLY_BLACK,
-		"gray" = COLOR_GRAY40,
+		"gray" = COLOR_FLOORTILE_GRAY,
 		"machine gray" = COLOR_ASSEMBLY_BGRAY,
 		"white" = COLOR_ASSEMBLY_WHITE,
 		"red" = COLOR_ASSEMBLY_RED,
@@ -36,7 +36,7 @@
 	overlays.Cut()
 	var/image/detail_overlay = image('icons/obj/assemblies/electronic_tools.dmi',src, "detailer-color")
 	detail_overlay.color = detail_color
-	overlays += detail_overlay
+	overlays.Add(detail_overlay)
 
 /obj/item/device/integrated_electronics/detailer/attack_self(mob/user)
 	var/color_choice = input(user, "Select color.", "Assembly Detailer") as null|anything in color_list

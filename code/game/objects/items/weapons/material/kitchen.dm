@@ -85,14 +85,18 @@
  * Knives
  */
 /obj/item/weapon/material/kitchen/utensil/knife
-	name = "knife"
+	name = "table knife"
 	desc = "A knife for eating with. Can cut through any food."
-	icon_state = "knife"
+	icon_state = "tableknife"
+	item_state = "knife"
 	force_const = 3.0
 	force_divisor = 0.05 // 3 when wielded with hardness 60 (steel)
 	scoop_food = 0
 	sharp = 1
 	edge = 1
+
+/obj/item/weapon/material/kitchen/utensil/knife/plastic
+	default_material = MATERIAL_PLASTIC
 
 // Identical to the tactical knife but nowhere near as stabby.
 // Kind of like the toy esword compared to the real thing.
@@ -131,9 +135,6 @@
 	mod_reach = 0.5
 	mod_handy = 1.0
 
-/obj/item/weapon/material/kitchen/utensil/knife/plastic
-	default_material = MATERIAL_PLASTIC
-
 /*
  * Rolling Pins
  */
@@ -149,7 +150,7 @@
 	hitsound = 'sound/effects/fighting/genhit3.ogg'
 	mod_weight = 1.2
 	mod_reach = 0.85
-	mod_handy = 0.85
+	mod_handy = 0.9
 
 /obj/item/weapon/material/kitchen/rollingpin/attack(mob/living/M as mob, mob/living/user as mob)
 	if ((MUTATION_CLUMSY in user.mutations) && prob(50) && user.unEquip(src))

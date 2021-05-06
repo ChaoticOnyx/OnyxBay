@@ -366,6 +366,9 @@ The slots that you can use are found in items_clothing.dm and are the inventory 
 			if(target.a_intent == I_HELP)
 				H.visible_message("<span class='notice'>[H] and [target] shake hands!</span>", \
 								"<span class='notice'>You shake [target]'s hand!</span>")
+				if(istype(H.gloves, /obj/item/clothing/gloves/stun))
+					var/obj/item/clothing/gloves/stun/SG = H.gloves
+					SG.stun_attack(H, target)
 			else
 				H.visible_message("<span class='warning'>[target] refuses to shake [H]'s hand!</span>", \
 								"<span class='warning'>[target] refuses to shake your hand!</span>")
@@ -583,7 +586,7 @@ The slots that you can use are found in items_clothing.dm and are the inventory 
 	attacker.do_attack_animation(target)
 
 	if(target.parrying)
-		if(target.handle_parry(attacker, w_atk=null))
+		if(target.handle_parry(attacker, null))
 			return
 	if(target.blocking)
 		if(target.handle_block_normal(attacker))
@@ -617,7 +620,7 @@ The slots that you can use are found in items_clothing.dm and are the inventory 
 		playsound(target.loc, 'sound/weapons/thudswoosh.ogg', 50, 1, -1)
 		if(prob(100-target.poise*6.5))
 			target.visible_message("<span class='danger'>[attacker] has pushed [target]!</span>")
-			target.apply_effect(3, WEAKEN, armor_check)
+			target.apply_effect(4, WEAKEN, armor_check)
 		else
 			target.visible_message("<span class='warning'>[attacker] attempted to push [target]!</span>")
 		return

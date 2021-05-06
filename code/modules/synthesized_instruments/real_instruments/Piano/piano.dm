@@ -3,4 +3,5 @@
 	desc = "A surprisingly high-tech piano with a digital display for modifying sound output"
 	icon_state = "piano"
 	path = /datum/instrument/piano
+	pull_slowdown = PULL_SLOWDOWN_HEAVY
 

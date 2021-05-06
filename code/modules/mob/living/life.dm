@@ -36,7 +36,9 @@
 
 	handle_actions()
 
-	update_canmove()
+	if(!istype(src, /mob/living/carbon/human)) // It is a dirty thing but update_canmove() must be called as late as possible and I can't figure out how to do it in a better way sorry
+		update_canmove(TRUE)
+
 	handle_regular_hud_updates()
 
 	if(mind)
@@ -108,15 +110,11 @@
 /mob/living/proc/handle_stunned()
 	if(stunned)
 		AdjustStunned(-1)
-		if(!stunned)
-			update_icons()
 	return stunned
 
 /mob/living/proc/handle_weakened()
 	if(weakened)
 		weakened = max(weakened-1,0)
-		if(!weakened)
-			update_icons()
 	return weakened
 
 /mob/living/proc/handle_stuttering()
@@ -163,8 +161,6 @@
 /mob/living/proc/handle_paralysed()
 	if(paralysis)
 		AdjustParalysis(-1)
-		if(!paralysis)
-			update_icons()
 	return paralysis
 
 /mob/living/proc/handle_disabilities()

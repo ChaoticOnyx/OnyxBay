@@ -7,7 +7,11 @@
 	anchored = 1
 	var/emagged = FALSE
 
+<<<<<<< HEAD
 /obj/structure/sign/double/barsign/proc/get_valid_states(initial=1, mob/living/user = null, var/roundstart = FALSE)
+=======
+/obj/structure/sign/double/barsign/proc/get_valid_states(initial = FALSE, mob/living/user = null)
+>>>>>>> d41e202dedf4092eefdb3d8ce6d6b25048dcaa13
 	. = icon_states(icon)
 	. -= "on"
 	if(!user || !iscultist(user))
@@ -17,11 +21,15 @@
 		. -= "Vlad's Salad Bar"
 		. -= "Combo Cafe"
 		. -= "???"
+<<<<<<< HEAD
 	if(roundstart)
 		. -= "CybersSylph"
+=======
+>>>>>>> d41e202dedf4092eefdb3d8ce6d6b25048dcaa13
 	. -= "empty"
-	if(initial)
+	if(initial)  // We don't want this to be picked by random
 		. -= "Off"
+		. -= "CybersSylph"
 
 /obj/structure/sign/double/barsign/examine(mob/user)
 	. = ..()
@@ -37,11 +45,16 @@
 
 /obj/structure/sign/double/barsign/Initialize()
 	. = ..()
+<<<<<<< HEAD
 	icon_state = pick(get_valid_states(roundstart = TRUE))
+=======
+	icon_state = pick(get_valid_states(initial = TRUE))
+>>>>>>> d41e202dedf4092eefdb3d8ce6d6b25048dcaa13
 
 /obj/structure/sign/double/barsign/attackby(obj/item/I, mob/living/user)
 
 	if(istype(I, /obj/item/weapon/card/emag) && !emagged)
+<<<<<<< HEAD
 		emagged = TRUE
 		to_chat(user, "<span class='notice'>You overload the access verification system and open access to special propaganda.</span>")
 		return
@@ -52,18 +65,32 @@
 			return
 		icon_state = sign_type
 		to_chat(user, "<span class='notice'>You change the barsign.</span>")
+=======
+		var/obj/item/weapon/card/emag/emag_card = I
+		emagged = TRUE
+		emag_card.uses -= 1
+		to_chat(user, SPAN("notice", "You overload the access verification system and open access to special propaganda."))
+		return
+
+	if(emagged)
+		var/sign_type = input(user, "What would you like to change the barsign to?") as null|anything in get_valid_states(FALSE, user)
+		if(!sign_type || !Adjacent(user))
+			return
+		icon_state = sign_type
+		to_chat(user, SPAN("notice", "You change the barsign."))
+>>>>>>> d41e202dedf4092eefdb3d8ce6d6b25048dcaa13
 		return
 
 	var/obj/item/weapon/card/id/card = I.GetIdCard()
 	if(istype(card))
 		if(access_bar in card.GetAccess())
-			var/sign_type = input(user, "What would you like to change the barsign to?") as null|anything in get_valid_states(0, user)
-			if(!sign_type)
+			var/sign_type = input(user, "What would you like to change the barsign to?") as null|anything in get_valid_states(FALSE, user)
+			if(!sign_type || !Adjacent(user))
 				return
 			icon_state = sign_type
-			to_chat(user, "<span class='notice'>You change the barsign.</span>")
+			to_chat(user, SPAN("notice", "You change the barsign."))
 		else
-			to_chat(user, "<span class='warning'>Access denied.</span>")
+			to_chat(user, SPAN("warning", "Access denied."))
 		return
 	return ..()
 

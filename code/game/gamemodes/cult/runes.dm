@@ -437,9 +437,14 @@
 	speak_incantation(user, "Ia! Ia! Zasan therium viortia!")
 	for(var/turf/T in range(1, src))
 		if(T.holy)
-			T.holy = 0
+			T.holy = FALSE
 		else
 			T.cultify()
+		
+	var/area/A = get_area(src)
+	if(A && !isspace(A))
+		A.holy = FALSE
+
 	visible_message("<span class='warning'>\The [src] embeds into the floor and walls around it, changing them!</span>", "You hear liquid flow.")
 	qdel(src)
 
@@ -695,9 +700,14 @@
 			M.say("Ia! Ia! Zasan therium viortia! Razan gilamrua kioha!")
 		for(var/turf/T in range(5, src))
 			if(T.holy)
-				T.holy = 0
+				T.holy = FALSE
 			else
 				T.cultify()
+
+	var/area/A = get_area(src)
+	if(A && !isspace(A))
+		A.holy = FALSE
+
 	visible_message("<span class='warning'>\The [src] embeds into the floor and walls around it, changing them!</span>", "You hear liquid flow.")
 	qdel(src)
 

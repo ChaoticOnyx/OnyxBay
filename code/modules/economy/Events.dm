@@ -1,4 +1,3 @@
-
 /datum/event/economic_event
 	endWhen = 50			//this will be set randomly, later
 	announceWhen = 15

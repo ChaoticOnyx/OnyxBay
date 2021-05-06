@@ -510,19 +510,19 @@
 	s.set_up(2, 1, location)
 	s.start()
 	for(var/mob/living/carbon/M in viewers(world.view, location))
+		var/eye_safety = M.eyecheck()
 		switch(get_dist(M, location))
 			if(0 to 3)
-				if(hasvar(M, "glasses"))
-					if(istype(M:glasses, /obj/item/clothing/glasses/sunglasses))
-						continue
+				if(eye_safety >= FLASH_PROTECTION_MODERATE)
+					continue
 
 				M.flash_eyes()
 				M.Weaken(15)
+				M.Stun(10)
 
 			if(4 to 5)
-				if(hasvar(M, "glasses"))
-					if(istype(M:glasses, /obj/item/clothing/glasses/sunglasses))
-						continue
+				if(eye_safety >= FLASH_PROTECTION_MODERATE)
+					continue
 
 				M.flash_eyes()
 				M.Stun(5)

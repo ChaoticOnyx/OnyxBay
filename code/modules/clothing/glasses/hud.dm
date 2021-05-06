@@ -99,6 +99,8 @@
 	hud_type = HUD_SECURITY
 	matrix_type = "night vision"
 	matrix_icon = "night"
+	darkness_view = 7
+	see_invisible = SEE_INVISIBLE_NOLIGHTING
 	origin_tech = list(TECH_MAGNET = 2)
 
 /obj/item/device/hudmatrix/night/Initialize()
@@ -287,7 +289,7 @@
 			matrix = W
 			cumulative_flash_protection += matrix.flash_protection
 			to_chat(user, SPAN("notice", "You install \the [matrix] into \the [src]."))
-			sound_to(user, 'sound/items/goggles_switch.ogg')
+			sound_to(user, sound('sound/items/goggles_switch.ogg', volume = 50))
 			update_clothing_icon()
 			user.update_action_buttons()
 
@@ -305,7 +307,7 @@
 			var/obj/item/device/hudlenses/H = W
 			H.attach_lenses(src)
 			to_chat(user, SPAN("notice", "You install \the [H] into \the [src]."))
-			sound_to(user, 'sound/items/goggles_switch.ogg')
+			sound_to(user, sound('sound/items/goggles_switch.ogg', volume = 50))
 			update_clothing_icon()
 			user.update_action_buttons()
 
@@ -363,11 +365,11 @@
 	if(!active)
 		activate_matrix()
 		to_chat(user, "You activate the optical matrix on \the [src].")
-		sound_to(user, activation_sound)
+		sound_to(user, sound(activation_sound, volume = 50))
 	else
 		deactivate_matrix()
 		to_chat(user, "You deactivate the optical matrix on \the [src].")
-		sound_to(user, 'sound/items/goggles_switch.ogg')
+		sound_to(user, sound('sound/items/goggles_switch.ogg', volume = 50))
 	update_clothing_icon()
 	user.update_action_buttons()
 

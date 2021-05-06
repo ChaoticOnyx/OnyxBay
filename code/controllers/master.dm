@@ -48,7 +48,6 @@ GLOBAL_REAL(Master, /datum/controller/master) = new
 	var/queue_priority_count_bg = 0 //Same, but for background subsystems
 	var/map_loading = FALSE	//Are we loading in a new map?
 
-	var/list/total_run_times
 	var/current_runlevel	//for scheduling different subsystems for different stages of the round
 
 	var/static/restart_clear = 0
@@ -60,7 +59,6 @@ GLOBAL_REAL(Master, /datum/controller/master) = new
 	var/static/current_ticklimit = TICK_LIMIT_RUNNING
 
 /datum/controller/master/New()
-	total_run_times = list()
 	// Highlander-style: there can only be one! Kill off the old and replace it with the new.
 	var/list/_subsystems = list()
 	subsystems = _subsystems
@@ -148,7 +146,6 @@ GLOBAL_REAL(Master, /datum/controller/master) = new
 			Master.subsystems += new BadBoy.type	//NEW_SS_GLOBAL will remove the old one
 		subsystems = Master.subsystems
 		current_runlevel = Master.current_runlevel
-		total_run_times = Master.total_run_times
 		StartProcessing(10)
 	else
 		to_chat(world, "<span class='boldannounce'>The Master Controller is having some issues, we will need to re-initialize EVERYTHING</span>")
@@ -443,14 +440,16 @@ GLOBAL_REAL(Master, /datum/controller/master) = new
 			//	in those cases, so we just let them run)
 			if (queue_node_flags & SS_NO_TICK_CHECK)
 				if (queue_node.tick_usage > TICK_LIMIT_RUNNING - TICK_USAGE && ran_non_ticker)
-					queue_node.queued_priority += queue_priority_count * 0.1
-					queue_priority_count -= queue_node_priority
-					queue_priority_count += queue_node.queued_priority
-					current_tick_budget -= queue_node_priority
-					queue_node = queue_node.queue_next
+					if (!(queue_node_flags & SS_BACKGROUND))
+						queue_node.queued_priority += queue_priority_count * 0.1
+						queue_priority_count -= queue_node_priority
+						queue_priority_count += queue_node.queued_priority
+						current_tick_budget -= queue_node_priority
+						queue_node = queue_node.queue_next
+
 					continue
 
-			if ((queue_node_flags & SS_BACKGROUND) && !bg_calc)
+			if (!bg_calc && (queue_node_flags & SS_BACKGROUND))
 				current_tick_budget = queue_priority_count_bg
 				bg_calc = TRUE
 
@@ -498,13 +497,12 @@ GLOBAL_REAL(Master, /datum/controller/master) = new
 			tick_usage += queue_node.paused_tick_usage
 
 			queue_node.tick_usage = MC_AVERAGE_FAST(queue_node.tick_usage, tick_usage)
-			total_run_times[queue_node.name] += ((tick_usage / 100) * world.tick_lag) / 10
 
 			queue_node.cost = MC_AVERAGE_FAST(queue_node.cost, TICK_DELTA_TO_MS(tick_usage))
 			queue_node.paused_ticks = 0
 			queue_node.paused_tick_usage = 0
 
-			if (queue_node_flags & SS_BACKGROUND) //update our running total
+			if (bg_calc) //update our running total
 				queue_priority_count_bg -= queue_node_priority
 			else
 				queue_priority_count -= queue_node_priority

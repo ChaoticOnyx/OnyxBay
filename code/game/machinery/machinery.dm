@@ -121,6 +121,8 @@ Class Procs:
 	var/clicksound			// sound played on succesful interface use by a carbon lifeform
 	var/clickvol = 40		// sound played on succesful interface use
 	var/life_tick = 0		// O P T I M I Z A T I O N
+	var/beep_last_played = 0
+	var/beepsounds = null
 
 /obj/machinery/Initialize(mapload, d=0, populate_components = TRUE)
 	. = ..()
@@ -142,6 +144,14 @@ Class Procs:
 
 	START_PROCESSING(SSmachines, src) // It's safe to remove machines from here.
 	SSmachines.machinery += src // All machines should remain in this list, always.
+
+/obj/machinery/proc/play_beep()
+	if (beepsounds == null)
+		return
+
+	if(!stat && world.time > beep_last_played + 60 SECONDS && prob(10))
+		beep_last_played = world.time
+		playsound(src.loc, beepsounds, 30)
 
 /obj/machinery/Destroy()
 	SSmachines.machinery -= src
@@ -372,7 +382,7 @@ Class Procs:
 
 /obj/machinery/proc/display_parts(mob/user)
 	. = "<span class='notice'>Following parts detected in the machine:</span>"
-	for(var/var/obj/item/C in component_parts)
+	for(var/obj/item/C in component_parts)
 		. += "\n<span class='notice'>	[C.name]</span>"
 
 /obj/machinery/examine(mob/user)

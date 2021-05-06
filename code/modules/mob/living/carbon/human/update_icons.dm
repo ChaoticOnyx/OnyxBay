@@ -151,12 +151,10 @@ Please contact me on #coderbus IRC. ~Carn x
 
 //UPDATES OVERLAYS FROM OVERLAYS_LYING/OVERLAYS_STANDING
 /mob/living/carbon/human/update_icons()
-	lying_prev = lying	//so we don't update overlays for lying/standing unless our stance changes again
-	hanging_prev = hanging
 	update_hud()		//TODO: remove the need for this
 
 	var/list/overlays_to_apply = list()
-	if (icon_update)
+	if(icon_update)
 		overlays.Cut()
 		var/list/visible_overlays
 		if(is_cloaked())
@@ -278,8 +276,10 @@ var/global/list/damage_icon_parts = list()
 		if(isnull(part) || part.is_stump())
 			icon_key += "0"
 			continue
-		for(var/M in part.markings)
-			icon_key += "[M][part.markings[M]["color"]]"
+		for(var/E in part.markings)
+			var/datum/sprite_accessory/marking/M = E
+			var/color = part.markings[E]
+			icon_key += "[M.name][color]"
 		if(part)
 			icon_key += "[part.species.get_race_key(part.owner)]"
 			icon_key += "[part.dna.GetUIState(DNA_UI_GENDER)]"
@@ -292,8 +292,10 @@ var/global/list/damage_icon_parts = list()
 				icon_key += "[rgb(part.h_col[1],part.h_col[2],part.h_col[3])]"
 			else
 				icon_key += "#000000"
-			for(var/M in part.markings)
-				icon_key += "[M][part.markings[M]["color"]]"
+			for(var/E in part.markings)
+				var/datum/sprite_accessory/marking/M = E
+				var/color = part.markings[E]
+				icon_key += "[M.name][color]"
 		if(BP_IS_ROBOTIC(part))
 			icon_key += "2[part.model ? "-[part.model]": ""]"
 		else if(part.status & ORGAN_DEAD)
@@ -366,7 +368,7 @@ var/global/list/damage_icon_parts = list()
 /mob/living/carbon/human/proc/update_underwear(update_icons=1)
 	overlays_standing[HO_UNDERWEAR_LAYER] = list()
 	for(var/obj/item/underwear/UW in worn_underwear)
-		var/image/I = image(body_build.get_mob_icon("hidden", UW.icon_state), UW.icon_state)
+		var/image/I = image(body_build.get_mob_icon(slot_hidden, UW.icon_state), UW.icon_state)
 		I.appearance_flags = RESET_COLOR | PIXEL_SCALE
 		I.color = UW.color
 

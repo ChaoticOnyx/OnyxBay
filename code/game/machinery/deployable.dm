@@ -245,6 +245,7 @@ for reference:
 
 /obj/machinery/deployable/barrier/emag_act(remaining_charges, mob/user)
 	if (src.emagged == 0)
+		playsound(src.loc, 'sound/effects/computer_emag.ogg', 25)
 		src.emagged = 1
 		src.req_access.Cut()
 		src.req_one_access.Cut()
@@ -255,6 +256,7 @@ for reference:
 		visible_message("<span class='warning'>BZZzZZzZZzZT</span>")
 		return 1
 	else if (src.emagged == 1)
+		playsound(src.loc, 'sound/effects/computer_emag.ogg', 25)
 		src.emagged = 2
 		to_chat(user, "You short out the anchoring mechanism on \the [src].")
 		var/datum/effect/effect/system/spark_spread/s = new /datum/effect/effect/system/spark_spread

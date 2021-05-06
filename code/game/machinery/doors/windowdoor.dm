@@ -22,17 +22,13 @@
 
 /obj/machinery/door/window/Initialize()
 	. = ..()
-
+	update_nearby_tiles()
+	update_icon()
 	hitsound = pick(
 		'sound/effects/materials/glass/knock1.ogg',
 		'sound/effects/materials/glass/knock2.ogg',
 		'sound/effects/materials/glass/knock3.ogg',
 	)
-
-/obj/machinery/door/window/Initialize()
-	. = ..()
-	update_nearby_tiles()
-	update_icon()
 
 /obj/machinery/door/window/update_icon()
 	if(density)
@@ -136,7 +132,7 @@
 		operating = TRUE
 
 	if(autoclose)
-		timer = addtimer(CALLBACK(src, .close), 10 SECONDS, TIMER_UNIQUE|TIMER_STOPPABLE)
+		timer = addtimer(CALLBACK(src, .proc/close), 10 SECONDS, TIMER_UNIQUE|TIMER_STOPPABLE)
 
 	flick("[base_state]opening", src)
 	set_density(0)
@@ -190,7 +186,7 @@
 	if(density && operable())
 		operating = -1
 		flick("[base_state]spark", src)
-		addtimer(CALLBACK(src, .open), 10)
+		addtimer(CALLBACK(src, .proc/open), 10)
 		return 1
 
 /obj/machinery/door/emp_act(severity)

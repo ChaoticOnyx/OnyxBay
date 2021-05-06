@@ -350,6 +350,42 @@
 	..()
 	overlays += image("icon"='icons/misc/beach.dmi',"icon_state"="water5","layer"=MOB_LAYER+0.1)
 
+//SAND
+
+/turf/simulated/floor/natural/sand
+	name = "sand"
+	desc = "Crumbly."
+	icon = 'icons/turf/flooring/sand.dmi'
+	icon_state = "sand0"
+	base_name = "sand"
+	base_desc = "Crumbly."
+	base_icon = 'icons/turf/flooring/sand.dmi'
+	base_icon_state = "sand0"
+	var/rand_state = TRUE
+
+/turf/simulated/floor/natural/sand/New()
+	if(rand_state)
+		icon_state = "sand[rand(0, 12)]"
+	..()
+
+/turf/simulated/floor/natural/sand/pure
+	rand_state = FALSE
+
+/turf/simulated/floor/natural/sand/gray
+	rand_state = FALSE
+	icon_state = "sand_gray"
+	base_icon_state = "sand_gray"
+
+/turf/simulated/floor/natural/sand/darksand
+	rand_state = FALSE
+	icon_state = "asteroidplating"
+	icon = 'icons/turf/floors.dmi'
+
+/turf/simulated/floor/sand_floor
+	name = "sand floor"
+	icon = 'icons/turf/flooring/sand.dmi'
+	icon_state = "sand_floor"
+	initial_flooring = /decl/flooring/sand_tile
 
 //MISCELLANEOUS FLOORING
 

@@ -38,6 +38,10 @@ var/list/solars_list = list()
 	if(SC && (get_dist(src, SC) > SOLAR_MAX_DIST))
 		return 0
 	control = SC
+
+	if (!is_processing)
+		START_PROCESSING(SSmachines, src)
+
 	return 1
 
 //set the control of the panel to null and removes it from the control list of the previous control computer if needed
@@ -111,11 +115,11 @@ var/list/solars_list = list()
 	sunfrac = cos(p_angle) ** 2
 	//isn't the power recieved from the incoming light proportionnal to cos(p_angle) (Lambert's cosine law) rather than cos(p_angle)^2 ?
 
-/obj/machinery/power/solar/Process()//TODO: remove/add this from machines to save on processing as needed ~Carn PRIORITY
+/obj/machinery/power/solar/Process()
 	if(stat & BROKEN)
-		return
+		return PROCESS_KILL
 	if(!GLOB.sun || !control) //if there's no sun or the panel is not linked to a solar control computer, no need to proceed
-		return
+		return PROCESS_KILL
 
 	if(powernet)
 		if(powernet == control.powernet)//check if the panel is still connected to the computer
@@ -448,11 +452,11 @@ var/list/solars_list = list()
 
 /obj/machinery/power/solar_control/Topic(href, href_list)
 	if(..())
-		usr << browse(null, "window=solcon")
+		close_browser(usr, "window=solcon")
 		usr.unset_machine()
 		return 0
 	if(href_list["close"] )
-		usr << browse(null, "window=solcon")
+		close_browser(usr, "window=solcon")
 		usr.unset_machine()
 		return 0
 

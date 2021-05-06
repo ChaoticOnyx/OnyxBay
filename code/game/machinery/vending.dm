@@ -13,6 +13,7 @@
 	obj_flags = OBJ_FLAG_ANCHORABLE
 	clicksound = "button"
 	clickvol = 40
+	pull_slowdown = PULL_SLOWDOWN_HEAVY
 
 	var/max_health = 100
 	var/health = 100
@@ -169,6 +170,7 @@
 
 /obj/machinery/vending/emag_act(remaining_charges, mob/user)
 	if (!emagged)
+		playsound(src.loc, 'sound/effects/computer_emag.ogg', 25)
 		src.emagged = 1
 		to_chat(user, "You short out the product lock on \the [src]")
 		return 1
@@ -1372,10 +1374,10 @@
 	use_vend_state = TRUE
 	products = list(
 	/obj/item/weapon/tray = 8,
-	/obj/item/weapon/material/kitchen/utensil/fork = 6,
-	/obj/item/weapon/material/kitchen/utensil/knife = 6,
-	/obj/item/weapon/material/kitchen/utensil/spoon = 6,
-	/obj/item/weapon/material/knife = 3,
+	/obj/item/weapon/material/kitchen/utensil/fork = 8,
+	/obj/item/weapon/material/kitchen/utensil/knife = 8,
+	/obj/item/weapon/material/kitchen/utensil/spoon = 8,
+	/obj/item/weapon/material/knife/kitchen = 3,
 	/obj/item/weapon/material/kitchen/rollingpin = 2,
 	/obj/item/weapon/reagent_containers/food/drinks/pitcher = 2,
 	/obj/item/weapon/reagent_containers/food/drinks/coffeecup = 8,
@@ -1392,7 +1394,7 @@
 	/obj/item/weapon/storage/lunchbox/syndicate = 3)
 
 
-	contraband = list(/obj/item/weapon/material/knife/butch = 2)
+	contraband = list(/obj/item/weapon/material/knife/butch/kitchen = 2)
 
 /obj/machinery/vending/sovietsoda
 	name = "BODA"
@@ -1535,7 +1537,8 @@
 					/obj/item/weapon/storage/bouquet = 3,
 					/obj/item/weapon/storage/wallet/poly = 2)
 	contraband = list(/obj/item/clothing/glasses/eyepatch = 2,
-					  /obj/item/clothing/accessory/horrible = 2)
+					  /obj/item/clothing/accessory/horrible = 2,
+					  /obj/item/clothing/under/monkey/color/random = 3)
 	premium = list(/obj/item/clothing/mask/smokable/pipe = 3)
 	prices = list(/obj/item/weapon/mirror = 60,
 				  /obj/item/weapon/haircomb = 40,

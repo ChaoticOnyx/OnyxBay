@@ -22,7 +22,7 @@
 		Consume(A)
 
 /turf/unsimulated/wall/supermatter/Destroy()
-	STOP_PROCESSING(SSturf, src)	
+	STOP_PROCESSING(SSturf, src)
 	. = ..()
 
 /turf/unsimulated/wall/supermatter/Process(wait, times_fired)

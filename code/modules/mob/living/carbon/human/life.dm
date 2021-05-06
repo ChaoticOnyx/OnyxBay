@@ -64,6 +64,9 @@
 	if(wearing_rig && wearing_rig.offline)
 		wearing_rig = null
 
+	lying_prev = lying	//so we don't update overlays for lying/standing unless our stance changes again
+	hanging_prev = hanging
+
 	..()
 
 	if(life_tick % 30 == 15)
@@ -78,14 +81,19 @@
 
 		//Organs and blood
 		handle_organs()
+		handle_organs_pain()
 		stabilize_body_temperature() //Body temperature adjusts itself (self-regulation)
 		handle_shock()
 		handle_pain()
 		handle_medical_side_effects()
 		handle_poise()
+		update_canmove(TRUE) // Otherwise we'll have a 1 tick latency between actual getting-up and the animation update
 
 		if(!client && !mind)
 			species.handle_npc(src)
+
+		if(lying != lying_prev || hanging != hanging_prev)
+			update_icons() // So we update icons ONCE (hopefully) and AFTER all the status/organs updates
 
 	if(!handle_some_updates())
 		return											//We go ahead and process them 5 times for HUD images and other stuff though.
@@ -446,6 +454,8 @@
 		return //fuck this precision
 
 	if(on_fire)
+		if (stat == CONSCIOUS)
+			src.emote("long_scream")
 		return //too busy for pesky metabolic regulation
 
 	if(bodytemperature < species.cold_level_1) //260.15 is 310.15 - 50, the temperature where you start to feel effects.
@@ -751,7 +761,7 @@
 				healths.icon_state = "health_numb"
 			else
 				// Generate a by-limb health display.
-				healths.icon_state = "blank"
+				healths.icon_state = "health"
 
 				var/no_damage = 1
 				var/trauma_val = 0 // Used in calculating softcrit/hardcrit indicators.
@@ -1171,6 +1181,7 @@
 	full_prosthetic = null
 	shock_stage = 0
 	poise = poise_pool
+	bad_external_organs.Cut()
 	..()
 
 /mob/living/carbon/human/reset_view(atom/A)
@@ -1220,6 +1231,6 @@
 
 	if((getHalLoss() + amount) > 100)
 		if(prob(95))
-			Stun(amount/10)
+			Stun(amount/12)
 			Weaken(amount/10)
-			to_chat(src,"<span class='warning'>Your legs let you down!</span>")
+			visible_message("<b>[src]</b> collapses!", SPAN("warning", "You collapse from shock!"))

@@ -33,6 +33,7 @@
 	//random amount of damage between half of the blade's force and the full force of the blade.
 	user.apply_damage(rand(force/2, force), BRUTE, zone, 0, (DAM_SHARP|DAM_EDGE))
 	user.Weaken(5)
+	user.Stun(3)
 
 	user.drop_from_inventory(src)
 	throw_at(get_edge_target_turf(src, pick(GLOB.alldirs)), rand(1,3), throw_speed)

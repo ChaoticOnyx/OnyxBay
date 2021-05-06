@@ -4,7 +4,6 @@
 	icon = 'icons/obj/inflatable.dmi'
 	var/deploy_path = null
 	var/inflatable_health
-	can_atmos_pass = ATMOS_PASS_DENSITY
 
 /obj/item/inflatable/attack_self(mob/user)
 	if(!deploy_path)
@@ -13,7 +12,7 @@
 	if(!do_after(user, 1 SECOND, src))
 		return
 	playsound(loc, 'sound/items/zip.ogg', 75, 1)
-	user.visible_message(SPAN_NOTICE("[user] inflates \the [src]."), SPAN_NOTICE("You inflate \the [src]."))
+	user.visible_message(SPAN("notice", "[user] inflates \the [src]."), SPAN("notice", "You inflate \the [src]."))
 	var/obj/structure/inflatable/R = new deploy_path(user.loc)
 	transfer_fingerprints_to(R)
 	R.add_fingerprint(user)
@@ -42,6 +41,7 @@
 	opacity = 0
 	icon = 'icons/obj/inflatable.dmi'
 	icon_state = "wall"
+	can_atmos_pass = ATMOS_PASS_DENSITY
 
 	var/undeploy_path = null
 	var/health = 10
@@ -63,11 +63,11 @@
 
 /obj/structure/inflatable/Initialize()
 	. = ..()
-	START_PROCESSING(SSobj,src)
+	START_PROCESSING(SSobj, src)
 
 /obj/structure/inflatable/Destroy()
 	update_nearby_tiles()
-	STOP_PROCESSING(SSobj,src)
+	STOP_PROCESSING(SSobj, src)
 	return ..()
 
 /obj/structure/inflatable/Process()

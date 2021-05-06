@@ -55,6 +55,7 @@
 			G.attacking = 0
 			G.action_used()
 			affecting.Weaken(2)
+			affecting.Stun(2)
 			affecting.visible_message("<span class='notice'>[assailant] pins [affecting] to the ground!</span>")
 			affecting.poise = 0
 
@@ -80,7 +81,9 @@
 	G.attacking = 1
 
 	if(do_mob(assailant, affecting, action_cooldown - 1))
-
+		if(!G?.has_hold_on_organ(O))
+			to_chat(assailant, SPAN("warning", "You must keep a hold on your target to jointlock!"))
+			return 0
 		G.attacking = 0
 		G.action_used()
 		O.jointlock(assailant)
@@ -110,7 +113,9 @@
 		G.attacking = 1
 
 		if(do_mob(assailant, affecting, action_cooldown - 1))
-
+			if(!G?.has_hold_on_organ(O))
+				to_chat(assailant, SPAN_WARNING("You must keep a hold on your target to dislocate!"))
+				return 0
 			G.attacking = 0
 			G.action_used()
 			O.dislocate(1)
@@ -405,6 +410,7 @@
 			affecting.eye_blurry += 10
 			affecting.Paralyse(1)
 			affecting.Weaken(4)
+			affecting.Stun(4)
 		if (eyes.damage >= eyes.min_broken_damage)
 			if(affecting.stat != 2)
 				to_chat(affecting, "<span class='warning'>You go blind!</span>")
