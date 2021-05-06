@@ -39,9 +39,6 @@
 	icon_state = pick(get_valid_states(initial = TRUE))
 
 /obj/structure/sign/double/barsign/attackby(obj/item/I, mob/living/user)
-
-
-
 	if(emagged)
 		var/sign_type = input(user, "What would you like to change the barsign to?") as null|anything in get_valid_states(FALSE, user)
 		if(!sign_type || !Adjacent(user))
