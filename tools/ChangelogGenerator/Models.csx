@@ -241,7 +241,7 @@ public static class Github
             Changelog changelog = new()
             {
                 Author = author,
-                Date = Closed?.Date ?? Opened.Date
+                Date = DateTime.Now.Date
             };
 
             foreach (Match match in matches)
