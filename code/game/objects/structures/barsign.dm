@@ -68,5 +68,5 @@
 	return
 
 /obj/structure/sign/double/barsign/emp_act(severity)
-icon_state = "???"
+	icon_state = "???"
 	..(severity)
