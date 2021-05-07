@@ -22,6 +22,11 @@
 	var/lastgen2 = 0
 	var/effective_gen = 0
 	var/lastgenlev = 0
+	beepsounds = list(
+		'sound/effects/machinery/engineer/turbine1.ogg',
+		'sound/effects/machinery/engineer/turbine2.ogg',
+		'sound/effects/machinery/engineer/turbine3.ogg'
+	)
 
 /obj/machinery/power/generator/New()
 	..()
@@ -69,6 +74,7 @@
 		stored_energy = 0
 		return
 
+	play_beep()
 	updateDialog()
 
 	var/datum/gas_mixture/air1 = circ1.return_transfer_air()

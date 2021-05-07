@@ -167,7 +167,6 @@ var/list/admin_verbs_server = list(
 	/datum/admins/proc/changemap,
 	/datum/admins/proc/delay,
 	/datum/admins/proc/toggleaban,
-	/datum/admins/proc/immreboot,
 	/client/proc/everyone_random,
 	/datum/admins/proc/toggleAI,
 	/client/proc/cmd_admin_delete,		// delete an instance/object/mob/etc,
@@ -295,7 +294,6 @@ var/list/admin_verbs_hideable = list(
 	/datum/admins/proc/changemap,
 	/datum/admins/proc/delay,
 	/datum/admins/proc/toggleaban,
-	/datum/admins/proc/immreboot,
 	/client/proc/everyone_random,
 	/datum/admins/proc/toggleAI,
 	/datum/admins/proc/adrev,
@@ -956,7 +954,7 @@ var/list/admin_verbs_mentor = list(
 	for(var/client/C in GLOB.clients)
 		to_chat(C, "<br><center><span class='notice'><b><font size=4>Man up.<br> Deal with it.</font></b><br>Move on.</span></center><br>")
 		if(C.get_preference_value(/datum/client_preference/play_admin_midis) == GLOB.PREF_YES)
-			sound_to(C, 'sound/voice/ManUp1.ogg')
+			sound_to(C, sound('sound/voice/ManUp1.ogg'))
 
 	log_and_message_admins("told everyone to man up and deal with it.")
 

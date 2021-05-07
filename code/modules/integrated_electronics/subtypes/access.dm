@@ -33,10 +33,6 @@
 	else
 		return FALSE
 
-	if(assembly)
-		// reset previus card access and set new access
-		assembly.access_card.access = access
-
 	set_pin_data(IC_OUTPUT, 3, passkey)
 
 	push_data()
@@ -52,7 +48,8 @@
 	spawn_flags = IC_SPAWN_DEFAULT|IC_SPAWN_RESEARCH
 	inputs = list("passkey" = IC_PINTYPE_STRING)
 	activators = list(
-		"set passkey" = IC_PINTYPE_PULSE_IN
+		"set passkey" = IC_PINTYPE_PULSE_IN,
+		"passkey setted" = IC_PINTYPE_PULSE_OUT
 	)
 
 /obj/item/integrated_circuit/output/access_displayer/do_work()
@@ -60,9 +57,7 @@
 
 	// from hippie_xor_decrypt proc
 	var/list/access = json_decode(XorEncrypt(hextostr(passkey, TRUE), SScircuit.cipherkey))
-	to_world(islist(access))
-	for(var/a in access)
-		to_world(a)
 	if(access && islist(access) && assembly)
 		// reset previus card access and set new access
 		assembly.access_card.access = access
+		activate_pin(2)

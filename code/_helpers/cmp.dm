@@ -66,3 +66,6 @@
 
 /proc/cmp_program(datum/computer_file/program/A, datum/computer_file/program/B)
 	return cmp_text_asc(A.filedesc, B.filedesc)
+
+/proc/cmp_marking_order(list/A, list/B)
+	return A[1] - B[1][1]

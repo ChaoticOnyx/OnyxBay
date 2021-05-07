@@ -104,7 +104,7 @@
 	icon = DRINK_ICON_FILE
 	icon_state = base_icon
 
-	if (reagents.reagent_list.len > 0)
+	if(length(reagents?.reagent_list))
 		var/datum/reagent/R = reagents.get_master_reagent()
 
 		SetName("[base_name] of [R.glass_name ? R.glass_name : "something"]")

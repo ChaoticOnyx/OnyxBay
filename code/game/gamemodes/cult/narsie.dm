@@ -188,7 +188,12 @@ var/global/list/narsie_list = list()
 		if (dist <= consume_range && !istype(A, /turf/space))
 			var/turf/T = A
 			if(T.holy)
-				T.holy = 0 //Nar-Sie doesn't give a shit about sacred grounds.
+				T.holy = FALSE //Nar-Sie doesn't give a shit about sacred grounds.
+		
+			var/area/TA = get_area(T)
+			if(TA && !isspace(TA))
+				TA.holy = FALSE
+
 			T.cultify()
 
 /obj/singularity/narsie/proc/old_narsie(const/atom/A)

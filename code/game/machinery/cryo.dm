@@ -25,6 +25,15 @@
 	var/ejecting = 0
 	var/biochemical_stasis = 0
 
+	beepsounds = list(
+		'sound/effects/machinery/medical/beep1.ogg',
+		'sound/effects/machinery/medical/beep2.ogg',
+		'sound/effects/machinery/medical/beep3.ogg',
+		'sound/effects/machinery/medical/beep4.ogg',
+		'sound/effects/machinery/medical/beep5.ogg',
+		'sound/effects/machinery/medical/beep6.ogg'
+	)
+
 /obj/machinery/atmospherics/unary/cryo_cell/New()
 	..()
 	icon = 'icons/obj/cryogenics_split.dmi'
@@ -66,6 +75,8 @@
 		return
 	if(!on)
 		return
+
+	play_beep()
 
 	if(occupant)
 		if(occupant.stat != DEAD)
@@ -193,10 +204,12 @@
 
 	if(href_list["biochemicalStasisOn"])
 		biochemical_stasis = 1
+		update_icon()
 		return TOPIC_REFRESH
 
 	if(href_list["biochemicalStasisOff"])
 		biochemical_stasis = 0
+		update_icon()
 		return TOPIC_REFRESH
 
 	. = ..()
@@ -231,15 +244,15 @@
 
 /obj/machinery/atmospherics/unary/cryo_cell/update_icon()
 	overlays.Cut()
+	var/overlays_state = 0
 	if(stat & (BROKEN|NOPOWER))
-		icon_state = "pod0"
+		overlays_state = 0
 	else
-		icon_state = "pod[on]"
+		overlays_state = !on ? 0 : biochemical_stasis ? 2 : 1
+
+	icon_state = "pod[overlays_state]"
 	var/image/I
-	if(stat & (BROKEN|NOPOWER))
-		I = image(icon, "pod0_top")
-	else
-		I = image(icon, "pod[on]_top")
+	I = image(icon, "pod[overlays_state]_top")
 
 	I.pixel_z = 32
 	overlays += I
@@ -252,16 +265,10 @@
 		overlays += pickle
 		occupant_icon_update_timer = world.time + 30
 
-	if(stat & (BROKEN|NOPOWER))
-		I = image(icon, "lid0")
-	else
-		I = image(icon, "lid[on]")
+	I = image(icon, "lid[overlays_state]")
 	overlays += I
 
-	if(stat & (BROKEN|NOPOWER))
-		I = image(icon, "lid0_top")
-	else
-		I = image(icon, "lid[on]_top")
+	I = image(icon, "lid[overlays_state]_top")
 	I.pixel_z = 32
 	overlays += I
 
@@ -457,6 +464,7 @@
 /obj/machinery/atmospherics/unary/cryo_cell/emag_act(remaining_charges, mob/user)
 	if(emagged)
 		return
+	playsound(src.loc, 'sound/effects/computer_emag.ogg', 25)
 	emagged = 1
 	to_chat(user, "<span class='danger'>You short out \the [src]'s circuits.</span>")
 	var/datum/effect/effect/system/spark_spread/spark_system = new /datum/effect/effect/system/spark_spread()

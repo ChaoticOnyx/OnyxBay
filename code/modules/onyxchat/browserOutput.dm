@@ -49,7 +49,7 @@ GLOBAL_LIST_EMPTY(cookie_match_history)
 	var/datum/asset/stuff = get_asset_datum(/datum/asset/group/onyxchat)
 	stuff.send(owner)
 
-	owner << browse(file('code/modules/onyxchat/browserassets/html/browserOutput.html'), "window=browseroutput")
+	show_browser(owner, file('code/modules/onyxchat/browserassets/html/browserOutput.html'), "window=browseroutput")
 
 /datum/chatOutput/Topic(href, list/href_list)
 	if(usr.client != owner)
@@ -106,9 +106,10 @@ GLOBAL_LIST_EMPTY(cookie_match_history)
 
 	messageQueue = null
 	sendClientData()
+	sendSpellcheckerTerms()
 
 	//do not convert to to_chat()
-	owner << "<span class=\"userdanger\">Failed to load fancy chat, reverting to old chat. Certain features won't work.</span>"
+	to_target(owner, "<span class=\"userdanger\">Failed to load fancy chat, reverting to old chat. Certain features won't work.</span>")
 
 /datum/chatOutput/proc/showChat()
 	winset(owner, "output", "is-visible=false")
@@ -117,7 +118,7 @@ GLOBAL_LIST_EMPTY(cookie_match_history)
 /datum/chatOutput/proc/ehjax_send(client/C = owner, window = "browseroutput", data)
 	if(islist(data))
 		data = json_encode(data)
-	C << output("[data]", "[window]:ehjaxCallback")
+	to_target(C, output("[data]", "[window]:ehjaxCallback"))
 
 //Sends client connection details to the chat to handle and save
 /datum/chatOutput/proc/sendClientData()
@@ -170,13 +171,24 @@ GLOBAL_LIST_EMPTY(cookie_match_history)
 /datum/chatOutput/proc/debug(error)
 	log_to_dd("\[[time2text(world.realtime, "YYYY-MM-DD hh:mm:ss")]\] Client: [(src.owner.key ? src.owner.key : src.owner)] triggered JS error: [error]")
 
+
+GLOBAL_VAR_INIT(spellcheckerTerms, file2text("config/names/spellcheсker_terms.txt"))
+/datum/chatOutput/proc/sendSpellcheckerTerms()
+	owner << output(GLOB.spellcheckerTerms, "browseroutput:setSpellcheckerTerms")
+
+/datum/chatOutput/proc/spell_check(text)
+	if(text)
+		owner << output(text, "browseroutput:spellCheck")
+
 //Global chat procs
-/proc/to_chat(target, message, handle_whitespace=TRUE)
+/proc/to_chat(target, message, handle_whitespace = TRUE)
+	set background = TRUE
+
 	if(!target)
 		return
 
 	if (isfile(target))
-		target << message
+		to_target(target, message)
 		return
 
 	if(target == world)
@@ -195,43 +207,26 @@ GLOBAL_LIST_EMPTY(cookie_match_history)
 
 	//'
 
-	if(islist(target))
-		// Do the double-encoding outside the loop to save nanoseconds
-		var/twiceEncoded = url_encode(url_encode(message))
-		for(var/I in target)
-			var/client/C = CLIENT_FROM_VAR(I) //Grab us a client if possible
+	if(!islist(target))
+		target = list(target)
 
-			if (!C)
-				continue
-
-			if(!C.chatOutput || C.chatOutput.broken) // A player who hasn't updated his skin file.
-				continue
-
-			if(!C.chatOutput.loaded)
-				//Client still loading, put their messages in a queue
-				C.chatOutput.messageQueue += message
-				continue
-
-			C << output(twiceEncoded, "browseroutput:output")
-	else
-		var/client/C = CLIENT_FROM_VAR(target) //Grab us a client if possible
+	// Do the double-encoding outside the loop to save nanoseconds
+	var/twiceEncoded = url_encode(url_encode(message))
+	for(var/I in target)
+		var/client/C = CLIENT_FROM_VAR(I) //Grab us a client if possible
 
 		if (!C)
-			return
+			continue
 
 		if(!C.chatOutput || C.chatOutput.broken) // A player who hasn't updated his skin file.
-			return
+			continue
 
 		if(!C.chatOutput.loaded)
 			//Client still loading, put their messages in a queue
 			C.chatOutput.messageQueue += message
-			return
+			continue
 
-		// url_encode it TWICE, this way any UTF-8 characters are able to be decoded by the Javascript.
-		C << output(url_encode(url_encode(message)), "browseroutput:output")
-
-/proc/to_world(message)
-	to_chat(world, message)
+		send_output(C, twiceEncoded, "browseroutput:output")
 
 /datum/chatOutput/proc/swaptolightmode() //Dark mode light mode stuff. Yell at KMC if this breaks! (See darkmode.dm for documentation)
 	owner.force_white_theme()

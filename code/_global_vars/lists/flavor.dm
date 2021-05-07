@@ -97,15 +97,7 @@ GLOBAL_LIST_INIT(music_tracks, list(
 	"End" = 'sound/music/end.ogg',
 	"Magicfly" = 'sound/music/magicfly.ogg',
 	"Self Justified Sacrifices" = 'sound/music/self_justified_sacrifices.ogg',
-	//new year music starts | TODO: do not forget to cleanup after New Year
-	"Final Countdown" = 'sound/music/newyear/christmasamb1.ogg',
-	"Last Christmas" = 'sound/music/newyear/christmasamb2.ogg',
-	"We Wish You a Merry Christmas" = 'sound/music/newyear/christmasamb3.ogg',
-	"Jingle Bells" = 'sound/music/newyear/christmasamb4.ogg',
-	"Happy New Year" = 'sound/music/newyear/happynewyear.ogg',
-	"New New New New Year" = 'sound/music/newyear/steklovata_newyear.ogg',
-	//new year music ends
-	"Mr. Sandman" = 'sound/music/newyear/sandman.ogg',
+	"Mr. Sandman" = 'sound/music/sandman.ogg',
 	"Lone Digger" = 'sound/music/lonedigger.ogg',
 	"Reaper & Blues" = 'sound/music/reapernblues.ogg',
 	"Undead Man Walkin`" = 'sound/music/undeadwalking.ogg',

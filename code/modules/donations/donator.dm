@@ -61,7 +61,7 @@
 		if(type == patron_type)
 			return FALSE
 
-	ASSERT(FALSE) // inaccessible
+	CRASH("This code should not be accessible")
 
 /datum/donator_info/proc/has_item(type)
 	return "[type]" in items

@@ -274,7 +274,7 @@
 			to_chat(user, SPAN_DANGER("There is  [O] \a in the way."))
 			return 0
 	return 1
-/obj/structure/railing/can_climb(mob/living/user)
+/obj/structure/railing/can_climb(mob/living/user, post_climb_check = 0)
 	var/turf/OT = get_step(src, src.dir)//opposite turf of railing
 	var/turf/T = get_turf(src)//current turf of railing
 	var/turf/UT = get_turf(usr)

@@ -380,3 +380,18 @@
 	w_class = ITEM_SIZE_NORMAL
 	armor = list(melee = 15, bullet = 10, laser = 10, energy = 0, bomb = 0, bio = 0, rad = 0)
 	siemens_coefficient = 0.8
+
+/obj/item/clothing/mask/plasticbag
+	name = "plastic bag"
+	desc = "Not an eco-friendly way to get your money back."
+	icon_state = "plasticbag"
+	item_state = "plasticbag"
+	flags_inv = HIDEFACE|BLOCKHAIR
+	body_parts_covered = HEAD|FACE|EYES
+	tint = TINT_BLIND
+
+/obj/item/clothing/mask/plasticbag/attackby(obj/item/W, mob/user)
+	if(istype(W, /obj/item/weapon/tape_roll))
+		to_chat(user, "You attach a piece of [W] to [src]!")
+		new /obj/item/clothing/mask/gas/plasticbag(get_turf(src))
+		qdel(src)

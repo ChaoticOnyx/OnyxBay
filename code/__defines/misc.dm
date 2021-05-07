@@ -40,7 +40,8 @@
 #define    IMPTRACK_HUD 7 // Tracking implant.
 #define SPECIALROLE_HUD 8 // AntagHUD image.
 #define  STATUS_HUD_OOC 9 // STATUS_HUD without virus DB check for someone being ill.
-#define 	  LIFE_HUD  10 // STATUS_HUD that only reports dead or alive
+#define        LIFE_HUD 10 // STATUS_HUD that only reports dead or alive
+#define        XENO_HUD 11 // Alien embryo status.
 
 // Shuttle moving status.
 #define SHUTTLE_IDLE      0
@@ -91,7 +92,9 @@
 
 #define CUSTOM_ITEM_OBJ 'icons/obj/custom_items_obj.dmi'
 #define CUSTOM_ITEM_MOB null
-#define CUSTOM_ITEM_SYNTH null
+#define CUSTOM_ITEM_ROBOTS 'icons/mob/robots_custom.dmi'
+#define CUSTOM_ITEM_AI null
+#define CUSTOM_ITEM_AI_HOLO 'icons/mob/ai_custom/ai_holos.dmi'
 
 #define WALL_CAN_OPEN 1
 #define WALL_OPENING 2
@@ -243,3 +246,17 @@
 #define MOUSE_OPACITY_TRANSPARENT 0
 #define MOUSE_OPACITY_ICON 1
 #define MOUSE_OPACITY_OPAQUE 2
+
+//How pulling an object affects mob's movement speed.
+#define PULL_SLOWDOWN_WEIGHT   -1  // Default value, slowdown's handled by an object's w_class.
+#define PULL_SLOWDOWN_EXTREME 4.5
+#define PULL_SLOWDOWN_HEAVY   3.5
+#define PULL_SLOWDOWN_MEDIUM  2.5
+#define PULL_SLOWDOWN_LIGHT   1.5
+#define PULL_SLOWDOWN_TINY    0.5
+#define PULL_SLOWDOWN_NONE    0
+
+#define JOB_VACANCY_STATUS_OPEN "Open"
+#define JOB_VACANCY_STATUS_COMPLETED "Completed"
+#define JOB_VACANCIES_SLOTS_AVAILABLE_AT_ROUNDSTART 3
+#define JOB_VACANCIES_SLOT_PER_TIME (10 MINUTES)

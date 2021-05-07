@@ -74,7 +74,7 @@
 
 	var/savefile/info = new("data/player_saves/[copytext(traitor.key, 1, 2)]/[traitor.key]/traitor.sav")
 	var/list/infos
-	info >> infos
+	from_file(info, infos)
 	if(istype(infos))
 		var/total_attempts = infos["Total"]
 		var/total_overall_success = infos["Success"]

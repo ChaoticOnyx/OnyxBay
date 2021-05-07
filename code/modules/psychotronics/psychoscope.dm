@@ -18,9 +18,7 @@
 
 // Psychoscope scanning on Shift + LMB
 /mob/ShiftClick(mob/user)
-	. = ..()
-	if(!.)
-		return
+	..()
 
 	if(src != user && istype(src, /mob))
 		var/mob/M = src
@@ -85,7 +83,7 @@
 		for(var/neuromod_reward in neuromod_rewards)
 			var/datum/neuromod/N = neuromod_reward
 
-			if(!N || neuromod_reward in scanned[lifeform_type]["opened_neuromods"])
+			if(!N || (neuromod_reward in scanned[lifeform_type]["opened_neuromods"]))
 				continue
 
 			var/opened = prob(initial(N.chance))
@@ -99,7 +97,7 @@
 
 /*
 	Opens one technology with a some chance (/datum/lifeform/tech_chance).
-	A opened technology will be added to `scanned[lifeform_type]["opened_techs"]` list.
+	An opened technology will be added to `scanned[lifeform_type]["opened_techs"]` list.
 	If there is a tehcnology with the same name - its technology level will be replaced.
 
 	Inputs:
@@ -731,7 +729,7 @@
 /*
 	Inserting a disk.
 */
-/obj/item/clothing/glasses/psychoscope/attackby(I, user)
+/obj/item/clothing/glasses/psychoscope/attackby(obj/item/weapon/I, mob/user)
 	if(istype(I, /obj/item/weapon/disk))
 		InsertDisk()
 		return

@@ -209,6 +209,8 @@
 
 	var/list/prone_overlay_offset = list(0, 0) // amount to shift overlays when lying
 	var/icon_scale = 1
+
+	var/xenomorph_type = /mob/living/carbon/alien/larva // What type of larva is spawned if infected with an alien embryo
 /*
 These are all the things that can be adjusted for equipping stuff and
 each one can be in the NORTH, SOUTH, EAST, and WEST direction. Specify
@@ -366,6 +368,9 @@ The slots that you can use are found in items_clothing.dm and are the inventory 
 			if(target.a_intent == I_HELP)
 				H.visible_message("<span class='notice'>[H] and [target] shake hands!</span>", \
 								"<span class='notice'>You shake [target]'s hand!</span>")
+				if(istype(H.gloves, /obj/item/clothing/gloves/stun))
+					var/obj/item/clothing/gloves/stun/SG = H.gloves
+					SG.stun_attack(H, target)
 			else
 				H.visible_message("<span class='warning'>[target] refuses to shake [H]'s hand!</span>", \
 								"<span class='warning'>[target] refuses to shake your hand!</span>")
@@ -583,7 +588,7 @@ The slots that you can use are found in items_clothing.dm and are the inventory 
 	attacker.do_attack_animation(target)
 
 	if(target.parrying)
-		if(target.handle_parry(attacker, w_atk=null))
+		if(target.handle_parry(attacker, null))
 			return
 	if(target.blocking)
 		if(target.handle_block_normal(attacker))

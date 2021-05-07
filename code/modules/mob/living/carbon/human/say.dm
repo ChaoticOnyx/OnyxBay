@@ -13,14 +13,14 @@
 			message = copytext(message,2+length(speaking.key))
 		else
 			speaking = get_default_language()
-			
+
 	if(has_chem_effect(CE_VOICELOSS, 1))
-		whispering = TRUE		
+		whispering = TRUE
 
 	message = sanitize(message)
 	var/obj/item/organ/internal/voicebox/vox = locate() in internal_organs
 	var/snowflake_speak = (speaking && (speaking.flags & NONVERBAL|SIGNLANG)) || (vox && vox.is_usable() && (speaking in vox.assists_languages))
-	if(!isSynthetic() && need_breathe() && failed_last_breath && !snowflake_speak)
+	if(!full_prosthetic && need_breathe() && failed_last_breath && !snowflake_speak)
 		var/obj/item/organ/internal/lungs/L = internal_organs_by_name[species.breathing_organ]
 		if(L.breath_fail_ratio > 0.9)
 			if(world.time < L.last_failed_breath + 2 MINUTES) //if we're in grace suffocation period, give it up for last words
@@ -222,7 +222,7 @@
 	var/needs_assist = 0
 	var/can_speak_assist = 0
 
-	if(species && speaking.name in species.assisted_langs)
+	if(species && (speaking.name in species.assisted_langs))
 		needs_assist = 1
 		for(var/obj/item/organ/internal/I in src.internal_organs)
 			if((speaking in I.assists_languages) && (I.is_usable()))

@@ -213,7 +213,7 @@ GLOBAL_LIST_EMPTY(common_report)
 		show_roundend_report(C)
 		give_show_report_button(C)
 		CHECK_TICK
-
+	log_roundend(GLOB.common_report)
 
 /datum/controller/subsystem/ticker/proc/give_show_report_button(client/C)
 	var/datum/action/report/R = new
@@ -242,7 +242,7 @@ GLOBAL_LIST_EMPTY(common_report)
 	return "data/roundend_reports/[ckey].html"
 
 /datum/controller/subsystem/ticker/proc/show_roundend_report(client/C, previous = FALSE)
-	var/datum/browser/roundend_report = new(C, "roundend")
+	var/datum/browser/roundend_report = new(C.mob, "roundend")
 	roundend_report.width = 800
 	roundend_report.height = 600
 	var/content
@@ -258,4 +258,5 @@ GLOBAL_LIST_EMPTY(common_report)
 	roundend_report.stylesheets = list()
 	roundend_report.add_stylesheet("roundend", 'html/browser/roundend.css')
 	roundend_report.add_stylesheet("font-awesome", 'html/font-awesome/css/all.min.css')
+	to_chat(C, content)
 	roundend_report.open(FALSE)

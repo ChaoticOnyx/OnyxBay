@@ -189,7 +189,7 @@
 
 				src.visible_message(SPAN_NOTICE("\The [src] pings!"))
 				if(cooked_sound)
-					playsound(get_turf(src), cooked_sound, 50, 1)
+					playsound(src, cooked_sound, 50, 1)
 		if(COOKED)
 			if(!can_burn_food)
 				eject()

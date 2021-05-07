@@ -46,7 +46,7 @@ Small, little HP, poisonous.
 
 	return L
 
-/mob/living/simple_animal/hostile/voxslug/get_scooped(mob/living/carbon/grabber)
+/mob/living/simple_animal/hostile/voxslug/get_scooped(mob/living/carbon/grabber, self_grab)
 	if(grabber.species.name != SPECIES_VOX)
 		to_chat(grabber, "<span class='warning'>\The [src] wriggles out of your hands before you can pick it up!</span>")
 		return

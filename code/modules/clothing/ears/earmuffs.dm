@@ -5,7 +5,8 @@
 	icon_state = "earmuffs"
 	item_state = "earmuffs"
 	slot_flags = SLOT_EARS | SLOT_TWOEARS
-
+	ear_protection = 2
+	
 /obj/item/clothing/ears/earmuffs/headphones
 	name = "headphones"
 	desc = "It's probably not in accordance with corporate policy to listen to music on the job... but fuck it."

@@ -83,6 +83,7 @@
 	return !!T.return_air()
 
 /proc/IsTurfAtmosUnsafe(turf/T)
+	ASSERT(T)
 	if(istype(T, /turf/space)) // Space tiles
 		return "Spawn location is open to space."
 	var/datum/gas_mixture/air = T.return_air()

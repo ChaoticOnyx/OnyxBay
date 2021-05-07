@@ -92,6 +92,7 @@ var/global/list/obj/machinery/message_server/message_servers = list()
 			update_icon()
 
 /obj/machinery/message_server/proc/send_pda_message(recipient = "",sender = "",message = "")
+	playsound(src.loc, "device_trr", 50)
 	var/result
 	for (var/token in spamfilter)
 		if (findtextEx(message,token))
@@ -101,6 +102,7 @@ var/global/list/obj/machinery/message_server/message_servers = list()
 	return result
 
 /obj/machinery/message_server/proc/send_rc_message(recipient = "",sender = "",message = "",stamp = "", id_auth = "", priority = 1)
+	playsound(src.loc, "device_trr", 50)
 	rc_msgs += new /datum/data_rc_msg(recipient,sender,message,stamp,id_auth)
 	var/authmsg = "[message]<br>"
 	if (id_auth)

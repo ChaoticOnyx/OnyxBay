@@ -50,7 +50,7 @@
 	new_content += "\[br\]Sign: \[signfield=finish\]\[/right\]"
 	set_content(new_content, new_title)
 
-/obj/item/weapon/paper/complaint_form/copy()
+/obj/item/weapon/paper/complaint_form/copy(loc = src.loc, generate_stamps = TRUE)
 	var/obj/item/weapon/paper/complaint_form/CF = ..()
 	CF.id = id
 	CF.signed = signed

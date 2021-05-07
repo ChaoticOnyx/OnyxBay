@@ -1,101 +1,115 @@
-body{font-family:Tahoma,sans-serif;}
-.top{font-size:12px;}
-a img {border:none;}
-.bgimages16 li {
-	padding:2px 10px 2px 30px;
-	background-position:6px center;
-	background-repeat:no-repeat;
-	border:1px solid #ddd;
-	border-left:4px solid #999;
-	margin-bottom:2px;
+body {
+	font-family: "New York", "Times New Roman", serif;
+	background-color: #22272E;
+	color: white;
+	font-weight: 400;
+	line-height: 1.5;
+	behavior: url(pie.htc);
+
+	scrollbar-base-color: #444d5c;
+	scrollbar-face-color: #444d5c;
+	scrollbar-3dlight-color: #22272E;
+	scrollbar-highlight-color: #22272E;
+	scrollbar-track-color: #22272E;
+	scrollbar-arrow-color: #22272E;
+	scrollbar-shadow-color: #444d5c;
+	scrollbar-dark-shadow-color: #22272E;
 }
-.bugfix {background-image:url(bug-minus.png)}
-.wip {background-image:url(hard-hat-exclamation.png)}
-.tweak {background-image:url(wrench-screwdriver.png)}
-.soundadd {background-image:url(music-plus.png)}
-.sounddel {background-image:url(music-minus.png)}
-.rscdel {background-image:url(cross-circle.png)}
-.rscadd {background-image:url(tick-circle.png)}
-.imageadd {background-image:url(image-plus.png)}
-.imagedel {background-image:url(image-minus.png)}
-.spellcheck {background-image:url(spell-check.png)}
-.experiment {background-image:url(burn-exclamation.png)}
-.balance {background-image:url(scales.png)}
-.maptweak {background-image:url(map-pencil.png)}
-.sansserif {font-size:12px;}
-.commit {
-	margin-bottom:20px;
-	font-size:100%;font-weight:normal;
+
+a {
+	color: white;
+	text-decoration: none;
 }
-.changes {
-	list-style:none;
-	margin:5px 0;
-	padding:0 0 0 25px;
-	font-size:0.8em;
+
+.commit a {
+	color: #14d0ff;
+	text-decoration: underline;
 }
-.date {
-	margin:10px 0;
-	color:blue;
-	border-bottom:2px solid #00f;
-	width:60%;
-	padding:2px 0;
-	font-size:1em;
-	font-weight:bold;
+
+.links a {
+	margin-left: 30px;
+	margin-right: 30px;
+	font-size: 42px;
 }
-.date_huge {
-	margin:10px 0;
-	color:red;
-	border-bottom:2px solid #00f;
-	width:80%;
-	padding:2px 0;
-	font-size:1.2em;
-	font-weight:bold;
+
+.align-center {
+	text-align: center;
 }
-.merge {
-	padding: 10px;
-	background-color: #EEEEEE;
-	border-style: solid;
-	border-width: thin;
-	margin:0;
-	font-size:0.9em;
+
+.align-left {
+	text-indent: 40px;
+	text-align: left;
 }
-.mergeAuthor {
-	background-color: #EEEEEE;
-	margin:0;
-	font-weight:bold;
-	font-size:1.2em;
+
+.font-huge {
+	font-size: 32px;
 }
+
+.font-medium,
 .author {
-	padding-left:10px;
-	margin:0;
-	font-weight:bold;
-	font-size:0.9em;
-	}
-.drop {
-	cursor:pointer;
-	border:1px solid #999;
-	display:inline;
-	font-size:0.9em;
-	padding:1px 20px 1px 5px;
-	line-height:16px;
+	font-size: 26px;
 }
-.hidden {display:none;}
-.indrop {
-	margin:2px 0 0 0;
-	clear:both;
-	background:#fff;
-	border:1px solid #ddd;
-	padding:5px 10px;
-	}
-.indrop p {
-	margin:0;
-	font-size:0.8em;
-	line-height:16px;
-	margin:1px 0;
+
+.font-small {
+	font-size: 20px;
 }
-.indrop img {
-	margin-right:5px;
-	vertical-align:middle;}
-.closed {background:url(chevron-expand.png) right center no-repeat;}
-.open {background:url(chevron.png) right center no-repeat;}
-.lic {font-size:9px;}
+
+.changes li {
+	padding: 2px 10px 2px 10px;
+	background-position: 6px center;
+	background-repeat: no-repeat;
+	border-left: 4px solid #999;
+	margin-bottom: 10px;
+}
+
+.changes li i {
+	margin-right: 10px;
+}
+
+li.green{
+	border-left-color: #57AB5A;
+	background-color: rgba(87, 171, 90, 0.2);
+	background: linear-gradient(90deg, rgba(87, 171, 90, 0.2) 0%, rgba(71, 139, 73, 0) 100%);
+	-pie-background: linear-gradient(rgba(87, 171, 90, 0.2) 0%, rgba(71, 139, 73, 0) 100%);
+}
+
+li.red {
+	border-left-color: #E5534B;
+	background-color: rgba(229, 83, 75, 0.2);
+	background: linear-gradient(90deg, rgba(229, 83, 75, 0.2) 0%, rgba(158, 57, 52, 0) 100%);
+	-pie-background: linear-gradient(rgba(229, 83, 75, 0.2) 0%, rgba(158, 57, 52, 0) 100%);
+}
+
+li.yellow {
+	border-left-color: #DAAA3F;
+	background: rgba(218, 170, 63, 0.2) linear-gradient(90deg, rgba(218, 170, 63, 0.2) 0%, rgba(150, 117, 44, 0) 100%);
+	-pie-background: linear-gradient(rgba(218, 170, 63, 0.2) 0%, rgba(150, 117, 44, 0) 100%);
+}
+
+.commit {
+	margin-bottom: 20px;
+}
+
+.changes {
+	list-style: none;
+	margin: 5px 0;
+	padding: 0 0 0 25px;
+	font-size: 0.8em;
+}
+
+.date {
+	margin: 10px 0;
+	color: #6B89DA;
+	border-bottom: 2px solid #6B89DA;
+	width: 100%;
+	padding: 2px 0;
+	font-size: 1em;
+	font-weight: bold;
+	text-transform: uppercase;
+}
+
+.author {
+	padding-left: 0px;
+	margin: 0;
+	font-weight: bold;
+}

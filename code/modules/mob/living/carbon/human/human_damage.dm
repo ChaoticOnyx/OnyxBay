@@ -60,7 +60,7 @@
 /mob/living/carbon/human/getHalLoss()
 	var/amount = 0
 	for(var/obj/item/organ/external/E in organs)
-		amount += E.get_full_pain()
+		amount += E.full_pain
 	return amount
 
 /mob/living/carbon/human/setHalLoss(amount)
@@ -355,6 +355,21 @@ In most cases it makes more sense to use apply_damage() instead! And make sure t
 
 	updatehealth()
 
+// damage ONE organic external organ, organ gets randomly selected from all damagable
+/mob/living/carbon/human/proc/take_organic_organ_damage(brute, burn)
+	var/list/organic_organs = list()
+
+	for(var/obj/item/organ/external/organ in get_damageable_organs())
+		if(!BP_IS_ROBOTIC(organ))
+			organic_organs += organ
+
+	if(organic_organs.len == 0) return
+
+	var/obj/item/organ/external/damaged_organ = pick(organic_organs)
+	if(damaged_organ.take_external_damage(brute, burn))
+		BITSET(hud_updateflag, HEALTH_HUD)
+
+	updatehealth()
 
 //Heal MANY external organs, in random order
 /mob/living/carbon/human/heal_overall_damage(brute, burn)
@@ -491,7 +506,7 @@ This function restores all organs.
 
 // Find out in how much pain the mob is at the moment.
 /mob/living/carbon/human/proc/get_shock()
-	if (!can_feel_pain())
+	if(!can_feel_pain())
 		return 0
 
 	var/traumatic_shock = getHalLoss()                 // Pain.
@@ -499,7 +514,7 @@ This function restores all organs.
 
 	if(stat == UNCONSCIOUS)
 		traumatic_shock *= 0.6
-	return max(0,traumatic_shock)
+	return max(0, traumatic_shock)
 
 /mob/living/carbon/human/apply_effect(effect = 0,effecttype = STUN, blocked = 0)
 	if(effecttype == IRRADIATE && (effect * blocked_mult(blocked) <= RAD_LEVEL_LOW))

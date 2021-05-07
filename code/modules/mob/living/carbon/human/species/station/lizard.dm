@@ -68,6 +68,8 @@
 		)
 	breathing_sound = 'sound/voice/lizard.ogg'
 
+	xenomorph_type = /mob/living/carbon/alien/larva/primal
+
 //	prone_overlay_offset = list(-4, -4)
 
 /datum/species/unathi/equip_survival_gear(mob/living/carbon/human/H)

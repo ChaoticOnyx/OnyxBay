@@ -14,7 +14,7 @@
 	var/list/data = ..()
 	ASSERT(istype(data))
 	var/static/list/med_fields = list("Major Disabilities", "Minor Disabilities", "Current Diseases",\
-		"Medical Condition Details", "Important Notes", "Recent Records", "Medical Background")
+		"Medical Condition Details", "Important Notes", "Medical Recent Records", "Medical Background")
 	var/fields_cached = data["fields"]
 	if (!fields_cached)
 		return data
@@ -46,7 +46,7 @@
 		to_chat(user, "<span class='notice'>\The [nano_host()] flashes an \"Access Denied\" warning.</span>")
 		return FALSE
 
-	if (F.name == "Recent Records")
+	if (F.name == "Medical Recent Records")
 
 		var/new_value = replacetext(input(user,\
 			"Enter medical record data. You may use HTML paper formatting tags:",

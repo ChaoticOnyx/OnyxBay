@@ -186,6 +186,7 @@
 
 /obj/vehicle/emag_act(remaining_charges, mob/user as mob)
 	if(!emagged)
+		playsound(src.loc, 'sound/effects/computer_emag.ogg', 25)
 		emagged = 1
 		if(locked)
 			locked = 0

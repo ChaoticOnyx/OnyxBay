@@ -2,6 +2,7 @@
 	icon = 'icons/obj/structures.dmi'
 	w_class = ITEM_SIZE_NO_CONTAINER
 	pull_sound = "pull_wood"
+	pull_slowdown = PULL_SLOWDOWN_MEDIUM
 
 	var/breakable
 	var/parts
