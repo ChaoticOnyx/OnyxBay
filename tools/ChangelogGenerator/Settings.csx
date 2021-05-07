@@ -43,7 +43,8 @@ private static class Settings
     {
         PropertyNamingPolicy = JsonNamingPolicy.CamelCase,
         Encoder = System.Text.Encodings.Web.JavaScriptEncoder.UnsafeRelaxedJsonEscaping,
-        WriteIndented = true
+        WriteIndented = true,
+        DefaultIgnoreCondition = System.Text.Json.Serialization.JsonIgnoreCondition.WhenWritingDefault
     };
     /// <summary>
     ///     Настройки для Markdown.
@@ -72,7 +73,7 @@ private static class Settings
 /// </summary>
 public enum ChangePrefix
 {
-    BugFix = 0,
+    BugFix = 1,
     Wip,
     Tweak,
     SoundAdd,
