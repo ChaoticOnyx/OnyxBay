@@ -216,6 +216,9 @@ proc/blood_splatter(target,datum/reagent/blood/source,large,spray_dir)
 	var/decal_type = /obj/effect/decal/cleanable/blood/splatter
 	var/turf/T = get_turf(target)
 
+	if(spray_dir)
+		decal_type = /obj/effect/decal/cleanable/blood/squirt
+
 	if(istype(source,/mob/living/carbon/human))
 		var/mob/living/carbon/human/M = source
 		source = M.get_blood(M.vessel)
@@ -248,7 +251,6 @@ proc/blood_splatter(target,datum/reagent/blood/source,large,spray_dir)
 		B.basecolor = source.data["blood_colour"]
 		B.update_icon()
 	if(spray_dir)
-		B.icon_state = "squirt"
 		B.dir = spray_dir
 
 	// Update blood information.
