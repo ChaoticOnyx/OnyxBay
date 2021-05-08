@@ -148,7 +148,7 @@
 	var/flickering = 0
 	var/light_type = /obj/item/weapon/light/tube		// the type of light item
 	var/construct_type = /obj/machinery/light_construct
-	var/pixel_shift = 2
+	var/pixel_shift = 0
 
 	var/datum/effect/effect/system/spark_spread/s = new /datum/effect/effect/system/spark_spread
 
@@ -243,15 +243,16 @@
 
 /obj/machinery/light/update_icon(trigger = 1)
 	overlays.Cut()
-	switch(dir)
-		if(NORTH)
-			pixel_y = pixel_shift
-		if(SOUTH)
-			pixel_y = -pixel_shift
-		if(EAST)
-			pixel_x = pixel_shift
-		if(WEST)
-			pixel_x = -pixel_shift
+	if(pixel_shift)
+		switch(dir)
+			if(NORTH)
+				pixel_y = pixel_shift
+			if(SOUTH)
+				pixel_y = -pixel_shift
+			if(EAST)
+				pixel_x = pixel_shift
+			if(WEST)
+				pixel_x = -pixel_shift
 
 	switch(get_status())		// set icon_states
 		if(LIGHT_OK)
