@@ -1,17 +1,14 @@
 {
     "type": "object",
-    "defaultSnippets": [
-        {
+    "defaultSnippets": [{
             "label": "Создать ченйджлог на сегодня",
             "body": {
                 "author": "$1",
                 "date": "$CURRENT_YEAR-$CURRENT_MONTH-$CURRENT_DATE",
-                "changes": [
-                    {
-                        "prefix": "$2",
-                        "message": "$3"
-                    }
-                ]
+                "changes": [{
+                    "prefix": "$2",
+                    "message": "$3"
+                }]
             }
         },
         {
@@ -19,12 +16,10 @@
             "body": {
                 "author": "$1",
                 "date": "$2-$3-$4",
-                "changes": [
-                    {
-                        "prefix": "$5",
-                        "message": "$6"
-                    }
-                ]
+                "changes": [{
+                    "prefix": "$5",
+                    "message": "$6"
+                }]
             }
         }
     ],
@@ -36,8 +31,7 @@
         "date": {
             "description": "Дата изменения в формате `YYYY-MM-DD` (не обязательна)",
             "type": "string",
-            "defaultSnippets": [
-                {
+            "defaultSnippets": [{
                     "label": "Сегодня",
                     "description": "Установить сегодняшнюю дату",
                     "body": "$CURRENT_YEAR-$CURRENT_MONTH-$CURRENT_DATE"
@@ -55,15 +49,13 @@
 
             "items": {
                 "type": "object",
-                "defaultSnippets": [
-                    {
-                        "label": "Добавить изменение",
-                        "body": {
-                            "prefix": "$1",
-                            "message": "$2"
-                        }
+                "defaultSnippets": [{
+                    "label": "Добавить изменение",
+                    "body": {
+                        "prefix": "$1",
+                        "message": "$2"
                     }
-                ],
+                }],
                 "properties": {
                     "prefix": {
                         "type": "string",
@@ -87,6 +79,10 @@
                     "message": {
                         "type": "string",
                         "description": "Описание изменения."
+                    },
+                    "pr": {
+                        "type": "integer",
+                        "description": "Номер PR с которым связано изменение."
                     }
                 }
             }

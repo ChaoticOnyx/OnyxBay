@@ -1,3 +1,4 @@
+#r "nuget:Markdig, 0.24.0"
 #load "Settings.csx"
 #nullable enable
 
@@ -7,6 +8,7 @@ using System.Linq;
 using System.Runtime.Serialization;
 using System.Text.Json.Serialization;
 using System.Text.RegularExpressions;
+using Markdig;
 
 public sealed class Changelog
 {
@@ -16,9 +18,9 @@ public sealed class Changelog
     public string Author { get; init; } = string.Empty;
 
     /// <summary>
-    ///     Дата изменении.
+    ///     Дата генерации изменении.
     /// </summary>
-    public DateTime Date { get; init; } = DateTime.Now;
+    public DateTime Date { get; init; } = DateTime.Now.Date;
 
     /// <summary>
     ///     Изменения.
@@ -86,6 +88,18 @@ public sealed class Changelog
         public string Message { get; init; } = string.Empty;
 
         /// <summary>
+        ///     Номер PR к которому относится данное изменение.
+        /// </summary>
+        public int? Pr { get; init; } = null;
+
+        /// <summary>
+        ///     Message в формате HTML.
+        /// </summary>
+        /// <returns></returns>
+        [JsonIgnore()]
+        public string MessageMdToHtml { get => Markdown.ToHtml(Message, Settings.MdPipeline); }
+
+        /// <summary>
         ///     Font Awesome классы для иконки в HTML.
         /// </summary>
         [JsonIgnore]
@@ -96,9 +110,9 @@ public sealed class Changelog
         [JsonIgnore]
         public string Color { get => ColorBinding(Prefix); }
 
-        public override string ToString() => $"{Prefix} - {Message}";
+        public override string ToString() => $"{Prefix} - {Message} (#{Pr ?? 0})";
 
-        public override int GetHashCode() => HashCode.Combine(Prefix, Message);
+        public override int GetHashCode() => HashCode.Combine(Prefix, Message, Pr ?? 0);
 
         public override bool Equals(object? obj)
         {
@@ -241,7 +255,7 @@ public static class Github
             Changelog changelog = new()
             {
                 Author = author,
-                Date = Closed?.Date ?? Opened.Date
+                Date = DateTime.Now.Date
             };
 
             foreach (Match match in matches)
@@ -259,7 +273,8 @@ public static class Github
                 changelog.Changes.Add(new()
                 {
                     Prefix = Enum.Parse<ChangePrefix>(prefix, true),
-                    Message = message
+                    Message = message,
+                    Pr = Number
                 });
             }
 
