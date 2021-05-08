@@ -135,6 +135,7 @@ SUBSYSTEM_DEF(supply)
 			add_points_from_source(profit, initial(material.name))
 // Alert crew to illegal items
 /datum/controller/subsystem/supply/proc/alert_crew(chance, force = FALSE)
+	var/announce = FALSE
 	announce = prob(chance) && (force || !crew_illegal_noticed)
 	if(announce)
 		var/message = "Suspicious cargo shipment has been detected. Immediate security intervention is required in the supply department."
