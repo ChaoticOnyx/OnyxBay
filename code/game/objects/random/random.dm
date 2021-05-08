@@ -154,9 +154,9 @@
 				/obj/item/weapon/storage/pill_bottle/dexalin_plus = 1,
 				/obj/item/weapon/storage/pill_bottle/dermaline = 1,
 				/obj/item/weapon/storage/pill_bottle/bicaridine = 1,
-				/obj/item/weapon/reagent_containers/syringe/antitoxin = 2,
-				/obj/item/weapon/reagent_containers/syringe/antiviral = 1,
-				/obj/item/weapon/reagent_containers/syringe/inaprovaline = 2,
+				/obj/item/weapon/reagent_containers/syringe/antitoxin/packaged = 2,
+				/obj/item/weapon/reagent_containers/syringe/antiviral/packaged = 1,
+				/obj/item/weapon/reagent_containers/syringe/inaprovaline/packaged = 2,
 				/obj/item/weapon/storage/box/freezer = 1,
 				/obj/item/stack/nanopaste = 1)
 
@@ -177,7 +177,7 @@
 				/obj/item/stack/medical/splint = 1,
 				/obj/item/bodybag/cryobag = 1,
 				/obj/item/weapon/storage/pill_bottle/kelotane = 2,
-				/obj/item/weapon/storage/pill_bottle/antitox = 2)
+				/obj/item/weapon/storage/pill_bottle/dylovene = 2)
 
 /obj/random/firstaid
 	name = "Random First Aid Kit"
@@ -223,7 +223,7 @@
 				/obj/item/stack/telecrystal = 1,
 				/obj/item/clothing/under/syndicate = 2,
 				/obj/item/weapon/reagent_containers/syringe = 3,
-				/obj/item/weapon/reagent_containers/syringe/steroid = 2,
+				/obj/item/weapon/reagent_containers/syringe/steroid/packaged = 2,
 				/obj/item/weapon/reagent_containers/syringe/drugs = 1)
 
 /obj/random/drinkbottle

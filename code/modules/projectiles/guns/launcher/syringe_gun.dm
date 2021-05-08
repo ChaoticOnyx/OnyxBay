@@ -20,7 +20,15 @@
 
 /obj/item/weapon/syringe_cartridge/attackby(obj/item/I, mob/user)
 	if(istype(I, /obj/item/weapon/reagent_containers/syringe))
-		syringe = I
+		var/obj/item/weapon/reagent_containers/syringe/S = I
+		if(S.mode == "broken")
+			to_chat(user, SPAN("warning", "This syringe is broken."))
+			return
+		if(S.mode == "packaged")
+			to_chat(user, SPAN("notice", "This syringe must be unwrapped first."))
+			return
+
+		syringe = S
 		to_chat(user, "<span class='notice'>You carefully insert [syringe] into [src].</span>")
 		user.remove_from_mob(syringe)
 		syringe.loc = src
