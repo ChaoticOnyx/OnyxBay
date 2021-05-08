@@ -6,6 +6,7 @@ SUBSYSTEM_DEF(supply)
 	flags = SS_NO_TICK_CHECK
 
 	var/crew_illegal_noticed = FALSE
+	var/illegal_alert_chance = 0
 	//supply points
 	var/points = 50
 	var/points_per_process = 1
@@ -133,14 +134,8 @@ SUBSYSTEM_DEF(supply)
 			var/material/material = material_type //False typing.
 			add_points_from_source(profit, initial(material.name))
 // Alert crew to illegal items
-/datum/controller/subsystem/supply/proc/alert_crew(illegal = FALSE, force = FALSE)
-	//New message handling
-	var/announce = FALSE
-	if(!illegal)
-		announce = prob(10)
-	else
-		announce = prob(95)
-	announce = announce && (force || !crew_illegal_noticed)
+/datum/controller/subsystem/supply/proc/alert_crew(chance, force = FALSE)
+	announce = prob(chance) && (force || !crew_illegal_noticed)
 	if(announce)
 		var/message = "Suspicious cargo shipment has been detected. Immediate security intervention is required in the supply department."
 		var/customname = "[GLOB.using_map.company_name] Security Cargo Departament"
@@ -175,7 +170,11 @@ SUBSYSTEM_DEF(supply)
 		var/datum/supply_order/SO = S
 		var/decl/hierarchy/supply_pack/SP = SO.object
 
-		alert_crew(SP.contraband)
+		if(SP.contraband)
+			illegal_alert_chance += 30
+		else
+			illegal_alert_chance += 5
+		illegal_alert_chance = clamp(illegal_alert_chance, 0, 90)
 		var/obj/A = new SP.containertype(pickedloc)
 		A.SetName("[SP.containername][SO.comment ? " ([SO.comment])":"" ]")
 		//supply manifest generation begin
@@ -206,6 +205,8 @@ SUBSYSTEM_DEF(supply)
 			for(var/atom/content in spawned)
 				slip.info += "<li>[content.name]</li>" //add the item to the manifest
 			slip.info += "</ul><br>CHECK CONTENTS AND STAMP BELOW THE LINE TO CONFIRM RECEIPT OF GOODS<hr>"
+	alert_crew(illegal_alert_chance)
+	illegal_alert_chance = 0
 	crew_illegal_noticed = FALSE // reset to default
 
 /datum/supply_order
