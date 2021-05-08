@@ -237,6 +237,7 @@ var/global/list/image/splatter_cache=list()
 	icon_state = "mucus"
 
 	var/list/datum/disease2/disease/virus2 = list()
+	var/dried = FALSE
 
 /obj/effect/decal/cleanable/mucus/Initialize()
 	. = ..()
@@ -253,4 +254,5 @@ var/global/list/image/splatter_cache=list()
 	name = "dried mucus"
 	desc = "Disguisting nonetheless."
 	icon_state = "mucus_dry"
+	dried = TRUE
 	virus2.Cut()
