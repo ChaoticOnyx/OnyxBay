@@ -26,7 +26,7 @@ var/list/all_virtual_listeners = list()
 	all_virtual_listeners += src
 
 	update_icon()
-   
+
 /mob/observer/virtual/Initialize()
 	. = ..()
 	STOP_PROCESSING(SSmobs, src)
