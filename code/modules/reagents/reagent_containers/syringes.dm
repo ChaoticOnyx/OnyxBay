@@ -86,7 +86,6 @@
 		return
 
 	if(mode == SYRINGE_PACKAGED)
-		to_chat(user, SPAN("notice", "This syringe must be unwrapped first."))
 		return
 
 	if(istype(target, /obj/structure/closet/body_bag))
