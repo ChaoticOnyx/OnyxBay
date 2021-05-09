@@ -139,7 +139,7 @@ SUBSYSTEM_DEF(supply)
 	announce = prob(chance) && (force || !crew_illegal_noticed)
 	if(announce)
 		var/message = "Suspicious cargo shipment has been detected. Immediate security intervention is required in the supply department."
-		var/customname = "[GLOB.using_map.company_name] Security Cargo Departament"
+		var/customname = "[GLOB.using_map.company_name] Cargo Security Departament"
 		command_announcement.Announce(message, customname, new_sound = GLOB.using_map.command_report_sound, msg_sanitized = 1)
 		crew_illegal_noticed = TRUE
 
