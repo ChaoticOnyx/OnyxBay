@@ -271,10 +271,14 @@ GLOBAL_VAR_CONST(PREF_SHORTHAND, "Shorthand")
 	key = "DEFAULT_HOTKEY_MODE"
 	default_value = GLOB.PREF_NO
 
+/datum/client_preference/floating_messages
+	description = "Floating chat messages"
+	key = "FLOATING_CHAT"
+	options = list(GLOB.PREF_SHOW, GLOB.PREF_HIDE)
 
-/********************
+/****************************
 * General Staff Preferences *
-********************/
+****************************/
 
 /datum/client_preference/staff
 	var/flags
