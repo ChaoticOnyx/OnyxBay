@@ -5,7 +5,6 @@ SUBSYSTEM_DEF(supply)
 	//Initializes at default time
 	flags = SS_NO_TICK_CHECK
 
-	var/crew_illegal_noticed = FALSE
 	var/illegal_alert_chance = 0
 	//supply points
 	var/points = 50
@@ -136,12 +135,11 @@ SUBSYSTEM_DEF(supply)
 // Alert crew to illegal items
 /datum/controller/subsystem/supply/proc/alert_crew(chance, force = FALSE)
 	var/announce = FALSE
-	announce = prob(chance) && (force || !crew_illegal_noticed)
+	announce = prob(chance) || force
 	if(announce)
 		var/message = "Suspicious cargo shipment has been detected. Immediate security intervention is required in the supply department."
 		var/customname = "[GLOB.using_map.company_name] Cargo Security Departament"
 		command_announcement.Announce(message, customname, new_sound = GLOB.using_map.command_report_sound, msg_sanitized = 1)
-		crew_illegal_noticed = TRUE
 
 //Buyin
 /datum/controller/subsystem/supply/proc/buy()
@@ -208,7 +206,6 @@ SUBSYSTEM_DEF(supply)
 			slip.info += "</ul><br>CHECK CONTENTS AND STAMP BELOW THE LINE TO CONFIRM RECEIPT OF GOODS<hr>"
 	alert_crew(illegal_alert_chance)
 	illegal_alert_chance = 0
-	crew_illegal_noticed = FALSE // reset to default
 
 /datum/supply_order
 	var/ordernum
