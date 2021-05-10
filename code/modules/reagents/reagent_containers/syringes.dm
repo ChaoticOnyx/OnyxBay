@@ -1,11 +1,6 @@
 ////////////////////////////////////////////////////////////////////////////////
 /// Syringes
 ////////////////////////////////////////////////////////////////////////////////
-#define SYRINGE_DRAW "draw"
-#define SYRINGE_INJECT "inject"
-#define SYRINGE_BROKEN "broken"
-#define SYRINGE_PACKAGED "packaged"
-
 /obj/item/weapon/reagent_containers/syringe
 	name = "syringe"
 	desc = "A syringe."
@@ -127,8 +122,8 @@
 		filling.color = reagents.get_color()
 		overlays += filling
 
-	if(mode == SYRINGE_PACKAGED)
-		overlays += image(icon, src, package_state)
+	if(mode == SYRINGE_PACKAGED && package_state)
+		overlays += package_state
 		return
 
 	if(ismob(loc))
@@ -138,7 +133,8 @@
 				injoverlay = "draw"
 			if(SYRINGE_INJECT)
 				injoverlay = "inject"
-		overlays += injoverlay
+		if(injoverlay)
+			overlays += injoverlay
 
 /obj/item/weapon/reagent_containers/syringe/proc/handleTarget(atom/target, mob/user)
 	switch(mode)

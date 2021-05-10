@@ -21,10 +21,10 @@
 /obj/item/weapon/syringe_cartridge/attackby(obj/item/I, mob/user)
 	if(istype(I, /obj/item/weapon/reagent_containers/syringe))
 		var/obj/item/weapon/reagent_containers/syringe/S = I
-		if(S.mode == "broken")
+		if(S.mode == SYRINGE_BROKEN)
 			to_chat(user, SPAN("warning", "This syringe is broken."))
 			return
-		if(S.mode == "packaged")
+		if(S.mode == SYRINGE_PACKAGED)
 			to_chat(user, SPAN("notice", "This syringe must be unwrapped first."))
 			return
 
