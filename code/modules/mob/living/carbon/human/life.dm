@@ -1004,6 +1004,10 @@
 
 	poise_icon?.icon_state = "[round(poise)]"
 
+/mob/living/carbon/human/proc/damage_poise(dmg = 1)
+	poise -= dmg
+	poise_icon?.icon_state = "[round(poise)]"
+
 /*
 	Called by life(), instead of having the individual hud items update icons each tick and check for status changes
 	we only set those statuses and icons upon changes.  Then those HUD items will simply add those pre-made images.

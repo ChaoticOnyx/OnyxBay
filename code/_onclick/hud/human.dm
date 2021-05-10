@@ -282,7 +282,7 @@
 		hud_elements |= mymob.nutrition_icon
 
 	if(hud_data.has_poise)
-		mymob.poise_icon = new/obj/screen()
+		mymob.poise_icon = new /obj/screen()
 		mymob.poise_icon.icon = 'icons/mob/screen1_poise.dmi'
 		mymob.poise_icon.icon_state = "50"
 		mymob.poise_icon.SetName("poise")

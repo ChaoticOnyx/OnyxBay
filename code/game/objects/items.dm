@@ -571,13 +571,13 @@ var/list/global/slot_flags_enumeration = list(
 			poise_dmg = P.damage+(P.agony/1.5)/(src.mod_shield*2.5)
 		if(src != H.get_active_hand())
 			poise_dmg *= 2
-		H.poise -= poise_dmg
+		H.damage_poise(poise_dmg)
 		if(H.poise < poise_dmg)
 			shot_out(H, P)
 
 /obj/item/proc/shot_out(mob/living/carbon/human/H, obj/item/projectile/P, msg = "shot", dist = 3) // item gets shot out of one's hands w/ a projectile
 	H.useblock_off()
-	H.poise -= 10
+	H.damage_poise(10)
 	if(!canremove)
 		visible_message(SPAN("warning", "[H] blocks [P] with \the [src]!"))
 		return

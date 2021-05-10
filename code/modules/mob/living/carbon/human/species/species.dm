@@ -612,7 +612,7 @@ The slots that you can use are found in items_clothing.dm and are the inventory 
 				return W.afterattack(shoot_to,target)
 
 	var/effective_armor = target.getarmor(attacker.zone_sel.selecting, "melee")
-	target.poise -= round(4.0+4.0*((100-effective_armor)/100),0.1)
+	target.damage_poise(round(4.0+4.0*((100-effective_armor)/100),0.1))
 
 	//target.visible_message("Debug \[DISARM\]: [target] lost [round(4.0+4.0*((100-effective_armor)/100),0.1)] poise ([target.poise]/[target.poise_pool])") // Debug Message
 
