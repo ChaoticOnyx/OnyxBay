@@ -281,6 +281,14 @@
 		mymob.nutrition_icon.screen_loc = ui_nutrition
 		hud_elements |= mymob.nutrition_icon
 
+	if(hud_data.has_poise)
+		mymob.poise_icon = new/obj/screen()
+		mymob.poise_icon.icon = 'icons/mob/screen1_poise.dmi'
+		mymob.poise_icon.icon_state = "50"
+		mymob.poise_icon.SetName("poise")
+		mymob.poise_icon.screen_loc = ui_health
+		hud_elements |= mymob.poise_icon
+
 
 	mymob.pain = new /obj/screen/fullscreen/pain( null )
 	hud_elements |= mymob.pain
