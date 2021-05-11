@@ -91,7 +91,7 @@
 				to_chat(user, SPAN_NOTICE("The [O] is full."))
 				return
 			if(isragemode && prob(50))
-				user.visible_message(SPAN_NOTICE("tries to milk [src], but [src] hits \him."))
+				user.visible_message(SPAN_NOTICE("[user] tries to milk [src], but [src] hits \him."))
 				user.attack_generic(src, rand(melee_damage_lower, melee_damage_upper) * 2, attacktext, environment_smash, damtype, defense)
 				return
 			var/transfered = udder.trans_type_to(G, /datum/reagent/drink/milk, rand(5,10))

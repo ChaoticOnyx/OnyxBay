@@ -626,8 +626,7 @@
 /obj/item/clothing/head/goatcapehood
 	name = "goat head hood"
 	desc = "A goat head."
-	icon_state = "goatskincape_hood"
-	item_state = "goatskincape_hood"
+	icon_state = "generic_hood"
 	body_parts_covered = HEAD
 	cold_protection = HEAD
 	flags_inv = HIDEEARS | BLOCKHAIR
