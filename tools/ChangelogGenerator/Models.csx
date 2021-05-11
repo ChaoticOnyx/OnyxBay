@@ -139,8 +139,7 @@ public sealed class Changelog
             return prefix switch
             {
                 ChangePrefix.BugFix => "fas fa-bug",
-                ChangePrefix.Wip => "fas fa-hard-hat",
-                ChangePrefix.Tweak => "fas fa-balance-scale",
+                ChangePrefix.Tweak => "fas fa-wrench",
                 ChangePrefix.SoundAdd => "fas fa-music",
                 ChangePrefix.SoundDel => "fas fa-minus",
                 ChangePrefix.RscAdd => "fas fa-plus",
@@ -151,6 +150,7 @@ public sealed class Changelog
                 ChangePrefix.SpellCheck => "fas fa-spell-check",
                 ChangePrefix.Experiment => "fas fa-hard-hat",
                 ChangePrefix.Admin => "fas fa-crown",
+                ChangePrefix.Balance => "fas fa-balance-scale",
                 _ => throw new NotImplementedException($"🚫 Для {prefix} не определена иконка.")
             };
         }
@@ -172,7 +172,7 @@ public sealed class Changelog
                 or ChangePrefix.MapTweak
                 or ChangePrefix.SpellCheck
                 or ChangePrefix.Admin => "green",
-                ChangePrefix.Wip
+                ChangePrefix.Balance
                 or ChangePrefix.Experiment => "yellow",
                 ChangePrefix.SoundDel
                 or ChangePrefix.RscDel

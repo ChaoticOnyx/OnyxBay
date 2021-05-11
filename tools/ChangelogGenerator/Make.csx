@@ -14,9 +14,22 @@ var files = (from file in Settings.ChangelogsFolder.GetFiles()
              where !file.Name.StartsWith('.') && file.Extension == ".json"
              select file).ToList();
 
-var changelogs = files.Select(f => JsonSerializer.Deserialize<Changelog>(File.ReadAllText(f.FullName), Settings.JsonOptions)
-                                   ?? throw new InvalidOperationException($"Невозможно запарсить {f}"))
-                      .ToList();
+List<Changelog> changelogs = new(12);
+
+foreach (var file in files)
+{
+    try
+    {
+        changelogs.Add(JsonSerializer.Deserialize<Changelog>(File.ReadAllText(file.FullName), Settings.JsonOptions)
+                                      ?? throw new InvalidOperationException($"Невозможно запарсить {file}"));
+    }
+    catch (JsonException e)
+    {
+        WriteLine($"🚫 Ошибка при парсинге файла {file.Name}: {e.Message}");
+
+        return 1;
+    }
+}
 
 changelogs = Changelog.Merge(changelogs);
 
@@ -25,9 +38,20 @@ if (changelogs.Count == 0)
     WriteLine("Нет новых чейнджлогов.");
 }
 
+List<Changelog> cache = new(0);
+
 // Парсинг кэша.
-var cache = JsonSerializer.Deserialize<List<Changelog>>(File.ReadAllText(Settings.ChangelogsCache.FullName), Settings.JsonOptions)
+try
+{
+cache = JsonSerializer.Deserialize<List<Changelog>>(File.ReadAllText(Settings.ChangelogsCache.FullName), Settings.JsonOptions)
                            ?? throw new InvalidOperationException($"Невозможно запарсить {Settings.ChangelogsCache}");
+}
+catch (JsonException e)
+{
+    WriteLine($"🚫 Ошибка при парсинге кэша: {e.Message}");
+
+    return 1;
+}
 
 cache.AddRange(changelogs);
 cache = Changelog.Merge(cache);
