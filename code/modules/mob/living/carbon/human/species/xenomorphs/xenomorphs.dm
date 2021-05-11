@@ -1,4 +1,4 @@
-proc/create_new_xenomorph(alien_caste, target)
+/proc/create_new_xenomorph(alien_caste, target)
 
 	target = get_turf(target)
 	if(!target || !alien_caste)

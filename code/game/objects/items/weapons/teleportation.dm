@@ -595,7 +595,7 @@ Frequency:
  * Bluespace cell malfunction
  */
 
-obj/item/weapon/vortex_manipulator/proc/bluespace_malf(mob/user)
+/obj/item/weapon/vortex_manipulator/proc/bluespace_malf(mob/user)
 	user.visible_message(SPAN_WARNING("The Vortex Manipulator announces: Bluespace cell detected. Heading to its pair."))
 	var/obj/item/weapon/cell/quantum/quacell = vcell
 	user.forceMove(get_turf(quacell.partner))

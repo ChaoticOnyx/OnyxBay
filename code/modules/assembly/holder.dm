@@ -15,15 +15,19 @@
 	var/obj/special_assembly = null
 
 /obj/item/device/assembly_holder/proc/attach(obj/item/device/D, obj/item/device/D2, mob/user)
+	CAN_BE_REDEFINED(TRUE)
 	return
 
 /obj/item/device/assembly_holder/proc/attach_special(obj/O, var/mob/user)
+	CAN_BE_REDEFINED(TRUE)
 	return
 
 /obj/item/device/assembly_holder/proc/process_activation(obj/item/device/D)
+	CAN_BE_REDEFINED(TRUE)
 	return
 
 /obj/item/device/assembly_holder/proc/detached()
+	CAN_BE_REDEFINED(TRUE)
 	return
 
 

@@ -77,8 +77,7 @@ REAGENT SCANNER
 		ui.set_window_options("focus=0;can_close=1;can_minimize=1;can_maximize=0;can_resize=0;titlebar=1;")
 		ui.open()
 
-proc/medical_scan_results(mob/living/carbon/human/H, verbose, separate_result)
-
+/proc/medical_scan_results(mob/living/carbon/human/H, verbose, separate_result)
 	. = list()
 	var/p_name = list()
 	p_name = "<span class='notice'><b>Scan results for \the [H]:</b></span>"
@@ -375,7 +374,7 @@ proc/medical_scan_results(mob/living/carbon/human/H, verbose, separate_result)
 
 
 // Calculates severity based on the ratios defined external limbs.
-proc/get_wound_severity(damage_ratio, vital = 0)
+/proc/get_wound_severity(damage_ratio, vital = 0)
 	var/degree
 
 	switch(damage_ratio)

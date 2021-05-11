@@ -55,7 +55,7 @@
 	..()
 	color = pick(ecig_colors)
 
-obj/item/clothing/mask/smokable/ecig/util/examine(mob/user)
+/obj/item/clothing/mask/smokable/ecig/util/examine(mob/user)
 	. = ..()
 	if(src.ec_cartridge)
 		. += "\n<span class='notice'>There are [round(ec_cartridge.reagents.total_volume, 1)] units of liquid remaining.</span>"
@@ -72,7 +72,7 @@ obj/item/clothing/mask/smokable/ecig/util/examine(mob/user)
 	icon_on = "pcigon"
 	cell_type = /obj/item/weapon/cell/device/high //enough for four catridges
 
-obj/item/clothing/mask/smokable/ecig/deluxe/examine(mob/user)
+/obj/item/clothing/mask/smokable/ecig/deluxe/examine(mob/user)
 	. = ..()
 	if(src.ec_cartridge)
 		. += "\n<span class='notice'>There are [round(ec_cartridge.reagents.total_volume, 1)] units of liquid remaining.</span>"

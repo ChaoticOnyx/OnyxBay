@@ -239,7 +239,7 @@
 	dir = SOUTH
 	initialize_directions = SOUTH|NORTH|EAST
 
-obj/machinery/atmospherics/trinary/filter/m_filter/New()
+/obj/machinery/atmospherics/trinary/filter/m_filter/New()
 	..()
 	switch(dir)
 		if(NORTH)

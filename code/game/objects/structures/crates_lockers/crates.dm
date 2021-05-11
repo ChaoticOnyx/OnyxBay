@@ -1,4 +1,4 @@
-obj/structure/closet/crate
+/obj/structure/closet/crate
 	name = "crate"
 	desc = "A rectangular steel crate."
 	icon = 'icons/obj/storage.dmi'

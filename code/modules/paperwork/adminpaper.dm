@@ -69,7 +69,7 @@
 	generateFooter()
 	updateDisplay()
 
-obj/item/weapon/paper/admin/proc/updateDisplay()
+/obj/item/weapon/paper/admin/proc/updateDisplay()
 	show_browser(usr, "<HTML><meta charset=\"utf-8\"><HEAD><TITLE>[name]</TITLE></HEAD><BODY>[headerOn ? header : ""][info_links][stamps][footerOn ? footer : ""][interactions]</BODY></HTML>", "window=[name];can_close=0")
 
 
