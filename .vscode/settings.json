@@ -5,5 +5,23 @@
 				"filenamePattern": "*.dmi",
 				"viewType": "imagePreview.previewEditor"
 		}
+	],
+	"files.associations": {
+		"*.tmpl": "html"
+	},
+	"json.schemas": [
+		{
+			"fileMatch": [
+				"/html/changelogs/*.json",
+				"!/html/changelogs/.all_changelog.json"
+			],
+			"url": "/.vscode/changelog.schema.json"
+		},
+		{
+			"fileMatch": [
+				"/html/changelogs/.all_changelog.json"
+			],
+			"url": "/.vscode/changelog_cache.schema.json"
+		}
 	]
 }

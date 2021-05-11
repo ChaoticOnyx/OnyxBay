@@ -164,9 +164,9 @@
 /obj/item/projectile/energy/acid //Slightly up-gunned (Read: The thing does agony and checks bio resist) variant of the simple alien mob's projectile, for queens and sentinels.
 	name = "acidic spit"
 	icon_state = "neurotoxin"
-	damage = 30
+	damage = 45
 	damage_type = BURN
-	agony = 10
+	agony = 15
 	check_armour = "bio"
 	armor_penetration = 25	// It's acid
 

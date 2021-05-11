@@ -62,6 +62,10 @@
 			endgame_exits += loc
 			delete_me = 1
 			return
+		if("xeno_spawn")
+			GLOB.xenospawn_areas += loc.loc
+			delete_me = 1
+			return
 
 	landmarks_list += src
 	return 1

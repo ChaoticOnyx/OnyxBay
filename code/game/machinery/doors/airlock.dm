@@ -845,6 +845,30 @@ About the new airlock wires panel:
 			if(src.shock(user, 100))
 				return
 
+	if(ishuman(user))
+		var/mob/living/carbon/human/H = user
+		if(H.species?.can_shred(H))
+			if(density && (!arePowerSystemsOn() || (stat & BROKEN)))
+				user.setClickCooldown(DEFAULT_WEAPON_COOLDOWN)
+				to_chat(user, "You start forcing \the [src] open...")
+				if(do_after(user, 30, src))
+					if(welded)
+						to_chat(user, SPAN("danger", "The airlock has been welded shut!"))
+					else if(locked)
+						to_chat(user, SPAN("danger", "The door bolts are down!"))
+					else if(density)
+						visible_message(SPAN("danger","\The [user] forces \the [src] open!"))
+						open(TRUE)
+						shake_animation(2, 2)
+				return
+			playsound(src.loc, 'sound/weapons/slash.ogg', 100, 1)
+			visible_message(SPAN("danger", "[user] slashes at \the [name]."), 1)
+			take_damage(10)
+			user.do_attack_animation(src)
+			user.setClickCooldown(5)
+			shake_animation(2, 2)
+			return
+
 	if(src.p_open)
 		user.set_machine(src)
 		wires.Interact(user)

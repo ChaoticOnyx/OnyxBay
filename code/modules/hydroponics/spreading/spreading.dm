@@ -226,7 +226,7 @@
 		..()
 		var/damage = W.edge ? W.force : W.force / 2
 		adjust_health(-damage)
-		playsound(get_turf(src), W.hitsound, 100, 1)
+		playsound(src, W.hitsound, 100, 1)
 
 //handles being overrun by vines - note that attacker_parent may be null in some cases
 /obj/effect/vine/proc/vine_overrun(datum/seed/attacker_seed, obj/effect/vine/attacker_parent)

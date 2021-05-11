@@ -16,7 +16,7 @@
 	speak_chance = 5
 	turns_per_move = 5
 	see_in_dark = 10
-	meat_type = /obj/item/weapon/reagent_containers/food/snacks/xenomeat
+	meat_type = /obj/item/weapon/reagent_containers/food/snacks/meat/xeno
 	response_help  = "pets"
 	response_disarm = "gently pushes aside"
 	response_harm   = "pokes"
@@ -181,7 +181,7 @@
 			busy = 0
 			stop_automated_movement = 0
 
-			
+
 /mob/living/simple_animal/hostile/giant_spider/nurse/proc/finalize_cocoon()
 	if(busy == SPINNING_COCOON)
 		if(cocoon_target && istype(cocoon_target.loc, /turf) && get_dist(src,cocoon_target) <= 1)

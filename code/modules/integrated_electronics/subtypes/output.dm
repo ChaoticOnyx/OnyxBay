@@ -157,7 +157,7 @@
 		if(!selected_sound)
 			return
 		vol = Clamp(vol, 0, 100)
-		playsound(get_turf(src), selected_sound, vol, freq, -1)
+		playsound(src, selected_sound, vol, freq, -1)
 		var/atom/A = get_object()
 		A.investigate_log("played a sound ([selected_sound]) as [type].", INVESTIGATE_CIRCUIT)
 

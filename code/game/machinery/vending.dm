@@ -410,6 +410,8 @@
  *  See NanoUI documentation for details.
  */
 /obj/machinery/vending/ui_interact(mob/user, ui_key = "main", datum/nanoui/ui = null, force_open = 1)
+	if(CanUseTopic(user) != STATUS_INTERACTIVE)
+		return
 	user.set_machine(src)
 
 	var/list/data = list()

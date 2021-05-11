@@ -148,6 +148,7 @@
 	var/flickering = 0
 	var/light_type = /obj/item/weapon/light/tube		// the type of light item
 	var/construct_type = /obj/machinery/light_construct
+	var/pixel_shift = 0
 
 	var/datum/effect/effect/system/spark_spread/s = new /datum/effect/effect/system/spark_spread
 
@@ -188,6 +189,7 @@
 	desc = "A small lighting fixture."
 	light_type = /obj/item/weapon/light/bulb
 	construct_type = /obj/machinery/light_construct/small
+	pixel_shift = 3
 
 /obj/machinery/light/small/he
 	name = "high efficiency light fixture"
@@ -232,7 +234,7 @@
 			broken(1)
 
 	on = powered()
-	update_icon(0)
+	update_icon()
 
 /obj/machinery/light/Destroy()
 	QDEL_NULL(lightbulb)
@@ -240,6 +242,17 @@
 	. = ..()
 
 /obj/machinery/light/update_icon(trigger = 1)
+	overlays.Cut()
+	if(pixel_shift)
+		switch(dir)
+			if(NORTH)
+				pixel_y = pixel_shift
+			if(SOUTH)
+				pixel_y = -pixel_shift
+			if(EAST)
+				pixel_x = pixel_shift
+			if(WEST)
+				pixel_x = -pixel_shift
 
 	switch(get_status())		// set icon_states
 		if(LIGHT_OK)
@@ -254,12 +267,21 @@
 			icon_state = "[base_state]-broken"
 			on = 0
 
+	var/image/TO
+	if(lightbulb?.tone_overlay)
+		TO = overlay_image(icon, "[icon_state]-over", flags=RESET_COLOR)
+		TO.color = lightbulb.brightness_color
+		TO.layer = ABOVE_LIGHTING_LAYER
+		TO.plane = EFFECTS_ABOVE_LIGHTING_PLANE
+
 	if(on)
 		update_use_power(POWER_USE_ACTIVE)
 
 		var/changed = 0
 		if(current_mode && (current_mode in lightbulb.lighting_modes))
 			changed = set_light(arglist(lightbulb.lighting_modes[current_mode]))
+			if(TO)
+				TO.color = lightbulb.lighting_modes[current_mode]["l_color"]
 		else
 			changed = set_light(lightbulb.brightness_range, lightbulb.brightness_power, lightbulb.brightness_color)
 
@@ -268,6 +290,12 @@
 	else
 		update_use_power(POWER_USE_OFF)
 		set_light(0)
+		if(TO)
+			TO.layer = layer + 0.001
+			TO.plane = plane
+
+	if(TO)
+		overlays += TO
 
 	change_power_consumption((light_range * light_power) * LIGHTING_POWER_FACTOR, POWER_USE_ACTIVE)
 
@@ -451,7 +479,12 @@
 	if(istype(user,/mob/living/carbon/human))
 		var/mob/living/carbon/human/H = user
 		if(H.species.can_shred(H))
-			visible_message("<span class='warning'>[user.name] smashed the light!</span>", 3, "You hear a tinkle of breaking glass")
+			if(get_status() == LIGHT_BROKEN)
+				return
+			playsound(src.loc, 'sound/weapons/slash.ogg', 100, 1)
+			user.do_attack_animation(src)
+			user.setClickCooldown(DEFAULT_QUICK_COOLDOWN)
+			visible_message(SPAN("warning", "[user.name] smashes the light!"))
 			broken()
 			return
 
@@ -589,6 +622,7 @@
 	var/list/lighting_modes = list()
 	var/sound_on
 	var/random_tone = FALSE
+	var/tone_overlay = TRUE
 	var/list/random_tone_options = list(
 		"#fffee0",
 		"#eafeff",
@@ -616,7 +650,8 @@
 	lighting_modes = list(
 		LIGHTMODE_EMERGENCY = list(l_range = 4, l_power = 1, l_color = "#da0205"),
 		LIGHTMODE_EVACUATION = list(l_range = 7, l_power = 6, l_color = "#bf0000"),
-		LIGHTMODE_ALARM = list(l_range = 7, l_power = 6, l_color = "#ff3333")
+		LIGHTMODE_ALARM = list(l_range = 7, l_power = 6, l_color = "#ff3333"),
+		LIGHTMODE_RADSTORM = list(l_range = 7, l_power = 3, l_color = "#8A9929")
 		)
 	sound_on = 'sound/machines/lightson.ogg'
 	random_tone = TRUE
@@ -636,6 +671,7 @@
 	brightness_color = "#33cccc"
 	matter = list(MATERIAL_STEEL = 60, MATERIAL_GLASS = 300)
 	random_tone = FALSE
+	tone_overlay = FALSE
 
 /obj/item/weapon/light/tube/quartz
 	name = "quartz light tube"
@@ -645,6 +681,7 @@
 	brightness_power = 10
 	brightness_color = "#8A2BE2"
 	random_tone = FALSE
+	tone_overlay = FALSE
 
 /obj/item/weapon/light/bulb
 	name = "light bulb"
@@ -656,12 +693,13 @@
 	matter = list(MATERIAL_GLASS = 100)
 
 	brightness_range = 4
-	brightness_power = 4
+	brightness_power = 3
 	brightness_color = "#a0a080"
 	lighting_modes = list(
 		LIGHTMODE_EMERGENCY = list(l_range = 3, l_power = 1, l_color = "#da0205"),
-		LIGHTMODE_EVACUATION = list(l_range = 4, l_power = 4, l_color = "#bf0000"),
-		LIGHTMODE_ALARM = list(l_range = 4, l_power = 4, l_color = "#ff3333")
+		LIGHTMODE_EVACUATION = list(l_range = 4, l_power = 3, l_color = "#bf0000"),
+		LIGHTMODE_ALARM = list(l_range = 4, l_power = 3, l_color = "#ff3333"),
+		LIGHTMODE_RADSTORM = list(l_range = 4, l_power = 2, l_color = "#8A9929")
 		)
 	random_tone = TRUE
 
@@ -674,6 +712,7 @@
 	brightness_color = "#33cccc"
 	matter = list(MATERIAL_STEEL = 30, MATERIAL_GLASS = 150)
 	random_tone = FALSE
+	tone_overlay = FALSE
 
 /obj/item/weapon/light/bulb/quartz
 	name = "quartz light bulb"
@@ -683,6 +722,7 @@
 	brightness_power = 8
 	brightness_color = "#8A2BE2"
 	random_tone = FALSE
+	tone_overlay = FALSE
 
 /obj/item/weapon/light/bulb/old
 	name = "old light bulb"
@@ -692,11 +732,13 @@
 	brightness_power = 3
 	brightness_color = "#ec8b2f"
 	random_tone = FALSE
+	tone_overlay = FALSE
 
 /obj/item/weapon/light/bulb/red
 	color = "#da0205"
 	brightness_color = "#da0205"
 	random_tone = FALSE
+	tone_overlay = FALSE
 
 /obj/item/weapon/light/bulb/red/readylight
 	brightness_range = 5
@@ -719,9 +761,11 @@
 	brightness_range = 4
 	brightness_power = 4
 	random_tone = FALSE
+	tone_overlay = FALSE
 
 // update the icon state and description of the light
 /obj/item/weapon/light/update_icon()
+	overlays.Cut()
 	switch(status)
 		if(LIGHT_OK)
 			icon_state = base_state
@@ -732,10 +776,10 @@
 		if(LIGHT_BROKEN)
 			icon_state = "[base_state]-broken"
 			desc = "A broken [name]."
-
-/obj/item/weapon/light/New(atom/newloc, obj/machinery/light/fixture = null)
-	..()
-	update_icon()
+	if(tone_overlay)
+		var/image/TO = overlay_image(icon, "[icon_state]-over", flags=RESET_COLOR)
+		TO.color = brightness_color
+		overlays += TO
 
 // attack bulb/tube with object
 // if a syringe, can inject plasma to make it explode

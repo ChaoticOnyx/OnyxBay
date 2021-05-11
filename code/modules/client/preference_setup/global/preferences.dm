@@ -199,6 +199,11 @@ GLOBAL_VAR_CONST(PREF_SHORTHAND, "Shorthand")
 	key = "HARDSUIT_ACTIVATION"
 	options = list(GLOB.PREF_MIDDLE_CLICK, GLOB.PREF_CTRL_CLICK, GLOB.PREF_ALT_CLICK, GLOB.PREF_CTRL_SHIFT_CLICK)
 
+/datum/client_preference/special_ability_key
+	description = "Special Ability Activation Key"
+	key = "SPECIAL_ABILITY"
+	options = list(GLOB.PREF_MIDDLE_CLICK, GLOB.PREF_CTRL_CLICK, GLOB.PREF_ALT_CLICK, GLOB.PREF_CTRL_SHIFT_CLICK)
+
 /datum/client_preference/tgui_style
 	description ="tgui Style"
 	key = "TGUI_FANCY"

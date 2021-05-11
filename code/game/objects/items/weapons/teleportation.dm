@@ -297,7 +297,7 @@ Frequency:
 		if(prob(50))
 			if(prob(50))
 				H.visible_message(SPAN_WARNING("The Vortex Manipulator violently shakes and extracts Space Carps from local bluespace anomaly!"))
-				playsound(get_turf(src), 'sound/effects/phasein.ogg', 50, 1)
+				playsound(src, 'sound/effects/phasein.ogg', 50, 1)
 				new /mob/living/simple_animal/hostile/carp(get_turf(src))
 				H.visible_message(SPAN_NOTICE("The Vortex Manipulator automatically initiates emergency area teleportation procedure."))
 				areateleport(H, 1)
@@ -306,7 +306,7 @@ Frequency:
 		else
 			if(prob(50))
 				H.visible_message(SPAN_WARNING("The Vortex Manipulator violently shakes and extracts Space Carps from local bluespace anomaly!"))
-				playsound(get_turf(src), 'sound/effects/phasein.ogg', 50, 1)
+				playsound(src, 'sound/effects/phasein.ogg', 50, 1)
 				new /mob/living/simple_animal/hostile/carp(get_turf(src))
 				var/temp_turf = get_turf(H)
 				H.visible_message(SPAN_NOTICE("The Vortex Manipulator suddenly teleports user to specific beacon for its own reasons."))
@@ -384,7 +384,7 @@ Frequency:
 		return
 	else if(prob(10))
 		H.visible_message(SPAN_WARNING("The Vortex Manipulator violently shakes and extracts Space Carps from local space-time anomaly!"))
-		playsound(get_turf(src), 'sound/effects/phasein.ogg', 50, 1)
+		playsound(src, 'sound/effects/phasein.ogg', 50, 1)
 		var/amount = rand(1,3)
 		for(var/i=0; i<amount; i++)
 			new /mob/living/simple_animal/hostile/carp(get_turf(src))
@@ -415,7 +415,7 @@ Frequency:
 				localteleport(M, 1)
 			return
 		localteleport(H, 1)
-	playsound(get_turf(src), "spark", 50, 1)
+	playsound(src, "spark", 50, 1)
 	var/datum/effect/effect/system/spark_spread/sparks = new /datum/effect/effect/system/spark_spread()
 	sparks.set_up(3, 0, get_turf(src))
 	sparks.start()
@@ -468,7 +468,7 @@ Frequency:
 	if(istype(vcell, /obj/item/weapon/cell/quantum))
 		var/obj/item/weapon/cell/quantum/Q = vcell
 		if(Q.partner)
-			playsound(get_turf(src), 'sound/effects/phasein.ogg', 50, 1)
+			playsound(src, 'sound/effects/phasein.ogg', 50, 1)
 			user.visible_message(SPAN_WARNING("The Vortex Manipulator turns into a potato!"))
 			new /obj/item/weapon/cell/potato(get_turf(src))
 			qdel(src)

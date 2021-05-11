@@ -80,7 +80,7 @@ meteor_act
 
 	return blocked
 
-/mob/living/carbon/human/stun_effect_act(stun_amount, agony_amount, def_zone)
+/mob/living/carbon/human/stun_effect_act(stun_amount, agony_amount, def_zone, used_weapon = null)
 	var/obj/item/organ/external/affected = get_organ(check_zone(def_zone))
 	if(!affected)
 		return

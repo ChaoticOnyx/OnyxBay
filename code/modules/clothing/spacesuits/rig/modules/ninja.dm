@@ -52,7 +52,7 @@
 		anim(get_turf(H), H, 'icons/effects/effects.dmi', "electricity",null,20,null)
 
 	// We still play the sound, even if not visibly uncloaking. Ninjas are not that stealthy.
-	playsound(get_turf(H), 'sound/effects/stealthoff.ogg', 75, 1)
+	playsound(H, 'sound/effects/stealthoff.ogg', 75, 1)
 
 
 /obj/item/rig_module/teleporter

@@ -178,6 +178,8 @@
 		if(H.species?.can_shred(H))
 			playsound(loc, get_sfx("glass_hit"), 75, 1)
 			visible_message("<span class='danger'>[user] smashes against the [name].</span>", 1)
+			user.do_attack_animation(src)
+			user.setClickCooldown(DEFAULT_QUICK_COOLDOWN)
 			take_damage(25)
 			return
 	return attackby(user, user)

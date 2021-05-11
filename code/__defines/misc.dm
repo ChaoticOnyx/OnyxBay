@@ -40,7 +40,8 @@
 #define    IMPTRACK_HUD 7 // Tracking implant.
 #define SPECIALROLE_HUD 8 // AntagHUD image.
 #define  STATUS_HUD_OOC 9 // STATUS_HUD without virus DB check for someone being ill.
-#define 	  LIFE_HUD  10 // STATUS_HUD that only reports dead or alive
+#define        LIFE_HUD 10 // STATUS_HUD that only reports dead or alive
+#define        XENO_HUD 11 // Alien embryo status.
 
 // Shuttle moving status.
 #define SHUTTLE_IDLE      0

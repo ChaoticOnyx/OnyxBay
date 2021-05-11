@@ -65,10 +65,8 @@
 	var/lum = source.luminosity
 	source.luminosity = 6
 
-	var/list/heard = view(range, source)
+	. = view(range, source)
 	source.luminosity = lum
-
-	return heard
 
 /proc/isStationLevel(level)
 	return level in GLOB.using_map.station_levels
@@ -222,7 +220,6 @@
 
 
 /proc/get_mobs_in_radio_ranges(list/obj/item/device/radio/radios)
-
 	set background = 1
 
 	. = list()
@@ -240,7 +237,6 @@
 		var/mob/M = GLOB.player_list[i]
 		if(M.can_hear_radio(speaker_coverage))
 			. += M
-	return .
 
 /mob/proc/can_hear_radio(list/hearturfs)
 	return FALSE

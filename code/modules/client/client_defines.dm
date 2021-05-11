@@ -27,7 +27,7 @@
 	changed to a URL at runtime (see client_procs.dm for procs that do this automatically). More information about how goofy this broken setting works at
 	http://www.byond.com/forum/post/1906517?page=2#comment23727144
 	*/
-	preload_rsc = 0
+	preload_rsc = 1
 
 	// * Sound stuff *
 	var/ambience_playing = null
@@ -64,4 +64,4 @@
 	var/first_say = TRUE
 
 	//For tracking shift key (world.time)
-	var/shift_released_at = 0 
+	var/shift_released_at = 0
