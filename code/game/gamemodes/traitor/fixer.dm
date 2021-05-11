@@ -31,7 +31,7 @@
 	addtimer(CALLBACK(src, .proc/contract_tick), time_to_nex_contract)
 
 /datum/contract_fixer/proc/create_random_contract(count = 1)
-	while(--count)
+	while(count--)
 		var/datum/contract_organization/CO = pick(organizations)
 		CO.create_random_contract()
 
@@ -42,6 +42,7 @@
 	var/datum/contract_fixer/holder
 
 /datum/contract_organization/New(datum/contract_organization/CO)
+	ASSERT(intents)
 	holder = CO
 
 /datum/contract_organization/proc/get_contracts(datum/mind/M)

@@ -148,6 +148,7 @@ GLOBAL_LIST_INIT(syndicate_factions, list(
 	intent = CONTRACT_IMPACT_MILITARY
 
 /datum/antag_contract/implant/New(datum/contract_organization/contract_organization, reason, datum/mind/target)
+	ASSERT(intent)
 	organization = contract_organization
 	create_contract(reason, target)
 	..()
@@ -236,9 +237,12 @@ GLOBAL_LIST_INIT(syndicate_factions, list(
 			reasonn = pick("they want to reverse engineer this item", "they need to use this item for their important scientific work")
 		if(CONTRACT_STEAL_UNDERPANTS)
 			reasonn = pick("they want to use this item for their spy operation on [GLOB.using_map.company_name]'s stations", "they want to use this item to confuse loyal [GLOB.using_map.company_name]'s employees")
+		else
+			CRASH("Steal contract type incorrect: [s_type]")
 	return reasonn
 
 /datum/antag_contract/item/steal/New(datum/contract_organization/contract_organization, reason, target)
+	ASSERT(intent)
 	organization = contract_organization
 	create_contract(reason, target)
 	..()
@@ -279,6 +283,7 @@ GLOBAL_LIST_INIT(syndicate_factions, list(
 	var/mob/living/silicon/ai/AI
 
 /datum/antag_contract/item/steal_ai/New(datum/contract_organization/contract_organization, reason, target)
+	ASSERT(intent)
 	organization = contract_organization
 	create_contract(reason, target)
 	..()
@@ -319,6 +324,7 @@ GLOBAL_LIST_INIT(syndicate_factions, list(
 	var/count
 
 /datum/antag_contract/item/blood/New(datum/contract_organization/contract_organization, reason, target)
+	ASSERT(intent)
 	organization = contract_organization
 	create_contract(reason, target)
 	..()
@@ -358,6 +364,7 @@ GLOBAL_LIST_INIT(syndicate_factions, list(
 	var/mob/living/carbon/human/H
 
 /datum/antag_contract/item/assassinate/New(datum/contract_organization/contract_organization, reason, datum/mind/target)
+	ASSERT(intent)
 	organization = contract_organization
 	create_contract(reason, target)
 	..()
@@ -456,9 +463,11 @@ GLOBAL_LIST_INIT(syndicate_factions, list(
 	name = "Dump"
 	unique = TRUE
 	reward = 8
+	intent = CONTRACT_STEAL_OPERATION
 	var/sum
 
 /datum/antag_contract/item/dump/New(datum/contract_organization/contract_organization, reason, target)
+	ASSERT(intent)
 	..()
 	organization = contract_organization
 	create_contract(reason, target)
@@ -485,10 +494,12 @@ GLOBAL_LIST_INIT(syndicate_factions, list(
 	name = "Steal research"
 	unique = TRUE
 	reward = 6
+	intent = CONTRACT_STEAL_SCIENCE
 	var/list/datum/design/targets = list()
 	var/static/counter = 0
 
 /datum/antag_contract/item/research/New(datum/contract_organization/contract_organization, reason, list/datum/design/target)
+	ASSERT(intent)
 	..()
 	organization = contract_organization
 	create_contract(reason, target)
@@ -541,9 +552,11 @@ GLOBAL_LIST_INIT(syndicate_factions, list(
 /datum/antag_contract/recon
 	name = "Recon"
 	reward = 12
+	intent = CONTRACT_STEAL_OPERATION
 	var/list/area/targets = list()
 
 /datum/antag_contract/recon/New(datum/contract_organization/contract_organization, reason, list/area/target)
+	ASSERT(intent)
 	organization = contract_organization
 	create_contract(reason, target)
 	..()
