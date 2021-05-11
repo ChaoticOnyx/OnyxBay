@@ -610,7 +610,6 @@
 	desc = "A Unathi suit made out of rubber."
 	icon_state = "lizsuit"
 
-
 /obj/item/clothing/suit/storage/hooded/goathidecape
 	name = "goat hide cape"
 	desc = "A goat hide. You can put it on to look like a true barbarian."

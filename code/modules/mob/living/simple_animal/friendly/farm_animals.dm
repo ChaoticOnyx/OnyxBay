@@ -87,12 +87,12 @@
 			to_chat(user, SPAN_WARNING("Better run away now!"))
 			Retaliate()
 		else if(istype(O, /obj/item/weapon/reagent_containers/glass))
+			if(G.reagents.total_volume >= G.volume)
+				to_chat(user, SPAN_NOTICE("The [O] is full."))
+				return
 			if(isragemode && prob(50))
 				user.visible_message(SPAN_NOTICE("tries to milk [src], but [src] hits \him."))
 				user.attack_generic(src, rand(melee_damage_lower, melee_damage_upper) * 2, attacktext, environment_smash, damtype, defense)
-				return
-			if(G.reagents.total_volume >= G.volume)
-				to_chat(user, SPAN_NOTICE("The [O] is full."))
 				return
 			var/transfered = udder.trans_type_to(G, /datum/reagent/drink/milk, rand(5,10))
 			if(!transfered)
@@ -103,7 +103,7 @@
 		..()
 
 /mob/living/simple_animal/hostile/retaliate/goat/AttackingTarget()
-	. =..()
+	. = ..()
 	var/mob/living/L = .
 	if(istype(L))
 		if(prob(15))
@@ -113,7 +113,6 @@
 /mob/living/simple_animal/hostile/retaliate/goat/harvest(mob/user)
 	new /obj/item/stack/material/animalhide/goat(src.loc)
 	..()
-
 
 //cow
 /mob/living/simple_animal/cow

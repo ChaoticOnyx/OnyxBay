@@ -185,7 +185,6 @@
 	icon_living = "goat"
 	icon_dead = "goat_dead"
 
-
 	speak_emote = list("brays")
 	mob_size = MOB_MEDIUM
 
