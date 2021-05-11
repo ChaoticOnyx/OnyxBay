@@ -199,6 +199,20 @@ datum/ghosttrap/pai/transfer_personality(mob/candidate, mob/living/silicon/robot
 	return 0
 
 /******************
+* Imaginary Friend *
+******************/
+/datum/ghosttrap/friend
+	object = "imaginary friend"
+	pref_check = BE_FRIEND
+	ghost_trap_message = "They are occupying a human head now."
+	ghost_trap_role = "Imaginary Friend"
+	ban_checks = list()
+	can_set_own_name = FALSE
+
+/datum/ghosttrap/friend/welcome_candidate(mob/target)
+	return
+
+/******************
 * Wizard Familiar *
 ******************/
 /datum/ghosttrap/familiar

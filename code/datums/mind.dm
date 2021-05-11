@@ -550,6 +550,11 @@
 	..()
 	mind.assigned_role = "Cyborg"
 
+//Friend
+/mob/living/imaginary_friend/mind_initialize()
+	..()
+	mind.assigned_role = "Imaginary Friend"
+
 //PAI
 /mob/living/silicon/pai/mind_initialize()
 	..()

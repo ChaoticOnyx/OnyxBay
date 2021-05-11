@@ -295,6 +295,23 @@
 						return
 			G.adjust_position()
 
+/datum/movement_handler/mob/friend
+	var/mob/living/imaginary_friend/friend
+	var/mob/living/carbon/human/friend_host
+
+/datum/movement_handler/mob/friend/New(mob/observer/imaginary_friend/friend)
+	src.friend = friend
+	friend_host = friend.host
+
+/datum/movement_handler/mob/friend/DoMove(direction, mob/mover, is_external)
+	if(!QDELETED(friend_host) && !QDELETED(friend))
+		return MOVEMENT_HANDLED
+
+/datum/movement_handler/mob/friend/MayMove(mob/mover, is_external)
+	var/dist = get_dist(get_turf(friend), get_turf(friend_host))
+	if(friend && friend_host && dist+1 < 9)
+		return MOVEMENT_PROCEED
+
 // Misc. helpers
 /mob/proc/MayEnterTurf(var/turf/T)
 	return T && !((mob_flags & MOB_FLAG_HOLY_BAD) && check_is_holy_turf(T))

@@ -17,6 +17,7 @@
 #define BE_PLANT "BE_PLANT"
 #define BE_SYNTH "BE_SYNTH"
 #define BE_PAI   "BE_PAI"
+#define BE_FRIEND   "BE_FRIEND"
 #define BE_FAMILIAR "BE_FAMILIAR"
 #define BE_SHADE "BE_SHADE"
 #define BE_VAMPIRE "BE_VAMPIRE"
