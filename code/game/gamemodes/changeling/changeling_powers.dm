@@ -140,7 +140,7 @@ var/global/list/possible_changeling_IDs = list("Alpha","Beta","Gamma","Delta","E
 
 	var/datum/changeling/changeling = src.mind.changeling
 	if(!changeling)
-		world.log << "[src] has the changeling verb but is not a changeling."
+		to_world_log("[src] has the changeling verb but is not a changeling.")
 		return
 
 	if(src.stat > max_stat)
@@ -516,7 +516,7 @@ var/global/list/possible_changeling_IDs = list("Alpha","Beta","Gamma","Delta","E
 
 	to_chat(usr, SPAN_NOTICE("We're starting to regenerate."))
 
-	addtimer(CALLBACK(src, .revive_ready), rand(80 SECONDS, 200 SECONDS))
+	addtimer(CALLBACK(src, .proc/revive_ready), rand(80 SECONDS, 200 SECONDS))
 
 /mob/living/carbon/human/proc/revive_ready()
 	if(QDELETED(src))
@@ -1139,8 +1139,6 @@ var/list/datum/absorbed_dna/hivemind_bank = list()
 
 	if(!ishuman(src))
 		return FALSE
-
-	..()
 
 	var/mob/living/M = src
 

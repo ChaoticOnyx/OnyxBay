@@ -290,14 +290,14 @@ It's fairly easy to fix if dealing with single letters but not so much with comp
 		p=p+n_mod
 	return sanitize(t)
 
-/mob/proc/log_message(message, message_type)
+/mob/proc/log_message(message, message_type, message_tag)
 	if(!LAZYLEN(message) || !message_type)
 		return
 
 	if(!islist(logging[message_type]))
 		logging[message_type] = list()
 
-	var/list/timestamped_message = list("[LAZYLEN(logging[message_type]) + 1]\[[time_stamp()]\] [key_name(src)]" = message)
+	var/list/timestamped_message = list("[LAZYLEN(logging[message_type]) + 1]\[[time_stamp()]\] [message_tag] [key_name(src)]" = message)
 
 	logging[message_type] += timestamped_message
 

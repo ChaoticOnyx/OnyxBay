@@ -40,10 +40,13 @@
 
 	var/gender_prefix = ""
 
-	if (istype(user_gender, /datum/gender/male))
+	if(istype(user_gender, /datum/gender/male))
 		gender_prefix = "male"
-	else
+	else if(istype(user_gender, /datum/gender/female))
 		gender_prefix = "female"
+
+	if(!gender_prefix)
+		return // No sounds for genderless beings
 
 	switch (key)
 		if ("cough")

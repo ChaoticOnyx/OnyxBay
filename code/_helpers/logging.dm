@@ -11,7 +11,7 @@
 /var/global/log_end= world.system_type == UNIX ? ascii2text(13) : ""
 
 /proc/log_to_dd(text)
-	world.log << text
+	to_world_log(text)
 	if(config && config.log_world_output)
 		log_debug("\[DD]: [text]")
 

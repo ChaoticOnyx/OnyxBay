@@ -148,7 +148,7 @@ var/global/datum/controller/occupations/job_master
 			if(job.is_restricted(player.client.prefs))
 				return FALSE
 
-			var/position_limit = job.total_positions
+			var/position_limit = job.total_positions + job.open_vacancies
 			if(!latejoin)
 				position_limit = job.spawn_positions
 			if((job.current_positions < position_limit) || position_limit == -1)
@@ -157,6 +157,8 @@ var/global/datum/controller/occupations/job_master
 				player.mind.role_alt_title = GetPlayerAltTitle(player, rank)
 				unassigned -= player
 				job.current_positions++
+				if(job.open_vacancies && job.current_positions > job.total_positions)
+					job_master.fill_vacancy(job.title, player.client.prefs.real_name)
 				return TRUE
 		Debug("AR has failed, Player: [player], Rank: [rank]")
 		return FALSE
@@ -694,3 +696,97 @@ var/global/datum/controller/occupations/job_master
 		return pick(loc_list)
 	else
 		return locate("start*[rank]") // use old stype
+
+/*
+* Job Vacancy procs and datums
+*/
+
+/datum/controller/occupations/proc/open_vacancy(title)
+	if(!title)
+		return FALSE
+
+	var/datum/job/J = GetJob(title)
+	if(!J)
+		return FALSE
+
+	var/datum/storyteller_character/ST = SSstoryteller.get_character()
+	var/available_vacancies = ST ? ST.get_available_vacancies() : job_master.get_available_vacancies()
+	if(length(GLOB.vacancies) >= available_vacancies)
+		return FALSE
+	++J.open_vacancies
+
+	var/datum/job_vacancy/JV = new
+	JV.title = J.title
+	JV.status = JOB_VACANCY_STATUS_OPEN
+	JV.time = stationtime2text()
+	JV.filledby = "None"
+	JV.id = sequential_id(/datum/job_vacancy)
+	return TRUE
+
+/datum/controller/occupations/proc/fill_vacancy(title, name)
+	if(!title)
+		return
+	if(!name)
+		return
+
+	var/datum/job/J = GetJob(title)
+	if(!J)
+		return FALSE
+	if(J.filled_vacancies >= J.open_vacancies)
+		return FALSE
+	++J.filled_vacancies
+
+	for(var/i in GLOB.vacancies)
+		var/datum/job_vacancy/JV = i
+		if(JV.status != JOB_VACANCY_STATUS_OPEN)
+			continue
+		if(JV.title != title)
+			continue
+
+		JV.filledby = name
+		JV.status = JOB_VACANCY_STATUS_COMPLETED
+		return
+
+/datum/controller/occupations/proc/delete_vacancy(id)
+	if(!id)
+		return FALSE
+
+	var/datum/job_vacancy/JV
+	for(var/i in GLOB.vacancies)
+		var/datum/job_vacancy/JVT = i
+		if(id == JVT.id)
+			JV = JVT
+			break
+
+	if(!JV)
+		return FALSE
+	if(JV.status != JOB_VACANCY_STATUS_OPEN)
+		return FALSE
+
+	var/datum/job/J = GetJob(JV.title)
+	if(!J)
+		return FALSE
+	J.open_vacancies = max(--J.open_vacancies, 0)
+
+	qdel(JV)
+	return TRUE
+
+/datum/controller/occupations/proc/get_available_vacancies()
+	return round(round_duration_in_ticks/JOB_VACANCIES_SLOT_PER_TIME) + JOB_VACANCIES_SLOTS_AVAILABLE_AT_ROUNDSTART
+
+GLOBAL_LIST_EMPTY(vacancies)
+
+/datum/job_vacancy
+	var/title
+	var/status
+	var/time
+	var/filledby
+	var/id
+
+/datum/job_vacancy/New()
+	. = ..()
+	GLOB.vacancies += src
+
+/datum/job_vacancy/Destroy()
+	GLOB.vacancies -= src
+	return ..()

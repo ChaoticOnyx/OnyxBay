@@ -44,6 +44,10 @@ var opts = {
 	'highlightColor': '#FFFF00', //The color of the highlighted message
 	'pingDisabled': false, //Has the user disabled the ping counter
 
+	//Spellchecker
+	'spellcheckTerms': '',
+	'spellcheckBlacklist': '',
+
 	//Clicks
 	'mouseDownX': null,
 	'mouseDownY': null,
@@ -352,7 +356,7 @@ function output(message, flag) {
 	var trimmed_message = entry.textContent || entry.innerText || "";
 
 	var handled = false;
-	if (opts.messageCombining) {
+	if (opts.messageCombining && flag !== 'internal') {
 		var lastmessages = $messages.children('div.entry:last-child').last();
 		if (lastmessages.length && $last_message && $last_message == trimmed_message) {
 			var badge = lastmessages.children('.r').last();
@@ -410,7 +414,7 @@ function output(message, flag) {
 
 		//Actually do the snap
 		//Stuff we can do after the message shows can go here, in the interests of responsiveness
-		if (opts.highlightTerms && opts.highlightTerms.length > 0) {
+		if (opts.highlightTerms && opts.highlightTerms.length > 0 && flag !== 'internal') {
 			highlightTerms(entry);
 		}
 	}
@@ -637,6 +641,7 @@ $(function() {
 		'sfont': getCookie('font'),
 		'smessagecombining': getCookie('messagecombining'),
 		'stheme': getCookie('theme'),
+		'sspellBlacklist': getCookie('spellcheckBlacklist'),
 	};
 
 	if (savedConfig.fontsize) {
@@ -673,6 +678,11 @@ $(function() {
 		opts.highlightColor = savedConfig.shighlightColor;
 		internalOutput('<span class="internal boldnshit">Loaded highlight color of: '+savedConfig.shighlightColor+'</span>', 'internal');
 	}
+
+	if (savedConfig.sspellBlacklist) {
+		opts.spellcheckBlacklist = savedConfig.sspellBlacklist;
+	}
+
 	if (savedConfig.sfont) {
 		$('body').css({'font-family': savedConfig.sfont});
 		internalOutput('<span class="internal boldnshit">Loaded font: '+savedConfig.sfont+'</span>', 'internal');
@@ -1011,6 +1021,48 @@ $(function() {
 		setCookie('highlightcolor', opts.highlightColor, 365);
 	});
 
+	$('#spellcheckBlacklist').click(function(e) {
+		if ($('.popup .spellcheckBlacklist').is(':visible')) {return;}
+		var popupContent = '<div class="head">Spellcheck blacklist</div>' +
+			'<div class="spellcheckPopup" id="spellcheckPopup">' +
+				'<div>Написанные здесь слова не будут проверяться на орфогр. ошибки.</div>' +
+				'<div><font size="1">Пример: "цига, карп" - "цигане" и "карпоеб" в вашем сообщении проигнорируются.</font></div>' +
+				'<form id="spellcheckForm">' +
+					'<div><input type="text" name="spellcheckInput" id="spellcheckInput" class="spellcheckInput" maxlength="255" value="'+ opts.spellcheckBlacklist +'" /></div>' +
+					'<div><input type="submit" text-align="center" name="spellcheckSubmit" id="spellcheckSubmit" class="spellcheckSubmit" value="Save" /></div>' +
+				'</form>' +
+			'</div>';
+		createPopup(popupContent, 500);
+	});
+
+	$('body').on('submit', '#spellcheckForm', function(e) {
+		e.preventDefault();
+
+		var term = $('#spellcheckInput').val();
+		if (term) {
+			term = term.trim();
+			if (term === '') {
+				opts.spellcheckBlacklist = '';
+			} else {
+				term = term.toLowerCase().replace(/[^а-яА-Я ]/g, ' ').trim().split(' ');
+				var exceps = [];
+				for (var i = 0, len = term.length; i < len; i++) {
+					if(exceps.indexOf(term[i]) > -1) continue;
+					if(term[i].length >= 3) exceps.push(term[i]);
+				}
+				opts.spellcheckBlacklist = exceps.join(', ');
+			}
+		} else {
+			opts.spellcheckBlacklist = '';
+		}
+
+
+		var $popup = $('#spellcheckPopup').closest('.popup');
+		$popup.remove();
+
+		setCookie('spellcheckBlacklist', opts.spellcheckBlacklist, 365);
+	});
+
 	$('#clearMessages').click(function() {
 		$messages.empty();
 		opts.messageCount = 0;
@@ -1053,3 +1105,95 @@ $(function() {
 	$('#userBar').show();
 	opts.priorChatHeight = $(window).height();
 });
+
+	/*****************************************
+	*
+	* SPELL CHECKER
+	*
+	******************************************/
+
+function setSpellcheckerTerms (data) {
+	if(!data) return;
+	data = byondDecode(data).trim().replace(new RegExp(/\s/g), '|');
+	opts.spellcheckTerms = data;
+}
+
+function spellCheck(text) {
+	if(!text) return;
+
+	text = filterText(text);
+
+	if(text.length > 3) {
+		sendYandexSpellerRequest(encodeURIComponent(text));
+	}
+}
+
+function filterText(text) {
+	text = byondDecode(text);
+	text = text.toLowerCase();
+	text = text.replace(/[^а-яА-Я ]/g, ' ');
+	text = text.replace(/\s+/g, ' ');
+	text = getUniqueWords(text);
+	text = removeBlacklistedWords(text);
+	return text;
+}
+
+function getUniqueWords(text) {
+	var words = text.split(' ');
+	var uniqueWords = [];
+
+	for (var i=0; i < words.length; i++){
+		if(words[i].length <= 3) continue;
+		if(uniqueWords.indexOf(words[i]) > -1) continue; 
+
+		uniqueWords.push(words[i]);
+	}
+	return uniqueWords.join(' ');
+}
+
+function removeBlacklistedWords(text) {
+	var blackList = opts.spellcheckTerms;
+	if (opts.spellcheckBlacklist) {
+		blackList += '|' + opts.spellcheckBlacklist.replace(new RegExp(/,\s*/g), '|');
+	}
+	var regex = '(?:\\s|^)(?:' + blackList + ')\\S*';
+	return text.replace(new RegExp(regex, 'g'), '');
+}
+
+function sendYandexSpellerRequest(text) {
+	var xhr = new XMLHttpRequest();
+	xhr.onreadystatechange = function() {
+		if (this.readyState == 4) {
+			if (xhr.status == 200) {
+				markWords(JSON.parse(xhr.responseText));
+			}
+		}
+	}
+	xhr.open("GET", "http://speller.yandex.net/services/spellservice.json/checkText?options=7&lang=ru&text=" + text, true);
+	xhr.send();
+}
+
+function markWords(data) {
+	if (!data || data === '[]') return;
+	var ToShow = ''; 
+
+	for (var i = 0, len = data.length; i < len; i++) {
+		var subst = data[i];
+		if (subst.s.length === 0) continue;
+
+		var replacement = '';
+		if (ToShow.length) replacement += ', ';
+
+		if(subst.s.length === 1) {
+			replacement += '<span class="line-good">'+subst.s[0]+'</span>';
+		} else {
+			replacement += '<span class="line-sugg">'+subst.s.join(', ')+'</span>';
+		}
+
+		ToShow += replacement+' - <span class="line-bad">'+subst.word+'</span>';
+	}
+
+	if (ToShow.length) {
+		internalOutput('<span class="spellChecker">Возможные орфографические ошибки: '+ToShow+'</span>', 'internal');
+	}
+}

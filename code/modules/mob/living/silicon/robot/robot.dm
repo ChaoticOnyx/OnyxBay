@@ -16,7 +16,8 @@
 	var/used_power_this_tick = 0
 	var/sight_mode = 0
 	var/custom_name = ""
-	var/custom_sprite = 0 //Due to all the sprites involved, a var for our custom borgs may be best
+	var/custom_sprite = TRUE //Due to all the sprites involved, a var for our custom borgs may be best
+	var/original_icon = 'icons/mob/robots.dmi'
 	var/crisis //Admin-settable for combat module use.
 	var/crisis_override = 0
 	var/integrated_light_power = 6
@@ -241,17 +242,16 @@
 	if(new_sprites && new_sprites.len)
 		module_sprites = new_sprites.Copy()
 		//Custom_sprite check and entry
-
-		if (custom_sprite == 1 && CUSTOM_ITEM_SYNTH)
-			var/list/valid_states = icon_states(CUSTOM_ITEM_SYNTH)
-			if("[ckey]-[modtype]" in valid_states)
-				module_sprites["Custom"] = "[src.ckey]-[modtype]"
-				icon = CUSTOM_ITEM_SYNTH
+		if(custom_sprite && CUSTOM_ITEM_ROBOTS)
+			var/sprite_state = GLOB.robot_custom_icons[ckey]
+			var/list/valid_states = icon_states(CUSTOM_ITEM_ROBOTS)
+			if(sprite_state && (sprite_state in valid_states))
+				module_sprites["Custom"] = sprite_state
+				icon = CUSTOM_ITEM_ROBOTS
 				icontype = "Custom"
 			else
 				icontype = module_sprites[1]
-				icon = 'icons/mob/robots.dmi'
-				to_chat(src, "<span class='warning'>Custom Sprite Sheet does not contain a valid icon_state for [ckey]-[modtype]</span>")
+				icon = original_icon
 		else
 			icontype = module_sprites[1]
 		icon_state = module_sprites[icontype]
@@ -404,7 +404,7 @@
 		to_chat(src, "<span class='warning'>Low Power.</span>")
 		return
 	var/dat = self_diagnosis()
-	src << browse(dat, "window=robotdiagnosis")
+	show_browser(src, dat, "window=robotdiagnosis")
 
 
 /mob/living/silicon/robot/verb/toggle_component()
@@ -840,7 +840,7 @@
 		else
 			dat += text("[obj]: \[<A HREF=?src=\ref[src];act=\ref[obj]>Activate</A> | <B>Deactivated</B>\]<BR>")
 */
-	src << browse(dat, "window=robotmod")
+	show_browser(src, dat, "window=robotmod")
 
 
 /mob/living/silicon/robot/Topic(href, href_list)
@@ -1018,7 +1018,7 @@
 	if(!module_sprites.len)
 		to_chat(src, "Something is badly wrong with the sprite selection. Harass a coder.")
 		return
-
+	set_module_sprites(module_sprites)
 	icon_selected = 0
 	src.icon_selection_tries = triesleft
 	if(module_sprites.len == 1 || !client)
@@ -1027,6 +1027,9 @@
 	else
 		icontype = input(src,"Select an icon! [triesleft ? "You have [triesleft] more chance\s." : "This is your last try."]", "Robot Icon", icontype, null) in module_sprites
 	icon_state = module_sprites[icontype]
+	var/list/valid_states = icon_states(icon)
+	if(!(icon_state in valid_states))
+		icon = original_icon
 	update_icon()
 
 	if (module_sprites.len > 1 && triesleft >= 1 && client)

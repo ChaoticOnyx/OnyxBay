@@ -7,19 +7,20 @@
 	density = 1
 	anchored = 0
 	pull_sound = "pull_machine"
+	pull_slowdown = PULL_SLOWDOWN_LIGHT
 
 	var/initial_capacity = 1000
 	var/initial_reagent_types  // A list of reagents and their ratio relative the initial capacity. list(/datum/reagent/water = 0.5) would fill the dispenser halfway to capacity.
 	var/amount_per_transfer_from_this = 10
 	var/possible_transfer_amounts = "10;25;50;100;500"
 
-	attackby(obj/item/weapon/W as obj, mob/user as mob)
-		return
+/obj/structure/reagent_dispensers/attackby(obj/item/weapon/W, mob/user)
+	return
 
 /obj/structure/reagent_dispensers/New()
 	create_reagents(initial_capacity)
 
-	if (!possible_transfer_amounts)
+	if(!possible_transfer_amounts)
 		src.verbs -= /obj/structure/reagent_dispensers/verb/set_APTFT
 
 	for(var/reagent_type in initial_reagent_types)
@@ -98,7 +99,7 @@
 	. = ..()
 	if(get_dist(src, user) > 2)
 		return
-	if (modded)
+	if(modded)
 		. += "\n<span class='warning'>Fuel faucet is wrenched open, leaking the fuel!</span>"
 	if(rig)
 		. += "\n<span class='notice'>There is some kind of device rigged to the tank.</span>"
@@ -263,6 +264,7 @@
 	amount_per_transfer_from_this = 10
 	initial_reagent_types = list(/datum/reagent/ethanol/beer = 1)
 	atom_flags = ATOM_FLAG_CLIMBABLE
+	pull_slowdown = PULL_SLOWDOWN_MEDIUM
 
 /obj/structure/reagent_dispensers/virusfood
 	name = "Virus Food Dispenser"

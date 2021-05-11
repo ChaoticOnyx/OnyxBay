@@ -155,6 +155,9 @@
 	icon = 'icons/obj/doors/doorele.dmi'
 	opacity = 0
 
+/obj/machinery/door/airlock/centcom/Process()
+	return PROCESS_KILL
+
 /obj/machinery/door/airlock/vault
 	name = "Vault"
 	icon = 'icons/obj/doors/vault.dmi'
@@ -842,6 +845,30 @@ About the new airlock wires panel:
 			if(src.shock(user, 100))
 				return
 
+	if(ishuman(user))
+		var/mob/living/carbon/human/H = user
+		if(H.species?.can_shred(H))
+			if(density && (!arePowerSystemsOn() || (stat & BROKEN)))
+				user.setClickCooldown(DEFAULT_WEAPON_COOLDOWN)
+				to_chat(user, "You start forcing \the [src] open...")
+				if(do_after(user, 30, src))
+					if(welded)
+						to_chat(user, SPAN("danger", "The airlock has been welded shut!"))
+					else if(locked)
+						to_chat(user, SPAN("danger", "The door bolts are down!"))
+					else if(density)
+						visible_message(SPAN("danger","\The [user] forces \the [src] open!"))
+						open(TRUE)
+						shake_animation(2, 2)
+				return
+			playsound(src.loc, 'sound/weapons/slash.ogg', 100, 1)
+			visible_message(SPAN("danger", "[user] slashes at \the [name]."), 1)
+			take_damage(10)
+			user.do_attack_animation(src)
+			user.setClickCooldown(5)
+			shake_animation(2, 2)
+			return
+
 	if(src.p_open)
 		user.set_machine(src)
 		wires.Interact(user)
@@ -1212,7 +1239,7 @@ About the new airlock wires panel:
 
 /obj/machinery/door/airlock/close(forced=0)
 	if(!can_close(forced))
-		addtimer(CALLBACK(src, .close), next_close_time(), TIMER_UNIQUE|TIMER_OVERRIDE)
+		addtimer(CALLBACK(src, .proc/close), next_close_time(), TIMER_UNIQUE|TIMER_OVERRIDE)
 		return 0
 
 	if(safe)
@@ -1222,7 +1249,7 @@ About the new airlock wires panel:
 					if(world.time > next_beep_at)
 						playsound(src.loc, close_failure_blocked, 30, 0, -3)
 						next_beep_at = world.time + SecondsToTicks(10)
-					addtimer(CALLBACK(src, .close), next_close_time(), TIMER_UNIQUE|TIMER_OVERRIDE)
+					addtimer(CALLBACK(src, .proc/close), next_close_time(), TIMER_UNIQUE|TIMER_OVERRIDE)
 					return
 
 	for(var/turf/turf in locs)

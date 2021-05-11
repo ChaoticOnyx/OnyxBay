@@ -830,13 +830,14 @@ var/list/name_to_material
 
 /material/resin
 	name = "resin"
-	icon_colour = "#26031f"
+	icon_colour = "#443f59"
 	dooropen_noise = 'sound/effects/attackblob.ogg'
 	door_icon_base = "resin"
 	melting_point = T0C+300
 	sheet_singular_name = "blob"
 	sheet_plural_name = "blobs"
 	conductive = 0
+	integrity = 20
 
 /material/resin/can_open_material_door(mob/living/user)
 	var/mob/living/carbon/M = user
@@ -977,6 +978,7 @@ var/list/name_to_material
 	use_name = "goat hide"
 	stack_type = /obj/item/stack/material/animalhide/goat
 	stack_origin_tech = list(TECH_MATERIAL = 2)
+	icon_colour = "#e8e7c8"
 	flags = MATERIAL_PADDING
 	ignition_point = T0C+300
 	melting_point = T0C+300

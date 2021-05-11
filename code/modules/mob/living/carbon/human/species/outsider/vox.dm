@@ -47,6 +47,8 @@
 	reagent_tag = IS_VOX
 
 	inherent_verbs = list(
+		/mob/living/carbon/human/proc/toggle_powers,
+		/mob/living/carbon/human/proc/toggle_leap,
 		/mob/living/carbon/human/proc/leap
 		)
 

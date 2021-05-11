@@ -208,7 +208,6 @@
 #define BP_LIVER    "liver"
 #define BP_KIDNEYS  "kidneys"
 #define BP_STOMACH  "stomach"
-#define BP_PLASMA   "plasma vessel"
 #define BP_APPENDIX "appendix"
 #define BP_CELL     "cell"
 #define BP_HIVE     "hive node"
@@ -221,9 +220,11 @@
 #define BP_GBLADDER "gas bladder"
 #define BP_POLYP    "polyp segment"
 #define BP_ANCHOR   "anchoring ligament"
-#define BP_PLASMA   "plasma filter"
+#define BP_PLASMA   "plasma vessel"
 #define BP_CHANG    "biostructure"
-#define BP_CANCER    "cancer"
+#define BP_CANCER   "cancer"
+#define BP_EMBRYO   "alien embryo"
+#define BP_GANGLION "spinal ganglion"
 
 // Robo Organs.
 #define BP_POSIBRAIN	"posibrain"
@@ -299,13 +300,17 @@
 #define SPECIES_NABBER      "Giant Armoured Serpentid"
 #define SPECIES_PROMETHEAN  "Promethean"
 #define SPECIES_EGYNO       "Egyno"
+#define SPECIES_MONKEY      "Monkey"
 
 // Ayyy IDs.
-#define SPECIES_XENO			"Xenomorph"
-#define SPECIES_XENO_DRONE		"Xenomorph Drone"
-#define SPECIES_XENO_HUNTER		"Xenomorph Hunter"
-#define SPECIES_XENO_SENTINEL	"Xenomorph Sentinel"
-#define SPECIES_XENO_QUEEN		"Xenomorph Queen"
+#define SPECIES_XENO                 "Xenomorph"
+#define SPECIES_XENO_DRONE           "Xenomorph Drone"
+#define SPECIES_XENO_HUNTER          "Xenomorph Hunter"
+#define SPECIES_XENO_SENTINEL        "Xenomorph Sentinel"
+#define SPECIES_XENO_QUEEN           "Xenomorph Queen"
+#define SPECIES_XENO_DRONE_VILE      "Xenomorph Vile Drone"
+#define SPECIES_XENO_HUNTER_FERAL    "Xenomorph Feral Hunter"
+#define SPECIES_XENO_SENTINEL_PRIMAL "Xenomorph Primal Sentinel"
 
 #define SURGERY_CLOSED 0
 #define SURGERY_OPEN 1
@@ -340,3 +345,8 @@
 #define STOMACH_FULLNESS_MEDIUM 350
 #define STOMACH_FULLNESS_HIGH 550
 #define STOMACH_FULLNESS_SUPER_HIGH 850
+
+#define HUMAN_POWER_NONE    "None"
+#define HUMAN_POWER_SPIT    "Spit"
+#define HUMAN_POWER_LEAP    "Leap"
+#define HUMAN_POWER_TACKLE  "Tackle"

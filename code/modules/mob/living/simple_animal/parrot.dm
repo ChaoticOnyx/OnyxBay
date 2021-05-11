@@ -136,7 +136,7 @@
 		dat +=	"<br><b>Claws:</b> <a href='?src=\ref[src];add_inv=claws'>Nothing</a>"
 
 
-	user << browse(dat, text("window=mob[];size=325x500", name))
+	show_browser(user, dat, text("window=mob[];size=325x500", name))
 	onclose(user, "mob[real_name]")
 	return
 
@@ -167,7 +167,7 @@
 					else
 						to_chat(usr, "<span class='warning'>There is nothing to remove from its [remove_from].</span>")
 						return
-				else if("claws")
+				if("claws")
 					if(!held_item)
 						to_chat(usr, "<span class='warning'>There is nothing to remove from its [remove_from]!</span>")
 						return
@@ -223,7 +223,7 @@
 									available_channels.Add(":d")
 								if("Cargo")
 									available_channels.Add(":q")
-				else if("claws")
+				if("claws")
 					if(held_item)
 						to_chat(usr, "<span class='warning'>It's already wearing something.</span>")
 						return
@@ -410,11 +410,11 @@
 					return
 			return
 
-		if(parrot_interest && parrot_interest in view(src))
+		if(parrot_interest && (parrot_interest in view(src)))
 			parrot_state = PARROT_SWOOP | PARROT_STEAL
 			return
 
-		if(parrot_perch && parrot_perch in view(src))
+		if(parrot_perch && (parrot_perch in view(src)))
 			parrot_state = PARROT_SWOOP | PARROT_RETURN
 			return
 

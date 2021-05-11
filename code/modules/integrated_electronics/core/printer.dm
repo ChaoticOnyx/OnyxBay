@@ -177,6 +177,12 @@
 	var/datum/browser/popup = new(user, "printernew", "Integrated Circuit Printer", 800, 630) // Set up the popup browser window
 
 	var/HTML = "<center><h2>Integrated Circuit Printer</h2></center><br>"
+	if(!SScircuit_components.can_fire)
+		HTML += "<center><h3>INTEGRATED CIRCUITS DISABLED BY LAW-2 SECTION SMART-PEOPLE-NOT-ALLOWED. Please contact your system administrator for instructions on how to resolve this issue.</h3></center>"
+		popup.set_content(HTML)
+		popup.open()
+		return
+
 	if(debug)
 		HTML += "<center><h3>DEBUG PRINTER -- Infinite materials. Cloning available.</h3></center>"
 	else
@@ -250,6 +256,9 @@
 	if(..())
 		return TRUE
 	add_fingerprint(usr)
+
+	if(!SScircuit_components.can_fire)
+		return TRUE
 
 	if(href_list["id-lock"])
 		idlock = null

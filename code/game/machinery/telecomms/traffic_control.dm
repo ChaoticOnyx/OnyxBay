@@ -52,7 +52,7 @@
 
 				for(var/mob/M in viewingcode)
 
-					if( (M.machine == src && M in view(1, src) ) || issilicon(M))
+					if( (M.machine == src && (M in view(1, src) )) || issilicon(M))
 						winset(M, "tcscode", "is-disabled=true")
 						winset(M, "tcscode", "text=\"[showcode]\"")
 					else
@@ -110,7 +110,7 @@
 					dat += "<a href='?src=\ref[src];operation=togglerun'>NEVER</a>"
 
 
-		user << browse(dat, "window=traffic_control;size=575x400")
+		show_browser(user, dat, "window=traffic_control;size=575x400")
 		onclose(user, "server_control")
 
 		temp = ""

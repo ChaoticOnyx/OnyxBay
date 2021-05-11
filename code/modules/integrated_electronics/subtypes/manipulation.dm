@@ -105,7 +105,7 @@
 				if(P)
 					installed_gun.play_fire_sound(assembly, P)
 					activate_pin(3)
-			else if(2)
+			if(2)
 				var/datum/firemode/next_firemode = installed_gun.switch_firemodes()
 				set_pin_data(IC_OUTPUT, 2, next_firemode ? next_firemode.name : null)
 				push_data()
@@ -398,8 +398,15 @@
 			if(contents.len)
 				drop(contents[1])
 
+	var/obj/item/I = get_object()
 	var/obj/item/AM = get_pin_data_as_type(IC_INPUT, 1, /obj/item)
-	if(!QDELETED(AM) && !istype(AM, /obj/item/device/electronic_assembly) && !istype(AM, /obj/item/device/transfer_valve) && !istype(assembly.loc, /obj/item/weapon/implant/compressed) || !isturf(assembly.loc))
+	if(AM && !QDELETED(AM) && !istype(AM, /obj/item/device/electronic_assembly) && \
+	!istype(AM, /obj/item/integrated_circuit) && !istype(AM, /obj/item/device/transfer_valve) && !istype(assembly.loc, /obj/item/weapon/implant/compressed) \
+	&& isturf(assembly.loc))
+		if(istype(AM, /obj/item/weapon/storage))
+			var/obj/item/weapon/storage/S = AM
+			for(var/obj/item/device/electronic_assembly/EA in S.return_inv())
+				S.remove_from_storage(EA, get_turf(I))
 		switch(mode)
 			if(1)
 				grab(AM)
@@ -411,7 +418,7 @@
 /obj/item/integrated_circuit/manipulation/grabber/proc/grab(obj/item/AM)
 	var/max_w_class = assembly.w_class
 	if(check_target(AM))
-		if(contents.len < max_items && AM.w_class <= max_w_class)
+		if(contents.len < max_items && AM.w_class < max_w_class)
 			var/atom/A = get_object()
 			A.investigate_log("picked up ([AM]) with [src].", INVESTIGATE_CIRCUIT)
 			AM.forceMove(src)
@@ -503,7 +510,7 @@
 	activate_pin(2)
 
 /obj/item/integrated_circuit/manipulation/claw/proc/can_pull(obj/I)
-	return assembly && I && I.w_class <= assembly.w_class && !I.anchored
+	return assembly && I && I.w_class <= assembly.w_class && !I.anchored && I != assembly
 
 /obj/item/integrated_circuit/manipulation/claw/proc/pull()
 	var/obj/acting_object = get_object()
@@ -694,7 +701,7 @@
 
 				container.handle_item_insertion(target_obj)
 
-			else if(2)
+			if(2)
 				if(target_obj in container.contents)
 					container.remove_from_storage(target_obj, get_turf(src))
 

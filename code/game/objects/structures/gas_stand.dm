@@ -3,6 +3,7 @@
 	icon = 'icons/obj/gas_stand.dmi'
 	desc = "Gas stand with retractable gas mask."
 	icon_state = "gas_stand_idle"
+	pull_slowdown = PULL_SLOWDOWN_TINY
 
 	var/obj/item/weapon/tank/tank
 	var/mob/living/carbon/breather
@@ -106,7 +107,7 @@
 				if(breather.internals)
 					breather.internals.icon_state = "internal1"
 			valve_opened = TRUE
-			playsound(get_turf(src), 'sound/effects/internals.ogg', 100, 1)
+			playsound(src, 'sound/effects/internals.ogg', 100, 1)
 			update_icon()
 			START_PROCESSING(SSobj,src)
 

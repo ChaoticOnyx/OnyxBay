@@ -132,7 +132,7 @@
 		operating = TRUE
 
 	if(autoclose)
-		timer = addtimer(CALLBACK(src, .close), 10 SECONDS, TIMER_UNIQUE|TIMER_STOPPABLE)
+		timer = addtimer(CALLBACK(src, .proc/close), 10 SECONDS, TIMER_UNIQUE|TIMER_STOPPABLE)
 
 	flick("[base_state]opening", src)
 	set_density(0)
@@ -178,6 +178,8 @@
 		if(H.species?.can_shred(H))
 			playsound(loc, get_sfx("glass_hit"), 75, 1)
 			visible_message("<span class='danger'>[user] smashes against the [name].</span>", 1)
+			user.do_attack_animation(src)
+			user.setClickCooldown(DEFAULT_QUICK_COOLDOWN)
 			take_damage(25)
 			return
 	return attackby(user, user)
@@ -186,7 +188,7 @@
 	if(density && operable())
 		operating = -1
 		flick("[base_state]spark", src)
-		addtimer(CALLBACK(src, .open), 10)
+		addtimer(CALLBACK(src, .proc/open), 10)
 		return 1
 
 /obj/machinery/door/emp_act(severity)
