@@ -18,6 +18,7 @@
 	var/pull_slowdown = PULL_SLOWDOWN_WEIGHT // How much it slows us down while we are pulling it
 
 /obj/Destroy()
+	CAN_BE_REDEFINED(TRUE)
 	var/obj/item/smallDelivery/delivery = loc
 
 	if (istype(delivery))

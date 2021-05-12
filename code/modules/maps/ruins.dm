@@ -69,7 +69,7 @@ GLOBAL_LIST_EMPTY(banned_ruin_ids)
 				GLOB.banned_ruin_ids += ruin.id //and ban them globally too
 			break
 
-proc/load_ruin(turf/central_turf, datum/map_template/template)
+/proc/load_ruin(turf/central_turf, datum/map_template/template)
 	if(!template)
 		return FALSE
 	for(var/i in template.get_affected_turfs(central_turf, 1))

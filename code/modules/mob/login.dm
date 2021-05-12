@@ -45,7 +45,8 @@
 	var/client/my_client // Need to keep track of this ourselves, since by the time Logout() is called the client has already been nulled
 
 /mob/Login()
-
+	CAN_BE_REDEFINED(TRUE)
+	SHOULD_CALL_PARENT(TRUE)
 	GLOB.player_list |= src
 	update_Login_details()
 	world.update_status()
@@ -75,7 +76,7 @@
 	add_click_catcher()
 
 	client.mob.update_client_color()
-	
+
 	//set macro to normal incase it was overriden (like cyborg currently does)
 	var/hotkey_mode = client.get_preference_value("DEFAULT_HOTKEY_MODE")
 	if (hotkey_mode == GLOB.PREF_NO)

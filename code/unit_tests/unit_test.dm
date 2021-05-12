@@ -53,7 +53,7 @@ var/ascii_reset = "[ascii_esc]\[0m"
 // We list these here so we can remove them from the for loop running this.
 // Templates aren't intended to be ran but just serve as a way to create child objects of it with inheritable tests for quick test creation.
 
-datum/unit_test
+/datum/unit_test
 	var/name = "template - should not be ran."
 	var/disabled = 0        // If we want to keep a unit test in the codebase but not run it for some reason.
 	var/async = 0           // If the check can be left to do it's own thing, you must define a check_result() proc if you use this.
@@ -63,35 +63,35 @@ datum/unit_test
 	var/safe_landmark
 	var/space_landmark
 
-datum/unit_test/proc/log_debug(message)
+/datum/unit_test/proc/log_debug(message)
 	log_unit_test("[ascii_yellow]---  DEBUG  --- \[[name]\]: [message][ascii_reset]")
 
-datum/unit_test/proc/log_bad(message)
+/datum/unit_test/proc/log_bad(message)
 	log_unit_test("[ascii_red]\[[name]\]: [message][ascii_reset]")
 
-datum/unit_test/proc/fail(message)
+/datum/unit_test/proc/fail(message)
 	all_unit_tests_passed = 0
 	failed_unit_tests++
 	reported = 1
 	log_unit_test("[ascii_red]!!! FAILURE !!! \[[name]\]: [message][ascii_reset]")
 
-datum/unit_test/proc/pass(message)
+/datum/unit_test/proc/pass(message)
 	reported = 1
 	log_unit_test("[ascii_green]*** SUCCESS *** \[[name]\]: [message][ascii_reset]")
 
-datum/unit_test/proc/skip(message)
+/datum/unit_test/proc/skip(message)
 	skipped_unit_tests++
 	reported = 1
 	log_unit_test("[ascii_yellow]--- SKIPPED --- \[[name]\]: [message][ascii_reset]")
 
-datum/unit_test/proc/start_test()
+/datum/unit_test/proc/start_test()
 	fail("No test proc.")
 
-datum/unit_test/proc/check_result()
+/datum/unit_test/proc/check_result()
 	fail("No check results proc")
 	return 1
 
-datum/unit_test/proc/get_safe_turf()
+/datum/unit_test/proc/get_safe_turf()
 	if(!safe_landmark)
 		for(var/landmark in landmarks_list)
 			if(istype(landmark, /obj/effect/landmark/test/safe_turf))
@@ -99,7 +99,7 @@ datum/unit_test/proc/get_safe_turf()
 				break
 	return get_turf(safe_landmark)
 
-datum/unit_test/proc/get_space_turf()
+/datum/unit_test/proc/get_space_turf()
 	if(!space_landmark)
 		for(var/landmark in landmarks_list)
 			if(istype(landmark, /obj/effect/landmark/test/space_turf))
@@ -107,7 +107,7 @@ datum/unit_test/proc/get_space_turf()
 				break
 	return get_turf(space_landmark)
 
-proc/load_unit_test_changes()
+/proc/load_unit_test_changes()
 /*
 	//This takes about 60 seconds to run on Travis and is only used for the ZAS vacume check on The Asteroid.
 	if(config.generate_map != 1)

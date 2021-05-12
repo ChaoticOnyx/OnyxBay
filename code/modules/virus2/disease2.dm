@@ -30,7 +30,7 @@ LEGACY_RECORD_STRUCTURE(virus_records, virus_record)
 		antigen = list(pick(ALL_ANTIGENS))
 		antigen |= pick(ALL_ANTIGENS)
 
-	for(var/datum/disease2/effect/E in effects) 
+	for(var/datum/disease2/effect/E in effects)
 		E.parent_disease = src
 		E.change_parent()
 
@@ -291,7 +291,7 @@ var/global/list/virusDB = list()
 	return 1
 
 
-proc/virology_letterhead(report_name)
+/proc/virology_letterhead(report_name)
 	return {"
 		<center><h1><b>[report_name]</b></h1></center>
 		<center><small><i>[station_name()] Virology Lab</i></small></center>

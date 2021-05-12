@@ -80,7 +80,7 @@
 			desc += " The optical pathway is melted and useless."
 			projectile_type = null
 
-obj/item/weapon/gun/energy/retro
+/obj/item/weapon/gun/energy/retro
 	name = "retro laser"
 	icon_state = "retro"
 	item_state = "retro"

@@ -415,7 +415,7 @@ The slots that you can use are found in items_clothing.dm and are the inventory 
 							"<span class='notice'>You hug [target]!</span>")
 
 	// Legacy for sum raisin
-	//H.visible_message("<span class='notice'>[H] hugs [target] to make [t_him] feel better!</span>", \
+	//H.visible_message("<span class='notice'>[H] hugs [target] to make [t_him] feel better!</span>",
 	//				"<span class='notice'>You hug [target] to make [t_him] feel better!</span>")
 
 /datum/species/proc/remove_inherent_verbs(mob/living/carbon/human/H)
