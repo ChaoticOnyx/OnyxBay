@@ -53,6 +53,10 @@ GLOBAL_LIST_INIT(syndicate_factions, list(
 	var/list/reason_list = list()
 	var/datum/contract_organization/organization
 
+/datum/antag_contract/New(datum/contract_organization/contract_organization, reason, datum/mind/target)
+	ASSERT(intent)
+	return src
+
 /datum/antag_contract/proc/ban_non_crew_antag()
 	for(var/antag_type in list(MODE_MEME, MODE_BLOB, MODE_DEITY, MODE_WIZARD, MODE_RAIDER, MODE_NINJA, MODE_NUKE, MODE_ACTOR, MODE_XENOMORPH, MODE_COMMANDO))
 		reason_list[antag_type] = list("NA", "NA", 0)
@@ -148,7 +152,6 @@ GLOBAL_LIST_INIT(syndicate_factions, list(
 	intent = CONTRACT_IMPACT_MILITARY
 
 /datum/antag_contract/implant/New(datum/contract_organization/contract_organization, reason, datum/mind/target)
-	ASSERT(intent)
 	organization = contract_organization
 	create_contract(reason, target)
 	..()
@@ -242,7 +245,6 @@ GLOBAL_LIST_INIT(syndicate_factions, list(
 	return reasonn
 
 /datum/antag_contract/item/steal/New(datum/contract_organization/contract_organization, reason, target)
-	ASSERT(intent)
 	organization = contract_organization
 	create_contract(reason, target)
 	..()
@@ -283,7 +285,6 @@ GLOBAL_LIST_INIT(syndicate_factions, list(
 	var/mob/living/silicon/ai/AI
 
 /datum/antag_contract/item/steal_ai/New(datum/contract_organization/contract_organization, reason, target)
-	ASSERT(intent)
 	organization = contract_organization
 	create_contract(reason, target)
 	..()
@@ -320,11 +321,10 @@ GLOBAL_LIST_INIT(syndicate_factions, list(
 	name = "Steal blood samples"
 	unique = TRUE
 	reward = 10
-	intent = CONTRACT_IMPACT_OPERATION & CONTRACT_IMPACT_SOCIAL
+	intent = CONTRACT_IMPACT_OPERATION | CONTRACT_IMPACT_SOCIAL
 	var/count
 
 /datum/antag_contract/item/blood/New(datum/contract_organization/contract_organization, reason, target)
-	ASSERT(intent)
 	organization = contract_organization
 	create_contract(reason, target)
 	..()
@@ -364,7 +364,6 @@ GLOBAL_LIST_INIT(syndicate_factions, list(
 	var/mob/living/carbon/human/H
 
 /datum/antag_contract/item/assassinate/New(datum/contract_organization/contract_organization, reason, datum/mind/target)
-	ASSERT(intent)
 	organization = contract_organization
 	create_contract(reason, target)
 	..()
@@ -467,7 +466,6 @@ GLOBAL_LIST_INIT(syndicate_factions, list(
 	var/sum
 
 /datum/antag_contract/item/dump/New(datum/contract_organization/contract_organization, reason, target)
-	ASSERT(intent)
 	..()
 	organization = contract_organization
 	create_contract(reason, target)
@@ -499,7 +497,6 @@ GLOBAL_LIST_INIT(syndicate_factions, list(
 	var/static/counter = 0
 
 /datum/antag_contract/item/research/New(datum/contract_organization/contract_organization, reason, list/datum/design/target)
-	ASSERT(intent)
 	..()
 	organization = contract_organization
 	create_contract(reason, target)
@@ -556,7 +553,6 @@ GLOBAL_LIST_INIT(syndicate_factions, list(
 	var/list/area/targets = list()
 
 /datum/antag_contract/recon/New(datum/contract_organization/contract_organization, reason, list/area/target)
-	ASSERT(intent)
 	organization = contract_organization
 	create_contract(reason, target)
 	..()

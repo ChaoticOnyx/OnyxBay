@@ -11,9 +11,7 @@
 
 /datum/contract_fixer/New()
 	for(var/org_path in subtypesof(/datum/contract_organization/syndicate))
-		var/datum/contract_organization/syndicate = new org_path(src)
-		organizations.Add(syndicate)
-		organizations_by_name[syndicate.name] = syndicate
+		new org_path(src)
 
 /datum/contract_fixer/proc/return_contracts(datum/mind/M)
 	var/list/datum/antag_contract/avaliable_contracts = list()
@@ -41,9 +39,11 @@
 	var/intents // what contracts organization prefers?
 	var/datum/contract_fixer/holder
 
-/datum/contract_organization/New(datum/contract_organization/CO)
+/datum/contract_organization/New(datum/contract_fixer/CF)
 	ASSERT(intents)
-	holder = CO
+	holder = CF
+	holder.organizations.Add(src)
+	holder.organizations_by_name[name] = src
 
 /datum/contract_organization/proc/get_contracts(datum/mind/M)
 	var/list/datum/antag_contract/avaliable_contracts = list()
@@ -57,6 +57,8 @@
 	while(candidates.len)
 		var/contract_type = pick(candidates)
 		var/datum/antag_contract/C = new contract_type(src)
+		if(!C)
+			continue
 		var/not_avaliable = (intents ^ C.intent || prob(75))
 		if(!C.can_place() && not_avaliable)
 			candidates -= contract_type
@@ -101,22 +103,22 @@
 
 /datum/contract_organization/syndicate/tti
 	name = "Trauma Team Interspace"
-	intents = CONTRACT_IMPACT_SOCIAL & CONTRACT_IMPACT_OPERATION
+	intents = CONTRACT_IMPACT_SOCIAL | CONTRACT_IMPACT_OPERATION
 /datum/contract_organization/syndicate/ms
 	name = "MiliSpace"
-	intents = CONTRACT_IMPACT_MILITARY & CONTRACT_IMPACT_HIJACK
+	intents = CONTRACT_IMPACT_MILITARY | CONTRACT_IMPACT_HIJACK
 /datum/contract_organization/syndicate/bs
 	name = "Biospacenica"
 	intents = CONTRACT_IMPACT_SOCIAL
 /datum/contract_organization/syndicate/kt
 	name = "Kang Too"
-	intents = CONTRACT_IMPACT_SOCIAL & CONTRACT_IMPACT_OPERATION & CONTRACT_IMPACT_MILITARY
+	intents = CONTRACT_IMPACT_SOCIAL | CONTRACT_IMPACT_OPERATION | CONTRACT_IMPACT_MILITARY
 /datum/contract_organization/syndicate/nv
 	name = "NovaPlasma"
-	intents = CONTRACT_IMPACT_SOCIAL & CONTRACT_IMPACT_OPERATION
+	intents = CONTRACT_IMPACT_SOCIAL | CONTRACT_IMPACT_OPERATION
 /datum/contract_organization/syndicate/dt
 	name = "Dynamoon Technologies"
-	intents = CONTRACT_IMPACT_SOCIAL & CONTRACT_IMPACT_HIJACK
+	intents = CONTRACT_IMPACT_SOCIAL | CONTRACT_IMPACT_HIJACK
 /datum/contract_organization/syndicate/ns
 	name = "NanoSaka"
-	intents = CONTRACT_IMPACT_SOCIAL & CONTRACT_IMPACT_OPERATION & CONTRACT_IMPACT_MILITARY & CONTRACT_IMPACT_HIJACK
+	intents = CONTRACT_IMPACT_SOCIAL | CONTRACT_IMPACT_OPERATION | CONTRACT_IMPACT_MILITARY | CONTRACT_IMPACT_HIJACK
