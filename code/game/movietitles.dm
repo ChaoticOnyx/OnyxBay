@@ -5,7 +5,7 @@
 
 GLOBAL_LIST(end_titles)
 
-client
+/client
 	var/list/credits
 
 /client/proc/RollCredits()

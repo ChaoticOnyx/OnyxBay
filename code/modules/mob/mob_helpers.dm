@@ -36,36 +36,36 @@
 /mob/living/silicon/isSynthetic()
 	return 1
 
-proc/isMonkey(A)
+/proc/isMonkey(A)
 	if (istype(A,/mob/living/carbon/human))
 		var/mob/living/carbon/human/H = A
 		return istype(H.species, /datum/species/monkey)
 	return 0
 
-proc/isdeaf(A)
+/proc/isdeaf(A)
 	if(isliving(A))
 		var/mob/living/M = A
 		return (M.sdisabilities & DEAF) || M.ear_deaf
 	return 0
 
-proc/hasorgans(A) // Fucking really??
+/proc/hasorgans(A) // Fucking really??
 	return ishuman(A)
 
-proc/iscuffed(A)
+/proc/iscuffed(A)
 	if(istype(A, /mob/living/carbon))
 		var/mob/living/carbon/C = A
 		if(C.handcuffed)
 			return 1
 	return 0
 
-proc/hassensorlevel(A, level)
+/proc/hassensorlevel(A, level)
 	var/mob/living/carbon/human/H = A
 	if(istype(H) && istype(H.w_uniform, /obj/item/clothing/under))
 		var/obj/item/clothing/under/U = H.w_uniform
 		return U.sensor_mode >= level
 	return 0
 
-proc/getsensorlevel(A)
+/proc/getsensorlevel(A)
 	var/mob/living/carbon/human/H = A
 	if(istype(H) && istype(H.w_uniform, /obj/item/clothing/under))
 		var/obj/item/clothing/under/U = H.w_uniform
@@ -206,7 +206,7 @@ var/list/global/organ_rel_size = list(
 	return t
 
 // This is temporary effect, often caused by alcohol
-proc/slur(phrase)
+/proc/slur(phrase)
 	phrase = html_decode(phrase)
 	var/new_phrase = ""
 	var/list/replacements_consonants = list(
@@ -233,7 +233,7 @@ proc/slur(phrase)
 	return html_encode(new_phrase)
 
 // This is temporary effect, often caused by shock
-proc/stutter(phrase)
+/proc/stutter(phrase)
 	phrase = html_decode(phrase)
 	var/new_phrase = ""
 	for(var/i = 1, i <= length_char(phrase), i++)
@@ -244,7 +244,7 @@ proc/stutter(phrase)
 				new_phrase += "-[letter]"
 	return html_encode(new_phrase)
 
-proc/Gibberish(t, p)//t is the inputted message, and any value higher than 70 for p will cause letters to be replaced instead of added
+/proc/Gibberish(t, p)//t is the inputted message, and any value higher than 70 for p will cause letters to be replaced instead of added
 	/* Turn text into complete gibberish! */
 	var/returntext = ""
 	for(var/i = 1, i <= length_char(t), i++)
@@ -290,14 +290,14 @@ It's fairly easy to fix if dealing with single letters but not so much with comp
 		p=p+n_mod
 	return sanitize(t)
 
-/mob/proc/log_message(message, message_type)
+/mob/proc/log_message(message, message_type, message_tag)
 	if(!LAZYLEN(message) || !message_type)
 		return
 
 	if(!islist(logging[message_type]))
 		logging[message_type] = list()
 
-	var/list/timestamped_message = list("[LAZYLEN(logging[message_type]) + 1]\[[time_stamp()]\] [key_name(src)]" = message)
+	var/list/timestamped_message = list("[LAZYLEN(logging[message_type]) + 1]\[[time_stamp()]\] [message_tag] [key_name(src)]" = message)
 
 	logging[message_type] += timestamped_message
 
@@ -387,7 +387,7 @@ var/list/intents = list(I_HELP,I_DISARM,I_GRAB,I_HURT)
 			else
 				hud_used.action_intent.icon_state = I_HELP
 
-proc/is_blind(A)
+/proc/is_blind(A)
 	if(istype(A, /mob/living/carbon))
 		var/mob/living/carbon/C = A
 		if(C.sdisabilities & BLIND || C.blinded)

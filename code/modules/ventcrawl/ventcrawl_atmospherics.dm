@@ -67,7 +67,7 @@
 /obj/machinery/atmospherics/pipe/manifold/isConnectable(obj/machinery/atmospherics/target)
 	return (target == node3 || ..())
 
-obj/machinery/atmospherics/trinary/isConnectable(obj/machinery/atmospherics/target)
+/obj/machinery/atmospherics/trinary/isConnectable(obj/machinery/atmospherics/target)
 	return (target == node3 || ..())
 
 /obj/machinery/atmospherics/pipe/manifold4w/isConnectable(obj/machinery/atmospherics/target)

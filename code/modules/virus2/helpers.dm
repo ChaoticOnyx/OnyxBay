@@ -1,5 +1,5 @@
 //Returns 1 if mob can be infected, 0 otherwise.
-proc/infection_chance(mob/living/carbon/M, vector = "Airborne")
+/proc/infection_chance(mob/living/carbon/M, vector = "Airborne")
 	if (!istype(M))
 		return 0
 

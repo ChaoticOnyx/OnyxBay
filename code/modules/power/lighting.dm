@@ -148,7 +148,7 @@
 	var/flickering = 0
 	var/light_type = /obj/item/weapon/light/tube		// the type of light item
 	var/construct_type = /obj/machinery/light_construct
-	var/pixel_shift = 2
+	var/pixel_shift = 0
 
 	var/datum/effect/effect/system/spark_spread/s = new /datum/effect/effect/system/spark_spread
 
@@ -243,15 +243,16 @@
 
 /obj/machinery/light/update_icon(trigger = 1)
 	overlays.Cut()
-	switch(dir)
-		if(NORTH)
-			pixel_y = pixel_shift
-		if(SOUTH)
-			pixel_y = -pixel_shift
-		if(EAST)
-			pixel_x = pixel_shift
-		if(WEST)
-			pixel_x = -pixel_shift
+	if(pixel_shift)
+		switch(dir)
+			if(NORTH)
+				pixel_y = pixel_shift
+			if(SOUTH)
+				pixel_y = -pixel_shift
+			if(EAST)
+				pixel_x = pixel_shift
+			if(WEST)
+				pixel_x = -pixel_shift
 
 	switch(get_status())		// set icon_states
 		if(LIGHT_OK)
@@ -272,6 +273,7 @@
 		TO.color = lightbulb.brightness_color
 		TO.layer = ABOVE_LIGHTING_LAYER
 		TO.plane = EFFECTS_ABOVE_LIGHTING_PLANE
+		TO.alpha = between(128, (lightbulb.brightness_power/6 * 255), 255)
 
 	if(on)
 		update_use_power(POWER_USE_ACTIVE)
@@ -281,6 +283,7 @@
 			changed = set_light(arglist(lightbulb.lighting_modes[current_mode]))
 			if(TO)
 				TO.color = lightbulb.lighting_modes[current_mode]["l_color"]
+				TO.alpha = between(128, (lightbulb.lighting_modes[current_mode]["l_power"]/6 * 255), 255) // Some fine tuning here
 		else
 			changed = set_light(lightbulb.brightness_range, lightbulb.brightness_power, lightbulb.brightness_color)
 

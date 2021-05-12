@@ -20,7 +20,7 @@ var/list/dreams = list(
 	"the clown", "the mime", "honking", "a flying pie", "hysterical laughter",
 	)
 
-mob/living/carbon/proc/dream()
+/mob/living/carbon/proc/dream()
 	dreaming = 1
 
 	spawn(0)
@@ -33,8 +33,8 @@ mob/living/carbon/proc/dream()
 		dreaming = 0
 		return 1
 
-mob/living/carbon/proc/handle_dreams()
+/mob/living/carbon/proc/handle_dreams()
 	if(client && !dreaming && prob(5))
 		dream()
 
-mob/living/carbon/var/dreaming = 0
+/mob/living/carbon/var/dreaming = 0

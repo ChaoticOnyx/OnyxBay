@@ -65,6 +65,23 @@
 	organ_tag = BP_RESIN
 	associated_power = /mob/living/carbon/human/proc/resin
 
+/obj/item/organ/internal/xenos/ganglion
+	name = "spinal ganglion"
+	desc = "It reminds both a dead cuttlefish and a wad of purple bubblegum."
+	icon = 'icons/mob/alien.dmi'
+	parent_organ = BP_CHEST
+	icon_state = "weed_extract" // For now it looks... acceptable
+	organ_tag = BP_GANGLION
+	vital = 1
+
+/obj/item/organ/internal/xenos/ganglion/New(mob/living/carbon/holder)
+	..()
+	max_damage = 100
+	if(species)
+		max_damage = species.total_health*1.5
+	min_bruised_damage = max_damage*0.25
+	min_broken_damage = max_damage*0.75
+
 /obj/item/organ/internal/eyes/xenos/update_colour()
 	if(!owner)
 		return

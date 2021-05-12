@@ -19,4 +19,6 @@
 		for(var/entry in M.logging[type])
 			dat += "<font size=2px>[entry]: [M.logging[type][entry]]</font><hr>"
 
-	show_browser(usr, dat, "window=invidual_logging;size=600x480")
+	var/datum/browser/popup = new(M, "individual_logging_panel", "Individual logging panel", 600, 480)
+	popup.set_content(dat)
+	popup.open()

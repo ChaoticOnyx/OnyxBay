@@ -1,7 +1,7 @@
 //This file was auto-corrected by findeclaration.exe on 25.5.2012 20:42:31
 var/global/list/all_objectives = list()
 
-datum/objective
+/datum/objective
 	var/datum/mind/owner = null			//Who owns the objective.
 	var/explanation_text = "Nothing"	//What that person is supposed to do.
 	var/datum/mind/target = null		//If they are focused on a particular person.
@@ -418,7 +418,7 @@ datum/objective/harm
 /datum/objective/nuclear/check_completion()
 	return SSticker.mode.station_was_nuked
 
-datum/objective/steal
+/datum/objective/steal
 	var/obj/item/steal_target
 	var/target_name
 
@@ -458,7 +458,7 @@ datum/objective/steal
 	)
 
 
-datum/objective/steal/proc/set_target(item_name)
+/datum/objective/steal/proc/set_target(item_name)
 	target_name = item_name
 	steal_target = possible_items[target_name]
 	if (!steal_target)
@@ -467,11 +467,11 @@ datum/objective/steal/proc/set_target(item_name)
 	return steal_target
 
 
-datum/objective/steal/find_target()
+/datum/objective/steal/find_target()
 	return set_target(pick(possible_items))
 
 
-datum/objective/steal/proc/select_target()
+/datum/objective/steal/proc/select_target()
 	var/list/possible_items_all = possible_items+possible_items_special+"custom"
 	if(!(/mob/living/silicon/ai in SSmobs.mob_list))
 		possible_items_all -= "a functional AI"
@@ -495,7 +495,7 @@ datum/objective/steal/proc/select_target()
 		set_target(new_target)
 	return steal_target
 
-datum/objective/steal/check_completion()
+/datum/objective/steal/check_completion()
 	if(!steal_target || !owner.current)
 		return 0
 	if(!isliving(owner.current))
