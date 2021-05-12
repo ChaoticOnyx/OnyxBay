@@ -273,6 +273,7 @@
 		TO.color = lightbulb.brightness_color
 		TO.layer = ABOVE_LIGHTING_LAYER
 		TO.plane = EFFECTS_ABOVE_LIGHTING_PLANE
+		TO.alpha = between(128, (lightbulb.brightness_power/6 * 255), 255)
 
 	if(on)
 		update_use_power(POWER_USE_ACTIVE)
@@ -282,6 +283,7 @@
 			changed = set_light(arglist(lightbulb.lighting_modes[current_mode]))
 			if(TO)
 				TO.color = lightbulb.lighting_modes[current_mode]["l_color"]
+				TO.alpha = between(128, (lightbulb.lighting_modes[current_mode]["l_power"]/6 * 255), 255) // Some fine tuning here
 		else
 			changed = set_light(lightbulb.brightness_range, lightbulb.brightness_power, lightbulb.brightness_color)
 
