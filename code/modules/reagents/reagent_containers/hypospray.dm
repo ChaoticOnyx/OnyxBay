@@ -16,11 +16,6 @@
 	atom_flags = ATOM_FLAG_OPEN_CONTAINER
 	slot_flags = SLOT_BELT
 
-///obj/item/weapon/reagent_containers/hypospray/New() //comment this to make hypos start off empty
-//	..()
-//	reagents.add_reagent(/datum/reagent/tricordrazine, 30)
-//	return
-
 /obj/item/weapon/reagent_containers/hypospray/do_surgery(mob/living/carbon/M, mob/living/user)
 	if(user.a_intent != I_HELP) //in case it is ever used as a surgery tool
 		return ..()
@@ -65,8 +60,8 @@
 	var/obj/item/weapon/reagent_containers/glass/beaker/vial/loaded_vial
 	volume = 0
 
-/obj/item/weapon/reagent_containers/hypospray/vial/New()
-	..()
+/obj/item/weapon/reagent_containers/hypospray/vial/Initialize()
+	. = ..()
 	loaded_vial = new /obj/item/weapon/reagent_containers/glass/beaker/vial(src)
 	volume = loaded_vial.volume
 	reagents.maximum_volume = loaded_vial.reagents.maximum_volume
@@ -113,22 +108,24 @@
 	desc = "A rapid and safe way to administer small amounts of drugs by untrained or trained personnel."
 	icon_state = "blue"
 	item_state = "autoinjector"
-	amount_per_transfer_from_this = 5
-	volume = 5
+	amount_per_transfer_from_this = 10
+	volume = 10
 	origin_tech = list(TECH_MATERIAL = 2, TECH_BIO = 2)
-	var/list/starts_with = list(/datum/reagent/inaprovaline = 5)
+	atom_flags = null
+	var/list/starts_with = list(/datum/reagent/inaprovaline = 10)
+	var/content_desc = "Inaprovaline 10u. Use to stabilize an injured person."
 
-/obj/item/weapon/reagent_containers/hypospray/autoinjector/New()
-	..()
+/obj/item/weapon/reagent_containers/hypospray/autoinjector/Initialize()
+	. = ..()
 	for(var/T in starts_with)
 		reagents.add_reagent(T, starts_with[T])
 	update_icon()
+	if(content_desc)
+		desc += " The label reads, \"[content_desc]\"."
 	return
 
 /obj/item/weapon/reagent_containers/hypospray/autoinjector/attack(mob/M as mob, mob/user as mob)
 	..()
-	if(reagents.total_volume <= 0) //Prevents autoinjectors to be refilled.
-		atom_flags &= ~ATOM_FLAG_OPEN_CONTAINER
 	update_icon()
 	return
 
@@ -146,21 +143,30 @@
 		. += "\n<span class='notice'>It is spent.</span>"
 
 /obj/item/weapon/reagent_containers/hypospray/autoinjector/detox
-	name = "autoinjector (antitox)"
 	icon_state = "green"
-	starts_with = list(/datum/reagent/dylovene = 5)
+	content_desc = "Dylovene 10u. Use in case of poisoning."
+	starts_with = list(/datum/reagent/dylovene = 10)
+
+/obj/item/weapon/reagent_containers/hypospray/autoinjector/tricordrazine
+	icon_state = "red"
+	content_desc = "Tricordrazine 10u. Use to speed up recovery from physical trauma."
+	starts_with = list(/datum/reagent/tricordrazine = 10)
 
 /obj/item/weapon/reagent_containers/hypospray/autoinjector/pain
-	name = "autoinjector (painkiller)"
 	icon_state = "purple"
-	starts_with = list(/datum/reagent/tramadol = 5)
+	content_desc = "Tramadol 10u. Highly potent painkiller. Warning: Do Not Mix With Alcohol!"
+	starts_with = list(/datum/reagent/tramadol = 10)
 
 /obj/item/weapon/reagent_containers/hypospray/autoinjector/combatpain
-	name = "autoinjector (oxycodone)"
 	icon_state = "black"
+	content_desc = "Oxycodone 5u"
 	starts_with = list(/datum/reagent/tramadol/oxycodone = 5)
+	amount_per_transfer_from_this = 5
+	volume = 5
 
 /obj/item/weapon/reagent_containers/hypospray/autoinjector/mindbreaker
-	name = "autoinjector"
 	icon_state = "black"
+	content_desc = ""
 	starts_with = list(/datum/reagent/mindbreaker = 5)
+	amount_per_transfer_from_this = 5
+	volume = 5

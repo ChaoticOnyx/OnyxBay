@@ -516,13 +516,16 @@
 		else if(stat & (BROKEN|MAINT))
 			to_chat(user, "Nothing happens.")
 		else if(hacker && !hacker.hacked_apcs_hidden)
+			playsound(src.loc, 'sound/signals/error7.ogg', 25)
 			to_chat(user, "<span class='warning'>Access denied.</span>")
 		else
 			if(src.allowed(usr) && !isWireCut(APC_WIRE_IDSCAN))
+				playsound(src.loc, 'sound/signals/warning9.ogg', 25)
 				locked = !locked
 				to_chat(user, "You [ locked ? "lock" : "unlock"] the APC interface.")
 				update_icon()
 			else
+				playsound(src.loc, 'sound/signals/error7.ogg', 25)
 				to_chat(user, "<span class='warning'>Access denied.</span>")
 	else if (istype(W, /obj/item/stack/cable_coil) && !terminal && opened && has_electronics!=2)
 		var/turf/T = loc
@@ -670,7 +673,7 @@
 						to_chat(user, "<span class='warning'>There's a nasty sound and \the [src] goes cold...</span>")
 						set_broken(TRUE)
 				queue_icon_update()
-		playsound(get_turf(src), 'sound/effects/fighting/smash.ogg', 75, 1)
+		playsound(src, 'sound/effects/fighting/smash.ogg', 75, 1)
 
 // attack with hand - remove cell (if cover open) or interact with the APC
 
@@ -686,6 +689,7 @@
 			flick("apc-spark", src)
 			if (do_after(user,6,src))
 				if(prob(50))
+					playsound(src.loc, 'sound/effects/computer_emag.ogg', 25)
 					emagged = 1
 					locked = 0
 					to_chat(user, "<span class='notice'>You emag the APC interface.</span>")
@@ -832,7 +836,7 @@
 		var/new_power_light = (lighting >= POWERCHAN_ON)
 		if(area.power_light != new_power_light)
 			area.power_light = new_power_light
-			area.set_emergency_lighting(lighting == POWERCHAN_OFF_AUTO) //if lights go auto-off, emergency lights go on
+			area.set_lighting_mode(LIGHTMODE_EMERGENCY, lighting == POWERCHAN_OFF_AUTO) //if lights go auto-off, emergency lights go on
 
 		area.power_equip = (equipment >= POWERCHAN_ON)
 		area.power_environ = (environ >= POWERCHAN_ON)
@@ -995,11 +999,10 @@
 		return 0
 
 /obj/machinery/power/apc/Process()
-
 	if(stat & (BROKEN|MAINT))
 		return
 	if(!area.requires_power)
-		return
+		return PROCESS_KILL
 	if(failure_timer)
 		if (!--failure_timer)
 			update()
@@ -1034,8 +1037,7 @@
 
 	if(cell && !shorted)
 		// draw power from cell as before to power the area
-		var/cellused = min(cell.charge, CELLRATE * lastused_total)	// clamp deduction to a max, amount left in cell
-		cell.use(cellused)
+		var/cellused = cell.use(CELLRATE * lastused_total)
 
 		if(excess > lastused_total)		// if power excess recharge the cell
 										// by the same amount just used
@@ -1054,7 +1056,6 @@
 				lighting = autoset(lighting, 0)
 				environ = autoset(environ, 0)
 				autoflag = 0
-
 
 		// Set channels depending on how much charge we have left
 		update_channels()
@@ -1087,7 +1088,6 @@
 					chargecount = 0
 
 				if(chargecount >= 10)
-
 					chargecount = 0
 					charging = 1
 
@@ -1151,7 +1151,7 @@
 // val 0=off, 1=off(auto) 2=on 3=on(auto)
 // on 0=off, 1=on, 2=autooff
 // defines a state machine, returns the new state
-obj/machinery/power/apc/proc/autoset(cur_state, on)
+/obj/machinery/power/apc/proc/autoset(cur_state, on)
 	//autoset will never turn on a channel set to off
 	switch(cur_state)
 		if(POWERCHAN_OFF_TEMP)

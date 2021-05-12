@@ -1,5 +1,5 @@
 //Returns 1 if mob can be infected, 0 otherwise.
-proc/infection_chance(mob/living/carbon/M, vector = "Airborne")
+/proc/infection_chance(mob/living/carbon/M, vector = "Airborne")
 	if (!istype(M))
 		return 0
 
@@ -100,6 +100,7 @@ proc/infection_chance(mob/living/carbon/M, vector = "Airborne")
 	if(forced || (prob(disease.infectionchance) && prob(mob_infection_prob)))
 		var/datum/disease2/disease/D = disease.getcopy()
 		D.minormutate()
+		D.update_disease()
 //		log_debug("Adding virus")
 		M.virus2["[D.uniqueID]"] = D
 		BITSET(M.hud_updateflag, STATUS_HUD)

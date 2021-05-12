@@ -2,27 +2,6 @@
 Title: Cryo Cell Status UI 
 Used In File(s): \code\game\machinery\cryo.dm
  -->
-<h3>Cryo Cell Status</h3>
-
-<div class="statusDisplay">
-	{{if data.notFunctional}}
-		<div class="line">
-			<div class="statusValue">Cryo Cell is not functional</div>
-		</div>	
-	{{else}}
-		{{if !data.hasOccupant}}
-			<div class="line">Cell Unoccupied</div>
-		{{else}}
-			{{:data.occupant}}
-		{{/if}}
-		<hr>
-		<div class="line">
-			<div class="statusLabel">Cell Temperature:</div><div class="statusValue">
-				<span class="{{:data.cellTemperatureStatus}}">{{:data.cellTemperature}} K</span>
-			</div>
-		</div>	
-	{{/if}}
-</div>
 {{if !data.notFunctional}}
 	<h3>Cryo Cell Operation</h3>
 	<div class="item">
@@ -34,6 +13,15 @@ Used In File(s): \code\game\machinery\cryo.dm
 		</div>
 		<div class="itemContent" style="width: 26%;">
 			{{:helper.link('Eject Occupant', 'arrowreturnthick-1-s', {'ejectOccupant' : 1}, data.hasOccupant ? null : 'disabled')}}
+		</div>
+	</div>
+	<div class="item">&nbsp;</div>
+	<div class="item">
+		<div class="itemLabel">
+			Biochemical Stasis:
+		</div>
+		<div class="itemContent" style="width: 40%;">
+			{{:helper.link('On', 'power', {'biochemicalStasisOn' : 1}, data.biochemicalStasis ? 'selected' : null)}}{{:helper.link('Off', 'close', {'biochemicalStasisOff' : 1}, data.biochemicalStasis ? null : 'selected')}}
 		</div>
 	</div>
 	<div class="item">&nbsp;</div>
@@ -58,3 +46,24 @@ Used In File(s): \code\game\machinery\cryo.dm
 		</div>
 	</div>
 {{/if}}
+<h3>Cryo Cell Status</h3>
+
+<div class="statusDisplay">
+	{{if data.notFunctional}}
+		<div class="line">
+			<div class="statusValue">Cryo Cell is not functional</div>
+		</div>	
+	{{else}}
+		{{if !data.hasOccupant}}
+			<div class="line">Cell Unoccupied</div>
+		{{else}}
+			{{:data.occupant}}
+		{{/if}}
+		<hr>
+		<div class="line">
+			<div class="statusLabel">Cell Temperature:</div><div class="statusValue">
+				<span class="{{:data.cellTemperatureStatus}}">{{:data.cellTemperature}} K</span>
+			</div>
+		</div>	
+	{{/if}}
+</div>

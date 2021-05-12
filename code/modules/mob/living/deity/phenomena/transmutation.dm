@@ -26,6 +26,7 @@
 	..()
 	L.adjustCloneLoss(20)
 	L.Weaken(2)
+	L.Stun(2)
 	to_chat(L, "<span class='danger'>You feel your body warp and change underneath you!</span>")
 
 /datum/phenomena/rock_form
@@ -39,3 +40,4 @@
 	to_chat(H, "<span class='danger'>You feel your body harden as it rapidly is transformed into living stone!</span>")
 	H.set_species("Golem")
 	H.Weaken(5)
+	H.Stun(5)

@@ -9,6 +9,7 @@ Thumbs.db
 *.before
 *.db
 *.db-*
+*.so
 data/
 cfg/
 # ignore config, but not subdirs
@@ -32,3 +33,4 @@ sql/test_db
 !.vscode/tasks.json
 !.vscode/launch.json
 !.vscode/extensions.json
+!.vscode/*.schema.json

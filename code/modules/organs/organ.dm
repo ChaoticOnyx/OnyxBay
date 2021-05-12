@@ -5,6 +5,7 @@ var/list/organ_cache = list()
 	icon = 'icons/obj/surgery.dmi'
 	germ_level = 0
 	w_class = ITEM_SIZE_TINY
+	dir = SOUTH
 
 	// Strings.
 	var/organ_tag = "organ"           // Unique identifier.
@@ -26,6 +27,7 @@ var/list/organ_cache = list()
 	var/rejecting                     // Is this organ already being rejected?
 
 	var/death_time
+
 
 /obj/item/organ/Destroy()
 	owner = null
@@ -64,6 +66,8 @@ var/list/organ_cache = list()
 
 	create_reagents(5 * (w_class-1)**2)
 	reagents.add_reagent(/datum/reagent/nutriment/protein, reagents.maximum_volume)
+
+	src.after_organ_creation()
 
 	update_icon()
 
@@ -342,6 +346,10 @@ var/list/organ_cache = list()
 			. +=  "Septic"
 	if(rejecting)
 		. += "Genetic Rejection"
+
+// special organ instruction for correct functional
+/obj/item/organ/proc/after_organ_creation()
+	return
 
 //used by stethoscope
 /obj/item/organ/proc/listen()

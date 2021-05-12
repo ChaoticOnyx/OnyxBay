@@ -101,8 +101,8 @@
 		user = usr
 	var/dat = "Write russian: "
 	var/list/rus_alphabet = list("А","Б","В","Г","Д","Е","Ё","Ж","З","И","Й",
-							"К","Л","М","Н","О","П","Р","С","Т","У","Ф",
-							"Х","Ц","Ч","Ш","Щ","Ъ","Ы","Ь","Э","Ю","Я"
+								 "К","Л","М","Н","О","П","Р","С","Т","У","Ф",
+								 "Х","Ц","Ч","Ш","Щ","Ъ","Ы","Ь","Э","Ю","Я"
 							)
 	for(var/letter_num = 1, letter_num <= rus_alphabet.len, letter_num++)
 		dat += "<a href='?\ref[src];type=russian_letter;drawing=rus[letter_num]'>[rus_alphabet[letter_num]]</a> "
@@ -167,6 +167,10 @@
 
 /obj/item/weapon/pen/crayon/attack(mob/living/carbon/M as mob, mob/user as mob)
 	if(istype(M) && M == user)
+		var/obj/item/blocked = M.check_mouth_coverage()
+		if(blocked)
+			to_chat(user, SPAN_WARNING("\The [blocked] is in the way!"))
+			return 1
 		to_chat(M, "You take a bite of the [src.name] and swallow it.")
 		M.nutrition += 1
 		M.reagents.add_reagent(/datum/reagent/crayon_dust,min(5,uses)/3)

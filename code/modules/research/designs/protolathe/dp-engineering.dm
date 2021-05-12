@@ -37,10 +37,17 @@
 	name = "hyper-capacity cell"
 	id = "hyper_cell"
 	req_tech = list(TECH_POWER = 5, TECH_MATERIAL = 4)
-	materials = list(MATERIAL_STEEL = 400, MATERIAL_GOLD = 150, MATERIAL_SILVER = 150, MATERIAL_GLASS = 70)
+	materials = list(MATERIAL_STEEL = 400, MATERIAL_GOLD = 150, MATERIAL_SILVER = 150, MATERIAL_GLASS = 80)
 	build_path = /obj/item/weapon/cell/hyper/empty
 	sort_string = "DAAAD"
 
+/datum/design/item/powercell/apex
+	name = "apex-capacity cell"
+	id = "apex_cell"
+	req_tech = list(TECH_POWER = 7, TECH_MATERIAL = 7, TECH_MAGNET = 5, TECH_ENGINEERING = 5)
+	materials = list(MATERIAL_STEEL = 400, MATERIAL_GOLD = 300, MATERIAL_GLASS = 90, MATERIAL_DIAMOND = 100)
+	build_path = /obj/item/weapon/cell/apex/empty
+	sort_string = "DAAAE"
 
 /datum/design/item/powercell/quantum
 	name = "bluespace cell"
@@ -48,7 +55,7 @@
 	req_tech = list(TECH_POWER = 6, TECH_MATERIAL = 6, TECH_BLUESPACE = 3, TECH_MAGNET = 5)
 	materials = list(MATERIAL_STEEL = 400, MATERIAL_GOLD = 150, MATERIAL_SILVER = 150, MATERIAL_GLASS = 70, MATERIAL_DIAMOND = 100)
 	build_path = /obj/item/weapon/cell/quantum
-	sort_string = "DAAAE"
+	sort_string = "DAAAF"
 
 /datum/design/item/tool/airlock_brace
 	name = "airlock brace"
@@ -84,7 +91,7 @@
 	name = "experimental welding tool"
 	desc = "This welding tool feels heavier in your possession than is normal. There appears to be no external fuel port."
 	id = "experimental_welder"
-	req_tech = list(TECH_ENGINEERING = 5, TECH_PHORON = 4)
+	req_tech = list(TECH_ENGINEERING = 5, TECH_PLASMA = 4)
 	materials = list(MATERIAL_STEEL = 120, MATERIAL_GLASS = 50)
 	build_path = /obj/item/weapon/weldingtool/experimental
 	sort_string = "VAGAH"
@@ -131,18 +138,21 @@
 	materials = list(MATERIAL_STEEL = 2000, MATERIAL_GLASS = 2000, MATERIAL_GOLD = 1000, MATERIAL_SILVER = 1000)
 
 /datum/design/item/smes_coil/standard
+	name = "SMES coil standard"
 	id = "smes_coil_standard"
 	req_tech = list(TECH_MATERIAL = 7, TECH_POWER = 7, TECH_ENGINEERING = 5)
 	build_path = /obj/item/weapon/smes_coil
 	sort_string = "VAXAA"
 
 /datum/design/item/smes_coil/super_capacity
+	name = "SMES coil super capacity"
 	id = "smes_coil_super_capacity"
 	req_tech = list(TECH_MATERIAL = 7, TECH_POWER = 8, TECH_ENGINEERING = 6)
 	build_path = /obj/item/weapon/smes_coil/super_capacity
 	sort_string = "VAXAB"
 
 /datum/design/item/smes_coil/super_io
+	name = "SMES coil super IO"
 	id = "smes_coil_super_io"
 	req_tech = list(TECH_MATERIAL = 7, TECH_POWER = 8, TECH_ENGINEERING = 6)
 	build_path = /obj/item/weapon/smes_coil/super_io

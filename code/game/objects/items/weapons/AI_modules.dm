@@ -81,7 +81,7 @@ AI MODULES
 		laws.sync(target, 0)
 	addAdditionalLaws(target, sender)
 
-	to_chat(target, "\The [sender] has uploaded a change to the laws you must follow, using \an [src]. From now on: ")
+	to_chat(target, SPAN_DANGER("\The [sender] has uploaded a change to the laws you must follow, using \an [src]. From now on: "))
 	target.show_laws()
 
 /obj/item/weapon/aiModule/proc/log_law_changes(mob/living/silicon/ai/target, mob/sender)
@@ -300,7 +300,7 @@ AI MODULES
 
 /******************** SCG Aggressive ********************/
 
-obj/item/weapon/aiModule/solgov_aggressive
+/obj/item/weapon/aiModule/solgov_aggressive
 	name = "\improper 'Military' Core AI Module"
 	desc = "A 'Military' Core AI Module: 'Reconfigures the AI's core laws.'."
 	origin_tech = list(TECH_DATA = 3, TECH_MATERIAL = 4)

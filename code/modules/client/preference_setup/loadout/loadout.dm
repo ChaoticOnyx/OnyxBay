@@ -112,7 +112,7 @@ var/list/gear_datums = list()
 	. = list()
 	if(!pref.preview_icon)
 		pref.update_preview_icon()
-	user << browse_rsc(pref.preview_icon, "previewicon.png")
+	send_rsc(user, pref.preview_icon, "previewicon.png")
 
 	if(!user.client)
 		return
@@ -220,19 +220,22 @@ var/list/gear_datums = list()
 		var/ticked = (G.display_name in pref.gear_list[pref.gear_slot])
 		var/allowed_to_see = gear_allowed_to_see(G)
 		var/display_class
+		var/discountText
 		if(G != selected_gear)
 			if(ticked)
 				display_class = "white"
 			else if(!gear_allowed_to_equip(G, user))
 				display_class = "gold"
+				discountText = G.price && G.discount ? "<b>(-[round(G.discount * 100)]%)</b>" : ""
 			else if(!allowed_to_see)
 				display_class = "red"
 			else
 				display_class = "gray"
 		else
 			display_class = "linkOn"
+
 		entry += "<tr>"
-		entry += "<td width=25%><a [display_class ? "class='[display_class]' " : ""]href='?src=\ref[src];select_gear=[html_encode(G.display_name)]'>[G.display_name]</a></td>"
+		entry += "<td width=25%><a [display_class ? "class='[display_class]' " : ""]href='?src=\ref[src];select_gear=[html_encode(G.display_name)]'>[G.display_name] [discountText]</a></td>"
 		entry += "</td></tr>"
 
 		if(!hide_unavailable_gear || allowed_to_see || ticked)
@@ -296,7 +299,7 @@ var/list/gear_datums = list()
 					. += "<font color='#808080'>[J.title]</font>"
 			. += "</i>"
 			. += "<br>"
-		
+
 		if(selected_gear.whitelisted)
 			. += "<b>Has species restrictions!</b>"
 			. += "<br>"
@@ -328,7 +331,12 @@ var/list/gear_datums = list()
 
 		if(selected_gear.price)
 			. += "<br>"
-			. += "<b>Price: [selected_gear.price] opyx[selected_gear.price != 1 ? "es" : ""]</b>"
+			if(!gear_allowed_to_equip(selected_gear, user) && selected_gear.discount)
+				var/adjusted_price = selected_gear.price * selected_gear.discount
+				. += "<b>Price: <strike>[selected_gear.price] opyx[selected_gear.price != 1 ? "es" : ""]</strike></b> "
+				. += "<font color='#ff6600'><b>[adjusted_price] opyx[adjusted_price != 1 ? "es" : ""] ([round(selected_gear.discount * 100)] percents off!)</b></font>"
+			else
+				. += "<b>Price: [selected_gear.price] opyx[selected_gear.price != 1 ? "es" : ""]</b>"
 			. += "<br>"
 
 		// Tweaks
@@ -427,7 +435,8 @@ var/list/gear_datums = list()
 		ASSERT(G.price)
 		ASSERT(!user.client.donator_info.has_item(G.type))
 		var/comment = "Donation store purchase: [G.type]"
-		var/transaction = SSdonations.create_transaction(user.client, -G.price, DONATIONS_TRANSACTION_TYPE_PURCHASE, comment)
+		var/adjusted_price = G.discount ? G.price * G.discount : G.price
+		var/transaction = SSdonations.create_transaction(user.client, -adjusted_price, DONATIONS_TRANSACTION_TYPE_PURCHASE, comment)
 		if(transaction)
 			if(SSdonations.give_item(user.client, G.type, transaction))
 				pref.trying_on_gear = null
@@ -540,7 +549,7 @@ var/list/gear_datums = list()
 	ASSERT(G)
 	if(!G.path)
 		return FALSE
-	
+
 	if(G.allowed_roles)
 		ASSERT(job_master)
 		var/list/jobs = new
@@ -556,10 +565,10 @@ var/list/gear_datums = list()
 				break
 		if(!job_ok)
 			return FALSE
-	
+
 	if(G.whitelisted && !(pref.species in G.whitelisted))
 		return FALSE
-		
+
 	return TRUE
 
 /datum/category_item/player_setup_item/loadout/proc/gear_allowed_to_equip(datum/gear/G, mob/user)
@@ -578,6 +587,7 @@ var/list/gear_datums = list()
 	var/path               //Path to item.
 	var/cost = 1           //Number of points used. Items in general cost 1 point, storage/armor/gloves/special use costs 2 points.
 	var/price              //Price of item, opyxes
+	var/discount           //Discount to a price
 	var/patron_tier        //Patron tier restriction
 	var/slot               //Slot to equip to.
 	var/list/allowed_roles //Roles that can spawn with this item.

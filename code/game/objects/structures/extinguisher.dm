@@ -32,15 +32,18 @@
 /obj/structure/extinguisher_cabinet/attack_hand(mob/user)
 	if(isrobot(user))
 		return
-	if (ishuman(user))
+	if(ishuman(user))
 		var/mob/living/carbon/human/H = user
 		var/obj/item/organ/external/temp = H.organs_by_name[BP_R_HAND]
-		if (user.hand)
+		if(user.hand)
 			temp = H.organs_by_name[BP_L_HAND]
 		if(temp && !temp.is_usable())
 			to_chat(user, "<span class='notice'>You try to move your [temp.name], but cannot!</span>")
 			return
 	if(has_extinguisher)
+		if(!user.IsAdvancedToolUser(1))
+			to_chat(user, FEEDBACK_YOU_LACK_DEXTERITY)
+			return
 		user.put_in_hands(has_extinguisher)
 		to_chat(user, "<span class='notice'>You take [has_extinguisher] from [src].</span>")
 		playsound(src.loc, 'sound/effects/extout.ogg', 50, 0)

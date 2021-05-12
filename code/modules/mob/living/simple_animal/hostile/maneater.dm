@@ -6,7 +6,7 @@
 	icon_dead = "maneater_dead"
 	speak_emote = list("gibbers")
 	turns_per_move = 2
-	meat_type = /obj/item/weapon/reagent_containers/food/snacks/xenomeat
+	meat_type = /obj/item/weapon/reagent_containers/food/snacks/meat/xeno
 	response_help = "pets the"
 	response_disarm = "gently pushes aside the"
 	response_harm = "hits the"
@@ -24,7 +24,7 @@
 
 	break_stuff_probability = 35
 
-	faction = null
+	faction = "floral"
 
 	var/angry = 0
 
@@ -37,7 +37,6 @@
 
 	spawn(5 SECONDS)
 		angry = 1
-		faction = "creature"
 
 /mob/living/simple_animal/hostile/maneater/attackby(obj/item/O, mob/user)
 	if(!angry && O.icon_state == "meat")
@@ -53,10 +52,12 @@
 		..()
 
 /mob/living/simple_animal/hostile/maneater/FindTarget()
+	if(!angry)
+		return null // Don't just return 0 or i'll beat you with a stick
 	. = ..()
 	if(.)
-		playsound(get_turf(src), 'sound/voice/MEraaargh.ogg', 70, 1)
-		custom_emote(1,"roars at [.]")
+		playsound(src, 'sound/voice/MEraaargh.ogg', 70, 1)
+		custom_emote(1, "roars at [.]")
 
 /mob/living/simple_animal/hostile/maneater/AttackingTarget()
 	. =..()

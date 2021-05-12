@@ -7,7 +7,7 @@
 		return
 	if(!islist(predicates))
 		predicates = list(predicates)
-	for(var/area/A)
+	for(var/area/A in world)
 		if(all_predicates_true(list(A), predicates))
 			. += A
 
@@ -46,17 +46,26 @@
 */
 /proc/pick_subarea_turf(areatype, list/predicates)
 	var/list/turfs = get_subarea_turfs(areatype, predicates)
-	if(turfs && turfs.len)
+	if(length(turfs))
 		return pick(turfs)
 
-/proc/pick_area_turf(areatype, list/predicates)
-	var/list/turfs = get_area_turfs(areatype, predicates)
-	if(turfs && turfs.len)
+/proc/pick_area_turf(area/A, list/predicates)
+	var/list/turfs = get_area_turfs(A, predicates)
+	if(length(turfs))
 		return pick(turfs)
+
+/proc/pick_area_by_type(areatype, list/predicates)
+	. = new /list()
+
+	for(var/area/A in world)
+		if(istype(A, areatype) && all_predicates_true(list(A), predicates))
+			. |= A
+
+	return pick(.)
 
 /proc/pick_area(list/predicates)
 	var/list/areas = get_filtered_areas(predicates)
-	if(areas && areas.len)
+	if(length(areas))
 		. = pick(areas)
 
 /proc/pick_area_and_turf(list/area_predicates, list/turf_predicates)
@@ -69,22 +78,22 @@
 	Predicate Helpers
 */
 /proc/is_station_area(area/A)
-	. = isStationLevel(A.z)
+	return A && isStationLevel(A.z)
 
 /proc/is_contact_area(area/A)
-	. = isContactLevel(A.z)
+	return A && isContactLevel(A.z)
 
 /proc/is_player_area(area/A)
-	. = isPlayerLevel(A.z)
+	return A && isPlayerLevel(A.z)
 
 /proc/is_not_space_area(area/A)
-	. = !istype(A,/area/space)
+	. = !istype(A, /area/space)
 
 /proc/is_not_shuttle_area(area/A)
-	. = !istype(A,/area/shuttle)
+	. = !istype(A, /area/shuttle)
 
 /proc/is_area_with_turf(area/A)
-	. = isnum(A.x)
+	return A && isnum(A.x)
 
 /proc/is_area_without_turf(area/A)
 	. = !is_area_with_turf(A)

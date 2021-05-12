@@ -305,73 +305,8 @@ var/global/list/additional_antag_types = list()
 /datum/game_mode/proc/cleanup()	//This is called when the round has ended but not the game, if any cleanup would be necessary in that case.
 	return
 
-/datum/game_mode/proc/declare_completion()
-	set waitfor = FALSE
-
-	check_victory()
-	sleep(2)
-
-	var/list/all_antag_types = GLOB.all_antag_types_
-	for(var/datum/antagonist/antag in antag_templates)
-		antag.check_victory()
-		antag.print_player_summary()
-		sleep(2)
-	for(var/antag_type in all_antag_types)
-		var/datum/antagonist/antag = all_antag_types[antag_type]
-		if(!antag.current_antagonists.len || (antag in antag_templates))
-			continue
-		sleep(2)
-		antag.print_player_summary()
-	sleep(2)
-
-	uplink_purchase_repository.print_entries()
-
-	var/clients = 0
-	var/surviving_humans = 0
-	var/surviving_total = 0
-	var/ghosts = 0
-	var/escaped_humans = 0
-	var/escaped_total = 0
-
-	for(var/mob/M in GLOB.player_list)
-		if(M.client)
-			clients++
-			if(M.stat != DEAD)
-				surviving_total++
-				if(ishuman(M))
-					surviving_humans++
-				var/area/A = get_area(M)
-				if(A && is_type_in_list(A, GLOB.using_map.post_round_safe_areas))
-					escaped_total++
-					if(ishuman(M))
-						escaped_humans++
-			else if(isghost(M))
-				ghosts++
-
-	var/text = ""
-	if(surviving_total > 0)
-		text += "<br>There [surviving_total>1 ? "were <b>[surviving_total] survivors</b>" : "was <b>one survivor</b>"]"
-		text += " (<b>[escaped_total>0 ? escaped_total : "none"] [evacuation_controller.emergency_evacuation ? "escaped" : "transferred"]</b>) and <b>[ghosts] ghosts</b>.<br>"
-	else
-		text += "There were <b>no survivors</b> (<b>[ghosts] ghosts</b>)."
-	to_world(text)
-
-	if(clients > 0)
-		feedback_set("round_end_clients",clients)
-	if(ghosts > 0)
-		feedback_set("round_end_ghosts",ghosts)
-	if(surviving_humans > 0)
-		feedback_set("survived_human",surviving_humans)
-	if(surviving_total > 0)
-		feedback_set("survived_total",surviving_total)
-	if(escaped_humans > 0)
-		feedback_set("escaped_human",escaped_humans)
-	if(escaped_total > 0)
-		feedback_set("escaped_total",escaped_total)
-
-	send2mainirc("A round of [src.name] has ended - [surviving_total] survivor\s, [ghosts] ghost\s.")
-
-	return 0
+/datum/game_mode/proc/special_report()
+	return
 
 /datum/game_mode/proc/check_win() //universal trigger to be called at mob death, nuke explosion, etc. To be called from everywhere.
 	return 0
@@ -411,7 +346,7 @@ var/global/list/additional_antag_types = list()
 		// If we don't have enough antags, draft people who voted for the round.
 		if(candidates.len < required_enemies)
 			for(var/mob/new_player/player in players)
-				if(!antag_id || !(antag_id in player.client.prefs.never_be_special_role))
+				if(!antag_id || ((antag_id in player.client.prefs.be_special_role) || (antag_id in player.client.prefs.may_be_special_role)))
 					log_debug("[player.key] has not selected never for this role, so we are drafting them.")
 					candidates += player.mind
 					players -= player
@@ -455,7 +390,7 @@ var/global/list/additional_antag_types = list()
 	shuffle(antag_templates) //In the case of multiple antag types
 	newscaster_announcements = pick(newscaster_standard_feeds)
 
-/datum/game_mode/proc/check_victory()
+/datum/game_mode/proc/print_roundend()
 	return
 
 // Manipulates the end-game cinematic in conjunction with GLOB.cinematic
@@ -486,7 +421,7 @@ var/global/list/additional_antag_types = list()
 //////////////////////////
 //Reports player logouts//
 //////////////////////////
-proc/display_roundstart_logout_report()
+/proc/display_roundstart_logout_report()
 	var/msg = "<span class='notice'><b>Roundstart logout report</b>\n\n"
 	for(var/mob/living/L in SSmobs.mob_list)
 
@@ -530,7 +465,7 @@ proc/display_roundstart_logout_report()
 	for(var/mob/M in SSmobs.mob_list)
 		if(M.client && M.client.holder)
 			to_chat(M, msg)
-proc/get_nt_opposed()
+/proc/get_nt_opposed()
 	var/list/dudes = list()
 	for(var/mob/living/carbon/human/man in GLOB.player_list)
 		if(man.client)

@@ -1,6 +1,4 @@
 /obj/item/integrated_circuit/proc/setup_io(list/io_list, io_type, list/io_default_list, pin_type)
-	if(!io_list)
-		return
 	var/list/io_list_copy = io_list.Copy()
 	io_list.Cut()
 	for(var/i in 1 to io_list_copy.len)
@@ -47,15 +45,15 @@
 /obj/item/integrated_circuit/proc/get_pin_ref(pin_type, pin_number)
 	switch(pin_type)
 		if(IC_INPUT)
-			if(!inputs || pin_number > inputs.len)
+			if(pin_number > inputs.len)
 				return
 			return inputs[pin_number]
 		if(IC_OUTPUT)
-			if(!outputs || pin_number > outputs.len)
+			if(pin_number > outputs.len)
 				return
 			return outputs[pin_number]
 		if(IC_ACTIVATOR)
-			if(!activators || pin_number > activators.len)
+			if(pin_number > activators.len)
 				return
 			return activators[pin_number]
 	return
@@ -64,8 +62,7 @@
 	if(islist(data))
 		for(var/i in 1 to length(data))
 			if(isweakref(data[i]))
-				var/weakref/dw = data[i]
-				data[i] = dw.resolve()
+				data[i] = data[i].resolve()
 	if(isweakref(data))
 		return data.resolve()
 	return data
@@ -123,16 +120,52 @@
 		return
 
 	// Those are supposed to be list indexes, check them for sanity
-	if(!isnum(parameters[1]) || parameters[1] % 1 || parameters[1] < 1)
+	if(!isnum_safe(parameters[1]) || parameters[1] % 1 || parameters[1] < 1)
 		return
 
-	if(!isnum(parameters[3]) || parameters[3] % 1 || parameters[3] < 1)
+	if(!isnum_safe(parameters[3]) || parameters[3] % 1 || parameters[3] < 1)
 		return
 
 	return get_pin_ref(parameters[1], parameters[2], parameters[3], components)
 
+#define string2charlist(string) (splittext(string, regex("(.)")) - splittext(string, ""))
+
+// Used to obfuscate object refs imported/exported as strings.
+// Not very secure, but if someone still finds a way to abuse refs, they deserve it.
+/proc/XorEncrypt(string, key)
+	if(!string || !key ||!istext(string)||!istext(key))
+		return
+	var/r
+	for(var/i = 1 to length(string))
+		r += ascii2text(text2ascii(string,i) ^ text2ascii(key,((i-1)%length(key))+1))
+	return r
+
+/// Encodes a string to hex
+/proc/strtohex(str)
+	if(!istext(str)||!str)
+		return
+	var/r
+	var/c
+	for(var/i = 1 to length(str))
+		c = text2ascii(str,i)
+		r += num2hex(c, 2)
+	return r
+
+/// Decodes hex to raw byte string. If safe=TRUE, returns null on incorrect input strings instead of CRASHing
+/proc/hextostr(str, safe=FALSE)
+	if(!istext(str)||!str)
+		return
+	var/r
+	var/c
+	for(var/i = 1 to length(str)/2)
+		c = hex2num(copytext(str,i*2-1,i*2+1), safe)
+		if(isnull(c))
+			return null
+		r += ascii2text(c)
+	return r
 // this is for data validation of stuff like ref encodes and more importantly ID access lists
 
+// for old int code, don't use them:
 /proc/compute_signature(data)
 	return md5(SScircuit.cipherkey + data)
 
@@ -142,3 +175,4 @@
 
 /proc/check_data_signature(signature, data)
 	return (compute_signature(data) == signature)
+

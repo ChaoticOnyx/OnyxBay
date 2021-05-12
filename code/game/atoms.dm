@@ -24,6 +24,7 @@
 	var/list/climbers = list()
 
 /atom/New(loc, ...)
+	CAN_BE_REDEFINED(TRUE)
 	//atom creation method that preloads variables at creation
 	if(GLOB.use_preloader && (src.type == GLOB._preloader.target_path))//in case the instanciated atom is creating other atoms in New()
 		GLOB._preloader.load(src)
@@ -42,9 +43,6 @@
 	if(atom_flags & ATOM_FLAG_CLIMBABLE)
 		verbs += /atom/proc/climb_on
 
-	if(opacity)
-		updateVisibility(src)
-
 //Called after New if the map is being loaded. mapload = TRUE
 //Called from base of New if the map is not being loaded. mapload = FALSE
 //This base must be called or derivatives must set initialized to TRUE
@@ -53,12 +51,21 @@
 //Must return an Initialize hint. Defined in __DEFINES/subsystems.dm
 
 /atom/proc/Initialize(mapload, ...)
+	CAN_BE_REDEFINED(TRUE)
+	SHOULD_CALL_PARENT(TRUE)
+
 	if(atom_flags & ATOM_FLAG_INITIALIZED)
 		crash_with("Warning: [src]([type]) initialized multiple times!")
 	atom_flags |= ATOM_FLAG_INITIALIZED
 
 	if(light_power && light_range)
 		update_light()
+
+	if(opacity)
+		updateVisibility(src)
+		var/turf/T = loc
+		if(istype(T))
+			T.RecalculateOpacity()
 
 	return INITIALIZE_HINT_NORMAL
 
@@ -279,21 +286,27 @@ its easier to just keep the beam vertical.
 		icon_state = new_icon_state
 
 /atom/proc/update_icon()
+	CAN_BE_REDEFINED(TRUE)
 	return
 
 /atom/proc/blob_act(destroy = 0, obj/effect/blob/source = null)
+	CAN_BE_REDEFINED(TRUE)
 	return
 
 /atom/proc/ex_act()
+	CAN_BE_REDEFINED(TRUE)
 	return
 
 /atom/proc/emag_act(remaining_charges, mob/user, emag_source)
+	CAN_BE_REDEFINED(TRUE)
 	return NO_EMAG_ACT
 
 /atom/proc/fire_act()
+	CAN_BE_REDEFINED(TRUE)
 	return
 
 /atom/proc/melt()
+	CAN_BE_REDEFINED(TRUE)
 	return
 
 /atom/proc/hitby(atom/movable/AM as mob|obj)
@@ -374,16 +387,15 @@ its easier to just keep the beam vertical.
 // message is output to anyone who can see, e.g. "The [src] does something!"
 // blind_message (optional) is what blind people will hear e.g. "You hear something!"
 /atom/proc/visible_message(message, blind_message, range = world.view, checkghosts = null)
-	var/turf/T = get_turf(src)
-	var/list/mobs = list()
-	var/list/objs = list()
-	get_mobs_and_objs_in_view_fast(T,range, mobs, objs, checkghosts)
+	var/list/seeing_mobs = list()
+	var/list/seeing_objs = list()
+	get_mobs_and_objs_in_view_fast(get_turf(src), range, seeing_mobs, seeing_objs, checkghosts)
 
-	for(var/o in objs)
+	for(var/o in seeing_objs)
 		var/obj/O = o
 		O.show_message(message, VISIBLE_MESSAGE, blind_message, AUDIBLE_MESSAGE)
 
-	for(var/m in mobs)
+	for(var/m in seeing_mobs)
 		var/mob/M = m
 		if(M.see_invisible >= invisibility)
 			M.show_message(message, VISIBLE_MESSAGE, blind_message, AUDIBLE_MESSAGE)
@@ -396,17 +408,17 @@ its easier to just keep the beam vertical.
 // deaf_message (optional) is what deaf people will see.
 // hearing_distance (optional) is the range, how many tiles away the message can be heard.
 /atom/proc/audible_message(message, deaf_message, hearing_distance = world.view, checkghosts = null)
-	var/turf/T = get_turf(src)
-	var/list/mobs = list()
-	var/list/objs = list()
-	get_mobs_and_objs_in_view_fast(T, hearing_distance, mobs, objs, checkghosts)
+	var/list/hearing_mobs = list()
+	var/list/hearing_objs = list()
+	get_mobs_and_objs_in_view_fast(get_turf(src), hearing_distance, hearing_mobs, hearing_objs, checkghosts)
 
-	for(var/m in mobs)
-		var/mob/M = m
-		M.show_message(message,2,deaf_message,1)
-	for(var/o in objs)
+	for(var/o in hearing_objs)
 		var/obj/O = o
-		O.show_message(message,2,deaf_message,1)
+		O.show_message(message, AUDIBLE_MESSAGE, deaf_message, VISIBLE_MESSAGE)
+
+	for(var/m in hearing_mobs)
+		var/mob/M = m
+		M.show_message(message, AUDIBLE_MESSAGE, deaf_message, VISIBLE_MESSAGE)
 
 /atom/movable/proc/dropInto(atom/destination)
 	while(istype(destination))

@@ -10,12 +10,20 @@
 	mob_size = 4
 	species_language = "Xenomorph"
 
+	var/adult_form = null
 	var/dead_icon
+	var/amount_grown = 0
+	var/max_grown = 200
+	var/time_of_birth
 	var/language
 	var/death_msg = "lets out a waning guttural screech, green blood bubbling from its maw."
+	var/can_namepick_as_adult = 0
+	var/adult_name
 	var/instance_num
 
 /mob/living/carbon/alien/New()
+
+	time_of_birth = world.time
 
 	verbs += /mob/living/proc/ventcrawl
 	verbs += /mob/living/proc/hide
@@ -34,6 +42,9 @@
 
 /mob/living/carbon/alien/u_equip(obj/item/W as obj)
 	return
+
+/mob/living/carbon/alien/Stat()
+	. = ..()
 
 /mob/living/carbon/alien/restrained()
 	return 0

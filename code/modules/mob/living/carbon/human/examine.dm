@@ -7,6 +7,7 @@
 	var/skipears = 0
 	var/skipeyes = 0
 	var/skipface = 0
+	var/skipjumpsuitaccessories = FALSE
 
 	//exosuits and helmets obscure our view and stuff.
 	if(wear_suit)
@@ -14,6 +15,7 @@
 		skipsuitstorage = wear_suit.flags_inv & HIDESUITSTORAGE
 		skipjumpsuit = wear_suit.flags_inv & HIDEJUMPSUIT
 		skipshoes = wear_suit.flags_inv & HIDESHOES
+		skipjumpsuitaccessories = wear_suit.flags_inv & HIDEJUMPSUITACCESSORIES
 
 	if(head)
 		skipmask = head.flags_inv & HIDEMASK
@@ -58,7 +60,7 @@
 
 	//uniform
 	if(w_uniform && !skipjumpsuit)
-		msg += "[T.He] [T.is] wearing [w_uniform.get_examine_line()].\n"
+		msg += "[T.He] [T.is] wearing [w_uniform.get_examine_line(!skipjumpsuitaccessories)].\n"
 
 	//head
 	if(head)
@@ -169,7 +171,7 @@
 		distance = 1
 	else
 		distance = get_dist(user,src)
-	if (src.stat)
+	if(src.stat)
 		msg += "<span class='warning'>[T.He] [T.is]n't responding to anything around [T.him] and seems to be unconscious.</span>\n"
 		if((stat == DEAD || is_asystole() || src.losebreath) && distance <= 3)
 			msg += "<span class='warning'>[T.He] [T.does] not appear to be breathing.</span>\n"
@@ -292,7 +294,8 @@
 
 	if(hasHUD(user, HUD_MEDICAL))
 		var/perpname = "wot"
-		var/medical = "None"
+		var/physical = "None"
+		var/mental = "None"
 
 		if(wear_id)
 			if(istype(wear_id,/obj/item/weapon/card/id))
@@ -305,9 +308,11 @@
 
 		var/datum/computer_file/crew_record/R = get_crewmember_record(perpname)
 		if(R)
-			medical = R.get_status()
+			physical = R.get_status_physical()
+			mental = R.get_status_mental()
 
-		msg += "<span class = 'deptradio'>Physical status:</span> <a href='?src=\ref[src];medical=1'>\[[medical]\]</a>\n"
+		msg += "<span class = 'deptradio'>Physical status:</span> <a href='?src=\ref[src];physical=1'>\[[physical]\]</a>\n"
+		msg += "<span class = 'deptradio'>Mental status:</span> <a href='?src=\ref[src];mental=1'>\[[mental]\]</a>\n"
 		msg += "<span class = 'deptradio'>Medical records:</span> <a href='?src=\ref[src];medrecord=`'>\[View\]</a>\n"
 
 
@@ -328,7 +333,7 @@
 	if(istype(M, /mob/living/carbon/human))
 		var/mob/living/carbon/human/H = M
 		var/obj/item/clothing/glasses/G = H.glasses
-		return istype(G) && ((G.hud_type & hudtype) || (G.hud && (G.hud.hud_type & hudtype)))
+		return istype(G) && (G.hud_type & hudtype)
 	else if(istype(M, /mob/living/silicon))
 		var/mob/living/silicon/R = M
 		if (R.active_hud == hudtype)
@@ -382,4 +387,4 @@
 	HTML += "<hr />"
 	HTML +="<a href='?src=\ref[src];flavor_change=done'>\[Done\]</a>"
 	HTML += "<tt>"
-	src << browse(jointext(HTML,null), "window=flavor_changes;size=430x300")
+	show_browser(src, jointext(HTML,null), "window=flavor_changes;size=430x300")

@@ -120,8 +120,8 @@
 			animate(src)
 
 /obj/effect/rune/examine(mob/user)
-	. = ..()
-	if(iscultist(user))
+	..()
+	if(iscultist(user) || isghost(user))
 		to_chat(user, "This is \a [cultname] rune.")
 
 /obj/effect/rune/attackby(obj/item/I, mob/living/user)
@@ -437,9 +437,14 @@
 	speak_incantation(user, "Ia! Ia! Zasan therium viortia!")
 	for(var/turf/T in range(1, src))
 		if(T.holy)
-			T.holy = 0
+			T.holy = FALSE
 		else
 			T.cultify()
+
+	var/area/A = get_area(src)
+	if(A && !isspace(A))
+		A.holy = FALSE
+
 	visible_message("<span class='warning'>\The [src] embeds into the floor and walls around it, changing them!</span>", "You hear liquid flow.")
 	qdel(src)
 
@@ -658,7 +663,7 @@
 		M.AdjustStunned(-1)
 		M.AdjustWeakened(-1)
 		M.add_chemical_effect(CE_PAINKILLER, 40)
-		M.add_chemical_effect(CE_SPEEDBOOST, 1)
+		M.add_up_to_chemical_effect(CE_SPEEDBOOST, 1)
 		M.adjustOxyLoss(-10 * removed)
 		M.heal_organ_damage(5 * removed, 5 * removed)
 		M.adjustToxLoss(-5 * removed)
@@ -695,9 +700,14 @@
 			M.say("Ia! Ia! Zasan therium viortia! Razan gilamrua kioha!")
 		for(var/turf/T in range(5, src))
 			if(T.holy)
-				T.holy = 0
+				T.holy = FALSE
 			else
 				T.cultify()
+
+	var/area/A = get_area(src)
+	if(A && !isspace(A))
+		A.holy = FALSE
+
 	visible_message("<span class='warning'>\The [src] embeds into the floor and walls around it, changing them!</span>", "You hear liquid flow.")
 	qdel(src)
 
@@ -926,7 +936,7 @@
 	var/obj/item/weapon/paper/target
 	var/tainted = 0
 	for(var/obj/item/weapon/paper/P in get_turf(src))
-		if(!P.info)
+		if(P.is_clean())
 			target = P
 			break
 		else

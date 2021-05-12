@@ -25,11 +25,9 @@
 
 	if (!( istext(HTMLstring) ))
 		CRASH("Given non-text argument!")
-		return
 	else
 		if (length(HTMLstring) != 7)
 			CRASH("Given non-HTML argument!")
-			return
 	var/textr = copytext(HTMLstring, 2, 4)
 	var/textg = copytext(HTMLstring, 4, 6)
 	var/textb = copytext(HTMLstring, 6, 8)
@@ -46,7 +44,6 @@
 	if (length(textb) < 2)
 		textr = text("0[]", textb)
 	return text("#[][][]", textr, textg, textb)
-	return
 
 //Returns the middle-most value
 /proc/dd_range(low, high, num)
@@ -331,6 +328,11 @@ Turf and target are seperate in case you want to teleport some distance from a t
 /proc/ionnum()
 	return "[pick("1","2","3","4","5","6","7","8","9","0")][pick("!","@","#","$","%","^","&","*")][pick("!","@","#","$","%","^","&","*")][pick("!","@","#","$","%","^","&","*")]"
 
+/atom/proc/add_verb(the_verb, datum/callback/callback)
+	if (callback && !callback.Invoke())
+		return
+
+	verbs += the_verb
 //When an AI is activated, it can choose from a list of non-slaved borgs to have as a slave.
 /proc/freeborg()
 	var/select = null
@@ -530,7 +532,7 @@ Turf and target are seperate in case you want to teleport some distance from a t
 	return max(min(middle, high), low)
 
 //returns random gauss number
-proc/GaussRand(sigma)
+/proc/GaussRand(sigma)
 	var/x,y,rsq
 	do
 		x=2*rand()-1
@@ -540,7 +542,7 @@ proc/GaussRand(sigma)
 	return sigma*y*sqrt(-2*log(rsq)/rsq)
 
 //returns random gauss number, rounded to 'roundto'
-proc/GaussRandRound(sigma,roundto)
+/proc/GaussRandRound(sigma,roundto)
 	return round(GaussRand(sigma),roundto)
 
 //Will return the contents of an atom recursivly to a depth of 'searchDepth'
@@ -666,7 +668,7 @@ proc/GaussRandRound(sigma,roundto)
 		var/translation = get_turf_translation(src_origin, trg_origin, turfs_src)
 		translate_turfs(translation, null)
 
-proc/DuplicateObject(obj/original, perfectcopy = 0 , sameloc = 0)
+/proc/DuplicateObject(obj/original, perfectcopy = 0 , sameloc = 0)
 	if(!original)
 		return null
 
@@ -820,16 +822,16 @@ proc/DuplicateObject(obj/original, perfectcopy = 0 , sameloc = 0)
 
 
 
-proc/get_cardinal_dir(atom/A, atom/B)
+/proc/get_cardinal_dir(atom/A, atom/B)
 	var/dx = abs(B.x - A.x)
 	var/dy = abs(B.y - A.y)
 	return get_dir(A, B) & (rand() * (dx+dy) < dy ? 3 : 12)
 
 //chances are 1:value. anyprob(1) will always return true
-proc/anyprob(value)
+/proc/anyprob(value)
 	return (rand(1,value)==value)
 
-proc/view_or_range(distance = world.view , center = usr , type)
+/proc/view_or_range(distance = world.view , center = usr , type)
 	switch(type)
 		if("view")
 			. = view(distance,center)
@@ -837,7 +839,7 @@ proc/view_or_range(distance = world.view , center = usr , type)
 			. = range(distance,center)
 	return
 
-proc/oview_or_orange(distance = world.view , center = usr , type)
+/proc/oview_or_orange(distance = world.view , center = usr , type)
 	switch(type)
 		if("view")
 			. = oview(distance,center)
@@ -845,7 +847,7 @@ proc/oview_or_orange(distance = world.view , center = usr , type)
 			. = orange(distance,center)
 	return
 
-proc/get_mob_with_client_list()
+/proc/get_mob_with_client_list()
 	var/list/mobs = list()
 	for(var/mob/M in SSmobs.mob_list)
 		if (M.client)

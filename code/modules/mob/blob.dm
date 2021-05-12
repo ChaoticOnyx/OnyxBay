@@ -63,7 +63,7 @@
 	if (T)
 		rally_spores(T)
 
-mob/blob/DblClickOn(atom/A) //Teleport view to another blob
+/mob/blob/DblClickOn(atom/A) //Teleport view to another blob
 	var/turf/T = get_turf(A)
 
 	var/obj/effect/blob/B = (locate(/obj/effect/blob) in T)
@@ -79,7 +79,7 @@ mob/blob/DblClickOn(atom/A) //Teleport view to another blob
 /mob/blob/airflow_stun()
 	return FALSE
 
-/mob/blob/CanPass(atom/movable/mover, turf/target, height, air_group)
+/mob/blob/CanPass(atom/movable/mover, turf/target)
 	return TRUE
 
 /mob/blob/check_airflow_movable(n)
@@ -154,10 +154,10 @@ mob/blob/DblClickOn(atom/A) //Teleport view to another blob
 	if (is_dead())
 		return
 
-	var/datum/hud/blob/H = hud_used
-
-	if (!H)
+	if (!hud_used)
 		InitializeHud()
+
+	var/datum/hud/blob/H = hud_used
 
 	var/number_of_cores = blob_cores.len
 	var/matrix/M = matrix()

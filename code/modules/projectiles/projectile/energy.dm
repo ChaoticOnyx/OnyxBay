@@ -91,13 +91,25 @@
 	stutter = 10
 	armor_penetration = 10
 
+/obj/item/projectile/energy/electrode/c45
+	name = "stun bullet"
+	icon_state = "stunbullet"
+	nodamage = 0
+	agony = 40 // Weaker than the stunsphere la'classique
+	damage_type = BURN
+	damage = 3 //A little ouchie.
+	armor_penetration = 10
+	fire_sound = 'sound/weapons/gunshot/gunshot.ogg'
+
 /obj/item/projectile/energy/electrode/c44
 	name = "shock bullet"
 	icon_state = "shockbullet"
 	nodamage = 0
 	agony = 60
+	damage_type = BRUTE
 	damage = 5 //It's still a bullet
 	armor_penetration = 10
+	fire_sound = 'sound/weapons/gun_revolver44.ogg'
 
 /obj/item/projectile/energy/c44
 	name = "overheated bullet"
@@ -107,6 +119,7 @@
 	eyeblur = 4
 	damage_type = BURN
 	armor_penetration = 15
+	fire_sound = 'sound/weapons/gun_revolver44.ogg'
 
 /obj/item/projectile/energy/declone
 	name = "decloner beam"
@@ -151,14 +164,14 @@
 /obj/item/projectile/energy/acid //Slightly up-gunned (Read: The thing does agony and checks bio resist) variant of the simple alien mob's projectile, for queens and sentinels.
 	name = "acidic spit"
 	icon_state = "neurotoxin"
-	damage = 30
+	damage = 45
 	damage_type = BURN
-	agony = 10
+	agony = 15
 	check_armour = "bio"
 	armor_penetration = 25	// It's acid
 
-/obj/item/projectile/energy/phoron
-	name = "phoron bolt"
+/obj/item/projectile/energy/plasma
+	name = "plasma bolt"
 	icon_state = "energy"
 	fire_sound = 'sound/effects/stealthoff.ogg'
 	damage = 20
@@ -180,15 +193,9 @@
 
 	to_chat(M, "<span class='danger'>You hear a loud roar.</span>")
 	var/ear_safety = 0
-	var/mob/living/carbon/human/H = M
 	if(iscarbon(M))
 		if(ishuman(M))
-			if(istype(H.l_ear, /obj/item/clothing/ears/earmuffs) || istype(H.r_ear, /obj/item/clothing/ears/earmuffs))
-				ear_safety += 2
-			if(MUTATION_HULK in M.mutations)
-				ear_safety += 1
-			if(istype(H.head, /obj/item/clothing/head/helmet))
-				ear_safety += 1
+			ear_safety = M.get_ear_protection()
 	if(ear_safety == 1)
 		M.make_dizzy(120)
 	else if (ear_safety > 1)

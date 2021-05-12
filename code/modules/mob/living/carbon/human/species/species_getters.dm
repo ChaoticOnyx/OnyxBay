@@ -13,9 +13,6 @@
 /datum/species/proc/get_tail_hair(mob/living/carbon/human/H)
 	return tail_hair
 
-/datum/species/proc/get_blood_mask(mob/living/carbon/human/H)
-	return blood_mask
-
 /datum/species/proc/get_damage_overlays(mob/living/carbon/human/H)
 	return damage_overlays
 

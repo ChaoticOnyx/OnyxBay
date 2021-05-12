@@ -157,6 +157,7 @@
 		to_chat(usr, "<span class='notice'>You can't record when playing!</span>")
 		return
 	if(mytape.used_capacity < mytape.max_capacity)
+		playsound(src.loc, 'sound/effects/recorder/start1.ogg', 15)
 		to_chat(usr, "<span class='notice'>Recording started.</span>")
 		recording = 1
 		update_icon()
@@ -197,9 +198,11 @@
 	if(usr.incapacitated())
 		return
 	if(recording)
+		playsound(src.loc, 'sound/effects/recorder/stop1.ogg', 15)
 		stop_recording()
 		return
 	else if(playing)
+		playsound(src.loc, 'sound/effects/recorder/stop1.ogg', 15)
 		playing = 0
 		update_icon()
 		to_chat(usr, "<span class='notice'>Playback stopped.</span>")
@@ -221,6 +224,8 @@
 		to_chat(usr, "<span class='notice'>You can't wipe the tape while playing or recording!</span>")
 		return
 	else
+		playsound(src.loc, 'sound/effects/recorder/stop1.ogg', 15)
+		playsound(src.loc, 'sound/effects/recorder/wipe1.ogg', 15)
 		if(mytape.storedinfo)	mytape.storedinfo.Cut()
 		if(mytape.timestamp)	mytape.timestamp.Cut()
 		mytape.used_capacity = 0
@@ -246,6 +251,8 @@
 	if(playing)
 		to_chat(usr, "<span class='notice'>You're already playing!</span>")
 		return
+	playsound(src.loc, 'sound/effects/recorder/start1.ogg', 15)
+	playsound(src.loc, 'sound/effects/recorder/playback1.ogg', 15)
 	playing = 1
 	update_icon()
 	to_chat(usr, "<span class='notice'>Audio playback started.</span>")
@@ -320,15 +327,14 @@
 		return
 
 	to_chat(usr, "<span class='notice'>Transcript printed.</span>")
-	var/obj/item/weapon/paper/P = new /obj/item/weapon/paper(get_turf(src))
 	var/t1 = "<B>Transcript:</B><BR><BR>"
-	for(var/i=1,mytape.storedinfo.len >= i,i++)
+	for(var/i in 1 to mytape.storedinfo.len)
 		var/printedmessage = mytape.storedinfo[i]
 		if (findtextEx(printedmessage,"*",1,2)) //replace action sounds
 			printedmessage = "\[[time2text(mytape.timestamp[i]*10,"mm:ss")]\] (Unrecognized sound)"
 		t1 += "[printedmessage]<BR>"
-	P.info = t1
-	P.SetName("Transcript")
+	var/obj/item/weapon/paper/P = new /obj/item/weapon/paper(get_turf(src))
+	P.set_content(t1, "Transcript", TRUE)
 	canprint = 0
 	sleep(300)
 	canprint = 1

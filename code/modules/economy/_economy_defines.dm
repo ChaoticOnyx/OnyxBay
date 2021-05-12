@@ -59,7 +59,7 @@
 											)
 
 //---- The following corporations are friendly with NanoTrasen and loosely enable trade and travel:
-//Corporation NanoTrasen - Generalised / high tech research and phoron exploitation.
+//Corporation NanoTrasen - Generalised / high tech research and plasma exploitation.
 //Corporation Vessel Contracting - Ship and station construction, materials research.
 //Corporation Osiris Atmospherics - Atmospherics machinery construction and chemical research.
 //Corporation Second Red Cross Society - 26th century Red Cross reborn as a dominating economic force in biomedical science (research and materials).

@@ -136,10 +136,10 @@
 	helmet_type = /obj/item/clothing/head/helmet/space/void/security/alt
 	mask_type = /obj/item/clothing/mask/breath
 
-/obj/machinery/suit_storage_unit/merc
+/obj/machinery/suit_storage_unit/syndi
 	name = "Nonstandard Voidsuit Storage Unit"
-	suit_type = /obj/item/clothing/suit/space/void/merc
-	helmet_type = /obj/item/clothing/head/helmet/space/void/merc
+	suit_type = /obj/item/clothing/suit/space/void/syndi
+	helmet_type = /obj/item/clothing/head/helmet/space/void/syndi
 	boots_type = /obj/item/clothing/shoes/magboots
 	tank_type = /obj/item/weapon/tank/oxygen
 	mask_type = /obj/item/clothing/mask/breath
@@ -201,7 +201,6 @@
 			return
 		else
 			return
-	return
 
 
 /obj/machinery/suit_storage_unit/attack_hand(mob/user as mob)
@@ -257,7 +256,7 @@
 			dat+= "<font color='maroon'><B>Unit chamber is too contaminated to continue usage. Please call for a qualified individual to perform maintenance.</font></B><BR><BR>"
 			dat+= text("<HR><A href='?src=\ref[];mach_close=suit_storage_unit'>Close control panel</A>", user)
 
-	user << browse(dat, "window=suit_storage_unit;size=400x500")
+	show_browser(user, dat, "window=suit_storage_unit;size=400x500")
 	onclose(user, "suit_storage_unit")
 	return
 
@@ -373,8 +372,8 @@
 	if(occupant)
 		eject_occupant(user)
 		return  // eject_occupant opens the door, so we need to return
+	playsound(src.loc, isopen ? 'sound/effects/suitcycler/close1.ogg' : 'sound/effects/suitcycler/open1.ogg', 70, 1)
 	isopen = !isopen
-	playsound(src, 'sound/machines/suitstorage_cycledoor.ogg', 50, 0)
 	return
 
 
@@ -685,7 +684,7 @@
 	var/active = 0          // PLEASE HOLD.
 	var/safeties = 1        // The cycler won't start with a living thing inside it unless safeties are off.
 	var/irradiating = 0     // If this is > 0, the cycler is decontaminating whatever is inside it.
-	var/radiation_level = 2 // 1 is removing germs, 2 is removing blood, 3 is removing phoron.
+	var/radiation_level = 2 // 1 is removing germs, 2 is removing blood, 3 is removing plasma.
 	var/model_text = ""     // Some flavour text for the topic box.
 	var/locked = 1          // If locked, nothing can be taken from or added to the cycler.
 	var/can_repair          // If set, the cycler can repair voidsuits.
@@ -757,7 +756,7 @@
 	name = "Nonstandard suit cycler"
 	model_text = "Nonstandard"
 	req_access = list(access_syndicate)
-	departments = list("Mercenary")
+	departments = list("Syndicate")
 	species = list(SPECIES_HUMAN,SPECIES_TAJARA,SPECIES_SKRELL,SPECIES_UNATHI)
 	can_repair = 1
 
@@ -875,6 +874,7 @@
 		return
 
 	//Clear the access reqs, disable the safeties, and open up all paintjobs.
+	playsound(src.loc, 'sound/effects/computer_emag.ogg', 25)
 	to_chat(user, "<span class='danger'>You run the sequencer across the interface, corrupting the operating protocols.</span>")
 	departments = list("Engineering","Mining","Medical","Security","Atmos","^%###^%$")
 	emagged = 1
@@ -927,7 +927,7 @@
 	if(panel_open)
 		wires.Interact(user)
 
-	user << browse(dat, "window=suit_cycler")
+	show_browser(user, dat, "window=suit_cycler")
 	onclose(user, "suit_cycler")
 	return
 
@@ -975,6 +975,7 @@
 		if(allowed(usr))
 			locked = !locked
 			to_chat(usr, "You [locked ? "lock" : "unlock"] [src].")
+			playsound(src.loc, locked ? 'sound/effects/suitcycler/close1.ogg' : 'sound/effects/suitcycler/open1.ogg', 70, 1)
 		else
 			to_chat(usr, FEEDBACK_ACCESS_DENIED)
 
@@ -1174,7 +1175,7 @@
 				suit.SetName("exploration voidsuit")
 				suit.icon_state = "void_explorer"
 
-		if("^%###^%$" || "Mercenary")
+		if("^%###^%$" || "Syndicate")
 			if(helmet)
 				helmet.SetName("blood-red voidsuit helmet")
 				helmet.icon_state = "rig0-syndie"

@@ -39,9 +39,9 @@
 	..()
 	var/datum/gas_mixture/environment = loc.return_air()
 	if (environment)
-		var/datum/gas_mixture/sharkmaw_phoron = new
-		sharkmaw_phoron.adjust_gas("phoron",  10)
-		environment.merge(sharkmaw_phoron)
+		var/datum/gas_mixture/sharkmaw_plasma = new
+		sharkmaw_plasma.adjust_gas("plasma",  10)
+		environment.merge(sharkmaw_plasma)
 		visible_message("<span class='warning'>\The [src]'s body releases some gas from the gills with a quiet fizz!</span>")
 
 /mob/living/simple_animal/hostile/carp/shark/AttackingTarget()
@@ -68,11 +68,11 @@
 	filling_color = "#cecece"
 	center_of_mass = "x=17;y=13"
 
-/obj/item/weapon/reagent_containers/food/snacks/sharkmeat/New()
-	..()
+/obj/item/weapon/reagent_containers/food/snacks/sharkmeat/Initialize()
+	. = ..()
 	reagents.add_reagent(/datum/reagent/nutriment/protein, 5)
 	reagents.add_reagent(/datum/reagent/space_drugs, 1)
-	reagents.add_reagent(/datum/reagent/toxin/phoron, 1)
+	reagents.add_reagent(/datum/reagent/toxin/plasma, 1)
 	src.bitesize = 8
 
 

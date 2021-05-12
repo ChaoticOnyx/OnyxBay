@@ -8,9 +8,10 @@ GLOBAL_DATUM_INIT(raiders, /datum/antagonist/raider, new)
 	landmark_id = "voxstart"
 	welcome_text = "Use :H to talk on your encrypted channel."
 	mob_path = /mob/living/carbon/human/vox
-	flags = ANTAG_OVERRIDE_MOB | ANTAG_OVERRIDE_JOB | ANTAG_CLEAR_EQUIPMENT | ANTAG_CHOOSE_NAME | ANTAG_VOTABLE | ANTAG_HAS_LEADER
+	flags = ANTAG_OVERRIDE_MOB | ANTAG_OVERRIDE_JOB | ANTAG_CLEAR_EQUIPMENT | ANTAG_VOTABLE | ANTAG_HAS_LEADER
 	antaghud_indicator = "hudmutineer"
 
+	valid_species = list(SPECIES_VOX)
 	hard_cap = 5
 	hard_cap_round = 6
 	initial_spawn_req = 3
@@ -22,6 +23,8 @@ GLOBAL_DATUM_INIT(raiders, /datum/antagonist/raider, new)
 	faction = "pirate"
 
 	station_crew_involved = FALSE
+
+	var/list/safe_areas = list(/area/skipjack_station/base, /area/skipjack_station/start)
 
 	// Heist overrides check_victory() and doesn't need victory or loss strings/tags.
 	var/list/raider_uniforms = list(
@@ -41,9 +44,9 @@ GLOBAL_DATUM_INIT(raiders, /datum/antagonist/raider, new)
 		)
 
 	var/list/raider_glasses = list(
-		/obj/item/clothing/glasses/thermal,
-		/obj/item/clothing/glasses/thermal/plain/eyepatch,
-		/obj/item/clothing/glasses/thermal/plain/monocle
+		/obj/item/clothing/glasses/hud/standard/thermal,
+		/obj/item/clothing/glasses/hud/one_eyed/patch/thermal,
+		/obj/item/clothing/glasses/hud/plain/thermal/monocle
 		)
 
 	var/list/raider_helmets = list(
@@ -80,7 +83,7 @@ GLOBAL_DATUM_INIT(raiders, /datum/antagonist/raider, new)
 		/obj/item/weapon/gun/launcher/crossbow,
 		/obj/item/weapon/gun/launcher/grenade/loaded,
 		/obj/item/weapon/gun/launcher/pneumatic,
-		/obj/item/weapon/gun/projectile/automatic/mini_uzi,
+		/obj/item/weapon/gun/projectile/automatic/machine_pistol/mini_uzi,
 		/obj/item/weapon/gun/projectile/automatic/c20r,
 		/obj/item/weapon/gun/projectile/automatic/wt550,
 		/obj/item/weapon/gun/projectile/automatic/sts35,
@@ -104,11 +107,9 @@ GLOBAL_DATUM_INIT(raiders, /datum/antagonist/raider, new)
 		)
 
 /datum/antagonist/raider/update_access(mob/living/player)
-	for(var/obj/item/weapon/storage/wallet/W in player.contents)
-		for(var/obj/item/weapon/card/id/id in W.contents)
-			id.SetName("[player.real_name]'s Passport")
-			id.registered_name = player.real_name
-			W.SetName("[initial(W.name)] ([id.name])")
+	for(var/obj/item/weapon/card/id/id in player.contents)
+		id.SetName("[player.real_name]'s Passport")
+		id.registered_name = player.real_name
 
 /datum/antagonist/raider/create_global_objectives()
 
@@ -138,7 +139,7 @@ GLOBAL_DATUM_INIT(raiders, /datum/antagonist/raider, new)
 	global_objectives |= new /datum/objective/heist/preserve_crew
 	return 1
 
-/datum/antagonist/raider/check_victory()
+/datum/antagonist/raider/print_roundend()
 	// Totally overrides the base proc.
 	var/win_type = "Major"
 	var/win_group = "Crew"
@@ -178,9 +179,8 @@ GLOBAL_DATUM_INIT(raiders, /datum/antagonist/raider, new)
 		else
 			win_msg += "<B>The Raiders were repelled!</B>"
 
-	to_world("<span class='danger'><font size = 3>[win_type] [win_group] victory!</font></span>")
-	to_world("[win_msg]")
 	feedback_set_details("round_end_result","heist - [win_type] [win_group]")
+	return "<span class='danger'><font size = 3>[win_type] [win_group] victory!</font></span><br>[win_msg]"
 
 /datum/antagonist/raider/proc/is_raider_crew_safe()
 
@@ -188,7 +188,11 @@ GLOBAL_DATUM_INIT(raiders, /datum/antagonist/raider, new)
 		return 0
 
 	for(var/datum/mind/player in current_antagonists)
-		if(!player.current || get_area(player.current) != locate(/area/skipjack_station/start))
+		if(!player.current)
+			return 0
+
+		var/area/player_area = get_area(player.current)
+		if(!is_type_in_list(player_area, safe_areas))
 			return 0
 	return 1
 
@@ -218,12 +222,12 @@ GLOBAL_DATUM_INIT(raiders, /datum/antagonist/raider, new)
 		player.equip_to_slot_or_del(new new_suit(player),slot_wear_suit)
 		equip_weapons(player)
 
-	var/obj/item/weapon/card/id/id = create_id("Visitor", player, equip = 0)
+	var/obj/item/weapon/card/id/id = create_id("Visitor", player)
 	id.SetName("[player.real_name]'s Passport")
-	id.assignment = "Visitor"
+	id.icon_state = "bum"
+
 	var/obj/item/weapon/storage/wallet/W = new(player)
-	W.handle_item_insertion(id)
-	player.equip_to_slot_or_del(W, slot_wear_id)
+	player.equip_to_slot_or_del(W, slot_l_store)
 	spawn_money(rand(50,150)*10,W)
 	create_radio(RAID_FREQ, player)
 

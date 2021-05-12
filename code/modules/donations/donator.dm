@@ -29,7 +29,8 @@
 	var/list/items = new
 
 /datum/donator_info/proc/on_patreon_tier_loaded(client/C)
-	if(patron_type != PATREON_NONE)
+	var/choosen_ooc_patreon_tier = C.get_preference_value(/datum/client_preference/ooc_name_color)
+	if (!patreon_tier_available(choosen_ooc_patreon_tier))
 		C.set_preference(/datum/client_preference/ooc_name_color, patron_type)
 
 /datum/donator_info/proc/get_decorated_ooc_name(client/C)
@@ -60,7 +61,7 @@
 		if(type == patron_type)
 			return FALSE
 
-	ASSERT(FALSE) // inaccessible
+	CRASH("This code should not be accessible")
 
 /datum/donator_info/proc/has_item(type)
 	return "[type]" in items

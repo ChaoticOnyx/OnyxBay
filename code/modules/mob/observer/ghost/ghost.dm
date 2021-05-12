@@ -7,10 +7,13 @@ var/global/list/image/ghost_sightless_images = list() //this is a list of images
 	icon = 'icons/mob/mob.dmi'
 	icon_state = "ghost"
 	appearance_flags = KEEP_TOGETHER
-	canmove = 0
 	blinded = 0
 	anchored = 1	//  don't get pushed around
 	universal_speak = 1
+
+	mob_flags = MOB_FLAG_HOLY_BAD
+	movement_handlers = list(/datum/movement_handler/mob/multiz_connected, /datum/movement_handler/mob/incorporeal)
+
 	var/is_manifest = FALSE
 	var/next_visibility_toggle = 0
 	var/can_reenter_corpse
@@ -28,7 +31,6 @@ var/global/list/image/ghost_sightless_images = list() //this is a list of images
 	var/seedarkness = 1
 
 	var/obj/item/device/multitool/ghost_multitool
-	incorporeal_move = 1
 
 	var/list/hud_images // A list of hud images
 
@@ -215,8 +217,9 @@ This is the proc mobs get to turn into a ghost. Forked from ghostize due to comp
 		var/turf/location = get_turf(src)
 		log_and_message_admins(" has ghosted. (<A HREF='?_src_=holder;adminplayerobservecoodjump=1;X=[location.x];Y=[location.y];Z=[location.z]'>JMP</a>)")
 		var/mob/observer/ghost/ghost = ghostize(0)	//0 parameter is so we can never re-enter our body, "Charlie, you can never come baaaack~" :3
-		ghost.timeofdeath = world.time // Because the living mob won't have a time of death and we want the respawn timer to work properly.
-		announce_ghost_joinleave(ghost)
+		if(ghost)
+			ghost.timeofdeath = world.time // Because the living mob won't have a time of death and we want the respawn timer to work properly.
+			announce_ghost_joinleave(ghost)
 
 /mob/observer/ghost/can_use_hands()	return 0
 /mob/observer/ghost/is_active()		return 0
@@ -363,7 +366,7 @@ This is the proc mobs get to turn into a ghost. Forked from ghostize due to comp
 /mob/observer/ghost/add_memory()
 	set hidden = 1
 	to_chat(src, "<span class='warning'>You are dead! You have no mind to store memory!</span>")
-/mob/observer/ghost/Post_Incorpmove()
+/mob/observer/ghost/PostIncorporealMovement()
 	stop_following()
 
 /mob/observer/ghost/verb/analyze_air()
@@ -391,7 +394,7 @@ This is the proc mobs get to turn into a ghost. Forked from ghostize due to comp
 	dat += "<h4>Crew Manifest</h4>"
 	dat += html_crew_manifest()
 
-	src << browse(dat, "window=manifest;size=370x420;can_close=1")
+	show_browser(src, dat, "window=manifest;size=370x420;can_close=1")
 
 //This is called when a ghost is drag clicked to something.
 /mob/observer/ghost/MouseDrop(atom/over)

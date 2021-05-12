@@ -3,7 +3,7 @@
 	assembly_icon = 'icons/obj/device.dmi'
 	assembly_icon_state = "hand_tele"
 	assembly_w_class = ITEM_SIZE_SMALL
-	data = {"{'assembly':{'type':'type-a electronic mechanism','name':'Hand Teleporter', 'detail_color':'#5d99be'},'components':\[{'type':'teleporter locator'},{'type':'bluespace rift generator'},{'type':'button','name':'Open Rift'}\],'wires':\[\[\[1,'O',1\],\[2,'I',1\]\],\[\[2,'A',1\],\[3,'A',1\]\]\]}"}
+	data = {"{'assembly':{'type':'type-c electronic machine','name':'Hand Teleporter'},'components':\[{'type':'button','name':'Open RIft'},{'type':'teleporter locator'},{'type':'bluespace rift generator'}],'wires':\[\[\[1,'A',1],\[3,'A',1]],\[\[2,'O',1],\[3,'I',1]]]}"}
 	power_cell_type = /obj/item/weapon/cell/hyper
 
 /obj/prefab/hand_teleporter

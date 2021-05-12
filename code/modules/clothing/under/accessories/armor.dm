@@ -68,7 +68,7 @@
 	icon_state = "armor_medium"
 	armor = list(melee = 35, bullet = 35, laser = 35, energy = 15, bomb = 30, bio = 0, rad = 0)
 
-/obj/item/clothing/accessory/armorplate/merc
+/obj/item/clothing/accessory/armorplate/syndi
 	name = "heavy armor plate"
 	desc = "A ceramics-reinforced synthetic armor plate, providing state of of the art protection. Attaches to a plate carrier."
 	icon_state = "armor_merc"
@@ -104,7 +104,7 @@
 	desc = "A pair of tan arm pads reinforced with armor plating. Attaches to a plate carrier."
 	icon_state = "armguards_tan"
 
-/obj/item/clothing/accessory/armguards/merc
+/obj/item/clothing/accessory/armguards/syndi
 	name = "heavy arm guards"
 	desc = "A pair of red-trimmed black arm pads reinforced with heavy armor plating. Attaches to a plate carrier."
 	icon_state = "armguards_merc"
@@ -160,7 +160,7 @@
 	desc = "A pair of armored leg pads in tan. Attaches to a plate carrier."
 	icon_state = "legguards_tan"
 
-/obj/item/clothing/accessory/legguards/merc
+/obj/item/clothing/accessory/legguards/syndi
 	name = "heavy leg guards"
 	desc = "A pair of heavily armored leg pads in red-trimmed black. Attaches to a plate carrier."
 	icon_state = "legguards_merc"

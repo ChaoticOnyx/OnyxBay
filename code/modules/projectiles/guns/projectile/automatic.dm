@@ -1,7 +1,7 @@
 /obj/item/weapon/gun/projectile/automatic //Hopefully someone will find a way to make these fire in bursts or something. --Superxpdude
 	name = "prototype SMG"
 	desc = "A protoype lightweight, fast firing gun. Uses 9mm rounds."
-	icon_state = "saber"	//ugly
+	icon_state = "saber"	//ugly no longer
 	fire_sound = 'sound/effects/weapons/gun/fire1.ogg'
 	w_class = ITEM_SIZE_NORMAL
 	mod_weight = 0.75
@@ -24,32 +24,47 @@
 		)
 
 /obj/item/weapon/gun/projectile/automatic/machine_pistol
-	name = ".45 machine pistol"
-	desc = "The Lumoco Arms MP6 Vesper, A fairly common machine pistol. Sometimes refered to as an 'uzi' by the backwater spacers it is often associated with. Uses .45 rounds."
+	name = "prototype .45 machine pistol"
+	desc = "A protoype lightweight, fast firing gun. Uses .45 rounds."
 	icon_state = "mpistolen"
-	item_state = "wt550"
+	item_state = "mpistolen"
 	w_class = ITEM_SIZE_NORMAL
 	load_method = MAGAZINE
 	caliber = ".45"
 	fire_sound = 'sound/effects/weapons/gun/fire1.ogg'
-	origin_tech = list(TECH_COMBAT = 5, TECH_MATERIAL = 2, TECH_ILLEGAL = 3)
+	origin_tech = list(TECH_COMBAT = 4, TECH_MATERIAL = 2)
 	slot_flags = SLOT_BELT
 	ammo_type = /obj/item/ammo_casing/c45
 	magazine_type = /obj/item/ammo_magazine/c45uzi
 	allowed_magazines = /obj/item/ammo_magazine/c45uzi //more damage compared to the wt550, smaller mag size
 
+	//machine pistol, like SMG but easier to one-hand with
 	firemodes = list(
 		list(mode_name="semiauto",       burst=1, fire_delay=0,    move_delay=null, one_hand_penalty=0, burst_accuracy=null, dispersion=null),
 		list(mode_name="3-round bursts", burst=3, fire_delay=null, move_delay=4,    one_hand_penalty=1, burst_accuracy=list(0,-1,-1),       dispersion=list(0.0, 0.6, 1.0)),
 		list(mode_name="short bursts",   burst=5, fire_delay=null, move_delay=4,    one_hand_penalty=2, burst_accuracy=list(0,-1,-1,-1,-2), dispersion=list(0.6, 0.6, 1.0, 1.0, 1.2)),
 		)
 
-/obj/item/weapon/gun/projectile/automatic/mini_uzi/update_icon()
+/obj/item/weapon/gun/projectile/automatic/machine_pistol/update_icon()
 	..()
 	if(ammo_magazine)
 		icon_state = "mpistolen"
 	else
 		icon_state = "mpistolen-empty"
+
+/obj/item/weapon/gun/projectile/automatic/machine_pistol/mini_uzi
+	name = ".45 machine pistol"
+	desc = "The Lumoco Arms MP6 Vesper, A fairly common machine pistol. Sometimes refered to as an 'uzi' by the backwater spacers it is often associated with. Uses .45 rounds."
+	icon_state = "saber"
+	item_state = "mpistolen"
+	origin_tech = list(TECH_COMBAT = 5, TECH_MATERIAL = 2, TECH_ILLEGAL = 3)
+
+/obj/item/weapon/gun/projectile/automatic/machine_pistol/mini_uzi/update_icon()
+	..()
+	if(ammo_magazine)
+		icon_state = "saber"
+	else
+		icon_state = "saber-empty"
 
 /obj/item/weapon/gun/projectile/automatic/c20r
 	name = "10mm submachine gun"
@@ -122,6 +137,7 @@
 	desc = "The WT-550 Saber is a cheap self-defense weapon, mass-produced by Ward-Takahashi for paramilitary and private use. Uses 9mm rounds."
 	icon_state = "wt550"
 	item_state = "wt550"
+	wielded_item_state = "wt550-wielded"
 	w_class = ITEM_SIZE_NORMAL
 	caliber = "9mm"
 	fire_sound = 'sound/effects/weapons/gun/fire10.ogg'
@@ -131,20 +147,20 @@
 	load_method = MAGAZINE
 	magazine_type = /obj/item/ammo_magazine/mc9mmt/rubber
 	allowed_magazines = /obj/item/ammo_magazine/mc9mmt
+	one_hand_penalty=1
 
 	//machine pistol, like SMG but easier to one-hand with
 	firemodes = list(
-		list(mode_name="semiauto",       burst=1, fire_delay=0,    move_delay=null, one_hand_penalty=0, burst_accuracy=null, dispersion=null),
-		list(mode_name="3-round bursts", burst=3, fire_delay=null, move_delay=4,    one_hand_penalty=1, burst_accuracy=list(0,-1,-1),       dispersion=list(0.0, 0.6, 1.0)),
-		list(mode_name="short bursts",   burst=5, fire_delay=null, move_delay=4,    one_hand_penalty=2, burst_accuracy=list(0,-1,-1,-1,-2), dispersion=list(0.6, 0.6, 1.0, 1.0, 1.2)),
+		list(mode_name="semiauto",       burst=1, fire_delay=0,    move_delay=null, one_hand_penalty=1, burst_accuracy=null, dispersion=null),
+		list(mode_name="3-round bursts", burst=3, fire_delay=null, move_delay=4,    one_hand_penalty=2, burst_accuracy=list(0,-1,-1),       dispersion=list(0.0, 0.6, 1.0)),
+		list(mode_name="short bursts",   burst=5, fire_delay=null, move_delay=4,    one_hand_penalty=3, burst_accuracy=list(0,-1,-1,-1,-2), dispersion=list(0.6, 0.6, 1.0, 1.0, 1.2)),
 		)
 
 /obj/item/weapon/gun/projectile/automatic/wt550/update_icon()
 	..()
-	if(ammo_magazine)
-		icon_state = "wt550-[round(ammo_magazine.stored_ammo.len,4)]"
-	else
-		icon_state = "wt550"
+	icon_state = (ammo_magazine)? "wt550-[round(ammo_magazine.stored_ammo.len,4)]" : "wt550"
+	item_state = (ammo_magazine)? "wt550" : "wt550-empty"
+	wielded_item_state = (ammo_magazine)? "wt550-wielded" : "wt550-wielded-empty"
 	return
 
 /obj/item/weapon/gun/projectile/automatic/z8

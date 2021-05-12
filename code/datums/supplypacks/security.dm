@@ -22,8 +22,9 @@
 /decl/hierarchy/supply_pack/security/armor
 	name = "Armor - Unmarked"
 	contains = list(/obj/item/clothing/suit/armor/pcarrier/medium = 2,
-					/obj/item/clothing/head/helmet =2)
-	cost = 20
+					/obj/item/clothing/head/helmet = 2,
+					/obj/item/device/radio/headset/tactical = 2)
+	cost = 25
 	containertype = /obj/structure/closet/crate/secure
 	containername = "\improper Armor crate"
 	access = access_security
@@ -111,6 +112,14 @@
 	cost = 120
 	containername = "\improper Security voidsuit crate"
 	containertype = /obj/structure/closet/crate/secure/large
+	access = access_brig
+
+/decl/hierarchy/supply_pack/security/rig
+	name = "Armor - Security RIG"
+	contains = list(/obj/item/weapon/rig/security)
+	cost = 480
+	containername = "\improper Security RIG crate"
+	containertype = /obj/structure/closet/crate/secure
 	access = access_brig
 
 /decl/hierarchy/supply_pack/security/weapons
@@ -247,6 +256,14 @@
 	cost = 15
 	containertype = /obj/structure/closet/crate/secure/weapon
 	containername = "\improper .45 rubber ammunition crate"
+	access = access_security
+
+/decl/hierarchy/supply_pack/security/pistolammostun
+	name = "Ammunition - .45 stun"
+	contains = list(/obj/item/ammo_magazine/c45m/stun = 4)
+	cost = 15
+	containertype = /obj/structure/closet/crate/secure/weapon
+	containername = "\improper .45 stun ammunition crate"
 	access = access_security
 
 /decl/hierarchy/supply_pack/security/pistolammopractice

@@ -58,6 +58,7 @@
 	if(hud_data.has_a_intent)
 
 		using = new /obj/screen/intent()
+		using.icon = ui_style
 		src.adding += using
 		action_intent = using
 
@@ -67,7 +68,7 @@
 		using = new /obj/screen()
 		using.SetName("mov_intent")
 		using.icon = ui_style
-		using.icon_state = (mymob.m_intent == "run" ? "running" : "walking")
+		using.icon_state = (mymob.m_intent == M_RUN ? "running" : "walking")
 		using.screen_loc = ui_movi
 		using.color = ui_color
 		using.alpha = ui_alpha
@@ -83,6 +84,17 @@
 		using.color = ui_color
 		using.alpha = ui_alpha
 		src.hotkeybuttons += using
+
+	if(hud_data.has_rest)
+		using = new /obj/screen()
+		using.SetName("rest")
+		using.icon = ui_style
+		using.icon_state = "rest"
+		using.screen_loc = ui_rest_act
+		using.color = ui_color
+		using.alpha = ui_alpha
+		src.adding += using
+
 
 	if(hud_data.has_hands)
 

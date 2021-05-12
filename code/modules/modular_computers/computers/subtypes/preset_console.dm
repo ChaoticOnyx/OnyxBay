@@ -77,6 +77,7 @@
 	..()
 	hard_drive.store_file(new /datum/computer_file/program/chatclient())
 	hard_drive.store_file(new /datum/computer_file/program/card_mod())
+	hard_drive.store_file(new /datum/computer_file/program/hire_tool())
 	hard_drive.store_file(new /datum/computer_file/program/comm())
 	hard_drive.store_file(new /datum/computer_file/program/camera_monitor())
 	hard_drive.store_file(new /datum/computer_file/program/email_client())
@@ -95,6 +96,7 @@
 	hard_drive.store_file(new /datum/computer_file/program/digitalwarrant())
 	hard_drive.store_file(new /datum/computer_file/program/forceauthorization())
 	hard_drive.store_file(new /datum/computer_file/program/records())
+	hard_drive.store_file(new /datum/computer_file/program/records/security())
 	hard_drive.store_file(new /datum/computer_file/program/wordprocessor())
 
 // Civilian
@@ -158,17 +160,17 @@
 	hard_drive.store_file(new /datum/computer_file/program/records())
 	hard_drive.store_file(new /datum/computer_file/program/wordprocessor())
 
-// Mercenary
-/obj/item/modular_computer/console/preset/mercenary/
+// Syndicate
+/obj/item/modular_computer/console/preset/syndicate/
 	computer_emagged = TRUE
 
-/obj/item/modular_computer/console/preset/mercenary/install_default_hardware()
+/obj/item/modular_computer/console/preset/syndicate/install_default_hardware()
 	..()
 	ai_slot = new /obj/item/weapon/computer_hardware/ai_slot(src)
 	nano_printer = new /obj/item/weapon/computer_hardware/nano_printer(src)
 	card_slot = new /obj/item/weapon/computer_hardware/card_slot(src)
 
-/obj/item/modular_computer/console/preset/mercenary/install_default_programs()
+/obj/item/modular_computer/console/preset/syndicate/install_default_programs()
 	..()
 	hard_drive.store_file(new /datum/computer_file/program/camera_monitor/hacked())
 	hard_drive.store_file(new /datum/computer_file/program/alarm_monitor())

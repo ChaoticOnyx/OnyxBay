@@ -34,6 +34,8 @@
 	var/list/threat_found_sounds = list('sound/voice/bcriminal.ogg', 'sound/voice/bjustice.ogg', 'sound/voice/bfreeze.ogg')
 	var/list/preparing_arrest_sounds = list('sound/voice/bfreeze.ogg')
 
+	var/last_attacker
+
 	var/list/secbot_verbs_default = list(
 		/mob/living/bot/secbot/proc/downonthefloor,
 		/mob/living/bot/secbot/proc/threatdetected,
@@ -220,12 +222,14 @@
 		playsound(src.loc, pick(threat_found_sounds), 50)
 		broadcast_security_hud_message("[src] was attacked by a hostile <b>[target_name(attacker)]</b> in <b>[get_area(src)]</b>.", src)
 	target = attacker
+	last_attacker = attacker
 	awaiting_surrender = INFINITY
 
 /mob/living/bot/secbot/resetTarget()
 	..()
 	GLOB.moved_event.unregister(target, src)
 	awaiting_surrender = -1
+	last_attacker = null
 	walk_to(src, 0)
 
 /mob/living/bot/secbot/startPatrol()
@@ -248,6 +252,7 @@
 			awaiting_surrender = -1
 			say("Level [threat] infraction alert!")
 			custom_emote(1, "points at [M.name]!")
+			playsound(src.loc, pick(threat_found_sounds), 50)
 			return
 
 /mob/living/bot/secbot/handleAdjacentTarget()
@@ -322,6 +327,9 @@
 
 	if(emagged && !M.incapacitated()) //check incapacitated so emagged secbots don't keep attacking the same target forever
 		return 10
+
+	if(M == last_attacker)
+		return 4
 
 	return M.assess_perp(access_scanner, 0, idcheck, check_records, check_arrest)
 

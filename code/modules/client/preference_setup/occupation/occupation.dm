@@ -15,22 +15,22 @@
 	sort_order = 1
 
 /datum/category_item/player_setup_item/occupation/load_character(savefile/S)
-	S["alternate_option"]  >> pref.alternate_option
-	S["job_high"]          >> pref.job_high
-	S["job_medium"]        >> pref.job_medium
-	S["job_low"]           >> pref.job_low
-	S["player_alt_titles"] >> pref.player_alt_titles
-	S["char_branch"]       >> pref.char_branch
-	S["char_rank"]         >> pref.char_rank
+	from_file(S["alternate_option"],  pref.alternate_option)
+	from_file(S["job_high"],          pref.job_high)
+	from_file(S["job_medium"],        pref.job_medium)
+	from_file(S["job_low"],           pref.job_low)
+	from_file(S["player_alt_titles"], pref.player_alt_titles)
+	from_file(S["char_branch"],       pref.char_branch)
+	from_file(S["char_rank"],         pref.char_rank)
 
 /datum/category_item/player_setup_item/occupation/save_character(savefile/S)
-	S["alternate_option"]  << pref.alternate_option
-	S["job_high"]          << pref.job_high
-	S["job_medium"]        << pref.job_medium
-	S["job_low"]           << pref.job_low
-	S["player_alt_titles"] << pref.player_alt_titles
-	S["char_branch"]       << pref.char_branch
-	S["char_rank"]         << pref.char_rank
+	to_file(S["alternate_option"],  pref.alternate_option)
+	to_file(S["job_high"],          pref.job_high)
+	to_file(S["job_medium"],        pref.job_medium)
+	to_file(S["job_low"],           pref.job_low)
+	to_file(S["player_alt_titles"], pref.player_alt_titles)
+	to_file(S["char_branch"],       pref.char_branch)
+	to_file(S["char_rank"],         pref.char_rank)
 
 /datum/category_item/player_setup_item/occupation/sanitize_character()
 	if(!istype(pref.job_medium)) pref.job_medium = list()
@@ -109,6 +109,9 @@
 		var/bannedReason = jobban_isbanned(user, rank)
 		if(bannedReason == "Whitelisted Job")
 			. += "<del>[rank]</del></td><td><b> \[WHITELIST]</b></td></tr>"
+			continue
+		else if (bannedReason == IAA_ban_reason)
+			. += "<del>[rank]</del></td><td><b> \[FIRED BY NT]</b></td></tr>"
 			continue
 		else if(bannedReason)
 			. += "<del>[rank]</del></td><td><b> \[BANNED]</b></td></tr>"
@@ -347,7 +350,7 @@
 		if(!(job_title in allowed_titles))
 			pref.job_low -= job_title
 
-datum/category_item/player_setup_item/proc/prune_occupation_prefs()
+/datum/category_item/player_setup_item/proc/prune_occupation_prefs()
 	var/datum/species/S = preference_species()
 	if((GLOB.using_map.flags & MAP_HAS_BRANCH)\
 	   && (!pref.char_branch || !mil_branches.is_spawn_branch(pref.char_branch, S)))

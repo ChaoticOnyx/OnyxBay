@@ -39,12 +39,11 @@
 		return
 
 	if(max_length)
-		//testing shows that just looking for > max_length alone will actually cut off the final character if message is precisely max_length, so >= instead
-		if(length_char(input) >= max_length)
-			var/overflow = ((length_char(input)+1) - max_length)
-			to_chat(usr, "<span class='warning'>Your message is too long by [overflow] character\s.</span>")
+		var/input_length = length_char(input)
+		if(input_length > max_length)
+			to_chat(usr, SPAN_WARNING("Your message is too long by [input_length - max_length] character\s."))
 			return
-		input = copytext_char(input, 1, max_length)
+		input = copytext_char(input, 1, max_length+1)
 
 	if(extra)
 		input = replace_characters(input, list("\n"=" ","\t"=" "))
@@ -78,18 +77,6 @@
 //this is a problem of double-encode(when & becomes &amp;), use sanitize() with encode=0, but not the sanitizeSafe()!
 /proc/sanitizeSafe(input, max_length = MAX_MESSAGE_LEN, encode = 1, trim = 1, extra = 1)
 	return sanitize(replace_characters(input, list(">"=" ","<"=" ", "\""="'")), max_length, encode, trim, extra)
-
-//Removes a few problematic characters
-/proc/sanitize_simple(t,list/repl_chars = list("\n"="#","\t"="#"))
-	for(var/char in repl_chars)
-		var/index = findtext_char(t, char)
-		while(index)
-			t = copytext(t, 1, index) + repl_chars[char] + copytext(t, index+1)
-			index = findtext_char(t, char, index+1)
-	return t
-
-/proc/sanitize_filename(t)
-	return sanitize_simple(t, list("\n"="", "\t"="", "/"="", "\\"="", "?"="", "%"="", "*"="", ":"="", "|"="", "\""="", "<"="", ">"=""))
 
 #define NO_CHARS_DETECTED 0
 #define SPACES_DETECTED 1
@@ -356,9 +343,9 @@
 
 //Used in preferences' SetFlavorText and human's set_flavor verb
 //Previews a string of len or less length
-proc/TextPreview(string, len=40)
-	if(length(string) <= len)
-		if(!length(string))
+/proc/TextPreview(string, len=40)
+	if(length_char(string) <= len)
+		if(!length_char(string))
 			return "\[...\]"
 		else
 			return string
@@ -367,7 +354,7 @@ proc/TextPreview(string, len=40)
 
 //alternative copytext() for encoded text, doesn't break html entities (&#34; and other)
 /proc/copytext_preserve_html(text, first, last)
-	return html_encode(copytext(html_decode(text), first, last))
+	return html_encode(copytext_char(html_decode(text), first, last))
 
 //For generating neat chat tag-images
 //The icon var could be local in the proc, but it's a waste of resources
@@ -415,6 +402,10 @@ proc/TextPreview(string, len=40)
 	t = replacetext(t, "\n", "<BR>")
 	t = replacetext(t, "\[center\]", "<center>")
 	t = replacetext(t, "\[/center\]", "</center>")
+	t = replacetext(t, "\[right\]", "<div style=\"text-align:right\">")
+	t = replacetext(t, "\[/right\]", "</div>")
+	t = replacetext(t, "\[left\]", "<div style=\"text-align:left\">")
+	t = replacetext(t, "\[/left\]", "</div>")
 	t = replacetext(t, "\[br\]", "<BR>")
 	t = replacetext(t, "\[b\]", "<B>")
 	t = replacetext(t, "\[/b\]", "</B>")
@@ -426,7 +417,7 @@ proc/TextPreview(string, len=40)
 	t = replacetext(t, "\[date\]", "[stationdate2text()]")
 	t = replacetext(t, "\[large\]", "<font size=\"4\">")
 	t = replacetext(t, "\[/large\]", "</font>")
-	t = replacetext(t, "\[field\]", "<span class=\"paper_field\"></span>")
+	t = replacetext(t, "\[field\]", "<!--paper_field-->")
 	t = replacetext(t, "\[h1\]", "<H1>")
 	t = replacetext(t, "\[/h1\]", "</H1>")
 	t = replacetext(t, "\[h2\]", "<H2>")
@@ -437,8 +428,14 @@ proc/TextPreview(string, len=40)
 	t = replacetext(t, "\[hr\]", "<HR>")
 	t = replacetext(t, "\[small\]", "<font size = \"1\">")
 	t = replacetext(t, "\[/small\]", "</font>")
+	t = replacetext(t, "\[medium\]", "<font size = \"2\">")
+	t = replacetext(t, "\[/medium\]", "</font>")
 	t = replacetext(t, "\[list\]", "<ul>")
 	t = replacetext(t, "\[/list\]", "</ul>")
+	t = replacetext(t, "\[item\]", "<li>")
+	t = replacetext(t, "\[/item\]", "</li>")
+	t = replacetext(t, "\[ord\]", "<ol>")
+	t = replacetext(t, "\[/ord\]", "</ol>")
 	t = replacetext(t, "\[table\]", "<table border=1 cellspacing=0 cellpadding=3 style='border: 1px solid black;'>")
 	t = replacetext(t, "\[/table\]", "</td></tr></table>")
 	t = replacetext(t, "\[grid\]", "<table>")
@@ -524,3 +521,9 @@ proc/TextPreview(string, len=40)
 		if (text2ascii(A, i) != text2ascii(B, i))
 			return FALSE
 	return TRUE
+
+/proc/counttext(haystack, needle, start = 0)
+	. = 0
+	while ((start = findtext(haystack, needle, start + 1)))
+		.++
+

@@ -20,7 +20,7 @@
 		kill()
 		return
 
-	originMachine = pick(vendingMachines)
+	originMachine = pick(vendingMachines).resolve()
 	vendingMachines.Remove(originMachine)
 	originMachine.shut_up = 0
 	originMachine.shoot_inventory = 1

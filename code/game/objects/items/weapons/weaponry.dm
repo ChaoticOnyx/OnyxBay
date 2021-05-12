@@ -223,9 +223,8 @@
 	healthcheck()
 	..()
 
-obj/effect/energy_net/user_unbuckle_mob(mob/user)
+/obj/effect/energy_net/user_unbuckle_mob(mob/user)
 	return escape_net(user)
-
 
 /obj/effect/energy_net/proc/escape_net(mob/user as mob)
 	visible_message(

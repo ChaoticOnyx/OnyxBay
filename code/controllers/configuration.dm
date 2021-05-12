@@ -4,6 +4,7 @@ var/list/gamemode_cache = list()
 	var/server_name = null					// server name (for world name / status)
 	var/server_id = null					// server id (used for separate bans storing)
 	var/server_suffix = 0					// generate numeric suffix based on server port
+	var/subserver_name = null               // subserver name in window title, ignored if null
 
 	var/log_ooc = 0							// Log OOC channel
 	var/log_access = 0						// Log login/logout
@@ -21,7 +22,7 @@ var/list/gamemode_cache = list()
 	var/log_adminwarn = 0					// Log warnings admins get about bomb construction and such
 	var/log_pda = 0							// Log pda messages
 	var/log_hrefs = 0						// Log all links clicked in-game. Could be used for debugging and tracking down exploits
-	var/log_world_output = 0				// Log world.log << messages
+	var/log_world_output = 0				// Log to_world_log(messages)
 
 	var/sql_enabled = FALSE					// SQL storage. If you want to enable it, use sql_enabled var in config file
 
@@ -454,6 +455,9 @@ var/list/gamemode_cache = list()
 
 				if ("serversuffix")
 					config.server_suffix = 1
+
+				if ("subserver_name")
+					config.subserver_name = value
 
 				if ("hostedby")
 					config.hostedby = value

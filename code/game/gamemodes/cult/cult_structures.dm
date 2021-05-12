@@ -43,21 +43,21 @@
 				"You hear a tinkle of crystal shards"
 				)
 			user.do_attack_animation(src)
-			playsound(get_turf(src),get_sfx("window_breaking"), 75, 1)
+			playsound(src, get_sfx("window_breaking"), 75, 1)
 			isbroken = 1
 			set_density(0)
 			icon_state = "pylon-broken"
 			set_light(0)
 		else
 			to_chat(user, "You hit the pylon!")
-			playsound(get_turf(src), get_sfx("glass_hit"), 75, 1)
+			playsound(src, get_sfx("glass_hit"), 75, 1)
 	else
 		if(prob(damage * 2))
 			to_chat(user, "You pulverize what was left of the pylon!")
 			qdel(src)
 		else
 			to_chat(user, "You hit the pylon!")
-		playsound(get_turf(src), get_sfx("glass_hit"), 75, 1)
+		playsound(src, get_sfx("glass_hit"), 75, 1)
 
 
 /obj/structure/cult/pylon/proc/repair(mob/user as mob)
@@ -128,7 +128,7 @@
 	var/mob/living/M = A
 
 	if(M.stat != DEAD)
-		if(M.transforming)
+		if(M.HasMovementHandler(/datum/movement_handler/mob/transformation))
 			return
 		if(M.has_brain_worms())
 			return //Borer stuff - RR
@@ -136,8 +136,8 @@
 		if(iscultist(M)) return
 		if(!ishuman(M) && !isrobot(M)) return
 
-		M.transforming = 1
-		M.canmove = 0
+		M.AddMovementHandler(/datum/movement_handler/mob/transformation)
+
 		M.icon = null
 		M.overlays.len = 0
 		M.set_invisibility(101)

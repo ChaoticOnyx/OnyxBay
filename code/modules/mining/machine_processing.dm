@@ -74,7 +74,7 @@
 	dat += "</table><hr>"
 	dat += "Currently displaying [show_all_ores ? "all ore types" : "only available ore types"]. <A href='?src=\ref[src];toggle_ores=1'>\[[show_all_ores ? "show less" : "show more"]\]</a></br>"
 	dat += "The ore processor is currently <A href='?src=\ref[src];toggle_power=1'>[(machine.active ? "<font color='green'>processing</font>" : "<font color='red'>disabled</font>")]</a>."
-	user << browse(dat, "window=processor_console;size=400x500")
+	show_browser(user, dat, "window=processor_console;size=400x500")
 	onclose(user, "processor_console")
 	return
 
@@ -142,7 +142,7 @@
 
 
 /obj/machinery/mineral/processing_unit
-	name = "industrial smelter" //This isn't actually a goddamn furnace, we're in space and it's processing platinum and flammable phoron...
+	name = "industrial smelter" //This isn't actually a goddamn furnace, we're in space and it's processing platinum and flammable plasma...
 	icon = 'icons/obj/machines/mining_machines.dmi'
 	icon_state = "furnace-off"
 	density = 1
@@ -206,7 +206,7 @@
 		if(O.ore && !isnull(ores_stored[O.ore.name]))
 			ores_stored[O.ore.name]++
 		else
-			world.log << "[src] encountered ore [O] with oretag [O.ore ? O.ore : "(no ore)"] which this machine did not have an entry for!"
+			to_world_log("[src] encountered ore [O] with oretag [O.ore ? O.ore : "(no ore)"] which this machine did not have an entry for!")
 
 		qdel(O)
 

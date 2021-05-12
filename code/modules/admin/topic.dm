@@ -312,10 +312,10 @@
 		ban_unban_log_save("[key_name(usr)] edited [banned_key]'s ban. Reason: [reason] Duration: [duration]")
 		log_and_message_admins("edited [banned_key]'s ban. Reason: [reason] Duration: [duration]")
 		Banlist.cd = "/base/[banfolder]"
-		Banlist["reason"] << reason
-		Banlist["temp"] << temp
-		Banlist["minutes"] << minutes
-		Banlist["bannedby"] << usr.ckey
+		to_file(Banlist["reason"],   reason)
+		to_file(Banlist["temp"],     temp)
+		to_file(Banlist["minutes"],  minutes)
+		to_file(Banlist["bannedby"], usr.ckey)
 		Banlist.cd = "/base"
 		feedback_inc("ban_edit",1)
 		unbanpanel()
@@ -654,7 +654,7 @@
 		jobs += "</tr></table>"
 		body = "<body>[jobs]</body>"
 		dat = "<tt>[header][body]</tt>"
-		usr << browse(dat, "window=jobban2;size=800x490")
+		show_browser(usr, dat, "window=jobban2;size=800x490")
 		return
 
 	//JOBBAN'S INNARDS
@@ -1007,7 +1007,7 @@
 		dat += {"<A href='?src=\ref[src];c_mode2=secret'>Secret</A><br>"}
 		dat += {"<A href='?src=\ref[src];c_mode2=random'>Random</A><br>"}
 		dat += {"Now: [SSticker.master_mode]"}
-		usr << browse(dat, "window=c_mode")
+		show_browser(usr, dat, "window=c_mode")
 
 	else if(href_list["f_secret"])
 		if(!check_rights(R_ADMIN))	return
@@ -1021,7 +1021,7 @@
 			dat += {"<A href='?src=\ref[src];f_secret2=[mode]'>[config.mode_names[mode]]</A><br>"}
 		dat += {"<A href='?src=\ref[src];f_secret2=secret'>Random (default)</A><br>"}
 		dat += {"Now: [secret_force_mode]"}
-		usr << browse(dat, "window=f_secret")
+		show_browser(usr, dat, "window=f_secret")
 
 	else if(href_list["c_mode2"])
 		if(!check_rights(R_ADMIN|R_SERVER))	return
@@ -1234,7 +1234,7 @@
 
 		if(config.allow_admin_rev)
 			L.revive()
-			log_and_message_admins("healed / Rrvived [key_name(L)]")
+			log_and_message_admins("healed / revived [key_name(L)]")
 		else
 			to_chat(usr, "Admin Rejuvinates have been disabled")
 
@@ -1463,9 +1463,8 @@
 		message_admins("[key_name(M)] has been hit by Bluespace Artillery fired by [src.owner]")
 
 		var/obj/effect/stop/S
-		S = new /obj/effect/stop
+		S = new /obj/effect/stop(M.loc)
 		S.victim = M
-		S.loc = M.loc
 		spawn(20)
 			qdel(S)
 
@@ -1539,7 +1538,20 @@
 				var/obj/pageobj = B.pages[page]
 				data += "<A href='?src=\ref[src];AdminFaxViewPage=[page];paper_bundle=\ref[B]'>Page [page] - [pageobj.name]</A><BR>"
 
-			usr << browse(data, "window=[B.name]")
+			show_browser(usr, data, "window=[B.name]")
+		else if (istype(fax, /obj/item/weapon/complaint_folder))
+			var/data = "<meta charset=\"utf-8\">"
+			var/obj/item/weapon/complaint_folder/CF = fax
+			data += "<A href='?src=\ref[src];AdminFaxViewPaper=\ref[CF.main_form]'>Main form ([CF?.main_form?.signed_ckey])</A><BR>"
+			for (var/obj/item/weapon/paper/complaint_form/cf in CF.contents)
+				if (cf == CF.main_form)
+					continue
+				data += "<A href='?src=\ref[src];AdminFaxViewPaper=\ref[cf]'>[cf] ([cf.signed_ckey])</A><BR>"
+			if (CF.target_ckey == "???")
+				data += "<HR><BR>"
+				data += "<A href='?src=\ref[src];AdminFaxComplaintCkey=\ref[CF]'>Set target ckey manually</A><BR>"
+
+			show_browser(usr, data, "window=[CF.name]")
 		else
 			to_chat(usr, "<span class='warning'>The faxed item is not viewable. This is probably a bug, and should be reported on the tracker: [fax.type]</span>")
 	else if (href_list["AdminFaxViewPage"])
@@ -1555,14 +1567,28 @@
 			var/obj/item/weapon/photo/H = bundle.pages[page]
 			H.show(src.owner)
 		return
-
-	else if(href_list["FaxReply"])
+	else if (href_list["AdminFaxViewPaper"])
+		var/obj/item/weapon/paper/P = locate(href_list["AdminFaxViewPaper"])
+		ASSERT(istype(P))
+		P.show_content(src.owner, 1)
+		return
+	else if (href_list["AdminFaxComplaintCkey"])
+		var/obj/item/weapon/complaint_folder/CF = locate(href_list["AdminFaxComplaintCkey"])
+		ASSERT(istype(CF))
+		var/key = sanitize(input(usr, "Enter target ckey:", "Complaint ckey manual fix", "???") as text|null)
+		var/rank = sanitize(input(usr, "Enter target rank:", "Complaint rank manual fix", "???") as text|null)
+		if (key && rank)
+			CF.target_ckey = ckey(key)
+			CF.target_rank = rank
+			CF.postvalidate()
+		return
+	else if (href_list["FaxReply"])
 		var/mob/sender = locate(href_list["FaxReply"])
 		var/obj/machinery/photocopier/faxmachine/fax = locate(href_list["originfax"])
 		var/replyorigin = href_list["replyorigin"]
 
 
-		var/obj/item/weapon/paper/admin/P = new /obj/item/weapon/paper/admin( null ) //hopefully the null loc won't cause trouble for us
+		var/obj/item/weapon/paper/admin/P = new /obj/item/weapon/paper/admin(null) //hopefully the null loc won't cause trouble for us
 		faxreply = P
 
 		P.admindatum = src
@@ -1609,7 +1635,7 @@
 
 		var/mob/M = locate(href_list["individuallog"]) in SSmobs.mob_list
 		if(!ismob(M))
-			usr << "This can only be used on instances of type /mob."
+			to_chat(usr, "This can only be used on instances of type /mob.")
 			return
 
 		show_individual_logging_panel(M, href_list["log_type"])
@@ -1979,7 +2005,7 @@
 		if(check_rights(R_ADMIN|R_SERVER))
 			if(href_list["vsc"] == "airflow")
 				vsc.ChangeSettingsDialog(usr,vsc.settings)
-			if(href_list["vsc"] == "phoron")
+			if(href_list["vsc"] == "plasma")
 				vsc.ChangeSettingsDialog(usr,vsc.plc.settings)
 			if(href_list["vsc"] == "default")
 				vsc.SetDefault(usr)
@@ -2001,7 +2027,7 @@
 					to_chat(usr, "Failed to add language '[lang2toggle]' from \the [M]!")
 
 			show_player_panel(M)
-	
+
 	else if(href_list["listen_tape_sound"])
 		var/sound/S = sound(locate(href_list["listen_tape_sound"]))
 		if(!S) return
@@ -2009,7 +2035,7 @@
 		S.channel = 703
 		sound_to(usr, S)
 		to_chat(usr, "<B><A HREF='?_src_=holder;stop_tape_sound=1'>Stop listening</A></B>")
-	
+
 	else if(href_list["stop_tape_sound"])
 		var/sound/S = sound(null)
 		S.channel = 703
@@ -2077,7 +2103,7 @@
 				if("resolve emergency")
 					var/datum/objective/ert_station_save/basic = new()
 					GLOB.ert.add_global_objective(basic)
-				else if("custom")
+				if("custom")
 					var/text = input("Write down the ERT mission", "ERT mission", null)
 					if(text)
 						var/datum/objective/ert_custom/custom = new
@@ -2104,17 +2130,17 @@
 		return
 
 	watchlist.AdminTopicProcess(src, href_list)
-	EAMS_AdminTopicProcess(src, href_list)
+	IAAJ_AdminTopicProcess(src, href_list)
 	SpeciesIngameWhitelist_AdminTopicProcess(src, href_list)
 
 
-mob/living/proc/can_centcom_reply()
+/mob/living/proc/can_centcom_reply()
 	return 0
 
-mob/living/carbon/human/can_centcom_reply()
+/mob/living/carbon/human/can_centcom_reply()
 	return istype(l_ear, /obj/item/device/radio/headset) || istype(r_ear, /obj/item/device/radio/headset)
 
-mob/living/silicon/ai/can_centcom_reply()
+/mob/living/silicon/ai/can_centcom_reply()
 	return silicon_radio != null && !check_unable(2)
 
 /datum/proc/extra_admin_link(prefix, sufix, short_links)

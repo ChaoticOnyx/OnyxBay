@@ -121,6 +121,8 @@ Class Procs:
 	var/clicksound			// sound played on succesful interface use by a carbon lifeform
 	var/clickvol = 40		// sound played on succesful interface use
 	var/life_tick = 0		// O P T I M I Z A T I O N
+	var/beep_last_played = 0
+	var/list/beepsounds = null
 
 /obj/machinery/Initialize(mapload, d=0, populate_components = TRUE)
 	. = ..()
@@ -142,6 +144,14 @@ Class Procs:
 
 	START_PROCESSING(SSmachines, src) // It's safe to remove machines from here.
 	SSmachines.machinery += src // All machines should remain in this list, always.
+
+/obj/machinery/proc/play_beep()
+	if (isnull(beepsounds))
+		return
+
+	if(!stat && world.time > beep_last_played + 60 SECONDS && prob(10))
+		beep_last_played = world.time
+		playsound(src.loc, pick(beepsounds), 30)
 
 /obj/machinery/Destroy()
 	SSmachines.machinery -= src
@@ -214,14 +224,21 @@ Class Procs:
 	if(!interact_offline && (stat & NOPOWER))
 		return STATUS_CLOSE
 
+	if(ishuman(user))
+		var/mob/living/carbon/human/H = user
+		if(H.IsAdvancedToolUser(TRUE) == FALSE)
+			return STATUS_CLOSE
+
 	return ..()
 
 /obj/machinery/CouldUseTopic(mob/user)
 	..()
-	user.set_machine(src)
+	if(user)
+		user.set_machine(src)
 
 /obj/machinery/CouldNotUseTopic(mob/user)
-	user.unset_machine()
+	if(user)
+		user.unset_machine()
 
 ////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -236,26 +253,29 @@ Class Procs:
 
 /obj/machinery/attack_hand(mob/user as mob)
 	if(inoperable(MAINT))
-		return 1
+		return TRUE
 	if(user.lying || user.stat)
-		return 1
+		return TRUE
 	if ( ! (istype(usr, /mob/living/carbon/human) || \
 			istype(usr, /mob/living/silicon)))
 		to_chat(usr, "<span class='warning'>You don't have the dexterity to do this!</span>")
-		return 1
+		return TRUE
 /*
 	//distance checks are made by atom/proc/DblClick
 	if ((get_dist(src, user) > 1 || !istype(src.loc, /turf)) && !istype(user, /mob/living/silicon))
-		return 1
+		return TRUE
 */
 	if (ishuman(user))
 		var/mob/living/carbon/human/H = user
+		if(H.IsAdvancedToolUser(TRUE) == FALSE)
+			to_chat(user, SPAN("warning", "I'm not smart enough to do that!"))
+			return TRUE
 		if(H.getBrainLoss() >= 55)
-			visible_message("<span class='warning'>[H] stares cluelessly at \the [src].</span>")
-			return 1
+			visible_message(SPAN("warning", "[H] stares cluelessly at \the [src]."))
+			return TRUE
 		else if(prob(H.getBrainLoss()))
-			to_chat(user, "<span class='warning'>You momentarily forget how to use \the [src].</span>")
-			return 1
+			to_chat(user, SPAN("warning", "You momentarily forget how to use \the [src]."))
+			return TRUE
 
 	return ..()
 
@@ -279,9 +299,9 @@ Class Procs:
 
 /obj/machinery/proc/shock(mob/user, prb)
 	if(inoperable())
-		return 0
+		return FALSE
 	if(!prob(prb))
-		return 0
+		return FALSE
 	var/datum/effect/effect/system/spark_spread/s = new /datum/effect/effect/system/spark_spread
 	s.set_up(5, 1, src)
 	s.start()
@@ -372,7 +392,7 @@ Class Procs:
 
 /obj/machinery/proc/display_parts(mob/user)
 	. = "<span class='notice'>Following parts detected in the machine:</span>"
-	for(var/var/obj/item/C in component_parts)
+	for(var/obj/item/C in component_parts)
 		. += "\n<span class='notice'>	[C.name]</span>"
 
 /obj/machinery/examine(mob/user)

@@ -4,6 +4,7 @@
 	icon = 'icons/obj/closet.dmi'
 	icon_state = "closed"
 	pull_sound = "pull_closet"
+	pull_slowdown = PULL_SLOWDOWN_HEAVY
 	density = 1
 	w_class = ITEM_SIZE_NO_CONTAINER
 	layer = STRUCTURE_LAYER
@@ -36,6 +37,8 @@
 	var/obj/item/weapon/shield/closet/cdoor
 	var/dremovable = 1	//	some closets' doors cannot be removed
 	var/nodoor = 0	// for crafting
+
+	var/open_delay = 0
 
 /obj/structure/closet/nodoor
 	nodoor = 1
@@ -136,9 +139,10 @@
 		else
 			. += "\nIt is full."
 
-/obj/structure/closet/CanPass(atom/movable/mover, turf/target, height=0, air_group=0)
-	if(air_group || (height==0 || wall_mounted)) return 1
-	return (!density)
+/obj/structure/closet/CanPass(atom/movable/mover, turf/target)
+	if(wall_mounted)
+		return TRUE
+	return ..()
 
 /obj/structure/closet/proc/can_open()
 	if((setup & CLOSET_HAS_LOCK) && locked)
@@ -389,8 +393,7 @@
 			attach_door(C)
 			return
 
-		if(usr.drop_item())
-			W.forceMove(loc)
+		if(usr.unEquip(W, target = loc))
 			W.pixel_x = 0
 			W.pixel_y = 0
 			W.pixel_z = 0
@@ -486,10 +489,18 @@
 	if(!src.open())
 		to_chat(user, "<span class='notice'>It won't budge!</span>")
 
-/obj/structure/closet/attack_hand(mob/user as mob)
-	src.add_fingerprint(user)
-	src.toggle(user)
+/obj/structure/closet/attack_hand(mob/user)
+	add_fingerprint(user)
 	user.setClickCooldown(2)
+	if(in_use)
+		to_chat(user, SPAN("warning", "You can't do this right now."))
+		return
+	in_use = TRUE
+	if(open_delay && !do_after(user, open_delay))
+		in_use = FALSE
+		return
+	toggle(user)
+	in_use = FALSE
 
 // tk grab then use on self
 /obj/structure/closet/attack_self_tk(mob/user as mob)
@@ -512,8 +523,7 @@
 		return
 
 	if(ishuman(usr))
-		src.add_fingerprint(usr)
-		src.toggle(usr)
+		attack_hand(usr)
 	else
 		to_chat(usr, "<span class='warning'>This mob type can't use this verb.</span>")
 
@@ -654,7 +664,7 @@
 
 	add_fingerprint(user)
 
-	if(!user.IsAdvancedToolUser())
+	if(!user.IsAdvancedToolUser(1))
 		to_chat(user, FEEDBACK_YOU_LACK_DEXTERITY)
 		return FALSE
 

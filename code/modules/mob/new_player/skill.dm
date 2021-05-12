@@ -15,7 +15,7 @@ var/list/hidden_skill_types = list(\
 	)
 
 
-proc/setup_skills()
+/proc/setup_skills()
 	if(SKILLS == null)
 		SKILLS = list()
 		for(var/T in (typesof(/datum/skill)-hidden_skill_types))
@@ -26,10 +26,10 @@ proc/setup_skills()
 				var/list/L = SKILLS[S.field]
 				L += S
 
-mob/living/carbon/human/proc/GetSkillClass(points)
+/mob/living/carbon/human/proc/GetSkillClass(points)
 	return CalculateSkillClass(points, age)
 
-proc/show_skill_window(mob/user, mob/living/carbon/human/M)
+/proc/show_skill_window(mob/user, mob/living/carbon/human/M)
 	if(!istype(M)) return
 	if(SKILLS == null)
 		setup_skills()
@@ -60,11 +60,11 @@ proc/show_skill_window(mob/user, mob/living/carbon/human/M)
 			HTML += "</tr>"
 	HTML += "</table>"
 
-	user << browse(null, "window=preferences")
-	user << browse(HTML, "window=show_skills;size=600x800")
+	close_browser(user, "window=preferences")
+	show_browser(user, HTML, "window=show_skills;size=600x800")
 	return
 
-mob/living/carbon/human/verb/show_skills()
+/mob/living/carbon/human/verb/show_skills()
 	set category = "IC"
 	set name = "Show Own Skills"
 

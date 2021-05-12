@@ -81,7 +81,7 @@
 		/obj/item/weapon/reagent_containers/glass,
 		/obj/item/weapon/reagent_containers/pill,
 		/obj/item/weapon/reagent_containers/ivbag,
-		/obj/item/stack/material/phoron,
+		/obj/item/stack/material/plasma,
 		/obj/item/weapon/storage/pill_bottle,
 		/obj/item/weapon/reagent_containers/food/snacks/monkeycube,
 		/obj/item/weapon/virusdish,
@@ -188,21 +188,29 @@
 
 	cant_hold = list() // understandable, have a great day
 
-/obj/item/weapon/gripper/surgical //Used to handle organs.
-	name = "surgical gripper"
+/obj/item/weapon/gripper/medical //Used to do medical stuff.
+	name = "medical gripper"
 	icon_state = "gripper-medical"
-	desc = "A simple grasping tool for holding surgical utensils as well organs and bodyparts."
+	desc = "A simple grasping tool for holding surgical utensils as well organs and bodyparts, also works fine with other medical stuff."
 	storage_type = list(
-		/obj/item/weapon/storage/box/
+		/obj/item/weapon/storage/box/,
+		/obj/item/weapon/storage/fancy/vials,
+		/obj/item/weapon/storage/lockbox/vials
 		)
 	can_hold = list(
 	/obj/item/organ,
-	/obj/item/weapon/reagent_containers/ivbag,
 	/obj/item/weapon/tank/anesthetic,
 	/obj/item/weapon/reagent_containers/food/snacks/meat,
 	/obj/item/device/mmi,
 	/obj/item/robot_parts,
-	/obj/item/weapon/paper
+	/obj/item/weapon/paper,
+	/obj/item/weapon/reagent_containers/glass,
+	/obj/item/weapon/reagent_containers/pill,
+	/obj/item/weapon/reagent_containers/ivbag,
+	/obj/item/stack/material/plasma,
+	/obj/item/weapon/storage/pill_bottle,
+	/obj/item/weapon/reagent_containers/food/snacks/monkeycube,
+	/obj/item/weapon/virusdish,
 	)
 
 /obj/item/weapon/gripper/no_use //Used when you want to hold and put items in other things, but not able to 'use' the item
@@ -225,17 +233,6 @@
 		. += "\nIt is holding \a [wrapped]."
 	else if (length(storage_type))
 		. += "\n[src] is currently can [mode == MODE_EMPTY ? "empty" : "open"] containers."
-
-/obj/item/weapon/gripper/integrated_circuit/attack_self(mob/living/silicon/user)
-	if(wrapped)
-		if (istype(wrapped, /obj/item/device/electronic_assembly))
-			var/obj/item/device/electronic_assembly/O = wrapped
-			O.interact(user)
-
-/obj/item/weapon/gripper/integrated_circuit/afterattack(atom/target, mob/user, proximity)
-	if(proximity && istype(wrapped, /obj/item/integrated_circuit) && istype(target, /obj/item/device/electronic_assembly))
-		var/obj/item/device/electronic_assembly/AS = target
-		AS.try_add_component(wrapped, user, AS)
 
 /obj/item/weapon/gripper/attack_self(mob/user as mob)
 	if(wrapped)
@@ -290,6 +287,12 @@
 	user.do_attack_animation(src)
 
 	if(wrapped)
+		if(istype(target, /obj/item/device/electronic_assembly) && istype(wrapped, /obj/item/integrated_circuit))
+			var/obj/item/device/electronic_assembly/AS = target
+			wrapped.forceMove(user, params)
+			AS.try_add_component(wrapped, user, AS)
+			wrapped = null
+			return
 		if(istype(target,/obj/structure/table)) //Putting item on the table if any
 			var/obj/structure/table/T = target
 			to_chat(src.loc, "<span class='notice'>You place \the [wrapped] on \the [target].</span>")
@@ -406,6 +409,17 @@
 	else if(istype(target,/obj/machinery/portable_atmospherics/canister))
 		var/obj/machinery/portable_atmospherics/canister/A = target
 		A.ui_interact(user)
+
+	else if(istype(target, /obj/machinery/mining/drill))
+		var/obj/machinery/mining/drill/hdrill = target
+		if(hdrill.panel_open && hdrill.cell && user.Adjacent(hdrill))
+			wrapped = hdrill.cell
+			hdrill.cell.add_fingerprint(user)
+			hdrill.cell.update_icon()
+			hdrill.cell.loc = src
+			hdrill.cell = null
+
+			user.visible_message(SPAN_DANGER("[user] removes the power cell from [hdrill]!"), "You remove the power cell.")
 
 	else if(istype(target, /obj/machinery/cell_charger))
 		var/obj/machinery/cell_charger/charger = target
@@ -625,4 +639,4 @@
 
 	dat += resources
 
-	src << browse(dat, "window=robotmod")
+	show_browser(src, dat, "window=robotmod")

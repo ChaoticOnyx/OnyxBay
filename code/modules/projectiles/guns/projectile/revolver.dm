@@ -232,7 +232,7 @@
 	insert_cell(C, user)
 	return 1
 /obj/item/weapon/gun/projectile/revolver/m2019/detective/proc/usecharge(UC)
-	if(bcell)
+	if(bcell && chambered?.BB)
 		if(bcell.checked_use(UC))
 			return 1
 		else

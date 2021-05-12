@@ -627,14 +627,12 @@
 		else
 			dat += "<A href='?src=\ref[src];help=2'>Show Help</A><BR>"
 	dat += "</BODY></HTML>"
-	user << browse(dat, "window=instrument;size=700x300")
+	show_browser(user, dat, "window=instrument;size=700x300")
 	onclose(user, "instrument")
 
 /obj/item/instrument/Topic(href, href_list)
-	if(..())
-		return 1
-	if(!in_range(src, usr) || issilicon(usr) || !isliving(usr) || !usr.canmove || usr.restrained())
-		usr << browse(null, "window=instrument;size=700x300")
+	if((. = ..()))
+		close_browser(usr, "window=instrument;size=700x300")
 		onclose(usr, "instrument")
 		return
 

@@ -19,6 +19,7 @@
 	siemens_coefficient = 0.6
 	w_class = ITEM_SIZE_NORMAL
 	var/has_visor = 1
+	ear_protection = 1
 
 /obj/item/clothing/head/helmet/attack_self(mob/user)
 	if(has_visor)
@@ -88,8 +89,8 @@
 //Non-hardsuit ERT helmets.
 //Commander
 /obj/item/clothing/head/helmet/ert
-	name = "asset protection command helmet"
-	desc = "An in-atmosphere helmet worn by many corporate and private asset protection forces. Has blue highlights."
+	name = "ERT commander helmet"
+	desc = "An in-atmosphere helmet worn by NanoTrasen's elite Emergency Response Teams. Has blue highlights."
 	icon_state = "erthelmet_cmd"
 	valid_accessory_slots = null
 	item_state_slots = list(
@@ -102,20 +103,20 @@
 
 //Security
 /obj/item/clothing/head/helmet/ert/security
-	name = "asset protection security helmet"
-	desc = "An in-atmosphere helmet worn by many corporate and private asset protection forces. Has red highlights."
+	name = "ERT security helmet"
+	desc = "An in-atmosphere helmet worn by NanoTrasen's elite Emergency Response Teams. Has red highlights."
 	icon_state = "erthelmet_sec"
 
 //Engineer
 /obj/item/clothing/head/helmet/ert/engineer
-	name = "asset protection engineering helmet"
-	desc = "An in-atmosphere helmet worn by many corporate and private asset protection forces. Has orange highlights."
+	name = "ERT engineering helmet"
+	desc = "An in-atmosphere helmet worn by NanoTrasen's elite Emergency Response Teams. Has orange highlights."
 	icon_state = "erthelmet_eng"
 
 //Medical
 /obj/item/clothing/head/helmet/ert/medical
-	name = "asset protection medical helmet"
-	desc = "An in-atmosphere helmet worn by many corporate and private asset protection forces. Has red and white highlights."
+	name = "ERT medical helmet"
+	desc = "An in-atmosphere helmet worn by NanoTrasen's elite Emergency Response Teams. Has red and white highlights."
 	icon_state = "erthelmet_med"
 
 //All of the armor below is mostly unused
@@ -142,7 +143,7 @@
 	siemens_coefficient = 0.4
 	has_visor = 0
 
-/obj/item/clothing/head/helmet/merc
+/obj/item/clothing/head/helmet/syndi
 	name = "heavy helmet"
 	desc = "A heavily reinforced helmet painted with red markings. Feels like it could take a lot of punishment."
 	icon_state = "helmet_merc"

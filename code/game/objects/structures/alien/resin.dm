@@ -38,11 +38,11 @@
 		// Aliens can get straight through these.
 		if(istype(user,/mob/living/carbon))
 			var/mob/living/carbon/M = user
-			if(locate(/obj/item/organ/internal/xenos/hivenode) in M.internal_organs)
+			if(M.a_intent == I_HURT && (locate(/obj/item/organ/internal/xenos/hivenode) in M.internal_organs))
 				visible_message("<span class='alium'>\The [user] strokes \the [name] and it melts away!</span>")
 				health = 0
 				healthcheck()
-				return
+			return
 		visible_message("<span class='danger'>\The [user] claws at \the [src]!</span>")
 		// Todo check attack datums.
 		health -= rand(5,10)

@@ -31,8 +31,8 @@
 	var/on_fire = 0
 	var/burn_time = 20 //if the rag burns for too long it turns to ashes
 
-/obj/item/weapon/reagent_containers/glass/rag/New()
-	..()
+/obj/item/weapon/reagent_containers/glass/rag/Initialize()
+	. = ..()
 	update_name()
 
 /obj/item/weapon/reagent_containers/glass/rag/Destroy()
@@ -167,10 +167,10 @@
 		return
 
 	//also copied from matches
-	if(reagents.get_reagent_amount(/datum/reagent/toxin/phoron)) // the phoron explodes when exposed to fire
+	if(reagents.get_reagent_amount(/datum/reagent/toxin/plasma)) // the plasma explodes when exposed to fire
 		visible_message("<span class='danger'>\The [src] conflagrates violently!</span>")
 		var/datum/effect/effect/system/reagents_explosion/e = new()
-		e.set_up(reagents.get_reagent_amount(/datum/reagent/toxin/phoron), src, 0, 0)
+		e.set_up(reagents.get_reagent_amount(/datum/reagent/toxin/plasma), src, 0, 0)
 		e.start()
 		qdel(src)
 		return

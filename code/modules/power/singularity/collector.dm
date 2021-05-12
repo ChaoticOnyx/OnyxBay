@@ -3,13 +3,13 @@ var/global/list/rad_collectors = list()
 
 /obj/machinery/power/rad_collector
 	name = "Radiation Collector Array"
-	desc = "A device which uses radiation and phoron to produce power."
+	desc = "A device which uses radiation and plasma to produce power."
 	icon = 'icons/obj/singularity.dmi'
 	icon_state = "ca"
 	anchored = 0
 	density = 1
 	req_access = list(access_engine_equip)
-	var/obj/item/weapon/tank/phoron/P = null
+	var/obj/item/weapon/tank/plasma/P = null
 	var/last_power = 0
 	var/last_power_new = 0
 	var/active = 0
@@ -19,12 +19,6 @@ var/global/list/rad_collectors = list()
 	var/health = 100
 	var/max_safe_temp = 1000 + T0C
 	var/melted
-
-	var/max_rads = 250 // rad collector will reach max power output at this value, and break at twice this value
-	var/max_power = 5e5
-	var/pulse_coeff = 20
-	var/end_time = 0
-	var/alert_delay = 10 SECONDS
 
 /obj/machinery/power/rad_collector/New()
 	..()
@@ -49,23 +43,17 @@ var/global/list/rad_collectors = list()
 	last_power = last_power_new
 	last_power_new = 0
 
-	var/rads = SSradiation.get_rads_at_turf(get_turf(src))
-	if(P && active && rads)
-		if(rads > max_rads)
-			if(world.time > end_time)
-				end_time = world.time + alert_delay
-				visible_message("\icon[src] \the [src] beeps loudly as the radiation reaches dangerous levels, indicating imminent damage.")
-				playsound(src, 'sound/effects/screech.ogg', 100, 1, 1)
-		if(rads > max_rads * 2)
-			collector_break()
-		receive_pulse(12.5*(rads/max_rads)/(0.3+(rads/max_rads)))
+	if(P && active)
+		var/rads = SSradiation.get_rads_at_turf(get_turf(src))
+		if(rads)
+			receive_pulse(rads * 5) //Maths is hard
 
 	if(P)
-		if(P.air_contents.gas["phoron"] == 0)
+		if(P.air_contents.gas["plasma"] == 0)
 			investigate_log("<font color='red'>out of fuel</font>.","singulo")
 			eject()
 		else
-			P.air_contents.adjust_gas("phoron", -0.01*drainratio*min(rads,max_rads)/max_rads) //fuel cost increases linearly with incoming radiation
+			P.air_contents.adjust_gas("plasma", -0.001 * drainratio)
 	return
 
 
@@ -78,7 +66,7 @@ var/global/list/rad_collectors = list()
 			toggle_power()
 			user.visible_message("[user.name] turns the [name] [active? "on":"off"].", \
 			"You turn the [name] [active? "on":"off"].")
-			investigate_log("turned [active?"<font color='green'>on</font>":"<font color='red'>off</font>"] by [user.key]. [P?"Fuel: [round(P.air_contents.gas["phoron"]/0.29)]%":"<font color='red'>It is empty</font>"].","singulo")
+			investigate_log("turned [active?"<font color='green'>on</font>":"<font color='red'>off</font>"] by [user.key]. [P?"Fuel: [round(P.air_contents.gas["plasma"]/0.29)]%":"<font color='red'>It is empty</font>"].","singulo")
 			return
 		else
 			to_chat(user, SPAN_WARNING("The controls are locked!"))
@@ -86,12 +74,12 @@ var/global/list/rad_collectors = list()
 
 
 /obj/machinery/power/rad_collector/attackby(obj/item/W, mob/user)
-	if(istype(W, /obj/item/weapon/tank/phoron))
+	if(istype(W, /obj/item/weapon/tank/plasma))
 		if(!anchored)
 			to_chat(user, "<span class='warning'>The [src] needs to be secured to the floor first.</span>")
 			return 1
 		if(P)
-			to_chat(user, "<span class='warning'>There's already a phoron tank loaded.</span>")
+			to_chat(user, "<span class='warning'>There's already a plasma tank loaded.</span>")
 			return 1
 		user.drop_item()
 		P = W
@@ -104,7 +92,7 @@ var/global/list/rad_collectors = list()
 			return 1
 	else if(isWrench(W))
 		if(P)
-			to_chat(user, "<span class='notice'>Remove the phoron tank first.</span>")
+			to_chat(user, "<span class='notice'>Remove the plasma tank first.</span>")
 			return 1
 		for(var/obj/machinery/power/rad_collector/R in get_turf(src))
 			if(R != src)
@@ -137,7 +125,6 @@ var/global/list/rad_collectors = list()
 	. = ..()
 	if (distance <= 3 && !(stat & BROKEN))
 		. += "\nThe meter indicates that \the [src] is collecting [last_power] W."
-		return 1
 
 /obj/machinery/power/rad_collector/ex_act(severity)
 	switch(severity)
@@ -168,7 +155,7 @@ var/global/list/rad_collectors = list()
 
 /obj/machinery/power/rad_collector/proc/eject()
 	locked = 0
-	var/obj/item/weapon/tank/phoron/Z = P
+	var/obj/item/weapon/tank/plasma/Z = P
 	if (!Z)
 		return
 	Z.forceMove(get_turf(src))
@@ -182,7 +169,7 @@ var/global/list/rad_collectors = list()
 /obj/machinery/power/rad_collector/proc/receive_pulse(pulse_strength)
 	if(P && active)
 		var/power_produced = 0
-		power_produced = min(100*P.air_contents.gas["phoron"]*pulse_strength*pulse_coeff,max_power)
+		power_produced = P.air_contents.gas["plasma"] * pulse_strength * 20
 		add_avail(power_produced)
 		last_power_new = power_produced
 		return

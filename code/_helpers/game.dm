@@ -65,10 +65,8 @@
 	var/lum = source.luminosity
 	source.luminosity = 6
 
-	var/list/heard = view(range, source)
+	. = view(range, source)
 	source.luminosity = lum
-
-	return heard
 
 /proc/isStationLevel(level)
 	return level in GLOB.using_map.station_levels
@@ -222,66 +220,75 @@
 
 
 /proc/get_mobs_in_radio_ranges(list/obj/item/device/radio/radios)
-
 	set background = 1
 
 	. = list()
 	// Returns a list of mobs who can hear any of the radios given in @radios
 	var/list/speaker_coverage = list()
-	for(var/obj/item/device/radio/R in radios)
-		if(R)
-			//Cyborg checks. Receiving message uses a bit of cyborg's charge.
-			var/obj/item/device/radio/borg/BR = R
-			if(istype(BR) && BR.myborg)
-				var/mob/living/silicon/robot/borg = BR.myborg
-				var/datum/robot_component/CO = borg.get_component("radio")
-				if(!CO)
-					continue //No radio component (Shouldn't happen)
-				if(!borg.is_component_functioning("radio") || !borg.cell_use_power(CO.active_usage))
-					continue //No power.
-
-			var/turf/speaker = get_turf(R)
-			if(speaker)
-				for(var/turf/T in hear(R.canhear_range,speaker))
-					speaker_coverage[T] = T
-
+	for(var/r in radios)
+		var/obj/item/device/radio/R = r // You better fucking be a radio.
+		var/turf/speaker = get_turf(R)
+		if(speaker)
+			for(var/turf/T in hear(R.canhear_range,speaker))
+				speaker_coverage[T] = R
 
 	// Try to find all the players who can hear the message
 	for(var/i = 1; i <= GLOB.player_list.len; i++)
 		var/mob/M = GLOB.player_list[i]
-		if(M)
-			var/turf/ear = get_turf(M)
-			if(ear)
-				// Ghostship is magic: Ghosts can hear radio chatter from anywhere
-				if(speaker_coverage[ear] || (isghost(M) && M.get_preference_value(/datum/client_preference/ghost_radio) == GLOB.PREF_ALL_CHATTER))
-					. |= M		// Since we're already looping through mobs, why bother using |= ? This only slows things down.
-	return .
+		if(M.can_hear_radio(speaker_coverage))
+			. += M
 
+/mob/proc/can_hear_radio(list/hearturfs)
+	return FALSE
+
+/mob/living/can_hear_radio(list/hearturfs)
+	return get_turf(src) in hearturfs
+
+/mob/living/silicon/robot/can_hear_radio(list/hearturfs)
+	var/turf/T = get_turf(src)
+	var/obj/item/device/radio/borg/R = hearturfs[T] // this should be an assoc list of turf-to-radio
+
+	// We heard it on our own radio? We use power for that.
+	if(istype(R) && R.myborg == src)
+		var/datum/robot_component/CO = get_component("radio")
+		if(!CO || !is_component_functioning("radio") || !cell_use_power(CO.active_usage))
+			return FALSE // Sorry, couldn't hear
+
+	return R // radio, true, false, what's the difference
+
+/mob/observer/ghost/can_hear_radio(list/hearturfs)
+	return get_preference_value(/datum/client_preference/ghost_radio) == GLOB.PREF_ALL_CHATTER
+
+//Uses dview to quickly return mobs and objects in view,
+// then adds additional mobs or objects if they are in range 'smartly',
+// based on their presence in lists of players or registered objects
 /proc/get_mobs_and_objs_in_view_fast(turf/T, range, list/mobs, list/objs, checkghosts = null)
-
-	var/list/hear = dview(range,T,INVISIBILITY_MAXIMUM)
+	var/list/hear = dview(range, T, INVISIBILITY_MAXIMUM)
 	var/list/hearturfs = list()
 
-	for(var/atom/movable/AM in hear)
-		if(ismob(AM))
-			mobs += AM
-			hearturfs += get_turf(AM)
-		else if(isobj(AM))
-			objs += AM
-			hearturfs += get_turf(AM)
+	for(var/thing in hear)
+		if(istype(thing, /obj)) //Can't use isobj() because /atom/movable returns true in that, and so lighting overlays would be included
+			objs += thing
+			hearturfs |= get_turf(thing)
+			continue
+		if(ismob(thing))
+			mobs += thing
+			hearturfs |= get_turf(thing)
 
-	for(var/mob/M in GLOB.player_list)
-		if(checkghosts && M.stat == DEAD && M.get_preference_value(checkghosts) != GLOB.PREF_NEARBY)
+	//A list of every mob with a client
+	for(var/mob in GLOB.player_list)
+		if(get_turf(mob) in hearturfs)
+			mobs |= mob
+			continue
+
+		var/mob/M = mob
+		if(checkghosts && M && M.stat == DEAD && M.get_preference_value(checkghosts) != GLOB.PREF_NEARBY)
 			mobs |= M
-		else if(get_turf(M) in hearturfs)
-			mobs |= M
 
-	for(var/obj/O in GLOB.listening_objects)
-		if(get_turf(O) in hearturfs)
-			objs |= O
-
-
-
+	//For objects below the top level who still want to hear
+	for(var/obj in GLOB.listening_objects)
+		if(get_turf(obj) in hearturfs)
+			objs |= obj
 
 
 proc
@@ -315,7 +322,7 @@ proc
 					return 0
 		return 1
 
-proc/isInSight(atom/A, atom/B)
+/proc/isInSight(atom/A, atom/B)
 	var/turf/Aturf = get_turf(A)
 	var/turf/Bturf = get_turf(B)
 
@@ -402,7 +409,7 @@ proc/isInSight(atom/A, atom/B)
 		for(var/client/C in show_to)
 			C.images -= I
 
-datum/projectile_data
+/datum/projectile_data
 	var/src_x
 	var/src_y
 	var/time

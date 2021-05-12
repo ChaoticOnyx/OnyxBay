@@ -272,6 +272,7 @@ GLOBAL_LIST_INIT(borer_reagent_types_by_name, setup_borer_reagents())
 	to_chat(src, "<span class='warning'>You focus your psychic lance on [M] and freeze their limbs with a wave of terrible dread.</span>")
 	to_chat(M, "<span class='wanring'>You feel a creeping, horrible sense of dread come over you, freezing your limbs and setting your heart racing.</span>")
 	M.Weaken(10)
+	M.Stun(10)
 
 	used_dominate = world.time
 

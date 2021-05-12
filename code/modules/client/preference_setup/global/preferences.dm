@@ -23,18 +23,15 @@ GLOBAL_VAR_CONST(PREF_HEAR, "Hear")
 GLOBAL_VAR_CONST(PREF_SILENT, "Silent")
 GLOBAL_VAR_CONST(PREF_SHORTHAND, "Shorthand")
 
-var/list/_client_preferences
-var/list/_client_preferences_by_key
-var/list/_client_preferences_by_type
-
 /proc/get_client_preferences()
-	if(!_client_preferences)
-		_client_preferences = list()
+	var/static/list/client_preferences
+	if(!client_preferences)
+		client_preferences = list()
 		for(var/ct in subtypesof(/datum/client_preference))
 			var/datum/client_preference/client_type = ct
 			if(initial(client_type.description))
-				_client_preferences += new client_type()
-	return _client_preferences
+				client_preferences += new client_type()
+	return client_preferences
 
 /proc/get_client_preference(datum/client_preference/preference)
 	if(istype(preference))
@@ -44,20 +41,22 @@ var/list/_client_preferences_by_type
 	return get_client_preference_by_key(preference)
 
 /proc/get_client_preference_by_key(preference)
-	if(!_client_preferences_by_key)
-		_client_preferences_by_key = list()
+	var/static/list/client_preferences_by_key
+	if(!client_preferences_by_key)
+		client_preferences_by_key = list()
 		for(var/ct in get_client_preferences())
 			var/datum/client_preference/client_pref = ct
-			_client_preferences_by_key[client_pref.key] = client_pref
-	return _client_preferences_by_key[preference]
+			client_preferences_by_key[client_pref.key] = client_pref
+	return client_preferences_by_key[preference]
 
 /proc/get_client_preference_by_type(preference)
-	if(!_client_preferences_by_type)
-		_client_preferences_by_type = list()
+	var/static/list/client_preferences_by_type
+	if(!client_preferences_by_type)
+		client_preferences_by_type = list()
 		for(var/ct in get_client_preferences())
 			var/datum/client_preference/client_pref = ct
-			_client_preferences_by_type[client_pref.type] = client_pref
-	return _client_preferences_by_type[preference]
+			client_preferences_by_type[client_pref.type] = client_pref
+	return client_preferences_by_type[preference]
 
 /datum/client_preference
 	var/description
@@ -160,6 +159,11 @@ var/list/_client_preferences_by_type
 	if(new_value == GLOB.PREF_HIDE)
 		QDEL_NULL(preference_mob.typing_indicator)
 
+/datum/client_preference/spell_checking
+	description ="Spell checking"
+	key = "SPELL_CHECKING"
+	default_value = GLOB.PREF_NO
+
 /datum/client_preference/show_ooc
 	description ="OOC chat"
 	key = "CHAT_OOC"
@@ -193,6 +197,11 @@ var/list/_client_preferences_by_type
 /datum/client_preference/hardsuit_activation
 	description = "Hardsuit Module Activation Key"
 	key = "HARDSUIT_ACTIVATION"
+	options = list(GLOB.PREF_MIDDLE_CLICK, GLOB.PREF_CTRL_CLICK, GLOB.PREF_ALT_CLICK, GLOB.PREF_CTRL_SHIFT_CLICK)
+
+/datum/client_preference/special_ability_key
+	description = "Special Ability Activation Key"
+	key = "SPECIAL_ABILITY"
 	options = list(GLOB.PREF_MIDDLE_CLICK, GLOB.PREF_CTRL_CLICK, GLOB.PREF_ALT_CLICK, GLOB.PREF_CTRL_SHIFT_CLICK)
 
 /datum/client_preference/tgui_style
@@ -248,12 +257,10 @@ var/list/_client_preferences_by_type
 	key = "OOC_NAME_COLOR"
 
 /datum/client_preference/ooc_name_color/may_set(client/given_client)
-	ASSERT(given_client)
-	return given_client.donator_info && given_client.donator_info.patron_type != PATREON_NONE
+	return TRUE
 
 /datum/client_preference/ooc_name_color/get_options(client/given_client)
-	ASSERT(given_client)
-	return given_client.donator_info.get_available_ooc_patreon_tiers()
+	return PATREON_ALL_TIERS
 
 /datum/client_preference/ooc_name_color/get_default_value(client/given_client)
 	ASSERT(given_client)

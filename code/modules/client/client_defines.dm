@@ -14,8 +14,6 @@
 	var/datum/click_handler/click_handler
 
 	var/datum/preferences/prefs = null
-	var/move_delay = 1
-	var/moving = null
 	var/species_ingame_whitelisted = FALSE
 
 	var/datum/donator_info/donator_info = new
@@ -29,7 +27,7 @@
 	changed to a URL at runtime (see client_procs.dm for procs that do this automatically). More information about how goofy this broken setting works at
 	http://www.byond.com/forum/post/1906517?page=2#comment23727144
 	*/
-	preload_rsc = 0
+	preload_rsc = 1
 
 	// * Sound stuff *
 	var/ambience_playing = null
@@ -64,3 +62,6 @@
 
 	//used for initial centering of saywindow
 	var/first_say = TRUE
+
+	//For tracking shift key (world.time)
+	var/shift_released_at = 0

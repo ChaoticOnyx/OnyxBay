@@ -16,22 +16,19 @@
 	opacity = 0
 	var/obj/item/weapon/airlock_electronics/electronics = null
 	explosion_resistance = 5
+	can_atmos_pass = ATMOS_PASS_PROC
 	air_properties_vary_with_direction = 1
 	var/timer = null
 
 /obj/machinery/door/window/Initialize()
 	. = ..()
-
+	update_nearby_tiles()
+	update_icon()
 	hitsound = pick(
 		'sound/effects/materials/glass/knock1.ogg',
 		'sound/effects/materials/glass/knock2.ogg',
 		'sound/effects/materials/glass/knock3.ogg',
 	)
-
-/obj/machinery/door/window/Initialize()
-	. = ..()
-	update_nearby_tiles()
-	update_icon()
 
 /obj/machinery/door/window/update_icon()
 	if(density)
@@ -79,7 +76,7 @@
 /obj/machinery/door/window/Bumped(atom/movable/AM)
 	if(operating)
 		return FALSE
-	
+
 	if(isbot(AM))
 		var/mob/living/bot/bot = AM
 		if(check_access(bot.botcard))
@@ -106,15 +103,19 @@
 		else if(density)
 			flick(text("[]deny", base_state), src)
 
-/obj/machinery/door/window/CanPass(atom/movable/mover, turf/target, height=0, air_group=0)
+/obj/machinery/door/window/CanPass(atom/movable/mover, turf/target)
 	if(istype(mover) && mover.pass_flags & PASS_FLAG_GLASS)
-		return 1
+		return TRUE
 	if(get_dir(loc, target) == dir) //Make sure looking at appropriate border
-		if(air_group)
-			return 0
 		return !density
-	else
-		return 1
+	return TRUE
+
+/obj/machinery/door/window/CanZASPass(turf/T, is_zone)
+	if(get_dir(T, loc) == turn(dir, 180))
+		if(is_zone) // No merging allowed.
+			return FALSE
+		return !density // Air can flow if open (density == FALSE).
+	return TRUE // Windoors don't block if not facing the right way.
 
 /obj/machinery/door/window/CheckExit(atom/movable/mover, turf/target)
 	if(istype(mover) && mover.pass_flags & PASS_FLAG_GLASS)
@@ -131,7 +132,7 @@
 		operating = TRUE
 
 	if(autoclose)
-		timer = addtimer(CALLBACK(src, .close), 10 SECONDS, TIMER_UNIQUE|TIMER_STOPPABLE)
+		timer = addtimer(CALLBACK(src, .proc/close), 10 SECONDS, TIMER_UNIQUE|TIMER_STOPPABLE)
 
 	flick("[base_state]opening", src)
 	set_density(0)
@@ -177,6 +178,8 @@
 		if(H.species?.can_shred(H))
 			playsound(loc, get_sfx("glass_hit"), 75, 1)
 			visible_message("<span class='danger'>[user] smashes against the [name].</span>", 1)
+			user.do_attack_animation(src)
+			user.setClickCooldown(DEFAULT_QUICK_COOLDOWN)
 			take_damage(25)
 			return
 	return attackby(user, user)
@@ -185,7 +188,7 @@
 	if(density && operable())
 		operating = -1
 		flick("[base_state]spark", src)
-		addtimer(CALLBACK(src, .open), 10)
+		addtimer(CALLBACK(src, .proc/open), 10)
 		return 1
 
 /obj/machinery/door/emp_act(severity)

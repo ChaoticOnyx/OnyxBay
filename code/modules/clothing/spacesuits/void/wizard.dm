@@ -26,10 +26,29 @@
 	flags_inv = HIDESHOES|HIDEJUMPSUIT|HIDETAIL //For gloves.
 	body_parts_covered = UPPER_TORSO|LOWER_TORSO|LEGS|FEET|ARMS
 	cold_protection = UPPER_TORSO | LOWER_TORSO | LEGS | FEET | ARMS
+	allowed = list(/obj/item/device/flashlight,
+				/obj/item/weapon/tank,
+				/obj/item/device/suit_cooling_unit,
+				/obj/item/weapon/spellbook,
+				/obj/item/weapon/contract,
+				/obj/item/weapon/teleportation_scroll,
+				/obj/item/weapon/gun/energy/staff,
+				/obj/item/weapon/magic_rock,
+				/obj/item/weapon/scrying,
+				/obj/item/weapon/monster_manual,
+				/obj/item/weapon/dice/d20/cursed)
 
 /obj/item/clothing/suit/space/void/wizard/New()
 	..()
-	slowdown_per_slot[slot_wear_suit] = 1
+	slowdown_per_slot[slot_wear_suit] = 0
+
+/obj/item/clothing/shoes/magboots/magic
+	name = "magic magboots"
+	desc = "A pair of reinforced boots that radiate energy. They resemble regular magboots but don't seem to have any magnets."
+	icon_state = "magboots-magic0"
+	icon_base = "magboots-magic"
+	traction_system = "magic"
+	wizard_garb = 1
 
 /obj/item/clothing/gloves/wizard
 	name = "mystical gloves"

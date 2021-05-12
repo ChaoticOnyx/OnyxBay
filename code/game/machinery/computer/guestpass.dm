@@ -103,7 +103,7 @@
 				dat += "<a href='?src=\ref[src];choice=access;access=[A]'>[area]</a><br>"
 		dat += "<br><a href='?src=\ref[src];action=issue'>Issue pass</a><br>"
 
-	user << browse(dat, "window=guestpass;size=400x520")
+	show_browser(user, dat, "window=guestpass;size=400x520")
 	onclose(user, "guestpass")
 
 
@@ -155,11 +155,8 @@
 				var/dat = "<h3>Activity log of guest pass terminal #[uid]</h3><br>"
 				for (var/entry in internal_log)
 					dat += "[entry]<br><hr>"
-//				to_chat(user, "Printing the log, standby...")
-				//sleep(50)
-				var/obj/item/weapon/paper/P = new /obj/item/weapon/paper( loc )
-				P.SetName("activity log")
-				P.info = dat
+				var/obj/item/weapon/paper/P = new /obj/item/weapon/paper(loc)
+				P.set_content(dat, "activity log", TRUE)
 				. = TOPIC_REFRESH
 
 			if ("issue")

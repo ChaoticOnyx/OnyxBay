@@ -12,6 +12,7 @@
 
 /obj/structure/AIcore/emag_act(remaining_charges, mob/user, emag_source)
 	if(!authorized)
+		playsound(src.loc, 'sound/effects/computer_emag.ogg', 25)
 		to_chat(user, "<span class='warning'>You swipe [emag_source] at [src] and jury rig it into the systems of [GLOB.using_map.full_name]!</span>")
 		authorized = 1
 		return 1

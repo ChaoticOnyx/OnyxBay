@@ -9,6 +9,7 @@
 	icon_aggro = "Goliath_alert"
 	icon_dead = "Goliath_dead"
 	icon_gib = "syndicate_gib"
+	var/icon_preattack = "Goliath_preattack"
 	attack_sound = 'sound/effects/fighting/punch4.ogg'
 	mouse_opacity = 2
 	move_to_delay = 40
@@ -29,12 +30,14 @@
 	idle_vision_range = 4
 	var/pre_attack = 0
 	var/dead = FALSE
+	var/hides_drop = 1
 
 /mob/living/simple_animal/hostile/asteroid/goliath/Life()
-	..()
-	handle_preattack()
-	if(dead && icon_state != icon_dead)
-		icon_state = icon_dead
+	. = ..()
+	if(.)
+		handle_preattack()
+		if(dead && icon_state != icon_dead)
+			icon_state = icon_dead
 
 /mob/living/simple_animal/hostile/asteroid/goliath/proc/handle_preattack()
 	if(ranged_cooldown <= 2 && !pre_attack)
@@ -42,7 +45,7 @@
 	if(!pre_attack || stat || stance == HOSTILE_STANCE_IDLE)
 		return
 	if(!dead)
-		icon_state = "Goliath_preattack"
+		icon_state = icon_preattack
 
 /mob/living/simple_animal/hostile/asteroid/goliath/OpenFire()
 	var/sturf = get_turf(src)
@@ -69,11 +72,11 @@
 	..()
 
 /mob/living/simple_animal/hostile/asteroid/goliath/Aggro()
-	vision_range = aggro_vision_range
-	handle_preattack()
-	if(icon_state != icon_aggro)
-		icon_state = icon_aggro
-	return
+	. = ..()
+	if(.)
+		handle_preattack()
+		if(icon_state != icon_aggro)
+			icon_state = icon_aggro
 
 /obj/effect/goliath_tentacle
 	name = "Goliath tentacle"
@@ -103,6 +106,7 @@
 	spawn(3)
 		for(var/mob/living/M in src.loc)
 			M.Weaken(3)
+			M.Stun(2)
 			visible_message("<span class='warning'>The [src.name] knocks [M.name] down!</span>")
 		qdel(src)
 
@@ -112,11 +116,14 @@
 		return
 	..()
 
-/mob/living/simple_animal/hostile/asteroid/goliath/death(gibbed)
-	dead = TRUE
-	var/obj/item/asteroid/goliath_hide/G = new /obj/item/asteroid/goliath_hide(src.loc)
-	G.layer = 4.1
-	..(gibbed)
+/mob/living/simple_animal/hostile/asteroid/goliath/death(gibbed, deathmessage, show_dead_message)
+	. = ..()
+	if(.)
+		dead = TRUE
+		var/counter
+		for(counter = 0, counter < hides_drop, counter++)
+			var/obj/item/asteroid/goliath_hide/G = new /obj/item/asteroid/goliath_hide(src.loc)
+			G.layer = 4.1
 
 /obj/item/asteroid/goliath_hide
 	name = "goliath hide plates"
@@ -159,3 +166,25 @@
 			else
 				to_chat(user, "<span class='warning'>You can't improve [D] any further!</span>")
 				return
+
+/mob/living/simple_animal/hostile/asteroid/goliath/alpha
+	name = "alpha goliath"
+	desc = "A massive beast that uses long tentacles to ensare its prey, threatening them is not advised under any conditions. This one looks especially ancient with its armor plates overgrown."
+	icon_state = "AlphaGoliath"
+	icon_living = "AlphaGoliath"
+	icon_aggro = "AlphaGoliath_alert"
+	icon_dead = "AlphaGoliath_dead"
+	icon_gib = "syndicate_gib"
+	icon_preattack = "AlphaGoliath_preattack"
+	ranged_cooldown_cap = 10
+	speed = 4
+	maxHealth = 500
+	health = 500
+	melee_damage_lower = 35
+	melee_damage_upper = 35
+	hides_drop = 2
+
+/mob/living/simple_animal/hostile/asteroid/goliath/alpha/death(gibbed, deathmessage, show_dead_message)
+	. = ..()
+	if(.)
+		new /obj/item/clothing/head/helmet/space/goliath(loc)

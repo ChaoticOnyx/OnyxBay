@@ -21,11 +21,12 @@
 	var/hex_to_work_on = copytext(hex,5,7)
 	return hex2num(hex_to_work_on)
 
+
 /mob/living/update_transform()
 	var/matrix/M = matrix()
 	M.Scale(icon_scale)
 	M.Translate(0, 16*(icon_scale-1))
-	if (hanging)
+	if(hanging)
 		M.Turn(180)
 	animate(src, transform = M, time = 10)
 
@@ -53,6 +54,7 @@
 		layer = MOB_LAYER // Fix for a byond bug where turf entry order no longer matters
 
 	animate(src, transform = M, time = anim_time)
+
 
 /mob/living/proc/update_modifier_visuals()
 	return

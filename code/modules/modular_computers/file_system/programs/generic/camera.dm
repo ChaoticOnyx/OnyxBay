@@ -39,6 +39,7 @@
 	name = "Camera Monitoring program"
 	var/obj/machinery/camera/current_camera = null
 	var/current_network = null
+	var/last_sound = 0
 
 /datum/nano_module/camera_monitor/ui_interact(mob/user, ui_key = "main", datum/nanoui/ui = null, force_open = 1, state = GLOB.default_state)
 	var/list/data = host.initial_data()
@@ -92,6 +93,10 @@
 			return
 		if(!(current_network in C.network))
 			return
+
+		if (last_sound + 2 SECONDS < world.time)
+			last_sound = world.time
+			playsound(usr, 'sound/effects/cctv_switch.ogg', 25)
 
 		switch_to_camera(usr, C)
 		apply_visual(usr)

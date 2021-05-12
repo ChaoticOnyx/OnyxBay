@@ -7,6 +7,7 @@
 	for(var/obj/item/grab/G in grabbed_by)
 		qdel(G)
 	clear_fullscreen()
+	if(ability_master) QDEL_NULL(ability_master)
 	if(client)
 		remove_screen_obj_references()
 		for(var/atom/movable/AM in client.screen)
@@ -80,16 +81,15 @@
 // self_message (optional) is what the src mob sees  e.g. "You do something!"
 // blind_message (optional) is what blind people will hear e.g. "You hear something!"
 /mob/visible_message(message, self_message, blind_message, range = world.view, checkghosts = null, narrate = FALSE)
-	var/turf/T = get_turf(src)
-	var/list/mobs = list()
-	var/list/objs = list()
-	get_mobs_and_objs_in_view_fast(T,range, mobs, objs, checkghosts)
+	var/list/seeing_mobs = list()
+	var/list/seeing_objs = list()
+	get_mobs_and_objs_in_view_fast(get_turf(src), range, seeing_mobs, seeing_objs, checkghosts)
 
-	for(var/o in objs)
+	for(var/o in seeing_objs)
 		var/obj/O = o
 		O.show_message(message, VISIBLE_MESSAGE, blind_message, AUDIBLE_MESSAGE)
 
-	for(var/m in mobs)
+	for(var/m in seeing_mobs)
 		var/mob/M = m
 		if(self_message && M == src)
 			M.show_message(self_message, VISIBLE_MESSAGE, blind_message, AUDIBLE_MESSAGE)
@@ -120,12 +120,15 @@
 // deaf_message (optional) is what deaf people will see.
 // hearing_distance (optional) is the range, how many tiles away the message can be heard.
 /mob/audible_message(message, self_message, deaf_message, hearing_distance = world.view, checkghosts = null, narrate = FALSE)
-	var/turf/T = get_turf(src)
-	var/list/mobs = list()
-	var/list/objs = list()
-	get_mobs_and_objs_in_view_fast(T, hearing_distance, mobs, objs, checkghosts)
+	var/list/hearing_mobs = list()
+	var/list/hearing_objs = list()
+	get_mobs_and_objs_in_view_fast(get_turf(src), hearing_distance, hearing_mobs, hearing_objs, checkghosts)
 
-	for(var/m in mobs)
+	for(var/o in hearing_objs)
+		var/obj/O = o
+		O.show_message(message, AUDIBLE_MESSAGE, deaf_message, VISIBLE_MESSAGE)
+
+	for(var/m in hearing_mobs)
 		var/mob/M = m
 		if(self_message && M == src)
 			M.show_message(self_message, AUDIBLE_MESSAGE, deaf_message, VISIBLE_MESSAGE)
@@ -133,10 +136,6 @@
 			M.show_message(message, AUDIBLE_MESSAGE, deaf_message, VISIBLE_MESSAGE)
 		else
 			M.show_message(message, AUDIBLE_MESSAGE)
-
-	for(var/o in objs)
-		var/obj/O = o
-		O.show_message(message, AUDIBLE_MESSAGE, deaf_message, VISIBLE_MESSAGE)
 
 /mob/proc/findname(msg)
 	for(var/mob/M in SSmobs.mob_list)
@@ -149,15 +148,33 @@
 	if(istype(loc, /turf))
 		var/turf/T = loc
 		. += T.movement_delay
+
+	switch(m_intent)
+		if(M_RUN)
+			if(drowsyness > 0)
+				. += config.walk_speed
+			else
+				. += config.run_speed
+		if(M_WALK)
+			. += config.walk_speed
+
+	if(lying) //Crawling, it's slower
+		. += 10 + (weakened * 2)
+
 	if(pulling)
-		if(istype(pulling, /obj))
-			var/obj/O = pulling
-			. += between(0, O.w_class, ITEM_SIZE_GARGANTUAN) / 5
-		else if(istype(pulling, /mob))
-			var/mob/M = pulling
-			. += max(0, M.mob_size) / MOB_MEDIUM
-		else
-			. += 1
+		var/area/A = get_area(src)
+		if(A.has_gravity)
+			if(istype(pulling, /obj))
+				var/obj/O = pulling
+				if(O.pull_slowdown == PULL_SLOWDOWN_WEIGHT)
+					. += between(0, O.w_class, ITEM_SIZE_GARGANTUAN) / 5
+				else
+					. += O.pull_slowdown
+			else if(istype(pulling, /mob))
+				var/mob/M = pulling
+				. += max(0, M.mob_size) / MOB_MEDIUM * (M.lying ? 2 : 0.5)
+			else
+				. += 1
 
 /mob/proc/Life()
 //	if(organStructure)
@@ -187,14 +204,13 @@
 	return incapacitated(INCAPACITATION_KNOCKDOWN)
 
 /mob/proc/incapacitated(incapacitation_flags = INCAPACITATION_DEFAULT)
-
-	if ((incapacitation_flags & INCAPACITATION_STUNNED) && stunned)
+	if((incapacitation_flags & INCAPACITATION_STUNNED) && stunned)
 		return 1
 
-	if ((incapacitation_flags & INCAPACITATION_FORCELYING) && (weakened || resting || pinned.len))
+	if((incapacitation_flags & INCAPACITATION_FORCELYING) && (weakened || resting || pinned.len))
 		return 1
 
-	if ((incapacitation_flags & INCAPACITATION_KNOCKOUT) && (stat || paralysis || sleeping || (status_flags & FAKEDEATH)))
+	if((incapacitation_flags & INCAPACITATION_KNOCKOUT) && (stat || paralysis || sleeping || (status_flags & FAKEDEATH)))
 		return 1
 
 	if((incapacitation_flags & INCAPACITATION_RESTRAINED) && restrained())
@@ -235,7 +251,7 @@
 	return
 
 //mob verbs are faster than object verbs. See http://www.byond.com/forum/?post=1326139&page=2#comment8198716 for why this isn't atom/verb/examine()
-/mob/verb/examinate(atom/A as mob|obj|turf in view())
+/mob/verb/examinate(atom/A as mob|obj|turf in view(src.client.eye))
 	set name = "Examine"
 	set category = "IC"
 
@@ -243,14 +259,19 @@
 		to_chat(src, "<span class='notice'>Something is there but you can't see it.</span>")
 		return 1
 
+	var/examine_result
+
 	face_atom(A)
 	if(istype(src, /mob/living/carbon))
 		var/mob/living/carbon/C = src
 		var/mob/fake = C.get_fake_appearance(A)
 		if(fake)
-			fake.examine(src)
-			return
-	to_chat(usr, A.examine(src))
+			examine_result = fake.examine(src)
+
+	if (isnull(examine_result))
+		examine_result = A.examine(src)
+
+	to_chat(usr, examine_result)
 
 /mob/verb/pointed(atom/A as mob|obj|turf in view())
 	set name = "Point To"
@@ -267,10 +288,9 @@
 
 	var/obj/P = new /obj/effect/decal/point(tile)
 	P.set_invisibility(invisibility)
-	spawn (20)
-		if(P)
-			qdel(P)	// qdel
-
+	P.pixel_x = A.pixel_x
+	P.pixel_y = A.pixel_y
+	QDEL_IN(P, 2 SECONDS)
 	face_atom(A)
 	return 1
 
@@ -315,7 +335,7 @@
 	for(var/t in typesof(/area))
 		master += text("[]\n", t)
 		//Foreach goto(26)
-	src << browse(master)
+	show_browser(src, master, null)
 	return
 */
 
@@ -375,7 +395,7 @@
 /*
 /mob/verb/help()
 	set name = "Help"
-	src << browse('html/help.html', "window=help")
+	show_browser(src, 'html/help.html', "window=help")
 	return
 */
 
@@ -383,26 +403,11 @@
 	set name = "Changelog"
 	set category = "OOC"
 	getFiles(
-		'html/88x31.png',
-		'html/bug-minus.png',
-		'html/burn-exclamation.png',
-		'html/chevron.png',
-		'html/chevron-expand.png',
-		'html/cross-circle.png',
-		'html/hard-hat-exclamation.png',
-		'html/image-minus.png',
-		'html/image-plus.png',
-		'html/map-pencil.png',
-		'html/music-minus.png',
-		'html/music-plus.png',
-		'html/tick-circle.png',
-		'html/scales.png',
-		'html/spell-check.png',
-		'html/wrench-screwdriver.png',
+		'html/pie.htc',
 		'html/changelog.css',
 		'html/changelog.html'
 		)
-	src << browse('html/changelog.html', "window=changes;size=675x650")
+	show_browser(src, 'html/changelog.html', "window=changes;size=675x650")
 	if(prefs.lastchangelog != changelog_hash)
 		prefs.lastchangelog = changelog_hash
 		SScharacter_setup.queue_preferences_save(prefs)
@@ -491,10 +496,10 @@
 	if(href_list["mach_close"])
 		var/t1 = text("window=[href_list["mach_close"]]")
 		unset_machine()
-		src << browse(null, t1)
+		show_browser(src, null, t1)
 
 	if(href_list["flavor_more"])
-		usr << browse(text("<HTML><meta charset=\"utf-8\"><HEAD><TITLE>[]</TITLE></HEAD><BODY><TT>[]</TT></BODY></HTML>", name, replacetext(flavor_text, "\n", "<BR>")), text("window=[];size=500x200", name))
+		show_browser(usr, text("<HTML><meta charset=\"utf-8\"><HEAD><TITLE>[]</TITLE></HEAD><BODY><TT>[]</TT></BODY></HTML>", name, replacetext(flavor_text, "\n", "<BR>")), text("window=[];size=500x200", name))
 		onclose(usr, "[name]")
 	if(href_list["flavor_change"])
 		update_flavor_text()
@@ -525,7 +530,7 @@
 	if(!Adjacent(usr)) return
 	if(istype(M,/mob/living/silicon/ai)) return
 	show_inv(usr)
-
+	usr.show_inventory.open()
 
 /mob/verb/stop_pulling()
 
@@ -679,61 +684,45 @@
 
 // facing verbs
 /mob/proc/canface()
-	if(!canmove)						return 0
-	if(anchored)						return 0
-	if(transforming)					return 0
-	return 1
+	return !incapacitated()
 
 // Not sure what to call this. Used to check if humans are wearing an AI-controlled exosuit and hence don't need to fall over yet.
 /mob/proc/can_stand_overridden()
 	return 0
 
-//Updates canmove, lying and icons. Could perhaps do with a rename but I can't think of anything to describe it.
-/mob/proc/update_canmove()
-
+//Updates lying and icons. Could perhaps do with a rename but I can't think of anything to describe it. / Now it DEFINITELY needs a new name, but UpdateLyingBuckledAndVerbStatus() is way too retardulous ~Toby
+/mob/proc/update_canmove(prevent_update_icons = FALSE)
+	var/lying_old = lying
 	if(!resting && cannot_stand() && can_stand_overridden())
 		lying = 0
-		canmove = 1
 	else if(buckled)
 		anchored = 1
-		canmove = 0
 		if(istype(buckled))
 			if(buckled.buckle_lying == -1)
 				lying = incapacitated(INCAPACITATION_KNOCKDOWN)
 			else
 				lying = buckled.buckle_lying
-			if(buckled.buckle_movable)
+			if(buckled.buckle_movable || buckled.buckle_relaymove)
 				anchored = 0
-				canmove = 1
 	else
 		lying = incapacitated(INCAPACITATION_KNOCKDOWN)
-		canmove = !incapacitated(INCAPACITATION_DISABLED)
 
 	if(lying)
 		set_density(0)
-		if(l_hand) unEquip(l_hand)
-		if(r_hand) unEquip(r_hand)
+		if(l_hand)
+			unEquip(l_hand)
+		if(r_hand)
+			unEquip(r_hand)
 	else
 		set_density(initial(density))
 	reset_layer()
 
 	for(var/obj/item/grab/G in grabbed_by)
-		if(G.stop_move())
-			canmove = 0
-
 		if(G.force_stand())
 			lying = 0
 
-	//Temporarily moved here from the various life() procs
-	//I'm fixing stuff incrementally so this will likely find a better home.
-	//It just makes sense for now. ~Carn
-	if( update_icon )	//forces a full overlay update
-		update_icon = 0
-		regenerate_icons()
-	else if( lying != lying_prev || hanging != hanging_prev)
+	if(!prevent_update_icons && lying_old != lying)
 		update_icons()
-
-	return canmove
 
 /mob/proc/reset_layer()
 	if(lying)
@@ -742,12 +731,12 @@
 		reset_plane_and_layer()
 
 /mob/proc/facedir(ndir)
-	if(!canface() || client.moving || world.time < client.move_delay)
+	if(!canface() || moving)
 		return 0
 	set_dir(ndir)
 	if(buckled && buckled.buckle_movable)
 		buckled.set_dir(ndir)
-	client.move_delay += movement_delay()
+	setMoveCooldown(movement_delay())
 	return 1
 
 

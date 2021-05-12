@@ -203,8 +203,9 @@
 	if(camera)
 		camera.status = 0
 
-	held_item.loc = src.loc
-	held_item = null
+	if(held_item)
+		held_item.loc = src.loc
+		held_item = null
 
 	gibs(loc, null, null, /obj/effect/gibspawner/robot) //TODO: use gib() or refactor spiderbots into synthetics.
 	qdel(src)
@@ -240,8 +241,6 @@
 	held_item.loc = src.loc
 	held_item = null
 	return 1
-
-	return
 
 /mob/living/simple_animal/spiderbot/verb/get_item()
 	set name = "Pick up item"
