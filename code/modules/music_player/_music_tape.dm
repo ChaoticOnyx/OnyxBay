@@ -14,7 +14,7 @@
 	var/random_color = TRUE
 	var/ruined = 0
 
-	var/list/datum/track/track
+	var/datum/track/track
 	var/uploader_ckey
 
 /obj/item/music_tape/Initialize()
@@ -28,9 +28,9 @@
 		overlays += "ribbonoverlay"
 
 /obj/item/music_tape/examine(mob/user)
-	. = ..(user)
+	. = ..()
 	if(track?.title)
-		to_chat(user, SPAN_NOTICE("It's labeled as \"[track.title]\"."))
+		. += "\n[SPAN_NOTICE("It's labeled as \"[track.title]\".")]"
 
 /obj/item/music_tape/attack_self(mob/user)
 	if(!ruined)

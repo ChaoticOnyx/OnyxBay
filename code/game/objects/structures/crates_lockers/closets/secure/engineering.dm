@@ -59,7 +59,7 @@
 	return list(
 		/obj/item/clothing/head/welding = 3,
 		/obj/item/weapon/weldingtool/largetank = 3,
-		/obj/item/weapon/weldpack = 3,
+		/obj/item/weapon/backwear/reagent/welding = 3,
 		/obj/item/clothing/glasses/welding = 3,
 		/obj/item/weapon/welder_tank = 6
 	)
@@ -82,7 +82,7 @@
 		/obj/item/device/radio/headset/headset_eng,
 		/obj/item/clothing/suit/storage/hazardvest,
 		/obj/item/clothing/mask/gas,
-		/obj/item/clothing/glasses/meson,
+		/obj/item/clothing/glasses/hud/standard/meson,
 		/obj/item/weapon/cartridge/engineering,
 		/obj/item/taperoll/engineering
 	)

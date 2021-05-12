@@ -165,8 +165,14 @@
 		is_jammed = 0
 		playsound(src.loc, 'sound/weapons/flipblade.ogg', 50, 1)
 	if(ammo_magazine)
-		user.put_in_hands(ammo_magazine)
-		user.visible_message("[user] removes [ammo_magazine] from [src].", "<span class='notice'>You remove [ammo_magazine] from [src].</span>")
+		if(allow_dump)
+			user.drop_from_inventory(ammo_magazine)
+			user.visible_message("[user] ejects [ammo_magazine] from [src].",
+			SPAN_NOTICE("You eject [ammo_magazine] from [src]."))
+		else
+			user.put_in_hands(ammo_magazine)
+			user.visible_message("[user] removes [ammo_magazine] from [src].", 
+			SPAN_NOTICE("You remove [ammo_magazine] from [src]."))
 		playsound(src.loc, 'sound/weapons/empty.ogg', 50, 1)
 		ammo_magazine.update_icon()
 		ammo_magazine = null
@@ -221,12 +227,12 @@
 		update_icon() //make sure to do this after unsetting ammo_magazine
 
 /obj/item/weapon/gun/projectile/examine(mob/user)
-	. = ..(user)
+	. = ..()
 	if(is_jammed)
-		to_chat(user, "<span class='warning'>It looks jammed.</span>")
+		. += "\n<span class='warning'>It looks jammed.</span>"
 	if(ammo_magazine)
-		to_chat(user, "It has \a [ammo_magazine] loaded.")
-	to_chat(user, "Has [getAmmo()] round\s remaining.")
+		. += "\nIt has \a [ammo_magazine] loaded."
+	. += "\nHas [getAmmo()] round\s remaining."
 	return
 
 /obj/item/weapon/gun/projectile/proc/getAmmo()

@@ -1,4 +1,4 @@
-datum/admins/proc/DB_ban_record(bantype, mob/banned_mob, duration = -1, reason, job = "", rounds = 0, banckey = null, banip = null, bancid = null, ban_everywhere = FALSE)
+/datum/admins/proc/DB_ban_record(bantype, mob/banned_mob, duration = -1, reason, job = "", rounds = 0, banckey = null, banip = null, bancid = null, ban_everywhere = FALSE)
 	if(!src || !src.owner)
 		return
 	_DB_ban_record(src.owner.ckey, src.owner.computer_id, src.owner.address, bantype, banned_mob, duration, reason, job, rounds, banckey, banip, bancid, ban_everywhere)
@@ -84,8 +84,7 @@ datum/admins/proc/DB_ban_record(bantype, mob/banned_mob, duration = -1, reason, 
 	message_admins("[setter] has added a [(ban_everywhere)?"Onyx wide":""] [bantype_str] for [ckey] [(job)?"([job])":""] [(duration > 0)?"([duration] minutes)":""] with the reason: \"[reason]\" to the ban database.",1)
 	return 1
 
-datum/admins/proc/DB_ban_unban(ckey, bantype, job = "")
-
+/datum/admins/proc/DB_ban_unban(ckey, bantype, job = "")
 	if(!check_rights(R_BAN))	return
 
 	var/bantype_str
@@ -153,8 +152,7 @@ datum/admins/proc/DB_ban_unban(ckey, bantype, job = "")
 
 	DB_ban_unban_by_id(ban_id)
 
-datum/admins/proc/DB_ban_edit(banid = null, param = null)
-
+/datum/admins/proc/DB_ban_edit(banid = null, param = null)
 	if(!check_rights(R_BAN))	return
 
 	if(!isnum(banid) || !istext(param))
@@ -230,8 +228,7 @@ datum/admins/proc/DB_ban_edit(banid = null, param = null)
 			to_chat(usr, "Cancelled")
 			return
 
-datum/admins/proc/DB_ban_unban_by_id(id)
-
+/datum/admins/proc/DB_ban_unban_by_id(id)
 	if(!check_rights(R_BAN))	return
 
 	var/sql
@@ -316,7 +313,7 @@ datum/admins/proc/DB_ban_unban_by_id(id)
 		output += "<option value='[j]'>[j]</option>"
 	for(var/j in GLOB.nonhuman_positions)
 		output += "<option value='[j]'>[j]</option>"
-	var/list/bantypes = list("traitor","changeling","operative","revolutionary","cultist","wizard") //For legacy bans.
+	var/list/bantypes = list("traitor","changeling","vampire","operative","revolutionary","cultist","wizard") //For legacy bans.
 	var/list/all_antag_types = GLOB.all_antag_types_
 	for(var/antag_type in all_antag_types) // Grab other bans.
 		var/datum/antagonist/antag = all_antag_types[antag_type]
@@ -488,4 +485,4 @@ datum/admins/proc/DB_ban_unban_by_id(id)
 
 			output += "</table></div>"
 
-	usr << browse(output,"window=lookupbans;size=900x700")
+	show_browser(usr, output,"window=lookupbans;size=900x700")

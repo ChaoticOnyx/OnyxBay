@@ -1,15 +1,14 @@
 
-/obj/structure/table/CanPass(atom/movable/mover, turf/target, height=0, air_group=0)
-	if(air_group || (height==0)) return 1
+/obj/structure/table/CanPass(atom/movable/mover, turf/target)
 	if(istype(mover,/obj/item/projectile))
 		return (check_cover(mover,target))
-	if (flipped == 1)
-		if (get_dir(loc, target) == dir)
+	if(flipped == 1)
+		if(get_dir(loc, target) == dir)
 			return !density
 		else
-			return 1
+			return TRUE
 	if(istype(mover) && mover.pass_flags & PASS_FLAG_TABLE)
-		return 1
+		return TRUE
 	var/obj/structure/table/T = (locate() in get_turf(mover))
 	return (T && !T.flipped) 	//If we are moving from a table, check if it is flipped.
 								//If the table we are standing on is not flipped, then we can move freely to another table.
@@ -75,6 +74,17 @@
 	return
 
 /obj/structure/table/attack_hand(mob/user as mob)
+	if(ishuman(user))
+		var/mob/living/carbon/human/H = user
+		if(H.species?.can_shred(H))
+			user.setClickCooldown(DEFAULT_QUICK_COOLDOWN)
+			user.do_attack_animation(src)
+			shake_animation(stime = 1)
+			user.visible_message(SPAN("danger", "[user] hacks through \the [src]!"))
+			playsound(loc, 'sound/effects/deskslam.ogg', 50, 1)
+			throw_contents_around(ITEM_SIZE_HUGE, 50)
+			take_damage(reinforced ? 10 : 20)
+			return
 	if(user.a_intent == I_HURT)
 		src.add_fingerprint(user)
 		user.setClickCooldown(DEFAULT_ATTACK_COOLDOWN)
@@ -106,6 +116,7 @@
 					return 0
 				G.affecting.forceMove(src.loc)
 				G.affecting.Weaken(rand(1,4))
+				G.affecting.Stun(1)
 				visible_message("<span class='warning'>[G.assailant] puts [G.affecting] on \the [src].</span>")
 				G.affecting.break_all_grabs(G.assailant)
 				qdel(W)
@@ -153,7 +164,7 @@
 		return
 
 	// Placing stuff on tables
-	if(user.drop_from_inventory(W, src.loc))
+	if(user.unEquip(W, target = loc))
 		auto_align(W, click_params)
 		return 1
 

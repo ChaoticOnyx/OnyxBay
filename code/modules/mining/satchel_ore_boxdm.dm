@@ -9,6 +9,7 @@
 	name = "ore box"
 	desc = "A heavy box used for storing ore."
 	density = 1
+	pull_slowdown = PULL_SLOWDOWN_HEAVY
 	var/last_update = 0
 	var/list/stored_ore = list()
 
@@ -40,7 +41,7 @@
 			stored_ore[O.name] = 1
 
 /obj/structure/ore_box/examine(mob/user)
-	. = ..(user)
+	. = ..()
 
 	// Borgs can now check contents too.
 	if((!istype(user, /mob/living/carbon/human)) && (!istype(user, /mob/living/silicon/robot)))
@@ -52,16 +53,16 @@
 	add_fingerprint(user)
 
 	if(!contents.len)
-		to_chat(user, "It is empty.")
+		. += "\nIt is empty."
 		return
 
 	if(world.time > last_update + 10)
 		update_ore_count()
 		last_update = world.time
 
-	to_chat(user, "It holds:")
+	. += "\nIt holds:"
 	for(var/ore in stored_ore)
-		to_chat(user, "- [stored_ore[ore]] [ore]")
+		. += "\n- [stored_ore[ore]] [ore]"
 	return
 
 

@@ -107,16 +107,13 @@
 
 /obj/machinery/telecomms/attack_hand(mob/user as mob)
 
-	// You need a multitool to use this, or be silicon
-	if(!issilicon(user))
-		// istype returns false if the value is null
-		if(!istype(user.get_active_hand(), /obj/item/device/multitool))
-			return
-
 	if(stat & (BROKEN|NOPOWER))
 		return
 
 	var/obj/item/device/multitool/P = get_multitool(user)
+
+	if(!P)
+		return
 
 	user.set_machine(src)
 	var/dat
@@ -172,7 +169,7 @@
 
 	dat += "</font>"
 	temp = ""
-	user << browse(dat, "window=tcommachine;size=520x500;can_resize=0")
+	show_browser(user, dat, "window=tcommachine;size=520x500;can_resize=0")
 	onclose(user, "dormitory")
 
 
@@ -193,7 +190,6 @@
 	else
 		src.listening_levels = GLOB.using_map.contact_levels
 		return 1
-	return 0
 
 // Returns a multitool from a user depending on their mobtype.
 
@@ -201,8 +197,14 @@
 
 	var/obj/item/device/multitool/P = null
 	// Let's double check
-	if(!issilicon(user) && istype(user.get_active_hand(), /obj/item/device/multitool))
-		P = user.get_active_hand()
+	if(!issilicon(user))
+		if(isMultitool(user.get_active_hand()))
+			P = user.get_active_hand()
+		else if(istype(user.get_active_hand(), /obj/item/weapon/combotool))
+			var/obj/item/weapon/combotool/tool = user.get_active_hand()
+			P = tool.tool_u
+			if(!isMultitool(P))
+				P = null
 	else if(isAI(user))
 		var/mob/living/silicon/ai/U = user
 		P = U.aiMulti
@@ -289,14 +291,14 @@
 /obj/machinery/telecomms/Topic(href, href_list)
 	if(..())
 		return 1
-	if(!issilicon(usr))
-		if(!istype(usr.get_active_hand(), /obj/item/device/multitool))
-			return
 
 	if(stat & (BROKEN|NOPOWER))
 		return
 
 	var/obj/item/device/multitool/P = get_multitool(usr)
+
+	if(!P)
+		return
 
 	if(href_list["input"])
 		switch(href_list["input"])

@@ -123,15 +123,15 @@
 /obj/item/stack/material/uranium/ten
 	amount = 10
 
-/obj/item/stack/material/phoron
-	name = "solid phoron"
-	icon_state = "sheet-phoron"
-	default_type = MATERIAL_PHORON
+/obj/item/stack/material/plasma
+	name = "solid plasma"
+	icon_state = "sheet-plasma"
+	default_type = MATERIAL_PLASMA
 
-/obj/item/stack/material/phoron/ten
+/obj/item/stack/material/plasma/ten
 	amount = 10
 
-/obj/item/stack/material/phoron/fifty
+/obj/item/stack/material/plasma/fifty
 	amount = 50
 
 /obj/item/stack/material/plastic
@@ -302,19 +302,28 @@
 /obj/item/stack/material/glass/reinforced/fifty
 	amount = 50
 
-/obj/item/stack/material/glass/phoronglass
-	name = "borosilicate glass"
-	desc = "This sheet is special platinum-glass alloy designed to withstand large temperatures."
-	singular_name = "borosilicate glass sheet"
-	icon_state = "sheet-phoronglass"
-	default_type = MATERIAL_PHORON_GLASS
+/obj/item/stack/material/glass/plass
+	name = "plass"
+	desc = "This sheet is special plasma-glass alloy designed to withstand large temperatures."
+	singular_name = "plass sheet"
+	icon_state = "sheet-plass"
+	default_type = MATERIAL_PLASS
 
-/obj/item/stack/material/glass/phoronrglass
-	name = "reinforced borosilicate glass"
-	desc = "This sheet is special platinum-glass alloy designed to withstand large temperatures. It is reinforced with few rods."
-	singular_name = "reinforced borosilicate glass sheet"
-	icon_state = "sheet-phoronrglass"
-	default_type = MATERIAL_REINFORCED_PHORON_GLASS
-
-/obj/item/stack/material/glass/phoronrglass/ten
+/obj/item/stack/material/glass/plass/ten
 	amount = 10
+
+/obj/item/stack/material/glass/plass/fifty
+	amount = 50
+
+/obj/item/stack/material/glass/rplass
+	name = "reinforced plass"
+	desc = "This sheet is special plasma-glass alloy designed to withstand large temperatures. It is reinforced with few rods."
+	singular_name = "reinforced plass sheet"
+	icon_state = "sheet-rplass"
+	default_type = MATERIAL_REINFORCED_PLASS
+
+/obj/item/stack/material/glass/rplass/ten
+	amount = 10
+
+/obj/item/stack/material/glass/rplass/fifty
+	amount = 50

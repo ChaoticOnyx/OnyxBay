@@ -110,7 +110,7 @@
 			. += " Activation index involves <b>physical interaction</b> with artifact surface."
 		if(TRIGGER_FORCE, TRIGGER_ENERGY, TRIGGER_HEAT, TRIGGER_COLD)
 			. += " Activation index involves <b>energetic interaction</b> with artifact surface."
-		if(TRIGGER_PHORON, TRIGGER_OXY, TRIGGER_CO2, TRIGGER_NITRO)
+		if(TRIGGER_PLASMA, TRIGGER_OXY, TRIGGER_CO2, TRIGGER_NITRO)
 			. += " Activation index involves <b>precise local atmospheric conditions</b>."
 		else
 			. += " Unable to determine any data about activation trigger."
@@ -142,7 +142,8 @@
 	if(istype(H.gloves,/obj/item/clothing/gloves/latex))
 		protected += 0.1
 
-	if(istype(H.glasses,/obj/item/clothing/glasses/science))
+	var/obj/item/clothing/glasses/hud/G = H.glasses
+	if(istype(G) && istype(G.matrix, /obj/item/device/hudmatrix/science))
 		protected += 0.1
 
 	return 1 - protected

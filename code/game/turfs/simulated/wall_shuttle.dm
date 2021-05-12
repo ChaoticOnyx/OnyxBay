@@ -171,7 +171,6 @@
 /turf/simulated/shuttle/wall/corner/dark/sw
 	dir = SOUTH|WEST
 
-
 /turf/simulated/shuttle/wall/corner/alien
 	icon_state = "corner_alien"
 	corner_overlay_state = "corner_alien"
@@ -194,4 +193,18 @@
 /turf/simulated/shuttle/wall/corner/merchant/se
 	dir = SOUTH|EAST
 /turf/simulated/shuttle/wall/corner/merchant/sw
+	dir = SOUTH|WEST
+
+//Corners for the guitar ship; might look a bit off but it's better than glowing walls;
+/turf/simulated/shuttle/wall/corner/smoothwhite/nolight
+	icon_state = "corner_white" //for mapping preview
+	corner_overlay_state = "corner_white"
+	tghil_si_ereth = "000"
+/turf/simulated/shuttle/wall/corner/smoothwhite/nolight/ne
+	dir = NORTH|EAST
+/turf/simulated/shuttle/wall/corner/smoothwhite/nolight/nw
+	dir = NORTH|WEST
+/turf/simulated/shuttle/wall/corner/smoothwhite/nolight/se
+	dir = SOUTH|EAST
+/turf/simulated/shuttle/wall/corner/smoothwhite/nolight/sw
 	dir = SOUTH|WEST

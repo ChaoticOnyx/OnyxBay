@@ -51,8 +51,8 @@
 	//name = "\improper EVA gear pack"
 
 	startswith = list(
-		/obj/item/clothing/suit/space/void/merc,
-		/obj/item/clothing/head/helmet/space/void/merc,
+		/obj/item/clothing/suit/space/void/syndi,
+		/obj/item/clothing/head/helmet/space/void/syndi,
 		/obj/item/clothing/mask/gas/syndicate,
 		/obj/item/weapon/tank/emergency/oxygen/double,
 		)
@@ -143,30 +143,12 @@
 
 /obj/item/weapon/storage/box/syndie_kit/cigarette/New()
 	..()
-	var/obj/item/weapon/storage/fancy/cigarettes/pack
-	pack = new /obj/item/weapon/storage/fancy/cigarettes(src)
-	fill_cigarre_package(pack, list(/datum/reagent/aluminum = 1, /datum/reagent/potassium = 1, /datum/reagent/sulfur = 1))
-	pack.desc += " 'F' has been scribbled on it."
-
-	pack = new /obj/item/weapon/storage/fancy/cigarettes(src)
-	fill_cigarre_package(pack, list(/datum/reagent/aluminum = 1, /datum/reagent/potassium = 1, /datum/reagent/sulfur = 1))
-	pack.desc += " 'F' has been scribbled on it."
-
-	pack = new /obj/item/weapon/storage/fancy/cigarettes(src)
-	fill_cigarre_package(pack, list(/datum/reagent/potassium = 1, /datum/reagent/sugar = 1, /datum/reagent/phosphorus = 1))
-	pack.desc += " 'S' has been scribbled on it."
-
-	pack = new /obj/item/weapon/storage/fancy/cigarettes(src)
-	fill_cigarre_package(pack, list(/datum/reagent/potassium = 1, /datum/reagent/sugar = 1, /datum/reagent/phosphorus = 1))
-	pack.desc += " 'S' has been scribbled on it."
-
-	pack = new /obj/item/weapon/storage/fancy/cigarettes(src)
-	fill_cigarre_package(pack, list(/datum/reagent/dylovene = 1, /datum/reagent/silicon = 1, /datum/reagent/hydrazine = 1))
-	pack.desc += " 'MB' has been scribbled on it."
-
-	pack = new /obj/item/weapon/storage/fancy/cigarettes(src)
-	fill_cigarre_package(pack, list(/datum/reagent/tricordrazine = 4))
-	pack.desc += " 'T' has been scribbled on it."
+	new /obj/item/weapon/storage/fancy/cigarettes/syndi_cigs/flash(src)
+	new /obj/item/weapon/storage/fancy/cigarettes/syndi_cigs/flash(src)
+	new /obj/item/weapon/storage/fancy/cigarettes/syndi_cigs/smoke(src)
+	new /obj/item/weapon/storage/fancy/cigarettes/syndi_cigs/smoke(src)
+	new /obj/item/weapon/storage/fancy/cigarettes/syndi_cigs/mind_breaker(src)
+	new /obj/item/weapon/storage/fancy/cigarettes/syndi_cigs/tricordrazine(src)
 
 	new /obj/item/weapon/flame/lighter/zippo(src)
 
@@ -197,12 +179,26 @@
 
 	startswith = list(/obj/item/weapon/spacecash/bundle/c1000 = 10)
 
+/obj/item/weapon/storage/backpack/satchel/syndie_kit/cleaning_kit
+	name="cleaning kit"
+	desc="Used to clean your dirty deeds up."
+	startswith = list(
+		/obj/item/weapon/reagent_containers/spray/cleaner,
+		/obj/item/weapon/reagent_containers/spray/sterilizine,
+		/obj/item/weapon/soap/syndie,
+		/obj/item/weapon/storage/bag/trash,
+		/obj/item/weapon/grenade/chem_grenade/cleaner = 3,
+		/obj/item/weapon/reagent_containers/glass/bucket/full,
+		/obj/item/weapon/mop,
+		/obj/item/weapon/storage/box/bodybags
+		)
+
 /obj/item/weapon/storage/backpack/satchel/syndie_kit/armor
 	name = "armor satchel"
 	desc = "A satchel for when you don't want to try a diplomatic approach."
 	startswith = list(
-		/obj/item/clothing/suit/armor/pcarrier/merc,
-		/obj/item/clothing/head/helmet/merc
+		/obj/item/clothing/suit/armor/pcarrier/syndi,
+		/obj/item/clothing/head/helmet/syndi
 	)
 
 /obj/item/weapon/storage/firstaid/surgery/syndie

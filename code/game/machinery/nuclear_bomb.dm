@@ -76,9 +76,14 @@ var/bomb_set
 		if(istype(O, /obj/item/weapon/disk/nuclear))
 			if(!user.unEquip(O, src))
 				return
+			O.forceMove(src)
 			auth = O
 			add_fingerprint(user)
 			return attack_hand(user)
+		if(istype(O, /obj/item/weapon/flame/lighter/zippo/nuke))
+			add_fingerprint(user)
+			to_chat(user, "You feel a little bit dumber now.")
+			return
 
 	if(anchored)
 		switch(removal_stage)
@@ -393,7 +398,7 @@ var/bomb_set
 	GLOB.moved_event.unregister(src, src, /obj/item/weapon/disk/nuclear/proc/check_z_level)
 	nuke_disks -= src
 	if(!nuke_disks.len)
-		var/turf/T = pick_area_turf(/area/maintenance, list(/proc/is_station_turf, /proc/not_turf_contains_dense_objects))
+		var/turf/T = pick_area_turf(pick_area_by_type(/area/maintenance, list(/proc/is_station_area)), list(/proc/not_turf_contains_dense_objects))
 		if(T)
 			var/obj/D = new /obj/item/weapon/disk/nuclear(T)
 			log_and_message_admins("[src], the last authentication disk, has been destroyed. Spawning [D] at ([D.x], [D.y], [D.z]).", location = T)
@@ -412,8 +417,8 @@ var/bomb_set
 	)
 
 /obj/item/weapon/storage/secure/briefcase/nukedisk/examine(user)
-	..()
-	to_chat(user,"On closer inspection, you see \a [GLOB.using_map.company_name] emblem is etched into the front of it.")
+	. = ..()
+	. += "\nOn closer inspection, you see \a [GLOB.using_map.company_name] emblem is etched into the front of it."
 
 /obj/item/weapon/folder/envelope/nuke_instructions
 	name = "instructions envelope"
@@ -422,26 +427,26 @@ var/bomb_set
 /obj/item/weapon/folder/envelope/nuke_instructions/Initialize()
 	. = ..()
 	var/obj/item/weapon/paper/R = new(src)
-	R.set_content("<center><img src=sollogo.png><br><br>\
-	<b>Warning: Classified<br>[GLOB.using_map.station_name] Self-Destruct System - Instructions</b></center><br><br>\
+	R.set_content("\[center\]\[br\]\[br\]\
+	\[b\]Warning: Classified\[br\][GLOB.using_map.station_name] Self-Destruct System - Instructions\[/b\]\[/center\]\[br\]\[br\]\
 	In the event of a Delta-level emergency, this document will guide you through the activation of the vessel's \
-	on-board nuclear self-destruct system. Please read carefully.<br><br>\
-	1) (Optional) Announce the imminent activation to any surviving crew members, and begin evacuation procedures.<br>\
-	2) Notify two heads of staff, both with ID cards with access to the ship's Keycard Authentication Devices.<br>\
-	3) Proceed to the self-destruct chamber, located on Deck One by the stairwell.<br>\
-	4) Unbolt the door and enter the chamber.<br>\
+	on-board nuclear self-destruct system. Please read carefully.\[br\]\[br\]\
+	1) (Optional) Announce the imminent activation to any surviving crew members, and begin evacuation procedures.\[br\]\
+	2) Notify two heads of staff, both with ID cards with access to the ship's Keycard Authentication Devices.\[br\]\
+	3) Proceed to the self-destruct chamber, located on Deck One by the stairwell.\[br\]\
+	4) Unbolt the door and enter the chamber.\[br\]\
 	5) Both heads of staff should stand in front of their own Keycard Authentication Devices. On the KAD interface, select \
-	Grant Nuclear Authentication Code. Both heads of staff should then swipe their ID cards simultaneously.<br>\
-	6) The KAD will now display the Authentication Code. Memorize this code.<br>\
-	7) Insert the nuclear authentication disk into the self-destruct terminal.<br>\
-	8) Enter the code into the self-destruct terminal.<br>\
+	Grant Nuclear Authentication Code. Both heads of staff should then swipe their ID cards simultaneously.\[br\]\
+	6) The KAD will now display the Authentication Code. Memorize this code.\[br\]\
+	7) Insert the nuclear authentication disk into the self-destruct terminal.\[br\]\
+	8) Enter the code into the self-destruct terminal.\[br\]\
 	9) Authentication procedures are now complete. Open the two cabinets containing the nuclear cylinders. They are \
-	located on the back wall of the chamber.<br>\
-	10) Place the cylinders upon the six nuclear cylinder inserters.<br>\
-	11) Activate the inserters. The cylinders will be pulled down into the self-destruct system.<br>\
-	12) Return to the terminal. Enter the desired countdown time.<br>\
-	13) When ready, disable the safety switch.<br>\
-	14) Start the countdown.<br><br>\
+	located on the back wall of the chamber.\[br\]\
+	10) Place the cylinders upon the six nuclear cylinder inserters.\[br\]\
+	11) Activate the inserters. The cylinders will be pulled down into the self-destruct system.\[br\]\
+	12) Return to the terminal. Enter the desired countdown time.\[br\]\
+	13) When ready, disable the safety switch.\[br\]\
+	14) Start the countdown.\[br\]\[br\]\
 	This concludes the instructions.", "vessel self-destruct instructions")
 
 	//stamp the paper
@@ -478,8 +483,19 @@ var/bomb_set
 	for(var/obj/machinery/self_destruct/ch in get_area(src))
 		inserters += ch
 
-/obj/machinery/nuclearbomb/station/attackby(obj/item/weapon/O as obj, mob/user as mob)
+/obj/machinery/nuclearbomb/station/attackby(obj/item/weapon/O, mob/user)
 	if(isWrench(O))
+		return
+	if(istype(O, /obj/item/weapon/disk/nuclear))
+		if(!user.unEquip(O, src))
+			return
+		O.forceMove(src)
+		auth = O
+		add_fingerprint(user)
+		return attack_hand(user)
+	if(istype(O, /obj/item/weapon/flame/lighter/zippo/nuke))
+		add_fingerprint(user)
+		to_chat(user, "You feel a little bit dumber now.")
 		return
 
 /obj/machinery/nuclearbomb/station/Topic(href, href_list)

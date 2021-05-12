@@ -18,15 +18,15 @@ var/const/commandos_possible = 6 //if more Commandos are needed in the future
 		to_chat(usr, "<font color='red'>There are [(6000-world.time)/10] seconds remaining before it may be called.</font>")
 		return
 
-	var/choice = input(usr, "Select type of strike team:") as null|anything in list("Heavy Asset Protection", "Mercenaries")
+	var/choice = input(usr, "Select type of strike team:") as null|anything in list("Death Squad", "Syndicates")
 	if(!choice)
 		return
 
 	var/datum/antagonist/deathsquad/team
 	switch(choice)
-		if("Heavy Asset Protection")
+		if("Death Squad")
 			team = GLOB.deathsquad
-		if("Mercenaries")
+		if("Syndicates")
 			team = GLOB.commandos
 		else
 			return

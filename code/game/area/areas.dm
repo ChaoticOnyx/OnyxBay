@@ -108,6 +108,7 @@
 		fire = TRUE	//used for firedoor checks
 		update_icon()
 		mouse_opacity = 0
+		set_lighting_mode(LIGHTMODE_ALARM, TRUE)
 		if(!all_doors)
 			return
 		for(var/obj/machinery/door/firedoor/D in all_doors)
@@ -117,13 +118,13 @@
 				else if(!D.density)
 					spawn()
 						D.close()
-		set_alert_lighting(TRUE)
 
 /area/proc/fire_reset()
 	if (fire)
 		fire = FALSE	//used for firedoor checks
 		update_icon()
 		mouse_opacity = 0
+		set_lighting_mode(LIGHTMODE_ALARM, FALSE)
 		if(!all_doors)
 			return
 		for(var/obj/machinery/door/firedoor/D in all_doors)
@@ -133,7 +134,6 @@
 				else if(D.density)
 					spawn(0)
 					D.open()
-		set_alert_lighting(FALSE)
 
 /area/proc/readyalert()
 	if(!eject)
@@ -190,17 +190,36 @@
 		update_icon()
 		power_change()
 
-/area/proc/set_emergency_lighting(state as num)
-	for(var/obj/machinery/light/M in src)
-		M.set_emergency_lighting(state)
+/area/proc/set_lighting_mode(mode, state)
+	if(!mode)
+		CRASH("Missing 'mode' arg.")
 
-/area/proc/set_evacuation_lighting(state)
+	if(state)
+		enabled_lighting_modes |= mode
+	else if(mode in enabled_lighting_modes)
+		enabled_lighting_modes -= mode
+
+	var/power_channel = LIGHT
+	var/old_lighting_mode = lighting_mode
+
+	if(LIGHTMODE_EMERGENCY in enabled_lighting_modes)
+		lighting_mode = LIGHTMODE_EMERGENCY
+		power_channel = ENVIRON
+	else if(LIGHTMODE_RADSTORM in enabled_lighting_modes)
+		lighting_mode = LIGHTMODE_RADSTORM
+	else if(LIGHTMODE_EVACUATION in enabled_lighting_modes)
+		lighting_mode = LIGHTMODE_EVACUATION
+	else if(LIGHTMODE_ALARM in enabled_lighting_modes)
+		lighting_mode = LIGHTMODE_ALARM
+	else
+		lighting_mode = null
+
+	if(old_lighting_mode == lighting_mode)
+		return
+
 	for(var/obj/machinery/light/L in src)
-		L.set_evacuation_lighting(state)
-
-/area/proc/set_alert_lighting(state as num)
-	for(var/obj/machinery/light/M in src)
-		M.set_alert_lighting(state)
+		L.set_mode(lighting_mode)
+		L.update_power_channel(power_channel)
 
 var/list/mob/living/forced_ambiance_list = new
 
@@ -215,7 +234,7 @@ var/list/mob/living/forced_ambiance_list = new
 	var/area/newarea = get_area(L.loc)
 	var/area/oldarea = L.lastarea
 	if(oldarea.has_gravity != newarea.has_gravity)
-		if(newarea.has_gravity == 1 && L.m_intent == "run") // Being ready when you change areas allows you to avoid falling.
+		if(newarea.has_gravity == 1 && L.m_intent == M_RUN) // Being ready when you change areas allows you to avoid falling.
 			thunk(L)
 		L.update_floating()
 
@@ -281,7 +300,8 @@ var/list/mob/living/forced_ambiance_list = new
 		var/mob/living/carbon/human/H = mob
 		if(istype(H.shoes, /obj/item/clothing/shoes/magboots) && (H.shoes.item_flags & ITEM_FLAG_NOSLIP))
 			return
-
+		if(H.species?.can_overcome_gravity(H))
+			return
 		H.AdjustStunned(1)
 		H.AdjustWeakened(1)
 		to_chat(mob, SPAN_WARNING("The sudden appearance of gravity makes you fall to the floor!"))

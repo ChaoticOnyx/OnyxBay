@@ -21,9 +21,9 @@
 
 /obj/machinery/bodyscanner/examine(mob/user)
 	. = ..()
-	if (. && user.Adjacent(src))
+	if (user.Adjacent(src))
 		if(occupant)
-			occupant.examine(user)
+			. += "\n[occupant.examine(user)]"
 
 /obj/machinery/bodyscanner/verb/eject()
 	set src in oview(1)
@@ -268,7 +268,8 @@
 				to_chat(usr, "\icon[src]<span class='warning'>The body scanner cannot scan that lifeform.</span>")
 				return TRUE
 
-			new /obj/item/weapon/paper/(loc, "<tt>[connected.occupant.get_medical_data()]</tt>", "Body scan report - [occupant]")
+			var/obj/item/weapon/paper/P = new /obj/item/weapon/paper/(loc)
+			P.set_content("<tt>[connected.occupant.get_medical_data()]</tt>", "Body scan report - [occupant]", TRUE)
 			return TRUE
 		if ("eject")
 			if (connected)
@@ -391,7 +392,12 @@
 	data["immunity"] = H.virus_immunity()
 
 	if (H.virus2.len)
-		data["warnings"] += list("Viral pathogen detected in blood stream.")
+		var/stage = 1
+		for(var/ID in H.virus2)
+			var/datum/disease2/disease/D = H.virus2[ID]
+			if(D.stage > stage)
+				stage = D.stage
+		data["warnings"] += list("Viral pathogen on stage [stage] of its life cycle detected in blood stream.")
 
 		if(H.antibodies.len)
 			data["warnings"] += list("Antibodies detected: [antigens2string(H.antibodies)]")
@@ -530,7 +536,12 @@
 
 	dat += "Antibody levels and immune system perfomance are at [round(H.virus_immunity()*100)]% of baseline."
 	if (H.virus2.len)
-		dat += "<font color='red'>Viral pathogen detected in blood stream.</font>"
+		var/stage = 1
+		for(var/ID in H.virus2)
+			var/datum/disease2/disease/D = H.virus2[ID]
+			if(D.stage > stage)
+				stage = D.stage
+		dat += "<font color='red'>Viral pathogen on stage [stage] of its life cycle detected in blood stream.</font>"
 		if(H.antibodies.len)
 			dat += "Antibodies detected: [antigens2string(H.antibodies)]"
 

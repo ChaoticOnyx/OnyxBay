@@ -42,8 +42,8 @@
 /turf/simulated/wall/silver/New(newloc)
 	..(newloc, MATERIAL_SILVER)
 
-/turf/simulated/wall/phoron/New(newloc)
-	..(newloc, MATERIAL_PHORON)
+/turf/simulated/wall/plasma/New(newloc)
+	..(newloc, MATERIAL_PLASMA)
 
 /turf/simulated/wall/sandstone/New(newloc)
 	..(newloc, MATERIAL_SANDSTONE)
@@ -51,8 +51,8 @@
 /turf/simulated/wall/wood/New(newloc)
 	..(newloc, MATERIAL_WOOD)
 
-/turf/simulated/wall/ironphoron/New(newloc)
-	..(newloc, MATERIAL_IRON, MATERIAL_PHORON)
+/turf/simulated/wall/ironplasma/New(newloc)
+	..(newloc, MATERIAL_IRON, MATERIAL_PLASMA)
 
 /turf/simulated/wall/golddiamond/New(newloc)
 	..(newloc, MATERIAL_GOLD, MATERIAL_DIAMOND)

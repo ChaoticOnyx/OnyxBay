@@ -16,5 +16,4 @@
 	set_light(10, 10, "#[num2hex(rand(64,255))][num2hex(rand(64,255))][num2hex(rand(64,255))]")
 	playsound(loc, 'sound/effects/bang.ogg', 50, 1, 5)
 	sleep(1 SECOND)
-	..()
 	qdel(src)

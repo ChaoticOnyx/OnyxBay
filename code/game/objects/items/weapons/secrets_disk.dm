@@ -26,15 +26,15 @@
 	"a bluespace gateway", "a teleporter", "a huge mining drill", "a strange spacecraft", "a space station",\
 	"a sleek-looking fighter spacecraft", "a ballistic rifle", "an energy sword", "an inanimate carbon rod")
 	subject += " " + pick("that is extremely powerful", "which is highly efficient", "which is incredibly compact",\
-	"that runs off of phoron", "that runs off of hydrogen gas", "created by the Skrell", "that just looks really cool")
+	"that runs off of plasma", "that runs off of hydrogen gas", "created by the Skrell", "that just looks really cool")
 
 /obj/item/weapon/disk/secret_project/examine(user)
-	..()
+	. = ..()
 	if(!locked)
-		to_chat(user, "With the disk's classified contents unlocked, \
-		you peer into its preview screen and see <span class='notice'>[subject]</span>.")
+		. += "\nWith the disk's classified contents unlocked, \
+		you peer into its preview screen and see <span class='notice'>[subject]</span>."
 	else
-		to_chat(user, "The disk is locked, you cannot see its contents.")
+		. += "\nThe disk is locked, you cannot see its contents."
 
 /obj/item/weapon/disk/secret_project/emag_act(remaining_charges, mob/user)
 	to_chat(user, "<span class='warning'>The cryptographic lock on this disk is far too complex. \

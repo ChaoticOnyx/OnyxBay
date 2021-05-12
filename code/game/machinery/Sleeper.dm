@@ -29,6 +29,8 @@
 	idle_power_usage = 15
 	active_power_usage = 200 //builtin health analyzer, dialysis machine, injectors.
 
+	beepsounds = "medical_beep"
+
 /obj/machinery/sleeper/verb/eject()
 	set src in oview(1)
 	set category = "Object"
@@ -55,11 +57,11 @@
 
 /obj/machinery/sleeper/examine(mob/user)
 	. = ..()
-	if (. && user.Adjacent(src))
+	if (user.Adjacent(src))
 		if (beaker)
-			to_chat(user, "It is loaded with a beaker.")
+			. += "\nIt is loaded with a beaker."
 		if(occupant)
-			occupant.examine(user)
+			. += "\n[occupant.examine(user)]"
 
 /obj/machinery/sleeper/Process()
 	if(stat & (NOPOWER|BROKEN))
@@ -67,6 +69,8 @@
 
 	if (!(occupant in src))
 		go_out()
+
+	play_beep()
 
 	if(filtering > 0)
 		if(beaker)
@@ -204,7 +208,7 @@
 				return TOPIC_REFRESH
 	if(href_list["stasis"])
 		var/nstasis = text2num(href_list["stasis"])
-		if(stasis != nstasis && nstasis in stasis_settings)
+		if(stasis != nstasis && (nstasis in stasis_settings))
 			stasis = text2num(href_list["stasis"])
 			return TOPIC_REFRESH
 
@@ -318,6 +322,7 @@
 	spark_system.set_up(5, 0, src.loc)
 
 	if(!emagged)
+		playsound(src.loc, 'sound/effects/computer_emag.ogg', 25)
 		to_chat(user, "<span class='danger'>You short out safety system turning it off.</span>")
 		emagged = 1
 		available_chemicals += list("Lexorin" = /datum/reagent/lexorin)
@@ -369,6 +374,8 @@
 		visible_message("\The [user] starts putting [M] into \the [src].")
 
 	if(do_after(user, 20, src))
+		if(!check_compatibility(M, user))
+			return
 		if(occupant)
 			to_chat(user, "<span class='warning'>\The [src] is already occupied.</span>")
 			return

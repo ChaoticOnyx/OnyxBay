@@ -13,7 +13,7 @@
 	desc = "Blue Pride, Galaxy Wide."
 	icon_state = "bluetag"
 	item_state = "bluetag"
-	blood_overlay_type = "armor"
+	blood_overlay_type = "armorblood"
 	body_parts_covered = UPPER_TORSO
 	allowed = list (/obj/item/weapon/gun/energy/lasertag/blue)
 	siemens_coefficient = 3.0
@@ -23,7 +23,7 @@
 	desc = "Reputed to go faster."
 	icon_state = "redtag"
 	item_state = "redtag"
-	blood_overlay_type = "armor"
+	blood_overlay_type = "armorblood"
 	body_parts_covered = UPPER_TORSO
 	allowed = list (/obj/item/weapon/gun/energy/lasertag/red)
 	siemens_coefficient = 3.0
@@ -214,11 +214,13 @@
 
 //coats
 
-/obj/item/clothing/suit/leathercoat
+/obj/item/clothing/suit/storage/toggle/leathercoat
 	name = "leather coat"
 	desc = "A long, thick black leather coat."
-	icon_state = "leathercoat"
-	item_state = "leathercoat"
+	icon_state = "leathercoat_open"
+	item_state = "leathercoat_open"
+	icon_open = "leathercoat_open"
+	icon_closed = "leathercoat"
 
 /obj/item/clothing/suit/browncoat
 	name = "brown leather coat"
@@ -351,7 +353,7 @@
 	cold_protection = UPPER_TORSO|ARMS
 	min_cold_protection_temperature = T0C - 20
 	siemens_coefficient = 0.7
-
+	initial_closed = TRUE
 
 /obj/item/clothing/suit/storage/toggle/varsity
 	name = "black varsity"
@@ -362,6 +364,7 @@
 	cold_protection = UPPER_TORSO|ARMS
 	min_cold_protection_temperature = T0C - 20
 	siemens_coefficient = 0.7
+	initial_closed = TRUE
 
 /obj/item/clothing/suit/storage/toggle/varsity/blue
 	name = "blue varsity"
@@ -388,6 +391,7 @@
 	icon_state = "leather_jacket"
 	item_state = "leather_jacket"
 	body_parts_covered = UPPER_TORSO|ARMS
+	initial_closed = TRUE
 
 /obj/item/clothing/suit/storage/black_jacket_long
 	name = "long black jacket"
@@ -395,12 +399,38 @@
 	icon_state = "black_jacket_long"
 	item_state = "black_jacket_long"
 	body_parts_covered = UPPER_TORSO|ARMS
+	initial_closed = TRUE
 
 /obj/item/clothing/suit/storage/black_jacket_NT
 	name = "black leather jacket NT"
 	desc = "A black leather coat. A corporate logo is proudly displayed on the back."
 	icon_state = "leather_jacket_nt"
 	body_parts_covered = UPPER_TORSO|ARMS
+	initial_closed = TRUE
+
+/obj/item/clothing/suit/storage/punk_jacket_AC
+	name = "black punk jacket"
+	desc = "A black leather jacket with Atomic Cats emblem on the back."
+	icon_state = "punk_jacket_AC"
+	body_parts_covered = UPPER_TORSO|ARMS
+
+/obj/item/clothing/suit/storage/punk_jacket_RD
+	name = "navy punk jacket"
+	desc = "A navy leather jacket with Rusty Devils emblem on the back."
+	icon_state = "punk_jacket_RD"
+	body_parts_covered = UPPER_TORSO|ARMS
+
+/obj/item/clothing/suit/storage/punk_jacket_TS
+	name = "brown punk jacket"
+	desc = "A brown leather jacket with Tunnel Snakes emblem on the back."
+	icon_state = "punk_jacket_TS"
+	body_parts_covered = UPPER_TORSO|ARMS
+
+/obj/item/clothing/suit/storage/fashionable_coat
+	name = "fashionable coat"
+	desc = "An expensive coat with a huge lapel."
+	icon_state = "fashionable_coat"
+	body_parts_covered = UPPER_TORSO|ARMS|LEGS
 
 //This one has buttons for some reason
 /obj/item/clothing/suit/storage/toggle/brown_jacket
@@ -411,6 +441,7 @@
 	icon_open = "brown_jacket_open"
 	icon_closed = "brown_jacket"
 	body_parts_covered = UPPER_TORSO|ARMS
+	initial_closed = TRUE
 
 /obj/item/clothing/suit/storage/toggle/brown_jacket_NT
 	name = "brown jacket NT"
@@ -419,6 +450,7 @@
 	icon_open = "brown_jacket_nt_open"
 	icon_closed = "brown_jacket_nt"
 	body_parts_covered = UPPER_TORSO|ARMS
+	initial_closed = TRUE
 
 /obj/item/clothing/suit/storage/toggle/marshal_jacket
 	name = "colonial marshal jacket"
@@ -429,6 +461,7 @@
 	icon_closed = "marshal_jacket"
 	valid_accessory_slots = list(ACCESSORY_SLOT_INSIGNIA)
 	body_parts_covered = UPPER_TORSO|ARMS
+	initial_closed = TRUE
 
 /obj/item/clothing/suit/storage/toggle/hoodie
 	name = "hoodie"
@@ -439,6 +472,7 @@
 	icon_closed = "hoodie"
 	min_cold_protection_temperature = T0C - 20
 	cold_protection = UPPER_TORSO|LOWER_TORSO|ARMS
+	initial_closed = TRUE
 
 /obj/item/clothing/suit/storage/toggle/hoodie/cti
 	name = "\improper CTI hoodie"
@@ -478,6 +512,7 @@
 	desc = "A green jacket bearing the logo of Major Bill's Shipping."
 	icon_state = "mbill"
 	item_state = "mbill"
+	initial_closed = TRUE
 
 /obj/item/clothing/suit/poncho/roles/security
 	name = "security poncho"
@@ -518,6 +553,7 @@
 	icon_state = "trackjacket"
 	icon_open = "trackjacket_open"
 	icon_closed = "trackjacket"
+	initial_closed = TRUE
 
 /obj/item/clothing/suit/storage/toggle/track/blue
 	name = "blue track jacket"

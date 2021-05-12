@@ -23,12 +23,12 @@ var/list/cached_space = list()
 /obj/effect/overmap/sector/temporary/proc/can_die(mob/observer)
 	testing("Checking if sector at [map_z[1]] can die.")
 	for(var/mob/M in GLOB.player_list)
-		if(M != observer && M.z in map_z)
+		if(M != observer && (M.z in map_z))
 			testing("There are people on it.")
 			return 0
 	return 1
 
-proc/get_deepspace(x,y)
+/proc/get_deepspace(x,y)
 	var/obj/effect/overmap/sector/temporary/res = locate(x,y,GLOB.using_map.overmap_z)
 	if(istype(res))
 		return res
@@ -47,7 +47,7 @@ proc/get_deepspace(x,y)
 /mob/lost_in_space()
 	return isnull(client)
 
-proc/overmap_spacetravel(turf/space/T, atom/movable/A)
+/proc/overmap_spacetravel(turf/space/T, atom/movable/A)
 	if (!T || !A)
 		return
 

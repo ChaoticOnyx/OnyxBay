@@ -12,7 +12,7 @@
 
 	var/speed = 1
 	var/mat_efficiency = 1
-	var/list/materials = list(MATERIAL_STEEL = 0, MATERIAL_GLASS = 0, MATERIAL_GOLD = 0, MATERIAL_SILVER = 0, MATERIAL_DIAMOND = 0, MATERIAL_PHORON = 0, MATERIAL_URANIUM = 0)
+	var/list/materials = list(MATERIAL_STEEL = 0, MATERIAL_GLASS = 0, MATERIAL_GOLD = 0, MATERIAL_SILVER = 0, MATERIAL_DIAMOND = 0, MATERIAL_PLASMA = 0, MATERIAL_URANIUM = 0)
 	var/res_max_amount = 200000
 
 	var/datum/research/files
@@ -194,6 +194,7 @@
 /obj/machinery/mecha_part_fabricator/emag_act(remaining_charges, mob/user)
 	switch(emagged)
 		if(0)
+			playsound(src.loc, 'sound/effects/computer_emag.ogg', 25)
 			emagged = 0.5
 			visible_message("\icon[src] <b>[src]</b> beeps: \"DB error \[Code 0x00F1\]\"")
 			sleep(10)
@@ -311,8 +312,8 @@
 			mattype = /obj/item/stack/material/silver
 		if(MATERIAL_DIAMOND)
 			mattype = /obj/item/stack/material/diamond
-		if(MATERIAL_PHORON)
-			mattype = /obj/item/stack/material/phoron
+		if(MATERIAL_PLASMA)
+			mattype = /obj/item/stack/material/plasma
 		if(MATERIAL_URANIUM)
 			mattype = /obj/item/stack/material/uranium
 		else

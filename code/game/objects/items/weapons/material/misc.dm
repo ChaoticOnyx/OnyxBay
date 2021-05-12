@@ -13,7 +13,7 @@
 	desc = "A very sharp axe blade upon a short fibremetal handle. It has a long history of chopping things, but now it is used for chopping wood."
 	icon = 'icons/obj/weapons.dmi'
 	icon_state = "hatchet"
-	force_const = 6.5
+	force_const = 7.5
 	thrown_force_const = 5
 	force_divisor = 0.125 // 7.5 with hardness 60 (steel)
 	thrown_force_divisor = 0.5 // 10 with weight 20 (steel)
@@ -70,7 +70,7 @@
 	icon = 'icons/obj/weapons.dmi'
 	icon_state = "hoe"
 	item_state = "hoe"
-	force_const = 5.0
+	force_const = 5.5
 	force_divisor = 0.125 // 2.5 with weight 20 (steel)
 	thrown_force_divisor = 0.25 // as above
 	w_class = ITEM_SIZE_SMALL

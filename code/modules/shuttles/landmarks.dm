@@ -127,3 +127,9 @@
 	if(active)
 		icon_state = "bluflare_on"
 		set_light(l_range = 6, l_power = 3)
+
+/obj/item/device/spaceflare/get_temperature_as_from_ignitor()
+	if(active)
+		return 1000
+	return 0
+	

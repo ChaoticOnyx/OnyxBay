@@ -237,7 +237,7 @@ var/list/possible_cable_coil_colours
 				new /obj/item/stack/cable_coil(src.loc, src.d1 ? 2 : 1, color)
 				qdel(src)
 
-obj/structure/cable/proc/cableColor(colorC)
+/obj/structure/cable/proc/cableColor(colorC)
 	var/color_n = "#dd0000"
 	if(colorC)
 		color_n = colorC
@@ -566,11 +566,11 @@ obj/structure/cable/proc/cableColor(colorC)
 		return
 
 	if(get_amount() == 1)
-		to_chat(user, "A short piece of power cable.")
+		. += "\nA short piece of power cable."
 	else if(get_amount() == 2)
-		to_chat(user, "A piece of power cable.")
+		. += "\nA piece of power cable."
 	else
-		to_chat(user, "A coil of power cable. There are [get_amount()] lengths of cable in the coil.")
+		. += "\nA coil of power cable. There are [get_amount()] lengths of cable in the coil."
 
 
 /obj/item/stack/cable_coil/verb/make_restraint()
@@ -589,7 +589,6 @@ obj/structure/cable/proc/cableColor(colorC)
 		src.use(15)
 	else
 		to_chat(usr, "<span class='notice'>You cannot do that.</span>")
-	..()
 
 /obj/item/stack/cable_coil/cyborg/verb/set_colour()
 	set name = "Change Colour"

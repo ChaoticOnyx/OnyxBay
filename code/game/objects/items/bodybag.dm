@@ -38,11 +38,13 @@
 	icon_opened = "bodybag_open"
 	open_sound = 'sound/items/zip.ogg'
 	close_sound = 'sound/items/zip.ogg'
+	pull_sound = "pull_body"
 	var/item_path = /obj/item/bodybag
 	density = 0
 	storage_capacity = (MOB_MEDIUM * 2) - 1
 	var/contains_body = 0
 	dremovable = 0
+	open_delay = 6
 
 /obj/structure/closet/body_bag/attackby(W as obj, mob/user as mob)
 	if (istype(W, /obj/item/weapon/pen))

@@ -103,11 +103,12 @@
 		overlays += I
 
 /obj/structure/bigDelivery/examine(mob/user)
-	if(..(user, 4))
+	. = ..()
+	if(get_dist(src, user) <= 4)
 		if(sortTag)
-			to_chat(user, "<span class='notice'>It is labeled \"[sortTag]\"</span>")
+			. += "\n<span class='notice'>It is labeled \"[sortTag]\"</span>"
 		if(examtext)
-			to_chat(user, "<span class='notice'>It has a note attached which reads, \"[examtext]\"</span>")
+			. += "\n<span class='notice'>It has a note attached which reads, \"[examtext]\"</span>"
 	return
 
 /obj/structure/bigDelivery/Destroy()
@@ -230,11 +231,12 @@
 		overlays += I
 
 /obj/item/smallDelivery/examine(mob/user)
-	if(..(user, 4))
+	. = ..()
+	if(get_dist(src, user) <= 4)
 		if(sortTag)
-			to_chat(user, "<span class='notice'>It is labeled \"[sortTag]\"</span>")
+			. += "\n<span class='notice'>It is labeled \"[sortTag]\"</span>"
 		if(examtext)
-			to_chat(user, "<span class='notice'>It has a note attached which reads, \"[examtext]\"</span>")
+			. += "\n<span class='notice'>It has a note attached which reads, \"[examtext]\"</span>"
 	return
 
 /obj/item/weapon/packageWrap
@@ -334,8 +336,9 @@
 	return
 
 /obj/item/weapon/packageWrap/examine(mob/user)
-	if(..(user, 0))
-		to_chat(user, "<span class='notice'>There are [amount] units of package wrap left!</span>")
+	. = ..()
+	if(get_dist(src, user) <= 0)
+		. += "\n<span class='notice'>There are [amount] units of package wrap left!</span>"
 	return
 
 /obj/item/device/destTagger
@@ -361,14 +364,14 @@
 
 	dat += "</tr></table><br>Current Selection: [currTag ? currTag : "None"]</tt>"
 	dat += "<br><a href='?src=\ref[src];nextTag=CUSTOM'>Enter custom location.</a>"
-	user << browse(dat, "window=destTagScreen;size=450x375")
+	show_browser(user, dat, "window=destTagScreen;size=450x375")
 	onclose(user, "destTagScreen")
 
 /obj/item/device/destTagger/attack_self(mob/user as mob)
 	openwindow(user)
 
 /obj/item/device/destTagger/OnTopic(user, href_list, state)
-	if(href_list["nextTag"] && href_list["nextTag"] in GLOB.tagger_locations)
+	if(href_list["nextTag"] && (href_list["nextTag"] in GLOB.tagger_locations))
 		src.currTag = href_list["nextTag"]
 		. = TOPIC_REFRESH
 	if(href_list["nextTag"] == "CUSTOM")

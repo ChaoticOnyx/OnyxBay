@@ -231,7 +231,7 @@
 		if(!target_breach)
 			to_chat(user, "There are no open breaches to seal with \the [W].")
 		else if(user != loc || do_after(user, 30, src))		//Doing this in your own inventory is awkward.
-			user.visible_message("<b>[user]</b> uses \the [W] to seal \the [target_breach] on \the [src].")
+			user.visible_message("<b>[user]</b> uses \the [W] to seal \the [target_breach.descriptor] on \the [src].")
 			target_breach.patched = TRUE
 			target_breach.update_descriptor()
 			calc_breach_damage()
@@ -240,7 +240,7 @@
 	..()
 
 /obj/item/clothing/suit/space/examine(mob/user)
-	. = ..(user)
+	. = ..()
 	if(can_breach && breaches && breaches.len)
 		for(var/datum/breach/B in breaches)
-			to_chat(user, "<span class='danger'>It has \a [B.descriptor].</span>")
+			. += "\n<span class='danger'>It has \a [B.descriptor].</span>"

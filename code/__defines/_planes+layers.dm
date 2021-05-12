@@ -194,6 +194,9 @@ What is the naming convention for planes or layers?
 	#define HUD_ITEM_LAYER              3
 	#define HUD_ABOVE_ITEM_LAYER        4
 
+#define ABOVE_HUD_PLANE                 8
+
+	#define ABOVE_HUD_BASE_LAYER        0
 
 //This is difference between planes used for atoms and effects
 #define PLANE_DIFFERENCE              3

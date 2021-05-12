@@ -346,6 +346,12 @@ var/const/EXTRA_COST_FACTOR = 1.25
 	hidden = 1
 	category = "Arms and Ammunition"
 
+/datum/autolathe/recipe/magazine_c45mstun
+	name = "ammunition (.45, stun)"
+	path = /obj/item/ammo_magazine/c45m/stun
+	hidden = 1
+	category = "Arms and Ammunition"
+
 /datum/autolathe/recipe/magazine_smg_rubber
 	name = "ammunition (9mm rubber top mounted)"
 	path = /obj/item/ammo_magazine/mc9mmt/rubber
@@ -361,7 +367,7 @@ var/const/EXTRA_COST_FACTOR = 1.25
 	name = "igniter"
 	path = /obj/item/device/assembly/igniter
 	category = "Devices and Components"
-	
+
 /datum/autolathe/recipe/voice
 	name = "voice analyzer"
 	path = /obj/item/device/assembly/voice
@@ -406,6 +412,26 @@ var/const/EXTRA_COST_FACTOR = 1.25
 /datum/autolathe/recipe/bulb
 	name = "light bulb"
 	path = /obj/item/weapon/light/bulb
+	category = "General"
+
+/datum/autolathe/recipe/tube
+	name = "high efficiency light tube"
+	path = /obj/item/weapon/light/tube/he
+	category = "General"
+
+/datum/autolathe/recipe/bulb
+	name = "high efficiency light bulb"
+	path = /obj/item/weapon/light/bulb/he
+	category = "General"
+
+/datum/autolathe/recipe/tube
+	name = "quartz light tube"
+	path = /obj/item/weapon/light/tube/quartz
+	category = "General"
+
+/datum/autolathe/recipe/bulb
+	name = "quartz light bulb"
+	path = /obj/item/weapon/light/bulb/quartz
 	category = "General"
 
 /datum/autolathe/recipe/ashtray_glass

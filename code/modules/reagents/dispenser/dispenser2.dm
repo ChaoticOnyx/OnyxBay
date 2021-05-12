@@ -21,16 +21,15 @@
 	anchored = 1
 	obj_flags = OBJ_FLAG_ANCHORABLE
 
-/obj/machinery/chemical_dispenser/New()
-	..()
-
+/obj/machinery/chemical_dispenser/Initialize()
+	. = ..()
 	if(spawn_cartridges)
 		for(var/type in spawn_cartridges)
 			add_cartridge(new type(src))
 
 /obj/machinery/chemical_dispenser/examine(mob/user)
 	. = ..()
-	to_chat(user, "It has [cartridges.len] cartridges installed, and has space for [DISPENSER_MAX_CARTRIDGES - cartridges.len] more.")
+	. += "\nIt has [cartridges.len] cartridges installed, and has space for [DISPENSER_MAX_CARTRIDGES - cartridges.len] more."
 
 /obj/machinery/chemical_dispenser/proc/add_cartridge(obj/item/weapon/reagent_containers/chem_disp_cartridge/C, mob/user)
 	if(!istype(C))

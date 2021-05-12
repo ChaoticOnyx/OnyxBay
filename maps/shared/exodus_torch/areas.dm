@@ -80,6 +80,10 @@
 	name = "Waste Disposal"
 	icon_state = "disposal"
 
+/area/maintenance/disposal/underground
+	name = "Underground Waste Disposal"
+	icon_state = "disposal"
+
 /area/maintenance/incinerator
 	name = "\improper Incinerator"
 	icon_state = "disposal"
@@ -163,6 +167,9 @@
 	name = "\improper Holodeck - Space"
 	has_gravity = 0
 	sound_env = SPACE
+
+/area/holodeck/source_chess
+	name = "\improper Holodeck - Chess Field"
 
 // Construction Site
 
@@ -253,6 +260,10 @@
 	name = "\improper Engineering SMES"
 	icon_state = "engine_smes"
 	sound_env = SMALL_ENCLOSED
+
+/area/engineering/singularity
+	name = "\improper Singularity Generator"
+	icon_state = "engine"
 
 /area/engineering/engineering_monitoring
 	name = "\improper Engineering Monitoring Room"
@@ -426,6 +437,10 @@
 	name = "\improper Command Security - Checkpoint"
 	icon_state = "checkpoint1"
 
+/area/security/checkpoint3
+	name = "\improper Escape Shuttle Security - Checkpoint"
+	icon_state = "checkpoint1"
+
 /area/security/detectives_office
 	name = "\improper Security - Forensic Office"
 	icon_state = "detective"
@@ -455,6 +470,9 @@
 	name = "\improper Security - Morgue"
 	icon_state = "brigmorgue"
 
+/area/security/brigswstorage
+	name = "\improper Security - S-W Storage"
+	icon_state = "brigswstorage"
 /area/security/evidence
 	name = "\improper Security - Evidence Storage"
 	icon_state = "evidence"
@@ -507,6 +525,10 @@
 	name = "\improper Custodial Closet"
 	icon_state = "janitor"
 
+/area/officesupplies
+	name = "\improper Office Supplies"
+	icon_state = "law"
+
 // Tcomm
 /area/tcommsat/
 	ambience = list("ai_ambient")
@@ -558,6 +580,11 @@
 	icon_state = "chapel"
 	ambience = list('sound/ambience/chapel/ambicha1.ogg','sound/ambience/chapel/ambicha2.ogg','sound/ambience/chapel/ambicha3.ogg','sound/ambience/chapel/ambicha4.ogg')
 	sound_env = LARGE_ENCLOSED
+
+/area/chapel/main/mass_driver
+	name = "\improper Chapel Funeral Hall"
+	icon_state = "chapel"
+
 
 // Merchant
 

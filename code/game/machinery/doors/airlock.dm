@@ -155,6 +155,9 @@
 	icon = 'icons/obj/doors/doorele.dmi'
 	opacity = 0
 
+/obj/machinery/door/airlock/centcom/Process()
+	return PROCESS_KILL
+
 /obj/machinery/door/airlock/vault
 	name = "Vault"
 	icon = 'icons/obj/doors/vault.dmi'
@@ -451,27 +454,27 @@
 		last_event = world.time
 	..()
 
-/obj/machinery/door/airlock/phoron
-	name = "Phoron Airlock"
+/obj/machinery/door/airlock/plasma
+	name = "Plasma Airlock"
 	desc = "No way this can end badly."
-	icon = 'icons/obj/doors/doorphoron.dmi'
-	mineral = MATERIAL_PHORON
+	icon = 'icons/obj/doors/doorplasma.dmi'
+	mineral = MATERIAL_PLASMA
 
-/obj/machinery/door/airlock/phoron/fire_act(datum/gas_mixture/air, exposed_temperature, exposed_volume)
+/obj/machinery/door/airlock/plasma/fire_act(datum/gas_mixture/air, exposed_temperature, exposed_volume)
 	if(exposed_temperature > 300)
-		PhoronBurn(exposed_temperature)
+		PlasmaBurn(exposed_temperature)
 
-/obj/machinery/door/airlock/phoron/proc/ignite(exposed_temperature)
+/obj/machinery/door/airlock/plasma/proc/ignite(exposed_temperature)
 	if(exposed_temperature > 300)
-		PhoronBurn(exposed_temperature)
+		PlasmaBurn(exposed_temperature)
 
-/obj/machinery/door/airlock/phoron/proc/PhoronBurn(temperature)
+/obj/machinery/door/airlock/plasma/proc/PlasmaBurn(temperature)
 	for(var/turf/simulated/floor/target_tile in range(2,loc))
-		target_tile.assume_gas("phoron", 35, 400+T0C)
+		target_tile.assume_gas("plasma", 35, 400+T0C)
 		spawn (0) target_tile.hotspot_expose(temperature, 400)
 	for(var/turf/simulated/wall/W in range(3,src))
 		W.burn((temperature/4))//Added so that you can't set off a massive chain reaction with a small flame
-	for(var/obj/machinery/door/airlock/phoron/D in range(3,src))
+	for(var/obj/machinery/door/airlock/plasma/D in range(3,src))
 		D.ignite(temperature/4)
 	new /obj/structure/door_assembly( src.loc )
 	qdel(src)
@@ -826,7 +829,7 @@ About the new airlock wires panel:
 			if (user)
 				src.attack_ai(user)
 
-/obj/machinery/door/airlock/CanPass(atom/movable/mover, turf/target, height=0, air_group=0)
+/obj/machinery/door/airlock/CanPass(atom/movable/mover, turf/target)
 	if (src.isElectrified())
 		if (istype(mover, /obj/item))
 			var/obj/item/i = mover
@@ -841,6 +844,30 @@ About the new airlock wires panel:
 		if(src.isElectrified())
 			if(src.shock(user, 100))
 				return
+
+	if(ishuman(user))
+		var/mob/living/carbon/human/H = user
+		if(H.species?.can_shred(H))
+			if(density && (!arePowerSystemsOn() || (stat & BROKEN)))
+				user.setClickCooldown(DEFAULT_WEAPON_COOLDOWN)
+				to_chat(user, "You start forcing \the [src] open...")
+				if(do_after(user, 30, src))
+					if(welded)
+						to_chat(user, SPAN("danger", "The airlock has been welded shut!"))
+					else if(locked)
+						to_chat(user, SPAN("danger", "The door bolts are down!"))
+					else if(density)
+						visible_message(SPAN("danger","\The [user] forces \the [src] open!"))
+						open(TRUE)
+						shake_animation(2, 2)
+				return
+			playsound(src.loc, 'sound/weapons/slash.ogg', 100, 1)
+			visible_message(SPAN("danger", "[user] slashes at \the [name]."), 1)
+			take_damage(10)
+			user.do_attack_animation(src)
+			user.setClickCooldown(5)
+			shake_animation(2, 2)
+			return
 
 	if(src.p_open)
 		user.set_machine(src)
@@ -1150,9 +1177,9 @@ About the new airlock wires panel:
 	qdel(src)
 
 	return da
-/obj/machinery/door/airlock/phoron/attackby(C as obj, mob/user as mob)
+/obj/machinery/door/airlock/plasma/attackby(obj/C, mob/user)
 	if(C)
-		ignite(is_hot(C))
+		ignite(C.get_temperature_as_from_ignitor())
 	..()
 
 /obj/machinery/door/airlock/set_broken(new_state)
@@ -1212,7 +1239,7 @@ About the new airlock wires panel:
 
 /obj/machinery/door/airlock/close(forced=0)
 	if(!can_close(forced))
-		addtimer(CALLBACK(src, .close), next_close_time(), TIMER_UNIQUE|TIMER_OVERRIDE)	
+		addtimer(CALLBACK(src, .proc/close), next_close_time(), TIMER_UNIQUE|TIMER_OVERRIDE)
 		return 0
 
 	if(safe)
@@ -1222,7 +1249,7 @@ About the new airlock wires panel:
 					if(world.time > next_beep_at)
 						playsound(src.loc, close_failure_blocked, 30, 0, -3)
 						next_beep_at = world.time + SecondsToTicks(10)
-					addtimer(CALLBACK(src, .close), next_close_time(), TIMER_UNIQUE|TIMER_OVERRIDE)	
+					addtimer(CALLBACK(src, .proc/close), next_close_time(), TIMER_UNIQUE|TIMER_OVERRIDE)
 					return
 
 	for(var/turf/turf in locs)
@@ -1382,15 +1409,15 @@ About the new airlock wires panel:
 	else
 		..(amount)
 
-/obj/machinery/door/airlock/examine()
+/obj/machinery/door/airlock/examine(mob/user)
 	. = ..()
 	if (lock_cut_state == BOLTS_EXPOSED)
-		to_chat(usr, "The bolt cover has been cut open.")
+		. += "\nThe bolt cover has been cut open."
 	if (lock_cut_state == BOLTS_CUT)
-		to_chat(usr, "The door bolts have been cut.")
+		. += "\nThe door bolts have been cut."
 	if(brace)
-		to_chat(usr, "\The [brace] is installed on \the [src], preventing it from opening.")
-		to_chat(usr, brace.examine_health())
+		. += "\n\The [brace] is installed on \the [src], preventing it from opening."
+		. += "\n[brace.examine_health()]"
 
 /obj/machinery/door/airlock/autoname
 	name = "hatch"

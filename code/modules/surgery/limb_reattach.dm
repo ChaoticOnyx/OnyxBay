@@ -21,12 +21,15 @@
 	var/obj/item/organ/external/E = tool
 	var/obj/item/organ/external/P = target.organs_by_name[E.parent_organ]
 	if(!P || P.is_stump())
-		to_chat(user, "<span class='danger'>The [E.amputation_point] is missing!</span>")
+		to_chat(user, SPAN("notice", "The [E.amputation_point] is missing!"))
 		return SURGERY_FAILURE
 
 	var/obj/item/organ/external/affected = target.get_organ(target_zone)
-	if (affected)
-		return 0
+	if(affected)
+		return SURGERY_FAILURE
+	if(E.organ_tag != check_zone(target_zone)) // Somehow this is safe to use. All hail the glorious bayspaghetti!
+		to_chat(user, SPAN("notice", "You manage to realize that \the [E] does not belong here."))
+		return SURGERY_FAILURE
 	var/list/organ_data = target.species.has_limbs["[target_zone]"]
 	return !isnull(organ_data)
 
@@ -36,8 +39,7 @@
 /datum/surgery_step/limb/attach
 	allowed_tools = list(/obj/item/organ/external = 100)
 
-	min_duration = 40
-	max_duration = 60
+	duration = ATTACH_DURATION
 
 /datum/surgery_step/limb/attach/begin_step(mob/user, mob/living/carbon/human/target, target_zone, obj/item/tool)
 	var/obj/item/organ/external/E = tool
@@ -72,8 +74,7 @@
 	)
 	can_infect = 1
 
-	min_duration = 75
-	max_duration = 105
+	duration = CLAMP_DURATION
 
 /datum/surgery_step/limb/connect/can_use(mob/living/user, mob/living/carbon/human/target, target_zone, obj/item/tool)
 	var/obj/item/organ/external/E = target.get_organ(target_zone)
@@ -109,8 +110,7 @@
 /datum/surgery_step/limb/mechanize
 	allowed_tools = list(/obj/item/robot_parts = 100)
 
-	min_duration = 50
-	max_duration = 70
+	duration = ATTACH_DURATION
 
 /datum/surgery_step/limb/mechanize/can_use(mob/living/user, mob/living/carbon/human/target, target_zone, obj/item/tool)
 	if(..())

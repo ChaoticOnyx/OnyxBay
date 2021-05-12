@@ -44,8 +44,9 @@
 
 /obj/item/weapon/material/twohanded/fireaxe/cult/examine(mob/user)
 	. = ..()
-	if(. && stored_power)
-		to_chat(user, "<span class='notice'>It exudes a death-like smell.</span>")
+	if(!. || !stored_power)
+		return
+	. += "\n<span class='notice'>It exudes a death-like smell.</span>"
 
 /obj/item/weapon/material/twohanded/fireaxe/cult/resolve_attackby(atom/a, mob/user, click_params)
 	if(istype(a, /obj/structure/deity/altar))
@@ -74,6 +75,6 @@
 	volume = 120
 	amount_per_transfer_from_this = 30
 
-/obj/item/weapon/reagent_containers/food/drinks/zombiedrink/New()
-	..()
+/obj/item/weapon/reagent_containers/food/drinks/zombiedrink/Initialize()
+	. = ..()
 	reagents.add_reagent(/datum/reagent/toxin/zombie,120)

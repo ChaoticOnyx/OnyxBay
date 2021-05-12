@@ -4,6 +4,7 @@
 	icon = 'icons/obj/closet.dmi'
 	icon_state = "closed"
 	pull_sound = "pull_closet"
+	pull_slowdown = PULL_SLOWDOWN_HEAVY
 	density = 1
 	w_class = ITEM_SIZE_NO_CONTAINER
 	layer = STRUCTURE_LAYER
@@ -37,6 +38,8 @@
 	var/dremovable = 1	//	some closets' doors cannot be removed
 	var/nodoor = 0	// for crafting
 
+	var/open_delay = 0
+
 /obj/structure/closet/nodoor
 	nodoor = 1
 	opened = TRUE
@@ -57,9 +60,9 @@
 	throw_speed = 1
 	throw_range = 4
 	w_class = ITEM_SIZE_HUGE
-	mod_weight = 1.5
+	mod_weight = 1.6
 	mod_reach = 1.4
-	mod_handy = 0.65
+	mod_handy = 0.7
 	mod_shield = 1.3
 	origin_tech = list(TECH_MATERIAL = 2)
 	matter = list(MATERIAL_STEEL = 1000)
@@ -119,25 +122,27 @@
 	return null
 
 /obj/structure/closet/examine(mob/user)
-	if(..(user, 1) && !opened)
+	. = ..()
+	if(get_dist(src, user) <= 1 && !opened)
 		var/content_size = 0
 		for(var/atom/movable/AM in src.contents)
 			if(!AM.anchored)
 				content_size += content_size(AM)
 		if(!content_size)
-			to_chat(user, "It is empty.")
+			. += "\nIt is empty."
 		else if(storage_capacity > content_size*4)
-			to_chat(user, "It is barely filled.")
+			. += "\nIt is barely filled."
 		else if(storage_capacity > content_size*2)
-			to_chat(user, "It is less than half full.")
+			. += "\nIt is less than half full."
 		else if(storage_capacity > content_size)
-			to_chat(user, "There is still some free space.")
+			. += "\nThere is still some free space."
 		else
-			to_chat(user, "It is full.")
+			. += "\nIt is full."
 
-/obj/structure/closet/CanPass(atom/movable/mover, turf/target, height=0, air_group=0)
-	if(air_group || (height==0 || wall_mounted)) return 1
-	return (!density)
+/obj/structure/closet/CanPass(atom/movable/mover, turf/target)
+	if(wall_mounted)
+		return TRUE
+	return ..()
 
 /obj/structure/closet/proc/can_open()
 	if((setup & CLOSET_HAS_LOCK) && locked)
@@ -388,8 +393,7 @@
 			attach_door(C)
 			return
 
-		if(usr.drop_item())
-			W.forceMove(loc)
+		if(usr.unEquip(W, target = loc))
 			W.pixel_x = 0
 			W.pixel_y = 0
 			W.pixel_z = 0
@@ -416,7 +420,7 @@
 		src.welded = !src.welded
 		src.update_icon()
 		user.visible_message("<span class='warning'>\The [src] has been [welded?"welded shut":"unwelded"] by \the [user].</span>", blind_message = "You hear welding.", range = 3)
-	else if(istype(W, /obj/item/device/multitool))
+	else if(istype(W, /obj/item/device/multitool) && (setup & CLOSET_HAS_LOCK))
 		var/obj/item/device/multitool/multi = W
 		if(multi.in_use)
 			to_chat(user, "<span class='warning'>This multitool is already in use!</span>")
@@ -485,10 +489,18 @@
 	if(!src.open())
 		to_chat(user, "<span class='notice'>It won't budge!</span>")
 
-/obj/structure/closet/attack_hand(mob/user as mob)
-	src.add_fingerprint(user)
-	src.toggle(user)
+/obj/structure/closet/attack_hand(mob/user)
+	add_fingerprint(user)
 	user.setClickCooldown(2)
+	if(in_use)
+		to_chat(user, SPAN("warning", "You can't do this right now."))
+		return
+	in_use = TRUE
+	if(open_delay && !do_after(user, open_delay))
+		in_use = FALSE
+		return
+	toggle(user)
+	in_use = FALSE
 
 // tk grab then use on self
 /obj/structure/closet/attack_self_tk(mob/user as mob)
@@ -511,8 +523,7 @@
 		return
 
 	if(ishuman(usr))
-		src.add_fingerprint(usr)
-		src.toggle(usr)
+		attack_hand(usr)
 	else
 		to_chat(usr, "<span class='warning'>This mob type can't use this verb.</span>")
 
@@ -653,7 +664,7 @@
 
 	add_fingerprint(user)
 
-	if(!user.IsAdvancedToolUser())
+	if(!user.IsAdvancedToolUser(1))
 		to_chat(user, FEEDBACK_YOU_LACK_DEXTERITY)
 		return FALSE
 

@@ -32,7 +32,8 @@
 
 /decl/hierarchy/outfit/job/science/roboticist
 	name = OUTFIT_JOB_NAME("Roboticist")
-	uniform = /obj/item/clothing/under/rank/scientist
+	uniform = /obj/item/clothing/under/rank/roboticist
+	gloves = /obj/item/clothing/gloves/thick
 	shoes = /obj/item/clothing/shoes/black
 	belt = /obj/item/weapon/storage/belt/utility/full
 	id_type = /obj/item/weapon/card/id/science/roboticist

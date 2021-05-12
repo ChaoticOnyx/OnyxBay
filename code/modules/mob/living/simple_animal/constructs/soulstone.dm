@@ -33,11 +33,11 @@
 /obj/item/device/soulstone/examine(mob/user)
 	. = ..()
 	if(full == SOULSTONE_EMPTY)
-		to_chat(user, "The shard still flickers with a fraction of the full artifact's power, but it needs to be filled with the essence of someone's life before it can be used.")
+		. += "\nThe shard still flickers with a fraction of the full artifact's power, but it needs to be filled with the essence of someone's life before it can be used."
 	if(full == SOULSTONE_ESSENCE)
-		to_chat(user,"The shard has gone transparent, a seeming window into a dimension of unspeakable horror.")
+		. += "\nThe shard has gone transparent, a seeming window into a dimension of unspeakable horror."
 	if(full == SOULSTONE_CRACKED)
-		to_chat(user, "This one is cracked and useless.")
+		. += "\nThis one is cracked and useless."
 
 /obj/item/device/soulstone/update_icon()
 	if(full == SOULSTONE_EMPTY)

@@ -186,8 +186,9 @@
 	return
 
 /obj/machinery/door/unpowered/simple/examine(mob/user)
-	if(..(user,1) && lock)
-		to_chat(user, "<span class='notice'>It appears to have a lock.</span>")
+	. = ..()
+	if(get_dist(src, user) <= 1 && lock)
+		. += "\n<span class='notice'>It appears to have a lock.</span>"
 
 /obj/machinery/door/unpowered/simple/can_open()
 	if(!..() || (lock && lock.isLocked()))
@@ -236,6 +237,15 @@
 
 /obj/machinery/door/unpowered/simple/resin/New(newloc,material_name,complexity)
 	..(newloc, MATERIAL_RESIN, complexity)
+
+/obj/machinery/door/unpowered/simple/resin/attack_hand(mob/user)
+	if(istype(user, /mob/living/carbon/alien/larva))
+		return ..()
+	if(ishuman(user))
+		var/mob/living/carbon/human/H = user
+		if(H.internal_organs_by_name[BP_HIVE])
+			return ..()
+	return FALSE
 
 /obj/machinery/door/unpowered/simple/cult/New(newloc,material_name,complexity)
 	..(newloc, MATERIAL_CULT, complexity)

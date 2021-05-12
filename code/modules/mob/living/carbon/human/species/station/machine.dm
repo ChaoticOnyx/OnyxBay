@@ -38,7 +38,7 @@
 	body_temperature = null
 	passive_temp_gain = 5  // This should cause IPCs to stabilize at ~80 C in a 20 C environment.
 
-	species_flags = SPECIES_FLAG_NO_SCAN | SPECIES_FLAG_NO_PAIN | SPECIES_FLAG_NO_POISON
+	species_flags = SPECIES_FLAG_NO_SCAN | SPECIES_FLAG_NO_PAIN | SPECIES_FLAG_NO_POISON | SPECIES_FLAG_NO_BLOOD
 	spawn_flags = SPECIES_IS_RESTRICTED | SPECIES_NO_FBP_CONSTRUCTION | SPECIES_NO_LACE
 	appearance_flags = HAS_UNDERWEAR //IPCs can wear undies too :(
 
@@ -73,6 +73,8 @@
 		)
 	genders = list(NEUTER)
 
+	xenomorph_type = null
+
 /datum/species/machine/handle_death(mob/living/carbon/human/H)
 	..()
 	if(istype(H.wear_mask,/obj/item/clothing/mask/monitor))
@@ -81,7 +83,7 @@
 		M.update_icon()
 
 /datum/species/machine/sanitize_name(new_name)
-	return sanitizeName(new_name, allow_numbers = 1)
+	return sanitizeName(new_name, allow_numbers = TRUE)
 
 /datum/species/machine/handle_post_spawn(mob/living/carbon/human/H)
 	if(!H)

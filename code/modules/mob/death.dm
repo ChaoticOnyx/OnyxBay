@@ -1,11 +1,10 @@
 //This is the proc for gibbing a mob. Cannot gib ghosts.
 //added different sort of gibs and animations. N
-/mob/proc/gib(anim="gibbed-m",do_gibs)
+/mob/proc/gib(anim = "gibbed-m", do_gibs)
 	if(status_flags & GODMODE)
 		return
 	death(1)
-	transforming = 1
-	canmove = 0
+	ADD_TRANSFORMATION_MOVEMENT_HANDLER(src)
 	icon = null
 	set_invisibility(101)
 	update_canmove()
@@ -19,24 +18,26 @@
 	playsound(src, "gib", 75, 1)
 
 	flick(anim, animation)
-	if(do_gibs) gibs(loc, dna)
+	if(do_gibs)
+		gibs(loc, dna)
 
 	addtimer(CALLBACK(src, .proc/check_delete, animation), 15)
 
 /mob/proc/check_delete(atom/movable/overlay/animation)
-	if(animation)	qdel(animation)
-	if(src)			qdel(src)
+	if(animation)
+		qdel(animation)
+	if(src)
+		qdel(src)
 
 //This is the proc for turning a mob into ash. Mostly a copy of gib code (above).
 //Originally created for wizard disintegrate. I've removed the virus code since it's irrelevant here.
 //Dusting robots does not eject the MMI, so it's a bit more powerful than gib() /N
-/mob/proc/dust(anim="dust-m",remains=/obj/effect/decal/cleanable/ash)
+/mob/proc/dust(anim = "dust-m", remains = /obj/effect/decal/cleanable/ash)
 	if(status_flags & GODMODE)
 		return
 	death(1)
 	var/atom/movable/overlay/animation = null
-	transforming = 1
-	canmove = 0
+	ADD_TRANSFORMATION_MOVEMENT_HANDLER(src)
 	icon = null
 	set_invisibility(101)
 
@@ -52,7 +53,7 @@
 	addtimer(CALLBACK(src, .proc/check_delete, animation), 15)
 
 
-/mob/proc/death(gibbed,deathmessage="seizes up and falls limp...", show_dead_message = "You have died.")
+/mob/proc/death(gibbed, deathmessage = "seizes up and falls limp...", show_dead_message = "You have died.")
 
 	if(stat == DEAD)
 		return 0

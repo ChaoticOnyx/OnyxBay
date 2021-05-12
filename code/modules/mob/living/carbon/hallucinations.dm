@@ -388,7 +388,7 @@
 		GLOB.human_mob_list.len   * 45;  "human",
 		GLOB.silicon_mob_list.len * 350; "cyborg",
 		GLOB.living_mob_list_.len * 6;   "animal",
-		GLOB.living_mob_list_.len * 5;   "xeno",
+		GLOB.living_mob_list_.len * 5;   "xenomorph",
 		GLOB.living_mob_list_.len * 2;   "bot",
 		GLOB.living_mob_list_.len    ;   "mouse",
 		GLOB.ghost_mob_list.len   * 3;   "ghost"
@@ -407,7 +407,7 @@
 			fake_candidates = GLOB.silicon_mob_list
 		if("animal")
 			fake_candidates = get_living_sublist(list(/mob/living/simple_animal), list(/mob/living/simple_animal/mouse))
-		if("xeno")
+		if("xenomorph")
 			fake_candidates = get_living_sublist(list(/mob/living/carbon/alien, /mob/living/carbon/slime, /mob/living/deity))
 		if("bot")
 			fake_candidates = get_living_sublist(list(/mob/living/bot))
@@ -535,7 +535,7 @@
 	var/turf/simulated/location = get_turf(holder)
 	ASSERT(istype(location))
 	var/zone/room = location.zone
-	var/list/available_effects = list("icons/effects/tile_effects.dmi" = "phoron", "icons/effects/tile_effects.dmi" = "sleeping_agent", "icons/effects/tile_effects.dmi" = "plasma-purple", "icons/effects/effects.dmi" = "electricity", "icons/effects/fire.dmi" = "real_fire") // Kinda ironic to use real_fire for non-real fire
+	var/list/available_effects = list("icons/effects/tile_effects.dmi" = "plasma", "icons/effects/tile_effects.dmi" = "sleeping_agent", "icons/effects/tile_effects.dmi" = "plasma-purple", "icons/effects/effects.dmi" = "electricity", "icons/effects/fire.dmi" = "real_fire") // Kinda ironic to use real_fire for non-real fire
 	var/chosen = rand(1, available_effects.len)
 	for(var/turf/simulated/T in room.contents)
 		effects.Add(image(icon = file(available_effects[chosen]), loc = T, icon_state = available_effects[available_effects[chosen]], layer = FLY_LAYER))

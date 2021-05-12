@@ -213,10 +213,7 @@ export const NeuromodRnD = props => {
 
               <LabeledList.Item label="Lifeform">
                 {data.selected_lifeform
-                  ? (data.selected_lifeform.scan_count >= data.selected_lifeform.neuromod_prod_scans
-                    ? <BadText text="Ok" good={true} />
-                    : <BadText text="Scans count not enough" />
-                  )
+                  ? <BadText text="Ok" good={true} />
                   : <BadText text="Not Selected" />
                 }
               </LabeledList.Item>

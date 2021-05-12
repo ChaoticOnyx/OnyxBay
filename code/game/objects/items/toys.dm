@@ -332,7 +332,7 @@
 /obj/item/toy/snappop/Crossed(H as mob|obj)
 	if((ishuman(H))) //i guess carp and shit shouldn't set them off
 		var/mob/living/carbon/M = H
-		if(M.m_intent == "run")
+		if(M.m_intent == M_RUN)
 			to_chat(M, "<span class='warning'>You step on the snap pop!</span>")
 
 			var/datum/effect/effect/system/spark_spread/s = new /datum/effect/effect/system/spark_spread
@@ -469,6 +469,11 @@
 	name = "Bartender action figure"
 	desc = "A \"Space Life\" brand Bartender action figure."
 	icon_state = "bartender"
+
+/obj/item/toy/figure/moose
+	name = "Moose action figure"
+	desc = "A \"Space Life\" brand Moose action figure."
+	icon_state = "moose"
 
 /obj/item/toy/figure/borg
 	name = "Cyborg action figure"
@@ -872,8 +877,7 @@
 	pixel_y = 0
 
 /obj/item/toy/chubbyskeleton/examine(mob/user)
-	to_chat(user, "<span class='notice'>*---------*<BR>This is [src], a Skeleton!<BR>He is wearing some black shorts.<BR>He is wearing a blue hoodie.<BR>He is wearing some slippers on his feet.<BR>*---------*</span>")
-	return
+	return "<span class='notice'>*---------*<BR>This is [src], a Skeleton!<BR>He is wearing some black shorts.<BR>He is wearing a blue hoodie.<BR>He is wearing some slippers on his feet.<BR>*---------*</span>"
 
 /obj/item/toy/chubbyskeleton/attack_hand(mob/user)
 	if(spam_flag == 0)
@@ -968,7 +972,7 @@
 /obj/item/toy/pig/proc/oink(mob/user, msg)
 	if(spam_flag == 0)
 		spam_flag = 1
-		playsound(loc, pick('sound/items/pig1.ogg','sound/items/pig2.ogg','sound/items/pig3.ogg'), 100, 1)
+		playsound(loc, pick('sound/effects/pig1.ogg','sound/effects/pig2.ogg','sound/effects/pig3.ogg'), 100, 1)
 		add_fingerprint(user)
 		if(message_spam_flag == 0)
 			message_spam_flag = 1
@@ -979,9 +983,8 @@
 			spam_flag = 0
 	return
 
-/obj/item/toy/pig/New()
-	..()
-	//var/piggy_choice = rand(1, 100)
+/obj/item/toy/pig/Initialize()
+	. = ..()
 	switch(rand(1, 100))
 		if(1 to 33)
 			icon_state = "pig1"
@@ -991,26 +994,27 @@
 			icon_state = "pig3"
 		if(100)
 			icon_state = "pig4"
-			name = "Kathleen"
-			desc = "The people demand Lucas!"
+			name = "green rubber piggy"
+			desc = "Watch out for angry voxes!"
 
 /obj/item/toy/pig/attack_self(mob/user)
 	oink(user, "squeezes")
 
 /obj/item/toy/pig/attack_hand(mob/user)
-	oink(user, pick("presses","squeezes","squashes","champs","pinches"))
+	oink(user, pick("presses", "squeezes", "squashes", "champs", "pinches"))
 
 /obj/item/toy/pig/MouseDrop(mob/user)
-	if((user == usr && (!usr.restrained() && (!usr.stat && (usr.contents.Find(src) || in_range(src, usr))))))
-		if(!istype(usr, /mob/living/carbon/slime) && !istype(usr, /mob/living/simple_animal))
-			if(!usr.get_active_hand())
-				var/mob/living/carbon/human/H = user
-				var/obj/item/organ/external/temp = H.organs_by_name[BP_R_HAND]
-				if(H.hand)
-					temp = H.organs_by_name[BP_L_HAND]
-				if(temp && !temp.is_usable())
-					to_chat(user, SPAN("notice", "You try to move your [temp.name], but cannot!"))
-					return
-				to_chat(user, SPAN("notice", "You pick up \the [src]."))
-				user.put_in_hands(src)
+	if(!CanMouseDrop(src, usr))
+		return
+	if(user == usr && (user.contents.Find(src) || in_range(src, user)))
+		if(ishuman(user) && !user.get_active_hand())
+			var/mob/living/carbon/human/H = user
+			var/obj/item/organ/external/temp = H.organs_by_name[BP_R_HAND]
+			if(H.hand)
+				temp = H.organs_by_name[BP_L_HAND]
+			if(temp && !temp.is_usable())
+				to_chat(user, SPAN("warning", "You try to pick up \the [src] with your [temp.name], but cannot!"))
+				return
+			to_chat(user, SPAN("notice", "You pick up \the [src]."))
+			user.put_in_hands(src)
 	return

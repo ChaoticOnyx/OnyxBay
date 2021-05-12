@@ -66,7 +66,7 @@
 	return ..()
 
 /mob/living/simple_animal/construct/examine(mob/user)
-	. = ..(user)
+	. = ..()
 	var/msg = "<span cass='info'>*---------*\nThis is \icon[src] \a <EM>[src]</EM>!\n"
 	if (src.health < src.maxHealth)
 		msg += "<span class='warning'>"
@@ -77,7 +77,7 @@
 		msg += "</span>"
 	msg += "*---------*</span>"
 
-	to_chat(user, msg)
+	. += "\n[msg]"
 
 /obj/item/weapon/ectoplasm
 	name = "ectoplasm"

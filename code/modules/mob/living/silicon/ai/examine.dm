@@ -1,7 +1,5 @@
 /mob/living/silicon/ai/examine(mob/user)
-	if(!..(user))
-		return
-
+	. = ..()
 	var/msg = ""
 	if (src.stat == DEAD)
 		msg += "<span class='deadsay'>It appears to be powered-down.</span>\n"
@@ -32,7 +30,7 @@
 	if(hardware && (hardware.owner == src))
 		msg += "<br>"
 		msg += hardware.get_examine_desc()
-	to_chat(user, msg)
+	. += "\n[msg]"
 	user.showLaws(src)
 	return
 

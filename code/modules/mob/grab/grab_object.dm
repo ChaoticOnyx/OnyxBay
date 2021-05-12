@@ -36,9 +36,9 @@
 		current_grab = all_grabstates[start_grab_name]
 
 /obj/item/grab/examine(user)
-	..()
+	. = ..()
 	var/obj/item/O = get_targeted_organ()
-	to_chat(user,"A grab on \the [affecting]'s [O.name].")
+	. += "\nA grab on \the [affecting]'s [O.name]."
 
 /obj/item/grab/Process()
 	current_grab.process(src)
@@ -89,7 +89,12 @@
 
 
 /obj/item/grab/proc/force_drop()
-	assailant.drop_from_inventory(src)
+	if(assailant)
+		assailant.drop_from_inventory(src)
+	else
+		loc = null
+		if(!QDELETED(src))
+			qdel(src)
 
 /obj/item/grab/proc/can_grab()
 
@@ -142,9 +147,7 @@
 
 // Returns the organ of the grabbed person that the grabber is targeting
 /obj/item/grab/proc/get_targeted_organ()
-	if(!affecting)
-		return
-	return (affecting.get_organ(target_zone))
+	return (affecting?.get_organ(target_zone))
 
 /obj/item/grab/proc/resolve_item_attack(mob/living/M, obj/item/I, target_zone)
 	if((M && ishuman(M)) && I)
@@ -204,7 +207,8 @@
 	current_grab.handle_resist(src)
 
 /obj/item/grab/proc/adjust_position(force = 0)
-	if(force)	affecting.forceMove(assailant.loc)
+	if(force)
+		affecting.forceMove(assailant.loc)
 
 	if(!assailant || !affecting || !assailant.Adjacent(affecting))
 		qdel(src)
@@ -214,6 +218,15 @@
 
 /obj/item/grab/proc/reset_position()
 	current_grab.reset_position(src)
+
+/obj/item/grab/proc/has_hold_on_organ(obj/item/organ/external/O)
+	if(!O)
+		return FALSE
+
+	if(get_targeted_organ() == O)
+		return TRUE
+
+	return FALSE
 
 /*
 	This section is for the simple procs used to return things from current_grab.

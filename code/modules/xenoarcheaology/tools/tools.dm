@@ -13,9 +13,9 @@
 	to_chat(user, "<span class='notice'>\icon[src] \The [src] flashes <i>[T.x]:[T.y]:[T.z]</i>.</span>")
 
 /obj/item/device/gps/examine(mob/user)
-	..()
+	. = ..()
 	var/turf/T = get_turf(src)
-	to_chat(user, "<span class='notice'>\The [src]'s screen shows: <i>[T.x]:[T.y]:[T.z]</i>.</span>")
+	. += "\n<span class='notice'>\The [src]'s screen shows: <i>[T.x]:[T.y]:[T.z]</i>.</span>"
 
 /obj/item/device/measuring_tape
 	name = "measuring tape"
@@ -205,7 +205,7 @@
 	dat += "<hr>"
 	dat += "<A href='?src=\ref[src];refresh=1'>Refresh</a><br>"
 	dat += "<A href='?src=\ref[src];close=1'>Close</a><br>"
-	user << browse(dat,"window=depth_scanner;size=300x500")
+	show_browser(user, dat, "window=depth_scanner;size=300x500")
 	onclose(user, "depth_scanner")
 
 /obj/item/device/depth_scanner/OnTopic(user, href_list)
@@ -262,7 +262,7 @@
 				<A href='byond://?src=\ref[src];freq=2'>+</A>
 				<A href='byond://?src=\ref[src];freq=10'>+</A><BR>
 				"}
-	user << browse(dat,"window=locater;size=300x150")
+	show_browser(user, dat, "window=locater;size=300x150")
 	onclose(user, "locater")
 
 /obj/item/weapon/pinpointer/radio/OnTopic(user, href_list)

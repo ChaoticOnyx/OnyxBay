@@ -140,7 +140,9 @@
 				var/input = sanitize(input(usr, "Please write a message to announce to the [station_name()].", "Priority Announcement") as null|text)
 				if(!input || !can_still_topic())
 					return 1
-				crew_announcement.Announce(input)
+				if(usr.client?.get_preference_value(/datum/client_preference/spell_checking) == GLOB.PREF_YES && usr.client.chatOutput)
+					usr.client.chatOutput.spell_check(input)
+				crew_announcement.Announce(input, msg_sanitized = TRUE)
 				announcment_cooldown = 1
 				spawn(600)//One minute cooldown
 					announcment_cooldown = 0
@@ -156,6 +158,8 @@
 						var/input = sanitize(input(usr, "Please choose a message to transmit to \[ABNORMAL ROUTING CORDINATES\] via quantum entanglement.  Please be aware that this process is very expensive, and abuse will lead to... termination. Transmission does not guarantee a response. There is a 30 second delay before you may send another message, be clear, full and concise.", "To abort, send an empty message.", "") as null|text)
 						if(!input || !can_still_topic())
 							return 1
+						if(usr.client?.get_preference_value(/datum/client_preference/spell_checking) == GLOB.PREF_YES && usr.client.chatOutput)
+							usr.client.chatOutput.spell_check(input)
 						Syndicate_announce(input, usr)
 						to_chat(usr, "<span class='notice'>Message transmitted.</span>")
 						log_say("[key_name(usr)] has made an illegal announcement: [input]")
@@ -174,6 +178,8 @@
 					var/input = sanitize(input("Please choose a message to transmit to [GLOB.using_map.boss_short] via quantum entanglement.  Please be aware that this process is very expensive, and abuse will lead to... termination.  Transmission does not guarantee a response. There is a 30 second delay before you may send another message, be clear, full and concise.", "To abort, send an empty message.", "") as null|text)
 					if(!input || !can_still_topic())
 						return 1
+					if(usr.client?.get_preference_value(/datum/client_preference/spell_checking) == GLOB.PREF_YES && usr.client.chatOutput)
+						usr.client.chatOutput.spell_check(input)
 					Centcomm_announce(input, usr)
 					to_chat(usr, "<span class='notice'>Message transmitted.</span>")
 					log_say("[key_name(usr)] has made an IA [GLOB.using_map.boss_short] announcement: [input]")
@@ -296,7 +302,6 @@ var/last_message_id = 0
 	if(!frequency) return
 
 	var/datum/signal/status_signal = new
-	status_signal.source = src
 	status_signal.transmission_method = 1
 	status_signal.data["command"] = command
 
@@ -304,11 +309,11 @@ var/last_message_id = 0
 		if("message")
 			status_signal.data["msg1"] = data1
 			status_signal.data["msg2"] = data2
-			log_admin("STATUS: [key_name(usr)] set status screen message with [src]: [data1] [data2]")
+			log_admin("STATUS: [key_name(usr)] set status screen message with: [data1] [data2]")
 		if("image")
 			status_signal.data["picture_state"] = data1
 
-	frequency.post_signal(src, status_signal)
+	frequency.post_signal(signal = status_signal)
 
 /proc/cancel_call_proc(mob/user)
 	if (!evacuation_controller)

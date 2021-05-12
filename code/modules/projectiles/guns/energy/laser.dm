@@ -2,7 +2,7 @@
 	name = "laser carbine"
 	desc = "A Hephaestus Industries G40E carbine, designed to kill with concentrated energy blasts."
 	icon_state = "laser"
-	item_state = "laser"
+	item_state = "laserrifle"
 	slot_flags = SLOT_BELT|SLOT_BACK
 	w_class = ITEM_SIZE_LARGE
 	force = 12.5
@@ -15,7 +15,7 @@
 	origin_tech = list(TECH_COMBAT = 3, TECH_MAGNET = 2)
 	matter = list(MATERIAL_STEEL = 2000)
 	projectile_type = /obj/item/projectile/beam/midlaser
-	wielded_item_state = "laser-wielded"
+	wielded_item_state = "laserrifle-wielded"
 
 	firemodes = list(
 		list(mode_name="beam", projectile_type=/obj/item/projectile/beam/midlaser),
@@ -54,6 +54,7 @@
 	icon_state = "laserp"
 	projectile_type = /obj/item/projectile/beam/practice
 	charge_cost = 10 //How much energy is needed to fire.
+	combustion = FALSE
 
 	firemodes = list()
 
@@ -79,7 +80,7 @@
 			desc += " The optical pathway is melted and useless."
 			projectile_type = null
 
-obj/item/weapon/gun/energy/retro
+/obj/item/weapon/gun/energy/retro
 	name = "retro laser"
 	icon_state = "retro"
 	item_state = "retro"
@@ -124,7 +125,7 @@ obj/item/weapon/gun/energy/retro
 	max_shots = 8
 	accuracy = 2
 	fire_delay = 20
-	wielded_item_state = "gun_wielded"
+	wielded_item_state = "lasercannon-wielded"
 	force = 14.0
 	mod_weight = 1.25
 	mod_reach = 1.0
@@ -225,6 +226,7 @@ obj/item/weapon/gun/energy/retro
 	matter = list(MATERIAL_STEEL = 2000)
 	projectile_type = /obj/item/projectile/beam/lastertag/blue
 	var/required_vest
+	combustion = FALSE
 
 /obj/item/weapon/gun/energy/lasertag/special_check(mob/living/carbon/human/M)
 	if(ishuman(M))

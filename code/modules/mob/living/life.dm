@@ -4,19 +4,20 @@
 
 	..()
 
-	if (transforming)
-		return
+	if(HAS_TRANSFORMATION_MOVEMENT_HANDLER(src))
+		return 0
 	if(!loc)
-		return
+		return 0
 
 	if(machine && !CanMouseDrop(machine, src))
 		machine = null
 
-	//Handle temperature/pressure differences between body and environment
-	var/datum/gas_mixture/environment = loc.return_air()
 	handle_modifiers() // Do this early since it might affect other things later.
-	if(environment)
-		handle_environment(environment)
+	if (do_check_environment())
+		//Handle temperature/pressure differences between body and environment
+		var/datum/gas_mixture/environment = loc.return_air()
+		if(environment)
+			handle_environment(environment)
 
 	blinded = 0 // Placing this here just show how out of place it is.
 	// human/handle_regular_status_updates() needs a cleanup, as blindness should be handled in handle_disabilities()
@@ -36,8 +37,14 @@
 
 	handle_actions()
 
-	update_canmove()
+	if(!istype(src, /mob/living/carbon/human)) // It is a dirty thing but update_canmove() must be called as late as possible and I can't figure out how to do it in a better way sorry
+		update_canmove(TRUE)
+
 	handle_regular_hud_updates()
+
+	if(mind)
+		for(var/datum/objective/O in mind.objectives)
+			O.update()
 
 	return 1
 
@@ -53,6 +60,9 @@
 			return
 
 		N.Handle(src)
+
+/mob/living/proc/do_check_environment()
+	return TRUE
 
 /mob/living/proc/handle_breathing()
 	return
@@ -104,15 +114,11 @@
 /mob/living/proc/handle_stunned()
 	if(stunned)
 		AdjustStunned(-1)
-		if(!stunned)
-			update_icons()
 	return stunned
 
 /mob/living/proc/handle_weakened()
 	if(weakened)
 		weakened = max(weakened-1,0)
-		if(!weakened)
-			update_icons()
 	return weakened
 
 /mob/living/proc/handle_stuttering()
@@ -159,8 +165,6 @@
 /mob/living/proc/handle_paralysed()
 	if(paralysis)
 		AdjustParalysis(-1)
-		if(!paralysis)
-			update_icons()
 	return paralysis
 
 /mob/living/proc/handle_disabilities()

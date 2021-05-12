@@ -92,6 +92,7 @@ var/global/list/obj/machinery/message_server/message_servers = list()
 			update_icon()
 
 /obj/machinery/message_server/proc/send_pda_message(recipient = "",sender = "",message = "")
+	playsound(src.loc, "device_trr", 50)
 	var/result
 	for (var/token in spamfilter)
 		if (findtextEx(message,token))
@@ -101,6 +102,7 @@ var/global/list/obj/machinery/message_server/message_servers = list()
 	return result
 
 /obj/machinery/message_server/proc/send_rc_message(recipient = "",sender = "",message = "",stamp = "", id_auth = "", priority = 1)
+	playsound(src.loc, "device_trr", 50)
 	rc_msgs += new /datum/data_rc_msg(recipient,sender,message,stamp,id_auth)
 	var/authmsg = "[message]<br>"
 	if (id_auth)
@@ -347,13 +349,13 @@ var/obj/machinery/blackbox_recorder/blackbox
 		query_insert.Execute()
 
 // Sanitize inputs to avoid SQL injection attacks
-proc/sql_sanitize_text(text)
+/proc/sql_sanitize_text(text)
 	text = replacetext(text, "'", "''")
 	text = replacetext(text, ";", "")
 	text = replacetext(text, "&", "")
 	return text
 
-proc/feedback_set(variable,value)
+/proc/feedback_set(variable,value)
 	if(!blackbox) return
 
 	variable = sql_sanitize_text(variable)
@@ -364,7 +366,7 @@ proc/feedback_set(variable,value)
 
 	FV.set_value(value)
 
-proc/feedback_inc(variable,value)
+/proc/feedback_inc(variable,value)
 	if(!blackbox) return
 
 	variable = sql_sanitize_text(variable)
@@ -375,7 +377,7 @@ proc/feedback_inc(variable,value)
 
 	FV.inc(value)
 
-proc/feedback_dec(variable,value)
+/proc/feedback_dec(variable,value)
 	if(!blackbox) return
 
 	variable = sql_sanitize_text(variable)
@@ -386,7 +388,7 @@ proc/feedback_dec(variable,value)
 
 	FV.dec(value)
 
-proc/feedback_set_details(variable,details)
+/proc/feedback_set_details(variable,details)
 	if(!blackbox) return
 
 	variable = sql_sanitize_text(variable)
@@ -398,7 +400,7 @@ proc/feedback_set_details(variable,details)
 
 	FV.set_details(details)
 
-proc/feedback_add_details(variable,details)
+/proc/feedback_add_details(variable,details)
 	if(!blackbox) return
 
 	variable = sql_sanitize_text(variable)

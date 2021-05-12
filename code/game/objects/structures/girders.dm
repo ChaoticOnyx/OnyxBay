@@ -4,6 +4,7 @@
 	density = 1
 	layer = BELOW_OBJ_LAYER
 	w_class = ITEM_SIZE_NO_CONTAINER
+	pull_slowdown = PULL_SLOWDOWN_HEAVY
 	var/state = 0
 	var/max_health = 150
 	var/health = 150
@@ -17,11 +18,10 @@
 
 /obj/structure/girder/examine(mob/user)
 	. = ..()
-	if(.)
-		if(health <= 0.4 * max_health)
-			to_chat(user, SPAN("warning", "It's heavily damaged!"))
-		else if(health < max_health)
-			to_chat(user, SPAN("warning", "It's showing signs of damage."))
+	if(health <= 0.4 * max_health)
+		. += "\n[SPAN("warning", "It's heavily damaged!")]"
+	else if(health < max_health)
+		. += "\n[SPAN("warning", "It's showing signs of damage.")]"
 
 /obj/structure/girder/attack_generic(mob/user, damage, attack_message = "smashes apart", wallbreaker)
 	if(!damage || !wallbreaker)
@@ -276,6 +276,8 @@
 	return
 
 /obj/structure/girder/cult
+	name = "strange girder"
+	desc = "This one is strange, looks like it is made from stone"
 	icon= 'icons/obj/cult.dmi'
 	icon_state= "cultgirder"
 	max_health = 250

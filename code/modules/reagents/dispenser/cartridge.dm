@@ -14,7 +14,7 @@
 	var/spawn_reagent = null
 	var/label = ""
 
-/obj/item/weapon/reagent_containers/chem_disp_cartridge/New()
+/obj/item/weapon/reagent_containers/chem_disp_cartridge/Initialize()
 	. = ..()
 	if(spawn_reagent)
 		reagents.add_reagent(spawn_reagent, volume)
@@ -23,13 +23,13 @@
 
 /obj/item/weapon/reagent_containers/chem_disp_cartridge/examine(mob/user)
 	. = ..()
-	to_chat(user, "It has a capacity of [volume] units.")
+	. += "\nIt has a capacity of [volume] units."
 	if(reagents.total_volume <= 0)
-		to_chat(user, "It is empty.")
+		. += "\nIt is empty."
 	else
-		to_chat(user, "It contains [reagents.total_volume] units of liquid.")
+		. += "\nIt contains [reagents.total_volume] units of liquid."
 	if(!is_open_container())
-		to_chat(user, "The cap is sealed.")
+		. += "\nThe cap is sealed."
 
 /obj/item/weapon/reagent_containers/chem_disp_cartridge/verb/verb_set_label()
 	set name = "Set Cartridge Label"
@@ -63,10 +63,10 @@
 		atom_flags |= ATOM_FLAG_OPEN_CONTAINER
 
 /obj/item/weapon/reagent_containers/chem_disp_cartridge/afterattack(obj/target, mob/user , flag)
-	if (!is_open_container() || !flag)
+	if(!is_open_container() || !flag)
 		return
 
-	else if(istype(target, /obj/structure/reagent_dispensers)) //A dispenser. Transfer FROM it TO us.
+	else if(istype(target, /obj/structure/reagent_dispensers) || istype(target, /obj/item/weapon/backwear/reagent)) //A dispenser. Transfer FROM it TO us.
 		target.add_fingerprint(user)
 
 		if(!target.reagents.total_volume && target.reagents)

@@ -1,0 +1,44 @@
+<div class="item">
+    {{:helper.link("Character", "", {"change_tab" : "StorytellerCPCharacterTab"}, data.current_tab == "StorytellerCPCharacterTab" ? "selected" : null )}}
+    {{:helper.link("Metrics", "", {"change_tab" : "StorytellerCPMetricsTab"}, data.pregame == 1 ? "inactive" : (data.current_tab == "StorytellerCPMetricsTab" ? "selected" : null) )}}
+    {{:helper.link("Triggers", "", {"change_tab" : "StorytellerCPTriggersTab"}, data.pregame == 1 ? "inactive" : (data.current_tab == "StorytellerCPTriggersTab" ? "selected" : null) )}}
+</div>
+
+<hr>
+
+<div class="item">
+    {{if data.current_tab == "StorytellerCPCharacterTab"}}
+        {{if data.storyteller.character}}
+            <span class='itemLabelWidest'>Current Storyteller Character: </span> <b>{{:data.storyteller.character.name}}</b><br>
+            <i>{{:data.storyteller.character.description}}</i>
+        {{else}}
+            There is no storyteller yet!
+        {{/if}}
+
+    {{else data.current_tab == "StorytellerCPMetricsTab"}}
+        {{props data.storyteller.metrics :metric :type}}
+            <div class="item">
+                <b>{{:metric.name}}: </b>{{:metric.value}}<br>
+                {{:helper.link("Statistics", "note", {"view_metric_statistics" : type})}}
+                {{:helper.link("Update", "arrowrefresh-1-w", {"update_metric" : type})}}
+                <i>
+                {{if metric.last_evaluation_time_minutes}}
+                    {{:metric.last_evaluation_time_minutes}} minutes ago
+                {{else metric.last_evaluation_time_seconds > 10}}
+                    {{:metric.last_evaluation_time_seconds}} seconds ago
+                {{else}}
+                    few moments ago
+                {{/if}}
+                </i>
+            </div>
+        {{/for}}
+
+    {{else data.current_tab == "StorytellerCPTriggersTab"}}
+        <i>All of the triggers will be invoked immediately after button click. Be careful!</i>
+        {{props data.storyteller.triggers :trigger :type}}
+            <div class="item">
+                {{:helper.link(trigger.name, "", {"invoke_trigger" : type})}}
+            </div>
+        {{/for}}
+    {{/if}}
+</div>

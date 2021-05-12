@@ -36,7 +36,7 @@
 		qdel(tank)
 	if(breather)
 		breather.remove_from_mob(contained)
-		src.visible_message("<span class='notice'>The mask rapidly retracts just before /the [src] is destroyed!</span>")
+		src.visible_message("<span class='notice'>The mask rapidly retracts just before \the [src] is destroyed!</span>")
 	qdel(contained)
 	contained = null
 	breather = null
@@ -154,9 +154,9 @@
 /obj/machinery/oxygen_pump/examine(mob/user)
 	. = ..()
 	if(tank)
-		to_chat(user, "The meter shows [round(tank.air_contents.return_pressure())]")
+		. += "\nThe meter shows [round(tank.air_contents.return_pressure())]"
 	else
-		to_chat(user, "<span class='warning'>It is missing a tank!</span>")
+		. += "\n<span class='warning'>It is missing a tank!</span>"
 
 /obj/machinery/oxygen_pump/Process()
 	if(breather)

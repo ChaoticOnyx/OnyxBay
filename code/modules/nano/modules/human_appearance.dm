@@ -34,11 +34,12 @@
 				cut_and_generate_data()
 				return 1
 	if(href_list["bodybuild"])
-		var/body_builds = owner.species.get_body_build_datum_list(owner.gender)
-		var/new_body_build = input(usr, "Choose your character's body build:", "Body Build", null) as null|anything in body_builds
-		if(new_body_build && can_still_topic(state))
-			if(owner.change_body_build(new_body_build))
-				return 1
+		if(can_change(APPEARANCE_BODY_BUILD))
+			var/body_builds = owner.species.get_body_build_datum_list(owner.gender)
+			var/new_body_build = input(usr, "Choose your character's body build:", "Body Build", null) as null|anything in body_builds
+			if(new_body_build && can_still_topic(state))
+				if(owner.change_body_build(new_body_build))
+					return 1
 	if(href_list["skin_tone"])
 		if(can_change_skin_tone())
 			var/new_s_tone = input(usr, "Choose your character's skin-tone:\n1 (lighter) - [owner.species.max_skin_tone()] (darker)", "Skin Tone", -owner.s_tone + 35) as num|null
@@ -121,7 +122,7 @@
 		for(var/gender in owner.species.genders)
 			genders[++genders.len] =  list("gender_name" = gender2text(gender), "gender_key" = gender)
 		data["genders"] = genders
-	data["change_body_build"] = 1 //pls someone TODO: create check for this shit
+	data["change_body_build"] = can_change(APPEARANCE_BODY_BUILD)
 	data["change_skin_tone"] = can_change_skin_tone()
 	data["change_skin_color"] = can_change_skin_color()
 	data["change_eye_color"] = can_change(APPEARANCE_EYE_COLOR)

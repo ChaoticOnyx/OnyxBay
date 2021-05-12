@@ -99,29 +99,29 @@
 	var/new_range = range + (rand(0,6) / severity) - (rand(0,3) / severity)
 	set_range(new_range)
 
-obj/item/device/suit_sensor_jammer/examine(user)
-	. = ..(user, 3)
-	if(.)
+/obj/item/device/suit_sensor_jammer/examine(user)
+	. = ..()
+	if(get_dist(src, user) <= 3)
 		var/list/message = list()
 		message += "This device appears to be [active ? "" : "in"]active and "
 		if(bcell)
 			message += "displays a charge level of [bcell.percent()]%."
 		else
 			message += "is lacking a cell."
-		to_chat(user, jointext(message,.))
+		. += "\n[jointext(message, " ")]"
 
-obj/item/device/suit_sensor_jammer/ui_status(mob/user, datum/ui_state/state)
+/obj/item/device/suit_sensor_jammer/ui_status(mob/user, datum/ui_state/state)
 	if(!bcell || bcell.charge <= 0)
 		return UI_CLOSE
 	return ..()
 
-obj/item/device/suit_sensor_jammer/tg_ui_interact(mob/user, ui_key = "main", datum/tgui/ui = null, force_open = 0, datum/tgui/master_ui = null, datum/ui_state/state = tg_default_state)
+/obj/item/device/suit_sensor_jammer/tg_ui_interact(mob/user, ui_key = "main", datum/tgui/ui = null, force_open = 0, datum/tgui/master_ui = null, datum/ui_state/state = tg_default_state)
 	ui = SStgui.try_update_ui(user, src, ui_key, ui, force_open)
 	if(!ui)
 		ui = new(user, src, ui_key, "suit_sensor_jammer", "Sensor Jammer", 350, 610, master_ui, state)
 		ui.open()
 
-obj/item/device/suit_sensor_jammer/ui_data()
+/obj/item/device/suit_sensor_jammer/ui_data()
 	var/list/methods = new
 	for(var/suit_sensor_jammer_method/ssjm in suit_sensor_jammer_methods)
 		methods[++methods.len] = list("name" = ssjm.name, "cost" = ssjm.energy_cost, "ref" = "\ref[ssjm]")
@@ -140,16 +140,16 @@ obj/item/device/suit_sensor_jammer/ui_data()
 
 	return data
 
-obj/item/device/suit_sensor_jammer/ui_act(action, params)
+/obj/item/device/suit_sensor_jammer/ui_act(action, params)
 	if(..())
 		return TRUE
 	switch(action)
 		if("enable_jammer")
 			enable()
-			. TRUE
+			. = TRUE
 		if("disable_jammer")
 			disable()
-			. FALSE
+			. = FALSE
 		if("increase_range")
 			set_range(range + 1)
 			. = 1

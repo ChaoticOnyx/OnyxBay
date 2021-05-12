@@ -57,6 +57,6 @@
 			msg += "<b><span class='notice'>Supported visors:</b></span>\n"
 			msg += visors
 
-	to_chat(user, msg)
+	. += "\n[msg]"
 	user.showLaws(src)
 	return

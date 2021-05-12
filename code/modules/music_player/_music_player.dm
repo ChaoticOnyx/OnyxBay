@@ -73,19 +73,18 @@ GLOBAL_LIST_EMPTY(music_players)
 	. = ..()
 
 /obj/item/music_player/examine(mob/user)
-	. = ..(user)
-	if(.)
-		if(tape)
-			to_chat(user, SPAN_NOTICE("You can see \a [tape] inside it."))
+	. = ..()
+	if(tape)
+		. += "\n[SPAN_NOTICE("You can see \a [tape] inside it.")]"
 
-		switch(panel)
-			if(PANEL_OPENED)
-				to_chat(user, "The front panel is unhinged.")
-			if(PANEL_UNSCREWED)
-				to_chat(user, "The front panel is unscrewed.")
+	switch(panel)
+		if(PANEL_OPENED)
+			. += "\nThe front panel is unhinged."
+		if(PANEL_UNSCREWED)
+			. += "\nThe front panel is unscrewed."
 
-		if(broken)
-			to_chat(user, SPAN_WARNING("It's broken."))
+	if(broken)
+		. += "\n[SPAN_WARNING("It's broken.")]"
 
 /obj/item/music_player/update_icon()
 	overlays.Cut()

@@ -169,16 +169,17 @@
 
 
 /obj/item/device/suit_cooling_unit/examine(mob/user)
-	if(!..(user, 1))
+	. = ..()
+	if(get_dist(src, user) > 1)
 		return
 
 	if (on)
-		to_chat(user, "It's switched on and running.")
+		. += "\nIt's switched on and running."
 	else
-		to_chat(user, "It is switched off.")
+		. += "\nIt is switched off."
 
 	if (cover_open)
-		to_chat(user, "The panel is open.")
+		. += "\nThe panel is open."
 
 	if (cell)
-		to_chat(user, "The charge meter reads [round(cell.percent())]%.")
+		. += "\nThe charge meter reads [round(cell.percent())]%."

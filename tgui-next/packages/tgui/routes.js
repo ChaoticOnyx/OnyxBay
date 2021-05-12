@@ -1,7 +1,6 @@
 import { AirlockElectronics } from './interfaces/AirlockElectronics';
 import { BrigTimer } from './interfaces/BrigTimer';
 import { Resleever } from './interfaces/Resleever';
-import { Jukebox } from './interfaces/Jukebox';
 import { SuitJammer } from './interfaces/SuitJammer';
 import { Psychoscope } from './interfaces/Psychoscope';
 import { NeuromodRnD } from './interfaces/NeuromodRnD';
@@ -19,10 +18,6 @@ const ROUTES = {
   resleever: {
     component: () => Resleever,
     scrollable: false,
-  },
-  jukebox: {
-    component: () => Jukebox,
-    scrollable: true,
   },
   suit_sensor_jammer: {
     component: () => SuitJammer,

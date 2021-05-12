@@ -34,11 +34,13 @@
 				else
 					to_chat(owner, "<span class='danger'>You gag as you want to throw up, but there's nothing in your stomach!</span>")
 					owner.Weaken(10)
+					owner.Stun(10)
 		if(inflamed > 600)
 			if(prob(1))
 				if(owner.can_feel_pain())
 					owner.custom_pain("You feel a stinging pain in your abdomen!")
 					owner.Weaken(10)
+					owner.Stun(10)
 
 				var/obj/item/organ/external/E = owner.get_organ(parent_organ)
 				E.sever_artery()

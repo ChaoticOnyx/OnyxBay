@@ -114,8 +114,8 @@ var/const/NO_EMAG_ACT = -50
 		user.visible_message("<span class='warning'>\The [src] fizzles and sparks - it seems it's been used once too often, and is now spent.</span>")
 	return 1
 /obj/item/weapon/card/emag/robot/examine(mob/user)
-	..()
-	to_chat(usr, "<span class='notice'>It has [uses] uses left.</span>")
+	. = ..()
+	. += "\n<span class='notice'>It has [uses] uses left.</span>"
 
 /obj/item/weapon/card/id
 	name = "identification card"
@@ -156,20 +156,18 @@ var/const/NO_EMAG_ACT = -50
 			access |= j.get_access()
 
 /obj/item/weapon/card/id/examine(mob/user)
-	set src in oview(1)
-	if(in_range(usr, src))
-		show(usr)
-		to_chat(usr, desc)
-	else
-		to_chat(usr, "<span class='warning'>It is too far away.</span>")
+	if(in_range(user, src))
+		show(user)
+		return desc
+	return "<span class='warning'>It is too far away.</span>"
 
 /obj/item/weapon/card/id/proc/prevent_tracking()
 	return 0
 
 /obj/item/weapon/card/id/proc/show(mob/user as mob)
 	if(front && side)
-		user << browse_rsc(front, "front.png")
-		user << browse_rsc(side, "side.png")
+		send_rsc(user, front, "front.png")
+		send_rsc(user, side, "side.png")
 	var/datum/browser/popup = new(user, "idcard", name, 600, 250)
 	popup.set_content(dat())
 	popup.set_title_image(usr.browse_rsc_icon(src.icon, src.icon_state))

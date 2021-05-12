@@ -122,19 +122,19 @@ GLOBAL_VAR(station_gravity_generator)
 /obj/machinery/gravity_generator/main/examine(mob/user)
 	. = ..()
 	if(panel_open)
-		to_chat(user, "The maintenance hatch is open.")
-	show_broken_info(user)
+		. += "\nThe maintenance hatch is open."
+	. += "[show_broken_info()]"
 
-/obj/machinery/gravity_generator/main/show_broken_info(mob/user)
+/obj/machinery/gravity_generator/main/show_broken_info()
 	switch(broken_state)
 		if(GRAV_NEEDS_PLASTEEL)
-			to_chat(user, "It requires ten plasteel to repair.")
+			. += "\nIt requires ten plasteel to repair."
 		if(GRAV_NEEDS_WELDING)
-			to_chat(user, "It requires a welder to repair.")
+			. += "\nIt requires a welder to repair."
 		if(GRAV_NEEDS_WRENCH)
-			to_chat(user, "It requires a wrench to repair.")
+			. += "\nIt requires a wrench to repair."
 		if(GRAV_NEEDS_SCREWDRIVER)
-			to_chat(user, "It requires a screwdriver to repair.")
+			. += "\nIt requires a screwdriver to repair."
 
 /obj/machinery/gravity_generator/main/ex_act(severity)
 	switch(severity)
@@ -329,7 +329,7 @@ GLOBAL_VAR(station_gravity_generator)
 	return ..()
 
 // Interaction
-/obj/machinery/gravity_generator/main/ui_interact(mob/user, ui_key, datum/nanoui/ui, force_open, datum/nano_ui/master_ui, datum/topic_state/state)
+/obj/machinery/gravity_generator/main/ui_interact(mob/user, ui_key, datum/nanoui/ui, force_open, datum/nanoui/master_ui, datum/topic_state/state)
 	var/data[0]
 
 	data["enabled"] = enabled
@@ -398,7 +398,7 @@ GLOBAL_VAR(station_gravity_generator)
 	update_icon()
 
 	if(announcer)
-		GLOB.global_announcer.autosay("Alert! Gravitational Generator has been discharged! Gravitation is disabled.", "Gravity Generator Alert System")
+		GLOB.global_announcer.autosay("Alert! Gravitational Generator has been discharged! Gravitation is disabled.", get_announcement_computer("Gravity Generator Alert System"))
 
 	SSradiation.radiate(src, 3 * charge)
 	playsound(loc, 'sound/effects/EMPulse.ogg', 100, 1)
@@ -504,7 +504,7 @@ GLOBAL_VAR(station_gravity_generator)
 				update_gravity_status()
 				playsound(loc, 'sound/effects/alert.ogg', 50, 1)
 				if(announcer)
-					GLOB.global_announcer.autosay("Gravitational Generator has been fully charged. Gravitation is enabled!", "Gravity Generator Alert System")
+					GLOB.global_announcer.autosay("Gravitational Generator has been fully charged. Gravitation is enabled!", get_announcement_computer("Gravity Generator Alert System"))
 
 		if(POWER_DOWN)
 			charge_count = max(0, charge_count - 2)
@@ -516,9 +516,9 @@ GLOBAL_VAR(station_gravity_generator)
 				update_gravity_status()
 				playsound(loc, 'sound/effects/alert.ogg', 50, 1)
 				if(announcer)
-					GLOB.global_announcer.autosay("Alert! Gravitational Generator has been discharged! Gravitation is disabled.", "Gravity Generator Alert System")
+					GLOB.global_announcer.autosay("Alert! Gravitational Generator has been discharged! Gravitation is disabled.", get_announcement_computer("Gravity Generator Alert System"))
 			else if(announcer && charge_count <= 50 && charge_count % 5 == 0)
-				GLOB.global_announcer.autosay("Danger! Gravitational Generator discharges detected! Charge status at [charge_count]%", "Gravity Generator Alert System", "Engineering")
+				GLOB.global_announcer.autosay("Danger! Gravitational Generator discharges detected! Charge status at [charge_count]%", get_announcement_computer("Gravity Generator Alert System"), "Engineering")
 
 
 /obj/machinery/gravity_generator/main/proc/update_gravity_status()
@@ -557,7 +557,7 @@ GLOBAL_VAR(station_gravity_generator)
 
 /obj/machinery/gravity_generator/part/examine(mob/user)
 	. = ..()
-	main_part.show_broken_info(user)
+	. += "[main_part.show_broken_info()]"
 
 /obj/machinery/gravity_generator/part/attackby(obj/item/I, mob/user)
 	return main_part.attackby(I, user)

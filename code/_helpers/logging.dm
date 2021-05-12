@@ -11,7 +11,7 @@
 /var/global/log_end= world.system_type == UNIX ? ascii2text(13) : ""
 
 /proc/log_to_dd(text)
-	world.log << text
+	to_world_log(text)
 	if(config && config.log_world_output)
 		log_debug("\[DD]: [text]")
 
@@ -53,6 +53,9 @@
 		for(var/client/C in GLOB.admins)
 			if(!req_pref || (C.get_preference_value(req_pref) == GLOB.PREF_SHOW))
 				to_chat(C, rendered)
+
+/proc/log_roundend(text)
+	log_generic("ROUNDEND", text, null, config.log_game)
 
 /proc/log_admin(text, location, notify_admin)
 	log_generic("ADMIN", text, location, config.log_admin, notify_admin)
@@ -116,6 +119,15 @@
 
 /proc/log_qdel(text)
 	WRITE_FILE(GLOB.world_qdel_log, "\[[time_stamp()]]QDEL: [text]")
+
+/proc/log_href(text)
+	if(!config.log_hrefs)
+		return
+	WRITE_FILE(GLOB.world_hrefs_log, "\[[time_stamp()]] HREF: [text]")
+
+/proc/log_href_exploit(atom/user)
+	WRITE_FILE(GLOB.href_exploit_attempt_log, "HREF: [key_name(user)] has potentially attempted an href exploit.")
+	message_admins("[key_name_admin(user)] has potentially attempted an href exploit.")
 
 /proc/log_error(text)
 	error(text)

@@ -47,6 +47,8 @@
 	reagent_tag = IS_VOX
 
 	inherent_verbs = list(
+		/mob/living/carbon/human/proc/toggle_powers,
+		/mob/living/carbon/human/proc/toggle_leap,
 		/mob/living/carbon/human/proc/leap
 		)
 
@@ -66,6 +68,7 @@
 
 
 	has_organ = list(
+		BP_STOMACH =  /obj/item/organ/internal/stomach/vox,
 		BP_HEART =    /obj/item/organ/internal/heart/vox,
 		BP_LUNGS =    /obj/item/organ/internal/lungs/vox,
 		BP_LIVER =    /obj/item/organ/internal/liver/vox,

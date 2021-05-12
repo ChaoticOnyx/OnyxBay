@@ -16,7 +16,8 @@
 	var/used_power_this_tick = 0
 	var/sight_mode = 0
 	var/custom_name = ""
-	var/custom_sprite = 0 //Due to all the sprites involved, a var for our custom borgs may be best
+	var/custom_sprite = TRUE //Due to all the sprites involved, a var for our custom borgs may be best
+	var/original_icon = 'icons/mob/robots.dmi'
 	var/crisis //Admin-settable for combat module use.
 	var/crisis_override = 0
 	var/integrated_light_power = 6
@@ -156,6 +157,10 @@
 	hud_list[IMPTRACK_HUD]    = new /image/hud_overlay('icons/mob/hud.dmi', src, "hudblank")
 	hud_list[SPECIALROLE_HUD] = new /image/hud_overlay('icons/mob/hud.dmi', src, "hudblank")
 
+/mob/living/silicon/robot/Initialize()
+	. = ..()
+	AddMovementHandler(/datum/movement_handler/robot/use_power, /datum/movement_handler/mob/space)
+
 /mob/living/silicon/robot/proc/recalculate_synth_capacities()
 	if(!module || !module.synths)
 		return
@@ -237,17 +242,16 @@
 	if(new_sprites && new_sprites.len)
 		module_sprites = new_sprites.Copy()
 		//Custom_sprite check and entry
-
-		if (custom_sprite == 1 && CUSTOM_ITEM_SYNTH)
-			var/list/valid_states = icon_states(CUSTOM_ITEM_SYNTH)
-			if("[ckey]-[modtype]" in valid_states)
-				module_sprites["Custom"] = "[src.ckey]-[modtype]"
-				icon = CUSTOM_ITEM_SYNTH
+		if(custom_sprite && CUSTOM_ITEM_ROBOTS)
+			var/sprite_state = GLOB.robot_custom_icons[ckey]
+			var/list/valid_states = icon_states(CUSTOM_ITEM_ROBOTS)
+			if(sprite_state && (sprite_state in valid_states))
+				module_sprites["Custom"] = sprite_state
+				icon = CUSTOM_ITEM_ROBOTS
 				icontype = "Custom"
 			else
 				icontype = module_sprites[1]
-				icon = 'icons/mob/robots.dmi'
-				to_chat(src, "<span class='warning'>Custom Sprite Sheet does not contain a valid icon_state for [ckey]-[modtype]</span>")
+				icon = original_icon
 		else
 			icontype = module_sprites[1]
 		icon_state = module_sprites[icontype]
@@ -263,8 +267,8 @@
 	modules.Add(GLOB.robot_module_types)
 	var/decl/security_state/security_state = decls_repository.get_decl(GLOB.using_map.security_state)
 	if((crisis && security_state.current_security_level_is_same_or_higher_than(security_state.high_security_level)) || crisis_override) //Leaving this in until it's balanced appropriately.
-		to_chat(src, "<span class='warning'>Crisis mode active. Combat module available.</span>")
-		modules+="Combat"
+		to_chat(src, SPAN("warning", "Crisis mode active. Combat module available."))
+		modules += "Combat"
 	modtype = input("Please, select a module!", "Robot module", null, null) as null|anything in modules
 	if(module)
 		return
@@ -273,7 +277,8 @@
 
 	var/module_type = robot_modules[modtype]
 	new module_type(src)
-	GLOB.robot_module_types.Remove(modtype)
+	if(modtype != "Standard")
+		GLOB.robot_module_types.Remove(modtype)
 	hands.icon_state = lowertext(modtype)
 	feedback_inc("cyborg_[lowertext(modtype)]",1)
 	updatename()
@@ -399,7 +404,7 @@
 		to_chat(src, "<span class='warning'>Low Power.</span>")
 		return
 	var/dat = self_diagnosis()
-	src << browse(dat, "window=robotdiagnosis")
+	show_browser(src, dat, "window=robotdiagnosis")
 
 
 /mob/living/silicon/robot/verb/toggle_component()
@@ -835,7 +840,7 @@
 		else
 			dat += text("[obj]: \[<A HREF=?src=\ref[src];act=\ref[obj]>Activate</A> | <B>Deactivated</B>\]<BR>")
 */
-	src << browse(dat, "window=robotmod")
+	show_browser(src, dat, "window=robotmod")
 
 
 /mob/living/silicon/robot/Topic(href, href_list)
@@ -967,7 +972,6 @@
 	disconnect_from_ai()
 	lawupdate = 0
 	lockcharge = 0
-	canmove = 1
 	scrambledcodes = 1
 	//Disconnect it's camera so it's not so easily tracked.
 	if(src.camera)
@@ -1014,7 +1018,7 @@
 	if(!module_sprites.len)
 		to_chat(src, "Something is badly wrong with the sprite selection. Harass a coder.")
 		return
-
+	set_module_sprites(module_sprites)
 	icon_selected = 0
 	src.icon_selection_tries = triesleft
 	if(module_sprites.len == 1 || !client)
@@ -1023,6 +1027,9 @@
 	else
 		icontype = input(src,"Select an icon! [triesleft ? "You have [triesleft] more chance\s." : "This is your last try."]", "Robot Icon", icontype, null) in module_sprites
 	icon_state = module_sprites[icontype]
+	var/list/valid_states = icon_states(icon)
+	if(!(icon_state in valid_states))
+		icon = original_icon
 	update_icon()
 
 	if (module_sprites.len > 1 && triesleft >= 1 && client)
@@ -1185,7 +1192,6 @@
 				to_chat(user, "You fail to hack [src]'s interface.")
 				to_chat(src, "Hack attempt detected.")
 			return 1
-		return
 
 /mob/living/silicon/robot/blob_act(destroy, obj/effect/blob/source)
 	if (is_dead())
@@ -1196,9 +1202,11 @@
 	spark_system.start()
 
 /mob/living/silicon/robot/incapacitated(incapacitation_flags = INCAPACITATION_DEFAULT)
-	..()
-	if ((incapacitation_flags & INCAPACITATION_FORCELYING) && (lockcharge))
+	if((incapacitation_flags & INCAPACITATION_FORCELYING) && (lockcharge || !is_component_functioning("actuator")))
 		return 1
+	if((incapacitation_flags & INCAPACITATION_KNOCKOUT) && !is_component_functioning("actuator"))
+		return 1
+	return ..()
 
 /mob/living/silicon/robot/proc/drop_all_upgrades()
 	for(var/obj/item/borg/upgrade/U in src)
@@ -1218,3 +1226,8 @@
 		ion_trail.stop()
 		qdel(ion_trail)
 		ion_trail = null
+
+/mob/living/silicon/robot/lay_down()
+	set category = null
+
+	return

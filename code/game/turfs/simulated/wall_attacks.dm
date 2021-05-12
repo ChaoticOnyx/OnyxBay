@@ -76,8 +76,6 @@
 			dismantle_wall()
 			return 1
 
-	if(..()) return 1
-
 	if(!can_open)
 		if(user.a_intent == I_HURT)
 			user.visible_message("<span class='danger'>\The [user] bangs against \the [src]!</span>",
@@ -142,8 +140,8 @@
 
 	if(W)
 		radiate()
-		if(is_hot(W))
-			burn(is_hot(W))
+		if(W.get_temperature_as_from_ignitor())
+			burn(W.get_temperature_as_from_ignitor())
 
 	if(locate(/obj/effect/overlay/wallrot) in src)
 		if(isWelder(W))

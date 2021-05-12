@@ -28,8 +28,6 @@
 		A.attackby(I, user)
 	return
 
-	..()
-
 /obj/item/clothing/attack_hand(mob/user)
 	//only forward to the attached accessory if the clothing is equipped (not in a storage)
 	if(accessories.len && src.loc == user)
@@ -60,9 +58,9 @@
 	src.add_fingerprint(usr)
 
 /obj/item/clothing/examine(mob/user)
-	. = ..(user)
+	. = ..()
 	for(var/obj/item/clothing/accessory/A in accessories)
-		to_chat(user, "\icon[A] \A [A] is attached to it.")
+		. += "\n\icon[A] \A [A] is attached to it."
 
 /obj/item/clothing/proc/update_accessory_slowdown()
 	slowdown_accessory = 0
@@ -83,7 +81,7 @@
 	update_clothing_icon()
 
 /obj/item/clothing/proc/remove_accessory(mob/user, obj/item/clothing/accessory/A)
-	if(!(A in accessories))
+	if(!A || !(A in accessories))
 		return
 
 	A.on_removed(user)

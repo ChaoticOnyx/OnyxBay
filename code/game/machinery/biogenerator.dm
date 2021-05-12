@@ -33,7 +33,8 @@
 			/obj/item/weapon/reagent_containers/food/drinks/milk/smallcarton = 30,
 			/obj/item/weapon/reagent_containers/food/snacks/meat = 50),
 		"Nutrients" = list(
-			/obj/item/weapon/reagent_containers/glass/bottle/eznutrient = 60,
+			/obj/item/weapon/reagent_containers/glass/bottle/compost = 60,
+			/obj/item/weapon/reagent_containers/glass/bottle/eznutrient = 120,
 			/obj/item/weapon/reagent_containers/glass/bottle/left4zed = 120,
 			/obj/item/weapon/reagent_containers/glass/bottle/robustharvest = 120),
 		"Leather" = list(
@@ -45,7 +46,7 @@
 			/obj/item/clothing/shoes/workboots = 400,
 			/obj/item/clothing/shoes/leather = 400,
 			/obj/item/clothing/shoes/dress = 400,
-			/obj/item/clothing/suit/leathercoat = 500,
+			/obj/item/clothing/suit/storage/toggle/leathercoat = 500,
 			/obj/item/clothing/suit/storage/toggle/brown_jacket = 500,
 			/obj/item/clothing/suit/storage/toggle/bomber = 500,
 			/obj/item/clothing/suit/storage/hooded/wintercoat = 500))

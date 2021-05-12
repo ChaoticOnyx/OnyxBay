@@ -60,8 +60,9 @@
 			to_chat(usr, "<span class='notice'>Camera deactivated.</span>")
 
 /obj/item/clothing/head/helmet/space/examine(mob/user)
-	if(..(user, 1) && camera)
-		to_chat(user, "This helmet has a built-in camera. Its [!ispath(camera) && camera.status ? "" : "in"]active.")
+	. = ..()
+	if(get_dist(src, user) <= 1 && camera)
+		. += "\nThis helmet has a built-in camera. Its [!ispath(camera) && camera.status ? "" : "in"]active."
 
 /obj/item/clothing/suit/space
 	name = "Space suit"

@@ -152,8 +152,7 @@
 	playsound(loc, 'sound/items/AirHorn.ogg', 100, 1)
 	for(var/mob/living/carbon/M in ohearers(6, src))
 		if(istype(M, /mob/living/carbon/human))
-			var/mob/living/carbon/human/H = M
-			if(istype(H.l_ear, /obj/item/clothing/ears/earmuffs) || istype(H.r_ear, /obj/item/clothing/ears/earmuffs))
+			if(M.get_ear_protection() > 2)
 				continue
 		M.sleeping = 0
 		M.stuttering += 20
@@ -213,6 +212,7 @@
 
 /obj/machinery/media/jukebox/emag_act(remaining_charges, mob/user)
 	if(!emagged)
+		playsound(src.loc, 'sound/effects/computer_emag.ogg', 25)
 		emagged = 1
 		StopPlaying()
 		visible_message(SPAN_DANGER("\The [src] makes a fizzling sound."))

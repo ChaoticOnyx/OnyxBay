@@ -210,7 +210,7 @@
 			vessel.update_total()
 	return amount
 
-proc/blood_splatter(target,datum/reagent/blood/source,large,spray_dir)
+/proc/blood_splatter(target,datum/reagent/blood/source,large,spray_dir)
 
 	var/obj/effect/decal/cleanable/blood/B
 	var/decal_type = /obj/effect/decal/cleanable/blood/splatter

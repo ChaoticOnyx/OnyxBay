@@ -30,7 +30,7 @@ You can set verify to TRUE if you want send() to sleep until the client has the 
 	if(client.cache.Find(asset_name) || client.sending.Find(asset_name))
 		return 0
 
-	client << browse_rsc(asset_cache.cache[asset_name], asset_name)
+	send_rsc(client, asset_cache.cache[asset_name], asset_name)
 
 	if(!verify)
 		client.cache += asset_name
@@ -73,7 +73,7 @@ You can set verify to TRUE if you want send() to sleep until the client has the 
 
 	for(var/asset in unreceived)
 		if (asset in asset_cache.cache)
-			client << browse_rsc(asset_cache.cache[asset], asset)
+			send_rsc(client, asset_cache.cache[asset], asset)
 
 	if(!verify || !winexists(client, "asset_cache_browser")) // Can't access the asset cache browser, rip.
 		client.cache += unreceived
@@ -258,6 +258,8 @@ You can set verify to TRUE if you want send() to sleep until the client has the 
 	assets = list(
 		"fa-regular-400.eot"  = 'html/font-awesome/webfonts/fa-regular-400.eot',
 		"fa-regular-400.woff" = 'html/font-awesome/webfonts/fa-regular-400.woff',
+		"fa-brands-400.eot"  = 'html/font-awesome/webfonts/fa-brands-400.eot',
+		"fa-brands-400.woff"  = 'html/font-awesome/webfonts/fa-brands-400.woff',
 		"fa-solid-900.eot"    = 'html/font-awesome/webfonts/fa-solid-900.eot',
 		"fa-solid-900.woff"   = 'html/font-awesome/webfonts/fa-solid-900.woff',
 		"font-awesome.css"    = 'html/font-awesome/css/all.min.css',

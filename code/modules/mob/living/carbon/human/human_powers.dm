@@ -1,77 +1,153 @@
 	// These should all be procs, you can add them to humans/subspecies by
 // species.dm's inherent_verbs ~ Z
 
-/mob/living/carbon/human/proc/tackle()
+/mob/living/carbon/human/proc/use_human_ability(atom/A)
+	if(!isliving(A))
+		return FALSE
+	switch(active_ability)
+		if(HUMAN_POWER_NONE)
+			return FALSE
+		if(HUMAN_POWER_SPIT)
+			var/mob/living/M = A
+			Spit(M)
+		if(HUMAN_POWER_LEAP)
+			var/mob/living/M = A
+			leap(M)
+		if(HUMAN_POWER_TACKLE)
+			var/mob/living/M = A
+			tackle(M)
+	return TRUE
+
+/mob/living/carbon/human/MiddleClickOn(atom/A)
+	if(get_preference_value(/datum/client_preference/special_ability_key) == GLOB.PREF_MIDDLE_CLICK)
+		if(use_human_ability(A))
+			return
+	..()
+
+/mob/living/carbon/human/AltClickOn(atom/A)
+	if(get_preference_value(/datum/client_preference/special_ability_key) == GLOB.PREF_ALT_CLICK)
+		if(use_human_ability(A))
+			return
+	..()
+
+/mob/living/carbon/human/CtrlClickOn(atom/A)
+	if(get_preference_value(/datum/client_preference/special_ability_key) == GLOB.PREF_CTRL_CLICK)
+		if(use_human_ability(A))
+			return
+	..()
+
+/mob/living/carbon/human/CtrlShiftClickOn(atom/A)
+	if(get_preference_value(/datum/client_preference/special_ability_key) == GLOB.PREF_CTRL_SHIFT_CLICK)
+		if(use_human_ability(A))
+			return
+	..()
+
+/mob/living/carbon/human/proc/toggle_powers()
+	set category = "Abilities"
+	set name = "Disable Abilities"
+	set desc = "Disable all active special abilities (Mouse Wheel)."
+
+	if(!src || src.stat) // Who knows right?
+		return
+	active_ability = HUMAN_POWER_NONE
+	to_chat(src, SPAN("notice", "<i>Selected special ability: <b>[active_ability]</b>.</i>"))
+
+/mob/living/carbon/human/proc/toggle_tackle()
+	set category = "Abilities"
+	set name = "Set Tackle"
+	set desc = "Tackle someone down (Mouse Wheel)."
+
+	if(!src || src.stat)
+		return
+	active_ability = HUMAN_POWER_TACKLE
+	to_chat(src, SPAN("notice", "<i>Selected special ability: <b>[active_ability]</b>.</i>"))
+
+/mob/living/carbon/human/proc/tackle(mob/living/T = null)
 	set category = "Abilities"
 	set name = "Tackle"
 	set desc = "Tackle someone down."
 
 	if(last_special > world.time)
+		to_chat(src, SPAN("warning", "You cannot tackle so soon!"))
 		return
 
 	if(incapacitated(INCAPACITATION_DISABLED) || buckled || pinned.len)
-		to_chat(src, "<span class='warning'>You cannot tackle in your current state.</span>")
+		to_chat(src, SPAN("warning", "You cannot tackle in your current state."))
 		return
 
-	var/list/choices = list()
-	for(var/mob/living/M in view(1,src))
-		if(!istype(M,/mob/living/silicon) && Adjacent(M))
-			choices += M
-	choices -= src
+	if(!T)
+		var/list/choices = list()
+		for(var/mob/living/M in view(1, src))
+			if(!istype(M, /mob/living/silicon) && Adjacent(M))
+				choices += M
+		choices -= src
+		T = input(src, "Who do you wish to tackle?") as null|anything in choices
 
-	var/mob/living/T = input(src,"Who do you wish to tackle?") as null|anything in choices
+	if(!T || !src || src.stat)
+		return
 
-	if(!T || !src || src.stat) return
-
-	if(!Adjacent(T)) return
+	if(!Adjacent(T))
+		return
 
 	//check again because we waited for user input
 	if(last_special > world.time)
 		return
 
 	if(incapacitated(INCAPACITATION_DISABLED) || buckled || pinned.len)
-		to_chat(src, "<span class='warning'>You cannot tackle in your current state.</span>")
+		to_chat(src, SPAN("warning", "You cannot tackle in your current state."))
 		return
 
-	last_special = world.time + 50
+	last_special = world.time + (5 SECONDS)
 
-	T.Weaken(rand(1,3))
+	T.Weaken(rand(2, 4))
 	if(prob(75))
-		visible_message("<span class='danger'>\The [src] has tackled down [T]!</span>")
+		visible_message(SPAN("danger", "\The [src] has tackled down [T]!"))
 	else
-		visible_message("<span class='danger'>\The [src] tried to tackle down [T]!</span>")
-		src.Weaken(rand(2,4)) //failure, you both get knocked down
+		visible_message(SPAN("danger", "\The [src] has tried to tackle down [T]!"))
 
-/mob/living/carbon/human/proc/leap()
+/mob/living/carbon/human/proc/toggle_leap()
+	set category = "Abilities"
+	set name = "Set Leap"
+	set desc = "Leap at a target and grab them aggressively (Mouse Wheel)."
+
+	if(!src || src.stat)
+		return
+	active_ability = HUMAN_POWER_LEAP
+	to_chat(src, SPAN("notice", "<i>Selected special ability: <b>[active_ability]</b>.</i>"))
+
+/mob/living/carbon/human/proc/leap(mob/living/T = null)
 	set category = "Abilities"
 	set name = "Leap"
 	set desc = "Leap at a target and grab them aggressively."
 
 	if(last_special > world.time)
+		to_chat(src, SPAN("warning", "You cannot leap so soon!"))
 		return
 
 	if(incapacitated(INCAPACITATION_DISABLED) || buckled || pinned.len)
-		to_chat(src, "<span class='warning'>You cannot leap in your current state.</span>")
+		to_chat(src, SPAN("warning", "You cannot leap in your current state."))
 		return
 
-	var/list/choices = list()
-	for(var/mob/living/M in oview(6,src))
-		if(!istype(M,/mob/living/silicon))
-			choices += M
-	choices -= src
+	if(!T)
+		var/list/choices = list()
+		for(var/mob/living/M in oview(6, src))
+			if(!istype(M,/mob/living/silicon))
+				choices += M
+		choices -= src
+		T = input(src, "Who do you wish to leap at?") as null|anything in choices
 
-	var/mob/living/T = input(src,"Who do you wish to leap at?") as null|anything in choices
+	if(!T || !isturf(T.loc) || !src || !isturf(loc))
+		return
 
-	if(!T || !isturf(T.loc) || !src || !isturf(loc)) return
-
-	if(get_dist(get_turf(T), get_turf(src)) > 4) return
+	if(get_dist(get_turf(T), get_turf(src)) > 4)
+		return
 
 	//check again because we waited for user input
 	if(last_special > world.time)
 		return
 
 	if(incapacitated(INCAPACITATION_DISABLED) || buckled || pinned.len || stance_damage >= 4)
-		to_chat(src, "<span class='warning'>You cannot leap in your current state.</span>")
+		to_chat(src, SPAN("warning", "You cannot leap in your current state."))
 		return
 
 	playsound(src.loc, 'sound/voice/shriek1.ogg', 50, 1)
@@ -79,21 +155,22 @@
 	last_special = world.time + (17.5 SECONDS)
 	status_flags |= LEAPING
 
-	src.visible_message("<span class='danger'>\The [src] leaps at [T]!</span>")
-	src.throw_at(get_step(get_turf(T),get_turf(src)), 4, 1, src)
+	visible_message("<b>\The [src]</b> leaps at <b>[T]</b>!")
+	throw_at(get_step(get_turf(T),get_turf(src)), 4, 1, src)
 
 	sleep(5)
 
-	if(status_flags & LEAPING) status_flags &= ~LEAPING
+	if(status_flags & LEAPING)
+		status_flags &= ~LEAPING
 
-	if(!src.Adjacent(T))
-		to_chat(src, "<span class='warning'>You miss!</span>")
+	if(!Adjacent(T))
+		to_chat(src, SPAN("warning", "You miss!"))
 		return
 
 	T.Weaken(3)
 
-	if(src.make_grab(src, T))
-		src.visible_message("<span class='warning'><b>\The [src]</b> seizes [T]!</span>")
+	if(make_grab(src, T))
+		visible_message(SPAN("danger", "<b>\The [src]</b> seizes [T]!"))
 
 /mob/living/carbon/human/proc/commune()
 	set category = "Abilities"
@@ -160,13 +237,18 @@
 /***********
  diona verbs
 ***********/
+/mob/living/carbon/human/proc/diona_split_nymph()
+	set name = "Split"
+	set desc = "Split your humanoid form into its constituent nymphs."
+	set category = "Abilities"
+	diona_split_into_nymphs(5)	// Separate proc to void argments being supplied when used as a verb
 
 /mob/living/carbon/human/proc/diona_heal_toggle()
 	set name = "Toggle Heal"
 	set desc = "Turn your inate healing on or off."
 	set category = "Abilities"
 	innate_heal = !innate_heal
-	if (innate_heal)
+	if(innate_heal)
 		to_chat(src, "<span class='alium'>You are now using nutrients to regenerate.</span>")
 	else
 		to_chat(src, "<span class='alium'>You are no longer using nutrients to regenerate.</span>")
@@ -178,12 +260,6 @@
 	S.set_dir(dir)
 	transfer_languages(src, S)
 
-	if(mind)
-		mind.transfer_to(S)
-
-		message_admins("\The [src] has split into nymphs; player now controls [key_name_admin(S)]")
-		log_admin("\The [src] has split into nymphs; player now controls [key_name(S)]")
-
 	var/nymphs = 1
 	var/mob/living/carbon/alien/diona/L = S
 
@@ -193,7 +269,7 @@
 		transfer_languages(src, D, WHITELISTED|RESTRICTED)
 		D.set_dir(pick(NORTH, SOUTH, EAST, WEST))
 		L.set_next_nymph(D)
-		D.set_previous_nymph(L)
+		D.set_last_nymph(L)
 		L = D
 
 	if(nymphs < number_of_resulting_nymphs)
@@ -202,17 +278,30 @@
 			transfer_languages(src, M, WHITELISTED|RESTRICTED)
 			M.set_dir(pick(NORTH, SOUTH, EAST, WEST))
 			L.set_next_nymph(M)
-			M.set_previous_nymph(L)
+			M.set_last_nymph(L)
 			L = M
 
 	L.set_next_nymph(S)
-	S.set_previous_nymph(L)
+	S.set_last_nymph(L)
 
 	for(var/obj/item/W in src)
 		drop_from_inventory(W)
 
 	visible_message("<span class='warning'>\The [src] quivers slightly, then splits apart with a wet slithering noise.</span>")
+
+	if(!mind)
+		qdel(src)
+		return
+
+	mind.transfer_to(S)
+	message_admins("\The [src] has split into nymphs; player now controls [key_name_admin(S)]")
+	log_admin("\The [src] has split into nymphs; player now controls [key_name(S)]")
 	qdel(src)
+
+	var/newname = sanitize(input(S, "You are now a nymph. Choose a name for yourself.", "Nymph Name") as null|text, MAX_NAME_LEN)
+	if(newname)
+		S.fully_replace_character_name(newname)
+
 
 /mob/living/carbon/human/proc/can_nab(mob/living/target)
 	if(QDELETED(src))

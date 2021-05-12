@@ -6,6 +6,7 @@
 	anchored = 0
 	density = 1
 	atom_flags = ATOM_FLAG_OPEN_CONTAINER | ATOM_FLAG_CLIMBABLE
+	pull_slowdown = PULL_SLOWDOWN_LIGHT
 	//copypaste sorry
 	var/amount_per_transfer_from_this = 5 //shit I dunno, adding this so syringes stop runtime erroring. --NeoFite
 	var/obj/item/weapon/storage/bag/trash/mybag	= null
@@ -20,8 +21,9 @@
 
 
 /obj/structure/janitorialcart/examine(mob/user)
-	if(..(user, 1))
-		to_chat(user, "[src] \icon[src] contains [reagents.total_volume] unit\s of liquid!")
+	. = ..()
+	if(get_dist(src, user) <= 1)
+		. += "\n[src] \icon[src] contains [reagents.total_volume] unit\s of liquid!"
 	//everything else is visible, so doesn't need to be mentioned
 
 
@@ -182,12 +184,13 @@
 
 
 /obj/structure/bed/chair/janicart/examine(mob/user)
-	if(!..(user, 1))
+	. = ..()
+	if(get_dist(src, user) > 1)
 		return
 
-	to_chat(user, "\icon[src] This [callme] contains [reagents.total_volume] unit\s of water!")
+	. += "\n\icon[src] This [callme] contains [reagents.total_volume] unit\s of water!"
 	if(mybag)
-		to_chat(user, "\A [mybag] is hanging on the [callme].")
+		. += "\n\A [mybag] is hanging on the [callme]."
 
 
 /obj/structure/bed/chair/janicart/attackby(obj/item/I, mob/user)

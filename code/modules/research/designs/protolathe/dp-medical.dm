@@ -2,7 +2,7 @@
 	name = "HUD health scanner"
 	id = "health_hud"
 	req_tech = list(TECH_BIO = 2, TECH_MAGNET = 3)
-	build_path = /obj/item/clothing/glasses/hud/health
+	build_path = /obj/item/clothing/glasses/hud/standard/medical
 	sort_string = "GAAAA"
 	category_items = "Medical"
 
@@ -77,7 +77,7 @@
 	desc = "A bluespace beaker, powered by experimental bluespace technology and Element Cuban combined with the Compound Pete. Can hold up to 300 units."
 	id = "bluespacebeaker"
 	req_tech = list(TECH_BLUESPACE = 2, TECH_MATERIAL = 6)
-	materials = list(MATERIAL_STEEL = 3000, MATERIAL_PHORON = 3000, MATERIAL_DIAMOND = 500)
+	materials = list(MATERIAL_STEEL = 3000, MATERIAL_PLASMA = 3000, MATERIAL_DIAMOND = 500)
 	build_path = /obj/item/weapon/reagent_containers/glass/beaker/bluespace
 	sort_string = "MCAAB"
 

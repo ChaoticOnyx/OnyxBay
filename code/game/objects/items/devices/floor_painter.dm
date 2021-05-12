@@ -112,7 +112,7 @@
 	if(decal_data["coloured"] && paint_colour)
 		painting_colour = paint_colour
 
-	playsound(get_turf(src), 'sound/effects/spray3.ogg', 30, 1, -6)
+	playsound(src, 'sound/effects/spray3.ogg', 30, 1, -6)
 	new painting_decal(F, painting_dir, painting_colour)
 
 /obj/item/device/floor_painter/attack_self(mob/user)
@@ -125,8 +125,8 @@
 		choose_colour()
 
 /obj/item/device/floor_painter/examine(mob/user)
-	. = ..(user)
-	to_chat(user, "It is configured to produce the '[decal]' decal with a direction of '[paint_dir]' using [paint_colour] paint.")
+	. = ..()
+	. += "\nIt is configured to produce the '[decal]' decal with a direction of '[paint_dir]' using [paint_colour] paint."
 
 /obj/item/device/floor_painter/verb/choose_colour()
 	set name = "Choose Colour"
