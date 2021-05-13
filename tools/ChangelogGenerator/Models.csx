@@ -96,7 +96,7 @@ public sealed class Changelog
         ///     Message в формате HTML.
         /// </summary>
         /// <returns></returns>
-        [JsonIgnore()]
+        [JsonIgnore]
         public string MessageMdToHtml { get => Markdown.ToHtml(Message, Settings.MdPipeline); }
 
         /// <summary>
@@ -151,7 +151,7 @@ public sealed class Changelog
                 ChangePrefix.Experiment => "fas fa-hard-hat",
                 ChangePrefix.Admin => "fas fa-crown",
                 ChangePrefix.Balance => "fas fa-balance-scale",
-                _ => throw new NotImplementedException($"🚫 Для {prefix} не определена иконка.")
+                _ => throw new NotImplementedException($"  🚫Для {prefix} не определена иконка.")
             };
         }
 
@@ -177,7 +177,7 @@ public sealed class Changelog
                 ChangePrefix.SoundDel
                 or ChangePrefix.RscDel
                 or ChangePrefix.ImageDel => "red",
-                _ => throw new NotImplementedException($"🚫 Для {prefix} не определён цвет.")
+                _ => throw new NotImplementedException($"  🚫Для {prefix} не определён цвет.")
             };
         }
     }
@@ -242,7 +242,7 @@ public static class Github
 
             if (matches.Count == 0)
             {
-                throw new InvalidOperationException($"🚫 Чейнджлог не обнаружен.");
+                throw new InvalidOperationException($"  🚫Чейнджлог не обнаружен.");
             }
 
             var author = changesBody.Groups[2].Value.Trim();
@@ -264,7 +264,7 @@ public static class Github
 
                 if (parts.Length < 2)
                 {
-                    throw new InvalidOperationException($"🚫 Неверный формат изменения: '{match.Value}'");
+                    throw new InvalidOperationException($"  🚫Неверный формат изменения: '{match.Value}'");
                 }
 
                 var prefix = parts[0].Trim();

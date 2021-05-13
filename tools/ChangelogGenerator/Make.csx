@@ -99,15 +99,15 @@ var context = new
     Changelogs = cache
 };
 
-WriteLine($"│  Сохранение HTML в {Settings.HtmlChangelog.Name}.");
+WriteLine($"│  Сохранение HTML в {Settings.HtmlChangelog.Name}...");
 File.WriteAllText(Settings.HtmlChangelog.FullName, template.Render(context));
 WriteLine("│  ✅HTML сохранен.");
 
-WriteLine($"│  Сохранение кэша в {Settings.ChangelogsCache.Name}.");
+WriteLine($"│  Сохранение кэша в {Settings.ChangelogsCache.Name}...");
 File.WriteAllText(Settings.ChangelogsCache.FullName, JsonSerializer.Serialize(cache, Settings.JsonOptions));
 WriteLine("│  ✅Кэш сохранён.");
 
-WriteLine("│  Удаление чейнджлог файлов.");
+WriteLine("│  Удаление чейнджлог файлов...");
 files.ForEach(f => f.Delete());
 WriteLine("╰  ✅Чейнджлог файлы удалены.");
 

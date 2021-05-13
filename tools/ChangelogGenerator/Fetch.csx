@@ -70,7 +70,7 @@ while (true)
         {
             Changelog changelog = pullRequest.ParseChangelog();
             var changelogPath = Path.GetFullPath($"PR-{pullRequest.Number}.json", Settings.ChangelogsFolder.FullName);
-            //File.WriteAllText(changelogPath, JsonSerializer.Serialize(changelog, Settings.JsonOptions));
+            File.WriteAllText(changelogPath, JsonSerializer.Serialize(changelog, Settings.JsonOptions));
             WriteLine($"│  ✅Чейнджлог PR #{pullRequest.Number} сохранён.");
         }
         catch (Exception e)
