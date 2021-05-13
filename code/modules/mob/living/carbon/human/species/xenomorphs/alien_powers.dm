@@ -307,7 +307,7 @@
 		if(M.stat == 2)
 			M.gib()
 
-/mob/living/carbon/human/proc/toggle_darksight()
+/mob/living/carbon/proc/toggle_darksight()
 	set category = "Abilities"
 	set name = "Toggle Darkvision"
 

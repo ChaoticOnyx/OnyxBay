@@ -238,14 +238,38 @@
 /obj/machinery/door/unpowered/simple/resin/New(newloc,material_name,complexity)
 	..(newloc, MATERIAL_RESIN, complexity)
 
-/obj/machinery/door/unpowered/simple/resin/attack_hand(mob/user)
-	if(istype(user, /mob/living/carbon/alien/larva))
-		return ..()
-	if(ishuman(user))
-		var/mob/living/carbon/human/H = user
+/obj/machinery/door/unpowered/simple/resin/allowed(mob/M)
+	if(istype(M, /mob/living/carbon/alien/larva))
+		return TRUE
+	if(ishuman(M))
+		var/mob/living/carbon/human/H = M
 		if(H.internal_organs_by_name[BP_HIVE])
-			return ..()
+			return TRUE
 	return FALSE
+
+/obj/machinery/door/unpowered/simple/resin/attackby(obj/item/I, mob/user) // It's much more simple that the other doors, no lock support etc.
+	add_fingerprint(user, 0, I)
+	if(istype(I, /obj/item/weapon) && user.a_intent == I_HURT)
+		var/obj/item/weapon/W = I
+		user.setClickCooldown(DEFAULT_ATTACK_COOLDOWN)
+		if(W.damtype == BRUTE || W.damtype == BURN)
+			user.do_attack_animation(src)
+			if(W.force < min_force)
+				user.visible_message(SPAN("danger", "\The [user] hits \the [src] with \the [W] with no visible effect."))
+			else
+				user.visible_message(SPAN("danger", "\The [user] forcefully strikes \the [src] with \the [W]!"))
+				playsound(loc, hitsound, 100, 1)
+				take_damage(W.force)
+			return
+
+	if(operating)
+		return
+
+	if(allowed(user))
+		if(density)
+			open()
+		else
+			close()
 
 /obj/machinery/door/unpowered/simple/cult/New(newloc,material_name,complexity)
 	..(newloc, MATERIAL_CULT, complexity)
