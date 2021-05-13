@@ -174,4 +174,4 @@
 	AIAltClick(user)
 
 /turf/BorgShiftClick(var/mob/living/silicon/robot/user)
-	AIShiftClick(user) 
+	AIShiftClick(user)

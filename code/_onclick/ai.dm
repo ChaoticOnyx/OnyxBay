@@ -247,4 +247,4 @@
 	if(AL)
 		AL.AIShiftClick(user)
 		return
-	return ..() 
+	return ..()
