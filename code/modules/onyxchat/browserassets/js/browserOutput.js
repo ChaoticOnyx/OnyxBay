@@ -1169,7 +1169,7 @@ function sendYandexSpellerRequest(text) {
 			}
 		}
 	}
-	xhr.open("GET", "http://speller.yandex.net/services/spellservice.json/checkText?options=7&lang=ru&text=" + text, true);
+	xhr.open("GET", "http://speller.yandex.net/services/spellservice.json/checkText?options=512&text=" + text, true);
 	xhr.send();
 }
 
