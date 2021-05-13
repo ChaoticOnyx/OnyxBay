@@ -253,7 +253,7 @@ Loot piles can be depleted, if loot_depleted is turned on.  Note that players wh
 	)
 
 	uncommon_loot = list(
-		/obj/item/weapon/reagent_containers/syringe/steroid,
+		/obj/item/weapon/reagent_containers/syringe/steroid/packaged,
 		/obj/item/weapon/storage/pill_bottle/zoom,
 		/obj/item/weapon/storage/pill_bottle/happy,
 		/obj/item/weapon/storage/pill_bottle/tramadol
