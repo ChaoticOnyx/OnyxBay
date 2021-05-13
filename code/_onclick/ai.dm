@@ -213,3 +213,38 @@
 /mob/living/silicon/ai/face_atom(atom/A)
 	if(eyeobj)
 		eyeobj.face_atom(A)
+
+
+//QOL feature, clicking on turf can toogle doors
+/turf/attack_ai(mob/user)
+	user.setClickCooldown(DEFAULT_QUICK_COOLDOWN)
+	//QOL feature, clicking on turf can toogle doors
+	var/obj/machinery/door/airlock/AL = locate(/obj/machinery/door/airlock) in src.contents
+	if(AL)
+		AL.attack_hand(user)
+		return TRUE
+	var/obj/machinery/door/firedoor/FD = locate(/obj/machinery/door/firedoor) in src.contents
+	if(FD)
+		FD.attack_hand(user)
+		return TRUE
+
+/turf/AICtrlClick(var/mob/user)
+	var/obj/machinery/door/airlock/AL = locate(/obj/machinery/door/airlock) in src.contents
+	if(AL)
+		AL.AICtrlClick(user)
+		return
+	return ..()
+
+/turf/AIAltClick(var/mob/user)
+	var/obj/machinery/door/airlock/AL = locate(/obj/machinery/door/airlock) in src.contents
+	if(AL)
+		AL.AIAltClick(user)
+		return
+	return ..()
+
+/turf/AIShiftClick(var/mob/user)
+	var/obj/machinery/door/airlock/AL = locate(/obj/machinery/door/airlock) in src.contents
+	if(AL)
+		AL.AIShiftClick(user)
+		return
+	return ..() 
