@@ -239,9 +239,12 @@ var/list/ai_verbs_default = list(
 	update_icon()
 
 /mob/living/silicon/ai/pointed(atom/A as mob|obj|turf in view())
-	set popup_menu = 0
-	set src = usr.contents
-	return 0
+	if (holo)
+		if(..())
+			holo.visible_message("<b>Hologram of [src]</b> points to [A]")
+	else
+		to_chat(src, "<span class='warning'>You need to be in hologram mode.</span>")
+
 
 /mob/living/silicon/ai/fully_replace_character_name(pickedName as text)
 	..()

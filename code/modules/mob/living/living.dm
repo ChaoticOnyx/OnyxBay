@@ -30,7 +30,9 @@
 	if(!..())
 		return 0
 
-	usr.visible_message("<b>[src]</b> points to [A]")
+	//Borgs and AI have their own message
+	if(!issilicon(src))
+		usr.visible_message("<b>[src]</b> points to [A]")
 	return 1
 
 // Check if current mob can push other mob or swap with it

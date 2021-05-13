@@ -55,7 +55,10 @@
 		CtrlAltClickOn(A)
 		return 1
 	if(modifiers["middle"])
-		MiddleClickOn(A)
+		if(modifiers["shift"])
+			ShiftMiddleClickOn(A)
+		else
+			MiddleClickOn(A)
 		return 1
 	if(modifiers["shift"])
 		ShiftClickOn(A)
@@ -216,6 +219,9 @@
 /mob/proc/MiddleClickOn(atom/A)
 	swap_hand()
 	return
+
+/mob/proc/ShiftMiddleClickOn(var/atom/A)
+	pointed(A)
 
 // In case of use break glass
 /*
