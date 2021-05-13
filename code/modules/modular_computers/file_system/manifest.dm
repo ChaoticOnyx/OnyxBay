@@ -62,7 +62,8 @@
 		var/found_place = FALSE
 		for(var/list/department in dept_data)
 			var/list/names = department["names"]
-			if(CR.get_department() && (GLOB.text_to_department_flags[CR.get_department()] & department["flag"]))
+			//if(CR.get_department() && (GLOB.text_to_department_flags[CR.get_department()] & department["flag"]))
+			if(department["flag"] in CR.assigned_deparment_flags)
 				names[name] = rank
 				found_place = TRUE
 		if(!found_place)
