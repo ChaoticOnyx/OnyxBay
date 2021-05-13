@@ -1330,7 +1330,7 @@
 /mob/living/carbon/human/slip(slipped_on, stun_duration = 8)
 	if((species.species_flags & SPECIES_FLAG_NO_SLIP) || (shoes && (shoes.item_flags & ITEM_FLAG_NOSLIP)))
 		return 0
-	poise -= stun_duration*5
+	damage_poise(stun_duration*5)
 	return !!(..(slipped_on, stun_duration))
 
 /mob/living/carbon/human/proc/undislocate()

@@ -989,15 +989,9 @@
 
 // Stance is being used in the Onyx fighting system. I wanted to call it stamina, but screw it.
 /mob/living/carbon/human/proc/handle_poise()
-	if(poise >= poise_pool) return 0 // Saving every single msecond. Fuck our mob controller *sigh
+	if(poise >= poise_pool)
+		return
 	var/pregen = poise_pool/10
-
-	if(poise+pregen > poise_pool)
-		poise = poise_pool
-		return
-	else if(poise < 0)
-		poise = 0
-		return
 
 	for(var/obj/item/grab/G in list(get_active_hand(), get_inactive_hand()))
 		pregen -= 1.25
@@ -1005,10 +999,14 @@
 	if(blocking)
 		pregen -= 2.5
 
-	if(poise < poise_pool)
-		poise += pregen
+	poise += pregen
+	poise = between(0, poise+pregen, poise_pool)
 
-		//visible_message("Debug: [src]'s stance is now: [poise]/[poise_pool]") //Debug message
+	poise_icon?.icon_state = "[round(poise)]"
+
+/mob/living/carbon/human/proc/damage_poise(dmg = 1)
+	poise -= dmg
+	poise_icon?.icon_state = "[round(poise)]"
 
 /*
 	Called by life(), instead of having the individual hud items update icons each tick and check for status changes
