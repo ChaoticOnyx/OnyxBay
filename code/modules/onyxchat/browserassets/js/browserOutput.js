@@ -1044,7 +1044,7 @@ $(function() {
 			if (term === '') {
 				opts.spellcheckBlacklist = '';
 			} else {
-				term = term.toLowerCase().replace(/[^а-яА-Я ]/g, ' ').trim().split(' ');
+				term = term.toLowerCase().replace(/[^а-яА-ЯёЁ ]/g, ' ').trim().split(' ');
 				var exceps = [];
 				for (var i = 0, len = term.length; i < len; i++) {
 					if(exceps.indexOf(term[i]) > -1) continue;
@@ -1131,7 +1131,7 @@ function spellCheck(text) {
 function filterText(text) {
 	text = byondDecode(text);
 	text = text.toLowerCase();
-	text = text.replace(/[^а-яА-Я ]/g, ' ');
+	text = text.replace(/[^а-яА-ЯёЁ ]/g, ' ');
 	text = text.replace(/\s+/g, ' ');
 	text = getUniqueWords(text);
 	text = removeBlacklistedWords(text);
