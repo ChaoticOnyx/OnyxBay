@@ -196,6 +196,7 @@ public static class Github
         /// <summary>
         ///     Ссылка на PR.
         /// </summary>
+        [JsonPropertyName("html_url")]
         public string Url { get; init; } = string.Empty;
         /// <summary>
         ///     Номер PR.
