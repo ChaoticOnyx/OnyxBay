@@ -217,11 +217,17 @@
 	Only used for swapping hands
 */
 /mob/proc/MiddleClickOn(atom/A)
+	if(get_preference_value(/datum/client_preference/pointing) == GLOB.PREF_MIDDLE_CLICK)
+		if(pointed(A))
+			return
 	swap_hand()
 	return
 
 /mob/proc/ShiftMiddleClickOn(var/atom/A)
-	pointed(A)
+	if(get_preference_value(/datum/client_preference/pointing) == GLOB.PREF_SHIFT_MIDDLE_CLICK)
+		if(pointed(A))
+			return
+	
 
 // In case of use break glass
 /*
