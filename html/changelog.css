@@ -120,10 +120,11 @@ li.yellow {
 }
 
 .date span {
-    left: 30%;
-    top: 20px;
+    left: 50%;
+    top: 21px;
     background-color: #22272e;
     position: relative;
+    transform: translateX(-50%);
     padding: 10px;
 }
 
@@ -131,7 +132,4 @@ li.yellow {
     padding-left: 0px;
     margin: 0;
     font-weight: bold;
-}
-
-
 }
