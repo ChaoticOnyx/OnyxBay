@@ -70,6 +70,14 @@ a {
     min-width: 12px;
 }
 
+.changes li sup * {
+    color: rgba(255, 255, 255, 0.5);
+    font-size: 18px;
+    border-bottom: none;
+    margin-left: 0px;
+    font-style: italic;
+}
+
 .changes li i.fa-plus-square,
 i.fa-minus-square,
 i.fa-compass,

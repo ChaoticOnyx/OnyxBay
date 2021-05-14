@@ -51,7 +51,9 @@
         <h3 class="author">{{ changelog.author }} updated:</h3>
         <ul class="changes">
             {{~ for change in changelog.changes ~}}
-            <li class="{{ change.color }}"><i class="{{ change.icon }}"></i>{{ change.message_md_to_html }}</li>
+            <li class="{{ change.color }}"><i class="{{ change.icon }}"></i>{{ change.message_md_to_html }} {{- if change.pr -}}
+                <sup><a href="https://github.com/ChaoticOnyx/OnyxBay/pull/{{ change.pr }}">#{{ change.pr }}</a></sup> {{- end -}}
+            </li>
             {{~ end ~}}
         </ul>
         {{~ end ~}}
