@@ -66,7 +66,7 @@
 /obj/effect/decal/cleanable/wizard_mark/Destroy()
 	spell.mark = null //dereference pls.
 	spell = null
-	..()
+	return ..()
 
 /obj/effect/decal/cleanable/wizard_mark/attack_hand(mob/user)
 	if(user == spell.holder)

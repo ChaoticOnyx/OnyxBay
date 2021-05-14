@@ -204,10 +204,8 @@
 /obj/vehicle/bike/Destroy()
 	qdel(trail)
 	qdel(engine)
-	..()
 
-
-
+	return ..()
 
 /obj/vehicle/bike/thermal
 	engine_type = /obj/item/weapon/engine/thermal
