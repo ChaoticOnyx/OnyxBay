@@ -10,8 +10,7 @@
 /datum/construction/New(atom)
 	..()
 	holder = atom
-	// don't want this without a holder
-	if(!holder)
+	if(!holder) // don't want this without a holder
 		spawn
 			qdel(src)
 	set_desc(steps.len)
@@ -51,12 +50,11 @@
 
 // check all steps, remove matching one.
 /datum/construction/proc/check_all_steps(atom/used_atom, mob/user)
-	for(var/i=1;i<=steps.len;i++)
+	for(var/i = 1; i <= steps.len; i++)
 		var/list/L = steps[i];
 		if(istype(used_atom, L["key"]))
 			if(custom_action(i, used_atom, user))
-				// stupid byond list from list removal...
-				steps[i] = null
+				steps[i] = null // stupid byond list from list removal...
 				listclearnulls(steps)
 				if(!steps.len)
 					spawn_result()
@@ -85,8 +83,8 @@
 	return
 
 /datum/construction/reversible/proc/update_index(diff)
-	index+=diff
-	if(index==0)
+	index += diff
+	if(index == 0)
 		spawn_result()
 	else
 		set_desc(index)
@@ -96,11 +94,9 @@
 /datum/construction/reversible/is_right_key(atom/used_atom)
 	var/list/L = steps[index]
 	if(istype(used_atom, L["key"]))
-		// to the first step -> forward
-		return FORWARD
+		return FORWARD // to the first step -> forward
 	else if(L["backkey"] && istype(used_atom, L["backkey"]))
-		// to the last step -> backwards
-		return BACKWARD
+		return BACKWARD // to the last step -> backwards
 	return 0
 
 /datum/construction/reversible/check_step(atom/used_atom, mob/user)

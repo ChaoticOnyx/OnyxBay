@@ -1,5 +1,5 @@
 /*
-	WARRANTY VOID IF CODE USED
+ WARRANTY VOID IF CODE USED
 */
 
 /datum/events
@@ -16,21 +16,21 @@
 	return
 
 
-//	Arguments: event_type as text, proc_holder as datum, proc_name as text
-//	Returns: New event, null on error.
+// Arguments: event_type as text, proc_holder as datum, proc_name as text
+// Returns: New event, null on error.
 /datum/events/proc/addEvent(event_type, proc_holder, proc_name)
 	if(!event_type || !proc_holder || !proc_name)
 		return
 	addEventType(event_type)
 	var/list/event = events[event_type]
-	var/datum/event/E = new /datum/event(proc_holder,proc_name)
+	var/datum/event/E = new /datum/event(proc_holder, proc_name)
 	event += E
 	return E
 
-//  Arguments: event_type as text, any number of additional arguments to pass to event handler
-//  Returns: null
+// Arguments: event_type as text, any number of additional arguments to pass to event handler
+// Returns: null
 /datum/events/proc/fireEvent()
-	var/list/event = listgetindex(events,args[1])
+	var/list/event = listgetindex(events, args[1])
 	if(istype(event))
 		spawn(-1)
 			for(var/datum/event/E in event)
@@ -43,7 +43,7 @@
 /datum/events/proc/clearEvent(event_type, datum/event/E)
 	if(!event_type || !E)
 		return
-	var/list/event = listgetindex(events,event_type)
+	var/list/event = listgetindex(events, event_type)
 	event -= E
 	return 1
 
@@ -51,13 +51,13 @@
 	var/listener
 	var/proc_name
 
-/datum/event/New(tlistener,tprocname)
+/datum/event/New(tlistener, tprocname)
 	listener = tlistener
 	proc_name = tprocname
 	return ..()
 
 /datum/event/proc/Fire()
 	if(listener)
-		call(listener,proc_name)(arglist(args))
+		call(listener, proc_name)(arglist(args))
 		return 1
 	return

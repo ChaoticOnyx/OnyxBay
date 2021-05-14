@@ -8,7 +8,7 @@
 		return
 
 /datum/topic_input/proc/get(i)
-	return listgetindex(href_list,i)
+	return listgetindex(href_list, i)
 
 /datum/topic_input/proc/getAndLocate(i)
 	var/t = get(i)
@@ -48,7 +48,7 @@
 
 /datum/topic_input/proc/getType(i, type)
 	var/t = getAndLocate(i)
-	return istype(t,type) ? t : null
+	return istype(t, type) ? t : null
 
 /datum/topic_input/proc/getPath(i)
 	var/t = get(i)

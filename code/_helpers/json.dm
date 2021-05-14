@@ -47,7 +47,7 @@ var/list/rus_unicode_conversion = list(
 	return _jsonw.write(L)
 
 /*
-	Json Writer
+ Json Writer
 */
 
 /json_writer
