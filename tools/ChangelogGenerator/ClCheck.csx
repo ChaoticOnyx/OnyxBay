@@ -41,9 +41,11 @@ if (pullRequest.Labels.Any(l => l.Name == Settings.ChangelogNotRequiredLabel))
     return 0;
 }
 
+Changelog? changelog = null;
+
 try
 {
-    var changelog = pullRequest.ParseChangelog();
+    changelog = pullRequest.ParseChangelog();
 }
 catch (Exception e)
 {
@@ -57,7 +59,7 @@ catch (Exception e)
     return 1;
 }
 
-WriteLine($"✅ Чейнджлог корректный.");
+WriteLine($"✅ Чейнджлог корректный ({changelog.Changes.Count} изм.).");
 
 // Удаление плашки о требовании чейнджлога.
 await client.DeleteAsync($"repos/{githubRepository}/issues/{pullRequest.Number}/labels/{Uri.EscapeUriString(Settings.ChangelogRequiredLabel)}");
