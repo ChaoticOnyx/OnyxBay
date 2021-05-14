@@ -77,7 +77,7 @@
 
 	return user_access
 
-/datum/nano_module/records/proc/edit_departament(datum/computer_file/crew_record/R, current_department_flags_name_list, default_message)
+/proc/edit_departament(datum/computer_file/crew_record/R, current_department_flags_name_list, default_message)
 	var/current_department_flags = "[default_message] [english_list(current_department_flags_name_list)]"
 	var/list/options = list()
 	options["Add ([current_department_flags])"] = 1

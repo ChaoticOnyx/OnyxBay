@@ -233,7 +233,7 @@
 	if (does_announce_visit)
 		to_chat(usr, SPAN("notice", "Device will announce your visit!"))
 	else
-		to_chat(usr, SPAN("notice", "Device will not announce your visit!")) 
+		to_chat(usr, SPAN("notice", "Device will not announce your visit!"))
 
 /obj/item/device/uplink_service/fake_crew_announcement/enable(mob/user = usr)
 	if(!istype(id_card))
@@ -256,6 +256,21 @@
 		job = new()
 		job.title = id_card.assignment
 		job.department_flag = CIV
+
+	var/assigned_flags = list()
+	for(var/flag in GLOB.department_flags)
+		if(flag & job.department_flag)
+			assigned_flags += flag
+	new_record.assigned_deparment_flags = assigned_flags
+
+	var/record_field/department/department = locate() in new_record.fields; ASSERT(istype(department))
+
+	var/default_message = "The current list of department flags:"
+	var/list/current_department_flags_name_list = list()
+	for(var/flag in new_record.assigned_deparment_flags)
+		current_department_flags_name_list[GLOB.department_flags_to_text[num2text(flag)]] = flag
+
+	department.set_value(english_list(edit_departament(new_record, current_department_flags_name_list, default_message)))
 
 	if(does_announce_visit)
 		var/datum/spawnpoint/arrivals/spawnpoint = new()
