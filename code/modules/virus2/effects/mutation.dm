@@ -108,14 +108,15 @@
 
 /datum/disease2/effect/dnaspread/deactivate(var/mob/living/carbon/human/mob)
 	if ((!original_dna["name"]) && (!original_dna["UI"]) && (!original_dna["SE"]))
-		var/list/newUI=original_dna["UI"]
-		var/list/newSE=original_dna["SE"]
-		mob.UpdateAppearance(newUI.Copy())
-		mob.dna.SE = newSE.Copy()
-		mob.dna.UpdateSE()
-		mob.real_name = original_dna["name"]
+		return
+	var/list/newUI=original_dna["UI"]
+	var/list/newSE=original_dna["SE"]
+	mob.UpdateAppearance(newUI.Copy())
+	mob.dna.SE = newSE.Copy()
+	mob.dna.UpdateSE()
+	mob.real_name = original_dna["name"]
 
-		to_chat(mob, "<span class='notice'>You feel more like yourself.</span>")
+	to_chat(mob, "<span class='notice'>You feel more like yourself.</span>")
 
 ////////////////////////STAGE 4/////////////////////////////////
 
