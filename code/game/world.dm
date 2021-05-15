@@ -1,4 +1,7 @@
-/var/server_name = "OnyxBay"
+#define REBOOT_HARD 1
+#define REBOOT_REALLY_HARD 2
+
+var/server_name = "OnyxBay"
 
 /var/game_id = null
 /hook/global_init/proc/generate_gameid()
@@ -478,10 +481,15 @@ var/world_topic_spam_protect_time = world.timeofday
 		qdel(C)
 
 
-/world/Reboot(reason)
+/world/Reboot(reason, reboot_hardness = 0)
 	// sound_to(world, sound('sound/AI/newroundsexy.ogg')
 
-	Master.Shutdown()
+	if(reboot_hardness == REBOOT_REALLY_HARD)
+		..(reason)
+		return
+
+	if(!reboot_hardness == REBOOT_HARD)
+		Master.Shutdown()
 
 	for(var/client/C in GLOB.clients)
 		var/datum/chatOutput/co = C.chatOutput
@@ -495,6 +503,11 @@ var/world_topic_spam_protect_time = world.timeofday
 		text2file("foo", "reboot_called")
 		to_world("<span class=danger>World reboot waiting for external scripts. Please be patient.</span>")
 		return
+
+	game_log("World rebooted at [time_stamp()]")
+
+	if(blackbox)
+		blackbox.save_all_data_to_sql()
 
 	..(reason)
 
@@ -662,7 +675,7 @@ var/failed_old_db_connections = 0
 		to_world_log("Feedback database connection established.")
 	return TRUE
 
-proc/setup_database_connection()
+/proc/setup_database_connection()
 
 	if(failed_db_connections > FAILED_DB_CONNECTION_CUTOFF)	//If it failed to establish a connection more than 5 times in a row, don't bother attempting to conenct anymore.
 		return 0
@@ -687,7 +700,7 @@ proc/setup_database_connection()
 	return .
 
 //This proc ensures that the connection to the feedback database (global variable dbcon) is established
-proc/establish_db_connection()
+/proc/establish_db_connection()
 	if(failed_db_connections > FAILED_DB_CONNECTION_CUTOFF)
 		return 0
 
@@ -707,7 +720,7 @@ proc/establish_db_connection()
 	return TRUE
 
 //These two procs are for the old database, while it's being phased out. See the tgstation.sql file in the SQL folder for more information.
-proc/setup_old_database_connection()
+/proc/setup_old_database_connection()
 
 	if(failed_old_db_connections > FAILED_DB_CONNECTION_CUTOFF)	//If it failed to establish a connection more than 5 times in a row, don't bother attempting to conenct anymore.
 		return 0
@@ -732,7 +745,7 @@ proc/setup_old_database_connection()
 	return .
 
 //This proc ensures that the connection to the feedback database (global variable dbcon) is established
-proc/establish_old_db_connection()
+/proc/establish_old_db_connection()
 	if(failed_old_db_connections > FAILED_DB_CONNECTION_CUTOFF)
 		return 0
 

@@ -151,18 +151,18 @@
 	icon_state = "beret_purple"
 
 /obj/item/clothing/head/beret/centcom/officer
-	name = "asset protection beret"
-	desc = "A navy blue beret adorned with the crest of corporate asset protection. For asset protection agents that are more inclined towards style than safety."
+	name = "ERT beret"
+	desc = "A navy blue beret adorned with the crest of NanoTrasen's elite Emergency Response Teams. For ERT officers that are more inclined towards style than safety."
 	icon_state = "beret_corporate_navy"
 
 /obj/item/clothing/head/beret/centcom/captain
-	name = "asset protection command beret"
-	desc = "A white beret adorned with the crest of corporate asset protection. For asset protection leaders that are more inclined towards style than safety."
+	name = "ERT commander beret"
+	desc = "A white beret adorned with the crest of NanoTrasen's elite Emergency Response Teams. For ERT commanders that are more inclined towards style than safety."
 	icon_state = "beret_corporate_white"
 
 /obj/item/clothing/head/beret/deathsquad
-	name = "heavy asset protection beret"
-	desc = "An armored red beret adorned with the crest of corporate asset protection. Doesn't sacrifice style or safety."
+	name = "Death Squad beret"
+	desc = "An armored red beret adorned with the crest of NanoTrasen's infamous Death Squad. Doesn't sacrifice style or safety."
 	icon_state = "beret_corporate_red"
 	armor = list(melee = 55, bullet = 55, laser = 35,energy = 20, bomb = 30, bio = 30, rad = 30)
 	siemens_coefficient = 0.9

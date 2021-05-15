@@ -937,7 +937,7 @@
 
 /datum/chemical_reaction/slime/bork/on_reaction(datum/reagents/holder)
 	var/list/borks = typesof(/obj/item/weapon/reagent_containers/food/snacks) - /obj/item/weapon/reagent_containers/food/snacks
-	playsound(get_turf(holder.my_atom), 'sound/effects/phasein.ogg', 100, 1)
+	playsound(holder.my_atom, 'sound/effects/phasein.ogg', 100, 1)
 	for(var/mob/living/carbon/human/M in viewers(get_turf(holder.my_atom), null))
 		if(M.eyecheck() < FLASH_PROTECTION_MODERATE)
 			M.flash_eyes()
@@ -973,7 +973,7 @@
 	set waitfor = 0
 	..()
 	sleep(50)
-	playsound(get_turf(holder.my_atom), 'sound/effects/phasein.ogg', 100, 1)
+	playsound(holder.my_atom, 'sound/effects/phasein.ogg', 100, 1)
 	for(var/mob/living/M in range (get_turf(holder.my_atom), 7))
 		M.bodytemperature -= 140
 		to_chat(M, "<span class='warning'>You feel a chill!</span>")
@@ -2098,9 +2098,15 @@
 	required_reagents = list(/datum/reagent/ethanol = 1, /datum/reagent/mercury = 2, /datum/reagent/luminol = 2)
 	result_amount = 1
 
-/datum/chemical_reaction/kvas
-	name = "Kvas"
-	result = /datum/reagent/ethanol/kvas
+/datum/chemical_reaction/kvass
+	name = "Kvass"
+	result = /datum/reagent/ethanol/kvass
 	required_reagents = list(/datum/reagent/ethanol/beer = 1, /datum/reagent/sugar = 1)
 	catalysts = list(/datum/reagent/enzyme = 5)
 	result_amount = 2
+
+/datum/chemical_reaction/quas
+	name = "Quas"
+	result = /datum/reagent/ethanol/quas
+	required_reagents = list(/datum/reagent/ethanol/kvass = 3, /datum/reagent/frostoil = 1, /datum/reagent/drink/ice = 1)
+	result_amount = 3

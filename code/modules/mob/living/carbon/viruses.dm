@@ -20,10 +20,12 @@
 
 			else if(istype(O,/obj/effect/decal/cleanable/mucus))
 				var/obj/effect/decal/cleanable/mucus/M = O
+				if(M.dried && M.loc != loc)
+					continue
 				if(isnull(M.virus2))
 					M.virus2 = list()
 				if(M.virus2.len)
-					for (var/ID in M.virus2)
+					for(var/ID in M.virus2)
 						var/datum/disease2/disease/V = M.virus2[ID]
 						infect_virus2(src,V)
 

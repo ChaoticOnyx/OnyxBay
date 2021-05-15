@@ -6,6 +6,7 @@
 	var/money = 0
 	var/list/transaction_log = list()
 	var/suspended = 0
+	var/off_station = FALSE
 	var/security_level = 0	//0 - auto-identify from worn ID, require only account number
 							//1 - require manual login / account number and pin
 							//2 - require card and manual login
@@ -53,7 +54,7 @@
 		R.Find(text)
 		amount = -text2num(R.match)
 
-/proc/create_account(new_owner_name = "Default user", starting_funds = 0, obj/machinery/computer/account_database/source_db)
+/proc/create_account(new_owner_name = "Default user", starting_funds = 0, obj/machinery/computer/account_database/source_db, _off_station)
 
 	//create a new account
 	var/datum/money_account/M = new()
@@ -66,6 +67,7 @@
 	T.target_name = new_owner_name
 	T.purpose = "Account creation"
 	T.amount = starting_funds
+	M.off_station = _off_station
 	if(!source_db)
 		//set a random date, time and location some time over the past few decades
 		T.date = "[num2text(rand(1,31))] [pick("January","February","March","April","May","June","July","August","September","October","November","December")], [game_year-rand(8,18)]"

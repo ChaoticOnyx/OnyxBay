@@ -74,6 +74,17 @@
 	return
 
 /obj/structure/table/attack_hand(mob/user as mob)
+	if(ishuman(user))
+		var/mob/living/carbon/human/H = user
+		if(H.species?.can_shred(H))
+			user.setClickCooldown(DEFAULT_QUICK_COOLDOWN)
+			user.do_attack_animation(src)
+			shake_animation(stime = 1)
+			user.visible_message(SPAN("danger", "[user] hacks through \the [src]!"))
+			playsound(loc, 'sound/effects/deskslam.ogg', 50, 1)
+			throw_contents_around(ITEM_SIZE_HUGE, 50)
+			take_damage(reinforced ? 10 : 20)
+			return
 	if(user.a_intent == I_HURT)
 		src.add_fingerprint(user)
 		user.setClickCooldown(DEFAULT_ATTACK_COOLDOWN)

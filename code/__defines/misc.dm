@@ -40,7 +40,8 @@
 #define    IMPTRACK_HUD 7 // Tracking implant.
 #define SPECIALROLE_HUD 8 // AntagHUD image.
 #define  STATUS_HUD_OOC 9 // STATUS_HUD without virus DB check for someone being ill.
-#define 	  LIFE_HUD  10 // STATUS_HUD that only reports dead or alive
+#define        LIFE_HUD 10 // STATUS_HUD that only reports dead or alive
+#define        XENO_HUD 11 // Alien embryo status.
 
 // Shuttle moving status.
 #define SHUTTLE_IDLE      0
@@ -254,3 +255,14 @@
 #define PULL_SLOWDOWN_LIGHT   1.5
 #define PULL_SLOWDOWN_TINY    0.5
 #define PULL_SLOWDOWN_NONE    0
+
+#define JOB_VACANCY_STATUS_OPEN "Open"
+#define JOB_VACANCY_STATUS_COMPLETED "Completed"
+#define JOB_VACANCIES_SLOTS_AVAILABLE_AT_ROUNDSTART 3
+#define JOB_VACANCIES_SLOT_PER_TIME (10 MINUTES)
+
+//Syringe states
+#define SYRINGE_DRAW "draw"
+#define SYRINGE_INJECT "inject"
+#define SYRINGE_BROKEN "broken"
+#define SYRINGE_PACKAGED "packaged"

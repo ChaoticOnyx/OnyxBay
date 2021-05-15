@@ -24,13 +24,13 @@
 /datum/disease2/effect/sneeze/activate(var/mob/living/carbon/human/mob)
 	if (prob(30))
 		to_chat(mob, SNEEZE_EFFECT_WARNING)
-	sleep(5)
-	mob.emote("sneeze")
-	for(var/mob/living/carbon/human/M in get_step(mob,mob.dir))
-		mob.spread_disease_to(M)
-	if (prob(50) && !mob.wear_mask)
-		var/obj/effect/decal/cleanable/mucus/M = new(get_turf(mob))
-		M.virus2 = virus_copylist(mob.virus2)
+	spawn(5)
+		mob.emote("sneeze")
+		for(var/mob/living/carbon/human/M in get_step(mob,mob.dir))
+			mob.spread_disease_to(M)
+		if (prob(50) && !mob.wear_mask)
+			var/obj/effect/decal/cleanable/mucus/M = new(get_turf(mob))
+			M.virus2 = virus_copylist(mob.virus2)
 
 
 
@@ -122,7 +122,7 @@
 	to_chat(mob, (SPAN_WARNING("Your throat hurts.")))
 	special_voice_old = mob.GetSpecialVoice()
 	mob.SetSpecialVoice(data["name"])
-	
+
 /datum/disease2/effect/voice_change/deactivate(mob/living/carbon/human/mob)
 	if(special_voice_old)
 		mob.SetSpecialVoice(special_voice_old)
@@ -240,13 +240,13 @@
 	mob.hud_used.action_intent.icon_state = "intent_harm"
 
 
-datum/disease2/effect/pacifism
+/datum/disease2/effect/pacifism
 	name = "Pacifist Syndrome"
 	stage = 2
 	chance_max = 20
 	possible_mutations = list(/datum/disease2/effect/aggressive)
 
-datum/disease2/effect/pacifism/activate(var/mob/living/carbon/human/mob)
+/datum/disease2/effect/pacifism/activate(var/mob/living/carbon/human/mob)
 	mob.a_intent = I_HELP
 	mob.hud_used.action_intent.icon_state = "intent_help"
 

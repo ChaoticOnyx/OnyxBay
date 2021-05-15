@@ -1,4 +1,4 @@
-/mob/living/carbon/alien/diona/get_scooped(var/mob/living/carbon/grabber)
+/mob/living/carbon/alien/diona/get_scooped(var/mob/living/carbon/grabber, self_grab)
 	if(grabber.species && grabber.species.name == SPECIES_DIONA && do_merge(grabber))
 		return
 	else return ..()

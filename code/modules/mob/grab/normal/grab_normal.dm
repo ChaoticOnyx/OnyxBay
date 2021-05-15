@@ -57,7 +57,7 @@
 			affecting.Weaken(2)
 			affecting.Stun(2)
 			affecting.visible_message("<span class='notice'>[assailant] pins [affecting] to the ground!</span>")
-			affecting.poise = 0
+			affecting.damage_poise(affecting.poise)
 
 			return 1
 		else
@@ -83,7 +83,7 @@
 	if(do_mob(assailant, affecting, action_cooldown - 1))
 		if(!G?.has_hold_on_organ(O))
 			to_chat(assailant, SPAN("warning", "You must keep a hold on your target to jointlock!"))
-			return
+			return 0
 		G.attacking = 0
 		G.action_used()
 		O.jointlock(assailant)
@@ -115,7 +115,7 @@
 		if(do_mob(assailant, affecting, action_cooldown - 1))
 			if(!G?.has_hold_on_organ(O))
 				to_chat(assailant, SPAN_WARNING("You must keep a hold on your target to dislocate!"))
-			return
+				return 0
 			G.attacking = 0
 			G.action_used()
 			O.dislocate(1)

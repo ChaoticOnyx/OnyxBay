@@ -21,7 +21,7 @@
 	path = /obj/item/weapon/storage/secure/briefcase/money
 	desc = "A briefcase with 10,000 untraceable credits for funding your sneaky activities."
 
-datum/uplink_item/item/tools/cleaning_kit
+/datum/uplink_item/item/tools/cleaning_kit
 	name = "Cleaning Kit"
 	item_cost = 15
 	path = /obj/item/weapon/storage/backpack/satchel/syndie_kit/cleaning_kit
@@ -93,7 +93,7 @@ datum/uplink_item/item/tools/cleaning_kit
 /datum/uplink_item/item/tools/flashdark
 	name = "Flashdark"
 	item_cost = 65
-	antag_costs = list(MODE_MERCENARY = 129)
+	antag_costs = list(MODE_NUKE = 129)
 	path = /obj/item/device/flashlight/flashdark
 
 /datum/uplink_item/item/tools/powersink

@@ -47,3 +47,14 @@
 /obj/item/weapon/reagent_containers/food/snacks/meat/chicken
 	name = "chicken piece"
 	desc = "It tastes like you'd expect."
+
+/obj/item/weapon/reagent_containers/food/snacks/meat/xeno
+	name = "xenomeat"
+	desc = "A slab of green meat. Smells like acid."
+	icon_state = "xenomeat"
+	filling_color = "#43de18"
+
+/obj/item/weapon/reagent_containers/food/snacks/meat/xeno/Initialize()
+	. = ..()
+	reagents.add_reagent(/datum/reagent/acid/polyacid, 9)
+	src.bitesize = 6

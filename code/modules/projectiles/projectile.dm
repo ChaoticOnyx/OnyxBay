@@ -19,6 +19,7 @@
 	var/current = null
 	var/shot_from = "" // name of the object which shot us
 	var/atom/original = null // the target clicked (not necessarily where the projectile is headed). Should probably be renamed to 'target' or something.
+	var/turf/previous = null // the projectile's previous turf updated on each move
 	var/turf/starting = null // the projectile's starting turf
 	var/list/permutated = list() // we've passed through these atoms, don't try to hit them again
 	var/list/segments = list() //For hitscan projectiles with tracers.
@@ -157,6 +158,7 @@
 
 	original = target
 	def_zone = target_zone
+	previous = get_turf(loc)
 
 	addtimer(CALLBACK(src, .proc/finalize_launch, curloc, targloc, x_offset, y_offset, angle_offset),0)
 	return 0
@@ -253,7 +255,7 @@
 
 	return 1
 
-/obj/item/projectile/Bump(atom/A as mob|obj|turf|area, forced=0)
+/obj/item/projectile/Bump(atom/A, forced = FALSE)
 	if(A == src)
 		return 0 //no
 
@@ -352,6 +354,7 @@
 			return
 
 		before_move()
+		previous = loc
 		Move(location.return_turf())
 
 		if(!bumped && !isturf(original))
@@ -441,7 +444,7 @@
 	xo = null
 	var/result = 0 //To pass the message back to the gun.
 
-/obj/item/projectile/test/Bump(atom/A as mob|obj|turf|area)
+/obj/item/projectile/test/Bump(atom/A, forced = FALSE)
 	if(A == firer)
 		loc = A.loc
 		return //cannot shoot yourself

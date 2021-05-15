@@ -868,9 +868,10 @@ Note that amputating the affected organ does in fact remove the infection from t
 			update_icon_drop(victim)
 			forceMove(victim.loc)
 			if(!clean) // Throw limb around.
-				if(src && isturf(loc))
-					throw_at(get_edge_target_turf(src, pick(GLOB.alldirs)), rand(1, 3), rand(2, 4))
-				dir = 2
+				spawn()
+					if(src && isturf(loc))
+						throw_at(get_edge_target_turf(src, pick(GLOB.alldirs)), rand(1, 3), rand(2, 4))
+					dir = 2
 		if(DROPLIMB_BURN)
 			new /obj/effect/decal/cleanable/ash(loc)
 			for(var/obj/item/I in src)
@@ -891,7 +892,8 @@ Note that amputating the affected organ does in fact remove the infection from t
 			for(var/obj/item/I in src)
 				I.forceMove(victim.loc)
 				if(isturf(I.loc))
-					I.throw_at(get_edge_target_turf(I, pick(GLOB.alldirs)), rand(1, 2), rand(2, 4))
+					spawn()
+						I.throw_at(get_edge_target_turf(I, pick(GLOB.alldirs)), rand(1, 2), rand(2, 4))
 
 			qdel(src)
 
@@ -972,7 +974,7 @@ Note that amputating the affected organ does in fact remove the infection from t
 		if(W.clamped)
 			return 1
 
-obj/item/organ/external/proc/remove_clamps()
+/obj/item/organ/external/proc/remove_clamps()
 	var/rval = 0
 	for(var/datum/wound/W in wounds)
 		rval |= W.clamped
@@ -1246,6 +1248,8 @@ obj/item/organ/external/proc/remove_clamps()
 /obj/item/organ/external/head/proc/disfigure(type = "brute")
 	if(status & ORGAN_DISFIGURED)
 		return
+	if(!(limb_flags & ORGAN_FLAG_CAN_BREAK)) // No need to disfigure xenomorphs and dionaea, right?
+		return
 	if(owner)
 		if(type == "brute")
 			owner.visible_message("<span class='danger'>You hear a sickening cracking sound coming from \the [owner]'s [name].</span>",	\
@@ -1500,7 +1504,7 @@ obj/item/organ/external/proc/remove_clamps()
 	return !BP_IS_ROBOTIC(src) && species && species.sexybits_location == organ_tag
 
 // Added to the mob's move delay tally if this organ is being used to move with.
-obj/item/organ/external/proc/movement_delay(max_delay)
+/obj/item/organ/external/proc/movement_delay(max_delay)
 	. = 0
 	if(is_stump())
 		. += max_delay

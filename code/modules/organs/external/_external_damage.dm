@@ -202,7 +202,7 @@ obj/item/organ/external/take_general_damage(amount, silent = FALSE)
 
 // Geneloss/cloneloss.
 /obj/item/organ/external/proc/get_genetic_damage()
-	return ((species && (species.species_flags & SPECIES_FLAG_NO_SCAN)) || BP_IS_ROBOTIC(src)) ? 0 : genetic_degradation
+	return (BP_IS_ROBOTIC(src) || (species?.species_flags & SPECIES_FLAG_NO_SCAN)) ? 0 : genetic_degradation
 
 /obj/item/organ/external/proc/remove_genetic_damage(amount)
 	if((species.species_flags & SPECIES_FLAG_NO_SCAN) || BP_IS_ROBOTIC(src))
@@ -236,11 +236,13 @@ obj/item/organ/external/take_general_damage(amount, silent = FALSE)
 	if(BP_IS_ROBOTIC(src))
 		return
 	src.status |= ORGAN_MUTATED
-	if(owner) owner.update_body()
+	if(owner)
+		owner.update_body()
 
 /obj/item/organ/external/proc/unmutate()
 	src.status &= ~ORGAN_MUTATED
-	if(owner) owner.update_body()
+	if(owner)
+		owner.update_body()
 
 /obj/item/organ/external/proc/update_pain()
 	if(!can_feel_pain())
@@ -267,9 +269,6 @@ obj/item/organ/external/take_general_damage(amount, silent = FALSE)
 
 /obj/item/organ/external/proc/get_pain()
 	return pain
-
-/obj/item/organ/external/proc/get_full_pain()
-	return full_pain
 
 /obj/item/organ/external/proc/adjust_pain(change)
 	if(!can_feel_pain())
@@ -298,9 +297,9 @@ obj/item/organ/external/take_general_damage(amount, silent = FALSE)
 		if((limb_flags & ORGAN_FLAG_CAN_STAND) && prob(min(agony_amount * ((body_part == LEG_LEFT || body_part == LEG_RIGHT)? 1 : 2), 70)))
 			owner.stance_damage_prone(src)
 
-		if(vital && get_full_pain() > 0.5 * max_damage)
+		if(vital && full_pain > 0.5 * max_damage)
 			owner.visible_message("<b>[owner]</b> reels in pain!")
-			if(has_genitals() || get_full_pain() + agony_amount > max_damage)
+			if(has_genitals() || full_pain + agony_amount > max_damage)
 				owner.Weaken(6)
 			else
 				owner.drop_l_hand()

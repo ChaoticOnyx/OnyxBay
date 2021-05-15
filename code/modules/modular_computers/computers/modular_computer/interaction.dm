@@ -147,6 +147,10 @@
 
 // On-click handling. Turns on the computer if it's off and opens the GUI.
 /obj/item/modular_computer/attack_self(mob/user)
+	if(ishuman(user))
+		var/mob/living/carbon/human/H = user
+		if(H.IsAdvancedToolUser(TRUE) == FALSE)
+			return
 	if(enabled && screen_on)
 		ui_interact(user)
 	else if(!enabled && screen_on)

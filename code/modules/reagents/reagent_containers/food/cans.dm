@@ -234,3 +234,14 @@
 /obj/item/weapon/reagent_containers/food/drinks/cans/applecider/Initialize()
 	. = ..()
 	reagents.add_reagent(/datum/reagent/ethanol/cider/apple, 40)
+
+/obj/item/weapon/reagent_containers/food/drinks/cans/red_mule
+	name = "\improper Red MULE"
+	desc = "Contains high levels of caffeine. Prohibited for use by children, pregnant women, people sensitive to caffeine, people not sensitive to caffeine, tajaran, animals and medical bots."
+	icon_state = "red_mule"
+	center_of_mass = "x=16;y=10"
+	trash = /obj/item/trash/cans/red_mule
+
+/obj/item/weapon/reagent_containers/food/drinks/cans/red_mule/Initialize()
+	. = ..()
+	reagents.add_reagent(/datum/reagent/drink/energy, 40)

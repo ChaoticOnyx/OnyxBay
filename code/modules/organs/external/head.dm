@@ -64,6 +64,8 @@
 			penman.visible_message("<span class='warning'>[penman] writes something on [head_name]!</span>", "You write something on [head_name].")
 			forehead_graffiti = graffiti
 			graffiti_style = style
+			if(owner)
+				log_and_message_admins("has written something on [owner]'s ([owner.ckey]) head: \"[graffiti]\".", penman)
 
 /obj/item/organ/external/head/set_dna(datum/dna/new_dna)
 	..()
@@ -73,7 +75,7 @@
 /obj/item/organ/external/head/get_agony_multiplier()
 	return (owner && owner.headcheck(organ_tag)) ? 1.50 : 1
 
-/obj/item/organ/external/head/robotize(company, skip_prosthetics, keep_organs)
+/obj/item/organ/external/head/robotize(company, skip_prosthetics = FALSE, keep_organs = FALSE, just_printed = FALSE)
 	if(company)
 		var/datum/robolimb/R = all_robolimbs[company]
 		if(R)

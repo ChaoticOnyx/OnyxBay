@@ -135,37 +135,40 @@
 
 	// Playing far movement sound with small chance when someone make step in maintenance area
 	// These sounds another players can hear only in the same maintenance area
-	if (m_intent == M_WALK)
+	if(m_intent == M_WALK)
 		return
 
 	var/chance = 25
 
-	if (MUTATION_FAT in mutations)
+	if(MUTATION_FAT in mutations)
 		chance += 5
 
-	if (MUTATION_CLUMSY in mutations)
+	if(MUTATION_CLUMSY in mutations)
 		chance += 10
 
-	if (MUTATION_HULK in mutations)
+	if(MUTATION_HULK in mutations)
 		chance += 15
 
-	if (!prob(chance))
+	if(!prob(chance))
 		return
 
 	var/area/maintenance/A = get_area(src)
 
-	if (!istype(A))
+	if(!istype(A))
 		return
 
-	for (var/mob/M in GLOB.player_list)
-		if (M == src)
+	for(var/mob/M in GLOB.player_list)
+		if(M == src)
 			continue
 
-		if (M.loc.z != src.loc.z || !istype(get_area(M), /area/maintenance))
+		if(istype(M, /mob/new_player))
+			continue
+
+		if(M.loc.z != src.loc.z || !istype(get_area(M), /area/maintenance))
 			continue
 
 		var/dist = get_dist(get_turf(M), T)
 
-		if (dist >= world.view && dist <= world.view * 3)
+		if(dist >= world.view && dist <= world.view * 3)
 			M.playsound_local(src.loc, "distant_movement", 100)
 

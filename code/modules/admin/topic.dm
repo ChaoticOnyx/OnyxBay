@@ -1638,7 +1638,7 @@
 			to_chat(usr, "This can only be used on instances of type /mob.")
 			return
 
-		show_individual_logging_panel(M, href_list["log_type"])
+		show_individual_logging_panel(usr, M, href_list["log_type"])
 
 	else if(href_list["traitor"])
 		if(!check_rights(R_ADMIN|R_MOD))	return
@@ -2103,7 +2103,7 @@
 				if("resolve emergency")
 					var/datum/objective/ert_station_save/basic = new()
 					GLOB.ert.add_global_objective(basic)
-				else if("custom")
+				if("custom")
 					var/text = input("Write down the ERT mission", "ERT mission", null)
 					if(text)
 						var/datum/objective/ert_custom/custom = new
@@ -2134,13 +2134,13 @@
 	SpeciesIngameWhitelist_AdminTopicProcess(src, href_list)
 
 
-mob/living/proc/can_centcom_reply()
+/mob/living/proc/can_centcom_reply()
 	return 0
 
-mob/living/carbon/human/can_centcom_reply()
+/mob/living/carbon/human/can_centcom_reply()
 	return istype(l_ear, /obj/item/device/radio/headset) || istype(r_ear, /obj/item/device/radio/headset)
 
-mob/living/silicon/ai/can_centcom_reply()
+/mob/living/silicon/ai/can_centcom_reply()
 	return silicon_radio != null && !check_unable(2)
 
 /datum/proc/extra_admin_link(prefix, sufix, short_links)

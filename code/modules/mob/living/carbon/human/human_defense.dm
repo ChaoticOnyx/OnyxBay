@@ -80,7 +80,7 @@ meteor_act
 
 	return blocked
 
-/mob/living/carbon/human/stun_effect_act(stun_amount, agony_amount, def_zone)
+/mob/living/carbon/human/stun_effect_act(stun_amount, agony_amount, def_zone, used_weapon = null)
 	var/obj/item/organ/external/affected = get_organ(check_zone(def_zone))
 	if(!affected)
 		return
@@ -289,13 +289,13 @@ meteor_act
 	visible_message(SPAN("danger", "[src] has been [I.attack_verb.len? pick(I.attack_verb) : "attacked"] in the [affecting.name] with [I.name] by [user]!"))
 	if(istype(user,/mob/living/carbon/human))
 		var/mob/living/carbon/human/A = user
-		A.poise -= 2.0+(I.mod_weight*2 + (1-I.mod_handy))
+		A.damage_poise(2.0+(I.mod_weight*2 + (1-I.mod_handy)))
 		//visible_message("Debug \[HIT\]: [A] used [2.0+(I.mod_weight*2 + (1-I.mod_handy))] poise ([A.poise]/[A.poise_pool])") // Debug Message
 
 	poise_damage = round((2.5+(I.mod_weight*3.0 + I.mod_reach))/1.5 + (2.5+(I.mod_weight*3.0 + I.mod_reach))/1.5*((100-blocked)/100),0.1)
 	if(headcheck(hit_zone))
 		poise_damage *= 1.15
-	src.poise -= poise_damage
+	damage_poise(poise_damage)
 	//visible_message("Debug \[HIT\]: [src] lost [poise_damage] poise ([src.poise]/[src.poise_pool])") // Debug Message
 
 	////////// Here goes the REAL armor processing.
@@ -380,13 +380,13 @@ meteor_act
 	visible_message(SPAN("danger", "[user] bashes [src]'s [affecting.name] with their [I.name]!"))
 	if(istype(user,/mob/living/carbon/human))
 		var/mob/living/carbon/human/A = user
-		A.poise -= 2.0+(I.mod_weight*2 + (1-I.mod_handy))
+		A.damage_poise(2.0+(I.mod_weight*2 + (1-I.mod_handy)))
 		//visible_message("Debug \[BASH\]: [A] used [2.0+(I.mod_weight*2 + (1-I.mod_handy))] poise ([A.poise]/[A.poise_pool])") // Debug Message
 
 	poise_damage = round((3.5+(I.mod_weight*3.0 + I.mod_reach))/1.5 + (3.5+(I.mod_weight*4.0 + I.mod_reach))/1.5*((100-blocked)/100),0.1)
 	if(headcheck(hit_zone))
 		poise_damage *= 1.15
-	src.poise -= poise_damage
+	damage_poise(poise_damage)
 	//visible_message("Debug \[BASH\]: [src] lost [poise_damage] poise ([src.poise]/[src.poise_pool])") // Debug Message
 
 	//////////
@@ -535,10 +535,10 @@ meteor_act
 				defender.parrying = 0
 				return 0
 			defender.next_move = world.time+1 //Well I'd prefer to use setClickCooldown but it ain't gonna work here.
-			defender.poise -= 2.5+(weapon_atk.mod_weight*1.5)
+			defender.damage_poise(2.5+(weapon_atk.mod_weight*1.5))
 			//visible_message("Debug \[parry\]: Defender [defender] lost [2.5+(weapon_def.mod_weight*2.5)] poise ([defender.poise]/[defender.poise_pool])") // Debug Message
 			attacker.setClickCooldown(weapon_atk.update_attack_cooldown()*2)
-			attacker.poise -= 17.5+(weapon_atk.mod_weight*7.5)
+			attacker.damage_poise(17.5+(weapon_atk.mod_weight*7.5))
 			//visible_message("Debug \[parry\]: Attacker [attacker] lost [20.0+(weapon_atk.mod_weight*5.0)] poise ([defender.poise]/[defender.poise_pool])") // Debug Message
 			visible_message(SPAN("warning", "[defender] parries [attacker]'s [weapon_atk.name] with their [weapon_def.name]."))
 
@@ -579,9 +579,9 @@ meteor_act
 			else if(weapon_def.mod_weight < weapon_atk.mod_weight)
 				d_mult = (weapon_atk.mod_weight - weapon_def.mod_weight)/0.5
 
-			defender.poise -= (4.0+(weapon_atk.mod_weight*2.5 + weapon_atk.mod_reach)) + (weapon_atk.mod_weight*2.5 + weapon_atk.mod_reach)*d_mult/weapon_def.mod_shield
+			defender.damage_poise((4.0+(weapon_atk.mod_weight*2.5 + weapon_atk.mod_reach)) + (weapon_atk.mod_weight*2.5 + weapon_atk.mod_reach)*d_mult/weapon_def.mod_shield)
 			//visible_message("Debug \[block\]: [defender] lost [(4.0+(weapon_atk.mod_weight*2.5 + weapon_atk.mod_reach)) + (weapon_atk.mod_weight*2.5 + weapon_atk.mod_reach)*d_mult/weapon_def.mod_shield] poise ([defender.poise]/[defender.poise_pool])") // Debug Message
-			attacker.poise -= 2.0+(weapon_atk.mod_weight*2 + (1-weapon_atk.mod_handy)*2)
+			attacker.damage_poise(2.0+(weapon_atk.mod_weight*2 + (1-weapon_atk.mod_handy)*2))
 			//visible_message("Debug \[block\]: [attacker] lost [2.0+(weapon_atk.mod_weight*2 + (1-weapon_atk.mod_handy)*2)] poise ([attacker.poise]/[attacker.poise_pool])") // Debug Message
 			visible_message(SPAN("warning", "[defender] blocks [attacker]'s [weapon_atk.name] with their [weapon_def.name]!"))
 			defender.last_block = world.time
@@ -593,8 +593,8 @@ meteor_act
 
 			playsound(loc, 'sound/effects/fighting/Genhit.ogg', 50, 1, -1)
 		else
-			defender.poise -= 2.5 + weapon_atk.mod_weight*10 + weapon_atk.mod_reach*5
-			attacker.poise -= weapon_atk.mod_weight*2 + (1-weapon_atk.mod_handy)*2
+			defender.damage_poise(2.5 + weapon_atk.mod_weight*10 + weapon_atk.mod_reach*5)
+			attacker.damage_poise(weapon_atk.mod_weight*2 + (1-weapon_atk.mod_handy)*2)
 			if((weapon_atk.sharp || weapon_atk.edge) && weapon_atk.force >= 10)
 				visible_message(SPAN("warning", "[defender] blocks [attacker]'s [weapon_atk.name] with their bare hands! Ouch."))
 				defender.apply_damage((weapon_atk.force*0.2), weapon_atk.damtype, BP_R_HAND, 0, 0, used_weapon=weapon_atk)
@@ -626,10 +626,10 @@ meteor_act
 				visible_message(SPAN("warning", "[defender] pointlessly attempts to block [attacker]'s attack with [weapon_def]."))
 				return 0 //For the case of candles and dices lmao
 
-			defender.poise -= atk_dmg / ((weapon_def.mod_handy+weapon_def.mod_reach) / 2)
+			defender.damage_poise(atk_dmg / ((weapon_def.mod_handy+weapon_def.mod_reach) / 2))
 			if(istype(attacker,/mob/living/carbon/human))
 				var/mob/living/carbon/human/human_attacker = attacker
-				human_attacker.poise -= 5.0 + weapon_def.mod_weight*2 + weapon_def.mod_handy*3
+				human_attacker.damage_poise(5.0 + weapon_def.mod_weight*2 + weapon_def.mod_handy*3)
 
 			visible_message(SPAN("warning", "[defender] blocks [attacker]'s attack with their [weapon_def.name]!"))
 			defender.last_block = world.time
@@ -643,10 +643,10 @@ meteor_act
 		else
 			if(istype(attacker,/mob/living/carbon/human))
 				var/mob/living/carbon/human/human_attacker = attacker
-				defender.poise -= 7.5
-				human_attacker.poise -= 5.0
+				defender.damage_poise(7.5)
+				human_attacker.damage_poise(5.0)
 			else
-				defender.poise -= atk_dmg
+				defender.damage_poise(atk_dmg)
 
 			visible_message(SPAN("warning", "[defender] blocks [attacker]'s attack!"))
 			defender.last_block = world.time
@@ -773,7 +773,7 @@ meteor_act
 
 					visible_message(SPAN("warning", "[src] blocks [O] with [weapon_def]!"))
 
-					poise -= throw_damage/weapon_def.mod_shield
+					damage_poise(throw_damage/weapon_def.mod_shield)
 					if(poise < throw_damage/weapon_def.mod_shield)
 						visible_message(SPAN("warning", "[src] falls down, unable to keep balance!"))
 						apply_effect(2, WEAKEN, 0)

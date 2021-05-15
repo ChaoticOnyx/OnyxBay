@@ -387,8 +387,8 @@
 	return 0
 
 // Handle being picked up.
-/mob/living/silicon/pai/get_scooped(mob/living/carbon/grabber, self_drop)
-	var/obj/item/weapon/holder/H = ..(grabber, self_drop)
+/mob/living/silicon/pai/get_scooped(mob/living/carbon/grabber, self_grab)
+	var/obj/item/weapon/holder/H = ..(grabber, self_grab)
 	if(!istype(H))
 		return
 	H.icon_state = "pai-[icon_state]"

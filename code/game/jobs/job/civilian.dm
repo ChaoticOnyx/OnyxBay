@@ -191,3 +191,5 @@
 	latejoin_at_spawnpoints = 1
 	access = list(access_merchant)
 	announced = FALSE
+	can_be_hired = FALSE
+	off_station = TRUE

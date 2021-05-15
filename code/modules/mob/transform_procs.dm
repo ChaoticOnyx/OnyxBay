@@ -329,4 +329,4 @@
 	src.does_not_breathe = TRUE
 	verbs += /mob/living/proc/breath_death
 	verbs += /mob/living/proc/consume
-	playsound(get_turf(src), 'sound/hallucinations/wail.ogg', 20, 1)
+	playsound(src, 'sound/hallucinations/wail.ogg', 20, 1)
