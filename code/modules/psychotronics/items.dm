@@ -46,7 +46,7 @@
 	neuromod = null
 	created_for = null
 
-	..()
+	return ..()
 
 /obj/item/weapon/reagent_containers/neuromod_shell/do_surgery(mob/living/carbon/M, mob/living/user)
 	afterattack(M, user, 1)
