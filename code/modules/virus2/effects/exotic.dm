@@ -130,8 +130,8 @@
 	name = "Nuclear fury"
 	desc = "You use all your willpower to achieve your highest goal in this life."
 
-	on_created_text = SPAN("warning", "I need to do everything possible to merge with the Atom!")
-	on_expired_text = SPAN("notice", "You feel rather weak.")
+	on_created_text = "<span class='warning'>I need to do everything possible to merge with the Atom!</span>"
+	on_expired_text = "<span class='notice'>You feel rather weak.</span>"
 
 	disable_duration_percent = 0.8
 	outgoing_melee_damage_percent = 1.35
