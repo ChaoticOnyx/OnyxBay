@@ -13,10 +13,10 @@
 	stage = 1
 	badness = VIRUS_EXOTIC
 
-/datum/disease2/effect/vulnerability/activate(var/mob/living/carbon/human/mob)
+/datum/disease2/effect/vulnerability/activate(mob/living/carbon/human/mob)
 	mob.add_modifier(/datum/modifier/vulnerability)
 
-/datum/disease2/effect/vulnerability/deactivate(var/mob/living/carbon/human/mob)
+/datum/disease2/effect/vulnerability/deactivate(mob/living/carbon/human/mob)
 	mob.remove_a_modifier_of_type(/datum/modifier/vulnerability)
 
 /datum/modifier/vulnerability
@@ -34,13 +34,12 @@
 	incoming_healing_percent = 0.2
 
 
-
 /datum/disease2/effect/musclerace
 	name = "Reverse Muscle Overstrain Effect"
 	stage = 1
 	badness = VIRUS_EXOTIC
 
-/datum/disease2/effect/musclerace/activate(var/mob/living/carbon/human/mob)
+/datum/disease2/effect/musclerace/activate(mob/living/carbon/human/mob)
 	mob.nutrition = max(0, mob.nutrition - 25)
 	mob.add_modifier(/datum/modifier/musclerace)
 	if(prob(25))
@@ -49,9 +48,9 @@
 	if(prob(45) && mob.reagents.get_reagent_amount(/datum/reagent/mutagen) < 5)
 		mob.custom_pain(pick("Your muscle tissue hurts unbearably!", "Your muscle tissue is burning!", "Your muscle tissue is torn!", "Your muscles are torn!", "Your muscles hurt unbearably!", "Your muscles are burning!", "Your muscles are shrinking!"), 45)
 		mob.bodytemperature += 45
-		mob.take_organ_damage((3*multiplier))
+		mob.take_organ_damage((3 * multiplier))
 
-/datum/disease2/effect/musclerace/deactivate(var/mob/living/carbon/human/mob)
+/datum/disease2/effect/musclerace/deactivate(mob/living/carbon/human/mob)
 	mob.remove_a_modifier_of_type(/datum/modifier/musclerace)
 
 /datum/modifier/musclerace
@@ -69,9 +68,7 @@
 	incoming_healing_percent = 0.2
 	haste = 1
 
-
-
-//Atom Virus
+// Atom Virus
 /datum/disease2/effect/nuclear
 	name = "Atomic Fever"
 	stage = 1
@@ -110,31 +107,31 @@
 		"i will die with these people - i will become one with these people",
 		)
 
-/datum/disease2/effect/nuclear/activate(var/mob/living/carbon/human/mob)
+/datum/disease2/effect/nuclear/activate(mob/living/carbon/human/mob)
 	if(!codes_received)
 		var/obj/machinery/nuclearbomb/nuke = locate(/obj/machinery/nuclearbomb/station) in world
 		if(nuke && mob.mind)
-			to_chat(mob, "<span class='danger'>Station Self Destruction Code is [nuke.r_code]. Write and dont forget, its very important, you have to blow up the station and get to know the Atom. Your consciousness will tell you everything you need.</span>")
+			to_chat(mob, SPAN("danger", "Station Self Destruction Code is [nuke.r_code]. Write and dont forget, its very important, you have to blow up the station and get to know the Atom. Your consciousness will tell you everything you need."))
 			mob.mind.store_memory("[nuke.r_code]")
 			mob.mind.store_memory("<B>ATOM WILL TELL ME THE WAY</B>")
 			codes_received = 1
 	if(prob(30))
-		to_chat(mob, "<span class='notice'>... [pick(reflections)] ...</span>")
+		to_chat(mob, SPAN("notice", "... [pick(reflections)] ..."))
 		if(prob(5))
 			mob.whisper_say("[pick(reflections)]")
 	if(mob.reagents.get_reagent_amount(/datum/reagent/tramadol/oxycodone) < 10)
 		mob.reagents.add_reagent(/datum/reagent/tramadol/oxycodone, 5)
 	mob.add_modifier(/datum/modifier/nuclear)
 
-/datum/disease2/effect/nuclear/deactivate(var/mob/living/carbon/human/mob)
+/datum/disease2/effect/nuclear/deactivate(mob/living/carbon/human/mob)
 	mob.remove_a_modifier_of_type(/datum/modifier/nuclear)
 
 /datum/modifier/nuclear
 	name = "Nuclear fury"
 	desc = "You use all your willpower to achieve your highest goal in this life."
 
-	on_created_text = "<span class='warning'>I need to do everything possible to merge with the Atom!</span>"
-	on_expired_text = "<span class='notice'>You feel rather weak.</span>"
+	on_created_text = SPAN("warning", "I need to do everything possible to merge with the Atom!")
+	on_expired_text = SPAN("notice", "You feel rather weak.")
 
 	disable_duration_percent = 0.8
 	outgoing_melee_damage_percent = 1.35
@@ -147,13 +144,11 @@
 	stage = 2
 	badness = VIRUS_EXOTIC
 
-/datum/disease2/effect/hisstarvation/activate(var/mob/living/carbon/human/mob)
+/datum/disease2/effect/hisstarvation/activate(mob/living/carbon/human/mob)
 	mob.nutrition = max(0, mob.nutrition - 1000)
 	mob.custom_emote(message = "hisses")
 	if(prob(25))
-		to_chat(mob, "<span class='danger'>[pick("You want to eat more than anything in this life!", "You feel your stomach begin to devour itself!", "You are ready to kill for food!", "You urgently need to find food!")]</span>")
-
-
+		to_chat(mob, SPAN("danger", "[pick("You want to eat more than anything in this life!", "You feel your stomach begin to devour itself!", "You are ready to kill for food!", "You urgently need to find food!")]"))
 
 //Atom Virus
 /datum/disease2/effect/nuclear_exacerbation
@@ -183,9 +178,9 @@
 		"Everything in this world is just dust for the Atom!",
 		)
 
-/datum/disease2/effect/nuclear_exacerbation/activate(var/mob/living/carbon/human/mob)
+/datum/disease2/effect/nuclear_exacerbation/activate(mob/living/carbon/human/mob)
 	if(prob(25))
-		to_chat(mob, "<span class='danger'>[pick(reflections)]</span>")
+		to_chat(mob, SPAN("danger", "[pick(reflections)]"))
 	if(mob.reagents.get_reagent_amount(/datum/reagent/hyperzine) < 10)
 		mob.reagents.add_reagent(/datum/reagent/hyperzine, 4)
 	if(mob.reagents.get_reagent_amount(/datum/reagent/bicaridine) < 25)
@@ -199,15 +194,15 @@
 	badness = VIRUS_EXOTIC
 	possible_mutations = list(/datum/disease2/effect/mind)
 
-/datum/disease2/effect/brainrot/activate(var/mob/living/carbon/human/mob)
+/datum/disease2/effect/brainrot/activate(mob/living/carbon/human/mob)
 	if(mob.reagents.get_reagent_amount(/datum/reagent/alkysine) > 5)
-		to_chat(mob, "<span class='notice'>You feel better.</span>")
+		to_chat(mob, SPAN("notice", "You feel better."))
 	else
 		if(mob.getBrainLoss() < 90)
 			mob.emote("drool")
 			mob.adjustBrainLoss(9)
 			if(prob(2))
-				to_chat(mob, "<span class='warning'>Your try to remember something important...but can't.</span>")
+				to_chat(mob, SPAN("warning", "Your try to remember something important... But can't."))
 		if(prob(5))
 			mob.confused += 5
 

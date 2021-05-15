@@ -33,7 +33,7 @@
 	possible_mutations = list(/datum/disease2/effect/immortal)
 
 /datum/disease2/effect/curer/activate(mob/living/carbon/human/mob)
-	to_chat(mob, SPAN_NOTICE("You feel cured."))
+	to_chat(mob, SPAN("notice", "You feel cured."))
 	for(var/ID in mob.virus2)
 		var/datum/disease2/disease/D = mob.virus2[ID]
 		D.cure(mob)
@@ -142,8 +142,8 @@
 		mob.bodytemperature += 25
 		if(prob(15))
 			mob.bodytemperature += 35
-			to_chat(mob, "<span class='warning'>Your insides burn out.</span>")
+			to_chat(mob, SPAN("warning", "Your insides burn out."))
 			mob.take_organ_damage(4 * multiplier)
 		if(prob(10))
 			mob.bodytemperature += 40
-			to_chat(mob, "<span class='warning'>You're burning in your own skin!</span>")
+			to_chat(mob, SPAN("warning", "You're burning in your own skin!"))
