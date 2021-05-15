@@ -159,7 +159,7 @@
 							  /datum/disease2/effect/killertoxins)
 
 /datum/disease2/effect/organs/activate(mob/living/carbon/human/mob)
-	var/organ = pick(list(BP_R_ARM, BP_L_ARM,B P_R_LEG, BP_L_LEG))
+	var/organ = pick(list(BP_R_ARM, BP_L_ARM, BP_R_LEG, BP_L_LEG))
 	var/obj/item/organ/external/E = mob.organs_by_name[organ]
 	if(!(E.status & ORGAN_DEAD))
 		E.status |= ORGAN_DEAD
