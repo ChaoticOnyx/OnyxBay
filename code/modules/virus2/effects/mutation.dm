@@ -96,8 +96,8 @@
 		original_dna["SE"] = mob.dna.SE.Copy()
 
 		to_chat(mob, SPAN("danger", "You don't feel like yourself."))
-		var/list/newUI=data["UI"]
-		var/list/newSE=data["SE"]
+		var/list/newUI = data["UI"]
+		var/list/newSE = data["SE"]
 		mob.UpdateAppearance(newUI.Copy())
 		mob.dna.SE = newSE.Copy()
 		mob.dna.UpdateSE()
