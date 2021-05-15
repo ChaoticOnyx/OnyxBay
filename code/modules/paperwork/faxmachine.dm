@@ -85,7 +85,7 @@ GLOBAL_LIST_EMPTY(adminfaxes)	//cache for faxes that have been sent to admins
 			dat += "<a href ='byond://?src=\ref[src];remove=1'>Remove Item</a><br>"
 
 
-	user << browse(dat, "window=copier")
+	show_browser(user, dat, "window=copier")
 	onclose(user, "copier")
 	return
 
@@ -93,7 +93,7 @@ GLOBAL_LIST_EMPTY(adminfaxes)	//cache for faxes that have been sent to admins
 	if (print_cooldown)
 		return
 	print_cooldown = 30 SECONDS
-	addtimer(CALLBACK(src, .go_off_print_cooldown), print_cooldown)
+	addtimer(CALLBACK(src, .proc/go_off_print_cooldown), print_cooldown)
 	return TRUE
 
 /obj/machinery/photocopier/faxmachine/proc/go_off_print_cooldown()
@@ -105,6 +105,7 @@ GLOBAL_LIST_EMPTY(adminfaxes)	//cache for faxes that have been sent to admins
 		return
 	if(href_list["print_complaint"])
 		if (print_cooldown_check())
+			playsound(src.loc, 'sound/signals/processing20.ogg', 25)
 			var/id = IAAJ_generate_fake_id()
 			ASSERT(id)
 			new /obj/item/weapon/complaint_folder(src.loc, id)
@@ -112,8 +113,10 @@ GLOBAL_LIST_EMPTY(adminfaxes)	//cache for faxes that have been sent to admins
 	if(href_list["send"])
 		if(copyitem)
 			if (destination in admin_departments)
+				playsound(src.loc, 'sound/signals/processing19.ogg', 25)
 				send_admin_fax(usr, destination)
 			else
+				playsound(src.loc, 'sound/signals/processing19.ogg', 25)
 				sendfax(destination)
 
 			if (sendcooldown)
@@ -272,4 +275,4 @@ GLOBAL_LIST_EMPTY(adminfaxes)	//cache for faxes that have been sent to admins
 	for(var/client/C in GLOB.admins)
 		if(check_rights((R_ADMIN|R_MOD),0,C))
 			to_chat(C, msg)
-			sound_to(C, 'sound/machines/dotprinter.ogg')
+			sound_to(C, sound('sound/machines/dotprinter.ogg'))

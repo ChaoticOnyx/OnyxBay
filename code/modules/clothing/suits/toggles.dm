@@ -1,6 +1,7 @@
 ///Hoods for winter coats and chaplain hoodie etc
 
 /obj/item/clothing/suit/storage/hooded
+	initial_closed = TRUE
 	var/obj/item/clothing/head/winterhood/hood
 	var/hoodtype = null //so the chaplain hoodie or other hoodies can override this
 	var/suittoggled = 0
@@ -137,7 +138,7 @@
 	cold_protection = UPPER_TORSO|LOWER_TORSO|ARMS
 	action_button_name = "Toggle Hood"
 	hoodtype = /obj/item/clothing/head/hoodiehood
-	
+
 /obj/item/clothing/head/hoodiehood
 	name = "hoodie hood"
 	desc = "A hood attached to a warm sweatshirt."

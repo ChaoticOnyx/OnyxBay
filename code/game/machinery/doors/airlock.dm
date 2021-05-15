@@ -155,6 +155,9 @@
 	icon = 'icons/obj/doors/doorele.dmi'
 	opacity = 0
 
+/obj/machinery/door/airlock/centcom/Process()
+	return PROCESS_KILL
+
 /obj/machinery/door/airlock/vault
 	name = "Vault"
 	icon = 'icons/obj/doors/vault.dmi'
@@ -1212,7 +1215,7 @@ About the new airlock wires panel:
 
 /obj/machinery/door/airlock/close(forced=0)
 	if(!can_close(forced))
-		addtimer(CALLBACK(src, .close), next_close_time(), TIMER_UNIQUE|TIMER_OVERRIDE)
+		addtimer(CALLBACK(src, .proc/close), next_close_time(), TIMER_UNIQUE|TIMER_OVERRIDE)
 		return 0
 
 	if(safe)
@@ -1222,7 +1225,7 @@ About the new airlock wires panel:
 					if(world.time > next_beep_at)
 						playsound(src.loc, close_failure_blocked, 30, 0, -3)
 						next_beep_at = world.time + SecondsToTicks(10)
-					addtimer(CALLBACK(src, .close), next_close_time(), TIMER_UNIQUE|TIMER_OVERRIDE)
+					addtimer(CALLBACK(src, .proc/close), next_close_time(), TIMER_UNIQUE|TIMER_OVERRIDE)
 					return
 
 	for(var/turf/turf in locs)

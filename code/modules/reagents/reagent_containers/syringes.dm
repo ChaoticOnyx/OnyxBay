@@ -67,7 +67,6 @@
 			if(!T.dna)
 				to_chat(user, "<span class='warning'>You are unable to locate any blood.</span>")
 				CRASH("[T] \[[T.type]\] was missing their dna datum!")
-				return
 
 			user.setClickCooldown(DEFAULT_QUICK_COOLDOWN)
 			user.do_attack_animation(target)
@@ -211,7 +210,6 @@
 			if(!T.dna)
 				to_chat(user, "<span class='warning'>You are unable to locate any blood.</span>")
 				CRASH("[T] \[[T.type]\] was missing their dna datum!")
-				return
 
 			var/injtime = time //Taking a blood sample through a hardsuit takes longer due to needing to find a port.
 			var/allow = T.can_inject(user, check_zone(user.zone_sel.selecting))
@@ -239,7 +237,7 @@
 			to_chat(user, "<span class='notice'>[target] is empty.</span>")
 			return
 
-		if(!target.is_open_container() && !istype(target, /obj/structure/reagent_dispensers) && !istype(target, /obj/item/slime_extract))
+		if(!target.is_open_container() && !istype(target, /obj/structure/reagent_dispensers) && !istype(target, /obj/item/weapon/backwear/reagent) && !istype(target, /obj/item/slime_extract))
 			to_chat(user, "<span class='notice'>You cannot directly remove reagents from this object.</span>")
 			return
 

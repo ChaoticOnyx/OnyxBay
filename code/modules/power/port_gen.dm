@@ -260,6 +260,7 @@
 		explode() //if they're foolish enough to emag while it's running
 
 	if (!emagged)
+		playsound(src.loc, 'sound/effects/computer_emag.ogg', 25)
 		emagged = 1
 		return 1
 
@@ -358,7 +359,7 @@
 	if (get_dist(src, user) > 1 )
 		if (!istype(user, /mob/living/silicon/ai))
 			user.unset_machine()
-			user << browse(null, "window=port_gen")
+			close_browser(user, "window=port_gen")
 			return
 
 	user.set_machine(src)
@@ -377,7 +378,7 @@
 	var/tempstr = "Temperature: [temperature]&deg;C<br>"
 	dat += (overheating)? "<span class='danger'>[tempstr]</span>" : tempstr
 	dat += "<br><A href='?src=\ref[src];action=close'>Close</A>"
-	user << browse("[dat]", "window=port_gen")
+	show_browser(user, "[dat]", "window=port_gen")
 	onclose(user, "port_gen")
 */
 

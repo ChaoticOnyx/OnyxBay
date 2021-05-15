@@ -136,7 +136,7 @@
 		dat +=	"<br><b>Claws:</b> <a href='?src=\ref[src];add_inv=claws'>Nothing</a>"
 
 
-	user << browse(dat, text("window=mob[];size=325x500", name))
+	show_browser(user, dat, text("window=mob[];size=325x500", name))
 	onclose(user, "mob[real_name]")
 	return
 
@@ -410,11 +410,11 @@
 					return
 			return
 
-		if(parrot_interest && parrot_interest in view(src))
+		if(parrot_interest && (parrot_interest in view(src)))
 			parrot_state = PARROT_SWOOP | PARROT_STEAL
 			return
 
-		if(parrot_perch && parrot_perch in view(src))
+		if(parrot_perch && (parrot_perch in view(src)))
 			parrot_state = PARROT_SWOOP | PARROT_RETURN
 			return
 

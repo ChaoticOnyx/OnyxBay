@@ -50,7 +50,7 @@
 	dat += "<br>"
 	dat += "<hr>"
 	dat += "<a href='?src=\ref[src]'>Refresh</a> <a href='?src=\ref[src];close=1'>Close</a>"
-	user << browse(dat, "window=artanalyser;size=450x500")
+	show_browser(user, dat, "window=artanalyser;size=450x500")
 	user.set_machine(src)
 	onclose(user, "artanalyser")
 
@@ -89,6 +89,7 @@
 		if(!owned_scanner)
 			reconnect_scanner()
 		if(owned_scanner)
+			playsound(src.loc, 'sound/signals/processing7.ogg', 50)
 			var/artifact_in_use = 0
 			for(var/obj/O in owned_scanner.loc)
 				if(O == owned_scanner)

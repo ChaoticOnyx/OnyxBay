@@ -232,7 +232,7 @@
 	A.ShiftClick(src)
 	return
 /atom/proc/ShiftClick(mob/user)
-	if(user.client && src in view(user.client.eye))
+	if(user.client && (src in view(user.client.eye)))
 		user.examinate(src)
 
 	return

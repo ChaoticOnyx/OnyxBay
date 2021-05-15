@@ -18,7 +18,6 @@
 	var/on = 0
 	var/list/active_scanned = list() //assoc list of objects being scanned, mapped to their overlay
 	var/client/user_client //since making sure overlays are properly added and removed is pretty important, so we track the current user explicitly
-	var/flicker = 0
 	var/base_state = "t-ray"
 
 	var/global/list/overlay_cache = list() //cache recent overlays
@@ -43,7 +42,6 @@
 	on = active
 	if(on)
 		START_PROCESSING(SSobj, src)
-		flicker = 0
 	else
 		STOP_PROCESSING(SSobj, src)
 		set_user_client(null)
@@ -51,7 +49,8 @@
 
 //If reset is set, then assume the client has none of our overlays, otherwise we only send new overlays.
 /obj/item/device/t_scanner/Process()
-	if(!on) return
+	if(!on)
+		return
 
 	//handle clients changing
 	var/client/loc_client = null
@@ -61,7 +60,8 @@
 	set_user_client(loc_client)
 
 	//no sense processing if no-one is going to see it.
-	if(!user_client) return
+	if(!user_client)
+		return
 
 	//get all objects in scan range
 	var/list/scanned = get_scanned_objects(scan_range)
@@ -78,15 +78,6 @@
 	for(var/obj/O in update_remove)
 		user_client.images -= active_scanned[O]
 		active_scanned -= O
-
-	//Flicker effect
-	for(var/obj/O in active_scanned)
-		var/image/overlay = active_scanned[O]
-		if(flicker)
-			overlay.alpha = 0
-		else
-			overlay.alpha = 128
-	flicker = !flicker
 
 //creates a new overlay for a scanned object
 /obj/item/device/t_scanner/proc/get_overlay(atom/movable/scanned)

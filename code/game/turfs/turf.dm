@@ -7,7 +7,7 @@
 
 	var/turf_flags
 
-	var/holy = 0
+	var/holy = FALSE
 
 	// Initial air contents (in moles)
 	var/list/initial_gas
@@ -86,6 +86,9 @@
 		M.start_pulling(t)
 	else
 		step(user.pulling, get_dir(user.pulling.loc, src))
+		if(isobj(user.pulling))
+			var/obj/O = user.pulling
+			user.setClickCooldown(DEFAULT_QUICK_COOLDOWN + O.pull_slowdown)
 	return 1
 
 /turf/attackby(obj/item/weapon/W as obj, mob/user as mob)

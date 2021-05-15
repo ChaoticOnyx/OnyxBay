@@ -221,17 +221,6 @@
 				return 1
 		return SURGERY_FAILURE
 
-		if(!limb_can_operate)
-			return 0
-
-		if(istype(C))
-			if(!C.can_use(10))
-				to_chat(user, "<span class='danger'>You need ten or more cable pieces to repair this damage.</span>")//usage amount made more consistent with regular cable repair
-
-				return SURGERY_FAILURE
-			C.use(10)
-		return 1
-
 /datum/surgery_step/robotics/repair_burn/begin_step(mob/user, mob/living/carbon/human/target, target_zone, obj/item/tool)
 	var/obj/item/organ/external/affected = target.get_organ(target_zone)
 	user.visible_message("[user] begins to splice new cabling into [target]'s [affected.name]." , \

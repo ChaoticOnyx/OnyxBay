@@ -92,11 +92,11 @@
 	// ask BYOND client to stop spamming us with assert arrival confirmations (see byond bug ID:2256651)
 	if (asset_cache_job && (asset_cache_job in completed_asset_jobs))
 		to_chat(src, SPAN_DANGER("An error has been detected in how your client is receiving resources. Attempting to correct.... (If you keep seeing these messages you might want to close byond and reconnect)"))
-		src << browse("...", "window=asset_cache_browser")
+		show_browser(src, "...", "window=asset_cache_browser")
 
 	//search the href for script injection
 	if( findtext(href,"<script",1,0) )
-		world.log << "Attempted use of scripts within a topic call, by [src]"
+		to_world_log("Attempted use of scripts within a topic call, by [src]")
 		message_admins("Attempted use of scripts within a topic call, by [src]")
 		//qdel(usr)
 		return
@@ -139,7 +139,7 @@
 
 	switch(href_list["action"])
 		if("openLink")
-			src << link(href_list["link"])
+			send_link(src, href_list["link"])
 
 	..()	//redirect to hsrc.Topic()
 
@@ -203,7 +203,7 @@
 			message_admins("<span class='adminnotice'>Panic Bunker: ([key] | age [player_age]) - attempted to connect. Redirected to [config.panic_server_name ? config.panic_server_name : config.panic_address]</span>")
 			to_chat(src, "<span class='notice'>Server is already full. Sending you to [config.panic_server_name ? config.panic_server_name : config.panic_address].</span>")
 			winset(src, null, "command=.options")
-			src << link("[config.panic_address]?redirect")
+			send_link(src, "[config.panic_address]?redirect")
 		else
 			log_access("Panic Bunker: ([key] | age [player_age]) - attempted to connect. Redirecting is not configured.")
 			message_admins("<span class='adminnotice'>Panic Bunker: ([key] | age [player_age]) - Redirecting is not configured.</span>")
@@ -224,8 +224,8 @@
 	. = ..()	//calls mob.Login()
 
 	if(byond_version < MIN_CLIENT_VERSION)
-		src << "<b><center><font size='5' color='red'>Your <font color='blue'>BYOND</font> version is too out of date!</font><br>\
-		<font size='3'>Please update it to [MIN_CLIENT_VERSION].</font></center>"
+		to_chat(src, "<b><center><font size='5' color='red'>Your <font color='blue'>BYOND</font> version is too out of date!</font><br>\
+		<font size='3'>Please update it to [MIN_CLIENT_VERSION].</font></center>")
 		qdel(src)
 		return
 
@@ -278,7 +278,7 @@
 		if(config.panic_address && TopicData != "redirect")
 			DIRECT_OUTPUT(src, SPAN_WARNING("<h1>This server is currently full and not accepting new connections. Sending you to [config.panic_server_name ? config.panic_server_name : config.panic_address]</h1>"))
 			winset(src, null, "command=.options")
-			src << link("[config.panic_address]?redirect")
+			send_link(src, "[config.panic_address]?redirect")
 
 		else
 			DIRECT_OUTPUT(src, SPAN_WARNING("<h1>This server is currently full and not accepting new connections.</h1>"))
@@ -584,3 +584,8 @@ client/verb/character_setup()
 
 		pct += delta
 		winset(src, "mainwindow.mainvsplit", "splitter=[pct]")
+
+/client/verb/release_shift()
+	set name = ".release_shift"
+
+	shift_released_at = world.time

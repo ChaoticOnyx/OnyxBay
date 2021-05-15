@@ -103,7 +103,7 @@
 				dat += "<a href='?src=\ref[src];choice=access;access=[A]'>[area]</a><br>"
 		dat += "<br><a href='?src=\ref[src];action=issue'>Issue pass</a><br>"
 
-	user << browse(dat, "window=guestpass;size=400x520")
+	show_browser(user, dat, "window=guestpass;size=400x520")
 	onclose(user, "guestpass")
 
 

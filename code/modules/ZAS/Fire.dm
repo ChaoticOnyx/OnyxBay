@@ -196,6 +196,9 @@ turf/proc/hotspot_expose(exposed_temperature, exposed_volume, soh = 0)
 	firelevel = fl
 	SSair.active_hotspots.Add(src)
 
+	if (fl >= 2)
+		playsound(src.loc, "fuel_explosion", 50, FALSE, 15)
+
 /obj/fire/proc/fire_color(env_temperature)
 	var/temperature = max(4000*sqrt(firelevel/vsc.fire_firelevel_multiplier), env_temperature)
 	return heat2color(temperature)

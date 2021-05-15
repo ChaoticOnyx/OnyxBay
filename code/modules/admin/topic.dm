@@ -312,10 +312,10 @@
 		ban_unban_log_save("[key_name(usr)] edited [banned_key]'s ban. Reason: [reason] Duration: [duration]")
 		log_and_message_admins("edited [banned_key]'s ban. Reason: [reason] Duration: [duration]")
 		Banlist.cd = "/base/[banfolder]"
-		Banlist["reason"] << reason
-		Banlist["temp"] << temp
-		Banlist["minutes"] << minutes
-		Banlist["bannedby"] << usr.ckey
+		to_file(Banlist["reason"],   reason)
+		to_file(Banlist["temp"],     temp)
+		to_file(Banlist["minutes"],  minutes)
+		to_file(Banlist["bannedby"], usr.ckey)
 		Banlist.cd = "/base"
 		feedback_inc("ban_edit",1)
 		unbanpanel()
@@ -654,7 +654,7 @@
 		jobs += "</tr></table>"
 		body = "<body>[jobs]</body>"
 		dat = "<tt>[header][body]</tt>"
-		usr << browse(dat, "window=jobban2;size=800x490")
+		show_browser(usr, dat, "window=jobban2;size=800x490")
 		return
 
 	//JOBBAN'S INNARDS
@@ -1007,7 +1007,7 @@
 		dat += {"<A href='?src=\ref[src];c_mode2=secret'>Secret</A><br>"}
 		dat += {"<A href='?src=\ref[src];c_mode2=random'>Random</A><br>"}
 		dat += {"Now: [SSticker.master_mode]"}
-		usr << browse(dat, "window=c_mode")
+		show_browser(usr, dat, "window=c_mode")
 
 	else if(href_list["f_secret"])
 		if(!check_rights(R_ADMIN))	return
@@ -1021,7 +1021,7 @@
 			dat += {"<A href='?src=\ref[src];f_secret2=[mode]'>[config.mode_names[mode]]</A><br>"}
 		dat += {"<A href='?src=\ref[src];f_secret2=secret'>Random (default)</A><br>"}
 		dat += {"Now: [secret_force_mode]"}
-		usr << browse(dat, "window=f_secret")
+		show_browser(usr, dat, "window=f_secret")
 
 	else if(href_list["c_mode2"])
 		if(!check_rights(R_ADMIN|R_SERVER))	return
@@ -1234,7 +1234,7 @@
 
 		if(config.allow_admin_rev)
 			L.revive()
-			log_and_message_admins("healed / Rrvived [key_name(L)]")
+			log_and_message_admins("healed / revived [key_name(L)]")
 		else
 			to_chat(usr, "Admin Rejuvinates have been disabled")
 
@@ -1538,7 +1538,7 @@
 				var/obj/pageobj = B.pages[page]
 				data += "<A href='?src=\ref[src];AdminFaxViewPage=[page];paper_bundle=\ref[B]'>Page [page] - [pageobj.name]</A><BR>"
 
-			usr << browse(data, "window=[B.name]")
+			show_browser(usr, data, "window=[B.name]")
 		else if (istype(fax, /obj/item/weapon/complaint_folder))
 			var/data = "<meta charset=\"utf-8\">"
 			var/obj/item/weapon/complaint_folder/CF = fax
@@ -1551,7 +1551,7 @@
 				data += "<HR><BR>"
 				data += "<A href='?src=\ref[src];AdminFaxComplaintCkey=\ref[CF]'>Set target ckey manually</A><BR>"
 
-			usr << browse(data, "window=[CF.name]")
+			show_browser(usr, data, "window=[CF.name]")
 		else
 			to_chat(usr, "<span class='warning'>The faxed item is not viewable. This is probably a bug, and should be reported on the tracker: [fax.type]</span>")
 	else if (href_list["AdminFaxViewPage"])
@@ -1635,7 +1635,7 @@
 
 		var/mob/M = locate(href_list["individuallog"]) in SSmobs.mob_list
 		if(!ismob(M))
-			usr << "This can only be used on instances of type /mob."
+			to_chat(usr, "This can only be used on instances of type /mob.")
 			return
 
 		show_individual_logging_panel(M, href_list["log_type"])

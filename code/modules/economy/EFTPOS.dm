@@ -106,9 +106,9 @@
 			dat += "<a href='?src=\ref[src];choice=change_code'>Change access code</a><br>"
 			dat += "<a href='?src=\ref[src];choice=change_id'>Change EFTPOS ID</a><br>"
 			dat += "Scan card to reset access code <a href='?src=\ref[src];choice=reset'>\[------\]</a>"
-		user << browse(dat,"window=eftpos")
+		show_browser(user, dat, "window=eftpos")
 	else
-		user << browse(null,"window=eftpos")
+		close_browser(user, "window=eftpos")
 
 /obj/item/device/eftpos/attackby(obj/item/O as obj, user as mob)
 
@@ -209,7 +209,7 @@
 				var/obj/item/I = usr.get_active_hand()
 				if (istype(I, /obj/item/weapon/card))
 					var/obj/item/weapon/card/id/C = I
-					if(access_cent_captain in C.access || access_hop in C.access || access_captain in C.access)
+					if((access_cent_captain in C.access) || (access_hop in C.access) || (access_captain in C.access))
 						access_code = 0
 						to_chat(usr, "\icon[src]<span class='info'>Access code reset to 0.</span>")
 				else if (istype(I, /obj/item/weapon/card/emag))
@@ -268,7 +268,3 @@
 				playsound(src, 'sound/machines/chime.ogg', 50, 1)
 				src.visible_message("\icon[src] \The [src] chimes.")
 				transaction_paid = 1
-	else
-		..()
-
-	//emag?

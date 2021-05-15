@@ -12,6 +12,7 @@
 		/obj/item/weapon/handcuffs,
 		/obj/item/weapon/gun/magnetic,
 		/obj/item/weapon/grenade,
+		/obj/item/weapon/gun/launcher/grenade
 		)
 	body_parts_covered = UPPER_TORSO|LOWER_TORSO
 	item_flags = ITEM_FLAG_THICKMATERIAL

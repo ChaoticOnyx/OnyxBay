@@ -218,6 +218,9 @@ macro "borghotkeymode"
 	elem 
 		name = "F12"
 		command = "F12"
+	elem 
+		name = "SHIFT+Up"
+		command = ".release_shift"
 
 macro "macro"
 	elem 
@@ -388,6 +391,9 @@ macro "macro"
 	elem 
 		name = "F12"
 		command = "F12"
+	elem 
+		name = "SHIFT+Up"
+		command = ".release_shift"
 
 macro "hotkeymode"
 	elem 
@@ -630,6 +636,9 @@ macro "hotkeymode"
 	elem 
 		name = "."
 		command = "move-down"
+	elem 
+		name = "SHIFT+Up"
+		command = ".release_shift"
 
 macro "borgmacro"
 	elem 
@@ -794,6 +803,9 @@ macro "borgmacro"
 	elem 
 		name = "F12"
 		command = "F12"
+	elem 
+		name = "SHIFT+Up"
+		command = ".release_shift"
 
 
 menu "menu"

@@ -71,13 +71,13 @@
 	changelog_hash = md5('html/changelog.html')					//used for telling if the changelog has changed recently
 
 	if(byond_version < RECOMMENDED_VERSION)
-		world.log << "Your server's byond version does not meet the recommended requirements for this server. Please update BYOND"
+		to_world_log("Your server's byond version does not meet the recommended requirements for this server. Please update BYOND")
 
 	load_configuration()
 
 	if(config.server_port)
 		var/port = OpenPort(config.server_port)
-		world.log << (port ? "Changed port to [port]" : "Failed to change port")
+		to_world_log(port ? "Changed port to [port]" : "Failed to change port")
 
 	//set window title
 	if(config.subserver_name)
@@ -386,7 +386,7 @@ var/world_topic_spam_protect_time = world.timeofday
 		var/amessage =  "<span class='info'>[rank] PM from [input["admin"]] to <b>[key_name(C)]</b> : [response])]</span>"
 		webhook_send_ahelp("[input["admin"]] -> [req_ckey]", response)
 
-		sound_to(C, 'sound/effects/adminhelp.ogg')
+		sound_to(C, sound('sound/effects/adminhelp.ogg'))
 		to_chat(C, message)
 
 		for(var/client/A in GLOB.admins)
@@ -477,21 +477,6 @@ var/world_topic_spam_protect_time = world.timeofday
 		notes_add(target,"[input["id"]] has permabanned [C.ckey]. - Reason: [input["reason"]] - This is a ban until appeal.",input["id"])
 		qdel(C)
 
-	else if(copytext(T,1,19) == "prometheus_metrics")
-		if(input["key"] != config.comms_password)
-			if(abs(world_topic_spam_protect_time - world.time) < 50)
-				sleep(50)
-				world_topic_spam_protect_time = world.time
-				return "Bad Key (Throttled)"
-
-			world_topic_spam_protect_time = world.time
-			return "Bad Key"
-
-		if(!GLOB || !GLOB.prometheus_metrics)
-			return "Metrics not ready"
-
-		return GLOB.prometheus_metrics.collect()
-
 
 /world/Reboot(reason)
 	// sound_to(world, sound('sound/AI/newroundsexy.ogg')
@@ -504,7 +489,7 @@ var/world_topic_spam_protect_time = world.timeofday
 			co.ehjax_send(data = "roundrestart")
 
 		if(config.server) //if you set a server location in config.txt, it sends you there instead of trying to reconnect to the same world address. -- NeoFite
-			C << link("byond://[config.server]")
+			send_link(C, "byond://[config.server]")
 
 	if(config.wait_for_sigusr1_reboot && reason != 3)
 		text2file("foo", "reboot_called")
@@ -520,7 +505,7 @@ var/world_topic_spam_protect_time = world.timeofday
 /world/proc/save_mode(the_mode)
 	var/F = file("data/mode.txt")
 	fdel(F)
-	F << the_mode
+	to_file(F, the_mode)
 
 /hook/startup/proc/loadMOTD()
 	world.load_motd()
@@ -670,11 +655,11 @@ var/failed_old_db_connections = 0
 
 /hook/startup/proc/connectDB()
 	if(!config.sql_enabled)
-		world.log << "SQL disabled. Your server will not use feedback database."
+		to_world_log("SQL disabled. Your server will not use feedback database.")
 	else if(!setup_database_connection())
-		world.log << "Your server failed to establish a connection with the feedback database."
+		to_world_log("Your server failed to establish a connection with the feedback database.")
 	else
-		world.log << "Feedback database connection established."
+		to_world_log("Feedback database connection established.")
 	return TRUE
 
 proc/setup_database_connection()
@@ -697,7 +682,7 @@ proc/setup_database_connection()
 		failed_db_connections = 0	//If this connection succeeded, reset the failed connections counter.
 	else
 		failed_db_connections++		//If it failed, increase the failed connections counter.
-		world.log << dbcon.ErrorMsg()
+		to_world_log(dbcon.ErrorMsg())
 
 	return .
 
@@ -714,11 +699,11 @@ proc/establish_db_connection()
 
 /hook/startup/proc/connectOldDB()
 	if(!config.sql_enabled)
-		world.log << "SQL disabled. Your server configured to use legacy admin and ban system."
+		to_world_log("SQL disabled. Your server configured to use legacy admin and ban system.")
 	else if(!setup_old_database_connection())
-		world.log << "Your server failed to establish a connection with the SQL database."
+		to_world_log("Your server failed to establish a connection with the SQL database.")
 	else
-		world.log << "SQL database connection established."
+		to_world_log("SQL database connection established.")
 	return TRUE
 
 //These two procs are for the old database, while it's being phased out. See the tgstation.sql file in the SQL folder for more information.
@@ -742,7 +727,7 @@ proc/setup_old_database_connection()
 		failed_old_db_connections = 0	//If this connection succeeded, reset the failed connections counter.
 	else
 		failed_old_db_connections++		//If it failed, increase the failed connections counter.
-		world.log << dbcon.ErrorMsg()
+		to_world_log(dbcon.ErrorMsg())
 
 	return .
 

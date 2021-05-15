@@ -260,20 +260,11 @@
 	resource_field = list()
 	need_update_field = 0
 
-	var/turf/simulated/S = get_turf(src)
-	if(!istype(S))
-		return
+	for(var/turf/simulated/S in range(2, src))
+		if(S.has_resources)
+			resource_field += S
 
-	var/sx = S.x - 2
-	var/sy = S.y - 2
-	var/turf/simulated/mine_turf
-	for(var/iy = 0, iy < 5, iy++)
-		for(var/ix = 0, ix < 5, ix++)
-			mine_turf = locate(sx + ix, sy + iy, S.z)
-			if(mine_turf && mine_turf.has_resources)
-				resource_field += mine_turf
-
-	if(!resource_field.len)
+	if(!length(resource_field))
 		system_error("resources depleted")
 
 /obj/machinery/mining/drill/proc/use_cell_power()

@@ -274,6 +274,7 @@
 	memory["purge"] = cycle_to_external_air
 
 /datum/computer/file/embedded_program/airlock/proc/begin_cycle_out()
+	playsound(master.loc, 'sound/signals/alarm13.ogg', 50)
 	state = STATE_IDLE
 	target_state = TARGET_OUTOPEN
 	memory["purge"] = cycle_to_external_air
