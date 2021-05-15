@@ -41,7 +41,7 @@
 
 			// check if we're immune
 			var/list/common_antibodies = V.antigen & src.antibodies
-			if(common_antibodies.len)
+			if(common_antibodies?.len)
 				V.dead = 1
 
 	immunity = min(immunity + 0.25, immunity_norm)
