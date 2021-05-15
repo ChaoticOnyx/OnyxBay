@@ -11,20 +11,21 @@ LEGACY_RECORD_STRUCTURE(virus_records, virus_record)
 	var/list/datum/disease2/effect/effects = list()
 	var/antigen = list() // 16 bits describing the antigens, when one bit is set, a cure with that bit can dock here
 	var/max_stage = 4
-	var/list/affected_species = list(SPECIES_HUMAN,SPECIES_UNATHI,SPECIES_SKRELL,SPECIES_TAJARA)
+	var/list/affected_species = list(SPECIES_HUMAN, SPECIES_UNATHI, SPECIES_SKRELL, SPECIES_TAJARA)
 
 /datum/disease2/disease/New(random_severity = 0)
-	uniqueID = rand(0,10000)
+	uniqueID = rand(0, 10000)
 	if(random_severity)
 		makerandom(random_severity)
 
 /datum/disease2/disease/proc/update_disease()
-
 	var/list/datum/disease2/effect/effects_sorted = list() //Sort effects by stage
+
 	for(var/i in 1 to max_stage)
 		for(var/datum/disease2/effect/D in effects)
 			if(D.stage == i)
 				effects_sorted.Add(D)
+
 	effects = effects_sorted
 	if(!antigen)
 		antigen = list(pick(ALL_ANTIGENS))
@@ -34,20 +35,20 @@ LEGACY_RECORD_STRUCTURE(virus_records, virus_record)
 		E.parent_disease = src
 		E.change_parent()
 
-/datum/disease2/disease/proc/makerandom(severity=2)
+/datum/disease2/disease/proc/makerandom(severity = 2)
 	var/list/excludetypes = list()
-	for(var/i=1 ; i <= max_stage ; i++ )
+	for(var/i = 1 ; i <= max_stage ; i++)
 		var/datum/disease2/effect/E = get_random_virus2_effect(i, severity, excludetypes)
 		E.stage = i
 		if(!E.allow_multiple)
 			excludetypes += E.type
 		effects += E
-	uniqueID = rand(0,10000)
+	uniqueID = rand(0, 10000)
 	switch(severity)
-		if(1,2)
-			infectionchance = rand(10,20)
+		if(1, 2)
+			infectionchance = rand(10, 20)
 		else
-			infectionchance = rand(60,90)
+			infectionchance = rand(60, 90)
 
 	antigen = list(pick(ALL_ANTIGENS))
 	antigen |= pick(ALL_ANTIGENS)
@@ -65,8 +66,8 @@ LEGACY_RECORD_STRUCTURE(virus_records, virus_record)
 		if((S.spawn_flags & SPECIES_CAN_JOIN) && !S.get_virus_immune() && !S.greater_form)
 			meat += S
 	if(meat.len)
-		var/num = rand(1,meat.len)
-		for(var/i=0,i<num,i++)
+		var/num = rand(1, meat.len)
+		for(var/i = 0, i<num, i++)
 			var/datum/species/picked = pick_n_take(meat)
 			res |= picked.name
 			if(picked.primitive_form)
@@ -74,6 +75,9 @@ LEGACY_RECORD_STRUCTURE(virus_records, virus_record)
 	return res
 
 /datum/disease2/disease/proc/process(mob/living/carbon/human/H)
+	if(!H)
+		return
+
 	if(dead)
 		cure(H)
 		return
@@ -98,8 +102,8 @@ LEGACY_RECORD_STRUCTURE(virus_records, virus_record)
 	if(prob(H.virus_immunity()) && prob(stage)) // Increasing chance of curing as the virus progresses
 		cure(H, 1)
 	//Waiting out the disease the old way
-	if(stage == max_stage && clicks > max(stage*100, 300))
-		if(prob(H.virus_immunity() * 0.05 + 100-infectionchance))
+	if(stage == max_stage && clicks > max(stage * 100, 300))
+		if(prob(H.virus_immunity() * 0.05 + 100 - infectionchance))
 			cure(H, 1)
 
 	var/top_badness = 1
@@ -120,7 +124,7 @@ LEGACY_RECORD_STRUCTURE(virus_records, virus_record)
 		clicks += 10
 
 	//Moving to the next stage
-	if(clicks > max(stage*100, 300))
+	if(clicks > max(stage * 100, 300))
 		if(stage < max_stage && prob(10))
 			stage++
 			clicks = 0
@@ -131,9 +135,9 @@ LEGACY_RECORD_STRUCTURE(virus_records, virus_record)
 
 	//fever
 	if(!H.chem_effects[CE_ANTIVIRAL])
-		H.bodytemperature = max(H.bodytemperature, min(310+5*min(stage,max_stage), H.bodytemperature+5*min(stage,max_stage)))
+		H.bodytemperature = max(H.bodytemperature, min(310 + 5 * min(stage, max_stage), H.bodytemperature + 5 * min(stage, max_stage)))
 
-/datum/disease2/disease/proc/cure(mob/living/carbon/H, antigen)
+/datum/disease2/disease/proc/cure(mob/living/carbon/human/H, antigen)
 	if(!H)
 		return
 	for(var/datum/disease2/effect/e in effects)
@@ -187,16 +191,16 @@ LEGACY_RECORD_STRUCTURE(virus_records, virus_record)
 
 	effects += get_random_virus2_effect(effect_stage, badness, exclude)
 
-	if (prob(5))
+	if(prob(5))
 		antigen = list(pick(ALL_ANTIGENS))
 		antigen |= pick(ALL_ANTIGENS)
 
-	if (prob(5) && all_species.len)
+	if(prob(5) && all_species.len)
 		affected_species = get_infectable_species()
 	update_disease()
 
 /datum/disease2/disease/proc/stageshift()
-	uniqueID = rand(0,10000)
+	uniqueID = rand(0, 10000)
 	var/list/exclude = list()
 	for(var/datum/disease2/effect/D in effects)
 		if(!D.stage == 1 || !D.stage == max_stage)
@@ -235,7 +239,7 @@ LEGACY_RECORD_STRUCTURE(virus_records, virus_record)
 		if(!(d.type in types))
 			return 0
 
-	if (antigen != disease.antigen)
+	if(antigen != disease.antigen)
 		return 0
 
 /proc/virus_copylist(list/datum/disease2/disease/viruses)
@@ -279,7 +283,7 @@ var/global/list/virusDB = list()
 	return r
 
 /datum/disease2/disease/proc/addToDB()
-	if ("[uniqueID]" in virusDB)
+	if("[uniqueID]" in virusDB)
 		return 0
 	var/datum/computer_file/data/virus_record/v = new()
 	v.fields["id"] = uniqueID
@@ -302,5 +306,4 @@ var/global/list/virusDB = list()
 	for(var/datum/disease2/effect/H in effects)
 		if(H.type == type && !H.allow_multiple)
 			return 0
-
 	return 1
