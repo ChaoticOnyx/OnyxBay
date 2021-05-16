@@ -217,7 +217,7 @@
 	message_admins("[key_name_admin(usr)] has toggled [key_name_admin(M)]'s nodamage to [(M.status_flags & GODMODE) ? "On" : "Off"]", 1)
 	feedback_add_details("admin_verb","GOD") //If you are copy-pasting this, ensure the 2nd parameter is unique to the new proc!
 
-proc/cmd_admin_mute(mob/M as mob, mute_type)
+/proc/cmd_admin_mute(mob/M, mute_type)
 	if(!usr || !usr.client)
 		return
 	if(!usr.client.holder)

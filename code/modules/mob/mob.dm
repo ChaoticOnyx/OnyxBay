@@ -47,6 +47,7 @@
 	gun_setting_icon = null
 	ability_master = null
 	zone_sel = null
+	poise_icon = null
 
 /mob/Initialize()
 	. = ..()

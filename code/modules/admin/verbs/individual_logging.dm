@@ -1,4 +1,4 @@
-/proc/show_individual_logging_panel(mob/M, type = INDIVIDUAL_SAY_LOG)
+/proc/show_individual_logging_panel(mob/user, mob/M, type = INDIVIDUAL_SAY_LOG)
 	if(!M || !ismob(M))
 		return
 	var/dat = "<meta charset=\"utf-8\"><center><a href='?_src_=holder;individuallog=\ref[M];log_type=[INDIVIDUAL_SAY_LOG]'>Say log</a> | "
@@ -19,6 +19,6 @@
 		for(var/entry in M.logging[type])
 			dat += "<font size=2px>[entry]: [M.logging[type][entry]]</font><hr>"
 
-	var/datum/browser/popup = new(M, "individual_logging_panel", "Individual logging panel", 600, 480)
+	var/datum/browser/popup = new(user, "individual_logging_panel", "Individual logging panel", 600, 480)
 	popup.set_content(dat)
 	popup.open()

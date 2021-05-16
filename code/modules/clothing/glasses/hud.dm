@@ -244,7 +244,7 @@
 	if(lenses)
 		qdel(lenses)
 		lenses = null
-	..()
+	return ..()
 
 /obj/item/clothing/glasses/hud/process_hud(mob/M)
 	if(sec_hud)

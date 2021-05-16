@@ -16,17 +16,17 @@
 		return
 	. = ..()
 
-/obj/item/weapon/board/attack_hand(mob/living/carbon/human/M as mob)
+/obj/item/weapon/board/attack_hand(mob/living/carbon/human/M)
 	if(M.machine == src)
 		..()
 	else
 		src.examine(M)
 
-obj/item/weapon/board/attackby(obj/item/I as obj, mob/user as mob)
+/obj/item/weapon/board/attackby(obj/item/I, mob/user)
 	if(!addPiece(I,user))
 		..()
 
-/obj/item/weapon/board/proc/addPiece(obj/item/I as obj, mob/user as mob, tile = 0)
+/obj/item/weapon/board/proc/addPiece(obj/item/I, mob/user, tile = 0)
 	if(I.w_class != ITEM_SIZE_TINY) //only small stuff
 		user.show_message("<span class='warning'>\The [I] is too big to be used as a board piece.</span>")
 		return 0
@@ -61,7 +61,7 @@ obj/item/weapon/board/attackby(obj/item/I as obj, mob/user as mob)
 	return 1
 
 
-/obj/item/weapon/board/interact(mob/user as mob)
+/obj/item/weapon/board/interact(mob/user)
 	if(user.is_physically_disabled() || (!isAI(user) && !user.Adjacent(src))) //can't see if you arent conscious. If you are not an AI you can't see it unless you are next to it, either.
 		close_browser(user, "window=boardgame")
 		user.unset_machine()
@@ -262,7 +262,7 @@ THAT STUPID GAME KIT
 	src.board_stat = "BBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBB"
 	src.selected = "CR"
 
-/obj/item/weapon/game_kit/MouseDrop_T(mob/user as mob)
+/obj/item/weapon/game_kit/MouseDrop_T(mob/user)
 	if (user == usr && !usr.incapacitated() && (usr.contents.Find(src) || in_range(src, usr)))
 		if (usr.hand)
 			if (!usr.l_hand)
@@ -304,11 +304,11 @@ THAT STUPID GAME KIT
 		dat += "<a href='?src=\ref[src];s_piece=[piece]'><img src='board_[piece].png' width=32 height=32 border=0></a>"
 	src.data = dat
 
-/obj/item/weapon/game_kit/attack_ai(mob/user as mob, unused, flag)
+/obj/item/weapon/game_kit/attack_ai(mob/user, unused, flag)
 	src.add_hiddenprint(user)
 	return src.attack_hand(user, unused, flag)
 
-/obj/item/weapon/game_kit/attack_hand(mob/user as mob, unused, flag)
+/obj/item/weapon/game_kit/attack_hand(mob/user, unused, flag)
 
 	if (flag)
 		return ..()

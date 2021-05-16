@@ -978,7 +978,7 @@
 					/obj/item/weapon/reagent_containers/pill/diet = 25,
 					/obj/item/weapon/towel/random = 40)
 
-	contraband = list(/obj/item/weapon/reagent_containers/syringe/steroid = 4)
+	contraband = list(/obj/item/weapon/reagent_containers/syringe/steroid/packaged = 4)
 
 //This one's from bay12
 /obj/machinery/vending/cart
@@ -1206,7 +1206,7 @@
 					/obj/item/weapon/reagent_containers/hypospray/autoinjector/pain = 4)
 	contraband = list(/obj/item/weapon/reagent_containers/pill/tox = 3,
 					  /obj/item/weapon/reagent_containers/pill/stox = 4,
-					  /obj/item/weapon/reagent_containers/pill/antitox = 6,
+					  /obj/item/weapon/reagent_containers/pill/dylovene = 6,
 					  /obj/item/weapon/reagent_containers/hypospray/autoinjector/combatpain = 2)
 	idle_power_usage = 211 //refrigerator - believe it or not, this is actually the average power consumption of a refrigerated vending machine according to NRCan.
 
@@ -1233,8 +1233,8 @@
 	products = list(/obj/item/stack/medical/bruise_pack = 2,
 					/obj/item/stack/medical/ointment = 2,
 					/obj/item/weapon/reagent_containers/hypospray/autoinjector = 4)
-	contraband = list(/obj/item/weapon/reagent_containers/syringe/antitoxin = 4,
-				   	  /obj/item/weapon/reagent_containers/syringe/antiviral = 4,
+	contraband = list(/obj/item/weapon/reagent_containers/syringe/antitoxin/packaged = 4,
+				   	  /obj/item/weapon/reagent_containers/syringe/antiviral/packaged = 4,
 				   	  /obj/item/weapon/reagent_containers/pill/tox = 1)
 
 /obj/machinery/vending/wallmed2
@@ -1244,7 +1244,7 @@
 	icon_state = "wallmed"
 	density = 0 //It is wall-mounted, and thus, not dense. --Superxpdude
 	products = list(/obj/item/weapon/reagent_containers/hypospray/autoinjector = 5,
-					/obj/item/weapon/reagent_containers/syringe/antitoxin = 1,
+					/obj/item/weapon/reagent_containers/syringe/antitoxin/packaged = 1,
 					/obj/item/stack/medical/bruise_pack = 3,
 					/obj/item/stack/medical/ointment =3)
 	contraband = list(/obj/item/weapon/reagent_containers/pill/tox = 3,

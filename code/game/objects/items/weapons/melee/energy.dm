@@ -5,6 +5,7 @@
 	var/mod_handy_a
 	var/mod_weight_a
 	var/mod_reach_a
+	var/mod_shield_a
 	sharp = 0
 	edge = 0
 	armor_penetration = 50
@@ -125,9 +126,11 @@
 	mod_weight = 0.5
 	mod_reach = 0.3
 	mod_handy = 1.0
+	mod_shield = 1.0
 	mod_weight_a = 1.25
 	mod_reach_a = 1.5
 	mod_handy_a = 1.5
+	mod_shield_a = 2.5
 	atom_flags = ATOM_FLAG_NO_BLOOD
 	origin_tech = list(TECH_MAGNET = 3, TECH_ILLEGAL = 4)
 	sharp = 0
@@ -157,7 +160,7 @@
 /obj/item/weapon/melee/energy/sword/activate(mob/living/user)
 	if(!active)
 		to_chat(user, "<span class='notice'>\The [src] is now energised.</span>")
-		mod_shield = 2.5
+		mod_shield = mod_shield_a
 	..()
 	attack_verb = list("attacked", "slashed", "stabbed", "sliced", "torn", "ripped", "diced", "cut")
 	icon_state = "sword[blade_color]"
@@ -165,7 +168,7 @@
 /obj/item/weapon/melee/energy/sword/deactivate(mob/living/user)
 	if(active)
 		to_chat(user, "<span class='notice'>\The [src] deactivates!</span>")
-		mod_shield = 1.0
+		mod_shield = initial(mod_shield)
 	..()
 	attack_verb = list()
 	icon_state = initial(icon_state)
@@ -218,6 +221,7 @@
 	mod_reach = 0.4
 	mod_weight_a = 1.5
 	mod_handy_a = 1.75
+	mod_shield_a = 2.75
 	origin_tech = list(TECH_MAGNET = 4, TECH_ILLEGAL = 5)
 	var/base_block_chance = 50
 
@@ -260,9 +264,7 @@
 	mod_weight = 1.0
 	mod_reach = 1.5
 	mod_handy = 1.75
-	mod_weight_a = 1.25
-	mod_reach_a = 1.5
-	mod_handy_a = 1.75
+	mod_shield = 2.5
 	atom_flags = ATOM_FLAG_NO_BLOOD
 	canremove = 0
 	attack_verb = list("attacked", "slashed", "stabbed", "sliced", "torn", "ripped", "diced", "cut")

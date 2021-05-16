@@ -120,6 +120,11 @@ GLOBAL_VAR_CONST(PREF_SHORTHAND, "Shorthand")
 	description ="Hitmarker Sound"
 	key = "SOUND_HITMARKER"
 
+/datum/client_preference/spell_checking
+	description ="Spell checking"
+	key = "SPELL_CHECKING"
+	default_value = GLOB.PREF_NO
+
 /datum/client_preference/ghost_ears
 	description ="Ghost ears"
 	key = "CHAT_GHOSTEARS"
@@ -158,11 +163,6 @@ GLOBAL_VAR_CONST(PREF_SHORTHAND, "Shorthand")
 /datum/client_preference/show_typing_indicator/changed(mob/preference_mob, new_value)
 	if(new_value == GLOB.PREF_HIDE)
 		QDEL_NULL(preference_mob.typing_indicator)
-
-/datum/client_preference/spell_checking
-	description ="Spell checking"
-	key = "SPELL_CHECKING"
-	default_value = GLOB.PREF_NO
 
 /datum/client_preference/show_ooc
 	description ="OOC chat"

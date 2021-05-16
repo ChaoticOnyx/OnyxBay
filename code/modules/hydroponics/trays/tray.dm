@@ -455,7 +455,7 @@
 
 		var/obj/item/weapon/reagent_containers/syringe/S = O
 
-		if (S.mode == 1)
+		if (S.mode == SYRINGE_INJECT)
 			if(seed)
 				return ..()
 			else

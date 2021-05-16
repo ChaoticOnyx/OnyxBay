@@ -288,7 +288,7 @@
 
 /obj/machinery/shieldwall/Destroy()
 	update_nearby_tiles()
-	..()
+	return ..()
 
 /obj/machinery/shieldwall/attack_hand(mob/user as mob)
 	return

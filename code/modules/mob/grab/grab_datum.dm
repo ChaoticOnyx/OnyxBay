@@ -299,8 +299,8 @@
 	//	return
 
 	var/p_lost = (5.5 + affecting.poise/10 - assailant.poise/20) * p_mult
-	assailant.poise -= p_lost
-	affecting.poise -= 2.0
+	assailant.damage_poise(p_lost)
+	affecting.damage_poise(2.0)
 
 	//assailant.visible_message("Debug: [assailant] lost [p_lost] poise | now: [assailant.poise]/[assailant.poise_pool]") //Debug message
 

@@ -10,7 +10,7 @@
 	if(!speaking)
 		speaking = parse_language(message)
 		if (speaking)
-			message = copytext(message,2+length(speaking.key))
+			message = copytext_char(message,2+length(speaking.key))
 		else
 			speaking = get_default_language()
 
@@ -234,16 +234,3 @@
 		return 1
 
 	return ..()
-
-/mob/living/carbon/human/parse_language(message)
-	var/prefix = copytext_char(message,1,2)
-	if(length_char(message) >= 1 && prefix == get_prefix_key(/decl/prefix/audible_emote))
-		return all_languages["Noise"]
-
-	if(length_char(message) >= 2 && is_language_prefix(prefix))
-		var/language_prefix = lowertext(copytext_char(message, 2 ,3))
-		var/datum/language/L = language_keys[language_prefix]
-		if (can_speak(L))
-			return L
-
-	return null

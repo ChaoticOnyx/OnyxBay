@@ -24,6 +24,7 @@
 	var/list/climbers = list()
 
 /atom/New(loc, ...)
+	CAN_BE_REDEFINED(TRUE)
 	//atom creation method that preloads variables at creation
 	if(GLOB.use_preloader && (src.type == GLOB._preloader.target_path))//in case the instanciated atom is creating other atoms in New()
 		GLOB._preloader.load(src)
@@ -285,21 +286,27 @@ its easier to just keep the beam vertical.
 		icon_state = new_icon_state
 
 /atom/proc/update_icon()
+	CAN_BE_REDEFINED(TRUE)
 	return
 
 /atom/proc/blob_act(destroy = 0, obj/effect/blob/source = null)
+	CAN_BE_REDEFINED(TRUE)
 	return
 
 /atom/proc/ex_act()
+	CAN_BE_REDEFINED(TRUE)
 	return
 
 /atom/proc/emag_act(remaining_charges, mob/user, emag_source)
+	CAN_BE_REDEFINED(TRUE)
 	return NO_EMAG_ACT
 
 /atom/proc/fire_act()
+	CAN_BE_REDEFINED(TRUE)
 	return
 
 /atom/proc/melt()
+	CAN_BE_REDEFINED(TRUE)
 	return
 
 /atom/proc/hitby(atom/movable/AM as mob|obj)

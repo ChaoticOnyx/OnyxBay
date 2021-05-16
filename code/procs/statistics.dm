@@ -1,4 +1,4 @@
-proc/sql_poll_population()
+/proc/sql_poll_population()
 	if(!sqllogging)
 		return
 	var/admincount = GLOB.admins.len
@@ -16,16 +16,16 @@ proc/sql_poll_population()
 			var/err = query.ErrorMsg()
 			log_game("SQL ERROR during population polling. Error : \[[err]\]\n")
 
-proc/sql_report_round_start()
+/proc/sql_report_round_start()
 	// TODO
 	if(!sqllogging)
 		return
-proc/sql_report_round_end()
+/proc/sql_report_round_end()
 	// TODO
 	if(!sqllogging)
 		return
 
-proc/sql_report_death(mob/living/carbon/human/H)
+/proc/sql_report_death(mob/living/carbon/human/H)
 	if(!sqllogging)
 		return
 	if(!H)
@@ -60,7 +60,7 @@ proc/sql_report_death(mob/living/carbon/human/H)
 			log_game("SQL ERROR during death reporting. Error : \[[err]\]\n")
 
 
-proc/sql_report_cyborg_death(mob/living/silicon/robot/H)
+/proc/sql_report_cyborg_death(mob/living/silicon/robot/H)
 	if(!sqllogging)
 		return
 	if(!H)
@@ -95,7 +95,7 @@ proc/sql_report_cyborg_death(mob/living/silicon/robot/H)
 			log_game("SQL ERROR during death reporting. Error : \[[err]\]\n")
 
 
-proc/statistic_cycle()
+/proc/statistic_cycle()
 	if(!sqllogging)
 		return
 	while(1)
@@ -103,7 +103,7 @@ proc/statistic_cycle()
 		sleep(6000)
 
 //This proc is used for feedback. It is executed at round end.
-proc/sql_commit_feedback()
+/proc/sql_commit_feedback()
 	if(!blackbox)
 		log_game("Round ended without a blackbox recorder. No feedback was sent to the database.")
 		return

@@ -11,7 +11,7 @@
 	var/list/possible_beards = list("Long Beard", "Very Long Beard", "Dwarf Beard", "Braided Beard", "Sea Dog", "Lumberjack")
 	var/datum/sprite_accessory/facial_hair_style = pick(possible_beards)
 	mob.change_facial_hair(facial_hair_style)
-	to_chat(mob, SPAN_WARNING("Your chin itches."))
+	to_chat(mob, SPAN("warning", "Your chin itches."))
 
 
 

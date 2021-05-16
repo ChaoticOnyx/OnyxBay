@@ -222,13 +222,13 @@
 
 	inherent_verbs = list(
 		/mob/living/proc/ventcrawl,
+		/mob/living/carbon/proc/toggle_darksight,
 		/mob/living/carbon/human/proc/regurgitate,
 		/mob/living/carbon/human/proc/plant,
 		/mob/living/carbon/human/proc/transfer_plasma,
 		/mob/living/carbon/human/proc/evolve,
 		/mob/living/carbon/human/proc/resin,
-		/mob/living/carbon/human/proc/corrosive_acid,
-		/mob/living/carbon/human/proc/toggle_darksight
+		/mob/living/carbon/human/proc/corrosive_acid
 		)
 
 /datum/species/xenos/drone/vile
@@ -240,6 +240,7 @@
 
 	inherent_verbs = list(
 		/mob/living/proc/ventcrawl,
+		/mob/living/carbon/proc/toggle_darksight,
 		/mob/living/carbon/human/proc/toggle_powers,
 		/mob/living/carbon/human/proc/toggle_acidspit,
 		/mob/living/carbon/human/proc/Spit,
@@ -248,8 +249,7 @@
 		/mob/living/carbon/human/proc/transfer_plasma,
 		/mob/living/carbon/human/proc/evolve,
 		/mob/living/carbon/human/proc/resin,
-		/mob/living/carbon/human/proc/corrosive_acid,
-		/mob/living/carbon/human/proc/toggle_darksight
+		/mob/living/carbon/human/proc/corrosive_acid
 		)
 
 /datum/species/xenos/hunter
@@ -276,6 +276,7 @@
 
 	inherent_verbs = list(
 		/mob/living/proc/ventcrawl,
+		/mob/living/carbon/proc/toggle_darksight,
 		/mob/living/carbon/human/proc/toggle_powers,
 		/mob/living/carbon/human/proc/toggle_tackle,
 		/mob/living/carbon/human/proc/toggle_leap,
@@ -283,8 +284,7 @@
 		/mob/living/carbon/human/proc/leap,
 		/mob/living/carbon/human/proc/gut,
 		/mob/living/carbon/human/proc/psychic_whisper,
-		/mob/living/carbon/human/proc/regurgitate,
-		/mob/living/carbon/human/proc/toggle_darksight
+		/mob/living/carbon/human/proc/regurgitate
 		)
 
 /datum/species/xenos/hunter/feral
@@ -321,6 +321,7 @@
 
 	inherent_verbs = list(
 		/mob/living/proc/ventcrawl,
+		/mob/living/carbon/proc/toggle_darksight,
 		/mob/living/carbon/human/proc/toggle_powers,
 		/mob/living/carbon/human/proc/toggle_tackle,
 		/mob/living/carbon/human/proc/toggle_neurotoxin,
@@ -329,8 +330,7 @@
 		/mob/living/carbon/human/proc/Spit,
 		/mob/living/carbon/human/proc/regurgitate,
 		/mob/living/carbon/human/proc/transfer_plasma,
-		/mob/living/carbon/human/proc/corrosive_acid,
-		/mob/living/carbon/human/proc/toggle_darksight
+		/mob/living/carbon/human/proc/corrosive_acid
 		)
 
 /datum/species/xenos/sentinel/primal
@@ -375,6 +375,7 @@
 
 	inherent_verbs = list(
 		/mob/living/proc/ventcrawl,
+		/mob/living/carbon/proc/toggle_darksight,
 		/mob/living/carbon/human/proc/toggle_powers,
 		/mob/living/carbon/human/proc/toggle_tackle,
 		/mob/living/carbon/human/proc/toggle_neurotoxin,
@@ -388,8 +389,7 @@
 		/mob/living/carbon/human/proc/plant,
 		/mob/living/carbon/human/proc/transfer_plasma,
 		/mob/living/carbon/human/proc/corrosive_acid,
-		/mob/living/carbon/human/proc/resin,
-		/mob/living/carbon/human/proc/toggle_darksight
+		/mob/living/carbon/human/proc/resin
 		)
 
 /datum/species/xenos/queen/handle_login_special(mob/living/carbon/human/H)
