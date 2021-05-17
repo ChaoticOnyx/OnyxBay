@@ -127,26 +127,26 @@
 
 /obj/item/projectile/bullet/pistol
 	damage = 27.5 //9mm, .38, etc
-	armor_penetration = 13.5
+	armor_penetration = 12.5
 
 /obj/item/projectile/bullet/pistol/medium
 	damage = 30 //.45
-	armor_penetration = 14.5
+	armor_penetration = 15
 
 /obj/item/projectile/bullet/pistol/medium/smg
 	fire_sound = 'sound/weapons/gunshot/gunshot_smg.ogg'
 	damage = 32.5 //10mm
-	armor_penetration = 19.5
+	armor_penetration = 15
 
 /obj/item/projectile/bullet/pistol/medium/revolver
 	fire_sound = 'sound/weapons/gun_revolver44.ogg'
 	damage = 37.5 //.44 magnum or something
-	armor_penetration = 20
+	armor_penetration = 17.5
 
 /obj/item/projectile/bullet/pistol/strong //matebas
 	fire_sound = 'sound/weapons/gun_mateba.ogg'
 	damage = 60 //.50AE
-	armor_penetration = 30
+	armor_penetration = 25
 
 /obj/item/projectile/bullet/pistol/strong/revolver //revolvers
 	damage = 50 //Revolvers get snowflake bullets, to keep them relevant
@@ -174,7 +174,7 @@
 /obj/item/projectile/bullet/pistol/accelerated/c44
 	name = "accelerated bullet"
 	damage = 40 //.44 magnum + gauss
-	armor_penetration = 45
+	armor_penetration = 30
 	fire_sound = 'sound/weapons/gun_revolver44.ogg'
 
 
@@ -208,17 +208,18 @@
 /* "Rifle" rounds */
 
 /obj/item/projectile/bullet/rifle
-	armor_penetration = 25
+	armor_penetration = 35
 	penetrating = 1
+	penetration_modifier = 1.1
 
 /obj/item/projectile/bullet/rifle/a556
 	fire_sound = 'sound/weapons/gunshot/gunshot3.ogg'
-	damage = 30
+	damage = 25
 
 /obj/item/projectile/bullet/rifle/a762
 	fire_sound = 'sound/weapons/gunshot/gunshot2.ogg'
 	damage = 35
-	armor_penetration = 30
+	armor_penetration = 45
 
 /obj/item/projectile/bullet/rifle/a145
 	fire_sound = 'sound/weapons/gunshot/sniper.ogg'

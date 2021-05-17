@@ -14,7 +14,7 @@
 	slot_flags = SLOT_BELT
 	ammo_type = /obj/item/ammo_casing/c9mm
 	multi_aim = 1
-	burst_delay = 2
+	burst_delay = 1.5
 
 	//machine pistol, easier to one-hand with
 	firemodes = list(
@@ -119,6 +119,7 @@
 	allowed_magazines = /obj/item/ammo_magazine/c556
 	one_hand_penalty = 3
 	wielded_item_state = "arifle-wielded"
+	burst_delay = 2
 
 	//Assault rifle, burst fire degrades quicker than SMG, worse one-handing penalty, slightly increased move delay
 	firemodes = list(
@@ -183,7 +184,7 @@
 	auto_eject = 1
 	auto_eject_sound = 'sound/weapons/smg_empty_alarm.ogg'
 	one_hand_penalty = 5
-	burst_delay = 4
+	burst_delay = 2.5
 	wielded_item_state = "z8carbine-wielded"
 	//would have one_hand_penalty=4,5 but the added weight of a grenade launcher makes one-handing even harder
 	firemodes = list(
