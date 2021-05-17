@@ -299,6 +299,7 @@ var/global/chicken_count = 0
 	icon_living = "chicken_robot"
 	icon_dead = "chicken_robot_dead"
 	item_state = "chicken_robot"
+	body_color = "robot"
 	maxHealth = 20
 	health = 20
 	mutable = FALSE
@@ -306,6 +307,7 @@ var/global/chicken_count = 0
 /mob/living/simple_animal/chicken/robot
 	name = "\improper robot chicken"
 	icon_state = "chicken_robot"
+	body_color = "robot"
 	egg_type = /obj/item/weapon/reagent_containers/food/snacks/egg
 	mutable = FALSE
 
