@@ -344,7 +344,7 @@ About the new airlock wires panel:
 		ui.open()
 		ui.set_auto_update(1)
 
-/obj/machinery/door/airlock/proc/hack(mob/user as mob)
+/obj/machinery/door/airlock/proc/hack(mob/user)
 	if(!aiHacking)
 		aiHacking = TRUE
 		spawn(20)
@@ -402,7 +402,7 @@ About the new airlock wires panel:
 				s.start()
 	return ..()
 
-/obj/machinery/door/airlock/attack_hand(mob/user as mob)
+/obj/machinery/door/airlock/attack_hand(mob/user)
 	if(!istype(usr, /mob/living/silicon))
 		if(isElectrified() && shock(user, 100))
 			return
