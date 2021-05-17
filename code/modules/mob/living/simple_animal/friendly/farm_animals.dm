@@ -256,7 +256,7 @@ var/global/chicken_count = 0
 		if(G.seed && G.seed.kitchen_tag in list("wheat", "rice", "grass"))
 			if(!stat && eggsleft < 8)
 				user.visible_message(SPAN("notice", "[user] feeds [O] to [name]! It clucks happily."), SPAN("notice", "You feed [O] to [name]! It clucks happily."))
-				if(mutable && G.reagents.has_any_reagent(/datum/reagent/nanites))
+				if(mutable && G.reagents.has_reagent(/datum/reagent/nanites))
 					Robotize()
 				user.drop_item()
 				QDEL_NULL(O)
