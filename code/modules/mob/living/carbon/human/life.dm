@@ -90,7 +90,8 @@
 		update_canmove(TRUE) // Otherwise we'll have a 1 tick latency between actual getting-up and the animation update
 
 		if(!client && !mind)
-			species.handle_npc(src)
+			spawn()
+				species.handle_npc(src)
 
 		if(lying != lying_prev || hanging != hanging_prev)
 			update_icons() // So we update icons ONCE (hopefully) and AFTER all the status/organs updates
