@@ -26,6 +26,9 @@
             "type": "coreclr",
             "request": "launch",
             "program": "dotnet-script",
+            "logging": {
+                "moduleLoad": false
+            },
             "args": [
                 "${workspaceFolder}/tools/ChangelogGenerator/Make.csx"
             ],
@@ -38,6 +41,9 @@
             "type": "coreclr",
             "request": "launch",
             "program": "dotnet-script",
+            "logging": {
+                "moduleLoad": false
+            },
             "env": {
                 "GITHUB_REPOSITORY": "ChaoticOnyx/OnyxBay"
             },
