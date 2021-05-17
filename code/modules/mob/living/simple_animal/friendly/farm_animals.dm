@@ -327,7 +327,7 @@ var/global/chicken_count = 0
 /obj/item/weapon/reagent_containers/food/snacks/egg/Process()
 	if(isturf(loc))
 		amount_grown++
-		if(amount_grown >= 240)
+		if(amount_grown >= 300)
 			visible_message("[src] hatches with a quiet cracking sound.")
 			new /mob/living/simple_animal/chick(get_turf(src))
 			STOP_PROCESSING(SSobj, src)
