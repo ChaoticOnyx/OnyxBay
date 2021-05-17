@@ -179,7 +179,8 @@
 	response_disarm = "gently pushes aside"
 	response_harm   = "kicks"
 	attacktext = "kicked"
-	health = 1
+	maxHealth = 3
+	health = 3
 	var/amount_grown = 0
 	pass_flags = PASS_FLAG_TABLE | PASS_FLAG_GRILLE
 	mob_size = MOB_MINISCULE
@@ -194,9 +195,10 @@
 	if(!.)
 		return
 	if(!stat)
-		amount_grown += rand(1,2)
-		if(amount_grown >= 100)
-			new /mob/living/simple_animal/chicken(src.loc)
+		amount_grown++
+		if(amount_grown >= 180)
+			amount_grown = -1
+			new /mob/living/simple_animal/chicken(loc)
 			qdel(src)
 
 var/const/MAX_CHICKENS = 50
@@ -221,9 +223,13 @@ var/global/chicken_count = 0
 	response_disarm = "gently pushes aside"
 	response_harm   = "kicks"
 	attacktext = "kicked"
+	maxHealth = 10
 	health = 10
 	var/eggsleft = 0
 	var/body_color
+	var/egg_type = /obj/item/weapon/reagent_containers/food/snacks/egg
+	var/mutable = TRUE
+	var/egg_chance
 	pass_flags = PASS_FLAG_TABLE
 	mob_size = MOB_SMALL
 	holder_type = /obj/item/weapon/holder/chicken
@@ -238,23 +244,25 @@ var/global/chicken_count = 0
 	item_state = "chicken_[body_color]"
 	pixel_x = rand(-6, 6)
 	pixel_y = rand(0, 10)
-	chicken_count += 1
+	chicken_count++
 
 /mob/living/simple_animal/chicken/death(gibbed, deathmessage, show_dead_message)
 	..(gibbed, deathmessage, show_dead_message)
-	chicken_count -= 1
+	chicken_count--
 
 /mob/living/simple_animal/chicken/attackby(obj/item/O, mob/user)
 	if(istype(O, /obj/item/weapon/reagent_containers/food/snacks/grown)) //feedin' dem chickens
 		var/obj/item/weapon/reagent_containers/food/snacks/grown/G = O
-		if(G.seed && G.seed.kitchen_tag == "wheat")
+		if(G.seed && G.seed.kitchen_tag in list("wheat", "rice", "grass"))
 			if(!stat && eggsleft < 8)
-				user.visible_message("<span class='notice'>[user] feeds [O] to [name]! It clucks happily.</span>","<span class='notice'>You feed [O] to [name]! It clucks happily.</span>")
+				user.visible_message(SPAN("notice", "[user] feeds [O] to [name]! It clucks happily."), SPAN("notice", "You feed [O] to [name]! It clucks happily."))
+				if(mutable && G.reagents.has_any_reagent(/datum/reagent/nanites))
+					Robotize()
 				user.drop_item()
-				qdel(O)
-				eggsleft += rand(1, 4)
+				QDEL_NULL(O)
+				eggsleft += rand(1, 3)
 			else
-				to_chat(user, "<span class='notice'>[name] doesn't seem hungry!</span>")
+				to_chat(user, SPAN("notice", "[name] doesn't seem hungry!"))
 		else
 			to_chat(user, "[name] doesn't seem interested in that.")
 	else
@@ -264,15 +272,47 @@ var/global/chicken_count = 0
 	. =..()
 	if(!.)
 		return
-	if(!stat && prob(3) && eggsleft > 0)
-		visible_message("[src] [pick("lays an egg.","squats down and croons.","begins making a huge racket.","begins clucking raucously.")]")
-		eggsleft--
-		var/obj/item/weapon/reagent_containers/food/snacks/egg/E = new(get_turf(src))
-		E.pixel_x = rand(-6,6)
-		E.pixel_y = rand(-6,6)
-		if(chicken_count < MAX_CHICKENS && prob(10))
-			E.amount_grown = 1
-			START_PROCESSING(SSobj, E)
+	if(eggsleft)
+		egg_chance++
+		if(!stat && prob(Floor(egg_chance/10)))
+			visible_message("<b>[name]</b> [pick("lays an egg.","squats down and croons.","begins making a huge racket.","begins clucking raucously.")]")
+			eggsleft--
+			egg_chance = 0
+			var/obj/item/weapon/reagent_containers/food/snacks/egg/E = new egg_type(get_turf(src))
+			E.pixel_x = rand(-6, 6)
+			E.pixel_y = rand(-6, 6)
+			if(chicken_count < MAX_CHICKENS)
+				START_PROCESSING(SSobj, E)
+	else
+		egg_chance = 0
+
+/mob/living/simple_animal/chicken/proc/Robotize()
+	if(stat)
+		return
+	if(!mutable)
+		return
+	visible_message("<b>[name]</b> flaps its wings as some twisted metal grows through its body!")
+
+	name = "\improper robot chicken"
+	desc = "Does it like to watch sketches?"
+	icon_state = "chicken_robot"
+	icon_living = "chicken_robot"
+	icon_dead = "chicken_robot_dead"
+	item_state = "chicken_robot"
+	maxHealth = 20
+	health = 20
+	mutable = FALSE
+
+/mob/living/simple_animal/chicken/robot
+	name = "\improper robot chicken"
+	icon_state = "chicken_robot"
+	egg_type = /obj/item/weapon/reagent_containers/food/snacks/egg
+	mutable = FALSE
+
+/mob/living/simple_animal/chicken/robot/New()
+	..()
+	Robotize()
+
 
 /obj/item/weapon/reagent_containers/food/snacks/egg
 	var/amount_grown = 0
@@ -284,8 +324,8 @@ var/global/chicken_count = 0
 
 /obj/item/weapon/reagent_containers/food/snacks/egg/Process()
 	if(isturf(loc))
-		amount_grown += rand(1,2)
-		if(amount_grown >= 100)
+		amount_grown++
+		if(amount_grown >= 240)
 			visible_message("[src] hatches with a quiet cracking sound.")
 			new /mob/living/simple_animal/chick(get_turf(src))
 			STOP_PROCESSING(SSobj, src)
