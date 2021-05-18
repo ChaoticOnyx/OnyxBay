@@ -129,9 +129,12 @@ var/list/holder_mob_icon_cache = list()
 /obj/item/weapon/holder/corgi/proc/rename()
 	for(var/mob/M in src.contents)
 		var/input = sanitize(input("How do you want to name this pet?", "Rename \the [M.name]", M.name) as null|text)
-		to_chat(usr, SPAN_NOTICE("The corgi is now named as '[input]'."))
-		M.name = input
-		name = input
+		if(istype(M, /mob/living/simple_animal/corgi/Ian) || istype(M, /mob/living/simple_animal/corgi/Lisa))
+			to_chat(usr, SPAN_NOTICE("The corgi starts to bark aggressively."))
+		else
+			to_chat(usr, SPAN_NOTICE("The corgi is now named as '[input]'."))
+			M.name = input
+			name = input
 
 /obj/item/weapon/holder/corgi/verb/name_pet()
 	set category = "Object"

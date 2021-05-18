@@ -39,19 +39,6 @@
 	response_disarm = "bops"
 	response_harm   = "kicks"
 
-/mob/living/simple_animal/corgi/proc/rename()
-	var/input = sanitize(input("How do you want to name this pet?", "Rename \the [src]", name) as null|text)
-	if(!QDELETED(src) && input && (get_dist(usr, src) <= 1))
-		to_chat(usr, SPAN_NOTICE("The corgi is now named as '[input]'."))
-		name = input
-
-/mob/living/simple_animal/corgi/verb/name_pet()
-	set src in oview(1)
-	set category = "Object"
-	set name = "Name pet"
-	if(get_dist(usr, src) <= 1)
-		rename()
-
 /mob/living/simple_animal/corgi/Life()
 	..()
 
