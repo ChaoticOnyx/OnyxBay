@@ -3,7 +3,7 @@
 	icon_state = "laser"
 	fire_sound = 'sound/effects/weapons/energy/fire8.ogg'
 	pass_flags = PASS_FLAG_TABLE | PASS_FLAG_GLASS | PASS_FLAG_GRILLE
-	damage = 35
+	damage = 32.5
 	damage_type = BURN
 	sharp = 1 //concentrated burns
 	check_armour = "laser"
