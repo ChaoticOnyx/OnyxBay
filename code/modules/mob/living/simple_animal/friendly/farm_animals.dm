@@ -253,7 +253,7 @@ var/global/chicken_count = 0
 /mob/living/simple_animal/chicken/attackby(obj/item/O, mob/user)
 	if(istype(O, /obj/item/weapon/reagent_containers/food/snacks/grown)) //feedin' dem chickens
 		var/obj/item/weapon/reagent_containers/food/snacks/grown/G = O
-		if(G.seed && G.seed.kitchen_tag in list("wheat", "rice", "grass"))
+		if(G.seed?.kitchen_tag in list("wheat", "rice", "grass"))
 			if(!stat && eggsleft < 8)
 				user.visible_message(SPAN("notice", "[user] feeds [O] to [name]! It clucks happily."), SPAN("notice", "You feed [O] to [name]! It clucks happily."))
 				if(mutable && G.reagents.has_reagent(/datum/reagent/nanites))
