@@ -34,7 +34,7 @@
 	fire_delay = 5.5
 	origin_tech = list(TECH_COMBAT = 2, TECH_MATERIAL = 2)
 	load_method = MAGAZINE
-	fire_sound = 'sound/effects/weapons/gun/fire8.ogg'
+	fire_sound = 'sound/effects/weapons/gun/fire_45.ogg'
 
 /obj/item/weapon/gun/projectile/sec/update_icon()
 	..()

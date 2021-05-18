@@ -14,6 +14,7 @@
 	var/projectile_type					//The bullet type to create when New() is called
 	var/obj/item/projectile/BB = null	//The loaded bullet - make it so that the projectiles are created only when needed?
 	var/spent_icon = "s-casing-spent"
+	var/ammo_stack = null 				//Put the path of the ammo stack you'd like to create here. It creates an ammo stack when you combine two of the same ammo type.
 
 /obj/item/ammo_casing/New()
 	..()
@@ -49,7 +50,7 @@
 	pixel_x = rand(-randpixel, randpixel)
 	pixel_y = rand(-randpixel, randpixel)
 
-/obj/item/ammo_casing/attackby(obj/item/weapon/W as obj, mob/user as mob)
+/obj/item/ammo_casing/attackby(obj/item/W as obj, mob/user as mob)
 	if(isScrewdriver(W))
 		if(!BB)
 			to_chat(user, "<span class='notice'>There is no bullet in the casing to inscribe anything into.</span>")
@@ -67,6 +68,16 @@
 			BB.SetName("[initial(BB.name)] (\"[label_text]\")")
 	else ..()
 
+if(istype(W, /obj/item/ammo_casing))
+		if(src.type == W.type)
+			var/obj/item/ammo_casing/A = W
+			if(A.BB && src.BB && ammo_stack)
+				var/obj/item/ammo_magazine/handful/H = new ammo_stack(src.loc)
+				H.update_icon()
+				qdel(src)
+				qdel(A)
+				user.put_in_hands(H)
+
 /obj/item/ammo_casing/update_icon()
 	if(spent_icon && !BB)
 		icon_state = spent_icon
@@ -79,6 +90,7 @@
 //Gun loading types
 #define SINGLE_CASING 	1	//The gun only accepts ammo_casings. ammo_magazines should never have this as their mag_type.
 #define SPEEDLOADER 	2	//Transfers casings from the mag to the gun when used.
+#define SINGLE_LOAD		3	//Loads one at a time.
 #define MAGAZINE 		4	//The magazine item itself goes inside the gun
 
 //An item that holds casings and can be used to put them inside guns

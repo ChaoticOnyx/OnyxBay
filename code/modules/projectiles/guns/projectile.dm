@@ -89,6 +89,8 @@
 			chambered.loc = get_turf(src)
 			chambered.SpinAnimation(4,1)
 			chambered.throw_at(get_ranged_target_turf(get_turf(src),turn(loc.dir,270),1), rand(0,1), 5)
+			if(casingsound)
+				playsound(get_turf(src), casingsound, 100, 1)
 		if(CYCLE_CASINGS) //cycle the casing back to the end.
 			if(ammo_magazine)
 				ammo_magazine.stored_ammo += chambered
