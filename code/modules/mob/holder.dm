@@ -126,6 +126,18 @@ var/list/holder_mob_icon_cache = list()
 /obj/item/weapon/holder/corgi
 	origin_tech = list(TECH_BIO = 4)
 
+/obj/item/weapon/holder/corgi/proc/rename()
+	for(var/mob/M in src.contents)
+		var/input = sanitize(input("How do you want to name this pet?", "Rename \the [M.name]", M.name) as null|text)
+		to_chat(usr, SPAN_NOTICE("The corgi is now named as '[input]'."))
+		M.name = input
+		name = input
+
+/obj/item/weapon/holder/corgi/verb/name_pet()
+	set category = "Object"
+	set name = "Name pet"
+	rename()
+
 /obj/item/weapon/holder/lizard
 	w_class = ITEM_SIZE_TINY
 	origin_tech = list(TECH_BIO = 2)
