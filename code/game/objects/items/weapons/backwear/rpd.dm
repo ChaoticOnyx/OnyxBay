@@ -14,7 +14,7 @@
 	matter = list(MATERIAL_STEEL = 1500, MATERIAL_GLASS = 500)
 
 /obj/item/weapon/backwear/powered/rpd/loaded
-	bcell = /obj/item/weapon/cell/standard
+	bcell = /obj/item/weapon/cell/high
 
 #define RPD_DISPENSE "dispense"
 #define RPD_WRENCH   "wrench"
@@ -155,6 +155,7 @@
 				O.update()
 				product = O
 			else if(selected.item_type == /obj/structure/disposalconstruct)
+				product = new selected.item_type()
 				var/datum/dispense_type/pipe/PD = selected
 				var/obj/structure/disposalconstruct/O = product
 				O.ptype = PD.pipe_type
