@@ -342,6 +342,12 @@
 	desc = "Drymate brand neaera cubes, shipped from Jargon 4. Just add water!"
 	startswith = list(/obj/item/weapon/reagent_containers/food/snacks/monkeycube/wrapped/neaeracube = 5)
 
+/obj/item/weapon/storage/box/monkeycubes/chickcubes
+	name = "chicken cube box"
+	desc = "Drymate brand chicken cubes, shipped from Jargon 4. Just add water!"
+	icon_state = "chickcubebox"
+	startswith = list(/obj/item/weapon/reagent_containers/food/snacks/monkeycube/wrapped/chickcube = 5)
+
 /obj/item/weapon/storage/box/ids
 	name = "box of spare IDs"
 	desc = "Has so many empty IDs."
