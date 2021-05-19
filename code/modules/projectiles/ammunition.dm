@@ -66,7 +66,8 @@
 		else
 			to_chat(user, "<span class='notice'>You inscribe \"[label_text]\" into \the [initial(BB.name)].</span>")
 			BB.SetName("[initial(BB.name)] (\"[label_text]\")")
-	else ..()
+	else
+		..()
 
 /obj/item/ammo_casing/update_icon()
 	if(spent_icon && !BB)

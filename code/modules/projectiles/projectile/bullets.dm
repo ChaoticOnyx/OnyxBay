@@ -134,7 +134,6 @@
 	armor_penetration = 15
 
 /obj/item/projectile/bullet/pistol/medium/smg
-	fire_sound = 'sound/effects/weapons/gun/fire_generic_smg.ogg'
 	damage = 32.5 //10mm
 	armor_penetration = 15
 
@@ -211,16 +210,13 @@
 	penetration_modifier = 1.1
 
 /obj/item/projectile/bullet/rifle/a556
-	fire_sound = 'sound/effects/weapons/gun/gunshot3.ogg'
 	damage = 25
 
 /obj/item/projectile/bullet/rifle/a762
-	fire_sound = 'sound/effects/weapons/gun/gunshot2.ogg'
 	damage = 35
 	armor_penetration = 45
 
 /obj/item/projectile/bullet/rifle/a145
-	fire_sound = 'sound/effects/weapons/gun/fire_sniper.ogg'
 	damage = 80
 	stun = 3
 	weaken = 3

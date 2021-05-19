@@ -35,7 +35,7 @@
 	playsound(M, "shotgun_pump_in", rand(45, 60), FALSE)
 
 	if(chambered)//We have a shell in the chamber
-		chambered.loc = get_turf(src)//Eject casing
+		ejectCasing()
 		chambered = null
 
 	sleep(5)

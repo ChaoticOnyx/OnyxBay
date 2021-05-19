@@ -83,8 +83,9 @@
 	magazine_type = /obj/item/ammo_magazine/a10mm
 	allowed_magazines = /obj/item/ammo_magazine/a10mm
 	auto_eject = 1
-	auto_eject_sound = 'sound/weapons/smg_empty_alarm.ogg'
+	auto_eject_sound = 'sound/effects/weapons/misc/smg_empty_alarm.ogg'
 	one_hand_penalty = 1
+	fire_sound = 'sound/effects/weapons/gun/fire_smg.ogg'
 
 	//SMG
 	firemodes = list(
@@ -120,6 +121,7 @@
 	one_hand_penalty = 3
 	wielded_item_state = "arifle-wielded"
 	burst_delay = 2
+	fire_sound = 'sound/effects/weapons/gun/fire_556.ogg'
 
 	//Assault rifle, burst fire degrades quicker than SMG, worse one-handing penalty, slightly increased move delay
 	firemodes = list(
@@ -182,10 +184,11 @@
 	magazine_type = /obj/item/ammo_magazine/a762
 	allowed_magazines = /obj/item/ammo_magazine/a762
 	auto_eject = 1
-	auto_eject_sound = 'sound/weapons/smg_empty_alarm.ogg'
+	auto_eject_sound = 'sound/effects/weapons/misc/smg_empty_alarm.ogg'
 	one_hand_penalty = 5
 	burst_delay = 2.5
 	wielded_item_state = "z8carbine-wielded"
+	fire_sound = 'sound/effects/weapons/gun/fire_762.ogg'
 	//would have one_hand_penalty=4,5 but the added weight of a grenade launcher makes one-handing even harder
 	firemodes = list(
 		list(mode_name="semiauto",       burst=1,    fire_delay=0,    move_delay=null, use_launcher=null, one_hand_penalty=5, burst_accuracy=null, dispersion=null),

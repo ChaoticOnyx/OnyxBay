@@ -51,7 +51,7 @@
 	magazine_type = /obj/item/ammo_magazine/c45m
 	allowed_magazines = /obj/item/ammo_magazine/c45m
 	auto_eject = 1
-	auto_eject_sound = 'sound/weapons/smg_empty_alarm.ogg'
+	auto_eject_sound = 'sound/effects/weapons/misc/smg_empty_alarm.ogg'
 	caliber = ".45"
 	fire_delay = 6.5
 	load_method = MAGAZINE
@@ -194,7 +194,7 @@
 	magazine_type = /obj/item/ammo_magazine/a75
 	fire_delay = 25
 	auto_eject = 1
-	auto_eject_sound = 'sound/weapons/smg_empty_alarm.ogg'
+	auto_eject_sound = 'sound/effects/weapons/misc/smg_empty_alarm.ogg'
 	fire_sound = 'sound/effects/weapons/gun/fire3.ogg'
 
 /obj/item/weapon/gun/projectile/gyropistol/update_icon()
@@ -218,7 +218,7 @@
 	load_method = MAGAZINE
 	magazine_type = /obj/item/ammo_magazine/mc9mm
 	allowed_magazines = /obj/item/ammo_magazine/mc9mm
-	fire_sound = 'sound/effects/weapons/gun/fire1.ogg'
+	fire_sound = 'sound/effects/weapons/gun/fire_9mm.ogg'
 
 /obj/item/weapon/gun/projectile/det_m9/update_icon()
 	..()
@@ -236,7 +236,7 @@
 	caliber = "9mm"
 	silenced = 0
 	fire_delay = 1
-	fire_sound = 'sound/effects/weapons/gun/fire_9mm.ogg'
+	fire_sound = 'sound/effects/weapons/gun/fire_9mm2.ogg'
 	mod_weight = 0.65
 	mod_reach = 0.5
 	mod_handy = 1.0
@@ -244,7 +244,6 @@
 	load_method = MAGAZINE
 	magazine_type = /obj/item/ammo_magazine/mc9mm
 	allowed_magazines = /obj/item/ammo_magazine/mc9mm
-	fire_sound = 'sound/effects/weapons/gun/fire6.ogg'
 
 /obj/item/weapon/gun/projectile/pistol/flash
 	name = "holdout signal pistol"

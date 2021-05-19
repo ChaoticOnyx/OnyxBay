@@ -73,7 +73,6 @@
 /obj/item/weapon/gun/projectile/handle_post_fire()
 	..()
 	if(chambered)
-		playsound(chambered, "casing_drop", rand(45, 60), TRUE)
 		chambered.expend()
 		process_chambered()
 
@@ -86,9 +85,7 @@
 
 	switch(handle_casings)
 		if(EJECT_CASINGS) //eject casing onto ground.
-			chambered.loc = get_turf(src)
-			chambered.SpinAnimation(4,1)
-			chambered.throw_at(get_ranged_target_turf(get_turf(src),turn(loc.dir,270),1), rand(0,1), 5)
+			ejectCasing()
 		if(CYCLE_CASINGS) //cycle the casing back to the end.
 			if(ammo_magazine)
 				ammo_magazine.stored_ammo += chambered
@@ -186,6 +183,11 @@
 			if(T)
 				for(var/obj/item/ammo_casing/C in loaded)
 					C.loc = T
+					C.SpinAnimation(4, 1)
+					if(istype(C, /obj/item/ammo_casing/shotgun))
+						playsound(C, 'sound/effects/weapons/gun/shell_fall.ogg', rand(45, 60), TRUE)
+					else
+						playsound(C, "casing_drop", rand(45, 60), TRUE)
 					count++
 				loaded.Cut()
 			if(count)
@@ -246,6 +248,17 @@
 	if(chambered)
 		bullets += 1
 	return bullets
+
+/obj/item/weapon/gun/projectile/proc/ejectCasing()
+	if(istype(chambered, /obj/item/ammo_casing/shotgun))
+		chambered.loc = get_turf(src)
+		chambered.SpinAnimation(4,1)
+		playsound(chambered, 'sound/effects/weapons/gun/shell_fall.ogg', rand(45, 60), TRUE)
+	else
+		chambered.loc = get_turf(src)
+		chambered.SpinAnimation(4,1)
+		chambered.throw_at(get_ranged_target_turf(get_turf(src),turn(loc.dir,270),1), rand(0,1), 5)
+		playsound(chambered, "casing_drop", rand(45, 60), TRUE)
 
 /* Unneeded -- so far.
 //in case the weapon has firemodes and can't unload using attack_hand()
