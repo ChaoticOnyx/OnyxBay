@@ -111,7 +111,7 @@
 			L.visible_message(SPAN_DANGER("The [src] knocks down \the [L]!"))
 
 /mob/living/simple_animal/hostile/retaliate/goat/harvest(mob/user)
-	new /obj/item/stack/material/animalhide/goat(src.loc)
+	new /obj/item/stack/material/animalhide/goat(get_turf(src))
 	..()
 
 //cow
