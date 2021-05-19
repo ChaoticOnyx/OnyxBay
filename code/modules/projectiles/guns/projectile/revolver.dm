@@ -68,7 +68,7 @@
 	name = "Legacy .38"
 	desc = "A cheap Martian knock-off of a Smith & Wesson Model 10. Uses .38-Special rounds."
 	icon_state = "detective"
-	fire_sound = 'sound/weapons/gun_revolversmall.ogg'
+	fire_sound = 'sound/effects/weapons/gun/fire_revolver1.ogg'
 	max_shells = 6
 	caliber = "38"
 	origin_tech = list(TECH_COMBAT = 2, TECH_MATERIAL = 2)
@@ -78,8 +78,6 @@
 	name = "S&W 620"
 	desc = "A cheap Martian knock-off of a Smith & Wesson Model 620. Uses .38-Special rounds."
 	icon_state = "saw620"
-	fire_sound = 'sound/weapons/gun_revolversmall.ogg'
-
 
 /obj/item/weapon/gun/projectile/revolver/detective/verb/rename_gun()
 	set name = "Name Gun"

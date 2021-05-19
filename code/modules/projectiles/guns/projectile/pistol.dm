@@ -5,7 +5,7 @@
 	allowed_magazines = /obj/item/ammo_magazine/c45m
 	icon_state = "colt"
 	caliber = ".45"
-	fire_sound = 'sound/weapons/gun_colt2.ogg'
+	fire_sound = 'sound/effects/weapons/gun/fire_colt2.ogg'
 	origin_tech = list(TECH_COMBAT = 2, TECH_MATERIAL = 2)
 	load_method = MAGAZINE
 
@@ -145,7 +145,7 @@
 	w_class = ITEM_SIZE_NORMAL
 	caliber = ".45"
 	silenced = 1
-	fire_sound = 'sound/weapons/gun_silenced1.ogg'
+	fire_sound = "fire_silent"
 	mod_weight = 0.7
 	mod_reach = 0.5
 	mod_handy = 1.0
@@ -236,7 +236,7 @@
 	caliber = "9mm"
 	silenced = 0
 	fire_delay = 1
-	fire_sound = 'sound/weapons/gun_9mm.ogg'
+	fire_sound = 'sound/effects/weapons/gun/fire_9mm.ogg'
 	mod_weight = 0.65
 	mod_reach = 0.5
 	mod_handy = 1.0

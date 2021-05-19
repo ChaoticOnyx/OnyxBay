@@ -19,7 +19,7 @@
 	one_hand_penalty = 2
 	var/recentpump = 0 // to prevent spammage
 	wielded_item_state = "gun_wielded"
-	fire_sound = 'sound/effects/weapons/gun/fire7.ogg'
+	fire_sound = 'sound/effects/weapons/gun/fire_shotgun2.ogg'
 
 /obj/item/weapon/gun/projectile/shotgun/pump/consume_next_projectile()
 	if(chambered)
@@ -181,7 +181,7 @@
 		list(mode_name="fire both barrels at once", burst=2),
 		)
 
-	fire_sound = 'sound/effects/weapons/gun/fire4.ogg'
+	fire_sound = 'sound/effects/weapons/gun/fire_shotgun2.ogg'
 
 /obj/item/weapon/gun/projectile/shotgun/doublebarrel/pellet
 	ammo_type = /obj/item/ammo_casing/shotgun/pellet
@@ -233,3 +233,4 @@
 	mod_reach = 0.7
 	mod_handy = 0.85
 	one_hand_penalty = 0
+	fire_sound = 'sound/effects/weapons/gun/fire_shotgun3.ogg'

@@ -8,7 +8,7 @@
 	penetrating = 5
 	armor_penetration = 70
 	penetration_modifier = 1.1
-	fire_sound = 'sound/weapons/railgun.ogg'
+	fire_sound = 'sound/effects/weapons/gun/fire_railgun.ogg'
 
 /obj/item/projectile/bullet/magnetic/slug
 	name = "slug"
