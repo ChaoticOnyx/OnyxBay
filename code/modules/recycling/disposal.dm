@@ -57,35 +57,37 @@
 		return
 
 	add_fingerprint(user, 0, I)
-	if(mode<=0) // It's off
+	if(mode <= 0) // It's off
 		if(isScrewdriver(I))
 			if(contents.len > 0)
 				to_chat(user, "Eject the items first!")
 				return
-			if(mode==0) // It's off but still not unscrewed
-				mode=-1 // Set it to doubleoff l0l
+			if(mode == 0) // It's off but still not unscrewed
+				mode = -1 // Set it to doubleoff l0l
 				playsound(src.loc, 'sound/items/Screwdriver.ogg', 50, 1)
 				to_chat(user, "You remove the screws around the power connection.")
 				return
-			else if(mode==-1)
-				mode=0
+			else if(mode == -1)
+				mode = 0
 				playsound(src.loc, 'sound/items/Screwdriver.ogg', 50, 1)
 				to_chat(user, "You attach the screws around the power connection.")
 				return
-		else if(isWelder(I) && mode==-1)
+		else if(isWelder(I) && mode == -1)
 			if(contents.len > 0)
 				to_chat(user, "Eject the items first!")
 				return
 			var/obj/item/weapon/weldingtool/W = I
-			if(W.remove_fuel(0,user))
+			if(W.remove_fuel(0, user))
 				playsound(src.loc, 'sound/items/Welder2.ogg', 100, 1)
 				to_chat(user, "You start slicing the floorweld off the disposal unit.")
 
-				if(do_after(user,20,src))
-					if(!src || !W.isOn()) return
+				if(do_after(user, 20, src))
+					if(!src || !W.isOn())
+						return
+					eject() // In case if something's got inside while we were slicin' and the GC got fucked due to lag
 					to_chat(user, "You sliced the floorweld off the disposal unit.")
 					var/obj/structure/disposalconstruct/C = new (src.loc)
-					src.transfer_fingerprints_to(C)
+					transfer_fingerprints_to(C)
 					C.ptype = 6 // 6 = disposal unit
 					C.anchored = 1
 					C.set_density(1)
@@ -334,7 +336,7 @@
 // eject the contents of the disposal unit
 /obj/machinery/disposal/proc/eject()
 	for(var/atom/movable/AM in src)
-		AM.forceMove(src.loc)
+		AM.forceMove(loc)
 		AM.pipe_eject(0)
 	update_icon()
 

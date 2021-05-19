@@ -109,6 +109,7 @@
 		src.attack_self(M)
 
 /obj/proc/hide(hide)
+	pulledby?.stop_pulling()
 	set_invisibility(hide ? INVISIBILITY_MAXIMUM : initial(invisibility))
 
 /obj/proc/hides_under_flooring()

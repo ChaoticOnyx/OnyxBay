@@ -5,7 +5,7 @@
 	w_class = ITEM_SIZE_LARGE
 	throw_speed = 3
 	throw_range = 3
-	max_amount = 60
+	max_amount = 50
 	center_of_mass = null
 	randpixel = 3
 
