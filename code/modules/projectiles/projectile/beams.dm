@@ -3,7 +3,7 @@
 	icon_state = "laser"
 	fire_sound = 'sound/effects/weapons/energy/fire8.ogg'
 	pass_flags = PASS_FLAG_TABLE | PASS_FLAG_GLASS | PASS_FLAG_GRILLE
-	damage = 35
+	damage = 32.5
 	damage_type = BURN
 	sharp = 1 //concentrated burns
 	check_armour = "laser"
@@ -28,21 +28,38 @@
 
 /obj/item/projectile/beam/smalllaser
 	damage = 25
+	armor_penetration = 5
 
 /obj/item/projectile/beam/midlaser
-	damage = 45
-	armor_penetration = 10
+	icon_state = "laser"
+	damage = 37.5
+	armor_penetration = 15
 
 /obj/item/projectile/beam/heavylaser
 	name = "heavy laser"
 	icon_state = "heavylaser"
 	fire_sound = 'sound/effects/weapons/energy/fire21.ogg'
-	damage = 55
-	armor_penetration = 30
+	damage = 50
+	armor_penetration = 35
 
 	muzzle_type = /obj/effect/projectile/laser/heavy/muzzle
 	tracer_type = /obj/effect/projectile/laser/heavy/tracer
 	impact_type = /obj/effect/projectile/laser/heavy/impact
+
+/obj/item/projectile/beam/sniper
+	name = "sniper beam"
+	icon_state = "xray"
+	fire_sound = 'sound/effects/weapons/heavy/fire1.ogg'
+	damage = 50
+	armor_penetration = 50
+	stun = 3
+	weaken = 3
+	stutter = 3
+	penetration_modifier = 1.0
+
+	muzzle_type = /obj/effect/projectile/laser/xray/muzzle
+	tracer_type = /obj/effect/projectile/laser/xray/tracer
+	impact_type = /obj/effect/projectile/laser/xray/impact
 
 /obj/item/projectile/beam/xray
 	name = "x-ray beam"
@@ -157,21 +174,6 @@
 			M.Weaken(5)
 			M.Stun(5)
 	return 1
-
-/obj/item/projectile/beam/sniper
-	name = "sniper beam"
-	icon_state = "xray"
-	fire_sound = 'sound/effects/weapons/heavy/fire1.ogg'
-	damage = 50
-	armor_penetration = 10
-	stun = 3
-	weaken = 3
-	stutter = 3
-	penetration_modifier = 1.0
-
-	muzzle_type = /obj/effect/projectile/laser/xray/muzzle
-	tracer_type = /obj/effect/projectile/laser/xray/tracer
-	impact_type = /obj/effect/projectile/laser/xray/impact
 
 /obj/item/projectile/beam/stun
 	name = "stun beam"
