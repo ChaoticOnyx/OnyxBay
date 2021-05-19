@@ -47,9 +47,9 @@
 	sides = 20
 
 /obj/item/weapon/dice/d100
-	name = "d100"
+	name = "dp"
 	desc = "A dice with ten sides. This one is for the tens digit."
-	icon_state = "d10010"
+	icon_state = "dp10"
 	sides = 10
 
 /obj/item/weapon/dice/proc/roll_die()
