@@ -152,6 +152,16 @@
 
 	DB_ban_unban_by_id(ban_id)
 
+proc/server_id_replacement(id)
+	var/server_id_replacement
+	if(id == "main")
+		server_id_replacement = "Eos Orbital Station"
+	if(id == "beginners")
+		server_id_replacement = "Chaotic Onyx"
+	if(id == "light")
+		server_id_replacement = "Experimental Onyx"
+	return server_id_replacement
+
 /datum/admins/proc/DB_ban_edit(banid = null, param = null)
 	if(!check_rights(R_BAN))	return
 
@@ -200,7 +210,7 @@
 			var/DBQuery/update_query = dbcon.NewQuery(sql)
 			update_query.Execute()
 			if(serverid)
-				message_admins("[key_name_admin(usr)] has edited a ban for [pckey]'s on [serverid] server. Reason set from [reason] to [value]",1)
+				message_admins("[key_name_admin(usr)] has edited a ban for [pckey]'s on [server_id_replacement(serverid)] server. Reason set from [reason] to [value]",1)
 			else
 				message_admins("[key_name_admin(usr)] has edited a ban for [pckey]'s reason from [reason] to [value]",1)
 		if("duration")
@@ -213,9 +223,9 @@
 			var/sql = "UPDATE erro_ban SET duration = [value], edits = CONCAT(edits,'- [eckey] changed ban duration from [duration] to [value]<br>'), expiration_time = DATE_ADD(bantime, INTERVAL [value] MINUTE) WHERE id = [banid]"
 			var/DBQuery/update_query = dbcon.NewQuery(sql)
 			if(serverid)
-				message_admins("[key_name_admin(usr)] has edited a ban for [pckey]'s duration from [duration] to [value]",1)
+				message_admins("[key_name_admin(usr)] has edited a ban for [pckey]'s on [server_id_replacement(serverid)] server. Duration set from [duration] to [value]",1)
 			else
-				message_admins("[key_name_admin(usr)] has edited a ban for [pckey]'s on [serverid] server. Duration set from [duration] to [value]",1)
+				message_admins("[key_name_admin(usr)] has edited a ban for [pckey]'s duration from [duration] to [value]",1)
 			update_query.Execute()
 		if("unban")
 			if(alert("Unban [pckey]?", "Unban?", "Yes", "No") == "Yes")
@@ -271,7 +281,7 @@
 	var/sql_update = "UPDATE erro_ban SET unbanned = 1, unbanned_datetime = Now(), unbanned_ckey = '[unban_ckey]', unbanned_computerid = '[unban_computerid]', unbanned_ip = '[unban_ip]' WHERE id = [id]"
 
 	if(serverid)
-		message_admins("[key_name_admin(usr)] has lifted [pckey]'s ban of [serverid] server.",1)
+		message_admins("[key_name_admin(usr)] has lifted [pckey]'s ban of [server_id_replacement(serverid)] server.",1)
 	else
 		message_admins("[key_name_admin(usr)] has lifted [pckey]'s ban.",1)
 
@@ -455,11 +465,11 @@
 				output += "<td align='center' colspan='2' bgcolor=''><b>IP:</b> [ip]</td>"
 				output += "<td align='center' colspan='2' bgcolor=''><b>CIP:</b> [cid]</td>"
 				if(!isnull(server_id))
-					output += "<td align='center' colspan='1' bgcolor=''><b>SERVER:</b> [server_id]</td>"
+					output += "<td align='center' colspan='1' bgcolor=''><b>SERVER:</b> [server_id_replacement(server_id)]</td>"
 				output += "</tr>"
 				output += "<tr bgcolor='[lcolor]'>"
 				if(!isnull(server_id))
-					output += "<td align='center' colspan='5'><b>Reason: [(unbanned || auto) ? "" : "(<a href=\"byond://?src=\ref[src];dbbanedit=reason;dbbanid=[banid];dbserverid=[server_id]\">Edit</a>)"]</b> <cite>\"[reason]\"</cite></td>"
+					output += "<td align='center' colspan='5'><b>Reason: [(unbanned || auto) ? "" : "(<a href=\"byond://?src=\ref[src];dbbanedit=reason;dbbanid=[banid];dbserverid=[server_id_replacement(server_id)]\">Edit</a>)"]</b> <cite>\"[reason]\"</cite></td>"
 				else
 					output += "<td align='center' colspan='5'><b>Reason: [(unbanned || auto) ? "" : "(<a href=\"byond://?src=\ref[src];dbbanedit=reason;dbbanid=[banid]\">Edit</a>)"]</b> <cite>\"[reason]\"</cite></td>"
 
