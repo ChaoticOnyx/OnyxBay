@@ -132,6 +132,9 @@ var/global/list/minevendor_list = list( //keep in order of price
 	if(href_list["choice"])
 		if(istype(inserted_id))
 			if(href_list["choice"] == "eject")
+				if(!Adjacent(usr))
+					to_chat(usr, "<span class='warning'>You can't reach it.</span>")
+					return
 				inserted_id.loc = loc
 				if(!usr.get_active_hand())
 					usr.put_in_hands(inserted_id)
