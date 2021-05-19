@@ -13,6 +13,9 @@
 /obj/item/weapon/dice/New()
 	icon_state = "[name][rand(1,sides)]"
 
+/obj/item/weapon/dice/d100/New()
+	icon_state = "[name][10*rand(0,sides-1)]"//Because d100 starts from 00 and ends on 90
+
 /obj/item/weapon/dice/d4
 	name = "d4"
 	desc = "A dice with four sides."
@@ -61,6 +64,10 @@
 	else if(result == 1)
 		comment = "Ouch, bad luck."
 	return list(result, comment)
+
+/obj/item/weapon/dice/d100/roll_die()
+	var/result = 10 * rand(0, sides-1)//Because d100 starts from 00 and ends on 90
+	return list(result, "")
 
 /obj/item/weapon/dice/attack_self(mob/user as mob)
 	var/list/roll_result = roll_die()
