@@ -282,6 +282,10 @@
 
 /obj/item/weapon/gun/projectile/automatic/l6_saw/proc/toggle_cover(mob/user)
 	cover_open = !cover_open
+	if(cover_open)
+		playsound(src.loc, 'sound/effects/weapons/gun/lmg_open.ogg', 50, 1)
+	else
+		playsound(src.loc, 'sound/effects/weapons/gun/lmg_close.ogg', 50, 1)
 	to_chat(user, "<span class='notice'>You [cover_open ? "open" : "close"] [src]'s cover.</span>")
 	update_icon()
 
