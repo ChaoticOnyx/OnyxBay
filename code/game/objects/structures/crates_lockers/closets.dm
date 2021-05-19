@@ -765,5 +765,5 @@
 
 	return 1
 
-/obj/mecha/hides_inside_walls() // Let's just don't
+/obj/structure/closet/hides_inside_walls() // Let's just don't
 	return FALSE
