@@ -80,9 +80,10 @@
 
 	var/current_pda_messaging = null
 
-/mob/living/silicon/pai/New(obj/item/device/paicard)
+/mob/living/silicon/pai/Initialize(mapload, obj/item/device/paicard)
+	. = ..()
 	status_flags |= NO_ANTAG
-	src.loc = paicard
+	loc = paicard
 	card = paicard
 	sradio = new(src)
 
@@ -92,8 +93,6 @@
 	verbs += /mob/living/silicon/pai/proc/choose_chassis
 	verbs += /mob/living/silicon/pai/proc/choose_verbs
 	verbs -= /mob/living/proc/ghost
-
-	..()
 
 	if(card)
 		if(!card.radio)
