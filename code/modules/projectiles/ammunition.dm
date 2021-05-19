@@ -68,16 +68,6 @@
 			BB.SetName("[initial(BB.name)] (\"[label_text]\")")
 	else ..()
 
-if(istype(W, /obj/item/ammo_casing))
-		if(src.type == W.type)
-			var/obj/item/ammo_casing/A = W
-			if(A.BB && src.BB && ammo_stack)
-				var/obj/item/ammo_magazine/handful/H = new ammo_stack(src.loc)
-				H.update_icon()
-				qdel(src)
-				qdel(A)
-				user.put_in_hands(H)
-
 /obj/item/ammo_casing/update_icon()
 	if(spent_icon && !BB)
 		icon_state = spent_icon
