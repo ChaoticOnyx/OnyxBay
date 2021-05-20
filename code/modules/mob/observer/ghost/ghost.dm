@@ -212,8 +212,7 @@ This is the proc mobs get to turn into a ghost. Forked from ghostize due to comp
 	if(response == "Stay in body" || !may_ghost())
 		return
 
-	var/turf/location = get_turf(src)
-	log_and_message_admins(" has ghosted. (<A HREF='?_src_=holder;adminplayerobservecoodjump=1;X=[location.x];Y=[location.y];Z=[location.z]'>JMP</a>)")
+	log_and_message_admins("has ghosted")
 	var/mob/observer/ghost/ghost = ghostize(can_reenter_corpse = FALSE)
 	if(ghost)
 		ghost.timeofdeath = world.time // Because the living mob won't have a time of death and we want the respawn timer to work properly.
@@ -228,9 +227,8 @@ This is the proc mobs get to turn into a ghost. Forked from ghostize due to comp
 	else if(istype(loc, /obj/machinery/cryopod))
 		return TRUE
 	else if(internal_organs_by_name[BP_CELL])
-		to_world("cell yest")
 		var/obj/item/organ/internal/cell/C  = internal_organs_by_name[BP_CELL]
-		if(C.cell.charge <= 1)
+		if(C.cell?.charge <= 1)
 			return TRUE
 	return FALSE
 
