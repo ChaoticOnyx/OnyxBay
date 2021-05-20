@@ -1,10 +1,10 @@
 //for db var look in _global_vars\configuration.dm
 //2 ways to call it
 //positional:
-//	sql_query_adv(template, db, arg1, arg2...)
+//	sql_query(template, db, arg1, arg2...)
 //	$$ and $[number] are useable
 //named:
-//	sql_query_adv(template, db, list(name1=value1, name2=value2...))
+//	sql_query(template, db, list(name1=value1, name2=value2...))
 //	Only $[name] is useable.
 /proc/sql_query(template, DBConnection/db, ...)
 	var/static/regex/token_finder = regex(@"\$(\w+|\$)")
