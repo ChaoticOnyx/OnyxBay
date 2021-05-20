@@ -47,7 +47,7 @@
 	sides = 20
 
 /obj/item/weapon/dice/dp
-	name = "Percentage dice"
+	name = "dp"
 	desc = "A dice with ten sides. This one is for the tens digit."
 	icon_state = "dp10"
 	sides = 10
