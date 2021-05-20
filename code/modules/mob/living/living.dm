@@ -214,6 +214,7 @@
 		adjustBrainLoss(health + maxHealth * 2)
 		updatehealth()
 		to_chat(src, SPAN("notice", "You have given up life and succumbed to death."))
+		log_and_message_admins("has succumbed")
 
 /mob/living/proc/updatehealth()
 	if(status_flags & GODMODE)
