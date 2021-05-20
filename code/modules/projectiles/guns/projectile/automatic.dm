@@ -18,9 +18,9 @@
 
 	//machine pistol, easier to one-hand with
 	firemodes = list(
-		list(mode_name="semiauto",       burst=1, fire_delay=0,    move_delay=null, one_hand_penalty=0, burst_accuracy=null, dispersion=null),
-		list(mode_name="3-round bursts", burst=3, fire_delay=null, move_delay=4,    one_hand_penalty=1, burst_accuracy=list(0,-1,-1),       dispersion=list(0.0, 0.6, 1.0)),
-		list(mode_name="short bursts",   burst=5, fire_delay=null, move_delay=4,    one_hand_penalty=2, burst_accuracy=list(0,-1,-1,-1,-2), dispersion=list(0.6, 0.6, 1.0, 1.0, 1.2)),
+		list(mode_name = "semiauto",       burst = 1, fire_delay = 0,    move_delay = null, one_hand_penalty = 0, burst_accuracy = null,                    dispersion = null),
+		list(mode_name = "3-round bursts", burst = 3, fire_delay = null, move_delay = 4,    one_hand_penalty = 1, burst_accuracy = list(0, -1, -1),         dispersion = list(0.0, 0.6, 1.0)),
+		list(mode_name = "5-round bursts", burst = 5, fire_delay = null, move_delay = 4,    one_hand_penalty = 2, burst_accuracy = list(0, -1, -1, -1, -2), dispersion = list(0.6, 0.6, 1.0, 1.0, 1.2))
 		)
 
 /obj/item/weapon/gun/projectile/automatic/machine_pistol
@@ -40,17 +40,17 @@
 
 	//machine pistol, like SMG but easier to one-hand with
 	firemodes = list(
-		list(mode_name="semiauto",       burst=1, fire_delay=0,    move_delay=null, one_hand_penalty=0, burst_accuracy=null, dispersion=null),
-		list(mode_name="3-round bursts", burst=3, fire_delay=null, move_delay=4,    one_hand_penalty=1, burst_accuracy=list(0,-1,-1),       dispersion=list(0.0, 0.6, 1.0)),
-		list(mode_name="short bursts",   burst=5, fire_delay=null, move_delay=4,    one_hand_penalty=2, burst_accuracy=list(0,-1,-1,-1,-2), dispersion=list(0.6, 0.6, 1.0, 1.0, 1.2)),
+		list(mode_name = "semiauto",       burst = 1, fire_delay = 0,    move_delay = null, one_hand_penalty = 0, burst_accuracy = null,                    dispersion = null),
+		list(mode_name = "3-round bursts", burst = 3, fire_delay = null, move_delay = 4,    one_hand_penalty = 1, burst_accuracy = list(0, -1,- 1),         dispersion = list(0.0, 0.6, 1.0)),
+		list(mode_name = "5-round bursts", burst = 5, fire_delay = null, move_delay = 4,    one_hand_penalty = 2, burst_accuracy = list(0, -1, -1, -1, -2), dispersion = list(0.6, 0.6, 1.0, 1.0, 1.2))
 		)
 
 /obj/item/weapon/gun/projectile/automatic/machine_pistol/update_icon()
-	..()
 	if(ammo_magazine)
 		icon_state = "mpistolen"
 	else
 		icon_state = "mpistolen-empty"
+	..()
 
 /obj/item/weapon/gun/projectile/automatic/machine_pistol/mini_uzi
 	name = ".45 machine pistol"
@@ -60,11 +60,11 @@
 	origin_tech = list(TECH_COMBAT = 5, TECH_MATERIAL = 2, TECH_ILLEGAL = 3)
 
 /obj/item/weapon/gun/projectile/automatic/machine_pistol/mini_uzi/update_icon()
-	..()
 	if(ammo_magazine)
 		icon_state = "saber"
 	else
 		icon_state = "saber-empty"
+	..()
 
 /obj/item/weapon/gun/projectile/automatic/c20r
 	name = "10mm submachine gun"
@@ -84,22 +84,21 @@
 	allowed_magazines = /obj/item/ammo_magazine/a10mm
 	auto_eject = 1
 	auto_eject_sound = 'sound/weapons/smg_empty_alarm.ogg'
-	one_hand_penalty = 1
+	one_hand_penalty = 2
 
 	//SMG
 	firemodes = list(
-		list(mode_name="semiauto",       burst=1, fire_delay=0,    move_delay=null, one_hand_penalty=2, burst_accuracy=null, dispersion=null),
-		list(mode_name="3-round bursts", burst=3, fire_delay=null, move_delay=4,    one_hand_penalty=3, burst_accuracy=list(0,-1,-1),       dispersion=list(0.0, 0.6, 1.0)),
-		list(mode_name="short bursts",   burst=5, fire_delay=null, move_delay=4,    one_hand_penalty=4, burst_accuracy=list(0,-1,-1,-1,-2), dispersion=list(0.6, 0.6, 1.0, 1.0, 1.2)),
+		list(mode_name = "semiauto",       burst = 1, fire_delay = 0,    move_delay = null, one_hand_penalty = 2, burst_accuracy = null,                    dispersion = null),
+		list(mode_name = "3-round bursts", burst = 3, fire_delay = null, move_delay = 4,    one_hand_penalty = 3, burst_accuracy = list(0, -1, -1),         dispersion = list(0.0, 0.6, 1.0)),
+		list(mode_name = "5-round bursts", burst = 5, fire_delay = null, move_delay = 4,    one_hand_penalty = 4, burst_accuracy = list(0, -1, -1, -1, -2), dispersion = list(0.6, 0.6, 1.0, 1.0, 1.2))
 		)
 
 /obj/item/weapon/gun/projectile/automatic/c20r/update_icon()
-	..()
 	if(ammo_magazine)
-		icon_state = "c20r-[round(ammo_magazine.stored_ammo.len,4)]"
+		icon_state = "c20r-[round(ammo_magazine.stored_ammo.len, 4)]"
 	else
 		icon_state = "c20r"
-	return
+	..()
 
 /obj/item/weapon/gun/projectile/automatic/sts35
 	name = "assault rifle"
@@ -122,9 +121,9 @@
 
 	//Assault rifle, burst fire degrades quicker than SMG, worse one-handing penalty, slightly increased move delay
 	firemodes = list(
-		list(mode_name="semiauto",       burst=1, fire_delay=0,    move_delay=null, one_hand_penalty=4, burst_accuracy=null, dispersion=null),
-		list(mode_name="3-round bursts", burst=3, fire_delay=null, move_delay=6,    one_hand_penalty=5, burst_accuracy=list(0,-1,-1),       dispersion=list(0.0, 0.6, 1.0)),
-		list(mode_name="short bursts",   burst=5, fire_delay=null, move_delay=6,    one_hand_penalty=6, burst_accuracy=list(0,-1,-2,-3,-3), dispersion=list(0.6, 1.0, 1.2, 1.2, 1.5)),
+		list(mode_name = "semiauto",       burst = 1, fire_delay = 0,    move_delay = null, one_hand_penalty = 3, burst_accuracy = null,                    dispersion = null),
+		list(mode_name = "3-round bursts", burst = 3, fire_delay = null, move_delay = 6,    one_hand_penalty = 5, burst_accuracy = list(0, -1, -1),         dispersion = list(0.0, 0.6, 1.0)),
+		list(mode_name = "5-round bursts", burst = 5, fire_delay = null, move_delay = 6,    one_hand_penalty = 6, burst_accuracy = list(0, -1, -2, -3, -3), dispersion = list(0.6, 1.0, 1.2, 1.2, 1.5))
 		)
 
 /obj/item/weapon/gun/projectile/automatic/sts35/update_icon()
@@ -147,21 +146,21 @@
 	load_method = MAGAZINE
 	magazine_type = /obj/item/ammo_magazine/mc9mmt/rubber
 	allowed_magazines = /obj/item/ammo_magazine/mc9mmt
-	one_hand_penalty=1
+	one_hand_penalty = 1
 
 	//machine pistol, like SMG but easier to one-hand with
 	firemodes = list(
-		list(mode_name="semiauto",       burst=1, fire_delay=0,    move_delay=null, one_hand_penalty=1, burst_accuracy=null, dispersion=null),
-		list(mode_name="3-round bursts", burst=3, fire_delay=null, move_delay=4,    one_hand_penalty=2, burst_accuracy=list(0,-1,-1),       dispersion=list(0.0, 0.6, 1.0)),
-		list(mode_name="short bursts",   burst=5, fire_delay=null, move_delay=4,    one_hand_penalty=3, burst_accuracy=list(0,-1,-1,-1,-2), dispersion=list(0.6, 0.6, 1.0, 1.0, 1.2)),
+		list(mode_name = "semiauto",       burst = 1, fire_delay = 0,    move_delay = null, one_hand_penalty = 1, burst_accuracy = null,                    dispersion = null),
+		list(mode_name = "3-round bursts", burst = 3, fire_delay = null, move_delay = 4,    one_hand_penalty = 2, burst_accuracy = list(0, -1, -1),         dispersion = list(0.0, 0.6, 1.0)),
+		list(mode_name = "5-round bursts", burst = 5, fire_delay = null, move_delay = 4,    one_hand_penalty = 3, burst_accuracy = list(0, -1, -1, -1, -2), dispersion = list(0.6, 0.6, 1.0, 1.0, 1.2))
 		)
 
 /obj/item/weapon/gun/projectile/automatic/wt550/update_icon()
-	..()
-	icon_state = (ammo_magazine)? "wt550-[round(ammo_magazine.stored_ammo.len,4)]" : "wt550"
-	item_state = (ammo_magazine)? "wt550" : "wt550-empty"
+	icon_state = (ammo_magazine)? "wt550-[round(ammo_magazine.stored_ammo.len, 4)]" : "wt550"
+	item_state = (ammo_magazine?.stored_ammo?.len)? "wt550" : "wt550-empty"
 	wielded_item_state = (ammo_magazine)? "wt550-wielded" : "wt550-wielded-empty"
-	return
+	..()
+
 
 /obj/item/weapon/gun/projectile/automatic/z8
 	name = "bullpup assault rifle"
@@ -183,13 +182,13 @@
 	auto_eject = 1
 	auto_eject_sound = 'sound/weapons/smg_empty_alarm.ogg'
 	one_hand_penalty = 5
-	burst_delay = 4
+	burst_delay = 3
 	wielded_item_state = "z8carbine-wielded"
 	//would have one_hand_penalty=4,5 but the added weight of a grenade launcher makes one-handing even harder
 	firemodes = list(
-		list(mode_name="semiauto",       burst=1,    fire_delay=0,    move_delay=null, use_launcher=null, one_hand_penalty=5, burst_accuracy=null, dispersion=null),
-		list(mode_name="3-round bursts", burst=3,    fire_delay=null, move_delay=6,    use_launcher=null, one_hand_penalty=6, burst_accuracy=list(0,-1,-1), dispersion=list(0.0, 0.6, 1.0)),
-		list(mode_name="fire grenades",  burst=null, fire_delay=null, move_delay=null, use_launcher=1,    one_hand_penalty=5, burst_accuracy=null, dispersion=null)
+		list(mode_name = "semiauto",       burst = 1,    fire_delay = 0,    move_delay = null, use_launcher = null, one_hand_penalty = 5, burst_accuracy = null,            dispersion = null),
+		list(mode_name = "3-round bursts", burst = 3,    fire_delay = null, move_delay = 6,    use_launcher = null, one_hand_penalty = 6, burst_accuracy = list(0, -1, -1), dispersion = list(0.0, 0.6, 1.0)),
+		list(mode_name = "fire grenades",  burst = null, fire_delay = null, move_delay = null, use_launcher = 1,    one_hand_penalty = 5, burst_accuracy = null,            dispersion = null)
 		)
 
 	var/use_launcher = 0
@@ -211,7 +210,7 @@
 	else
 		..()
 
-/obj/item/weapon/gun/projectile/automatic/z8/Fire(atom/target, mob/living/user, params, pointblank=0, reflex=0)
+/obj/item/weapon/gun/projectile/automatic/z8/Fire(atom/target, mob/living/user, params, pointblank = 0, reflex = 0)
 	if(use_launcher)
 		launcher.Fire(target, user, params, pointblank, reflex)
 		if(!launcher.chambered)
@@ -220,7 +219,6 @@
 		..()
 
 /obj/item/weapon/gun/projectile/automatic/z8/update_icon()
-	..()
 	if(ammo_magazine)
 		if(ammo_magazine.stored_ammo.len)
 			icon_state = "carbine-loaded"
@@ -228,7 +226,7 @@
 			icon_state = "carbine-empty"
 	else
 		icon_state = "carbine"
-	return
+	..()
 
 /obj/item/weapon/gun/projectile/automatic/z8/examine(mob/user)
 	. = ..()
@@ -237,11 +235,13 @@
 	else
 		. += "\n\The [launcher] is empty."
 
+
 /obj/item/weapon/gun/projectile/automatic/l6_saw
 	name = "light machine gun"
-	desc = "A rather traditionally made L6 SAW with a pleasantly lacquered wooden pistol grip. Has 'Aussec Armoury- 2531' engraved on the reciever." //probably should refluff this
+	desc = "A heavily modified 5.56x45mm light machine gun, designated 'L6 SAW'. Has 'Aussec Armoury - 2531' engraved on the reciever below the designation."
 	icon_state = "l6closed100"
-	item_state = "l6closedmag"
+	item_state = "l6closed"
+	wielded_item_state = "l6closed-wielded"
 	w_class = ITEM_SIZE_HUGE
 	force = 14.0
 	mod_weight = 1.2
@@ -256,39 +256,44 @@
 	load_method = MAGAZINE
 	magazine_type = /obj/item/ammo_magazine/box/a556
 	allowed_magazines = list(/obj/item/ammo_magazine/box/a556, /obj/item/ammo_magazine/c556)
-	one_hand_penalty = 6
-	wielded_item_state = "gun_wielded"
+	burst_delay = 1
+	burst = 5
+	move_delay = 12
+	one_hand_penalty = 8
 
 	//LMG, better sustained fire accuracy than assault rifles (comparable to SMG), higer move delay and one-handing penalty
 	//No single-shot or 3-round-burst modes since using this weapon should come at a cost to flexibility.
 	firemodes = list(
-		list(mode_name="short bursts",	burst=5, move_delay=12, one_hand_penalty=8, burst_accuracy = list(0,-1,-1,-2,-2),          dispersion = list(0.6, 1.0, 1.0, 1.0, 1.2)),
-		list(mode_name="long bursts",	burst=8, move_delay=15, one_hand_penalty=9, burst_accuracy = list(0,-1,-1,-2,-2,-2,-3,-3), dispersion = list(1.0, 1.0, 1.0, 1.0, 1.2)),
+		list(mode_name = "5-round bursts", burst = 5, move_delay = 12, one_hand_penalty = 8, burst_accuracy = list(0, -1, -1, -1, -2),             dispersion = list(0.0, 0.6, 0.6, 1.0, 1.0)),
+		list(mode_name = "8-round bursts", burst = 8, move_delay = 15, one_hand_penalty = 9, burst_accuracy = list(0, -1, -1, -2, -2, -2, -3, -3), dispersion = list(0.6, 0.6, 1.0, 1.0, 1.2))
 		)
 
 	var/cover_open = 0
 
 /obj/item/weapon/gun/projectile/automatic/l6_saw/mag
+	icon_state = "l6closedmag"
+	item_state = "l6closedmag"
+	wielded_item_state = "l6closedmag-wielded"
 	magazine_type = /obj/item/ammo_magazine/c556
 
 /obj/item/weapon/gun/projectile/automatic/l6_saw/special_check(mob/user)
 	if(cover_open)
-		to_chat(user, "<span class='warning'>[src]'s cover is open! Close it before firing!</span>")
+		to_chat(user, SPAN("warning", "[src]'s cover is open! Close it before firing!"))
 		return 0
 	return ..()
 
 /obj/item/weapon/gun/projectile/automatic/l6_saw/proc/toggle_cover(mob/user)
 	cover_open = !cover_open
-	to_chat(user, "<span class='notice'>You [cover_open ? "open" : "close"] [src]'s cover.</span>")
+	to_chat(user, SPAN("notice", "You [cover_open ? "open" : "close"] [src]'s cover."))
 	update_icon()
 
-/obj/item/weapon/gun/projectile/automatic/l6_saw/attack_self(mob/user as mob)
+/obj/item/weapon/gun/projectile/automatic/l6_saw/attack_self(mob/user)
 	if(cover_open)
 		toggle_cover(user) //close the cover
 	else
 		return ..() //once closed, behave like normal
 
-/obj/item/weapon/gun/projectile/automatic/l6_saw/attack_hand(mob/user as mob)
+/obj/item/weapon/gun/projectile/automatic/l6_saw/attack_hand(mob/user)
 	if(!cover_open && user.get_inactive_hand() == src)
 		toggle_cover(user) //open the cover
 	else
@@ -296,7 +301,7 @@
 
 /obj/item/weapon/gun/projectile/automatic/l6_saw/update_icon()
 	if(istype(ammo_magazine, /obj/item/ammo_magazine/box))
-		icon_state = "l6[cover_open ? "open" : "closed"][round(ammo_magazine.stored_ammo.len, 25)]"
+		icon_state = "l6[cover_open ? "open" : "closed"][Ceiling(ammo_magazine.stored_ammo.len / 12)]"
 		item_state = "l6[cover_open ? "open" : "closed"]"
 	else if(ammo_magazine)
 		icon_state = "l6[cover_open ? "open" : "closed"]mag"
@@ -304,16 +309,17 @@
 	else
 		icon_state = "l6[cover_open ? "open" : "closed"]-empty"
 		item_state = "l6[cover_open ? "open" : "closed"]-empty"
+	wielded_item_state = "[item_state]-wielded"
 	..()
 
 /obj/item/weapon/gun/projectile/automatic/l6_saw/load_ammo(obj/item/A, mob/user)
 	if(!cover_open)
-		to_chat(user, "<span class='warning'>You need to open the cover to load that into [src].</span>")
+		to_chat(user, SPAN("warning", "You need to open the cover to load that into [src]."))
 		return
 	..()
 
-/obj/item/weapon/gun/projectile/automatic/l6_saw/unload_ammo(mob/user, allow_dump=1)
+/obj/item/weapon/gun/projectile/automatic/l6_saw/unload_ammo(mob/user, allow_dump = 1)
 	if(!cover_open)
-		to_chat(user, "<span class='warning'>You need to open the cover to unload [src].</span>")
+		to_chat(user, SPAN("warning", "You need to open the cover to unload [src]."))
 		return
 	..()
