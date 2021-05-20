@@ -586,7 +586,7 @@
 "ln" = (/obj/structure/cable{d2 = 8; icon_state = "0-8"},/obj/structure/cable{icon_state = "0-4"; d2 = 4},/obj/structure/cable,/turf/simulated/floor/plating/airless,/area/solar/derelict_starboard)
 "lo" = (/obj/structure/cable,/obj/structure/cable{d2 = 8; icon_state = "0-8"},/obj/structure/cable{icon_state = "0-4"; d2 = 4},/turf/simulated/floor/plating/airless,/area/solar/derelict_aft)
 "lp" = (/obj/structure/cable,/obj/structure/cable{d2 = 2; icon_state = "0-2"},/obj/structure/cable{d2 = 8; icon_state = "0-8"},/turf/simulated/floor/plating/airless,/area/solar/derelict_aft)
-"lq" = (/obj/structure/closet/coffin,/obj/item/weapon/dice/d100,/turf/simulated/floor/tiled/dark,/area/derelict/medical/chapel)
+"lq" = (/obj/structure/closet/coffin,/obj/item/weapon/dice/dp,/turf/simulated/floor/tiled/dark,/area/derelict/medical/chapel)
 "lr" = (/obj/item/stack/cable_coil/cut,/turf/simulated/floor/plating/airless,/area/derelict/bridge/ai_upload)
 
 (1,1,1) = {"
