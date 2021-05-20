@@ -83,8 +83,9 @@
 /mob/living/silicon/pai/Initialize(mapload, obj/item/device/paicard)
 	. = ..()
 	status_flags |= NO_ANTAG
-	loc = paicard
-	card = paicard
+	if(paicard)
+		loc = paicard
+		card = paicard
 	sradio = new(src)
 
 	//As a human made device, we'll understand sol common without the need of the translator
