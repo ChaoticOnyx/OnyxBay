@@ -665,7 +665,7 @@ var/failed_don_db_connections = 0
 
 proc/setup_database_connection()
 
-	if(failed_db_connections > FAILED_DB_CONNECTION_CUTOFF)	//If it failed to establish a connection more than 5 times in a row, don't bother attempting to conenct anymore.
+	if(failed_db_connections > FAILED_DB_CONNECTION_CUTOFF)	//If it failed to establish a connection more than 5 times in a row, don't bother attempting to connect anymore.
 		return 0
 
 	if(!dbcon)
@@ -710,7 +710,7 @@ proc/establish_db_connection()
 //These two procs are for the old database, while it's being phased out. See the tgstation.sql file in the SQL folder for more information.
 proc/setup_old_database_connection()
 
-	if(failed_old_db_connections > FAILED_DB_CONNECTION_CUTOFF)	//If it failed to establish a connection more than 5 times in a row, don't bother attempting to conenct anymore.
+	if(failed_old_db_connections > FAILED_DB_CONNECTION_CUTOFF)	//If it failed to establish a connection more than 5 times in a row, don't bother attempting to connect anymore.
 		return 0
 
 	if(!dbcon_old)
@@ -755,7 +755,7 @@ proc/establish_old_db_connection()
 
 proc/setup_don_database_connection()
 
-	if(failed_don_db_connections > FAILED_DB_CONNECTION_CUTOFF)	//If it failed to establish a connection more than 5 times in a row, don't bother attempting to conenct anymore.
+	if(failed_don_db_connections > FAILED_DB_CONNECTION_CUTOFF)	//If it failed to establish a connection more than 5 times in a row, don't bother attempting to connect anymore.
 		return 0
 
 	if(!dbcon_don)
