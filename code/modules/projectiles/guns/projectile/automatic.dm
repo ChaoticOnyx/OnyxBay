@@ -157,7 +157,7 @@
 
 /obj/item/weapon/gun/projectile/automatic/wt550/update_icon()
 	icon_state = (ammo_magazine)? "wt550-[round(ammo_magazine.stored_ammo.len, 4)]" : "wt550"
-	item_state = (ammo_magazine?.stored_ammo?.len)? "wt550" : "wt550-empty"
+	item_state = (ammo_magazine?.stored_ammo?.len) ? "wt550" : "wt550-empty"
 	wielded_item_state = (ammo_magazine)? "wt550-wielded" : "wt550-wielded-empty"
 	..()
 
