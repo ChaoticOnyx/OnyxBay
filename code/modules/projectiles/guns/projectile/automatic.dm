@@ -142,7 +142,7 @@
 	wielded_item_state = "wt550-wielded"
 	w_class = ITEM_SIZE_NORMAL
 	caliber = "9mm"
-	fire_sound = 'sound/effects/weapons/gun/fire10.ogg'
+	fire_sound = 'sound/effects/weapons/gun/fire9.ogg'
 	origin_tech = list(TECH_COMBAT = 5, TECH_MATERIAL = 2)
 	slot_flags = SLOT_BELT
 	ammo_type = /obj/item/ammo_casing/c9mm/rubber
