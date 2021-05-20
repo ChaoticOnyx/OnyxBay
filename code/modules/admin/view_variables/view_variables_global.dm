@@ -37,7 +37,7 @@
 				"sqllogin",
 				"sqlpass",
 				"sqlport",
-				"sqldonaddres",
+				"sqldonaddress",
 				"sqldondb",
 				"sqldonport",
 				"sqldonlogin",

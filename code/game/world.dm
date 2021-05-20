@@ -654,6 +654,7 @@ var/failed_db_connections = 0
 var/failed_old_db_connections = 0
 var/failed_don_db_connections = 0
 
+
 /hook/startup/proc/connectDB()
 	if(!config.sql_enabled)
 		log_to_dd("SQL disabled. Your server will not use feedback database.")
@@ -708,9 +709,10 @@ proc/establish_db_connection()
 	return TRUE
 
 //These two procs are for the old database, while it's being phased out. See the tgstation.sql file in the SQL folder for more information.
+//If you don't know what any of this do, look at the same code above
 proc/setup_old_database_connection()
 
-	if(failed_old_db_connections > FAILED_DB_CONNECTION_CUTOFF)	//If it failed to establish a connection more than 5 times in a row, don't bother attempting to connect anymore.
+	if(failed_old_db_connections > FAILED_DB_CONNECTION_CUTOFF)	
 		return 0
 
 	if(!dbcon_old)
@@ -725,14 +727,13 @@ proc/setup_old_database_connection()
 	dbcon_old.Connect("dbi:mysql:[db]:[address]:[port]","[user]","[pass]")
 	. = dbcon_old.IsConnected()
 	if ( . )
-		failed_old_db_connections = 0	//If this connection succeeded, reset the failed connections counter.
+		failed_old_db_connections = 0
 	else
-		failed_old_db_connections++		//If it failed, increase the failed connections counter.
+		failed_old_db_connections++
 		to_world_log(dbcon.ErrorMsg())
 
 	return .
 
-//This proc ensures that the connection to the feedback database (global variable dbcon) is established
 proc/establish_old_db_connection()
 	if(failed_old_db_connections > FAILED_DB_CONNECTION_CUTOFF)
 		return 0
@@ -741,6 +742,7 @@ proc/establish_old_db_connection()
 		return setup_old_database_connection()
 	else
 		return 1
+
 
 /hook/startup/proc/connectDonDB()
 	if(!config.sql_enabled)
@@ -751,11 +753,10 @@ proc/establish_old_db_connection()
 		log_to_dd("Donations database connection established.")
 	return TRUE
 
-//These procs are for the donation database.
-
+//If you don't know what any of this do, look at the same code above
 proc/setup_don_database_connection()
 
-	if(failed_don_db_connections > FAILED_DB_CONNECTION_CUTOFF)	//If it failed to establish a connection more than 5 times in a row, don't bother attempting to connect anymore.
+	if(failed_don_db_connections > FAILED_DB_CONNECTION_CUTOFF)
 		return 0
 
 	if(!dbcon_don)
@@ -772,14 +773,13 @@ proc/setup_don_database_connection()
 	. = dbcon_don.IsConnected()
 	if ( . )
 		SSdonations.UpdateAllClients()
-		failed_don_db_connections = 0	//If this connection succeeded, reset the failed connections counter.
+		failed_don_db_connections = 0
 	else
-		failed_don_db_connections++		//If it failed, increase the failed connections counter.
+		failed_don_db_connections++
 		log_to_dd(dbcon.ErrorMsg())
 
 	return .
 
-//This proc ensures that the connection to the donations database is established
 proc/establish_don_db_connection()
 	if(failed_don_db_connections > FAILED_DB_CONNECTION_CUTOFF)
 		return 0
