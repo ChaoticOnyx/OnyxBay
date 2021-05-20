@@ -125,7 +125,8 @@ var/global/list/protected_objects = list(/obj/structure/table, /obj/structure/ca
 /mob/living/simple_animal/hostile/mimic/Destroy()
 	copy_of = null
 	creator = null
-	..()
+
+	return ..()
 
 /mob/living/simple_animal/hostile/mimic/sleeping
 	wander = 0

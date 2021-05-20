@@ -136,7 +136,7 @@
 			var/mob/living/carbon/C = buckled_mob
 			slab_nutrition = C.nutrition / 15
 			if (istype(buckled_mob, /mob/living/carbon/alien))
-				slab_type = /obj/item/weapon/reagent_containers/food/snacks/xenomeat
+				slab_type = /obj/item/weapon/reagent_containers/food/snacks/meat/xeno
 
 		if (istype(buckled_mob,/mob/living/simple_animal))
 			var/mob/living/simple_animal/critter = buckled_mob

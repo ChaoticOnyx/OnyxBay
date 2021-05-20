@@ -1,5 +1,5 @@
 //like orange but only checks north/south/east/west for one step
-proc/cardinalrange(center)
+/proc/cardinalrange(center)
 	var/list/things = list()
 	for(var/direction in GLOB.cardinal)
 		var/turf/T = get_step(center, direction)
@@ -69,8 +69,7 @@ proc/cardinalrange(center)
 	if(processing)	shutdown_core()
 	visible_message("<span class='warning'>\The [src] melts!</span>")
 	//Might want to have it leave a mess on the floor but no sprites for now
-	..()
-	return
+	return ..()
 
 
 /obj/machinery/am_shielding/CanPass(atom/movable/mover, turf/target)

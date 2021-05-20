@@ -388,7 +388,7 @@
 		GLOB.human_mob_list.len   * 45;  "human",
 		GLOB.silicon_mob_list.len * 350; "cyborg",
 		GLOB.living_mob_list_.len * 6;   "animal",
-		GLOB.living_mob_list_.len * 5;   "xeno",
+		GLOB.living_mob_list_.len * 5;   "xenomorph",
 		GLOB.living_mob_list_.len * 2;   "bot",
 		GLOB.living_mob_list_.len    ;   "mouse",
 		GLOB.ghost_mob_list.len   * 3;   "ghost"
@@ -407,7 +407,7 @@
 			fake_candidates = GLOB.silicon_mob_list
 		if("animal")
 			fake_candidates = get_living_sublist(list(/mob/living/simple_animal), list(/mob/living/simple_animal/mouse))
-		if("xeno")
+		if("xenomorph")
 			fake_candidates = get_living_sublist(list(/mob/living/carbon/alien, /mob/living/carbon/slime, /mob/living/deity))
 		if("bot")
 			fake_candidates = get_living_sublist(list(/mob/living/bot))

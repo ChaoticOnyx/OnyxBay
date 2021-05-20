@@ -245,7 +245,7 @@
 		if(custom_sprite && CUSTOM_ITEM_ROBOTS)
 			var/sprite_state = GLOB.robot_custom_icons[ckey]
 			var/list/valid_states = icon_states(CUSTOM_ITEM_ROBOTS)
-			if(sprite_state && sprite_state in valid_states)
+			if(sprite_state && (sprite_state in valid_states))
 				module_sprites["Custom"] = sprite_state
 				icon = CUSTOM_ITEM_ROBOTS
 				icontype = "Custom"
@@ -430,6 +430,11 @@
 	else
 		C.toggled = 1
 		to_chat(src, "<span class='warning'>You enable [C.name].</span>")
+
+/mob/living/silicon/robot/pointed(atom/A as mob|obj|turf in view())
+	if(..())
+		usr.visible_message("<b>[src]</b> laser points to [A]")
+
 /mob/living/silicon/robot/proc/update_robot_light()
 	if(lights_on)
 		if(intenselight)

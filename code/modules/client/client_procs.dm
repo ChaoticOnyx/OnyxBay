@@ -175,10 +175,12 @@
 		qdel(src)
 		return
 
+	/* Should be uncommented as soon as we manage to set a working resource URL. For now, messing with clients' preload_rsc at runtime may rain holy hell down upon us.
 	// Change the way they should download resources.
 	if(config.resource_urls && config.resource_urls.len)
 		src.preload_rsc = pick(config.resource_urls)
 	else src.preload_rsc = 1 // If config.resource_urls is not set, preload like normal.
+	*/
 
 	DIRECT_OUTPUT(src, "<span class='warning'>If the title screen is black and chat is broken, resources are still downloading. Please be patient until the title screen appears.</span>")
 	GLOB.clients += src
@@ -463,17 +465,17 @@
 			if (!D.send_slow(src)) //Precache the client with all other assets slowly, so as to not block other browse() calls
 				return
 
-mob/proc/MayRespawn()
+/mob/proc/MayRespawn()
 	return 0
 
-client/proc/MayRespawn()
+/client/proc/MayRespawn()
 	if(mob)
 		return mob.MayRespawn()
 
 	// Something went wrong, client is usually kicked or transfered to a new mob at this point
 	return 0
 
-client/verb/character_setup()
+/client/verb/character_setup()
 	set name = "Character Setup"
 	set category = "OOC"
 	if(prefs)

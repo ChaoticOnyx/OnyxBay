@@ -102,8 +102,7 @@ var/global/list/obj/machinery/telecomms/telecomms_list = list()
 	machine.receive_information(signal, src)
 
 /obj/machinery/telecomms/proc/receive_information(datum/signal/signal, obj/machinery/telecomms/machine_from)
-	// receive information from linked machinery
-	..()
+	return	// receive information from linked machinery
 
 /obj/machinery/telecomms/proc/is_freq_listening(datum/signal/signal)
 	// return 1 if found, 0 if not found
@@ -142,7 +141,8 @@ var/global/list/obj/machinery/telecomms/telecomms_list = list()
 	for(var/obj/machinery/telecomms/comm in telecomms_list)
 		comm.links -= src
 	links = list()
-	..()
+
+	return ..()
 
 // Used in auto linking
 /obj/machinery/telecomms/proc/add_link(obj/machinery/telecomms/T)

@@ -51,6 +51,8 @@ var/list/ventcrawl_machinery = list(
 		return FALSE
 	if(isMonkey(src))
 		return TRUE
+	if(istype(species, /datum/species/xenos))
+		return TRUE
 	return ventcrawl_carry()
 
 /mob/living/carbon/human/ventcrawl_carry()

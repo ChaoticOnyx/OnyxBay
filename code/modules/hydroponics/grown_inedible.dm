@@ -64,4 +64,4 @@
 	if(!istype(M))
 		return
 	if(M.m_intent != M_WALK)
-		M.slip_on_obj(src, 3, 2)
+		M.slip_on_obj(src, 2, 2)

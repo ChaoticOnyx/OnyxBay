@@ -258,6 +258,8 @@ You can set verify to TRUE if you want send() to sleep until the client has the 
 	assets = list(
 		"fa-regular-400.eot"  = 'html/font-awesome/webfonts/fa-regular-400.eot',
 		"fa-regular-400.woff" = 'html/font-awesome/webfonts/fa-regular-400.woff',
+		"fa-brands-400.eot"  = 'html/font-awesome/webfonts/fa-brands-400.eot',
+		"fa-brands-400.woff"  = 'html/font-awesome/webfonts/fa-brands-400.woff',
 		"fa-solid-900.eot"    = 'html/font-awesome/webfonts/fa-solid-900.eot',
 		"fa-solid-900.woff"   = 'html/font-awesome/webfonts/fa-solid-900.woff',
 		"font-awesome.css"    = 'html/font-awesome/css/all.min.css',

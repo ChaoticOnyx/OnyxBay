@@ -193,35 +193,28 @@
 	speak_incantation(user, "Mah[pick("'","`")]weyh pleggh at e'ntrath!")
 	target.visible_message("<span class='warning'>The markings below [target] glow a bloody red.</span>")
 
-	to_chat(target, "<span class='cult'>Your blood pulses. Your head throbs. The world goes red. All at once you are aware of a horrible, horrible truth. The veil of reality has been ripped away and in the festering wound left behind something sinister takes root.</span>")
-	if(!GLOB.cult.can_become_antag(target.mind, 1))
-		to_chat(target, "<span class='danger'>Are you going insane?</span>")
-	else
-		to_chat(target, "<span class='cult'>Do you want to join the cult of Nar'Sie? You can choose to ignore offer... <a href='?src=\ref[src];join=1'>Join the cult</a>.</span>")
+	to_chat(target, SPAN_OCCULT("Your blood pulses. Your head throbs. The world goes red. All at once you are aware of a horrible, horrible truth. The veil of reality has been ripped away and in the festering wound left behind something sinister takes root."))
 
 	spamcheck = 1
-	spawn(40)
+	spawn(30)
 		spamcheck = 0
-		if(!iscultist(target) && target.loc == get_turf(src)) // They hesitated, resisted, or can't join, and they are still on the rune - burn them
+		if(!iscultist(target) && target.loc == get_turf(src) && GLOB.cult.can_become_antag(target.mind, 1))
+			GLOB.cult.add_antagonist(target.mind, ignore_role = 1, do_not_equip = 1)
+		else // They hesitated, resisted, or can't join, and they are still on the rune - damage them
 			if(target.stat == CONSCIOUS)
-				target.take_overall_damage(0, 10)
+				target.take_overall_damage(10, 0)
 				switch(target.getFireLoss())
 					if(0 to 25)
-						to_chat(target, "<span class='danger'>Your blood boils as you force yourself to resist the corruption invading every corner of your mind.</span>")
+						to_chat(target, SPAN_DANGER("Your blood boils as you force yourself to resist the corruption invading every corner of your mind."))
 					if(25 to 45)
-						to_chat(target, "<span class='danger'>Your blood boils and your body burns as the corruption further forces itself into your body and mind.</span>")
-						target.take_overall_damage(0, 3)
+						to_chat(target, SPAN_DANGER("Your blood boils and your body burns as the corruption further forces itself into your body and mind."))
+						target.take_overall_damage(3, 5)
 					if(45 to 75)
-						to_chat(target, "<span class='danger'>You begin to hallucinate images of a dark and incomprehensible being and your entire body feels like its engulfed in flame as your mental defenses crumble.</span>")
-						target.take_overall_damage(0, 5)
+						to_chat(target, SPAN_DANGER("You begin to hallucinate images of a dark and incomprehensible being and your entire body feels like its engulfed in flame as your mental defenses crumble."))
+						target.take_overall_damage(5, 10)
 					if(75 to 100)
-						to_chat(target, "<span class='cult'>Your mind turns to ash as the burning flames engulf your very soul and images of an unspeakable horror begin to bombard the last remnants of mental resistance.</span>")
-						target.take_overall_damage(0, 10)
-
-/obj/effect/rune/convert/Topic(href, href_list)
-	if(href_list["join"])
-		if(usr.loc == loc && !iscultist(usr))
-			GLOB.cult.add_antagonist(usr.mind, ignore_role = 1, do_not_equip = 1)
+						to_chat(target, SPAN_OCCULT("Your mind turns to ash as the burning flames engulf your very soul and images of an unspeakable horror begin to bombard the last remnants of mental resistance."))
+						target.take_overall_damage(10, 20)
 
 /obj/effect/rune/teleport
 	cultname = "teleport"
@@ -440,7 +433,7 @@
 			T.holy = FALSE
 		else
 			T.cultify()
-		
+
 	var/area/A = get_area(src)
 	if(A && !isspace(A))
 		A.holy = FALSE
@@ -663,7 +656,7 @@
 		M.AdjustStunned(-1)
 		M.AdjustWeakened(-1)
 		M.add_chemical_effect(CE_PAINKILLER, 40)
-		M.add_chemical_effect(CE_SPEEDBOOST, 1)
+		M.add_up_to_chemical_effect(CE_SPEEDBOOST, 1)
 		M.adjustOxyLoss(-10 * removed)
 		M.heal_organ_damage(5 * removed, 5 * removed)
 		M.adjustToxLoss(-5 * removed)

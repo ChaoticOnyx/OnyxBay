@@ -416,7 +416,7 @@
 	var/turf/T = get_turf(src)
 	//If we're turning it on
 	if(set_welding && !welding)
-		if (get_fuel() > 0)
+		if(get_fuel() > 0)
 			if(M)
 				to_chat(M, "<span class='notice'>You switch the [src] on.</span>")
 			else if(T)
@@ -424,6 +424,7 @@
 			src.force = 15
 			src.damtype = "fire"
 			welding = 1
+			set_light(2)
 			update_icon()
 			START_PROCESSING(SSobj, src)
 		else
@@ -440,6 +441,7 @@
 		src.force = 3
 		src.damtype = "brute"
 		src.welding = 0
+		set_light(0)
 		update_icon()
 
 //Decides whether or not to damage a player's eyes based on what they're wearing as protection
@@ -591,6 +593,7 @@
 	START_PROCESSING(SSobj, src)
 
 /obj/item/weapon/welder_tank/experimental/Destroy()
+	. = ..()
 	STOP_PROCESSING(SSobj, src)
 
 /obj/item/weapon/welder_tank/experimental/Process()

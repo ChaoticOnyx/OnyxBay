@@ -28,7 +28,8 @@ NOTE: there are two lists of areas in the end of this file: centcom and station 
 	luminosity = 0
 	mouse_opacity = 0
 	var/lightswitch = 1
-
+	var/lighting_mode = ""
+	var/list/enabled_lighting_modes = list()
 	var/eject = null
 
 	var/debug = 0
@@ -80,7 +81,7 @@ NOTE: there are two lists of areas in the end of this file: centcom and station 
 /area/space/update_icon()
 	return
 
-area/space/atmosalert()
+/area/space/atmosalert()
 	return
 
 /area/space/fire_alert()

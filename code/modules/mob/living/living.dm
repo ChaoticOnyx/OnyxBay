@@ -30,7 +30,9 @@
 	if(!..())
 		return 0
 
-	usr.visible_message("<b>[src]</b> points to [A]")
+	//Borgs and AI have their own message
+	if(!issilicon(src))
+		usr.visible_message("<b>[src]</b> points to [A]")
 	return 1
 
 // Check if current mob can push other mob or swap with it
@@ -142,7 +144,7 @@
 					var/obj/machinery/disposal/D = AM
 					if(istype(D) && !(D.stat & BROKEN))
 						Weaken(6)
-						playsound(get_turf(AM), 'sound/effects/clang.ogg', 75)
+						playsound(AM, 'sound/effects/clang.ogg', 75)
 						visible_message(SPAN_WARNING("[src] falls into \the [AM]!"), SPAN_WARNING("You fall into \the [AM]!"))
 						if (client)
 							client.perspective = EYE_PERSPECTIVE

@@ -43,7 +43,7 @@
 	..()
 
 	regular_hud_updates()
-		
+
 	//Feeding, chasing food, FOOOOODDDD
 	if(!stat && !resting && !buckled)
 		turns_since_scan++
@@ -60,29 +60,30 @@
 						movement_target = S
 						break
 			if(movement_target)
-				stop_automated_movement = 1
-				step_to(src,movement_target,1)
-				sleep(3)
-				step_to(src,movement_target,1)
-				sleep(3)
-				step_to(src,movement_target,1)
+				spawn(0) // Jesus fucking christ, do we still need that sleep(3) spamming abomination in Life proc?
+					stop_automated_movement = 1
+					step_to(src,movement_target,1)
+					sleep(3)
+					step_to(src,movement_target,1)
+					sleep(3)
+					step_to(src,movement_target,1)
 
-				if(movement_target)		//Not redundant due to sleeps, Item can be gone in 6 decisecomds
-					if (movement_target.loc.x < src.x)
-						set_dir(WEST)
-					else if (movement_target.loc.x > src.x)
-						set_dir(EAST)
-					else if (movement_target.loc.y < src.y)
-						set_dir(SOUTH)
-					else if (movement_target.loc.y > src.y)
-						set_dir(NORTH)
-					else
-						set_dir(SOUTH)
+					if(movement_target)		//Not redundant due to sleeps, Item can be gone in 6 decisecomds
+						if (movement_target.loc.x < src.x)
+							set_dir(WEST)
+						else if (movement_target.loc.x > src.x)
+							set_dir(EAST)
+						else if (movement_target.loc.y < src.y)
+							set_dir(SOUTH)
+						else if (movement_target.loc.y > src.y)
+							set_dir(NORTH)
+						else
+							set_dir(SOUTH)
 
-					if(isturf(movement_target.loc) )
-						UnarmedAttack(movement_target)
-					else if(ishuman(movement_target.loc) && prob(20))
-						visible_emote("stares at the [movement_target] that [movement_target.loc] has with sad puppy eyes.")
+						if(isturf(movement_target.loc) )
+							UnarmedAttack(movement_target)
+						else if(ishuman(movement_target.loc) && prob(20))
+							visible_emote("stares at the [movement_target] that [movement_target.loc] has with sad puppy eyes.")
 
 		if(prob(1))
 			visible_emote(pick("dances around.","chases their tail."))
@@ -90,12 +91,12 @@
 				for(var/i in list(1,2,4,8,4,2,1,2,4,8,4,2,1,2,4,8,4,2))
 					set_dir(i)
 					sleep(1)
-					
+
 /mob/living/simple_animal/corgi/proc/regular_hud_updates()
 	if(pullin)
-		if(pulling)								
+		if(pulling)
 			pullin.icon_state = "pull1"
-		else									
+		else
 			pullin.icon_state = "pull0"
 	if(fire)
 		if(fire_alert)
@@ -107,13 +108,13 @@
 			oxygen.icon_state = "oxy1"
 		else
 			oxygen.icon_state = "oxy0"
-			
+
 	if(toxin)
 		if(toxins_alert)
 			toxin.icon_state = "tox1"
 		else
 			toxin.icon_state = "tox0"
-			
+
 	if (healths)
 		switch(health)
 			if(30 to INFINITY)
@@ -131,7 +132,7 @@
 			if(1 to 5)
 				healths.icon_state = "health6"
 			else
-				healths.icon_state = "health7"					
+				healths.icon_state = "health7"
 
 /obj/item/weapon/reagent_containers/food/snacks/meat/corgi
 	name = "Corgi meat"

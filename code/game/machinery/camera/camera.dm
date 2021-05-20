@@ -201,8 +201,9 @@
 	if(user.species.can_shred(user))
 		set_status(0)
 		user.do_attack_animation(src)
+		user.setClickCooldown(DEFAULT_QUICK_COOLDOWN)
 		visible_message("<span class='warning'>\The [user] slashes at [src]!</span>")
-		playsound(src.loc, 'sound/effects/fighting/smash.ogg', 50, 1)
+		playsound(src.loc, 'sound/weapons/slash.ogg', 100, 1)
 		add_hiddenprint(user)
 		destroy()
 

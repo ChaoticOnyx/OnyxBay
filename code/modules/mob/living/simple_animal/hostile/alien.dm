@@ -10,7 +10,7 @@
 	response_disarm = "shoves"
 	response_harm = "hits"
 	speed = -1
-	meat_type = /obj/item/weapon/reagent_containers/food/snacks/xenomeat
+	meat_type = /obj/item/weapon/reagent_containers/food/snacks/meat/xeno
 	maxHealth = 100
 	health = 100
 	harm_intent_damage = 5
@@ -22,7 +22,7 @@
 	min_gas = null
 	max_gas = null
 	unsuitable_atoms_damage = 15
-	faction = "alien"
+	faction = "xenomorph"
 	environment_smash = 2
 	status_flags = CANPUSH
 	minbodytemp = 0
@@ -85,5 +85,5 @@
 	icon_state = "toxin"
 
 /mob/living/simple_animal/hostile/alien/death(gibbed, deathmessage, show_dead_message)
-	..(gibbed, deathmessage = "lets out a waning guttural screech, green blood bubbling from its maw...", show_dead_message)
+	. = ..(gibbed, "lets out a waning guttural screech, green blood bubbling from its maw...", show_dead_message)
 	playsound(src, 'sound/voice/hiss6.ogg', 100, 1)

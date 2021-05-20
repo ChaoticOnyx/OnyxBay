@@ -618,7 +618,8 @@
 /obj/item/mecha_parts/mecha_equipment/repair_droid/Destroy()
 	qdel(pr_repair_droid)
 	pr_repair_droid = null
-	..()
+
+	return ..()
 
 /obj/item/mecha_parts/mecha_equipment/repair_droid/attach(obj/mecha/M as obj)
 	..()
@@ -708,7 +709,8 @@
 /obj/item/mecha_parts/mecha_equipment/tesla_energy_relay/Destroy()
 	qdel(pr_energy_relay)
 	pr_energy_relay = null
-	..()
+
+	return ..()
 
 /obj/item/mecha_parts/mecha_equipment/tesla_energy_relay/detach()
 	pr_energy_relay.stop()
@@ -795,7 +797,8 @@
 /obj/item/mecha_parts/mecha_equipment/generator/Destroy()
 	qdel(pr_mech_generator)
 	pr_mech_generator = null
-	..()
+
+	return ..()
 
 /obj/item/mecha_parts/mecha_equipment/generator/proc/init()
 	fuel = new /obj/item/stack/material/plasma(src)

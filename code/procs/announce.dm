@@ -29,7 +29,7 @@
 	title = "[command_name()] Update"
 	announcement_type = "[command_name()] Update"
 
-/datum/announcement/proc/Announce(message as text, new_title = "", new_sound = sound, do_newscast = newscast, msg_sanitized = 0, zlevels = GLOB.using_map.contact_levels)
+/datum/announcement/proc/Announce(message, new_title = "", new_sound = sound, do_newscast = newscast, msg_sanitized = 0, zlevels = GLOB.using_map.contact_levels)
 	if(!message)
 		return
 	var/message_title = new_title ? new_title : title
@@ -55,7 +55,7 @@
 	if(log)
 		log_game("[key_name(usr)] has made \a [announcement_type]: [message_title] - [message] - [announcer]", notify_admin = TRUE)
 
-proc/should_recieve_announce(mob/M, list/contact_levels)
+/proc/should_recieve_announce(mob/M, list/contact_levels)
 	if (istype(M,/mob/new_player) || isdeaf(M))
 		return 0
 	if (M.z in (contact_levels | GLOB.using_map.admin_levels))
@@ -67,23 +67,23 @@ proc/should_recieve_announce(mob/M, list/contact_levels)
 		return 1
 	return 0
 
-datum/announcement/proc/FormMessage(message as text, message_title as text)
+/datum/announcement/proc/FormMessage(message, message_title)
 	. = "<h2 class='alert'>[message_title]</h2>"
 	. += "<br><span class='alert'>[message]</span>"
 	if (announcer)
 		. += "<br><span class='alert'> -[html_encode(announcer)]</span>"
 
-datum/announcement/minor/FormMessage(message as text, message_title as text)
+/datum/announcement/minor/FormMessage(message, message_title)
 	. = "<b>[message]</b>"
 
-datum/announcement/priority/FormMessage(message as text, message_title as text)
+/datum/announcement/priority/FormMessage(message, message_title)
 	. = "<h1 class='alert'>[message_title]</h1>"
 	. += "<br><span class='alert'>[message]</span>"
 	if(announcer)
 		. += "<br><span class='alert'> -[html_encode(announcer)]</span>"
 	. += "<br>"
 
-datum/announcement/priority/command/FormMessage(message as text, message_title as text)
+/datum/announcement/priority/command/FormMessage(message, message_title)
 	. = "<h1 class='alert'>[command_name()] Update</h1>"
 	if (message_title)
 		. += "<br><h2 class='alert'>[message_title]</h2>"
@@ -91,11 +91,11 @@ datum/announcement/priority/command/FormMessage(message as text, message_title a
 	. += "<br><span class='alert'>[message]</span><br>"
 	. += "<br>"
 
-datum/announcement/priority/security/FormMessage(message as text, message_title as text)
+/datum/announcement/priority/security/FormMessage(message, message_title)
 	. = "<font size=4 color='red'>[message_title]</font>"
 	. += "<br><font color='red'>[message]</font>"
 
-datum/announcement/proc/NewsCast(message as text, message_title as text)
+/datum/announcement/proc/NewsCast(message, message_title)
 	if(!newscast)
 		return
 

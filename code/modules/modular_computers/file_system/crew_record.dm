@@ -7,6 +7,19 @@ GLOBAL_VAR_INIT(default_mental_status, "Stable")
 GLOBAL_LIST_INIT(security_statuses, list("None", "Released", "Parolled", "Incarcerated", "Arrest"))
 GLOBAL_VAR_INIT(default_security_status, "None")
 GLOBAL_VAR_INIT(arrest_security_status, "Arrest")
+GLOBAL_LIST_INIT(department_flags, list(
+	COM,
+	SPT,
+	SCI,
+	SEC,
+	MED,
+	ENG,
+	SUP,
+	EXP,
+	SRV,
+	CIV,
+	MSC
+))
 GLOBAL_LIST_INIT(text_to_department_flags, list(
 	"Heads of Staff" = COM,
 	"Command Support" = SPT,
@@ -45,6 +58,7 @@ GLOBAL_LIST_INIT(department_flags_to_text, list(
 	var/icon/photo_front = null
 	var/icon/photo_side = null
 	var/list/fields = list()	// Fields of this record
+	var/list/assigned_deparment_flags = list()
 
 /datum/computer_file/crew_record/New()
 	..()
@@ -71,7 +85,19 @@ GLOBAL_LIST_INIT(department_flags_to_text, list(
 	set_job(H ? GetAssignment(H) : "Unset")
 	set_sex(H ? gender2text(H.gender) : "Unset")
 	set_age(H ? H.age : 30)
-	set_department(GLOB.department_flags_to_text[num2text(GetDepartmentFlag(H))])
+	var/list/job_flag = list()
+	var/list/job_flag_name = list()
+	if(H)
+		var/datum/job/job = job_master.occupations_by_title[H.job]
+		if(job)
+			for(var/flag in GLOB.department_flags)
+				if(flag & job.department_flag)
+					job_flag += flag
+					job_flag_name += GLOB.department_flags_to_text[num2text(flag)]
+	if(!length(job_flag))
+		job_flag = list(MSC)
+	assigned_deparment_flags = job_flag
+	set_department(english_list(job_flag_name))
 	set_species(H ? H.get_species() : SPECIES_HUMAN)
 	set_branch(H ? (H.char_branch && H.char_branch.name) : "None")
 	set_rank(H ? (H.char_rank && H.char_rank.name) : "None")
@@ -125,16 +151,6 @@ GLOBAL_LIST_INIT(department_flags_to_text, list(
 		return F.set_value(value)
 
 // Global methods
-// get departament flag from human
-/proc/GetDepartmentFlag(mob/living/carbon/human/H)
-	var/job_flag
-	if(H)
-		var/datum/job/job = job_master.occupations_by_title[H.job]
-		if(job)
-			job_flag = job.department_flag
-	if(!job_flag)
-		job_flag = MSC
-	return job_flag
 
 // Used by character creation to create a record for new arrivals.
 /proc/CreateModularRecord(mob/living/carbon/human/H)
@@ -295,7 +311,7 @@ FIELD_LIST("Sex", sex, FALSE, record_genders())
 FIELD_NUM("Age", age, FALSE)
 
 
-FIELD_LIST_SECURE("Department", department, FALSE, GLOB.text_to_department_flags, access_hop)
+FIELD_SHORT_SECURE("Department", department, FALSE, access_hop)
 FIELD_SHORT("Species",species, FALSE)
 FIELD_LIST("Branch", branch, TRUE, record_branches()) // hidden field
 FIELD_LIST("Rank", rank, TRUE, record_ranks()) // hidden field

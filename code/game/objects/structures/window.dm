@@ -145,11 +145,33 @@
 		return !anchored // If it's anchored, it'll block air.
 	return TRUE // Don't stop airflow from the other sides.
 
+// Basically CanPass(), but also checks for diagonal movement
+// Currently only used by facehuggers
+// TODO: Expand somehow so it can be used by other projectiles as well
+//       It cannot be used in its current state because it will cause weird
+//       corner-shooting sutiations (it probably should check for connected windows)
+/obj/structure/window/proc/CanDiagonalPass(atom/movable/mover, turf/target)
+	if(istype(mover) && mover.pass_flags & PASS_FLAG_GLASS)
+		return TRUE
+	if(is_full_window())
+		return FALSE
+	var/mover_dir = get_dir(loc, target)
+	if((mover_dir & dir) || (mover_dir & turn(dir, -45)) || (mover_dir & turn(dir, 45)))
+		return !density
+	return TRUE
 
-/obj/structure/window/CheckExit(atom/movable/O as mob|obj, target as turf)
+/obj/structure/window/CheckExit(atom/movable/O, turf/target)
 	if(istype(O) && O.pass_flags & PASS_FLAG_GLASS)
 		return 1
 	if(get_dir(O.loc, target) == dir)
+		return 0
+	return 1
+
+/obj/structure/window/proc/CheckDiagonalExit(atom/movable/mover, turf/target)
+	if(istype(mover) && mover.pass_flags & PASS_FLAG_GLASS)
+		return 1
+	var/mover_dir = get_dir(mover.loc, target)
+	if((mover_dir & dir) || (turn(mover_dir, -45) & dir) || (turn(mover_dir, 45) & dir))
 		return 0
 	return 1
 

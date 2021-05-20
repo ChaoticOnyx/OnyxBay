@@ -55,7 +55,10 @@
 		CtrlAltClickOn(A)
 		return 1
 	if(modifiers["middle"])
-		MiddleClickOn(A)
+		if(modifiers["shift"])
+			ShiftMiddleClickOn(A)
+		else
+			MiddleClickOn(A)
 		return 1
 	if(modifiers["shift"])
 		ShiftClickOn(A)
@@ -214,8 +217,17 @@
 	Only used for swapping hands
 */
 /mob/proc/MiddleClickOn(atom/A)
+	if(get_preference_value(/datum/client_preference/pointing) == GLOB.PREF_MIDDLE_CLICK)
+		if(pointed(A))
+			return
 	swap_hand()
 	return
+
+/mob/proc/ShiftMiddleClickOn(var/atom/A)
+	if(get_preference_value(/datum/client_preference/pointing) == GLOB.PREF_SHIFT_MIDDLE_CLICK)
+		if(pointed(A))
+			return
+	
 
 // In case of use break glass
 /*
@@ -232,7 +244,7 @@
 	A.ShiftClick(src)
 	return
 /atom/proc/ShiftClick(mob/user)
-	if(user.client && src in view(user.client.eye))
+	if(user.client && (src in view(user.client.eye)))
 		user.examinate(src)
 
 	return

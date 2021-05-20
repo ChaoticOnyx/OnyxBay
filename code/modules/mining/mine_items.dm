@@ -28,15 +28,6 @@
 	new /obj/item/weapon/pickaxe(src)
 	new /obj/item/clothing/glasses/hud/standard/meson(src)
 
-/******************************Lantern*******************************/
-
-/obj/item/device/flashlight/lantern
-	name = "lantern"
-	icon_state = "lantern"
-	item_state = "lantern"
-	desc = "A mining lantern."
-	brightness_on = 6			// luminosity when on
-
 /*****************************Pickaxe********************************/
 
 /obj/item/weapon/pickaxe

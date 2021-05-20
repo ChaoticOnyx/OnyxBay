@@ -21,12 +21,15 @@
 	var/obj/item/organ/external/E = tool
 	var/obj/item/organ/external/P = target.organs_by_name[E.parent_organ]
 	if(!P || P.is_stump())
-		to_chat(user, "<span class='danger'>The [E.amputation_point] is missing!</span>")
+		to_chat(user, SPAN("notice", "The [E.amputation_point] is missing!"))
 		return SURGERY_FAILURE
 
 	var/obj/item/organ/external/affected = target.get_organ(target_zone)
-	if (affected)
-		return 0
+	if(affected)
+		return SURGERY_FAILURE
+	if(E.organ_tag != check_zone(target_zone)) // Somehow this is safe to use. All hail the glorious bayspaghetti!
+		to_chat(user, SPAN("notice", "You manage to realize that \the [E] does not belong here."))
+		return SURGERY_FAILURE
 	var/list/organ_data = target.species.has_limbs["[target_zone]"]
 	return !isnull(organ_data)
 

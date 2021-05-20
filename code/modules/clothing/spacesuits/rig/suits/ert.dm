@@ -1,7 +1,7 @@
 /obj/item/weapon/rig/ert
-	name = "asset protection command hardsuit control module"
-	desc = "A hardsuit used by many corporate and private asset protection forces. Has blue highlights. Armoured and space ready."
-	suit_type = "Asset Protection command"
+	name = "ERT commander hardsuit control module"
+	desc = "A hardsuit used by NanoTrasen's elite Emergency Response Teams. Has blue highlights. Armored and space ready."
+	suit_type = "ERT commander"
 	icon_state = "ert_commander_rig"
 
 	chest_type = /obj/item/clothing/suit/space/rig/ert
@@ -40,9 +40,9 @@
 
 
 /obj/item/weapon/rig/ert/engineer
-	name = "asset protection engineering hardsuit control module"
-	desc = "A hardsuit used by many corporate and private asset protection forces. Has orange highlights. Armoured and space ready."
-	suit_type = "Asset Protection engineer"
+	name = "ERT engineering hardsuit control module"
+	desc = "A hardsuit used by NanoTrasen's elite Emergency Response Teams. Has orange highlights. Armored and space ready."
+	suit_type = "ERT engineer"
 	icon_state = "ert_engineer_rig"
 	armor = list(melee = 60, bullet = 50, laser = 50,energy = 15, bomb = 30, bio = 100, rad = 100)
 
@@ -59,9 +59,9 @@
 	siemens_coefficient = 0
 
 /obj/item/weapon/rig/ert/janitor
-	name = "asset protection sanitation hardsuit control module"
-	desc = "A hardsuit used by many corporate and private asset protection forces. Has purple highlights. Armoured and space ready."
-	suit_type = "Asset Protection sanitation"
+	name = "ERT sanitation hardsuit control module"
+	desc = "A hardsuit used by NanoTrasen's elite Emergency Response Teams. Has purple highlights. Armored and space ready."
+	suit_type = "ERT sanitation"
 	icon_state = "ert_janitor_rig"
 	armor = list(melee = 60, bullet = 50, laser = 50,energy = 40, bomb = 40, bio = 100, rad = 100)
 
@@ -75,9 +75,9 @@
 		)
 
 /obj/item/weapon/rig/ert/medical
-	name = "asset protection medical hardsuit control module"
-	desc = "A hardsuit used by many corporate and private asset protection forces. Has white highlights. Armoured and space ready."
-	suit_type = "Asset Protection medic"
+	name = "ERT medical hardsuit control module"
+	desc = "A hardsuit used by NanoTrasen's elite Emergency Response Teams. Has white highlights. Armored and space ready."
+	suit_type = "ERT medic"
 	icon_state = "ert_medical_rig"
 
 	initial_modules = list(
@@ -89,9 +89,9 @@
 		)
 
 /obj/item/weapon/rig/ert/security
-	name = "asset protection security hardsuit control module"
-	desc = "A hardsuit used by many corporate and private asset protection forces. Has red highlights. Armoured and space ready."
-	suit_type = "Asset Protection security"
+	name = "ERT security hardsuit control module"
+	desc = "A hardsuit used by NanoTrasen's elite Emergency Response Teams. Has red highlights. Armored and space ready."
+	suit_type = "ERT security"
 	icon_state = "ert_security_rig"
 
 	initial_modules = list(
@@ -103,9 +103,9 @@
 		)
 
 /obj/item/weapon/rig/ert/assetprotection
-	name = "heavy asset protection suit control module"
-	desc = "A heavy, modified version of a common asset protection hardsuit. Has blood red highlights.  Armoured and space ready."
-	suit_type = "heavy asset protection"
+	name = "Death Squad suit control module"
+	desc = "That's not red paint. That's real blood."
+	suit_type = "Death Squad"
 	icon_state = "asset_protection_rig"
 	armor = list(melee = 70, bullet = 55, laser = 55,energy = 40, bomb = 70, bio = 100, rad = 100)
 

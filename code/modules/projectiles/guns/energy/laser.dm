@@ -12,16 +12,16 @@
 	one_hand_penalty = 2
 	accuracy = 2
 	max_shots = 12
+	fire_delay = 6
 	origin_tech = list(TECH_COMBAT = 3, TECH_MAGNET = 2)
 	matter = list(MATERIAL_STEEL = 2000)
 	projectile_type = /obj/item/projectile/beam/midlaser
 	wielded_item_state = "laserrifle-wielded"
 
 	firemodes = list(
-		list(mode_name="beam", projectile_type=/obj/item/projectile/beam/midlaser),
-		list(mode_name="slug", projectile_type=/obj/item/projectile/energy/laser/mid)
+		list(mode_name = "beam", projectile_type = /obj/item/projectile/beam/midlaser),
+		list(mode_name = "bolt", projectile_type = /obj/item/projectile/energy/laser/mid)
 	)
-
 
 /obj/item/weapon/gun/energy/laser/mounted
 	desc = "A modification Hephaestus Industries G40E carbine, designed to be mounted on cyborgs and other battle machinery. It's designed to kill with concentrated energy blasts."
@@ -80,7 +80,7 @@
 			desc += " The optical pathway is melted and useless."
 			projectile_type = null
 
-obj/item/weapon/gun/energy/retro
+/obj/item/weapon/gun/energy/retro
 	name = "retro laser"
 	icon_state = "retro"
 	item_state = "retro"
@@ -132,8 +132,8 @@ obj/item/weapon/gun/energy/retro
 	mod_handy = 1.0
 
 	firemodes = list(
-		list(mode_name="beam", projectile_type=/obj/item/projectile/beam/heavylaser),
-		list(mode_name="slug", projectile_type=/obj/item/projectile/energy/laser/heavy)
+		list(mode_name = "beam", projectile_type = /obj/item/projectile/beam/heavylaser),
+		list(mode_name = "bolt", projectile_type = /obj/item/projectile/energy/laser/heavy)
 	)
 
 /obj/item/weapon/gun/energy/lasercannon/mounted

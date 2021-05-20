@@ -81,7 +81,7 @@
 		target.mind.transfer_to(transformer)
 	else
 		transformer.key = target.key
-	playsound(get_turf(target), revert_sound, 50, 1)
+	playsound(target, revert_sound, 50, 1)
 	transformer.forceMove(get_turf(target))
 	remove_target(target)
 	qdel(target)
@@ -154,7 +154,7 @@
 	invocation = "Poli'crakata!"
 	invocation_type = SpI_SHOUT
 	spell_flags = INCLUDEUSER
-	range = -1
+	range = 0
 	duration = 150
 	charge_max = 600
 	cooldown_min = 300
@@ -170,7 +170,7 @@
 	invocation = "mutters something dark and twisted as their form begins to twist..."
 	invocation_type = SpI_EMOTE
 	spell_flags = INCLUDEUSER
-	range = -1
+	range = 0
 	duration = 150
 	charge_max = 1200
 	cooldown_min = 600

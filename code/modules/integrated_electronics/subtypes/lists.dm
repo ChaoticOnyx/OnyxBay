@@ -62,7 +62,6 @@
 			if(step == 0)
 				step = input_list.len + step_amount
 			step = step - step_amount
-			to_world(step)
 			if(step < 1)
 				step = 0
 				activate_pin(2)

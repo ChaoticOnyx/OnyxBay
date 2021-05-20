@@ -37,7 +37,8 @@
 	set_opacity(0)
 	set_density(0)
 	update_nearby_tiles()
-	..()
+
+	return ..()
 
 /obj/machinery/shield/attackby(obj/item/weapon/W as obj, mob/user as mob)
 	if(!istype(W)) return
@@ -133,7 +134,8 @@
 
 /obj/machinery/shieldgen/Destroy()
 	collapse_shields()
-	..()
+
+	return ..()
 
 /obj/machinery/shieldgen/proc/shields_up()
 	if(active) return 0 //If it's already turned on, how did this get called?

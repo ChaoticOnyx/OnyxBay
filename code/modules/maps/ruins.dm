@@ -2,13 +2,13 @@ GLOBAL_LIST_EMPTY(banned_ruin_ids)
 
 /proc/seedRuins(list/z_levels = null, budget = 0, whitelist = /area/space, list/potentialRuins, maxx = world.maxx, maxy = world.maxy)
 	if(!z_levels || !z_levels.len)
-		WARNING("No Z levels provided - Not generating ruins")
+		UNLINT(WARNING("No Z levels provided - Not generating ruins"))
 		return
 
 	for(var/zl in z_levels)
 		var/turf/T = locate(1, 1, zl)
 		if(!T)
-			WARNING("Z level [zl] does not exist - Not generating ruins")
+			UNLINT(WARNING("Z level [zl] does not exist - Not generating ruins"))
 			return
 
 	var/list/ruins = potentialRuins.Copy()
@@ -69,7 +69,7 @@ GLOBAL_LIST_EMPTY(banned_ruin_ids)
 				GLOB.banned_ruin_ids += ruin.id //and ban them globally too
 			break
 
-proc/load_ruin(turf/central_turf, datum/map_template/template)
+/proc/load_ruin(turf/central_turf, datum/map_template/template)
 	if(!template)
 		return FALSE
 	for(var/i in template.get_affected_turfs(central_turf, 1))

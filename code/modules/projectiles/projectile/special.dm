@@ -66,7 +66,7 @@
 	check_armour = "bullet"
 	blockable = FALSE
 
-	Bump(atom/A as mob|obj|turf|area)
+	Bump(atom/A, forced = FALSE)
 		if(A == firer)
 			loc = A.loc
 			return
@@ -170,7 +170,7 @@
 	muzzle_type = /obj/effect/projectile/bullet/muzzle
 
 /obj/item/projectile/energy/laser
-	name = "laser slug"
+	name = "laser bolt"
 	icon_state = "ibeam"
 	damage = 30
 	agony = 10
@@ -179,19 +179,90 @@
 	check_armour = "laser"
 	armor_penetration = 10
 	sharp = 1 //concentrated burns
-	pass_flags = PASS_FLAG_TABLE | PASS_FLAG_GRILLE
+	penetration_modifier = 0.35
+	pass_flags = PASS_FLAG_TABLE | PASS_FLAG_GLASS | PASS_FLAG_GRILLE
 	fire_sound = 'sound/effects/weapons/energy/fire8.ogg'
+
+/obj/item/projectile/energy/laser/small
+	icon_state = "laser_small"
+	damage = 40
+	armor_penetration = 15
 
 /obj/item/projectile/energy/laser/mid
 	icon_state = "laser"
 	damage = 60
-	agony = 20
-	armor_penetration = 20
+	agony = 10
+	armor_penetration = 25
 
 /obj/item/projectile/energy/laser/heavy
-	name = "heavy laser slug"
-	icon_state = "heavylaser"
+	name = "heavy laser bolt"
+	icon_state = "laser_heavy"
 	damage = 80
-	agony = 30
-	armor_penetration = 40
+	agony = 20
+	armor_penetration = 45
 	fire_sound = 'sound/effects/weapons/energy/fire21.ogg'
+
+/obj/item/projectile/facehugger_proj // Yes, it's dirty, and hacky, and so on. But it works and works fucking perfectly.
+	name = "alien"
+	icon = 'icons/mob/alien.dmi'
+	icon_state = "facehugger_thrown"
+	embed = 0 // nope nope nope nope nope
+	damage_type = PAIN
+	pass_flags = PASS_FLAG_TABLE
+	var/mob/living/simple_animal/hostile/facehugger/holder = null
+
+/obj/item/projectile/facehugger_proj/Bump(atom/A as mob|obj|turf|area)
+	if(A == firer)
+		loc = A.loc
+		return
+
+	if(!holder)
+		return
+
+	if(bumped)
+		return
+	bumped = TRUE
+
+	if(istype(A, /mob/living/carbon/human))
+		var/mob/living/carbon/human/H = A
+		if(H.faction != holder.faction && holder.facefuck(H))
+			holder = null
+			qdel(src)
+			return TRUE
+
+	var/turf/bump_loc = get_turf(A)
+	var/turf/previous_loc = get_turf(previous)
+	holder.forceMove(bump_loc)
+
+	if(istype(bump_loc, /turf/simulated/wall) || istype(bump_loc, /turf/simulated/shuttle/wall))
+		holder.forceMove(previous_loc) // Get us out of the wall
+	else
+		for(var/obj/O in bump_loc)
+			if(!O.density || !O.anchored)
+				continue
+			if(istype(O, /obj/structure/window)) // Yeah those fuckers require different processing, did I mention FUCK glass panes
+				var/obj/structure/window/W = O
+				if(get_turf(W) == starting)
+					if(!W.CheckDiagonalExit(src, get_turf(original)))
+						W.take_damage(10)
+					else
+						continue
+				else if(!W.CanDiagonalPass(src, previous_loc))
+					W.take_damage(10)
+				else
+					continue
+			else if(O.CanZASPass(previous_loc)) // If it doesn't block gases, it also doesn't prevent us from getting through
+				continue
+			holder.forceMove(previous_loc) // Otherwise we failed to pass
+			holder.visible_message(SPAN("danger", "\The [holder] smacks against \the [O]!"))
+			break
+
+	holder.FindTarget()
+	holder.MoveToTarget() // Calling these two to make sure the facehugger will try to keep distance upon missing
+	holder = null
+
+
+	set_density(0)
+	set_invisibility(101)
+	qdel(src)
+	return TRUE

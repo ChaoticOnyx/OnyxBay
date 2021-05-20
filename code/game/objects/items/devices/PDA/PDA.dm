@@ -372,7 +372,7 @@ var/global/list/obj/item/device/pda/PDAs = list()
 	var/auto_update = 1
 	if(mode in no_auto_update)
 		auto_update = 0
-	if(old_ui && (mode == lastmode && ui_tick % 5 && mode in update_every_five))
+	if(old_ui && (mode == lastmode && ui_tick % 5 && (mode in update_every_five)))
 		return
 
 	lastmode = mode
@@ -1376,12 +1376,12 @@ var/global/list/obj/item/device/pda/PDAs = list()
 	return ..()
 
 /obj/item/device/pda/clown/Crossed(AM as mob|obj) //Clown PDA is slippery.
-	if (istype(AM, /mob/living))
+	if(istype(AM, /mob/living))
 		var/mob/living/M = AM
 
-		if(M.slip("the PDA",8) && M.real_name != src.owner && istype(src.cartridge, /obj/item/weapon/cartridge/clown))
-			if(src.cartridge.charges < 5)
-				src.cartridge.charges++
+		if(M.slip_on_obj(src, 3, 3) && M.real_name != owner && istype(cartridge, /obj/item/weapon/cartridge/clown))
+			if(cartridge.charges < 5)
+				cartridge.charges++
 
 /obj/item/device/pda/proc/available_pdas()
 	var/list/names = list()

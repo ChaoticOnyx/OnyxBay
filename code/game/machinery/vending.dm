@@ -410,6 +410,8 @@
  *  See NanoUI documentation for details.
  */
 /obj/machinery/vending/ui_interact(mob/user, ui_key = "main", datum/nanoui/ui = null, force_open = 1)
+	if(CanUseTopic(user) != STATUS_INTERACTIVE)
+		return
 	user.set_machine(src)
 
 	var/list/data = list()
@@ -923,57 +925,31 @@
 					/obj/item/weapon/reagent_containers/food/drinks/cans/waterbottle = 10,
 					/obj/item/weapon/reagent_containers/food/drinks/cans/space_up = 10,
 					/obj/item/weapon/reagent_containers/food/drinks/cans/iced_tea = 10,
-					/obj/item/weapon/reagent_containers/food/drinks/cans/grape_juice = 10)
+					/obj/item/weapon/reagent_containers/food/drinks/cans/grape_juice = 10,
+					/obj/item/weapon/reagent_containers/food/drinks/cans/red_mule = 5)
+
 	contraband = list(/obj/item/weapon/reagent_containers/food/drinks/cans/thirteenloko = 5,
 					  /obj/item/weapon/reagent_containers/food/drinks/cans/dopecola = 5,
 					  /obj/item/weapon/reagent_containers/food/snacks/liquidfood = 6)
+
 	premium = list(/obj/item/weapon/reagent_containers/food/drinks/cans/waterbottle/fi4i = 5)
-	prices = list(/obj/item/weapon/reagent_containers/food/drinks/cans/cola = 2,
-				  /obj/item/weapon/reagent_containers/food/drinks/cans/colavanilla = 3,
-				  /obj/item/weapon/reagent_containers/food/drinks/cans/colacherry = 3,
-				  /obj/item/weapon/reagent_containers/food/drinks/cans/space_mountain_wind = 2,
-				  /obj/item/weapon/reagent_containers/food/drinks/cans/dr_gibb = 2,
-				  /obj/item/weapon/reagent_containers/food/drinks/cans/starkist = 2,
-				  /obj/item/weapon/reagent_containers/food/drinks/cans/waterbottle = 1,
-				  /obj/item/weapon/reagent_containers/food/drinks/cans/space_up = 2,
-				  /obj/item/weapon/reagent_containers/food/drinks/cans/iced_tea = 3,
-				  /obj/item/weapon/reagent_containers/food/drinks/cans/grape_juice = 3)
+
+	prices = list(/obj/item/weapon/reagent_containers/food/drinks/cans/cola = 5,
+				  /obj/item/weapon/reagent_containers/food/drinks/cans/colavanilla = 8,
+				  /obj/item/weapon/reagent_containers/food/drinks/cans/colacherry = 8,
+				  /obj/item/weapon/reagent_containers/food/drinks/cans/space_mountain_wind = 5,
+				  /obj/item/weapon/reagent_containers/food/drinks/cans/dr_gibb = 5,
+				  /obj/item/weapon/reagent_containers/food/drinks/cans/starkist = 5,
+				  /obj/item/weapon/reagent_containers/food/drinks/cans/waterbottle = 3,
+				  /obj/item/weapon/reagent_containers/food/drinks/cans/space_up = 5,
+				  /obj/item/weapon/reagent_containers/food/drinks/cans/iced_tea = 8,
+				  /obj/item/weapon/reagent_containers/food/drinks/cans/grape_juice = 5,
+				  /obj/item/weapon/reagent_containers/food/drinks/cans/red_mule = 15)
+
 	idle_power_usage = 211 //refrigerator - believe it or not, this is actually the average power consumption of a refrigerated vending machine according to NRCan.
 
 /obj/machinery/vending/cola_red
-	name = "Robust Softdrinks"
-	desc = "A softdrink vendor provided by Robust Industries, LLC."
 	icon_state = "Cola_Machine_red"
-	use_vend_state = TRUE
-	vend_delay = 11
-	product_slogans = "Robust Softdrinks: More robust than a toolbox to the head!"
-	product_ads = "Refreshing!;Hope you're thirsty!;Over 1 million drinks sold!;Thirsty? Why not cola?;Please, have a drink!;Drink up!;The best drinks in space."
-	rand_amount = TRUE
-	products = list(/obj/item/weapon/reagent_containers/food/drinks/cans/cola = 10,
-					/obj/item/weapon/reagent_containers/food/drinks/cans/colavanilla = 10,
-					/obj/item/weapon/reagent_containers/food/drinks/cans/colacherry = 10,
-					/obj/item/weapon/reagent_containers/food/drinks/cans/space_mountain_wind = 10,
-					/obj/item/weapon/reagent_containers/food/drinks/cans/dr_gibb = 10,
-					/obj/item/weapon/reagent_containers/food/drinks/cans/starkist = 10,
-					/obj/item/weapon/reagent_containers/food/drinks/cans/waterbottle = 10,
-					/obj/item/weapon/reagent_containers/food/drinks/cans/space_up = 10,
-					/obj/item/weapon/reagent_containers/food/drinks/cans/iced_tea = 10,
-					/obj/item/weapon/reagent_containers/food/drinks/cans/grape_juice = 10)
-	contraband = list(/obj/item/weapon/reagent_containers/food/drinks/cans/thirteenloko = 5,
-					  /obj/item/weapon/reagent_containers/food/drinks/cans/dopecola = 5,
-					  /obj/item/weapon/reagent_containers/food/snacks/liquidfood = 6)
-	premium = list(/obj/item/weapon/reagent_containers/food/drinks/cans/waterbottle/fi4i = 5)
-	prices = list(/obj/item/weapon/reagent_containers/food/drinks/cans/cola = 2,
-				  /obj/item/weapon/reagent_containers/food/drinks/cans/colavanilla = 3,
-				  /obj/item/weapon/reagent_containers/food/drinks/cans/colacherry = 3,
-				  /obj/item/weapon/reagent_containers/food/drinks/cans/space_mountain_wind = 2,
-				  /obj/item/weapon/reagent_containers/food/drinks/cans/dr_gibb = 2,
-				  /obj/item/weapon/reagent_containers/food/drinks/cans/starkist = 2,
-				  /obj/item/weapon/reagent_containers/food/drinks/cans/waterbottle = 1,
-				  /obj/item/weapon/reagent_containers/food/drinks/cans/space_up = 2,
-				  /obj/item/weapon/reagent_containers/food/drinks/cans/iced_tea = 3,
-				  /obj/item/weapon/reagent_containers/food/drinks/cans/grape_juice = 3)
-	idle_power_usage = 211 //refrigerator - believe it or not, this is actually the average power consumption of a refrigerated vending machine according to NRCan.
 
 /obj/machinery/vending/fitness
 	name = "SweatMAX"
@@ -1002,7 +978,7 @@
 					/obj/item/weapon/reagent_containers/pill/diet = 25,
 					/obj/item/weapon/towel/random = 40)
 
-	contraband = list(/obj/item/weapon/reagent_containers/syringe/steroid = 4)
+	contraband = list(/obj/item/weapon/reagent_containers/syringe/steroid/packaged = 4)
 
 //This one's from bay12
 /obj/machinery/vending/cart
@@ -1230,7 +1206,7 @@
 					/obj/item/weapon/reagent_containers/hypospray/autoinjector/pain = 4)
 	contraband = list(/obj/item/weapon/reagent_containers/pill/tox = 3,
 					  /obj/item/weapon/reagent_containers/pill/stox = 4,
-					  /obj/item/weapon/reagent_containers/pill/antitox = 6,
+					  /obj/item/weapon/reagent_containers/pill/dylovene = 6,
 					  /obj/item/weapon/reagent_containers/hypospray/autoinjector/combatpain = 2)
 	idle_power_usage = 211 //refrigerator - believe it or not, this is actually the average power consumption of a refrigerated vending machine according to NRCan.
 
@@ -1257,8 +1233,8 @@
 	products = list(/obj/item/stack/medical/bruise_pack = 2,
 					/obj/item/stack/medical/ointment = 2,
 					/obj/item/weapon/reagent_containers/hypospray/autoinjector = 4)
-	contraband = list(/obj/item/weapon/reagent_containers/syringe/antitoxin = 4,
-				   	  /obj/item/weapon/reagent_containers/syringe/antiviral = 4,
+	contraband = list(/obj/item/weapon/reagent_containers/syringe/antitoxin/packaged = 4,
+				   	  /obj/item/weapon/reagent_containers/syringe/antiviral/packaged = 4,
 				   	  /obj/item/weapon/reagent_containers/pill/tox = 1)
 
 /obj/machinery/vending/wallmed2
@@ -1268,7 +1244,7 @@
 	icon_state = "wallmed"
 	density = 0 //It is wall-mounted, and thus, not dense. --Superxpdude
 	products = list(/obj/item/weapon/reagent_containers/hypospray/autoinjector = 5,
-					/obj/item/weapon/reagent_containers/syringe/antitoxin = 1,
+					/obj/item/weapon/reagent_containers/syringe/antitoxin/packaged = 1,
 					/obj/item/stack/medical/bruise_pack = 3,
 					/obj/item/stack/medical/ointment =3)
 	contraband = list(/obj/item/weapon/reagent_containers/pill/tox = 3,
@@ -1537,7 +1513,8 @@
 					/obj/item/weapon/storage/bouquet = 3,
 					/obj/item/weapon/storage/wallet/poly = 2)
 	contraband = list(/obj/item/clothing/glasses/eyepatch = 2,
-					  /obj/item/clothing/accessory/horrible = 2)
+					  /obj/item/clothing/accessory/horrible = 2,
+					  /obj/item/clothing/under/monkey/color/random = 3)
 	premium = list(/obj/item/clothing/mask/smokable/pipe = 3)
 	prices = list(/obj/item/weapon/mirror = 60,
 				  /obj/item/weapon/haircomb = 40,

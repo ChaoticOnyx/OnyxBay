@@ -125,7 +125,7 @@
 		KA.receive_request(src, initial_card)
 
 	if(confirm_delay)
-		addtimer(CALLBACK(src, .broadcast_check), confirm_delay)
+		addtimer(CALLBACK(src, .proc/broadcast_check), confirm_delay)
 
 /obj/machinery/keycard_auth/proc/broadcast_check()
 	if(confirmed)

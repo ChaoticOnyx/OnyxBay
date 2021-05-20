@@ -66,7 +66,7 @@
 
 /obj/structure/ladder/proc/instant_climb(mob/user)
 	var/target_ladder = getTargetLadder(user)
-		user.forceMove(get_turf(target_ladder))
+	user.forceMove(get_turf(target_ladder))
 
 /obj/structure/ladder/proc/climb(mob/user)
 	if(!user.may_climb_ladders(src))

@@ -411,6 +411,7 @@
 
 // perform a flush
 /obj/machinery/disposal/proc/flush()
+	set waitfor = 0
 
 	flushing = 1
 	flick("[icon_state]-flush", src)
