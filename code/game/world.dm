@@ -772,7 +772,6 @@ proc/setup_don_database_connection()
 
 	. = dbcon_don.IsConnected()
 	if ( . )
-		SSdonations.UpdateAllClients()
 		failed_don_db_connections = 0
 	else
 		failed_don_db_connections++

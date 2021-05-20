@@ -14,6 +14,7 @@ SUBSYSTEM_DEF(donations)
 
 	if(establish_don_db_connection())
 		log_debug("Donations system successfully connected!")
+		UpdateAllClients()
 	else
 		log_debug("Donations system failed to connect with DB!")
 
