@@ -61,12 +61,6 @@
 	opacity = 0
 
 //////////////////////////////////////////
-/obj/machinery/door/airlock/sol
-	name = "Airlock"
-	icon = 'icons/obj/doors/doorsol.dmi'
-	assembly_type = /obj/structure/door_assembly/door_assembly_sol
-
-//////////////////////////////////////////
 /obj/machinery/door/airlock/glass
 	name = "Glass Airlock"
 	icon = 'icons/obj/doors/doorglass.dmi'
@@ -235,21 +229,6 @@
 	glass = 1
 
 /obj/machinery/door/airlock/glass_virology/Initialize()
-	. = ..()
-	hitsound = GLASS_AIRLOCK_HIT_SOUND
-
-//////////////////////////////////////////
-/obj/machinery/door/airlock/glass_sol
-	name = "Maintenance Hatch"
-	icon = 'icons/obj/doors/doorsolglass.dmi'
-	hitsound = null
-	maxhealth = 300
-	explosion_resistance = 5
-	opacity = 0
-	assembly_type = /obj/structure/door_assembly/door_assembly_sol
-	glass = 1
-
-/obj/machinery/door/airlock/glass_sol/Initialize()
 	. = ..()
 	hitsound = GLASS_AIRLOCK_HIT_SOUND
 
