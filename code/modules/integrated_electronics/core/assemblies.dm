@@ -346,7 +346,7 @@
 			</colgroup>\n"
 
 		// TABLE HEADERS
-		HTML += "<tr class='texte-bold'><td rowspan='1'>Activators</td></tr>"
+		HTML += "<tr class='text-bold'><td rowspan='1'>Activators</td></tr>"
 
 		// TABLE CONTENT
 		for(var/activator in circuit_pins.activators)
