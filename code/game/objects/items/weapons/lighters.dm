@@ -393,4 +393,4 @@ CIGARETTES AND STUFF ARE IN 'SMOKABLES' FOLDER
 		else
 			user.apply_damage(7.5, BURN, BP_R_HAND)
 		user.visible_message(SPAN("notice", "You hear a nasty snap, as [user] shuts off [src], badly pinching their hand in the process."))
-	playsound(src.loc, 'sound/items/zippo_open.ogg', 100, 1, -4)
+	playsound(src.loc, 'sound/items/zippo_close.ogg', 100, 1, -4)

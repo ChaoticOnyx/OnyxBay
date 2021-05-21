@@ -302,7 +302,10 @@
 						P.update_icon()
 
 						//Needs some special treatment ;)
-						if(ptype==9 || ptype==10)
+						if(ptype == 5)
+							var/obj/structure/disposalpipe/trunk/TrunkP = P
+							TrunkP.getlinked()
+						else if(ptype == 9 || ptype == 10)
 							var/obj/structure/disposalpipe/sortjunction/SortP = P
 							SortP.sortType = sortType
 							SortP.updatedir()

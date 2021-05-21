@@ -128,6 +128,7 @@
 
 		receptacle_value += bling.worth
 		to_chat(user, "<span class='notice'>You slide [bling.worth] credits into [src]'s receptacle.</span>")
+		bling.worth = 0
 		qdel(bling)
 
 	else

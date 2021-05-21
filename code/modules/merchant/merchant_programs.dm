@@ -125,6 +125,7 @@
 			if(istype(target, /obj/item/weapon/spacecash))
 				var/obj/item/weapon/spacecash/cash = target
 				bank += cash.worth
+				cash.worth = 0
 				qdel(target)
 		last_comms = "ALL MONEY DETECTED ON PAD TRANSFERED"
 		return

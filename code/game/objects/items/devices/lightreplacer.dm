@@ -59,9 +59,10 @@
 	var/emagged = 0
 	var/failmsg = ""
 	var/charge = 0
-	var/load_interval = 60
-	var/store_broken = 0//If set, this lightreplacer will suck up and store broken bulbs
+	var/load_interval = 30
+	var/store_broken = 0// If set, this lightreplacer will suck up and store broken bulbs
 	var/max_stored = 10
+	var/load_queue = FALSE
 
 /obj/item/device/lightreplacer/advanced
 	store_broken = 1
@@ -113,46 +114,68 @@
 			return
 
 /obj/item/device/lightreplacer/afterattack(atom/target, mob/living/user, proximity, params)
-	if (istype(target, /obj/item/weapon/storage/box))
-		if (box_contains_lights(target))
+	if(istype(target, /obj/item/weapon/storage/box))
+		if(box_contains_lights(target))
 			load_lights_from_box(target, user)
 		else
 			to_chat(user, "This box has no bulbs in it!")
-
+	if(istype(target, /obj/item/weapon/light))
+		if(!isturf(target.loc))
+			return
+		var/obj/item/weapon/light/L = target
+		if(L.status != 0)
+			return
+		if(load_queue || uses >= max_uses)
+			to_chat(user, "\The [src] is already full!")
+			return
+		uses++
+		to_chat(user, SPAN("notice", "Light loaded: [uses]/[max_uses]"))
+		playsound(loc, 'sound/machines/click.ogg', 20, 1)
+		L.loc = null
+		qdel(L)
 
 /obj/item/device/lightreplacer/proc/box_contains_lights(obj/item/weapon/storage/box/box)
-	for (var/obj/item/weapon/light/L in box.contents)
-		if (L.status == 0)
-			return 1
-	return 0
+	for(var/obj/item/weapon/light/L in box.contents)
+		if(L.status == 0)
+			return TRUE
+	return FALSE
 
 
 /obj/item/device/lightreplacer/proc/load_lights_from_box(obj/item/weapon/storage/box/box, mob/user)
 	var/boxstartloc = box.loc
-	var/ourstartloc = src.loc
-	user.visible_message("<span class='notice'>[user] starts loading lights from the [box] into their [src]</span>", "<span class='notice'>You start loading lights from the [box] into the [src]</span>")
-	while (uses < max_uses)
+	var/ourstartloc = loc
+	if(load_queue)
+		return
+	if(uses >= max_uses)
+		to_chat(user, "\The [src] is already full!")
+		return
+	load_queue = TRUE
+	user.visible_message(SPAN("notice", "[user] starts loading lights from \the [box] into their [src]."), SPAN("notice", "You start loading lights from the [box] into the [src]."))
+	while(uses < max_uses)
 		var/bulb = null
-		for (var/obj/item/weapon/light/L in box.contents)
-			if (L.status == 0)
+		for(var/obj/item/weapon/light/L in box.contents)
+			if(L.status == 0)
 				bulb = L
 				break
 
-		if (!bulb)
-			to_chat(user, "<span class='warning'>There are no more working lights left in the box!</span>")
+		if(!bulb)
+			to_chat(user, SPAN("warning", "There are no more working lights left in \the [box]!"))
+			load_queue = FALSE
 			return
 
-		if (do_after(user, load_interval, needhand = 0) && boxstartloc == box.loc && ourstartloc == src.loc)
+		if(do_after(user, load_interval, needhand = 0) && boxstartloc == box.loc && ourstartloc == loc)
 			uses++
-			to_chat(user, "<span class='notice'>Light loaded: [uses]/[max_uses]</span>")
-			playsound(src.loc, 'sound/machines/click.ogg', 20, 1)
-			box.remove_from_storage(bulb,get_turf(box))
+			to_chat(user, SPAN("notice", "Light loaded: [uses]/[max_uses]"))
+			playsound(loc, 'sound/machines/click.ogg', 20, 1)
+			box.remove_from_storage(bulb, get_turf(box))
 			qdel(bulb)
 		else
-			to_chat(usr, "<span class='warning'>You need to keep the [src] close to the box!</span>")
+			to_chat(usr, SPAN("warning", "You need to keep \the [src] close to \the [box]!"))
+			load_queue = FALSE
 			return
 
-	to_chat(user, "<span class='notice'>The [src]'s refill light shines a solid green, indicating it's full and ready to go!</span>")
+	load_queue = FALSE
+	to_chat(user, SPAN("notice", "\The [src]'s refill light shines a solid green, indicating it's full and ready to go!"))
 
 /obj/item/device/lightreplacer/proc/stored()
 	var/count = 0

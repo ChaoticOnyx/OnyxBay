@@ -170,7 +170,7 @@
 	muzzle_type = /obj/effect/projectile/bullet/muzzle
 
 /obj/item/projectile/energy/laser
-	name = "laser slug"
+	name = "laser bolt"
 	icon_state = "ibeam"
 	damage = 30
 	agony = 10
@@ -179,21 +179,27 @@
 	check_armour = "laser"
 	armor_penetration = 10
 	sharp = 1 //concentrated burns
-	pass_flags = PASS_FLAG_TABLE | PASS_FLAG_GRILLE
+	penetration_modifier = 0.35
+	pass_flags = PASS_FLAG_TABLE | PASS_FLAG_GLASS | PASS_FLAG_GRILLE
 	fire_sound = 'sound/effects/weapons/energy/fire8.ogg'
+
+/obj/item/projectile/energy/laser/small
+	icon_state = "laser_small"
+	damage = 40
+	armor_penetration = 15
 
 /obj/item/projectile/energy/laser/mid
 	icon_state = "laser"
 	damage = 60
-	agony = 20
-	armor_penetration = 20
+	agony = 10
+	armor_penetration = 25
 
 /obj/item/projectile/energy/laser/heavy
-	name = "heavy laser slug"
-	icon_state = "heavylaser"
+	name = "heavy laser bolt"
+	icon_state = "laser_heavy"
 	damage = 80
-	agony = 30
-	armor_penetration = 40
+	agony = 20
+	armor_penetration = 45
 	fire_sound = 'sound/effects/weapons/energy/fire21.ogg'
 
 /obj/item/projectile/facehugger_proj // Yes, it's dirty, and hacky, and so on. But it works and works fucking perfectly.

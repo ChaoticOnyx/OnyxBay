@@ -376,8 +376,8 @@
 				return 0
 			if(!cdoor)
 				return 0
-			user.visible_message("<span class='notice'>[user] unscrewed [cdoor] from [src].</span>")
-			remove_door()
+			if(remove_door())
+				user.visible_message(SPAN("notice", "[user] unscrewed [cdoor] from [src]."))
 			return
 
 		if(istype(W, /obj/item/weapon/shield/closet) && dremovable && !cdoor)
@@ -729,7 +729,10 @@
 
 /obj/structure/closet/proc/remove_door()
 	if(!cdoor)
-		return 0
+		return FALSE
+	if(welded || locked)
+		return FALSE
+	open()
 	broken = FALSE
 	locked = FALSE
 	var/matrix/M = matrix()
@@ -743,7 +746,7 @@
 
 	update_icon()
 
-	return 1
+	return TRUE
 
 /obj/structure/closet/proc/attach_door(obj/item/weapon/shield/closet/C)
 	if(cdoor)
@@ -761,3 +764,6 @@
 	update_icon()
 
 	return 1
+
+/obj/structure/closet/hides_inside_walls() // Let's just don't
+	return FALSE
