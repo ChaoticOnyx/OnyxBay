@@ -1,29 +1,172 @@
-div.scrollleft
-{
-	bottom: 0;
-	margin: 0;
-	overflow: scroll;
-	overflow-x: auto;
-	position: absolute;
-	text-indent: 15px;
-	top: 120px;
-	width: 200px;
+body {
+    background-color: #262626;
+    overflow: hidden;
 }
 
-div.scrollright
-{
-	bottom: 0;
-	left: 210px;
-	margin: 0;
-	right: 0;
-	overflow: scroll;
-	overflow-x: auto;
-	position: absolute;
-	text-indent: 15px;
-	top: 120px;
+.uiTitle {
+    background-color: #202021;
+    color: white;
+    border: none;
+    text-transform: uppercase;
 }
 
-font.lowtext
-{
-	bottom: 0;
+.uiTitleButtons {
+    padding: 8px 8px 6px 8px;
+}
+
+div.scrollleft {
+    bottom: 0;
+    margin: 0;
+    position: absolute;
+    left: 0;
+    top: 32px;
+    width: 200px;
+    background-color: #2D2D2D;
+    padding-left: 8px;
+}
+
+div.scrollright {
+    bottom: 0;
+    left: 208px;
+    margin: 0;
+    right: 0;
+    position: absolute;
+    top: 32px;
+}
+
+a:link,
+a,
+a:active,
+a.linkOff {
+    border: none;
+    padding: 2px 4px 2px 4px;
+}
+
+a:link {
+    cursor: pointer;
+}
+
+a:hover {
+    background-color: #71acf0;
+    color: white;
+}
+
+a.icon {
+    background-color: rgba(0, 0, 0, 0);
+    padding-left: 0;
+}
+
+a.linkOff {
+    border: none;
+}
+
+a.align-to-text {
+    position: relative;
+    top: 3px;
+    margin-right: 0;
+}
+
+table {
+    border-collapse: collapse;
+    text-align: left;
+}
+
+.text-bold {
+    font-weight: bold;
+}
+
+table * td {
+    padding: 2px 2px 2px 6px;
+}
+
+table * tr {
+    background-color: #2A2A2A;
+}
+
+table * tr:nth-child(odd) {
+    background-color: #262626;
+}
+
+table * .row-center {
+    text-align: center;
+}
+
+#component_bar {
+    padding-left: 8px;
+    background-color: #333333;
+}
+
+#component_actions {
+    display: inline;
+    float: right;
+    margin-right: 8px;
+}
+
+#status_bar {
+    background-color: #007ACC;
+    position: fixed;
+    width: 100%;
+    bottom: 0;
+    left: 0;
+    z-index: 1;
+}
+
+#status_bar a {
+    padding-top: 4px;
+    padding-bottom: 3px;
+}
+
+#status_bar .divider {
+    display: inline;
+    margin-left: 4px;
+    margin-right: 4px;
+}
+
+#status_bar a:hover {
+    background-color: #0092f0;
+}
+
+a.grey {
+    background-color: #4D4D4D;
+    border-radius: 2px;
+    font-size: 12px;
+}
+
+a.grey div.codicon-symbol-parameter {
+    color: #B180D7;
+}
+
+a.grey div.codicon-symbol-event {
+    color: #EE9D28;
+}
+
+a.grey div.codicon-symbol-variable {
+    color: #75BEFF;
+}
+
+a.grey:hover {
+    background-color: #094771;
+}
+
+a div.fit-in-button {
+    position: relative;
+    top: 3px;
+}
+
+.segmented-control a {
+    height: 19px;
+    margin-right: 0;
+    background-color: #4D4D4D;
+}
+
+.segmented-control a:hover {
+    background-color: #094771;
+}
+
+.segmented-control :first-child {
+    border-radius: 2px 0 0 2px;
+}
+
+.segmented-control :last-child {
+    border-radius: 0 2px 2px 0;
 }
