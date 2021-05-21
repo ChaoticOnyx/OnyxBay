@@ -280,7 +280,7 @@
 				/obj/item/weapon/gun/projectile/pistol/colt = 4,
 				/obj/item/weapon/gun/projectile/pistol/sec = 4,
 				/obj/item/weapon/gun/projectile/pistol/sec/wood = 3,
-				/obj/item/weapon/gun/projectile/pistol/pistol = 4,
+				/obj/item/weapon/gun/projectile/pistol/holdout = 4,
 				/obj/item/weapon/gun/projectile/pirate = 5,
 				/obj/item/weapon/gun/projectile/revolver = 2,
 				/obj/item/weapon/gun/projectile/automatic/wt550 = 3,
