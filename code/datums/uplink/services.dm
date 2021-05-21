@@ -270,7 +270,7 @@
 	for(var/flag in new_record.assigned_deparment_flags)
 		current_department_flags_name_list[GLOB.department_flags_to_text[num2text(flag)]] = flag
 
-	department.set_value(english_list(edit_departament(new_record, current_department_flags_name_list, default_message)))
+	department.set_value(english_list(edit_department(new_record, current_department_flags_name_list, default_message)))
 
 	if(does_announce_visit)
 		var/datum/spawnpoint/arrivals/spawnpoint = new()

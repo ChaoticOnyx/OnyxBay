@@ -77,7 +77,7 @@
 
 	return user_access
 
-/proc/edit_departament(datum/computer_file/crew_record/R, current_department_flags_name_list, default_message)
+/proc/edit_department(datum/computer_file/crew_record/R, current_department_flags_name_list, default_message)
 	var/current_department_flags = "[default_message] [english_list(current_department_flags_name_list)]"
 	var/list/options = list()
 	options["Add ([current_department_flags])"] = 1
@@ -94,14 +94,14 @@
 				var/flag = remain_flags_text[selected_flag]
 				R.assigned_deparment_flags += flag
 				current_department_flags_name_list[selected_flag] = flag
-			. = edit_departament(R, current_department_flags_name_list, default_message)
+			. = edit_department(R, current_department_flags_name_list, default_message)
 		if(2)
 			var/selected_flag = input("Select flag name", "Department Flag") as null|anything in current_department_flags_name_list
 			if(selected_flag)
 				var/flag = current_department_flags_name_list[selected_flag]
 				R.assigned_deparment_flags -= flag
 				current_department_flags_name_list -= selected_flag
-			. = edit_departament(R, current_department_flags_name_list, default_message)
+			. = edit_department(R, current_department_flags_name_list, default_message)
 		else
 			. = current_department_flags_name_list
 
@@ -124,7 +124,7 @@
 		for(var/flag in R.assigned_deparment_flags)
 			current_department_flags_name_list[GLOB.department_flags_to_text[num2text(flag)]] = flag
 
-		newValue = english_list(edit_departament(R, current_department_flags_name_list, default_message))
+		newValue = english_list(edit_department(R, current_department_flags_name_list, default_message))
 	else
 		switch(F.valtype)
 			if(EDIT_SHORTTEXT)
