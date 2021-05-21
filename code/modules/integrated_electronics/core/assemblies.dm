@@ -307,7 +307,7 @@
 			INPUTS += "<ul>"
 			for(var/k in io.linked)
 				var/datum/integrated_io/linked = k
-				INPUTS += "<li><a class='grey' href='?src=\ref[circuit_pins];act=unwire;pin=\ref[io];link=\ref[linked]'><div class='codicon codicon-symbol-variable fit-in-button'></div>[linked]</a> ← <a class='grey' href='?src=\ref[linked.holder]'><div class='codicon codicon-symbol-property'></div>[linked.holder.displayed_name]</a></li>"
+				INPUTS += "<li><a class='grey' href='?src=\ref[circuit_pins];act=unwire;pin=\ref[io];link=\ref[linked]'><div class='codicon codicon-symbol-variable fit-in-button'></div>[linked]</a> ← <a class='grey' href='?src=\ref[linked.holder]'><div class='codicon codicon-symbol-property fit-in-button'></div>[linked.holder.displayed_name]</a></li>"
 
 			INPUTS += "</ul>"
 
@@ -326,7 +326,7 @@
 			OUTPUTS += "<ul>"
 			for(var/k in io.linked)
 				var/datum/integrated_io/linked = k
-				OUTPUTS += "<li><a class='grey' href='?src=\ref[circuit_pins];act=unwire;pin=\ref[io];link=\ref[linked]'><div class='codicon codicon-symbol-variable fit-in-button'></div>[linked]</a> ← <a class='grey' href='?src=\ref[linked.holder]'><div class='codicon codicon-symbol-property'></div>[linked.holder.displayed_name]</a></li>"
+				OUTPUTS += "<li><a class='grey' href='?src=\ref[circuit_pins];act=unwire;pin=\ref[io];link=\ref[linked]'><div class='codicon codicon-symbol-variable fit-in-button'></div>[linked]</a> ← <a class='grey' href='?src=\ref[linked.holder]'><div class='codicon codicon-symbol-property fit-in-button'></div>[linked.holder.displayed_name]</a></li>"
 
 			OUTPUTS += "</ul>"
 
@@ -360,7 +360,7 @@
 
 				for(var/k in io.linked)
 					var/datum/integrated_io/linked = k
-					ACTIVATORS += "<li><a class='grey' href='?src=\ref[circuit_pins];act=unwire;pin=\ref[io];link=\ref[linked]'><div class='codicon codicon-symbol-event fit-in-button'></div>[linked]</a> ← <a class='grey' href='?src=\ref[linked.holder]'><div class='codicon codicon-symbol-property'></div>[linked.holder.displayed_name]</a></li>"
+					ACTIVATORS += "<li><a class='grey' href='?src=\ref[circuit_pins];act=unwire;pin=\ref[io];link=\ref[linked]'><div class='codicon codicon-symbol-event fit-in-button'></div>[linked]</a> ← <a class='grey' href='?src=\ref[linked.holder]'><div class='codicon codicon-symbol-property fit-in-button'></div>[linked.holder.displayed_name]</a></li>"
 
 				ACTIVATORS += "</ul>"
 
