@@ -1,4 +1,4 @@
-/obj/item/weapon/gun/projectile/automatic/
+/obj/item/weapon/gun/projectile/automatic
 	name = "prototype .45 machine pistol"
 	desc = "A protoype lightweight, fast firing gun. Uses .45 rounds."
 	icon_state = "mpistolen"
@@ -107,7 +107,7 @@
 	name = "assault rifle"
 	desc = "The rugged STS-35 is a durable automatic weapon of a make popular on the frontier worlds. The serial number has been scratched off. Uses 5.56mm rounds."
 	icon_state = "arifle"
-	item_state = null
+	item_state = "arifle"
 	w_class = ITEM_SIZE_HUGE
 	force = 12.5
 	mod_weight = 1.0
@@ -132,9 +132,9 @@
 		)
 
 /obj/item/weapon/gun/projectile/automatic/sts35/update_icon()
+	..()
 	icon_state = (ammo_magazine)? "arifle" : "arifle-empty"
 	wielded_item_state = (ammo_magazine)? "arifle-wielded" : "arifle-wielded-empty"
-	..()
 
 /obj/item/weapon/gun/projectile/automatic/wt550
 	name = "9mm submachine gun"
@@ -307,6 +307,7 @@
 		return ..() //once open, behave like normal
 
 /obj/item/weapon/gun/projectile/automatic/l6_saw/update_icon()
+	..()
 	if(istype(ammo_magazine, /obj/item/ammo_magazine/box))
 		icon_state = "l6[cover_open ? "open" : "closed"][round(ammo_magazine.stored_ammo.len, 25)]"
 		item_state = "l6[cover_open ? "open" : "closed"]"
@@ -316,7 +317,6 @@
 	else
 		icon_state = "l6[cover_open ? "open" : "closed"]-empty"
 		item_state = "l6[cover_open ? "open" : "closed"]-empty"
-	..()
 
 /obj/item/weapon/gun/projectile/automatic/l6_saw/load_ammo(obj/item/A, mob/user)
 	if(!cover_open)
