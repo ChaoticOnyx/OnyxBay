@@ -18,6 +18,7 @@
 	var/pull_slowdown = PULL_SLOWDOWN_WEIGHT // How much it slows us down while we are pulling it
 
 /obj/Destroy()
+	CAN_BE_REDEFINED(TRUE)
 	var/obj/item/smallDelivery/delivery = loc
 
 	if (istype(delivery))
@@ -108,6 +109,7 @@
 		src.attack_self(M)
 
 /obj/proc/hide(hide)
+	pulledby?.stop_pulling()
 	set_invisibility(hide ? INVISIBILITY_MAXIMUM : initial(invisibility))
 
 /obj/proc/hides_under_flooring()

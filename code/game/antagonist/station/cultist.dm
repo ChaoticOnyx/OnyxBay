@@ -156,16 +156,6 @@ GLOBAL_DATUM_INIT(cult, /datum/antagonist/cultist, new)
 		for(var/mob/observer/ghost/D in SSmobs.mob_list)
 			add_ghost_magic(D)
 
-/datum/antagonist/cultist/proc/offer_uncult(mob/M)
-	if(!iscultist(M) || !M.mind)
-		return
-
-	to_chat(M, "<span class='cult'>Do you want to abandon the cult of Nar'Sie? <a href='?src=\ref[src];confirmleave=1'>ACCEPT</a></span>")
-
-/datum/antagonist/cultist/Topic(href, href_list)
-	if(href_list["confirmleave"])
-		GLOB.cult.remove_antagonist(usr.mind, 1)
-
 /datum/antagonist/cultist/proc/remove_cultiness(amount)
 	cult_rating = max(0, cult_rating - amount)
 

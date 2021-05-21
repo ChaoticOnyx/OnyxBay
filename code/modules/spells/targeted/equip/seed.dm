@@ -15,7 +15,7 @@
 	cooldown_min = 200 //20 seconds
 	level_max = list(Sp_TOTAL = 3, Sp_SPEED = 3, Sp_POWER = 0)
 
-	range = -1
+	range = 0
 	max_targets = 1
 
 	hud_state = "wiz_seed"

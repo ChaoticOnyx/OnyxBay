@@ -50,6 +50,7 @@ var/list/gear_datums = list()
 	var/datum/gear/selected_gear
 	var/list/selected_tweaks = new
 	var/hide_unavailable_gear = FALSE
+	var/hide_donate_gear = FALSE
 	var/flag_not_enough_opyxes = FALSE
 
 /datum/category_item/player_setup_item/loadout/load_character(savefile/S)
@@ -142,6 +143,7 @@ var/list/gear_datums = list()
 	. += "<a href='?src=\ref[src];clear_loadout=1'>Clear Loadout</a><br>"
 	. += "<a href='?src=\ref[src];random_loadout=1'>Random Loadout</a><br>"
 	. += "<a href='?src=\ref[src];toggle_hiding=1'>[hide_unavailable_gear ? "Show unavailable for your jobs and species" : "Hide unavailable for your jobs and species"]</a><br>"
+	. += "<a href='?src=\ref[src];toggle_donate=1'>[hide_donate_gear ? "Show donate gears" : "Hide donate gears"]</a><br>"
 	. += "</td>"
 
 	. += "</tr></table>"
@@ -215,6 +217,8 @@ var/list/gear_datums = list()
 			continue
 		var/datum/gear/G = LC.gear[gear_name]
 		if(!G.path)
+			continue
+		if(hide_donate_gear && (G.price || G.patron_tier))
 			continue
 		var/entry = ""
 		var/ticked = (G.display_name in pref.gear_list[pref.gear_slot])
@@ -493,6 +497,9 @@ var/list/gear_datums = list()
 		return TOPIC_REFRESH_UPDATE_PREVIEW
 	if(href_list["toggle_hiding"])
 		hide_unavailable_gear = !hide_unavailable_gear
+		return TOPIC_REFRESH
+	if(href_list["toggle_donate"])
+		hide_donate_gear = !hide_donate_gear
 		return TOPIC_REFRESH
 	if(href_list["get_opyxes"])
 		SSdonations.show_donations_info(user)

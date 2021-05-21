@@ -398,7 +398,8 @@
 	stop_pulling()
 	to_chat(src, SPAN("warning", "You slipped on [slipped_on]!"))
 	playsound(src.loc, 'sound/misc/slip.ogg', 50, 1, -3)
-	Weaken(Floor(stun_duration/3))
+	Stun(Ceiling(stun_duration/3)) // At least 1 second of actual stun
+	Weaken(stun_duration)
 	return 1
 
 /mob/living/carbon/slip_on_obj(obj/slipped_on, stun_duration = 8, slip_dist = 0)

@@ -45,7 +45,7 @@
 
 /decl/hierarchy/supply_pack/medical/pills
 	num_contained = 5
-	contains = list(/obj/item/weapon/storage/pill_bottle/antitox,
+	contains = list(/obj/item/weapon/storage/pill_bottle/dylovene,
 					/obj/item/weapon/storage/pill_bottle/bicaridine,
 					/obj/item/weapon/storage/pill_bottle/dexalin_plus,
 					/obj/item/weapon/storage/pill_bottle/dexalin,

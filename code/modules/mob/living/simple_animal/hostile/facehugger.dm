@@ -58,7 +58,7 @@
 			var/obj/item/mask = H.get_equipped_item(slot_wear_mask)
 			if(istype(mask, /obj/item/weapon/holder/facehugger)) // No need to interrupt our allies
 				var/obj/item/weapon/holder/facehugger/F = mask
-				if(F.wasted) // ...unless they are dead
+				if(!F.wasted) // ...unless they are dead
 					continue
 			L += a
 	return L

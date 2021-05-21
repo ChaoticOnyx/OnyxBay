@@ -258,3 +258,4 @@ var/global/datum/body_build/default_body_build = new
 	name                 = "Xenomorph"
 	genders              = list(MALE, FEMALE, NEUTER)
 	blood_icon           = null // Fuck it, I ain't gonna spend all day showering if I'm an apex predator
+	dam_mask             = 'icons/mob/human_races/masks/dam_mask_xenos.dmi'

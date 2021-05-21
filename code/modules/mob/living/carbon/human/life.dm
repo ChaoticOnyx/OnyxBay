@@ -90,7 +90,8 @@
 		update_canmove(TRUE) // Otherwise we'll have a 1 tick latency between actual getting-up and the animation update
 
 		if(!client && !mind)
-			species.handle_npc(src)
+			spawn()
+				species.handle_npc(src)
 
 		if(lying != lying_prev || hanging != hanging_prev)
 			update_icons() // So we update icons ONCE (hopefully) and AFTER all the status/organs updates
@@ -902,7 +903,7 @@
 			playsound_local(src,pick(GLOB.scarySounds),50, 1, -1)
 
 	var/area/A = get_area(src)
-	if(client && world.time >= client.played + 150)
+	if(client && world.time >= client.played + 600)
 		A.play_ambience(src)
 	if(stat == UNCONSCIOUS && world.time - l_move_time < 5 && prob(10))
 		to_chat(src,"<span class='notice'>You feel like you're [pick("moving","flying","floating","falling","hovering")].</span>")
@@ -989,15 +990,9 @@
 
 // Stance is being used in the Onyx fighting system. I wanted to call it stamina, but screw it.
 /mob/living/carbon/human/proc/handle_poise()
-	if(poise >= poise_pool) return 0 // Saving every single msecond. Fuck our mob controller *sigh
+	if(poise >= poise_pool)
+		return
 	var/pregen = poise_pool/10
-
-	if(poise+pregen > poise_pool)
-		poise = poise_pool
-		return
-	else if(poise < 0)
-		poise = 0
-		return
 
 	for(var/obj/item/grab/G in list(get_active_hand(), get_inactive_hand()))
 		pregen -= 1.25
@@ -1005,10 +1000,14 @@
 	if(blocking)
 		pregen -= 2.5
 
-	if(poise < poise_pool)
-		poise += pregen
+	poise += pregen
+	poise = between(0, poise+pregen, poise_pool)
 
-		//visible_message("Debug: [src]'s stance is now: [poise]/[poise_pool]") //Debug message
+	poise_icon?.icon_state = "[round(poise)]"
+
+/mob/living/carbon/human/proc/damage_poise(dmg = 1)
+	poise -= dmg
+	poise_icon?.icon_state = "[round(poise)]"
 
 /*
 	Called by life(), instead of having the individual hud items update icons each tick and check for status changes

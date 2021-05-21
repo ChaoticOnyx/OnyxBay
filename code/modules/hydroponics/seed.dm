@@ -345,6 +345,7 @@
 			s.set_up(3, 1, get_turf(target))
 			s.start()
 			new /obj/effect/decal/cleanable/molten_item(get_turf(target)) // Leave a pile of goo behind for dramatic effect...
+			target.buckled?.unbuckle_mob()
 			target.forceMove(T)                                     // And teleport them to the chosen location.
 			impact = 1
 

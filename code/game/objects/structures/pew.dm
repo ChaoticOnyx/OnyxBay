@@ -2,7 +2,7 @@
 /* -------------------- Pews -------------------- */
 /* ============================================== */
 
-obj/structure/bed/pew // pew pew
+/obj/structure/bed/pew // pew pew
 	name = "pew"
 	desc = "It's like a bench, but more holy. No, not <i>holey</i>, <b>holy</b>. Like, godly, divine. That kinda thing.<br>Okay, it's actually kind of holey, too, now that you look at it closer."
 	icon_state = "armchair_preview"

@@ -6,7 +6,7 @@
 	invocation = "Sia helda!"
 	invocation_type = SpI_SHOUT
 	spell_flags = INCLUDEUSER | NEEDSCLOTHES
-	range = -1
+	range = 0
 	max_targets = 1
 
 	compatible_mobs = list(/mob/living/carbon/human)

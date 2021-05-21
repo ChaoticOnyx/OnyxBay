@@ -3,6 +3,7 @@
 ****************************************************/
 /obj/item/organ/internal
 	food_organ_type = /obj/item/weapon/reagent_containers/food/snacks/organ
+	throwforce = 0.1 // Enough to upset you, not enough to crack your ribcage open
 	var/dead_icon // Icon to use when the organ has died.
 	var/surface_accessible = FALSE
 	var/relative_size = 25   // Relative size of the organ. Roughly % of space they take in the target projection :D

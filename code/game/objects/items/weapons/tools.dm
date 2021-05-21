@@ -593,6 +593,7 @@
 	START_PROCESSING(SSobj, src)
 
 /obj/item/weapon/welder_tank/experimental/Destroy()
+	. = ..()
 	STOP_PROCESSING(SSobj, src)
 
 /obj/item/weapon/welder_tank/experimental/Process()

@@ -50,6 +50,7 @@
 	var/obj/screen/nutrition_icon = null
 	var/obj/screen/pressure = null
 	var/obj/screen/pain = null
+	var/obj/screen/poise_icon = null
 	var/obj/screen/gun/item/item_use_icon = null
 	var/obj/screen/gun/radio/radio_use_icon = null
 	var/obj/screen/gun/move/gun_move_icon = null

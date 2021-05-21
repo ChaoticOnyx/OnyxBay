@@ -16,6 +16,7 @@ GLOBAL_VAR_CONST(PREF_OFF, "Off")
 GLOBAL_VAR_CONST(PREF_BASIC, "Basic")
 GLOBAL_VAR_CONST(PREF_FULL, "Full")
 GLOBAL_VAR_CONST(PREF_MIDDLE_CLICK, "middle click")
+GLOBAL_VAR_CONST(PREF_SHIFT_MIDDLE_CLICK, "shift middle click")
 GLOBAL_VAR_CONST(PREF_ALT_CLICK, "alt click")
 GLOBAL_VAR_CONST(PREF_CTRL_CLICK, "ctrl click")
 GLOBAL_VAR_CONST(PREF_CTRL_SHIFT_CLICK, "ctrl shift click")
@@ -120,6 +121,11 @@ GLOBAL_VAR_CONST(PREF_SHORTHAND, "Shorthand")
 	description ="Hitmarker Sound"
 	key = "SOUND_HITMARKER"
 
+/datum/client_preference/spell_checking
+	description ="Spell checking"
+	key = "SPELL_CHECKING"
+	default_value = GLOB.PREF_NO
+
 /datum/client_preference/ghost_ears
 	description ="Ghost ears"
 	key = "CHAT_GHOSTEARS"
@@ -159,11 +165,6 @@ GLOBAL_VAR_CONST(PREF_SHORTHAND, "Shorthand")
 	if(new_value == GLOB.PREF_HIDE)
 		QDEL_NULL(preference_mob.typing_indicator)
 
-/datum/client_preference/spell_checking
-	description ="Spell checking"
-	key = "SPELL_CHECKING"
-	default_value = GLOB.PREF_NO
-
 /datum/client_preference/show_ooc
 	description ="OOC chat"
 	key = "CHAT_OOC"
@@ -197,7 +198,13 @@ GLOBAL_VAR_CONST(PREF_SHORTHAND, "Shorthand")
 /datum/client_preference/hardsuit_activation
 	description = "Hardsuit Module Activation Key"
 	key = "HARDSUIT_ACTIVATION"
-	options = list(GLOB.PREF_MIDDLE_CLICK, GLOB.PREF_CTRL_CLICK, GLOB.PREF_ALT_CLICK, GLOB.PREF_CTRL_SHIFT_CLICK)
+	options = list(GLOB.PREF_MIDDLE_CLICK, GLOB.PREF_SHIFT_MIDDLE_CLICK, GLOB.PREF_CTRL_CLICK, GLOB.PREF_ALT_CLICK, GLOB.PREF_CTRL_SHIFT_CLICK)
+
+/datum/client_preference/pointing
+	description = "Point to Activation Key"
+	key = "POINTING_ACTIVATION"
+	default_value = GLOB.PREF_SHIFT_MIDDLE_CLICK
+	options = list(GLOB.PREF_SHIFT_MIDDLE_CLICK, GLOB.PREF_MIDDLE_CLICK)
 
 /datum/client_preference/special_ability_key
 	description = "Special Ability Activation Key"
