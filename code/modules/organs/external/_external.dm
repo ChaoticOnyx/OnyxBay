@@ -220,10 +220,10 @@
 				continue
 			if(I == return_item())
 				continue
-			. += "\n<span class='danger'>There is \a [I] sticking out of it.</span>"
+			. += SPAN_DANGER("\nThere is \a [I] sticking out of it.")
 		var/ouchies = get_wounds_desc()
 		if(ouchies != "nothing")
-			. += "\n<span class='notice'>There is [ouchies] visible on it.</span>"
+			. += SPAN_NOTICE("\nThere is [ouchies] visible on it.")
 
 	return
 
@@ -263,10 +263,10 @@
 
 					if(!(user.l_hand && user.r_hand))
 						user.put_in_hands(removing)
-					user.visible_message("<span class='danger'><b>[user]</b> extracts [removing] from [src] with [W]!</span>")
+					user.visible_message(SPAN_DANGER("<b>[user]</b> extracts [removing] from [src] with [W]!"))
 				else
 					if(organ_tag == BP_HEAD && W.sharp && alert("Do you really want to rips the skin off [src] with [W]?",,"Ew, no.","MEAT!") == "MEAT!")
-						user.visible_message("<span class='danger'><b>[user]</b> rips the skin off [src] with [W], revealing a skull and meat.</span>")
+						user.visible_message(SPAN_DANGER("<b>[user]</b> rips the skin off [src] with [W], revealing a skull and meat."))
 						food_organ.appearance = food_organ_type
 						food_organ.forceMove(get_turf(loc))
 						food_organ = null
@@ -284,7 +284,7 @@
 								food_organ.forceMove(get_turf(loc))
 								food_organ = null
 								qdel(src)
-						user.visible_message("<span class='danger'><b>[user]</b> fishes around fruitlessly in [src] with [W].</span>")
+						user.visible_message(SPAN_DANGER("<b>[user]</b> fishes around fruitlessly in [src] with [W]."))
 				return
 	..()
 
