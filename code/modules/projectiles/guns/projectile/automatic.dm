@@ -1,4 +1,49 @@
-/obj/item/weapon/gun/projectile/automatic //Hopefully someone will find a way to make these fire in bursts or something. --Superxpdude
+/obj/item/weapon/gun/projectile/automatic/
+	name = "prototype .45 machine pistol"
+	desc = "A protoype lightweight, fast firing gun. Uses .45 rounds."
+	icon_state = "mpistolen"
+	item_state = "mpistolen"
+	w_class = ITEM_SIZE_NORMAL
+	load_method = MAGAZINE
+	caliber = ".45"
+	fire_sound = 'sound/effects/weapons/gun/fire1.ogg'
+	origin_tech = list(TECH_COMBAT = 4, TECH_MATERIAL = 2)
+	slot_flags = SLOT_BELT
+	ammo_type = /obj/item/ammo_casing/c45
+	magazine_type = /obj/item/ammo_magazine/c45uzi
+	allowed_magazines = /obj/item/ammo_magazine/c45uzi //more damage compared to the wt550, smaller mag size
+	mag_insert_sound = 'sound/effects/weapons/gun/smg_magin.ogg'
+	mag_eject_sound = 'sound/effects/weapons/gun/smg_magout.ogg'
+
+	//machine pistol, like SMG but easier to one-hand with
+	firemodes = list(
+		list(mode_name="semiauto",       burst=1, fire_delay=0,    move_delay=null, one_hand_penalty=0, burst_accuracy=null, dispersion=null),
+		list(mode_name="3-round bursts", burst=3, fire_delay=null, move_delay=4,    one_hand_penalty=1, burst_accuracy=list(0,-1,-1),       dispersion=list(0.0, 0.6, 1.0)),
+		list(mode_name="short bursts",   burst=5, fire_delay=null, move_delay=4,    one_hand_penalty=2, burst_accuracy=list(0,-1,-1,-1,-2), dispersion=list(0.6, 0.6, 1.0, 1.0, 1.2)),
+		)
+
+/obj/item/weapon/gun/projectile/automatic/update_icon()
+	..()
+	if(ammo_magazine)
+		icon_state = "mpistolen"
+	else
+		icon_state = "mpistolen-empty"
+
+/obj/item/weapon/gun/projectile/automatic/mini_uzi
+	name = ".45 machine pistol"
+	desc = "The Lumoco Arms MP6 Vesper, A fairly common machine pistol. Sometimes refered to as an 'uzi' by the backwater spacers it is often associated with. Uses .45 rounds."
+	icon_state = "saber"
+	item_state = "mpistolen"
+	origin_tech = list(TECH_COMBAT = 5, TECH_MATERIAL = 2, TECH_ILLEGAL = 3)
+
+/obj/item/weapon/gun/projectile/automatic/mini_uzi/update_icon()
+	..()
+	if(ammo_magazine)
+		icon_state = "saber"
+	else
+		icon_state = "saber-empty"
+
+/obj/item/weapon/gun/projectile/automatic/saber //Moved it to own subclass as its' no longer in use. LEGACY CODE. -Tsurupeta
 	name = "prototype SMG"
 	desc = "A protoype lightweight, fast firing gun. Uses 9mm rounds."
 	icon_state = "saber"	//ugly no longer
@@ -23,49 +68,6 @@
 		list(mode_name="short bursts",   burst=5, fire_delay=null, move_delay=4,    one_hand_penalty=2, burst_accuracy=list(0,-1,-1,-1,-2), dispersion=list(0.6, 0.6, 1.0, 1.0, 1.2)),
 		)
 
-/obj/item/weapon/gun/projectile/automatic/machine_pistol
-	name = "prototype .45 machine pistol"
-	desc = "A protoype lightweight, fast firing gun. Uses .45 rounds."
-	icon_state = "mpistolen"
-	item_state = "mpistolen"
-	w_class = ITEM_SIZE_NORMAL
-	load_method = MAGAZINE
-	caliber = ".45"
-	fire_sound = 'sound/effects/weapons/gun/fire1.ogg'
-	origin_tech = list(TECH_COMBAT = 4, TECH_MATERIAL = 2)
-	slot_flags = SLOT_BELT
-	ammo_type = /obj/item/ammo_casing/c45
-	magazine_type = /obj/item/ammo_magazine/c45uzi
-	allowed_magazines = /obj/item/ammo_magazine/c45uzi //more damage compared to the wt550, smaller mag size
-
-	//machine pistol, like SMG but easier to one-hand with
-	firemodes = list(
-		list(mode_name="semiauto",       burst=1, fire_delay=0,    move_delay=null, one_hand_penalty=0, burst_accuracy=null, dispersion=null),
-		list(mode_name="3-round bursts", burst=3, fire_delay=null, move_delay=4,    one_hand_penalty=1, burst_accuracy=list(0,-1,-1),       dispersion=list(0.0, 0.6, 1.0)),
-		list(mode_name="short bursts",   burst=5, fire_delay=null, move_delay=4,    one_hand_penalty=2, burst_accuracy=list(0,-1,-1,-1,-2), dispersion=list(0.6, 0.6, 1.0, 1.0, 1.2)),
-		)
-
-/obj/item/weapon/gun/projectile/automatic/machine_pistol/update_icon()
-	..()
-	if(ammo_magazine)
-		icon_state = "mpistolen"
-	else
-		icon_state = "mpistolen-empty"
-
-/obj/item/weapon/gun/projectile/automatic/machine_pistol/mini_uzi
-	name = ".45 machine pistol"
-	desc = "The Lumoco Arms MP6 Vesper, A fairly common machine pistol. Sometimes refered to as an 'uzi' by the backwater spacers it is often associated with. Uses .45 rounds."
-	icon_state = "saber"
-	item_state = "mpistolen"
-	origin_tech = list(TECH_COMBAT = 5, TECH_MATERIAL = 2, TECH_ILLEGAL = 3)
-
-/obj/item/weapon/gun/projectile/automatic/machine_pistol/mini_uzi/update_icon()
-	..()
-	if(ammo_magazine)
-		icon_state = "saber"
-	else
-		icon_state = "saber-empty"
-
 /obj/item/weapon/gun/projectile/automatic/c20r
 	name = "10mm submachine gun"
 	desc = "The C-20r is a lightweight and rapid firing SMG, for when you REALLY need someone dead. Uses 10mm rounds. Has a 'Scarborough Arms - Per falcis, per pravitas' buttstamp."
@@ -79,7 +81,6 @@
 	caliber = "10mm"
 	origin_tech = list(TECH_COMBAT = 5, TECH_MATERIAL = 2, TECH_ILLEGAL = 8)
 	slot_flags = SLOT_BELT|SLOT_BACK
-	load_method = MAGAZINE
 	magazine_type = /obj/item/ammo_magazine/a10mm
 	allowed_magazines = /obj/item/ammo_magazine/a10mm
 	auto_eject = 1
@@ -115,12 +116,13 @@
 	caliber = "a556"
 	origin_tech = list(TECH_COMBAT = 6, TECH_MATERIAL = 1, TECH_ILLEGAL = 5)
 	slot_flags = SLOT_BACK
-	load_method = MAGAZINE
 	magazine_type = /obj/item/ammo_magazine/c556
 	allowed_magazines = /obj/item/ammo_magazine/c556
 	one_hand_penalty = 3
 	wielded_item_state = "arifle-wielded"
 	fire_sound = 'sound/effects/weapons/gun/fire_556.ogg'
+	mag_insert_sound = 'sound/effects/weapons/gun/assaultrifle_magin.ogg'
+	mag_eject_sound = 'sound/effects/weapons/gun/assaultrifle_magout.ogg'
 
 	//Assault rifle, burst fire degrades quicker than SMG, worse one-handing penalty, slightly increased move delay
 	firemodes = list(
@@ -146,7 +148,6 @@
 	origin_tech = list(TECH_COMBAT = 5, TECH_MATERIAL = 2)
 	slot_flags = SLOT_BELT
 	ammo_type = /obj/item/ammo_casing/c9mm/rubber
-	load_method = MAGAZINE
 	magazine_type = /obj/item/ammo_magazine/mc9mmt/rubber
 	allowed_magazines = /obj/item/ammo_magazine/mc9mmt
 	one_hand_penalty=1
@@ -179,7 +180,6 @@
 	origin_tech = list(TECH_COMBAT = 8, TECH_MATERIAL = 3)
 	ammo_type = /obj/item/ammo_casing/a762
 	slot_flags = SLOT_BACK
-	load_method = MAGAZINE
 	magazine_type = /obj/item/ammo_magazine/a762
 	allowed_magazines = /obj/item/ammo_magazine/a762
 	auto_eject = 1
@@ -188,6 +188,9 @@
 	burst_delay = 4
 	wielded_item_state = "z8carbine-wielded"
 	fire_sound = 'sound/effects/weapons/gun/fire_762.ogg'
+	mag_insert_sound = 'sound/effects/weapons/gun/z8_magin.ogg'
+	mag_eject_sound = 'sound/effects/weapons/gun/z8_magout.ogg'
+
 	//would have one_hand_penalty=4,5 but the added weight of a grenade launcher makes one-handing even harder
 	firemodes = list(
 		list(mode_name="semiauto",       burst=1,    fire_delay=0,    move_delay=null, use_launcher=null, one_hand_penalty=5, burst_accuracy=null, dispersion=null),
@@ -256,12 +259,13 @@
 	origin_tech = list(TECH_COMBAT = 6, TECH_MATERIAL = 1, TECH_ILLEGAL = 2)
 	slot_flags = 0 //need sprites for SLOT_BACK
 	ammo_type = /obj/item/ammo_casing/a556
-	load_method = MAGAZINE
 	magazine_type = /obj/item/ammo_magazine/box/a556
 	allowed_magazines = list(/obj/item/ammo_magazine/box/a556, /obj/item/ammo_magazine/c556)
 	one_hand_penalty = 6
 	wielded_item_state = "gun_wielded"
 	fire_sound = 'sound/effects/weapons/gun/lmg_fire.ogg'
+	mag_insert_sound = 'sound/effects/weapons/gun/lmg_magin.ogg'
+	mag_eject_sound = 'sound/effects/weapons/gun/lmg_magout.ogg'
 
 	//LMG, better sustained fire accuracy than assault rifles (comparable to SMG), higer move delay and one-handing penalty
 	//No single-shot or 3-round-burst modes since using this weapon should come at a cost to flexibility.

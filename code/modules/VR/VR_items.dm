@@ -37,7 +37,7 @@ GLOBAL_LIST_EMPTY(thunderfield_items)
 
 /datum/thunderfield_item/uzi_gun
 	name = "UZI"
-	item = /obj/item/weapon/gun/projectile/automatic/machine_pistol
+	item = /obj/item/weapon/gun/projectile/automatic
 	cost = 5
 
 /datum/thunderfield_item/uzi_gun_magazine

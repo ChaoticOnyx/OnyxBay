@@ -101,7 +101,7 @@
 	name = "\improper Smooth operator"
 	desc = "9mm with silencer kit and ammunition."
 	startswith = list(
-		/obj/item/weapon/gun/projectile/pistol,
+		/obj/item/weapon/gun/projectile/pistol/holdout,
 		/obj/item/weapon/silencer,
 		/obj/item/ammo_magazine/mc9mm
 	)

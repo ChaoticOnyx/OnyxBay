@@ -95,7 +95,7 @@
 	name = "Machine Pistol"
 	item_cost = 45
 	antag_costs = list(MODE_NUKE = 10)
-	path = /obj/item/weapon/gun/projectile/automatic/machine_pistol
+	path = /obj/item/weapon/gun/projectile/automatic
 
 /datum/uplink_item/item/visible_weapons/combat_shotgun
 	name = "Combat Shotgun"

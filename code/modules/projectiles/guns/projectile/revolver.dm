@@ -14,6 +14,7 @@
 	ammo_type = /obj/item/ammo_casing/a357
 	var/chamber_offset = 0 //how many empty chambers in the cylinder until you hit a round
 	fire_sound = 'sound/effects/weapons/gun/fire2.ogg'
+	mag_insert_sound = 'sound/effects/weapons/gun/spin_cylinder1.ogg'
 
 /obj/item/weapon/gun/projectile/revolver/coltpython
 	name = "Colt Python"

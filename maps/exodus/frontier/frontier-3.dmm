@@ -696,7 +696,7 @@
 "ant" = (/obj/structure/bed/chair{dir = 8},/turf/simulated/floor/shuttle/darkred,/area/syndicate_station/start)
 "anu" = (/obj/structure/bed/chair{dir = 4},/obj/machinery/light{dir = 1},/turf/simulated/floor/shuttle/darkred,/area/syndicate_station/start)
 "anv" = (/obj/structure/closet/hydrant{pixel_y = 32},/turf/simulated/floor/shuttle/darkred,/area/syndicate_station/start)
-"anw" = (/obj/structure/table/rack,/obj/item/weapon/storage/belt/security,/obj/item/weapon/storage/belt/security,/obj/item/ammo_magazine/mc9mm/flash,/obj/item/weapon/gun/projectile/pistol/flash,/turf/simulated/floor/shuttle/darkred,/area/syndicate_station/start)
+"anw" = (/obj/structure/table/rack,/obj/item/weapon/storage/belt/security,/obj/item/weapon/storage/belt/security,/obj/item/ammo_magazine/mc9mm/flash,/obj/item/weapon/gun/projectile/pistol/holdout/flash,/turf/simulated/floor/shuttle/darkred,/area/syndicate_station/start)
 "anx" = (/obj/machinery/door/airlock/centcom{name = "Bathroom"; opacity = 1},/turf/unsimulated/floor{dir = 2; icon_state = "freezerfloor"},/area/syndicate_mothership)
 "any" = (/turf/unsimulated/floor{dir = 2; icon_state = "freezerfloor"},/area/syndicate_mothership)
 "anz" = (/obj/machinery/shower{dir = 1},/turf/unsimulated/floor{dir = 2; icon_state = "freezerfloor"},/area/syndicate_mothership)

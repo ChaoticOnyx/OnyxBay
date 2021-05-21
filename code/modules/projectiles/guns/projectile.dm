@@ -30,6 +30,8 @@
 	var/allowed_magazines		//magazine types that may be loaded. Can be a list or single path
 	var/auto_eject = 0			//if the magazine should automatically eject itself when empty.
 	var/auto_eject_sound = null
+	var/mag_insert_sound = "magazine_insert"
+	var/mag_eject_sound = 'sound/weapons/empty.ogg'
 
 	far_fire_sound = "far_fire"
 
@@ -117,7 +119,7 @@
 				AM.loc = src
 				ammo_magazine = AM
 				user.visible_message("[user] inserts [AM] into [src].", "<span class='notice'>You insert [AM] into [src].</span>")
-				playsound(src.loc, "magazine_insert", rand(45, 60), FALSE)
+				playsound(src.loc, mag_insert_sound, rand(45, 60), FALSE)
 			if(SPEEDLOADER)
 				if(loaded.len >= max_shells)
 					to_chat(user, "<span class='warning'>[src] is full!</span>")
@@ -133,7 +135,7 @@
 						count++
 				if(count)
 					user.visible_message("[user] reloads [src].", "<span class='notice'>You load [count] round\s into [src].</span>")
-					playsound(src, 'sound/effects/weapons/gun/spin_cylinder1.ogg', rand(45, 60), FALSE)
+					playsound(src, mag_insert_sound, rand(45, 60), FALSE)
 		AM.update_icon()
 	else if(istype(A, /obj/item/ammo_casing))
 		var/obj/item/ammo_casing/C = A
@@ -172,7 +174,7 @@
 			user.put_in_hands(ammo_magazine)
 			user.visible_message("[user] removes [ammo_magazine] from [src].",
 			SPAN_NOTICE("You remove [ammo_magazine] from [src]."))
-		playsound(src.loc, 'sound/weapons/empty.ogg', 50, 1)
+		playsound(src.loc, mag_eject_sound, 50, 1)
 		ammo_magazine.update_icon()
 		ammo_magazine = null
 	else if(loaded.len)
@@ -197,6 +199,7 @@
 			loaded.len--
 			user.put_in_hands(C)
 			user.visible_message("[user] removes \a [C] from [src].", "<span class='notice'>You remove \a [C] from [src].</span>")
+			playsound(src.loc, 'sound/effects/weapons/gun/casingout.ogg', 50, 1)
 	else
 		to_chat(user, "<span class='warning'>[src] is empty.</span>")
 	update_icon()
