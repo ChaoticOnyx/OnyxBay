@@ -12,179 +12,6 @@
 	mag_insert_sound = 'sound/effects/weapons/gun/pistol_magin.ogg'
 	mag_eject_sound = 'sound/effects/weapons/gun/pistol_magout.ogg'
 
-/obj/item/weapon/gun/projectile/pistol/holdout
-	name = "holdout pistol"
-	desc = "The Lumoco Arms P3 Whisper. A small, easily concealable gun. Uses 9mm rounds."
-	icon_state = "pistol"
-	item_state = null
-	w_class = ITEM_SIZE_SMALL
-	caliber = "9mm"
-	silenced = 0
-	fire_delay = 1
-	fire_sound = 'sound/effects/weapons/gun/fire_9mm2.ogg'
-	mod_weight = 0.65
-	mod_reach = 0.5
-	mod_handy = 1.0
-	origin_tech = list(TECH_COMBAT = 2, TECH_MATERIAL = 2, TECH_ILLEGAL = 2)
-	magazine_type = /obj/item/ammo_magazine/mc9mm
-	allowed_magazines = /obj/item/ammo_magazine/mc9mm
-
-/obj/item/weapon/gun/projectile/pistol/holdout/flash
-	name = "holdout signal pistol"
-	magazine_type = /obj/item/ammo_magazine/mc9mm/flash
-
-/obj/item/weapon/gun/projectile/pistol/holdout/attack_hand(mob/user as mob)
-	if(user.get_inactive_hand() == src)
-		if(silenced)
-			if(user.l_hand != src && user.r_hand != src)
-				..()
-				return
-			to_chat(user, "<span class='notice'>You unscrew [silenced] from [src].</span>")
-			user.put_in_hands(silenced)
-			silenced = initial(silenced)
-			w_class = initial(w_class)
-			fire_sound = 'sound/effects/weapons/gun/fire_9mm2.ogg'
-			update_icon()
-			return
-	..()
-
-/obj/item/weapon/gun/projectile/pistol/holdout/attackby(obj/item/I as obj, mob/user as mob)
-	if(istype(I, /obj/item/weapon/silencer))
-		if(user.l_hand != src && user.r_hand != src)	//if we're not in his hands
-			to_chat(user, "<span class='notice'>You'll need [src] in your hands to do that.</span>")
-			return
-		user.drop_item()
-		to_chat(user, "<span class='notice'>You screw [I] onto [src].</span>")
-		silenced = I	//dodgy?
-		w_class = ITEM_SIZE_NORMAL
-		I.forceMove(src)		//put the silencer into the gun
-		update_icon()
-		fire_sound = "fire_silent"
-		return
-	..()
-
-/obj/item/weapon/gun/projectile/pistol/holdout/update_icon()
-	..()
-	if(silenced)
-		icon_state = "pistol-silencer"
-	else
-		icon_state = "pistol"
-	if(!(ammo_magazine && ammo_magazine.stored_ammo.len))
-		icon_state = "[icon_state]-e"
-
-/obj/item/weapon/silencer
-	name = "silencer"
-	desc = "A silencer."
-	icon = 'icons/obj/gun.dmi'
-	icon_state = "silencer"
-	w_class = ITEM_SIZE_SMALL
-
-/obj/item/weapon/gun/projectile/pistol/colt
-	name = "vintage .45 pistol"
-	desc = "A cheap Martian knock-off of a Colt M1911. Uses .45 rounds."
-	magazine_type = /obj/item/ammo_magazine/c45m
-	allowed_magazines = /obj/item/ammo_magazine/c45m
-	icon_state = "colt"
-	caliber = ".45"
-	fire_sound = 'sound/effects/weapons/gun/fire_colt2.ogg'
-
-/obj/item/weapon/gun/projectile/pistol/colt/officer
-	name = "military .45 pistol"
-	desc = "The WT45 - a mass produced kinetic sidearm well-known in films and entertainment programming for being the daily carry choice issued to officers of the Sol Central Government Defense Forces. Uses .45 rounds."
-	icon_state = "usp"
-	accuracy = 0.35
-	fire_delay = 6.5
-
-/obj/item/weapon/gun/projectile/pistol/colt/officer/update_icon()
-	..()
-	if(ammo_magazine && ammo_magazine.stored_ammo.len)
-		icon_state = "usp"
-	else
-		icon_state = "usp-e"
-
-/obj/item/weapon/gun/projectile/pistol/vp78
-	name = ".45 pistol"
-	desc = "The NT Mk58 is a cheap, ubiquitous sidearm, produced by a NanoTrasen subsidiary. Found pretty much everywhere humans are. Uses .45 rounds."
-	icon_state = "secguncomp"
-	magazine_type = /obj/item/ammo_magazine/c45m/stun
-	allowed_magazines = /obj/item/ammo_magazine/c45m
-	caliber = ".45"
-	accuracy = -0.35
-	fire_delay = 5.5
-	fire_sound = 'sound/effects/weapons/gun/fire_45.ogg'
-
-/obj/item/weapon/gun/projectile/pistol/update_icon()
-	..()
-	if(ammo_magazine && ammo_magazine.stored_ammo.len)
-		icon_state = "secguncomp"
-	else
-		icon_state = "secguncomp-e"
-
-/obj/item/weapon/gun/projectile/pistol/vp78
-	name = "VP78"
-	desc = "The VT78 pistol is a common and reliable sidearm, used by security forces and colonial marshalls all over the world. Uses .45 rounds."
-	icon_state = "VP78"
-	item_state = "vp78"
-	magazine_type = /obj/item/ammo_magazine/c45m/stun
-	allowed_magazines = /obj/item/ammo_magazine/c45m
-	caliber = ".45"
-	accuracy = -0.35
-	fire_delay = 5.5
-
-/obj/item/weapon/gun/projectile/pistol/vp78/update_icon()
-	..()
-	if(ammo_magazine && ammo_magazine.stored_ammo.len)
-		icon_state = "VP78"
-	else
-		icon_state = "VP78-e"
-
-/obj/item/weapon/gun/projectile/pistol/vp78/tactical
-	name = "VP78 Tactical"
-	desc = "The VT78 pistol is a common and reliable sidearm, used by security forces and colonial marshalls all over the world. This one is heavily modified and painted in green camo. Uses .45 rounds."
-	icon_state = "VP78tactic"
-	magazine_type = /obj/item/ammo_magazine/c45m
-	allowed_magazines = /obj/item/ammo_magazine/c45m
-	auto_eject = 1
-	auto_eject_sound = 'sound/effects/weapons/misc/smg_empty_alarm.ogg'
-	fire_delay = 6.5
-
-/obj/item/weapon/gun/projectile/pistol/vp78/tactical/update_icon()
-	..()
-	if(ammo_magazine && ammo_magazine.stored_ammo.len)
-		icon_state = "VP78tactic"
-	else
-		icon_state = "VP78tactic-e"
-
-/obj/item/weapon/gun/projectile/pistol/vp78/wood
-	name = "VP78 Special"
-	desc = "The VT78 pistol is a common and reliable sidearm, used by security forces and colonial marshalls all over the world. This one has a sweet wooden grip, among other modifications. Uses .45 rounds."
-	icon_state = "VP78wood"
-	accuracy = 0.35
-	fire_delay = 4.5
-
-/obj/item/weapon/gun/projectile/pistol/vp78/wood/update_icon()
-	..()
-	if(ammo_magazine && ammo_magazine.stored_ammo.len)
-		icon_state = "VP78wood"
-	else
-		icon_state = "VP78wood-e"
-
-/obj/item/weapon/gun/projectile/pistol/c45sec
-	name = "Colt .45"
-	desc = "Corvus C45 pistol is a well-made replica of a good old Colt M1911. Chambered in .45."
-	icon_state = "c45sec"
-	item_state = "c45sec"
-	auto_eject = 1
-	caliber = ".45"
-	accuracy = -0.35
-
-/obj/item/weapon/gun/projectile/pistol/c45sec/update_icon()
-	..()
-	if(ammo_magazine && ammo_magazine.stored_ammo.len)
-		icon_state = "c45sec"
-	else
-		icon_state = "c45sec-e"
-
 /obj/item/weapon/gun/projectile/pistol/flash
 	name = ".45 signal pistol"
 	magazine_type = /obj/item/ammo_magazine/c45m/flash
@@ -201,6 +28,79 @@
 		icon_state = "secgundark"
 	else
 		icon_state = "secgundark-e"
+
+/obj/item/weapon/gun/projectile/pistol/colt
+	name = "vintage .45 pistol"
+	desc = "A cheap Martian knock-off of a Colt M1911. Uses .45 rounds."
+	icon_state = "colt"
+	fire_sound = 'sound/effects/weapons/gun/fire_colt2.ogg'
+
+/obj/item/weapon/gun/projectile/pistol/colt/update_icon()
+	..()
+	if(ammo_magazine && ammo_magazine.stored_ammo.len)
+		icon_state = "colt"
+	else
+		icon_state = "colt-e"
+
+/obj/item/weapon/gun/projectile/pistol/colt/officer
+	name = "military .45 pistol"
+	desc = "The WT45 - a mass produced kinetic sidearm well-known in films and entertainment programming for being the daily carry choice issued to officers of the Sol Central Government Defense Forces. Uses .45 rounds."
+	icon_state = "usp"
+	accuracy = 0.35
+	fire_delay = 6.5
+
+/obj/item/weapon/gun/projectile/pistol/colt/officer/update_icon()
+	..()
+	if(ammo_magazine && ammo_magazine.stored_ammo.len)
+		icon_state = "usp"
+	else
+		icon_state = "usp-e"
+
+/obj/item/weapon/gun/projectile/pistol/vp78
+	name = "VP78"
+	desc = "The VT78 pistol is a common and reliable sidearm, used by security forces and colonial marshalls all over the world. Uses .45 rounds."
+	icon_state = "VP78"
+	item_state = "vp78"
+	magazine_type = /obj/item/ammo_magazine/c45m/stun
+	caliber = ".45"
+	accuracy = -0.35
+
+/obj/item/weapon/gun/projectile/pistol/vp78/update_icon()
+	..()
+	if(ammo_magazine && ammo_magazine.stored_ammo.len)
+		icon_state = "VP78"
+	else
+		icon_state = "VP78-e"
+
+/obj/item/weapon/gun/projectile/pistol/vp78/wood
+	name = "VP78 Special"
+	desc = "The VT78 pistol is a common and reliable sidearm, used by security forces and colonial marshalls all over the world. This one has a sweet wooden grip, among other modifications. Uses .45 rounds."
+	icon_state = "VP78wood"
+	accuracy = 0.35
+	fire_delay = 4.5
+
+/obj/item/weapon/gun/projectile/pistol/vp78/wood/update_icon()
+	..()
+	if(ammo_magazine && ammo_magazine.stored_ammo.len)
+		icon_state = "VP78wood"
+	else
+		icon_state = "VP78wood-e"
+
+/obj/item/weapon/gun/projectile/pistol/vp78/tactical
+	name = "VP78 Tactical"
+	desc = "The VT78 pistol is a common and reliable sidearm, used by security forces and colonial marshalls all over the world. This one is heavily modified and painted in green camo. Uses .45 rounds."
+	icon_state = "VP78tactic"
+	magazine_type = /obj/item/ammo_magazine/c45m
+	auto_eject = 1
+	auto_eject_sound = 'sound/effects/weapons/misc/smg_empty_alarm.ogg'
+	fire_delay = 6.5
+
+/obj/item/weapon/gun/projectile/pistol/vp78/tactical/update_icon()
+	..()
+	if(ammo_magazine && ammo_magazine.stored_ammo.len)
+		icon_state = "VP78tactic"
+	else
+		icon_state = "VP78tactic-e"
 
 /obj/item/weapon/gun/projectile/pistol/silenced
 	name = "silenced pistol"
@@ -285,6 +185,73 @@
 		icon_state = "det-m9"
 	else
 		icon_state = "det-m9_e"
+
+/obj/item/weapon/gun/projectile/pistol/holdout
+	name = "holdout pistol"
+	desc = "The Lumoco Arms P3 Whisper. A small, easily concealable gun. Uses 9mm rounds."
+	icon_state = "pistol"
+	item_state = null
+	w_class = ITEM_SIZE_SMALL
+	caliber = "9mm"
+	silenced = 0
+	fire_delay = 1
+	fire_sound = 'sound/effects/weapons/gun/fire_9mm2.ogg'
+	mod_weight = 0.65
+	mod_reach = 0.5
+	mod_handy = 1.0
+	origin_tech = list(TECH_COMBAT = 2, TECH_MATERIAL = 2, TECH_ILLEGAL = 2)
+	magazine_type = /obj/item/ammo_magazine/mc9mm
+	allowed_magazines = /obj/item/ammo_magazine/mc9mm
+
+/obj/item/weapon/gun/projectile/pistol/holdout/flash
+	name = "holdout signal pistol"
+	magazine_type = /obj/item/ammo_magazine/mc9mm/flash
+
+/obj/item/weapon/gun/projectile/pistol/holdout/attack_hand(mob/user as mob)
+	if(user.get_inactive_hand() == src)
+		if(silenced)
+			if(user.l_hand != src && user.r_hand != src)
+				..()
+				return
+			to_chat(user, "<span class='notice'>You unscrew [silenced] from [src].</span>")
+			user.put_in_hands(silenced)
+			silenced = initial(silenced)
+			w_class = initial(w_class)
+			fire_sound = 'sound/effects/weapons/gun/fire_9mm2.ogg'
+			update_icon()
+			return
+	..()
+
+/obj/item/weapon/gun/projectile/pistol/holdout/attackby(obj/item/I as obj, mob/user as mob)
+	if(istype(I, /obj/item/weapon/silencer))
+		if(user.l_hand != src && user.r_hand != src)	//if we're not in his hands
+			to_chat(user, "<span class='notice'>You'll need [src] in your hands to do that.</span>")
+			return
+		user.drop_item()
+		to_chat(user, "<span class='notice'>You screw [I] onto [src].</span>")
+		silenced = I	//dodgy?
+		w_class = ITEM_SIZE_NORMAL
+		I.forceMove(src)		//put the silencer into the gun
+		update_icon()
+		fire_sound = "fire_silent"
+		return
+	..()
+
+/obj/item/weapon/gun/projectile/pistol/holdout/update_icon()
+	..()
+	if(silenced)
+		icon_state = "pistol-silencer"
+	else
+		icon_state = "pistol"
+	if(!(ammo_magazine && ammo_magazine.stored_ammo.len))
+		icon_state = "[icon_state]-e"
+
+/obj/item/weapon/silencer
+	name = "silencer"
+	desc = "A silencer."
+	icon = 'icons/obj/gun.dmi'
+	icon_state = "silencer"
+	w_class = ITEM_SIZE_SMALL
 
 /obj/item/weapon/gun/projectile/pirate
 	name = "zip gun"
