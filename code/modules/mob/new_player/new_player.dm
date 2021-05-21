@@ -223,8 +223,7 @@
 		return
 
 	if(href_list["privacy_poll"])
-		establish_db_connection()
-		if(!dbcon.IsConnected())
+		if(!establish_db_connection())
 			return
 		var/voted = 0
 

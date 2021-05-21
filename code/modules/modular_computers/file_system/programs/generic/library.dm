@@ -37,8 +37,7 @@ The answer was five and a half years -ZeroBits
 		data["current_book"] = current_book
 	else
 		var/list/all_entries[0]
-		establish_old_db_connection()
-		if(!dbcon_old.IsConnected())
+		if(!establish_old_db_connection())
 			error_message = "Unable to contact External Archive. Please contact your system administrator for assistance."
 		else
 			var/DBQuery/query = dbcon_old.NewQuery("SELECT id, author, title, category FROM library ORDER BY "+sanitizeSQL(sort_by))
@@ -110,8 +109,7 @@ The answer was five and a half years -ZeroBits
 
 		var/choice = input(usr, "Upload [B.name] by [B.author] to the External Archive?") in list("Yes", "No")
 		if(choice == "Yes")
-			establish_old_db_connection()
-			if(!dbcon_old.IsConnected())
+			if(!establish_old_db_connection())
 				error_message = "Network Error: Connection to the Archive has been severed."
 				return 1
 
@@ -179,8 +177,7 @@ The answer was five and a half years -ZeroBits
 		return 0
 
 	var/sqlid = sanitizeSQL(id)
-	establish_old_db_connection()
-	if(!dbcon_old.IsConnected())
+	if(!establish_old_db_connection())
 		error_message = "Network Error: Connection to the Archive has been severed."
 		return 1
 
@@ -204,8 +201,7 @@ The answer was five and a half years -ZeroBits
 		return
 
 	var/sqlid = sanitizeSQL(id)
-	establish_db_connection()
-	if(!dbcon.IsConnected())
+	if(!establish_db_connection())
 		to_chat(user, SPAN_WARNING("Failed to establish database connection!"))
 		return
 

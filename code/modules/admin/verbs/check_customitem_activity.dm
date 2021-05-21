@@ -29,8 +29,7 @@ var/inactive_keys = "None<br>"
 	if(checked_for_inactives)
 		return
 
-	establish_db_connection()
-	if(!dbcon.IsConnected())
+	if(!establish_db_connection())
 		return
 
 	//grab all ckeys associated with custom items

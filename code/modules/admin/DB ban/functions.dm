@@ -9,8 +9,7 @@
 	if(usr)
 		if(!check_rights(R_MOD,0) && !check_rights(R_BAN))	return
 
-	establish_db_connection()
-	if(!dbcon.IsConnected())
+	if(!establish_db_connection())
 		return 0
 
 	var/serverip = "[world.internet_address]:[world.port]"
@@ -119,8 +118,7 @@
 	if(job)
 		sql += " AND job = '[job]'"
 
-	establish_db_connection()
-	if(!dbcon.IsConnected())
+	if(!establish_db_connection())
 		return
 
 	var/ban_id
@@ -279,8 +277,7 @@
 
 	if(!check_rights(R_BAN))	return
 
-	establish_db_connection()
-	if(!dbcon.IsConnected())
+	if(!establish_db_connection())
 		to_chat(usr, "<span class='warning'>Failed to establish database connection</span>")
 		return
 

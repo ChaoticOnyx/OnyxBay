@@ -50,7 +50,7 @@ SUBSYSTEM_DEF(eams)
 	if (!initialized && user)
 		to_chat(user, SPAN("adminnotice", "Wait until EAMS initialized!"))
 		return
-	if(!__active && (!dbcon || !dbcon.IsConnected()))
+	if(!__active && !establish_db_connection())
 		to_chat(user, SPAN("adminnotice", "EAMS can't be enabled because there is no DB connection!"))
 		return
 
@@ -100,7 +100,7 @@ SUBSYSTEM_DEF(eams)
 	if (!__active)
 		return FALSE
 
-	if(!dbcon || !dbcon.IsConnected())  // Database isn't connected
+	if(!establish_db_connection())  // Database isn't connected
 		__DBError()
 		return FALSE
 
@@ -120,7 +120,7 @@ SUBSYSTEM_DEF(eams)
 	if (!__active)
 		return FALSE
 
-	if(!dbcon || !dbcon.IsConnected())  // Database isn't connected
+	if(!establish_db_connection())  // Database isn't connected
 		__DBError()
 		return FALSE
 
@@ -292,7 +292,7 @@ SUBSYSTEM_DEF(eams)
 	set category = "Server"
 	set name = "Toggle EAMS"
 
-	if (!dbcon || !dbcon.IsConnected())
+	if (!establish_db_connection())
 		to_chat(usr, SPAN("adminnotice", "The Database is not connected!"))
 		return
 
