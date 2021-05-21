@@ -135,7 +135,7 @@
 						count++
 				if(count)
 					user.visible_message("[user] reloads [src].", "<span class='notice'>You load [count] round\s into [src].</span>")
-					playsound(src, mag_insert_sound, rand(45, 60), FALSE)
+					playsound(src, mag_insert_sound, rand(50, 75), FALSE)
 		AM.update_icon()
 	else if(istype(A, /obj/item/ammo_casing))
 		var/obj/item/ammo_casing/C = A
@@ -164,7 +164,7 @@
 		if(!do_after(user, 4, src))
 			return
 		is_jammed = 0
-		playsound(src.loc, 'sound/weapons/flipblade.ogg', 50, 1)
+		playsound(src.loc, 'sound/weapons/flipblade.ogg', rand(50, 75), FALSE)
 	if(ammo_magazine)
 		if(allow_dump)
 			user.drop_from_inventory(ammo_magazine)
@@ -174,7 +174,7 @@
 			user.put_in_hands(ammo_magazine)
 			user.visible_message("[user] removes [ammo_magazine] from [src].",
 			SPAN_NOTICE("You remove [ammo_magazine] from [src]."))
-		playsound(src.loc, mag_eject_sound, 50, 1)
+		playsound(src.loc, mag_eject_sound, 75)
 		ammo_magazine.update_icon()
 		ammo_magazine = null
 	else if(loaded.len)
@@ -199,7 +199,7 @@
 			loaded.len--
 			user.put_in_hands(C)
 			user.visible_message("[user] removes \a [C] from [src].", "<span class='notice'>You remove \a [C] from [src].</span>")
-			playsound(src.loc, 'sound/effects/weapons/gun/casingout.ogg', 50, 1)
+			playsound(src.loc, "bullet_insert", 50, 1)
 	else
 		to_chat(user, "<span class='warning'>[src] is empty.</span>")
 	update_icon()
