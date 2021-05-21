@@ -265,7 +265,9 @@
 						user.put_in_hands(removing)
 					user.visible_message(SPAN_DANGER("<b>[user]</b> extracts [removing] from [src] with [W]!"))
 				else
-					if(organ_tag == BP_HEAD && W.sharp && alert("Do you really want to rips the skin off [src] with [W]?",,"Ew, no.","MEAT!") == "MEAT!")
+					if(organ_tag == BP_HEAD && W.sharp)
+						if(alert("Do you really want to rips the skin off [src] with [W]?",,"Ew, no.","MEAT!") == "Ew, no.")
+							return
 						user.visible_message(SPAN_DANGER("<b>[user]</b> rips the skin off [src] with [W], revealing a skull and meat."))
 						food_organ.appearance = food_organ_type
 						food_organ.forceMove(get_turf(loc))
