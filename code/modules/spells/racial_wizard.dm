@@ -93,7 +93,7 @@
 	school = "racial"
 	spell_flags = INCLUDEUSER
 	invocation_type = SpI_EMOTE
-	range = -1
+	range = 0
 	invocation = "begins to grow!"
 	charge_max = 1200 //2 minutes
 	duration = 300 //30 seconds

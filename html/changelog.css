@@ -10,9 +10,8 @@ body {
     scrollbar-3dlight-color: #22272E;
     scrollbar-highlight-color: #22272E;
     scrollbar-track-color: #22272E;
-    scrollbar-arrow-color: #22272E;
+    scrollbar-arrow-color: #444d5c;
     scrollbar-shadow-color: #444d5c;
-    scrollbar-dark-shadow-color: #22272E;
 }
 
 a {
@@ -66,7 +65,25 @@ a {
 }
 
 .changes li i {
-    margin-right: 10px;
+    margin-right: 20px;
+    max-width: 12px;
+    min-width: 12px;
+}
+
+.changes li sup * {
+    color: rgba(255, 255, 255, 0.5);
+    font-size: 18px;
+    border-bottom: none;
+    margin-left: 0px;
+    font-style: italic;
+}
+
+.changes li i.fa-plus-square,
+i.fa-minus-square,
+i.fa-compass,
+i.fa-wrench {
+    margin-left: 2px !important;
+    margin-right: 18px !important;
 }
 
 li.green {
@@ -103,12 +120,20 @@ li.yellow {
 .date {
     margin: 10px 0;
     color: #6B89DA;
-    border-bottom: 2px solid #6B89DA;
+    border-bottom: 4px solid #6B89DA;
     width: 100%;
-    padding: 2px 0;
     font-size: 1em;
     font-weight: bold;
     text-transform: uppercase;
+}
+
+.date span {
+    left: 50%;
+    top: 21px;
+    background-color: #22272e;
+    position: relative;
+    transform: translateX(-50%);
+    padding: 10px;
 }
 
 .author {

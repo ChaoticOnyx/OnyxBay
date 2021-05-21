@@ -25,7 +25,7 @@ prefix: A summary of changes made.
 Вместо `prefix` подставляете одну из доступных строк:
 
 - bugfix
-- wip
+- balance
 - tweak
 - soundadd
 - sounddel

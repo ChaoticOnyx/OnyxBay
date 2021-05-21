@@ -32,7 +32,7 @@
 		var/mob/living/M = AM
 		if(reagents.total_volume <= 0)
 			return
-		if(M.slip_on_obj(src, 3, 2))
+		if(M.slip_on_obj(src, 2, 2))
 			reagents.remove_any(3)
 
 /obj/item/weapon/soap/afterattack(atom/target, mob/user as mob, proximity)

@@ -18,7 +18,8 @@ Contains helper procs for airflow, handled in /connection_group.
 	if(lying)
 		return 0
 	to_chat(src, SPAN_WARNING("The sudden rush of air knocks you over!"))
-	Weaken(rand(1,2))
+	Weaken(rand(2, 3))
+	Stun(2)
 	last_airflow_stun = world.time
 
 /mob/living/silicon/airflow_stun()
@@ -89,11 +90,12 @@ Contains helper procs for airflow, handled in /connection_group.
 
 /atom/movable/Bump(atom/A)
 	if(airflow_speed > 0 && airflow_dest)
-		if(airborne_acceleration > 1)
-			airflow_hit(A)
-		else if(istype(src, /mob/living/carbon/human))
-			to_chat(src, "<span class='notice'>You are pinned against [A] by airflow!</span>")
-			airborne_acceleration = 0
+		if(!istype(A, /obj/item))
+			if(airborne_acceleration > 1)
+				airflow_hit(A)
+			else if(istype(src, /mob/living/carbon/human))
+				to_chat(src, SPAN("notice", "You are pinned against [A] by airflow!"))
+				airborne_acceleration = 0
 	else
 		airflow_speed = 0
 		airflow_time = 0

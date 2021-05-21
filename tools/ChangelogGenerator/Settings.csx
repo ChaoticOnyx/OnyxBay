@@ -74,7 +74,6 @@ private static class Settings
 public enum ChangePrefix
 {
     BugFix = 1,
-    Wip,
     Tweak,
     SoundAdd,
     SoundDel,
@@ -85,5 +84,6 @@ public enum ChangePrefix
     MapTweak,
     SpellCheck,
     Experiment,
-    Admin
+    Admin,
+    Balance
 }

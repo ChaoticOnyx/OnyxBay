@@ -196,7 +196,8 @@
 
 /obj/item/weapon/anodevice/Destroy()
 	STOP_PROCESSING(SSobj, src)
-	..()
+
+	return ..()
 
 /obj/item/weapon/anodevice/attack(mob/living/M, mob/living/user, def_zone)
 	if (!istype(M))

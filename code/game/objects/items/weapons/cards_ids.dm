@@ -80,15 +80,17 @@ var/const/NO_EMAG_ACT = -50
 		return ..(A, user)
 
 	uses -= used_uses
+	uses = max(uses, 0)
 	A.add_fingerprint(user)
 	if(used_uses)
 		log_and_message_admins("emagged \an [A].")
 
-	if(uses<1)
-		user.visible_message("<span class='warning'>\The [src] fizzles and sparks - it seems it's been used once too often, and is now spent.</span>")
+	if(uses == 0)
+		user.visible_message(SPAN("warning", "\The [src] fizzles and sparks - it seems it's been used once too often, and is now spent."))
 		user.drop_item()
 		var/obj/item/weapon/card/emag_broken/junk = new(user.loc)
 		junk.add_fingerprint(user)
+		uses = -1
 		qdel(src)
 
 	return 1
@@ -113,6 +115,7 @@ var/const/NO_EMAG_ACT = -50
 	if(uses<1)
 		user.visible_message("<span class='warning'>\The [src] fizzles and sparks - it seems it's been used once too often, and is now spent.</span>")
 	return 1
+
 /obj/item/weapon/card/emag/robot/examine(mob/user)
 	. = ..()
 	. += "\n<span class='notice'>It has [uses] uses left.</span>"

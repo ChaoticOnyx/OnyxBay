@@ -430,6 +430,11 @@
 	else
 		C.toggled = 1
 		to_chat(src, "<span class='warning'>You enable [C.name].</span>")
+
+/mob/living/silicon/robot/pointed(atom/A as mob|obj|turf in view())
+	if(..())
+		usr.visible_message("<b>[src]</b> laser points to [A]")
+
 /mob/living/silicon/robot/proc/update_robot_light()
 	if(lights_on)
 		if(intenselight)

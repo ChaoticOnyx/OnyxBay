@@ -18,7 +18,8 @@
 			T.Entered(A)
 		step_rand(A)
 	cargo.Cut()
-	..()
+
+	return ..()
 
 /obj/mecha/working/ripley/update_icon()
 	..()

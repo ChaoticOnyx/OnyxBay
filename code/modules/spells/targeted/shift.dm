@@ -5,7 +5,7 @@
 	charge_max = 200
 	spell_flags = Z2NOCAST | INCLUDEUSER | CONSTRUCT_CHECK
 	invocation_type = SpI_NONE
-	range = -1
+	range = 0
 	duration = 50 //in deciseconds
 
 	hud_state = "const_shift"
