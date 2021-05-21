@@ -416,9 +416,10 @@
 		mouthshoot = 0
 		return
 /obj/item/weapon/gun/var/weapon_in_mouth = FALSE
+
 /obj/item/weapon/gun/proc/handle_war_crime(mob/living/carbon/human/user, mob/living/carbon/human/target)
 	var/obj/item/grab/G = user.get_inactive_hand()
-	if(G && G.affecting == target)
+	if(G?.affecting == target)
 		if(!G.force_danger())
 			to_chat(user, SPAN_NOTICE("You need a better grab for this."))
 			return
@@ -449,9 +450,9 @@
 			weapon_in_mouth = FALSE
 			return
 		var/obj/item/projectile/in_chamber = consume_next_projectile()
-		if (istype(in_chamber))
+		if(istype(in_chamber))
 			user.visible_message(SPAN_WARNING("[user] pulls the trigger."))
-			var/shot_sound = in_chamber.fire_sound? in_chamber.fire_sound : fire_sound
+			var/shot_sound = in_chamber.fire_sound ? in_chamber.fire_sound : fire_sound
 			if(silenced)
 				playsound(user, shot_sound, 10, 1)
 			else
@@ -462,13 +463,13 @@
 				return
 
 			in_chamber.on_hit(target)
-			if (in_chamber.damage_type != PAIN)
+			if(in_chamber.damage_type != PAIN)
 				log_and_message_admins("[key_name(user)] killed [target] using \a [src]")
-				target.apply_damage(in_chamber.damage*2.5, in_chamber.damage_type, BP_HEAD, 0, in_chamber.damage_flags(), used_weapon = "Point blank shot in the mouth with \a [in_chamber]")
+				target.apply_damage(in_chamber.damage * 2.5, in_chamber.damage_type, BP_HEAD, 0, in_chamber.damage_flags(), used_weapon = "Point blank shot in the mouth with \a [in_chamber]")
 				target.death()
 			else
 				to_chat(user, SPAN_NOTICE("Ow..."))
-				target.apply_effect(110,PAIN,0)
+				target.apply_effect(110, PAIN, 0)
 			qdel(in_chamber)
 			weapon_in_mouth = FALSE
 			return
@@ -523,4 +524,3 @@
 	var/datum/firemode/new_mode = switch_firemodes(user)
 	if(new_mode)
 		to_chat(user, "<span class='notice'>\The [src] is now set to [new_mode.name].</span>")
-
