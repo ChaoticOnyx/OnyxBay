@@ -703,13 +703,16 @@ var/failed_don_db_connections = 0
 
 //This proc ensures that the connection to the feedback database (global variable dbcon) is established
 /proc/establish_db_connection()
+	if(!config.sql_enabled)
+		return FALSE
+
 	if(failed_db_connections > FAILED_DB_CONNECTION_CUTOFF)
-		return 0
+		return FALSE
 
 	if(!dbcon || !dbcon.IsConnected())
 		return setup_database_connection()
 	else
-		return 1
+		return TRUE
 
 
 /hook/startup/proc/connectOldDB()
@@ -748,13 +751,16 @@ var/failed_don_db_connections = 0
 	return .
 
 /proc/establish_old_db_connection()
+	if(!config.sql_enabled)
+		return FALSE
+
 	if(failed_old_db_connections > FAILED_DB_CONNECTION_CUTOFF)
-		return 0
+		return FALSE
 
 	if(!dbcon_old || !dbcon_old.IsConnected())
 		return setup_old_database_connection()
 	else
-		return 1
+		return TRUE
 
 
 /hook/startup/proc/connectDonDB()
@@ -793,12 +799,15 @@ proc/setup_don_database_connection()
 	return .
 
 /proc/establish_don_db_connection()
+	if(!config.sql_enabled)
+		return FALSE
+
 	if(failed_don_db_connections > FAILED_DB_CONNECTION_CUTOFF)
-		return 0
+		return FALSE
 
 	if(!dbcon_don || !dbcon_don.IsConnected())
 		return setup_don_database_connection()
 	else
-		return 1
+		return TRUE
 
 #undef FAILED_DB_CONNECTION_CUTOFF
