@@ -43,6 +43,7 @@
 			user.put_in_hands(silenced)
 			silenced = initial(silenced)
 			w_class = initial(w_class)
+			fire_sound = 'sound/effects/weapons/gun/fire_9mm2.ogg'
 			update_icon()
 			return
 	..()
@@ -58,6 +59,7 @@
 		w_class = ITEM_SIZE_NORMAL
 		I.forceMove(src)		//put the silencer into the gun
 		update_icon()
+		fire_sound = "fire_silent"
 		return
 	..()
 
@@ -213,7 +215,6 @@
 	origin_tech = list(TECH_COMBAT = 2, TECH_MATERIAL = 2, TECH_ILLEGAL = 8)
 	magazine_type = /obj/item/ammo_magazine/c45m
 	allowed_magazines = /obj/item/ammo_magazine/c45m
-	fire_sound = "fire_silent"
 
 /obj/item/weapon/gun/projectile/pistol/magnum_pistol
 	name = ".50 magnum pistol"

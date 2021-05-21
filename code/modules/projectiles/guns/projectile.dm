@@ -154,7 +154,6 @@
 			playsound(user, "shell_insert", rand(45, 60), FALSE)
 		else
 			playsound(user, "bullet_insert", rand(45, 60), FALSE)
-
 	update_icon()
 
 //attempts to unload src. If allow_dump is set to 0, the speedloader unloading method will be disabled
