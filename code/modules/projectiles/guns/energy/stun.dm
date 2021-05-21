@@ -17,8 +17,8 @@
 		)
 
 /obj/item/weapon/gun/energy/taser/carbine
-	name = "Mk44 NL"
-	desc = "The NT Mk44 NL is a high capacity gun used for non-lethal takedowns. It can switch between high and low intensity stun shots."
+	name = "stun carbine"
+	desc = "The NT Mk44 NL is a high capacity gun used for non-lethal takedowns. It can switch between high and low intensity stun beams, and concentrated stun spheres."
 	icon_state = "tasercarbine"
 	w_class = ITEM_SIZE_LARGE
 	slot_flags = SLOT_BELT|SLOT_BACK
@@ -30,12 +30,14 @@
 	mod_handy = 1.0
 	max_shots = 12
 	accuracy = 1
-	projectile_type = /obj/item/projectile/beam/stun/heavy
+	max_shots = 12
+	projectile_type = /obj/item/projectile/energy/electrode/stunsphere
 	wielded_item_state = "tasercarbine-wielded"
 
 	firemodes = list(
-		list(mode_name="stun", projectile_type=/obj/item/projectile/beam/stun/heavy),
-		list(mode_name="shock", projectile_type=/obj/item/projectile/beam/stun/shock/heavy),
+		list(mode_name = "sphere", projectile_type = /obj/item/projectile/energy/electrode/stunsphere),
+		list(mode_name = "stun",   projectile_type = /obj/item/projectile/beam/stun/heavy),
+		list(mode_name = "shock",  projectile_type = /obj/item/projectile/beam/stun/shock/heavy),
 		)
 
 /obj/item/weapon/gun/energy/taser/mounted
@@ -47,9 +49,9 @@
 	projectile_type = /obj/item/projectile/energy/electrode
 
 	firemodes = list(
-		list(mode_name="sphere", projectile_type=/obj/item/projectile/energy/electrode),
-		list(mode_name="stun", projectile_type=/obj/item/projectile/beam/stun),
-		list(mode_name="shock", projectile_type=/obj/item/projectile/beam/stun/shock),
+		list(mode_name = "sphere", projectile_type = /obj/item/projectile/energy/electrode),
+		list(mode_name = "stun",   projectile_type = /obj/item/projectile/beam/stun),
+		list(mode_name = "shock",  projectile_type = /obj/item/projectile/beam/stun/shock),
 		)
 
 /obj/item/weapon/gun/energy/taser/mounted/cyborg
