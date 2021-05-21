@@ -420,7 +420,7 @@
 /obj/item/weapon/gun/proc/handle_war_crime(mob/living/carbon/human/user, mob/living/carbon/human/target)
 	var/obj/item/grab/G = user.get_inactive_hand()
 	if(G?.affecting == target)
-		if(!G.force_danger())
+		if(!G?.current_grab?.can_absorb)
 			to_chat(user, SPAN_NOTICE("You need a better grab for this."))
 			return
 
