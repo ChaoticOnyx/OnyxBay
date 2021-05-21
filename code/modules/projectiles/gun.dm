@@ -156,7 +156,7 @@
 	Fire(A,user,params) //Otherwise, fire normally.
 
 /obj/item/weapon/gun/attack(atom/A, mob/living/user, def_zone)
-	if(ishuman(A) && user.zone_sel.selecting == BP_MOUTH)
+	if(ishuman(A) && user.zone_sel.selecting == BP_MOUTH && user.a_intent != I_HURT)
 		handle_war_crime(user, A)
 	if (A == user && user.zone_sel.selecting == BP_MOUTH && !mouthshoot)
 		handle_suicide(user)
