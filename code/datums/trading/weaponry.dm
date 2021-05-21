@@ -23,8 +23,8 @@
 								/obj/item/weapon/gun/projectile/pistol/magnum_pistol			= TRADER_ALL,
 								/obj/item/weapon/gun/projectile/revolver				= TRADER_THIS_TYPE,
 								/obj/item/weapon/gun/projectile/revolver/detective		= TRADER_ALL,
-								/obj/item/weapon/gun/projectile/pistol/sec						= TRADER_ALL,
-								/obj/item/weapon/gun/projectile/pistol/sec/MK					= TRADER_BLACKLIST,
+								/obj/item/weapon/gun/projectile/pistol						= TRADER_ALL,
+								/obj/item/weapon/gun/projectile/pistol/MK					= TRADER_BLACKLIST,
 								/obj/item/weapon/gun/projectile/shotgun					= TRADER_ALL,
 								/obj/item/weapon/gun/projectile/shotgun/pump/boomstick	= TRADER_BLACKLIST,
 								/obj/item/ammo_magazine									= TRADER_SUBTYPES_ONLY,
@@ -109,7 +109,7 @@
 	insult_drop = 0
 
 	possible_trading_items = list(/obj/item/weapon/gun/projectile/pirate                               = TRADER_THIS_TYPE,
-								/obj/item/weapon/gun/projectile/pistol/sec/MK                                 = TRADER_THIS_TYPE,
+								/obj/item/weapon/gun/projectile/pistol/MK                                 = TRADER_THIS_TYPE,
 								/obj/item/weapon/gun/projectile/pistol/silenced/cheap                         = TRADER_THIS_TYPE,
 								/obj/item/weapon/gun/projectile/heavysniper/ant                        = TRADER_THIS_TYPE,
 								/obj/item/weapon/gun/energy/laser/dogan                                = TRADER_THIS_TYPE,

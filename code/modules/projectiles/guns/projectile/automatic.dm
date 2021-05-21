@@ -14,6 +14,8 @@
 	allowed_magazines = /obj/item/ammo_magazine/c45uzi //more damage compared to the wt550, smaller mag size
 	mag_insert_sound = 'sound/effects/weapons/gun/smg_magin.ogg'
 	mag_eject_sound = 'sound/effects/weapons/gun/smg_magout.ogg'
+	multi_aim = 1
+	burst_delay = 2
 
 	//machine pistol, like SMG but easier to one-hand with
 	firemodes = list(

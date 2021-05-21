@@ -1,4 +1,4 @@
-/obj/item/weapon/gun/projectile/pistol/sec/MK
+/obj/item/weapon/gun/projectile/pistol/MK
 	desc = "Similar in both appearance and use of the NT Mk58, the MK pistol is an cheap knock off that preys on the unsuspecting firearm buyers."
 	jam_chance = 35
 
