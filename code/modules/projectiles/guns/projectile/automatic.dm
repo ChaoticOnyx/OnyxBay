@@ -42,7 +42,7 @@
 	icon_state = "saber"
 	origin_tech = list(TECH_COMBAT = 5, TECH_MATERIAL = 2, TECH_ILLEGAL = 3)
 
-/obj/item/weapon/gun/projectile/automatic/mini_uzi/update_icon()
+/obj/item/weapon/gun/projectile/automatic/machine_pistol/mini_uzi/update_icon()
 	..()
 	if(ammo_magazine)
 		icon_state = "saber"

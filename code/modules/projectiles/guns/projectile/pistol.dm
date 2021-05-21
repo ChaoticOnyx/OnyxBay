@@ -12,6 +12,13 @@
 	mag_insert_sound = 'sound/effects/weapons/gun/pistol_magin.ogg'
 	mag_eject_sound = 'sound/effects/weapons/gun/pistol_magout.ogg'
 
+/obj/item/weapon/gun/projectile/pistol/update_icon()
+	..()
+	if(ammo_magazine && ammo_magazine.stored_ammo.len)
+		icon_state = "secguncomp"
+	else
+		icon_state = "secguncomp-e"
+
 /obj/item/weapon/gun/projectile/pistol/flash
 	name = ".45 signal pistol"
 	magazine_type = /obj/item/ammo_magazine/c45m/flash
