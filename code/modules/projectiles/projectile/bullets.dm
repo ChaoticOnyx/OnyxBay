@@ -204,6 +204,7 @@
 	pellets = 6
 	range_step = 1
 	spread_step = 10
+	penetration_modifier = 1.2 // A bit more internal damage since we don't have armor penetration anyway
 
 /* "Rifle" rounds */
 

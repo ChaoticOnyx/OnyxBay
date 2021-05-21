@@ -246,6 +246,7 @@
 		else
 			item_state_slots[slot_l_hand_str] = "[modifystate][ratio]"
 			item_state_slots[slot_r_hand_str] = "[modifystate][ratio]"
+	update_held_icon()
 
 /obj/item/weapon/gun/energy/rifle/cheap
 	name = "energy rifle"
