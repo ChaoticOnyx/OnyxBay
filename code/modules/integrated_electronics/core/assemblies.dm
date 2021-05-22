@@ -357,7 +357,7 @@
 			HTML += "<tr><td colspan='1'>"
 			io = activator
 			var/ACTIVATORS = "<div class='segmented-control'><a href='?src=\ref[circuit_pins];act=wire;pin=\ref[io]'><div class='codicon codicon-symbol-event fit-in-button'></div>[io]</a>"
-			ACTIVATORS += "<a href='?src=\ref[circuit_pins];act=data;pin=\ref[io]'>[io.data?"\<PULSE OUT\>":"\<PULSE IN\>"]</a></div><br>\n"
+			ACTIVATORS += "<a href='?src=\ref[circuit_pins];act=data;pin=\ref[io]'>[io.data?"\<PULSE OUT\>":"\<PULSE IN\>"]</a></div>\n"
 
 			if(io.linked.len)
 				ACTIVATORS += "<ul>"
