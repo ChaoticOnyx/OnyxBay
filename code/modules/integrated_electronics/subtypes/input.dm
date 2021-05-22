@@ -212,16 +212,16 @@
 	power_draw_per_use = 80
 
 /obj/item/integrated_circuit/input/adv_med_scanner/proc/damage_to_severity(value)
-	if(value < 100)
-		return 4
-	if(value < 75)
-		return 3
-	if(value < 50)
-		return 2
-	if(value < 25)
-		return 1
 	if(value < 1)
 		return 0
+	if(value < 25)
+		return 1
+	if(value < 50)
+		return 2
+	if(value < 75)
+		return 3
+	if(value < 100)
+		return 4
 	return 5
 
 /obj/item/integrated_circuit/input/adv_med_scanner/do_work()

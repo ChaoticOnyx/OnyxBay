@@ -289,7 +289,7 @@
 	for(var/datum/reagent/R in source?.reagents?.reagent_list)
 		reagent_names_list.Add(R.name)
 	var/atom/AM = get_object()
-	AM.investigate_log("transfer reagents: [jointext(reagent_names_list, ", ")] with [src].", INVESTIGATE_CIRCUIT)
+	AM.investigate_log("transfer reagents: [jointext(reagent_names_list, ", ")] from [source] to [target] with [src].", INVESTIGATE_CIRCUIT)
 
 	source.reagents.trans_to(target, transfer_amount)
 	activate_pin(2)
