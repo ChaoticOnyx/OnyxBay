@@ -157,7 +157,7 @@
 	Fire(A,user,params) //Otherwise, fire normally.
 
 /obj/item/weapon/gun/attack(atom/A, mob/living/user, def_zone)
-	if(ishuman(A) && user.zone_sel.selecting == BP_MOUTH && user.a_intent != I_HURT)
+	if(ishuman(A) && user.zone_sel.selecting == BP_MOUTH && user.a_intent != I_HURT && !weapon_in_mouth)
 		handle_war_crime(user, A)
 	if (A == user && user.zone_sel.selecting == BP_MOUTH && !mouthshoot)
 		handle_suicide(user)
@@ -395,7 +395,7 @@
 		mouthshoot = 0
 		return
 	var/obj/item/projectile/in_chamber = consume_next_projectile()
-	if (istype(in_chamber))
+	if (istype(in_chamber) && process_projectile(in_chamber, user, user, BP_MOUTH))
 		user.visible_message("<span class = 'warning'>[user] pulls the trigger.</span>")
 		var/shot_sound = in_chamber.fire_sound? in_chamber.fire_sound : fire_sound
 		if(silenced)
@@ -457,7 +457,8 @@
 			weapon_in_mouth = FALSE
 			return
 		var/obj/item/projectile/in_chamber = consume_next_projectile()
-		if(istype(in_chamber))
+		if(istype(in_chamber) && process_projectile(in_chamber, user, target, BP_MOUTH))
+			var/not_killable = istype(in_chamber, /obj/item/projectile/energy/electrode) || istype(in_chamber, /obj/item/projectile/energy/flash)
 			user.visible_message(SPAN_WARNING("[user] pulls the trigger."))
 			var/shot_sound = in_chamber.fire_sound ? in_chamber.fire_sound : fire_sound
 			if(silenced)
@@ -470,7 +471,7 @@
 				return
 
 			in_chamber.on_hit(target)
-			if(in_chamber.damage_type != PAIN)
+			if(in_chamber.damage_type != PAIN || !not_killable)
 				log_and_message_admins("[key_name(user)] killed [target] using \a [src]")
 				target.apply_damage(in_chamber.damage * 2.5, in_chamber.damage_type, BP_HEAD, 0, in_chamber.damage_flags(), used_weapon = "Point blank shot in the mouth with \a [in_chamber]")
 				target.death()

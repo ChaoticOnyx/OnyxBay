@@ -103,8 +103,9 @@
 	return 1
 
 //called when the projectile stops flying because it collided with something
-/obj/item/projectile/proc/on_impact(atom/A)
-	impact_effect(effect_transform)		// generate impact effect
+/obj/item/projectile/proc/on_impact(atom/A, use_impact = TRUE)
+	if(use_impact)
+		impact_effect(effect_transform)		// generate impact effect, if projectile is in the same loc as shoot start loc, that will cause bugs.
 	if(damage && damage_type == BURN)
 		var/turf/T = get_turf(A)
 		if(T)
@@ -152,7 +153,7 @@
 
 	if(targloc == curloc) //Shooting something in the same turf
 		target.bullet_act(src, target_zone)
-		on_impact(target)
+		on_impact(target, FALSE) //location is null in that case, todo: fix it.
 		qdel(src)
 		return 0
 
