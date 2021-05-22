@@ -1388,6 +1388,7 @@
 			set_pin_data(IC_OUTPUT, 1, selected)
 			push_data()
 			activate_pin(1)
+		return IC_TOPIC_REFRESH
 
 // -storage examiner- // **works**
 /obj/item/integrated_circuit/input/storage_examiner
