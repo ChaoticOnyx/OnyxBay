@@ -383,7 +383,7 @@
 
 	// BATTERY
 	if(battery)
-		HTML += "<a class='icon' title='Battery'><div class='codicon codicon-symbol-event fit-in-button'></div>Cell charge: [round(battery.charge, 0.1)]/[battery.maxcharge]</a>"
+		HTML += "<a class='icon' title='Eject Battery' href='?src=\ref[src];remove_cell=1'><div class='codicon codicon-symbol-event fit-in-button'></div>[battery] ([round(battery.charge, 0.1)]/[battery.maxcharge])</a>"
 	else
 		HTML += "<a class='icon' title='Battery'><div class='codicon codicon-symbol-event fit-in-button'></div>No power cell detected!</a>"
 
