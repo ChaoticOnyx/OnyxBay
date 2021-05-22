@@ -23,7 +23,7 @@
 								/obj/item/weapon/gun/projectile/pistol/magnum_pistol			= TRADER_ALL,
 								/obj/item/weapon/gun/projectile/revolver				= TRADER_THIS_TYPE,
 								/obj/item/weapon/gun/projectile/revolver/detective		= TRADER_ALL,
-								/obj/item/weapon/gun/projectile/pistol						= TRADER_ALL,
+								/obj/item/weapon/gun/projectile/pistol						= TRADER_SUBTYPES_ONLY,
 								/obj/item/weapon/gun/projectile/pistol/secgun/MK					= TRADER_BLACKLIST,
 								/obj/item/weapon/gun/projectile/shotgun					= TRADER_ALL,
 								/obj/item/weapon/gun/projectile/shotgun/pump/boomstick	= TRADER_BLACKLIST,
