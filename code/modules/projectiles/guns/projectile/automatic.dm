@@ -155,7 +155,13 @@
 		)
 
 /obj/item/weapon/gun/projectile/automatic/sts35/update_icon()
-	icon_state = (ammo_magazine)? "arifle-loaded" : "arifle-empty"
+	if(ammo_magazine)
+		if(ammo_magazine?.stored_ammo.len)
+			icon_state = "arifle-loaded"
+		else
+			icon_state = "arifle-empty"
+	else
+		icon_state = "arifle"
 	wielded_item_state = (ammo_magazine)? "arifle-wielded" : "arifle-wielded-empty"
 	..()
 
