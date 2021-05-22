@@ -279,7 +279,7 @@
 				/obj/item/weapon/gun/projectile/automatic/z8 = 2,
 				/obj/item/weapon/gun/projectile/pistol/colt = 4,
 				/obj/item/weapon/gun/projectile/pistol/vp78 = 4,
-				/obj/item/weapon/gun/projectile/pistol/wood = 3,
+				/obj/item/weapon/gun/projectile/pistol/secgun/wood = 3,
 				/obj/item/weapon/gun/projectile/pistol/holdout = 4,
 				/obj/item/weapon/gun/projectile/pirate = 5,
 				/obj/item/weapon/gun/projectile/revolver = 2,
@@ -303,7 +303,7 @@
 				/obj/item/weapon/gun/projectile/pistol/colt = 2,
 				/obj/item/weapon/gun/projectile/pistol/holdout = 2,
 				/obj/item/weapon/gun/energy/retro = 1,
-				/obj/item/weapon/gun/projectile/pistol/wood = 1)
+				/obj/item/weapon/gun/projectile/pistol/secgun/wood = 1)
 
 /obj/random/ammo
 	name = "Random Ammunition"

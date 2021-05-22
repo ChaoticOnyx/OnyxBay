@@ -1,10 +1,4 @@
 /obj/item/weapon/gun/projectile/pistol
-	name = ".45 pistol"
-	desc = "The GP Mk5 is a cheap, ubiquitous sidearm, produced by a various number of gun manufacturers. Found pretty much everywhere humans are. Uses .45 rounds."
-	icon_state = "secguncomp"
-	magazine_type = /obj/item/ammo_magazine/c45m
-	allowed_magazines = /obj/item/ammo_magazine/c45m
-	caliber = ".45"
 	fire_delay = 5.5
 	origin_tech = list(TECH_COMBAT = 2, TECH_MATERIAL = 2)
 	load_method = MAGAZINE
@@ -12,14 +6,21 @@
 	mag_insert_sound = 'sound/effects/weapons/gun/pistol_magin.ogg'
 	mag_eject_sound = 'sound/effects/weapons/gun/pistol_magout.ogg'
 
-/obj/item/weapon/gun/projectile/pistol/update_icon()
+/obj/item/weapon/gun/projectile/pistol/secgun
+	name = ".45 pistol"
+	desc = "The NT Mk58 is a cheap, ubiquitous sidearm, produced by a NanoTrasen subsidiary. This one has a sweet wooden grip, among other modifications. Uses .45 rounds."
+	icon_state = "secguncomp"
+	magazine_type = /obj/item/ammo_magazine/c45m
+	allowed_magazines = /obj/item/ammo_magazine/c45m
+	caliber = ".45"
+/obj/item/weapon/gun/projectile/pistol/secgun/update_icon()
 	..()
 	if(ammo_magazine && ammo_magazine.stored_ammo.len)
 		icon_state = "secguncomp"
 	else
 		icon_state = "secguncomp-e"
 
-/obj/item/weapon/gun/projectile/pistol/flash
+/obj/item/weapon/gun/projectile/pistol/secgun/flash
 	name = ".45 signal pistol"
 	magazine_type = /obj/item/ammo_magazine/c45m/flash
 
@@ -29,7 +30,7 @@
 	icon_state = "secgundark"
 	accuracy = 0
 
-/obj/item/weapon/gun/projectile/pistol/wood/update_icon()
+/obj/item/weapon/gun/projectile/pistol/secgun/wood/update_icon()
 	..()
 	if(ammo_magazine && ammo_magazine.stored_ammo.len)
 		icon_state = "secgundark"
@@ -40,6 +41,9 @@
 	name = "vintage .45 pistol"
 	desc = "A cheap Martian knock-off of a Colt M1911. Uses .45 rounds."
 	icon_state = "colt"
+	magazine_type = /obj/item/ammo_magazine/c45m
+	allowed_magazines = /obj/item/ammo_magazine/c45m
+	caliber = ".45"
 	fire_sound = 'sound/effects/weapons/gun/fire_colt2.ogg'
 
 /obj/item/weapon/gun/projectile/pistol/colt/update_icon()
@@ -69,6 +73,7 @@
 	icon_state = "VP78"
 	item_state = "vp78"
 	magazine_type = /obj/item/ammo_magazine/c45m/stun
+	allowed_magazines = /obj/item/ammo_magazine/c45m
 	caliber = ".45"
 	accuracy = -0.35
 
