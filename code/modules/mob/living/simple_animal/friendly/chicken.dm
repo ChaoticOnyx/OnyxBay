@@ -307,6 +307,7 @@ var/global/chicken_count = 0
 					/obj/item/weapon/reagent_containers/food/snacks/grown/carrot = 1)
 	fertile = FALSE
 	mutable = FALSE
+	meat_type = /obj/item/weapon/reagent_containers/food/snacks/tomatomeat
 
 ///////////////////////////////////////////////////////
 /datum/chicken_species/rainbow
