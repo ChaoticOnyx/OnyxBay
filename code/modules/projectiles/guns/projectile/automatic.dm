@@ -103,6 +103,7 @@
 	force = 10
 	mod_weight = 0.9
 	mod_reach = 0.75
+	mod_handy = 1.0
 	caliber = "10mm"
 	origin_tech = list(TECH_COMBAT = 5, TECH_MATERIAL = 2, TECH_ILLEGAL = 8)
 	slot_flags = SLOT_BELT|SLOT_BACK
