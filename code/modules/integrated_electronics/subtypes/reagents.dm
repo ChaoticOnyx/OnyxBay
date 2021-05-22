@@ -286,7 +286,7 @@
 		return
 
 	var/list/reagent_names_list = list()
-	for(var/datum/reagent/R in reagents?.reagent_list)
+	for(var/datum/reagent/R in source?.reagents?.reagent_list)
 		reagent_names_list.Add(R.name)
 	var/atom/AM = get_object()
 	AM.investigate_log("transfer reagents: [jointext(reagent_names_list, ", ")] with [src].", INVESTIGATE_CIRCUIT)
