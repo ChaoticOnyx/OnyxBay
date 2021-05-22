@@ -150,7 +150,7 @@
 	icon_state = "duffle"
 	item_state_slots = null
 	w_class = ITEM_SIZE_HUGE
-	max_storage_space = DEFAULT_BACKPACK_STORAGE + 10
+	max_storage_space = DEFAULT_BACKPACK_STORAGE + 14
 
 /obj/item/weapon/storage/backpack/dufflebag/New()
 	..()
@@ -205,6 +205,7 @@
 	name = "satchel"
 	desc = "A trendy looking satchel."
 	icon_state = "satchel-norm"
+	max_w_class = ITEM_SIZE_NORMAL // It's not nearly as spaceous as backpacks, how TF can you fit a rifle inside?
 
 /obj/item/weapon/storage/backpack/satchel/grey
 	name = "grey satchel"
@@ -408,7 +409,7 @@
 	name = "security messenger bag"
 	desc = "A tactical backpack worn over one shoulder. This one is in Security colors."
 	icon_state = "courierbagsec"
-	
+
 //Smuggler's satchel
 /obj/item/weapon/storage/backpack/satchel/flat
 	name = "\improper Smuggler's satchel"
