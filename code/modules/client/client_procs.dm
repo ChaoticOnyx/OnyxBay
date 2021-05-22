@@ -316,9 +316,7 @@
 	if(!establish_db_connection())
 		return null
 
-	var/sql_ckey = sql_sanitize_text(ckey(key))
-
-	var/DBQuery/query = sql_query("SELECT datediff(Now(),firstseen) as age FROM erro_player WHERE ckey = $sql_ckey", dbcon, list(sql_ckey = sql_ckey))
+	var/DBQuery/query = sql_query("SELECT datediff(Now(),firstseen) as age FROM erro_player WHERE ckey = $ckey", dbcon, list(ckey = ckey(key)))
 
 	if(query.NextRow())
 		return text2num(query.item[1])
@@ -342,13 +340,11 @@
 	if(!establish_db_connection())
 		return
 
-	var/sql_ckey = sql_sanitize_text(src.ckey)
-
-	var/DBQuery/query = sql_query("SELECT id, datediff(Now(),firstseen) as age FROM erro_player WHERE ckey = $sql_ckey", dbcon, list(sql_ckey = sql_ckey))
-	var/sql_id = 0
+	var/DBQuery/query = sql_query("SELECT id, datediff(Now(),firstseen) as age FROM erro_player WHERE ckey = $ckey", dbcon, list(ckey = ckey))
+	var/id = 0
 	player_age = 0	// New players won't have an entry so knowing we have a connection we set this to zero to be updated if their is a record.
 	while(query.NextRow())
-		sql_id = query.item[1]
+		id = query.item[1]
 		player_age = text2num(query.item[2])
 		break
 
@@ -367,31 +363,26 @@
 	watchlist.OnLogin(src)
 
 	//Just the standard check to see if it's actually a number
-	if(sql_id)
-		if(istext(sql_id))
-			sql_id = text2num(sql_id)
-		if(!isnum(sql_id))
+	if(id)
+		if(istext(id))
+			id = text2num(id)
+		if(!isnum(id))
 			return
 
 	var/admin_rank = "Player"
 	if(src.holder)
 		admin_rank = src.holder.rank
 
-	var/sql_ip = sql_sanitize_text(src.address)
-	var/sql_computerid = sql_sanitize_text(src.computer_id)
-	var/sql_admin_rank = sql_sanitize_text(admin_rank)
-
-
-	if(sql_id)
+	if(id)
 		//Player already identified previously, we need to just update the 'lastseen', 'ip' and 'computer_id' variables
-		sql_query("UPDATE erro_player SET lastseen = Now(), ip = $sql_ip, computerid = $sql_computerid, lastadminrank = $sql_admin_rank WHERE id = $sql_id", dbcon, list(sql_ip = sql_ip, sql_computerid = sql_computerid, sql_admin_rank = sql_admin_rank, sql_id = sql_id))
+		sql_query("UPDATE erro_player SET lastseen = Now(), ip = $address, computerid = $computer_id, lastadminrank = $admin_rank WHERE id = $id", dbcon, list(address = address, computer_id = computer_id, admin_rank = admin_rank, id = id))
 	else
 		//New player!! Need to insert all the stuff
-		sql_query("INSERT INTO erro_player VALUES (null, $sql_ckey, Now(), Now(), $sql_ip, $sql_computerid, $sql_admin_rank)", dbcon, list(sql_ckey = sql_ckey, sql_ip = sql_ip, sql_computerid = sql_computerid, sql_admin_rank = sql_admin_rank))
+		sql_query("INSERT INTO erro_player VALUES (null, $ckey, Now(), Now(), $address, $computer_id, $admin_rank)", dbcon, list(ckey = ckey, address = address, computer_id = computer_id, admin_rank = admin_rank))
 
 	//Logging player access
 	var/serverip = "[world.internet_address]:[world.port]"
-	sql_query("INSERT INTO erro_connection_log (id, datetime, serverip, ckey, ip, computerid) VALUES (null, Now(), $serverip, $sql_ckey,$sql_ip, $sql_computerid)", dbcon, list(serverip = serverip, sql_ckey = sql_ckey, sql_ip = sql_ip, sql_computerid = sql_computerid))
+	sql_query("INSERT INTO erro_connection_log (id, datetime, serverip, ckey, ip, computerid) VALUES (null, Now(), $serverip, $ckey, $address, $computer_id)", dbcon, list(serverip = serverip, ckey = ckey, address = address, computer_id = computer_id))
 
 
 #undef UPLOAD_LIMIT

@@ -13,11 +13,6 @@
  * SQL sanitization
  */
 
-// Run all strings to be used in an SQL query through this proc first to properly escape out injection attempts.
-/proc/sanitizeSQL(t as text)
-	var/sqltext = dbcon.Quote(t);
-	return copytext_char(sqltext, 2, length_char(sqltext));//Quote() adds quotes around input, we already do that
-
 /proc/decode_from_db(text)
 	if(config.db_uses_cp1251_encoding)
 		return cp1251toutf8(text)

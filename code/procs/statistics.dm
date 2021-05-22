@@ -32,16 +32,11 @@
 	var/area/placeofdeath = get_area(H)
 	var/podname = placeofdeath ? placeofdeath.name : "Unknown area"
 
-	var/sqlname = sanitizeSQL(H.real_name)
-	var/sqlkey = sanitizeSQL(H.key)
-	var/sqlpod = sanitizeSQL(podname)
-	var/sqlspecial = sanitizeSQL(H.mind.special_role)
-	var/sqljob = sanitizeSQL(H.mind.assigned_role)
 	var/laname
 	var/lakey
 	if(H.last_attacker_)
-		laname = sanitizeSQL(H.last_attacker_.name)
-		lakey = sanitizeSQL(H.last_attacker_.client.key)
+		laname = H.last_attacker_.name
+		lakey = H.last_attacker_.client.key
 	var/sqltime = time2text(world.realtime, "YYYY-MM-DD hh:mm:ss")
 	var/coord = "[H.x], [H.y], [H.z]"
 //	log_debug("INSERT INTO death (name, byondkey, job, special, pod, tod, laname, lakey, gender, bruteloss, fireloss, brainloss, oxyloss) VALUES ('[sqlname]', '[sqlkey]', '[sqljob]', '[sqlspecial]', '[sqlpod]', '[sqltime]', '[laname]', '[lakey]', '[H.gender]', [H.bruteloss], [H.getFireLoss()], [H.getBrainLoss()], [H.getOxyLoss()])")
@@ -67,11 +62,11 @@
 					oxyloss,
 					coord)
 			VALUES
-				($sqlname',
-				$sqlkey,
-				$sqljob,
-				$sqlspecial,
-				$sqlpod,
+				($name',
+				$key,
+				$job,
+				$special,
+				$pod,
 				$sqltime,
 				$laname,
 				$lakey,
@@ -81,7 +76,7 @@
 				$brain,
 				$oxy,
 				$coord)
-			"}, dbcon, list(sqlname = sqlname, sqlkey = sqlkey, sqljob = sqljob, sqlspecial = sqlspecial, sqlpod = sqlpod, sqltime = sqltime, laname = laname, lakey = lakey, gender = H.gender, brute = H.getBruteLoss(), fire = H.getFireLoss(), brain = H.getBrainLoss(), oxy = H.getOxyLoss(), coord = coord))
+			"}, dbcon, list(name = H.real_name, key = H.key, job = H.mind.assigned_role, special = H.mind.special_role, pod = podname, sqltime = sqltime, laname = laname, lakey = lakey, gender = H.gender, brute = H.getBruteLoss(), fire = H.getFireLoss(), brain = H.getBrainLoss(), oxy = H.getOxyLoss(), coord = coord))
 
 
 /proc/sql_report_cyborg_death(mob/living/silicon/robot/H)
@@ -95,16 +90,11 @@
 	var/area/placeofdeath = get_area(H)
 	var/podname = placeofdeath ? placeofdeath.name : "Unknown area"
 
-	var/sqlname = sanitizeSQL(H.real_name)
-	var/sqlkey = sanitizeSQL(H.key)
-	var/sqlpod = sanitizeSQL(podname)
-	var/sqlspecial = sanitizeSQL(H.mind.special_role)
-	var/sqljob = sanitizeSQL(H.mind.assigned_role)
 	var/laname
 	var/lakey
 	if(H.last_attacker_)
-		laname = sanitizeSQL(H.last_attacker_.name)
-		lakey = sanitizeSQL(H.last_attacker_.client.key)
+		laname = H.last_attacker_.name
+		lakey = H.last_attacker_.client.key
 	var/sqltime = time2text(world.realtime, "YYYY-MM-DD hh:mm:ss")
 	var/coord = "[H.x], [H.y], [H.z]"
 //	log_debug("INSERT INTO death (name, byondkey, job, special, pod, tod, laname, lakey, gender, bruteloss, fireloss, brainloss, oxyloss) VALUES ('[sqlname]', '[sqlkey]', '[sqljob]', '[sqlspecial]', '[sqlpod]', '[sqltime]', '[laname]', '[lakey]', '[H.gender]', [H.bruteloss], [H.getFireLoss()], [H.getBrainLoss()], [H.getOxyLoss()])")
@@ -130,11 +120,11 @@
 					oxyloss,
 					coord)
 			VALUES
-				($sqlname,
-				$sqlkey,
-				$sqljob,
-				$sqlspecial,
-				$sqlpod,
+				($name,
+				$key,
+				$job,
+				$special,
+				$pod,
 				$sqltime,
 				$laname,
 				$lakey,
@@ -143,8 +133,8 @@
 				$fire,
 				$brain,
 				$oxy,
-				$coord) q
-			"}, dbcon, list(sqlname = sqlname, sqlkey = sqlkey, sqljob = sqljob, sqlspecial = sqlspecial, sqlpod = sqlpod, sqltime = sqltime, laname = laname, lakey = lakey, gender = H.gender, brute = H.getBruteLoss(), fire = H.getFireLoss(), brain = H.getBrainLoss(), oxy = H.getOxyLoss(), coord = coord))
+				$coord)
+			"}, dbcon, list(name = H.real_name, key = H.key, job = H.mind.assigned_role, special = H.mind.special_role, pod = podname, sqltime = sqltime, laname = laname, lakey = lakey, gender = H.gender, brute = H.getBruteLoss(), fire = H.getFireLoss(), brain = H.getBrainLoss(), oxy = H.getOxyLoss(), coord = coord))
 
 /proc/statistic_cycle()
 	if(!sqllogging)

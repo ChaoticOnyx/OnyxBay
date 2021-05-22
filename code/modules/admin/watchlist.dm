@@ -4,7 +4,6 @@
 /datum/watchlist/proc/Add(target_ckey, browse = 0)
 	if (!target_ckey)
 		var/new_ckey = ckey(input(usr, "Who would you like to add to the watchlist?", "Enter a ckey", null) as text)
-		new_ckey = sanitizeSQL(new_ckey)
 		if (!new_ckey)
 			return
 
@@ -23,20 +22,16 @@
 
 		target_ckey = new_ckey
 
-	target_ckey = sanitizeSQL(target_ckey)
-
 	if (Check(target_ckey))
 		to_chat(usr, "<span class='redtext'>[target_ckey] is already on the watchlist.</span>")
 		return
 
 	var/reason = sanitize(input(usr, "Please State Reason", "Reason"))
-	reason = sanitizeSQL(reason)
 	reason = encode_for_db(reason)
 	if (!reason)
 		return
 
 	var/adminckey = usr.ckey
-	adminckey = sanitizeSQL(adminckey)
 	if (!adminckey)
 		return
 
@@ -67,8 +62,6 @@
 
 
 /datum/watchlist/proc/Check(target_ckey)
-	target_ckey = sanitizeSQL(target_ckey)
-
 	var/DBQuery/query_watch = sql_query({"
 		SELECT
 			reason
@@ -85,8 +78,6 @@
 
 
 /datum/watchlist/proc/Remove(target_ckey, browse = 0)
-	target_ckey = sanitizeSQL(target_ckey)
-
 	sql_query({"
 		DELETE FROM
 			erro_watch
@@ -106,8 +97,6 @@
 
 
 /datum/watchlist/proc/Edit(target_ckey, browse = 0)
-	target_ckey = sanitizeSQL(target_ckey)
-
 	var/DBQuery/query_watchreason = sql_query({"
 		SELECT
 			reason
@@ -121,13 +110,11 @@
 		var/watch_reason = decode_from_db(query_watchreason.item[1])
 
 		var/new_reason = sanitize(input(usr, "Input new reason", "New Reason", html_decode(watch_reason)))
-		new_reason = sanitizeSQL(new_reason)
 		if (!new_reason)
 			return
 
-		var/admin_ckey = sanitizeSQL(usr.ckey)
+		var/admin_ckey = usr.ckey
 		var/edit_text = "Edited by [admin_ckey] on [time2text(world.realtime, "YYYY-MM-DD hh:mm:ss")] from<br>[watch_reason]<br>to<br>[new_reason]<hr>"
-		edit_text = sanitizeSQL(edit_text)
 		edit_text = encode_for_db(edit_text)
 
 		new_reason = encode_for_db(new_reason)
@@ -171,7 +158,6 @@
 		search = "^[search]"
 	else
 		search = "^."
-	search = sanitizeSQL(search)
 
 	var/DBQuery/query_watchlist = sql_query({"
 		SELECT
@@ -249,7 +235,7 @@
 		Show()
 
 	else if(href_list["watcheditlog"])
-		var/target_ckey = sanitizeSQL("[href_list["watcheditlog"]]")
+		var/target_ckey = href_list["watcheditlog"]
 
 		var/DBQuery/query_watchedits = sql_query({"
 			SELECT

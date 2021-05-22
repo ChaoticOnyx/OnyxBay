@@ -119,8 +119,6 @@ SUBSYSTEM_DEF(donations)
 
 	if(player.donator_info.opyxes + change < 0)
 		return FALSE
-	type = sql_sanitize_text(type)
-	comment = sql_sanitize_text(comment)
 
 	sql_query({"
 		INSERT INTO

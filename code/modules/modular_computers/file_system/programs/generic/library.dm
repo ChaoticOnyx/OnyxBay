@@ -76,7 +76,7 @@ The answer was five and a half years -ZeroBits
 		view_book(href_list["viewbook"])
 		return 1
 	if(href_list["viewid"])
-		view_book(sanitizeSQL(input("Enter USBN:") as num|null))
+		view_book(input("Enter USBN:") as num|null)
 		return 1
 	if(href_list["closebook"])
 		current_book = null
@@ -124,10 +124,9 @@ The answer was five and a half years -ZeroBits
 
 			var/upload_category = input(usr, "Upload to which category?") in list("Fiction", "Non-Fiction", "Reference", "Religion")
 
-			var/sqltitle = encode_for_db(sanitizeSQL(B.name))
-			var/sqlauthor = encode_for_db(sanitizeSQL(B.author))
-			var/sqlcontent = encode_for_db(sanitizeSQL(B.dat))
-			var/sqlcategory = sanitizeSQL(upload_category)
+			var/sqltitle = encode_for_db(B.name)
+			var/sqlauthor = encode_for_db(B.author)
+			var/sqlcontent = encode_for_db(B.dat)
 			var/DBQuery/query = sql_query({"
 				INSERT INTO
 					library
@@ -139,8 +138,8 @@ The answer was five and a half years -ZeroBits
 					($sqlauthor,
 					$sqltitle,
 					$sqlcontent,
-					$sqlcategory)
-				"}, dbcon_old, list(sqlauthor = sqlauthor, sqltitle = sqltitle, sqlcontent = sqlcontent, sqlcategory = sqlcategory))
+					$upload_category)
+				"}, dbcon_old, list(sqlauthor = sqlauthor, sqltitle = sqltitle, sqlcontent = sqlcontent, upload_category = upload_category))
 			if(!query)
 				error_message = "Network Error: Unable to upload to the Archive. Contact your system Administrator for assistance."
 				return 1
@@ -196,12 +195,11 @@ The answer was five and a half years -ZeroBits
 	if(current_book || !id)
 		return 0
 
-	var/sqlid = sanitizeSQL(id)
 	if(!establish_old_db_connection())
 		error_message = "Network Error: Connection to the Archive has been severed."
 		return 1
 
-	var/DBQuery/query = sql_query("SELECT * FROM library WHERE id = $sqlid", dbcon_old, list(sqlid = sqlid))
+	var/DBQuery/query = sql_query("SELECT * FROM library WHERE id = $id", dbcon_old, list(id = id))
 
 	while(query.NextRow())
 		current_book = list(
@@ -219,25 +217,24 @@ The answer was five and a half years -ZeroBits
 	if(!check_rights(R_INVESTIGATE, TRUE, user))
 		return
 
-	var/sqlid = sanitizeSQL(id)
 	if(!establish_db_connection())
 		to_chat(user, SPAN_WARNING("Failed to establish database connection!"))
 		return
 
 	var/author
 	var/title
-	var/DBQuery/query = sql_query("SELECT author, title FROM library WHERE id = $sqlid", dbcon)
+	var/DBQuery/query = sql_query("SELECT author, title FROM library WHERE id = $id", dbcon, list(id = id))
 
 	if(query.NextRow())
 		author = query.item[1]
 		title = query.item[2]
 	else
-		to_chat(user, SPAN_WARNING("Book with ISBN number \[[sqlid]\] was not found!"))
+		to_chat(user, SPAN_WARNING("Book with ISBN number \[[id]\] was not found!"))
 		return
 
-	query = sql_query("DELETE FROM library WHERE id = $sqlid", dbcon, list(sqlid = sqlid))
+	query = sql_query("DELETE FROM library WHERE id = $id", dbcon, list(id = id))
 	if(query)
-		log_and_message_admins("has deleted the book: \[[sqlid]\] \"[title]\" by [author]", user)
+		log_and_message_admins("has deleted the book: \[[id]\] \"[title]\" by [author]", user)
 
 #define WIKI_COMMON_CATEGORY "Available_in_library"
 #define WIKI_HACKED_CATEGORY "Available_in_hacked_library"

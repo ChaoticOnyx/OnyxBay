@@ -360,17 +360,8 @@ var/obj/machinery/blackbox_recorder/blackbox
 				details = encode_for_db(FV.get_details())
 				))
 
-// Sanitize inputs to avoid SQL injection attacks
-/proc/sql_sanitize_text(text)
-	text = replacetext(text, "'", "''")
-	text = replacetext(text, ";", "")
-	text = replacetext(text, "&", "")
-	return text
-
 /proc/feedback_set(variable,value)
 	if(!blackbox) return
-
-	variable = sql_sanitize_text(variable)
 
 	var/datum/feedback_variable/FV = blackbox.find_feedback_datum(variable)
 
@@ -381,8 +372,6 @@ var/obj/machinery/blackbox_recorder/blackbox
 /proc/feedback_inc(variable,value)
 	if(!blackbox) return
 
-	variable = sql_sanitize_text(variable)
-
 	var/datum/feedback_variable/FV = blackbox.find_feedback_datum(variable)
 
 	if(!FV) return
@@ -391,8 +380,6 @@ var/obj/machinery/blackbox_recorder/blackbox
 
 /proc/feedback_dec(variable,value)
 	if(!blackbox) return
-
-	variable = sql_sanitize_text(variable)
 
 	var/datum/feedback_variable/FV = blackbox.find_feedback_datum(variable)
 
@@ -403,9 +390,6 @@ var/obj/machinery/blackbox_recorder/blackbox
 /proc/feedback_set_details(variable,details)
 	if(!blackbox) return
 
-	variable = sql_sanitize_text(variable)
-	details = sql_sanitize_text(details)
-
 	var/datum/feedback_variable/FV = blackbox.find_feedback_datum(variable)
 
 	if(!FV) return
@@ -414,9 +398,6 @@ var/obj/machinery/blackbox_recorder/blackbox
 
 /proc/feedback_add_details(variable,details)
 	if(!blackbox) return
-
-	variable = sql_sanitize_text(variable)
-	details = sql_sanitize_text(details)
 
 	var/datum/feedback_variable/FV = blackbox.find_feedback_datum(variable)
 
