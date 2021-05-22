@@ -53,6 +53,13 @@
             "cwd": "${workspaceFolder}",
             "stopAtEntry": false,
             "console": "internalConsole"
+        },
+        {
+            "name": "Nano Watch",
+            "type": "PowerShell",
+            "request": "launch",
+            "script": "${workspaceFolder}/nano/Watch.ps1",
+            "cwd": "${workspaceFolder}"
         }
     ]
 }
