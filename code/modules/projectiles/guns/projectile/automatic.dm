@@ -27,7 +27,7 @@
 		list(mode_name = "semiauto",       burst = 1, fire_delay = 0,    move_delay = null, one_hand_penalty = 0, burst_accuracy = null,                    dispersion = null),
 		list(mode_name = "3-round bursts", burst = 3, fire_delay = null, move_delay = 4,    one_hand_penalty = 1, burst_accuracy = list(0, -1,- 1),         dispersion = list(0.0, 0.6, 1.0)),
 		list(mode_name = "5-round bursts", burst = 5, fire_delay = null, move_delay = 4,    one_hand_penalty = 2, burst_accuracy = list(0, -1, -1, -1, -2), dispersion = list(0.6, 0.6, 1.0, 1.0, 1.2))
-
+	)
 /obj/item/weapon/gun/projectile/automatic/machine_pistol/update_icon()
 	if(ammo_magazine)
 		icon_state = "mpistolen"
@@ -240,7 +240,7 @@
 	name = "light machine gun"
 	desc = "A heavily modified 5.56x45mm light machine gun, designated 'L6 SAW'. Has 'Aussec Armoury - 2531' engraved on the reciever below the designation."
 	icon_state = "l6closed100"
-	item_state = "l6closedmag"
+	item_state = "l6closed"
 	wielded_item_state = "l6closed-wielded"
 	w_class = ITEM_SIZE_HUGE
 	force = 14.0

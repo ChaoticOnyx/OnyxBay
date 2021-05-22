@@ -18,7 +18,6 @@
 	handle_casings = HOLD_CASINGS
 	one_hand_penalty = 2
 	var/recentpump = 0 // to prevent spammage
-	wielded_item_state = "gun_wielded"
 	fire_sound = 'sound/effects/weapons/gun/fire_shotgun2.ogg'
 
 /obj/item/weapon/gun/projectile/shotgun/pump/consume_next_projectile()
