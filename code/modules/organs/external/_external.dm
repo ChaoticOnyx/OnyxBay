@@ -266,7 +266,7 @@
 					user.visible_message(SPAN_DANGER("<b>[user]</b> extracts [removing] from [src] with [W]!"))
 				else
 					if(organ_tag == BP_HEAD && W.sharp)
-						if(alert("Do you really want to rips the skin off [src] with [W]?",,"Ew, no.","MEAT!") == "Ew, no.")
+						if(alert("Do you really want to rip the skin off [src] with [W]?",,"Ew, no.","MEAT!") == "Ew, no.")
 							return
 						user.visible_message(SPAN_DANGER("<b>[user]</b> rips the skin off [src] with [W], revealing a skull and meat."))
 						food_organ.appearance = food_organ_type
@@ -280,7 +280,7 @@
 							gibs(user.loc)
 						qdel(src)
 					else
-						if(alert("Do you really want to rips the skin off [src] with [W]?",,"Ew, no.","MEAT!") == "MEAT!")
+						if(alert("Do you really want to rip the skin off [src] with [W]?",,"Ew, no.","MEAT!") == "MEAT!")
 							if(src && !QDELETED(src))
 								food_organ.appearance = food_organ_type
 								food_organ.forceMove(get_turf(loc))
@@ -596,7 +596,7 @@ This function completely restores a damaged organ to perfect condition.
 
 /obj/item/organ/external/die()
 	for(var/obj/item/organ/external/E in children)
-		E.take_external_damage(10, 0, used_weapon="parent organ sepsis")
+		E.take_external_damage(10, 0, used_weapon = "parent organ sepsis")
 	..()
 
 //Updating germ levels. Handles organ germ levels and necrosis.
