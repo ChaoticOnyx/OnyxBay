@@ -597,6 +597,16 @@
 			heal_organ_damage(50, 50)
 			blood_used += 12
 
+		for(var/obj/item/organ/external/current_organ in organs)
+			for(var/datum/wound/wound in current_organ.wounds)
+				wound.embedded_objects.Cut()
+
+			// remove embedded objects and drop them on the floor
+			for(var/obj/implanted_object in current_organ.implants)
+				if(!istype(implanted_object,/obj/item/weapon/implant))	// We don't want to remove REAL implants. Just shrapnel etc.
+					implanted_object.loc = get_turf(src)
+					current_organ.implants -= implanted_object
+
 		for (var/A in organs)
 			var/healed = FALSE
 			var/obj/item/organ/external/E = A
