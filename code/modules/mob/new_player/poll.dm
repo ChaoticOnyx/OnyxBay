@@ -4,8 +4,8 @@
 		return
 	var/voted = 0
 
-	var/DBQuery/query = dbcon.NewQuery("SELECT * FROM erro_privacy WHERE ckey='[src.ckey]'")
-	query.Execute()
+	var/DBQuery/query = sql_query("SELECT * FROM erro_privacy WHERE ckey = $ckey", dbcon, list(ckey = ckey))
+
 	while(query.NextRow())
 		voted = 1
 		break
@@ -52,8 +52,16 @@
 	if(src.client && src.client.holder)
 		isadmin = 1
 
-	var/DBQuery/select_query = dbcon.NewQuery("SELECT id, question FROM erro_poll_question WHERE [(isadmin ? "" : "adminonly = false AND")] Now() BETWEEN starttime AND endtime")
-	select_query.Execute()
+	var/DBQuery/select_query = sql_query({"
+		SELECT
+			id,
+			question
+		FROM
+			erro_poll_question
+		WHERE
+			[(isadmin ? "" : "adminonly = false AND")]
+			Now() BETWEEN starttime AND endtime
+		"}, dbcon)
 
 	var/output = "<meta charset=\"utf-8\"><div align='center'><B>Player polls</B>"
 	output +="<hr>"
@@ -82,8 +90,18 @@
 	if(!establish_db_connection())
 		return
 
-	var/DBQuery/select_query = dbcon.NewQuery("SELECT starttime, endtime, question, polltype, multiplechoiceoptions FROM erro_poll_question WHERE id = [pollid]")
-	select_query.Execute()
+	var/DBQuery/select_query = sql_query({"
+		SELECT
+			starttime,
+			endtime,
+			question,
+			polltype,
+			multiplechoiceoptions
+		FROM
+			erro_poll_question
+		WHERE
+			id = $pollid
+		"}, dbcon, list(pollid = pollid))
 
 	var/pollstarttime = ""
 	var/pollendtime = ""
@@ -107,8 +125,16 @@
 	switch(polltype)
 		//Polls that have enumerated options
 		if("OPTION")
-			var/DBQuery/voted_query = dbcon.NewQuery("SELECT optionid FROM erro_poll_vote WHERE pollid = [pollid] AND ckey = '[usr.ckey]'")
-			voted_query.Execute()
+			var/DBQuery/voted_query = sql_query({"
+				SELECT
+					optionid
+				FROM
+					erro_poll_vote
+				WHERE
+					pollid = $pollid
+					AND
+					ckey = $ckey
+				"}, dbcon, list(pollid = pollid, ckey = usr.ckey))
 
 			var/voted = 0
 			var/votedoptionid = 0
@@ -119,8 +145,16 @@
 
 			var/list/datum/polloption/options = list()
 
-			var/DBQuery/options_query = dbcon.NewQuery("SELECT id, text FROM erro_poll_option WHERE pollid = [pollid]")
-			options_query.Execute()
+			var/DBQuery/options_query = sql_query({"
+				SELECT
+					id,
+					text
+				FROM
+					erro_poll_option
+				WHERE
+					pollid = $pollid
+				"}, dbcon, list(pollid = pollid))
+
 			while(options_query.NextRow())
 				var/datum/polloption/PO = new()
 				PO.optionid = text2num(options_query.item[1])
@@ -160,8 +194,16 @@
 
 		//Polls with a text input
 		if("TEXT")
-			var/DBQuery/voted_query = dbcon.NewQuery("SELECT replytext FROM erro_poll_textreply WHERE pollid = [pollid] AND ckey = '[usr.ckey]'")
-			voted_query.Execute()
+			var/DBQuery/voted_query = sql_query({"
+				SELECT
+					replytext
+				FROM
+					erro_poll_textreply
+				WHERE
+					pollid = $pollid
+					AND
+					ckey = $ckey
+				"}, dbcon, list(pollid = pollid, ckey = usr.ckey))
 
 			var/voted = 0
 			var/vote_text = ""
@@ -202,8 +244,20 @@
 
 		//Polls with a text input
 		if("NUMVAL")
-			var/DBQuery/voted_query = dbcon.NewQuery("SELECT o.text, v.rating FROM erro_poll_option o, erro_poll_vote v WHERE o.pollid = [pollid] AND v.ckey = '[usr.ckey]' AND o.id = v.optionid")
-			voted_query.Execute()
+			var/DBQuery/voted_query = sql_query({"
+				SELECT
+					o.text,
+					v.rating
+				FROM
+					erro_poll_option o,
+					erro_poll_vote v
+				WHERE
+					o.pollid = $pollid
+					AND
+					v.ckey = $ckey
+					AND
+					o.id = v.optionid
+				"}, dbcon, list(pollid = pollid, ckey = usr.ckey))
 
 			var/output = "<meta charset=\"utf-8\"><div align='center'><B>Player poll</B>"
 			output +="<hr>"
@@ -228,8 +282,21 @@
 				var/minid = 999999
 				var/maxid = 0
 
-				var/DBQuery/option_query = dbcon.NewQuery("SELECT id, text, minval, maxval, descmin, descmid, descmax FROM erro_poll_option WHERE pollid = [pollid]")
-				option_query.Execute()
+				var/DBQuery/option_query = sql_query({"
+					SELECT
+						id,
+						text,
+						minval,
+						maxval,
+						descmin,
+						descmid,
+						descmax
+					FROM
+						erro_poll_option
+					WHERE
+						pollid = $pollid
+					"}, dbcon, list(pollid = pollid))
+
 				while(option_query.NextRow())
 					var/optionid = text2num(option_query.item[1])
 					var/optiontext = option_query.item[2]
@@ -271,8 +338,16 @@
 
 			show_browser(src, output, "window=playerpoll;size=500x500")
 		if("MULTICHOICE")
-			var/DBQuery/voted_query = dbcon.NewQuery("SELECT optionid FROM erro_poll_vote WHERE pollid = [pollid] AND ckey = '[usr.ckey]'")
-			voted_query.Execute()
+			var/DBQuery/voted_query = sql_query({"
+				SELECT
+					optionid
+				FROM
+					erro_poll_vote
+				WHERE
+					pollid = $pollid
+					AND
+					ckey = $ckey
+				"}, dbcon, list(pollid = pollid, ckey = usr.ckey))
 
 			var/list/votedfor = list()
 			var/voted = 0
@@ -284,8 +359,16 @@
 			var/maxoptionid = 0
 			var/minoptionid = 0
 
-			var/DBQuery/options_query = dbcon.NewQuery("SELECT id, text FROM erro_poll_option WHERE pollid = [pollid]")
-			options_query.Execute()
+			var/DBQuery/options_query = sql_query({"
+				SELECT
+					id,
+					text
+				FROM
+					erro_poll_option
+				WHERE
+					pollid = $pollid
+				"}, dbcon, list(pollid = pollid))
+			
 			while(options_query.NextRow())
 				var/datum/polloption/PO = new()
 				PO.optionid = text2num(options_query.item[1])
@@ -342,8 +425,20 @@
 	if(!establish_db_connection())
 		return
 
-	var/DBQuery/select_query = dbcon.NewQuery("SELECT starttime, endtime, question, polltype, multiplechoiceoptions FROM erro_poll_question WHERE id = [pollid] AND Now() BETWEEN starttime AND endtime")
-	select_query.Execute()
+	var/DBQuery/select_query = sql_query({"
+		SELECT
+			starttime,
+			endtime,
+			question,
+			polltype,
+			multiplechoiceoptions
+		FROM
+			erro_poll_question
+		WHERE
+			id = $pollid
+			AND
+			Now() BETWEEN starttime AND endtime
+		"}, dbcon, list(pollid = pollid))
 
 	var/validpoll = 0
 	var/multiplechoiceoptions = 0
@@ -360,8 +455,16 @@
 		to_chat(usr, "<span class='warning'>Poll is not valid.</span>")
 		return
 
-	var/DBQuery/select_query2 = dbcon.NewQuery("SELECT id FROM erro_poll_option WHERE id = [optionid] AND pollid = [pollid]")
-	select_query2.Execute()
+	var/DBQuery/select_query2 = sql_query({"
+		SELECT
+			id
+		FROM
+			erro_poll_option
+		WHERE
+			id = $optionid
+			AND
+			pollid = $pollid
+		"}, dbcon, list(optionid = optionid, pollid = pollid))
 
 	var/validoption = 0
 
@@ -375,8 +478,16 @@
 
 	var/alreadyvoted = 0
 
-	var/DBQuery/voted_query = dbcon.NewQuery("SELECT id FROM erro_poll_vote WHERE pollid = [pollid] AND ckey = '[usr.ckey]'")
-	voted_query.Execute()
+	var/DBQuery/voted_query = sql_query({"
+		SELECT
+			id
+		FROM
+			erro_poll_vote
+		WHERE
+			pollid = $pollid
+			AND
+			ckey = $ckey
+		"}, dbcon, list(pollid, pollid, ckey = usr.ckey))
 
 	while(voted_query.NextRow())
 		alreadyvoted += 1
@@ -396,8 +507,25 @@
 		adminrank = usr.client.holder.rank
 
 
-	var/DBQuery/insert_query = dbcon.NewQuery("INSERT INTO erro_poll_vote (id ,datetime ,pollid ,optionid ,ckey ,ip ,adminrank) VALUES (null, Now(), [pollid], [optionid], '[usr.ckey]', '[usr.client.address]', '[adminrank]')")
-	insert_query.Execute()
+	sql_query({"
+		INSERT INTO
+			erro_poll_vote
+				(id,
+				datetime,
+				pollid,
+				optionid,
+				ckey,
+				ip,
+				adminrank)
+		VALUES
+			(null,
+			Now(),
+			$pollid,
+			$optionid,
+			$ckey,
+			$address,
+			$adminrank)
+		"}, dbcon, list(pollid = pollid, optionid = optionid, ckey = usr.ckey, address = usr.client.address, adminrank = adminrank))
 
 	to_chat(usr, "<span class='notice'>Vote successful.</span>")
 	close_browser(usr, "window=playerpoll")
@@ -412,8 +540,18 @@
 	if(!establish_db_connection())
 		return
 
-	var/DBQuery/select_query = dbcon.NewQuery("SELECT starttime, endtime, question, polltype FROM erro_poll_question WHERE id = [pollid] AND Now() BETWEEN starttime AND endtime")
-	select_query.Execute()
+	var/DBQuery/select_query = sql_query({"
+		SELECT
+			starttime,
+			endtime,
+			question,
+			polltype
+		FROM
+			erro_poll_question
+		WHERE
+			id = $pollid
+			AND Now() BETWEEN starttime AND endtime
+		"}, dbcon, list(pollid = pollid))
 
 	var/validpoll = 0
 
@@ -429,8 +567,16 @@
 
 	var/alreadyvoted = 0
 
-	var/DBQuery/voted_query = dbcon.NewQuery("SELECT id FROM erro_poll_textreply WHERE pollid = [pollid] AND ckey = '[usr.ckey]'")
-	voted_query.Execute()
+	var/DBQuery/voted_query = sql_query({"
+		SELECT
+			id
+		FROM
+			erro_poll_textreply
+		WHERE
+			pollid = $pollid
+			AND
+			ckey = $ckey
+		"}, dbcon, list(pollid = pollid, ckey = usr.ckey))
 
 	while(voted_query.NextRow())
 		alreadyvoted = 1
@@ -454,8 +600,25 @@
 		to_chat(usr, "The text you entered was blank, contained illegal characters or was too long. Please correct the text and submit again.")
 		return
 
-	var/DBQuery/insert_query = dbcon.NewQuery("INSERT INTO erro_poll_textreply (id ,datetime ,pollid ,ckey ,ip ,replytext ,adminrank) VALUES (null, Now(), [pollid], '[usr.ckey]', '[usr.client.address]', '[replytext]', '[adminrank]')")
-	insert_query.Execute()
+	sql_query({"
+		INSERT INTO
+			erro_poll_textreply
+				(id,
+				datetime,
+				pollid,
+				ckey,
+				ip,
+				replytext,
+				adminrank)
+		VALUES
+			(null,
+			Now(),
+			$pollid,
+			$ckey,
+			$address,
+			$replytext,
+			$adminrank)
+		"}, dbcon, list(pollid = pollid, ckey = usr.ckey, address = usr.client.address, replytext = replytext, adminrank = adminrank))
 
 	to_chat(usr, "<span class='notice'>Feedback logging successful.</span>")
 	close_browser(usr, "window=playerpoll")
@@ -470,8 +633,18 @@
 	if(!establish_db_connection())
 		return
 
-	var/DBQuery/select_query = dbcon.NewQuery("SELECT starttime, endtime, question, polltype FROM erro_poll_question WHERE id = [pollid] AND Now() BETWEEN starttime AND endtime")
-	select_query.Execute()
+	var/DBQuery/select_query = sql_query({"
+		SELECT
+			starttime,
+			endtime,
+			question,
+			polltype
+		FROM
+			erro_poll_question
+		WHERE
+			id = $pollid
+			AND Now() BETWEEN starttime AND endtime
+		"}, dbcon, list(pollid = pollid))
 
 	var/validpoll = 0
 
@@ -485,8 +658,16 @@
 		to_chat(usr, "<span class='warning'>Poll is not valid.</span>")
 		return
 
-	var/DBQuery/select_query2 = dbcon.NewQuery("SELECT id FROM erro_poll_option WHERE id = [optionid] AND pollid = [pollid]")
-	select_query2.Execute()
+	var/DBQuery/select_query2 = sql_query({"
+		SELECT 
+			id 
+		FROM 
+			erro_poll_option 
+		WHERE 
+			id = $optionid 
+			AND 
+			pollid = $pollid
+		"}, dbcon, list(optionid = optionid, pollid = pollid))
 
 	var/validoption = 0
 
@@ -500,8 +681,16 @@
 
 	var/alreadyvoted = 0
 
-	var/DBQuery/voted_query = dbcon.NewQuery("SELECT id FROM erro_poll_vote WHERE optionid = [optionid] AND ckey = '[usr.ckey]'")
-	voted_query.Execute()
+	var/DBQuery/voted_query = sql_query({"
+		SELECT
+			id
+		FROM
+			erro_poll_vote
+		WHERE
+			optionid = $optionid
+			AND
+			ckey = $ckey
+		"}, dbcon, list(optionid = optionid, ckey = usr.ckey))
 
 	while(voted_query.NextRow())
 		alreadyvoted = 1
@@ -516,8 +705,27 @@
 		adminrank = usr.client.holder.rank
 
 
-	var/DBQuery/insert_query = dbcon.NewQuery("INSERT INTO erro_poll_vote (id ,datetime ,pollid ,optionid ,ckey ,ip ,adminrank, rating) VALUES (null, Now(), [pollid], [optionid], '[usr.ckey]', '[usr.client.address]', '[adminrank]', [(isnull(rating)) ? "null" : rating])")
-	insert_query.Execute()
+	sql_query({"
+		INSERT INTO
+			erro_poll_vote
+				(id,
+				datetime,
+				pollid,
+				optionid,
+				ckey,
+				ip,
+				adminrank,
+				rating)
+		VALUES
+			(null,
+			Now(),
+			$pollid,
+			$optionid,
+			$ckey, 
+			$address, 
+			$adminrank, 
+			[(isnull(rating)) ? "null" : "$rating"])
+		"}, dbcon, list(pollid = pollid, optionid = optionid, ckey = usr.ckey, address = usr.client.address, adminrank = adminrank, rating = rating))
 
 	to_chat(usr, "<span class='notice'>Vote successful.</span>")
 	close_browser(usr, "window=playerpoll")

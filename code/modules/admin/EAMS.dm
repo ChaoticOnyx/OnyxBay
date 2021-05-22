@@ -104,8 +104,8 @@ SUBSYSTEM_DEF(eams)
 		__DBError()
 		return FALSE
 
-	var/DBQuery/query = dbcon.NewQuery("SELECT ckey FROM whitelist_ckey WHERE ckey = \"[C.ckey]\" LIMIT 0,1")
-	if (!query.Execute())
+	var/DBQuery/query = sql_query("SELECT ckey FROM whitelist_ckey WHERE ckey = $ckey LIMIT 0,1", dbcon, list(ckey = C.ckey))
+	if (!query)
 		__DBError()
 		return FALSE
 
@@ -127,11 +127,11 @@ SUBSYSTEM_DEF(eams)
 	var/DBQuery/query = null
 
 	if (value)
-		query = dbcon.NewQuery("INSERT INTO whitelist_ckey (ckey) VALUES ('[C.ckey]')")
+		query = sql_query("INSERT INTO whitelist_ckey (ckey) VALUES ($ckey)", dbcon, list(ckey = C.ckey))
 	else
-		query = dbcon.NewQuery("DELETE FROM whitelist_ckey WHERE ckey='[C.ckey]'")
+		query = sql_query("DELETE FROM whitelist_ckey WHERE ckey=$ckey", dbcon, list(ckey = C.ckey))
 
-	if (!query.Execute())
+	if (!query)
 		__DBError()
 		return FALSE
 
@@ -147,9 +147,9 @@ SUBSYSTEM_DEF(eams)
 	ASSERT(istext(ip))
 
 	ip = dbcon.Quote(ip)
-	var/DBQuery/query = dbcon.NewQuery("SELECT response FROM eams_cache WHERE ip = [ip] LIMIT 1")
+	var/DBQuery/query = sql_query("SELECT response FROM eams_cache WHERE ip = $ip LIMIT 1", dbcon, list(ip = ip))
 
-	if (!query.Execute())
+	if (!query)
 		__DBError()
 		return FALSE
 
@@ -164,9 +164,9 @@ SUBSYSTEM_DEF(eams)
 
 	ip = dbcon.Quote(ip)
 	raw_response = dbcon.Quote(raw_response)
-	var/DBQuery/query = dbcon.NewQuery("INSERT INTO eams_cache(ip, response) VALUES ([ip], [raw_response])")
+	var/DBQuery/query = sql_query("INSERT INTO eams_cache(ip, response) VALUES ($ip, $raw_response)", dbcon, list(ip = ip, raw_response = raw_response))
 
-	if (!query.Execute())
+	if (!query)
 		__DBError()
 		return FALSE
 
@@ -175,15 +175,15 @@ SUBSYSTEM_DEF(eams)
 /datum/controller/subsystem/eams/proc/__RecordClientIP(client/C)
 	ASSERT(istype(C))
 
-	var/DBQuery/query = dbcon.NewQuery("INSERT INTO ckey_ip(ckey, ip) VALUES ([dbcon.Quote(C.ckey)], [dbcon.Quote(C.address)])")
-	if (!query.Execute())
+	var/DBQuery/query = sql_query("INSERT INTO ckey_ip(ckey, ip) VALUES ($ckey, $address)", dbcon, list(ckey = C.ckey, address = C.address))
+	if (!query)
 		__DBError()
 
 /datum/controller/subsystem/eams/proc/__RecordClientCID(client/C)
 	ASSERT(istype(C))
 
-	var/DBQuery/query = dbcon.NewQuery("INSERT INTO ckey_computerid(ckey, computerid) VALUES ([dbcon.Quote(C.ckey)], [dbcon.Quote(C.computer_id)])")
-	if (!query.Execute())
+	var/DBQuery/query = sql_query("INSERT INTO ckey_computerid(ckey, computerid) VALUES ($ckey, $cid)", dbcon, list(ckey = C.ckey, cid = C.computer_id))
+	if (!query)
 		__DBError()
 
 /datum/controller/subsystem/eams/proc/CollectDataForClient(client/C)

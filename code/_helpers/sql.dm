@@ -7,6 +7,7 @@
 //	sql_query(template, db, list(name1=value1, name2=value2...))
 //	Only $[name] is useable.
 /proc/sql_query(template, DBConnection/db, ...)
+	ASSERT(istype(db))
 	var/static/regex/token_finder = regex(@"\$(\w+|\$)")
 	var/mode_named = FALSE
 	var/list/arguments = args.Copy(3)

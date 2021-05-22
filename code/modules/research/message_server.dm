@@ -334,8 +334,8 @@ var/obj/machinery/blackbox_recorder/blackbox
 	if(!establish_db_connection()) return
 	var/round_id
 
-	var/DBQuery/query = dbcon.NewQuery("SELECT MAX(round_id) AS round_id FROM erro_feedback")
-	query.Execute()
+	var/DBQuery/query = sql_query("SELECT MAX(round_id) AS round_id FROM erro_feedback")
+
 	while(query.NextRow())
 		round_id = query.item[1]
 
@@ -344,9 +344,21 @@ var/obj/machinery/blackbox_recorder/blackbox
 	round_id++
 
 	for(var/datum/feedback_variable/FV in feedback)
-		var/sql = "INSERT INTO erro_feedback VALUES (null, Now(), [round_id], \"[encode_for_db(FV.get_variable())]\", [encode_for_db(FV.get_value())], \"[encode_for_db(FV.get_details())]\")"
-		var/DBQuery/query_insert = dbcon.NewQuery(sql)
-		query_insert.Execute()
+		sql_query({"
+			INSERT INTO
+				erro_feedback
+			VALUES
+				(null,
+				Now(),
+				$round_id,
+				$var,
+				$value,
+				$details)
+			"}, dbcon, list(round_id = round_id, 
+				var = encode_for_db(FV.get_variable()), 
+				value = encode_for_db(FV.get_value()), 
+				details = encode_for_db(FV.get_details())
+				))
 
 // Sanitize inputs to avoid SQL injection attacks
 /proc/sql_sanitize_text(text)

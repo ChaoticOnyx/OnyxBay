@@ -8,11 +8,14 @@
 		if (!new_ckey)
 			return
 
-		var/DBQuery/query_watchfind = dbcon.NewQuery("SELECT ckey FROM erro_player WHERE ckey = '[new_ckey]'")
-		if (!query_watchfind.Execute())
-			var/err = query_watchfind.ErrorMsg()
-			log_DB("Watchlist error: ckey can't be obtained from players table \[[err]\].", notify_admin = TRUE)
-			return
+		var/DBQuery/query_watchfind = sql_query({"
+			SELECT
+				ckey
+			FROM
+				erro_player
+			WHERE
+				ckey = $new_ckey
+			"}, dbcon, list(new_ckey = new_ckey))
 
 		if (!query_watchfind.NextRow())
 			if (alert(usr, "[new_ckey] has not been seen before, are you sure you want to add them to the watchlist?", "Unknown ckey", "Yes", "No", "Cancel") != "Yes")
@@ -37,11 +40,19 @@
 	if (!adminckey)
 		return
 
-	var/DBQuery/query_watchadd = dbcon.NewQuery("INSERT INTO erro_watch (ckey, reason, adminckey, timestamp) VALUES ('[target_ckey]', '[reason]', '[adminckey]', Now())")
-	if (!query_watchadd.Execute())
-		var/err = query_watchadd.ErrorMsg()
-		log_DB("Watchlist error during adding new watch entry \[[err]\].", notify_admin = TRUE)
-		return
+	sql_query({"
+		INSERT INTO
+			erro_watch
+				(ckey,
+				reason,
+				adminckey,
+				timestamp)
+		VALUES
+			($target_ckey,
+			$reason,
+			$adminckey,
+			Now())
+		"}, dbcon, list(target_ckey = target_ckey, reason = reason, adminckey = adminckey))
 
 	reason = html_decode(reason)
 	log_admin("[key_name(usr)] has added [target_ckey] to the watchlist - Reason: [reason]", notify_admin = TRUE)
@@ -58,11 +69,14 @@
 /datum/watchlist/proc/Check(target_ckey)
 	target_ckey = sanitizeSQL(target_ckey)
 
-	var/DBQuery/query_watch = dbcon.NewQuery("SELECT reason FROM erro_watch WHERE ckey = '[target_ckey]'")
-	if (!query_watch.Execute())
-		var/err = query_watch.ErrorMsg()
-		log_DB("Watchlist error: reason can't be obtained from watch table \[[err]\].", notify_admin = TRUE)
-		return
+	var/DBQuery/query_watch = sql_query({"
+		SELECT
+			reason
+		FROM
+			erro_watch
+		WHERE
+			ckey = $target_ckey
+		"}, dbcon, list(target_ckey = target_ckey))
 
 	if (query_watch.NextRow())
 		return decode_from_db(html_decode(query_watch.item[1]))
@@ -73,11 +87,12 @@
 /datum/watchlist/proc/Remove(target_ckey, browse = 0)
 	target_ckey = sanitizeSQL(target_ckey)
 
-	var/DBQuery/query_watchdel = dbcon.NewQuery("DELETE FROM erro_watch WHERE ckey = '[target_ckey]'")
-	if (!query_watchdel.Execute())
-		var/err = query_watchdel.ErrorMsg()
-		log_DB("Watchlist error during removing watch entry \[[err]\].", notify_admin = TRUE)
-		return
+	sql_query({"
+		DELETE FROM
+			erro_watch
+		WHERE
+			ckey = $target_ckey
+		"}, dbcon, list(target_ckey = target_ckey))
 
 	log_admin("[key_name(usr)] has removed [target_ckey] from the watchlist", notify_admin = TRUE)
 
@@ -86,18 +101,21 @@
 			player.watchlist_warn = null
 			break
 
-	if (browse)
+	if(browse)
 		Show()
 
 
 /datum/watchlist/proc/Edit(target_ckey, browse = 0)
 	target_ckey = sanitizeSQL(target_ckey)
 
-	var/DBQuery/query_watchreason = dbcon.NewQuery("SELECT reason FROM erro_watch WHERE ckey = '[target_ckey]'")
-	if (!query_watchreason.Execute())
-		var/err = query_watchreason.ErrorMsg()
-		log_DB("Watchlist error: reason can't be obtained from watch table \[[err]\].", notify_admin = TRUE)
-		return
+	var/DBQuery/query_watchreason = sql_query({"
+		SELECT
+			reason
+		FROM
+			erro_watch
+		WHERE
+			ckey = $target_ckey
+		"}, dbcon, list(target_ckey = target_ckey))
 
 	if (query_watchreason.NextRow())
 		var/watch_reason = decode_from_db(query_watchreason.item[1])
@@ -113,11 +131,19 @@
 		edit_text = encode_for_db(edit_text)
 
 		new_reason = encode_for_db(new_reason)
-		var/DBQuery/query_watchupdate = dbcon.NewQuery("UPDATE erro_watch SET reason = '[new_reason]', last_editor = '[admin_ckey]', edits = CONCAT(IFNULL(edits,''),'[edit_text]') WHERE ckey = '[target_ckey]'")
-		if (!query_watchupdate.Execute())
-			var/err = query_watchupdate.ErrorMsg()
-			log_DB("Watchlist error: reason can't be updated \[[err]\].", notify_admin = TRUE)
-			return
+		sql_query({"
+			UPDATE
+				erro_watch
+			SET
+				reason = $new_reason,
+				last_editor = $admin_ckey,
+				edits = CONCAT(
+					IFNULL(edits,''),
+					$edit_text
+				)
+			WHERE
+				ckey = $target_ckey
+			"}, dbcon, list(new_reason = new_reason, admin_ckey = admin_ckey, edit_text = edit_text, target_ckey = target_ckey))
 
 		watch_reason = html_decode(watch_reason)
 		new_reason = html_decode(new_reason)
@@ -147,11 +173,20 @@
 		search = "^."
 	search = sanitizeSQL(search)
 
-	var/DBQuery/query_watchlist = dbcon.NewQuery("SELECT ckey, reason, adminckey, timestamp, last_editor FROM erro_watch WHERE ckey REGEXP '[search]' ORDER BY ckey")
-	if(!query_watchlist.Execute())
-		var/err = query_watchlist.ErrorMsg()
-		log_DB("Watchlist error: watch table can't be obtained \[[err]\].", notify_admin = TRUE)
-		return
+	var/DBQuery/query_watchlist = sql_query({"
+		SELECT
+			ckey,
+			reason,
+			adminckey,
+			timestamp,
+			last_editor
+		FROM
+			erro_watch
+		WHERE
+			ckey REGEXP $search
+		ORDER BY
+			ckey
+		"}, dbcon, list(search = search))
 
 	while(query_watchlist.NextRow())
 		var/ckey = query_watchlist.item[1]
@@ -216,11 +251,14 @@
 	else if(href_list["watcheditlog"])
 		var/target_ckey = sanitizeSQL("[href_list["watcheditlog"]]")
 
-		var/DBQuery/query_watchedits = dbcon.NewQuery("SELECT edits FROM erro_watch WHERE ckey = '[target_ckey]'")
-		if(!query_watchedits.Execute())
-			var/err = query_watchedits.ErrorMsg()
-			log_game("SQL ERROR obtaining edits from watch table. Error : \[[err]\]\n")
-			return
+		var/DBQuery/query_watchedits = sql_query({"
+			SELECT
+				edits
+			FROM
+				erro_watch
+			WHERE
+				ckey = $target_ckey
+			"}, dbcon, list(target_ckey = target_ckey))
 
 		if(query_watchedits.NextRow())
 			var/edit_log = decode_from_db(query_watchedits.item[1])

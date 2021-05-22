@@ -318,8 +318,7 @@
 
 	var/sql_ckey = sql_sanitize_text(ckey(key))
 
-	var/DBQuery/query = dbcon.NewQuery("SELECT datediff(Now(),firstseen) as age FROM erro_player WHERE ckey = '[sql_ckey]'")
-	query.Execute()
+	var/DBQuery/query = sql_query("SELECT datediff(Now(),firstseen) as age FROM erro_player WHERE ckey = $sql_ckey", dbcon, list(sql_ckey = sql_ckey))
 
 	if(query.NextRow())
 		return text2num(query.item[1])
@@ -345,8 +344,7 @@
 
 	var/sql_ckey = sql_sanitize_text(src.ckey)
 
-	var/DBQuery/query = dbcon.NewQuery("SELECT id, datediff(Now(),firstseen) as age FROM erro_player WHERE ckey = '[sql_ckey]'")
-	query.Execute()
+	var/DBQuery/query = sql_query("SELECT id, datediff(Now(),firstseen) as age FROM erro_player WHERE ckey = $sql_ckey", dbcon, list(sql_ckey = sql_ckey))
 	var/sql_id = 0
 	player_age = 0	// New players won't have an entry so knowing we have a connection we set this to zero to be updated if their is a record.
 	while(query.NextRow())
@@ -354,15 +352,13 @@
 		player_age = text2num(query.item[2])
 		break
 
-	var/DBQuery/query_ip = dbcon.NewQuery("SELECT ckey FROM erro_player WHERE ip = '[address]'")
-	query_ip.Execute()
+	var/DBQuery/query_ip = sql_query("SELECT ckey FROM erro_player WHERE ip = $address", dbcon, list(address = address))
 	related_accounts_ip = ""
 	while(query_ip.NextRow())
 		related_accounts_ip += "[query_ip.item[1]], "
 		break
 
-	var/DBQuery/query_cid = dbcon.NewQuery("SELECT ckey FROM erro_player WHERE computerid = '[computer_id]'")
-	query_cid.Execute()
+	var/DBQuery/query_cid = sql_query("SELECT ckey FROM erro_player WHERE computerid = $computer_id", dbcon, list(computer_id = computer_id))
 	related_accounts_cid = ""
 	while(query_cid.NextRow())
 		related_accounts_cid += "[query_cid.item[1]], "
@@ -388,17 +384,14 @@
 
 	if(sql_id)
 		//Player already identified previously, we need to just update the 'lastseen', 'ip' and 'computer_id' variables
-		var/DBQuery/query_update = dbcon.NewQuery("UPDATE erro_player SET lastseen = Now(), ip = '[sql_ip]', computerid = '[sql_computerid]', lastadminrank = '[sql_admin_rank]' WHERE id = [sql_id]")
-		query_update.Execute()
+		sql_query("UPDATE erro_player SET lastseen = Now(), ip = $sql_ip, computerid = $sql_computerid, lastadminrank = $sql_admin_rank WHERE id = $sql_id", dbcon, list(sql_ip = sql_ip, sql_computerid = sql_computerid, sql_admin_rank = sql_admin_rank, sql_id = sql_id))
 	else
 		//New player!! Need to insert all the stuff
-		var/DBQuery/query_insert = dbcon.NewQuery("INSERT INTO erro_player (id, ckey, firstseen, lastseen, ip, computerid, lastadminrank) VALUES (null, '[sql_ckey]', Now(), Now(), '[sql_ip]', '[sql_computerid]', '[sql_admin_rank]')")
-		query_insert.Execute()
+		sql_query("INSERT INTO erro_player VALUES (null, $sql_ckey, Now(), Now(), $sql_ip, $sql_computerid, $sql_admin_rank)", dbcon, list(sql_ckey = sql_ckey, sql_ip = sql_ip, sql_computerid = sql_computerid, sql_admin_rank = sql_admin_rank))
 
 	//Logging player access
 	var/serverip = "[world.internet_address]:[world.port]"
-	var/DBQuery/query_accesslog = dbcon.NewQuery("INSERT INTO `erro_connection_log`(`id`,`datetime`,`serverip`,`ckey`,`ip`,`computerid`) VALUES(null,Now(),'[serverip]','[sql_ckey]','[sql_ip]','[sql_computerid]');")
-	query_accesslog.Execute()
+	sql_query("INSERT INTO erro_connection_log (id, datetime, serverip, ckey, ip, computerid) VALUES (null, Now(), $serverip, $sql_ckey,$sql_ip, $sql_computerid)", dbcon, list(serverip = serverip, sql_ckey = sql_ckey, sql_ip = sql_ip, sql_computerid = sql_computerid))
 
 
 #undef UPLOAD_LIMIT

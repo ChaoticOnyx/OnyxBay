@@ -35,18 +35,14 @@ var/list/whitelist = list()
 		alien_whitelist = splittext(text, "\n")
 		return 1
 /proc/load_alienwhitelistSQL()
-	var/DBQuery/query = dbcon_old.NewQuery("SELECT * FROM whitelist")
-	if(!query.Execute())
-		to_world_log(dbcon_old.ErrorMsg())
-		return 0
-	else
-		while(query.NextRow())
-			var/list/row = query.GetRowData()
-			if(alien_whitelist[row["ckey"]])
-				var/list/A = alien_whitelist[row["ckey"]]
-				A.Add(row["race"])
-			else
-				alien_whitelist[row["ckey"]] = list(row["race"])
+	var/DBQuery/query = sql_query("SELECT * FROM whitelist", dbcon_old)
+	while(query.NextRow())
+		var/list/row = query.GetRowData()
+		if(alien_whitelist[row["ckey"]])
+			var/list/A = alien_whitelist[row["ckey"]]
+			A.Add(row["race"])
+		else
+			alien_whitelist[row["ckey"]] = list(row["race"])
 	return 1
 
 /proc/is_species_whitelisted(mob/M, species_name)

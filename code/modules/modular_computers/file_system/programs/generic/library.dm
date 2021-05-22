@@ -40,8 +40,17 @@ The answer was five and a half years -ZeroBits
 		if(!establish_old_db_connection())
 			error_message = "Unable to contact External Archive. Please contact your system administrator for assistance."
 		else
-			var/DBQuery/query = dbcon_old.NewQuery("SELECT id, author, title, category FROM library ORDER BY "+sanitizeSQL(sort_by))
-			query.Execute()
+			var/DBQuery/query = sql_query({"
+				SELECT
+					id,
+					author,
+					title,
+					category
+				FROM
+					library
+				ORDER BY
+					$sort_by
+				"}, dbcon_old, list(sort_by = sort_by))
 
 			while(query.NextRow())
 				all_entries.Add(list(list(
@@ -119,9 +128,20 @@ The answer was five and a half years -ZeroBits
 			var/sqlauthor = encode_for_db(sanitizeSQL(B.author))
 			var/sqlcontent = encode_for_db(sanitizeSQL(B.dat))
 			var/sqlcategory = sanitizeSQL(upload_category)
-			var/DBQuery/query = dbcon_old.NewQuery("INSERT INTO library (author, title, content, category) VALUES ('[sqlauthor]', '[sqltitle]', '[sqlcontent]', '[sqlcategory]')")
-			if(!query.Execute())
-				to_chat(usr, query.ErrorMsg())
+			var/DBQuery/query = sql_query({"
+				INSERT INTO
+					library
+						(author,
+						title,
+						content,
+						category)
+				VALUES
+					($sqlauthor,
+					$sqltitle,
+					$sqlcontent,
+					$sqlcategory)
+				"}, dbcon_old, list(sqlauthor = sqlauthor, sqltitle = sqltitle, sqlcontent = sqlcontent, sqlcategory = sqlcategory))
+			if(!query)
 				error_message = "Network Error: Unable to upload to the Archive. Contact your system Administrator for assistance."
 				return 1
 			else
@@ -181,8 +201,7 @@ The answer was five and a half years -ZeroBits
 		error_message = "Network Error: Connection to the Archive has been severed."
 		return 1
 
-	var/DBQuery/query = dbcon_old.NewQuery("SELECT * FROM library WHERE id=[sqlid]")
-	query.Execute()
+	var/DBQuery/query = sql_query("SELECT * FROM library WHERE id = $sqlid", dbcon_old, list(sqlid = sqlid))
 
 	while(query.NextRow())
 		current_book = list(
@@ -207,8 +226,8 @@ The answer was five and a half years -ZeroBits
 
 	var/author
 	var/title
-	var/DBQuery/query = dbcon.NewQuery("SELECT author, title FROM library WHERE id=[sqlid]")
-	query.Execute()
+	var/DBQuery/query = sql_query("SELECT author, title FROM library WHERE id = $sqlid", dbcon)
+
 	if(query.NextRow())
 		author = query.item[1]
 		title = query.item[2]
@@ -216,8 +235,8 @@ The answer was five and a half years -ZeroBits
 		to_chat(user, SPAN_WARNING("Book with ISBN number \[[sqlid]\] was not found!"))
 		return
 
-	query = dbcon.NewQuery("DELETE FROM library WHERE id=[sqlid]")
-	if(query.Execute())
+	query = sql_query("DELETE FROM library WHERE id = $sqlid", dbcon, list(sqlid = sqlid))
+	if(query)
 		log_and_message_admins("has deleted the book: \[[sqlid]\] \"[title]\" by [author]", user)
 
 #define WIKI_COMMON_CATEGORY "Available_in_library"
