@@ -62,8 +62,6 @@
 		else
 			adminwho += ", [C]"
 
-	reason = encode_for_db(reason)
-
 	if(isnull(config.server_id))
 		sql_query({"
 			INSERT INTO
@@ -320,7 +318,7 @@
 	if(query.NextRow())
 		pckey = query.item[1]
 		duration = query.item[2]
-		reason = decode_from_db(query.item[3])
+		reason = query.item[3]
 		if(!isnull(config.server_id))
 			serverid = query.item[4]
 	else
@@ -332,7 +330,6 @@
 		if("reason")
 			if(!value)
 				value = sanitize(input("Insert the new reason for [pckey]'s ban", "New Reason", "[reason]", null) as null|text)
-				value = encode_for_db(value)
 				if(!value)
 					to_chat(usr, "Cancelled")
 					return
@@ -625,7 +622,7 @@
 				var/banid = select_query.item[1]
 				var/bantime = select_query.item[2]
 				var/bantype  = select_query.item[3]
-				var/reason = decode_from_db(select_query.item[4])
+				var/reason = select_query.item[4]
 				var/job = select_query.item[5]
 				var/duration = select_query.item[6]
 				var/expiration = select_query.item[7]

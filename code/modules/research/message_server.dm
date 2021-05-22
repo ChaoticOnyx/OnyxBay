@@ -355,9 +355,9 @@ var/obj/machinery/blackbox_recorder/blackbox
 				$value,
 				$details)
 			"}, dbcon, list(round_id = round_id, 
-				var = encode_for_db(FV.get_variable()), 
-				value = encode_for_db(FV.get_value()), 
-				details = encode_for_db(FV.get_details())
+				var = FV.get_variable(), 
+				value = FV.get_value(), 
+				details = FV.get_details()
 				))
 
 /proc/feedback_set(variable,value)

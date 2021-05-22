@@ -1,27 +1,11 @@
 /*
  * Holds procs designed to help with filtering text
  * Contains groups:
- *			SQL sanitization
  *			Text sanitization
  *			Text searches
  *			Text modification
  *			Misc
  */
-
-
-/*
- * SQL sanitization
- */
-
-/proc/decode_from_db(text)
-	if(config.db_uses_cp1251_encoding)
-		return cp1251toutf8(text)
-	return text
-
-/proc/encode_for_db(text)
-	if(config.db_uses_cp1251_encoding)
-		return utf8tocp1251(text)
-	return text
 
 /*
  * Text sanitization

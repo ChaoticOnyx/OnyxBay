@@ -54,9 +54,9 @@ The answer was five and a half years -ZeroBits
 
 			while(query.NextRow())
 				all_entries.Add(list(list(
-				"id" = decode_from_db(query.item[1]),
-				"author" = decode_from_db(query.item[2]),
-				"title" = decode_from_db(query.item[3]),
+				"id" = query.item[1],
+				"author" = query.item[2],
+				"title" = query.item[3],
 				"category" = query.item[4]
 			)))
 		data["book_list"] = all_entries
@@ -124,9 +124,6 @@ The answer was five and a half years -ZeroBits
 
 			var/upload_category = input(usr, "Upload to which category?") in list("Fiction", "Non-Fiction", "Reference", "Religion")
 
-			var/sqltitle = encode_for_db(B.name)
-			var/sqlauthor = encode_for_db(B.author)
-			var/sqlcontent = encode_for_db(B.dat)
 			var/DBQuery/query = sql_query({"
 				INSERT INTO
 					library
@@ -135,11 +132,11 @@ The answer was five and a half years -ZeroBits
 						content,
 						category)
 				VALUES
-					($sqlauthor,
-					$sqltitle,
-					$sqlcontent,
+					($author,
+					$title,
+					$content,
 					$upload_category)
-				"}, dbcon_old, list(sqlauthor = sqlauthor, sqltitle = sqltitle, sqlcontent = sqlcontent, upload_category = upload_category))
+				"}, dbcon_old, list(author = B.author, title = B.name, content = B.dat, upload_category = upload_category))
 			if(!query)
 				error_message = "Network Error: Unable to upload to the Archive. Contact your system Administrator for assistance."
 				return 1
@@ -204,9 +201,9 @@ The answer was five and a half years -ZeroBits
 	while(query.NextRow())
 		current_book = list(
 			"id" = query.item[1],
-			"author" = decode_from_db(query.item[2]),
-			"title" = decode_from_db(query.item[3]),
-			"content" = decode_from_db(query.item[4])
+			"author" = query.item[2],
+			"title" = query.item[3],
+			"content" = query.item[4]
 			)
 		break
 	return 1
