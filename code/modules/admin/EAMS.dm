@@ -150,7 +150,6 @@ SUBSYSTEM_DEF(eams)
 		__DBError()
 		return FALSE
 
-	ip = dbcon.Quote(ip)
 	var/DBQuery/query = sql_query("SELECT response FROM eams_cache WHERE ip = $ip LIMIT 1", dbcon, list(ip = ip))
 
 	if (!query)
@@ -170,8 +169,6 @@ SUBSYSTEM_DEF(eams)
 		__DBError()
 		return FALSE
 
-	ip = dbcon.Quote(ip)
-	raw_response = dbcon.Quote(raw_response)
 	var/DBQuery/query = sql_query("INSERT INTO eams_cache(ip, response) VALUES ($ip, $raw_response)", dbcon, list(ip = ip, raw_response = raw_response))
 
 	if (!query)
