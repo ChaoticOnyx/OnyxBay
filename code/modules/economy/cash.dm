@@ -29,6 +29,7 @@
 			user.drop_from_inventory(cash)
 			bundle = new (src.loc)
 			bundle.worth += cash.worth
+			cash.worth = 0
 			qdel(cash)
 		else //is bundle
 			bundle = W

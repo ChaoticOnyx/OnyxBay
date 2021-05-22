@@ -198,7 +198,8 @@
 /obj/machinery/teleport/hub/proc/teleport(atom/movable/M as mob|obj)
 	if(!com)
 		return
-	if(!com.locked)
+	if(QDELETED(com.locked))
+		com.locked = null // If com is still locked to a deleted item
 		for(var/mob/O in hearers(src, null))
 			O.show_message("<span class='warning'>Failure: Cannot authenticate locked on coordinates. Please reinstate coordinate matrix.</span>")
 		return

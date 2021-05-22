@@ -20,7 +20,7 @@ GLOBAL_LIST_EMPTY(IAA_approved_list)
 				approvals = approvals + 1
 			WHERE
 				ckey = $$
-			"}, key)
+			"}, dbcon, key)
 	else
 		GLOB.IAA_approved_list[key] = 1
 		sql_query({"
@@ -30,7 +30,7 @@ GLOBAL_LIST_EMPTY(IAA_approved_list)
 				)
 			VALUES
 				($$)
-			"}, key)
+			"}, dbcon, key)
 	return
 
 /proc/IAA_disprove(key)
@@ -41,7 +41,7 @@ GLOBAL_LIST_EMPTY(IAA_approved_list)
 			erro_iaa_approved
 		WHERE
 			ckey = $$
-		"}, key)
+		"}, dbcon, key)
 	return
 
 /proc/IAA_disprove_by_id(id)
@@ -53,7 +53,7 @@ GLOBAL_LIST_EMPTY(IAA_approved_list)
 			erro_iaa_jobban
 		WHERE
 			id = $$
-		"}, id)
+		"}, dbcon, id)
 	query.NextRow()
 	IAA_disprove(query.item[1])
 	var/list/others = splittext(query.item[2], ", ")
@@ -92,7 +92,7 @@ GLOBAL_LIST_EMPTY(IAA_approved_list)
 				expiration_time = DATE_ADD(Now(), INTERVAL $duration DAY)
 			WHERE
 				id = $id
-			"}, list(
+			"}, dbcon, list(
 				status = action,
 				comment = comment,
 				ckey = ckey,
@@ -109,7 +109,7 @@ GLOBAL_LIST_EMPTY(IAA_approved_list)
 				resolve_ckey = $ckey
 			WHERE
 				id = $id
-			"}, list(
+			"}, dbcon, list(
 				status = action,
 				comment = comment,
 				ckey = ckey,
@@ -122,7 +122,7 @@ GLOBAL_LIST_EMPTY(IAA_approved_list)
 				erro_iaa_jobban
 			WHERE
 				id = $$
-			"}, id)
+			"}, dbcon, id)
 		query.NextRow()
 		expiration_time = query.item[1]
 		IAA_approve(src.ckey)
@@ -142,7 +142,7 @@ GLOBAL_LIST_EMPTY(IAA_approved_list)
 			erro_iaa_jobban
 		WHERE
 			id = $$
-		"}, id)
+		"}, dbcon, id)
 	if (!query.NextRow())
 		to_chat(usr, "No entry with such id")
 		return
@@ -160,7 +160,7 @@ GLOBAL_LIST_EMPTY(IAA_approved_list)
 			cancel_comment = $comment,
 			cancel_ckey = $ckey
 		WHERE
-			id = $id"}, list(
+			id = $id"}, dbcon, list(
 		status = action,
 		comment = comment,
 		ckey = ckey,
@@ -194,7 +194,7 @@ GLOBAL_LIST_EMPTY(IAA_approved_list)
 			status = '[IAA_STATUS_APPROVED]'
 			AND
 			IFNULL(expiration_time, Now()) >= Now())
-		"})
+		"}, dbcon)
 	while (query.NextRow())
 		var/datum/IAA_brief_jobban_info/JB = new()
 		JB.id              = query.item[1]
@@ -213,7 +213,7 @@ GLOBAL_LIST_EMPTY(IAA_approved_list)
 			approvals
 		FROM
 			erro_iaa_approved
-		"})
+		"}, dbcon)
 
 	while (query.NextRow())
 		GLOB.IAA_approved_list[query.item[1]] = query.item[2]
@@ -226,7 +226,7 @@ GLOBAL_LIST_EMPTY(IAA_approved_list)
 			erro_iaa_jobban
 		WHERE
 			fakeid = $$
-		"}, fakeid)
+		"}, dbcon, fakeid)
 	return !query.RowCount()
 
 /proc/IAAJ_generate_fake_id()
@@ -269,7 +269,7 @@ GLOBAL_LIST_EMPTY(IAA_approved_list)
 				Now(),
 				$status
 			)
-			"}, list(
+			"}, dbcon, list(
 			fakeid = fakeid,
 			ckey = ckey,
 			iaa_ckey = iaa_ckey,
@@ -286,7 +286,7 @@ GLOBAL_LIST_EMPTY(IAA_approved_list)
 			erro_iaa_jobban
 		WHERE
 			fakeid = $$
-		"}, fakeid)
+		"}, dbcon, fakeid)
 	query.NextRow() //tbh I have no real idea how to handle database faults so might as well let it crash right there if it happens
 	JB.id = query.item[1]
 	JB.expiration_time = query.item[2]
@@ -354,7 +354,7 @@ GLOBAL_LIST_EMPTY(IAA_approved_list)
 		ORDER BY id DESC
 		LIMIT [results_per_page]
 		OFFSET [startfrom]
-		"})
+		"}, dbcon)
 
 	while (query.NextRow())
 		var/datum/IAA_brief_jobban_info/JB = new()
@@ -399,7 +399,7 @@ GLOBAL_LIST_EMPTY(IAA_approved_list)
 			erro_iaa_jobban
 		WHERE
 			id = $$
-		"}, id)
+		"}, dbcon, id)
 	if (!query.NextRow())
 		to_chat(usr, "No entry with such id")
 		return

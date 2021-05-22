@@ -37,28 +37,31 @@ meteor_act
 					return PROJECTILE_FORCE_BLOCK // Small items don't block the projectile while getting shot out
 
 	//Tase effect
-	var/siemens_coeff = get_siemens_coefficient_organ(organ)
 	if(P.tasing)
-		handle_tase(P.agony*siemens_coeff)
+		handle_tase(P.agony * get_siemens_coefficient_organ(organ))
 
 	var/blocked = ..(P, def_zone) // Unobviously, the external damage applies here
 
 	//Internal damage
-	var/penetrating_damage = ((P.damage + P.armor_penetration) * P.penetration_modifier) - min(blocked, 100)
-	var/internal_damage_prob = 45 + max(penetrating_damage, -20) // The minimal chance to deal internal damage is 25%
+	var/penetrating_damage = ((P.damage + P.armor_penetration) * P.penetration_modifier) - blocked
+	var/internal_damage_prob = 70 + max(penetrating_damage, -30) // The minimal chance to deal internal damage is 40%, armor is more about blocking damage itself
 
-	if(organ.encased && !(organ.status & ORGAN_BROKEN)) //ribs and skulls somewhat protect
-		internal_damage_prob *= 0.75
+	var/overkill_value = 1
+	if(organ.damage >= organ.max_damage * 1.5) // Overkill stuff; if our bodypart is a pile of shredded meat then it doesn't protect organs well
+		overkill_value *= 3
 
-	if(organ.internal_organs.len && internal_damage_prob)
-		var/damage_amt = (P.damage * P.penetration_modifier) * blocked_mult(blocked / 2) //So we don't factor in armor_penetration as additional damage
+	if(organ.internal_organs.len && prob(internal_damage_prob * overkill_value))
+		var/damage_amt = (P.damage * P.penetration_modifier) * blocked_mult(blocked / 1.5) //So we don't factor in armor_penetration as additional damage
 		if(blocked >= P.damage) // Armor has absorbed the penetrational power
 			damage_amt = sqrt(damage_amt)
+		if(organ.encased && !(organ.status & ORGAN_BROKEN)) //ribs and skulls somewhat protect
+			overkill_value *= 0.75
+		damage_amt *= overkill_value
 		if(damage_amt > 0)
 			var/list/victims = list()
 			var/list/possible_victims = shuffle(organ.internal_organs.Copy())
 			for(var/obj/item/organ/internal/I in possible_victims)
-				if(I.damage < I.max_damage && (prob((I.relative_size) * (1 / max(1, victims.len)))))
+				if(I.damage < I.max_damage && (prob((sqrt(I.relative_size) * 10) * (1 / max(1, victims.len)))))
 					victims += I
 			if(victims.len)
 				for(var/obj/item/organ/internal/victim in victims)
