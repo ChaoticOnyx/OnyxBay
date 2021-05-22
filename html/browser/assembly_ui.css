@@ -132,20 +132,20 @@ a.grey {
     font-size: 12px;
 }
 
-a.grey div.codicon-symbol-parameter {
+a.grey div.codicon-symbol-parameter, .segmented-control a div.codicon-symbol-parameter {
     color: #B180D7;
 }
 
-a.grey div.codicon-symbol-event {
+a.grey div.codicon-symbol-event, .segmented-control a div.codicon-symbol-event {
     color: #EE9D28;
 }
 
-a.grey div.codicon-symbol-variable {
+a.grey div.codicon-symbol-variable, .segmented-control a div.codicon-symbol-variable {
     color: #75BEFF;
 }
 
-a.grey:hover {
-    background-color: #094771;
+a.grey:hover, a.active {
+    background-color: #094771 !important;
 }
 
 a div.fit-in-button {

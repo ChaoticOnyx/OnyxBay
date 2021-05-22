@@ -203,7 +203,11 @@
 		// Non-inbuilt circuits come after inbuilt circuits
 		else
 			components += "<div class='segmented-control'><a href='?src=\ref[src];component=\ref[circuit];change_pos=1' style='text-decoration:none;'>[remove_num]</a>"
-			components += "<a href='?src=\ref[src];component=\ref[circuit]'>[circuit.displayed_name]</a></div>\n"
+			if (circuit == circuit_pins)
+				components += "<a class='active' href='?src=\ref[src];component=\ref[circuit]'>[circuit.displayed_name]</a></div>\n"
+			else
+				components += "<a href='?src=\ref[src];component=\ref[circuit]'>[circuit.displayed_name]</a></div>\n"
+
 			remove_num++
 
 	HTML += components
@@ -299,7 +303,7 @@
 			if(!io)
 				continue
 
-			INPUTS += "<a class='grey' href='?src=\ref[circuit_pins];act=wire;pin=\ref[io]'><div class='codicon codicon-symbol-variable fit-in-button'></div>[io.display_pin_type()] [io.name]</a><a class='grey' href='?src=\ref[circuit_pins];act=data;pin=\ref[io]'><div class='codicon codicon-symbol-parameter fit-in-button'></div>[io.display_data(io.data)]</a><br>\n"
+			INPUTS += "<a class='grey' href='?src=\ref[circuit_pins];act=wire;pin=\ref[io]'><div class='codicon codicon-symbol-variable fit-in-button'></div>[io.display_pin_type()] [io.name]</a> = <a class='grey' href='?src=\ref[circuit_pins];act=data;pin=\ref[io]'><div class='codicon codicon-symbol-parameter fit-in-button'></div>[io.display_data(io.data)]</a><br>\n"
 
 			if (!io.linked.len)
 				continue
@@ -318,7 +322,7 @@
 			if(!io)
 				continue
 
-			OUTPUTS += "<a class='grey' href='?src=\ref[circuit_pins];act=wire;pin=\ref[io]'><div class='codicon codicon-symbol-variable fit-in-button'></div>[io.display_pin_type()] [io.name]</a><a class='grey' href='?src=\ref[circuit_pins];act=data;pin=\ref[io]'><div class='codicon codicon-symbol-parameter fit-in-button'></div>[io.display_data(io.data)]</a><br>\n"
+			OUTPUTS += "<a class='grey' href='?src=\ref[circuit_pins];act=wire;pin=\ref[io]'><div class='codicon codicon-symbol-variable fit-in-button'></div>[io.display_pin_type()] [io.name]</a> = <a class='grey' href='?src=\ref[circuit_pins];act=data;pin=\ref[io]'><div class='codicon codicon-symbol-parameter fit-in-button'></div>[io.display_data(io.data)]</a><br>\n"
 
 			if (!io.linked.len)
 				continue
@@ -352,8 +356,8 @@
 		for(var/activator in circuit_pins.activators)
 			HTML += "<tr><td colspan='1'>"
 			io = activator
-			var/ACTIVATORS = "<a class='grey' href='?src=\ref[circuit_pins];act=wire;pin=\ref[io]'><div class='codicon codicon-symbol-event fit-in-button'></div>[io]</a>"
-			ACTIVATORS += "<a class='grey' href='?src=\ref[circuit_pins];act=data;pin=\ref[io]'>[io.data?"\<PULSE OUT\>":"\<PULSE IN\>"]</a><br>\n"
+			var/ACTIVATORS = "<div class='segmented-control'><a href='?src=\ref[circuit_pins];act=wire;pin=\ref[io]'><div class='codicon codicon-symbol-event fit-in-button'></div>[io]</a>"
+			ACTIVATORS += "<a href='?src=\ref[circuit_pins];act=data;pin=\ref[io]'>[io.data?"\<PULSE OUT\>":"\<PULSE IN\>"]</a></div><br>\n"
 
 			if(io.linked.len)
 				ACTIVATORS += "<ul>"
