@@ -29,7 +29,6 @@
 		list(mode_name = "5-round bursts", burst = 5, fire_delay = null, move_delay = 4,    one_hand_penalty = 2, burst_accuracy = list(0, -1, -1, -1, -2), dispersion = list(0.6, 0.6, 1.0, 1.0, 1.2))
 
 /obj/item/weapon/gun/projectile/automatic/machine_pistol/update_icon()
-	..()
 	if(ammo_magazine)
 		icon_state = "mpistolen"
 	else
@@ -43,7 +42,6 @@
 	origin_tech = list(TECH_COMBAT = 5, TECH_MATERIAL = 2, TECH_ILLEGAL = 3)
 
 /obj/item/weapon/gun/projectile/automatic/machine_pistol/mini_uzi/update_icon()
-	..()
 	if(ammo_magazine)
 		icon_state = "saber"
 	else
