@@ -3,6 +3,7 @@
 	desc = "The mass-produced W-T Remmington 29x shotgun is a favourite of police and security forces on many worlds. Useful for sweeping alleys."
 	icon_state = "shotgun"
 	item_state = "shotgun"
+	wielded_item_state = "shotgun-wielded"
 	max_shells = 4
 	w_class = ITEM_SIZE_HUGE
 	force = 12.5
@@ -52,6 +53,7 @@
 	desc = "Built for close quarters combat, the Hephaestus Industries KS-40 is widely regarded as a weapon of choice for repelling boarders."
 	icon_state = "cshotgun"
 	item_state = "cshotgun"
+	wielded_item_state = "cshotgun-wielded"
 	origin_tech = list(TECH_COMBAT = 5, TECH_MATERIAL = 2)
 	max_shells = 7 //match the ammo box capacity, also it can hold a round in the chamber anyways, for a total of 8.
 	ammo_type = /obj/item/ammo_casing/shotgun
@@ -156,6 +158,7 @@
 	desc = "A true classic."
 	icon_state = "dshotgun"
 	item_state = "dshotgun"
+	wielded_item_state = "dshotgun-wielded"
 	//SPEEDLOADER because rapid unloading.
 	//In principle someone could make a speedloader for it, so it makes sense.
 	load_method = SINGLE_CASING|SPEEDLOADER
@@ -172,7 +175,6 @@
 	origin_tech = list(TECH_COMBAT = 3, TECH_MATERIAL = 1)
 	ammo_type = /obj/item/ammo_casing/shotgun/beanbag
 	one_hand_penalty = 2
-	wielded_item_state = "gun_wielded"
 
 	burst_delay = 0
 	firemodes = list(
@@ -224,6 +226,7 @@
 	desc = "Omar's coming!"
 	icon_state = "sawnshotgun"
 	item_state = "sawnshotgun"
+	wielded_item_state = null // It's basically a 12 Cal pistol
 	slot_flags = SLOT_BELT|SLOT_HOLSTER
 	ammo_type = /obj/item/ammo_casing/shotgun/pellet
 	w_class = ITEM_SIZE_NORMAL

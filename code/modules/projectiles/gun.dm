@@ -109,6 +109,7 @@
 			else
 				item_state_slots[slot_l_hand_str] = initial(item_state)
 				item_state_slots[slot_r_hand_str] = initial(item_state)
+	update_held_icon()
 
 //Checks whether a given mob can use the gun
 //Any checks that shouldn't result in handle_click_empty() being called if they fail should go here.
@@ -198,7 +199,13 @@
 			process_point_blank(projectile, user, target)
 
 		if(process_projectile(projectile, user, target, user.zone_sel?.selecting, clickparams))
-			handle_post_fire(user, target, pointblank, reflex)
+			var/burstfire = 0
+			if(burst > 1) // It ain't a burst? Then just act normally
+				if(i > 1)
+					burstfire = -1  // We've already seen the BURST message, so shut up
+				else
+					burstfire = 1 // We've yet to see the BURST message
+			handle_post_fire(user, target, pointblank, reflex, burstfire)
 			update_icon()
 
 		if(i < burst)
@@ -234,25 +241,25 @@
 	playsound(src.loc, 'sound/effects/weapons/gun/gun_empty.ogg', 75)
 
 //called after successfully firing
-/obj/item/weapon/gun/proc/handle_post_fire(mob/user, atom/target, pointblank=0, reflex=0)
+/obj/item/weapon/gun/proc/handle_post_fire(mob/user, atom/target, pointblank = 0, reflex = 0, burstfire = 0)
 	if(fire_anim)
 		flick(fire_anim, src)
 
-	if(!silenced)
+	if(!silenced && (burstfire != -1))
 		if(reflex)
 			user.visible_message(
-				"<span class='reflex_shoot'><b>\The [user] fires \the [src][pointblank ? " point blank at \the [target]":""] by reflex!</b></span>",
+				"<span class='reflex_shoot'><b>\The [user] fires \the [src][pointblank ? " point blank at \the [target]":""][burstfire == 1 ? " in a burst":""] by reflex!</b></span>",
 				"<span class='reflex_shoot'>You fire \the [src] by reflex!</span>",
 				"You hear a [fire_sound_text]!"
 			)
 		else
 			user.visible_message(
-				"<span class='danger'>\The [user] fires \the [src][pointblank ? " point blank at \the [target]":""]!</span>",
+				"<span class='danger'>\The [user] fires \the [src][pointblank ? " point blank at \the [target]":""][burstfire == 1 ? " in a burst":""]!</span>",
 				"<span class='warning'>You fire \the [src]!</span>",
 				"You hear a [fire_sound_text]!"
 				)
 
-	if(one_hand_penalty)
+	if(one_hand_penalty && (burstfire != -1))
 		if(!src.is_held_twohanded(user))
 			switch(one_hand_penalty)
 				if(1)

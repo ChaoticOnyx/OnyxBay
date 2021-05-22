@@ -159,6 +159,7 @@
 	wielded_item_state = (ammo_magazine)? "arifle-wielded" : "arifle-wielded-empty"
 	..()
 
+
 /obj/item/weapon/gun/projectile/automatic/z8
 	name = "bullpup assault rifle"
 	desc = "The Z8 Bulldog is an older model bullpup carbine, made by the now defunct Zendai Foundries. Uses armor piercing 7.62mm rounds. Makes you feel like a space marine when you hold it."
@@ -219,7 +220,6 @@
 		..()
 
 /obj/item/weapon/gun/projectile/automatic/z8/update_icon()
-	..()
 	if(ammo_magazine)
 		if(ammo_magazine.stored_ammo.len)
 			icon_state = "carbine-loaded"
@@ -235,6 +235,7 @@
 		. += "\n\The [launcher] has \a [launcher.chambered] loaded."
 	else
 		. += "\n\The [launcher] is empty."
+
 
 /obj/item/weapon/gun/projectile/automatic/l6_saw
 	name = "light machine gun"
@@ -262,6 +263,7 @@
 	fire_sound = 'sound/effects/weapons/gun/lmg_fire.ogg'
 	mag_insert_sound = 'sound/effects/weapons/gun/lmg_magin.ogg'
 	mag_eject_sound = 'sound/effects/weapons/gun/lmg_magout.ogg'
+
 
 	//LMG, better sustained fire accuracy than assault rifles (comparable to SMG), higer move delay and one-handing penalty
 	//No single-shot or 3-round-burst modes since using this weapon should come at a cost to flexibility.
