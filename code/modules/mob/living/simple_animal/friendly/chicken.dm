@@ -86,32 +86,40 @@ var/global/chicken_count = 0
 /mob/living/simple_animal/chicken/attackby(obj/item/O, mob/user)
 	if(istype(O, /obj/item/weapon/reagent_containers/food/snacks/grown)) //feedin' dem chickens
 		var/obj/item/weapon/reagent_containers/food/snacks/grown/G = O
-		if(G.seed?.kitchen_tag in list("wheat", "rice", "grass"))
-			if(!stat && eggsleft < 8)
-				user.visible_message(SPAN("notice", "[user] feeds [O] to [name]! It clucks happily."), SPAN("notice", "You feed [O] to [name]! It clucks happily."))
-				if(species.mutable)
-					if(G.reagents.has_reagent(/datum/reagent/nanites))
-						change_species(/datum/chicken_species/robot)
-					else if(G.reagents.has_reagent(/datum/reagent/mutagen))
-						var/new_species = pick(/datum/chicken_species/white, /datum/chicken_species/brown, /datum/chicken_species/black)
-						if(G.reagents.has_reagent(/datum/reagent/toxin/plasma))
-							new_species = /datum/chicken_species/plasma
-						else if(G.reagents.has_reagent(/datum/reagent/gold))
-							new_species = /datum/chicken_species/golden
-						else if(G.reagents.has_reagent(/datum/reagent/toxin/fertilizer/left4zed))
-							new_species = /datum/chicken_species/vegan
-						else if(G.reagents.has_reagent(/datum/reagent/space_drugs))
-							new_species = /datum/chicken_species/rainbow
-						change_species(new_species)
-				user.drop_item()
-				QDEL_NULL(O)
-				eggsleft += rand(1, 3)
-			else
-				to_chat(user, SPAN("notice", "[name] doesn't seem hungry!"))
-		else
-			to_chat(user, "[name] doesn't seem interested in that.")
+		feed_with(G, user)
 	else
 		..()
+
+/mob/living/simple_animal/chicken/proc/feed_with(obj/item/weapon/reagent_containers/food/snacks/grown/G, mob/user)
+	if(!G)
+		return // To prevent the case of somebody clickspamming during lags
+	if(stat)
+		to_chat(user, SPAN("notice", "[name] doesn't seem capable of eating."))
+		return
+	if(!(G.seed?.kitchen_tag in list("wheat", "rice", "grass")))
+		to_chat(user, "[name] doesn't seem interested in that.")
+		return
+	if(eggsleft >= 8)
+		to_chat(user, SPAN("notice", "[name] doesn't seem hungry!"))
+		return
+	user.visible_message(SPAN("notice", "[user] feeds [G] to [name]! It clucks happily."), SPAN("notice", "You feed [G] to [name]! It clucks happily."))
+	if(species.mutable)
+		if(G.reagents.has_reagent(/datum/reagent/nanites))
+			change_species(/datum/chicken_species/robot)
+		else if(G.reagents.has_reagent(/datum/reagent/mutagen))
+			var/new_species = pick(/datum/chicken_species/white, /datum/chicken_species/brown, /datum/chicken_species/black)
+			if(G.reagents.has_reagent(/datum/reagent/toxin/plasma))
+				new_species = /datum/chicken_species/plasma
+			else if(G.reagents.has_reagent(/datum/reagent/gold))
+				new_species = /datum/chicken_species/golden
+			else if(G.reagents.has_reagent(/datum/reagent/toxin/fertilizer/left4zed))
+				new_species = /datum/chicken_species/vegan
+			else if(G.reagents.has_reagent(/datum/reagent/space_drugs))
+				new_species = /datum/chicken_species/rainbow
+			change_species(new_species)
+		user.drop_item()
+		qdel(G)
+		eggsleft += rand(1, 3)
 
 /mob/living/simple_animal/chicken/Life()
 	. =..()
