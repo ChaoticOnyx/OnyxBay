@@ -299,7 +299,23 @@ datum/objective/escape
 		var/area/check_area = location.loc
 		return check_area && is_type_in_list(check_area, GLOB.using_map.post_round_safe_areas)
 
+/datum/objective/escape/changeling/find_target()
+	. = ..()
 
+	if(target?.current)
+		explanation_text = "Escape on the shuttle or an escape pod alive and free with the identity of [target.current.real_name], the [target.assigned_role]."
+		target = target.current.real_name
+
+/datum/objective/escape/changeling/check_completion()
+	if(!..())
+		return FALSE
+	if(!target)
+		return TRUE
+
+	var/obj/item/weapon/card/id/id_card = owner.current.GetIdCard()
+	if(id_card?.registered_name == target && owner.current.real_name == target)
+		return TRUE
+	return FALSE
 
 datum/objective/survive
 	explanation_text = "Stay alive until the end."
