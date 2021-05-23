@@ -354,14 +354,14 @@ GLOBAL_VAR_INIT(chicken_count, 0) // Number of /mob/living/simple_animal/chicken
 	. = ..()
 
 /obj/item/weapon/reagent_containers/food/snacks/egg/Process()
-	if(isturf(loc))
+	if(isturf(loc) || ismob(loc))
 		amount_grown++
 		if(amount_grown >= 300)
 			visible_message("[src] hatches with a quiet cracking sound.")
 			new /mob/living/simple_animal/chick(get_turf(src))
 			STOP_PROCESSING(SSobj, src)
 			qdel(src)
-	else if(!ismob(loc)) // Don't kill the egg when somebody picks it up
+	else
 		return PROCESS_KILL
 
 #undef CHICKEN_WHITE
