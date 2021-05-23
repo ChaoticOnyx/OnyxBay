@@ -1,3 +1,12 @@
+#define CHICKEN_WHITE   /datum/chicken_species/white
+#define CHICKEN_BROWN   /datum/chicken_species/brown
+#define CHICKEN_BLACK   /datum/chicken_species/black
+#define CHICKEN_ROBOT   /datum/chicken_species/robot
+#define CHICKEN_GOLDEN  /datum/chicken_species/golden
+#define CHICKEN_PLASMA  /datum/chicken_species/plasma
+#define CHICKEN_VEGAN   /datum/chicken_species/vegan
+#define CHICKEN_RAINBOW /datum/chicken_species/rainbow
+
 #define MAX_CHICKENS 50
 var/global/chicken_count = 0
 
@@ -73,11 +82,16 @@ var/global/chicken_count = 0
 /mob/living/simple_animal/chicken/Initialize()
 	. = ..()
 	if(!species)
-		change_species(pick(/datum/chicken_species/white, /datum/chicken_species/brown, /datum/chicken_species/black))
+		change_species(pick(CHICKEN_WHITE, CHICKEN_BROWN, CHICKEN_BLACK))
 	species.update_owner()
 	pixel_x = rand(-6, 6)
 	pixel_y = rand(0, 10)
 	chicken_count++
+
+/mob/living/simple_animal/chicken/Destroy()
+	if(species)
+		QDEL_NULL(species)
+	return ..()
 
 /mob/living/simple_animal/chicken/death(gibbed, deathmessage, show_dead_message)
 	..(gibbed, deathmessage, show_dead_message)
@@ -97,7 +111,7 @@ var/global/chicken_count = 0
 		to_chat(user, SPAN("notice", "[name] doesn't seem capable of eating."))
 		return
 	if(!(G.seed?.kitchen_tag in list("wheat", "rice", "grass")))
-		to_chat(user, "[name] doesn't seem interested in that.")
+		to_chat(user, SPAN("notice", "[name] doesn't seem interested in that."))
 		return
 	if(eggsleft >= 8)
 		to_chat(user, SPAN("notice", "[name] doesn't seem hungry!"))
@@ -105,17 +119,17 @@ var/global/chicken_count = 0
 	user.visible_message(SPAN("notice", "[user] feeds [G] to [name]! It clucks happily."), SPAN("notice", "You feed [G] to [name]! It clucks happily."))
 	if(species.mutable)
 		if(G.reagents.has_reagent(/datum/reagent/nanites))
-			change_species(/datum/chicken_species/robot)
+			change_species(CHICKEN_ROBOT)
 		else if(G.reagents.has_reagent(/datum/reagent/mutagen))
-			var/new_species = pick(/datum/chicken_species/white, /datum/chicken_species/brown, /datum/chicken_species/black)
+			var/new_species = pick(CHICKEN_WHITE, CHICKEN_BROWN, CHICKEN_BLACK)
 			if(G.reagents.has_reagent(/datum/reagent/toxin/plasma))
-				new_species = /datum/chicken_species/plasma
+				new_species = CHICKEN_PLASMA
 			else if(G.reagents.has_reagent(/datum/reagent/gold))
-				new_species = /datum/chicken_species/golden
+				new_species = CHICKEN_GOLDEN
 			else if(G.reagents.has_reagent(/datum/reagent/toxin/fertilizer/left4zed))
-				new_species = /datum/chicken_species/vegan
+				new_species = CHICKEN_VEGAN
 			else if(G.reagents.has_reagent(/datum/reagent/space_drugs))
-				new_species = /datum/chicken_species/rainbow
+				new_species = CHICKEN_RAINBOW
 			change_species(new_species)
 		user.drop_item()
 		qdel(G)
@@ -155,7 +169,7 @@ var/global/chicken_count = 0
 
 /mob/living/simple_animal/chicken/white/Initialize()
 	. = ..()
-	change_species(/datum/chicken_species/white)
+	change_species(CHICKEN_WHITE)
 
 ///////////////////////////////////////////////////////
 /mob/living/simple_animal/chicken/brown
@@ -164,7 +178,7 @@ var/global/chicken_count = 0
 
 /mob/living/simple_animal/chicken/brown/Initialize()
 	. = ..()
-	change_species(/datum/chicken_species/brown)
+	change_species(CHICKEN_BROWN)
 
 ///////////////////////////////////////////////////////
 /mob/living/simple_animal/chicken/black
@@ -173,7 +187,7 @@ var/global/chicken_count = 0
 
 /mob/living/simple_animal/chicken/black/Initialize()
 	. = ..()
-	change_species(/datum/chicken_species/black)
+	change_species(CHICKEN_BLACK)
 
 ///////////////////////////////////////////////////////
 /mob/living/simple_animal/chicken/robot
@@ -182,7 +196,7 @@ var/global/chicken_count = 0
 
 /mob/living/simple_animal/chicken/robot/Initialize()
 	. = ..()
-	change_species(/datum/chicken_species/robot)
+	change_species(CHICKEN_ROBOT)
 
 ///////////////////////////////////////////////////////
 /mob/living/simple_animal/chicken/golden
@@ -191,7 +205,7 @@ var/global/chicken_count = 0
 
 /mob/living/simple_animal/chicken/golden/Initialize()
 	. = ..()
-	change_species(/datum/chicken_species/golden)
+	change_species(CHICKEN_GOLDEN)
 
 ///////////////////////////////////////////////////////
 /mob/living/simple_animal/chicken/plasma
@@ -200,7 +214,7 @@ var/global/chicken_count = 0
 
 /mob/living/simple_animal/chicken/plasma/Initialize()
 	. = ..()
-	change_species(/datum/chicken_species/plasma)
+	change_species(CHICKEN_PLASMA)
 
 ///////////////////////////////////////////////////////
 /mob/living/simple_animal/chicken/vegan
@@ -209,7 +223,7 @@ var/global/chicken_count = 0
 
 /mob/living/simple_animal/chicken/vegan/Initialize()
 	. = ..()
-	change_species(/datum/chicken_species/vegan)
+	change_species(CHICKEN_VEGAN)
 
 ///////////////////////////////////////////////////////
 /mob/living/simple_animal/chicken/rainbow
@@ -218,7 +232,7 @@ var/global/chicken_count = 0
 
 /mob/living/simple_animal/chicken/rainbow/Initialize()
 	. = ..()
-	change_species(/datum/chicken_species/rainbow)
+	change_species(CHICKEN_RAINBOW)
 
 ///////////////////////
 /// Chicken species ///
@@ -349,4 +363,12 @@ var/global/chicken_count = 0
 	else
 		return PROCESS_KILL
 
+#undef CHICKEN_WHITE
+#undef CHICKEN_BROWN
+#undef CHICKEN_BLACK
+#undef CHICKEN_ROBOT
+#undef CHICKEN_GOLDEN
+#undef CHICKEN_PLASMA
+#undef CHICKEN_VEGAN
+#undef CHICKEN_RAINBOW
 #undef MAX_CHICKENS
