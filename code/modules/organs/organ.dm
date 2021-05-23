@@ -36,7 +36,6 @@ var/list/organ_cache = list()
 	return food_organ
 
 /obj/item/organ/proc/organ_eaten(mob/user)
-	QDEL_NULL(food_organ)
 	qdel(src)
 
 /obj/item/organ/proc/update_food_from_organ()
@@ -47,6 +46,7 @@ var/list/organ_cache = list()
 /obj/item/organ/Destroy()
 	owner = null
 	dna = null
+	QDEL_NULL(food_organ)
 	return ..()
 
 /obj/item/organ/proc/update_health()
