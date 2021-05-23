@@ -361,7 +361,7 @@ GLOBAL_VAR_INIT(chicken_count, 0) // Number of /mob/living/simple_animal/chicken
 			new /mob/living/simple_animal/chick(get_turf(src))
 			STOP_PROCESSING(SSobj, src)
 			qdel(src)
-	else
+	else if(!ismob(loc)) // Don't kill the egg when somebody picks it up
 		return PROCESS_KILL
 
 #undef CHICKEN_WHITE
