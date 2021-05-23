@@ -98,7 +98,7 @@
 	add_fingerprint(user)
 
 /obj/item/weapon/melee/baton/proc/set_status(newstatus, mob/user)
-	if(bcell && bcell.charge > hitcost)
+	if(bcell && bcell.charge >= hitcost)
 		if(status != newstatus)
 			change_status(newstatus)
 			to_chat(user, "<span class='notice'>[src] is now [status ? "on" : "off"].</span>")

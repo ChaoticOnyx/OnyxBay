@@ -4412,7 +4412,7 @@
 "bJd" = (/obj/structure/bookcase/manuals/research_and_development,/obj/effect/floor_decal/corner/purple/diagonal,/turf/simulated/floor/tiled/white,/area/rnd/restroom)
 "bJe" = (/obj/machinery/vending/snack,/obj/machinery/alarm{dir = 2; layer = 3.1; pixel_y = 25},/obj/effect/floor_decal/corner/purple/diagonal,/turf/simulated/floor/tiled/white,/area/rnd/restroom)
 "bJf" = (/obj/machinery/vending/coffee,/obj/effect/floor_decal/corner/purple/diagonal,/turf/simulated/floor/tiled/white,/area/rnd/restroom)
-"bJg" = (/obj/structure/table/standard,/obj/item/weapon/dice/d100,/obj/machinery/light{dir = 1},/obj/effect/floor_decal/corner/purple/diagonal,/turf/simulated/floor/tiled/white,/area/rnd/restroom)
+"bJg" = (/obj/structure/table/standard,/obj/item/weapon/dice/dp,/obj/machinery/light{dir = 1},/obj/effect/floor_decal/corner/purple/diagonal,/turf/simulated/floor/tiled/white,/area/rnd/restroom)
 "bJh" = (/obj/structure/disposalpipe/segment{dir = 4},/obj/structure/cable{d1 = 4; d2 = 8; icon_state = "4-8"},/obj/machinery/door/firedoor/border_only,/obj/effect/floor_decal/oldflood,/turf/simulated/floor/tiled,/area/crew_quarters/sleep3)
 "bJi" = (/obj/structure/cable/green{d1 = 1; d2 = 2; icon_state = "1-2"},/obj/machinery/atmospherics/pipe/simple/hidden/scrubbers,/obj/structure/disposalpipe/segment,/turf/simulated/floor/tiled,/area/hallway/primary/fore)
 "bJj" = (/turf/simulated/wall,/area/rnd/restroom)
