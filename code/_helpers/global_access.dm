@@ -289,8 +289,6 @@
 			return global.chemical_reaction_logs;
 		if("chemical_reactions_list")
 			return global.chemical_reactions_list;
-		if("chicken_count")
-			return global.chicken_count;
 		if("church_name")
 			return global.church_name;
 		if("client_preference_stats_")
@@ -1274,8 +1272,6 @@
 			global.chemical_reaction_logs=newval;
 		if("chemical_reactions_list")
 			global.chemical_reactions_list=newval;
-		if("chicken_count")
-			global.chicken_count=newval;
 		if("church_name")
 			global.church_name=newval;
 		if("client_preference_stats_")

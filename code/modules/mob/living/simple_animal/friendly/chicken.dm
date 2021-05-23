@@ -8,7 +8,7 @@
 #define CHICKEN_RAINBOW /datum/chicken_species/rainbow
 
 #define MAX_CHICKENS 50
-var/global/chicken_count = 0
+GLOBAL_VAR_INIT(chicken_count, 0) // Number of /mob/living/simple_animal/chicken's in the current world
 
 /mob/living/simple_animal/chick
 	name = "\improper chick"
@@ -35,8 +35,8 @@ var/global/chicken_count = 0
 	pass_flags = PASS_FLAG_TABLE | PASS_FLAG_GRILLE
 	mob_size = MOB_MINISCULE
 
-/mob/living/simple_animal/chick/New()
-	..()
+/mob/living/simple_animal/chick/Initialize()
+	. = ..()
 	pixel_x = rand(-6, 6)
 	pixel_y = rand(0, 10)
 
@@ -86,7 +86,7 @@ var/global/chicken_count = 0
 	species.update_owner()
 	pixel_x = rand(-6, 6)
 	pixel_y = rand(0, 10)
-	chicken_count++
+	GLOB.chicken_count++
 
 /mob/living/simple_animal/chicken/Destroy()
 	if(species)
@@ -95,7 +95,7 @@ var/global/chicken_count = 0
 
 /mob/living/simple_animal/chicken/death(gibbed, deathmessage, show_dead_message)
 	..(gibbed, deathmessage, show_dead_message)
-	chicken_count--
+	GLOB.chicken_count--
 
 /mob/living/simple_animal/chicken/attackby(obj/item/O, mob/user)
 	if(istype(O, /obj/item/weapon/reagent_containers/food/snacks/grown)) //feedin' dem chickens
@@ -149,7 +149,7 @@ var/global/chicken_count = 0
 			var/obj/egg = new egg_type(get_turf(src))
 			egg.pixel_x = rand(-6, 6)
 			egg.pixel_y = rand(-6, 6)
-			if(species.fertile && istype(egg, /obj/item/weapon/reagent_containers/food/snacks/egg) && chicken_count < MAX_CHICKENS)
+			if(species.fertile && istype(egg, /obj/item/weapon/reagent_containers/food/snacks/egg) && GLOB.chicken_count < MAX_CHICKENS)
 				START_PROCESSING(SSobj, egg)
 	else
 		egg_chance = 0
@@ -371,4 +371,5 @@ var/global/chicken_count = 0
 #undef CHICKEN_PLASMA
 #undef CHICKEN_VEGAN
 #undef CHICKEN_RAINBOW
+
 #undef MAX_CHICKENS
