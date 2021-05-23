@@ -1,7 +1,7 @@
 /obj/item/projectile/ion
 	name = "ion bolt"
 	icon_state = "ion"
-	fire_sound = 'sound/weapons/Laser.ogg'
+	fire_sound = 'sound/effects/weapons/energy/Laser.ogg'
 	damage = 0
 	damage_type = BURN
 	nodamage = 1
@@ -42,7 +42,7 @@
 /obj/item/projectile/temp
 	name = "freeze beam"
 	icon_state = "ice_2"
-	fire_sound = 'sound/weapons/pulse3.ogg'
+	fire_sound = 'sound/effects/weapons/energy/pulse3.ogg'
 	damage = 0
 	damage_type = BURN
 	nodamage = 1

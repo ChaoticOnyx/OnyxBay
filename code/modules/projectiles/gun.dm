@@ -57,7 +57,7 @@
 	var/fire_delay = 6 	//delay after shooting before the gun can be used again
 	var/burst_delay = 2	//delay between shots, if firing in bursts
 	var/move_delay = 1
-	var/fire_sound = 'sound/weapons/gunshot/gunshot.ogg'
+	var/fire_sound = 'sound/effects/weapons/gun/gunshot.ogg'
 	var/far_fire_sound = null
 	var/fire_sound_text = "gunshot"
 	var/fire_anim = null
@@ -238,7 +238,7 @@
 		user.visible_message("*click click*", "<span class='danger'>*click*</span>")
 	else
 		src.visible_message("*click click*")
-	playsound(src.loc, 'sound/weapons/empty.ogg', 100, 1)
+	playsound(src.loc, 'sound/effects/weapons/gun/gun_empty.ogg', 75)
 
 //called after successfully firing
 /obj/item/weapon/gun/proc/handle_post_fire(mob/user, atom/target, pointblank = 0, reflex = 0, burstfire = 0)

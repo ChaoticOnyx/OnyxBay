@@ -160,7 +160,8 @@ GLOBAL_LIST_INIT(handcuffs_sound,list('sound/effects/using/cuffs/use1.ogg','soun
 
 GLOBAL_LIST_INIT(cable_hcuffs_sound,list('sound/effects/using/cuffs/cable_use1.ogg'))
 
-GLOBAL_LIST_INIT(far_fire_sound,list('sound/effects/weapons/gun/far_fire1.ogg','sound/effects/weapons/gun/far_fire2.ogg','sound/effects/weapons/gun/far_fire3.ogg'))
+GLOBAL_LIST_INIT(far_fire_sound,list('sound/effects/weapons/gun/far_fire1.ogg','sound/effects/weapons/gun/far_fire2.ogg','sound/effects/weapons/gun/far_fire3.ogg',
+										'sound/effects/weapons/gun/far_fire4.ogg'))
 
 GLOBAL_LIST_INIT(magazine_insert_sound,list('sound/effects/weapons/gun/magazine_insert1.ogg','sound/effects/weapons/gun/magazine_insert2.ogg','sound/effects/weapons/gun/magazine_insert3.ogg'))
 
@@ -179,7 +180,8 @@ GLOBAL_LIST_INIT(fire_silent_sound,list('sound/effects/weapons/gun/fire_silent1.
 										'sound/effects/weapons/gun/fire_silent7.ogg'))
 
 GLOBAL_LIST_INIT(casing_drop_sound,list('sound/effects/weapons/gun/casing_drop1.ogg','sound/effects/weapons/gun/casing_drop2.ogg','sound/effects/weapons/gun/casing_drop3.ogg',
-										'sound/effects/weapons/gun/casing_drop4.ogg'))
+										'sound/effects/weapons/gun/casing_drop4.ogg','sound/effects/weapons/gun/casing_drop5.ogg','sound/effects/weapons/gun/casing_drop6.ogg',
+										'sound/effects/weapons/gun/casing_drop7.ogg'))
 
 GLOBAL_LIST_INIT(pull_body_sound,list('sound/effects/pulling/pull_body1.ogg','sound/effects/pulling/pull_body2.ogg','sound/effects/pulling/pull_body3.ogg',
 									'sound/effects/pulling/pull_body4.ogg','sound/effects/pulling/pull_body5.ogg','sound/effects/pulling/pull_body6.ogg',

@@ -67,7 +67,7 @@ GLOBAL_LIST_EMPTY(thunderfield_items)
 
 /datum/thunderfield_item/gyro_gun
 	name = "Gyro pystol"
-	item = /obj/item/weapon/gun/projectile/gyropistol
+	item = /obj/item/weapon/gun/projectile/pistol/gyropistol
 	cost = 7
 
 /datum/thunderfield_item/gyro_gun_magazine

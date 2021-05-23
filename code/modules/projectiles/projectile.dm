@@ -239,7 +239,7 @@
 		for(var/mob/O in hearers(7, get_turf(target_mob)))
 			if(O.client)
 				if(O.get_preference_value(/datum/client_preference/play_hitmarker) == GLOB.PREF_YES)
-					O.playsound_local(target_mob, 'sound/weapons/hitmarker.ogg', 50, 1)
+					O.playsound_local(target_mob, 'sound/effects/weapons/misc/hitmarker.ogg', 50, 1)
 
 	//admin logs
 	if(!no_attack_log)

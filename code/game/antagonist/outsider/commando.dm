@@ -22,7 +22,7 @@ GLOBAL_DATUM_INIT(commandos, /datum/antagonist/deathsquad/syndicate, new)
 /datum/antagonist/deathsquad/syndicate/equip(mob/living/carbon/human/player)
 
 	player.equip_to_slot_or_del(new /obj/item/clothing/under/syndicate(player), slot_w_uniform)
-	player.equip_to_slot_or_del(new /obj/item/weapon/gun/projectile/silenced(player), slot_belt)
+	player.equip_to_slot_or_del(new /obj/item/weapon/gun/projectile/pistol/silenced(player), slot_belt)
 	player.equip_to_slot_or_del(new /obj/item/clothing/shoes/swat(player), slot_shoes)
 	player.equip_to_slot_or_del(new /obj/item/clothing/glasses/hud/standard/thermal(player), slot_glasses)
 	player.equip_to_slot_or_del(new /obj/item/clothing/mask/gas/syndicate(player), slot_wear_mask)

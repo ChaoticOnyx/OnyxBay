@@ -325,7 +325,7 @@
 	var/obj/item/projectile/beam/LE = new (T)
 	LE.icon = 'icons/effects/genetics.dmi'
 	LE.icon_state = "eyelasers"
-	playsound(usr.loc, 'sound/weapons/taser2.ogg', 75, 1)
+	playsound(usr.loc, 'sound/effects/weapons/energy/taser2.ogg', 75, 1)
 	LE.launch(A)
 /mob/living/carbon/human/LaserEyes()
 	if(nutrition>0)
