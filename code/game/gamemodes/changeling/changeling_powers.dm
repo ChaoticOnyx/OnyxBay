@@ -1445,12 +1445,9 @@ var/list/datum/absorbed_dna/hivemind_bank = list()
 			if(changeling_generic_weapon(/obj/item/weapon/melee/changeling/arm_blade/greater))
 				to_chat(src, "<span class='notice'>We prepare an extra sharp blade.</span>")
 
-				return
 
 		else
-			if(changeling_generic_weapon(/obj/item/weapon/melee/changeling/arm_blade))
-				return
-			return
+			changeling_generic_weapon(/obj/item/weapon/melee/changeling/arm_blade)
 
 //Increases macimum chemical storage
 /mob/proc/changeling_recursive_enhancement()
