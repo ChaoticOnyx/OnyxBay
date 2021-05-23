@@ -1,6 +1,13 @@
 body {
     background-color: #262626;
     overflow: hidden;
+    scrollbar-base-color: #4D4D4D;
+    scrollbar-face-color: #4D4D4D;
+    scrollbar-3dlight-color: #262626;
+    scrollbar-highlight-color: #262626;
+    scrollbar-track-color: #262626;
+    scrollbar-arrow-color: #4D4D4D;
+    scrollbar-shadow-color: #4D4D4D;
 }
 
 .uiTitle {
@@ -23,6 +30,8 @@ div.scrollleft {
     width: 200px;
     background-color: #2D2D2D;
     padding-left: 8px;
+    overflow-y: auto;
+    margin-bottom: 24px;
 }
 
 div.scrollright {
@@ -32,6 +41,8 @@ div.scrollright {
     right: 0;
     position: absolute;
     top: 32px;
+    overflow-y: auto;
+    margin-bottom: 24px;
 }
 
 a:link,
