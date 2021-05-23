@@ -31,6 +31,10 @@
 	name = "box (C)"
 	startswith = list(/obj/item/weapon/implanter/compressed)
 
+/obj/item/weapon/storage/box/syndie_kit/spy_implant
+	name = "box (S)"
+	startswith = list(/obj/item/weapon/implanter/spy)
+
 /obj/item/weapon/storage/box/syndie_kit/imp_explosive
 	name = "box (E)"
 	startswith = list(

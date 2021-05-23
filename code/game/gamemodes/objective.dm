@@ -389,6 +389,19 @@ datum/objective/harm
 				return 1
 		return 0
 
+/datum/objective/contracts
+	var/amount = 1
+
+/datum/objective/contracts/New()
+	amount = rand(3, 5)
+	explanation_text = "Complete at least [amount] contracts."
+
+/datum/objective/contracts/check_completion()
+	if(owner.completed_contracts >= amount)
+		return TRUE
+	else
+		return FALSE
+
 /datum/objective/ert_station_save
 
 /datum/objective/ert_station_save/check_completion()

@@ -388,6 +388,8 @@
 				W.forceMove(src.loc)
 
 	//Update any existing objectives involving this mob.
+	for(var/datum/antag_contract/AC in GLOB.all_contracts)
+		AC.on_mob_despawned(occupant.mind)
 	for(var/datum/objective/O in all_objectives)
 		// We don't want revs to get objectives that aren't for heads of staff. Letting
 		// them win or lose based on cryo is silly so we remove the objective.
