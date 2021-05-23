@@ -343,7 +343,7 @@
 /decl/hierarchy/supply_pack/miscellaneous/tc25
 	name = "Telecrystals - 25"
 	contains = list(/obj/item/stack/telecrystal{amount = 25})
-	cost = 225
+	cost = 250
 	containername = "\improper crate"
 	hidden = 1
 	contraband = 1
@@ -351,8 +351,7 @@
 /decl/hierarchy/supply_pack/miscellaneous/tc60
 	name = "Telecrystals - 60"
 	contains = list(/obj/item/stack/telecrystal{amount = 30} = 2)
-	cost = 480
+	cost = 600
 	containername = "\improper crate"
 	hidden = 1
 	contraband = 1
-
