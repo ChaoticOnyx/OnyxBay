@@ -31,6 +31,7 @@ var/global/list/possible_changeling_IDs = list("Alpha","Beta","Gamma","Delta","E
 	var/FLP_last_time_used = 0
 	var/rapidregen_active = FALSE
 	var/is_revive_ready = FALSE
+	var/last_transformation_at = 0
 
 /datum/changeling/New()
 	..()
@@ -335,6 +336,7 @@ var/global/list/possible_changeling_IDs = list("Alpha","Beta","Gamma","Delta","E
 	spawn(10)
 		src.verbs += /mob/proc/changeling_transform
 
+	changeling.last_transformation_at = world.time
 	changeling_update_languages(changeling.absorbed_languages)
 
 	feedback_add_details("changeling_powers","TR")

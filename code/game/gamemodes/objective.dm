@@ -313,7 +313,7 @@ datum/objective/escape
 		return TRUE
 
 	var/obj/item/weapon/card/id/id_card = owner.current.GetIdCard()
-	if(id_card?.registered_name == target && owner.current.real_name == target)
+	if(id_card?.registered_name == target && owner.current.real_name == target && owner.changeling?.last_transformation_at + 3 MINUTES <= world.time)
 		return TRUE
 	return FALSE
 
