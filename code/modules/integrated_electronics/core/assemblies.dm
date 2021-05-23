@@ -227,22 +227,22 @@
 		HTML += "<div id='component_bar'>\n"
 
 		// COMPONENT NAME
-		HTML += "<a class='icon align-to-text'><div class='codicon codicon-symbol-property'></div></a>[circuit_pins.displayed_name]\n"
+		HTML += "<a class='icon align-to-text'><i class='codicon codicon-symbol-property'></i></a>[circuit_pins.displayed_name]\n"
 
 		// START COMPONENT_ACTIONS
 		HTML += "<div id='component_actions'>\n"
 
 		// REFRESH BUTTON
-		HTML += "<a class='icon align-to-text' href='?src=\ref[src];component=\ref[circuit_pins]'><div class='codicon codicon-refresh'></div></a>"
+		HTML += "<a class='icon align-to-text' href='?src=\ref[src];component=\ref[circuit_pins]'><i class='codicon codicon-refresh'></i></a>"
 		// RENAME BUTTON
-		HTML += "<a class='icon align-to-text' title='Rename' href='?src=\ref[src];component=\ref[circuit_pins];rename_component=1'><div class='codicon codicon-pencil'></div></a>"
+		HTML += "<a class='icon align-to-text' title='Rename' href='?src=\ref[src];component=\ref[circuit_pins];rename_component=1'><i class='codicon codicon-pencil'></i></a>"
 		// COPY REF BUTTON
-		HTML += "<a class='icon align-to-text' title='Copy Ref' href='?src=\ref[src];component=\ref[circuit_pins];scan=1'><div class='codicon codicon-copy'></div></a>"
+		HTML += "<a class='icon align-to-text' title='Copy Ref' href='?src=\ref[src];component=\ref[circuit_pins];scan=1'><i class='codicon codicon-copy'></i></a>"
 		// INTERACT BUTTON
-		HTML += "<a class='icon align-to-text' title='Interact' href='?src=\ref[src];component=\ref[circuit_pins];interact=1'><div class='codicon codicon-play'></div></a>"
+		HTML += "<a class='icon align-to-text' title='Interact' href='?src=\ref[src];component=\ref[circuit_pins];interact=1'><i class='codicon codicon-play'></i></a>"
 		if(circuit_pins.removable)
 			// REMOVE BUTTON
-			HTML += "<a class='icon align-to-text' title='Remove' href='?src=\ref[src];component=\ref[circuit_pins];remove=1'><div class='codicon codicon-close-all'></div></a>"
+			HTML += "<a class='icon align-to-text' title='Remove' href='?src=\ref[src];component=\ref[circuit_pins];remove=1'><i class='codicon codicon-close-all'></i></a>"
 
 		// END COMPONENT_ACTIONS
 		HTML += "</div>\n"
@@ -303,7 +303,7 @@
 			if(!io)
 				continue
 
-			INPUTS += "<a class='grey' href='?src=\ref[circuit_pins];act=wire;pin=\ref[io]'><div class='codicon codicon-symbol-variable fit-in-button'></div>[io.display_pin_type()] [io.name]</a> = <a class='grey' href='?src=\ref[circuit_pins];act=data;pin=\ref[io]'><div class='codicon codicon-symbol-parameter fit-in-button'></div>[io.display_data(io.data)]</a><br>\n"
+			INPUTS += "<a class='grey' href='?src=\ref[circuit_pins];act=wire;pin=\ref[io]'><i class='codicon codicon-symbol-variable fit-in-button'></i>[io.display_pin_type()] [io.name]</a> = <a class='grey' href='?src=\ref[circuit_pins];act=data;pin=\ref[io]'><i class='codicon codicon-symbol-parameter fit-in-button'></i>[io.display_data(io.data)]</a><br>\n"
 
 			if (!io.linked.len)
 				continue
@@ -311,7 +311,7 @@
 			INPUTS += "<ul>"
 			for(var/k in io.linked)
 				var/datum/integrated_io/linked = k
-				INPUTS += "<li><a class='grey' href='?src=\ref[circuit_pins];act=unwire;pin=\ref[io];link=\ref[linked]'><div class='codicon codicon-symbol-variable fit-in-button'></div>[linked]</a> ← <a class='grey' href='?src=\ref[linked.holder]'><div class='codicon codicon-symbol-property fit-in-button'></div>[linked.holder.displayed_name]</a></li>"
+				INPUTS += "<li><a class='grey' href='?src=\ref[circuit_pins];act=unwire;pin=\ref[io];link=\ref[linked]'><i class='codicon codicon-symbol-variable fit-in-button'></i>[linked]</a> ← <a class='grey' href='?src=\ref[linked.holder]'><i class='codicon codicon-symbol-property fit-in-button'></i>[linked.holder.displayed_name]</a></li>"
 
 			INPUTS += "</ul>"
 
@@ -322,7 +322,7 @@
 			if(!io)
 				continue
 
-			OUTPUTS += "<a class='grey' href='?src=\ref[circuit_pins];act=wire;pin=\ref[io]'><div class='codicon codicon-symbol-variable fit-in-button'></div>[io.display_pin_type()] [io.name]</a> = <a class='grey' href='?src=\ref[circuit_pins];act=data;pin=\ref[io]'><div class='codicon codicon-symbol-parameter fit-in-button'></div>[io.display_data(io.data)]</a><br>\n"
+			OUTPUTS += "<a class='grey' href='?src=\ref[circuit_pins];act=wire;pin=\ref[io]'><i class='codicon codicon-symbol-variable fit-in-button'></i>[io.display_pin_type()] [io.name]</a> = <a class='grey' href='?src=\ref[circuit_pins];act=data;pin=\ref[io]'><i class='codicon codicon-symbol-parameter fit-in-button'></i>[io.display_data(io.data)]</a><br>\n"
 
 			if (!io.linked.len)
 				continue
@@ -330,7 +330,7 @@
 			OUTPUTS += "<ul>"
 			for(var/k in io.linked)
 				var/datum/integrated_io/linked = k
-				OUTPUTS += "<li><a class='grey' href='?src=\ref[circuit_pins];act=unwire;pin=\ref[io];link=\ref[linked]'><div class='codicon codicon-symbol-variable fit-in-button'></div>[linked]</a> ← <a class='grey' href='?src=\ref[linked.holder]'><div class='codicon codicon-symbol-property fit-in-button'></div>[linked.holder.displayed_name]</a></li>"
+				OUTPUTS += "<li><a class='grey' href='?src=\ref[circuit_pins];act=unwire;pin=\ref[io];link=\ref[linked]'><i class='codicon codicon-symbol-variable fit-in-button'></i>[linked]</a> ← <a class='grey' href='?src=\ref[linked.holder]'><i class='codicon codicon-symbol-property fit-in-button'></i>[linked.holder.displayed_name]</a></li>"
 
 			OUTPUTS += "</ul>"
 
@@ -356,7 +356,7 @@
 		for(var/activator in circuit_pins.activators)
 			HTML += "<tr><td colspan='1'>"
 			io = activator
-			var/ACTIVATORS = "<div class='segmented-control'><a href='?src=\ref[circuit_pins];act=wire;pin=\ref[io]'><div class='codicon codicon-symbol-event fit-in-button'></div>[io]</a>"
+			var/ACTIVATORS = "<div class='segmented-control'><a href='?src=\ref[circuit_pins];act=wire;pin=\ref[io]'><i class='codicon codicon-symbol-event fit-in-button'></i>[io]</a>"
 			ACTIVATORS += "<a href='?src=\ref[circuit_pins];act=data;pin=\ref[io]'>[io.data?"\<PULSE OUT\>":"\<PULSE IN\>"]</a></div>\n"
 
 			if(io.linked.len)
@@ -364,7 +364,7 @@
 
 				for(var/k in io.linked)
 					var/datum/integrated_io/linked = k
-					ACTIVATORS += "<li><a class='grey' href='?src=\ref[circuit_pins];act=unwire;pin=\ref[io];link=\ref[linked]'><div class='codicon codicon-symbol-event fit-in-button'></div>[linked]</a> ← <a class='grey' href='?src=\ref[linked.holder]'><div class='codicon codicon-symbol-property fit-in-button'></div>[linked.holder.displayed_name]</a></li>"
+					ACTIVATORS += "<li><a class='grey' href='?src=\ref[circuit_pins];act=unwire;pin=\ref[io];link=\ref[linked]'><i class='codicon codicon-symbol-event fit-in-button'></i>[linked]</a> ← <a class='grey' href='?src=\ref[linked.holder]'><i class='codicon codicon-symbol-property fit-in-button'></i>[linked.holder.displayed_name]</a></li>"
 
 				ACTIVATORS += "</ul>"
 
@@ -380,19 +380,19 @@
 	HTML += "<div id='status_bar'>\n"
 
 	// USED SPACE
-	HTML += "<a class='icon' title='Space'><div class='codicon codicon-database fit-in-button'></div>Space used: [total_part_size]/[max_components]</a><div class='divider'></div>\n"
+	HTML += "<a class='icon' title='Space'><i class='codicon codicon-database fit-in-button'></i>Space used: [total_part_size]/[max_components]</a><div class='divider'></div>\n"
 
 	// COMPLEXITY
-	HTML += "<a class='icon' title='Complexity'><div class='codicon codicon-gear fit-in-button'></div>Complexity: [total_complexity]/[max_complexity]</a><div class='divider'></div>"
+	HTML += "<a class='icon' title='Complexity'><i class='codicon codicon-gear fit-in-button'></i>Complexity: [total_complexity]/[max_complexity]</a><div class='divider'></div>"
 
 	// BATTERY
 	if(battery)
-		HTML += "<a class='icon' title='Eject Battery' href='?src=\ref[src];remove_cell=1'><div class='codicon codicon-symbol-event fit-in-button'></div>[battery] ([round(battery.charge, 0.1)]/[battery.maxcharge])</a>"
+		HTML += "<a class='icon' title='Eject Battery' href='?src=\ref[src];remove_cell=1'><i class='codicon codicon-symbol-event fit-in-button'></i>[battery] ([round(battery.charge, 0.1)]/[battery.maxcharge])</a>"
 	else
-		HTML += "<a class='icon' title='Battery'><div class='codicon codicon-symbol-event fit-in-button'></div>No power cell detected!</a>"
+		HTML += "<a class='icon' title='Battery'><i class='codicon codicon-symbol-event fit-in-button'></i>No power cell detected!</a>"
 
 	// CHANGE UI INTERACTION STYLE
-	HTML += "<a class='icon' href='?src=\ref[src];change_ui_style=1'><div class='codicon codicon-multiple-windows fit-in-button'></div>Change UI interaction style</a>"
+	HTML += "<a class='icon' href='?src=\ref[src];change_ui_style=1'><i class='codicon codicon-multiple-windows fit-in-button'></i>Change UI interaction style</a>"
 
 	// END STATUS BAR
 	HTML += "</div>\n"
