@@ -266,6 +266,14 @@ You can set verify to TRUE if you want send() to sleep until the client has the 
 		"v4shim.css"          = 'html/font-awesome/css/v4-shims.min.css'
 	)
 
+/datum/asset/simple/codicon
+	isTrivial = TRUE
+	verify = FALSE
+	assets = list(
+		"codicon.css" = 'html/codicon/codicon.css',
+		"codicon.ttf" = 'html/codicon/codicon.ttf'
+	)
+
 /datum/asset/simple/tgui
 	verify = FALSE
 	assets = list(
