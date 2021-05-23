@@ -176,7 +176,7 @@ GLOBAL_LIST_EMPTY(IAA_approved_list)
 
 /proc/IAAJ_populate()
 	if(!establish_db_connection())
-		warning("Failed to connect to DB, IAAJ module deactivated, if anyone print IAA complain kit server will be crashed.")
+		warning("Failed to connect to DB, IAAJ module deactivated. If anyone prints an IAA complain kit, the server will crash.")
 		return
 	var/DBQuery/query
 	query = sql_query({"
