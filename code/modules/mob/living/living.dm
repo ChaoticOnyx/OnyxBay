@@ -207,15 +207,6 @@
 
 	return can_move_mob(tmob, 1, 0)
 
-/mob/living/verb/succumb()
-	set hidden = 1
-
-	if(health <= maxHealth * 0.75 && stat == UNCONSCIOUS)
-		adjustBrainLoss(health + maxHealth * 2)
-		updatehealth()
-		to_chat(src, SPAN("notice", "You have given up life and succumbed to death."))
-		log_and_message_admins("has succumbed")
-
 /mob/living/proc/updatehealth()
 	if(status_flags & GODMODE)
 		health = 100

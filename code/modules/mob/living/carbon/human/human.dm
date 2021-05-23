@@ -1687,3 +1687,16 @@
 		to_chat(src, "<span class='notice'>You will use your main hand to block.</span>")
 		if(src.blockswitch_icon)
 			src.blockswitch_icon.icon_state = "act_blockswitch0"
+
+/mob/living/carbon/human/verb/succumb()
+	set hidden = 1
+
+	if(internal_organs_by_name[BP_BRAIN])
+		var/obj/item/organ/internal/brain/brain = internal_organs_by_name[BP_BRAIN]
+		if(brain.damage <= brain.max_damage * 0.75 && stat != UNCONSCIOUS)
+			return 
+
+		to_chat(src, SPAN("notice", "You have given up life and succumbed to death."))
+		log_and_message_admins("has succumbed")
+		adjustBrainLoss(brain.max_damage)
+		updatehealth()

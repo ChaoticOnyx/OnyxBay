@@ -222,20 +222,22 @@ This is the proc mobs get to turn into a ghost. Forked from ghostize due to comp
 	return TRUE
 
 /mob/living/carbon/human/may_ghost()
-	if(health <= maxHealth * 0.75 && stat == UNCONSCIOUS)
+	if(istype(loc, /obj/machinery/cryopod))
 		return TRUE
-	else if(istype(loc, /obj/machinery/cryopod))
-		return TRUE
-	else if(internal_organs_by_name[BP_CELL])
-		var/obj/item/organ/internal/cell/C  = internal_organs_by_name[BP_CELL]
-		if(C.cell?.charge <= 1)
+	if(internal_organs_by_name[BP_BRAIN])
+		var/obj/item/organ/internal/brain/brain = internal_organs_by_name[BP_BRAIN]
+		if(brain.damage >= brain.max_damage * 0.75 && stat == UNCONSCIOUS)
+			return TRUE
+	if(internal_organs_by_name[BP_CELL])
+		var/obj/item/organ/internal/cell/C = internal_organs_by_name[BP_CELL]
+		if(!C.cell || C.cell.charge <= 1)
 			return TRUE
 	return FALSE
 
 /mob/living/silicon/robot/may_ghost()
-	if(!cell || cell.charge <= 1 || !is_component_functioning("power cell"))
+	if(istype(loc, /obj/machinery/cryopod/robot))
 		return TRUE
-	else if(istype(loc, /obj/machinery/cryopod/robot))
+	else if(!cell || cell.charge <= 1 || !is_component_functioning("power cell"))
 		return TRUE
 	return FALSE
 
