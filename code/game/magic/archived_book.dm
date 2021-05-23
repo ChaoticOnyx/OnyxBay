@@ -45,13 +45,10 @@ datum/book_manager/proc/freeid()
 		return
 
 	if(BOOKS_USE_SQL && config.sql_enabled) // always false. see todo on line 6 of this file
-		var/DBConnection/dbcon = new()
-		dbcon.Connect("dbi:mysql:[sqldb]:[sqladdress]:[sqlport]","[sqllogin]","[sqlpass]")
 		if(!establish_db_connection())
 			alert("Connection to Archive has been severed. Aborting.")
 		else
 			var/DBQuery/query = sql_query("DELETE FROM library WHERE id=$$", dbcon, isbn)
-			dbcon.Disconnect()
 	else
 		book_mgr.remove(isbn)
 	log_admin("[usr.key] has deleted the book [isbn]")

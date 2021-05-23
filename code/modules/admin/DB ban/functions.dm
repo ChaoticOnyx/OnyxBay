@@ -222,7 +222,11 @@
 	return 1
 
 /datum/admins/proc/DB_ban_unban(ckey, bantype, job = "")
-	if(!check_rights(R_BAN))	return
+	if(!establish_db_connection())
+		return
+
+	if(!check_rights(R_BAN))
+		return
 
 	var/bantype_str
 	if(bantype)
@@ -250,9 +254,6 @@
 		bantype_sql = "(bantype = 'PERMABAN' OR (bantype = 'TEMPBAN' AND expiration_time > Now() ) )"
 	else
 		bantype_sql = "bantype = $bantype_str"
-
-	if(!establish_db_connection())
-		return
 
 	var/ban_id
 	var/ban_number = 0 //failsafe
@@ -295,6 +296,9 @@
 	DB_ban_unban_by_id(ban_id)
 
 /datum/admins/proc/DB_ban_edit(banid = null, param = null)
+	if(!establish_db_connection())
+		return
+
 	if(!check_rights(R_BAN))	return
 
 	if(!isnum(banid) || !istext(param))
@@ -385,6 +389,9 @@
 			return
 
 /datum/admins/proc/DB_ban_unban_by_id(id)
+	if(!establish_db_connection())
+		return
+
 	if(!check_rights(R_BAN))	return
 
 	var/sql
@@ -392,9 +399,6 @@
 		sql = "SELECT ckey FROM erro_ban WHERE id = $id"
 	else
 		sql = "SELECT ckey, server_id FROM erro_ban WHERE id = $id"
-
-	if(!establish_db_connection())
-		return
 
 	var/ban_number = 0 //failsafe
 

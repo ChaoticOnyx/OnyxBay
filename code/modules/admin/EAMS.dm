@@ -145,6 +145,10 @@ SUBSYSTEM_DEF(eams)
 
 /datum/controller/subsystem/eams/proc/__LoadResponseFromCache(ip)
 	ASSERT(istext(ip))
+	
+	if(!establish_db_connection())  // Database isn't connected
+		__DBError()
+		return FALSE
 
 	ip = dbcon.Quote(ip)
 	var/DBQuery/query = sql_query("SELECT response FROM eams_cache WHERE ip = $ip LIMIT 1", dbcon, list(ip = ip))
@@ -162,6 +166,10 @@ SUBSYSTEM_DEF(eams)
 	ASSERT(istext(ip))
 	ASSERT(istext(raw_response))
 
+	if(!establish_db_connection())  // Database isn't connected
+		__DBError()
+		return FALSE
+
 	ip = dbcon.Quote(ip)
 	raw_response = dbcon.Quote(raw_response)
 	var/DBQuery/query = sql_query("INSERT INTO eams_cache(ip, response) VALUES ($ip, $raw_response)", dbcon, list(ip = ip, raw_response = raw_response))
@@ -175,12 +183,20 @@ SUBSYSTEM_DEF(eams)
 /datum/controller/subsystem/eams/proc/__RecordClientIP(client/C)
 	ASSERT(istype(C))
 
+	if(!establish_db_connection())  // Database isn't connected
+		__DBError()
+		return FALSE
+
 	var/DBQuery/query = sql_query("INSERT INTO ckey_ip(ckey, ip) VALUES ($ckey, $address)", dbcon, list(ckey = C.ckey, address = C.address))
 	if (!query)
 		__DBError()
 
 /datum/controller/subsystem/eams/proc/__RecordClientCID(client/C)
 	ASSERT(istype(C))
+
+	if(!establish_db_connection())  // Database isn't connected
+		__DBError()
+		return FALSE
 
 	var/DBQuery/query = sql_query("INSERT INTO ckey_computerid(ckey, computerid) VALUES ($ckey, $cid)", dbcon, list(ckey = C.ckey, cid = C.computer_id))
 	if (!query)

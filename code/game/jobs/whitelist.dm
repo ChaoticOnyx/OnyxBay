@@ -35,6 +35,8 @@ var/list/whitelist = list()
 		alien_whitelist = splittext(text, "\n")
 		return 1
 /proc/load_alienwhitelistSQL()
+	if(!establish_old_db_connection())
+		return FALSE
 	var/DBQuery/query = sql_query("SELECT * FROM whitelist", dbcon_old)
 	while(query.NextRow())
 		var/list/row = query.GetRowData()
@@ -43,7 +45,7 @@ var/list/whitelist = list()
 			A.Add(row["race"])
 		else
 			alien_whitelist[row["ckey"]] = list(row["race"])
-	return 1
+	return TRUE
 
 /proc/is_species_whitelisted(mob/M, species_name)
 	var/datum/species/S = all_species[species_name]

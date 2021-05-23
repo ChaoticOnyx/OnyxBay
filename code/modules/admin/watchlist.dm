@@ -2,6 +2,9 @@
 
 
 /datum/watchlist/proc/Add(target_ckey, browse = 0)
+	if(!establish_db_connection())
+		return
+
 	if (!target_ckey)
 		var/new_ckey = ckey(input(usr, "Who would you like to add to the watchlist?", "Enter a ckey", null) as text)
 		if (!new_ckey)
@@ -62,6 +65,9 @@
 
 
 /datum/watchlist/proc/Check(target_ckey)
+	if(!establish_db_connection())
+		return
+
 	var/DBQuery/query_watch = sql_query({"
 		SELECT
 			reason
@@ -78,6 +84,9 @@
 
 
 /datum/watchlist/proc/Remove(target_ckey, browse = 0)
+	if(!establish_db_connection())
+		return
+
 	sql_query({"
 		DELETE FROM
 			erro_watch
@@ -97,6 +106,9 @@
 
 
 /datum/watchlist/proc/Edit(target_ckey, browse = 0)
+	if(!establish_db_connection())
+		return
+
 	var/DBQuery/query_watchreason = sql_query({"
 		SELECT
 			reason
@@ -146,6 +158,9 @@
 
 
 /datum/watchlist/proc/Show(search)
+	if(!establish_db_connection())
+		return
+
 	var/output = "<meta charset=\"utf-8\">"
 	output += "<form method='GET' name='search' action='?'>\
 	<input type='hidden' name='_src_' value='holder'>\
@@ -235,6 +250,9 @@
 		Show()
 
 	else if(href_list["watcheditlog"])
+		if(!establish_db_connection())
+			return
+
 		var/target_ckey = href_list["watcheditlog"]
 
 		var/DBQuery/query_watchedits = sql_query({"

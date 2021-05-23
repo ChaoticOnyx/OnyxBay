@@ -19,6 +19,9 @@
 			holder.showAccounts(target)
 
 /datum/admins/proc/showAccounts(targetkey)
+	if(!establish_db_connection())
+		return
+
 	var/size = 0
 	var/output = "<meta charset=\"utf-8\"><center><table border='1'> <caption>Matching computerID</caption><tr> <th width='100px' >ckey</th><th width='100px'>firstseen</th><th width='100px'>lastseen</th><th width='100px'>ip</th><th width='100px'>computerid </th></tr>"
 
@@ -97,6 +100,9 @@
 	show_browser(usr, output, "window=accaunts;size=600x[size*50+100]")
 
 /datum/admins/proc/checkAllAccounts()
+	if(!establish_db_connection())
+		return
+
 	var/DBQuery/query
 	var/t1 = ""
 	var/output = "<meta charset=\"utf-8\"><B>Matching IP</B><BR><BR>"
