@@ -1,3 +1,5 @@
+#define MAX_CHICKENS = 50
+var/global/chicken_count = 0
 
 /mob/living/simple_animal/chick
 	name = "\improper chick"
@@ -39,9 +41,6 @@
 			amount_grown = -1
 			new /mob/living/simple_animal/chicken(loc)
 			qdel(src)
-
-#define MAX_CHICKENS = 50
-var/global/chicken_count = 0
 
 /mob/living/simple_animal/chicken
 	name = "\improper chicken"
@@ -341,3 +340,5 @@ var/global/chicken_count = 0
 			qdel(src)
 	else
 		return PROCESS_KILL
+
+#undef MAX_CHICKENS
