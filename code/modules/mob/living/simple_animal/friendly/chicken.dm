@@ -8,6 +8,7 @@
 #define CHICKEN_RAINBOW /datum/chicken_species/rainbow
 
 #define MAX_CHICKENS 50
+#define MAX_EGGS_PER_CHICKEN 8
 GLOBAL_VAR_INIT(chicken_count, 0) // Number of /mob/living/simple_animal/chicken's in the current world
 
 /mob/living/simple_animal/chick
@@ -113,7 +114,7 @@ GLOBAL_VAR_INIT(chicken_count, 0) // Number of /mob/living/simple_animal/chicken
 	if(!(G.seed?.kitchen_tag in list("wheat", "rice", "grass")))
 		to_chat(user, SPAN("notice", "[name] doesn't seem interested in that."))
 		return
-	if(eggsleft >= 8)
+	if(eggsleft >= MAX_EGGS_PER_CHICKEN)
 		to_chat(user, SPAN("notice", "[name] doesn't seem hungry!"))
 		return
 	user.visible_message(SPAN("notice", "[user] feeds [G] to [name]! It clucks happily."), SPAN("notice", "You feed [G] to [name]! It clucks happily."))
@@ -133,7 +134,7 @@ GLOBAL_VAR_INIT(chicken_count, 0) // Number of /mob/living/simple_animal/chicken
 			change_species(new_species)
 		user.drop_item()
 		qdel(G)
-		eggsleft += rand(1, 3)
+		eggsleft = min((eggsleft + rand(1, 3)), MAX_EGGS_PER_CHICKEN)
 
 /mob/living/simple_animal/chicken/Life()
 	. =..()
@@ -141,7 +142,7 @@ GLOBAL_VAR_INIT(chicken_count, 0) // Number of /mob/living/simple_animal/chicken
 		return
 	if(eggsleft)
 		egg_chance++
-		if(!stat && prob(Floor(egg_chance/10)))
+		if(!stat && prob(Floor(egg_chance / 10)))
 			visible_message("<b>[name]</b> [pick("lays an egg", "squats down and croons", "begins making a huge racket", "begins clucking raucously")].")
 			eggsleft--
 			egg_chance = 0
