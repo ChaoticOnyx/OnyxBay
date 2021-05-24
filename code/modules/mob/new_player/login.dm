@@ -38,6 +38,7 @@
 	return ..()
 
 /mob/new_player/Login()
+	SHOULD_CALL_PARENT(FALSE)
 	update_Login_details()	//handles setting lastKnownIP and computer_id for use by the ban systems as well as checking for multikeying
 	if(join_motd)
 		to_chat(src, "<div class=\"motd\">[join_motd]</div>")
