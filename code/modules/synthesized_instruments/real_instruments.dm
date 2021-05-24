@@ -207,7 +207,7 @@
 /obj/structure/synthesized_instrument/Initialize()
 	. = ..()
 	instruments = list()
-	for (var/type in typesof(path))
+	for(var/type in typesof(path))
 		var/datum/instrument/new_instrument = new type
 		if(!new_instrument.id)
 			continue
@@ -218,7 +218,7 @@
 /obj/structure/synthesized_instrument/Destroy()
 	QDEL_NULL(real_instrument)
 	QDEL_NULL_LIST(instruments)
-	return
+	return ..()
 
 /obj/structure/synthesized_instrument/attack_hand(mob/user)
 	src.interact(user)
@@ -260,7 +260,7 @@
 	instruments = list()
 	for(var/type in typesof(path))
 		var/datum/instrument/new_instrument = new type
-		if (!new_instrument.id)
+		if(!new_instrument.id)
 			continue
 		new_instrument.create_full_sample_deviation_map()
 		instruments[new_instrument.name] = new_instrument
@@ -269,7 +269,7 @@
 /obj/item/device/synthesized_instrument/Destroy()
 	QDEL_NULL(real_instrument)
 	QDEL_NULL_LIST(instruments)
-	. = ..()
+	return ..()
 
 
 /obj/item/device/synthesized_instrument/attack_self(mob/user as mob)
