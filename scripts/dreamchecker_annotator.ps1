@@ -42,7 +42,6 @@ $ProcessInfo.RedirectStandardOutput = $true
 $ProcessInfo.RedirectStandardError = $true
 # UseShellExecute = $false требуется для редиректа потоков.
 $ProcessInfo.UseShellExecute = $false
-$ProcessInfo.StandardErrorEncoding = [System.Text.Encoding]::ASCII
 
 Write-Host "Запуск $Bin"
 $Process = New-Object System.Diagnostics.Process
