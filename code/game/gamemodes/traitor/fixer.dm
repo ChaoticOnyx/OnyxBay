@@ -54,7 +54,7 @@
 
 /datum/contract_organization/proc/create_random_contract()
 	var/list/candidates = (subtypesof(/datum/antag_contract))
-	candidates.Remove(/datum/antag_contract/item) // place here banned contracts, e.g. parent contracts without intent
+	candidates.Remove(/datum/antag_contract/item) // place banned contracts here, e.g. parent contracts without intent
 	while(candidates.len)
 		var/contract_type = pick(candidates)
 		var/datum/antag_contract/C = new contract_type(src)
