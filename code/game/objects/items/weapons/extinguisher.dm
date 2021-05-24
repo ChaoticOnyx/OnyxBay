@@ -11,10 +11,10 @@
 	mod_handy = 0.7
 	mod_weight = 1.5
 	mod_reach = 1.0
-	w_class = ITEM_SIZE_NORMAL
+	w_class = ITEM_SIZE_LARGE
 	throw_speed = 2
 	throw_range = 10
-	matter = list(MATERIAL_STEEL = 90)
+	matter = list(MATERIAL_STEEL = 900)
 	attack_verb = list("slammed", "whacked", "bashed", "thunked", "battered", "bludgeoned", "thrashed")
 
 	var/spray_particles = 3
@@ -41,6 +41,7 @@
 	spray_amount = 80
 	max_volume = 1000
 	sprite_name = "miniFE"
+	matter = list(MATERIAL_STEEL = 500)
 
 /obj/item/weapon/extinguisher/New()
 	create_reagents(max_volume)
