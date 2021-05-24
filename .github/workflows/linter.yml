@@ -1,5 +1,9 @@
 name: Linter
 
+permissions:
+  pull-requests: read
+  checks: write
+
 on:
   pull_request
 
