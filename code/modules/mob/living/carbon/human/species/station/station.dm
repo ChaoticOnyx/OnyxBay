@@ -318,12 +318,12 @@
 
 /proc/spawn_diona_nymph(turf/target)
 	if(!istype(target))
-		return 0
+		return
 
 	//This is a terrible hack and I should be ashamed.
 	var/datum/seed/diona = SSplants.seeds["diona"]
 	if(!diona)
-		return 0
+		return 
 
 	spawn(1) // So it has time to be thrown about by the gib() proc.
 		var/mob/living/carbon/alien/diona/D = new(target)
@@ -333,7 +333,6 @@
 			if(D)
 				if(!D.ckey || !D.client)
 					D.death()
-		return 1
 
 #define DIONA_LIMB_DEATH_COUNT 9
 /datum/species/diona/handle_death_check(mob/living/carbon/human/H)
