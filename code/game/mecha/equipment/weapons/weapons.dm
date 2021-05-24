@@ -36,7 +36,7 @@
 			break
 		playsound(chassis, fire_sound, fire_volume, 1)
 		projectiles--
-		var/P = new projectile(curloc)
+		var/P = new projectile(chassis.loc)
 		Fire(P, target)
 		if(fire_cooldown)
 			sleep(fire_cooldown)
