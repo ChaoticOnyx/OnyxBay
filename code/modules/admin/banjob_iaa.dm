@@ -175,7 +175,9 @@ GLOBAL_LIST_EMPTY(IAA_approved_list)
 	return 1
 
 /proc/IAAJ_populate()
-	ASSERT(establish_db_connection())
+	if(!establish_db_connection())
+		warning("Failed to connect to DB, IAAJ module is not populated and will not work.")
+		return
 	var/DBQuery/query
 	query = sql_query({"
 		SELECT
