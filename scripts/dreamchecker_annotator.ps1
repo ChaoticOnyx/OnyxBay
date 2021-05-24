@@ -45,19 +45,22 @@ foreach ($match in $RegexMatches.Matches)
 {
     $Column = ($match.Groups | Where-Object -Property 'name' -eq 'column' | Select-Object -ExpandProperty 'Value') -as [int]
     $Line = ($match.Groups | Where-Object -Property 'name' -eq 'line' | Select-Object -ExpandProperty 'Value') -as [int]
+    $Level = $match.Groups | Where-Object -Property 'name' -eq 'type' | Select-Object -ExpandProperty 'Value'
+
+    if ($Level -eq 'error')
+    {
+        $Level = 'failure'
+    }
 
     $ResultJson += @{
-        pessage = $match.Groups | Where-Object -Property 'name' -eq 'message' | Select-Object -ExpandProperty 'Value'
+        message = $match.Groups | Where-Object -Property 'name' -eq 'message' | Select-Object -ExpandProperty 'Value'
         path = $match.Groups | Where-Object -Property 'name' -eq 'filename' | Select-Object -ExpandProperty 'Value'
-        column = @{
-            start = $Column
-            end = $Column
-        }
-        line = @{
-            start = $Line
-            end = $Line
-        }
-        level = ($match.Groups | Where-Object -Property 'name' -eq 'type' | Select-Object -ExpandProperty 'Value')
+        start_line = $Line
+        end_line = $Line
+        start_column = $Column
+        end_column = $Column
+        annotation_level = $Level
+        title = 'DreamChecker'
     }
 }
 

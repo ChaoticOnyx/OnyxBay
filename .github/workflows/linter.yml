@@ -1,0 +1,27 @@
+name: Linter
+
+on:
+  pull_request
+
+jobs:
+  DreamChecker:
+    runs-on: ubuntu-latest
+    if: github.base_ref == 'dev' && github.event.pull_request.draft == false
+    steps:
+      - name: Checkout
+        uses: actions/checkout@5a4ac9002d0be2fb38bd78e4b4dbde5606d7042f
+        with:
+          persist-credentials: true
+          fetch-depth: 25
+      - name: Download dreamchecker
+        shell: pwsh
+        run: ./scripts/dreamchecker_downloader.ps1
+      - name: Create annotations
+        shell: pwsh
+        run: ./scripts/dreamchecker_annotator.ps1
+      - name: Annotate
+        uses: igorsaux/annotations-action-1@a651a74507fca3f3fd2b0c3fa2e00e549b5ffcce
+        with:
+          repo-token: ${{ secrets.GITHUB_TOKEN }}
+          input: './annotations.json'
+          title: 'DreamChecker Linter'
