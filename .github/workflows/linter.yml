@@ -37,3 +37,4 @@ jobs:
           repo-token: ${{ secrets.GITHUB_TOKEN }}
           input: './annotations.json'
           title: 'DreamChecker'
+          ignore-unauthorized-error: true
