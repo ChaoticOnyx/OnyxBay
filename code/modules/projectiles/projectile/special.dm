@@ -188,6 +188,12 @@
 	damage = 40
 	armor_penetration = 15
 
+/obj/item/projectile/energy/laser/lesser
+	icon_state = "laser"
+	damage = 50
+	agony = 5
+	armor_penetration = 20
+
 /obj/item/projectile/energy/laser/mid
 	icon_state = "laser"
 	damage = 60
