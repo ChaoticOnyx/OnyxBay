@@ -31,10 +31,3 @@ jobs:
           PR: ${{ github.event.number }}
         run: |
           ./scripts/dreamchecker_annotator.ps1
-      - name: Annotate
-        uses: igorsaux/annotations-action-1@a651a74507fca3f3fd2b0c3fa2e00e549b5ffcce
-        with:
-          repo-token: ${{ secrets.GITHUB_TOKEN }}
-          input: './annotations.json'
-          title: 'DreamChecker'
-          ignore-unauthorized-error: true

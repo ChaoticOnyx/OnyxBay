@@ -73,23 +73,8 @@ foreach ($match in $RegexMatches.Matches)
     $Column = ($match.Groups | Where-Object -Property 'name' -eq 'column' | Select-Object -ExpandProperty 'Value') -as [int]
     $Line = ($match.Groups | Where-Object -Property 'name' -eq 'line' | Select-Object -ExpandProperty 'Value') -as [int]
     $Level = $match.Groups | Where-Object -Property 'name' -eq 'type' | Select-Object -ExpandProperty 'Value'
+    $Message = $match.Groups | Where-Object -Property 'name' -eq 'message' | Select-Object -ExpandProperty 'Value'
 
-    if ($Level -eq 'error')
-    {
-        $Level = 'failure'
-    }
-
-    $ResultJson += @{
-        message = $match.Groups | Where-Object -Property 'name' -eq 'message' | Select-Object -ExpandProperty 'Value'
-        path = $Path
-        start_line = $Line
-        end_line = $Line
-        start_column = $Column
-        end_column = $Column
-        annotation_level = $Level
-        title = $Level
-    }
+    # https://docs.github.com/en/actions/reference/workflow-commands-for-github-actions#setting-an-error-message
+    Write-Host "::$Level file=$Path,line=$Line,col=$Column::$Message"
 }
-
-Write-Host "Сохранение в $TargetOut"
-ConvertTo-Json -InputObject $ResultJson | Out-File -FilePath $TargetOut
