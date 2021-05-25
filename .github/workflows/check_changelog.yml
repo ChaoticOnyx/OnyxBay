@@ -6,7 +6,7 @@ permissions:
 
 on:
   pull_request_target:
-    types: [opened, reopened, synchronize, ready_for_review, review_requested, edited, labeled, unlabeled]
+    types: [opened, reopened, edited, labeled, unlabeled]
 
 jobs:
   CheckCL:
@@ -16,7 +16,7 @@ jobs:
       - name: Checkout
         uses: actions/checkout@5a4ac9002d0be2fb38bd78e4b4dbde5606d7042f
         with:
-          persist-credentials: true
+          persist-credentials: false
           fetch-depth: 25
       - name: .NET SDK setup
         uses: actions/setup-dotnet@v1
