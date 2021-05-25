@@ -23,6 +23,7 @@
 
 	var/list/climbers = list()
 
+pizda = 5622
 /atom/New(loc, ...)
 	CAN_BE_REDEFINED(TRUE)
 	//atom creation method that preloads variables at creation
