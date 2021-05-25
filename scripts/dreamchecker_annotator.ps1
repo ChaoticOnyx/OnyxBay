@@ -57,6 +57,7 @@ Write-Host 'Парсинг вывода.'
 # Вырезаем управляющие символы
 $ErrorOutput = $ErrorOutput -replace '\e\[(\d+;)*(\d+)?[ABCDHJKfmsu]', ''
 $RegexMatches = $ErrorOutput | Select-String -Pattern '(?<filename>.*?), line (?<line>\d+), column (?<column>\d+):\s{1,2}(?<type>error|warning): (?<message>.*)' -AllMatches
+$HasErrors = $false
 
 foreach ($match in $RegexMatches.Matches)
 {
@@ -72,6 +73,16 @@ foreach ($match in $RegexMatches.Matches)
     $Level = $match.Groups | Where-Object -Property 'name' -eq 'type' | Select-Object -ExpandProperty 'Value'
     $Message = $match.Groups | Where-Object -Property 'name' -eq 'message' | Select-Object -ExpandProperty 'Value'
 
+    if ($Level -eq 'error')
+    {
+        $HasErrors = $true
+    }
+
     # https://docs.github.com/en/actions/reference/workflow-commands-for-github-actions#setting-an-error-message
     Write-Host "::$Level file=$Path,line=$Line,col=$Column::$Message"
+}
+
+if ($HasErrors -eq $true)
+{
+    exit 1
 }
