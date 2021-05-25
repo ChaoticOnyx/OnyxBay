@@ -11,5 +11,6 @@
 	src.anchored = 1
 
 /mob/living/silicon/decoy/Initialize()
+	SHOULD_CALL_PARENT(FALSE)
 	atom_flags |= ATOM_FLAG_INITIALIZED
 	return INITIALIZE_HINT_NORMAL

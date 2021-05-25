@@ -211,7 +211,7 @@
 	pass_flags = PASS_FLAG_TABLE
 	var/mob/living/simple_animal/hostile/facehugger/holder = null
 
-/obj/item/projectile/facehugger_proj/Bump(atom/A as mob|obj|turf|area)
+/obj/item/projectile/facehugger_proj/Bump(atom/A, forced = FALSE)
 	if(A == firer)
 		loc = A.loc
 		return

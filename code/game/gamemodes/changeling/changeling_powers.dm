@@ -1074,6 +1074,8 @@ var/list/datum/absorbed_dna/hivemind_bank = list()
 
 	var/datum/reagent/target_chem = input(src, "Choose reagent:") as null|anything in chemistry
 	var/amount = input(src, "How much reagent do we want to synthesize?", "Amount", 1) as num|null
+	if(amount <= 0)
+		return
 	if(changeling.chem_charges <= amount)
 		to_chat(src, "<span class='notice'>Not enough chemicals.</span>")
 		return
@@ -1104,8 +1106,7 @@ var/list/datum/absorbed_dna/hivemind_bank = list()
 
 	var/mob/living/carbon/human/C = src
 
-	for(var/datum/reagent/r in changeling.pick_chemistry)
-		changeling.pick_chemistry -= r
+	changeling.pick_chemistry.clear_reagents()
 	C.adjustToxLoss(10)
 	src.verbs -= /mob/proc/prepare_changeling_chemical_sting
 	src.verbs -= /mob/proc/empty_cauldron
