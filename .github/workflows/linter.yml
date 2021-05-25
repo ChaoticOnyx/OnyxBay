@@ -1,8 +1,4 @@
-name: Linter
-
-permissions:
-  pull-requests: read
-  checks: write
+name: Linters
 
 on:
   pull_request
