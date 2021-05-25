@@ -196,7 +196,7 @@
 
 /obj/item/projectile/energy/laser/heavy
 	name = "heavy laser bolt"
-	icon_state = "laser_heavy"
+	icon_state = "laser_huge"
 	damage = 80
 	agony = 20
 	armor_penetration = 45
