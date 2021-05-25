@@ -45,28 +45,122 @@
 	if(!machine_recipes)
 		machine_recipes = autolathe_recipes
 
-/obj/machinery/autolathe/interact(mob/user as mob)
+/obj/machinery/autolathe/ui_interact(mob/user, ui_key = "main", datum/nanoui/ui = null, force_open = 1, master_ui = null, datum/topic_state/state = GLOB.default_state)
+	if(disabled)
+		return
 
 	update_recipe_list()
 
-	if(..() || (disabled && !panel_open))
-		to_chat(user, "<span class='danger'>\The [src] is disabled!</span>")
-		return
+	/*
+		Data schema:
+		{
+			"storage": [
+				{
+					"name": string,
+					"count": int,
+					"capacity": int
+				},
+				...
+			],
+			"category":
+			{
+				"selected": string,
+				"total": [string]
+			},
+			"recipes":
+			[
+				{
+					"name": string,
+					"index": int,
+					"category": string,
+					"can_make": boolean,
+					"hidden": boolean,
+					"required": [
+						{
+							"name": string,
+							"count": int
+						},
+						...
+					],
+					"multipliers": [string]
+				}
+			]
+		}
+	*/
+	var/list/data = list(
+		"storage" = list(),
+		"category" = list(
+			"selected" = show_category,
+			"total" = autolathe_categories + "All"
+		),
+		"recipes" = list()
+	)
 
-	if(shocked)
-		shock(user, 50)
+	for(var/material in stored_material)
+		data["storage"] += list(list(
+			"name" = material,
+			"count" = stored_material[material],
+			"capacity" = storage_capacity[material]
+			))
 
-	var/dat = "<meta charset=\"utf-8\"><center><h1>Autolathe Control Panel</h1><hr/>"
+	var/index = 0
+	for(var/datum/autolathe/recipe/R in machine_recipes)
+		index++
 
+		if(R.hidden && !hacked || (show_category != "All" && show_category != R.category))
+			continue
+
+		var/list/recipe_data = list(
+			"name" = R.name,
+			"index" = index,
+			"can_make" = TRUE,
+			"category" = R.category,
+			"hidden" = R.hidden == null ? FALSE : TRUE,
+			"required" = list(),
+			"multipliers" = list()
+		)
+
+		var/max_sheets = 0
+
+		if(!R.resources || !R.resources.len)
+			continue
+
+		for(var/material in R.resources)
+			var/sheets = round(stored_material[material] / round(R.resources[material] * mat_efficiency))
+
+			if(isnull(max_sheets) || max_sheets > sheets)
+				max_sheets = sheets
+			if(!isnull(stored_material[material]) && stored_material[material] < round(R.resources[material] * mat_efficiency))
+				recipe_data["can_make"] = FALSE
+
+			recipe_data["required"] += list(list(
+				"name" = material,
+				"count" = round(R.resources[material] * mat_efficiency)
+			))
+
+			// Build list of multipliers for sheets.
+			if(R.is_stack)
+				var/obj/item/stack/R_stack = R.path
+				max_sheets = min(max_sheets, initial(R_stack.max_amount))
+				// do not allow lathe to print more sheets than the max amount that can fit in one stack
+				if(max_sheets && max_sheets > 0)
+					for(var/i = 5; i < max_sheets; i *= 2) //5,10,20,40...
+						recipe_data["multipliers"] += i
+
+					recipe_data["multipliers"] += max_sheets
+
+		data["recipes"] += list(recipe_data)
+
+	ui = SSnano.try_update_ui(user, src, ui_key, ui, data, force_open)
+	if(!ui)
+		ui = new(user, src, ui_key, "autolathe.tmpl", "Autolathe Control Panel", 560, 700, master_ui = master_ui, state = state)
+		ui.set_layout_key("basic")
+		ui.set_initial_data(data)
+		ui.open()
+
+/obj/machinery/autolathe/interact(mob/user as mob)
+	/*
 	if(!disabled)
-		dat += "<table width = '100%'>"
-		var/material_top = "<tr>"
-		var/material_bottom = "<tr>"
-
-		for(var/material in stored_material)
-			material_top += "<td width = '25%' align = center><b>[material]</b></td>"
-			material_bottom += "<td width = '25%' align = center>[stored_material[material]]<b>/[storage_capacity[material]]</b></td>"
-
 		dat += "[material_top]</tr>[material_bottom]</tr></table><hr>"
 		dat += "<h2>Printable Designs</h2><h3>Showing: <a href='?src=\ref[src];change_category=1'>[show_category]</a>.</h3></center><table width = '100%'>"
 
@@ -119,11 +213,11 @@
 
 	show_browser(user, dat, "window=autolathe")
 	onclose(user, "autolathe")
+	*/
 
 /obj/machinery/autolathe/attackby(obj/item/O as obj, mob/user as mob)
-
 	if(busy)
-		to_chat(user, "<span class='notice'>\The [src] is busy. Please wait for completion of previous operation.</span>")
+		to_chat(user, SPAN("notice", "\The [src] is busy. Please wait for completion of previous operation."))
 		return
 
 	if(default_deconstruction_screwdriver(user, O))
@@ -192,7 +286,7 @@
 		mass_per_sheet += eating.matter[material]
 
 	if(!filltype)
-		to_chat(user, "<span class='notice'>\The [src] is full. Please remove material from the autolathe in order to insert more.</span>")
+		to_chat(user, SPAN("notice", "\The [src] is full. Please remove material from the autolathe in order to insert more."))
 		return
 	else if(filltype == 1)
 		to_chat(user, "You fill \the [src] to capacity with \the [eating].")
@@ -210,21 +304,26 @@
 	updateUsrDialog()
 	return
 
-/obj/machinery/autolathe/attack_hand(mob/user as mob)
-	user.set_machine(src)
-	interact(user)
+/obj/machinery/autolathe/attack_hand(mob/user)
+	if(disabled && !panel_open)
+		to_chat(user, SPAN("danger", "\The [src] is disabled!"))
+		return
 
-/obj/machinery/autolathe/CanUseTopic(user, href_list)
-	if(busy)
-		to_chat(user, "<span class='notice'>The autolathe is busy. Please wait for completion of previous operation.</span>")
-		return min(STATUS_UPDATE, ..())
-	return ..()
+	if(shocked)
+		shock(user, 50)
+
+	ui_interact(user)
 
 /obj/machinery/autolathe/OnTopic(user, href_list, state)
 	set waitfor = 0
+
+	if(busy)
+		to_chat(user, SPAN("notice", "The autolathe is busy. Please wait for completion of previous operation."))
+		return TOPIC_REFRESH
+
 	if(href_list["change_category"])
-		var/choice = input("Which category do you wish to display?") as null|anything in autolathe_categories+"All"
-		if(!choice || !CanUseTopic(user, state))
+		var/choice = href_list["change_category"]
+		if(!choice || !(choice in autolathe_categories + "All") || !CanUseTopic(user, state))
 			return TOPIC_HANDLED
 		show_category = choice
 		. = TOPIC_REFRESH

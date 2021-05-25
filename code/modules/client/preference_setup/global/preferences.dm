@@ -23,6 +23,8 @@ GLOBAL_VAR_CONST(PREF_CTRL_SHIFT_CLICK, "ctrl shift click")
 GLOBAL_VAR_CONST(PREF_HEAR, "Hear")
 GLOBAL_VAR_CONST(PREF_SILENT, "Silent")
 GLOBAL_VAR_CONST(PREF_SHORTHAND, "Shorthand")
+GLOBAL_VAR_CONST(PREF_WHITE, "White")
+GLOBAL_VAR_CONST(PREF_DARK, "Dark")
 
 /proc/get_client_preferences()
 	var/static/list/client_preferences
@@ -225,6 +227,11 @@ GLOBAL_VAR_CONST(PREF_SHORTHAND, "Shorthand")
 	description = "Fake NanoUI Browser Style"
 	key = "BROWSER_STYLED"
 	options = list(GLOB.PREF_FANCY, GLOB.PREF_PLAIN)
+
+/datum/client_preference/nanoui_theme
+	description = "NanoUI Theme"
+	key = "NANOUI_THEME"
+	options = list(GLOB.PREF_DARK, GLOB.PREF_WHITE)
 
 /datum/client_preference/ambient_occlusion
 	description = "Toggle Ambient Occlusion"

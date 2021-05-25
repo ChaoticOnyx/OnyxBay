@@ -53,7 +53,7 @@ var NanoTemplate = function () {
                     }
                     catch(error)
                     {
-                        alert('ERROR: An error occurred while loading the UI: ' + error.message);
+                        alert(' ERROR: An error occurred while loading the UI: ' + error.message);
                         return;
                     }
 

@@ -1,0 +1,93 @@
+html, body {
+    font-family: Helvetica, Arial, sans-serif;
+    margin: 0;
+    padding-left: 0.3rem;
+    padding-right: 0.3rem;
+    font-size: 1rem;
+}
+
+a {
+    cursor: pointer !important;
+}
+
+h1 {
+    font-size: 1.5rem;
+}
+
+h2 {
+    font-size: 1.2rem;
+}
+
+h1, h2 {
+    text-align: center;
+    margin: 0;
+    padding-top: 0.3rem;
+    padding-bottom: 0.3rem;
+}
+
+.section {
+    display: flex;
+    flex-direction: column;
+    margin-top: 0.3rem;
+    margin-bottom: 0.3rem;
+    border-radius: 0.3rem;
+    font-size: 0.8rem;
+}
+
+.section-content {
+    padding-top: 0.3rem;
+    padding-bottom: 0.3rem;
+}
+
+.section-row {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-around;
+    align-items: center;
+}
+
+.section-column {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
+    align-items: center;
+}
+
+.recipes {
+    width: 100%;
+}
+
+.recipes td {
+    text-align: center;
+}
+
+.filters {
+    padding-right: 0.3rem;
+    padding-left: 0.3rem;
+    flex-wrap: wrap;
+    justify-content: flex-start;
+    font-weight: bold;
+}
+
+.filters > a {
+    padding: 0.15rem 0.5rem;
+    border-radius: 1rem;
+    text-decoration: none;
+    margin-top: 0.15rem;
+    margin-right: 0.05rem;
+    margin-left: 0.15rem;
+}
+
+.recipes * a {
+    text-decoration: none;
+    font-weight: bold;
+}
+
+table {
+    border-spacing: 0;
+}
+
+tr td {
+    padding-top: 0.2rem;
+    padding-bottom: 0.2rem;
+}

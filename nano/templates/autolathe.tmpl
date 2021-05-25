@@ -1,0 +1,69 @@
+
+{{:helper.addCss('autolathe.css')}}
+{{:helper.theme('autolathe', config.theme)}}
+<h1>Autolathe Control Panel</h1>
+
+<div>
+    <div class="section">
+        <div class="section-title">
+            <h2>Materials</h2>
+        </div>
+
+        <div class="section-content section-row">
+            {{for data.storage}}
+                <div class="material">
+                    <span class="material-name">{{:value.name}}</span>
+                    <span class="material-count">{{:value.count}}/{{:value.capacity}}</span>
+                </div>
+            {{/for}}
+        </div>
+    </div>
+
+    <div class="section">
+        <div class="section-title">
+            <h2>Printable Designs</h2>
+        </div>
+        <div class="section-content">
+            <div class="section-row filters">
+                Filters:
+                {{for data.category.total}}
+                    {{if data.category.selected == value}}
+                        <a class="selected">{{:helper.link(value, undefined, { 'change_category': value })}}</a>
+                    {{else}}
+                        <a>{{:helper.link(value, undefined, { 'change_category': value })}}</a>
+                    {{/if}}
+                {{/for}}
+            </div>
+        </div>
+        <div class="section-content section-column">
+            <table class="recipes">
+                <colgroup>
+                    <col span="1" style="width: 50%;">
+                    <col span="1" style="width: 50%;">
+                 </colgroup>
+                <thead>
+                    <tr>
+                        <th>Name</th>
+                        <th>Required</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {{for data.recipes}}
+                    <tr class="candystripe">
+                        {{if value.can_make}}
+                            <td><a>{{:helper.link(value.name, undefined, { 'make': value.index, 'multiplier': 1 })}}</a></td>
+                        {{else}}
+                            <td>{{:value.name}}</td>
+                        {{/if}}
+                        <td>
+                            {{:value.required.map(function (el, i) {
+                                return el.name + ' ' + el.count;
+                            }).join(', ')}}
+                        </td>
+                    </tr>
+                    {{/for}}
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>

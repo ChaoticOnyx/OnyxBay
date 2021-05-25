@@ -198,6 +198,18 @@ NanoBaseHelpers = function ()
                 html += '</div>';
 
 				return html;
+			},
+			addCss: function(fileName) {
+				$('head').append('<link rel="stylesheet" href="' + fileName + '" type="text/css" />');
+
+				return '';
+			},
+			theme: function(templateName, themeName) {
+				if (!templateName || !themeName) {
+					return '';
+				}
+
+				return this.addCss(templateName + '.' + themeName + '.theme' + '.css');
 			}
 		};
 		

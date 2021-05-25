@@ -51,6 +51,8 @@ nanoui is used to open and update nano browser uis
 	var/is_auto_updating = 0
 	// the current status/visibility of the ui
 	var/status = STATUS_INTERACTIVE
+	// nanoui's theme (from client's preference)
+	var/theme = ""
 
 	// Relationship between a master interface and its children. Used in update_status
 	var/datum/nanoui/master_ui
@@ -76,6 +78,15 @@ nanoui is used to open and update nano browser uis
 	src_object = nsrc_object
 	ui_key = nui_key
 	window_id = "[ui_key]\ref[src_object]"
+	
+	var/prefered_theme = user.get_preference_value(/datum/client_preference/nanoui_theme)
+	switch(prefered_theme)
+		if(GLOB.PREF_WHITE)
+			theme = "white"
+		if(GLOB.PREF_DARK)
+			theme = "dark"
+		else
+			CRASH("Invalid NanoUI theme: [prefered_theme]")
 
 	src.master_ui = master_ui
 	if(master_ui)
@@ -209,7 +220,8 @@ nanoui is used to open and update nano browser uis
 			"mapName" = GLOB.using_map.path,
 			"mapZLevel" = map_z_level,
 			"mapZLevels" = GLOB.using_map.map_levels,
-			"user" = list("name" = user? user.name : "Unknown")
+			"user" = list("name" = user? user.name : "Unknown"),
+			"theme" = theme
 		)
 	return config_data
 
@@ -380,10 +392,11 @@ nanoui is used to open and update nano browser uis
 
 	return {"
 <!DOCTYPE html>
-<html>
-	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<html lang="ru">
 	<head>
 		<meta http-equiv="X-UA-Compatible" content="IE=edge">
+		<meta name="viewport" content="width=device-width, initial-scale=1">
+		<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 		<script type='text/javascript'>
 			function receiveUpdateData(jsonString)
 			{
