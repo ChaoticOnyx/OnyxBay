@@ -9,7 +9,7 @@
 #define ITEM_SIZE_GARGANTUAN     6
 #define ITEM_SIZE_NO_CONTAINER INFINITY // Use this to forbid item from being placed in a container.
 
-#define base_storage_cost(w_class) (w_class == 1) ? 1 : (3**(w_class-1) / 3 * 2) // 1, 2, 6, 18, ...
+#define base_storage_cost(w_class) ((w_class == 1) ? 1 : (3**(w_class-1) / 3 * 2)) // 1, 2, 6, 18, ...
 
 //linear increase. Using many small storage containers is more space-efficient than using large ones,
 //in exchange for being limited in the w_class of items that will fit
