@@ -23,7 +23,6 @@ if ($IsWindows)
 }
 
 $Bin = Join-Path -Path $env:GITHUB_WORKSPACE $Bin
-$TargetOut = Join-Path -Path $env:GITHUB_WORKSPACE 'annotations.json'
 
 if (-not(Test-Path $Bin))
 {
@@ -58,8 +57,6 @@ Write-Host 'Парсинг вывода.'
 # Вырезаем управляющие символы
 $ErrorOutput = $ErrorOutput -replace '\e\[(\d+;)*(\d+)?[ABCDHJKfmsu]', ''
 $RegexMatches = $ErrorOutput | Select-String -Pattern '(?<filename>.*?), line (?<line>\d+), column (?<column>\d+):\s{1,2}(?<type>error|warning): (?<message>.*)' -AllMatches
-
-$ResultJson = @()
 
 foreach ($match in $RegexMatches.Matches)
 {
