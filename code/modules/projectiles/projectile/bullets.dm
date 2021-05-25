@@ -203,6 +203,15 @@
 	spread_step = 10
 	penetration_modifier = 1.2 // A bit more internal damage since we don't have armor penetration anyway
 
+/obj/item/projectile/bullet/pellet/scattershot // Used by *heavy* shotguns, i.e. LBX AC 10 "Scattershot"
+	name = "shrapnel"
+	damage = 35
+	armor_penetration = 20
+	pellets = 5
+	range_step = 2
+	spread_step = 15
+	penetration_modifier = 1.2
+
 /* "Rifle" rounds */
 
 /obj/item/projectile/bullet/rifle
