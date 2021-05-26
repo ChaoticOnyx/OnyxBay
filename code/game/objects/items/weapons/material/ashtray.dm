@@ -10,6 +10,7 @@
 	mod_reach = 0.3
 	mod_handy = 0.5
 	w_class = ITEM_SIZE_SMALL
+	hitsound = "swing_hit"
 	var/max_butts = 10
 
 /obj/item/weapon/material/ashtray/examine(mob/user)
@@ -24,11 +25,11 @@
 /obj/item/weapon/material/ashtray/update_icon()
 	overlays.Cut()
 	if (contents.len == max_butts)
-		overlays |= image('icons/obj/objects.dmi',"ashtray_full")
+		overlays |= image('icons/obj/objects.dmi', "ashtray_full")
 	else if (contents.len >= max_butts/2)
-		overlays |= image('icons/obj/objects.dmi',"ashtray_half")
+		overlays |= image('icons/obj/objects.dmi', "ashtray_half")
 
-/obj/item/weapon/material/ashtray/attackby(obj/item/weapon/W as obj, mob/user as mob)
+/obj/item/weapon/material/ashtray/attackby(obj/item/weapon/W, mob/user)
 	if(health <= 0)
 		return
 	if(istype(W,/obj/item/weapon/cigbutt) || istype(W,/obj/item/clothing/mask/smokable/cigarette) || istype(W, /obj/item/weapon/flame/match))
