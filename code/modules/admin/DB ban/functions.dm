@@ -66,7 +66,7 @@
 		sql_query({"
 			INSERT INTO
 				erro_ban
-			VALUES 
+			VALUES
 				(null,
 				Now(),
 				$serverip,
@@ -85,13 +85,13 @@
 				$who,
 				$adminwho,
 				'', null, null, null, null, null, null, null)
-			"}, dbcon, list(serverip = serverip, bantype_str = bantype_str, reason = reason, job = job, 
-				duration = duration ? duration : 0, 
-				rounds = rounds ? "[rounds]" : "0", ckey = ckey, 
-				computerid = computerid ? computerid : "", 
-				ip = ip ? ip : "", a_ckey = a_ckey, 
-				a_computerid = a_computerid ? a_computerid : "", 
-				a_ip = a_ip ? a_ip : "", 
+			"}, dbcon, list(serverip = serverip, bantype_str = bantype_str, reason = reason, job = job,
+				duration = duration ? duration : 0,
+				rounds = rounds ? "[rounds]" : "0", ckey = ckey,
+				computerid = computerid ? computerid : "",
+				ip = ip ? ip : "", a_ckey = a_ckey,
+				a_computerid = a_computerid ? a_computerid : "",
+				a_ip = a_ip ? a_ip : "",
 				who = who, adminwho = adminwho))
 	else
 		if(ban_everywhere)
@@ -155,7 +155,7 @@
 					$who,
 					$adminwho,
 					'', null, null, null, null, null, null, 'main'),
-					
+
 					(null,
 					Now(),
 					$serverip,
@@ -204,12 +204,12 @@
 					$who,
 					$adminwho,
 					'', null, null, null, null, null, null, $server_id)
-				"}, dbcon, list(serverip = serverip, bantype_str = bantype_str, reason = reason, job = job, 
-				duration = duration ? duration : 0, 
-				rounds = rounds ? "[rounds]" : "0", ckey = ckey, 
-				computerid = computerid ? computerid : "", 
-				ip = ip ? ip : "", a_ckey = a_ckey, 
-				a_computer_id = a_computerid ? a_computerid : "", 
+				"}, dbcon, list(serverip = serverip, bantype_str = bantype_str, reason = reason, job = job,
+				duration = duration ? duration : 0,
+				rounds = rounds ? "[rounds]" : "0", ckey = ckey,
+				computerid = computerid ? computerid : "",
+				ip = ip ? ip : "", a_ckey = a_ckey,
+				a_computer_id = a_computerid ? a_computerid : "",
 				a_ip = a_ip ? a_ip : "", who = who, adminwho = adminwho, server_id = config.server_id))
 
 	var/setter = a_ckey
@@ -517,25 +517,6 @@
 			var/cidsearch = ""
 			var/bantypesearch = ""
 
-			if(!match)
-				if(adminckey)
-					adminsearch = "AND a_ckey = $adminckey "
-				if(playerckey)
-					playersearch = "AND ckey = $playerckey "
-				if(playerip)
-					ipsearch  = "AND ip = $playerip "
-				if(playercid)
-					cidsearch  = "AND computerid = $playercid "
-			else
-				if(adminckey && length(adminckey) >= 3)
-					adminsearch = "AND a_ckey LIKE $adminckey% "
-				if(playerckey && length(playerckey) >= 3)
-					playersearch = "AND ckey LIKE $playerckey% "
-				if(playerip && length(playerip) >= 3)
-					ipsearch  = "AND ip LIKE $playerip% "
-				if(playercid && length(playercid) >= 7)
-					cidsearch  = "AND computerid LIKE $playercid% "
-
 			if(dbbantype)
 				bantypesearch = "AND bantype = "
 
@@ -550,71 +531,62 @@
 						bantypesearch += "'PERMABAN' "
 
 			var/DBQuery/select_query
-			if(isnull(config.server_id))
-				select_query = sql_query({"
-					SELECT
-						id,
-						bantime,
-						bantype,
-						reason,
-						job,
-						duration,
-						expiration_time,
-						ckey,
-						a_ckey,
-						unbanned,
-						unbanned_ckey,
-						unbanned_datetime,
-						edits,
-						ip,
-						computerid
-					FROM
-						erro_ban
-					WHERE
-						1
-						[playersearch]
-						[adminsearch]
-						[ipsearch]
-						[cidsearch]
-						[bantypesearch]
-					ORDER BY 
-						bantime 
-					DESC LIMIT 
-						100
-					"}, dbcon, list(playerckey = playerckey, adminckey = adminckey, playerip = playerip, playercid = playercid))
+			var/list/query_arg_list
+
+			if(!match)
+				if(adminckey)
+					adminsearch = "AND a_ckey = $adminckey "
+				if(playerckey)
+					playersearch = "AND ckey = $playerckey "
+				if(playerip)
+					ipsearch  = "AND ip = $playerip "
+				if(playercid)
+					cidsearch  = "AND computerid = $playercid "
+				query_arg_list = list(playerckey = playerckey, adminckey = adminckey, playerip = playerip, playercid = playercid)
+
 			else
-				select_query = sql_query({"
-					SELECT
-						id,
-						bantime,
-						bantype,
-						reason,
-						job,
-						duration,
-						expiration_time,
-						ckey,
-						a_ckey,
-						unbanned,
-						unbanned_ckey,
-						unbanned_datetime,
-						edits,
-						ip,
-						computerid,
-						server_id
-					FROM
-						erro_ban
-					WHERE
-						1
-						[playersearch]
-						[adminsearch]
-						[ipsearch]
-						[cidsearch]
-						[bantypesearch]
-					ORDER BY
-						bantime
-					DESC LIMIT
-						100
-					"}, dbcon, list(playerckey = playerckey, adminckey = adminckey, playerip = playerip, playercid = playercid))
+				if(adminckey && length(adminckey) >= 3)
+					adminsearch = "AND a_ckey LIKE $adminckey "
+				if(playerckey && length(playerckey) >= 3)
+					playersearch = "AND ckey LIKE $playerckey "
+				if(playerip && length(playerip) >= 3)
+					ipsearch  = "AND ip LIKE $playerip "
+				if(playercid && length(playercid) >= 7)
+					cidsearch  = "AND computerid LIKE $playercid "
+				query_arg_list = list(playerckey = "%" + playerckey + "%", adminckey = "%" + adminckey + "%", playerip = "%" + playerip + "%", playercid = "%" + playercid + "%")
+
+			select_query = sql_query({"
+				SELECT
+					id,
+					bantime,
+					bantype,
+					reason,
+					job,
+					duration,
+					expiration_time,
+					ckey,
+					a_ckey,
+					unbanned,
+					unbanned_ckey,
+					unbanned_datetime,
+					edits,
+					ip,
+					computerid,
+					server_id
+				FROM
+					erro_ban
+				WHERE
+					1
+					[playersearch]
+					[adminsearch]
+					[ipsearch]
+					[cidsearch]
+					[bantypesearch]
+				ORDER BY
+					bantime
+				DESC LIMIT
+					100
+				"}, dbcon, query_arg_list)
 
 			var/now = time2text(world.realtime, "YYYY-MM-DD hh:mm:ss") // MUST BE the same format as SQL gives us the dates in, and MUST be least to most specific (i.e. year, month, day not day, month, year)
 
