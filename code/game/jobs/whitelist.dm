@@ -21,11 +21,11 @@ var/list/whitelist = list()
 /hook/startup/proc/loadAlienWhitelist()
 	if(config.usealienwhitelist)
 		if(config.usealienwhitelistSQL)
-			if(!load_alienwhitelistSQL())
-				to_world_log("Could not load alienwhitelist via SQL")
+			load_alienwhitelistSQL()
 		else
 			load_alienwhitelist()
 	return 1
+
 /proc/load_alienwhitelist()
 	var/text = file2text("config/alienwhitelist.txt")
 	if (!text)
@@ -34,8 +34,13 @@ var/list/whitelist = list()
 	else
 		alien_whitelist = splittext(text, "\n")
 		return 1
+
 /proc/load_alienwhitelistSQL()
 	if(!establish_old_db_connection())
+		error("Failed to connect to database in load_alienwhitelistSQL(). Reverting to legacy system.")
+		log_misc("Failed to connect to database in load_alienwhitelistSQL(). Reverting to legacy system.")
+		config.usealienwhitelistSQL = 0
+		load_alienwhitelist()
 		return FALSE
 	var/DBQuery/query = sql_query("SELECT * FROM whitelist", dbcon_old)
 	while(query.NextRow())

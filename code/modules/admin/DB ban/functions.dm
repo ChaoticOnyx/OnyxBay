@@ -269,8 +269,8 @@
 				(unbanned is null
 				OR
 				unbanned = false)
-			[isnull(config.server_id) ? "" : " AND server_id = '$config.server_id'"]
-			[job ? " AND job = '$job'" : ""]
+			[isnull(config.server_id) ? "" : " AND server_id = $server_id"]
+			[job ? " AND job = $job" : ""]
 		"}, dbcon, list(ckey = ckey, bantype_str = bantype_str, server_id = config.server_id, job = job))
 
 	while(query.NextRow())
