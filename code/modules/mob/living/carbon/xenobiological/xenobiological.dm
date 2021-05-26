@@ -1,7 +1,7 @@
 /mob/living/carbon/metroid
 	name = "baby metroid"
 	icon = 'icons/mob/metroids.dmi'
-	icon_state = "grey baby metroid"
+	icon_state = "green baby metroid"
 	pass_flags = PASS_FLAG_TABLE
 	speak_emote = list("chirps")
 
@@ -48,7 +48,7 @@
 	var/hurt_temperature = T0C-50 // metroid keeps taking damage when its bodytemperature is below this
 	var/die_temperature = 50 // metroid dies instantly when its bodytemperature is below this
 
-	var/colour = "grey"
+	var/colour = "green"
 
 	var/core_removal_stage = 0 //For removing cores.
 
@@ -62,7 +62,7 @@
 /mob/living/carbon/metroid/setToxLoss(amount)
 	adjustToxLoss(amount-getToxLoss())
 
-/mob/living/carbon/metroid/New(location, colour="grey")
+/mob/living/carbon/metroid/New(location, colour = "green")
 
 	verbs += /mob/living/proc/ventcrawl
 

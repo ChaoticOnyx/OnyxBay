@@ -2,7 +2,7 @@
 	name = "metroid extract"
 	desc = "Goo extracted from a metroid. Legends claim these to have \"magical powers\"."
 	icon = 'icons/mob/metroids.dmi'
-	icon_state = "grey metroid extract"
+	icon_state = "green metroid extract"
 	force = 1.0
 	w_class = ITEM_SIZE_TINY
 	throwforce = 0

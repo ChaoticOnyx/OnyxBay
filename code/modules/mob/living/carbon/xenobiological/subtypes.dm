@@ -1,9 +1,9 @@
 /mob/living/carbon/metroid/proc/GetMutations()
 	switch(src.colour)
-		if("grey")
+		if("green")
 			return list("orange", "metal", "blue", "purple")
 		if("purple")
-			return list("dark purple", "dark blue", "green", "green")
+			return list("dark purple", "dark blue", "grey", "grey")
 		if("metal")
 			return list("silver", "yellow", "gold", "gold")
 		if("orange")
@@ -26,8 +26,8 @@
 			return list("red", "red", "oil", "oil")
 		if("gold")
 			return list("gold", "gold", "adamantine", "adamantine")
-		if("green")
-			return list("green", "green", "black", "black")
+		if("grey")
+			return list("grey", "grey", "black", "black")
 		// Tier 5
 		else
 			return list()
@@ -35,8 +35,8 @@
 /mob/living/carbon/metroid/proc/GetCoreType()
 	switch(src.colour)
 		// Tier 1
-		if("grey")
-			return /obj/item/metroid_extract/grey
+		if("green")
+			return /obj/item/metroid_extract/green
 		// Tier 2
 		if("purple")
 			return /obj/item/metroid_extract/purple
@@ -62,8 +62,8 @@
 			return /obj/item/metroid_extract/red
 		if("gold")
 			return /obj/item/metroid_extract/gold
-		if("green")
-			return /obj/item/metroid_extract/green
+		if("grey")
+			return /obj/item/metroid_extract/grey
 		if("sepia")
 			return /obj/item/metroid_extract/sepia
 		if("bluespace")
@@ -81,4 +81,4 @@
 			return /obj/item/metroid_extract/adamantine
 		if("black")
 			return /obj/item/metroid_extract/black
-	return /obj/item/metroid_extract/grey
+	return /obj/item/metroid_extract/green

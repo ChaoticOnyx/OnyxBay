@@ -853,13 +853,13 @@
 		T.SetName("used metroid extract")
 		T.desc = "This extract has been used up."
 
-//Grey
+//Green
 /datum/chemical_reaction/metroid/create
 	name = "Metroid Spawn"
 	result = null
 	required_reagents = list(/datum/reagent/toxin/plasma = 1)
 	result_amount = 1
-	required = /obj/item/metroid_extract/grey
+	required = /obj/item/metroid_extract/green
 
 /datum/chemical_reaction/metroid/create/on_reaction(datum/reagents/holder)
 	holder.my_atom.visible_message("<span class='warning'>Infused with plasma, the core begins to quiver and grow, and soon a new baby metroid emerges from it!</span>")
@@ -872,7 +872,7 @@
 	result = null
 	required_reagents = list(/datum/reagent/blood = 1)
 	result_amount = 1
-	required = /obj/item/metroid_extract/grey
+	required = /obj/item/metroid_extract/green
 
 /datum/chemical_reaction/metroid/monkey/on_reaction(datum/reagents/holder)
 	for(var/i = 1, i <= 3, i++)
@@ -885,15 +885,15 @@
 	result = /datum/reagent/tricordrazine
 	required_reagents = list(/datum/reagent/water = 1)
 	result_amount = 15
-	required = /obj/item/metroid_extract/grey
+	required = /obj/item/metroid_extract/green
 
-//Green
+//Gray
 /datum/chemical_reaction/metroid/mutate
 	name = "Mutation Toxin"
 	result = /datum/reagent/metroidtoxin
 	required_reagents = list(/datum/reagent/toxin/plasma = 1)
 	result_amount = 1
-	required = /obj/item/metroid_extract/green
+	required = /obj/item/metroid_extract/gray
 
 //Metal
 /datum/chemical_reaction/metroid/metal
