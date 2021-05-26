@@ -13,17 +13,13 @@ jobs:
         with:
           persist-credentials: true
           fetch-depth: 25
-      - name: Download dreamchecker
-        shell: pwsh
-        run: |
-          ./scripts/dreamchecker_downloader.ps1
-      - name: Chmod & Version
-        run: |
-          chmod +x $GITHUB_WORKSPACE/dreamchecker
-          $GITHUB_WORKSPACE/dreamchecker --version
-      - name: Create annotations
-        shell: pwsh
+      - name: Download & Lint
         env:
           PR: ${{ github.event.number }}
+        shell: pwsh
         run: |
-          ./scripts/dreamchecker_annotator.ps1
+          Import-Module ./scripts/GitHub/
+          Import-Module ./scripts/DreamChecker/
+          $env:DREAMCHECKER = (Install-DreamChecker -Path $env:GITHUB_WORKSPACE)
+          Invoke-Expression "$env:GITHUB_WORKSPACE/dreamchecker --version"
+          ./tools/CI/DreamCheckerLinter.ps1
