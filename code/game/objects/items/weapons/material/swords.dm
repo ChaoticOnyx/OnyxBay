@@ -24,6 +24,7 @@
 	force_const = 3.0
 	force_divisor = 0.35 // 7 when wielded with weight 20 (steel)
 	thrown_force_divisor = 0.2
+	hitsound = "swing_hit" // It's dull
 
 /obj/item/weapon/material/sword/katana
 	name = "katana"
@@ -43,3 +44,4 @@
 	force_const = 2.5
 	force_divisor = 0.25 // 5 when wielded with weight 20 (steel)
 	thrown_force_divisor = 0.2
+	hitsound = "swing_hit"
