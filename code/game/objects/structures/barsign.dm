@@ -20,7 +20,6 @@
 	. -= "empty"
 	if(initial)  // We don't want this to be picked by random
 		. -= "Off"
-		. -= "CybersSylph"
 
 /obj/structure/sign/double/barsign/examine(mob/user)
 	. = ..()
