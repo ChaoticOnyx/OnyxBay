@@ -28,6 +28,7 @@
 		if(istype(STD))
 			STD.uplink = U
 			STD.authentication_complete = TRUE
+			STD.visible_message("\The [STD] blinks green!")
 
 /datum/uplink_item/item/tools/money
 	name = "Operations Funding"
