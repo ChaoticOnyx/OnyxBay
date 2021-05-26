@@ -360,7 +360,7 @@
 			to_chat(user, SPAN("notice", "There is already a sample present."))
 			return
 		if(istype(target, /mob/living/carbon))
-			if(istype(target, /mob/living/carbon/slime))
+			if(istype(target, /mob/living/carbon/metroid))
 				to_chat(user, SPAN("warning", "You are unable to locate any blood."))
 				return
 			var/mob/living/carbon/T = target

@@ -887,13 +887,13 @@
 	result_amount = 15
 	required = /obj/item/metroid_extract/green
 
-//Gray
+//Grey
 /datum/chemical_reaction/metroid/mutate
 	name = "Mutation Toxin"
 	result = /datum/reagent/metroidtoxin
 	required_reagents = list(/datum/reagent/toxin/plasma = 1)
 	result_amount = 1
-	required = /obj/item/metroid_extract/gray
+	required = /obj/item/metroid_extract/grey
 
 //Metal
 /datum/chemical_reaction/metroid/metal
