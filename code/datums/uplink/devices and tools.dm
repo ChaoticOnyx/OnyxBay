@@ -27,6 +27,7 @@
 		var/obj/item/weapon/storage/briefcase/std/STD = .
 		if(istype(STD))
 			STD.uplink = U
+			STD.authentication_complete = TRUE
 
 /datum/uplink_item/item/tools/money
 	name = "Operations Funding"
