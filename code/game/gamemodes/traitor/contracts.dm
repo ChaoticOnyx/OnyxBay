@@ -306,6 +306,8 @@ GLOBAL_LIST_INIT(syndicate_factions, list(
 			return
 		for(var/datum/antag_contract/item/steal_ai/s_AI in GLOB.all_contracts)
 			valid_AIs.Remove(s_AI.AI)
+		if(!length(valid_AIs))
+			return
 		AI = pick(valid_AIs)
 	target_desc = "[target_desc] [AI.name]"
 	create_explain_text("steal <b>[target_desc]<b> and send it via STD (found in <b>Devices and Tools</b>).")
