@@ -1,5 +1,16 @@
 [
   {
+    "author": "HonkyDonky",
+    "date": "2021-05-27T00:00:00+03:00",
+    "changes": [
+      {
+        "prefix": "Tweak",
+        "message": "Добавлена задержка для повторного использования Point-To.",
+        "pr": 5277
+      }
+    ]
+  },
+  {
     "author": "Doster-d",
     "date": "2021-05-25T00:00:00+03:00",
     "changes": [
