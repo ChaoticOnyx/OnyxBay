@@ -111,7 +111,7 @@ var/list/admin_ranks = list()								//list of all ranks with associated rights
 		var/DBQuery/query = sql_query({"
 			SELECT 
 				ckey, 
-				rank, 
+				`rank`, 
 				flags 
 			FROM 
 				erro_admin
