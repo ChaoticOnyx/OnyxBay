@@ -309,7 +309,7 @@
 
 
 /obj/item/weapon/storage/briefcase/inflatable
-	name = "inflatable barriers case"
+	name = "inflatable barriers kit"
 	desc = "Contains inflatable walls and doors."
 	icon_state = "inf_box"
 	item_state = "case"
