@@ -314,11 +314,8 @@
 	icon_state = "inf_box"
 	item_state = "case"
 	w_class = ITEM_SIZE_LARGE
-	max_storage_space = 0
+	max_storage_space = null
+	storage_slots = 6
+	max_w_class = ITEM_SIZE_NORMAL
 	can_hold = list(/obj/item/inflatable)
 	startswith = list(/obj/item/inflatable/door = 2, /obj/item/inflatable/wall = 4)
-
-/obj/item/weapon/storage/briefcase/inflatable/Initialize()
-	. = ..()
-	if(!max_storage_space)
-		max_storage_space = base_storage_cost(ITEM_SIZE_NORMAL) * 6
