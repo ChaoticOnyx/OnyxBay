@@ -114,9 +114,21 @@ function Invoke-DmCodeStyleCheck
                         continue
                     }
 
+                    $FormatedMessage = $Rule.Message
+
+                    foreach ($Group in $Match.Groups)
+                    {
+                        if ([char]::IsNumber($Group.Name[0]))
+                        {
+                            continue
+                        }
+
+                        $FormatedMessage = $FormatedMessage -replace "{{$($Group.Name)}}", $Group.Value
+                    }
+
                     # Ширина табуляции на гитхабе - 8
                     $Column = ($Line[0..($Match.Index - 1)] -replace '\t', [string]::new(' ', 8)).Count
-                    $FormatedMessage = $Rule.Message -f $Match.Groups[0].Value, $ErrorString
+                    $FormatedMessage = $FormatedMessage -f $Match.Groups[0].Value
 
                     New-DiagnosticMessage -FileName $Path -Message $FormatedMessage -Level $Rule.Level -Line $LineIndex -Column $Column | Write-Output
                 }
