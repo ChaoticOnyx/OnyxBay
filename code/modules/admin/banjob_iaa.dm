@@ -10,6 +10,8 @@ GLOBAL_LIST_EMPTY(IAA_approved_list)
 #define IAA_BAN_DURATION_DAYS       7
 
 /proc/IAA_approve(key)
+	if(!establish_db_connection())
+		return
 	key = ckey(key)
 	if (GLOB.IAA_approved_list[key])
 		GLOB.IAA_approved_list[key]++
@@ -34,6 +36,8 @@ GLOBAL_LIST_EMPTY(IAA_approved_list)
 	return
 
 /proc/IAA_disprove(key)
+	if(!establish_db_connection())
+		return
 	key = ckey(key)
 	GLOB.IAA_approved_list[key] = 0
 	sql_query({"
@@ -45,6 +49,8 @@ GLOBAL_LIST_EMPTY(IAA_approved_list)
 	return
 
 /proc/IAA_disprove_by_id(id)
+	if(!establish_db_connection())
+		return
 	var/DBQuery/query = sql_query({"
 		SELECT
 			iaa_ckey,
@@ -75,6 +81,8 @@ GLOBAL_LIST_EMPTY(IAA_approved_list)
 	var/expiration_time
 
 /datum/IAA_brief_jobban_info/proc/resolve(approved = TRUE, comment = "automatic_approval", ckey = "system")
+	if(!establish_db_connection())
+		return
 	ASSERT(status == IAA_STATUS_PENDING)
 	var/action = approved ? IAA_STATUS_APPROVED : IAA_STATUS_DENIED
 	message_admins("IAA jobban <a href='?_src_=holder;iaaj_inspect=[id]'>[id] ([fakeid])</a> was [IAAJ_status_colorize(action, action)] by [ckey] ([comment])")
@@ -134,6 +142,8 @@ GLOBAL_LIST_EMPTY(IAA_approved_list)
 		qdel(src)
 
 /proc/IAAJ_cancel(id, comment, ckey)
+	if(!establish_db_connection())
+		return
 	var/DBQuery/query = sql_query({"
 		SELECT
 			status,
@@ -221,6 +231,8 @@ GLOBAL_LIST_EMPTY(IAA_approved_list)
 		GLOB.IAA_approved_list[query.item[1]] = query.item[2]
 
 /proc/IAAJ_check_fakeid_available(fakeid)
+	if(!establish_db_connection())
+		return
 	var/DBQuery/query = sql_query({"
 		SELECT
 			fakeid
@@ -238,6 +250,8 @@ GLOBAL_LIST_EMPTY(IAA_approved_list)
 	return IAAJ_generate_fake_id() //nigh impossible to get there, will be even more impossible to descend further into recursion
 
 /proc/IAAJ_insert_new(fakeid, ckey, iaa_ckey, other_ckeys, reason, job)
+	if(!establish_db_connection())
+		return
 	if (!IAAJ_check_fakeid_available(fakeid))
 		message_admins("IAAJ fakeid collision. Possible re-send and/or duplicate?")
 		return
@@ -328,6 +342,8 @@ GLOBAL_LIST_EMPTY(IAA_approved_list)
 	show_browser(usr, dat, "window=iaaj_ban;size=400x400")
 
 /datum/admins/proc/IAAJ_list_all_bans(startfrom = 0)
+	if(!establish_db_connection())
+		return
 	var/const/results_per_page = 10
 	if(!check_rights(R_BAN))
 		return
@@ -376,6 +392,8 @@ GLOBAL_LIST_EMPTY(IAA_approved_list)
 	show_browser(usr, dat, "window=iaaj_ban;size=400x400")
 
 /datum/admins/proc/IAAJ_inspect_ban(id)
+	if(!establish_db_connection())
+		return
 	if(!check_rights(R_BAN))
 		return
 	var/DBQuery/query

@@ -6,15 +6,11 @@
 	for(var/mob/M in GLOB.player_list)
 		if(M.client)
 			playercount += 1
-	establish_db_connection()
-	if(!dbcon.IsConnected())
+	if(!establish_db_connection())
 		log_game("SQL ERROR during population polling. Failed to connect.")
 	else
 		var/sqltime = time2text(world.realtime, "YYYY-MM-DD hh:mm:ss")
-		var/DBQuery/query = dbcon_old.NewQuery("INSERT INTO `tgstation`.`population` (`playercount`, `admincount`, `time`) VALUES ([playercount], [admincount], '[sqltime]')")
-		if(!query.Execute())
-			var/err = query.ErrorMsg()
-			log_game("SQL ERROR during population polling. Error : \[[err]\]\n")
+		sql_query("INSERT INTO tgstation.population (playercount, admincount, time) VALUES ($playercount, $admincount, $sqltime)", dbcon_old, list(playercount = playercount, admincount = admincount, sqltime = sqltime))
 
 /proc/sql_report_round_start()
 	// TODO
@@ -36,28 +32,51 @@
 	var/area/placeofdeath = get_area(H)
 	var/podname = placeofdeath ? placeofdeath.name : "Unknown area"
 
-	var/sqlname = sanitizeSQL(H.real_name)
-	var/sqlkey = sanitizeSQL(H.key)
-	var/sqlpod = sanitizeSQL(podname)
-	var/sqlspecial = sanitizeSQL(H.mind.special_role)
-	var/sqljob = sanitizeSQL(H.mind.assigned_role)
 	var/laname
 	var/lakey
 	if(H.last_attacker_)
-		laname = sanitizeSQL(H.last_attacker_.name)
-		lakey = sanitizeSQL(H.last_attacker_.client.key)
+		laname = H.last_attacker_.name
+		lakey = H.last_attacker_.client.key
 	var/sqltime = time2text(world.realtime, "YYYY-MM-DD hh:mm:ss")
 	var/coord = "[H.x], [H.y], [H.z]"
 //	log_debug("INSERT INTO death (name, byondkey, job, special, pod, tod, laname, lakey, gender, bruteloss, fireloss, brainloss, oxyloss) VALUES ('[sqlname]', '[sqlkey]', '[sqljob]', '[sqlspecial]', '[sqlpod]', '[sqltime]', '[laname]', '[lakey]', '[H.gender]', [H.bruteloss], [H.getFireLoss()], [H.getBrainLoss()], [H.getOxyLoss()])")
 
-	establish_db_connection()
-	if(!dbcon.IsConnected())
+	if(!establish_db_connection())
 		log_game("SQL ERROR during death reporting. Failed to connect.")
 	else
-		var/DBQuery/query = dbcon.NewQuery("INSERT INTO death (name, byondkey, job, special, pod, tod, laname, lakey, gender, bruteloss, fireloss, brainloss, oxyloss, coord) VALUES ('[sqlname]', '[sqlkey]', '[sqljob]', '[sqlspecial]', '[sqlpod]', '[sqltime]', '[laname]', '[lakey]', '[H.gender]', [H.getBruteLoss()], [H.getFireLoss()], [H.getBrainLoss()], [H.getOxyLoss()], '[coord]')")
-		if(!query.Execute())
-			var/err = query.ErrorMsg()
-			log_game("SQL ERROR during death reporting. Error : \[[err]\]\n")
+		sql_query({"
+			INSERT INTO
+				death
+					(name,
+					byondkey,
+					job,
+					special,
+					pod,
+					tod,
+					laname,
+					lakey,
+					gender,
+					bruteloss,
+					fireloss,
+					brainloss,
+					oxyloss,
+					coord)
+			VALUES
+				($name',
+				$key,
+				$job,
+				$special,
+				$pod,
+				$sqltime,
+				$laname,
+				$lakey,
+				$gender,
+				$brute,
+				$fire,
+				$brain,
+				$oxy,
+				$coord)
+			"}, dbcon, list(name = H.real_name, key = H.key, job = H.mind.assigned_role, special = H.mind.special_role, pod = podname, sqltime = sqltime, laname = laname, lakey = lakey, gender = H.gender, brute = H.getBruteLoss(), fire = H.getFireLoss(), brain = H.getBrainLoss(), oxy = H.getOxyLoss(), coord = coord))
 
 
 /proc/sql_report_cyborg_death(mob/living/silicon/robot/H)
@@ -71,29 +90,51 @@
 	var/area/placeofdeath = get_area(H)
 	var/podname = placeofdeath ? placeofdeath.name : "Unknown area"
 
-	var/sqlname = sanitizeSQL(H.real_name)
-	var/sqlkey = sanitizeSQL(H.key)
-	var/sqlpod = sanitizeSQL(podname)
-	var/sqlspecial = sanitizeSQL(H.mind.special_role)
-	var/sqljob = sanitizeSQL(H.mind.assigned_role)
 	var/laname
 	var/lakey
 	if(H.last_attacker_)
-		laname = sanitizeSQL(H.last_attacker_.name)
-		lakey = sanitizeSQL(H.last_attacker_.client.key)
+		laname = H.last_attacker_.name
+		lakey = H.last_attacker_.client.key
 	var/sqltime = time2text(world.realtime, "YYYY-MM-DD hh:mm:ss")
 	var/coord = "[H.x], [H.y], [H.z]"
 //	log_debug("INSERT INTO death (name, byondkey, job, special, pod, tod, laname, lakey, gender, bruteloss, fireloss, brainloss, oxyloss) VALUES ('[sqlname]', '[sqlkey]', '[sqljob]', '[sqlspecial]', '[sqlpod]', '[sqltime]', '[laname]', '[lakey]', '[H.gender]', [H.bruteloss], [H.getFireLoss()], [H.getBrainLoss()], [H.getOxyLoss()])")
 
-	establish_db_connection()
-	if(!dbcon.IsConnected())
+	if(!establish_db_connection())
 		log_game("SQL ERROR during death reporting. Failed to connect.")
 	else
-		var/DBQuery/query = dbcon.NewQuery("INSERT INTO death (name, byondkey, job, special, pod, tod, laname, lakey, gender, bruteloss, fireloss, brainloss, oxyloss, coord) VALUES ('[sqlname]', '[sqlkey]', '[sqljob]', '[sqlspecial]', '[sqlpod]', '[sqltime]', '[laname]', '[lakey]', '[H.gender]', [H.getBruteLoss()], [H.getFireLoss()], [H.getBrainLoss()], [H.getOxyLoss()], '[coord]')")
-		if(!query.Execute())
-			var/err = query.ErrorMsg()
-			log_game("SQL ERROR during death reporting. Error : \[[err]\]\n")
-
+		sql_query({"
+			INSERT INTO
+				death
+					(name,
+					byondkey,
+					job,
+					special,
+					pod,
+					tod,
+					laname,
+					lakey,
+					gender,
+					bruteloss,
+					fireloss,
+					brainloss,
+					oxyloss,
+					coord)
+			VALUES
+				($name,
+				$key,
+				$job,
+				$special,
+				$pod,
+				$sqltime,
+				$laname,
+				$lakey,
+				$gender,
+				$brute,
+				$fire,
+				$brain,
+				$oxy,
+				$coord)
+			"}, dbcon, list(name = H.real_name, key = H.key, job = H.mind.assigned_role, special = H.mind.special_role, pod = podname, sqltime = sqltime, laname = laname, lakey = lakey, gender = H.gender, brute = H.getBruteLoss(), fire = H.getFireLoss(), brain = H.getBrainLoss(), oxy = H.getOxyLoss(), coord = coord))
 
 /proc/statistic_cycle()
 	if(!sqllogging)
@@ -115,13 +156,11 @@
 		log_game("Round ended without any feedback being generated. No feedback was sent to the database.")
 		return
 
-	establish_db_connection()
-	if(!dbcon.IsConnected())
+	if(!establish_db_connection())
 		log_game("SQL ERROR during feedback reporting. Failed to connect.")
 	else
 
-		var/DBQuery/max_query = dbcon.NewQuery("SELECT MAX(roundid) AS max_round_id FROM erro_feedback")
-		max_query.Execute()
+		var/DBQuery/max_query = sql_query("SELECT MAX(roundid) AS max_round_id FROM erro_feedback", dbcon)
 
 		var/newroundid
 
@@ -140,7 +179,18 @@
 			var/variable = item.get_variable()
 			var/value = item.get_value()
 
-			var/DBQuery/query = dbcon.NewQuery("INSERT INTO erro_feedback (id, roundid, time, variable, value) VALUES (null, [newroundid], Now(), '[variable]', '[value]')")
-			if(!query.Execute())
-				var/err = query.ErrorMsg()
-				log_game("SQL ERROR during death reporting. Error : \[[err]\]\n")
+			sql_query({"
+				INSERT INTO
+					erro_feedback
+						(id,
+						roundid,
+						time,
+						variable,
+						value)
+				VALUES
+					(null,
+					$newroundid,
+					Now(),
+					$variable,
+					$value)
+				"}, dbcon, list(newroundid = newroundid, variable = variable, value = value))

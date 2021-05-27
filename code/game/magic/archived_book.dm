@@ -3,7 +3,7 @@
 #define BOOK_VERSION_MIN	1
 #define BOOK_VERSION_MAX	2
 #define BOOK_PATH			"data/books/"
-#define BOOKS_USE_SQL		0				// no guarentee for this branch to work right with sql
+#define BOOKS_USE_SQL		0				// no guarentee for this branch to work right with sql  // TODO: make books work normally with SQL
 
 var/global/datum/book_manager/book_mgr = new()
 
@@ -44,16 +44,11 @@ datum/book_manager/proc/freeid()
 	if(!isbn)
 		return
 
-	if(BOOKS_USE_SQL && config.sql_enabled)
-		var/DBConnection/dbcon = new()
-		dbcon.Connect("dbi:mysql:[sqldb]:[sqladdress]:[sqlport]","[sqllogin]","[sqlpass]")
-		if(!dbcon.IsConnected())
+	if(BOOKS_USE_SQL && config.sql_enabled) // always false. see todo on line 6 of this file
+		if(!establish_db_connection())
 			alert("Connection to Archive has been severed. Aborting.")
 		else
-			var/DBQuery/query = dbcon.NewQuery("DELETE FROM library WHERE id=[isbn]")
-			if(!query.Execute())
-				to_chat(usr, query.ErrorMsg())
-			dbcon.Disconnect()
+			var/DBQuery/query = sql_query("DELETE FROM library WHERE id=$$", dbcon, isbn)
 	else
 		book_mgr.remove(isbn)
 	log_admin("[usr.key] has deleted the book [isbn]")

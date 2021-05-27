@@ -223,14 +223,12 @@
 		return
 
 	if(href_list["privacy_poll"])
-		establish_db_connection()
-		if(!dbcon.IsConnected())
+		if(!establish_db_connection())
 			return
 		var/voted = 0
 
 		//First check if the person has not voted yet.
-		var/DBQuery/query = dbcon.NewQuery("SELECT * FROM erro_privacy WHERE ckey='[src.ckey]'")
-		query.Execute()
+		var/DBQuery/query = sql_query("SELECT * FROM erro_privacy WHERE ckey = $ckey", dbcon, list(ckey = ckey))
 		while(query.NextRow())
 			voted = 1
 			break
@@ -254,9 +252,7 @@
 			return
 
 		if(!voted)
-			var/sql = "INSERT INTO erro_privacy VALUES (null, Now(), '[src.ckey]', '[option]')"
-			var/DBQuery/query_insert = dbcon.NewQuery(sql)
-			query_insert.Execute()
+			sql_query("INSERT INTO erro_privacy VALUES (null, Now(), $ckey, $option)", dbcon, list(ckey = ckey, option = option))
 			to_chat(usr, "<b>Thank you for your vote!</b>")
 			close_browser(usr, "window=privacypoll")
 
