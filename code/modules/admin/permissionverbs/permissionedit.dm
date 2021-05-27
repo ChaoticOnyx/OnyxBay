@@ -84,7 +84,7 @@
 		to_chat(usr, "<span class='notice'>New admin added.</span>")
 	else
 		if(!isnull(admin_id) && isnum(admin_id))
-			sql_query("UPDATE erro_admin SET rank = $new_rank WHERE id = $admin_id", dbcon, list(new_rank = new_rank, admin_id = admin_id))
+			sql_query("UPDATE erro_admin SET `rank` = $new_rank WHERE id = $admin_id", dbcon, list(new_rank = new_rank, admin_id = admin_id))
 			sql_query("INSERT INTO test.erro_admin_log (id, datetime, adminckey, adminip. log) VALUES (NULL , NOW( ) , $ckey, $address, 'Edited the rank of $adm_ckey to $new_rank');", dbcon, list(ckey = usr.ckey, address = usr.client.address, adm_ckey = adm_ckey, new_rank = new_rank))
 			to_chat(usr, "<span class='notice'>Admin rank changed.</span>")
 

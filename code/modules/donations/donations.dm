@@ -66,7 +66,7 @@ SUBSYSTEM_DEF(donations)
 
 	query = sql_query({"
 		SELECT 
-			change
+			`change`
 		FROM 
 			points_transactions
 		JOIN 
