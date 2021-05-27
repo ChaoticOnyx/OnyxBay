@@ -62,6 +62,30 @@ function New-DiagnosticMessage
     }
 }
 
+function Get-DmRulesets
+{
+    <#
+        .SYNOPSIS
+            Парсит набор правил из .json файла.
+        .PARAMETER Path
+            Путь до .json файла.
+        .OUTPUTS
+            [Ruleset[]] - набор правил.
+    #>
+
+    [CmdletBinding()]
+    [OutputType([Ruleset[]])]
+    param(
+        [Parameter(Mandatory)]
+        [string]$Path
+    )
+
+    PROCESS
+    {
+        Get-Content -Path $Path | ConvertFrom-Json | Write-Output
+    }
+}
+
 function Invoke-DmCodeStyleCheck
 {
     <#
@@ -107,13 +131,6 @@ function Invoke-DmCodeStyleCheck
 
                 foreach ($Match in $RegexMatches.Matches)
                 {
-                    $ErrorString = $Match.Groups | Where-Object -Property Name -EQ 'error'
-
-                    if ($null -eq $ErrorString)
-                    {
-                        continue
-                    }
-
                     $FormatedMessage = $Rule.Message
 
                     foreach ($Group in $Match.Groups)

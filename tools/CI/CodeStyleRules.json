@@ -10,8 +10,18 @@
         "Level": "warning"
     },
     {
-        "Pattern": "(?<error>[\\w\\d<>][-+=*][^\\s+-])",
+        "Pattern": "(?<!\/\/+.*)(?<error>[-+=*][^\\s+-/]\\w+)",
         "Message": "Отсутствует пробел после оператора: '{{error}}'",
+        "Level": "warning"
+    },
+    {
+        "Pattern": "(?<!\/\/+.*)(?<error>[\\w\\d](?!\\s)[-+=*])(?![+-])",
+        "Message": "Отсутствует пробел перед оператором: '{{error}}'",
+        "Level": "warning"
+    },
+    {
+        "Pattern": "(?<!for\\s*)\\s?[\\(,]\\s?(?<error>var\/[\\w\\d]+)",
+        "Message": "Лишний var/ в аргументах: '{{error}}'",
         "Level": "warning"
     }
 ]

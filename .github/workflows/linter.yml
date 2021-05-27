@@ -39,5 +39,5 @@ jobs:
         run: |
           Import-Module ./scripts/GitHub/
           Import-Module ./scripts/CodeStyle/
-          $Global:DmRuleset = Get-Content -Path './tools/CI/CodeStyleRules.json' | ConvertFrom-Json
+          $Global:DmRuleset = Get-DmRulesets -Path './tools/CI/CodeStyleRules.json'
           ./tools/CI/CodeStyleLinter.ps1
