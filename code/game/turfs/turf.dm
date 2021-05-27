@@ -70,12 +70,12 @@
 
 /turf/attack_hand(mob/user)
 	user.setClickCooldown(DEFAULT_QUICK_COOLDOWN)
-	//QOL feature, clicking on turf can toogle doors
-	var/obj/machinery/door/airlock/AL = locate(/obj/machinery/door/airlock) in src.contents
+	// QOL feature, clicking on turf can toogle doors
+	var/obj/machinery/door/airlock/AL = locate(/obj/machinery/door/airlock) in contents
 	if(AL)
 		AL.attack_hand(user)
 		return TRUE
-	var/obj/machinery/door/firedoor/FD = locate(/obj/machinery/door/firedoor) in src.contents
+	var/obj/machinery/door/firedoor/FD = locate(/obj/machinery/door/firedoor) in contents
 	if(FD)
 		FD.attack_hand(user)
 		return TRUE

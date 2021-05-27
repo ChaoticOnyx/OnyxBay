@@ -166,12 +166,12 @@
 	attack_ai(user)
 	return
 
-//QOL feature, clicking on turf can toogle doors
-/turf/BorgCtrlClick(var/mob/living/silicon/robot/user)
+// QOL feature, clicking on turf can toogle doors
+/turf/BorgCtrlClick(mob/living/silicon/robot/user)
 	AICtrlClick(user)
 
-/turf/BorgAltClick(var/mob/living/silicon/robot/user)
+/turf/BorgAltClick(mob/living/silicon/robot/user)
 	AIAltClick(user)
 
-/turf/BorgShiftClick(var/mob/living/silicon/robot/user)
+/turf/BorgShiftClick(mob/living/silicon/robot/user)
 	AIShiftClick(user)

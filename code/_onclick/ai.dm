@@ -215,35 +215,35 @@
 		eyeobj.face_atom(A)
 
 
-//QOL feature, clicking on turf can toogle doors
+// QOL feature, clicking on turf can toogle doors
 /turf/attack_ai(mob/user)
 	user.setClickCooldown(DEFAULT_QUICK_COOLDOWN)
-	//QOL feature, clicking on turf can toogle doors
-	var/obj/machinery/door/airlock/AL = locate(/obj/machinery/door/airlock) in src.contents
+	// QOL feature, clicking on turf can toogle doors
+	var/obj/machinery/door/airlock/AL = locate(/obj/machinery/door/airlock) in contents
 	if(AL)
 		AL.attack_hand(user)
 		return TRUE
-	var/obj/machinery/door/firedoor/FD = locate(/obj/machinery/door/firedoor) in src.contents
+	var/obj/machinery/door/firedoor/FD = locate(/obj/machinery/door/firedoor) in contents
 	if(FD)
 		FD.attack_hand(user)
 		return TRUE
 
-/turf/AICtrlClick(var/mob/user)
-	var/obj/machinery/door/airlock/AL = locate(/obj/machinery/door/airlock) in src.contents
+/turf/AICtrlClick(mob/user)
+	var/obj/machinery/door/airlock/AL = locate(/obj/machinery/door/airlock) in contents
 	if(AL)
 		AL.AICtrlClick(user)
 		return
 	return ..()
 
-/turf/AIAltClick(var/mob/user)
-	var/obj/machinery/door/airlock/AL = locate(/obj/machinery/door/airlock) in src.contents
+/turf/AIAltClick(mob/user)
+	var/obj/machinery/door/airlock/AL = locate(/obj/machinery/door/airlock) in contents
 	if(AL)
 		AL.AIAltClick(user)
 		return
 	return ..()
 
-/turf/AIShiftClick(var/mob/user)
-	var/obj/machinery/door/airlock/AL = locate(/obj/machinery/door/airlock) in src.contents
+/turf/AIShiftClick(mob/user)
+	var/obj/machinery/door/airlock/AL = locate(/obj/machinery/door/airlock) in contents
 	if(AL)
 		AL.AIShiftClick(user)
 		return
