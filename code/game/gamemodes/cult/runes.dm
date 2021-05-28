@@ -223,7 +223,8 @@
 						target.take_overall_damage(10, 20)
 
 /obj/effect/rune/convert/Topic(href, href_list)
-	if(href_list["join"])
+	var/list/mob/living/cultists = get_cultists()
+	if(href_list["join"] && cultists.len)
 		if(usr.loc == loc && !iscultist(usr))
 			GLOB.cult.add_antagonist(usr.mind, ignore_role = 1, do_not_equip = 1)
 
