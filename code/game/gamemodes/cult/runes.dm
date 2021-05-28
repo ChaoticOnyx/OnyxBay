@@ -191,15 +191,15 @@
 		return fizzle(user)
 
 	speak_incantation(user, "Mah[pick("'","`")]weyh pleggh at e'ntrath!")
-	target.visible_message("<span class='warning'>The markings below [target] glow a bloody red.</span>")
+	target.visible_message(SPAN_WARNING("The markings below [target] glow a bloody red.")
 
 	to_chat(target, SPAN_OCCULT("Your blood pulses. Your head throbs. The world goes red. All at once you are aware of a horrible, horrible truth. The veil of reality has been ripped away and in the festering wound left behind something sinister takes root."))
 	var/list/mob/living/cultists = get_cultists()
 	if(cultists.len < 2)
 		if(!GLOB.cult.can_become_antag(target.mind, 1))
-			to_chat(target, "<span class='danger'>Are you going insane?</span>")
+			to_chat(target, SPAN_DANGER("Are you going insane?"))
 		else
-			to_chat(target, "<span class='cult'>Do you want to join the cult of Nar'Sie? You can choose to ignore offer... <a href='?src=\ref[src];join=1'>Join the cult</a>.</span>")
+			to_chat(target, SPAN_OCCULT("Do you want to join the cult of Nar'Sie? You can choose to ignore offer... <a href='?src=\ref[src];join=1'>Join the cult</a>.")
 
 	spamcheck = 1
 	spawn(30)
