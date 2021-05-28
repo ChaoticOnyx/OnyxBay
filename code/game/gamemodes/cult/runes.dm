@@ -178,6 +178,11 @@
 	var/spamcheck = 0
 
 /obj/effect/rune/convert/cast(mob/living/user)
+	var/list/mob/living/cultists = get_cultists()
+	if(cultists.len < 2)
+		to_chat(user, "<span class='warning'>You need two cultists around this rune to make it work.</span>")
+		return fizzle(user)
+
 	if(spamcheck)
 		return
 
