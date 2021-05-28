@@ -178,7 +178,6 @@
 	var/spamcheck = 0
 
 /obj/effect/rune/convert/cast(mob/living/user)
-	var/list/mob/living/cultists = get_cultists()
 	if(spamcheck)
 		return
 
@@ -195,7 +194,7 @@
 	target.visible_message("<span class='warning'>The markings below [target] glow a bloody red.</span>")
 
 	to_chat(target, SPAN_OCCULT("Your blood pulses. Your head throbs. The world goes red. All at once you are aware of a horrible, horrible truth. The veil of reality has been ripped away and in the festering wound left behind something sinister takes root."))
-
+	var/list/mob/living/cultists = get_cultists()
 	if(cultists.len < 2)
 		if(!GLOB.cult.can_become_antag(target.mind, 1))
 			to_chat(target, "<span class='danger'>Are you going insane?</span>")
