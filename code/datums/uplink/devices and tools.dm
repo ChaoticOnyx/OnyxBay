@@ -17,10 +17,11 @@
 
 /datum/uplink_item/item/tools/std
 	name = "Syndicate Teleportation Device (STD)"
-	desc = "It utilizes a local wormhole generator to teleport the stored items to our base. Upon successful teleportation, the device self-destructs for safety reasons. To use it follow the instructions indicated on the STD."
+	desc = "It utilizes a local wormhole generator to teleport the stored items to our base. Upon successful teleportation, the device self-destructs for safety reasons. To use it, briefly put your uplink device inside for authorization, place the items you need to transport inside, and follow the instructions indicated on the STD."
 	item_cost = 1
 	path = /obj/item/weapon/storage/briefcase/std
 
+/* commented for experiment.
 /datum/uplink_item/item/tools/std/buy(obj/item/device/uplink/U)
 	. = ..()
 	if(.)
@@ -29,6 +30,7 @@
 			STD.uplink = U
 			STD.authentication_complete = TRUE
 			STD.visible_message("\The [STD] blinks green!")
+*/
 
 /datum/uplink_item/item/tools/money
 	name = "Operations Funding"
