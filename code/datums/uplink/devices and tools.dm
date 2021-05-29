@@ -23,10 +23,12 @@
 
 /datum/uplink_item/item/tools/std/buy(obj/item/device/uplink/U)
 	. = ..()
-	if(.)
+	if(. && istype(U.loc, /obj/item/weapon/implant/uplink))
 		var/obj/item/weapon/storage/briefcase/std/STD = .
 		if(istype(STD))
 			STD.uplink = U
+			STD.authentication_complete = TRUE
+			STD.visible_message("\The [STD] blinks green!")
 
 /datum/uplink_item/item/tools/money
 	name = "Operations Funding"
