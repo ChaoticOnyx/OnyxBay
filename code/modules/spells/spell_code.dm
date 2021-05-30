@@ -293,7 +293,7 @@ var/list/spells = typesof(/spell) //needed for the badmin verb for now
 		targets = list(targets)
 	else if(!targets.len)
 		return 0
-	if(!istype(src,/spell/area_teleport))
+	if(!istype(src, /spell/area_teleport))
 		var/list/valid_targets = view_or_range(range, holder, selection_type)
 		for(var/target in targets)
 			if(!(target in valid_targets))
@@ -302,7 +302,7 @@ var/list/spells = typesof(/spell) //needed for the badmin verb for now
 
 	return 1
 
-/spell/proc/invocation(mob/user = usr, list/targets) //spelling the spell out and setting it on recharge/reducing charges amount
+/spell/proc/invocation(mob/user = usr, list/targets) // spelling the spell out and setting it on recharge/reducing charges amount
 
 	switch(invocation_type)
 		if(SpI_SHOUT)
