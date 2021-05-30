@@ -424,7 +424,7 @@
 			src.force = 15
 			src.damtype = "fire"
 			welding = 1
-			set_light(2)
+			set_light(0.3, 0.5, 2, 2, "#e38f46")
 			update_icon()
 			START_PROCESSING(SSobj, src)
 		else
