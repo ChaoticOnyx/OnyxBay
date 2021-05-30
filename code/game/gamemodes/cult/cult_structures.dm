@@ -161,4 +161,4 @@
 		else
 			new_mob.key = M.key
 
-		to_chat(new_mob, "<B>Your form morphs into that of a corgi.</B>")//Because we don't have cluwnes
+		to_chat(new_mob, "<B>Your form morphs into that of a corgi.</B>") // Because we don't have cluwnes

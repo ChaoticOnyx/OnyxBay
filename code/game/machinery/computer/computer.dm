@@ -75,9 +75,9 @@
 		set_light(light_max_bright_on, light_inner_range_on, light_outer_range_on, 2, light_color)
 
 	if(stat & BROKEN)
-		overlays += image(icon,"[icon_state]_broken", overlay_layer)
+		overlays += image(icon, "[icon_state]_broken", overlay_layer)
 	else
-		overlays += image(icon,icon_screen, overlay_layer)
+		overlays += image(icon, icon_screen, overlay_layer)
 
 	if(icon_keyboard)
 		overlays += image(icon, icon_keyboard, overlay_layer)
