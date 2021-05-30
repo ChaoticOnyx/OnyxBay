@@ -535,28 +535,7 @@ var/list/global/slot_flags_enumeration = list(
 		var/obj/item/projectile/P = damage_source
 		if(!P.blockable)
 			return 0
-		if(mod_shield >= 2.5)
-			// some effects here
-			var/datum/effect/effect/system/spark_spread/spark_system = new /datum/effect/effect/system/spark_spread()
-			spark_system.set_up(3, 0, user.loc)
-			spark_system.start()
-			if(istype(P, /obj/item/projectile/beam))
-				visible_message(SPAN("warning", "\The [user] dissolves [P] with their [name]!"))
-				proj_poise_drain(user, P)
-				return PROJECTILE_FORCE_BLOCK // Beam reflections code is kinda messy, I ain't gonna touch it. ~Toby
-			else if(P.starting)
-				visible_message(SPAN("warning", "\The [user] reflects [P] with their [name]!"))
-
-				// Find a turf near or on the original location to bounce to
-				var/new_x = P.starting.x + rand(-2, 2)
-				var/new_y = P.starting.y + rand(-2, 2)
-				var/turf/curloc = get_turf(user)
-
-				// redirect the projectile
-				P.redirect(new_x, new_y, curloc, user)
-				proj_poise_drain(user, P)
-				return PROJECTILE_CONTINUE // complete projectile permutation
-		else if(mod_shield >= 1.3)
+		if(mod_shield >= 1.3)
 			if(P.armor_penetration > (25 * mod_shield) - 5)
 				visible_message(SPAN("warning", "\The [user] tries to block [P] with their [name]. <b>Not the best idea.</b>"))
 				return 0
@@ -566,7 +545,7 @@ var/list/global/slot_flags_enumeration = list(
 	return 0
 
 /obj/item/proc/proj_poise_drain(mob/user, obj/item/projectile/P, weak_shield = FALSE)
-	if(istype(user,/mob/living/carbon/human))
+	if(istype(user, /mob/living/carbon/human))
 		var/mob/living/carbon/human/H = user
 		var/poise_dmg = P.damage / (mod_shield * 2.5)
 		if(weak_shield && P.damage_type == BRUTE)
