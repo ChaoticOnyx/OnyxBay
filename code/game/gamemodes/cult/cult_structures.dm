@@ -97,7 +97,7 @@
 /obj/effect/gateway/active
 	light_outer_range = 5
 	light_color = "#ff0000"
-	spawnable=list(
+	spawnable = list(
 		/mob/living/simple_animal/hostile/scarybat,
 		/mob/living/simple_animal/hostile/creature,
 		/mob/living/simple_animal/hostile/faithless
@@ -162,4 +162,3 @@
 			new_mob.key = M.key
 
 		to_chat(new_mob, "<B>Your form morphs into that of a corgi.</B>")//Because we don't have cluwnes
-
