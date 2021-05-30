@@ -106,7 +106,7 @@
 /obj/effect/gateway/active/cult
 	light_outer_range = 5
 	light_color = "#ff0000"
-	spawnable=list(
+	spawnable = list(
 		/mob/living/simple_animal/hostile/scarybat/cult,
 		/mob/living/simple_animal/hostile/creature/cult,
 		/mob/living/simple_animal/hostile/faithless/cult
