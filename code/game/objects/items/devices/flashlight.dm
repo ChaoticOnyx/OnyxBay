@@ -156,7 +156,6 @@
 	flashlight_max_bright = -1
 	flashlight_outer_range = 4
 	flashlight_inner_range = 1
-	brightness_color = "#000000"
 
 /obj/item/device/flashlight/pen
 	name = "penlight"
@@ -228,7 +227,7 @@
 
 	flashlight_inner_range = 1.5
 	flashlight_outer_range = 3
-	brightness_color = "#ffc58f"
+	brightness_color = "#efac75"
 
 /obj/item/device/flashlight/lamp/brown
 	desc = "A classic brown-shaded desk lamp."
@@ -237,7 +236,7 @@
 
 	flashlight_inner_range = 1.5
 	flashlight_outer_range = 3
-	brightness_color = "#ffc58f"
+	brightness_color = "#efac75"
 
 
 /obj/item/device/flashlight/lamp/verb/toggle_light()
