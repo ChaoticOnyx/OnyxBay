@@ -283,7 +283,7 @@
 			changed = set_light(arglist(lightbulb.lighting_modes[current_mode]))
 			if(TO)
 				TO.color = lightbulb.lighting_modes[current_mode]["l_color"]
-				TO.alpha = between(128, (lightbulb.lighting_modes[current_mode]["l_max_bright"] * 255), 255) // Some fine tuning here
+				TO.alpha = between(128, (lightbulb.lighting_modes[current_mode]["l_max_bright"] * 1.5 * 255), 255) // Some fine tuning here
 		else
 			changed = set_light(lightbulb.b_max_bright, lightbulb.b_inner_range, lightbulb.b_outer_range, lightbulb.b_curve, lightbulb.b_color)
 
@@ -649,14 +649,15 @@
 	item_state = "c_tube"
 	matter = list(MATERIAL_GLASS = 100)
 
-	b_max_bright = 0.65
+	b_max_bright = 0.85
 	b_outer_range = 7
+	b_curve = 3
 	b_color = "#fffee0"
 	lighting_modes = list(
-		LIGHTMODE_EMERGENCY  = list(l_max_bright = 0.4,  l_inner_range = 0.1, l_outer_range = 4, l_falloff_curve = 2, l_color = "#da0205"),
-		LIGHTMODE_EVACUATION = list(l_max_bright = 0.65, l_inner_range = 0.1, l_outer_range = 7, l_falloff_curve = 2, l_color = "#bf0000"),
-		LIGHTMODE_ALARM      = list(l_max_bright = 0.65, l_inner_range = 0.1, l_outer_range = 7, l_falloff_curve = 2, l_color = "#ff3333"),
-		LIGHTMODE_RADSTORM   = list(l_max_bright = 0.5,  l_inner_range = 0.1, l_outer_range = 7, l_falloff_curve = 2, l_color = "#8A9929")
+		LIGHTMODE_EMERGENCY  = list(l_max_bright = 0.4,  l_inner_range = 1, l_outer_range = 5, l_falloff_curve = 3, l_color = "#da0205"),
+		LIGHTMODE_EVACUATION = list(l_max_bright = 0.85, l_inner_range = 1, l_outer_range = 7, l_falloff_curve = 3, l_color = "#bf0000"),
+		LIGHTMODE_ALARM      = list(l_max_bright = 0.85, l_inner_range = 1, l_outer_range = 7, l_falloff_curve = 3, l_color = "#ff3333"),
+		LIGHTMODE_RADSTORM   = list(l_max_bright = 0.55, l_inner_range = 1, l_outer_range = 7, l_falloff_curve = 3, l_color = "#8A9929")
 		)
 	sound_on = 'sound/machines/lightson.ogg'
 	random_tone = TRUE
@@ -670,7 +671,7 @@
 	name = "high efficiency light tube"
 	desc = "An efficient light used to reduce strain on the station's power grid."
 	base_state = "lhetube"
-	b_outer_range = 8
+	b_outer_range = 7
 	b_max_bright = 0.9
 	b_color = "#33cccc"
 	matter = list(MATERIAL_STEEL = 60, MATERIAL_GLASS = 300)
@@ -681,7 +682,7 @@
 	name = "quartz light tube"
 	desc = "Light is almost the same as sunlight."
 	base_state = "lqtube"
-	b_outer_range = 7
+	b_outer_range = 8
 	b_max_bright = 1.0
 	b_color = "#8A2BE2"
 	random_tone = FALSE
@@ -696,16 +697,16 @@
 	broken_chance = 5
 	matter = list(MATERIAL_GLASS = 100)
 
-	b_max_bright = 0.3
-	b_inner_range = 0.1
+	b_max_bright = 0.4
+	b_inner_range = 0.75
 	b_outer_range = 4
-	b_curve = 3.5
+	b_curve = 4.0
 	b_color = "#a0a080"
 	lighting_modes = list(
-		LIGHTMODE_EMERGENCY  = list(l_max_bright = 0.25, l_inner_range = 0.1, l_outer_range = 3, l_falloff_curve = 3.0, l_color = "#da0205"),
-		LIGHTMODE_EVACUATION = list(l_max_bright = 0.3,  l_inner_range = 0.1, l_outer_range = 4, l_falloff_curve = 3.0, l_color = "#bf0000"),
-		LIGHTMODE_ALARM      = list(l_max_bright = 0.3,  l_inner_range = 0.1, l_outer_range = 4, l_falloff_curve = 3.0, l_color = "#ff3333"),
-		LIGHTMODE_RADSTORM   = list(l_max_bright = 0.25, l_inner_range = 0.1, l_outer_range = 4, l_falloff_curve = 3.0, l_color = "#8A9929")
+		LIGHTMODE_EMERGENCY  = list(l_max_bright = 0.3, l_inner_range = 0.5,  l_outer_range = 3, l_falloff_curve = 4.0, l_color = "#da0205"),
+		LIGHTMODE_EVACUATION = list(l_max_bright = 0.4, l_inner_range = 0.75, l_outer_range = 4, l_falloff_curve = 4.0, l_color = "#bf0000"),
+		LIGHTMODE_ALARM      = list(l_max_bright = 0.4, l_inner_range = 0.75, l_outer_range = 4, l_falloff_curve = 4.0, l_color = "#ff3333"),
+		LIGHTMODE_RADSTORM   = list(l_max_bright = 0.3, l_inner_range = 0.5,  l_outer_range = 4, l_falloff_curve = 4.0, l_color = "#8A9929")
 		)
 	random_tone = TRUE
 
@@ -713,7 +714,7 @@
 	name = "high efficiency light bulb"
 	desc = "An efficient light used to reduce strain on the station's power grid."
 	base_state = "lhebulb"
-	b_max_bright = 0.4
+	b_max_bright = 0.6
 	b_outer_range = 5
 	b_color = "#33cccc"
 	matter = list(MATERIAL_STEEL = 30, MATERIAL_GLASS = 150)
@@ -742,7 +743,7 @@
 	color = "#da0205"
 	b_color = "#da0205"
 	random_tone = FALSE
-	tone_overlay = FALSE
+	tone_overlay = TRUE
 
 /obj/item/weapon/light/bulb/red/readylight
 	lighting_modes = list(

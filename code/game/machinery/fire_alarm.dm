@@ -44,7 +44,7 @@
 	else
 		if(!src.detecting)
 			icon_state = "fire1"
-			set_light(0.25, 0.1, 1, 2, COLOR_RED)
+			set_light(0.25, 0.5, 1.25, 2, COLOR_RED)
 		else if(z in GLOB.using_map.contact_levels)
 			icon_state = "fire0"
 			var/decl/security_state/security_state = decls_repository.get_decl(GLOB.using_map.security_state)

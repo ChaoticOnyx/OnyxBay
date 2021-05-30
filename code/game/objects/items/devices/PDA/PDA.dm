@@ -348,7 +348,7 @@ var/global/list/obj/item/device/pda/PDAs = list()
 			set_light(0)
 		else
 			fon = 1
-			set_light(0.3, 0.1, 2)
+			set_light(0.3, 0.1, 2, 2, "#8cb87d")
 
 /obj/item/device/pda/GetAccess()
 	if(id)

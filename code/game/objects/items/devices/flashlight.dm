@@ -15,9 +15,10 @@
 	var/activation_sound = 'sound/effects/flashlight.ogg'
 	var/spam_flag = FALSE // spamming can possibly overload lighting SS
 
-	var/flashlight_max_bright  = 0.5 // brightness of light when on, must be no greater than 1.
-	var/flashlight_inner_range = 1   // inner range of light when on, can be negative
-	var/flashlight_outer_range = 4   // outer range of light when on, can be negative
+	var/flashlight_max_bright    = 0.5 // brightness of light when on, must be no greater than 1.
+	var/flashlight_inner_range   = 1   // inner range of light when on, can be negative
+	var/flashlight_outer_range   = 4   // outer range of light when on, can be negative
+	var/flashlight_falloff_curve = 4.0
 	var/brightness_color = "#fff3b2" // color of light when on
 	var/light_overlay = TRUE
 
@@ -42,7 +43,7 @@
 /obj/item/device/flashlight/proc/switch_light(state = FALSE)
 	on = state
 	if(on)
-		set_light(flashlight_max_bright, flashlight_inner_range, flashlight_outer_range, 2, brightness_color)
+		set_light(flashlight_max_bright, flashlight_inner_range, flashlight_outer_range, flashlight_falloff_curve, brightness_color)
 	else
 		set_light(0)
 
@@ -144,6 +145,7 @@
 
 	flashlight_max_bright = 0.75
 	flashlight_outer_range = 5
+	flashlight_falloff_curve = 3.0
 	brightness_color = "#afffff"
 
 /obj/item/device/flashlight/flashdark
@@ -156,6 +158,7 @@
 	flashlight_max_bright = -1
 	flashlight_outer_range = 4
 	flashlight_inner_range = 1
+	flashlight_falloff_curve = 2.5
 
 /obj/item/device/flashlight/pen
 	name = "penlight"
@@ -202,6 +205,7 @@
 
 	flashlight_max_bright = 0.75
 	flashlight_outer_range = 5
+	flashlight_falloff_curve = 2.5
 	brightness_color = "#ffc58f"
 	light_overlay = FALSE
 
@@ -217,6 +221,7 @@
 	flashlight_max_bright = 0.3
 	flashlight_inner_range = 2
 	flashlight_outer_range = 4
+	flashlight_falloff_curve = 4.0
 	on = 1
 
 // green-shaded desk lamp
@@ -259,6 +264,7 @@
 	flashlight_max_bright = 0.8
 	flashlight_inner_range = 2
 	flashlight_outer_range = 7
+	flashlight_falloff_curve = 2.5
 	brightness_color = "#e58775"
 
 	action_button_name = null //just pull it manually, neckbeard.
