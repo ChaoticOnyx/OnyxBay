@@ -747,7 +747,7 @@
 
 /obj/item/weapon/light/bulb/red/readylight
 	lighting_modes = list(
-		LIGHTMODE_READY = list(l_outer_range = 5, l_max_bright = 1, l_color = "#00ff00"),
+		LIGHTMODE_READY = list(l_max_bright = 0.4, l_inner_range = 0.5,  l_outer_range = 4, l_falloff_curve = 4.0, l_color = "#00ff00")
 		)
 
 /obj/item/weapon/light/throw_impact(atom/hit_atom)

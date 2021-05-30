@@ -366,7 +366,7 @@
 					color = "#4958dd"
 				if(2)
 					color = "#008000"
-			set_light(0.25, 0.5, 1, 2, color)
+			set_light(0.35, 0.5, 1, 2, color)
 		else
 			set_light(0)
 
