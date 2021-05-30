@@ -81,7 +81,7 @@
 	//shift that shit pls god
 	// Update bioluminescence.
 	if(seed && seed.get_trait(TRAIT_BIOLUM))
-		set_light(round(seed.get_trait(TRAIT_POTENCY)/10), l_color = seed.get_trait(TRAIT_BIOLUM_COLOUR))
+		set_light(0.5, 0.1, round(seed.get_trait(TRAIT_POTENCY)/10), l_color = seed.get_trait(TRAIT_BIOLUM_COLOUR))
 	else
 		set_light(0)
 

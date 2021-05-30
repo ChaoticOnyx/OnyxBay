@@ -725,7 +725,7 @@
 		move_to_delay = initial(move_to_delay)
 	else
 		alpha = 255
-		set_light(4)
+		set_light(0.25, 0.1, 3)
 		move_to_delay = 2
 	return
 

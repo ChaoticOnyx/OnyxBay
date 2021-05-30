@@ -343,7 +343,7 @@
 		nanobots = TRUE
 		item_state = "vox-medic-active"
 		to_chat(H, "<span class='notice'>Nanobots activated.</span>")
-		set_light(6,6, "#e09d37")
+		set_light(0.5, 0.1, 3, 2, "#e09d37")
 		slowdown_per_slot[slot_wear_suit] = 10
 
 /obj/item/clothing/suit/space/vox/medic/Initialize()

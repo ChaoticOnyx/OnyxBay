@@ -392,7 +392,7 @@
 			overlays += "welded_open"
 
 	if(do_set_light)
-		set_light(1.5, 0.5, COLOR_SUN)
+		set_light(0.25, 0.1, 1, 2, COLOR_SUN)
 
 // CHECK PRESSURE
 /obj/machinery/door/firedoor/Process()

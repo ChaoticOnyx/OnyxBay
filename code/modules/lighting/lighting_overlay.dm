@@ -10,7 +10,8 @@
 	invisibility = INVISIBILITY_LIGHTING
 	color = LIGHTING_BASE_MATRIX
 	icon_state = "light1"
-	blend_mode = BLEND_MULTIPLY
+	blend_mode = BLEND_OVERLAY
+	appearance_flags = 0
 
 	var/lum_r = 0
 	var/lum_g = 0
@@ -105,11 +106,11 @@
 	else
 		icon_state = null
 		color = list(
-			rr, rg, rb, 00,
-			gr, gg, gb, 00,
-			br, bg, bb, 00,
-			ar, ag, ab, 00,
-			00, 00, 00, 01
+			-rr, -rg, -rb, 00,
+			-gr, -gg, -gb, 00,
+			-br, -bg, -bb, 00,
+			-ar, -ag, -ab, 00,
+			01, 01, 01, 01
 		)
 
 	luminosity = set_luminosity
@@ -130,7 +131,7 @@
 		T.lighting_overlay = null
 
 	loc = null
-	
+
 	. = ..()
 
 /atom/movable/lighting_overlay/forceMove()
