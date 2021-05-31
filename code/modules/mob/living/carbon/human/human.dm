@@ -1693,7 +1693,7 @@
 
 	if(internal_organs_by_name[BP_BRAIN])
 		var/obj/item/organ/internal/brain/brain = internal_organs_by_name[BP_BRAIN]
-		if(brain.damage <= brain.max_damage * 0.75 && stat != UNCONSCIOUS)
+		if(brain.is_broken() && stat != UNCONSCIOUS)
 			return 
 
 		to_chat(src, SPAN("notice", "You have given up life and succumbed to death."))

@@ -4,6 +4,8 @@
 		add_to_dead_mob_list()
 	else
 		add_to_living_mob_list()
+
+	if(give_ghost_proc_at_initialize)
 		verbs |= /mob/living/proc/ghost
 
 	if(controllable)

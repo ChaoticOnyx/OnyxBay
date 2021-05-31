@@ -226,7 +226,7 @@ This is the proc mobs get to turn into a ghost. Forked from ghostize due to comp
 		return TRUE
 	if(internal_organs_by_name[BP_BRAIN])
 		var/obj/item/organ/internal/brain/brain = internal_organs_by_name[BP_BRAIN]
-		if(brain.damage >= brain.max_damage * 0.75 && stat == UNCONSCIOUS)
+		if(brain.is_broken() && stat == UNCONSCIOUS)
 			return TRUE
 	if(internal_organs_by_name[BP_CELL])
 		var/obj/item/organ/internal/cell/C = internal_organs_by_name[BP_CELL]

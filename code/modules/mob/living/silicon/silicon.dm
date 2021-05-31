@@ -30,9 +30,9 @@
 	var/list/avaliable_huds
 	var/active_hud
 
-/mob/living/silicon/Initialize()
-	. = ..()
+/mob/living/silicon/New()
 	GLOB.silicon_mob_list += src
+	..()
 
 	if(silicon_radio)
 		silicon_radio = new silicon_radio(src)

@@ -80,12 +80,12 @@
 
 	var/current_pda_messaging = null
 
-/mob/living/silicon/pai/Initialize(mapload, obj/item/device/paicard)
-	. = ..()
+	give_ghost_proc_at_initialize = FALSE
+
+/mob/living/silicon/pai/New(obj/item/device/paicard)
 	status_flags |= NO_ANTAG
-	if(paicard)
-		loc = paicard
-		card = paicard
+	src.loc = paicard
+	card = paicard
 	sradio = new(src)
 
 	//As a human made device, we'll understand sol common without the need of the translator
@@ -93,7 +93,8 @@
 
 	verbs += /mob/living/silicon/pai/proc/choose_chassis
 	verbs += /mob/living/silicon/pai/proc/choose_verbs
-	verbs -= /mob/living/proc/ghost
+
+	..()
 
 	if(card)
 		if(!card.radio)
