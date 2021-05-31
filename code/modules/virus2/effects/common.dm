@@ -33,7 +33,7 @@
 	name = "[initial(R.name)][initial(name)]"
 
 /datum/disease2/effect/adaptation_chem/change_parent()
-	parent_disease.antigen = null
+	parent_disease.antigen = list()
 
 /datum/disease2/effect/adaptation_chem/activate(mob/living/carbon/human/mob)
 	if (mob.reagents.get_reagent_amount(data) > multiplier)
@@ -86,7 +86,7 @@
 	badness = VIRUS_COMMON
 
 /datum/disease2/effect/adaptation_damage/change_parent()
-	parent_disease.antigen = null
+	parent_disease.antigen = list()
 
 /datum/disease2/effect/adaptation_damage/activate(mob/living/carbon/human/mob)
 	for(var/obj/item/organ/external/E in mob.organs)
@@ -102,7 +102,7 @@
 	badness = VIRUS_COMMON
 
 /datum/disease2/effect/adaptation_rads/change_parent()
-	parent_disease.antigen = null
+	parent_disease.antigen = list()
 
 /datum/disease2/effect/adaptation_rads/activate(mob/living/carbon/human/mob)
 	if(mob.radiation > 10*multiplier)
