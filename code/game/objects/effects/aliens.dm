@@ -148,7 +148,7 @@
 	name = "purple sac"
 	desc = "Weird purple octopus-like thing."
 	layer = ABOVE_TILE_LAYER + 0.01
-	light_range = NODERANGE
+	light_outer_range = NODERANGE
 	var/node_range = NODERANGE
 
 /obj/effect/alien/weeds/node/New()

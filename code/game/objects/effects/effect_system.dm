@@ -209,7 +209,6 @@ steam.start() -- spawns the effect
 /obj/effect/effect/smoke/illumination/New(newloc, lifetime=10, range=null, power=null, color=null)
 	time_to_live=lifetime
 	..()
-	set_light(range, power, color)
 
 /////////////////////////////////////////////
 // Bad smoke

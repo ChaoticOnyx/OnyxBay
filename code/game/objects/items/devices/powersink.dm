@@ -112,7 +112,7 @@
 
 	var/datum/powernet/PN = attached.powernet
 	if(PN)
-		set_light(5)
+		set_light(0.5, 0.1, 12)
 
 		// found a powernet, so drain up to max power from it
 

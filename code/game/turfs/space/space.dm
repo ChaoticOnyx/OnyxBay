@@ -60,7 +60,7 @@
 	if(!config.starlight)
 		return
 	if(locate(/turf/simulated) in orange(src,1))
-		set_light(config.starlight)
+		set_light(min(0.1*config.starlight, 1), 1, 2.5)
 	else
 		set_light(0)
 
