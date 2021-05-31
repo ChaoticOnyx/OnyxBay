@@ -31,6 +31,9 @@
 		thearea = pick(teleportlocs)
 	return list(teleportlocs[thearea])
 
+/spell/area_teleport/check_valid_targets()
+	return TRUE
+
 /spell/area_teleport/cast(area/thearea, mob/user)
 	playsound(user,cast_sound,50,1)
 	if(!istype(thearea))

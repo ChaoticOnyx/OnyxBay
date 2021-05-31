@@ -300,7 +300,7 @@ var/list/spells = typesof(/spell) //needed for the badmin verb for now
 			return 0
 	return 1
 
-/spell/proc/invocation(mob/user = usr, list/targets) //spelling the spell out and setting it on recharge/reducing charges amount
+/spell/proc/invocation(mob/user = usr, list/targets) // spelling the spell out and setting it on recharge/reducing charges amount
 
 	switch(invocation_type)
 		if(SpI_SHOUT)
