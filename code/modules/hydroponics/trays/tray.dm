@@ -295,17 +295,9 @@
 	harvest = 0
 	lastproduce = age
 
-	if(!seed.get_trait(TRAIT_HARVEST_REPEAT))
+	if(!seed.get_trait(TRAIT_HARVEST_REPEAT) || seed?.has_mob_product)
 		yield_mod = 0
-		seed = null
-		dead = 0
-		age = 0
-		sampled = 0
-		mutation_mod = 0
-
-	if(seed?.has_mob_product)
-		yield_mod = 0
-		seed = null
+		QDEL_NULL(seed)
 		dead = 0
 		age = 0
 		sampled = 0
