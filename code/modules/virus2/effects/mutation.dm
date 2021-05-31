@@ -58,7 +58,7 @@
 	name = "[H.real_name] [initial(name)]"
 
 /datum/disease2/effect/adaptation_kill/change_parent()
-	parent_disease.antigen = null
+	parent_disease.antigen = list()
 
 /datum/disease2/effect/adaptation_kill/activate(mob/living/carbon/human/mob)
 	var/mob/living/carbon/human/H = data
