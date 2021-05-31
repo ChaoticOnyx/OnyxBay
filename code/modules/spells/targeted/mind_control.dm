@@ -100,15 +100,18 @@
 	return TRUE
 
 /datum/magical_imprint/Process()
-	if(implanted_in.reagents.has_reagent(/datum/reagent/water/holywater))
+	if(QDELETED(implanted_in))
+		return
+	else if(implanted_in.reagents.has_reagent(/datum/reagent/water/holywater))
 		var/message_ender = "<span class='danger'>Water frees you from magical influence, you are free now:<br> You no longer have to follow any previous laws!</span>"
 		to_chat(implanted_in, message_ender)
 		if(implanted_in.mind)
 			implanted_in.mind.store_memory(message_ender)
-		Destroy()
+		qdel(src)
 		return
-	if (implanted_in.stat == DEAD)
-		Destroy()
+	else if (implanted_in.stat == DEAD)
+		qdel(src)
+		return
 
 	if(world.time < last_reminder + 5 MINUTES)
 		return
@@ -120,7 +123,7 @@
 
 /datum/magical_imprint/Destroy()
 	STOP_PROCESSING(SSprocessing, src)
-	. = ..()
+	return ..()
 
 /datum/magical_imprint/proc/implant_in_mob(mob/M, target_zone)
 	if(ishuman(M))
