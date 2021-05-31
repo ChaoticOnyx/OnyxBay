@@ -209,10 +209,6 @@
 	density = 0
 	anchored = 1
 
-	// UI variables
-	var/hide_status = FALSE
-	var/hide_organs = FALSE
-
 /obj/machinery/body_scanconsole/Initialize()
 	for(var/D in GLOB.cardinal)
 		src.connected = locate(/obj/machinery/bodyscanner, get_step(src, D))
@@ -246,59 +242,55 @@
 /obj/machinery/body_scanconsole/attack_ai(user as mob)
 	return src.attack_hand(user)
 
-/obj/machinery/body_scanconsole/ui_act(action, params)
-	if(..())
-		return TRUE
+/obj/machinery/body_scanconsole/tgui_act(action, params)
+	. = ..()
 
-	if(!src.allowed(usr))
-		return TRUE
+	if(.)
+		return
+
+	if(!allowed(usr))
+		to_chat(usr, SPAN("warning", "Access denied."))
+		return
 
 	switch (action)
 		if ("print")
 			if (!src.connected)
 				to_chat(usr, "\icon[src]<span class='warning'>Error: No body scanner connected.</span>")
-				return TRUE
+				return
 
 			var/mob/living/carbon/human/occupant = src.connected.occupant
 			if (!src.connected.occupant)
 				to_chat(usr, "\icon[src]<span class='warning'>The body scanner is empty.</span>")
-				return TRUE
+				return
 
 			if (!istype(occupant,/mob/living/carbon/human))
 				to_chat(usr, "\icon[src]<span class='warning'>The body scanner cannot scan that lifeform.</span>")
-				return TRUE
+				return
 
 			var/obj/item/weapon/paper/P = new /obj/item/weapon/paper/(loc)
 			P.set_content("<tt>[connected.occupant.get_medical_data()]</tt>", "Body scan report - [occupant]", TRUE)
-			return TRUE
+			return
 		if ("eject")
 			if (connected)
 				connected.eject()
-				return TRUE
-		if ("toggle_status")
-			hide_status = !hide_status
-			return TRUE
-		if ("toggle_organs")
-			hide_organs = !hide_organs
-			return TRUE
+				return
 
-/obj/machinery/body_scanconsole/ui_data(mob/user)
+/obj/machinery/body_scanconsole/tgui_data(mob/user)
 	var/list/data = list()
 
 	data["connected"] = connected
 	data["medical_data"] = null
-	data["hide_status"] = hide_status
-	data["hide_organs"] = hide_organs
 
 	if (connected && connected.occupant)
 		data["medical_data"] = connected.occupant.get_medical_data_ui()
 
 	return data
 
-/obj/machinery/body_scanconsole/tg_ui_interact(mob/user, ui_key = "main", datum/tgui/ui = null, force_open = 0, datum/tgui/master_ui = null, datum/ui_state/state = GLOB.default_state)
-	ui = SStgui.try_update_ui(user, src, ui_key, ui, force_open)
+/obj/machinery/body_scanconsole/tgui_interact(mob/user, datum/tgui/ui)
+	ui = SStgui.try_update_ui(user, src, ui)
+	
 	if(!ui)
-		ui = new(user, src, ui_key, "body_scanner", name , 500, 700, master_ui, state)
+		ui = new(user, src, "BodyScanner", name)
 		ui.open()
 
 /obj/machinery/body_scanconsole/attack_hand(mob/user)
@@ -315,7 +307,7 @@
 		to_chat(user, "<span class='warning'>This device can only scan compatible lifeforms.</span>")
 		return
 
-	tg_ui_interact(user)
+	tgui_interact(user)
 
 /proc/get_severity(amount)
 	if(!amount)

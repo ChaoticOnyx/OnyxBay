@@ -45,7 +45,7 @@
 /obj/item/weapon/storage/briefcase/std/interact(mob/user)
 	ui_interact(user)
 
-/obj/item/weapon/storage/briefcase/std/ui_data(mob/user)
+/obj/item/weapon/storage/briefcase/std/proc/ui_data(mob/user)
 	var/list/list/data = list()
 
 	data["can_launch"] = can_launch()

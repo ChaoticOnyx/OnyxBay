@@ -151,9 +151,9 @@
 	return src.attack_hand(user)
 
 /obj/machinery/door_timer/attack_hand(mob/user as mob)
-	tg_ui_interact(user)
+	tgui_interact(user)
 
-/obj/machinery/door_timer/ui_data(mob/user)
+/obj/machinery/door_timer/tgui_data(mob/user)
 	var/list/data = list()
 
 	data["timing"] = timing
@@ -175,12 +175,15 @@
 	return data
 
 
-/obj/machinery/door_timer/ui_act(action, params)
-	if(..())
-		return TRUE
+/obj/machinery/door_timer/tgui_act(action, params)
+	. = ..()
 
-	if(!src.allowed(usr))
-		return TRUE
+	if(.)
+		return
+
+	if(!allowed(usr))
+		to_chat(usr, SPAN("warning", "Access denied."))
+		return
 
 	switch (action)
 		if("start")
@@ -207,13 +210,14 @@
 			timetoset = Clamp(timetoset, 0, 36000)
 
 	src.update_icon()
-	return TRUE
+	return
 
 
-/obj/machinery/door_timer/tg_ui_interact(mob/user, ui_key = "main", datum/tgui/ui = null, force_open = 0, datum/tgui/master_ui = null, datum/ui_state/state = GLOB.default_state)
-	ui = SStgui.try_update_ui(user, src, ui_key, ui, force_open)
+/obj/machinery/door_timer/tgui_interact(mob/user, datum/tgui/ui)
+	ui = SStgui.try_update_ui(user, src, ui)
+
 	if(!ui)
-		ui = new(user, src, ui_key, "brig_timer", name , 300, 200, master_ui, state)
+		ui = new(user, src, "BrigTimer", name)
 		ui.open()
 
 //icon update function
