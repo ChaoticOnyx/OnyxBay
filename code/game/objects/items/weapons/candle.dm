@@ -38,7 +38,7 @@
 /obj/item/weapon/flame/candle/proc/light(mob/user)
 	if(!lit)
 		lit = TRUE
-		visible_message("<span class='notice'>\The [user] lights the [name].</span>")
+		visible_message(SPAN("notice", "\The [user] lights the [name]."))
 		set_light(0.3, 0.25, 2.0, 4.0)
 		START_PROCESSING(SSobj, src)
 
