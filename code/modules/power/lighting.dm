@@ -273,7 +273,7 @@
 		TO.color = lightbulb.b_color
 		TO.layer = ABOVE_LIGHTING_LAYER
 		TO.plane = EFFECTS_ABOVE_LIGHTING_PLANE
-		TO.alpha = between(128, (lightbulb.b_max_bright/6 * 255), 255)
+		TO.alpha = between(128, (lightbulb.b_max_bright * 1.25 * 255), 255)
 
 	if(on)
 		update_use_power(POWER_USE_ACTIVE)
@@ -651,13 +651,13 @@
 
 	b_max_bright = 0.85
 	b_outer_range = 7
-	b_curve = 3
+	b_curve = 2.5
 	b_color = "#fffee0"
 	lighting_modes = list(
-		LIGHTMODE_EMERGENCY  = list(l_max_bright = 0.4,  l_inner_range = 1, l_outer_range = 5, l_falloff_curve = 3, l_color = "#da0205"),
-		LIGHTMODE_EVACUATION = list(l_max_bright = 0.85, l_inner_range = 1, l_outer_range = 7, l_falloff_curve = 3, l_color = "#bf0000"),
-		LIGHTMODE_ALARM      = list(l_max_bright = 0.85, l_inner_range = 1, l_outer_range = 7, l_falloff_curve = 3, l_color = "#ff3333"),
-		LIGHTMODE_RADSTORM   = list(l_max_bright = 0.55, l_inner_range = 1, l_outer_range = 7, l_falloff_curve = 3, l_color = "#8A9929")
+		LIGHTMODE_EMERGENCY  = list(l_max_bright = 0.4,  l_inner_range = 1, l_outer_range = 5, l_falloff_curve = 2.5, l_color = "#da0205"),
+		LIGHTMODE_EVACUATION = list(l_max_bright = 0.85, l_inner_range = 1, l_outer_range = 7, l_falloff_curve = 2.5, l_color = "#bf0000"),
+		LIGHTMODE_ALARM      = list(l_max_bright = 0.85, l_inner_range = 1, l_outer_range = 7, l_falloff_curve = 2.5, l_color = "#ff3333"),
+		LIGHTMODE_RADSTORM   = list(l_max_bright = 0.55, l_inner_range = 1, l_outer_range = 7, l_falloff_curve = 2.5, l_color = "#8A9929")
 		)
 	sound_on = 'sound/machines/lightson.ogg'
 	random_tone = TRUE
