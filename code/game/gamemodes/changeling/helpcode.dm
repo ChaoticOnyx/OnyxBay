@@ -1,4 +1,5 @@
 
+// For changeling names generation
 var/global/list/possible_changeling_IDs = list("Alpha","Beta","Gamma","Delta","Epsilon","Zeta","Eta","Theta","Iota","Kappa","Lambda","Mu","Nu","Xi","Omicron","Pi","Rho","Sigma","Tau","Upsilon","Phi","Chi","Psi","Omega")
 
 // Using in: /mob/living/carbon/human/proc/changeling_rapidregen()
@@ -83,6 +84,7 @@ var/global/list/possible_changeling_IDs = list("Alpha","Beta","Gamma","Delta","E
 	..()
 	M.revive()
 
+///// Changeling reagets recipes /////
 /datum/chemical_reaction/change_reviver
 	name = "Strange bioliquid"
 	result = /datum/reagent/rezadone/change_reviver
@@ -120,7 +122,7 @@ var/global/list/possible_changeling_IDs = list("Alpha","Beta","Gamma","Delta","E
 		visible_message("<span class='warning'>A grotesque weapon forms around [loc.name]\'s arm!</span>",
 		"<span class='warning'>Our arm twists and mutates, transforming it into a deadly weapon.</span>",
 		"<span class='italics'>You hear organic matter ripping and tearing!</span>")
-		src.creator = loc
+		creator = loc
 
 /obj/item/weapon/melee/changeling/Initialize()
 	. = ..()
@@ -155,7 +157,6 @@ var/global/list/possible_changeling_IDs = list("Alpha","Beta","Gamma","Delta","E
 		spawn(1)
 			if(src)
 				qdel(src)
-
 
 /obj/item/weapon/melee/changeling/arm_blade
 	name = "arm blade"
@@ -262,7 +263,7 @@ var/global/list/possible_changeling_IDs = list("Alpha","Beta","Gamma","Delta","E
 		var/obj/O = target
 		to_chat(user, "<span class='notice'>We send an electrical pulse up our finger, and into \the [O].</span>")
 		O.add_fingerprint(user)
-		O.emag_act(1,user,src)
+		O.emag_act(1, user, src)
 		log_and_message_admins("finger-lockpicked \an [O].")
 		ling_datum.chem_charges -= 10
 		return 1

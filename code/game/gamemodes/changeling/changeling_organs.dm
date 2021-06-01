@@ -78,7 +78,7 @@
 			if(istype(loc, /obj/item/organ/external))
 				brainchan.verbs += /mob/proc/transform_into_little_changeling
 			else
-				brainchan.verbs += /mob/proc/aggressive
+				brainchan.verbs += /mob/proc/headcrab_runaway
 	..()
 
 // Called when biostructure is placed inside a mob
@@ -97,9 +97,10 @@
 
 	return TRUE
 
+
 // Biostructure processing
 /obj/item/organ/internal/biostructure/Process()
-	..()
+	. = ..()
 	if(damage > max_damage / 2 && healing_threshold)
 		if(owner)
 			alert(owner, "We have taken massive core damage! We need regeneration.", "Core Damaged")
@@ -115,6 +116,7 @@
 			damage--
 			last_regen_time = world.time
 
+
 // Kills the biostructure
 /obj/item/organ/internal/biostructure/die()
 	if(brainchan)
@@ -128,14 +130,16 @@
 			host.death()
 	dead_icon = "Strange_biostructure_dead"
 	QDEL_NULL(brainchan)
-	..()
+	return ..()
+
 
 // After-creation thingy. Called by /human/revive(). Fuck if I know why since the biostructure, marked as 'foreign', doesn't get deleted during revive(). TODO: Find out what the fuck this piece of rotten spaghetti is.
 /obj/item/organ/internal/biostructure/after_organ_creation()
 	. = ..()
 	change_host(owner)
 
-// Transfers a biostructure from src.loc to atom/destination
+
+// Transfers a biostructure from src.loc to atom/destination (physically)
 /obj/item/organ/internal/biostructure/proc/change_host(atom/destination)
 	var/atom/source = loc
 	//deleteing biostructure from external organ so when that organ is deleted biostructure wont be deleted
@@ -160,16 +164,19 @@
 		var/mob/living/carbon/human/H = destination
 		owner = H
 		H.internal_organs_by_name[BP_CHANG] = src
+
 		var/obj/item/organ/external/E = H.get_organ(parent_organ)
 		if(E)	//wont happen but just in case
 			E.internal_organs |= src
 			if(E.status & ORGAN_CUT_AWAY)
 				E.status &= ~ORGAN_CUT_AWAY
-		var/obj/item/organ/internal/brain/brain = H.internal_organs_by_name[BP_BRAIN]
-		if(brain)
-			brain.vital = FALSE
+
+		var/obj/item/organ/internal/brain/B = H.internal_organs_by_name[BP_BRAIN]
+		if(B)
+			B.vital = FALSE
 	else
 		owner = null
+
 
 // Makes a new biostructure OR connects an existing one inside a mob
 /mob/living/proc/insert_biostructure()
@@ -191,45 +198,3 @@
 	else
 		internal_organs |= BIO
 	..()
-
-
-/mob/living/carbon/proc/move_biostructure()
-	var/obj/item/organ/internal/biostructure/BIO = src.internal_organs_by_name[BP_CHANG]
-	if(!BIO)
-		return
-	if(is_regenerating())
-		to_chat(src, SPAN_NOTICE("We can't do it right now."))
-		return
-	if(!BIO.moving)
-		var/list/available_limbs = organs.Copy()
-		for(var/obj/item/organ/external/E in available_limbs)
-			if(E.organ_tag == BP_R_HAND || E.organ_tag == BP_L_HAND || E.organ_tag == BP_R_FOOT || E.organ_tag == BP_L_FOOT || E.is_stump())
-				available_limbs -= E
-		var/obj/item/organ/external/new_parent = input(src, "Where do we want to move our [BIO.name]?") as null|anything in available_limbs
-
-		if(new_parent)
-			to_chat(src, SPAN("notice", "We start to move our [BIO.name] to \the [new_parent]."))
-			BIO.moving = TRUE
-			var/move_time
-			if(mind.changeling.recursive_enhancement)
-				move_time = rand(20, 50)
-			else
-				move_time = rand(80, 150)
-			if(do_after(src, move_time, can_move = 1, needhand = 0, incapacitation_flags = 0))
-				BIO.moving = FALSE
-				if(src.mind)
-					if(istype(src,/mob/living/carbon/human))
-						var/mob/living/carbon/human/H = src
-						var/obj/item/organ/external/E = H.get_organ(BIO.parent_organ)
-						if(!E)
-							to_chat(src, SPAN("notice", "We are missing that limb."))
-							return
-						if(istype(E))
-							E.internal_organs -= BIO
-						BIO.parent_organ = new_parent.organ_tag
-						E = H.get_organ(BIO.parent_organ)
-						if(!E)
-							CRASH("[src] spawned in [src] without a parent organ: [BIO.parent_organ].")
-						E.internal_organs |= BIO
-						to_chat(src, SPAN("notice", "Our [BIO.name] is now in \the [new_parent]."))
-						log_debug("([src])The changeling biostructure moved in [new_parent].")

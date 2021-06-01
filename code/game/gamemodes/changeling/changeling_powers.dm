@@ -1,4 +1,7 @@
 
+// HIVE MIND UPLOAD/DOWNLOAD DNA
+var/list/datum/absorbed_dna/hivemind_bank = list()
+
 /datum/changeling //stores changeling powers, changeling recharge thingie, changeling absorbed DNA and changeling ID (for changeling hivemind)
 	var/list/datum/absorbed_dna/absorbed_dna = list()
 	var/list/absorbed_languages = list()
@@ -30,7 +33,6 @@
 	var/rapidregen_active = FALSE
 	var/is_revive_ready = FALSE
 
-
 /datum/changeling/New()
 	..()
 	if(possible_changeling_IDs.len)
@@ -39,7 +41,6 @@
 		changelingID = "[changelingID]"
 	else
 		changelingID = "[rand(1,999)]"
-
 
 /datum/changeling/Destroy()
 	purchasedpowers = null
@@ -194,22 +195,17 @@
 	mind.changeling.chem_storage += 25
 	return TRUE
 
-
-// HIVE MIND UPLOAD/DOWNLOAD DNA
-var/list/datum/absorbed_dna/hivemind_bank = list()
-
-
 //////////
 //STINGS//
 //////////
 /mob/proc/sting_can_reach(mob/M, sting_range = 1)
-	if(M.loc == src.loc)
+	if(M.loc == loc)
 		return TRUE //target and source are in the same thing
 	if(!isturf(loc) || !isturf(M.loc))
 		to_chat(src, "<span class='warning'>We cannot reach \the [M] with a sting!</span>")
 		return FALSE //One is inside, the other is outside something.
 	// Maximum queued turfs set to 25; I don't *think* anything raises sting_range above 2, but if it does the 25 may need raising
-	if(!AStar(src.loc, M.loc, /turf/proc/AdjacentTurfs, /turf/proc/Distance, max_nodes=25, max_node_depth=sting_range)) //If we can't find a path, fail
+	if(!AStar(loc, M.loc, /turf/proc/AdjacentTurfs, /turf/proc/Distance, max_nodes = 25, max_node_depth = sting_range)) //If we can't find a path, fail
 		to_chat(src, "<span class='warning'>We cannot find a path to sting \the [M] by!</span>")
 		return FALSE
 	return TRUE
@@ -296,3 +292,47 @@ var/list/datum/absorbed_dna/hivemind_bank = list()
 	else
 		to_chat(src, "<span class='warning'>You prepare your ability.</span>")
 		PushClickHandler(path)
+
+
+// Transfers mind from wherewher we are into atom/A, moves biostructure in process
+/mob/proc/changeling_transfer_mind(atom/A)
+	var/obj/item/organ/internal/biostructure/BIO
+	if(istype(src, /mob/living/carbon/brain))
+		BIO = loc
+	else
+		BIO = locate() in contents
+
+	if(!BIO)
+		return FALSE
+
+	var/mob/M = A
+	if(!M)
+		return FALSE
+
+	BIO.change_host(M) // Biostructure object gets moved here
+
+	if(mind) // It SHOULD exist, but we cannot be completely sure when it comes to changelings code
+		if(!istype(M, /mob/living/carbon/brain))
+			mind.transfer_to(M) // Moving mind into a mob
+		else
+			BIO.mind_into_biostructure(src) // Moving mind into a biostructure
+	else
+		M.key = key // Cringe happened, using hard transfer by key and praying for things to still be repairable
+
+	var/mob/living/carbon/human/H = M
+	if(istype(H))
+		if(H.stat == DEAD) // Resurrects dead bodies, yet doesn't heal damage
+			H.setBrainLoss(0)
+			H.SetParalysis(0)
+			H.SetStunned(0)
+			H.SetWeakened(0)
+			H.shock_stage = 0
+			H.timeofdeath = 0
+			H.switch_from_dead_to_living_mob_list()
+			var/obj/item/organ/internal/heart/heart = H.internal_organs_by_name[BP_HEART]
+			heart.pulse = 1
+			H.set_stat(CONSCIOUS)
+			H.failed_last_breath = 0 // So mobs that died of oxyloss don't revive and have perpetual out of breath.
+			H.reload_fullscreen()
+
+	return TRUE

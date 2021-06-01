@@ -1,28 +1,67 @@
 
-//////////////////changelling mob///////////////////////////////////////////////////////////
+/mob/living/carbon/human/proc/has_any_exposed_bodyparts()
+	var/p_head  = FALSE
+	var/p_face  = FALSE
+	var/p_eyes  = FALSE
+	var/p_chest = FALSE
+	var/p_groin = FALSE
+	var/p_arms  = FALSE
+	var/p_hands = FALSE
+	var/p_legs  = FALSE
+	var/p_feet  = FALSE
+
+	for(var/obj/item/clothing/C in list(head, wear_mask, wear_suit, w_uniform, gloves, shoes))
+		if(!C)
+			continue
+		if((C.body_parts_covered & HEAD) && (C.item_flags & ITEM_FLAG_THICKMATERIAL))
+			p_head = TRUE
+		if((C.body_parts_covered & FACE) && (C.item_flags & ITEM_FLAG_THICKMATERIAL))
+			p_face = TRUE
+		if((C.body_parts_covered & EYES) && (C.item_flags & ITEM_FLAG_THICKMATERIAL))
+			p_eyes = TRUE
+		if((C.body_parts_covered & UPPER_TORSO) && (C.item_flags & ITEM_FLAG_THICKMATERIAL))
+			p_chest = TRUE
+		if((C.body_parts_covered & LOWER_TORSO) && (C.item_flags & ITEM_FLAG_THICKMATERIAL))
+			p_groin = TRUE
+		if((C.body_parts_covered & ARMS) && (C.item_flags & ITEM_FLAG_THICKMATERIAL))
+			p_arms = TRUE
+		if((C.body_parts_covered & HANDS) && (C.item_flags & ITEM_FLAG_THICKMATERIAL))
+			p_hands = TRUE
+		if((C.body_parts_covered & LEGS) && (C.item_flags & ITEM_FLAG_THICKMATERIAL))
+			p_legs = TRUE
+		if((C.body_parts_covered & FEET) && (C.item_flags & ITEM_FLAG_THICKMATERIAL))
+			p_feet = TRUE
+
+	return !(p_head && p_face && p_eyes && p_chest && p_groin && p_arms && p_hands && p_legs && p_feet)
+
 
 /mob/proc/transform_into_little_changeling()
 	set category = "Changeling"
 	set name = "Transform into little changeling"
 	set desc = "If we find ourselves inside a severed limb we will grow little limbs and jaws."
 
-	var/obj/item/organ/internal/biostructure/BIO = src.loc
+	var/obj/item/organ/internal/biostructure/BIO = loc
 	var/limb_to_del = BIO.loc
-	if (istype(BIO.loc,/obj/item/organ/external/leg))
+
+	if(istype(BIO.loc,/obj/item/organ/external/leg))
 		var/mob/living/simple_animal/hostile/little_changeling/leg_chan/leg_ling = new (get_turf(BIO.loc))
 		changeling_transfer_mind(leg_ling)
-	else if (istype(BIO.loc,/obj/item/organ/external/arm))
+
+	else if(istype(BIO.loc,/obj/item/organ/external/arm))
 		var/mob/living/simple_animal/hostile/little_changeling/arm_chan/arm_ling = new (get_turf(BIO.loc))
 		changeling_transfer_mind(arm_ling)
-	else if (istype(BIO.loc,/obj/item/organ/external/head))
+
+	else if(istype(BIO.loc,/obj/item/organ/external/head))
 		var/mob/living/simple_animal/hostile/little_changeling/head_chan/head_ling = new (get_turf(BIO.loc))
 		changeling_transfer_mind(head_ling)
+
 	else
 		return
 
 	BIO.loc.visible_message(SPAN("warning", "[BIO.loc] suddenly grows little legs!"), \
 							SPAN("changeling", "<font size='2'><b>We have just transformed into mobile but vulnerable form! We have to find a new host quickly!</b></font>"))
 	qdel(limb_to_del)
+
 
 /mob/living/simple_animal/hostile/little_changeling
 	name = "biomass"
@@ -62,11 +101,13 @@
 	break_stuff_probability = 15
 	faction = "biomass"
 
+
 /mob/living/simple_animal/hostile/little_changeling/New()
 	verbs += /mob/living/proc/ventcrawl
 	verbs += /mob/living/proc/hide
 	pixel_z = 6
 	..()
+
 
 /mob/living/simple_animal/hostile/little_changeling/death(gibbed, deathmessage = "has been ripped open!", show_dead_message)
 	var/obj/item/organ/internal/biostructure/BIO = locate() in contents
@@ -76,6 +117,7 @@
 		return
 	..()
 
+
 /mob/living/simple_animal/hostile/little_changeling/Destroy()
 	var/obj/item/organ/internal/biostructure/BIO = locate() in contents
 	if(BIO)
@@ -84,13 +126,14 @@
 		return
 	..()
 
+
 /mob/living/simple_animal/hostile/little_changeling/verb/prepare_paralyse_sting()
 	set category = "Changeling"
 	set name = "Paralyzis sting"
 	set desc = "We sting our prey and inject paralyzing toxin into them, making them harmless to us for relatively long period of time."
 
 	change_ctate(/datum/click_handler/changeling/little_paralyse)
-	return
+
 
 /mob/living/simple_animal/hostile/little_changeling/proc/paralyse_sting(mob/living/carbon/human/target as mob in oview(1))
 	if(stat == DEAD)
@@ -116,50 +159,19 @@
 		to_chat(src, SPAN("changeling", "We are too far away."))
 		return
 
-	// Part not exposed for sting flags
-	var/head = FALSE
-	var/face = FALSE
-	var/eyes = FALSE
-	var/chest = FALSE
-	var/groin = FALSE
-	var/arms = FALSE
-	var/hands = FALSE
-	var/legs = FALSE
-	var/feet = FALSE
-
-	// TODO[V] Refactor this one
-	for(var/obj/item/clothing/C in list(target.head, target.wear_mask, target.wear_suit, target.w_uniform, target.gloves, target.shoes))
-		if(C && (C.body_parts_covered & HEAD) && (C.item_flags & ITEM_FLAG_THICKMATERIAL))
-			head = TRUE
-		if(C && (C.body_parts_covered & FACE) && (C.item_flags & ITEM_FLAG_THICKMATERIAL))
-			face = TRUE
-		if(C && (C.body_parts_covered & EYES) && (C.item_flags & ITEM_FLAG_THICKMATERIAL))
-			eyes = TRUE
-		if(C && (C.body_parts_covered & UPPER_TORSO) && (C.item_flags & ITEM_FLAG_THICKMATERIAL))
-			chest = TRUE
-		if(C && (C.body_parts_covered & LOWER_TORSO) && (C.item_flags & ITEM_FLAG_THICKMATERIAL))
-			groin = TRUE
-		if(C && (C.body_parts_covered & ARMS) && (C.item_flags & ITEM_FLAG_THICKMATERIAL))
-			arms = TRUE
-		if(C && (C.body_parts_covered & HANDS) && (C.item_flags & ITEM_FLAG_THICKMATERIAL))
-			hands = TRUE
-		if(C && (C.body_parts_covered & LEGS) && (C.item_flags & ITEM_FLAG_THICKMATERIAL))
-			legs = TRUE
-		if(C && (C.body_parts_covered & FEET) && (C.item_flags & ITEM_FLAG_THICKMATERIAL))
-			feet = TRUE
-
-	if(head && face && eyes && chest && groin && arms && hands && legs && feet)
+	if(!target.has_any_exposed_bodyparts())
 		to_chat(src, SPAN("changeling", "[target]'s armor has protected them from our stinger."))
 		return
 
 	to_chat(target, SPAN("danger", "Your muscles begin to painfully tighten."))
 	target.Weaken(20)
 	target.Stun(20)
-	src.visible_message(SPAN("danger", "[src] has grown out a huge abominable stinger and pierced \the [target] with it!"))
+	visible_message(SPAN("danger", "[src] has grown out a huge abominable stinger and pierced \the [target] with it!"))
 	feedback_add_details("changeling_powers", "PB")
 
 	last_special = world.time + 15 SECONDS
 	return
+
 
 /mob/living/simple_animal/hostile/little_changeling/verb/prepare_infest()
 	set category = "Changeling"
@@ -167,7 +179,7 @@
 	set desc = "We latch onto potential host and merge with their body, taking control over it."
 
 	change_ctate(/datum/click_handler/changeling/infest)
-	return
+
 
 /mob/living/simple_animal/hostile/little_changeling/proc/infest(mob/living/carbon/human/target as mob in oview(1))
 	var/datum/changeling/changeling = src.mind.changeling
@@ -202,43 +214,11 @@
 		to_chat(src, SPAN("changeling", "We are already infesting!"))
 		return
 
-	if(target.stat != DEAD && !target.is_asystole() && !target.incapacitated() && !target.sleeping && !target.weakened && !target.stunned && !target.paralysis && !target.restrained())
+	if(target.stat != DEAD && !target.is_asystole() && !target.incapacitated(INCAPACITATION_ALL))
 		to_chat(src, SPAN("changeling", "We need our victim to be paralysed, dead or somehow else incapable of defending themself for us to latch on!"))
 		return
 
-	// Part not exposed for merge flags
-	var/head = FALSE
-	var/face = FALSE
-	var/eyes = FALSE
-	var/chest = FALSE
-	var/groin = FALSE
-	var/arms = FALSE
-	var/hands = FALSE
-	var/legs = FALSE
-	var/feet = FALSE
-
-	// TODO[V] Refactor this one later
-	for(var/obj/item/clothing/C in list(target.head, target.wear_mask, target.wear_suit, target.w_uniform, target.gloves, target.shoes))
-		if(C && (C.body_parts_covered & HEAD) && (C.item_flags & ITEM_FLAG_THICKMATERIAL))
-			head = TRUE
-		if(C && (C.body_parts_covered & FACE) && (C.item_flags & ITEM_FLAG_THICKMATERIAL))
-			face = TRUE
-		if(C && (C.body_parts_covered & EYES) && (C.item_flags & ITEM_FLAG_THICKMATERIAL))
-			eyes = TRUE
-		if(C && (C.body_parts_covered & UPPER_TORSO) && (C.item_flags & ITEM_FLAG_THICKMATERIAL))
-			chest = TRUE
-		if(C && (C.body_parts_covered & LOWER_TORSO) && (C.item_flags & ITEM_FLAG_THICKMATERIAL))
-			groin = TRUE
-		if(C && (C.body_parts_covered & ARMS) && (C.item_flags & ITEM_FLAG_THICKMATERIAL))
-			arms = TRUE
-		if(C && (C.body_parts_covered & HANDS) && (C.item_flags & ITEM_FLAG_THICKMATERIAL))
-			hands = TRUE
-		if(C && (C.body_parts_covered & LEGS) && (C.item_flags & ITEM_FLAG_THICKMATERIAL))
-			legs = TRUE
-		if(C && (C.body_parts_covered & FEET) && (C.item_flags & ITEM_FLAG_THICKMATERIAL))
-			feet = TRUE
-
-	if(head && face && eyes && chest && groin && arms && hands && legs && feet)
+	if(!target.has_any_exposed_bodyparts())
 		to_chat(src, SPAN("changeling", "We can't merge with [target] because they are coated with something impenetrable for us!"))
 		return
 
@@ -272,7 +252,7 @@
 	to_chat(target, SPAN("deadsay", "You have died."))
 	changeling.isabsorbing = FALSE
 
-	if(istype(src,/mob/living/simple_animal/hostile/little_changeling/arm_chan))
+	if(istype(src, /mob/living/simple_animal/hostile/little_changeling/arm_chan))
 		if(!target.has_limb(BP_L_ARM))
 			target.restore_limb(BP_L_ARM)
 			target.restore_limb(BP_L_HAND)
@@ -280,7 +260,7 @@
 			target.restore_limb(BP_R_ARM)
 			target.restore_limb(BP_R_HAND)
 
-	else if(istype(src,/mob/living/simple_animal/hostile/little_changeling/leg_chan))
+	else if(istype(src, /mob/living/simple_animal/hostile/little_changeling/leg_chan))
 		if(!target.has_limb(BP_L_LEG))
 			target.restore_limb(BP_L_LEG)
 			target.restore_limb(BP_L_FOOT)
@@ -288,7 +268,7 @@
 			target.restore_limb(BP_R_LEG)
 			target.restore_limb(BP_R_FOOT)
 
-	else if(istype(src,/mob/living/simple_animal/hostile/little_changeling/head_chan))
+	else if(istype(src, /mob/living/simple_animal/hostile/little_changeling/head_chan))
 		if(!target.has_limb(BP_HEAD))
 			target.restore_limb(BP_HEAD)
 			target.internal_organs_by_name[BP_BRAIN] = new /obj/item/organ/internal/brain(target)
@@ -306,10 +286,12 @@
 
 	return
 
+
 /mob/living/simple_animal/hostile/little_changeling/FindTarget()
 	. = ..()
 	if(.)
 		custom_emote(1, "nashes at [.]")
+
 
 /mob/living/simple_animal/hostile/little_changeling/AttackingTarget()
 	if(!harm_intent_damage)
@@ -322,6 +304,7 @@
 	if(ishuman(L) && prob(3))
 		L.Weaken(3)
 		L.visible_message(SPAN("danger", "\the [src] knocks down \the [L]!"))
+
 
 ///// Subtypes /////
 /mob/living/simple_animal/hostile/little_changeling/arm_chan
@@ -360,6 +343,7 @@
 	icon_state = "gib_leg"
 	icon_living = "gib_leg"
 
+
 ///// Headcrabs /////
 /mob/living/simple_animal/hostile/little_changeling/headcrab
 	maxHealth = 40
@@ -371,6 +355,27 @@
 	icon_state = "headcrab"
 	icon_living = "headcrab"
 	icon_dead = "headcrab_dead"
+
+
+/mob/living/simple_animal/hostile/little_changeling/headcrab/update_icon()
+	if(cloaked)
+		alpha = 25
+		set_light(0)
+		move_to_delay = initial(move_to_delay)
+	else
+		alpha = 255
+		set_light(0.25, 0.1, 3)
+		move_to_delay = 2
+
+
+/mob/living/simple_animal/hostile/little_changeling/headcrab/death(gibbed, deathmessage = "went limp and collapsed!", show_dead_message)
+	cloaked = 0
+	var/obj/item/organ/internal/biostructure/BIO = locate() in contents
+	if(BIO)
+		BIO.die()
+	..()
+	qdel(src) // The headcrab is supposed to be the biostructure itself (but with tiny legs), not a separate entity
+
 
 /mob/living/simple_animal/hostile/little_changeling/headcrab/verb/Vanish()
 	set category = "Changeling"
@@ -397,25 +402,8 @@
 		speed = 4
 		apply_effect(2, STUN, 0)
 
-/mob/living/simple_animal/hostile/little_changeling/headcrab/update_icon()
-	if(cloaked)
-		alpha = 25
-		set_light(0)
-		move_to_delay = initial(move_to_delay)
-	else
-		alpha = 255
-		set_light(0.25, 0.1, 3)
-		move_to_delay = 2
 
-/mob/living/simple_animal/hostile/little_changeling/headcrab/death(gibbed, deathmessage = "went limp and collapsed!", show_dead_message)
-	cloaked = 0
-	var/obj/item/organ/internal/biostructure/BIO = locate() in contents
-	if(BIO)
-		BIO.die()
-	..()
-	qdel(src) // The headcrab is supposed to be the biostructure itself, not a separate entity
-
-/mob/proc/aggressive() // Well fuck I can't decide whether it should belong here or somewhere in /changeling/powers
+/mob/proc/headcrab_runaway() // Well fuck I can't decide whether it should belong here or somewhere in /changeling/powers
 	set category = "Changeling"
 	set name = "Runaway form"
 	set desc = "We take our weakest form."
@@ -426,8 +414,8 @@
 	var/mob/living/simple_animal/hostile/little_changeling/headcrab/HC = new (get_turf(src))
 	var/obj/item/organ/internal/biostructure/BIO = loc
 
+	BIO.parent_organ = BP_CHEST // So we don't end up inside nonexistent limbs
 	changeling_transfer_mind(HC)
 
 	HC.visible_message(SPAN("danger", "[BIO] suddenly grows tiny eyes and reforms it's appendages into legs!"), \
 					   SPAN("changeling", "<font size='2'><b>We are in our weakest form! WE HAVE TO SURVIVE!</b></font>"))
-

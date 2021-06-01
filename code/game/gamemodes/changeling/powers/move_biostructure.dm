@@ -8,44 +8,46 @@
 	if(T)
 		T.move_biostructure()
 
-/mob/proc/changeling_transfer_mind(atom/A)
-	var/obj/item/organ/internal/biostructure/BIO
-	if(istype(src, /mob/living/carbon/brain))
-		BIO = loc
-	else
-		BIO = locate() in contents
-
+// Moves biostructure inside a mob's body
+/mob/living/carbon/proc/move_biostructure()
+	var/obj/item/organ/internal/biostructure/BIO = internal_organs_by_name[BP_CHANG]
 	if(!BIO)
-		return FALSE
+		return
 
-	var/mob/M = A
-	if(!M)
-		return FALSE
+	if(is_regenerating())
+		to_chat(src, SPAN_NOTICE("We can't do it right now."))
+		return
 
-	BIO.change_host(M)
+	if(!BIO.moving)
+		var/list/available_limbs = organs.Copy()
+		for(var/obj/item/organ/external/E in available_limbs)
+			if(E.organ_tag == BP_R_HAND || E.organ_tag == BP_L_HAND || E.organ_tag == BP_R_FOOT || E.organ_tag == BP_L_FOOT || E.is_stump())
+				available_limbs -= E
+		var/obj/item/organ/external/new_parent = input(src, "Where do we want to move our [BIO.name]?") as null|anything in available_limbs
 
-	if(mind)	// basicaly if its mob then mind transfers to mob otherwise creating brain inside of biostucture
-		if(!istype(M, /mob/living/carbon/brain))
-			mind.transfer_to(M)
-		else
-			BIO.mind_into_biostructure(src)
-	else
-		if(istype(M))
-			M.key = key
-
-	var/mob/living/carbon/human/H = M
-	if(istype(H))
-		if(H.stat == DEAD)
-			H.setBrainLoss(0)
-			H.SetParalysis(0)
-			H.SetStunned(0)
-			H.SetWeakened(0)
-			H.shock_stage = 0
-			H.timeofdeath = 0
-			H.switch_from_dead_to_living_mob_list()
-			var/obj/item/organ/internal/heart/heart = H.internal_organs_by_name[BP_HEART]
-			heart.pulse = 1
-			H.set_stat(CONSCIOUS)
-			H.failed_last_breath = 0 // So mobs that died of oxyloss don't revive and have perpetual out of breath.
-			H.reload_fullscreen()
-	return TRUE
+		if(new_parent)
+			to_chat(src, SPAN("notice", "We start to move our [BIO.name] to \the [new_parent]."))
+			BIO.moving = TRUE
+			var/move_time
+			if(mind.changeling.recursive_enhancement)
+				move_time = rand(20, 50)
+			else
+				move_time = rand(80, 150)
+			if(do_after(src, move_time, can_move = 1, needhand = 0, incapacitation_flags = 0))
+				BIO.moving = FALSE
+				if(src.mind)
+					if(istype(src,/mob/living/carbon/human))
+						var/mob/living/carbon/human/H = src
+						var/obj/item/organ/external/E = H.get_organ(BIO.parent_organ)
+						if(!E)
+							to_chat(src, SPAN("notice", "We are missing that limb."))
+							return
+						if(istype(E))
+							E.internal_organs -= BIO
+						BIO.parent_organ = new_parent.organ_tag
+						E = H.get_organ(BIO.parent_organ)
+						if(!E)
+							CRASH("[src] spawned in [src] without a parent organ: [BIO.parent_organ].")
+						E.internal_organs |= BIO
+						to_chat(src, SPAN("notice", "Our [BIO.name] is now in \the [new_parent]."))
+						log_debug("([src])The changeling biostructure moved in [new_parent].")
