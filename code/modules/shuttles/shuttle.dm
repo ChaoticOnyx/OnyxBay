@@ -144,6 +144,8 @@
 	if(!destination)
 		return FALSE
 	for(var/mob/M in GLOB.player_list)
+		if(istype(M, /mob/new_player))
+			continue
 		if(M.loc.z != destination.loc.z)
 			continue
 
