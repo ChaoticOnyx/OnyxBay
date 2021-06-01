@@ -133,9 +133,10 @@
 	if(internal_organs)
 		for(var/obj/item/organ/O in internal_organs)
 			qdel(O)
+		internal_organs.Cut()
 
 	applied_pressure = null
-	if(splinted && splinted.loc == src)
+	if(splinted?.loc == src)
 		qdel(splinted)
 	splinted = null
 

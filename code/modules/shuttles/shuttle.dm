@@ -114,8 +114,8 @@
 			while (world.time < arrive_time)
 				if(!fwooshed && (arrive_time - world.time) < 100)
 					fwooshed = 1
-					play_arrive_sound(destination)
-					playsound(destination, sound_landing, 30, 0, 7)
+					if(play_arrive_sound(destination))
+						playsound(destination, sound_landing, 30, 0, 7)
 				sleep(5)
 			if(!attempt_move(destination))
 				attempt_move(start_location) //try to go back to where we started. If that fails, I guess we're stuck in the interim location
@@ -141,12 +141,17 @@
 
 
 /datum/shuttle/proc/play_arrive_sound(obj/effect/shuttle_landmark/destination)
-	for (var/mob/M in GLOB.player_list)
-		if (M.loc.z != destination.loc.z)
+	if(!destination)
+		return FALSE
+	for(var/mob/M in GLOB.player_list)
+		if(istype(M, /mob/new_player))
+			continue
+		if(M.loc.z != destination.loc.z)
 			continue
 
-		if (get_dist(destination, M) <= shuttle_size)
+		if(get_dist(destination, M) <= shuttle_size)
 			M.playsound_local(M.loc, 'sound/effects/vessel_passby.ogg', 50, TRUE)
+	return TRUE
 
 //just moves the shuttle from A to B, if it can be moved
 //A note to anyone overriding move in a subtype. shuttle_moved() must absolutely not, under any circumstances, fail to move the shuttle.
@@ -193,7 +198,7 @@
 	current_location = destination
 
 	// if there's a zlevel above our destination, paint in a ceiling on it so we retain our air
-	if(HasAbove(current_location.z))
+	if(HasAbove(current_location.z) && ceiling_type)
 		for(var/area/A in shuttle_area)
 			for(var/turf/TD in A.contents)
 				var/turf/TA = GetAbove(TD)

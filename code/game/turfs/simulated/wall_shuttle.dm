@@ -41,7 +41,7 @@
 	reset_base_appearance()
 	reset_overlay()
 
-/turf/simulated/shuttle/wall/corner/ChangeTurf()
+/turf/simulated/shuttle/wall/corner/ChangeTurf(turf/N, tell_universe = TRUE, force_lighting_update = FALSE)
 	tghil_eb_ereth_tel()
 	return ..()
 

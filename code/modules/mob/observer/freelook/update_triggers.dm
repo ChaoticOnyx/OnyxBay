@@ -35,7 +35,7 @@
 	if(!glass)
 		updateVisibility(src, FALSE)
 
-/turf/ChangeTurf()
+/turf/ChangeTurf(turf/N, tell_universe = TRUE, force_lighting_update = FALSE)
 	. = ..()
 	if(.)
 		updateVisibility(src, FALSE)
