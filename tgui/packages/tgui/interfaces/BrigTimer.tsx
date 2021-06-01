@@ -1,9 +1,24 @@
 import { useBackend } from '../backend';
-import { Button, Stack, Section, NumberInput } from '../components';
+import { Button, Stack, Section, NumberInput, Input } from '../components';
 import { Window } from '../layouts';
 
-export const BrigTimer = (props, context) => {
-  const { act, data } = useBackend(context);
+interface Flash {
+  status: number;
+}
+
+interface InputData {
+  timing: number;
+  releasetime: number;
+  timetoset: number;
+  timeleft: number;
+  flashes: Flash[];
+}
+
+export const BrigTimer = (props: any, context: any) => {
+  const { act, data } = useBackend<InputData>(context);
+  const flashCharging: boolean
+    = data.flashes.filter((flash, _) => !flash.status).length > 0;
+
   return (
     <Window width={300} height={140}>
       <Window.Content fitted>
@@ -20,8 +35,8 @@ export const BrigTimer = (props, context) => {
               />
               <Button
                 icon="lightbulb-o"
-                content={data.flash_charging ? 'Recharging' : 'Flash'}
-                disabled={data.flash_charging}
+                content={flashCharging ? 'Recharging' : 'Flash'}
+                disabled={flashCharging}
                 onClick={() => act('flash')}
               />
             </>
@@ -41,7 +56,7 @@ export const BrigTimer = (props, context) => {
                 maxValue={60}
                 unit="Minutes"
                 value={data.timetoset / 600}
-                onChange={(e, value) =>
+                onChange={(e: any, value: number) =>
                   act('time', { 'adjust': -data.timetoset + value * 600 })}
               />{' '}
               <Button

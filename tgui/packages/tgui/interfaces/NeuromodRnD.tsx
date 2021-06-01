@@ -11,10 +11,55 @@ import {
   Flex,
   Divider,
 } from '../components';
-import { Lifeform } from './Psychoscope';
-import { logger } from '../logging';
+import { ScanData } from './Psychoscope';
 
-const CheckItem = (props, context) => {
+interface Beaker {
+  check_status: number;
+  volume_max: number;
+  volume: number;
+}
+
+interface Lifeform {
+  mob_type: string;
+  kingdom: string;
+  class: string;
+  genus: string;
+  species: string;
+  desc: string;
+  tech_rewards: any[];
+  neuromod_rewards: any[];
+  type: string;
+  scan_count: number;
+}
+
+interface Neuromod {
+  name: string;
+  desc: string;
+  type: string;
+  chance: number;
+  research_time: number;
+  researched?: number;
+}
+
+interface NeuromodShell {
+  neuromod: Neuromod;
+  created_for: string;
+}
+interface InputData {
+  disk: string;
+  beaker: Beaker;
+  neuromod_shell: NeuromodShell;
+  neuromods: Neuromod[];
+  lifeforms: Lifeform[];
+  selected_neuromod: Neuromod;
+  selected_lifeform: Lifeform;
+  is_researching: number;
+  research_progress: number;
+  development_ready: number;
+  development_progress: number;
+}
+
+const CheckItem = (props: any, _: any) => {
   const { text, checked } = props;
 
   return (
@@ -25,8 +70,8 @@ const CheckItem = (props, context) => {
   );
 };
 
-const NeuromodResearching = (props, context) => {
-  const { act, data } = useBackend(context);
+const NeuromodResearching = (_: any, context: any) => {
+  const { act, data } = useBackend<InputData>(context);
   const { selected_neuromod, is_researching, research_progress } = data;
 
   if (selected_neuromod) {
@@ -87,8 +132,8 @@ const NeuromodResearching = (props, context) => {
   return <NoticeBox>No Selected Neuromod</NoticeBox>;
 };
 
-const NeuromodDevelopment = (props, context) => {
-  const { act, data } = useBackend(context);
+const NeuromodDevelopment = (_: any, context: any) => {
+  const { act, data } = useBackend<InputData>(context);
   const {
     neuromod_shell,
     beaker,
@@ -175,8 +220,8 @@ const NeuromodDevelopment = (props, context) => {
   );
 };
 
-const NeuromodsList = (props, context) => {
-  const { act, data } = useBackend(context);
+const NeuromodsList = (_: any, context: any) => {
+  const { act, data } = useBackend<InputData>(context);
   const { neuromods } = data;
 
   if (!neuromods) {
@@ -211,8 +256,8 @@ const NeuromodsList = (props, context) => {
   );
 };
 
-const LifeformsList = (props, context) => {
-  const { act, data } = useBackend(context);
+const LifeformsList = (_: any, context: any) => {
+  const { act, data } = useBackend<InputData>(context);
   const { lifeforms, selected_lifeform } = data;
 
   if (!lifeforms) {
@@ -223,7 +268,7 @@ const LifeformsList = (props, context) => {
     <Section ml={0.5} title="Lifeforms">
       {lifeforms.map((lifeform, i) => (
         <>
-          <Lifeform lifeformData={lifeforms[i]}>
+          <ScanData lifeformData={lifeforms[i]}>
             <Button
               disabled={selected_lifeform?.type === lifeform.type}
               content="Select"
@@ -232,7 +277,7 @@ const LifeformsList = (props, context) => {
                   lifeform_type: lifeform.type,
                 })}
             />
-          </Lifeform>
+          </ScanData>
           {i !== lifeforms.length - 1 ? <Divider /> : null}
         </>
       ))}
@@ -240,8 +285,8 @@ const LifeformsList = (props, context) => {
   );
 };
 
-const DiskContents = (props, context) => {
-  const { act, data } = useBackend(context);
+const DiskContents = (_: any, context: any) => {
+  const { act, data } = useBackend<InputData>(context);
   const { disk } = data;
 
   if (!disk) {
@@ -272,7 +317,7 @@ const DiskContents = (props, context) => {
                 content="Save to Disk"
                 disabled={data.selected_lifeform ? false : true}
                 onClick={() =>
-                  act(ref, 'saveLifeformToDisk', {
+                  act('saveLifeformToDisk', {
                     lifeform_type: data.selected_lifeform.type,
                   })}
               />
@@ -282,7 +327,7 @@ const DiskContents = (props, context) => {
                 content="Save to Disk"
                 disabled={data.selected_neuromod ? false : true}
                 onClick={() =>
-                  act(ref, 'saveNeuromodToDisk', {
+                  act('saveNeuromodToDisk', {
                     neuromod_type: data.selected_neuromod.type,
                   })}
               />
@@ -294,8 +339,7 @@ const DiskContents = (props, context) => {
   );
 };
 
-const DataManagement = (props, context) => {
-  const { act, data } = useBackend(context);
+const DataManagement = (props: any, context: any) => {
   const [tabIndex, setTabIndex] = useLocalState(context, 'tabDataIndex', 0);
 
   const tabs = [
@@ -336,8 +380,8 @@ const DataManagement = (props, context) => {
   );
 };
 
-export const NeuromodRnD = (props, context) => {
-  const { act, data } = useBackend(context);
+export const NeuromodRnD = (props: any, context: any) => {
+  const { act, data } = useBackend<InputData>(context);
   const [tabIndex, setTabIndex] = useLocalState(context, 'tabIndex', 0);
 
   const tabs = [
@@ -414,8 +458,8 @@ export const NeuromodRnD = (props, context) => {
               {data.disk === null
                 ? 'Empty'
                 : data.disk === 'neuromod'
-                  ? 'Neuromod Data'
-                  : 'Lifeform Data'}
+                ? 'Neuromod Data'
+                : 'Lifeform Data'}
             </LabeledList.Item>
 
             <LabeledList.Item label="Neuromod Shell Slot">

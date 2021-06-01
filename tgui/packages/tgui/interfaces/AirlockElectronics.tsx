@@ -1,13 +1,30 @@
 import { useBackend, useLocalState } from '../backend';
 import { Button, Flex, LabeledList, Section, Tabs } from '../components';
 import { Window } from '../layouts';
-import { sortBy } from 'common/collections';
 
-export const AirlockElectronics = (props, context) => {
-  const { act, data } = useBackend(context);
-  const { oneAccess, unres_direction } = data;
+interface Access {
+  name: string;
+  id: number;
+  req: number;
+}
+
+interface Region {
+  name: string;
+  accesses: Access[];
+}
+
+interface InputData {
+  regions: Region[];
+  oneAccess: number;
+  locked: number;
+  lockable: number;
+}
+
+export const AirlockElectronics = (props: any, context: any) => {
+  const { act, data } = useBackend<InputData>(context);
   const regions = data.regions || [];
-  let accesses = [];
+  const oneAccess = data.oneAccess;
+  let accesses: Access[] = [];
   data.regions.map(
     (region) =>
       (accesses = accesses.concat(
@@ -30,9 +47,9 @@ export const AirlockElectronics = (props, context) => {
           </LabeledList>
         </Section>
         <AirlockAccessList
-          accesses={regions}
+          regions={regions}
           selectedList={accesses}
-          accessMod={(id) =>
+          accessMod={(id: number) =>
             act('set', {
               access: id,
             })}
@@ -57,21 +74,27 @@ const diffMap = {
   },
 };
 
-export const AirlockAccessList = (props, context) => {
-  const { accesses = [], selectedList = [], accessMod } = props;
-  const [selectedAccessName, setSelectedAccessName] = useLocalState(
+export const AirlockAccessList = (props: any, context: any) => {
+  const {
+    regions = [],
+    selectedList = [],
+    accessMod,
+  }: {
+    regions: Region[];
+    selectedList: any[];
+    accessMod: (id: number) => void;
+  } = props;
+  const [selectedRegionName, setSelectedRegionName] = useLocalState(
     context,
     'accessName',
-    accesses[0]?.name
+    regions[0]?.name
   );
-  const selectedAccess = accesses.find(
-    (access) => access.name === selectedAccessName
+  const selectedAccess = regions.find(
+    (region) => region.name === selectedRegionName
   );
-  const selectedAccessEntries = sortBy((entry) => entry.desc)(
-    selectedAccess?.accesses || []
-  );
+  const selectedAccessEntries = selectedAccess?.accesses || [];
 
-  const checkAccessIcon = (accesses) => {
+  const checkAccessIcon = (accesses: Access[]) => {
     let oneAccess = false;
     let oneInaccess = false;
     for (let element of accesses) {
@@ -95,7 +118,7 @@ export const AirlockAccessList = (props, context) => {
       <Flex>
         <Flex.Item>
           <Tabs vertical>
-            {accesses.map((access) => {
+            {regions.map((access) => {
               const entries = access.accesses || [];
               const icon = diffMap[checkAccessIcon(entries)].icon;
               const color = diffMap[checkAccessIcon(entries)].color;
@@ -105,8 +128,8 @@ export const AirlockAccessList = (props, context) => {
                   altSelection
                   color={color}
                   icon={icon}
-                  selected={access.name === selectedAccessName}
-                  onClick={() => setSelectedAccessName(access.name)}>
+                  selected={access.name === selectedRegionName}
+                  onClick={() => setSelectedRegionName(access.name)}>
                   {access.name}
                 </Tabs.Tab>
               );

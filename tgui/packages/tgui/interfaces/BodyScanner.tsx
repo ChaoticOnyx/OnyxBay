@@ -11,7 +11,43 @@ import {
 } from '../components';
 import { Window } from '../layouts';
 
-export const BodyScanner = (props, context) => {
+interface Organ {
+  name: string;
+  status: string[];
+  damage: string[];
+}
+
+interface MedicalData {
+  object: string;
+  scan_date: string;
+  brain_activity: number;
+  pulse: string;
+  blood_volume: number;
+  blood_volume_abs: number;
+  blood_volume_max: number;
+  blood_type: string;
+  blood_pressure: string;
+  blood_oxygenation: number;
+  warnings: string[];
+  body_temperature_c: number;
+  body_temperature_f: number;
+  brute_severity: string;
+  burn_severity: string;
+  tox_severity: string;
+  oxy_severity: string;
+  rad_severity: string;
+  clone_severity: string;
+  immunity: number;
+  external_organs: Organ[];
+  internal_organs: Organ[];
+}
+
+interface InputData {
+  connected: string;
+  medical_data: MedicalData;
+}
+
+export const BodyScanner = (props: any, context: any) => {
   const { act, data } = useBackend(context);
 
   return (
@@ -23,8 +59,8 @@ export const BodyScanner = (props, context) => {
   );
 };
 
-const ScanData = (props, context) => {
-  const { act, data } = useBackend(context);
+const ScanData = (props: any, context: any) => {
+  const { act, data } = useBackend<InputData>(context);
   if (!data.medical_data) {
     return <NoticeBox>Body Scanner is empty.</NoticeBox>;
   }
@@ -64,22 +100,20 @@ const ScanData = (props, context) => {
         <Section title="Warnings">
           {data.medical_data.warnings.length
             ? data.medical_data.warnings.map((warning, i) => {
-              return <NoticeBox key={i}>{warning}</NoticeBox>;
-            })
+                return <NoticeBox key={i}>{warning}</NoticeBox>;
+              })
             : 'Nothing'}
         </Section>
 
         <Section title="Common">
           <LabeledList>
             <LabeledList.Item label="Pulse">
-              {data.medical_data.pulse >= 0
-                ? data.medical_data.pulse + ' BPM'
-                : 'Nonstandard biology'}
+              {`${data.medical_data.pulse} BPM`}
             </LabeledList.Item>
 
             <LabeledList.Item label="Body Temperature">
-              {data.medical_data.body_temperature_c} ℃ (
-              {data.medical_data.body_temperature_f} ℉)
+              {data.medical_data.body_temperature_c} °C (
+              {data.medical_data.body_temperature_f} °F)
             </LabeledList.Item>
 
             <LabeledList.Item label="Brain Activity">
@@ -163,8 +197,8 @@ const ScanData = (props, context) => {
                 data.medical_data.brute_severity === 'None'
                   ? 'good'
                   : data.medical_data.brute_severity === 'Severe'
-                    ? 'bad'
-                    : 'average'
+                  ? 'bad'
+                  : 'average'
               }>
               {data.medical_data.brute_severity}
             </LabeledList.Item>
@@ -175,8 +209,8 @@ const ScanData = (props, context) => {
                 data.medical_data.burn_severity === 'None'
                   ? 'good'
                   : data.medical_data.burn_severity === 'Severe'
-                    ? 'bad'
-                    : 'average'
+                  ? 'bad'
+                  : 'average'
               }>
               {data.medical_data.burn_severity}
             </LabeledList.Item>
@@ -187,8 +221,8 @@ const ScanData = (props, context) => {
                 data.medical_data.tox_severity === 'None'
                   ? 'good'
                   : data.medical_data.tox_severity === 'Severe'
-                    ? 'bad'
-                    : 'average'
+                  ? 'bad'
+                  : 'average'
               }>
               {data.medical_data.tox_severity}
             </LabeledList.Item>
@@ -199,8 +233,8 @@ const ScanData = (props, context) => {
                 data.medical_data.oxy_severity === 'None'
                   ? 'good'
                   : data.medical_data.oxy_severity === 'Severe'
-                    ? 'bad'
-                    : 'average'
+                  ? 'bad'
+                  : 'average'
               }>
               {data.medical_data.oxy_severity}
             </LabeledList.Item>
@@ -211,8 +245,8 @@ const ScanData = (props, context) => {
                 data.medical_data.rad_severity === 'None'
                   ? 'good'
                   : data.medical_data.rad_severity === 'Severe'
-                    ? 'bad'
-                    : 'average'
+                  ? 'bad'
+                  : 'average'
               }>
               {data.medical_data.rad_severity}
             </LabeledList.Item>
@@ -223,8 +257,8 @@ const ScanData = (props, context) => {
                 data.medical_data.clone_severity === 'None'
                   ? 'good'
                   : data.medical_data.clone_severity === 'Severe'
-                    ? 'bad'
-                    : 'average'
+                  ? 'bad'
+                  : 'average'
               }>
               {data.medical_data.clone_severity}
             </LabeledList.Item>

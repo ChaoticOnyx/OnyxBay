@@ -2,9 +2,20 @@ import { useBackend } from '../backend';
 import { Window } from '../layouts';
 import { Button, LabeledList, Section, ProgressBar } from '../components';
 
-export const ReSleever = (props, context) => {
-  const { act, data } = useBackend(context);
-  const progress = String(data.remaining / data.timetosleeve);
+interface InputData {
+  name: string;
+  lace?: string;
+  isOccupiedEjectable: number;
+  isLaceEjectable: number;
+  active: number;
+  remaining: number;
+  timetosleeve: number;
+  ready: number;
+}
+
+export const ReSleever = (props: any, context: any) => {
+  const { act, data } = useBackend<InputData>(context);
+  const progress = data.remaining / data.timetosleeve;
 
   return (
     <Window width={400} height={300}>

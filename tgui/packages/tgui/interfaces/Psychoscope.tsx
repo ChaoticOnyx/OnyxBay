@@ -10,15 +10,65 @@ import {
   Flex,
   Divider,
 } from '../components';
-import { logger } from '../logging';
 
-const OpenedNeuromods = (props, context) => {
-  const { act, data } = useBackend(context);
-  const { state, scan, disk } = props;
+interface Lifeform {
+  mob_type: string;
+  kingdom: string;
+  class: string;
+  genus: string;
+  species: string;
+  desc: string;
+  tech_rewards: any[];
+  neuromod_rewards: any[];
+  type: string;
+}
+
+interface ScanRecord {
+  date: string;
+  name: string;
+}
+
+interface Neuromod {
+  neuromod_name: string;
+  neuromod_desc: string;
+  neuromod_type: string;
+  from?: string;
+  fromType?: string;
+}
+
+interface Tech {
+  tech_id: string;
+  tech_name: string;
+  tech_level: number;
+  from?: string;
+  fromType?: string;
+}
+
+interface Scan {
+  lifeform: Lifeform;
+  scan_count: number;
+  scans_journal: ScanRecord[];
+  opened_neuromods: Neuromod[];
+  opened_techs: Tech[];
+}
+
+interface InputData {
+  status: number;
+  scanned: Scan[];
+  total_lifeforms: number;
+  opened_lifeforms: number;
+  selected_lifeform: Scan;
+  inserted_disk: string;
+  charge: number;
+  max_charge: number;
+}
+
+const OpenedNeuromods = (_: any, context: any) => {
+  const { act, data } = useBackend<InputData>(context);
 
   const scanned = data.scanned || [];
   const { inserted_disk } = data;
-  let neuromods = [];
+  let neuromods: Neuromod[] = [];
 
   scanned.forEach((scan) => {
     scan.opened_neuromods?.map((neuromod, _) => {
@@ -34,39 +84,43 @@ const OpenedNeuromods = (props, context) => {
     return <NoticeBox>No Opened Neuromods.</NoticeBox>;
   }
 
-  return neuromods.map((neuromod, i) => (
+  return (
     <>
-      <LabeledList>
-        <LabeledList.Item label="Name">
-          {neuromod.neuromod_name}
-        </LabeledList.Item>
-        <LabeledList.Item label="Description">
-          {neuromod.neuromod_desc}
-        </LabeledList.Item>
-        <LabeledList.Item label="Source">{neuromod.from}</LabeledList.Item>
-        <LabeledList.Item label="Actions">
-          <Button
-            disabled={inserted_disk !== 'neuromod'}
-            icon="save"
-            content="Save to Disk"
-            onClick={() =>
-              act('saveNeuromodToDisk', {
-                lifeform_type: neuromod.fromType,
-                neuromod_type: neuromod.neuromod_type,
-              })}
-          />
-        </LabeledList.Item>
-      </LabeledList>
-      {i !== neuromods.length - 1 ? <Divider /> : null}
+      {neuromods.map((neuromod, i) => (
+        <>
+          <LabeledList>
+            <LabeledList.Item label="Name">
+              {neuromod.neuromod_name}
+            </LabeledList.Item>
+            <LabeledList.Item label="Description">
+              {neuromod.neuromod_desc}
+            </LabeledList.Item>
+            <LabeledList.Item label="Source">{neuromod.from}</LabeledList.Item>
+            <LabeledList.Item label="Actions">
+              <Button
+                disabled={inserted_disk !== 'neuromod'}
+                icon="save"
+                content="Save to Disk"
+                onClick={() =>
+                  act('saveNeuromodToDisk', {
+                    lifeform_type: neuromod.fromType,
+                    neuromod_type: neuromod.neuromod_type,
+                  })}
+              />
+            </LabeledList.Item>
+          </LabeledList>
+          {i !== neuromods.length - 1 ? <Divider /> : null}
+        </>
+      ))}
     </>
-  ));
+  );
 };
 
-const OpenedTechnologies = (props, context) => {
-  const { act, data } = useBackend(context);
+const OpenedTechnologies = (_: any, context: any) => {
+  const { act, data } = useBackend<InputData>(context);
   const scanned = data.scanned || [];
   const { inserted_disk } = data;
-  let techs = [];
+  let techs: Tech[] = [];
 
   scanned.forEach((scan) => {
     scan.opened_techs?.map((tech, _) => {
@@ -82,57 +136,68 @@ const OpenedTechnologies = (props, context) => {
     return <NoticeBox>No opened technologies.</NoticeBox>;
   }
 
-  return techs.map((tech, i) => (
+  return (
     <>
-      <LabeledList>
-        <LabeledList.Item label="Name">{tech.tech_name}</LabeledList.Item>
-        <LabeledList.Item label="Level">{tech.tech_level}</LabeledList.Item>
-        <LabeledList.Item label="Source">{tech.from}</LabeledList.Item>
-        <LabeledList.Item label="Actions">
-          <Button
-            icon="save"
-            content="Save to Disk"
-            disabled={inserted_disk !== 'tech'}
-            onClick={() =>
-              act('saveTechToDisk', {
-                lifeform_type: tech.fromType,
-                tech_id: tech.tech_id,
-                tech_level: tech.tech_level,
-              })}
-          />
-        </LabeledList.Item>
-      </LabeledList>
-      {i !== techs.length - 1 ? <Divider /> : null}
+      {techs.map((tech, i) => (
+        <>
+          <LabeledList>
+            <LabeledList.Item label="Name">{tech.tech_name}</LabeledList.Item>
+            <LabeledList.Item label="Level">{tech.tech_level}</LabeledList.Item>
+            <LabeledList.Item label="Source">{tech.from}</LabeledList.Item>
+            <LabeledList.Item label="Actions">
+              <Button
+                icon="save"
+                content="Save to Disk"
+                disabled={inserted_disk !== 'tech'}
+                onClick={() =>
+                  act('saveTechToDisk', {
+                    lifeform_type: tech.fromType,
+                    tech_id: tech.tech_id,
+                    tech_level: tech.tech_level,
+                  })}
+              />
+            </LabeledList.Item>
+          </LabeledList>
+          {i !== techs.length - 1 ? <Divider /> : null}
+        </>
+      ))}
     </>
-  ));
+  );
 };
 
-const ScanReport = (props, context) => {
-  const { act, data } = useBackend(context);
-  const { scans_journal } = props.lifeformData;
+const ScanReport = (props: any, _: any) => {
+  const lifeformData: Scan = props.lifeformData;
+  const { scans_journal } = lifeformData;
 
   if (!scans_journal) {
     return <NoticeBox>No Scans</NoticeBox>;
   }
 
-  return scans_journal.map((scan, i) => {
-    return (
-      <>
-        <LabeledList>
-          <LabeledList.Item label="Date">{scan.date}</LabeledList.Item>
-          <LabeledList.Item label="Object Name">{scan.name}</LabeledList.Item>
-        </LabeledList>
-        {i !== scans_journal.length - 1 ? <Divider /> : null}
-      </>
-    );
-  });
+  return (
+    <>
+      {scans_journal.map((scan, i) => {
+        return (
+          <>
+            <LabeledList>
+              <LabeledList.Item label="Date">{scan.date}</LabeledList.Item>
+              <LabeledList.Item label="Object Name">
+                {scan.name}
+              </LabeledList.Item>
+            </LabeledList>
+            {i !== scans_journal.length - 1 ? <Divider /> : null}
+          </>
+        );
+      })}
+    </>
+  );
 };
 
-export const Lifeform = (props, context) => {
+export const ScanData = (props: any, _: any) => {
   const showScanHistory = props.showScanHistory || false;
-  const { children } = props;
-  const { scan_count } = props.lifeformData;
-  const lifeform = props.lifeformData.lifeform || props.lifeformData;
+  const { children, lifeformData }: { children: any; lifeformData: Scan }
+    = props;
+  const { scan_count } = lifeformData;
+  const lifeform: Lifeform = lifeformData.lifeform;
 
   return (
     <>
@@ -144,9 +209,7 @@ export const Lifeform = (props, context) => {
         <LabeledList.Item label="Description">{lifeform.desc}</LabeledList.Item>
         <LabeledList.Item label="Scans Count">{scan_count}</LabeledList.Item>
         {children ? (
-          <LabeledList.Item label="Actions">
-            {children}
-          </LabeledList.Item>
+          <LabeledList.Item label="Actions">{children}</LabeledList.Item>
         ) : null}
       </LabeledList>
       {showScanHistory ? (
@@ -158,9 +221,9 @@ export const Lifeform = (props, context) => {
   );
 };
 
-const LifeformsList = (props, context) => {
-  const { act, data } = useBackend(context);
-  const { selected_lifeform, scanned } = data;
+const LifeformsList = (_: any, context: any) => {
+  const { act, data } = useBackend<InputData>(context);
+  const { scanned } = data;
   const [lifeformTabIndex, setLifeformTabIndex] = useLocalState(
     context,
     'lifeformTabIndex',
@@ -202,7 +265,7 @@ const LifeformsList = (props, context) => {
                   })}
               />
             }>
-            <Lifeform
+            <ScanData
               showScanHistory
               lifeformData={scanned[lifeformTabIndex]}
             />
@@ -213,7 +276,7 @@ const LifeformsList = (props, context) => {
   );
 };
 
-const Discoveries = (props, context) => {
+const Discoveries = (_: any, context: any) => {
   const { act, data } = useBackend(context);
 
   return (
@@ -229,9 +292,8 @@ const Discoveries = (props, context) => {
   );
 };
 
-export const Psychoscope = (props, context) => {
-  const { act, data } = useBackend(context);
-  const { state } = props;
+export const Psychoscope = (props: any, context: any) => {
+  const { act, data } = useBackend<InputData>(context);
   const [tabIndex, setTabIndex] = useLocalState(context, 'tabIndex', 0);
 
   const tabs = [
@@ -287,7 +349,7 @@ export const Psychoscope = (props, context) => {
             </LabeledList.Item>
             <LabeledList.Item label="Charge">
               {data.charge === null ? (
-                <span style={{ color: 'red' }}>No battery cell</span>
+                'No battery cell'
               ) : (
                 <ProgressBar value={data.charge / data.max_charge} />
               )}
