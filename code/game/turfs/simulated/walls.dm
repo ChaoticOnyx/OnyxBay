@@ -289,9 +289,9 @@
 			plant.pixel_x = 0
 			plant.pixel_y = 0
 
-/turf/simulated/wall/ChangeTurf(newtype)
+/turf/simulated/wall/ChangeTurf(turf/N, tell_universe = TRUE, force_lighting_update = FALSE)
 	clear_plants()
-	return ..(newtype)
+	return ..()
 
 //Appearance
 /turf/simulated/wall/examine(mob/user)

@@ -208,7 +208,7 @@
 
 //The two situations which require unregistering
 
-/turf/simulated/open/ChangeTurf(turf/N, tell_universe=1, force_lighting_update = 0)
+/turf/simulated/open/ChangeTurf(turf/N, tell_universe = TRUE, force_lighting_update = FALSE)
 	//We do not want to change any of the behaviour, just make sure this goes away
 	src.clean_up()
 	. = ..()
