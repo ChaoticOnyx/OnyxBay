@@ -126,10 +126,10 @@
 		to_chat(user, SPAN("warning", "You aren't sure you'll fit in this men's cloth..."))
 		return 0
 
-// Altehor
+// N1ght1ngal3
 
 /obj/item/clothing/under/ntpilot
-	name = "pilot jumpsuit"
-	desc = "Even though it's painted red, it still belongs to the NT."
+	name = "NanoTrasen flightsuit"
+	desc = "A sleek dark red NanoTrasen flightsuit. It proudly sports three different patches with the NanoTrasen logo on it, as well as several unnecessary looking flaps and pockets for effect."
 	icon_state = "ntpilot"
 	item_state = "ntpilot"
