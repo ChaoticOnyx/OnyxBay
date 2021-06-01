@@ -1,9 +1,7 @@
-#define CHARS_PER_LINE 5
-#define FONT_SIZE "5pt"
+#define CHARS_PER_LINE 8
+#define FONT_SIZE "6pt"
 #define FONT_COLOR "#09f"
-#define FONT_STYLE "Arial Black"
-
-//This file was auto-corrected by findeclaration.exe on 25.5.2012 20:42:31
+#define FONT_STYLE "Small Fonts"
 
 ///////////////////////////////////////////////////////////////////////////////////////////////
 // Brig Door control displays.
