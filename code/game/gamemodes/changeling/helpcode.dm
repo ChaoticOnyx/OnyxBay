@@ -129,12 +129,13 @@
 	var/damage_threshold_value
 	var/healing_threshold = 1
 	var/moving = 0
+	var/datum/reagents/chem_cauldron
 
 /obj/item/organ/internal/biostructure/New(mob/living/holder)
 	..()
 	max_damage = 600
-	min_bruised_damage = max_damage*0.25
-	min_broken_damage = max_damage*0.75
+	min_bruised_damage = max_damage * 0.25
+	min_broken_damage = max_damage * 0.75
 
 
 	damage_threshold_value = round(max_damage / damage_threshold_count)
@@ -145,18 +146,19 @@
 	spawn(5)
 		if(brainchan && brainchan.client)
 			brainchan.client.screen.len = null //clear the hud
-	var/datum/reagent/toxin/cyanide/change_toxin/R = new
-	reagents.reagent_list += R
-	R.volume = 5
+	reagents.maximum_volume += 5
+	reagents.add_reagent(/datum/reagent/toxin/cyanide/change_toxin, 5)
+	chem_cauldron = new /datum/reagents(120, src)
 
 /obj/item/organ/internal/biostructure/Destroy()
 	QDEL_NULL(brainchan)
+	QDEL_NULL(chem_cauldron)
 	. = ..()
 
 /obj/item/organ/internal/biostructure/proc/mind_into_biostructure(mob/living/M)
 	if(status & ORGAN_DEAD)
 		return
-	if(M && M.mind && brainchan)
+	if(M?.mind && brainchan)
 		M.mind.transfer_to(brainchan)
 		to_chat(brainchan, "<span class='notice'>You feel slightly disoriented.</span>")
 
@@ -294,10 +296,10 @@
 		for (var/obj/item/organ/external/E in available_limbs)
 			if (E.organ_tag == BP_R_HAND || E.organ_tag == BP_L_HAND || E.organ_tag == BP_R_FOOT || E.organ_tag == BP_L_FOOT || E.is_stump())
 				available_limbs -= E
-		var/obj/item/organ/external/new_parent = input(src, "Where do you want to move [BIO]?") as null|anything in available_limbs
+		var/obj/item/organ/external/new_parent = input(src, "Where do we want to move our [BIO.name]?") as null|anything in available_limbs
 
 		if(new_parent)
-			to_chat(src, "<span class='notice'>We started to move our [BIO] to \the [new_parent].</span>")
+			to_chat(src, SPAN("notice", "We start to move our [BIO.name] to \the [new_parent]."))
 			BIO.moving = 1
 			var/move_time
 			if(src.mind.changeling.recursive_enhancement)
@@ -311,7 +313,7 @@
 						var/mob/living/carbon/human/H = src
 						var/obj/item/organ/external/E = H.get_organ(BIO.parent_organ)
 						if(!E)
-							to_chat(src, "<span class='notice'>You are missing that limb.</span>")
+							to_chat(src, SPAN("notice", "We are missing that limb."))
 							return
 						if(istype(E))
 							E.internal_organs -= BIO
@@ -320,7 +322,7 @@
 						if(!E)
 							CRASH("[src] spawned in [src] without a parent organ: [BIO.parent_organ].")
 						E.internal_organs |= BIO
-						to_chat(src, "<span class='notice'>Our [BIO] is now in our \the [new_parent].</span>")
+						to_chat(src, SPAN("notice", "Our [BIO.name] is now in \the [new_parent]."))
 						log_debug("([src])The changeling biostructure moved in [new_parent].")
 
 
@@ -624,9 +626,8 @@
 	absorbDNA(newDNA)
 
 	target.ghostize()
-	changeling_transfer_mind(target)
-
-	qdel(src)
+	if(changeling_transfer_mind(target))
+		qdel(src) // So we wait for transfer to end before risking to fuck things up
 
 	return
 
@@ -725,7 +726,7 @@
 		move_to_delay = initial(move_to_delay)
 	else
 		alpha = 255
-		set_light(4)
+		set_light(0.25, 0.1, 3)
 		move_to_delay = 2
 	return
 

@@ -41,9 +41,11 @@ if (pullRequest.Labels.Any(l => l.Name == Settings.ChangelogNotRequiredLabel))
     return 0;
 }
 
+Changelog? changelog = null;
+
 try
 {
-    var changelog = pullRequest.ParseChangelog();
+    changelog = pullRequest.ParseChangelog();
 }
 catch (Exception e)
 {
@@ -51,18 +53,18 @@ catch (Exception e)
     // Удаление плашки проверенного чейнджлога.
     await client.DeleteAsync($"repos/{githubRepository}/issues/{pullRequest.Number}/labels/{Uri.EscapeUriString(Settings.ChangelogCheckedLabel)}");
     // Добавление плашки о требовании чейнджлога.
-    var putResponse = await client.PutAsync($"repos/{githubRepository}/issues/{pullRequest.Number}/labels", new StringContent($"{{ \"labels\": [\"{Settings.ChangelogRequiredLabel}\"] }}"));
+    var putResponse = await client.PostAsync($"repos/{githubRepository}/issues/{pullRequest.Number}/labels", new StringContent($"{{ \"labels\": [\"{Settings.ChangelogRequiredLabel}\"] }}"));
     putResponse.EnsureSuccessStatusCode();
 
     return 1;
 }
 
-WriteLine($"✅ Чейнджлог корректный.");
+WriteLine($"✅ Чейнджлог корректный ({changelog.Changes.Count} изм.).");
 
 // Удаление плашки о требовании чейнджлога.
 await client.DeleteAsync($"repos/{githubRepository}/issues/{pullRequest.Number}/labels/{Uri.EscapeUriString(Settings.ChangelogRequiredLabel)}");
 // Добавление плашки о наличии чейнджлога.
-var putResponse = await client.PutAsync($"repos/{githubRepository}/issues/{pullRequest.Number}/labels", new StringContent($"{{ \"labels\": [\"{Settings.ChangelogCheckedLabel}\"] }}"));
+var putResponse = await client.PostAsync($"repos/{githubRepository}/issues/{pullRequest.Number}/labels", new StringContent($"{{ \"labels\": [\"{Settings.ChangelogCheckedLabel}\"] }}"));
 putResponse.EnsureSuccessStatusCode();
 
 return 0;

@@ -579,7 +579,7 @@
 		icon_state = initial(icon_state)
 		is_scanning = FALSE
 		playsound(src, 'sound/effects/psychoscope/psychoscope_on.ogg', 10, 0)
-		set_light(2, 5, rgb(105, 180, 255))
+		set_light(0.4, 0.1, 2, 2, rgb(105, 180, 255))
 		update_icon()
 
 /obj/item/clothing/glasses/psychoscope/proc/Disable(mob/user)

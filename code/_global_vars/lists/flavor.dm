@@ -16,7 +16,7 @@ GLOBAL_LIST_INIT(hit_appends, list("-OOF", "-ACK", "-UGH", "-HRNK", "-HURGH", "-
 // Some scary sounds.
 GLOBAL_LIST_INIT(scarySounds, list(
 	'sound/weapons/thudswoosh.ogg',
-	'sound/weapons/Taser.ogg',
+	'sound/effects/weapons/energy/Taser.ogg',
 	'sound/weapons/armbomb.ogg',
 	'sound/voice/hiss1.ogg',
 	'sound/voice/hiss2.ogg',

@@ -100,5 +100,5 @@
 
 	nameset = 1
 	to_chat(user, "<span class='notice'>You claim the [src] as your own!</span>")
-	name = "[user]'s signet ring"
-	desc = "A signet ring belonging to [user], for when you're too sophisticated to sign letters."
+	name = "[user.real_name]'s signet ring"
+	desc = "A signet ring belonging to [user.real_name], for when you're too sophisticated to sign letters."

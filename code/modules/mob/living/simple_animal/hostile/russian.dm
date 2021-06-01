@@ -34,7 +34,7 @@
 	weapon1 = /obj/item/weapon/gun/projectile/revolver/mateba
 	ranged = 1
 	projectiletype = /obj/item/projectile/bullet
-	projectilesound = 'sound/weapons/gunshot/gunshot2.ogg'
+	projectilesound = 'sound/effects/weapons/gun/gunshot2.ogg'
 	casingtype = /obj/item/ammo_casing/a50
 
 

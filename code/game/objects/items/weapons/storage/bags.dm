@@ -10,17 +10,25 @@
 
 /obj/item/weapon/storage/bag/handle_item_insertion(obj/item/W as obj, prevent_warning = 0)
 	. = ..()
-	if(.) update_w_class()
+	if(.)
+		update_w_class()
 
 /obj/item/weapon/storage/bag/remove_from_storage(obj/item/W as obj, atom/new_location)
 	. = ..()
-	if(.) update_w_class()
+	if(.)
+		update_w_class()
 
 /obj/item/weapon/storage/bag/can_be_inserted(obj/item/W, mob/user, stop_messages = 0)
-	if(istype(src.loc, /obj/item/weapon/storage))
+	if(istype(loc, /obj/item/weapon/storage))
 		if(!stop_messages)
-			to_chat(user, "<span class='notice'>Take [src] out of [src.loc] first.</span>")
-		return 0 //causes problems if the bag expands and becomes larger than src.loc can hold, so disallow it
+			to_chat(user, SPAN("notice", "Take [src] out of [loc] first."))
+		return FALSE //causes problems if the bag expands and becomes larger than src.loc can hold, so disallow it
+	if(ishuman(loc))
+		var/mob/living/carbon/human/H = loc
+		if(!(H.get_inactive_hand() == src || H.get_active_hand() == src || H.belt == src))
+			if(!stop_messages)
+				to_chat(user, SPAN("notice", "Take [src] out first."))
+			return FALSE //disallowing it because people stuff bags in their pockets and store fucking guns and plasma bombs inside
 	. = ..()
 
 /obj/item/weapon/storage/bag/proc/update_w_class()
@@ -33,8 +41,8 @@
 		w_class++
 
 /obj/item/weapon/storage/bag/get_storage_cost()
-	var/used_ratio = storage_space_used()/max_storage_space
-	return max(base_storage_cost(w_class), round(used_ratio*base_storage_cost(max_w_class), 1))
+	var/used_ratio = storage_space_used() / max_storage_space
+	return max(base_storage_cost(w_class), round(used_ratio * base_storage_cost(max_w_class), 1))
 
 // -----------------------------
 //          Trash bag
@@ -47,7 +55,7 @@
 	item_state = "trashbag"
 
 	w_class = ITEM_SIZE_SMALL
-	max_w_class = ITEM_SIZE_HUGE //can fit a backpack inside a trash bag, seems right
+	max_w_class = ITEM_SIZE_LARGE // storing things like backpacks inside a belt-attachable bag? no fuck you
 	max_storage_space = DEFAULT_BACKPACK_STORAGE
 	can_hold = list() // any
 
@@ -97,4 +105,4 @@
 	max_storage_space = 100
 	max_w_class = ITEM_SIZE_HUGE
 	w_class = ITEM_SIZE_SMALL
-	can_hold = list(/obj/item/weapon/coin,/obj/item/weapon/spacecash)
+	can_hold = list(/obj/item/weapon/coin, /obj/item/weapon/spacecash)

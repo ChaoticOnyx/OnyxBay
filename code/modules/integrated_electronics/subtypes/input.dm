@@ -212,16 +212,16 @@
 	power_draw_per_use = 80
 
 /obj/item/integrated_circuit/input/adv_med_scanner/proc/damage_to_severity(value)
-	if(value < 100)
-		return 4
-	if(value < 75)
-		return 3
-	if(value < 50)
-		return 2
-	if(value < 25)
-		return 1
 	if(value < 1)
 		return 0
+	if(value < 25)
+		return 1
+	if(value < 50)
+		return 2
+	if(value < 75)
+		return 3
+	if(value < 100)
+		return 4
 	return 5
 
 /obj/item/integrated_circuit/input/adv_med_scanner/do_work()
@@ -868,13 +868,13 @@
 	var/datum/signal/signal = new()
 	signal.transmission_method = 1
 	signal.data["tag"] = code
-	signal.data["command"] = json_encode(command)
+	signal.data["command"] = html_encode(command)
 	signal.encryption = 0
 	return signal
 
 /obj/item/integrated_circuit/input/signaler/advanced/receive_signal(datum/signal/signal)
 	if(signal_good(signal))
-		set_pin_data(IC_OUTPUT,1,json_decode(signal.data["command"]))
+		set_pin_data(IC_OUTPUT,1,html_decode(signal.data["command"]))
 		push_data()
 		..()
 
@@ -1388,6 +1388,7 @@
 			set_pin_data(IC_OUTPUT, 1, selected)
 			push_data()
 			activate_pin(1)
+		return IC_TOPIC_REFRESH
 
 // -storage examiner- // **works**
 /obj/item/integrated_circuit/input/storage_examiner

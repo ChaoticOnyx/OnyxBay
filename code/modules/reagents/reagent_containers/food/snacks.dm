@@ -465,6 +465,18 @@
 		src.SetName("Frosted Jelly Donut")
 		reagents.add_reagent(/datum/reagent/nutriment/sprinkles, 2)
 
+/obj/item/weapon/reagent_containers/food/snacks/vegg
+	name = "vegg"
+	desc = "So... It's more like a seed, right?"
+	icon_state = "egg-vegan"
+	filling_color = "#70bf70"
+	volume = 10
+	center_of_mass = "x=16;y=13"
+
+/obj/item/weapon/reagent_containers/food/snacks/egg/Initialize()
+	. = ..()
+	reagents.add_reagent(/datum/reagent/nutriment, 3)
+
 /obj/item/weapon/reagent_containers/food/snacks/egg
 	name = "egg"
 	desc = "An egg!"
@@ -538,6 +550,30 @@
 
 /obj/item/weapon/reagent_containers/food/snacks/egg/yellow
 	icon_state = "egg-yellow"
+
+/obj/item/weapon/reagent_containers/food/snacks/egg/robot
+	name = "robot egg"
+	icon_state = "egg-robot"
+
+/obj/item/weapon/reagent_containers/food/snacks/egg/robot/Initialize()
+	. = ..()
+	reagents.add_reagent(/datum/reagent/nanites, 1)
+
+/obj/item/weapon/reagent_containers/food/snacks/egg/golden
+	name = "golden egg"
+	icon_state = "egg-golden"
+
+/obj/item/weapon/reagent_containers/food/snacks/egg/golden/Initialize()
+	. = ..()
+	reagents.add_reagent(/datum/reagent/gold, 3)
+
+/obj/item/weapon/reagent_containers/food/snacks/egg/plasma
+	name = "plasma egg"
+	icon_state = "egg-plasma"
+
+/obj/item/weapon/reagent_containers/food/snacks/egg/plasma/Initialize()
+	. = ..()
+	reagents.add_reagent(/datum/reagent/toxin/plasma, 3)
 
 /obj/item/weapon/reagent_containers/food/snacks/friedegg
 	name = "Fried egg"

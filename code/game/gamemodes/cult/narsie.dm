@@ -32,12 +32,12 @@ var/global/list/narsie_list = list()
 	// Pixel stuff centers Narsie.
 	pixel_x = -236
 	pixel_y = -256
-	light_range = 1
+	light_outer_range = 1
 	light_color = "#3e0000"
 
 	current_size = 6
 	consume_range = 6 // How many tiles out do we eat.
-	var/announce=1
+	var/announce = 1
 	var/cause_hell = 1
 
 /obj/singularity/narsie/large/New()
@@ -188,8 +188,8 @@ var/global/list/narsie_list = list()
 		if (dist <= consume_range && !istype(A, /turf/space))
 			var/turf/T = A
 			if(T.holy)
-				T.holy = FALSE //Nar-Sie doesn't give a shit about sacred grounds.
-		
+				T.holy = FALSE // Nar-Sie doesn't give a shit about sacred grounds.
+
 			var/area/TA = get_area(T)
 			if(TA && !isspace(TA))
 				TA.holy = FALSE

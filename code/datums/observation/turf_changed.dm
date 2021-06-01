@@ -20,7 +20,7 @@ GLOBAL_DATUM_INIT(turf_changed_event, /decl/observ/turf_changed, new)
 * Turf Changed Handling *
 ************************/
 
-/turf/ChangeTurf()
+/turf/ChangeTurf(turf/N, tell_universe = TRUE, force_lighting_update = FALSE)
 	var/old_density = density
 	var/old_opacity = opacity
 	. = ..()

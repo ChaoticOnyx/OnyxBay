@@ -20,7 +20,7 @@
 	var/original_icon = 'icons/mob/robots.dmi'
 	var/crisis //Admin-settable for combat module use.
 	var/crisis_override = 0
-	var/integrated_light_power = 6
+	var/integrated_light_max_bright = 0.75
 	var/datum/wires/robot/wires
 
 //Icon stuff
@@ -430,12 +430,17 @@
 	else
 		C.toggled = 1
 		to_chat(src, "<span class='warning'>You enable [C.name].</span>")
+
+/mob/living/silicon/robot/pointed(atom/A as mob|obj|turf in view())
+	if(..())
+		usr.visible_message("<b>[src]</b> laser points to [A]")
+
 /mob/living/silicon/robot/proc/update_robot_light()
 	if(lights_on)
 		if(intenselight)
-			set_light(integrated_light_power * 2, integrated_light_power)
+			set_light(1, 2, 6)
 		else
-			set_light(integrated_light_power)
+			set_light(0.75, 1, 4)
 	else
 		set_light(0)
 

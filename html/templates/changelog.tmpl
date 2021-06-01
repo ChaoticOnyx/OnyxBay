@@ -8,15 +8,6 @@
     <link rel="stylesheet" type="text/css" href="font-awesome.css">
     <link rel="stylesheet" type="text/css" href="changelog.css">
     <base target="_blank" />
-    <script type='text/javascript'>
-        function changeText(tagID, newText, linkTagID) {
-            var tag = document.getElementById(tagID);
-            tag.innerHTML = newText;
-            var linkTag = document.getElementById(linkTagID);
-            linkTag.removeAttribute("href");
-            linkTag.removeAttribute("onclick");
-        }
-    </script>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
 </head>
 
@@ -55,12 +46,14 @@
 
     <div class="commit">
         {{~ last_date = null ~}} {{~ for changelog in changelogs ~}} {{~ if last_date != changelog.date ~}}
-        <h2 class="date">{{ changelog.date }}</h2>
+        <div class="date"><span>{{ changelog.date | date.to_string '%d %B %Y' 'ru-RU' }}</span></div>
         {{~ last_date = changelog.date ~}} {{~ end ~}}
         <h3 class="author">{{ changelog.author }} updated:</h3>
         <ul class="changes">
             {{~ for change in changelog.changes ~}}
-            <li class="{{ change.color }}"><i class="{{ change.icon }}"></i>{{ change.message_md_to_html }}</li>
+            <li class="{{ change.color }}"><i class="{{ change.icon }}"></i>{{ change.message_md_to_html }} {{- if change.pr -}}
+                <sup><a href="https://github.com/ChaoticOnyx/OnyxBay/pull/{{ change.pr }}">#{{ change.pr }}</a></sup> {{- end -}}
+            </li>
             {{~ end ~}}
         </ul>
         {{~ end ~}}

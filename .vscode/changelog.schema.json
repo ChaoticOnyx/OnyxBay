@@ -62,7 +62,7 @@
                         "description": "Префикс изменения.",
                         "enum": [
                             "BugFix",
-                            "Wip",
+                            "Balance",
                             "Tweak",
                             "SoundAdd",
                             "SoundDel",

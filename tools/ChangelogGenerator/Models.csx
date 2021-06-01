@@ -96,7 +96,7 @@ public sealed class Changelog
         ///     Message в формате HTML.
         /// </summary>
         /// <returns></returns>
-        [JsonIgnore()]
+        [JsonIgnore]
         public string MessageMdToHtml { get => Markdown.ToHtml(Message, Settings.MdPipeline); }
 
         /// <summary>
@@ -139,8 +139,7 @@ public sealed class Changelog
             return prefix switch
             {
                 ChangePrefix.BugFix => "fas fa-bug",
-                ChangePrefix.Wip => "fas fa-hard-hat",
-                ChangePrefix.Tweak => "fas fa-balance-scale",
+                ChangePrefix.Tweak => "fas fa-wrench",
                 ChangePrefix.SoundAdd => "fas fa-music",
                 ChangePrefix.SoundDel => "fas fa-minus",
                 ChangePrefix.RscAdd => "fas fa-plus",
@@ -151,7 +150,8 @@ public sealed class Changelog
                 ChangePrefix.SpellCheck => "fas fa-spell-check",
                 ChangePrefix.Experiment => "fas fa-hard-hat",
                 ChangePrefix.Admin => "fas fa-crown",
-                _ => throw new NotImplementedException($"🚫 Для {prefix} не определена иконка.")
+                ChangePrefix.Balance => "fas fa-balance-scale",
+                _ => throw new NotImplementedException($"  🚫Для {prefix} не определена иконка.")
             };
         }
 
@@ -172,12 +172,12 @@ public sealed class Changelog
                 or ChangePrefix.MapTweak
                 or ChangePrefix.SpellCheck
                 or ChangePrefix.Admin => "green",
-                ChangePrefix.Wip
+                ChangePrefix.Balance
                 or ChangePrefix.Experiment => "yellow",
                 ChangePrefix.SoundDel
                 or ChangePrefix.RscDel
                 or ChangePrefix.ImageDel => "red",
-                _ => throw new NotImplementedException($"🚫 Для {prefix} не определён цвет.")
+                _ => throw new NotImplementedException($"  🚫Для {prefix} не определён цвет.")
             };
         }
     }
@@ -196,6 +196,7 @@ public static class Github
         /// <summary>
         ///     Ссылка на PR.
         /// </summary>
+        [JsonPropertyName("html_url")]
         public string Url { get; init; } = string.Empty;
         /// <summary>
         ///     Номер PR.
@@ -242,7 +243,7 @@ public static class Github
 
             if (matches.Count == 0)
             {
-                throw new InvalidOperationException($"🚫 Чейнджлог не обнаружен.");
+                throw new InvalidOperationException($"  🚫Чейнджлог не обнаружен.");
             }
 
             var author = changesBody.Groups[2].Value.Trim();
@@ -264,7 +265,7 @@ public static class Github
 
                 if (parts.Length < 2)
                 {
-                    throw new InvalidOperationException($"🚫 Неверный формат изменения: '{match.Value}'");
+                    throw new InvalidOperationException($"  🚫Неверный формат изменения: '{match.Value}'");
                 }
 
                 var prefix = parts[0].Trim();

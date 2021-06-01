@@ -530,11 +530,11 @@
 	if (length(held))
 		if (prob(40))
 			var/obj/item/R = held[length(held)]
-			R.forceMove(get_turf(src))
-			visible_message("<span class='danger'[held[length(held)]] drops on the [get_turf(src)]!</span>")
 			held -= R
+			R.forceMove(get_turf(src))
+			R.visible_message("<span class='danger'>[R] drops on the [get_turf(src)]!</span>")
 			if(R && istype(R.loc,/turf))
-				held.throw_at(get_edge_target_turf(R.loc,pick(GLOB.alldirs)),rand(1,3),30)
+				R.throw_at(get_edge_target_turf(R.loc,pick(GLOB.alldirs)),rand(1,3),30)
 
 /obj/item/robot_rack/examine(mob/user)
 	. = ..()

@@ -19,8 +19,9 @@
 	desc = "A floating crystal that hums with an unearthly energy."
 	icon_state = "pylon"
 	var/isbroken = 0
-	light_power = 2
-	light_range = 13
+	light_max_bright = 0.5
+	light_inner_range = 1
+	light_outer_range = 13
 	light_color = "#3e0000"
 	var/obj/item/wepon = null
 
@@ -66,7 +67,7 @@
 		isbroken = 0
 		set_density(1)
 		icon_state = "pylon"
-		set_light(5)
+		set_light(0.5)
 
 /obj/structure/cult/tome
 	name = "Desk"
@@ -94,18 +95,18 @@
 	var/spawnable = null
 
 /obj/effect/gateway/active
-	light_range=5
-	light_color="#ff0000"
-	spawnable=list(
+	light_outer_range = 5
+	light_color = "#ff0000"
+	spawnable = list(
 		/mob/living/simple_animal/hostile/scarybat,
 		/mob/living/simple_animal/hostile/creature,
 		/mob/living/simple_animal/hostile/faithless
 	)
 
 /obj/effect/gateway/active/cult
-	light_range=5
-	light_color="#ff0000"
-	spawnable=list(
+	light_outer_range = 5
+	light_color = "#ff0000"
+	spawnable = list(
 		/mob/living/simple_animal/hostile/scarybat/cult,
 		/mob/living/simple_animal/hostile/creature/cult,
 		/mob/living/simple_animal/hostile/faithless/cult
@@ -160,5 +161,4 @@
 		else
 			new_mob.key = M.key
 
-		to_chat(new_mob, "<B>Your form morphs into that of a corgi.</B>")//Because we don't have cluwnes
-
+		to_chat(new_mob, "<B>Your form morphs into that of a corgi.</B>") // Because we don't have cluwnes

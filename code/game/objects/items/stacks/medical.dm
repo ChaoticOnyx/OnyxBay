@@ -100,7 +100,7 @@
 	M.updatehealth()
 
 /obj/item/stack/medical/get_storage_cost()
-	return w_class
+	return base_storage_cost(w_class)
 
 /obj/item/stack/medical/bruise_pack
 	name = "roll of bandage"

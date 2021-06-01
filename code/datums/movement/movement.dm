@@ -77,7 +77,7 @@ if(LAZYLEN(movement_handlers) && ispath(movement_handlers[1])) { \
 
 // If is_external is explicitly set then use that, otherwise if the mover isn't the host assume it's external
 #define SET_MOVER(X) X = X || src
-#define SET_IS_EXTERNAL(X) is_external = isnull(is_external) ? (mover != src) : is_external
+#define SET_IS_EXTERNAL(X) is_external = isnull(is_external) ? (X != src) : is_external
 
 /atom/movable/proc/DoMove(var/direction, var/mob/mover, var/is_external)
 	INIT_MOVEMENT_HANDLERS

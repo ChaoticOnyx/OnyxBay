@@ -22,13 +22,6 @@
 		F.dirt += 4
 	qdel(src)
 
-/obj/effect/decal/cleanable/greenglow
-
-	New()
-		..()
-		spawn(1200)// 2 minutes
-			qdel(src)
-
 /obj/effect/decal/cleanable/dirt
 	name = "dirt"
 	desc = "Someone should clean that up."
@@ -54,9 +47,12 @@
 	gender = PLURAL
 	density = 0
 	anchored = 1
-	light_range = 1
 	icon = 'icons/effects/effects.dmi'
 	icon_state = "greenglow"
+
+/obj/effect/decal/cleanable/greenglow/Initialize()
+	. = ..()
+	set_light(0.2, 0.1, 1)
 
 /obj/effect/decal/cleanable/cobweb
 	name = "cobweb"

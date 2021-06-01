@@ -90,7 +90,8 @@
 		update_canmove(TRUE) // Otherwise we'll have a 1 tick latency between actual getting-up and the animation update
 
 		if(!client && !mind)
-			species.handle_npc(src)
+			spawn()
+				species.handle_npc(src)
 
 		if(lying != lying_prev || hanging != hanging_prev)
 			update_icons() // So we update icons ONCE (hopefully) and AFTER all the status/organs updates
@@ -220,7 +221,7 @@
 			set_light(0)
 	else
 		if(species.appearance_flags & RADIATION_GLOWS)
-			set_light(max(1,min(10,radiation/10)), max(1,min(20,radiation/20)), species.get_flesh_colour(src))
+			set_light(0.3, 0.1, max(1,min(20,radiation/20)), 2, species.get_flesh_colour(src))
 		// END DOGSHIT SNOWFLAKE
 
 		var/obj/item/organ/internal/diona/nutrients/rad_organ = locate() in internal_organs

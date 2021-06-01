@@ -278,6 +278,8 @@
 	set name = "Point To"
 	set category = "Object"
 
+	if(last_time_pointed_at + 2 SECONDS >= world.time)
+		return
 	if(!src || !isturf(src.loc) || !(A in view(src.loc)))
 		return 0
 	if(istype(A, /obj/effect/decal/point))
@@ -286,6 +288,8 @@
 	var/tile = get_turf(A)
 	if (!tile)
 		return 0
+
+	last_time_pointed_at = world.time
 
 	var/obj/P = new /obj/effect/decal/point(tile)
 	P.set_invisibility(invisibility)

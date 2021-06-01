@@ -85,6 +85,7 @@ var/list/admin_verbs_admin = list(
 	/client/proc/man_up,
 	/client/proc/global_man_up,
 	/client/proc/response_team, // Response Teams admin verb,
+	/client/proc/edit_traitor_contracts, // for contract interaction verb,
 	/client/proc/response_team_menu, // Response Teams Menu admin verb,
 	/client/proc/toggle_antagHUD_use,
 	/client/proc/toggle_antagHUD_restrictions,
@@ -179,8 +180,7 @@ var/list/admin_verbs_server = list(
 	/datum/admins/proc/toggle_space_ninja,
 	/client/proc/toggle_random_events,
 	/client/proc/check_customitem_activity,
-	/client/proc/nanomapgen_DumpImage,
-	/client/proc/update_donations_db_credentials
+	/client/proc/nanomapgen_DumpImage
 	)
 
 var/list/admin_verbs_debug = list(

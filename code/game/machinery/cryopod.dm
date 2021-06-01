@@ -388,6 +388,8 @@
 				W.forceMove(src.loc)
 
 	//Update any existing objectives involving this mob.
+	for(var/datum/antag_contract/AC in GLOB.all_contracts)
+		AC.on_mob_despawned(occupant.mind)
 	for(var/datum/objective/O in all_objectives)
 		// We don't want revs to get objectives that aren't for heads of staff. Letting
 		// them win or lose based on cryo is silly so we remove the objective.
@@ -497,7 +499,6 @@
 		occupant.client.eye = src.occupant.client.mob
 		occupant.client.perspective = MOB_PERSPECTIVE
 
-	occupant.verbs -= /mob/living/proc/ghost
 	occupant.forceMove(get_turf(src))
 	set_occupant(null)
 
@@ -546,7 +547,6 @@
 		to_chat(occupant, "<span class='notice'><b>If you ghost, log out or close your client now, your character will shortly be permanently removed from the round.</b></span>")
 		occupant.client.perspective = EYE_PERSPECTIVE
 		occupant.client.eye = src
-	occupant.verbs += /mob/living/proc/ghost								//It must be updated before the mob is inside. Or the verbs don't get updated.
 	occupant.forceMove(src)
 	time_entered = world.time
 

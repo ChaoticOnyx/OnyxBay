@@ -134,17 +134,16 @@
 	armor_penetration = 14.5
 
 /obj/item/projectile/bullet/pistol/medium/smg
-	fire_sound = 'sound/weapons/gunshot/gunshot_smg.ogg'
 	damage = 32.5 //10mm
 	armor_penetration = 19.5
 
 /obj/item/projectile/bullet/pistol/medium/revolver
-	fire_sound = 'sound/weapons/gun_revolver44.ogg'
+	fire_sound = 'sound/effects/weapons/gun/fire_revolver44.ogg'
 	damage = 37.5 //.44 magnum or something
 	armor_penetration = 20
 
 /obj/item/projectile/bullet/pistol/strong //matebas
-	fire_sound = 'sound/weapons/gun_mateba.ogg'
+	fire_sound = 'sound/effects/weapons/gun/fire_mateba.ogg'
 	damage = 60 //.50AE
 	armor_penetration = 30
 
@@ -169,20 +168,19 @@
 	agony = 35
 	embed = 0
 	sharp = 0
-	fire_sound = 'sound/weapons/gun_revolver44.ogg'
+	fire_sound = 'sound/effects/weapons/gun/fire_revolver44.ogg'
 
 /obj/item/projectile/bullet/pistol/accelerated/c44
 	name = "accelerated bullet"
 	damage = 40 //.44 magnum + gauss
 	armor_penetration = 45
-	fire_sound = 'sound/weapons/gun_revolver44.ogg'
+	fire_sound = 'sound/effects/weapons/gun/fire_revolver44.ogg'
 
 
 /* shotgun projectiles */
 
 /obj/item/projectile/bullet/shotgun
 	name = "slug"
-	fire_sound = 'sound/weapons/gunshot/shotgun.ogg'
 	damage = 55
 	armor_penetration = 20
 
@@ -199,11 +197,20 @@
 //Overall less damage than slugs in exchange for more damage at very close range and more embedding
 /obj/item/projectile/bullet/pellet/shotgun
 	name = "shrapnel"
-	fire_sound = 'sound/weapons/gunshot/shotgun.ogg'
 	damage = 20
 	pellets = 6
 	range_step = 1
 	spread_step = 10
+	penetration_modifier = 1.2 // A bit more internal damage since we don't have armor penetration anyway
+
+/obj/item/projectile/bullet/pellet/scattershot // Used by *heavy* shotguns, i.e. LBX AC 10 "Scattershot"
+	name = "shrapnel"
+	damage = 35
+	armor_penetration = 20
+	pellets = 5
+	range_step = 2
+	spread_step = 15
+	penetration_modifier = 1.2
 
 /* "Rifle" rounds */
 
@@ -212,16 +219,13 @@
 	penetrating = 1
 
 /obj/item/projectile/bullet/rifle/a556
-	fire_sound = 'sound/weapons/gunshot/gunshot3.ogg'
-	damage = 30
+	damage = 25
 
 /obj/item/projectile/bullet/rifle/a762
-	fire_sound = 'sound/weapons/gunshot/gunshot2.ogg'
 	damage = 35
 	armor_penetration = 30
 
 /obj/item/projectile/bullet/rifle/a145
-	fire_sound = 'sound/weapons/gunshot/sniper.ogg'
 	damage = 80
 	stun = 3
 	weaken = 3

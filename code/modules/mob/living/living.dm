@@ -4,7 +4,9 @@
 		add_to_dead_mob_list()
 	else
 		add_to_living_mob_list()
-		verbs -= /mob/living/proc/ghost
+
+	if(give_ghost_proc_at_initialize)
+		verbs |= /mob/living/proc/ghost
 
 	if(controllable)
 		GLOB.available_mobs_for_possess += src
@@ -30,7 +32,9 @@
 	if(!..())
 		return 0
 
-	usr.visible_message("<b>[src]</b> points to [A]")
+	//Borgs and AI have their own message
+	if(!issilicon(src))
+		usr.visible_message("<b>[src]</b> points to [A]")
 	return 1
 
 // Check if current mob can push other mob or swap with it
@@ -206,13 +210,6 @@
 		return 0
 
 	return can_move_mob(tmob, 1, 0)
-
-/mob/living/verb/succumb()
-	set hidden = 1
-	if ((src.health < src.maxHealth/1.33)) // Health below 150.
-		src.adjustBrainLoss(src.health + src.maxHealth * 2) // Deal 2x health in BrainLoss damage, as before but variable.
-		updatehealth()
-		to_chat(src, "<span class='notice'>You have given up life and succumbed to death.</span>")
 
 /mob/living/proc/updatehealth()
 	if(status_flags & GODMODE)
@@ -487,7 +484,6 @@
 	if(stat == DEAD)
 		switch_from_dead_to_living_mob_list()
 		timeofdeath = 0
-		verbs -= /mob/living/proc/ghost
 
 	// restore us to conciousness
 	set_stat(CONSCIOUS)
