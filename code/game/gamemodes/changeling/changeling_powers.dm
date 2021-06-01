@@ -26,7 +26,6 @@ var/global/list/possible_changeling_IDs = list("Alpha","Beta","Gamma","Delta","E
 	var/true_dead = FALSE
 	var/damaged = FALSE
 	var/heal = 0
-	var/datum/reagents/pick_chemistry
 	var/isdetachingnow = FALSE
 	var/FLP_last_time_used = 0
 	var/rapidregen_active = FALSE
@@ -34,7 +33,6 @@ var/global/list/possible_changeling_IDs = list("Alpha","Beta","Gamma","Delta","E
 
 /datum/changeling/New()
 	..()
-	pick_chemistry = new /datum/reagents(120, src)
 	if(possible_changeling_IDs.len)
 		changelingID = pick(possible_changeling_IDs)
 		possible_changeling_IDs -= changelingID
@@ -1031,7 +1029,12 @@ var/list/datum/absorbed_dna/hivemind_bank = list()
 	var/N = 10
 	if(changeling.recursive_enhancement == TRUE)
 		N = 20
-	changeling.pick_chemistry.trans_to_mob(target, N)
+
+	var/obj/item/organ/internal/biostructure/BIO = locate() in contents
+	if(!BIO)
+		return FALSE
+
+	BIO.chem_cauldron.trans_to_mob(target, N)
 	feedback_add_details("changeling_powers","CS")
 	return TRUE
 
@@ -1083,7 +1086,12 @@ var/list/datum/absorbed_dna/hivemind_bank = list()
 		if(changeling.chem_charges <= 2*amount)
 			to_chat(src, "<span class='notice'>Not enough chemicals.</span>")
 			return
-	changeling.pick_chemistry.add_reagent(target_chem, amount)
+
+	var/obj/item/organ/internal/biostructure/BIO = locate() in contents
+	if(!BIO)
+		return
+	BIO.chem_cauldron.add_reagent(target_chem, amount)
+
 	if(target_chem == /datum/reagent/toxin/plasma)
 		amount *= 2
 	changeling.chem_charges -= amount
@@ -1106,7 +1114,11 @@ var/list/datum/absorbed_dna/hivemind_bank = list()
 
 	var/mob/living/carbon/human/C = src
 
-	changeling.pick_chemistry.clear_reagents()
+	var/obj/item/organ/internal/biostructure/BIO = locate() in contents
+	if(!BIO)
+		return FALSE
+	BIO.chem_cauldron.clear_reagents()
+
 	C.adjustToxLoss(10)
 	src.verbs -= /mob/proc/prepare_changeling_chemical_sting
 	src.verbs -= /mob/proc/empty_cauldron

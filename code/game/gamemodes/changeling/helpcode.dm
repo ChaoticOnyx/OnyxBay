@@ -129,12 +129,13 @@
 	var/damage_threshold_value
 	var/healing_threshold = 1
 	var/moving = 0
+	var/datum/reagents/chem_cauldron
 
 /obj/item/organ/internal/biostructure/New(mob/living/holder)
 	..()
 	max_damage = 600
-	min_bruised_damage = max_damage*0.25
-	min_broken_damage = max_damage*0.75
+	min_bruised_damage = max_damage * 0.25
+	min_broken_damage = max_damage * 0.75
 
 
 	damage_threshold_value = round(max_damage / damage_threshold_count)
@@ -145,12 +146,13 @@
 	spawn(5)
 		if(brainchan && brainchan.client)
 			brainchan.client.screen.len = null //clear the hud
-	var/datum/reagent/toxin/cyanide/change_toxin/R = new
-	reagents.reagent_list += R
-	R.volume = 5
+	reagents.maximum_volume += 5
+	reagents.add_reagent(/datum/reagent/toxin/cyanide/change_toxin, 5)
+	chem_cauldron = new /datum/reagents(120, src)
 
 /obj/item/organ/internal/biostructure/Destroy()
 	QDEL_NULL(brainchan)
+	QDEL_NULL(chem_cauldron)
 	. = ..()
 
 /obj/item/organ/internal/biostructure/proc/mind_into_biostructure(mob/living/M)
