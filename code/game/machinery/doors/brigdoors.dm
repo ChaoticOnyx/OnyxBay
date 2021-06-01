@@ -50,7 +50,7 @@
 		set_broken(TRUE)
 	queue_icon_update()
 
-//Main door timer loop, if it's timing and time is >0 reduce time by 1.
+// Main door timer loop, if it's timing and time is >0 reduce time by 1.
 // if it's less than 0, open door, reset timer
 // update the door_timer window and the icon
 /obj/machinery/door_timer/Process()
@@ -88,7 +88,7 @@
 	releasetime = world.timeofday + timetoset
 
 
-	//set timing
+	// set timing
 	timing = 1
 
 	for(var/obj/machinery/door/window/brigdoor/door in targets)
@@ -111,7 +111,7 @@
 	// Reset releasetime
 	releasetime = 0
 
-	//reset timing
+	// reset timing
 	timing = 0
 
 	if (broadcast_to_huds)
@@ -220,7 +220,7 @@
 		ui = new(user, src, "BrigTimer", name)
 		ui.open()
 
-//icon update function
+// icon update function
 // if NOPOWER, display blank
 // if BROKEN, display blue screen of death icon AI uses
 // if timing=true, run update display function
@@ -252,7 +252,7 @@
 	overlays += image('icons/obj/status_display.dmi', icon_state=picture_state)
 
 
-//Checks to see if there's 1 line or 2, adds text-icons-numbers/letters over display
+// Checks to see if there's 1 line or 2, adds text-icons-numbers/letters over display
 // Stolen from status_display
 /obj/machinery/door_timer/proc/update_display(line1, line2)
 	var/new_text = {"<div style="font-size:[FONT_SIZE];color:[FONT_COLOR];font:'[FONT_STYLE]';text-align:center;" valign="top">[line1]<br>[line2]</div>"}
@@ -260,8 +260,8 @@
 		maptext = new_text
 
 
-//Actual string input to icon display for loop, with 5 pixel x offsets for each letter.
-//Stolen from status_display
+// Actual string input to icon display for loop, with 5 pixel x offsets for each letter.
+// Stolen from status_display
 /obj/machinery/door_timer/proc/texticon(tn, px = 0, py = 0)
 	var/image/I = image('icons/obj/status_display.dmi', "blank")
 	var/len = length(tn)

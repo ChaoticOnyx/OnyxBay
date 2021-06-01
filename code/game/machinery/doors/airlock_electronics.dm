@@ -4,15 +4,15 @@
 	name = "airlock electronics"
 	icon = 'icons/obj/doors/door_assembly.dmi'
 	icon_state = "door_electronics"
-	w_class = ITEM_SIZE_SMALL //It should be tiny! -Agouri
+	w_class = ITEM_SIZE_SMALL // It should be tiny! -Agouri
 
 	matter = list(MATERIAL_STEEL = 50, MATERIAL_GLASS = 50)
 
 	req_access = list(access_engine)
 
-	var/secure = 0 //if set, then wires will be randomized and bolts will drop if the door is broken
+	var/secure = 0 // if set, then wires will be randomized and bolts will drop if the door is broken
 	var/list/conf_access = list()
-	var/one_access = 0 //if set to 1, door would receive req_one_access instead of req_access
+	var/one_access = 0 // if set to 1, door would receive req_one_access instead of req_access
 	var/last_configurator = null
 	var/locked = 1
 	var/lockable = 1
@@ -26,7 +26,7 @@
 
 
 
-//tgui interact code generously lifted from tgstation.
+// tgui interact code generously lifted from tgstation.
 /obj/item/weapon/airlock_electronics/tgui_interact(mob/user, datum/tgui/ui)
 	ui = SStgui.try_update_ui(user, src, ui)
 	
@@ -38,7 +38,7 @@
 	var/list/data = list()
 	var/list/regions = list()
 
-	for(var/i in ACCESS_REGION_SECURITY to ACCESS_REGION_SUPPLY) //code/game/jobs/_access_defs.dm
+	for(var/i in ACCESS_REGION_SECURITY to ACCESS_REGION_SUPPLY) // code/game/jobs/_access_defs.dm
 		var/list/region = list()
 		var/list/accesses = list()
 		for(var/j in get_region_accesses(i))
@@ -81,7 +81,7 @@
 		if("unlock")
 			if(!lockable)
 				return
-			if(!req_access || istype(usr,/mob/living/silicon))
+			if(!req_access || istype(usr, /mob/living/silicon))
 				locked = 0
 				last_configurator = usr.name
 				return
@@ -89,13 +89,13 @@
 				var/obj/item/weapon/card/id/I = usr.get_active_hand()
 				I = I ? I.GetIdCard() : null
 				if(!istype(I, /obj/item/weapon/card/id))
-					to_chat(usr, "<span class='warning'>[\src] flashes a yellow LED near the ID scanner. Did you remember to scan your ID or PDA?</span>")
+					to_chat(usr, SPAN("warning", "[\src] flashes a yellow LED near the ID scanner. Did you remember to scan your ID or PDA?"))
 					return
 				if (check_access(I))
 					locked = 0
 					last_configurator = I.registered_name
 				else
-					to_chat(usr, "<span class='warning'>[\src] flashes a red LED near the ID scanner, indicating your access has been denied.</span>")
+					to_chat(usr, SPAN("warning", "[\src] flashes a red LED near the ID scanner, indicating your access has been denied."))
 					return
 		if("lock")
 			if(!lockable)

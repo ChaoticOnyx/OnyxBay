@@ -20,7 +20,7 @@ GLOBAL_DATUM_INIT(tgui_default_state, /datum/ui_state/default, new)
 
 /mob/living/tgui_default_can_use_topic(src_object)
 	. = shared_ui_interaction(src_object)
-	if(. > UI_CLOSE && loc) //must not be in nullspace.
+	if(. > UI_CLOSE && loc) // must not be in nullspace.
 		. = min(., shared_living_ui_distance(src_object)) // Check the distance...
 
 	var/mob/living/carbon/human/H = src
@@ -34,7 +34,7 @@ GLOBAL_DATUM_INIT(tgui_default_state, /datum/ui_state/default, new)
 
 	// Robots can interact with anything they can see.
 	var/list/clientviewlist = getviewsize(client.view)
-	if(get_dist(src, src_object) <= min(clientviewlist[1],clientviewlist[2]))
+	if(get_dist(src, src_object) <= min(clientviewlist[1], clientviewlist[2]))
 		return UI_INTERACTIVE
 	return UI_DISABLED // Otherwise they can keep the UI open.
 

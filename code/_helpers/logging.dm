@@ -155,7 +155,7 @@
 		entry += "<nobody>"
 	else if(istype(user, /mob))
 		var/mob/mob = user
-		entry += "[mob.ckey] (as [mob] at [mob.x],[mob.y],[mob.z])"
+		entry += "[mob.ckey] (as [mob] at [mob.x], [mob.y], [mob.z])"
 	else if(istype(user, /client))
 		var/client/client = user
 		entry += "[client.ckey]"
