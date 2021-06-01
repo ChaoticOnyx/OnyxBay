@@ -1,3 +1,4 @@
+
 /obj/item/organ/internal/biostructure
 	name = "strange biostructure"
 	desc = "Strange abhorrent biostructure of unknown origins. Is that an alien organ, a xenoparasite or some sort of space cancer? Is that normal to bear things like that inside you?"
@@ -20,8 +21,9 @@
 	var/damage_threshold_value
 	var/healing_threshold = 1
 	var/moving = FALSE
-	var/datum/reagents/chem_cauldron
+	var/datum/reagents/chem_cauldron // Reagent holder used by the Biochemical Cauldron ability. It's safe to leave it be even if the ability is removed/disabled.
 
+// Called upon creation of a biostructure. TODO: Replace with Initialize(), requires replacing all /organ/New()'s with Initialize()s.
 /obj/item/organ/internal/biostructure/New(mob/living/holder)
 	..()
 	max_damage = 600
@@ -45,9 +47,10 @@
 	QDEL_NULL(chem_cauldron)
 	. = ..()
 
+// Does some magical shit checking /datum/changeling damage
 /obj/item/organ/internal/biostructure/proc/check_damage()
 	if(owner)
-		if (owner.has_damaged_organ())
+		if(owner.has_damaged_organ())
 			owner.mind.changeling.damaged = TRUE
 		else
 			owner.mind.changeling.damaged = FALSE
@@ -55,6 +58,7 @@
 		if(brainchan)
 			brainchan.mind.changeling.damaged = FALSE
 
+// Transfers mind from M into the brainchan located inside the biostructure
 /obj/item/organ/internal/biostructure/proc/mind_into_biostructure(mob/living/M)
 	if(status & ORGAN_DEAD)
 		return
@@ -62,6 +66,7 @@
 		M.mind.transfer_to(brainchan)
 		to_chat(brainchan, SPAN("changeling", "You feel slightly disoriented."))
 
+// Called when biostructure is taken out of a mob
 /obj/item/organ/internal/biostructure/removed(mob/living/user)
 	if(vital)
 		if(owner)
@@ -76,6 +81,7 @@
 				brainchan.verbs += /mob/proc/aggressive
 	..()
 
+// Called when biostructure is placed inside a mob
 /obj/item/organ/internal/biostructure/replaced(mob/living/target)
 	if(!..())
 		return FALSE
@@ -91,6 +97,7 @@
 
 	return TRUE
 
+// Biostructure processing
 /obj/item/organ/internal/biostructure/Process()
 	..()
 	if(damage > max_damage / 2 && healing_threshold)
