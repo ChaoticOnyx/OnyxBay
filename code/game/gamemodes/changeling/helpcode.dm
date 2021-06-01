@@ -158,7 +158,7 @@
 /obj/item/organ/internal/biostructure/proc/mind_into_biostructure(mob/living/M)
 	if(status & ORGAN_DEAD)
 		return
-	if(M && M.mind && brainchan)
+	if(M?.mind && brainchan)
 		M.mind.transfer_to(brainchan)
 		to_chat(brainchan, "<span class='notice'>You feel slightly disoriented.</span>")
 
@@ -296,10 +296,10 @@
 		for (var/obj/item/organ/external/E in available_limbs)
 			if (E.organ_tag == BP_R_HAND || E.organ_tag == BP_L_HAND || E.organ_tag == BP_R_FOOT || E.organ_tag == BP_L_FOOT || E.is_stump())
 				available_limbs -= E
-		var/obj/item/organ/external/new_parent = input(src, "Where do you want to move [BIO]?") as null|anything in available_limbs
+		var/obj/item/organ/external/new_parent = input(src, "Where do we want to move our [BIO.name]?") as null|anything in available_limbs
 
 		if(new_parent)
-			to_chat(src, "<span class='notice'>We started to move our [BIO] to \the [new_parent].</span>")
+			to_chat(src, SPAN("notice", "We start to move our [BIO.name] to \the [new_parent]."))
 			BIO.moving = 1
 			var/move_time
 			if(src.mind.changeling.recursive_enhancement)
@@ -313,7 +313,7 @@
 						var/mob/living/carbon/human/H = src
 						var/obj/item/organ/external/E = H.get_organ(BIO.parent_organ)
 						if(!E)
-							to_chat(src, "<span class='notice'>You are missing that limb.</span>")
+							to_chat(src, SPAN("notice", "We are missing that limb."))
 							return
 						if(istype(E))
 							E.internal_organs -= BIO
@@ -322,7 +322,7 @@
 						if(!E)
 							CRASH("[src] spawned in [src] without a parent organ: [BIO.parent_organ].")
 						E.internal_organs |= BIO
-						to_chat(src, "<span class='notice'>Our [BIO] is now in our \the [new_parent].</span>")
+						to_chat(src, SPAN("notice", "Our [BIO.name] is now in \the [new_parent]."))
 						log_debug("([src])The changeling biostructure moved in [new_parent].")
 
 
@@ -626,9 +626,8 @@
 	absorbDNA(newDNA)
 
 	target.ghostize()
-	changeling_transfer_mind(target)
-
-	qdel(src)
+	if(changeling_transfer_mind(target))
+		qdel(src) // So we wait for transfer to end before risking to fuck things up
 
 	return
 

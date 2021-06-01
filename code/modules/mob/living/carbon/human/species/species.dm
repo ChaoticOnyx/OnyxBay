@@ -286,8 +286,8 @@ The slots that you can use are found in items_clothing.dm and are the inventory 
 	for(var/obj/item/organ/external/E in H.contents)
 		for(var/obj/item/organ/internal/O in E.internal_organs)
 			if(istype(O) && O.foreign)
-				E.internal_organs -= O
-				H.internal_organs -= O
+				E.internal_organs.Remove(O)
+				H.internal_organs.Remove(O)
 				foreign_organs |= O
 
 	for(var/obj/item/organ/organ in H.contents)
@@ -318,6 +318,8 @@ The slots that you can use are found in items_clothing.dm and are the inventory 
 		H.internal_organs_by_name[organ_tag] = O
 
 	for(var/obj/item/organ/internal/organ in foreign_organs)
+		organ.owner = H // Let's just make sure, it doesn't hurt
+		organ.rejuvenate()
 		var/obj/item/organ/external/E = H.get_organ(organ.parent_organ)
 		E.internal_organs |= organ
 		H.internal_organs_by_name[organ.organ_tag] = organ

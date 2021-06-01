@@ -1814,29 +1814,31 @@ var/list/datum/absorbed_dna/hivemind_bank = list()
 
 /mob/proc/changeling_transfer_mind(atom/A)
 	var/obj/item/organ/internal/biostructure/BIO
-	if (istype(src,/mob/living/carbon/brain))
-		BIO = src.loc
+	if(istype(src, /mob/living/carbon/brain))
+		BIO = loc
 	else
-		BIO = locate() in src.contents
+		BIO = locate() in contents
 
 	if(!BIO)
-		return
+		return FALSE
+
 	var/mob/M = A
+	if(!M)
+		return FALSE
 
-	BIO.change_host(A)
+	BIO.change_host(M)
 
-	if (src.mind)	//basicaly if its mob then mind transfers to mob otherwise creating brain inside of biostucture
-		if(istype(M) && !istype(M,/mob/living/carbon/brain))
-			src.mind.transfer_to(M)
+	if(mind)	// basicaly if its mob then mind transfers to mob otherwise creating brain inside of biostucture
+		if(!istype(M, /mob/living/carbon/brain))
+			mind.transfer_to(M)
 		else
 			BIO.mind_into_biostructure(src)
 	else
 		if(istype(M))
-			M.key = src.key
-		return
+			M.key = key
 
-	var/mob/living/carbon/human/H = A
-	if (istype(H))
+	var/mob/living/carbon/human/H = M
+	if(istype(H))
 		if(H.stat == DEAD)
 			H.setBrainLoss(0)
 			H.SetParalysis(0)
@@ -1848,12 +1850,9 @@ var/list/datum/absorbed_dna/hivemind_bank = list()
 			var/obj/item/organ/internal/heart/heart = H.internal_organs_by_name[BP_HEART]
 			heart.pulse = 1
 			H.set_stat(CONSCIOUS)
-			H.failed_last_breath = 0 //So mobs that died of oxyloss don't revive and have perpetual out of breath.
+			H.failed_last_breath = 0 // So mobs that died of oxyloss don't revive and have perpetual out of breath.
 			H.reload_fullscreen()
-
-
-
-
+	return TRUE
 
 /mob/proc/prepare_changeling_bioelectrogenesis()
 	set category = "Changeling"
