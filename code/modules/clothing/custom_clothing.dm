@@ -125,3 +125,11 @@
 	if(user.gender == FEMALE)
 		to_chat(user, SPAN("warning", "You aren't sure you'll fit in this men's cloth..."))
 		return 0
+
+// Altehor
+
+/obj/item/clothing/under/ntpilot
+	name = "pilot jumpsuit"
+	desc = "Even though it's painted red, it still belongs to the NT."
+	icon_state = "ntpilot"
+	item_state = "ntpilot"
