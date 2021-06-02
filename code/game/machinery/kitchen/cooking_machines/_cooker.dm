@@ -249,6 +249,9 @@
 
 	..()
 
+/obj/machinery/cooker/attack_ai()
+	return
+
 /obj/machinery/cooker/proc/hurt_big_mob(mob/living/victim, mob/user)
 	to_chat(user, SPAN_WARNING("That's not going to fit."))
 	return
