@@ -78,7 +78,7 @@
 		return
 /datum/disease2/effect/proc/deactivate(mob/living/carbon/human/mob)
 	if(!istype(mob))
-		if(!istype(parent_disease)) // if virus not in mob, delete this fucking shit, that's buggy virus
+		if(parent_disease) // if virus not in mob, delete this fucking shit, that's buggy virus
 			QDEL_NULL(parent_disease)
 		return
 
