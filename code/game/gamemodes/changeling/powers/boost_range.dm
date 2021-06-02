@@ -3,7 +3,7 @@
 /mob/proc/changeling_boost_range()
 	set category = "Changeling"
 	set name = "Ranged Sting (10)"
-	set desc = "Your next sting ability can be used against targets 2 squares away."
+	set desc = "Our next sting ability can be used against targets 2 squares away."
 
 	var/datum/changeling/changeling = changeling_power(10)
 	if(!changeling)

@@ -43,19 +43,20 @@
 	var/obj/item/organ/internal/biostructure/BIO = loc
 	var/limb_to_del = BIO.loc
 
-	if(istype(BIO.loc,/obj/item/organ/external/leg))
+	if(istype(BIO.loc, /obj/item/organ/external/leg))
 		var/mob/living/simple_animal/hostile/little_changeling/leg_chan/leg_ling = new (get_turf(BIO.loc))
 		changeling_transfer_mind(leg_ling)
 
-	else if(istype(BIO.loc,/obj/item/organ/external/arm))
+	else if(istype(BIO.loc, /obj/item/organ/external/arm))
 		var/mob/living/simple_animal/hostile/little_changeling/arm_chan/arm_ling = new (get_turf(BIO.loc))
 		changeling_transfer_mind(arm_ling)
 
-	else if(istype(BIO.loc,/obj/item/organ/external/head))
+	else if(istype(BIO.loc, /obj/item/organ/external/head))
 		var/mob/living/simple_animal/hostile/little_changeling/head_chan/head_ling = new (get_turf(BIO.loc))
 		changeling_transfer_mind(head_ling)
 
 	else
+		headcrab_runaway() // Because byond doesn't want to update verbs sometimes this engine is a fucking mess
 		return
 
 	BIO.loc.visible_message(SPAN("warning", "[BIO.loc] suddenly grows little legs!"), \

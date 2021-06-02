@@ -280,7 +280,7 @@ var/list/datum/absorbed_dna/hivemind_bank = list()
 	var/mob/living/M = src
 
 	if(M.l_hand && M.r_hand)
-		to_chat(M, SPAN("changeling", "Your hands are full."))
+		to_chat(M, SPAN("changeling", "Our hands are full."))
 		return
 
 	var/obj/item/weapon/W = new weapon_type(src)

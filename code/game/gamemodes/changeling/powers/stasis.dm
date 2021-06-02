@@ -45,6 +45,6 @@
 	if(QDELETED(src))
 		return
 	mind.changeling.is_revive_ready = TRUE
-	to_chat(src, SPAN("changeling", "<font size='5'>We are ready to rise. Use the <b>Regenerative Stasis (20)</b> verb when you are ready.</font>"))
+	to_chat(src, SPAN("changeling", "<font size='5'>We are ready to rise. Use the <b>Regenerative Stasis (20)</b> verb when we are ready.</font>"))
 
 	feedback_add_details("changeling_powers", "FD")

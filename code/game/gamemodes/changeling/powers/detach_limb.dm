@@ -20,7 +20,7 @@
 			detachable_limbs -= E
 
 	changeling.isdetachingnow = TRUE
-	var/obj/item/organ/external/organ_to_remove = input(T, "Which organ do you want to detach?") as null|anything in detachable_limbs
+	var/obj/item/organ/external/organ_to_remove = input(T, "Which organ do we want to detach?") as null|anything in detachable_limbs
 	if(!organ_to_remove)
 		changeling.isdetachingnow = FALSE
 		return

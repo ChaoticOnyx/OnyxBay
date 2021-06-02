@@ -64,21 +64,22 @@
 		return
 	if(M?.mind && brainchan)
 		M.mind.transfer_to(brainchan)
-		to_chat(brainchan, SPAN("changeling", "You feel slightly disoriented."))
+		to_chat(brainchan, SPAN("changeling", "We feel slightly disoriented."))
 
 // Called when biostructure is taken out of a mob
 /obj/item/organ/internal/biostructure/removed(mob/living/user)
 	if(vital)
 		if(owner)
 			mind_into_biostructure(owner)
-		else if (istype(loc, /mob/living))
+		else if(istype(loc, /mob/living))
 			mind_into_biostructure(loc)
 
 		spawn()
-			if(istype(loc, /obj/item/organ/external))
-				brainchan.verbs += /mob/proc/transform_into_little_changeling
-			else
-				brainchan.verbs += /mob/proc/headcrab_runaway
+			if(brainchan)
+				if(istype(loc, /obj/item/organ/external))
+					brainchan.verbs += /mob/proc/transform_into_little_changeling
+				else
+					brainchan.verbs += /mob/proc/headcrab_runaway
 	..()
 
 // Called when biostructure is placed inside a mob
@@ -96,7 +97,6 @@
 			target.key = brainchan.key
 
 	return TRUE
-
 
 // Biostructure processing
 /obj/item/organ/internal/biostructure/Process()
@@ -122,6 +122,7 @@
 	if(brainchan)
 		if(brainchan.mind)
 			brainchan.mind.changeling.true_dead = TRUE
+			brainchan.mind.current = null
 		brainchan.death()
 	else
 		var/mob/host = loc

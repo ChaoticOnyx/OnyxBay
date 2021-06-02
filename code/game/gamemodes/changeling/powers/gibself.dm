@@ -2,7 +2,7 @@
 /mob/proc/changeling_gib_self()
 	set category = "Changeling"
 	set name = "Body Disjunction (40)"
-	set desc = "Tear apart your human disguise, revealing your little form."
+	set desc = "Tear apart our human disguise, revealing our little form."
 
 	var/datum/changeling/changeling = changeling_power(40, 0, 0, DEAD)
 	if(!changeling)

@@ -26,13 +26,13 @@
 	var/datum/species/S_dat = all_species[S_name]
 	var/changeTime = 2 SECONDS
 	if(mob_size != S_dat.mob_size)
-		src.visible_message("<span class='warning'>[src]'s body begins to twist, their mass changing rapidly!</span>")
+		src.visible_message(SPAN("warning", "[src]'s body begins to twist, their mass changing rapidly!"))
 		changeTime = 8 SECONDS
 	else
-		src.visible_message("<span class='warning'>[src]'s body begins to twist, changing rapidly!</span>")
+		src.visible_message(SPAN("warning", "[src]'s body begins to twist, changing rapidly!"))
 
 	if(!do_after(src, changeTime))
-		to_chat(src, "<span class='notice'>You fail to change shape.</span>")
+		to_chat(src, SPAN("changeling", "We fail to change shape."))
 		return
 	handle_changeling_transform(chosen_dna)
 
