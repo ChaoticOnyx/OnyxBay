@@ -3,32 +3,29 @@
 	set category = "Changeling"
 	set name = "Chemical Sting (5)"
 	set desc = "We inject synthesized chemicals into the victim."
-	if(is_regenerating())
+
+	if(changeling_is_incapacitated())
 		return
+
 	change_ctate(/datum/click_handler/changeling/changeling_chemical_sting)
-	return
 
 /mob/proc/changeling_chemical_sting(mob/living/carbon/human/T)
-	if(src.status_flags & FAKEDEATH)	//Check for stasis
-		to_chat(src, "<span class='warning'>We can't sting until our stasis ends successfully.</span>")
-		return 0
-
-	var/datum/changeling/changeling = src.mind.changeling
+	var/datum/changeling/changeling = mind.changeling
 	var/mob/living/carbon/human/target = changeling_sting(/mob/proc/prepare_changeling_chemical_sting, T, 5)
-
 	if(!target)
-		return FALSE
-	var/N = 10
+		return
+
+	var/transfer_amount = 10
 	if(changeling.recursive_enhancement == TRUE)
-		N = 20
+		transfer_amount = 20
 
 	var/obj/item/organ/internal/biostructure/BIO = locate() in contents
 	if(!BIO)
-		return FALSE
+		return
 
-	BIO.chem_cauldron.trans_to_mob(target, N)
-	feedback_add_details("changeling_powers","CS")
-	return TRUE
+	BIO.chem_cauldron.trans_to_mob(target, transfer_amount)
+
+	feedback_add_details("changeling_powers", "CS")
 
 /mob/proc/chem_disp_sting()
 	set category = "Changeling"
@@ -72,11 +69,11 @@
 	if(amount <= 0)
 		return
 	if(changeling.chem_charges <= amount)
-		to_chat(src, "<span class='notice'>Not enough chemicals.</span>")
+		to_chat(src, SPAN("changeling", "Not enough chemicals."))
 		return
 	if(target_chem == /datum/reagent/toxin/plasma)
-		if(changeling.chem_charges <= 2*amount)
-			to_chat(src, "<span class='notice'>Not enough chemicals.</span>")
+		if(changeling.chem_charges <= 2 * amount)
+			to_chat(src, SPAN("changeling", "Not enough chemicals."))
 			return
 
 	var/obj/item/organ/internal/biostructure/BIO = locate() in contents
@@ -87,7 +84,7 @@
 	if(target_chem == /datum/reagent/toxin/plasma)
 		amount *= 2
 	changeling.chem_charges -= amount
-	if(!(/mob/proc/changeling_chemical_sting in src.verbs))
+	if(!(/mob/proc/changeling_chemical_sting in verbs))
 		src.verbs += /mob/proc/prepare_changeling_chemical_sting
 		src.verbs += /mob/proc/empty_cauldron
 
@@ -101,7 +98,7 @@
 		return FALSE
 
 	if(src.status_flags & FAKEDEATH)	//Check for stasis
-		to_chat(src, "<span class='warning'>We can't sting until our stasis ends successfully.</span>")
+		to_chat(src, SPAN("changeling", "We can't sting until our stasis ends successfully."))
 		return FALSE
 
 	var/mob/living/carbon/human/C = src
@@ -112,5 +109,5 @@
 	BIO.chem_cauldron.clear_reagents()
 
 	C.adjustToxLoss(10)
-	src.verbs -= /mob/proc/prepare_changeling_chemical_sting
-	src.verbs -= /mob/proc/empty_cauldron
+	verbs -= /mob/proc/prepare_changeling_chemical_sting
+	verbs -= /mob/proc/empty_cauldron

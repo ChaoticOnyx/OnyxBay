@@ -7,13 +7,12 @@
 
 	var/datum/changeling/changeling = changeling_power(max_stat = UNCONSCIOUS)
 	if(!changeling)
-		return FALSE
+		return
 
 	var/mob/living/carbon/C = src
 	if(C.does_not_breathe == FALSE)
 		C.does_not_breathe = TRUE
-		to_chat(src, "<span class='notice'>We stop breathing, as we no longer need to.</span>")
+		to_chat(src, SPAN("changeling", "We stop breathing, as we no longer need to."))
 	else
 		C.does_not_breathe = FALSE
-		to_chat(src, "<span class='notice'>We resume breathing, as we now need to again.</span>")
-	return TRUE
+		to_chat(src, SPAN("changeling", "We resume breathing, as we now need to again."))

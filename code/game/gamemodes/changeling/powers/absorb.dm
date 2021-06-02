@@ -9,59 +9,59 @@
 	if(!changeling)
 		return
 
-	var/obj/item/grab/G = src.get_active_hand()
+	var/obj/item/grab/G = get_active_hand()
 	if(!istype(G))
-		to_chat(src, "<span class='warning'>We must be grabbing a creature in our active hand to absorb them.</span>")
-		return
-
-	var/mob/living/carbon/human/T = G.affecting
-	if(!istype(T) || isMonkey(T) || (T.isSynthetic()))
-		to_chat(src, "<span class='warning'>[T] is not compatible with our biology.</span>")
-		return
-
-	if(T.species.species_flags & SPECIES_FLAG_NO_SCAN)
-		to_chat(src, "<span class='warning'>We cannot extract DNA from this creature!</span>")
-		return
-
-	if(MUTATION_HUSK in T.mutations)
-		to_chat(src, "<span class='warning'>This creature's DNA is ruined beyond useability!</span>")
+		to_chat(src, SPAN("changeling", "We must be grabbing a creature with our active hand to absorb them."))
 		return
 
 	if(!G.can_absorb())
-		to_chat(src, "<span class='warning'>We must have a tighter grip to absorb this creature.</span>")
+		to_chat(src, SPAN("changeling", "We must have a tighter grip to absorb this creature."))
+		return
+
+	var/mob/living/carbon/human/T = G.affecting
+	if(!istype(T) || isMonkey(T) || T.isSynthetic())
+		to_chat(src, SPAN("changeling", "[T] is not compatible with our biology."))
+		return
+
+	if(T.species.species_flags & SPECIES_FLAG_NO_SCAN)
+		to_chat(src, SPAN("changeling", "We cannot extract DNA from this creature!"))
+		return
+
+	if(MUTATION_HUSK in T.mutations)
+		to_chat(src, SPAN("changeling", "This creature's DNA is ruined beyond useability!"))
 		return
 
 	if(changeling.isabsorbing)
-		to_chat(src, "<span class='warning'>We are already absorbing!</span>")
+		to_chat(src, SPAN("changeling", "Our proboscis is already in use!"))
 		return
 
-	var/obj/item/organ/external/affecting = T.get_organ(src.zone_sel.selecting)
+	var/obj/item/organ/external/affecting = T.get_organ(zone_sel.selecting)
 	if(!affecting)
-		to_chat(src, "<span class='warning'>They are missing that body part!</span>")
+		to_chat(src, SPAN("changeling", "They are missing that body part!"))
 
-	changeling.isabsorbing = 1
-	for(var/stage = 1, stage<=3, stage++)
+	changeling.isabsorbing = TRUE
+	for(var/stage = 1 to 3)
 		switch(stage)
 			if(1)
-				to_chat(src, "<span class='notice'>This creature is compatible. We must hold still...</span>")
+				to_chat(src, SPAN("changeling", "This creature is compatible. We must hold still..."))
 			if(2)
-				to_chat(src, "<span class='notice'>We extend a proboscis.</span>")
-				src.visible_message("<span class='warning'>[src] extends a proboscis!</span>")
+				to_chat(src, SPAN("changeling", "We extend a proboscis."))
+				visible_message(SPAN("danger", "[src] extends a proboscis!"))
 			if(3)
-				to_chat(src, "<span class='notice'>We stab [T] with the proboscis.</span>")
-				src.visible_message("<span class='danger'>[src] stabs [T] with the proboscis!</span>")
-				to_chat(T, "<span class='danger'>You feel a sharp stabbing pain!</span>")
+				to_chat(src, SPAN("changeling", "We stab [T] with the proboscis."))
+				visible_message(SPAN("danger", "[src] stabs [T] with the proboscis!"))
+				to_chat(T, SPAN("danger", "You feel a sharp stabbing pain!"))
 				affecting.take_external_damage(39, 0, DAM_SHARP, "large organic needle")
 
 		feedback_add_details("changeling_powers","A[stage]")
 		if(!do_mob(src, T, 150))
-			to_chat(src, "<span class='warning'>Our absorption of [T] has been interrupted!</span>")
-			changeling.isabsorbing = 0
+			to_chat(src, SPAN("changeling", "Our absorption of [T] has been interrupted!"))
+			changeling.isabsorbing = FALSE
 			return
 
-	to_chat(src, "<span class='notice'>We have absorbed [T]!</span>")
-	src.visible_message("<span class='danger'>[src] sucks the fluids from [T]!</span>")
-	to_chat(T, "<span class='danger'>You have been absorbed by the changeling!</span>")
+	to_chat(src, SPAN("changeling", "<b>We have absorbed [T]!</b>"))
+	src.visible_message(SPAN("danger", "[src] sucks the fluids from [T]!"))
+	to_chat(T, SPAN("danger", "You have been absorbed by the changeling!"))
 	changeling.chem_charges += 10
 	changeling.geneticpoints += 2
 
@@ -84,9 +84,9 @@
 		mind.store_memory(T.mind.memory)
 		mind.store_memory("<hr>")
 
-	if(T.mind && T.mind.changeling)
+	if(T.mind?.changeling)
 		if(T.mind.changeling.absorbed_dna)
-			for(var/datum/absorbed_dna/dna_data in T.mind.changeling.absorbed_dna)	//steal all their loot
+			for(var/datum/absorbed_dna/dna_data in T.mind.changeling.absorbed_dna)	// steal all their loot
 				if(changeling.GetDNA(dna_data.name))
 					continue
 				absorbDNA(dna_data)
@@ -94,16 +94,16 @@
 			T.mind.changeling.absorbed_dna.len = 1
 
 		if(T.mind.changeling.purchasedpowers)
-			for(var/datum/power/changeling/Tp in T.mind.changeling.purchasedpowers)
-				if(Tp in changeling.purchasedpowers)
+			for(var/datum/power/changeling/T_power in T.mind.changeling.purchasedpowers)
+				if(T_power in changeling.purchasedpowers)
 					continue
 				else
-					changeling.purchasedpowers += Tp
+					changeling.purchasedpowers += T_power
 
-					if(!Tp.isVerb)
-						call(Tp.verbpath)()
+					if(!T_power.isVerb)
+						call(T_power.verbpath)()
 					else
-						src.make_changeling()
+						make_changeling()
 
 		changeling.chem_charges += T.mind.changeling.chem_charges
 		changeling.geneticpoints += T.mind.changeling.geneticpoints
@@ -112,8 +112,7 @@
 		T.mind.changeling.absorbedcount = 0
 
 	changeling.absorbedcount++
-	changeling.isabsorbing = 0
+	changeling.isabsorbing = FALSE
 
 	T.death(0)
 	T.Drain()
-	return 1

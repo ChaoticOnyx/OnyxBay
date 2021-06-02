@@ -40,7 +40,7 @@ var/list/datum/absorbed_dna/hivemind_bank = list()
 		possible_changeling_IDs -= changelingID
 		changelingID = "[changelingID]"
 	else
-		changelingID = "[rand(1,999)]"
+		changelingID = "[rand(1,99)]"
 
 /datum/changeling/Destroy()
 	purchasedpowers = null
@@ -69,8 +69,8 @@ var/list/datum/absorbed_dna/hivemind_bank = list()
 
 /mob/proc/absorbDNA(datum/absorbed_dna/newDNA)
 	var/datum/changeling/changeling = null
-	if(src.mind && src.mind.changeling)
-		changeling = src.mind.changeling
+	if(mind?.changeling)
+		changeling = mind.changeling
 	if(!changeling)
 		return
 
@@ -142,7 +142,19 @@ var/list/datum/absorbed_dna/hivemind_bank = list()
 			verbs -= P.verbpath
 
 
-//Helper proc. Does all the checks and stuff for us to avoid copypasta
+// Checks if we are in stasis or dead. Some abilities don't need all the checks performed by changeling_power(), so we use this one.
+/mob/proc/changeling_is_incapacitated(max_stat = CONSCIOUS)
+	if(is_regenerating())
+		to_chat(src, SPAN("changeling", "We cannot use our body while in stasis."))
+		return TRUE
+
+	if(stat > max_stat)
+		to_chat(src, SPAN("changeling", "We are incapacitated."))
+		return
+
+	return FALSE
+
+// Helper proc. Does all the checks and stuff for us to avoid copypasta
 /mob/proc/changeling_power(required_chems = 0, required_dna = 0, max_genetic_damage = 100, max_stat = CONSCIOUS)
 	if(!mind)
 		return
@@ -154,20 +166,19 @@ var/list/datum/absorbed_dna/hivemind_bank = list()
 		to_world_log("[src] has the changeling verb but is not a changeling.")
 		return
 
-	if(stat > max_stat)
-		to_chat(src, "<span class='warning'>We are incapacitated.</span>")
+	if(changeling_is_incapacitated(max_stat))
 		return
 
 	if(changeling.absorbed_dna.len < required_dna)
-		to_chat(src, "<span class='warning'>We require at least [required_dna] samples of compatible DNA.</span>")
+		to_chat(src, SPAN("changeling", "We require at least <b>[required_dna]</b> samples of compatible DNA."))
 		return
 
 	if(changeling.chem_charges < required_chems)
-		to_chat(src, "<span class='warning'>We require at least [required_chems] units of chemicals to do that!</span>")
+		to_chat(src, SPAN("changeling", "We require at least <b>[required_chems]</b> units of chemicals to do that!"))
 		return
 
 	if(changeling.geneticdamage > max_genetic_damage)
-		to_chat(src, "<span class='warning'>Our genomes are still reassembling. We need time to recover first.</span>")
+		to_chat(src, SPAN("changeling", "Our genomes are still reassembling. We need time to recover first."))
 		return
 
 	return changeling
@@ -202,11 +213,11 @@ var/list/datum/absorbed_dna/hivemind_bank = list()
 	if(M.loc == loc)
 		return TRUE //target and source are in the same thing
 	if(!isturf(loc) || !isturf(M.loc))
-		to_chat(src, "<span class='warning'>We cannot reach \the [M] with a sting!</span>")
+		to_chat(src, SPAN("changeling", "We cannot reach \the [M] with a sting!"))
 		return FALSE //One is inside, the other is outside something.
 	// Maximum queued turfs set to 25; I don't *think* anything raises sting_range above 2, but if it does the 25 may need raising
 	if(!AStar(loc, M.loc, /turf/proc/AdjacentTurfs, /turf/proc/Distance, max_nodes = 25, max_node_depth = sting_range)) //If we can't find a path, fail
-		to_chat(src, "<span class='warning'>We cannot find a path to sting \the [M] by!</span>")
+		to_chat(src, SPAN("changeling", "We cannot find a path to sting \the [M] by!"))
 		return FALSE
 	return TRUE
 
@@ -228,7 +239,7 @@ var/list/datum/absorbed_dna/hivemind_bank = list()
 
 	var/obj/item/organ/external/target_limb = T.get_organ(src.zone_sel.selecting)
 	if (!target_limb)
-		to_chat(src, "<span class='warning'>[T] is missing the limb we are targeting.</span>")
+		to_chat(src, SPAN("changeling", "[T] is missing the limb we are targeting."))
 		return
 
 	changeling.chem_charges -= required_chems
@@ -239,13 +250,13 @@ var/list/datum/absorbed_dna/hivemind_bank = list()
 		verbs += verb_path
 
 	if(loud)
-		visible_message("<span class='danger'>[src] fires an organic shard into [T]!</span>")
+		visible_message(SPAN("danger", "[src] fires an organic shard into [T]!"))
 	else
-		to_chat(src, "<span class='notice'>We stealthily sting [T].</span>")
+		to_chat(src, SPAN("changeling", "We stealthily sting [T]."))
 
 	for(var/obj/item/clothing/clothes in list(T.head, T.wear_mask, T.wear_suit, T.w_uniform, T.gloves, T.shoes))
 		if(istype(clothes) && (clothes.body_parts_covered & target_limb.body_part) && (clothes.item_flags & ITEM_FLAG_THICKMATERIAL))
-			to_chat(src, "<span class='warning'>[T]'s armor has protected them.</span>")
+			to_chat(src, SPAN("changeling", "[T]'s armor has protected them."))
 			return //thick clothes will protect from the sting
 
 	if(T.isSynthetic() || BP_IS_ROBOTIC(target_limb))
@@ -253,15 +264,15 @@ var/list/datum/absorbed_dna/hivemind_bank = list()
 	if(!T.mind || !T.mind.changeling)	//T will be affected by the sting
 		if(target_limb.can_feel_pain())
 			T.flash_pain(75)
-			to_chat(T, "<span class='danger'>Your [target_limb.name] hurts.</span>")
+			to_chat(T, SPAN("danger", "Your [target_limb.name] hurts."))
 		return T
 	return
 
 
-/mob/proc/changeling_generic_weapon(weapon_type, loud = TRUE, required_chems = 20)
+/mob/proc/changeling_generic_weapon(weapon_type, required_chems = 20, loud = TRUE)
 	var/datum/changeling/changeling = changeling_power(required_chems, 1)
 	if(!changeling)
-		return
+		return FALSE
 
 	if(!ishuman(src))
 		return FALSE
@@ -269,7 +280,7 @@ var/list/datum/absorbed_dna/hivemind_bank = list()
 	var/mob/living/M = src
 
 	if(M.l_hand && M.r_hand)
-		to_chat(M, "<span class='danger'>Your hands are full.</span>")
+		to_chat(M, SPAN("changeling", "Your hands are full."))
 		return
 
 	var/obj/item/weapon/W = new weapon_type(src)
@@ -282,15 +293,15 @@ var/list/datum/absorbed_dna/hivemind_bank = list()
 
 
 /mob/proc/change_ctate(path)
-	var/datum/click_handler/handler = src.GetClickHandler()
+	var/datum/click_handler/handler = GetClickHandler()
 	if(!ispath(path))
-		to_chat(src, "<span class='warning'>This is awkward. 1-800-CALL-CODERS to fix this.</span>")
+		to_chat(src, SPAN("notice", "<b>This is awkward. 1-800-CALL-CODERS to fix this.</b>"))
 		return
 	if(handler.type == path)
-		to_chat(src, "<span class='notice'>You unprepare [handler.handler_name].</span>")
+		to_chat(src, SPAN("notice", "You unprepare [handler.handler_name]."))
 		usr.PopClickHandler()
 	else
-		to_chat(src, "<span class='warning'>You prepare your ability.</span>")
+		to_chat(src, SPAN("notice", "You prepare your ability."))
 		PushClickHandler(path)
 
 
