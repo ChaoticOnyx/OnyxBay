@@ -922,9 +922,9 @@
 	restore_all_organs(ignore_prosthetic_prefs)       // Reapply robotics/amputated status from preferences.
 
 	if(!client || !key) //Don't boot out anyone already in the mob.
-		for (var/obj/item/organ/internal/brain/H in world)
+		for(var/obj/item/organ/internal/brain/H in world)
 			if(H.brainmob)
-				if(H.brainmob.real_name == src.real_name)
+				if(H.brainmob.real_name == real_name)
 					if(H.brainmob.mind)
 						H.brainmob.mind.transfer_to(src)
 						qdel(H)
@@ -1694,7 +1694,7 @@
 	if(internal_organs_by_name[BP_BRAIN])
 		var/obj/item/organ/internal/brain/brain = internal_organs_by_name[BP_BRAIN]
 		if(!brain.is_broken() || stat != UNCONSCIOUS)
-			return 
+			return
 
 		to_chat(src, SPAN("notice", "You have given up life and succumbed to death."))
 		log_and_message_admins("has succumbed")

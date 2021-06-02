@@ -15,6 +15,7 @@
 		to_chat(C, SPAN("changeling", "We are able to feel pain now."))
 	else
 		to_chat(C, SPAN("changeling", "We are unable to feel pain anymore."))
+		changeling.chem_charges -= 10
 
 	spawn()
 		while(C && !C.can_feel_pain() && C.mind && C.mind.changeling && !is_regenerating())

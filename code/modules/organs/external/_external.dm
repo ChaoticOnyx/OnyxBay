@@ -246,6 +246,9 @@
 						var/obj/item/organ/internal/mmi_holder/O = removing
 						removing = O.transfer_and_delete()
 
+					if(istype(removing, /obj/item/organ/internal))
+						var/obj/item/organ/internal/remove_me_properly = removing
+						remove_me_properly.removed(user)
 					removing.forceMove(get_turf(user))
 
 					if(!(user.l_hand && user.r_hand))
@@ -414,7 +417,7 @@
 /*
 This function completely restores a damaged organ to perfect condition.
 */
-/obj/item/organ/external/rejuvenate(ignore_prosthetic_prefs)
+/obj/item/organ/external/rejuvenate(ignore_prosthetic_prefs = FALSE)
 	damage_state = "00"
 
 	status = 0
