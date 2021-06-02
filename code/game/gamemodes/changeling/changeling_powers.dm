@@ -143,19 +143,19 @@ var/list/datum/absorbed_dna/hivemind_bank = list()
 
 
 // Checks if we are in stasis or dead. Some abilities don't need all the checks performed by changeling_power(), so we use this one.
-/mob/proc/changeling_is_incapacitated(max_stat = CONSCIOUS)
-	if(is_regenerating())
+/mob/proc/changeling_is_incapacitated(max_stat = CONSCIOUS, allow_stasis = FALSE)
+	if(!allow_stasis && is_regenerating())
 		to_chat(src, SPAN("changeling", "We cannot use our body while in stasis."))
 		return TRUE
 
 	if(stat > max_stat)
 		to_chat(src, SPAN("changeling", "We are incapacitated."))
-		return
+		return TRUE
 
 	return FALSE
 
 // Helper proc. Does all the checks and stuff for us to avoid copypasta
-/mob/proc/changeling_power(required_chems = 0, required_dna = 0, max_genetic_damage = 100, max_stat = CONSCIOUS)
+/mob/proc/changeling_power(required_chems = 0, required_dna = 0, max_genetic_damage = 100, max_stat = CONSCIOUS, allow_stasis = FALSE)
 	if(!mind)
 		return
 	if(!iscarbon(src))
@@ -166,7 +166,7 @@ var/list/datum/absorbed_dna/hivemind_bank = list()
 		to_world_log("[src] has the changeling verb but is not a changeling.")
 		return
 
-	if(changeling_is_incapacitated(max_stat))
+	if(changeling_is_incapacitated(max_stat, allow_stasis))
 		return
 
 	if(changeling.absorbed_dna.len < required_dna)
