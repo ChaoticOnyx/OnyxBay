@@ -904,6 +904,18 @@
 	if(!selection || !S || !U)
 		return
 
+	var/damage_mod = 1.0
+
+	if(istype(selection, /obj/item/weapon/material/shard/shrapnel))
+		var/obj/item/W = U.get_active_hand()
+
+		if(!istype(W) || !W.sharp)
+			to_chat(usr, "You need to have a sharp object in active hand to do this.")
+			return
+
+		damage_mod = 1.5 + (W.w_class - 1) * 0.75
+
+
 	if(self)
 		visible_message("<span class='warning'><b>[src] rips [selection] out of their body.</b></span>","<span class='warning'><b>You rip [selection] out of your body.</b></span>")
 	else
@@ -925,10 +937,10 @@
 		for(var/datum/wound/wound in affected.wounds)
 			wound.embedded_objects -= selection
 
-		H.shock_stage+=20
-		affected.take_external_damage((selection.w_class * 3), 0, DAM_EDGE, "Embedded object extraction")
+		H.shock_stage += 20 * damage_mod
+		affected.take_external_damage((selection.w_class * 3 * damage_mod), 0, DAM_EDGE, "Embedded object extraction")
 
-		if(prob(selection.w_class * 5) && affected.sever_artery()) //I'M SO ANEMIC I COULD JUST -DIE-.
+		if(prob(selection.w_class * 5 * damage_mod) && affected.sever_artery()) //I'M SO ANEMIC I COULD JUST -DIE-.
 			H.custom_pain("Something tears wetly in your [affected] as [selection] is pulled free!", 50, affecting = affected)
 
 		if (ishuman(U))
@@ -938,8 +950,8 @@
 	else if(issilicon(src))
 		var/mob/living/silicon/robot/R = src
 		R.embedded -= selection
-		R.adjustBruteLoss(5)
-		R.adjustFireLoss(10)
+		R.adjustBruteLoss(5 * damage_mod)
+		R.adjustFireLoss(10 * damage_mod)
 
 	selection.forceMove(get_turf(src))
 	if(!(U.l_hand && U.r_hand))

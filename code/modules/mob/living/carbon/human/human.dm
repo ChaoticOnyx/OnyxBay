@@ -968,7 +968,7 @@
 	var/list/visible_implants = list()
 	for(var/obj/item/organ/external/organ in src.organs)
 		for(var/obj/item/weapon/O in organ.implants)
-			if(!istype(O,/obj/item/weapon/implant) && (O.w_class > class) && !istype(O,/obj/item/weapon/material/shard/shrapnel))
+			if(!istype(O,/obj/item/weapon/implant) && (O.w_class > class))
 				visible_implants += O
 
 	return(visible_implants)
@@ -1694,7 +1694,7 @@
 	if(internal_organs_by_name[BP_BRAIN])
 		var/obj/item/organ/internal/brain/brain = internal_organs_by_name[BP_BRAIN]
 		if(!brain.is_broken() || stat != UNCONSCIOUS)
-			return 
+			return
 
 		to_chat(src, SPAN("notice", "You have given up life and succumbed to death."))
 		log_and_message_admins("has succumbed")
