@@ -1201,7 +1201,7 @@
 		if(istype(cig))
 			cig.light()
 
-/mob/living/carbon/human/rejuvenate()
+/mob/living/carbon/human/rejuvenate(ignore_prosthetic_prefs = FALSE)
 	restore_blood()
 	full_prosthetic = null
 	shock_stage = 0

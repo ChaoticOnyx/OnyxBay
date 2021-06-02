@@ -16,7 +16,7 @@
 	QDEL_NULL_LIST(hallucinations)
 	return ..()
 
-/mob/living/carbon/rejuvenate()
+/mob/living/carbon/rejuvenate(ignore_prosthetic_prefs = FALSE)
 	bloodstr.clear_reagents()
 	touching.clear_reagents()
 	var/datum/reagents/R = get_ingested_reagents()
@@ -536,12 +536,12 @@
 /mob/living/carbon/proc/get_ingested_reagents()
 	return reagents
 
-/mob/living/carbon/rejuvenate()
+/mob/living/carbon/rejuvenate(ignore_prosthetic_prefs = FALSE)
 	. = ..()
 
 	// And restore all organs...
-	for (var/obj/item/organ/O in organs)
-		O.rejuvenate()
+	for(var/obj/item/organ/O in organs)
+		O.rejuvenate(ignore_prosthetic_prefs)
 
 /mob/living/carbon/proc/set_species()
 	return FALSE
