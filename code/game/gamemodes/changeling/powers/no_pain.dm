@@ -4,7 +4,7 @@
 	set name = "Toggle feel pain (10)"
 	set desc = "We cannot feel pain while this ability is active. Spends 3 chemicals every 4 seconds."
 
-	var/datum/changeling/changeling = changeling_power(10, 0, 0, UNCONSCIOUS)
+	var/datum/changeling/changeling = changeling_power(10, 0, 0, UNCONSCIOUS, TRUE)
 	if(!changeling)
 		return
 
