@@ -17,6 +17,7 @@
 	data["color_head"] = hex2rgb(rand_hex_color())
 
 /datum/disease2/effect/unified_appearance/activate(mob/living/carbon/human/mob)
+	..()
 	mob.change_facial_hair(data["facial"])
 	mob.change_facial_hair_color(data["color_facial"][1], data["color_facial"][2], data["color_facial"][3])
 	mob.change_hair(data["head"])
@@ -33,6 +34,7 @@
 	possible_mutations = list(/datum/disease2/effect/immortal)
 
 /datum/disease2/effect/curer/activate(mob/living/carbon/human/mob)
+	..()
 	to_chat(mob, SPAN("notice", "You feel cured."))
 	for(var/ID in mob.virus2)
 		var/datum/disease2/disease/D = mob.virus2[ID]
@@ -61,6 +63,7 @@
 	parent_disease.antigen = list()
 
 /datum/disease2/effect/adaptation_kill/activate(mob/living/carbon/human/mob)
+	..()
 	var/mob/living/carbon/human/H = data
 	if(locate(H) in GLOB.dead_mob_list_)
 		parent_disease.cure(mob)
@@ -83,6 +86,7 @@
 		data = c_data
 
 /datum/disease2/effect/dnaspread/activate(mob/living/carbon/human/mob)
+	..()
 	if(!transformed && !host)
 		if(!data["name"] || !data["UI"] || !data["SE"])
 			data["name"] = mob.real_name
@@ -107,6 +111,7 @@
 		transformed = 1
 
 /datum/disease2/effect/dnaspread/deactivate(mob/living/carbon/human/mob)
+	..()
 	if(!original_dna["name"] || !original_dna["UI"] || !original_dna["SE"])
 		return
 	var/list/newUI = original_dna["UI"]
@@ -126,6 +131,7 @@
 	badness = VIRUS_MUTATION
 
 /datum/disease2/effect/monkey/activate(mob/living/carbon/human/mob)
+	..()
 	mob.monkeyize()
 
 
@@ -138,6 +144,7 @@
 							  /datum/disease2/effect/flu)
 
 /datum/disease2/effect/fluspanish/activate(mob/living/carbon/human/mob)
+	..()
 	if(mob.reagents.get_reagent_amount(/datum/reagent/leporazine) < 5)
 		mob.bodytemperature += 25
 		if(prob(15))

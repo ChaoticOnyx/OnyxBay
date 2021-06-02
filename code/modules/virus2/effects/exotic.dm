@@ -14,9 +14,11 @@
 	badness = VIRUS_EXOTIC
 
 /datum/disease2/effect/vulnerability/activate(mob/living/carbon/human/mob)
+	..()
 	mob.add_modifier(/datum/modifier/vulnerability)
 
 /datum/disease2/effect/vulnerability/deactivate(mob/living/carbon/human/mob)
+	..()
 	mob.remove_a_modifier_of_type(/datum/modifier/vulnerability)
 
 /datum/modifier/vulnerability
@@ -40,6 +42,7 @@
 	badness = VIRUS_EXOTIC
 
 /datum/disease2/effect/musclerace/activate(mob/living/carbon/human/mob)
+	..()
 	mob.nutrition = max(0, mob.nutrition - 25)
 	mob.add_modifier(/datum/modifier/musclerace)
 	if(prob(25))
@@ -51,6 +54,7 @@
 		mob.take_organ_damage((3 * multiplier))
 
 /datum/disease2/effect/musclerace/deactivate(mob/living/carbon/human/mob)
+	..()
 	mob.remove_a_modifier_of_type(/datum/modifier/musclerace)
 
 /datum/modifier/musclerace
@@ -108,6 +112,7 @@
 		)
 
 /datum/disease2/effect/nuclear/activate(mob/living/carbon/human/mob)
+	..()
 	if(!codes_received)
 		var/obj/machinery/nuclearbomb/nuke = locate(/obj/machinery/nuclearbomb/station) in world
 		if(nuke && mob.mind)
@@ -124,6 +129,7 @@
 	mob.add_modifier(/datum/modifier/nuclear)
 
 /datum/disease2/effect/nuclear/deactivate(mob/living/carbon/human/mob)
+	..()
 	mob.remove_a_modifier_of_type(/datum/modifier/nuclear)
 
 /datum/modifier/nuclear
@@ -145,6 +151,7 @@
 	badness = VIRUS_EXOTIC
 
 /datum/disease2/effect/hisstarvation/activate(mob/living/carbon/human/mob)
+	..()
 	mob.nutrition = max(0, mob.nutrition - 1000)
 	mob.custom_emote(message = "hisses")
 	if(prob(25))
@@ -179,6 +186,7 @@
 		)
 
 /datum/disease2/effect/nuclear_exacerbation/activate(mob/living/carbon/human/mob)
+	..()
 	if(prob(25))
 		to_chat(mob, SPAN("danger", "[pick(reflections)]"))
 	if(mob.reagents.get_reagent_amount(/datum/reagent/hyperzine) < 10)
@@ -195,6 +203,7 @@
 	possible_mutations = list(/datum/disease2/effect/mind)
 
 /datum/disease2/effect/brainrot/activate(mob/living/carbon/human/mob)
+	..()
 	if(mob.reagents.get_reagent_amount(/datum/reagent/alkysine) > 5)
 		to_chat(mob, SPAN("notice", "You feel better."))
 	else
@@ -215,6 +224,7 @@
 	possible_mutations = list(/datum/disease2/effect/radian)
 
 /datum/disease2/effect/emp/activate(var/mob/living/carbon/human/mob)
+	..()
 	if(prob(35))
 		to_chat(mob, "<span class='danger'>Your inner energy breaks out!</span>")
 		empulse(mob.loc, 3, 2)
@@ -234,6 +244,7 @@
 							  /datum/disease2/effect/nuclear)
 
 /datum/disease2/effect/nuclear_escalation/activate(var/mob/living/carbon/human/mob)
+	..()
 	if(prob(10))
 		to_chat(mob, "<span class='danger'>The atom was mistaken in you, you received a great gift and could not live up to expectations, good luck.</span>")
 		var/obj/item/organ/internal/brain/B = mob.internal_organs_by_name[BP_BRAIN]
@@ -249,6 +260,7 @@
 	badness = VIRUS_EXOTIC
 
 /datum/disease2/effect/gibbingtons/activate(var/mob/living/carbon/human/mob)
+	..()
 	// Probabilities have been tweaked to kill in ~2-3 minutes, giving 5-10 messages.
 	// Probably needs more balancing, but it's better than LOL U GIBBED NOW, especially now that viruses can potentially have no signs up until Gibbingtons.
 	mob.adjustBruteLoss(10*multiplier)

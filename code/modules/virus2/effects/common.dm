@@ -7,7 +7,8 @@
 	oneshot = 1
 	possible_mutations = list(/datum/disease2/effect/unified_appearance)
 
-/datum/disease2/effect/beard/activate(var/mob/living/carbon/human/mob)
+/datum/disease2/effect/beard/activate(mob/living/carbon/human/mob)
+	..()
 	var/list/possible_beards = list("Long Beard", "Very Long Beard", "Dwarf Beard", "Braided Beard", "Sea Dog", "Lumberjack")
 	var/datum/sprite_accessory/facial_hair_style = pick(possible_beards)
 	mob.change_facial_hair(facial_hair_style)
@@ -36,7 +37,8 @@
 	parent_disease.antigen = list()
 
 /datum/disease2/effect/adaptation_chem/activate(mob/living/carbon/human/mob)
-	if (mob.reagents.get_reagent_amount(data) > multiplier)
+	..()
+	if(mob.reagents.get_reagent_amount(data) > multiplier)
 		parent_disease.cure(mob)
 
 ////////////////////////STAGE 2/////////////////////////////////
@@ -47,7 +49,8 @@
 	badness = VIRUS_COMMON
 	possible_mutations = list(/datum/disease2/effect/chem_synthesis)
 
-/datum/disease2/effect/stimulant/activate(var/mob/living/carbon/human/mob)
+/datum/disease2/effect/stimulant/activate(mob/living/carbon/human/mob)
+	..()
 	to_chat(mob, STIMULANT_EFFECT_WARNING)
 	if (mob.reagents.get_reagent_amount(/datum/reagent/hyperzine) < 10)
 		mob.reagents.add_reagent(/datum/reagent/hyperzine, 4)
@@ -61,7 +64,8 @@
 	stage = 2
 	badness = VIRUS_COMMON
 
-/datum/disease2/effect/hair/activate(var/mob/living/carbon/human/mob)
+/datum/disease2/effect/hair/activate(mob/living/carbon/human/mob)
+	..()
 	if(mob.species.name == SPECIES_HUMAN && !(mob.h_style == "Bald") && !(mob.h_style == "Balding Hair"))
 		to_chat(mob, HAIR_EFFECT_WARNING)
 		spawn(50)
@@ -75,7 +79,8 @@
 	stage = 2
 	badness = VIRUS_COMMON
 
-/datum/disease2/effect/blind/activate(var/mob/living/carbon/human/mob)
+/datum/disease2/effect/blind/activate(mob/living/carbon/human/mob)
+	..()
 	mob.eye_blind = max(mob.eye_blind, 4)
 
 
@@ -89,6 +94,7 @@
 	parent_disease.antigen = list()
 
 /datum/disease2/effect/adaptation_damage/activate(mob/living/carbon/human/mob)
+	..()
 	for(var/obj/item/organ/external/E in mob.organs)
 		var/dmg = E.get_damage()
 		if(dmg > 8*multiplier)
@@ -105,6 +111,7 @@
 	parent_disease.antigen = list()
 
 /datum/disease2/effect/adaptation_rads/activate(mob/living/carbon/human/mob)
+	..()
 	if(mob.radiation > 10*multiplier)
 		parent_disease.cure(mob)
 ////////////////////////STAGE 3/////////////////////////////////
@@ -127,8 +134,9 @@
 	var/datum/reagent/R = data
 	name = "[initial(name)] ([initial(R.name)])"
 
-/datum/disease2/effect/chem_synthesis/activate(var/mob/living/carbon/human/mob)
-	if (mob.reagents.get_reagent_amount(data) < 5)
+/datum/disease2/effect/chem_synthesis/activate(mob/living/carbon/human/mob)
+	..()
+	if(mob.reagents.get_reagent_amount(data) < 5)
 		mob.reagents.add_reagent(data, 2)
 
 
@@ -138,7 +146,8 @@
 	stage = 3
 	badness = VIRUS_COMMON
 
-/datum/disease2/effect/mutation/activate(var/mob/living/carbon/human/mob)
+/datum/disease2/effect/mutation/activate(mob/living/carbon/human/mob)
+	..()
 	mob.apply_damage(2, CLONE)
 
 
@@ -148,7 +157,8 @@
 	stage = 3
 	badness = VIRUS_COMMON
 
-/datum/disease2/effect/mind/activate(var/mob/living/carbon/human/mob)
+/datum/disease2/effect/mind/activate(mob/living/carbon/human/mob)
+	..()
 	var/obj/item/organ/internal/brain/B = mob.internal_organs_by_name[BP_BRAIN]
 	if (B && B.damage < B.min_broken_damage)
 		B.take_internal_damage(5)
@@ -163,7 +173,8 @@
 	possible_mutations = list(/datum/disease2/effect/organs,
 							  /datum/disease2/effect/killertoxins)
 
-/datum/disease2/effect/toxins/activate(var/mob/living/carbon/human/mob)
+/datum/disease2/effect/toxins/activate(mob/living/carbon/human/mob)
+	..()
 	mob.adjustToxLoss((2*multiplier))
 
 
@@ -174,6 +185,7 @@
 	badness = VIRUS_COMMON
 
 /datum/disease2/effect/escaping/activate(mob/living/carbon/human/mob)
+	..()
 	if(!mob.handcuffed)
 		return
 	mob.visible_message(
@@ -192,7 +204,8 @@
 	possible_mutations = list(/datum/disease2/effect/organs,
 							  /datum/disease2/effect/toxins)
 
-/datum/disease2/effect/killertoxins/activate(var/mob/living/carbon/human/mob)
+/datum/disease2/effect/killertoxins/activate(mob/living/carbon/human/mob)
+	..()
 	mob.adjustToxLoss(15*multiplier)
 
 
@@ -202,7 +215,8 @@
 	stage = 4
 	badness = VIRUS_COMMON
 
-/datum/disease2/effect/deaf/activate(var/mob/living/carbon/human/mob)
+/datum/disease2/effect/deaf/activate(mob/living/carbon/human/mob)
+	..()
 	mob.ear_deaf += 20
 
 
@@ -214,7 +228,8 @@
 	badness = VIRUS_COMMON
 	possible_mutations = list(/datum/disease2/effect/spread_radiation)
 
-/datum/disease2/effect/radian/activate(var/mob/living/carbon/human/mob)
+/datum/disease2/effect/radian/activate(mob/living/carbon/human/mob)
+	..()
 	mob.apply_effect(2*multiplier, IRRADIATE, blocked = 0)
 
 
@@ -235,5 +250,6 @@
 	name = "[initial(name)]([gas_name])"
 
 /datum/disease2/effect/gas/activate(mob/living/carbon/human/mob)
+	..()
 	var/datum/gas_mixture/env = mob.loc.return_air()
 	env.adjust_gas(data, multiplier)

@@ -72,6 +72,19 @@
 			multiplier = rand(1,multiplier_max)
 
 /datum/disease2/effect/proc/activate(mob/living/carbon/human/mob)
+	if(!istype(mob))
+		if(parent_disease) // if virus not in mob, delete this fucking shit, that's buggy virus
+			QDEL_NULL(parent_disease)
+		return
 /datum/disease2/effect/proc/deactivate(mob/living/carbon/human/mob)
+	if(!istype(mob))
+		if(!istype(parent_disease)) // if virus not in mob, delete this fucking shit, that's buggy virus
+			QDEL_NULL(parent_disease)
+		return
+
 /datum/disease2/effect/proc/generate(copy_data) // copy_data will be non-null if this is a copy; it should be used to initialise the data for this effect if present
+	if(!copy_data) // are you fucking sure in our fucking build, n-word?
+		if(parent_disease) // if virus not in mob, delete this fucking shit, that's buggy virus
+			QDEL_NULL(parent_disease)
+		return
 /datum/disease2/effect/proc/change_parent()
