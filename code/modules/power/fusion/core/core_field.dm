@@ -40,7 +40,7 @@
 	var/last_range
 	var/last_power
 
-/obj/effect/fusion_em_field/New(loc, var/obj/machinery/power/fusion_core/new_owned_core)
+/obj/effect/fusion_em_field/New(loc, obj/machinery/power/fusion_core/new_owned_core)
 	..()
 
 	set_light(light_min_power, light_min_range / 10, light_min_range)
