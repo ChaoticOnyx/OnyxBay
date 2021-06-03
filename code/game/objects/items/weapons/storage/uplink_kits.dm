@@ -55,8 +55,8 @@
 	//name = "\improper EVA gear pack"
 
 	startswith = list(
-		/obj/item/clothing/suit/space/void/syndi,
-		/obj/item/clothing/head/helmet/space/void/syndi,
+		/obj/item/clothing/suit/space/syndicate,
+		/obj/item/clothing/head/helmet/space/syndicate,
 		/obj/item/clothing/mask/gas/syndicate,
 		/obj/item/weapon/tank/emergency/oxygen/double,
 		)
@@ -181,11 +181,11 @@
 
 /obj/item/weapon/storage/secure/briefcase/money
 
-	startswith = list(/obj/item/weapon/spacecash/bundle/c1000 = 10)
+	startswith = list(/obj/item/weapon/spacecash/bundle/c500 = 10)
 
 /obj/item/weapon/storage/backpack/satchel/syndie_kit/cleaning_kit
-	name="cleaning kit"
-	desc="Used to clean your dirty deeds up."
+	name = "cleaning kit"
+	desc = "Used to clean your dirty deeds up."
 	startswith = list(
 		/obj/item/weapon/reagent_containers/spray/cleaner,
 		/obj/item/weapon/reagent_containers/spray/sterilizine,

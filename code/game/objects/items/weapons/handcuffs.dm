@@ -257,5 +257,5 @@ var/last_chew = 0
 	if(countdown)
 		sleep(countdown_time)
 
-	explosion(get_turf(src), 0, 1, 3, 0)
+	explosion(get_turf(src), 1, 2, 3, 0)
 	qdel(src)
