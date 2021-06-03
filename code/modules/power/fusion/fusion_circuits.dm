@@ -25,6 +25,18 @@
 	build_path = /obj/machinery/computer/gyrotron_control
 	origin_tech = list(TECH_DATA = 4, TECH_ENGINEERING = 4)
 
+/obj/item/weapon/circuitboard/gyrotron
+	name = "internal circuitry (gyrotron)"
+	build_path = /obj/machinery/power/emitter/gyrotron
+	board_type = "machine"
+	origin_tech = list(TECH_POWER = 6, TECH_MAGNET = 4, TECH_ENGINEERING = 4)
+	req_components = list(
+							/obj/item/weapon/stock_parts/matter_bin/super = 1,
+							/obj/item/weapon/stock_parts/micro_laser/ultra = 2,
+							/obj/item/weapon/stock_parts/console_screen = 1,
+							/obj/item/stack/cable_coil = 30
+							)
+
 /obj/item/weapon/circuitboard/fusion_core
 	name = "internal circuitry (fusion core)"
 	build_path = /obj/machinery/power/fusion_core
