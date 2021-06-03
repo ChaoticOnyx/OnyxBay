@@ -347,7 +347,7 @@
 			"13" = 'icons/effects/416x416.dmi'
 			)
 
-	if( ((newsize-1)%2==0) && (newsize<=13) )
+	if(((newsize - 1) % 2 == 0) && (newsize <= 13))
 		icon = 'icons/obj/machines/power/fusion.dmi'
 		if(newsize>1)
 			icon = size_to_icon["[newsize]"]
