@@ -195,7 +195,7 @@
 			else
 				var/obj/item/weapon/reagent_containers/food/condiment/P = new /obj/item/weapon/reagent_containers/food/condiment(src.loc)
 				reagents.trans_to_obj(P,50)
-		else if (href_list["createsyrignes"])
+		else if(href_list["createsyrignes"])
 			var/amount = 1
 
 			amount = input("Select the amount of reagents", "Min 1, Max 15", 15)
@@ -204,13 +204,13 @@
 			if(reagents.total_volume / amount < 1) //Sanity checking.
 				return
 
-			var/name = sanitizeSafe(input(usr,"Name:", "Name your syringe!", "[reagents.get_master_reagent_name()] ([amount]u)"), MAX_NAME_LEN)
+			var/name = sanitizeSafe(input(usr, "Name:", "Name your syringe!", "[reagents.get_master_reagent_name()] ([amount]u)"), MAX_NAME_LEN)
 			if(!name)
 				name = reagents.get_master_reagent_name()
 
 			while(reagents.total_volume > 0)
 				var/obj/item/weapon/reagent_containers/syringe/S = new(src.loc)
-				S.name = "[name] syringe"
+				S.attach_label(null, null, name)
 				S.mode = SYRINGE_PACKAGED
 
 				reagents.trans_to_obj(S, amount)
