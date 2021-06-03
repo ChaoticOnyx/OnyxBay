@@ -243,7 +243,7 @@
 	explosion(get_turf(owned_core),-1,-1,8,10) // Blow out all the windows.
 	return
 
-/obj/effect/fusion_em_field/proc/ChangeFieldStrength(var/new_strength)
+/obj/effect/fusion_em_field/proc/ChangeFieldStrength(new_strength)
 	var/calc_size = 1
 	if(new_strength <= 50)
 		calc_size = 1
