@@ -18,5 +18,10 @@
         "Pattern": "(?<=\".*)(?<error><\\s?span)(?=.*>)",
         "Message": "Вместо HTML тэга необходимо использовать макрос 'SPAN': '{{error}}'",
         "Level": "warning"
+    },
+    {
+        "Pattern": "(?<error>if|for|while)\\s+\\(",
+        "Message": "Лишний пробел после '{{error}}'",
+        "Level": "warning"
     }
 ]
