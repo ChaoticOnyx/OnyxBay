@@ -72,7 +72,7 @@ GLOBAL_LIST_INIT(syndicate_factions, list(
 			var/datum/antagonist/antag = GLOB.all_antag_types_[antag_type]
 			if(antag.is_antagonist(target_mind))
 				var/list/params = reason_list[antag_type]
-				if(params)
+				if(length(params) > 2)
 					var/chance = params[3]
 					if(skip_third_param)
 						chance = 100
@@ -83,6 +83,8 @@ GLOBAL_LIST_INIT(syndicate_factions, list(
 					else
 						return_value = TRUE
 					break
+				else
+					return_value = FALSE
 	else
 		return_value = FALSE
 	return return_value
