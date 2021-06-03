@@ -280,7 +280,7 @@
 		reactants.Add(name)
 		reactants[name] = quantity
 
-/obj/effect/fusion_em_field/proc/RadiateAll(var/ratio_lost = 1)
+/obj/effect/fusion_em_field/proc/RadiateAll(ratio_lost = 1)
 
 	// Create our plasma field and dump it into our environment.
 	var/turf/T = get_turf(src)
