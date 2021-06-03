@@ -51,6 +51,8 @@
 			return global.SScharacter_setup;
 		if("SScircuit")
 			return global.SScircuit;
+		if("SSvirus2suka")
+			return global.SSvirus2suka;
 		if("SScircuit_components")
 			return global.SScircuit_components;
 		if("SSevac")
@@ -1034,6 +1036,8 @@
 			global.SScharacter_setup=newval;
 		if("SScircuit")
 			global.SScircuit=newval;
+		if("SSvirus2suka")
+			global.SSvirus2suka=newval;
 		if("SScircuit_components")
 			global.SScircuit_components=newval;
 		if("SSevac")

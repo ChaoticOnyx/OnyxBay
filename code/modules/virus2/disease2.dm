@@ -143,6 +143,7 @@ LEGACY_RECORD_STRUCTURE(virus_records, virus_record)
 /datum/disease2/disease/proc/cure(mob/living/carbon/human/H, antigen)
 	if(!H)
 		return
+	SSvirus2suka.dequeue_virus(src)
 	for(var/datum/disease2/effect/e in effects)
 		e.deactivate(H)
 	H.virus2.Remove("[uniqueID]")

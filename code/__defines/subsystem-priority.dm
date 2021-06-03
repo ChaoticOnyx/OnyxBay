@@ -19,6 +19,7 @@
 #define SS_PRIORITY_RADIATION      20	// Radiation processing and cache updates.
 #define SS_PRIORITY_SHUTTLE        20	// Shuttle movement.
 #define SS_PRIORITY_CIRCUIT_COMP   20	// Processing circuit component do_work.
+#define SS_PRIORITY_VIRUSES        20	// Processing viruses life.
 #define SS_PRIORITY_OPEN_SPACE     20	// Open turf updates.
 #define SS_PRIORITY_AIRFLOW        15	// Object movement from ZAS airflow.
 #define SS_PRIORITY_VOTE           10	// Vote management.
