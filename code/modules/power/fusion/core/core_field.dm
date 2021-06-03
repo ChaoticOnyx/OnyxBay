@@ -262,7 +262,7 @@
 	field_strength = new_strength
 	change_size(calc_size)
 
-/obj/effect/fusion_em_field/proc/AddEnergy(var/a_energy, var/a_plasma_temperature)
+/obj/effect/fusion_em_field/proc/AddEnergy(a_energy, a_plasma_temperature)
 	energy += a_energy
 	plasma_temperature += a_plasma_temperature
 	if(a_energy && percent_unstable > 0)
