@@ -27,8 +27,8 @@
 	name = "Vulnerability"
 	desc = "Something devours your inner strength."
 
-	on_created_text = "<span class='warning'>You are now weak, something affects your well-being!</span>"
-	on_expired_text = "<span class='notice'>You feel better.</span>"
+	on_created_text = SPAN("warning", "You are now weak, something affects your well-being!")
+	on_expired_text = SPAN("notice", "You feel better.")
 
 	max_health_percent = 0.5
 	disable_duration_percent = 2
@@ -65,8 +65,8 @@
 	name = "Unintentional Muscle Burning"
 	desc = "Some kind of force makes your body work to the limit of its capabilities."
 
-	on_created_text = "<span class='warning'>You are incredibly strong right now, this is not for long!</span>"
-	on_expired_text = "<span class='notice'>You feel better.</span>"
+	on_created_text = SPAN("warning", "You are incredibly strong right now, this is not for long!")
+	on_expired_text = SPAN("notice", "You feel better.")
 
 	max_health_percent = 0.8
 	disable_duration_percent = 0.5
@@ -142,8 +142,8 @@
 	name = "Nuclear fury"
 	desc = "You use all your willpower to achieve your highest goal in this life."
 
-	on_created_text = "<span class='warning'>I need to do everything possible to merge with the Atom!</span>"
-	on_expired_text = "<span class='notice'>You feel rather weak.</span>"
+	on_created_text = SPAN("warning", "I need to do everything possible to merge with the Atom!")
+	on_expired_text = SPAN("notice", "You feel rather weak.")
 
 	disable_duration_percent = 0.8
 	outgoing_melee_damage_percent = 1.35
@@ -232,14 +232,14 @@
 	badness = VIRUS_EXOTIC
 	possible_mutations = list(/datum/disease2/effect/radian)
 
-/datum/disease2/effect/emp/activate(var/mob/living/carbon/human/mob)
+/datum/disease2/effect/emp/activate(mob/living/carbon/human/mob)
 	if(..())
 		return
 	if(prob(35))
-		to_chat(mob, "<span class='danger'>Your inner energy breaks out!</span>")
+		to_chat(mob, SPAN("danger", "Your inner energy breaks out!"))
 		empulse(mob.loc, 3, 2)
 	if(prob(50))
-		to_chat(mob, "<span class='warning'>You are overwhelmed with electricity from the inside!</span>")
+		to_chat(mob, SPAN("warning", "You are overwhelmed with electricity from the inside!"))
 		var/datum/effect/effect/system/spark_spread/s = new /datum/effect/effect/system/spark_spread
 		s.set_up(5, 1, mob)
 		s.start()
@@ -253,11 +253,11 @@
 	possible_mutations = list(/datum/disease2/effect/nuclear_exacerbation,
 							  /datum/disease2/effect/nuclear)
 
-/datum/disease2/effect/nuclear_escalation/activate(var/mob/living/carbon/human/mob)
+/datum/disease2/effect/nuclear_escalation/activate(mob/living/carbon/human/mob)
 	if(..())
 		return
 	if(prob(10))
-		to_chat(mob, "<span class='danger'>The atom was mistaken in you, you received a great gift and could not live up to expectations, good luck.</span>")
+		to_chat(mob, SPAN("danger", "The atom was mistaken in you, you received a great gift and could not live up to expectations, good luck."))
 		var/obj/item/organ/internal/brain/B = mob.internal_organs_by_name[BP_BRAIN]
 		if(B && B.damage < B.min_broken_damage)
 			B.take_internal_damage(150)
@@ -270,7 +270,7 @@
 	stage = 4
 	badness = VIRUS_EXOTIC
 
-/datum/disease2/effect/gibbingtons/activate(var/mob/living/carbon/human/mob)
+/datum/disease2/effect/gibbingtons/activate(mob/living/carbon/human/mob)
 	if(..())
 		return
 	// Probabilities have been tweaked to kill in ~2-3 minutes, giving 5-10 messages.

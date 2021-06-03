@@ -55,9 +55,9 @@
 	if(..())
 		return
 	to_chat(mob, STIMULANT_EFFECT_WARNING)
-	if (mob.reagents.get_reagent_amount(/datum/reagent/hyperzine) < 10)
+	if(mob.reagents.get_reagent_amount(/datum/reagent/hyperzine) < 10)
 		mob.reagents.add_reagent(/datum/reagent/hyperzine, 4)
-	if (prob(30))
+	if(prob(30))
 		mob.jitteriness += 10
 
 
@@ -170,7 +170,7 @@
 	if(..())
 		return
 	var/obj/item/organ/internal/brain/B = mob.internal_organs_by_name[BP_BRAIN]
-	if (B && B.damage < B.min_broken_damage)
+	if(B && B.damage < B.min_broken_damage)
 		B.take_internal_damage(5)
 
 

@@ -49,7 +49,7 @@
 	badness = VIRUS_ENGINEERED
 	possible_mutations = list(/datum/disease2/effect/fluspanish)
 
-/datum/disease2/effect/cold9/activate(var/mob/living/carbon/human/mob)
+/datum/disease2/effect/cold9/activate(mob/living/carbon/human/mob)
 	if(..())
 		return
 	if(mob.reagents.get_reagent_amount(/datum/reagent/leporazine) < 2)
@@ -160,7 +160,7 @@
 	var/heal_amt = -5 * multiplier
 	mob.apply_damages(heal_amt, heal_amt, heal_amt, heal_amt)
 
-/datum/disease2/effect/immortal/deactivate(var/mob/living/carbon/human/mob)
+/datum/disease2/effect/immortal/deactivate(mob/living/carbon/human/mob)
 	if(..())
 		return
 	to_chat(mob, IMMORTAL_AGING_EFFECT_WARNING)
@@ -273,7 +273,7 @@
 	if(..())
 		return
 	var/list/detachable_limbs = mob.organs.Copy()
-	for (var/obj/item/organ/external/E in detachable_limbs)
+	for(var/obj/item/organ/external/E in detachable_limbs)
 		if(E.organ_tag == BP_R_HAND || E.organ_tag == BP_L_HAND || E.organ_tag == BP_R_FOOT || E.organ_tag == BP_L_FOOT || E.organ_tag == BP_CHEST || E.organ_tag == BP_GROIN || E.organ_tag == BP_HEAD || E.is_stump())
 			detachable_limbs -= E
 	var/obj/item/organ/external/organ_to_remove = pick(detachable_limbs)
