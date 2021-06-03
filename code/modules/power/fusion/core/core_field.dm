@@ -273,7 +273,7 @@
 		energy -= 100
 		plasma_temperature += 1
 
-/obj/effect/fusion_em_field/proc/AddParticles(var/name, var/quantity = 1)
+/obj/effect/fusion_em_field/proc/AddParticles(name, quantity = 1)
 	if(name in reactants)
 		reactants[name] += quantity
 	else if(name != "proton" && name != "electron" && name != "neutron")
