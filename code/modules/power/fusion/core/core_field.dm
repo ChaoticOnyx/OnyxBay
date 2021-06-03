@@ -483,7 +483,7 @@
 	STOP_PROCESSING(SSobj, src)
 	. = ..()
 
-/obj/effect/fusion_em_field/bullet_act(var/obj/item/projectile/Proj)
+/obj/effect/fusion_em_field/bullet_act(obj/item/projectile/Proj)
 	AddEnergy(Proj.damage)
 	update_icon()
 	return 0
