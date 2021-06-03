@@ -195,6 +195,26 @@
 			else
 				var/obj/item/weapon/reagent_containers/food/condiment/P = new /obj/item/weapon/reagent_containers/food/condiment(src.loc)
 				reagents.trans_to_obj(P,50)
+		else if (href_list["createsyrignes"])
+			var/amount = 1
+
+			amount = input("Select the amount of reagents", "Min 1, Max 15", 15)
+			amount = Clamp(amount, 1, 15)
+
+			if(reagents.total_volume / amount < 1) //Sanity checking.
+				return
+
+			var/name = sanitizeSafe(input(usr,"Name:", "Name your syringe!", "[reagents.get_master_reagent_name()] ([amount]u)"), MAX_NAME_LEN)
+			if(!name)
+				name = reagents.get_master_reagent_name()
+
+			while(reagents.total_volume > 0)
+				var/obj/item/weapon/reagent_containers/syringe/S = new(src.loc)
+				S.name = "[name] syringe"
+				S.mode = SYRINGE_PACKAGED
+
+				reagents.trans_to_obj(S, amount)
+
 		else if(href_list["change_pill"])
 			#define MAX_PILL_SPRITE 25 //max icon state of the pill sprites
 			var/dat = "<meta charset=\"utf-8\"><table>"
@@ -275,7 +295,8 @@
 		if(!condi)
 			dat += "<HR><BR><A href='?src=\ref[src];createpill=1'>Create pill (60 units max)</A><a href=\"?src=\ref[src]&change_pill=1\"><img src=\"pill[pillsprite].png\" /></a><BR>"
 			dat += "<A href='?src=\ref[src];createpill_multiple=1'>Create multiple pills</A><BR>"
-			dat += "<A href='?src=\ref[src];createbottle=1'>Create bottle (60 units max)<a href=\"?src=\ref[src]&change_bottle=1\"><img src=\"[bottlesprite].png\" /></A>"
+			dat += "<A href='?src=\ref[src];createbottle=1'>Create bottle (60 units max)<a href=\"?src=\ref[src]&change_bottle=1\"><img src=\"[bottlesprite].png\" /></A><BR><BR>"
+			dat += "<A href='?src=\ref[src];createsyrignes=1'>Create syringes</A>"
 		else
 			dat += "<A href='?src=\ref[src];createbottle=1'>Create bottle (50 units max)</A>"
 	if(!condi)

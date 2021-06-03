@@ -78,13 +78,15 @@
 	req_one_access = list(access_medical,access_chemistry)
 
 /obj/machinery/smartfridge/secure/medbay/accept_check(obj/item/O as obj)
-	if(istype(O,/obj/item/weapon/reagent_containers/glass/))
-		return 1
-	if(istype(O,/obj/item/weapon/storage/pill_bottle/))
-		return 1
-	if(istype(O,/obj/item/weapon/reagent_containers/pill/))
-		return 1
-	return 0
+	if(istype(O, /obj/item/weapon/reagent_containers/glass/))
+		return TRUE
+	if(istype(O, /obj/item/weapon/storage/pill_bottle/))
+		return TRUE
+	if(istype(O, /obj/item/weapon/reagent_containers/pill/))
+		return TRUE
+	if(istype(O, /obj/item/weapon/reagent_containers/syringe/))
+		return TRUE
+	return FALSE
 
 /obj/machinery/smartfridge/secure/virology
 	name = "\improper Refrigerated Virus Storage"
