@@ -12,16 +12,16 @@
     {
         "Pattern": "(?<!for\\s*)\\s?[\\(,]\\s?(?<error>var\/[\\w\\d]+)",
         "Message": "Лишний var/ в аргументах: '{{error}}'",
-        "Level": "warning"
+        "Level": "error"
     },
     {
         "Pattern": "(?<=\".*)(?<error><\\s?span)(?=.*>)",
         "Message": "Вместо HTML тэга необходимо использовать макрос 'SPAN': '{{error}}'",
-        "Level": "warning"
+        "Level": "error"
     },
     {
         "Pattern": "(?<error>if|for|while)\\s+\\(",
         "Message": "Лишний пробел после '{{error}}'",
-        "Level": "warning"
+        "Level": "error"
     }
 ]
