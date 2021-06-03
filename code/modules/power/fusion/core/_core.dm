@@ -6,6 +6,7 @@ var/list/fusion_cores = list()
 
 #define MAX_FIELD_STR 10000
 #define MIN_FIELD_STR 1
+#define POWER_MODIFIER 5000
 
 /obj/machinery/power/fusion_core
 	name = "\improper R-UST Mk. 8 Tokamak core"
@@ -50,7 +51,7 @@ var/list/fusion_cores = list()
 	if(href_list["str"])
 		var/dif = text2num(href_list["str"])
 		field_strength = min(max(field_strength + dif, MIN_FIELD_STR), MAX_FIELD_STR)
-		change_power_consumption(500 * field_strength, POWER_USE_ACTIVE)
+		change_power_consumption(POWER_MODIFIER * field_strength, POWER_USE_ACTIVE)
 		if(owned_field)
 			owned_field.ChangeFieldStrength(field_strength)
 
