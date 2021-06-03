@@ -66,6 +66,14 @@
 	..()
 	if(!owner)
 		return
+
+	if(germ_level > INFECTION_LEVEL_ONE && prob(1))
+		owner.eye_blurry = 5
+	if(germ_level > INFECTION_LEVEL_TWO && prob(1))
+		owner.eye_blurry = 20
+	if(germ_level > INFECTION_LEVEL_THREE && prob(1))
+		owner.eye_blind = 2
+
 	if(is_bruised())
 		owner.eye_blurry = 20
 	if(is_broken())

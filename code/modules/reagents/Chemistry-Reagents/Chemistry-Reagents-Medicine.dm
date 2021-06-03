@@ -612,7 +612,7 @@
 /datum/reagent/spaceacillin/affect_blood(mob/living/carbon/M, alien, removed)
 	M.immunity = max(M.immunity - 0.1, 0)
 	M.add_chemical_effect(CE_ANTIVIRAL, VIRUS_COMMON)
-	M.add_chemical_effect(CE_ANTIBIOTIC, 1)
+	M.add_chemical_effect(CE_ANTIBIOTIC, volume)
 	if(volume > 10)
 		M.immunity = max(M.immunity - 0.3, 0)
 		M.add_chemical_effect(CE_ANTIVIRAL, VIRUS_ENGINEERED)

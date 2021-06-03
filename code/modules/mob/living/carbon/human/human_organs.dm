@@ -69,7 +69,8 @@
 	var/damage_this_tick = getToxLoss()
 	for(var/obj/item/organ/external/O in organs)
 		damage_this_tick += O.burn_dam + O.brute_dam
-
+		if(O.germ_level > INFECTION_LEVEL_ONE/2)
+			. = TRUE
 	if(damage_this_tick > last_dam)
 		. = TRUE
 	last_dam = damage_this_tick
@@ -114,7 +115,7 @@
 				if(E.wounds.len)
 					for(var/datum/wound/W in E.wounds)
 						if(W.infection_check())
-							W.germ_level += 1
+							W.germ_level += 1.5
 
 /mob/living/carbon/human/proc/handle_stance()
 	// Don't need to process any of this if they aren't standing anyways

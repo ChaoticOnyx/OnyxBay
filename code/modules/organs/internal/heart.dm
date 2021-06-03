@@ -51,6 +51,15 @@
 	if(oxy < BLOOD_VOLUME_BAD) //MOAR
 		pulse_mod++
 
+	if(germ_level > INFECTION_LEVEL_ONE && prob(50))
+		pulse_mod++
+
+	if(germ_level > INFECTION_LEVEL_TWO)
+		pulse_mod++
+
+	if(germ_level > INFECTION_LEVEL_THREE && prob(50))
+		pulse_mod++
+
 	if(owner.status_flags & FAKEDEATH || owner.chem_effects[CE_NOPULSE])
 		pulse = Clamp(PULSE_NONE + pulse_mod, PULSE_NONE, PULSE_2FAST) //pretend that we're dead. unlike actual death, can be inflienced by meds
 		return
