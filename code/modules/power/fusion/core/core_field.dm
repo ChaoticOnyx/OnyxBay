@@ -87,6 +87,8 @@
 	addtimer(CALLBACK(src, .proc/update_light_colors), 10 SECONDS)
 
 /obj/effect/fusion_em_field/proc/update_light_colors()
+	if(QDELETED(src))
+		return
 	var/use_range
 	var/use_power
 	switch (plasma_temperature)
