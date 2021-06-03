@@ -27,9 +27,6 @@
 	name = "Vulnerability"
 	desc = "Something devours your inner strength."
 
-	on_created_text = SPAN_WARNING("You are now weak, something affects your well-being!")
-	on_expired_text = SPAN_NOTICE("You feel better.")
-
 	max_health_percent = 0.5
 	disable_duration_percent = 2
 	incoming_brute_damage_percent = 1.5
@@ -37,6 +34,10 @@
 	bleeding_rate_percent = 4
 	incoming_healing_percent = 0.2
 
+/datum/modifier/vulnerability/New(new_holder, new_origin)
+	. = ..()
+	on_created_text = SPAN_WARNING("You are now weak, something affects your well-being!")
+	on_expired_text = SPAN_NOTICE("You feel better.")
 
 /datum/disease2/effect/musclerace
 	name = "Reverse Muscle Overstrain Effect"
@@ -65,9 +66,6 @@
 	name = "Unintentional Muscle Burning"
 	desc = "Some kind of force makes your body work to the limit of its capabilities."
 
-	on_created_text = SPAN_WARNING("You are incredibly strong right now, this is not for long!")
-	on_expired_text = SPAN_NOTICE("You feel better.")
-
 	max_health_percent = 0.8
 	disable_duration_percent = 0.5
 	incoming_brute_damage_percent = 1.4
@@ -75,6 +73,11 @@
 	bleeding_rate_percent = 2
 	incoming_healing_percent = 0.2
 	haste = 1
+
+/datum/modifier/musclerace/New(new_holder, new_origin)
+	. = ..()
+	on_created_text = SPAN_WARNING("You are incredibly strong right now, this is not for long!")
+	on_expired_text = SPAN_NOTICE("You feel better.")
 
 // Atom Virus
 /datum/disease2/effect/nuclear
@@ -142,12 +145,14 @@
 	name = "Nuclear fury"
 	desc = "You use all your willpower to achieve your highest goal in this life."
 
-	on_created_text = SPAN_WARNING("I need to do everything possible to merge with the Atom!")
-	on_expired_text = SPAN_NOTICE("You feel rather weak.")
-
 	disable_duration_percent = 0.8
 	outgoing_melee_damage_percent = 1.35
 	evasion = 0.7
+
+/datum/modifier/nuclear/New(new_holder, new_origin)
+	. = ..()
+	on_created_text = SPAN_WARNING("I need to do everything possible to merge with the Atom!")
+	on_expired_text = SPAN_NOTICE("You feel rather weak.")
 
 ////////////////////////STAGE 2/////////////////////////////////
 
