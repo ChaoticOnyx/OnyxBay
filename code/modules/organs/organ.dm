@@ -203,7 +203,7 @@ var/list/organ_cache = list()
 /obj/item/organ/proc/remove_rejuv()
 	qdel(src)
 
-/obj/item/organ/proc/rejuvenate(ignore_prosthetic_prefs)
+/obj/item/organ/proc/rejuvenate(ignore_prosthetic_prefs = FALSE)
 	damage = 0
 	status = 0
 	if(!ignore_prosthetic_prefs && owner && owner.client && owner.client.prefs && owner.client.prefs.real_name == owner.real_name)

@@ -425,7 +425,7 @@
 	adjustFireLoss(burn)
 	src.updatehealth()
 
-/mob/living/proc/restore_all_organs()
+/mob/living/proc/restore_all_organs(ignore_prosthetic_prefs = FALSE)
 	return
 
 /mob/living/update_gravity(has_gravity)
@@ -434,8 +434,8 @@
 	else
 		start_floating()
 
-/mob/living/proc/revive()
-	rejuvenate()
+/mob/living/proc/revive(ignore_prosthetic_prefs = FALSE)
+	rejuvenate(ignore_prosthetic_prefs)
 	if(buckled)
 		buckled.unbuckle_mob()
 	if(iscarbon(src))
@@ -450,7 +450,7 @@
 	ExtinguishMob()
 	fire_stacks = 0
 
-/mob/living/proc/rejuvenate()
+/mob/living/proc/rejuvenate(ignore_prosthetic_prefs = FALSE)
 	if(reagents)
 		reagents.clear_reagents()
 
@@ -478,7 +478,7 @@
 	heal_overall_damage(getBruteLoss(), getFireLoss())
 
 	// fix all of our organs
-	restore_all_organs()
+	restore_all_organs(ignore_prosthetic_prefs)
 
 	// remove the character from the list of the dead
 	if(stat == DEAD)
