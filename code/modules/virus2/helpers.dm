@@ -1,3 +1,4 @@
+#define VIRUS_THRESHOLD 10
 //Returns 1 if mob can be infected, 0 otherwise.
 /proc/infection_chance(mob/living/carbon/M, vector = "Airborne")
 	if (!istype(M))
@@ -77,7 +78,9 @@
 		return
 	if(M.status_flags & GODMODE)
 		return
-	if ("[disease.uniqueID]" in M.virus2)
+	if("[disease.uniqueID]" in M.virus2)
+		return
+	if(length(M.virus2) > VIRUS_THRESHOLD)
 		return
 	// if one of the antibodies in the mob's body matches one of the disease's antigens, don't infect
 	var/list/antibodies_in_common = M.antibodies & disease.antigen
@@ -181,3 +184,5 @@
 				if(V && V.spreadtype != vector) continue
 				if(!infection_spreading_check(victim, V.spreadtype)) continue
 				infect_virus2(src,V)
+
+#undef VIRUS_THRESHOLD
