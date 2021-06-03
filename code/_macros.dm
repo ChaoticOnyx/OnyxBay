@@ -199,7 +199,7 @@
 
 #define JOINTEXT(X) jointext(X, null)
 
-#define SPAN(class, X)   "<span class='[class]'>[X]</span>"
+#define SPAN(class, X) "<span class='" + ##class + "'>" + ##X + "</span>"
 
 #define SPAN_NOTICE(X)   SPAN("notice", X)
 
