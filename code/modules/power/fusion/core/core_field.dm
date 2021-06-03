@@ -336,7 +336,7 @@
 			environment.add_thermal_energy(plasma_temperature*20000)
 	radiation = 0
 
-/obj/effect/fusion_em_field/proc/change_size(var/newsize = 1)
+/obj/effect/fusion_em_field/proc/change_size(newsize = 1)
 	var/changed = 0
 	var/static/list/size_to_icon = list(
 			"3" = 'icons/effects/96x96.dmi',
