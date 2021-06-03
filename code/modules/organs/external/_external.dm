@@ -610,10 +610,10 @@ Note that amputating the affected organ does in fact remove the infection from t
 		if (owner.germ_level > W.germ_level && W.infection_check())
 			W.germ_level += W.germ_speed
 
-	if (antibiotics < 15)
+	if(antibiotics < 15)
 		for(var/datum/wound/W in wounds)
 			//Infected wounds raise the organ's germ level
-			if (W.germ_level > germ_level && prob(Interpolate(5, 100, 1 - antibiotics / 15)))
+			if(W.germ_level > germ_level && prob(Interpolate(5, 100, 1 - antibiotics / 15)))
 				germ_level++
 				break	//limit increase to a maximum of one per second
 
@@ -633,13 +633,13 @@ Note that amputating the affected organ does in fact remove the infection from t
 			if (!target_organ || I.germ_level < target_organ.germ_level)	//choose the organ with the lowest germ_level
 				target_organ = I
 
-	if (!target_organ)
+	if(!target_organ)
 		//figure out which organs we can spread germs to and pick one at random
 		var/list/candidate_organs = list()
 		for (var/obj/item/organ/I in internal_organs)
-			if (I.germ_level < germ_level)
+			if(I.germ_level < germ_level)
 				candidate_organs |= I
-		if (candidate_organs.len)
+		if(candidate_organs.len)
 			target_organ = pick(candidate_organs)
 
 	if(target_organ)
@@ -647,19 +647,19 @@ Note that amputating the affected organ does in fact remove the infection from t
 			if(prob(Interpolate(20, 70, germ_level / INFECTION_LEVEL_THREE) - antibiotics))
 				target_organ.germ_level = max(0, target_organ.germ_level + (germ_level - 250) / 5)
 
-	if (target_organ)
+	if(target_organ)
 		target_organ.germ_level++
 
 	//spread the infection to child and parent organs
-	if (children)
-		for (var/obj/item/organ/external/child in children)
-			if (child.germ_level < germ_level && !BP_IS_ROBOTIC(child))
-				if (child.germ_level < INFECTION_LEVEL_ONE * 2 || prob(30 - antibiotics))
+	if(children)
+		for(var/obj/item/organ/external/child in children)
+			if(child.germ_level < germ_level && !BP_IS_ROBOTIC(child))
+				if(child.germ_level < INFECTION_LEVEL_ONE * 2 || prob(30 - antibiotics))
 					child.germ_level++
 
-	if (parent)
-		if (parent.germ_level < germ_level && !BP_IS_ROBOTIC(parent))
-			if (parent.germ_level < INFECTION_LEVEL_ONE * 2 || prob(30 - antibiotics))
+	if(parent)
+		if(parent.germ_level < germ_level && !BP_IS_ROBOTIC(parent))
+			if(parent.germ_level < INFECTION_LEVEL_ONE * 2 || prob(30 - antibiotics))
 				parent.germ_level++
 
 	if(germ_level >= INFECTION_LEVEL_FOUR && antibiotics < 15)	//overdosing is necessary to stop severe infections

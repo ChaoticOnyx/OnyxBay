@@ -150,7 +150,7 @@ var/list/organ_cache = list()
 
 	var/antibiotics = owner.chem_effects[CE_ANTIBIOTIC]
 
-	if (germ_level > 0 && germ_level < INFECTION_LEVEL_ONE/2 && prob(virus_immunity * 0.3))
+	if(germ_level > 0 && germ_level < INFECTION_LEVEL_ONE/2 && prob(virus_immunity * 0.3))
 		germ_level--
 
 	if (germ_level >= INFECTION_LEVEL_ONE/2)
