@@ -102,7 +102,7 @@
 			alpha = 230
 		else
 			var/temp_mod = (plasma_temperature - 5000) / 20000
-			use_range = light_min_range + ceil((light_max_range-light_min_range)*temp_mod)
+			use_range = light_min_range + ceil((light_max_range - light_min_range) * temp_mod)
 			use_power = light_min_power + ceil((light_max_power-light_min_power)*temp_mod)
 			switch (plasma_temperature)
 				if (1000 to 6000)
