@@ -305,8 +305,8 @@
 	else
 		var/datum/wound/cut/W = affected.get_incision()
 
-		var/message = SPAN_NOTICE("[user] cauterizes[W ? " \a [W.desc] on" : ""] \the [target]'s [affected.name] with \the [tool].")
-		var/self_message = SPAN_NOTICE("You cauterize[W ? " \a [W.desc] on" : ""] \the [target]'s [affected.name] with \the [tool].")
+		var/message = SPAN_NOTICE("[user] cauterizes[W ? " a [W.desc] on" : ""] \the [target]'s [affected.name] with \the [tool].")
+		var/self_message = SPAN_NOTICE("You cauterize[W ? " a [W.desc] on" : ""] \the [target]'s [affected.name] with \the [tool].")
 		user.visible_message(message, self_message)
 		if(W)
 			W.close()
