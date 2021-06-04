@@ -14,10 +14,11 @@
 
 /datum/progressbar/New(mob/user, goal_number, atom/target)
 	. = ..()
-	if(!target) target = user
-	if (!istype(target))
+	if(!target)
+		target = user
+	if(!istype(target))
 		EXCEPTION("Invalid target given")
-	if (goal_number)
+	if(goal_number)
 		goal = goal_number
 
 	bar = image('icons/effects/progressbar.dmi', target, "prog_bar_0")
@@ -42,12 +43,10 @@
 	. = ..()
 
 /datum/progressbar/proc/update(progress)
-//	log_debug("Update [progress] - [goal] - [(progress / goal)] - [((progress / goal) * 100)] - [round(((progress / goal) * 100), 5)]")
-
-	if (!user || !user.client || !target)
+	if(!user || !user.client || !target)
 		shown = 0
 		return
-	if (user.client != client)
+	if(user.client != client)
 		if (client)
 			client.images -= bar
 			shown = 0
@@ -61,7 +60,7 @@
 	bar.icon_state = "prog_bar_[round(((progress / goal) * 100), 2.5)]"
 	bar.pixel_y = WORLD_ICON_SIZE + id * PROGRESSBAR_ICON_HEIGHT
 
-	if (user.get_preference_value(/datum/client_preference/show_progress_bar) == GLOB.PREF_SHOW)
+	if(user.get_preference_value(/datum/client_preference/show_progress_bar) == GLOB.PREF_SHOW)
 		user.client.images += bar
 		shown = 1
 
