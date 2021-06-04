@@ -222,7 +222,7 @@ var/list/organ_cache = list()
 			robotize()
 
 /obj/item/organ/proc/handle_antibiotics()
-	if(!owner || !germ_level)
+	if(!owner || !germ_level || BP_IS_ROBOTIC(src))
 		return
 
 	var/antibiotics = owner.chem_effects[CE_ANTIBIOTIC]

@@ -603,6 +603,9 @@ Note that amputating the affected organ does in fact remove the infection from t
 		handle_germ_effects()
 
 /obj/item/organ/external/proc/handle_germ_sync()
+	if(BP_IS_ROBOTIC(src))
+		return
+
 	var/antibiotics = owner.chem_effects[CE_ANTIBIOTIC]
 
 	for(var/datum/wound/W in wounds)
@@ -618,6 +621,8 @@ Note that amputating the affected organ does in fact remove the infection from t
 				break	//limit increase to a maximum of one per second
 
 /obj/item/organ/external/handle_germ_effects()
+	if(BP_IS_ROBOTIC(src))
+		return
 
 	if(germ_level < INFECTION_LEVEL_TWO)
 		return ..()
