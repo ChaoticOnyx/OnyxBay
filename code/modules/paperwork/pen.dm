@@ -266,7 +266,7 @@
 	return ..()
 
 /obj/item/weapon/pen/energy_dagger/get_temperature_as_from_ignitor()
-	if(active)
+	if(battlepen)
 		return 3500
 	return 0
 
