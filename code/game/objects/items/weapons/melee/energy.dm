@@ -60,7 +60,7 @@
 	return
 
 /obj/item/weapon/melee/energy/dropped()
-	spawn(3)
+	spawn(10)
 		if(isturf(loc))
 			deactivate()
 

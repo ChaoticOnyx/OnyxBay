@@ -113,15 +113,16 @@
 	..()
 
 /obj/item/device/chameleonholo/bomb/deactivate(mob/user)
-	if(!bomb_armed)
+	if(!bomb_armed || !active)
 		return
+	bomb_armed = FALSE
 	visible_message(SPAN("warning", "*CLICK*"))
 	to_chat(user, SPAN("danger", "<b>Fuck.</b>"))
 	playsound(src, 'sound/effects/snap.ogg', 100, 1, -6)
 	appearance = initial(appearance)
 	dir = initial(dir)
 	density = initial(density)
-	var/exp_loc = get_turf(src)
 	spawn(10)
-		explosion(exp_loc, 1, 2, 3, 4)
-		qdel(src)
+		if(src)
+			explosion(get_turf(src), 0, 2, 4, 5)
+			qdel(src)

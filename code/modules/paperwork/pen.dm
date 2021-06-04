@@ -211,7 +211,7 @@
 	hitsound = 'sound/effects/fighting/energy1.ogg'
 	attack_verb = list("attacked", "slashed", "stabbed", "sliced", "torn", "ripped", "diced", "cut")
 
-/obj/item/weapon/pen/dagger/attack_self(mob/living/user)
+/obj/item/weapon/pen/energy_dagger/attack_self(mob/living/user)
 	battlepen = !battlepen
 
 	if(battlepen)
@@ -219,9 +219,9 @@
 			user.visible_message(SPAN("danger", "\The [user] accidentally cuts \himself with \the [src]."), \
 								 SPAN("danger", "You accidentally cut yourself with \the [src]."))
 			user.take_organ_damage(5, 5)
-		deactivate(user)
-	else
 		activate(user)
+	else
+		deactivate(user)
 
 	if(ishuman(user))
 		var/mob/living/carbon/human/H = user
@@ -251,7 +251,7 @@
 	item_state = initial(item_state)
 
 /obj/item/weapon/pen/dagger/dropped()
-	spawn(3)
+	spawn(10)
 		if(isturf(loc))
 			deactivate()
 
