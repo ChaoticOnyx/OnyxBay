@@ -60,8 +60,9 @@
 	return
 
 /obj/item/weapon/melee/energy/dropped()
-	if(isturf(loc))
-		deactivate()
+	spawn(3)
+		if(isturf(loc))
+			deactivate()
 
 /obj/item/weapon/melee/energy/get_storage_cost()
 	if(active)

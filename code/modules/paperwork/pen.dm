@@ -25,6 +25,7 @@
 	matter = list(MATERIAL_STEEL = 10)
 	var/colour = COLOR_BLACK	//what colour the ink is!
 	var/color_description = "black ink"
+	var/battlepen = FALSE
 
 
 /obj/item/weapon/pen/blue
@@ -67,7 +68,9 @@
 	color_description = "transluscent ink"
 
 
-/obj/item/weapon/pen/attack(atom/A, mob/user as mob, target_zone)
+/obj/item/weapon/pen/attack(atom/A, mob/user, target_zone)
+	if(battlepen)
+		return ..()
 	if(ismob(A))
 		var/mob/M = A
 		if(ishuman(A) && user.a_intent == I_HELP && target_zone == BP_HEAD)
@@ -193,6 +196,64 @@
 				color_description = "black ink"
 		to_chat(usr, "<span class='info'>You select the [lowertext(selected_type)] ink container.</span>")
 
+
+/obj/item/weapon/pen/energy_dagger
+	name = "pen"
+	desc = "It's a black ink pen with a fancy-looking button."
+	mod_weight = 0.5
+	mod_reach = 0.4
+	mod_handy = 1.25
+	force = 22.5 // Half an esword's force
+	sharp = TRUE
+	edge = TRUE
+	icon_state = "edagger0"
+	item_state = "edagger0"
+	hitsound = 'sound/effects/fighting/energy1.ogg'
+	attack_verb = list("attacked", "slashed", "stabbed", "sliced", "torn", "ripped", "diced", "cut")
+
+/obj/item/weapon/pen/dagger/attack_self(mob/living/user)
+	battlepen = !battlepen
+
+	if(battlepen)
+		if((MUTATION_CLUMSY in user.mutations) && prob(50))
+			user.visible_message(SPAN("danger", "\The [user] accidentally cuts \himself with \the [src]."), \
+								 SPAN("danger", "You accidentally cut yourself with \the [src]."))
+			user.take_organ_damage(5, 5)
+		deactivate(user)
+	else
+		activate(user)
+
+	if(ishuman(user))
+		var/mob/living/carbon/human/H = user
+		H.update_inv_l_hand()
+		H.update_inv_r_hand()
+
+	add_fingerprint(user)
+
+/obj/item/weapon/pen/dagger/proc/activate(mob/living/user)
+	battlepen = TRUE
+	to_chat(user, SPAN("notice", "\The [src] is now energised."))
+	slot_flags |= SLOT_DENYPOCKET
+	name = "energy dagger"
+	desc = "Bureaucracy has never ever been so deadly."
+	throwforce = 45
+	icon_state = "edagger1"
+	item_state = "edagger1"
+
+/obj/item/weapon/pen/dagger/proc/deactivate(mob/living/user)
+	battlepen = FALSE
+	to_chat(user, SPAN("notice", "\The [src] deactivates!"))
+	slot_flags = initial(slot_flags)
+	name = initial(name)
+	desc = initial(desc)
+	throwforce = initial(throwforce)
+	icon_state = initial(icon_state)
+	item_state = initial(item_state)
+
+/obj/item/weapon/pen/dagger/dropped()
+	spawn(3)
+		if(isturf(loc))
+			deactivate()
 
 /*
  * Crayons

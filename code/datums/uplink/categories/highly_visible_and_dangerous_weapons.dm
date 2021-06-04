@@ -64,12 +64,14 @@
 
 /datum/uplink_item/item/visible_weapons/energy_sword
 	name = "Energy Sword"
+	desc = "One of the best melee weapons known to the mankind, it can turn a living being into something less living and less being in just a few swings. It is also capable of reflecting any projectiles. Just don't forget to turn it on."
 	item_cost = 8
 	antag_costs = list(MODE_NUKE = 6)
 	path = /obj/item/weapon/melee/energy/sword/one_hand
 
 /datum/uplink_item/item/visible_weapons/submachinegun
 	name = "Submachine Gun"
+	desc = "C20-r, the standard issue 10mm submachine gun given to Syndicate Nuclear Ops. Rapid-firing, accurate, and unbeliveably lethal."
 	item_cost = 12
 	antag_costs = list(MODE_NUKE = 6)
 	path = /obj/item/weapon/gun/projectile/automatic/c20r
@@ -84,6 +86,7 @@
 
 /datum/uplink_item/item/visible_weapons/assaultrifle
 	name = "Assault Rifle"
+	desc = "5.56mm assault rifle. Trusty, but not as powerful as you would probably expect."
 	item_cost = 6
 	antag_roles = list(MODE_NUKE)
 	path = /obj/item/weapon/gun/projectile/automatic/sts35
@@ -91,31 +94,35 @@
 /datum/uplink_item/item/visible_weapons/heavysniper
 	name = "Anti-materiel Rifle"
 	desc = "A 14.5mm heavy sniper rifle and ammunition."
-	item_cost = 10
+	item_cost = 69
+	antag_costs = list(MODE_NUKE = 10)
 	antag_roles = list(MODE_NUKE)
 	path = /obj/item/weapon/storage/secure/briefcase/heavysniper
 
 /datum/uplink_item/item/visible_weapons/combat_shotgun
 	name = "Combat Shotgun"
-	desc = "A combat shotgun."
+	desc = "A combat shotgun. Useful for blowing people across the room Italian style."
 	item_cost = 7
 	antag_roles = list(MODE_NUKE)
 	path = /obj/item/weapon/gun/projectile/shotgun/pump/combat
 
 /datum/uplink_item/item/visible_weapons/pulsecarbine
 	name = "Pulse Carbine"
+	desc = "A lightweight, rapid-firing pulse carbine."
 	item_cost = 9
 	antag_roles = list(MODE_NUKE)
 	path = /obj/item/weapon/gun/energy/pulse_rifle/carbine
 
 /datum/uplink_item/item/visible_weapons/grenade_launcher
 	name = "Grenade Launcher"
+	desc = "In fact, it's just a slingshot for grenades. However, this thing might come in handy when used with fragmentation shells."
 	item_cost = 3
 	antag_roles = list(MODE_NUKE)
 	path = /obj/item/weapon/gun/launcher/grenade/loaded
 
 /datum/uplink_item/item/visible_weapons/rocketlauncher
 	name = "Rocket Launcher"
+	desc = "Don't even try to perform rocket jumping."
 	item_cost = 7
 	antag_roles = list(MODE_NUKE)
 	path = /obj/item/weapon/gun/launcher/rocket

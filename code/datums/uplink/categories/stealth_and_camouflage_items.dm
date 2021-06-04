@@ -47,17 +47,11 @@
 	item_cost = 3
 	path = /obj/item/weapon/storage/backpack/satchel/flat
 
-/datum/uplink_item/item/stealth_items/chameleon_hologram
-	name = "Chameleon Hologram"
-	item_cost = 2
-	path = /obj/item/device/chameleonholo
-	desc = "This device can scan any item and save its appearance, projecting it onto itself when dropped and becoming almost indistinguishable from the scanned item. It will lose its disguise if it's picked up again. You can also clear the memory buffer when holding it."
-
 /datum/uplink_item/item/stealth_items/chameleon_projector
-	name = "Chameleon-Projector"
+	name = "Chameleon Projector"
+	desc = "Embedded with a hidden holographic cloaker, allowing it to change it's appearance."
 	item_cost = 6
 	path = /obj/item/device/chameleon
-	desc = "Embedded with a hidden holographic cloaker, allowing it to change it's appearance."
 
 /*  Disabled until fixed
 /datum/uplink_item/item/stealth_items/thermal
@@ -69,7 +63,7 @@
 /datum/uplink_item/item/stealth_items/thermal
 	name = "Chameleon Thermal Imaging Goggles"
 	desc = "These goggles contain a very special thermal imaging optical matrix that can change its color."
-	item_cost = 4
+	item_cost = 5
 	path = /obj/item/clothing/glasses/hud/standard/thermal/syndie
 
 /datum/uplink_item/item/stealth_items/contortionist

@@ -1056,6 +1056,7 @@
 #include "code\game\objects\structures\dogbed.dm"
 #include "code\game\objects\structures\door_assembly.dm"
 #include "code\game\objects\structures\electricchair.dm"
+#include "code\game\objects\structures\energy_barrier.dm"
 #include "code\game\objects\structures\extinguisher.dm"
 #include "code\game\objects\structures\fireaxe_cabinet.dm"
 #include "code\game\objects\structures\fitness.dm"

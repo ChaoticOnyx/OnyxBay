@@ -34,25 +34,17 @@
 	item_cost = 8
 	path = /obj/item/weapon/storage/box/emps
 
+/datum/uplink_item/item/grenades/manhack
+	name = "Manhack Delivery Grenade"
+	desc = "Releases a swarm of murderous manhacks. Be careful, they will be more than happy to chop YOU as well."
+	item_cost = 3
+	path = /obj/item/weapon/grenade/spawnergrenade/manhacks
+
 /datum/uplink_item/item/grenades/frag_high_yield
 	name = "Fragmentation Bomb"
 	item_cost = 2
 	antag_roles = list(MODE_NUKE) // yeah maybe regular traitors shouldn't be able to get these
 	path = /obj/item/weapon/grenade/frag/high_yield
-
-/datum/uplink_item/item/grenades/fragshell
-	name = "Fragmentation Shell"
-	desc = "Weaker than standard fragmentation grenades, these devices can be fired from a grenade launcher."
-	item_cost = 1
-	antag_roles = list(MODE_NUKE)
-	path = /obj/item/weapon/grenade/frag/shell
-
-/datum/uplink_item/item/grenades/fragshells
-	name = "5 Fragmentation Shells"
-	desc = "Weaker than standard fragmentation grenades, these devices can be fired from a grenade launcher."
-	item_cost = 4
-	antag_roles = list(MODE_NUKE)
-	path = /obj/item/weapon/storage/box/fragshells
 
 /datum/uplink_item/item/grenades/frag
 	name = "Fragmentation Grenade"

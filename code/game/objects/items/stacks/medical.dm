@@ -433,3 +433,39 @@
 				else
 					to_chat(user, SPAN("warning", "\The [src] is used up, but there are more wounds to treat on \the [affecting.name]."))
 			use(used)
+
+
+/obj/item/stack/medical/advanced/resurrection_serum
+	name = "serum injector"
+	singular_name = "serum dose"
+	desc = "A weird-looking injector with some sort of bloody-red serum inside."
+	description_antag = "This more-expensive-than-your-life-is liquid, rumored to be made of mysterious vampire-like creatures, is capable brining dead to life."
+	icon_state = "resurrect_serum"
+	origin_tech = list(TECH_BIO = 9)
+	amount = 1
+	stack_empty = 1
+	splittable = 0
+
+/obj/item/stack/medical/advanced/resurrection_serum/attack(mob/living/carbon/M, mob/user)
+	if(..())
+		return 1
+
+	if(M.stat != DEAD)
+		to_chat(user, SPAN("notice", "\The [src] quickly retracts its needles as you bring it close to [M]."))
+		return
+
+	to_chat(user, SPAN("notice", "You prepare to inject [M]..."))
+	if(!do_after(user, 50))
+		return
+
+	if(M.stat != DEAD)
+		to_chat(user, SPAN("notice", "\The [src] quickly retracts its needles as soon as you try to inject [M]!"))
+		return
+
+	M.revive()
+	to_chat(user, SPAN("notice", "You inject [M] with \the [src]. A moment later, their body twitches."))
+	to_chat(M, SPAN("notice", "You hear a familiar voice. It tells you to come back."))
+	use(1)
+
+/obj/item/stack/medical/advanced/resurrection_serum/ten
+	amount = 10

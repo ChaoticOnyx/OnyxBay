@@ -332,25 +332,33 @@
 	containername = "\improper crate"
 	hidden = 1
 
-/decl/hierarchy/supply_pack/miscellaneous/tc10
-	name = "Telecrystals - 10"
-	contains = list(/obj/item/stack/telecrystal{amount = 10})
-	cost = 100
+/decl/hierarchy/supply_pack/miscellaneous/tc3
+	name = "Telecrystals - 3"
+	contains = list(/obj/item/stack/telecrystal{amount = 3})
+	cost = 150
 	containername = "\improper crate"
 	hidden = 1
 	contraband = 1
 
-/decl/hierarchy/supply_pack/miscellaneous/tc25
-	name = "Telecrystals - 25"
-	contains = list(/obj/item/stack/telecrystal{amount = 25})
-	cost = 250
+/decl/hierarchy/supply_pack/miscellaneous/tc6
+	name = "Telecrystals - 6"
+	contains = list(/obj/item/stack/telecrystal{amount = 6})
+	cost = 300
 	containername = "\improper crate"
 	hidden = 1
 	contraband = 1
 
-/decl/hierarchy/supply_pack/miscellaneous/tc60
-	name = "Telecrystals - 60"
-	contains = list(/obj/item/stack/telecrystal{amount = 30} = 2)
+/decl/hierarchy/supply_pack/miscellaneous/tc9
+	name = "Telecrystals - 9"
+	contains = list(/obj/item/stack/telecrystal{amount = 9})
+	cost = 450
+	containername = "\improper crate"
+	hidden = 1
+	contraband = 1
+
+/decl/hierarchy/supply_pack/miscellaneous/tc12
+	name = "Telecrystals - 12"
+	contains = list(/obj/item/stack/telecrystal{amount = 12})
 	cost = 600
 	containername = "\improper crate"
 	hidden = 1
