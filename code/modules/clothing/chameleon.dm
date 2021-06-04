@@ -303,7 +303,7 @@
 
 /obj/item/clothing/gloves/chameleon/robust/examine(mob/user)
 	. = ..()
-	. += "These look extra robust."
+	. += "\nThese look extra robust."
 
 //******************
 //**Chameleon Mask**

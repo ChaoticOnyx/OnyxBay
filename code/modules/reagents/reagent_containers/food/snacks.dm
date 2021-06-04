@@ -741,26 +741,6 @@
 	reagents.add_reagent(/datum/reagent/nutriment/protein, 6)
 	bitesize = 2
 
-/obj/item/weapon/reagent_containers/food/snacks/donkpocket/sinpocket
-	name = "\improper Sin-pocket"
-	desc = "The food of choice for the veteran. Do <B>NOT</B> overconsume."
-	filling_color = "#6d6d00"
-	heated_reagents = list(/datum/reagent/drink/doctor_delight = 5, /datum/reagent/hyperzine = 0.75, /datum/reagent/synaptizine = 0.25)
-	var/has_been_heated = 0
-
-/obj/item/weapon/reagent_containers/food/snacks/donkpocket/sinpocket/attack_self(mob/user)
-	if(has_been_heated)
-		to_chat(user, "<span class='notice'>The heating chemicals have already been spent.</span>")
-		return
-	has_been_heated = 1
-	user.visible_message("<span class='notice'>[user] crushes \the [src] package.</span>", "You crush \the [src] package and feel a comfortable heat build up.")
-	addtimer(CALLBACK(src, .proc/heat, user), 200)
-
-/obj/item/weapon/reagent_containers/food/snacks/donkpocket/sinpocket/heat(user)
-	if(user)
-		to_chat(user, "You think \the [src] is ready to eat about now.")
-	. = ..()
-
 /obj/item/weapon/reagent_containers/food/snacks/donkpocket
 	name = "Donk-pocket"
 	desc = "The food of choice for the seasoned traitor."
@@ -798,6 +778,30 @@
 	for(var/reagent in heated_reagents)
 		reagents.del_reagent(reagent)
 	SetName(initial(name))
+
+/obj/item/weapon/reagent_containers/food/snacks/donkpocket/sinpocket
+	name = "\improper Sin-pocket"
+	desc = "The food of choice for the veteran. Do <B>NOT</B> overconsume."
+	filling_color = "#6d6d00"
+	heated_reagents = list(/datum/reagent/tricordrazine = 5, /datum/reagent/drink/doctor_delight = 5, /datum/reagent/hyperzine = 0.75, /datum/reagent/synaptizine = 0.25)
+	var/has_been_heated = 0
+
+/obj/item/weapon/reagent_containers/food/snacks/donkpocket/sinpocket/Initialize()
+	. = ..()
+	bitesize = 5
+
+/obj/item/weapon/reagent_containers/food/snacks/donkpocket/sinpocket/attack_self(mob/user)
+	if(has_been_heated)
+		to_chat(user, "<span class='notice'>The heating chemicals have already been spent.</span>")
+		return
+	has_been_heated = 1
+	user.visible_message("<span class='notice'>[user] crushes \the [src] package.</span>", "You crush \the [src] package and feel a comfortable heat build up.")
+	addtimer(CALLBACK(src, .proc/heat, user), 200)
+
+/obj/item/weapon/reagent_containers/food/snacks/donkpocket/sinpocket/heat(user)
+	if(user)
+		to_chat(user, "You think \the [src] is ready to eat about now.")
+	. = ..()
 
 /obj/item/weapon/reagent_containers/food/snacks/brainburger
 	name = "brainburger"

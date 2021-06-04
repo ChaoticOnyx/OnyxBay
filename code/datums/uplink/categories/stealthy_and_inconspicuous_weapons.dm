@@ -40,6 +40,13 @@
 	item_cost = 3
 	path = /obj/item/weapon/storage/box/syndie_kit/syringegun
 
+/datum/uplink_item/item/stealthy_weapons/robust_gloves
+	name = "Robust Chameleon Gloves"
+	desc = "This pair of chameleon gloves drastically increases their wearer's unarmed combat abilities."
+	item_cost = 4
+	antag_costs = list(MODE_NUKE = 2)
+	path = /obj/item/clothing/gloves/chameleon/robust
+
 /datum/uplink_item/item/stealthy_weapons/sleepy
 	name = "Sleepy Pen"
 	desc = "Puts your target to sleep."

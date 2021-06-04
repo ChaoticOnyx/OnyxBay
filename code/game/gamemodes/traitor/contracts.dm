@@ -552,7 +552,7 @@ GLOBAL_LIST_INIT(syndicate_factions, list(
 
 /datum/antag_contract/recon
 	name = "Recon"
-	reward = 5 // The kit costs 2 TCs, and it's actually kinda difficult
+	reward = 3 // One 2 TC kit is enough to complete two of these.
 	intent = CONTRACT_STEAL_OPERATION
 	var/list/area/targets = list()
 
