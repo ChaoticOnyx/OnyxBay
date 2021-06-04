@@ -153,7 +153,7 @@ var/list/organ_cache = list()
 	if(germ_level > 0 && germ_level < INFECTION_LEVEL_ONE/2 && prob(virus_immunity * 0.3))
 		germ_level--
 
-	if (germ_level >= INFECTION_LEVEL_ONE/2)
+	if(germ_level >= INFECTION_LEVEL_ONE/2)
 		if(antibiotics < 5 && prob(round(germ_level/(INFECTION_LEVEL_TWO*0.015) * owner.immunity_weakness())))
 			germ_level += round(M_EULER**(germ_level/1000) * owner.immunity_weakness())
 		else // Will only trigger if immunity has hit zero. Once it does, 10x infection rate.
@@ -163,7 +163,7 @@ var/list/organ_cache = list()
 		if(owner.bodytemperature - T0C < 45.5)
 			owner.bodytemperature += germ_level / 170
 
-	if (germ_level >= INFECTION_LEVEL_TWO)
+	if(germ_level >= INFECTION_LEVEL_TWO)
 		var/obj/item/organ/external/parent = owner.get_organ(parent_organ)
 		//spread germs
 		if (antibiotics < 5 && parent.germ_level < germ_level && ( parent.germ_level < INFECTION_LEVEL_ONE*2 || prob(owner.immunity_weakness() * 0.3) ))

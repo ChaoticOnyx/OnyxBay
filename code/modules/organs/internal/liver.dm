@@ -36,7 +36,7 @@
 			to_chat(owner, SPAN_WARNING("Your skin itches."))
 
 	//Detox can heal small amounts of damage
-	if (damage < max_damage && !owner.chem_effects[CE_TOXIN])
+	if(damage < max_damage && !owner.chem_effects[CE_TOXIN])
 		heal_damage(0.2 * owner.chem_effects[CE_ANTITOX])
 
 	// Get the effectiveness of the liver.
