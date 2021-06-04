@@ -633,7 +633,7 @@ Note that amputating the affected organ does in fact remove the infection from t
 
 	//spread the infection to internal organs
 	var/obj/item/organ/target_organ = null	//make internal organs become infected one at a time instead of all at once
-	for (var/obj/item/organ/I in internal_organs)
+	for(var/obj/item/organ/I in internal_organs)
 		if(I.germ_level < germ_level)	//once the organ reaches whatever we can give it, or level two, switch to a different one
 			if(!target_organ || I.germ_level < target_organ.germ_level)	//choose the organ with the lowest germ_level
 				target_organ = I

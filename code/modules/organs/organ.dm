@@ -169,7 +169,7 @@ var/list/organ_cache = list()
 		if (antibiotics < 5 && parent.germ_level < germ_level && ( parent.germ_level < INFECTION_LEVEL_ONE*2 || prob(owner.immunity_weakness() * 0.3) ))
 			parent.germ_level++
 
-		if (prob(3))	//about once every 30 seconds
+		if(prob(3))	//about once every 30 seconds
 			take_general_damage(1,silent=prob(30))
 
 	if(germ_level >= INFECTION_LEVEL_THREE)
@@ -226,11 +226,11 @@ var/list/organ_cache = list()
 		return
 
 	var/antibiotics = owner.chem_effects[CE_ANTIBIOTIC]
-	if (!antibiotics)
+	if(!antibiotics)
 		return
 
 	germ_level -= Interpolate(antibiotics, 1, germ_level / (INFECTION_LEVEL_FOUR + 400))
-	if (germ_level < INFECTION_LEVEL_ONE)
+	if(germ_level < INFECTION_LEVEL_ONE)
 		germ_level = 0 //cure instantly
 
 /obj/item/organ/proc/take_general_damage(amount, silent = FALSE)

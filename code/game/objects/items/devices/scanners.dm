@@ -229,7 +229,7 @@ REAGENT SCANNER
 					limb_result = "[limb_result] \[[SPAN_DANGER("extreme infection")]\]"
 					found_extreme_infection = TRUE
 				else
-					limb_result = "[limb_result] \[<span class='danger'>infection</span>\]"
+					limb_result = "[limb_result] \[[SPAN_DANGER("infection")]\]"
 			if(!found_bleed && (E.status & ORGAN_ARTERY_CUT))
 				found_bleed = TRUE
 			if(!found_tendon && (E.status & ORGAN_TENDON_CUT))

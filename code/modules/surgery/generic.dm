@@ -240,7 +240,7 @@
 
 	duration = CAUTERIZE_DURATION
 
-/datum/surgery_step/generic/cauterize/proc/is_desinfection_cauterize(var/obj/item/organ/external/affected)
+/datum/surgery_step/generic/cauterize/proc/is_desinfection_cauterize(obj/item/organ/external/affected)
 	if(affected.open() && affected.get_incision(1))
 		return FALSE
 
@@ -268,7 +268,7 @@
 	if(is_desinfection_cauterize(affected))
 		return TRUE
 	if(!affected.get_incision(1))
-		to_chat(user, "<span class='warning'>There are no incisions on [target]'s [affected.name] that can be closed cleanly with \the [tool]!</span>")
+		to_chat(user, SPAN_WARNING("There are no incisions on [target]'s [affected.name] that can be closed cleanly with \the [tool]!"))
 		return SURGERY_FAILURE
 
 	if(affected.is_stump()) // Copypasting some stuff here to avoid having to modify ..() for a single surgery
@@ -304,8 +304,8 @@
 		affected.take_external_damage(0, removed / 10, used_weapon = tool)
 	else
 		var/datum/wound/cut/W = affected.get_incision()
-		user.visible_message("<span class='notice'>[user] cauterizes[W ? " \a [W.desc] on" : ""] \the [target]'s [affected.name] with \the [tool].</span>", \
-		"<span class='notice'>You cauterize[W ? " \a [W.desc] on" : ""] \the [target]'s [affected.name] with \the [tool].</span>")
+		user.visible_message(SPAN_NOTICE("[user] cauterizes[W ? " \a [W.desc] on" : ""] \the [target]'s [affected.name] with \the [tool]."), \
+		SPAN_NOTICE("You cauterize[W ? " \a [W.desc] on" : ""] \the [target]'s [affected.name] with \the [tool]."))
 		if(W)
 			W.close()
 		if(affected.is_stump())
