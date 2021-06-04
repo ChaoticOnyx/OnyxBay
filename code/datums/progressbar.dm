@@ -1,6 +1,6 @@
 #define PROGRESSBAR_ICON_HEIGHT 7
 
-/client/
+/client
 	var/numProgressbars = 0
 
 /datum/progressbar
