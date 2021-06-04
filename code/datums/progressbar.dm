@@ -35,7 +35,7 @@
 
 
 /datum/progressbar/Destroy()
-	if (client)
+	if(client)
 		client.images -= bar
 	qdel(bar)
 	if(target)
@@ -47,7 +47,7 @@
 		shown = 0
 		return
 	if(user.client != client)
-		if (client)
+		if(client)
 			client.images -= bar
 			shown = 0
 		client = user.client
