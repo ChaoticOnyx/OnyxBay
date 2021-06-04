@@ -304,8 +304,10 @@
 		affected.take_external_damage(0, removed / 10, used_weapon = tool)
 	else
 		var/datum/wound/cut/W = affected.get_incision()
-		user.visible_message(SPAN_NOTICE("[user] cauterizes[W ? " \a [W.desc] on" : ""] \the [target]'s [affected.name] with \the [tool]."), \
-		SPAN_NOTICE("You cauterize[W ? " \a [W.desc] on" : ""] \the [target]'s [affected.name] with \the [tool]."))
+
+		var/message = SPAN_NOTICE("[user] cauterizes[W ? " \a [W.desc] on" : ""] \the [target]'s [affected.name] with \the [tool].")
+		var/self_message = SPAN_NOTICE("You cauterize[W ? " \a [W.desc] on" : ""] \the [target]'s [affected.name] with \the [tool].")
+		user.visible_message(message, self_message)
 		if(W)
 			W.close()
 		if(affected.is_stump())
