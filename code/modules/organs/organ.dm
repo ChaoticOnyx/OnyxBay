@@ -231,7 +231,7 @@ var/list/organ_cache = list()
 
 	germ_level -= Interpolate(antibiotics, 1, germ_level / (INFECTION_LEVEL_FOUR + 400))
 	if(germ_level < INFECTION_LEVEL_ONE)
-		germ_level = 0 //cure instantly
+		germ_level = 0 // cure instantly
 
 /obj/item/organ/proc/take_general_damage(amount, silent = FALSE)
 	CRASH("Not Implemented")
