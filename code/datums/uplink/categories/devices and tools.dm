@@ -137,6 +137,12 @@
 			Once it has enough power, powersink explodes, destroying everything in a HUGE range."
 	item_cost = 5
 
+/datum/uplink_item/item/stealth_items/chameleon_hologram
+	name = "Chameleon Bomb"
+	desc = "A powerful bomb with an integrated chameleon hologram projector. Be careful, once you arm and activate it, any touch will trigger an explosion!"
+	item_cost = 6
+	path = /obj/item/device/chameleonholo
+
 /datum/uplink_item/item/tools/c4explosive/heavy
 	name = "Large Package Bomb"
 	item_cost = 6
