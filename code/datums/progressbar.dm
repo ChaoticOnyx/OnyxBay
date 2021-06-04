@@ -1,6 +1,6 @@
 #define PROGRESSBAR_ICON_HEIGHT 7
 
-/atom/
+/client/
 	var/numProgressbars = 0
 
 /datum/progressbar
@@ -9,7 +9,6 @@
 	var/shown = 0
 	var/mob/user
 	var/client/client
-	var/atom/target
 	var/id
 
 /datum/progressbar/New(mob/user, goal_number, atom/target)
@@ -26,36 +25,37 @@
 	bar.plane = HUD_PLANE
 	bar.layer = HUD_ABOVE_ITEM_LAYER
 	src.user = user
-	src.target = target
 	if(user)
 		client = user.client
 
-	target.numProgressbars += 1
-	id = target.numProgressbars
+	client.numProgressbars++
+	id = client.numProgressbars
 
 
 /datum/progressbar/Destroy()
 	if(client)
 		client.images -= bar
+		client.numProgressbars--
 	qdel(bar)
-	if(target)
-		target.numProgressbars -= 1
 	. = ..()
 
 /datum/progressbar/proc/update(progress)
-	if(!user || !user.client || !target)
+	if(!user || !user.client)
 		shown = 0
 		return
 	if(user.client != client)
 		if(client)
 			client.images -= bar
 			shown = 0
+			client.numProgressbars--
 		client = user.client
+		client.numProgressbars++
+		id = client.numProgressbars
 
 	progress = Clamp(progress, 0, goal)
 
-	if(id > target.numProgressbars)
-		id = target.numProgressbars
+	if(id > client.numProgressbars)
+		id = client.numProgressbars
 
 	bar.icon_state = "prog_bar_[round(((progress / goal) * 100), 2.5)]"
 	bar.pixel_y = WORLD_ICON_SIZE + id * PROGRESSBAR_ICON_HEIGHT
