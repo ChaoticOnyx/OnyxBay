@@ -230,7 +230,7 @@
 
 	add_fingerprint(user)
 
-/obj/item/weapon/pen/dagger/proc/activate(mob/living/user)
+/obj/item/weapon/pen/energy_dagger/proc/activate(mob/living/user)
 	battlepen = TRUE
 	to_chat(user, SPAN("notice", "\The [src] is now energised."))
 	slot_flags |= SLOT_DENYPOCKET
@@ -240,7 +240,7 @@
 	icon_state = "edagger1"
 	item_state = "edagger1"
 
-/obj/item/weapon/pen/dagger/proc/deactivate(mob/living/user)
+/obj/item/weapon/pen/energy_dagger/proc/deactivate(mob/living/user)
 	battlepen = FALSE
 	to_chat(user, SPAN("notice", "\The [src] deactivates!"))
 	slot_flags = initial(slot_flags)
@@ -250,7 +250,7 @@
 	icon_state = initial(icon_state)
 	item_state = initial(item_state)
 
-/obj/item/weapon/pen/dagger/dropped()
+/obj/item/weapon/pen/energy_dagger/dropped()
 	spawn(10)
 		if(isturf(loc))
 			deactivate()
