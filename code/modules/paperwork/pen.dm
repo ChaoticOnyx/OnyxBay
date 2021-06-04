@@ -203,7 +203,8 @@
 	mod_weight = 0.5
 	mod_reach = 0.4
 	mod_handy = 1.25
-	force = 22.5 // Half an esword's force
+	force = 25 // Half an esword's force
+	armor_penetration = 35
 	sharp = TRUE
 	edge = TRUE
 	icon_state = "edagger0"
@@ -237,8 +238,10 @@
 	name = "energy dagger"
 	desc = "Bureaucracy has never ever been so deadly."
 	throwforce = 45
+	throw_speed = 1
 	icon_state = "edagger1"
 	item_state = "edagger1"
+	playsound(user, 'sound/weapons/saberon.ogg', 50, 1)
 
 /obj/item/weapon/pen/energy_dagger/proc/deactivate(mob/living/user)
 	battlepen = FALSE
@@ -247,13 +250,25 @@
 	name = initial(name)
 	desc = initial(desc)
 	throwforce = initial(throwforce)
+	throw_speed = initial(throw_speed)
 	icon_state = initial(icon_state)
 	item_state = initial(item_state)
+	playsound(user, 'sound/weapons/saberoff.ogg', 50, 1)
 
 /obj/item/weapon/pen/energy_dagger/dropped()
-	spawn(10)
+	spawn(9)
 		if(isturf(loc))
 			deactivate()
+
+/obj/item/weapon/pen/energy_dagger/get_storage_cost()
+	if(battlepen)
+		return ITEM_SIZE_NO_CONTAINER
+	return ..()
+
+/obj/item/weapon/pen/energy_dagger/get_temperature_as_from_ignitor()
+	if(active)
+		return 3500
+	return 0
 
 /*
  * Crayons
