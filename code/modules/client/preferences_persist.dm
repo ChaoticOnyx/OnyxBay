@@ -37,7 +37,7 @@
 		CRASH("failed to remove tmpfile at [tmp_path]")
 
 /datum/preferences/proc/load_preferences()
-	var/datum/pref_record_reader/R = load_pref_record("preferences")
+	var/datum/pref_record_reader/R = load_pref_record("player_preferences")
 	if(!R)
 		R = new /datum/pref_record_reader/null(PREF_SER_VERSION)
 	player_setup.load_preferences(R)
@@ -45,7 +45,7 @@
 /datum/preferences/proc/save_preferences()
 	var/datum/pref_record_writer/json_list/W = new(PREF_SER_VERSION)
 	player_setup.save_preferences(W)
-	save_pref_record("preferences", W.data)
+	save_pref_record("player_preferences", W.data)
 
 /datum/preferences/proc/get_slot_key(slot)
 	return "character_[GLOB.using_map.preferences_key()]_[slot]"

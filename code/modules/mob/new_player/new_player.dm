@@ -25,8 +25,9 @@
 	verbs += /mob/proc/join_as_actor
 	verbs += /mob/proc/join_response_team
 
-/mob/new_player/verb/new_player_panel()
-	set src = usr
+/mob/new_player/proc/new_player_panel(forced = FALSE)
+	if(!SScharacter_setup.initialized && !forced)
+		return // Not ready yet.
 	new_player_panel_proc()
 
 /mob/new_player/proc/new_player_panel_proc()
@@ -144,10 +145,11 @@
 			if(isnull(client.holder))
 				announce_ghost_joinleave(src)
 
-			var/mob/living/carbon/human/dummy/mannequin = new()
-			client.prefs.dress_preview_mob(mannequin)
-			observer.set_appearance(mannequin)
-			qdel(mannequin)
+			var/mob/living/carbon/human/dummy/mannequin = get_mannequin(client.ckey)
+			if(mannequin)
+				client.prefs.dress_preview_mob(mannequin)
+				observer.set_appearance(mannequin)
+				qdel(mannequin)
 
 			if(client.prefs.be_random_name)
 				client.prefs.real_name = random_name(client.prefs.gender)

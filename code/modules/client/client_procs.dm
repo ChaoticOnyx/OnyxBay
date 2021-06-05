@@ -269,12 +269,8 @@
 
 	chatOutput.start()
 
-	// Change position only if it not default
-	if (get_preference_value(/datum/client_preference/chat_position) == GLOB.PREF_YES)
-		update_chat_position(TRUE)
-
-	if(get_preference_value(/datum/client_preference/fullscreen_mode) != GLOB.PREF_NO)
-		toggle_fullscreen(get_preference_value(/datum/client_preference/fullscreen_mode))
+	if(prefs && !istype(mob, world.mob))
+		prefs.apply_post_login_preferences()
 
 	if(config.player_limit && is_player_rejected_by_player_limit(usr, ckey))
 		if(config.panic_address && TopicData != "redirect")

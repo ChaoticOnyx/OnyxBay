@@ -55,6 +55,7 @@
 	my_client = client
 	set_sight(sight|SEE_TURFS)
 	GLOB.player_list |= src
+
 	new_player_panel()
 
 	if(!SScharacter_setup.initialized)
@@ -68,7 +69,4 @@
 /mob/new_player/proc/deferred_login()
 	if(client)
 		client.playtitlemusic()
-
-	var/decl/security_state/security_state = GLOB.using_map.security_state
-	var/decl/security_level/SL = security_state.current_security_level
-	to_chat(src, SPAN("notice", "The alert level on the [station_name()] is currently: <font color=[SL.light_color_alarm]><B>[SL.name]</B></font>."))
+		client.prefs?.apply_post_login_preferences()

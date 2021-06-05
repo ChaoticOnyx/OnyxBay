@@ -24,15 +24,18 @@ GLOBAL_VAR_CONST(PREF_HEAR, "Hear")
 GLOBAL_VAR_CONST(PREF_SILENT, "Silent")
 GLOBAL_VAR_CONST(PREF_SHORTHAND, "Shorthand")
 
+var/global/list/_client_preferences
+var/global/list/_client_preferences_by_key
+var/global/list/_client_preferences_by_type
+
 /proc/get_client_preferences()
-	var/static/list/client_preferences
-	if(!client_preferences)
-		client_preferences = list()
+	if(!_client_preferences)
+		_client_preferences = list()
 		for(var/ct in subtypesof(/datum/client_preference))
 			var/datum/client_preference/client_type = ct
 			if(initial(client_type.description))
-				client_preferences += new client_type()
-	return client_preferences
+				_client_preferences += new client_type()
+	return _client_preferences
 
 /proc/get_client_preference(datum/client_preference/preference)
 	if(istype(preference))
@@ -42,22 +45,20 @@ GLOBAL_VAR_CONST(PREF_SHORTHAND, "Shorthand")
 	return get_client_preference_by_key(preference)
 
 /proc/get_client_preference_by_key(preference)
-	var/static/list/client_preferences_by_key
-	if(!client_preferences_by_key)
-		client_preferences_by_key = list()
+	if(!_client_preferences_by_key)
+		_client_preferences_by_key = list()
 		for(var/ct in get_client_preferences())
 			var/datum/client_preference/client_pref = ct
-			client_preferences_by_key[client_pref.key] = client_pref
-	return client_preferences_by_key[preference]
+			_client_preferences_by_key[client_pref.key] = client_pref
+	return _client_preferences_by_key[preference]
 
 /proc/get_client_preference_by_type(preference)
-	var/static/list/client_preferences_by_type
-	if(!client_preferences_by_type)
-		client_preferences_by_type = list()
+	if(!_client_preferences_by_type)
+		_client_preferences_by_type = list()
 		for(var/ct in get_client_preferences())
 			var/datum/client_preference/client_pref = ct
-			client_preferences_by_type[client_pref.type] = client_pref
-	return client_preferences_by_type[preference]
+			_client_preferences_by_type[client_pref.type] = client_pref
+	return _client_preferences_by_type[preference]
 
 /datum/client_preference
 	var/description
@@ -224,6 +225,7 @@ GLOBAL_VAR_CONST(PREF_SHORTHAND, "Shorthand")
 /datum/client_preference/browser_style
 	description = "Fake NanoUI Browser Style"
 	key = "BROWSER_STYLED"
+	default_value = GLOB.PREF_FANCY
 	options = list(GLOB.PREF_FANCY, GLOB.PREF_PLAIN)
 
 /datum/client_preference/ambient_occlusion
@@ -242,6 +244,8 @@ GLOBAL_VAR_CONST(PREF_SHORTHAND, "Shorthand")
 	default_value = GLOB.PREF_NO
 
 /datum/client_preference/fullscreen_mode/changed(mob/preference_mob, new_value)
+	if(!SScharacter_setup.initialized)
+		return
 	if(preference_mob.client)
 		preference_mob.client.toggle_fullscreen(new_value)
 
@@ -251,6 +255,8 @@ GLOBAL_VAR_CONST(PREF_SHORTHAND, "Shorthand")
 	default_value = GLOB.PREF_NO
 
 /datum/client_preference/chat_position/changed(mob/preference_mob, new_value)
+	if(!SScharacter_setup.initialized)
+		return
 	if(preference_mob.client)
 		preference_mob.client.update_chat_position(new_value == GLOB.PREF_YES)
 
