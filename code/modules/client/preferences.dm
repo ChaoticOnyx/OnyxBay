@@ -57,13 +57,17 @@
 			load_data()
 
 	sanitize_preferences()
+	if(client && istype(client.mob, /mob/new_player))
+		var/mob/new_player/np = client.mob
+		np.new_player_panel(TRUE)
 
 /datum/preferences/proc/load_data()
 	load_failed = null
 	var/stage = "pre"
 
 	try
-		var/pref_path = get_path(client_ckey, "preferences")
+		var/pref_path = get_path(client_ckey, "player_preferences")
+
 		if(!fexists(pref_path))
 			stage = "migrate"
 			// Try to migrate legacy savefile-based preferences
@@ -168,6 +172,10 @@
 			return "God"
 
 /datum/preferences/proc/ShowChoices(mob/user)
+	if(!SScharacter_setup.initialized || SSatoms.init_state < INITIALIZATION_INNEW_REGULAR)
+		to_chat(user, SPAN("notice", "Please, wait for the game to initialize!"))
+		return
+
 	if(!user || !user.client)
 		return
 
@@ -431,3 +439,14 @@
 /datum/preferences/proc/close_load_dialog(mob/user)
 	close_browser(user, "window=saves")
 	panel.close()
+
+/datum/preferences/proc/apply_post_login_preferences()
+	set waitfor = 0
+	if(!client)
+		return
+
+	if(client.get_preference_value(/datum/client_preference/chat_position) == GLOB.PREF_YES)
+		client.update_chat_position(TRUE)
+
+	if(client.get_preference_value(/datum/client_preference/fullscreen_mode) != GLOB.PREF_NO)
+		client.toggle_fullscreen(client.get_preference_value(/datum/client_preference/fullscreen_mode))

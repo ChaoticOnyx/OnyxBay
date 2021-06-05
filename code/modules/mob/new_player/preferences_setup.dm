@@ -49,6 +49,9 @@
 #undef ASSIGN_LIST_TO_COLORS
 
 /datum/preferences/proc/dress_preview_mob(mob/living/carbon/human/mannequin)
+	if(!mannequin)
+		return
+
 	var/update_icon = FALSE
 	copy_to(mannequin, TRUE)
 
@@ -118,6 +121,8 @@
 
 /datum/preferences/proc/update_preview_icon()
 	var/mob/living/carbon/human/dummy/mannequin/mannequin = get_mannequin(client_ckey)
+	if(!mannequin)
+		return
 	mannequin.delete_inventory(TRUE)
 	dress_preview_mob(mannequin)
 
