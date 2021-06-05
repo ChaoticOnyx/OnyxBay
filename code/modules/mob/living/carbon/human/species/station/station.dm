@@ -97,6 +97,8 @@
 	name_language = LANGUAGE_SIIK_MAAS
 	health_hud_intensity = 1.75
 
+	passive_temp_gain = 1 // Allow Tajar stabilize at 38-40C at 20C environment, and 47-49 in a spacesuit.
+
 	min_age = 18
 	max_age = 140
 
