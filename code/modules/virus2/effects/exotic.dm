@@ -14,17 +14,18 @@
 	badness = VIRUS_EXOTIC
 
 /datum/disease2/effect/vulnerability/activate(mob/living/carbon/human/mob)
+	if(..())
+		return
 	mob.add_modifier(/datum/modifier/vulnerability)
 
 /datum/disease2/effect/vulnerability/deactivate(mob/living/carbon/human/mob)
+	if(..())
+		return
 	mob.remove_a_modifier_of_type(/datum/modifier/vulnerability)
 
 /datum/modifier/vulnerability
 	name = "Vulnerability"
 	desc = "Something devours your inner strength."
-
-	on_created_text = "<span class='warning'>You are now weak, something affects your well-being!</span>"
-	on_expired_text = "<span class='notice'>You feel better.</span>"
 
 	max_health_percent = 0.5
 	disable_duration_percent = 2
@@ -33,6 +34,10 @@
 	bleeding_rate_percent = 4
 	incoming_healing_percent = 0.2
 
+/datum/modifier/vulnerability/New(new_holder, new_origin)
+	. = ..()
+	on_created_text = SPAN_WARNING("You are now weak, something affects your well-being!")
+	on_expired_text = SPAN_NOTICE("You feel better.")
 
 /datum/disease2/effect/musclerace
 	name = "Reverse Muscle Overstrain Effect"
@@ -40,6 +45,8 @@
 	badness = VIRUS_EXOTIC
 
 /datum/disease2/effect/musclerace/activate(mob/living/carbon/human/mob)
+	if(..())
+		return
 	mob.nutrition = max(0, mob.nutrition - 25)
 	mob.add_modifier(/datum/modifier/musclerace)
 	if(prob(25))
@@ -51,14 +58,13 @@
 		mob.take_organ_damage((3 * multiplier))
 
 /datum/disease2/effect/musclerace/deactivate(mob/living/carbon/human/mob)
+	if(..())
+		return
 	mob.remove_a_modifier_of_type(/datum/modifier/musclerace)
 
 /datum/modifier/musclerace
 	name = "Unintentional Muscle Burning"
 	desc = "Some kind of force makes your body work to the limit of its capabilities."
-
-	on_created_text = "<span class='warning'>You are incredibly strong right now, this is not for long!</span>"
-	on_expired_text = "<span class='notice'>You feel better.</span>"
 
 	max_health_percent = 0.8
 	disable_duration_percent = 0.5
@@ -67,6 +73,11 @@
 	bleeding_rate_percent = 2
 	incoming_healing_percent = 0.2
 	haste = 1
+
+/datum/modifier/musclerace/New(new_holder, new_origin)
+	. = ..()
+	on_created_text = SPAN_WARNING("You are incredibly strong right now, this is not for long!")
+	on_expired_text = SPAN_NOTICE("You feel better.")
 
 // Atom Virus
 /datum/disease2/effect/nuclear
@@ -108,15 +119,17 @@
 		)
 
 /datum/disease2/effect/nuclear/activate(mob/living/carbon/human/mob)
+	if(..())
+		return
 	if(!codes_received)
 		var/obj/machinery/nuclearbomb/nuke = locate(/obj/machinery/nuclearbomb/station) in world
 		if(nuke && mob.mind)
-			to_chat(mob, SPAN("danger", "Station Self Destruction Code is [nuke.r_code]. Write and dont forget, its very important, you have to blow up the station and get to know the Atom. Your consciousness will tell you everything you need."))
+			to_chat(mob, SPAN_DANGER("Station Self Destruction Code is [nuke.r_code]. Write and dont forget, its very important, you have to blow up the station and get to know the Atom. Your consciousness will tell you everything you need."))
 			mob.mind.store_memory("[nuke.r_code]")
 			mob.mind.store_memory("<B>ATOM WILL TELL ME THE WAY</B>")
 			codes_received = 1
 	if(prob(30))
-		to_chat(mob, SPAN("notice", "... [pick(reflections)] ..."))
+		to_chat(mob, SPAN_NOTICE("... [pick(reflections)] ..."))
 		if(prob(5))
 			mob.whisper_say("[pick(reflections)]")
 	if(mob.reagents.get_reagent_amount(/datum/reagent/tramadol/oxycodone) < 10)
@@ -124,18 +137,22 @@
 	mob.add_modifier(/datum/modifier/nuclear)
 
 /datum/disease2/effect/nuclear/deactivate(mob/living/carbon/human/mob)
+	if(..())
+		return
 	mob.remove_a_modifier_of_type(/datum/modifier/nuclear)
 
 /datum/modifier/nuclear
 	name = "Nuclear fury"
 	desc = "You use all your willpower to achieve your highest goal in this life."
 
-	on_created_text = "<span class='warning'>I need to do everything possible to merge with the Atom!</span>"
-	on_expired_text = "<span class='notice'>You feel rather weak.</span>"
-
 	disable_duration_percent = 0.8
 	outgoing_melee_damage_percent = 1.35
 	evasion = 0.7
+
+/datum/modifier/nuclear/New(new_holder, new_origin)
+	. = ..()
+	on_created_text = SPAN_WARNING("I need to do everything possible to merge with the Atom!")
+	on_expired_text = SPAN_NOTICE("You feel rather weak.")
 
 ////////////////////////STAGE 2/////////////////////////////////
 
@@ -145,10 +162,12 @@
 	badness = VIRUS_EXOTIC
 
 /datum/disease2/effect/hisstarvation/activate(mob/living/carbon/human/mob)
+	if(..())
+		return
 	mob.nutrition = max(0, mob.nutrition - 1000)
 	mob.custom_emote(message = "hisses")
 	if(prob(25))
-		to_chat(mob, SPAN("danger", "[pick("You want to eat more than anything in this life!", "You feel your stomach begin to devour itself!", "You are ready to kill for food!", "You urgently need to find food!")]"))
+		to_chat(mob, SPAN_DANGER("[pick("You want to eat more than anything in this life!", "You feel your stomach begin to devour itself!", "You are ready to kill for food!", "You urgently need to find food!")]"))
 
 //Atom Virus
 /datum/disease2/effect/nuclear_exacerbation
@@ -179,8 +198,10 @@
 		)
 
 /datum/disease2/effect/nuclear_exacerbation/activate(mob/living/carbon/human/mob)
+	if(..())
+		return
 	if(prob(25))
-		to_chat(mob, SPAN("danger", "[pick(reflections)]"))
+		to_chat(mob, SPAN_DANGER("[pick(reflections)]"))
 	if(mob.reagents.get_reagent_amount(/datum/reagent/hyperzine) < 10)
 		mob.reagents.add_reagent(/datum/reagent/hyperzine, 4)
 	if(mob.reagents.get_reagent_amount(/datum/reagent/bicaridine) < 25)
@@ -195,14 +216,16 @@
 	possible_mutations = list(/datum/disease2/effect/mind)
 
 /datum/disease2/effect/brainrot/activate(mob/living/carbon/human/mob)
+	if(..())
+		return
 	if(mob.reagents.get_reagent_amount(/datum/reagent/alkysine) > 5)
-		to_chat(mob, SPAN("notice", "You feel better."))
+		to_chat(mob, SPAN_NOTICE("You feel better."))
 	else
 		if(mob.getBrainLoss() < 90)
 			mob.emote("drool")
 			mob.adjustBrainLoss(9)
 			if(prob(2))
-				to_chat(mob, SPAN("warning", "Your try to remember something important... But can't."))
+				to_chat(mob, SPAN_WARNING("Your try to remember something important... But can't."))
 		if(prob(5))
 			mob.confused += 5
 
@@ -214,12 +237,14 @@
 	badness = VIRUS_EXOTIC
 	possible_mutations = list(/datum/disease2/effect/radian)
 
-/datum/disease2/effect/emp/activate(var/mob/living/carbon/human/mob)
+/datum/disease2/effect/emp/activate(mob/living/carbon/human/mob)
+	if(..())
+		return
 	if(prob(35))
-		to_chat(mob, "<span class='danger'>Your inner energy breaks out!</span>")
+		to_chat(mob, SPAN_DANGER("Your inner energy breaks out!"))
 		empulse(mob.loc, 3, 2)
 	if(prob(50))
-		to_chat(mob, "<span class='warning'>You are overwhelmed with electricity from the inside!</span>")
+		to_chat(mob, SPAN_WARNING("You are overwhelmed with electricity from the inside!"))
 		var/datum/effect/effect/system/spark_spread/s = new /datum/effect/effect/system/spark_spread
 		s.set_up(5, 1, mob)
 		s.start()
@@ -233,9 +258,11 @@
 	possible_mutations = list(/datum/disease2/effect/nuclear_exacerbation,
 							  /datum/disease2/effect/nuclear)
 
-/datum/disease2/effect/nuclear_escalation/activate(var/mob/living/carbon/human/mob)
+/datum/disease2/effect/nuclear_escalation/activate(mob/living/carbon/human/mob)
+	if(..())
+		return
 	if(prob(10))
-		to_chat(mob, "<span class='danger'>The atom was mistaken in you, you received a great gift and could not live up to expectations, good luck.</span>")
+		to_chat(mob, SPAN_DANGER("The atom was mistaken in you, you received a great gift and could not live up to expectations, good luck."))
 		var/obj/item/organ/internal/brain/B = mob.internal_organs_by_name[BP_BRAIN]
 		if(B && B.damage < B.min_broken_damage)
 			B.take_internal_damage(150)
@@ -248,7 +275,9 @@
 	stage = 4
 	badness = VIRUS_EXOTIC
 
-/datum/disease2/effect/gibbingtons/activate(var/mob/living/carbon/human/mob)
+/datum/disease2/effect/gibbingtons/activate(mob/living/carbon/human/mob)
+	if(..())
+		return
 	// Probabilities have been tweaked to kill in ~2-3 minutes, giving 5-10 messages.
 	// Probably needs more balancing, but it's better than LOL U GIBBED NOW, especially now that viruses can potentially have no signs up until Gibbingtons.
 	mob.adjustBruteLoss(10*multiplier)

@@ -5,6 +5,8 @@
 	stage = 1
 
 /datum/disease2/effect/honk/activate(mob/living/carbon/human/mob)
+	if(..())
+		return
 	playsound(mob.loc, 'sound/items/bikehorn.ogg', 50, 1)
 	to_chat(mob, SPAN_WARNING("You suddenly honk."))
 
@@ -20,6 +22,8 @@
 	delay = 15 SECONDS
 
 /datum/disease2/effect/sneeze/activate(mob/living/carbon/human/mob)
+	if(..())
+		return
 	if(prob(30))
 		to_chat(mob, SNEEZE_EFFECT_WARNING)
 	spawn(5)
@@ -47,6 +51,8 @@
 	delay = 25 SECONDS
 
 /datum/disease2/effect/drool/activate(mob/living/carbon/human/mob)
+	if(..())
+		return
 	mob.emote("drool")
 
 
@@ -57,6 +63,8 @@
 	delay = 25 SECONDS
 
 /datum/disease2/effect/twitch/activate(mob/living/carbon/human/mob)
+	if(..())
+		return
 	mob.emote("twitch")
 
 
@@ -66,6 +74,8 @@
 	delay = 25 SECONDS
 
 /datum/disease2/effect/headache/activate(mob/living/carbon/human/mob)
+	if(..())
+		return
 	mob.custom_pain("Your head hurts a bit.", 20)
 
 
@@ -75,6 +85,8 @@
 	delay = 25 SECONDS
 
 /datum/disease2/effect/itch/activate(mob/living/carbon/human/mob)
+	if(..())
+		return
 	var/obj/O = pick(mob.organs)
 	to_chat(mob, ITCH_EFFECT_WARNING(O.name))
 
@@ -85,6 +97,8 @@
 	delay = 25 SECONDS
 
 /datum/disease2/effect/stomach/activate(mob/living/carbon/human/mob)
+	if(..())
+		return
 	to_chat(mob, STOMACH_EFFECT_WARNING)
 
 
@@ -107,6 +121,8 @@
 		data = c_data
 
 /datum/disease2/effect/voice_change/activate(mob/living/carbon/human/mob)
+	if(..())
+		return
 	if(!data["name"])
 		data["name"] = mob.real_name
 	to_chat(mob, SPAN_WARNING("Your throat hurts."))
@@ -114,6 +130,8 @@
 	mob.SetSpecialVoice(data["name"])
 
 /datum/disease2/effect/voice_change/deactivate(mob/living/carbon/human/mob)
+	if(..())
+		return
 	if(special_voice_old)
 		mob.SetSpecialVoice(special_voice_old)
 	else
@@ -127,6 +145,8 @@
 	delay = 15 SECONDS
 
 /datum/disease2/effect/disorientation/activate(mob/living/carbon/human/mob)
+	if(..())
+		return
 	to_chat(mob, DISORIENTATION_EFFECT_WARNING)
 	if(mob.client)
 		var/client/C = mob.client
@@ -142,6 +162,8 @@
 	chance_max = 25
 	delay = 25 SECONDS
 /datum/disease2/effect/fridge/activate(mob/living/carbon/human/mob)
+	if(..())
+		return
 	mob.emote("shiver")
 
 
@@ -149,6 +171,8 @@
 	name = "Appetiser Effect"
 	stage = 2
 /datum/disease2/effect/hungry/activate(mob/living/carbon/human/mob)
+	if(..())
+		return
 	mob.nutrition = max(0, mob.nutrition - 200)
 
 
@@ -158,6 +182,8 @@
 	delay = 25 SECONDS
 
 /datum/disease2/effect/cough/activate(mob/living/carbon/human/mob)
+	if(..())
+		return
 	mob.emote("cough")
 	if(mob.wear_mask)
 		return
@@ -172,6 +198,8 @@
 	delay = 35 SECONDS
 
 /datum/disease2/effect/sleepy/activate(mob/living/carbon/human/mob)
+	if(..())
+		return
 	mob.emote("collapse")
 
 
@@ -181,6 +209,8 @@
 	delay = 10 SECONDS
 
 /datum/disease2/effect/aids/activate(mob/living/carbon/human/mob)
+	if(..())
+		return
 	mob.immunity -= 2 * multiplier
 
 /datum/disease2/effect/aids/change_parent()
@@ -192,6 +222,8 @@
 	stage = 2
 
 /datum/disease2/effect/drowsness/activate(mob/living/carbon/human/mob)
+	if(..())
+		return
 	if(mob.drowsyness < 35)
 		mob.drowsyness += 10
 
@@ -202,6 +234,8 @@
 	delay = 25 SECONDS
 
 /datum/disease2/effect/flu/activate(mob/living/carbon/human/mob)
+	if(..())
+		return
 	mob.bodytemperature += 5
 	if(prob(3))
 		to_chat(mob, SPAN_WARNING("Your stomach feels heavy."))
@@ -230,6 +264,8 @@
 	possible_mutations = list(/datum/disease2/effect/aggressive)
 
 /datum/disease2/effect/pacifism/activate(mob/living/carbon/human/mob)
+	if(..())
+		return
 	mob.a_intent = I_HELP
 	mob.hud_used.action_intent.icon_state = "intent_help"
 
@@ -241,6 +277,8 @@
 	delay = 15 SECONDS
 
 /datum/disease2/effect/confusion/activate(mob/living/carbon/human/mob)
+	if(..())
+		return
 	to_chat(mob, CONFUSION_EFFECT_WARNING)
 	mob.confused += 10
 
@@ -250,6 +288,8 @@
 	stage = 3
 
 /datum/disease2/effect/deaf/activate(mob/living/carbon/human/mob)
+	if(..())
+		return
 	mob.ear_deaf = 5
 
 
@@ -258,6 +298,8 @@
 	stage = 3
 
 /datum/disease2/effect/telepathic/activate(mob/living/carbon/human/mob)
+	if(..())
+		return
 	mob.dna.SetSEState(GLOB.REMOTETALKBLOCK, 1)
 	domutcheck(mob, null, MUTCHK_FORCED)
 
@@ -268,6 +310,8 @@
 	multiplier_max = 3
 
 /datum/disease2/effect/shakey/activate(mob/living/carbon/human/mob)
+	if(..())
+		return
 	shake_camera(mob, 5 * multiplier)
 
 ////////////////////////STAGE 4/////////////////////////////////
@@ -278,4 +322,6 @@
 	multiplier_max = 10
 
 /datum/disease2/effect/hallucinations/activate(mob/living/carbon/human/mob)
+	if(..())
+		return
 	mob.adjust_hallucination(multiplier, 4 * multiplier)

@@ -1,6 +1,7 @@
+#define VIRUS_THRESHOLD 10
 //Returns 1 if mob can be infected, 0 otherwise.
 /proc/infection_chance(mob/living/carbon/M, vector = "Airborne")
-	if (!istype(M))
+	if(!istype(M))
 		return 0
 
 	var/mob/living/carbon/human/H = M
@@ -45,12 +46,12 @@
 
 //Similar to infection check, but used for when M is spreading the virus.
 /proc/infection_spreading_check(mob/living/carbon/M, vector = "Airborne")
-	if (!istype(M))
+	if(!istype(M))
 		return 0
 
 	var/protection = M.getarmor(null, "bio")	//gets the full body bio armour value, weighted by body part coverage.
 
-	if (vector == "Airborne")	//for airborne infections face-covering items give non-weighted protection value.
+	if(vector == "Airborne")	//for airborne infections face-covering items give non-weighted protection value.
 		if(M.internal)
 			return 1
 		protection = max(protection, M.getarmor(FACE, "bio"))
@@ -77,7 +78,9 @@
 		return
 	if(M.status_flags & GODMODE)
 		return
-	if ("[disease.uniqueID]" in M.virus2)
+	if("[disease.uniqueID]" in M.virus2)
+		return
+	if(length(M.virus2) > VIRUS_THRESHOLD)
 		return
 	// if one of the antibodies in the mob's body matches one of the disease's antigens, don't infect
 	var/list/antibodies_in_common = M.antibodies & disease.antigen
@@ -181,3 +184,5 @@
 				if(V && V.spreadtype != vector) continue
 				if(!infection_spreading_check(victim, V.spreadtype)) continue
 				infect_virus2(src,V)
+
+#undef VIRUS_THRESHOLD
