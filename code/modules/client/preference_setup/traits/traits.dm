@@ -31,12 +31,11 @@ var/list/trait_categories = list() // The categories available for the trait men
 	sort_order = 1
 	var/current_tab = "Physical"
 
-/datum/category_item/player_setup_item/traits/load_character(savefile/S)
-	from_file(S["traits"], pref.traits)
+/datum/category_item/player_setup_item/traits/load_character(datum/pref_record_reader/R)
+	pref.traits = R.read("traits")
 
-/datum/category_item/player_setup_item/traits/save_character(savefile/S)
-	to_file(S["traits"], pref.traits)
-
+/datum/category_item/player_setup_item/traits/save_character(datum/pref_record_writer/W)
+	W.write("traits", pref.traits)
 
 /datum/category_item/player_setup_item/traits/content()
 	. = list()

@@ -56,4 +56,19 @@
 	set_sight(sight|SEE_TURFS)
 	GLOB.player_list |= src
 	new_player_panel()
-	client.playtitlemusic()
+
+	if(!SScharacter_setup.initialized)
+		SScharacter_setup.newplayers_requiring_init += src
+	else
+		deferred_login()
+
+// This is called when the charcter setup system has been sufficiently initialized and prefs are available.
+// Do not make any calls in mob/Login which may require prefs having been loaded.
+// It is safe to assume that any UI or sound related calls will fall into that category.
+/mob/new_player/proc/deferred_login()
+	if(client)
+		client.playtitlemusic()
+
+	var/decl/security_state/security_state = GLOB.using_map.security_state
+	var/decl/security_level/SL = security_state.current_security_level
+	to_chat(src, SPAN("notice", "The alert level on the [station_name()] is currently: <font color=[SL.light_color_alarm]><B>[SL.name]</B></font>."))

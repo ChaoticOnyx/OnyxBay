@@ -20,21 +20,19 @@
 			var/decl/backpack_outfit/backpack_outfit = bos[bo]
 			backpacks_by_name[backpack_outfit.name] = backpack_outfit
 
-/datum/category_item/player_setup_item/general/equipment/load_character(savefile/S)
-	var/load_backbag
+/datum/category_item/player_setup_item/general/equipment/load_character(datum/pref_record_reader/R)
+	pref.all_underwear = R.read("all_underwear")
+	pref.all_underwear_metadata = R.read("all_underwear_metadata")
+	pref.backpack_metadata = R.read("backpack_metadata")
 
-	from_file(S["all_underwear"], pref.all_underwear)
-	from_file(S["all_underwear_metadata"], pref.all_underwear_metadata)
-	from_file(S["backpack"], load_backbag)
-	from_file(S["backpack_metadata"], pref.backpack_metadata)
-
+	var/load_backbag = R.read("backpack")
 	pref.backpack = backpacks_by_name[load_backbag] || get_default_outfit_backpack()
 
-/datum/category_item/player_setup_item/general/equipment/save_character(savefile/S)
-	to_file(S["all_underwear"], pref.all_underwear)
-	to_file(S["all_underwear_metadata"], pref.all_underwear_metadata)
-	to_file(S["backpack"], pref.backpack.name)
-	to_file(S["backpack_metadata"], pref.backpack_metadata)
+/datum/category_item/player_setup_item/general/equipment/save_character(datum/pref_record_writer/W)
+	W.write("all_underwear", pref.all_underwear)
+	W.write("all_underwear_metadata", pref.all_underwear_metadata)
+	W.write("backpack", pref.backpack.name)
+	W.write("backpack_metadata", pref.backpack_metadata)
 
 /datum/category_item/player_setup_item/general/equipment/sanitize_character()
 	if(!istype(pref.all_underwear))
@@ -172,26 +170,3 @@
 			return TOPIC_REFRESH_UPDATE_PREVIEW
 
 	return ..()
-
-/datum/category_item/player_setup_item/general/equipment/update_setup(savefile/preferences, savefile/character)
-	if(preferences["version"]  <= 16)
-		var/list/old_index_to_backpack_type = list(
-			/decl/backpack_outfit/nothing,
-			/decl/backpack_outfit/backpack,
-			/decl/backpack_outfit/satchel,
-			/decl/backpack_outfit/messenger_bag,
-			/decl/backpack_outfit/satchel,
-			/decl/backpack_outfit/satchel,
-			/decl/backpack_outfit/pocketbook
-		)
-
-		var/old_index
-		from_file(character["backbag"], old_index)
-
-		if(old_index > 0 && old_index <= old_index_to_backpack_type.len)
-			pref.backpack = decls_repository.get_decl(old_index_to_backpack_type[old_index])
-		else
-			pref.backpack = get_default_outfit_backpack()
-
-		to_file(character["backpack"], pref.backpack.name)
-		return 1

@@ -11,25 +11,25 @@
 	name = "Basic"
 	sort_order = 1
 
-/datum/category_item/player_setup_item/general/basic/load_character(savefile/S)
-	from_file(S["real_name"],             pref.real_name)
-	from_file(S["name_is_always_random"], pref.be_random_name)
-	from_file(S["gender"],                pref.gender)
-	from_file(S["body"],                  pref.body)
+/datum/category_item/player_setup_item/general/basic/load_character(datum/pref_record_reader/R)
+	pref.real_name =      R.read("real_name")
+	pref.be_random_name = R.read("name_is_always_random")
+	pref.gender =         R.read("gender")
+	pref.body =           R.read("body")
 	if(!pref.body)
 		pref.body = "Default" // fucking crutch for hot fix
-	from_file(S["age"],                   pref.age)
-	from_file(S["spawnpoint"],            pref.spawnpoint)
-	from_file(S["OOC_Notes"],             pref.metadata)
+	pref.age =            R.read("age")
+	pref.spawnpoint =     R.read("spawnpoint")
+	pref.metadata =       R.read("OOC_Notes")
 
-/datum/category_item/player_setup_item/general/basic/save_character(savefile/S)
-	to_file(S["real_name"],             pref.real_name)
-	to_file(S["name_is_always_random"], pref.be_random_name)
-	to_file(S["gender"],                pref.gender)
-	to_file(S["body"],                  pref.body)
-	to_file(S["age"],                   pref.age)
-	to_file(S["spawnpoint"],            pref.spawnpoint)
-	to_file(S["OOC_Notes"],             pref.metadata)
+/datum/category_item/player_setup_item/general/basic/save_character(datum/pref_record_writer/W)
+	W.write("real_name",             pref.real_name)
+	W.write("name_is_always_random", pref.be_random_name)
+	W.write("gender",                pref.gender)
+	W.write("body",                  pref.body)
+	W.write("age",                   pref.age)
+	W.write("spawnpoint",            pref.spawnpoint)
+	W.write("OOC_Notes",             pref.metadata)
 
 /datum/category_item/player_setup_item/general/basic/proc/sanitize_body()
 	var/datum/species/S = all_species[pref.species]
