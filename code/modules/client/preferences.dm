@@ -103,11 +103,11 @@
 	player_setup.load_preferences(savefile_reader)
 	var/orig_slot = default_slot
 
-	S.cd = GLOB.using_map.character_load_path(S, slot)
+	S.cd = "/[GLOB.using_map.path]"
 	for(var/slot = 1 to 40)
 		if(!S.dir.Find("character[slot]"))
 			continue
-		S.cd = "/[GLOB.using_map.path]/character[slot]"
+		S.cd = GLOB.using_map.character_load_path(S, slot)
 		default_slot = slot
 		player_setup.load_character(savefile_reader)
 		save_character(override_key = "character_[GLOB.using_map.preferences_key()]_[slot]")
