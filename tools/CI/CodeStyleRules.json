@@ -10,12 +10,12 @@
         "Level": "warning"
     },
     {
-        "Pattern": "(?<!for\\s*)\\s?[\\(,]\\s?(?<error>var\/[\\w\\d]+)",
+        "Pattern": "(?<!for|while|catch\\s*)\\s?[\\(,]\\s?(?<error>var\/[\\w\\d]+)",
         "Message": "Лишний var/ в аргументах: '{{error}}'",
         "Level": "error"
     },
     {
-        "Pattern": "(?<=\".*)(?<error><\\s?span)(?=.*>)",
+        "Pattern": "(?<=\".*)(?<error><\\s?span)(?=.*>.*\")",
         "Message": "Вместо HTML тэга необходимо использовать макрос 'SPAN': '{{error}}'",
         "Level": "error"
     },
