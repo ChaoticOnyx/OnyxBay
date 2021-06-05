@@ -61,6 +61,7 @@
 /datum/preferences/proc/load_data()
 	load_failed = null
 	var/stage = "pre"
+
 	try
 		var/pref_path = get_path(client_ckey, "preferences")
 		if(!fexists(pref_path))
