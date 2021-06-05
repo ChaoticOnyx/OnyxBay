@@ -58,8 +58,6 @@
 
 	sanitize_preferences()
 
-	..()
-
 /datum/preferences/proc/load_data()
 	load_failed = null
 	var/stage = "pre"
