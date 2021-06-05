@@ -40,7 +40,7 @@ div.scrollleft {
     background-color: #2D2D2D;
     padding-left: 8px;
     overflow-y: auto;
-    margin-bottom: 24px;
+    margin-bottom: 21px;
 }
 
 div.scrollright {
@@ -51,7 +51,7 @@ div.scrollright {
     position: absolute;
     top: 32px;
     overflow-y: auto;
-    margin-bottom: 24px;
+    margin-bottom: 21px;
 }
 
 a:link,
