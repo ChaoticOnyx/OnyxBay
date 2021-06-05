@@ -73,6 +73,7 @@
 		stage = "load"
 		load_preferences()
 		load_character()
+
 	catch(var/exception/E)
 		load_failed = "{[stage]} [E]"
 		throw E
