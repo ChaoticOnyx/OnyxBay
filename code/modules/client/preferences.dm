@@ -2,15 +2,21 @@
 
 /datum/preferences
 	//doohickeys for savefiles
-	var/path
+	var/is_guest = FALSE
 	var/default_slot = 1				//Holder so it doesn't default to slot 1, rather the last one used
-	var/savefile_version = 0
+
+	// Cache, mapping slot record ids to character names
+	// Saves reading all the slot records when listing
+	var/list/slot_names = null
 
 	//non-preference stuff
 	var/warns = 0
 	var/muted = 0
 	var/last_ip
 	var/last_id
+
+	// Populated with an error message if loading fails.
+	var/load_failed = null
 
 	//game-preferences
 	var/lastchangelog = ""				//Saved changlog filesize to detect if there was a change
@@ -24,8 +30,6 @@
 	var/client/client = null
 	var/client_ckey = null
 
-	var/savefile/loaded_preferences
-	var/savefile/loaded_character
 	var/datum/category_collection/player_setup_collection/player_setup
 	var/datum/browser/panel
 
@@ -34,25 +38,82 @@
 		client = C
 		client_ckey = C.ckey
 		SScharacter_setup.preferences_datums[C.ckey] = src
+		if(SScharacter_setup.initialized)
+			setup()
+		else
+			SScharacter_setup.prefs_awaiting_setup += src
+	..()
 
+/datum/preferences/proc/setup()
 	player_setup = new(src)
 	gender = pick(MALE, FEMALE)
 	real_name = random_name(gender,species)
 	b_type = RANDOM_BLOOD_TYPE
 
-	if(!IsGuestKey(C.key))
-		load_path(C.ckey)
-		load_preferences()
-		load_and_update_character()
+	if(client)
+		if(IsGuestKey(client.key))
+			is_guest = TRUE
+		else
+			load_data()
+
 	sanitize_preferences()
 
-	..()
+/datum/preferences/proc/load_data()
+	load_failed = null
+	var/stage = "pre"
 
-/datum/preferences/proc/load_and_update_character(slot)
-	load_character(slot)
-	if(update_setup(loaded_preferences, loaded_character))
-		SScharacter_setup.queue_preferences_save(src)
-		save_character()
+	try
+		var/pref_path = get_path(client_ckey, "preferences")
+		if(!fexists(pref_path))
+			stage = "migrate"
+			// Try to migrate legacy savefile-based preferences
+			if(!migrate_legacy_preferences())
+				// If there's no old save, there'll be nothing to load.
+				return
+
+		stage = "load"
+		load_preferences()
+		load_character()
+
+	catch(var/exception/E)
+		load_failed = "{[stage]} [E]"
+		throw E
+
+/datum/preferences/proc/migrate_legacy_preferences()
+	// We make some assumptions here:
+	// - all relevant savefiles were version 17, which covers anything saved from 2018+
+	// - legacy saves were only made on the current map
+	// - a maximum of 40 slots were used
+
+	var/legacy_pref_path = get_path(client.ckey, "preferences", "sav")
+	if(!fexists(legacy_pref_path))
+		return 0
+
+	var/savefile/S = new(legacy_pref_path)
+	if(S["version"] != 17)
+		return 0
+
+	// Legacy version 17 ~= new version 1
+	var/datum/pref_record_reader/dm_savefile/savefile_reader = new(S, 1)
+
+	player_setup.load_preferences(savefile_reader)
+	var/orig_slot = default_slot
+
+	S.cd = "/[GLOB.using_map.path]"
+	for(var/slot = 1 to 40)
+		if(!S.dir.Find("character[slot]"))
+			continue
+		S.cd = "/[GLOB.using_map.path]/character[slot]"
+		default_slot = slot
+		player_setup.load_character(savefile_reader)
+		save_character(override_key = "character_[GLOB.using_map.path]_[slot]")
+		S.cd = "/[GLOB.using_map.path]"
+	S.cd = "/"
+
+	default_slot = orig_slot
+	save_preferences()
+
+	return 1
 
 /datum/preferences/proc/ZeroSkills(forced = 0)
 	for(var/V in SKILLS) for(var/datum/skill/S in SKILLS[V])
@@ -116,15 +177,16 @@
 
 	var/dat = "<center>"
 
-	if(path)
+	if(is_guest)
+		dat += "Please create an account to save your preferences. If you have an account and are seeing this, please adminhelp for assistance."
+	else if(load_failed)
+		dat += "Loading your savefile failed. Please adminhelp for assistance."
+	else
 		dat += "Slot - "
 		dat += "<a href='?src=\ref[src];load=1'>Load slot</a> - "
 		dat += "<a href='?src=\ref[src];save=1'>Save slot</a> - "
 		dat += "<a href='?src=\ref[src];resetslot=1'>Reset slot</a> - "
 		dat += "<a href='?src=\ref[src];reload=1'>Reload slot</a>"
-
-	else
-		dat += "Please create an account to save your preferences."
 
 	dat += "<br>"
 	dat += player_setup.header()
@@ -353,18 +415,12 @@
 	dat += "<body>"
 	dat += "<tt><center>"
 
-	var/savefile/S = new /savefile(path)
-	if(S)
-		dat += "<b>Select a character slot to load</b><hr>"
-		var/name
-		for(var/i=1, i<= config.character_slots, i++)
-			S.cd = GLOB.using_map.character_load_path(S, i)
-			from_file(S["real_name"], name)
-			if(!name)
-				name = "Character[i]"
-			if(i==default_slot)
-				name = "<b>[name]</b>"
-			dat += "<a href='?src=\ref[src];changeslot=[i]'>[name]</a><br>"
+	dat += "<b>Select a character slot to load</b><hr>"
+	for(var/i = 1, i <= config.character_slots, i++)
+		var/name = (slot_names && slot_names[get_slot_key(i)]) || "Character[i]"
+		if(i == default_slot)
+			name = "<b>[name]</b>"
+		dat += "<a href='?src=\ref[src];changeslot=[i]'>[name]</a><br>"
 
 	dat += "<hr>"
 	dat += "</center></tt>"

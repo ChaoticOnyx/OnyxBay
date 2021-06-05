@@ -76,25 +76,21 @@ var/const/CHARACTER_PREFERENCE_INPUT_TITLE = "Character Preference"
 	for(var/datum/category_group/player_setup_category/PS in categories)
 		PS.sanitize_setup()
 
-/datum/category_collection/player_setup_collection/proc/load_character(savefile/S)
+/datum/category_collection/player_setup_collection/proc/load_character(datum/pref_record_reader/R)
 	for(var/datum/category_group/player_setup_category/PS in categories)
-		PS.load_character(S)
+		PS.load_character(R)
 
-/datum/category_collection/player_setup_collection/proc/save_character(savefile/S)
+/datum/category_collection/player_setup_collection/proc/save_character(datum/pref_record_writer/W)
 	for(var/datum/category_group/player_setup_category/PS in categories)
-		PS.save_character(S)
+		PS.save_character(W)
 
-/datum/category_collection/player_setup_collection/proc/load_preferences(savefile/S)
+/datum/category_collection/player_setup_collection/proc/load_preferences(datum/pref_record_reader/R)
 	for(var/datum/category_group/player_setup_category/PS in categories)
-		PS.load_preferences(S)
+		PS.load_preferences(R)
 
-/datum/category_collection/player_setup_collection/proc/save_preferences(savefile/S)
+/datum/category_collection/player_setup_collection/proc/save_preferences(datum/pref_record_writer/W)
 	for(var/datum/category_group/player_setup_category/PS in categories)
-		PS.save_preferences(S)
-
-/datum/category_collection/player_setup_collection/proc/update_setup(savefile/preferences, savefile/character)
-	for(var/datum/category_group/player_setup_category/PS in categories)
-		. = PS.update_setup(preferences, character) || .
+		PS.save_preferences(W)
 
 /datum/category_collection/player_setup_collection/proc/header()
 	var/dat = ""
@@ -140,30 +136,26 @@ var/const/CHARACTER_PREFERENCE_INPUT_TITLE = "Character Preference"
 	for(var/datum/category_item/player_setup_item/PI in items)
 		PI.sanitize_character()
 
-/datum/category_group/player_setup_category/proc/load_character(savefile/S)
+/datum/category_group/player_setup_category/proc/load_character(datum/pref_record_reader/R)
 	for(var/datum/category_item/player_setup_item/PI in items)
-		PI.load_character(S)
+		PI.load_character(R)
 
-/datum/category_group/player_setup_category/proc/save_character(savefile/S)
+/datum/category_group/player_setup_category/proc/save_character(datum/pref_record_writer/W)
 	// Sanitize all data, then save it
 	for(var/datum/category_item/player_setup_item/PI in items)
 		PI.sanitize_character()
 	for(var/datum/category_item/player_setup_item/PI in items)
-		PI.save_character(S)
+		PI.save_character(W)
 
-/datum/category_group/player_setup_category/proc/load_preferences(savefile/S)
+/datum/category_group/player_setup_category/proc/load_preferences(datum/pref_record_reader/R)
 	for(var/datum/category_item/player_setup_item/PI in items)
-		PI.load_preferences(S)
+		PI.load_preferences(R)
 
-/datum/category_group/player_setup_category/proc/save_preferences(savefile/S)
+/datum/category_group/player_setup_category/proc/save_preferences(datum/pref_record_writer/W)
 	for(var/datum/category_item/player_setup_item/PI in items)
 		PI.sanitize_preferences()
 	for(var/datum/category_item/player_setup_item/PI in items)
-		PI.save_preferences(S)
-
-/datum/category_group/player_setup_category/proc/update_setup(savefile/preferences, savefile/character)
-	for(var/datum/category_item/player_setup_item/PI in items)
-		. = PI.update_setup(preferences, character) || .
+		PI.save_preferences(W)
 
 /datum/category_group/player_setup_category/proc/content(mob/user)
 	. = "<table style='width:100%'><tr style='vertical-align:top'><td style='width:50%'>"
@@ -202,32 +194,26 @@ var/const/CHARACTER_PREFERENCE_INPUT_TITLE = "Character Preference"
 /*
 * Called when the item is asked to load per character settings
 */
-/datum/category_item/player_setup_item/proc/load_character(savefile/S)
+/datum/category_item/player_setup_item/proc/load_character(datum/pref_record_reader/R)
 	return
 
 /*
 * Called when the item is asked to save per character settings
 */
-/datum/category_item/player_setup_item/proc/save_character(savefile/S)
+/datum/category_item/player_setup_item/proc/save_character(datum/pref_record_writer/W)
 	return
 
 /*
 * Called when the item is asked to load user/global settings
 */
-/datum/category_item/player_setup_item/proc/load_preferences(savefile/S)
+/datum/category_item/player_setup_item/proc/load_preferences(datum/pref_record_reader/R)
 	return
 
 /*
 * Called when the item is asked to save user/global settings
 */
-/datum/category_item/player_setup_item/proc/save_preferences(savefile/S)
+/datum/category_item/player_setup_item/proc/save_preferences(datum/pref_record_writer/W)
 	return
-
-/*
-* Called when the item is asked to update user/global settings
-*/
-/datum/category_item/player_setup_item/proc/update_setup(savefile/preferences, savefile/character)
-	return 0
 
 /datum/category_item/player_setup_item/proc/content()
 	return

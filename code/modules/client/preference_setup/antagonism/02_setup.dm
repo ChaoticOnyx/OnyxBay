@@ -12,9 +12,9 @@
 	..()
 	SETUP_SUBTYPE_DECLS_BY_NAME(/decl/uplink_source, uplink_sources_by_name)
 
-/datum/category_item/player_setup_item/antagonism/basic/load_character(savefile/S)
+/datum/category_item/player_setup_item/antagonism/basic/load_character(datum/pref_record_reader/R)
 	var/list/uplink_order
-	from_file(S["uplink_sources"], uplink_order)
+	uplink_order = R.read("uplink_sources")
 
 	if(istype(uplink_order))
 		pref.uplink_sources = list()
@@ -23,13 +23,13 @@
 			if(uplink_source)
 				pref.uplink_sources += uplink_source
 
-/datum/category_item/player_setup_item/antagonism/basic/save_character(savefile/S)
+/datum/category_item/player_setup_item/antagonism/basic/save_character(datum/pref_record_writer/W)
 	var/uplink_order = list()
 	for(var/entry in pref.uplink_sources)
 		var/decl/uplink_source/UL = entry
 		uplink_order += UL.name
 
-	to_file(S["uplink_sources"], uplink_order)
+	W.write("uplink_sources", uplink_order)
 
 /datum/category_item/player_setup_item/antagonism/basic/sanitize_character()
 	if(!istype(pref.uplink_sources))
