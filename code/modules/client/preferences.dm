@@ -66,7 +66,7 @@
 	var/stage = "pre"
 
 	try
-		var/pref_path = get_path(client_ckey, "preferences")
+		var/pref_path = get_path(client_ckey, "client_preferences")
 
 		if(!fexists(pref_path))
 			stage = "migrate"
@@ -103,7 +103,7 @@
 	player_setup.load_preferences(savefile_reader)
 	var/orig_slot = default_slot
 
-	S.cd = "/[GLOB.using_map.path]"
+	S.cd = "/exodus"
 	for(var/slot = 1 to 40)
 		if(!S.dir.Find("character[slot]"))
 			continue
@@ -111,7 +111,7 @@
 		default_slot = slot
 		player_setup.load_character(savefile_reader)
 		save_character(override_key = "character_[GLOB.using_map.preferences_key()]_[slot]")
-		S.cd = "/[GLOB.using_map.path]"
+		S.cd = "/exodus"
 	S.cd = "/"
 
 	default_slot = orig_slot
