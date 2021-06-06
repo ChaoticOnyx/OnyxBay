@@ -35,9 +35,9 @@ NanoStateManager = function ()
 		}
 
 		var stateKey = 'default';
-		if (_data['config'].hasOwnProperty('stateKey') && _data['config']['stateKey'])
+		if (_data.config.hasOwnProperty('stateKey') && _data.config.stateKey)
 		{
-			stateKey = _data['config']['stateKey'].toLowerCase();
+			stateKey = _data.config.stateKey.toLowerCase();
 		}
 
 		NanoStateManager.setCurrentState(stateKey);
@@ -68,7 +68,7 @@ NanoStateManager = function ()
 		} catch (error) {
 			return;
 		}
-	}
+	};
 
 	// Receive update data from the server
 	var receiveUpdateData = function (jsonString)
@@ -93,11 +93,11 @@ NanoStateManager = function ()
 		{
 			if (_data && _data.hasOwnProperty('data'))
 			{
-				updateData['data'] = _data['data'];
+				updateData.data = _data.data;
 			}
 			else
 			{
-				updateData['data'] = {};
+				updateData.data = {};
 			}
 		}
 
