@@ -51,6 +51,10 @@ onyxui is used to open and update nano browser uis
 	var/is_auto_updating = 0
 	// the current status/visibility of the ui
 	var/status = STATUS_INTERACTIVE
+	// ui's theme
+	var/theme = ""
+	// main ui's template filename without extension
+	var/template_name = ""
 
 	// Relationship between a master interface and its children. Used in update_status
 	var/datum/onyxui/master_ui
@@ -76,11 +80,21 @@ onyxui is used to open and update nano browser uis
 	src_object = nsrc_object
 	ui_key = nui_key
 	window_id = "[ui_key]\ref[src_object]"
+	template_name = copytext(ntemplate_filename, 1, length(ntemplate_filename) - 4)
 
 	src.master_ui = master_ui
 	if(master_ui)
 		master_ui.children += src
 	src.state = state
+
+	var/prefered_theme = user.get_preference_value(/datum/client_preference/onyxui_theme)
+	switch(prefered_theme)
+		if(GLOB.PREF_WHITE)
+			theme = "white"
+		if(GLOB.PREF_DARK)
+			theme = "dark"
+		else
+			CRASH("Invalid OnyxUI theme: [prefered_theme]")
 
 	// add the passed template filename as the "main" template, this is required
 	add_template("main", ntemplate_filename)
@@ -200,7 +214,7 @@ onyxui is used to open and update nano browser uis
 	name = sanitize(name)
 	var/list/config_data = list(
 			"title" = title,
-			"srcObject" = list("name" = name),
+			"srcObject" = list("name" = name, "ref" = "\ref[src]"),
 			"stateKey" = state_key,
 			"status" = status,
 			"autoUpdateLayout" = auto_update_layout,
@@ -210,7 +224,9 @@ onyxui is used to open and update nano browser uis
 			"mapZLevel" = map_z_level,
 			"mapZLevels" = GLOB.using_map.map_levels,
 			"user" = list("name" = user? user.name : "Unknown"),
-			"windowId" = window_id
+			"windowId" = window_id,
+			"theme" = theme,
+			"templateName" = template_name
 		)
 	return config_data
 

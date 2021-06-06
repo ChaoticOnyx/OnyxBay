@@ -76,3 +76,23 @@ Sqrl.helpers.define('progressBar', function(content, _, __) {
 
 	return '<div class="displayBar ' + classes + '"><div class="displayBar' + 'Fill ' + classes + '" style="width: ' + percentage + '%;"></div><div class="displayBar' + 'Text ' + classes + '">' + showText + '</div></div>';
 });
+
+Sqrl.helpers.define('css', function(content, _, __) {
+	var args = content.params[0];
+	var fileName = args.fileName;
+
+	$('head').append('<link rel="stylesheet" href="' + fileName + '" type="text/css" />');
+
+	return '';
+});
+
+Sqrl.helpers.define('theme', function(content, _, __) {
+	var args = content.params[0];
+	var name = args.config.templateName;
+	var theme = args.config.theme;
+	var fileName = name + '.' + theme + '.theme.css';
+
+	Sqrl.helpers.cache.css({ params: [ { fileName: fileName } ] }, _, __);
+
+	return '';
+});

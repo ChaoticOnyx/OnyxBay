@@ -23,6 +23,8 @@ GLOBAL_VAR_CONST(PREF_CTRL_SHIFT_CLICK, "ctrl shift click")
 GLOBAL_VAR_CONST(PREF_HEAR, "Hear")
 GLOBAL_VAR_CONST(PREF_SILENT, "Silent")
 GLOBAL_VAR_CONST(PREF_SHORTHAND, "Shorthand")
+GLOBAL_VAR_CONST(PREF_WHITE, "White")
+GLOBAL_VAR_CONST(PREF_DARK, "Dark")
 
 var/global/list/_client_preferences
 var/global/list/_client_preferences_by_key
@@ -224,7 +226,7 @@ var/global/list/_client_preferences_by_type
 	options = list(GLOB.PREF_PRIMARY, GLOB.PREF_ALL)
 
 /datum/client_preference/browser_style
-	description = "Fake onyxui Browser Style"
+	description = "Fake OnyxUI Browser Style"
 	key = "BROWSER_STYLED"
 	default_value = GLOB.PREF_FANCY
 	options = list(GLOB.PREF_FANCY, GLOB.PREF_PLAIN)
@@ -285,6 +287,11 @@ var/global/list/_client_preferences_by_type
 	key = "DEFAULT_HOTKEY_MODE"
 	default_value = GLOB.PREF_NO
 
+
+/datum/client_preference/onyxui_theme
+	description = "OnyxUI Theme"
+	key = "ONYXUI_THEME"
+	options = list(GLOB.PREF_DARK, GLOB.PREF_WHITE)
 
 /********************
 * General Staff Preferences *
