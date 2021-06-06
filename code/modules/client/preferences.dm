@@ -445,11 +445,6 @@
 	if(!client)
 		return
 
-	client.log_client_to_db()
-	SSdonations.log_client_to_db(client)
-	SSdonations.update_donator(client)
-	SSdonations.update_donator_items(client)
-
 	if(client.get_preference_value(/datum/client_preference/chat_position) == GLOB.PREF_YES)
 		client.update_chat_position(TRUE)
 
