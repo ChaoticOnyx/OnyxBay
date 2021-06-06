@@ -177,7 +177,11 @@
 	if(ref)
 		param = "\ref[ref]"
 
-	winset(user, windowid, "on-close=\".windowclose [param]\"")
+	addtimer(CALLBACK(user, /mob/proc/post_onclose, windowid, param), 2)
+
+/mob/proc/post_onclose(windowid, param)
+	if(client)
+		winset(src, windowid, "on-close=\".windowclose [param]\"")
 
 //	log_debug("OnClose [user]: [windowid] : ["on-close=\".windowclose [param]\""]")
 
