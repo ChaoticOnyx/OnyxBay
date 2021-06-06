@@ -20,7 +20,7 @@ var/global/list/obj/item/device/pda/PDAs = list()
 
 	var/lastmode = 0
 	var/ui_tick = 0
-	var/nanoUI[0]
+	var/onyxui[0]
 
 	//Secondary variables
 	var/scanmode = 0 //1 is medical scanner, 2 is forensics, 3 is reagent scanner.
@@ -366,9 +366,9 @@ var/global/list/obj/item/device/pda/PDAs = list()
 	return
 
 
-/obj/item/device/pda/ui_interact(mob/user, ui_key = "main", datum/nanoui/ui = null, force_open = 1)
+/obj/item/device/pda/ui_interact(mob/user, ui_key = "main", datum/onyxui/ui = null, force_open = 1)
 	ui_tick++
-	var/datum/nanoui/old_ui = SSnano.get_open_ui(user, src, "main")
+	var/datum/onyxui/old_ui = SSonyxui.get_open_ui(user, src, "main")
 	var/auto_update = 1
 	if(mode in no_auto_update)
 		auto_update = 0
@@ -418,7 +418,7 @@ var/global/list/obj/item/device/pda/PDAs = list()
 			)
 
 		if(mode in cartmodes)
-			data["records"] = cartridge.create_NanoUI_values()
+			data["records"] = cartridge.create_onyxui_values()
 
 		if(mode == 0)
 			cartdata["name"] = cartridge.name
@@ -535,7 +535,7 @@ var/global/list/obj/item/device/pda/PDAs = list()
 					if(FM.img)
 						ASSERT(user.client)
 						send_asset(user.client, "newscaster_photo_[FC.channel_id]_[index].png")
-					// News stories are HTML-stripped but require newline replacement to be properly displayed in NanoUI
+					// News stories are HTML-stripped but require newline replacement to be properly displayed in onyxui
 					var/body = replacetext(FM.body, "\n", "<br>")
 					messages[++messages.len] = list("author" = FM.author, "body" = body, "message_type" = FM.message_type, "time_stamp" = FM.time_stamp, "has_image" = (FM.img != null), "caption" = FM.caption, "index" = index)
 			feed["messages"] = messages
@@ -544,17 +544,16 @@ var/global/list/obj/item/device/pda/PDAs = list()
 
 	data["manifest"] = nano_crew_manifest()
 
-	nanoUI = data
+	onyxui = data
 	// update the ui if it exists, returns null if no ui is passed/found
 
-	ui = SSnano.try_update_ui(user, src, ui_key, ui, data, force_open)
+	ui = SSonyxui.try_update_ui(user, src, ui_key, ui, data, force_open)
 
 	if (!ui)
 		// the ui does not exist, so we'll create a new() one
-	        // for a list of parameters and their descriptions see the code docs in \code\modules\nano\nanoui.dm
+	        // for a list of parameters and their descriptions see the code docs in \code\modules\onyxui\onyxui.dm
 		ui = new(user, src, ui_key, "pda.tmpl", title, 520, 400, state = GLOB.inventory_state)
 		// when the ui is first opened this is the data it will use
-
 		ui.set_initial_data(data)
 		// open the new ui window
 		ui.open()
@@ -572,7 +571,7 @@ var/global/list/obj/item/device/pda/PDAs = list()
 	if(active_uplink_check(user))
 		return
 
-	ui_interact(user) //NanoUI requires this proc
+	ui_interact(user) //onyxui requires this proc
 	return
 
 /obj/item/device/pda/Topic(href, href_list)
@@ -586,7 +585,7 @@ var/global/list/obj/item/device/pda/PDAs = list()
 
 	..()
 	var/mob/user = usr
-	var/datum/nanoui/ui = SSnano.get_open_ui(user, src, "main")
+	var/datum/onyxui/ui = SSonyxui.get_open_ui(user, src, "main")
 	var/mob/living/U = usr
 	//Looking for master was kind of pointless since PDAs don't appear to have one.
 	//if ((src in U.contents) || ( istype(loc, /turf) && in_range(src, U) ) )
@@ -878,7 +877,7 @@ var/global/list/obj/item/device/pda/PDAs = list()
 		honkamt--
 		playsound(loc, 'sound/items/bikehorn.ogg', 30, 1)
 
-	return 1 // return 1 tells it to refresh the UI in NanoUI
+	return 1 // return 1 tells it to refresh the UI in onyxui
 
 /obj/item/device/pda/update_icon()
 	..()
@@ -1043,7 +1042,7 @@ var/global/list/obj/item/device/pda/PDAs = list()
 			U.client.chatOutput.spell_check(message)
 
 		P.new_message_from_pda(src, message)
-		SSnano.update_user_uis(U, src) // Update the sending user's PDA UI so that they can see the new message
+		SSonyxui.update_user_uis(U, src) // Update the sending user's PDA UI so that they can see the new message
 
 /obj/item/device/pda/proc/new_info(beep_silent, message_tone, reception_message)
 	if (!beep_silent)
@@ -1063,7 +1062,7 @@ var/global/list/obj/item/device/pda/PDAs = list()
 	if(L)
 		if(reception_message)
 			to_chat(L, reception_message)
-		SSnano.update_user_uis(L, src) // Update the receiving user's PDA UI so that they can see the new message
+		SSonyxui.update_user_uis(L, src) // Update the receiving user's PDA UI so that they can see the new message
 
 /obj/item/device/pda/proc/new_news(message)
 	new_info(news_silent, newstone, news_silent ? "" : "\icon[src] <b>[message]</b>")
@@ -1110,7 +1109,7 @@ var/global/list/obj/item/device/pda/PDAs = list()
 
 	if(can_use(usr))
 		mode = 0
-		SSnano.update_uis(src)
+		SSonyxui.update_uis(src)
 		to_chat(usr, "<span class='notice'>You press the reset button on \the [src].</span>")
 	else
 		to_chat(usr, "<span class='notice'>You cannot do this while restrained.</span>")
@@ -1213,7 +1212,7 @@ var/global/list/obj/item/device/pda/PDAs = list()
 		user.drop_item()
 		cartridge.loc = src
 		to_chat(user, "<span class='notice'>You insert [cartridge] into [src].</span>")
-		SSnano.update_uis(src) // update all UIs attached to src
+		SSonyxui.update_uis(src) // update all UIs attached to src
 		if(cartridge.radio)
 			cartridge.radio.hostpda = src
 
@@ -1239,7 +1238,7 @@ var/global/list/obj/item/device/pda/PDAs = list()
 		C.loc = src
 		pai = C
 		to_chat(user, "<span class='notice'>You slot \the [C] into [src].</span>")
-		SSnano.update_uis(src) // update all UIs attached to src
+		SSonyxui.update_uis(src) // update all UIs attached to src
 	else if(istype(C, /obj/item/weapon/pen))
 		var/obj/item/weapon/pen/O = locate() in src
 		if(O)

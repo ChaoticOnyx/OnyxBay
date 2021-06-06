@@ -91,7 +91,7 @@
 	ui_interact(user)
 	return
 
-/obj/structure/janitorialcart/ui_interact(mob/user, ui_key = "main", datum/nanoui/ui = null, force_open = 1)
+/obj/structure/janitorialcart/ui_interact(mob/user, ui_key = "main", datum/onyxui/ui = null, force_open = 1)
 	var/data[0]
 	data["name"] = capitalize(name)
 	data["bag"] = mybag ? capitalize(mybag.name) : null
@@ -100,7 +100,7 @@
 	data["replacer"] = myreplacer ? capitalize(myreplacer.name) : null
 	data["signs"] = signs ? "[signs] sign\s" : null
 
-	ui = SSnano.try_update_ui(user, src, ui_key, ui, data, force_open)
+	ui = SSonyxui.try_update_ui(user, src, ui_key, ui, data, force_open)
 	if(!ui)
 		ui = new(user, src, ui_key, "janitorcart.tmpl", "Janitorial cart", 240, 160)
 		ui.set_initial_data(data)

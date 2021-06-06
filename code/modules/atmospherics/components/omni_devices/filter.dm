@@ -91,7 +91,7 @@
 
 	return 1
 
-/obj/machinery/atmospherics/omni/filter/ui_interact(mob/user, ui_key = "main", datum/nanoui/ui = null, force_open = 1)
+/obj/machinery/atmospherics/omni/filter/ui_interact(mob/user, ui_key = "main", datum/onyxui/ui = null, force_open = 1)
 	if(!user)
 		if(ui)
 			ui.close()
@@ -102,7 +102,7 @@
 	var/list/data = new()
 	data = build_uidata()
 
-	ui = SSnano.try_update_ui(user, src, ui_key, ui, data, force_open)
+	ui = SSonyxui.try_update_ui(user, src, ui_key, ui, data, force_open)
 
 	if(!ui)
 		ui = new(user, src, ui_key, "omni_filter.tmpl", "Omni Filter Control", 330, 330)
@@ -143,7 +143,7 @@
 	if(portData.len)
 		data["ports"] = portData
 	if(output)
-		data["set_flow_rate"] = round(set_flow_rate*10)		//because nanoui can't handle rounded decimals.
+		data["set_flow_rate"] = round(set_flow_rate*10)		//because onyxui can't handle rounded decimals.
 		data["last_flow_rate"] = round(last_flow_rate*10)
 
 	return data
@@ -191,7 +191,7 @@
 				switch_filter(dir_flag(href_list["dir"]), mode_return_switch(new_filter))
 
 	update_icon()
-	SSnano.update_uis(src)
+	SSonyxui.update_uis(src)
 	return
 
 /obj/machinery/atmospherics/omni/filter/proc/mode_return_switch(mode)

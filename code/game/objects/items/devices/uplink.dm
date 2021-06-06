@@ -21,9 +21,9 @@
 	var/uses 							// Numbers of crystals
 	var/list/ItemsCategory				// List of categories with lists of items
 	var/list/ItemsReference				// List of references with an associated item
-	var/list/nanoui_items				// List of items for NanoUI use
-	var/nanoui_menu = 0					// The current menu we are in
-	var/list/nanoui_data = new 			// Additional data for NanoUI use
+	var/list/onyxui_items				// List of items for onyxui use
+	var/onyxui_menu = 0					// The current menu we are in
+	var/list/onyxui_data = new 			// Additional data for onyxui use
 
 	var/datum/mind/uplink_owner = null
 	var/used_TC = 0
@@ -32,7 +32,7 @@
 	var/datum/uplink_item/discount_item	//The item to be discounted
 	var/discount_amount					//The amount as a percent the item will be discounted by
 
-/obj/item/device/uplink/nano_host()
+/obj/item/device/uplink/onyxui_host()
 	return loc
 
 /obj/item/device/uplink/New(atom/location, datum/mind/owner, telecrystals = DEFAULT_TELECRYSTAL_AMOUNT)
@@ -40,7 +40,7 @@
 		CRASH("Invalid spawn location. Expected /atom, was [location ? location.type : "NULL"]")
 
 	..()
-	nanoui_data = list()
+	onyxui_data = list()
 	update_nano_data()
 
 	src.uplink_owner = owner
@@ -70,7 +70,7 @@
 
 		discount_item = new_discount_item
 		update_nano_data()
-		SSnano.update_uis(src)
+		SSonyxui.update_uis(src)
 
 /obj/item/device/uplink/proc/is_improper_item(datum/uplink_item/new_discount_item, discount_amount)
 	if(!new_discount_item)
@@ -111,24 +111,24 @@
 	return 0
 
 /*
-	NANO UI FOR UPLINK WOOP WOOP
+	ONYX UI FOR UPLINK WOOP WOOP
 */
-/obj/item/device/uplink/ui_interact(mob/user, ui_key = "main", datum/nanoui/ui = null, force_open = 1, uistate = GLOB.inventory_state)
+/obj/item/device/uplink/ui_interact(mob/user, ui_key = "main", datum/onyxui/ui = null, force_open = 1, uistate = GLOB.inventory_state)
 	var/title = "Remote Uplink"
 	var/data[0]
 
 	data["welcome"] = welcome
 	data["crystals"] = uses
-	data["menu"] = nanoui_menu
+	data["menu"] = onyxui_menu
 	data["discount_category"] = discount_item ? discount_item.category.name : ""
 	data["discount_name"] = discount_item ? discount_item.name : ""
 	data["discount_amount"] = (1-discount_amount)*100
 	data["offer_expiry"] = worldtime2stationtime(next_offer_time)
 
-	data += nanoui_data
+	data += onyxui_data
 
 	// update the ui if it exists, returns null if no ui is passed/found
-	ui = SSnano.try_update_ui(user, src, ui_key, ui, data, force_open)
+	ui = SSonyxui.try_update_ui(user, src, ui_key, ui, data, force_open)
 	if (!ui)	// No auto-refresh
 		ui = new(user, src, ui_key, "uplink.tmpl", title, 450, 600, state = uistate)
 		ui.set_initial_data(data)
@@ -152,13 +152,13 @@
 		. = TOPIC_REFRESH
 	else if(href_list["lock"])
 		toggle()
-		SSnano.close_user_uis(user, src, "main")
+		SSonyxui.close_user_uis(user, src, "main")
 		. = TOPIC_HANDLED
 	else if(href_list["return"])
-		nanoui_menu = round(nanoui_menu/10)
+		onyxui_menu = round(onyxui_menu/10)
 		. = TOPIC_REFRESH
 	else if(href_list["menu"])
-		nanoui_menu = text2num(href_list["menu"])
+		onyxui_menu = text2num(href_list["menu"])
 		if(href_list["id"])
 			exploit_id = text2num(href_list["id"])
 		if(href_list["category"])
@@ -169,36 +169,36 @@
 		update_nano_data()
 
 /obj/item/device/uplink/proc/update_nano_data()
-	if(nanoui_menu == 0)
+	if(onyxui_menu == 0)
 		var/categories[0]
 		for(var/datum/uplink_category/category in uplink.categories)
 			if(category.can_view(src))
 				categories[++categories.len] = list("name" = category.name, "ref" = "\ref[category]")
-		nanoui_data["categories"] = categories
-	else if(nanoui_menu == 1)
+		onyxui_data["categories"] = categories
+	else if(onyxui_menu == 1)
 		var/items[0]
 		for(var/datum/uplink_item/item in category.items)
 			if(item.can_view(src))
 				var/cost = item.cost(uses, src)
 				if(!cost) cost = "???"
 				items[++items.len] = list("name" = item.name(), "description" = replacetext(item.description(), "\n", "<br>"), "can_buy" = item.can_buy(src), "cost" = cost, "ref" = "\ref[item]")
-		nanoui_data["items"] = items
-	else if(nanoui_menu == 2)
+		onyxui_data["items"] = items
+	else if(onyxui_menu == 2)
 		var/permanentData[0]
 		for(var/datum/computer_file/crew_record/L in GLOB.all_crew_records)
 			permanentData[++permanentData.len] = list(Name = L.get_name(),"id" = L.uid, "exploit" = length(L.get_antagRecord()))
-		nanoui_data["exploit_records"] = permanentData
-	else if(nanoui_menu == 3)
+		onyxui_data["exploit_records"] = permanentData
+	else if(onyxui_menu == 3)
 		var/list/contracts = list()
 		for(var/datum/antag_contract/AC in GLOB.traitors.fixer.return_contracts(src?.uplink_owner))
 			contracts.Add(list(list(AC.name, AC.desc, AC.reward)))
-		nanoui_data["contracts"] = contracts
-	else if(nanoui_menu == 21)
-		nanoui_data["exploit_exists"] = 0
+		onyxui_data["contracts"] = contracts
+	else if(onyxui_menu == 21)
+		onyxui_data["exploit_exists"] = 0
 
 		for(var/datum/computer_file/crew_record/L in GLOB.all_crew_records)
 			if(L.uid == exploit_id)
-				nanoui_data["exploit"] = list()  // Setting this to equal L.fields passes it's variables that are lists as reference instead of value.
+				onyxui_data["exploit"] = list()  // Setting this to equal L.fields passes it's variables that are lists as reference instead of value.
 								 // We trade off being able to automatically add shit for more control over what gets passed to json
 								 // and if it's sanitized for html.
 				var/list/fields = list(
@@ -222,9 +222,9 @@
 						"name" = html_encode(F.name),
 						"val" = F.get_display_value()
 					)))
-				nanoui_data["exploit"]["fields"] =  rec_fields
+				onyxui_data["exploit"]["fields"] =  rec_fields
 
-				nanoui_data["exploit_exists"] = 1
+				onyxui_data["exploit_exists"] = 1
 				break
 
 // I placed this here because of how relevant it is.
@@ -269,5 +269,5 @@
 	..()
 	hidden_uplink = new(src)
 
-/obj/item/device/uplink/contained/ui_interact(mob/user, ui_key = "main", datum/nanoui/ui = null, force_open = 1, uistate = GLOB.contained_state)
+/obj/item/device/uplink/contained/ui_interact(mob/user, ui_key = "main", datum/onyxui/ui = null, force_open = 1, uistate = GLOB.contained_state)
 	return ..()

@@ -1,7 +1,7 @@
 /datum/computer_file/program/card_mod
 	filename = "cardmod"
 	filedesc = "ID card modification program"
-	nanomodule_path = /datum/nano_module/program/card_mod
+	nanomodule_path = /datum/onyxui_module/program/card_mod
 	program_icon_state = "id"
 	program_key_state = "id_key"
 	program_menu_icon = "key"
@@ -11,13 +11,13 @@
 	size = 8
 	category = PROG_COMMAND
 
-/datum/nano_module/program/card_mod
+/datum/onyxui_module/program/card_mod
 	name = "ID card modification program"
 	var/mod_mode = 1
 	var/is_centcom = 0
 	var/show_assignments = 0
 
-/datum/nano_module/program/card_mod/ui_interact(mob/user, ui_key = "main", datum/nanoui/ui = null, force_open = 1, datum/topic_state/state = GLOB.default_state)
+/datum/onyxui_module/program/card_mod/ui_interact(mob/user, ui_key = "main", datum/onyxui/ui = null, force_open = 1, datum/topic_state/state = GLOB.default_state)
 	var/list/data = host.initial_data()
 
 	data["src"] = "\ref[src]"
@@ -93,14 +93,14 @@
 					"accesses" = accesses)))
 			data["regions"] = regions
 
-	ui = SSnano.try_update_ui(user, src, ui_key, ui, data, force_open)
+	ui = SSonyxui.try_update_ui(user, src, ui_key, ui, data, force_open)
 	if (!ui)
 		ui = new(user, src, ui_key, "identification_computer.tmpl", name, 600, 700, state = state)
 		ui.auto_update_layout = 1
 		ui.set_initial_data(data)
 		ui.open()
 
-/datum/nano_module/program/card_mod/proc/format_jobs(list/jobs)
+/datum/onyxui_module/program/card_mod/proc/format_jobs(list/jobs)
 	var/obj/item/weapon/card/id/id_card = program.computer.card_slot ? program.computer.card_slot.stored_card : null
 	var/list/formatted = list()
 	for(var/job in jobs)
@@ -111,7 +111,7 @@
 
 	return formatted
 
-/datum/nano_module/program/card_mod/proc/get_accesses(is_centcom = 0)
+/datum/onyxui_module/program/card_mod/proc/get_accesses(is_centcom = 0)
 	return null
 
 /datum/computer_file/program/card_mod/proc/get_photo(mob/user)
@@ -147,7 +147,7 @@
 	if (computer.card_slot)
 		id_card = computer.card_slot.stored_card
 
-	var/datum/nano_module/program/card_mod/module = NM
+	var/datum/onyxui_module/program/card_mod/module = NM
 	switch(href_list["action"])
 		if("switchm")
 			if(href_list["target"] == "mod")
@@ -265,7 +265,7 @@
 						id_card.side = selected_CR.photo_side
 						var/list/access = get_access_by_rank(selected_CR.get_job())
 						if(isnull(access))
-							SSnano.update_uis(NM)
+							SSonyxui.update_uis(NM)
 							return 1
 						remove_nt_access(id_card)
 						apply_access(id_card, access)
@@ -301,7 +301,7 @@
 	if(id_card)
 		id_card.SetName(text("[id_card.registered_name]'s ID Card ([id_card.assignment])"))
 
-	SSnano.update_uis(NM)
+	SSonyxui.update_uis(NM)
 	return 1
 
 /datum/computer_file/program/card_mod/proc/remove_nt_access(obj/item/weapon/card/id/id_card)

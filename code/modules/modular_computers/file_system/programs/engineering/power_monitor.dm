@@ -1,7 +1,7 @@
 /datum/computer_file/program/power_monitor
 	filename = "powermonitor"
 	filedesc = "Power Monitoring"
-	nanomodule_path = /datum/nano_module/power_monitor/
+	nanomodule_path = /datum/onyxui_module/power_monitor/
 	program_icon_state = "power_monitor"
 	program_key_state = "power_key"
 	program_menu_icon = "battery-3"
@@ -16,7 +16,7 @@
 
 /datum/computer_file/program/power_monitor/process_tick()
 	..()
-	var/datum/nano_module/power_monitor/NMA = NM
+	var/datum/onyxui_module/power_monitor/NMA = NM
 	if(istype(NMA) && NMA.has_alarm())
 		if(!has_alert)
 			program_icon_state = "power_monitor_warn"
@@ -30,31 +30,31 @@
 			update_computer_icon()
 			has_alert = 0
 
-/datum/nano_module/power_monitor
+/datum/onyxui_module/power_monitor
 	name = "Power monitor"
 	var/list/grid_sensors
 	var/active_sensor = null	//name_tag of the currently selected sensor
 
-/datum/nano_module/power_monitor/New()
+/datum/onyxui_module/power_monitor/New()
 	..()
 	refresh_sensors()
 
-/datum/nano_module/power_monitor/Destroy()
+/datum/onyxui_module/power_monitor/Destroy()
 	for(var/grid_sensor in grid_sensors)
 		remove_sensor(grid_sensor, FALSE)
 	grid_sensors = null
 	. = ..()
 
 // Checks whether there is an active alarm, if yes, returns 1, otherwise returns 0.
-/datum/nano_module/power_monitor/proc/has_alarm()
+/datum/onyxui_module/power_monitor/proc/has_alarm()
 	for(var/obj/machinery/power/sensor/S in grid_sensors)
 		if(S.check_grid_warning())
 			return 1
 	return 0
 
-// If PC is not null header template is loaded. Use PC.get_header_data() to get relevant nanoui data from it. All data entries begin with "PC_...."
+// If PC is not null header template is loaded. Use PC.get_header_data() to get relevant onyxui data from it. All data entries begin with "PC_...."
 // In future it may be expanded to other modular computer devices.
-/datum/nano_module/power_monitor/ui_interact(mob/user, ui_key = "main", datum/nanoui/ui = null, force_open = 1, datum/topic_state/state = GLOB.default_state)
+/datum/onyxui_module/power_monitor/ui_interact(mob/user, ui_key = "main", datum/onyxui/ui = null, force_open = 1, datum/topic_state/state = GLOB.default_state)
 	var/list/data = host.initial_data()
 
 	var/list/sensors = list()
@@ -74,7 +74,7 @@
 	if(focus)
 		data["focus"] = focus.return_reading_data()
 
-	ui = SSnano.try_update_ui(user, src, ui_key, ui, data, force_open)
+	ui = SSonyxui.try_update_ui(user, src, ui_key, ui, data, force_open)
 	if (!ui)
 		ui = new(user, src, ui_key, "power_monitor.tmpl", "Power Monitoring Console", 800, 500, state = state)
 		if(host.update_layout()) // This is necessary to ensure the status bar remains updated along with rest of the UI.
@@ -84,9 +84,9 @@
 		ui.set_auto_update(1)
 
 // Refreshes list of active sensors kept on this computer.
-/datum/nano_module/power_monitor/proc/refresh_sensors()
+/datum/onyxui_module/power_monitor/proc/refresh_sensors()
 	grid_sensors = list()
-	var/turf/T = get_turf(nano_host())
+	var/turf/T = get_turf(onyxui_host())
 	if(!T) // Safety check
 		return
 	var/connected_z_levels = GetConnectedZlevels(T.z)
@@ -96,18 +96,18 @@
 				warning("Powernet sensor with unset ID Tag! [S.x]X [S.y]Y [S.z]Z")
 			else
 				grid_sensors += S
-				GLOB.destroyed_event.register(S, src, /datum/nano_module/power_monitor/proc/remove_sensor)
+				GLOB.destroyed_event.register(S, src, /datum/onyxui_module/power_monitor/proc/remove_sensor)
 
-/datum/nano_module/power_monitor/proc/remove_sensor(removed_sensor, update_ui = TRUE)
+/datum/onyxui_module/power_monitor/proc/remove_sensor(removed_sensor, update_ui = TRUE)
 	if(active_sensor == removed_sensor)
 		active_sensor = null
 		if(update_ui)
-			SSnano.update_uis(src)
+			SSonyxui.update_uis(src)
 	grid_sensors -= removed_sensor
-	GLOB.destroyed_event.unregister(removed_sensor, src, /datum/nano_module/power_monitor/proc/remove_sensor)
+	GLOB.destroyed_event.unregister(removed_sensor, src, /datum/onyxui_module/power_monitor/proc/remove_sensor)
 
 // Allows us to process UI clicks, which are relayed in form of hrefs.
-/datum/nano_module/power_monitor/Topic(href, href_list)
+/datum/onyxui_module/power_monitor/Topic(href, href_list)
 	if(..())
 		return 1
 	if( href_list["clear"] )

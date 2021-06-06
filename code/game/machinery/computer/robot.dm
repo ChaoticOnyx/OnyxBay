@@ -14,12 +14,12 @@
 /obj/machinery/computer/robotics/attack_hand(mob/user as mob)
 	ui_interact(user)
 
-/obj/machinery/computer/robotics/ui_interact(mob/user, ui_key = "main", datum/nanoui/ui = null, force_open = 1)
+/obj/machinery/computer/robotics/ui_interact(mob/user, ui_key = "main", datum/onyxui/ui = null, force_open = 1)
 	var/data[0]
 	data["robots"] = get_cyborgs(user)
 	data["is_ai"] = issilicon(user)
 
-	ui = SSnano.try_update_ui(user, src, ui_key, ui, data, force_open)
+	ui = SSonyxui.try_update_ui(user, src, ui_key, ui, data, force_open)
 	if (!ui)
 		ui = new(user, src, ui_key, "robot_control.tmpl", "Robotic Control Console", 400, 500)
 		ui.set_initial_data(data)
@@ -109,7 +109,7 @@
 
 // Proc: get_cyborgs()
 // Parameters: 1 (operator - mob which is operating the console.)
-// Description: Returns NanoUI-friendly list of accessible cyborgs.
+// Description: Returns onyxui-friendly list of accessible cyborgs.
 /obj/machinery/computer/robotics/proc/get_cyborgs(mob/operator)
 	var/list/robots = list()
 

@@ -59,12 +59,12 @@
 	C.loc = src
 	cartridges[C.label] = C
 	cartridges = sortAssoc(cartridges)
-	SSnano.update_uis(src)
+	SSonyxui.update_uis(src)
 
 /obj/machinery/chemical_dispenser/proc/remove_cartridge(label)
 	. = cartridges[label]
 	cartridges -= label
-	SSnano.update_uis(src)
+	SSonyxui.update_uis(src)
 
 /obj/machinery/chemical_dispenser/attackby(obj/item/weapon/W, mob/user)
 	if(istype(W, /obj/item/weapon/reagent_containers/chem_disp_cartridge))
@@ -102,13 +102,13 @@
 		RC.loc = src
 		update_icon()
 		to_chat(user, "<span class='notice'>You set \the [RC] on \the [src].</span>")
-		SSnano.update_uis(src) // update all UIs attached to src
+		SSonyxui.update_uis(src) // update all UIs attached to src
 
 	else
 		..()
 	return
 
-/obj/machinery/chemical_dispenser/ui_interact(mob/user, ui_key = "main",datum/nanoui/ui = null, force_open = 1)
+/obj/machinery/chemical_dispenser/ui_interact(mob/user, ui_key = "main",datum/onyxui/ui = null, force_open = 1)
 	// this is the data which will be sent to the ui
 	var/data[0]
 	data["amount"] = amount
@@ -134,7 +134,7 @@
 	data["chemicals"] = chemicals
 
 	// update the ui if it exists, returns null if no ui is passed/found
-	ui = SSnano.try_update_ui(user, src, ui_key, ui, data, force_open)
+	ui = SSonyxui.try_update_ui(user, src, ui_key, ui, data, force_open)
 	if(!ui)
 		ui = new(user, src, ui_key, "chem_disp.tmpl", ui_title, 390, 680)
 		ui.set_initial_data(data)

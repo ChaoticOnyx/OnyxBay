@@ -230,7 +230,7 @@
 */
 
 
-/obj/item/weapon/cartridge/proc/create_NanoUI_values(mob/user as mob)
+/obj/item/weapon/cartridge/proc/create_onyxui_values(mob/user as mob)
 	var/values[0]
 
 	/*		Signaler (Mode: 40)				*/

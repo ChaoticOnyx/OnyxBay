@@ -176,7 +176,7 @@
 	ui_interact(user)
 	return
 
-/obj/machinery/atmospherics/binary/passive_gate/ui_interact(mob/user, ui_key = "main", datum/nanoui/ui = null, force_open = 1)
+/obj/machinery/atmospherics/binary/passive_gate/ui_interact(mob/user, ui_key = "main", datum/onyxui/ui = null, force_open = 1)
 	if(stat & (BROKEN|NOPOWER))
 		return
 
@@ -185,7 +185,7 @@
 
 	data = list(
 		"on" = unlocked,
-		"pressure_set" = round(target_pressure*100),	//Nano UI can't handle rounded non-integers, apparently.
+		"pressure_set" = round(target_pressure*100),	// Onyx UI can't handle rounded non-integers, apparently.
 		"max_pressure" = max_pressure_setting,
 		"input_pressure" = round(air1.return_pressure()*100),
 		"output_pressure" = round(air2.return_pressure()*100),
@@ -195,10 +195,10 @@
 	)
 
 	// update the ui if it exists, returns null if no ui is passed/found
-	ui = SSnano.try_update_ui(user, src, ui_key, ui, data, force_open)
+	ui = SSonyxui.try_update_ui(user, src, ui_key, ui, data, force_open)
 	if (!ui)
 		// the ui does not exist, so we'll create a new() one
-		// for a list of parameters and their descriptions see the code docs in \code\modules\nano\nanoui.dm
+		// for a list of parameters and their descriptions see the code docs in \code\modules\onyxui\onyxui.dm
 		ui = new(user, src, ui_key, "pressure_regulator.tmpl", name, 470, 370)
 		ui.set_initial_data(data)	// when the ui is first opened this is the data it will use
 		ui.open()					// open the new ui window
@@ -235,7 +235,7 @@
 			var/new_flow_rate = input(usr,"Enter new flow rate limit (0-[air1.volume]kPa)","Flow Rate Control",src.set_flow_rate) as num
 			src.set_flow_rate = between(0, new_flow_rate, air1.volume)
 
-	usr.set_machine(src)	//Is this even needed with NanoUI?
+	usr.set_machine(src)	//Is this even needed with onyxui?
 	src.update_icon()
 	src.add_fingerprint(usr)
 	return

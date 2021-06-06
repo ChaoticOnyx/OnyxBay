@@ -5,7 +5,7 @@
 // Powernet sensors are devices which relay information about connected powernet. This information may be relayed
 // via two procs. Proc return_reading_text will return fully HTML styled string which contains all information. This
 // may be used in PDAs or similar applications. Second proc, return_reading_data will return list containing needed data.
-// This is used in NanoUI, for example.
+// This is used in onyxui, for example.
 
 /obj/machinery/power/sensor
 	name = "Powernet Sensor"
@@ -134,7 +134,7 @@
 
 // Proc: return_reading_data()
 // Parameters: None
-// Description: Generates list containing all powernet data. Optimised for usage with NanoUI
+// Description: Generates list containing all powernet data. Optimised for usage with onyxui
 /obj/machinery/power/sensor/proc/return_reading_data()
 	// No powernet. Try to connect to one first.
 	if(!powernet)

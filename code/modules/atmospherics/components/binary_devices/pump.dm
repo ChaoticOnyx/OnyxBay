@@ -120,7 +120,7 @@ Thus, the two variables affect pump operation are set in New():
 
 	return 1
 
-/obj/machinery/atmospherics/binary/pump/ui_interact(mob/user, ui_key = "main", datum/nanoui/ui = null, force_open = 1)
+/obj/machinery/atmospherics/binary/pump/ui_interact(mob/user, ui_key = "main", datum/onyxui/ui = null, force_open = 1)
 	if(stat & (BROKEN|NOPOWER))
 		return
 
@@ -129,7 +129,7 @@ Thus, the two variables affect pump operation are set in New():
 
 	data = list(
 		"on" = use_power,
-		"pressure_set" = round(target_pressure*100),	//Nano UI can't handle rounded non-integers, apparently.
+		"pressure_set" = round(target_pressure*100),	// Onyx UI can't handle rounded non-integers, apparently.
 		"max_pressure" = max_pressure_setting,
 		"last_flow_rate" = round(last_flow_rate*10),
 		"last_power_draw" = round(last_power_draw),
@@ -137,10 +137,10 @@ Thus, the two variables affect pump operation are set in New():
 	)
 
 	// update the ui if it exists, returns null if no ui is passed/found
-	ui = SSnano.try_update_ui(user, src, ui_key, ui, data, force_open)
+	ui = SSonyxui.try_update_ui(user, src, ui_key, ui, data, force_open)
 	if (!ui)
 		// the ui does not exist, so we'll create a new() one
-		// for a list of parameters and their descriptions see the code docs in \code\modules\nano\nanoui.dm
+		// for a list of parameters and their descriptions see the code docs in \code\modules\onyxui\onyxui.dm
 		ui = new(user, src, ui_key, "gas_pump.tmpl", name, 470, 290)
 		ui.set_initial_data(data)	// when the ui is first opened this is the data it will use
 		ui.open()					// open the new ui window

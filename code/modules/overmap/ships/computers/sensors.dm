@@ -24,7 +24,7 @@
 			sensors = S
 			break
 
-/obj/machinery/computer/sensors/ui_interact(mob/user, ui_key = "main", datum/nanoui/ui = null, force_open = 1)
+/obj/machinery/computer/sensors/ui_interact(mob/user, ui_key = "main", datum/onyxui/ui = null, force_open = 1)
 	if(!linked)
 		return
 
@@ -51,7 +51,7 @@
 		data["range"] = "N/A"
 		data["on"] = 0
 
-	ui = SSnano.try_update_ui(user, src, ui_key, ui, data, force_open)
+	ui = SSonyxui.try_update_ui(user, src, ui_key, ui, data, force_open)
 	if (!ui)
 		ui = new(user, src, ui_key, "shipsensors.tmpl", "[linked.name] Sensors Control", 420, 530)
 		ui.set_initial_data(data)

@@ -855,7 +855,7 @@
 		return 1
 
 	if (href_list["showalerts"])
-		open_subsystem(/datum/nano_module/alarm_monitor/all)
+		open_subsystem(/datum/onyxui_module/alarm_monitor/all)
 		return 1
 
 	if (href_list["mod"])

@@ -126,11 +126,11 @@
 	return
 
 /**
- *  Display the NanoUI window for the vending machine.
+ *  Display the onyxui window for the vending machine.
  *
- *  See NanoUI documentation for details.
+ *  See onyxui documentation for details.
  */
-/obj/machinery/biogenerator/ui_interact(mob/user, ui_key = "main", datum/nanoui/ui = null, force_open = 1)
+/obj/machinery/biogenerator/ui_interact(mob/user, ui_key = "main", datum/onyxui/ui = null, force_open = 1)
 	user.set_machine(src)
 	var/list/data = list()
 	data["state"] = state
@@ -158,7 +158,7 @@
 				"type_name" = type_name,
 				"products" = listed_products)))
 		data["types"] = listed_types
-	ui = SSnano.try_update_ui(user, src, ui_key, ui, data, force_open)
+	ui = SSonyxui.try_update_ui(user, src, ui_key, ui, data, force_open)
 	if (!ui)
 		ui = new(user, src, ui_key, "biogenerator.tmpl", "Biogenerator", 440, 600)
 		ui.set_initial_data(data)
@@ -209,7 +209,7 @@
 		qdel(I)
 	if(S)
 		state = BG_PROCESSING
-		SSnano.update_uis(src)
+		SSonyxui.update_uis(src)
 		update_icon()
 		playsound(src.loc, 'sound/machines/blender.ogg', 50, 1)
 		use_power_oneoff(S * 30)
@@ -225,7 +225,7 @@
 	var/cost = products[type][path]
 	cost = round(cost/build_eff)
 	points -= cost
-	SSnano.update_uis(src)
+	SSonyxui.update_uis(src)
 	update_icon()
 	sleep(30)
 	var/atom/movable/result = new path

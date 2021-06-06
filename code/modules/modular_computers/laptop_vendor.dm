@@ -231,7 +231,7 @@
 /obj/machinery/lapvend/attack_hand(mob/user)
 	ui_interact(user)
 
-/obj/machinery/lapvend/ui_interact(mob/user, ui_key = "main", datum/nanoui/ui = null, force_open = 1)
+/obj/machinery/lapvend/ui_interact(mob/user, ui_key = "main", datum/onyxui/ui = null, force_open = 1)
 	if(stat & (BROKEN | NOPOWER | MAINT))
 		if(ui)
 			ui.close()
@@ -252,7 +252,7 @@
 	if(state == 1 || state == 2)
 		data["totalprice"] = total_price
 
-	ui = SSnano.try_update_ui(user, src, ui_key, ui, data, force_open)
+	ui = SSonyxui.try_update_ui(user, src, ui_key, ui, data, force_open)
 	if (!ui)
 		ui = new(user, src, ui_key, "computer_fabricator.tmpl", "Personal Computer Vendor", 500, 400)
 		ui.set_initial_data(data)

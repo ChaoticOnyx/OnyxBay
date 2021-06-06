@@ -17,7 +17,7 @@
 // Return the appropriate QDEL_HINT; in most cases this is QDEL_HINT_QUEUE.
 /datum/proc/Destroy(force=FALSE)
 	tag = null
-	SSnano && SSnano.close_uis(src)
+	SSonyxui && SSonyxui.close_uis(src)
 	var/list/timers = active_timers
 	active_timers = null
 	for(var/thing in timers)

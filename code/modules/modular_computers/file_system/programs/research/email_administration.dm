@@ -9,19 +9,19 @@
 	category = PROG_ADMIN
 	requires_ntnet = 1
 	available_on_ntnet = 1
-	nanomodule_path = /datum/nano_module/email_administration
+	nanomodule_path = /datum/onyxui_module/email_administration
 	required_access = access_network
 
 
 
 
-/datum/nano_module/email_administration/
+/datum/onyxui_module/email_administration/
 	name = "Email Client"
 	var/datum/computer_file/data/email_account/current_account = null
 	var/datum/computer_file/data/email_message/current_message = null
 	var/error = ""
 
-/datum/nano_module/email_administration/ui_interact(mob/user, ui_key = "main", datum/nanoui/ui = null, force_open = 1, datum/topic_state/state = GLOB.default_state)
+/datum/onyxui_module/email_administration/ui_interact(mob/user, ui_key = "main", datum/onyxui/ui = null, force_open = 1, datum/topic_state/state = GLOB.default_state)
 	var/list/data = host.initial_data()
 
 	if(error)
@@ -56,7 +56,7 @@
 		data["accounts"] = all_accounts
 		data["accountcount"] = all_accounts.len
 
-	ui = SSnano.try_update_ui(user, src, ui_key, ui, data, force_open)
+	ui = SSonyxui.try_update_ui(user, src, ui_key, ui, data, force_open)
 	if (!ui)
 		ui = new(user, src, ui_key, "email_administration.tmpl", "Email Administration Utility", 600, 450, state = state)
 		if(host.update_layout())
@@ -66,7 +66,7 @@
 		ui.open()
 
 
-/datum/nano_module/email_administration/Topic(href, href_list)
+/datum/onyxui_module/email_administration/Topic(href, href_list)
 	if(..())
 		return 1
 

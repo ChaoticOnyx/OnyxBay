@@ -21,7 +21,7 @@
 
 	ui_interact(user)
 
-/obj/item/weapon/aicard/ui_interact(mob/user, ui_key = "main", datum/nanoui/ui = null, force_open = 1, datum/topic_state/state = GLOB.inventory_state)
+/obj/item/weapon/aicard/ui_interact(mob/user, ui_key = "main", datum/onyxui/ui = null, force_open = 1, datum/topic_state/state = GLOB.inventory_state)
 	var/data[0]
 	data["has_ai"] = carded_ai != null
 	if(carded_ai)
@@ -39,7 +39,7 @@
 		data["laws"] = laws
 		data["has_laws"] = laws.len
 
-	ui = SSnano.try_update_ui(user, src, ui_key, ui, data, force_open)
+	ui = SSonyxui.try_update_ui(user, src, ui_key, ui, data, force_open)
 	if (!ui)
 		ui = new(user, src, ui_key, "aicard.tmpl", "[name]", 600, 400, state = state)
 		ui.set_initial_data(data)

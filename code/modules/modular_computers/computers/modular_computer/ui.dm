@@ -1,5 +1,5 @@
-// Operates NanoUI
-/obj/item/modular_computer/ui_interact(mob/user, ui_key = "main", datum/nanoui/ui = null, force_open = 1)
+// Operates onyxui
+/obj/item/modular_computer/ui_interact(mob/user, ui_key = "main", datum/onyxui/ui = null, force_open = 1)
 	if(!screen_on || !enabled)
 		if(ui)
 			ui.close()
@@ -38,7 +38,7 @@
 		programs.Add(list(program))
 
 	data["programs"] = programs
-	ui = SSnano.try_update_ui(user, src, ui_key, ui, data, force_open)
+	ui = SSonyxui.try_update_ui(user, src, ui_key, ui, data, force_open)
 	if (!ui)
 		ui = new(user, src, ui_key, "laptop_mainscreen.tmpl", "NTOS Main Menu", 400, 500)
 		ui.auto_update_layout = 1
@@ -95,7 +95,7 @@
 	if(.)
 		update_uis()
 
-// Function used by NanoUI's to obtain data for header. All relevant entries begin with "PC_"
+// Function used by onyxui's to obtain data for header. All relevant entries begin with "PC_"
 /obj/item/modular_computer/proc/get_header_data()
 	var/list/data = list()
 

@@ -12,7 +12,7 @@
 	requires_ntnet = 1
 	requires_ntnet_feature = NTNET_SOFTWAREDOWNLOAD
 	available_on_ntnet = 0
-	nanomodule_path = /datum/nano_module/program/computer_ntnetdownload/
+	nanomodule_path = /datum/onyxui_module/program/computer_ntnetdownload/
 	ui_header = "downloader_finished.gif"
 	var/datum/computer_file/program/downloaded_file = null
 	var/hacked_download = 0
@@ -136,11 +136,11 @@
 		return 1
 	return 0
 
-/datum/nano_module/program/computer_ntnetdownload
+/datum/onyxui_module/program/computer_ntnetdownload
 	name = "Network Downloader"
 	var/obj/item/modular_computer/my_computer = null
 
-/datum/nano_module/program/computer_ntnetdownload/ui_interact(mob/user, ui_key = "main", datum/nanoui/ui = null, force_open = 1, datum/topic_state/state = GLOB.default_state)
+/datum/onyxui_module/program/computer_ntnetdownload/ui_interact(mob/user, ui_key = "main", datum/onyxui/ui = null, force_open = 1, datum/topic_state/state = GLOB.default_state)
 	if(program)
 		my_computer = program.computer
 
@@ -203,12 +203,12 @@
 	data["downloadable_programs"] = all_entries
 
 	if(prog.downloads_queue.len > 0)
-		var/list/queue = list() // Nanoui can't iterate through assotiative lists, so we have to do this
+		var/list/queue = list() // onyxui can't iterate through assotiative lists, so we have to do this
 		for(var/item in prog.downloads_queue)
 			queue += item
 		data["downloads_queue"] = queue
 
-	ui = SSnano.try_update_ui(user, src, ui_key, ui, data, force_open)
+	ui = SSonyxui.try_update_ui(user, src, ui_key, ui, data, force_open)
 	if (!ui)
 		ui = new(user, src, ui_key, "ntnet_downloader.tmpl", "NTNet Download Program", 575, 700, state = state)
 		ui.auto_update_layout = 1

@@ -1,5 +1,5 @@
 /mob/living/carbon/human/proc/change_appearance(flags = APPEARANCE_ALL_HAIR, location = src, mob/user = src, check_species_whitelist = 1, list/species_whitelist = list(), list/species_blacklist = list(), datum/topic_state/state = GLOB.default_state)
-	var/datum/nano_module/appearance_changer/AC = new(location, src, check_species_whitelist, species_whitelist, species_blacklist)
+	var/datum/onyxui_module/appearance_changer/AC = new(location, src, check_species_whitelist, species_whitelist, species_blacklist)
 	AC.flags = flags
 	AC.ui_interact(user, state = state)
 

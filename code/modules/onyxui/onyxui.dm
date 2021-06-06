@@ -1,12 +1,12 @@
 /**********************************************************
-NANO UI FRAMEWORK
+ONYX UI FRAMEWORK
 
-nanoui class (or whatever Byond calls classes)
+onyxui class (or whatever Byond calls classes)
 
-nanoui is used to open and update nano browser uis
+onyxui is used to open and update nano browser uis
 **********************************************************/
 
-/datum/nanoui
+/datum/onyxui
 	// the user who opened this ui
 	var/mob/user
 	// the object this ui "belongs" to
@@ -53,25 +53,25 @@ nanoui is used to open and update nano browser uis
 	var/status = STATUS_INTERACTIVE
 
 	// Relationship between a master interface and its children. Used in update_status
-	var/datum/nanoui/master_ui
-	var/list/datum/nanoui/children = list()
+	var/datum/onyxui/master_ui
+	var/list/datum/onyxui/children = list()
 	var/datum/topic_state/state = null
 
  /**
-  * Create a new nanoui instance.
+  * Create a new onyxui instance.
   *
   * @param nuser /mob The mob who has opened/owns this ui
   * @param nsrc_object /obj|/mob The obj or mob which this ui belongs to
   * @param nui_key string A string key to use for this ui. Allows for multiple unique uis on one src_oject
-  * @param ntemplate string The filename of the template file from /nano/templates (e.g. "my_template.tmpl")
+  * @param ntemplate string The filename of the template file from /onyxui/templates (e.g. "my_template.tmpl")
   * @param ntitle string The title of this ui
   * @param nwidth int the width of the ui window
   * @param nheight int the height of the ui window
   * @param nref /atom A custom ref to use if "on_close_logic" is set to 1
   *
-  * @return /nanoui new nanoui object
+  * @return /onyxui new onyxui object
   */
-/datum/nanoui/New(nuser, nsrc_object, nui_key, ntemplate_filename, ntitle = 0, nwidth = 0, nheight = 0, atom/nref = null, datum/nanoui/master_ui = null, datum/topic_state/state = GLOB.default_state)
+/datum/onyxui/New(nuser, nsrc_object, nui_key, ntemplate_filename, ntitle = 0, nwidth = 0, nheight = 0, atom/nref = null, datum/onyxui/master_ui = null, datum/topic_state/state = GLOB.default_state)
 	user = nuser
 	src_object = nsrc_object
 	ui_key = nui_key
@@ -105,19 +105,19 @@ nanoui is used to open and update nano browser uis
 			assets.send(user.client)
 			close()
 
-//Do not qdel nanouis. Use close() instead.
-/datum/nanoui/Destroy()
+//Do not qdel onyxuis. Use close() instead.
+/datum/onyxui/Destroy()
 	user = null
 	src_object = null
 	state = null
 	. = ..()
 
  /**
-  * Use this proc to add assets which are common to (and required by) all nano uis
+  * Use this proc to add assets which are common to (and required by) all onyx uis
   *
   * @return nothing
   */
-/datum/nanoui/proc/add_common_assets()
+/datum/onyxui/proc/add_common_assets()
 	add_script("libraries.min.js") // A JS file comprising of jQuery, doT.js and jQuery Timer libraries (compressed together)
 	add_script("onyxui_utility.js") // The NanoUtility JS, this is used to store utility functions.
 	add_script("onyxui_template.js") // The NanoTemplate JS, this is used to render templates.
@@ -138,7 +138,7 @@ nanoui is used to open and update nano browser uis
   *
   * @return nothing
   */
-/datum/nanoui/proc/set_status(state, push_update)
+/datum/onyxui/proc/set_status(state, push_update)
 	if (state != status) // Only update if it is different
 		if (status == STATUS_DISABLED)
 			status = state
@@ -156,8 +156,8 @@ nanoui is used to open and update nano browser uis
   *
   * @return nothing
   */
-/datum/nanoui/proc/update_status(push_update = 0)
-	var/atom/host = src_object && src_object.nano_host()
+/datum/onyxui/proc/update_status(push_update = 0)
+	var/atom/host = src_object && src_object.onyxui_host()
 	if(!host)
 		close()
 		return
@@ -177,7 +177,7 @@ nanoui is used to open and update nano browser uis
   *
   * @return nothing
   */
-/datum/nanoui/proc/set_auto_update(nstate = 1)
+/datum/onyxui/proc/set_auto_update(nstate = 1)
 	is_auto_updating = nstate
 
  /**
@@ -187,7 +187,7 @@ nanoui is used to open and update nano browser uis
   *
   * @return nothing
   */
-/datum/nanoui/proc/set_initial_data(list/data)
+/datum/onyxui/proc/set_initial_data(list/data)
 	initial_data = data
 
  /**
@@ -195,7 +195,7 @@ nanoui is used to open and update nano browser uis
   *
   * @return /list config data
   */
-/datum/nanoui/proc/get_config_data()
+/datum/onyxui/proc/get_config_data()
 	var/name = "[src_object]"
 	name = sanitize(name)
 	var/list/config_data = list(
@@ -221,7 +221,7 @@ nanoui is used to open and update nano browser uis
   *
   * @return /list data to send to the ui
   */
-/datum/nanoui/proc/get_send_data(list/data)
+/datum/onyxui/proc/get_send_data(list/data)
 	var/list/config_data = get_config_data()
 
 	var/list/send_data = list("config" = config_data)
@@ -238,29 +238,29 @@ nanoui is used to open and update nano browser uis
   *
   * @return nothing
   */
-/datum/nanoui/proc/set_window_options(nwindow_options)
+/datum/onyxui/proc/set_window_options(nwindow_options)
 	window_options = nwindow_options
 
  /**
   * Add a CSS stylesheet to this UI
   * These must be added before the UI has been opened, adding after that will have no effect
   *
-  * @param file string The name of the CSS file from /nano/css (e.g. "my_style.css")
+  * @param file string The name of the CSS file from /onyxui/css (e.g. "my_style.css")
   *
   * @return nothing
   */
-/datum/nanoui/proc/add_stylesheet(file)
+/datum/onyxui/proc/add_stylesheet(file)
 	stylesheets.Add(file)
 
  /**
   * Add a JavsScript script to this UI
   * These must be added before the UI has been opened, adding after that will have no effect
   *
-  * @param file string The name of the JavaScript file from /nano/js (e.g. "my_script.js")
+  * @param file string The name of the JavaScript file from /onyxui/js (e.g. "my_script.js")
   *
   * @return nothing
   */
-/datum/nanoui/proc/add_script(file)
+/datum/onyxui/proc/add_script(file)
 	scripts.Add(file)
 
  /**
@@ -269,25 +269,25 @@ nanoui is used to open and update nano browser uis
   * These must be added before the UI has been opened, adding after that will have no effect
   *
   * @param key string The key which is used to reference this template in the frontend
-  * @param filename string The name of the template file from /nano/templates (e.g. "my_template.tmpl")
+  * @param filename string The name of the template file from /onyxui/templates (e.g. "my_template.tmpl")
   *
   * @return nothing
   */
-/datum/nanoui/proc/add_template(key, filename)
+/datum/onyxui/proc/add_template(key, filename)
 	templates[key] = filename
 
  /**
   * Set the layout key for use in the frontend Javascript
   * The layout key is the basic layout key for the page
   * Two files are loaded on the client based on the layout key varable:
-  *     -> a template in /nano/templates with the filename "layout_<layout_key>.tmpl
-  *     -> a CSS stylesheet in /nano/css with the filename "layout_<layout_key>.css
+  *     -> a template in /onyxui/templates with the filename "layout_<layout_key>.tmpl
+  *     -> a CSS stylesheet in /onyxui/css with the filename "layout_<layout_key>.css
   *
   * @param nlayout string The layout key to use
   *
   * @return nothing
   */
-/datum/nanoui/proc/set_layout_key(nlayout_key)
+/datum/onyxui/proc/set_layout_key(nlayout_key)
 	layout_key = lowertext(nlayout_key)
 
  /**
@@ -297,7 +297,7 @@ nanoui is used to open and update nano browser uis
   *
   * @return nothing
   */
-/datum/nanoui/proc/set_auto_update_layout(nstate)
+/datum/onyxui/proc/set_auto_update_layout(nstate)
 	auto_update_layout = nstate
 
  /**
@@ -307,7 +307,7 @@ nanoui is used to open and update nano browser uis
   *
   * @return nothing
   */
-/datum/nanoui/proc/set_auto_update_content(nstate)
+/datum/onyxui/proc/set_auto_update_content(nstate)
 	auto_update_content = nstate
 
  /**
@@ -317,7 +317,7 @@ nanoui is used to open and update nano browser uis
   *
   * @return nothing
   */
-/datum/nanoui/proc/set_state_key(nstate_key)
+/datum/onyxui/proc/set_state_key(nstate_key)
 	state_key = nstate_key
 
  /**
@@ -327,7 +327,7 @@ nanoui is used to open and update nano browser uis
   *
   * @return nothing
   */
-/datum/nanoui/proc/set_show_map(nstate)
+/datum/onyxui/proc/set_show_map(nstate)
 	show_map = nstate
 
  /**
@@ -337,7 +337,7 @@ nanoui is used to open and update nano browser uis
   *
   * @return nothing
   */
-/datum/nanoui/proc/set_map_z_level(nz)
+/datum/onyxui/proc/set_map_z_level(nz)
 	map_z_level = nz
 
  /**
@@ -347,7 +347,7 @@ nanoui is used to open and update nano browser uis
   *
   * @return nothing
   */
-/datum/nanoui/proc/use_on_close_logic(state)
+/datum/onyxui/proc/use_on_close_logic(state)
 	on_close_logic = state
 
  /**
@@ -355,7 +355,7 @@ nanoui is used to open and update nano browser uis
   *
   * @return string HTML for the UI
   */
-/datum/nanoui/proc/get_html()
+/datum/onyxui/proc/get_html()
 
 	// before the UI opens, add the layout files based on the layout key
 	add_stylesheet("layout_[layout_key].css")
@@ -421,7 +421,7 @@ nanoui is used to open and update nano browser uis
   *
   * @return nothing
   */
-/datum/nanoui/proc/open()
+/datum/onyxui/proc/open()
 	if(!user || !user.client)
 		return
 
@@ -439,14 +439,14 @@ nanoui is used to open and update nano browser uis
 	winset(user, "mapwindow.map", "focus=true") // return keyboard focus to map
 	on_close_winset()
 	//onclose(user, window_id)
-	SSnano.ui_opened(src)
+	SSonyxui.ui_opened(src)
 
  /**
   * Reinitialise this UI, potentially with a different template and/or initial data
   *
   * @return nothing
   */
-/datum/nanoui/proc/reinitialise(template, new_initial_data)
+/datum/onyxui/proc/reinitialise(template, new_initial_data)
 	if(template)
 		add_template("main", template)
 	if(new_initial_data)
@@ -458,11 +458,11 @@ nanoui is used to open and update nano browser uis
   *
   * @return nothing
   */
-/datum/nanoui/proc/close()
+/datum/onyxui/proc/close()
 	is_auto_updating = 0
-	SSnano.ui_closed(src)
+	SSonyxui.ui_closed(src)
 	close_browser(user, "window=[window_id]")
-	for(var/datum/nanoui/child in children)
+	for(var/datum/onyxui/child in children)
 		child.close()
 	children.Cut()
 	state = null
@@ -470,25 +470,25 @@ nanoui is used to open and update nano browser uis
 	qdel(src)
 
  /**
-  * Set the UI window to call the nanoclose verb when the window is closed
+  * Set the UI window to call the onyxuiclose verb when the window is closed
   * This allows Nano to handle closed windows
   *
   * @return nothing
   */
-/datum/nanoui/proc/on_close_winset()
+/datum/onyxui/proc/on_close_winset()
 	if(!user.client)
 		return
 	var/params = "\ref[src]"
 
 	spawn(2)
-		winset(user, window_id, "on-close=\"nanoclose [params]\"")
+		winset(user, window_id, "on-close=\"onyxuiclose [params]\"")
 
  /**
   * Push data to an already open UI window
   *
   * @return nothing
   */
-/datum/nanoui/proc/push_data(data, force_push = 0)
+/datum/onyxui/proc/push_data(data, force_push = 0)
 	update_status(0)
 	if (status == STATUS_DISABLED && !force_push)
 		return // Cannot update UI, no visibility
@@ -500,13 +500,13 @@ nanoui is used to open and update nano browser uis
 	send_output(user, list2params(list(strip_improper(json_encode(send_data)))), "[window_id].browser:receiveUpdateData")
 
  /**
-  * This Topic() proc is called whenever a user clicks on a link within a Nano UI
+  * This Topic() proc is called whenever a user clicks on a link within a Onyx UI
   * If the UI status is currently STATUS_INTERACTIVE then call the src_object Topic()
   * If the src_object Topic() returns 1 (true) then update all UIs attached to src_object
   *
   * @return nothing
   */
-/datum/nanoui/Topic(href, href_list)
+/datum/onyxui/Topic(href, href_list)
 	update_status(0) // update the status
 	if (status != STATUS_INTERACTIVE || user != usr) // If UI is not interactive or usr calling Topic is not the UI user
 		return
@@ -526,7 +526,7 @@ nanoui is used to open and update nano browser uis
 			return
 
 	if ((src_object && src_object.Topic(href, href_list, state)) || map_update)
-		SSnano.update_uis(src_object) // update all UIs attached to src_object
+		SSonyxui.update_uis(src_object) // update all UIs attached to src_object
 
  /**
   * Process this UI, updating the entire UI or just the status (aka visibility)
@@ -535,7 +535,7 @@ nanoui is used to open and update nano browser uis
   *
   * @return nothing
   */
-/datum/nanoui/proc/try_update(update = 0)
+/datum/onyxui/proc/try_update(update = 0)
 	if (!src_object || !user)
 		close()
 		return
@@ -546,10 +546,10 @@ nanoui is used to open and update nano browser uis
 		update_status(1) // Not updating UI, so lets check here if status has changed
 
  /**
-  * This Process proc is called by SSnano.
+  * This Process proc is called by SSonyxui.
   * Use try_update() to make manual updates.
   */
-/datum/nanoui/Process()
+/datum/onyxui/Process()
 	try_update(0)
 
  /**
@@ -557,5 +557,5 @@ nanoui is used to open and update nano browser uis
   *
   * @return nothing
   */
-/datum/nanoui/proc/update(force_open = 0)
+/datum/onyxui/proc/update(force_open = 0)
 	src_object.ui_interact(user, ui_key, src, force_open, master_ui, state)

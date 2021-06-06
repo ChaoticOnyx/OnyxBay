@@ -202,4 +202,4 @@
 	set src in usr
 
 
-	brainmob.open_subsystem(/datum/nano_module/law_manager, usr)
+	brainmob.open_subsystem(/datum/onyxui_module/law_manager, usr)

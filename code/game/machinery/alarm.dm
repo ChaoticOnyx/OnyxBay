@@ -479,7 +479,7 @@
 	ui_interact(user)
 	wires.Interact(user)
 
-/obj/machinery/alarm/ui_interact(mob/user, ui_key = "main", datum/nanoui/ui = null, force_open = 1, master_ui = null, datum/topic_state/state = GLOB.default_state)
+/obj/machinery/alarm/ui_interact(mob/user, ui_key = "main", datum/onyxui/ui = null, force_open = 1, master_ui = null, datum/topic_state/state = GLOB.default_state)
 	var/data[0]
 	var/remote_connection = 0
 	var/remote_access = 0
@@ -499,7 +499,7 @@
 	if(!(locked && !remote_connection) || remote_access || issilicon(user))
 		populate_controls(data)
 
-	ui = SSnano.try_update_ui(user, src, ui_key, ui, data, force_open)
+	ui = SSonyxui.try_update_ui(user, src, ui_key, ui, data, force_open)
 	if(!ui)
 		ui = new(user, src, ui_key, "air_alarm.tmpl", src.name, 325, 625, master_ui = master_ui, state = state)
 		ui.set_initial_data(data)

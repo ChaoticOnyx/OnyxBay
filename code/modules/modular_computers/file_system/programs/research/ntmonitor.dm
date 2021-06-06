@@ -10,13 +10,13 @@
 	requires_ntnet = 1
 	required_access = access_network
 	available_on_ntnet = 1
-	nanomodule_path = /datum/nano_module/computer_ntnetmonitor/
+	nanomodule_path = /datum/onyxui_module/computer_ntnetmonitor/
 
-/datum/nano_module/computer_ntnetmonitor
+/datum/onyxui_module/computer_ntnetmonitor
 	name = "NTNet Diagnostics and Monitoring"
 	available_to_ai = TRUE
 
-/datum/nano_module/computer_ntnetmonitor/ui_interact(mob/user, ui_key = "main", datum/nanoui/ui = null, force_open = 1, datum/topic_state/state = GLOB.default_state)
+/datum/onyxui_module/computer_ntnetmonitor/ui_interact(mob/user, ui_key = "main", datum/onyxui/ui = null, force_open = 1, datum/topic_state/state = GLOB.default_state)
 	if(!ntnet_global)
 		return
 	var/list/data = host.initial_data()
@@ -36,7 +36,7 @@
 
 	data["banned_nids"] = list(ntnet_global.banned_nids)
 
-	ui = SSnano.try_update_ui(user, src, ui_key, ui, data, force_open)
+	ui = SSonyxui.try_update_ui(user, src, ui_key, ui, data, force_open)
 	if (!ui)
 		ui = new(user, src, ui_key, "ntnet_monitor.tmpl", "NTNet Diagnostics and Monitoring Tool", 575, 700, state = state)
 		if(host.update_layout())
@@ -45,7 +45,7 @@
 		ui.open()
 		ui.set_auto_update(1)
 
-/datum/nano_module/computer_ntnetmonitor/Topic(href, href_list, state)
+/datum/onyxui_module/computer_ntnetmonitor/Topic(href, href_list, state)
 	var/mob/user = usr
 	if(..())
 		return 1

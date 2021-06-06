@@ -10,7 +10,7 @@
 	docking_program = new progtype(src)
 	program = docking_program
 
-/obj/machinery/embedded_controller/radio/simple_docking_controller/ui_interact(mob/user, ui_key = "main", datum/nanoui/ui = null, force_open = 1, datum/nanoui/master_ui = null, datum/topic_state/state = GLOB.default_state)
+/obj/machinery/embedded_controller/radio/simple_docking_controller/ui_interact(mob/user, ui_key = "main", datum/onyxui/ui = null, force_open = 1, datum/onyxui/master_ui = null, datum/topic_state/state = GLOB.default_state)
 	var/data[0]
 
 	data = list(
@@ -20,7 +20,7 @@
 		"door_lock" = 	docking_program.memory["door_status"]["lock"],
 	)
 
-	ui = SSnano.try_update_ui(user, src, ui_key, ui, data, force_open)
+	ui = SSonyxui.try_update_ui(user, src, ui_key, ui, data, force_open)
 
 	if (!ui)
 		ui = new(user, src, ui_key, "simple_docking_console.tmpl", name, 470, 290, state = state)

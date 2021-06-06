@@ -1,6 +1,6 @@
 // POWERNET SENSOR MONITORING CONSOLE
 // Connects to powernet sensors and loads data from them. Shows this data to the user.
-// Newly supports NanoUI.
+// Newly supports onyxui.
 
 
 /obj/machinery/computer/power_monitor
@@ -18,7 +18,7 @@
 	var/alerting = 0
 	idle_power_usage = 300
 	active_power_usage = 300
-	var/datum/nano_module/power_monitor/power_monitor
+	var/datum/onyxui_module/power_monitor/power_monitor
 
 // Checks the sensors for alerts. If change (alerts cleared or detected) occurs, calls for icon update.
 /obj/machinery/computer/power_monitor/Process()
@@ -53,8 +53,8 @@
 		return
 	ui_interact(user)
 
-// Uses dark magic to operate the NanoUI of this computer.
-/obj/machinery/computer/power_monitor/ui_interact(mob/user, ui_key = "main", datum/nanoui/ui = null, force_open = 1)
+// Uses dark magic to operate the onyxui of this computer.
+/obj/machinery/computer/power_monitor/ui_interact(mob/user, ui_key = "main", datum/onyxui/ui = null, force_open = 1)
 	power_monitor.ui_interact(user, ui_key, ui, force_open)
 
 

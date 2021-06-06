@@ -13,7 +13,7 @@ var/global/nttransfer_uid = 0
 	requires_ntnet_feature = NTNET_PEERTOPEER
 	network_destination = "other device via P2P tunnel"
 	available_on_ntnet = 1
-	nanomodule_path = /datum/nano_module/program/computer_nttransfer/
+	nanomodule_path = /datum/onyxui_module/program/computer_nttransfer/
 
 	var/error = ""										// Error screen
 	var/server_password = ""							// Optional password to download the file.
@@ -77,10 +77,10 @@ var/global/nttransfer_uid = 0
 	download_completion = 0
 
 
-/datum/nano_module/program/computer_nttransfer
+/datum/onyxui_module/program/computer_nttransfer
 	name = "NTNet P2P Transfer Client"
 
-/datum/nano_module/program/computer_nttransfer/ui_interact(mob/user, ui_key = "main", datum/nanoui/ui = null, force_open = 1, datum/topic_state/state = GLOB.default_state)
+/datum/onyxui_module/program/computer_nttransfer/ui_interact(mob/user, ui_key = "main", datum/onyxui/ui = null, force_open = 1, datum/topic_state/state = GLOB.default_state)
 	if(!program)
 		return
 	var/datum/computer_file/program/nttransfer/PRG = program
@@ -125,7 +125,7 @@ var/global/nttransfer_uid = 0
 			)))
 		data["servers"] = all_servers
 
-	ui = SSnano.try_update_ui(user, src, ui_key, ui, data, force_open)
+	ui = SSonyxui.try_update_ui(user, src, ui_key, ui, data, force_open)
 	if (!ui)
 		ui = new(user, src, ui_key, "ntnet_transfer.tmpl", "NTNet P2P Transfer Client", 575, 700, state = state)
 		ui.auto_update_layout = 1

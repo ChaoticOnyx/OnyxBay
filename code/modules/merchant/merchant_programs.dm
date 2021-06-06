@@ -4,7 +4,7 @@
 	extended_desc = "Allows communication and trade between passing vessels, even while jumping."
 	program_icon_state = "comm"
 	program_menu_icon = "cart"
-	nanomodule_path = /datum/nano_module/program/merchant
+	nanomodule_path = /datum/onyxui_module/program/merchant
 	requires_ntnet = 1
 	available_on_ntnet = 1
 	size = 12
@@ -18,7 +18,7 @@
 	var/temp = null
 	var/bank = 0 //A straight up money till
 
-/datum/nano_module/program/merchant
+/datum/onyxui_module/program/merchant
 	name = "Merchant's List"
 
 /datum/computer_file/program/merchant/proc/get_merchant(num)
@@ -27,7 +27,7 @@
 	if(num)
 		return SStrade.traders[num]
 
-/datum/nano_module/program/merchant/ui_interact(mob/user, ui_key = "main", datum/nanoui/ui = null, force_open = 1, datum/topic_state/state = GLOB.default_state)
+/datum/onyxui_module/program/merchant/ui_interact(mob/user, ui_key = "main", datum/onyxui/ui = null, force_open = 1, datum/topic_state/state = GLOB.default_state)
 	var/list/data = host.initial_data()
 	var/show_trade = 0
 	var/hailed = 0
@@ -53,7 +53,7 @@
 				for(var/i in 1 to T.trading_items.len)
 					trades += T.print_trading_items(i)
 			data["trades"] = trades
-	ui = SSnano.try_update_ui(user, src, ui_key, ui, data, force_open)
+	ui = SSonyxui.try_update_ui(user, src, ui_key, ui, data, force_open)
 	if (!ui)
 		ui = new(user, src, ui_key, "merchant.tmpl", "Merchant List", 575, 700, state = state)
 		ui.auto_update_layout = 1

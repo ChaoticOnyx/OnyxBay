@@ -43,7 +43,7 @@ var/global/list/default_pai_software = list()
 
 	ui_interact(src)
 
-/mob/living/silicon/pai/ui_interact(mob/user, ui_key = "main", datum/nanoui/ui = null, force_open = 1)
+/mob/living/silicon/pai/ui_interact(mob/user, ui_key = "main", datum/onyxui/ui = null, force_open = 1)
 	if(user != src)
 		if(ui) ui.set_status(STATUS_CLOSE, 0)
 		return
@@ -90,7 +90,7 @@ var/global/list/default_pai_software = list()
 	data["emotions"] = emotions
 	data["current_emotion"] = card.current_emotion
 
-	ui = SSnano.try_update_ui(user, src, ui_key, ui, data, force_open)
+	ui = SSonyxui.try_update_ui(user, src, ui_key, ui, data, force_open)
 	if (!ui)
 		ui = new(user, src, ui_key, "pai_interface.tmpl", "pAI Software Interface", 450, 600)
 		ui.set_initial_data(data)

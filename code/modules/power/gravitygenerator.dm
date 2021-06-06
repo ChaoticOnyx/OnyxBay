@@ -329,7 +329,7 @@ GLOBAL_VAR(station_gravity_generator)
 	return ..()
 
 // Interaction
-/obj/machinery/gravity_generator/main/ui_interact(mob/user, ui_key, datum/nanoui/ui, force_open, datum/nanoui/master_ui, datum/topic_state/state)
+/obj/machinery/gravity_generator/main/ui_interact(mob/user, ui_key, datum/onyxui/ui, force_open, datum/onyxui/master_ui, datum/topic_state/state)
 	var/data[0]
 
 	data["enabled"] = enabled
@@ -338,7 +338,7 @@ GLOBAL_VAR(station_gravity_generator)
 	data["breaker"] = breaker
 	data["emergency_shutoff_button"] = emergency_shutoff_button
 
-	ui = SSnano.try_update_ui(user, src, ui_key, ui, data, force_open)
+	ui = SSonyxui.try_update_ui(user, src, ui_key, ui, data, force_open)
 	if(!ui)
 		ui = new(user, src, ui_key, "gravity_generator.tmpl", "Gravitational Generator Panel", 500, 300, state = state)
 		ui.set_initial_data(data)

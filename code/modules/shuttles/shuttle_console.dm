@@ -79,7 +79,7 @@
 			shuttle.set_docking_codes(uppertext(newcode))
 		return TOPIC_REFRESH
 
-/obj/machinery/computer/shuttle_control/ui_interact(mob/user, ui_key = "main", datum/nanoui/ui = null, force_open = 1)
+/obj/machinery/computer/shuttle_control/ui_interact(mob/user, ui_key = "main", datum/onyxui/ui = null, force_open = 1)
 	var/datum/shuttle/autodock/shuttle = SSshuttle.shuttles[shuttle_tag]
 	if (!istype(shuttle))
 		to_chat(user,"<span class='warning'>Unable to establish link with the shuttle.</span>")
@@ -87,7 +87,7 @@
 
 	var/list/data = get_ui_data(shuttle)
 
-	ui = SSnano.try_update_ui(user, src, ui_key, ui, data, force_open)
+	ui = SSonyxui.try_update_ui(user, src, ui_key, ui, data, force_open)
 	if(!ui)
 		ui = new(user, src, ui_key, ui_template, "[shuttle_tag] Shuttle Control", 470, 450)
 		ui.set_initial_data(data)

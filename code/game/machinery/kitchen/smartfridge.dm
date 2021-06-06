@@ -206,7 +206,7 @@
 		overlays.Cut()
 		if(panel_open)
 			overlays += image(icon, icon_panel)
-		SSnano.update_uis(src)
+		SSonyxui.update_uis(src)
 		return
 
 	if(isMultitool(O) || isWirecutter(O))
@@ -261,7 +261,7 @@
 
 /obj/machinery/smartfridge/proc/stock(datum/stored_items/I, obj/item/O)
 	I.add_product(O)
-	SSnano.update_uis(src)
+	SSonyxui.update_uis(src)
 
 /obj/machinery/smartfridge/attack_ai(mob/user as mob)
 	attack_hand(user)
@@ -276,7 +276,7 @@
 *   SmartFridge Menu
 ********************/
 
-/obj/machinery/smartfridge/ui_interact(mob/user, ui_key = "main", datum/nanoui/ui = null, force_open = 1)
+/obj/machinery/smartfridge/ui_interact(mob/user, ui_key = "main", datum/onyxui/ui = null, force_open = 1)
 	user.set_machine(src)
 
 	var/data[0]
@@ -296,7 +296,7 @@
 	if(items.len > 0)
 		data["contents"] = items
 
-	ui = SSnano.try_update_ui(user, src, ui_key, ui, data, force_open)
+	ui = SSonyxui.try_update_ui(user, src, ui_key, ui, data, force_open)
 	if(!ui)
 		ui = new(user, src, ui_key, "smartfridge.tmpl", src.name, 400, 500)
 		ui.set_initial_data(data)
@@ -306,7 +306,7 @@
 	if(..()) return 0
 
 	var/mob/user = usr
-	var/datum/nanoui/ui = SSnano.get_open_ui(user, src, "main")
+	var/datum/onyxui/ui = SSonyxui.get_open_ui(user, src, "main")
 
 	if(href_list["close"])
 		user.unset_machine()

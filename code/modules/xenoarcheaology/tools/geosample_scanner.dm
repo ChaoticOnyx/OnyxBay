@@ -117,7 +117,7 @@
 	if(total_purity && fresh_coolant)
 		coolant_purity = total_purity / fresh_coolant
 
-/obj/machinery/radiocarbon_spectrometer/ui_interact(mob/user, ui_key = "main", datum/nanoui/ui = null, force_open = 1)
+/obj/machinery/radiocarbon_spectrometer/ui_interact(mob/user, ui_key = "main", datum/onyxui/ui = null, force_open = 1)
 
 	if(user.stat)
 		return
@@ -149,10 +149,10 @@
 	data["rad_shield_on"] = rad_shield
 
 	// update the ui if it exists, returns null if no ui is passed/found
-	ui = SSnano.try_update_ui(user, src, ui_key, ui, data, force_open)
+	ui = SSonyxui.try_update_ui(user, src, ui_key, ui, data, force_open)
 	if (!ui)
 		// the ui does not exist, so we'll create a new() one
-		// for a list of parameters and their descriptions see the code docs in \code\modules\nano\nanoui.dm
+		// for a list of parameters and their descriptions see the code docs in \code\modules\nano\onyxui.dm
 		ui = new(user, src, ui_key, "geoscanner.tmpl", "High Res Radiocarbon Spectrometer", 900, 825)
 		// when the ui is first opened this is the data it will use
 		ui.set_initial_data(data)

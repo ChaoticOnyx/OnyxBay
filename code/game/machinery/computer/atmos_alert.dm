@@ -23,7 +23,7 @@ var/global/list/minor_air_alarms = list()
 /obj/machinery/computer/atmos_alert/attack_hand(mob/user)
 	ui_interact(user)
 
-/obj/machinery/computer/atmos_alert/ui_interact(mob/user, ui_key = "main", datum/nanoui/ui = null, force_open = 1)
+/obj/machinery/computer/atmos_alert/ui_interact(mob/user, ui_key = "main", datum/onyxui/ui = null, force_open = 1)
 	var/data[0]
 	var/major_alarms[0]
 	var/minor_alarms[0]
@@ -37,7 +37,7 @@ var/global/list/minor_air_alarms = list()
 	data["priority_alarms"] = major_alarms
 	data["minor_alarms"] = minor_alarms
 
-	ui = SSnano.try_update_ui(user, src, ui_key, ui, data, force_open)
+	ui = SSonyxui.try_update_ui(user, src, ui_key, ui, data, force_open)
 	if(!ui)
 		ui = new(user, src, ui_key, "atmos_alert.tmpl", src.name, 500, 500)
 		ui.set_initial_data(data)

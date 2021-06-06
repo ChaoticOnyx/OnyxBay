@@ -9,7 +9,7 @@
 	requires_ntnet = 0
 	available_on_ntnet = 0
 	available_on_syndinet = 1
-	nanomodule_path = /datum/nano_module/program/revelation/
+	nanomodule_path = /datum/onyxui_module/program/revelation/
 	var/armed = 0
 
 /datum/computer_file/program/revelation/run_program(mob/living/user)
@@ -61,10 +61,10 @@
 	temp.armed = armed
 	return temp
 
-/datum/nano_module/program/revelation
+/datum/onyxui_module/program/revelation
 	name = "Revelation Virus"
 
-/datum/nano_module/program/revelation/ui_interact(mob/user, ui_key = "main", datum/nanoui/ui = null, force_open = 1, datum/topic_state/state = GLOB.default_state)
+/datum/onyxui_module/program/revelation/ui_interact(mob/user, ui_key = "main", datum/onyxui/ui = null, force_open = 1, datum/topic_state/state = GLOB.default_state)
 	var/list/data = list()
 	var/datum/computer_file/program/revelation/PRG = program
 	if(!istype(PRG))
@@ -74,7 +74,7 @@
 
 	data["armed"] = PRG.armed
 
-	ui = SSnano.try_update_ui(user, src, ui_key, ui, data, force_open)
+	ui = SSonyxui.try_update_ui(user, src, ui_key, ui, data, force_open)
 	if (!ui)
 		ui = new(user, src, ui_key, "revelation.tmpl", "Revelation Virus", 400, 250, state = state)
 		ui.auto_update_layout = 1

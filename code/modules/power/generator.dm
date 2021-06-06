@@ -166,7 +166,7 @@
 		reconnect()
 	ui_interact(user)
 
-/obj/machinery/power/generator/ui_interact(mob/user, ui_key = "main", datum/nanoui/ui = null, force_open = 1)
+/obj/machinery/power/generator/ui_interact(mob/user, ui_key = "main", datum/onyxui/ui = null, force_open = 1)
 	// this is the data which will be sent to the ui
 	var/vertical = 0
 	if (dir == NORTH || dir == SOUTH)
@@ -205,10 +205,10 @@
 
 
 	// update the ui if it exists, returns null if no ui is passed/found
-	ui = SSnano.try_update_ui(user, src, ui_key, ui, data, force_open)
+	ui = SSonyxui.try_update_ui(user, src, ui_key, ui, data, force_open)
 	if(!ui)
 		// the ui does not exist, so we'll create a new() one
-		// for a list of parameters and their descriptions see the code docs in \code\modules\nano\nanoui.dm
+		// for a list of parameters and their descriptions see the code docs in \code\modules\nano\onyxui.dm
 		ui = new(user, src, ui_key, "generator.tmpl", "Thermoelectric Generator", 450, 500)
 		// when the ui is first opened this is the data it will use
 		ui.set_initial_data(data)

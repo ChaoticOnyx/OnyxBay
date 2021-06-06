@@ -205,7 +205,7 @@
 			S.fail(1)
 
 
-/obj/machinery/power/shield_generator/ui_interact(mob/user, ui_key = "main", datum/nanoui/ui = null, force_open = 1)
+/obj/machinery/power/shield_generator/ui_interact(mob/user, ui_key = "main", datum/onyxui/ui = null, force_open = 1)
 	var/data[0]
 
 	data["running"] = running
@@ -227,7 +227,7 @@
 	data["hacked"] = hacked
 	data["offline_for"] = offline_for * 2
 
-	ui = SSnano.try_update_ui(user, src, ui_key, ui, data, force_open)
+	ui = SSonyxui.try_update_ui(user, src, ui_key, ui, data, force_open)
 	if (!ui)
 		ui = new(user, src, ui_key, "shieldgen.tmpl", src.name, 500, 800)
 		ui.set_initial_data(data)
@@ -274,7 +274,7 @@
 		var/old_energy = current_energy
 		shutdown_field()
 		log_and_message_admins("has triggered \the [src]'s emergency shutdown!", user)
-		spawn()	
+		spawn()
 			empulse(src, old_energy / 60000000, old_energy / 32000000, 1) // If shields are charged at 450 MJ, the EMP will be 7.5, 14.0625. 90 MJ, 1.5, 2.8125
 		old_energy = 0
 

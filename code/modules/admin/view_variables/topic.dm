@@ -473,15 +473,15 @@
 			to_chat(usr, "This can only be done on mobs with clients")
 			return
 
-		SSnano.close_uis(H)
+		SSonyxui.close_uis(H)
 		H.client.cache.Cut()
 		var/datum/asset/assets = get_asset_datum(/datum/asset/directories/onyxui)
 		assets.send(H.client)
 
 		to_chat(usr, "Resource files sent")
-		to_chat(H, "Your NanoUI Resource files have been refreshed")
+		to_chat(H, "Your onyxui Resource files have been refreshed")
 
-		log_admin("[key_name(usr)] resent the NanoUI resource files to [key_name(H)] ")
+		log_admin("[key_name(usr)] resent the onyxui resource files to [key_name(H)] ")
 
 	else if(href_list["regenerateicons"])
 		if(!check_rights(0))	return

@@ -42,7 +42,7 @@
 	else
 		..()
 
-/obj/item/weapon/card/id/syndicate/ui_interact(mob/user, ui_key = "main", datum/nanoui/ui = null, force_open = 1)
+/obj/item/weapon/card/id/syndicate/ui_interact(mob/user, ui_key = "main", datum/onyxui/ui = null, force_open = 1)
 	var/data[0]
 	var/entries[0]
 	entries[++entries.len] = list("name" = "Age", 				"value" = age)
@@ -62,7 +62,7 @@
 	data["electronic_warfare"] = electronic_warfare
 	data["entries"] = entries
 
-	ui = SSnano.try_update_ui(user, src, ui_key, ui, data, force_open)
+	ui = SSonyxui.try_update_ui(user, src, ui_key, ui, data, force_open)
 	if (!ui)
 		ui = new(user, src, ui_key, "agent_id_card.tmpl", "Agent id", 600, 400)
 		ui.set_initial_data(data)
@@ -203,7 +203,7 @@
 					. = 1
 
 	// Always update the UI, or buttons will spin indefinitely
-	SSnano.update_uis(src)
+	SSonyxui.update_uis(src)
 
 /var/global/list/id_card_states
 /proc/id_card_states()

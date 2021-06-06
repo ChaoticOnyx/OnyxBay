@@ -2,15 +2,15 @@
 	filename = "secrecords"
 	filedesc = "Security Records"
 	extended_desc = "This program allows access to the crew's security records."
-	nanomodule_path = /datum/nano_module/records/security
+	nanomodule_path = /datum/onyxui_module/records/security
 	category = PROG_SEC
 
-/datum/nano_module/records/security
+/datum/onyxui_module/records/security
 	name = "Security Records"
 	records_context = record_field_context_security
 	template_file = "sec_records.tmpl"
 
-/datum/nano_module/records/security/generate_updated_data()
+/datum/onyxui_module/records/security/generate_updated_data()
 	var/list/data = ..()
 	ASSERT(istype(data))
 	var/static/list/sec_fields = list("Criminal Status", "Major Crimes", "Minor Crimes", "Crime Details", "Important Notes", "Security Recent Records", "Security Background")
@@ -37,7 +37,7 @@
 	data["sec_fields"] = sec_fields_as_array
 	return data
 
-/datum/nano_module/records/security/edit_field(mob/user, field)
+/datum/onyxui_module/records/security/edit_field(mob/user, field)
 	var/datum/computer_file/crew_record/R = active_record
 	if (!R)
 		return FALSE
@@ -46,7 +46,7 @@
 		return FALSE
 
 	if (!F.can_edit(get_record_access(user), records_context))
-		to_chat(user, "<span class='notice'>\The [nano_host()] flashes an \"Access Denied\" warning.</span>")
+		to_chat(user, "<span class='notice'>\The [onyxui_host()] flashes an \"Access Denied\" warning.</span>")
 		return FALSE
 
 	if (F.name == "Security Recent Records")

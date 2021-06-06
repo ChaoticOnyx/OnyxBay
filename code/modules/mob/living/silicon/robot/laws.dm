@@ -51,4 +51,4 @@
 /mob/living/silicon/robot/proc/robot_checklaws()
 	set category = "Silicon Commands"
 	set name = "State Laws"
-	open_subsystem(/datum/nano_module/law_manager)
+	open_subsystem(/datum/onyxui_module/law_manager)

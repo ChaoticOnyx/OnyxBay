@@ -4,21 +4,21 @@
 /datum/computer_file/program/reports
 	filename = "repview"
 	filedesc = "Report Editor"
-	nanomodule_path = /datum/nano_module/program/reports
+	nanomodule_path = /datum/onyxui_module/program/reports
 	extended_desc = "A general paperwork viewing and editing utility."
 	size = 6
 	available_on_ntnet = 1
 	requires_ntnet = 0
 	usage_flags = PROGRAM_ALL
 
-/datum/nano_module/program/reports
+/datum/onyxui_module/program/reports
 	name = "Report Editor"
 	var/can_view_only = 0                              //Whether we are in view-only mode.
 	var/datum/computer_file/report/selected_report     //A report being viewed/edited. This is a temporary copy.
 	var/datum/computer_file/report/saved_report        //The computer file open.
 	var/prog_state = REPORTS_VIEW
 
-/datum/nano_module/program/reports/ui_interact(mob/user, ui_key = "main", datum/nanoui/ui = null, force_open = 1, state = GLOB.default_state)
+/datum/onyxui_module/program/reports/ui_interact(mob/user, ui_key = "main", datum/onyxui/ui = null, force_open = 1, state = GLOB.default_state)
 	var/list/data = host.initial_data()
 	data["prog_state"] = prog_state
 	switch(prog_state)
@@ -36,14 +36,14 @@
 				L += list(M)
 			data["reports"] = L
 
-	ui = SSnano.try_update_ui(user, src, ui_key, ui, data, force_open)
+	ui = SSonyxui.try_update_ui(user, src, ui_key, ui, data, force_open)
 	if (!ui)
 		ui = new(user, src, ui_key, "reports.tmpl", name, 700, 800, state = state)
 		ui.auto_update_layout = 1
 		ui.set_initial_data(data)
 		ui.open()
 
-/datum/nano_module/program/reports/proc/switch_state(new_state)
+/datum/onyxui_module/program/reports/proc/switch_state(new_state)
 	if(prog_state == new_state)
 		return
 	switch(new_state)
@@ -57,11 +57,11 @@
 			program.requires_ntnet = 1
 			prog_state = REPORTS_DOWNLOAD
 
-/datum/nano_module/program/reports/proc/close_report()
+/datum/onyxui_module/program/reports/proc/close_report()
 	QDEL_NULL(selected_report)
 	saved_report = null
 
-/datum/nano_module/program/reports/proc/save_report(mob/user, save_as)
+/datum/onyxui_module/program/reports/proc/save_report(mob/user, save_as)
 	if(!program.computer || !program.computer.hard_drive)
 		to_chat(user, "Unable to find hard drive.")
 		return
@@ -79,7 +79,7 @@
 	selected_report = saved_report.clone()
 	to_chat(user, "The report has been saved as [saved_report.filename].[saved_report.filetype]")
 
-/datum/nano_module/program/reports/proc/load_report(mob/user)
+/datum/onyxui_module/program/reports/proc/load_report(mob/user)
 	if(!program.computer || !program.computer.hard_drive)
 		to_chat(user, "Unable to find hard drive.")
 		return
@@ -104,7 +104,7 @@
 		selected_report = chosen_report.clone()
 		return 1
 
-/datum/nano_module/program/reports/Topic(href, href_list)
+/datum/onyxui_module/program/reports/Topic(href, href_list)
 	if(..())
 		return 1
 	var/mob/user = usr

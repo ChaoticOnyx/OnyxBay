@@ -3,14 +3,14 @@
 	filedesc = "AI Records"
 	extended_desc = "This program allows access to the crew's records."
 	available_on_ntnet = FALSE
-	nanomodule_path = /datum/nano_module/records/ai
+	nanomodule_path = /datum/onyxui_module/records/ai
 
-/datum/nano_module/records/ai
+/datum/onyxui_module/records/ai
 	name = "AI Records"
 	records_context = record_field_context_medical | record_field_context_crew | record_field_context_security
 	template_file = "ai_records.tmpl"
 
-/datum/nano_module/records/ai/generate_updated_data()
+/datum/onyxui_module/records/ai/generate_updated_data()
 	var/list/data = ..()
 	ASSERT(istype(data))
 	var/static/list/med_fields = list("Major Disabilities", "Minor Disabilities", "Current Diseases",\
@@ -50,7 +50,7 @@
 	data["sec_fields"] = sec_fields_as_array
 	return data
 
-/datum/nano_module/records/ai/edit_field(mob/user, field)
+/datum/onyxui_module/records/ai/edit_field(mob/user, field)
 	var/datum/computer_file/crew_record/R = active_record
 	if (!R)
 		return FALSE
@@ -59,7 +59,7 @@
 		return FALSE
 
 	if (!F.can_edit(get_record_access(user), records_context))
-		to_chat(user, "<span class='notice'>\The [nano_host()] flashes an \"Access Denied\" warning.</span>")
+		to_chat(user, "<span class='notice'>\The [onyxui_host()] flashes an \"Access Denied\" warning.</span>")
 		return FALSE
 
 	if (F.name == "Medical Recent Records")

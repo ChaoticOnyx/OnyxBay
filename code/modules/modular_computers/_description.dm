@@ -45,7 +45,7 @@ if one is destroyed the second will take over. If all relays are gone it stops w
 possible to enable/disable Software Downloading, P2P file transfers and Communication (IC version of IRC, PDA messages for more than two people)
 
 5. Software
-Software would almost exclusively use NanoUI modules. Few exceptions are text editor (uses similar screen as TCS IDE used for editing and classic HTML for previewing as Nano looks differently)
+Software would almost exclusively use onyxui modules. Few exceptions are text editor (uses similar screen as TCS IDE used for editing and classic HTML for previewing as Nano looks differently)
 and similar programs which for some reason require HTML UI. Most software will be highly dependent on NTNet to work as laptops are not physically connected to the station's network.
 What i plan to add:
 

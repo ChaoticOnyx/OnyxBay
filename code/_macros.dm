@@ -129,7 +129,7 @@
 #define to_file(handle, value)                to_target(handle, value)
 #define from_file(handle, target_var)         from_target(handle, target_var)
 
-#define MAP_IMAGE_PATH "nano/images/[GLOB.using_map.path]/"
+#define MAP_IMAGE_PATH "onyxui/images/[GLOB.using_map.path]/"
 
 #define map_image_file_name(z_level) "[GLOB.using_map.path]-[z_level].png"
 

@@ -104,17 +104,17 @@
 	return 1
 
  /**
-  * The ui_interact proc is used to open and update Nano UIs
+  * The ui_interact proc is used to open and update Onyx UIs
   * If ui_interact is not used then the UI will not update correctly
   * ui_interact is currently defined for /atom/movable (which is inherited by /obj and /mob)
   *
   * @param user /mob The mob who is interacting with this ui
   * @param ui_key string A string key to use for this ui. Allows for multiple unique uis on one obj/mob (defaut value "main")
-  * @param ui /datum/nanoui This parameter is passed by the nanoui process() proc when updating an open ui
+  * @param ui /datum/onyxui This parameter is passed by the onyxui process() proc when updating an open ui
   *
   * @return nothing
   */
-/obj/machinery/atmospherics/unary/cryo_cell/ui_interact(mob/user, ui_key = "main", datum/nanoui/ui = null, force_open = 1)
+/obj/machinery/atmospherics/unary/cryo_cell/ui_interact(mob/user, ui_key = "main", datum/onyxui/ui = null, force_open = 1)
 	if(user == occupant || user.stat)
 		return
 
@@ -164,10 +164,10 @@
 	data["biochemicalStasis"] = biochemical_stasis
 
 	// update the ui if it exists, returns null if no ui is passed/found
-	ui = SSnano.try_update_ui(user, src, ui_key, ui, data, force_open)
+	ui = SSonyxui.try_update_ui(user, src, ui_key, ui, data, force_open)
 	if(!ui)
 		// the ui does not exist, so we'll create a new() one
-		// for a list of parameters and their descriptions see the code docs in \code\modules\nano\nanoui.dm
+		// for a list of parameters and their descriptions see the code docs in \code\modules\nano\onyxui.dm
 		ui = new(user, src, ui_key, "cryo.tmpl", "Cryo Cell Control System", 520, 630)
 		// when the ui is first opened this is the data it will use
 		ui.set_initial_data(data)

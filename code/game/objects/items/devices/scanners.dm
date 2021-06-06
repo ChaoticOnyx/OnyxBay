@@ -46,7 +46,7 @@ REAGENT SCANNER
 	playsound(src.loc, 'sound/signals/processing21.ogg', 50)
 	ui_interact(user,target = C)
 
-/obj/item/device/healthanalyzer/ui_interact(mob/user, ui_key = "main", datum/nanoui/ui = null, force_open = 1,mob/living/carbon/human/target)
+/obj/item/device/healthanalyzer/ui_interact(mob/user, ui_key = "main", datum/onyxui/ui = null, force_open = 1,mob/living/carbon/human/target)
 
 	var/data[0]
 
@@ -70,7 +70,7 @@ REAGENT SCANNER
 		data["reagent"] = scan_data[7]
 		data["virus"] = scan_data[8]
 
-	ui = SSnano.try_update_ui(user, src, ui_key, ui, data, force_open)
+	ui = SSonyxui.try_update_ui(user, src, ui_key, ui, data, force_open)
 	if (!ui)
 		ui = new(user, src, ui_key, "healthanalyzer.tmpl", " ", 640, 370)
 		ui.set_initial_data(data)

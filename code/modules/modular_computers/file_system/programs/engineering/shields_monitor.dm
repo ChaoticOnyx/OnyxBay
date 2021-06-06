@@ -1,7 +1,7 @@
 /datum/computer_file/program/shields_monitor
 	filename = "shieldsmonitor"
 	filedesc = "Shield Generators Monitoring"
-	nanomodule_path = /datum/nano_module/shields_monitor/
+	nanomodule_path = /datum/onyxui_module/shields_monitor/
 	program_icon_state = "shield"
 	program_key_state = "generic_key"
 	program_menu_icon = "radio-on"
@@ -12,16 +12,16 @@
 	size = 10
 	category = PROG_ENG
 
-/datum/nano_module/shields_monitor
+/datum/onyxui_module/shields_monitor
 	name = "Shields monitor"
 	var/obj/machinery/power/shield_generator/active = null
 
-/datum/nano_module/shields_monitor/Destroy()
+/datum/onyxui_module/shields_monitor/Destroy()
 	. = ..()
 	deselect_shield()
 
-/datum/nano_module/shields_monitor/proc/get_shields()
-	var/turf/T = get_turf(nano_host())
+/datum/onyxui_module/shields_monitor/proc/get_shields()
+	var/turf/T = get_turf(onyxui_host())
 	if(!T)
 		return list()
 
@@ -36,7 +36,7 @@
 		deselect_shield()
 	return shields
 
-/datum/nano_module/shields_monitor/ui_interact(mob/user, ui_key = "main", datum/nanoui/ui = null, force_open = 1, datum/topic_state/state = GLOB.default_state)
+/datum/onyxui_module/shields_monitor/ui_interact(mob/user, ui_key = "main", datum/onyxui/ui = null, force_open = 1, datum/topic_state/state = GLOB.default_state)
 	var/list/data = host.initial_data()
 
 	if (active)
@@ -75,7 +75,7 @@
 			shields_info.Add(temp)
 		data["shields"] = shields_info
 
-	ui = SSnano.try_update_ui(user, src, ui_key, ui, data, force_open)
+	ui = SSonyxui.try_update_ui(user, src, ui_key, ui, data, force_open)
 	if (!ui)
 		ui = new(user, src, ui_key, "shields_monitor.tmpl", "Shield Generators Monitoring", 400, 500, state = state)
 		if(host.update_layout())
@@ -84,7 +84,7 @@
 		ui.open()
 		ui.set_auto_update(1)
 
-/datum/nano_module/shields_monitor/Topic(href, href_list)
+/datum/onyxui_module/shields_monitor/Topic(href, href_list)
 	if(..())
 		return 1
 	if( href_list["refresh"] )
@@ -98,14 +98,14 @@
 		var/obj/machinery/power/shield_generator/S = locate(href_list["ref"]) in shields
 		if(S)
 			deselect_shield()
-			GLOB.destroyed_event.register(S, src, /datum/nano_module/shields_monitor/proc/deselect_shield)
+			GLOB.destroyed_event.register(S, src, /datum/onyxui_module/shields_monitor/proc/deselect_shield)
 			active = S
 		return 1
 
-/datum/nano_module/shields_monitor/proc/deselect_shield(source)
+/datum/onyxui_module/shields_monitor/proc/deselect_shield(source)
 	if(!active)
 		return
 	GLOB.destroyed_event.unregister(active, src)
 	active = null
 	if(source) // source is only set if called by the shield destroyed event, which is the only time we want to update the UI
-		SSnano.update_uis(src)
+		SSonyxui.update_uis(src)

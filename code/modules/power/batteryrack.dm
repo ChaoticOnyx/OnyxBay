@@ -205,7 +205,7 @@
 		celldiff = min(min(celldiff, most.charge), least.maxcharge - least.charge)
 		least.give(most.use(celldiff))
 
-/obj/machinery/power/smes/batteryrack/ui_interact(mob/user, ui_key = "main", datum/nanoui/ui = null, force_open = 1)
+/obj/machinery/power/smes/batteryrack/ui_interact(mob/user, ui_key = "main", datum/onyxui/ui = null, force_open = 1)
 	var/data[0]
 
 	data["mode"] = mode
@@ -234,7 +234,7 @@
 		cells += list(cell)
 	data["cells_list"] = cells
 
-	ui = SSnano.try_update_ui(user, src, ui_key, ui, data, force_open)
+	ui = SSonyxui.try_update_ui(user, src, ui_key, ui, data, force_open)
 	if (!ui)
 		ui = new(user, src, ui_key, "psu.tmpl", "Cell Rack PSU", 500, 430)
 		ui.set_initial_data(data)
@@ -271,7 +271,7 @@
 
 /obj/machinery/power/smes/batteryrack/Topic(href, href_list)
 	// ..() would respond to those topic calls, but we don't want to use them at all.
-	// Calls to these shouldn't occur anyway, due to usage of different nanoUI, but
+	// Calls to these shouldn't occur anyway, due to usage of different onyxui, but
 	// it's here in case someone decides to try hrefhacking/modified templates.
 	if(href_list["input"] || href_list["output"])
 		return 1

@@ -15,13 +15,13 @@
 	category = PROG_UTIL
 	available_on_ntnet = 0
 	requires_ntnet = 0
-	nanomodule_path = /datum/nano_module/program/computer_configurator/
+	nanomodule_path = /datum/onyxui_module/program/computer_configurator/
 
-/datum/nano_module/program/computer_configurator
+/datum/onyxui_module/program/computer_configurator
 	name = "NTOS Computer Configuration Tool"
 	var/obj/item/modular_computer/movable = null
 
-/datum/nano_module/program/computer_configurator/ui_interact(mob/user, ui_key = "main", datum/nanoui/ui = null, force_open = 1, datum/topic_state/state = GLOB.default_state)
+/datum/onyxui_module/program/computer_configurator/ui_interact(mob/user, ui_key = "main", datum/onyxui/ui = null, force_open = 1, datum/topic_state/state = GLOB.default_state)
 	if(program)
 		movable = program.computer
 	if(!istype(movable))
@@ -57,7 +57,7 @@
 		)))
 
 	data["hardware"] = all_entries
-	ui = SSnano.try_update_ui(user, src, ui_key, ui, data, force_open)
+	ui = SSonyxui.try_update_ui(user, src, ui_key, ui, data, force_open)
 	if (!ui)
 		ui = new(user, src, ui_key, "laptop_configuration.tmpl", "NTOS Configuration Utility", 575, 700, state = state)
 		ui.auto_update_layout = 1

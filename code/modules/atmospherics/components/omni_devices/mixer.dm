@@ -129,14 +129,14 @@
 
 	return 1
 
-/obj/machinery/atmospherics/omni/mixer/ui_interact(mob/user, ui_key = "main", datum/nanoui/ui = null, force_open = 1)
+/obj/machinery/atmospherics/omni/mixer/ui_interact(mob/user, ui_key = "main", datum/onyxui/ui = null, force_open = 1)
 	usr.set_machine(src)
 
 	var/list/data = new()
 
 	data = build_uidata()
 
-	ui = SSnano.try_update_ui(user, src, ui_key, ui, data, force_open)
+	ui = SSonyxui.try_update_ui(user, src, ui_key, ui, data, force_open)
 
 	if (!ui)
 		ui = new(user, src, ui_key, "omni_mixer.tmpl", "Omni Mixer Control", 360, 330)
@@ -172,7 +172,7 @@
 	if(portData.len)
 		data["ports"] = portData
 	if(output)
-		data["set_flow_rate"] = round(set_flow_rate*10)		//because nanoui can't handle rounded decimals.
+		data["set_flow_rate"] = round(set_flow_rate*10)		//because onyxui can't handle rounded decimals.
 		data["last_flow_rate"] = round(last_flow_rate*10)
 
 	return data
@@ -205,7 +205,7 @@
 				con_lock(dir_flag(href_list["dir"]))
 
 	update_icon()
-	SSnano.update_uis(src)
+	SSonyxui.update_uis(src)
 	return
 
 /obj/machinery/atmospherics/omni/mixer/proc/switch_mode(port = NORTH, mode = ATM_NONE)

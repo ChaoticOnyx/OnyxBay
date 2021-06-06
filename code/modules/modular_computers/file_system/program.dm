@@ -5,7 +5,7 @@
 	var/required_access = null				// List of required accesses to run/download the program.
 	var/requires_access_to_run = 1			// Whether the program checks for required_access when run.
 	var/requires_access_to_download = 1		// Whether the program checks for required_access when downloading.
-	var/datum/nano_module/NM = null			// If the program uses NanoModule, put it here and it will be automagically opened. Otherwise implement ui_interact.
+	var/datum/onyxui_module/NM = null			// If the program uses NanoModule, put it here and it will be automagically opened. Otherwise implement ui_interact.
 	var/nanomodule_path = null				// Path to nanomodule, make sure to set this if implementing new program.
 	var/program_state = PROGRAM_STATE_KILLED// PROGRAM_STATE_KILLED or PROGRAM_STATE_BACKGROUND or PROGRAM_STATE_ACTIVE - specifies whether this program is running.
 	var/obj/item/modular_computer/computer	// Device that runs this program.
@@ -23,7 +23,7 @@
 	var/available_on_ntnet = 1				// Whether the program can be downloaded from NTNet. Set to 0 to disable.
 	var/available_on_syndinet = 0			// Whether the program can be downloaded from SyndiNet (accessible via emagging the computer). Set to 1 to enable.
 	var/computer_emagged = 0				// Set to 1 if computer that's running us was emagged. Computer updates this every Process() tick
-	var/ui_header = null					// Example: "something.gif" - a header image that will be rendered in computer's UI when this program is running at background. Images are taken from /nano/images/status_icons. Be careful not to use too large images!
+	var/ui_header = null					// Example: "something.gif" - a header image that will be rendered in computer's UI when this program is running at background. Images are taken from /onyxui/images/status_icons. Be careful not to use too large images!
 	var/ntnet_speed = 0						// GQ/s - current network connectivity transfer rate
 
 /datum/computer_file/program/New(obj/item/modular_computer/comp = null)
@@ -35,8 +35,8 @@
 	computer = null
 	. = ..()
 
-/datum/computer_file/program/nano_host()
-	return computer.nano_host()
+/datum/computer_file/program/onyxui_host()
+	return computer.onyxui_host()
 
 /datum/computer_file/program/clone()
 	var/datum/computer_file/program/temp = ..()
@@ -145,7 +145,7 @@
 	else if(loud)
 		to_chat(user, "<span class='notice'>\The [computer] flashes an \"Access Denied\" warning.</span>")
 
-// This attempts to retrieve header data for NanoUIs. If implementing completely new device of different type than existing ones
+// This attempts to retrieve header data for onyxuis. If implementing completely new device of different type than existing ones
 // always include the device here in this proc. This proc basically relays the request to whatever is running the program.
 /datum/computer_file/program/proc/get_header_data()
 	if(computer)
@@ -177,7 +177,7 @@
 
 // This is called every tick when the program is enabled. Ensure you do parent call if you override it. If parent returns 1 continue with UI initialisation.
 // It returns 0 if it can't run or if NanoModule was used instead. I suggest using NanoModules where applicable.
-/datum/computer_file/program/ui_interact(mob/user, ui_key = "main", datum/nanoui/ui = null, force_open = 1)
+/datum/computer_file/program/ui_interact(mob/user, ui_key = "main", datum/onyxui/ui = null, force_open = 1)
 	if(program_state != PROGRAM_STATE_ACTIVE) // Our program was closed. Close the ui if it exists.
 		if(ui)
 			ui.close()
@@ -212,11 +212,11 @@
 /obj/item/modular_computer/update_layout()
 	return TRUE
 
-/datum/nano_module/program
+/datum/onyxui_module/program
 	available_to_ai = FALSE
 	var/datum/computer_file/program/program = null	// Program-Based computer program that runs this nano module. Defaults to null.
 
-/datum/nano_module/program/New(host, topic_manager, program)
+/datum/onyxui_module/program/New(host, topic_manager, program)
 	..()
 	src.program = program
 

@@ -99,7 +99,7 @@ var/list/obj/machinery/requests_console/allConsoles = list()
 		return
 	ui_interact(user)
 
-/obj/machinery/requests_console/ui_interact(mob/user, ui_key = "main", datum/nanoui/ui = null, force_open = 1)
+/obj/machinery/requests_console/ui_interact(mob/user, ui_key = "main", datum/onyxui/ui = null, force_open = 1)
 	var/data[0]
 
 	data["department"] = department
@@ -120,7 +120,7 @@ var/list/obj/machinery/requests_console/allConsoles = list()
 	data["msgVerified"] = msgVerified
 	data["announceAuth"] = announceAuth
 
-	ui = SSnano.try_update_ui(user, src, ui_key, ui, data, force_open)
+	ui = SSonyxui.try_update_ui(user, src, ui_key, ui, data, force_open)
 	if (!ui)
 		ui = new(user, src, ui_key, "request_console.tmpl", "[department] Request Console", 520, 410)
 		ui.set_initial_data(data)

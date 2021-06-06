@@ -206,7 +206,7 @@ var/list/turret_icons
 
 	ui_interact(user)
 
-/obj/machinery/porta_turret/ui_interact(mob/user, ui_key = "main", datum/nanoui/ui = null, force_open = 1)
+/obj/machinery/porta_turret/ui_interact(mob/user, ui_key = "main", datum/onyxui/ui = null, force_open = 1)
 	var/data[0]
 	data["access"] = !isLocked(user)
 	data["locked"] = locked
@@ -224,7 +224,7 @@ var/list/turret_icons
 		settings[++settings.len] = list("category" = "Check misc. Lifeforms", "setting" = "check_anomalies", "value" = check_anomalies)
 		data["settings"] = settings
 
-	ui = SSnano.try_update_ui(user, src, ui_key, ui, data, force_open)
+	ui = SSonyxui.try_update_ui(user, src, ui_key, ui, data, force_open)
 	if (!ui)
 		ui = new(user, src, ui_key, "turret_control.tmpl", "Turret Controls", 500, 300)
 		ui.set_initial_data(data)

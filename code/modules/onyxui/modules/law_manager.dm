@@ -1,4 +1,4 @@
-/datum/nano_module/law_manager
+/datum/onyxui_module/law_manager
 	name = "Law manager"
 	var/ion_law	= "IonLaw"
 	var/zeroth_law = "ZerothLaw"
@@ -12,7 +12,7 @@
 	var/global/list/datum/ai_laws/player_laws
 	var/mob/living/silicon/owner = null
 
-/datum/nano_module/law_manager/New(mob/living/silicon/S)
+/datum/onyxui_module/law_manager/New(mob/living/silicon/S)
 	..()
 	owner = S
 
@@ -27,7 +27,7 @@
 			if(laws.selectable)
 				player_laws += laws
 
-/datum/nano_module/law_manager/Topic(href, href_list)
+/datum/onyxui_module/law_manager/Topic(href, href_list)
 	if(..())
 		return 1
 
@@ -147,7 +147,7 @@
 
 	return 0
 
-/datum/nano_module/law_manager/ui_interact(mob/user, ui_key = "main", datum/nanoui/ui = null, force_open = 1, datum/topic_state/state = GLOB.default_state)
+/datum/onyxui_module/law_manager/ui_interact(mob/user, ui_key = "main", datum/onyxui/ui = null, force_open = 1, datum/topic_state/state = GLOB.default_state)
 	var/data[0]
 	owner.lawsync()
 
@@ -176,21 +176,21 @@
 	data["channels"] = channels
 	data["law_sets"] = package_multiple_laws(data["isAdmin"] ? admin_laws : player_laws)
 
-	ui = SSnano.try_update_ui(user, src, ui_key, ui, data, force_open)
+	ui = SSonyxui.try_update_ui(user, src, ui_key, ui, data, force_open)
 	if (!ui)
 		ui = new(user, src, ui_key, "law_manager.tmpl", sanitize("[src] - [owner]"), 800, is_malf(user) ? 600 : 400, state = state)
 		ui.set_initial_data(data)
 		ui.open()
 		ui.set_auto_update(1)
 
-/datum/nano_module/law_manager/proc/package_laws(list/data, field, list/datum/ai_law/laws)
+/datum/onyxui_module/law_manager/proc/package_laws(list/data, field, list/datum/ai_law/laws)
 	var/packaged_laws[0]
 	for(var/datum/ai_law/AL in laws)
 		packaged_laws[++packaged_laws.len] = list("law" = AL.law, "index" = AL.get_index(), "state" = owner.laws.get_state_law(AL), "ref" = "\ref[AL]")
 	data[field] = packaged_laws
 	data["has_[field]"] = packaged_laws.len
 
-/datum/nano_module/law_manager/proc/package_multiple_laws(list/datum/ai_laws/laws)
+/datum/onyxui_module/law_manager/proc/package_multiple_laws(list/datum/ai_laws/laws)
 	var/law_sets[0]
 	for(var/datum/ai_laws/ALs in laws)
 		var/packaged_laws[0]
@@ -202,7 +202,7 @@
 
 	return law_sets
 
-/datum/nano_module/law_manager/proc/is_malf(mob/user)
+/datum/onyxui_module/law_manager/proc/is_malf(mob/user)
 	return (is_admin(user) && !owner.is_slaved()) || owner.is_malf_or_traitor()
 
 /mob/living/silicon/proc/is_slaved()
@@ -211,7 +211,7 @@
 /mob/living/silicon/robot/is_slaved()
 	return lawupdate && connected_ai ? sanitize(connected_ai.name) : null
 
-/datum/nano_module/law_manager/proc/sync_laws(mob/living/silicon/ai/AI)
+/datum/onyxui_module/law_manager/proc/sync_laws(mob/living/silicon/ai/AI)
 	if(!AI)
 		return
 	for(var/mob/living/silicon/robot/R in AI.connected_robots)

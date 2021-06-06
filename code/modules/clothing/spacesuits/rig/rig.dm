@@ -459,7 +459,7 @@
 	cell.use(cost * CELLRATE)
 	return 1
 
-/obj/item/weapon/rig/ui_interact(mob/user, ui_key = "main", datum/nanoui/ui = null, force_open = 1, nano_state = GLOB.inventory_state)
+/obj/item/weapon/rig/ui_interact(mob/user, ui_key = "main", datum/onyxui/ui = null, force_open = 1, nano_state = GLOB.inventory_state)
 	if(!user)
 		return
 
@@ -527,7 +527,7 @@
 	if(module_list.len)
 		data["modules"] = module_list
 
-	ui = SSnano.try_update_ui(user, src, ui_key, ui, data, force_open)
+	ui = SSonyxui.try_update_ui(user, src, ui_key, ui, data, force_open)
 	if (!ui)
 		ui = new(user, src, ui_key, ((src.loc != user) ? ai_interface_path : interface_path), interface_title, 480, 550, state = nano_state)
 		ui.set_initial_data(data)

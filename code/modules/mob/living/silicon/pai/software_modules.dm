@@ -12,7 +12,7 @@
 	// Whether pAIs should automatically receive this module at no cost
 	var/default = 0
 
-	proc/on_ui_interact(mob/living/silicon/pai/user, datum/nanoui/ui=null, force_open=1)
+	proc/on_ui_interact(mob/living/silicon/pai/user, datum/onyxui/ui=null, force_open=1)
 		return
 
 	proc/toggle(mob/living/silicon/pai/user)
@@ -31,7 +31,7 @@
 	toggle = 0
 	default = 1
 
-	on_ui_interact(mob/living/silicon/pai/user, datum/nanoui/ui=null, force_open=1)
+	on_ui_interact(mob/living/silicon/pai/user, datum/onyxui/ui=null, force_open=1)
 		var/data[0]
 
 		data["master"] = user.master
@@ -39,7 +39,7 @@
 		data["prime"] = user.pai_law0
 		data["supplemental"] = user.pai_laws
 
-		ui = SSnano.try_update_ui(user, user, id, ui, data, force_open)
+		ui = SSonyxui.try_update_ui(user, user, id, ui, data, force_open)
 		if(!ui)
 			// Don't copy-paste this unless you're making a pAI software module!
 			ui = new(user, user, id, "pai_directives.tmpl", "pAI Directives", 450, 600)
@@ -87,7 +87,7 @@
 	toggle = 0
 	default = 1
 
-	on_ui_interact(mob/living/silicon/pai/user, datum/nanoui/ui = null, force_open = 1)
+	on_ui_interact(mob/living/silicon/pai/user, datum/onyxui/ui = null, force_open = 1)
 		var/data[0]
 
 		data["listening"] = user.silicon_radio.broadcasting
@@ -104,7 +104,7 @@
 
 		data["channels"] = channels
 
-		ui = SSnano.try_update_ui(user, user, id, ui, data, force_open)
+		ui = SSonyxui.try_update_ui(user, user, id, ui, data, force_open)
 		if(!ui)
 			ui = new(user, user, id, "pai_radio.tmpl", "Radio Configuration", 300, 150)
 			ui.set_initial_data(data)
@@ -123,12 +123,12 @@
 	id = "manifest"
 	toggle = 0
 
-	on_ui_interact(mob/living/silicon/pai/user, datum/nanoui/ui=null, force_open=1)
+	on_ui_interact(mob/living/silicon/pai/user, datum/onyxui/ui=null, force_open=1)
 		var/data[0]
-		// This is dumb, but NanoUI breaks if it has no data to send
+		// This is dumb, but onyxui breaks if it has no data to send
 		data["manifest"] = nano_crew_manifest()
 
-		ui = SSnano.try_update_ui(user, user, id, ui, data, force_open)
+		ui = SSonyxui.try_update_ui(user, user, id, ui, data, force_open)
 		if(!ui)
 			// Don't copy-paste this unless you're making a pAI software module!
 			ui = new(user, user, id, "pai_manifest.tmpl", "Crew Manifest", 450, 600)
@@ -142,7 +142,7 @@
 	id = "messenger"
 	toggle = 0
 
-	on_ui_interact(mob/living/silicon/pai/user, datum/nanoui/ui=null, force_open=1)
+	on_ui_interact(mob/living/silicon/pai/user, datum/onyxui/ui=null, force_open=1)
 		var/data[0]
 
 		data["receiver_off"] = user.pda.toff
@@ -178,7 +178,7 @@
 
 		data["messages"] = messages
 
-		ui = SSnano.try_update_ui(user, user, id, ui, data, force_open)
+		ui = SSonyxui.try_update_ui(user, user, id, ui, data, force_open)
 		if(!ui)
 			// Don't copy-paste this unless you're making a pAI software module!
 			ui = new(user, user, id, "pai_messenger.tmpl", "Digital Messenger", 450, 600)
@@ -226,7 +226,7 @@
 	id = "door_jack"
 	toggle = 0
 
-	on_ui_interact(mob/living/silicon/pai/user, datum/nanoui/ui=null, force_open=1)
+	on_ui_interact(mob/living/silicon/pai/user, datum/onyxui/ui=null, force_open=1)
 		var/data[0]
 
 		data["cable"] = user.cable != null
@@ -236,7 +236,7 @@
 		data["progress_b"] = user.hackprogress % 10
 		data["aborted"] = user.hack_aborted
 
-		ui = SSnano.try_update_ui(user, user, id, ui, data, force_open)
+		ui = SSonyxui.try_update_ui(user, user, id, ui, data, force_open)
 		if(!ui)
 			// Don't copy-paste this unless you're making a pAI software module!
 			ui = new(user, user, id, "pai_doorjack.tmpl", "Door Jack", 300, 150)
@@ -300,7 +300,7 @@
 	id = "atmos_sense"
 	toggle = 0
 
-	on_ui_interact(mob/living/silicon/pai/user, datum/nanoui/ui=null, force_open=1)
+	on_ui_interact(mob/living/silicon/pai/user, datum/onyxui/ui=null, force_open=1)
 		var/data[0]
 
 		var/turf/T = get_turf_or_move(user.loc)
@@ -327,7 +327,7 @@
 				gases[++gases.len] = gas
 			data["gas"] = gases
 
-		ui = SSnano.try_update_ui(user, user, id, ui, data, force_open)
+		ui = SSonyxui.try_update_ui(user, user, id, ui, data, force_open)
 		if(!ui)
 			// Don't copy-paste this unless you're making a pAI software module!
 			ui = new(user, user, id, "pai_atmosphere.tmpl", "Atmosphere Sensor", 350, 300)
@@ -381,13 +381,13 @@
 	id = "signaller"
 	toggle = 0
 
-	on_ui_interact(mob/living/silicon/pai/user, datum/nanoui/ui=null, force_open=1)
+	on_ui_interact(mob/living/silicon/pai/user, datum/onyxui/ui=null, force_open=1)
 		var/data[0]
 
 		data["frequency"] = format_frequency(user.sradio.frequency)
 		data["code"] = user.sradio.code
 
-		ui = SSnano.try_update_ui(user, user, id, ui, data, force_open)
+		ui = SSonyxui.try_update_ui(user, user, id, ui, data, force_open)
 		if(!ui)
 			// Don't copy-paste this unless you're making a pAI software module!
 			ui = new(user, user, id, "pai_signaller.tmpl", "Signaller", 320, 150)

@@ -87,7 +87,7 @@
 		return
 	ui_interact(user)
 
-/obj/machinery/mecha_part_fabricator/ui_interact(mob/user, ui_key = "main", datum/nanoui/ui = null, force_open = 1)
+/obj/machinery/mecha_part_fabricator/ui_interact(mob/user, ui_key = "main", datum/onyxui/ui = null, force_open = 1)
 	var/data[0]
 
 	var/datum/design/current = queue.len ? queue[1] : null
@@ -112,7 +112,7 @@
 	if(current)
 		data["builtperc"] = round((progress / current.time) * 100)
 
-	ui = SSnano.try_update_ui(user, src, ui_key, ui, data, force_open)
+	ui = SSonyxui.try_update_ui(user, src, ui_key, ui, data, force_open)
 	if(!ui)
 		ui = new(user, src, ui_key, "mechfab.tmpl", "Exosuit Fabricator UI", 840, 600)
 		ui.set_initial_data(data)

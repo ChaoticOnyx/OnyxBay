@@ -9,7 +9,7 @@
 	program_icon_state = "comm"
 	program_key_state = "med_key"
 	program_menu_icon = "flag"
-	nanomodule_path = /datum/nano_module/program/comm
+	nanomodule_path = /datum/onyxui_module/program/comm
 	extended_desc = "Used to command and control. Can relay long-range communications. This program can not be run on tablet computers."
 	required_access = access_heads
 	requires_ntnet = 1
@@ -25,7 +25,7 @@
 	temp.message_core.messages = message_core.messages.Copy()
 	return temp
 
-/datum/nano_module/program/comm
+/datum/onyxui_module/program/comm
 	name = "Command and Communications Program"
 	available_to_ai = TRUE
 	var/current_status = STATE_DEFAULT
@@ -37,11 +37,11 @@
 	var/current_viewing_message_id = 0
 	var/current_viewing_message = null
 
-/datum/nano_module/program/comm/New()
+/datum/onyxui_module/program/comm/New()
 	..()
 	crew_announcement.newscast = 1
 
-/datum/nano_module/program/comm/ui_interact(mob/user, ui_key = "main", datum/nanoui/ui = null, force_open = 1, datum/topic_state/state = GLOB.default_state)
+/datum/onyxui_module/program/comm/ui_interact(mob/user, ui_key = "main", datum/onyxui/ui = null, force_open = 1, datum/topic_state/state = GLOB.default_state)
 
 	var/list/data = host.initial_data()
 
@@ -97,25 +97,25 @@
 			processed_evac_options[++processed_evac_options.len] = option
 	data["evac_options"] = processed_evac_options
 
-	ui = SSnano.try_update_ui(user, src, ui_key, ui, data, force_open)
+	ui = SSonyxui.try_update_ui(user, src, ui_key, ui, data, force_open)
 	if(!ui)
 		ui = new(user, src, ui_key, "communication.tmpl", name, 550, 420, state = state)
 		ui.auto_update_layout = 1
 		ui.set_initial_data(data)
 		ui.open()
 
-/datum/nano_module/program/comm/proc/is_autenthicated(mob/user)
+/datum/onyxui_module/program/comm/proc/is_autenthicated(mob/user)
 	if(program)
 		return program.can_run(user)
 	return 1
 
-/datum/nano_module/program/comm/proc/obtain_message_listener()
+/datum/onyxui_module/program/comm/proc/obtain_message_listener()
 	if(program)
 		var/datum/computer_file/program/comm/P = program
 		return P.message_core
 	return global_message_listener
 
-/datum/nano_module/program/comm/Topic(href, href_list)
+/datum/onyxui_module/program/comm/Topic(href, href_list)
 	if(..())
 		return 1
 	var/mob/user = usr
@@ -153,7 +153,7 @@
 					if(is_autenthicated(user) && program.computer_emagged && !issilicon(usr) && ntn_comm)
 						if(centcomm_message_cooldown)
 							to_chat(usr, "<span class='warning'>Arrays recycling. Please stand by.</span>")
-							SSnano.update_uis(src)
+							SSonyxui.update_uis(src)
 							return
 						var/input = sanitize(input(usr, "Please choose a message to transmit to \[ABNORMAL ROUTING CORDINATES\] via quantum entanglement.  Please be aware that this process is very expensive, and abuse will lead to... termination. Transmission does not guarantee a response. There is a 30 second delay before you may send another message, be clear, full and concise.", "To abort, send an empty message.", "") as null|text)
 						if(!input || !can_still_topic())
@@ -170,7 +170,7 @@
 				if(is_autenthicated(user) && !issilicon(usr) && ntn_comm)
 					if(centcomm_message_cooldown)
 						to_chat(usr, "<span class='warning'>Arrays recycling. Please stand by.</span>")
-						SSnano.update_uis(src)
+						SSonyxui.update_uis(src)
 						return
 					if(!is_relay_online())//Contact Centcom has a check, Syndie doesn't to allow for Traitor funs.
 						to_chat(usr, "<span class='warning'>No Emergency Bluespace Relay detected. Unable to transmit message.</span>")

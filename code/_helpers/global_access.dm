@@ -79,8 +79,8 @@
 			return global.SSmisc_late;
 		if("SSmobs")
 			return global.SSmobs;
-		if("SSnano")
-			return global.SSnano;
+		if("SSonyxui")
+			return global.SSonyxui;
 		if("SSobj")
 			return global.SSobj;
 		if("SSopen_space")
@@ -1064,8 +1064,8 @@
 			global.SSmisc_late=newval;
 		if("SSmobs")
 			global.SSmobs=newval;
-		if("SSnano")
-			global.SSnano=newval;
+		if("SSonyxui")
+			global.SSonyxui=newval;
 		if("SSobj")
 			global.SSobj=newval;
 		if("SSopen_space")
@@ -2009,7 +2009,7 @@
 	"SSmisc",
 	"SSmisc_late",
 	"SSmobs",
-	"SSnano",
+	"SSonyxui",
 	"SSobj",
 	"SSopen_space",
 	"SSplants",

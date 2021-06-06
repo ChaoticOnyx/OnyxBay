@@ -9,7 +9,7 @@
 	icon = 'icons/obj/surgery.dmi'
 	icon_state = "brain-prosthetic"
 	silicon_subsystems = list(
-		/datum/nano_module/law_manager
+		/datum/onyxui_module/law_manager
 	)
 
 /mob/living/silicon/sil_brainmob/New()

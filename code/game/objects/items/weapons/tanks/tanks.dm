@@ -228,7 +228,7 @@ var/list/global/tank_gauge_cache = list()
 		proxyassembly.assembly.attack_self(user)
 
 
-/obj/item/weapon/tank/ui_interact(mob/user, ui_key = "main", datum/nanoui/ui = null, force_open = 1)
+/obj/item/weapon/tank/ui_interact(mob/user, ui_key = "main", datum/onyxui/ui = null, force_open = 1)
 	var/mob/living/carbon/location = null
 
 	if(istype(loc, /obj/item/weapon/rig))		// check for tanks in rigs
@@ -272,10 +272,10 @@ var/list/global/tank_gauge_cache = list()
 					data["maskConnected"] = 1
 
 	// update the ui if it exists, returns null if no ui is passed/found
-	ui = SSnano.try_update_ui(user, src, ui_key, ui, data, force_open)
+	ui = SSonyxui.try_update_ui(user, src, ui_key, ui, data, force_open)
 	if (!ui)
 		// the ui does not exist, so we'll create a new() one
-		// for a list of parameters and their descriptions see the code docs in \code\modules\nano\nanoui.dm
+		// for a list of parameters and their descriptions see the code docs in \code\modules\nano\onyxui.dm
 		ui = new(user, src, ui_key, "tanks.tmpl", "Tank", 500, 300)
 		// when the ui is first opened this is the data it will use
 		ui.set_initial_data(data)

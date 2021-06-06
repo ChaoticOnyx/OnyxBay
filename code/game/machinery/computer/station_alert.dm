@@ -6,17 +6,17 @@
 	icon_screen = "alert:0"
 	light_color = "#e6ffff"
 	circuit = /obj/item/weapon/circuitboard/stationalert
-	var/datum/nano_module/alarm_monitor/alarm_monitor
-	var/monitor_type = /datum/nano_module/alarm_monitor
+	var/datum/onyxui_module/alarm_monitor/alarm_monitor
+	var/monitor_type = /datum/onyxui_module/alarm_monitor
 
 /obj/machinery/computer/station_alert/engineering
-	monitor_type = /datum/nano_module/alarm_monitor/engineering
+	monitor_type = /datum/onyxui_module/alarm_monitor/engineering
 
 /obj/machinery/computer/station_alert/security
-	monitor_type = /datum/nano_module/alarm_monitor/security
+	monitor_type = /datum/onyxui_module/alarm_monitor/security
 
 /obj/machinery/computer/station_alert/all
-	monitor_type = /datum/nano_module/alarm_monitor/all
+	monitor_type = /datum/onyxui_module/alarm_monitor/all
 
 /obj/machinery/computer/station_alert/Initialize()
 	alarm_monitor = new monitor_type(src)
@@ -29,7 +29,7 @@
 	. = ..()
 	unregister_monitor()
 
-/obj/machinery/computer/station_alert/proc/register_monitor(datum/nano_module/alarm_monitor/monitor)
+/obj/machinery/computer/station_alert/proc/register_monitor(datum/onyxui_module/alarm_monitor/monitor)
 	if(monitor.host != src)
 		return
 

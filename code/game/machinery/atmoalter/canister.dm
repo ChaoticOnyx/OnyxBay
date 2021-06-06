@@ -275,7 +275,7 @@ update_flag
 
 	..()
 
-	SSnano.update_uis(src) // Update all NanoUIs attached to src
+	SSonyxui.update_uis(src) // Update all onyxuis attached to src
 
 /obj/machinery/portable_atmospherics/canister/attack_ai(mob/user as mob)
 	return
@@ -283,7 +283,7 @@ update_flag
 /obj/machinery/portable_atmospherics/canister/attack_hand(mob/user as mob)
 	ui_interact(user)
 
-/obj/machinery/portable_atmospherics/canister/ui_interact(mob/user, ui_key = "main", datum/nanoui/ui = null, force_open = 1)
+/obj/machinery/portable_atmospherics/canister/ui_interact(mob/user, ui_key = "main", datum/onyxui/ui = null, force_open = 1)
 	// this is the data which will be sent to the ui
 	var/data[0]
 	data["name"] = name
@@ -299,7 +299,7 @@ update_flag
 	if (holding)
 		data["holdingTank"] = list("name" = holding.name, "tankPressure" = round(holding.air_contents.return_pressure()))
 
-	ui = SSnano.try_update_ui(user, src, ui_key, ui, data, force_open)
+	ui = SSonyxui.try_update_ui(user, src, ui_key, ui, data, force_open)
 	if (!ui)
 		ui = new(user, src, ui_key, "canister.tmpl", "Canister", 480, 400)
 		ui.set_initial_data(data)

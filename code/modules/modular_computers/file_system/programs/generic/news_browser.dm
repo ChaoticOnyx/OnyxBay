@@ -10,7 +10,7 @@
 	requires_ntnet = 1
 	available_on_ntnet = 1
 
-	nanomodule_path = /datum/nano_module/program/computer_newsbrowser/
+	nanomodule_path = /datum/onyxui_module/program/computer_newsbrowser/
 	var/datum/computer_file/data/news_article/loaded_article
 	var/download_progress = 0
 	var/download_netspeed = 0
@@ -34,7 +34,7 @@
 	if(download_progress >= loaded_article.size)
 		downloading = 0
 		requires_ntnet = 0 // Turn off NTNet requirement as we already loaded the file into local memory.
-	SSnano.update_uis(NM)
+	SSonyxui.update_uis(NM)
 
 /datum/computer_file/program/newsbrowser/kill_program()
 	..()
@@ -84,13 +84,13 @@
 		. = 1
 		show_archived = !show_archived
 	if(.)
-		SSnano.update_uis(NM)
+		SSonyxui.update_uis(NM)
 
 
-/datum/nano_module/program/computer_newsbrowser
+/datum/onyxui_module/program/computer_newsbrowser
 	name = "NTNet/ExoNet News Browser"
 
-/datum/nano_module/program/computer_newsbrowser/ui_interact(mob/user, ui_key = "main", datum/nanoui/ui = null, force_open = 1, datum/topic_state/state = GLOB.default_state)
+/datum/onyxui_module/program/computer_newsbrowser/ui_interact(mob/user, ui_key = "main", datum/onyxui/ui = null, force_open = 1, datum/topic_state/state = GLOB.default_state)
 
 	var/datum/computer_file/program/newsbrowser/PRG
 	var/list/data = list()
@@ -124,7 +124,7 @@
 		data["all_articles"] = all_articles
 		data["showing_archived"] = PRG.show_archived
 
-	ui = SSnano.try_update_ui(user, src, ui_key, ui, data, force_open)
+	ui = SSonyxui.try_update_ui(user, src, ui_key, ui, data, force_open)
 	if (!ui)
 		ui = new(user, src, ui_key, "news_browser.tmpl", "NTNet/ExoNet News Browser", 575, 750, state = state)
 		ui.auto_update_layout = 1

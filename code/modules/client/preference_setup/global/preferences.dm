@@ -224,7 +224,7 @@ var/global/list/_client_preferences_by_type
 	options = list(GLOB.PREF_PRIMARY, GLOB.PREF_ALL)
 
 /datum/client_preference/browser_style
-	description = "Fake NanoUI Browser Style"
+	description = "Fake onyxui Browser Style"
 	key = "BROWSER_STYLED"
 	default_value = GLOB.PREF_FANCY
 	options = list(GLOB.PREF_FANCY, GLOB.PREF_PLAIN)

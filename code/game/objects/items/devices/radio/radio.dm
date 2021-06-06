@@ -73,7 +73,7 @@
 
 	return ui_interact(user)
 
-/obj/item/device/radio/ui_interact(mob/user, ui_key = "main", datum/nanoui/ui = null, force_open = 1)
+/obj/item/device/radio/ui_interact(mob/user, ui_key = "main", datum/onyxui/ui = null, force_open = 1)
 	var/data[0]
 
 	data["mic_status"] = broadcasting
@@ -92,7 +92,7 @@
 	if(syndie)
 		data["useSyndMode"] = 1
 
-	ui = SSnano.try_update_ui(user, src, ui_key, ui, data, force_open)
+	ui = SSonyxui.try_update_ui(user, src, ui_key, ui, data, force_open)
 	if(!ui)
 		ui = new(user, src, ui_key, "radio_basic.tmpl", "[name]", 400, 430)
 		ui.set_initial_data(data)
@@ -203,7 +203,7 @@
 		return 1
 
 	if(.)
-		SSnano.update_uis(src)
+		SSonyxui.update_uis(src)
 
 /obj/item/device/radio/proc/autosay(message, from, channel) //BS12 EDIT
 	var/datum/radio_frequency/connection = null
@@ -686,7 +686,7 @@
 		. = 1
 
 	if(.)
-		SSnano.update_uis(src)
+		SSonyxui.update_uis(src)
 
 /obj/item/device/radio/borg/interact(mob/user as mob)
 	if(!on)
@@ -694,7 +694,7 @@
 
 	. = ..()
 
-/obj/item/device/radio/borg/ui_interact(mob/user, ui_key = "main", datum/nanoui/ui = null, force_open = 1)
+/obj/item/device/radio/borg/ui_interact(mob/user, ui_key = "main", datum/onyxui/ui = null, force_open = 1)
 	var/data[0]
 
 	data["mic_status"] = broadcasting
@@ -715,7 +715,7 @@
 	data["has_subspace"] = 1
 	data["subspace"] = subspace_transmission
 
-	ui = SSnano.try_update_ui(user, src, ui_key, ui, data, force_open)
+	ui = SSonyxui.try_update_ui(user, src, ui_key, ui, data, force_open)
 	if(!ui)
 		ui = new(user, src, ui_key, "radio_basic.tmpl", "[name]", 400, 430)
 		ui.set_initial_data(data)

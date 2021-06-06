@@ -37,7 +37,7 @@
 	log_debug("[src]'s Topic: [href] destined for [hsrc].")
 
 	if(href_list["nano_err"]) //nano throwing errors
-		log_debug("## NanoUI, Subject [src]: " + html_decode(href_list["nano_err"]))//NANO DEBUG HOOK
+		log_debug("## onyxui, Subject [src]: " + html_decode(href_list["nano_err"]))//NANO DEBUG HOOK
 
 
 	#endif

@@ -3,13 +3,13 @@
 /datum/real_instrument
 	var/list/datum/instrument/instruments
 	var/datum/sound_player/player
-	var/datum/nano_module/song_editor/song_editor
-	var/datum/nano_module/usage_info/usage_info
+	var/datum/onyxui_module/song_editor/song_editor
+	var/datum/onyxui_module/usage_info/usage_info
 	var/maximum_lines
 	var/maximum_line_length
 	var/obj/owner
-	var/datum/nano_module/env_editor/env_editor
-	var/datum/nano_module/echo_editor/echo_editor
+	var/datum/onyxui_module/env_editor/env_editor
+	var/datum/onyxui_module/echo_editor/echo_editor
 
 /datum/real_instrument/New(obj/who, datum/sound_player/how, list/datum/instrument/instruments)
 	player = how
@@ -142,7 +142,7 @@
 
 
 
-/datum/real_instrument/proc/ui_call(mob/user, ui_key, datum/nanoui/ui = null, force_open = 0)
+/datum/real_instrument/proc/ui_call(mob/user, ui_key, datum/onyxui/ui = null, force_open = 0)
 	var/list/data
 	data = list(
 		"playback" = list(
@@ -183,7 +183,7 @@
 	)
 
 
-	ui = SSnano.try_update_ui(user, src, ui_key, ui, data, force_open)
+	ui = SSonyxui.try_update_ui(user, src, ui_key, ui, data, force_open)
 	if (!ui)
 		ui = new (user, src.owner, ui_key, "synthesizer.tmpl", owner.name, 600, 800)
 		ui.set_initial_data(data)
@@ -228,7 +228,7 @@
 	src.ui_interact(user)
 
 
-/obj/structure/synthesized_instrument/ui_interact(mob/user, ui_key = "instrument", datum/nanoui/ui = null, force_open = 0)
+/obj/structure/synthesized_instrument/ui_interact(mob/user, ui_key = "instrument", datum/onyxui/ui = null, force_open = 0)
 	real_instrument.ui_call(user,ui_key,ui,force_open)
 
 
@@ -280,7 +280,7 @@
 	src.ui_interact(user)
 
 
-/obj/item/device/synthesized_instrument/ui_interact(mob/user, ui_key = "instrument", datum/nanoui/ui = null, force_open = 0)
+/obj/item/device/synthesized_instrument/ui_interact(mob/user, ui_key = "instrument", datum/onyxui/ui = null, force_open = 0)
 	real_instrument.ui_call(user,ui_key,ui,force_open)
 
 

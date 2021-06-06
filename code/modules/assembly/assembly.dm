@@ -135,9 +135,9 @@
 /obj/item/device/assembly/interact(mob/user as mob)
 	return //HTML MENU FOR WIRES GOES HERE
 
-/obj/item/device/assembly/nano_host()
+/obj/item/device/assembly/onyxui_host()
 	if(istype(loc, /obj/item/device/assembly_holder))
-		return loc.nano_host()
+		return loc.onyxui_host()
 	return ..()
 
 /*

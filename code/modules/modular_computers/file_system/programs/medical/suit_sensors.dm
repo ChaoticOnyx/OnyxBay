@@ -1,7 +1,7 @@
 /datum/computer_file/program/suit_sensors
 	filename = "sensormonitor"
 	filedesc = "Suit Sensors Monitoring"
-	nanomodule_path = /datum/nano_module/crew_monitor
+	nanomodule_path = /datum/onyxui_module/crew_monitor
 	program_icon_state = "crew"
 	program_key_state = "med_key"
 	program_menu_icon = "heart"
@@ -13,10 +13,10 @@
 	category = PROG_MONITOR
 
 
-/datum/nano_module/crew_monitor
+/datum/onyxui_module/crew_monitor
 	name = "Crew monitor"
 
-/datum/nano_module/crew_monitor/Topic(href, href_list)
+/datum/onyxui_module/crew_monitor/Topic(href, href_list)
 	if(..()) return 1
 
 	if(href_list["track"])
@@ -27,7 +27,7 @@
 				AI.ai_actual_track(H)
 		return 1
 
-/datum/nano_module/crew_monitor/ui_interact(mob/user, ui_key = "main", datum/nanoui/ui = null, force_open = 1, datum/topic_state/state = GLOB.default_state)
+/datum/onyxui_module/crew_monitor/ui_interact(mob/user, ui_key = "main", datum/onyxui/ui = null, force_open = 1, datum/topic_state/state = GLOB.default_state)
 	var/list/data = host.initial_data()
 
 	data["isAI"] = isAI(user)
@@ -35,7 +35,7 @@
 	for(var/z_level in GLOB.using_map.map_levels)
 		data["crewmembers"] += crew_repository.health_data(z_level)
 
-	ui = SSnano.try_update_ui(user, src, ui_key, ui, data, force_open)
+	ui = SSonyxui.try_update_ui(user, src, ui_key, ui, data, force_open)
 	if(!ui)
 		ui = new(user, src, ui_key, "crew_monitor.tmpl", "Crew Monitoring Computer", 900, 800, state = state)
 

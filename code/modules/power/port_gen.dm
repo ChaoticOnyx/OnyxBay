@@ -316,7 +316,7 @@
 /obj/machinery/power/port_gen/pacman/attack_ai(mob/user as mob)
 	ui_interact(user)
 
-/obj/machinery/power/port_gen/pacman/ui_interact(mob/user, ui_key = "main", datum/nanoui/ui = null, force_open = 1)
+/obj/machinery/power/port_gen/pacman/ui_interact(mob/user, ui_key = "main", datum/onyxui/ui = null, force_open = 1)
 	if(IsBroken())
 		return
 
@@ -346,7 +346,7 @@
 
 
 
-	ui = SSnano.try_update_ui(user, src, ui_key, ui, data, force_open)
+	ui = SSonyxui.try_update_ui(user, src, ui_key, ui, data, force_open)
 	if (!ui)
 		ui = new(user, src, ui_key, "pacman.tmpl", src.name, 500, 560)
 		ui.set_initial_data(data)

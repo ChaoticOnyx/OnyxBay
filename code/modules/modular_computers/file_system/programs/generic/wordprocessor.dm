@@ -8,7 +8,7 @@
 	category = PROG_OFFICE
 	requires_ntnet = 0
 	available_on_ntnet = 1
-	nanomodule_path = /datum/nano_module/program/computer_wordprocessor/
+	nanomodule_path = /datum/onyxui_module/program/computer_wordprocessor/
 	var/browsing
 	var/open_file
 	var/loaded_data
@@ -172,10 +172,10 @@
 			error = "Hardware error: Printer was unable to print the file. It may be out of paper."
 			return 1
 
-/datum/nano_module/program/computer_wordprocessor
+/datum/onyxui_module/program/computer_wordprocessor
 	name = "Word Processor"
 
-/datum/nano_module/program/computer_wordprocessor/ui_interact(mob/user, ui_key = "main", datum/nanoui/ui = null, force_open = 1, datum/topic_state/state = GLOB.default_state)
+/datum/onyxui_module/program/computer_wordprocessor/ui_interact(mob/user, ui_key = "main", datum/onyxui/ui = null, force_open = 1, datum/topic_state/state = GLOB.default_state)
 	var/list/data = host.initial_data()
 	var/datum/computer_file/program/wordprocessor/PRG
 	PRG = program
@@ -217,7 +217,7 @@
 		data["filedata"] = pencode2html(PRG.loaded_data)
 		data["filename"] = "UNNAMED"
 
-	ui = SSnano.try_update_ui(user, src, ui_key, ui, data, force_open)
+	ui = SSonyxui.try_update_ui(user, src, ui_key, ui, data, force_open)
 	if (!ui)
 		ui = new(user, src, ui_key, "word_processor.tmpl", "Word Processor", 575, 700, state = state)
 		ui.auto_update_layout = 1

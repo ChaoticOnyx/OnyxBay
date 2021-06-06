@@ -11,7 +11,7 @@
 	required_access = access_heads
 	requires_access_to_run = 0
 	available_on_ntnet = 1
-	nanomodule_path = /datum/nano_module/program/computer_aidiag/
+	nanomodule_path = /datum/onyxui_module/program/computer_aidiag/
 	var/restoring = 0
 
 /datum/computer_file/program/aidiag/proc/get_ai()
@@ -81,10 +81,10 @@
 	if((A.hardware_integrity() == 100) && (A.backup_capacitor() == 100))
 		restoring = 0
 
-/datum/nano_module/program/computer_aidiag
+/datum/onyxui_module/program/computer_aidiag
 	name = "AI Maintenance Utility"
 
-/datum/nano_module/program/computer_aidiag/ui_interact(mob/user, ui_key = "main", datum/nanoui/ui = null, force_open = 1, datum/topic_state/state = GLOB.default_state)
+/datum/onyxui_module/program/computer_aidiag/ui_interact(mob/user, ui_key = "main", datum/onyxui/ui = null, force_open = 1, datum/topic_state/state = GLOB.default_state)
 	var/list/data = host.initial_data()
 	var/mob/living/silicon/ai/A
 	// A shortcut for getting the AI stored inside the computer. The program already does necessary checks.
@@ -110,7 +110,7 @@
 
 		data["ai_laws"] = all_laws
 
-	ui = SSnano.try_update_ui(user, src, ui_key, ui, data, force_open)
+	ui = SSonyxui.try_update_ui(user, src, ui_key, ui, data, force_open)
 	if (!ui)
 		ui = new(user, src, ui_key, "aidiag.tmpl", "AI Maintenance Utility", 600, 400, state = state)
 		if(host.update_layout())

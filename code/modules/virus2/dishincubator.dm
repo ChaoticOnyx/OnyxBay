@@ -27,7 +27,7 @@
 		O.loc = src
 
 		user.visible_message("[user] adds \a [O] to \the [src]!", "You add \a [O] to \the [src]!")
-		SSnano.update_uis(src)
+		SSonyxui.update_uis(src)
 
 		src.attack_hand(user)
 		return
@@ -43,7 +43,7 @@
 		O.loc = src
 
 		user.visible_message("[user] adds \a [O] to \the [src]!", "You add \a [O] to \the [src]!")
-		SSnano.update_uis(src)
+		SSonyxui.update_uis(src)
 
 		src.attack_hand(user)
 
@@ -51,7 +51,7 @@
 	if(stat & (NOPOWER|BROKEN)) return
 	ui_interact(user)
 
-/obj/machinery/disease2/incubator/ui_interact(mob/user, ui_key = "main", datum/nanoui/ui = null, force_open = 1)
+/obj/machinery/disease2/incubator/ui_interact(mob/user, ui_key = "main", datum/onyxui/ui = null, force_open = 1)
 	user.set_machine(src)
 
 	var/data[0]
@@ -95,7 +95,7 @@
 			data["beaker_has_no_blood"] = TRUE
 
 
-	ui = SSnano.try_update_ui(user, src, ui_key, ui, data, force_open)
+	ui = SSonyxui.try_update_ui(user, src, ui_key, ui, data, force_open)
 	if (!ui)
 		ui = new(user, src, ui_key, "dish_incubator.tmpl", src.name, 400, 600)
 		ui.set_initial_data(data)
@@ -116,7 +116,7 @@
 			if(dish.growth + 3 >= 100 && dish.growth < 100)
 				ping("\The [src] pings, \"Sufficient viral growth density achieved.\"")
 			dish.growth += 3
-			SSnano.update_uis(src)
+			SSonyxui.update_uis(src)
 
 		if(radiation)
 			if(radiation > 50 && prob(5))
@@ -129,7 +129,7 @@
 			else if(prob(5))
 				dish.virus2.minormutate()
 			radiation -= 1
-			SSnano.update_uis(src)
+			SSonyxui.update_uis(src)
 		if(toxins)
 			if(prob(5))
 				dish.virus2.infectionchance -= 1
@@ -145,7 +145,7 @@
 				dish.virus2 = null
 				ping("\The [src] pings, \"Virus sample has been destroyed\"")
 			toxins -= 1
-			SSnano.update_uis(src)
+			SSonyxui.update_uis(src)
 		if(mutagen)
 			if(mutagen > 50 && prob(5))
 				if(dish.virus2.mediummutate())
@@ -157,17 +157,17 @@
 			else if(prob(10))
 				dish.virus2.minormutate()
 			mutagen -= 1
-			SSnano.update_uis(src)
+			SSonyxui.update_uis(src)
 
 
 	else if(!dish)
 		on = 0
 		icon_state = "incubator"
-		SSnano.update_uis(src)
+		SSonyxui.update_uis(src)
 
 /obj/machinery/disease2/incubator/OnTopic(user, href_list)
 	if (href_list["close"])
-		SSnano.close_user_uis(user, src, "main")
+		SSonyxui.close_user_uis(user, src, "main")
 		return TOPIC_HANDLED
 
 	if (href_list["ejectchem"])

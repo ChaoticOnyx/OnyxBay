@@ -93,7 +93,7 @@ message - returns a distorted version of this
 distortion_chance - the chance of a filter being applied to each character.
 distortion_speed - multiplier for the chance increase.
 distortion - starting distortion.
-english_only - whether to use traditional english letters only (for use in NanoUI)
+english_only - whether to use traditional english letters only (for use in onyxui)
 */
 /proc/RadioChat(mob/living/user, message, distortion_chance = 60, distortion_speed = 1, distortion = 1, english_only = 0)
 	var/datum/language/language

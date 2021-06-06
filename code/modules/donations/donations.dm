@@ -50,13 +50,13 @@ SUBSYSTEM_DEF(donations)
 	var/was_donator = player.donator_info.donator
 
 	var/DBQuery/query = sql_query({"
-		SELECT 
+		SELECT
 			patron_types.type
-		FROM 
+		FROM
 			players
-		JOIN 
+		JOIN
 			patron_types ON players.patron_type = patron_types.id
-		WHERE 
+		WHERE
 			ckey = $ckey
 		LIMIT 0,1
 	"}, dbcon_don, list(ckey = player.ckey))
@@ -65,13 +65,13 @@ SUBSYSTEM_DEF(donations)
 		player.donator_info.patron_type = query.item[1]
 
 	query = sql_query({"
-		SELECT 
+		SELECT
 			`change`
-		FROM 
+		FROM
 			points_transactions
-		JOIN 
+		JOIN
 			players ON players.id = points_transactions.player
-		WHERE 
+		WHERE
 			ckey = $ckey
 	"}, dbcon_don, list(ckey = player.ckey))
 
@@ -94,11 +94,11 @@ SUBSYSTEM_DEF(donations)
 		return FALSE
 
 	var/DBQuery/query = sql_query({"
-		SELECT 
+		SELECT
 			item_path
-		FROM 
+		FROM
 			store_players_items
-		WHERE 
+		WHERE
 			player = (SELECT id FROM players WHERE ckey = $ckey)
 	"}, dbcon_don, list(ckey = player.ckey))
 
@@ -134,16 +134,16 @@ SUBSYSTEM_DEF(donations)
 
 	var/transaction_id
 	var/DBQuery/query = sql_query({"
-		SELECT 
+		SELECT
 			id
-		FROM 
+		FROM
 			points_transactions
 		WHERE
-			player = (SELECT id FROM players WHERE ckey = $ckey) 
+			player = (SELECT id FROM players WHERE ckey = $ckey)
 			AND
 			comment = $comment
-		ORDER BY 
-			id 
+		ORDER BY
+			id
 			DESC
 	"}, dbcon_don, list(ckey = player.ckey, comment = comment))
 
@@ -220,7 +220,7 @@ SUBSYSTEM_DEF(donations)
 	var/list/data = list(
 		"SSdonations" = "\ref[SSdonations]"
 	)
-	var/datum/nanoui/ui = SSnano.try_update_ui(user, src, ui_key, null, data, force_open=FALSE)
+	var/datum/onyxui/ui = SSonyxui.try_update_ui(user, src, ui_key, null, data, force_open=FALSE)
 	if(!ui)
 		ui = new (user, src, ui_key, "donations_info.tmpl", "Donations Info", 500, 600, state=GLOB.interactive_state)
 		ui.set_initial_data(data)

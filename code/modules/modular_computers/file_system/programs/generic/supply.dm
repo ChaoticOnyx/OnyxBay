@@ -1,7 +1,7 @@
 /datum/computer_file/program/supply
 	filename = "supply"
 	filedesc = "Supply Management"
-	nanomodule_path = /datum/nano_module/supply
+	nanomodule_path = /datum/onyxui_module/supply
 	program_icon_state = "supply"
 	program_key_state = "rd_key"
 	program_menu_icon = "cart"
@@ -13,12 +13,12 @@
 
 /datum/computer_file/program/supply/process_tick()
 	..()
-	var/datum/nano_module/supply/SNM = NM
+	var/datum/onyxui_module/supply/SNM = NM
 	if(istype(SNM) && (SNM.emagged != computer_emagged))
 		SNM.emagged = computer_emagged
 		SNM.generate_categories()
 
-/datum/nano_module/supply
+/datum/onyxui_module/supply
 	name = "Supply Management program"
 	var/screen = 1		// 0: Ordering menu, 1: Statistics 2: Shuttle control, 3: Orders menu
 	var/selected_category
@@ -27,7 +27,7 @@
 	var/emagged = FALSE	// TODO: Implement synchronisation with modular computer framework.
 	var/current_security_level
 
-/datum/nano_module/supply/ui_interact(mob/user, ui_key = "main", datum/nanoui/ui = null, force_open = 1, state = GLOB.default_state)
+/datum/onyxui_module/supply/ui_interact(mob/user, ui_key = "main", datum/onyxui/ui = null, force_open = 1, state = GLOB.default_state)
 	var/list/data = host.initial_data()
 	var/is_admin = check_access(user, access_cargo)
 	var/decl/security_state/security_state = decls_repository.get_decl(GLOB.using_map.security_state)
@@ -73,23 +73,23 @@
 			var/list/requests[0]
 			var/list/done[0]
 			for(var/datum/supply_order/SO in SSsupply.shoppinglist)
-				cart.Add(order_to_nanoui(SO))
+				cart.Add(order_to_onyxui(SO))
 			for(var/datum/supply_order/SO in SSsupply.requestlist)
-				requests.Add(order_to_nanoui(SO))
+				requests.Add(order_to_onyxui(SO))
 			for(var/datum/supply_order/SO in SSsupply.donelist)
-				done.Add(order_to_nanoui(SO))
+				done.Add(order_to_onyxui(SO))
 			data["cart"] = cart
 			data["requests"] = requests
 			data["done"] = done
 
-	ui = SSnano.try_update_ui(user, src, ui_key, ui, data, force_open)
+	ui = SSonyxui.try_update_ui(user, src, ui_key, ui, data, force_open)
 	if (!ui)
 		ui = new(user, src, ui_key, "supply.tmpl", name, 1050, 800, state = state)
 		ui.set_auto_update(1)
 		ui.set_initial_data(data)
 		ui.open()
 
-/datum/nano_module/supply/Topic(href, href_list)
+/datum/onyxui_module/supply/Topic(href, href_list)
 	var/mob/user = usr
 	if(..())
 		return 1
@@ -209,7 +209,7 @@
 				break
 		return 1
 
-/datum/nano_module/supply/proc/generate_categories()
+/datum/onyxui_module/supply/proc/generate_categories()
 	category_names = list()
 	category_contents = list()
 	for(var/decl/hierarchy/supply_pack/sp in cargo_supply_pack_root.children)
@@ -226,7 +226,7 @@
 				)))
 			category_contents[sp.name] = category
 
-/datum/nano_module/supply/proc/get_shuttle_status()
+/datum/onyxui_module/supply/proc/get_shuttle_status()
 	var/datum/shuttle/autodock/ferry/supply/shuttle = SSsupply.shuttle
 	if(!istype(shuttle))
 		return "No Connection"
@@ -238,7 +238,7 @@
 		return "Docked"
 	return "Docking/Undocking"
 
-/datum/nano_module/supply/proc/order_to_nanoui(datum/supply_order/SO)
+/datum/onyxui_module/supply/proc/order_to_onyxui(datum/supply_order/SO)
 	return list(list(
 		"id" = SO.ordernum,
 		"object" = SO.object.name,
@@ -247,13 +247,13 @@
 		"reason" = SO.reason
 		))
 
-/datum/nano_module/supply/proc/can_print()
-	var/obj/item/modular_computer/MC = nano_host()
+/datum/onyxui_module/supply/proc/can_print()
+	var/obj/item/modular_computer/MC = onyxui_host()
 	if(!istype(MC) || !istype(MC.nano_printer))
 		return 0
 	return 1
 
-/datum/nano_module/supply/proc/print_order(datum/supply_order/O, mob/user)
+/datum/onyxui_module/supply/proc/print_order(datum/supply_order/O, mob/user)
 	if(!O)
 		return
 
@@ -270,7 +270,7 @@
 	t += "<hr>"
 	print_text(t, user, rawhtml = TRUE)
 
-/datum/nano_module/supply/proc/print_summary(mob/user)
+/datum/onyxui_module/supply/proc/print_summary(mob/user)
 	var/t = ""
 	t += "<center><BR><b><large>[GLOB.using_map.station_name]</large></b><BR><i>[station_date]</i><BR><i>Export overview<field></i></center><hr>"
 	for(var/source in SSsupply.point_source_descriptions)

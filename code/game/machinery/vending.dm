@@ -33,7 +33,7 @@
 	var/vend_delay = 10 //How long does it take to vend?
 	var/categories = CAT_NORMAL // Bitmask of cats we're currently showing
 	var/datum/stored_items/vending_products/currently_vending = null // What we're requesting payment for right now
-	var/status_message = "" // Status screen messages like "insufficient funds", displayed in NanoUI
+	var/status_message = "" // Status screen messages like "insufficient funds", displayed in onyxui
 	var/status_error = 0 // Set to 1 if status_message is an error
 
 	/*
@@ -212,7 +212,7 @@
 			src.vend(currently_vending, usr)
 			return
 		else if(handled)
-			SSnano.update_uis(src)
+			SSonyxui.update_uis(src)
 			return // don't smack that machine with your 2 credits
 
 	if (I || istype(W, /obj/item/weapon/spacecash))
@@ -225,7 +225,7 @@
 		if(src.panel_open)
 			src.overlays += image(src.icon, "[base_icon]-panel")
 
-		SSnano.update_uis(src)  // Speaker switch is on the main UI, not wires UI
+		SSonyxui.update_uis(src)  // Speaker switch is on the main UI, not wires UI
 		return
 	else if(isMultitool(W) || isWirecutter(W))
 		if(src.panel_open)
@@ -242,7 +242,7 @@
 		coin = W
 		categories |= CAT_COIN
 		to_chat(user, "<span class='notice'>You insert \the [W] into \the [src].</span>")
-		SSnano.update_uis(src)
+		SSonyxui.update_uis(src)
 		return
 	else if(istype(W,/obj/item/weapon/weldingtool))
 		var/obj/item/weapon/weldingtool/WT = W
@@ -405,11 +405,11 @@
 	ui_interact(user)
 
 /**
- *  Display the NanoUI window for the vending machine.
+ *  Display the onyxui window for the vending machine.
  *
- *  See NanoUI documentation for details.
+ *  See onyxui documentation for details.
  */
-/obj/machinery/vending/ui_interact(mob/user, ui_key = "main", datum/nanoui/ui = null, force_open = 1)
+/obj/machinery/vending/ui_interact(mob/user, ui_key = "main", datum/onyxui/ui = null, force_open = 1)
 	if(CanUseTopic(user) != STATUS_INTERACTIVE)
 		return
 	user.set_machine(src)
@@ -450,7 +450,7 @@
 	else
 		data["panel"] = 0
 
-	ui = SSnano.try_update_ui(user, src, ui_key, ui, data, force_open)
+	ui = SSonyxui.try_update_ui(user, src, ui_key, ui, data, force_open)
 	if (!ui)
 		ui = new(user, src, ui_key, "vending_machine.tmpl", src.name, 440, 600)
 		ui.set_initial_data(data)
@@ -484,7 +484,7 @@
 			var/key = text2num(href_list["vend"])
 			var/datum/stored_items/vending_products/R = product_records[key]
 
-			// This should not happen unless the request from NanoUI was bad
+			// This should not happen unless the request from onyxui was bad
 			if(!(R.category & src.categories))
 				return
 
@@ -508,7 +508,7 @@
 		else if ((href_list["togglevoice"]) && (src.panel_open))
 			src.shut_up = !src.shut_up
 
-		SSnano.update_uis(src)
+		SSonyxui.update_uis(src)
 
 /obj/machinery/vending/proc/vend(datum/stored_items/vending_products/R, mob/user)
 	if((!allowed(usr)) && !emagged && scan_id)	//For SECURE VENDING MACHINES YEAH
@@ -518,7 +518,7 @@
 	src.vend_ready = 0 //One thing at a time!!
 	src.status_message = "Vending..."
 	src.status_error = 0
-	SSnano.update_uis(src)
+	SSonyxui.update_uis(src)
 
 	if (R.category & CAT_COIN)
 		if(!coin)
@@ -562,7 +562,7 @@
 		src.status_error = 0
 		src.vend_ready = 1
 		currently_vending = null
-		SSnano.update_uis(src)
+		SSonyxui.update_uis(src)
 
 /**
  * Add item to the machine
@@ -576,10 +576,10 @@
 
 	if(R.add_product(W))
 		to_chat(user, "<span class='notice'>You insert \the [W] in the product receptor.</span>")
-		SSnano.update_uis(src)
+		SSonyxui.update_uis(src)
 		return 1
 
-	SSnano.update_uis(src)
+	SSonyxui.update_uis(src)
 
 /obj/machinery/vending/Process()
 	if(stat & (BROKEN|NOPOWER))

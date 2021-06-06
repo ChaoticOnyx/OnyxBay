@@ -51,7 +51,7 @@ var/list/escape_pods_by_name = list()
 	name = "escape pod controller"
 	var/datum/shuttle/autodock/ferry/escape_pod/pod
 
-/obj/machinery/embedded_controller/radio/simple_docking_controller/escape_pod/ui_interact(mob/user, ui_key = "main", datum/nanoui/ui = null, force_open = 1)
+/obj/machinery/embedded_controller/radio/simple_docking_controller/escape_pod/ui_interact(mob/user, ui_key = "main", datum/onyxui/ui = null, force_open = 1)
 	var/data[0]
 
 	data = list(
@@ -63,7 +63,7 @@ var/list/escape_pods_by_name = list()
 		"is_armed" = pod.arming_controller.armed,
 	)
 
-	ui = SSnano.try_update_ui(user, src, ui_key, ui, data, force_open)
+	ui = SSonyxui.try_update_ui(user, src, ui_key, ui, data, force_open)
 
 	if (!ui)
 		ui = new(user, src, ui_key, "escape_pod_console.tmpl", name, 470, 290)
@@ -89,7 +89,7 @@ var/list/escape_pods_by_name = list()
 	name = "escape pod berth controller"
 	progtype = /datum/computer/file/embedded_program/docking/simple/escape_pod
 
-/obj/machinery/embedded_controller/radio/simple_docking_controller/escape_pod_berth/ui_interact(mob/user, ui_key = "main", datum/nanoui/ui = null, force_open = 1)
+/obj/machinery/embedded_controller/radio/simple_docking_controller/escape_pod_berth/ui_interact(mob/user, ui_key = "main", datum/onyxui/ui = null, force_open = 1)
 	var/data[0]
 
 	var/armed = null
@@ -103,7 +103,7 @@ var/list/escape_pods_by_name = list()
 		"armed" = armed,
 	)
 
-	ui = SSnano.try_update_ui(user, src, ui_key, ui, data, force_open)
+	ui = SSonyxui.try_update_ui(user, src, ui_key, ui, data, force_open)
 
 	if (!ui)
 		ui = new(user, src, ui_key, "escape_pod_berth_console.tmpl", name, 470, 290)

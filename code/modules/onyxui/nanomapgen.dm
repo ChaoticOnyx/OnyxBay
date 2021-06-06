@@ -17,7 +17,7 @@
 //NOTE: Does not explicitly support non 32x32 icons or stuff with large pixel_* values, so don't blame me if it doesn't work perfectly
 
 /client/proc/nanomapgen_DumpImage()
-	set name = "Generate NanoUI Map"
+	set name = "Generate onyxui Map"
 	set category = "Server"
 
 	if(holder)
@@ -48,7 +48,7 @@
 		sleep(3)
 		return NANOMAP_TERMINALERR
 
-	var/icon/Tile = icon(file("nano/mapbase1024.png"))
+	var/icon/Tile = icon(file("onyxui/mapbase1024.png"))
 	if (Tile.Width() != NANOMAP_MAX_ICON_DIMENSION || Tile.Height() != NANOMAP_MAX_ICON_DIMENSION)
 		to_world_log("NanoMapGen: <B>ERROR: BASE IMAGE DIMENSIONS ARE NOT [NANOMAP_MAX_ICON_DIMENSION]x[NANOMAP_MAX_ICON_DIMENSION]</B>")
 		sleep(3)

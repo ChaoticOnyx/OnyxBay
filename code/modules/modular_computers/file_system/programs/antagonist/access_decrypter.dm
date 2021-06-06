@@ -9,7 +9,7 @@
 	requires_ntnet = 1
 	available_on_ntnet = 0
 	available_on_syndinet = 1
-	nanomodule_path = /datum/nano_module/program/access_decrypter/
+	nanomodule_path = /datum/onyxui_module/program/access_decrypter/
 	var/message = ""
 	var/running = FALSE
 	var/progress = 0
@@ -70,10 +70,10 @@
 			ntnet_global.intrusion_detection_alarm = 1
 		return 1
 
-/datum/nano_module/program/access_decrypter
+/datum/onyxui_module/program/access_decrypter
 	name = "NTNet Access Decrypter"
 
-/datum/nano_module/program/access_decrypter/ui_interact(mob/user, ui_key = "main", datum/nanoui/ui = null, force_open = 1, datum/topic_state/state = GLOB.default_state)
+/datum/onyxui_module/program/access_decrypter/ui_interact(mob/user, ui_key = "main", datum/onyxui/ui = null, force_open = 1, datum/topic_state/state = GLOB.default_state)
 	if(!ntnet_global)
 		return
 	var/datum/computer_file/program/access_decrypter/PRG = program
@@ -98,7 +98,7 @@
 			strings.Add(string)
 		data["dos_strings"] = strings
 
-	ui = SSnano.try_update_ui(user, src, ui_key, ui, data, force_open)
+	ui = SSonyxui.try_update_ui(user, src, ui_key, ui, data, force_open)
 	if (!ui)
 		ui = new(user, src, ui_key, "access_decrypter.tmpl", "NTNet Access Decrypter", 550, 400, state = state)
 		ui.auto_update_layout = 1

@@ -1,7 +1,7 @@
 /datum/computer_file/program/hire_tool
 	filename = "NTHiretool"
 	filedesc = "Hire Management Tool"
-	nanomodule_path = /datum/nano_module/program/hire_tool
+	nanomodule_path = /datum/onyxui_module/program/hire_tool
 	program_icon_state = "id"
 	program_key_state = "id_key"
 	program_menu_icon = "suitcase"
@@ -12,13 +12,13 @@
 	usage_flags = PROGRAM_CONSOLE
 	category = PROG_COMMAND
 
-/datum/nano_module/program/hire_tool
+/datum/onyxui_module/program/hire_tool
 	name = "Hire Management Tool"
 	var/hiring_menu = FALSE
 	var/hiring_job = null
 	var/message = ""
 
-/datum/nano_module/program/hire_tool/ui_interact(mob/user, ui_key = "main", datum/nanoui/ui = null, force_open = 1, datum/topic_state/state = GLOB.default_state)
+/datum/onyxui_module/program/hire_tool/ui_interact(mob/user, ui_key = "main", datum/onyxui/ui = null, force_open = 1, datum/topic_state/state = GLOB.default_state)
 	var/list/data = host.initial_data()
 
 	data["hiring_menu"] = hiring_menu
@@ -43,17 +43,17 @@
 
 	var/list/job_vacancies = newlist()
 	for(var/datum/job_vacancy/JO in GLOB.vacancies)
-		job_vacancies |= vacancy_to_nanoui(JO)
+		job_vacancies |= vacancy_to_onyxui(JO)
 	data["current_vacancies"] = job_vacancies.len ? job_vacancies : 0
 
-	ui = SSnano.try_update_ui(user, src, ui_key, ui, data, force_open)
+	ui = SSonyxui.try_update_ui(user, src, ui_key, ui, data, force_open)
 	if(!ui)
 		ui = new(user, src, ui_key, "hire_tool.tmpl", name, 600, 700, state = state)
 		ui.auto_update_layout = 1
 		ui.set_initial_data(data)
 		ui.open()
 
-/datum/nano_module/program/hire_tool/proc/correct_available_jobs(list/positions)
+/datum/onyxui_module/program/hire_tool/proc/correct_available_jobs(list/positions)
 	if(!positions)
 		return
 
@@ -70,7 +70,7 @@
 
 	return jobs
 
-/datum/nano_module/program/hire_tool/proc/vacancy_to_nanoui(datum/job_vacancy/JV)
+/datum/onyxui_module/program/hire_tool/proc/vacancy_to_onyxui(datum/job_vacancy/JV)
 	return list(list(
 		"title" = JV.title,
 		"status" = JV.status,
@@ -79,7 +79,7 @@
 		"id" = JV.id
 		))
 
-/datum/nano_module/program/hire_tool/Topic(href, href_list)
+/datum/onyxui_module/program/hire_tool/Topic(href, href_list)
 	if(..())
 		return 1
 

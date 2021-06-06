@@ -42,7 +42,7 @@
 	if(..()) return
 	ui_interact(user)
 
-/obj/machinery/computer/diseasesplicer/ui_interact(mob/user, ui_key = "main", datum/nanoui/ui = null, force_open = 1)
+/obj/machinery/computer/diseasesplicer/ui_interact(mob/user, ui_key = "main", datum/onyxui/ui = null, force_open = 1)
 	user.set_machine(src)
 
 	var/data[0]
@@ -80,7 +80,7 @@
 	else
 		data["info"] = "No dish loaded."
 
-	ui = SSnano.try_update_ui(user, src, ui_key, ui, data, force_open)
+	ui = SSonyxui.try_update_ui(user, src, ui_key, ui, data, force_open)
 	if (!ui)
 		ui = new(user, src, ui_key, "disease_splicer.tmpl", src.name, 400, 600)
 		ui.set_initial_data(data)
@@ -94,12 +94,12 @@
 		scanning -= 1
 		if(!scanning)
 			ping("\The [src] pings, \"Analysis complete.\"")
-			SSnano.update_uis(src)
+			SSonyxui.update_uis(src)
 	if(splicing)
 		splicing -= 1
 		if(!splicing)
 			ping("\The [src] pings, \"Splicing operation complete.\"")
-			SSnano.update_uis(src)
+			SSonyxui.update_uis(src)
 	if(burning)
 		burning -= 1
 		if(!burning)
@@ -121,11 +121,11 @@
 					d.species = species_buffer
 
 			ping("\The [src] pings, \"Backup disk saved.\"")
-			SSnano.update_uis(src)
+			SSonyxui.update_uis(src)
 
 /obj/machinery/computer/diseasesplicer/OnTopic(user, href_list)
 	if (href_list["close"])
-		SSnano.close_user_uis(user, src, "main")
+		SSonyxui.close_user_uis(user, src, "main")
 		return TOPIC_HANDLED
 
 	if (href_list["grab"])

@@ -42,7 +42,7 @@ var/bomb_set
 		timeleft = max(timeleft - (wait / 10), 0)
 		if(timeleft <= 0)
 			addtimer(CALLBACK(src, .proc/explode), 0)
-		SSnano.update_uis(src)
+		SSonyxui.update_uis(src)
 
 /obj/machinery/nuclearbomb/attackby(obj/item/weapon/O as obj, mob/user as mob, params)
 	if(isScrewdriver(O))
@@ -178,7 +178,7 @@ var/bomb_set
 		return STATUS_CLOSE
 	return ..()
 
-/obj/machinery/nuclearbomb/ui_interact(mob/user, ui_key = "main", datum/nanoui/ui = null, force_open = 1)
+/obj/machinery/nuclearbomb/ui_interact(mob/user, ui_key = "main", datum/onyxui/ui = null, force_open = 1)
 	var/data[0]
 	data["hacking"] = 0
 	data["auth"] = is_auth(user)
@@ -205,7 +205,7 @@ var/bomb_set
 		if(yes_code)
 			data["message"] = "*****"
 
-	ui = SSnano.try_update_ui(user, src, ui_key, ui, data, force_open)
+	ui = SSonyxui.try_update_ui(user, src, ui_key, ui, data, force_open)
 	if(!ui)
 		ui = new(user, src, ui_key, "nuclear_bomb.tmpl", "Nuke Control Panel", 300, 510)
 		ui.set_initial_data(data)

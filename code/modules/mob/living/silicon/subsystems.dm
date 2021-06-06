@@ -1,22 +1,22 @@
 /mob/living/silicon
 	var/list/silicon_subsystems_by_name = list()
 	var/list/silicon_subsystems = list(
-		/datum/nano_module/alarm_monitor/all,
-		/datum/nano_module/law_manager,
-		/datum/nano_module/records/ai
+		/datum/onyxui_module/alarm_monitor/all,
+		/datum/onyxui_module/law_manager,
+		/datum/onyxui_module/records/ai
 	)
 
 /mob/living/silicon/ai/New()
 	silicon_subsystems.Cut()
-	for(var/subtype in subtypesof(/datum/nano_module))
-		var/datum/nano_module/NM = subtype
+	for(var/subtype in subtypesof(/datum/onyxui_module))
+		var/datum/onyxui_module/NM = subtype
 		if(initial(NM.available_to_ai))
 			silicon_subsystems += NM
 	..()
 
 /mob/living/silicon/robot/syndicate
 	silicon_subsystems = list(
-		/datum/nano_module/law_manager
+		/datum/onyxui_module/law_manager
 	)
 
 /mob/living/silicon/Destroy()
@@ -29,7 +29,7 @@
 	for(var/subsystem_type in silicon_subsystems)
 		init_subsystem(subsystem_type)
 
-	if(/datum/nano_module/alarm_monitor/all in silicon_subsystems)
+	if(/datum/onyxui_module/alarm_monitor/all in silicon_subsystems)
 		for(var/datum/alarm_handler/AH in SSalarm.all_handlers)
 			AH.register_alarm(src, /mob/living/silicon/proc/receive_alarm)
 			queued_alarms[AH] = list()	// Makes sure alarms remain listed in consistent order
@@ -39,7 +39,7 @@
 	if(existing_entry && !ispath(existing_entry))
 		return FALSE
 
-	var/ui_state = subsystem_type == /datum/nano_module/law_manager ? GLOB.conscious_state : GLOB.self_state
+	var/ui_state = subsystem_type == /datum/onyxui_module/law_manager ? GLOB.conscious_state : GLOB.self_state
 	var/stat_silicon_subsystem/SSS = new(src, subsystem_type, ui_state)
 	silicon_subsystems[subsystem_type] = SSS
 	silicon_subsystems_by_name[SSS.name] = SSS
@@ -87,7 +87,7 @@
 	parent_type = /atom/movable
 	simulated = 0
 	var/ui_state
-	var/datum/nano_module/subsystem
+	var/datum/onyxui_module/subsystem
 
 /stat_silicon_subsystem/New(mob/living/silicon/loc, subsystem_type, ui_state)
 	if(!istype(loc))

@@ -25,7 +25,7 @@
 	else
 		..()
 
-/obj/machinery/embedded_controller/radio/airlock/docking_port/ui_interact(mob/user, ui_key = "main", datum/nanoui/ui = null, force_open = 1, datum/nanoui/master_ui = null, datum/topic_state/state = GLOB.default_state)
+/obj/machinery/embedded_controller/radio/airlock/docking_port/ui_interact(mob/user, ui_key = "main", datum/onyxui/ui = null, force_open = 1, datum/onyxui/master_ui = null, datum/topic_state/state = GLOB.default_state)
 	var/data[0]
 
 	data = list(
@@ -40,7 +40,7 @@
 		"name" = docking_program.get_name()
 	)
 
-	ui = SSnano.try_update_ui(user, src, ui_key, ui, data, force_open)
+	ui = SSonyxui.try_update_ui(user, src, ui_key, ui, data, force_open)
 
 	if (!ui)
 		ui = new(user, src, ui_key, "docking_airlock_console.tmpl", name, 470, 290, state = state)

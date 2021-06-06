@@ -2,7 +2,7 @@
 	filename = "docking"
 	filedesc = "Docking Control"
 	required_access = access_heads
-	nanomodule_path = /datum/nano_module/docking
+	nanomodule_path = /datum/onyxui_module/docking
 	program_icon_state = "supply"
 	program_key_state = "rd_key"
 	program_menu_icon = "triangle-2-e-w"
@@ -12,18 +12,18 @@
 	available_on_ntnet = 1
 	requires_ntnet = 1
 
-/datum/nano_module/docking
+/datum/onyxui_module/docking
 	name = "Docking Control program"
 	var/list/docking_controllers = list() //list of tags
 
 /datum/computer_file/program/docking/run_program()
 	. = ..()
 	if(NM)
-		var/datum/nano_module/docking/NMD = NM
+		var/datum/onyxui_module/docking/NMD = NM
 		NMD.refresh_docks()
 
-/datum/nano_module/docking/proc/refresh_docks()
-	var/atom/movable/AM = nano_host()
+/datum/onyxui_module/docking/proc/refresh_docks()
+	var/atom/movable/AM = onyxui_host()
 	if(!istype(AM))
 		return
 	docking_controllers.Cut()
@@ -41,7 +41,7 @@
 				continue
 			docking_controllers += D.docking_program.id_tag
 
-/datum/nano_module/docking/ui_interact(mob/user, ui_key = "main", datum/nanoui/ui = null, force_open = 1, state = GLOB.default_state)
+/datum/onyxui_module/docking/ui_interact(mob/user, ui_key = "main", datum/onyxui/ui = null, force_open = 1, state = GLOB.default_state)
 	var/list/data = host.initial_data()
 	var/list/docks = list()
 	for(var/docktag in docking_controllers)
@@ -56,14 +56,14 @@
 				"codes" = P.docking_codes ? P.docking_codes : "Unset"
 				)))
 	data["docks"] = docks
-	ui = SSnano.try_update_ui(user, src, ui_key, ui, data, force_open)
+	ui = SSonyxui.try_update_ui(user, src, ui_key, ui, data, force_open)
 	if (!ui)
 		ui = new(user, src, ui_key, "docking.tmpl", name, 600, 450, state = state)
 		ui.set_auto_update(1)
 		ui.set_initial_data(data)
 		ui.open()
 
-/datum/nano_module/docking/Topic(href, href_list, state)
+/datum/onyxui_module/docking/Topic(href, href_list, state)
 	if(..())
 		return 1
 	if(href_list["edit_code"])

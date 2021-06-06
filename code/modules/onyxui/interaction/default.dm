@@ -7,7 +7,7 @@ GLOBAL_DATUM_INIT(default_state, /datum/topic_state/default, new)
 	return user.default_can_use_topic(src_object)
 
 /mob/proc/default_can_use_topic(src_object)
-	return STATUS_CLOSE // By default no mob can do anything with NanoUI
+	return STATUS_CLOSE // By default no mob can do anything with onyxui
 
 /mob/observer/ghost/default_can_use_topic(src_object)
 	if(can_admin_interact())
@@ -58,7 +58,7 @@ GLOBAL_DATUM_INIT(default_state, /datum/topic_state/default, new)
 
 	return STATUS_CLOSE
 
-//Some atoms such as vehicles might have special rules for how mobs inside them interact with NanoUI.
+//Some atoms such as vehicles might have special rules for how mobs inside them interact with onyxui.
 /atom/proc/contents_nano_distance(src_object, mob/living/user)
 	return user.shared_living_nano_distance(src_object)
 

@@ -146,7 +146,7 @@
 		return
 	return ui_interact(user)
 
-/obj/machinery/firealarm/ui_interact(mob/user, ui_key = "main", datum/nanoui/ui = null, force_open = 1, datum/topic_state/state = GLOB.outside_state)
+/obj/machinery/firealarm/ui_interact(mob/user, ui_key = "main", datum/onyxui/ui = null, force_open = 1, datum/topic_state/state = GLOB.outside_state)
 	var/data[0]
 	var/decl/security_state/security_state = decls_repository.get_decl(GLOB.using_map.security_state)
 
@@ -156,7 +156,7 @@
 	var/area/A = get_area(src)
 	data["active"] = A.fire
 
-	ui = SSnano.try_update_ui(user, src, ui_key, ui, data, force_open)
+	ui = SSonyxui.try_update_ui(user, src, ui_key, ui, data, force_open)
 	if(!ui)
 		ui = new(user, src, ui_key, "fire_alarm.tmpl", "Fire Alarm", 240, 330, state = state)
 		ui.set_initial_data(data)

@@ -1,4 +1,4 @@
-/datum/nano_module/song_editor
+/datum/onyxui_module/song_editor
 	name = "Song Editor"
 	available_to_ai = 0
 	var/datum/synthesized_song/song
@@ -6,27 +6,27 @@
 	var/page = 1
 
 
-/datum/nano_module/song_editor/New(host, topic_manager, datum/synthesized_song/song)
+/datum/onyxui_module/song_editor/New(host, topic_manager, datum/synthesized_song/song)
 	..()
 	src.host = host
 	src.song = song
 
 
-/datum/nano_module/song_editor/proc/pages()
+/datum/onyxui_module/song_editor/proc/pages()
 	return Ceiling(src.song.lines.len / GLOB.musical_config.song_editor_lines_per_page)
 
 
-/datum/nano_module/song_editor/proc/current_page()
+/datum/onyxui_module/song_editor/proc/current_page()
 	return src.song.current_line > 0 ? Ceiling(src.song.current_line / GLOB.musical_config.song_editor_lines_per_page) : src.page
 
 
-/datum/nano_module/song_editor/proc/page_bounds(page_num)
+/datum/onyxui_module/song_editor/proc/page_bounds(page_num)
 	return list(
 		max(1 + GLOB.musical_config.song_editor_lines_per_page * (page_num-1), 1),
 		min(GLOB.musical_config.song_editor_lines_per_page * page_num, src.song.lines.len))
 
 
-/datum/nano_module/song_editor/ui_interact(mob/user, ui_key = "song_editor", datum/nanoui/ui = null, force_open = 0)
+/datum/onyxui_module/song_editor/ui_interact(mob/user, ui_key = "song_editor", datum/onyxui/ui = null, force_open = 0)
 	var/list/data = list()
 
 	var/current_page = src.current_page()
@@ -41,14 +41,14 @@
 	data["page_num"] = current_page
 	data["page_offset"] = GLOB.musical_config.song_editor_lines_per_page * (current_page-1)
 
-	ui = SSnano.try_update_ui(user, src, ui_key, ui, data, force_open)
+	ui = SSonyxui.try_update_ui(user, src, ui_key, ui, data, force_open)
 	if (!ui)
 		ui = new (user, src, ui_key, "song_editor.tmpl", "Song Editor", 550, 600)
 		ui.set_initial_data(data)
 		ui.open()
 
 
-/datum/nano_module/song_editor/Topic(href, href_list)
+/datum/onyxui_module/song_editor/Topic(href, href_list)
 	if (..())
 		return 1
 

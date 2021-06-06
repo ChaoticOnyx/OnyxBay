@@ -392,7 +392,7 @@ var/list/ai_verbs_default = list(
 	if (href_list["switchcamera"])
 		switchCamera(locate(href_list["switchcamera"])) in cameranet.cameras
 	if (href_list["showalerts"])
-		open_subsystem(/datum/nano_module/alarm_monitor/all)
+		open_subsystem(/datum/onyxui_module/alarm_monitor/all)
 	//Carn: holopad requests
 	if (href_list["jumptoholopad"])
 		var/obj/machinery/hologram/holopad/H = locate(href_list["jumptoholopad"])

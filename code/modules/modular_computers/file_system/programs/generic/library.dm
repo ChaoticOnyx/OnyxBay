@@ -18,16 +18,16 @@ The answer was five and a half years -ZeroBits
 	requires_ntnet = 1
 	available_on_ntnet = 1
 
-	nanomodule_path = /datum/nano_module/library
+	nanomodule_path = /datum/onyxui_module/library
 
-/datum/nano_module/library
+/datum/onyxui_module/library
 	name = "Library"
 	var/error_message = ""
 	var/current_book
 	var/obj/machinery/libraryscanner/scanner
 	var/sort_by = "id"
 
-/datum/nano_module/library/ui_interact(mob/user, ui_key = "main", datum/nanoui/ui = null, force_open = 1, datum/topic_state/state = GLOB.default_state)
+/datum/onyxui_module/library/ui_interact(mob/user, ui_key = "main", datum/onyxui/ui = null, force_open = 1, datum/topic_state/state = GLOB.default_state)
 	var/list/data = host.initial_data()
 
 	data["admin"] = check_rights(R_INVESTIGATE, FALSE, user)
@@ -62,14 +62,14 @@ The answer was five and a half years -ZeroBits
 		data["book_list"] = all_entries
 		data["scanner"] = istype(scanner)
 
-	ui = SSnano.try_update_ui(user, src, ui_key, ui, data, force_open)
+	ui = SSonyxui.try_update_ui(user, src, ui_key, ui, data, force_open)
 	if (!ui)
 		ui = new(user, src, ui_key, "library.tmpl", "Library Program", 575, 700, state = state)
 		ui.auto_update_layout = 1
 		ui.set_initial_data(data)
 		ui.open()
 
-/datum/nano_module/library/Topic(href, href_list)
+/datum/onyxui_module/library/Topic(href, href_list)
 	if(..())
 		return 1
 	if(href_list["viewbook"])
@@ -82,10 +82,10 @@ The answer was five and a half years -ZeroBits
 		current_book = null
 		return 1
 	if(href_list["connectscanner"])
-		if(!nano_host())
+		if(!onyxui_host())
 			return 1
 		for(var/d in GLOB.cardinal)
-			var/obj/machinery/libraryscanner/scn = locate(/obj/machinery/libraryscanner, get_step(nano_host(), d))
+			var/obj/machinery/libraryscanner/scn = locate(/obj/machinery/libraryscanner, get_step(onyxui_host(), d))
 			if(scn && scn.anchored)
 				scanner = scn
 				return 1
@@ -154,10 +154,10 @@ The answer was five and a half years -ZeroBits
 			return 1
 
 		//PRINT TO BINDER
-		if(!nano_host())
+		if(!onyxui_host())
 			return 1
 		for(var/d in GLOB.cardinal)
-			var/obj/machinery/bookbinder/bndr = locate(/obj/machinery/bookbinder, get_step(nano_host(), d))
+			var/obj/machinery/bookbinder/bndr = locate(/obj/machinery/bookbinder, get_step(onyxui_host(), d))
 			if(bndr && bndr.anchored && bndr.operable())
 				var/obj/item/weapon/book/new_book = bndr.print(current_book["content"], current_book["title"], current_book["author"])
 				if(new_book)
@@ -188,7 +188,7 @@ The answer was five and a half years -ZeroBits
 			del_book_from_db(href_list["delbook"], usr)
 		return 1
 
-/datum/nano_module/library/proc/view_book(id)
+/datum/onyxui_module/library/proc/view_book(id)
 	if(current_book || !id)
 		return 0
 
@@ -248,23 +248,23 @@ The answer was five and a half years -ZeroBits
 	requires_ntnet = 1
 	available_on_ntnet = 1
 
-	nanomodule_path = /datum/nano_module/wiki
+	nanomodule_path = /datum/onyxui_module/wiki
 
-/datum/nano_module/wiki
+/datum/onyxui_module/wiki
 	name = "Wiki"
 
-/datum/nano_module/wiki/ui_interact(mob/user, ui_key = "main", datum/nanoui/ui = null, force_open = 0, datum/topic_state/state = GLOB.default_state)
+/datum/onyxui_module/wiki/ui_interact(mob/user, ui_key = "main", datum/onyxui/ui = null, force_open = 0, datum/topic_state/state = GLOB.default_state)
 	var/list/data = host.initial_data()
 
 	var/emagged = 0
-	if(istype(nano_host(), /obj/item/modular_computer))
-		var/obj/item/modular_computer/computer = nano_host()
+	if(istype(onyxui_host(), /obj/item/modular_computer))
+		var/obj/item/modular_computer/computer = onyxui_host()
 		emagged = computer.computer_emagged
-	if(istype(nano_host(), /datum/computer_file/program))
-		var/datum/computer_file/program/program = nano_host()
+	if(istype(onyxui_host(), /datum/computer_file/program))
+		var/datum/computer_file/program/program = onyxui_host()
 		emagged = program.computer_emagged
 
-	ui = SSnano.try_update_ui(user, src, ui_key, ui, data, force_open)
+	ui = SSonyxui.try_update_ui(user, src, ui_key, ui, data, force_open)
 	if (!ui)
 		ui = new(user, src, ui_key, "wiki_topics.tmpl", "Knowledge Base", 575, 700, state = state)
 		ui.add_script("wiki_topics.js")
@@ -274,32 +274,32 @@ The answer was five and a half years -ZeroBits
 		ui.set_initial_data(data)
 		ui.open()
 
-/datum/nano_module/wiki/Topic(href, href_list)
+/datum/onyxui_module/wiki/Topic(href, href_list)
 	if(..())
 		return 1
 	if(href_list["topic"])
 		var/emagged = 0
-		if(istype(nano_host(), /obj/item/modular_computer))
-			var/obj/item/modular_computer/computer = nano_host()
+		if(istype(onyxui_host(), /obj/item/modular_computer))
+			var/obj/item/modular_computer/computer = onyxui_host()
 			emagged = computer.computer_emagged
-		if(istype(nano_host(), /datum/computer_file/program))
-			var/datum/computer_file/program/program = nano_host()
+		if(istype(onyxui_host(), /datum/computer_file/program))
+			var/datum/computer_file/program/program = onyxui_host()
 			emagged = program.computer_emagged
 
 		// Print to connected bookbinders (if any)
 		for(var/d in GLOB.cardinal)
-			var/obj/machinery/bookbinder/bndr = locate(/obj/machinery/bookbinder, get_step(nano_host(), d))
+			var/obj/machinery/bookbinder/bndr = locate(/obj/machinery/bookbinder, get_step(onyxui_host(), d))
 			if(bndr && bndr.anchored && bndr.operable())
 				bndr.print_wiki(href_list["topic"], emagged ? 0 : 1)
 				return 1
 
 		// Regular print (creates book template)
-		if(istype(nano_host(), /obj/item/modular_computer))
-			var/obj/item/modular_computer/computer = nano_host()
+		if(istype(onyxui_host(), /obj/item/modular_computer))
+			var/obj/item/modular_computer/computer = onyxui_host()
 			if(!computer.nano_printer)
 				to_chat(usr, SPAN_DANGER("Error: No printer detected. Unable to print document."))
 				return 1
-		new /obj/item/weapon/book/wiki/template(get_turf(nano_host()), href_list["topic"], emagged ? 0 : 1)
+		new /obj/item/weapon/book/wiki/template(get_turf(onyxui_host()), href_list["topic"], emagged ? 0 : 1)
 		return 1
 
 #undef WIKI_COMMON_CATEGORY

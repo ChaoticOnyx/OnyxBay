@@ -1,5 +1,5 @@
 /*
-	This state checks if user is somewhere within src_object, as well as the default NanoUI interaction.
+	This state checks if user is somewhere within src_object, as well as the default onyxui interaction.
 */
 GLOBAL_DATUM_INIT(contained_state, /datum/topic_state/contained_state, new)
 

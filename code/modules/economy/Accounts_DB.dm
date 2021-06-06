@@ -52,7 +52,7 @@
 		O.loc = src
 		held_card = O
 
-		SSnano.update_uis(src)
+		SSonyxui.update_uis(src)
 
 	attack_hand(user)
 
@@ -60,7 +60,7 @@
 	if(stat & (NOPOWER|BROKEN)) return
 	ui_interact(user)
 
-/obj/machinery/computer/account_database/ui_interact(mob/user, ui_key="main", datum/nanoui/ui = null, force_open = 1)
+/obj/machinery/computer/account_database/ui_interact(mob/user, ui_key="main", datum/onyxui/ui = null, force_open = 1)
 	user.set_machine(src)
 
 	var/data[0]
@@ -106,7 +106,7 @@
 	if (accounts.len > 0)
 		data["accounts"] = accounts
 
-	ui = SSnano.try_update_ui(user, src, ui_key, ui, data, force_open)
+	ui = SSonyxui.try_update_ui(user, src, ui_key, ui, data, force_open)
 	if (!ui)
 		ui = new(user, src, ui_key, "accounts_terminal.tmpl", src.name, 400, 640)
 		ui.set_initial_data(data)
@@ -116,7 +116,7 @@
 	if(..())
 		return 1
 
-	var/datum/nanoui/ui = SSnano.get_open_ui(usr, src, "main")
+	var/datum/onyxui/ui = SSonyxui.get_open_ui(usr, src, "main")
 
 	if(href_list["choice"])
 		switch(href_list["choice"])

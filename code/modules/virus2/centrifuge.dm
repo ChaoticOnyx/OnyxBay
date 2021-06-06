@@ -23,7 +23,7 @@
 		O.loc = src
 
 		user.visible_message("[user] adds \a [O] to \the [src]!", "You add \a [O] to \the [src]!")
-		SSnano.update_uis(src)
+		SSonyxui.update_uis(src)
 
 	src.attack_hand(user)
 
@@ -36,7 +36,7 @@
 	if(..()) return
 	ui_interact(user)
 
-/obj/machinery/computer/centrifuge/ui_interact(mob/user, ui_key = "main", datum/nanoui/ui = null, force_open = 1)
+/obj/machinery/computer/centrifuge/ui_interact(mob/user, ui_key = "main", datum/onyxui/ui = null, force_open = 1)
 	user.set_machine(src)
 
 	var/data[0]
@@ -71,7 +71,7 @@
 					data["antibodies"] = antigens2string(A.data["antibodies"], none=null)
 				data["is_antibody_sample"] = 1
 
-	ui = SSnano.try_update_ui(user, src, ui_key, ui, data, force_open)
+	ui = SSonyxui.try_update_ui(user, src, ui_key, ui, data, force_open)
 	if (!ui)
 		ui = new(user, src, ui_key, "isolation_centrifuge.tmpl", src.name, 400, 500)
 		ui.set_initial_data(data)
@@ -93,7 +93,7 @@
 
 /obj/machinery/computer/centrifuge/OnTopic(user, href_list)
 	if (href_list["close"])
-		SSnano.close_user_uis(user, src, "main")
+		SSonyxui.close_user_uis(user, src, "main")
 		return TOPIC_HANDLED
 
 	if (href_list["print"])
@@ -147,7 +147,7 @@
 	sample.reagents.remove_reagent(/datum/reagent/blood, amt)
 	sample.reagents.add_reagent(/datum/reagent/antibodies, amt, data)
 
-	SSnano.update_uis(src)
+	SSonyxui.update_uis(src)
 	update_icon()
 	ping("\The [src] pings, \"Antibody isolated.\"")
 
@@ -157,7 +157,7 @@
 	dish.virus2 = virus2
 	virus2 = null
 
-	SSnano.update_uis(src)
+	SSonyxui.update_uis(src)
 	update_icon()
 	ping("\The [src] pings, \"Pathogen isolated.\"")
 

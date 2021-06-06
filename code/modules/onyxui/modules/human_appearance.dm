@@ -1,4 +1,4 @@
-/datum/nano_module/appearance_changer
+/datum/onyxui_module/appearance_changer
 	name = "Appearance Editor"
 	available_to_ai = FALSE
 	var/flags = APPEARANCE_ALL_HAIR
@@ -11,14 +11,14 @@
 	var/list/whitelist
 	var/list/blacklist
 
-/datum/nano_module/appearance_changer/New(location, mob/living/carbon/human/H, check_species_whitelist = 1, list/species_whitelist = list(), list/species_blacklist = list())
+/datum/onyxui_module/appearance_changer/New(location, mob/living/carbon/human/H, check_species_whitelist = 1, list/species_whitelist = list(), list/species_blacklist = list())
 	..()
 	owner = H
 	src.check_whitelist = check_species_whitelist
 	src.whitelist = species_whitelist
 	src.blacklist = species_blacklist
 
-/datum/nano_module/appearance_changer/Topic(ref, href_list, datum/topic_state/state = GLOB.default_state)
+/datum/onyxui_module/appearance_changer/Topic(ref, href_list, datum/topic_state/state = GLOB.default_state)
 	if(..())
 		return 1
 
@@ -99,7 +99,7 @@
 
 	return 0
 
-/datum/nano_module/appearance_changer/ui_interact(mob/user, ui_key = "main", datum/nanoui/ui = null, force_open = 1, datum/topic_state/state = GLOB.default_state)
+/datum/onyxui_module/appearance_changer/ui_interact(mob/user, ui_key = "main", datum/onyxui/ui = null, force_open = 1, datum/topic_state/state = GLOB.default_state)
 	if(!owner || !owner.species)
 		return
 
@@ -144,33 +144,33 @@
 
 	data["change_hair_color"] = can_change(APPEARANCE_HAIR_COLOR)
 	data["change_facial_hair_color"] = can_change(APPEARANCE_FACIAL_HAIR_COLOR)
-	ui = SSnano.try_update_ui(user, src, ui_key, ui, data, force_open)
+	ui = SSonyxui.try_update_ui(user, src, ui_key, ui, data, force_open)
 	if (!ui)
 		ui = new(user, src, ui_key, "appearance_changer.tmpl", "[src]", 800, 450, state = state)
 		ui.set_initial_data(data)
 		ui.open()
 		ui.set_auto_update(1)
 
-/datum/nano_module/appearance_changer/proc/update_dna()
+/datum/onyxui_module/appearance_changer/proc/update_dna()
 	if(owner && (flags & APPEARANCE_UPDATE_DNA))
 		owner.update_dna()
 
-/datum/nano_module/appearance_changer/proc/can_change(flag)
+/datum/onyxui_module/appearance_changer/proc/can_change(flag)
 	return owner && (flags & flag)
 
-/datum/nano_module/appearance_changer/proc/can_change_skin_tone()
+/datum/onyxui_module/appearance_changer/proc/can_change_skin_tone()
 	return owner && (flags & APPEARANCE_SKIN) && owner.species.appearance_flags & HAS_A_SKIN_TONE
 
-/datum/nano_module/appearance_changer/proc/can_change_skin_color()
+/datum/onyxui_module/appearance_changer/proc/can_change_skin_color()
 	return owner && (flags & APPEARANCE_SKIN) && owner.species.appearance_flags & HAS_SKIN_COLOR
 
-/datum/nano_module/appearance_changer/proc/cut_and_generate_data()
+/datum/onyxui_module/appearance_changer/proc/cut_and_generate_data()
 	// Making the assumption that the available species remain constant
 	valid_facial_hairstyles.Cut()
 	valid_facial_hairstyles.Cut()
 	generate_data()
 
-/datum/nano_module/appearance_changer/proc/generate_data()
+/datum/onyxui_module/appearance_changer/proc/generate_data()
 	if(!owner)
 		return
 	if(!valid_species.len)

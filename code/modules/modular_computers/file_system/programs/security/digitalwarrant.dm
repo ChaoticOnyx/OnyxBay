@@ -15,13 +15,13 @@ LEGACY_RECORD_STRUCTURE(all_warrants, warrant)
 	available_on_ntnet = 1
 	required_access = access_security
 	usage_flags = PROGRAM_ALL
-	nanomodule_path = /datum/nano_module/digitalwarrant/
+	nanomodule_path = /datum/onyxui_module/digitalwarrant/
 
-/datum/nano_module/digitalwarrant/
+/datum/onyxui_module/digitalwarrant/
 	name = "Warrant Assistant"
 	var/datum/computer_file/data/warrant/activewarrant
 
-/datum/nano_module/digitalwarrant/ui_interact(mob/user, ui_key = "main", datum/nanoui/ui = null, force_open = 1, datum/topic_state/state = GLOB.default_state)
+/datum/onyxui_module/digitalwarrant/ui_interact(mob/user, ui_key = "main", datum/onyxui/ui = null, force_open = 1, datum/topic_state/state = GLOB.default_state)
 	var/list/data = host.initial_data()
 
 	if(activewarrant)
@@ -54,14 +54,14 @@ LEGACY_RECORD_STRUCTURE(all_warrants, warrant)
 		data["searchwarrants"] = searchwarrants.len ? searchwarrants : null
 		data["archivedwarrants"] = archivedwarrants.len? archivedwarrants :null
 
-	ui = SSnano.try_update_ui(user, src, ui_key, ui, data, force_open)
+	ui = SSonyxui.try_update_ui(user, src, ui_key, ui, data, force_open)
 	if (!ui)
 		ui = new(user, src, ui_key, "digitalwarrant.tmpl", name, 700, 450, state = state)
 		ui.auto_update_layout = 1
 		ui.set_initial_data(data)
 		ui.open()
 
-/datum/nano_module/digitalwarrant/Topic(href, href_list)
+/datum/onyxui_module/digitalwarrant/Topic(href, href_list)
 	if(..())
 		return 1
 
@@ -119,7 +119,7 @@ LEGACY_RECORD_STRUCTURE(all_warrants, warrant)
 
 	if(href_list["savewarrant"])
 		. = 1
-		broadcast_security_hud_message("\A [activewarrant.fields["arrestsearch"]] warrant for <b>[activewarrant.fields["namewarrant"]]</b> has been [(activewarrant in GLOB.all_warrants) ? "edited" : "uploaded"].", nano_host())
+		broadcast_security_hud_message("\A [activewarrant.fields["arrestsearch"]] warrant for <b>[activewarrant.fields["namewarrant"]]</b> has been [(activewarrant in GLOB.all_warrants) ? "edited" : "uploaded"].", onyxui_host())
 		GLOB.all_warrants |= activewarrant
 
 		for(var/datum/computer_file/crew_record/person in GLOB.all_crew_records)

@@ -10,12 +10,12 @@
 	available_on_ntnet = 1
 	required_access = access_armory
 	usage_flags = PROGRAM_ALL
-	nanomodule_path = /datum/nano_module/forceauthorization/
+	nanomodule_path = /datum/onyxui_module/forceauthorization/
 
-/datum/nano_module/forceauthorization/
+/datum/onyxui_module/forceauthorization/
 	name = "Use of Force Authorization Manager"
 
-/datum/nano_module/forceauthorization/ui_interact(mob/user, ui_key = "main", datum/nanoui/ui = null, force_open = 1, datum/topic_state/state = GLOB.default_state)
+/datum/onyxui_module/forceauthorization/ui_interact(mob/user, ui_key = "main", datum/onyxui/ui = null, force_open = 1, datum/topic_state/state = GLOB.default_state)
 	var/list/data = host.initial_data()
 
 	data["guns"] = list()
@@ -33,14 +33,14 @@
 
 		data["guns"] += list(list("name" = "[G]", "ref" = "\ref[G]", "owner" = G.registered_owner, "modes" = modes, "loc" = list("x" = T.x, "y" = T.y, "z" = T.z)))
 
-	ui = SSnano.try_update_ui(user, src, ui_key, ui, data, force_open)
+	ui = SSonyxui.try_update_ui(user, src, ui_key, ui, data, force_open)
 	if (!ui)
 		ui = new(user, src, ui_key, "forceauthorization.tmpl", name, 700, 450, state = state)
 		ui.auto_update_layout = 1
 		ui.set_initial_data(data)
 		ui.open()
 
-/datum/nano_module/forceauthorization/Topic(href, href_list)
+/datum/onyxui_module/forceauthorization/Topic(href, href_list)
 	if(..())
 		return 1
 
