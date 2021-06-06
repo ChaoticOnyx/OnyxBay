@@ -3,6 +3,7 @@ Sqrl.helpers.define('link', function(content, blocks, _) {
 	var parameters = args.act;
 	var body = args.body;
 	var classes = args.class || '';
+	var enabled = args.enabled;
 	var dataHref = '';
 
 	if (parameters) {
@@ -13,8 +14,14 @@ Sqrl.helpers.define('link', function(content, blocks, _) {
 		classes = classes.join(' ');
 	}
 
-	if (classes.search('disabled') === -1) {
+	if (enabled === undefined || enabled === null) {
+		enabled = true;
+	}
+
+	if (enabled) {
 		classes += ' linkActive';
+	} else {
+		classes += ' disabled';
 	}
 
 	for (var i = 0; i < blocks.length; i++) {
@@ -37,8 +44,9 @@ Sqrl.helpers.define('link', function(content, blocks, _) {
 Sqrl.helpers.define('icon', function(content, blocks, _) {
 	var args = content.params[0] || {};
 	iconName = args.name;
+	iconType = args.type || 's';
 
-	return '<span class="fas fa-' + iconName + '"></span>';
+	return '<span class="fa' + iconType + ' fa-' + iconName + '"></span>';
 });
 
 Sqrl.helpers.define('progressBar', function(content, _, __) {
