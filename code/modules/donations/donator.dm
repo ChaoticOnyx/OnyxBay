@@ -29,11 +29,15 @@
 	var/list/items = new
 
 /datum/donator_info/proc/on_patreon_tier_loaded(client/C)
+	if(!SScharacter_setup.initialized)
+		return
 	var/choosen_ooc_patreon_tier = C.get_preference_value(/datum/client_preference/ooc_name_color)
-	if (!patreon_tier_available(choosen_ooc_patreon_tier))
+	if(!patreon_tier_available(choosen_ooc_patreon_tier))
 		C.set_preference(/datum/client_preference/ooc_name_color, patron_type)
 
 /datum/donator_info/proc/get_decorated_ooc_name(client/C)
+	if(!SScharacter_setup.initialized)
+		return C.key
 	var/choosen_ooc_patreon_tier = C.get_preference_value(/datum/client_preference/ooc_name_color)
 	if(choosen_ooc_patreon_tier == PATREON_NONE)
 		return C.key

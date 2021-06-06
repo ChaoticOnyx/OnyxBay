@@ -37,6 +37,3 @@
 	new /datum/random_map/automata/cave_system(null, 1, 1, 6, 255, 255) // Create the mining Z-level.
 	new /datum/random_map/noise/ore(null, 1, 1, 6, 255, 255)         // Create the mining ore distribution map.
 	return 1
-
-/datum/map/exodus/preferences_key()
-	return "exodus"

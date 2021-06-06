@@ -3,7 +3,7 @@
 
 /datum/map/proc/preferences_key()
 	// Must be a filename-safe string. In future if map paths get funky, do some sanitization here.
-	return path
+	return "default"
 
 // Procs for loading legacy savefile preferences
 /datum/map/proc/character_save_path(slot)
