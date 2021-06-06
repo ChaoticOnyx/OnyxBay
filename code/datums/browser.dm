@@ -123,21 +123,13 @@
 		onclose(user, window_id, ref)
 
 /datum/browser/proc/update(force_open = 0, use_onclose = 1)
-	if(!user)
-		qdel(src)
-		return
 	if(force_open)
 		open(use_onclose)
 	else
 		send_output(user, get_content(), "[window_id].browser")
 
 /datum/browser/proc/close()
-	if(!user)
-		qdel(src)
-		return
 	close_browser(user, "window=[window_id]")
-	winset(user, "mapwindow.map", "focus=true")
-	qdel(src)
 
 /datum/browser/Destroy()
 	ref = null
@@ -183,7 +175,11 @@
 	if(ref)
 		param = "\ref[ref]"
 
-	winset(user, windowid, "on-close=\".windowclose [param]\"")
+	addtimer(CALLBACK(user, /mob/proc/post_onclose, windowid, param), 2)
+
+/mob/proc/post_onclose(windowid, param)
+	if(client)
+		winset(src, windowid, "on-close=\".windowclose [param]\"")
 
 //	log_debug("OnClose [user]: [windowid] : ["on-close=\".windowclose [param]\""]")
 
