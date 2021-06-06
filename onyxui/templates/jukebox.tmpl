@@ -28,6 +28,8 @@ Used In File(s): \code\game\machinery\jukebox.dm
 <h3><span class="white">Available tracks:</span></h3>
 <div class="itemContent">
     {{@ each(it.data.tracks) => value, index }}
+    <div class="item"></div>
         {{@ link({act: {title: value.track}, body: value.track, class: value.track == it.data.current_track ? 'disabled' : null}) /}}
+    </div>
     {{/ each }}
 </div>

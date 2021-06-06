@@ -58,7 +58,7 @@
             "name": "Nano Watch",
             "type": "PowerShell",
             "request": "launch",
-            "script": "${workspaceFolder}/nano/Watch.ps1",
+            "script": "${workspaceFolder}/onyxui/Watch.ps1",
             "cwd": "${workspaceFolder}"
         },
         {

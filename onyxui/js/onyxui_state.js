@@ -22,20 +22,20 @@ NanoStateClass.prototype.isCurrent = function () {
 };
 
 NanoStateClass.prototype.onAdd = function (previousState) {
-    // Do not add code here, add it to the 'default' state (nano_state_defaut.js) or create a new state and override this function
+    // Do not add code here, add it to the 'default' state (onyxui_defaut.js) or create a new state and override this function
 
     NanoBaseCallbacks.addCallbacks();
 };
 
 NanoStateClass.prototype.onRemove = function (nextState) {
-    // Do not add code here, add it to the 'default' state (nano_state_defaut.js) or create a new state and override this function
+    // Do not add code here, add it to the 'default' state (onyxui_defaut.js) or create a new state and override this function
 
     NanoBaseCallbacks.removeCallbacks();
     NanoBaseHelpers.removeHelpers();
 };
 
 NanoStateClass.prototype.onBeforeUpdate = function (data) {
-    // Do not add code here, add it to the 'default' state (nano_state_defaut.js) or create a new state and override this function
+    // Do not add code here, add it to the 'default' state (onyxui_defaut.js) or create a new state and override this function
 
     data = NanoStateManager.executeBeforeUpdateCallbacks(data);
 
@@ -43,7 +43,7 @@ NanoStateClass.prototype.onBeforeUpdate = function (data) {
 };
 
 NanoStateClass.prototype.onUpdate = function (data) {
-    // Do not add code here, add it to the 'default' state (nano_state_defaut.js) or create a new state and override this function
+    // Do not add code here, add it to the 'default' state (onyxui_defaut.js) or create a new state and override this function
 
     try
     {
@@ -104,13 +104,13 @@ NanoStateClass.prototype.onUpdate = function (data) {
 };
 
 NanoStateClass.prototype.onAfterUpdate = function (data) {
-    // Do not add code here, add it to the 'default' state (nano_state_defaut.js) or create a new state and override this function
+    // Do not add code here, add it to the 'default' state (onyxui_defaut.js) or create a new state and override this function
 
     NanoStateManager.executeAfterUpdateCallbacks(data);
 };
 
 NanoStateClass.prototype.alertText = function (text) {
-    // Do not add code here, add it to the 'default' state (nano_state_defaut.js) or create a new state and override this function
+    // Do not add code here, add it to the 'default' state (onyxui_defaut.js) or create a new state and override this function
 
     alert(text);
 };

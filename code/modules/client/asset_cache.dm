@@ -294,19 +294,19 @@ You can set verify to TRUE if you want send() to sleep until the client has the 
 		/datum/asset/simple/tgui
 	)
 
-/datum/asset/directories/nanoui
+/datum/asset/directories/onyxui
 	isTrivial = FALSE
 	dirs = list(
-		"nano/js/",
-		"nano/css/",
-		"nano/images/",
-		"nano/templates/",
-		"nano/images/torch/",
-		"nano/images/status_icons/",
-		"nano/images/source/",
-		"nano/images/modular_computers/",
-		"nano/images/exodus/",
-		"nano/images/example/"
+		"onyxui/js/",
+		"onyxui/css/",
+		"onyxui/images/",
+		"onyxui/templates/",
+		"onyxui/images/torch/",
+		"onyxui/images/status_icons/",
+		"onyxui/images/source/",
+		"onyxui/images/modular_computers/",
+		"onyxui/images/exodus/",
+		"onyxui/images/example/"
 	)
 
 /*
