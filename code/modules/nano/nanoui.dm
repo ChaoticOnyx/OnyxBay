@@ -427,7 +427,7 @@ nanoui is used to open and update nano browser uis
 		close()
 
 	var/window_size = ""
-	if (width && height)
+	if(width && height)
 		window_size = "size=[width]x[height];"
 	if(update_status(0))
 		return // Will be closed by update_status().
