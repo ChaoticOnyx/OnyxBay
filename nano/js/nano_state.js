@@ -25,7 +25,6 @@ NanoStateClass.prototype.onAdd = function (previousState) {
     // Do not add code here, add it to the 'default' state (nano_state_defaut.js) or create a new state and override this function
 
     NanoBaseCallbacks.addCallbacks();
-    NanoBaseHelpers.addHelpers();
 };
 
 NanoStateClass.prototype.onRemove = function (nextState) {

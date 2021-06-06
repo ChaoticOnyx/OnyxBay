@@ -5,8 +5,6 @@ var NanoTemplate = function () {
 
     var _templates = {};
     var _compiledTemplates = {};
-	
-	var _helpers = {};
 
     var init = function () {
         // We store templateData in the body tag, it's as good a place as any
@@ -67,13 +65,12 @@ var NanoTemplate = function () {
 
             return;
         }
-    }
+    };
 
-    var compileTemplates = function () {
-
+    var compileTemplates = function (data) {
         for (var key in _templates) {
             try {
-                _compiledTemplates[key] = doT.template(_templates[key], null, _templates)
+                _compiledTemplates[key] = Sqrl.compile(_templates[key]);
             }
             catch (error) {
                 alert(error.message);
@@ -97,39 +94,13 @@ var NanoTemplate = function () {
                     alert('ERROR: Template "' + templateKey + '" does not exist in _compiledTemplates!');
                     return '<h2>Template error (does not exist)</h2>';
                 }
-                compileTemplates();
+                
+                compileTemplates(data);
             }
-            if (typeof _compiledTemplates[templateKey] != 'function') {
-                alert(_compiledTemplates[templateKey]);
-                alert('ERROR: Template "' + templateKey + '" failed to compile!');
-                return '<h2>Template error (failed to compile)</h2>';
-            }
-            return _compiledTemplates[templateKey].call(this, data['data'], data['config'], _helpers);
-        },
-		addHelper: function (helperName, helperFunction) {
-			if (!jQuery.isFunction(helperFunction)) {
-				alert('NanoTemplate.addHelper failed to add ' + helperName + ' as it is not a function.');
-				return;	
-			}
-			
-			_helpers[helperName] = helperFunction;
-		},
-		addHelpers: function (helpers) {		
-			for (var helperName in helpers) {
-				if (!helpers.hasOwnProperty(helperName))
-				{
-					continue;
-				}
-				NanoTemplate.addHelper(helperName, helpers[helperName]);
-			}
-		},
-		removeHelper: function (helperName) {
-			if (helpers.hasOwnProperty(helperName))
-			{
-				delete _helpers[helperName];
-			}	
-		}
-    }
+
+            return _compiledTemplates[templateKey](data, Sqrl.defaultConfig);
+        }
+    };
 }();
- 
+
 

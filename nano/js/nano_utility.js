@@ -38,6 +38,7 @@ var NanoUtility = function ()
 					queryString += key + '=' + parameters[key];
 				}
 			}
+
 			return queryString;
 		}
     }
@@ -46,7 +47,7 @@ var NanoUtility = function ()
 if (typeof jQuery == 'undefined') {  
 	alert('ERROR: Javascript library failed to load!');
 }
-if (typeof doT == 'undefined') {  
+if (typeof Sqrl == 'undefined') {  
 	alert('ERROR: Template engine failed to load!');
 }	
 
