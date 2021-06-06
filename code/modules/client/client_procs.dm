@@ -252,11 +252,6 @@
 			sleep(2) // wait a bit more, possibly fixes hardware mode not re-activating right
 			winset(src, null, "command=\".configure graphics-hwmode on\"")
 
-	log_client_to_db()
-	SSdonations.log_client_to_db(src)
-	SSdonations.update_donator(src)
-	SSdonations.update_donator_items(src)
-
 	send_resources()
 
 	if(prefs.lastchangelog != changelog_hash) //bolds the changelog button on the interface so we know there are updates.

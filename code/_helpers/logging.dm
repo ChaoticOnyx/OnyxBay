@@ -49,7 +49,7 @@
 		WRITE_FILE(GLOB.world_common_log, "\[[time_stamp()]] [game_id] [type]: [message][log_end]")
 
 	var/rendered = "<span class=\"log_message\"><span class=\"prefix\">[type] LOG:</span> <span class=\"message\">[message]</span></span>"
-	if(notify_admin)
+	if(notify_admin && SScharacter_setup.initialized) // Checking SScharacter_setup early so won't cycle through all the admins
 		for(var/client/C in GLOB.admins)
 			if(!req_pref || (C.get_preference_value(req_pref) == GLOB.PREF_SHOW))
 				to_chat(C, rendered)
