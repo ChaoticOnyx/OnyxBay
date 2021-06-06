@@ -7,9 +7,9 @@ Used In File(s): \code\game\machinery\jukebox.dm
     <span class="white">Current track:</span> <span class="average">{{it.data.current_track}}</span>
 </h3>
 <div>
-    {{@ link({act: {play: 1}, body: 'Play', class: it.data.playing ? 'disabled' : null }) /}}
-    {{@ link({act: {stop: 1}, body: 'Stop', class: !it.data.playing ? 'disabled' : null }) /}}
-    {{@ link({act: {eject: 1}, body: 'Eject', class: it.data.tape ? 'linkActive' : 'disabled' }) /}}
+    {{@ link({ act: { play:  1 }, body: 'Play',  class: it.data.playing  ? 'disabled'   : null       }) /}}
+    {{@ link({ act: { stop:  1 }, body: 'Stop',  class: !it.data.playing ? 'disabled'   : null       }) /}}
+    {{@ link({ act: { eject: 1 }, body: 'Eject', class: it.data.tape     ? 'linkActive' : 'disabled' }) /}}
 </div>
 
 <h3><span class="white">Volume:</span></h3>
@@ -17,19 +17,19 @@ Used In File(s): \code\game\machinery\jukebox.dm
 
 <br>
 <div class="itemContent">
-    {{@ link({act: {volume: 0}, body: '0', class: it.data.volume === 0 ? 'disabled' : null}) /}}
-    {{@ link({act: {volume: 10}, body: '20', class: it.data.volume === 10 ? 'disabled' : null}) /}}
-    {{@ link({act: {volume: 20}, body: '40', class: it.data.volume === 20 ? 'disabled' : null}) /}}
-    {{@ link({act: {volume: 30}, body: '60', class: it.data.volume === 30 ? 'disabled' : null}) /}}
-    {{@ link({act: {volume: 40}, body: '80', class: it.data.volume === 40 ? 'disabled' : null}) /}}
-    {{@ link({act: {volume: 50}, body: '100', class: it.data.volume === 50 ? 'disabled' : null}) /}}
+    {{@ link({ act: { volume: 0  }, body: '0',   class: it.data.volume === 0  ? 'disabled' : null  }) /}}
+    {{@ link({ act: { volume: 10 }, body: '20',  class: it.data.volume === 10 ? 'disabled' : null  }) /}}
+    {{@ link({ act: { volume: 20 }, body: '40',  class: it.data.volume === 20 ? 'disabled' : null  }) /}}
+    {{@ link({ act: { volume: 30 }, body: '60',  class: it.data.volume === 30 ? 'disabled' : null  }) /}}
+    {{@ link({ act: { volume: 40 }, body: '80',  class: it.data.volume === 40 ? 'disabled' : null  }) /}}
+    {{@ link({ act: { volume: 50 }, body: '100', class: it.data.volume === 50 ? 'disabled' : null  }) /}}
 </div>
 
 <h3><span class="white">Available tracks:</span></h3>
 <div class="itemContent">
     {{@ each(it.data.tracks) => value, index }}
     <div class="item"></div>
-        {{@ link({act: {title: value.track}, body: value.track, class: value.track == it.data.current_track ? 'disabled' : null}) /}}
+        {{@ link({ act: { title: value.track }, body: value.track, class: value.track == it.data.current_track ? 'disabled' : null }) /}}
     </div>
     {{/ each }}
 </div>

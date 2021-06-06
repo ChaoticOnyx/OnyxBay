@@ -22,8 +22,9 @@ NanoStateManager = function ()
 	var init = function ()
 	{
 		_data = loadFromStorage();
+		var initialData = $('body').data('initialData');
 
-		if (!_data) {
+		if (!_data || _data.windowId !== initialData.windowId) {
 			// We store initialData and templateData in the body tag, it's as good a place as any
 			_data = $('body').data('initialData');
 		}

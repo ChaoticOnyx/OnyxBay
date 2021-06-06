@@ -1,3 +1,74 @@
+{{@ if(it.data.PC_hasheader) }}
+	<div style="float: left">
+		<div class='item'>
+			<table><tr>
+			{{@ if(it.data.PC_batteryicon && it.data.PC_showbatteryicon) }}
+				<td><img src='{{ it.data.PC_batteryicon }}'>
+			{{/ if }}
+			{{@ if(it.data.PC_batterypercent && it.data.PC_showbatteryicon) }}
+				<td><b>{{ it.data.PC_batterypercent }}</b>
+			{{/ if }}
+			{{@ if(it.data.PC_ntneticon) }}
+				<td><img src='{{ it.data.PC_ntneticon }}'>
+			{{/ if }}
+			{{@ if(it.data.PC_apclinkicon) }}
+				<td><img src='{{ it.data.PC_apclinkicon }}'>
+			{{/ if }}
+			{{@ if(it.data.PC_stationtime) }}
+				<td><b>{{ it.data.PC_stationtime }}<b>
+			{{/ if }}
+			{{@ each(it.data.PC_programheaders) => value }}
+				<td><img src='{{ value.icon }}'>
+			{{/ each }}
+			</table>
+		</div>
+	</div>
+	<div style="float: right">
+		<table><tr>
+			<td>{{@ link({ act: { 'PC_shutdown': 1 }, body: 'Shutdown' }) /}}
+			{{@ if(it.data.PC_showexitprogram) }}
+				<td>{{@ link({ act: { 'PC_exit': 	 1 }, body: 'Exit Program' 	   }) /}}
+				<td>{{@ link({ act: { 'PC_minimize': 1 }, body: 'Minimize Program' }) /}}
+			{{/ if }}
+		</table>
+	</div>
+	<div style="clear: both">
+{{/ if }}
+
+<div id='uiTitleWrapper' unselectable="on"><div id='uiStatusIcon' class='icon24 uiStatusGood' unselectable="on"></div><div id='uiTitleText' unselectable="on">{{ it.config.title }}</div><div id='uiTitleFluff' unselectable="on"></div></div>
+<div id='uiMapWrapper' class="hidden" unselectable="on">
+    <div id='uiMapHeader' unselectable="on">
+		{{@ link({ act: { 'showMap': 0 }, body: 'Hide Map' }) /}}
+		<div style="float: right; width: 240px;">
+			<span style="float: left;">Z Level:&nbsp;</span>
+			{{@ each(it.config.mapZLevels) => zValue, zIndex }}
+				{{@ link({ act: { 'mapZLevel': zValue }, body: zValue, class: it.config.mapZLevel == zValue ? 'selected' : null }) /}}
+			{{/ each }}
+		</div>
+
+        <div style="float: right; width: 240px;">
+            <span style="float: left;">Zoom Level:&nbsp;</span>
+            <div unselectable="on" class="link zoomLink" data-zoom-level="4">x1.0</div>
+            <div unselectable="on" class="link zoomLink" data-zoom-level="6">x1.5</div>
+            <div unselectable="on" class="link zoomLink" data-zoom-level="8">x2.0</div>
+            <div unselectable="on" class="link zoomLink" data-zoom-level="12">x2.5</div>
+        </div>
+        <!-- Add a template with the key "mapHeader" to have it rendered here -->
+    </div>
+    <div id='uiMapContainer' unselectable="on">
+        <div id='uiMap' unselectable="on">
+            <img id="uiMapImage" src="{{ it.config.mapName }}-{{ it.config.mapZLevel }}.png" width="256" height="256" unselectable="on" />
+            <div id='uiMapContent' unselectable="on">
+                <!-- Add a template with the key "mapContent" to have it rendered here (on the map) -->
+                <!-- Having a "mapContent" template enables the map functionality -->
+            </div>
+        </div>
+        <div id="uiMapTooltip"></div>
+    </div>
+    <div id='uiMapFooter' unselectable="on">
+        <!-- Add a template with the key "mapFooter" to have it rendered here -->
+    </div>
+</div>
 <div id='uiContent' unselectable="on">
 	<div id='uiLoadingNotice'>Initiating...</div>
 </div>

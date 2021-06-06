@@ -49,15 +49,7 @@ if (typeof jQuery == 'undefined') {
 }
 if (typeof Sqrl == 'undefined') {  
 	alert('ERROR: Template engine failed to load!');
-}	
-
-(function() {
-	var _alert = window.alert;
-	window.alert = function(str) {
-		window.location = "byond://?nano_err=" + encodeURIComponent(str);
-		_alert(str);
-	};
-})();
+}
 
 // All scripts are initialised here, this allows control of init order
 $(document).ready(function () {
