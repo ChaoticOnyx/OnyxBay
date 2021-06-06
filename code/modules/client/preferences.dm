@@ -66,7 +66,7 @@
 	var/stage = "pre"
 
 	try
-		var/pref_path = get_path(client_ckey, "player_preferences")
+		var/pref_path = get_path(client_ckey, "preferences")
 
 		if(!fexists(pref_path))
 			stage = "migrate"
@@ -89,7 +89,7 @@
 	// - legacy saves were only made on the current map
 	// - a maximum of 40 slots were used
 
-	var/legacy_pref_path = get_path(client.ckey, "preferences", "sav")
+	var/legacy_pref_path = "data/player_saves/[copytext(client.ckey, 1, 2)]/[client.ckey]/preferences.sav"
 	if(!fexists(legacy_pref_path))
 		return 0
 

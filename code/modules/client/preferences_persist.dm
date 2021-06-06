@@ -1,7 +1,7 @@
 #define PREF_SER_VERSION 1
 
-/datum/preferences/proc/get_path(ckey, record_key, extension="json")
-	return "data/player_saves/[copytext(ckey,1,2)]/[ckey]/[record_key].[extension]"
+/datum/preferences/proc/get_path(ckey, record_key, extension = "json")
+	return "data/players/[ckey]/[record_key].[extension]"
 
 // Returns null if there's no record file. Crashes on other error conditions.
 /datum/preferences/proc/load_pref_record(record_key)
@@ -39,7 +39,7 @@
 /datum/preferences/proc/load_preferences()
 	var/datum/pref_record_reader/R = load_pref_record("player_preferences")
 	if(!R)
-		R = new /datum/pref_record_reader/null(PREF_SER_VERSION)
+		R = new /datum/pref_record_reader/null_reader(PREF_SER_VERSION)
 	player_setup.load_preferences(R)
 
 /datum/preferences/proc/save_preferences()
@@ -62,17 +62,17 @@
 
 	if(slot == SAVE_RESET)
 		// If we're resetting, set everything to null. Sanitization will clean it up
-		var/datum/pref_record_reader/null/R = new(PREF_SER_VERSION)
+		var/datum/pref_record_reader/null_reader/R = new(PREF_SER_VERSION)
 		player_setup.load_character(R)
 	else
 		var/datum/pref_record_reader/R = load_pref_record(get_slot_key(slot))
 		if(!R)
-			R = new /datum/pref_record_reader/null(PREF_SER_VERSION)
+			R = new /datum/pref_record_reader/null_reader(PREF_SER_VERSION)
 		player_setup.load_character(R)
 
 	update_preview_icon()
 
-/datum/preferences/proc/save_character(override_key=null)
+/datum/preferences/proc/save_character(override_key = null)
 	var/datum/pref_record_writer/json_list/W = new(PREF_SER_VERSION)
 	player_setup.save_character(W)
 

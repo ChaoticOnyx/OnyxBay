@@ -57,16 +57,16 @@
 
 // Null preference reader
 // Returns null for all keys; used when initializing records
-/datum/pref_record_reader/null
+/datum/pref_record_reader/null_reader
 	var/version
 
-/datum/pref_record_reader/null/New(version)
+/datum/pref_record_reader/null_reader/New(version)
 	src.version = version
 
-/datum/pref_record_reader/null/get_version()
+/datum/pref_record_reader/null_reader/get_version()
 	return version
 
-/datum/pref_record_reader/null/read(key)
+/datum/pref_record_reader/null_reader/read(key)
 	return null
 
 
@@ -77,7 +77,7 @@
 
 /datum/pref_record_writer/json_list/New(version)
 	ASSERT(isnum(version))
-	data = list("__VERSION"=version)
+	data = list("__VERSION" = version)
 
 /datum/pref_record_writer/json_list/write(key, val)
 	data[key] = val

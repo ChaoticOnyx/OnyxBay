@@ -82,15 +82,18 @@
 	return ..()
 
 /client/proc/get_preference_value(preference)
-	if (!prefs)
+	if(!SScharacter_setup.initialized)
+		return // Too early to use any preferences
+
+	if(!prefs)
 		log_error("[ckey]'s preferences did not load. Trying to fix.")
 		prefs = SScharacter_setup.preferences_datums[ckey]
 
-	if (!prefs)
+	if(!prefs)
 		log_error("[ckey]'s preferences are broken. Creating new one.")
 		prefs = new /datum/preferences(src)
 
-	if (!prefs)
+	if(!prefs)
 		CRASH("Can't create preferences for [ckey].")
 
 	var/datum/client_preference/cp = get_client_preference(preference)
