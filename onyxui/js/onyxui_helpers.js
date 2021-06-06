@@ -2,7 +2,7 @@ Sqrl.helpers.define('link', function(content, blocks, _) {
 	var args = content.params[0] || {};
 	var parameters = args.act;
 	var body = args.body;
-	var classes = args.class || 'linkActive';
+	var classes = args.class || '';
 	var dataHref = '';
 
 	if (parameters) {
@@ -11,6 +11,10 @@ Sqrl.helpers.define('link', function(content, blocks, _) {
 
 	if (Array.isArray(classes)) {
 		classes = classes.join(' ');
+	}
+
+	if (classes.search('disabled') === -1) {
+		classes += ' linkActive';
 	}
 
 	for (var i = 0; i < blocks.length; i++) {
@@ -32,7 +36,7 @@ Sqrl.helpers.define('link', function(content, blocks, _) {
 
 Sqrl.helpers.define('icon', function(content, blocks, _) {
 	var args = content.params[0] || {};
-	iconName = args.icon;
+	iconName = args.name;
 
 	return '<span class="fas fa-' + iconName + '"></span>';
 });

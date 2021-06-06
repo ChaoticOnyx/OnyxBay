@@ -7,9 +7,21 @@ Used In File(s): \code\game\machinery\jukebox.dm
     <span class="white">Current track:</span> <span class="average">{{it.data.current_track}}</span>
 </h3>
 <div>
-    {{@ link({ act: { play:  1 }, body: 'Play',  class: it.data.playing  ? 'disabled'   : null       }) /}}
-    {{@ link({ act: { stop:  1 }, body: 'Stop',  class: !it.data.playing ? 'disabled'   : null       }) /}}
-    {{@ link({ act: { eject: 1 }, body: 'Eject', class: it.data.tape     ? 'linkActive' : 'disabled' }) /}}
+    {{@ link({ act: { play:  1 }, class: it.data.playing  ? 'disabled'   : null }) }}
+    {{# body }}
+        {{@ icon({ name: 'play' }) /}}
+        Play
+    {{/ link }}
+    {{@ link({ act: { stop:  1 },  class: !it.data.playing ? 'disabled'   : null }) }}
+    {{# body }}
+        {{@ icon({ name: 'stop' }) /}}
+        Stop
+    {{/ link }}
+    {{@ link({ act: { eject: 1 }, class: it.data.tape     ? 'linkActive' : 'disabled' }) }}
+    {{# body }}
+        {{@ icon({ name: 'eject' }) /}}
+        Eject
+    {{/ link }}
 </div>
 
 <h3><span class="white">Volume:</span></h3>

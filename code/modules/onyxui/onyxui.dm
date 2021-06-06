@@ -143,6 +143,7 @@ onyxui is used to open and update nano browser uis
 	add_script("onyxui_filters.js")
 	add_stylesheet("shared.css") // this CSS sheet is common to all UIs
 	add_stylesheet("icons.css") // this CSS sheet is common to all UIs
+	add_stylesheet("font-awesome.css") // this CSS sheet is common to all UIs
 
  /**
   * Set the current status (also known as visibility) of this ui.
