@@ -126,6 +126,7 @@ nanoui is used to open and update nano browser uis
 	add_script("onyxui_state_default.js") // The NanoStateDefault JS, this is the "default" state (used by all UIs by default), which inherits from NanoState
 	add_script("onyxui_callbacks.js") // The NanoBaseCallbacks JS, this is used to set up (before and after update) callbacks which are common to all UIs
 	add_script("onyxui_helpers.js") // The NanoBaseHelpers JS, this is used to set up template helpers which are common to all UIs
+	add_script("onyxui_filters.js")
 	add_stylesheet("shared.css") // this CSS sheet is common to all UIs
 	add_stylesheet("icons.css") // this CSS sheet is common to all UIs
 

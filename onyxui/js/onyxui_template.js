@@ -4,7 +4,6 @@ var NanoTemplate = function () {
     var _templateData = {};
 
     var _templates = {};
-    var _compiledTemplates = {};
 
     var init = function () {
         // We store templateData in the body tag, it's as good a place as any
@@ -67,17 +66,6 @@ var NanoTemplate = function () {
         }
     };
 
-    var compileTemplates = function (data) {
-        for (var key in _templates) {
-            try {
-                _compiledTemplates[key] = Sqrl.compile(_templates[key]);
-            }
-            catch (error) {
-                alert(error.message);
-            }
-        }
-    };
-
     return {
         init: function () {
             init();
@@ -89,16 +77,7 @@ var NanoTemplate = function () {
             return _templates.hasOwnProperty(key);
         },
         parse: function (templateKey, data) {
-            if (!_compiledTemplates.hasOwnProperty(templateKey) || !_compiledTemplates[templateKey]) {
-                if (!_templates.hasOwnProperty(templateKey)) {
-                    alert('ERROR: Template "' + templateKey + '" does not exist in _compiledTemplates!');
-                    return '<h2>Template error (does not exist)</h2>';
-                }
-                
-                compileTemplates(data);
-            }
-
-            return _compiledTemplates[templateKey](data, Sqrl.defaultConfig);
+            return Sqrl.render(_templates[templateKey], data, Sqrl.defaultConfig);
         }
     };
 }();

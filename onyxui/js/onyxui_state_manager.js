@@ -21,8 +21,12 @@ NanoStateManager = function ()
 	// this function sets up the templates and base functionality
 	var init = function ()
 	{
-		// We store initialData and templateData in the body tag, it's as good a place as any
-		_data = $('body').data('initialData');
+		_data = loadFromStorage();
+
+		if (!_data) {
+			// We store initialData and templateData in the body tag, it's as good a place as any
+			_data = $('body').data('initialData');
+		}
 
 		if (_data == null || !_data.hasOwnProperty('config') || !_data.hasOwnProperty('data'))
 		{
@@ -43,6 +47,27 @@ NanoStateManager = function ()
 			_isInitialised = true;
 		});
 	};
+
+	var loadFromStorage = function()
+	{
+		if (!window.localStorage || !window.localStorage.getItem) {
+			return null;
+		}
+
+		try {
+			return JSON.parse(window.localStorage.getItem('data'));
+		} catch (error) {
+			window.localStorage.clear();
+		}
+	};
+
+	var saveToStorage = function(data) {
+		try {
+			window.localStorage.setItem('data', JSON.stringify(data));
+		} catch (error) {
+			return;
+		}
+	}
 
 	// Receive update data from the server
 	var receiveUpdateData = function (jsonString)
@@ -102,6 +127,7 @@ NanoStateManager = function ()
 		}
 
 		_data = data;
+		saveToStorage(_data);
 
         _currentState.onUpdate(_data);
 
