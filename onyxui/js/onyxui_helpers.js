@@ -4,7 +4,9 @@ Sqrl.helpers.define("link", function (content, blocks, _) {
   var body = args.body;
   var classes = args.class || "";
   var enabled = args.enabled;
+  var selected = args.selected || false;
   var dataHref = "";
+  var attribute = "";
 
   if (parameters) {
     dataHref = 'data-href="' + NanoUtility.generateHref(parameters);
@@ -14,14 +16,16 @@ Sqrl.helpers.define("link", function (content, blocks, _) {
     classes = classes.join(" ");
   }
 
-  if (enabled === undefined || enabled === null) {
+  if (enabled !== false) {
     enabled = true;
   }
 
   if (enabled) {
-    classes += " linkActive";
-  } else {
-    classes += " disabled";
+    if (selected) {
+      attribute = "selected";
+    } else {
+      attribute = "enabled";
+    }
   }
 
   for (var i = 0; i < blocks.length; i++) {
@@ -38,7 +42,9 @@ Sqrl.helpers.define("link", function (content, blocks, _) {
   }
 
   return (
-    '<div unselectable="on" class="link ' +
+    "<div " +
+    attribute +
+    ' class="button ' +
     classes +
     '" ' +
     dataHref +
@@ -53,13 +59,7 @@ Sqrl.helpers.define("icon", function (content, blocks, _) {
   iconName = args.name;
   iconType = args.type || "s";
 
-  return (
-    '<span unselectable="on" class="fa' +
-    iconType +
-    " fa-" +
-    iconName +
-    '"></span>'
-  );
+  return '<span class="fa' + iconType + " fa-" + iconName + '"></span>';
 });
 
 Sqrl.helpers.define("progressBar", function (content, _, __) {

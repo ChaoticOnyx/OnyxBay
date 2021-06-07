@@ -10,38 +10,26 @@ NanoBaseCallbacks = (function () {
     // it updates the status/visibility icon and adds click event handling to buttons/links
     status: function (updateData) {
       var uiStatusClass;
-      if (updateData["config"]["status"] == 2) {
+      if (updateData.config.status === 2) {
         uiStatusClass = "far fa-eye uiStatusGood";
-        $(".linkActive").removeClass("inactive");
-      } else if (updateData["config"]["status"] == 1) {
+        $("div.button[disabled]").attr("enabled", "");
+      } else if (updateData.config.status === 1) {
         uiStatusClass = "far fa-eye uiStatusAverage";
-        $(".linkActive").addClass("inactive");
+        $("div.button").attr("enabled", null);
       } else {
         uiStatusClass = "far fa-eye uiStatusBad";
-        $(".linkActive").addClass("inactive");
+        $("div.button").attr("enabled", null);
       }
+
       $("#uiStatusIcon").attr("class", uiStatusClass);
 
-      $(".linkActive").stopTime("linkPending");
-      $(".linkActive").removeClass("linkPending");
-
-      $(".linkActive")
+      $("div.button[enabled]")
         .off("click")
         .on("click", function (event) {
           event.preventDefault();
+
           var href = $(this).data("href");
-          if (href != null && _canClick) {
-            _canClick = false;
-            $("body").oneTime(300, "enableClick", function () {
-              _canClick = true;
-            });
-            if (updateData["config"]["status"] == 2) {
-              $(this).oneTime(300, "linkPending", function () {
-                $(this).addClass("linkPending");
-              });
-            }
-            window.location.href = href;
-          }
+          window.location.href = href;
         });
 
       return updateData;

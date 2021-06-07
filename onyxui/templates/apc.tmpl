@@ -55,12 +55,12 @@
 					<span class='bad'>Off</span>
 				{{/ if }}
 			{{# else }}	
-				{{@ link({ act: { 'breaker': 1 }, class: it.data.isOperating ? 'selected' : null }) }}
+				{{@ link({ act: { 'breaker': 1 }, selected: it.data.isOperating }) }}
 				{{# body }}
 					{{@ icon({ name: 'lightbulb', type: 'r' }) /}}
 					On
 				{{/ link }}
-				{{@ link({ act: { 'breaker': 1 }, class: it.data.isOperating ? null : 'selected' }) }}
+				{{@ link({ act: { 'breaker': 1 }, selected: !it.data.isOperating }) }}
 				{{# body }}
 				{{@ icon({ name: 'lightbulb', type: 'r' }) /}}
 					Off
@@ -113,12 +113,12 @@
 						<span class='bad'>Off</span>
 					{{/ if }}				
 				{{# else }}
-					{{@ link({ act: { 'cmode': 1 }, class: it.data.chargeMode ? 'selected' : null }) }}
+					{{@ link({ act: { 'cmode': 1 }, selected: it.data.chargeMode }) }}
 					{{# body }}
 						{{@ icon({ name: 'sync' }) /}}
 						Auto
 					{{/ link }}
-					{{@ link({ act: {'cmode': 1}, class: it.data.chargeMode ? null : 'selected' }) }}
+					{{@ link({ act: {'cmode': 1}, selected: !it.data.chargeMode }) }}
 					{{# body }}
 						{{@ icon({ name: 'times' }) /}}
 						Off
@@ -164,17 +164,17 @@
 			</div>
 			{{@ if(!it.data.locked || it.data.siliconUser) }}
 				<div class="itemContentFull">
-					{{@ link({ act: value.topicParams.auto, class: (value.status === it.data.pChan_Off_A || value.status === it.data.pChan_On_A) ? 'selected' : null }) }}
+					{{@ link({ act: value.topicParams.auto, selected: (value.status === it.data.pChan_Off_A || value.status === it.data.pChan_On_A) }) }}
 					{{# body }}
 						{{@ icon({ name: 'sync' }) /}}
 						Auto
 					{{/ link }}
-					{{@ link({ act: value.topicParams.on, class: (value.status === it.data.pChan_Off_T || value.status === it.data.pChan_On) ? 'selected' : null }) }}
+					{{@ link({ act: value.topicParams.on, selected: (value.status === it.data.pChan_Off_T || value.status === it.data.pChan_On) }) }}
 					{{# body }}
 						{{@ icon({ name: 'lightbulb' }) /}}
 						On
 					{{/ link }}
-					{{@ link({ act: value.topicParams.off, class: (value.status === it.data.pChan_Off) ? 'selected' : null }) }}
+					{{@ link({ act: value.topicParams.off, selected: value.status === it.data.pChan_Off }) }}
 					{{# body }}
 						{{@ icon({ name: 'times' }) /}}
 						Off
@@ -211,12 +211,12 @@
 					<span class='bad'>Disengaged</span>
 				{{/ if }}
 			{{# else }}
-				{{@ link({ act: { 'lock': 1 }, 'class': it.data.coverLocked ? 'selected' : null }) }}
+				{{@ link({ act: { 'lock': 1 }, selected: it.data.coverLocked }) }}
 				{{# body }}
 					{{@ icon({ name: 'lock' }) /}}
 					Engaged
 				{{/ link }}
-				{{@ link({ act: { 'lock': 1 }, class: it.data.coverLocked ? null : 'selected' }) }}
+				{{@ link({ act: { 'lock': 1 }, selected: !it.data.coverLocked }) }}
 				{{# body }}
 					{{@ icon({ name: 'lock-open' }) /}}
 					Disengaged

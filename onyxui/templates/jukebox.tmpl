@@ -10,16 +10,18 @@ Used In File(s): \code\game\machinery\jukebox.dm
     <span class="white">Current track:</span> <span class="average">{{ it.data.current_track }}</span>
 </h3>
 <div>
-    {{@ link({ act: { play:  1 }, enabled: !it.data.playing }) }}
+    {{@ link({ act: { play:  1 }, selected: it.data.playing }) }}
     {{# body }}
         {{@ icon({ name: 'play' }) /}}
         Play
     {{/ link }}
-    {{@ link({ act: { stop:  1 }, enabled: it.data.playing  }) }}
+
+    {{@ link({ act: { stop:  1 }, selected: !it.data.playing  }) }}
     {{# body }}
         {{@ icon({ name: 'stop' }) /}}
         Stop
     {{/ link }}
+
     {{@ link({ act: { eject: 1 }, enabled: it.data.tape !== null }) }}
     {{# body }}
         {{@ icon({ name: 'eject' }) /}}
@@ -35,12 +37,12 @@ Used In File(s): \code\game\machinery\jukebox.dm
 
 <br>
 <div class="itemContent">
-    {{@ link({ act: { volume: 0  }, body: '0',   enabled: it.data.volume !== 0  }) /}}
-    {{@ link({ act: { volume: 10 }, body: '20',  enabled: it.data.volume !== 10 }) /}}
-    {{@ link({ act: { volume: 20 }, body: '40',  enabled: it.data.volume !== 20 }) /}}
-    {{@ link({ act: { volume: 30 }, body: '60',  enabled: it.data.volume !== 30 }) /}}
-    {{@ link({ act: { volume: 40 }, body: '80',  enabled: it.data.volume !== 40 }) /}}
-    {{@ link({ act: { volume: 50 }, body: '100', enabled: it.data.volume !== 50 }) /}}
+    {{@ link({ act: { volume: 0  }, body: '0',   selected: it.data.volume === 0  }) /}}
+    {{@ link({ act: { volume: 10 }, body: '20',  selected: it.data.volume === 10 }) /}}
+    {{@ link({ act: { volume: 20 }, body: '40',  selected: it.data.volume === 20 }) /}}
+    {{@ link({ act: { volume: 30 }, body: '60',  selected: it.data.volume === 30 }) /}}
+    {{@ link({ act: { volume: 40 }, body: '80',  selected: it.data.volume === 40 }) /}}
+    {{@ link({ act: { volume: 50 }, body: '100', selected: it.data.volume === 50 }) /}}
 </div>
 
 <h3>
@@ -50,7 +52,7 @@ Used In File(s): \code\game\machinery\jukebox.dm
 <div class="itemContent">
     {{@ each(it.data.tracks) => value, index }}
     <div class="item"></div>
-        {{@ link({ act: { title: value.track }, body: value.track, enabled: value.track !== it.data.current_track }) /}}
+        {{@ link({ act: { title: value.track }, body: value.track, selected: value.track === it.data.current_track }) /}}
     </div>
     {{/ each }}
 </div>

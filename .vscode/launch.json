@@ -55,7 +55,7 @@
             "console": "internalConsole"
         },
         {
-            "name": "Nano Watch",
+            "name": "OnyxUI Watch",
             "type": "PowerShell",
             "request": "launch",
             "script": "${workspaceFolder}/onyxui/Watch.ps1",
