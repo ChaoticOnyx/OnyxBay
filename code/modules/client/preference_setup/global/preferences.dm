@@ -97,10 +97,10 @@ var/global/list/_client_preferences_by_type
 
 /datum/client_preference/play_lobby_music/changed(mob/preference_mob, new_value)
 	if(new_value == GLOB.PREF_YES)
-		if(isnewplayer(preference_mob))
-			GLOB.using_map.lobby_music.play_to(preference_mob)
+		if(isnewplayer(preference_mob) && preference_mob.client)
+			GLOB.lobby_music.play_to(preference_mob.client)
 	else
-		sound_to(preference_mob, sound(null, repeat = 0, wait = 0, volume = 85, channel = 1))
+		sound_to(preference_mob.client, sound(null, repeat = 0, wait = 0, volume = 85, channel = 1))
 
 /datum/client_preference/play_ambiance
 	description ="Play ambience"
@@ -245,8 +245,6 @@ var/global/list/_client_preferences_by_type
 	default_value = GLOB.PREF_NO
 
 /datum/client_preference/fullscreen_mode/changed(mob/preference_mob, new_value)
-	if(!SScharacter_setup.initialized)
-		return
 	if(preference_mob.client)
 		preference_mob.client.toggle_fullscreen(new_value)
 
@@ -256,8 +254,6 @@ var/global/list/_client_preferences_by_type
 	default_value = GLOB.PREF_NO
 
 /datum/client_preference/chat_position/changed(mob/preference_mob, new_value)
-	if(!SScharacter_setup.initialized)
-		return
 	if(preference_mob.client)
 		preference_mob.client.update_chat_position(new_value == GLOB.PREF_YES)
 

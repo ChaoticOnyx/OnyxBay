@@ -544,10 +544,13 @@ var/const/FALLOFF_SOUNDS = 0.5
 
 /client/proc/playtitlemusic()
 	if(get_preference_value(/datum/client_preference/play_lobby_music) == GLOB.PREF_YES)
-		GLOB.lobby_music.play_to(src)
+		if(isnewplayer(mob))
+			GLOB.lobby_music.play_to(src)
+	else
+		sound_to(src, sound(null, repeat = 0, wait = 0, volume = 85, channel = 1))
 
 /proc/get_rand_frequency()
-	return rand(32000, 55000) //Frequency stuff only works with 45kbps oggs.
+	return rand(32000, 55000) // Frequency stuff only works with 45kbps oggs.
 
 /proc/get_sfx(soundin)
 	if(istext(soundin))

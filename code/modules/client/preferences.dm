@@ -440,10 +440,14 @@
 	close_browser(user, "window=saves")
 	panel.close()
 
-/datum/preferences/proc/apply_post_login_preferences()
+/datum/preferences/proc/apply_post_login_preferences(client/update_client = null)
 	set waitfor = 0
 	if(!client)
-		return
+		if(!update_client)
+			return
+		client = update_client
+
+	client.chatOutput.start()
 
 	if(client.get_preference_value(/datum/client_preference/chat_position) == GLOB.PREF_YES)
 		client.update_chat_position(TRUE)
