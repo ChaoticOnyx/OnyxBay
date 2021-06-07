@@ -1,10 +1,15 @@
- /**
-  * tgui state: hands_state
-  *
-  * Checks that the src_object is in the user's hands, or user's active gripper.
- **/
+/*!
+ * Copyright (c) 2020 Aleksej Komarov
+ * SPDX-License-Identifier: MIT
+ */
 
-/var/global/datum/ui_state/hands_state/tg_hands_state = new()
+/**
+ * tgui state: hands_state
+ *
+ * Checks that the src_object is in the user's hands.
+ */
+
+GLOBAL_DATUM_INIT(tgui_hands_state, /datum/ui_state/hands_state, new)
 
 /datum/ui_state/hands_state/can_use_topic(src_object, mob/user)
 	. = user.shared_ui_interaction(src_object)
@@ -15,12 +20,11 @@
 	return UI_CLOSE
 
 /mob/living/hands_can_use_topic(src_object)
-	if(src_object in get_both_hands(src))
+	if(get_active_hand() == src_object || get_inactive_hand() == src_object)
 		return UI_INTERACTIVE
 	return UI_CLOSE
 
 /mob/living/silicon/robot/hands_can_use_topic(src_object)
-	for(var/obj/item/weapon/gripper/active_gripper in list(module_state_1, module_state_2, module_state_3))
-		if(active_gripper.contains(src_object))
-			return UI_INTERACTIVE
+	if(activated(src_object))
+		return UI_INTERACTIVE
 	return UI_CLOSE

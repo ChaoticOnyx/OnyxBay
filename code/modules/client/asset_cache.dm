@@ -274,24 +274,36 @@ You can set verify to TRUE if you want send() to sleep until the client has the 
 		"codicon.ttf" = 'html/codicon/codicon.ttf'
 	)
 
-/datum/asset/simple/tgui
+/datum/asset/simple/tgui_common
+	isTrivial = TRUE
 	verify = FALSE
 	assets = list(
-		// tgui-next
-		"tgui-main.html" = 'tgui-next/packages/tgui/public/tgui-main.html',
-		"tgui-fallback.html" = 'tgui-next/packages/tgui/public/tgui-fallback.html',
-		"tgui.bundle.js" = 'tgui-next/packages/tgui/public/tgui.bundle.js',
-		"tgui.bundle.css" = 'tgui-next/packages/tgui/public/tgui.bundle.css',
-		"shim-html5shiv.js" = 'tgui-next/packages/tgui/public/shim-html5shiv.js',
-		"shim-ie8.js" = 'tgui-next/packages/tgui/public/shim-ie8.js',
-		"shim-dom4.js" = 'tgui-next/packages/tgui/public/shim-dom4.js',
-		"shim-css-om.js" = 'tgui-next/packages/tgui/public/shim-css-om.js'
+		"tgui-common.bundle.js" = 'tgui/public/tgui-common.bundle.js',
 	)
 
-/datum/asset/group/tgui
-	children = list(
-		/datum/asset/simple/fontawesome,
-		/datum/asset/simple/tgui
+/datum/asset/simple/tgui
+	isTrivial = TRUE
+	verify = FALSE
+	assets = list(
+		"tgui.bundle.js" = 'tgui/public/tgui.bundle.js',
+		"tgui.bundle.css" = 'tgui/public/tgui.bundle.css',
+	)
+
+/datum/asset/simple/tgui_panel
+	isTrivial = TRUE
+	verify = FALSE
+	assets = list(
+		"tgui-panel.bundle.js" = 'tgui/public/tgui-panel.bundle.js',
+		"tgui-panel.bundle.css" = 'tgui/public/tgui-panel.bundle.css',
+	)
+
+/datum/asset/simple/tgfont
+	isTrivial = TRUE
+	verify = FALSE
+	assets = list(
+		"tgfont.eot" = 'tgui/packages/tgfont/dist/tgfont.eot',
+		"tgfont.woff2" = 'tgui/packages/tgfont/dist/tgfont.woff2',
+		"tgfont.css" = 'tgui/packages/tgfont/dist/tgfont.css'
 	)
 
 /datum/asset/directories/nanoui
