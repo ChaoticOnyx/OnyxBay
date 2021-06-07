@@ -392,7 +392,7 @@ macro "macro"
 		name = "F12"
 		command = "F12"
 	elem 
-		name = "SHIFT+Up"
+		name = "SHIFT+UP"
 		command = ".release_shift"
 
 macro "hotkeymode"
@@ -1114,64 +1114,33 @@ window "chemdispenser_reagents"
 window "mainwindow"
 	elem "mainwindow"
 		type = MAIN
-		pos = 372,0
-		size = 1001x739
+		pos = 281,0
+		size = 640x440
 		anchor1 = none
 		anchor2 = none
 		is-default = true
 		saved-params = "pos;size;is-minimized;is-maximized"
+		statusbar = false
 		icon = 'icons\\onyxlogo132x32.png'
 		macro = "macro"
 		menu = "menu"
 	elem "asset_cache_browser"
 		type = BROWSER
-		pos = 424,208
-		size = 1x1
+		pos = 0,0
+		size = 200x200
 		anchor1 = none
 		anchor2 = none
 		is-visible = false
 		saved-params = ""
 	elem "mainvsplit"
 		type = CHILD
-		pos = 0,0
-		size = 1001x720
+		pos = 3,0
+		size = 640x440
 		anchor1 = 0,0
 		anchor2 = 100,100
 		saved-params = "splitter"
 		right = "infowindow"
 		is-vert = true
-	elem "input"
-		type = INPUT
-		pos = 2,720
-		size = 878x20
-		anchor1 = 0,100
-		anchor2 = 100,100
-		background-color = #d3b5b5
-		is-default = true
-		border = sunken
-		saved-params = "command"
-		on-focus = ".add_typing_indicator"
-		on-blur = ".remove_typing_indicator"
-	elem "saybutton"
-		type = BUTTON
-		pos = 880,720
-		size = 40x20
-		anchor1 = 100,100
-		anchor2 = none
-		saved-params = "is-checked"
-		text = "Chat"
-		command = ".winset \"saybutton.is-checked=true?input.command=\"!Say \\\"\" macrobutton.is-checked=false:input.command=\""
-		button-type = pushbox
-	elem "hotkey_toggle"
-		type = BUTTON
-		pos = 920,720
-		size = 80x20
-		anchor1 = 100,100
-		anchor2 = none
-		saved-params = ""
-		text = "Hotkey Toggle"
-		command = ".winset \"mainwindow.macro!=macro ? mainwindow.macro=macro hotkey_toggle.is-checked=false input.focus=true : mainwindow.macro=hotkeymode hotkey_toggle.is-checked=true mapwindow.map.focus=true\""
-		button-type = pushbox
 
 window "mapwindow"
 	elem "mapwindow"
@@ -1203,7 +1172,7 @@ window "mapwindow"
 window "outputwindow"
 	elem "outputwindow"
 		type = MAIN
-		pos = 372,0
+		pos = 281,-30
 		size = 640x480
 		anchor1 = none
 		anchor2 = none
@@ -1214,55 +1183,50 @@ window "outputwindow"
 		can-minimize = false
 		can-resize = false
 		is-pane = true
+		outer-size = 654x494
 	elem "browseroutput"
 		type = BROWSER
 		pos = 0,0
-		size = 640x480
+		size = 640x456
 		anchor1 = 0,0
 		anchor2 = 100,100
 		background-color = #ffffff
 		is-visible = false
 		saved-params = ""
-		auto-format = false
 	elem "output"
 		type = OUTPUT
 		pos = 0,0
-		size = 640x480
+		size = 640x456
 		anchor1 = 0,0
 		anchor2 = 100,100
 		is-default = true
 		saved-params = ""
-	elem "saybutton_alt"
+	elem "saybutton"
 		type = BUTTON
-		pos = 519,459
+		pos = 519,460
 		size = 40x20
 		anchor1 = 100,100
 		anchor2 = none
-		is-visible = false
-		is-disabled = true
 		saved-params = "is-checked"
 		text = "Chat"
 		command = ".winset \"saybutton.is-checked=true?input.command=\"!say \\\"\" macrobutton.is-checked=false:input.command=\""
 		button-type = pushbox
-	elem "input_alt"
+	elem "input"
 		type = INPUT
-		pos = 1,459
+		pos = 1,460
 		size = 517x20
 		anchor1 = 0,100
 		anchor2 = 100,100
 		background-color = #d3b5b5
-		is-visible = false
-		is-disabled = true
+		is-default = true
 		border = sunken
 		saved-params = "command"
-	elem "hotkey_toggle_alt"
+	elem "hotkey_toggle"
 		type = BUTTON
-		pos = 560,459
+		pos = 560,460
 		size = 80x20
 		anchor1 = 100,100
 		anchor2 = none
-		is-visible = false
-		is-disabled = true
 		saved-params = ""
 		text = "Hotkey Toggle"
 		command = ".winset \"mainwindow.macro!=macro ? mainwindow.macro=macro hotkey_toggle.is-checked=false input.focus=true : mainwindow.macro=hotkeymode hotkey_toggle.is-checked=true mapwindow.map.focus=true\""
@@ -1281,7 +1245,7 @@ window "browserwindow"
 	elem "browser"
 		type = BROWSER
 		pos = 0,0
-		size = 640x499
+		size = 640x474
 		anchor1 = 0,0
 		anchor2 = 100,100
 		background-color = #ffffff
@@ -1391,23 +1355,18 @@ window "saywindow"
 		size = 300x90
 		anchor1 = none
 		anchor2 = none
-		background-color = none
 		is-visible = false
 		saved-params = "size;pos"
 		title = "say (text)"
 		statusbar = false
 		can-close = false
 		can-minimize = false
-		can-resize = true
-		outer-size = 308x117
-		inner-size = 300x90
 	elem "saywindow-button"
 		type = BUTTON
 		pos = 110,50
 		size = 80x25
 		anchor1 = 37,56
 		anchor2 = 63,83
-		background-color = none
 		border = line
 		saved-params = ""
 		text = "OK"
@@ -1418,7 +1377,6 @@ window "saywindow"
 		size = 280x20
 		anchor1 = 3,18
 		anchor2 = 96,40
-		is-default = false
 		border = sunken
 		saved-params = ""
 		command = "Say "

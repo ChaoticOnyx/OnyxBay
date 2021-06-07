@@ -70,3 +70,4 @@
 	if(client)
 		client.playtitlemusic()
 		client.prefs?.apply_post_login_preferences()
+		client.chatOutput.start()
