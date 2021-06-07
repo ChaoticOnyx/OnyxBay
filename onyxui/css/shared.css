@@ -1,6 +1,9 @@
 html, body {
     height: 100%;
     overflow: hidden;
+    user-select: none;
+    -ms-user-select: none;
+    cursor: default;
 }
 
 body {
@@ -11,11 +14,7 @@ body {
     line-height: 170%;
     font-family: Verdana, Geneva, sans-serif;
     background-color: #252525;
-    background-image: url('bg-nanotrasen.svg');
-    background-size: 70%;
-    background-position: center;
-    background-repeat: no-repeat;
-
+    
     scrollbar-base-color: #363636;
     scrollbar-face-color: #363636;
     scrollbar-3dlight-color: #252525;
@@ -55,7 +54,6 @@ hr {
     color: #ffffff;
     text-decoration: none;
     background: #40628a;
-    border: 1px solid #161616;
     padding: 0px 4px 4px 4px;
     margin: 0 2px 2px 0;
     cursor: default;
@@ -68,6 +66,7 @@ hr {
 
 a:hover, .zoomLink:hover, .linkActive:hover {
     background: #507aac;
+    cursor: pointer;
 }
 
 .linkPending, .linkPending:hover {

@@ -52,6 +52,7 @@ onyxui is used to open and update nano browser uis
 	// main ui's template filename without extension
 	var/template_name = ""
 	var/is_fancy = TRUE
+	var/centered = FALSE
 
 	// Relationship between a master interface and its children. Used in update_status
 	var/datum/onyxui/master_ui
@@ -99,6 +100,13 @@ onyxui is used to open and update nano browser uis
 		else
 			window_options += "can_resize=1;titlebar=1;"
 			is_fancy = FALSE
+
+	var/prefered_position = user.get_preference_value(/datum/client_preference/onyxui_spawn_position)
+	switch(prefered_position)
+		if(GLOB.PREF_CENTER)
+			centered = TRUE
+		else
+			centered = FALSE
 
 	// add the passed template filename as the "main" template, this is required
 	add_template("main", ntemplate_filename)
@@ -229,7 +237,8 @@ onyxui is used to open and update nano browser uis
 			"windowId" = window_id,
 			"theme" = theme,
 			"templateName" = template_name,
-			"fancy" = is_fancy
+			"fancy" = is_fancy,
+			"centered" = centered
 		)
 	return config_data
 

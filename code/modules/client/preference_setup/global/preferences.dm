@@ -25,6 +25,8 @@ GLOBAL_VAR_CONST(PREF_SILENT, "Silent")
 GLOBAL_VAR_CONST(PREF_SHORTHAND, "Shorthand")
 GLOBAL_VAR_CONST(PREF_WHITE, "White")
 GLOBAL_VAR_CONST(PREF_DARK, "Dark")
+GLOBAL_VAR_CONST(PREF_CENTER, "Center")
+GLOBAL_VAR_CONST(PREF_LAST, "Last Position")
 
 var/global/list/_client_preferences
 var/global/list/_client_preferences_by_key
@@ -297,6 +299,11 @@ var/global/list/_client_preferences_by_type
 	description = "OnyxUI Titlebar"
 	key = "ONYXUI_TITLEBAR"
 	options = list(GLOB.PREF_YES, GLOB.PREF_NO)
+
+/datum/client_preference/onyxui_spawn_position
+	description = "OnyxUI Spawn Position"
+	key = "ONYXUI_SPAWN_POSITION"
+	options = list(GLOB.PREF_LAST, GLOB.PREF_CENTER)
 
 /********************
 * General Staff Preferences *

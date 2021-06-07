@@ -35,18 +35,18 @@
 	<div style="clear: both">
 {{/ if }}
 
-<div id='uiTitleWrapper' unselectable="on">
-	<div id='uiStatusIcon' unselectable="on"></div>
-	<div id='uiTitleText' unselectable="on">{{ it.config.title }}</div>
-	<div id="uiTitleButtons" unselectable="on">
+<div id='uiTitleWrapper'>
+	<div id='uiStatusIcon'></div>
+	<div id='uiTitleText'>{{ it.config.title }}</div>
+	<div id="uiTitleButtons">
 	{{@ if(it.config.fancy) }}
-		<div id='maximizeWindow' unselectable="on">{{@ icon({ name: 'square', type: 'r' }) /}}</div>
-		<div id='closeWindow' unselectable="on">{{@ icon({ name: 'times' }) /}}</div>		
+		<div id='maximizeWindow'>{{@ icon({ name: 'square', type: 'r' }) /}}</div>
+		<div id='closeWindow'>{{@ icon({ name: 'times' }) /}}</div>		
 	{{/ if }}
 	</div>
 </div>
-<div id='uiMapWrapper' class="hidden" unselectable="on">
-    <div id='uiMapHeader' unselectable="on">
+<div id='uiMapWrapper' class="hidden">
+    <div id='uiMapHeader'>
 		{{@ link({ act: { 'showMap': 0 }, body: 'Hide Map' }) /}}
 		<div style="float: right; width: 240px;">
 			<span style="float: left;">Z Level:&nbsp;</span>
@@ -57,27 +57,27 @@
 
         <div style="float: right; width: 240px;">
             <span style="float: left;">Zoom Level:&nbsp;</span>
-            <div unselectable="on" class="link zoomLink" data-zoom-level="4">x1.0</div>
-            <div unselectable="on" class="link zoomLink" data-zoom-level="6">x1.5</div>
-            <div unselectable="on" class="link zoomLink" data-zoom-level="8">x2.0</div>
-            <div unselectable="on" class="link zoomLink" data-zoom-level="12">x2.5</div>
+            <div class="link zoomLink" data-zoom-level="4">x1.0</div>
+            <div class="link zoomLink" data-zoom-level="6">x1.5</div>
+            <div class="link zoomLink" data-zoom-level="8">x2.0</div>
+            <div class="link zoomLink" data-zoom-level="12">x2.5</div>
         </div>
         <!-- Add a template with the key "mapHeader" to have it rendered here -->
     </div>
-    <div id='uiMapContainer' unselectable="on">
-        <div id='uiMap' unselectable="on">
-            <img id="uiMapImage" src="{{ it.config.mapName }}-{{ it.config.mapZLevel }}.png" width="256" height="256" unselectable="on" />
-            <div id='uiMapContent' unselectable="on">
+    <div id='uiMapContainer'>
+        <div id='uiMap'>
+            <img id="uiMapImage" src="{{ it.config.mapName }}-{{ it.config.mapZLevel }}.png" width="256" height="256" />
+            <div id='uiMapContent'>
                 <!-- Add a template with the key "mapContent" to have it rendered here (on the map) -->
                 <!-- Having a "mapContent" template enables the map functionality -->
             </div>
         </div>
         <div id="uiMapTooltip"></div>
     </div>
-    <div id='uiMapFooter' unselectable="on">
+    <div id='uiMapFooter'>
         <!-- Add a template with the key "mapFooter" to have it rendered here -->
     </div>
 </div>
-<div id='uiContent' unselectable="on">
+<div id='uiContent'>
 	<div id='uiLoadingNotice'>Initiating...</div>
 </div>
