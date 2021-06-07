@@ -17,16 +17,12 @@ onyxui is used to open and update nano browser uis
 	var/ui_key
 	// window_id is used as the window name/identifier for browse and onclose
 	var/window_id
-	// the browser window width
-	var/width = 0
-	// the browser window height
-	var/height = 0
 	// whether to use extra logic when window closes
 	var/on_close_logic = 1
 	// an extra ref to use when the window is closed, usually null
 	var/atom/ref = null
 	// options for modifying window behaviour
-	var/window_options = "focus=0;can_close=1;can_minimize=1;can_maximize=0;can_resize=1;titlebar=1;" // window option is set using window_id
+	var/window_options = "focus=0;can_close=1;can_minimize=1;can_maximize=0;" // window option is set using window_id
 	// the list of stylesheets to apply to this ui
 	var/list/stylesheets = list()
 	// the list of javascript scripts to use for this ui
@@ -55,6 +51,7 @@ onyxui is used to open and update nano browser uis
 	var/theme = ""
 	// main ui's template filename without extension
 	var/template_name = ""
+	var/is_fancy = TRUE
 
 	// Relationship between a master interface and its children. Used in update_status
 	var/datum/onyxui/master_ui
@@ -69,13 +66,11 @@ onyxui is used to open and update nano browser uis
   * @param nui_key string A string key to use for this ui. Allows for multiple unique uis on one src_oject
   * @param ntemplate string The filename of the template file from /onyxui/templates (e.g. "my_template.tmpl")
   * @param ntitle string The title of this ui
-  * @param nwidth int the width of the ui window
-  * @param nheight int the height of the ui window
   * @param nref /atom A custom ref to use if "on_close_logic" is set to 1
   *
   * @return /onyxui new onyxui object
   */
-/datum/onyxui/New(nuser, nsrc_object, nui_key, ntemplate_filename, ntitle = 0, nwidth = 0, nheight = 0, atom/nref = null, datum/onyxui/master_ui = null, datum/topic_state/state = GLOB.default_state)
+/datum/onyxui/New(nuser, nsrc_object, nui_key, ntemplate_filename, ntitle = 0, atom/nref = null, datum/onyxui/master_ui = null, datum/topic_state/state = GLOB.default_state)
 	user = nuser
 	src_object = nsrc_object
 	ui_key = nui_key
@@ -96,15 +91,20 @@ onyxui is used to open and update nano browser uis
 		else
 			CRASH("Invalid OnyxUI theme: [prefered_theme]")
 
+	var/prefered_titlebar = user.get_preference_value(/datum/client_preference/onyxui_titlebar)
+	switch(prefered_titlebar)
+		if(GLOB.PREF_YES)
+			window_options += "can_resize=0;titlebar=0;"
+			is_fancy = TRUE
+		else
+			window_options += "can_resize=1;titlebar=1;"
+			is_fancy = FALSE
+
 	// add the passed template filename as the "main" template, this is required
 	add_template("main", ntemplate_filename)
 
 	if (ntitle)
 		title = sanitize(ntitle)
-	if (nwidth)
-		width = nwidth
-	if (nheight)
-		height = nheight
 	if (nref)
 		ref = nref
 
@@ -133,6 +133,7 @@ onyxui is used to open and update nano browser uis
   */
 /datum/onyxui/proc/add_common_assets()
 	add_script("libraries.min.js") // A JS file comprising of jQuery, doT.js and jQuery Timer libraries (compressed together)
+	add_script("onyxui_byond.js") // JS functions to work with byond.
 	add_script("onyxui_utility.js") // The NanoUtility JS, this is used to store utility functions.
 	add_script("onyxui_template.js") // The NanoTemplate JS, this is used to render templates.
 	add_script("onyxui_state_manager.js") // The NanoStateManager JS, it handles updates from the server and passes data to the current state
@@ -227,7 +228,8 @@ onyxui is used to open and update nano browser uis
 			"user" = list("name" = user? user.name : "Unknown"),
 			"windowId" = window_id,
 			"theme" = theme,
-			"templateName" = template_name
+			"templateName" = template_name,
+			"fancy" = is_fancy
 		)
 	return config_data
 
@@ -445,14 +447,11 @@ onyxui is used to open and update nano browser uis
 	if(!src_object)
 		close()
 
-	var/window_size = ""
-	if (width && height)
-		window_size = "size=[width]x[height];"
 	update_status(0)
 	if(status == STATUS_CLOSE)
 		return // Will be closed by update_status().
 
-	show_browser(user, get_html(), "window=[window_id];[window_size][window_options]")
+	show_browser(user, get_html(), "window=[window_id];[window_options]")
 	winset(user, "mapwindow.map", "focus=true") // return keyboard focus to map
 	on_close_winset()
 	//onclose(user, window_id)
@@ -488,7 +487,7 @@ onyxui is used to open and update nano browser uis
 
  /**
   * Set the UI window to call the onyxuiclose verb when the window is closed
-  * This allows Nano to handle closed windows
+  * This allows OnyxUI to handle closed windows
   *
   * @return nothing
   */
@@ -541,6 +540,9 @@ onyxui is used to open and update nano browser uis
 			map_update = 1
 		else
 			return
+
+	if(href_list["close"])
+		close()
 
 	if ((src_object && src_object.Topic(href, href_list, state)) || map_update)
 		SSonyxui.update_uis(src_object) // update all UIs attached to src_object

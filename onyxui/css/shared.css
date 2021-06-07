@@ -1,3 +1,8 @@
+html, body {
+    height: 100%;
+    overflow: hidden;
+}
+
 body {
     padding: 0;
     margin: 0;
@@ -5,7 +10,21 @@ body {
     color: #ffffff;
     line-height: 170%;
     font-family: Verdana, Geneva, sans-serif;
-    background: #272727;
+    background-color: #252525;
+    background-image: url('bg-nanotrasen.svg');
+    background-size: 70%;
+    background-position: center;
+    background-repeat: no-repeat;
+}
+
+#uiLayout {
+    overflow-y: hidden;
+    height: 100%;
+}
+
+#uiContent {
+    overflow-y: auto;
+    height: 100%;
 }
 
 #uiNoScript {
@@ -582,7 +601,7 @@ div.notice {
     color: #ff9225;
 }
 
-table.fixed { 
+table.fixed {
 	table-layout:fixed;
 }
 

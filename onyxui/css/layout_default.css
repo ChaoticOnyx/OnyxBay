@@ -1,7 +1,3 @@
-body {
-    background: #272727 url(uiBackground.png) 50% 0 repeat-x;
-}
-
 #uiWrapper {
     width: 100%;
     height: 100%;
@@ -10,41 +6,57 @@ body {
 }
 
 #uiTitleWrapper {
-    position: relative;
-    height: 30px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    align-content: center;
+    cursor: default;
+    height: 1.2rem;
+    background-color: #363636;
 }
 
 #uiTitleText {
-    position: absolute;
-    top: 6px;
-    left: 44px;
-    width: 66%;
-    overflow: hidden;
     color: #E9C183;
-    font-size: 16px;
+    font-size: 0.6rem;
 }
 
-#uiTitle.icon {
-    padding: 6px 8px 6px 42px;
-    background-position: 2px 50%;
-    background-repeat: no-repeat;
+#uiTitleButtons {
+    display: flex;
+    height: 100%;
 }
 
-#uiTitleFluff {
-    position: absolute;
-    top: 4px;
-    right: 12px;
-    width: 42px;
-    height: 24px;
-    background: url(uiTitleFluff.png) 50% 50% no-repeat;
+#uiTitleButtons > div {
+    padding-top: 0.25rem;
+    padding-right: 0.3rem;
+    padding-left: 0.3rem;
+    font-size: 0.6rem;
+}
+
+#minimizeWindow:hover, #maximizeWindow:hover {
+    background-color: #4D4D4D;
+}
+
+#closeWindow:hover {
+    background-color: red;
 }
 
 #uiStatusIcon {
-    position: absolute;
-    top: 4px;
-    left: 12px;
-    width: 24px;
-    height: 24px;
+    padding-top: 0.6rem;
+    padding-left: 0.3rem;
+    height: 100%;
+    font-size: 0.6rem;
+}
+
+.uiStatusGood {
+    color: #4f7529;
+}
+
+.uiStatusAverage {
+    color: #cd6500;
+}
+
+.uiStatusBad {
+    color: #ee0000;
 }
 
 #uiMapWrapper {
@@ -101,6 +113,7 @@ body {
 #uiContent {
     clear: both;
     padding: 8px;
+    padding-top: 0;
 }
 
 #uiMapTooltip {

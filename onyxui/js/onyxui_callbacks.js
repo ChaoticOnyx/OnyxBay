@@ -13,17 +13,17 @@ NanoBaseCallbacks = function ()
 			var uiStatusClass;
 			if (updateData['config']['status'] == 2)
 			{
-				uiStatusClass = 'icon24 uiStatusGood';
+				uiStatusClass = 'far fa-eye uiStatusGood';
 				$('.linkActive').removeClass('inactive');
 			}
 			else if (updateData['config']['status'] == 1)
 			{
-				uiStatusClass = 'icon24 uiStatusAverage';
+				uiStatusClass = 'far fa-eye uiStatusAverage';
 				$('.linkActive').addClass('inactive');
 			}
 			else
 			{
-				uiStatusClass = 'icon24 uiStatusBad'
+				uiStatusClass = 'far fa-eye uiStatusBad';
 				$('.linkActive').addClass('inactive');
 			}
 			$('#uiStatusIcon').attr('class', uiStatusClass);

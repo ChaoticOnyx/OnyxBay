@@ -46,7 +46,7 @@ Sqrl.helpers.define('icon', function(content, blocks, _) {
 	iconName = args.name;
 	iconType = args.type || 's';
 
-	return '<span class="fa' + iconType + ' fa-' + iconName + '"></span>';
+	return '<span unselectable="on" class="fa' + iconType + ' fa-' + iconName + '"></span>';
 });
 
 Sqrl.helpers.define('progressBar', function(content, _, __) {
@@ -106,5 +106,18 @@ Sqrl.helpers.define('theme', function(content, _, __) {
 
 	Sqrl.helpers.cache.css({ params: [ { fileName: fileName } ] }, _, __);
 
+	return '';
+});
+
+Sqrl.helpers.define('window', function(content, _, __) {
+	var args = content.params[0];
+	var config = content.params[1].config;
+	var width = args.width;
+	var height = args.height;
+
+	Byond.winset(config.windowId, {
+		size: width + 'x' + height
+	});
+	
 	return '';
 });

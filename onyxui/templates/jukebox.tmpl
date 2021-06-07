@@ -3,22 +3,24 @@ Title: Jukebox UI
 Used In File(s): \code\game\machinery\jukebox.dm
 -->
 
+{{@ window({ width: 340, height: 440 }, it) /}}
+
 <h3>
     {{@ icon({ name: 'music' }) /}}
     <span class="white">Current track:</span> <span class="average">{{ it.data.current_track }}</span>
 </h3>
 <div>
-    {{@ link({ act: { play:  1 }, enabled: it.data.playing }) }}
+    {{@ link({ act: { play:  1 }, enabled: !it.data.playing }) }}
     {{# body }}
         {{@ icon({ name: 'play' }) /}}
         Play
     {{/ link }}
-    {{@ link({ act: { stop:  1 }, enabled: !it.data.playing  }) }}
+    {{@ link({ act: { stop:  1 }, enabled: it.data.playing  }) }}
     {{# body }}
         {{@ icon({ name: 'stop' }) /}}
         Stop
     {{/ link }}
-    {{@ link({ act: { eject: 1 }, enabled: it.data.tape }) }}
+    {{@ link({ act: { eject: 1 }, enabled: it.data.tape !== null }) }}
     {{# body }}
         {{@ icon({ name: 'eject' }) /}}
         Eject

@@ -293,6 +293,11 @@ var/global/list/_client_preferences_by_type
 	key = "ONYXUI_THEME"
 	options = list(GLOB.PREF_DARK, GLOB.PREF_WHITE)
 
+/datum/client_preference/onyxui_titlebar
+	description = "OnyxUI Titlebar"
+	key = "ONYXUI_TITLEBAR"
+	options = list(GLOB.PREF_YES, GLOB.PREF_NO)
+
 /********************
 * General Staff Preferences *
 ********************/

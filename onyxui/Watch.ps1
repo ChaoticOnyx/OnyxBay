@@ -30,7 +30,7 @@ try
             $ChangedFile = Get-Item $EventArgs.FullPath
             $Extension = $ChangedFile.Extension
 
-            if (($Extension -ne '.css') -and ($Extension -ne '.js') -and ($Extension -ne '.css') -and ($Extension -ne '.tmpl'))
+            if (($Extension -ne '.css') -and ($Extension -ne '.js') -and ($Extension -ne '.css') -and ($Extension -ne '.tmpl') -and ($Extension -ne '.svg'))
             {
                 return
             }

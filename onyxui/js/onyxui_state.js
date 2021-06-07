@@ -16,6 +16,7 @@ NanoStateClass.prototype.key = null;
 NanoStateClass.prototype.layoutRendered = false;
 NanoStateClass.prototype.contentRendered = false;
 NanoStateClass.prototype.mapInitialised = false;
+NanoStateClass.prototype.windowState = null;
 
 NanoStateClass.prototype.isCurrent = function () {
     return NanoStateManager.getCurrentState() == this;
@@ -44,6 +45,10 @@ NanoStateClass.prototype.onBeforeUpdate = function (data) {
 
 NanoStateClass.prototype.onUpdate = function (data) {
     // Do not add code here, add it to the 'default' state (onyxui_defaut.js) or create a new state and override this function
+
+    windowState = Byond.winget(data.config.windowId, ['is-maximized']).then(function(res) {
+        windowState = res;
+    });
 
     try
     {
@@ -94,6 +99,25 @@ NanoStateClass.prototype.onUpdate = function (data) {
         if (NanoTemplate.templateExists('mapFooter'))
         {
             $("#uiMapFooter").html(NanoTemplate.parse('mapFooter', data)); // render the 'mapFooter' template to the #uiMapFooter div
+        }
+        if (data.config.fancy)
+        {
+            $("#closeWindow").on('click', function() {
+                Byond.call(null, {
+                    src: data.config.srcObject.ref,
+                    close: 1
+                });
+            });
+
+            $("#maximizeWindow").on('click', function() {
+                var isMaximized = windowState['is-maximized'];
+
+                Byond.winset(data.config.windowId, {
+                    'is-maximized': !isMaximized
+                });
+
+                windowState['is-maximized'] = !isMaximized;
+            });
         }
     }
     catch(error)

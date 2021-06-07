@@ -7,21 +7,6 @@
 	height: 24px;
 }
 
-.icon24.uiStatusGood
-{
-	background: url(uiIcons24.png) 0 0 no-repeat;
-}
-
-.icon24.uiStatusAverage
-{
-	background: url(uiIcons24.png) 0 -24px no-repeat;
-}
-
-.icon24.uiStatusBad
-{
-	background: url(uiIcons24.png) 0 -48px no-repeat;
-}
-
 /* states and images */
 .uiIcon16 {
 	float: left;
