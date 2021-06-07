@@ -561,3 +561,7 @@ its easier to just keep the beam vertical.
 		do_climb(target)
 	else
 		return ..()
+
+/atom/MouseEntered(location, control, params)
+	. = ..()
+	update_tooltip(usr, name)

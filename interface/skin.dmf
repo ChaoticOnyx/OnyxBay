@@ -1135,7 +1135,7 @@ window "mainwindow"
 	elem "mainvsplit"
 		type = CHILD
 		pos = 3,0
-		size = 640x440
+		size = 634x440
 		anchor1 = 0,0
 		anchor2 = 100,100
 		saved-params = "splitter"
@@ -1168,6 +1168,17 @@ window "mapwindow"
 		saved-params = "icon-size;zoom-mode"
 		on-show = ".winset\"mainwindow.mainvsplit.left=mapwindow\""
 		on-hide = ".winset\"mainwindow.mainvsplit.left=\""
+	elem "tooltip"
+		type = LABEL
+		pos = 0,464
+		size = 280x16
+		anchor1 = 0,100
+		is-visible = false
+		text = ""
+		align = left
+		background-color = #272727
+		text-color = #ffffff
+		border = line
 
 window "outputwindow"
 	elem "outputwindow"
