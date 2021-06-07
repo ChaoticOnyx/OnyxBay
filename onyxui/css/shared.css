@@ -15,16 +15,14 @@ body {
     background-size: 70%;
     background-position: center;
     background-repeat: no-repeat;
-}
 
-#uiLayout {
-    overflow-y: hidden;
-    height: 100%;
-}
-
-#uiContent {
-    overflow-y: auto;
-    height: 100%;
+    scrollbar-base-color: #363636;
+    scrollbar-face-color: #363636;
+    scrollbar-3dlight-color: #252525;
+    scrollbar-highlight-color: #252525;
+    scrollbar-track-color: #252525;
+    scrollbar-arrow-color: #363636;
+    scrollbar-shadow-color: #363636;
 }
 
 #uiNoScript {

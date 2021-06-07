@@ -100,25 +100,44 @@ NanoStateClass.prototype.onUpdate = function (data) {
         {
             $("#uiMapFooter").html(NanoTemplate.parse('mapFooter', data)); // render the 'mapFooter' template to the #uiMapFooter div
         }
+
+        $("#closeWindow").on('click', function() {
+            Byond.call(null, {
+                src: data.config.srcObject.ref,
+                close: 1
+            });
+        });
+
+        $("#maximizeWindow").on('click', function() {
+            var isMaximized = windowState['is-maximized'];
+
+            Byond.winset(data.config.windowId, {
+                'is-maximized': !isMaximized
+            });
+
+            windowState['is-maximized'] = !isMaximized;
+        });
+
         if (data.config.fancy)
         {
-            $("#closeWindow").on('click', function() {
-                Byond.call(null, {
-                    src: data.config.srcObject.ref,
-                    close: 1
-                });
+            $('#uiLayout').css({
+                'overflow-y': 'unset'
             });
 
-            $("#maximizeWindow").on('click', function() {
-                var isMaximized = windowState['is-maximized'];
+            $('#uiContent').css({
+                'overflow-y': 'auto'
+            });
+        } else {
+            $('#uiLayout').css({
+                'overflow-y': 'auto'
+            });
 
-                Byond.winset(data.config.windowId, {
-                    'is-maximized': !isMaximized
-                });
-
-                windowState['is-maximized'] = !isMaximized;
+            $('#uiContent').css({
+                'overflow-y': 'unset'
             });
         }
+
+        $('#uiContent').focus();
     }
     catch(error)
     {
