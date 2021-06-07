@@ -1,5 +1,5 @@
 /obj/screen/splash
-	name = "Baystation12"
+	name = "Chaotic Onyx"
 	desc = "This shouldn't be read."
 	screen_loc = "WEST,SOUTH"
 	icon = 'maps/exodus/exodus_lobby.dmi'
@@ -30,6 +30,9 @@
 		animate(src, alpha = 255, time = 30)
 	if(qdel_after)
 		QDEL_IN(src, 30)
+
+/obj/screen/splash/MouseEntered(location, control, params)
+	return // TODO: Replace /obj/screen/splash with somethig more sane
 
 /obj/screen/splash/Destroy()
 	if(holder)
