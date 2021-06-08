@@ -1,0 +1,145 @@
+import { useBackend, useLocalState } from '../backend';
+import { Button, Divider, Flex, Input, Section, Table } from '../components';
+import { Window } from '../layouts';
+
+interface Material {
+  name: string;
+  count: number;
+  capacity: number | null;
+}
+
+interface Category {
+  selected: string;
+  total: string[];
+}
+
+interface Recipe {
+  name: string;
+  index: number;
+  category: string;
+  can_make: boolean;
+  hidden: boolean;
+  required: Material[];
+  multipliers: string[];
+}
+
+interface InputData {
+  storage: Material[];
+  category: Category;
+  recipes: Recipe[];
+}
+
+export const Autolathe = (props: any, context: any) => {
+  const { act, data, getTheme } = useBackend<InputData>(context);
+  let [searchQuery, setSearchQuery] = useLocalState(
+    context,
+    'searchQuery',
+    null
+  );
+  let found = [];
+
+  if (searchQuery !== null) {
+    found = data.recipes.filter(
+      (recipe, _) => recipe.name.search(searchQuery) >= 0
+    );
+  } else {
+    found = data.recipes;
+  }
+
+  return (
+    <Window switchTheme theme={getTheme("primer")} width="427" height="600">
+      <Window.Content scrollable>
+        <Section title="Materials">
+          <Flex justify="space-around" align="center">
+            {data.storage.map((material, i) => {
+              return (
+                <Flex.Item key={i}>
+                  {material.name} {material.count}/{material.capacity}
+                </Flex.Item>
+              );
+            })}
+          </Flex>
+        </Section>
+        <Section title="Printable Designs">
+          <Input
+            placeholder="Search"
+            fluid
+            onInput={(e: any) => setSearchQuery(e.target.value)}
+          />
+          <Divider />
+          <Flex bold wrap justify="flex-start" align="center">
+            Filters:
+            {data.category.total.map((category, i) => {
+              return (
+                <Flex.Item key={i}>
+                  <Button
+                    className="label-primer"
+                    selected={data.category.selected === category}
+                    content={category}
+                    onClick={() =>
+                      act('change_category', { category: category })}
+                  />
+                </Flex.Item>
+              );
+            })}
+          </Flex>
+          <Divider />
+          <Table>
+            <Table.Row>
+              <Table.Cell textAlign="center" bold>
+                Name
+              </Table.Cell>
+              <Table.Cell textAlign="center" bold>
+                Required
+              </Table.Cell>
+            </Table.Row>
+            {found.map((recipe, i) => {
+              if (searchQuery !== null) {
+                let found = recipe.name.search(searchQuery);
+                if (found < 0) {
+                  return null;
+                }
+              }
+
+              return (
+                <Table.Row className="candystripe" key={i}>
+                  <Table.Cell>
+                    <Button
+                      className="link-primer"
+                      content={recipe.name}
+                      disabled={!recipe.can_make}
+                      onClick={() =>
+                        act('make', { make: recipe.index, multiplier: 1 })}
+                    />
+                    {recipe.multipliers.length > 0 ? (
+                      <div class="multipliers">
+                        {recipe.multipliers.map((mult, k) => {
+                          return (
+                            <Button
+                              key={k}
+                              content={'x' + mult}
+                              onClick={() =>
+                                act('make', {
+                                  make: recipe.index,
+                                  multiplier: mult,
+                                })}
+                            />
+                          );
+                        })}
+                      </div>
+                    ) : null}
+                  </Table.Cell>
+                  <Table.Cell>
+                    {recipe.required.map((material, i) => {
+                      return <div key={i}>{material.name + ' ' + material.count}</div>;
+                    })}
+                  </Table.Cell>
+                </Table.Row>
+              );
+            })}
+          </Table>
+        </Section>
+      </Window.Content>
+    </Window>
+  );
+};
