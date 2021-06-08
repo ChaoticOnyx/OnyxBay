@@ -41,7 +41,7 @@
 	singular_name = "goat hide piece"
 	icon_state = "goatskin"
 
-//don't see anywhere else to put these, maybe together they could be used to make the xenos suit?
+// don't see anywhere else to put these, maybe together they could be used to make the xenos suit?
 /obj/item/stack/material/xenochitin
 	name = "alien chitin"
 	desc = "A piece of the hide of a terrible creature."
