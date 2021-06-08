@@ -36,7 +36,7 @@
 	// * Security things *
 	var/received_irc_pm = -99999
 
-	//IRC admin that spoke with them last.
+	// IRC admin that spoke with them last.
 	var/irc_admin
 	var/mute_irc = 0
 
@@ -47,21 +47,21 @@
 	var/list/topiclimiter
 
 	// comment out the line below when debugging locally to enable the options & messages menu
-	//control_freak = 1
+	// control_freak = 1
 
 	// * Database related things *
 
-	//So admins know why it isn't working - Used to determine how old the account is - in days.
+	// So admins know why it isn't working - Used to determine how old the account is - in days.
 	var/player_age = "Requires database"
 
-	//So admins know why it isn't working - Used to determine what other accounts previously logged in from this ip
+	// So admins know why it isn't working - Used to determine what other accounts previously logged in from this ip
 	var/related_accounts_ip = "Requires database"
 
-	//So admins know why it isn't working - Used to determine what other accounts previously logged in from this computer id
+	// So admins know why it isn't working - Used to determine what other accounts previously logged in from this computer id
 	var/related_accounts_cid = "Requires database"
 
-	//used for initial centering of saywindow
+	// used for initial centering of saywindow
 	var/first_say = TRUE
 
-	//For tracking shift key (world.time)
+	// For tracking shift key (world.time)
 	var/shift_released_at = 0

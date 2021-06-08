@@ -1,5 +1,5 @@
 /obj/screen/splash
-	name = "Baystation12"
+	name = "Chaotic Onyx"
 	desc = "This shouldn't be read."
 	screen_loc = "WEST,SOUTH"
 	icon = 'maps/exodus/exodus_lobby.dmi'
@@ -68,5 +68,5 @@
 // It is safe to assume that any UI or sound related calls will fall into that category.
 /mob/new_player/proc/deferred_login()
 	if(client)
+		client.prefs?.apply_post_login_preferences(client)
 		client.playtitlemusic()
-		client.prefs?.apply_post_login_preferences()
