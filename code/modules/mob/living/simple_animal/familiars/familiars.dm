@@ -176,3 +176,21 @@
 	attacktext = "claws"
 
 	wizardy_spells = list(/spell/targeted/subjugation)
+
+/mob/living/simple_animal/familiar/goat
+	name = "goat"
+	desc = "A goat. This one looks a bit satanic."
+	icon = 'icons/mob/animal.dmi'
+	icon_state = "goat"
+	icon_living = "goat"
+	icon_dead = "goat_dead"
+	speak_emote = list("brays")
+	mob_size = MOB_MEDIUM
+
+	health = 60
+	maxHealth = 60
+	melee_damage_lower = 10
+	melee_damage_upper = 20
+	attacktext = "kicked"
+
+	wizardy_spells = list(/spell/targeted/projectile/magic_missile)
