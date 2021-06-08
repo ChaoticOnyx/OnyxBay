@@ -255,7 +255,7 @@ var/global/list/_client_preferences_by_type
 
 /datum/client_preference/chat_position/changed(mob/preference_mob, new_value)
 	if(preference_mob.client)
-		preference_mob.client.update_chat_position(new_value == GLOB.PREF_YES)
+		preference_mob.client.update_chat_position(new_value)
 
 /datum/client_preference/cinema_credits
 	description = "Show Cinema-like Credits At Round-end"

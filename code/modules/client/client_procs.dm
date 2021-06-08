@@ -90,7 +90,7 @@
 	log_href("[src] (usr:[usr]) || [hsrc ? "[hsrc] " : ""][href]")
 
 	// ask BYOND client to stop spamming us with assert arrival confirmations (see byond bug ID:2256651)
-	if (asset_cache_job && (asset_cache_job in completed_asset_jobs))
+	if(asset_cache_job && (asset_cache_job in completed_asset_jobs))
 		to_chat(src, SPAN("danger", "An error has been detected in how your client is receiving resources. Attempting to correct... (If you keep seeing these messages you might want to close byond and reconnect)"))
 		show_browser(src, "...", "window=asset_cache_browser")
 
@@ -202,7 +202,7 @@
 		var/player_age = get_player_age(ckey)
 		if(config.panic_address && TopicData != "redirect")
 			log_access("Panic Bunker: ([key] | age [player_age]) - attempted to connect. Redirected to [config.panic_server_name ? config.panic_server_name : config.panic_address]")
-			message_admins("<span class='adminnotice'>Panic Bunker: ([key] | age [player_age]) - attempted to connect. Redirected to [config.panic_server_name ? config.panic_server_name : config.panic_address]</span>")
+			message_admins(SPAN("adminnotice", "Panic Bunker: ([key] | age [player_age]) - attempted to connect. Redirected to [config.panic_server_name ? config.panic_server_name : config.panic_address]"))
 			to_chat(src, SPAN("notice", "Server is already full. Sending you to [config.panic_server_name ? config.panic_server_name : config.panic_address]."))
 			winset(src, null, "command=.options")
 			send_link(src, "[config.panic_address]?redirect")
@@ -463,8 +463,9 @@
 
 /client/proc/update_chat_position(use_alternative)
 	var/input_height = 0
+	var/currently_alternative = (winget(src, "input", "is-default") == "false") ? TRUE : FALSE
 	// Hell
-	if(use_alternative == TRUE)
+	if(use_alternative == GLOB.PREF_YES && !currently_alternative)
 		input_height = winget(src, "input", "size")
 		input_height = text2num(splittext(input_height, "x")[2])
 
@@ -484,7 +485,7 @@
 		current_size = splittext(winget(src, "mainwindow.mainvsplit", "size"), "x")
 		new_size = "[current_size[1]]x[text2num(current_size[2]) + input_height]"
 		winset(src, "mainwindow.mainvsplit", "size=[new_size]")
-	else
+	else if(use_alternative == GLOB.PREF_NO && currently_alternative)
 		input_height = winget(src, "input_alt", "size")
 		input_height = text2num(splittext(input_height, "x")[2])
 
