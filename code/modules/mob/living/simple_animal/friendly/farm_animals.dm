@@ -112,7 +112,7 @@
 /mob/living/simple_animal/hostile/retaliate/goat/harvest(mob/user)
 	new /obj/item/stack/material/animalhide/goat(get_turf(src))
 	..()
-//cow
+// cow
 /mob/living/simple_animal/cow
 	name = "cow"
 	desc = "Known for their milk, just don't tip them over."
