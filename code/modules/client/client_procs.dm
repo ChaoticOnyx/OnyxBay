@@ -139,7 +139,6 @@
 		if("usr")		hsrc = mob
 		if("prefs")		return prefs.process_link(usr,href_list)
 		if("vars")		return view_var_Topic(href,href_list,hsrc)
-		if("chat")		return chatOutput.Topic(href, href_list)
 
 	switch(href_list["action"])
 		if("openLink")
@@ -168,9 +167,6 @@
 /client/New(TopicData)
 	TopicData = null							// Prevent calls to client.Topic from connect
 
-	// Load onyxchat
-	chatOutput = new(src)
-
 	if(!(connection in list("seeker", "web")))					// Invalid connection type.
 		return null
 
@@ -190,6 +186,8 @@
 	GLOB.clients += src
 	GLOB.ckey_directory[ckey] = src
 
+	// Instantiate tgui panel
+	tgui_panel = new(src)
 
 	// Admin Authorisation
 	var/datum/admins/admin_datum = admin_datums[ckey]
@@ -235,6 +233,9 @@
 		qdel(src)
 		return
 
+	// Initialize tgui panel
+	tgui_panel.initialize()
+	
 	GLOB.using_map.map_info(src)
 
 	if(custom_event_msg && custom_event_msg != "")

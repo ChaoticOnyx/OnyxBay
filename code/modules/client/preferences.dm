@@ -446,8 +446,6 @@
 			return
 		client = update_client
 
-	client.chatOutput.start()
-
 	client.update_chat_position(client.get_preference_value(/datum/client_preference/chat_position))
 
 	if(client.get_preference_value(/datum/client_preference/fullscreen_mode) != GLOB.PREF_NO)

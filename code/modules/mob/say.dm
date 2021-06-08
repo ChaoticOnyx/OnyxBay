@@ -34,9 +34,9 @@
 		usr.emote("me",usr.emote_type,message)
 	else
 		usr.emote(message)
-
-	if(client?.get_preference_value(/datum/client_preference/spell_checking) == GLOB.PREF_YES && client.chatOutput)
-		client.chatOutput.spell_check(message)
+	// TODO: spellcheck
+	//if(client?.get_preference_value(/datum/client_preference/spell_checking) == GLOB.PREF_YES && client.chatOutput)
+	//	client.chatOutput.spell_check(message)
 
 	var/ckeyname = "[usr.ckey]/[usr.name]"
 	webhook_send_me(ckeyname, message)

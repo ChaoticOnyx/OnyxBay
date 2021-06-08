@@ -227,31 +227,6 @@ You can set verify to TRUE if you want send() to sleep until the client has the 
 		"icons/pda_icons/",
 	)
 
-/datum/asset/group/onyxchat
-	isTrivial = FALSE
-	children = list(
-		/datum/asset/simple/jquery,
-		/datum/asset/simple/onyxchat,
-		/datum/asset/simple/fontawesome
-	)
-
-/datum/asset/simple/jquery
-	verify = FALSE
-	assets = list(
-		"jquery.min.js"            = 'code/modules/onyxchat/browserassets/js/jquery.min.js',
-	)
-
-/datum/asset/simple/onyxchat
-	isTrivial = FALSE
-	verify = FALSE
-	assets = list(
-		"json2.min.js"             = 'code/modules/onyxchat/browserassets/js/json2.min.js',
-		"browserOutput.js"         = 'code/modules/onyxchat/browserassets/js/browserOutput.js',
-		"browserOutput.css"	       = 'code/modules/onyxchat/browserassets/css/browserOutput.css',
-		"browserOutput_white.css"  = 'code/modules/onyxchat/browserassets/css/browserOutput_white.css',
-		"browserOutput_marines.css"  = 'code/modules/onyxchat/browserassets/css/browserOutput_marines.css'
-	)
-
 /datum/asset/simple/fontawesome
 	isTrivial = TRUE
 	verify = FALSE
