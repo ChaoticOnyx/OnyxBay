@@ -37,7 +37,7 @@
 	log_debug("[src]'s Topic: [href] destined for [hsrc].")
 
 	if(href_list["nano_err"]) // nano throwing errors
-		log_debug("## NanoUI, Subject [src]: " + html_decode(href_list["nano_err"]))//NANO DEBUG HOOK
+		log_debug("## NanoUI, Subject [src]: " + html_decode(href_list["nano_err"]))// NANO DEBUG HOOK
 
 
 	#endif
@@ -66,7 +66,7 @@
 		topiclimiter[MINUTE_COUNT] += 1
 		if(topiclimiter[MINUTE_COUNT] > config.minutetopiclimit)
 			var/msg = "Your previous action was ignored because you've done too many in a minute."
-			if(minute != topiclimiter[ADMINSWARNED_AT]) //only one admin message per-minute. (if they spam the admins can just boot/ban them)
+			if(minute != topiclimiter[ADMINSWARNED_AT]) // only one admin message per-minute. (if they spam the admins can just boot/ban them)
 				topiclimiter[ADMINSWARNED_AT] = minute
 				msg += " Administrators have been informed."
 				log_game("[key_name(src)] Has hit the per-minute topic limit of [config.minutetopiclimit] topic calls in a given game minute")
@@ -86,7 +86,7 @@
 			to_chat(src, SPAN("danger", "Your previous action was ignored because you've done too many in a second."))
 			return
 
-	//Logs all hrefs
+	// Logs all hrefs
 	log_href("[src] (usr:[usr]) || [hsrc ? "[hsrc] " : ""][href]")
 
 	// ask BYOND client to stop spamming us with assert arrival confirmations (see byond bug ID:2256651)
@@ -94,14 +94,14 @@
 		to_chat(src, SPAN("danger", "An error has been detected in how your client is receiving resources. Attempting to correct... (If you keep seeing these messages you might want to close byond and reconnect)"))
 		show_browser(src, "...", "window=asset_cache_browser")
 
-	//search the href for script injection
+	// search the href for script injection
 	if(findtext(href, "<script", 1, 0))
 		to_world_log("Attempted use of scripts within a topic call, by [src]")
 		message_admins("Attempted use of scripts within a topic call, by [src]")
 		//qdel(usr)
 		return
 
-	//Admin PM
+	// Admin PM
 	if(href_list["priv_msg"])
 		var/client/C = locate(href_list["priv_msg"])
 		var/datum/ticket/ticket = locate(href_list["ticket"])
@@ -141,15 +141,15 @@
 		if("openLink")
 			send_link(src, href_list["link"])
 
-	..()	//redirect to hsrc.Topic()
+	..()	// redirect to hsrc.Topic()
 
-//This stops files larger than UPLOAD_LIMIT being sent from client to server via input(), client.Import() etc.
+// This stops files larger than UPLOAD_LIMIT being sent from client to server via input(), client.Import() etc.
 /client/AllowUpload(filename, filelength)
 	if(filelength > UPLOAD_LIMIT)
 		to_chat(src, "<font color='red'>Error: AllowUpload(): File Upload too large. Upload Limit: [UPLOAD_LIMIT/1024]KiB.</font>")
 		return 0
-/*	//Don't need this at the moment. But it's here if it's needed later.
-	//Helps prevent multiple files being uploaded at once. Or right after eachother.
+/*	// Don't need this at the moment. But it's here if it's needed later.
+	// Helps prevent multiple files being uploaded at once. Or right after eachother.
 	var/time_to_wait = fileaccess_timer - world.time
 	if(time_to_wait > 0)
 		to_chat(src, "<font color='red'>Error: AllowUpload(): Spam prevention. Please wait [round(time_to_wait/10)] seconds.</font>")
@@ -284,7 +284,7 @@
 		return
 
 /*	if(holder)
-		src.control_freak = 0 //Devs need 0 for profiler access
+		src.control_freak = 0 // Devs need 0 for profiler access
 */
 	//////////////
 	//DISCONNECT//
@@ -356,7 +356,7 @@
 
 	watchlist.OnLogin(src)
 
-	//Just the standard check to see if it's actually a number
+	// Just the standard check to see if it's actually a number
 	if(id)
 		if(istext(id))
 			id = text2num(id)
@@ -368,13 +368,13 @@
 		admin_rank = src.holder.rank
 
 	if(id)
-		//Player already identified previously, we need to just update the 'lastseen', 'ip' and 'computer_id' variables
+		// Player already identified previously, we need to just update the 'lastseen', 'ip' and 'computer_id' variables
 		sql_query("UPDATE erro_player SET lastseen = Now(), ip = $address, computerid = $computer_id, lastadminrank = $admin_rank WHERE id = $id", dbcon, list(address = address, computer_id = computer_id, admin_rank = admin_rank, id = id))
 	else
-		//New player!! Need to insert all the stuff
+		// New player!! Need to insert all the stuff
 		sql_query("INSERT INTO erro_player VALUES (null, $ckey, Now(), Now(), $address, $computer_id, $admin_rank)", dbcon, list(ckey = ckey, address = address, computer_id = computer_id, admin_rank = admin_rank))
 
-	//Logging player access
+	// Logging player access
 	var/serverip = "[world.internet_address]:[world.port]"
 	sql_query("INSERT INTO erro_connection_log (id, datetime, serverip, ckey, ip, computerid) VALUES (null, Now(), $serverip, $ckey, $address, $computer_id)", dbcon, list(serverip = serverip, ckey = ckey, address = address, computer_id = computer_id))
 
@@ -382,8 +382,8 @@
 #undef UPLOAD_LIMIT
 #undef MIN_CLIENT_VERSION
 
-//checks if a client is afk
-//3000 frames = 5 minutes
+// checks if a client is afk
+// 3000 frames = 5 minutes
 /client/proc/is_afk(duration=3000)
 	if(inactivity > duration)	return inactivity
 	return 0
@@ -405,7 +405,7 @@
 	. = ..()
 	sleep(1)
 
-//send resources to the client. It's here in its own proc so we can move it around easiliy if need be
+// send resources to the client. It's here in its own proc so we can move it around easiliy if need be
 /client/proc/send_resources()
 
 	getFiles(
@@ -420,7 +420,7 @@
 		'html/images/talisman.png'
 		)
 
-	spawn (10) //removing this spawn causes all clients to not get verbs.
+	spawn (10) // removing this spawn causes all clients to not get verbs.
 		if(!src) // client disconnected
 			return
 
@@ -438,7 +438,7 @@
 				priority_assets += D
 
 		for(var/datum/asset/D in (priority_assets + other_assets))
-			if (!D.send_slow(src)) //Precache the client with all other assets slowly, so as to not block other browse() calls
+			if (!D.send_slow(src)) // Precache the client with all other assets slowly, so as to not block other browse() calls
 				return
 
 /mob/proc/MayRespawn()
