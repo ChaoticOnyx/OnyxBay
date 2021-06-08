@@ -154,3 +154,8 @@
 		new /datum/stack_recipe("white folder", /obj/item/weapon/folder/white), \
 		new /datum/stack_recipe("yellow folder", /obj/item/weapon/folder/yellow), \
 		))
+
+/material/goat_hide/generate_recipes()
+	recipes = list()
+	recipes += new /datum/stack_recipe("goat skin cape", /obj/item/clothing/suit/storage/hooded/goathidecape)
+	recipes += new /datum/stack_recipe("hairless hide", /obj/item/stack/material/hairlesshide)

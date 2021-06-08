@@ -609,3 +609,26 @@
 	name = "unathi suit"
 	desc = "A Unathi suit made out of rubber."
 	icon_state = "lizsuit"
+
+/obj/item/clothing/suit/storage/hooded/goathidecape
+	name = "goat hide cape"
+	desc = "A goat hide. You can put it on to look like a true barbarian."
+	icon_state = "goatskincape"
+	item_state = "goatskincape"
+	body_parts_covered = UPPER_TORSO|LOWER_TORSO
+	cold_protection = UPPER_TORSO|LOWER_TORSO
+	min_cold_protection_temperature = ARMOR_MIN_COLD_PROTECTION_TEMPERATURE
+	armor = list(melee = 25, bullet = 10, laser = 0, energy = 40, bomb = 0, bio = 10, rad = 0)
+	action_button_name = "Toggle hood"
+	hoodtype = /obj/item/clothing/head/goatcapehood
+	siemens_coefficient = 0.6
+
+/obj/item/clothing/head/goatcapehood
+	name = "goat head hood"
+	desc = "A goat head."
+	icon_state = "generic_hood"
+	body_parts_covered = HEAD
+	cold_protection = HEAD
+	flags_inv = HIDEEARS | BLOCKHAIR
+	min_cold_protection_temperature = ARMOR_MIN_COLD_PROTECTION_TEMPERATURE
+	armor = list(melee = 25, bullet = 10, laser = 0, energy = 40, bomb = 0, bio = 10, rad = 0)
