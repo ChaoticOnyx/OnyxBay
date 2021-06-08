@@ -23,6 +23,8 @@ GLOBAL_VAR_CONST(PREF_CTRL_SHIFT_CLICK, "ctrl shift click")
 GLOBAL_VAR_CONST(PREF_HEAR, "Hear")
 GLOBAL_VAR_CONST(PREF_SILENT, "Silent")
 GLOBAL_VAR_CONST(PREF_SHORTHAND, "Shorthand")
+GLOBAL_VAR_CONST(PREF_WHITE, "White")
+GLOBAL_VAR_CONST(PREF_DARK, "Dark")
 
 var/global/list/_client_preferences
 var/global/list/_client_preferences_by_key
@@ -214,14 +216,19 @@ var/global/list/_client_preferences_by_type
 	options = list(GLOB.PREF_MIDDLE_CLICK, GLOB.PREF_CTRL_CLICK, GLOB.PREF_ALT_CLICK, GLOB.PREF_CTRL_SHIFT_CLICK)
 
 /datum/client_preference/tgui_style
-	description ="tgui Style"
+	description = "TGUI Style"
 	key = "TGUI_FANCY"
 	options = list(GLOB.PREF_FANCY, GLOB.PREF_PLAIN)
 
 /datum/client_preference/tgui_monitor
-	description ="tgui Monitor"
+	description = "TGUI Monitor"
 	key = "TGUI_MONITOR"
 	options = list(GLOB.PREF_PRIMARY, GLOB.PREF_ALL)
+
+/datum/client_preference/tgui_theme
+	description = "TGUI Theme"
+	key = "TGUI_THEME"
+	options = list(GLOB.PREF_WHITE, GLOB.PREF_DARK)
 
 /datum/client_preference/browser_style
 	description = "Fake NanoUI Browser Style"
