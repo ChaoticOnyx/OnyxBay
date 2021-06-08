@@ -564,8 +564,8 @@ var/global/list/obj/machinery/telecomms/telecomms_list = list()
 				else if(issilicon(M))
 					race = "Artificial Life"
 					log.parameters["intelligible"] = 1
-				else if(isslime(M))
-					race = "Slime"
+				else if(ismetroid(M))
+					race = "Metroid"
 				else if(isanimal(M))
 					race = "Domestic Animal"
 

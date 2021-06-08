@@ -119,9 +119,9 @@
 	if(target.buckled)
 		to_chat(user, SPAN("warning", "Unbuckle the subject before attempting to move them."))
 		return FALSE
-	for(var/mob/living/carbon/slime/M in range(1, target))
+	for(var/mob/living/carbon/metroid/M in range(1,target))
 		if(M.Victim == target)
-			to_chat(user, "[target.name] will not fit into the sleeper because they have a slime latched onto their head.")
+			to_chat(user, "[target.name] will not fit into the sleeper because they have a metroid latched onto their head.")
 			return FALSE
 	return TRUE
 
@@ -265,7 +265,7 @@
 
 /obj/machinery/body_scanconsole/tgui_interact(mob/user, datum/tgui/ui)
 	ui = SStgui.try_update_ui(user, src, ui)
-	
+
 	if(!ui)
 		ui = new(user, src, "BodyScanner", name)
 		ui.open()
