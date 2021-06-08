@@ -388,7 +388,7 @@ Class Procs:
 /obj/machinery/tgui_act(action, params)
 	. = ..()
 
-	if (.)
+	if(.)
 		return TRUE
 
 	if(clicksound && istype(usr, /mob/living/carbon))

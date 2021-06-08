@@ -105,7 +105,7 @@
 				max_sheets = min(max_sheets, initial(R_stack.max_amount))
 				// do not allow lathe to print more sheets than the max amount that can fit in one stack
 				if(max_sheets && max_sheets > 0)
-					for(var/i = 5; i < max_sheets; i *= 2) //5,10,20,40...
+					for(var/i = 5; i < max_sheets; i *= 2) //5, 10, 20, 40...
 						recipe_data["multipliers"] += i
 
 					recipe_data["multipliers"] += max_sheets
@@ -237,7 +237,7 @@
 			show_category = choice
 			return TRUE
 		if("make")
-			if (!machine_recipes)
+			if(!machine_recipes)
 				return TRUE
 
 			var/index = text2num(params["make"])
@@ -247,7 +247,7 @@
 			if(index > 0 && index <= machine_recipes.len)
 				making = machine_recipes[index]
 
-			//Exploit detection, not sure if necessary after rewrite.
+			// Exploit detection, not sure if necessary after rewrite.
 			if(!making || multiplier < 0 || multiplier > 100 || multiplier == null)
 				log_and_message_admins("tried to exploit an autolathe to duplicate an item!", usr)
 				return TRUE
@@ -255,7 +255,7 @@
 			busy = TRUE
 			update_use_power(POWER_USE_ACTIVE)
 
-			//Check if we still have the materials.
+			// Check if we still have the materials.
 			for(var/material in making.resources)
 				if(!isnull(stored_material[material]))
 					if(stored_material[material] < round(making.resources[material] * mat_efficiency) * multiplier)
@@ -263,13 +263,13 @@
 						update_use_power(POWER_USE_IDLE)
 						return TRUE
 
-			//Consume materials.
+			// Consume materials.
 			for(var/material in making.resources)
 				if(!isnull(stored_material[material]))
 					stored_material[material] = max(0, stored_material[material] - round(making.resources[material] * mat_efficiency) * multiplier)
 
 			updateUsrDialog()
-			//Fancy autolathe animation.
+			// Fancy autolathe animation.
 			flick("autolathe_n", src)
 
 			sleep(build_time)
@@ -277,11 +277,11 @@
 			busy = FALSE
 			update_use_power(POWER_USE_IDLE)
 
-			//Sanity check.
+			// Sanity check.
 			if(!making || QDELETED(src))
 				return TRUE
 
-			//Create the desired item.
+			// Create the desired item.
 			var/obj/item/I = new making.path(loc)
 			if(multiplier > 1 && istype(I, /obj/item/stack))
 				var/obj/item/stack/S = I
@@ -292,7 +292,7 @@
 /obj/machinery/autolathe/update_icon()
 	icon_state = (panel_open ? "autolathe_t" : "autolathe")
 
-//Updates overall lathe storage size.
+// Updates overall lathe storage size.
 /obj/machinery/autolathe/RefreshParts()
 	..()
 	var/mb_rating = 0
@@ -306,7 +306,7 @@
 	storage_capacity[MATERIAL_STEEL] = mb_rating  * 25000
 	storage_capacity[MATERIAL_GLASS] = mb_rating  * 12500
 	build_time = 50 / man_rating
-	mat_efficiency = 1.1 - man_rating * 0.1// Normally, price is 1.25 the amount of material, so this shouldn't go higher than 0.8. Maximum rating of parts is 3
+	mat_efficiency = 1.1 - man_rating * 0.1 // Normally, price is 1.25 the amount of material, so this shouldn't go higher than 0.8. Maximum rating of parts is 3
 
 /obj/machinery/autolathe/dismantle()
 
