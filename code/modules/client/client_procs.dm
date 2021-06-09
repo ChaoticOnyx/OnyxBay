@@ -232,9 +232,6 @@
 		<font size='3'>Please update it to [MIN_CLIENT_VERSION].</font></center>")
 		qdel(src)
 		return
-
-	// Initialize tgui panel
-	tgui_panel.initialize()
 	
 	GLOB.using_map.map_info(src)
 

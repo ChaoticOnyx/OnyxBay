@@ -230,6 +230,21 @@ var/global/list/_client_preferences_by_type
 	key = "TGUI_THEME"
 	options = list(GLOB.PREF_WHITE, GLOB.PREF_DARK)
 
+/datum/client_preference/tgui_chat
+	description = "TGUI Chat"
+	key = "TGUI_CHAT"
+	options = list(GLOB.PREF_YES, GLOB.PREF_NO)
+
+/datum/client_preference/tgui_chat/changed(mob/preference_mob, new_value)
+	if(preference_mob.client == null)
+		return
+
+	if(new_value == GLOB.PREF_YES)
+		preference_mob.client.tgui_panel.initialize()
+	else
+		winset(preference_mob, "output", "on-show=&is-disabled=0&is-visible=1")
+		winset(preference_mob, "browseroutput", "is-disabled=1;is-visible=0")
+
 /datum/client_preference/browser_style
 	description = "Fake NanoUI Browser Style"
 	key = "BROWSER_STYLED"

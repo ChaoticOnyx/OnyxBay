@@ -450,3 +450,9 @@
 
 	if(client.get_preference_value(/datum/client_preference/fullscreen_mode) != GLOB.PREF_NO)
 		client.toggle_fullscreen(client.get_preference_value(/datum/client_preference/fullscreen_mode))
+
+	if(client.get_preference_value(/datum/client_preference/chat_position) == GLOB.PREF_NO)
+		winset(client, "output", "on-show=&is-disabled=0&is-visible=1")
+		winset(client, "browseroutput", "is-disabled=1;is-visible=0")
+	else
+		client.tgui_panel.initialize()
