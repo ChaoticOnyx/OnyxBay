@@ -378,9 +378,7 @@
 		// New player!! Need to insert all the stuff
 		sql_query("INSERT INTO erro_player VALUES (null, $ckey, Now(), Now(), $address, $computer_id, $admin_rank)", dbcon, list(ckey = ckey, address = address, computer_id = computer_id, admin_rank = admin_rank))
 
-	// Logging player access
-	var/serverip = "[world.internet_address]:[world.port]"
-	sql_query("INSERT INTO erro_connection_log (id, datetime, serverip, ckey, ip, computerid) VALUES (null, Now(), $serverip, $ckey, $address, $computer_id)", dbcon, list(serverip = serverip, ckey = ckey, address = address, computer_id = computer_id))
+	sql_query("INSERT INTO connection(datetime, ckey, ip, computerid) VALUES (Now(), $ckey, $address, $computer_id)", dbcon, list(ckey = ckey, address = address, computer_id = computer_id))
 
 
 #undef UPLOAD_LIMIT
