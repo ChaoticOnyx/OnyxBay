@@ -19,7 +19,6 @@ import { audioMiddleware, audioReducer } from './audio';
 import { chatMiddleware, chatReducer } from './chat';
 import { gameMiddleware, gameReducer } from './game';
 import { setupPanelFocusHacks } from './panelFocus';
-import { pingMiddleware, pingReducer } from './ping';
 import { settingsMiddleware, settingsReducer } from './settings';
 import { telemetryMiddleware } from './telemetry';
 
@@ -31,13 +30,11 @@ const store = configureStore({
     audio: audioReducer,
     chat: chatReducer,
     game: gameReducer,
-    ping: pingReducer,
     settings: settingsReducer,
   }),
   middleware: {
     pre: [
       chatMiddleware,
-      pingMiddleware,
       telemetryMiddleware,
       settingsMiddleware,
       audioMiddleware,
@@ -110,7 +107,6 @@ const setupApp = () => {
       './game',
       './Notifications',
       './Panel',
-      './ping',
       './settings',
       './telemetry',
     ], () => {

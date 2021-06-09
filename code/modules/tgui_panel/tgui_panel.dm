@@ -50,7 +50,7 @@
 	))
 	// Other setup
 	request_telemetry()
-	addtimer(CALLBACK(src, .proc/on_initialize_timed_out), 5 SECONDS)
+	addtimer(CALLBACK(src, .proc/on_initialize_timed_out), 10 SECONDS)
 
 /**
  * private
@@ -59,7 +59,7 @@
  */
 /datum/tgui_panel/proc/on_initialize_timed_out()
 	// Currently does nothing but sending a message to old chat.
-	DIRECT_OUTPUT(client, SPAN("userdanger", "Failed to load fancy chat, click <a href='?src=\ref(src);reload_tguipanel=1'>HERE</a> to attempt to reload it."))
+	DIRECT_OUTPUT(client, SPAN("danger", "Failed to load fancy chat, click <a href='?src=\ref(src);reload_tguipanel=1'>HERE</a> to attempt to reload it."))
 
 /**
  * private

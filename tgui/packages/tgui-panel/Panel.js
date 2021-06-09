@@ -10,7 +10,6 @@ import { NowPlayingWidget, useAudio } from './audio';
 import { ChatPanel, ChatTabs } from './chat';
 import { useGame } from './game';
 import { Notifications } from './Notifications';
-import { PingIndicator } from './ping';
 import { SettingsPanel, useSettings } from './settings';
 
 export const Panel = (props, context) => {
@@ -40,9 +39,6 @@ export const Panel = (props, context) => {
             <Stack mr={1} align="center">
               <Stack.Item grow overflowX="auto">
                 <ChatTabs />
-              </Stack.Item>
-              <Stack.Item>
-                <PingIndicator />
               </Stack.Item>
               <Stack.Item>
                 <Button

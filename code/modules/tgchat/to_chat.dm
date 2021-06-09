@@ -70,8 +70,21 @@
 		target = GLOB.clients
 	// Build a message
 	var/message = list()
+	// Replace expanded \icon macro with icon2html
+	// regex/Replace with a proc won't work here because icon2html takes target as an argument and there is no way to pass it to the replacement proc
+	// not even hacks with reassigning usr work
+	var/static/regex/i = new(@/<IMG CLASS=icon SRC=(\[[^]]+])(?: ICONSTATE='([^']+)')?>/, "g")
+	//'
 	if(type) message["type"] = type
-	if(text) message["text"] = text
-	if(html) message["html"] = html
+	if(text)
+		while(i.Find(text))
+			text = copytext(text,1,i.index)+icon2html(locate(i.group[1]), target, icon_state=i.group[2])+copytext(text,i.next)
+
+		message["text"] = text
+	if(html)
+		while(i.Find(html))
+			html = copytext(html,1,i.index)+icon2html(locate(i.group[1]), target, icon_state=i.group[2])+copytext(html,i.next)
+
+		message["html"] = html
 	if(avoid_highlighting) message["avoidHighlighting"] = avoid_highlighting
 	SSchat.queue(target, message)

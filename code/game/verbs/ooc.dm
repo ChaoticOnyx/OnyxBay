@@ -46,4 +46,4 @@
 		return
 
 	if(alert(usr, "Are you sure? You have to switch to the English keyboard layout first.\nWarning: This will close all open windows.", "Fix hotkeys", "Yes", "No") == "Yes")
-		winset(src, null, "reset=true")
+		nuke_chat()
