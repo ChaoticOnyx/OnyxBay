@@ -27,7 +27,7 @@ const setGlobalFontFamily = fontFamily => {
 };
 
 const setGlobalIconSize = iconSize => {
-  document.querySelectorAll('img.icon').forEach((value, _) => {
+  document.querySelectorAll('img.icon:not(.text_tag)').forEach((value, _) => {
     value.style.setProperty('min-height', iconSize + 'px');
   });
 };

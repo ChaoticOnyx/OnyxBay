@@ -1,6 +1,6 @@
 /client/proc/cmd_admin_say(msg as text)
 	set category = "Special Verbs"
-	set name = "Asay" // Gave this shit a shorter name so you only have to time out "asay" rather than "admin say" to use it --NeoFite
+	set name = "Asay" //Gave this shit a shorter name so you only have to time out "asay" rather than "admin say" to use it --NeoFite
 	set hidden = 1
 	if(!check_rights(R_ADMIN))	return
 
@@ -13,9 +13,9 @@
 	if(check_rights(R_ADMIN,0))
 		for(var/client/C in GLOB.admins)
 			if(R_ADMIN & C.holder.rights)
-				to_chat(C, SPAN("mod_channel", "[create_text_tag("admin", "ADMIN:", C)] ") + SPAN("name", "[key_name(usr, 1)]") + "([admin_jump_link(mob, src)]): " + SPAN("message linkify", "[msg]"), type = MESSAGE_TYPE_ADMINCHAT)
+				to_chat(C, "<span class='admin_channel'>" + create_text_tag("admin", "ADMIN") + " <span class='name'>[key_name(usr, 1)]</span>([admin_jump_link(mob, src)]): <span class='message linkify'>[msg]</span></span>")
 
-	feedback_add_details("admin_verb","M") // If you are copy-pasting this, ensure the 2nd parameter is unique to the new proc!
+	feedback_add_details("admin_verb","M") //If you are copy-pasting this, ensure the 2nd parameter is unique to the new proc!
 
 /client/proc/cmd_mod_say(msg as text)
 	set category = "Special Verbs"
@@ -35,6 +35,6 @@
 	if(check_rights(R_ADMIN, 0))
 		sender_name = "<span class='admin'>[sender_name]</span>"
 	for(var/client/C in GLOB.admins)
-		to_chat(C, SPAN("admin_channel", "[create_text_tag("mod", "MOD:", C)]") + SPAN("name", " [sender_name]") + "([admin_jump_link(mob, C.holder)]): " + SPAN("message linkify", "[msg]"), type = MESSAGE_TYPE_MODCHAT)
+		to_chat(C, "<span class='mod_channel'>" + create_text_tag("mod", "MOD") + " <span class='name'>[sender_name]</span>([admin_jump_link(mob, C.holder)]): <span class='message linkify'>[msg]</span></span>")
 
-	feedback_add_details("admin_verb","MS") // If you are copy-pasting this, ensure the 2nd parameter is unique to the new proc!
+	feedback_add_details("admin_verb","MS") //If you are copy-pasting this, ensure the 2nd parameter is unique to the new proc!

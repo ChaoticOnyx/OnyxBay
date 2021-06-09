@@ -30,6 +30,7 @@ export const MESSAGE_TYPE_DEADCHAT = 'deadchat';
 export const MESSAGE_TYPE_OOC = 'ooc';
 export const MESSAGE_TYPE_LOOC = 'looc';
 export const MESSAGE_TYPE_AOOC = 'aooc';
+export const MESSAGE_TYPE_DOOC = 'dooc';
 export const MESSAGE_TYPE_PRAY = 'pray';
 export const MESSAGE_TYPE_ADMINPM = 'adminpm';
 export const MESSAGE_TYPE_COMBAT = 'combat';
@@ -85,13 +86,25 @@ export const MESSAGE_TYPES = [
     type: MESSAGE_TYPE_OOC,
     name: 'OOC',
     description: 'The bluewall of global OOC messages',
-    selector: '.ooc, .oocplain',
+    selector: '.ooc, .oocplain, .adminooc',
+  },
+  {
+    type: MESSAGE_TYPE_AOOC,
+    name: 'AOOC',
+    description: 'Antag OOC',
+    selector: '.ooc .aooc',
+  },
+  {
+    type: MESSAGE_TYPE_DOOC,
+    name: 'DOOC',
+    description: 'Discord OOC',
+    selector: '.ooc .dooc',
   },
   {
     type: MESSAGE_TYPE_LOOC,
     name: 'LOOC',
     description: 'Local OOC',
-    selector: '.looc',
+    selector: '.ooc .looc',
   },
   {
     type: MESSAGE_TYPE_PRAY,
@@ -148,13 +161,6 @@ export const MESSAGE_TYPES = [
     type: MESSAGE_TYPE_DEBUG,
     name: 'Debug Log',
     description: 'DEBUG: SSPlanets subsystem Recover().',
-    admin: true,
-  },
-  {
-    type: MESSAGE_TYPE_AOOC,
-    name: 'AOOC',
-    description: 'Admin OOC',
-    selector: '.adminooc',
     admin: true,
   },
 ];
