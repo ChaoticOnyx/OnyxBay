@@ -216,20 +216,25 @@
 /datum/callproc/proc/finalise()
 	var/returnval
 
+	if(is_proc_protected(procname))
+		log_admin("[key_name(usr)] failed to call forbidden [procname]() with [arguments.len ? "the arguments [json_encode(arguments)]" : "no arguments"].")
+		to_chat(usr, SPAN_WARNING("Failed to call forbidden proc!"))
+		return
+
 	if(hastarget)
 		if(!target)
 			to_chat(usr, "Your callproc target no longer exists.")
 			return
-		log_admin("[key_name(src)] called [target]'s [procname]() with [arguments.len ? "the arguments [list2params(arguments)]" : "no arguments"].")
+		log_admin("[key_name(usr)] called [target]'s [procname]() with [arguments.len ? "the arguments [json_encode(arguments)]" : "no arguments"].")
 		if(arguments.len)
 			returnval = call(target, procname)(arglist(arguments))
 		else
 			returnval = call(target, procname)()
 	else
-		log_admin("[key_name(src)] called [procname]() with [arguments.len ? "the arguments [list2params(arguments)]" : "no arguments"].")
+		log_admin("[key_name(usr)] called [procname]() with [arguments.len ? "the arguments [json_encode(arguments)]" : "no arguments"].")
 		returnval = call(procname)(arglist(arguments))
 
-	to_chat(usr, "<span class='info'>[procname]() returned: [json_encode(returnval)]</span>")
+	to_chat(usr, SPAN_NOTICE("[procname]() returned: [json_encode(returnval)]"))
 	feedback_add_details("admin_verb","APC") //If you are copy-pasting this, ensure the 2nd parameter is unique to the new proc!
 
 #undef CANCEL

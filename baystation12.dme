@@ -1208,6 +1208,7 @@
 #include "code\modules\admin\buildmode\room_builder.dm"
 #include "code\modules\admin\buildmode\throw_at.dm"
 #include "code\modules\admin\callproc\callproc.dm"
+#include "code\modules\admin\callproc\protected_procs.dm"
 #include "code\modules\admin\DB ban\functions.dm"
 #include "code\modules\admin\permissionverbs\permissionedit.dm"
 #include "code\modules\admin\secrets\admin_secrets\alter_narsie.dm"
