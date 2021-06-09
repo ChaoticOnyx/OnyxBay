@@ -138,7 +138,7 @@
 		return
 
 	if(panel_open)
-		//Don't eat multitools or wirecutters used on an open lathe.
+		// Don't eat multitools or wirecutters used on an open lathe.
 		if(isMultitool(O) || isWirecutter(O))
 			attack_hand(user)
 			return
@@ -220,6 +220,11 @@
 
 	if(shocked)
 		shock(user, 50)
+
+	if(panel_open)
+		var/datum/browser/hack_panel = new(user, "hack_panel", "Maintenance Panel", 400, 400)
+		hack_panel.set_content(wires.GetInteractWindow())
+		hack_panel.open()
 
 	tgui_interact(user)
 
