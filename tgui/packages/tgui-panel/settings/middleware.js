@@ -9,6 +9,7 @@ import { setClientTheme } from '../themes';
 import { loadSettings, updateSettings } from './actions';
 import { selectSettings } from './selectors';
 import { FONTS_DISABLED } from './constants';
+import { logger } from '../../tgui/logging';
 
 const setGlobalFontSize = fontSize => {
   document.documentElement.style
@@ -24,6 +25,12 @@ const setGlobalFontFamily = fontFamily => {
     .setProperty('font-family', fontFamily);
   document.body.style
     .setProperty('font-family', fontFamily);
+};
+
+const setGlobalIconSize = iconSize => {
+  document.querySelectorAll('img.icon').forEach((value, _) => {
+    value.style.setProperty('min-height', iconSize + 'px');
+  });
 };
 
 export const settingsMiddleware = store => {
@@ -48,6 +55,8 @@ export const settingsMiddleware = store => {
       // Update global UI font size
       setGlobalFontSize(settings.fontSize);
       setGlobalFontFamily(settings.fontFamily);
+      // Update globla UI icon size
+      setGlobalIconSize(settings.iconSize);
       // Save settings to the web storage
       storage.set('panel-settings', settings);
       return;

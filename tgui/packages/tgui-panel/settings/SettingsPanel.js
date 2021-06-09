@@ -54,6 +54,7 @@ export const SettingsGeneral = (props, context) => {
     fontFamily,
     fontSize,
     lineHeight,
+    iconSize,
     highlightText,
     highlightColor,
   } = useSelector(context, selectSettings);
@@ -128,6 +129,21 @@ export const SettingsGeneral = (props, context) => {
             onDrag={(e, value) => dispatch(updateSettings({
               lineHeight: value,
             }))} />
+        </LabeledList.Item>
+        <LabeledList.Item label="Icon Size">
+          <NumberInput
+            width="4em"
+            step={1}
+            stepPixelSize={10}
+            minValue={16}
+            maxValue={64}
+            value={iconSize}
+            unit="px"
+            format={value => toFixed(value)}
+            onDrag={(e, value) => dispatch(updateSettings({
+              iconSize: value,
+            }))}
+            />
         </LabeledList.Item>
       </LabeledList>
       <Divider />
