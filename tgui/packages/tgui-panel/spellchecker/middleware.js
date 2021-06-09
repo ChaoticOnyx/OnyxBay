@@ -1,7 +1,8 @@
-import { logger } from '../../tgui/logging';
+import { storage } from '../../common/storage';
 import { MESSAGE_TYPE_INTERNAL } from '../chat/constants';
-import { doSpellCheck } from './actions';
+import { doSpellCheck, loadSpellCheckerSettings, updateSpellCheckerSettings } from './actions';
 import { YANDEX_BASE_URI } from './constants';
+import { selectSpellChecker } from './selector';
 
 const filterText = (text) => {
   text = text.toLowerCase();
@@ -62,17 +63,25 @@ const makeSpellErrorMessage = (errors) => {
 };
 
 export const spellCheckerMiddleware = (store) => {
+  let initialized = false;
+
   return (next) => (action) => {
     const { type, payload } = action;
-    const { enabled, blacklist } = store.getState().spellChecker;
 
-    if (!enabled) {
-      return next(action);
+    if (!initialized) {
+      initialized = true;
+      storage.get('spellchecker-settings').then((settings) => {
+        store.dispatch(loadSpellCheckerSettings(settings));
+      });
     }
 
-    if (type === doSpellCheck.type) {
+    // Pass action to get an updated state
+    next(action);
+    const settings = selectSpellChecker(store.getState());
+
+    if (type === doSpellCheck.type && settings.enabled) {
       let filtered = filterText(payload);
-      filtered = removeBlacklistedWords(filtered, blacklist);
+      filtered = removeBlacklistedWords(filtered, settings.blacklist);
       yandexRequest(filtered, (response) => {
         if (
           response.readyState === XMLHttpRequest.DONE
@@ -95,6 +104,10 @@ export const spellCheckerMiddleware = (store) => {
       });
     }
 
-    return next(action);
+    if (type === updateSpellCheckerSettings.type) {
+      storage.set('spellchecker-settings', settings);
+    }
+
+    return;
   };
 };

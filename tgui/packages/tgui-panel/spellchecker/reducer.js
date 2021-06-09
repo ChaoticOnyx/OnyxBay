@@ -1,14 +1,24 @@
-import { logger } from "../../tgui/logging";
-import { toggleSpellChecker, updateSpellCheckerSettings } from "./actions";
+import { loadSpellCheckerSettings, resetSpellCheckerBlacklist, toggleSpellChecker, updateSpellCheckerSettings } from "./actions";
 
-export const initialState = {
+const initialState = {
   enabled: false,
   visible: false,
-  blacklist: '',
+  blacklist: 'бипски, дорм, еган, емаг, ионк, научк, синг, скрабер, термалы, хонк, центком, голодек, тазер, ксен, мусорк',
 };
+
+export const defaultBlacklist = initialState.blacklist;
 
 export const spellCheckerReducer = (state = initialState, action) => {
   const { type, payload } = action;
+
+  if (type === loadSpellCheckerSettings.type) {
+    delete payload.visible;
+
+    return {
+      ...state,
+      ...payload,
+    };
+  }
 
   if (type === updateSpellCheckerSettings.type) {
     return {

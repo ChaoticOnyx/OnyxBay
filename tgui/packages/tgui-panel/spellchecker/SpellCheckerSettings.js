@@ -8,9 +8,8 @@ import {
   TextArea,
 } from '../../tgui/components';
 import { Button } from '../../tgui/components';
-import { logger } from '../../tgui/logging';
-import { updateSettings } from '../settings/actions';
 import { updateSpellCheckerSettings } from './actions';
+import { defaultBlacklist } from './reducer';
 import { selectSpellChecker } from './selector';
 
 export const SpellCheckerSettings = (props, context) => {
@@ -23,10 +22,24 @@ export const SpellCheckerSettings = (props, context) => {
         <LabeledList.Item label="Enable">
           <Button.Checkbox
             checked={enabled}
+            tooltip="Enables spell checking of an input text."
+            tooltipPosition="right"
             onClick={() =>
               dispatch(
                 updateSpellCheckerSettings({
                   enabled: !enabled,
+                }))}
+          />
+        </LabeledList.Item>
+        <LabeledList.Item label="Restore Blacklist">
+          <Button.Confirm
+            icon="trash"
+            tooltip="Restores the blacklist to default words."
+            tooltipPosition="right"
+            onClick={() =>
+              dispatch(
+                updateSpellCheckerSettings({
+                  blacklist: defaultBlacklist,
                 }))}
           />
         </LabeledList.Item>

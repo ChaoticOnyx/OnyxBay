@@ -4,6 +4,7 @@
  * @license MIT
  */
 
+import { logger } from '../../tgui/logging';
 import { changeSettingsTab, loadSettings, openChatSettings, toggleSettings, updateSettings } from './actions';
 import { FONTS, SETTINGS_TABS } from './constants';
 
@@ -25,6 +26,7 @@ const initialState = {
 
 export const settingsReducer = (state = initialState, action) => {
   const { type, payload } = action;
+
   if (type === updateSettings.type) {
     return {
       ...state,
