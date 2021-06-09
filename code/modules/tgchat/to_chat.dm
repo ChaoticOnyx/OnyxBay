@@ -78,12 +78,12 @@
 	if(type) message["type"] = type
 	if(text)
 		while(i.Find(text))
-			text = copytext(text,1,i.index)+icon2html(locate(i.group[1]), target, icon_state=i.group[2])+copytext(text,i.next)
+			text = copytext(text, 1, i.index) + icon2html(locate(i.group[1]), target, icon_state = i.group[2]) + copytext(text, i.next)
 
 		message["text"] = text
 	if(html)
 		while(i.Find(html))
-			html = copytext(html,1,i.index)+icon2html(locate(i.group[1]), target, icon_state=i.group[2])+copytext(html,i.next)
+			html = copytext(html, 1, i.index) + icon2html(locate(i.group[1]), target, icon_state = i.group[2]) + copytext(html, i.next)
 
 		message["html"] = html
 	if(avoid_highlighting) message["avoidHighlighting"] = avoid_highlighting
