@@ -31,3 +31,6 @@
 			var/display_name = C.key
 			var/player_display = holder ? "[display_name]([usr.client.holder.rank])" : display_name
 			receive_communication(C, target, "<span class='ooc'><span class='aooc'>[create_text_tag("aooc", "Antag-OOC:", target)] <EM>[player_display]:</EM> <span class='message linkify'>[message]</span></span></span>")
+
+/decl/communication_channel/aooc/get_message_type()
+	return MESSAGE_TYPE_AOOC

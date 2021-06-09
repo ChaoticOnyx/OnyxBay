@@ -9,7 +9,6 @@ import { setClientTheme } from '../themes';
 import { loadSettings, updateSettings } from './actions';
 import { selectSettings } from './selectors';
 import { FONTS_DISABLED } from './constants';
-import { logger } from '../../tgui/logging';
 
 const setGlobalFontSize = fontSize => {
   document.documentElement.style

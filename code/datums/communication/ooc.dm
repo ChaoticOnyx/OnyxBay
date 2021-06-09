@@ -52,3 +52,6 @@
 			receive_communication(C, target, "<span class='ooc'><font color='[ooc_color]'>[sent_message]</font></span>")
 		else
 			receive_communication(C, target, "<span class='ooc'><span class='[ooc_style]'>[sent_message]</span></span>")
+
+/decl/communication_channel/ooc/get_message_type()
+	return MESSAGE_TYPE_OOC
