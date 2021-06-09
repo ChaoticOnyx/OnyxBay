@@ -140,9 +140,7 @@
 				var/input = sanitize(input(usr, "Please write a message to announce to the [station_name()].", "Priority Announcement") as null|text)
 				if(!input || !can_still_topic())
 					return 1
-				// TODO: spellcheck
-				// if(usr.client?.get_preference_value(/datum/client_preference/spell_checking) == GLOB.PREF_YES && usr.client.chatOutput)
-				//	usr.client.chatOutput.spell_check(input)
+				usr.client.spellcheck(input)
 				crew_announcement.Announce(input, msg_sanitized = TRUE)
 				announcment_cooldown = 1
 				spawn(600)// One minute cooldown
@@ -159,9 +157,7 @@
 						var/input = sanitize(input(usr, "Please choose a message to transmit to \[ABNORMAL ROUTING CORDINATES\] via quantum entanglement.  Please be aware that this process is very expensive, and abuse will lead to... termination. Transmission does not guarantee a response. There is a 30 second delay before you may send another message, be clear, full and concise.", "To abort, send an empty message.", "") as null|text)
 						if(!input || !can_still_topic())
 							return 1
-						// TODO: spellcheck
-						// if(usr.client?.get_preference_value(/datum/client_preference/spell_checking) == GLOB.PREF_YES && usr.client.chatOutput)
-						//	usr.client.chatOutput.spell_check(input)
+						usr.client?.spellcheck(input)
 						Syndicate_announce(input, usr)
 						to_chat(usr, SPAN("notice", "Message transmitted."))
 						log_say("[key_name(usr)] has made an illegal announcement: [input]")

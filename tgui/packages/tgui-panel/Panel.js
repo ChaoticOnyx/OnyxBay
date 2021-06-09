@@ -11,6 +11,7 @@ import { ChatPanel, ChatTabs } from './chat';
 import { useGame } from './game';
 import { Notifications } from './Notifications';
 import { SettingsPanel, useSettings } from './settings';
+import { useSpellCheckerSettings, SpellCheckerSettings } from './spellchecker';
 
 export const Panel = (props, context) => {
   // IE8-10: Needs special treatment due to missing Flex support
@@ -21,6 +22,7 @@ export const Panel = (props, context) => {
   }
   const audio = useAudio(context);
   const settings = useSettings(context);
+  const spellChecker = useSpellCheckerSettings(context);
   const game = useGame(context);
   if (process.env.NODE_ENV !== 'production') {
     const { useDebug, KitchenSink } = require('tgui/debug');
@@ -39,6 +41,15 @@ export const Panel = (props, context) => {
             <Stack mr={1} align="center">
               <Stack.Item grow overflowX="auto">
                 <ChatTabs />
+              </Stack.Item>
+              <Stack.Item>
+                <Button
+                  color={spellChecker.enabled ? 'yellow' : 'grey'}
+                  selected={spellChecker.visible}
+                  icon="spell-check"
+                  tooltip="Yandex Spell Checker"
+                  tooltipPosition="bottom-start"
+                  onClick={() => spellChecker.toggle()} />
               </Stack.Item>
               <Stack.Item>
                 <Button
@@ -72,6 +83,11 @@ export const Panel = (props, context) => {
         {settings.visible && (
           <Stack.Item>
             <SettingsPanel />
+          </Stack.Item>
+        )}
+        {spellChecker.visible && (
+          <Stack.Item>
+            <SpellCheckerSettings />
           </Stack.Item>
         )}
         <Stack.Item grow>

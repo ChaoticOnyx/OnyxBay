@@ -737,3 +737,18 @@ h2.alert {
 .ml-3 {
   margin-left: 3em;
 }
+
+/* SPELL CHECK */
+
+.spell-error {
+  font-weight: bold;
+  color: orange;
+  
+  .correct-word {
+    border-bottom: green solid 0.15rem;
+  }
+
+  .error-word {
+    border-bottom: red solid 0.15rem;
+  }
+}

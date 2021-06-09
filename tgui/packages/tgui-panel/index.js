@@ -21,6 +21,8 @@ import { gameMiddleware, gameReducer } from './game';
 import { setupPanelFocusHacks } from './panelFocus';
 import { settingsMiddleware, settingsReducer } from './settings';
 import { telemetryMiddleware } from './telemetry';
+import { spellCheckerReducer } from './spellchecker/reducer';
+import { spellCheckerMiddleware } from './spellchecker/middleware';
 
 perf.mark('inception', window.performance?.timing?.navigationStart);
 perf.mark('init');
@@ -31,6 +33,7 @@ const store = configureStore({
     chat: chatReducer,
     game: gameReducer,
     settings: settingsReducer,
+    spellChecker: spellCheckerReducer,
   }),
   middleware: {
     pre: [
@@ -39,6 +42,7 @@ const store = configureStore({
       settingsMiddleware,
       audioMiddleware,
       gameMiddleware,
+      spellCheckerMiddleware,
     ],
   },
 });
@@ -109,6 +113,7 @@ const setupApp = () => {
       './Panel',
       './settings',
       './telemetry',
+      './spellchecker',
     ], () => {
       renderApp();
     });

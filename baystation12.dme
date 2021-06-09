@@ -2645,6 +2645,7 @@
 #include "code\modules\tables\tables.dm"
 #include "code\modules\tables\update_triggers.dm"
 #include "code\modules\tgchat\message.dm"
+#include "code\modules\tgchat\spellcheck.dm"
 #include "code\modules\tgchat\to_chat.dm"
 #include "code\modules\tgui\external.dm"
 #include "code\modules\tgui\states.dm"

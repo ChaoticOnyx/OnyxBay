@@ -184,9 +184,7 @@ var/list/channel_to_radio_key = new
 			verb = speaking.whisper_verb ? speaking.whisper_verb : speaking.speech_verb
 		else
 			verb = say_quote(message, speaking)
-	// TODO: spellchecl
-	// if(client?.get_preference_value(/datum/client_preference/spell_checking) == GLOB.PREF_YES && client.chatOutput)
-	//	client.chatOutput.spell_check(message)
+	client?.spellcheck(message)
 
 	message = trim_left(message)
 
