@@ -458,6 +458,7 @@ class ChatRenderer {
     const pageHtml = '<!doctype html>\n'
       + '<html>\n'
       + '<head>\n'
+      + '<meta charset="utf-8">\n'
       + '<title>SS13 Chat Log</title>\n'
       + '<style>\n' + cssText + '</style>\n'
       + '</head>\n'
