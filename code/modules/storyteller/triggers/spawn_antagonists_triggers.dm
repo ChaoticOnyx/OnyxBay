@@ -14,8 +14,24 @@
 
 /storyteller_trigger/spawn_antagonist/traitor/New()
 	name = "Spawn Traitor"
-	antagonist_id = "traitor"
+	antagonist_id = MODE_TRAITOR
 
 /storyteller_trigger/spawn_antagonist/changeling/New()
 	name = "Spawn Changeling"
-	antagonist_id = "changeling"
+	antagonist_id = MODE_CHANGELING
+
+/storyteller_trigger/spawn_antagonist/vampire/New()
+	name = "Spawn Vampire"
+	antagonist_id = MODE_VAMPIRE
+
+/storyteller_trigger/spawn_antagonist/wizard/New()
+	name = "Spawn Wizard"
+	antagonist_id = MODE_WIZARD
+
+/storyteller_trigger/spawn_antagonist/ninja/New()
+	name = "Spawn Ninja"
+	antagonist_id = MODE_NINJA
+
+/storyteller_trigger/spawn_antagonist/borer/New()
+	name = "Spawn Borer"
+	antagonist_id = MODE_BORER

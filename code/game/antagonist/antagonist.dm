@@ -222,6 +222,11 @@
 
 	return 1
 
+/proc/alert_timeout(recipient, message, title, timeout, button1, button2, button3)
+	src = new /datum()  // make this proc die if src dies
+	spawn(timeout) del(src)
+	return alert(recipient, message, title, button1, button2, button3)
+
 /datum/antagonist/proc/draft_antagonist(datum/mind/player)
 	//Check if the player can join in this antag role, or if the player has already been given an antag role.
 	if(!can_become_antag(player))
@@ -234,8 +239,16 @@
 		log_debug_verbose("[player.key] was selected for [role_text] by lottery, but they have not joined the game.")
 		return 0
 	if(GAME_STATE >= RUNLEVEL_GAME && (isghostmind(player) || isnewplayer(player.current)) && !(player in SSticker.antag_pool))
-		log_debug_verbose("[player.key] was selected for [role_text] by lottery, but they are a ghost not in the antag pool.")
-		return 0
+		var/answer = alert_timeout(
+			recipient = player.current,
+			message = "You was selected for role [role_text] by lottery. Are you ready to play it?", 
+			title = "Do you want to play [role_text]?",
+			timeout = 100,
+			button1 = "Yes",
+			button2 = "No")
+		if(answer != "Yes")
+			log_debug_verbose("[player.key] was selected for [role_text] by lottery, but they denied it.")
+			return 0
 
 	pending_antagonists |= player
 	log_debug_verbose("[player.key] has been selected for [role_text] by lottery.")
