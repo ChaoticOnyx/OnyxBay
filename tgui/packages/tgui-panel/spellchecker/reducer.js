@@ -19,7 +19,7 @@ export const spellCheckerReducer = (state = initialState, action) => {
       };
     }
 
-    delete payload.visible;
+    payload.visible = false;
 
     return {
       ...state,

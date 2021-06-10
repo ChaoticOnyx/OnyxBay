@@ -9,7 +9,7 @@
  * tgui panel / chat troubleshooting verb
  */
 /client/verb/fix_tgui_panel()
-	set name = "Fix chat"
+	set name = "Fix Chat"
 	set category = "OOC"
 	var/action
 	log_tgui(src, "Started fixing.", context = "verb/fix_tgui_panel")
@@ -23,7 +23,9 @@
 		winset(src, "browseroutput", "is-disabled=1;is-visible=0")
 		log_tgui(src, "Failed to fix.", context = "verb/fix_tgui_panel")
 
-/client/proc/nuke_chat()
+/client/verb/nuke_chat()
+	set name = "Nuke Chat"
+	set hidden = TRUE
 	// Catch all solution (kick the whole thing in the pants)
 	winset(src, "output", "on-show=&is-disabled=0&is-visible=1")
 	winset(src, "browseroutput", "is-disabled=1;is-visible=0")
