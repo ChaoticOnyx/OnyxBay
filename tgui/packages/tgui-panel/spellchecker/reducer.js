@@ -12,6 +12,13 @@ export const spellCheckerReducer = (state = initialState, action) => {
   const { type, payload } = action;
 
   if (type === loadSpellCheckerSettings.type) {
+    if (!payload) {
+      return {
+        ...state,
+        initialState
+      };
+    }
+
     delete payload.visible;
 
     return {
