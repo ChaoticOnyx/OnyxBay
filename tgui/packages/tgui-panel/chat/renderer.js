@@ -440,7 +440,7 @@ class ChatRenderer {
     let cssText = '';
     const styleSheets = document.styleSheets;
     for (let i = 0; i < styleSheets.length; i++) {
-      const cssRules = styleSheets[i].cssRules;
+      const cssRules = styleSheets[i].rules;
       for (let i = 0; i < cssRules.length; i++) {
         const rule = cssRules[i];
         cssText += rule.cssText + '\n';
@@ -458,6 +458,7 @@ class ChatRenderer {
     const pageHtml = '<!doctype html>\n'
       + '<html>\n'
       + '<head>\n'
+      + '<meta charset="utf-8">\n'
       + '<title>SS13 Chat Log</title>\n'
       + '<style>\n' + cssText + '</style>\n'
       + '</head>\n'

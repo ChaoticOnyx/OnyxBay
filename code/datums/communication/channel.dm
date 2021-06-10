@@ -49,6 +49,10 @@
 /decl/communication_channel/proc/do_communicate(communicator, message)
 	return
 
+/decl/communication_channel/proc/get_message_type()
+	CAN_BE_REDEFINED(TRUE)
+	CRASH("Channel [src] has no message type")
+
 /*
 * Procs for handling the reception of communication messages
 */
@@ -75,7 +79,7 @@
 	return TRUE
 
 /decl/communication_channel/proc/do_receive_communication(datum/communicator, datum/receiver, message)
-	to_chat(receiver, message)
+	to_chat(receiver, message, type = get_message_type())
 
 // Misc. helpers
 /datum/proc/communication_identifier()

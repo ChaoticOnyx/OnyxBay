@@ -18,6 +18,11 @@ Push-Location -Path $Ci.Workspace
 
 foreach ($File in $ChangedFiles)
 {
+    if ((Test-Path $File.FileName) -eq $false)
+    {
+        continue
+    }
+
     if (($File.FileName[-3..-1] | Join-String) -ne '.dm')
     {
         Write-Verbose "Пропускается файл $($File.FileName)"

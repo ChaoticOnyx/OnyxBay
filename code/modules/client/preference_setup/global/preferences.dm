@@ -125,11 +125,6 @@ var/global/list/_client_preferences_by_type
 	description ="Hitmarker Sound"
 	key = "SOUND_HITMARKER"
 
-/datum/client_preference/spell_checking
-	description ="Spell checking"
-	key = "SPELL_CHECKING"
-	default_value = GLOB.PREF_NO
-
 /datum/client_preference/ghost_ears
 	description ="Ghost ears"
 	key = "CHAT_GHOSTEARS"
@@ -229,6 +224,21 @@ var/global/list/_client_preferences_by_type
 	description = "TGUI Theme"
 	key = "TGUI_THEME"
 	options = list(GLOB.PREF_WHITE, GLOB.PREF_DARK)
+
+/datum/client_preference/tgui_chat
+	description = "TGUI Chat"
+	key = "TGUI_CHAT"
+	options = list(GLOB.PREF_YES, GLOB.PREF_NO)
+
+/datum/client_preference/tgui_chat/changed(mob/preference_mob, new_value)
+	if(preference_mob.client == null)
+		return
+
+	if(new_value == GLOB.PREF_YES)
+		preference_mob.client.tgui_panel.initialize()
+	else
+		winset(preference_mob, "output", "on-show=&is-disabled=0&is-visible=1")
+		winset(preference_mob, "browseroutput", "is-disabled=1;is-visible=0")
 
 /datum/client_preference/browser_style
 	description = "Fake NanoUI Browser Style"

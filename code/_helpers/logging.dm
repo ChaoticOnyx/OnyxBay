@@ -61,7 +61,7 @@
 	log_generic("ADMIN", text, location, config.log_admin, notify_admin)
 
 /proc/log_debug(text, location)
-	log_generic("DEBUG", text, location, FALSE, TRUE, /datum/client_preference/staff/show_debug_logs)
+	log_generic("DEBUG", SPAN("filter_debuglog", text), location, FALSE, TRUE, /datum/client_preference/staff/show_debug_logs)
 	if(!config.log_debug || !GLOB.world_debug_log)
 		return
 	WRITE_FILE(GLOB.world_debug_log, "\[[time_stamp()]] DEBUG: [text][log_end]")

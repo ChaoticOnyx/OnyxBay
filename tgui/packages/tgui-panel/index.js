@@ -19,9 +19,10 @@ import { audioMiddleware, audioReducer } from './audio';
 import { chatMiddleware, chatReducer } from './chat';
 import { gameMiddleware, gameReducer } from './game';
 import { setupPanelFocusHacks } from './panelFocus';
-import { pingMiddleware, pingReducer } from './ping';
 import { settingsMiddleware, settingsReducer } from './settings';
 import { telemetryMiddleware } from './telemetry';
+import { spellCheckerReducer } from './spellchecker/reducer';
+import { spellCheckerMiddleware } from './spellchecker/middleware';
 
 perf.mark('inception', window.performance?.timing?.navigationStart);
 perf.mark('init');
@@ -31,17 +32,17 @@ const store = configureStore({
     audio: audioReducer,
     chat: chatReducer,
     game: gameReducer,
-    ping: pingReducer,
     settings: settingsReducer,
+    spellChecker: spellCheckerReducer,
   }),
   middleware: {
     pre: [
       chatMiddleware,
-      pingMiddleware,
       telemetryMiddleware,
       settingsMiddleware,
       audioMiddleware,
       gameMiddleware,
+      spellCheckerMiddleware,
     ],
   },
 });
@@ -110,9 +111,9 @@ const setupApp = () => {
       './game',
       './Notifications',
       './Panel',
-      './ping',
       './settings',
       './telemetry',
+      './spellchecker',
     ], () => {
       renderApp();
     });
