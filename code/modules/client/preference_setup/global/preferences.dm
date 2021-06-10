@@ -125,11 +125,6 @@ var/global/list/_client_preferences_by_type
 	description ="Hitmarker Sound"
 	key = "SOUND_HITMARKER"
 
-/datum/client_preference/spell_checking
-	description ="Spell checking"
-	key = "SPELL_CHECKING"
-	default_value = GLOB.PREF_NO
-
 /datum/client_preference/ghost_ears
 	description ="Ghost ears"
 	key = "CHAT_GHOSTEARS"
