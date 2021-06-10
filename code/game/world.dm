@@ -352,7 +352,7 @@ var/world_topic_spam_protect_time = world.timeofday
 			return "globally muted"
 		if(jobban_keylist.Find("[ckey] - OOC"))
 			return "banned from ooc"
-		var/sent_message = "[create_text_tag("dooc", "DISCORD OOC")] <EM>[ckey]:</EM> <span class='message linkify'>[message]</span>"
+		var/sent_message = "[create_text_tag("dooc", "DOOC")] <EM>[ckey]:</EM> <span class='message linkify'>[message]</span>"
 		for(var/client/target in GLOB.clients)
 			if(!target)
 				continue //sanity
