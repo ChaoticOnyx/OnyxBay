@@ -10,7 +10,6 @@ import { loadSettings, updateSettings } from './actions';
 import { selectSettings } from './selectors';
 import { FONTS_DISABLED } from './constants';
 import { loadChat, rebuildChat, resetSettings } from '../chat/actions';
-import { logger } from '../../tgui/logging';
 
 const setGlobalFontSize = fontSize => {
   document.documentElement.style

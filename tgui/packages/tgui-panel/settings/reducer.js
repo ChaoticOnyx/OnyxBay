@@ -4,7 +4,6 @@
  * @license MIT
  */
 
-import { logger } from '../../tgui/logging';
 import { changeSettingsTab, loadSettings, openChatSettings, toggleSettings, updateSettings } from './actions';
 import { FONTS, SETTINGS_TABS } from './constants';
 
