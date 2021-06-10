@@ -15,7 +15,7 @@ export const spellCheckerReducer = (state = initialState, action) => {
     if (!payload) {
       return {
         ...state,
-        initialState
+        initialState,
       };
     }
 
