@@ -13,8 +13,6 @@
 
 	level_max = list(Sp_TOTAL = 5, Sp_SPEED = 0, Sp_POWER = 5)
 
-	spell_flags = 0
-
 	duration = 20
 	proj_step_delay = 1
 
