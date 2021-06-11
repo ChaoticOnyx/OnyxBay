@@ -83,7 +83,8 @@
 
 /client/proc/get_preference_value(preference)
 	if(!SScharacter_setup.initialized)
-		return // Too early to use any preferences
+		// Too early to use any preferences
+		CRASH("Trying to get [ckey]'s preferences before the subsystem's initialization.")
 
 	if(!prefs)
 		log_error("[ckey]'s preferences did not load. Trying to fix.")
