@@ -57,9 +57,6 @@
 			load_data()
 
 	sanitize_preferences()
-	if(client && istype(client.mob, /mob/new_player))
-		var/mob/new_player/np = client.mob
-		np.new_player_panel(TRUE)
 
 /datum/preferences/proc/load_data()
 	load_failed = null
@@ -441,10 +438,10 @@
 	panel.close()
 
 /datum/preferences/proc/apply_post_login_preferences(client/update_client = null)
+	client = client || update_client
+	
 	if(!client)
-		if(!update_client)
-			return
-		client = update_client
+		return
 
 	client.update_chat_position(client.get_preference_value(/datum/client_preference/chat_position))
 
@@ -456,3 +453,6 @@
 		winset(client, "browseroutput", "is-disabled=1;is-visible=0")
 	else
 		client.tgui_panel.initialize()
+
+	var/mob/new_player/np = client.mob
+	istype(np) && np.new_player_panel(TRUE)
