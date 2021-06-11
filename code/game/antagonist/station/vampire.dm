@@ -16,6 +16,59 @@ GLOBAL_DATUM_INIT(vampires, /datum/antagonist/vampire, new)
 	flags = ANTAG_SUSPICIOUS | ANTAG_RANDSPAWN | ANTAG_VOTABLE
 	antaghud_indicator = "hudvampire"
 
+/datum/antagonist/vampire/create_objectives(datum/mind/player)
+	if(!..())
+		return
+
+	var/kill
+	var/escape
+	var/protect
+	var/ghouls
+	var/vampirize
+
+	switch(rand(1,100))
+		if(1 to 25)
+			kill = 1
+			escape = 1
+		if(26 to 50)
+			protect = 1
+			escape = 1
+		if(51 to 75)
+			kill = 1
+			vampirize = 1
+		if(76 to 98)
+			vampirize = 1
+			escape = 1
+		else
+			ghouls = 1
+			kill = 1
+			escape = 1
+
+
+	if(kill)
+		var/datum/objective/assassinate/kill_objective = new
+		kill_objective.owner = player
+		kill_objective.find_target()
+		player.objectives += kill_objective
+	if(protect)
+		var/datum/objective/ghouls/protect_objective = new
+		protect_objective.owner = player
+		protect_objective.find_target()
+		player.objectives += protect_objective
+	if(vampirize)
+		var/datum/objective/vampirize/vampirize_objective = new
+		vampirize_objective.owner = player
+		vampirize_objective.find_target()
+		player.objectives += vampirize_objective
+	if(ghouls)
+		var/datum/objective/ghouls/ghouls_objective = new
+		ghouls_objective.owner = player
+		player.objectives += ghouls_objective
+	if(escape)
+		var/datum/objective/survive/survive_objective = new
+		survive_objective.owner = player
+		player.objectives += survive_objective
+	return
 
 /datum/antagonist/vampire/update_antag_mob(datum/mind/player)
 	..()
