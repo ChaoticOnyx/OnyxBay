@@ -150,11 +150,6 @@ var/global/list/_client_preferences_by_type
 	key = "CHAT_GHOSTFOLLOWLINKLENGTH"
 	options = list(GLOB.PREF_SHORT, GLOB.PREF_LONG)
 
-/datum/client_preference/chat_tags
-	description ="Chat tags"
-	key = "CHAT_SHOWICONS"
-	options = list(GLOB.PREF_SHOW, GLOB.PREF_HIDE)
-
 /datum/client_preference/show_typing_indicator
 	description ="Typing indicator"
 	key = "SHOW_TYPING"
@@ -163,31 +158,6 @@ var/global/list/_client_preferences_by_type
 /datum/client_preference/show_typing_indicator/changed(mob/preference_mob, new_value)
 	if(new_value == GLOB.PREF_HIDE)
 		QDEL_NULL(preference_mob.typing_indicator)
-
-/datum/client_preference/show_ooc
-	description ="OOC chat"
-	key = "CHAT_OOC"
-	options = list(GLOB.PREF_SHOW, GLOB.PREF_HIDE)
-
-/datum/client_preference/show_discord_ooc
-	description ="Discord OOC chat"
-	key = "CHAT_DISCORD_OOC"
-	options = list(GLOB.PREF_SHOW, GLOB.PREF_HIDE)
-
-/datum/client_preference/show_aooc
-	description ="AOOC chat"
-	key = "CHAT_AOOC"
-	options = list(GLOB.PREF_SHOW, GLOB.PREF_HIDE)
-
-/datum/client_preference/show_looc
-	description ="LOOC chat"
-	key = "CHAT_LOOC"
-	options = list(GLOB.PREF_SHOW, GLOB.PREF_HIDE)
-
-/datum/client_preference/show_dsay
-	description ="Dead chat"
-	key = "CHAT_DEAD"
-	options = list(GLOB.PREF_SHOW, GLOB.PREF_HIDE)
 
 /datum/client_preference/show_progress_bar
 	description ="Progress Bar"

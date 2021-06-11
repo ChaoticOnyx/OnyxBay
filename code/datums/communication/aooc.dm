@@ -5,7 +5,6 @@
 	flags = COMMUNICATION_LOG_CHANNEL_NAME|COMMUNICATION_ADMIN_FOLLOW
 	log_proc = /proc/log_ooc
 	mute_setting = MUTE_AOOC
-	show_preference_setting = /datum/client_preference/show_aooc
 
 /decl/communication_channel/aooc/can_communicate(client/C, message)
 	. = ..()
