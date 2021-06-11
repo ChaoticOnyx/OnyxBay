@@ -438,3 +438,61 @@ GLOBAL_PROTECT(hub_password)
 `for(var/i = 1, i <= some_value, i++)` является стандартным способом писать циклы во многих языках программирования, однако в BYOND, внезапно, `for(var/i in 1 to some_value)` оказывается быстрее в плане производительности. (Обратите внимание, что `to` включает и левую, и правую границу).
 
 ОДНАКО, если `some_value` или `i` меняются в течение цикла, или вы итерируете по элементам списка, длина которого изменяется, вы НЕ можете использовать этот тип цикла for.
+
+### Логические операторы || и &&
+Они могут быть использованы для так называемого "null-coalescing assignment" и более коротких условии.
+
+Пример:
+
+```dm
+/datum/preferences/proc/apply_post_login_preferences(client/update_client = null)
+	client = client || update_client
+```
+
+Этот пример аналогичен коду далее:
+
+```dm
+/datum/preferences/proc/apply_post_login_preferences(client/update_client = null)
+	if(!client)
+		client = update_client
+```
+
+То есть, выражение
+
+```dm
+C = A || B
+```
+
+равнозначно выражению
+
+```dm
+if(A)
+	C = A
+else
+	C = B
+```
+
+Ещё пример:
+
+```dm
+foo(a || "some_default_value")
+```
+
+Если a равен null или 'false' - будет передано значение "some_default_value".
+
+Также можно делать с оператором &&, но в отличии от || результат может не присваиваться.
+
+```dm
+var/obj/a = some_object
+istype(a) && a.foo()
+```
+
+Этот пример равнозначен коду:
+
+```dm
+var/obj/a = some_object
+if(istype(a))
+	a.foo()
+```
+
+В версии 514 добавлены сокращенные варианты: A ||= B и A &&= B
