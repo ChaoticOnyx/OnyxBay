@@ -1,5 +1,11 @@
 GLOBAL_DATUM_INIT(vampires, /datum/antagonist/vampire, new)
 
+/proc/isvampire(mob/player)
+	if(!GLOB.vampires|| !player.mind)
+		return 0
+	if(player.mind in GLOB.vampires.current_antagonists)
+		return 1
+
 /datum/antagonist/vampire
 	id = MODE_VAMPIRE
 	role_text = "Vampire"
