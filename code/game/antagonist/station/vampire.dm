@@ -28,21 +28,21 @@ GLOBAL_DATUM_INIT(vampires, /datum/antagonist/vampire, new)
 
 	switch(rand(1,100))
 		if(1 to 25)
-			kill = 1
-			escape = 1
+			kill = TRUE
+			escape = TRUE
 		if(26 to 50)
-			protect = 1
-			escape = 1
+			protect = TRUE
+			escape = TRUE
 		if(51 to 75)
-			kill = 1
-			vampirize = 1
+			kill = TRUE
+			vampirize = TRUE
 		if(76 to 98)
-			vampirize = 1
-			escape = 1
+			vampirize = TRUE
+			escape = TRUE
 		else
-			ghouls = 1
-			kill = 1
-			escape = 1
+			ghouls = TRUE
+			kill = TRUE
+			escape = TRUE
 
 
 	if(kill)
@@ -51,7 +51,7 @@ GLOBAL_DATUM_INIT(vampires, /datum/antagonist/vampire, new)
 		kill_objective.find_target()
 		player.objectives += kill_objective
 	if(protect)
-		var/datum/objective/ghouls/protect_objective = new
+		var/datum/objective/protect/protect_objective = new
 		protect_objective.owner = player
 		protect_objective.find_target()
 		player.objectives += protect_objective
@@ -68,7 +68,6 @@ GLOBAL_DATUM_INIT(vampires, /datum/antagonist/vampire, new)
 		var/datum/objective/survive/survive_objective = new
 		survive_objective.owner = player
 		player.objectives += survive_objective
-	return
 
 /datum/antagonist/vampire/update_antag_mob(datum/mind/player)
 	..()
