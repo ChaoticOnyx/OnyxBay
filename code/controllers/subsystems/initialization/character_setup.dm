@@ -17,11 +17,14 @@ SUBSYSTEM_DEF(character_setup)
 		var/datum/preferences/prefs = prefs_awaiting_setup[prefs_awaiting_setup.len]
 		prefs_awaiting_setup.len--
 		prefs.setup()
+
+	// Not too early and not too late
+	. = ..()
+
 	while(newplayers_requiring_init.len)
 		var/mob/new_player/new_player = newplayers_requiring_init[newplayers_requiring_init.len]
 		newplayers_requiring_init.len--
 		new_player.deferred_login()
-	. = ..()
 
 /datum/controller/subsystem/character_setup/fire(resumed = FALSE)
 	while(save_queue.len)
