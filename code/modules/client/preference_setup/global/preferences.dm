@@ -303,28 +303,6 @@ var/global/list/_client_preferences_by_type
 	options = list(GLOB.PREF_SHOW, GLOB.PREF_HIDE)
 
 /********************
-* Admin Preferences *
-********************/
-
-/datum/client_preference/staff/show_attack_logs
-	description = "Attack Log Messages"
-	key = "CHAT_ATTACKLOGS"
-	options = list(GLOB.PREF_SHOW, GLOB.PREF_HIDE)
-	flags = R_ADMIN
-	default_value = GLOB.PREF_HIDE
-
-/********************
-* Debug Preferences *
-********************/
-
-/datum/client_preference/staff/show_debug_logs
-	description = "Debug Log Messages"
-	key = "CHAT_DEBUGLOGS"
-	options = list(GLOB.PREF_SHOW, GLOB.PREF_HIDE)
-	default_value = GLOB.PREF_HIDE
-	flags = R_ADMIN|R_DEBUG
-
-/********************
 * Misc Preferences *
 ********************/
 

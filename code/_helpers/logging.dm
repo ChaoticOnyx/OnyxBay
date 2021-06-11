@@ -38,7 +38,7 @@
 /proc/testing(msg)
 	log_to_dd("\[[time_stamp()]]\[TESTING] [msg][log_end]")
 
-/proc/log_generic(type, message, location, log_to_common = TRUE, notify_admin = FALSE, req_pref = null)
+/proc/log_generic(type, message, location, log_to_common = TRUE, notify_admin = FALSE, message_type)
 	var/turf/T = get_turf(location)
 	if(location && T)
 		if(log_to_common)
@@ -51,17 +51,16 @@
 	var/rendered = "<span class=\"log_message\"><span class=\"prefix\">[type] LOG:</span> <span class=\"message\">[message]</span></span>"
 	if(notify_admin && SScharacter_setup.initialized) // Checking SScharacter_setup early so won't cycle through all the admins
 		for(var/client/C in GLOB.admins)
-			if(!req_pref || (C.get_preference_value(req_pref) == GLOB.PREF_SHOW))
-				to_chat(C, rendered)
+			to_chat(C, rendered, message_type)
 
 /proc/log_roundend(text)
 	log_generic("ROUNDEND", text, null, config.log_game)
 
 /proc/log_admin(text, location, notify_admin)
-	log_generic("ADMIN", text, location, config.log_admin, notify_admin)
+	log_generic("ADMIN", text, location, config.log_admin, notify_admin, MESSAGE_TYPE_ADMINLOG)
 
 /proc/log_debug(text, location)
-	log_generic("DEBUG", SPAN("filter_debuglog", text), location, FALSE, TRUE, /datum/client_preference/staff/show_debug_logs)
+	log_generic("DEBUG", SPAN("filter_debuglog", text), location, FALSE, TRUE, MESSAGE_TYPE_DEBUG)
 	if(!config.log_debug || !GLOB.world_debug_log)
 		return
 	WRITE_FILE(GLOB.world_debug_log, "\[[time_stamp()]] DEBUG: [text][log_end]")
@@ -78,7 +77,7 @@
 	log_generic("VOTE", text, null, config.log_vote)
 
 /proc/log_access(text, notify_admin)
-	log_generic("ACCESS", text, null, config.log_vote, notify_admin)
+	log_generic("ACCESS", text, null, config.log_vote, notify_admin, MESSAGE_TYPE_ADMINLOG)
 
 /proc/log_say(text)
 	log_generic("SAY", text, null, config.log_say)
@@ -93,13 +92,13 @@
 	log_generic("EMOTE", text, null, config.log_emote)
 
 /proc/log_attack(text, location, notify_admin)
-	log_generic("ATTACK", text, location, config.log_attack, notify_admin, /datum/client_preference/staff/show_attack_logs)
+	log_generic("ATTACK", text, location, config.log_attack, notify_admin, MESSAGE_TYPE_ATTACKLOG)
 
 /proc/log_adminsay(text)
-	log_generic("ADMINSAY", text, null, config.log_adminchat)
+	log_generic("ADMINSAY", text, null, config.log_adminchat, FALSE, MESSAGE_TYPE_ADMINLOG)
 
 /proc/log_adminwarn(text, location, notify_admin)
-	log_generic("ADMINWARN", text, location, config.log_adminwarn, notify_admin)
+	log_generic("ADMINWARN", text, location, config.log_adminwarn, notify_admin, MESSAGE_TYPE_ADMINLOG)
 
 /proc/log_pda(text)
 	log_generic("PDA", text, null, config.log_pda)
