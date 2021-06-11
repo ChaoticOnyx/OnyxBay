@@ -1,14 +1,12 @@
 // human things
 
 /mob/living/imaginary_friend/proc/Show()
-	if(!client) //nobody home
+	if(!client || !virtual_human) //nobody home
 		return
 
 	//Remove old image from host and friend
-	if(host.client)
-		host.client.images.Remove(ghost_image)
-
-	client.images.Remove(ghost_image)
+	host.remove_client_image(ghost_image)
+	src.remove_client_image(ghost_image)
 
 	//Generate image from virtual human
 	ghost_image = image(virtual_human.icon, src, virtual_human.icon_state, MOB_LAYER, dir=src.dir)
@@ -19,10 +17,8 @@
 		ghost_image.alpha = 150
 
 	//Add new image to host and friend
-	if(!hidden && host.client)
-		host.client.images |= ghost_image
-
-	client.images |= ghost_image
+	host.add_client_image(ghost_image)
+	src.add_client_image(ghost_image)
 
 /mob/living/imaginary_friend/proc/handle_items(var/mob/living/carbon/human/H, job_tittle)
 	// equip friend with friend's clothing
@@ -38,32 +34,32 @@
 	equip_to_slot_or_del(new /obj/item/clothing/under/chameleon/friend(H), slot_w_uniform)
 	// disguise friend's items to job items
 	var/datum/job/job = job_master.GetJob(job_tittle)
-	var/decl/hierarchy/outfit/outfit = job.get_outfit(virtual_human, job)
+	var/decl/hierarchy/outfit/outfit = job.get_outfit(H, job)
 	for(var/slot in list(slot_back, slot_wear_mask, slot_glasses, slot_gloves, slot_head, slot_shoes, slot_wear_suit, slot_w_uniform))
 		switch (slot)
 			if(slot_w_uniform)
-				var/obj/item/clothing/under/chameleon/friend/C = get_equipped_item(slot_w_uniform)
+				var/obj/item/clothing/under/chameleon/friend/C = H.get_equipped_item(slot_w_uniform)
 				C.disguise(outfit?.uniform)
 			if(slot_wear_suit)
-				var/obj/item/clothing/suit/chameleon/friend/C = get_equipped_item(slot_wear_suit)
+				var/obj/item/clothing/suit/chameleon/friend/C = H.get_equipped_item(slot_wear_suit)
 				C.disguise(outfit?.suit)
 			if(slot_gloves)
-				var/obj/item/clothing/gloves/chameleon/friend/C = get_equipped_item(slot_gloves)
+				var/obj/item/clothing/gloves/chameleon/friend/C = H.get_equipped_item(slot_gloves)
 				C.disguise(outfit?.gloves)
 			if(slot_shoes)
-				var/obj/item/clothing/shoes/chameleon/friend/C = get_equipped_item(slot_shoes)
+				var/obj/item/clothing/shoes/chameleon/friend/C = H.get_equipped_item(slot_shoes)
 				C.disguise(outfit?.shoes)
 			if(slot_wear_mask)
-				var/obj/item/clothing/mask/chameleon/friend/C = get_equipped_item(slot_wear_mask)
+				var/obj/item/clothing/mask/chameleon/friend/C = H.get_equipped_item(slot_wear_mask)
 				C.disguise(outfit?.mask)
 			if(slot_head)
-				var/obj/item/clothing/head/chameleon/friend/C = get_equipped_item(slot_head)
+				var/obj/item/clothing/head/chameleon/friend/C = H.get_equipped_item(slot_head)
 				C.disguise(outfit?.head)
 			if(slot_glasses)
-				var/obj/item/clothing/glasses/chameleon/friend/C = get_equipped_item(slot_glasses)
+				var/obj/item/clothing/glasses/chameleon/friend/C = H.get_equipped_item(slot_glasses)
 				C.disguise(outfit?.glasses)
 			if(slot_back)
-				var/obj/item/weapon/storage/backpack/chameleon/friend/C = get_equipped_item(slot_back)
+				var/obj/item/weapon/storage/backpack/chameleon/friend/C = H.get_equipped_item(slot_back)
 				C.disguise(outfit?.back)
 	// handle custom items
 	// maybe next time.

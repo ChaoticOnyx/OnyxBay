@@ -15,25 +15,21 @@
 	var/out = "<meta charset=\"utf-8\"><b>The Syndicate Operations Menu</b>"
 	out += "<hr><b>Friends</b></br>"
 	for(var/mob/living/imaginary_friend/IF in GLOB.friend_list)
-		out += "<br><b>Contract [contract.mind.name]:</b> <small>[contract.desc]</small> "
-		if(contract.completed)
-			out += "(<font color='green'>completed</font>)"
-		else
-			out += "(<font color='red'>incompleted</font>)"
+		out += "<br><b>Friend [IF.name]:</b>, host: [IF?.host?.real_name], type: [IF.friend_type]"
 		out += " <a href='?src=\ref[src];friend_remove=\ref[IF];friend_action=1'>\[delete friend]</a>"
-	out += "<hr><a href='?src=\ref[src];friend_add=1;friend_action=1'>\[add contract]</a><br><br>"
+	out += "<hr><a href='?src=\ref[src];friend_add=1;friend_action=1'>\[add friend]</a><br><br>"
 	show_browser(usr, out, "window=edit_friends[src]")
 
 //If the friend goes afk, make a brand new friend. Plenty of fish in the sea of imagination.
 /mob/living/imaginary_friend/proc/reroll_friend()
 	if(src.client) //reconnected
+		friend_initialized = TRUE
 		return
 	friend_initialized = FALSE
 	make_friend()
 
 /mob/living/imaginary_friend/proc/make_friend()
-	qdel(src)
-	new /mob/living/imaginary_friend(get_turf(host), src)
+	get_ghost()
 
 /mob/living/imaginary_friend/proc/get_ghost()
 	set waitfor = FALSE
@@ -42,3 +38,4 @@
 		return
 	var/datum/ghosttrap/friend/S = get_ghost_trap("imaginary friend")
 	S.request_player(src, "The [host.real_name] brain broke, the imaginary friend ready to appear. ", 1 MINUTE)
+	addtimer(CALLBACK(src, .proc/reroll_friend), 1.1 MINUTE)

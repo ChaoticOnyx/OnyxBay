@@ -3,12 +3,21 @@ GLOBAL_LIST_EMPTY(friend_list)
 	name = "imaginary friend"
 	real_name = "imaginary friend"
 	desc = "A wonderful yet fake friend."
+	density = 0
+	alpha = 127
+	plane = OBSERVER_PLANE
+	invisibility = INVISIBILITY_OBSERVER
+	see_invisible = SEE_INVISIBLE_OBSERVER
+	sight = SEE_TURFS|SEE_MOBS|SEE_OBJS
+	simulated = FALSE
+	status_flags = GODMODE
 	see_in_dark = 3 // human see_in_dark + 1, because of fun.
 	stat = CONSCIOUS
 	mouse_opacity = MOUSE_OPACITY_OPAQUE
 	see_invisible = SEE_INVISIBLE_LIVING
 	invisibility = INVISIBILITY_MAXIMUM
 	movement_handlers = list(/datum/movement_handler/mob/incorporeal, /datum/movement_handler/mob/friend)
+	var/friend_type = "Not Defined"
 	var/image/ghost_image
 	var/mob/living/carbon/human/host // who contains the constr... Khem, imaginary friend
 	var/mob/living/carbon/human/virtual_human // Fred Collon holder, use for get virtual clothes, virtual ID card, tl;dr icons
@@ -25,6 +34,14 @@ GLOBAL_LIST_EMPTY(friend_list)
 	..()
 	greet()
 	Show()
+
+/mob/living/imaginary_friend/Logout()
+	..()
+	addtimer(CALLBACK(src, .proc/reroll_friend), 1 MINUTE)
+
+/mob/living/imaginary_friend/examine(mob/user, infix, suffix)
+	. = ..()
+	. += "\n[virtual_human?.examine()]"
 
 /mob/living/imaginary_friend/Destroy()
 	if(host.client)
@@ -79,7 +96,7 @@ GLOBAL_LIST_EMPTY(friend_list)
 	for(var/mob/observer/ghost/O in GLOB.ghost_mob_list)
 		to_chat(O, "[ghost_follow_link(host, O)] [dead_rendered]")
 
-/mob/living/imaginary_friend/New(mob/living/carbon/human/H)
+/mob/living/imaginary_friend/Initialize(mob/living/carbon/human/H)
 	. = ..()
 
 	get_ghost()
