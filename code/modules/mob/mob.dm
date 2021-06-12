@@ -913,7 +913,7 @@
 			to_chat(usr, "You need to have a sharp object in active hand to do this.")
 			return
 
-		damage_mod = 1.5 + (W.w_class - 1) * 0.75
+		damage_mod = 2 + W.w_class
 
 
 	if(self)
@@ -937,8 +937,8 @@
 		for(var/datum/wound/wound in affected.wounds)
 			wound.embedded_objects -= selection
 
-		H.shock_stage += 20 * damage_mod
-		affected.take_external_damage((selection.w_class * 3 * damage_mod), 0, DAM_EDGE, "Embedded object extraction")
+		H.shock_stage += 20 * max(damage_mod * 0.25, 1)
+		affected.take_external_damage((selection.w_class * 6 * damage_mod), 0, DAM_EDGE, "Embedded object extraction")
 
 		if(prob(selection.w_class * 5 * damage_mod) && affected.sever_artery()) //I'M SO ANEMIC I COULD JUST -DIE-.
 			H.custom_pain("Something tears wetly in your [affected] as [selection] is pulled free!", 50, affecting = affected)
