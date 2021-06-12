@@ -65,8 +65,16 @@
 // Do not make any calls in mob/Login which may require prefs having been loaded.
 // It is safe to assume that any UI or sound related calls will fall into that category.
 /mob/new_player/proc/deferred_login()
-	if(client)
-		client.prefs?.apply_post_login_preferences(client)
-		client.playtitlemusic()
+	if(!client)
+		return
+	
+	client.prefs.apply_post_login_preferences(client)
+	client.playtitlemusic()
 
-		new_player_panel(TRUE)
+	new_player_panel(TRUE)
+
+	// bolds the changelog button on the interface so we know there are updates.
+	if(client.prefs.lastchangelog != changelog_hash)
+		to_chat(client, SPAN("info", "You have unread updates in the changelog."))
+		if(config.aggressive_changelog)
+			client.changes()
