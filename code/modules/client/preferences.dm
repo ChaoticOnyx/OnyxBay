@@ -57,9 +57,6 @@
 			load_data()
 
 	sanitize_preferences()
-	if(client && istype(client.mob, /mob/new_player))
-		var/mob/new_player/np = client.mob
-		np.new_player_panel(TRUE)
 
 /datum/preferences/proc/load_data()
 	load_failed = null
@@ -441,10 +438,8 @@
 	panel.close()
 
 /datum/preferences/proc/apply_post_login_preferences(client/update_client = null)
-	if(!client)
-		if(!update_client)
-			return
-		client = update_client
+	client = client || update_client
+	ASSERT(client)
 
 	client.update_chat_position(client.get_preference_value(/datum/client_preference/chat_position))
 

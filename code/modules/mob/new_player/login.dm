@@ -56,8 +56,6 @@
 	set_sight(sight|SEE_TURFS)
 	GLOB.player_list |= src
 
-	new_player_panel()
-
 	if(!SScharacter_setup.initialized)
 		SScharacter_setup.newplayers_requiring_init += src
 	else
@@ -70,3 +68,5 @@
 	if(client)
 		client.prefs?.apply_post_login_preferences(client)
 		client.playtitlemusic()
+
+		new_player_panel(TRUE)
