@@ -26,7 +26,7 @@ GLOBAL_DATUM_INIT(vampires, /datum/antagonist/vampire, new)
 	var/ghouls
 	var/vampirize
 
-	switch(rand(1,100))
+	switch(rand(1, 100))
 		if(1 to 25)
 			kill = TRUE
 			escape = TRUE
