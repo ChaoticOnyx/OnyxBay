@@ -1011,19 +1011,3 @@
 
 	verbs -= /mob/living/carbon/human/proc/grapple
 	ADD_VERB_IN_IF(src, 800, /mob/living/carbon/human/proc/grapple, CALLBACK(src, .proc/finish_vamp_timeout, VAMP_FRENZIED))
-
-/mob/living/carbon/human/proc/vampire_self_respiration()
-	set category = "Vampire"
-	set name = "Toggle Breathing"
-	set desc = "You choose whether or not to breathe."
-
-	if(src.mind && !(src.mind in GLOB.vampires.current_antagonists))
-		return
-
-	var/mob/living/carbon/C = src
-	if(C.does_not_breathe == FALSE)
-		C.does_not_breathe = TRUE
-		to_chat(src, SPAN("notice", "We stop breathing, as we no longer need to."))
-	else
-		C.does_not_breathe = FALSE
-		to_chat(src, SPAN("notice", "We resume breathing, as we now need to again."))

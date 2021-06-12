@@ -91,7 +91,4 @@ var/list/datum/power/vampire/vampirepowers = list()
 	blood_cost = 500
 	verbpath = /mob/living/carbon/human/proc/vampire_embrace
 
-/datum/power/vampire/vampire_self_respiration
-	name = "Toggle Breathing"
-	desc = "You choose whether or not to breathe."
-	verbpath = /mob/living/carbon/human/proc/vampire_self_respiration
+
