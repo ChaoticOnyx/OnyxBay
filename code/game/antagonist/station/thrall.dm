@@ -11,9 +11,9 @@ GLOBAL_DATUM_INIT(thralls, /datum/antagonist/thrall, new)
 
 /proc/isghoul(mob/player)
 	if(!GLOB.thralls || !player.mind)
-		return 0
+		return FALSE
 	if(player.mind in GLOB.thralls.current_antagonists)
-		return 1
+		return TRUE
 
 /datum/antagonist/thrall/update_antag_mob(datum/mind/player)
 	..()
