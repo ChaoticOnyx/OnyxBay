@@ -6,13 +6,13 @@
 	name = "Skills"
 	sort_order = 1
 
-/datum/category_item/player_setup_item/skills/load_character(savefile/S)
-	from_file(S["skills"], pref.skills)
-	from_file(S["used_skillpoints"], pref.used_skillpoints)
+/datum/category_item/player_setup_item/skills/load_character(datum/pref_record_reader/R)
+	pref.skills = R.read("skills")
+	pref.used_skillpoints = R.read("used_skillpoints")
 
-/datum/category_item/player_setup_item/skills/save_character(savefile/S)
-	to_file(S["skills"], pref.skills)
-	to_file(S["used_skillpoints"], pref.used_skillpoints)
+/datum/category_item/player_setup_item/skills/save_character(datum/pref_record_writer/W)
+	W.write("skills", pref.skills)
+	W.write("used_skillpoints", pref.used_skillpoints)
 
 /datum/category_item/player_setup_item/skills/sanitize_character()
 	if(SKILLS == null)				setup_skills()

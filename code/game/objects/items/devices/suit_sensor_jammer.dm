@@ -38,7 +38,7 @@
 	disable()
 
 /obj/item/device/suit_sensor_jammer/attack_self(mob/user)
-	tg_ui_interact(user)
+	tgui_interact(user)
 
 /obj/item/device/suit_sensor_jammer/attackby(obj/item/I as obj, mob/user as mob)
 	if(isCrowbar(I))
@@ -110,18 +110,14 @@
 			message += "is lacking a cell."
 		. += "\n[jointext(message, " ")]"
 
-/obj/item/device/suit_sensor_jammer/ui_status(mob/user, datum/ui_state/state)
-	if(!bcell || bcell.charge <= 0)
-		return UI_CLOSE
-	return ..()
+/obj/item/device/suit_sensor_jammer/tgui_interact(mob/user, datum/tgui/ui)
+	ui = SStgui.try_update_ui(user, src, ui)
 
-/obj/item/device/suit_sensor_jammer/tg_ui_interact(mob/user, ui_key = "main", datum/tgui/ui = null, force_open = 0, datum/tgui/master_ui = null, datum/ui_state/state = tg_default_state)
-	ui = SStgui.try_update_ui(user, src, ui_key, ui, force_open)
 	if(!ui)
-		ui = new(user, src, ui_key, "suit_sensor_jammer", "Sensor Jammer", 350, 610, master_ui, state)
+		ui = new(user, src, "SuitSensorJammer", name)
 		ui.open()
 
-/obj/item/device/suit_sensor_jammer/ui_data()
+/obj/item/device/suit_sensor_jammer/tgui_data()
 	var/list/methods = new
 	for(var/suit_sensor_jammer_method/ssjm in suit_sensor_jammer_methods)
 		methods[++methods.len] = list("name" = ssjm.name, "cost" = ssjm.energy_cost, "ref" = "\ref[ssjm]")
@@ -140,9 +136,12 @@
 
 	return data
 
-/obj/item/device/suit_sensor_jammer/ui_act(action, params)
-	if(..())
-		return TRUE
+/obj/item/device/suit_sensor_jammer/tgui_act(action, params)
+	. = ..()
+
+	if(.)
+		return
+
 	switch(action)
 		if("enable_jammer")
 			enable()

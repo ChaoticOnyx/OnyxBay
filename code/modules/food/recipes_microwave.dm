@@ -53,12 +53,12 @@ I said no!
 	)
 	result = /obj/item/weapon/reagent_containers/food/snacks/donut/jelly
 
-/datum/recipe/jellydonut/slime
-	reagents = list(/datum/reagent/slimejelly = 5, /datum/reagent/sugar = 5)
+/datum/recipe/jellydonut/metroid
+	reagents = list(/datum/reagent/metroidjelly = 5, /datum/reagent/sugar = 5)
 	items = list(
 		/obj/item/weapon/reagent_containers/food/snacks/dough
 	)
-	result = /obj/item/weapon/reagent_containers/food/snacks/donut/slimejelly
+	result = /obj/item/weapon/reagent_containers/food/snacks/donut/metroidjelly
 
 /datum/recipe/jellydonut/cherry
 	reagents = list(/datum/reagent/nutriment/cherryjelly = 5, /datum/reagent/sugar = 5)
@@ -665,12 +665,12 @@ I said no!
 	items = list(/obj/item/weapon/reagent_containers/food/snacks/meat)
 	result = /obj/item/weapon/reagent_containers/food/snacks/stew
 
-/datum/recipe/slimetoast
-	reagents = list(/datum/reagent/slimejelly = 5)
+/datum/recipe/metroidtoast
+	reagents = list(/datum/reagent/metroidjelly = 5)
 	items = list(
 		/obj/item/weapon/reagent_containers/food/snacks/slice/bread,
 	)
-	result = /obj/item/weapon/reagent_containers/food/snacks/jelliedtoast/slime
+	result = /obj/item/weapon/reagent_containers/food/snacks/jelliedtoast/metroid
 
 /datum/recipe/jelliedtoast
 	reagents = list(/datum/reagent/nutriment/cherryjelly = 5)
@@ -771,12 +771,12 @@ I said no!
 	items = list(/obj/item/weapon/reagent_containers/food/snacks/sliceable/flatdough)
 	result = /obj/item/weapon/reagent_containers/food/snacks/applepie
 
-/datum/recipe/slimeburger
-	reagents = list(/datum/reagent/slimejelly = 5)
+/datum/recipe/metroidburger
+	reagents = list(/datum/reagent/metroidjelly = 5)
 	items = list(
 		/obj/item/weapon/reagent_containers/food/snacks/bun
 	)
-	result = /obj/item/weapon/reagent_containers/food/snacks/jellyburger/slime
+	result = /obj/item/weapon/reagent_containers/food/snacks/jellyburger/metroid
 
 /datum/recipe/jellyburger
 	reagents = list(/datum/reagent/nutriment/cherryjelly = 5)
@@ -800,13 +800,13 @@ I said no!
 	)
 	result = /obj/item/weapon/reagent_containers/food/snacks/threebread
 
-/datum/recipe/slimesandwich
-	reagents = list(/datum/reagent/slimejelly = 5)
+/datum/recipe/metroidsandwich
+	reagents = list(/datum/reagent/metroidjelly = 5)
 	items = list(
 		/obj/item/weapon/reagent_containers/food/snacks/slice/bread,
 		/obj/item/weapon/reagent_containers/food/snacks/slice/bread,
 	)
-	result = /obj/item/weapon/reagent_containers/food/snacks/jellysandwich/slime
+	result = /obj/item/weapon/reagent_containers/food/snacks/jellysandwich/metroid
 
 /datum/recipe/cherrysandwich
 	reagents = list(/datum/reagent/nutriment/cherryjelly = 5)
@@ -820,17 +820,17 @@ I said no!
 	reagents = list(/datum/reagent/blood = 30)
 	result = /obj/item/weapon/reagent_containers/food/snacks/bloodsoup
 
-/datum/recipe/slimesoup
-	reagents = list(/datum/reagent/water = 10, /datum/reagent/slimejelly = 5)
+/datum/recipe/metroidsoup
+	reagents = list(/datum/reagent/water = 10, /datum/reagent/metroidjelly = 5)
 	items = list()
-	result = /obj/item/weapon/reagent_containers/food/snacks/slimesoup
+	result = /obj/item/weapon/reagent_containers/food/snacks/metroidsoup
 
-/datum/recipe/boiledslimeextract
+/datum/recipe/boiledmetroidextract
 	reagents = list(/datum/reagent/water = 5)
 	items = list(
-		/obj/item/slime_extract,
+		/obj/item/metroid_extract,
 	)
-	result = /obj/item/weapon/reagent_containers/food/snacks/boiledslimecore
+	result = /obj/item/weapon/reagent_containers/food/snacks/boiledmetroidcore
 
 /datum/recipe/chocolateegg
 	items = list(

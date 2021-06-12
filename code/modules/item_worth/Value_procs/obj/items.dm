@@ -1,4 +1,4 @@
-/obj/item/slime_extract/Value(base)
+/obj/item/metroid_extract/Value(base)
 	return base * Uses
 
 /obj/item/ammo_casing/Value()

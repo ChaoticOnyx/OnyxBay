@@ -10,10 +10,10 @@
 
 				"trade_complete"    = "Remember to give them attention and food. They are living beings, and you should treat them like so.",
 				"trade_blacklist"   = "Legally I can' do that. Morally, I refuse to do that.",
-				"trade_found_unwanted" = "I want only slime extracts. I don't need food or shiny things. I'm looking for specific ones at that. Ones I already have the lab and reagents for.",
+				"trade_found_unwanted" = "I want only metroid extracts. I don't need food or shiny things. I'm looking for specific ones at that. Ones I already have the lab and reagents for.",
 				"trade_not_enough"   = "I'd give you the animal for free, but I need the money to feed the others. So you must pay in full.",
 				"how_much"          = "This is a fine specimen. I believe it will cost you VALUE credits.",
-				"what_want"         = "I currently need those slime extracts and seeds:",
+				"what_want"         = "I currently need those metroid extracts and seeds:",
 
 				"compliment_deny"   = "That was almost charming.",
 				"compliment_accept" = "Thank you. I needed that.",
@@ -24,7 +24,7 @@
 				"bribe_accept"      = "Hm. It'll be good for the animals, so sure.",
 				)
 
-	possible_wanted_items = list(/obj/item/slime_extract									= TRADER_SUBTYPES_ONLY,
+	possible_wanted_items = list(/obj/item/metroid_extract									= TRADER_SUBTYPES_ONLY,
 								/obj/item/seeds 											= TRADER_SUBTYPES_ONLY
 								)
 
@@ -49,7 +49,7 @@
 								/mob/living/simple_animal/hostile/carp						= TRADER_THIS_TYPE,
 								/obj/item/device/dociler									= TRADER_THIS_TYPE,
 								/obj/structure/dogbed										= TRADER_THIS_TYPE,
-								/obj/item/device/slime_scanner								= TRADER_THIS_TYPE
+								/obj/item/device/metroid_scanner								= TRADER_THIS_TYPE
 								)
 
 /datum/trader/ship/prank_shop

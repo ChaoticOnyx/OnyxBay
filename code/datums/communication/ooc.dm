@@ -47,8 +47,11 @@
 	for(var/client/target in GLOB.clients)
 		if(target.is_key_ignored(C.key)) // If we're ignored by this person, then do nothing.
 			continue
-		var/sent_message = "[create_text_tag("ooc", "OOC:", target)] <EM>[decorated_ckey]:</EM> <span class='message linkify'>[message]</span>"
+		var/sent_message = "[create_text_tag("ooc", "OOC", target)] <EM>[decorated_ckey]:</EM> <span class='message linkify'>[message]</span>"
 		if(can_badmin)
 			receive_communication(C, target, "<span class='ooc'><font color='[ooc_color]'>[sent_message]</font></span>")
 		else
 			receive_communication(C, target, "<span class='ooc'><span class='[ooc_style]'>[sent_message]</span></span>")
+
+/decl/communication_channel/ooc/get_message_type()
+	return MESSAGE_TYPE_OOC

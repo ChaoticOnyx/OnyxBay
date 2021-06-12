@@ -104,6 +104,8 @@ var/global/list/string_slot_flags = list(
 	return 1
 
 /proc/get_mannequin(ckey)
+	if(SSatoms.init_state < INITIALIZATION_INNEW_REGULAR)
+		return
 	if(!mannequins_)
 		mannequins_ = new()
 	. = mannequins_[ckey]

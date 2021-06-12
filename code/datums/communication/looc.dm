@@ -38,13 +38,16 @@
 			var/received_message = adm.receive_looc(C, key, message, "R")
 			receive_communication(C, adm, received_message)
 
+/decl/communication_channel/ooc/looc/get_message_type()
+	return MESSAGE_TYPE_LOOC
+
 /client/proc/receive_looc(client/C, commkey, message, prefix)
 	var/mob/M = C.mob
 	var/display_name = isghost(M) ? commkey : M.name
 	var/admin_stuff = holder ? "/([commkey])" : ""
 	if(prefix)
 		prefix = "\[[prefix]\] "
-	return "<span class='ooc'><span class='looc'>" + create_text_tag("looc", "LOOC:", src) + " <span class='prefix'>[prefix]</span><EM>[display_name][admin_stuff]:</EM> <span class='message linkify'>[message]</span></span></span>"
+	return "<span class='ooc'><span class='looc'>" + create_text_tag("looc", "LOOC") + " <span class='prefix'>[prefix]</span><EM>[display_name][admin_stuff]:</EM> <span class='message linkify'>[message]</span></span></span>"
 
 /mob/proc/looc_prefix()
 	return eyeobj ? "Body" : ""

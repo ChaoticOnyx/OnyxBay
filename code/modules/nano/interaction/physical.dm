@@ -9,7 +9,7 @@ GLOBAL_DATUM_INIT(physical_state, /datum/topic_state/physical, new)
 	return STATUS_CLOSE
 
 /mob/observer/ghost/check_physical_distance(src_object)
-	return default_can_use_topic(src_object)
+	return tgui_default_can_use_topic(src_object)
 
 /mob/living/check_physical_distance(src_object)
 	return shared_living_nano_distance(src_object)

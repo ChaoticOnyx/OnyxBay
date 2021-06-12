@@ -735,11 +735,15 @@
 	name = "old light bulb"
 	desc = "Old type of light bulbs, almost not being used at the station."
 	base_state = "lold_bulb"
+	broken_chance = 1
+	b_max_bright = 0.8
+	b_outer_range = 6
 	b_color = "#ec8b2f"
 	random_tone = FALSE
 	tone_overlay = FALSE
 
 /obj/item/weapon/light/bulb/red
+	b_outer_range = 6
 	color = "#da0205"
 	b_color = "#da0205"
 	random_tone = FALSE

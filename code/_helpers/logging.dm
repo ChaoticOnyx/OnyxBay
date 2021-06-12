@@ -49,7 +49,7 @@
 		WRITE_FILE(GLOB.world_common_log, "\[[time_stamp()]] [game_id] [type]: [message][log_end]")
 
 	var/rendered = "<span class=\"log_message\"><span class=\"prefix\">[type] LOG:</span> <span class=\"message\">[message]</span></span>"
-	if(notify_admin)
+	if(notify_admin && SScharacter_setup.initialized) // Checking SScharacter_setup early so won't cycle through all the admins
 		for(var/client/C in GLOB.admins)
 			if(!req_pref || (C.get_preference_value(req_pref) == GLOB.PREF_SHOW))
 				to_chat(C, rendered)
@@ -61,7 +61,7 @@
 	log_generic("ADMIN", text, location, config.log_admin, notify_admin)
 
 /proc/log_debug(text, location)
-	log_generic("DEBUG", text, location, FALSE, TRUE, /datum/client_preference/staff/show_debug_logs)
+	log_generic("DEBUG", SPAN("filter_debuglog", text), location, FALSE, TRUE, /datum/client_preference/staff/show_debug_logs)
 	if(!config.log_debug || !GLOB.world_debug_log)
 		return
 	WRITE_FILE(GLOB.world_debug_log, "\[[time_stamp()]] DEBUG: [text][log_end]")
@@ -143,8 +143,37 @@
 
 /* ui logging */
 
-/proc/log_tgui(text)
-	log_debug(text)
+/**
+ * Appends a tgui-related log entry. All arguments are optional.
+ */
+/proc/log_tgui(user, message, context,
+		datum/tgui_window/window,
+		datum/src_object)
+	var/entry = ""
+	// Insert user info
+	if(!user)
+		entry += "<nobody>"
+	else if(istype(user, /mob))
+		var/mob/mob = user
+		entry += "[mob.ckey] (as [mob] at [mob.x], [mob.y], [mob.z])"
+	else if(istype(user, /client))
+		var/client/client = user
+		entry += "[client.ckey]"
+	// Insert context
+	if(context)
+		entry += " in [context]"
+	else if(window)
+		entry += " in [window.id]"
+	// Resolve src_object
+	if(!src_object && window?.locked_by)
+		src_object = window.locked_by.src_object
+	// Insert src_object info
+	if(src_object)
+		entry += "\nUsing: [src_object.type] \ref[src_object]"
+	// Insert message
+	if(message)
+		entry += "\n[message]"
+	log_debug(entry)
 
 //pretty print a direction bitflag, can be useful for debugging.
 /proc/dir_text(dir)
