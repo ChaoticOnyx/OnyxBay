@@ -15,7 +15,7 @@ SUBSYSTEM_DEF(character_setup)
 	while(clients_awaiting_setup.len)
 		var/client/C = clients_awaiting_setup[clients_awaiting_setup.len]
 		clients_awaiting_setup.len--
-		C.setup_preferences(TRUE)
+		C?.setup_preferences(TRUE)
 
 	// get_preference_value() requires value 'initialized' to be set TRUE.
 	// If we don't do it now - following deferred_login() will fail.
