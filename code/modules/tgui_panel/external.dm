@@ -11,6 +11,11 @@
 /client/verb/fix_tgui_panel()
 	set name = "Fix Chat"
 	set category = "OOC"
+
+	if(!tgui_panel.initialized_at)
+		DIRECT_OUTPUT(src, "Chat is not loaded yet.")
+		return
+
 	var/action
 	log_tgui(src, "Started fixing.", context = "verb/fix_tgui_panel")
 
