@@ -176,15 +176,12 @@ class ChatRenderer {
       this.highlightColor = null;
       return;
     }
-    const allowedRegex = /^[a-z0-9_\-\s]+$/ig;
     const lines = String(text)
       .split(',')
       .map(str => str.trim())
       .filter(str => (
         // Must be longer than one character
         str && str.length > 1
-        // Must be alphanumeric (with some punctuation)
-        && allowedRegex.test(str)
       ));
     // Nothing to match, reset highlighting
     if (lines.length === 0) {

@@ -50,7 +50,7 @@
 	))
 	// Other setup
 	request_telemetry()
-	addtimer(CALLBACK(src, .proc/on_initialize_timed_out), 10 SECONDS)
+	addtimer(CALLBACK(src, .proc/on_initialize_timed_out), 30 SECONDS)
 
 /**
  * private

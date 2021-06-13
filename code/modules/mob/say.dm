@@ -35,7 +35,7 @@
 	else
 		usr.emote(message)
 	
-	client.spellcheck(message)
+	client?.spellcheck(message)
 
 	var/ckeyname = "[usr.ckey]/[usr.name]"
 	webhook_send_me(ckeyname, message)

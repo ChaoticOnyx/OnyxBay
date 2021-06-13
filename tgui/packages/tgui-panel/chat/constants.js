@@ -96,8 +96,8 @@ export const MESSAGE_TYPES = [
   },
   {
     type: MESSAGE_TYPE_DOOC,
-    name: 'DOOC',
-    description: 'Discord OOC',
+    name: 'Discord',
+    description: 'Messages from discord',
     selector: '.ooc .dooc',
   },
   {

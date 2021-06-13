@@ -8,7 +8,6 @@
 	flags = COMMUNICATION_LOG_CHANNEL_NAME
 	log_proc = /proc/log_say
 	mute_setting = MUTE_DEADCHAT
-	show_preference_setting = /datum/client_preference/show_dsay
 
 /decl/communication_channel/dsay/communicate(communicator, message, speech_method = /decl/dsay_communication/say)
 	..()
@@ -47,8 +46,6 @@
 /decl/dsay_communication/proc/can_receive(client/C, mob/M)
 	if(istype(C) && C.mob == M)
 		return TRUE
-	if(M.get_preference_value(/datum/client_preference/show_dsay) == GLOB.PREF_HIDE)
-		return FALSE
 	if(istype(C) && M.is_key_ignored(C.key))
 		return FALSE
 	if(M.client.holder && !is_mentor(M.client))

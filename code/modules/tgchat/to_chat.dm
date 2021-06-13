@@ -54,7 +54,7 @@
  * ```
  */
 /proc/to_chat(target, html,
-		type = null,
+		type,
 		text = null,
 		avoid_highlighting = FALSE,
 		// FIXME: These flags are now pointless and have no effect

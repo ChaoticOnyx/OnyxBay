@@ -352,11 +352,11 @@ var/world_topic_spam_protect_time = world.timeofday
 			return "globally muted"
 		if(jobban_keylist.Find("[ckey] - OOC"))
 			return "banned from ooc"
-		var/sent_message = "[create_text_tag("dooc", "DISCORD OOC")] <EM>[ckey]:</EM> <span class='message linkify'>[message]</span>"
+		var/sent_message = "[create_text_tag("dooc", "Discord")] <EM>[ckey]:</EM> <span class='message linkify'>[message]</span>"
 		for(var/client/target in GLOB.clients)
 			if(!target)
 				continue //sanity
-			if(target.is_key_ignored(ckey) || target.get_preference_value(/datum/client_preference/show_ooc) == GLOB.PREF_HIDE || target.get_preference_value(/datum/client_preference/show_discord_ooc) == GLOB.PREF_HIDE  && !input["isadmin"]) // If we're ignored by this person, then do nothing.
+			if(target.is_key_ignored(ckey) && !input["isadmin"]) // If we're ignored by this person, then do nothing.
 				continue //if it shouldn't see then it doesn't
 			to_chat(target, "<span class='ooc dooc'><span class='everyone'>[sent_message]</span></span>", type = MESSAGE_TYPE_DOOC)
 

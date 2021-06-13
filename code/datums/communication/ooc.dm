@@ -5,7 +5,6 @@
 	flags = COMMUNICATION_NO_GUESTS
 	log_proc = /proc/log_ooc
 	mute_setting = MUTE_OOC
-	show_preference_setting = /datum/client_preference/show_ooc
 
 /decl/communication_channel/ooc/can_communicate(client/C, message)
 	. = ..()
