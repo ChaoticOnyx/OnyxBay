@@ -87,12 +87,9 @@
 		CRASH("Trying to get [ckey]'s preferences before the subsystem's initialization.")
 
 	if(!prefs)
-		log_error("[ckey]'s preferences did not load. Trying to fix.")
-		prefs = SScharacter_setup.preferences_datums[ckey]
-
-	if(!prefs)
 		log_error("[ckey]'s preferences are broken. Creating new one.")
 		prefs = new /datum/preferences(src)
+		setup_preferences()
 
 	if(!prefs)
 		CRASH("Can't create preferences for [ckey].")

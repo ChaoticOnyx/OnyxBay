@@ -217,13 +217,7 @@
 	// Load EAMS data
 	SSeams.CollectDataForClient(src)
 
-	// preferences datum - also holds some persistant data for the client (because we may as well keep these datums to a minimum)
-	prefs = SScharacter_setup.preferences_datums[ckey]
-	if(!prefs)
-		prefs = new /datum/preferences(src)
-	prefs.last_ip = address				// these are gonna be used for banning
-	prefs.last_id = computer_id			// these are gonna be used for banning
-	apply_fps(prefs.clientfps)
+	setup_preferences()
 
 	. = ..()	// calls mob.Login()
 
@@ -564,3 +558,17 @@
 	set name = ".release_shift"
 
 	shift_released_at = world.time
+
+/client/proc/setup_preferences(initialization = FALSE)
+	// This proc will be called twice if SScharacter_setup is not initialized,
+	// so, don't create prefs again.
+	if(!prefs)
+		// preferences datum - also holds 	some persistant data for the client (because we may as well keep these datums to a minimum)
+		prefs = new /datum/preferences(src)
+		prefs.last_ip = address				// these are gonna be used for banning
+		prefs.last_id = computer_id			// these are gonna be used for banning
+
+	if(initialization || SScharacter_setup.initialized)
+		prefs.setup()
+	else
+		SScharacter_setup.queue_client(src)
