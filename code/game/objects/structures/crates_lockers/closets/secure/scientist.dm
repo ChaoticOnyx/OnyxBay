@@ -59,6 +59,7 @@
 		/obj/item/clothing/under/rank/research_director/dress_rd,
 		/obj/item/clothing/glasses/hud/standard/science,
 		/obj/item/weapon/cartridge/rd,
+		/obj/item/clothing/neck/cloak/rd,
 		/obj/item/clothing/shoes/leather,
 		/obj/item/clothing/gloves/latex,
 		/obj/item/device/radio/headset/heads/rd,

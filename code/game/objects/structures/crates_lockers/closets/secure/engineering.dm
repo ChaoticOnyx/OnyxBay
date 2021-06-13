@@ -25,6 +25,7 @@
 		/obj/item/clothing/mask/gas,
 		/obj/item/weapon/combotool/advtool,
 		/obj/item/device/flash,
+		/obj/item/clothing/neck/cloak/ce,
 		/obj/item/taperoll/engineering,
 		/obj/item/weapon/crowbar/brace_jack
 	)
