@@ -158,20 +158,20 @@
 
 /datum/gear/suit/cloak
 	display_name = "cloaks selection"
-	path = /obj/item/clothing/neck/cloak
+	path = /obj/item/clothing/suit/cloak
 	allowed_roles = COMMAND_ROLES
 	price = 15
 
 /datum/gear/suit/cloak/New()
 	..()
 	var/cloaks = list()
-	cloaks += /obj/item/clothing/neck/cloak/rd
-	cloaks += /obj/item/clothing/neck/cloak/cmo
-	cloaks += /obj/item/clothing/neck/cloak/ce
-	cloaks += /obj/item/clothing/neck/cloak/hos
-	cloaks += /obj/item/clothing/neck/cloak/hop
-	cloaks += /obj/item/clothing/neck/cloak/cap
-	cloaks += /obj/item/clothing/neck/cloak/qm
+	cloaks += /obj/item/clothing/suit/cloak/rd
+	cloaks += /obj/item/clothing/suit/cloak/cmo
+	cloaks += /obj/item/clothing/suit/cloak/ce
+	cloaks += /obj/item/clothing/suit/cloak/hos
+	cloaks += /obj/item/clothing/suit/cloak/hop
+	cloaks += /obj/item/clothing/suit/cloak/cap
+	cloaks += /obj/item/clothing/suit/cloak/qm
 	gear_tweaks += new /datum/gear_tweak/path/specified_types_list(cloaks)
 
 
