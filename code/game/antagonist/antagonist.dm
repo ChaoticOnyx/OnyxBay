@@ -222,11 +222,6 @@
 
 	return 1
 
-/proc/alert_timeout(recipient, message, title, timeout, button1, button2, button3)
-	src = new /datum()  // make this proc die if src dies
-	spawn(timeout) del(src)
-	return alert(recipient, message, title, button1, button2, button3)
-
 /datum/antagonist/proc/draft_antagonist(datum/mind/player)
 	//Check if the player can join in this antag role, or if the player has already been given an antag role.
 	if(!can_become_antag(player))
