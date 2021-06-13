@@ -7,10 +7,10 @@ SUBSYSTEM_DEF(inactivity)
 	var/number_kicked = 0
 
 /datum/controller/subsystem/inactivity/fire(resumed = FALSE)
-	if (!config.kick_inactive)
+	if(!config.kick_inactive)
 		suspend()
 		return
-	if (!resumed)
+	if(!resumed)
 		client_list = GLOB.clients.Copy()
 
 	while(client_list.len)
@@ -21,7 +21,7 @@ SUBSYSTEM_DEF(inactivity)
 			to_chat(C, SPAN("warning", "You have been inactive for more than [config.kick_inactive] minute\s and have been disconnected."), type = MESSAGE_TYPE_SYSTEM)
 			qdel(C)
 			number_kicked++
-		if (MC_TICK_CHECK)
+		if(MC_TICK_CHECK)
 			return
 
 /datum/controller/subsystem/inactivity/stat_entry()
