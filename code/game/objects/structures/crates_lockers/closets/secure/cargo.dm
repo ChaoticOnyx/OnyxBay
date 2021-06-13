@@ -38,7 +38,6 @@
 		/obj/item/clothing/suit/fire/firefighter,
 		/obj/item/weapon/tank/emergency/oxygen,
 		/obj/item/clothing/mask/gas,
-		/obj/item/clothing/neck/cloak/qm,
 		/obj/item/clothing/glasses/hud/standard/meson,
 		/obj/item/clothing/head/soft
 	)
