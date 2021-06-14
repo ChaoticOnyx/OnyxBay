@@ -25,11 +25,10 @@
 	bar.plane = HUD_PLANE
 	bar.layer = HUD_ABOVE_ITEM_LAYER
 	src.user = user
-	if(user)
+	if(user.client)
 		client = user.client
-
-	client.numProgressbars++
-	id = client.numProgressbars
+		client.numProgressbars++
+		id = client.numProgressbars
 
 
 /datum/progressbar/Destroy()
