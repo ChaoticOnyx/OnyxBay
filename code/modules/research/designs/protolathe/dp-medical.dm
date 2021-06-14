@@ -10,12 +10,12 @@
 	materials = list(MATERIAL_STEEL = 30, MATERIAL_GLASS = 20)
 	category_items = "Medical"
 
-/datum/design/item/medical/slime_scanner
+/datum/design/item/medical/metroid_scanner
 	desc = "Multipurpose organic life scanner."
-	id = "slime_scanner"
+	id = "metroid_scanner"
 	req_tech = list(TECH_MAGNET = 2, TECH_BIO = 2)
 	materials = list(MATERIAL_STEEL = 200, MATERIAL_GLASS = 100)
-	build_path = /obj/item/device/slime_scanner
+	build_path = /obj/item/device/metroid_scanner
 	sort_string = "MACFA"
 
 /datum/design/item/medical/mass_spectrometer

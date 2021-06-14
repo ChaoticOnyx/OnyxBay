@@ -1,7 +1,7 @@
 
 #define NEUROMODRND_MUTAGEN_NEEDED 25
 
-/* CONSOLE */
+// CONSOLE
 
 /obj/machinery/computer/neuromod_rnd
 	name = "neuromod RnD console"
@@ -12,7 +12,7 @@
 	clicksound = 'sound/machines/console_click.ogg'
 	circuit = /obj/item/weapon/circuitboard/neuromod_rnd
 
-	/* RESEARCHING AND DEVELOPMENT */
+	// RESEARCHING AND DEVELOPMENT
 	var/research_progress = 0
 	var/development_progress = 0
 	var/max_development_progress = 100
@@ -20,13 +20,13 @@
 	var/is_develop = FALSE
 	var/datum/neuromod/researching_neuromod = null
 
-	/* DATA MANAGEMENT */
+	// DATA MANAGEMENT
 	var/list/neuromods = list()					// List of all saved neuromods
 	var/list/lifeforms = list()					// List of all saved lifeforms
 	var/datum/lifeform/selected_lifeform = null	// Contains path to a lifeform
 	var/datum/neuromod/selected_neuromod = null	// Contains path to a neuromod
 
-	/* ENERGY CONSUMPTION */
+	// ENERGY CONSUMPTION
 	active_power_usage = 15 KILOWATTS
 	idle_power_usage = 40
 
@@ -35,10 +35,11 @@
 
 /* UI */
 
-/obj/machinery/computer/neuromod_rnd/ui_act(action, params)
-	if (..()) return
+/obj/machinery/computer/neuromod_rnd/tgui_act(action, params)
+	. = ..()
 
-	. = FALSE
+	if(.)
+		return
 
 	playsound(src, clicksound, 15, 1)
 
@@ -119,7 +120,7 @@
 			development_progress = 0
 			return TRUE
 
-/obj/machinery/computer/neuromod_rnd/ui_data(mob/user, ui_key)
+/obj/machinery/computer/neuromod_rnd/tgui_data(mob/user, ui_key)
 	var/list/data = list()
 
 	data["disk"] = null
@@ -163,11 +164,11 @@
 
 	return data
 
-/obj/machinery/computer/neuromod_rnd/tg_ui_interact(mob/user, ui_key, datum/tgui/ui, force_open, datum/tgui/master_ui, datum/ui_state/state)
-	ui = SStgui.try_update_ui(user, src, ui_key, ui, force_open)
+/obj/machinery/computer/neuromod_rnd/tgui_interact(mob/user, datum/tgui/ui)
+	ui = SStgui.try_update_ui(user, src, ui)
 
 	if(!ui)
-		ui = new(user, src, ui_key, "neuromod_rnd", "Neuromod RnD", 500, 600, master_ui, state)
+		ui = new(user, src, "NeuromodRnD", name)
 		ui.open()
 
 /* DEVELOPMENT PROCS */
@@ -827,16 +828,16 @@
 	. = ..()
 
 /obj/machinery/computer/neuromod_rnd/attack_ai(mob/user)
-	tg_ui_interact(user)
+	tgui_interact(user)
 
 /obj/machinery/computer/neuromod_rnd/attack_hand(mob/user)
 	..()
 
 	if(stat & (BROKEN|NOPOWER))
 		return
-	tg_ui_interact(user)
+	tgui_interact(user)
 
 /obj/machinery/computer/neuromod_rnd/interact(mob/user)
-	tg_ui_interact(user)
+	tgui_interact(user)
 
 #undef NEUROMODRND_MUTAGEN_NEEDED

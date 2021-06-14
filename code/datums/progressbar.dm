@@ -31,6 +31,10 @@
 		id = client.numProgressbars
 
 
+	client.numProgressbars++
+	id = client.numProgressbars
+
+
 /datum/progressbar/Destroy()
 	if(client)
 		client.images -= bar

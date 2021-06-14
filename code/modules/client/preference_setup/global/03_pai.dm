@@ -4,12 +4,12 @@
 
 	var/datum/paiCandidate/candidate
 
-/datum/category_item/player_setup_item/player_global/pai/load_preferences(savefile/S)
+/datum/category_item/player_setup_item/player_global/pai/load_preferences(datum/pref_record_reader/R)
 	if(!candidate)
 		candidate = new()
 	candidate.savefile_load(pref.client)
 
-/datum/category_item/player_setup_item/player_global/pai/save_preferences(savefile/S)
+/datum/category_item/player_setup_item/player_global/pai/save_preferences(datum/pref_record_writer/W)
 	if(!candidate)
 		return
 	candidate.savefile_save(pref.client)

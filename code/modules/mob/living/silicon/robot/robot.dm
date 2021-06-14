@@ -9,7 +9,7 @@
 	health = 200
 
 	mob_bump_flag = ROBOT
-	mob_swap_flags = ROBOT|MONKEY|SLIME|SIMPLE_ANIMAL
+	mob_swap_flags = ROBOT|MONKEY|METROID|SIMPLE_ANIMAL
 	mob_push_flags = ~HEAVY //trundle trundle
 
 	var/lights_on = 0 // Is our integrated light on?

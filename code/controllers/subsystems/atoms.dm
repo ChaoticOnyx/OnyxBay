@@ -19,6 +19,11 @@ SUBSYSTEM_DEF(atoms)
 /datum/controller/subsystem/atoms/Initialize(timeofday)
 	init_state = INITIALIZATION_INNEW_MAPLOAD
 	InitializeAtoms()
+
+	// Mannequins refuse to spawn prior to atoms init, so refresh them in case anyone connected before init finished.
+	for(var/client/C)
+		if(C.prefs)
+			C.prefs.update_preview_icon()
 	return ..()
 
 /datum/controller/subsystem/atoms/proc/InitializeAtoms(list/atoms)
