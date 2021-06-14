@@ -1,5 +1,5 @@
 .Section {
-  border-radius: 0.4rem;
+  border-radius: .4rem;
   font-size: 1.2rem;
 }
 
@@ -11,27 +11,36 @@
   font-size: 1.5rem;
 }
 
+.Button {
+  cursor: pointer;
+  border-radius: .4rem;
+  font-weight: bold;
+}
+
 .label-primer {
-  padding: 0.15rem 0.5rem;
+  border: none !important;
+  padding: .15rem .5rem;
   border-radius: 1rem;
   text-decoration: none;
-  margin-top: 0.15rem;
-  margin-right: 0.05rem;
-  margin-left: 0.15rem;
+  margin-top: .15rem;
+  margin-right: .05rem;
+  margin-left: .15rem;
   cursor: pointer;
 }
 
 .link-primer {
   font-weight: bold;
   background: none !important;
+  cursor: pointer;
+  border: none !important;
 }
 
 .link-primer:hover {
   background: none;
 }
 
-.link-primer:not(.Button--disabled) {
-  cursor: pointer;
+.link-primer.Button--disabled {
+  cursor: default;
 }
 
 .multipliers {
@@ -48,13 +57,21 @@
 }
 
 .multipliers :first-child {
-  border-radius: 0.4rem 0 0 0.4rem;
+  border-radius: .4rem 0 0 .4rem;
 }
 
 .multipliers :last-child {
-  border-radius: 0 0.4rem 0.4rem 0;
+  border-radius: 0 .4rem .4rem 0;
+}
+
+.multipliers .Button--disabled {
+  cursor: default;
 }
 
 .Input {
-  border-radius: 0.5rem;
+  border-radius: .5rem;
+}
+
+.Section__buttons {
+  margin-top: -.3rem;
 }

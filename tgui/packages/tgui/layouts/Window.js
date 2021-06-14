@@ -83,8 +83,7 @@ export class Window extends Component {
     return (
       <Layout
         className="Window"
-        theme={theme}
-        switchTheme>
+        theme={theme}>
         <TitleBar
           className="Window__titleBar"
           title={!suspended && (title || decodeHtmlEntities(config.title))}

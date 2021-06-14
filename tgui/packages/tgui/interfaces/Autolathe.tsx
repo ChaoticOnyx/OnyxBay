@@ -1,5 +1,13 @@
 import { useBackend, useLocalState } from '../backend';
-import { Button, Divider, Flex, Input, Section, Table } from '../components';
+import {
+  AnimatedNumber,
+  Button,
+  Divider,
+  Flex,
+  Input,
+  Section,
+  Table,
+} from '../components';
 import { Window } from '../layouts';
 
 interface Material {
@@ -36,25 +44,29 @@ export const Autolathe = (props: any, context: any) => {
     'searchQuery',
     null
   );
-  let found = [];
+  let found: Recipe[] = data.recipes;
 
   if (searchQuery !== null) {
     found = data.recipes.filter(
       (recipe, _) => recipe.name.search(searchQuery) >= 0
     );
-  } else {
-    found = data.recipes;
   }
 
   return (
-    <Window switchTheme theme={getTheme("primer")} width="427" height="600">
+    <Window theme={getTheme('primer')} width="427" height="600">
       <Window.Content scrollable>
         <Section title="Materials">
           <Flex justify="space-around" align="center">
             {data.storage.map((material, i) => {
               return (
                 <Flex.Item key={i}>
-                  {material.name} {material.count}/{material.capacity}
+                  {material.name}{' '}
+                  <AnimatedNumber
+                    format={(value: number) =>
+                      Math.round(value).toLocaleString()}
+                    value={material.count}
+                  />
+                  /{material.capacity.toLocaleString()}
                 </Flex.Item>
               );
             })}
@@ -131,7 +143,11 @@ export const Autolathe = (props: any, context: any) => {
                   </Table.Cell>
                   <Table.Cell>
                     {recipe.required.map((material, i) => {
-                      return <div key={i}>{material.name + ' ' + material.count}</div>;
+                      return (
+                        <div key={i}>
+                          {material.name + ' ' + material.count.toLocaleString()}
+                        </div>
+                      );
                     })}
                   </Table.Cell>
                 </Table.Row>
