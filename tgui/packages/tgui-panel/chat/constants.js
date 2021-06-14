@@ -28,6 +28,10 @@ export const MESSAGE_TYPE_INFO = 'info';
 export const MESSAGE_TYPE_WARNING = 'warning';
 export const MESSAGE_TYPE_DEADCHAT = 'deadchat';
 export const MESSAGE_TYPE_OOC = 'ooc';
+export const MESSAGE_TYPE_LOOC = 'looc';
+export const MESSAGE_TYPE_AOOC = 'aooc';
+export const MESSAGE_TYPE_DOOC = 'dooc';
+export const MESSAGE_TYPE_PRAY = 'pray';
 export const MESSAGE_TYPE_ADMINPM = 'adminpm';
 export const MESSAGE_TYPE_COMBAT = 'combat';
 export const MESSAGE_TYPE_ADMINCHAT = 'adminchat';
@@ -82,7 +86,31 @@ export const MESSAGE_TYPES = [
     type: MESSAGE_TYPE_OOC,
     name: 'OOC',
     description: 'The bluewall of global OOC messages',
-    selector: '.ooc, .adminooc, .oocplain',
+    selector: '.ooc, .oocplain, .adminooc',
+  },
+  {
+    type: MESSAGE_TYPE_AOOC,
+    name: 'AOOC',
+    description: 'Antag OOC',
+    selector: '.ooc .aooc',
+  },
+  {
+    type: MESSAGE_TYPE_DOOC,
+    name: 'Discord',
+    description: 'Messages from discord',
+    selector: '.ooc .dooc',
+  },
+  {
+    type: MESSAGE_TYPE_LOOC,
+    name: 'LOOC',
+    description: 'Local OOC',
+    selector: '.ooc .looc',
+  },
+  {
+    type: MESSAGE_TYPE_PRAY,
+    name: 'Pray',
+    description: 'A straightforward channel to speak with the God',
+    selector: '.pray',
   },
   {
     type: MESSAGE_TYPE_ADMINPM,

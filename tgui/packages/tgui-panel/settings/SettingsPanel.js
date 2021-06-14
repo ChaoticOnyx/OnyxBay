@@ -9,7 +9,7 @@ import { useLocalState } from 'tgui/backend';
 import { useDispatch, useSelector } from 'common/redux';
 import { Box, Button, ColorBox, Divider, Dropdown, Flex, Input, LabeledList, NumberInput, Section, Stack, Tabs, TextArea } from 'tgui/components';
 import { ChatPageSettings } from '../chat';
-import { rebuildChat, saveChatToDisk } from '../chat/actions';
+import { rebuildChat, resetSettings, saveChatToDisk } from '../chat/actions';
 import { THEMES } from '../themes';
 import { changeSettingsTab, updateSettings } from './actions';
 import { FONTS, SETTINGS_TABS } from './constants';
@@ -54,6 +54,7 @@ export const SettingsGeneral = (props, context) => {
     fontFamily,
     fontSize,
     lineHeight,
+    iconSize,
     highlightText,
     highlightColor,
   } = useSelector(context, selectSettings);
@@ -172,6 +173,12 @@ export const SettingsGeneral = (props, context) => {
         onClick={() => dispatch(saveChatToDisk())}>
         Save chat log
       </Button>
+      <Button.Confirm
+        icon="trash"
+        color="red"
+        onClick={() => dispatch(resetSettings())}>
+        Delete All
+      </Button.Confirm>
     </Section>
   );
 };

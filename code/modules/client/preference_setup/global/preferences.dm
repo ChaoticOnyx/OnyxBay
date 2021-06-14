@@ -125,11 +125,6 @@ var/global/list/_client_preferences_by_type
 	description ="Hitmarker Sound"
 	key = "SOUND_HITMARKER"
 
-/datum/client_preference/spell_checking
-	description ="Spell checking"
-	key = "SPELL_CHECKING"
-	default_value = GLOB.PREF_NO
-
 /datum/client_preference/ghost_ears
 	description ="Ghost ears"
 	key = "CHAT_GHOSTEARS"
@@ -155,11 +150,6 @@ var/global/list/_client_preferences_by_type
 	key = "CHAT_GHOSTFOLLOWLINKLENGTH"
 	options = list(GLOB.PREF_SHORT, GLOB.PREF_LONG)
 
-/datum/client_preference/chat_tags
-	description ="Chat tags"
-	key = "CHAT_SHOWICONS"
-	options = list(GLOB.PREF_SHOW, GLOB.PREF_HIDE)
-
 /datum/client_preference/show_typing_indicator
 	description ="Typing indicator"
 	key = "SHOW_TYPING"
@@ -168,31 +158,6 @@ var/global/list/_client_preferences_by_type
 /datum/client_preference/show_typing_indicator/changed(mob/preference_mob, new_value)
 	if(new_value == GLOB.PREF_HIDE)
 		QDEL_NULL(preference_mob.typing_indicator)
-
-/datum/client_preference/show_ooc
-	description ="OOC chat"
-	key = "CHAT_OOC"
-	options = list(GLOB.PREF_SHOW, GLOB.PREF_HIDE)
-
-/datum/client_preference/show_discord_ooc
-	description ="Discord OOC chat"
-	key = "CHAT_DISCORD_OOC"
-	options = list(GLOB.PREF_SHOW, GLOB.PREF_HIDE)
-
-/datum/client_preference/show_aooc
-	description ="AOOC chat"
-	key = "CHAT_AOOC"
-	options = list(GLOB.PREF_SHOW, GLOB.PREF_HIDE)
-
-/datum/client_preference/show_looc
-	description ="LOOC chat"
-	key = "CHAT_LOOC"
-	options = list(GLOB.PREF_SHOW, GLOB.PREF_HIDE)
-
-/datum/client_preference/show_dsay
-	description ="Dead chat"
-	key = "CHAT_DEAD"
-	options = list(GLOB.PREF_SHOW, GLOB.PREF_HIDE)
 
 /datum/client_preference/show_progress_bar
 	description ="Progress Bar"
@@ -229,6 +194,21 @@ var/global/list/_client_preferences_by_type
 	description = "TGUI Theme"
 	key = "TGUI_THEME"
 	options = list(GLOB.PREF_WHITE, GLOB.PREF_DARK)
+
+/datum/client_preference/tgui_chat
+	description = "TGUI Chat"
+	key = "TGUI_CHAT"
+	options = list(GLOB.PREF_YES, GLOB.PREF_NO)
+
+/datum/client_preference/tgui_chat/changed(mob/preference_mob, new_value)
+	if(preference_mob.client == null)
+		return
+
+	if(new_value == GLOB.PREF_YES)
+		preference_mob.client.tgui_panel.initialize()
+	else
+		winset(preference_mob, "output", "on-show=&is-disabled=0&is-visible=1")
+		winset(preference_mob, "browseroutput", "is-disabled=1;is-visible=0")
 
 /datum/client_preference/browser_style
 	description = "Fake NanoUI Browser Style"
@@ -321,28 +301,6 @@ var/global/list/_client_preferences_by_type
 	description ="Remote LOOC chat"
 	key = "CHAT_RLOOC"
 	options = list(GLOB.PREF_SHOW, GLOB.PREF_HIDE)
-
-/********************
-* Admin Preferences *
-********************/
-
-/datum/client_preference/staff/show_attack_logs
-	description = "Attack Log Messages"
-	key = "CHAT_ATTACKLOGS"
-	options = list(GLOB.PREF_SHOW, GLOB.PREF_HIDE)
-	flags = R_ADMIN
-	default_value = GLOB.PREF_HIDE
-
-/********************
-* Debug Preferences *
-********************/
-
-/datum/client_preference/staff/show_debug_logs
-	description = "Debug Log Messages"
-	key = "CHAT_DEBUGLOGS"
-	options = list(GLOB.PREF_SHOW, GLOB.PREF_HIDE)
-	default_value = GLOB.PREF_HIDE
-	flags = R_ADMIN|R_DEBUG
 
 /********************
 * Misc Preferences *

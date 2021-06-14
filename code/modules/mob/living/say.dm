@@ -3,7 +3,7 @@ var/list/department_radio_keys = list(
 	  ":l" = "left ear",	":д" = "left ear",
 	  ":i" = "intercom",	":ш" = "intercom",
 	  ":h" = "department",	":р" = "department",
-	  ":+" = "special",		".+" = "special", //activate radio-specific special functions
+	  ":+" = "special",		".+" = "special", // activate radio-specific special functions
 	  ":c" = "Command",		":с" = "Command",
 	  ":n" = "Science",		":т" = "Science",
 	  ":m" = "Medical",		":ь" = "Medical",
@@ -55,14 +55,14 @@ var/list/channel_to_radio_key = new
 
 /mob/living/proc/binarycheck()
 
-	if (istype(src, /mob/living/silicon/pai))
+	if(istype(src, /mob/living/silicon/pai))
 		return
 
-	if (!ishuman(src))
+	if(!ishuman(src))
 		return
 
 	var/mob/living/carbon/human/H = src
-	if (H.l_ear || H.r_ear)
+	if(H.l_ear || H.r_ear)
 		var/obj/item/device/radio/headset/dongle
 		if(istype(H.l_ear,/obj/item/device/radio/headset))
 			dongle = H.l_ear
@@ -77,8 +77,8 @@ var/list/channel_to_radio_key = new
 /mob/proc/is_muzzled()
 	return (wear_mask && (istype(wear_mask, /obj/item/clothing/mask/muzzle) || istype(src.wear_mask, /obj/item/weapon/grenade)))
 
-//Takes a list of the form list(message, verb, whispering) and modifies it as needed
-//Returns 1 if a speech problem was applied, 0 otherwise
+// Takes a list of the form list(message, verb, whispering) and modifies it as needed
+// Returns 1 if a speech problem was applied, 0 otherwise
 /mob/living/proc/handle_speech_problems(list/message_data)
 	var/message = html_decode(message_data[1])
 	var/verb = message_data[2]
@@ -151,17 +151,17 @@ var/list/channel_to_radio_key = new
 	if(prefix == get_prefix_key(/decl/prefix/visible_emote))
 		return custom_emote(1, copytext_char(message,2))
 
-	//parse the radio code and consume it
+	// parse the radio code and consume it
 	var/message_mode = parse_message_mode(message, "headset")
-	if (message_mode)
-		if (message_mode == "headset")
-			message = copytext_char(message,2)	//it would be really nice if the parse procs could do this for us.
+	if(message_mode)
+		if(message_mode == "headset")
+			message = copytext_char(message,2)	// it would be really nice if the parse procs could do this for us.
 		else
 			message = copytext_char(message,3)
 
 	message = trim_left(message)
 
-	//parse the language code and consume it
+	// parse the language code and consume it
 	if(!speaking)
 		speaking = parse_language(message)
 		if(speaking)
@@ -179,14 +179,12 @@ var/list/channel_to_radio_key = new
 		to_chat(src, "<span class='danger'>You're muzzled and cannot speak!</span>")
 		return
 
-	if (speaking)
+	if(speaking)
 		if(whispering)
 			verb = speaking.whisper_verb ? speaking.whisper_verb : speaking.speech_verb
 		else
 			verb = say_quote(message, speaking)
-
-	if(client?.get_preference_value(/datum/client_preference/spell_checking) == GLOB.PREF_YES && client.chatOutput)
-		client.chatOutput.spell_check(message)
+	client?.spellcheck(message)
 
 	message = trim_left(message)
 
@@ -216,7 +214,7 @@ var/list/channel_to_radio_key = new
 		italics = 1
 		message_range = 1
 
-	//speaking into radios
+	// speaking into radios
 	if(used_radios.len)
 		italics = 1
 		message_range = 1
@@ -235,27 +233,27 @@ var/list/channel_to_radio_key = new
 	var/list/listening_obj = list()
 	var/turf/T = get_turf(src)
 
-	//handle nonverbal and sign languages here
-	if (speaking)
-		if (speaking.flags & NONVERBAL)
-			if (prob(30))
+	// handle nonverbal and sign languages here
+	if(speaking)
+		if(speaking.flags & NONVERBAL)
+			if(prob(30))
 				src.custom_emote(1, "[pick(speaking.signlang_verb)].")
 
-		if (speaking.flags & SIGNLANG)
+		if(speaking.flags & SIGNLANG)
 			log_say("[name]/[key] : SIGN: [message]")
 			log_message(message, INDIVIDUAL_SAY_LOG)
 			return say_signlang(message, pick(speaking.signlang_verb), speaking)
 
 	if(T)
-		//make sure the air can transmit speech - speaker's side
+		// make sure the air can transmit speech - speaker's side
 		var/datum/gas_mixture/environment = T.return_air()
 		var/pressure = (environment)? environment.return_pressure() : 0
 		if(pressure < SOUND_MINIMUM_PRESSURE)
 			message_range = 1
 
-		if (pressure < ONE_ATMOSPHERE*0.4) //sound distortion pressure, to help clue people in that the air is thin, even if it isn't a vacuum yet
+		if(pressure < ONE_ATMOSPHERE*0.4) // sound distortion pressure, to help clue people in that the air is thin, even if it isn't a vacuum yet
 			italics = 1
-			sound_vol *= 0.5 //muffle the sound a bit, so it's like we're actually talking through contact
+			sound_vol *= 0.5 // muffle the sound a bit, so it's like we're actually talking through contact
 
 		get_mobs_and_objs_in_view_fast(T, message_range, listening, listening_obj, /datum/client_preference/ghost_ears)
 
@@ -290,7 +288,7 @@ var/list/channel_to_radio_key = new
 
 	for(var/obj/O in listening_obj)
 		spawn(0)
-			if(O) //It's possible that it could be deleted in the meantime.
+			if(O) // It's possible that it could be deleted in the meantime.
 				O.hear_talk(src, message, verb, speaking)
 
 	if(whispering)
@@ -307,7 +305,7 @@ var/list/channel_to_radio_key = new
 
 		for(var/obj/O in eavesdroping)
 			spawn(0)
-				if(O) //It's possible that it could be deleted in the meantime.
+				if(O) // It's possible that it could be deleted in the meantime.
 					O.hear_talk(src, stars(message), verb, speaking)
 
 

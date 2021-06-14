@@ -34,9 +34,8 @@
 		usr.emote("me",usr.emote_type,message)
 	else
 		usr.emote(message)
-
-	if(client?.get_preference_value(/datum/client_preference/spell_checking) == GLOB.PREF_YES && client.chatOutput)
-		client.chatOutput.spell_check(message)
+	
+	client?.spellcheck(message)
 
 	var/ckeyname = "[usr.ckey]/[usr.name]"
 	webhook_send_me(ckeyname, message)
@@ -46,22 +45,22 @@
 
 /mob/proc/say_understands(mob/other,datum/language/speaking = null)
 
-	if (src.stat == 2)		//Dead
+	if(src.stat == 2)		//Dead
 		return 1
 
-	//Universal speak makes everything understandable, for obvious reasons.
+	// Universal speak makes everything understandable, for obvious reasons.
 	else if(src.universal_speak || src.universal_understand)
 		return 1
 
-	//Languages are handled after.
-	if (!speaking)
+	// Languages are handled after.
+	if(!speaking)
 		if(!other)
 			return 1
 		if(other.universal_speak)
 			return 1
 		if(isAI(src) && ispAI(other))
 			return 1
-		if (istype(other, src.type) || istype(src, other.type))
+		if(istype(other, src.type) || istype(src, other.type))
 			return 1
 		return 0
 
@@ -81,7 +80,7 @@
 		return speaking.get_spoken_verb(ending)
 
 	var/verb = pick(speak_emote)
-	if(verb == "says") //a little bit of a hack, but we can't let speak_emote default to an empty list without breaking other things
+	if(verb == "says") // a little bit of a hack, but we can't let speak_emote default to an empty list without breaking other things
 		if(ending == "!")
 			verb = pick("exclaims","shouts","yells")
 		else if(ending == "?")
@@ -98,15 +97,15 @@
 
 /mob/proc/say_test(text)
 	var/ending = copytext(text, length(text))
-	if (ending == "?")
+	if(ending == "?")
 		return "1"
-	else if (ending == "!")
+	else if(ending == "!")
 		return "2"
 	return "0"
 
-//parses the message mode code (e.g. :h, :w) from text, such as that supplied to say.
-//returns the message mode string or null for no message mode.
-//standard mode is the mode returned for the special ';' radio code.
+// parses the message mode code (e.g. :h, :w) from text, such as that supplied to say.
+// returns the message mode string or null for no message mode.
+// standard mode is the mode returned for the special ';' radio code.
 /mob/proc/parse_message_mode(message, standard_mode="headset")
 	if(length_char(message) >= 1 && copytext_char(message,1,2) == get_prefix_key(/decl/prefix/radio_main_channel))
 		return standard_mode
@@ -117,8 +116,8 @@
 
 	return null
 
-//parses the language code (e.g. :j) from text, such as that supplied to say.
-//returns the language object only if the code corresponds to a language that src can speak, otherwise null.
+// parses the language code (e.g. :j) from text, such as that supplied to say.
+// returns the language object only if the code corresponds to a language that src can speak, otherwise null.
 /mob/proc/parse_language(message)
 	var/prefix = copytext_char(message,1,2)
 	if(length_char(message) >= 1 && prefix == get_prefix_key(/decl/prefix/audible_emote))
@@ -127,7 +126,7 @@
 	if(length_char(message) >= 2 && is_language_prefix(prefix))
 		var/language_prefix = sanitize_cyrillic_char(copytext_char(message, 2 ,3))
 		var/datum/language/L = language_keys[language_prefix]
-		if (can_speak(L))
+		if(can_speak(L))
 			return L
 
 	return null

@@ -8,6 +8,7 @@
 	invocation = "Re-Alki R'natha."
 	invocation_type = SpI_WHISPER
 	cooldown_min = 300
+	need_target = 0
 
 	smoke_amt = 1
 	smoke_spread = 5

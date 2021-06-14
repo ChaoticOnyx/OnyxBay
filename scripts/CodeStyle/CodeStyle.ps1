@@ -117,7 +117,7 @@ function Invoke-DmCodeStyleCheck
         }
 
         Write-Host "Парсинг файла $Path"
-        $FileContent = Get-Content -Path $Path
+        $FileContent = (Get-Content -Path $Path)
         $Lines = ($FileContent -replace '\n\r', '\n').Split('\n')
         $LineIndex = 0
 
@@ -145,7 +145,15 @@ function Invoke-DmCodeStyleCheck
 
                     # Ширина табуляции на гитхабе - 8
                     $Column = ($Line[0..($Match.Index - 1)] -replace '\t', [string]::new(' ', 8)).Count
-                    $FormatedMessage = $FormatedMessage -f $Match.Groups[0].Value
+
+                    try
+                    {
+                        $FormatedMessage = $FormatedMessage -f $Match.Groups[0].Value
+                    }
+                    catch
+                    {
+                        continue
+                    }
 
                     New-DiagnosticMessage -FileName $Path -Message $FormatedMessage -Level $Rule.Level -Line $LineIndex -Column $Column | Write-Output
                 }

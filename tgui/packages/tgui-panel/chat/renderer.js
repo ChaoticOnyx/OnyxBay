@@ -176,15 +176,12 @@ class ChatRenderer {
       this.highlightColor = null;
       return;
     }
-    const allowedRegex = /^[a-z0-9_\-\s]+$/ig;
     const lines = String(text)
       .split(',')
       .map(str => str.trim())
       .filter(str => (
         // Must be longer than one character
         str && str.length > 1
-        // Must be alphanumeric (with some punctuation)
-        && allowedRegex.test(str)
       ));
     // Nothing to match, reset highlighting
     if (lines.length === 0) {
@@ -440,7 +437,7 @@ class ChatRenderer {
     let cssText = '';
     const styleSheets = document.styleSheets;
     for (let i = 0; i < styleSheets.length; i++) {
-      const cssRules = styleSheets[i].cssRules;
+      const cssRules = styleSheets[i].rules;
       for (let i = 0; i < cssRules.length; i++) {
         const rule = cssRules[i];
         cssText += rule.cssText + '\n';
@@ -458,6 +455,7 @@ class ChatRenderer {
     const pageHtml = '<!doctype html>\n'
       + '<html>\n'
       + '<head>\n'
+      + '<meta charset="utf-8">\n'
       + '<title>SS13 Chat Log</title>\n'
       + '<style>\n' + cssText + '</style>\n'
       + '</head>\n'

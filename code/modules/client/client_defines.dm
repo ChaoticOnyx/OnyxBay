@@ -18,9 +18,6 @@
 
 	var/datum/donator_info/donator_info = new
 
-	///onyxchat chatoutput of the client
-	var/datum/chatOutput/chatOutput
-
 	/*
 	As of byond 512, due to how broken preloading is, preload_rsc MUST be set to 1 at compile time if resource URLs are *not* in use,
 	BUT you still want resource preloading enabled (from the server itself). If using resource URLs, it should be set to 0 and

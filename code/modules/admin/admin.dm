@@ -9,33 +9,33 @@ var/global/floorIsLava = 0
 	log_adminwarn(msg)
 	for(var/client/C in GLOB.admins)
 		if(R_ADMIN & C.holder.rights)
-			to_chat(C, msg)
+			to_chat(C, msg, MESSAGE_TYPE_ADMINLOG)
 /proc/message_staff(msg)
 	msg = "<span class=\"log_message\"><span class=\"prefix\">STAFF LOG:</span> <span class=\"message\">[msg]</span></span>"
 	log_adminwarn(msg)
 	for(var/client/C in GLOB.admins)
 		if(R_INVESTIGATE & C.holder.rights)
-			to_chat(C, msg)
+			to_chat(C, msg, MESSAGE_TYPE_ADMINLOG)
 /proc/msg_admin_attack(text) //Toggleable Attack Messages
 	log_attack(text)
 	var/rendered = "<span class=\"log_message\"><span class=\"prefix\">ATTACK:</span> <span class=\"message\">[text]</span></span>"
 	for(var/client/C in GLOB.admins)
 		if(check_rights(R_INVESTIGATE, 0, C))
-			if(C.get_preference_value(/datum/client_preference/staff/show_attack_logs) == GLOB.PREF_SHOW)
-				var/msg = rendered
-				to_chat(C, msg)
+			var/msg = rendered
+			to_chat(C, msg, MESSAGE_TYPE_ATTACKLOG)
+
 /proc/href_exploit(suspect_ckey, href)
 	var/rendered = "<span class=\"log_message\"><span class=\"prefix\">HREF EXPLOIT POSSIBLE:</span> <span class=\"message\">Suspect: '[suspect_ckey]' || Href: '[href]'</span></span><br>"
 	log_href(rendered)
 	for(var/client/C in GLOB.admins)
 		if(check_rights(R_INVESTIGATE, 0, C))
 			var/msg = rendered
-			to_chat(C, msg)
+			to_chat(C, msg, MESSAGE_TYPE_ADMINLOG)
 
 /proc/admin_notice(message, rights)
 	for(var/mob/M in SSmobs.mob_list)
 		if(check_rights(rights, 0, M))
-			to_chat(M, message)
+			to_chat(M, message, MESSAGE_TYPE_ADMINLOG)
 
 ///////////////////////////////////////////////////////////////////////////////////////////////Panels
 

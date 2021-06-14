@@ -137,9 +137,8 @@
 	switch(href_list["_src_"])
 		if("holder")	hsrc = holder
 		if("usr")		hsrc = mob
-		if("prefs")		return prefs.process_link(usr,href_list)
-		if("vars")		return view_var_Topic(href,href_list,hsrc)
-		if("chat")		return chatOutput.Topic(href, href_list)
+		if("prefs")		return prefs.process_link(usr, href_list)
+		if("vars")		return view_var_Topic(href, href_list, hsrc)
 
 	switch(href_list["action"])
 		if("openLink")
@@ -168,9 +167,6 @@
 /client/New(TopicData)
 	TopicData = null							// Prevent calls to client.Topic from connect
 
-	// Load onyxchat
-	chatOutput = new(src)
-
 	if(!(connection in list("seeker", "web")))					// Invalid connection type.
 		return null
 
@@ -190,6 +186,8 @@
 	GLOB.clients += src
 	GLOB.ckey_directory[ckey] = src
 
+	// Instantiate tgui panel
+	tgui_panel = new(src)
 
 	// Admin Authorisation
 	var/datum/admins/admin_datum = admin_datums[ckey]
@@ -219,13 +217,7 @@
 	// Load EAMS data
 	SSeams.CollectDataForClient(src)
 
-	// preferences datum - also holds some persistant data for the client (because we may as well keep these datums to a minimum)
-	prefs = SScharacter_setup.preferences_datums[ckey]
-	if(!prefs)
-		prefs = new /datum/preferences(src)
-	prefs.last_ip = address				// these are gonna be used for banning
-	prefs.last_id = computer_id			// these are gonna be used for banning
-	apply_fps(prefs.clientfps)
+	setup_preferences()
 
 	. = ..()	// calls mob.Login()
 
@@ -234,7 +226,7 @@
 		<font size='3'>Please update it to [MIN_CLIENT_VERSION].</font></center>")
 		qdel(src)
 		return
-
+	
 	GLOB.using_map.map_info(src)
 
 	if(custom_event_msg && custom_event_msg != "")
@@ -262,11 +254,6 @@
 	SSdonations.update_donator_items(src)
 
 	send_resources()
-
-	if(prefs.lastchangelog != changelog_hash) // bolds the changelog button on the interface so we know there are updates.
-		to_chat(src, SPAN("info", "You have unread updates in the changelog."))
-		if(config.aggressive_changelog)
-			src.changes()
 
 	if(!winexists(src, "asset_cache_browser")) // The client is using a custom skin, tell them.
 		to_chat(src, SPAN("warning", "Unable to access asset cache browser, if you are using a custom skin file, please allow DS to download the updated version, if you are not, then make a bug report. This is not a critical issue but can cause issues with resource downloading, as it is impossible to know when extra resources arrived to you."))
@@ -571,3 +558,17 @@
 	set name = ".release_shift"
 
 	shift_released_at = world.time
+
+/client/proc/setup_preferences(initialization = FALSE)
+	// This proc will be called twice if SScharacter_setup is not initialized,
+	// so, don't create prefs again.
+	if(!prefs)
+		// preferences datum - also holds 	some persistant data for the client (because we may as well keep these datums to a minimum)
+		prefs = new /datum/preferences(src)
+		prefs.last_ip = address				// these are gonna be used for banning
+		prefs.last_id = computer_id			// these are gonna be used for banning
+
+	if(initialization || SScharacter_setup.initialized)
+		prefs.setup()
+	else
+		SScharacter_setup.queue_client(src)
