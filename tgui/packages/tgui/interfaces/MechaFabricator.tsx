@@ -12,7 +12,7 @@ import {
 } from '../components';
 import { Window } from '../layouts';
 
-export interface InputData {
+interface InputData {
   current?: string;
   queue: string[];
   buildable: Buildable[];
@@ -26,7 +26,7 @@ export interface InputData {
   builtperc: number;
 }
 
-export interface Buildable {
+interface Buildable {
   name: string;
   id: number;
   category: string;
@@ -34,12 +34,12 @@ export interface Buildable {
   time: string;
 }
 
-export interface Manufacturer {
+interface Manufacturer {
   id: string;
   company: string;
 }
 
-export interface Material {
+interface Material {
   mat: string;
   amt: number;
 }
