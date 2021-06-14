@@ -99,7 +99,7 @@
 /obj/machinery/mecha_part_fabricator/tgui_data(mob/user)
 	var/datum/design/current = queue.len ? queue[1] : null
 	var/data = list(
-		"current" = current ? current.name : null,
+		"current" = current?.name,
 		"queue" = get_queue_names(),
 		"buildable" = get_build_options(),
 		"category" = category,
