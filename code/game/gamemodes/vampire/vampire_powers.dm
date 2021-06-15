@@ -625,7 +625,9 @@
 			if (healed)
 				break
 
-		virus2 = list()
+		for(var/ID in virus2)
+			var/datum/disease2/disease/V = virus2[ID]
+			V.cure(src)
 
 		var/list/emotes_lookers = list("[src]'s skin appears to liquefy for a moment, sealing up their wounds.",
 									"[src]'s veins turn black as their damaged flesh regenerates before your eyes!",
