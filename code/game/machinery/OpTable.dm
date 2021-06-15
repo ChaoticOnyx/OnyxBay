@@ -10,10 +10,19 @@
 	var/mob/living/carbon/human/victim = null
 	var/strapped = 0.0
 	var/busy = FALSE
+	var/time_to_strip = 5 SECONDS
 
 	var/obj/machinery/computer/operating/computer = null
 
 	beepsounds = "medical_beep"
+
+/obj/machinery/optable/RefreshParts()
+	var/default_strip = 6 SECONDS
+	var/rating = 1
+	for(var/obj/item/weapon/stock_parts/P in component_parts)
+		if(ismanipulator(P) && rating > P.rating)
+			rating = P.rating
+	time_to_strip = clamp(default_strip - rating, 1 SECONDS, 5 SECONDS)
 
 /obj/machinery/optable/Initialize()
 	. = ..()
@@ -31,6 +40,8 @@
 				continue
 			computer.table = src
 			break
+	RefreshParts()
+	update_icon()
 
 /obj/machinery/optable/ex_act(severity)
 
@@ -103,7 +114,7 @@
 	busy = TRUE
 	usr.visible_message(SPAN_DANGER("[usr] begins to undress [victim] on the table with the built-in tool."),
 						SPAN_NOTICE("You begin to undress [victim] on the table with the built-in tool."))
-	if(do_after(usr, 5 SECONDS, victim))
+	if(do_after(usr, time_to_strip, victim))
 		if(!victim)
 			return
 		for(var/obj/item/clothing/C in victim.contents)
