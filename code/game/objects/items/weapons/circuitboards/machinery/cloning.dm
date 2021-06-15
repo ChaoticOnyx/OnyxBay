@@ -57,6 +57,13 @@
 							/obj/item/weapon/stock_parts/manipulator = 4,
 							)
 
+/obj/item/weapon/circuitboard/optable
+	name = T_BOARD("operating table")
+	build_path = /obj/machinery/optable
+	board_type = "machine"
+	origin_tech = list(TECH_ENGINEERING = 3, TECH_BIO = 3)
+	req_components = list(/obj/item/weapon/stock_parts/manipulator = 4)
+
 /obj/item/weapon/circuitboard/bodyscanner_console
 	name = T_BOARD("body scanner console")
 	board_type = "machine"

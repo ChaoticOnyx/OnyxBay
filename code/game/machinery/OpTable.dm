@@ -17,9 +17,18 @@
 
 /obj/machinery/optable/Initialize()
 	. = ..()
+	component_parts = list(new /obj/item/weapon/circuitboard/optable(src),
+		new /obj/item/weapon/stock_parts/manipulator(src),
+		new /obj/item/weapon/stock_parts/manipulator(src),
+		new /obj/item/weapon/stock_parts/manipulator(src),
+		new /obj/item/weapon/stock_parts/manipulator(src)
+	)
 	for(dir in list(NORTH,EAST,SOUTH,WEST))
 		computer = locate(/obj/machinery/computer/operating, get_step(src, dir))
-		if (computer)
+		if(computer)
+			if(computer.table)
+				computer = null
+				continue
 			computer.table = src
 			break
 
@@ -132,6 +141,8 @@
 	C.resting = 1
 	C.dropInto(loc)
 	for(var/obj/O in src)
+		if(O in component_parts)
+			continue
 		O.dropInto(loc)
 	src.add_fingerprint(user)
 	if(ishuman(C))
@@ -158,7 +169,13 @@
 	take_victim(usr,usr)
 
 /obj/machinery/optable/attackby(obj/item/weapon/W as obj, mob/living/carbon/user as mob)
-	if (istype(W, /obj/item/grab))
+	if(default_deconstruction_screwdriver(user, W))
+		return
+	if(default_deconstruction_crowbar(user, W))
+		return
+	if(default_part_replacement(user, W))
+		return
+	if(istype(W, /obj/item/grab))
 		var/obj/item/grab/G = W
 		if(iscarbon(G.affecting) && check_table(G.affecting))
 			take_victim(G.affecting,usr)

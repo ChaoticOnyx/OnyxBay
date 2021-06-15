@@ -54,6 +54,13 @@
 	build_path = /obj/item/weapon/circuitboard/body_scanner
 	sort_string = "FAGAO"
 
+/datum/design/circuit/optable
+	name = "operating table"
+	id = "optable"
+	req_tech = list(TECH_ENGINEERING = 3, TECH_BIO = 3)
+	build_path = /obj/item/weapon/circuitboard/optable
+	sort_string = "FAGAP"
+
 /datum/design/circuit/destructive_analyzer
 	name = "destructive analyzer"
 	id = "destructive_analyzer"
