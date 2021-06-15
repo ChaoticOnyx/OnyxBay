@@ -6,8 +6,6 @@
  * @license MIT
  */
 
-import { logger } from "../tgui/logging";
-
 export const IMPL_MEMORY = 0;
 export const IMPL_LOCAL_STORAGE = 1;
 export const IMPL_INDEXED_DB = 2;

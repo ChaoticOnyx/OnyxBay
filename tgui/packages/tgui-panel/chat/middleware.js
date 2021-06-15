@@ -13,7 +13,6 @@ import { MAX_PERSISTED_MESSAGES, MESSAGE_SAVE_INTERVAL, MESSAGE_TYPE_INTERNAL } 
 import { createMessage, serializeMessage } from './model';
 import { chatRenderer } from './renderer';
 import { selectChat, selectCurrentChatPage } from './selectors';
-import { logger } from '../../tgui/logging';
 
 // List of blacklisted tags
 const FORBID_TAGS = [
