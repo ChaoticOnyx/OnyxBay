@@ -157,6 +157,8 @@
 	Fire(A,user,params) //Otherwise, fire normally.
 
 /obj/item/weapon/gun/attack(atom/A, mob/living/user, def_zone)
+	if(ishuman(A) && user.zone_sel.selecting == BP_MOUTH && user.a_intent != I_HURT && !weapon_in_mouth)
+		handle_war_crime(user, A)
 	if (A == user && user.zone_sel.selecting == BP_MOUTH && !mouthshoot)
 		handle_suicide(user)
 	else if(user.a_intent == I_HURT) //point blank shooting
@@ -393,7 +395,7 @@
 		mouthshoot = 0
 		return
 	var/obj/item/projectile/in_chamber = consume_next_projectile()
-	if (istype(in_chamber))
+	if (istype(in_chamber) && process_projectile(in_chamber, user, user, BP_MOUTH))
 		user.visible_message("<span class = 'warning'>[user] pulls the trigger.</span>")
 		var/shot_sound = in_chamber.fire_sound? in_chamber.fire_sound : fire_sound
 		if(silenced)
@@ -420,6 +422,69 @@
 		handle_click_empty(user)
 		mouthshoot = 0
 		return
+/obj/item/weapon/gun/var/weapon_in_mouth = FALSE
+
+/obj/item/weapon/gun/proc/handle_war_crime(mob/living/carbon/human/user, mob/living/carbon/human/target)
+	var/obj/item/grab/G = user.get_inactive_hand()
+	if(G?.affecting == target)
+		if(!G?.current_grab?.can_absorb)
+			to_chat(user, SPAN_NOTICE("You need a better grab for this."))
+			return
+
+		var/obj/item/organ/external/head/head = target.organs_by_name[BP_HEAD]
+		if(!istype(head))
+			to_chat(user, SPAN_NOTICE("You can't shoot in [target]'s mouth because you can't find their head."))
+			return
+
+		var/obj/item/clothing/head/helmet = target.get_equipped_item(slot_head)
+		var/obj/item/clothing/mask/mask = target.get_equipped_item(slot_wear_mask)
+		if((istype(helmet) && (helmet.body_parts_covered & HEAD)) || (istype(mask) && (mask.body_parts_covered & FACE)))
+			to_chat(user, SPAN_NOTICE("You can't shoot in [target]'s mouth because their face is covered."))
+			return
+
+		weapon_in_mouth = TRUE
+		target.visible_message(SPAN_DANGER("[user] sticks their gun in [target]'s mouth, ready to pull the trigger..."))
+		if(!do_after(user, 2 SECONDS, progress=0))
+			target.visible_message(SPAN_NOTICE("[user] decided [target]'s life was worth living."))
+			weapon_in_mouth = FALSE
+			return
+		if(istype(src, /obj/item/weapon/gun/flamer))
+			target.adjust_fire_stacks(15)
+			target.IgniteMob()
+			target.death()
+			log_and_message_admins("[key_name(user)] killed [target] using \a [src]")
+			playsound(user, 'sound/weapons/gunshot/flamethrower/flamer_fire.ogg', 50, 1)
+			weapon_in_mouth = FALSE
+			return
+		var/obj/item/projectile/in_chamber = consume_next_projectile()
+		if(istype(in_chamber) && process_projectile(in_chamber, user, target, BP_MOUTH))
+			var/not_killable = istype(in_chamber, /obj/item/projectile/energy/electrode) || istype(in_chamber, /obj/item/projectile/energy/flash)
+			user.visible_message(SPAN_WARNING("[user] pulls the trigger."))
+			var/shot_sound = in_chamber.fire_sound ? in_chamber.fire_sound : fire_sound
+			if(silenced)
+				playsound(user, shot_sound, 10, 1)
+			else
+				playsound(user, shot_sound, 50, 1)
+			if(istype(in_chamber, /obj/item/projectile/beam/lastertag))
+				user.show_message(SPAN_WARNING("You feel rather silly, trying to shoot [target] with a toy."))
+				weapon_in_mouth = FALSE
+				return
+
+			in_chamber.on_hit(target)
+			if(in_chamber.damage_type != PAIN || !not_killable)
+				log_and_message_admins("[key_name(user)] killed [target] using \a [src]")
+				target.apply_damage(in_chamber.damage * 2.5, in_chamber.damage_type, BP_HEAD, 0, in_chamber.damage_flags(), used_weapon = "Point blank shot in the mouth with \a [in_chamber]")
+				target.death()
+			else
+				to_chat(user, SPAN_NOTICE("Ow..."))
+				target.apply_effect(110, PAIN, 0)
+			qdel(in_chamber)
+			weapon_in_mouth = FALSE
+			return
+		else
+			handle_click_empty(user)
+			weapon_in_mouth = FALSE
+			return
 
 /obj/item/weapon/gun/proc/toggle_scope(mob/user, zoom_amount=2.0)
 	//looking through a scope limits your periphereal vision
@@ -467,4 +532,3 @@
 	var/datum/firemode/new_mode = switch_firemodes(user)
 	if(new_mode)
 		to_chat(user, "<span class='notice'>\The [src] is now set to [new_mode.name].</span>")
-
