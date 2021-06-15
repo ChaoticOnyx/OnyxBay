@@ -14,8 +14,7 @@ export const spellCheckerReducer = (state = initialState, action) => {
   if (type === loadSpellCheckerSettings.type) {
     if (!payload) {
       return {
-        ...state,
-        initialState,
+        ...initialState,
       };
     }
 
