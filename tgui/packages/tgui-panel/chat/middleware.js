@@ -9,10 +9,11 @@ import { storage } from 'common/storage';
 import { loadSettings, updateSettings } from '../settings/actions';
 import { selectSettings } from '../settings/selectors';
 import { addChatPage, changeChatPage, changeScrollTracking, loadChat, rebuildChat, removeChatPage, saveChatToDisk, toggleAcceptedType, updateMessageCount } from './actions';
-import { MAX_PERSISTED_MESSAGES, MESSAGE_SAVE_INTERVAL } from './constants';
+import { MAX_PERSISTED_MESSAGES, MESSAGE_SAVE_INTERVAL, MESSAGE_TYPE_INTERNAL } from './constants';
 import { createMessage, serializeMessage } from './model';
 import { chatRenderer } from './renderer';
 import { selectChat, selectCurrentChatPage } from './selectors';
+import { logger } from '../../tgui/logging';
 
 // List of blacklisted tags
 const FORBID_TAGS = [
@@ -115,9 +116,21 @@ export const chatMiddleware = store => {
     if (type === updateSettings.type || type === loadSettings.type) {
       next(action);
       const settings = selectSettings(store.getState());
+      try {
       chatRenderer.setHighlight(
         settings.highlightText,
         settings.highlightColor);
+      }
+      catch {
+        store.dispatch({
+          type: 'chat/message',
+          payload: {
+            type: MESSAGE_TYPE_INTERNAL,
+            text: 'Incorrect or unsupported regular expression.',
+          },
+        });
+      }
+
       return;
     }
     if (type === 'roundrestart') {
