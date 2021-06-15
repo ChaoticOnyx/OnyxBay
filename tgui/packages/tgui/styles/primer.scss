@@ -1,6 +1,8 @@
+$border-radius: .4rem;
+
 .Section {
-  border-radius: .4rem;
-  font-size: 1.2rem;
+  border-radius: $border-radius;
+  font-size: 1rem;
 }
 
 .Section__title {
@@ -8,12 +10,13 @@
 }
 
 .Section__titleText {
-  font-size: 1.5rem;
+  font-size: 1.2em;
 }
 
 .Button {
+  font-size: .9em;
   cursor: pointer;
-  border-radius: .4rem;
+  border-radius: $border-radius;
   font-weight: bold;
 }
 
@@ -49,7 +52,6 @@
 }
 
 .multipliers * {
-  font-size: 1rem;
   font-weight: bold;
   margin: 0;
   border-radius: 0;
@@ -57,11 +59,11 @@
 }
 
 .multipliers :first-child {
-  border-radius: .4rem 0 0 .4rem;
+  border-radius: $border-radius 0 0 $border-radius;
 }
 
 .multipliers :last-child {
-  border-radius: 0 .4rem .4rem 0;
+  border-radius: 0 $border-radius $border-radius 0;
 }
 
 .multipliers .Button--disabled {
@@ -69,9 +71,32 @@
 }
 
 .Input {
-  border-radius: .5rem;
+  border-radius: $border-radius;
 }
 
 .Section__buttons {
-  margin-top: -.3rem;
+  margin-top: -.15em;
+}
+
+.slide-animation {
+  animation: slide-up 0.4s ease;
+}
+
+@keyframes slide-up {
+  0% {
+      opacity: 0;
+      transform: translateY(100vh);
+  }
+  100% {
+      opacity: 1;
+      transform: translateY(0);
+  }
+}
+
+.ProgressBar {
+  border-radius: $border-radius;
+  
+  .ProgressBar__fill {
+    border-radius: $border-radius;
+  }
 }

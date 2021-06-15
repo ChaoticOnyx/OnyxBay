@@ -9,6 +9,7 @@ import {
   Stack,
   Table,
   Input,
+  ProgressBar,
 } from '../components';
 import { Window } from '../layouts';
 
@@ -44,7 +45,43 @@ interface Material {
   amt: number;
 }
 
+interface Queue {
+  name: string;
+  progress: number | string;
+  index: number;
+}
+
 const ejectMultipliers = [1, 5, 10];
+
+const queueElement = (
+  props: Queue,
+  context: any,
+  addDivider: boolean = false
+) => {
+  const { act } = useBackend<InputData>(context);
+
+  return (
+    <Stack vertical className="slide-animation">
+      {addDivider && <Divider />}
+      <Stack.Item>{props.name}</Stack.Item>
+      <Stack.Item>
+        <Stack>
+          <Stack.Item width="100%">
+            {(typeof props.progress === 'string' && (
+              <ProgressBar maxValue={100}>{props.progress}</ProgressBar>
+            )) || <ProgressBar value={props.progress} maxValue={100} />}
+          </Stack.Item>
+          <Stack.Item>
+            <Button
+              onClick={() => act('remove', { remove: props.index })}
+              content="Cancel"
+            />
+          </Stack.Item>
+        </Stack>
+      </Stack.Item>
+    </Stack>
+  );
+};
 
 const fabricatorStorage = (props: any, context: any) => {
   const { act, data } = useBackend<InputData>(context);
@@ -58,7 +95,8 @@ const fabricatorStorage = (props: any, context: any) => {
               {material.mat}:{' '}
               <AnimatedNumber
                 format={(val: number) => Math.round(val).toLocaleString()}
-                value={material.amt} />
+                value={material.amt}
+              />
               /{data.maxres.toLocaleString()}
               <Divider hidden />
               <div class="multipliers">
@@ -173,29 +211,18 @@ const fabricatorProduction = (props: any, context: any) => {
       </Flex>
       <Divider />
       <Table>
-        <Table.Row>
-          <Table.Cell textAlign="center" bold>
-            Name
-          </Table.Cell>
-          <Table.Cell textAlign="center" bold>
-            Required
-          </Table.Cell>
-          <Table.Cell textAlign="center" bold>
-            Time
-          </Table.Cell>
-        </Table.Row>
         {buildableToShow.map((buildable, i) => {
           return (
             <Table.Row className="candystripe" key={i}>
-              <Table.Cell>
+              <Table.Cell width="25ch">
                 <Button
                   className="link-primer"
                   onClick={() => act('build', { build: buildable.id })}>
                   {buildable.name}
                 </Button>
               </Table.Cell>
-              <Table.Cell>{buildable.resourses}</Table.Cell>
-              <Table.Cell>{buildable.time}</Table.Cell>
+              <Table.Cell width="40ch">{buildable.resourses}</Table.Cell>
+              <Table.Cell textAlign="center">{buildable.time}</Table.Cell>
             </Table.Row>
           );
         })}
@@ -211,34 +238,23 @@ const fabricatorQueue = (props: any, context: any) => {
     <Section width="22rem" minHeight="100%" title="Queue">
       {data.current ? (
         <>
-          <LabeledList>
-            <LabeledList.Item label="Name">{data.current}</LabeledList.Item>
-            <LabeledList.Item label="Status">
-              <AnimatedNumber
-                value={data.builtperc}
-                format={(val: number) => `${Math.round(val)}%`}
-              />
-            </LabeledList.Item>
-            <LabeledList.Item>
-              <Button onClick={() => act('remove', { remove: 1 })}>
-                Cancel
-              </Button>
-            </LabeledList.Item>
-          </LabeledList>
+          {queueElement(
+            {
+              index: 1,
+              name: data.current,
+              progress: data.builtperc,
+            },
+            context
+          )}
           {data.queue.map((queue, i) => {
-            return (
-              <>
-                <Divider />
-                <LabeledList>
-                  <LabeledList.Item label="Name">{queue}</LabeledList.Item>
-                  <LabeledList.Item label="Status">Queued</LabeledList.Item>
-                  <LabeledList.Item>
-                    <Button onClick={() => act('remove', { remove: i + 2 })}>
-                      Cancel
-                    </Button>
-                  </LabeledList.Item>
-                </LabeledList>
-              </>
+            return queueElement(
+              {
+                index: i + 2,
+                name: queue,
+                progress: 'Queued',
+              },
+              context,
+              true
             );
           })}
         </>
@@ -256,7 +272,7 @@ export const MechaFabricator = (props: any, context: any) => {
     <Window
       theme={getTheme('primer')}
       width={1000}
-      height={800}
+      height={600}
       title="Exosuit Fabricator UI">
       <Window.Content>
         <Stack fill justify="stretch">

@@ -177,4 +177,12 @@ $border-thick: 0.1rem;
     scrollbar-arrow-color: #f6f8fa;
     scrollbar-shadow-color: #d9dbdb;
   }
+
+  .ProgressBar {
+    border: #d9dbdb solid $border-thick;
+
+    .ProgressBar__fill {
+      background-color: #28A745;
+    }
+  }
 }
