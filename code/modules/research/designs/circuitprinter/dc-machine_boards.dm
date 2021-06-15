@@ -40,6 +40,20 @@
 	build_path = /obj/item/weapon/circuitboard/roboprinter
 	sort_string = "FAGAM"
 
+/datum/design/circuit/cryochamber
+	name = "cryo chamber"
+	id = "cryo_chamber"
+	req_tech = list(TECH_ENGINEERING = 1, TECH_BIO = 3, TECH_DATA = 3)
+	build_path = /obj/item/weapon/circuitboard/cryo_cell
+	sort_string = "FAGAN"
+
+/datum/design/circuit/bodyscanner
+	name = "body scanner"
+	id = "bodyscanner"
+	req_tech = list(TECH_ENGINEERING = 3, TECH_BIO = 5, TECH_DATA = 5)
+	build_path = /obj/item/weapon/circuitboard/body_scanner
+	sort_string = "FAGAO"
+
 /datum/design/circuit/destructive_analyzer
 	name = "destructive analyzer"
 	id = "destructive_analyzer"
