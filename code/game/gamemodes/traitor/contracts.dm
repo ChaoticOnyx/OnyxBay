@@ -1,7 +1,6 @@
 GLOBAL_VAR_INIT(contract_recon_target_count, 3)
 GLOBAL_LIST_EMPTY(all_contracts)
 GLOBAL_LIST_INIT(contracts_steal_items, list(
-	"the prototype psychoscope" =                       list(CONTRACT_STEAL_SCIENCE, /obj/item/clothing/glasses/psychoscope),
 	"the captain's antique laser gun" =                 list(CONTRACT_STEAL_MILITARY, /obj/item/weapon/gun/energy/captain),
 	"a bluespace rift generator in hand teleporter" =   list(CONTRACT_STEAL_SCIENCE, /obj/item/integrated_circuit/manipulation/bluespace_rift),
 	"an RCD" =                                          list(CONTRACT_STEAL_OPERATION, /obj/item/weapon/rcd),
