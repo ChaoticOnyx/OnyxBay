@@ -189,7 +189,7 @@ class ChatRenderer {
       this.highlightColor = null;
       return;
     }
-    this.highlightRegex = new RegExp('(' + lines.join('|') + ')', 'gi');
+    this.highlightRegex = new RegExp('(' + lines.join('|') + ')', 'g');
     this.highlightColor = color;
   }
 

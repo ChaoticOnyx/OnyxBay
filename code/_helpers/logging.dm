@@ -59,8 +59,8 @@
 /proc/log_admin(text, location, notify_admin)
 	log_generic("ADMIN", text, location, config.log_admin, notify_admin, MESSAGE_TYPE_ADMINLOG)
 
-/proc/log_debug(text, location)
-	log_generic("DEBUG", SPAN("filter_debuglog", text), location, FALSE, TRUE, MESSAGE_TYPE_DEBUG)
+/proc/log_debug(text, location, type = MESSAGE_TYPE_DEBUG)
+	log_generic("DEBUG", SPAN("filter_debuglog", text), location, FALSE, TRUE, type)
 	if(!config.log_debug || !GLOB.world_debug_log)
 		return
 	WRITE_FILE(GLOB.world_debug_log, "\[[time_stamp()]] DEBUG: [text][log_end]")
@@ -172,7 +172,7 @@
 	// Insert message
 	if(message)
 		entry += "\n[message]"
-	log_debug(entry)
+	log_debug(entry, type = MESSAGE_TYPE_UIDEBUG)
 
 //pretty print a direction bitflag, can be useful for debugging.
 /proc/dir_text(dir)

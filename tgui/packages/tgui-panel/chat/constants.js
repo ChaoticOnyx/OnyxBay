@@ -40,6 +40,7 @@ export const MESSAGE_TYPE_EVENTCHAT = 'eventchat';
 export const MESSAGE_TYPE_ADMINLOG = 'adminlog';
 export const MESSAGE_TYPE_ATTACKLOG = 'attacklog';
 export const MESSAGE_TYPE_DEBUG = 'debug';
+export const MESSAGE_TYPE_UIDEBUG = 'uidebug';
 
 // Metadata for each message type
 export const MESSAGE_TYPES = [
@@ -160,7 +161,13 @@ export const MESSAGE_TYPES = [
   {
     type: MESSAGE_TYPE_DEBUG,
     name: 'Debug Log',
-    description: 'DEBUG: SSPlanets subsystem Recover().',
+    description: 'DEBUG: MC crashed or runtimed, restarting',
+    admin: true,
+  },
+  {
+    type: MESSAGE_TYPE_UIDEBUG,
+    name: 'Debug TGUI Log',
+    description: 'Using: /obj/machinery/autolathe [0xDEADBEEF].',
     admin: true,
   },
 ];
