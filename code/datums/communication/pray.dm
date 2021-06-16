@@ -20,3 +20,6 @@
 	..()
 	if(receiver.client.holder && !receiver.client.get_preference_value(/datum/client_preference/staff/govnozvuki) == GLOB.PREF_NO)
 		sound_to(receiver, sound('sound/effects/ding.ogg'))
+
+/decl/communication_channel/pray/get_message_type()
+	return MESSAGE_TYPE_PRAY

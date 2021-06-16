@@ -267,7 +267,7 @@
 		T.clean_blood()
 
 
-		for(var/mob/living/carbon/slime/M in T)
+		for(var/mob/living/carbon/metroid/M in T)
 			M.adjustToxLoss(rand(5, 10))
 
 /datum/reagent/space_cleaner/affect_touch(mob/living/carbon/M, alien, removed)
@@ -300,7 +300,7 @@
 /datum/reagent/lube // TODO: spraying on borgs speeds them up
 	name = "Space Lube"
 	description = "Lubricant is a substance introduced between two moving surfaces to reduce the friction and wear between them. giggity."
-	taste_description = "slime"
+	taste_description = "metroid"
 	reagent_state = LIQUID
 	color = "#009ca8"
 

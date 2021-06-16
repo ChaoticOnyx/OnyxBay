@@ -117,14 +117,6 @@ SUBSYSTEM_DEF(supply)
 					if(istype(A, /obj/item/weapon/disk/survey))
 						var/obj/item/weapon/disk/survey/D = A
 						add_points_from_source(round(D.Value() * 0.005), "gep")
-
-					// Sell neuromods
-					if (istype(A, /obj/item/weapon/reagent_containers/neuromod_shell))
-						var/obj/item/weapon/reagent_containers/neuromod_shell/NS = A
-						if (NS.neuromod)
-							add_points_from_source(150, "science")
-						else
-							add_points_from_source(25, "science")
 			qdel(AM)
 
 	if(material_count.len)

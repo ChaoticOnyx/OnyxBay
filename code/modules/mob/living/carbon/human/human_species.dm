@@ -15,6 +15,9 @@
 /mob/living/carbon/human/dummy/mannequin/add_to_dead_mob_list()
 	return FALSE
 
+/mob/living/carbon/human/dummy/mannequin/update_deformities()
+	return // There's simply no need in extra processing
+
 /mob/living/carbon/human/dummy/mannequin/fully_replace_character_name(new_name)
 	..("[new_name] (mannequin)", FALSE)
 

@@ -8,6 +8,7 @@
 	invocation = "Scyar Nila!"
 	invocation_type = SpI_SHOUT
 	cooldown_min = 200 //100 deciseconds reduction per rank
+	need_target = 0
 
 	smoke_spread = 1
 	smoke_amt = 5

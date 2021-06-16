@@ -41,8 +41,7 @@
 		/obj/machinery/smartfridge/,
 		/obj/machinery/biogenerator,
 		/obj/machinery/constructable_frame,
-		/obj/machinery/radiocarbon_spectrometer,
-		/obj/machinery/computer/neuromod_rnd
+		/obj/machinery/radiocarbon_spectrometer
 	)
 
 /obj/item/weapon/reagent_containers/glass/Initialize()

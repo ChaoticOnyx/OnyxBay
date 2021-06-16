@@ -25,7 +25,6 @@
 
 	if(stat != DEAD)
 		aura_check(AURA_TYPE_LIFE)
-		handle_neuromods()
 
 	//Check if we're on fire
 	handle_fire()
@@ -47,19 +46,6 @@
 			O.update()
 
 	return 1
-
-/mob/living/proc/handle_neuromods()
-	if (!neuromods.len)
-		return
-
-	for (var/neuromod_type in neuromods)
-		var/datum/neuromod/N = GLOB.neuromods.Get(neuromod_type)
-
-		if (!N)
-			crash_with("trying to get [neuromod_type] but it is not exists")
-			return
-
-		N.Handle(src)
 
 /mob/living/proc/do_check_environment()
 	return TRUE

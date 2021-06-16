@@ -1114,10 +1114,10 @@ window "chemdispenser_reagents"
 window "mainwindow"
 	elem "mainwindow"
 		type = MAIN
-		pos = 372,0
-		size = 1001x739
-		anchor1 = none
-		anchor2 = none
+		pos = 281,0
+		size = 640x440
+		anchor1 = -1,-1
+		anchor2 = -1,-1
 		is-default = true
 		saved-params = "pos;size;is-minimized;is-maximized"
 		icon = 'icons\\onyxlogo132x32.png'
@@ -1125,16 +1125,16 @@ window "mainwindow"
 		menu = "menu"
 	elem "asset_cache_browser"
 		type = BROWSER
-		pos = 424,208
+		pos = 0,0
 		size = 1x1
-		anchor1 = none
-		anchor2 = none
+		anchor1 = -1,-1
+		anchor2 = -1,-1
 		is-visible = false
 		saved-params = ""
 	elem "mainvsplit"
 		type = CHILD
-		pos = 0,0
-		size = 1001x720
+		pos = 3,0
+		size = 640x420
 		anchor1 = 0,0
 		anchor2 = 100,100
 		saved-params = "splitter"
@@ -1142,8 +1142,8 @@ window "mainwindow"
 		is-vert = true
 	elem "input"
 		type = INPUT
-		pos = 2,720
-		size = 878x20
+		pos = 3,420
+		size = 517x20
 		anchor1 = 0,100
 		anchor2 = 100,100
 		background-color = #d3b5b5
@@ -1154,20 +1154,20 @@ window "mainwindow"
 		on-blur = ".remove_typing_indicator"
 	elem "saybutton"
 		type = BUTTON
-		pos = 880,720
+		pos = 520,420
 		size = 40x20
 		anchor1 = 100,100
-		anchor2 = none
+		anchor2 = -1,-1
 		saved-params = "is-checked"
 		text = "Chat"
 		command = ".winset \"saybutton.is-checked=true?input.command=\"!Say \\\"\" macrobutton.is-checked=false:input.command=\""
 		button-type = pushbox
 	elem "hotkey_toggle"
 		type = BUTTON
-		pos = 920,720
+		pos = 560,420
 		size = 80x20
 		anchor1 = 100,100
-		anchor2 = none
+		anchor2 = -1,-1
 		saved-params = ""
 		text = "Hotkey Toggle"
 		command = ".winset \"mainwindow.macro!=macro ? mainwindow.macro=macro hotkey_toggle.is-checked=false input.focus=true : mainwindow.macro=hotkeymode hotkey_toggle.is-checked=true mapwindow.map.focus=true\""
@@ -1178,8 +1178,8 @@ window "mapwindow"
 		type = MAIN
 		pos = 281,0
 		size = 640x480
-		anchor1 = none
-		anchor2 = none
+		anchor1 = -1,-1
+		anchor2 = -1,-1
 		saved-params = "pos;size;is-minimized;is-maximized"
 		titlebar = false
 		statusbar = false
@@ -1203,7 +1203,7 @@ window "mapwindow"
 window "outputwindow"
 	elem "outputwindow"
 		type = MAIN
-		pos = 372,0
+		pos = 281,0
 		size = 640x480
 		anchor1 = none
 		anchor2 = none
@@ -1223,7 +1223,6 @@ window "outputwindow"
 		background-color = #ffffff
 		is-visible = false
 		saved-params = ""
-		auto-format = false
 	elem "output"
 		type = OUTPUT
 		pos = 0,0
@@ -1234,19 +1233,19 @@ window "outputwindow"
 		saved-params = ""
 	elem "saybutton_alt"
 		type = BUTTON
-		pos = 519,459
+		pos = 519,460
 		size = 40x20
 		anchor1 = 100,100
-		anchor2 = none
+		anchor2 = -1,-1
 		is-visible = false
 		is-disabled = true
 		saved-params = "is-checked"
 		text = "Chat"
-		command = ".winset \"saybutton.is-checked=true?input.command=\"!say \\\"\" macrobutton.is-checked=false:input.command=\""
+		command = ".winset \"saybutton_alt.is-checked=true?input_alt.command=\"!say \\\"\" macrobutton.is-checked=false:input_alt.command=\""
 		button-type = pushbox
 	elem "input_alt"
 		type = INPUT
-		pos = 1,459
+		pos = 1,460
 		size = 517x20
 		anchor1 = 0,100
 		anchor2 = 100,100
@@ -1257,15 +1256,15 @@ window "outputwindow"
 		saved-params = "command"
 	elem "hotkey_toggle_alt"
 		type = BUTTON
-		pos = 560,459
+		pos = 560,460
 		size = 80x20
 		anchor1 = 100,100
-		anchor2 = none
+		anchor2 = -1,-1
 		is-visible = false
 		is-disabled = true
 		saved-params = ""
 		text = "Hotkey Toggle"
-		command = ".winset \"mainwindow.macro!=macro ? mainwindow.macro=macro hotkey_toggle.is-checked=false input.focus=true : mainwindow.macro=hotkeymode hotkey_toggle.is-checked=true mapwindow.map.focus=true\""
+		command = ".winset \"mainwindow.macro!=macro ? mainwindow.macro=macro hotkey_toggle_alt.is-checked=false input_alt.focus=true : mainwindow.macro=hotkeymode hotkey_toggle_alt.is-checked=true mapwindow.map.focus=true\""
 		button-type = pushbox
 
 window "browserwindow"

@@ -1,4 +1,4 @@
-/mob/living/carbon/slime/Life()
+/mob/living/carbon/metroid/Life()
 	set invisibility = 0
 	set background = 1
 
@@ -13,7 +13,7 @@
 		if(!client)
 			handle_regular_AI()
 
-/mob/living/carbon/slime/handle_environment(datum/gas_mixture/environment)
+/mob/living/carbon/metroid/handle_environment(datum/gas_mixture/environment)
 	if(!environment)
 		adjustToxLoss(rand(10,20))
 		return
@@ -36,7 +36,7 @@
 			if(bodytemperature <= die_temperature)
 				adjustToxLoss(200)
 			else
-				// could be more fancy, but doesn't worth the complexity: when the slimes goes into a cold area
+				// could be more fancy, but doesn't worth the complexity: when the metroids goes into a cold area
 				// the damage is mostly determined by how fast its body cools
 				adjustToxLoss(30)
 
@@ -44,7 +44,7 @@
 
 	return //TODO: DEFERRED
 
-/mob/living/carbon/slime/proc/adjust_body_temperature(current, loc_temp, boost)
+/mob/living/carbon/metroid/proc/adjust_body_temperature(current, loc_temp, boost)
 	var/temperature = current
 	var/difference = abs(current-loc_temp)	//get difference
 	var/increments// = difference/10			//find how many increments apart they are
@@ -61,7 +61,7 @@
 	temp_change = (temperature - current)
 	return temp_change
 
-/mob/living/carbon/slime/handle_chemicals_in_body()
+/mob/living/carbon/metroid/handle_chemicals_in_body()
 	chem_effects.Cut()
 
 	if(touching) touching.metabolize()
@@ -73,7 +73,7 @@
 
 	return //TODO: DEFERRED
 
-/mob/living/carbon/slime/handle_regular_status_updates()
+/mob/living/carbon/metroid/handle_regular_status_updates()
 
 	src.blinded = null
 
@@ -137,7 +137,7 @@
 
 	return 1
 
-/mob/living/carbon/slime/proc/handle_nutrition()
+/mob/living/carbon/metroid/proc/handle_nutrition()
 
 	nutrition -= 0.1 + 0.05 * is_adult
 
@@ -151,21 +151,21 @@
 		nutrition -= 20
 		amount_grown++
 
-/mob/living/carbon/slime/proc/get_max_nutrition() // Can't go above it
+/mob/living/carbon/metroid/proc/get_max_nutrition() // Can't go above it
 	if (is_adult) return 1200
 	else return 1000
 
-/mob/living/carbon/slime/proc/get_grow_nutrition() // Above it we grow, below it we can eat
+/mob/living/carbon/metroid/proc/get_grow_nutrition() // Above it we grow, below it we can eat
 	if (is_adult) return 1000
 	else return 800
 
-/mob/living/carbon/slime/proc/get_hunger_nutrition() // Below it we will always eat
+/mob/living/carbon/metroid/proc/get_hunger_nutrition() // Below it we will always eat
 	if (is_adult) return 600
 	else return 500
 
-/mob/living/carbon/slime/proc/get_starve_nutrition() // Below it we will eat before everything else
+/mob/living/carbon/metroid/proc/get_starve_nutrition() // Below it we will eat before everything else
 	if (is_adult) return 300
 	else return 200
 
-/mob/living/carbon/slime/slip() //Can't slip something without legs.
+/mob/living/carbon/metroid/slip() //Can't slip something without legs.
 	return 0

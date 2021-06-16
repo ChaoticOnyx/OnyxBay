@@ -417,9 +417,9 @@
 	color = rgb(rand(50, 255), rand(50, 255), rand(50, 255))
 	..()
 
-/obj/item/device/flashlight/slime
+/obj/item/device/flashlight/metroid
 	gender = PLURAL
-	name = "glowing slime extract"
+	name = "glowing metroid extract"
 	desc = "A glowing ball of what appears to be amber."
 	icon = 'icons/obj/lighting.dmi'
 	icon_state = "slime-on"
@@ -433,12 +433,12 @@
 	light_overlay = FALSE
 	on = 1 //Bio-luminesence has one setting, on.
 
-/obj/item/device/flashlight/slime/New()
+/obj/item/device/flashlight/metroid/New()
 	..()
 	set_light(flashlight_max_bright, flashlight_inner_range, flashlight_outer_range, 2, brightness_color)
 
-/obj/item/device/flashlight/slime/update_icon()
+/obj/item/device/flashlight/metroid/update_icon()
 	return
 
-/obj/item/device/flashlight/slime/attack_self(mob/user)
+/obj/item/device/flashlight/metroid/attack_self(mob/user)
 	return //Bio-luminescence does not toggle.

@@ -150,7 +150,7 @@
 	if(Adjacent(user))
 		attack_hand(user)
 
-/obj/effect/rune/attack_generic(mob/living/user) // Cult constructs/slimes/whatnot!
+/obj/effect/rune/attack_generic(mob/living/user) // Cult constructs/metroids/whatnot!
 	attack_hand(user)
 
 /obj/effect/rune/proc/cast(mob/living/user)

@@ -288,7 +288,7 @@
 /datum/reagent/mutagen
 	name = "Unstable mutagen"
 	description = "Might cause unpredictable mutations. Keep away from children."
-	taste_description = "slime"
+	taste_description = "metroid"
 	taste_mult = 0.9
 	reagent_state = LIQUID
 	color = "#13bc5e"
@@ -329,15 +329,15 @@
 	color = "#4d9e6c"
 	mutation_potency = 0.025
 
-/datum/reagent/slimejelly
-	name = "Slime Jelly"
+/datum/reagent/metroidjelly
+	name = "Metroid Jelly"
 	description = "A gooey semi-liquid produced from one of the deadliest lifeforms in existence. SO REAL."
-	taste_description = "slime"
+	taste_description = "metroid"
 	taste_mult = 1.3
 	reagent_state = LIQUID
 	color = "#801e28"
 
-/datum/reagent/slimejelly/affect_blood(mob/living/carbon/M, alien, removed)
+/datum/reagent/metroidjelly/affect_blood(mob/living/carbon/M, alien, removed)
 	if(alien == IS_DIONA)
 		return
 	if(prob(10))
@@ -554,15 +554,15 @@
 
 /* Transformations */
 
-/datum/reagent/slimetoxin
+/datum/reagent/metroidtoxin
 	name = "Mutation Toxin"
-	description = "A corruptive toxin produced by slimes."
+	description = "A corruptive toxin produced by metroids."
 	taste_description = "sludge"
 	reagent_state = LIQUID
 	color = "#13bc5e"
 	metabolism = REM * 0.4
 
-/datum/reagent/slimetoxin/affect_blood(mob/living/carbon/human/H, alien, removed)
+/datum/reagent/metroidtoxin/affect_blood(mob/living/carbon/human/H, alien, removed)
 	if(!istype(H))
 		return
 	if(H.species.name == SPECIES_PROMETHEAN)
@@ -605,14 +605,14 @@
 		O.droplimb()
 	H.update_body()
 
-/datum/reagent/aslimetoxin
+/datum/reagent/ametroidtoxin
 	name = "Advanced Mutation Toxin"
-	description = "An advanced corruptive toxin produced by slimes."
+	description = "An advanced corruptive toxin produced by metroids."
 	taste_description = "sludge"
 	reagent_state = LIQUID
 	color = "#13bc5e"
 
-/datum/reagent/aslimetoxin/affect_blood(mob/living/carbon/M, alien, removed) // TODO: check if there's similar code anywhere else
+/datum/reagent/ametroidtoxin/affect_blood(mob/living/carbon/M, alien, removed) // TODO: check if there's similar code anywhere else
 	if(HAS_TRANSFORMATION_MOVEMENT_HANDLER(M))
 		return
 	to_chat(M, "<span class='danger'>Your flesh rapidly mutates!</span>")
@@ -625,7 +625,7 @@
 			qdel(W)
 			continue
 		M.drop_from_inventory(W)
-	var/mob/living/carbon/slime/new_mob = new /mob/living/carbon/slime(M.loc)
+	var/mob/living/carbon/metroid/new_mob = new /mob/living/carbon/metroid(M.loc)
 	new_mob.a_intent = "hurt"
 	new_mob.universal_speak = 1
 	if(M.mind)
@@ -637,7 +637,7 @@
 /datum/reagent/nanites
 	name = "Nanomachines"
 	description = "Microscopic construction robots."
-	taste_description = "slimey metal"
+	taste_description = "metroidy metal"
 	reagent_state = LIQUID
 	color = "#535e66"
 	overdose = 5

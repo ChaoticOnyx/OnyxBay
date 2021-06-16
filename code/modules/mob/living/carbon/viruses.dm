@@ -35,7 +35,7 @@
 			if(isnull(V)) // Trying to figure out a runtime error that keeps repeating
 				CRASH("virus2 nulled before calling activate()")
 			else
-				V.process(src)
+				SSvirus2suka.queue_virus(V, TRUE, src) // fast, fast, fast
 			// activate may have deleted the virus
 			if(!V)
 				continue

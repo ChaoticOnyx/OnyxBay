@@ -79,9 +79,9 @@
 			var/obj/item/grab/grab = G
 			if(!ismob(grab.affecting))
 				return
-			for(var/mob/living/carbon/slime/M in range(1,G:affecting))
+			for(var/mob/living/carbon/metroid/M in range(1,G:affecting))
 				if(M.Victim == grab.affecting)
-					to_chat(usr, "[grab.affecting:name] will not fit into the [src.name] because they have a slime latched onto their head.")
+					to_chat(usr, "[grab.affecting:name] will not fit into the [src.name] because they have a metroid latched onto their head.")
 					return
 			var/mob/M = G:affecting
 			if(put_mob(M))

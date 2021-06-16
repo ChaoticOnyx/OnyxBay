@@ -82,10 +82,10 @@
 #define MONKEY 2
 #define ALIEN 4
 #define ROBOT 8
-#define SLIME 16
+#define METROID 16
 #define SIMPLE_ANIMAL 32
 #define HEAVY 64
-#define ALLMOBS (HUMAN|MONKEY|ALIEN|ROBOT|SLIME|SIMPLE_ANIMAL|HEAVY)
+#define ALLMOBS (HUMAN|MONKEY|ALIEN|ROBOT|METROID|SIMPLE_ANIMAL|HEAVY)
 
 // Robot AI notifications
 #define ROBOT_NOTIFICATION_NEW_UNIT 1
@@ -328,7 +328,7 @@
 #define AURA_TYPE_THROWN "Thrown"
 #define AURA_TYPE_LIFE   "Life"
 
-#define SLIME_EVOLUTION_THRESHOLD 10
+#define METROID_EVOLUTION_THRESHOLD 10
 
 //Used in mob/proc/get_input
 

@@ -1116,7 +1116,7 @@
 			to_chat(usr, SPAN("danger", "Kinda hard to climb in while handcuffed don't you think?"))
 			return
 
-	for(var/mob/living/carbon/slime/M in range(1,usr))
+	for(var/mob/living/carbon/metroid/M in range(1,usr))
 		if(M.Victim == usr)
 			to_chat(usr, SPAN("danger", "You're too busy getting your life sucked out of you."))
 			return
