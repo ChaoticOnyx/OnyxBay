@@ -3,7 +3,6 @@
 /client
 	var/list/progressbars = list()
 
-GLOBAL_VAR_INIT(progressbar_counter, 0)
 /datum/progressbar
 	var/goal = 1
 	var/image/bar
