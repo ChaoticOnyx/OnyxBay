@@ -94,8 +94,7 @@
 /datum/uplink_item/item/visible_weapons/heavysniper
 	name = "Anti-materiel Rifle"
 	desc = "A 14.5mm heavy sniper rifle and ammunition."
-	item_cost = 69
-	antag_costs = list(MODE_NUKE = 10)
+	item_cost = 10
 	antag_roles = list(MODE_NUKE)
 	path = /obj/item/weapon/storage/secure/briefcase/heavysniper
 
