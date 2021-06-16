@@ -134,6 +134,7 @@
 	name = "Two Percent Syndrome"
 	stage = 4
 	badness = VIRUS_MUTATION
+	oneshot = 1
 
 /datum/disease2/effect/monkey/activate(mob/living/carbon/human/mob)
 	if(..())
