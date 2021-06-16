@@ -577,9 +577,9 @@
 	if(target.buckled)
 		to_chat(user, "<span class='warning'>Unbuckle [target == user ? "yourself" : target] first.</span>")
 		return
-	for(var/mob/living/carbon/slime/M in range(1,target))
+	for(var/mob/living/carbon/metroid/M in range(1,target))
 		if(M.Victim == target)
-			to_chat(user, "[target.name] will not fit into the [src] because they have a slime latched onto their head.")
+			to_chat(user, "[target.name] will not fit into the [src] because they have a metroid latched onto their head.")
 			return
 	return TRUE
 

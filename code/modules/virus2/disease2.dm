@@ -14,6 +14,9 @@ LEGACY_RECORD_STRUCTURE(virus_records, virus_record)
 	var/list/affected_species = list(SPECIES_HUMAN, SPECIES_UNATHI, SPECIES_SKRELL, SPECIES_TAJARA)
 
 /datum/disease2/disease/New(random_severity = 0)
+	if(GAME_STATE <= RUNLEVEL_SETUP) // fix server start runtime
+		qdel(src)
+		return
 	uniqueID = rand(0, 10000)
 	if(random_severity)
 		makerandom(random_severity)
@@ -140,6 +143,7 @@ LEGACY_RECORD_STRUCTURE(virus_records, virus_record)
 /datum/disease2/disease/proc/cure(mob/living/carbon/human/H, antigen)
 	if(!H)
 		return
+	SSvirus2suka.dequeue_virus(src)
 	for(var/datum/disease2/effect/e in effects)
 		e.deactivate(H)
 	H.virus2.Remove("[uniqueID]")

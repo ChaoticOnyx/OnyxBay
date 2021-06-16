@@ -11,7 +11,7 @@
 	anchored = 1
 
 	idle_power_usage = 60
-	active_power_usage = 10000	//10 kW. It's a big all-body scanner.
+	active_power_usage = 10000	// 10 kW. It's a big all-body scanner.
 
 /obj/machinery/bodyscanner/relaymove(mob/user as mob)
 	if (user.stat)
@@ -44,10 +44,10 @@
 	if (usr.stat != 0)
 		return
 	if (src.occupant)
-		to_chat(usr, "<span class='warning'>The scanner is already occupied!</span>")
+		to_chat(usr, SPAN("warning", "The scanner is already occupied!"))
 		return
 	if (usr.abiotic())
-		to_chat(usr, "<span class='warning'>The subject cannot have abiotic items on.</span>")
+		to_chat(usr, SPAN("warning", "The subject cannot have abiotic items on."))
 		return
 	usr.pulling = null
 	usr.client.perspective = EYE_PERSPECTIVE
@@ -57,9 +57,9 @@
 	update_use_power(POWER_USE_ACTIVE)
 	src.icon_state = "body_scanner_1"
 	for(var/obj/O in src)
-		//O = null
+		// O = null
 		qdel(O)
-		//Foreach goto(124)
+		// Foreach goto(124)
 	src.add_fingerprint(usr)
 	return
 
@@ -86,7 +86,7 @@
 	var/mob/M = G.affecting
 	if(!check_compatibility(M, user))
 		return
-	user.visible_message("<span class='notice'>\The [user] begins placing \the [M] into \the [src].</span>", "<span class='notice'>You start placing \the [M] into \the [src].</span>")
+	user.visible_message(SPAN("notice", "\The [user] begins placing \the [M] into \the [src]."), SPAN("notice", "You start placing \the [M] into \the [src]."))
 	if(do_after(user, 20, src))
 		if(!check_compatibility(M, user))
 			return
@@ -111,24 +111,24 @@
 	if(!CanMouseDrop(target, user))
 		return FALSE
 	if(occupant)
-		to_chat(user, "<span class='warning'>The scanner is already occupied!</span>")
+		to_chat(user, SPAN("warning", "The scanner is already occupied!"))
 		return FALSE
 	if(target.abiotic())
-		to_chat(user, "<span class='warning'>The subject cannot have abiotic items on.</span>")
+		to_chat(user, SPAN("warning", "The subject cannot have abiotic items on."))
 		return FALSE
 	if(target.buckled)
-		to_chat(user, "<span class='warning'>Unbuckle the subject before attempting to move them.</span>")
+		to_chat(user, SPAN("warning", "Unbuckle the subject before attempting to move them."))
 		return FALSE
-	for(var/mob/living/carbon/slime/M in range(1,target))
+	for(var/mob/living/carbon/metroid/M in range(1,target))
 		if(M.Victim == target)
-			to_chat(user, "[target.name] will not fit into the sleeper because they have a slime latched onto their head.")
+			to_chat(user, "[target.name] will not fit into the sleeper because they have a metroid latched onto their head.")
 			return FALSE
 	return TRUE
 
 /obj/machinery/bodyscanner/MouseDrop_T(mob/target, mob/user)
 	if(!check_compatibility(target, user))
 		return
-	user.visible_message("<span class='notice'>\The [user] begins placing \the [target] into \the [src].</span>", "<span class='notice'>You start placing \the [target] into \the [src].</span>")
+	user.visible_message(SPAN("notice", "\The [user] begins placing \the [target] into \the [src]."), SPAN("notice", "You start placing \the [target] into \the [src]."))
 	if(!do_after(user, 20, src))
 		return
 
@@ -150,8 +150,8 @@
 			for(var/atom/movable/A as mob|obj in src)
 				A.dropInto(loc)
 				ex_act(severity)
-				//Foreach goto(35)
-			//SN src = null
+				// Foreach goto(35)
+			// SN src = null
 			qdel(src)
 			return
 		if(2.0)
@@ -159,8 +159,8 @@
 				for(var/atom/movable/A as mob|obj in src)
 					A.dropInto(loc)
 					ex_act(severity)
-					//Foreach goto(108)
-				//SN src = null
+					// Foreach goto(108)
+				// SN src = null
 				qdel(src)
 				return
 		if(3.0)
@@ -168,8 +168,8 @@
 				for(var/atom/movable/A as mob|obj in src)
 					A.dropInto(loc)
 					ex_act(severity)
-					//Foreach goto(181)
-				//SN src = null
+					// Foreach goto(181)
+				// SN src = null
 				qdel(src)
 				return
 		else
@@ -179,12 +179,12 @@
 
 	switch(severity)
 		if(1.0)
-			//SN src = null
+			// SN src = null
 			qdel(src)
 			return
 		if(2.0)
 			if (prob(50))
-				//SN src = null
+				// SN src = null
 				qdel(src)
 				return
 		else
@@ -209,10 +209,6 @@
 	density = 0
 	anchored = 1
 
-	// UI variables
-	var/hide_status = FALSE
-	var/hide_organs = FALSE
-
 /obj/machinery/body_scanconsole/Initialize()
 	for(var/D in GLOB.cardinal)
 		src.connected = locate(/obj/machinery/bodyscanner, get_step(src, D))
@@ -220,85 +216,58 @@
 			break
 	return ..()
 
-/*
-
-/obj/machinery/body_scanconsole/process() //not really used right now
-	if(stat & (NOPOWER|BROKEN))
-		return
-	//use_power(250) // power stuff
-
-//	var/mob/M //occupant
-//	if (!( src.status )) //remove this
-//		return
-//	if ((src.connected && src.connected.occupant)) //connected & occupant ok
-//		M = src.connected.occupant
-//	else
-//		if (istype(M, /mob))
-//		//do stuff
-//		else
-///			src.temphtml = "Process terminated due to lack of occupant in scanning chamber."
-//			src.status = null
-//	src.updateDialog()
-//	return
-
-*/
-
 /obj/machinery/body_scanconsole/attack_ai(user as mob)
 	return src.attack_hand(user)
 
-/obj/machinery/body_scanconsole/ui_act(action, params)
-	if(..())
-		return TRUE
+/obj/machinery/body_scanconsole/tgui_act(action, params)
+	. = ..()
 
-	if(!src.allowed(usr))
-		return TRUE
+	if(.)
+		return
+
+	if(!allowed(usr))
+		to_chat(usr, SPAN("warning", "Access denied."))
+		return
 
 	switch (action)
 		if ("print")
 			if (!src.connected)
-				to_chat(usr, "\icon[src]<span class='warning'>Error: No body scanner connected.</span>")
-				return TRUE
+				to_chat(usr, SPAN("warning", "Error: No body scanner connected."))
+				return
 
 			var/mob/living/carbon/human/occupant = src.connected.occupant
 			if (!src.connected.occupant)
-				to_chat(usr, "\icon[src]<span class='warning'>The body scanner is empty.</span>")
-				return TRUE
+				to_chat(usr, SPAN("warning", "The body scanner is empty."))
+				return
 
-			if (!istype(occupant,/mob/living/carbon/human))
-				to_chat(usr, "\icon[src]<span class='warning'>The body scanner cannot scan that lifeform.</span>")
-				return TRUE
+			if (!istype(occupant, /mob/living/carbon/human))
+				to_chat(usr, SPAN("warning", "The body scanner cannot scan that lifeform."))
+				return
 
 			var/obj/item/weapon/paper/P = new /obj/item/weapon/paper/(loc)
 			P.set_content("<tt>[connected.occupant.get_medical_data()]</tt>", "Body scan report - [occupant]", TRUE)
-			return TRUE
+			return
 		if ("eject")
 			if (connected)
 				connected.eject()
-				return TRUE
-		if ("toggle_status")
-			hide_status = !hide_status
-			return TRUE
-		if ("toggle_organs")
-			hide_organs = !hide_organs
-			return TRUE
+				return
 
-/obj/machinery/body_scanconsole/ui_data(mob/user)
+/obj/machinery/body_scanconsole/tgui_data(mob/user)
 	var/list/data = list()
 
 	data["connected"] = connected
 	data["medical_data"] = null
-	data["hide_status"] = hide_status
-	data["hide_organs"] = hide_organs
 
 	if (connected && connected.occupant)
 		data["medical_data"] = connected.occupant.get_medical_data_ui()
 
 	return data
 
-/obj/machinery/body_scanconsole/tg_ui_interact(mob/user, ui_key = "main", datum/tgui/ui = null, force_open = 0, datum/tgui/master_ui = null, datum/ui_state/state = GLOB.default_state)
-	ui = SStgui.try_update_ui(user, src, ui_key, ui, force_open)
+/obj/machinery/body_scanconsole/tgui_interact(mob/user, datum/tgui/ui)
+	ui = SStgui.try_update_ui(user, src, ui)
+
 	if(!ui)
-		ui = new(user, src, ui_key, "body_scanner", name , 500, 700, master_ui, state)
+		ui = new(user, src, "BodyScanner", name)
 		ui.open()
 
 /obj/machinery/body_scanconsole/attack_hand(mob/user)
@@ -307,15 +276,15 @@
 	if(stat & (NOPOWER|BROKEN))
 		return
 	if(!connected || (connected.stat & (NOPOWER|BROKEN)))
-		to_chat(user, "<span class='warning'>This console is not connected to a functioning body scanner.</span>")
+		to_chat(user, SPAN("warning", "This console is not connected to a functioning body scanner."))
 		return
 	if (!(connected.occupant in connected))
 		connected.go_out()
 	if(!ishuman(connected.occupant))
-		to_chat(user, "<span class='warning'>This device can only scan compatible lifeforms.</span>")
+		to_chat(user, SPAN("warning", "This device can only scan compatible lifeforms."))
 		return
 
-	tg_ui_interact(user)
+	tgui_interact(user)
 
 /proc/get_severity(amount)
 	if(!amount)
@@ -493,11 +462,11 @@
 	if(H.should_have_organ(BP_BRAIN))
 		var/obj/item/organ/internal/brain/brain = H.internal_organs_by_name[BP_BRAIN]
 		if(!brain || H.stat == DEAD || (H.status_flags & FAKEDEATH))
-			brain_result = "<span class='danger'>none, patient is braindead</span>"
+			brain_result = SPAN("danger", "none, patient is braindead")
 		else if(H.stat != DEAD)
-			brain_result = "[round(max(0,(1 - brain.damage/brain.max_damage)*100))]%"
+			brain_result = "[round(max(0, (1 - brain.damage/brain.max_damage) * 100))]%"
 	else
-		brain_result = "<span class='danger'>ERROR - Nonstandard biology</span>"
+		brain_result = SPAN("danger", "ERROR - Nonstandard biology")
 	dat += "<b>Brain activity:</b> [brain_result]"
 
 	var/pulse_result = "normal"
@@ -512,17 +481,17 @@
 
 	// Blood pressure. Based on the idea of a normal blood pressure being 120 over 80.
 	if(H.get_blood_volume() <= 70)
-		dat += "<span class='danger'>Severe blood loss detected.</span>"
+		dat += SPAN("danger", "Severe blood loss detected.")
 	if(H.b_type)
 		dat += "<b>Blood type:</b> [H.b_type]"
 	dat += "<b>Blood pressure:</b> [H.get_blood_pressure()] ([H.get_blood_oxygenation()]% blood oxygenation)"
 	dat += "<b>Blood volume:</b> [H.vessel.get_reagent_amount(/datum/reagent/blood)]/[H.species.blood_volume]u"
 	if (H.chem_effects[CE_BLOCKAGE])
-		dat += "<span class='warning'>Warning: Blood clotting detected, blood transfusion recommended.</span>"
+		dat += SPAN("warning", "Warning: Blood clotting detected, blood transfusion recommended.")
 	// Body temperature.
 	dat += "<b>Body temperature:</b> [H.bodytemperature-T0C]&deg;C ([H.bodytemperature*1.8-459.67]&deg;F)"
 	if(H.nutrition < 150)
-		dat += "<span class='warning'>Warning: Very low nutrition value detected.</span>"
+		dat += SPAN("warning", "Warning: Very low nutrition value detected.")
 
 	dat += "<b>Physical Trauma:</b>\t[get_severity(H.getBruteLoss())]"
 	dat += "<b>Burn Severity:</b>\t[get_severity(H.getFireLoss())]"
@@ -561,11 +530,11 @@
 			for(var/d in reagentdata)
 				dat += reagentdata[d]
 	if (is_overdosed)
-		dat += "<span class='warning'>Warning: Medicine overdose detected.</span>"
+		dat += SPAN("warning", "Warning: Medicine overdose detected.")
 	if (H.chem_effects[CE_ALCOHOL])
-		dat += "<span class='notice'>Alcohol byproducts detected in subject's blood.</span>"
+		dat += SPAN("notice", "Alcohol byproducts detected in subject's blood.")
 	if (H.chem_effects[CE_ALCOHOL_TOXIC])
-		dat += "<span class='warning'>Warning: Subject suffering from alcohol intoxication.</span>"
+		dat += SPAN("warning", "Warning: Subject suffering from alcohol intoxication.")
 
 	var/list/table = list()
 	table += "<table border='1'><tr><th>Organ</th><th>Damage</th><th>Status</th></tr>"

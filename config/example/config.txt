@@ -426,7 +426,7 @@ HUMAN_DELAY  0
 ROBOT_DELAY  0
 MONKEY_DELAY 0 ## doesn't work because build is shit TODO: FIX
 ALIEN_DELAY  0 ## doesn't work because build is shit TODO: FIX
-SLIME_DELAY  0
+METROID_DELAY  0
 ANIMAL_DELAY 0
 
 ## Remove the # in front of this config option to have loyalty implants spawn by default on your server.

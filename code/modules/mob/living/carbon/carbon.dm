@@ -16,7 +16,7 @@
 	QDEL_NULL_LIST(hallucinations)
 	return ..()
 
-/mob/living/carbon/rejuvenate()
+/mob/living/carbon/rejuvenate(ignore_prosthetic_prefs = FALSE)
 	bloodstr.clear_reagents()
 	touching.clear_reagents()
 	var/datum/reagents/R = get_ingested_reagents()
@@ -130,16 +130,12 @@
 	return shock_damage
 
 /mob/living/carbon/proc/apply_shock(shock_damage, def_zone, siemens_coeff = 1.0)
-	var/neuromods_modifier = max(1, (neuromods.len)**2 * 2)
 	shock_damage *= siemens_coeff
 	if(shock_damage < 0.5)
 		return 0
 	if(shock_damage < 1)
 		shock_damage = 1
 	apply_damage(shock_damage, BURN, def_zone, used_weapon="Electrocution")
-
-	if (neuromods_modifier > 1)
-		adjustBrainLoss(neuromods_modifier)
 
 	return(shock_damage)
 
@@ -536,12 +532,12 @@
 /mob/living/carbon/proc/get_ingested_reagents()
 	return reagents
 
-/mob/living/carbon/rejuvenate()
+/mob/living/carbon/rejuvenate(ignore_prosthetic_prefs = FALSE)
 	. = ..()
 
 	// And restore all organs...
-	for (var/obj/item/organ/O in organs)
-		O.rejuvenate()
+	for(var/obj/item/organ/O in organs)
+		O.rejuvenate(ignore_prosthetic_prefs)
 
 /mob/living/carbon/proc/set_species()
 	return FALSE

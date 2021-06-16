@@ -57,7 +57,7 @@
 /obj/proc/post_buckle_mob(mob/living/M)
 	if(buckle_pixel_shift)
 		var/list/pixel_shift = cached_key_number_decode(buckle_pixel_shift)
-		if(M == buckled_mob)	
+		if(M == buckled_mob)
 			M.default_pixel_y = M.default_pixel_y + pixel_shift["y"]
 			M.default_pixel_x = M.default_pixel_x + pixel_shift["x"]
 		else
@@ -72,7 +72,7 @@
 		return 0
 	if(M == buckled_mob)
 		return 0
-	if(istype(M, /mob/living/carbon/slime))
+	if(istype(M, /mob/living/carbon/metroid))
 		to_chat(user, SPAN("warning", "\The [M] is too squishy to buckle in."))
 		return 0
 

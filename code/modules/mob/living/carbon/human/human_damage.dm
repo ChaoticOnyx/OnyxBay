@@ -423,7 +423,7 @@ This function restores the subjects blood to max.
 /*
 This function restores all organs.
 */
-/mob/living/carbon/human/restore_all_organs(ignore_prosthetic_prefs)
+/mob/living/carbon/human/restore_all_organs(ignore_prosthetic_prefs = FALSE)
 	for(var/bodypart in BP_BY_DEPTH)
 		var/obj/item/organ/external/current_organ = organs_by_name[bodypart]
 		if(istype(current_organ))

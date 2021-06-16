@@ -1,6 +1,7 @@
 /obj/lighting_plane
 	screen_loc = "1,1"
 	plane = LIGHTING_PLANE
+	layer = LIGHTING_LAYER
 
 	blend_mode = BLEND_MULTIPLY
 	appearance_flags = PLANE_MASTER | NO_CLIENT_COLOR
@@ -18,6 +19,7 @@
 
 /obj/lighting_general
 	plane = LIGHTING_PLANE
+	layer = LIGHTING_LAYER
 	screen_loc = "8,8"
 
 	icon = LIGHTING_ICON
@@ -34,14 +36,10 @@
 
 	transform = M
 
-/obj/lighting_general/proc/sync(new_colour)
-	color = new_colour
-
 /mob
 	var/obj/lighting_plane/l_plane
 	var/obj/lighting_general/l_general
 
-
-/mob/proc/change_light_colour(new_colour)
+/mob/proc/change_light_color(new_color)
 	if(l_general)
-		l_general.sync(new_colour)
+		l_general.color = new_color
