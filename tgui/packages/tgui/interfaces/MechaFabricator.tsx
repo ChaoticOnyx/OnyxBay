@@ -10,6 +10,7 @@ import {
   Table,
   Input,
   ProgressBar,
+  Box,
 } from '../components';
 import { Window } from '../layouts';
 
@@ -61,7 +62,7 @@ const queueElement = (
   const { act } = useBackend<InputData>(context);
 
   return (
-    <Stack vertical className="slide-animation">
+    <Stack vertical className="MechaFabricator__slideAnimation">
       {addDivider && <Divider />}
       <Stack.Item>{props.name}</Stack.Item>
       <Stack.Item>
@@ -99,34 +100,31 @@ const fabricatorStorage = (props: any, context: any) => {
               />
               /{data.maxres.toLocaleString()}
               <Divider hidden />
-              <div class="multipliers">
+              <Box class="Multipliers">
                 {ejectMultipliers.map((multiplier, i) => {
                   return (
-                    <Button
+                    <Button.Segmented
                       key={i}
                       disabled={material.amt <= multiplier * 2000}
                       onClick={() =>
                         act('eject', {
                           eject: material.mat,
                           amount: multiplier,
-                        })}>
-                      x{multiplier}
-                    </Button>
+                        })}
+                      content={`x${multiplier}`} />
                   );
                 })}
-                <Button
+                <Button.Segmented
                   disabled={material.amt === 0}
                   onClick={() =>
-                    act('eject', { eject: material.mat, amount: 0 })}>
-                  Stack
-                </Button>
-                <Button
+                    act('eject', { eject: material.mat, amount: 0 })}
+                  content="Stack" />
+                <Button.Segmented
                   disabled={material.amt === 0}
                   onClick={() =>
-                    act('eject', { eject: material.mat, amount: -1 })}>
-                  All
-                </Button>
-              </div>
+                    act('eject', { eject: material.mat, amount: -1 })}
+                  content="All" />
+              </Box>
               {k < data.materials.length - 1 && <Divider />}
             </Stack.Item>
           );
@@ -182,13 +180,12 @@ const fabricatorProduction = (props: any, context: any) => {
         {data.manufacturers.map((manufacturer, i) => {
           return (
             <Flex.Item key={i}>
-              <Button
+              <Button.Label
                 selected={data.manufacturer === manufacturer.id}
-                className="label-primer"
                 onClick={() =>
                   act('manufacturer', { manufacturer: manufacturer.id })}>
                 {manufacturer.company}
-              </Button>
+              </Button.Label>
             </Flex.Item>
           );
         })}
@@ -199,12 +196,11 @@ const fabricatorProduction = (props: any, context: any) => {
         {data.categories.map((category, i) => {
           return (
             <Flex.Item key={i}>
-              <Button
+              <Button.Label
                 selected={data.category === category}
-                className="label-primer"
                 onClick={() => act('category', { category: category })}>
                 {category}
-              </Button>
+              </Button.Label>
             </Flex.Item>
           );
         })}
@@ -215,11 +211,10 @@ const fabricatorProduction = (props: any, context: any) => {
           return (
             <Table.Row className="candystripe" key={i}>
               <Table.Cell width="25ch">
-                <Button
-                  className="link-primer"
+                <Button.Link
                   onClick={() => act('build', { build: buildable.id })}>
                   {buildable.name}
-                </Button>
+                </Button.Link>
               </Table.Cell>
               <Table.Cell width="40ch">{buildable.resourses}</Table.Cell>
               <Table.Cell textAlign="center">{buildable.time}</Table.Cell>

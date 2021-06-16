@@ -119,6 +119,33 @@ export const Button = props => {
   return buttonContent;
 };
 
+export const ButtonLink = props => {
+  return Button({
+    ...props,
+    className: 'Button--link',
+  });
+};
+
+Button.Link = ButtonLink;
+
+export const ButtonLabel = props => {
+  return Button({
+    ...props,
+    className: 'Button--label',
+  });
+};
+
+Button.Label = ButtonLabel;
+
+export const ButtonSegmented = props => {
+  return Button({
+    ...props,
+    className: 'Button--segmented',
+  });
+};
+
+Button.Segmented = ButtonSegmented;
+
 Button.defaultHooks = pureComponentHooks;
 
 export const ButtonCheckbox = props => {

@@ -1,6 +1,7 @@
 import { useBackend, useLocalState } from '../backend';
 import {
   AnimatedNumber,
+  Box,
   Button,
   Divider,
   Flex,
@@ -84,8 +85,7 @@ export const Autolathe = (props: any, context: any) => {
             {data.category.total.map((category, i) => {
               return (
                 <Flex.Item key={i}>
-                  <Button
-                    className="label-primer"
+                  <Button.Label
                     selected={data.category.selected === category}
                     content={category}
                     onClick={() =>
@@ -116,18 +116,17 @@ export const Autolathe = (props: any, context: any) => {
               return (
                 <Table.Row className="candystripe" key={i}>
                   <Table.Cell>
-                    <Button
-                      className="link-primer"
+                    <Button.Link
                       content={recipe.name}
                       disabled={!recipe.can_make}
                       onClick={() =>
                         act('make', { make: recipe.index, multiplier: 1 })}
                     />
                     {recipe.multipliers.length > 0 ? (
-                      <div class="multipliers">
+                      <Box class="Multipliers">
                         {recipe.multipliers.map((mult, k) => {
                           return (
-                            <Button
+                            <Button.Segmented
                               key={k}
                               content={'x' + mult}
                               onClick={() =>
@@ -138,7 +137,7 @@ export const Autolathe = (props: any, context: any) => {
                             />
                           );
                         })}
-                      </div>
+                      </Box>
                     ) : null}
                   </Table.Cell>
                   <Table.Cell>
