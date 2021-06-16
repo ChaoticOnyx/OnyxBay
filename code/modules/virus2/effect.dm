@@ -16,6 +16,7 @@
 	effect.generate()
 	effect.chance = rand(0,effect.chance_max)
 	effect.multiplier = rand(1,effect.multiplier_max)
+	effect.stage = stage
 	return effect
 
 /proc/get_mutated_effect(original_effect)
@@ -33,6 +34,7 @@
 	effect.generate()
 	effect.chance = rand(0,effect.chance_max)
 	effect.multiplier = rand(1,effect.multiplier_max)
+	effect.stage = stage
 	return effect
 
 /datum/disease2/effect
