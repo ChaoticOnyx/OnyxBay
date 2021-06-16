@@ -57,17 +57,17 @@ const ejectMultipliers = [1, 5, 10];
 const queueElement = (
   props: Queue,
   context: any,
-  addDivider: boolean = false
+  addDivider: boolean = false,
 ) => {
   const { act } = useBackend<InputData>(context);
 
   return (
-    <Stack vertical className="MechaFabricator__slideAnimation">
+    <Stack vertical className='MechaFabricator__slideAnimation'>
       {addDivider && <Divider />}
       <Stack.Item>{props.name}</Stack.Item>
       <Stack.Item>
         <Stack>
-          <Stack.Item width="100%">
+          <Stack.Item width='100%'>
             {(typeof props.progress === 'string' && (
               <ProgressBar maxValue={100}>{props.progress}</ProgressBar>
             )) || <ProgressBar value={props.progress} maxValue={100} />}
@@ -75,7 +75,7 @@ const queueElement = (
           <Stack.Item>
             <Button
               onClick={() => act('remove', { remove: props.index })}
-              content="Cancel"
+              content='Cancel'
             />
           </Stack.Item>
         </Stack>
@@ -88,7 +88,7 @@ const fabricatorStorage = (props: any, context: any) => {
   const { act, data } = useBackend<InputData>(context);
 
   return (
-    <Section minHeight="100%" title="Storage">
+    <Section minHeight='100%' title='Storage'>
       <Stack vertical>
         {data.materials.map((material, k) => {
           return (
@@ -100,7 +100,7 @@ const fabricatorStorage = (props: any, context: any) => {
               />
               /{data.maxres.toLocaleString()}
               <Divider hidden />
-              <Box class="Multipliers">
+              <Box class='Multipliers'>
                 {ejectMultipliers.map((multiplier, i) => {
                   return (
                     <Button.Segmented
@@ -110,20 +110,26 @@ const fabricatorStorage = (props: any, context: any) => {
                         act('eject', {
                           eject: material.mat,
                           amount: multiplier,
-                        })}
-                      content={`x${multiplier}`} />
+                        })
+                      }
+                      content={`x${multiplier}`}
+                    />
                   );
                 })}
                 <Button.Segmented
                   disabled={material.amt === 0}
                   onClick={() =>
-                    act('eject', { eject: material.mat, amount: 0 })}
-                  content="Stack" />
+                    act('eject', { eject: material.mat, amount: 0 })
+                  }
+                  content='Stack'
+                />
                 <Button.Segmented
                   disabled={material.amt === 0}
                   onClick={() =>
-                    act('eject', { eject: material.mat, amount: -1 })}
-                  content="All" />
+                    act('eject', { eject: material.mat, amount: -1 })
+                  }
+                  content='All'
+                />
               </Box>
               {k < data.materials.length - 1 && <Divider />}
             </Stack.Item>
@@ -139,7 +145,7 @@ const fabricatorProduction = (props: any, context: any) => {
   let [searchQuery, setSearchQuery] = useLocalState(
     context,
     'searchQuery',
-    null
+    null,
   );
 
   let buildableToShow: Buildable[] = data.buildable;
@@ -149,33 +155,33 @@ const fabricatorProduction = (props: any, context: any) => {
       return value.category === data.category;
     })
     .filter((value) => {
-      return searchQuery === null
-        ? true
-        : value.name.toLowerCase().search(searchQuery.toLowerCase()) >= 0;
+      return searchQuery === null ?
+        true :
+        value.name.toLowerCase().search(searchQuery.toLowerCase()) >= 0;
     });
 
   return (
     <Section
-      minHeight="100%"
-      title="Production"
+      minHeight='100%'
+      title='Production'
       buttons={
-        <Button icon="sync" onClick={() => act('sync')}>
+        <Button icon='sync' onClick={() => act('sync')}>
           Sync
         </Button>
       }>
       <LabeledList>
-        <LabeledList.Item label="Synchronization Status">
+        <LabeledList.Item label='Synchronization Status'>
           {data.sync || 'Not Synchronized '}
         </LabeledList.Item>
       </LabeledList>
       <Divider />
       <Input
-        placeholder="Search"
+        placeholder='Search'
         fluid
         onInput={(e: any) => setSearchQuery(e.target.value)}
       />
       <Divider />
-      <Flex bold wrap justify="flex-start" align="center">
+      <Flex bold wrap justify='flex-start' align='center'>
         Brand:
         {data.manufacturers.map((manufacturer, i) => {
           return (
@@ -183,7 +189,8 @@ const fabricatorProduction = (props: any, context: any) => {
               <Button.Label
                 selected={data.manufacturer === manufacturer.id}
                 onClick={() =>
-                  act('manufacturer', { manufacturer: manufacturer.id })}>
+                  act('manufacturer', { manufacturer: manufacturer.id })
+                }>
                 {manufacturer.company}
               </Button.Label>
             </Flex.Item>
@@ -191,7 +198,7 @@ const fabricatorProduction = (props: any, context: any) => {
         })}
       </Flex>
       <Divider />
-      <Flex bold wrap justify="flex-start" align="center">
+      <Flex bold wrap justify='flex-start' align='center'>
         Category:
         {data.categories.map((category, i) => {
           return (
@@ -209,15 +216,15 @@ const fabricatorProduction = (props: any, context: any) => {
       <Table>
         {buildableToShow.map((buildable, i) => {
           return (
-            <Table.Row className="candystripe" key={i}>
-              <Table.Cell width="25ch">
+            <Table.Row className='candystripe' key={i}>
+              <Table.Cell width='25ch'>
                 <Button.Link
                   onClick={() => act('build', { build: buildable.id })}>
                   {buildable.name}
                 </Button.Link>
               </Table.Cell>
-              <Table.Cell width="40ch">{buildable.resourses}</Table.Cell>
-              <Table.Cell textAlign="center">{buildable.time}</Table.Cell>
+              <Table.Cell width='40ch'>{buildable.resourses}</Table.Cell>
+              <Table.Cell textAlign='center'>{buildable.time}</Table.Cell>
             </Table.Row>
           );
         })}
@@ -230,7 +237,7 @@ const fabricatorQueue = (props: any, context: any) => {
   const { act, data } = useBackend<InputData>(context);
 
   return (
-    <Section width="22rem" minHeight="100%" title="Queue">
+    <Section width='22rem' minHeight='100%' title='Queue'>
       {data.current ? (
         <>
           {queueElement(
@@ -239,7 +246,7 @@ const fabricatorQueue = (props: any, context: any) => {
               name: data.current,
               progress: data.builtperc,
             },
-            context
+            context,
           )}
           {data.queue.map((queue, i) => {
             return queueElement(
@@ -249,7 +256,7 @@ const fabricatorQueue = (props: any, context: any) => {
                 progress: 'Queued',
               },
               context,
-              true
+              true,
             );
           })}
         </>
@@ -268,11 +275,11 @@ export const MechaFabricator = (props: any, context: any) => {
       theme={getTheme('primer')}
       width={1000}
       height={600}
-      title="Exosuit Fabricator UI">
+      title='Exosuit Fabricator UI'>
       <Window.Content>
-        <Stack fill justify="stretch">
+        <Stack fill justify='stretch'>
           <Stack.Item>{fabricatorStorage(props, context)}</Stack.Item>
-          <Stack.Item width="100%">
+          <Stack.Item width='100%'>
             {fabricatorProduction(props, context)}
           </Stack.Item>
           <Stack.Item>{fabricatorQueue(props, context)}</Stack.Item>

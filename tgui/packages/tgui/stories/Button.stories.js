@@ -38,20 +38,20 @@ const Story = (props, context) => {
   return (
     <Section>
       <Box mb={1}>
-        <Button content="Simple" />
-        <Button selected content="Selected" />
-        <Button altSelected content="Alt Selected" />
-        <Button disabled content="Disabled" />
-        <Button color="transparent" content="Transparent" />
-        <Button icon="cog" content="Icon" />
-        <Button icon="power-off" />
-        <Button fluid content="Fluid" />
+        <Button content='Simple' />
+        <Button selected content='Selected' />
+        <Button altSelected content='Alt Selected' />
+        <Button disabled content='Disabled' />
+        <Button color='transparent' content='Transparent' />
+        <Button icon='cog' content='Icon' />
+        <Button icon='power-off' />
+        <Button fluid content='Fluid' />
         <Button
           my={1}
           lineHeight={2}
           minWidth={15}
-          textAlign="center"
-          content="With Box props" />
+          textAlign='center'
+          content='With Box props' />
       </Box>
       <Box mb={1}>
         {COLORS_STATES.map(color => (
@@ -70,7 +70,7 @@ const Story = (props, context) => {
         <br />
         {COLORS_SPECTRUM.map(color => (
           <Box inline
-            mx="7px"
+            mx='7px'
             key={color}
             color={color}>
             {color}

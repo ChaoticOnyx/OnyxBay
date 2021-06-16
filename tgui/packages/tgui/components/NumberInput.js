@@ -77,9 +77,9 @@ export class NumberInput extends Component {
         const state = { ...prevState };
         const offset = state.origin - e.screenY;
         if (prevState.dragging) {
-          const stepOffset = Number.isFinite(minValue)
-            ? minValue % step
-            : 0;
+          const stepOffset = Number.isFinite(minValue) ?
+            minValue % step :
+            0;
           // Translate mouse movement to value
           // Give it some headroom (by increasing clamp range by 1 step)
           state.internalValue = clamp(
@@ -88,9 +88,9 @@ export class NumberInput extends Component {
             maxValue + step);
           // Clamp the final value
           state.value = clamp(
-            state.internalValue
-              - state.internalValue % step
-              + stepOffset,
+            state.internalValue -
+              state.internalValue % step +
+              stepOffset,
             minValue,
             maxValue);
           state.origin = e.screenY;
@@ -168,7 +168,7 @@ export class NumberInput extends Component {
     // IE8: Use an "unselectable" prop because "user-select" doesn't work.
     const renderContentElement = value => (
       <div
-        className="NumberInput__content"
+        className='NumberInput__content'
         unselectable={Byond.IS_LTE_IE8}>
         {value + (unit ? ' ' + unit : '')}
       </div>
@@ -194,9 +194,9 @@ export class NumberInput extends Component {
         lineHeight={lineHeight}
         fontSize={fontSize}
         onMouseDown={this.handleDragStart}>
-        <div className="NumberInput__barContainer">
+        <div className='NumberInput__barContainer'>
           <div
-            className="NumberInput__bar"
+            className='NumberInput__bar'
             style={{
               height: clamp(
                 (displayValue - minValue) / (maxValue - minValue) * 100,
@@ -206,7 +206,7 @@ export class NumberInput extends Component {
         {contentElement}
         <input
           ref={this.inputRef}
-          className="NumberInput__input"
+          className='NumberInput__input'
           style={{
             display: !editing ? 'none' : undefined,
             height: height,

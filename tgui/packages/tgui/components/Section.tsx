@@ -69,17 +69,13 @@ export class Section extends Component<SectionProps> {
         ])}
         {...computeBoxProps(rest)}>
         {hasTitle && (
-          <div className="Section__title">
-            <span className="Section__titleText">
-              {title}
-            </span>
-            <div className="Section__buttons">
-              {buttons}
-            </div>
+          <div className='Section__title'>
+            <span className='Section__titleText'>{title}</span>
+            <div className='Section__buttons'>{buttons}</div>
           </div>
         )}
-        <div className="Section__rest">
-          <div ref={this.scrollableRef} className="Section__content">
+        <div className='Section__rest'>
+          <div ref={this.scrollableRef} className='Section__content'>
             {children}
           </div>
         </div>

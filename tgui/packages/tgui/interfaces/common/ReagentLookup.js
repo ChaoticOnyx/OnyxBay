@@ -14,35 +14,35 @@ export const ReagentLookup = (props, context) => {
 
   return (
     <LabeledList>
-      <LabeledList.Item label="Reagent">
-        <Icon name="circle" mr={1} color={reagent.reagentCol} />
+      <LabeledList.Item label='Reagent'>
+        <Icon name='circle' mr={1} color={reagent.reagentCol} />
         {reagent.name}
         <Button
           ml={1}
-          icon="wifi"
-          color="teal"
-          tooltip="Open the associated wikipage for this reagent."
-          tooltipPosition="left"
+          icon='wifi'
+          color='teal'
+          tooltip='Open the associated wikipage for this reagent.'
+          tooltipPosition='left'
           onClick={() => {
             Byond.command(`wiki Guide_to_chemistry#${reagent.name}`);
           }} />
       </LabeledList.Item>
-      <LabeledList.Item label="Description">
+      <LabeledList.Item label='Description'>
         {reagent.desc}
       </LabeledList.Item>
-      <LabeledList.Item label="pH">
-        <Icon name="circle" mr={1} color={reagent.pHCol} />
+      <LabeledList.Item label='pH'>
+        <Icon name='circle' mr={1} color={reagent.pHCol} />
         {reagent.pH}
       </LabeledList.Item>
-      <LabeledList.Item label="Properties">
+      <LabeledList.Item label='Properties'>
         <LabeledList>
           {!!reagent.OD && (
-            <LabeledList.Item label="Overdose">
+            <LabeledList.Item label='Overdose'>
               {reagent.OD}u
             </LabeledList.Item>
           )}
           {reagent.addictions[0] && (
-            <LabeledList.Item label="Addiction">
+            <LabeledList.Item label='Addiction'>
               {reagent.addictions.map(addiction => (
                 <Box key={addiction}>
                   {addiction}
@@ -50,19 +50,19 @@ export const ReagentLookup = (props, context) => {
               ))}
             </LabeledList.Item>
           )}
-          <LabeledList.Item label="Metabolization rate">
+          <LabeledList.Item label='Metabolization rate'>
             {reagent.metaRate}u/s
           </LabeledList.Item>
         </LabeledList>
       </LabeledList.Item>
-      <LabeledList.Item label="Impurities">
+      <LabeledList.Item label='Impurities'>
         <LabeledList>
           {reagent.impureReagent && (
-            <LabeledList.Item label="Impure reagent">
+            <LabeledList.Item label='Impure reagent'>
               <Button
-                icon="vial"
-                tooltip="This reagent will partially convert into this when the purity is above the Inverse purity on consumption."
-                tooltipPosition="left"
+                icon='vial'
+                tooltip='This reagent will partially convert into this when the purity is above the Inverse purity on consumption.'
+                tooltipPosition='left'
                 content={reagent.impureReagent}
                 onClick={() => act('reagent_click', {
                   id: reagent.impureId,
@@ -70,23 +70,23 @@ export const ReagentLookup = (props, context) => {
             </LabeledList.Item>
           )}
           {reagent.inverseReagent && (
-            <LabeledList.Item label="Inverse reagent">
+            <LabeledList.Item label='Inverse reagent'>
               <Button
-                icon="vial"
+                icon='vial'
                 content={reagent.inverseReagent}
-                tooltip="This reagent will convert into this when the purity is below the Inverse purity on consumption."
-                tooltipPosition="left"
+                tooltip='This reagent will convert into this when the purity is below the Inverse purity on consumption.'
+                tooltipPosition='left'
                 onClick={() => act('reagent_click', {
                   id: reagent.inverseId,
                 })} />
             </LabeledList.Item>
           )}
           {reagent.failedReagent && (
-            <LabeledList.Item label="Failed reagent">
+            <LabeledList.Item label='Failed reagent'>
               <Button
-                icon="vial"
-                tooltip="This reagent will turn into this if the purity of the reaction is below the minimum purity on completion."
-                tooltipPosition="left"
+                icon='vial'
+                tooltip='This reagent will turn into this if the purity of the reaction is below the minimum purity on completion.'
+                tooltipPosition='left'
                 content={reagent.failedReagent}
                 onClick={() => act('reagent_click', {
                   id: reagent.failedId,
@@ -104,9 +104,9 @@ export const ReagentLookup = (props, context) => {
             This reagent works on the dead.
           </Box>
         )}
-        {!reagent.failedReagent
-          && !reagent.inverseReagent
-          && !reagent.impureReagent && (
+        {!reagent.failedReagent &&
+          !reagent.inverseReagent &&
+          !reagent.impureReagent && (
           <Box>
             This reagent has no impure reagents.
           </Box>
@@ -114,10 +114,10 @@ export const ReagentLookup = (props, context) => {
       </LabeledList.Item>
       <LabeledList.Item>
         <Button
-          icon="flask"
+          icon='flask'
           mt={2}
           content={"Find associated reaction"}
-          color="purple"
+          color='purple'
           onClick={() => act('find_reagent_reaction', {
             id: reagent.id,
           })} />

@@ -16,9 +16,9 @@ const Story = (props, context) => {
   return (
     <Section>
       <Collapsible
-        title="Collapsible Demo"
+        title='Collapsible Demo'
         buttons={(
-          <Button icon="cog" />
+          <Button icon='cog' />
         )}>
         <BoxWithSampleText />
       </Collapsible>

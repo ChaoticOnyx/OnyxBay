@@ -51,7 +51,7 @@ const PaneContent = props => {
       ])}
       {...rest}>
       {fitted && children || (
-        <div className="Window__contentPadding">
+        <div className='Window__contentPadding'>
           {children}
         </div>
       )}

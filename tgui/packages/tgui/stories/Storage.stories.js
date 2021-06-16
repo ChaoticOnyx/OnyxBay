@@ -23,10 +23,10 @@ const Story = (props, context) => {
   }
   return (
     <Section
-      title="Local Storage"
+      title='Local Storage'
       buttons={(
         <Button
-          icon="recycle"
+          icon='recycle'
           onClick={() => {
             localStorage.clear();
             storage.clear();
@@ -35,10 +35,10 @@ const Story = (props, context) => {
         </Button>
       )}>
       <LabeledList>
-        <LabeledList.Item label="Keys in use">
+        <LabeledList.Item label='Keys in use'>
           {localStorage.length}
         </LabeledList.Item>
-        <LabeledList.Item label="Remaining space">
+        <LabeledList.Item label='Remaining space'>
           {formatSiUnit(localStorage.remainingSpace, 0, 'B')}
         </LabeledList.Item>
       </LabeledList>

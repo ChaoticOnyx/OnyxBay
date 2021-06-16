@@ -43,28 +43,29 @@ export const Autolathe = (props: any, context: any) => {
   let [searchQuery, setSearchQuery] = useLocalState(
     context,
     'searchQuery',
-    null
+    null,
   );
   let found: Recipe[] = data.recipes;
 
   if (searchQuery !== null) {
     found = data.recipes.filter(
-      (recipe, _) => recipe.name.search(searchQuery) >= 0
+      (recipe, _) => recipe.name.search(searchQuery) >= 0,
     );
   }
 
   return (
-    <Window theme={getTheme('primer')} width="427" height="600">
+    <Window theme={getTheme('primer')} width='427' height='600'>
       <Window.Content scrollable>
-        <Section title="Materials">
-          <Flex justify="space-around" align="center">
+        <Section title='Materials'>
+          <Flex justify='space-around' align='center'>
             {data.storage.map((material, i) => {
               return (
                 <Flex.Item key={i}>
                   {material.name}{' '}
                   <AnimatedNumber
                     format={(value: number) =>
-                      Math.round(value).toLocaleString()}
+                      Math.round(value).toLocaleString()
+                    }
                     value={material.count}
                   />
                   /{material.capacity.toLocaleString()}
@@ -73,14 +74,14 @@ export const Autolathe = (props: any, context: any) => {
             })}
           </Flex>
         </Section>
-        <Section title="Printable Designs">
+        <Section title='Printable Designs'>
           <Input
-            placeholder="Search"
+            placeholder='Search'
             fluid
             onInput={(e: any) => setSearchQuery(e.target.value)}
           />
           <Divider />
-          <Flex bold wrap justify="flex-start" align="center">
+          <Flex bold wrap justify='flex-start' align='center'>
             Filters:
             {data.category.total.map((category, i) => {
               return (
@@ -89,7 +90,8 @@ export const Autolathe = (props: any, context: any) => {
                     selected={data.category.selected === category}
                     content={category}
                     onClick={() =>
-                      act('change_category', { category: category })}
+                      act('change_category', { category: category })
+                    }
                   />
                 </Flex.Item>
               );
@@ -98,10 +100,10 @@ export const Autolathe = (props: any, context: any) => {
           <Divider />
           <Table>
             <Table.Row>
-              <Table.Cell textAlign="center" bold>
+              <Table.Cell textAlign='center' bold>
                 Name
               </Table.Cell>
-              <Table.Cell textAlign="center" bold>
+              <Table.Cell textAlign='center' bold>
                 Required
               </Table.Cell>
             </Table.Row>
@@ -114,16 +116,17 @@ export const Autolathe = (props: any, context: any) => {
               }
 
               return (
-                <Table.Row className="candystripe" key={i}>
+                <Table.Row className='candystripe' key={i}>
                   <Table.Cell>
                     <Button.Link
                       content={recipe.name}
                       disabled={!recipe.can_make}
                       onClick={() =>
-                        act('make', { make: recipe.index, multiplier: 1 })}
+                        act('make', { make: recipe.index, multiplier: 1 })
+                      }
                     />
                     {recipe.multipliers.length > 0 ? (
-                      <Box class="Multipliers">
+                      <Box class='Multipliers'>
                         {recipe.multipliers.map((mult, k) => {
                           return (
                             <Button.Segmented
@@ -133,7 +136,8 @@ export const Autolathe = (props: any, context: any) => {
                                 act('make', {
                                   make: recipe.index,
                                   multiplier: mult,
-                                })}
+                                })
+                              }
                             />
                           );
                         })}
@@ -144,7 +148,9 @@ export const Autolathe = (props: any, context: any) => {
                     {recipe.required.map((material, i) => {
                       return (
                         <div key={i}>
-                          {material.name + ' ' + material.count.toLocaleString()}
+                          {material.name +
+                            ' ' +
+                            material.count.toLocaleString()}
                         </div>
                       );
                     })}

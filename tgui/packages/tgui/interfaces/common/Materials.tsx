@@ -59,7 +59,7 @@ const EjectMaterial = (props: {
   return (
     <>
       <NumberInput
-        width="30px"
+        width='30px'
         animated
         value={removeMaterials}
         minValue={1}
@@ -72,7 +72,7 @@ const EjectMaterial = (props: {
           }
         }} />
       <Button
-        icon="eject"
+        icon='eject'
         disabled={!removable}
         onClick={() => {
           props.onEject(removeMaterials);
@@ -93,7 +93,7 @@ export const Materials = (props: {
             name={material.name}
             amount={material.amount}
             formatting={MaterialFormatting.SIUnits} />
-          <Box mt={1} textAlign="center">
+          <Box mt={1} textAlign='center'>
             <EjectMaterial material={material} onEject={(amount) => {
               props.onEject(material.ref, amount);
             }} />
@@ -141,7 +141,7 @@ export const MaterialAmount = (props: {
   }
 
   return (
-    <Flex direction="column" textAlign="center">
+    <Flex direction='column' textAlign='center'>
       <Flex.Item>
         <MaterialIcon material={name} style={style} />
       </Flex.Item>
