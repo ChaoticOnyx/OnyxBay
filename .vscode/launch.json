@@ -55,6 +55,21 @@
             "console": "internalConsole"
         },
         {
+            "name": "Run StyleCop",
+            "type": "coreclr",
+            "request": "launch",
+            "program": "dotnet-script",
+            "logging": {
+                "moduleLoad": false
+            },
+            "args": [
+                "${workspaceFolder}/tools/StyleCop/Program.csx"
+            ],
+            "cwd": "${workspaceFolder}",
+            "stopAtEntry": false,
+            "console": "internalConsole"
+        },
+        {
             "name": "Nano Watch",
             "type": "PowerShell",
             "request": "launch",
