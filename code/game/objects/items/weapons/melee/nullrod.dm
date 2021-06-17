@@ -13,19 +13,18 @@
 	mod_reach = 0.75
 	mod_handy = 1.0
 
-/obj/item/weapon/nullrod/attack(mob/M as mob, mob/living/user as mob) //Paste from old-code to decult with a null rod.
+/obj/item/weapon/nullrod/attack(mob/M as mob, mob/living/user as mob)
 	admin_attack_log(user, M, "Attacked using \a [src]", "Was attacked with \a [src]", "used \a [src] to attack")
 
 	user.setClickCooldown(DEFAULT_ATTACK_COOLDOWN)
 	user.do_attack_animation(M)
-	//if(user != M)
 	if(M.mind && LAZYLEN(M.mind.learned_spells))
-		M.silence_spells(300) //30 seconds
+		M.silence_spells(300)
 		to_chat(M, SPAN_DANGER("You've been silenced!"))
 		return
 
 	if(!user.IsAdvancedToolUser())
-		to_chat(user, SPAN_WARNING("You don't have the dexterity to do this!</span>"))
+		to_chat(user, SPAN_WARNING("You don't have the dexterity to do this!"))
 		return
 
 	if((MUTATION_CLUMSY in user.mutations) && prob(50))
@@ -47,11 +46,11 @@
 
 	if(istype(A, /turf/simulated/wall/cult))
 		var/turf/simulated/wall/cult/W = A
-		user.visible_message("<span class='notice'>\The [user] touches \the [A] with \the [src], and the enchantment affecting it fizzles away.</span>", "<span class='notice'>You touch \the [A] with \the [src], and the enchantment affecting it fizzles away.</span>")
+		user.visible_message(SPAN_NOTICE("\The [user] touches \the [A] with \the [src], and the enchantment affecting it fizzles away."),SPAN_NOTICE("You touch \the [A] with \the [src], and the enchantment affecting it fizzles away."))
 		W.decultify()
 
 	if(istype(A, /turf/simulated/floor/misc/cult))
 		var/turf/simulated/floor/misc/cult/F = A
-		user.visible_message("<span class='notice'>\The [user] touches \the [A] with \the [src], and the enchantment affecting it fizzles away.</span>", "<span class='notice'>You touch \the [A] with \the [src], and the enchantment affecting it fizzles away.</span>")
+		user.visible_message(SPAN_NOTICE("\The [user] touches \the [A] with \the [src], and the enchantment affecting it fizzles away."),SPAN_NOTICE("You touch \the [A] with \the [src], and the enchantment affecting it fizzles away."))
 		F.decultify()
 
