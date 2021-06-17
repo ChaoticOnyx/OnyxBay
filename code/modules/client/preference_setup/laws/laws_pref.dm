@@ -1,3 +1,5 @@
+// Disabled until we decide to make IPCs playable
+
 /datum/preferences
 	var/list/laws = list()
 	var/is_shackled = FALSE
