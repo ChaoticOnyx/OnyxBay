@@ -34,7 +34,7 @@ var/const/CHARACTER_PREFERENCE_INPUT_TITLE = "Character Preference"
 	category_item_type = /datum/category_item/player_setup_item/traits
 
 /datum/category_group/player_setup_category/relations_preferences
-	name = "Matchmaking"
+	name = "Relations"
 	sort_order = 6
 	category_item_type = /datum/category_item/player_setup_item/relations
 
