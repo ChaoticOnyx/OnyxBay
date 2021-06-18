@@ -7,7 +7,7 @@ using ChaoticOnyx.Hekate;
 /// <summary>
 ///     Результат анализа.
 /// </summary>
-public sealed record AnalysisResult(ICollection<CodeIssue> CodeIssues);
+public sealed record AnalysisResult(ICollection<CodeIssue> CodeIssues, IList<SyntaxToken>? FixedUnit);
 
 /// <summary>
 ///     Контекст анализа.
@@ -15,7 +15,7 @@ public sealed record AnalysisResult(ICollection<CodeIssue> CodeIssues);
 /// <param name="CodeStyle">Используемый стиль кода.</param>
 /// <param name="Unit">Юнит компиляции.</param>
 /// <returns></returns>
-public sealed record AnalysisContext(CodeStyle CodeStyle, CompilationUnit Unit);
+public sealed record AnalysisContext(CodeStyle CodeStyle, CompilationUnit Unit, bool TryToFix = false);
 
 /// <summary>
 ///     Класс для всех анализаторов. Каждый анализатор создаётся только один раз, при вызове метода Analyze().

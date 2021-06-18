@@ -59,7 +59,7 @@ public string GetDme()
 public void ParseFile(FileInfo file) {
     var fileContent = File.ReadAllText(file.FullName);
     var unit = CompilationUnit.FromSource(fileContent, 4);
-    var context = new AnalysisContext(Settings.CodeStyle, unit);
+    var context = new AnalysisContext(Settings.CodeStyle, unit, true);
 
     IEnumerable<CodeIssue> issues = new List<CodeIssue>();
 
@@ -67,8 +67,14 @@ public void ParseFile(FileInfo file) {
     {
         var result = analyzer.Call(context);
         issues = issues.Concat(result.CodeIssues);
+
+        if (result.FixedUnit is not null)
+        {
+            unit = CompilationUnit.FromTokens(result.FixedUnit);
+        }
     }
 
+    File.WriteAllText(file.FullName, unit.Emit());
     IssuesInFile.Add(file, issues);
 
     foreach (var issue in issues)

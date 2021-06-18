@@ -25,7 +25,9 @@ public static class Issues
         {
             // Ошибки анализаторов.
             MissingSpaceAfter => "Отсутствует пробел после `{0}`.",
+            MissingSpaceBefore => "Отсутствует пробел перед `{0}`.",
             ExtraSpaceAfter => "Лишний пробел после `{0}`.",
+            ExtraSpaceBefore => "Лишний пробел перед `{0}`.",
 
             // Встроенные ошибки.
             IssuesId.MissingClosingSign => "Отсутствует закрывающий знак для `{0}`.",

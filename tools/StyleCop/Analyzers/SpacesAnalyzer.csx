@@ -14,162 +14,214 @@ using ChaoticOnyx.Hekate;
 public sealed class SpaceAnalyzer : CodeAnalyzer
 {
     private readonly List<CodeIssue> _issues = new();
+    private List<SyntaxToken>? _fixedTokens = null;
+    private bool _fixMode = false;
 
     internal override AnalysisResult Analyze(AnalysisContext context)
     {
-        var (codeStyle, unit) = context;
-        var spacingStyle = codeStyle.Spaces;
+        var (style, unit, _) = context;
+        _fixMode = context.TryToFix;
+        var tokens = unit.Lexer.Tokens.ToList();
+        var spacingStyle = style.Spaces;
 
-        for (var i = 0; i < unit.Lexer.Tokens.Count; i++)
+        if (_fixMode)
         {
-            var token = unit.Lexer.Tokens[i];
-            var next = i + 1 < unit.Lexer.Tokens.Count ? unit.Lexer.Tokens[i + 1] : null;
-            var lastLead = token.Leads.LastOrDefault();
-            var firstTrail = token.Trails.FirstOrDefault();
+            _fixedTokens = new();
+        }
 
-            if (firstTrail?.Kind == SyntaxKind.EndOfLine)
-            {
-                continue;
-            }
-
-            var hasSpacesBefore = lastLead?.Kind == SyntaxKind.WhiteSpace;
-            var hasSpacesAfter = firstTrail?.Kind == SyntaxKind.WhiteSpace;
+        for (var i = 0; i < tokens.Count; i++)
+        {
+            var token = tokens[i];
+            var next = i + 1 < tokens.Count ? tokens[i + 1] : null;
+            SyntaxToken result;
 
             switch (token.Kind)
             {
                 case SyntaxKind.IfKeyword:
-                    if (spacingStyle.If && !hasSpacesAfter)
-                    {
-                        AddIssue(Issues.MissingSpaceAfter, token);
-                    }
-                    else if (!spacingStyle.If && hasSpacesAfter)
-                    {
-                        AddIssue(Issues.ExtraSpaceAfter, token);
-                    }
+                    result = CheckSpaces(token, next, true, spacingStyle.If);
+                    _fixedTokens?.Add(result);
 
                     break;
                 case SyntaxKind.ForKeyword:
-                    if (spacingStyle.For && !hasSpacesAfter)
-                    {
-                        AddIssue(Issues.MissingSpaceAfter, token);
-                    }
-                    else if (!spacingStyle.For && hasSpacesAfter)
-                    {
-                        AddIssue(Issues.ExtraSpaceAfter, token);
-                    }
+                    result = CheckSpaces(token, next, true, spacingStyle.For);
+                    _fixedTokens?.Add(result);
 
                     break;
                 case SyntaxKind.CatchKeyword:
-                    if (spacingStyle.Catch && !hasSpacesAfter)
-                    {
-                        AddIssue(Issues.MissingSpaceAfter, token);
-                    }
-                    else if (!spacingStyle.Catch && hasSpacesAfter)
-                    {
-                        AddIssue(Issues.ExtraSpaceAfter, token);
-                    }
+                    result = CheckSpaces(token, next, true, spacingStyle.Catch);
+                    _fixedTokens?.Add(result);
 
                     break;
                 case SyntaxKind.ThrowKeyword:
-                    if (spacingStyle.Throw && !hasSpacesAfter)
-                    {
-                        AddIssue(Issues.MissingSpaceAfter, token);
-                    }
-                    else if (!spacingStyle.Throw && hasSpacesAfter)
-                    {
-                        AddIssue(Issues.ExtraSpaceAfter, token);
-                    }
+                    result = CheckSpaces(token, next, true, spacingStyle.Throw);
+                    _fixedTokens?.Add(result);
 
                     break;
                 case SyntaxKind.Comma:
-                    if (spacingStyle.AfterComma && !hasSpacesAfter)
-                    {
-                        AddIssue(Issues.MissingSpaceAfter, token);
-                    }
-                    else if (!spacingStyle.AfterComma && hasSpacesAfter)
-                    {
-                        AddIssue(Issues.ExtraSpaceAfter, token);
-                    }
-
-                    if (spacingStyle.BeforeComma && !hasSpacesBefore)
-                    {
-                        AddIssue(Issues.MissingSpaceBefore, token);
-                    }
-                    else if (!spacingStyle.BeforeComma && hasSpacesBefore)
-                    {
-                        AddIssue(Issues.ExtraSpaceBefore, token);
-                    }
+                    result = CheckSpaces(token, next, true, spacingStyle.AfterComma);
+                    result = CheckSpaces(result, next, false, spacingStyle.BeforeComma);
+                    _fixedTokens?.Add(result);
 
                     break;
                 case SyntaxKind.NewKeyword:
-                    if (next?.Kind != SyntaxKind.OpenParenthesis)
-                    {
-                        break;
-                    }
-
-                    if (spacingStyle.New && !hasSpacesAfter)
-                    {
-                        AddIssue(Issues.MissingSpaceAfter, token);
-                    }
-                    else if (!spacingStyle.New && hasSpacesAfter)
-                    {
-                        AddIssue(Issues.ExtraSpaceAfter, token);
-                    }
+                    result = CheckSpaces(token, next, true, spacingStyle.New);
+                    _fixedTokens?.Add(result);
 
                     break;
                 case SyntaxKind.OpenParenthesis:
-                    if (spacingStyle.InParentheses && !hasSpacesAfter)
-                    {
-                        AddIssue(Issues.MissingSpaceAfter, token);
-                    }
-                    else if (!spacingStyle.InParentheses && hasSpacesAfter)
-                    {
-                        AddIssue(Issues.ExtraSpaceAfter, token);
-                    }
+                    result = CheckSpaces(token, next, true, spacingStyle.InParentheses);
+                    _fixedTokens?.Add(result);
 
                     break;
                 case SyntaxKind.CloseParenthesis:
-                    if (spacingStyle.InParentheses && !hasSpacesBefore)
-                    {
-                        AddIssue(Issues.MissingSpaceBefore, token);
-                    }
-                    else if (!spacingStyle.InParentheses && hasSpacesBefore)
-                    {
-                        AddIssue(Issues.ExtraSpaceBefore, token);
-                    }
+                    result = CheckSpaces(token, next, false, spacingStyle.InParentheses);
+                    _fixedTokens?.Add(result);
 
                     break;
                 case SyntaxKind.OpenBracket:
-                    if (spacingStyle.InBrackets && !hasSpacesAfter)
-                    {
-                        AddIssue(Issues.MissingSpaceAfter, token);
-                    }
-                    else if (!spacingStyle.InBrackets && hasSpacesAfter)
-                    {
-                        AddIssue(Issues.ExtraSpaceAfter, token);
-                    }
+                    result = CheckSpaces(token, next, true, spacingStyle.InBrackets);
+                    _fixedTokens?.Add(result);
 
                     break;
                 case SyntaxKind.CloseBracket:
-                    if (spacingStyle.InBrackets && !hasSpacesBefore)
+                    result = CheckSpaces(token, next, false, spacingStyle.InBrackets);
+                    _fixedTokens?.Add(result);
+
+                    break;
+                case SyntaxKind.Identifier:
+                    if (next?.Kind != SyntaxKind.OpenParenthesis)
                     {
-                        AddIssue(Issues.MissingSpaceBefore, token);
+                        _fixedTokens?.Add(token);
+                        break;
                     }
-                    else if (!spacingStyle.InBrackets && hasSpacesBefore)
-                    {
-                        AddIssue(Issues.ExtraSpaceBefore, token);
-                    }
+
+                    result = CheckSpaces(token, next, true, spacingStyle.MethodParentheses);
+                    _fixedTokens?.Add(result);
+
+                    break;
+                default:
+                    _fixedTokens?.Add(token);
 
                     break;
             }
         }
 
-        return new(_issues);
+        return new(_issues, _fixedTokens);
     }
 
     internal override void Clear()
     {
+        _fixedTokens?.Clear();
+        _fixedTokens = null;
         _issues.Clear();
+        _fixMode = false;
+    }
+
+    /// <summary>
+    ///     Проверяет на наличие/отсутствие пробела перед/после токена.
+    ///     Возвращает исправленный токен если включён режим исправления или переданный токен без режима исправления.
+    ///     В случае выключенного режима исправления - создаёт ошибку.
+    /// </summary>
+    /// <param name="token">Токен который необходимо проверить.</param>
+    /// <param name="next">Следующий токен.</param>
+    /// <param name="checkAfter">Если true - проверяет после токена, false - перед токеном.</param>
+    /// <param name="shouldBe">Если true - проверяет на наличие пробела, false - его отсутствие.</param>
+    /// <returns></returns>
+    private SyntaxToken CheckSpaces(SyntaxToken token, SyntaxToken? next, bool checkAfter = true, bool shouldBe = false)
+    {
+        if (checkAfter && token.Kind != SyntaxKind.Comma && next?.Kind != SyntaxKind.OpenParenthesis)
+        {
+            return token;
+        }
+
+        SyntaxToken? whitespace;
+
+        if (checkAfter)
+        {
+            whitespace = token.Trails.FirstOrDefault();
+        }
+        else
+        {
+            whitespace = token.Leads.LastOrDefault();
+        }
+
+        if (whitespace?.Kind == SyntaxKind.EndOfLine)
+        {
+            return token;
+        }
+
+        if (whitespace?.Kind != SyntaxKind.WhiteSpace)
+        {
+            if (shouldBe)
+            {
+                if (_fixMode)
+                {
+                    return checkAfter ? CreateTokenWithSpaceAfterFrom(token) : CreateTokenWithSpaceBeforeFrom(token);
+                }
+                else
+                {
+                    AddIssue(Issues.ExtraSpaceAfter, token);
+                }
+            }
+        }
+        else
+        {
+            if (!shouldBe)
+            {
+                if (_fixMode)
+                {
+                    return checkAfter ? CreateTokenWithoutSpaceAfterFrom(token) : CreateTokenWithoutSpaceBeforeFrom(token);
+                }
+                else
+                {
+                    AddIssue(Issues.MissingSpaceAfter, token);
+                }
+            }
+        }
+
+        return token;
+    }
+
+    private SyntaxToken CreateTokenWithSpaceAfterFrom(SyntaxToken token)
+    {
+        SyntaxToken newToken = new(token.Kind, token.Text, token.Position, token.FilePosition);
+
+        newToken.AddLeadTokens(token.Leads.ToArray());
+        newToken.AddTrailTokens(new SyntaxToken(SyntaxKind.WhiteSpace, " "));
+        newToken.AddTrailTokens(token.Trails.ToArray());
+
+        return newToken;
+    }
+
+    private SyntaxToken CreateTokenWithoutSpaceAfterFrom(SyntaxToken token)
+    {
+        SyntaxToken newToken = new(token.Kind, token.Text, token.Position, token.FilePosition);
+
+        newToken.AddLeadTokens(token.Leads.ToArray());
+        newToken.AddTrailTokens(token.Trails.Skip(1).ToArray());
+
+        return newToken;
+    }
+
+    private SyntaxToken CreateTokenWithSpaceBeforeFrom(SyntaxToken token)
+    {
+        SyntaxToken newToken = new(token.Kind, token.Text, token.Position, token.FilePosition);
+
+        newToken.AddTrailTokens(token.Trails.ToArray());
+        newToken.AddLeadTokens(token.Leads.ToArray());
+        newToken.AddLeadTokens(new SyntaxToken(SyntaxKind.WhiteSpace, " "));
+
+        return newToken;
+    }
+
+    private SyntaxToken CreateTokenWithoutSpaceBeforeFrom(SyntaxToken token)
+    {
+        SyntaxToken newToken = new(token.Kind, token.Text, token.Position, token.FilePosition);
+
+        newToken.AddTrailTokens(token.Trails.ToArray());
+        newToken.AddLeadTokens(token.Leads.SkipLast(1).ToArray());
+
+        return newToken;
     }
 
     private void AddIssue(string id, SyntaxToken token)
