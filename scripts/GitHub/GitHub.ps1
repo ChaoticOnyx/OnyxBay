@@ -221,13 +221,18 @@ function Get-GithubPullRequestFiles
 
                 foreach ($Line in $Lines)
                 {
+                    Write-Debug "Строка $i : $Line"
+
                     if ($Line[0] -eq '+')
                     {
                         Write-Debug "Изменена строка $i"
                         $ChangedLines += $i
+                        $i++
                     }
-
-                    $i++
+                    elseif ($Line[0] -ne '-')
+                    {
+                        $i++
+                    }
                 }
             }
 
