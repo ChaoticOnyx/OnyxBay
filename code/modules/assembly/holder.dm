@@ -42,6 +42,7 @@
 	if(user)
 		user.remove_from_mob(D)
 		user.remove_from_mob(D2)
+	g = 2
 	D.holder = src
 	D2.holder = src
 	D.loc = src
