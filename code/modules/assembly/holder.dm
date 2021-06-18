@@ -43,6 +43,7 @@
 		user.remove_from_mob(D)
 		user.remove_from_mob(D2)
 	g = 2
+	b = 1
 	D.holder = src
 	D2.holder = src
 	D.loc = src
@@ -53,6 +54,7 @@
 		D2.proximity_monitor.SetHost(src, D2)
 	a_left = D
 	a_right = D2
+	j = 999
 	SetName("[D.name]-[D2.name] assembly")
 	update_icon()
 	user.put_in_hands(src)
