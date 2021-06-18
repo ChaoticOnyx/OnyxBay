@@ -209,11 +209,12 @@
 		"title" = title,
 		"status" = status,
 		"interface" = interface,
+		"theme" = user.get_preference_value(/datum/client_preference/tgui_theme),
 		"window" = list(
 			"key" = window_key,
 			"size" = window_size,
 			"fancy" = user.get_preference_value(/datum/client_preference/tgui_style) == GLOB.PREF_FANCY,
-			"locked" = user.get_preference_value(/datum/client_preference/tgui_monitor) == GLOB.PREF_PRIMARY,
+			"locked" = user.get_preference_value(/datum/client_preference/tgui_monitor) == GLOB.PREF_PRIMARY
 		),
 		"client" = list(
 			"ckey" = user.client.ckey,

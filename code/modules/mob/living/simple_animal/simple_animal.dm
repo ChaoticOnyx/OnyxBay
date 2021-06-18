@@ -5,8 +5,8 @@
 	maxHealth = 20
 
 	mob_bump_flag = SIMPLE_ANIMAL
-	mob_swap_flags = MONKEY|SLIME|SIMPLE_ANIMAL
-	mob_push_flags = MONKEY|SLIME|SIMPLE_ANIMAL
+	mob_swap_flags = MONKEY|METROID|SIMPLE_ANIMAL
+	mob_push_flags = MONKEY|METROID|SIMPLE_ANIMAL
 
 	var/show_stat_health = 1	//does the percentage health show in the stat panel for the mob
 

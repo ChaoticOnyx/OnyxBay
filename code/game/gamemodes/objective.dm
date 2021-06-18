@@ -436,7 +436,6 @@ datum/objective/harm
 	var/target_name
 
 	var/global/possible_items[] = list(
-		"the prototype psychoscope" = /obj/item/clothing/glasses/psychoscope,
 		"the captain's antique laser gun" = /obj/item/weapon/gun/energy/captain,
 		"a bluespace rift generator in hand teleporter" = /obj/item/integrated_circuit/manipulation/bluespace_rift,
 		"an RCD" = /obj/item/weapon/rcd,
@@ -447,7 +446,7 @@ datum/objective/harm
 		"the [station_name()] blueprints" = /obj/item/blueprints,
 		"a nasa voidsuit" = /obj/item/clothing/suit/space/void,
 		"28 moles of plasma (full tank)" = /obj/item/weapon/tank,
-		"a sample of slime extract" = /obj/item/slime_extract,
+		"a sample of metroid extract" = /obj/item/metroid_extract,
 		"a piece of corgi meat" = /obj/item/weapon/reagent_containers/food/snacks/meat/corgi,
 		"a research director's jumpsuit" = /obj/item/clothing/under/rank/research_director,
 		"a chief engineer's jumpsuit" = /obj/item/clothing/under/rank/chief_engineer,

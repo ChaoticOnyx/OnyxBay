@@ -9,6 +9,7 @@ import { setClientTheme } from '../themes';
 import { loadSettings, updateSettings } from './actions';
 import { selectSettings } from './selectors';
 import { FONTS_DISABLED } from './constants';
+import { loadChat, rebuildChat, resetSettings } from '../chat/actions';
 
 const setGlobalFontSize = fontSize => {
   document.documentElement.style
@@ -52,6 +53,14 @@ export const settingsMiddleware = store => {
       storage.set('panel-settings', settings);
       return;
     }
+
+    if (type === resetSettings.type) {
+      storage.clear();
+      Byond.winset({
+        command: 'Nuke-Chat',
+      });
+    }
+
     return next(action);
   };
 };

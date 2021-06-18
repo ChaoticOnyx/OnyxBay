@@ -12,6 +12,7 @@ const initialState = {
   fontSize: 13,
   fontFamily: FONTS[0],
   lineHeight: 1.2,
+  iconSize: 16,
   theme: 'light',
   adminMusicVolume: 0.5,
   highlightText: '',
@@ -24,6 +25,7 @@ const initialState = {
 
 export const settingsReducer = (state = initialState, action) => {
   const { type, payload } = action;
+
   if (type === updateSettings.type) {
     return {
       ...state,

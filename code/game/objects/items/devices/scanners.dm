@@ -647,7 +647,7 @@ REAGENT SCANNER
 	user.visible_message("\The [user] scans \the [target] with \the [src]")
 	user.show_message("Price estimation of \the [target]: [value ? value : "N/A"] credits")
 
-/obj/item/device/slime_scanner
+/obj/item/device/metroid_scanner
 	name = "xenolife scanner"
 	desc = "Multipurpose organic life scanner. With spectral breath analyzer you can find out what snacks Ian had! Or what gasses alien life breathes."
 	icon_state = "xenobio"
@@ -658,13 +658,13 @@ REAGENT SCANNER
 	obj_flags = OBJ_FLAG_CONDUCTIBLE
 	matter = list(MATERIAL_STEEL = 30, MATERIAL_GLASS = 20)
 
-/obj/item/device/slime_scanner/proc/list_gases(gases)
+/obj/item/device/metroid_scanner/proc/list_gases(gases)
 	. = list()
 	for(var/g in gases)
 		. += "[gas_data.name[g]] ([gases[g]]%)"
 	return english_list(.)
 
-/obj/item/device/slime_scanner/afterattack(mob/target, mob/user, proximity)
+/obj/item/device/metroid_scanner/afterattack(mob/target, mob/user, proximity)
 	if(!proximity)
 		return
 
@@ -688,22 +688,22 @@ REAGENT SCANNER
 		user.show_message("Breathes:\t[list_gases(A.min_gas)]")
 		user.show_message("Known toxins:\t[list_gases(A.max_gas)]")
 		user.show_message("Temperature comfort zone:\t[A.minbodytemp] K to [A.maxbodytemp] K")
-	else if(istype(target, /mob/living/carbon/slime/))
-		var/mob/living/carbon/slime/T = target
-		user.show_message("<span class='notice'>Slime scan result for \the [T]:</span>")
-		user.show_message("[T.colour] [T.is_adult ? "adult" : "baby"] slime")
+	else if(istype(target, /mob/living/carbon/metroid/))
+		var/mob/living/carbon/metroid/T = target
+		user.show_message("<span class='notice'>Metroid scan result for \the [T]:</span>")
+		user.show_message("[T.colour] [T.is_adult ? "adult" : "baby"] metroid")
 		user.show_message("Nutrition:\t[T.nutrition]/[T.get_max_nutrition()]")
 		if(T.nutrition < T.get_starve_nutrition())
-			user.show_message("<span class='alert'>Warning:\tthe slime is starving!</span>")
+			user.show_message("<span class='alert'>Warning:\tthe metroid is starving!</span>")
 		else if (T.nutrition < T.get_hunger_nutrition())
-			user.show_message("<span class='warning'>Warning:\tthe slime is hungry.</span>")
+			user.show_message("<span class='warning'>Warning:\tthe metroid is hungry.</span>")
 		user.show_message("Electric charge strength:\t[T.powerlevel]")
 		user.show_message("Health:\t[round(T.health / T.maxHealth)]%")
 
 		var/list/mutations = T.GetMutations()
 
 		if(!mutations.len)
-			user.show_message("This slime will never mutate.")
+			user.show_message("This metroid will never mutate.")
 		else
 			var/list/mutationChances = list()
 			for(var/i in mutations)
@@ -721,7 +721,7 @@ REAGENT SCANNER
 			user.show_message("Possible colours on splitting:\t[english_list(mutationTexts)]")
 
 		if (T.cores > 1)
-			user.show_message("Anomalous slime core amount detected.")
+			user.show_message("Anomalous metroid core amount detected.")
 		user.show_message("Growth progress:\t[T.amount_grown]/10.")
 	else
 		user.show_message("Incompatible life form, analysis failed.")

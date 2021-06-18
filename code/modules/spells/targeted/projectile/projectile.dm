@@ -9,6 +9,7 @@ If the spell_projectile is seeking, it will update its target every process and 
 	name = "projectile spell"
 
 	range = 7
+	need_target = 0
 
 	var/proj_type = /obj/item/projectile/spell_projectile //use these. They are very nice
 

@@ -1,15 +1,16 @@
 #define SAVE_RESET -1
 
 /datum/preferences
-	//doohickeys for savefiles
+	// doohickeys for savefiles
 	var/is_guest = FALSE
-	var/default_slot = 1				//Holder so it doesn't default to slot 1, rather the last one used
+	// Holder so it doesn't default to slot 1, rather the last one used
+	var/default_slot = 1
 
 	// Cache, mapping slot record ids to character names
 	// Saves reading all the slot records when listing
 	var/list/slot_names = null
 
-	//non-preference stuff
+	// NON-PREFERENCE STUFF
 	var/warns = 0
 	var/muted = 0
 	var/last_ip
@@ -18,13 +19,16 @@
 	// Populated with an error message if loading fails.
 	var/load_failed = null
 
-	//game-preferences
-	var/lastchangelog = ""				//Saved changlog filesize to detect if there was a change
+	// GAME-PREFERENCES
+	// Saved changlog filesize to detect if there was a change
+	var/lastchangelog = ""
 
-	//character preferences
-	var/species_preview                 //Used for the species selection window.
-	var/list/traits						//Traits which modifier characters for better or worse (mostly worse).
-		//Mob preview
+	// CHARACTER PREFERENCES
+	// Used for the species selection window.
+	var/species_preview
+	// Traits which modifier characters for better or worse (mostly worse).
+	var/list/traits
+	// Mob preview
 	var/icon/preview_icon = null
 
 	var/client/client = null
@@ -34,14 +38,11 @@
 	var/datum/browser/panel
 
 /datum/preferences/New(client/C)
-	if(istype(C))
-		client = C
-		client_ckey = C.ckey
-		SScharacter_setup.preferences_datums[C.ckey] = src
-		if(SScharacter_setup.initialized)
-			setup()
-		else
-			SScharacter_setup.prefs_awaiting_setup += src
+	ASSERT(istype(C))
+
+	client = C
+	client_ckey = C.ckey
+
 	..()
 
 /datum/preferences/proc/setup()
@@ -57,9 +58,6 @@
 			load_data()
 
 	sanitize_preferences()
-	if(client && istype(client.mob, /mob/new_player))
-		var/mob/new_player/np = client.mob
-		np.new_player_panel(TRUE)
 
 /datum/preferences/proc/load_data()
 	load_failed = null
@@ -440,13 +438,18 @@
 	close_browser(user, "window=saves")
 	panel.close()
 
-/datum/preferences/proc/apply_post_login_preferences()
-	set waitfor = 0
-	if(!client)
-		return
+/datum/preferences/proc/apply_post_login_preferences(client/update_client = null)
+	client = client || update_client
+	ASSERT(client)
 
-	if(client.get_preference_value(/datum/client_preference/chat_position) == GLOB.PREF_YES)
-		client.update_chat_position(TRUE)
+	client.apply_fps(clientfps)
+	client.update_chat_position(client.get_preference_value(/datum/client_preference/chat_position))
 
 	if(client.get_preference_value(/datum/client_preference/fullscreen_mode) != GLOB.PREF_NO)
 		client.toggle_fullscreen(client.get_preference_value(/datum/client_preference/fullscreen_mode))
+
+	if(client.get_preference_value(/datum/client_preference/tgui_chat) == GLOB.PREF_NO)
+		winset(client, "output", "on-show=&is-disabled=0&is-visible=1")
+		winset(client, "browseroutput", "is-disabled=1;is-visible=0")
+	else
+		client.tgui_panel.initialize()

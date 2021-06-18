@@ -93,7 +93,11 @@ var/list/limb_icon_cache = list()
 			else
 				body_build = owner.body_build.roboindex
 
-		icon_state = "[icon_name][gender][body_build]"
+		var/stump_icon = ""
+		if(is_stump())
+			stump_icon = "_s"
+
+		icon_state = "[icon_name][gender][body_build][stump_icon]"
 
 		if (species)
 			if(species.base_skin_colours && !isnull(species.base_skin_colours[s_base]))

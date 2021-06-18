@@ -532,10 +532,10 @@
 	..()
 	if(!mind.assigned_role)	mind.assigned_role = "Assistant"	//defualt
 
-//slime
-/mob/living/carbon/slime/mind_initialize()
+//metroid
+/mob/living/carbon/metroid/mind_initialize()
 	..()
-	mind.assigned_role = "slime"
+	mind.assigned_role = "metroid"
 
 /mob/living/carbon/alien/larva/mind_initialize()
 	..()

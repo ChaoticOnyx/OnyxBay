@@ -12,7 +12,7 @@
 	level_max = list(Sp_TOTAL = 4, Sp_SPEED = 4, Sp_POWER = 3)
 	cooldown_min = 100 //50 deciseconds reduction per rank
 	duration = 50 //in deciseconds
-
+	need_target = 0
 	hud_state = "wiz_jaunt"
 
 /spell/targeted/ethereal_jaunt/cast(list/targets) //magnets, so mostly hardcoded

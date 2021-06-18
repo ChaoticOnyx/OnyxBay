@@ -267,12 +267,12 @@
 	maxcharge = 50
 
 
-/obj/item/weapon/cell/slime
-	name = "charged slime core"
-	desc = "A yellow slime core infused with plasma, it crackles with power."
+/obj/item/weapon/cell/metroid
+	name = "charged metroid core"
+	desc = "A yellow metroid core infused with plasma, it crackles with power."
 	origin_tech = list(TECH_POWER = 2, TECH_BIO = 4)
-	icon = 'icons/mob/slimes.dmi' //'icons/obj/harvest.dmi'
-	icon_state = "yellow slime extract" //"potato_battery"
+	icon = 'icons/mob/metroids.dmi' //'icons/obj/harvest.dmi'
+	icon_state = "yellow metroid extract" //"potato_battery"
 	maxcharge = 200
 	matter = null
 

@@ -253,6 +253,7 @@ type BackendState<TData> = {
     title: string,
     status: number,
     interface: string,
+    theme: string,
     window: {
       key: string,
       size: [number, number],
@@ -296,6 +297,8 @@ export const useBackend = <TData>(context: any) => {
   return {
     ...state,
     act: sendAct,
+    getTheme: (baseName: string) => 
+    `${baseName}-${(state.config.theme.toLowerCase())}`,
   };
 };
 

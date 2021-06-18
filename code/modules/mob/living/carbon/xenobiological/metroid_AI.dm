@@ -1,4 +1,4 @@
-/mob/living/carbon/slime/proc/handle_regular_AI()
+/mob/living/carbon/metroid/proc/handle_regular_AI()
 	if(client)
 		return
 
@@ -11,7 +11,7 @@
 		--confused
 		return
 
-	if(nutrition < get_starve_nutrition()) // If a slime is starving, it starts losing its friends
+	if(nutrition < get_starve_nutrition()) // If a metroid is starving, it starts losing its friends
 		if(Friends.len > 0 && prob(1))
 			var/mob/nofriend = pick(Friends)
 			if(nofriend && Friends[nofriend])
@@ -27,7 +27,7 @@
 			handle_AI()
 	handle_speech_and_mood()
 
-/mob/living/carbon/slime/proc/handle_targets()
+/mob/living/carbon/metroid/proc/handle_targets()
 	if(Victim) // If it's eating someone already, continue eating!
 		return
 
@@ -37,7 +37,7 @@
 			target_patience = 0
 			Target = null
 
-	var/hungry = 0 // determines if the slime is hungry
+	var/hungry = 0 // determines if the metroid is hungry
 
 	if (nutrition < get_starve_nutrition())
 		hungry = 2
@@ -89,8 +89,8 @@
 			else if(isturf(loc) && prob(33))
 				SelfMove(pick(GLOB.cardinal))
 
-/mob/living/carbon/slime/proc/AssessTarget(mob/living/M)
-	if(isslime(M)) // Ignore other slimes
+/mob/living/carbon/metroid/proc/AssessTarget(mob/living/M)
+	if(ismetroid(M)) // Ignore other metroids
 		return 0
 
 	if(M in Friends) // Ignore friends
@@ -101,7 +101,7 @@
 			return 1
 
 	if(!invalidFeedTarget(M)) // Checks for those we want to eat
-		if(istype(M, /mob/living/carbon/human)) // Ignore slime(wo)men - player-controlled slimes still can attack them
+		if(istype(M, /mob/living/carbon/human)) // Ignore metroid(wo)men - player-controlled metroids still can attack them
 			var/mob/living/carbon/human/H = M
 			if(H.species.name == SPECIES_PROMETHEAN)
 				return 0
@@ -109,7 +109,7 @@
 
 	return 0
 
-/mob/living/carbon/slime/proc/handle_AI()  // the master AI process
+/mob/living/carbon/metroid/proc/handle_AI()  // the master AI process
 	if(stat == DEAD || client || Victim)
 		AIproc = 0
 		return // If we're dead or have a client, we don't need AI, if we're feeding, we continue feeding
@@ -135,7 +135,7 @@
 			AIproc = 0
 			return
 
-		for(var/mob/living/carbon/slime/M in view(1, Target))
+		for(var/mob/living/carbon/metroid/M in view(1, Target))
 			if(M.Victim == Target)
 				Target = null
 				AIproc = 0
@@ -168,8 +168,8 @@
 			return
 
 	else
-		var/mob/living/carbon/slime/frenemy
-		for (var/mob/living/carbon/slime/S in view(1, src))
+		var/mob/living/carbon/metroid/frenemy
+		for (var/mob/living/carbon/metroid/S in view(1, src))
 			if (S != src)
 				frenemy = S
 		if (frenemy && prob(1) && frenemy.Adjacent(src))
@@ -184,7 +184,7 @@
 		handle_AI()
 	return
 
-/mob/living/carbon/slime/proc/UpdateFace()
+/mob/living/carbon/metroid/proc/UpdateFace()
 	var/newmood = ""
 	a_intent = I_HELP
 	if(confused)
@@ -206,7 +206,7 @@
 		mood = newmood
 		regenerate_icons()
 
-/mob/living/carbon/slime/proc/handle_speech_and_mood()
+/mob/living/carbon/metroid/proc/handle_speech_and_mood()
 	UpdateFace()
 
 	//Speech understanding starts here
@@ -214,7 +214,7 @@
 	if (speech_buffer.len > 0)
 		var/who = speech_buffer[1] // Who said it?
 		var/phrase = speech_buffer[2] // What did they say?
-		if ((findtext(phrase, num2text(number)) || findtext(phrase, "slimes"))) // Talking to us
+		if ((findtext(phrase, num2text(number)) || findtext(phrase, "metroids"))) // Talking to us
 			if (findtext(phrase, "hello") || findtext(phrase, "hi"))
 				to_say = pick("Hello...", "Hi...")
 			else if (findtext(phrase, "follow"))
@@ -285,14 +285,14 @@
 		emote(pick("bounce","sway","light","vibrate","jiggle"))
 	else
 		var/t = 10
-		var/slimes_near = -1 // Don't count myself
-		var/dead_slimes = 0
+		var/metroids_near = -1 // Don't count myself
+		var/dead_metroids = 0
 		var/friends_near = list()
 		for (var/mob/living/carbon/M in view(7,src))
-			if (isslime(M))
-				++slimes_near
+			if (ismetroid(M))
+				++metroids_near
 				if (M.stat == DEAD)
-					++dead_slimes
+					++dead_metroids
 			if (M in Friends)
 				t += 20
 				friends_near += M
@@ -336,10 +336,10 @@
 			if (powerlevel > 5) phrases += "Zap..."
 			if (powerlevel > 8) phrases += "Zap... Bzz..."
 			if (mood == "sad") phrases += "Bored..."
-			if (slimes_near) phrases += "Brother..."
-			if (slimes_near > 1) phrases += "Brothers..."
-			if (dead_slimes) phrases += "What happened?"
-			if (!slimes_near)
+			if (metroids_near) phrases += "Brother..."
+			if (metroids_near > 1) phrases += "Brothers..."
+			if (dead_metroids) phrases += "What happened?"
+			if (!metroids_near)
 				phrases += "Lonely..."
 			for (var/M in friends_near)
 				phrases += "[M]... friend..."
@@ -347,7 +347,7 @@
 					phrases += "[M]... feed me..."
 			say (pick(phrases))
 
-/mob/living/carbon/slime/proc/will_hunt(hunger) // Check for being stopped from feeding and chasing
+/mob/living/carbon/metroid/proc/will_hunt(hunger) // Check for being stopped from feeding and chasing
 	if (hunger == 2 || rabid || attacked) return 1
 	if (Leader) return 0
 	if (holding_still) return 0

@@ -10,8 +10,8 @@ import { NowPlayingWidget, useAudio } from './audio';
 import { ChatPanel, ChatTabs } from './chat';
 import { useGame } from './game';
 import { Notifications } from './Notifications';
-import { PingIndicator } from './ping';
 import { SettingsPanel, useSettings } from './settings';
+import { useSpellCheckerSettings, SpellCheckerSettings } from './spellchecker';
 
 export const Panel = (props, context) => {
   // IE8-10: Needs special treatment due to missing Flex support
@@ -22,6 +22,7 @@ export const Panel = (props, context) => {
   }
   const audio = useAudio(context);
   const settings = useSettings(context);
+  const spellChecker = useSpellCheckerSettings(context);
   const game = useGame(context);
   if (process.env.NODE_ENV !== 'production') {
     const { useDebug, KitchenSink } = require('tgui/debug');
@@ -42,7 +43,13 @@ export const Panel = (props, context) => {
                 <ChatTabs />
               </Stack.Item>
               <Stack.Item>
-                <PingIndicator />
+                <Button
+                  color={spellChecker.enabled ? 'yellow' : 'grey'}
+                  selected={spellChecker.visible}
+                  icon="spell-check"
+                  tooltip="Yandex Spell Checker"
+                  tooltipPosition="bottom-start"
+                  onClick={() => spellChecker.toggle()} />
               </Stack.Item>
               <Stack.Item>
                 <Button
@@ -78,25 +85,17 @@ export const Panel = (props, context) => {
             <SettingsPanel />
           </Stack.Item>
         )}
+        {spellChecker.visible && (
+          <Stack.Item>
+            <SpellCheckerSettings />
+          </Stack.Item>
+        )}
         <Stack.Item grow>
           <Section fill fitted position="relative">
             <Pane.Content scrollable>
               <ChatPanel lineHeight={settings.lineHeight} />
             </Pane.Content>
             <Notifications>
-              {game.connectionLostAt && (
-                <Notifications.Item
-                  rightSlot={(
-                    <Button
-                      color="white"
-                      onClick={() => Byond.command('.reconnect')}>
-                      Reconnect
-                    </Button>
-                  )}>
-                  You are either AFK, experiencing lag or the connection
-                  has closed.
-                </Notifications.Item>
-              )}
               {game.roundRestartedAt && (
                 <Notifications.Item>
                   The connection has been closed because the server is

@@ -1,4 +1,4 @@
-/mob/living/carbon/slime/proc/Wrap(mob/living/M) // This is a proc for the clicks
+/mob/living/carbon/metroid/proc/Wrap(mob/living/M) // This is a proc for the clicks
 	if (Victim == M || src == M)
 		Feedstop()
 		return
@@ -14,11 +14,11 @@
 
 	Feedon(M)
 
-/mob/living/carbon/slime/proc/invalidFeedTarget(mob/living/M)
+/mob/living/carbon/metroid/proc/invalidFeedTarget(mob/living/M)
 	if (!istype(M))
 		return "This subject is incompatible..."
-	if (istype(M, /mob/living/carbon/slime)) // No cannibalism... yet
-		return "I cannot feed on other slimes..."
+	if (istype(M, /mob/living/carbon/metroid)) // No cannibalism... yet
+		return "I cannot feed on other metroids..."
 	if (!Adjacent(M))
 		return "This subject is too far away..."
 	if (issilicon(M))
@@ -28,16 +28,16 @@
 	if (ishuman(M))
 		var/mob/living/carbon/human/H = M
 		if(H.species.species_flags & (SPECIES_FLAG_NO_POISON|SPECIES_FLAG_NO_SCAN))
-			//they can't take clone or tox damage, then for the most part they aren't affected by being fed on - and presumably feeding on them would not affect the slime either
+			//they can't take clone or tox damage, then for the most part they aren't affected by being fed on - and presumably feeding on them would not affect the metroid either
 			return "This subject does not have an edible life energy..."
 	if (istype(M, /mob/living/carbon) && M.getCloneLoss() >= M.maxHealth * 1.5 || istype(M, /mob/living/simple_animal) && M.stat == DEAD)
 		return "This subject does not have an edible life energy..."
-	for(var/mob/living/carbon/slime/met in view())
+	for(var/mob/living/carbon/metroid/met in view())
 		if(met.Victim == M && met != src)
 			return "\The [met] is already feeding on this subject..."
 	return 0
 
-/mob/living/carbon/slime/proc/Feedon(mob/living/M)
+/mob/living/carbon/metroid/proc/Feedon(mob/living/M)
 	set waitfor = 0
 	Victim = M
 	forceMove(M.loc)
@@ -99,7 +99,7 @@
 		else
 			break
 
-	if(happyWithFood) // This means that the slime has either drained the victim or let it go
+	if(happyWithFood) // This means that the metroid has either drained the victim or let it go
 		if(!client)
 			if(Victim && !rabid && !attacked && Victim.LAssailant && Victim.LAssailant != Victim)
 				if(!(Victim.LAssailant in Friends))
@@ -112,17 +112,17 @@
 
 	Victim = null
 
-/mob/living/carbon/slime/proc/Feedstop()
+/mob/living/carbon/metroid/proc/Feedstop()
 	if(Victim)
 		Victim = null
 
-/mob/living/carbon/slime/proc/UpdateFeed()
+/mob/living/carbon/metroid/proc/UpdateFeed()
 	if(Victim)
 		forceMove(Victim.loc) // simple "attach to head" effect!
 
-/mob/living/carbon/slime/verb/Evolve()
-	set category = "Slime"
-	set desc = "This will let you evolve from baby to adult slime."
+/mob/living/carbon/metroid/verb/Evolve()
+	set category = "Metroid"
+	set desc = "This will let you evolve from baby to adult metroid."
 
 	if(stat)
 		to_chat(src, "<span class='notice'>I must be conscious to do this...</span>")
@@ -134,15 +134,15 @@
 			maxHealth = 200
 			amount_grown = 0
 			regenerate_icons()
-			SetName(text("[colour] [is_adult ? "adult" : "baby"] slime ([number])"))
+			SetName(text("[colour] [is_adult ? "adult" : "baby"] metroid ([number])"))
 		else
 			to_chat(src, "<span class='notice'>I am not ready to evolve yet...</span>")
 	else
 		to_chat(src, "<span class='notice'>I have already evolved...</span>")
 
-/mob/living/carbon/slime/verb/Reproduce()
-	set category = "Slime"
-	set desc = "This will make you split into four slimes."
+/mob/living/carbon/metroid/verb/Reproduce()
+	set category = "Metroid"
+	set desc = "This will make you split into four metroids."
 
 	if(stat)
 		to_chat(src, "<span class='notice'>I must be conscious to do this...</span>")
@@ -160,19 +160,19 @@
 				var/t = colour
 				if(prob(mutation_chance))
 					t = pick(mutations)
-				var/mob/living/carbon/slime/M = new /mob/living/carbon/slime(loc, t)
+				var/mob/living/carbon/metroid/M = new /mob/living/carbon/metroid(loc, t)
 				if(i != 1)
 					step_away(M, src)
 				M.Friends = Friends.Copy()
 				babies += M
-				feedback_add_details("slime_babies_born","slimebirth_[replacetext(M.colour," ","_")]")
+				feedback_add_details("metroid_babies_born","metroidbirth_[replacetext(M.colour," ","_")]")
 
-			var/mob/living/carbon/slime/new_slime = babies[1]
-			new_slime.universal_speak = universal_speak
+			var/mob/living/carbon/metroid/new_metroid = babies[1]
+			new_metroid.universal_speak = universal_speak
 			if(src.mind)
-				src.mind.transfer_to(new_slime)
+				src.mind.transfer_to(new_metroid)
 			else
-				new_slime.key = src.key
+				new_metroid.key = src.key
 			qdel(src)
 		else
 			to_chat(src, "<span class='notice'>I am not ready to reproduce yet...</span>")

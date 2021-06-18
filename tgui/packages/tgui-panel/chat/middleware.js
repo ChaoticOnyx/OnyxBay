@@ -8,8 +8,8 @@ import DOMPurify from 'dompurify';
 import { storage } from 'common/storage';
 import { loadSettings, updateSettings } from '../settings/actions';
 import { selectSettings } from '../settings/selectors';
-import { addChatPage, changeChatPage, changeScrollTracking, loadChat, rebuildChat, removeChatPage, saveChatToDisk, toggleAcceptedType, updateMessageCount } from './actions';
-import { MAX_PERSISTED_MESSAGES, MESSAGE_SAVE_INTERVAL } from './constants';
+import { addChatPage, changeChatPage, changeScrollTracking, loadChat, loadSettingsFromDisk, rebuildChat, removeChatPage, saveChatToDisk, saveSettingsToDisk, toggleAcceptedType, updateMessageCount } from './actions';
+import { MAX_PERSISTED_MESSAGES, MESSAGE_SAVE_INTERVAL, MESSAGE_TYPE_INTERNAL } from './constants';
 import { createMessage, serializeMessage } from './model';
 import { chatRenderer } from './renderer';
 import { selectChat, selectCurrentChatPage } from './selectors';
@@ -64,6 +64,30 @@ const loadChatFromStorage = async store => {
   store.dispatch(loadChat(state));
 };
 
+const _saveSettingsToDisk = async () => {
+  const data = {
+    'chat-state': await storage.get('chat-state'),
+    'panel-settings': await storage.get('panel-settings'),
+    'spellchecker-settings': await storage.get('spellchecker-settings'),
+  };
+
+  const rawData = JSON.stringify(data);
+  const blob = new Blob([rawData], { type: "application/json" });
+  window.navigator.msSaveBlob(blob, 'tgui-settings.json');
+};
+
+const _loadSettingsFromDisk = data => {
+  const settings = JSON.parse(data);
+
+  for (let key of Object.keys(settings)) {
+    storage.set(key, settings[key]);
+  }
+
+  Byond.winset({
+    command: 'Nuke-Chat',
+  });
+};
+
 export const chatMiddleware = store => {
   let initialized = false;
   let loaded = false;
@@ -115,9 +139,21 @@ export const chatMiddleware = store => {
     if (type === updateSettings.type || type === loadSettings.type) {
       next(action);
       const settings = selectSettings(store.getState());
+      try {
       chatRenderer.setHighlight(
         settings.highlightText,
         settings.highlightColor);
+      }
+      catch (error) {
+        store.dispatch({
+          type: 'chat/message',
+          payload: {
+            type: MESSAGE_TYPE_INTERNAL,
+            text: `Incorrect or unsupported regular expression: ${error}`,
+          },
+        });
+      }
+
       return;
     }
     if (type === 'roundrestart') {
@@ -127,6 +163,26 @@ export const chatMiddleware = store => {
     }
     if (type === saveChatToDisk.type) {
       chatRenderer.saveToDisk();
+      return;
+    }
+    if (type === saveSettingsToDisk.type) {
+      _saveSettingsToDisk();
+      return;
+    }
+    if (type === loadSettingsFromDisk.type) {
+      try {
+        _loadSettingsFromDisk(payload.data);
+      }
+      catch (error) {
+        store.dispatch({
+          type: 'chat/message',
+          payload: {
+            type: MESSAGE_TYPE_INTERNAL,
+            text: `Invalid JSON data: ${error}`,
+          },
+        });
+      }
+
       return;
     }
     return next(action);

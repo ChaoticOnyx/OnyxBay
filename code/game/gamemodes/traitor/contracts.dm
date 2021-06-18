@@ -1,7 +1,6 @@
 GLOBAL_VAR_INIT(contract_recon_target_count, 3)
 GLOBAL_LIST_EMPTY(all_contracts)
 GLOBAL_LIST_INIT(contracts_steal_items, list(
-	"the prototype psychoscope" =                       list(CONTRACT_STEAL_SCIENCE, /obj/item/clothing/glasses/psychoscope),
 	"the captain's antique laser gun" =                 list(CONTRACT_STEAL_MILITARY, /obj/item/weapon/gun/energy/captain),
 	"a bluespace rift generator in hand teleporter" =   list(CONTRACT_STEAL_SCIENCE, /obj/item/integrated_circuit/manipulation/bluespace_rift),
 	"an RCD" =                                          list(CONTRACT_STEAL_OPERATION, /obj/item/weapon/rcd),
@@ -10,7 +9,7 @@ GLOBAL_LIST_INIT(contracts_steal_items, list(
 	"a pair of magboots" =                              list(CONTRACT_STEAL_OPERATION, /obj/item/clothing/shoes/magboots),
 	"the [station_name()] blueprints" =                 list(CONTRACT_STEAL_OPERATION, /obj/item/blueprints),
 	// "a nasa voidsuit" =                              list(CONTRACT_STEAL_OPERATION, /obj/item/clothing/suit/space/void),
-	"a sample of slime extract" =                       list(CONTRACT_STEAL_SCIENCE, /obj/item/slime_extract),
+	"a sample of slime extract" =                       list(CONTRACT_STEAL_SCIENCE, /obj/item/metroid_extract),
 	"a piece of corgi meat" =                           list(CONTRACT_STEAL_OPERATION, /obj/item/weapon/reagent_containers/food/snacks/meat/corgi),
 	"a research director's jumpsuit" =                  list(CONTRACT_STEAL_UNDERPANTS, /obj/item/clothing/under/rank/research_director),
 	"a chief engineer's jumpsuit" =                     list(CONTRACT_STEAL_UNDERPANTS, /obj/item/clothing/under/rank/chief_engineer),

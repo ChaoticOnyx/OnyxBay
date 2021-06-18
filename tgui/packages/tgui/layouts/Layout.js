@@ -15,6 +15,7 @@ export const Layout = props => {
     children,
     ...rest
   } = props;
+  
   return (
     <div className={'theme-' + theme}>
       <div

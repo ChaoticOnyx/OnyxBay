@@ -6,6 +6,7 @@
 /obj/item/organ/external/stump/New(mob/living/carbon/holder, internal, obj/item/organ/external/limb)
 	if(istype(limb))
 		organ_tag = limb.organ_tag
+		icon_name = limb.icon_name
 		body_part = limb.body_part
 		amputation_point = limb.amputation_point
 		joint = limb.joint
