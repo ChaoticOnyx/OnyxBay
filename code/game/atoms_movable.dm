@@ -104,7 +104,7 @@
 			if(L.lying)
 				continue
 			throw_impact(A, speed, thrown_with, target_zone)
-			
+
 		if(isobj(A))
 			if(A.density && !A.throwpass)	// **TODO: Better behaviour for windows which are dense, but shouldn't always stop movement
 				throw_impact(A, speed)

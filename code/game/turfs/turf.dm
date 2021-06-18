@@ -261,7 +261,7 @@ var/const/enterloopsanity = 100
 		decals = null
 
 // Called when turf is hit by a thrown object
-/turf/hitby(atom/movable/AM as mob|obj, speed)
+/turf/hitby(atom/movable/AM, speed, nomsg)
 	if(src.density)
 		spawn(2)
 			step(AM, turn(AM.last_move, 180))
