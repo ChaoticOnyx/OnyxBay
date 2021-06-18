@@ -29,13 +29,13 @@ const Story = (props, context) => {
       <Box m={2}>
         m: 2
       </Box>
-      <Box textAlign="left">
+      <Box textAlign='left'>
         left
       </Box>
-      <Box textAlign="center">
+      <Box textAlign='center'>
         center
       </Box>
-      <Box textAlign="right">
+      <Box textAlign='right'>
         right
       </Box>
     </Section>

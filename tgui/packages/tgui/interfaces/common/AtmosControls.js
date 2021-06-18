@@ -34,9 +34,9 @@ export const Vent = (props, context) => {
           })} />
       )}>
       <LabeledList>
-        <LabeledList.Item label="Mode">
+        <LabeledList.Item label='Mode'>
           <Button
-            icon="sign-in-alt"
+            icon='sign-in-alt'
             content={direction ? 'Pressurizing' : 'Scrubbing'}
             color={!direction && 'danger'}
             onClick={() => act('direction', {
@@ -44,18 +44,18 @@ export const Vent = (props, context) => {
               val: Number(!direction),
             })} />
         </LabeledList.Item>
-        <LabeledList.Item label="Pressure Regulator">
+        <LabeledList.Item label='Pressure Regulator'>
           <Button
-            icon="sign-in-alt"
-            content="Internal"
+            icon='sign-in-alt'
+            content='Internal'
             selected={incheck}
             onClick={() => act('incheck', {
               id_tag,
               val: checks,
             })} />
           <Button
-            icon="sign-out-alt"
-            content="External"
+            icon='sign-out-alt'
+            content='External'
             selected={excheck}
             onClick={() => act('excheck', {
               id_tag,
@@ -63,11 +63,11 @@ export const Vent = (props, context) => {
             })} />
         </LabeledList.Item>
         {!!incheck && (
-          <LabeledList.Item label="Internal Target">
+          <LabeledList.Item label='Internal Target'>
             <NumberInput
               value={Math.round(internal)}
-              unit="kPa"
-              width="75px"
+              unit='kPa'
+              width='75px'
               minValue={0}
               step={10}
               maxValue={5066}
@@ -76,20 +76,20 @@ export const Vent = (props, context) => {
                 value,
               })} />
             <Button
-              icon="undo"
+              icon='undo'
               disabled={intdefault}
-              content="Reset"
+              content='Reset'
               onClick={() => act('reset_internal_pressure', {
                 id_tag,
               })} />
           </LabeledList.Item>
         )}
         {!!excheck && (
-          <LabeledList.Item label="External Target">
+          <LabeledList.Item label='External Target'>
             <NumberInput
               value={Math.round(external)}
-              unit="kPa"
-              width="75px"
+              unit='kPa'
+              width='75px'
               minValue={0}
               step={10}
               maxValue={5066}
@@ -98,9 +98,9 @@ export const Vent = (props, context) => {
                 value,
               })} />
             <Button
-              icon="undo"
+              icon='undo'
               disabled={extdefault}
-              content="Reset"
+              content='Reset'
               onClick={() => act('reset_external_pressure', {
                 id_tag,
               })} />
@@ -138,7 +138,7 @@ export const Scrubber = (props, context) => {
           })} />
       )}>
       <LabeledList>
-        <LabeledList.Item label="Mode">
+        <LabeledList.Item label='Mode'>
           <Button
             icon={scrubbing ? 'filter' : 'sign-in-alt'}
             color={scrubbing || 'danger'}
@@ -156,9 +156,9 @@ export const Scrubber = (props, context) => {
               val: Number(!widenet),
             })} />
         </LabeledList.Item>
-        <LabeledList.Item label="Filters">
-          {scrubbing
-            && filter_types.map(filter => (
+        <LabeledList.Item label='Filters'>
+          {scrubbing &&
+            filter_types.map(filter => (
               <Button key={filter.gas_id}
                 icon={filter.enabled ? 'check-square-o' : 'square-o'}
                 content={getGasLabel(filter.gas_id, filter.gas_name)}
@@ -168,8 +168,8 @@ export const Scrubber = (props, context) => {
                   id_tag,
                   val: filter.gas_id,
                 })} />
-            ))
-            || 'N/A'}
+            )) ||
+            'N/A'}
         </LabeledList.Item>
       </LabeledList>
     </Section>

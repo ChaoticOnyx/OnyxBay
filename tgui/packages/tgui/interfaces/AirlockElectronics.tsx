@@ -28,16 +28,16 @@ export const AirlockElectronics = (props: any, context: any) => {
   data.regions.map(
     (region) =>
       (accesses = accesses.concat(
-        region.accesses.filter((access) => access.req !== 0)
-      ))
+        region.accesses.filter((access) => access.req !== 0),
+      )),
   );
 
   return (
     <Window width={420} height={485}>
       <Window.Content scrollable fitted>
-        <Section title="Main">
+        <Section title='Main'>
           <LabeledList>
-            <LabeledList.Item label="Access Required">
+            <LabeledList.Item label='Access Required'>
               <Button
                 icon={oneAccess ? 'unlock' : 'lock'}
                 content={oneAccess ? 'One' : 'All'}
@@ -52,7 +52,8 @@ export const AirlockElectronics = (props: any, context: any) => {
           accessMod={(id: number) =>
             act('set', {
               access: id,
-            })}
+            })
+          }
         />
       </Window.Content>
     </Window>
@@ -87,10 +88,10 @@ export const AirlockAccessList = (props: any, context: any) => {
   const [selectedRegionName, setSelectedRegionName] = useLocalState(
     context,
     'accessName',
-    regions[0]?.name
+    regions[0]?.name,
   );
   const selectedAccess = regions.find(
-    (region) => region.name === selectedRegionName
+    (region) => region.name === selectedRegionName,
   );
   const selectedAccessEntries = selectedAccess?.accesses || [];
 
@@ -114,7 +115,7 @@ export const AirlockAccessList = (props: any, context: any) => {
   };
 
   return (
-    <Section title="Access" fill>
+    <Section title='Access' fill>
       <Flex>
         <Flex.Item>
           <Tabs vertical>

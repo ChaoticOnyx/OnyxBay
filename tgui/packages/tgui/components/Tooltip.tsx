@@ -1,14 +1,13 @@
-
 import { Placement } from '@popperjs/core';
 import { Component, findDOMfromVNode, InfernoNode } from 'inferno';
-import { Popper } from "./Popper";
+import { Popper } from './Popper';
 
-const DEFAULT_PLACEMENT = "top";
+const DEFAULT_PLACEMENT = 'top';
 
 type TooltipProps = {
   children?: InfernoNode;
   content: string;
-  position?: Placement,
+  position?: Placement;
 };
 
 type TooltipState = {
@@ -35,13 +34,13 @@ export class Tooltip extends Component<TooltipProps, TooltipState> {
     // immediately if this internal variable is removed.
     const domNode = findDOMfromVNode(this.$LI, true);
 
-    domNode.addEventListener("mouseenter", () => {
+    domNode.addEventListener('mouseenter', () => {
       this.setState({
         hovered: true,
       });
     });
 
-    domNode.addEventListener("mouseleave", () => {
+    domNode.addEventListener('mouseleave', () => {
       this.setState({
         hovered: false,
       });
@@ -52,11 +51,11 @@ export class Tooltip extends Component<TooltipProps, TooltipState> {
     return (
       <Popper
         options={{
-          placement: this.props.position || "auto",
+          placement: this.props.position || 'auto',
         }}
         popperContent={
           <div
-            className="Tooltip"
+            className='Tooltip'
             style={{
               opacity: this.state.hovered ? 1 : 0,
             }}>
@@ -64,7 +63,7 @@ export class Tooltip extends Component<TooltipProps, TooltipState> {
           </div>
         }
         additionalStyles={{
-          "pointer-events": "none",
+          'pointer-events': 'none',
         }}>
         {this.props.children}
       </Popper>

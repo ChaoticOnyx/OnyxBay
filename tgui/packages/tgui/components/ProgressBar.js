@@ -8,7 +8,7 @@ import { clamp01, scale, keyOfMatchingRange, toFixed } from 'common/math';
 import { classes, pureComponentHooks } from 'common/react';
 import { computeBoxClassName, computeBoxProps } from './Box';
 
-export const ProgressBar = props => {
+export const ProgressBar = (props) => {
   const {
     className,
     value,
@@ -21,9 +21,8 @@ export const ProgressBar = props => {
   } = props;
   const scaledValue = scale(value, minValue, maxValue);
   const hasContent = children !== undefined;
-  const effectiveColor = color
-    || keyOfMatchingRange(value, ranges)
-    || 'default';
+  const effectiveColor =
+    color || keyOfMatchingRange(value, ranges) || 'default';
   return (
     <div
       className={classes([
@@ -34,14 +33,13 @@ export const ProgressBar = props => {
       ])}
       {...computeBoxProps(rest)}>
       <div
-        className="ProgressBar__fill ProgressBar__fill--animated"
+        className='ProgressBar__fill ProgressBar__fill--animated'
         style={{
           width: clamp01(scaledValue) * 100 + '%',
-        }} />
-      <div className="ProgressBar__content">
-        {hasContent
-          ? children
-          : toFixed(scaledValue * 100) + '%'}
+        }}
+      />
+      <div className='ProgressBar__content'>
+        {hasContent ? children : toFixed(scaledValue * 100) + '%'}
       </div>
     </div>
   );

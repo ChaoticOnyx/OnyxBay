@@ -16,13 +16,10 @@ export const NowPlayingWidget = (props, context) => {
   const settings = useSettings(context);
   const title = audio.meta?.title;
   return (
-    <Flex align="center">
-      {audio.playing && (
+    <Flex align='center'>
+      {(audio.playing && (
         <>
-          <Flex.Item
-            shrink={0}
-            mx={0.5}
-            color="label">
+          <Flex.Item shrink={0} mx={0.5} color='label'>
             Now playing:
           </Flex.Item>
           <Flex.Item
@@ -36,32 +33,38 @@ export const NowPlayingWidget = (props, context) => {
             {title || 'Unknown Track'}
           </Flex.Item>
         </>
-      ) || (
-        <Flex.Item grow={1} color="label">
+      )) || (
+        <Flex.Item grow={1} color='label'>
           Nothing to play.
         </Flex.Item>
       )}
       {audio.playing && (
-        <Flex.Item mx={0.5} fontSize="0.9em">
+        <Flex.Item mx={0.5} fontSize='0.9em'>
           <Button
-            tooltip="Stop"
-            icon="stop"
-            onClick={() => dispatch({
-              type: 'audio/stopMusic',
-            })} />
+            tooltip='Stop'
+            icon='stop'
+            onClick={() =>
+              dispatch({
+                type: 'audio/stopMusic',
+              })
+            }
+          />
         </Flex.Item>
       )}
-      <Flex.Item mx={0.5} fontSize="0.9em">
+      <Flex.Item mx={0.5} fontSize='0.9em'>
         <Knob
           minValue={0}
           maxValue={1}
           value={settings.adminMusicVolume}
           step={0.0025}
           stepPixelSize={1}
-          format={value => toFixed(value * 100) + '%'}
-          onDrag={(e, value) => settings.update({
-            adminMusicVolume: value,
-          })} />
+          format={(value) => toFixed(value * 100) + '%'}
+          onDrag={(e, value) =>
+            settings.update({
+              adminMusicVolume: value,
+            })
+          }
+        />
       </Flex.Item>
     </Flex>
   );

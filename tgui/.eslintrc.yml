@@ -15,6 +15,7 @@ plugins:
 settings:
   react:
     version: '16.10'
+extends: prettier
 rules:
 
   ## Possible Errors
@@ -349,7 +350,7 @@ rules:
   # implicit-arrow-linebreak: error
   ## Enforce the consistent use of either double or single quotes in JSX
   ## attributes
-  jsx-quotes: [error, prefer-double]
+  jsx-quotes: [error, prefer-single]
   ## Enforce consistent spacing between keys and values in object literal
   ## properties
   key-spacing: [error, { beforeColon: false, afterColon: true }]
@@ -444,7 +445,7 @@ rules:
   ## Require or disallow assignment operator shorthand where possible
   # operator-assignment: error
   ## Enforce consistent linebreak style for operators
-  operator-linebreak: [error, before]
+  operator-linebreak: [error, after]
   ## Require or disallow padding within blocks
   # padded-blocks: error
   ## Require or disallow padding lines between statements
@@ -682,7 +683,7 @@ rules:
   react/jsx-closing-tag-location: error
   ## Enforce or disallow newlines inside of curly braces in JSX attributes and
   ## expressions (fixable)
-  react/jsx-curly-newline: error
+  react/jsx-curly-newline: off
   ## Enforce or disallow spaces inside of curly braces in JSX attributes and
   ## expressions (fixable)
   react/jsx-curly-spacing: error

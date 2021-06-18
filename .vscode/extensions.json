@@ -2,8 +2,10 @@
     "recommendations": [
         "gbasood.byond-dm-language-support",
         "platymuus.dm-langclient",
-        "EditorConfig.EditorConfig",
+        "editorconfig.editorconfig",
         "ms-vscode.powershell-preview",
-        "ms-dotnettools.csharp"
+        "ms-dotnettools.csharp",
+        "esbenp.prettier-vscode",
+        "dbaeumer.vscode-eslint"
     ]
 }
