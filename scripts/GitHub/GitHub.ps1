@@ -210,29 +210,28 @@ function Get-GithubPullRequestFiles
         foreach ($RawFile in $RawFiles)
         {
             Write-Debug "Парсинг изменений в $($RawFile.FileName)"
-            $RegexMatches = ($RawFile.Patch | Select-String -Pattern '\+(?<line>\d+),(?<lines_count>\d+)' -AllMatches).Matches
             $Lines = ($RawFile.Patch -Split "`n")
             [int[]]$ChangedLines = @()
 
-            foreach ($Match in $RegexMatches)
+            foreach ($Line in $Lines)
             {
+                $Match = ($Line | Select-String -Pattern '\+(?<line>\d+),(?<lines_count>\d+)' -AllMatches).Matches
                 $StartLine = ($Match.Groups | Where-Object -Property 'name' -EQ 'line' | Select-Object -ExpandProperty 'value') -as [int]
-                $i = $StartLine - 1
 
-                foreach ($Line in $Lines)
+                if ($StartLine -ne 0)
                 {
-                    Write-Debug "Строка $i : $Line"
+                    $i = $StartLine - 1
+                }
 
-                    if ($Line[0] -eq '+')
-                    {
-                        Write-Debug "Изменена строка $i"
-                        $ChangedLines += $i
-                        $i++
-                    }
-                    elseif ($Line[0] -ne '-')
-                    {
-                        $i++
-                    }
+                if ($Line[0] -eq '+')
+                {
+                    Write-Debug "Изменена строка $i"
+                    $ChangedLines += $i
+                    $i++
+                }
+                elseif ($Line[0] -ne '-')
+                {
+                    $i++
                 }
             }
 
