@@ -162,13 +162,17 @@
 					rand_damage = 7
 					accurate = 1
 
+			if(istype(H.gloves, /obj/item/clothing/gloves/chameleon/robust)) // Syndie Gloves Go Robust
+				rand_damage = rand(7, 14)
+				accurate = 1
+
 			if (M.grabbed_by.len)
 				// Someone got a good grip on them, they won't be able to do much damage
 				rand_damage = max(2, rand_damage - 2)
 
 			if(src.grabbed_by.len || !src.MayMove() || src==H || H.species.species_flags & SPECIES_FLAG_NO_BLOCK)
 				accurate = 1 // certain circumstances make it impossible for us to evade punches
-				rand_damage = 5
+				rand_damage *= 5
 
 				if(src.grabbed_by.len)
 					for(var/obj/item/grab/G in src.grabbed_by)

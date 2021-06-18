@@ -5,28 +5,34 @@
 	category = /datum/uplink_category/badassery
 
 /datum/uplink_item/item/badassery/balloon
-	name = "For showing that You Are The BOSS (Useless Balloon)"
+	name = "For showing that You Are The BOSS"
+	desc = "A beautiful balloon."
 	item_cost = DEFAULT_TELECRYSTAL_AMOUNT
 	path = /obj/item/toy/balloon
 
 /datum/uplink_item/item/badassery/balloon/NT
-	name = "For showing that you love NT SOO much (Useless Balloon)"
+	name = "For showing that you love NT SOO much"
 	path = /obj/item/toy/balloon/nanotrasen
 
+/datum/uplink_item/item/badassery/balloon/snail
+	name = "For showing that you know what you're doing"
+	path = /obj/item/toy/balloon/snail
+
 /datum/uplink_item/item/badassery/balloon/random
-	name = "For showing 'Whatevah~' (Useless Balloon)"
+	name = "For showing 'Whatevah~'"
 	desc = "Randomly selects a ballon for you!"
 	path = /obj/item/toy/balloon
-
-/datum/uplink_item/item/badassery/lighter
-	name = "For lighting cigarettes in a badass manner (Zippo Lighter)"
-	item_cost = 122
-	path = /obj/item/weapon/flame/lighter/zippo/syndie
 
 /datum/uplink_item/item/badassery/balloon/random/get_goods(obj/item/device/uplink/U, loc)
 	var/balloon_type = pick(typesof(path))
 	var/obj/item/I = new balloon_type(loc)
 	return I
+
+/datum/uplink_item/item/badassery/lighter
+	name = "For lighting cigarettes in a badass manner"
+	desc = "An extremely fancy zippo lighter. Only Syndicate members are properly trained to deal with such a fashionable thing."
+	item_cost = DEFAULT_TELECRYSTAL_AMOUNT - 1
+	path = /obj/item/weapon/flame/lighter/zippo/syndie
 
 /**************
 * Random Item *
@@ -70,8 +76,8 @@
 ****************/
 /datum/uplink_item/item/badassery/surplus
 	name = "\improper Surplus Crate"
-	item_cost = DEFAULT_TELECRYSTAL_AMOUNT * 4
-	var/item_worth = DEFAULT_TELECRYSTAL_AMOUNT * 6
+	item_cost = DEFAULT_TELECRYSTAL_AMOUNT * 2
+	var/item_worth = DEFAULT_TELECRYSTAL_AMOUNT * 3
 	var/icon
 
 /datum/uplink_item/item/badassery/surplus/New()
