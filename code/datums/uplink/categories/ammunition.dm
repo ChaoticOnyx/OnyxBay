@@ -3,6 +3,7 @@
 *************/
 /datum/uplink_item/item/ammo
 	category = /datum/uplink_category/ammunition
+	item_cost = 1
 
 /datum/uplink_item/item/ammo/c45m
 	name = ".45"
