@@ -36,7 +36,7 @@ class LineRange
 class PullRequestFile
 {
     [string]$FileName
-    [LineRange[]]$ChangedLines
+    [int[]]$ChangedLines
 }
 
 class Asset
@@ -211,24 +211,29 @@ function Get-GithubPullRequestFiles
         {
             Write-Debug "Парсинг изменений в $($RawFile.FileName)"
             $RegexMatches = ($RawFile.Patch | Select-String -Pattern '\+(?<line>\d+),(?<lines_count>\d+)' -AllMatches).Matches
-            [LineRange[]]$ChangeRanges = @()
+            $Lines = ($RawFile.Patch -Split "`n")
+            [int[]]$ChangedLines = @()
 
             foreach ($Match in $RegexMatches)
             {
                 $StartLine = ($Match.Groups | Where-Object -Property 'name' -EQ 'line' | Select-Object -ExpandProperty 'value') -as [int]
-                $LinesCount = ($Match.Groups | Where-Object -Property 'name' -EQ 'lines_count' | Select-Object -ExpandProperty 'value') -as [int]
+                $i = $StartLine - 1
 
-                Write-Debug "Определён диапазон $StartLine-$($StartLine + $LinesCount)"
+                foreach ($Line in $Lines)
+                {
+                    if ($Line[0] -eq '+')
+                    {
+                        Write-Debug "Изменена строка $i"
+                        $ChangedLines += $i
+                    }
 
-                $ChangeRanges += [LineRange]@{
-                    Start = $StartLine
-                    End   = $StartLine + $LinesCount
+                    $i++
                 }
             }
 
             $Files += [PullRequestFile]@{
                 FileName     = $RawFile.FileName
-                ChangedLines = $ChangeRanges
+                ChangedLines = $ChangedLines
             }
         }
 

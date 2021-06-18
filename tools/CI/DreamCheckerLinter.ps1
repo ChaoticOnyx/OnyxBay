@@ -33,7 +33,7 @@ foreach ($Message in $Messages)
         continue
     }
 
-    if ($null -eq ($ChangedFiles | Select-Object -ExpandProperty ChangedLines | Where-Object -Property Start -LT $Message.Line | Where-Object -Property End -GT $Message.Line))
+    if ($null -eq ($ChangedFiles | Select-Object -ExpandProperty ChangedLines | Where-Object -Property Start -EQ $Message.Line))
     {
         continue
     }
