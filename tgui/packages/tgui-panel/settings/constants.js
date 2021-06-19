@@ -13,6 +13,10 @@ export const SETTINGS_TABS = [
     id: 'chatPage',
     name: 'Chat Tabs',
   },
+  {
+    id: 'backgroundImage',
+    name: 'Background Image',
+  },
 ];
 
 
@@ -31,3 +35,15 @@ export const FONTS = [
   'Courier New',
   'Lucida Console',
 ];
+
+export const REPEAT_MODE = {
+  no: 'no-repeat',
+  repeat: 'repeat',
+  repeatx: 'repeat-x',
+  repeaty: 'repeat-y',
+};
+
+export const SIZE_MODE = {
+  cover: 'cover',
+  contain: 'contain',
+};
