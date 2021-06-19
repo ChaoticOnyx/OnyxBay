@@ -13,7 +13,7 @@
 	mod_reach = 0.75
 	mod_handy = 1.0
 
-/obj/item/weapon/nullrod/attack(mob/M as mob, mob/living/user as mob)
+/obj/item/weapon/nullrod/attack(mob/M, mob/living/user)
 	admin_attack_log(user, M, "Attacked using \a [src]", "Was attacked with \a [src]", "used \a [src] to attack")
 
 	user.setClickCooldown(DEFAULT_ATTACK_COOLDOWN)
@@ -53,4 +53,3 @@
 		var/turf/simulated/floor/misc/cult/F = A
 		user.visible_message(SPAN_NOTICE("\The [user] touches \the [A] with \the [src], and the enchantment affecting it fizzles away."),SPAN_NOTICE("You touch \the [A] with \the [src], and the enchantment affecting it fizzles away."))
 		F.decultify()
-
