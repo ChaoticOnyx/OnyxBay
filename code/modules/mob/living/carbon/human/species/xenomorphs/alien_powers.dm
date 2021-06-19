@@ -18,7 +18,7 @@
 
 	if(amount)
 		I.stored_plasma += amount
-	I.stored_plasma = max(0, min(I.stored_plasma,I.max_plasma))
+	I.stored_plasma = max(0, min(I.stored_plasma, I.max_plasma))
 
 /mob/living/carbon/human/proc/check_alien_ability(cost, needs_organ = null, needs_foundation = FALSE, silent = FALSE) //Returns 1 if the ability is clear for usage.
 
