@@ -238,11 +238,11 @@ var/global/list/_client_preferences_by_type
 /datum/client_preference/chat_position
 	description = "Use Alternative Chat Position"
 	key = "CHAT_ALT"
-	default_value = GLOB.PREF_NO
+	options = list(GLOB.PREF_NO, GLOB.PREF_YES)
 
 /datum/client_preference/chat_position/changed(mob/preference_mob, new_value)
 	if(preference_mob.client)
-		preference_mob.client.update_chat_position(new_value)
+		preference_mob.client.update_chat_position()
 
 /datum/client_preference/cinema_credits
 	description = "Show Cinema-like Credits At Round-end"

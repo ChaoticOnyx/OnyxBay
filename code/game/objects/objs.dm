@@ -16,6 +16,7 @@
 	var/armor_penetration = 0
 	var/anchor_fall = FALSE
 	var/pull_slowdown = PULL_SLOWDOWN_WEIGHT // How much it slows us down while we are pulling it
+	hitby_sound = 'sound/effects/metalhit2.ogg'
 
 /obj/Destroy()
 	CAN_BE_REDEFINED(TRUE)

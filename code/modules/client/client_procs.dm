@@ -452,9 +452,11 @@
 
 /client/proc/update_chat_position(use_alternative)
 	var/input_height = 0
+	var/mode = get_preference_value(/datum/client_preference/chat_position)
 	var/currently_alternative = (winget(src, "input", "is-default") == "false") ? TRUE : FALSE
+
 	// Hell
-	if(use_alternative == GLOB.PREF_YES && !currently_alternative)
+	if(mode == GLOB.PREF_YES && !currently_alternative)
 		input_height = winget(src, "input", "size")
 		input_height = text2num(splittext(input_height, "x")[2])
 
@@ -474,7 +476,7 @@
 		current_size = splittext(winget(src, "mainwindow.mainvsplit", "size"), "x")
 		new_size = "[current_size[1]]x[text2num(current_size[2]) + input_height]"
 		winset(src, "mainwindow.mainvsplit", "size=[new_size]")
-	else if(use_alternative == GLOB.PREF_NO && currently_alternative)
+	else if(mode == GLOB.PREF_NO && currently_alternative)
 		input_height = winget(src, "input_alt", "size")
 		input_height = text2num(splittext(input_height, "x")[2])
 

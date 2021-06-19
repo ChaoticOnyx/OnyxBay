@@ -92,7 +92,7 @@
 
 /decl/hierarchy/outfit/job/mime
 	name = OUTFIT_JOB_NAME("Mime")
-	head = /obj/item/clothing/head/beret
+	head = /obj/item/clothing/head/beret/classique
 	uniform = /obj/item/clothing/under/mime
 	id_type = /obj/item/weapon/card/id/civilian/mime
 	pda_type = /obj/item/device/pda/mime

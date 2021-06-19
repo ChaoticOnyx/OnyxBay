@@ -9,24 +9,20 @@
 	return new /obj/item/stack/telecrystal(loc, cost(U.uses, U))
 
 /datum/uplink_item/item/telecrystal/one
-	name = "Telecrystal - 01"
+	name = "Telecrystal - 1"
 	item_cost = 1
 
-/datum/uplink_item/item/telecrystal/five
-	name = "Telecrystals - 05"
-	item_cost = 5
+/datum/uplink_item/item/telecrystal/three
+	name = "Telecrystals - 3"
+	item_cost = 3
 
-/datum/uplink_item/item/telecrystal/ten
-	name = "Telecrystals - 10"
-	item_cost = 10
+/datum/uplink_item/item/telecrystal/six
+	name = "Telecrystals - 6"
+	item_cost = 6
 
-/datum/uplink_item/item/telecrystal/twentyfive
-	name = "Telecrystals - 25"
-	item_cost = 25
-
-/datum/uplink_item/item/telecrystal/fifty
-	name = "Telecrystals - 50"
-	item_cost = 50
+/datum/uplink_item/item/telecrystal/twelve
+	name = "Telecrystals - 12"
+	item_cost = 12
 
 /datum/uplink_item/item/telecrystal/all
 	name = "Telecrystals - Empty Uplink"

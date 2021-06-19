@@ -32,10 +32,10 @@ const Story = (props, context) => {
       </ProgressBar>
       <Box mt={1}>
         <Button
-          content="-0.1"
+          content='-0.1'
           onClick={() => setProgress(progress - 0.1)} />
         <Button
-          content="+0.1"
+          content='+0.1'
           onClick={() => setProgress(progress + 0.1)} />
       </Box>
     </Section>

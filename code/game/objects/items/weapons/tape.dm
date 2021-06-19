@@ -3,6 +3,7 @@
 	desc = "A roll of sticky tape. Possibly for taping ducks... or was that ducts?"
 	icon = 'icons/obj/bureaucracy.dmi'
 	icon_state = "taperoll"
+	var/tape_speed = 30
 	w_class = ITEM_SIZE_SMALL
 
 /obj/item/weapon/tape_roll/attack(mob/living/carbon/human/H, mob/user)
@@ -23,7 +24,7 @@
 				return
 			user.visible_message("<span class='danger'>\The [user] begins taping over \the [H]'s eyes!</span>")
 
-			if(!do_mob(user, H, 30))
+			if(!do_mob(user, H, tape_speed))
 				return
 
 			// Repeat failure checks.
@@ -48,7 +49,7 @@
 				return
 			user.visible_message("<span class='danger'>\The [user] begins taping up \the [H]'s mouth!</span>")
 
-			if(!do_mob(user, H, 30))
+			if(!do_mob(user, H, tape_speed))
 				return
 
 			// Repeat failure checks.
@@ -66,7 +67,7 @@
 
 		else if(user.zone_sel.selecting == BP_CHEST)
 			if(H.wear_suit && istype(H.wear_suit, /obj/item/clothing/suit/space))
-				if(H == user || do_mob(user, H, 10))	//Skip the time-check if patching your own suit, that's handled in attackby()
+				if(H == user || do_mob(user, H, (tape_speed /3 )))	//Skip the time-check if patching your own suit, that's handled in attackby()
 					H.wear_suit.attackby(src, user)
 			else
 				to_chat(user, "<span class='warning'>\The [H] isn't wearing a spacesuit for you to reseal.</span>")
@@ -82,6 +83,11 @@
 	var/obj/item/weapon/ducttape/tape = new(get_turf(src))
 	tape.attach(W)
 	user.put_in_hands(tape)
+
+/obj/item/weapon/tape_roll/syndie
+	desc = "A roll of sticky tape. This one is suspiciously sticky."
+	icon_state = "syndietape"
+	tape_speed = 5
 
 /obj/item/weapon/ducttape
 	name = "piece of tape"

@@ -17,9 +17,9 @@ const Story = (props, context) => {
   return (
     <Section>
       <LabeledList>
-        <LabeledList.Item label="Use theme">
+        <LabeledList.Item label='Use theme'>
           <Input
-            placeholder="theme_name"
+            placeholder='theme_name'
             value={theme}
             onInput={(e, value) => setTheme(value)} />
         </LabeledList.Item>

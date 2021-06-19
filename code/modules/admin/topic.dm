@@ -1664,17 +1664,6 @@
 			return
 		show_traitor_panel(M)
 
-	else if(href_list["skillpanel"])
-		if(!check_rights(R_INVESTIGATE))
-			return
-
-		if(GAME_STATE < RUNLEVEL_GAME)
-			alert("The game hasn't started yet!")
-			return
-
-		var/mob/M = locate(href_list["skillpanel"])
-		show_skills(M)
-
 	else if(href_list["create_object"])
 		if(!check_rights(R_SPAWN))	return
 		return create_object(usr)

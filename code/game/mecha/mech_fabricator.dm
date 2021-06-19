@@ -9,6 +9,8 @@
 	idle_power_usage = 20
 	active_power_usage = 5000
 	req_access = list(access_robotics)
+	clicksound = 'sound/effects/using/console/press2.ogg'
+	clickvol = 30
 
 	var/speed = 1
 	var/mat_efficiency = 1
@@ -85,67 +87,77 @@
 		return
 	if(!allowed(user))
 		return
-	ui_interact(user)
+	tgui_interact(user)
 
-/obj/machinery/mecha_part_fabricator/ui_interact(mob/user, ui_key = "main", datum/nanoui/ui = null, force_open = 1)
-	var/data[0]
+/obj/machinery/mecha_part_fabricator/tgui_interact(mob/user, datum/tgui/ui)
+	ui = SStgui.try_update_ui(user, src, ui)
 
+	if(!ui)
+		ui = new(user, src, "MechaFabricator")
+		ui.open()
+
+/obj/machinery/mecha_part_fabricator/tgui_data(mob/user)
 	var/datum/design/current = queue.len ? queue[1] : null
-	if(current)
-		data["current"] = current.name
-	data["queue"] = get_queue_names()
-	data["buildable"] = get_build_options()
-	data["category"] = category
-	data["categories"] = categories
+	var/data = list(
+		"current" = current?.name,
+		"queue" = get_queue_names(),
+		"buildable" = get_build_options(),
+		"category" = category,
+		"categories" = categories
+	)
+
 	if(all_robolimbs)
 		var/list/T = list()
+
 		for(var/A in all_robolimbs)
 			var/datum/robolimb/R = all_robolimbs[A]
+
 			if(R.unavailable_at_fab || R.applies_to_part.len)
 				continue
-			T += list(list("id" = A, "company" = R.company))
+			
+			T += list(list(
+				"id" = A,
+				"company" = R.company
+			))
+		
 		data["manufacturers"] = T
 		data["manufacturer"] = manufacturer
+	
 	data["materials"] = get_materials()
 	data["maxres"] = res_max_amount
 	data["sync"] = sync_message
+	
 	if(current)
 		data["builtperc"] = round((progress / current.time) * 100)
 
-	ui = SSnano.try_update_ui(user, src, ui_key, ui, data, force_open)
-	if(!ui)
-		ui = new(user, src, ui_key, "mechfab.tmpl", "Exosuit Fabricator UI", 840, 600)
-		ui.set_initial_data(data)
-		ui.open()
-		ui.set_auto_update(1)
+	return data
 
-/obj/machinery/mecha_part_fabricator/Topic(href, href_list)
-	if(..())
+/obj/machinery/mecha_part_fabricator/tgui_act(action, params)
+	. = ..()
+	
+	if(.)
 		return
 
-	if(href_list["build"])
-		add_to_queue(text2num(href_list["build"]))
-
-	if(href_list["remove"])
-		remove_from_queue(text2num(href_list["remove"]))
-
-	if(href_list["category"])
-		if(href_list["category"] in categories)
-			category = href_list["category"]
-
-	if(href_list["manufacturer"])
-		if(href_list["manufacturer"] in all_robolimbs)
-			manufacturer = href_list["manufacturer"]
-
-	if(href_list["eject"])
-		eject_materials(href_list["eject"], text2num(href_list["amount"]))
-
-	if(href_list["sync"])
-		sync()
-	else
-		sync_message = ""
-
-	return 1
+	switch(action)
+		if("build")
+			add_to_queue(text2num(params["build"]))
+			. = TRUE
+		if("remove")
+			remove_from_queue(text2num(params["remove"]))
+			. = TRUE
+		if("category")
+			if(params["category"] in categories)
+				category = params["category"]
+				. = TRUE
+		if("eject")
+			eject_materials(params["eject"], text2num(params["amount"]))
+			. = TRUE
+		if("sync")
+			sync()
+			. = TRUE
+		if("manufacturer")
+			manufacturer = params["manufacturer"]
+			. = TRUE
 
 /obj/machinery/mecha_part_fabricator/attackby(obj/item/I, mob/user)
 	if(busy)

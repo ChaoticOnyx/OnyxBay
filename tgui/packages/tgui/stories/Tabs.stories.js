@@ -26,7 +26,7 @@ const Story = (props, context) => {
       <Section>
         <Button.Checkbox
           inline
-          content="vertical"
+          content='vertical'
           checked={tabProps.vertical}
           onClick={() => setTabProps({
             ...tabProps,
@@ -34,7 +34,7 @@ const Story = (props, context) => {
           })} />
         <Button.Checkbox
           inline
-          content="leftSlot"
+          content='leftSlot'
           checked={tabProps.leftSlot}
           onClick={() => setTabProps({
             ...tabProps,
@@ -42,7 +42,7 @@ const Story = (props, context) => {
           })} />
         <Button.Checkbox
           inline
-          content="rightSlot"
+          content='rightSlot'
           checked={tabProps.rightSlot}
           onClick={() => setTabProps({
             ...tabProps,
@@ -50,7 +50,7 @@ const Story = (props, context) => {
           })} />
         <Button.Checkbox
           inline
-          content="icon"
+          content='icon'
           checked={tabProps.icon}
           onClick={() => setTabProps({
             ...tabProps,
@@ -58,7 +58,7 @@ const Story = (props, context) => {
           })} />
         <Button.Checkbox
           inline
-          content="fluid"
+          content='fluid'
           checked={tabProps.fluid}
           onClick={() => setTabProps({
             ...tabProps,
@@ -66,7 +66,7 @@ const Story = (props, context) => {
           })} />
         <Button.Checkbox
           inline
-          content="centered"
+          content='centered'
           checked={tabProps.centered}
           onClick={() => setTabProps({
             ...tabProps,
@@ -76,7 +76,7 @@ const Story = (props, context) => {
       <Section fitted>
         <TabsPrefab />
       </Section>
-      <Section title="Normal section">
+      <Section title='Normal section'>
         <TabsPrefab />
         Some text
       </Section>
@@ -105,15 +105,15 @@ const TabsPrefab = (props, context) => {
             <Button
               circular
               compact
-              color="transparent"
-              icon="times" />
+              color='transparent'
+              icon='times' />
           )}
           rightSlot={tabProps.rightSlot && (
             <Button
               circular
               compact
-              color="transparent"
-              icon="times" />
+              color='transparent'
+              icon='times' />
           )}
           onClick={() => setTabIndex(i)}>
           {text}

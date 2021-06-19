@@ -29,21 +29,22 @@ export const SuitSensorJammer = (props, context) => {
     <Window width={350} height={506}>
       <Window.Content fitted>
         <Section
-          title="Status"
+          title='Status'
           buttons={
             <Button
-              content="Toggle Jammer"
-              icon="wifi"
+              content='Toggle Jammer'
+              icon='wifi'
               selected={data.active}
               onClick={() =>
-                act(data.active ? 'disable_jammer' : 'enable_jammer')}
+                act(data.active ? 'disable_jammer' : 'enable_jammer')
+              }
             />
           }>
           <LabeledList>
-            <LabeledList.Item label="State">
+            <LabeledList.Item label='State'>
               {data.active ? 'Active' : 'Disabled'}
             </LabeledList.Item>
-            <LabeledList.Item label="Charge">
+            <LabeledList.Item label='Charge'>
               <ProgressBar
                 ranges={{
                   good: [0.6, 1.0],
@@ -53,29 +54,29 @@ export const SuitSensorJammer = (props, context) => {
                 value={String(charge)}
               />
             </LabeledList.Item>
-            <LabeledList.Item label="Energy Consumption">
+            <LabeledList.Item label='Energy Consumption'>
               ~{data.total_cost}W
             </LabeledList.Item>
           </LabeledList>
         </Section>
-        <Section title="Settings">
+        <Section title='Settings'>
           <LabeledList>
-            <LabeledList.Item label="Range">
+            <LabeledList.Item label='Range'>
               {data.range}{' '}
               <Button
                 disabled={data.range <= 0 ? '1' : null}
-                icon="minus"
+                icon='minus'
                 onClick={() => act('decrease_range')}
               />
               <Button
                 disabled={data.range >= data.max_range ? '1' : null}
-                icon="plus"
+                icon='plus'
                 onClick={() => act('increase_range')}
               />
             </LabeledList.Item>
           </LabeledList>
         </Section>
-        <Section title="Methods">
+        <Section title='Methods'>
           {methods.map((method) => {
             return (
               <>
