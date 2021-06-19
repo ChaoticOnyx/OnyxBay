@@ -248,7 +248,7 @@
 				client.eye = loc
 	return
 
-/mob/proc/show_inv(mob/user as mob)
+/mob/proc/show_inv(mob/user)
 	return
 
 //mob verbs are faster than object verbs. See http://www.byond.com/forum/?post=1326139&page=2#comment8198716 for why this isn't atom/verb/examine()
@@ -528,14 +528,18 @@
 			return 1
 	return 0
 
-/mob/MouseDrop(mob/M as mob)
+/mob/MouseDrop(mob/M)
 	..()
-	if(M != usr) return
-	if(usr == src) return
-	if(!Adjacent(usr)) return
-	if(istype(M,/mob/living/silicon/ai)) return
+	if(M != usr)
+		return
+	if(usr == src)
+		return
+	if(!Adjacent(usr))
+		return
+	if(istype(M,/mob/living/silicon/ai))
+		return
 	show_inv(usr)
-	usr.show_inventory.open()
+	usr.show_inventory?.open()
 
 /mob/verb/stop_pulling()
 

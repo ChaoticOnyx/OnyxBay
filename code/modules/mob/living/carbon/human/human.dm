@@ -235,7 +235,7 @@
 /mob/living/carbon/human/var/temperature_resistance = T0C+75
 
 /mob/living/carbon/human/show_inv(mob/user)
-	if(user.incapacitated() || !user.Adjacent(src) || !user.IsAdvancedToolUser())
+	if(user.incapacitated() || !user.Adjacent(src))
 		return
 	var/dat = "<B><HR><FONT size=3>[name]</FONT></B><BR><HR>"
 	var/firstline = TRUE
