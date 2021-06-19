@@ -431,10 +431,20 @@
 			var/datum/effect/effect/system/spark_spread/s = new /datum/effect/effect/system/spark_spread
 			s.set_up(3, 1, src)
 			s.start()
-			if(ishuman(user) && prob(75) && electrocute_mob(user, get_area(src), src, rand(0.7, 1.0)))
-				user.visible_message(SPAN("warning", "[user] tries to pry [lightbulb] out of [src] with [W], only to get shocked."))
-				user.drop_item()
-				return
+			if(ishuman(user) && prob(75))
+				var/mob/living/carbon/human/H = user
+				var/wrong_choice = FALSE
+				if(H.species.siemens_coefficient <= 0)
+					wrong_choice = TRUE
+				else if(H.gloves)
+					var/obj/item/clothing/gloves/G = H.gloves
+					if(G.siemens_coefficient == 0)
+						wrong_choice = TRUE
+				if(wrong_choice)
+					user.visible_message(SPAN("warning", "[user] tries to pry [lightbulb] out of [src] with [W], only to get shocked."))
+					user.drop_item()
+					electrocute_mob(user, get_area(src), src, rand(0.7, 1.0))
+					return
 		user.visible_message(SPAN("notice", "[user] pries [lightbulb] out of [src] with [W]."))
 		remove_bulb()
 		return
