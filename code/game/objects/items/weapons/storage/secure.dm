@@ -351,7 +351,7 @@
 				if(src.gunspawned == 0)
 					src.gunspawned = 1
 					if (src.guntype == "M1911")
-						src.gun = new /obj/item/weapon/gun/projectile/colt/detective(src)
+						src.gun = new /obj/item/weapon/gun/projectile/pistol/colt/detective(src)
 						new /obj/item/ammo_magazine/c45m/rubber(src)
 						new /obj/item/ammo_magazine/c45m/rubber(src)
 						new /obj/item/ammo_magazine/c45m/stun(src)
@@ -379,7 +379,7 @@
 						new /obj/item/ammo_magazine/c44/chem(src)
 						new /obj/item/weapon/cell/device/high(src)
 					else if(src.guntype == "T9 Patrol")
-						src.gun = new /obj/item/weapon/gun/projectile/det_m9(src)
+						src.gun = new /obj/item/weapon/gun/projectile/pistol/det_m9(src)
 						new /obj/item/ammo_magazine/mc9mm(src)
 						new /obj/item/ammo_magazine/mc9mm(src)
 						new /obj/item/ammo_magazine/mc9mm(src)

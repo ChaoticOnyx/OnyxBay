@@ -53,13 +53,13 @@ var/list/gear_datums = list()
 	var/hide_donate_gear = FALSE
 	var/flag_not_enough_opyxes = FALSE
 
-/datum/category_item/player_setup_item/loadout/load_character(savefile/S)
-	from_file(S["gear_list"], pref.gear_list)
-	from_file(S["gear_slot"], pref.gear_slot)
+/datum/category_item/player_setup_item/loadout/load_character(datum/pref_record_reader/R)
+	pref.gear_list = R.read("gear_list")
+	pref.gear_slot = R.read("gear_slot")
 
-/datum/category_item/player_setup_item/loadout/save_character(savefile/S)
-	to_file(S["gear_list"], pref.gear_list)
-	to_file(S["gear_slot"], pref.gear_slot)
+/datum/category_item/player_setup_item/loadout/save_character(datum/pref_record_writer/W)
+	W.write("gear_list", pref.gear_list)
+	W.write("gear_slot", pref.gear_slot)
 
 /datum/category_item/player_setup_item/loadout/proc/valid_gear_choices(max_cost)
 	. = list()
@@ -528,29 +528,6 @@ var/list/gear_datums = list()
 		for(var/datum/gear/G in pool)
 			if(G.cost > points_left || (G.slot && G.slot == chosen.slot))
 				pool -= G
-
-/datum/category_item/player_setup_item/loadout/update_setup(savefile/preferences, savefile/character)
-	if(preferences["version"] < 14)
-		var/list/old_gear = character["gear"]
-		if(istype(old_gear)) // During updates data isn't sanitized yet, we have to do manual checks
-			if(!istype(pref.gear_list)) pref.gear_list = list()
-			if(!pref.gear_list.len) pref.gear_list.len++
-			pref.gear_list[1] = old_gear
-		return 1
-
-	if(preferences["version"] < 15)
-		if(istype(pref.gear_list))
-			// Checks if the key of the pref.gear_list is a list.
-			// If not the key is replaced with the corresponding value.
-			// This will convert the loadout slot data to a reasonable and (more importantly) compatible format.
-			// I.e. list("1" = loadout_data1, "2" = loadout_data2, "3" = loadout_data3) becomes list(loadout_data1, loadout_data2, loadaout_data3)
-			for(var/index = 1 to pref.gear_list.len)
-				var/key = pref.gear_list[index]
-				if(islist(key))
-					continue
-				var/value = pref.gear_list[key]
-				pref.gear_list[index] = value
-		return 1
 
 /datum/category_item/player_setup_item/loadout/proc/gear_allowed_to_see(datum/gear/G)
 	ASSERT(G)

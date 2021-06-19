@@ -1,8 +1,11 @@
 {
 	// Lets you preview .dmi files in the editor
-	"workbench.editorAssociations": {
-		"*.dmi": "imagePreview.previewEditor"
-	},
+	"workbench.editorAssociations": [
+		{
+				"filenamePattern": "*.dmi",
+				"viewType": "imagePreview.previewEditor"
+		}
+	],
 	"files.associations": {
 		"*.tmpl": "html"
 	},
@@ -19,6 +22,12 @@
 				"/html/changelogs/.all_changelog.json"
 			],
 			"url": "/.vscode/changelog_cache.schema.json"
+		},
+		{
+			"fileMatch": [
+				"/tools/CI/CodeStyleRules.json"
+			],
+			"url": "/.vscode/codestyle.schema.json"
 		}
 	]
 }

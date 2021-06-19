@@ -69,7 +69,7 @@
 		if(is_sterile)
 			icon_state = "facehugger_impregnated"
 
-/mob/living/simple_animal/hostile/facehugger/get_scooped(mob/living/carbon/grabber)
+/mob/living/simple_animal/hostile/facehugger/get_scooped(mob/living/carbon/grabber, self_grab)
 	if(grabber.faction != "xenomorph" && !is_sterile && !stat)
 		to_chat(grabber, SPAN("warning", "\The [src] wriggles out of your hands before you can pick it up!"))
 		return

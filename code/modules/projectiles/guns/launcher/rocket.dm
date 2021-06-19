@@ -15,7 +15,7 @@
 	slot_flags = SLOT_BACK
 	wielded_item_state = "rpg-wielded"
 	origin_tech = list(TECH_COMBAT = 8, TECH_MATERIAL = 5)
-	fire_sound = 'sound/weapons/rpg_fire.ogg'
+	fire_sound = 'sound/effects/weapons/gun/fire_rpg.ogg'
 	combustion = 1
 
 	release_force = 20
@@ -36,7 +36,7 @@
 			I.loc = src
 			rockets += I
 			to_chat(user, "<span class='notice'>You put the rocket in [src].</span>")
-			playsound(usr.loc, 'sound/weapons/rpg_reload.ogg', 25, 1)
+			playsound(usr.loc, 'sound/effects/weapons/gun/rpg_reload.ogg', 25, 1)
 			to_chat(user, "<span class='notice'>[rockets.len] / [max_rockets] rockets.</span>")
 		else
 			to_chat(usr, "<span class='warning'>\The [src] cannot hold more rockets.</span>")

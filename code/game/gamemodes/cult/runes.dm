@@ -150,7 +150,7 @@
 	if(Adjacent(user))
 		attack_hand(user)
 
-/obj/effect/rune/attack_generic(mob/living/user) // Cult constructs/slimes/whatnot!
+/obj/effect/rune/attack_generic(mob/living/user) // Cult constructs/metroids/whatnot!
 	attack_hand(user)
 
 /obj/effect/rune/proc/cast(mob/living/user)
@@ -191,14 +191,20 @@
 		return fizzle(user)
 
 	speak_incantation(user, "Mah[pick("'","`")]weyh pleggh at e'ntrath!")
-	target.visible_message("<span class='warning'>The markings below [target] glow a bloody red.</span>")
+	target.visible_message(SPAN_WARNING("The markings below [target] glow a bloody red."))
 
 	to_chat(target, SPAN_OCCULT("Your blood pulses. Your head throbs. The world goes red. All at once you are aware of a horrible, horrible truth. The veil of reality has been ripped away and in the festering wound left behind something sinister takes root."))
+	var/list/mob/living/cultists = get_cultists()
+	if(cultists.len < 2)
+		if(!GLOB.cult.can_become_antag(target.mind, 1))
+			to_chat(target, SPAN_DANGER("Are you going insane?"))
+		else
+			to_chat(target, SPAN_OCCULT("Do you want to join the cult of Nar'Sie? You can choose to ignore offer... <a href='?src=\ref[src];join=1'>Join the cult</a>."))
 
 	spamcheck = 1
 	spawn(30)
 		spamcheck = 0
-		if(!iscultist(target) && target.loc == get_turf(src) && GLOB.cult.can_become_antag(target.mind, 1))
+		if(!iscultist(target) && target.loc == get_turf(src) && GLOB.cult.can_become_antag(target.mind, 1) && cultists.len >= 2)
 			GLOB.cult.add_antagonist(target.mind, ignore_role = 1, do_not_equip = 1)
 		else // They hesitated, resisted, or can't join, and they are still on the rune - damage them
 			if(target.stat == CONSCIOUS)
@@ -215,6 +221,12 @@
 					if(75 to 100)
 						to_chat(target, SPAN_OCCULT("Your mind turns to ash as the burning flames engulf your very soul and images of an unspeakable horror begin to bombard the last remnants of mental resistance."))
 						target.take_overall_damage(10, 20)
+
+/obj/effect/rune/convert/Topic(href, href_list)
+	var/list/mob/living/cultists = get_cultists()
+	if(href_list["join"] && cultists.len)
+		if(usr.loc == loc && !iscultist(usr))
+			GLOB.cult.add_antagonist(usr.mind, ignore_role = 1, do_not_equip = 1)
 
 /obj/effect/rune/teleport
 	cultname = "teleport"

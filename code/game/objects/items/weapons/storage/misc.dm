@@ -23,7 +23,7 @@
 	new /obj/item/weapon/dice/d10( src )
 	new /obj/item/weapon/dice/d12( src )
 	new /obj/item/weapon/dice/d20( src )
-	new /obj/item/weapon/dice/d100( src )
+	new /obj/item/weapon/dice/dp( src )
 
 /*
  * Donut Box

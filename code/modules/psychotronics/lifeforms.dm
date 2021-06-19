@@ -227,14 +227,14 @@
 		)
 	)
 
-/* Slime */
-/datum/lifeform/slime
-	mob_type = /mob/living/carbon/slime
+/* Metroid */
+/datum/lifeform/metroid
+	mob_type = /mob/living/carbon/metroid
 	kingdom = "UNKNOWN"
 	class = "UNKNOWN"
 	genus = "UNKNOWN"
-	species = "Slime"
-	desc = "Slimes have vulnerability to water. When an adult slime dies - it splits in to a pair of small slimes."
+	species = "Metroid"
+	desc = "Metroids have vulnerability to water. When an adult metroid dies - it splits in to a pair of small metroids."
 	tech_chance = 10
 	tech_rewards = list(
 		"2" = list(

@@ -75,6 +75,7 @@
 /obj/item/weapon/tank/emergency
 	name = "emergency tank"
 	icon_state = "emergency"
+	hitsound = "swing_hit" // Too small for that cool bonky sound
 	gauge_icon = "indicator_emergency"
 	gauge_cap = 4
 	obj_flags = OBJ_FLAG_CONDUCTIBLE

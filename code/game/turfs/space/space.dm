@@ -60,7 +60,7 @@
 	if(!config.starlight)
 		return
 	if(locate(/turf/simulated) in orange(src,1))
-		set_light(config.starlight)
+		set_light(min(0.1*config.starlight, 1), 1, 2.5)
 	else
 		set_light(0)
 
@@ -214,8 +214,8 @@
 					A.loc.Entered(A)
 	return
 
-/turf/space/ChangeTurf(turf/N, tell_universe=1, force_lighting_update = 0)
-	return ..(N, tell_universe, 1)
+/turf/space/ChangeTurf(turf/N, tell_universe = TRUE, force_lighting_update = FALSE)
+	return ..(N, tell_universe, TRUE)
 
 //Bluespace turfs for shuttles and possible future transit use
 /turf/space/bluespace

@@ -12,8 +12,8 @@
 	combustion = FALSE
 
 	firemodes = list(
-		list(mode_name="stun", projectile_type=/obj/item/projectile/energy/electrode/stunsphere, modifystate="tasertacticalstun"),
-		list(mode_name="lethal", projectile_type=/obj/item/projectile/beam, modifystate="tasertacticalkill")
+		list(mode_name = "stun",   projectile_type = /obj/item/projectile/energy/electrode/stunsphere, modifystate = "tasertacticalstun"),
+		list(mode_name = "lethal", projectile_type = /obj/item/projectile/beam,                        modifystate = "tasertacticalkill")
 		)
 
 /obj/item/weapon/gun/energy/secure/gun
@@ -30,9 +30,9 @@
 	authorized_modes = list(ALWAYS_AUTHORIZED, AUTHORIZED)
 
 	firemodes = list(
-		list(mode_name="stun", projectile_type=/obj/item/projectile/energy/electrode/stunsphere, modifystate="tasertacticalstun"),
-		list(mode_name="shock", projectile_type=/obj/item/projectile/beam/stun/shock, modifystate="tasertacticalshock"),
-		list(mode_name="lethal", projectile_type=/obj/item/projectile/beam, modifystate="tasertacticalkill")
+		list(mode_name = "stun",   projectile_type = /obj/item/projectile/energy/electrode/stunsphere, modifystate = "tasertacticalstun"),
+		list(mode_name = "shock",  projectile_type = /obj/item/projectile/beam/stun/shock,             modifystate = "tasertacticalshock"),
+		list(mode_name = "lethal", projectile_type = /obj/item/projectile/beam,                        modifystate = "tasertacticalkill")
 		)
 
 /obj/item/weapon/gun/energy/gun/small
@@ -46,8 +46,8 @@
 	modifystate = "smallgunstun"
 
 	firemodes = list(
-		list(mode_name="stun", projectile_type=/obj/item/projectile/energy/electrode, modifystate="smallgunstun"),
-		list(mode_name="lethal", projectile_type=/obj/item/projectile/beam/smalllaser, modifystate="smallgunkill")
+		list(mode_name = "stun",   projectile_type = /obj/item/projectile/energy/electrode,  modifystate = "smallgunstun"),
+		list(mode_name = "lethal", projectile_type = /obj/item/projectile/beam/smalllaser,   modifystate = "smallgunkill")
 		)
 
 /obj/item/weapon/gun/energy/secure/gun/small
@@ -61,9 +61,9 @@
 	modifystate = "smallgunstun"
 
 	firemodes = list(
-		list(mode_name="stun", projectile_type=/obj/item/projectile/energy/electrode, modifystate="smallgunstun"),
-		list(mode_name="shock", projectile_type=/obj/item/projectile/beam/stun/shock, modifystate="tasertacticalshock"),
-		list(mode_name="lethal", projectile_type=/obj/item/projectile/beam/smalllaser, modifystate="smallgunkill")
+		list(mode_name = "stun",   projectile_type = /obj/item/projectile/energy/electrode, modifystate = "smallgunstun"),
+		list(mode_name = "shock",  projectile_type = /obj/item/projectile/beam/stun/shock,  modifystate = "tasertacticalshock"),
+		list(mode_name = "lethal", projectile_type = /obj/item/projectile/beam/smalllaser,  modifystate = "smallgunkill")
 		)
 
 /obj/item/weapon/gun/energy/gun/mounted
@@ -89,8 +89,8 @@
 	recharge_time = 5
 
 	firemodes = list(
-		list(mode_name="stun", projectile_type=/obj/item/projectile/energy/electrode/stunsphere),
-		list(mode_name="lethal", projectile_type=/obj/item/projectile/beam)
+		list(mode_name = "stun",   projectile_type = /obj/item/projectile/energy/electrode/stunsphere),
+		list(mode_name = "lethal", projectile_type = /obj/item/projectile/beam)
 		)
 
 	var/fail_counter = 0
@@ -114,7 +114,7 @@
 			if(ismob(loc))
 				to_chat(loc, SPAN("warning", "\The [src] feels pleasantly warm."))
 
-/obj/item/weapon/gun/energy/gun/nuclear/Fire(atom/target, mob/living/user, clickparams, pointblank=0, reflex=0)
+/obj/item/weapon/gun/energy/gun/nuclear/Fire(atom/target, mob/living/user, clickparams, pointblank = 0, reflex = 0)
 	..()
 	if(fail_counter > 35)
 		var/datum/effect/effect/system/spark_spread/spark_system = new /datum/effect/effect/system/spark_spread()
@@ -130,9 +130,9 @@
 		else
 			visible_message("\The [src]'s reactor heats up uncontrollably...  But nothing happens.")
 	if(prob(95))
-		fail_counter += rand(2, 3)
+		fail_counter += rand(1, 2)
 	else
-		fail_counter += rand(10, 20)
+		fail_counter += rand(8, 16)
 		to_chat(loc, SPAN("warning", "\The [src] emits a nasty buzzing sound!"))
 		var/datum/effect/effect/system/spark_spread/spark_system = new /datum/effect/effect/system/spark_spread()
 		spark_system.set_up(2, 0, user.loc)
@@ -167,8 +167,10 @@
 /obj/item/weapon/gun/energy/gun/nuclear/proc/get_mode_overlay()
 	var/datum/firemode/current_mode = firemodes[sel_mode]
 	switch(current_mode.name)
-		if("stun") return "nucgun-stun"
-		if("lethal") return "nucgun-kill"
+		if("stun")
+			return "nucgun-stun"
+		if("lethal")
+			return "nucgun-kill"
 
 /obj/item/weapon/gun/energy/gun/nuclear/update_icon()
 	var/list/new_overlays = list()
@@ -198,8 +200,8 @@
 	combustion = FALSE
 
 	firemodes = list(
-		list(mode_name="stun", projectile_type=/obj/item/projectile/energy/electrode/stunsphere, modifystate="egunstun"),
-		list(mode_name="lethal", projectile_type=/obj/item/projectile/beam, modifystate="egunkill"),
+		list(mode_name = "stun",   projectile_type = /obj/item/projectile/energy/electrode/stunsphere, modifystate="egunstun"),
+		list(mode_name = "lethal", projectile_type = /obj/item/projectile/beam,                        modifystate="egunkill")
 		)
 
 /obj/item/weapon/gun/energy/rifle
@@ -227,8 +229,9 @@
 	projectile_type = /obj/item/projectile/energy/electrode/stunsphere
 
 	firemodes = list(
-		list(mode_name = "stun",   modifystate = "eriflestun", projectile_type = /obj/item/projectile/energy/electrode/stunsphere, fire_delay = null, charge_cost = 10, burst = 2),
-		list(mode_name = "lethal", modifystate = "eriflekill", projectile_type = /obj/item/projectile/beam/midlaser,               fire_delay = 8,    charge_cost = 20, burst = 1)
+		list(mode_name = "stun", modifystate = "eriflestun", projectile_type = /obj/item/projectile/energy/electrode/stunsphere, fire_delay = null, charge_cost = 10, burst = 2),
+		list(mode_name = "beam", modifystate = "eriflekill", projectile_type = /obj/item/projectile/beam/midlaser,               fire_delay = 8,    charge_cost = 20, burst = 1),
+		list(mode_name = "bolt", modifystate = "eriflekill", projectile_type = /obj/item/projectile/energy/laser/mid,            fire_delay = 8,    charge_cost = 20, burst = 1)
 	)
 
 /obj/item/weapon/gun/energy/rifle/update_icon()
@@ -263,6 +266,7 @@
 	projectile_type = /obj/item/projectile/energy/electrode/stunsphere
 
 	firemodes = list(
-		list(mode_name = "stun",   modifystate = "eriflestun", projectile_type = /obj/item/projectile/energy/electrode/stunsphere, fire_delay = null, charge_cost = 10, burst = 2),
-		list(mode_name = "lethal", modifystate = "eriflekill", projectile_type = /obj/item/projectile/beam/midlaser,               fire_delay = 10,   charge_cost = 20, burst = 1)
+		list(mode_name = "stun", modifystate = "eriflestun", projectile_type = /obj/item/projectile/energy/electrode/stunsphere, fire_delay = null, charge_cost = 10, burst = 2),
+		list(mode_name = "beam", modifystate = "eriflekill", projectile_type = /obj/item/projectile/beam/midlaser,               fire_delay = 10,   charge_cost = 20, burst = 1),
+		list(mode_name = "bolt", modifystate = "eriflekill", projectile_type = /obj/item/projectile/energy/laser/lesser,         fire_delay = 10,   charge_cost = 20, burst = 1)
 	)

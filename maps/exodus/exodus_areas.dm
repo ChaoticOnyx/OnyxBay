@@ -32,7 +32,7 @@
 
 /area/shuttle/supply/elevator/lower
 	name = "Cargo Elevator Lower Deck"
-	base_turf = /turf/simulated/floor
+	base_turf = /turf/simulated/floor/plating
 
 /area/shuttle/merchant
 	icon_state = "shuttlegrn"

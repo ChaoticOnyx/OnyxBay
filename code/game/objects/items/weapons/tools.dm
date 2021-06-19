@@ -66,6 +66,7 @@
 	center_of_mass = "x=16;y=7"
 	attack_verb = list("stabbed")
 	lock_picking_level = 5
+	hitsound = 'sound/weapons/bladeslice.ogg'
 
 /obj/item/weapon/screwdriver/Initialize()
 	switch(pick("red","blue","purple","brown","green","cyan","yellow"))
@@ -133,6 +134,7 @@
 	attack_verb = list("pinched", "nipped")
 	sharp = 1
 	edge = 1
+	hitsound = 'sound/weapons/bladeslice.ogg'
 
 /obj/item/weapon/wirecutters/Initialize()
 	if(prob(50))
@@ -421,10 +423,11 @@
 				to_chat(M, "<span class='notice'>You switch the [src] on.</span>")
 			else if(T)
 				T.visible_message("<span class='danger'>\The [src] turns on.</span>")
-			src.force = 15
-			src.damtype = "fire"
+			force = 15
+			damtype = "fire"
+			hitsound = 'sound/effects/flare.ogg' // Surprisingly it sounds just perfect
 			welding = 1
-			set_light(2)
+			set_light(0.3, 0.5, 2, 2, "#e38f46")
 			update_icon()
 			START_PROCESSING(SSobj, src)
 		else
@@ -438,9 +441,10 @@
 			to_chat(M, "<span class='notice'>You switch \the [src] off.</span>")
 		else if(T)
 			T.visible_message("<span class='warning'>\The [src] turns off.</span>")
-		src.force = 3
-		src.damtype = "brute"
-		src.welding = 0
+		force = 3
+		damtype = "brute"
+		hitsound = initial(hitsound)
+		welding = 0
 		set_light(0)
 		update_icon()
 

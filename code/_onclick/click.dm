@@ -227,7 +227,7 @@
 	if(get_preference_value(/datum/client_preference/pointing) == GLOB.PREF_SHIFT_MIDDLE_CLICK)
 		if(pointed(A))
 			return
-	
+
 
 // In case of use break glass
 /*
@@ -325,7 +325,7 @@
 	var/obj/item/projectile/beam/LE = new (T)
 	LE.icon = 'icons/effects/genetics.dmi'
 	LE.icon_state = "eyelasers"
-	playsound(usr.loc, 'sound/weapons/taser2.ogg', 75, 1)
+	playsound(usr.loc, 'sound/effects/weapons/energy/taser2.ogg', 75, 1)
 	LE.launch(A)
 /mob/living/carbon/human/LaserEyes()
 	if(nutrition>0)
@@ -569,8 +569,8 @@ var/const/CLICK_HANDLER_ALL                  = (~0)
 
 /datum/click_handler/changeling/infest/OnClick(atom/target)
 	var/mob/living/simple_animal/hostile/little_changeling/L = user
+	user.PopClickHandler() // Executing it earlier since user gets lost during successful infest()
 	L.infest(target)
-	user.PopClickHandler()
 	return
 
 /datum/click_handler/changeling/changeling_death_sting

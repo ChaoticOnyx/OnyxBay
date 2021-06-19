@@ -1,4 +1,4 @@
-// Generic damage proc (slimes and monkeys).
+// Generic damage proc (metroids and monkeys).
 /atom/proc/attack_generic(mob/user as mob)
 	return 0
 
@@ -82,14 +82,14 @@
 	A.attack_generic(src,rand(5,6),"bitten")
 
 /*
-	Slimes
+	Metroids
 	Nothing happening here
 */
 
-/mob/living/carbon/slime/RestrainedClickOn(atom/A)
+/mob/living/carbon/metroid/RestrainedClickOn(atom/A)
 	return
 
-/mob/living/carbon/slime/UnarmedAttack(atom/A, proximity)
+/mob/living/carbon/metroid/UnarmedAttack(atom/A, proximity)
 
 	if(!..())
 		return
@@ -114,7 +114,7 @@
 			if (I_DISARM) // We stun the target, with the intention to feed
 				var/stunprob = 1
 
-				if (powerlevel > 0 && !istype(A, /mob/living/carbon/slime))
+				if (powerlevel > 0 && !istype(A, /mob/living/carbon/metroid))
 					switch(power * 10)
 						if(0) stunprob *= 10
 						if(1 to 2) stunprob *= 20

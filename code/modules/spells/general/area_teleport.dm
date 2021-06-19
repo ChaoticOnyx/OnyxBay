@@ -8,6 +8,7 @@
 	invocation = "Scyar Nila!"
 	invocation_type = SpI_SHOUT
 	cooldown_min = 200 //100 deciseconds reduction per rank
+	need_target = 0
 
 	smoke_spread = 1
 	smoke_amt = 5
@@ -30,6 +31,9 @@
 	else
 		thearea = pick(teleportlocs)
 	return list(teleportlocs[thearea])
+
+/spell/area_teleport/check_valid_targets()
+	return TRUE
 
 /spell/area_teleport/cast(area/thearea, mob/user)
 	playsound(user,cast_sound,50,1)

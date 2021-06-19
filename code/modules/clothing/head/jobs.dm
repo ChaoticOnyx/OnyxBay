@@ -178,6 +178,11 @@
 	desc = "A simple, solid color beret. This one has no emblems or insignia on it."
 	icon_state = "beret_white"
 
+/obj/item/clothing/head/beret/classique
+	name = "classic beret"
+	desc = "For artists only!"
+	icon_state = "beret_classique"
+
 //Some retard put these in /under/jobs/security.dm. What a shame.
 /obj/item/clothing/head/det
 	name = "fedora"

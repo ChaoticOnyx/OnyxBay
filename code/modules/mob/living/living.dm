@@ -4,7 +4,9 @@
 		add_to_dead_mob_list()
 	else
 		add_to_living_mob_list()
-		verbs -= /mob/living/proc/ghost
+
+	if(give_ghost_proc_at_initialize)
+		verbs |= /mob/living/proc/ghost
 
 	if(controllable)
 		GLOB.available_mobs_for_possess += src
@@ -99,9 +101,9 @@
 				forceMove(tmob.loc)
 				tmob.forceMove(oldloc)
 				now_pushing = 0
-				for(var/mob/living/carbon/slime/slime in view(1,tmob))
-					if(slime.Victim == tmob)
-						slime.UpdateFeed()
+				for(var/mob/living/carbon/metroid/metroid in view(1,tmob))
+					if(metroid.Victim == tmob)
+						metroid.UpdateFeed()
 				return
 
 			if(!can_move_mob(tmob, 0, 0))
@@ -208,13 +210,6 @@
 		return 0
 
 	return can_move_mob(tmob, 1, 0)
-
-/mob/living/verb/succumb()
-	set hidden = 1
-	if ((src.health < src.maxHealth/1.33)) // Health below 150.
-		src.adjustBrainLoss(src.health + src.maxHealth * 2) // Deal 2x health in BrainLoss damage, as before but variable.
-		updatehealth()
-		to_chat(src, "<span class='notice'>You have given up life and succumbed to death.</span>")
 
 /mob/living/proc/updatehealth()
 	if(status_flags & GODMODE)
@@ -430,7 +425,7 @@
 	adjustFireLoss(burn)
 	src.updatehealth()
 
-/mob/living/proc/restore_all_organs()
+/mob/living/proc/restore_all_organs(ignore_prosthetic_prefs = FALSE)
 	return
 
 /mob/living/update_gravity(has_gravity)
@@ -439,8 +434,8 @@
 	else
 		start_floating()
 
-/mob/living/proc/revive()
-	rejuvenate()
+/mob/living/proc/revive(ignore_prosthetic_prefs = FALSE)
+	rejuvenate(ignore_prosthetic_prefs)
 	if(buckled)
 		buckled.unbuckle_mob()
 	if(iscarbon(src))
@@ -455,7 +450,7 @@
 	ExtinguishMob()
 	fire_stacks = 0
 
-/mob/living/proc/rejuvenate()
+/mob/living/proc/rejuvenate(ignore_prosthetic_prefs = FALSE)
 	if(reagents)
 		reagents.clear_reagents()
 
@@ -483,13 +478,12 @@
 	heal_overall_damage(getBruteLoss(), getFireLoss())
 
 	// fix all of our organs
-	restore_all_organs()
+	restore_all_organs(ignore_prosthetic_prefs)
 
 	// remove the character from the list of the dead
 	if(stat == DEAD)
 		switch_from_dead_to_living_mob_list()
 		timeofdeath = 0
-		verbs -= /mob/living/proc/ghost
 
 	// restore us to conciousness
 	set_stat(CONSCIOUS)
@@ -549,8 +543,8 @@
 	if(s_active && !(s_active in contents) && get_turf(s_active) != get_turf(src))
 		s_active.close(src)
 
-	if(update_slimes)
-		for(var/mob/living/carbon/slime/M in view(1, src))
+	if(update_metroids)
+		for(var/mob/living/carbon/metroid/M in view(1, src))
 			M.UpdateFeed()
 
 /mob/living/proc/can_pull()

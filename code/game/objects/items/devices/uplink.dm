@@ -188,6 +188,11 @@
 		for(var/datum/computer_file/crew_record/L in GLOB.all_crew_records)
 			permanentData[++permanentData.len] = list(Name = L.get_name(),"id" = L.uid, "exploit" = length(L.get_antagRecord()))
 		nanoui_data["exploit_records"] = permanentData
+	else if(nanoui_menu == 3)
+		var/list/contracts = list()
+		for(var/datum/antag_contract/AC in GLOB.traitors.fixer.return_contracts(src?.uplink_owner))
+			contracts.Add(list(list(AC.name, AC.desc, AC.reward)))
+		nanoui_data["contracts"] = contracts
 	else if(nanoui_menu == 21)
 		nanoui_data["exploit_exists"] = 0
 

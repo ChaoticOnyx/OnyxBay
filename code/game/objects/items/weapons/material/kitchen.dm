@@ -28,7 +28,7 @@
 	create_reagents(5)
 	return
 
-/obj/item/weapon/material/kitchen/utensil/attack(mob/living/carbon/M as mob, mob/living/carbon/user as mob)
+/obj/item/weapon/material/kitchen/utensil/attack(mob/living/carbon/M, mob/living/carbon/user)
 	if(!istype(M))
 		return ..()
 
@@ -53,7 +53,7 @@
 			if(!(M.can_force_feed(user, loaded) && do_mob(user, M, 5 SECONDS)))
 				return
 			M.visible_message("<span class='notice'>\The [user] feeds some [loaded] to \the [M] with \the [src].</span>")
-		playsound(M.loc,'sound/items/eatfood.ogg', rand(10,40), 1)
+		playsound(M.loc, 'sound/items/eatfood.ogg', rand(10, 40), 1)
 		overlays.Cut()
 		return
 	else
@@ -74,6 +74,7 @@
 	desc = "It's a spoon. You can see your own upside-down face in it. Looks like an extremely inefficient weapon"
 	icon_state = "spoon"
 	attack_verb = list("attacked", "poked")
+	hitsound = "swing_hit"
 	sharp = 0
 	force_divisor = 0.1 //2 when wielded with weight 20 (steel)
 	mod_weight = 0.3
@@ -95,6 +96,13 @@
 	sharp = 1
 	edge = 1
 
+/obj/item/weapon/material/kitchen/utensil/knife/attack(mob/living/M, mob/living/user)
+	if((MUTATION_CLUMSY in user.mutations) && prob(50))
+		to_chat(user, SPAN("warning", "You accidentally cut yourself with \the [src]."))
+		user.take_organ_damage(20)
+		return
+	return ..()
+
 /obj/item/weapon/material/kitchen/utensil/knife/plastic
 	default_material = MATERIAL_PLASTIC
 
@@ -113,13 +121,6 @@
 	mod_weight = 0.3
 	mod_reach = 0.33
 	mod_handy = 0.75
-
-/obj/item/weapon/material/kitchen/utensil/knife/attack(target as mob, mob/living/user as mob)
-	if ((MUTATION_CLUMSY in user.mutations) && prob(50))
-		to_chat(user, "<span class='warning'>You accidentally cut yourself with \the [src].</span>")
-		user.take_organ_damage(20)
-		return
-	return ..()
 
 /obj/item/weapon/material/kitchen/utensil/knife/unathiknife
 	name = "dueling knife"
@@ -147,7 +148,7 @@
 	default_material = MATERIAL_WOOD
 	force_divisor = 0.7 // 10 when wielded with weight 15 (wood)
 	thrown_force_divisor = 0.8 // 12 dmg (wood)
-	hitsound = 'sound/effects/fighting/genhit3.ogg'
+	hitsound = "swing_hit"
 	mod_weight = 1.2
 	mod_reach = 0.85
 	mod_handy = 0.9

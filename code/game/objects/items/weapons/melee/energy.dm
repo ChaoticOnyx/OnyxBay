@@ -5,7 +5,7 @@
 	var/mod_handy_a
 	var/mod_weight_a
 	var/mod_reach_a
-	var/mod_shield_a
+	var/mod_shield_a = 1.0
 	sharp = 0
 	edge = 0
 	armor_penetration = 50
@@ -23,6 +23,7 @@
 	mod_handy = mod_handy_a
 	mod_weight = mod_weight_a
 	mod_reach = mod_reach_a
+	mod_shield = mod_shield_a
 	playsound(user, 'sound/weapons/saberon.ogg', 50, 1)
 
 /obj/item/weapon/melee/energy/proc/deactivate(mob/living/user)
@@ -38,12 +39,13 @@
 	mod_handy = initial(mod_handy)
 	mod_weight = initial(mod_weight)
 	mod_reach = initial(mod_reach)
+	mod_shield = initial(mod_shield)
 
-/obj/item/weapon/melee/energy/attack_self(mob/living/user as mob)
+/obj/item/weapon/melee/energy/attack_self(mob/living/user)
 	if(active)
 		if((MUTATION_CLUMSY in user.mutations) && prob(50))
-			user.visible_message("<span class='danger'>\The [user] accidentally cuts \himself with \the [src].</span>", \
-			"<span class='danger'>You accidentally cut yourself with \the [src].</span>")
+			user.visible_message(SPAN("danger", "\The [user] accidentally cuts \himself with \the [src]."), \
+								 SPAN("danger", "You accidentally cut yourself with \the [src]."))
 			user.take_organ_damage(5, 5)
 		deactivate(user)
 	else
@@ -58,8 +60,9 @@
 	return
 
 /obj/item/weapon/melee/energy/dropped()
-	if(isturf(loc))
-		deactivate()
+	spawn(9)
+		if(isturf(loc))
+			deactivate()
 
 /obj/item/weapon/melee/energy/get_storage_cost()
 	if(active)
@@ -69,6 +72,43 @@
 /obj/item/weapon/melee/energy/get_temperature_as_from_ignitor()
 	if(active)
 		return 3500
+	return 0
+
+/obj/item/weapon/melee/energy/handle_shield(mob/user, damage, atom/damage_source = null, mob/attacker = null, def_zone = null, attack_text = "the attack")
+	if(!active)
+		return 0
+	if(!user.blocking)
+		return 0
+	if(user.incapacitated(INCAPACITATION_DISABLED))
+		return 0
+	if(mod_shield < 1.3)
+		return 0 // So energy axes and daggers wielders don't go jedi
+	if(istype(damage_source, /obj/item/projectile))
+		var/obj/item/projectile/P = damage_source
+		if(!P.blockable)
+			return 0
+		// some effects here
+		var/datum/effect/effect/system/spark_spread/spark_system = new /datum/effect/effect/system/spark_spread()
+		spark_system.set_up(3, 0, user.loc)
+		spark_system.start()
+		if(istype(P, /obj/item/projectile/beam))
+			visible_message(SPAN("warning", "\The [user] dissolves [P] with their [name]!"))
+			proj_poise_drain(user, P)
+			playsound(user.loc, 'sound/weapons/blade1.ogg', 50, 1) // Since it's dissolved, not reflected
+			return PROJECTILE_FORCE_BLOCK // Beam reflections code is kinda messy, I ain't gonna touch it. ~Toby
+		else if(P.starting)
+			visible_message(SPAN("warning", "\The [user] reflects [P] with their [name]!"))
+
+			// Find a turf near or on the original location to bounce to
+			var/new_x = P.starting.x + rand(-2, 2)
+			var/new_y = P.starting.y + rand(-2, 2)
+			var/turf/curloc = get_turf(user)
+
+			// redirect the projectile
+			P.redirect(new_x, new_y, curloc, user)
+			proj_poise_drain(user, P)
+			playsound(user.loc, 'sound/effects/fighting/energyblock.ogg', 50, 1)
+			return PROJECTILE_CONTINUE // complete projectile permutation
 	return 0
 
 /*
@@ -94,6 +134,7 @@
 	mod_weight_a = 1.5
 	mod_reach_a = 1.25
 	mod_handy_a = 1.5
+	mod_shield_a = 1.25 // Still not enough to block projectiles
 	atom_flags = ATOM_FLAG_NO_BLOOD
 	obj_flags = OBJ_FLAG_CONDUCTIBLE
 	origin_tech = list(TECH_MAGNET = 3, TECH_COMBAT = 4)
@@ -135,7 +176,23 @@
 	origin_tech = list(TECH_MAGNET = 3, TECH_ILLEGAL = 4)
 	sharp = 0
 	edge = 1
+	hitsound = 'sound/effects/fighting/energy1.ogg'
 	var/blade_color
+
+/obj/item/weapon/melee/energy/sword/activate(mob/living/user)
+	if(!active)
+		to_chat(user, SPAN("notice", "\The [src] is now energised."))
+	..()
+	attack_verb = list("attacked", "slashed", "stabbed", "sliced", "torn", "ripped", "diced", "cut")
+	icon_state = "sword[blade_color]"
+
+/obj/item/weapon/melee/energy/sword/deactivate(mob/living/user)
+	if(active)
+		to_chat(user, SPAN("notice", "\The [src] deactivates!"))
+	..()
+	attack_verb = list()
+	icon_state = initial(icon_state)
+
 
 /obj/item/weapon/melee/energy/sword/one_hand
 	name = "energy sword"
@@ -157,53 +214,28 @@
 /obj/item/weapon/melee/energy/sword/one_hand/purple/New()
 	blade_color = "purple"
 
-/obj/item/weapon/melee/energy/sword/activate(mob/living/user)
-	if(!active)
-		to_chat(user, "<span class='notice'>\The [src] is now energised.</span>")
-		mod_shield = mod_shield_a
-	..()
-	attack_verb = list("attacked", "slashed", "stabbed", "sliced", "torn", "ripped", "diced", "cut")
-	icon_state = "sword[blade_color]"
-
-/obj/item/weapon/melee/energy/sword/deactivate(mob/living/user)
-	if(active)
-		to_chat(user, "<span class='notice'>\The [src] deactivates!</span>")
-		mod_shield = initial(mod_shield)
-	..()
-	attack_verb = list()
-	icon_state = initial(icon_state)
-
-/obj/item/weapon/melee/energy/sword/one_hand/attackby(obj/item/sword as obj, mob/user as mob)
+/obj/item/weapon/melee/energy/sword/one_hand/attackby(obj/item/sword, mob/user)
 	if(istype(sword, /obj/item/weapon/melee/energy/sword/one_hand))
-		to_chat(user, "<span class='notice'>You attach the ends of the two energy swords, making a single double-bladed weapon!</span>")
-		new /obj/item/weapon/melee/energy/sword/dualsaber(user.loc)
-		qdel(sword)
-		sword = null
+		to_chat(user, SPAN("notice", "You attach the ends of the two energy swords, making a single double-bladed weapon!"))
+		var/obj/item/weapon/melee/energy/sword/dualsaber/D = new /obj/item/weapon/melee/energy/sword/dualsaber(user.loc)
+		user.drop_from_inventory(src)
+		user.drop_from_inventory(sword)
 		qdel(src)
-
-/obj/item/weapon/melee/energy/sword/handle_shield(mob/user)
-	. = ..()
-
-	if(.)
-		playsound(user.loc, 'sound/weapons/blade1.ogg', 50, 1)
+		qdel(sword)
+		user.put_in_hands(D)
 
 /obj/item/weapon/melee/energy/sword/pirate
 	name = "energy cutlass"
 	desc = "Arrrr matey."
 	icon_state = "cutlass0"
+	mod_weight_a = 1.25
+	mod_reach_a = 1.35
+	mod_handy_a = 1.35
+	mod_shield_a = 2.0
 
 /obj/item/weapon/melee/energy/sword/pirate/activate(mob/living/user)
 	..()
 	icon_state = "cutlass1"
-
-/obj/item/weapon/melee/energy/sword/bogsword
-	name = "alien sword"
-	desc = "A strange, strange energy sword."
-	icon_state = "sword0"
-
-/obj/item/weapon/melee/energy/sword/bogsword/activate(mob/living/user)
-	..()
-	icon_state = "bog_sword"
 
 /*
  *DualSaber
@@ -212,7 +244,7 @@
 	name = "dualsaber"
 	desc = "May the Dark side be within you."
 	icon_state = "dualsaber0"
-	active_force = 70
+	active_force = 60
 	active_throwforce = 70
 	force = 5
 	throwforce = 10
@@ -220,7 +252,8 @@
 	throw_range = 10
 	mod_reach = 0.4
 	mod_weight_a = 1.5
-	mod_handy_a = 1.75
+	mod_reach_a = 1.55
+	mod_handy_a = 2.0
 	mod_shield_a = 2.75
 	origin_tech = list(TECH_MAGNET = 4, TECH_ILLEGAL = 5)
 	var/base_block_chance = 50
@@ -252,6 +285,7 @@
 	name = "energy blade"
 	desc = "A concentrated beam of energy in the shape of a blade. Very stylish... and lethal."
 	icon_state = "blade"
+	active = TRUE
 	force = 40 //Normal attacks deal very high damage - about the same as wielded fire axe
 	armor_penetration = 100
 	sharp = 1
@@ -268,6 +302,7 @@
 	atom_flags = ATOM_FLAG_NO_BLOOD
 	canremove = 0
 	attack_verb = list("attacked", "slashed", "stabbed", "sliced", "torn", "ripped", "diced", "cut")
+	hitsound = 'sound/effects/fighting/energy1.ogg'
 	var/mob/living/creator
 	var/datum/effect/effect/system/spark_spread/spark_system
 
@@ -309,9 +344,3 @@
 			host.embedded -= src
 			host.drop_from_inventory(src)
 		QDEL_IN(src, 0)
-
-/obj/item/weapon/melee/energy/blade/handle_shield(mob/user) // C'mon it's an esword on crack why would it be unable to reflect projectiles?
-	. = ..()
-
-	if(.)
-		playsound(user.loc, 'sound/weapons/blade1.ogg', 50, 1)

@@ -1,0 +1,34 @@
+{{:helper.syndicateMode()}}
+
+<b>Glad to hear you, {{:data.owner}}. I am {{:data.fixer}}. These are the currently active contracts:</b>
+<table style="width:100%">
+	<tr>
+		<th>Title</th>
+		<th style="width:68%">Description</th>
+		<th style="width:12%">Reward</th>
+	</tr>
+	{{for data.contracts}}
+		<tr class="candystripe">
+			<td style="text-align: center;">{{:value.name}}</td>
+			<td style="text-indent: 20px; padding: 5px;">{{:value.desc}}</td>
+			<td style="text-align: center;">{{:value.reward}}</td>
+		</tr>
+	{{/for}}
+</table>
+
+<div class="item">
+	<div class="itemLabel">
+		<b>The reward will be issued to</b>:
+	</div>
+	<div class="itemContent">
+		{{if data.is_owner}}
+			{{:data.owner}}
+		{{else}}
+			{{:data.owner}} (put your uplink device inside to change the payment address)
+		{{/if}}
+	</div>
+</div>
+
+<div class="item">
+	{{:helper.link('Launch', 'plus', {'launch' : 1}, data.can_launch ? null : 'disabled')}}
+</div>

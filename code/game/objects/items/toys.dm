@@ -125,6 +125,12 @@
 	icon_state = "ntballoon"
 	item_state = "ntballoon"
 
+/obj/item/toy/balloon/snail
+	name = "\improper 'snail' balloon"
+	desc = "It looks quite familiar, right?"
+	icon_state = "snailballoon"
+	item_state = "snailballoon"
+
 /*
  * Fake telebeacon
  */
@@ -817,7 +823,7 @@
 	attack_verb = list("attacked", "whacked", "jabbed", "poked", "marshalled")
 
 /obj/item/weapon/marshalling_wand/Initialize()
-	set_light(1.5, 1.5, "#ff0000")
+	set_light(0.6, 0.5, 2, 2, "#ff0000")
 	return ..()
 
 /obj/item/weapon/marshalling_wand/attack_self(mob/living/user)

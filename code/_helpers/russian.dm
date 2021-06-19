@@ -20,3 +20,9 @@ GLOBAL_LIST_INIT(rkeys, list(
 	if(t in GLOB.rkeys)
 		return GLOB.rkeys[t]
 	return t
+
+/proc/sanitize_cyrillic_string(text)
+	. = ""
+	for(var/i in 1 to length_char(text))
+		. += sanitize_cyrillic_char(copytext_char(text, i, i+1))
+	return .

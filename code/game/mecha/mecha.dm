@@ -584,25 +584,25 @@
 		src.log_append_to_last("Armor saved.")
 	return
 
-/obj/mecha/hitby(atom/movable/A as mob|obj)
+/obj/mecha/hitby(atom/movable/AM, speed, nomsg = TRUE)
 	..()
-	src.log_message("Hit by [A].",1)
-	if(istype(A, /obj/item/mecha_parts/mecha_tracking))
-		A.forceMove(src)
-		src.visible_message("The [A] fastens firmly to [src].")
+	log_message("Hit by [AM].",1)
+	if(istype(AM, /obj/item/mecha_parts/mecha_tracking))
+		AM.forceMove(src)
+		visible_message("The [AM] fastens firmly to [src].")
 		return
-	if(deflect_hit(is_melee=0) || istype(A, /mob))
-		src.occupant_message("<span class='notice'>\The [A] bounces off the armor.</span>")
-		src.visible_message("\The [A] bounces off \the [src] armor.")
-		src.log_append_to_last("Armor saved.")
-		if(istype(A, /mob/living))
-			var/mob/living/M = A
+	if(deflect_hit(is_melee = 0) || ismob(AM))
+		occupant_message(SPAN("notice", "\The [AM] bounces off the armor."))
+		visible_message("\The [AM] bounces off \the [src] armor.")
+		log_append_to_last("Armor saved.")
+		if(isliving(AM))
+			var/mob/living/M = AM
 			M.take_organ_damage(10)
-	else if(istype(A, /obj))
-		var/obj/O = A
+	else if(isobj(AM))
+		var/obj/O = AM
 		if(O.throwforce)
-			src.hit_damage(O.throwforce, is_melee=0)
-			src.check_for_internal_damage(list(MECHA_INT_TEMP_CONTROL,MECHA_INT_TANK_BREACH,MECHA_INT_CONTROL_LOST))
+			hit_damage(O.throwforce, is_melee = 0)
+			check_for_internal_damage(list(MECHA_INT_TEMP_CONTROL, MECHA_INT_TANK_BREACH, MECHA_INT_CONTROL_LOST))
 	return
 
 /obj/mecha/bullet_act(obj/item/projectile/Proj)
@@ -974,12 +974,15 @@
 	set category = "Exosuit Interface"
 	set src = usr.loc
 	set popup_menu = 0
-	if(usr!=occupant)	return
+	if(usr != occupant)
+		return
 	lights = !lights
-	if(lights)	set_light(light_range + lights_power)
-	else		set_light(light_range - lights_power)
-	src.occupant_message("Toggled lights [lights?"on":"off"].")
-	log_message("Toggled lights [lights?"on":"off"].")
+	if(lights)
+		set_light(0.6, 1, 6)
+	else
+		set_light(0)
+	src.occupant_message("Toggled lights [lights ? "on" : "off"].")
+	log_message("Toggled lights [lights ? "on" : "off"].")
 	return
 
 
@@ -1033,7 +1036,7 @@
 		to_chat(usr, "<span class='warning'>Access denied</span>")
 		src.log_append_to_last("Permission denied.")
 		return
-	for(var/mob/living/carbon/slime/M in range(1,usr))
+	for(var/mob/living/carbon/metroid/M in range(1,usr))
 		if(M.Victim == usr)
 			to_chat(usr, "You're too busy getting your life sucked out of you.")
 			return

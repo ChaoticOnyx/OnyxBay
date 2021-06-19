@@ -26,21 +26,23 @@
 	activate_pin(2)
 
 /obj/item/integrated_circuit/text/ascii2text
-	name = "ascii to character converter"
+	name = "ascii to text converter"
 	desc = "This circuit will translate ascii to character"
 	icon_state = "lowercase"
 	inputs = list("input" = IC_PINTYPE_NUMBER)
-	outputs = list("output" = IC_PINTYPE_CHAR)
+	outputs = list("output" = IC_PINTYPE_STRING)
 	activators = list("to text" = IC_PINTYPE_PULSE_IN, "on converted" = IC_PINTYPE_PULSE_OUT)
 	spawn_flags = IC_SPAWN_DEFAULT|IC_SPAWN_RESEARCH
 
 /obj/item/integrated_circuit/text/ascii2text/do_work()
-	var/result = null
+	var/result = ""
 	pull_data()
 	var/incoming = get_pin_data(IC_INPUT, 1)
 	if(!isnum_safe(incoming))
-		result = ascii2text(incoming)
-
+		return
+	incoming = min(255, incoming)
+	incoming = max(incoming, 0)
+	result = "[sanitize(ascii2text(incoming))]"
 	set_pin_data(IC_OUTPUT, 1, result)
 	push_data()
 	activate_pin(2)

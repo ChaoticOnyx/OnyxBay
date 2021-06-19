@@ -2,12 +2,13 @@
 /obj/item/stack/material
 	force = 5.0
 	throwforce = 5
-	w_class = ITEM_SIZE_LARGE
+	w_class = ITEM_SIZE_NORMAL
 	throw_speed = 3
 	throw_range = 3
 	max_amount = 50
 	center_of_mass = null
 	randpixel = 3
+	storage_cost_mult = 1.25
 
 	var/default_type = MATERIAL_STEEL
 	var/material/material

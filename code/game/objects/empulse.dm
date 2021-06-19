@@ -29,14 +29,6 @@
 	for(var/mob/M in range(heavy_range, epicenter))
 		M.playsound_local(epicenter, "electric_explosion", rand(80, 100))
 
-		var/mob/living/carbon/human/H = M
-		// Take brain damage if the mob has neuromods
-		if (istype(H) && H.neuromods.len)
-			var/neuromods_modifier = max(1, (H.neuromods.len)**2 * 4)
-
-			if (neuromods_modifier > 1)
-				H.adjustBrainLoss(neuromods_modifier)
-
 	for(var/atom/T in range(light_range, epicenter))
 		#ifdef EMPDEBUG
 		var/time = world.timeofday

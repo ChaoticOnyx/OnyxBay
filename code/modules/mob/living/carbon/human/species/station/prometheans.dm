@@ -15,10 +15,10 @@ var/datum/species/shapeshifter/promethean/prometheans
 	flesh_color = "#05fffb"
 
 	hunger_factor =    DEFAULT_HUNGER_FACTOR //todo
-	reagent_tag =      IS_SLIME
-	bump_flag =        SLIME
-	swap_flags =       MONKEY|SLIME|SIMPLE_ANIMAL
-	push_flags =       MONKEY|SLIME|SIMPLE_ANIMAL
+	reagent_tag =      IS_METROID
+	bump_flag =        METROID
+	swap_flags =       MONKEY|METROID|SIMPLE_ANIMAL
+	push_flags =       MONKEY|METROID|SIMPLE_ANIMAL
 	species_flags =    SPECIES_FLAG_NO_SCAN | SPECIES_FLAG_NO_SLIP | SPECIES_FLAG_NO_MINOR_CUT
 	appearance_flags = HAS_SKIN_COLOR | HAS_EYE_COLOR | HAS_HAIR_COLOR | RADIATION_GLOWS
 	spawn_flags =      SPECIES_IS_RESTRICTED
@@ -39,20 +39,20 @@ var/datum/species/shapeshifter/promethean/prometheans
 	rarity_value =        5
 	limbs_are_nonsolid =  TRUE
 
-	unarmed_types = list(/datum/unarmed_attack/slime_glomp)
-	has_organ =     list(BP_BRAIN = /obj/item/organ/internal/brain/slime) // Slime core.
+	unarmed_types = list(/datum/unarmed_attack/metroid_glomp)
+	has_organ =     list(BP_BRAIN = /obj/item/organ/internal/brain/metroid) // Metroid core.
 	has_limbs = list(
-		BP_CHEST =  list("path" = /obj/item/organ/external/chest/unbreakable/slime),
-		BP_GROIN =  list("path" = /obj/item/organ/external/groin/unbreakable/slime),
-		BP_HEAD =   list("path" = /obj/item/organ/external/head/unbreakable/slime),
-		BP_L_ARM =  list("path" = /obj/item/organ/external/arm/unbreakable/slime),
-		BP_R_ARM =  list("path" = /obj/item/organ/external/arm/right/unbreakable/slime),
-		BP_L_LEG =  list("path" = /obj/item/organ/external/leg/unbreakable/slime),
-		BP_R_LEG =  list("path" = /obj/item/organ/external/leg/right/unbreakable/slime),
-		BP_L_HAND = list("path" = /obj/item/organ/external/hand/unbreakable/slime),
-		BP_R_HAND = list("path" = /obj/item/organ/external/hand/right/unbreakable/slime),
-		BP_L_FOOT = list("path" = /obj/item/organ/external/foot/unbreakable/slime),
-		BP_R_FOOT = list("path" = /obj/item/organ/external/foot/right/unbreakable/slime)
+		BP_CHEST =  list("path" = /obj/item/organ/external/chest/unbreakable/metroid),
+		BP_GROIN =  list("path" = /obj/item/organ/external/groin/unbreakable/metroid),
+		BP_HEAD =   list("path" = /obj/item/organ/external/head/unbreakable/metroid),
+		BP_L_ARM =  list("path" = /obj/item/organ/external/arm/unbreakable/metroid),
+		BP_R_ARM =  list("path" = /obj/item/organ/external/arm/right/unbreakable/metroid),
+		BP_L_LEG =  list("path" = /obj/item/organ/external/leg/unbreakable/metroid),
+		BP_R_LEG =  list("path" = /obj/item/organ/external/leg/right/unbreakable/metroid),
+		BP_L_HAND = list("path" = /obj/item/organ/external/hand/unbreakable/metroid),
+		BP_R_HAND = list("path" = /obj/item/organ/external/hand/right/unbreakable/metroid),
+		BP_L_FOOT = list("path" = /obj/item/organ/external/foot/unbreakable/metroid),
+		BP_R_FOOT = list("path" = /obj/item/organ/external/foot/right/unbreakable/metroid)
 		)
 	heat_discomfort_strings = list("You feel too warm.")
 	cold_discomfort_strings = list("You feel too cool.")
@@ -98,8 +98,8 @@ var/datum/species/shapeshifter/promethean/prometheans
 	// We need a handle_life() proc for this stuff.
 
 	// Regenerate limbs and heal damage if we have any. Copied from Bay xenos code.
-	// Theoretically the only internal organ a slime will have
-	// is the slime core. but we might as well be thorough.
+	// Theoretically the only internal organ a metroid will have
+	// is the metroid core. but we might as well be thorough.
 	for(var/obj/item/organ/I in H.internal_organs)
 		if(I.damage > 0)
 			I.damage = max(I.damage - heal_rate, 0)

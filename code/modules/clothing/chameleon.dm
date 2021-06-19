@@ -297,6 +297,14 @@
 	disguise(clothing_choices[picked], usr)
 	update_clothing_icon()	//so our overlays update.
 
+/obj/item/clothing/gloves/chameleon/robust
+	desc = "It looks like a pair of extra robust gloves. It seems to have a small dial inside."
+	origin_tech = list(TECH_ILLEGAL = 5)
+
+/obj/item/clothing/gloves/chameleon/robust/examine(mob/user)
+	. = ..()
+	. += "\nThese look extra robust."
+
 //******************
 //**Chameleon Mask**
 //******************
@@ -388,7 +396,7 @@
 	origin_tech = list(TECH_COMBAT = 2, TECH_MATERIAL = 2, TECH_ILLEGAL = 3)
 	matter = list()
 
-	fire_sound = 'sound/weapons/gunshot/gunshot_pistol.ogg'
+	fire_sound = 'sound/effects/weapons/gun/fire_generic_pistol.ogg'
 	projectile_type = /obj/item/projectile/chameleon
 	charge_meter = 0
 	charge_cost = 20 //uses next to no power, since it's just holograms

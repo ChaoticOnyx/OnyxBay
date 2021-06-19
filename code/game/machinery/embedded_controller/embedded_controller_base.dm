@@ -39,7 +39,7 @@
 
 	src.ui_interact(user)
 
-/obj/machinery/embedded_controller/ui_interact()
+/obj/machinery/embedded_controller/ui_interact(mob/user, ui_key = "main", datum/nanoui/ui = null, force_open = 1, datum/nanoui/master_ui = null, datum/topic_state/state = GLOB.default_state)
 	return
 
 /obj/machinery/embedded_controller/radio

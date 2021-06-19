@@ -97,12 +97,18 @@ DEBUG
 			return
 
 		//Job permabans
-		var/DBQuery/query
-		if(isnull(config.server_id))
-			query = dbcon.NewQuery("SELECT ckey, job FROM erro_ban WHERE bantype = 'JOB_PERMABAN' AND isnull(unbanned)")
-		else
-			query = dbcon.NewQuery("SELECT ckey, job FROM erro_ban WHERE bantype = 'JOB_PERMABAN' AND isnull(unbanned) AND server_id = '[config.server_id]'")
-		query.Execute()
+		var/DBQuery/query = sql_query({"
+			SELECT 
+				ckey, 
+				job 
+			FROM 
+				erro_ban 
+			WHERE 
+				bantype = 'JOB_PERMABAN' 
+				AND 
+				isnull(unbanned)
+				[isnull(config.server_id) ? "" : " AND server_id = $sid"]
+			"}, dbcon, list(sid = config.server_id))
 
 		while(query.NextRow())
 			var/ckey = query.item[1]
@@ -113,10 +119,9 @@ DEBUG
 		//Job tempbans
 		var/DBQuery/query1
 		if(isnull(config.server_id))
-			query1 = dbcon.NewQuery("SELECT ckey, job FROM erro_ban WHERE bantype = 'JOB_TEMPBAN' AND isnull(unbanned) AND expiration_time > Now()")
+			query1 = sql_query("SELECT ckey, job FROM erro_ban WHERE bantype = 'JOB_TEMPBAN' AND isnull(unbanned) AND expiration_time > Now()", dbcon)
 		else
-			query1 = dbcon.NewQuery("SELECT ckey, job FROM erro_ban WHERE bantype = 'JOB_TEMPBAN' AND isnull(unbanned) AND server_id = '[config.server_id]' AND expiration_time > Now()")
-		query1.Execute()
+			query1 = sql_query("SELECT ckey, job FROM erro_ban WHERE bantype = 'JOB_TEMPBAN' AND isnull(unbanned) AND server_id = $$ AND expiration_time > Now()", dbcon, config.server_id)
 
 		while(query1.NextRow())
 			var/ckey = query1.item[1]

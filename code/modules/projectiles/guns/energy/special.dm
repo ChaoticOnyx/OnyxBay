@@ -147,7 +147,7 @@
 	item_icons = null
 	icon_state = "staffofchange"
 	item_state = "staffofchange"
-	fire_sound = 'sound/weapons/emitter.ogg'
+	fire_sound = 'sound/effects/weapons/energy/emitter.ogg'
 	obj_flags =  OBJ_FLAG_CONDUCTIBLE
 	slot_flags = SLOT_BELT|SLOT_BACK
 	w_class = ITEM_SIZE_LARGE
@@ -208,7 +208,7 @@
 	icon = 'icons/obj/tools.dmi'
 	icon_state = "plasmacutter"
 	item_state = "plasmacutter"
-	fire_sound = 'sound/weapons/plasma_cutter.ogg'
+	fire_sound = 'sound/effects/weapons/energy/plasma_cutter.ogg'
 	slot_flags = SLOT_BELT|SLOT_BACK
 	w_class = ITEM_SIZE_NORMAL
 	force = 8

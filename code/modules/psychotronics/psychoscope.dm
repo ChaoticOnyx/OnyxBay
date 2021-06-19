@@ -579,7 +579,7 @@
 		icon_state = initial(icon_state)
 		is_scanning = FALSE
 		playsound(src, 'sound/effects/psychoscope/psychoscope_on.ogg', 10, 0)
-		set_light(2, 5, rgb(105, 180, 255))
+		set_light(0.4, 0.1, 2, 2, rgb(105, 180, 255))
 		update_icon()
 
 /obj/item/clothing/glasses/psychoscope/proc/Disable(mob/user)
@@ -620,7 +620,7 @@
 	set popup_menu = 1
 	set category = "Psychoscope"
 
-	tg_ui_interact(usr)
+	tgui_interact(usr)
 
 /*
 	Removes an inserted disk.
@@ -742,18 +742,18 @@
 	Shows up a psychoscope's UI.
 */
 /obj/item/clothing/glasses/psychoscope/AltClick(mob/user)
-	tg_ui_interact(user)
+	tgui_interact(user)
 
 /* UI */
 
-/obj/item/clothing/glasses/psychoscope/tg_ui_interact(mob/user, ui_key, datum/tgui/ui, force_open, datum/tgui/master_ui, datum/ui_state/state)
-	ui = SStgui.try_update_ui(user, src, ui_key, ui, force_open)
+/obj/item/clothing/glasses/psychoscope/tgui_interact(mob/user, datum/tgui/ui)
+	ui = SStgui.try_update_ui(user, src, ui)
 
 	if(!ui)
-		ui = new(user, src, ui_key, "psychoscope", "Psychoscope", 500, 600, master_ui, state)
+		ui = new(user, src, "Psychoscope", name)
 		ui.open()
 
-/obj/item/clothing/glasses/psychoscope/ui_data(mob/user, ui_key)
+/obj/item/clothing/glasses/psychoscope/tgui_data(mob/user, ui_key)
 	var/list/data = list()
 
 	data["status"] = active
@@ -784,10 +784,11 @@
 
 	return data
 
-/obj/item/clothing/glasses/psychoscope/ui_act(action, params)
-	if(..()) return
+/obj/item/clothing/glasses/psychoscope/tgui_act(action, params)
+	. = ..()
 
-	. = FALSE
+	if(.)
+		return
 
 	if(!bcell)
 		return

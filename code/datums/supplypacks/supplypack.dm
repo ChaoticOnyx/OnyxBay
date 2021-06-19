@@ -1,5 +1,5 @@
 var/decl/hierarchy/supply_pack/cargo_supply_pack_root = new()
-var/decl/hierarchy/supply_pack/cargo_supply_packs	// Non-category supply packs
+var/list/decl/hierarchy/supply_pack/cargo_supply_packs	// Non-category supply packs
 
 /decl/hierarchy/supply_pack
 	name = "Supply Packs"

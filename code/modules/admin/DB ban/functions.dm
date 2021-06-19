@@ -9,8 +9,7 @@
 	if(usr)
 		if(!check_rights(R_MOD,0) && !check_rights(R_BAN))	return
 
-	establish_db_connection()
-	if(!dbcon.IsConnected())
+	if(!establish_db_connection())
 		return 0
 
 	var/serverip = "[world.internet_address]:[world.port]"
@@ -63,20 +62,156 @@
 		else
 			adminwho += ", [C]"
 
-	reason = sql_sanitize_text(reason)
-	reason = encode_for_db(reason)
-
-	var/sql
 	if(isnull(config.server_id))
-		sql = "INSERT INTO erro_ban (`id`,`bantime`,`serverip`,`bantype`,`reason`,`job`,`duration`,`rounds`,`expiration_time`,`ckey`,`computerid`,`ip`,`a_ckey`,`a_computerid`,`a_ip`,`who`,`adminwho`,`edits`,`unbanned`,`unbanned_datetime`,`unbanned_ckey`,`unbanned_computerid`,`unbanned_ip`,`server_id`) VALUES (null, Now(), '[serverip]', '[bantype_str]', '[reason]', '[job]', [(duration)?"[duration]":"0"], [(rounds)?"[rounds]":"0"], Now() + INTERVAL [(duration>0) ? duration : 0] MINUTE, '[ckey]', '[computerid]', '[ip]', '[a_ckey]', '[a_computerid]', '[a_ip]', '[who]', '[adminwho]', '', null, null, null, null, null, null)"
+		sql_query({"
+			INSERT INTO
+				erro_ban
+			VALUES
+				(null,
+				Now(),
+				$serverip,
+				$bantype_str,
+				$reason,
+				$job,
+				$duration,
+				$rounds,
+				Now() + INTERVAL $duration MINUTE,
+				$ckey,
+				$computerid,
+				$ip,
+				$a_ckey,
+				$a_computerid,
+				$a_ip,
+				$who,
+				$adminwho,
+				'', null, null, null, null, null, null, null)
+			"}, dbcon, list(serverip = serverip, bantype_str = bantype_str, reason = reason, job = job,
+				duration = duration ? duration : 0,
+				rounds = rounds ? "[rounds]" : "0", ckey = ckey,
+				computerid = computerid ? computerid : "",
+				ip = ip ? ip : "", a_ckey = a_ckey,
+				a_computerid = a_computerid ? a_computerid : "",
+				a_ip = a_ip ? a_ip : "",
+				who = who, adminwho = adminwho))
 	else
 		if(ban_everywhere)
-			sql = "INSERT INTO erro_ban (`id`,`bantime`,`serverip`,`bantype`,`reason`,`job`,`duration`,`rounds`,`expiration_time`,`ckey`,`computerid`,`ip`,`a_ckey`,`a_computerid`,`a_ip`,`who`,`adminwho`,`edits`,`unbanned`,`unbanned_datetime`,`unbanned_ckey`,`unbanned_computerid`,`unbanned_ip`,`server_id`) VALUES (null, Now(), '[serverip]', '[bantype_str]', '[reason]', '[job]', [(duration)?"[duration]":"0"], [(rounds)?"[rounds]":"0"], Now() + INTERVAL [(duration>0) ? duration : 0] MINUTE, '[ckey]', '[computerid]', '[ip]', '[a_ckey]', '[a_computerid]', '[a_ip]', '[who]', '[adminwho]', '', null, null, null, null, null, 'main'), (null, Now(), '[serverip]', '[bantype_str]', '[reason]', '[job]', [(duration)?"[duration]":"0"], [(rounds)?"[rounds]":"0"], Now() + INTERVAL [(duration>0) ? duration : 0] MINUTE, '[ckey]', '[computerid]', '[ip]', '[a_ckey]', '[a_computerid]', '[a_ip]', '[who]', '[adminwho]', '', null, null, null, null, null, 'beginners'), (null, Now(), '[serverip]', '[bantype_str]', '[reason]', '[job]', [(duration)?"[duration]":"0"], [(rounds)?"[rounds]":"0"], Now() + INTERVAL [(duration>0) ? duration : 0] MINUTE, '[ckey]', '[computerid]', '[ip]', '[a_ckey]', '[a_computerid]', '[a_ip]', '[who]', '[adminwho]', '', null, null, null, null, null, 'light')"
-		else
-			sql = "INSERT INTO erro_ban (`id`,`bantime`,`serverip`,`bantype`,`reason`,`job`,`duration`,`rounds`,`expiration_time`,`ckey`,`computerid`,`ip`,`a_ckey`,`a_computerid`,`a_ip`,`who`,`adminwho`,`edits`,`unbanned`,`unbanned_datetime`,`unbanned_ckey`,`unbanned_computerid`,`unbanned_ip`,`server_id`) VALUES (null, Now(), '[serverip]', '[bantype_str]', '[reason]', '[job]', [(duration)?"[duration]":"0"], [(rounds)?"[rounds]":"0"], Now() + INTERVAL [(duration>0) ? duration : 0] MINUTE, '[ckey]', '[computerid]', '[ip]', '[a_ckey]', '[a_computerid]', '[a_ip]', '[who]', '[adminwho]', '', null, null, null, null, null, '[config.server_id]')"
+			sql_query({"
+				INSERT INTO
+					erro_ban
+				VALUES
+					(null,
+					Now(),
+					$serverip,
+					$bantype_str,
+					$reason,
+					$job,
+					$duration,
+					$rounds,
+					Now() + INTERVAL $duration MINUTE,
+					$ckey,
+					$computerid,
+					$ip,
+					$a_ckey,
+					$a_computerid,
+					$a_ip,
+					$who,
+					$adminwho,
+					'', null, null, null, null, null, null, 'main'),
 
-	var/DBQuery/query_insert = dbcon.NewQuery(sql)
-	query_insert.Execute()
+					(null,
+					Now(),
+					$serverip,
+					$bantype_str,
+					$reason,
+					$job,
+					$duration,
+					$rounds,
+					Now() + INTERVAL $duration MINUTE,
+					$ckey,
+					$computerid,
+					$ip,
+					$a_ckey,
+					$a_computerid,
+					$a_ip,
+					$who,
+					$adminwho,
+					'', null, null, null, null, null, null, 'beginners'),
+
+					(null,
+					Now(),
+					$serverip,
+					$bantype_str,
+					$reason,
+					$job,
+					$duration,
+					$rounds,
+					Now() + INTERVAL $duration MINUTE,
+					$ckey,
+					$computerid,
+					$ip,
+					$a_ckey,
+					$a_computerid,
+					$a_ip,
+					$who,
+					$adminwho,
+					'', null, null, null, null, null, null, 'main'),
+
+					(null,
+					Now(),
+					$serverip,
+					$bantype_str,
+					$reason,
+					$job,
+					$duration,
+					$rounds,
+					Now() + INTERVAL $duration MINUTE,
+					$ckey,
+					$computerid,
+					$ip,
+					$a_ckey,
+					$a_computerid,
+					$a_ip,
+					$who,
+					$adminwho,
+					'', null, null, null, null, null, null, 'light')
+				"}, dbcon, list(serverip = serverip, bantype_str = bantype_str, reason = reason, job = job,
+					duration = duration ? duration : 0,
+					rounds = rounds ? "[rounds]" : "0", ckey = ckey,
+					computerid = computerid ? computerid : "", ip = ip, a_ckey = a_ckey,
+					a_computerid = a_computerid ? a_computerid : "",
+					a_ip = a_ip ? a_ip : "", who = who, adminwho = adminwho))
+
+		else
+			sql_query({"
+				INSERT INTO
+					erro_ban
+				VALUES
+					(null,
+					Now(),
+					$serverip,
+					$bantype_str,
+					$reason,
+					$job,
+					$duration,
+					$rounds,
+					Now() + INTERVAL $duration MINUTE,
+					$ckey,
+					$computerid,
+					$ip,
+					$a_ckey,
+					$a_computer_id,
+					$a_ip,
+					$who,
+					$adminwho,
+					'', null, null, null, null, null, null, $server_id)
+				"}, dbcon, list(serverip = serverip, bantype_str = bantype_str, reason = reason, job = job,
+				duration = duration ? duration : 0,
+				rounds = rounds ? "[rounds]" : "0", ckey = ckey,
+				computerid = computerid ? computerid : "",
+				ip = ip ? ip : "", a_ckey = a_ckey,
+				a_computer_id = a_computerid ? a_computerid : "",
+				a_ip = a_ip ? a_ip : "", who = who, adminwho = adminwho, server_id = config.server_id))
+
 	var/setter = a_ckey
 	if(usr)
 		to_chat(usr, "<span class='notice'>Ban saved to database.</span>")
@@ -85,7 +220,11 @@
 	return 1
 
 /datum/admins/proc/DB_ban_unban(ckey, bantype, job = "")
-	if(!check_rights(R_BAN))	return
+	if(!establish_db_connection())
+		return
+
+	if(!check_rights(R_BAN))
+		return
 
 	var/bantype_str
 	if(bantype)
@@ -112,26 +251,28 @@
 	if(bantype_str == "ANY")
 		bantype_sql = "(bantype = 'PERMABAN' OR (bantype = 'TEMPBAN' AND expiration_time > Now() ) )"
 	else
-		bantype_sql = "bantype = '[bantype_str]'"
-
-	var/sql
-	if(isnull(config.server_id))
-		sql = "SELECT id FROM erro_ban WHERE ckey = '[ckey]' AND [bantype_sql] AND (unbanned is null OR unbanned = false)"
-	else
-		sql = "SELECT id FROM erro_ban WHERE ckey = '[ckey]' AND [bantype_sql] AND (unbanned is null OR unbanned = false) AND server_id = '[config.server_id]'"
-
-	if(job)
-		sql += " AND job = '[job]'"
-
-	establish_db_connection()
-	if(!dbcon.IsConnected())
-		return
+		bantype_sql = "bantype = $bantype_str"
 
 	var/ban_id
 	var/ban_number = 0 //failsafe
 
-	var/DBQuery/query = dbcon.NewQuery(sql)
-	query.Execute()
+	var/DBQuery/query = sql_query({"
+		SELECT
+			id
+		FROM
+			erro_ban
+		WHERE
+			ckey = $ckey
+			AND
+			[bantype_sql]
+			AND
+				(unbanned is null
+				OR
+				unbanned = false)
+			[isnull(config.server_id) ? "" : " AND server_id = $server_id"]
+			[job ? " AND job = $job" : ""]
+		"}, dbcon, list(ckey = ckey, bantype_str = bantype_str, server_id = config.server_id, job = job))
+
 	while(query.NextRow())
 		ban_id = query.item[1]
 		ban_number++;
@@ -153,6 +294,9 @@
 	DB_ban_unban_by_id(ban_id)
 
 /datum/admins/proc/DB_ban_edit(banid = null, param = null)
+	if(!establish_db_connection())
+		return
+
 	if(!check_rights(R_BAN))	return
 
 	if(!isnum(banid) || !istext(param))
@@ -161,11 +305,9 @@
 
 	var/DBQuery/query
 	if(isnull(config.server_id))
-		query = dbcon.NewQuery("SELECT ckey, duration, reason FROM erro_ban WHERE id = [banid]")
+		query = sql_query("SELECT ckey, duration, reason FROM erro_ban WHERE id = $banid", dbcon, list(banid = banid))
 	else
-		query = dbcon.NewQuery("SELECT ckey, duration, reason, server_id FROM erro_ban WHERE id = [banid]")
-
-	query.Execute()
+		query = sql_query("SELECT ckey, duration, reason, server_id FROM erro_ban WHERE id = $banid", dbcon, list(banid = banid))
 
 	var/eckey = usr.ckey	//Editing admin ckey
 	var/pckey				//(banned) Player ckey
@@ -176,29 +318,33 @@
 	if(query.NextRow())
 		pckey = query.item[1]
 		duration = query.item[2]
-		reason = decode_from_db(query.item[3])
+		reason = query.item[3]
 		if(!isnull(config.server_id))
 			serverid = query.item[4]
 	else
 		to_chat(usr, "Invalid ban id. Contact the database admin")
 		return
-
-	reason = sql_sanitize_text(reason)
 	var/value
 
 	switch(param)
 		if("reason")
 			if(!value)
 				value = sanitize(input("Insert the new reason for [pckey]'s ban", "New Reason", "[reason]", null) as null|text)
-				value = sql_sanitize_text(value)
-				value = encode_for_db(value)
 				if(!value)
 					to_chat(usr, "Cancelled")
 					return
 
-			var/sql = "UPDATE erro_ban SET reason = '[value]', edits = CONCAT(edits,'- [eckey] changed ban reason from <cite><b>\\\"[reason]\\\"</b></cite> to <cite><b>\\\"[value]\\\"</b></cite><BR>') WHERE id = [banid]"
-			var/DBQuery/update_query = dbcon.NewQuery(sql)
-			update_query.Execute()
+			sql_query({"
+				UPDATE
+					erro_ban
+				SET
+					reason = $value,
+					edits = CONCAT
+						(edits,
+						'- $eckey changed ban reason from <cite><b>\"$reason\"</b></cite> to <cite><b>\"$value\"</b></cite><BR>')
+				WHERE
+					id = $banid
+				"}, dbcon, list(value = value, eckey = eckey, reason = reason, banid = banid))
 			if(serverid)
 				message_admins("[key_name_admin(usr)] has edited a ban for [pckey]'s on [serverid] server. Reason set from [reason] to [value]",1)
 			else
@@ -210,13 +356,24 @@
 					to_chat(usr, "Cancelled")
 					return
 
-			var/sql = "UPDATE erro_ban SET duration = [value], edits = CONCAT(edits,'- [eckey] changed ban duration from [duration] to [value]<br>'), expiration_time = DATE_ADD(bantime, INTERVAL [value] MINUTE) WHERE id = [banid]"
-			var/DBQuery/update_query = dbcon.NewQuery(sql)
+			sql_query({"
+				UPDATE
+					erro_ban
+				SET
+					duration = $value,
+					edits = CONCAT
+						(edits,
+						'- $eckey changed ban duration from $duration to $value<br>'),
+					expiration_time = DATE_ADD
+						(bantime,
+						INTERVAL $value MINUTE)
+				WHERE
+					id = $banid
+				"}, dbcon, list(value = value, eckey = eckey, duration = duration, banid = banid))
 			if(serverid)
 				message_admins("[key_name_admin(usr)] has edited a ban for [pckey]'s duration from [duration] to [value]",1)
 			else
 				message_admins("[key_name_admin(usr)] has edited a ban for [pckey]'s on [serverid] server. Duration set from [duration] to [value]",1)
-			update_query.Execute()
 		if("unban")
 			if(alert("Unban [pckey]?", "Unban?", "Yes", "No") == "Yes")
 				DB_ban_unban_by_id(banid)
@@ -229,24 +386,22 @@
 			return
 
 /datum/admins/proc/DB_ban_unban_by_id(id)
+	if(!establish_db_connection())
+		return
+
 	if(!check_rights(R_BAN))	return
 
 	var/sql
 	if(isnull(config.server_id))
-		sql = "SELECT ckey FROM erro_ban WHERE id = [id]"
+		sql = "SELECT ckey FROM erro_ban WHERE id = $id"
 	else
-		sql = "SELECT ckey, server_id FROM erro_ban WHERE id = [id]"
-
-	establish_db_connection()
-	if(!dbcon.IsConnected())
-		return
+		sql = "SELECT ckey, server_id FROM erro_ban WHERE id = $id"
 
 	var/ban_number = 0 //failsafe
 
 	var/pckey
 	var/serverid
-	var/DBQuery/query = dbcon.NewQuery(sql)
-	query.Execute()
+	var/DBQuery/query = sql_query(sql, dbcon, list(id = id))
 	while(query.NextRow())
 		pckey = query.item[1]
 		if(!isnull(config.server_id))
@@ -264,20 +419,27 @@
 	if(!src.owner || !istype(src.owner, /client))
 		return
 
-	var/unban_ckey = src.owner:ckey
-	var/unban_computerid = src.owner:computer_id
-	var/unban_ip = src.owner:address
+	var/unban_ckey = src.owner.ckey
+	var/unban_computerid = src.owner.computer_id
+	var/unban_ip = src.owner.address
 
-	var/sql_update = "UPDATE erro_ban SET unbanned = 1, unbanned_datetime = Now(), unbanned_ckey = '[unban_ckey]', unbanned_computerid = '[unban_computerid]', unbanned_ip = '[unban_ip]' WHERE id = [id]"
+	sql_query({"
+		UPDATE
+			erro_ban
+		SET
+			unbanned = 1,
+			unbanned_datetime = Now(),
+			unbanned_ckey = $unban_ckey,
+			unbanned_computerid = $unbancid,
+			unbanned_ip = $unbanip
+		WHERE
+			id = $id
+		"}, dbcon, list(unban_ckey = unban_ckey, unbancid = unban_computerid, unbanip = unban_ip, id = id))
 
 	if(serverid)
-		message_admins("[key_name_admin(usr)] has lifted [pckey]'s ban of [serverid] server.",1)
+		message_admins("[key_name_admin(usr)] has lifted [pckey]'s ban of [serverid] server.", 1)
 	else
-		message_admins("[key_name_admin(usr)] has lifted [pckey]'s ban.",1)
-
-	var/DBQuery/query_update = dbcon.NewQuery(sql_update)
-	query_update.Execute()
-
+		message_admins("[key_name_admin(usr)] has lifted [pckey]'s ban.", 1)
 
 /client/proc/DB_ban_panel()
 	set category = "Admin"
@@ -296,8 +458,7 @@
 
 	if(!check_rights(R_BAN))	return
 
-	establish_db_connection()
-	if(!dbcon.IsConnected())
+	if(!establish_db_connection())
 		to_chat(usr, "<span class='warning'>Failed to establish database connection</span>")
 		return
 
@@ -332,9 +493,6 @@
 
 		adminckey = ckey(adminckey)
 		playerckey = ckey(playerckey)
-		playerip = sql_sanitize_text(playerip)
-		playercid = sql_sanitize_text(playercid)
-
 		if(adminckey || playerckey || playerip || playercid || dbbantype)
 
 			var/blcolor = "#ffeeee" //banned light
@@ -359,25 +517,6 @@
 			var/cidsearch = ""
 			var/bantypesearch = ""
 
-			if(!match)
-				if(adminckey)
-					adminsearch = "AND a_ckey = '[adminckey]' "
-				if(playerckey)
-					playersearch = "AND ckey = '[playerckey]' "
-				if(playerip)
-					ipsearch  = "AND ip = '[playerip]' "
-				if(playercid)
-					cidsearch  = "AND computerid = '[playercid]' "
-			else
-				if(adminckey && length(adminckey) >= 3)
-					adminsearch = "AND a_ckey LIKE '[adminckey]%' "
-				if(playerckey && length(playerckey) >= 3)
-					playersearch = "AND ckey LIKE '[playerckey]%' "
-				if(playerip && length(playerip) >= 3)
-					ipsearch  = "AND ip LIKE '[playerip]%' "
-				if(playercid && length(playercid) >= 7)
-					cidsearch  = "AND computerid LIKE '[playercid]%' "
-
 			if(dbbantype)
 				bantypesearch = "AND bantype = "
 
@@ -392,12 +531,62 @@
 						bantypesearch += "'PERMABAN' "
 
 			var/DBQuery/select_query
-			if(isnull(config.server_id))
-				select_query = dbcon.NewQuery("SELECT id, bantime, bantype, reason, job, duration, expiration_time, ckey, a_ckey, unbanned, unbanned_ckey, unbanned_datetime, edits, ip, computerid FROM erro_ban WHERE 1 [playersearch] [adminsearch] [ipsearch] [cidsearch] [bantypesearch] ORDER BY bantime DESC LIMIT 100")
-			else
-				select_query = dbcon.NewQuery("SELECT id, bantime, bantype, reason, job, duration, expiration_time, ckey, a_ckey, unbanned, unbanned_ckey, unbanned_datetime, edits, ip, computerid, server_id FROM erro_ban WHERE 1 [playersearch] [adminsearch] [ipsearch] [cidsearch] [bantypesearch] ORDER BY bantime DESC LIMIT 100")
+			var/list/query_arg_list
 
-			select_query.Execute()
+			if(!match)
+				if(adminckey)
+					adminsearch = "AND a_ckey = $adminckey "
+				if(playerckey)
+					playersearch = "AND ckey = $playerckey "
+				if(playerip)
+					ipsearch  = "AND ip = $playerip "
+				if(playercid)
+					cidsearch  = "AND computerid = $playercid "
+				query_arg_list = list(playerckey = playerckey, adminckey = adminckey, playerip = playerip, playercid = playercid)
+
+			else
+				if(adminckey && length(adminckey) >= 3)
+					adminsearch = "AND a_ckey LIKE $adminckey "
+				if(playerckey && length(playerckey) >= 3)
+					playersearch = "AND ckey LIKE $playerckey "
+				if(playerip && length(playerip) >= 3)
+					ipsearch  = "AND ip LIKE $playerip "
+				if(playercid && length(playercid) >= 7)
+					cidsearch  = "AND computerid LIKE $playercid "
+				query_arg_list = list(playerckey = "%" + playerckey + "%", adminckey = "%" + adminckey + "%", playerip = "%" + playerip + "%", playercid = "%" + playercid + "%")
+
+			select_query = sql_query({"
+				SELECT
+					id,
+					bantime,
+					bantype,
+					reason,
+					job,
+					duration,
+					expiration_time,
+					ckey,
+					a_ckey,
+					unbanned,
+					unbanned_ckey,
+					unbanned_datetime,
+					edits,
+					ip,
+					computerid,
+					server_id
+				FROM
+					erro_ban
+				WHERE
+					1
+					[playersearch]
+					[adminsearch]
+					[ipsearch]
+					[cidsearch]
+					[bantypesearch]
+				ORDER BY
+					bantime
+				DESC LIMIT
+					100
+				"}, dbcon, query_arg_list)
 
 			var/now = time2text(world.realtime, "YYYY-MM-DD hh:mm:ss") // MUST BE the same format as SQL gives us the dates in, and MUST be least to most specific (i.e. year, month, day not day, month, year)
 
@@ -405,7 +594,7 @@
 				var/banid = select_query.item[1]
 				var/bantime = select_query.item[2]
 				var/bantype  = select_query.item[3]
-				var/reason = decode_from_db(select_query.item[4])
+				var/reason = select_query.item[4]
 				var/job = select_query.item[5]
 				var/duration = select_query.item[6]
 				var/expiration = select_query.item[7]

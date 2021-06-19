@@ -34,6 +34,7 @@ var/list/spells = typesof(/spell) //needed for the badmin verb for now
 	var/selection_type = "view"		//can be "range" or "view"
 	var/atom/movable/holder			//where the spell is. Normally the user, can be an item
 	var/duration = 0 //how long the spell lasts
+	var/need_target = 1
 
 	var/list/spell_levels = list(Sp_SPEED = 0, Sp_POWER = 0) //the current spell levels - total spell levels can be obtained by just adding the two values
 	var/list/level_max = list(Sp_TOTAL = 4, Sp_SPEED = 4, Sp_POWER = 0) //maximum possible levels in each category. Total does cover both.
@@ -287,20 +288,22 @@ var/list/spells = typesof(/spell) //needed for the badmin verb for now
 	return 1
 
 /spell/proc/check_valid_targets(list/targets)
+	if(!need_target)
+		return TRUE
 	if(!targets)
-		return 0
+		return FALSE
 	if(!islist(targets))
 		targets = list(targets)
 	else if(!targets.len)
-		return 0
+		return FALSE
 
 	var/list/valid_targets = view_or_range(range, holder, selection_type)
 	for(var/target in targets)
 		if(!(target in valid_targets))
-			return 0
-	return 1
+			return FALSE
+	return TRUE
 
-/spell/proc/invocation(mob/user = usr, list/targets) //spelling the spell out and setting it on recharge/reducing charges amount
+/spell/proc/invocation(mob/user = usr, list/targets) // spelling the spell out and setting it on recharge/reducing charges amount
 
 	switch(invocation_type)
 		if(SpI_SHOUT)
