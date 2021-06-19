@@ -427,19 +427,19 @@
 
 	// attempt to remove the lightbulb out of the fixture with a crowbar
 	else if(isCrowbar(W) && lightbulb)
-		if(powered())
+		if(powered() && (W.obj_flags & OBJ_FLAG_CONDUCTIBLE))
 			var/datum/effect/effect/system/spark_spread/s = new /datum/effect/effect/system/spark_spread
 			s.set_up(3, 1, src)
 			s.start()
 			if(ishuman(user) && prob(75))
 				var/mob/living/carbon/human/H = user
-				var/wrong_choice = FALSE
+				var/wrong_choice = TRUE
 				if(H.species.siemens_coefficient <= 0)
-					wrong_choice = TRUE
+					wrong_choice = FALSE
 				else if(H.gloves)
 					var/obj/item/clothing/gloves/G = H.gloves
 					if(G.siemens_coefficient == 0)
-						wrong_choice = TRUE
+						wrong_choice = FALSE
 				if(wrong_choice)
 					user.visible_message(SPAN("warning", "[user] tries to pry [lightbulb] out of [src] with [W], only to get shocked."))
 					user.drop_item()
