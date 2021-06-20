@@ -336,7 +336,7 @@
 	return html_encode(copytext_char(html_decode(text), first, last))
 
 /proc/create_text_tag(tagname, tagdesc)
-	return SPAN("text-tag-[tagname]", tagdesc)
+	return SPAN("text-tag [tagname]", tagdesc)
 
 /proc/contains_az09(input)
 	for(var/i=1, i<=length(input), i++)

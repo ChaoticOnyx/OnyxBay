@@ -5,7 +5,7 @@
  */
 
 import { changeSettingsTab, loadSettings, openChatSettings, toggleSettings, updateSettings } from './actions';
-import { FONTS, SETTINGS_TABS } from './constants';
+import { FONTS, REPEAT_MODE, SETTINGS_TABS, SIZE_MODE } from './constants';
 
 const initialState = {
   version: 1,
@@ -20,6 +20,12 @@ const initialState = {
   view: {
     visible: false,
     activeTab: SETTINGS_TABS[0].id,
+  },
+  background: {
+    url: null,
+    opaque: 0,
+    repeat: REPEAT_MODE.no,
+    size: SIZE_MODE.contain,
   },
 };
 
