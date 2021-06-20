@@ -72,8 +72,6 @@
 	var/datum/global_iterator/pr_give_air //moves air from tank to cabin
 	var/datum/global_iterator/pr_internal_damage //processes internal damage
 
-	var/create_tracker
-
 	var/wreckage
 
 	var/list/equipment = new
