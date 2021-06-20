@@ -136,7 +136,6 @@
 			but when the power sink comes in contact with exposed wires out in space or on the station it starts to drain the power at a RAPID rate. \
 			Once it has enough power, powersink explodes, destroying everything in a HUGE range."
 	item_cost = 5
-	path = /obj/item/device/powersink
 
 /datum/uplink_item/item/stealth_items/chameleon_hologram
 	name = "Chameleon Bomb"
@@ -169,6 +168,7 @@
 	item_cost = 7
 	antag_costs = list(MODE_NUKE = 11)
 	path = /obj/item/device/flashlight/flashdark
+	path = /obj/item/device/powersink
 
 /datum/uplink_item/item/tools/ai_module
 	name = "Hacked AI Upload Module"
