@@ -22,8 +22,6 @@
 	force = 45
 	max_equip = 4
 
-	create_tracker = 0
-
 /obj/mecha/combat/marauder/seraph
 	desc = "Heavy-duty, command-type exosuit. This is a custom model, utilized only by high-ranking military personnel."
 	name = "Seraph"
@@ -37,8 +35,6 @@
 	force = 55
 	max_equip = 5
 
-	create_tracker = 0
-
 /obj/mecha/combat/marauder/mauler
 	desc = "Heavy-duty, combat exosuit, developed off of the existing Marauder model."
 	name = "Mauler"
@@ -46,8 +42,6 @@
 	initial_icon = "mauler"
 	operation_req_access = list(access_syndicate)
 	wreckage = /obj/effect/decal/mecha_wreckage/mauler
-
-	create_tracker = 0
 
 /obj/mecha/combat/marauder/Initialize()
 	. = ..()

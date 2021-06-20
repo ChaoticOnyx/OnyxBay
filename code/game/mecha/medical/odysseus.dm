@@ -11,8 +11,6 @@
 	deflect_chance = 15
 	var/obj/item/clothing/glasses/hud/health/mech/hud
 
-	create_tracker = 1
-
 /obj/mecha/medical/odysseus/Initialize()
 	. = ..()
 	hud = new /obj/item/clothing/glasses/hud/health/mech(src)

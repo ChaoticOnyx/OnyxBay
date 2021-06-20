@@ -107,11 +107,6 @@
 	log_message("[src.name] created.")
 	loc.Entered(src)
 	mechas_list += src //global mech list
-
-	var/turf/T = get_turf(src)
-	if(isPlayerLevel(T.z) && src.create_tracker)
-		new /obj/item/mecha_parts/mecha_tracking(src)
-
 	return
 
 /obj/mecha/Destroy()

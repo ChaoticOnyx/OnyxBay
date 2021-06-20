@@ -16,8 +16,6 @@
 	max_equip = 3
 	var/squeak = 0
 
-	create_tracker = 0
-
 /obj/mecha/combat/honker/melee_action(target)
 	if(!melee_can_hit)
 		return

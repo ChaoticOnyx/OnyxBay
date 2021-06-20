@@ -10,8 +10,6 @@
 	cargo_capacity = 10
 	var/hides = 0
 
-	create_tracker = 1
-
 /obj/mecha/working/ripley/Destroy()
 	for(var/atom/movable/A in src.cargo)
 		A.loc = loc
@@ -42,8 +40,6 @@
 	damage_absorption = list("fire"=0.5,"bullet"=0.8,"bomb"=0.5)
 	wreckage = /obj/effect/decal/mecha_wreckage/ripley/firefighter
 
-	create_tracker = 1
-
 /obj/mecha/working/ripley/deathripley
 	desc = "OH SHIT IT'S THE DEATHSQUAD WE'RE ALL GONNA DIE!"
 	name = "DEATH-RIPLEY"
@@ -54,8 +50,6 @@
 	lights_power = 60
 	wreckage = /obj/effect/decal/mecha_wreckage/ripley/deathripley
 	step_energy_drain = 0
-
-	create_tracker = 0
 
 /obj/mecha/working/ripley/deathripley/Initialize()
 	. = ..()

@@ -16,8 +16,6 @@
 	internal_damage_threshold = 35
 	max_equip = 3
 
-	create_tracker = 1
-
 /obj/mecha/combat/gygax/dark
 	desc = "A lightweight exosuit used by Heavy Asset Protection. A significantly upgraded Gygax security mech."
 	name = "Dark Gygax"
@@ -31,8 +29,6 @@
 	wreckage = /obj/effect/decal/mecha_wreckage/gygax/dark
 	max_equip = 4
 	step_energy_drain = 5
-
-	create_tracker = 0
 
 /obj/mecha/combat/gygax/dark/Initialize()
 	. = .. ()
