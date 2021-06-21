@@ -34,7 +34,14 @@
 	singular_name = "alien hide piece"
 	icon_state = "sheet-xeno"
 
-//don't see anywhere else to put these, maybe together they could be used to make the xenos suit?
+/obj/item/stack/material/animalhide/goat
+	default_type = "goat hide"
+	name = "goat hide"
+	desc = "A goat hide."
+	singular_name = "goat hide piece"
+	icon_state = "goatskin"
+
+// don't see anywhere else to put these, maybe together they could be used to make the xenos suit?
 /obj/item/stack/material/xenochitin
 	name = "alien chitin"
 	desc = "A piece of the hide of a terrible creature."
@@ -55,6 +62,7 @@
 	icon_state = "weed_extract"
 
 /obj/item/stack/material/hairlesshide
+	default_type = "hairless hide"
 	name = "hairless hide"
 	desc = "This hide was stripped of it's hair, but still needs tanning."
 	singular_name = "hairless hide piece"
