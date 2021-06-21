@@ -10,6 +10,25 @@
 	mod_weight = 0.25
 	mod_handy = 0.25
 
+/obj/item/trash/dishes
+	var/list/stack = list()
+
+/obj/item/trash/dishes/baking_sheet
+	name = "baking sheet"
+	icon_state = "baking_sheet0"
+
+/obj/item/trash/dishes/plate
+	name = "plate"
+	icon_state = "plate0"
+
+/obj/item/trash/dishes/bowl
+	name = "bowl"
+	icon_state	= "bowl0"
+
+/obj/item/trash/dishes/tray
+	name = "tray"
+	icon_state = "tray0"
+
 /obj/item/trash/raisins
 	name = "\improper 4no raisins"
 	icon_state = "4no_raisins"
@@ -63,18 +82,6 @@
 	name = "syndi cakes"
 	icon_state = "syndi_cakes"
 
-/obj/item/trash/waffles
-	name = "waffles"
-	icon_state = "waffles"
-
-/obj/item/trash/plate
-	name = "plate"
-	icon_state = "plate"
-
-/obj/item/trash/snack_bowl
-	name = "snack bowl"
-	icon_state	= "snack_bowl"
-
 /obj/item/trash/pistachios
 	name = "pistachios pack"
 	icon_state = "pistachios_pack"
@@ -82,10 +89,6 @@
 /obj/item/trash/semki
 	name = "semki pack"
 	icon_state = "semki_pack"
-
-/obj/item/trash/tray
-	name = "tray"
-	icon_state = "tray"
 
 /obj/item/trash/candle
 	name = "candle"
@@ -192,3 +195,56 @@
 
 /obj/item/trash/attack(mob/M as mob, mob/living/user as mob)
 	return
+
+/obj/item/trash/dishes/update_icon()
+	var/obj/item/trash/dishes/old_icon_state = copytext("[icon_state]",1,-1) // suitable for different name lengths
+	icon_state = "[old_icon_state][length(stack)]"
+
+
+/obj/item/trash/dishes/attackby(obj/item/I as obj, mob/user as mob)
+	var/obj/item/trash/dishes/dish = I
+	if(I.type == src.type) // We add only objects of our own type
+
+
+		var/list/dishestoadd = list()
+
+		dishestoadd += dish
+		for(var/obj/item/trash/dishes/i in dish.stack)
+			dishestoadd += i
+
+		if((length(stack)+1) + length(dishestoadd) <= 5)
+			user.drop_item()
+
+			dish.loc = src
+			dish.stack = list()
+
+			dish.update_icon()
+			src.stack.Add(dishestoadd)
+			update_icon()
+
+
+			to_chat(user, "<span class='warning'>You put \the [dish] ontop of \the [src]!</span>")
+		else
+			to_chat(user, "<span class='warning'>The stack is too high!</span>")
+
+		return
+	..()
+
+
+/obj/item/trash/dishes/attack_hand( mob/user as mob )
+
+	if(length(stack) > 0)
+		if( user.get_inactive_hand() != src )
+			..()
+			return
+
+		var/obj/item/trash/dishes/dish = stack[length(stack)]
+		stack -= dish
+
+		user.put_in_hands(dish)
+		to_chat(user, "<span class='warning'>You remove the topmost [src] from your hand.</span>")
+
+		update_icon()
+
+		return
+	..()
