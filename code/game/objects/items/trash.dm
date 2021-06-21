@@ -197,11 +197,10 @@
 	return
 
 /obj/item/trash/dishes/update_icon()
-	var/obj/item/trash/dishes/old_icon_state = copytext("[icon_state]",1,-1) // suitable for different name lengths
+	var/old_icon_state = copytext(icon_state, 1, length(icon_state)) // suitable for different name lengths
 	icon_state = "[old_icon_state][length(stack)]"
 
-
-/obj/item/trash/dishes/attackby(obj/item/I as obj, mob/user as mob)
+/obj/item/trash/dishes/attackby(obj/item/I, mob/user)
 	var/obj/item/trash/dishes/dish = I
 	if(I.type == src.type) // We add only objects of our own type
 
@@ -215,7 +214,7 @@
 		if((length(stack)+1) + length(dishestoadd) <= 5)
 			user.drop_item()
 
-			dish.loc = src
+			dish.forceMove(src)
 			dish.stack = list()
 
 			dish.update_icon()
@@ -223,18 +222,17 @@
 			update_icon()
 
 
-			to_chat(user, "<span class='warning'>You put \the [dish] ontop of \the [src]!</span>")
+			to_chat(user, SPAN("warning", "You put \the [dish] ontop of \the [src]!"))
 		else
-			to_chat(user, "<span class='warning'>The stack is too high!</span>")
+			to_chat(user, SPAN("warning", "The stack is too high!"))
 
 		return
 	..()
 
-
-/obj/item/trash/dishes/attack_hand( mob/user as mob )
+/obj/item/trash/dishes/attack_hand(mob/user)
 
 	if(length(stack) > 0)
-		if( user.get_inactive_hand() != src )
+		if(user.get_inactive_hand() != src)
 			..()
 			return
 
@@ -242,7 +240,7 @@
 		stack -= dish
 
 		user.put_in_hands(dish)
-		to_chat(user, "<span class='warning'>You remove the topmost [src] from your hand.</span>")
+		to_chat(user, SPAN("warning", "You remove the topmost [src] from your hand."))
 
 		update_icon()
 
