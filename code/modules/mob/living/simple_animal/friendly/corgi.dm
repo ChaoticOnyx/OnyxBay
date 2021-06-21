@@ -27,6 +27,7 @@
 	var/obj/item/inventory_head
 	var/obj/item/inventory_back
 	var/obj/movement_target
+	renamable = 1
 
 //IAN! SQUEEEEEEEEE~
 /mob/living/simple_animal/corgi/Ian
@@ -38,6 +39,7 @@
 	response_help  = "pets"
 	response_disarm = "bops"
 	response_harm   = "kicks"
+	renamable = 0
 
 /mob/living/simple_animal/corgi/Life()
 	..()
@@ -181,6 +183,7 @@
 	icon_living = "puppy"
 	icon_dead = "puppy_dead"
 	item_state = "puppy"
+	renamable = 1
 
 //pupplies cannot wear anything.
 /mob/living/simple_animal/corgi/puppy/Topic(href, href_list)
@@ -204,6 +207,7 @@
 	response_harm   = "kicks"
 	turns_since_scan = 0
 	var/puppies = 0
+	renamable = 0
 
 //Lisa already has a cute bow!
 /mob/living/simple_animal/corgi/Lisa/Topic(href, href_list)
