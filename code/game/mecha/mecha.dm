@@ -1070,7 +1070,7 @@
 		set_dir(dir_in)
 		playsound(src, 'sound/machines/windowdoor.ogg', 50, 1)
 		if(!hasInternalDamage())
-			to_chat(src.occupant, sound('sound/mecha/nominal.ogg',volume=50))
+			sound_to(src.occupant, sound('sound/mecha/nominal.ogg',volume=50))
 		return 1
 	else
 		return 0
