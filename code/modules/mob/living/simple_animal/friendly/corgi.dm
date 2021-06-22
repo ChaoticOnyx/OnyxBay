@@ -24,8 +24,7 @@
 	maxHealth = 30
 	possession_candidate = 1
 	holder_type = /obj/item/weapon/holder/corgi
-	var/obj/item/inventory_head
-	var/obj/item/inventory_back
+	var/obj/item/hat
 	var/obj/movement_target
 
 //IAN! SQUEEEEEEEEE~
@@ -39,9 +38,9 @@
 	response_disarm = "bops"
 	response_harm   = "kicks"
 
+
 /mob/living/simple_animal/corgi/Life()
 	..()
-
 	regular_hud_updates()
 
 	//Feeding, chasing food, FOOOOODDDD
@@ -80,7 +79,7 @@
 						else
 							set_dir(SOUTH)
 
-						if(isturf(movement_target.loc) )
+						if(isturf(movement_target.loc))
 							UnarmedAttack(movement_target)
 						else if(ishuman(movement_target.loc) && prob(20))
 							visible_emote("stares at the [movement_target] that [movement_target.loc] has with sad puppy eyes.")
@@ -91,6 +90,7 @@
 				for(var/i in list(1,2,4,8,4,2,1,2,4,8,4,2,1,2,4,8,4,2))
 					set_dir(i)
 					sleep(1)
+	update_hat()
 
 /mob/living/simple_animal/corgi/proc/regular_hud_updates()
 	if(pullin)
@@ -139,40 +139,64 @@
 	desc = "Tastes like... well you know..."
 
 /mob/living/simple_animal/corgi/attackby(obj/item/O as obj, mob/user as mob)  //Marker -Agouri
+	if(user.a_intent == I_HELP && istype(O, /obj/item/clothing/head/corgi)) //Equiping corgi with a cool hat!
+		if(hat)
+			to_chat(user, SPAN_WARNING("\The [src] is already wearing \the [hat]."))
+			return
+		user.unEquip(O)
+		wear_hat(O)
+		user.visible_message(SPAN_WARNING("\The [user] puts \the [O] on \the [src]."))
+		return
 	if(istype(O, /obj/item/weapon/newspaper))
 		if(!stat)
 			for(var/mob/M in viewers(user, null))
 				if ((M.client && !( M.blinded )))
-					M.show_message("<span class='notice'>[user] baps [name] on the nose with the rolled up [O]</span>")
+					M.show_message(SPAN_WARNING("[user] baps [name] on the nose with the rolled up [O]"))
 			spawn(0)
 				for(var/i in list(1,2,4,8,4,2,1,2))
 					set_dir(i)
+					update_hat()
 					sleep(1)
 	else
 		..()
 
-/mob/living/simple_animal/corgi/regenerate_icons()
-	overlays = list()
+/mob/living/simple_animal/corgi/proc/get_hat_icon(obj/item/hat, offset_x, offset_y)
+	var/t_state = hat.icon_state
+	if(hat.item_state_slots && hat.item_state_slots[slot_head_str])
+		t_state = hat.item_state_slots[slot_head_str]
+	else if(hat.item_state)
+		t_state = hat.item_state
+	var/key = "[t_state]_[offset_x]_[offset_y]"
+	if(!mob_hat_cache[key])            // Not ideal as there's no guarantee all hat icon_states
+		var/t_icon = default_onmob_icons[slot_head_str] // are unique across multiple dmis, but whatever.
+		if(hat.icon_override)
+			t_icon = hat.icon_override
+		else if(hat.item_icons && (slot_head_str in hat.item_icons))
+			t_icon = hat.item_icons[slot_head_str]
+		var/image/I = image(icon = t_icon, icon_state = t_state)
+		I.pixel_x = offset_x
+		I.pixel_y = offset_y
+		mob_hat_cache[key] = I
+	return mob_hat_cache[key]
 
-	if(inventory_head)
-		var/head_icon_state = inventory_head.icon_state
-		if(health <= 0)
-			head_icon_state += "2"
+/mob/living/simple_animal/corgi/proc/wear_hat(obj/item/new_hat)
+	if(hat)
+		return
+	hat = new_hat
+	new_hat.forceMove(src)
+	update_hat()
 
-		var/icon/head_icon = image('icons/mob/corgi_head.dmi',head_icon_state)
-		if(head_icon)
-			overlays += head_icon
-
-	if(inventory_back)
-		var/back_icon_state = inventory_back.icon_state
-		if(health <= 0)
-			back_icon_state += "2"
-
-		var/icon/back_icon = image('icons/mob/corgi_back.dmi',back_icon_state)
-		if(back_icon)
-			overlays += back_icon
-	return
-
+/mob/living/simple_animal/corgi/proc/update_hat()
+	var hat_offset_x = 1 		//preseting offsets to north and south
+	var hat_offset_y = -7
+	if(src.dir == 4): 				//Setting offset for east and west to properly render hats
+		hat_offset_x = 8
+		hat_offset_y = -8
+	else if(src.dir == 8):
+		hat_offset_x = -8
+		hat_offset_y = -8
+	overlays.Cut()
+	overlays |= get_hat_icon(hat, hat_offset_x, hat_offset_y)
 
 /mob/living/simple_animal/corgi/puppy
 	name = "\improper corgi puppy"
@@ -186,7 +210,7 @@
 //pupplies cannot wear anything.
 /mob/living/simple_animal/corgi/puppy/Topic(href, href_list)
 	if(href_list["remove_inv"] || href_list["add_inv"])
-		to_chat(usr, "<span class='warning'>You can't fit this on [src]</span>")
+		to_chat(usr, SPAN_WARNING("You can't fit this on [src]"))
 		return
 	..()
 
@@ -209,7 +233,7 @@
 //Lisa already has a cute bow!
 /mob/living/simple_animal/corgi/Lisa/Topic(href, href_list)
 	if(href_list["remove_inv"] || href_list["add_inv"])
-		to_chat(usr, "<span class='warning'>[src] already has a cute bow!</span>")
+		to_chat(usr, SPAN_WARNING("[src] already has a cute bow!"))
 		return
 	..()
 
