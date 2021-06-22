@@ -203,24 +203,19 @@
 /obj/item/trash/dishes/attackby(obj/item/I, mob/user)
 	var/obj/item/trash/dishes/dish = I
 	if(I.type == src.type) // We add only objects of our own type
-
-
 		var/list/dishestoadd = list()
-
 		dishestoadd += dish
+
 		for(var/obj/item/trash/dishes/i in dish.stack)
 			dishestoadd += i
 
-		if((length(stack) + 1) + length(dishestoadd) <= 5)
+		if((length(stack) + length(dishestoadd)) <= 4)
 			user.drop_item()
-
 			dish.forceMove(src)
-			dish.stack = list()
-
+			dish.stack.Cut()
 			dish.update_icon()
-			src.stack.Add(dishestoadd)
+			stack += dishestoadd
 			update_icon()
-
 
 			to_chat(user, SPAN("warning", "You put \the [dish] ontop of \the [src]!"))
 		else
@@ -240,7 +235,7 @@
 		stack -= dish
 
 		user.put_in_hands(dish)
-		to_chat(user, SPAN("warning", "You remove the topmost [src] from your hand."))
+		to_chat(user, SPAN("warning", "You have removed the topmost [src] from your hand."))
 
 		update_icon()
 
