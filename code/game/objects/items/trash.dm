@@ -211,7 +211,7 @@
 		for(var/obj/item/trash/dishes/i in dish.stack)
 			dishestoadd += i
 
-		if((length(stack)+1) + length(dishestoadd) <= 5)
+		if((length(stack) + 1) + length(dishestoadd) <= 5)
 			user.drop_item()
 
 			dish.forceMove(src)
