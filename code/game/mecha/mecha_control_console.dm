@@ -85,7 +85,7 @@
 							<b>Active equipment:</b> [M.selected||"None"]"}
 		if(istype(M, /obj/mecha/working/ripley))
 			var/obj/mecha/working/ripley/RM = M
-			answer += "<b>Used cargo space:</b> [RM.cargo.len/RM.cargo_capacity*100]%<br>"
+			answer += "<br><b>Used cargo space:</b> [length(RM.cargo)/RM.cargo_capacity*100]%<br>"
 
 		return answer
 
