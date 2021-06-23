@@ -193,7 +193,7 @@
 			spam_flag = TRUE
 			playsound(loc, 'sound/items/bikehorn.ogg', 50, 1)
 			spawn(20)
-				spam_flag = TRUE
+				spam_flag = FALSE
 
 /obj/item/weapon/paper/attack_ai(mob/living/silicon/ai/user)
 	show_content(user)
