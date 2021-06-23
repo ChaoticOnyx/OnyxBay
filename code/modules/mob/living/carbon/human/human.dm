@@ -235,7 +235,10 @@
 /mob/living/carbon/human/var/temperature_resistance = T0C+75
 
 /mob/living/carbon/human/show_inv(mob/user)
-	if(user.incapacitated() || !user.Adjacent(src) || !user.IsAdvancedToolUser())
+	if(user.incapacitated() || !user.Adjacent(src))
+		return
+	if(!user.IsAdvancedToolUser())
+		show_inv_reduced(user)
 		return
 	var/dat = "<B><HR><FONT size=3>[name]</FONT></B><BR><HR>"
 	var/firstline = TRUE
@@ -278,6 +281,39 @@
 		dat += "<BR><a href='?src=\ref[src];item=\ref[UW]'>Remove \the [UW]</a>"
 
 	dat += "<BR><A href='?src=\ref[src];item=splints'>Remove splints</A>"
+	dat += "<HR><A href='?src=\ref[src];refresh=1'>Refresh</A>"
+	dat += "<BR><A href='?src=\ref[user];inv_close=1'>Close</A>"
+
+	if(!user.show_inventory || user.show_inventory.user != user)
+		user.show_inventory = new /datum/browser(user, "mob[name]", "Inventory", 340, 560)
+		user.show_inventory.set_content(dat)
+	else
+		user.show_inventory.set_content(dat)
+		user.show_inventory.update()
+	return
+
+// Used when the user is not an advanced tool user (i.e. xenomorph)
+/mob/living/carbon/human/proc/show_inv_reduced(mob/user) // aka show_inv_to_a_moron
+	if(user.incapacitated() || !user.Adjacent(src))
+		return
+	var/dat = "<B><HR><FONT size=3>[name]</FONT></B><BR><HR>"
+	var/firstline = TRUE
+	for(var/entry in species.hud.gear)
+		var/list/slot_ref = species.hud.gear[entry]
+		if((slot_ref["slot"] in list(slot_l_store, slot_r_store, slot_w_uniform, slot_gloves, slot_shoes, slot_wear_id)))
+			continue
+		var/obj/item/thing_in_slot = get_equipped_item(slot_ref["slot"])
+		if(firstline)
+			firstline = FALSE
+		else
+			dat += "<BR>"
+		dat += "<B>[slot_ref["name"]]:</b> <a href='?src=\ref[src];item=[slot_ref["slot"]]'>[istype(thing_in_slot) ? thing_in_slot : "nothing"]</a>"
+	dat += "<HR>"
+
+	if(species.hud.has_hands)
+		dat += "<b>Left hand:</b> <A href='?src=\ref[src];item=[slot_l_hand]'>[istype(l_hand) ? l_hand : "nothing"]</A>"
+		dat += "<BR><b>Right hand:</b> <A href='?src=\ref[src];item=[slot_r_hand]'>[istype(r_hand) ? r_hand : "nothing"]</A>"
+
 	dat += "<HR><A href='?src=\ref[src];refresh=1'>Refresh</A>"
 	dat += "<BR><A href='?src=\ref[user];inv_close=1'>Close</A>"
 
