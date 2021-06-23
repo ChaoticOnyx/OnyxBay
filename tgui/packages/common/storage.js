@@ -34,8 +34,8 @@ const testLocalStorage = testGeneric(() => (
 ));
 
 const testIndexedDb = testGeneric(() => (
-  (window.indexedDB || window.msIndexedDB) &&
-  (window.IDBTransaction || window.msIDBTransaction)
+  (window.indexedDB || window.msIndexedDB)
+  && (window.IDBTransaction || window.msIDBTransaction)
 ));
 
 class MemoryBackend {

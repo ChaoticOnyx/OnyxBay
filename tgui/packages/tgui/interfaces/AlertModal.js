@@ -102,13 +102,13 @@ export class AlertModal extends Component {
                           if (keyCode === KEY_SPACE || keyCode === KEY_ENTER) {
                             act('choose', { choice: button });
                           } else if (
-                            keyCode === KEY_LEFT ||
-                            (e.shiftKey && keyCode === KEY_TAB)
+                            keyCode === KEY_LEFT
+                            || (e.shiftKey && keyCode === KEY_TAB)
                           ) {
                             this.setCurrent(current - 1, keyCode === KEY_LEFT);
                           } else if (
-                            keyCode === KEY_RIGHT ||
-                            keyCode === KEY_TAB
+                            keyCode === KEY_RIGHT
+                            || keyCode === KEY_TAB
                           ) {
                             this.setCurrent(current + 1, keyCode === KEY_RIGHT);
                           }

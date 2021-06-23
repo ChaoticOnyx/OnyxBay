@@ -235,9 +235,9 @@ export const sendMessage = (message: any = {}) => {
  */
 export const sendAct = (action: string, payload: object = {}) => {
   // Validate that payload is an object
-  const isObject = typeof payload === 'object' &&
-    payload !== null &&
-    !Array.isArray(payload);
+  const isObject = typeof payload === 'object'
+    && payload !== null
+    && !Array.isArray(payload);
   if (!isObject) {
     logger.error(`Payload for act() must be an object, got this:`, payload);
     return;
@@ -328,18 +328,18 @@ export const useLocalState = <T>(
   const { store } = context;
   const state = selectBackend(store.getState());
   const sharedStates = state.shared ?? {};
-  const sharedState = (key in sharedStates) ?
-    sharedStates[key] :
-    initialState;
+  const sharedState = (key in sharedStates)
+    ? sharedStates[key]
+    : initialState;
   return [
     sharedState,
     nextState => {
       store.dispatch(backendSetSharedState({
         key,
         nextState: (
-          typeof nextState === 'function' ?
-            nextState(sharedState) :
-            nextState
+          typeof nextState === 'function'
+            ? nextState(sharedState)
+            : nextState
         ),
       }));
     },
@@ -368,9 +368,9 @@ export const useSharedState = <T>(
   const { store } = context;
   const state = selectBackend(store.getState());
   const sharedStates = state.shared ?? {};
-  const sharedState = (key in sharedStates) ?
-    sharedStates[key] :
-    initialState;
+  const sharedState = (key in sharedStates)
+    ? sharedStates[key]
+    : initialState;
   return [
     sharedState,
     nextState => {
@@ -378,9 +378,9 @@ export const useSharedState = <T>(
         type: 'setSharedState',
         key,
         value: JSON.stringify(
-          typeof nextState === 'function' ?
-            nextState(sharedState) :
-            nextState
+          typeof nextState === 'function'
+            ? nextState(sharedState)
+            : nextState
         ) || '',
       });
     },

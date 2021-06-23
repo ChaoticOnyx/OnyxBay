@@ -231,6 +231,9 @@ Class Procs:
 
 	return ..()
 
+/obj/machinery/tgui_state(mob/user)
+	return GLOB.tgui_machinery_state
+
 /obj/machinery/CouldUseTopic(mob/user)
 	..()
 	if(user)

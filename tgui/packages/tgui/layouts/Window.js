@@ -37,8 +37,8 @@ export class Window extends Component {
 
   componentDidUpdate(prevProps) {
     const shouldUpdateGeometry = (
-      this.props.width !== prevProps.width ||
-      this.props.height !== prevProps.height
+      this.props.width !== prevProps.width
+      || this.props.height !== prevProps.height
     );
     if (shouldUpdateGeometry) {
       this.updateGeometry();
@@ -76,9 +76,9 @@ export class Window extends Component {
     const fancy = config.window?.fancy;
     // Determine when to show dimmer
     const showDimmer = config.user && (
-      config.user.observer ?
-        config.status < UI_DISABLED :
-        config.status < UI_INTERACTIVE
+      config.user.observer
+        ? config.status < UI_DISABLED
+        : config.status < UI_INTERACTIVE
     );
     return (
       <Layout
@@ -186,10 +186,10 @@ const TitleBar = (props, context) => {
           name='eye' />
       )}
       <div className='TitleBar__title'>
-        {typeof title === 'string' &&
-          title === title.toLowerCase() &&
-          toTitleCase(title) ||
-          title}
+        {typeof title === 'string'
+          && title === title.toLowerCase()
+          && toTitleCase(title)
+          || title}
       </div>
       <div
         className='TitleBar__dragZone'

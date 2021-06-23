@@ -184,13 +184,11 @@
 	take_damage(damage)
 	return
 
-/obj/machinery/vending/attackby(obj/item/weapon/W, mob/user)
-
+/obj/machinery/vending/proc/pay(obj/item/weapon/W, mob/user)
 	var/obj/item/weapon/card/id/I = W.GetIdCard()
 
 	if(currently_vending && vendor_account && !vendor_account.suspended)
 		var/paid = 0
-		var/handled = 0
 
 		if(!vend_ready) // One thingy at a time!
 			to_chat(user, SPAN("warning", "\The [src] is busy at the moment!"))
@@ -198,25 +196,21 @@
 
 		if(I) //for IDs and PDAs and wallets with IDs
 			paid = pay_with_card(I,W)
-			handled = 1
 		else if (istype(W, /obj/item/weapon/spacecash/ewallet))
 			var/obj/item/weapon/spacecash/ewallet/C = W
 			paid = pay_with_ewallet(C)
-			handled = 1
 		else if (istype(W, /obj/item/weapon/spacecash/bundle))
 			var/obj/item/weapon/spacecash/bundle/C = W
 			paid = pay_with_cash(C)
-			handled = 1
 
 		if(paid)
 			src.vend(currently_vending, usr)
-			return
-		else if(handled)
-			SSnano.update_uis(src)
-			return // don't smack that machine with your 2 credits
+			return TRUE
+	
+	return FALSE
 
-	if (I || istype(W, /obj/item/weapon/spacecash))
-		attack_hand(user)
+/obj/machinery/vending/attackby(obj/item/weapon/W, mob/user)
+	if(pay(W, user))
 		return
 	else if(istype(W, /obj/item/weapon/screwdriver))
 		src.panel_open = !src.panel_open
@@ -225,7 +219,6 @@
 		if(src.panel_open)
 			src.overlays += image(src.icon, "[base_icon]-panel")
 
-		SSnano.update_uis(src)  // Speaker switch is on the main UI, not wires UI
 		return
 	else if(isMultitool(W) || isWirecutter(W))
 		if(src.panel_open)
@@ -242,7 +235,6 @@
 		coin = W
 		categories |= CAT_COIN
 		to_chat(user, "<span class='notice'>You insert \the [W] into \the [src].</span>")
-		SSnano.update_uis(src)
 		return
 	else if(istype(W,/obj/item/weapon/weldingtool))
 		var/obj/item/weapon/weldingtool/WT = W
@@ -402,34 +394,33 @@
 			return
 
 	wires.Interact(user)
-	ui_interact(user)
+	tgui_interact(user)
 
-/**
- *  Display the NanoUI window for the vending machine.
- *
- *  See NanoUI documentation for details.
- */
-/obj/machinery/vending/ui_interact(mob/user, ui_key = "main", datum/nanoui/ui = null, force_open = 1)
-	if(CanUseTopic(user) != STATUS_INTERACTIVE)
-		return
-	user.set_machine(src)
+/obj/machinery/vending/tgui_interact(mob/user, datum/tgui/ui)
+	ui = SStgui.try_update_ui(user, src, ui)
 
+	if(!ui)
+		ui = new(user, src, "Vending")
+		ui.open()
+
+/obj/machinery/vending/tgui_data(mob/user)
 	var/list/data = list()
+
 	if(currently_vending)
 		data["mode"] = 1
 		data["product"] = currently_vending.item_name
 		data["price"] = currently_vending.price
 		data["message_err"] = 0
-		data["message"] = src.status_message
-		data["message_err"] = src.status_error
+		data["message"] = status_message
+		data["message_err"] = status_error
 	else
 		data["mode"] = 0
 		var/list/listed_products = list()
 
-		for(var/key = 1 to src.product_records.len)
-			var/datum/stored_items/vending_products/I = src.product_records[key]
+		for(var/key = 1 to product_records.len)
+			var/datum/stored_items/vending_products/I = product_records[key]
 
-			if(!(I.category & src.categories))
+			if(!(I.category & categories))
 				continue
 
 			listed_products.Add(list(list(
@@ -441,81 +432,91 @@
 
 		data["products"] = listed_products
 
-	if(src.coin)
+	if(coin)
 		data["coin"] = src.coin.name
 
-	if(src.panel_open)
+	if(panel_open)
 		data["panel"] = 1
 		data["speaker"] = src.shut_up ? 0 : 1
 	else
 		data["panel"] = 0
 
-	ui = SSnano.try_update_ui(user, src, ui_key, ui, data, force_open)
-	if (!ui)
-		ui = new(user, src, ui_key, "vending_machine.tmpl", src.name, 440, 600)
-		ui.set_initial_data(data)
-		ui.open()
+	return data
 
-/obj/machinery/vending/Topic(href, href_list)
-	if(stat & (BROKEN|NOPOWER))
-		return
-	if(..())
+/obj/machinery/vending/tgui_act(action, params)
+	. = ..()
+
+	if(.)
 		return
 
-	if(href_list["remove_coin"] && !istype(usr,/mob/living/silicon))
-		if(!coin)
-			to_chat(usr, "There is no coin in this machine.")
-			return
+	switch(action)
+		if("remove_coin")
+			if(istype(usr,/mob/living/silicon))
+				return TRUE
 
-		coin.forceMove(src.loc)
-		if(!usr.get_active_hand())
-			usr.put_in_hands(coin)
-		to_chat(usr, "<span class='notice'>You remove \the [coin] from \the [src]</span>")
-		coin = null
-		categories &= ~CAT_COIN
+			if(!coin)
+				to_chat(usr, "There is no coin in this machine.")
+				return TRUE
 
-	if ((usr.contents.Find(src) || (in_range(src, usr) && istype(src.loc, /turf))))
-		if ((href_list["vend"]) && (src.vend_ready) && (!currently_vending))
-			if((!allowed(usr)) && !emagged && scan_id)	//For SECURE VENDING MACHINES YEAH
-				to_chat(usr, "<span class='warning'>Access denied.</span>")//Unless emagged of course
+			coin.forceMove(src.loc)
+
+			if(!usr.get_active_hand())
+				usr.put_in_hands(coin)
+
+			to_chat(usr, "<span class='notice'>You remove \the [coin] from \the [src]</span>")
+			coin = null
+			categories &= ~CAT_COIN
+
+			return TRUE
+		if("vend")
+			if(!vend_ready || currently_vending)
+				return TRUE
+			
+			if((!allowed(usr)) && !emagged && scan_id)	// For SECURE VENDING MACHINES YEAH
+				to_chat(usr, "<span class='warning'>Access denied.</span>")// Unless emagged of course
 				flick("[base_icon]-deny", src)
-				return
+				return TRUE
 
-			var/key = text2num(href_list["vend"])
+			var/key = text2num(params["vend"])
 			var/datum/stored_items/vending_products/R = product_records[key]
 
 			// This should not happen unless the request from NanoUI was bad
-			if(!(R.category & src.categories))
-				return
+			if(!(R.category & categories))
+				return TRUE
 
 			if(R.price <= 0)
-				src.vend(R, usr)
-			else if(istype(usr,/mob/living/silicon)) //If the item is not free, provide feedback if a synth is trying to buy something.
+				vend(R, usr)
+			else if(istype(usr,/mob/living/silicon)) // If the item is not free, provide feedback if a synth is trying to buy something.
 				to_chat(usr, "<span class='danger'>Artificial unit recognized.  Artificial units cannot complete this transaction.  Purchase canceled.</span>")
-				return
+				return TRUE
 			else
 				src.currently_vending = R
 				if(!vendor_account || vendor_account.suspended)
-					src.status_message = "This machine is currently unable to process payments due to problems with the associated account."
-					src.status_error = 1
+					status_message = "This machine is currently unable to process payments due to problems with the associated account."
+					status_error = 1
 				else
-					src.status_message = "Please swipe a card or insert cash to pay for the item."
-					src.status_error = 0
+					status_message = "Please swipe a card or insert cash to pay for the item."
+					status_error = 0
 
-		else if (href_list["cancelpurchase"])
-			src.currently_vending = null
+		if("cancelpurchase")
+			currently_vending = null
+			return TRUE
 
-		else if ((href_list["togglevoice"]) && (src.panel_open))
-			src.shut_up = !src.shut_up
-
-		SSnano.update_uis(src)
+		if("togglevoice")
+			if(!panel_open)
+				return TRUE
+			
+			shut_up = !shut_up
+			return TRUE
+		if("pay")
+			pay(usr.GetIdCard(), usr)
 
 /obj/machinery/vending/proc/vend(datum/stored_items/vending_products/R, mob/user)
-	if((!allowed(usr)) && !emagged && scan_id)	//For SECURE VENDING MACHINES YEAH
-		to_chat(usr, "<span class='warning'>Access denied.</span>")//Unless emagged of course
+	if((!allowed(usr)) && !emagged && scan_id)	// For SECURE VENDING MACHINES YEAH
+		to_chat(usr, "<span class='warning'>Access denied.</span>") // Unless emagged of course
 		flick("[base_icon]-deny", src)
 		return
-	src.vend_ready = 0 //One thing at a time!!
+	src.vend_ready = 0 // One thing at a time!!
 	src.status_message = "Vending..."
 	src.status_error = 0
 	SSnano.update_uis(src)
