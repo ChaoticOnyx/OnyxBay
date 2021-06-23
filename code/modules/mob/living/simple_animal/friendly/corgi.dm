@@ -25,6 +25,7 @@
 	possession_candidate = 1
 	holder_type = /obj/item/weapon/holder/corgi
 	var/obj/item/hat
+	var/old_dir
 	var/obj/movement_target
 
 //IAN! SQUEEEEEEEEE~
@@ -38,6 +39,9 @@
 	response_disarm = "bops"
 	response_harm   = "kicks"
 
+/mob/living/simple_animal/corgi/Move(a, b, flag)
+	..()
+	update_hat()
 
 /mob/living/simple_animal/corgi/Life()
 	..()
@@ -78,6 +82,7 @@
 							set_dir(NORTH)
 						else
 							set_dir(SOUTH)
+						update_hat()
 
 						if(isturf(movement_target.loc))
 							UnarmedAttack(movement_target)
@@ -89,8 +94,9 @@
 			spawn(0)
 				for(var/i in list(1,2,4,8,4,2,1,2,4,8,4,2,1,2,4,8,4,2))
 					set_dir(i)
+					update_hat()
 					sleep(1)
-	update_hat()
+
 
 /mob/living/simple_animal/corgi/proc/regular_hud_updates()
 	if(pullin)
@@ -139,19 +145,26 @@
 	desc = "Tastes like... well you know..."
 
 /mob/living/simple_animal/corgi/attackby(obj/item/O as obj, mob/user as mob)  //Marker -Agouri
-	if(user.a_intent == I_HELP && istype(O, /obj/item/clothing/head/corgi)) //Equiping corgi with a cool hat!
+	if(user.a_intent == I_HELP && istype(O, /obj/item/clothing/head)) 	//Equiping corgi with a cool hat!
+		if(istype(O, /obj/item/clothing/head/helmet)) 					//Looks too bad on corgi
+			to_chat(user, SPAN_WARNING("\The [O] is too small for [name] head."))
+			return
+		if(istype(O, /obj/item/clothing/head/kitty)) //Tail of kitty ears in not properly aligned
+			to_chat(user, SPAN_WARNING("[name] chases [O] tail and swallows it!"))
+			user.unEquip(O)
+			return
 		if(hat)
-			to_chat(user, SPAN_WARNING("\The [src] is already wearing \the [hat]."))
+			to_chat(user, SPAN_WARNING("[name] is already wearing \the [hat]."))
 			return
 		user.unEquip(O)
 		wear_hat(O)
-		user.visible_message(SPAN_WARNING("\The [user] puts \the [O] on \the [src]."))
+		user.visible_message(SPAN_WARNING("[user] puts \the [O] on [name]."))
 		return
 	if(istype(O, /obj/item/weapon/newspaper))
 		if(!stat)
 			for(var/mob/M in viewers(user, null))
 				if ((M.client && !( M.blinded )))
-					M.show_message(SPAN_WARNING("[user] baps [name] on the nose with the rolled up [O]"))
+					M.show_message(SPAN_WARNING("[user] baps [name] on the nose with the rolled up [O]!"))
 			spawn(0)
 				for(var/i in list(1,2,4,8,4,2,1,2))
 					set_dir(i)
@@ -159,7 +172,9 @@
 					sleep(1)
 	else
 		..()
-
+///////////////////
+//// HAT STUFF ////
+//////////////////
 /mob/living/simple_animal/corgi/proc/get_hat_icon(obj/item/hat, offset_x, offset_y)
 	var/t_state = hat.icon_state
 	if(hat.item_state_slots && hat.item_state_slots[slot_head_str])
@@ -187,8 +202,17 @@
 	update_hat()
 
 /mob/living/simple_animal/corgi/proc/update_hat()
-	var hat_offset_x = 1 		//preseting offsets to north and south
-	var hat_offset_y = -7
+	if(!hat)
+		return
+	if(stat == DEAD)
+		hat.dropInto(loc)
+		hat = null
+		return
+	if(old_dir == src.dir) //We do not need to update hat, if we did not change dir
+		return
+	old_dir = src.dir
+	var/hat_offset_x = 1 		//preseting offsets to north and south
+	var/hat_offset_y = -7
 	if(src.dir == 4)			//Setting offset for east and west to properly render hats
 		hat_offset_x = 8
 		hat_offset_y = -8
@@ -197,6 +221,9 @@
 		hat_offset_y = -8
 	overlays.Cut()
 	overlays |= get_hat_icon(hat, hat_offset_x, hat_offset_y)
+/////////////////////
+//END OF HAT STUFF//
+///////////////////
 
 /mob/living/simple_animal/corgi/puppy
 	name = "\improper corgi puppy"
