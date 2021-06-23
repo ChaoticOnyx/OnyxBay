@@ -211,7 +211,7 @@
 		return
 	if(old_dir == src.dir) //We do not need to update hat, if we did not change dir
 		return
-	old_dir = src.dir
+	old_dir = dir
 	var/hat_offset_x = 1 		//preseting offsets to north and south
 	var/hat_offset_y = -7
 	if(src.dir == 4)			//Setting offset for east and west to properly render hats
