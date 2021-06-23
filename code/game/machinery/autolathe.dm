@@ -199,7 +199,16 @@
 	else
 		to_chat(user, "You fill \the [src] with \the [eating].")
 
-	flick("autolathe_o", src) // Plays metal insertion animation. Work out a good way to work out a fitting animation. ~Z
+	if(eating.matter.Find("steel"))
+		if(panel_open)
+			flick("autolathe_o_t", src)
+		else
+			flick("autolathe_o", src) // Plays metal insertion animation. Work out a good way to work out a fitting animation. ~Z
+	else if(eating.matter.Find("glass"))
+		if(panel_open)
+			flick("autolathe_r_t", src)
+		else
+			flick("autolathe_r", src)
 
 	if(istype(eating,/obj/item/stack))
 		var/obj/item/stack/stack = eating
