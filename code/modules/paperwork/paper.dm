@@ -190,7 +190,7 @@
 	user.examinate(src)
 	if(rigged && (Holiday == "April Fool's Day"))
 		if(spam_flag == FALSE)
-			spam_flag = TRUE
+			spam_flag = FALSE
 			playsound(loc, 'sound/items/bikehorn.ogg', 50, 1)
 			spawn(20)
 				spam_flag = TRUE
