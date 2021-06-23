@@ -230,7 +230,7 @@ obj/machinery/resleever/Process()
 	visible_message("[user] starts putting [target] into \the [src].", 3)
 
 	if(do_after(user, 20, src))
-		if(!target || !(target in range(2,src)))
+		if(!target || !(target in range(2, src)))
 			return
 
 		target.forceMove(src)
