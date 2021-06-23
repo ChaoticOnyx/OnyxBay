@@ -206,7 +206,7 @@
 		if(paid)
 			src.vend(currently_vending, usr)
 			return TRUE
-	
+
 	return FALSE
 
 /obj/machinery/vending/attackby(obj/item/weapon/W, mob/user)
@@ -404,33 +404,44 @@
 		ui.open()
 
 /obj/machinery/vending/tgui_data(mob/user)
-	var/list/data = list()
+	var/list/data = list(
+		"name" = name,
+		"mode" = 0
+	)
 
 	if(currently_vending)
+		var/atom/A = currently_vending.item_path
+		var/icon/ico = new(initial(A.icon), initial(A.icon_state))
 		data["mode"] = 1
-		data["product"] = currently_vending.item_name
-		data["price"] = currently_vending.price
-		data["message_err"] = 0
-		data["message"] = status_message
-		data["message_err"] = status_error
-	else
-		data["mode"] = 0
-		var/list/listed_products = list()
+		data["payment"] = list(
+			"product" = currently_vending.item_name,
+			"price" = currently_vending.price,
+			"message_err" = 0,
+			"message" = status_message,
+			"message_err" = status_error,
+			"icon" = "[icon2html(ico, user)]"
+		)
 
-		for(var/key = 1 to product_records.len)
-			var/datum/stored_items/vending_products/I = product_records[key]
+	var/list/listed_products = list()
 
-			if(!(I.category & categories))
-				continue
+	for(var/key = 1 to product_records.len)
+		var/datum/stored_items/vending_products/I = product_records[key]
 
-			listed_products.Add(list(list(
-				"key" = key,
-				"name" = I.item_name,
-				"price" = I.price,
-				"color" = I.display_color,
-				"amount" = I.get_amount())))
+		if(!(I.category & categories))
+			continue
 
-		data["products"] = listed_products
+		var/atom/A = I.item_path
+		var/icon/ico = new(initial(A.icon), initial(A.icon_state))
+
+		listed_products.Add(list(list(
+			"key" = key,
+			"name" = I.item_name,
+			"price" = I.price,
+			"color" = I.display_color,
+			"amount" = I.get_amount(),
+			"icon" = "[icon2html(ico, user)]")))
+
+	data["products"] = listed_products
 
 	if(coin)
 		data["coin"] = src.coin.name
@@ -471,9 +482,9 @@
 		if("vend")
 			if(!vend_ready || currently_vending)
 				return TRUE
-			
+
 			if((!allowed(usr)) && !emagged && scan_id)	// For SECURE VENDING MACHINES YEAH
-				to_chat(usr, SPAN("warning", "Access denied."))// Unless emagged of course
+				to_chat(usr, SPAN("warning", "Access denied.")) // Unless emagged of course
 				flick("[base_icon]-deny", src)
 				return TRUE
 
@@ -505,7 +516,7 @@
 		if("togglevoice")
 			if(!panel_open)
 				return TRUE
-			
+
 			shut_up = !shut_up
 			return TRUE
 		if("pay")
