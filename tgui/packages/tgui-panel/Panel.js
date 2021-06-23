@@ -91,7 +91,7 @@ export const Panel = (props, context) => {
         )}
         <Stack.Item grow>
           <Section fill fitted position='relative'>
-            <Pane.Content scrollable>
+            <Pane.Content id='chatContainer' scrollable>
               <ChatPanel lineHeight={settings.lineHeight} />
             </Pane.Content>
             <Notifications>
@@ -102,6 +102,7 @@ export const Panel = (props, context) => {
                 </Notifications.Item>
               )}
             </Notifications>
+            <div id='imageContainer' />
           </Section>
         </Stack.Item>
       </Stack>

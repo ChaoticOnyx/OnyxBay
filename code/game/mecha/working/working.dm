@@ -5,9 +5,6 @@
 
 /obj/mecha/working/Initialize()
 	. = ..()
-	var/turf/T = get_turf(src)
-	if(isPlayerLevel(T.z))
-		new /obj/item/mecha_parts/mecha_tracking(src)
 
 /obj/mecha/working/Destroy()
 	for(var/mob/M in src)

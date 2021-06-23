@@ -32,7 +32,7 @@ import {
 } from '../chat/actions';
 import { THEMES } from '../themes';
 import { changeSettingsTab, updateSettings } from './actions';
-import { FONTS, SETTINGS_TABS } from './constants';
+import { FONTS, REPEAT_MODE, SETTINGS_TABS, SIZE_MODE } from './constants';
 import { selectActiveTab, selectSettings } from './selectors';
 
 export const SettingsPanel = (props, context) => {
@@ -52,8 +52,7 @@ export const SettingsPanel = (props, context) => {
                     changeSettingsTab({
                       tabId: tab.id,
                     }),
-                )
-                }>
+                )}>
                 {tab.name}
               </Tabs.Tab>
             ))}
@@ -63,6 +62,7 @@ export const SettingsPanel = (props, context) => {
       <Stack.Item grow={1} basis={0}>
         {activeTab === 'general' && <SettingsGeneral />}
         {activeTab === 'chatPage' && <ChatPageSettings />}
+        {activeTab === 'backgroundImage' && <BackgroundImageSettings />}
       </Stack.Item>
     </Stack>
   );
@@ -74,7 +74,6 @@ export const SettingsGeneral = (props, context) => {
     fontFamily,
     fontSize,
     lineHeight,
-    iconSize,
     highlightText,
     highlightColor,
   } = useSelector(context, selectSettings);
@@ -94,8 +93,7 @@ export const SettingsGeneral = (props, context) => {
                 updateSettings({
                   theme: value,
                 }),
-            )
-            }
+            )}
           />
         </LabeledList.Item>
         <LabeledList.Item label='Font style'>
@@ -110,9 +108,7 @@ export const SettingsGeneral = (props, context) => {
                       updateSettings({
                         fontFamily: value,
                       }),
-                  )
-                  }
-                />
+                  )} />
               )) || (
                 <Input
                   value={fontFamily}
@@ -121,9 +117,7 @@ export const SettingsGeneral = (props, context) => {
                       updateSettings({
                         fontFamily: value,
                       }),
-                  )
-                  }
-                />
+                  )} />
               )}
             </Stack.Item>
             <Stack.Item>
@@ -134,8 +128,7 @@ export const SettingsGeneral = (props, context) => {
                 ml={1}
                 onClick={() => {
                   setFreeFont(!freeFont);
-                }}
-              />
+                }} />
             </Stack.Item>
           </Stack>
         </LabeledList.Item>
@@ -154,9 +147,7 @@ export const SettingsGeneral = (props, context) => {
                 updateSettings({
                   fontSize: value,
                 }),
-            )
-            }
-          />
+            )} />
         </LabeledList.Item>
         <LabeledList.Item label='Line height'>
           <NumberInput
@@ -172,15 +163,12 @@ export const SettingsGeneral = (props, context) => {
                 updateSettings({
                   lineHeight: value,
                 }),
-            )
-            }
-          />
+            )} />
         </LabeledList.Item>
         <LabeledList.Item label='Save Settings'>
           <Button
             icon='download'
-            onClick={() => dispatch(saveSettingsToDisk())}
-          />
+            onClick={() => dispatch(saveSettingsToDisk())} />
         </LabeledList.Item>
         <LabeledList.Item label='Load Settings'>
           <Stack align='baseline'>
@@ -188,8 +176,7 @@ export const SettingsGeneral = (props, context) => {
               <Input
                 onInput={(e, value) => setPastedJson(value)}
                 fluid
-                placeholder='Paste your JSON here'
-              />
+                placeholder='Paste your JSON here' />
             </Stack.Item>
             <Stack.Item>
               <Button
@@ -198,11 +185,9 @@ export const SettingsGeneral = (props, context) => {
                     loadSettingsFromDisk({
                       data: pastedJson,
                     }),
-                )
-                }
+                )}
                 icon='upload'
-                content='Load'
-              />
+                content='Load' />
             </Stack.Item>
           </Stack>
         </LabeledList.Item>
@@ -223,8 +208,7 @@ export const SettingsGeneral = (props, context) => {
                   updateSettings({
                     highlightColor: value,
                   }),
-              )
-              }
+              )}
             />
           </Flex.Item>
         </Flex>
@@ -236,8 +220,7 @@ export const SettingsGeneral = (props, context) => {
               updateSettings({
                 highlightText: value,
               }),
-          )
-          }
+          )}
         />
       </Box>
       <Divider />
@@ -259,6 +242,142 @@ export const SettingsGeneral = (props, context) => {
         onClick={() => dispatch(resetSettings())}>
         Reset Chat
       </Button.Confirm>
+    </Section>
+  );
+};
+
+export const BackgroundImageSettings = (props, context) => {
+  let { background } = useSelector(context, selectSettings);
+  const dispatch = useDispatch(context);
+
+  background ||= {
+    url: null,
+    opaque: 0,
+    repeat: REPEAT_MODE.no,
+    size: SIZE_MODE.contain,
+  };
+
+  const { url, opaque, repeat, size, color } = background;
+
+  return (
+    <Section>
+      <LabeledList>
+        <LabeledList.Item label='Image'>
+          <Input
+            fluid
+            placeholder='Paste URL'
+            value={url}
+            onChange={(e, value) =>
+              dispatch(
+                updateSettings({
+                  background: {
+                    ...background,
+                    url: value,
+                  },
+                }),
+            )}
+          />
+        </LabeledList.Item>
+        <LabeledList.Item label='Opaque'>
+          <NumberInput
+            minValue={0}
+            maxValue={100}
+            value={opaque}
+            unit='%'
+            onChange={(e, value) =>
+              dispatch(
+                updateSettings({
+                  background: {
+                    ...background,
+                    opaque: value,
+                  },
+                }),
+            )}
+          />
+        </LabeledList.Item>
+        <LabeledList.Item label='Repeat'>
+          <Button.Checkbox
+            content='No Repeat'
+            checked={repeat === REPEAT_MODE.no}
+            onClick={() =>
+              dispatch(
+                updateSettings({
+                  background: {
+                    ...background,
+                    repeat: REPEAT_MODE.no,
+                  },
+                }),
+            )}
+          />
+          <Button.Checkbox
+            content='Repeat'
+            checked={repeat === REPEAT_MODE.repeat}
+            onClick={() =>
+              dispatch(
+                updateSettings({
+                  background: {
+                    ...background,
+                    repeat: REPEAT_MODE.repeat,
+                  },
+                }),
+            )}
+          />
+          <Button.Checkbox
+            content='Repeat-X'
+            checked={repeat === REPEAT_MODE.repeatx}
+            onClick={() =>
+              dispatch(
+                updateSettings({
+                  background: {
+                    ...background,
+                    repeat: REPEAT_MODE.repeatx,
+                  },
+                }),
+            )}
+          />
+          <Button.Checkbox
+            content='Repeat-Y'
+            checked={repeat === REPEAT_MODE.repeaty}
+            onClick={() =>
+              dispatch(
+                updateSettings({
+                  background: {
+                    ...background,
+                    repeat: REPEAT_MODE.repeaty,
+                  },
+                }),
+            )}
+          />
+        </LabeledList.Item>
+        <LabeledList.Item label='Size'>
+          <Button.Checkbox
+            content='Cover'
+            checked={size === SIZE_MODE.cover}
+            onClick={() =>
+              dispatch(
+                updateSettings({
+                  background: {
+                    ...background,
+                    size: SIZE_MODE.cover,
+                  },
+                }),
+            )}
+          />
+          <Button.Checkbox
+            content='Contain'
+            checked={size === SIZE_MODE.contain}
+            onClick={() =>
+              dispatch(
+                updateSettings({
+                  background: {
+                    ...background,
+                    size: SIZE_MODE.contain,
+                  },
+                }),
+            )}
+          />
+        </LabeledList.Item>
+      </LabeledList>
     </Section>
   );
 };

@@ -89,17 +89,15 @@
 	sleep(5)
 	for(var/mob/M in GLOB.player_list)
 		if(M.client && !(M.client.holder && M.client.get_preference_value(/datum/client_preference/staff/govnozvuki) == GLOB.PREF_NO))
-			to_chat(M, sound(get_sfx("far_explosion")))//makes no sense if you are on the station but whatever
-
+			sound_to(M, sound(get_sfx("far_explosion"))) // makes no sense if you are on the station but whatever
 
 	sleep(75)
-
 
 //MALF
 /datum/universal_state/nuclear_explosion/malf/start_cinematic_intro()
 	for(var/mob/M in GLOB.player_list) //I guess so that people in the lobby only hear the explosion
 		if(M.client && !(M.client.holder && M.client.get_preference_value(/datum/client_preference/staff/govnozvuki) == GLOB.PREF_NO))
-			to_chat(M, sound('sound/machines/Alarm.ogg'))
+			sound_to(M, sound('sound/machines/Alarm.ogg'))
 
 	sleep(28)
 
