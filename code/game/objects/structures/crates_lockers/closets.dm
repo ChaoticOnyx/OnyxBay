@@ -38,7 +38,7 @@
 	var/dremovable = TRUE	//	some closets' doors cannot be removed
 	var/nodoor = FALSE	// for crafting
 
-	var/open_delay = FALSE
+	var/open_delay = 0
 
 	var/material = /obj/item/stack/material/steel
 
@@ -438,7 +438,7 @@
 		broken = 1
 		src.update_icon()
 		multi.in_use=0
-		user.visible_message(SPAN_WARNING("[user] [locked?"locks":"unlocks"] [name] with a multitool."), SPAN_WARNING("I [locked?"enable":"disable"] the locking modules."))
+		user.visible_message(SPAN_WARNING("[user] [locked ? "locks" : "unlocks"] [name] with a multitool."), SPAN_WARNING("I [locked ? "enable" : "disable"] the locking modules."))
 	else if(setup & CLOSET_HAS_LOCK)
 		src.togglelock(user, W)
 	else
@@ -448,7 +448,10 @@
 	if(!WT.remove_fuel(0,user))
 		to_chat(user, SPAN_NOTICE("You need more welding fuel to complete this task."))
 		return
-	new src.material(src.loc)
+	if(material != null)
+		new material(loc)
+	else
+		log_debug("\The [src] doesnt have material, this is bug", loc, type)
 	user.visible_message(SPAN_NOTICE("\The [src] has been cut apart by [user] with \the [WT]."), SPAN_NOTICE("You have cut \the [src] apart with \the [WT]."), "You hear welding.")
 	qdel(src)
 
