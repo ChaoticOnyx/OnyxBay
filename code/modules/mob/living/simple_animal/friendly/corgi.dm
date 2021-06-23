@@ -31,7 +31,7 @@
 //IAN! SQUEEEEEEEEE~
 /mob/living/simple_animal/corgi/Ian
 	name = "Ian"
-	real_name = "Ian"	//Intended to hold the name without altering it.
+	real_name = "Ian"	// Intended to hold the name without altering it.
 	gender = MALE
 	desc = "It's a corgi."
 	turns_since_scan = 0
@@ -45,10 +45,10 @@
 
 /mob/living/simple_animal/corgi/Life()
 	..()
-	update_hat() //In case somewhere something unpredictable happens - it'll fix it, I guess.
+	update_hat() // In case somewhere something unpredictable happens - it'll fix it, I guess.
 	regular_hud_updates()
 
-	//Feeding, chasing food, FOOOOODDDD
+	// Feeding, chasing food, FOOOOODDDD
 	if(!stat && !resting && !buckled)
 		turns_since_scan++
 		if(turns_since_scan > 5)
@@ -72,7 +72,7 @@
 					sleep(3)
 					step_to(src,movement_target,1)
 
-					if(movement_target)		//Not redundant due to sleeps, Item can be gone in 6 decisecomds
+					if(movement_target)		// Not redundant due to sleeps, Item can be gone in 6 decisecomds
 						if (movement_target.loc.x < src.x)
 							set_dir(WEST)
 						else if (movement_target.loc.x > src.x)
@@ -95,7 +95,7 @@
 			spawn(0)
 				for(var/i in list(1,2,4,8,4,2,1,2,4,8,4,2,1,2,4,8,4,2))
 					set_dir(i)
-					update_hat() //Too bad, it'll be better to optimize.
+					update_hat() // Too bad, it'll be better to optimize.
 					sleep(1)
 
 
@@ -107,7 +107,7 @@
 			pullin.icon_state = "pull0"
 	if(fire)
 		if(fire_alert)
-			fire.icon_state = "fire[fire_alert]" //fire_alert is either 0 if no alert, 1 for heat and 2 for cold.
+			fire.icon_state = "fire[fire_alert]" // fire_alert is either 0 if no alert, 1 for heat and 2 for cold.
 		else
 			fire.icon_state = "fire0"
 	if(oxygen)
@@ -145,12 +145,12 @@
 	name = "Corgi meat"
 	desc = "Tastes like... well you know..."
 
-/mob/living/simple_animal/corgi/attackby(obj/item/O as obj, mob/user as mob)  //Marker -Agouri
-	if(user.a_intent == I_HELP && istype(O, /obj/item/clothing/head)) 	//Equiping corgi with a cool hat!
-		if(istype(O, /obj/item/clothing/head/helmet)) 					//Looks too bad on corgi
+/mob/living/simple_animal/corgi/attackby(obj/item/O as obj, mob/user as mob)  // Marker -Agouri
+	if(user.a_intent == I_HELP && istype(O, /obj/item/clothing/head)) 	// Equiping corgi with a cool hat!
+		if(istype(O, /obj/item/clothing/head/helmet)) 					// Looks too bad on corgi
 			to_chat(user, SPAN_WARNING("\The [O] is too small for [name] head."))
 			return
-		if(istype(O, /obj/item/clothing/head/kitty)) //Tail of kitty ears in not properly aligned
+		if(istype(O, /obj/item/clothing/head/kitty)) // Tail of kitty ears in not properly aligned
 			to_chat(user, SPAN_WARNING("[name] cannot wear \the [O]!"))
 			return
 		if(hat)
@@ -222,9 +222,9 @@
 		hat_offset_y = -8
 	overlays.Cut()
 	overlays |= get_hat_icon(hat, hat_offset_x, hat_offset_y)
+///////////////////////
+// END OF HAT STUFF //
 /////////////////////
-//END OF HAT STUFF//
-///////////////////
 
 /mob/living/simple_animal/corgi/puppy
 	name = "\improper corgi puppy"
