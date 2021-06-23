@@ -45,6 +45,7 @@
 
 /mob/living/simple_animal/corgi/Life()
 	..()
+	update_hat() //In case somewhere something unpredictable happens - it'll fix it, I guess.
 	regular_hud_updates()
 
 	//Feeding, chasing food, FOOOOODDDD
@@ -94,7 +95,7 @@
 			spawn(0)
 				for(var/i in list(1,2,4,8,4,2,1,2,4,8,4,2,1,2,4,8,4,2))
 					set_dir(i)
-					update_hat()
+					update_hat() //Too bad, it'll be better to optimize.
 					sleep(1)
 
 
@@ -150,8 +151,7 @@
 			to_chat(user, SPAN_WARNING("\The [O] is too small for [name] head."))
 			return
 		if(istype(O, /obj/item/clothing/head/kitty)) //Tail of kitty ears in not properly aligned
-			to_chat(user, SPAN_WARNING("[name] chases [O] tail and swallows it!"))
-			user.unEquip(O)
+			to_chat(user, SPAN_WARNING("[name] cannot wear \the [O]!"))
 			return
 		if(hat)
 			to_chat(user, SPAN_WARNING("[name] is already wearing \the [hat]."))
@@ -205,6 +205,7 @@
 	if(!hat)
 		return
 	if(stat == DEAD)
+		overlays.Cut()
 		hat.dropInto(loc)
 		hat = null
 		return
