@@ -202,7 +202,7 @@
 
 /obj/item/trash/dishes/attackby(obj/item/I, mob/user)
 	var/obj/item/trash/dishes/dish = I
-	if(I.type == src.type) // We add only objects of our own type
+	if(I.type == type) // We add only objects of our own type
 		var/list/dishestoadd = list()
 		dishestoadd += dish
 
