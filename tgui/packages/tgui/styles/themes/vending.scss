@@ -140,14 +140,10 @@
   @at-root .theme-vending-white &,
     .theme-vending-dark & {
     cursor: pointer;
+    font-size: 1.5rem;
   }
 
   &--cancel {
-    @at-root .theme-vending-white &,
-      .theme-vending-dark & {
-      font-size: 1.3em;
-    }
-
     @at-root .theme-vending-white & {
       background-color: #e91e63;
 
@@ -175,7 +171,6 @@
     @at-root .theme-vending-white &,
       .theme-vending-dark & {
       text-align: center;
-      font-size: 1.3em;
     }
 
     @at-root .theme-vending-white & {
@@ -202,41 +197,10 @@
   }
 
   &--product {
-    .AmountCounter {
-      @at-root .theme-vending-white &,
-        .theme-vending-dark & {
-        text-align: center;
-        border-radius: 50%;
-        width: 2.2rem;
-      }
-
-      @at-root .theme-vending-white & {
-        background-color: #ff5722;
-      }
-
-      @at-root .theme-vending-dark & {
-        background-color: #ff5722;
-      }
-    }
-
-    &.Button--disabled {
-      .AmountCounter {
-        @at-root .theme-vending-white & {
-          background-color: #797979 !important;
-        }
-
-        @at-root .theme-vending-dark & {
-          background-color: #797979 !important;
-        }
-      }
-    }
-
     @at-root .theme-vending-white &,
       .theme-vending-dark & {
-      font-size: 1.2em;
-      padding: 0.8em;
-      margin-top: 1rem;
-      margin-bottom: 1rem;
+      margin-top: .5em;
+      margin-bottom: .5em;
 
       &:first-child {
         margin-top: 0;
@@ -249,9 +213,7 @@
 
     @at-root .theme-vending-white & {
       background-color: #e91e63;
-      background: linear-gradient(-45deg, #e91e63, #673ab7);
-      background-size: 400% 400%;
-      animation: gradient 5s linear infinite;
+      background: #00bcd4;
 
       &:focus,
       &:hover,
@@ -273,9 +235,7 @@
 
     @at-root .theme-vending-dark & {
       background-color: #e91e63;
-      background: linear-gradient(-45deg, #e91e63, #673ab7);
-      background-size: 400% 400%;
-      animation: gradient 5s linear infinite;
+      background: #673ab7;
 
       &:focus,
       &:hover,
@@ -292,18 +252,6 @@
         box-shadow: none !important;
         text-shadow: none !important;
         background-color: #9e9e9e !important;
-      }
-    }
-
-    @keyframes gradient {
-      0% {
-        background-position: 0% 0%;
-      }
-      50% {
-        background-position: 100% 0%;
-      }
-      100% {
-        background-position: 0% 0%;
       }
     }
   }

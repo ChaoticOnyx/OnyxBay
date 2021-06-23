@@ -34,13 +34,11 @@ const product = (product: Product, context: any) => {
       onClick={() => act('vend', { vend: product.key })}>
       <Stack>
         <Stack.Item>
-          <Box className='AmountCounter'>
-            {product.amount.toString().padStart(2, '0')}
-          </Box>
+            {product.amount} |
         </Stack.Item>
         <Stack.Item>{product.name} - </Stack.Item>
         <Stack.Item>
-          {(outOfStock && 'Out of Stock!') || (
+          {
             <>
               {isUseCoins ? 1 : product.price}
               {isUseCoins ? (
@@ -52,7 +50,7 @@ const product = (product: Product, context: any) => {
                 />
               )}
             </>
-          )}
+          }
         </Stack.Item>
       </Stack>
     </Button>
@@ -105,7 +103,7 @@ export const Vending = (props: any, context: any) => {
 
   return (
     <Window
-      width={400}
+      width={460}
       height={600}
       theme={getTheme('vending')}
       title='Vending Machine'>
