@@ -209,7 +209,7 @@
 		hat.dropInto(loc)
 		hat = null
 		return
-	if(old_dir == src.dir) //We do not need to update hat, if we did not change dir
+	if(old_dir == dir) // We do not need to update hat, if we did not change dir
 		return
 	old_dir = dir
 	var/hat_offset_x = 1 		//preseting offsets to north and south
