@@ -156,11 +156,11 @@
 			qdel(src)
 			return
 		if(2.0)
-			if (prob(50))
+			if(prob(50))
 				qdel(src)
 				return
 		if(3.0)
-			if (prob(25))
+			if(prob(25))
 				spawn(0)
 					src.malfunction()
 					return
@@ -169,7 +169,7 @@
 	return
 
 /obj/machinery/vending/emag_act(remaining_charges, mob/user)
-	if (!emagged)
+	if(!emagged)
 		playsound(src.loc, 'sound/effects/computer_emag.ogg', 25)
 		src.emagged = 1
 		to_chat(user, "You short out the product lock on \the [src]")
@@ -195,11 +195,11 @@
 			return
 
 		if(I) //for IDs and PDAs and wallets with IDs
-			paid = pay_with_card(I,W)
-		else if (istype(W, /obj/item/weapon/spacecash/ewallet))
+			paid = pay_with_card(I, W)
+		else if(istype(W, /obj/item/weapon/spacecash/ewallet))
 			var/obj/item/weapon/spacecash/ewallet/C = W
 			paid = pay_with_ewallet(C)
-		else if (istype(W, /obj/item/weapon/spacecash/bundle))
+		else if(istype(W, /obj/item/weapon/spacecash/bundle))
 			var/obj/item/weapon/spacecash/bundle/C = W
 			paid = pay_with_cash(C)
 
@@ -234,16 +234,16 @@
 		W.forceMove(src)
 		coin = W
 		categories |= CAT_COIN
-		to_chat(user, "<span class='notice'>You insert \the [W] into \the [src].</span>")
+		to_chat(user, SPAN("notice", "You insert \the [W] into \the [src]."))
 		return
-	else if(istype(W,/obj/item/weapon/weldingtool))
+	else if(istype(W, /obj/item/weapon/weldingtool))
 		var/obj/item/weapon/weldingtool/WT = W
 		if(!WT.isOn())
 			return
 		if(health == max_health)
 			to_chat(user, SPAN("notice", "\The [src] is undamaged."))
 			return
-		if(!WT.remove_fuel(0,user))
+		if(!WT.remove_fuel(0, user))
 			to_chat(user, SPAN("notice", "You need more welding fuel to complete this task."))
 			return
 		user.visible_message(SPAN("notice", "[user] is repairing \the [src]..."), \
@@ -292,7 +292,7 @@
 		to_chat(usr, "\icon[cashmoney] <span class='warning'>That is not enough money.</span>")
 		return 0
 
-	visible_message("<span class='info'>\The [usr] inserts some cash into \the [src].</span>")
+	visible_message(SPAN("info", "\The [usr] inserts some cash into \the [src]."))
 	cashmoney.worth -= currently_vending.price
 
 	if(cashmoney.worth <= 0)
@@ -312,7 +312,7 @@
  * successful, 0 if failed.
  */
 /obj/machinery/vending/proc/pay_with_ewallet(obj/item/weapon/spacecash/ewallet/wallet)
-	visible_message("<span class='info'>\The [usr] swipes \the [wallet] through \the [src].</span>")
+	visible_message(SPAN("info", "\The [usr] swipes \the [wallet] through \the [src]."))
 	if(currently_vending.price > wallet.worth)
 		src.status_message = "Insufficient funds on chargecard."
 		src.status_error = 1
@@ -330,11 +330,11 @@
  */
 /obj/machinery/vending/proc/pay_with_card(obj/item/weapon/card/id/I, obj/item/ID_container)
 	if(I==ID_container || ID_container == null)
-		visible_message("<span class='info'>\The [usr] swipes \the [I] through \the [src].</span>")
+		visible_message(SPAN("info", "\The [usr] swipes \the [I] through \the [src]."))
 	else
-		visible_message("<span class='info'>\The [usr] swipes \the [ID_container] through \the [src].</span>")
+		visible_message(SPAN("info", "\The [usr] swipes \the [ID_container] through \the [src]."))
 	var/datum/money_account/customer_account = get_account(I.associated_account_number)
-	if (!customer_account)
+	if(!customer_account)
 		src.status_message = "Error: Unable to access account. Please contact technical support if problem persists."
 		src.status_error = 1
 		return 0
@@ -451,7 +451,7 @@
 
 	switch(action)
 		if("remove_coin")
-			if(istype(usr,/mob/living/silicon))
+			if(istype(usr, /mob/living/silicon))
 				return TRUE
 
 			if(!coin)
@@ -463,7 +463,7 @@
 			if(!usr.get_active_hand())
 				usr.put_in_hands(coin)
 
-			to_chat(usr, "<span class='notice'>You remove \the [coin] from \the [src]</span>")
+			to_chat(usr, SPAN("notice", "You remove \the [coin] from \the [src]"))
 			coin = null
 			categories &= ~CAT_COIN
 
@@ -473,7 +473,7 @@
 				return TRUE
 			
 			if((!allowed(usr)) && !emagged && scan_id)	// For SECURE VENDING MACHINES YEAH
-				to_chat(usr, "<span class='warning'>Access denied.</span>")// Unless emagged of course
+				to_chat(usr, SPAN("warning", "Access denied."))// Unless emagged of course
 				flick("[base_icon]-deny", src)
 				return TRUE
 
@@ -486,8 +486,8 @@
 
 			if(R.price <= 0)
 				vend(R, usr)
-			else if(istype(usr,/mob/living/silicon)) // If the item is not free, provide feedback if a synth is trying to buy something.
-				to_chat(usr, "<span class='danger'>Artificial unit recognized.  Artificial units cannot complete this transaction.  Purchase canceled.</span>")
+			else if(istype(usr, /mob/living/silicon)) // If the item is not free, provide feedback if a synth is trying to buy something.
+				to_chat(usr, SPAN("danger", "Artificial unit recognized.  Artificial units cannot complete this transaction.  Purchase canceled."))
 				return TRUE
 			else
 				src.currently_vending = R
@@ -513,7 +513,7 @@
 
 /obj/machinery/vending/proc/vend(datum/stored_items/vending_products/R, mob/user)
 	if((!allowed(usr)) && !emagged && scan_id)	// For SECURE VENDING MACHINES YEAH
-		to_chat(usr, "<span class='warning'>Access denied.</span>") // Unless emagged of course
+		to_chat(usr, SPAN("warning", "Access denied.")) // Unless emagged of course
 		flick("[base_icon]-deny", src)
 		return
 	src.vend_ready = 0 // One thing at a time!!
@@ -521,15 +521,15 @@
 	src.status_error = 0
 	SSnano.update_uis(src)
 
-	if (R.category & CAT_COIN)
+	if(R.category & CAT_COIN)
 		if(!coin)
-			to_chat(user, "<span class='notice'>You need to insert a coin to get this item.</span>")
+			to_chat(user, SPAN("notice", "You need to insert a coin to get this item."))
 			return
 		if(coin.string_attached)
 			if(prob(50))
-				to_chat(user, "<span class='notice'>You successfully pull the coin out before \the [src] could swallow it.</span>")
+				to_chat(user, SPAN("notice", "You successfully pull the coin out before \the [src] could swallow it."))
 			else
-				to_chat(user, "<span class='notice'>You weren't able to pull the coin out fast enough, the machine ate it, string and all.</span>")
+				to_chat(user, SPAN("notice", "You weren't able to pull the coin out fast enough, the machine ate it, string and all."))
 				qdel(coin)
 				coin = null
 				categories &= ~CAT_COIN
@@ -550,14 +550,14 @@
 		if(prob(diona_spawn_chance)) //Hehehe
 			var/turf/T = get_turf(src)
 			var/mob/living/carbon/alien/diona/S = new(T)
-			src.visible_message("<span class='notice'>\The [src] makes an odd grinding noise before coming to a halt as \a [S.name] slurmps out from the receptacle.</span>")
+			src.visible_message(SPAN("notice", "\The [src] makes an odd grinding noise before coming to a halt as \a [S.name] slurmps out from the receptacle."))
 		else //Just a normal vend, then
 			R.get_product(get_turf(src))
 			src.visible_message("\The [src] whirs as it vends \the [R.item_name].")
 			if(prob(1)) //The vending gods look favorably upon you
 				sleep(3)
 				if(R.get_product(get_turf(src)))
-					src.visible_message("<span class='notice'>\The [src] clunks as it vends an additional [R.item_name].</span>")
+					src.visible_message(SPAN("notice", "\The [src] clunks as it vends an additional [R.item_name]."))
 
 		src.status_message = ""
 		src.status_error = 0
@@ -576,7 +576,7 @@
 		return
 
 	if(R.add_product(W))
-		to_chat(user, "<span class='notice'>You insert \the [W] in the product receptor.</span>")
+		to_chat(user, SPAN("notice", "You insert \the [W] in the product receptor."))
 		SSnano.update_uis(src)
 		return 1
 
@@ -607,11 +607,11 @@
 	if(stat & NOPOWER)
 		return
 
-	if (!message)
+	if(!message)
 		return
 
 	for(var/mob/O in hearers(src, null))
-		O.show_message("<span class='game say'><span class='name'>\The [src]</span> beeps, \"[message]\"</span>",2)
+		O.show_message("<span class='game say'><span class='name'>\The [src]</span> beeps, \"[message]\"</span>", 2)
 	return
 
 /obj/machinery/vending/powered()
@@ -652,19 +652,19 @@
 //Somebody cut an important wire and now we're following a new definition of "pitch."
 /obj/machinery/vending/proc/throw_item()
 	var/obj/throw_item = null
-	var/mob/living/target = locate() in view(7,src)
+	var/mob/living/target = locate() in view(7, src)
 	if(!target)
 		return 0
 
 	for(var/datum/stored_items/vending_products/R in shuffle(src.product_records))
 		throw_item = R.get_product(loc)
-		if (throw_item)
+		if(throw_item)
 			break
-	if (!throw_item)
+	if(!throw_item)
 		return 0
 	spawn(0)
-		throw_item.throw_at(target, rand(1,2), 3, src)
-	src.visible_message("<span class='warning'>\The [src] launches \a [throw_item] at \the [target]!</span>")
+		throw_item.throw_at(target, rand(1, 2), 3, src)
+	src.visible_message(SPAN("warning", "\The [src] launches \a [throw_item] at \the [target]!"))
 	return 1
 
 /obj/machinery/vending/set_broken(new_state)
@@ -1297,14 +1297,14 @@
 	icon_state = "seeds"
 	use_vend_state = TRUE
 	vend_delay = 13
-	products = list(/obj/item/seeds/bananaseed = 3,/obj/item/seeds/berryseed = 3,/obj/item/seeds/carrotseed = 3,/obj/item/seeds/chantermycelium = 3,/obj/item/seeds/chiliseed = 3,
-					/obj/item/seeds/cornseed = 3, /obj/item/seeds/eggplantseed = 3, /obj/item/seeds/potatoseed = 3, /obj/item/seeds/replicapod = 3,/obj/item/seeds/soyaseed = 3,
-					/obj/item/seeds/sunflowerseed = 3,/obj/item/seeds/tomatoseed = 3,/obj/item/seeds/towermycelium = 3,/obj/item/seeds/wheatseed = 3,/obj/item/seeds/appleseed = 3,
-					/obj/item/seeds/poppyseed = 3,/obj/item/seeds/sugarcaneseed = 3,/obj/item/seeds/ambrosiavulgarisseed = 3,/obj/item/seeds/peanutseed = 3,/obj/item/seeds/whitebeetseed = 3,/obj/item/seeds/watermelonseed = 3,/obj/item/seeds/limeseed = 3,
-					/obj/item/seeds/lemonseed = 3,/obj/item/seeds/orangeseed = 3,/obj/item/seeds/grassseed = 3,/obj/item/seeds/cocoapodseed = 3,/obj/item/seeds/plumpmycelium = 2,
-					/obj/item/seeds/cabbageseed = 3,/obj/item/seeds/grapeseed = 3,/obj/item/seeds/pumpkinseed = 3,/obj/item/seeds/cherryseed = 3,/obj/item/seeds/plastiseed = 3,/obj/item/seeds/riceseed = 3,/obj/item/seeds/lavenderseed = 3)
-	contraband = list(/obj/item/seeds/amanitamycelium = 2,/obj/item/seeds/glowshroom = 2,/obj/item/seeds/libertymycelium = 2,/obj/item/seeds/mtearseed = 2,
-					  /obj/item/seeds/nettleseed = 2,/obj/item/seeds/reishimycelium = 2,/obj/item/seeds/reishimycelium = 2,/obj/item/seeds/shandseed = 2,)
+	products = list(/obj/item/seeds/bananaseed = 3, /obj/item/seeds/berryseed = 3, /obj/item/seeds/carrotseed = 3, /obj/item/seeds/chantermycelium = 3, /obj/item/seeds/chiliseed = 3,
+					/obj/item/seeds/cornseed = 3, /obj/item/seeds/eggplantseed = 3, /obj/item/seeds/potatoseed = 3, /obj/item/seeds/replicapod = 3, /obj/item/seeds/soyaseed = 3,
+					/obj/item/seeds/sunflowerseed = 3, /obj/item/seeds/tomatoseed = 3, /obj/item/seeds/towermycelium = 3, /obj/item/seeds/wheatseed = 3, /obj/item/seeds/appleseed = 3,
+					/obj/item/seeds/poppyseed = 3, /obj/item/seeds/sugarcaneseed = 3, /obj/item/seeds/ambrosiavulgarisseed = 3, /obj/item/seeds/peanutseed = 3, /obj/item/seeds/whitebeetseed = 3, /obj/item/seeds/watermelonseed = 3, /obj/item/seeds/limeseed = 3,
+					/obj/item/seeds/lemonseed = 3, /obj/item/seeds/orangeseed = 3, /obj/item/seeds/grassseed = 3, /obj/item/seeds/cocoapodseed = 3, /obj/item/seeds/plumpmycelium = 2,
+					/obj/item/seeds/cabbageseed = 3, /obj/item/seeds/grapeseed = 3, /obj/item/seeds/pumpkinseed = 3, /obj/item/seeds/cherryseed = 3, /obj/item/seeds/plastiseed = 3, /obj/item/seeds/riceseed = 3, /obj/item/seeds/lavenderseed = 3)
+	contraband = list(/obj/item/seeds/amanitamycelium = 2, /obj/item/seeds/glowshroom = 2, /obj/item/seeds/libertymycelium = 2, /obj/item/seeds/mtearseed = 2,
+					  /obj/item/seeds/nettleseed = 2, /obj/item/seeds/reishimycelium = 2, /obj/item/seeds/reishimycelium = 2, /obj/item/seeds/shandseed = 2, )
 	premium = list(/obj/item/weapon/reagent_containers/spray/waterflower = 1)
 
 /**
@@ -1341,7 +1341,7 @@
 	vend_delay = 15
 	vend_reply = "Have an enchanted evening!"
 	product_ads = "FJKLFJSD;AJKFLBJAKL;1234 LOONIES LOL!;>MFW;Kill them fuckers!;GET DAT FUKKEN DISK;HONK!;EI NATH;Down with Central!;Admin conspiracies since forever!;Space-time bending hardware!"
-	products = list(/obj/item/clothing/head/wizard = 1,/obj/item/clothing/suit/wizrobe = 1,/obj/item/clothing/head/wizard/red = 1,/obj/item/clothing/suit/wizrobe/red = 1,/obj/item/clothing/shoes/sandal = 1,/obj/item/weapon/staff = 2)
+	products = list(/obj/item/clothing/head/wizard = 1, /obj/item/clothing/suit/wizrobe = 1, /obj/item/clothing/head/wizard/red = 1, /obj/item/clothing/suit/wizrobe/red = 1, /obj/item/clothing/shoes/sandal = 1, /obj/item/weapon/staff = 2)
 
 /obj/machinery/vending/dinnerware
 	name = "Dinnerware"
@@ -1411,7 +1411,7 @@
 	icon_state = "engivend"
 	use_vend_state = TRUE
 	vend_delay = 21
-	req_one_access = list(access_atmospherics,access_engine_equip)
+	req_one_access = list(access_atmospherics, access_engine_equip)
 	products = list(/obj/item/clothing/glasses/hud/standard/meson = 2,
 					/obj/item/device/multitool = 4,
 					/obj/item/device/geiger = 4,
@@ -1428,7 +1428,7 @@
 	name = "Robco Tool Maker"
 	desc = "Everything you need for do-it-yourself repair."
 	icon_state = "engi"
-	req_one_access = list(access_atmospherics,access_engine_equip)
+	req_one_access = list(access_atmospherics, access_engine_equip)
 	products = list(/obj/item/weapon/storage/belt/utility = 4,
 					/obj/item/clothing/glasses/hud/standard/meson = 4,
 					/obj/item/clothing/gloves/insulated = 4,
