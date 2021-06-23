@@ -1004,7 +1004,7 @@
 	emag_master = name
 	if(module && istype(module,/obj/item/weapon/robot_module/security))
 		var/obj/item/weapon/gun/energy/laser/mounted/cyborg/LC = locate() in R.module.modules
-		if (LC)
+		if(LC)
 			LC.locked = 0
 	message_admins("Cyborg [key_name_admin(R)] emagged itself.")
 
@@ -1258,7 +1258,6 @@
 	set category = null
 
 	return
-
 
 
 
