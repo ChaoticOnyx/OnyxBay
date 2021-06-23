@@ -217,7 +217,7 @@
 	if(dir == 4)			// Setting offset for east and west to properly render hats
 		hat_offset_x = 8
 		hat_offset_y = -8
-	else if(src.dir == 8)
+	else if(dir == 8)
 		hat_offset_x = -8
 		hat_offset_y = -8
 	overlays.Cut()
