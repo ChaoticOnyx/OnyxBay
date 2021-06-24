@@ -27,7 +27,7 @@
 				//gloves provide a larger bonus
 				if (istype(H.gloves, /obj/item/clothing/gloves))
 					score += 2
-	//log_debug("Score for [M] : [score]")
+
 	switch(score)
 		if (6 to INFINITY)
 			return 0
@@ -70,10 +70,8 @@
 //Attemptes to infect mob M with virus. Set forced to 1 to ignore protective clothnig
 /proc/infect_virus2(mob/living/carbon/M,datum/disease2/disease/disease,forced = 0)
 	if(!istype(disease))
-		//log_debug("Bad virus")
 		return
 	if(!istype(M))
-		//log_debug("Bad mob")
 		return
 	if(M.status_flags & GODMODE)
 		return
@@ -97,13 +95,11 @@
 		else
 			return //not compatible with this species
 
-	//log_debug("Infecting [M]")
 	var/mob_infection_prob = infection_chance(M, disease.spreadtype) * M.immunity_weakness()
 	if(forced || (prob(disease.infectionchance) && prob(mob_infection_prob)))
 		var/datum/disease2/disease/D = disease.getcopy()
 		D.minormutate()
 		D.update_disease()
-		//log_debug("Adding virus")
 		D.infected = M
 		M.virus2["[D.uniqueID]"] = D
 		BITSET(M.hud_updateflag, STATUS_HUD)
@@ -127,39 +123,30 @@
 	return(prob(sqrt(p)) && prob(sqrt(p)))
 
 /mob/living/carbon/proc/spread_disease_to(mob/living/carbon/victim, vector = "Airborne")
-	//log_debug("spreading from [src] to [victim]")
 	if (src == victim)
 		return "retardation"
 
-	//log_debug("Spreading [vector] diseases from [src] to [victim]")
 	if (virus2.len > 0)
 		for (var/ID in virus2)
-			//log_debug("Attempting virus [ID]")
 			var/datum/disease2/disease/V = virus2[ID]
 			if(V.spreadtype != vector) 
-				//log_debug("Wrong vector")
 				continue
 
 			//It's hard to get other people sick if you're in an airtight suit.
 			if(infection_spreading_check(src, V.spreadtype))
-				//log_debug("Fail infection_spreading_check")
 				continue
 
 			if (vector == "Airborne")
 				if(airborne_can_reach(get_turf(src), get_turf(victim)))
-					//log_debug("In range, infecting")
 					infect_virus2(victim,V)
-				//else
-					//log_debug("Could not reach target")
+
 
 			if (vector == "Contact")
 				if (Adjacent(victim))
-					//log_debug("In range, infecting")
 					infect_virus2(victim,V)
 
 	//contact goes both ways
 	if (victim.virus2.len > 0 && vector == "Contact" && Adjacent(victim))
-		//log_debug("Spreading [vector] diseases from [victim] to [src]")
 		var/nudity = 1
 
 		if (ishuman(victim))
