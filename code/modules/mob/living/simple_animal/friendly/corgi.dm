@@ -145,7 +145,7 @@
 	name = "Corgi meat"
 	desc = "Tastes like... well you know..."
 
-/mob/living/simple_animal/corgi/attackby(obj/item/O as obj, mob/user as mob)  // Marker -Agouri
+/mob/living/simple_animal/corgi/attackby(obj/item/O, mob/user)  // Marker -Agouri
 	if(user.a_intent == I_HELP && istype(O, /obj/item/clothing/head)) 	// Equiping corgi with a cool hat!
 		if(istype(O, /obj/item/clothing/head/helmet)) 					// Looks too bad on corgi
 			to_chat(user, SPAN_WARNING("\The [O] is too small for [name] head."))
