@@ -104,6 +104,7 @@
 		D.minormutate()
 		D.update_disease()
 		//log_debug("Adding virus")
+		D.infected = M
 		M.virus2["[D.uniqueID]"] = D
 		BITSET(M.hud_updateflag, STATUS_HUD)
 
