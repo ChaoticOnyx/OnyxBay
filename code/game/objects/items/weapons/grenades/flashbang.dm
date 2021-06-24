@@ -21,7 +21,7 @@
 		B.update_icon()
 
 	new /obj/effect/sparks(loc)
-	new /obj/effect/effect/smoke/illumination(src.loc, 5, range = 30, power = 1, color = "#ffffff")
+	new /obj/effect/effect/smoke/illumination(loc, 5, range = 30, power = 1, color = "#ffffff")
 	qdel(src)
 	return
 
@@ -47,8 +47,12 @@
 	else if(get_dist(M, T) <= 5)
 		distance_tier = 2
 
+	visible_message("DEBUG: eyecheck() = [eye_effect], get_ear_protection = [ear_effect], distance_tier = [distance_tier].")
+
+	eye_effect = distance_tier - eye_effect
 	ear_effect = distance_tier - ear_effect
-	eye_effect = distance_tier - ear_effect
+
+	visible_message("DEBUG: eye_effect = [eye_effect], ear_effect = [ear_effect].")
 
 	// Blinding effect
 	if(eye_effect >= 6)
@@ -62,7 +66,7 @@
 		M.eye_blurry += eye_effect // But stacking these doesn't hurt too much
 
 	if(eye_effect >= 0)
-		M.flash_eyes(intensity = INFINITY, effect_duration = (10 * eye_effect))
+		M.flash_eyes(intensity = INFINITY, type = /obj/screen/fullscreen/flash/persistent, effect_duration = (10 * eye_effect))
 
 	// Deafening effect
 	if(ear_effect >= 3)
