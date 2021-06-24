@@ -108,7 +108,7 @@
 
 /obj/structure/closet/crate/handmade
 	name = "Handmade crate"
-	desc = "Handmade crate made of plasteel, looks like it lost plastic properties"
+	desc = "Another handmade by a young assistant. How cute! It looks like crude steel crate with no plastic in it"
 	icon_state = "handmadecrate"
 	icon_opened = "handmadecrateopen"
 	icon_closed = "handmadecrate"
