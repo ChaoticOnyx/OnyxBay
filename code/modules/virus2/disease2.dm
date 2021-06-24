@@ -98,7 +98,7 @@ LEGACY_RECORD_STRUCTURE(virus_records, virus_record)
 
 	if(stage <= 1 && clicks == 0) 	// with a certain chance, the mob may become immune to the disease before it starts properly
 		if(prob(infected.virus_immunity() * 0.05))
-			cure(1)
+			cure()
 			return
 
 	// Some species are flat out immune to organic viruses.

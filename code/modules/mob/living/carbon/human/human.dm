@@ -930,7 +930,7 @@
 
 	for(var/ID in virus2)
 		var/datum/disease2/disease/V = virus2[ID]
-		V.cure(src)
+		V.cure()
 
 	losebreath = 0
 

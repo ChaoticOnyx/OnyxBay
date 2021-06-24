@@ -40,7 +40,7 @@
 	to_chat(mob, SPAN("notice", "You feel cured."))
 	for(var/ID in mob.virus2)
 		var/datum/disease2/disease/D = mob.virus2[ID]
-		D.cure(mob)
+		D.cure()
 
 
 ////////////////////////STAGE 2/////////////////////////////////
@@ -69,7 +69,7 @@
 		return
 	var/mob/living/carbon/human/H = data
 	if(locate(H) in GLOB.dead_mob_list_)
-		parent_disease.cure(mob)
+		parent_disease.cure()
 
 ////////////////////////STAGE 3/////////////////////////////////
 
