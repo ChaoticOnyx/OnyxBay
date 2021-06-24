@@ -60,7 +60,7 @@
 			choosen_trigger = pickweight(triggers)
 			result = _run_trigger(choosen_trigger)
 			triggers.Remove(choosen_trigger)
-		while(!result && triggers.len)
+		while(!result && length(triggers))
 
 		if(!result)
 			_log_debug("Triggers don't work! We can't fix the balance :(")
