@@ -140,6 +140,9 @@
 		return
 	WRITE_FILE(GLOB.world_runtime_log, text)
 
+/proc/log_demo(text)
+	WRITE_FILE(GLOB.world_demo_log, text)
+
 /* ui logging */
 
 /**
