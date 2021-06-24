@@ -33,7 +33,7 @@ SUBSYSTEM_DEF(virus2suka)
 				break
 			continue
 
-		circuit.process(arglist(entry))
+		circuit.process()
 		if(MC_TICK_CHECK)
 			break
 	position = null
