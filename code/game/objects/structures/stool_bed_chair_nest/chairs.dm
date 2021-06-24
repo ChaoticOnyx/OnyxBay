@@ -344,6 +344,13 @@
 /obj/structure/bed/chair/shuttle/red/New(newloc, newmaterial)
 	..(newloc, MATERIAL_PLASTIC, MATERIAL_CARPET)
 
+/obj/structure/bed/chair/shuttle/black
+	base_icon = "shuttle_chaibl"
+	icon_state = "shuttle_chaibl_preview"
+
+/obj/structure/bed/chair/shuttle/black/New(newloc, newmaterial)
+	..(newloc, MATERIAL_PLASTIC, MATERIAL_CARPET)
+
 // Colorful chairs
 /obj/structure/bed/chair/brown/New(newloc, newmaterial)
 	..(newloc, MATERIAL_STEEL, MATERIAL_LEATHER)
