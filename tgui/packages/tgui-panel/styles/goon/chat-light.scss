@@ -206,41 +206,45 @@ a.popt {
 
 /* TAGS */
 
-span[class^="text-tag"] {
+span.text-tag {
   font-weight: bold;
   color: white;
   font-size: 0.8rem;
   border-radius: 0.2rem;
   padding-left: 0.2rem;
   padding-right: 0.2rem;
-}
 
-.text-tag-ooc {
-  background-color: #5353ff;
-}
+  &-ooc {
+    background-color: #5353ff;
+  }
+  
+  &-mod {
+    background-color: #9611D4;
+  }
+  
+  &-admin {
+    background-color: #735638;
+  }
+  
+  &-aooc {
+    background-color: #960018;
+  }
+  
+  &-dead {
+    background-color: #c380ff;
+  }
+  
+  &-looc {
+    background-color: #098080;
+  }
+  
+  &-dooc {
+    background-color: #5869EA;
+  }
 
-.text-tag-mod {
-  background-color: #9611D4;
-}
-
-.text-tag-admin {
-  background-color: #735638;
-}
-
-.text-tag-aooc {
-  background-color: #960018;
-}
-
-.text-tag-dead {
-  background-color: #c380ff;
-}
-
-.text-tag-looc {
-  background-color: #3a9696;
-}
-
-.text-tag-dooc {
-  background-color: #5869EA;
+  &-help {
+    background-color: #d10023;
+  }
 }
 
 /* MOTD */
@@ -359,7 +363,7 @@ em {
 
 
 .ooc .looc {
-  color: #3a9696;
+  color: #098080;
 }
 
 .ooc .elevated {

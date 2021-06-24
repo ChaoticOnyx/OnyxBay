@@ -815,7 +815,7 @@ datum/objective/heist/salvage
 		if(GLOB.raiders && GLOB.raiders.is_raider_crew_safe()) return 1
 		return 0
 
-//Borer objective(s).
+// Borer objective(s).
 /datum/objective/borer_survive
 	explanation_text = "Survive in a host until the end of the round."
 

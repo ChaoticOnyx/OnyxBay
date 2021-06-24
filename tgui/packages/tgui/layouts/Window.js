@@ -37,8 +37,8 @@ export class Window extends Component {
 
   componentDidUpdate(prevProps) {
     const shouldUpdateGeometry = (
-      this.props.width !== prevProps.width
-      || this.props.height !== prevProps.height
+      this.props.width !== prevProps.width ||
+      this.props.height !== prevProps.height
     );
     if (shouldUpdateGeometry) {
       this.updateGeometry();
@@ -76,17 +76,16 @@ export class Window extends Component {
     const fancy = config.window?.fancy;
     // Determine when to show dimmer
     const showDimmer = config.user && (
-      config.user.observer
-        ? config.status < UI_DISABLED
-        : config.status < UI_INTERACTIVE
+      config.user.observer ?
+        config.status < UI_DISABLED :
+        config.status < UI_INTERACTIVE
     );
     return (
       <Layout
-        className="Window"
-        theme={theme}
-        switchTheme>
+        className='Window'
+        theme={theme}>
         <TitleBar
-          className="Window__titleBar"
+          className='Window__titleBar'
           title={!suspended && (title || decodeHtmlEntities(config.title))}
           status={config.status}
           fancy={fancy}
@@ -103,16 +102,16 @@ export class Window extends Component {
           ])}>
           {!suspended && children}
           {showDimmer && (
-            <div className="Window__dimmer" />
+            <div className='Window__dimmer' />
           )}
         </div>
         {fancy && (
           <>
-            <div className="Window__resizeHandle__e"
+            <div className='Window__resizeHandle__e'
               onMousedown={resizeStartHandler(1, 0)} />
-            <div className="Window__resizeHandle__s"
+            <div className='Window__resizeHandle__s'
               onMousedown={resizeStartHandler(0, 1)} />
-            <div className="Window__resizeHandle__se"
+            <div className='Window__resizeHandle__se'
               onMousedown={resizeStartHandler(1, 1)} />
           </>
         )}
@@ -136,7 +135,7 @@ const WindowContent = props => {
       ])}
       {...rest}>
       {fitted && children || (
-        <div className="Window__contentPadding">
+        <div className='Window__contentPadding'>
           {children}
         </div>
       )}
@@ -177,34 +176,34 @@ const TitleBar = (props, context) => {
       ])}>
       {status === undefined && (
         <Icon
-          className="TitleBar__statusIcon"
-          name="tools"
+          className='TitleBar__statusIcon'
+          name='tools'
           opacity={0.5} />
       ) || (
         <Icon
-          className="TitleBar__statusIcon"
+          className='TitleBar__statusIcon'
           color={statusToColor(status)}
-          name="eye" />
+          name='eye' />
       )}
-      <div className="TitleBar__title">
-        {typeof title === 'string'
-          && title === title.toLowerCase()
-          && toTitleCase(title)
-          || title}
+      <div className='TitleBar__title'>
+        {typeof title === 'string' &&
+          title === title.toLowerCase() &&
+          toTitleCase(title) ||
+          title}
       </div>
       <div
-        className="TitleBar__dragZone"
+        className='TitleBar__dragZone'
         onMousedown={e => fancy && onDragStart(e)} />
       {process.env.NODE_ENV !== 'production' && (
         <div
-          className="TitleBar__devBuildIndicator"
+          className='TitleBar__devBuildIndicator'
           onClick={() => dispatch(toggleKitchenSink())}>
-          <Icon name="bug" />
+          <Icon name='bug' />
         </div>
       )}
       {Boolean(fancy && canClose) && (
         <div
-          className="TitleBar__close TitleBar__clickable"
+          className='TitleBar__close TitleBar__clickable'
           // IE8: Synthetic onClick event doesn't work on IE8.
           // IE8: Use a plain character instead of a unicode symbol.
           // eslint-disable-next-line react/no-unknown-property

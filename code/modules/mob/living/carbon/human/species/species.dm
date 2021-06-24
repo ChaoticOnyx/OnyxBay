@@ -281,7 +281,8 @@ The slots that you can use are found in items_clothing.dm and are the inventory 
 /datum/species/proc/create_organs(mob/living/carbon/human/H) //Handles creation of mob organs.
 
 	H.mob_size = mob_size
-	var/list/obj/item/organ/internal/foreign_organs = list()
+	var/list/foreign_organs = list()
+	var/list/implants_from_external_organs = list()
 
 	for(var/obj/item/organ/external/E in H.contents)
 		for(var/obj/item/organ/internal/O in E.internal_organs)
@@ -289,6 +290,10 @@ The slots that you can use are found in items_clothing.dm and are the inventory 
 				E.internal_organs.Remove(O)
 				H.internal_organs.Remove(O)
 				foreign_organs |= O
+		if(E.implants.len)
+			implants_from_external_organs[E.organ_tag] = list()
+		for(var/I in E.implants)
+			implants_from_external_organs[E.organ_tag] += I
 
 	for(var/obj/item/organ/organ in H.contents)
 		if((organ in H.organs) || (organ in H.internal_organs))
@@ -336,8 +341,11 @@ The slots that you can use are found in items_clothing.dm and are the inventory 
 
 	H.sync_organ_dna()
 
-/datum/species/proc/hug(mob/living/carbon/human/H,mob/living/target)
+	for(var/obj/item/organ/external/E in H.contents)
+		if(E.organ_tag in implants_from_external_organs)
+			E.implants += implants_from_external_organs[E.organ_tag]
 
+/datum/species/proc/hug(mob/living/carbon/human/H, mob/living/target)
 	var/mob/living/carbon/human/V
 	if(istype(target,/mob/living/carbon/human))
 		V = target
@@ -616,7 +624,10 @@ The slots that you can use are found in items_clothing.dm and are the inventory 
 				return W.afterattack(shoot_to,target)
 
 	var/effective_armor = target.getarmor(attacker.zone_sel.selecting, "melee")
-	target.damage_poise(round(4.0+4.0*((100-effective_armor)/100),0.1))
+	var/poisedmg = round(4.0 + 4.0 * ((100 - effective_armor) / 100), 0.1)
+	if(istype(attacker.gloves, /obj/item/clothing/gloves/chameleon/robust))
+		poisedmg *= 1.75
+	target.damage_poise(poisedmg)
 
 	//target.visible_message("Debug \[DISARM\]: [target] lost [round(4.0+4.0*((100-effective_armor)/100),0.1)] poise ([target.poise]/[target.poise_pool])") // Debug Message
 

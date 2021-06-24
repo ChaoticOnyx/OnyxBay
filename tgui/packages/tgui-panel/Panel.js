@@ -16,9 +16,7 @@ import { useSpellCheckerSettings, SpellCheckerSettings } from './spellchecker';
 export const Panel = (props, context) => {
   // IE8-10: Needs special treatment due to missing Flex support
   if (Byond.IS_LTE_IE10) {
-    return (
-      <HoboPanel />
-    );
+    return <HoboPanel />;
   }
   const audio = useAudio(context);
   const settings = useSettings(context);
@@ -28,9 +26,7 @@ export const Panel = (props, context) => {
     const { useDebug, KitchenSink } = require('tgui/debug');
     const debug = useDebug(context);
     if (debug.kitchenSink) {
-      return (
-        <KitchenSink panel />
-      );
+      return <KitchenSink panel />;
     }
   }
   return (
@@ -38,37 +34,40 @@ export const Panel = (props, context) => {
       <Stack fill vertical>
         <Stack.Item>
           <Section fitted>
-            <Stack mr={1} align="center">
-              <Stack.Item grow overflowX="auto">
+            <Stack mr={1} align='center'>
+              <Stack.Item grow overflowX='auto'>
                 <ChatTabs />
               </Stack.Item>
               <Stack.Item>
                 <Button
                   color={spellChecker.enabled ? 'yellow' : 'grey'}
                   selected={spellChecker.visible}
-                  icon="spell-check"
-                  tooltip="Yandex Spell Checker"
-                  tooltipPosition="bottom-start"
-                  onClick={() => spellChecker.toggle()} />
+                  icon='spell-check'
+                  tooltip='Yandex Spell Checker'
+                  tooltipPosition='bottom-start'
+                  onClick={() => spellChecker.toggle()}
+                />
               </Stack.Item>
               <Stack.Item>
                 <Button
-                  color="grey"
+                  color='grey'
                   selected={audio.visible}
-                  icon="music"
-                  tooltip="Music player"
-                  tooltipPosition="bottom-start"
-                  onClick={() => audio.toggle()} />
+                  icon='music'
+                  tooltip='Music player'
+                  tooltipPosition='bottom-start'
+                  onClick={() => audio.toggle()}
+                />
               </Stack.Item>
               <Stack.Item>
                 <Button
                   icon={settings.visible ? 'times' : 'cog'}
                   selected={settings.visible}
-                  tooltip={settings.visible
-                    ? 'Close settings'
-                    : 'Open settings'}
-                  tooltipPosition="bottom-start"
-                  onClick={() => settings.toggle()} />
+                  tooltip={
+                    settings.visible ? 'Close settings' : 'Open settings'
+                  }
+                  tooltipPosition='bottom-start'
+                  onClick={() => settings.toggle()}
+                />
               </Stack.Item>
             </Stack>
           </Section>
@@ -91,8 +90,8 @@ export const Panel = (props, context) => {
           </Stack.Item>
         )}
         <Stack.Item grow>
-          <Section fill fitted position="relative">
-            <Pane.Content scrollable>
+          <Section fill fitted position='relative'>
+            <Pane.Content id='chatContainer' scrollable>
               <ChatPanel lineHeight={settings.lineHeight} />
             </Pane.Content>
             <Notifications>
@@ -103,6 +102,7 @@ export const Panel = (props, context) => {
                 </Notifications.Item>
               )}
             </Notifications>
+            <div id='imageContainer' />
           </Section>
         </Stack.Item>
       </Stack>
@@ -126,9 +126,7 @@ const HoboPanel = (props, context) => {
           onClick={() => settings.toggle()}>
           Settings
         </Button>
-        {settings.visible && (
-          <SettingsPanel />
-        ) || (
+        {(settings.visible && <SettingsPanel />) || (
           <ChatPanel lineHeight={settings.lineHeight} />
         )}
       </Pane.Content>

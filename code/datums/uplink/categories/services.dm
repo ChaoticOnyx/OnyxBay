@@ -7,37 +7,37 @@
 /datum/uplink_item/item/services/fake_ion_storm
 	name = "Ion Storm Announcement"
 	desc = "Interferes with ion sensors."
-	item_cost = 6
+	item_cost = 1
 	path = /obj/item/device/uplink_service/fake_ion_storm
 
 /datum/uplink_item/item/services/suit_sensor_garble
 	name = "Complete Suit Sensor Jamming"
 	desc = "Garbles all suit sensor data for 10 minutes."
-	item_cost = 12
+	item_cost = 2
 	path = /obj/item/device/uplink_service/jamming/garble
 
 /datum/uplink_item/item/services/fake_rad_storm
 	name = "Radiation Storm Announcement"
 	desc = "Interferes with radiation sensors."
-	item_cost = 22
+	item_cost = 3
 	path = /obj/item/device/uplink_service/fake_rad_storm
 
 /datum/uplink_item/item/services/fake_crew_annoncement
 	name = "Crew Arrival Announcement and Records"
 	desc = "Creates a fake crew arrival announcement as well as fake crew records, using your current appearance (including held items!) and worn id card. Prepare well!"
-	item_cost = 14
+	item_cost = 2
 	path = /obj/item/device/uplink_service/fake_crew_announcement
 
 /datum/uplink_item/item/services/suit_sensor_shutdown
 	name = "Complete Suit Sensor Shutdown"
 	desc = "Completely disables all suit sensors for 10 minutes."
-	item_cost = 33
+	item_cost = 3
 	path = /obj/item/device/uplink_service/jamming
 
 /datum/uplink_item/item/services/fake_update_announcement
 	name = "Central Command Announcement"
 	desc = "Causes a falsified central command announcement. Think carefully about the consequences!"
-	item_cost = 30
+	item_cost = 3
 	path = /obj/item/device/uplink_service/fake_update_announcement
 
 /***************

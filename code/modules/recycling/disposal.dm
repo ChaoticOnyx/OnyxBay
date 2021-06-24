@@ -28,6 +28,7 @@
 	active_power_usage = 2200	//the pneumatic pump power. 3 HP ~ 2200W
 	idle_power_usage = 100
 	atom_flags = ATOM_FLAG_CLIMBABLE
+	hitby_loudness_multiplier = 0.5
 	var/datum/browser/disposal_menu
 
 // create a new disposal
@@ -478,6 +479,10 @@
 
 		H.vent_gas(loc)
 		qdel(H)
+
+
+/obj/machinery/disposal/hitby(atom/movable/AM, speed, nomsg = TRUE)
+	..()
 
 /obj/machinery/disposal/CanPass(atom/movable/mover, turf/target)
 	if(istype(mover,/obj/item) && mover.throwing)

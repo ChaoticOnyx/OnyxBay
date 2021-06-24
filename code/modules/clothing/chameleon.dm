@@ -297,6 +297,15 @@
 	disguise(clothing_choices[picked], usr)
 	update_clothing_icon()	//so our overlays update.
 
+/obj/item/clothing/gloves/chameleon/robust
+	desc = "It looks like a pair of extra robust gloves. It seems to have a small dial inside."
+	unarmed_damage_override = 10
+	origin_tech = list(TECH_ILLEGAL = 5)
+
+/obj/item/clothing/gloves/chameleon/robust/examine(mob/user)
+	. = ..()
+	. += "\nThese look extra robust."
+
 //******************
 //**Chameleon Mask**
 //******************

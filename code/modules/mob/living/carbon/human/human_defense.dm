@@ -748,10 +748,9 @@ meteor_act
 	return 1
 
 //this proc handles being hit by a thrown atom
-/mob/living/carbon/human/hitby(atom/movable/AM as mob|obj,speed = THROWFORCE_SPEED_DIVISOR)
-	if(istype(AM,/obj/))
+/mob/living/carbon/human/hitby(atom/movable/AM, speed = THROWFORCE_SPEED_DIVISOR)
+	if(isobj(AM))
 		var/obj/O = AM
-
 		if(in_throw_mode && !get_active_hand() && speed <= THROWFORCE_SPEED_DIVISOR)	//empty active hand and we're in throw mode
 			if(!incapacitated())
 				if(isturf(O.loc))
@@ -761,42 +760,44 @@ meteor_act
 					return
 
 		var/dtype = O.damtype
-		var/throw_damage = O.throwforce*(speed/THROWFORCE_SPEED_DIVISOR)
+		var/throw_damage = O.throwforce * (speed / THROWFORCE_SPEED_DIVISOR)
 
-		if(src.blocking)
+		if(blocking)
 			var/obj/item/weapon_def
-			if(src.blocking_hand && src.get_inactive_hand())
-				weapon_def = src.get_inactive_hand()
-			else if(src.get_active_hand())
-				weapon_def = src.get_active_hand()
+			if(blocking_hand && get_inactive_hand())
+				weapon_def = get_inactive_hand()
+			else if(get_active_hand())
+				weapon_def = get_active_hand()
+
 			if(weapon_def)
 				if(weapon_def.force && weapon_def.w_class >= O.w_class)
 					var/dir = get_dir(src,O)
-					O.throw_at(get_edge_target_turf(src,dir),1)
+					O.throw_at(get_edge_target_turf(src, dir), 1)
 
 					visible_message(SPAN("warning", "[src] blocks [O] with [weapon_def]!"))
+					playsound(src, 'sound/effects/fighting/Genhit.ogg', 50, 1, -1)
 
-					damage_poise(throw_damage/weapon_def.mod_shield)
-					if(poise < throw_damage/weapon_def.mod_shield)
+					damage_poise(throw_damage / weapon_def.mod_shield)
+					if(poise < throw_damage / weapon_def.mod_shield)
 						visible_message(SPAN("warning", "[src] falls down, unable to keep balance!"))
 						apply_effect(2, WEAKEN, 0)
-						src.useblock_off()
+						useblock_off()
 					return
 
 
 		var/zone = BP_CHEST
-		if (istype(O.thrower, /mob/living))
+		if(isliving(O.thrower))
 			var/mob/living/L = O.thrower
 			if(L.zone_sel)
 				zone = check_zone(L.zone_sel.selecting)
 		else
-			zone = ran_zone(BP_CHEST,75)	//Hits a random part of the body, geared towards the chest
+			zone = ran_zone(BP_CHEST, 75)	//Hits a random part of the body, geared towards the chest
 
 		//check if we hit
 		var/miss_chance = 15
-		if (O.throw_source)
+		if(O.throw_source)
 			var/distance = get_dist(O.throw_source, loc)
-			miss_chance = max(15*(distance-2), 0)
+			miss_chance = max(15 * (distance - 2), 0)
 		zone = get_zone_with_miss_chance(zone, src, miss_chance, ranged_attack=1)
 
 		if(zone && O.thrower != src)
@@ -816,7 +817,9 @@ meteor_act
 		var/hit_area = affecting.name
 		var/datum/wound/created_wound
 
-		src.visible_message(SPAN("warning", "\The [src] has been hit in the [hit_area] by \the [O]."))
+		visible_message(SPAN("warning", "\The [src] has been hit in the [hit_area] by \the [O]."))
+		play_hitby_sound(AM)
+
 		var/armor = run_armor_check(affecting, "melee", O.armor_penetration, "Your armor has protected your [hit_area].", "Your armor has softened hit to your [hit_area].") //I guess "melee" is the best fit here
 		if(armor < 100)
 			var/damage_flags = O.damage_flags()
@@ -831,46 +834,47 @@ meteor_act
 				admin_attack_log(M, src, "Threw \an [O] at their victim.", "Had \an [O] thrown at them", "threw \an [O] at")
 
 		//thrown weapon embedded object code.
-		if(dtype == BRUTE && istype(O,/obj/item))
+		if(dtype == BRUTE && istype(O, /obj/item))
 			var/obj/item/I = O
-			if (!is_robot_module(I))
+			if(!is_robot_module(I))
 				var/sharp = is_sharp(I)
 				var/damage = throw_damage //the effective damage used for embedding purposes, no actual damage is dealt here
-				if (armor)
+				if(armor)
 					damage *= blocked_mult(armor)
 
 				//blunt objects should really not be embedding in things unless a huge amount of force is involved
-				var/embed_chance = sharp? damage/I.w_class : damage/(I.w_class*3)
-				var/embed_threshold = sharp? 5*I.w_class : 15*I.w_class
+				var/embed_chance = sharp? (damage / I.w_class) : (damage / (I.w_class * 3))
+				var/embed_threshold = sharp? (5 * I.w_class) : (15 * I.w_class)
 
 				//Sharp objects will always embed if they do enough damage.
 				//Thrown sharp objects have some momentum already and have a small chance to embed even if the damage is below the threshold
-				if((sharp && prob(damage/(10*I.w_class)*100)) || (damage > embed_threshold && prob(embed_chance)))
+				if((sharp && prob(damage / (10 * I.w_class) * 100)) || (damage > embed_threshold && prob(embed_chance)))
 					affecting.embed(I, supplied_wound = created_wound)
 
 		// Begin BS12 momentum-transfer code.
 		var/mass = 1.5
 		if(istype(O, /obj/item))
 			var/obj/item/I = O
-			mass = I.w_class/THROWNOBJ_KNOCKBACK_DIVISOR
-		var/momentum = speed*mass
+			mass = I.w_class / THROWNOBJ_KNOCKBACK_DIVISOR
+		var/momentum = speed * mass
 
 		if(O.throw_source && momentum >= THROWNOBJ_KNOCKBACK_SPEED)
 			var/dir = get_dir(O.throw_source, src)
 
-			visible_message(SPAN("warning", "\The [src] staggers under the impact!"),SPAN("warning", "You stagger under the impact!"))
-			src.throw_at(get_edge_target_turf(src,dir),1,momentum)
+			visible_message(SPAN("warning", "\The [src] staggers under the impact!"), SPAN("warning", "You stagger under the impact!"))
+			throw_at(get_edge_target_turf(src, dir), 1, momentum)
 
-			if(!O || !src) return
+			if(!O || !src)
+				return
 
 			if(O.loc == src && O.sharp) //Projectile is embedded and suitable for pinning.
-				var/turf/T = near_wall(dir,2)
+				var/turf/T = near_wall(dir, 2)
 
 				if(T)
-					src.loc = T
-					visible_message(SPAN("warning", "[src] is pinned to the wall by [O]!"),SPAN("warning", "You are pinned to the wall by [O]!"))
-					src.anchored = 1
-					src.pinned += O
+					loc = T
+					visible_message(SPAN("warning", "[src] is pinned to the wall by [O]!"), SPAN("warning", "You are pinned to the wall by [O]!"))
+					anchored = 1
+					pinned += O
 
 /mob/living/carbon/human/embed(obj/O, def_zone=null, datum/wound/supplied_wound)
 	if(!def_zone) ..()

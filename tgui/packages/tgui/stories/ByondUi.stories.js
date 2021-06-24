@@ -19,7 +19,7 @@ const Story = (props, context) => {
     `Byond.winset('${window.__windowId__}', {\n  'is-visible': true,\n})`);
   return (
     <>
-      <Section title="Button">
+      <Section title='Button'>
         <ByondUi
           params={{
             type: 'button',
@@ -27,10 +27,10 @@ const Story = (props, context) => {
           }} />
       </Section>
       <Section
-        title="Make BYOND calls"
+        title='Make BYOND calls'
         buttons={(
           <Button
-            icon="chevron-right"
+            icon='chevron-right'
             onClick={() => setImmediate(() => {
               try {
                 const result = new Function('return (' + code + ')')();
@@ -50,9 +50,9 @@ const Story = (props, context) => {
           </Button>
         )}>
         <Box
-          as="textarea"
-          width="100%"
-          height="10em"
+          as='textarea'
+          width='100%'
+          height='10em'
           onChange={e => setCode(e.target.value)}>
           {code}
         </Box>

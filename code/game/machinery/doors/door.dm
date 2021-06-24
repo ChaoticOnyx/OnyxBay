@@ -11,6 +11,7 @@
 	density = 1
 	can_atmos_pass = ATMOS_PASS_PROC
 	layer = CLOSED_DOOR_LAYER
+	hitby_sound = 'sound/effects/metalhit2.ogg'
 	var/open_layer = OPEN_DOOR_LAYER
 	var/closed_layer = CLOSED_DOOR_LAYER
 
@@ -163,17 +164,13 @@
 		take_damage(min(damage, 100))
 
 
-
-/obj/machinery/door/hitby(AM as mob|obj, speed=5)
-
+/obj/machinery/door/hitby(atom/movable/AM, speed = 5, nomsg = FALSE)
 	..()
-	visible_message("<span class='danger'>[src.name] was hit by [AM].</span>")
 	var/tforce = 0
 	if(ismob(AM))
 		tforce = 15 * (speed/5)
 	else
 		tforce = AM:throwforce * (speed/5)
-	playsound(src.loc, hitsound, 100, 1)
 	take_damage(tforce)
 	return
 

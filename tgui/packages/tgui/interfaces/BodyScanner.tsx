@@ -70,53 +70,53 @@ const ScanData = (props: any, context: any) => {
   }
 
   return (
-    <Flex direction="row">
+    <Flex direction='row'>
       <Flex.Item shrink={1} basis={'40%'}>
         <Section title={'Scan Results'}>
           <LabeledList>
-            <LabeledList.Item label="Name">
+            <LabeledList.Item label='Name'>
               {data.medical_data.object}
             </LabeledList.Item>
 
-            <LabeledList.Item label="Date">
+            <LabeledList.Item label='Date'>
               {data.medical_data.scan_date}
             </LabeledList.Item>
 
-            <LabeledList.Item label="Actions">
+            <LabeledList.Item label='Actions'>
               <Button
-                icon="print"
+                icon='print'
                 onClick={() => act('print')}
-                content="Print Scan"
+                content='Print Scan'
               />
               <Button
-                icon="eject"
+                icon='eject'
                 onClick={() => act('eject')}
-                content="Eject"
+                content='Eject'
               />
             </LabeledList.Item>
           </LabeledList>
         </Section>
 
-        <Section title="Warnings">
-          {data.medical_data.warnings.length
-            ? data.medical_data.warnings.map((warning, i) => {
+        <Section title='Warnings'>
+          {data.medical_data.warnings.length ?
+            data.medical_data.warnings.map((warning, i) => {
                 return <NoticeBox key={i}>{warning}</NoticeBox>;
-              })
-            : 'Nothing'}
+              }) :
+            'Nothing'}
         </Section>
 
-        <Section title="Common">
+        <Section title='Common'>
           <LabeledList>
-            <LabeledList.Item label="Pulse">
+            <LabeledList.Item label='Pulse'>
               {`${data.medical_data.pulse} BPM`}
             </LabeledList.Item>
 
-            <LabeledList.Item label="Body Temperature">
+            <LabeledList.Item label='Body Temperature'>
               {data.medical_data.body_temperature_c} °C (
               {data.medical_data.body_temperature_f} °F)
             </LabeledList.Item>
 
-            <LabeledList.Item label="Brain Activity">
+            <LabeledList.Item label='Brain Activity'>
               {data.medical_data.brain_activity >= 0 ? (
                 <ProgressBar
                   value={data.medical_data.brain_activity}
@@ -131,7 +131,7 @@ const ScanData = (props: any, context: any) => {
               )}
             </LabeledList.Item>
 
-            <LabeledList.Item label="Immunity">
+            <LabeledList.Item label='Immunity'>
               <ProgressBar
                 value={data.medical_data.immunity}
                 ranges={{
@@ -144,29 +144,29 @@ const ScanData = (props: any, context: any) => {
           </LabeledList>
         </Section>
 
-        <Section title="Blood">
+        <Section title='Blood'>
           <LabeledList>
-            <LabeledList.Item label="Blood Type">
-              {data.medical_data.blood_type
-                ? data.medical_data.blood_type
-                : 'Unknown'}
+            <LabeledList.Item label='Blood Type'>
+              {data.medical_data.blood_type ?
+                data.medical_data.blood_type :
+                'Unknown'}
             </LabeledList.Item>
 
-            <LabeledList.Item label="Blood Pressure">
+            <LabeledList.Item label='Blood Pressure'>
               {data.medical_data.blood_pressure}
             </LabeledList.Item>
 
-            <LabeledList.Item label="Blood Volume">
+            <LabeledList.Item label='Blood Volume'>
               <ProgressBar
                 value={data.medical_data.blood_volume / 100}
                 // eslint-disable-next-line max-len
                 content={
-                  data.medical_data.blood_volume_abs
-                  + '/'
-                  + data.medical_data.blood_volume_max
-                  + 'u ('
-                  + data.medical_data.blood_volume
-                  + '%)'
+                  data.medical_data.blood_volume_abs +
+                  '/' +
+                  data.medical_data.blood_volume_max +
+                  'u (' +
+                  data.medical_data.blood_volume +
+                '%)'
                 }
                 ranges={{
                   good: [0.8, 1.0],
@@ -176,7 +176,7 @@ const ScanData = (props: any, context: any) => {
               />
             </LabeledList.Item>
 
-            <LabeledList.Item label="Blood Oxygenation">
+            <LabeledList.Item label='Blood Oxygenation'>
               <ProgressBar
                 value={data.medical_data.blood_oxygenation / 100}
                 ranges={{
@@ -189,76 +189,76 @@ const ScanData = (props: any, context: any) => {
           </LabeledList>
         </Section>
 
-        <Section title="Defects">
+        <Section title='Defects'>
           <LabeledList>
             <LabeledList.Item
-              label="Physical Trauma"
+              label='Physical Trauma'
               color={
-                data.medical_data.brute_severity === 'None'
-                  ? 'good'
-                  : data.medical_data.brute_severity === 'Severe'
-                  ? 'bad'
-                  : 'average'
+                data.medical_data.brute_severity === 'None' ?
+                  'good' :
+                  data.medical_data.brute_severity === 'Severe' ?
+                  'bad' :
+              'average'
               }>
               {data.medical_data.brute_severity}
             </LabeledList.Item>
 
             <LabeledList.Item
-              label="Burn Severity"
+              label='Burn Severity'
               color={
-                data.medical_data.burn_severity === 'None'
-                  ? 'good'
-                  : data.medical_data.burn_severity === 'Severe'
-                  ? 'bad'
-                  : 'average'
+                data.medical_data.burn_severity === 'None' ?
+                  'good' :
+                  data.medical_data.burn_severity === 'Severe' ?
+                  'bad' :
+              'average'
               }>
               {data.medical_data.burn_severity}
             </LabeledList.Item>
 
             <LabeledList.Item
-              label="Systematic Organ Failure"
+              label='Systematic Organ Failure'
               color={
-                data.medical_data.tox_severity === 'None'
-                  ? 'good'
-                  : data.medical_data.tox_severity === 'Severe'
-                  ? 'bad'
-                  : 'average'
+                data.medical_data.tox_severity === 'None' ?
+                  'good' :
+                  data.medical_data.tox_severity === 'Severe' ?
+                  'bad' :
+              'average'
               }>
               {data.medical_data.tox_severity}
             </LabeledList.Item>
 
             <LabeledList.Item
-              label="Oxygen Deprivation"
+              label='Oxygen Deprivation'
               color={
-                data.medical_data.oxy_severity === 'None'
-                  ? 'good'
-                  : data.medical_data.oxy_severity === 'Severe'
-                  ? 'bad'
-                  : 'average'
+                data.medical_data.oxy_severity === 'None' ?
+                  'good' :
+                  data.medical_data.oxy_severity === 'Severe' ?
+                  'bad' :
+              'average'
               }>
               {data.medical_data.oxy_severity}
             </LabeledList.Item>
 
             <LabeledList.Item
-              label="Radiation Level"
+              label='Radiation Level'
               color={
-                data.medical_data.rad_severity === 'None'
-                  ? 'good'
-                  : data.medical_data.rad_severity === 'Severe'
-                  ? 'bad'
-                  : 'average'
+                data.medical_data.rad_severity === 'None' ?
+                  'good' :
+                  data.medical_data.rad_severity === 'Severe' ?
+                  'bad' :
+              'average'
               }>
               {data.medical_data.rad_severity}
             </LabeledList.Item>
 
             <LabeledList.Item
-              label="Genetic Tissue Damage"
+              label='Genetic Tissue Damage'
               color={
-                data.medical_data.clone_severity === 'None'
-                  ? 'good'
-                  : data.medical_data.clone_severity === 'Severe'
-                  ? 'bad'
-                  : 'average'
+                data.medical_data.clone_severity === 'None' ?
+                  'good' :
+                  data.medical_data.clone_severity === 'Severe' ?
+                  'bad' :
+              'average'
               }>
               {data.medical_data.clone_severity}
             </LabeledList.Item>
@@ -267,7 +267,7 @@ const ScanData = (props: any, context: any) => {
       </Flex.Item>
       <Divider vertical />
       <Flex.Item grow={1} basis={'60%'}>
-        <Section title="External">
+        <Section title='External'>
           <Table>
             <Table.Row>
               <Table.Cell bold>
@@ -318,7 +318,7 @@ const ScanData = (props: any, context: any) => {
           </Table>
         </Section>
 
-        <Section title="Internal">
+        <Section title='Internal'>
           <Table>
             <Table.Row>
               <Table.Cell bold>

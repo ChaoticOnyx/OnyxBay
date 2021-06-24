@@ -23,8 +23,8 @@ const Story = (props, context) => {
     context, 'fs_title', true);
   return (
     <Flex
-      height="100%"
-      direction="column">
+      height='100%'
+      direction='column'>
       <Flex.Item mb={1}>
         <Section>
           <Button
@@ -54,7 +54,7 @@ const Story = (props, context) => {
       </Flex.Item>
       <Flex.Item grow={1}>
         <Flex
-          height="100%"
+          height='100%'
           direction={direction}>
           <Flex.Item
             mr={direction === 'row' && 1}
