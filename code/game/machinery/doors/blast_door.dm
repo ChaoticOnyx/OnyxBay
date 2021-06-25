@@ -72,6 +72,7 @@
 	else
 		icon_state = icon_state_open
 	SSradiation.resistance_cache.Remove(get_turf(src))
+	SSdemo.mark_dirty(src)
 	return
 
 // Proc: force_open()

@@ -393,6 +393,7 @@
 
 	if(do_set_light)
 		set_light(0.25, 0.1, 1, 2, COLOR_SUN)
+	SSdemo.mark_dirty(src)
 
 // CHECK PRESSURE
 /obj/machinery/door/firedoor/Process()

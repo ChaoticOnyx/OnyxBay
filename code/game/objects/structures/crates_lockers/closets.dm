@@ -563,6 +563,8 @@
 		else
 			icon_state = icon_opened
 
+	SSdemo.mark_dirty(src)
+
 /obj/structure/closet/attack_generic(mob/user, damage, attack_message = "destroys", wallbreaker)
 	if(!damage || !wallbreaker)
 		return

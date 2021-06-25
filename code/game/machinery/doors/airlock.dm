@@ -293,6 +293,7 @@ About the new airlock wires panel:
 	if(brace)
 		brace.update_icon()
 		overlays += image(brace.icon, brace.icon_state)
+	SSdemo.mark_dirty(src)
 
 /obj/machinery/door/airlock/do_animate(animation)
 	switch(animation)
