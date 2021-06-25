@@ -3,7 +3,7 @@
 	set category = null
 	set name = "Admin PM Mob"
 	if(!holder)
-		to_chat(src, "<span class='warning'>Error: Admin-PM-Context: Only administrators may use this command.</span>")
+		to_chat(src, "<span class='warning'>Error: Admin-PM-Context: Only administrators may use this command.</span>", confidential = TRUE)
 		return
 	if( !ismob(M) || !M.client )	return
 	cmd_admin_pm(M.client,null)
@@ -14,7 +14,7 @@
 	set category = "Admin"
 	set name = "Admin PM"
 	if(!holder)
-		to_chat(src, "<span class='warning'>Error: Admin-PM-Panel: Only administrators may use this command.</span>")
+		to_chat(src, "<span class='warning'>Error: Admin-PM-Panel: Only administrators may use this command.</span>", confidential = TRUE)
 		return
 	var/list/client/targets[0]
 	for(var/client/T)
@@ -38,12 +38,12 @@
 
 /client/proc/cmd_admin_pm(client/C, msg = null, datum/ticket/ticket = null)
 	if(prefs.muted & MUTE_ADMINHELP)
-		to_chat(src, "<span class='warning'>Error: Private-Message: You are unable to use PM-s (muted).</span>")
+		to_chat(src, "<span class='warning'>Error: Private-Message: You are unable to use PM-s (muted).</span>", confidential = TRUE)
 		return
 
 	if(!istype(C,/client))
-		if(holder)	to_chat(src, "<span class='warning'>Error: Private-Message: Client not found.</span>")
-		else		to_chat(src, "<span class='warning'>Error: Private-Message: Client not found. They may have lost connection, so please be patient!</span>")
+		if(holder)	to_chat(src, "<span class='warning'>Error: Private-Message: Client not found.</span>", confidential = TRUE)
+		else		to_chat(src, "<span class='warning'>Error: Private-Message: Client not found. They may have lost connection, so please be patient!</span>", confidential = TRUE)
 		return
 
 	var/recieve_pm_type = "Player"
@@ -54,7 +54,7 @@
 			recieve_pm_type = holder.rank
 
 	else if(C && !C.holder)
-		to_chat(src, "<span class='warning'>Error: Admin-PM: Non-admin to non-admin PM communication is forbidden.</span>")
+		to_chat(src, "<span class='warning'>Error: Admin-PM: Non-admin to non-admin PM communication is forbidden.</span>", confidential = TRUE)
 		return
 
 	msg = sanitize(msg)
@@ -66,8 +66,8 @@
 
 		if(!msg)	return
 		if(!C)
-			if(holder)	to_chat(src, "<span class='warning'>Error: Private-Message: Client not found.</span>")
-			else		to_chat(src, "<span class='warning'>Error: Private-Message: Client not found. They may have lost connection, so try using an adminhelp!</span>")
+			if(holder)	to_chat(src, "<span class='warning'>Error: Private-Message: Client not found.</span>", confidential = TRUE)
+			else		to_chat(src, "<span class='warning'>Error: Private-Message: Client not found. They may have lost connection, so try using an adminhelp!</span>", confidential = TRUE)
 			return
 
 		msg = sanitize(msg)
@@ -91,10 +91,10 @@
 			ticket = new /datum/ticket(receiver_lite)
 			ticket.take(sender_lite)
 		else
-			to_chat(src, "<span class='notice'>You do not have an open ticket. Please use the adminhelp verb to open a ticket.</span>")
+			to_chat(src, "<span class='notice'>You do not have an open ticket. Please use the adminhelp verb to open a ticket.</span>", confidential = TRUE)
 			return
 	else if(ticket.status != TICKET_ASSIGNED && sender_lite.ckey == ticket.owner.ckey)
-		to_chat(src, "<span class='notice'>Your ticket is not open for conversation. Please wait for an administrator to receive your adminhelp.</span>")
+		to_chat(src, "<span class='notice'>Your ticket is not open for conversation. Please wait for an administrator to receive your adminhelp.</span>", confidential = TRUE)
 		return
 
 	// if the sender is an admin and they're not assigned to the ticket, ask them if they want to take/join it, unless the admin is responding to their own ticket
@@ -107,7 +107,7 @@
 	if(holder && !C.holder)
 		recieve_message = "<span class='pm'><span class='howto'><b>-- Click the [recieve_pm_type]'s name to reply --</b></span></span>\n"
 		if(C.adminhelped)
-			to_chat(C, recieve_message)
+			to_chat(C, recieve_message, confidential = TRUE)
 			C.adminhelped = 0
 
 		//AdminPM popup for ApocStation and anybody else who wants to use it. Set it with POPUP_ADMIN_PM in config.txt ~Carn
@@ -130,7 +130,7 @@
 	else
 		sender_message += ": <span class='message linkify'>[msg]</span>"
 	sender_message += "</span></span>"
-	to_chat(src, sender_message)
+	to_chat(src, sender_message, confidential = TRUE)
 
 	var/receiver_message = "<span class='pm'><span class='in'>" + create_text_tag("pm_in", "") + " <b>\[[recieve_pm_type] PM\]</b> <span class='name'>[get_options_bar(src, C.holder ? 1 : 0, C.holder ? 1 : 0, 1)]</span>"
 	if(C.holder)
@@ -139,7 +139,7 @@
 	else
 		receiver_message += ": <span class='message linkify'>[msg]</span>"
 	receiver_message += "</span></span>"
-	to_chat(C, receiver_message)
+	to_chat(C, receiver_message, confidential = TRUE)
 	//play the recieving admin the adminhelp sound (if they have them enabled)
 	//non-admins shouldn't be able to disable this
 	if(C.get_preference_value(/datum/client_preference/staff/play_adminhelp_ping) == GLOB.PREF_HEAR)
@@ -158,11 +158,11 @@
 		if(X == C || X == src)
 			continue
 		if(X.key != key && X.key != C.key && (X.holder.rights & R_ADMIN|R_MOD|R_MENTOR))
-			to_chat(X, "<span class='pm'><span class='other'>" + create_text_tag("pm_other", "PM") + " <span class='name'>[key_name(src, X, 0, ticket)]</span> to <span class='name'>[key_name(C, X, 0, ticket)]</span> (<a href='?_src_=holder;take_ticket=\ref[ticket]'>[(ticket.status == TICKET_OPEN) ? "TAKE" : "JOIN"]</a>) (<a href='?src=\ref[usr];close_ticket=\ref[ticket]'>CLOSE</a>): <span class='message linkify'>[msg]</span></span></span>")
+			to_chat(X, "<span class='pm'><span class='other'>" + create_text_tag("pm_other", "PM") + " <span class='name'>[key_name(src, X, 0, ticket)]</span> to <span class='name'>[key_name(C, X, 0, ticket)]</span> (<a href='?_src_=holder;take_ticket=\ref[ticket]'>[(ticket.status == TICKET_OPEN) ? "TAKE" : "JOIN"]</a>) (<a href='?src=\ref[usr];close_ticket=\ref[ticket]'>CLOSE</a>): <span class='message linkify'>[msg]</span></span></span>", confidential = TRUE)
 
 /client/proc/cmd_admin_irc_pm(sender)
 	if(prefs.muted & MUTE_ADMINHELP)
-		to_chat(src, "<span class='warning'>Error: Private-Message: You are unable to use PM-s (muted).</span>")
+		to_chat(src, "<span class='warning'>Error: Private-Message: You are unable to use PM-s (muted).</span>", confidential = TRUE)
 		return
 
 	var/msg = input(src,"Message:", "Reply private message to [sender] on IRC / 400 character limit") as text|null
@@ -180,9 +180,9 @@
 	adminmsg2adminirc(src, sender, html_decode(msg))
 	admin_pm_repository.store_pm(src, "IRC-[sender]", msg)
 
-	to_chat(src, "<span class='pm'><span class='out'>" + create_text_tag("pm_out_alt", "PM") + " to <span class='name'>[sender]</span>: <span class='message linkify'>[msg]</span></span></span>")
+	to_chat(src, "<span class='pm'><span class='out'>" + create_text_tag("pm_out_alt", "PM") + " to <span class='name'>[sender]</span>: <span class='message linkify'>[msg]</span></span></span>", confidential = TRUE)
 	for(var/client/X in GLOB.admins)
 		if(X == src)
 			continue
 		if(X.holder.rights & R_ADMIN|R_MOD)
-			to_chat(X, "<span class='pm'><span class='other'>" + create_text_tag("pm_other", "PM") + " <span class='name'>[key_name(src, X, 0)]</span> to <span class='name'>[sender]</span>: <span class='message linkify'>[msg]</span></span></span>")
+			to_chat(X, "<span class='pm'><span class='other'>" + create_text_tag("pm_other", "PM") + " <span class='name'>[key_name(src, X, 0)]</span> to <span class='name'>[sender]</span>: <span class='message linkify'>[msg]</span></span></span>", confidential = TRUE)

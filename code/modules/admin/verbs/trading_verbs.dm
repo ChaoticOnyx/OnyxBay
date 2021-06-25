@@ -5,7 +5,7 @@
 
 	for(var/a in SStrade.traders)
 		var/datum/trader/T = a
-		to_chat(src, "[T.name] <a href='?_src_=vars;Vars=\ref[T]'>\ref[T]</a>")
+		to_chat(src, "[T.name] <a href='?_src_=vars;Vars=\ref[T]'>\ref[T]</a>", confidential = TRUE)
 
 /client/proc/add_trader()
 	set category = "Debug"

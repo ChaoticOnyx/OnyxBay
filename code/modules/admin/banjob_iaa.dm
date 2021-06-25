@@ -154,7 +154,7 @@ GLOBAL_LIST_EMPTY(IAA_approved_list)
 			id = $$
 		"}, dbcon, id)
 	if (!query.NextRow())
-		to_chat(usr, "No entry with such id")
+		to_chat(usr, "No entry with such id", confidential = TRUE)
 		return
 	ASSERT(query.item[1] == IAA_STATUS_APPROVED)
 	var/fakeid = query.item[2]
@@ -421,7 +421,7 @@ GLOBAL_LIST_EMPTY(IAA_approved_list)
 			id = $$
 		"}, dbcon, id)
 	if (!query.NextRow())
-		to_chat(usr, "No entry with such id")
+		to_chat(usr, "No entry with such id", confidential = TRUE)
 		return
 	var/fakeid            = query.item[ 2]
 	var/ckey              = query.item[ 3]
@@ -472,7 +472,7 @@ GLOBAL_LIST_EMPTY(IAA_approved_list)
 				chosen_JB = JB
 				break
 		if (!chosen_JB)
-			to_chat(usr, SPAN_WARNING("Failed to find active jobban with such id!"))
+			to_chat(usr, SPAN_WARNING("Failed to find active jobban with such id!"), confidential = TRUE)
 			return
 		var/action = input(usr, "Select action:", "Resolve IAA jobban", "Cancel") as anything in list("Approve", "Deny", "Cancel")
 		switch(action)

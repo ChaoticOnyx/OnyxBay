@@ -10,13 +10,13 @@ GLOBAL_LIST_EMPTY(available_mobs_for_possess)
 	if(!isliving(M))
 		return
 	if(M.client)
-		to_chat(src, SPAN_WARNING("You can't toggle possess mode for mobs with client!"))
+		to_chat(src, SPAN_WARNING("You can't toggle possess mode for mobs with client!"), confidential = TRUE)
 		return
 	if(M.ckey && copytext(M.ckey, 1, 2) == "@")
-		to_chat(src, SPAN_WARNING("[M] is occupied with aghosted admin."))
+		to_chat(src, SPAN_WARNING("[M] is occupied with aghosted admin."), confidential = TRUE)
 		return
 	if(M.stat == DEAD)
-		to_chat(src, SPAN_WARNING("[M] is dead. There's no point to toggle possess mode!"))
+		to_chat(src, SPAN_WARNING("[M] is dead. There's no point to toggle possess mode!"), confidential = TRUE)
 		return
 
 	M.controllable = !M.controllable
@@ -33,7 +33,7 @@ GLOBAL_LIST_EMPTY(available_mobs_for_possess)
 		if(G.client)
 			if(jobban_isbanned(G, "Animal"))
 				continue
-			to_chat(G, SPAN_DEADSAY("<b>[create_ghost_link(G, M, "(F)")] [capitalize(M.name)] is now available to possess! [possess_link(G, M)]</b>"))
+			to_chat(G, SPAN_DEADSAY("<b>[create_ghost_link(G, M, "(F)")] [capitalize(M.name)] is now available to possess! [possess_link(G, M)]</b>"), confidential = TRUE)
 
 /proc/possess_link(mob/observer/ghost/G, mob/living/M)
 	return "<a href='byond://?src=\ref[G];possess=\ref[M]'>(Occupy)</a>"

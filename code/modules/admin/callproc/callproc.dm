@@ -26,7 +26,7 @@
 				else
 					return
 			if(!target)
-				to_chat(usr, "Proc call cancelled.")
+				to_chat(usr, "Proc call cancelled.", confidential = TRUE)
 				return
 		if("Cancel")
 			return
@@ -91,11 +91,11 @@
 
 	if(hastarget)
 		if(!target)
-			to_chat(usr, "Your callproc target no longer exists.")
+			to_chat(usr, "Your callproc target no longer exists.", confidential = TRUE)
 			clear()
 			return
 		if(!hascall(target, procname))
-			to_chat(usr, "\The [target] has no call [procname]()")
+			to_chat(usr, "\The [target] has no call [procname]()", confidential = TRUE)
 			clear()
 			return
 
@@ -116,7 +116,7 @@
 
 	while(!done)
 		if(hastarget && !target)
-			to_chat(usr, "Your callproc target no longer exists.")
+			to_chat(usr, "Your callproc target no longer exists.", confidential = TRUE)
 			return CANCEL
 		switch(input("Type of [arguments.len+1]\th variable", "argument [arguments.len+1]") as null|anything in list(
 				"finished", "null", "text", "num", "type", "obj reference", "mob reference",
@@ -185,7 +185,7 @@
 			if("click on atom")
 				waiting_for_click = 1
 				C.verbs += /client/proc/cancel_callproc_select
-				to_chat(C, "Click an atom to select it. Click an atom then click 'cancel', or use the Cancel-Callproc-Select verb to cancel selecting a target by click.")
+				to_chat(C, "Click an atom to select it. Click an atom then click 'cancel', or use the Cancel-Callproc-Select verb to cancel selecting a target by click.", confidential = TRUE)
 				return WAITING
 
 		if(!done)
@@ -218,12 +218,12 @@
 
 	if(is_proc_protected(procname))
 		log_admin("[key_name(usr)] failed to call forbidden [procname]() with [arguments.len ? "the arguments [json_encode(arguments)]" : "no arguments"].")
-		to_chat(usr, SPAN_WARNING("Failed to call forbidden proc!"))
+		to_chat(usr, SPAN_WARNING("Failed to call forbidden proc!"), confidential = TRUE)
 		return
 
 	if(hastarget)
 		if(!target)
-			to_chat(usr, "Your callproc target no longer exists.")
+			to_chat(usr, "Your callproc target no longer exists.", confidential = TRUE)
 			return
 		log_admin("[key_name(usr)] called [target]'s [procname]() with [arguments.len ? "the arguments [json_encode(arguments)]" : "no arguments"].")
 		if(arguments.len)
@@ -234,7 +234,7 @@
 		log_admin("[key_name(usr)] called [procname]() with [arguments.len ? "the arguments [json_encode(arguments)]" : "no arguments"].")
 		returnval = call(procname)(arglist(arguments))
 
-	to_chat(usr, SPAN_NOTICE("[procname]() returned: [json_encode(returnval)]"))
+	to_chat(usr, SPAN_NOTICE("[procname]() returned: [json_encode(returnval)]"), confidential = TRUE)
 	feedback_add_details("admin_verb","APC") //If you are copy-pasting this, ensure the 2nd parameter is unique to the new proc!
 
 #undef CANCEL

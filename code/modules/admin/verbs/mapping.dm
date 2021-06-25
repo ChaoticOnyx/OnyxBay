@@ -200,15 +200,15 @@ var/list/debug_verbs = list (
 	var/turf/simulated/location = get_turf(usr)
 
 	if(!istype(location, /turf/simulated))
-		to_chat(src, "<Span class='warning'>This debug tool can only be used while on a simulated turf.</span>")
+		to_chat(src, "<Span class='warning'>This debug tool can only be used while on a simulated turf.</span>", confidential = TRUE)
 		return
 
 	if(!usedZAScolors)
-		to_chat(src, "ZAS Test Colors")
-		to_chat(src, "Green = Zone you are standing in")
-		to_chat(src, "Blue = Connected zone to the zone you are standing in")
-		to_chat(src, "Yellow = A zone that is connected but not one adjacent to your connected zone")
-		to_chat(src, "Red = Not connected")
+		to_chat(src, "ZAS Test Colors", confidential = TRUE)
+		to_chat(src, "Green = Zone you are standing in", confidential = TRUE)
+		to_chat(src, "Blue = Connected zone to the zone you are standing in", confidential = TRUE)
+		to_chat(src, "Yellow = A zone that is connected but not one adjacent to your connected zone", confidential = TRUE)
+		to_chat(src, "Red = Not connected", confidential = TRUE)
 		usedZAScolors = 1
 
 	testZAScolors_zones += location.zone
