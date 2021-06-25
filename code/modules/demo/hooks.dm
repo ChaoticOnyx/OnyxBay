@@ -15,10 +15,10 @@
 	. = ..()
 	SSdemo.write_event_line("logout [ckey]")
 
-/turf/setDir()
+/turf/set_dir()
 	. = ..()
 	SSdemo.mark_turf(src)
 
-/atom/movable/setDir()
+/atom/movable/set_dir()
 	. = ..()
 	SSdemo.mark_dirty(src)
