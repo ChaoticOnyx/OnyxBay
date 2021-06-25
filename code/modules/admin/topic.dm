@@ -2133,7 +2133,7 @@
 		if(href_list["obj_add"])
 			var/datum/antag_contract/contract
 			var/datum/contract_organization/selected_org
-			var/new_cnt_type = input("Select contract type:", "Contract type", null) as null|anything in list("Assassinate", "Implant", "Steal", "Steal active AI", "Steal blood samples", "Dump", "Protect", "Brig", "Heist", "Custom")
+			var/new_cnt_type = input("Select contract type:", "Contract type", null) as null|anything in list("Assassinate", "Implant", "Steal", "Steal active AI", "Steal blood samples", "Dump", "Protect", "Heist", "Custom")
 			var/selected_org_name = input("Select syndicate organization:", "Syndicate organization", null) as null|anything in GLOB.traitors.fixer.organizations_by_name
 			if(!selected_org_name) return
 			selected_org = GLOB.traitors.fixer.organizations_by_name[selected_org_name]
@@ -2194,10 +2194,6 @@
 					if("Protect")
 						var/datum/mind/selected_target = input("Select target (don't select any, if you want to select target by code):", "Syndicate organization", null) as null|anything in SSticker.minds
 						contract = new /datum/antag_contract/protect(selected_org, selected_reason, selected_target)
-					if("Brig")
-						var/datum/mind/selected_target = input("Select target (don't select any, if you want to select target by code):", "Syndicate organization", null) as null|anything in SSticker.minds
-						var/selected_time = input("Enter amount of TIME to steal (don't enter any, if you want to select time by code)", "Amount of brig time") as null|num
-						contract = new /datum/antag_contract/brig(selected_org, selected_reason, selected_target, selected_time)
 					if("Heist")
 						var/datum/mind/selected_target = input("Select target (don't select any, if you want to select target by code):", "Syndicate organization", null) as null|anything in SSticker.minds
 						contract = new /datum/antag_contract/kidnap(selected_org, selected_reason, selected_target)
