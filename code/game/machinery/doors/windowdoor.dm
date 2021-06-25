@@ -36,6 +36,7 @@
 		icon_state = base_state
 	else
 		icon_state = "[base_state]open"
+	SSdemo.mark_dirty(src)
 
 /obj/machinery/door/window/proc/shatter(display_message = 1)
 	new /obj/item/weapon/material/shard(loc)
