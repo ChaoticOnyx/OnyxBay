@@ -425,9 +425,33 @@
 		user.setClickCooldown(W.update_attack_cooldown())
 		user.do_attack_animation(src)
 
+	// attempt to remove the lightbulb out of the fixture with a crowbar
+	else if(isCrowbar(W) && lightbulb)
+		if(powered() && (W.obj_flags & OBJ_FLAG_CONDUCTIBLE))
+			var/datum/effect/effect/system/spark_spread/s = new /datum/effect/effect/system/spark_spread
+			s.set_up(3, 1, src)
+			s.start()
+			if(ishuman(user) && prob(75))
+				var/mob/living/carbon/human/H = user
+				var/wrong_choice = TRUE
+				if(H.species.siemens_coefficient <= 0)
+					wrong_choice = FALSE
+				else if(H.gloves)
+					var/obj/item/clothing/gloves/G = H.gloves
+					if(G.siemens_coefficient == 0)
+						wrong_choice = FALSE
+				if(wrong_choice)
+					user.visible_message(SPAN("warning", "[user] tries to pry [lightbulb] out of [src] with [W], only to get shocked."))
+					user.drop_item()
+					electrocute_mob(user, get_area(src), src, rand(0.7, 1.0))
+					return
+		user.visible_message(SPAN("notice", "[user] pries [lightbulb] out of [src] with [W]."))
+		remove_bulb()
+		return
+
 	// attempt to stick weapon into light socket
 	else if(!lightbulb)
-		if(istype(W, /obj/item/weapon/screwdriver)) //If it's a screwdriver open it.
+		if(isScrewdriver(W)) //If it's a screwdriver open it.
 			playsound(src.loc, 'sound/items/Screwdriver.ogg', 75, 1)
 			user.visible_message("[user.name] opens [src]'s casing.", "You open [src]'s casing.", "You hear a noise.")
 			new construct_type(src.loc, src.dir, src)

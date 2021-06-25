@@ -224,12 +224,13 @@ BLIND     // can't see anything
 	var/wired = FALSE
 	var/wire_color
 	var/clipped = FALSE
-	var/obj/item/clothing/ring/ring = null		//Covered ring
-	var/mob/living/carbon/human/wearer = null	//Used for covered rings when dropping
+	var/obj/item/clothing/ring/ring = null    // Covered ring
+	var/mob/living/carbon/human/wearer = null // Used for covered rings when dropping
+	var/unarmed_damage_override = null        // Overrides unarmed attack damage if not null
 	body_parts_covered = HANDS
 	slot_flags = SLOT_GLOVES
 	attack_verb = list("challenged")
-	species_restricted = list("exclude",SPECIES_NABBER, SPECIES_UNATHI,SPECIES_TAJARA, SPECIES_VOX)
+	species_restricted = list("exclude", SPECIES_NABBER, SPECIES_UNATHI, SPECIES_TAJARA, SPECIES_VOX)
 	blood_overlay_type = "bloodyhands"
 
 /obj/item/clothing/gloves/Initialize()

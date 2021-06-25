@@ -85,13 +85,13 @@ a.popt {
   color: #333;
 }
 
-.popup input[type=text]:hover,
-.popup input[type=text]:active,
-.popup input[type=text]:focus {
+.popup input[type='text']:hover,
+.popup input[type='text']:active,
+.popup input[type='text']:focus {
   border-color: green;
 }
 
-.popup input[type=submit] {
+.popup input[type='submit'] {
   padding: 5px 10px;
   background: #999;
   color: #ddd;
@@ -100,9 +100,9 @@ a.popt {
   font-weight: bold;
 }
 
-.popup input[type=submit]:hover,
-.popup input[type=submit]:focus,
-.popup input[type=submit]:active {
+.popup input[type='submit']:hover,
+.popup input[type='submit']:focus,
+.popup input[type='submit']:active {
   background: #aaa;
   cursor: pointer;
 }
@@ -127,7 +127,7 @@ a.popt {
   text-align: center;
 }
 
-.highlightPopup input[type=text] {
+.highlightPopup input[type='text'] {
   display: block;
   width: 215px;
   text-align: left;
@@ -135,7 +135,7 @@ a.popt {
 }
 
 .highlightPopup input.highlightColor {
-  background-color: #FFFF00;
+  background-color: #ffff00;
 }
 
 .highlightPopup input.highlightTermSubmit {
@@ -188,41 +188,45 @@ a.popt {
 
 /* TAGS */
 
-span[class^="text-tag"] {
+span.text-tag {
   font-weight: bold;
   color: white;
   font-size: 0.8rem;
   border-radius: 0.2rem;
   padding-left: 0.2rem;
   padding-right: 0.2rem;
-}
 
-.text-tag-ooc {
-  background-color: #5353ff;
-}
+  &-ooc {
+    background-color: #5353ff;
+  }
 
-.text-tag-mod {
-  background-color: #9611D4;
-}
+  &-mod {
+    background-color: #9611d4;
+  }
 
-.text-tag-admin {
-  background-color: #735638;
-}
+  &-admin {
+    background-color: #735638;
+  }
 
-.text-tag-aooc {
-  background-color: #960018;
-}
+  &-aooc {
+    background-color: #960018;
+  }
 
-.text-tag-dead {
-  background-color: #c380ff;
-}
+  &-dead {
+    background-color: #c380ff;
+  }
 
-.text-tag-looc {
-  background-color: #3a9696;
-}
+  &-looc {
+    background-color: #3a9696;
+  }
 
-.text-tag-dooc {
-  background-color: #5869EA;
+  &-dooc {
+    background-color: #5869ea;
+  }
+
+  &-help {
+    background-color: #d10023;
+  }
 }
 
 /* MOTD */
@@ -331,7 +335,7 @@ em {
 }
 
 .ooc .dooc {
-  color: #5869EA;
+  color: #5869ea;
 }
 
 .ooc .looc {
@@ -415,7 +419,7 @@ em {
 /* Admin: Channels */
 
 .mod_channel {
-  color: #9611D4;
+  color: #9611d4;
   font-weight: bold;
 }
 
@@ -432,7 +436,7 @@ em {
 /* Radio: Misc */
 
 .deadsay {
-  color: #e2c1ff
+  color: #e2c1ff;
 }
 
 .radio {
@@ -637,19 +641,19 @@ h2.alert {
 
 @keyframes hypnocolor {
   0% {
-      color: #202020;
+    color: #202020;
   }
   25% {
-      color: #4b02ac;
+    color: #4b02ac;
   }
   50% {
-      color: #9f41f1;
+    color: #9f41f1;
   }
   75% {
-      color: #541c9c;
+    color: #541c9c;
   }
   100% {
-      color: #7adbf3;
+    color: #7adbf3;
   }
 }
 
@@ -661,17 +665,18 @@ h2.alert {
 
 @keyframes phobia {
   0% {
-      color: #f75a5a;
+    color: #f75a5a;
   }
   50% {
-      color: #dd0000;
+    color: #dd0000;
   }
   100% {
-      color: #f75a5a;
+    color: #f75a5a;
   }
 }
 
-.connectionClosed, .fatalError {
+.connectionClosed,
+.fatalError {
   background: red;
   color: white;
   padding: 5px;
@@ -714,7 +719,7 @@ h2.alert {
 
 .spell-error {
   font-weight: bold;
-  
+
   .correct-word {
     border-bottom: green solid 0.15rem;
   }

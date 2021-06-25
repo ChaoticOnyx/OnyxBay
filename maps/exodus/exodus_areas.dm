@@ -855,6 +855,17 @@
 	name = "\improper Chapel Maintenance"
 	icon_state = "maint_security_port"
 
+/area/maintenance/chapel/north
+	name = "\improper Chapel Maintenance - North"
+
+/area/maintenance/chapel/south
+	name = "\improper Chapel Maintenance - South"
+
+/area/maintenance/abandoned_casino
+	name = "\improper Abandoned Casino"
+	icon_state = "ghettocasino"
+
+
 /area/maintenance/getto_rnd
 	name = "\improper RnD Maintenance"
 	icon_state = "maint_cargo"

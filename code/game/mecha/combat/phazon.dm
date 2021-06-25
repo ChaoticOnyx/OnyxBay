@@ -20,7 +20,6 @@
 	var/phasing_energy_drain = 5 KILOWATTS
 	max_equip = 4
 
-
 /obj/mecha/combat/phazon/Initialize()
 	. = ..()
 	var/obj/item/mecha_parts/mecha_equipment/ME = new /obj/item/mecha_parts/mecha_equipment/tool/rcd
