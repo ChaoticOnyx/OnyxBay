@@ -345,8 +345,8 @@
 	..(newloc, MATERIAL_PLASTIC, MATERIAL_CARPET)
 
 /obj/structure/bed/chair/shuttle/black
-	base_icon = "shuttle_chaibl"
-	icon_state = "shuttle_chaibl_preview"
+	base_icon = "shuttle_chairbl"
+	icon_state = "shuttle_chairbl_preview"
 
 /obj/structure/bed/chair/shuttle/black/New(newloc, newmaterial)
 	..(newloc, MATERIAL_PLASTIC, MATERIAL_CARPET)
