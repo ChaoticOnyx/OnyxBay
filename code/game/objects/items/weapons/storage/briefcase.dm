@@ -54,7 +54,7 @@
 	data["is_owner"] = uplink.uplink_owner && (uplink.uplink_owner == user.mind)
 	data["contracts"] = list()
 
-	for(var/datum/antag_contract/item/C in GLOB.traitors.fixer.return_contracts())
+	for(var/datum/antag_contract/item/C in uplink.accepted_contracts)
 		if(!C.check(src))
 			continue
 		data["contracts"].Add(list(list(
