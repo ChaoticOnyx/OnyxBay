@@ -9,11 +9,11 @@
 	. = ..()
 
 /datum/build_mode/edit/Help()
-	to_chat(user, "<span class='notice'>***********************************************************</span>")
-	to_chat(user, "<span class='notice'>Right Click on Build Mode Button = Select var & value</span>")
-	to_chat(user, "<span class='notice'>Left Click                       = Sets the var's value</span>")
-	to_chat(user, "<span class='notice'>Right Click                      = Reset the var's value</span>")
-	to_chat(user, "<span class='notice'>***********************************************************</span>")
+	to_chat(user, "<span class='notice'>***********************************************************</span>", confidential = TRUE)
+	to_chat(user, "<span class='notice'>Right Click on Build Mode Button = Select var & value</span>", confidential = TRUE)
+	to_chat(user, "<span class='notice'>Left Click                       = Sets the var's value</span>", confidential = TRUE)
+	to_chat(user, "<span class='notice'>Right Click                      = Reset the var's value</span>", confidential = TRUE)
+	to_chat(user, "<span class='notice'>***********************************************************</span>", confidential = TRUE)
 
 /datum/build_mode/edit/Configurate()
 	var/var_name = input("Enter variable name:", "Name", var_to_edit) as text|null
@@ -54,7 +54,7 @@
 	if(old_value == new_value)
 		return
 	A.vars[var_to_edit] = new_value
-	to_chat(user, "<span class='notice'>Changed the value of [var_to_edit] from '[old_value]' to '[new_value]'.</span>")
+	to_chat(user, "<span class='notice'>Changed the value of [var_to_edit] from '[old_value]' to '[new_value]'.</span>", confidential = TRUE)
 	Log("[log_info_line(A)] - [var_to_edit] - [old_value] -> [new_value]")
 
 /datum/build_mode/edit/proc/SetValue(new_value)

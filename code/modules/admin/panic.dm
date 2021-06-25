@@ -3,7 +3,7 @@
 	set name = "Toggle Panic Bunker"
 
 	if (!establish_db_connection())
-		to_chat(usr, "<span class='adminnotice'>The Database is not connected!</span>")
+		to_chat(usr, "<span class='adminnotice'>The Database is not connected!</span>", confidential = TRUE)
 		return
 
 	if(config.panic_bunker == 0 && config.panic_bunker != initial(config.panic_bunker))

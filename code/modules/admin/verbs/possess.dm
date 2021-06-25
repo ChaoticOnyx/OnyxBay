@@ -4,7 +4,7 @@
 
 	if(istype(O,/obj/singularity))
 		if(config.forbid_singulo_possession)
-			to_chat(usr, "It is forbidden to possess singularities.")
+			to_chat(usr, "It is forbidden to possess singularities.", confidential = TRUE)
 			return
 
 	log_admin("[key_name(usr)] has possessed [O] ([O.type])", location = O, notify_admin = TRUE)

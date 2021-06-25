@@ -59,7 +59,7 @@
 		if(build_mode && host && (build_mode in host.build_modes))
 			host.current_build_mode = build_mode
 			icon_state = build_mode.icon_state
-			to_chat(usr, "<span class='notice'>Build mode '[host.current_build_mode]' selected.</span>")
+			to_chat(usr, "<span class='notice'>Build mode '[host.current_build_mode]' selected.</span>", confidential = TRUE)
 	else if(parameters["right"])
 		host.current_build_mode.Configurate()
 

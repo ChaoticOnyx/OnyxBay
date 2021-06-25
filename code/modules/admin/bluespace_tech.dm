@@ -15,7 +15,7 @@
 		return
 
 	if(!isghost(mob))
-		to_chat(src, SPAN_WARNING("You must to be a ghost to use this!"))
+		to_chat(src, SPAN_WARNING("You must to be a ghost to use this!"), confidential = TRUE)
 		return
 
 	//I couldn't get the normal way to work so this works.
@@ -104,7 +104,7 @@
 	)
 
 /mob/living/carbon/human/bluespace_tech/can_inject(mob/user, target_zone)
-	to_chat(user, SPAN_DANGER("The [src] disarms you before you can inject them."))
+	to_chat(user, SPAN_DANGER("The [src] disarms you before you can inject them."), confidential = TRUE)
 	user.drop_item()
 	return 0
 
@@ -140,10 +140,10 @@
 
 	if (fall_override)
 		fall_override = FALSE
-		to_chat(usr, SPAN_NOTICE("You will now fall normally."))
+		to_chat(usr, SPAN_NOTICE("You will now fall normally."), confidential = TRUE)
 	else
 		fall_override = TRUE
-		to_chat(usr, SPAN_NOTICE("You will no longer fall."))
+		to_chat(usr, SPAN_NOTICE("You will no longer fall."), confidential = TRUE)
 
 /mob/living/carbon/human/bluespace_tech/verb/bstwalk()
 	set name = "Ruin Everything"
@@ -153,10 +153,10 @@
 
 	if(usr.HasMovementHandler(/datum/movement_handler/mob/incorporeal))
 		usr.RemoveMovementHandler(/datum/movement_handler/mob/incorporeal)
-		to_chat(usr, SPAN_NOTICE("You will no-longer phase through solid matter."))
+		to_chat(usr, SPAN_NOTICE("You will no-longer phase through solid matter."), confidential = TRUE)
 	else
 		usr.ReplaceMovementHandler(/datum/movement_handler/mob/incorporeal)
-		to_chat(usr, SPAN_NOTICE("You will now phase through solid matter."))
+		to_chat(usr, SPAN_NOTICE("You will now phase through solid matter."), confidential = TRUE)
 
 /mob/living/carbon/human/bluespace_tech/verb/bstrecover()
 	set name = "Rejuv"
@@ -187,7 +187,7 @@
 	set category = "BST"
 
 	status_flags ^= GODMODE
-	to_chat(usr, SPAN_NOTICE("God mode is now [status_flags & GODMODE ? "enabled" : "disabled"]."))
+	to_chat(usr, SPAN_NOTICE("God mode is now [status_flags & GODMODE ? "enabled" : "disabled"]."), confidential = TRUE)
 
 //Equipment. All should have canremove set to 0
 //All items with a /bluespace_tech need the attack_hand() proc overrided to stop people getting overpowered items.
@@ -202,7 +202,7 @@
 	if(!user)
 		return
 	if(!istype(user, /mob/living/carbon/human/bluespace_tech))
-		to_chat(user, SPAN_WARNING("Your hand seems to go right through the [src]. It's like it doesn't exist."))
+		to_chat(user, SPAN_WARNING("Your hand seems to go right through the [src]. It's like it doesn't exist."), confidential = TRUE)
 		return
 	return ..()
 
@@ -219,7 +219,7 @@
 	if(!user)
 		return
 	if(!istype(user, /mob/living/carbon/human/bluespace_tech))
-		to_chat(user, SPAN_WARNING("Your hand seems to go right through the [src]. It's like it doesn't exist."))
+		to_chat(user, SPAN_WARNING("Your hand seems to go right through the [src]. It's like it doesn't exist."), confidential = TRUE)
 		return
 	return ..()
 
@@ -245,7 +245,7 @@
 	if(!user)
 		return
 	if(!istype(user, /mob/living/carbon/human/bluespace_tech))
-		to_chat(user, SPAN_WARNING("Your hand seems to go right through the [src]. It's like it doesn't exist."))
+		to_chat(user, SPAN_WARNING("Your hand seems to go right through the [src]. It's like it doesn't exist."), confidential = TRUE)
 		return
 	return ..()
 
@@ -261,7 +261,7 @@
 	if(!user)
 		return
 	if(!istype(user, /mob/living/carbon/human/bluespace_tech))
-		to_chat(user, SPAN_WARNING("Your hand seems to go right through the [src]. It's like it doesn't exist."))
+		to_chat(user, SPAN_WARNING("Your hand seems to go right through the [src]. It's like it doesn't exist."), confidential = TRUE)
 		return
 	return ..()
 
@@ -291,13 +291,13 @@
 			vision_flags = 0
 			see_invisible = -1
 
-	to_chat(usr, SPAN_NOTICE("\The [src]'s vision mode is now <b>[mode]</b>."))
+	to_chat(usr, SPAN_NOTICE("\The [src]'s vision mode is now <b>[mode]</b>."), confidential = TRUE)
 
 /obj/item/clothing/glasses/sunglasses/bluespace_tech/attack_hand(mob/user)
 	if(!user)
 		return
 	if(!istype(user, /mob/living/carbon/human/bluespace_tech))
-		to_chat(user, SPAN_WARNING("Your hand seems to go right through the [src]. It's like it doesn't exist."))
+		to_chat(user, SPAN_WARNING("Your hand seems to go right through the [src]. It's like it doesn't exist."), confidential = TRUE)
 		return
 	return ..()
 
@@ -313,7 +313,7 @@
 	if(!user)
 		return
 	if(!istype(user, /mob/living/carbon/human/bluespace_tech))
-		to_chat(user, SPAN_WARNING("Your hand seems to go right through the [src]. It's like it doesn't exist."))
+		to_chat(user, SPAN_WARNING("Your hand seems to go right through the [src]. It's like it doesn't exist."), confidential = TRUE)
 		return
 	return ..()
 
@@ -330,7 +330,7 @@
 	if(!user)
 		return
 	if(!istype(user, /mob/living/carbon/human/bluespace_tech))
-		to_chat(user, SPAN_WARNING("Your hand seems to go right through the [src]. It's like it doesn't exist."))
+		to_chat(user, SPAN_WARNING("Your hand seems to go right through the [src]. It's like it doesn't exist."), confidential = TRUE)
 		return
 	return ..()
 

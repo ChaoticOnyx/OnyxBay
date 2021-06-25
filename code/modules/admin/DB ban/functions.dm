@@ -214,7 +214,7 @@
 
 	var/setter = a_ckey
 	if(usr)
-		to_chat(usr, "<span class='notice'>Ban saved to database.</span>")
+		to_chat(usr, "<span class='notice'>Ban saved to database.</span>", confidential = TRUE)
 		setter = key_name_admin(usr)
 	message_admins("[setter] has added a [(ban_everywhere)?"Onyx wide":""] [bantype_str] for [ckey] [(job)?"([job])":""] [(duration > 0)?"([duration] minutes)":""] with the reason: \"[reason]\" to the ban database.",1)
 	if(ismob(banned_mob) && banned_mob.client)
@@ -283,17 +283,17 @@
 		ban_number++;
 
 	if(ban_number == 0)
-		to_chat(usr, "<span class='warning'>Database update failed due to no bans fitting the search criteria. If this is not a legacy ban you should contact the database admin.</span>")
+		to_chat(usr, "<span class='warning'>Database update failed due to no bans fitting the search criteria. If this is not a legacy ban you should contact the database admin.</span>", confidential = TRUE)
 		return
 
 	if(ban_number > 1)
-		to_chat(usr, "<span class='warning'>Database update failed due to multiple bans fitting the search criteria. Note down the ckey, job and current time and contact the database admin.</span>")
+		to_chat(usr, "<span class='warning'>Database update failed due to multiple bans fitting the search criteria. Note down the ckey, job and current time and contact the database admin.</span>", confidential = TRUE)
 		return
 
 	if(istext(ban_id))
 		ban_id = text2num(ban_id)
 	if(!isnum(ban_id))
-		to_chat(usr, "<span class='warning'>Database update failed due to a ban ID mismatch. Contact the database admin.</span>")
+		to_chat(usr, "<span class='warning'>Database update failed due to a ban ID mismatch. Contact the database admin.</span>", confidential = TRUE)
 		return
 
 	DB_ban_unban_by_id(ban_id)
@@ -305,7 +305,7 @@
 	if(!check_rights(R_BAN))	return
 
 	if(!isnum(banid) || !istext(param))
-		to_chat(usr, "Cancelled")
+		to_chat(usr, "Cancelled", confidential = TRUE)
 		return
 
 	var/DBQuery/query
@@ -327,7 +327,7 @@
 		if(!isnull(config.server_id))
 			serverid = query.item[4]
 	else
-		to_chat(usr, "Invalid ban id. Contact the database admin")
+		to_chat(usr, "Invalid ban id. Contact the database admin", confidential = TRUE)
 		return
 	var/value
 
@@ -336,7 +336,7 @@
 			if(!value)
 				value = sanitize(input("Insert the new reason for [pckey]'s ban", "New Reason", "[reason]", null) as null|text)
 				if(!value)
-					to_chat(usr, "Cancelled")
+					to_chat(usr, "Cancelled", confidential = TRUE)
 					return
 
 			sql_query({"
@@ -384,10 +384,10 @@
 				DB_ban_unban_by_id(banid)
 				return
 			else
-				to_chat(usr, "Cancelled")
+				to_chat(usr, "Cancelled", confidential = TRUE)
 				return
 		else
-			to_chat(usr, "Cancelled")
+			to_chat(usr, "Cancelled", confidential = TRUE)
 			return
 
 /datum/admins/proc/DB_ban_unban_by_id(id)
@@ -414,11 +414,11 @@
 		ban_number++;
 
 	if(ban_number == 0)
-		to_chat(usr, "<span class='warning'>Database update failed due to a ban id not being present in the database.</span>")
+		to_chat(usr, "<span class='warning'>Database update failed due to a ban id not being present in the database.</span>", confidential = TRUE)
 		return
 
 	if(ban_number > 1)
-		to_chat(usr, "<span class='warning'>Database update failed due to multiple bans having the same ID. Contact the database admin.</span>")
+		to_chat(usr, "<span class='warning'>Database update failed due to multiple bans having the same ID. Contact the database admin.</span>", confidential = TRUE)
 		return
 
 	if(!src.owner || !istype(src.owner, /client))
@@ -464,7 +464,7 @@
 	if(!check_rights(R_BAN))	return
 
 	if(!establish_db_connection())
-		to_chat(usr, "<span class='warning'>Failed to establish database connection</span>")
+		to_chat(usr, "<span class='warning'>Failed to establish database connection</span>", confidential = TRUE)
 		return
 
 	var/output = "<!doctype html><html lang=\"ru\"><head><meta http-equiv=\"X-UA-Compatible\" content=\"IE=edge\"><meta charset=\"utf-8\"><title>Ban panel</title><meta name=\"viewport\" content=\"width=device-width, initial-scale=1\"><link rel=\"stylesheet\" href=\"https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css\"><link href=\"css/bootstrap-ie8.css\" rel=\"stylesheet\"><script src=\"https://cdn.jsdelivr.net/g/html5shiv@3.7.3\"></script><style>label{font-size: 16px;}h3{font-size: 20px;}</style></head><div class=\"container\"><h3>Add custom ban<small class=\"text-muted\"> use only when you can't ban through any other method</small></h3>"

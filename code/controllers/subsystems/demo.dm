@@ -27,7 +27,7 @@ SUBSYSTEM_DEF(demo)
 	var/new_time = world.time
 	if(last_written_time != new_time)
 		if(initialized)
-			log_demo("time [new_time]\n")
+			log_demo("time [new_time]")
 		else
 			pre_init_lines += "time [new_time]"
 	last_written_time = new_time
@@ -35,7 +35,7 @@ SUBSYSTEM_DEF(demo)
 /datum/controller/subsystem/demo/proc/write_event_line(line)
 	write_time()
 	if(initialized)
-		log_demo("[line]\n")
+		log_demo("[line]")
 	else
 		pre_init_lines += line
 
@@ -62,14 +62,14 @@ SUBSYSTEM_DEF(demo)
 	last_chat_message = text
 
 /datum/controller/subsystem/demo/Initialize()
-	log_demo("demo version 1\n") // increment this if you change the format
+	log_demo("demo version 1") // increment this if you change the format
 	if(revdata)
-		log_demo("commit [revdata.revision]\n")
+		log_demo("commit [revdata.revision]")
 
 	// write a "snapshot" of the world at this point.
 	// start with turfs
 	log_generic("Writing turfs...")
-	log_demo("init [world.maxx] [world.maxy] [world.maxz]\n")
+	log_demo("init [world.maxx] [world.maxy] [world.maxz]")
 	marked_turfs.Cut()
 	for(var/z in 1 to world.maxz)
 		var/row_list = list()
@@ -102,7 +102,7 @@ SUBSYSTEM_DEF(demo)
 				last_appearance = this_appearance
 		if(rle_count > 1)
 			row_list += rle_count
-		log_demo(jointext(row_list, ",") + "\n")
+		log_demo(jointext(row_list, ","))
 	CHECK_TICK
 	// then do objects
 	log_generic("Writing objects")
@@ -128,7 +128,7 @@ SUBSYSTEM_DEF(demo)
 					row_list += turf_list
 				spacing++
 			CHECK_TICK // This is a bit risky because something might change but meh, its not a big deal.
-		log_demo(jointext(row_list, ",") + "\n")
+		log_demo(jointext(row_list, ","))
 
 	// track objects that exist in nullspace
 	var/nullspace_list = list()
@@ -140,10 +140,10 @@ SUBSYSTEM_DEF(demo)
 			continue
 		nullspace_list += encode_init_obj(AM)
 		CHECK_TICK
-	log_demo(jointext(nullspace_list, ",") + "\n")
+	log_demo(jointext(nullspace_list, ","))
 
 	for(var/line in pre_init_lines)
-		log_demo("[line]\n")
+		log_demo("[line]")
 
 	return ..()
 
@@ -156,7 +156,7 @@ SUBSYSTEM_DEF(demo)
 
 	write_time()
 	if(src.del_list.len)
-		var/s = "del [jointext(src.del_list, ",")]\n" // if I don't do it like this I get "incorrect number of macro arguments" because byond is stupid and sucks
+		var/s = "del [jointext(src.del_list, ",")]" // if I don't do it like this I get "incorrect number of macro arguments" because byond is stupid and sucks
 		log_demo(s)
 	src.del_list.Cut()
 
@@ -189,7 +189,7 @@ SUBSYSTEM_DEF(demo)
 			canceled = TRUE
 			break
 	if(dirty_updates.len)
-		var/s = "update [jointext(dirty_updates, ",")]\n"
+		var/s = "update [jointext(dirty_updates, ",")]"
 		log_demo(s)
 	if(canceled)
 		return
@@ -214,7 +214,7 @@ SUBSYSTEM_DEF(demo)
 			canceled = TRUE
 			break
 	if(new_updates.len)
-		var/s = "new [jointext(new_updates, ",")]\n"
+		var/s = "new [jointext(new_updates, ",")]"
 		log_demo(s)
 	if(canceled)
 		return
@@ -233,7 +233,7 @@ SUBSYSTEM_DEF(demo)
 				canceled = TRUE
 				break
 	if(turf_updates.len)
-		var/s = "turf [jointext(turf_updates, ",")]\n"
+		var/s = "turf [jointext(turf_updates, ",")]"
 		log_demo(s)
 	if(canceled)
 		return
@@ -408,7 +408,6 @@ SUBSYSTEM_DEF(demo)
 	if(marked_dirty[M])
 		marked_dirty -= M
 
-// I can't wait for when TG ports this and they make this a #define macro.
 /datum/controller/subsystem/demo/proc/mark_dirty(atom/movable/M)
 	if(!isobj(M) && !ismob(M))
 		return

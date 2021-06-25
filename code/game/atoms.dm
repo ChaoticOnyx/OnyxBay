@@ -25,6 +25,9 @@
 
 	var/list/climbers = list()
 
+	/// Last appearance of the atom for demo saving purposes
+	var/image/demo_last_appearance
+
 /atom/New(loc, ...)
 	CAN_BE_REDEFINED(TRUE)
 	//atom creation method that preloads variables at creation
@@ -44,6 +47,8 @@
 
 	if(atom_flags & ATOM_FLAG_CLIMBABLE)
 		verbs += /atom/proc/climb_on
+
+	SSdemo.mark_new(src)
 
 //Called after New if the map is being loaded. mapload = TRUE
 //Called from base of New if the map is not being loaded. mapload = FALSE

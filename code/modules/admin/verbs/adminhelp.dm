@@ -70,12 +70,12 @@ var/list/adminhelp_ignored_words = list("unknown","the","a","an","of","monkey","
 
 	// handle muting and automuting
 	if(prefs.muted & MUTE_ADMINHELP)
-		to_chat(src, "<font color='red'>Error: Admin-PM: You cannot send adminhelps (Muted).</font>")
+		to_chat(src, "<font color='red'>Error: Admin-PM: You cannot send adminhelps (Muted).</font>", confidential = TRUE)
 		return
 
 	if(src.mob)
 		if(jobban_isbanned(src.mob, "AHELP"))
-			to_chat(src, SPAN("danger", "You have been banned from Adminhelp."))
+			to_chat(src, SPAN("danger", "You have been banned from Adminhelp."), confidential = TRUE)
 			return
 
 	adminhelped = 1 // Determines if they get the message to reply by clicking the name.
@@ -111,7 +111,7 @@ var/list/adminhelp_ignored_words = list("unknown","the","a","an","of","monkey","
 				src.cmd_admin_pm(admin_client, original_msg, ticket)
 				break
 		if(!admin_found)
-			to_chat(src, SPAN("warning", "Error: Private-Message: Client not found. They may have lost connection, so please be patient!"))
+			to_chat(src, SPAN("warning", "Error: Private-Message: Client not found. They may have lost connection, so please be patient!"), confidential = TRUE)
 		return
 
 	ticket.msgs += new /datum/ticket_msg(src.ckey, null, original_msg)
@@ -133,11 +133,11 @@ var/list/adminhelp_ignored_words = list("unknown","the","a","an","of","monkey","
 			if(X.get_preference_value(/datum/client_preference/staff/play_adminhelp_ping) == GLOB.PREF_HEAR)
 				sound_to(X, sound('sound/effects/adminhelp.ogg'))
 			if(X.holder.rights == R_MENTOR)
-				to_chat(X, mentor_msg, type = MESSAGE_TYPE_ADMINPM) // Mentors won't see coloring of names on people with special_roles (Antags, etc.)
+				to_chat(X, mentor_msg, type = MESSAGE_TYPE_ADMINPM, confidential = TRUE) // Mentors won't see coloring of names on people with special_roles (Antags, etc.)
 			else
-				to_chat(X, msg, type = MESSAGE_TYPE_ADMINPM)
+				to_chat(X, msg, type = MESSAGE_TYPE_ADMINPM, confidential = TRUE)
 	// show it to the person adminhelping too
-	to_chat(src, SPAN("notice linkify", "PM to-<b>Staff</b> (<a href='?src=\ref[usr];close_ticket=\ref[ticket]'>CLOSE</a>): [original_msg]"), type = MESSAGE_TYPE_ADMINPM)
+	to_chat(src, SPAN("notice linkify", "PM to-<b>Staff</b> (<a href='?src=\ref[usr];close_ticket=\ref[ticket]'>CLOSE</a>): [original_msg]"), type = MESSAGE_TYPE_ADMINPM, confidential = TRUE)
 	var/admin_number_present = GLOB.admins.len - admin_number_afk
 	log_admin("HELP: [key_name(src)]: [original_msg] - heard by [admin_number_present] non-AFK admins.")
 	if(admin_number_present <= 0)

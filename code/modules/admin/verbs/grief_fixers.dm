@@ -16,7 +16,7 @@
 	// Depower the supermatter, as it would quickly blow up once we remove all gases from the pipes.
 	for(var/obj/machinery/power/supermatter/S in SSmachines.machinery)
 		S.power = 0
-	to_chat(usr, "\[1/5\] - Supermatter depowered")
+	to_chat(usr, "\[1/5\] - Supermatter depowered", confidential = TRUE)
 
 	// Remove all gases from all pipenets
 	for(var/net in SSmachines.pipenets)
@@ -25,13 +25,13 @@
 			G.gas = list()
 			G.update_values()
 
-	to_chat(usr, "\[2/5\] - All pipenets purged of gas.")
+	to_chat(usr, "\[2/5\] - All pipenets purged of gas.", confidential = TRUE)
 
 	// Delete all zones.
 	for(var/zone/Z in world)
 		Z.c_invalidate()
 
-	to_chat(usr, "\[3/5\] - All ZAS Zones removed.")
+	to_chat(usr, "\[3/5\] - All ZAS Zones removed.", confidential = TRUE)
 
 	var/list/unsorted_overlays = list()
 	for(var/id in gas_data.tile_overlay)
@@ -42,9 +42,9 @@
 		T.overlays.Remove(unsorted_overlays)
 		T.zone = null
 
-	to_chat(usr, "\[4/5\] - All turfs reset to roundstart values.")
+	to_chat(usr, "\[4/5\] - All turfs reset to roundstart values.", confidential = TRUE)
 
 	SSair.reboot()
 
-	to_chat(usr, "\[5/5\] - ZAS Rebooted")
+	to_chat(usr, "\[5/5\] - ZAS Rebooted", confidential = TRUE)
 	to_world("<span class = 'danger'>Atmosphere restart completed in <b>[(world.timeofday - current_time)/10]</b> seconds.</span>")

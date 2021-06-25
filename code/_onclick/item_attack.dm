@@ -26,6 +26,8 @@ avoid code duplication. This includes items that may sometimes act as a standard
 
 // Called when the item is in the active hand, and clicked; alternately, there is an 'activate held object' verb or you can hit pagedown.
 /obj/item/proc/attack_self(mob/user)
+	SSdemo.mark_dirty(src)
+	SSdemo.mark_dirty(user)
 	return
 
 //I would prefer to rename this to attack(), but that would involve touching hundreds of files.
@@ -54,6 +56,14 @@ avoid code duplication. This includes items that may sometimes act as a standard
 	//////////Logging////////
 	if(!no_attack_log)
 		admin_attack_log(user, M, "Attacked using \a [src] (DAMTYE: [uppertext(damtype)])", "Was attacked with \a [src] (DAMTYE: [uppertext(damtype)])", "used \a [src] (DAMTYE: [uppertext(damtype)]) to attack")
+
+	//////////Demo///////////
+	/*SSdemo.mark_dirty(src)
+	if(isturf(M))
+		SSdemo.mark_turf(M)
+	else
+		SSdemo.mark_dirty(M)*/
+
 	//////////Logging////////
 
 	user.setClickCooldown(update_attack_cooldown())
@@ -113,7 +123,9 @@ avoid code duplication. This includes items that may sometimes act as a standard
 
 /atom/proc/attackby(obj/item/W, mob/user, click_params)
 	CAN_BE_REDEFINED(TRUE)
-
+	SSdemo.mark_dirty(src)
+	SSdemo.mark_dirty(W)
+	SSdemo.mark_dirty(user)
 	return
 
 /atom/movable/attackby(obj/item/W, mob/user)
@@ -139,6 +151,9 @@ avoid code duplication. This includes items that may sometimes act as a standard
 		return 0
 	if(can_operate(src, user) && I.do_surgery(src, user)) //Surgery
 		return 1
+	SSdemo.mark_dirty(src)
+	SSdemo.mark_dirty(I)
+	SSdemo.mark_dirty(user)
 	return I.attack(src, user, user.zone_sel.selecting)
 
 /mob/living/carbon/human/attackby(obj/item/I, mob/user)
