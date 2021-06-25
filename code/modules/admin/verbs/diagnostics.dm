@@ -122,9 +122,9 @@
 	set desc = "This spams all the active jobban entries for the current round to standard output."
 	set category = "Debug"
 
-	to_chat(usr, "<b>Jobbans active in this round.</b>")
+	to_chat(usr, "<b>Jobbans active in this round.</b>", confidential = TRUE)
 	for(var/t in jobban_keylist)
-		to_chat(usr, "[t]")
+		to_chat(usr, "[t]", confidential = TRUE)
 
 /client/proc/print_jobban_old_filter()
 	set name = "Search Jobban Log"
@@ -135,7 +135,7 @@
 	if(!filter)
 		return
 
-	to_chat(usr, "<b>Jobbans active in this round.</b>")
+	to_chat(usr, "<b>Jobbans active in this round.</b>", confidential = TRUE)
 	for(var/t in jobban_keylist)
 		if(findtext(t, filter))
-			to_chat(usr, "[t]")
+			to_chat(usr, "[t]", confidential = TRUE)

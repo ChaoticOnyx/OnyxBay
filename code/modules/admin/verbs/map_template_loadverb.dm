@@ -26,7 +26,7 @@
 		if(template.load(T, centered = TRUE, clear_contents=clear_contents))
 			log_and_message_admins("has placed a map template ([template.name]).")
 		else
-			to_chat(usr, "Failed to place map")
+			to_chat(usr, "Failed to place map", confidential = TRUE)
 	usr.client.images -= preview
 
 /datum/admins/proc/map_template_load_new_z()
@@ -52,7 +52,7 @@
 	if (new_z_centre)
 		log_and_message_admins("has placed a map template ([template.name]) on a new zlevel.", location=new_z_centre)
 	else
-		to_chat(usr, "Failed to place map")
+		to_chat(usr, "Failed to place map", confidential = TRUE)
 
 /datum/admins/proc/map_template_upload()
 	set category = "Fun"
@@ -65,13 +65,13 @@
 	if(!map)
 		return
 	if(copytext("[map]",-4) != ".dmm")
-		to_chat(usr, "Bad map file: [map]")
+		to_chat(usr, "Bad map file: [map]", confidential = TRUE)
 		return
 
 	var/datum/map_template/M = new(list(map), "[map]")
 	if(M.preload_size())
-		to_chat(usr, "Map template '[map]' ready to place ([M.width]x[M.height])")
+		to_chat(usr, "Map template '[map]' ready to place ([M.width]x[M.height])", confidential = TRUE)
 		SSmapping.map_templates[M.name] = M
 		message_admins("<span class='adminnotice'>[key_name_admin(usr)] has uploaded a map template ([map])</span>")
 	else
-		to_chat(usr, "Map template '[map]' failed to load properly")
+		to_chat(usr, "Map template '[map]' failed to load properly", confidential = TRUE)

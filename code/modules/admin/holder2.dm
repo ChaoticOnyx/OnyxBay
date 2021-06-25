@@ -37,11 +37,11 @@ var/list/admin_datums = list()
 		owner.holder = src
 		owner.add_admin_verbs()	//TODO
 		GLOB.admins |= C
-		
+
 /datum/admins/proc/disassociate()
 	if(owner)
 		GLOB.admins -= owner
-		GLOB.deadmined_list |= src 
+		GLOB.deadmined_list |= src
 		owner.remove_admin_verbs()
 		owner.deadmin_holder = owner.holder
 		owner.holder = null
@@ -49,7 +49,7 @@ var/list/admin_datums = list()
 /datum/admins/proc/reassociate()
 	if(owner)
 		GLOB.admins += owner
-		GLOB.deadmined_list -= src 
+		GLOB.deadmined_list -= src
 		owner.holder = src
 		owner.deadmin_holder = null
 		owner.add_admin_verbs()
@@ -75,7 +75,7 @@ NOTE: It checks usr by default. Supply the "user" argument if you wish to check 
 		return FALSE
 	if(!C.holder)
 		if(show_msg)
-			to_chat(C, "<span class='warning'>Error: You are not an admin.</span>")
+			to_chat(C, "<span class='warning'>Error: You are not an admin.</span>", confidential = TRUE)
 		return FALSE
 
 	if(rights_required)
@@ -83,7 +83,7 @@ NOTE: It checks usr by default. Supply the "user" argument if you wish to check 
 			return TRUE
 		else
 			if(show_msg)
-				to_chat(C, "<span class='warning'>Error: You do not have sufficient rights to do that. You require one of the following flags:[rights2text(rights_required," ")].</span>")
+				to_chat(C, "<span class='warning'>Error: You do not have sufficient rights to do that. You require one of the following flags:[rights2text(rights_required," ")].</span>", confidential = TRUE)
 			return FALSE
 	else
 		return TRUE
@@ -97,7 +97,7 @@ NOTE: It checks usr by default. Supply the "user" argument if you wish to check 
 			if(usr.client.holder.rights != other.holder.rights)
 				if( (usr.client.holder.rights & other.holder.rights) == other.holder.rights )
 					return 1	//we have all the rights they have and more
-		to_chat(usr, "<font color='red'>Error: Cannot proceed. They have more or equal rights to us.</font>")
+		to_chat(usr, "<font color='red'>Error: Cannot proceed. They have more or equal rights to us.</font>", confidential = TRUE)
 	return 0
 
 /client/proc/deadmin()
@@ -136,14 +136,14 @@ NOTE: It checks usr by default. Supply the "user" argument if you wish to check 
 	set name = "Stealth Mode"
 
 	if(!holder)
-		to_chat(src, "<span class='warning'>Error: You are not an admin.</span>")
+		to_chat(src, "<span class='warning'>Error: You are not an admin.</span>", confidential = TRUE)
 		return
 
 	holder.stealthy_ = holder.stealthy_ == STEALTH_OFF ? STEALTH_MANUAL : STEALTH_OFF
 	if(holder.stealthy_)
-		to_chat(src, "<span class='notice'>You are now stealthed.</span>")
+		to_chat(src, "<span class='notice'>You are now stealthed.</span>", confidential = TRUE)
 	else
-		to_chat(src, "<span class='notice'>You are no longer stealthed.</span>")
+		to_chat(src, "<span class='notice'>You are no longer stealthed.</span>", confidential = TRUE)
 	log_and_message_admins("has turned stealth mode [holder.stealthy_ ? "ON" : "OFF"]")
 	feedback_add_details("admin_verb","SM") //If you are copy-pasting this, ensure the 2nd parameter is unique to the new proc!
 

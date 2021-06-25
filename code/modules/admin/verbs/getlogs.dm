@@ -14,7 +14,7 @@
 
 	message_admins("[key_name_admin(src)] accessed file: [path]")
 	to_target(src, run(file(path)))
-	to_chat(src, "Attempting to send file, this may take a fair few minutes if the file is very large.")
+	to_chat(src, "Attempting to send file, this may take a fair few minutes if the file is very large.", confidential = TRUE)
 	return
 
 
@@ -30,7 +30,7 @@
 	if( fexists(path) )
 		to_target(src, run(file(path)))
 	else
-		to_chat(src, "<font color='red'>Error: view_txt_log(): File not found/Invalid path([path]).</font>")
+		to_chat(src, "<font color='red'>Error: view_txt_log(): File not found/Invalid path([path]).</font>", confidential = TRUE)
 		return
 	feedback_add_details("admin_verb","VTL") //If you are copy-pasting this, ensure the 2nd parameter is unique to the new proc!
 	return
@@ -45,7 +45,7 @@
 	if( fexists(path) )
 		to_target(src, run(file(path)))
 	else
-		to_chat(src, "<font color='red'>Error: view_atk_log(): File not found/Invalid path([path]).</font>")
+		to_chat(src, "<font color='red'>Error: view_atk_log(): File not found/Invalid path([path]).</font>", confidential = TRUE)
 		return
 	to_target(usr, run(file(path)))
 	feedback_add_details("admin_verb","SSAL") //If you are copy-pasting this, ensure the 2nd parameter is unique to the new proc!

@@ -32,7 +32,7 @@
 
 	if(!query_text || length(query_text) < 1)
 		return
- 
+
 	log_debug("[key_name(src)] try to execute SDQL query: \"[query_text]\".")
 	sleep(-1) // Incase the server crashes due to a huge query, we allow the server to log the above things (it might just delay it).
 
@@ -140,12 +140,12 @@
 
 							CHECK_TICK
 
-			to_chat(usr, SPAN_NOTICE("Query executed on [objs.len] object\s."))
+			to_chat(usr, SPAN_NOTICE("Query executed on [objs.len] object\s."), confidential = TRUE)
 			log_and_message_admins("[key_name(src)] successfully executed SDQL query: \"[query_text]\".")
 	catch(var/exception/e)
-		to_chat(usr, SPAN_DANGER("An exception has occured during the execution of your query and your query has been aborted."))
-		to_chat(usr, "exception name: [e.name]")
-		to_chat(usr, "file/line: [e.file]/[e.line]")
+		to_chat(usr, SPAN_DANGER("An exception has occured during the execution of your query and your query has been aborted."), confidential = TRUE)
+		to_chat(usr, "exception name: [e.name]", confidential = TRUE)
+		to_chat(usr, "file/line: [e.file]/[e.line]", confidential = TRUE)
 		return
 
 /proc/SDQL_parse(list/query_list)
@@ -170,7 +170,7 @@
 				querys[querys_pos] = parsed_tree
 				querys_pos++
 			else //There was an error so don't run anything, and tell the user which query has errored.
-				to_chat(usr, "<span class='danger'>Parsing error on [querys_pos]\th query. Nothing was executed.</span>")
+				to_chat(usr, "<span class='danger'>Parsing error on [querys_pos]\th query. Nothing was executed.</span>", confidential = TRUE)
 				return list()
 			query_tree = list()
 			do_parse = 0
@@ -191,22 +191,22 @@
 
 	for(var/item in query_tree)
 		if(istype(item, /list))
-			to_chat(usr, "[spaces](")
+			to_chat(usr, "[spaces](", confidential = TRUE)
 			SDQL_testout(item, indent + 1)
-			to_chat(usr, "[spaces])")
+			to_chat(usr, "[spaces])", confidential = TRUE)
 
 		else
-			to_chat(usr, "[spaces][item]")
+			to_chat(usr, "[spaces][item]", confidential = TRUE)
 
 		if(!isnum(item) && query_tree[item])
 
 			if(istype(query_tree[item], /list))
-				to_chat(usr, "[spaces]&nbsp;&nbsp;&nbsp;&nbsp;(")
+				to_chat(usr, "[spaces]&nbsp;&nbsp;&nbsp;&nbsp;(", confidential = TRUE)
 				SDQL_testout(query_tree[item], indent + 2)
-				to_chat(usr, "[spaces]&nbsp;&nbsp;&nbsp;&nbsp;)")
+				to_chat(usr, "[spaces]&nbsp;&nbsp;&nbsp;&nbsp;)", confidential = TRUE)
 
 			else
-				to_chat(usr, "[spaces]&nbsp;&nbsp;&nbsp;&nbsp;[query_tree[item]]")
+				to_chat(usr, "[spaces]&nbsp;&nbsp;&nbsp;&nbsp;[query_tree[item]]", confidential = TRUE)
 
 /proc/SDQL_from_objs(list/tree)
 	if("world" in tree)
@@ -305,7 +305,7 @@
 				if("or", "||")
 					result = (result || val)
 				else
-					to_chat(usr, "<span class='warning'>SDQL2: Unknown op [op]</span>")
+					to_chat(usr, "<span class='warning'>SDQL2: Unknown op [op]</span>", confidential = TRUE)
 					result = null
 		else
 			result = val
@@ -379,11 +379,11 @@
 
 	else if (expression [start] == "{" && long)
 		if (lowertext(copytext(expression[start + 1], 1, 3)) != "0x")
-			to_chat(usr, "<span class='danger'>Invalid pointer syntax: [expression[start + 1]]</span>")
+			to_chat(usr, "<span class='danger'>Invalid pointer syntax: [expression[start + 1]]</span>", confidential = TRUE)
 			return null
 		v = locate("\[[expression[start + 1]]]")
 		if (!v)
-			to_chat(usr, "<span class='danger'>Invalid pointer: [expression[start + 1]]</span>")
+			to_chat(usr, "<span class='danger'>Invalid pointer: [expression[start + 1]]</span>", confidential = TRUE)
 			return null
 		start++
 
@@ -423,7 +423,7 @@
 			var/list/L = v
 			var/index = SDQL_expression(source, expression[start + 2])
 			if (isnum(index) && (!IsInteger(index) || L.len < index))
-				to_chat(usr, "<span class='danger'>Invalid list index: [index]</span>")
+				to_chat(usr, "<span class='danger'>Invalid list index: [index]</span>", confidential = TRUE)
 				return null
 
 			return L[index]
@@ -495,7 +495,7 @@
 
 		else if(char == "'")
 			if(word != "")
-				to_chat(usr, "<span class='warning'>SDQL2: You have an error in your SDQL syntax, unexpected ' in query: \"<font color=gray>[query_text]</font>\" following \"<font color=gray>[word]</font>\". Please check your syntax, and try again.</span>")
+				to_chat(usr, "<span class='warning'>SDQL2: You have an error in your SDQL syntax, unexpected ' in query: \"<font color=gray>[query_text]</font>\" following \"<font color=gray>[word]</font>\". Please check your syntax, and try again.</span>", confidential = TRUE)
 				return null
 
 			word = "'"
@@ -515,7 +515,7 @@
 					word += char
 
 			if(i > len)
-				to_chat(usr, "<span class='warning'>SDQL2: You have an error in your SDQL syntax, unmatched ' in query: \"<font color=gray>[query_text]</font>\". Please check your syntax, and try again.</span>")
+				to_chat(usr, "<span class='warning'>SDQL2: You have an error in your SDQL syntax, unmatched ' in query: \"<font color=gray>[query_text]</font>\". Please check your syntax, and try again.</span>", confidential = TRUE)
 				return null
 
 			query_list += "[word]'"
@@ -523,7 +523,7 @@
 
 		else if(char == "\"")
 			if(word != "")
-				to_chat(usr, "<span class='warning'>SDQL2: You have an error in your SDQL syntax, unexpected \" in query: \"<font color=gray>[query_text]</font>\" following \"<font color=gray>[word]</font>\". Please check your syntax, and try again.</span>")
+				to_chat(usr, "<span class='warning'>SDQL2: You have an error in your SDQL syntax, unexpected \" in query: \"<font color=gray>[query_text]</font>\" following \"<font color=gray>[word]</font>\". Please check your syntax, and try again.</span>", confidential = TRUE)
 				return null
 
 			word = "\""
@@ -543,7 +543,7 @@
 					word += char
 
 			if(i > len)
-				to_chat(usr, "<span class='warning'>SDQL2: You have an error in your SDQL syntax, unmatched \" in query: \"<font color=gray>[query_text]</font>\". Please check your syntax, and try again.</span>")
+				to_chat(usr, "<span class='warning'>SDQL2: You have an error in your SDQL syntax, unmatched \" in query: \"<font color=gray>[query_text]</font>\". Please check your syntax, and try again.</span>", confidential = TRUE)
 				return null
 
 			query_list += "[word]\""

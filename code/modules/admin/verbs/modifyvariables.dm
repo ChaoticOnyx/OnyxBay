@@ -109,7 +109,7 @@
 
 /client/proc/mod_list(list/L, atom/O, original_name, objectvar)
 	if(!check_rights(R_VAREDIT))	return
-	if(!istype(L,/list)) to_chat(src, "Not a List.")
+	if(!istype(L,/list)) to_chat(src, "Not a List.", confidential = TRUE)
 	if(L.len > 1000)
 		var/confirm = alert(src, "The list you're trying to edit is very long, continuing may crash the server.", "Warning", "Continue", "Abort")
 		if(confirm != "Continue")
@@ -121,7 +121,7 @@
 		try
 			if(!isnum(a) && L[a] != null)
 				assoc = 1 //This is pretty weak test but I can't think of anything else
-				to_chat(usr, "List appears to be associative.")
+				to_chat(usr, "List appears to be associative.", confidential = TRUE)
 		catch {} // Builtin non-assoc lists (contents, etc.) will runtime if you try to get an assoc value of them
 
 	var/list/names = null

@@ -48,10 +48,10 @@ SUBSYSTEM_DEF(eams)
 
 /datum/controller/subsystem/eams/proc/Toggle(mob/user)
 	if (!initialized && user)
-		to_chat(user, SPAN("adminnotice", "Wait until EAMS initialized!"))
+		to_chat(user, SPAN("adminnotice", "Wait until EAMS initialized!"), confidential = TRUE)
 		return
 	if(!__active && !establish_db_connection())
-		to_chat(user, SPAN("adminnotice", "EAMS can't be enabled because there is no DB connection!"))
+		to_chat(user, SPAN("adminnotice", "EAMS can't be enabled because there is no DB connection!"), confidential = TRUE)
 		return
 
 	__active = !__active
@@ -145,7 +145,7 @@ SUBSYSTEM_DEF(eams)
 
 /datum/controller/subsystem/eams/proc/__LoadResponseFromCache(ip)
 	ASSERT(istext(ip))
-	
+
 	if(!establish_db_connection())  // Database isn't connected
 		__DBError()
 		return FALSE
@@ -264,7 +264,7 @@ SUBSYSTEM_DEF(eams)
 		if (C.eams_info.ip_country == "")
 			C.eams_info.ip_country = "unknown"
 
-		to_chat(C, SPAN_WARNING("You were blocked by EAMS! Please, contact Administrators."))
+		to_chat(C, SPAN_WARNING("You were blocked by EAMS! Please, contact Administrators."), confidential = TRUE)
 		log_and_message_admins("Blocked by EAMS: [C.key] ([C.address]) connected from [C.eams_info.ip_country] ([C.eams_info.ip_countryCode])", 0)
 
 		return FALSE
@@ -281,7 +281,7 @@ SUBSYSTEM_DEF(eams)
 	set name = "Toggle EAMS"
 
 	if (!establish_db_connection())
-		to_chat(usr, SPAN("adminnotice", "The Database is not connected!"))
+		to_chat(usr, SPAN("adminnotice", "The Database is not connected!"), confidential = TRUE)
 		return
 
 	var/eams_status = SSeams.Toggle()

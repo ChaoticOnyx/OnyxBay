@@ -27,7 +27,7 @@
 	log_admin("BUILD MODE - [name] - [key_name(usr)] - [message]")
 
 /datum/build_mode/proc/Warn(message)
-	to_chat(user, "BUILD MODE - [name] - [message])")
+	to_chat(user, "BUILD MODE - [name] - [message])", confidential = TRUE)
 
 /datum/build_mode/proc/select_subpath(given_path)
 	var/desired_path = input("Enter full or partial typepath.","Typepath","[given_path]") as text|null
