@@ -95,7 +95,7 @@
 
 	// ask BYOND client to stop spamming us with assert arrival confirmations (see byond bug ID:2256651)
 	if(asset_cache_job && (asset_cache_job in completed_asset_jobs))
-		to_chat(src, SPAN("danger", "An error has been detected in how your client is receiving resources. Attempting to correct... (If you keep seeing these messages you might want to close byond and reconnect)"))
+		to_chat(src, SPAN("danger", "An error has been detected in how your client is receiving resources. Attempting to correct... (If you keep seeing these messages you might want to close byond and reconnect)"), confidential = TRUE)
 		show_browser(src, "...", "window=asset_cache_browser")
 
 	// search the href for script injection
@@ -118,10 +118,10 @@
 
 	if(href_list["irc_msg"])
 		if(!holder && received_irc_pm < world.time - 6000) //Worse they can do is spam IRC for 10 minutes
-			to_chat(usr, SPAN("warning", "You are no longer able to use this, it's been more then 10 minutes since an admin on IRC has responded to you."))
+			to_chat(usr, SPAN("warning", "You are no longer able to use this, it's been more then 10 minutes since an admin on IRC has responded to you."), confidential = TRUE)
 			return
 		if(mute_irc)
-			to_chat(usr, SPAN("warning", "You cannot use this as your client has been muted from sending messages to the admins on IRC."))
+			to_chat(usr, SPAN("warning", "You cannot use this as your client has been muted from sending messages to the admins on IRC."), confidential = TRUE)
 			return
 		cmd_admin_irc_pm(href_list["irc_msg"])
 		return
@@ -149,7 +149,7 @@
 // This stops files larger than UPLOAD_LIMIT being sent from client to server via input(), client.Import() etc.
 /client/AllowUpload(filename, filelength)
 	if(filelength > UPLOAD_LIMIT)
-		to_chat(src, "<font color='red'>Error: AllowUpload(): File Upload too large. Upload Limit: [UPLOAD_LIMIT/1024]KiB.</font>")
+		to_chat(src, "<font color='red'>Error: AllowUpload(): File Upload too large. Upload Limit: [UPLOAD_LIMIT/1024]KiB.</font>", confidential = TRUE)
 		return 0
 /*	// Don't need this at the moment. But it's here if it's needed later.
 	// Helps prevent multiple files being uploaded at once. Or right after eachother.
@@ -205,7 +205,7 @@
 		if(config.panic_address && TopicData != "redirect")
 			log_access("Panic Bunker: ([key] | age [player_age]) - attempted to connect. Redirected to [config.panic_server_name ? config.panic_server_name : config.panic_address]")
 			message_admins(SPAN("adminnotice", "Panic Bunker: ([key] | age [player_age]) - attempted to connect. Redirected to [config.panic_server_name ? config.panic_server_name : config.panic_address]"))
-			to_chat(src, SPAN("notice", "Server is already full. Sending you to [config.panic_server_name ? config.panic_server_name : config.panic_address]."))
+			to_chat(src, SPAN("notice", "Server is already full. Sending you to [config.panic_server_name ? config.panic_server_name : config.panic_address]."), confidential = TRUE)
 			winset(src, null, "command=.options")
 			send_link(src, "[config.panic_address]?redirect")
 		else
@@ -223,17 +223,17 @@
 
 	if(byond_version < MIN_CLIENT_VERSION)
 		to_chat(src, "<b><center><font size='5' color='red'>Your <font color='blue'>BYOND</font> version is too out of date!</font><br>\
-		<font size='3'>Please update it to [MIN_CLIENT_VERSION].</font></center>")
+		<font size='3'>Please update it to [MIN_CLIENT_VERSION].</font></center>", confidential = TRUE)
 		qdel(src)
 		return
-	
+
 	GLOB.using_map.map_info(src)
 
 	if(custom_event_msg && custom_event_msg != "")
-		to_chat(src, "<h1 class='alert'>Custom Event</h1>")
-		to_chat(src, "<h2 class='alert'>A custom event is taking place. OOC Info:</h2>")
-		to_chat(src, "<span class='alert'>[custom_event_msg]</span>")
-		to_chat(src, "<br>")
+		to_chat(src, "<h1 class='alert'>Custom Event</h1>", confidential = TRUE)
+		to_chat(src, "<h2 class='alert'>A custom event is taking place. OOC Info:</h2>", confidential = TRUE)
+		to_chat(src, "<span class='alert'>[custom_event_msg]</span>", confidential = TRUE)
+		to_chat(src, "<br>", confidential = TRUE)
 
 
 	if(holder)
@@ -256,7 +256,7 @@
 	send_resources()
 
 	if(!winexists(src, "asset_cache_browser")) // The client is using a custom skin, tell them.
-		to_chat(src, SPAN("warning", "Unable to access asset cache browser, if you are using a custom skin file, please allow DS to download the updated version, if you are not, then make a bug report. This is not a critical issue but can cause issues with resource downloading, as it is impossible to know when extra resources arrived to you."))
+		to_chat(src, SPAN("warning", "Unable to access asset cache browser, if you are using a custom skin file, please allow DS to download the updated version, if you are not, then make a bug report. This is not a critical issue but can cause issues with resource downloading, as it is impossible to know when extra resources arrived to you."), confidential = TRUE)
 
 	if(prefs && !istype(mob, world.mob))
 		prefs.apply_post_login_preferences(src)
