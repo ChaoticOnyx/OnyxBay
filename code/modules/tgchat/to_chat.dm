@@ -27,6 +27,8 @@
 	if(avoid_highlighting) message["avoidHighlighting"] = avoid_highlighting
 	var/message_blob = TGUI_CREATE_MESSAGE("chat/message", message)
 	var/message_html = message_to_html(message)
+	if(!confidential)
+		SSdemo.write_chat(target, message)
 	if(islist(target))
 		for(var/_target in target)
 			var/client/client = CLIENT_FROM_VAR(_target)
@@ -62,7 +64,7 @@
 		trailing_newline = TRUE,
 		confidential = FALSE)
 	if(Master.current_runlevel == RUNLEVEL_INIT || !SSchat?.initialized)
-		to_chat_immediate(target, html, type, text)
+		to_chat_immediate(target, html, type, text, confidential)
 		return
 	if(!target || (!html && !text))
 		return
@@ -84,4 +86,4 @@
 
 		message["html"] = html
 	if(avoid_highlighting) message["avoidHighlighting"] = avoid_highlighting
-	SSchat.queue(target, message)
+	SSchat.queue(target, message, confidential)
