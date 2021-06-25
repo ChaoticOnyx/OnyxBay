@@ -269,6 +269,6 @@ var/const/enterloopsanity = 100
 			var/mob/living/M = AM
 			M.turf_collision(src, speed)
 
-/turf/setDir()
+/turf/set_dir()
 	. = ..()
 	SSdemo.mark_turf(src)

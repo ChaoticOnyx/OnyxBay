@@ -25,9 +25,6 @@
 
 	var/list/climbers = list()
 
-	/// Last appearance of the atom for demo saving purposes
-	var/image/demo_last_appearance
-
 /atom/New(loc, ...)
 	CAN_BE_REDEFINED(TRUE)
 	//atom creation method that preloads variables at creation
