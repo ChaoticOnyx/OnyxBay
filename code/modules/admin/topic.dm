@@ -2133,43 +2133,97 @@
 		if(href_list["obj_add"])
 			var/datum/antag_contract/contract
 			var/datum/contract_organization/selected_org
+			var/new_cnt_type = input("Select contract type:", "Contract type", null) as null|anything in list("Assassinate", "Implant", "Steal", "Steal active AI", "Steal blood samples", "Dump", "Protect", "Brig", "Heist", "Custom")
 			var/selected_org_name = input("Select syndicate organization:", "Syndicate organization", null) as null|anything in GLOB.traitors.fixer.organizations_by_name
 			if(!selected_org_name) return
 			selected_org = GLOB.traitors.fixer.organizations_by_name[selected_org_name]
 			if(!selected_org) return
-			var/new_cnt_type = input("Select contract type:", "Contract type", null) as null|anything in list("Assassinate", "Implant", "Steal", "Steal active AI", "Steal blood samples", "Dump")
-			var/selected_reason = input("Enter reason (don't select any, if you want to select reason by code)", "Contract reason") as null|text
-			if(!selected_reason) selected_reason = null
-			switch(new_cnt_type)
-				if("Assassinate")
-					var/datum/mind/selected_target = input("Select target (don't select any, if you want to select target by code):", "Syndicate organization", null) as null|anything in SSticker.minds
-					contract = new /datum/antag_contract/item/assassinate(selected_org, selected_reason, selected_target)
-				if("Implant")
-					var/datum/mind/selected_target = input("Select target (don't select any, if you want to select target by code):", "Syndicate organization", null) as null|anything in SSticker.minds
-					contract = new /datum/antag_contract/implant(selected_org, selected_reason, selected_target)
-				if("Steal")
-					var/selected_item = input("Enter path to item to steal", "Steal item")
-					contract = new /datum/antag_contract/item/steal(selected_org, selected_reason, text2path(selected_item))
-				if("Steal active AI")
-					var/mob/living/silicon/ai/selected_AI = input("Select target (don't select any, if you want to select target by code):", "Syndicate organization", null) as null|anything in ai_list
-					contract = new /datum/antag_contract/item/steal_ai(selected_org, selected_reason, selected_AI)
-				if("Steal blood samples")
-					var/count_samples = input("Enter amount of blood samples to steal", "Amount of blood") as null|num
-					contract = new /datum/antag_contract/item/blood(selected_org, selected_reason, count_samples)
-				if("Dump")
-					var/money = input("Enter amount of MANIY to steal", "Amount of money") as null|num
-					contract = new /datum/antag_contract/item/dump(selected_org, selected_reason, money)
-			if(!contract.can_place())
-				to_chat(usr, "Internal error detected, please try again, if you use custom target and reason, please report this.")
-				qdel(contract)
+			if(new_cnt_type == "Custom")
+				var/datum/antag_contract/custom/custom_contract
+				var/selected_name = input("Enter name", "Contract name") as null|text
+				var/use_standart_desc = alert("Would you like to use standart description?",,"Yes","No")
+				var/selected_reason = ""
+				var/selected_expl_text = ""
+				var/selected_desc = ""
+				var/time_amount = 0
+				use_standart_desc = use_standart_desc == "Yes"
+				if(use_standart_desc)
+					selected_reason = input("Enter reason", "Contract reason") as null|text
+					selected_expl_text = input("Enter explanation text", "Explanation Text") as null|message
+				else
+					selected_desc = input("Enter desc", "Contract desc") as null|message
+				var/use_timer = alert("Would you like to use timer?",,"Yes","No")
+				use_timer = use_timer == "Yes"
+				if(use_timer)
+					time_amount = input("Enter time (in minutes) to live a contract (e.g. enter 10, timer = 10 minutes)", "Contract time_to_nex_contract") as null|num
+					if(time_amount)
+						time_amount = time_amount MINUTES
+					else
+						use_timer = FALSE
+				var/reward = input("Enter amount of reward for closing this contract", "Contract Reward") as null|num
+				if(!reward)
+					reward = 1
+				custom_contract = new(selected_org, selected_reason, selected_expl_text, use_timer, time_amount, selected_desc, reward, selected_name)
+				if(!custom_contract.can_place())
+					to_chat(usr, "Internal error detected, please report this.")
+					qdel(contract)
+				else
+					selected_org.add_contract(custom_contract)
 			else
-				selected_org.add_contract(contract)
+				var/selected_reason = input("Enter reason (don't select any, if you want to select reason by code)", "Contract reason") as null|text
+				if(!selected_reason) selected_reason = null
+				switch(new_cnt_type)
+					if("Assassinate")
+						var/datum/mind/selected_target = input("Select target (don't select any, if you want to select target by code):", "Syndicate organization", null) as null|anything in SSticker.minds
+						contract = new /datum/antag_contract/item/assassinate(selected_org, selected_reason, selected_target)
+					if("Implant")
+						var/datum/mind/selected_target = input("Select target (don't select any, if you want to select target by code):", "Syndicate organization", null) as null|anything in SSticker.minds
+						contract = new /datum/antag_contract/implant(selected_org, selected_reason, selected_target)
+					if("Steal")
+						var/selected_item = input("Enter path to item to steal", "Steal item")
+						contract = new /datum/antag_contract/item/steal(selected_org, selected_reason, text2path(selected_item))
+					if("Steal active AI")
+						var/mob/living/silicon/ai/selected_AI = input("Select target (don't select any, if you want to select target by code):", "Syndicate organization", null) as null|anything in ai_list
+						contract = new /datum/antag_contract/item/steal_ai(selected_org, selected_reason, selected_AI)
+					if("Steal blood samples")
+						var/count_samples = input("Enter amount of blood samples to steal", "Amount of blood") as null|num
+						contract = new /datum/antag_contract/item/blood(selected_org, selected_reason, count_samples)
+					if("Dump")
+						var/money = input("Enter amount of MANIY to steal", "Amount of money") as null|num
+						contract = new /datum/antag_contract/item/dump(selected_org, selected_reason, money)
+					if("Protect")
+						var/datum/mind/selected_target = input("Select target (don't select any, if you want to select target by code):", "Syndicate organization", null) as null|anything in SSticker.minds
+						contract = new /datum/antag_contract/protect(selected_org, selected_reason, selected_target)
+					if("Brig")
+						var/datum/mind/selected_target = input("Select target (don't select any, if you want to select target by code):", "Syndicate organization", null) as null|anything in SSticker.minds
+						var/selected_time = input("Enter amount of TIME to steal (don't enter any, if you want to select time by code)", "Amount of brig time") as null|num
+						contract = new /datum/antag_contract/brig(selected_org, selected_reason, selected_target, selected_time)
+					if("Heist")
+						var/datum/mind/selected_target = input("Select target (don't select any, if you want to select target by code):", "Syndicate organization", null) as null|anything in SSticker.minds
+						contract = new /datum/antag_contract/kidnap(selected_org, selected_reason, selected_target)
+				if(!contract.can_place())
+					to_chat(usr, "Internal error detected, please try again, if you use custom target and reason, please report this.")
+					qdel(contract)
+				else
+					selected_org.add_contract(contract)
 		if(href_list["obj_remove"])
 			var/datum/antag_contract/contract = locate(href_list["obj_remove"])
 			ASSERT(istype(contract))
 			var/datum/contract_organization/org = contract.organization
 			ASSERT(istype(org))
 			org.remove_conract(contract)
+		if(href_list["obj_complete"])
+			var/datum/antag_contract/contract = locate(href_list["obj_complete"]); ASSERT(istype(contract))
+			var/list/uplink_owner_to_uplink_list = list()
+			for(var/obj/item/device/uplink/U in GLOB.world_uplinks)
+				if(U.uplink_owner)
+					to_world(U.uplink_owner.name)
+					uplink_owner_to_uplink_list[U.uplink_owner.name] = U
+			to_world("TRYING TO CLOSE CONTRACT!")
+			var/reward_owner = input("Select uplink owner:", "Syndicate organization", null) as null|anything in uplink_owner_to_uplink_list
+			if(reward_owner)
+				var/obj/item/device/uplink/U = uplink_owner_to_uplink_list[reward_owner]
+				contract.complete(U)
 		edit_contracts()
 		return
 
