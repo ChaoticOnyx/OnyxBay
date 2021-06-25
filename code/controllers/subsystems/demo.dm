@@ -63,8 +63,8 @@ SUBSYSTEM_DEF(demo)
 
 /datum/controller/subsystem/demo/Initialize()
 	log_demo("demo version 1\n") // increment this if you change the format
-	/*if(GLOB.revdata)
-		log_demo("commit [GLOB.revdata.originmastercommit || GLOB.revdata.commit]\n")*/
+	if(revdata)
+		log_demo("commit [revdata.revision]\n")
 
 	// write a "snapshot" of the world at this point.
 	// start with turfs
