@@ -218,7 +218,8 @@
 		setter = key_name_admin(usr)
 	message_admins("[setter] has added a [(ban_everywhere)?"Onyx wide":""] [bantype_str] for [ckey] [(job)?"([job])":""] [(duration > 0)?"([duration] minutes)":""] with the reason: \"[reason]\" to the ban database.",1)
 	if(ismob(banned_mob) && banned_mob.client)
-		to_chat(banned_mob, SPAN("notice", "You were banned [bantype_str][(duration > 0)?" ([duration] minutes)":""] with the reason: \"[reason]\"."))
+		var/rendered_text = uppertext("You were banned [bantype_str][(duration > 0)?" ([duration] minutes)":""] with the reason:")
+		rendered_text = rendered_text + "\"[reason]\"."
 	return 1
 
 /datum/admins/proc/DB_ban_unban(ckey, bantype, job = "")
