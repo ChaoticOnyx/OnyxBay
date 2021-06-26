@@ -220,6 +220,7 @@
 	if(ismob(banned_mob) && banned_mob.client)
 		var/rendered_text = uppertext("You were banned [bantype_str][(duration > 0)?" ([duration] minutes)":""] with the reason:")
 		rendered_text = rendered_text + "\"[reason]\"."
+		to_chat(banned_mob, "<font size='15' color='red'><b>[rendered_text]</b></font>")
 	return 1
 
 /datum/admins/proc/DB_ban_unban(ckey, bantype, job = "")
