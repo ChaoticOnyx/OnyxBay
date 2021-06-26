@@ -217,6 +217,8 @@
 		to_chat(usr, "<span class='notice'>Ban saved to database.</span>")
 		setter = key_name_admin(usr)
 	message_admins("[setter] has added a [(ban_everywhere)?"Onyx wide":""] [bantype_str] for [ckey] [(job)?"([job])":""] [(duration > 0)?"([duration] minutes)":""] with the reason: \"[reason]\" to the ban database.",1)
+	if(ismob(banned_mob) && banned_mob.client)
+		to_chat(banned_mob, SPAN("notice", "You were banned [bantype_str][(duration > 0)?" ([duration] minutes)":""] with the reason: \"[reason]\"."))
 	return 1
 
 /datum/admins/proc/DB_ban_unban(ckey, bantype, job = "")
