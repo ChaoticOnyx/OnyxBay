@@ -69,7 +69,7 @@
 	update_icon()
 
 /obj/item/weapon/material/twohanded/update_icon()
-	var/tmp/new_item_state = "[base_icon][wielded]"
+	var/new_item_state = "[base_icon][wielded]"
 	item_state_slots[slot_l_hand_str] = new_item_state
 	item_state_slots[slot_r_hand_str] = new_item_state
 
