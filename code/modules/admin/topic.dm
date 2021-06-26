@@ -2133,7 +2133,7 @@
 		if(href_list["obj_add"])
 			var/datum/antag_contract/contract
 			var/datum/contract_organization/selected_org
-			var/new_cnt_type = input("Select contract type:", "Contract type", null) as null|anything in list("Assassinate", "Implant", "Steal", "Steal active AI", "Steal blood samples", "Dump", "Protect", "Heist", "Custom")
+			var/new_cnt_type = input("Select contract type:", "Contract type", null) as null|anything in list("Assassinate", "Implant", "Steal", "Steal active AI", "Steal blood samples", "Dump", "Protect", "Kidnap", "Custom")
 			var/selected_org_name = input("Select syndicate organization:", "Syndicate organization", null) as null|anything in GLOB.traitors.fixer.organizations_by_name
 			if(!selected_org_name) return
 			selected_org = GLOB.traitors.fixer.organizations_by_name[selected_org_name]
