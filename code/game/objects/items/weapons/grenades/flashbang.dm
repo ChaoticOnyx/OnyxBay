@@ -47,12 +47,8 @@
 	else if(get_dist(M, T) <= 5)
 		distance_tier = 2
 
-	visible_message("DEBUG: eyecheck() = [eye_effect], get_ear_protection = [ear_effect], distance_tier = [distance_tier].")
-
 	eye_effect = distance_tier - eye_effect
 	ear_effect = distance_tier - ear_effect
-
-	visible_message("DEBUG: eye_effect = [eye_effect], ear_effect = [ear_effect].")
 
 	// Blinding effect
 	if(eye_effect >= 6)
