@@ -22,7 +22,7 @@
 	for(var/obj/item/weapon/stock_parts/P in component_parts)
 		if(ismanipulator(P) && rating > P.rating)
 			rating = P.rating
-	time_to_strip = clamp(default_strip - rating, 1 SECONDS, 5 SECONDS)
+	time_to_strip = clamp(default_strip - rating, 2 SECONDS, 5 SECONDS)
 
 /obj/machinery/optable/Initialize()
 	. = ..()
