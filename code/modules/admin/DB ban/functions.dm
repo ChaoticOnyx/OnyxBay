@@ -218,7 +218,7 @@
 		setter = key_name_admin(usr)
 	message_admins("[setter] has added a [(ban_everywhere)?"Onyx wide":""] [bantype_str] for [ckey] [(job)?"([job])":""] [(duration > 0)?"([duration] minutes)":""] with the reason: \"[reason]\" to the ban database.",1)
 	if(ismob(banned_mob) && banned_mob.client)
-		var/rendered_text = uppertext("You were banned [(duration > 0) ? "temporary ([duration] minutes)" : "permanently"] with the reason: ")
+		var/rendered_text = uppertext("You have been banned [(duration > 0) ? "temporarily ([duration] minutes)" : "permanently"] with the reason: ")
 		rendered_text = rendered_text + "\n\"[reason]\"."
 		rendered_text = "<font size='12' color='red'><b>[rendered_text]</b></font>"
 		to_chat(banned_mob, rendered_text, MESSAGE_TYPE_SYSTEM)
