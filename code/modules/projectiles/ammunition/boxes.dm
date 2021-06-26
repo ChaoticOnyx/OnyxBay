@@ -269,9 +269,9 @@
 	icon_state = "c762"
 	mag_type = MAGAZINE
 	caliber = "a556"
-	matter = list(MATERIAL_STEEL = 1800)
+	matter = list(MATERIAL_STEEL = 2250)
 	ammo_type = /obj/item/ammo_casing/a556
-	max_ammo = 20
+	max_ammo = 25
 	multiple_sprites = 1
 
 /obj/item/ammo_magazine/caps
