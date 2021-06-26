@@ -2194,7 +2194,7 @@
 					if("Protect")
 						var/datum/mind/selected_target = input("Select target (don't select any, if you want to select target by code):", "Syndicate organization", null) as null|anything in SSticker.minds
 						contract = new /datum/antag_contract/protect(selected_org, selected_reason, selected_target)
-					if("Heist")
+					if("Kidnap")
 						var/datum/mind/selected_target = input("Select target (don't select any, if you want to select target by code):", "Syndicate organization", null) as null|anything in SSticker.minds
 						contract = new /datum/antag_contract/kidnap(selected_org, selected_reason, selected_target)
 				if(!contract.can_place())
