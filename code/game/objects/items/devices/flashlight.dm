@@ -157,8 +157,8 @@
 
 	flashlight_max_bright = -3
 	flashlight_outer_range = 4
-	flashlight_inner_range = 1.25
-	flashlight_falloff_curve = 2.25
+	flashlight_inner_range = 1
+	flashlight_falloff_curve = 3.0
 	brightness_color = "#ffffff"
 
 /obj/item/device/flashlight/pen
