@@ -13,9 +13,9 @@
   @at-root .theme-vending-dark & {
     scrollbar-base-color: #2d333b;
     scrollbar-face-color: #2d333b;
-    scrollbar-3dlight-color: #14171b;
-    scrollbar-highlight-color: #14171b;
-    scrollbar-track-color: #14171b;
+    scrollbar-3dlight-color: #272B2E;
+    scrollbar-highlight-color: #272B2E;
+    scrollbar-track-color: #272B2E;
     scrollbar-arrow-color: #2d333b;
     scrollbar-shadow-color: #2d333b;
   }
@@ -142,7 +142,7 @@
   @at-root .theme-vending-white &,
     .theme-vending-dark & {
     cursor: pointer;
-    font-size: 1.2em;
+    font-size: 1.3em;
   }
 
   &--cancel {
@@ -199,10 +199,15 @@
   }
 
   &--product {
+    .Stack {
+    }
+
     @at-root .theme-vending-white &,
       .theme-vending-dark & {
       margin-top: 0.5em;
       margin-bottom: 0.5em;
+      padding-left: 0;
+      border-radius: 1.5rem 0.2rem 0.2rem 1.5rem;
 
       &:first-child {
         margin-top: 0;
@@ -260,6 +265,7 @@
 .ProductIcon {
   @at-root .theme-vending-white &,
     .theme-vending-dark & {
+      -ms-interpolation-mode: nearest-neighbor;
       width: 3em;
       height: 3em;
       margin-bottom: -.5em;

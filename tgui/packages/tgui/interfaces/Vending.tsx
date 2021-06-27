@@ -41,19 +41,22 @@ const product = (product: Product, context: any) => {
   const outOfStock = product.amount === 0;
   const isUseCoins = product.price === 0;
   const iconSrc = product.icon.match('src="(.*)"')[1];
+  const capitalizedName
+    = product.name[0].toUpperCase() + product.name.substr(1);
 
   return (
     <Button
       className='Button--product'
       fluid
       disabled={outOfStock}
+      tooltip={product.amount && `In Stock: ${product.amount}`}
       onClick={() => act('vend', { vend: product.key })}>
-      <Stack>
+      <Stack align='center'>
         <Stack.Item>
-          {product.amount}{' '}
-          <i style={{ 'margin-left': '.1rem' }} class='fas fa-shopping-cart' />
+          <img class='ProductIcon' src={iconSrc} />
         </Stack.Item>
-        <Stack.Item ml='0'>
+        <Stack.Item width='100%'>{capitalizedName}</Stack.Item>
+        <Stack.Item mr={0}>
           {
             <>
               {isUseCoins ? 1 : product.price}
@@ -68,14 +71,6 @@ const product = (product: Product, context: any) => {
             </>
           }
         </Stack.Item>
-        <Stack.Item>
-          <img
-            class='ProductIcon'
-            src={iconSrc}
-            style={{ '-ms-interpolation-mode': 'nearest-neighbor' }}
-          />
-        </Stack.Item>
-        <Stack.Item>{product.name}</Stack.Item>
       </Stack>
     </Button>
   );
