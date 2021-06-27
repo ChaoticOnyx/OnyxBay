@@ -11,7 +11,7 @@
 	mod_handy = 0.25
 
 /obj/item/trash/dishes
-	/obj/item/trash/dishes/var/list/stack = list()
+	var/list/stack = list()
 
 /obj/item/trash/dishes/baking_sheet
 	name = "baking sheet"
@@ -221,14 +221,11 @@
 		else
 			to_chat(user, SPAN("warning", "The stack is too high!"))
 
-		return
-	..()
+	return
 
 /obj/item/trash/dishes/attack_hand(mob/user)
-
 	if(length(stack) > 0 && user.get_inactive_hand() == src)
 		if(user.get_inactive_hand() != src)
-			..()
 			return
 
 		var/obj/item/trash/dishes/dish = stack[length(stack)]
@@ -239,5 +236,4 @@
 
 		update_icon()
 
-		return
-	..()
+	return
