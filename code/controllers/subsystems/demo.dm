@@ -167,6 +167,10 @@ SUBSYSTEM_DEF(demo)
 	while(marked_dirty.len)
 		last_completed++
 		var/atom/movable/M = marked_dirty[marked_dirty.len]
+		if(QDELETED(M))
+			if(MC_TICK_CHECK)
+				break
+			continue
 		var/tmp_icon = M.icon
 		var/tmp_icon_state = M.icon_state
 		if(ishuman(M))
@@ -176,6 +180,9 @@ SUBSYSTEM_DEF(demo)
 		if(M.gc_destroyed || !M)
 			continue
 		if(M.loc == M.demo_last_loc && M.appearance == M.demo_last_appearance)
+			if(MC_TICK_CHECK)
+				canceled = TRUE
+				break
 			continue
 		var/loc_string = "="
 		if(M.loc != M.demo_last_loc)
@@ -191,7 +198,6 @@ SUBSYSTEM_DEF(demo)
 			M.demo_last_appearance = M.appearance
 			M.icon = tmp_icon
 			M.icon_state = tmp_icon_state
-			M.update_icon
 		dirty_updates += "\ref[M] [loc_string] [appearance_string]"
 		if(MC_TICK_CHECK)
 			canceled = TRUE
@@ -209,6 +215,10 @@ SUBSYSTEM_DEF(demo)
 		last_completed++
 		var/atom/movable/M = marked_new[marked_new.len]
 		marked_new.len--
+		if(QDELETED(M))
+			if(MC_TICK_CHECK)
+				break
+			continue
 		if(M.gc_destroyed || !M)
 			continue
 		var/loc_string = "null"
@@ -225,7 +235,6 @@ SUBSYSTEM_DEF(demo)
 		new_updates += "\ref[M] [loc_string] [encode_appearance(M.appearance)]"
 		M.icon = tmp_icon
 		M.icon_state = tmp_icon_state
-		M.update_icon
 		if(MC_TICK_CHECK)
 			canceled = TRUE
 			break
@@ -239,6 +248,9 @@ SUBSYSTEM_DEF(demo)
 	var/list/marked_turfs = src.marked_turfs
 	var/list/turf_updates = list()
 	while(marked_turfs.len)
+		if(MC_TICK_CHECK)
+			canceled = TRUE
+			break
 		last_completed++
 		var/turf/T = marked_turfs[marked_turfs.len]
 		marked_turfs.len--
