@@ -180,7 +180,7 @@
 		return
 
 	M.visible_message(msg, narrate = TRUE)
-	log_and_message_admins(" - VisibleNarrate on [A]: [sanitize(msg)]", confidential = TRUE)
+	log_and_message_admins(" - VisibleNarrate on [A]: [sanitize(msg)]")
 
 // Visible narrate, it's as if it's a audible message
 /client/proc/cmd_admin_audible_narrate(atom/A)

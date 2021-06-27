@@ -45,7 +45,9 @@
 	if(atom_flags & ATOM_FLAG_CLIMBABLE)
 		verbs += /atom/proc/climb_on
 
-	SSdemo.mark_new(src)
+//Organs in mob is very laggy thing in replays
+	if(!isorgan(src) && !isinternalorgan(src))
+		SSdemo.mark_new(src)
 
 //Called after New if the map is being loaded. mapload = TRUE
 //Called from base of New if the map is not being loaded. mapload = FALSE
