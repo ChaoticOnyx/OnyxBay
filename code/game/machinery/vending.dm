@@ -162,7 +162,7 @@
 		if(3.0)
 			if(prob(25))
 				spawn(0)
-					src.malfunction()
+					malfunction()
 					return
 				return
 		else
@@ -170,8 +170,8 @@
 
 /obj/machinery/vending/emag_act(remaining_charges, mob/user)
 	if(!emagged)
-		playsound(src.loc, 'sound/effects/computer_emag.ogg', 25)
-		src.emagged = 1
+		playsound(loc, 'sound/effects/computer_emag.ogg', 25)
+		emagged = 1
 		to_chat(user, "You short out the product lock on \the [src]")
 		return 1
 
@@ -204,7 +204,7 @@
 			paid = pay_with_cash(C)
 
 		if(paid)
-			src.vend(currently_vending, usr)
+			vend(currently_vending, usr)
 			return TRUE
 
 	return FALSE
@@ -213,15 +213,15 @@
 	if(pay(W, user))
 		return
 	else if(istype(W, /obj/item/weapon/screwdriver))
-		src.panel_open = !src.panel_open
-		to_chat(user, "You [src.panel_open ? "open" : "close"] the maintenance panel.")
-		src.overlays.Cut()
-		if(src.panel_open)
-			src.overlays += image(src.icon, "[base_icon]-panel")
+		panel_open = !panel_open
+		to_chat(user, "You [panel_open ? "open" : "close"] the maintenance panel.")
+		overlays.Cut()
+		if(panel_open)
+			overlays += image(icon, "[base_icon]-panel")
 
 		return
 	else if(isMultitool(W) || isWirecutter(W))
-		if(src.panel_open)
+		if(panel_open)
 			attack_hand(user)
 		return
 	else if((obj_flags & OBJ_FLAG_ANCHORABLE) && isWrench(W))
@@ -314,8 +314,8 @@
 /obj/machinery/vending/proc/pay_with_ewallet(obj/item/weapon/spacecash/ewallet/wallet)
 	visible_message(SPAN("info", "\The [usr] swipes \the [wallet] through \the [src]."))
 	if(currently_vending.price > wallet.worth)
-		src.status_message = "Insufficient funds on chargecard."
-		src.status_error = 1
+		status_message = "Insufficient funds on chargecard."
+		status_error = 1
 		return 0
 	else
 		wallet.worth -= currently_vending.price
@@ -335,13 +335,13 @@
 		visible_message(SPAN("info", "\The [usr] swipes \the [ID_container] through \the [src]."))
 	var/datum/money_account/customer_account = get_account(I.associated_account_number)
 	if(!customer_account)
-		src.status_message = "Error: Unable to access account. Please contact technical support if problem persists."
-		src.status_error = 1
+		status_message = "Error: Unable to access account. Please contact technical support if problem persists."
+		status_error = 1
 		return 0
 
 	if(customer_account.suspended)
-		src.status_message = "Unable to access account: account suspended."
-		src.status_error = 1
+		status_message = "Unable to access account: account suspended."
+		status_error = 1
 		return 0
 
 	// Have the customer punch in the PIN before checking if there's enough money. Prevents people from figuring out acct is
@@ -351,13 +351,13 @@
 		customer_account = attempt_account_access(I.associated_account_number, attempt_pin, 2)
 
 		if(!customer_account)
-			src.status_message = "Unable to access account: incorrect credentials."
-			src.status_error = 1
+			status_message = "Unable to access account: incorrect credentials."
+			status_error = 1
 			return 0
 
 	if(currently_vending.price > customer_account.money)
-		src.status_message = "Insufficient funds in account."
-		src.status_error = 1
+		status_message = "Insufficient funds in account."
+		status_error = 1
 		return 0
 	else
 		// Okay to move the money at this point
@@ -389,8 +389,8 @@
 	if(stat & (BROKEN|NOPOWER))
 		return
 
-	if(src.seconds_electrified != 0)
-		if(src.shock(user, 100))
+	if(seconds_electrified != 0)
+		if(shock(user, 100))
 			return
 
 	wires.Interact(user)
@@ -444,11 +444,11 @@
 	data["products"] = listed_products
 
 	if(coin)
-		data["coin"] = src.coin.name
+		data["coin"] = coin.name
 
 	if(panel_open)
 		data["panel"] = 1
-		data["speaker"] = src.shut_up ? 0 : 1
+		data["speaker"] = shut_up ? 0 : 1
 	else
 		data["panel"] = 0
 
@@ -469,7 +469,7 @@
 				to_chat(usr, "There is no coin in this machine.")
 				return TRUE
 
-			coin.forceMove(src.loc)
+			coin.forceMove(loc)
 
 			if(!usr.get_active_hand())
 				usr.put_in_hands(coin)
@@ -501,7 +501,7 @@
 				to_chat(usr, SPAN("danger", "Artificial unit recognized.  Artificial units cannot complete this transaction.  Purchase canceled."))
 				return TRUE
 			else
-				src.currently_vending = R
+				currently_vending = R
 				if(!vendor_account || vendor_account.suspended)
 					status_message = "This machine is currently unable to process payments due to problems with the associated account."
 					status_error = 1
@@ -527,9 +527,9 @@
 		to_chat(usr, SPAN("warning", "Access denied.")) // Unless emagged of course
 		flick("[base_icon]-deny", src)
 		return
-	src.vend_ready = 0 // One thing at a time!!
-	src.status_message = "Vending..."
-	src.status_error = 0
+	vend_ready = 0 // One thing at a time!!
+	status_message = "Vending..."
+	status_error = 0
 	SSnano.update_uis(src)
 
 	if(R.category & CAT_COIN)
@@ -549,30 +549,30 @@
 			coin = null
 			categories &= ~CAT_COIN
 
-	if(((src.last_reply + (src.vend_delay + 200)) <= world.time) && src.vend_reply)
+	if(((last_reply + (vend_delay + 200)) <= world.time) && vend_reply)
 		spawn(0)
-			src.speak(src.vend_reply)
-			src.last_reply = world.time
+			speak(vend_reply)
+			last_reply = world.time
 
 	use_power_oneoff(vend_power_usage)	//actuators and stuff
 	if(use_vend_state) //Show the vending animation if needed
 		flick("[base_icon]-vend", src)
-	spawn(src.vend_delay) //Time to vend
+	spawn(vend_delay) //Time to vend
 		if(prob(diona_spawn_chance)) //Hehehe
 			var/turf/T = get_turf(src)
 			var/mob/living/carbon/alien/diona/S = new(T)
-			src.visible_message(SPAN("notice", "\The [src] makes an odd grinding noise before coming to a halt as \a [S.name] slurmps out from the receptacle."))
+			visible_message(SPAN("notice", "\The [src] makes an odd grinding noise before coming to a halt as \a [S.name] slurmps out from the receptacle."))
 		else //Just a normal vend, then
 			R.get_product(get_turf(src))
-			src.visible_message("\The [src] whirs as it vends \the [R.item_name].")
+			visible_message("\The [src] whirs as it vends \the [R.item_name].")
 			if(prob(1)) //The vending gods look favorably upon you
 				sleep(3)
 				if(R.get_product(get_turf(src)))
-					src.visible_message(SPAN("notice", "\The [src] clunks as it vends an additional [R.item_name]."))
+					visible_message(SPAN("notice", "\The [src] clunks as it vends an additional [R.item_name]."))
 
-		src.status_message = ""
-		src.status_error = 0
-		src.vend_ready = 1
+		status_message = ""
+		status_error = 0
+		vend_ready = 1
 		currently_vending = null
 		SSnano.update_uis(src)
 
@@ -597,20 +597,20 @@
 	if(stat & (BROKEN|NOPOWER))
 		return
 
-	if(!src.active)
+	if(!active)
 		return
 
-	if(src.seconds_electrified > 0)
-		src.seconds_electrified--
+	if(seconds_electrified > 0)
+		seconds_electrified--
 
 	//Pitch to the people!  Really sell it!
-	if(((src.last_slogan + src.slogan_delay) <= world.time) && (src.slogan_list.len > 0) && (!src.shut_up) && prob(5))
-		var/slogan = pick(src.slogan_list)
-		src.speak(slogan)
-		src.last_slogan = world.time
+	if(((last_slogan + slogan_delay) <= world.time) && (slogan_list.len > 0) && (!shut_up) && prob(5))
+		var/slogan = pick(slogan_list)
+		speak(slogan)
+		last_slogan = world.time
 
-	if(src.shoot_inventory && prob(shooting_chance))
-		src.throw_item()
+	if(shoot_inventory && prob(shooting_chance))
+		throw_item()
 
 	return
 
@@ -654,7 +654,7 @@
 
 //Oh no we're malfunctioning!  Dump out some product and break.
 /obj/machinery/vending/proc/malfunction()
-	for(var/datum/stored_items/vending_products/R in src.product_records)
+	for(var/datum/stored_items/vending_products/R in product_records)
 		while(R.get_amount()>0)
 			R.get_product(loc)
 		break
@@ -667,7 +667,7 @@
 	if(!target)
 		return 0
 
-	for(var/datum/stored_items/vending_products/R in shuffle(src.product_records))
+	for(var/datum/stored_items/vending_products/R in shuffle(product_records))
 		throw_item = R.get_product(loc)
 		if(throw_item)
 			break
@@ -675,7 +675,7 @@
 		return 0
 	spawn(0)
 		throw_item.throw_at(target, rand(1, 2), 3, src)
-	src.visible_message(SPAN("warning", "\The [src] launches \a [throw_item] at \the [target]!"))
+	visible_message(SPAN("warning", "\The [src] launches \a [throw_item] at \the [target]!"))
 	return 1
 
 /obj/machinery/vending/set_broken(new_state)
@@ -1326,9 +1326,9 @@
  */
 /obj/machinery/vending/hydroseeds/build_inventory()
 	var/list/all_products = list(
-		list(src.products, CAT_NORMAL),
-		list(src.contraband, CAT_HIDDEN),
-		list(src.premium, CAT_COIN))
+		list(products, CAT_NORMAL),
+		list(contraband, CAT_HIDDEN),
+		list(premium, CAT_COIN))
 
 	for(var/current_list in all_products)
 		var/category = current_list[2]
@@ -1338,11 +1338,11 @@
 			var/name = S.name
 			var/datum/stored_items/vending_products/product = new /datum/stored_items/vending_products(src, entry, name)
 
-			product.price = (entry in src.prices) ? src.prices[entry] : 0
+			product.price = (entry in prices) ? prices[entry] : 0
 			product.amount = (current_list[1][entry]) ? current_list[1][entry] : 1
 			product.category = category
 
-			src.product_records.Add(product)
+			product_records.Add(product)
 
 /obj/machinery/vending/magivend
 	name = "MagiVend"

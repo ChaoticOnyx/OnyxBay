@@ -39,7 +39,7 @@ export interface Payment {
 const product = (product: Product, context: any) => {
   const { act, data } = useBackend<InputData>(context);
   const outOfStock = product.amount === 0;
-  const isUseCoins = product.price === 0;
+  const isFree = product.price === 0;
   const iconSrc = product.icon.match('src="(.*)"')[1];
   const capitalizedName
     = product.name[0].toUpperCase() + product.name.substr(1);
@@ -49,7 +49,7 @@ const product = (product: Product, context: any) => {
       className='Button--product'
       fluid
       disabled={outOfStock}
-      tooltip={product.amount && `In Stock: ${product.amount}`}
+      tooltip={!isFree && `In Stock: ${product.amount}` || null}
       onClick={() => act('vend', { vend: product.key })}>
       <Stack align='center'>
         <Stack.Item>
@@ -59,9 +59,9 @@ const product = (product: Product, context: any) => {
         <Stack.Item mr={0}>
           {
             <>
-              {isUseCoins ? 1 : product.price}
-              {isUseCoins ? (
-                <i style={{ 'margin-left': '.1rem' }} class='fas fa-coins' />
+              {isFree ? product.amount : product.price}
+              {isFree ? (
+                <i style={{ 'margin-left': '.5rem' }} class='fas fa-boxes' />
               ) : (
                 <i
                   style={{ 'margin-left': '.5rem' }}
