@@ -154,42 +154,42 @@
 		return
 
 	if(isnull(variable))
-		to_chat(usr, "Unable to determine variable type.")
+		to_chat(usr, "Unable to determine variable type.", confidential = TRUE)
 	else if(isnum(variable))
-		to_chat(usr, "Variable appears to be <b>NUM</b>.")
+		to_chat(usr, "Variable appears to be <b>NUM</b>.", confidential = TRUE)
 		default = "num"
 		dir = 1
 
 	else if(istext(variable))
-		to_chat(usr, "Variable appears to be <b>TEXT</b>.")
+		to_chat(usr, "Variable appears to be <b>TEXT</b>.", confidential = TRUE)
 		default = "text"
 
 	else if(isloc(variable))
-		to_chat(usr, "Variable appears to be <b>REFERENCE</b>.")
+		to_chat(usr, "Variable appears to be <b>REFERENCE</b>.", confidential = TRUE)
 		default = "reference"
 
 	else if(isicon(variable))
-		to_chat(usr, "Variable appears to be <b>ICON</b>.")
+		to_chat(usr, "Variable appears to be <b>ICON</b>.", confidential = TRUE)
 		variable = "\icon[variable]"
 		default = "icon"
 
 	else if(istype(variable,/atom) || istype(variable,/datum))
-		to_chat(usr, "Variable appears to be <b>TYPE</b>.")
+		to_chat(usr, "Variable appears to be <b>TYPE</b>.", confidential = TRUE)
 		default = "type"
 
 	else if(istype(variable,/list))
-		to_chat(usr, "Variable appears to be <b>LIST</b>.")
+		to_chat(usr, "Variable appears to be <b>LIST</b>.", confidential = TRUE)
 		default = "list"
 
 	else if(istype(variable,/client))
-		to_chat(usr, "Variable appears to be <b>CLIENT</b>.")
+		to_chat(usr, "Variable appears to be <b>CLIENT</b>.", confidential = TRUE)
 		default = "cancel"
 
 	else
-		to_chat(usr, "Variable appears to be <b>FILE</b>.")
+		to_chat(usr, "Variable appears to be <b>FILE</b>.", confidential = TRUE)
 		default = "file"
 
-	to_chat(usr, "Variable contains: [variable]")
+	to_chat(usr, "Variable contains: [variable]", confidential = TRUE)
 	if(dir)
 		switch(variable)
 			if(1)
@@ -212,7 +212,7 @@
 				dir = null
 
 		if(dir)
-			to_chat(usr, "If a direction, direction is: [dir]")
+			to_chat(usr, "If a direction, direction is: [dir]", confidential = TRUE)
 	var/class = "text"
 	var/list/class_input = list("text","num","type","reference","mob reference", "icon","file","list","edit referenced object","restore to default")
 
@@ -327,7 +327,7 @@
 
 	for(var/p in forbidden_varedit_object_types())
 		if( istype(O,p) )
-			to_chat(usr, "<span class='danger'>It is forbidden to edit this object's variables.</span>")
+			to_chat(usr, "<span class='danger'>It is forbidden to edit this object's variables.</span>", confidential = TRUE)
 			return
 
 	var/class
@@ -336,7 +336,7 @@
 
 	if(param_var_name)
 		if(!(param_var_name in O.get_variables()))
-			to_chat(src, "A variable with this name ([param_var_name]) doesn't exist in this atom ([O])")
+			to_chat(src, "A variable with this name ([param_var_name]) doesn't exist in this atom ([O])", confidential = TRUE)
 			return
 
 		if(!O.may_edit_var(usr, param_var_name))
@@ -348,41 +348,41 @@
 
 		if(autodetect_class)
 			if(isnull(var_value))
-				to_chat(usr, "Unable to determine variable type.")
+				to_chat(usr, "Unable to determine variable type.", confidential = TRUE)
 				class = null
 				autodetect_class = null
 			else if(isnum(var_value))
-				to_chat(usr, "Variable appears to be <b>NUM</b>.")
+				to_chat(usr, "Variable appears to be <b>NUM</b>.", confidential = TRUE)
 				class = "num"
 				dir = 1
 
 			else if(istext(var_value))
-				to_chat(usr, "Variable appears to be <b>TEXT</b>.")
+				to_chat(usr, "Variable appears to be <b>TEXT</b>.", confidential = TRUE)
 				class = "text"
 
 			else if(isloc(var_value))
-				to_chat(usr, "Variable appears to be <b>REFERENCE</b>.")
+				to_chat(usr, "Variable appears to be <b>REFERENCE</b>.", confidential = TRUE)
 				class = "reference"
 
 			else if(isicon(var_value))
-				to_chat(usr, "Variable appears to be <b>ICON</b>.")
+				to_chat(usr, "Variable appears to be <b>ICON</b>.", confidential = TRUE)
 				var_value = "\icon[var_value]"
 				class = "icon"
 
 			else if(istype(var_value,/atom) || istype(var_value,/datum))
-				to_chat(usr, "Variable appears to be <b>TYPE</b>.")
+				to_chat(usr, "Variable appears to be <b>TYPE</b>.", confidential = TRUE)
 				class = "type"
 
 			else if(istype(var_value,/list))
-				to_chat(usr, "Variable appears to be <b>LIST</b>.")
+				to_chat(usr, "Variable appears to be <b>LIST</b>.", confidential = TRUE)
 				class = "list"
 
 			else if(istype(var_value,/client))
-				to_chat(usr, "Variable appears to be <b>CLIENT</b>.")
+				to_chat(usr, "Variable appears to be <b>CLIENT</b>.", confidential = TRUE)
 				class = "cancel"
 
 			else
-				to_chat(usr, "Variable appears to be <b>FILE</b>.")
+				to_chat(usr, "Variable appears to be <b>FILE</b>.", confidential = TRUE)
 				class = "file"
 
 	else
@@ -405,42 +405,42 @@
 		var/dir
 		var/default
 		if(isnull(var_value))
-			to_chat(usr, "Unable to determine variable type.")
+			to_chat(usr, "Unable to determine variable type.", confidential = TRUE)
 		else if(isnum(var_value))
-			to_chat(usr, "Variable appears to be <b>NUM</b>.")
+			to_chat(usr, "Variable appears to be <b>NUM</b>.", confidential = TRUE)
 			default = "num"
 			dir = 1
 
 		else if(istext(var_value))
-			to_chat(usr, "Variable appears to be <b>TEXT</b>.")
+			to_chat(usr, "Variable appears to be <b>TEXT</b>.", confidential = TRUE)
 			default = "text"
 
 		else if(isloc(var_value))
-			to_chat(usr, "Variable appears to be <b>REFERENCE</b>.")
+			to_chat(usr, "Variable appears to be <b>REFERENCE</b>.", confidential = TRUE)
 			default = "reference"
 
 		else if(isicon(var_value))
-			to_chat(usr, "Variable appears to be <b>ICON</b>.")
+			to_chat(usr, "Variable appears to be <b>ICON</b>.", confidential = TRUE)
 			var_value = "\icon[var_value]"
 			default = "icon"
 
 		else if(istype(var_value,/atom) || istype(var_value,/datum))
-			to_chat(usr, "Variable appears to be <b>TYPE</b>.")
+			to_chat(usr, "Variable appears to be <b>TYPE</b>.", confidential = TRUE)
 			default = "type"
 
 		else if(istype(var_value,/list))
-			to_chat(usr, "Variable appears to be <b>LIST</b>.")
+			to_chat(usr, "Variable appears to be <b>LIST</b>.", confidential = TRUE)
 			default = "list"
 
 		else if(istype(var_value,/client))
-			to_chat(usr, "Variable appears to be <b>CLIENT</b>.")
+			to_chat(usr, "Variable appears to be <b>CLIENT</b>.", confidential = TRUE)
 			default = "cancel"
 
 		else
-			to_chat(usr, "Variable appears to be <b>FILE</b>.")
+			to_chat(usr, "Variable appears to be <b>FILE</b>.", confidential = TRUE)
 			default = "file"
 
-		to_chat(usr, "Variable contains: [var_value]")
+		to_chat(usr, "Variable contains: [var_value]", confidential = TRUE)
 		if(dir)
 			switch(var_value)
 				if(1)
@@ -462,7 +462,7 @@
 				else
 					dir = null
 			if(dir)
-				to_chat(usr, "If a direction, direction is: [dir]")
+				to_chat(usr, "If a direction, direction is: [dir]", confidential = TRUE)
 		var/list/class_input = list("text","num","type","reference","mob reference", "icon","file","list","json","color","edit referenced object","restore to default")
 		if(src.holder)
 			var/datum/marked_datum = holder.marked_datum()
