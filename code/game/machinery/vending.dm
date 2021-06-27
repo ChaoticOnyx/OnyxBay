@@ -521,7 +521,8 @@
 			shut_up = !shut_up
 			return TRUE
 		if("pay")
-			pay(usr.GetIdCard(), usr)
+			pay(usr.get_active_hand(), usr) || pay(usr.get_inactive_hand(), usr)
+			return TRUE
 
 /obj/machinery/vending/proc/vend(datum/stored_items/vending_products/R, mob/user)
 	if((!allowed(usr)) && !emagged && scan_id)	// For SECURE VENDING MACHINES YEAH
