@@ -58,6 +58,8 @@
 
 #define isorgan(A) istype(A, /obj/item/organ/external)
 
+#define isinternalorgan(A) istype(A, /obj/item/organ/internal)
+
 #define isstack(A) istype(A, /obj/item/stack)
 
 #define isspace(A) istype(A, /area/space)

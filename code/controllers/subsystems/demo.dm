@@ -148,7 +148,7 @@ SUBSYSTEM_DEF(demo)
 	return ..()
 
 /datum/controller/subsystem/demo/fire()
-	if(!src.marked_new.len && !src.marked_dirty.len && !src.marked_turfs.len && !src.del_list.len)
+	if(!src.marked_new.len && !src.marked_dirty.len && !src.marked_turfs.len)
 		return // nothing to do
 
 	last_queued = src.marked_new.len + src.marked_dirty.len + src.marked_turfs.len
@@ -167,6 +167,9 @@ SUBSYSTEM_DEF(demo)
 	while(marked_dirty.len)
 		last_completed++
 		var/atom/movable/M = marked_dirty[marked_dirty.len]
+		if(ishuman(M))
+			M.icon = 'icons/mob/human.dmi'
+			M.icon_state = "body_m_s"
 		marked_dirty.len--
 		if(M.gc_destroyed || !M)
 			continue
@@ -200,6 +203,9 @@ SUBSYSTEM_DEF(demo)
 	while(marked_new.len)
 		last_completed++
 		var/atom/movable/M = marked_new[marked_new.len]
+		if(ishuman(M))
+			M.icon = 'icons/mob/human.dmi'
+			M.icon_state = "body_m_s"
 		marked_new.len--
 		if(M.gc_destroyed || !M)
 			continue
