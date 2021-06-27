@@ -13,10 +13,11 @@ export interface InputData {
   mode: number;
   products: Product[];
   panel: number;
-  coin: string;
+  coin?: string;
   payment?: Payment;
   name: string;
   speaker: number;
+  ready: number;
 }
 
 export interface Product {
@@ -49,7 +50,7 @@ const product = (product: Product, context: any) => {
       className='Button--product'
       fluid
       disabled={outOfStock}
-      tooltip={!isFree && `In Stock: ${product.amount}` || null}
+      tooltip={(!isFree && `In Stock: ${product.amount}`) || null}
       onClick={() => act('vend', { vend: product.key })}>
       <Stack align='center'>
         <Stack.Item>
@@ -127,9 +128,22 @@ const pay = (props: any, context: any) => {
   );
 };
 
+const vendingProgress = () => {
+  return (
+    <Modal className='VendingProgress'>
+      <Stack>
+        <Stack.Item>Vending...</Stack.Item>
+        <Stack.Item>
+          <Icon spin name='spinner' />
+        </Stack.Item>
+      </Stack>
+    </Modal>
+  );
+};
+
 export const Vending = (props: any, context: any) => {
   const { act, data, getTheme } = useBackend<InputData>(context);
-  const { products, mode } = data;
+  const { products, mode, ready } = data;
 
   return (
     <Window
@@ -160,6 +174,7 @@ export const Vending = (props: any, context: any) => {
         {products.map((value, i) => product(value, context))}
       </Window.Content>
       {mode === 1 && pay(props, context)}
+      {!ready && vendingProgress()}
     </Window>
   );
 };

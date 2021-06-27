@@ -128,6 +128,20 @@
   }
 }
 
+.VendingProgress {
+  @at-root .theme-vending-white &,
+    .theme-vending-dark & {
+    border-radius: 0.8rem;
+    font-size: 1.2em;
+    margin: auto;
+    
+    padding: {
+      left: 1rem;
+      right: 2rem;
+    }
+  }
+}
+
 .LabeledList * {
   @at-root .theme-vending-white & {
     color: white !important;

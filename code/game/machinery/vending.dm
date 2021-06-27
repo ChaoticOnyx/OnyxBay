@@ -406,7 +406,8 @@
 /obj/machinery/vending/tgui_data(mob/user)
 	var/list/data = list(
 		"name" = name,
-		"mode" = 0
+		"mode" = 0,
+		"ready" = vend_ready
 	)
 
 	if(currently_vending)
@@ -530,7 +531,6 @@
 	vend_ready = 0 // One thing at a time!!
 	status_message = "Vending..."
 	status_error = 0
-	SSnano.update_uis(src)
 
 	if(R.category & CAT_COIN)
 		if(!coin)
