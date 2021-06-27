@@ -559,6 +559,8 @@
 	if(use_vend_state) //Show the vending animation if needed
 		flick("[base_icon]-vend", src)
 	spawn(vend_delay) //Time to vend
+		playsound(src, 'sound/effects/using/disposal/drop2.ogg', 40, TRUE)
+
 		if(prob(diona_spawn_chance)) //Hehehe
 			var/turf/T = get_turf(src)
 			var/mob/living/carbon/alien/diona/S = new(T)
@@ -575,7 +577,6 @@
 		status_error = 0
 		vend_ready = 1
 		currently_vending = null
-		SSnano.update_uis(src)
 
 /**
  * Add item to the machine
@@ -589,10 +590,7 @@
 
 	if(R.add_product(W))
 		to_chat(user, SPAN("notice", "You insert \the [W] in the product receptor."))
-		SSnano.update_uis(src)
 		return 1
-
-	SSnano.update_uis(src)
 
 /obj/machinery/vending/Process()
 	if(stat & (BROKEN|NOPOWER))
