@@ -158,7 +158,7 @@
 			var/list/mutations = GetMutations()
 			for(var/i = 1 to 4)
 				var/t = colour
-				if(prob(mutation_chance))
+				if(length(mutations) && prob(mutation_chance))
 					t = pick(mutations)
 				var/mob/living/carbon/metroid/M = new /mob/living/carbon/metroid(loc, t)
 				if(i != 1)
