@@ -57,14 +57,14 @@ export const formatSiUnit = (
     SI_SYMBOLS.length);
   const symbol = SI_SYMBOLS[symbolIndex];
   const scaledNumber = value / Math.pow(1000, base1000);
-  const scaledPrecision = realBase1000 > minBase1000 ?
-    (2 + base1000 * 3 - base10) :
-    0;
+  const scaledPrecision = realBase1000 > minBase1000
+    ? (2 + base1000 * 3 - base10)
+    : 0;
   // TODO: Make numbers bigger than precision value show
   // up to 2 decimal numbers.
   const finalString = (
-    toFixed(scaledNumber, scaledPrecision) +
-    ' ' + symbol + unit
+    toFixed(scaledNumber, scaledPrecision)
+    + ' ' + symbol + unit
   );
   return finalString.trim();
 };
@@ -158,14 +158,14 @@ export const formatSiBaseTenUnit = (
     SI_BASE_TEN_UNIT.length);
   const symbol = SI_BASE_TEN_UNIT[symbolIndex];
   const scaledNumber = value / Math.pow(1000, base1000);
-  const scaledPrecision = realBase1000 > minBase1000 ?
-    (2 + base1000 * 3 - base10) :
-    0;
+  const scaledPrecision = realBase1000 > minBase1000
+    ? (2 + base1000 * 3 - base10)
+    : 0;
   // TODO: Make numbers bigger than precision value show
   // up to 2 decimal numbers.
   const finalString = (
-    toFixed(scaledNumber, scaledPrecision) +
-    ' ' + symbol + ' ' + unit
+    toFixed(scaledNumber, scaledPrecision)
+    + ' ' + symbol + ' ' + unit
   );
   return finalString.trim();
 };

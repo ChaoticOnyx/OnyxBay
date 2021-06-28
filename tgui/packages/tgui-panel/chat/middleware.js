@@ -123,10 +123,10 @@ export const chatMiddleware = store => {
       loaded = true;
       return;
     }
-    if (type === changeChatPage.type ||
-        type === addChatPage.type ||
-        type === removeChatPage.type ||
-        type === toggleAcceptedType.type) {
+    if (type === changeChatPage.type
+        || type === addChatPage.type
+        || type === removeChatPage.type
+        || type === toggleAcceptedType.type) {
       next(action);
       const page = selectCurrentChatPage(store.getState());
       chatRenderer.changePage(page);

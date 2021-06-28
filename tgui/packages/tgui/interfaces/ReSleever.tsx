@@ -60,8 +60,8 @@ export const ReSleever = (props: any, context: any) => {
           }>
           <LabeledList>
             <LabeledList.Item label='Status'>
-              {(progress > 0 && 'In Progress') ||
-                (data.ready ? 'Ready' : 'Not Ready')}
+              {(progress > 0 && 'In Progress')
+                || (data.ready ? 'Ready' : 'Not Ready')}
             </LabeledList.Item>
             <LabeledList.Item label='Progress'>
               <ProgressBar value={progress} />

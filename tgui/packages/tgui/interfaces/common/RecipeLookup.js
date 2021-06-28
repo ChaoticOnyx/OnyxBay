@@ -185,29 +185,29 @@ export const RecipeLookup = (props, context) => {
         <Flex
           justify='space-between'>
           <Tooltip
-            content={recipe.isColdRecipe ?
-              "The temperature at which it is underheated, causing negative effects on the reaction." :
-            "The minimum temperature needed for this reaction to start. Heating it up past this point will increase the reaction rate."} >
+            content={recipe.isColdRecipe
+              ? "The temperature at which it is underheated, causing negative effects on the reaction."
+            : "The minimum temperature needed for this reaction to start. Heating it up past this point will increase the reaction rate."} >
             <Flex.Item
               position='relative'
               textColor={recipe.isColdRecipe && "red"}>
-              {recipe.isColdRecipe ?
-                recipe.explodeTemp + "K" :
-                recipe.tempMin + "K"}
+              {recipe.isColdRecipe
+                ? recipe.explodeTemp + "K"
+                : recipe.tempMin + "K"}
             </Flex.Item>
           </Tooltip>
 
           {recipe.explosive && (
             <Tooltip
-              content={recipe.isColdRecipe ?
-                "The minimum temperature needed for this reaction to start. Heating it up past this point will increase the reaction rate." :
-              "The temperature at which it is overheated, causing negative effects on the reaction."}>
+              content={recipe.isColdRecipe
+                ? "The minimum temperature needed for this reaction to start. Heating it up past this point will increase the reaction rate."
+              : "The temperature at which it is overheated, causing negative effects on the reaction."}>
               <Flex.Item
                 position='relative'
                 textColor={!recipe.isColdRecipe && "red"}>
-                {recipe.isColdRecipe ?
-                  recipe.tempMin + "K" :
-                  recipe.explodeTemp + "K"}
+                {recipe.isColdRecipe
+                  ? recipe.tempMin + "K"
+                  : recipe.explodeTemp + "K"}
               </Flex.Item>
             </Tooltip>
           )}

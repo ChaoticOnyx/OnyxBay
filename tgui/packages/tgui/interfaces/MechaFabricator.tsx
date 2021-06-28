@@ -155,9 +155,9 @@ const fabricatorProduction = (props: any, context: any) => {
       return value.category === data.category;
     })
     .filter((value) => {
-      return searchQuery === null ?
-        true :
-        value.name.toLowerCase().search(searchQuery.toLowerCase()) >= 0;
+      return searchQuery === null
+        ? true
+        : value.name.toLowerCase().search(searchQuery.toLowerCase()) >= 0;
     });
 
   return (

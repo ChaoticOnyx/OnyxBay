@@ -41,10 +41,10 @@ export const Button = (props) => {
   // A warning about the lowercase onclick
   if (onclick) {
     logger.warn(
-      `Lowercase 'onclick' is not supported on Button and lowercase` +
-        ` prop names are discouraged in general. Please use a camelCase` +
-        `'onClick' instead and read: ` +
-        `https://infernojs.org/docs/guides/event-handling`,
+      `Lowercase 'onclick' is not supported on Button and lowercase`
+        + ` prop names are discouraged in general. Please use a camelCase`
+        + `'onClick' instead and read: `
+        + `https://infernojs.org/docs/guides/event-handling`,
     );
   }
   // IE8: Use a lowercase "onclick" because synthetic events are fucked.
@@ -61,9 +61,9 @@ export const Button = (props) => {
         circular && 'Button--circular',
         compact && 'Button--compact',
         iconPosition && 'Button--iconPosition--' + iconPosition,
-        color && typeof color === 'string' ?
-          'Button--color--' + color :
-          'Button--color--default',
+        color && typeof color === 'string'
+          ? 'Button--color--' + color
+          : 'Button--color--default',
         className,
       ])}
       tabIndex={!disabled && '0'}

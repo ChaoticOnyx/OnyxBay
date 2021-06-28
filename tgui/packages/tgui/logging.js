@@ -30,8 +30,8 @@ const log = (level, ns, ...args) => {
         return JSON.stringify(value);
       })
       .filter(value => value)
-      .join(' ') +
-      '\nUser Agent: ' + navigator.userAgent;
+      .join(' ')
+      + '\nUser Agent: ' + navigator.userAgent;
     Byond.topic({
       tgui: 1,
       window_id: window.__windowId__,

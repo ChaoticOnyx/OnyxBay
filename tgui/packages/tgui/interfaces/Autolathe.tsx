@@ -148,9 +148,9 @@ export const Autolathe = (props: any, context: any) => {
                     {recipe.required.map((material, i) => {
                       return (
                         <div key={i}>
-                          {material.name +
-                            ' ' +
-                            material.count.toLocaleString()}
+                          {material.name
+                            + ' '
+                            + material.count.toLocaleString()}
                         </div>
                       );
                     })}
