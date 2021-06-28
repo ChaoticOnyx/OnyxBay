@@ -221,19 +221,19 @@
 		else
 			to_chat(user, SPAN("warning", "The stack is too high!"))
 
-	return
+		return
 
 /obj/item/trash/dishes/attack_hand(mob/user)
-	if(length(stack) > 0 && user.get_inactive_hand() == src)
-		if(user.get_inactive_hand() != src)
-			return
+	if(user.get_inactive_hand() != src)
+		..()
+		return
 
-		var/obj/item/trash/dishes/dish = stack[length(stack)]
-		stack -= dish
+	var/obj/item/trash/dishes/dish = stack[length(stack)]
+	stack -= dish
 
-		user.put_in_hands(dish)
-		to_chat(user, SPAN("warning", "You have removed the topmost [src] from your hand."))
+	user.put_in_hands(dish)
+	to_chat(user, SPAN("warning", "You have removed the topmost [src] from your hand."))
 
-		update_icon()
+	update_icon()
 
 	return
