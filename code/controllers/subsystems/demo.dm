@@ -171,11 +171,6 @@ SUBSYSTEM_DEF(demo)
 			if(MC_TICK_CHECK)
 				break
 			continue
-		var/tmp_icon = M.icon
-		var/tmp_icon_state = M.icon_state
-		if(ishuman(M))
-			M.icon = 'icons/mob/human.dmi'
-			M.icon_state = "body_m_s"
 		marked_dirty.len--
 		if(M.gc_destroyed || !M)
 			continue
@@ -196,8 +191,6 @@ SUBSYSTEM_DEF(demo)
 		if(M.appearance != M.demo_last_appearance)
 			appearance_string = encode_appearance(M.appearance, M.demo_last_appearance)
 			M.demo_last_appearance = M.appearance
-			M.icon = tmp_icon
-			M.icon_state = tmp_icon_state
 		dirty_updates += "\ref[M] [loc_string] [appearance_string]"
 		if(MC_TICK_CHECK)
 			canceled = TRUE
@@ -228,13 +221,8 @@ SUBSYSTEM_DEF(demo)
 			loc_string = "\ref[M.loc]"
 		var/tmp_icon = M.icon
 		var/tmp_icon_state = M.icon_state
-		if(ishuman(M))
-			M.icon = 'icons/mob/human.dmi'
-			M.icon_state = "body_m_s"
 		M.demo_last_appearance = M.appearance
 		new_updates += "\ref[M] [loc_string] [encode_appearance(M.appearance)]"
-		M.icon = tmp_icon
-		M.icon_state = tmp_icon_state
 		if(MC_TICK_CHECK)
 			canceled = TRUE
 			break
