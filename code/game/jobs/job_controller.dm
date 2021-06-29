@@ -507,6 +507,7 @@ var/global/datum/controller/occupations/job_master
 		for(var/datum/gear/G in spawn_in_storage)
 			G.spawn_in_storage_or_drop(H, H.client.prefs.Gear()[G.display_name])
 
+		/* TODO: fix whelchair shit
 		if(istype(H)) //give humans wheelchairs, if they need them.
 			var/obj/item/organ/external/l_foot = H.get_organ(BP_L_FOOT)
 			var/obj/item/organ/external/r_foot = H.get_organ(BP_R_FOOT)
@@ -517,6 +518,7 @@ var/global/datum/controller/occupations/job_master
 				W.set_dir(H.dir)
 				W.buckled_mob = H
 				W.add_fingerprint(H)
+		*/
 
 		to_chat(H, "<B>You are [job.total_positions == 1 ? "the" : "a"] [alt_title ? alt_title : rank].</B>")
 
