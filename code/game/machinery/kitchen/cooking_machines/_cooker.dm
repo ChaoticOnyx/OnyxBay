@@ -111,7 +111,7 @@
 		return 0
 
 	// Not sure why a food item that passed the previous checks would fail to drop, but safety first.
-	if(!user.unEquip(I))
+	if(!user.drop_from_inventory(I))
 		return
 
 	if(inserted_mob)
