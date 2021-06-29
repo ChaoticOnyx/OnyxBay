@@ -431,16 +431,13 @@
 		if(!(I.category & categories))
 			continue
 
-		var/atom/A = I.item_path
-		var/icon/ico = new(initial(A.icon), initial(A.icon_state))
-
 		listed_products.Add(list(list(
 			"key" = key,
 			"name" = I.item_name,
 			"price" = I.price,
 			"color" = I.display_color,
 			"amount" = I.get_amount(),
-			"icon" = "[icon2html(ico, user)]")))
+			"icon" = icon2base64html(I.item_path))))
 
 	data["products"] = listed_products
 

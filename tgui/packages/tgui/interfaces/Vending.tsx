@@ -41,7 +41,7 @@ const product = (product: Product, context: any) => {
   const { act, data } = useBackend<InputData>(context);
   const outOfStock = product.amount === 0;
   const isFree = product.price === 0;
-  const iconSrc = product.icon.match('src="(.*)"')[1];
+  const iconSrc = product.icon.match('src=["\'](.*)["\']')[1];
   const capitalizedName
     = product.name[0].toUpperCase() + product.name.substr(1);
 
