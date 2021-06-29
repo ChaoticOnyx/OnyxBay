@@ -19,8 +19,8 @@ const setGlobalFontSize = (fontSize) => {
 const setGlobalFontFamily = (fontFamily) => {
   if (fontFamily === FONTS_DISABLED) fontFamily = null;
 
-  document.documentElement?.style.setProperty('font-family', fontFamily);
-  document.body?.style.setProperty('font-family', fontFamily);
+  document.documentElement?.style.setProperty('font-family', `${fontFamily}, "apple color emoji", "segoe ui emoji", "segoe ui symbol"`);
+  document.body?.style.setProperty('font-family', `${fontFamily}, "apple color emoji", "segoe ui emoji", "segoe ui symbol"`);
 };
 
 const setBackgroundImage = (background) => {
