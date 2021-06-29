@@ -205,7 +205,7 @@
 /obj/item/stack/material/ocp
 	name = "osmium-carbide plasteel"
 	icon_state = "plasteel"
-	item_state = "metal"
+	item_state = "sheet-metal"
 	default_type = MATERIAL_OSMIUM_CARBIDE_PLASTEEL
 	apply_colour = 1
 
@@ -239,7 +239,7 @@
 /obj/item/stack/material/plasteel
 	name = "plasteel"
 	icon_state = "plasteel"
-	item_state = "metal"
+	item_state = "sheet-metal"
 	default_type = MATERIAL_PLASTEEL
 
 /obj/item/stack/material/plasteel/ten
