@@ -62,7 +62,7 @@
 			"name" = material,
 			"count" = stored_material[material],
 			"capacity" = storage_capacity[material],
-			"icon" = icon2base64html(GLOB.material_to_icon[material])
+			"icon" = icon2base64html(get_icon_for_material(material))
 			))
 
 	var/index = 0

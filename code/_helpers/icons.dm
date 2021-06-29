@@ -849,11 +849,14 @@
 	dummySave["dummy"] << icon
 	var/iconData = dummySave.ExportText("dummy")
 	var/list/partial = splittext(iconData, "{")
-	// if cleanup fails we want to still return the correct base64
+
+	// If cleanup fails we want to still return the correct base64
 	. = replacetext(copytext_char(partial[2], 3, -5), "\n", "")
 	dummySave.Unlock()
 	dummySave = null
-	// if you get the idea to try and make this more optimized, make sure to still call unlock on the savefile after every write to unlock it.
+
+	// If you get the idea to try and make this more optimized,
+	// make sure to still call unlock on the savefile after every write to unlock it.
 	fdel("tmp/dummySave.sav")
 
 // This proc accepts an icon or a path you need the icon from.

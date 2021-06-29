@@ -307,7 +307,7 @@
 /obj/machinery/mecha_part_fabricator/proc/get_materials()
 	. = list()
 	for(var/T in materials)
-		. += list(list("mat" = capitalize(T), "amt" = materials[T], "icon" = icon2base64html(GLOB.material_to_icon[T])))
+		. += list(list("mat" = capitalize(T), "amt" = materials[T], "icon" = icon2base64html(get_icon_for_material(T))))
 
 /obj/machinery/mecha_part_fabricator/proc/eject_materials(material, amount) // 0 amount = 0 means ejecting a full stack; -1 means eject everything
 	var/recursive = amount == -1 ? 1 : 0
