@@ -411,8 +411,6 @@
 	)
 
 	if(currently_vending)
-		var/atom/A = currently_vending.item_path
-		var/icon/ico = new(initial(A.icon), initial(A.icon_state))
 		data["mode"] = 1
 		data["payment"] = list(
 			"product" = currently_vending.item_name,
@@ -420,7 +418,7 @@
 			"message_err" = 0,
 			"message" = status_message,
 			"message_err" = status_error,
-			"icon" = "[icon2html(ico, user)]"
+			"icon" = icon2base64html(currently_vending.item_path)
 		)
 
 	var/list/listed_products = list()
@@ -431,16 +429,13 @@
 		if(!(I.category & categories))
 			continue
 
-		var/atom/A = I.item_path
-		var/icon/ico = new(initial(A.icon), initial(A.icon_state))
-
 		listed_products.Add(list(list(
 			"key" = key,
 			"name" = I.item_name,
 			"price" = I.price,
 			"color" = I.display_color,
 			"amount" = I.get_amount(),
-			"icon" = "[icon2html(ico, user)]")))
+			"icon" = icon2base64html(I.item_path))))
 
 	data["products"] = listed_products
 

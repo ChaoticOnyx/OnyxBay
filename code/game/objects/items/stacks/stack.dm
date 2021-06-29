@@ -15,6 +15,7 @@
 	mod_weight = 0.75
 	mod_reach = 0.5
 	mod_handy = 0.5
+	icon = 'icons/obj/materials.dmi'
 	var/list/datum/stack_recipe/recipes
 	var/singular_name
 	var/amount = 1
