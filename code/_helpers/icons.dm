@@ -864,18 +864,18 @@
 
 	if(ispath(thing))
 		var/atom/A = thing
-		var/hash = md5("[initial(A.icon)]-[initial(A.icon_state)]")
-		var/cached = bicon_cache[hash]
+		var/key = "[initial(A.icon)]-[initial(A.icon_state)]"
+		var/cached = bicon_cache[key]
 
 		if(!cached)
-			bicon_cache[hash] = cached = icon2base64(icon(initial(A.icon), initial(A.icon_state)))
+			bicon_cache[key] = cached = icon2base64(icon(initial(A.icon), initial(A.icon_state), SOUTH, 1))
 
 		return "<img class='game-icon' src='data:image/png;base64,[cached]'>"
 	if(isicon(thing))
-		var/hash = md5("\ref[thing]")
-		var/cached = bicon_cache[hash]
+		var/key = "\ref[thing]"
+		var/cached = bicon_cache[key]
 
 		if(!cached)
-			bicon_cache[hash] = cached = icon2base64(thing)
+			bicon_cache[key] = cached = icon2base64(thing)
 
 		return "<img class='game-icon' src='data:image/png;base64,[cached]'>"

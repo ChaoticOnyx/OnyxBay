@@ -7,6 +7,7 @@ import {
   Modal,
   Stack,
 } from '../components';
+import { GameIcon } from '../components/GameIcon';
 import { Window } from '../layouts';
 
 export interface InputData {
@@ -41,7 +42,6 @@ const product = (product: Product, context: any) => {
   const { act, data } = useBackend<InputData>(context);
   const outOfStock = product.amount === 0;
   const isFree = product.price === 0;
-  const iconSrc = product.icon.match('src=["\'](.*)["\']')[1];
   const capitalizedName
     = product.name[0].toUpperCase() + product.name.substr(1);
 
@@ -54,7 +54,7 @@ const product = (product: Product, context: any) => {
       onClick={() => act('vend', { vend: product.key })}>
       <Stack align='center'>
         <Stack.Item>
-          <img class='ProductIcon' src={iconSrc} />
+          <GameIcon className='ProductIcon' html={product.icon} />
         </Stack.Item>
         <Stack.Item width='100%'>{capitalizedName}</Stack.Item>
         <Stack.Item mr={0}>
@@ -80,7 +80,6 @@ const product = (product: Product, context: any) => {
 const pay = (props: any, context: any) => {
   const { act, data } = useBackend<InputData>(context);
   const { payment } = data;
-  const iconSrc = payment.icon.match('src="(.*)"')[1];
 
   return (
     <Modal className='Payment'>
@@ -88,11 +87,7 @@ const pay = (props: any, context: any) => {
 
       <LabeledList>
         <LabeledList.Item label='Product'>
-          <img
-            class='ProductIcon'
-            src={iconSrc}
-            style={{ '-ms-interpolation-mode': 'nearest-neighbor' }}
-          />
+          <GameIcon className='ProductIcon' html={payment.icon} />
           {payment.product}
         </LabeledList.Item>
         <LabeledList.Item label='Price'>
