@@ -882,3 +882,5 @@
 			bicon_cache[key] = cached = icon2base64(thing)
 
 		return "<img class='game-icon' src='data:image/png;base64,[cached]'>"
+
+	CRASH("[thing] is must be a path or an icon")
