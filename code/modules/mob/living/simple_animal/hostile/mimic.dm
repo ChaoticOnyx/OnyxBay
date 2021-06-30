@@ -40,7 +40,6 @@ var/global/list/protected_objects = list(/obj/structure/table, /obj/structure/ca
 /mob/living/simple_animal/hostile/mimic/New(newloc, obj/o, mob/living/creator)
 	..()
 	o = o || /obj/structure/closet/crate
-	if(o)
 		if(ispath(o))
 			o = new o(newloc)
 		CopyObject(o,creator)
