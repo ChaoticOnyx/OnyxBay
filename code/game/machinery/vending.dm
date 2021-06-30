@@ -185,6 +185,9 @@
 	return
 
 /obj/machinery/vending/proc/pay(obj/item/weapon/W, mob/user)
+	if(!W)
+		return FALSE
+	
 	var/obj/item/weapon/card/id/I = W.GetIdCard()
 
 	if(currently_vending && vendor_account && !vendor_account.suspended)
@@ -194,7 +197,7 @@
 			to_chat(user, SPAN("warning", "\The [src] is busy at the moment!"))
 			return
 
-		if(I) //for IDs and PDAs and wallets with IDs
+		if(I) // For IDs and PDAs and wallets with IDs
 			paid = pay_with_card(I, W)
 		else if(istype(W, /obj/item/weapon/spacecash/ewallet))
 			var/obj/item/weapon/spacecash/ewallet/C = W
