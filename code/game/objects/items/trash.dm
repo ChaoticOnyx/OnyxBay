@@ -70,10 +70,20 @@
 /obj/item/trash/plate
 	name = "plate"
 	icon_state = "plate"
+	w_class = ITEM_SIZE_TINY
+
+/obj/item/trash/plate_in_bag
+	name = "plate"
+	icon_state = "plate_in_bag"
+	w_class = ITEM_SIZE_TINY
 
 /obj/item/trash/snack_bowl
 	name = "snack bowl"
 	icon_state	= "snack_bowl"
+
+/obj/item/trash/snack_bowl_in_bag
+	name = "snack bowl"
+	icon_state	= "snack_bowl_in_bag"
 
 /obj/item/trash/pistachios
 	name = "pistachios pack"
@@ -86,6 +96,10 @@
 /obj/item/trash/tray
 	name = "tray"
 	icon_state = "tray"
+
+/obj/item/trash/tray_in_bag
+	name = "tray"
+	icon_state = "tray_in_bag"
 
 /obj/item/trash/candle
 	name = "candle"
