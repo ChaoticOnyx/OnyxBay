@@ -89,7 +89,7 @@
 	if(!disease.affected_species.len)
 		return
 
-	if (!(M.species.name in disease.affected_species))
+	if (!(M.species?.name in disease.affected_species))
 		if (forced)
 			disease.affected_species[1] = M.species.name
 		else
@@ -129,7 +129,7 @@
 	if (virus2.len > 0)
 		for (var/ID in virus2)
 			var/datum/disease2/disease/V = virus2[ID]
-			if(V.spreadtype != vector) 
+			if(V.spreadtype != vector)
 				continue
 
 			//It's hard to get other people sick if you're in an airtight suit.
