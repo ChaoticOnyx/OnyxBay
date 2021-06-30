@@ -39,8 +39,7 @@ var/global/list/protected_objects = list(/obj/structure/table, /obj/structure/ca
 
 /mob/living/simple_animal/hostile/mimic/New(newloc, obj/o, mob/living/creator)
 	..()
-	if(o == null)
-		o = /obj/structure/closet/crate
+	o = o || /obj/structure/closet/crate
 	if(o)
 		if(ispath(o))
 			o = new o(newloc)
@@ -66,7 +65,7 @@ var/global/list/protected_objects = list(/obj/structure/table, /obj/structure/ca
 		icon_living = icon_state
 
 		if(istype(O, /obj/structure))
-			health = (anchored * 50) + 50
+			health = anchored * 50 + 50
 			destroy_objects = TRUE
 			if(O.density && O.anchored)
 				knockdown_people = TRUE
@@ -83,8 +82,6 @@ var/global/list/protected_objects = list(/obj/structure/table, /obj/structure/ca
 		if(creator)
 			creator = weakref(creator)
 			faction = "\ref[creator]" // very unique
-		return TRUE
-	return
 
 /mob/living/simple_animal/hostile/mimic/death()
 	if(!copy_of)
