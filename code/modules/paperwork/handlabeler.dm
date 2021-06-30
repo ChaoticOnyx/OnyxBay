@@ -16,8 +16,13 @@
 		return
 	if(!mode)	//if it's off, give up.
 		return
+
 	if(A == loc)	// if placing the labeller into something (e.g. backpack)
 		return		// don't set a label
+
+	switch(A.icon_state)
+		if("deliverycrate" || "deliverycloset" || "deliverycrateSmall" || "deliverycrate5" || "deliverycrate4" || "deliverycrate3" || "deliverycrate2" || "deliverycrate1")
+			return		// Restricts adding a label not through the hand labeller dialog
 
 	if(!labels_left)
 		to_chat(user, "<span class='notice'>No labels left.</span>")
