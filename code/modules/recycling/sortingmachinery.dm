@@ -42,46 +42,21 @@
 		else
 			to_chat(user, "<span class='warning'>You need to set a destination first!</span>")
 
-	else if(istype(W, /obj/item/weapon/pen))
+	else if(istype(W, /obj/item/weapon/pen) || istype(W, /obj/item/weapon/hand_labeler))
 		switch(alert("What would you like to alter?",,"Title","Description", "Cancel"))
 			if("Title")
 				var/str = sanitizeSafe(input(usr,"Label text?","Set label",""), MAX_NAME_LEN)
 				if(!str || !length(str))
 					to_chat(usr, "<span class='warning'> Invalid text.</span>")
 					return
-				user.visible_message("\The [user] titles \the [src] with \a [W], marking down: \"[str]\"",\
-				"<span class='notice'>You title \the [src]: \"[str]\"</span>",\
-				"You hear someone scribbling a note.")
-				SetName("[name] ([str])")
-				if(!examtext && !nameset)
-					nameset = 1
-					update_icon()
+				if(istype(W, /obj/item/weapon/pen))
+					user.visible_message("\The [user] titles \the [src] with \a [W], marking down: \"[str]\"",\
+					"<span class='notice'>You title \the [src]: \"[str]\"</span>",\
+					"You hear someone scribbling a note.")
 				else
-					nameset = 1
-			if("Description")
-				var/str = sanitize(input(usr,"Label text?","Set label",""))
-				if(!str || !length(str))
-					to_chat(usr, "<span class='warning'>Invalid text.</span>")
-					return
-				if(!examtext && !nameset)
-					examtext = str
-					update_icon()
-				else
-					examtext = str
-				user.visible_message("\The [user] labels \the [src] with \a [W], scribbling down: \"[examtext]\"",\
-				"<span class='notice'>You label \the [src]: \"[examtext]\"</span>",\
-				"You hear someone scribbling a note.")
-
-	else if(istype(W, /obj/item/weapon/hand_labeler))
-		switch(alert("What would you like to alter?",,"Title","Description", "Cancel"))
-			if("Title")
-				var/str = sanitizeSafe(input(usr,"Label text?","Set label",""), MAX_NAME_LEN)
-				if(!str || !length(str))
-					to_chat(usr, "<span class='warning'> Invalid text.</span>")
-					return
-				user.visible_message("\The [user] titles \the [src] with \a [W], marking down: \"[str]\"",\
-				"<span class='notice'>You title \the [src]: \"[str]\"</span>",\
-				"You hear the sound of a small printer.")
+					user.visible_message("\The [user] titles \the [src] with \a [W]: \"[str]\"",\
+					"<span class='notice'>You title \the [src]: \"[str]\"</span>",\
+					"You hear the sound of a small printer.")
 				SetName("[name] ([str])")
 				if(!examtext && !nameset)
 					nameset = 1
@@ -99,10 +74,14 @@
 					update_icon()
 				else
 					examtext = str
-				user.visible_message("\The [user] labels \the [src] with \a [W], scribbling down: \"[examtext]\"",\
-				"<span class='notice'>You label \the [src]: \"[examtext]\"</span>",\
-				"You hear the sound of a small printer.")
-	return
+				if(istype(W, /obj/item/weapon/pen))
+					user.visible_message("\The [user] labels \the [src] with \a [W], scribbling down: \"[examtext]\"",\
+					"<span class='notice'>You label \the [src]: \"[examtext]\"</span>",\
+					"You hear someone scribbling a note.")
+				else
+					user.visible_message("\The [user] labels \the [src] with \a [W]: \"[examtext]\"",\
+					"<span class='notice'>You label \the [src]: \"[examtext]\"</span>",\
+					"You hear the sound of a small printer.")
 
 /obj/structure/bigDelivery/update_icon()
 	overlays = new()
@@ -204,16 +183,21 @@
 		else
 			to_chat(user, "<span class='warning'>You need to set a destination first!</span>")
 
-	else if(istype(W, /obj/item/weapon/pen))
+	else if(istype(W, /obj/item/weapon/pen) || istype(W, /obj/item/weapon/hand_labeler))
 		switch(alert("What would you like to alter?",,"Title","Description", "Cancel"))
 			if("Title")
 				var/str = sanitizeSafe(input(usr,"Label text?","Set label",""), MAX_NAME_LEN)
 				if(!str || !length(str))
 					to_chat(usr, "<span class='warning'> Invalid text.</span>")
 					return
-				user.visible_message("\The [user] titles \the [src] with \a [W], marking down: \"[str]\"",\
-				"<span class='notice'>You title \the [src]: \"[str]\"</span>",\
-				"You hear someone scribbling a note.")
+				if(istype(W, /obj/item/weapon/pen))
+					user.visible_message("\The [user] titles \the [src] with \a [W], marking down: \"[str]\"",\
+					"<span class='notice'>You title \the [src]: \"[str]\"</span>",\
+					"You hear someone scribbling a note.")
+				else
+					user.visible_message("\The [user] titles \the [src] with \a [W]: \"[str]\"",\
+					"<span class='notice'>You title \the [src]: \"[str]\"</span>",\
+					"You hear the sound of a small printer.")
 				SetName("[name] ([str])")
 				if(!examtext && !nameset)
 					nameset = 1
@@ -231,9 +215,14 @@
 					update_icon()
 				else
 					examtext = str
-				user.visible_message("\The [user] labels \the [src] with \a [W], scribbling down: \"[examtext]\"",\
-				"<span class='notice'>You label \the [src]: \"[examtext]\"</span>",\
-				"You hear someone scribbling a note.")
+				if(istype(W, /obj/item/weapon/pen))
+					user.visible_message("\The [user] labels \the [src] with \a [W], scribbling down: \"[examtext]\"",\
+					"<span class='notice'>You label \the [src]: \"[examtext]\"</span>",\
+					"You hear someone scribbling a note.")
+				else
+					user.visible_message("\The [user] labels \the [src] with \a [W]: \"[examtext]\"",\
+					"<span class='notice'>You label \the [src]: \"[examtext]\"</span>",\
+					"You hear the sound of a small printer.")
 	return
 
 /obj/item/smallDelivery/update_icon()
