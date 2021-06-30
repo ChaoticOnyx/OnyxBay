@@ -32,7 +32,7 @@ var/global/list/protected_objects = list(/obj/structure/table, /obj/structure/ca
 	faction = "mimic"
 	move_to_delay = 8
 
-	var/weakref/copy_of = /obj/structure/closet/crate
+	var/weakref/copy_of
 	var/weakref/creator // the creator
 	var/destroy_objects = FALSE
 	var/knockdown_people = FALSE
