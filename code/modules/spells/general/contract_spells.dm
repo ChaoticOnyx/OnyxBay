@@ -43,7 +43,7 @@
 	if(!target)
 		return
 
-	to_chat(target, SPAN_INFO("You feel great!"))
+	to_chat(target, SPAN("info", "You feel great!"))
 	target.ExtinguishMob()
 
 /spell/contract/punish
