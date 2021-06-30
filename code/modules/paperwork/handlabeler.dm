@@ -19,20 +19,7 @@
 	if(A == loc)	// if placing the labeller into something (e.g. backpack)
 		return		// don't set a label
 
-	// Restricts adding a label not through the hand labeller dialog
-	if(A.icon_state == "deliverycrate")
-		return
-	if(A.icon_state == "deliverycrateSmall")
-		return
-	if(A.icon_state == "deliverycrate5")
-		return
-	if(A.icon_state == "deliverycrate4")
-		return
-	if(A.icon_state == "deliverycrate3")
-		return
-	if(A.icon_state == "deliverycrate2")
-		return
-	if(A.icon_state == "deliverycrate1")
+	if(findtext(A.icon_state,"deliverycrate")!=0 || A.icon_state == "deliverycloset")	// Restricts adding a label not through the hand labeller dialog
 		return
 
 	if(!labels_left)
