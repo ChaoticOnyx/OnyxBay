@@ -235,7 +235,10 @@
 /mob/living/carbon/human/var/temperature_resistance = T0C+75
 
 /mob/living/carbon/human/show_inv(mob/user)
-	if(user.incapacitated() || !user.Adjacent(src) || !user.IsAdvancedToolUser())
+	if(user.incapacitated() || !user.Adjacent(src))
+		return
+	if(!user.IsAdvancedToolUser())
+		show_inv_reduced(user)
 		return
 	var/dat = "<B><HR><FONT size=3>[name]</FONT></B><BR><HR>"
 	var/firstline = TRUE
@@ -278,6 +281,39 @@
 		dat += "<BR><a href='?src=\ref[src];item=\ref[UW]'>Remove \the [UW]</a>"
 
 	dat += "<BR><A href='?src=\ref[src];item=splints'>Remove splints</A>"
+	dat += "<HR><A href='?src=\ref[src];refresh=1'>Refresh</A>"
+	dat += "<BR><A href='?src=\ref[user];inv_close=1'>Close</A>"
+
+	if(!user.show_inventory || user.show_inventory.user != user)
+		user.show_inventory = new /datum/browser(user, "mob[name]", "Inventory", 340, 560)
+		user.show_inventory.set_content(dat)
+	else
+		user.show_inventory.set_content(dat)
+		user.show_inventory.update()
+	return
+
+// Used when the user is not an advanced tool user (i.e. xenomorph)
+/mob/living/carbon/human/proc/show_inv_reduced(mob/user) // aka show_inv_to_a_moron
+	if(user.incapacitated() || !user.Adjacent(src))
+		return
+	var/dat = "<B><HR><FONT size=3>[name]</FONT></B><BR><HR>"
+	var/firstline = TRUE
+	for(var/entry in species.hud.gear)
+		var/list/slot_ref = species.hud.gear[entry]
+		if((slot_ref["slot"] in list(slot_l_store, slot_r_store, slot_w_uniform, slot_gloves, slot_shoes, slot_wear_id)))
+			continue
+		var/obj/item/thing_in_slot = get_equipped_item(slot_ref["slot"])
+		if(firstline)
+			firstline = FALSE
+		else
+			dat += "<BR>"
+		dat += "<B>[slot_ref["name"]]:</b> <a href='?src=\ref[src];item=[slot_ref["slot"]]'>[istype(thing_in_slot) ? thing_in_slot : "nothing"]</a>"
+	dat += "<HR>"
+
+	if(species.hud.has_hands)
+		dat += "<b>Left hand:</b> <A href='?src=\ref[src];item=[slot_l_hand]'>[istype(l_hand) ? l_hand : "nothing"]</A>"
+		dat += "<BR><b>Right hand:</b> <A href='?src=\ref[src];item=[slot_r_hand]'>[istype(r_hand) ? r_hand : "nothing"]</A>"
+
 	dat += "<HR><A href='?src=\ref[src];refresh=1'>Refresh</A>"
 	dat += "<BR><A href='?src=\ref[user];inv_close=1'>Close</A>"
 
@@ -644,7 +680,7 @@
 		return FLASH_PROTECTION_MAJOR
 	return total_protection
 
-/mob/living/carbon/human/flash_eyes(intensity = FLASH_PROTECTION_MODERATE, override_blindness_check = FALSE, affect_silicon = FALSE, visual = FALSE, type = /obj/screen/fullscreen/flash)
+/mob/living/carbon/human/flash_eyes(intensity = FLASH_PROTECTION_MODERATE, override_blindness_check = FALSE, affect_silicon = FALSE, visual = FALSE, type = /obj/screen/fullscreen/flash, effect_duration = 25)
 	if(internal_organs_by_name[BP_EYES]) // Eyes are fucked, not a 'weak point'.
 		var/obj/item/organ/internal/eyes/I = internal_organs_by_name[BP_EYES]
 		I.additional_flash_effects(intensity)
@@ -915,24 +951,22 @@
 
 /mob/living/carbon/human/revive(ignore_prosthetic_prefs = FALSE)
 	if(should_have_organ(BP_HEART))
-		vessel.add_reagent(/datum/reagent/blood,species.blood_volume-vessel.total_volume)
+		vessel.add_reagent(/datum/reagent/blood, species.blood_volume - vessel.total_volume)
 		fixblood()
 
 	species.create_organs(src) // Reset our organs/limbs.
-	restore_all_organs(ignore_prosthetic_prefs)       // Reapply robotics/amputated status from preferences.
 
 	if(!client || !key) //Don't boot out anyone already in the mob.
-		for (var/obj/item/organ/internal/brain/H in world)
+		for(var/obj/item/organ/internal/brain/H in world)
 			if(H.brainmob)
-				if(H.brainmob.real_name == src.real_name)
+				if(H.brainmob.real_name == real_name)
 					if(H.brainmob.mind)
 						H.brainmob.mind.transfer_to(src)
 						qdel(H)
 
-
-	for (var/ID in virus2)
+	for(var/ID in virus2)
 		var/datum/disease2/disease/V = virus2[ID]
-		V.cure(src)
+		V.cure()
 
 	losebreath = 0
 
@@ -1156,9 +1190,8 @@
 
 
 	// Rebuild the HUD. If they aren't logged in then login() should reinstantiate it for them.
-	if(client && client.screen)
-		client.screen.len = null
-		InitializeHud()
+	if(client)
+		Login()
 
 	if(config && config.use_cortical_stacks && client && client.prefs.has_cortical_stack)
 		create_stack()
@@ -1330,7 +1363,7 @@
 /mob/living/carbon/human/slip(slipped_on, stun_duration = 8)
 	if((species.species_flags & SPECIES_FLAG_NO_SLIP) || (shoes && (shoes.item_flags & ITEM_FLAG_NOSLIP)))
 		return 0
-	poise -= stun_duration*5
+	damage_poise(stun_duration*5)
 	return !!(..(slipped_on, stun_duration))
 
 /mob/living/carbon/human/proc/undislocate()
@@ -1535,7 +1568,7 @@
 	if(no_pain)
 		return 0
 		// TODO [V] Remove this dirty hack
-	if(isSynthetic())
+	if(full_prosthetic) // Not using isSynthetic() to prevent huge overhead
 		return 0
 	if(check_organ)
 		if(!istype(check_organ))
@@ -1687,3 +1720,16 @@
 		to_chat(src, "<span class='notice'>You will use your main hand to block.</span>")
 		if(src.blockswitch_icon)
 			src.blockswitch_icon.icon_state = "act_blockswitch0"
+
+/mob/living/carbon/human/verb/succumb()
+	set hidden = 1
+
+	if(internal_organs_by_name[BP_BRAIN])
+		var/obj/item/organ/internal/brain/brain = internal_organs_by_name[BP_BRAIN]
+		if(!brain.is_broken() || stat != UNCONSCIOUS)
+			return
+
+		to_chat(src, SPAN("notice", "You have given up life and succumbed to death."))
+		log_and_message_admins("has succumbed")
+		adjustBrainLoss(brain.max_damage)
+		updatehealth()

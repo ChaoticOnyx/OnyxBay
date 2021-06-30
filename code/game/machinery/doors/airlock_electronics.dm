@@ -4,15 +4,15 @@
 	name = "airlock electronics"
 	icon = 'icons/obj/doors/door_assembly.dmi'
 	icon_state = "door_electronics"
-	w_class = ITEM_SIZE_SMALL //It should be tiny! -Agouri
+	w_class = ITEM_SIZE_SMALL // It should be tiny! -Agouri
 
 	matter = list(MATERIAL_STEEL = 50, MATERIAL_GLASS = 50)
 
 	req_access = list(access_engine)
 
-	var/secure = 0 //if set, then wires will be randomized and bolts will drop if the door is broken
+	var/secure = 0 // if set, then wires will be randomized and bolts will drop if the door is broken
 	var/list/conf_access = list()
-	var/one_access = 0 //if set to 1, door would receive req_one_access instead of req_access
+	var/one_access = 0 // if set to 1, door would receive req_one_access instead of req_access
 	var/last_configurator = null
 	var/locked = 1
 	var/lockable = 1
@@ -22,24 +22,23 @@
 	if (!ishuman(user) && !istype(user,/mob/living/silicon/robot))
 		return ..(user)
 
-	tg_ui_interact(user)
+	tgui_interact(user)
 
 
 
-//tgui interact code generously lifted from tgstation.
-/obj/item/weapon/airlock_electronics/tg_ui_interact(mob/user, ui_key = "main", datum/tgui/ui = null, force_open = 0, \
-	datum/tgui/master_ui = null, datum/ui_state/state = tg_hands_state)
-
-	SStgui.try_update_ui(user, src, ui_key, ui, force_open)
+// tgui interact code generously lifted from tgstation.
+/obj/item/weapon/airlock_electronics/tgui_interact(mob/user, datum/tgui/ui)
+	ui = SStgui.try_update_ui(user, src, ui)
+	
 	if(!ui)
-		ui = new(user, src, ui_key, "airlock_electronics", src.name, 1000, 500, master_ui, state)
+		ui = new(user, src, "AirlockElectronics", name)
 		ui.open()
 
-/obj/item/weapon/airlock_electronics/ui_data(mob/user)
+/obj/item/weapon/airlock_electronics/tgui_data(mob/user)
 	var/list/data = list()
 	var/list/regions = list()
 
-	for(var/i in ACCESS_REGION_SECURITY to ACCESS_REGION_SUPPLY) //code/game/jobs/_access_defs.dm
+	for(var/i in ACCESS_REGION_SECURITY to ACCESS_REGION_SUPPLY) // code/game/jobs/_access_defs.dm
 		var/list/region = list()
 		var/list/accesses = list()
 		for(var/j in get_region_accesses(i))
@@ -58,48 +57,50 @@
 
 	return data
 
-/obj/item/weapon/airlock_electronics/ui_act(action, params)
-	if(..())
-		return TRUE
+/obj/item/weapon/airlock_electronics/tgui_act(action, params)
+	. = ..()
+
+	if(.)
+		return
+
 	switch(action)
 		if("clear")
 			conf_access = list()
 			one_access = 0
-			return TRUE
+			return
 		if("one_access")
 			one_access = !one_access
-			return TRUE
+			return
 		if("set")
 			var/access = text2num(params["access"])
 			if (!(access in conf_access))
 				conf_access += access
 			else
 				conf_access -= access
-			return TRUE
+			return
 		if("unlock")
 			if(!lockable)
-				return TRUE
-			if(!req_access || istype(usr,/mob/living/silicon))
+				return
+			if(!req_access || istype(usr, /mob/living/silicon))
 				locked = 0
 				last_configurator = usr.name
-				return TRUE
+				return
 			else
 				var/obj/item/weapon/card/id/I = usr.get_active_hand()
 				I = I ? I.GetIdCard() : null
 				if(!istype(I, /obj/item/weapon/card/id))
-					to_chat(usr, "<span class='warning'>[\src] flashes a yellow LED near the ID scanner. Did you remember to scan your ID or PDA?</span>")
-					return TRUE
+					to_chat(usr, SPAN("warning", "[\src] flashes a yellow LED near the ID scanner. Did you remember to scan your ID or PDA?"))
+					return
 				if (check_access(I))
 					locked = 0
 					last_configurator = I.registered_name
 				else
-					to_chat(usr, "<span class='warning'>[\src] flashes a red LED near the ID scanner, indicating your access has been denied.</span>")
-					return TRUE
+					to_chat(usr, SPAN("warning", "[\src] flashes a red LED near the ID scanner, indicating your access has been denied."))
+					return
 		if("lock")
 			if(!lockable)
-				return TRUE
+				return
 			locked = 1
-			. = TRUE
 
 /obj/item/weapon/airlock_electronics/secure
 	name = "secure airlock electronics"
@@ -112,9 +113,3 @@
 	req_access = list()
 	locked = 0
 	lockable = 0
-
-/obj/item/weapon/airlock_electronics/brace/tg_ui_interact(mob/user, ui_key = "main", datum/tgui/ui = null, force_open = 0, datum/tgui/master_ui = null, datum/ui_state/state = tg_deep_inventory_state)
-	SStgui.try_update_ui(user, src, ui_key, ui, force_open)
-	if(!ui)
-		ui = new(user, src, ui_key, "airlock_electronics", src.name, 1000, 500, master_ui, state)
-		ui.open()

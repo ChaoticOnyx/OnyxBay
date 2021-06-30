@@ -14,7 +14,12 @@
 	obj_flags = OBJ_FLAG_CONDUCTIBLE
 	matter = list(MATERIAL_STEEL = 3000)
 	var/list/carrying = list() // List of things on the tray. - Doohl
-	var/max_carry = 2*base_storage_cost(ITEM_SIZE_NORMAL)
+	var/max_carry = 0
+
+/obj/item/weapon/tray/Initialize()
+	. = ..()
+	if(!max_carry)
+		max_carry = 2 * base_storage_cost(ITEM_SIZE_NORMAL)
 
 /obj/item/weapon/tray/attack(mob/living/carbon/M as mob, mob/living/carbon/user as mob)
 	user.setClickCooldown(DEFAULT_ATTACK_COOLDOWN)

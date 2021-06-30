@@ -202,7 +202,7 @@
 /datum/reagent/clonexadone
 	name = "Clonexadone"
 	description = "A liquid compound similar to that used in the cloning process. Can be used to 'finish' the cloning process when used in conjunction with a cryo tube."
-	taste_description = "slime"
+	taste_description = "metroid"
 	reagent_state = LIQUID
 	color = "#80bfff"
 	metabolism = REM * 0.25

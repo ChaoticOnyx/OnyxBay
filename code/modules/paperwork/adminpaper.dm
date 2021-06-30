@@ -5,7 +5,7 @@
 	var/datum/admins/admindatum = null
 
 	var/interactions = null
-	var/isCrayon = 0
+	var/isCrayon = FALSE
 	var/origin = null
 	var/mob/sender = null
 	var/obj/machinery/photocopier/faxmachine/destination
@@ -22,7 +22,6 @@
 /obj/item/weapon/paper/admin/New()
 	..()
 	generateInteractions()
-
 
 /obj/item/weapon/paper/admin/proc/generateInteractions()
 	//clear first
@@ -69,7 +68,7 @@
 	generateFooter()
 	updateDisplay()
 
-obj/item/weapon/paper/admin/proc/updateDisplay()
+/obj/item/weapon/paper/admin/proc/updateDisplay()
 	show_browser(usr, "<HTML><meta charset=\"utf-8\"><HEAD><TITLE>[name]</TITLE></HEAD><BODY>[headerOn ? header : ""][info_links][stamps][footerOn ? footer : ""][interactions]</BODY></HTML>", "window=[name];can_close=0")
 
 

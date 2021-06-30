@@ -135,7 +135,7 @@
 	min_power = 30
 
 /datum/hallucination/gunfire/start()
-	gunshot = pick('sound/weapons/gunshot/gunshot_strong.ogg', 'sound/weapons/gunshot/gunshot2.ogg', 'sound/weapons/gunshot/shotgun.ogg', 'sound/weapons/gunshot/gunshot.ogg','sound/weapons/Taser.ogg')
+	gunshot = pick('sound/effects/weapons/gun/fire_strong.ogg', 'sound/effects/weapons/gun/gunshot2.ogg', 'sound/effects/weapons/gun/fire_shotgun.ogg', 'sound/effects/weapons/gun/gunshot.ogg','sound/effects/weapons/energy/Taser.ogg')
 	origin = locate(holder.x + rand(4,8), holder.y + rand(4,8), holder.z)
 	holder.playsound_local(origin,gunshot,50)
 
@@ -408,7 +408,7 @@
 		if("animal")
 			fake_candidates = get_living_sublist(list(/mob/living/simple_animal), list(/mob/living/simple_animal/mouse))
 		if("xenomorph")
-			fake_candidates = get_living_sublist(list(/mob/living/carbon/alien, /mob/living/carbon/slime, /mob/living/deity))
+			fake_candidates = get_living_sublist(list(/mob/living/carbon/alien, /mob/living/carbon/metroid, /mob/living/deity))
 		if("bot")
 			fake_candidates = get_living_sublist(list(/mob/living/bot))
 		if("mouse")

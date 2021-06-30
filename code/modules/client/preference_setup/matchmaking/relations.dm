@@ -6,17 +6,17 @@
 	name = "Matchmaking"
 	sort_order = 1
 
-/datum/category_item/player_setup_item/relations/load_character(savefile/S)
-	from_file(S["relations"], pref.relations)
-	from_file(S["relations_info"], pref.relations_info)
+/datum/category_item/player_setup_item/relations/load_character(datum/pref_record_reader/R)
+	pref.relations = R.read("relations")
+	pref.relations_info = R.read("relations_info")
 
-	for (var/T in pref.relations)
-		if (!matchmaker.relation_types.Find(T))
+	for(var/T in pref.relations)
+		if(!matchmaker.relation_types.Find(T))
 			pref.relations.Remove(T)
 
-/datum/category_item/player_setup_item/relations/save_character(savefile/S)
-	to_file(S["relations"], pref.relations)
-	to_file(S["relations_info"], pref.relations_info)
+/datum/category_item/player_setup_item/relations/save_character(datum/pref_record_writer/W)
+	W.write("relations", pref.relations)
+	W.write("relations_info", pref.relations_info)
 
 /datum/category_item/player_setup_item/relations/sanitize_character()
 	if(!pref.relations)

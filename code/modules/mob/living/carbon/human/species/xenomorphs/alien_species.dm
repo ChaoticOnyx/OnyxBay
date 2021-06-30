@@ -47,13 +47,15 @@
 
 	vision_flags = SEE_SELF|SEE_MOBS
 	eye_icon = "blank_eyes"
-	darksight = 8
+	darksight_range = 8
+	darksight_tint = DARKTINT_GOOD
 
 	has_organ = list(
 		O_BRAIN =    /obj/item/organ/internal/brain/xeno,
 		O_PLASMA =   /obj/item/organ/internal/xenos/plasmavessel,
 		O_HIVE =     /obj/item/organ/internal/xenos/hivenode,
-		O_NUTRIENT = /obj/item/organ/internal/diona/nutrients
+		O_NUTRIENT = /obj/item/organ/internal/diona/nutrients,
+		O_GANGLION = /obj/item/organ/internal/xenos/ganglion
 		)
 
 	body_builds = list(
@@ -124,6 +126,8 @@
 	..()
 
 /datum/species/xenos/proc/regenerate(mob/living/carbon/human/H)
+	if(H.stat == DEAD)
+		return TRUE // So we neither regenerate nor gain plasma once dead
 	var/heal_rate = weeds_heal_rate
 	var/mend_prob = 10
 	if(!H.resting)
@@ -138,6 +142,7 @@
 		H.adjustToxLoss(-heal_rate)
 		if(prob(5))
 			to_chat(H, "<span class='alium'>I feel a soothing sensation come over me...</span>")
+		H.UpdateDamageIcon()
 		return TRUE
 
 	//next internal organs
@@ -147,7 +152,7 @@
 			if(mend_prob)
 				to_chat(H, "<span class='alium'>I feel a soothing sensation within my [I.parent_organ]...</span>")
 			if(!I.damage && (I.status & ORGAN_DEAD))
-				to_chat(H, "<span class='alium'>I feel invigorated as my [I.parent_organ] appears to be functioning again!</span>")
+				to_chat(H, "<span class='alium'>I feel invigorated as my [I] appears to be functioning again!</span>")
 				I.status &= ~ORGAN_DEAD
 			return TRUE
 
@@ -196,6 +201,7 @@
 	caste_name = "drone"
 	weeds_plasma_rate = 15
 	slowdown = 1
+	total_health = 150
 	tail = "xenos_drone_tail"
 	rarity_value = 5
 	strength = STR_MEDIUM
@@ -211,18 +217,19 @@
 		BP_ACID =		/obj/item/organ/internal/xenos/acidgland,
 		BP_HIVE =		/obj/item/organ/internal/xenos/hivenode,
 		BP_RESIN =		/obj/item/organ/internal/xenos/resinspinner,
-		BP_NUTRIENT =	/obj/item/organ/internal/diona/nutrients
+		BP_NUTRIENT =	/obj/item/organ/internal/diona/nutrients,
+		BP_GANGLION =    /obj/item/organ/internal/xenos/ganglion
 		)
 
 	inherent_verbs = list(
 		/mob/living/proc/ventcrawl,
+		/mob/living/carbon/proc/toggle_darksight,
 		/mob/living/carbon/human/proc/regurgitate,
 		/mob/living/carbon/human/proc/plant,
 		/mob/living/carbon/human/proc/transfer_plasma,
 		/mob/living/carbon/human/proc/evolve,
 		/mob/living/carbon/human/proc/resin,
-		/mob/living/carbon/human/proc/corrosive_acid,
-		/mob/living/carbon/human/proc/toggle_darksight
+		/mob/living/carbon/human/proc/corrosive_acid
 		)
 
 /datum/species/xenos/drone/vile
@@ -234,6 +241,7 @@
 
 	inherent_verbs = list(
 		/mob/living/proc/ventcrawl,
+		/mob/living/carbon/proc/toggle_darksight,
 		/mob/living/carbon/human/proc/toggle_powers,
 		/mob/living/carbon/human/proc/toggle_acidspit,
 		/mob/living/carbon/human/proc/Spit,
@@ -242,8 +250,7 @@
 		/mob/living/carbon/human/proc/transfer_plasma,
 		/mob/living/carbon/human/proc/evolve,
 		/mob/living/carbon/human/proc/resin,
-		/mob/living/carbon/human/proc/corrosive_acid,
-		/mob/living/carbon/human/proc/toggle_darksight
+		/mob/living/carbon/human/proc/corrosive_acid
 		)
 
 /datum/species/xenos/hunter
@@ -251,7 +258,7 @@
 	weeds_plasma_rate = 5
 	caste_name = "hunter"
 	slowdown = -1
-	total_health = 150
+	total_health = 200
 	tail = "xenos_hunter_tail"
 	strength = STR_HIGH
 	brute_mod = 0.75
@@ -264,11 +271,13 @@
 		BP_BRAIN =    /obj/item/organ/internal/brain/xeno,
 		BP_PLASMA =   /obj/item/organ/internal/xenos/plasmavessel/hunter,
 		BP_HIVE =     /obj/item/organ/internal/xenos/hivenode,
-		BP_NUTRIENT = /obj/item/organ/internal/diona/nutrients
+		BP_NUTRIENT = /obj/item/organ/internal/diona/nutrients,
+		BP_GANGLION =  /obj/item/organ/internal/xenos/ganglion
 		)
 
 	inherent_verbs = list(
 		/mob/living/proc/ventcrawl,
+		/mob/living/carbon/proc/toggle_darksight,
 		/mob/living/carbon/human/proc/toggle_powers,
 		/mob/living/carbon/human/proc/toggle_tackle,
 		/mob/living/carbon/human/proc/toggle_leap,
@@ -276,8 +285,7 @@
 		/mob/living/carbon/human/proc/leap,
 		/mob/living/carbon/human/proc/gut,
 		/mob/living/carbon/human/proc/psychic_whisper,
-		/mob/living/carbon/human/proc/regurgitate,
-		/mob/living/carbon/human/proc/toggle_darksight
+		/mob/living/carbon/human/proc/regurgitate
 		)
 
 /datum/species/xenos/hunter/feral
@@ -308,11 +316,13 @@
 		BP_PLASMA =   /obj/item/organ/internal/xenos/plasmavessel/sentinel,
 		BP_ACID =     /obj/item/organ/internal/xenos/acidgland,
 		BP_HIVE =     /obj/item/organ/internal/xenos/hivenode,
-		BP_NUTRIENT = /obj/item/organ/internal/diona/nutrients
+		BP_NUTRIENT = /obj/item/organ/internal/diona/nutrients,
+		BP_GANGLION = /obj/item/organ/internal/xenos/ganglion
 		)
 
 	inherent_verbs = list(
 		/mob/living/proc/ventcrawl,
+		/mob/living/carbon/proc/toggle_darksight,
 		/mob/living/carbon/human/proc/toggle_powers,
 		/mob/living/carbon/human/proc/toggle_tackle,
 		/mob/living/carbon/human/proc/toggle_neurotoxin,
@@ -321,8 +331,7 @@
 		/mob/living/carbon/human/proc/Spit,
 		/mob/living/carbon/human/proc/regurgitate,
 		/mob/living/carbon/human/proc/transfer_plasma,
-		/mob/living/carbon/human/proc/corrosive_acid,
-		/mob/living/carbon/human/proc/toggle_darksight
+		/mob/living/carbon/human/proc/corrosive_acid
 		)
 
 /datum/species/xenos/sentinel/primal
@@ -361,11 +370,13 @@
 		BP_ACID =     /obj/item/organ/internal/xenos/acidgland,
 		BP_HIVE =     /obj/item/organ/internal/xenos/hivenode,
 		BP_RESIN =    /obj/item/organ/internal/xenos/resinspinner,
-		BP_NUTRIENT = /obj/item/organ/internal/diona/nutrients
+		BP_NUTRIENT = /obj/item/organ/internal/diona/nutrients,
+		BP_GANGLION =  /obj/item/organ/internal/xenos/ganglion
 		)
 
 	inherent_verbs = list(
 		/mob/living/proc/ventcrawl,
+		/mob/living/carbon/proc/toggle_darksight,
 		/mob/living/carbon/human/proc/toggle_powers,
 		/mob/living/carbon/human/proc/toggle_tackle,
 		/mob/living/carbon/human/proc/toggle_neurotoxin,
@@ -379,8 +390,7 @@
 		/mob/living/carbon/human/proc/plant,
 		/mob/living/carbon/human/proc/transfer_plasma,
 		/mob/living/carbon/human/proc/corrosive_acid,
-		/mob/living/carbon/human/proc/resin,
-		/mob/living/carbon/human/proc/toggle_darksight
+		/mob/living/carbon/human/proc/resin
 		)
 
 /datum/species/xenos/queen/handle_login_special(mob/living/carbon/human/H)

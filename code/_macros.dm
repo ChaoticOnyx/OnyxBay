@@ -68,7 +68,7 @@
 
 #define issilicon(A) istype(A, /mob/living/silicon)
 
-#define isslime(A) istype(A, /mob/living/carbon/slime)
+#define ismetroid(A) istype(A, /mob/living/carbon/metroid)
 
 #define isunderwear(A) istype(A, /obj/item/underwear)
 
@@ -199,7 +199,7 @@
 
 #define JOINTEXT(X) jointext(X, null)
 
-#define SPAN(class, X)   "<span class='[class]'>[X]</span>"
+#define SPAN(class, X) "<span class='" + ##class + "'>" + ##X + "</span>"
 
 #define SPAN_NOTICE(X)   SPAN("notice", X)
 

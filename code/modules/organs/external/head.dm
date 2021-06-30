@@ -12,7 +12,7 @@
 	joint = "jaw"
 	amputation_point = "neck"
 	encased = "skull"
-	artery_name = "cartoid artery"
+	artery_name = "carotid artery"
 	cavity_name = "cranial"
 	limb_flags = ORGAN_FLAG_CAN_AMPUTATE | ORGAN_FLAG_GENDERED_ICON | ORGAN_FLAG_HEALS_OVERKILL | ORGAN_FLAG_CAN_BREAK
 
@@ -64,6 +64,8 @@
 			penman.visible_message("<span class='warning'>[penman] writes something on [head_name]!</span>", "You write something on [head_name].")
 			forehead_graffiti = graffiti
 			graffiti_style = style
+			if(owner)
+				log_and_message_admins("has written something on [owner]'s ([owner.ckey]) head: \"[graffiti]\".", penman)
 
 /obj/item/organ/external/head/set_dna(datum/dna/new_dna)
 	..()

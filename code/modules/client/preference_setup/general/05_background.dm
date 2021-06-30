@@ -15,17 +15,17 @@
 	name = "Background"
 	sort_order = 5
 
-/datum/category_item/player_setup_item/general/background/load_character(savefile/S)
-	from_file(S["nanotrasen_relation"], pref.nanotrasen_relation)
-	from_file(S["home_system"], pref.home_system)
-	from_file(S["citizenship"], pref.citizenship)
-	from_file(S["faction"], pref.faction)
-	from_file(S["religion"], pref.religion)
-	from_file(S["med_record"], pref.med_record)
-	from_file(S["gen_record"], pref.gen_record)
-	from_file(S["sec_record"], pref.sec_record)
-	from_file(S["exploit_record"], pref.exploit_record)
-	from_file(S["memory"], pref.memory)
+/datum/category_item/player_setup_item/general/background/load_character(datum/pref_record_reader/R)
+	pref.nanotrasen_relation = R.read("nanotrasen_relation")
+	pref.home_system = R.read("home_system")
+	pref.citizenship = R.read("citizenship")
+	pref.faction = R.read("faction")
+	pref.religion = R.read("religion")
+	pref.med_record = R.read("med_record")
+	pref.gen_record = R.read("gen_record")
+	pref.sec_record = R.read("sec_record")
+	pref.exploit_record = R.read("exploit_record")
+	pref.memory = R.read("memory")
 
 	// delete factions from old saves
 	var/factionExist = FALSE
@@ -36,17 +36,17 @@
 	if (!factionExist)
 		pref.faction = "NanoTrasen"
 
-/datum/category_item/player_setup_item/general/background/save_character(savefile/S)
-	to_file(S["nanotrasen_relation"], pref.nanotrasen_relation)
-	to_file(S["home_system"], pref.home_system)
-	to_file(S["citizenship"], pref.citizenship)
-	to_file(S["faction"], pref.faction)
-	to_file(S["religion"], pref.religion)
-	to_file(S["med_record"], pref.med_record)
-	to_file(S["gen_record"], pref.gen_record)
-	to_file(S["sec_record"], pref.sec_record)
-	to_file(S["exploit_record"], pref.exploit_record)
-	to_file(S["memory"], pref.memory)
+/datum/category_item/player_setup_item/general/background/save_character(datum/pref_record_writer/W)
+	W.write("nanotrasen_relation", pref.nanotrasen_relation)
+	W.write("home_system", pref.home_system)
+	W.write("citizenship", pref.citizenship)
+	W.write("faction", pref.faction)
+	W.write("religion", pref.religion)
+	W.write("med_record", pref.med_record)
+	W.write("gen_record", pref.gen_record)
+	W.write("sec_record", pref.sec_record)
+	W.write("exploit_record", pref.exploit_record)
+	W.write("memory", pref.memory)
 
 /datum/category_item/player_setup_item/general/background/sanitize_character()
 	if(!pref.home_system)

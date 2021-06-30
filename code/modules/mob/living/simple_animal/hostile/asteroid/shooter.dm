@@ -33,7 +33,7 @@
 /obj/item/projectile/energy/neurotoxin/shockzard
 	name = "energy blast"
 	icon_state = "ice_2"
-	fire_sound = 'sound/weapons/pulse3.ogg'
+	fire_sound = 'sound/effects/weapons/energy/pulse3.ogg'
 	damage = 5
 	damage_type = BURN
 	nodamage = 0

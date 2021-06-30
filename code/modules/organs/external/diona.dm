@@ -111,7 +111,8 @@
 	..()
 	if(!istype(H) || !H.organs || !H.organs.len)
 		H.death()
-	if(prob(50) && spawn_diona_nymph(get_turf(src)))
+	if(prob(50))
+		spawn_diona_nymph(get_turf(src))
 		qdel(src)
 
 // Copypaste due to eye code, RIP.
@@ -128,7 +129,8 @@
 	..()
 	if(!istype(H) || !H.organs || !H.organs.len)
 		H.death()
-	if(prob(50) && spawn_diona_nymph(get_turf(src)))
+	if(prob(50))
+		spawn_diona_nymph(get_turf(src))
 		qdel(src)
 
 /obj/item/organ/internal/diona
@@ -144,7 +146,8 @@
 	..()
 	if(!istype(H) || !H.organs || !H.organs.len)
 		H.death()
-	if(prob(50) && !skip_nymph && spawn_diona_nymph(get_turf(src)))
+	if(prob(50) && !skip_nymph)
+		spawn_diona_nymph(get_turf(src))
 		qdel(src)
 
 /obj/item/organ/internal/diona/Process()

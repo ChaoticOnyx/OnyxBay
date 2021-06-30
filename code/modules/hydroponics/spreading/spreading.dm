@@ -166,7 +166,7 @@
 
 	// Apply colour and light from seed datum.
 	if(seed.get_trait(TRAIT_BIOLUM))
-		set_light(1 + round(seed.get_trait(TRAIT_POTENCY)/20), l_color = seed.get_trait(TRAIT_BIOLUM_COLOUR))
+		set_light(0.5, 0.1, (1 + round(seed.get_trait(TRAIT_POTENCY)/20)), l_color = seed.get_trait(TRAIT_BIOLUM_COLOUR))
 	else
 		set_light(0)
 
@@ -226,7 +226,7 @@
 		..()
 		var/damage = W.edge ? W.force : W.force / 2
 		adjust_health(-damage)
-		playsound(get_turf(src), W.hitsound, 100, 1)
+		playsound(src, W.hitsound, 100, 1)
 
 //handles being overrun by vines - note that attacker_parent may be null in some cases
 /obj/effect/vine/proc/vine_overrun(datum/seed/attacker_seed, obj/effect/vine/attacker_parent)

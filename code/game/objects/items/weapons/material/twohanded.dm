@@ -166,7 +166,7 @@
 
 	throwforce = 7
 	attack_verb = list("smashed", "beaten", "slammed", "smacked", "struck", "battered", "bonked")
-	hitsound = 'sound/effects/fighting/genhit3.ogg'
+	hitsound = "swing_hit"
 	default_material = MATERIAL_WOOD
 	force_divisor = 1.0           // 20 when wielded with weight 20 (steel)
 	unwielded_force_divisor = 0.7 // 15 when unwielded based on above.

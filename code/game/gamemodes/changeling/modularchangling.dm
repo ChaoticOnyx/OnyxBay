@@ -35,23 +35,21 @@ var/list/datum/power/changeling/powerinstances = list()
 	verbpath = /mob/living/carbon/human/proc/changeling_fakedeath
 
 // Hivemind
-
 /datum/power/changeling/hive_upload
 	name = "Hive Channel"
 	desc = "We can channel a DNA into the airwaves, allowing our fellow changelings to absorb it and transform into it as if they acquired the DNA themselves."
-	helptext = "Allows other changelings to absorb the DNA you channel from the airwaves. Will not help them towards their absorb objectives."
+	helptext = "Allows other changelings to absorb the DNA we channel from the airwaves. Will not help them towards their absorb objectives."
 	genomecost = 0
 	verbpath = /mob/proc/changeling_hiveupload
 
 /datum/power/changeling/hive_download
 	name = "Hive Absorb"
 	desc = "We can absorb a single DNA from the airwaves, allowing us to use more disguises with help from our fellow changelings."
-	helptext = "Allows you to absorb a single DNA and use it. Does not count towards your absorb objective."
+	helptext = "Allows us to absorb a single DNA and use it. Does not count towards our absorb objective."
 	genomecost = 0
 	verbpath = /mob/proc/changeling_hivedownload
 
-//Biostructure and limb management
-
+// Biostructure and limb management
 /datum/power/changeling/move_biostructure
 	name = "Relocate Biostructure"
 	desc = "We move our precious core organ to different part of our body."
@@ -67,8 +65,7 @@ var/list/datum/power/changeling/powerinstances = list()
 	genomecost = 0
 	verbpath = /mob/proc/changeling_detach_limb
 
-//Other free abilities
-
+// Other free abilities
 /datum/power/changeling/self_respiration
 	name = "Self Respiration"
 	desc = "We evolve our body to no longer require drawing oxygen from the atmosphere."
@@ -117,7 +114,7 @@ var/list/datum/power/changeling/powerinstances = list()
 /datum/power/changeling/mimicvoice
 	name = "Mimic Voice"
 	desc = "We shape our vocal glands to sound like a desired voice."
-	helptext = "Will turn your voice into the name that you enter. We must constantly expend chemicals to maintain our form like this"
+	helptext = "Will turn our voice into the name that we enter. We must constantly expend chemicals to maintain our form like this"
 	genomecost = 3
 	allowduringlesserform = 1
 	verbpath = /mob/proc/changeling_mimicvoice
@@ -125,7 +122,7 @@ var/list/datum/power/changeling/powerinstances = list()
 /datum/power/changeling/extractdna
 	name = "Extract DNA"
 	desc = "We stealthily sting a target and extract the DNA from them."
-	helptext = "Will give you the DNA of your target, allowing you to transform into them. Does not count towards absorb objectives."
+	helptext = "Will give us the DNA of our target, allowing us to transform into them. Does not count towards absorb objectives."
 	genomecost = 4
 	allowduringlesserform = 1
 	verbpath = /mob/proc/prepare_changeling_extract_dna_sting
@@ -209,14 +206,7 @@ var/list/datum/power/changeling/powerinstances = list()
 	genomecost = 8
 	verbpath = /mob/proc/changeling_visible_camouflage
 
-/datum/power/changeling/electric_lockpick
-	name = "Electric Lockpick"
-	desc = "We discreetly evolve a finger to be able to send a small electric charge.  \
-	We can open most electrical locks, but it will be obvious when we do so."
-	helptext = "Use the ability, then touch something that utilizes an electrical locking system, to open it.  Each use costs 10 chemicals."
-	genomecost = 8
-	verbpath = /mob/proc/changeling_electric_lockpick
-
+// Changeling items
 /datum/power/changeling/arm_blade
 	name = "Arm Blade"
 	desc = "We reform one of our arms into a deadly blade."
@@ -225,9 +215,6 @@ var/list/datum/power/changeling/powerinstances = list()
 	genomecost = 8
 	verbpath = /mob/proc/changeling_arm_blade
 
-//Grows a scary, and powerful arm blade.
-
-//Claws
 /datum/power/changeling/claw
 	name = "Claw"
 	desc = "We reform one of our arms into a deadly claw."
@@ -235,6 +222,14 @@ var/list/datum/power/changeling/powerinstances = list()
 	enhancedtext = "The claw would have armor peneratration."
 	genomecost = 6
 	verbpath = /mob/proc/changeling_claw
+
+/datum/power/changeling/electric_lockpick
+	name = "Electric Lockpick"
+	desc = "We discreetly evolve a finger to be able to send a small electric charge.  \
+	We can open most electrical locks, but it will be obvious when we do so."
+	helptext = "Use the ability, then touch something that utilizes an electrical locking system, to open it.  Each use costs 10 chemicals."
+	genomecost = 8
+	verbpath = /mob/proc/changeling_electric_lockpick
 
 /datum/power/changeling/recursive_enhancement
 	name = "Recursive Enhancement"
@@ -267,7 +262,7 @@ var/list/datum/power/changeling/powerinstances = list()
 
 /datum/power/changeling/gib_self
 	name = "Body Disjunction"
-	desc = "Tear apart your human disguise and become a hunting pack of lesser critters."
+	desc = "Tear apart our human disguise and become a hunting pack of lesser critters."
 	helptext = "Takes time."
 	genomecost = 8
 	verbpath = /mob/proc/changeling_gib_self
@@ -296,7 +291,7 @@ var/list/datum/power/changeling/powerinstances = list()
 */
 /datum/power/changeling/rapid_heal
 	name = "Passive Regeneration"
-	desc = "Allows you to passively regenerate when activated."
+	desc = "Allows us to passively regenerate when activated."
 	helptext = "Spends chemicals."
 	genomecost = 6
 	verbpath = /mob/proc/changeling_rapid_heal

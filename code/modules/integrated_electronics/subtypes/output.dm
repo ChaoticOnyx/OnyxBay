@@ -86,7 +86,7 @@
 /obj/item/integrated_circuit/output/light/proc/update_lighting()
 	if(light_toggled)
 		if(assembly)
-			assembly.set_light(l_range = light_brightness, l_power = 1, l_color = light_rgb)
+			assembly.set_light(1, light_brightness/4, light_brightness, 2, light_rgb)
 	else
 		if(assembly)
 			assembly.set_light(0)
@@ -157,7 +157,7 @@
 		if(!selected_sound)
 			return
 		vol = Clamp(vol, 0, 100)
-		playsound(get_turf(src), selected_sound, vol, freq, -1)
+		playsound(src, selected_sound, vol, freq, -1)
 		var/atom/A = get_object()
 		A.investigate_log("played a sound ([selected_sound]) as [type].", INVESTIGATE_CIRCUIT)
 

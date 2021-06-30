@@ -7,7 +7,7 @@
 	return FALSE
 
 /storyteller_trigger/proc/invoke()
-	ASSERT("Storyteller trigger '[name]' invoke method is not implemented!")
+	CRASH("Storyteller trigger '[name]' invoke method is not implemented!")
 
 /storyteller_trigger/proc/get_params_for_ui()
 	var/list/data = list(

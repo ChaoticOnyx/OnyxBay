@@ -114,7 +114,7 @@
 
 				bloodDNA = null
 
-		if(src.wet)
+		if(wet)
 
 			if(M.buckled || (M.m_intent == M_WALK && prob(min(100, 100/(wet/10))) ) )
 				return
@@ -123,10 +123,10 @@
 			var/slip_stun = 3
 			var/floor_type = "wet"
 
-			if(2 <= src.wet) // Lube
+			if(wet >= 2) // Lube
 				floor_type = "slippery"
 				slip_dist = 4
-				slip_stun = 9
+				slip_stun = 6
 
 			if(M.slip("the [floor_type] floor", slip_stun))
 				for(var/i = 1 to slip_dist)

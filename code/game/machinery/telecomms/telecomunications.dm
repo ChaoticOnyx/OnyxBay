@@ -141,7 +141,8 @@ var/global/list/obj/machinery/telecomms/telecomms_list = list()
 	for(var/obj/machinery/telecomms/comm in telecomms_list)
 		comm.links -= src
 	links = list()
-	..()
+
+	return ..()
 
 // Used in auto linking
 /obj/machinery/telecomms/proc/add_link(obj/machinery/telecomms/T)
@@ -563,8 +564,8 @@ var/global/list/obj/machinery/telecomms/telecomms_list = list()
 				else if(issilicon(M))
 					race = "Artificial Life"
 					log.parameters["intelligible"] = 1
-				else if(isslime(M))
-					race = "Slime"
+				else if(ismetroid(M))
+					race = "Metroid"
 				else if(isanimal(M))
 					race = "Domestic Animal"
 

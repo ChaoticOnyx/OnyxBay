@@ -47,6 +47,7 @@
 	gun_setting_icon = null
 	ability_master = null
 	zone_sel = null
+	poise_icon = null
 
 /mob/Initialize()
 	. = ..()
@@ -247,7 +248,7 @@
 				client.eye = loc
 	return
 
-/mob/proc/show_inv(mob/user as mob)
+/mob/proc/show_inv(mob/user)
 	return
 
 //mob verbs are faster than object verbs. See http://www.byond.com/forum/?post=1326139&page=2#comment8198716 for why this isn't atom/verb/examine()
@@ -277,6 +278,8 @@
 	set name = "Point To"
 	set category = "Object"
 
+	if(last_time_pointed_at + 2 SECONDS >= world.time)
+		return
 	if(!src || !isturf(src.loc) || !(A in view(src.loc)))
 		return 0
 	if(istype(A, /obj/effect/decal/point))
@@ -285,6 +288,8 @@
 	var/tile = get_turf(A)
 	if (!tile)
 		return 0
+
+	last_time_pointed_at = world.time
 
 	var/obj/P = new /obj/effect/decal/point(tile)
 	P.set_invisibility(invisibility)
@@ -404,26 +409,10 @@
 	set category = "OOC"
 	getFiles(
 		'html/pie.htc',
-		'html/88x31.png',
-		'html/bug-minus.png',
-		'html/burn-exclamation.png',
-		'html/chevron.png',
-		'html/chevron-expand.png',
-		'html/cross-circle.png',
-		'html/hard-hat-exclamation.png',
-		'html/image-minus.png',
-		'html/image-plus.png',
-		'html/map-pencil.png',
-		'html/music-minus.png',
-		'html/music-plus.png',
-		'html/tick-circle.png',
-		'html/scales.png',
-		'html/spell-check.png',
-		'html/wrench-screwdriver.png',
 		'html/changelog.css',
 		'html/changelog.html'
 		)
-	show_browser(src, 'html/changelog.html', "window=changes;size=675x650")
+	show_browser(src, 'html/changelog.html', "window=changes;size=675x800")
 	if(prefs.lastchangelog != changelog_hash)
 		prefs.lastchangelog = changelog_hash
 		SScharacter_setup.queue_preferences_save(prefs)
@@ -539,14 +528,18 @@
 			return 1
 	return 0
 
-/mob/MouseDrop(mob/M as mob)
+/mob/MouseDrop(mob/M)
 	..()
-	if(M != usr) return
-	if(usr == src) return
-	if(!Adjacent(usr)) return
-	if(istype(M,/mob/living/silicon/ai)) return
+	if(M != usr)
+		return
+	if(usr == src)
+		return
+	if(!Adjacent(usr))
+		return
+	if(istype(M,/mob/living/silicon/ai))
+		return
 	show_inv(usr)
-	usr.show_inventory.open()
+	usr.show_inventory?.open()
 
 /mob/verb/stop_pulling()
 

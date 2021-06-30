@@ -1,0 +1,32 @@
+.MechaFabricator {
+  &__slideAnimation {
+    animation: slide-up 0.4s ease;
+  }
+
+  @keyframes slide-up {
+    0% {
+      opacity: 0;
+      transform: translateY(100vh);
+    }
+    100% {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+}
+
+.Storage .game-icon {
+  @at-root .theme-primer-white &, .theme-primer-dark & {
+    width: 3em;
+    height: 3em;
+    vertical-align: -1.5rem;
+  }
+}
+
+.Buildable .game-icon {
+  @at-root .theme-primer-white &, .theme-primer-dark & {
+    width: 2em;
+    height: 2em;
+    vertical-align: -1.5rem;
+  }
+}

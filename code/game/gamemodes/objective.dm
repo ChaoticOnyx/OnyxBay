@@ -1,7 +1,7 @@
 //This file was auto-corrected by findeclaration.exe on 25.5.2012 20:42:31
 var/global/list/all_objectives = list()
 
-datum/objective
+/datum/objective
 	var/datum/mind/owner = null			//Who owns the objective.
 	var/explanation_text = "Nothing"	//What that person is supposed to do.
 	var/datum/mind/target = null		//If they are focused on a particular person.
@@ -389,6 +389,19 @@ datum/objective/harm
 				return 1
 		return 0
 
+/datum/objective/contracts
+	var/amount = 1
+
+/datum/objective/contracts/New()
+	amount = rand(3, 5)
+	explanation_text = "Complete at least [amount] contracts."
+
+/datum/objective/contracts/check_completion()
+	if(owner.completed_contracts >= amount)
+		return TRUE
+	else
+		return FALSE
+
 /datum/objective/ert_station_save
 
 /datum/objective/ert_station_save/check_completion()
@@ -418,12 +431,11 @@ datum/objective/harm
 /datum/objective/nuclear/check_completion()
 	return SSticker.mode.station_was_nuked
 
-datum/objective/steal
+/datum/objective/steal
 	var/obj/item/steal_target
 	var/target_name
 
 	var/global/possible_items[] = list(
-		"the prototype psychoscope" = /obj/item/clothing/glasses/psychoscope,
 		"the captain's antique laser gun" = /obj/item/weapon/gun/energy/captain,
 		"a bluespace rift generator in hand teleporter" = /obj/item/integrated_circuit/manipulation/bluespace_rift,
 		"an RCD" = /obj/item/weapon/rcd,
@@ -434,7 +446,7 @@ datum/objective/steal
 		"the [station_name()] blueprints" = /obj/item/blueprints,
 		"a nasa voidsuit" = /obj/item/clothing/suit/space/void,
 		"28 moles of plasma (full tank)" = /obj/item/weapon/tank,
-		"a sample of slime extract" = /obj/item/slime_extract,
+		"a sample of metroid extract" = /obj/item/metroid_extract,
 		"a piece of corgi meat" = /obj/item/weapon/reagent_containers/food/snacks/meat/corgi,
 		"a research director's jumpsuit" = /obj/item/clothing/under/rank/research_director,
 		"a chief engineer's jumpsuit" = /obj/item/clothing/under/rank/chief_engineer,
@@ -458,7 +470,7 @@ datum/objective/steal
 	)
 
 
-datum/objective/steal/proc/set_target(item_name)
+/datum/objective/steal/proc/set_target(item_name)
 	target_name = item_name
 	steal_target = possible_items[target_name]
 	if (!steal_target)
@@ -467,11 +479,11 @@ datum/objective/steal/proc/set_target(item_name)
 	return steal_target
 
 
-datum/objective/steal/find_target()
+/datum/objective/steal/find_target()
 	return set_target(pick(possible_items))
 
 
-datum/objective/steal/proc/select_target()
+/datum/objective/steal/proc/select_target()
 	var/list/possible_items_all = possible_items+possible_items_special+"custom"
 	if(!(/mob/living/silicon/ai in SSmobs.mob_list))
 		possible_items_all -= "a functional AI"
@@ -495,7 +507,7 @@ datum/objective/steal/proc/select_target()
 		set_target(new_target)
 	return steal_target
 
-datum/objective/steal/check_completion()
+/datum/objective/steal/check_completion()
 	if(!steal_target || !owner.current)
 		return 0
 	if(!isliving(owner.current))
@@ -803,7 +815,7 @@ datum/objective/heist/salvage
 		if(GLOB.raiders && GLOB.raiders.is_raider_crew_safe()) return 1
 		return 0
 
-//Borer objective(s).
+// Borer objective(s).
 /datum/objective/borer_survive
 	explanation_text = "Survive in a host until the end of the round."
 

@@ -62,7 +62,7 @@
 			src.visible_message("[src] pushes [target] out of the way.")
 
 		melee_can_hit = 0
-		if(do_after(melee_cooldown))
+		spawn(melee_cooldown)
 			melee_can_hit = 1
 		return
 
@@ -80,7 +80,7 @@
 						src.visible_message("<b>[src.name] smashes through the wall</b>")
 						playsound(src, 'sound/effects/fighting/smash.ogg', 50, 1)
 					melee_can_hit = 0
-					if(do_after(melee_cooldown))
+					spawn(melee_cooldown)
 						melee_can_hit = 1
 					break
 	return

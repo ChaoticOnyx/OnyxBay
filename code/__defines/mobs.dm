@@ -82,10 +82,10 @@
 #define MONKEY 2
 #define ALIEN 4
 #define ROBOT 8
-#define SLIME 16
+#define METROID 16
 #define SIMPLE_ANIMAL 32
 #define HEAVY 64
-#define ALLMOBS (HUMAN|MONKEY|ALIEN|ROBOT|SLIME|SIMPLE_ANIMAL|HEAVY)
+#define ALLMOBS (HUMAN|MONKEY|ALIEN|ROBOT|METROID|SIMPLE_ANIMAL|HEAVY)
 
 // Robot AI notifications
 #define ROBOT_NOTIFICATION_NEW_UNIT 1
@@ -208,7 +208,6 @@
 #define BP_LIVER    "liver"
 #define BP_KIDNEYS  "kidneys"
 #define BP_STOMACH  "stomach"
-#define BP_PLASMA   "plasma vessel"
 #define BP_APPENDIX "appendix"
 #define BP_CELL     "cell"
 #define BP_HIVE     "hive node"
@@ -221,10 +220,11 @@
 #define BP_GBLADDER "gas bladder"
 #define BP_POLYP    "polyp segment"
 #define BP_ANCHOR   "anchoring ligament"
-#define BP_PLASMA   "plasma filter"
+#define BP_PLASMA   "plasma vessel"
 #define BP_CHANG    "biostructure"
 #define BP_CANCER   "cancer"
 #define BP_EMBRYO   "alien embryo"
+#define BP_GANGLION "spinal ganglion"
 
 // Robo Organs.
 #define BP_POSIBRAIN	"posibrain"
@@ -328,7 +328,7 @@
 #define AURA_TYPE_THROWN "Thrown"
 #define AURA_TYPE_LIFE   "Life"
 
-#define SLIME_EVOLUTION_THRESHOLD 10
+#define METROID_EVOLUTION_THRESHOLD 10
 
 //Used in mob/proc/get_input
 

@@ -27,6 +27,8 @@
 /obj/item/clothing/proc/needs_vision_update()
 	return flash_protection || tint
 
+GLOBAL_LIST_EMPTY(clothing_blood_icons)
+
 /obj/item/clothing/get_mob_overlay(mob/user_mob, slot)
 	var/image/ret = ..()
 
@@ -35,9 +37,16 @@
 
 	if(ishuman(user_mob))
 		var/mob/living/carbon/human/user_human = user_mob
-		if(blood_DNA && user_human.body_build.blood_icon)
-			var/image/bloodsies	= overlay_image(user_human.body_build.blood_icon, blood_overlay_type, blood_color, RESET_COLOR)
-			ret.overlays += bloodsies
+		if(blood_overlay_type && blood_DNA && user_human.body_build.blood_icon)
+			var/mob_state = get_icon_state(slot)
+			var/mob_icon = user_human.body_build.get_mob_icon(slot, mob_state)
+			var/cache_index = "[mob_icon]/[mob_state]/[blood_color]"
+			if(!GLOB.clothing_blood_icons[cache_index])
+				var/image/bloodover = image(icon = user_human.body_build.blood_icon, icon_state = blood_overlay_type)
+				bloodover.color = blood_color
+				bloodover.filters += filter(type = "alpha", icon = icon(mob_icon, mob_state))
+				GLOB.clothing_blood_icons[cache_index] = bloodover
+			ret.overlays |= GLOB.clothing_blood_icons[cache_index]
 
 	if(accessories.len)
 		for(var/obj/item/clothing/accessory/A in accessories)
@@ -169,6 +178,7 @@
 	w_class = ITEM_SIZE_TINY
 	throwforce = 2
 	slot_flags = SLOT_EARS
+	blood_overlay_type = null // These are small anyways
 
 /obj/item/clothing/ears/update_clothing_icon()
 	if (ismob(src.loc))
@@ -196,6 +206,7 @@ BLIND     // can't see anything
 	var/darkness_view = 0//Base human is 2
 	var/see_invisible = -1
 	var/light_protection = 0
+	blood_overlay_type = null // These are too small to bother, no need to waste CPU time
 
 /obj/item/clothing/glasses/update_clothing_icon()
 	if(ismob(src.loc))
@@ -213,12 +224,13 @@ BLIND     // can't see anything
 	var/wired = FALSE
 	var/wire_color
 	var/clipped = FALSE
-	var/obj/item/clothing/ring/ring = null		//Covered ring
-	var/mob/living/carbon/human/wearer = null	//Used for covered rings when dropping
+	var/obj/item/clothing/ring/ring = null    // Covered ring
+	var/mob/living/carbon/human/wearer = null // Used for covered rings when dropping
+	var/unarmed_damage_override = null        // Overrides unarmed attack damage if not null
 	body_parts_covered = HANDS
 	slot_flags = SLOT_GLOVES
 	attack_verb = list("challenged")
-	species_restricted = list("exclude",SPECIES_NABBER, SPECIES_UNATHI,SPECIES_TAJARA, SPECIES_VOX)
+	species_restricted = list("exclude", SPECIES_NABBER, SPECIES_UNATHI, SPECIES_TAJARA, SPECIES_VOX)
 	blood_overlay_type = "bloodyhands"
 
 /obj/item/clothing/gloves/Initialize()
@@ -380,7 +392,7 @@ BLIND     // can't see anything
 
 /obj/item/clothing/head/proc/update_flashlight(mob/user = null)
 	if(on && !light_applied)
-		set_light(brightness_on)
+		set_light(0.5, 1, 3)
 		light_applied = 1
 	else if(!on && light_applied)
 		set_light(0)
@@ -613,7 +625,7 @@ BLIND     // can't see anything
 	allowed = list(/obj/item/weapon/tank/emergency)
 	armor = list(melee = 5, bullet = 5, laser = 5,energy = 0, bomb = 0, bio = 0, rad = 0)
 	slot_flags = SLOT_OCLOTHING
-	blood_overlay_type = "suit"
+	blood_overlay_type = "suitblood"
 	siemens_coefficient = 0.9
 	w_class = ITEM_SIZE_NORMAL
 
@@ -886,3 +898,4 @@ BLIND     // can't see anything
 	gender = NEUTER
 	species_restricted = list("exclude", SPECIES_NABBER, SPECIES_DIONA)
 	var/undergloves = 1
+	blood_overlay_type = null

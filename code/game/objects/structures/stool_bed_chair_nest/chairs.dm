@@ -107,7 +107,7 @@
 	desc = "A folded chair. Good for smashing noggin-shaped things."
 	icon = 'icons/obj/furniture.dmi'
 	icon_state = "folded_chair"
-	item_state = "table_parts"
+	item_state = "folded_chair"
 	w_class = ITEM_SIZE_GARGANTUAN // Jesus no
 	force = 12.5
 	throwforce = 10.0
@@ -342,6 +342,13 @@
 	icon_state = "shuttle_chaired_preview"
 
 /obj/structure/bed/chair/shuttle/red/New(newloc, newmaterial)
+	..(newloc, MATERIAL_PLASTIC, MATERIAL_CARPET)
+
+/obj/structure/bed/chair/shuttle/black
+	base_icon = "shuttle_chairbl"
+	icon_state = "shuttle_chairbl_preview"
+
+/obj/structure/bed/chair/shuttle/black/New(newloc, newmaterial)
 	..(newloc, MATERIAL_PLASTIC, MATERIAL_CARPET)
 
 // Colorful chairs

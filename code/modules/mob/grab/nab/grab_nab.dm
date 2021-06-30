@@ -88,7 +88,7 @@
 		G.affecting.visible_message("<span class='danger'>[G.assailant]'s spikes dig in painfully!</span>")
 	else
 		G.affecting.apply_damage(attack_damage, BRUTE, hit_zone, armor,, "crushing")
-	playsound(get_turf(G.assailant), 'sound/weapons/bite.ogg', 25, 1, -1)
+	playsound(G.assailant, 'sound/weapons/bite.ogg', 25, 1, -1)
 
 	admin_attack_log(G.assailant, G.affecting, "Crushed their victim.", "Was crushed.", "crushed")
 
@@ -101,6 +101,6 @@
 
 	G.affecting.apply_damage(attack_damage, BRUTE, hit_zone, armor, DAM_SHARP|DAM_EDGE, "mandibles")
 	G.affecting.visible_message("<span class='danger'>[G.assailant] chews on [G.affecting]'s [damaging.name]!</span>")
-	playsound(get_turf(G.assailant), 'sound/weapons/bite.ogg', 25, 1, -1)
+	playsound(G.assailant, 'sound/weapons/bite.ogg', 25, 1, -1)
 
 	admin_attack_log(G.assailant, G.affecting, "Chews their victim.", "Was chewed.", "chewed")

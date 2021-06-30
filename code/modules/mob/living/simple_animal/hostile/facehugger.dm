@@ -58,7 +58,7 @@
 			var/obj/item/mask = H.get_equipped_item(slot_wear_mask)
 			if(istype(mask, /obj/item/weapon/holder/facehugger)) // No need to interrupt our allies
 				var/obj/item/weapon/holder/facehugger/F = mask
-				if(F.wasted) // ...unless they are dead
+				if(!F.wasted) // ...unless they are dead
 					continue
 			L += a
 	return L
@@ -69,7 +69,7 @@
 		if(is_sterile)
 			icon_state = "facehugger_impregnated"
 
-/mob/living/simple_animal/hostile/facehugger/get_scooped(mob/living/carbon/grabber)
+/mob/living/simple_animal/hostile/facehugger/get_scooped(mob/living/carbon/grabber, self_grab)
 	if(grabber.faction != "xenomorph" && !is_sterile && !stat)
 		to_chat(grabber, SPAN("warning", "\The [src] wriggles out of your hands before you can pick it up!"))
 		return
@@ -92,6 +92,10 @@
 	if(mask && !mask.knocked_out(H, dist = 0))
 		H.visible_message(SPAN("warning", "\The [src] tries to rip [H]'s [mask] off, but fails."))
 		return FALSE
+	var/obj/item/l_ear = H.get_equipped_item(slot_l_ear)
+	l_ear?.knocked_out(H, dist = 0)
+	var/obj/item/r_ear = H.get_equipped_item(slot_r_ear)
+	r_ear?.knocked_out(H, dist = 0)
 
 	var/obj/item/weapon/holder/facehugger/holder = new()
 	forceMove(holder)

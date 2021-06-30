@@ -111,7 +111,7 @@
 		return 0
 
 	// Not sure why a food item that passed the previous checks would fail to drop, but safety first.
-	if(!user.unEquip(I))
+	if(!user.drop_from_inventory(I))
 		return
 
 	if(inserted_mob)
@@ -174,7 +174,7 @@
 
 				src.visible_message(SPAN_NOTICE("\The [src] pings!"))
 				if(cooked_sound)
-					playsound(get_turf(src), cooked_sound, 50, 1)
+					playsound(src, cooked_sound, 50, 1)
 		if(COOKED)
 			if(!can_burn_food)
 				eject()

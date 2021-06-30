@@ -1,10 +1,6 @@
 ////////////////////////////////////////////////////////////////////////////////
-/// Syringes.
+/// Syringes
 ////////////////////////////////////////////////////////////////////////////////
-#define SYRINGE_DRAW 0
-#define SYRINGE_INJECT 1
-#define SYRINGE_BROKEN 2
-
 /obj/item/weapon/reagent_containers/syringe
 	name = "syringe"
 	desc = "A syringe."
@@ -24,73 +20,14 @@
 	var/visible_name = "a syringe"
 	var/time = 30
 	var/stabby = TRUE
+	var/starting_label = null
+	var/package_state = "package"
 
-/obj/item/weapon/reagent_containers/dna_sampler
-	name = "dna sampler"
-	desc = "It is device with little needle that can be used to take dna sample for bioprinter."
-	icon = 'icons/obj/syringe.dmi'
-	icon_state = "dna_sampler"
-	matter = list(MATERIAL_GLASS = 50)
-	amount_per_transfer_from_this = 1
-	possible_transfer_amounts = null
-	volume = 1
-	w_class = ITEM_SIZE_TINY
-	unacidable = 1 //glass
-
-/obj/item/weapon/reagent_containers/dna_sampler/detective
-	name = "blood sampler"
-	desc = "It is device with little needle that can be used to take blood sample."
-	amount_per_transfer_from_this = 5
-	volume = 5
-
-/obj/item/weapon/reagent_containers/dna_sampler/attack_self(mob/user as mob)
-	if (!reagents.get_free_space())
-		src.reagents.del_reagent(/datum/reagent/blood)
-		icon_state = "dna_sampler"
-		to_chat(user, "<span class='notice'>You reset \the [src].</span>")
-
-/obj/item/weapon/reagent_containers/dna_sampler/attackby(obj/item/I as obj, mob/user as mob)
-	return
-
-/obj/item/weapon/reagent_containers/dna_sampler/afterattack(obj/target, mob/user, proximity)
-	if(!proximity)
-		return
-	if(ismob(target))//Blood!
-		if(reagents.has_reagent(/datum/reagent/blood))
-			to_chat(user, "<span class='notice'>There is already a sample present.</span>")
-			return
-		if(istype(target, /mob/living/carbon))
-			if(istype(target, /mob/living/carbon/slime))
-				to_chat(user, "<span class='warning'>You are unable to locate any blood.</span>")
-				return
-			var/mob/living/carbon/T = target
-			if(!T.dna)
-				to_chat(user, "<span class='warning'>You are unable to locate any blood.</span>")
-				CRASH("[T] \[[T.type]\] was missing their dna datum!")
-
-			user.setClickCooldown(DEFAULT_QUICK_COOLDOWN)
-			user.do_attack_animation(target)
-
-			T.take_blood(src, amount_per_transfer_from_this)
-			icon_state = "dna_sampler_full"
-			to_chat(user, "<span class='notice'>You take a blood sample from [target].</span>")
-			to_chat(T,"<span class='notice'>You feel a tiny prick.</span>")
-			for(var/mob/O in viewers(4, user))
-				O.show_message("<span class='notice'>[user] takes a blood sample from [target].</span>", 1)
-			return
-
-	if(!reagents.total_volume)
-		to_chat(user, "<span class='notice'>The syringe is empty.</span>")
-		return
-	if(!reagents.get_free_space())
-		if(!target.reagents.get_free_space())
-			to_chat(user, "<span class='notice'>[target] is full.</span>")
-			return
-
-		var/trans = reagents.trans_to(target, amount_per_transfer_from_this)
-		to_chat(user, "<span class='notice'>You inject \the [target] with [trans] units of the solution. \The [src] now contains [src.reagents.total_volume] units.</span>")
-		icon_state = "dna_sampler"
-
+/obj/item/weapon/reagent_containers/syringe/Initialize()
+	. = ..()
+	if(mode != SYRINGE_PACKAGED && starting_label)
+		name = "syringe"
+		attach_label(null, null, starting_label) // So the name isn't hardcoded and the label can be removed for reusability
 
 /obj/item/weapon/reagent_containers/syringe/on_reagent_change()
 	update_icon()
@@ -103,7 +40,7 @@
 	..()
 	update_icon()
 
-/obj/item/weapon/reagent_containers/syringe/attack_self(mob/user as mob)
+/obj/item/weapon/reagent_containers/syringe/attack_self(mob/user)
 	switch(mode)
 		if(SYRINGE_DRAW)
 			mode = SYRINGE_INJECT
@@ -111,6 +48,13 @@
 			mode = SYRINGE_DRAW
 		if(SYRINGE_BROKEN)
 			return
+		if(SYRINGE_PACKAGED)
+			to_chat(user, SPAN("notice", "You unwrap \the [src]."))
+			mode = SYRINGE_INJECT
+			if(starting_label)
+				name = "syringe"
+				desc = "A syringe."
+				attach_label(null, null, starting_label)
 	update_icon()
 
 /obj/item/weapon/reagent_containers/syringe/attack_hand()
@@ -133,7 +77,10 @@
 		return
 
 	if(mode == SYRINGE_BROKEN)
-		to_chat(user, "<span class='warning'>This syringe is broken.</span>")
+		to_chat(user, SPAN("warning", "This syringe is broken."))
+		return
+
+	if(mode == SYRINGE_PACKAGED)
 		return
 
 	if(istype(target, /obj/structure/closet/body_bag))
@@ -164,14 +111,6 @@
 		return
 
 	var/rounded_vol = round(reagents.total_volume, round(reagents.maximum_volume / 3))
-	if(ismob(loc))
-		var/injoverlay
-		switch(mode)
-			if (SYRINGE_DRAW)
-				injoverlay = "draw"
-			if (SYRINGE_INJECT)
-				injoverlay = "inject"
-		overlays += injoverlay
 	icon_state = "[rounded_vol]"
 	item_state = "syringe_[rounded_vol]"
 
@@ -183,11 +122,24 @@
 		filling.color = reagents.get_color()
 		overlays += filling
 
+	if(mode == SYRINGE_PACKAGED && package_state)
+		overlays += package_state
+		return
+
+	if(ismob(loc))
+		var/injoverlay
+		switch(mode)
+			if(SYRINGE_DRAW)
+				injoverlay = "draw"
+			if(SYRINGE_INJECT)
+				injoverlay = "inject"
+		if(injoverlay)
+			overlays += injoverlay
+
 /obj/item/weapon/reagent_containers/syringe/proc/handleTarget(atom/target, mob/user)
 	switch(mode)
 		if(SYRINGE_DRAW)
 			drawReagents(target, user)
-
 		if(SYRINGE_INJECT)
 			injectReagents(target, user)
 
@@ -202,7 +154,7 @@
 			to_chat(user, "<span class='notice'>There is already a blood sample in this syringe.</span>")
 			return
 		if(istype(target, /mob/living/carbon))
-			if(istype(target, /mob/living/carbon/slime))
+			if(istype(target, /mob/living/carbon/metroid))
 				to_chat(user, "<span class='warning'>You are unable to locate any blood.</span>")
 				return
 			var/amount = reagents.get_free_space()
@@ -237,7 +189,7 @@
 			to_chat(user, "<span class='notice'>[target] is empty.</span>")
 			return
 
-		if(!target.is_open_container() && !istype(target, /obj/structure/reagent_dispensers) && !istype(target, /obj/item/weapon/backwear/reagent) && !istype(target, /obj/item/slime_extract))
+		if(!target.is_open_container() && !istype(target, /obj/structure/reagent_dispensers) && !istype(target, /obj/item/weapon/backwear/reagent) && !istype(target, /obj/item/metroid_extract))
 			to_chat(user, "<span class='notice'>You cannot directly remove reagents from this object.</span>")
 			return
 
@@ -257,7 +209,7 @@
 	if(istype(target, /obj/item/weapon/implantcase/chem))
 		return
 
-	if(!target.is_open_container() && !ismob(target) && !istype(target, /obj/item/weapon/reagent_containers/food) && !istype(target, /obj/item/slime_extract) && !istype(target, /obj/item/clothing/mask/smokable/cigarette) && !istype(target, /obj/item/weapon/storage/fancy/cigarettes))
+	if(!target.is_open_container() && !ismob(target) && !istype(target, /obj/item/weapon/reagent_containers/food) && !istype(target, /obj/item/metroid_extract) && !istype(target, /obj/item/clothing/mask/smokable/cigarette) && !istype(target, /obj/item/weapon/storage/fancy/cigarettes))
 		to_chat(user, "<span class='notice'>You cannot directly fill this object.</span>")
 		return
 	if(!target.reagents.get_free_space())
@@ -370,6 +322,160 @@
 		add_fingerprint(user)
 	update_icon()
 
+////////////////////////////////////////////////////////////////////////////////
+/// DNA sampler
+////////////////////////////////////////////////////////////////////////////////
+/obj/item/weapon/reagent_containers/dna_sampler
+	name = "dna sampler"
+	desc = "It is device with little needle that can be used to take dna sample for bioprinter."
+	icon = 'icons/obj/syringe.dmi'
+	icon_state = "dna_sampler"
+	matter = list(MATERIAL_GLASS = 50)
+	amount_per_transfer_from_this = 1
+	possible_transfer_amounts = null
+	volume = 1
+	w_class = ITEM_SIZE_TINY
+	unacidable = 1 //glass
+
+/obj/item/weapon/reagent_containers/dna_sampler/detective
+	name = "blood sampler"
+	desc = "It is device with little needle that can be used to take blood sample."
+	amount_per_transfer_from_this = 5
+	volume = 5
+
+/obj/item/weapon/reagent_containers/dna_sampler/attack_self(mob/user as mob)
+	if (!reagents.get_free_space())
+		src.reagents.del_reagent(/datum/reagent/blood)
+		icon_state = "dna_sampler"
+		to_chat(user, SPAN("notice", "You reset \the [src]."))
+
+/obj/item/weapon/reagent_containers/dna_sampler/attackby(obj/item/I as obj, mob/user as mob)
+	return
+
+/obj/item/weapon/reagent_containers/dna_sampler/afterattack(obj/target, mob/user, proximity)
+	if(!proximity)
+		return
+	if(ismob(target))//Blood!
+		if(reagents.has_reagent(/datum/reagent/blood))
+			to_chat(user, SPAN("notice", "There is already a sample present."))
+			return
+		if(istype(target, /mob/living/carbon))
+			if(istype(target, /mob/living/carbon/metroid))
+				to_chat(user, SPAN("warning", "You are unable to locate any blood."))
+				return
+			var/mob/living/carbon/T = target
+			if(!T.dna)
+				to_chat(user, SPAN("warning", "You are unable to locate any blood."))
+				CRASH("[T] \[[T.type]\] was missing their dna datum!")
+
+			user.setClickCooldown(DEFAULT_QUICK_COOLDOWN)
+			user.do_attack_animation(target)
+
+			T.take_blood(src, amount_per_transfer_from_this)
+			icon_state = "dna_sampler_full"
+			to_chat(user, SPAN("notice", "You take a blood sample from [target]."))
+			to_chat(T, SPAN("notice", "You feel a tiny prick."))
+			for(var/mob/O in viewers(4, user))
+				O.show_message(SPAN("notice", "[user] takes a blood sample from [target]."), 1)
+			return
+
+	if(!reagents.total_volume)
+		to_chat(user, SPAN("notice", "The syringe is empty."))
+		return
+	if(!reagents.get_free_space())
+		if(!target.reagents.get_free_space())
+			to_chat(user, SPAN("notice", "[target] is full."))
+			return
+
+		var/trans = reagents.trans_to(target, amount_per_transfer_from_this)
+		to_chat(user, SPAN("notice", "You inject \the [target] with [trans] units of the solution. \The [src] now contains [src.reagents.total_volume] units."))
+		icon_state = "dna_sampler"
+
+////////////////////////////////////////////////////////////////////////////////
+/// Presets
+////////////////////////////////////////////////////////////////////////////////
+
+/obj/item/weapon/reagent_containers/syringe/inaprovaline
+	name = "syringe (inaprovaline)"
+	desc = "Contains inaprovaline - used to slow bleeding and stabilize patients."
+	mode = SYRINGE_INJECT
+	starting_label = "inaprovaline"
+
+/obj/item/weapon/reagent_containers/syringe/inaprovaline/packaged
+	mode = SYRINGE_PACKAGED
+
+/obj/item/weapon/reagent_containers/syringe/inaprovaline/Initialize()
+	. = ..()
+	reagents.add_reagent(/datum/reagent/inaprovaline, 15)
+	update_icon()
+
+////////////////////////////////////////////////////////////////////////////////
+/obj/item/weapon/reagent_containers/syringe/antitoxin
+	name = "syringe (dylovene)"
+	desc = "Contains a broad-spectrum antitoxin used to neutralize poisons."
+	mode = SYRINGE_INJECT
+	starting_label = "dylovene"
+	package_state = "package_tox"
+
+/obj/item/weapon/reagent_containers/syringe/antitoxin/packaged
+	mode = SYRINGE_PACKAGED
+
+/obj/item/weapon/reagent_containers/syringe/antitoxin/Initialize()
+	. = ..()
+	reagents.add_reagent(/datum/reagent/dylovene, 15)
+	update_icon()
+
+////////////////////////////////////////////////////////////////////////////////
+/obj/item/weapon/reagent_containers/syringe/antiviral
+	name = "syringe (spaceacillin)"
+	desc = "Contains an all-purpose antiviral agent."
+	mode = SYRINGE_INJECT
+	starting_label = "spaceacillin"
+	package_state = "package_viro"
+
+/obj/item/weapon/reagent_containers/syringe/antiviral/packaged
+	mode = SYRINGE_PACKAGED
+
+/obj/item/weapon/reagent_containers/syringe/antiviral/Initialize()
+	. = ..()
+	reagents.add_reagent(/datum/reagent/spaceacillin, 15)
+	update_icon()
+
+////////////////////////////////////////////////////////////////////////////////
+/obj/item/weapon/reagent_containers/syringe/drugs
+	name = "syringe (drugs)"
+	desc = "Contains a mix of aggressive drugs meant for torture."
+	mode = SYRINGE_INJECT
+	starting_label = "drugs"
+	package_state = "package_drugs"
+
+/obj/item/weapon/reagent_containers/syringe/drugs/packaged
+	mode = SYRINGE_PACKAGED
+
+/obj/item/weapon/reagent_containers/syringe/drugs/Initialize()
+	. = ..()
+	reagents.add_reagent(/datum/reagent/space_drugs, 5)
+	reagents.add_reagent(/datum/reagent/mindbreaker, 5)
+	reagents.add_reagent(/datum/reagent/cryptobiolin, 5)
+	update_icon()
+
+////////////////////////////////////////////////////////////////////////////////
+/obj/item/weapon/reagent_containers/syringe/steroid
+	name = "syringe (anabolic steroids)"
+	desc = "Contains a mix of drugs for muscle growth."
+	mode = SYRINGE_INJECT
+	starting_label = "anabolic steroids"
+	package_state = "package_steroid"
+
+/obj/item/weapon/reagent_containers/syringe/steroid/packaged
+	mode = SYRINGE_PACKAGED
+
+/obj/item/weapon/reagent_containers/syringe/steroid/Initialize()
+	. = ..()
+	reagents.add_reagent(/datum/reagent/adrenaline, 5)
+	reagents.add_reagent(/datum/reagent/hyperzine, 10)
+
+////////////////////////////////////////////////////////////////////////////////
 /obj/item/weapon/reagent_containers/syringe/ld50_syringe
 	name = "Lethal Injection Syringe"
 	desc = "A syringe used for lethal injections."
@@ -388,68 +494,14 @@
 		return
 	..()
 
-////////////////////////////////////////////////////////////////////////////////
-/// Syringes. END
-////////////////////////////////////////////////////////////////////////////////
-
-/obj/item/weapon/reagent_containers/syringe/inaprovaline
-	name = "Syringe (inaprovaline)"
-	desc = "Contains inaprovaline - used to stabilize patients."
-
-/obj/item/weapon/reagent_containers/syringe/inaprovaline/Initialize()
-	. = ..()
-	reagents.add_reagent(/datum/reagent/inaprovaline, 15)
-	mode = SYRINGE_INJECT
-	update_icon()
-
-/obj/item/weapon/reagent_containers/syringe/antitoxin
-	name = "Syringe (anti-toxin)"
-	desc = "Contains anti-toxins."
-
-/obj/item/weapon/reagent_containers/syringe/antitoxin/Initialize()
-	. = ..()
-	reagents.add_reagent(/datum/reagent/dylovene, 15)
-	mode = SYRINGE_INJECT
-	update_icon()
-
-/obj/item/weapon/reagent_containers/syringe/antiviral
-	name = "Syringe (spaceacillin)"
-	desc = "Contains antiviral agents."
-
-/obj/item/weapon/reagent_containers/syringe/antiviral/Initialize()
-	. = ..()
-	reagents.add_reagent(/datum/reagent/spaceacillin, 15)
-	mode = SYRINGE_INJECT
-	update_icon()
-
-/obj/item/weapon/reagent_containers/syringe/drugs
-	name = "Syringe (drugs)"
-	desc = "Contains aggressive drugs meant for torture."
-
-/obj/item/weapon/reagent_containers/syringe/drugs/Initialize()
-	. = ..()
-	reagents.add_reagent(/datum/reagent/space_drugs, 5)
-	reagents.add_reagent(/datum/reagent/mindbreaker, 5)
-	reagents.add_reagent(/datum/reagent/cryptobiolin, 5)
-	mode = SYRINGE_INJECT
-	update_icon()
-
 /obj/item/weapon/reagent_containers/syringe/ld50_syringe/choral
+	mode = SYRINGE_INJECT
 
 /obj/item/weapon/reagent_containers/syringe/ld50_syringe/choral/Initialize()
 	. = ..()
 	reagents.add_reagent(/datum/reagent/chloralhydrate, 60)
-	mode = SYRINGE_INJECT
 	update_icon()
 
-/obj/item/weapon/reagent_containers/syringe/steroid
-	name = "Syringe (anabolic steroids)"
-	desc = "Contains drugs for muscle growth."
-
-/obj/item/weapon/reagent_containers/syringe/steroid/Initialize()
-	. = ..()
-	reagents.add_reagent(/datum/reagent/adrenaline, 5)
-	reagents.add_reagent(/datum/reagent/hyperzine, 10)
-
+////////////////////////////////////////////////////////////////////////////////
 /obj/item/weapon/reagent_containers/syringe/borg
 	stabby = FALSE

@@ -80,6 +80,8 @@
 
 	var/current_pda_messaging = null
 
+	give_ghost_proc_at_initialize = FALSE
+
 /mob/living/silicon/pai/New(obj/item/device/paicard)
 	status_flags |= NO_ANTAG
 	src.loc = paicard
@@ -91,7 +93,6 @@
 
 	verbs += /mob/living/silicon/pai/proc/choose_chassis
 	verbs += /mob/living/silicon/pai/proc/choose_verbs
-	verbs -= /mob/living/proc/ghost
 
 	..()
 

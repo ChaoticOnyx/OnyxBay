@@ -37,7 +37,8 @@
 	set_opacity(0)
 	set_density(0)
 	update_nearby_tiles()
-	..()
+
+	return ..()
 
 /obj/machinery/shield/attackby(obj/item/weapon/W as obj, mob/user as mob)
 	if(!istype(W)) return
@@ -86,7 +87,7 @@
 				qdel(src)
 
 
-/obj/machinery/shield/hitby(AM as mob|obj)
+/obj/machinery/shield/hitby(atom/movable/AM) // Okay this stuff is belly-deep in legacy stuff, let's rework it later
 	//Let everyone know we've been hit!
 	visible_message("<span class='notice'><B>\[src] was hit by [AM].</B></span>")
 
@@ -133,7 +134,8 @@
 
 /obj/machinery/shieldgen/Destroy()
 	collapse_shields()
-	..()
+
+	return ..()
 
 /obj/machinery/shieldgen/proc/shields_up()
 	if(active) return 0 //If it's already turned on, how did this get called?

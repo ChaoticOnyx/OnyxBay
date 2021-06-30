@@ -19,6 +19,7 @@
 	can_atmos_pass = ATMOS_PASS_PROC
 	air_properties_vary_with_direction = 1
 	var/timer = null
+	hitby_sound = "glass_hit"
 
 /obj/machinery/door/window/Initialize()
 	. = ..()

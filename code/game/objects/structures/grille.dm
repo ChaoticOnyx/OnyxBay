@@ -10,7 +10,8 @@
 	explosion_resistance = 1
 	var/health = 10
 	var/destroyed = 0
-
+	hitby_sound = 'sound/effects/grillehit.ogg'
+	hitby_loudness_multiplier = 1.5
 
 /obj/structure/grille/ex_act(severity)
 	qdel(src)
@@ -155,9 +156,10 @@
 				health -= W.force
 			if("brute")
 				health -= W.force * 0.1
-	healthcheck()
-	..()
-	return
+		healthcheck()
+		return
+
+	return ..()
 
 
 /obj/structure/grille/proc/healthcheck()

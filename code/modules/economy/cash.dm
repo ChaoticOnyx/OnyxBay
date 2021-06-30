@@ -29,6 +29,7 @@
 			user.drop_from_inventory(cash)
 			bundle = new (src.loc)
 			bundle.worth += cash.worth
+			cash.worth = 0
 			qdel(cash)
 		else //is bundle
 			bundle = W
@@ -163,7 +164,7 @@
 	desc = "It's worth 1000 credits."
 	worth = 1000
 
-proc/spawn_money(sum, spawnloc, mob/living/carbon/human/human_user as mob)
+/proc/spawn_money(sum, spawnloc, mob/living/carbon/human/human_user)
 	if(sum in list(1000, 500, 200, 100, 50, 20, 10, 1))
 		var/cash_type = text2path("/obj/item/weapon/spacecash/bundle/c[sum]")
 		var/obj/cash = new cash_type (usr.loc)

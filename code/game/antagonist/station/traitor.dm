@@ -2,11 +2,16 @@ GLOBAL_DATUM_INIT(traitors, /datum/antagonist/traitor, new)
 
 // Inherits most of its vars from the base datum.
 /datum/antagonist/traitor
+	var/datum/contract_fixer/fixer
 	id = MODE_TRAITOR
 	restricted_jobs = list(/datum/job/captain, /datum/job/hos,
 							/datum/job/merchant, /datum/job/lawyer)
 	additional_restricted_jobs = list(/datum/job/officer, /datum/job/warden, /datum/job/detective)
 	flags = ANTAG_SUSPICIOUS | ANTAG_RANDSPAWN | ANTAG_VOTABLE
+
+/datum/antagonist/traitor/Initialize()
+	..()
+	fixer = new()
 
 /datum/antagonist/traitor/get_extra_panel_options(datum/mind/player)
 	return "<a href='?src=\ref[player];common=crystals'>\[set crystals\]</a><a href='?src=\ref[src];spawn_uplink=\ref[player.current]'>\[spawn uplink\]</a>"
@@ -37,27 +42,9 @@ GLOBAL_DATUM_INIT(traitors, /datum/antagonist/traitor, new)
 			block_objective.owner = traitor
 			traitor.objectives += block_objective
 	else
-		switch(rand(1,100))
-			if(1 to 33)
-				var/datum/objective/assassinate/kill_objective = new
-				kill_objective.owner = traitor
-				kill_objective.find_target()
-				traitor.objectives += kill_objective
-			if(34 to 50)
-				var/datum/objective/brig/brig_objective = new
-				brig_objective.owner = traitor
-				brig_objective.find_target()
-				traitor.objectives += brig_objective
-			if(51 to 66)
-				var/datum/objective/harm/harm_objective = new
-				harm_objective.owner = traitor
-				harm_objective.find_target()
-				traitor.objectives += harm_objective
-			else
-				var/datum/objective/steal/steal_objective = new
-				steal_objective.owner = traitor
-				steal_objective.find_target()
-				traitor.objectives += steal_objective
+		var/datum/objective/contracts/C = new
+		C.owner = traitor
+		traitor.objectives += C
 		switch(rand(1,100))
 			if(1 to 100)
 				if (!(locate(/datum/objective/escape) in traitor.objectives))

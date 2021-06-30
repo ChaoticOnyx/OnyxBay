@@ -58,7 +58,7 @@
 	playsound(location, 'sound/effects/smoke.ogg', 50, 1, -3)
 	if(S)
 		var/list/reagent_names_list = list()
-		for(var/datum/reagent/R in reagents.reagent_list)
+		for(var/datum/reagent/R in reagents?.reagent_list)
 			reagent_names_list.Add(R.name)
 		var/atom/AM = get_object()
 		AM.investigate_log("smokes these reagents: [jointext(reagent_names_list, ", ")] with [src].", INVESTIGATE_CIRCUIT)
@@ -160,7 +160,7 @@
 	var/atom/acting_object = get_object()
 
 	var/list/reagent_names_list = list()
-	for(var/datum/reagent/R in reagents.reagent_list)
+	for(var/datum/reagent/R in reagents?.reagent_list)
 		reagent_names_list.Add(R.name)
 
 	if(busy || !check_target(AM))
@@ -208,7 +208,7 @@
 		if(istype(AM, /mob/living/carbon))
 			var/mob/living/carbon/C = AM
 			var/injection_status = C.can_inject(null, BP_CHEST)
-			if(istype(C, /mob/living/carbon/slime) || !C.dna || !injection_status)
+			if(istype(C, /mob/living/carbon/metroid) || !C.dna || !injection_status)
 				activate_pin(3)
 				return
 			C.visible_message(SPAN("danger", "[acting_object] takes a blood sample from [C]!"), \
@@ -286,10 +286,10 @@
 		return
 
 	var/list/reagent_names_list = list()
-	for(var/datum/reagent/R in reagents.reagent_list)
+	for(var/datum/reagent/R in source?.reagents?.reagent_list)
 		reagent_names_list.Add(R.name)
 	var/atom/AM = get_object()
-	AM.investigate_log("transfer reagents: [jointext(reagent_names_list, ", ")] with [src].", INVESTIGATE_CIRCUIT)
+	AM.investigate_log("transfer reagents: [jointext(reagent_names_list, ", ")] from [source] to [target] with [src].", INVESTIGATE_CIRCUIT)
 
 	source.reagents.trans_to(target, transfer_amount)
 	activate_pin(2)
@@ -375,7 +375,7 @@
 	var/obj/item/I = get_pin_data_as_type(IC_INPUT, 1, /obj/item)
 	if(istype(I) && (I.reagents.total_volume) && check_target(I))
 		var/list/reagent_names_list = list()
-		for(var/datum/reagent/R in reagents.reagent_list)
+		for(var/datum/reagent/R in reagents?.reagent_list)
 			reagent_names_list.Add(R.name)
 		var/atom/AM = get_object()
 		AM.investigate_log("grinded reagents: [jointext(reagent_names_list, ", ")] with [src].", INVESTIGATE_CIRCUIT)
@@ -408,7 +408,7 @@
 
 /obj/item/integrated_circuit/reagent/storage/scan/do_work(ord)
 	var/list/cont = list()
-	for(var/datum/reagent/RE in reagents.reagent_list)
+	for(var/datum/reagent/RE in reagents?.reagent_list)
 		cont += RE.name
 	var/atom/AM = get_object()
 	AM.investigate_log("scanned reagents: [jointext(cont, ", ")] with [src].", INVESTIGATE_CIRCUIT)
@@ -476,7 +476,7 @@
 		return
 
 	var/atom/AM = get_object()
-	for(var/datum/reagent/G in source.reagents.reagent_list)
+	for(var/datum/reagent/G in source.reagents?.reagent_list)
 		if(!direction_mode)
 			if(G.name in demand)
 				AM.investigate_log("transfered [G.type] to [target], amount [transfer_amount] with [src]", INVESTIGATE_CIRCUIT)
@@ -597,7 +597,7 @@
 			W.set_up(T)
 
 	var/list/reagent_names_list = list()
-	for(var/datum/reagent/R in reagents.reagent_list)
+	for(var/datum/reagent/R in reagents?.reagent_list)
 		reagent_names_list.Add(R.name)
 	var/atom/AM = get_object()
 	AM.investigate_log("extinguished reagents: [jointext(reagent_names_list, ", ")] with [src].", INVESTIGATE_CIRCUIT)

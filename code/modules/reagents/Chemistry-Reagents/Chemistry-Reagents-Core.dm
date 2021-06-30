@@ -112,7 +112,7 @@
 /datum/reagent/antibodies
 	data = list("antibodies"=list())
 	name = "Antibodies"
-	taste_description = "slime"
+	taste_description = "metroid"
 	reagent_state = LIQUID
 	color = "#0050f0"
 
@@ -134,12 +134,12 @@
 	var/slippery = 1
 
 /datum/reagent/water/affect_blood(mob/living/carbon/M, alien, removed)
-	if(!istype(M, /mob/living/carbon/slime) && alien != IS_SLIME)
+	if(!istype(M, /mob/living/carbon/metroid) && alien != IS_METROID)
 		return
 	M.adjustToxLoss(2 * removed)
 
 /datum/reagent/water/affect_ingest(mob/living/carbon/M, alien, removed)
-	if(!istype(M, /mob/living/carbon/slime) && alien != IS_SLIME)
+	if(!istype(M, /mob/living/carbon/metroid) && alien != IS_METROID)
 		return
 	M.adjustToxLoss(2 * removed)
 
@@ -191,10 +191,10 @@
 			remove_self(amount)
 
 /datum/reagent/water/affect_touch(mob/living/carbon/M, alien, removed)
-	if(!istype(M, /mob/living/carbon/slime) && alien != IS_SLIME)
+	if(!istype(M, /mob/living/carbon/metroid) && alien != IS_METROID)
 		return
 	M.adjustToxLoss(10 * removed)	// Babies have 150 health, adults have 200; So, 15 units and 20
-	var/mob/living/carbon/slime/S = M
+	var/mob/living/carbon/metroid/S = M
 	if(!S.client && istype(S))
 		if(S.Target) // Like cats
 			S.Target = null

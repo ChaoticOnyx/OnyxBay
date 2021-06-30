@@ -16,7 +16,7 @@
 		/obj/item/clothing/accessory/locket,
 		/obj/item/clothing/head/hairflower,
 		/obj/item/device/flashlight/pen,
-		/obj/item/device/flashlight/slime,
+		/obj/item/device/flashlight/metroid,
 		/obj/item/seeds,
 		/obj/item/weapon/coin,
 		/obj/item/weapon/dice,

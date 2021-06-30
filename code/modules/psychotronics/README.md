@@ -1,4 +1,7 @@
 # Psychoscope mandatory beyond this point
+
+ВЫКЛЮЕНО В [#5567](https://github.com/ChaoticOnyx/OnyxBay/pull/5567)
+
 ## Структура проекта:
 - psychoscope.dm - реализация психоскопа.
 - neuromods.dm - реализация и список нейромодов.
