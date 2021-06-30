@@ -702,7 +702,7 @@ rules:
   ## Validate props indentation in JSX (fixable)
   react/jsx-indent-props: [error, 2]
   ## Validate JSX has key prop when in array or iterator
-  react/jsx-key: error
+  # react/jsx-key: error 
   ## Validate JSX maximum depth
   react/jsx-max-depth: [error, { max: 10 }] ## Generous
   ## Limit maximum of props on a single line in JSX (fixable)
