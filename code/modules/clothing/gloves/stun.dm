@@ -10,10 +10,12 @@
 	var/attack_cost = 50
 	var/obj/item/weapon/cell/device/bcell
 
-/obj/item/clothing/gloves/stun/Initialize(loc, obj/item/clothing/gloves/G)
-	. = ..()
+/obj/item/clothing/gloves/stun/Initialize(mapload, obj/item/clothing/gloves/G)
+	. = ..(mapload)
 	if(!istype(G))
-		return
+		G = new /obj/item/clothing/gloves/thick // So we won't end up with a broken pair of shites when adminspawning these
+		G.wired = TRUE
+		G.update_icon(TRUE)
 	base_gloves = G
 	appearance = base_gloves.appearance
 	name = "stun gloves"
@@ -30,7 +32,7 @@
 	QDEL_NULL(base_gloves)
 	return ..()
 
-/obj/item/clothing/gloves/stun/update_icon(needs_updating=FALSE)
+/obj/item/clothing/gloves/stun/update_icon(needs_updating = FALSE)
 	..()
 	if(bcell)
 		overlays += image(icon, "gloves_cell")
@@ -99,7 +101,7 @@
 	check_zone(zone)
 	if(zone in restricted_bps)
 		zone = BP_GROIN // To avoid stunning people with one stun attack
-		to_chat(src.loc, SPAN("notice", "The target will dodge your attack on the legs, so you go for their lower body instead!"))
+		to_chat(loc, SPAN("notice", "The target will dodge your attack on the legs, so you go for their lower body instead!"))
 	return zone
 
 /obj/item/clothing/gloves/stun/proc/stun_attack(mob/living/carbon/human/user, mob/living/carbon/human/victim)
