@@ -221,8 +221,6 @@
 		else
 			to_chat(user, SPAN("warning", "The stack is too high!"))
 
-		return
-
 /obj/item/trash/dishes/attack_hand(mob/user)
 	if(user.get_inactive_hand() != src)
 		..()
@@ -235,5 +233,3 @@
 	to_chat(user, SPAN("warning", "You have removed the topmost [src] from your hand."))
 
 	update_icon()
-
-	return
