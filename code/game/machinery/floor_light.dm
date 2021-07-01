@@ -13,6 +13,7 @@ var/list/floor_light_cache = list()
 	power_channel = EQUIP
 	matter = list(MATERIAL_STEEL = 250, MATERIAL_GLASS = 250)
 
+	var/glow
 	var/on
 	var/damaged
 	var/default_light_max_bright = 0.75
@@ -24,9 +25,14 @@ var/list/floor_light_cache = list()
 	anchored = 1
 
 /obj/machinery/floor_light/attackby(obj/item/W, mob/user)
+	var/turf/T = src.loc
 	if(isScrewdriver(W))
-		anchored = !anchored
-		visible_message("<span class='notice'>\The [user] has [anchored ? "attached" : "detached"] \the [src].</span>")
+		if(!T.is_plating())
+			to_chat(user, "You can only attach the [name] if the floor plating is removed.")
+			return
+		else
+			anchored = !anchored
+			visible_message("<span class='notice'>\The [user] has [anchored ? "attached" : "detached"] \the [src].</span>")
 	else if(isWelder(W) && (damaged || (stat & BROKEN)))
 		var/obj/item/weapon/weldingtool/WT = W
 		if(!WT.remove_fuel(0, user))
@@ -46,7 +52,6 @@ var/list/floor_light_cache = list()
 	return
 
 /obj/machinery/floor_light/attack_hand(mob/user)
-
 	if(user.a_intent == I_HURT && !issmall(user))
 		if(!isnull(damaged) && !(stat & BROKEN))
 			visible_message("<span class='danger'>\The [user] smashes \the [src]!</span>")
@@ -68,25 +73,24 @@ var/list/floor_light_cache = list()
 			to_chat(user, "<span class='warning'>\The [src] is too damaged to be functional.</span>")
 			return
 
-		if(stat & NOPOWER)
+		on = !on
+		to_chat(user, "<span class='notice'>You switch \the [src].</span>")
+
+		if(on && stat && NOPOWER)
 			to_chat(user, "<span class='warning'>\The [src] is unpowered.</span>")
 			return
 
-		on = !on
-		if(on)
-			update_use_power(POWER_USE_ACTIVE)
-		visible_message("<span class='notice'>\The [user] turns \the [src] [on ? "on" : "off"].</span>")
-		update_brightness()
+		Process()
 		return
 
 /obj/machinery/floor_light/Process()
 	..()
 	var/need_update
-	if((!anchored || broken()) && on)
+	if((!anchored || broken()) && glow)
 		update_use_power(POWER_USE_OFF)
-		on = 0
+		glow = 0
 		need_update = 1
-	else if(use_power && !on)
+	else if(use_power && !glow)
 		update_use_power(POWER_USE_OFF)
 		need_update = 1
 	if(need_update)
@@ -110,7 +114,7 @@ var/list/floor_light_cache = list()
 		if(isnull(damaged))
 			var/cache_key = "floorlight-[default_light_colour]"
 			if(!floor_light_cache[cache_key])
-				var/image/I = image("on")
+				var/image/I = image("glowing")
 				I.color = default_light_colour
 				I.plane = plane
 				I.layer = layer+0.001
@@ -153,5 +157,5 @@ var/list/floor_light_cache = list()
 /obj/machinery/floor_light/Destroy()
 	var/area/A = get_area(src)
 	if(A)
-		on = 0
+		glow = 0
 	. = ..()
