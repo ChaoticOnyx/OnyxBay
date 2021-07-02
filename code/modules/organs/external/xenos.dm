@@ -221,7 +221,7 @@
 				die()
 				return PROCESS_KILL
 			var/birth_loc = loc
-			spawn(10) // So the newborn larvae won't get shredded by flying limbs
+			spawn(1 SECOND) // So the newborn larvae won't get shredded by flying limbs
 				var/mob/living/carbon/alien/larva/L = new larva_path(get_turf(birth_loc))
 				L.larva_announce_to_ghosts()
 			die()
