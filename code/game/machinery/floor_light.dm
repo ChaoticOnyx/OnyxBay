@@ -19,7 +19,9 @@ var/list/floor_light_cache = list()
 	var/default_light_max_bright = 0.75
 	var/default_light_inner_range = 1
 	var/default_light_outer_range = 3
-	var/default_light_colour = "#ffffff"
+	var/default_light_colour = "#CEffff"
+	var/broken_light_colour = "#FFFFFF"
+	var/light_colour
 
 /obj/machinery/floor_light/prebuilt
 	anchored = 1
@@ -46,7 +48,6 @@ var/list/floor_light_cache = list()
 		visible_message("<span class='notice'>\The [user] has repaired \the [src].</span>")
 		set_broken(FALSE)
 		damaged = null
-		update_brightness()
 	else if(W.force && user.a_intent == "hurt")
 		attack_hand(user)
 	return
@@ -61,49 +62,44 @@ var/list/floor_light_cache = list()
 			visible_message("<span class='danger'>\The [user] attacks \the [src]!</span>")
 			playsound(src.loc, get_sfx("glass_hit"), 75, 1)
 			if(isnull(damaged)) damaged = 0
-		update_brightness()
 		return
 	else
+		on = !on
+		to_chat(user, "<span class='notice'>You switch \the [src]  [on ? "on" : "off"].</span>")
 
 		if(!anchored)
 			to_chat(user, "<span class='warning'>\The [src] must be screwed down first.</span>")
 			return
-
 		if(stat & BROKEN)
 			to_chat(user, "<span class='warning'>\The [src] is too damaged to be functional.</span>")
 			return
-
-		on = !on
-		to_chat(user, "<span class='notice'>You switch \the [src].</span>")
-
 		if(on && stat && NOPOWER)
 			to_chat(user, "<span class='warning'>\The [src] is unpowered.</span>")
 			return
 
-		Process()
-		return
-
 /obj/machinery/floor_light/Process()
 	..()
-	var/need_update
-	if((!anchored || broken()) && glow)
-		update_use_power(POWER_USE_OFF)
-		glow = 0
-		need_update = 1
-	else if(use_power && !glow)
-		update_use_power(POWER_USE_OFF)
-		need_update = 1
-	if(need_update)
-		update_brightness()
+	if(((!anchored || broken()) && (glow)) || (use_power && !on))
+		update_brightness(FALSE)
+	else if(!glow && !use_power && on)
+		update_brightness(TRUE)
 
-/obj/machinery/floor_light/proc/update_brightness()
-	if(on && use_power == POWER_USE_ACTIVE)
-		if(light_outer_range != default_light_outer_range || light_max_bright != default_light_max_bright || light_color != default_light_colour)
-			set_light(default_light_max_bright, default_light_inner_range, default_light_outer_range, 2, default_light_colour)
+
+/obj/machinery/floor_light/proc/update_brightness(var/mustWork)
+	if(mustWork)
+		if((light_outer_range != default_light_outer_range || light_max_bright != default_light_max_bright))
+			if(broken())
+				set_light(default_light_max_bright / (active_power_usage / idle_power_usage), default_light_inner_range, default_light_outer_range, 2, broken_light_colour)
+				update_use_power(POWER_USE_IDLE)
+			else
+				set_light(default_light_max_bright, default_light_inner_range, default_light_outer_range, 2, default_light_colour)
+				update_use_power(POWER_USE_ACTIVE)
+			glow = 1
 	else
-		update_use_power(POWER_USE_OFF)
 		if(light_outer_range || light_max_bright)
 			set_light(0)
+			update_use_power(POWER_USE_OFF)
+			glow = 0
 
 	change_power_consumption((light_outer_range + light_max_bright) * 10, POWER_USE_ACTIVE)
 	update_icon()
