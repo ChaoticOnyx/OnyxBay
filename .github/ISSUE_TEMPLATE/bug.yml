@@ -1,0 +1,63 @@
+name: Баг
+description: Описать проблему, чтобы помочь починить её
+labels:
+  - "\U0001F535требуется проверка"
+  - "баг"
+body:
+  - type: textarea
+    id: bug_description
+    attributes:
+      label: Описание бага
+      description: Четкое и понятное описание сути бага.
+    validations:
+      required: true
+  - type: textarea
+    id: bug_reproduction
+    attributes:
+      label: Шаги воспроизведения
+      description: Опишите способ воспроизведения бага.
+    validations:
+      required: true
+  - type: textarea
+    id: expected_behaviour
+    attributes:
+      label: Ожидаемое поведение
+      description: Четкое и понятное описание того, что должно было произойти.
+    validations:
+      required: true
+  - type: textarea
+    id: additional_info
+    attributes:
+      label: (Опционально) Дополнительная информация
+      description: Здесь можете описать любую дополнительную информацию, которая касается бага. Также можете приложить скриншоты.
+  - type: markdown
+    attributes:
+      value: "## Характеристики"
+  - type: input
+    id: os
+    attributes:
+      label: Операционная система
+      description: Выберите операционную систему, на которой произошёл баг.
+    validations:
+      required: true
+  - type: input
+    id: client_version
+    attributes:
+      label: Версия клиента
+      description: Укажите версию клиента, на которой произошёл баг. Указана в клиенте BYOND в меню 'About BYOND...'.
+    validations:
+      required: true
+  - type: input
+    id: server_version
+    attributes:
+      label: Версия сервера
+      description: Укажите версию сервера, на которой произошёл баг. Команда "Show server revision" в вкладке ООС на сервере.
+    validations:
+      required: true
+  - type: input
+    id: round_id
+    attributes:
+      label: Идентификатор раунда
+      description: Укажите идентификатор раунда, в котором произошёл баг. Можно найти там же где и версию сервера.
+    validations:
+      required: true

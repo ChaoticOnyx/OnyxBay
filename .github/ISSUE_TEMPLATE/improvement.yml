@@ -1,0 +1,20 @@
+name: Улучшение
+description: Предложить идею по улучшению сборки
+labels:
+  - "\U0001F535требуется проверка"
+  - "\U0001F529 улучшение"
+body:
+  - type: textarea
+    id: description
+    attributes:
+      label: Улучшение
+      description: В чем смысл вашего улучшения? Какую проблему оно решает? Четко и понятно опишите в чем заключается проблема.
+    validations:
+      required: true
+  - type: textarea
+    id: solution
+    attributes:
+      label: Решение
+      description: Опишите ваше решение проблемы. Четко и понятно опишите как вы видите решение своей проблемы.
+    validations:
+      required: true
