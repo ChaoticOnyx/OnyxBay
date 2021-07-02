@@ -123,7 +123,7 @@
 	item_state = "boxing"
 
 /obj/structure/window/reinforced/holowindow/Destroy()
-	..()
+	return ..()
 
 /obj/structure/window/reinforced/holowindow/attackby(obj/item/W as obj, mob/user as mob)
 
@@ -155,10 +155,10 @@
 	return
 
 /obj/structure/window/reinforced/holowindow/disappearing/Destroy()
-	..()
+	return ..()
 
 /obj/machinery/door/window/holowindoor/Destroy()
-	..()
+	return ..()
 
 /obj/machinery/door/window/holowindoor/attackby(obj/item/weapon/I as obj, mob/user as mob)
 
@@ -196,7 +196,7 @@
 	qdel(src)
 
 /obj/structure/bed/chair/holochair/Destroy()
-	..()
+	return ..()
 
 /obj/structure/bed/chair/holochair/attackby(obj/item/weapon/W as obj, mob/user as mob)
 	if(istype(W, /obj/item/weapon/wrench))
@@ -372,7 +372,7 @@
 
 /mob/living/simple_animal/hostile/carp/holodeck/New()
 	..()
-	set_light(2) //hologram lighting
+	set_light(0.5, 0.1, 2) //hologram lighting
 
 /mob/living/simple_animal/hostile/carp/holodeck/proc/set_safety(safe)
 	if (safe)

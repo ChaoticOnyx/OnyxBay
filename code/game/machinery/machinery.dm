@@ -231,6 +231,9 @@ Class Procs:
 
 	return ..()
 
+/obj/machinery/tgui_state(mob/user)
+	return GLOB.tgui_machinery_state
+
 /obj/machinery/CouldUseTopic(mob/user)
 	..()
 	if(user)
@@ -384,6 +387,15 @@ Class Procs:
 
 /obj/machinery/proc/malf_upgrade(mob/living/silicon/ai/user)
 	return 0
+
+/obj/machinery/tgui_act(action, params)
+	. = ..()
+
+	if(.)
+		return TRUE
+
+	if(clicksound && istype(usr, /mob/living/carbon))
+		playsound(src, clicksound, clickvol)
 
 /obj/machinery/CouldUseTopic(mob/user)
 	..()

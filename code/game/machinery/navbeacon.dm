@@ -167,7 +167,7 @@ Transponder Codes:<UL>"}
 
 /obj/machinery/navbeacon/Destroy()
 	navbeacons.Remove(src)
-	..()
+	return ..()
 
 // Patrol beacon types below. So many.
 /obj/machinery/navbeacon/Robotics

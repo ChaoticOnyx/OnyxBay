@@ -115,7 +115,7 @@ GLOBAL_DATUM_INIT(wizards, /datum/antagonist/wizard, new)
 	for(var/spell/spell_to_remove in mind.learned_spells)
 		remove_spell(spell_to_remove)
 
-obj/item/clothing
+/obj/item/clothing
 	var/wizard_garb = 0
 
 // Does this clothing slot count as wizard garb? (Combines a few checks)

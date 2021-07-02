@@ -173,12 +173,12 @@ var/list/ghost_traps
 	minutes_since_death = DRONE_SPAWN_DELAY
 	..()
 
-datum/ghosttrap/drone/assess_candidate(mob/observer/ghost/candidate, mob/target)
+/datum/ghosttrap/drone/assess_candidate(mob/observer/ghost/candidate, mob/target)
 	. = ..()
 	if(. && !target.can_be_possessed_by(candidate))
 		return 0
 
-datum/ghosttrap/drone/transfer_personality(mob/candidate, mob/living/silicon/robot/drone/drone)
+/datum/ghosttrap/drone/transfer_personality(mob/candidate, mob/living/silicon/robot/drone/drone)
 	if(!assess_candidate(candidate))
 		return 0
 	drone.transfer_personality(candidate.client)
@@ -192,10 +192,10 @@ datum/ghosttrap/drone/transfer_personality(mob/candidate, mob/living/silicon/rob
 	ghost_trap_message = "They are occupying a pAI now."
 	ghost_trap_role = "pAI"
 
-datum/ghosttrap/pai/assess_candidate(mob/observer/ghost/candidate, mob/target)
+/datum/ghosttrap/pai/assess_candidate(mob/observer/ghost/candidate, mob/target)
 	return 0
 
-datum/ghosttrap/pai/transfer_personality(mob/candidate, mob/living/silicon/robot/drone/drone)
+/datum/ghosttrap/pai/transfer_personality(mob/candidate, mob/living/silicon/robot/drone/drone)
 	return 0
 
 /******************

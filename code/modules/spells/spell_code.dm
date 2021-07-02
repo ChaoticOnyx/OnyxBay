@@ -18,10 +18,10 @@ var/list/spells = typesof(/spell) //needed for the badmin verb for now
 
 	var/charge_max = 100 //recharge time in deciseconds if charge_type = Sp_RECHARGE or starting charges if charge_type = Sp_CHARGES
 	var/charge_counter = 0 //can only cast spells if it equals recharge, ++ each decisecond if charge_type = Sp_RECHARGE or -- each cast if charge_type = Sp_CHARGES
-	var/still_recharging_msg = "<span class='notice'>The spell is still recharging.</span>"
+	var/still_recharging_msg = SPAN_NOTICE("The spell is still recharging.")
 
 	var/silenced = 0 //not a binary - the length of time we can't cast this for
-	var/processing = 0 //are we processing already? Mainly used so that silencing a spell doesn't call process() again. (and inadvertedly making it run twice as fast)
+	var/processing = FALSE //are we processing already? Mainly used so that silencing a spell doesn't call process() again. (and inadvertedly making it run twice as fast)
 
 	var/holder_var_type = "bruteloss" //only used if charge_type equals to "holder_var"
 	var/holder_var_amount = 20 //same. The amount adjusted with the mob's var when the spell is used
@@ -34,6 +34,7 @@ var/list/spells = typesof(/spell) //needed for the badmin verb for now
 	var/selection_type = "view"		//can be "range" or "view"
 	var/atom/movable/holder			//where the spell is. Normally the user, can be an item
 	var/duration = 0 //how long the spell lasts
+	var/need_target = TRUE
 
 	var/list/spell_levels = list(Sp_SPEED = 0, Sp_POWER = 0) //the current spell levels - total spell levels can be obtained by just adding the two values
 	var/list/level_max = list(Sp_TOTAL = 4, Sp_SPEED = 4, Sp_POWER = 0) //maximum possible levels in each category. Total does cover both.
@@ -78,7 +79,7 @@ var/list/spells = typesof(/spell) //needed for the badmin verb for now
 /spell/proc/process()
 	if(processing)
 		return
-	processing = 1
+	processing = TRUE
 	spawn(0)
 		while(charge_counter < charge_max || silenced > 0)
 			charge_counter = min(charge_max,charge_counter+1)
@@ -89,7 +90,7 @@ var/list/spells = typesof(/spell) //needed for the badmin verb for now
 			if(!istype(S))
 				return
 			S.update_charge(1)
-		processing = 0
+		processing = FALSE
 	return
 
 /////////////////
@@ -212,50 +213,50 @@ var/list/spells = typesof(/spell) //needed for the badmin verb for now
 
 /spell/proc/cast_check(skipcharge = 0,mob/user = usr, list/targets) //checks if the spell can be cast based on its settings; skipcharge is used when an additional cast_check is called inside the spell
 	if(silenced > 0)
-		return 0
+		return FALSE
 
 	if(!(src in user.mind.learned_spells) && holder == user && !(isanimal(user)))
 		error("[user] utilized the spell '[src]' without having it.")
-		to_chat(user, "<span class='warning'>You shouldn't have this spell! Something's wrong.</span>")
-		return 0
+		to_chat(user, SPAN_WARNING("You shouldn't have this spell! Something's wrong."))
+		return FALSE
 
 	var/turf/user_turf = get_turf(user)
 	if(!user_turf)
-		to_chat(user, "<span class='warning'>You cannot cast spells in null space!</span>")
+		to_chat(user, SPAN_WARNING("You cannot cast spells in null space!"))
 
 	if((spell_flags & Z2NOCAST) && (user_turf.z in GLOB.using_map.admin_levels)) //Certain spells are not allowed on the centcomm zlevel
-		return 0
+		return FALSE
 
 	if(spell_flags & CONSTRUCT_CHECK)
 		for(var/turf/T in range(holder, 1))
 			if(findNullRod(T))
-				return 0
+				return FALSE
 
 	if(istype(user, /mob/living/simple_animal) && holder == user)
 		var/mob/living/simple_animal/SA = user
 		if(SA.purge)
-			to_chat(SA, "<span class='warning'>The nullrod's power interferes with your own!</span>")
-			return 0
+			to_chat(SA, SPAN_WARNING("The nullrod's power interferes with your own!"))
+			return FALSE
 
 	if(!src.check_charge(skipcharge, user)) //sees if we can cast based on charges alone
-		return 0
+		return FALSE
 
 	if(!(spell_flags & GHOSTCAST) && holder == user)
 		if(user.stat && !(spell_flags & STATALLOWED))
 			to_chat(usr, "Not when you're incapacitated.")
-			return 0
+			return FALSE
 
 		if(ishuman(user) && !(invocation_type in list(SpI_EMOTE, SpI_NONE)))
 			if(user.is_muzzled())
 				to_chat(user, "Mmmf mrrfff!")
-				return 0
+				return FALSE
 
 	var/spell/noclothes/spell = locate() in user.mind.learned_spells
 	if((spell_flags & NEEDSCLOTHES) && !(spell && istype(spell)) && holder == user)//clothes check
 		if(!user.wearing_wiz_garb())
-			return 0
+			return FALSE
 
-	return 1
+	return TRUE
 
 /spell/proc/check_charge(skipcharge, mob/user)
 	if(!skipcharge)
@@ -263,12 +264,12 @@ var/list/spells = typesof(/spell) //needed for the badmin verb for now
 			if(Sp_RECHARGE)
 				if(charge_counter < charge_max)
 					to_chat(user, still_recharging_msg)
-					return 0
+					return FALSE
 			if(Sp_CHARGES)
 				if(!charge_counter)
-					to_chat(user, "<span class='notice'>[name] has no charges left.</span>")
-					return 0
-	return 1
+					to_chat(user, SPAN_NOTICE("[name] has no charges left."))
+					return FALSE
+	return TRUE
 
 /spell/proc/take_charge(mob/user = user, skipcharge)
 	if(!skipcharge)
@@ -276,31 +277,33 @@ var/list/spells = typesof(/spell) //needed for the badmin verb for now
 			if(Sp_RECHARGE)
 				charge_counter = 0 //doesn't start recharging until the targets selecting ends
 				src.process()
-				return 1
+				return TRUE
 			if(Sp_CHARGES)
 				charge_counter-- //returns the charge if the targets selecting fails
-				return 1
+				return TRUE
 			if(Sp_HOLDVAR)
 				adjust_var(user, holder_var_type, holder_var_amount)
-				return 1
-		return 0
-	return 1
+				return TRUE
+		return FALSE
+	return TRUE
 
 /spell/proc/check_valid_targets(list/targets)
+	if(!need_target)
+		return TRUE
 	if(!targets)
-		return 0
+		return FALSE
 	if(!islist(targets))
 		targets = list(targets)
 	else if(!targets.len)
-		return 0
+		return FALSE
 
 	var/list/valid_targets = view_or_range(range, holder, selection_type)
 	for(var/target in targets)
 		if(!(target in valid_targets))
-			return 0
-	return 1
+			return FALSE
+	return TRUE
 
-/spell/proc/invocation(mob/user = usr, list/targets) //spelling the spell out and setting it on recharge/reducing charges amount
+/spell/proc/invocation(mob/user = usr, list/targets) // spelling the spell out and setting it on recharge/reducing charges amount
 
 	switch(invocation_type)
 		if(SpI_SHOUT)
@@ -322,24 +325,24 @@ var/list/spells = typesof(/spell) //needed for the badmin verb for now
 
 /spell/proc/can_improve(upgrade_type)
 	if(level_max[Sp_TOTAL] <= ( spell_levels[Sp_SPEED] + spell_levels[Sp_POWER] )) //too many levels, can't do it
-		return 0
+		return FALSE
 
 	if(upgrade_type && spell_levels[upgrade_type] >= level_max[upgrade_type])
-		return 0
+		return FALSE
 
-	return 1
+	return TRUE
 
 /spell/proc/empower_spell()
 	if(!can_improve(Sp_POWER))
-		return 0
+		return FALSE
 
 	spell_levels[Sp_POWER]++
 
-	return 1
+	return TRUE
 
 /spell/proc/quicken_spell()
 	if(!can_improve(Sp_SPEED))
-		return 0
+		return FALSE
 
 	spell_levels[Sp_SPEED]++
 
@@ -376,7 +379,7 @@ var/list/spells = typesof(/spell) //needed for the badmin verb for now
 
 /spell/proc/spell_do_after(mob/user as mob, delay as num, numticks = 5)
 	if(!user || isnull(user))
-		return 0
+		return FALSE
 
 	var/incap_flags = INCAPACITATION_STUNNED
 	if(!(spell_flags & (STATALLOWED|GHOSTCAST)))

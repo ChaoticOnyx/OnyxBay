@@ -336,7 +336,7 @@
 			signalDoor(tag_exterior_door, command)
 			signalDoor(tag_interior_door, command)
 
-datum/computer/file/embedded_program/airlock/proc/signal_mech_sensor(command, sensor)
+/datum/computer/file/embedded_program/airlock/proc/signal_mech_sensor(command, sensor)
 	var/datum/signal/signal = new
 	signal.data["tag"] = sensor
 	signal.data["command"] = command

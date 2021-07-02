@@ -31,7 +31,7 @@
 			desc += " It is warm to the touch."
 			START_PROCESSING(SSobj, src)
 		if(material.luminescence)
-			set_light(material.luminescence, material.luminescence, material.icon_colour)
+			set_light(material.luminescence, 0.1, material.luminescence, 2, material.icon_colour)
 	else
 		SetName("[fuel_type] fuel rod assembly")
 		desc = "A fuel rod for a fusion reactor. This one is made from [fuel_type]."

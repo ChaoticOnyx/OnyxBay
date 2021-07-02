@@ -8,7 +8,8 @@
 			return u_attack
 	return null
 
-/mob/living/carbon/human/attack_hand(mob/living/M as mob)
+#define FINALIZE_UNARMED(damage, maximize) (damage * (maximize ? 140 : rand(60, 140)) / 100)
+/mob/living/carbon/human/attack_hand(mob/living/M)
 
 	var/mob/living/carbon/human/H = M
 	if(istype(H))
@@ -115,27 +116,26 @@
 			return 1
 
 		if(I_GRAB)
-			visible_message("<span class='danger'>[M] attempted to grab \the [src]!</span>")
+			visible_message(SPAN("danger", "[M] attempted to grab \the [src]!"))
 			return H.make_grab(H, src)
 
 		if(I_HURT)
-
 			if(M.zone_sel.selecting == "mouth" && wear_mask && istype(wear_mask, /obj/item/weapon/grenade))
 				var/obj/item/weapon/grenade/G = wear_mask
 				if(!G.active)
-					visible_message("<span class='danger'>\The [M] pulls the pin from \the [src]'s [G.name]!</span>")
+					visible_message(SPAN("danger", "\The [M] pulls the pin from \the [src]'s [G.name]!"))
 					G.activate(M)
 					update_inv_wear_mask()
 				else
-					to_chat(M, SPAN_WARNING("The [G] is already primed! Run!"))
+					to_chat(M, SPAN("warning", "The [G] is already primed! Run!"))
 				return
 
 			if(!istype(H))
-				attack_generic(H,rand(1,3),"punched")
+				attack_generic(H, rand(1, 3), "punched")
 				return
 
-			var/rand_damage = rand(3, 7)
-			//var/block = 0
+			var/attack_damage = 5
+
 			var/accurate = 0
 			var/specmod = 1
 			var/hit_zone = H.zone_sel.selecting
@@ -148,30 +148,33 @@
 			if(!attack)
 				return 0
 			if(world.time < H.last_attack + attack.delay)
-				to_chat(H, "<span class='notice'>You can't attack again so soon.</span>")
+				to_chat(H, SPAN("notice", "You can't attack again so soon."))
 				return 0
 			else
 				H.last_attack = world.time
 
 			if(!affecting || affecting.is_stump())
-				to_chat(M, "<span class='danger'>They are missing that limb!</span>")
+				to_chat(M, SPAN("danger", "They are missing that limb!"))
 				return 1
 
-			switch(src.a_intent)
-				if(I_HELP) // We didn't see this coming, so we get the full blow
-					rand_damage = 7
-					accurate = 1
+			if(a_intent == I_HELP) // We didn't see this coming, so we get the full blow
+				accurate = 1
 
-			if (M.grabbed_by.len)
+			if(istype(H.gloves, /obj/item/clothing/gloves)) // Syndie Gloves Go Robust
+				var/obj/item/clothing/gloves/GL = H.gloves
+				if(!isnull(GL.unarmed_damage_override))
+					attack_damage = GL.unarmed_damage_override
+				//FINALIZE_UNARMED(damage, maximize)
+
+			if(M.grabbed_by.len)
 				// Someone got a good grip on them, they won't be able to do much damage
-				rand_damage = max(2, rand_damage - 2)
+				attack_damage = max(2, attack_damage - 2)
 
-			if(src.grabbed_by.len || !src.MayMove() || src==H || H.species.species_flags & SPECIES_FLAG_NO_BLOCK)
+			if(grabbed_by.len || !MayMove() || src == H || H.species.species_flags & SPECIES_FLAG_NO_BLOCK)
 				accurate = 1 // certain circumstances make it impossible for us to evade punches
-				rand_damage = 5
 
-				if(src.grabbed_by.len)
-					for(var/obj/item/grab/G in src.grabbed_by)
+				if(grabbed_by.len)
+					for(var/obj/item/grab/G in grabbed_by)
 						if(G.assailant == H)
 							var/obj/item/organ/external/O = G.get_targeted_organ()
 							switch(hit_zone)
@@ -179,29 +182,28 @@
 									attack_message = "[H] lands a jab against [src]'s jaw!"
 									specmod = 2
 								if(BP_CHEST)
-									if(G.target_zone == BP_CHEST && O.damage > O.max_damage && src.should_have_organ(BP_HEART))
-										H.visible_message("<span class='danger'>[H] shoves \his hand into [src]'s chest!</span>")
-										src.custom_pain("You can feel a hand ripping your inwards!", 50, affecting = O)
+									if(G.target_zone == BP_CHEST && O.damage > O.max_damage && should_have_organ(BP_HEART))
+										H.visible_message(SPAN("danger", "[H] shoves \his hand into [src]'s chest!"))
+										custom_pain("You can feel a hand ripping your inwards!", 50, affecting = O)
 										H.next_move = world.time + 40 //also should prevent user from triggering this repeatedly
 										if(!do_after(H, 40))
 											return 0
 										if(!(G && G.affecting == src)) //check that we still have a grab
 											return 0
 
-										for(var/obj/item/organ/internal/heart/I in src.internal_organs)
+										for(var/obj/item/organ/internal/heart/I in internal_organs)
 											if(I && istype(I))
 												I.cut_away(src)
 												O.implants -= I
 												H.put_in_active_hand(I)
-												H.visible_message("<span class='danger'>[H] rips [src]'s [I.name] out!</span>")
+												H.visible_message(SPAN("danger", "[H] rips [src]'s [I.name] out!"))
 												playsound(src.loc, 'sound/effects/squelch1.ogg', 50, 1)
 												admin_attack_log(H, src, "Ripped their victim's heart out", "Got their heart ripped out", "ripped out")
 												return 0
-										H.visible_message("<span class='danger'>[H] did not find anything useful in [src]'s chest!</span>")
+										H.visible_message(SPAN("danger", "[H] did not find anything useful in [src]'s chest!"))
 										return 0
 
 			// Process evasion and blocking
-
 			if(!accurate)
 				/* ~Hubblenaut
 					This place is kind of convoluted and will need some explaining.
@@ -230,7 +232,7 @@
 				if(prob(80))
 					hit_zone = ran_zone(hit_zone)
 				if(prob(15) && hit_zone != BP_CHEST) // Missed!
-					if(!src.lying)
+					if(!lying)
 						attack_message = "[H] attempted to strike [src], but missed!"
 					else
 						attack_message = "[H] attempted to strike [src], but \he rolled out of the way!"
@@ -254,9 +256,9 @@
 
 			if(miss_type < 2)
 				if(!attack_message)
-					attack.show_attack(H, src, hit_zone, rand_damage)
+					attack.show_attack(H, src, hit_zone, FINALIZE_UNARMED(attack_damage, accurate))
 				else
-					H.visible_message("<span class='danger'>[attack_message]</span>")
+					H.visible_message(SPAN("danger", "[attack_message]"))
 
 			playsound(loc, ((miss_type) ? (miss_type == 1 ? attack.miss_sound : 'sound/weapons/thudswoosh.ogg') : attack.attack_sound), 25, 1, -1)
 			admin_attack_log(H, src, "[miss_type ? (miss_type == 1 ? "Has missed" : "Was blocked by") : "Has [pick(attack.attack_verb)]"] their victim.", "[miss_type ? (miss_type == 1 ? "Missed" : "Blocked") : "[pick(attack.attack_verb)]"] their attacker", "[miss_type ? (miss_type == 1 ? "has missed" : "was blocked by") : "has [pick(attack.attack_verb)]"]")
@@ -264,21 +266,22 @@
 			if(miss_type)
 				return 0
 
-			var/real_damage = rand_damage
+			attack_damage = FINALIZE_UNARMED(attack_damage, accurate)
+			var/real_damage = attack_damage // We don't want species' damage modifiers to apply additional effects but damage
 			real_damage += attack.get_unarmed_damage(H)
 			real_damage *= damage_multiplier
-			rand_damage *= damage_multiplier
+			attack_damage *= damage_multiplier
 			if(MUTATION_HULK in H.mutations)
 				real_damage *= 2 // Hulks do twice the damage
-				rand_damage *= 2
+				attack_damage *= 2
 			real_damage = max(1, real_damage)
 
 			var/armour = run_armor_check(hit_zone, "melee")
 			// Apply additional unarmed effects.
-			attack.apply_effects(H, src, armour, rand_damage, hit_zone, specmod)
+			attack.apply_effects(H, src, armour, attack_damage, hit_zone, specmod)
 
 			// Finally, apply damage to target
-			apply_damage(real_damage, (attack.deal_halloss ? PAIN : BRUTE), hit_zone, armour, damage_flags=attack.damage_flags())
+			apply_damage(real_damage, (attack.deal_halloss ? PAIN : BRUTE), hit_zone, armour, damage_flags = attack.damage_flags())
 
 		if(I_DISARM)
 			if(H.species)
@@ -286,6 +289,7 @@
 				H.species.disarm_attackhand(H, src)
 
 	return
+#undef FINALIZE_UNARMED
 
 /mob/living/carbon/human/proc/afterattack(atom/target as mob|obj|turf|area, mob/living/user as mob|obj, inrange, params)
 	return

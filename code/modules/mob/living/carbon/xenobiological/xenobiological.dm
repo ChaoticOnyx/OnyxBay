@@ -1,7 +1,7 @@
-/mob/living/carbon/slime
-	name = "baby slime"
-	icon = 'icons/mob/slimes.dmi'
-	icon_state = "grey baby slime"
+/mob/living/carbon/metroid
+	name = "baby metroid"
+	icon = 'icons/mob/metroids.dmi'
+	icon_state = "green baby metroid"
 	pass_flags = PASS_FLAG_TABLE
 	speak_emote = list("chirps")
 
@@ -13,27 +13,27 @@
 	nutrition = 800
 
 	see_in_dark = 8
-	update_slimes = 0
+	update_metroids = 0
 
-	// canstun and canweaken don't affect slimes because they ignore stun and weakened variables
+	// canstun and canweaken don't affect metroids because they ignore stun and weakened variables
 	// for the sake of cleanliness, though, here they are.
 	status_flags = CANPARALYSE|CANPUSH
 
 	var/toxloss = 0
 	var/is_adult = 0
 	var/number = 0 // Used to understand when someone is talking to it
-	var/cores = 1 // the number of /obj/item/slime_extract's the slime has left inside
+	var/cores = 1 // the number of /obj/item/metroid_extract's the metroid has left inside
 	var/mutation_chance = 30 // Chance of mutating, should be between 25 and 35
 
 	var/powerlevel = 0 // 0-10 controls how much electricity they are generating
-	var/amount_grown = 0 // controls how long the slime has been overfed, if 10, grows or reproduces
+	var/amount_grown = 0 // controls how long the metroid has been overfed, if 10, grows or reproduces
 
-	var/mob/living/Victim = null // the person the slime is currently feeding on
-	var/mob/living/Target = null // AI variable - tells the slime to hunt this down
-	var/mob/living/Leader = null // AI variable - tells the slime to follow this person
+	var/mob/living/Victim = null // the person the metroid is currently feeding on
+	var/mob/living/Target = null // AI variable - tells the metroid to hunt this down
+	var/mob/living/Leader = null // AI variable - tells the metroid to follow this person
 
 	var/attacked = 0 // Determines if it's been attacked recently. Can be any number, is a cooloff-ish variable
-	var/rabid = 0 // If set to 1, the slime will attack and eat anything it comes in contact with
+	var/rabid = 0 // If set to 1, the metroid will attack and eat anything it comes in contact with
 	var/holding_still = 0 // AI variable, cooloff-ish for how long it's going to stay in one place
 	var/target_patience = 0 // AI variable, cooloff-ish for how long it's going to follow its target
 
@@ -45,38 +45,38 @@
 
 	var/AIproc = 0 // If it's 0, we need to launch an AI proc
 
-	var/hurt_temperature = T0C-50 // slime keeps taking damage when its bodytemperature is below this
-	var/die_temperature = 50 // slime dies instantly when its bodytemperature is below this
+	var/hurt_temperature = T0C-50 // metroid keeps taking damage when its bodytemperature is below this
+	var/die_temperature = 50 // metroid dies instantly when its bodytemperature is below this
 
-	var/colour = "grey"
+	var/colour = "green"
 
 	var/core_removal_stage = 0 //For removing cores.
 
 
-/mob/living/carbon/slime/getToxLoss()
+/mob/living/carbon/metroid/getToxLoss()
 	return toxloss
 
-/mob/living/carbon/slime/adjustToxLoss(amount)
+/mob/living/carbon/metroid/adjustToxLoss(amount)
 	toxloss = Clamp(toxloss + amount, 0, maxHealth)
 
-/mob/living/carbon/slime/setToxLoss(amount)
+/mob/living/carbon/metroid/setToxLoss(amount)
 	adjustToxLoss(amount-getToxLoss())
 
-/mob/living/carbon/slime/New(location, colour="grey")
+/mob/living/carbon/metroid/New(location, colour = "green")
 
 	verbs += /mob/living/proc/ventcrawl
 
 	src.colour = colour
-	number = random_id(/mob/living/carbon/slime, 1, 1000)
-	name = "[colour] [is_adult ? "adult" : "baby"] slime ([number])"
+	number = random_id(/mob/living/carbon/metroid, 1, 1000)
+	name = "[colour] [is_adult ? "adult" : "baby"] metroid ([number])"
 	real_name = name
 	mutation_chance = rand(25, 35)
 	regenerate_icons()
 	..(location)
 
-/mob/living/carbon/slime/movement_delay()
+/mob/living/carbon/metroid/movement_delay()
 	if (bodytemperature >= 330.23) // 135 F
-		return -1	// slimes become supercharged at high temperatures
+		return -1	// metroids become supercharged at high temperatures
 
 	var/tally = ..()
 
@@ -87,18 +87,18 @@
 		tally += (283.222 - bodytemperature) / 10 * 1.75
 
 	if(reagents)
-		if(reagents.has_reagent(/datum/reagent/hyperzine)) // Hyperzine slows slimes down
+		if(reagents.has_reagent(/datum/reagent/hyperzine)) // Hyperzine slows metroids down
 			tally *= 2
 
 		if(reagents.has_reagent(/datum/reagent/frostoil)) // Frostoil also makes them move VEEERRYYYYY slow
 			tally *= 5
 
-	if(health <= 0) // if damaged, the slime moves twice as slow
+	if(health <= 0) // if damaged, the metroid moves twice as slow
 		tally *= 2
 
-	return tally + config.slime_delay
+	return tally + config.metroid_delay
 
-/mob/living/carbon/slime/Bump(atom/movable/AM as mob|obj, yes)
+/mob/living/carbon/metroid/Bump(atom/movable/AM as mob|obj, yes)
 	if ((!(yes) || now_pushing))
 		return
 	now_pushing = 1
@@ -135,10 +135,10 @@
 
 	..()
 
-/mob/living/carbon/slime/Allow_Spacemove()
+/mob/living/carbon/metroid/Allow_Spacemove()
 	return 1
 
-/mob/living/carbon/slime/Stat()
+/mob/living/carbon/metroid/Stat()
 	. = ..()
 
 	statpanel("Status")
@@ -155,20 +155,20 @@
 
 		stat(null,"Power Level: [powerlevel]")
 
-/mob/living/carbon/slime/adjustFireLoss(amount)
+/mob/living/carbon/metroid/adjustFireLoss(amount)
 	..(-abs(amount)) // Heals them
 	return
 
-/mob/living/carbon/slime/bullet_act(obj/item/projectile/Proj)
+/mob/living/carbon/metroid/bullet_act(obj/item/projectile/Proj)
 	attacked += 10
 	..(Proj)
 	return 0
 
-/mob/living/carbon/slime/emp_act(severity)
+/mob/living/carbon/metroid/emp_act(severity)
 	powerlevel = 0 // oh no, the power!
 	..()
 
-/mob/living/carbon/slime/ex_act(severity)
+/mob/living/carbon/metroid/ex_act(severity)
 	..()
 
 	var/b_loss = null
@@ -193,13 +193,13 @@
 	updatehealth()
 
 
-/mob/living/carbon/slime/u_equip(obj/item/W as obj)
+/mob/living/carbon/metroid/u_equip(obj/item/W as obj)
 	return
 
-/mob/living/carbon/slime/attack_ui(slot)
+/mob/living/carbon/metroid/attack_ui(slot)
 	return
 
-/mob/living/carbon/slime/attack_hand(mob/living/carbon/human/M as mob)
+/mob/living/carbon/metroid/attack_hand(mob/living/carbon/human/M as mob)
 
 	..()
 
@@ -276,7 +276,7 @@
 				visible_message("<span class='danger'>[M] has attempted to punch [src]!</span>")
 	return
 
-/mob/living/carbon/slime/attackby(obj/item/W, mob/user)
+/mob/living/carbon/metroid/attackby(obj/item/W, mob/user)
 	if(W.force > 0)
 		attacked += 10
 		if(!(stat) && prob(25)) //Only run this check if we're alive or otherwise motile, otherwise surgery will be agonizing for xenobiologists.
@@ -289,22 +289,22 @@
 		Feedstop()
 		step_away(src, user)
 
-/mob/living/carbon/slime/restrained()
+/mob/living/carbon/metroid/restrained()
 	return 0
 
-/mob/living/carbon/slime/var/co2overloadtime = null
-/mob/living/carbon/slime/var/temperature_resistance = T0C+75
+/mob/living/carbon/metroid/var/co2overloadtime = null
+/mob/living/carbon/metroid/var/temperature_resistance = T0C+75
 
-/mob/living/carbon/slime/toggle_throw_mode()
+/mob/living/carbon/metroid/toggle_throw_mode()
 	return
 
-/mob/living/carbon/slime/has_eyes()
+/mob/living/carbon/metroid/has_eyes()
 	return 0
 
-/mob/living/carbon/slime/check_has_mouth()
+/mob/living/carbon/metroid/check_has_mouth()
 	return 0
 
-/mob/living/carbon/slime/proc/gain_nutrition(amount)
+/mob/living/carbon/metroid/proc/gain_nutrition(amount)
 	nutrition += amount
 	if(prob(amount * 2)) // Gain around one level per 50 nutrition
 		powerlevel++

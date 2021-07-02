@@ -67,7 +67,8 @@
 	var/obj/item/weapon/broken_bottle/B = new /obj/item/weapon/broken_bottle(newloc)
 	if(prob(33))
 		new /obj/item/weapon/material/shard(newloc) // Create a glass shard at the target's location!
-	B.icon_state = src.icon_state
+	B.icon_state = icon_state
+	B.w_class = w_class
 
 	var/icon/I = new('icons/obj/drinks.dmi', src.icon_state)
 	I.Blend(B.broken_outline, ICON_OVERLAY, rand(5), 1)
@@ -80,7 +81,7 @@
 		L.IgniteMob()
 
 	playsound(src, "window_breaking", 70, 1)
-	src.transfer_fingerprints_to(B)
+	transfer_fingerprints_to(B)
 
 	qdel(src)
 	return B
@@ -148,7 +149,7 @@
 	if(rag)
 		var/underlay_image = image(icon='icons/obj/drinks.dmi', icon_state=rag.on_fire? "[rag_underlay]_lit" : rag_underlay)
 		underlays += underlay_image
-		set_light(rag.light_range, rag.light_power, rag.light_color)
+		set_light(rag.light_max_bright, 0.1, rag.light_outer_range, 2, rag.light_color)
 	else if(pourer)
 		overlays += pourer_overlay
 		set_light(0)
@@ -191,7 +192,6 @@
 
 //Keeping this here for now, I'll ask if I should keep it here.
 /obj/item/weapon/broken_bottle
-
 	name = "Broken Bottle"
 	desc = "A bottle with a sharp broken bottom."
 	icon = 'icons/obj/drinks.dmi'
@@ -204,16 +204,13 @@
 	throw_speed = 3
 	throw_range = 5
 	item_state = "beer"
+	w_class = ITEM_SIZE_SMALL
 	attack_verb = list("stabbed", "slashed", "attacked")
+	hitsound = 'sound/weapons/bladeslice.ogg'
 	sharp = 1
 	edge = 0
 	unacidable = 1
 	var/icon/broken_outline = icon('icons/obj/drinks.dmi', "broken")
-
-/obj/item/weapon/broken_bottle/attack(mob/living/carbon/M as mob, mob/living/carbon/user as mob)
-	playsound(loc, 'sound/weapons/bladeslice.ogg', 50, 1, -1)
-	return ..()
-
 
 /obj/item/weapon/reagent_containers/food/drinks/bottle/gin
 	name = "Griffeater Gin"

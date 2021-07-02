@@ -58,6 +58,7 @@
 	icon = 'icons/obj/weapons.dmi'
 	icon_state = "crossbow"
 	item_state = "crossbow-solid"
+	wielded_item_state = "crossbow-solid-wielded"
 	fire_sound = 'sound/weapons/punchmiss.ogg' // TODO: Decent THWOK noise.
 	fire_sound_text = "a solid thunk"
 	fire_delay = 25
@@ -65,6 +66,7 @@
 	mod_reach = 0.8
 	mod_handy = 1.0
 	slot_flags = SLOT_BACK
+	one_hand_penalty = 5 // The thing is huge AF
 
 	var/obj/item/bolt
 	var/tension = 0                         // Current draw on the bow.
@@ -202,6 +204,7 @@
 		icon_state = "crossbow-nocked"
 	else
 		icon_state = "crossbow"
+	..()
 
 
 // Crossbow construction.

@@ -80,7 +80,7 @@
 		return
 
 	var/obj/O = new /obj(T)
-	O.set_light(range, -10, "#ffffff")
+	O.set_light(-10, 0.1, 10, 2, "#ffffff")
 
 	spawn(duration)
 		qdel(O)
@@ -93,7 +93,7 @@
 	school = "racial"
 	spell_flags = INCLUDEUSER
 	invocation_type = SpI_EMOTE
-	range = -1
+	range = 0
 	invocation = "begins to grow!"
 	charge_max = 1200 //2 minutes
 	duration = 300 //30 seconds

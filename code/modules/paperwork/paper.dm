@@ -28,8 +28,8 @@
 	var/list/ico[0]      //Icons and
 	var/list/offset_x[0] //offsets stored for later
 	var/list/offset_y[0] //usage by the photocopier
-	var/rigged = 0
-	var/spam_flag = 0
+	var/rigged = FALSE
+	var/spam_flag = FALSE
 	var/readonly = FALSE
 	var/appendable = TRUE
 	var/dynamic_icon = FALSE
@@ -57,7 +57,7 @@
 	set_content(text ? text : info, title, rawhtml || src.rawhtml)
 
 /obj/item/weapon/paper/proc/copy(loc = src.loc, generate_stamps = TRUE)
-	var/obj/item/weapon/paper/P = new src.type(loc)
+	var/obj/item/weapon/paper/P = new (loc)
 	P.name = name
 	P.info = info
 	P.info_links = info_links
@@ -189,11 +189,11 @@
 		return
 	user.examinate(src)
 	if(rigged && (Holiday == "April Fool's Day"))
-		if(spam_flag == 0)
-			spam_flag = 1
+		if(!spam_flag)
+			spam_flag = TRUE
 			playsound(loc, 'sound/items/bikehorn.ogg', 50, 1)
 			spawn(20)
-				spam_flag = 0
+				spam_flag = FALSE
 
 /obj/item/weapon/paper/attack_ai(mob/living/silicon/ai/user)
 	show_content(user)
@@ -446,9 +446,9 @@
 
 /obj/item/weapon/paper/attackby(obj/item/weapon/P as obj, mob/user as mob)
 	..()
-	var/clown = 0
+	var/clown = FALSE
 	if(user.mind && (user.mind.assigned_role == "Clown"))
-		clown = 1
+		clown = TRUE
 
 	if(istype(P, /obj/item/weapon/tape_roll))
 		var/obj/item/weapon/tape_roll/tape = P
@@ -567,4 +567,4 @@
 //For supply.
 /obj/item/weapon/paper/manifest
 	name = "supply manifest"
-	var/is_copy = 1
+	var/is_copy = TRUE

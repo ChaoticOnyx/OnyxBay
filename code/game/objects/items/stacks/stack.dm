@@ -15,6 +15,7 @@
 	mod_weight = 0.75
 	mod_reach = 0.5
 	mod_handy = 0.5
+	icon = 'icons/obj/materials.dmi'
 	var/list/datum/stack_recipe/recipes
 	var/singular_name
 	var/amount = 1
@@ -26,6 +27,7 @@
 	var/list/datum/matter_synth/synths = null
 	var/craft_tool //determines what kind of tools should be used for crafting
 	var/splittable = 1 //can we split/combine the stacks?
+	var/storage_cost_mult = 1.0
 
 /obj/item/stack/New(loc, amount=null)
 	..()
@@ -356,8 +358,7 @@
 
 /obj/item/stack/get_storage_cost()	//Scales storage cost to stack size
 	. = ..()
-	if (amount < max_amount)
-		. = ceil(. * amount / max_amount)
+	return ceil(. * amount * storage_cost_mult / max_amount)
 
 /obj/item/stack/attack_hand(mob/user as mob)
 	if((user.get_inactive_hand() == src) && splittable)

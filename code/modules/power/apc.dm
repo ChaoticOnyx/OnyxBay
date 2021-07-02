@@ -356,17 +356,17 @@
 		if(update_state & (UPDATE_OPENED1|UPDATE_OPENED2|UPDATE_BROKE))
 			set_light(0)
 		else if(update_state & UPDATE_BLUESCREEN)
-			set_light(l_range = 2, l_power = 0.5, l_color = "#0000ff")
+			set_light(0.25, 0.5, 1, 2, "0000ff")
 		else if(!(stat & (BROKEN|MAINT)) && update_state & UPDATE_ALLGOOD)
 			var/color
 			switch(charging)
 				if(0)
-					color = "#f86060"
+					color = "#b73737"
 				if(1)
-					color = "#a8b0f8"
+					color = "#4958dd"
 				if(2)
-					color = "#82ff4c"
-			set_light(l_range = 2, l_power = 0.5, l_color = color)
+					color = "#008000"
+			set_light(0.35, 0.5, 1, 2, color)
 		else
 			set_light(0)
 
@@ -1151,7 +1151,7 @@
 // val 0=off, 1=off(auto) 2=on 3=on(auto)
 // on 0=off, 1=on, 2=autooff
 // defines a state machine, returns the new state
-obj/machinery/power/apc/proc/autoset(cur_state, on)
+/obj/machinery/power/apc/proc/autoset(cur_state, on)
 	//autoset will never turn on a channel set to off
 	switch(cur_state)
 		if(POWERCHAN_OFF_TEMP)

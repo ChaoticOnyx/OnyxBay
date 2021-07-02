@@ -133,9 +133,10 @@
 	if(internal_organs)
 		for(var/obj/item/organ/O in internal_organs)
 			qdel(O)
+		internal_organs.Cut()
 
 	applied_pressure = null
-	if(splinted && splinted.loc == src)
+	if(splinted?.loc == src)
 		qdel(splinted)
 	splinted = null
 
@@ -218,16 +219,17 @@
 	for(var/obj/item/organ/external/child in children)
 		child.show_decay_status(user)
 
-/obj/item/organ/external/attackby(obj/item/weapon/W as obj, mob/user as mob)
+/obj/item/organ/external/attackby(obj/item/weapon/W, mob/user)
+	user.setClickCooldown(DEFAULT_ATTACK_COOLDOWN)
 	switch(stage)
 		if(0)
 			if(W.sharp)
-				user.visible_message("<span class='danger'><b>[user]</b> cuts [src] open with [W]!</span>")
+				user.visible_message(SPAN("danger", "<b>[user]</b> cuts [src] open with [W]!"))
 				stage++
 				return
 		if(1)
 			if(istype(W))
-				user.visible_message("<span class='danger'><b>[user]</b> cracks [src] open like an egg with [W]!</span>")
+				user.visible_message(SPAN("danger", "<b>[user]</b> cracks [src] open like an egg with [W]!"))
 				stage++
 				return
 		if(2)
@@ -245,14 +247,12 @@
 						var/obj/item/organ/internal/mmi_holder/O = removing
 						removing = O.transfer_and_delete()
 
-					removing.forceMove(get_turf(user))
+					removing.forceMove(get_turf(src))
 
-					if(!(user.l_hand && user.r_hand))
-						user.put_in_hands(removing)
-					user.visible_message("<span class='danger'><b>[user]</b> extracts [removing] from [src] with [W]!</span>")
+					user.visible_message(SPAN("danger", "<b>[user]</b> extracts [removing] from [src] with [W]!"))
 				else
 					if(organ_tag == BP_HEAD && W.sharp)
-						user.visible_message("<span class='danger'><b>[user]</b> rips the skin off [src] with [W], revealing a skull.</span>")
+						user.visible_message(SPAN("danger", "<b>[user]</b> rips the skin off [src] with [W], revealing a skull."))
 						if(istype(src.loc,/turf))
 							new /obj/item/weapon/skull(src.loc)
 							gibs(src.loc)
@@ -261,7 +261,7 @@
 							gibs(user.loc)
 						qdel(src)
 					else
-						user.visible_message("<span class='danger'><b>[user]</b> fishes around fruitlessly in [src] with [W].</span>")
+						user.visible_message(SPAN("danger", "<b>[user]</b> fishes around fruitlessly in [src] with [W]."))
 				return
 	..()
 
@@ -413,7 +413,7 @@
 /*
 This function completely restores a damaged organ to perfect condition.
 */
-/obj/item/organ/external/rejuvenate(ignore_prosthetic_prefs)
+/obj/item/organ/external/rejuvenate(ignore_prosthetic_prefs = FALSE)
 	damage_state = "00"
 
 	status = 0
@@ -974,7 +974,7 @@ Note that amputating the affected organ does in fact remove the infection from t
 		if(W.clamped)
 			return 1
 
-obj/item/organ/external/proc/remove_clamps()
+/obj/item/organ/external/proc/remove_clamps()
 	var/rval = 0
 	for(var/datum/wound/W in wounds)
 		rval |= W.clamped
@@ -1504,7 +1504,7 @@ obj/item/organ/external/proc/remove_clamps()
 	return !BP_IS_ROBOTIC(src) && species && species.sexybits_location == organ_tag
 
 // Added to the mob's move delay tally if this organ is being used to move with.
-obj/item/organ/external/proc/movement_delay(max_delay)
+/obj/item/organ/external/proc/movement_delay(max_delay)
 	. = 0
 	if(is_stump())
 		. += max_delay

@@ -47,6 +47,7 @@
 
 	var/datum/job/assigned_job
 
+	var/completed_contracts = 0
 	var/list/datum/objective/objectives = list()
 	var/list/datum/objective/special_verbs = list()
 	var/syndicate_awareness = SYNDICATE_UNAWARE
@@ -531,10 +532,10 @@
 	..()
 	if(!mind.assigned_role)	mind.assigned_role = "Assistant"	//defualt
 
-//slime
-/mob/living/carbon/slime/mind_initialize()
+//metroid
+/mob/living/carbon/metroid/mind_initialize()
 	..()
-	mind.assigned_role = "slime"
+	mind.assigned_role = "metroid"
 
 /mob/living/carbon/alien/larva/mind_initialize()
 	..()

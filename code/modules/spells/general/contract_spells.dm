@@ -10,7 +10,6 @@
 	invocation = "none"
 	invocation_type = SpI_NONE
 
-
 	var/mob/subject
 
 /spell/contract/New(mob/M)
@@ -21,7 +20,7 @@
 /spell/contract/choose_targets()
 	return list(subject)
 
-/spell/contract/cast(mob/target,mob/user)
+/spell/contract/cast(mob/target, mob/user)
 	if(!subject)
 		to_chat(usr, "This spell was not properly given a target. Contact a coder.")
 		return null
@@ -34,34 +33,32 @@
 /spell/contract/reward
 	name = "Reward Contractee"
 	desc = "A spell that makes your contracted victim feel better."
-
+	need_target = FALSE
 	charge_max = 300
 	cooldown_min = 100
-
 	hud_state = "wiz_jaunt_old"
 
-/spell/contract/reward/cast(mob/living/target,mob/user)
+/spell/contract/reward/cast(mob/living/target, mob/user)
 	target = ..(target,user)
 	if(!target)
 		return
 
-	to_chat(target, "<span class='info'>You feel great!</span>")
+	to_chat(target, SPAN("info", "You feel great!"))
 	target.ExtinguishMob()
 
 /spell/contract/punish
 	name = "Punish Contractee"
 	desc = "A spell that sets your contracted victim ablaze."
-
+	need_target = FALSE
 	charge_max = 300
 	cooldown_min = 100
-
 	hud_state = "gen_immolate"
 
-/spell/contract/punish/cast(mob/living/target,mob/user)
+/spell/contract/punish/cast(mob/living/target, mob/user)
 	target = ..(target,user)
 	if(!target)
 		return
 
-	to_chat(target, "<span class='danger'>You feel punished!</span>")
+	to_chat(target, SPAN_DANGER("You feel punished!"))
 	target.fire_stacks += 15
 	target.IgniteMob()

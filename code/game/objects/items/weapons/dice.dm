@@ -13,6 +13,9 @@
 /obj/item/weapon/dice/New()
 	icon_state = "[name][rand(1,sides)]"
 
+/obj/item/weapon/dice/dp/New()
+	icon_state = "[name][10*rand(0,sides-1)]"//Because dp starts from 00 and ends on 90
+
 /obj/item/weapon/dice/d4
 	name = "d4"
 	desc = "A dice with four sides."
@@ -43,10 +46,10 @@
 	icon_state = "d2020"
 	sides = 20
 
-/obj/item/weapon/dice/d100
-	name = "d100"
+/obj/item/weapon/dice/dp
+	name = "dp"
 	desc = "A dice with ten sides. This one is for the tens digit."
-	icon_state = "d10010"
+	icon_state = "dp10"
 	sides = 10
 
 /obj/item/weapon/dice/proc/roll_die()
@@ -61,6 +64,10 @@
 	else if(result == 1)
 		comment = "Ouch, bad luck."
 	return list(result, comment)
+
+/obj/item/weapon/dice/dp/roll_die()
+	var/result = 10 * rand(0, sides-1)//Because dp starts from 00 and ends on 90
+	return list(result, "")
 
 /obj/item/weapon/dice/attack_self(mob/user as mob)
 	var/list/roll_result = roll_die()

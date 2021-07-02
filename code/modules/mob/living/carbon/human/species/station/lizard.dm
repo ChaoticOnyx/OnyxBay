@@ -8,7 +8,8 @@
 
 	unarmed_types = list(/datum/unarmed_attack/stomp, /datum/unarmed_attack/tail, /datum/unarmed_attack/claws, /datum/unarmed_attack/bite/sharp)
 	primitive_form = "Stok"
-	darksight = 3
+	darksight_range = 3
+	darksight_tint = DARKTINT_MODERATE
 	gluttonous = GLUT_TINY
 	strength = STR_HIGH
 	slowdown = 0.5
@@ -120,11 +121,17 @@
 
 	if(prob(2) && H.nutrition > 150)
 		for(var/limb_type in has_limbs)
+			var/list/obj/item/organ/internal/foreign_organs = list()
 			var/obj/item/organ/external/E = H.organs_by_name[limb_type]
 			if(E && E.organ_tag != BP_HEAD && !E.vital && !E.is_usable())	//Skips heads and vital bits...
 				E.removed()			//...because no one wants their head to explode to make way for a new one.
+				for(var/obj/item/organ/internal/O in E.internal_organs)
+					if(istype(O) && O.foreign)
+						E.internal_organs.Remove(O)
+						H.internal_organs.Remove(O)
+						foreign_organs |= O
 				qdel(E)
-				E= null
+				E = null
 			if(!E)
 				var/list/organ_data = has_limbs[limb_type]
 				var/limb_path = organ_data["path"]
@@ -137,6 +144,15 @@
 				blood_splatter(H,B,1)
 				O.set_dna(H.dna)
 				H.update_body()
+
+				for(var/obj/item/organ/internal/organ in foreign_organs)
+					organ.owner = H
+					organ.rejuvenate()
+					var/obj/item/organ/external/FE = H.get_organ(organ.parent_organ)
+					FE.internal_organs |= organ
+					H.internal_organs |= organ
+					H.internal_organs_by_name[organ.organ_tag] = organ
+					organ.after_organ_creation()
 				return
 			else
 				for(var/datum/wound/W in E.wounds)

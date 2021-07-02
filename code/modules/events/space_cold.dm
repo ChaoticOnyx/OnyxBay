@@ -1,4 +1,4 @@
-datum/event/space_cold/start()
+/datum/event/space_cold/start()
 	var/list/candidates = list()	//list of candidate keys
 	for(var/mob/living/carbon/human/G in GLOB.player_list)
 		if(G.client && G.stat != DEAD && !G.species.get_virus_immune(G))

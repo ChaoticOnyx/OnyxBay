@@ -5,42 +5,25 @@
 	name = "Settings"
 	sort_order = 5
 
-/datum/category_item/player_setup_item/player_global/settings/load_preferences(savefile/S)
-	from_file(S["lastchangelog"], pref.lastchangelog)
-	from_file(S["default_slot"], pref.default_slot)
-	from_file(S["preference_values"], pref.preference_values)
+/datum/category_item/player_setup_item/player_global/settings/load_preferences(datum/pref_record_reader/R)
+	pref.lastchangelog = R.read("lastchangelog")
+	pref.default_slot = R.read("default_slot")
+	pref.slot_names = R.read("slot_names")
+	pref.preference_values = R.read("preference_values")
 
-/datum/category_item/player_setup_item/player_global/settings/save_preferences(savefile/S)
-	to_file(S["lastchangelog"], pref.lastchangelog)
-	to_file(S["default_slot"], pref.default_slot)
-	to_file(S["preference_values"], pref.preference_values)
-
-/datum/category_item/player_setup_item/player_global/settings/update_setup(savefile/preferences, savefile/character)
-	if(preferences["version"] < 16)
-		var/list/preferences_enabled
-		var/list/preferences_disabled
-		from_file(preferences["preferences"], preferences_enabled)
-		from_file(preferences["preferences_disabled"], preferences_disabled)
-
-		if(!istype(preferences_enabled))
-			preferences_enabled = list()
-		if(!istype(preferences_disabled))
-			preferences_disabled = list()
-
-		pref.preference_values = list()
-		for(var/datum/client_preference/cp in get_client_preferences())
-			if(cp.key in preferences_enabled)
-				pref.preference_values[cp.key] = cp.get_options(preference_mob().client)[1] // for the converted preferences, the truthy value is going to be the first one...
-			else if(cp.key in preferences_disabled)
-				pref.preference_values[cp.key] = cp.get_options(preference_mob().client)[2] // ...and the falsy value the second
-			else
-				pref.preference_values[cp.key] = cp.get_default_value(preference_mob().client)
-		return 1
+/datum/category_item/player_setup_item/player_global/settings/save_preferences(datum/pref_record_writer/W)
+	W.write("lastchangelog", pref.lastchangelog)
+	W.write("default_slot", pref.default_slot)
+	W.write("slot_names", pref.slot_names)
+	W.write("preference_values", pref.preference_values)
 
 /datum/category_item/player_setup_item/player_global/settings/sanitize_preferences()
 	// Ensure our preferences are lists.
 	if(!istype(pref.preference_values))
 		pref.preference_values = list()
+
+	if(!istype(pref.slot_names))
+		pref.slot_names = list()
 
 	var/list/client_preference_keys = list()
 	for(var/cp in get_client_preferences())
@@ -99,15 +82,16 @@
 	return ..()
 
 /client/proc/get_preference_value(preference)
-	if (!prefs)
-		log_error("[ckey]'s preferences did not load. Trying to fix.")
-		prefs = SScharacter_setup.preferences_datums[ckey]
+	if(!SScharacter_setup.initialized)
+		// Too early to use any preferences
+		CRASH("Trying to get [ckey]'s preferences before the subsystem's initialization.")
 
-	if (!prefs)
+	if(!prefs)
 		log_error("[ckey]'s preferences are broken. Creating new one.")
 		prefs = new /datum/preferences(src)
+		setup_preferences()
 
-	if (!prefs)
+	if(!prefs)
 		CRASH("Can't create preferences for [ckey].")
 
 	var/datum/client_preference/cp = get_client_preference(preference)

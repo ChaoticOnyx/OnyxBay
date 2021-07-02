@@ -212,16 +212,16 @@
 	power_draw_per_use = 80
 
 /obj/item/integrated_circuit/input/adv_med_scanner/proc/damage_to_severity(value)
-	if(value < 100)
-		return 4
-	if(value < 75)
-		return 3
-	if(value < 50)
-		return 2
-	if(value < 25)
-		return 1
 	if(value < 1)
 		return 0
+	if(value < 25)
+		return 1
+	if(value < 50)
+		return 2
+	if(value < 75)
+		return 3
+	if(value < 100)
+		return 4
 	return 5
 
 /obj/item/integrated_circuit/input/adv_med_scanner/do_work()
@@ -245,9 +245,9 @@
 	push_data()
 	activate_pin(2)
 
-/obj/item/integrated_circuit/input/slime_scanner
-	name = "slime scanner"
-	desc = "A very small version of the xenobio analyser. This allows the machine to know every needed properties of slime. Output mutation list is non-associative."
+/obj/item/integrated_circuit/input/metroid_scanner
+	name = "metroid scanner"
+	desc = "A very small version of the xenobio analyser. This allows the machine to know every needed properties of a metroid. Output mutation list is non-associative."
 	icon_state = "medscan_adv"
 	complexity = 12
 	inputs = list("target" = IC_PINTYPE_REF)
@@ -259,16 +259,16 @@
 		"health"				= IC_PINTYPE_NUMBER,
 		"possible mutation"		= IC_PINTYPE_LIST,
 		"genetic destability"	= IC_PINTYPE_NUMBER,
-		"slime core amount"		= IC_PINTYPE_NUMBER,
+		"metroid core amount"		= IC_PINTYPE_NUMBER,
 		"Growth progress"		= IC_PINTYPE_NUMBER,
 	)
 	activators = list("scan" = IC_PINTYPE_PULSE_IN, "on scanned" = IC_PINTYPE_PULSE_OUT)
 	spawn_flags = IC_SPAWN_RESEARCH
 	power_draw_per_use = 80
 
-/obj/item/integrated_circuit/input/slime_scanner/do_work()
-	var/mob/living/carbon/slime/T = get_pin_data_as_type(IC_INPUT, 1, /mob/living/carbon/slime)
-	if(!isslime(T)) //Invalid input
+/obj/item/integrated_circuit/input/metroid_scanner/do_work()
+	var/mob/living/carbon/metroid/T = get_pin_data_as_type(IC_INPUT, 1, /mob/living/carbon/metroid)
+	if(!ismetroid(T)) //Invalid input
 		return
 	if(T in view(get_turf(src))) // Like medbot's analyzer it can be used in range..
 
@@ -280,7 +280,7 @@
 		set_pin_data(IC_OUTPUT, 6, T.GetMutations())
 		set_pin_data(IC_OUTPUT, 7, T.mutation_chance)
 		set_pin_data(IC_OUTPUT, 8, T.cores)
-		set_pin_data(IC_OUTPUT, 9, T.amount_grown/SLIME_EVOLUTION_THRESHOLD)
+		set_pin_data(IC_OUTPUT, 9, T.amount_grown/METROID_EVOLUTION_THRESHOLD)
 
 
 	push_data()
@@ -868,13 +868,13 @@
 	var/datum/signal/signal = new()
 	signal.transmission_method = 1
 	signal.data["tag"] = code
-	signal.data["command"] = json_encode(command)
+	signal.data["command"] = html_encode(command)
 	signal.encryption = 0
 	return signal
 
 /obj/item/integrated_circuit/input/signaler/advanced/receive_signal(datum/signal/signal)
 	if(signal_good(signal))
-		set_pin_data(IC_OUTPUT,1,json_decode(signal.data["command"]))
+		set_pin_data(IC_OUTPUT,1,html_decode(signal.data["command"]))
 		push_data()
 		..()
 
@@ -1388,6 +1388,7 @@
 			set_pin_data(IC_OUTPUT, 1, selected)
 			push_data()
 			activate_pin(1)
+		return IC_TOPIC_REFRESH
 
 // -storage examiner- // **works**
 /obj/item/integrated_circuit/input/storage_examiner

@@ -32,7 +32,7 @@
 	icon_state = "pirateranged"
 	icon_living = "pirateranged"
 	icon_dead = "piratemelee_dead"
-	projectilesound = 'sound/weapons/laser.ogg'
+	projectilesound = 'sound/effects/weapons/energy/Laser.ogg'
 	ranged = 1
 	rapid = 1
 	projectiletype = /obj/item/projectile/beam

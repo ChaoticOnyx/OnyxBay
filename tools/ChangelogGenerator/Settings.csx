@@ -1,7 +1,9 @@
+#r "nuget:Markdig, 0.24.0"
 #nullable enable
 
 using System.Text.Json;
 using System.IO;
+using Markdig;
 
 /// <summary>
 ///     Настройки скрипта.
@@ -41,8 +43,17 @@ private static class Settings
     {
         PropertyNamingPolicy = JsonNamingPolicy.CamelCase,
         Encoder = System.Text.Encodings.Web.JavaScriptEncoder.UnsafeRelaxedJsonEscaping,
-        WriteIndented = true
+        WriteIndented = true,
+        DefaultIgnoreCondition = System.Text.Json.Serialization.JsonIgnoreCondition.WhenWritingDefault
     };
+    /// <summary>
+    ///     Настройки для Markdown.
+    /// </summary>
+    /// <returns></returns>
+    public static readonly MarkdownPipeline MdPipeline = new MarkdownPipelineBuilder()
+                                                             .UseAdvancedExtensions()
+                                                             .UseEmojiAndSmiley()
+                                                             .Build();
     /// <summary>
     ///     Название плашки, которая будет добавляться к PR если отсутствует чейнджлог или он с ошибками.
     /// </summary>
@@ -62,8 +73,7 @@ private static class Settings
 /// </summary>
 public enum ChangePrefix
 {
-    BugFix = 0,
-    Wip,
+    BugFix = 1,
     Tweak,
     SoundAdd,
     SoundDel,
@@ -74,5 +84,6 @@ public enum ChangePrefix
     MapTweak,
     SpellCheck,
     Experiment,
-    Admin
+    Admin,
+    Balance
 }

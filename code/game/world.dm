@@ -352,13 +352,13 @@ var/world_topic_spam_protect_time = world.timeofday
 			return "globally muted"
 		if(jobban_keylist.Find("[ckey] - OOC"))
 			return "banned from ooc"
-		var/sent_message = "[create_text_tag("DISCORD OOC:")] <EM>[ckey]:</EM> <span class='message linkify'>[message]</span>"
+		var/sent_message = "[create_text_tag("dooc", "Discord")] <EM>[ckey]:</EM> <span class='message linkify'>[message]</span>"
 		for(var/client/target in GLOB.clients)
 			if(!target)
 				continue //sanity
-			if(target.is_key_ignored(ckey) || target.get_preference_value(/datum/client_preference/show_ooc) == GLOB.PREF_HIDE || target.get_preference_value(/datum/client_preference/show_discord_ooc) == GLOB.PREF_HIDE  && !input["isadmin"]) // If we're ignored by this person, then do nothing.
+			if(target.is_key_ignored(ckey) && !input["isadmin"]) // If we're ignored by this person, then do nothing.
 				continue //if it shouldn't see then it doesn't
-			to_chat(target, "<span class='ooc'><span class='everyone'>[sent_message]</span></span>")
+			to_chat(target, "<span class='ooc dooc'><span class='everyone'>[sent_message]</span></span>", type = MESSAGE_TYPE_DOOC)
 
 	else if ("asay" in input)
 		return "not supported" //simply no asay on bay
@@ -492,9 +492,7 @@ var/world_topic_spam_protect_time = world.timeofday
 		Master.Shutdown()
 
 	for(var/client/C in GLOB.clients)
-		var/datum/chatOutput/co = C.chatOutput
-		if(co)
-			co.ehjax_send(data = "roundrestart")
+		C?.tgui_panel?.send_roundrestart()
 
 		if(config.server) //if you set a server location in config.txt, it sends you there instead of trying to reconnect to the same world address. -- NeoFite
 			send_link(C, "byond://[config.server]")
@@ -665,19 +663,21 @@ var/world_topic_spam_protect_time = world.timeofday
 #define FAILED_DB_CONNECTION_CUTOFF 5
 var/failed_db_connections = 0
 var/failed_old_db_connections = 0
+var/failed_don_db_connections = 0
+
 
 /hook/startup/proc/connectDB()
 	if(!config.sql_enabled)
-		to_world_log("SQL disabled. Your server will not use feedback database.")
+		log_to_dd("SQL disabled. Your server will not use feedback database.")
 	else if(!setup_database_connection())
-		to_world_log("Your server failed to establish a connection with the feedback database.")
+		log_to_dd("Your server failed to establish a connection with the feedback database.")
 	else
-		to_world_log("Feedback database connection established.")
+		log_to_dd("Feedback database connection established.")
 	return TRUE
 
-proc/setup_database_connection()
+/proc/setup_database_connection()
 
-	if(failed_db_connections > FAILED_DB_CONNECTION_CUTOFF)	//If it failed to establish a connection more than 5 times in a row, don't bother attempting to conenct anymore.
+	if(failed_db_connections > FAILED_DB_CONNECTION_CUTOFF)	//If it failed to establish a connection more than 5 times in a row, don't bother attempting to connect anymore.
 		return 0
 
 	if(!dbcon)
@@ -695,34 +695,38 @@ proc/setup_database_connection()
 		failed_db_connections = 0	//If this connection succeeded, reset the failed connections counter.
 	else
 		failed_db_connections++		//If it failed, increase the failed connections counter.
-		to_world_log(dbcon.ErrorMsg())
+		log_to_dd(dbcon.ErrorMsg())
 
 	return .
 
 //This proc ensures that the connection to the feedback database (global variable dbcon) is established
-proc/establish_db_connection()
+/proc/establish_db_connection()
+	if(!config.sql_enabled)
+		return FALSE
+
 	if(failed_db_connections > FAILED_DB_CONNECTION_CUTOFF)
-		return 0
+		return FALSE
 
 	if(!dbcon || !dbcon.IsConnected())
 		return setup_database_connection()
 	else
-		return 1
+		return TRUE
 
 
 /hook/startup/proc/connectOldDB()
 	if(!config.sql_enabled)
-		to_world_log("SQL disabled. Your server configured to use legacy admin and ban system.")
+		log_to_dd("SQL disabled. Your server configured to use legacy admin and ban system.")
 	else if(!setup_old_database_connection())
-		to_world_log("Your server failed to establish a connection with the SQL database.")
+		log_to_dd("Your server failed to establish a connection with the SQL database.")
 	else
-		to_world_log("SQL database connection established.")
+		log_to_dd("SQL database connection established.")
 	return TRUE
 
 //These two procs are for the old database, while it's being phased out. See the tgstation.sql file in the SQL folder for more information.
-proc/setup_old_database_connection()
+//If you don't know what any of this do, look at the same code above
+/proc/setup_old_database_connection()
 
-	if(failed_old_db_connections > FAILED_DB_CONNECTION_CUTOFF)	//If it failed to establish a connection more than 5 times in a row, don't bother attempting to conenct anymore.
+	if(failed_old_db_connections > FAILED_DB_CONNECTION_CUTOFF)	
 		return 0
 
 	if(!dbcon_old)
@@ -737,21 +741,71 @@ proc/setup_old_database_connection()
 	dbcon_old.Connect("dbi:mysql:[db]:[address]:[port]","[user]","[pass]")
 	. = dbcon_old.IsConnected()
 	if ( . )
-		failed_old_db_connections = 0	//If this connection succeeded, reset the failed connections counter.
+		failed_old_db_connections = 0
 	else
-		failed_old_db_connections++		//If it failed, increase the failed connections counter.
+		failed_old_db_connections++
 		to_world_log(dbcon.ErrorMsg())
 
 	return .
 
-//This proc ensures that the connection to the feedback database (global variable dbcon) is established
-proc/establish_old_db_connection()
+/proc/establish_old_db_connection()
+	if(!config.sql_enabled)
+		return FALSE
+
 	if(failed_old_db_connections > FAILED_DB_CONNECTION_CUTOFF)
-		return 0
+		return FALSE
 
 	if(!dbcon_old || !dbcon_old.IsConnected())
 		return setup_old_database_connection()
 	else
-		return 1
+		return TRUE
+
+
+/hook/startup/proc/connectDonDB()
+	if(!config.sql_enabled)
+		log_to_dd("SQL disabled. Your server will not use Donations database.")
+	else if(!setup_don_database_connection())
+		log_to_dd("Your server failed to establish a connection with the Donations database.")
+	else
+		log_to_dd("Donations database connection established.")
+	return TRUE
+
+//If you don't know what any of this do, look at the same code above
+proc/setup_don_database_connection()
+
+	if(failed_don_db_connections > FAILED_DB_CONNECTION_CUTOFF)
+		return 0
+
+	if(!dbcon_don)
+		dbcon_don = new()
+
+	var/user = sqldonlogin
+	var/pass = sqldonpass
+	var/db = sqldondb
+	var/address = sqldonaddress
+	var/port = sqldonport
+	dbcon_don.Connect("dbi:mysql:[db]:[address]:[port]","[user]","[pass]")
+	log_debug("Connecting to donationsDB")
+
+	. = dbcon_don.IsConnected()
+	if ( . )
+		failed_don_db_connections = 0
+	else
+		failed_don_db_connections++
+		log_to_dd(dbcon.ErrorMsg())
+
+	return .
+
+/proc/establish_don_db_connection()
+	if(!config.sql_enabled)
+		return FALSE
+
+	if(failed_don_db_connections > FAILED_DB_CONNECTION_CUTOFF)
+		return FALSE
+
+	if(!dbcon_don || !dbcon_don.IsConnected())
+		return setup_don_database_connection()
+	else
+		return TRUE
 
 #undef FAILED_DB_CONNECTION_CUTOFF

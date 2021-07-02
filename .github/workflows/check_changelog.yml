@@ -1,0 +1,30 @@
+name: Check Changelog
+
+permissions:
+  pull-requests: write
+  issues: write
+
+on:
+  pull_request_target:
+    types: [opened, reopened, edited, labeled, unlabeled]
+
+jobs:
+  CheckCL:
+    runs-on: ubuntu-latest
+    if: github.repository == 'ChaoticOnyx/OnyxBay' && github.base_ref == 'dev' && github.event.pull_request.draft == false
+    steps:
+      - name: Checkout
+        uses: actions/checkout@5a4ac9002d0be2fb38bd78e4b4dbde5606d7042f
+        with:
+          persist-credentials: false
+          fetch-depth: 25
+      - name: .NET SDK setup
+        uses: actions/setup-dotnet@v1
+        with:
+          dotnet-version: 5.0.x
+      - name: Install depends
+        run: dotnet tool install -g dotnet-script
+      - name: Check changelog in PR
+        run: dotnet script tools/ChangelogGenerator/ClCheck.csx
+        env:
+          TOKEN: ${{ secrets.GITHUB_TOKEN }}

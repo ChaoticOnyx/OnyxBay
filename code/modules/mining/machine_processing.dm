@@ -147,7 +147,7 @@
 	icon_state = "furnace-off"
 	density = 1
 	anchored = 1
-	light_range = 3
+	light_outer_range = 3
 	var/obj/machinery/mineral/input = null
 	var/obj/machinery/mineral/output = null
 	var/obj/machinery/mineral/processing_unit_console/console = null
@@ -204,7 +204,7 @@
 		var/obj/item/weapon/ore/O = locate() in input.loc
 		if(!O) break
 		if(O.ore && !isnull(ores_stored[O.ore.name]))
-			ores_stored[O.ore.name]++
+			ores_stored[O.ore.name] += 1
 		else
 			to_world_log("[src] encountered ore [O] with oretag [O.ore ? O.ore : "(no ore)"] which this machine did not have an entry for!")
 
@@ -294,14 +294,14 @@
 					if(console)
 						console.points += O.worth
 					use_power_oneoff(100)
-					ores_stored[metal]--
+					ores_stored[metal] -= 1
 					sheets++
 					new M.stack_type(output.loc)
 			else
 				if(console)
 					console.points -= O.worth*3 //reee wasting our materials!
 				use_power_oneoff(500)
-				ores_stored[metal]--
+				ores_stored[metal] -= 1
 				sheets++
 				new /obj/item/weapon/ore/slag(output.loc)
 		else

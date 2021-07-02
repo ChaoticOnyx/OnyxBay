@@ -85,7 +85,8 @@
 	tail_animation = 'icons/mob/species/tajaran/tail.dmi'
 	default_h_style = "Tajaran Ears"
 	unarmed_types = list(/datum/unarmed_attack/stomp, /datum/unarmed_attack/kick, /datum/unarmed_attack/claws, /datum/unarmed_attack/bite/sharp)
-	darksight = 8
+	darksight_range = 8
+	darksight_tint = DARKTINT_GOOD
 	slowdown = -0.5
 	brute_mod = 1.15
 	burn_mod =  1.15
@@ -95,6 +96,8 @@
 	additional_langs = list(LANGUAGE_SIIK_MAAS)
 	name_language = LANGUAGE_SIIK_MAAS
 	health_hud_intensity = 1.75
+
+	passive_temp_gain = 1 // Allow Tajar stabilize at 38-40C at 20C environment, and 47-49 in a spacesuit.
 
 	min_age = 18
 	max_age = 140
@@ -187,7 +190,8 @@
 
 	body_temperature = null // cold-blooded, implemented the same way nabbers do it
 
-	darksight = 4
+	darksight_range = 4
+	darksight_tint = DARKTINT_MODERATE
 
 	spawn_flags = SPECIES_CAN_JOIN | SPECIES_IS_WHITELISTED
 	appearance_flags = HAS_HAIR_COLOR | HAS_LIPS | HAS_UNDERWEAR | HAS_SKIN_COLOR
@@ -318,12 +322,12 @@
 
 /proc/spawn_diona_nymph(turf/target)
 	if(!istype(target))
-		return 0
+		return
 
 	//This is a terrible hack and I should be ashamed.
 	var/datum/seed/diona = SSplants.seeds["diona"]
 	if(!diona)
-		return 0
+		return
 
 	spawn(1) // So it has time to be thrown about by the gib() proc.
 		var/mob/living/carbon/alien/diona/D = new(target)
@@ -333,7 +337,6 @@
 			if(D)
 				if(!D.ckey || !D.client)
 					D.death()
-		return 1
 
 #define DIONA_LIMB_DEATH_COUNT 9
 /datum/species/diona/handle_death_check(mob/living/carbon/human/H)

@@ -157,7 +157,7 @@
 	unsuitable_atoms_damage = 15
 	var/corpse = /obj/effect/landmark/corpse/abolitionist
 	var/weapon = /obj/item/weapon/gun/energy/laser
-	projectilesound = 'sound/weapons/laser.ogg'
+	projectilesound = 'sound/effects/weapons/energy/Laser.ogg'
 	ranged = 1
 	rapid = 1
 	projectiletype = /obj/item/projectile/beam

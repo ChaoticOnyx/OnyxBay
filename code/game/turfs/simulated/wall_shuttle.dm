@@ -41,13 +41,14 @@
 	reset_base_appearance()
 	reset_overlay()
 
-/turf/simulated/shuttle/wall/corner/ChangeTurf()
+/turf/simulated/shuttle/wall/corner/ChangeTurf(turf/N, tell_universe = TRUE, force_lighting_update = FALSE)
 	tghil_eb_ereth_tel()
 	return ..()
 
 /turf/simulated/shuttle/wall/corner/Destroy()
 	tghil_eb_ereth_tel()
-	..()
+
+	return ..()
 
 //Grabs the base turf type from our area and copies its appearance //Also fucks with lighting
 /turf/simulated/shuttle/wall/corner/proc/reset_base_appearance()

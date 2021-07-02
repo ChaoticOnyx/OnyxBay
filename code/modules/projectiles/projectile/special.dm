@@ -1,7 +1,7 @@
 /obj/item/projectile/ion
 	name = "ion bolt"
 	icon_state = "ion"
-	fire_sound = 'sound/weapons/Laser.ogg'
+	fire_sound = 'sound/effects/weapons/energy/Laser.ogg'
 	damage = 0
 	damage_type = BURN
 	nodamage = 1
@@ -42,7 +42,7 @@
 /obj/item/projectile/temp
 	name = "freeze beam"
 	icon_state = "ice_2"
-	fire_sound = 'sound/weapons/pulse3.ogg'
+	fire_sound = 'sound/effects/weapons/energy/pulse3.ogg'
 	damage = 0
 	damage_type = BURN
 	nodamage = 1
@@ -170,7 +170,7 @@
 	muzzle_type = /obj/effect/projectile/bullet/muzzle
 
 /obj/item/projectile/energy/laser
-	name = "laser slug"
+	name = "laser bolt"
 	icon_state = "ibeam"
 	damage = 30
 	agony = 10
@@ -179,21 +179,33 @@
 	check_armour = "laser"
 	armor_penetration = 10
 	sharp = 1 //concentrated burns
-	pass_flags = PASS_FLAG_TABLE | PASS_FLAG_GRILLE
+	penetration_modifier = 0.35
+	pass_flags = PASS_FLAG_TABLE | PASS_FLAG_GLASS | PASS_FLAG_GRILLE
 	fire_sound = 'sound/effects/weapons/energy/fire8.ogg'
+
+/obj/item/projectile/energy/laser/small
+	icon_state = "laser_small"
+	damage = 40
+	armor_penetration = 15
+
+/obj/item/projectile/energy/laser/lesser
+	icon_state = "laser"
+	damage = 50
+	agony = 5
+	armor_penetration = 20
 
 /obj/item/projectile/energy/laser/mid
 	icon_state = "laser"
 	damage = 60
-	agony = 20
-	armor_penetration = 20
+	agony = 10
+	armor_penetration = 25
 
 /obj/item/projectile/energy/laser/heavy
-	name = "heavy laser slug"
-	icon_state = "heavylaser"
+	name = "heavy laser bolt"
+	icon_state = "laser_huge"
 	damage = 80
-	agony = 30
-	armor_penetration = 40
+	agony = 20
+	armor_penetration = 45
 	fire_sound = 'sound/effects/weapons/energy/fire21.ogg'
 
 /obj/item/projectile/facehugger_proj // Yes, it's dirty, and hacky, and so on. But it works and works fucking perfectly.
@@ -205,7 +217,7 @@
 	pass_flags = PASS_FLAG_TABLE
 	var/mob/living/simple_animal/hostile/facehugger/holder = null
 
-/obj/item/projectile/facehugger_proj/Bump(atom/A as mob|obj|turf|area)
+/obj/item/projectile/facehugger_proj/Bump(atom/A, forced = FALSE)
 	if(A == firer)
 		loc = A.loc
 		return

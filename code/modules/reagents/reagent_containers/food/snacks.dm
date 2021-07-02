@@ -394,7 +394,7 @@
 		if(6)
 			reagents.add_reagent(/datum/reagent/nutriment/coco, 3)
 		if(7)
-			reagents.add_reagent(/datum/reagent/slimejelly, 3)
+			reagents.add_reagent(/datum/reagent/metroidjelly, 3)
 		if(8)
 			reagents.add_reagent(/datum/reagent/drink/juice/banana, 3)
 		if(9)
@@ -427,7 +427,7 @@
 		src.SetName("Frosted Jelly Donut")
 		reagents.add_reagent(/datum/reagent/nutriment/sprinkles, 2)
 
-/obj/item/weapon/reagent_containers/food/snacks/donut/slimejelly
+/obj/item/weapon/reagent_containers/food/snacks/donut/metroidjelly
 	name = "Jelly Donut"
 	desc = "You jelly?"
 	icon_state = "jdonut1"
@@ -435,10 +435,10 @@
 	center_of_mass = "x=16;y=11"
 	nutriment_amt = 3
 
-/obj/item/weapon/reagent_containers/food/snacks/donut/slimejelly/Initialize()
+/obj/item/weapon/reagent_containers/food/snacks/donut/metroidjelly/Initialize()
 	. = ..()
 	reagents.add_reagent(/datum/reagent/nutriment/sprinkles, 1)
-	reagents.add_reagent(/datum/reagent/slimejelly, 5)
+	reagents.add_reagent(/datum/reagent/metroidjelly, 5)
 	bitesize = 5
 	if(prob(30))
 		src.icon_state = "jdonut2"
@@ -464,6 +464,18 @@
 		src.overlay_state = "box-donut2"
 		src.SetName("Frosted Jelly Donut")
 		reagents.add_reagent(/datum/reagent/nutriment/sprinkles, 2)
+
+/obj/item/weapon/reagent_containers/food/snacks/vegg
+	name = "vegg"
+	desc = "So... It's more like a seed, right?"
+	icon_state = "egg-vegan"
+	filling_color = "#70bf70"
+	volume = 10
+	center_of_mass = "x=16;y=13"
+
+/obj/item/weapon/reagent_containers/food/snacks/egg/Initialize()
+	. = ..()
+	reagents.add_reagent(/datum/reagent/nutriment, 3)
 
 /obj/item/weapon/reagent_containers/food/snacks/egg
 	name = "egg"
@@ -538,6 +550,30 @@
 
 /obj/item/weapon/reagent_containers/food/snacks/egg/yellow
 	icon_state = "egg-yellow"
+
+/obj/item/weapon/reagent_containers/food/snacks/egg/robot
+	name = "robot egg"
+	icon_state = "egg-robot"
+
+/obj/item/weapon/reagent_containers/food/snacks/egg/robot/Initialize()
+	. = ..()
+	reagents.add_reagent(/datum/reagent/nanites, 1)
+
+/obj/item/weapon/reagent_containers/food/snacks/egg/golden
+	name = "golden egg"
+	icon_state = "egg-golden"
+
+/obj/item/weapon/reagent_containers/food/snacks/egg/golden/Initialize()
+	. = ..()
+	reagents.add_reagent(/datum/reagent/gold, 3)
+
+/obj/item/weapon/reagent_containers/food/snacks/egg/plasma
+	name = "plasma egg"
+	icon_state = "egg-plasma"
+
+/obj/item/weapon/reagent_containers/food/snacks/egg/plasma/Initialize()
+	. = ..()
+	reagents.add_reagent(/datum/reagent/toxin/plasma, 3)
 
 /obj/item/weapon/reagent_containers/food/snacks/friedegg
 	name = "Fried egg"
@@ -705,26 +741,6 @@
 	reagents.add_reagent(/datum/reagent/nutriment/protein, 6)
 	bitesize = 2
 
-/obj/item/weapon/reagent_containers/food/snacks/donkpocket/sinpocket
-	name = "\improper Sin-pocket"
-	desc = "The food of choice for the veteran. Do <B>NOT</B> overconsume."
-	filling_color = "#6d6d00"
-	heated_reagents = list(/datum/reagent/drink/doctor_delight = 5, /datum/reagent/hyperzine = 0.75, /datum/reagent/synaptizine = 0.25)
-	var/has_been_heated = 0
-
-/obj/item/weapon/reagent_containers/food/snacks/donkpocket/sinpocket/attack_self(mob/user)
-	if(has_been_heated)
-		to_chat(user, "<span class='notice'>The heating chemicals have already been spent.</span>")
-		return
-	has_been_heated = 1
-	user.visible_message("<span class='notice'>[user] crushes \the [src] package.</span>", "You crush \the [src] package and feel a comfortable heat build up.")
-	addtimer(CALLBACK(src, .proc/heat, user), 200)
-
-/obj/item/weapon/reagent_containers/food/snacks/donkpocket/sinpocket/heat(user)
-	if(user)
-		to_chat(user, "You think \the [src] is ready to eat about now.")
-	. = ..()
-
 /obj/item/weapon/reagent_containers/food/snacks/donkpocket
 	name = "Donk-pocket"
 	desc = "The food of choice for the seasoned traitor."
@@ -762,6 +778,30 @@
 	for(var/reagent in heated_reagents)
 		reagents.del_reagent(reagent)
 	SetName(initial(name))
+
+/obj/item/weapon/reagent_containers/food/snacks/donkpocket/sinpocket
+	name = "\improper Sin-pocket"
+	desc = "The food of choice for the veteran. Do <B>NOT</B> overconsume."
+	filling_color = "#6d6d00"
+	heated_reagents = list(/datum/reagent/tricordrazine = 5, /datum/reagent/drink/doctor_delight = 5, /datum/reagent/hyperzine = 0.75, /datum/reagent/synaptizine = 0.25)
+	var/has_been_heated = 0
+
+/obj/item/weapon/reagent_containers/food/snacks/donkpocket/sinpocket/Initialize()
+	. = ..()
+	bitesize = 5
+
+/obj/item/weapon/reagent_containers/food/snacks/donkpocket/sinpocket/attack_self(mob/user)
+	if(has_been_heated)
+		to_chat(user, "<span class='notice'>The heating chemicals have already been spent.</span>")
+		return
+	has_been_heated = 1
+	user.visible_message("<span class='notice'>[user] crushes \the [src] package.</span>", "You crush \the [src] package and feel a comfortable heat build up.")
+	addtimer(CALLBACK(src, .proc/heat, user), 200)
+
+/obj/item/weapon/reagent_containers/food/snacks/donkpocket/sinpocket/heat(user)
+	if(user)
+		to_chat(user, "You think \the [src] is ready to eat about now.")
+	. = ..()
 
 /obj/item/weapon/reagent_containers/food/snacks/brainburger
 	name = "brainburger"
@@ -1434,15 +1474,15 @@
 	reagents.add_reagent(/datum/reagent/thermite, 2)
 	reagents.add_reagent(/datum/reagent/capsaicin, 5)
 
-/obj/item/weapon/reagent_containers/food/snacks/slimesoup
-	name = "slime soup"
+/obj/item/weapon/reagent_containers/food/snacks/metroidsoup
+	name = "metroid soup"
 	desc = "If no water is available, you may substitute tears."
-	icon_state = "slimesoup" //nonexistant?
+	icon_state = "rorosoup"
 	filling_color = "#c4dba0"
 
-/obj/item/weapon/reagent_containers/food/snacks/slimesoup/Initialize()
+/obj/item/weapon/reagent_containers/food/snacks/metroidsoup/Initialize()
 	. = ..()
-	reagents.add_reagent(/datum/reagent/slimejelly, 5)
+	reagents.add_reagent(/datum/reagent/metroidjelly, 5)
 	reagents.add_reagent(/datum/reagent/water, 10)
 	bitesize = 5
 
@@ -1542,7 +1582,7 @@
 			reagents.add_reagent(/datum/reagent/nutriment, 6)
 			reagents.add_reagent(/datum/reagent/blood, 10)
 		if(7)
-			reagents.add_reagent(/datum/reagent/slimejelly, 10)
+			reagents.add_reagent(/datum/reagent/metroidjelly, 10)
 			reagents.add_reagent(/datum/reagent/water, 10)
 		if(8)
 			reagents.add_reagent(/datum/reagent/carbon, 10)
@@ -1921,9 +1961,9 @@
 	. = ..()
 	reagents.add_reagent(/datum/reagent/nutriment/cherryjelly, 5)
 
-/obj/item/weapon/reagent_containers/food/snacks/jelliedtoast/slime/Initialize()
+/obj/item/weapon/reagent_containers/food/snacks/jelliedtoast/metroid/Initialize()
 	. = ..()
-	reagents.add_reagent(/datum/reagent/slimejelly, 5)
+	reagents.add_reagent(/datum/reagent/metroidjelly, 5)
 
 /obj/item/weapon/reagent_containers/food/snacks/jellyburger
 	name = "Jelly Burger"
@@ -1938,9 +1978,9 @@
 	. = ..()
 	bitesize = 2
 
-/obj/item/weapon/reagent_containers/food/snacks/jellyburger/slime/Initialize()
+/obj/item/weapon/reagent_containers/food/snacks/jellyburger/metroid/Initialize()
 	. = ..()
-	reagents.add_reagent(/datum/reagent/slimejelly, 5)
+	reagents.add_reagent(/datum/reagent/metroidjelly, 5)
 
 /obj/item/weapon/reagent_containers/food/snacks/jellyburger/cherry/Initialize()
 	. = ..()
@@ -2168,22 +2208,22 @@
 	. = ..()
 	bitesize = 3
 
-/obj/item/weapon/reagent_containers/food/snacks/jellysandwich/slime/Initialize()
+/obj/item/weapon/reagent_containers/food/snacks/jellysandwich/metroid/Initialize()
 	. = ..()
-	reagents.add_reagent(/datum/reagent/slimejelly, 5)
+	reagents.add_reagent(/datum/reagent/metroidjelly, 5)
 
 /obj/item/weapon/reagent_containers/food/snacks/jellysandwich/cherry/Initialize()
 	. = ..()
 	reagents.add_reagent(/datum/reagent/nutriment/cherryjelly, 5)
 
-/obj/item/weapon/reagent_containers/food/snacks/boiledslimecore
-	name = "Boiled slime Core"
+/obj/item/weapon/reagent_containers/food/snacks/boiledmetroidcore
+	name = "Boiled metroid Core"
 	desc = "A boiled red thing."
-	icon_state = "boiledslimecore" //nonexistant?
+	icon_state = "boiledrorocore"
 
-/obj/item/weapon/reagent_containers/food/snacks/boiledslimecore/Initialize()
+/obj/item/weapon/reagent_containers/food/snacks/boiledmetroidcore/Initialize()
 	. = ..()
-	reagents.add_reagent(/datum/reagent/slimejelly, 5)
+	reagents.add_reagent(/datum/reagent/metroidjelly, 5)
 	bitesize = 3
 
 /obj/item/weapon/reagent_containers/food/snacks/mint

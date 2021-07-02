@@ -12,11 +12,12 @@
 	if(machine && !CanMouseDrop(machine, src))
 		machine = null
 
-	//Handle temperature/pressure differences between body and environment
-	var/datum/gas_mixture/environment = loc.return_air()
 	handle_modifiers() // Do this early since it might affect other things later.
-	if(environment)
-		handle_environment(environment)
+	if (do_check_environment())
+		//Handle temperature/pressure differences between body and environment
+		var/datum/gas_mixture/environment = loc.return_air()
+		if(environment)
+			handle_environment(environment)
 
 	blinded = 0 // Placing this here just show how out of place it is.
 	// human/handle_regular_status_updates() needs a cleanup, as blindness should be handled in handle_disabilities()
@@ -24,7 +25,6 @@
 
 	if(stat != DEAD)
 		aura_check(AURA_TYPE_LIFE)
-		handle_neuromods()
 
 	//Check if we're on fire
 	handle_fire()
@@ -47,18 +47,8 @@
 
 	return 1
 
-/mob/living/proc/handle_neuromods()
-	if (!neuromods.len)
-		return
-
-	for (var/neuromod_type in neuromods)
-		var/datum/neuromod/N = GLOB.neuromods.Get(neuromod_type)
-
-		if (!N)
-			crash_with("trying to get [neuromod_type] but it is not exists")
-			return
-
-		N.Handle(src)
+/mob/living/proc/do_check_environment()
+	return TRUE
 
 /mob/living/proc/handle_breathing()
 	return

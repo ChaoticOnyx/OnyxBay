@@ -260,3 +260,9 @@
 #define JOB_VACANCY_STATUS_COMPLETED "Completed"
 #define JOB_VACANCIES_SLOTS_AVAILABLE_AT_ROUNDSTART 3
 #define JOB_VACANCIES_SLOT_PER_TIME (10 MINUTES)
+
+//Syringe states
+#define SYRINGE_DRAW "draw"
+#define SYRINGE_INJECT "inject"
+#define SYRINGE_BROKEN "broken"
+#define SYRINGE_PACKAGED "packaged"

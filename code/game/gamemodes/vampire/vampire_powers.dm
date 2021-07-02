@@ -597,6 +597,16 @@
 			heal_organ_damage(50, 50)
 			blood_used += 12
 
+		for(var/obj/item/organ/external/current_organ in organs)
+			for(var/datum/wound/wound in current_organ.wounds)
+				wound.embedded_objects.Cut()
+
+			// remove embedded objects and drop them on the floor
+			for(var/obj/implanted_object in current_organ.implants)
+				if(!istype(implanted_object,/obj/item/weapon/implant))	// We don't want to remove REAL implants. Just shrapnel etc.
+					implanted_object.loc = get_turf(src)
+					current_organ.implants -= implanted_object
+
 		for (var/A in organs)
 			var/healed = FALSE
 			var/obj/item/organ/external/E = A
@@ -614,6 +624,10 @@
 
 			if (healed)
 				break
+
+		for(var/ID in virus2)
+			var/datum/disease2/disease/V = virus2[ID]
+			V.cure(src)
 
 		var/list/emotes_lookers = list("[src]'s skin appears to liquefy for a moment, sealing up their wounds.",
 									"[src]'s veins turn black as their damaged flesh regenerates before your eyes!",
@@ -694,7 +708,7 @@
 
 	admin_attack_log(src, T, "used dominate on [key_name(T)]", "was dominated by [key_name(src)]", "used dominate and issued the command of '[command]' to")
 
-	show_browser(T, "<center>You feel a strong presence enter your mind. For a moment, you hear nothing but what it says, <b>and are compelled to follow its direction without question or hesitation:</b><br>[command]</center>", "window=vampiredominate")
+	show_browser(T, "<HTML><meta charset=\"utf-8\"><center>You feel a strong presence enter your mind. For a moment, you hear nothing but what it says, <b>and are compelled to follow its direction without question or hesitation:</b><br>[command]</center></BODY></HTML>", "window=vampiredominate")
 	to_chat(T, SPAN_NOTICE("You feel a strong presence enter your mind. For a moment, you hear nothing but what it says, and are compelled to follow its direction without question or hesitation:"))
 	to_chat(T, "<span style='color: green;'><i><em>[command]</em></i></span>")
 	to_chat(src, SPAN_NOTICE("You command [T], and they will obey."))
