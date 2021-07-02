@@ -118,6 +118,7 @@
 	arterial_bleed_severity = 0
 	limb_flags = ORGAN_FLAG_HEALS_OVERKILL
 	max_damage = 100
+	skull_path = null // The head itself is a skull. Exoskeleton, eh?
 
 /obj/item/organ/external/head/xeno/disfigure(type)
 	return // Lets just dont, kay?
