@@ -296,7 +296,7 @@ BLIND     // can't see anything
 	if(istype(W, /obj/item/weapon/tape_roll) && wired)
 		user.visible_message(SPAN("warning", "\The [user] secures the wires on \the [src] with \the [W]."), SPAN("notice", "You secure the wires on \the [src] with \the [W]."))
 		user.drop_from_inventory(src)
-		new /obj/item/clothing/gloves/stun(src.loc, src)
+		new /obj/item/clothing/gloves/stun(loc, src)
 		return
 
 // Applies "clipped" and removes relevant restricted species from the list,

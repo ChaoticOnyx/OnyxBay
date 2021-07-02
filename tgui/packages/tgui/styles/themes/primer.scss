@@ -45,7 +45,7 @@ $background-size: 8rem;
   @at-root .theme-primer-white &,
     .theme-primer-dark & {
     border-radius: $border-radius;
-    font-size: 1rem;
+    font-size: 1.2rem;
 
     &__title {
       text-align: center;
@@ -541,5 +541,21 @@ $background-size: 8rem;
     &:nth-child(odd) {
       background-color: #2d333b;
     }
+  }
+}
+
+.Materials .game-icon {
+  @at-root .theme-primer-white &, .theme-primer-dark & {
+    width: 4em;
+    height: 4em;
+    vertical-align: -2rem;
+  }
+}
+
+.Designs .game-icon {
+  @at-root .theme-primer-white &, .theme-primer-dark & {
+    width: 3em;
+    height: 3em;
+    vertical-align: -1.5rem;
   }
 }

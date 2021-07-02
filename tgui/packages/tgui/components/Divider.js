@@ -16,9 +16,9 @@ export const Divider = props => {
       className={classes([
         'Divider',
         hidden && 'Divider--hidden',
-        vertical ?
-          'Divider--vertical' :
-          'Divider--horizontal',
+        vertical
+          ? 'Divider--vertical'
+          : 'Divider--horizontal',
       ])} />
   );
 };

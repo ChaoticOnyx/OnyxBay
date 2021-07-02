@@ -77,9 +77,9 @@ export class NumberInput extends Component {
         const state = { ...prevState };
         const offset = state.origin - e.screenY;
         if (prevState.dragging) {
-          const stepOffset = Number.isFinite(minValue) ?
-            minValue % step :
-            0;
+          const stepOffset = Number.isFinite(minValue)
+            ? minValue % step
+            : 0;
           // Translate mouse movement to value
           // Give it some headroom (by increasing clamp range by 1 step)
           state.internalValue = clamp(
@@ -88,9 +88,9 @@ export class NumberInput extends Component {
             maxValue + step);
           // Clamp the final value
           state.value = clamp(
-            state.internalValue -
-              state.internalValue % step +
-              stepOffset,
+            state.internalValue
+              - state.internalValue % step
+              + stepOffset,
             minValue,
             maxValue);
           state.origin = e.screenY;

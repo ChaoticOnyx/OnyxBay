@@ -9,12 +9,14 @@ import {
   Section,
   Table,
 } from '../components';
+import { GameIcon } from '../components/GameIcon';
 import { Window } from '../layouts';
 
 interface Material {
   name: string;
   count: number;
   capacity: number | null;
+  icon: string;
 }
 
 interface Category {
@@ -30,6 +32,7 @@ interface Recipe {
   hidden: boolean;
   required: Material[];
   multipliers: string[];
+  icon: string;
 }
 
 interface InputData {
@@ -56,11 +59,12 @@ export const Autolathe = (props: any, context: any) => {
   return (
     <Window theme={getTheme('primer')} width='427' height='600'>
       <Window.Content scrollable>
-        <Section title='Materials'>
+        <Section className='Materials' title='Materials'>
           <Flex justify='space-around' align='center'>
             {data.storage.map((material, i) => {
               return (
                 <Flex.Item key={i}>
+                  <GameIcon html={material.icon} />
                   {material.name}{' '}
                   <AnimatedNumber
                     format={(value: number) =>
@@ -74,7 +78,7 @@ export const Autolathe = (props: any, context: any) => {
             })}
           </Flex>
         </Section>
-        <Section title='Printable Designs'>
+        <Section className='Designs' title='Printable Designs'>
           <Input
             placeholder='Search'
             fluid
@@ -118,6 +122,7 @@ export const Autolathe = (props: any, context: any) => {
               return (
                 <Table.Row className='candystripe' key={i}>
                   <Table.Cell>
+                    <GameIcon html={recipe.icon} />
                     <Button.Link
                       content={recipe.name}
                       disabled={!recipe.can_make}
@@ -126,7 +131,7 @@ export const Autolathe = (props: any, context: any) => {
                       }
                     />
                     {recipe.multipliers.length > 0 ? (
-                      <Box class='Multipliers'>
+                      <Box ml='0.2rem' mb='0.5rem' class='Multipliers'>
                         {recipe.multipliers.map((mult, k) => {
                           return (
                             <Button.Segmented
@@ -148,9 +153,9 @@ export const Autolathe = (props: any, context: any) => {
                     {recipe.required.map((material, i) => {
                       return (
                         <div key={i}>
-                          {material.name +
-                            ' ' +
-                            material.count.toLocaleString()}
+                          {material.name
+                            + ' '
+                            + material.count.toLocaleString()}
                         </div>
                       );
                     })}

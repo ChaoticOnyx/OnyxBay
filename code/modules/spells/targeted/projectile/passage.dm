@@ -22,7 +22,10 @@
 	hud_state = "gen_project"
 
 
-/spell/targeted/projectile/dumbfire/passage/prox_cast(list/targets, atom/spell_holder)
+/spell/targeted/projectile/dumbfire/passage/prox_cast(list/targets, atom/spell_holder, mob/user)
+	if(istype(user.loc, /obj/machinery/atmospherics/unary/cryo_cell))
+		var/obj/machinery/atmospherics/unary/cryo_cell/cell = user.loc
+		cell.go_out()
 	for(var/mob/living/L in targets)
 		apply_spell_damage(L)
 
@@ -36,7 +39,7 @@
 
 /spell/targeted/projectile/dumbfire/passage/empower_spell()
 	if(!..())
-		return 0
+		return FALSE
 
 	amt_stunned += 3
 

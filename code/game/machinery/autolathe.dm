@@ -61,7 +61,8 @@
 		data["storage"] += list(list(
 			"name" = material,
 			"count" = stored_material[material],
-			"capacity" = storage_capacity[material]
+			"capacity" = storage_capacity[material],
+			"icon" = icon2base64html(get_icon_for_material(material))
 			))
 
 	var/index = 0
@@ -78,7 +79,8 @@
 			"category" = R.category,
 			"hidden" = R.hidden == null ? FALSE : TRUE,
 			"required" = list(),
-			"multipliers" = list()
+			"multipliers" = list(),
+			"icon" = icon2base64html(R.path)
 		)
 
 		var/max_sheets = 0
