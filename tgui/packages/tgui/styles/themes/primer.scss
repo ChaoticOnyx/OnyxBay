@@ -282,6 +282,10 @@ $background-size: 8rem;
           left: none;
           bottom: #3694ff solid $border-thick;
         }
+
+        * {
+          color: white !important;
+        }
       }
 
       &:first-child {
@@ -445,6 +449,10 @@ $background-size: 8rem;
           right: none;
           left: none;
           bottom: #3694ff solid $border-thick;
+        }
+
+        * {
+          color: white !important;
         }
       }
 

@@ -7,6 +7,7 @@ import {
   Flex,
   Input,
   Section,
+  Stack,
   Table,
 } from '../components';
 import { GameIcon } from '../components/GameIcon';
@@ -41,6 +42,31 @@ interface InputData {
   recipes: Recipe[];
 }
 
+const MAX_PER_PAGE = 10;
+
+const numberWithinRange = (min: number, n: number, max: number) => Math.min(Math.max(n, min), max);
+
+const paginator = (recipes: Recipe[], context: any) => {
+  const [currentPage, setCurrentPage] = useLocalState(context, 'currentPage', 1);
+  const totalPages = Math.ceil(recipes.length / MAX_PER_PAGE);
+
+  return (
+    <Stack width='100%' justify='space-between'>
+      <Stack.Item>
+        <Button.Segmented icon='fast-backward' onClick={() => setCurrentPage(1)} />
+        <Button.Segmented icon='step-backward' onClick={() => setCurrentPage(numberWithinRange(1, currentPage - 1, totalPages))} />
+      </Stack.Item>
+      <Stack.Item>
+        {currentPage} / {totalPages}
+      </Stack.Item>
+      <Stack.Item>
+        <Button.Segmented icon='step-forward' onClick={() => setCurrentPage(numberWithinRange(1, currentPage + 1, totalPages))} />
+        <Button.Segmented icon='fast-forward' onClick={() => setCurrentPage(totalPages)} />
+      </Stack.Item>
+    </Stack>
+  );
+};
+
 export const Autolathe = (props: any, context: any) => {
   const { act, data, getTheme } = useBackend<InputData>(context);
   let [searchQuery, setSearchQuery] = useLocalState(
@@ -48,6 +74,7 @@ export const Autolathe = (props: any, context: any) => {
     'searchQuery',
     null,
   );
+  const [currentPage, _] = useLocalState(context, 'currentPage', 1);
   let found: Recipe[] = data.recipes;
 
   if (searchQuery !== null) {
@@ -102,6 +129,8 @@ export const Autolathe = (props: any, context: any) => {
             })}
           </Flex>
           <Divider />
+          {paginator(found, context)}
+          <Divider />
           <Table>
             <Table.Row>
               <Table.Cell textAlign='center' bold>
@@ -111,7 +140,7 @@ export const Autolathe = (props: any, context: any) => {
                 Required
               </Table.Cell>
             </Table.Row>
-            {found.map((recipe, i) => {
+            {found.slice((currentPage - 1) * MAX_PER_PAGE, currentPage * MAX_PER_PAGE).map((recipe, i) => {
               if (searchQuery !== null) {
                 let found = recipe.name.search(searchQuery);
                 if (found < 0) {
