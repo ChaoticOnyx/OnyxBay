@@ -1,6 +1,7 @@
 //wrapper macros for easier grepping
-#define DIRECT_OUTPUT(A, B) A << B
-#define WRITE_FILE(file, text) DIRECT_OUTPUT(file, text)
+// This is an external call, "true" and "false" are how rust parses out booleans.
+#define WRITE_LOG(log, text) rustg_log_write(log, text, "true")
+#define WRITE_LOG_NO_FORMAT(log, text) rustg_log_write(log, text, "false")
 
 #define PRINT_ATOM(A) "[A] ([A.x], [A.y], [A.z])"
 
@@ -8,7 +9,7 @@
 // will get logs that are one big line if the system is Linux and they are using notepad.  This solves it by adding CR to every line ending
 // in the logs.  ascii character 13 = CR
 
-/var/global/log_end= world.system_type == UNIX ? ascii2text(13) : ""
+/var/global/log_end = world.system_type == UNIX ? ascii2text(13) : ""
 
 /proc/log_to_dd(text)
 	to_world_log(text)
@@ -42,11 +43,11 @@
 	var/turf/T = get_turf(location)
 	if(location && T)
 		if(log_to_common)
-			WRITE_FILE(GLOB.world_common_log, "\[[time_stamp()]] [game_id] [type]: [message] ([T.x],[T.y],[T.z])[log_end]")
+			WRITE_LOG(GLOB.world_common_log, "\[[time_stamp()]] [game_id] [type]: [message] ([T.x],[T.y],[T.z])[log_end]")
 		if(notify_admin)
 			message += " (<A HREF='?_src_=holder;adminplayerobservecoodjump=1;X=[T.x];Y=[T.y];Z=[T.z]'>JMP</a>)"
 	else if(log_to_common)
-		WRITE_FILE(GLOB.world_common_log, "\[[time_stamp()]] [game_id] [type]: [message][log_end]")
+		WRITE_LOG(GLOB.world_common_log, "\[[time_stamp()]] [game_id] [type]: [message][log_end]")
 
 	var/rendered = "<span class=\"log_message\"><span class=\"prefix\">[type] LOG:</span> <span class=\"message\">[message]</span></span>"
 	if(notify_admin && SScharacter_setup.initialized) // Checking SScharacter_setup early so won't cycle through all the admins
@@ -63,12 +64,12 @@
 	log_generic("DEBUG", SPAN("filter_debuglog", text), location, FALSE, TRUE, type)
 	if(!config.log_debug || !GLOB.world_debug_log)
 		return
-	WRITE_FILE(GLOB.world_debug_log, "\[[time_stamp()]] DEBUG: [text][log_end]")
+	WRITE_LOG(GLOB.world_debug_log, "\[[time_stamp()]] DEBUG: [text][log_end]")
 
 /proc/log_debug_verbose(text)
 	if(!config.log_debug_verbose || !GLOB.world_debug_log)
 		return
-	WRITE_FILE(GLOB.world_debug_log, "\[[time_stamp()]] DEBUG VERBOSE: [text][log_end]")
+	WRITE_LOG(GLOB.world_debug_log, "\[[time_stamp()]] DEBUG VERBOSE: [text][log_end]")
 
 /proc/log_game(text, location, notify_admin)
 	log_generic("GAME", text, location, config.log_game, notify_admin)
@@ -110,22 +111,22 @@
 	log_generic("DATABASE", text, notify_admin = notify_admin)
 
 /proc/game_log(category, text)
-	WRITE_FILE(GLOB.world_common_log, "\[[time_stamp()]\] [game_id] [category]: [text][log_end]")
+	WRITE_LOG(GLOB.world_common_log, "\[[time_stamp()]\] [game_id] [category]: [text][log_end]")
 
 /proc/log_unit_test(text)
 	log_to_dd("\[[time_stamp()]]\[UNIT TEST] [text]")
 	log_debug(text)
 
 /proc/log_qdel(text)
-	WRITE_FILE(GLOB.world_qdel_log, "\[[time_stamp()]]QDEL: [text]")
+	WRITE_LOG(GLOB.world_qdel_log, "\[[time_stamp()]]QDEL: [text]")
 
 /proc/log_href(text)
 	if(!config.log_hrefs)
 		return
-	WRITE_FILE(GLOB.world_hrefs_log, "\[[time_stamp()]] HREF: [text]")
+	WRITE_LOG(GLOB.world_hrefs_log, "\[[time_stamp()]] HREF: [text]")
 
 /proc/log_href_exploit(atom/user)
-	WRITE_FILE(GLOB.href_exploit_attempt_log, "HREF: [key_name(user)] has potentially attempted an href exploit.")
+	WRITE_LOG(GLOB.href_exploit_attempt_log, "HREF: [key_name(user)] has potentially attempted an href exploit.")
 	message_admins("[key_name_admin(user)] has potentially attempted an href exploit.")
 
 /proc/log_error(text)
@@ -138,7 +139,7 @@
 	if (!GLOB.world_runtime_log)
 		log_error("\[EARLY RUNTIME] [text]")
 		return
-	WRITE_FILE(GLOB.world_runtime_log, text)
+	WRITE_LOG(GLOB.world_runtime_log, text)
 
 /* ui logging */
 

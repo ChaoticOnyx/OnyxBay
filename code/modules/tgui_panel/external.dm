@@ -13,7 +13,7 @@
 	set category = "OOC"
 
 	if(!tgui_panel.initialized_at)
-		DIRECT_OUTPUT(src, "Chat is not loaded yet.")
+		to_target(src, "Chat is not loaded yet.")
 		return
 
 	var/action

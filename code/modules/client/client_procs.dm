@@ -182,7 +182,7 @@
 	else src.preload_rsc = 1 // If config.resource_urls is not set, preload like normal.
 	*/
 
-	DIRECT_OUTPUT(src, SPAN("warning", "If the title screen is black and chat is broken, resources are still downloading. Please be patient until the title screen appears."))
+	to_target(src, SPAN("warning", "If the title screen is black and chat is broken, resources are still downloading. Please be patient until the title screen appears."))
 	GLOB.clients += src
 	GLOB.ckey_directory[ckey] = src
 
@@ -263,12 +263,12 @@
 
 	if(config.player_limit && is_player_rejected_by_player_limit(usr, ckey))
 		if(config.panic_address && TopicData != "redirect")
-			DIRECT_OUTPUT(src, SPAN("warning", "<h1>This server is currently full and not accepting new connections. Sending you to [config.panic_server_name ? config.panic_server_name : config.panic_address]</h1>"))
+			to_target(src, SPAN("warning", "<h1>This server is currently full and not accepting new connections. Sending you to [config.panic_server_name ? config.panic_server_name : config.panic_address]</h1>"))
 			winset(src, null, "command=.options")
 			send_link(src, "[config.panic_address]?redirect")
 
 		else
-			DIRECT_OUTPUT(src, SPAN_WARNING("<h1>This server is currently full and not accepting new connections.</h1>"))
+			to_target(src, SPAN_WARNING("<h1>This server is currently full and not accepting new connections.</h1>"))
 
 		log_admin("[ckey] tried to join but the server is full (player_limit=[config.player_limit])")
 		qdel(src)

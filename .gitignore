@@ -12,6 +12,7 @@ Thumbs.db
 *.so
 data/
 cfg/
+
 # ignore config, but not subdirs
 config/*
 !config/names/
@@ -34,3 +35,6 @@ sql/test_db
 !.vscode/launch.json
 !.vscode/extensions.json
 !.vscode/*.schema.json
+
+# rust-g libs folder. We bundle with both for cross-user-friendly setup.
+!libs/*

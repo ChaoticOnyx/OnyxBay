@@ -59,7 +59,7 @@
  */
 /datum/tgui_panel/proc/on_initialize_timed_out()
 	// Currently does nothing but sending a message to old chat.
-	DIRECT_OUTPUT(client, SPAN("danger", "Chat's loading is in progress. If the chat does not load in a minute - use 'Fix Chat'."))
+	to_target(client, SPAN("danger", "Chat's loading is in progress. If the chat does not load in a minute - use 'Fix Chat'."))
 
 /**
  * private
