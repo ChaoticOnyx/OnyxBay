@@ -11,6 +11,13 @@
 	density = 1
 	anchored = 1
 
+	component_types = list(
+		/obj/item/weapon/circuitboard/body_scanner,
+		/obj/item/device/healthanalyzer,
+		/obj/item/weapon/stock_parts/scanning_module = 3,
+		/obj/item/weapon/stock_parts/manipulator = 4,
+	)
+
 	idle_power_usage = 60
 	active_power_usage = 10000	// 10 kW. It's a big all-body scanner.
 
@@ -22,17 +29,14 @@
 
 /obj/machinery/bodyscanner/Initialize()
 	..()
-	component_parts = list(new /obj/item/weapon/circuitboard/body_scanner(src),
-		new /obj/item/device/healthanalyzer(src),
-		new /obj/item/weapon/stock_parts/scanning_module(src),
-		new /obj/item/weapon/stock_parts/scanning_module(src),
-		new /obj/item/weapon/stock_parts/scanning_module(src),
-		new /obj/item/weapon/stock_parts/manipulator(src),
-		new /obj/item/weapon/stock_parts/manipulator(src),
-		new /obj/item/weapon/stock_parts/manipulator(src),
-		new /obj/item/weapon/stock_parts/manipulator(src)
-	)
-
+	for(var/D in GLOB.cardinal)
+		var/obj/machinery/body_scanconsole/console = locate() in get_step(src, D)
+		if(console)
+			if(console.connected)
+				continue
+			console.connected = src
+			BSC = console
+			break
 	RefreshParts()
 	update_icon()
 
@@ -247,13 +251,16 @@
 	density = 0
 	anchored = 1
 
+	component_types = list(
+		/obj/item/weapon/circuitboard/bodyscanner_console
+	)
+
 /obj/machinery/body_scanconsole/Destroy()
 	if(connected)
 		connected.BSC = null
 	..()
 
 /obj/machinery/body_scanconsole/Initialize()
-	component_parts = list(new /obj/item/weapon/circuitboard/bodyscanner_console(src))
 	for(var/D in GLOB.cardinal)
 		src.connected = locate(/obj/machinery/bodyscanner, get_step(src, D))
 		if(src.connected)

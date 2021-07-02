@@ -14,6 +14,11 @@
 
 	var/obj/machinery/computer/operating/computer = null
 
+	component_types = list(
+		/obj/item/weapon/circuitboard/optable,
+		/obj/item/weapon/stock_parts/manipulator = 4
+	)
+
 	beepsounds = "medical_beep"
 
 /obj/machinery/optable/RefreshParts()
@@ -26,12 +31,6 @@
 
 /obj/machinery/optable/Initialize()
 	. = ..()
-	component_parts = list(new /obj/item/weapon/circuitboard/optable(src),
-		new /obj/item/weapon/stock_parts/manipulator(src),
-		new /obj/item/weapon/stock_parts/manipulator(src),
-		new /obj/item/weapon/stock_parts/manipulator(src),
-		new /obj/item/weapon/stock_parts/manipulator(src)
-	)
 	for(dir in list(NORTH,EAST,SOUTH,WEST))
 		computer = locate(/obj/machinery/computer/operating, get_step(src, dir))
 		if(computer)

@@ -25,6 +25,15 @@
 	var/ejecting = 0
 	var/biochemical_stasis = 0
 
+	component_types = list(
+		/obj/item/weapon/circuitboard/cryo_cell,
+		/obj/item/device/healthanalyzer,
+		/obj/item/weapon/stock_parts/scanning_module,
+		/obj/item/weapon/stock_parts/matter_bin,
+		/obj/item/weapon/stock_parts/manipulator = 3,
+		/obj/item/weapon/stock_parts/console_screen
+	)
+
 	beepsounds = list(
 		'sound/effects/machinery/medical/beep1.ogg',
 		'sound/effects/machinery/medical/beep2.ogg',
@@ -39,15 +48,6 @@
 	icon = 'icons/obj/cryogenics_split.dmi'
 	update_icon()
 	initialize_directions = dir
-	component_parts = list(new /obj/item/weapon/circuitboard/cryo_cell(src),
-		new /obj/item/device/healthanalyzer(src),
-		new /obj/item/weapon/stock_parts/scanning_module(src),
-		new /obj/item/weapon/stock_parts/matter_bin(src),
-		new /obj/item/weapon/stock_parts/manipulator(src),
-		new /obj/item/weapon/stock_parts/manipulator(src),
-		new /obj/item/weapon/stock_parts/manipulator(src),
-		new /obj/item/weapon/stock_parts/console_screen(src)
-	)
 
 	RefreshParts()
 	update_icon()
