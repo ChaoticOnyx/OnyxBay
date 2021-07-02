@@ -220,8 +220,10 @@
 			if(!larva_path) // Something went very wrong, the host cannot give birth
 				die()
 				return PROCESS_KILL
-			var/mob/living/carbon/alien/larva/L = new larva_path(get_turf(src))
-			L.larva_announce_to_ghosts()
+			var/birth_loc = loc
+			spawn(10) // So the newborn larvae won't get shredded by flying limbs
+				var/mob/living/carbon/alien/larva/L = new larva_path(get_turf(birth_loc))
+				L.larva_announce_to_ghosts()
 			die()
 			owner.gib()
 			QDEL_NULL(src)
