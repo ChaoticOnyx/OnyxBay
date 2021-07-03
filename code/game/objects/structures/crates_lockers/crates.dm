@@ -98,7 +98,7 @@
 		overlays += greenlight
 
 /obj/structure/closet/crate/plastic
-	name = "Plastic crate"
+	name = "plastic crate"
 	desc = "A rectangular plastic crate."
 	icon_state = "plasticcrate"
 	icon_opened = "plasticcrateopen"
@@ -107,7 +107,7 @@
 	material = /obj/item/stack/material/plastic
 
 /obj/structure/closet/crate/handmade
-	name = "Handmade crate"
+	name = "handmade crate"
 	desc = "Another handmade by a young assistant. Crude crate, now it`s more steel than plasteel."
 	icon_state = "handmadecrate"
 	icon_opened = "handmadecrateopen"
