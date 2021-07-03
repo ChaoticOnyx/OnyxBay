@@ -61,6 +61,27 @@
 	build_path = /obj/item/weapon/circuitboard/optable
 	sort_string = "FAGAP"
 
+/datum/design/circuit/chemmaster
+	name = "chem Master 3000"
+	id = "chemmaster"
+	req_tech = list(TECH_ENGINEERING = 3, TECH_BIO = 3, TECH_DATA = 3)
+	build_path = /obj/item/weapon/circuitboard/chemmaster
+	sort_string = "FAGAP"
+
+/datum/design/circuit/grinder
+	name = "All-In-One Grinder"
+	id = "grinder"
+	req_tech = list(TECH_ENGINEERING = 3, TECH_BIO = 2)
+	build_path = /obj/item/weapon/circuitboard/optable
+	sort_string = "FAGAP"
+
+/datum/design/circuit/chemical_dispenser
+	name = "chemical dispenser"
+	id = "chemical_dispenser"
+	req_tech = list(TECH_ENGINEERING = 3, TECH_BIO = 3, TECH_DATA = 3)
+	build_path = /obj/item/weapon/circuitboard/chemical_dispenser
+	sort_string = "FAGAP"
+
 /datum/design/circuit/destructive_analyzer
 	name = "destructive analyzer"
 	id = "destructive_analyzer"
