@@ -110,7 +110,7 @@
 
 			var/appeal
 			if(config && config.banappeals)
-				appeal = "\nFor more information on your ban, or to appeal, head to <a href='[config.banappeals]'>[config.banappeals]</a>"
+				appeal = "\nTo get more information about your ban, or to appeal it, head to <a href='[config.banappeals]'>[config.banappeals]</a>"
 
 			var/desc = "\nReason: You, or another user of this computer or connection ([pckey]) is banned from playing here. The ban reason is:\n[reason]\nThis ban was applied by [ackey] on [bantime], [expires][appeal]"
 
