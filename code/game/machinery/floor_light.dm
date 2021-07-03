@@ -18,6 +18,7 @@ var/list/floor_light_cache = list()
 	var/damaged = FALSE
 	var/cracks = 0
 	var/light_intensity = 1
+	var/inverted = FALSE
 	var/default_light_max_bright = 0.75
 	var/default_light_inner_range = 1
 	var/default_light_outer_range = 3
@@ -27,6 +28,7 @@ var/list/floor_light_cache = list()
 
 /obj/machinery/floor_light/prebuilt
 	anchored = TRUE
+	on = TRUE
 
 /obj/machinery/floor_light/Process()
 	..()
@@ -34,6 +36,7 @@ var/list/floor_light_cache = list()
 		update_brightness(TRUE)
 	else if((glow && !on) || (glow && (!anchored || broken())))
 		update_brightness(FALSE)
+
 
 /obj/machinery/floor_light/proc/levelupdate()
 	for(var/obj/O in src)
@@ -75,18 +78,36 @@ var/list/floor_light_cache = list()
 		damaged = FALSE
 		cracks = 0
 	else if(isMultitool(W))
-		switch(alert("What would you like to change?",, "Color", "intensity", "Cancel"))
+		switch(alert("What would you like to change?",, "Color", "intensity", "Invert", "Cancel"))
 			if("Color")
 				light_colour = input(user, "Choose your floor light's colour:") as color
 				update_icon()
+				glow = FALSE
+				visible_message("<span class='notice'>\The [user] change \the [src] color.</span>")
+				playsound(src.loc, "button", 50, 1)
 				return
 			if("intensity")
 				switch(alert("Choose your floor light's intensity",, "slow", "normal", "fast"))
-					if("slow") light_intensity = 0
-					if("normal") light_intensity = 1
-					if("fast") light_intensity = 2
+					if("slow")
+						light_intensity = 0
+						visible_message("<span class='notice'>\The [user] change \the [src] intensity to slow.</span>")
+					if("normal")
+						light_intensity = 1
+						visible_message("<span class='notice'>\The [user] change \the [src] intensity to normal.</span>")
+					if("fast")
+						light_intensity = 2
+						visible_message("<span class='notice'>\The [user] change \the [src] intensity to fast.</span>")
 					else return
 				update_icon()
+				glow = FALSE
+				playsound(src.loc, "button", 50, 1)
+				return
+			if("Invert")
+				inverted = !inverted
+				update_icon()
+				glow = FALSE
+				visible_message("<span class='notice'>\The [user] inverted \the [src] rhythm.</span>")
+				playsound(src.loc, "button", 50, 1)
 				return
 			if("Cancel")
 				return
@@ -126,19 +147,17 @@ var/list/floor_light_cache = list()
 
 /obj/machinery/floor_light/proc/update_brightness(var/mustWork)
 	if(mustWork)
-		if((light_outer_range != default_light_outer_range || light_max_bright != default_light_max_bright))
-			if(broken())
-				set_light(default_light_max_bright / (active_power_usage / idle_power_usage), default_light_inner_range, default_light_outer_range, 2, broken_light_colour)
-				update_use_power(POWER_USE_IDLE)
-			else
-				set_light(default_light_max_bright, default_light_inner_range, default_light_outer_range, 2, light_colour)
-				update_use_power(POWER_USE_ACTIVE)
-			glow = 1
+		if(broken())
+			set_light(default_light_max_bright / (active_power_usage / idle_power_usage), default_light_inner_range, default_light_outer_range, 2, broken_light_colour)
+			update_use_power(POWER_USE_IDLE)
+		else
+			set_light(default_light_max_bright, default_light_inner_range, default_light_outer_range, 2, light_colour)
+			update_use_power(POWER_USE_ACTIVE)
+		glow = 1
 	else
-		if(light_outer_range || light_max_bright)
-			set_light(0)
-			update_use_power(POWER_USE_OFF)
-			glow = 0
+		set_light(0)
+		update_use_power(POWER_USE_OFF)
+		glow = 0
 	change_power_consumption((light_outer_range + light_max_bright) * 10, POWER_USE_ACTIVE)
 	update_icon()
 
@@ -147,29 +166,19 @@ var/list/floor_light_cache = list()
 	if(damaged)
 		var/i
 		var/crack
-		while(cracks < damaged)
-			crack = rand(1,8)
-			var/cache_key = "floorlight-damaged[i]-crack[crack]"
-			if(!floor_light_cache[cache_key])
-				var/image/I = image("damaged[crack]")
-				I.color = broken_light_colour
-				I.plane = plane
-				I.layer = crack_layer + 0.001
-				crack_layer = I.layer
-				floor_light_cache[cache_key] = I
-			overlays |= floor_light_cache[cache_key]
-			cracks++
 		if(broken())
-			overlays -= floor_light_cache["floorlight-glowing"]
-			var/cache_key = "floorlight-damaged-smashed"
-			if(!floor_light_cache[cache_key])
-				var/image/I = image("smashed")
-				I.color = broken_light_colour
-				I.plane = plane
-				I.layer = crack_layer + 0.001
-				crack_layer = I.layer
-				floor_light_cache[cache_key] = I
+			while(cracks < damaged)
+				crack = rand(1,8)
+				var/cache_key = "floorlight-damaged[i]-crack[crack]"
+				if(!floor_light_cache[cache_key])
+					var/image/I = image("damaged[crack]")
+					I.color = broken_light_colour
+					I.plane = plane
+					I.layer = crack_layer + 0.001
+					crack_layer = I.layer
+					floor_light_cache[cache_key] = I
 				overlays |= floor_light_cache[cache_key]
+				cracks++
 	else overlays.Cut()
 	if(use_power)
 		if(!broken())
@@ -178,11 +187,14 @@ var/list/floor_light_cache = list()
 				overlays -= floor_light_cache["floorlight-glowing[light_intensity]"]
 				var/cache_key = "floorlight-glowing[light_intensity]"
 				//if(!floor_light_cache[cache_key])
-				var/image/I = image("glowing")
-				if(light_intensity == 0)
-					I = image("glowing_slow")
-				else
-					I = image("glowing_fast")
+				var/image/I
+				switch(light_intensity)
+					if(1)
+						I = inverted ? image("glowing_invert") : image("glowing")
+					if(0)
+						I = inverted ? image("glowing_slow_invert") : image("glowing_slow")
+					if(2)
+						I = inverted ? image("glowing_fast_invert") : image("glowing_fast")
 				I.color = light_colour
 				I.plane = plane
 				I.layer = layer + 0.001
