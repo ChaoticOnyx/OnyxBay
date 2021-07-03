@@ -617,7 +617,7 @@
 	//Well then break it!
 	breakout = FALSE
 	to_chat(escapee, SPAN_WARNING("You successfully break out!"))
-	visible_message(SPAN_DANGER("<span class='danger'>\The [escapee] successfully broke out of \the [src]!"))
+	visible_message(SPAN_DANGER("\The [escapee] successfully broke out of \the [src]!"))
 	playsound(src.loc, 'sound/effects/grillehit.ogg', 100, 1)
 	break_open()
 	shake_animation()
