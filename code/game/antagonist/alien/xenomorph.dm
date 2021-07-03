@@ -40,7 +40,7 @@ GLOBAL_DATUM_INIT(xenomorphs, /datum/antagonist/xenos, new)
 		to_chat(player.current, SPAN("notice", "[antag_text]"))
 
 	show_objectives_at_creation(player)
-	return 1
+	return TRUE
 
 /datum/antagonist/xenos/attempt_random_spawn()
 	if(config.aliens_allowed) ..()
@@ -48,8 +48,8 @@ GLOBAL_DATUM_INIT(xenomorphs, /datum/antagonist/xenos, new)
 /datum/antagonist/xenos/antags_are_dead()
 	for(var/datum/mind/antag in current_antagonists)
 		if(antag.current.stat != DEAD)
-			return 0
-	return 1
+			return FALSE
+	return TRUE
 
 /datum/antagonist/xenos/proc/get_vents()
 	var/list/vents = list()
