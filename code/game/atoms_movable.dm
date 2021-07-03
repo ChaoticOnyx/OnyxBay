@@ -117,20 +117,14 @@
 			if(A.density && !A.throwpass)	// **TODO: Better behaviour for windows which are dense, but shouldn't always stop movement
 				throw_impact(A, speed)
 
-/atom/movable/proc/throw_at(atom/target, range, speed, thrower, thrown_with, target_zone)
+/atom/movable/proc/throw_at(atom/target, range, speed, atom/thrower, thrown_with, target_zone)
 	if(!target || !src)
 		return FALSE
 	if(target.z != src.z)
 		return FALSE
 	// src loc check
-	var/src_loc = src.loc
-	if(!isturf(src_loc))
-		if(ismob(src_loc))
-			var/mob/src_mob = src_loc
-			if(!isturf(src_mob.loc))
-				return FALSE
-		else
-			return FALSE
+	if(thrower && !isturf(thrower.loc))
+		return FALSE
 	//use a modified version of Bresenham's algorithm to get from the atom's current position to that of the target
 	src.throwing = TRUE
 	src.thrower = thrower
