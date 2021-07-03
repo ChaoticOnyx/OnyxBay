@@ -19,6 +19,11 @@ GLOBAL_DATUM_INIT(borers, /datum/antagonist/xenos/borer, new)
 
 	station_crew_involved = FALSE
 
+/datum/antagonist/xenos/borer/Initialize()
+	. = ..()
+	if(config.borer_min_age)
+		min_player_age = config.borer_min_age
+
 /datum/antagonist/xenos/borer/get_extra_panel_options(datum/mind/player)
 	return "<a href='?src=\ref[src];move_to_spawn=\ref[player.current]'>\[put in host\]</a>"
 
