@@ -111,11 +111,11 @@
 	#define MOB_SHADOW_LAYER            2.15
 	// OBJ
 	#define BELOW_DOOR_LAYER            2.16
+	#define OPEN_DOOR_LAYER             2.17
 	#define BELOW_TABLE_LAYER           2.18
 	#define TABLE_LAYER                 2.19
 	#define BELOW_OBJ_LAYER             2.20
 	#define STRUCTURE_LAYER             2.21
-	#define OPEN_DOOR_LAYER             2.22
 	// OBJ_LAYER                        3
 	#define ABOVE_OBJ_LAYER             3.01
 	#define CLOSED_DOOR_LAYER           3.02
