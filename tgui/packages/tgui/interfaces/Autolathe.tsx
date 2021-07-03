@@ -74,7 +74,7 @@ export const Autolathe = (props: any, context: any) => {
     'searchQuery',
     null,
   );
-  const [currentPage, _] = useLocalState(context, 'currentPage', 1);
+  const [currentPage, setCurrentPage] = useLocalState(context, 'currentPage', 1);
   let found: Recipe[] = data.recipes;
 
   if (searchQuery !== null) {
@@ -109,7 +109,10 @@ export const Autolathe = (props: any, context: any) => {
           <Input
             placeholder='Search'
             fluid
-            onInput={(e: any) => setSearchQuery(e.target.value)}
+            onInput={(e: any) => {
+              setCurrentPage(1);
+              return setSearchQuery(e.target.value);
+            }}
           />
           <Divider />
           <Flex bold wrap justify='flex-start' align='center'>
@@ -121,7 +124,10 @@ export const Autolathe = (props: any, context: any) => {
                     selected={data.category.selected === category}
                     content={category}
                     onClick={() =>
-                      act('change_category', { category: category })
+                      {
+                        setCurrentPage(1);
+                        return act('change_category', { category: category });
+                    }
                     }
                   />
                 </Flex.Item>
