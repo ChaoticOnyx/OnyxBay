@@ -4,8 +4,7 @@ GLOBAL_DATUM_INIT(xenomorphs, /datum/antagonist/xenos, new)
 	id = MODE_XENOMORPH
 	role_text = "Xenomorph"
 	role_text_plural = "Xenomorphs"
-	mob_path = /mob/living/carbon/alien/larva
-	flags = ANTAG_OVERRIDE_MOB | ANTAG_RANDSPAWN | ANTAG_OVERRIDE_JOB
+	flags = ANTAG_RANDSPAWN | ANTAG_OVERRIDE_JOB
 	welcome_text = "Hiss! You are a larval alien. Hide and bide your time until you are ready to evolve."
 	antaghud_indicator = "hudalien"
 	antag_indicator = "hudalien"
@@ -31,8 +30,26 @@ GLOBAL_DATUM_INIT(xenomorphs, /datum/antagonist/xenos, new)
 	spawn_announcement_sound = GLOB.using_map.xenomorph_spawn_sound
 	..()
 
+/datum/antagonist/xenos/greet(datum/mind/player)
+	to_chat(player.current, SPAN("danger", "<font size=3>You are a [role_text]!</font>"))
+	if(ishuman(player.current))
+		to_chat(player.current, SPAN("notice", "Hiss! You are a xenomorph! Do everything you can to make sure the hive thriving!"))
+	else
+		to_chat(player.current, SPAN("notice", "[welcome_text]"))
+	if(config.objectives_disabled == CONFIG_OBJECTIVE_NONE || !player.objectives.len)
+		to_chat(player.current, SPAN("notice", "[antag_text]"))
+
+	show_objectives_at_creation(player)
+	return TRUE
+
 /datum/antagonist/xenos/attempt_random_spawn()
 	if(config.aliens_allowed) ..()
+
+/datum/antagonist/xenos/antags_are_dead()
+	for(var/datum/mind/antag in current_antagonists)
+		if(antag.current.stat != DEAD)
+			return FALSE
+	return TRUE
 
 /datum/antagonist/xenos/proc/get_vents()
 	var/list/vents = list()

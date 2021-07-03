@@ -121,6 +121,7 @@
 	max_damage = 50
 	min_broken_damage = 25
 	limb_flags = ORGAN_FLAG_CAN_AMPUTATE | ORGAN_FLAG_CAN_BREAK
+	skull_path = null
 
 /obj/item/organ/external/head/no_eyes/diona/removed()
 	if(BP_IS_ROBOTIC(src))
