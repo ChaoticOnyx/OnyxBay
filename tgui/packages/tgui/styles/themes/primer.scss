@@ -149,7 +149,6 @@ $background-size: 8rem;
     font-size: 0.9em;
     cursor: pointer;
     border-radius: $border-radius;
-    font-weight: bold;
     transition: all 0.2s;
 
     &--disabled {
@@ -197,11 +196,40 @@ $background-size: 8rem;
     background-color: #fafbfc;
     border: #d9dbdb solid $border-thick;
 
+    &--color--bad {
+      color: #cb2431;
+
+      * {
+        color: #cb2431 !important;
+      }
+
+      &:hover,
+      &:focus,
+      &--selected {
+        color: white !important;
+        background-color: #cb2431 !important;
+
+        * {
+          color: white !important;
+        }
+      }
+    }
+
     &:focus,
     &:hover,
     &.Button--selected {
       background-color: #edeff2;
       border: #b3b6b9 solid $border-thick;
+    }
+
+    &.Button--disabled {
+      color: #d9dbdb !important;
+      background-color: #fafbfc !important;
+      border: #d9dbdb solid $border-thick;
+
+      * {
+        color: #d9dbdb !important;
+      }
     }
 
     &--label {
@@ -222,10 +250,12 @@ $background-size: 8rem;
       &:hover,
       &.Button--selected {
         color: #58a6ff;
+        background-color: transparent !important;
       }
 
       &.Button--disabled {
         color: #586069;
+        background-color: transparent !important;
       }
     }
 
@@ -298,6 +328,13 @@ $background-size: 8rem;
         color: #959da5;
         background-color: #fafbfc !important;
 
+        border: {
+          top: #d9dbdb solid $border-thick;
+          bottom: #d9dbdb solid $border-thick;
+          left: none;
+          right: none;
+        }
+
         &:hover,
         &:focus {
           border: {
@@ -318,15 +355,44 @@ $background-size: 8rem;
   }
 
   @at-root .theme-primer-dark & {
-    color: #adbac7;
+    color: #c9d1d9;
     background-color: #21262d;
     border: #444c56 solid $border-thick;
+
+    &--color--bad {
+      color: #d73a49;
+
+      * {
+        color: #d73a49 !important;
+      }
+
+      &:hover,
+      &:focus,
+      &--selected {
+        color: white !important;
+        background-color: #cb2431 !important;
+
+        * {
+          color: white !important;
+        }
+      }
+    }
 
     &:focus,
     &:hover,
     &.Button--selected {
       background-color: #444c56;
       border: #768390 solid $border-thick;
+    }
+
+    &.Button--disabled {
+      color: #666c72 !important;
+      background-color: #21262d !important;
+      border: #444c56 solid $border-thick;
+
+      * {
+        color: #666c72 !important;
+      }
     }
 
     &--label {
@@ -348,10 +414,12 @@ $background-size: 8rem;
       &:hover,
       &.Button--selected {
         color: white;
+        background-color: transparent !important;
       }
 
       &.Button--disabled {
         color: #586069 !important;
+        background-color: transparent !important;
       }
     }
 
@@ -424,6 +492,13 @@ $background-size: 8rem;
         color: #5c6772;
         background-color: #293037 !important;
 
+        border: {
+          top: #444c56 solid $border-thick;
+          bottom: #444c56 solid $border-thick;
+          left: none;
+          right: none;
+        }
+
         &:hover,
         &:focus {
           border: {
@@ -458,6 +533,16 @@ $background-size: 8rem;
 
   @at-root .theme-primer-dark & {
     border-top: #373e47 solid $border-thick;
+  }
+
+  &--vertical {
+    @at-root .theme-primer-white & {
+      border-left: #d9dbdb solid $border-thick;
+    }
+
+    @at-root .theme-primer-dark & {
+      border-left: #373e47 solid $border-thick;
+    }
   }
 }
 
@@ -526,6 +611,80 @@ $background-size: 8rem;
   }
 }
 
+.Layout__content .Icon {
+  @at-root .theme-primer-white & {
+    color: #959da5;
+  }
+
+  @at-root .theme-primer-dark & {
+    color: #6e7681;
+  }
+}
+
+.Tabs {
+  @at-root .theme-primer-white &,
+    .theme-primer-dark & {
+    border-radius: $border-radius;
+  }
+
+  @at-root .theme-primer-white & {
+    background-color: #fafbfc;
+
+    & * {
+      color: #24292e;
+    }
+  }
+
+  @at-root .theme-primer-dark & {
+    background-color: #22272e;
+
+    & * {
+      color: #c9d1d9;
+    }
+  }
+
+  .Tab {
+    @at-root .theme-primer-white &,
+      .theme-primer-dark & {
+      cursor: pointer;
+      padding: {
+        left: 0.4rem;
+        right: 0.4rem;
+      }
+      background-color: transparent !important;
+    }
+
+    @at-root .theme-primer-white & {
+      border-bottom: #fafbfc solid 0.2rem;
+    }
+
+    @at-root .theme-primer-dark & {
+      border-bottom: #22272e solid 0.2rem;
+    }
+
+    &:hover {
+      @at-root .theme-primer-white & {
+        border-bottom: #d1d5da solid 0.2rem;
+      }
+
+      @at-root .theme-primer-dark & {
+        border-bottom: #636e7b solid 0.2rem;
+      }
+    }
+
+    &:focus,
+    &--selected {
+      @at-root .theme-primer-white & {
+        border-bottom: #f9826c solid 0.2rem !important;
+      }
+
+      @at-root .theme-primer-dark & {
+        border-bottom: #f9826c solid 0.2rem !important;
+      }
+    }
+  }
+}
+
 .candystripe {
   @at-root .theme-primer-white & {
     background-color: #f6f8fa;
@@ -545,17 +704,40 @@ $background-size: 8rem;
 }
 
 .Materials .game-icon {
-  @at-root .theme-primer-white &, .theme-primer-dark & {
+  @at-root .theme-primer-white &,
+    .theme-primer-dark & {
     width: 4em;
     height: 4em;
     vertical-align: -2rem;
   }
 }
 
+.Materials--small .game-icon {
+  @at-root .theme-primer-white &,
+    .theme-primer-dark & {
+    width: 2em;
+    height: 2em;
+    vertical-align: -1rem;
+  }
+}
+
 .Designs .game-icon {
-  @at-root .theme-primer-white &, .theme-primer-dark & {
+  @at-root .theme-primer-white &,
+    .theme-primer-dark & {
     width: 3em;
     height: 3em;
     vertical-align: -1.5rem;
+  }
+}
+
+.Table {
+  &.Table--bordered {
+    @at-root .theme-primer-white & {
+      border: #e1e4e8 solid $border-thick;
+    }
+
+    @at-root .theme-primer-dark & {
+      border: #373e47 solid $border-thick;
+    }
   }
 }

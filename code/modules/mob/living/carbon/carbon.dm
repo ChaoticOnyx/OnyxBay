@@ -14,6 +14,12 @@
 	QDEL_NULL_LIST(internal_organs)
 	QDEL_NULL_LIST(stomach_contents)
 	QDEL_NULL_LIST(hallucinations)
+	if(loc)
+		for(var/mob/M in contents)
+			M.dropInto(loc)
+	else
+		for(var/mob/M in contents)
+			qdel(M)
 	return ..()
 
 /mob/living/carbon/rejuvenate(ignore_prosthetic_prefs = FALSE)

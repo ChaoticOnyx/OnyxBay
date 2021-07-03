@@ -90,7 +90,7 @@
 
 /obj/item/asteroid/anomalous_core
 	name = "anomalous core"
-	desc = "Strange biostructure that constantly emits bursts of energy. It has two flaps and juicy core that looks squeezable."
+	desc = "Strange biostructure that constantly emits bursts of energy. It has two flaps and a juicy core that looks squeezable."
 	icon = 'icons/mob/asteroid/psychekinetic.dmi'
 	icon_state = "psychecore"
 	var/inert = 0
@@ -102,20 +102,20 @@
 /obj/item/asteroid/anomalous_core/proc/make_inert()
 	inert = 1
 	icon_state = "psychecore_used"
-	desc = "Strange biostructure that looks as if it possesed some energy but then was drained out. It has two flaps and husked core."
+	desc = "Strange biostructure that looks as if it possesed some energy but then was drained out. It has two flaps and a husked core."
 
 /obj/item/asteroid/anomalous_core/attack(mob/living/M, mob/living/user)
 	if(ishuman(M))
 		var/mob/living/carbon/human/H = M
 		if(inert)
-			to_chat(user, "<span class='notice'>[src] have become inert, its healing properties are no more.</span>")
+			to_chat(user, "<span class='notice'>[src] has become inert, its healing properties are no more.</span>")
 			return
 		else
 			if(H.stat == DEAD)
 				to_chat(user, "<span class='notice'>[src] are useless on the dead.</span>")
 				return
 			if(H != user)
-				H.visible_message("[user] forces [H] to apply [src]... they quickly regenerate all injuries!")
+				H.visible_message("[user] forces [H] to apply [src]... They quickly regenerate all the injuries!")
 			else
 				to_chat(user, "<span class='notice'>You start to smear [src] on yourself. You feel burst of energy coming through your whole body. At first it feels like torture, but then it feels good.</span>")
 			H.revive()

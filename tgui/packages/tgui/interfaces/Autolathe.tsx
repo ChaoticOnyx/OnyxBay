@@ -131,7 +131,7 @@ export const Autolathe = (props: any, context: any) => {
                       }
                     />
                     {recipe.multipliers.length > 0 ? (
-                      <Box ml='0.2rem' mb='0.5rem' class='Multipliers'>
+                      <Box ml='0.2rem' mb='0.5rem'>
                         {recipe.multipliers.map((mult, k) => {
                           return (
                             <Button.Segmented

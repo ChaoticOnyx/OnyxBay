@@ -86,3 +86,4 @@
 /obj/item/organ/external/head/unbreakable/metroid
 	max_damage = 15
 	eye_icon = "blank_eyes"
+	skull_path = null
