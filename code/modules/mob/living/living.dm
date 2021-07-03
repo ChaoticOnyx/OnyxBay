@@ -836,6 +836,9 @@
 	if(auras)
 		for(var/a in auras)
 			remove_aura(a)
+	if(mind)
+		mind.current = null
+	QDEL_NULL(aiming)
 	return ..()
 
 /mob/living/proc/set_m_intent(intent)

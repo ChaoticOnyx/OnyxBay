@@ -98,7 +98,8 @@ SUBSYSTEM_DEF(storyteller)
 	if (drop_data)
 		__ckey_to_ui_data[user.ckey] = list()
 	var/data = __ckey_to_ui_data[user.ckey]
-	data["storyteller"] = __get_params_for_ui(data["current_tab"])
+	if("current_tab" in data)
+		data["storyteller"] = __get_params_for_ui(data["current_tab"])
 	data["pregame"] = (GAME_STATE < RUNLEVEL_GAME)
 
 	var/ui_key = "storyteller_control_panel"

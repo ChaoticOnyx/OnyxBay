@@ -19,15 +19,23 @@
 	var/pull_sound = null
 
 /atom/movable/Destroy()
-	. = ..()
-	for(var/atom/movable/AM in src)
-		qdel(AM)
+	for(var/A in src)
+		qdel(A)
 
 	forceMove(null)
-	if (pulledby)
-		if (pulledby.pulling == src)
+	if(pulledby)
+		if(pulledby.pulling == src)
 			pulledby.pulling = null
 		pulledby = null
+
+	if(LAZYLEN(movement_handlers) && !ispath(movement_handlers[1]))
+		QDEL_NULL_LIST(movement_handlers)
+
+	if(virtual_mob && !ispath(virtual_mob))
+		qdel(virtual_mob)
+		virtual_mob = null
+
+	. = ..()
 
 /atom/movable/Bump(atom/A, yes)
 	if(src.throwing)
