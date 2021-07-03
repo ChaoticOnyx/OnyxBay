@@ -379,7 +379,7 @@
 			if(!cdoor)
 				return FALSE
 			if(remove_door())
-				user.visible_message(SPAN_NOTICE("[user] unscrewed [cdoor] from [src]."))
+				user.visible_message(SPAN("notice", "[user] unscrewed [cdoor] from [src]."))
 			return
 
 		if(istype(W, /obj/item/weapon/shield/closet) && dremovable && !cdoor)
@@ -493,7 +493,7 @@
 	add_fingerprint(user)
 	user.setClickCooldown(2)
 	if(in_use)
-		to_chat(user, SPAN_WARNING("You can't do this right now."))
+		to_chat(user, SPAN("warning", "You can't do this right now."))
 		return
 	in_use = TRUE
 	if(open_delay && !do_after(user, open_delay))
