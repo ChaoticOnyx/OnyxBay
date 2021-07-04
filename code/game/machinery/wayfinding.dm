@@ -4,7 +4,7 @@
 	icon_state = "cart"
 	use_vend_state = TRUE
 	vend_delay = 23
-	products = list(/obj/item/weapon/cartridge/medical = 25)
+	products = list(/obj/item/weapon/pinpointer/wayfinding = 25)
 	slogan_list = list("Find a wayfinding pinpointer? Give it to me! I'll make it worth your while. Please. Daddy needs his medicine.", //last sentence is a reference to Sealab 2021
 						"See a wayfinding pinpointer? Don't let it go to the crusher! Recycle it with me instead. I'll pay you or not.", //I see these things heading for disposals through cargo all the time
 						"Can't find the disk? Need a pinpointer? Buy a wayfinding pinpointer and find the captain's office today!",
@@ -24,6 +24,7 @@
 	desc = "A handheld tracking device that points to useful places."
 	icon_state = "pinpointer_way"
 	var/owner = null
+	var/obj/machinery/navbeacon/wayfinding/way_target
 	var/list/beacons = list()
 
 /obj/item/weapon/pinpointer/wayfinding/attack_self(mob/living/user)
@@ -43,20 +44,30 @@
 		return
 
 	var/A = input(user, "", "Pinpoint") as null|anything in sortList(beacons)
-	if(!A || QDELETED(src) || !user || !user.is_holding(src) || user.incapacitated())
+	if(!A || QDELETED(src) || !user || !src.Adjacent(user) || user.incapacitated())
 		return
 
-	target = beacons[A]
+	way_target = beacons[A]
+	target = acquire_target()
 	..()
+
+/obj/item/weapon/pinpointer/wayfinding/toggle()
+	..()
+	if(!active)
+		way_target = null
+
+/obj/item/weapon/pinpointer/wayfinding/acquire_target()
+	if(way_target)
+		return weakref(way_target)
 
 /obj/item/weapon/pinpointer/wayfinding/examine(mob/user)
 	. = ..()
-	var/msg = "Its tracking indicator reads "
+	var/msg = " Its tracking indicator reads "
 	if(target)
 		var/obj/machinery/navbeacon/wayfinding/B  = target
 		msg += "\"[B.codes["wayfinding"]]\"."
 	else
-		msg = "Its tracking indicator is blank."
+		msg = " Its tracking indicator is blank."
 	if(owner)
 		msg += " It belongs to [owner]."
 	. += msg

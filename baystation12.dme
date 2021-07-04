@@ -689,6 +689,7 @@
 #include "code\game\machinery\vending.dm"
 #include "code\game\machinery\wall_frames.dm"
 #include "code\game\machinery\washing_machine.dm"
+#include "code\game\machinery\wayfinding.dm"
 #include "code\game\machinery\wishgranter.dm"
 #include "code\game\machinery\atmoalter\area_atmos_computer.dm"
 #include "code\game\machinery\atmoalter\canister.dm"
