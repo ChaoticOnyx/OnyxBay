@@ -280,7 +280,7 @@ CIGARETTES AND STUFF ARE IN 'SMOKABLES' FOLDER
 	icon_state = "zippo-rainbow"
 
 /obj/item/weapon/flame/lighter/zippo/pt
-	name = "\improper T&P lighter"
+	name = "\improper T'n'P lighter"
 	desc = "They say its flame smells like maple syrup. More like burnt hair, if you ask me."
 	icon_state = "zippo-pt"
 
