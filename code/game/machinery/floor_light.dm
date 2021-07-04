@@ -1,4 +1,5 @@
-var/list/floor_light_cache = list()
+var/floor_light_cache = list()
+var/floor_light_color_cache = list()
 
 /obj/machinery/floor_light
 	name = "floor light"
@@ -13,7 +14,10 @@ var/list/floor_light_cache = list()
 	power_channel = EQUIP
 	matter = list(MATERIAL_STEEL = 250, MATERIAL_GLASS = 250)
 
+	var/hp = 4	// Hits to destroy
+	var/shield = 2	// Hits to broke
 	var/glow = FALSE
+	var/must_work
 	var/on = FALSE
 	var/damaged = FALSE
 	var/cracks = 0
@@ -24,7 +28,7 @@ var/list/floor_light_cache = list()
 	var/default_light_outer_range = 3
 	var/default_light_colour = "#69baff"
 	var/broken_light_colour = "#FFFFFF"
-	var/light_colour = "#69baff"	// TODO: Add color input through multitool
+	var/light_colour
 
 /obj/machinery/floor_light/prebuilt
 	anchored = TRUE
@@ -33,10 +37,11 @@ var/list/floor_light_cache = list()
 /obj/machinery/floor_light/Process()
 	..()
 	if(on && !glow && anchored)
-		update_brightness(TRUE)
+		must_work = TRUE
+		update_brightness()
 	else if((glow && !on) || (glow && (!anchored || broken())))
-		update_brightness(FALSE)
-
+		must_work = FALSE
+		update_brightness()
 
 /obj/machinery/floor_light/proc/levelupdate()
 	for(var/obj/O in src)
@@ -76,12 +81,11 @@ var/list/floor_light_cache = list()
 		visible_message("<span class='notice'>\The [user] has repaired \the [src].</span>")
 		set_broken(FALSE)
 		damaged = FALSE
-		cracks = 0
 	else if(isMultitool(W))
 		switch(alert("What would you like to change?",, "Color", "intensity", "Invert", "Cancel"))
 			if("Color")
-				light_colour = input(user, "Choose your floor light's colour:") as color
-				update_icon()
+				light_colour = input(user, "Choose your floor light's color:") as color
+				update_brightness()
 				glow = FALSE
 				visible_message("<span class='notice'>\The [user] change \the [src] color.</span>")
 				playsound(src.loc, "button", 50, 1)
@@ -98,13 +102,13 @@ var/list/floor_light_cache = list()
 						light_intensity = 2
 						visible_message("<span class='notice'>\The [user] change \the [src] intensity to fast.</span>")
 					else return
-				update_icon()
+				update_brightness()
 				glow = FALSE
 				playsound(src.loc, "button", 50, 1)
 				return
 			if("Invert")
 				inverted = !inverted
-				update_icon()
+				update_brightness()
 				glow = FALSE
 				visible_message("<span class='notice'>\The [user] inverted \the [src] rhythm.</span>")
 				playsound(src.loc, "button", 50, 1)
@@ -124,11 +128,13 @@ var/list/floor_light_cache = list()
 		else
 			visible_message("<span class='danger'>\The [user] attacks \the [src]!</span>")
 			playsound(src.loc, get_sfx("glass_hit"), 75, 1)
-		if(damaged < 3)
+		if(damaged < hp)
 			damaged++
+		/*
 		else
 			Destroy()
-		update_icon()
+		*/
+		update_brightness()
 		return
 	else
 		on = !on
@@ -145,48 +151,52 @@ var/list/floor_light_cache = list()
 				to_chat(user, "<span class='warning'>\The [src] is unpowered.</span>")
 				return
 
-/obj/machinery/floor_light/proc/update_brightness(var/mustWork)
-	if(mustWork)
+/obj/machinery/floor_light/proc/update_brightness()
+	var/ID = "\ref[src]"
+	update_icon(ID)
+	if(must_work)
 		if(broken())
 			set_light(default_light_max_bright / (active_power_usage / idle_power_usage), default_light_inner_range, default_light_outer_range, 2, broken_light_colour)
 			update_use_power(POWER_USE_IDLE)
+			change_power_consumption((light_outer_range + light_max_bright) * 10, POWER_USE_IDLE)
 		else
-			set_light(default_light_max_bright, default_light_inner_range, default_light_outer_range, 2, light_colour)
+			set_light(default_light_max_bright, default_light_inner_range, default_light_outer_range, 2, light_color_check(ID))
 			update_use_power(POWER_USE_ACTIVE)
+			change_power_consumption((light_outer_range + light_max_bright) * 10, POWER_USE_ACTIVE)
 		glow = 1
 	else
 		set_light(0)
 		update_use_power(POWER_USE_OFF)
+		change_power_consumption(0, POWER_USE_OFF)
 		glow = 0
-	change_power_consumption((light_outer_range + light_max_bright) * 10, POWER_USE_ACTIVE)
-	update_icon()
 
-/obj/machinery/floor_light/update_icon()
+/obj/machinery/floor_light/update_icon(ID)
 	var/crack_layer = layer + 0.002
 	if(damaged)
-		var/i
 		var/crack
 		if(broken())
 			while(cracks < damaged)
 				crack = rand(1,8)
-				var/cache_key = "floorlight-damaged[i]-crack[crack]"
-				if(!floor_light_cache[cache_key])
-					var/image/I = image("damaged[crack]")
-					I.color = broken_light_colour
-					I.plane = plane
-					I.layer = crack_layer + 0.001
-					crack_layer = I.layer
-					floor_light_cache[cache_key] = I
+				var/cache_key = "floorlight[ID]-damaged[crack]"
+				var/image/I = image("damaged[crack]")
+				I.color = broken_light_colour
+				I.plane = plane
+				I.layer = crack_layer + 0.001
+				crack_layer = I.layer
+				floor_light_cache[cache_key] = I
+				floor_light_color_cache[cache_key] = I.color
 				overlays |= floor_light_cache[cache_key]
 				cracks++
-	else overlays.Cut()
+	else
+		while(cracks > damaged)
+			overlays -= floor_light_cache[@"floorlight[ID]-damaged[.]"]
+			cracks--
 	if(use_power)
+		overlays -= floor_light_cache["floorlight[ID]-glowing"]
+		overlays -= floor_light_cache["floorlight[ID]-flickering"]
 		if(!broken())
 			if(!damaged)
-				overlays -= floor_light_cache["floorlight-flickering"]
-				overlays -= floor_light_cache["floorlight-glowing[light_intensity]"]
-				var/cache_key = "floorlight-glowing[light_intensity]"
-				//if(!floor_light_cache[cache_key])
+				var/cache_key = "floorlight[ID]-glowing"
 				var/image/I
 				switch(light_intensity)
 					if(1)
@@ -195,24 +205,35 @@ var/list/floor_light_cache = list()
 						I = inverted ? image("glowing_slow_invert") : image("glowing_slow")
 					if(2)
 						I = inverted ? image("glowing_fast_invert") : image("glowing_fast")
-				I.color = light_colour
+				I.color = light_color_check(ID)
 				I.plane = plane
 				I.layer = layer + 0.001
 				floor_light_cache[cache_key] = I
+				floor_light_color_cache[cache_key] = I.color
 				overlays |= floor_light_cache[cache_key]
 			else
-				overlays -= floor_light_cache["floorlight-glowing[light_intensity]"]
-				var/cache_key = "floorlight-flickering"
-				if(!floor_light_cache[cache_key])
-					var/image/I = image("flickering")
-					I.color = light_colour
-					I.plane = plane
-					I.layer = layer + 0.001
-					floor_light_cache[cache_key] = I
+				var/cache_key = "floorlight[ID]-flickering"
+				var/image/I = image("flickering")
+				I.color = light_color_check(ID)
+				I.plane = plane
+				I.layer = layer + 0.001
+				floor_light_cache[cache_key] = I
+				floor_light_cache[cache_key] = I.color
 				overlays |= floor_light_cache[cache_key]
 	else
-		overlays -= floor_light_cache["floorlight-glowing[light_intensity]"]
-		overlays -= floor_light_cache["floorlight-flickering"]
+		overlays -= floor_light_cache["floorlight[ID]-glowing"]
+		overlays -= floor_light_cache["floorlight[ID]-flickering"]
+	light_color = null
 
 /obj/machinery/floor_light/proc/broken()
 	return (stat & (BROKEN|NOPOWER))
+
+/obj/machinery/floor_light/proc/light_color_check(ID)
+	if(isnull(light_colour))
+		if(floor_light_cache["floorlight[ID]-glowing"])
+			return floor_light_color_cache["floorlight[ID]-glowing"]
+		else if(floor_light_cache["floorlight[ID]-flickering"])
+			return floor_light_color_cache["floorlight[ID]-flickering"]
+		else
+			return default_light_colour
+	else return light_colour
