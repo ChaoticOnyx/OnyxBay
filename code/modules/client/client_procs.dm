@@ -226,7 +226,7 @@
 		<font size='3'>Please update it to [MIN_CLIENT_VERSION].</font></center>")
 		qdel(src)
 		return
-	
+
 	GLOB.using_map.map_info(src)
 
 	if(custom_event_msg && custom_event_msg != "")
@@ -273,6 +273,21 @@
 		log_admin("[ckey] tried to join but the server is full (player_limit=[config.player_limit])")
 		qdel(src)
 		return
+
+	// EPILEPSY WARNING
+	to_chat(src, "<font size='3'>Health Warnings</font>\n<font size='5'><b>WARNING: PHOTOSENSITIVITY/EPILEPSY SEIZURES</b></font>\n\
+	A very small percentage of individuals may experience epileptic seizures or blackouts when exposed to certain light patterns or flashing lights. \
+	Exposure to certain patterns or backgrounds on a television screen or when playing video games may trigger epileptic seizures or blackouts in these individuals. \
+	These conditions may trigger previously undetected epileptic symptoms or seizures in persons who have no history of prior seizures or epilepsy. If you, or anyone in your family \
+	has an epileptic condition or has had seizures of any kind, consult your physician before playing.\n\
+	IMMEDIATELY DISCONTINUE use and consult your physician before resuming gameplay. If you or your child experience any of the following health problems or symptoms:\n\
+	<b>Dizziness\n\
+	Altered vision\n\
+	Eye or muscle twitches\n\
+	Loss of awareness\n\
+	Disorientation Seizures or\n\
+	Any involuntary movement or convulsion</b>\n\
+	<font size='5'>RESUME GAME PLAY ONLY ON APPROVAL OF YOUR PHYSICIAN.</font>", MESSAGE_TYPE_SYSTEM)
 
 /*	if(holder)
 		src.control_freak = 0 // Devs need 0 for profiler access
