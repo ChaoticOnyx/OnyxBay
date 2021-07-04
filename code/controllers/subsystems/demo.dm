@@ -219,8 +219,6 @@ SUBSYSTEM_DEF(demo)
 			loc_string = "[M.x],[M.y],[M.z]"
 		else if(ismovable(M.loc))
 			loc_string = "\ref[M.loc]"
-		var/tmp_icon = M.icon
-		var/tmp_icon_state = M.icon_state
 		M.demo_last_appearance = M.appearance
 		new_updates += "\ref[M] [loc_string] [encode_appearance(M.appearance)]"
 		if(MC_TICK_CHECK)
