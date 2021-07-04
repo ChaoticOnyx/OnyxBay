@@ -1,30 +1,6 @@
 #include "casino_areas.dm"
 #include "../mining/mining_areas.dm"
 
-/obj/effect/overmap/ship/casino
-	name = "passenger liner"
-	desc = "Sensors detect an undamaged vessel without any signs of activity."
-	color = "#bd6100"
-	vessel_mass = 100
-	default_delay = 30 SECONDS
-	speed_mod = 5 SECONDS
-	burn_delay = 20 SECONDS
-	initial_generic_waypoints = list(
-		"nav_casino_1",
-		"nav_casino_2",
-		"nav_casino_3",
-		"nav_casino_4",
-		"nav_casino_antag",
-		"nav_casino_hangar",
-	)
-	initial_restricted_waypoints = list(
-		"Casino Cutter" = list("nav_casino_hangar"),
-	)
-
-/obj/effect/overmap/ship/casino/New(nloc, max_x, max_y)
-	name = "IPV [pick("Fortuna","Gold Rush","Ebisu","Lucky Paw","Four Leaves")], \a [name]"
-	..()
-
 /datum/map_template/ruin/away_site/casino
 	name = "Casino"
 	id = "awaysite_casino"
@@ -60,8 +36,6 @@
 	shuttle_area = /area/casino/casino_cutter
 	current_location = "nav_casino_hangar"
 	landmark_transition = "nav_casino_transit"
-	fuel_consumption = 0.5//it's small
-	range = 1
 	defer_initialisation = TRUE
 
 /obj/effect/shuttle_landmark/nav_casino/cutter_hangar

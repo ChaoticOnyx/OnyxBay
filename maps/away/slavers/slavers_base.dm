@@ -1,22 +1,6 @@
 #include "slavers_base_areas.dm"
 #include "../mining/mining_areas.dm"
 
-/obj/effect/overmap/sector/slavers_base
-	name = "large asteroid"
-	desc = "Sensor array is reading an artificial structure inside the asteroid."
-	icon_state = "object"
-	known = 0
-
-	initial_generic_waypoints = list(
-		"nav_slavers_base_1",
-		"nav_slavers_base_2",
-		"nav_slavers_base_3",
-		"nav_slavers_base_4",
-		"nav_slavers_base_5",
-		"nav_slavers_base_6",
-		"nav_slavers_base_antag"
-	)
-
 /datum/map_template/ruin/away_site/slavers
 	name = "Slavers' Base"
 	id = "awaysite_slavers"

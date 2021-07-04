@@ -153,8 +153,4 @@
 	..()
 
 /datum/event/proc/location_name()
-	if(!GLOB.using_map.use_overmap)
-		return station_name()
-
-	var/obj/effect/overmap/O = map_sectors["[pick(affecting_z)]"]
-	return O ? O.name : "Unknown Location"
+	return station_name()

@@ -259,10 +259,6 @@
 	if(!GLOB.universe.OnTouchMapEdge(src))
 		return
 
-	if(GLOB.using_map.use_overmap)
-		overmap_spacetravel(get_turf(src), src)
-		return
-
 	var/new_x
 	var/new_y
 	var/new_z = GLOB.using_map.get_transit_zlevel(z)

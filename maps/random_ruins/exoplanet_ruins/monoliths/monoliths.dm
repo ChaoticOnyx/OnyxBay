@@ -23,10 +23,6 @@
 	var/material/A = get_material_by_name(MATERIAL_ALIUMIUM)
 	if(A)
 		color = A.icon_colour
-	if(GLOB.using_map.use_overmap)
-		var/obj/effect/overmap/sector/exoplanet/E = map_sectors["[z]"]
-		if(istype(E))
-			desc += "\nThere are images on it: [E.get_engravings()]"
 
 /obj/structure/monolith/update_icon()
 	overlays.Cut()
@@ -41,24 +37,6 @@
 
 /obj/structure/monolith/attack_hand(mob/user)
 	visible_message("[user] touches \the [src].")
-	if(GLOB.using_map.use_overmap && istype(user,/mob/living/carbon/human))
-		var/obj/effect/overmap/sector/exoplanet/E = map_sectors["[z]"]
-		if(istype(E))
-			var/mob/living/carbon/human/H = user
-			if(!H.isSynthetic())
-				active = 1
-				update_icon()
-				if(prob(99))
-					to_chat(H, "<span class='notice'>As you touch \the [src], you suddenly get a vivid image - [E.get_engravings()]</span>")
-				else
-					to_chat(H, "<span class='warning'>An overwhelming stream of information invades your mind!</span>")
-					var/vision = ""
-					for(var/i = 1 to 10)
-						vision += pick(E.actors) + " " + pick("killing","dying","gored","expiring","exploding","mauled","burning","flayed","in agony") + ". "
-					to_chat(H, "<span class='danger'><font size=2>[uppertext(vision)]</font></span>")
-					H.Paralyse(2)
-					H.hallucination(20, 100)
-				return
 	to_chat(user, "<span class='notice'>\The [src] is still.</span>")
 	return ..()
 
