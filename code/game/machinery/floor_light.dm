@@ -14,8 +14,8 @@ var/floor_light_color_cache = list()
 	power_channel = EQUIP
 	matter = list(MATERIAL_STEEL = 250, MATERIAL_GLASS = 250)
 
-	var/hp = 4	// Hits to destroy
-	var/shield = 2	// Hits to broke
+	var/hp = 9	// Hits to destroy
+	var/shield = 3	// Hits to broke
 	var/glow = FALSE
 	var/must_work
 	var/on = FALSE
@@ -28,7 +28,7 @@ var/floor_light_color_cache = list()
 	var/default_light_outer_range = 3
 	var/default_light_colour = "#69baff"
 	var/broken_light_colour = "#FFFFFF"
-	var/light_colour
+	var/light_colour = "#69baff"
 
 /obj/machinery/floor_light/prebuilt
 	anchored = TRUE
@@ -55,6 +55,13 @@ var/floor_light_color_cache = list()
 	var/area/A = get_area(src)
 	if(A)
 		glow = 0
+
+	var/ID = "\ref[src]"
+	overlays -= floor_light_cache["floorlight[ID]-glowing"]
+	overlays -= floor_light_cache["floorlight[ID]-flickering"]
+	for(var/i = 1, i <= 8, i++)
+		overlays -= floor_light_cache["floorlight[ID]-damaged[i]"]
+
 	playsound(src, "electric_explosion", 70, 1)
 	. = ..()
 
@@ -82,6 +89,12 @@ var/floor_light_color_cache = list()
 		set_broken(FALSE)
 		damaged = FALSE
 	else if(isMultitool(W))
+		if(!on)
+			to_chat(user, "<span class='warning'>\The [src] needs to be switched on for the setup.</span>")
+			return
+		if(damaged)
+			to_chat(user, "<span class='warning'>\The [src] needs to be repaired for the setup.</span>")
+			return
 		switch(alert("What would you like to change?",, "Color", "intensity", "Invert", "Cancel"))
 			if("Color")
 				light_colour = input(user, "Choose your floor light's color:") as color
@@ -121,7 +134,7 @@ var/floor_light_color_cache = list()
 
 /obj/machinery/floor_light/attack_hand(mob/user)
 	if(user.a_intent == I_HURT && !issmall(user))
-		if(damaged && !(stat & BROKEN))
+		if(damaged >= shield && !(stat & BROKEN))
 			visible_message("<span class='danger'>\The [user] smashes \the [src]!</span>")
 			playsound(src, "window_breaking", 70, 1)
 			set_broken(TRUE)
@@ -130,10 +143,8 @@ var/floor_light_color_cache = list()
 			playsound(src.loc, get_sfx("glass_hit"), 75, 1)
 		if(damaged < hp)
 			damaged++
-		/*
 		else
 			Destroy()
-		*/
 		update_brightness()
 		return
 	else
@@ -153,7 +164,6 @@ var/floor_light_color_cache = list()
 
 /obj/machinery/floor_light/proc/update_brightness()
 	var/ID = "\ref[src]"
-	update_icon(ID)
 	if(must_work)
 		if(broken())
 			set_light(default_light_max_bright / (active_power_usage / idle_power_usage), default_light_inner_range, default_light_outer_range, 2, broken_light_colour)
@@ -169,6 +179,8 @@ var/floor_light_color_cache = list()
 		update_use_power(POWER_USE_OFF)
 		change_power_consumption(0, POWER_USE_OFF)
 		glow = 0
+	update_icon(ID)
+	light_colour = null
 
 /obj/machinery/floor_light/update_icon(ID)
 	var/crack_layer = layer + 0.002
@@ -187,15 +199,12 @@ var/floor_light_color_cache = list()
 				floor_light_color_cache[cache_key] = I.color
 				overlays |= floor_light_cache[cache_key]
 				cracks++
-	else
-		while(cracks > damaged)
-			overlays -= floor_light_cache[@"floorlight[ID]-damaged[.]"]
-			cracks--
+	else overlays.Cut()
 	if(use_power)
-		overlays -= floor_light_cache["floorlight[ID]-glowing"]
-		overlays -= floor_light_cache["floorlight[ID]-flickering"]
 		if(!broken())
 			if(!damaged)
+				overlays -= floor_light_cache["floorlight[ID]-flickering"]
+				overlays -= floor_light_color_cache["floorlight[ID]-flickering"]
 				var/cache_key = "floorlight[ID]-glowing"
 				var/image/I
 				switch(light_intensity)
@@ -212,25 +221,28 @@ var/floor_light_color_cache = list()
 				floor_light_color_cache[cache_key] = I.color
 				overlays |= floor_light_cache[cache_key]
 			else
+				overlays -= floor_light_cache["floorlight[ID]-glowing"]
+				overlays -= floor_light_color_cache["floorlight[ID]-glowing"]
 				var/cache_key = "floorlight[ID]-flickering"
 				var/image/I = image("flickering")
 				I.color = light_color_check(ID)
 				I.plane = plane
 				I.layer = layer + 0.001
 				floor_light_cache[cache_key] = I
-				floor_light_cache[cache_key] = I.color
+				floor_light_color_cache[cache_key] = I.color
 				overlays |= floor_light_cache[cache_key]
 	else
 		overlays -= floor_light_cache["floorlight[ID]-glowing"]
 		overlays -= floor_light_cache["floorlight[ID]-flickering"]
-	light_color = null
+		overlays -= floor_light_color_cache["floorlight[ID]-glowing"]
+		overlays -= floor_light_color_cache["floorlight[ID]-flickering"]
 
 /obj/machinery/floor_light/proc/broken()
 	return (stat & (BROKEN|NOPOWER))
 
 /obj/machinery/floor_light/proc/light_color_check(ID)
 	if(isnull(light_colour))
-		if(floor_light_cache["floorlight[ID]-glowing"])
+		if(floor_light_cache["floorlight[ID]-glowing"] && !damaged)
 			return floor_light_color_cache["floorlight[ID]-glowing"]
 		else if(floor_light_cache["floorlight[ID]-flickering"])
 			return floor_light_color_cache["floorlight[ID]-flickering"]
