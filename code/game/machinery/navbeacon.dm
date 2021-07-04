@@ -1,5 +1,5 @@
 var/global/list/navbeacons = list()
-
+GLOBAL_LIST_EMPTY(wayfindingbeacons)
 /obj/machinery/navbeacon
 	icon = 'icons/obj/objects.dmi'
 	icon_state = "navbeacon0-f"
@@ -9,8 +9,9 @@ var/global/list/navbeacons = list()
 	layer = ABOVE_WIRE_LAYER
 	anchored = 1
 
-	var/open = 0		// true if cover is open
-	var/locked = 1		// true if controls are locked
+	var/wayfinding = FALSE
+	var/open = FALSE	// true if cover is open
+	var/locked = TRUE	// true if controls are locked
 	var/location = ""	// location response text
 	var/list/codes = list()		// assoc. list of transponder codes
 
@@ -18,6 +19,16 @@ var/global/list/navbeacons = list()
 
 /obj/machinery/navbeacon/New()
 	..()
+
+	if(wayfinding)
+		if(!location)
+			var/obj/machinery/door/airlock/A = locate(/obj/machinery/door/airlock) in loc
+			if(A)
+				location = A.name
+			else
+				location = get_area(src)?.name | "Unknown"
+		codes += list("wayfinding" = "[location]")
+		GLOB.wayfindingbeacons += src
 
 	var/turf/T = loc
 	hide(!T.is_plating())
@@ -166,6 +177,8 @@ Transponder Codes:<UL>"}
 				updateDialog()
 
 /obj/machinery/navbeacon/Destroy()
+	if(wayfinding)
+		GLOB.wayfindingbeacons -= src
 	navbeacons.Remove(src)
 	return ..()
 
