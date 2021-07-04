@@ -2,12 +2,14 @@
 	STOP_PROCESSING(SSmobs, src)
 	GLOB.dead_mob_list_ -= src
 	GLOB.living_mob_list_ -= src
+	GLOB.player_list -= src
 	unset_machine()
 	QDEL_NULL(hud_used)
 	for(var/obj/item/grab/G in grabbed_by)
 		qdel(G)
 	clear_fullscreen()
-	if(ability_master) QDEL_NULL(ability_master)
+	if(ability_master)
+		QDEL_NULL(ability_master)
 	if(client)
 		remove_screen_obj_references()
 		for(var/atom/movable/AM in client.screen)

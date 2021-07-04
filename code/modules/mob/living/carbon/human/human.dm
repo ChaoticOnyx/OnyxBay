@@ -1193,7 +1193,7 @@
 	if(client)
 		Login()
 
-	if(config && config.use_cortical_stacks && client && client.prefs.has_cortical_stack)
+	if(config && config.use_cortical_stacks && client && client.prefs.has_cortical_stack && !(species.spawn_flags & SPECIES_NO_LACE))
 		create_stack()
 	full_prosthetic = null
 

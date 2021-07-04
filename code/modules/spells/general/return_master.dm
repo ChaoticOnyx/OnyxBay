@@ -8,16 +8,17 @@
 	invocation = "none"
 	invocation_type = SpI_NONE
 	cooldown_min = 200
-
 	smoke_spread = 1
 	smoke_amt = 5
-
+	need_target = FALSE
 	hud_state = "wiz_tele"
 
 
-/spell/contract/return_master/cast(mob/target,mob/user)
-	target = ..(target,user)
+/spell/contract/return_master/cast(mob/target, mob/user)
+	target = ..(target, user)
 	if(!target)
 		return
-
-	user.forceMove(get_turf(target))
+	if(istype(target.loc, /obj/machinery/atmospherics/unary/cryo_cell))
+		var/obj/machinery/atmospherics/unary/cryo_cell/cell = target.loc
+		cell.go_out()
+	target.forceMove(get_turf(user))

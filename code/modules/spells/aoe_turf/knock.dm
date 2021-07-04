@@ -19,14 +19,14 @@
 			spawn(1)
 				if(istype(door,/obj/machinery/door/airlock))
 					var/obj/machinery/door/airlock/AL = door //casting is important
-					AL.locked = 0
-				door.open()
+					AL.locked = FALSE
+				door.open(TRUE)
 	return
 
 
 /spell/aoe_turf/knock/empower_spell()
 	if(!..())
-		return 0
+		return FALSE
 	range *= 2
 
 	return "You've doubled the range of [src]."

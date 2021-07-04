@@ -27,6 +27,8 @@
 	var/forehead_graffiti
 	var/graffiti_style
 
+	var/skull_path = /obj/item/weapon/skull
+
 /obj/item/organ/external/head/examine(mob/user)
 	. = ..()
 

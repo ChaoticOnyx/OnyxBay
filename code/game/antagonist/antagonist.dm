@@ -234,8 +234,16 @@
 		log_debug_verbose("[player.key] was selected for [role_text] by lottery, but they have not joined the game.")
 		return 0
 	if(GAME_STATE >= RUNLEVEL_GAME && (isghostmind(player) || isnewplayer(player.current)) && !(player in SSticker.antag_pool))
-		log_debug_verbose("[player.key] was selected for [role_text] by lottery, but they are a ghost not in the antag pool.")
-		return 0
+		var/answer = alert_timeout(
+			recipient = player.current,
+			message = "You were selected for role [role_text] by lottery. Are you ready to play it?", 
+			title = "Do you want to play [role_text]?",
+			timeout = 100,
+			button1 = "Yes",
+			button2 = "No")
+		if(answer != "Yes")
+			log_debug_verbose("[player.key] was selected for [role_text] by lottery, but they denied it.")
+			return 0
 
 	pending_antagonists |= player
 	log_debug_verbose("[player.key] has been selected for [role_text] by lottery.")
