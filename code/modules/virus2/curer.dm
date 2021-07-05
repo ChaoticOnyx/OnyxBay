@@ -26,7 +26,7 @@
 
 		var/list/data = list("donor" = null, "blood_DNA" = null, "blood_type" = null, "trace_chem" = null, "virus2" = list(), "antibodies" = list())
 		data["virus2"] |= I:virus2
-		product.reagents.add_reagent(/datum/reagent/blood,30,data)
+		product.reagents.add_reagent(/datum/reagent/bloodbase/blood,30,data)
 
 		virusing = 1
 		spawn(1200) virusing = 0
@@ -50,7 +50,7 @@
 		dat += "Virus production in progress"
 	else if(container)
 		// see if there's any blood in the container
-		var/datum/reagent/blood/B = locate(/datum/reagent/blood) in container.reagents.reagent_list
+		var/datum/reagent/bloodbase/blood/B = locate(/datum/reagent/bloodbase/blood) in container.reagents.reagent_list
 
 		if(B)
 			dat += "Blood sample inserted."
@@ -94,10 +94,10 @@
 /obj/machinery/computer/curer/proc/createcure(obj/item/weapon/reagent_containers/container)
 	var/obj/item/weapon/reagent_containers/glass/beaker/product = new(src.loc)
 
-	var/datum/reagent/blood/B = locate() in container.reagents.reagent_list
+	var/datum/reagent/bloodbase/blood/B = locate() in container.reagents.reagent_list
 
 	var/list/data = list()
 	data["antibodies"] = B.data["antibodies"]
-	product.reagents.add_reagent(/datum/reagent/antibodies,30,data)
+	product.reagents.add_reagent(/datum/reagent/bloodbase/antibodies,30,data)
 
 	state("\The [src.name] buzzes", "blue")

@@ -90,7 +90,7 @@
 		blood_total = vampire.blood_total
 		blood_usable = vampire.blood_usable
 
-		if (!T.vessel.get_reagent_amount(/datum/reagent/blood))
+		if (!T.vessel.get_reagent_amount(/datum/reagent/bloodbase/blood))
 			to_chat(src, SPAN_DANGER("[T] has no more blood left to give."))
 			break
 
@@ -101,7 +101,7 @@
 
 		// Alive and not of empty mind.
 		if (check_drain_target_state(T))
-			blood = min(15, T.vessel.get_reagent_amount(/datum/reagent/blood))
+			blood = min(15, T.vessel.get_reagent_amount(/datum/reagent/bloodbase/blood))
 			vampire.blood_total += blood
 			vampire.blood_usable += blood
 			blood_drained += blood
@@ -120,7 +120,7 @@
 				frenzy_lower_chance = 0
 		// SSD/protohuman or dead.
 		else
-			blood = min(5, T.vessel.get_reagent_amount(/datum/reagent/blood))
+			blood = min(5, T.vessel.get_reagent_amount(/datum/reagent/bloodbase/blood))
 			vampire.blood_usable += blood
 			blood_drained += blood
 
@@ -142,7 +142,7 @@
 
 
 		check_vampire_upgrade()
-		T.vessel.remove_reagent(/datum/reagent/blood, 15)
+		T.vessel.remove_reagent(/datum/reagent/bloodbase/blood, 15)
 
 	vampire.status &= ~VAMP_DRAINING
 
@@ -931,11 +931,11 @@
 		if (!mind.vampire)
 			to_chat(src, "<span class='alert'>Your fangs have disappeared!</span>")
 			return
-		if (!T.vessel.get_reagent_amount(/datum/reagent/blood))
+		if (!T.vessel.get_reagent_amount(/datum/reagent/bloodbase/blood))
 			to_chat(src, "<span class='alert'>[T] is now drained of blood. You begin forcing your own blood into their body, spreading the corruption of the Veil to their body.</span>")
 			break
 
-		T.vessel.remove_reagent(/datum/reagent/blood, 50)
+		T.vessel.remove_reagent(/datum/reagent/bloodbase/blood, 50)
 
 	T.revive()
 

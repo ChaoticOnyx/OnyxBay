@@ -37,7 +37,7 @@
 		if (being_feed)
 			to_chat(user, SPAN_NOTICE("You are already feeding on \the [src]."))
 			return
-		if (reagents.get_reagent_amount(/datum/reagent/blood))
+		if (reagents.get_reagent_amount(/datum/reagent/bloodbase/blood))
 			user.visible_message(SPAN_WARNING("[user] raises \the [src] up to their mouth and bites into it."), SPAN_NOTICE("You raise \the [src] up to your mouth and bite into it, starting to drain its contents.<br>You need to stand still."))
 			being_feed = TRUE
 			vampire_marks = TRUE
@@ -45,15 +45,15 @@
 				if(!user)
 					return
 				var/blood_taken = 0
-				blood_taken = min(5, reagents.get_reagent_amount(/datum/reagent/blood)/4)
+				blood_taken = min(5, reagents.get_reagent_amount(/datum/reagent/bloodbase/blood)/4)
 
-				reagents.remove_reagent(/datum/reagent/blood, blood_taken*4)
+				reagents.remove_reagent(/datum/reagent/bloodbase/blood, blood_taken*4)
 				user.mind.vampire.blood_usable += blood_taken
 
 				if (blood_taken)
 					to_chat(user, SPAN_NOTICE("You have accumulated [user.mind.vampire.blood_usable] [user.mind.vampire.blood_usable > 1 ? "units" : "unit"] of usable blood. It tastes quite stale."))
 
-				if (reagents.get_reagent_amount(/datum/reagent/blood) < 1)
+				if (reagents.get_reagent_amount(/datum/reagent/bloodbase/blood) < 1)
 					break
 			user.visible_message(SPAN_WARNING("[user] licks \his fangs dry, lowering \the [src]."), SPAN_NOTICE("You lick your fangs clean of the tasteless blood."))
 			being_feed = FALSE
@@ -129,7 +129,7 @@
 	. = ..()
 	if(blood_type)
 		name = "blood pack [blood_type]"
-		reagents.add_reagent(/datum/reagent/blood, volume, list("donor" = null, "blood_DNA" = null, "blood_type" = blood_type, "trace_chem" = null, "virus2" = list(), "antibodies" = list()))
+		reagents.add_reagent(/datum/reagent/bloodbase/blood, volume, list("donor" = null, "blood_DNA" = null, "blood_type" = blood_type, "trace_chem" = null, "virus2" = list(), "antibodies" = list()))
 
 /obj/item/weapon/reagent_containers/ivbag/blood/APlus
 	blood_type = "A+"

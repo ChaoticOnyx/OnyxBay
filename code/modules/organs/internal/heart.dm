@@ -136,7 +136,7 @@
 						blood_max += bleed_amount
 						do_spray += "the [temp.artery_name] in \the [owner]'s [temp.name]"
 					else
-						owner.vessel.remove_reagent(/datum/reagent/blood, bleed_amount)
+						owner.vessel.remove_reagent(/datum/reagent/bloodbase/blood, bleed_amount)
 
 		switch(pulse)
 			if(PULSE_SLOW)

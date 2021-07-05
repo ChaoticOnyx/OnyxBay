@@ -14,7 +14,7 @@
 	return 1
 
 /datum/phenomena/exhude_blood/activate(mob/living/carbon/human/H, mob/living/deity/user)
-	H.vessel.add_reagent(/datum/reagent/blood, 30)
+	H.vessel.add_reagent(/datum/reagent/bloodbase/blood, 30)
 	to_chat(H,"<span class='notice'>You feel a rush as new blood enters your system.</span>")
 
 

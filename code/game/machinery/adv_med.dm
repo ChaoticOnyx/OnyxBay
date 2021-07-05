@@ -327,7 +327,7 @@
 		data["pulse"] = null
 
 	data["blood_volume"] = H.get_blood_volume()
-	data["blood_volume_abs"] = H.vessel.get_reagent_amount(/datum/reagent/blood)
+	data["blood_volume_abs"] = H.vessel.get_reagent_amount(/datum/reagent/bloodbase/blood)
 	data["blood_volume_max"] = H.species.blood_volume
 
 	data["blood_type"] = null
@@ -485,7 +485,7 @@
 	if(H.b_type)
 		dat += "<b>Blood type:</b> [H.b_type]"
 	dat += "<b>Blood pressure:</b> [H.get_blood_pressure()] ([H.get_blood_oxygenation()]% blood oxygenation)"
-	dat += "<b>Blood volume:</b> [H.vessel.get_reagent_amount(/datum/reagent/blood)]/[H.species.blood_volume]u"
+	dat += "<b>Blood volume:</b> [H.vessel.get_reagent_amount(/datum/reagent/bloodbase/blood)]/[H.species.blood_volume]u"
 	if (H.chem_effects[CE_BLOCKAGE])
 		dat += SPAN("warning", "Warning: Blood clotting detected, blood transfusion recommended.")
 	// Body temperature.

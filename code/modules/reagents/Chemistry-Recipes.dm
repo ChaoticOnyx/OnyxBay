@@ -698,7 +698,7 @@
 /datum/chemical_reaction/blood_paint
 	name = "Blood paint"
 	result = /datum/reagent/paint
-	required_reagents = list(/datum/reagent/toxin/plasticide = 1, /datum/reagent/water = 3, /datum/reagent/blood = 2)
+	required_reagents = list(/datum/reagent/toxin/plasticide = 1, /datum/reagent/water = 3, /datum/reagent/bloodbase/blood = 2)
 	result_amount = 5
 
 /datum/chemical_reaction/blood_paint/send_data(datum/reagents/T)
@@ -870,7 +870,7 @@
 /datum/chemical_reaction/metroid/monkey
 	name = "Metroid Monkey"
 	result = null
-	required_reagents = list(/datum/reagent/blood = 1)
+	required_reagents = list(/datum/reagent/bloodbase/blood = 1)
 	result_amount = 1
 	required = /obj/item/metroid_extract/green
 
@@ -931,7 +931,7 @@
 /datum/chemical_reaction/metroid/marble
 	name = "Metroid marble"
 	result = null
-	required_reagents = list(/datum/reagent/blood = 1)
+	required_reagents = list(/datum/reagent/bloodbase/blood = 1)
 	result_amount = 1
 	required = /obj/item/metroid_extract/metal
 
@@ -966,7 +966,7 @@
 /datum/chemical_reaction/metroid/n_crit
 	name = "Metroid Neutral Crit"
 	result = null
-	required_reagents = list(/datum/reagent/blood = 1)
+	required_reagents = list(/datum/reagent/bloodbase/blood = 1)
 	result_amount = 1
 	required = /obj/item/metroid_extract/gold
 	var/list/possible_mobs = list(
@@ -1050,7 +1050,7 @@
 /datum/chemical_reaction/metroid/stabilizer
 	name = "Metroid Stabilizer"
 	result = null
-	required_reagents = list(/datum/reagent/blood = 1)
+	required_reagents = list(/datum/reagent/bloodbase/blood = 1)
 	required = /obj/item/metroid_extract/blue
 
 /datum/chemical_reaction/metroid/stabilizer/on_reaction(datum/reagents/holder)
@@ -1089,7 +1089,7 @@
 /datum/chemical_reaction/metroid/casp
 	name = "Metroid Capsaicin Oil"
 	result = /datum/reagent/capsaicin
-	required_reagents = list(/datum/reagent/blood = 1)
+	required_reagents = list(/datum/reagent/bloodbase/blood = 1)
 	result_amount = 10
 	required = /obj/item/metroid_extract/orange
 
@@ -1116,7 +1116,7 @@
 /datum/chemical_reaction/metroid/overload
 	name = "Metroid EMP"
 	result = null
-	required_reagents = list(/datum/reagent/blood = 1)
+	required_reagents = list(/datum/reagent/bloodbase/blood = 1)
 	result_amount = 1
 	required = /obj/item/metroid_extract/yellow
 
@@ -1163,7 +1163,7 @@
 /datum/chemical_reaction/metroid/jam
 	name = "Metroid Jam"
 	result = /datum/reagent/metroidjelly
-	required_reagents = list(/datum/reagent/blood = 5)
+	required_reagents = list(/datum/reagent/bloodbase/blood = 5)
 	result_amount = 10
 	required = /obj/item/metroid_extract/purple
 
@@ -1195,7 +1195,7 @@
 /datum/chemical_reaction/metroid/bloodlust
 	name = "Bloodlust"
 	result = null
-	required_reagents = list(/datum/reagent/blood = 1)
+	required_reagents = list(/datum/reagent/bloodbase/blood = 1)
 	result_amount = 1
 	required = /obj/item/metroid_extract/red
 
@@ -1270,7 +1270,7 @@
 /datum/chemical_reaction/metroid/film
 	name = "Metroid Film"
 	result = null
-	required_reagents = list(/datum/reagent/blood = 1)
+	required_reagents = list(/datum/reagent/bloodbase/blood = 1)
 	result_amount = 2
 	required = /obj/item/metroid_extract/sepia
 
@@ -1322,7 +1322,7 @@
 /datum/chemical_reaction/metroid/crayon
 	name = "Metroid Crayon"
 	result = null
-	required_reagents = list(/datum/reagent/blood = 1)
+	required_reagents = list(/datum/reagent/bloodbase/blood = 1)
 	required = /obj/item/metroid_extract/pyrite
 
 /datum/chemical_reaction/metroid/crayon/on_reaction(datum/reagents/holder)
@@ -1461,7 +1461,7 @@
 /datum/chemical_reaction/syntiflesh
 	name = "Syntiflesh"
 	result = null
-	required_reagents = list(/datum/reagent/blood = 5, /datum/reagent/clonexadone = 1)
+	required_reagents = list(/datum/reagent/bloodbase/blood = 5, /datum/reagent/clonexadone = 1)
 	result_amount = 1
 
 /datum/chemical_reaction/syntiflesh/on_reaction(datum/reagents/holder, created_volume)
@@ -1816,7 +1816,7 @@
 /datum/chemical_reaction/demonsblood
 	name = "Demons Blood"
 	result = /datum/reagent/ethanol/demonsblood
-	required_reagents = list(/datum/reagent/ethanol/rum = 3, /datum/reagent/drink/spacemountainwind = 1, /datum/reagent/blood = 1, /datum/reagent/drink/dr_gibb = 1)
+	required_reagents = list(/datum/reagent/ethanol/rum = 3, /datum/reagent/drink/spacemountainwind = 1, /datum/reagent/bloodbase/blood = 1, /datum/reagent/drink/dr_gibb = 1)
 	result_amount = 6
 
 /datum/chemical_reaction/booger
@@ -1852,7 +1852,7 @@
 /datum/chemical_reaction/red_mead
 	name = "Red Mead"
 	result = /datum/reagent/ethanol/red_mead
-	required_reagents = list(/datum/reagent/blood = 1, /datum/reagent/ethanol/mead = 1)
+	required_reagents = list(/datum/reagent/bloodbase/blood = 1, /datum/reagent/ethanol/mead = 1)
 	result_amount = 2
 
 /datum/chemical_reaction/mead
@@ -1961,7 +1961,7 @@
 /datum/chemical_reaction/devilskiss
 	name = "Devils Kiss"
 	result = /datum/reagent/ethanol/devilskiss
-	required_reagents = list(/datum/reagent/blood = 1, /datum/reagent/ethanol/coffee/kahlua = 1, /datum/reagent/ethanol/rum = 1)
+	required_reagents = list(/datum/reagent/bloodbase/blood = 1, /datum/reagent/ethanol/coffee/kahlua = 1, /datum/reagent/ethanol/rum = 1)
 	result_amount = 3
 
 /datum/chemical_reaction/hippiesdelight
@@ -2070,7 +2070,7 @@
 /datum/chemical_reaction/nanoblood
 	name = "Nanoblood"
 	result = /datum/reagent/nanoblood
-	required_reagents = list(/datum/reagent/dexalinp = 1, /datum/reagent/iron = 1, /datum/reagent/blood = 1)
+	required_reagents = list(/datum/reagent/dexalinp = 1, /datum/reagent/iron = 1, /datum/reagent/bloodbase/blood = 1)
 	result_amount = 3
 
 /datum/chemical_reaction/glintwine
@@ -2130,7 +2130,7 @@
 /datum/chemical_reaction/georgerrmartini
 	name = "George R.R. Martini"
 	result = /datum/reagent/ethanol/georgerrmartini
-	required_reagents = list(/datum/reagent/blood = 2, /datum/reagent/sodiumchloride = 1, /datum/reagent/ethanol/absinthe = 2)
+	required_reagents = list(/datum/reagent/bloodbase/blood = 2, /datum/reagent/sodiumchloride = 1, /datum/reagent/ethanol/absinthe = 2)
 	result_amount = 5
 
 /datum/chemical_reaction/siegbrau

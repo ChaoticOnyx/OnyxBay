@@ -3,10 +3,12 @@
 /datum/reagent
 	var/value = 1 //per unit
 
-/datum/reagent/blood
+/datum/reagent/bloodbase
+
+/datum/reagent/bloodbase/blood
 	value = 2
 
-/datum/reagent/antibodies
+/datum/reagent/bloodbase/antibodies
 	value = 6
 
 /datum/reagent/water
