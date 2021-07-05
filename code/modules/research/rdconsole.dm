@@ -279,7 +279,6 @@
 		return data
 
 	data["item"] = list(
-		"icon" = icon2base64html(loaded_item.type),
 		"name" = loaded_item.name
 	)
 
@@ -369,7 +368,6 @@
 
 /obj/machinery/computer/rdconsole/proc/get_design_data(datum/design/design)
 	var/list/data = list(
-		"icon" = icon2base64html(design.build_path),
 		"id" = design.id,
 		"name" = design.name,
 		"category" = design.category,

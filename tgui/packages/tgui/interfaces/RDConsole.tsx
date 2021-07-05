@@ -742,7 +742,7 @@ const designs = (device: Device, context: any) => {
                       'vertical-align': 'middle',
                     }}
                     className='Materials--small'>
-                    <GameIcon html={design.icon} /> {design.name}
+                    {design.name}
                   </Table.Cell>
                   <Table.Cell
                     style={{
@@ -802,7 +802,7 @@ const queue = (device: Device, context: any) => {
         <Table className='Table--bordered'>
           <Table.Row className='candystripe'>
             <Table.Cell />
-            <Table.Cell pl='0.5rem' bold>
+            <Table.Cell bold>
               Name
             </Table.Cell>
           </Table.Row>
@@ -814,7 +814,7 @@ const queue = (device: Device, context: any) => {
                       <Button ml='0.2rem' icon='minus' onClick={() => act('remove', { from: device.name, index: i + 1 })} />
                     </Table.Cell>
                     <Table.Cell className='Materials--small'>
-                      <GameIcon html={design.icon} /> {design.name}
+                      {design.name}
                     </Table.Cell>
                   </Table.Row>
                 );

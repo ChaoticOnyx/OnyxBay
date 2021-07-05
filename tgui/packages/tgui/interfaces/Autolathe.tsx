@@ -157,7 +157,6 @@ export const Autolathe = (props: any, context: any) => {
               return (
                 <Table.Row className='candystripe' key={i}>
                   <Table.Cell>
-                    <GameIcon html={recipe.icon} />
                     <Button.Link
                       content={recipe.name}
                       disabled={!recipe.can_make}
