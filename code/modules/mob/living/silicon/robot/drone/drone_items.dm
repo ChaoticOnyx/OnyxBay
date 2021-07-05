@@ -529,7 +529,7 @@
 		//Different classes of items give different commodities.
 		if(istype(W,/obj/item/weapon/cigbutt))
 			if(plastic)
-				plastic.add_charge(500)
+				plastic.add_charge(250)
 		else if(istype(W,/obj/effect/spider/spiderling))
 			if(wood)
 				wood.add_charge(2000)
@@ -572,7 +572,7 @@
 				glass.add_charge(1000)
 		else if(istype(W,/obj/item/weapon/flame/match))
 			if(wood)
-				wood.add_charge(500)
+				wood.add_charge(250)
 		else if(istype(W,/obj/item/weapon/reagent_containers/food/snacks/grown))
 			if(wood)
 				wood.add_charge(4000)
