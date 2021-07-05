@@ -79,9 +79,6 @@
 	if(istype(I, /obj/item/weapon/reagent_containers/food/snacks/badrecipe))
 		to_chat(user, SPAN_WARNING("Making [I] [cook_type] shouldn't help."))
 		return 0
-	if(istype(I, /obj/item/weapon/reagent_containers/food/snacks/slice))
-		to_chat(user, SPAN_WARNING("Making [I] [cook_type] shouldn't help."))
-		return 0
 	else if(istype(I, /obj/item/weapon/reagent_containers/food/snacks))
 		var/obj/item/weapon/reagent_containers/food/snacks/check = I
 		if(cook_type in check.cooked_types)
