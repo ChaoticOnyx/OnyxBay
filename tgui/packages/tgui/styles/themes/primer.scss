@@ -531,7 +531,7 @@ $background-size: 8rem;
   @at-root .theme-primer-white &,
     .theme-primer-dark & {
     &--hidden {
-      border: none;
+      border: none !important;
     }
   }
 

@@ -475,25 +475,6 @@ const device = (device: Device, context: any) => {
     );
   };
 
-  const disposeButtons = (chemical: Chemical) => {
-    return (
-      <Button
-        onClick={() =>
-            act('dispose', {
-              from: device.name,
-              thing: chemical.units,
-              amount: 1,
-            })
-          }
-        disabled={!chemical.units}
-        mt='0.2rem'
-        ml='0.2rem'
-        mb='0.2rem'
-        content='1x'
-        />
-    );
-  };
-
   return (
     <Stack width='100%'>
       <Stack.Item width='33.3%'>
@@ -921,7 +902,7 @@ export const RDConsole = (props: any, context: any) => {
   return (
     <Window
       width={1000}
-      height={600}
+      height={800}
       title='RnD Console'
       theme={getTheme('primer')}>
       <Window.Content scrollable>
