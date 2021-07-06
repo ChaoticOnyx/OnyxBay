@@ -877,6 +877,7 @@ interface Tab {
   name: string;
   icon: string;
   render: (props: any, context: any) => void;
+  action?: (act: (action: string, payload: object) => void) => void | null;
 }
 
 const TABS: Tab[] = [
@@ -889,16 +890,19 @@ const TABS: Tab[] = [
     name: 'Destructive Analyzer',
     icon: 'atom',
     render: destructorTab,
+    action: (act) => act('select_device', { device: 'destructor' }),
   },
   {
     name: 'Protolathe',
     icon: 'drafting-compass',
     render: protolatheTab,
+    action: (act) => act('select_device', { device: 'protolathe' }),
   },
   {
     name: 'Circuit Imprinter',
     icon: 'microchip',
     render: imprinterTab,
+    action: (act) => act('select_device', { device: 'imprinter' }),
   },
 ];
 
@@ -924,6 +928,7 @@ export const RDConsole = (props: any, context: any) => {
                 <Tabs.Tab
                   onClick={() => {
                     act(''); // For clicking sound
+                    tab.action && tab.action(act);
                     setSelectedTab(tab.name);
                   }}
                   selected={tab.name === selectedTab}

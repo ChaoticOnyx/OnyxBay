@@ -49,6 +49,7 @@
 
 	var/id = 0			// ID of the computer (for server restrictions).
 	var/sync = 1		// If sync = 0, it doesn't show up on Server Control Console
+	var/selected_device = "destructor"
 
 /obj/machinery/computer/rdconsole/proc/CallReagentName(reagent_type)
 	var/datum/reagent/R = reagent_type
@@ -172,9 +173,9 @@
 		"disk" = null,
 		"techs" = list(),
 		"devices" = list(
-			list("name" = "destructor", "connected" = !!linked_destroy,   "data" = get_destructor_data()),
-			list("name" = "imprinter",  "connected" = !!linked_imprinter, "data" = get_imprinter_data()),
-			list("name" = "protolathe", "connected" = !!linked_lathe,     "data" = get_protolathe_data())
+			list("name" = "destructor", "connected" = !!linked_destroy,   "data" = get_destructor_data(selected_device == "destructor")),
+			list("name" = "imprinter",  "connected" = !!linked_imprinter, "data" = get_imprinter_data(selected_device == "imprinter")),
+			list("name" = "protolathe", "connected" = !!linked_lathe,     "data" = get_protolathe_data(selected_device == "protolathe"))
 		)
 	)
 
@@ -263,6 +264,14 @@
 		if("disconnect")
 			disconnect(params["thing"])
 			return TRUE
+		if("select_device")
+			set_selected_device(params["device"])
+			return TRUE
+
+/obj/machinery/computer/rdconsole/proc/set_selected_device(new_value)
+	ASSERT(new_value in list("destructor", "protolathe", "imprinter"))
+
+	selected_device = new_value
 
 /obj/machinery/computer/rdconsole/proc/get_destructor_data()
 	if(!linked_destroy)
@@ -290,13 +299,13 @@
 
 	return data
 
-/obj/machinery/computer/rdconsole/proc/get_imprinter_data()
-	return get_device_data(linked_imprinter)
+/obj/machinery/computer/rdconsole/proc/get_imprinter_data(get_full_data = TRUE)
+	return get_device_data(linked_imprinter, get_full_data)
 
-/obj/machinery/computer/rdconsole/proc/get_protolathe_data()
-	return get_device_data(linked_lathe)
+/obj/machinery/computer/rdconsole/proc/get_protolathe_data(get_full_data = TRUE)
+	return get_device_data(linked_lathe, get_full_data)
 
-/obj/machinery/computer/rdconsole/proc/get_device_data(obj/machinery/device)
+/obj/machinery/computer/rdconsole/proc/get_device_data(obj/machinery/device, get_full_data = TRUE)
 	if(!device)
 		return null
 
@@ -326,6 +335,9 @@
 		"busy" = device:busy,
 		"queue" = list()
 	)
+
+	if(!get_full_data)
+		return data
 
 	for(var/M in device:materials)
 		var/amount = device:materials[M]
