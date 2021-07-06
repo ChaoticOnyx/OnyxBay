@@ -58,7 +58,7 @@ interface Design {
   icon: string;
   id: string;
   name: string;
-  category: string;
+  category: string[];
   buildType: BuildType;
   materials: MaterialElement[];
   chemicals: ChemicalElement[];
@@ -136,9 +136,7 @@ const diskContent = (disk: Disk) => {
       return <LabeledList.Item label='Content'>Empty</LabeledList.Item>;
     }
 
-    return (
-      <LabeledList.Item label='Design'>{diskData.name}</LabeledList.Item>
-    );
+    return <LabeledList.Item label='Design'>{diskData.name}</LabeledList.Item>;
   };
 
   const techDiskContent = (disk: Disk) => {
@@ -475,25 +473,6 @@ const device = (device: Device, context: any) => {
     );
   };
 
-  const disposeButtons = (chemical: Chemical) => {
-    return (
-      <Button
-        onClick={() =>
-            act('dispose', {
-              from: device.name,
-              thing: chemical.units,
-              amount: 1,
-            })
-          }
-        disabled={!chemical.units}
-        mt='0.2rem'
-        ml='0.2rem'
-        mb='0.2rem'
-        content='1x'
-        />
-    );
-  };
-
   return (
     <Stack width='100%'>
       <Stack.Item width='33.3%'>
@@ -651,7 +630,9 @@ const designs = (device: Device, context: any) => {
   }
 
   if (currentFilter !== null && currentFilter !== 'All') {
-    found = found.filter((design, _) => currentFilter === design.category);
+    found = found.filter(
+      (design, _) => design.category.find((s) => s === currentFilter),
+    );
   }
 
   const emptyRow = () => {
@@ -742,7 +723,7 @@ const designs = (device: Device, context: any) => {
                       'vertical-align': 'middle',
                     }}
                     className='Materials--small'>
-                    <GameIcon html={design.icon} /> {design.name}
+                    {design.name}
                   </Table.Cell>
                   <Table.Cell
                     style={{
@@ -792,7 +773,12 @@ const queue = (device: Device, context: any) => {
   return (
     <>
       <h2>Queue ({<AnimatedNumber value={queue.length} />})</h2>
-      <Button icon='eraser' content='Clear' disabled={!queue.length} onClick={() => act('remove', { from: device.name, index: -1 })} />
+      <Button
+        icon='eraser'
+        content='Clear'
+        disabled={!queue.length}
+        onClick={() => act('remove', { from: device.name, index: -1 })}
+      />
       <Divider />
       <Box
         maxHeight='20rem'
@@ -802,19 +788,25 @@ const queue = (device: Device, context: any) => {
         <Table className='Table--bordered'>
           <Table.Row className='candystripe'>
             <Table.Cell />
-            <Table.Cell pl='0.5rem' bold>
-              Name
-            </Table.Cell>
+            <Table.Cell bold>Name</Table.Cell>
           </Table.Row>
           {queue.length
             ? queue.map((design, i) => {
                 return (
                   <Table.Row className='candystripe'>
-                    <Table.Cell style={{ 'vertical-align': 'middle' }} width='1ch'>
-                      <Button ml='0.2rem' icon='minus' onClick={() => act('remove', { from: device.name, index: i + 1 })} />
+                    <Table.Cell
+                      style={{ 'vertical-align': 'middle' }}
+                      width='1ch'>
+                      <Button
+                        ml='0.2rem'
+                        icon='minus'
+                        onClick={() =>
+                          act('remove', { from: device.name, index: i + 1 })
+                        }
+                      />
                     </Table.Cell>
                     <Table.Cell className='Materials--small'>
-                      <GameIcon html={design.icon} /> {design.name}
+                      {design.name}
                     </Table.Cell>
                   </Table.Row>
                 );
@@ -885,6 +877,7 @@ interface Tab {
   name: string;
   icon: string;
   render: (props: any, context: any) => void;
+  action?: (act: (action: string, payload: object) => void) => void | null;
 }
 
 const TABS: Tab[] = [
@@ -897,16 +890,19 @@ const TABS: Tab[] = [
     name: 'Destructive Analyzer',
     icon: 'atom',
     render: destructorTab,
+    action: (act) => act('select_device', { device: 'destructor' }),
   },
   {
     name: 'Protolathe',
     icon: 'drafting-compass',
     render: protolatheTab,
+    action: (act) => act('select_device', { device: 'protolathe' }),
   },
   {
     name: 'Circuit Imprinter',
     icon: 'microchip',
     render: imprinterTab,
+    action: (act) => act('select_device', { device: 'imprinter' }),
   },
 ];
 
@@ -921,7 +917,7 @@ export const RDConsole = (props: any, context: any) => {
   return (
     <Window
       width={1000}
-      height={600}
+      height={800}
       title='RnD Console'
       theme={getTheme('primer')}>
       <Window.Content scrollable>
@@ -932,6 +928,7 @@ export const RDConsole = (props: any, context: any) => {
                 <Tabs.Tab
                   onClick={() => {
                     act(''); // For clicking sound
+                    tab.action && tab.action(act);
                     setSelectedTab(tab.name);
                   }}
                   selected={tab.name === selectedTab}

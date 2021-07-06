@@ -7,7 +7,7 @@
 
 /datum/design/item/optical
 	materials = list(MATERIAL_STEEL = 50, MATERIAL_GLASS = 50)
-	category_items = "Misc"
+	category_items = list("Misc")
 
 /datum/design/item/optical/mesons
 	name = "optical mesons scanner"
@@ -40,7 +40,7 @@
 	materials = list(MATERIAL_GLASS = 500, MATERIAL_STEEL = 500)
 	build_path = /obj/item/device/paicard
 	sort_string = "VABAI"
-	category_items = "Misc"
+	category_items = list("Misc")
 
 /datum/design/item/tool/light_replacer
 	name = "light replacer"
@@ -81,7 +81,7 @@
 	materials = list(MATERIAL_STEEL = 300, MATERIAL_GLASS = 300)
 	build_path = /obj/item/device/encryptionkey/binary
 	sort_string = "VASAA"
-	category_items = "Misc"
+	category_items = list("Misc")
 
 /datum/design/item/camouflage/chameleon
 	name = "holographic equipment kit"
@@ -91,4 +91,4 @@
 	materials = list(MATERIAL_STEEL = 500)
 	build_path = /obj/item/weapon/storage/backpack/chameleon/sydie_kit
 	sort_string = "VASBA"
-	category_items = "Misc"
+	category_items = list("Misc")

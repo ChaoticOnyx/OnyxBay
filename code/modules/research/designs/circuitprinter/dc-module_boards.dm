@@ -4,12 +4,12 @@
 	req_tech = list(TECH_DATA = 4, TECH_BIO = 3)
 	build_path = /obj/item/weapon/circuitboard/aicore
 	sort_string = "XAAAA"
-	category_items = "Module Boards"
+	category_items = list("Module Boards")
 
 /datum/design/aimodule
 	build_type = IMPRINTER
 	materials = list(MATERIAL_GLASS = 2000, MATERIAL_GOLD = 100)
-	category_items = "Module Boards"
+	category_items = list("Module Boards")
 
 /datum/design/aimodule/AssembleDesignName()
 	name = "AI module design ([name])"
