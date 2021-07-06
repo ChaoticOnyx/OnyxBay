@@ -23,10 +23,30 @@
 /obj/effect/portal/Initialize(mapload, end, delete_after = 300, failure_rate)
 	. = ..()
 	setup_portal(end, delete_after, failure_rate)
+	move_all_objects()
 
 /obj/effect/portal/Destroy()
 	target = null
 	return ..()
+
+/obj/effect/portal/proc/move_all_objects()
+	var/turf/T = get_turf(src)
+	for(var/atom/movable/M in T)
+		if(iseffect(M))
+			continue
+		if(M.anchored && !ismech(M))
+			continue
+		if(!ismovable(M))
+			continue
+		if (!target)
+			qdel(src)
+			return
+		for(var/cardinal in GLOB.cardinal)
+			if(step(M, cardinal))
+				break
+	// if any objcets still in loc, teleport them, e.g. crates abuse
+	for(var/atom/movable/M in T)
+		teleport(M)
 
 /obj/effect/portal/proc/setup_portal(end, delete_after, failure_rate)
 	if(failure_rate)
