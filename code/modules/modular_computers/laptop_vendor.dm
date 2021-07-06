@@ -4,7 +4,7 @@
 	name = "computer vendor"
 	desc = "A vending machine with a built-in microfabricator, capable of dispensing various NT-branded computers."
 	icon = 'icons/obj/vending.dmi'
-	icon_state = "robotics"
+	icon_state = "cart"
 	layer = BELOW_OBJ_LAYER
 	anchored = 1
 	density = 1

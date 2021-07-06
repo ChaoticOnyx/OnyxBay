@@ -22,7 +22,13 @@
 	var/locked = 0
 	var/scan_id = 1
 	var/is_secure = 0
+	var/qlen
 	var/datum/wires/smartfridge/wires = null
+
+	component_types = list(
+							/obj/item/weapon/circuitboard/smartfridge,
+							/obj/item/weapon/stock_parts/matter_bin = 2
+	)
 
 /obj/machinery/smartfridge/secure
 	is_secure = 1
@@ -139,6 +145,7 @@
 	icon_state = "drying_rack"
 	icon_on = "drying_rack_on"
 	icon_off = "drying_rack"
+	component_types = list()
 
 /obj/machinery/smartfridge/drying_rack/accept_check(obj/item/O as obj)
 	if(istype(O, /obj/item/weapon/reagent_containers/food/snacks/))
@@ -161,10 +168,12 @@
 		icon_state = icon_off
 	else
 		icon_state = icon_on
-	if(contents.len)
+	if(contents.len > 0)
 		overlays += "drying_rack_filled"
 		if(!inoperable())
 			overlays += "drying_rack_drying"
+	else
+		overlays.Cut()
 
 /obj/machinery/smartfridge/drying_rack/proc/dry()
 	for(var/datum/stored_items/I in item_records)
@@ -201,12 +210,25 @@
 
 /obj/machinery/smartfridge/attackby(obj/item/O as obj, mob/user as mob)
 	if(isScrewdriver(O))
-		panel_open = !panel_open
-		user.visible_message("[user] [panel_open ? "opens" : "closes"] the maintenance panel of \the [src].", "You [panel_open ? "open" : "close"] the maintenance panel of \the [src].")
-		overlays.Cut()
-		if(panel_open)
-			overlays += image(icon, icon_panel)
-		SSnano.update_uis(src)
+		if(istype(src, /obj/machinery/smartfridge/drying_rack))
+			playsound(src.loc, 'sound/items/Screwdriver.ogg', 50, 1)
+			if(do_after(user, 20, src))
+				var/obj/machinery/constructable_frame/machine_frame/M = new /obj/machinery/constructable_frame/machine_frame(get_turf(src))
+				M.set_dir(src.dir)
+				M.state = 2
+				M.icon_state = "box_1"
+				new /obj/item/stack/material/wood(src.loc, 2)
+				qdel(src)
+		else
+			panel_open = !panel_open
+			user.visible_message("[user] [panel_open ? "opens" : "closes"] the maintenance panel of \the [src].", "You [panel_open ? "open" : "close"] the maintenance panel of \the [src].")
+			overlays.Cut()
+			if(panel_open)
+				overlays += image(icon, icon_panel)
+			SSnano.update_uis(src)
+			return
+
+	if(default_deconstruction_crowbar(user, O))
 		return
 
 	if(isMultitool(O) || isWirecutter(O))
@@ -325,6 +347,7 @@
 				amount = count
 			for(var/i = 1 to amount)
 				I.get_product(get_turf(src))
+				update_icon()
 
 		return 1
 	return 0

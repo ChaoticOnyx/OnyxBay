@@ -29,7 +29,20 @@
 /obj/machinery/constructable_frame/machine_frame
 	attackby(obj/item/P as obj, mob/user as mob)
 		switch(state)
+			if(0)
+				if(isWrench(P))
+					playsound(src.loc, 'sound/items/Ratchet.ogg', 50, 1)
+					if(do_after(user, 20, src))
+						to_chat(user, "<span class='notice'>You wrench the frame into place.</span>")
+						src.anchored = 1
+						src.state = 1
 			if(1)
+				if(isWrench(P))
+					playsound(src.loc, 'sound/items/Ratchet.ogg', 50, 1)
+					if(do_after(user, 20, src))
+						to_chat(user, "<span class='notice'>You unfasten the frame.</span>")
+						src.anchored = 0
+						src.state = 0
 				if(isCoil(P))
 					var/obj/item/stack/cable_coil/C = P
 					if (C.get_amount() < 5)
@@ -42,12 +55,11 @@
 							to_chat(user, "<span class='notice'>You add cables to the frame.</span>")
 							state = 2
 							icon_state = "box_1"
-				else
-					if(isWrench(P))
-						playsound(src.loc, 'sound/items/Ratchet.ogg', 75, 1)
-						to_chat(user, "<span class='notice'>You dismantle the frame</span>")
-						new /obj/item/stack/material/steel(src.loc, 5)
-						qdel(src)
+				if(isWelder(P))
+					playsound(src.loc, 'sound/items/Ratchet.ogg', 75, 1)
+					to_chat(user, "<span class='notice'>You dismantle the frame</span>")
+					new /obj/item/stack/material/wood(src.loc, 2)
+					qdel(src)
 			if(2)
 				if(istype(P, /obj/item/weapon/circuitboard))
 					var/obj/item/weapon/circuitboard/B = P
@@ -71,14 +83,23 @@
 						to_chat(user, desc)
 					else
 						to_chat(user, "<span class='warning'>This frame does not accept circuit boards of this type!</span>")
-				else
-					if(isWirecutter(P))
-						playsound(src.loc, 'sound/items/Wirecutter.ogg', 50, 1)
-						to_chat(user, "<span class='notice'>You remove the cables.</span>")
-						state = 1
-						icon_state = "box_0"
-						var/obj/item/stack/cable_coil/A = new /obj/item/stack/cable_coil( src.loc )
-						A.amount = 5
+				if(isWirecutter(P))
+					playsound(src.loc, 'sound/items/Wirecutter.ogg', 50, 1)
+					to_chat(user, "<span class='notice'>You remove the cables.</span>")
+					state = 1
+					icon_state = "box_0"
+					var/obj/item/stack/cable_coil/A = new /obj/item/stack/cable_coil( src.loc )
+					A.amount = 5
+				if(istype(P, /obj/item/stack/material) && P.get_material_name() == MATERIAL_WOOD)
+					var/obj/item/stack/material/M = P
+					if(do_after(user, 20, src) && state == 2)
+						if(M.use(2))
+							var/obj/machinery/smartfridge/drying_rack/D = new /obj/machinery/smartfridge/drying_rack
+							D.loc = get_turf(src)
+							to_chat(user, SPAN("notice", "You construct the drying rack."))
+							qdel(src)
+					else
+						to_chat(user, SPAN("notice", "You need two wooden planks to build the drying rack."))
 
 			if(3)
 				if(isCrowbar(P))
