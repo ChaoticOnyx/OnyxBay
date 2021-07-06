@@ -79,6 +79,7 @@
 	mod_reach = 0.75
 	mod_handy = 1.0
 	max_storage_space = 23
+
 /obj/item/weapon/storage/toolbox/syndicate/New()
 	..()
 	new /obj/item/clothing/gloves/insulated(src)
