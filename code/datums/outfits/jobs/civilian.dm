@@ -39,6 +39,7 @@
 	uniform = /obj/item/clothing/under/rank/janitor
 	id_type = /obj/item/weapon/card/id/civilian/janitor
 	pda_type = /obj/item/device/pda/janitor
+	backpack_contents = list(/obj/item/weapon/storage/belt/janitor = 1)
 
 /decl/hierarchy/outfit/job/librarian
 	name = OUTFIT_JOB_NAME("Librarian")
