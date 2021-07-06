@@ -253,7 +253,7 @@
 		/obj/item/weapon/storage/pill_bottle,
 		/obj/item/weapon/ore,
 		/obj/item/weapon/reagent_containers/food/drinks,
-		/obj/item/weapon/storage/plants,
+		/obj/item/weapon/storage/plants
 		)
 
 /obj/item/weapon/storage/belt/military
