@@ -68,21 +68,6 @@
 	var/list/valid_colors = list("#c20c00", "#0227f7", "#6262ff", "#454545", "#009900", "#e17291")
 	gear_tweaks = list(new /datum/gear_tweak/color(valid_colors))
 
-// IPC clothing
-/datum/gear/mask/ipc_monitor
-	display_name = "display monitor (IPC)"
-	path = /obj/item/clothing/mask/monitor
-	sort_category = "Xenowear"
-	whitelisted = list(SPECIES_IPC)
-	cost = 0
-
-/datum/gear/suit/lab_xyn_machine
-	display_name = "Xynergy labcoat (IPC)"
-	path = /obj/item/clothing/suit/storage/toggle/labcoat/xyn_machine
-	slot = slot_wear_suit
-	sort_category = "Xenowear"
-	whitelisted = list(SPECIES_IPC)
-
 // Misc clothing
 // /datum/gear/uniform/harness
 // 	display_name = "gear harness (Full Body Prosthetic, Diona, Giant Armoured Serpentid)"
