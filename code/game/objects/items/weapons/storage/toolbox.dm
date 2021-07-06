@@ -78,6 +78,7 @@
 	mod_weight = 1.75
 	mod_reach = 0.75
 	mod_handy = 1.0
+	max_storage_space = DEFAULT_SYNDY_BOX_STORAGE
 
 /obj/item/weapon/storage/toolbox/syndicate/New()
 	..()
