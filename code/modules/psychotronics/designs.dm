@@ -5,7 +5,7 @@
 	req_tech = list(TECH_MAGNET = 6, TECH_BIO = 6, TECH_DATA = 4)
 	build_path = /obj/item/clothing/glasses/psychoscope
 	sort_string = "GBAAA"
-	category_items = "Misc"
+	category_items = list("Misc")
 	materials = list(MATERIAL_STEEL = 6000, MATERIAL_REINFORCED_GLASS = 1000, MATERIAL_GOLD = 4000, MATERIAL_DIAMOND = 500)
 
 /datum/design/circuit/neuromod_rnd

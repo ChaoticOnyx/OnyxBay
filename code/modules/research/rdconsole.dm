@@ -370,7 +370,7 @@
 	var/list/data = list(
 		"id" = design.id,
 		"name" = design.name,
-		"category" = design.category,
+		"category" = design.category_items,
 		"build_type" = null,
 		"materials" = list(),
 		"chemicals" = list(),

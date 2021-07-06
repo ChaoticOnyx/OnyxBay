@@ -58,7 +58,7 @@ interface Design {
   icon: string;
   id: string;
   name: string;
-  category: string;
+  category: string[];
   buildType: BuildType;
   materials: MaterialElement[];
   chemicals: ChemicalElement[];
@@ -136,9 +136,7 @@ const diskContent = (disk: Disk) => {
       return <LabeledList.Item label='Content'>Empty</LabeledList.Item>;
     }
 
-    return (
-      <LabeledList.Item label='Design'>{diskData.name}</LabeledList.Item>
-    );
+    return <LabeledList.Item label='Design'>{diskData.name}</LabeledList.Item>;
   };
 
   const techDiskContent = (disk: Disk) => {
@@ -632,7 +630,9 @@ const designs = (device: Device, context: any) => {
   }
 
   if (currentFilter !== null && currentFilter !== 'All') {
-    found = found.filter((design, _) => currentFilter === design.category);
+    found = found.filter(
+      (design, _) => design.category.find((s) => s === currentFilter),
+    );
   }
 
   const emptyRow = () => {
@@ -773,7 +773,12 @@ const queue = (device: Device, context: any) => {
   return (
     <>
       <h2>Queue ({<AnimatedNumber value={queue.length} />})</h2>
-      <Button icon='eraser' content='Clear' disabled={!queue.length} onClick={() => act('remove', { from: device.name, index: -1 })} />
+      <Button
+        icon='eraser'
+        content='Clear'
+        disabled={!queue.length}
+        onClick={() => act('remove', { from: device.name, index: -1 })}
+      />
       <Divider />
       <Box
         maxHeight='20rem'
@@ -783,16 +788,22 @@ const queue = (device: Device, context: any) => {
         <Table className='Table--bordered'>
           <Table.Row className='candystripe'>
             <Table.Cell />
-            <Table.Cell bold>
-              Name
-            </Table.Cell>
+            <Table.Cell bold>Name</Table.Cell>
           </Table.Row>
           {queue.length
             ? queue.map((design, i) => {
                 return (
                   <Table.Row className='candystripe'>
-                    <Table.Cell style={{ 'vertical-align': 'middle' }} width='1ch'>
-                      <Button ml='0.2rem' icon='minus' onClick={() => act('remove', { from: device.name, index: i + 1 })} />
+                    <Table.Cell
+                      style={{ 'vertical-align': 'middle' }}
+                      width='1ch'>
+                      <Button
+                        ml='0.2rem'
+                        icon='minus'
+                        onClick={() =>
+                          act('remove', { from: device.name, index: i + 1 })
+                        }
+                      />
                     </Table.Cell>
                     <Table.Cell className='Materials--small'>
                       {design.name}
