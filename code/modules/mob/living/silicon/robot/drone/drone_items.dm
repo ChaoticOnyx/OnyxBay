@@ -419,7 +419,7 @@
 			hdrill.cell.loc = src
 			hdrill.cell = null
 
-			user.visible_message(SPAN_DANGER("[user] removes the power cell from [hdrill]!"), "You remove the power cell.")
+			user.visible_message(SPAN("danger", "[user] removes the power cell from [hdrill]!"), "You remove the power cell.")
 
 	else if(istype(target, /obj/machinery/cell_charger))
 		var/obj/machinery/cell_charger/charger = target
@@ -433,7 +433,7 @@
 			charger.charging = null
 			charger.update_icon()
 
-			user.visible_message(SPAN_DANGER("[user] removes the power cell from [charger]!"), "You remove the power cell.")
+			user.visible_message(SPAN("danger", "[user] removes the power cell from [charger]!"), "You remove the power cell.")
 
 	else
 		to_chat(user, "<span class='notice'>[src] can't interact with \the [target].</span>")

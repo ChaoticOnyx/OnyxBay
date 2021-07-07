@@ -60,7 +60,7 @@ var/global/list/rad_collectors = list()
 /obj/machinery/power/rad_collector/attack_hand(mob/user)
 	if(anchored)
 		if((stat & BROKEN) || melted)
-			to_chat(user, SPAN_WARNING("The [src] is completely destroyed!"))
+			to_chat(user, SPAN("warning", "The [src] is completely destroyed!"))
 			return
 		if(!locked)
 			toggle_power()
@@ -69,7 +69,7 @@ var/global/list/rad_collectors = list()
 			investigate_log("turned [active?"<font color='green'>on</font>":"<font color='red'>off</font>"] by [user.key]. [P?"Fuel: [round(P.air_contents.gas["plasma"]/0.29)]%":"<font color='red'>It is empty</font>"].","singulo")
 			return
 		else
-			to_chat(user, SPAN_WARNING("The controls are locked!"))
+			to_chat(user, SPAN("warning", "The controls are locked!"))
 			return
 
 
@@ -137,7 +137,7 @@ var/global/list/rad_collectors = list()
 		var/turf/T = get_turf(src)
 		if(T)
 			T.assume_air(P.air_contents)
-			audible_message(SPAN_DANGER("\The [P] detonates, sending shrapnel flying!"))
+			audible_message(SPAN("danger", "\The [P] detonates, sending shrapnel flying!"))
 			fragmentate(T, 2, 4, list(/obj/item/projectile/bullet/pellet/fragment/tank/small = 3, /obj/item/projectile/bullet/pellet/fragment/tank = 1))
 			explosion(T, -1, -1, 0)
 			QDEL_NULL(P)

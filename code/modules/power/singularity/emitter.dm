@@ -81,13 +81,13 @@
 			var/area/A = get_area(src)
 			if(active)
 				active = 0
-				to_chat(user, SPAN_NOTICE("You turn off \the [src]."))
+				to_chat(user, SPAN("notice", "You turn off \the [src]."))
 				log_admin("[key_name(user)] turned off \the [src] at X:[x], Y:[y], Z:[z] Area: [A.name].")
 				message_admins("[key_name_admin(user)] turned off \the [src].")
 				investigate_log("turned <font color='red'>off</font> by [user.key]","singulo")
 			else
 				active = 1
-				to_chat(user, SPAN_WARNING("You turn on \the [src]."))
+				to_chat(user, SPAN("warning", "You turn on \the [src]."))
 				shot_number = 0
 				fire_delay = get_initial_fire_delay()
 				log_admin("[key_name(user)] turned on \the [src] at X:[x], Y:[y], Z:[z] Area: [A.name].")
@@ -95,9 +95,9 @@
 				investigate_log("turned <font color='green'>on</font> by [user.key]","singulo")
 			update_icon()
 		else
-			to_chat(user, SPAN_WARNING("The controls are locked!"))
+			to_chat(user, SPAN("warning", "The controls are locked!"))
 	else
-		to_chat(user, SPAN_WARNING("\The [src] needs to be firmly secured to the floor first."))
+		to_chat(user, SPAN("warning", "\The [src] needs to be firmly secured to the floor first."))
 		return 1
 
 /obj/machinery/power/emitter/emp_act(severity)

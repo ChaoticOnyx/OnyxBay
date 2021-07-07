@@ -12,7 +12,7 @@ SUBSYSTEM_DEF(virus2suka)
 
 /datum/controller/subsystem/virus2suka/fire(resumed = FALSE)
 	if(paused_ticks >= 10) // The likeliest fail mode, due to the fast tick rate, is that it can never clear the full queue, running resumed every tick and accumulating a backlog.
-		log_and_message_admins(SPAN_DANGER("Alert. [name] report <b>LEVEL ONE DEFCON</b>, automatically attempt to avoid server lags by disabling viruses."))
+		log_and_message_admins(SPAN("danger", "Alert. [name] report <b>LEVEL ONE DEFCON</b>, automatically attempt to avoid server lags by disabling viruses."))
 		disable()          // As this SS deals with optional and potentially abusable content, it will autodisable if overtaxing the server.
 		return
 

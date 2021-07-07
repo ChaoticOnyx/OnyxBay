@@ -25,5 +25,5 @@ GLOBAL_LIST_EMPTY(thunderfield_spawns_list)
 	if(!isvrhuman(user))
 		return
 	user.mind.thunder_points += points
-	to_chat(user, SPAN_WARNING("You get [points] points! Your total points are: [user.mind.thunder_points]"))
+	to_chat(user, SPAN("warning", "You get [points] points! Your total points are: [user.mind.thunder_points]"))
 	qdel(src)

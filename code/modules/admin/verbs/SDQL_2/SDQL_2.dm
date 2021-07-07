@@ -32,7 +32,7 @@
 
 	if(!query_text || length(query_text) < 1)
 		return
- 
+
 	log_debug("[key_name(src)] try to execute SDQL query: \"[query_text]\".")
 	sleep(-1) // Incase the server crashes due to a huge query, we allow the server to log the above things (it might just delay it).
 
@@ -140,10 +140,10 @@
 
 							CHECK_TICK
 
-			to_chat(usr, SPAN_NOTICE("Query executed on [objs.len] object\s."))
+			to_chat(usr, SPAN("notice", "Query executed on [objs.len] object\s."))
 			log_and_message_admins("[key_name(src)] successfully executed SDQL query: \"[query_text]\".")
 	catch(var/exception/e)
-		to_chat(usr, SPAN_DANGER("An exception has occured during the execution of your query and your query has been aborted."))
+		to_chat(usr, SPAN("danger", "An exception has occured during the execution of your query and your query has been aborted."))
 		to_chat(usr, "exception name: [e.name]")
 		to_chat(usr, "file/line: [e.file]/[e.line]")
 		return

@@ -108,7 +108,7 @@
 	if(!timer || !length(cameras) || !length(active_recon_areas_list) || finish)
 		return
 	if(ishuman(uplink?.uplink_owner?.current))
-		to_chat(uplink.uplink_owner.current, SPAN_NOTICE("It looks like there are problems with your spy network in one the following areas:\n[english_list(active_recon_areas_list, and_text = "\n")]\nBugs maintenance required. Your current progress has been zeroed out."))
+		to_chat(uplink.uplink_owner.current, SPAN("notice", "It looks like there are problems with your spy network in one the following areas:\n[english_list(active_recon_areas_list, and_text = "\n")]\nBugs maintenance required. Your current progress has been zeroed out."))
 	active_recon_areas_list = list()
 	deltimer(timer)
 	timer = null
@@ -131,7 +131,7 @@
 	if(usr.incapacitated() || !Adjacent(usr) || !ishuman(usr))
 		return
 	if(timer)
-		to_chat(usr, SPAN_NOTICE("Active spy network detected in the following areas:\n[english_list(active_recon_areas_list, and_text = "\n")]\nYou can deactivate the network by picking up the camera bugs."))
+		to_chat(usr, SPAN("notice", "Active spy network detected in the following areas:\n[english_list(active_recon_areas_list, and_text = "\n")]\nYou can deactivate the network by picking up the camera bugs."))
 		return
 	var/list/sensor_list = list()
 	if(length(active_recon_areas_list))
@@ -170,7 +170,7 @@
 	for(var/area_name in sensor_list)
 		if(sensor_list[area_name] >= 3)
 			sensor_active = TRUE
-			to_chat(usr, SPAN_NOTICE("Data collection initiated."))
+			to_chat(usr, SPAN("notice", "Data collection initiated."))
 			start()
 			if(uplink?.uplink_owner == usr.mind)
 				var/area/A = get_area_name(area_name)
@@ -179,12 +179,12 @@
 					if(C.completed)
 						continue
 					if(A in C.targets)
-						to_chat(usr, SPAN_NOTICE("Recon contract locked in."))
+						to_chat(usr, SPAN("notice", "Recon contract locked in."))
 
 	if(!sensor_active)
 		if(!length(messages))
 			messages += "Not enough bugs."
-		to_chat(usr, SPAN_WARNING("Data collection initialization failed:\n[english_list(messages, and_text = "\n")]"))
+		to_chat(usr, SPAN("warning", "Data collection initialization failed:\n[english_list(messages, and_text = "\n")]"))
 
 /obj/item/device/spy_monitor/attack_self(mob/user)
 	if(operating)
@@ -201,12 +201,12 @@
 
 /obj/item/device/spy_monitor/proc/pair(obj/item/device/spy_bug/SB, mob/living/user)
 	if(SB.camera in cameras)
-		to_chat(user, SPAN_NOTICE("\The [SB] has been unpaired from \the [src]."))
+		to_chat(user, SPAN("notice", "\The [SB] has been unpaired from \the [src]."))
 		SB.unpair()
 		bugs -= SB
 		cameras -= SB.camera
 	else
-		to_chat(user, SPAN_NOTICE("\The [SB] has been paired with \the [src]."))
+		to_chat(user, SPAN("notice", "\The [SB] has been paired with \the [src]."))
 		SB.pair_with(src)
 		bugs += SB
 		cameras += SB.camera

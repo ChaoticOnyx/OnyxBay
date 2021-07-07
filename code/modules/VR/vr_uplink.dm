@@ -43,7 +43,7 @@
 		if(uplink && uplink.len >= number)
 			var/datum/thunderfield_item/I = uplink[number]
 			if(I.cost > vr_mind.thunder_points)
-				to_chat(usr, SPAN_NOTICE("<B>You dont have enough points.</B>"))
+				to_chat(usr, SPAN("notice", "<B>You dont have enough points.</B>"))
 				interact(usr)
 				return
 			var/obj/item/O = new I.item(src)

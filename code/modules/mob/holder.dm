@@ -83,7 +83,7 @@ var/list/holder_mob_icon_cache = list()
 		var/mob/living/carbon/M = user
 		var/obj/item/blocked = M.check_mouth_coverage()
 		if(blocked)
-			to_chat(user, SPAN_WARNING("\The [blocked] is in the way!"))
+			to_chat(user, SPAN("warning", "\The [blocked] is in the way!"))
 			return 1
 		for(var/mob/victim in src.contents)
 			M.devour(victim)

@@ -9,9 +9,9 @@
 /obj/item/weapon/paper/complaint_form/examine(mob/user)
 	. = ..()
 	if (signed)
-		. += "\n[SPAN_NOTICE("It appears to be signed. It can't be modified.")]"
+		. += "\n[SPAN("notice", "It appears to be signed. It can't be modified.")]"
 	else
-		. += "\n[SPAN_NOTICE("It appears to be unsigned and ready for modifications.")]"
+		. += "\n[SPAN("notice", "It appears to be unsigned and ready for modifications.")]"
 
 
 /obj/item/weapon/paper/complaint_form/get_signature(obj/item/weapon/pen/P, mob/user, signfield)
@@ -114,12 +114,12 @@
 /obj/item/weapon/complaint_folder/examine(mob/user)
 	. = ..()
 	if (main_form.signed)
-		. += "\n[SPAN_NOTICE("It is signed by [main_form.signed_name]")]"
+		. += "\n[SPAN("notice", "It is signed by [main_form.signed_name]")]"
 		if (length(contents) > 1)
 			var/counter = 0
 			for (var/obj/item/weapon/paper/complaint_form/F in contents)
 				counter++
-			. += "\n[SPAN_NOTICE("It has [counter - 1] complaint forms attached")]"
+			. += "\n[SPAN("notice", "It has [counter - 1] complaint forms attached")]"
 
 /obj/item/weapon/complaint_folder/proc/check_signed()
 	if (signed)
@@ -145,14 +145,14 @@
 	if (istype(W, /obj/item/weapon/paper/complaint_form))
 		var/obj/item/weapon/paper/complaint_form/CF = W
 		if (!check_signed())
-			to_chat(user, SPAN_WARNING("Sign [src] first!"))
+			to_chat(user, SPAN("warning", "Sign [src] first!"))
 			return
 		if (id == CF.id)
-			to_chat(user, SPAN_NOTICE("You add \the [CF] to \the [src]."))
+			to_chat(user, SPAN("notice", "You add \the [CF] to \the [src]."))
 			user.drop_item()
 			CF.forceMove(src)
 			return
-		to_chat(user, SPAN_WARNING("IDs don't match!"))
+		to_chat(user, SPAN("warning", "IDs don't match!"))
 		return
 
 	if (istype(W, /obj/item/weapon/pen))
@@ -169,7 +169,7 @@
 	if (user.get_inactive_hand() != src)
 		return ..()
 	if (!check_signed())
-		to_chat(user, SPAN_WARNING("Sign [src] first!"))
+		to_chat(user, SPAN("warning", "Sign [src] first!"))
 		return
 	var/list/choices_list = list()
 	for (var/obj/item/weapon/paper/complaint_form/F in contents)
@@ -182,12 +182,12 @@
 		return
 	if (istype(action,/obj/item/weapon/paper/complaint_form))
 		user.put_in_hands(action)
-		to_chat(user, SPAN_NOTICE("You take [action] out of [src]."))
+		to_chat(user, SPAN("notice", "You take [action] out of [src]."))
 		return
 	if (action == new_form_choice)
 		var/new_form = new /obj/item/weapon/paper/complaint_form(src.loc, id, target_name, target_occupation)
 		user.put_in_hands(new_form)
-		to_chat(user, SPAN_NOTICE("You take [new_form] out of [src]."))
+		to_chat(user, SPAN("notice", "You take [new_form] out of [src]."))
 		return
 
 
@@ -250,7 +250,7 @@
 	for (var/obj/item/weapon/paper/complaint_form/CF in contents)
 		if(!CF.signed)
 			return "At least one of supplementary forms is not signed"
-	
+
 	var/captains = 0
 	var/heads = 0
 	var/crewmembers = 0
@@ -267,7 +267,7 @@
 		var/parsed_reason = strip_html_properly(parsed_data["reason"])
 		var/parsed_brief_reason = strip_html_properly(parsed_data["brief_reason"])
 		var/record = check_records(parsed_name, parsed_occupation)
-		
+
 		if (!record || !parsed_reason || !parsed_brief_reason || parsed_name != CF.signed_name)
 			return "At least one of supplementary forms is malformed"
 		if (parsed_name in names)

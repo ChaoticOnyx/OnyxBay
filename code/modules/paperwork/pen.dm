@@ -79,7 +79,7 @@
 			if(istype(head))
 				head.write_on(user, src.color_description)
 		else
-			to_chat(user, SPAN_WARNING("You stab [M] with \the [src]."))
+			to_chat(user, SPAN("warning", "You stab [M] with \the [src]."))
 			admin_attack_log(user, M, "Stabbed using \a [src]", "Was stabbed with \a [src]", "used \a [src] to stab")
 	else if(istype(A, /obj/item/organ/external/head))
 		var/obj/item/organ/external/head/head = A

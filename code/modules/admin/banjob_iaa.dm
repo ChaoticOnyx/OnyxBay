@@ -472,7 +472,7 @@ GLOBAL_LIST_EMPTY(IAA_approved_list)
 				chosen_JB = JB
 				break
 		if (!chosen_JB)
-			to_chat(usr, SPAN_WARNING("Failed to find active jobban with such id!"))
+			to_chat(usr, SPAN("warning", "Failed to find active jobban with such id!"))
 			return
 		var/action = input(usr, "Select action:", "Resolve IAA jobban", "Cancel") as anything in list("Approve", "Deny", "Cancel")
 		switch(action)

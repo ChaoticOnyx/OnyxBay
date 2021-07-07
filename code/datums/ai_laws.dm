@@ -237,7 +237,7 @@
 		if(law == zeroth_law_borg)
 			continue
 		if(law == zeroth_law)
-			parts += SPAN_DANGER("[law.get_index()]. [law.law]")
+			parts += SPAN("danger", "[law.get_index()]. [law.law]")
 		else
 			parts += "[law.get_index()]. [law.law]"
 	return parts.Join("<br>")

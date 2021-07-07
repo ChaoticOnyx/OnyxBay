@@ -11,7 +11,7 @@
 	if(istype(A, /obj/item/device/electronic_assembly))
 		var/obj/item/device/electronic_assembly/EA = A
 		if(EA.idlock)
-			to_chat(user, SPAN_NOTICE("[A] is currently identity-locked and can't be analyzed."))
+			to_chat(user, SPAN("notice", "[A] is currently identity-locked and can't be analyzed."))
 			return FALSE
 
 		var/saved = "[A.name] analyzed! On circuit printers with cloning enabled, you may use the code below to clone the circuit:<br><br><code>[SScircuit.save_electronic_assembly(A)]</code>"

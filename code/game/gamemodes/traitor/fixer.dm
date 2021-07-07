@@ -87,7 +87,7 @@
 
 /datum/admins/proc/edit_contracts()
 	if(GAME_STATE <= RUNLEVEL_SETUP)
-		to_chat(usr, SPAN_DANGER("The game hasn't started yet!"))
+		to_chat(usr, SPAN("danger", "The game hasn't started yet!"))
 		return
 
 	var/out = "<meta charset=\"utf-8\"><b>The Syndicate Operations Menu</b>"

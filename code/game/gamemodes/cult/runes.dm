@@ -191,15 +191,15 @@
 		return fizzle(user)
 
 	speak_incantation(user, "Mah[pick("'","`")]weyh pleggh at e'ntrath!")
-	target.visible_message(SPAN_WARNING("The markings below [target] glow a bloody red."))
+	target.visible_message(SPAN("warning", "The markings below [target] glow a bloody red."))
 
-	to_chat(target, SPAN_OCCULT("Your blood pulses. Your head throbs. The world goes red. All at once you are aware of a horrible, horrible truth. The veil of reality has been ripped away and in the festering wound left behind something sinister takes root."))
+	to_chat(target, SPAN("cult", "Your blood pulses. Your head throbs. The world goes red. All at once you are aware of a horrible, horrible truth. The veil of reality has been ripped away and in the festering wound left behind something sinister takes root."))
 	var/list/mob/living/cultists = get_cultists()
 	if(cultists.len < 2)
 		if(!GLOB.cult.can_become_antag(target.mind, 1))
-			to_chat(target, SPAN_DANGER("Are you going insane?"))
+			to_chat(target, SPAN("danger", "Are you going insane?"))
 		else
-			to_chat(target, SPAN_OCCULT("Do you want to join the cult of Nar'Sie? You can choose to ignore offer... <a href='?src=\ref[src];join=1'>Join the cult</a>."))
+			to_chat(target, SPAN("cult", "Do you want to join the cult of Nar'Sie? You can choose to ignore offer... <a href='?src=\ref[src];join=1'>Join the cult</a>."))
 
 	spamcheck = 1
 	spawn(30)
@@ -211,15 +211,15 @@
 				target.take_overall_damage(10, 0)
 				switch(target.getFireLoss())
 					if(0 to 25)
-						to_chat(target, SPAN_DANGER("Your blood boils as you force yourself to resist the corruption invading every corner of your mind."))
+						to_chat(target, SPAN("danger", "Your blood boils as you force yourself to resist the corruption invading every corner of your mind."))
 					if(25 to 45)
-						to_chat(target, SPAN_DANGER("Your blood boils and your body burns as the corruption further forces itself into your body and mind."))
+						to_chat(target, SPAN("danger", "Your blood boils and your body burns as the corruption further forces itself into your body and mind."))
 						target.take_overall_damage(3, 5)
 					if(45 to 75)
-						to_chat(target, SPAN_DANGER("You begin to hallucinate images of a dark and incomprehensible being and your entire body feels like its engulfed in flame as your mental defenses crumble."))
+						to_chat(target, SPAN("danger", "You begin to hallucinate images of a dark and incomprehensible being and your entire body feels like its engulfed in flame as your mental defenses crumble."))
 						target.take_overall_damage(5, 10)
 					if(75 to 100)
-						to_chat(target, SPAN_OCCULT("Your mind turns to ash as the burning flames engulf your very soul and images of an unspeakable horror begin to bombard the last remnants of mental resistance."))
+						to_chat(target, SPAN("cult", "Your mind turns to ash as the burning flames engulf your very soul and images of an unspeakable horror begin to bombard the last remnants of mental resistance."))
 						target.take_overall_damage(10, 20)
 
 /obj/effect/rune/convert/Topic(href, href_list)
@@ -437,7 +437,7 @@
 
 /obj/effect/rune/defile/cast(mob/living/user)
 	if(!is_station_turf(get_turf(src)))
-		to_chat(user, SPAN_DANGER("This place is too powerless for any defiling!"))
+		to_chat(user, SPAN("danger", "This place is too powerless for any defiling!"))
 		return
 	speak_incantation(user, "Ia! Ia! Zasan therium viortia!")
 	for(var/turf/T in range(1, src))
@@ -695,7 +695,7 @@
 /obj/effect/rune/massdefile/cast(mob/living/user)
 	var/list/mob/living/cultists = get_cultists()
 	if(!is_station_turf(get_turf(src)))
-		to_chat(user, SPAN_DANGER("This place is too powerless for any defiling!"))
+		to_chat(user, SPAN("danger", "This place is too powerless for any defiling!"))
 		return
 	if(cultists.len < 3)
 		to_chat(user, "<span class='warning'>You need three cultists around this rune to make it work.</span>")

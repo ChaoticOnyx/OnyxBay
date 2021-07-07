@@ -30,20 +30,20 @@
 /obj/item/music_tape/examine(mob/user)
 	. = ..()
 	if(track?.title)
-		. += "\n[SPAN_NOTICE("It's labeled as \"[track.title]\".")]"
+		. += "\n[SPAN("notice", "It's labeled as \"[track.title]\".")]"
 
 /obj/item/music_tape/attack_self(mob/user)
 	if(!ruined)
 		if(!do_after(user, 15, target = src) || ruined)
 			return
-		to_chat(user, SPAN_NOTICE("You pull out all the tape!"))
+		to_chat(user, SPAN("notice", "You pull out all the tape!"))
 		ruin()
 
 /obj/item/music_tape/attackby(obj/item/I, mob/user, params)
 	if(ruined && (isScrewdriver(I) || istype(I, /obj/item/weapon/pen)))
-		to_chat(user, SPAN_NOTICE("You start winding \the [src] back in..."))
+		to_chat(user, SPAN("notice", "You start winding \the [src] back in..."))
 		if(do_after(user, 120, target = src))
-			to_chat(user, SPAN_NOTICE("You wound \the [src] back in."))
+			to_chat(user, SPAN("notice", "You wound \the [src] back in."))
 			fix()
 		return
 
@@ -55,11 +55,11 @@
 			new_name = sanitizeSafe(new_name)
 
 			if(new_name)
-				to_chat(user, SPAN_NOTICE("You label \the [src] '[new_name]'."))
+				to_chat(user, SPAN("notice", "You label \the [src] '[new_name]'."))
 				track.title = "tape - \"[new_name]\""
 				SetName("tape - \"[new_name]\"")
 			else
-				to_chat(user, SPAN_NOTICE("You scratch off the label."))
+				to_chat(user, SPAN("notice", "You scratch off the label."))
 				track.title = "unknown"
 				SetName("tape")
 		return

@@ -102,7 +102,7 @@
 
 /proc/clothes_check(user, target, target_zone)
 	if(length(get_target_clothes(target, target_zone)))
-		to_chat(user, SPAN_DANGER("Clothing on [target]'s [organ_name_by_zone(target, target_zone)] blocks surgery!"))
+		to_chat(user, SPAN("danger", "Clothing on [target]'s [organ_name_by_zone(target, target_zone)] blocks surgery!"))
 		return SURGERY_BLOCKED
 
 /proc/spread_germs_to_organ(obj/item/organ/external/E, mob/living/carbon/human/user)

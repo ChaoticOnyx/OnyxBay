@@ -169,7 +169,7 @@
 			break
 
 		if(cig == null)
-			to_chat(user, SPAN_NOTICE("Looks like the packet is out of cigarettes."))
+			to_chat(user, SPAN("notice", "Looks like the packet is out of cigarettes."))
 			return
 
 		// Instead of running equip_to_slot_if_possible() we check here first,
@@ -183,7 +183,7 @@
 		user.equip_to_slot(cig, slot_wear_mask)
 
 		reagents.maximum_volume = 5 * contents.len
-		to_chat(user, SPAN_NOTICE("You take a cigarette out of the pack.</span>"))
+		to_chat(user, SPAN("notice", "You take a cigarette out of the pack.</span>"))
 		update_icon()
 	else
 		..()

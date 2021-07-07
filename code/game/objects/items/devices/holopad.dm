@@ -61,7 +61,7 @@
 /obj/item/device/holopad/proc/ring()
 	if(call_state != CALL_RINGING)
 		return
-	audible_message(SPAN_WARNING("Something vibrates.."), hearing_distance = 4)
+	audible_message(SPAN("warning", "Something vibrates.."), hearing_distance = 4)
 	addtimer(CALLBACK(src, .proc/ring), 50)
 
 /obj/item/device/holopad/proc/placeCall(mob/user)
@@ -80,9 +80,9 @@
 		call_state = CALL_CALLING
 		abonent = target
 		icon_state = "holopad_calling"
-		to_chat(user, SPAN_NOTICE("Calling [sanitize(abonent.getName(1))]"))
+		to_chat(user, SPAN("notice", "Calling [sanitize(abonent.getName(1))]"))
 	else
-		to_chat(user, SPAN_WARNING("Remote device is busy"))
+		to_chat(user, SPAN("warning", "Remote device is busy"))
 
 /obj/item/device/holopad/proc/acceptCall()
 	if(call_state == CALL_RINGING)
@@ -113,7 +113,7 @@
 	if(call_state==CALL_NONE)
 		return
 
-	audible_message(SPAN_WARNING("Connection closed"), hearing_distance = 4)
+	audible_message(SPAN("warning", "Connection closed"), hearing_distance = 4)
 	call_state = CALL_NONE
 	icon_state = initial(icon_state)
 	desc = initial(desc)

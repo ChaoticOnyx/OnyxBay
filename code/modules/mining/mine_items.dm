@@ -220,12 +220,12 @@
 	var/turf/T = get_turf(src)
 
 	if(istype(T, /turf/space) || istype(T, /turf/simulated/open))
-		to_chat(user, SPAN_WARNING("There's no solid surface to plant the flag on."))
+		to_chat(user, SPAN("warning", "There's no solid surface to plant the flag on."))
 		return
 
 	for(var/obj/item/stack/flag/F in T)
 		if(F.upright)
-			to_chat(user, SPAN_WARNING("\The [F] is already planted here."))
+			to_chat(user, SPAN("warning", "\The [F] is already planted here."))
 			return
 
 	if(use(1)) // Don't skip use() checks even if you only need one! Stacks with the amount of 0 are possible, e.g. on synthetics!
@@ -291,12 +291,12 @@
 /obj/item/weapon/ore_radar/attack_self(mob/user)
 	if(!active)
 		active = 1
-		to_chat(usr, SPAN_NOTICE("You activate the pinpointer."))
+		to_chat(usr, SPAN("notice", "You activate the pinpointer."))
 		START_PROCESSING(SSprocessing, src)
 	else
 		active = 0
 		icon_state = "pinoff"
-		to_chat(usr, SPAN_NOTICE("You deactivate the pinpointer."))
+		to_chat(usr, SPAN("notice", "You deactivate the pinpointer."))
 		STOP_PROCESSING(SSprocessing, src)
 
 /obj/item/weapon/ore_radar/Process()
@@ -370,7 +370,7 @@
 				M.desc = initial(M.desc)
 				loaded = 0
 				icon_state = "animal_tagger0"
-				user.visible_message(SPAN_NOTICE("\The [user] revives \the [M] by injecting it with \the [src]."))
+				user.visible_message(SPAN("notice", "\The [user] revives \the [M] by injecting it with \the [src]."))
 				feedback_add_details("lazarus_injector", "[M.type]")
 				playsound(src, 'sound/effects/refill.ogg', 50, 1)
 				return
@@ -388,7 +388,7 @@
 			return
 		emagged = TRUE
 		emag_card.uses -= 1
-		to_chat(user, SPAN_WARNING("You overload \the [src]'s injection matrix."))
+		to_chat(user, SPAN("warning", "You overload \the [src]'s injection matrix."))
 		return
 
 	return ..()

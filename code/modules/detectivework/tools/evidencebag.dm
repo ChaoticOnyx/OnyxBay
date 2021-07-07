@@ -47,15 +47,15 @@
 
 /obj/item/weapon/evidencebag/proc/put_item(obj/item/I, mob/user)
 	if(istype(I, /obj/item/weapon/evidencebag))
-		to_chat(user, SPAN_NOTICE("You find putting an evidence bag in another evidence bag to be slightly absurd."))
+		to_chat(user, SPAN("notice", "You find putting an evidence bag in another evidence bag to be slightly absurd."))
 		return
 
 	if(I.w_class > ITEM_SIZE_NORMAL)
-		to_chat(user, SPAN_NOTICE("[I] won't fit in [src]."))
+		to_chat(user, SPAN("notice", "[I] won't fit in [src]."))
 		return FALSE
 
 	if(stored_item)
-		to_chat(user, SPAN_NOTICE("[src] already has something inside it."))
+		to_chat(user, SPAN("notice", "[src] already has something inside it."))
 		return FALSE
 
 	user.visible_message("[user] puts [I] into [src]", "You put [I] inside [src].",\

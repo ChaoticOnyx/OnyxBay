@@ -15,9 +15,9 @@
 		R.adjustFireLoss(-15)
 		R.updatehealth()
 		use(1)
-		user.visible_message(SPAN_NOTICE("\The [user] applied some [src] on [R]'s damaged areas."), SPAN_NOTICE("You apply some [src] at [R]'s damaged areas."))
+		user.visible_message(SPAN("notice", "\The [user] applied some [src] on [R]'s damaged areas."), SPAN_NOTICE("You apply some [src] at [R]'s damaged areas."))
 	else
-		to_chat(user, SPAN_NOTICE("All [R]'s systems are nominal."))
+		to_chat(user, SPAN("notice", "All [R]'s systems are nominal."))
 
 /obj/item/stack/nanopaste/attack(mob/living/M, mob/user)
 	if (!istype(M) || !istype(user))

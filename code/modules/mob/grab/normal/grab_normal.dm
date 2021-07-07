@@ -114,7 +114,7 @@
 
 		if(do_mob(assailant, affecting, action_cooldown - 1))
 			if(!G?.has_hold_on_organ(O))
-				to_chat(assailant, SPAN_WARNING("You must keep a hold on your target to dislocate!"))
+				to_chat(assailant, SPAN("warning", "You must keep a hold on your target to dislocate!"))
 				return 0
 			G.attacking = 0
 			G.action_used()

@@ -73,27 +73,27 @@
 	if(usr.incapacitated())
 		return
 	if(!victim)
-		to_chat(usr, SPAN_DANGER("There is no patient on the table."))
+		to_chat(usr, SPAN("danger", "There is no patient on the table."))
 		return
 	if(!ishuman(victim))
-		to_chat(usr, SPAN_DANGER("[victim] can't be undressed for some biological reasons."))
+		to_chat(usr, SPAN("danger", "[victim] can't be undressed for some biological reasons."))
 		return
 	if(istype(victim.back, /obj/item/weapon/rig) && !victim.back.mob_can_unequip(victim, slot_back, TRUE))
-		to_chat(usr, SPAN_DANGER("\The [victim.back] must be removed."))
+		to_chat(usr, SPAN("danger", "\The [victim.back] must be removed."))
 		return
 	if(!locate(/obj/item/clothing) in victim.contents)
-		to_chat(usr, SPAN_DANGER("[victim] has no clothes to remove."))
+		to_chat(usr, SPAN("danger", "[victim] has no clothes to remove."))
 		return
 	if(stat & (BROKEN|NOPOWER))
-		to_chat(usr, SPAN_DANGER("\The [src] is unpowered."))
+		to_chat(usr, SPAN("danger", "\The [src] is unpowered."))
 		return
 	if(busy)
-		to_chat(usr, SPAN_DANGER("[victim] is already undressing."))
+		to_chat(usr, SPAN("danger", "[victim] is already undressing."))
 		return
 
 	busy = TRUE
-	usr.visible_message(SPAN_DANGER("[usr] begins to undress [victim] on the table with the built-in tool."),
-						SPAN_NOTICE("You begin to undress [victim] on the table with the built-in tool."))
+	usr.visible_message(SPAN("danger", "[usr] begins to undress [victim] on the table with the built-in tool."),
+						SPAN("notice", "You begin to undress [victim] on the table with the built-in tool."))
 	if(do_after(usr, 5 SECONDS, victim))
 		if(!victim)
 			return
@@ -102,8 +102,8 @@
 				continue
 			victim.drop_from_inventory(C)
 			use_power_oneoff(100)
-		usr.visible_message(SPAN_DANGER("[usr] successfully removes all clothing from [victim]."),
-							SPAN_NOTICE("You successfully remove all clothing from [victim]."))
+		usr.visible_message(SPAN("danger", "[usr] successfully removes all clothing from [victim]."),
+							SPAN("notice", "You successfully remove all clothing from [victim]."))
 	busy = FALSE
 
 /obj/machinery/optable/proc/check_victim()

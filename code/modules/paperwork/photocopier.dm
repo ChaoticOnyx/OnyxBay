@@ -44,7 +44,7 @@
 
 /obj/machinery/photocopier/proc/busy_check(user)
 	if (busy)
-		to_chat(user, SPAN_WARNING("[src] is busy!"))
+		to_chat(user, SPAN("warning", "[src] is busy!"))
 	return busy
 
 /obj/machinery/photocopier/Topic(href, href_list)
@@ -185,7 +185,7 @@
 		var/toner_left = toner
 		toner_left = CF.recolorize(saturation = Clamp(toner / 30.0, 0.5, 0.94), grayscale = src.grayscale, amount = toner_left)
 		if (toner_left <= 0)
-			visible_message(SPAN_NOTICE("A red light on \the [src] flashes, indicating that it is out of toner."))
+			visible_message(SPAN("notice", "A red light on \the [src] flashes, indicating that it is out of toner."))
 			toner_left = 0
 		toner = toner_left
 	return CF

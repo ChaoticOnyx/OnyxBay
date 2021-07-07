@@ -15,7 +15,7 @@
 		return
 
 	if(is_regenerating())
-		to_chat(src, SPAN_NOTICE("We can't do it right now."))
+		to_chat(src, SPAN("notice", "We can't do it right now."))
 		return
 
 	if(!BIO.moving)

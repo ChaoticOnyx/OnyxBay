@@ -111,13 +111,13 @@ var/global/list/image/ghost_sightless_images = list() //this is a list of images
 
 /mob/observer/ghost/proc/try_to_occupy(mob/living/L)
 	if(jobban_isbanned(src, "Animal"))
-		to_chat(src, SPAN_WARNING("You're banned from occupying mobs!"))
+		to_chat(src, SPAN("warning", "You're banned from occupying mobs!"))
 		return
 	if(!L.controllable)
-		to_chat(src, SPAN_WARNING("[L] can't be occupied!"))
+		to_chat(src, SPAN("warning", "[L] can't be occupied!"))
 		return
 	if(L.client || (L.ckey && copytext(L.ckey, 1, 2) == "@"))
-		to_chat(src, SPAN_WARNING("[L] is already occupied!"))
+		to_chat(src, SPAN("warning", "[L] is already occupied!"))
 		return
 	if(!MayRespawn(TRUE, isanimal(mind?.current) || isbot(mind?.current) ? DEAD_ANIMAL_DELAY : ANIMAL_SPAWN_DELAY))
 		return
@@ -526,17 +526,17 @@ This is the proc mobs get to turn into a ghost. Forked from ghostize due to comp
 		return FALSE
 	if(mind?.current && (mind.current in GLOB.living_mob_list_) && (can_reenter_corpse in list(CORPSE_CAN_REENTER, CORPSE_CAN_REENTER_AND_RESPAWN)))
 		if(feedback)
-			to_chat(src, SPAN_WARNING("Your non-dead body prevents you from respawning."))
+			to_chat(src, SPAN("warning", "Your non-dead body prevents you from respawning."))
 		return FALSE
 	if(config.antag_hud_restricted && has_enabled_antagHUD == TRUE)
 		if(feedback)
-			to_chat(src, SPAN_WARNING("antagHUD restrictions prevent you from respawning."))
+			to_chat(src, SPAN("warning", "antagHUD restrictions prevent you from respawning."))
 		return FALSE
 
 	var/timedifference = world.time - timeofdeath
 	if(!client.holder && respawn_time && timeofdeath && timedifference < respawn_time MINUTES)
 		var/timedifference_text = time2text(respawn_time MINUTES - timedifference,"mm:ss")
-		to_chat(src, SPAN_WARNING("You must have been dead for [respawn_time] minute\s to respawn. You have [timedifference_text] left."))
+		to_chat(src, SPAN("warning", "You must have been dead for [respawn_time] minute\s to respawn. You have [timedifference_text] left."))
 		return FALSE
 
 	return TRUE

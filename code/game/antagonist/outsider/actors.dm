@@ -42,11 +42,11 @@ GLOBAL_DATUM_INIT(actor, /datum/antagonist/actor, new)
 	set desc = "Join as an Actor to entertain the crew through television!"
 
 	if(GAME_STATE < RUNLEVEL_GAME)
-		to_chat(src, SPAN_WARNING("Please wait for round start."))
+		to_chat(src, SPAN("warning", "Please wait for round start."))
 		return
 
 	if(jobban_isbanned(src, MODE_ACTOR))
-		to_chat(src, SPAN_WARNING("You are jobbanned from the actor role."))
+		to_chat(src, SPAN("warning", "You are jobbanned from the actor role."))
 		return
 
 	if(!MayRespawn(TRUE) || !GLOB.actor.can_become_antag(mind, TRUE))
@@ -57,8 +57,8 @@ GLOBAL_DATUM_INIT(actor, /datum/antagonist/actor, new)
 
 	if(isghost(src) || isnewplayer(src))
 		if(GLOB.actor.current_antagonists.len >= GLOB.actor.hard_cap)
-			to_chat(src, SPAN_WARNING("No more actors may spawn at the current time."))
+			to_chat(src, SPAN("warning", "No more actors may spawn at the current time."))
 			return
 		GLOB.actor.create_default(src)
 	else
-		to_chat(src, SPAN_WARNING("You must be observing or be a new player to spawn as an actor."))
+		to_chat(src, SPAN("warning", "You must be observing or be a new player to spawn as an actor."))

@@ -141,7 +141,7 @@
 /obj/item/weapon/pen/crayon/Topic(href, href_list, state = GLOB.physical_state)
 	. = ..()
 	if(!last_target.Adjacent(usr))
-		to_chat(usr, SPAN_WARNING("You moved too far away!"))
+		to_chat(usr, SPAN("warning", "You moved too far away!"))
 		popup.close()
 		return
 	if(usr.incapacitated())
@@ -150,7 +150,7 @@
 	var/drawing = href_list["drawing"] ? href_list["drawing"] : "rune"
 	var/visible_name = href_list["type"] ? replacetext(href_list["type"], "_", " ") : "drawing"
 	popup.close()
-	usr.visible_message(SPAN_NOTICE("[usr] starts drawing something on \the [last_target]."), SPAN_NOTICE("You start drawing on \the [last_target]"))
+	usr.visible_message(SPAN("notice", "[usr] starts drawing something on \the [last_target]."), SPAN_NOTICE("You start drawing on \the [last_target]"))
 	var/turf/multiple_check = last_target
 	if(instant || do_after(usr, 50))
 		if(multiple_check != last_target)
@@ -160,8 +160,8 @@
 		if(drawing == "rune")
 			drawing = "rune[rand(1,6)]"
 		new /obj/effect/decal/cleanable/crayon(last_target, colour, shadeColour, drawing, visible_name)
-		usr.visible_message(SPAN_NOTICE("[usr] finished drawing [visible_name] on \the [last_target]."), \
-							SPAN_NOTICE("You finished drawing [visible_name] on \the [last_target]"))
+		usr.visible_message(SPAN("notice", "[usr] finished drawing [visible_name] on \the [last_target]."), \
+							SPAN("notice", "You finished drawing [visible_name] on \the [last_target]"))
 		last_target.add_fingerprint(usr)
 		reduce_uses()
 
@@ -169,7 +169,7 @@
 	if(istype(M) && M == user)
 		var/obj/item/blocked = M.check_mouth_coverage()
 		if(blocked)
-			to_chat(user, SPAN_WARNING("\The [blocked] is in the way!"))
+			to_chat(user, SPAN("warning", "\The [blocked] is in the way!"))
 			return 1
 		to_chat(M, "You take a bite of the [src.name] and swallow it.")
 		M.nutrition += 1
@@ -193,5 +193,5 @@
 	if(uses)
 		uses -= amount
 		if(uses <= 0)
-			to_chat(usr, SPAN_WARNING("You [action_text] your [src.name]!"))
+			to_chat(usr, SPAN("warning", "You [action_text] your [src.name]!"))
 			qdel(src)

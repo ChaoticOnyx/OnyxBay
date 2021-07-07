@@ -21,15 +21,15 @@
 	power_channel = ENVIRON
 
 /obj/machinery/keycard_auth/attack_ai(mob/user)
-	to_chat(user, SPAN_WARNING("A firewall prevents you from interfacing with this device!"))
+	to_chat(user, SPAN("warning", "A firewall prevents you from interfacing with this device!"))
 	return
 
 /obj/machinery/keycard_auth/attackby(obj/item/weapon/W, mob/user)
 	if(stat & (NOPOWER|BROKEN))
-		to_chat(user, SPAN_WARNING("This device is not powered."))
+		to_chat(user, SPAN("warning", "This device is not powered."))
 		return
 	if(istype(W,/obj/item/weapon/card/id))
-		visible_message(SPAN_NOTICE("\The [user] swipes \the [W] through \the [src]."))
+		visible_message(SPAN("notice", "\The [user] swipes \the [W] through \the [src]."))
 		var/obj/item/weapon/card/id/ID = W
 		if(access_keycard_auth in ID.access)
 			if(active)
@@ -37,7 +37,7 @@
 					event_source.confirmed = 1
 					event_source.event_confirmed_by = user
 				else
-					visible_message(SPAN_WARNING("\The [src] blinks and displays a message: Unable to confirm the event with the same card."), range=2)
+					visible_message(SPAN("warning", "\The [src] blinks and displays a message: Unable to confirm the event with the same card."), range=2)
 			else if(screen == 2)
 				event_triggered_by = user
 				initial_card = ID
@@ -166,7 +166,7 @@
 			feedback_inc("alert_keycard_auth_maintRevoke",1)
 		if("Emergency Response Team")
 			if(is_ert_blocked())
-				visible_message(SPAN_WARNING("\The [src] blinks and displays a message: All emergency response teams are dispatched and can not be called at this time."), range=2)
+				visible_message(SPAN("warning", "\The [src] blinks and displays a message: All emergency response teams are dispatched and can not be called at this time."), range=2)
 				return
 
 			trigger_armed_response_team(1)
@@ -174,9 +174,9 @@
 		if("Grant Nuclear Authorization Code")
 			var/obj/machinery/nuclearbomb/nuke = locate(/obj/machinery/nuclearbomb/station) in world
 			if(nuke)
-				visible_message(SPAN_WARNING("\The [src] blinks and displays a message: The nuclear authorization code is [nuke.r_code]"), range=2)
+				visible_message(SPAN("warning", "\The [src] blinks and displays a message: The nuclear authorization code is [nuke.r_code]"), range=2)
 			else
-				visible_message(SPAN_WARNING("\The [src] blinks and displays a message: No self destruct terminal found."), range=2)
+				visible_message(SPAN("warning", "\The [src] blinks and displays a message: No self destruct terminal found."), range=2)
 			feedback_inc("alert_keycard_auth_nukecode",1)
 
 /obj/machinery/keycard_auth/proc/is_ert_blocked()

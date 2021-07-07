@@ -66,7 +66,7 @@
 
 	if(do_after(user, 15 + (user.weakened * 2), src, incapacitation_flags = ~INCAPACITATION_FORCELYING))
 		if(step_towards(user, src))
-			user.visible_message(SPAN_WARNING("<font size=1>[user] crawls on \the [src]!</font>"))
+			user.visible_message(SPAN("warning", "<font size=1>[user] crawls on \the [src]!</font>"))
 
 /turf/attack_hand(mob/user)
 	user.setClickCooldown(DEFAULT_QUICK_COOLDOWN)

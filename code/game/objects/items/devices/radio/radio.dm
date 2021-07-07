@@ -252,7 +252,7 @@
 
 	var/mob/living/carbon/C = M
 	if((istype(C)) && (C.chem_effects[CE_SEDATE]))
-		to_chat(M, SPAN_WARNING("You're unable to reach \the [src]."))
+		to_chat(M, SPAN("warning", "You're unable to reach \the [src]."))
 		return 0
 
 	if(istype(M)) M.trigger_aiming(TARGET_CAN_RADIO)
@@ -513,9 +513,9 @@
 	. = ..()
 	if ((in_range(src, user) || loc == user))
 		if (b_stat)
-			. += "\n[SPAN_NOTICE("\The [src] can be attached and modified!</span>")]"
+			. += "\n[SPAN("notice", "\The [src] can be attached and modified!</span>")]"
 		else
-			. += "\n[SPAN_NOTICE("\The [src] can not be modified or attached!</span>")]"
+			. += "\n[SPAN("notice", "\The [src] can not be modified or attached!</span>")]"
 	return
 
 /obj/item/device/radio/attackby(obj/item/weapon/W as obj, mob/user as mob)

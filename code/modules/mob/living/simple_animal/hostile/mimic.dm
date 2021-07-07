@@ -118,7 +118,7 @@ var/global/list/protected_objects = list(/obj/structure/table, /obj/structure/ca
 		if(istype(L))
 			if(prob(15))
 				L.Weaken(1)
-				L.visible_message(SPAN_DANGER("\The [src] knocks down \the [L]!"))
+				L.visible_message(SPAN("danger", "\The [src] knocks down \the [L]!"))
 
 /mob/living/simple_animal/hostile/mimic/Destroy()
 	copy_of = null

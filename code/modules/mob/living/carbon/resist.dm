@@ -114,12 +114,12 @@
 		..()
 	else
 		setClickCooldown(100)
-		visible_message(SPAN_DANGER("[src] attempts to unbuckle themself!"),
-						SPAN_WARNING("You attempt to unbuckle yourself. (This will take around 2 minutes and you need to stand still)"))
+		visible_message(SPAN("danger", "[src] attempts to unbuckle themself!"),
+						SPAN("warning", "You attempt to unbuckle yourself. (This will take around 2 minutes and you need to stand still)"))
 
 		if(do_after(src, 2 MINUTES, incapacitation_flags = INCAPACITATION_DEFAULT & ~(INCAPACITATION_RESTRAINED | INCAPACITATION_BUCKLED_FULLY)))
 			if(!buckled)
 				return
-			visible_message(SPAN_DANGER("\The [src] manages to unbuckle themself!"),
-							SPAN_NOTICE("You successfully unbuckle yourself."))
+			visible_message(SPAN("danger", "\The [src] manages to unbuckle themself!"),
+							SPAN("notice", "You successfully unbuckle yourself."))
 			buckled.user_unbuckle_mob(src)

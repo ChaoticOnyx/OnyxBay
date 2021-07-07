@@ -189,7 +189,7 @@ Frequency:
 		onclose(user, "scroll")
 		return
 	else
-		to_chat(user, SPAN_NOTICE("You flip Vortex Manipulator's protective cover open"))
+		to_chat(user, SPAN("notice", "You flip Vortex Manipulator's protective cover open"))
 		cover_open = 1
 
 		if(vcell)
@@ -205,25 +205,25 @@ Frequency:
 			if(!vcell)
 				user.drop_from_inventory(W, src)
 				vcell = W
-				to_chat(user, SPAN_NOTICE("You install a cell in [src]."))
+				to_chat(user, SPAN("notice", "You install a cell in [src]."))
 				icon_state = "vm_open"
 				update_icon()
 			else
-				to_chat(user, SPAN_NOTICE("[src] already has a cell."))
+				to_chat(user, SPAN("notice", "[src] already has a cell."))
 
 		else if(istype(W, /obj/item/weapon/screwdriver))
 			if(vcell)
 				vcell.update_icon()
 				vcell.forceMove(get_turf(src.loc))
 				vcell = null
-				to_chat(user, SPAN_NOTICE("You remove the cell from the [src]."))
+				to_chat(user, SPAN("notice", "You remove the cell from the [src]."))
 				icon_state = "vm_nocell"
 				update_icon()
 				return
 			..()
 		return
 	else
-		to_chat(user, SPAN_NOTICE("Open cover first!"))
+		to_chat(user, SPAN("notice", "Open cover first!"))
 
 /obj/item/weapon/vortex_manipulator/Topic(href, href_list)
 	var/mob/living/carbon/human/H = usr
@@ -259,11 +259,11 @@ Frequency:
 			self_activate(H)
 		else if (href_list["toggle_click_tele"])
 			teleport_on_click = !teleport_on_click
-			to_chat(H, SPAN_NOTICE("You toggle the ability of your Vortex Manipulator to teleport you with just aiming it at some location. Is it on or off now?"))
+			to_chat(H, SPAN("notice", "You toggle the ability of your Vortex Manipulator to teleport you with just aiming it at some location. Is it on or off now?"))
 		else if (href_list["close_cover"])
 			cover_open = 0
 			icon_state = "vm_closed"
-			to_chat(H, SPAN_NOTICE("You flip Vortex Manipulator's protective cover closed"))
+			to_chat(H, SPAN("notice", "You flip Vortex Manipulator's protective cover closed"))
 			update_icon()
 			return
 
@@ -283,33 +283,33 @@ Frequency:
 	if(timelord_mode || (severity == 2))
 		if(prob(25))
 			if(prob(50))
-				H.visible_message(SPAN_NOTICE("The Vortex Manipulator suddenly teleports user to specific beacon for its own reasons."))
+				H.visible_message(SPAN("notice", "The Vortex Manipulator suddenly teleports user to specific beacon for its own reasons."))
 				beaconteleport(H, 1)
 			else
 				malfunction()
 		else
 			if(prob(75))
-				H.visible_message(SPAN_NOTICE("The Vortex Manipulator is automatically trying to avoid local space-time anomaly."))
+				H.visible_message(SPAN("notice", "The Vortex Manipulator is automatically trying to avoid local space-time anomaly."))
 				localteleport(H, 1)
 			else
 				malfunction()
 	else
 		if(prob(50))
 			if(prob(50))
-				H.visible_message(SPAN_WARNING("The Vortex Manipulator violently shakes and extracts Space Carps from local bluespace anomaly!"))
+				H.visible_message(SPAN("warning", "The Vortex Manipulator violently shakes and extracts Space Carps from local bluespace anomaly!"))
 				playsound(src, 'sound/effects/phasein.ogg', 50, 1)
 				new /mob/living/simple_animal/hostile/carp(get_turf(src))
-				H.visible_message(SPAN_NOTICE("The Vortex Manipulator automatically initiates emergency area teleportation procedure."))
+				H.visible_message(SPAN("notice", "The Vortex Manipulator automatically initiates emergency area teleportation procedure."))
 				areateleport(H, 1)
 			else
 				malfunction()
 		else
 			if(prob(50))
-				H.visible_message(SPAN_WARNING("The Vortex Manipulator violently shakes and extracts Space Carps from local bluespace anomaly!"))
+				H.visible_message(SPAN("warning", "The Vortex Manipulator violently shakes and extracts Space Carps from local bluespace anomaly!"))
 				playsound(src, 'sound/effects/phasein.ogg', 50, 1)
 				new /mob/living/simple_animal/hostile/carp(get_turf(src))
 				var/temp_turf = get_turf(H)
-				H.visible_message(SPAN_NOTICE("The Vortex Manipulator suddenly teleports user to specific beacon for its own reasons."))
+				H.visible_message(SPAN("notice", "The Vortex Manipulator suddenly teleports user to specific beacon for its own reasons."))
 				beaconteleport(H, 1)
 				for(var/mob/M in range(rand(2, 7), temp_turf))
 					localteleport(M, 1)
@@ -319,7 +319,7 @@ Frequency:
 /obj/item/weapon/vortex_manipulator/afterattack(atom/A, mob/user, proximity)
 	if(proximity || !teleport_on_click) return
 	if((!vcell || (vcell.charge <= chargecost_local * 10)) && !timelord_mode)
-		to_chat(user, SPAN_NOTICE("No power source or not enough charge to teleport locally"))
+		to_chat(user, SPAN("notice", "No power source or not enough charge to teleport locally"))
 		return
 	var/turf/tempturf = get_turf(A)
 	localteleport(user, 1, tempturf.x, tempturf.y)
@@ -334,23 +334,23 @@ Frequency:
 
 /obj/item/weapon/vortex_manipulator/proc/self_activate(mob/living/carbon/human/user)
 	if(!active)
-		to_chat(user, SPAN_NOTICE("You attempt to activate Vortex Manipulator"))
+		to_chat(user, SPAN("notice", "You attempt to activate Vortex Manipulator"))
 		if(!timelord_mode)
 			var/counter = 0
 			for(var/obj/item/weapon/vortex_manipulator/VM in GLOB.vortex_manipulators)
 				if(VM.active && !VM.timelord_mode)
 					counter++
 			if (counter > 3)
-				to_chat(user, SPAN_WARNING("You fail to activate your Vortex Manipulator - local space-time can't hold any more active VMs."))
+				to_chat(user, SPAN("warning", "You fail to activate your Vortex Manipulator - local space-time can't hold any more active VMs."))
 				return
 		active = 1
 		unique_id = random_id(/obj/item/weapon/vortex_manipulator, 1111, 9999)
 		log_and_message_admins("has activated Vortex Manipulator [unique_id]!")
-		to_chat(user, SPAN_NOTICE("You successfully activate Vortex Manipulator. Its unique identifier is now: [unique_id]"))
+		to_chat(user, SPAN("notice", "You successfully activate Vortex Manipulator. Its unique identifier is now: [unique_id]"))
 		return
 	else
 		//currently not used
-		to_chat(user, SPAN_NOTICE("You deactivate your Vortex Manipulator and clean all personal settings"))
+		to_chat(user, SPAN("notice", "You deactivate your Vortex Manipulator and clean all personal settings"))
 		unique_id = 0
 		active = 0
 		timelord_mode = 0
@@ -372,10 +372,10 @@ Frequency:
 	if(!ishuman(vm_owner))
 		return
 	var/mob/living/carbon/human/H = vm_owner
-	H.visible_message(SPAN_NOTICE("The Vortex Manipulator malfunctions!"))
+	H.visible_message(SPAN("notice", "The Vortex Manipulator malfunctions!"))
 	var/turf/temp_turf = get_turf(H)
 	if(prob(3))
-		H.visible_message(SPAN_DANGER("The Vortex Manipulator releases its energy in a large explosion!"))
+		H.visible_message(SPAN("danger", "The Vortex Manipulator releases its energy in a large explosion!"))
 		explosion(temp_turf, 0, 0, 3, 4)
 		areateleport(H, 1)
 		explosion(temp_turf, 1, 2, 4, 5)
@@ -383,7 +383,7 @@ Frequency:
 			areateleport(M, 1)
 		return
 	else if(prob(10))
-		H.visible_message(SPAN_WARNING("The Vortex Manipulator violently shakes and extracts Space Carps from local space-time anomaly!"))
+		H.visible_message(SPAN("warning", "The Vortex Manipulator violently shakes and extracts Space Carps from local space-time anomaly!"))
 		playsound(src, 'sound/effects/phasein.ogg', 50, 1)
 		var/amount = rand(1,3)
 		for(var/i=0; i<amount; i++)
@@ -392,25 +392,25 @@ Frequency:
 			localteleport(M, 1)
 		return
 	else if(prob(10))
-		H.visible_message(SPAN_WARNING("The Vortex Manipulator violently shakes and releases some of its hidden energy!"))
+		H.visible_message(SPAN("warning", "The Vortex Manipulator violently shakes and releases some of its hidden energy!"))
 		explosion(get_turf(src), 0, 0, 3, 4)
 		return
 	else if(prob(15))
-		H.visible_message(SPAN_NOTICE("The Vortex Manipulator automatically initiates emergency area teleportation procedure."))
+		H.visible_message(SPAN("notice", "The Vortex Manipulator automatically initiates emergency area teleportation procedure."))
 		areateleport(H, 1)
 		for(var/mob/M in range(rand(3, 7), temp_turf))
 			beaconteleport(M, 1)
 		return
 	else if(prob(30))
-		H.visible_message(SPAN_NOTICE("The Vortex Manipulator suddenly teleports user to specific beacon for its own reasons."))
+		H.visible_message(SPAN("notice", "The Vortex Manipulator suddenly teleports user to specific beacon for its own reasons."))
 		beaconteleport(H, 1)
 		for(var/mob/M in range(rand(3, 7), temp_turf))
 			localteleport(M, 1)
 		return
 	else if(prob(40))
-		H.visible_message(SPAN_NOTICE("The Vortex Manipulator is automatically trying to avoid local space-time anomaly."))
+		H.visible_message(SPAN("notice", "The Vortex Manipulator is automatically trying to avoid local space-time anomaly."))
 		if(prob(50))
-			H.visible_message(SPAN_WARNING("The Vortex Manipulator fails to avoid local space-time anomaly!"))
+			H.visible_message(SPAN("warning", "The Vortex Manipulator fails to avoid local space-time anomaly!"))
 			for(var/mob/M in range(rand(3, 7), temp_turf))
 				localteleport(M, 1)
 			return
@@ -469,12 +469,12 @@ Frequency:
 		var/obj/item/weapon/cell/quantum/Q = vcell
 		if(Q.partner)
 			playsound(src, 'sound/effects/phasein.ogg', 50, 1)
-			user.visible_message(SPAN_WARNING("The Vortex Manipulator turns into a potato!"))
+			user.visible_message(SPAN("warning", "The Vortex Manipulator turns into a potato!"))
 			new /obj/item/weapon/cell/potato(get_turf(src))
 			qdel(src)
 			return
 	log_and_message_admins("has used Vortex Manipulator's Local Massive Random ability.")
-	user.visible_message(SPAN_WARNING("The Vortex Manipulator announces: Battle function activated. Assembling local space-time anomaly."))
+	user.visible_message(SPAN("warning", "The Vortex Manipulator announces: Battle function activated. Assembling local space-time anomaly."))
 	var/turf/temp_turf = get_turf(user)
 	for(var/mob/M in range(5, temp_turf))
 		var/vortexchecktemp = 0
@@ -499,7 +499,7 @@ Frequency:
 	for(var/obj/item/weapon/vortex_manipulator/VM in GLOB.vortex_manipulators)
 		var/H = VM.get_owner()
 		if (ishuman(H) && (VM.active || nonactive_announce))
-			to_chat(H, SPAN_DANGER("Your Vortex Manipulator suddenly announces with voice of [user]: [input]"))
+			to_chat(H, SPAN("danger", "Your Vortex Manipulator suddenly announces with voice of [user]: [input]"))
 	deductcharge(chargecost_beacon)
 
 
@@ -596,7 +596,7 @@ Frequency:
  */
 
 /obj/item/weapon/vortex_manipulator/proc/bluespace_malf(mob/user)
-	user.visible_message(SPAN_WARNING("The Vortex Manipulator announces: Bluespace cell detected. Heading to its pair."))
+	user.visible_message(SPAN("warning", "The Vortex Manipulator announces: Bluespace cell detected. Heading to its pair."))
 	var/obj/item/weapon/cell/quantum/quacell = vcell
 	user.forceMove(get_turf(quacell.partner))
 

@@ -36,8 +36,8 @@
 
 /datum/modifier/vulnerability/New(new_holder, new_origin)
 	. = ..()
-	on_created_text = SPAN_WARNING("You are now weak, something affects your well-being!")
-	on_expired_text = SPAN_NOTICE("You feel better.")
+	on_created_text = SPAN("warning", "You are now weak, something affects your well-being!")
+	on_expired_text = SPAN("notice", "You feel better.")
 
 /datum/disease2/effect/musclerace
 	name = "Reverse Muscle Overstrain Effect"
@@ -76,8 +76,8 @@
 
 /datum/modifier/musclerace/New(new_holder, new_origin)
 	. = ..()
-	on_created_text = SPAN_WARNING("You are incredibly strong right now, this is not for long!")
-	on_expired_text = SPAN_NOTICE("You feel better.")
+	on_created_text = SPAN("warning", "You are incredibly strong right now, this is not for long!")
+	on_expired_text = SPAN("notice", "You feel better.")
 
 // Atom Virus
 /datum/disease2/effect/nuclear
@@ -124,12 +124,12 @@
 	if(!codes_received)
 		var/obj/machinery/nuclearbomb/nuke = locate(/obj/machinery/nuclearbomb/station) in world
 		if(nuke && mob.mind)
-			to_chat(mob, SPAN_DANGER("Station Self Destruction Code is [nuke.r_code]. Write and dont forget, its very important, you have to blow up the station and get to know the Atom. Your consciousness will tell you everything you need."))
+			to_chat(mob, SPAN("danger", "Station Self Destruction Code is [nuke.r_code]. Write and dont forget, its very important, you have to blow up the station and get to know the Atom. Your consciousness will tell you everything you need."))
 			mob.mind.store_memory("[nuke.r_code]")
 			mob.mind.store_memory("<B>ATOM WILL TELL ME THE WAY</B>")
 			codes_received = 1
 	if(prob(30))
-		to_chat(mob, SPAN_NOTICE("... [pick(reflections)] ..."))
+		to_chat(mob, SPAN("notice", "... [pick(reflections)] ..."))
 		if(prob(5))
 			mob.whisper_say("[pick(reflections)]")
 	if(mob.reagents.get_reagent_amount(/datum/reagent/tramadol/oxycodone) < 10)
@@ -151,8 +151,8 @@
 
 /datum/modifier/nuclear/New(new_holder, new_origin)
 	. = ..()
-	on_created_text = SPAN_WARNING("I need to do everything possible to merge with the Atom!")
-	on_expired_text = SPAN_NOTICE("You feel rather weak.")
+	on_created_text = SPAN("warning", "I need to do everything possible to merge with the Atom!")
+	on_expired_text = SPAN("notice", "You feel rather weak.")
 
 ////////////////////////STAGE 2/////////////////////////////////
 
@@ -167,7 +167,7 @@
 	mob.nutrition = max(0, mob.nutrition - 1000)
 	mob.custom_emote(message = "hisses")
 	if(prob(25))
-		to_chat(mob, SPAN_DANGER("[pick("You want to eat more than anything in this life!", "You feel your stomach begin to devour itself!", "You are ready to kill for food!", "You urgently need to find food!")]"))
+		to_chat(mob, SPAN("danger", "[pick("You want to eat more than anything in this life!", "You feel your stomach begin to devour itself!", "You are ready to kill for food!", "You urgently need to find food!")]"))
 
 //Atom Virus
 /datum/disease2/effect/nuclear_exacerbation
@@ -201,7 +201,7 @@
 	if(..())
 		return
 	if(prob(25))
-		to_chat(mob, SPAN_DANGER("[pick(reflections)]"))
+		to_chat(mob, SPAN("danger", "[pick(reflections)]"))
 	if(mob.reagents.get_reagent_amount(/datum/reagent/hyperzine) < 10)
 		mob.reagents.add_reagent(/datum/reagent/hyperzine, 4)
 	if(mob.reagents.get_reagent_amount(/datum/reagent/bicaridine) < 25)
@@ -219,13 +219,13 @@
 	if(..())
 		return
 	if(mob.reagents.get_reagent_amount(/datum/reagent/alkysine) > 5)
-		to_chat(mob, SPAN_NOTICE("You feel better."))
+		to_chat(mob, SPAN("notice", "You feel better."))
 	else
 		if(mob.getBrainLoss() < 90)
 			mob.emote("drool")
 			mob.adjustBrainLoss(9)
 			if(prob(2))
-				to_chat(mob, SPAN_WARNING("Your try to remember something important... But can't."))
+				to_chat(mob, SPAN("warning", "Your try to remember something important... But can't."))
 		if(prob(5))
 			mob.confused += 5
 
@@ -241,10 +241,10 @@
 	if(..())
 		return
 	if(prob(35))
-		to_chat(mob, SPAN_DANGER("Your inner energy breaks out!"))
+		to_chat(mob, SPAN("danger", "Your inner energy breaks out!"))
 		empulse(mob.loc, 3, 2)
 	if(prob(50))
-		to_chat(mob, SPAN_WARNING("You are overwhelmed with electricity from the inside!"))
+		to_chat(mob, SPAN("warning", "You are overwhelmed with electricity from the inside!"))
 		var/datum/effect/effect/system/spark_spread/s = new /datum/effect/effect/system/spark_spread
 		s.set_up(5, 1, mob)
 		s.start()
@@ -262,7 +262,7 @@
 	if(..())
 		return
 	if(prob(10))
-		to_chat(mob, SPAN_DANGER("The atom was mistaken in you, you received a great gift and could not live up to expectations, good luck."))
+		to_chat(mob, SPAN("danger", "The atom was mistaken in you, you received a great gift and could not live up to expectations, good luck."))
 		var/obj/item/organ/internal/brain/B = mob.internal_organs_by_name[BP_BRAIN]
 		if(B && B.damage < B.min_broken_damage)
 			B.take_internal_damage(150)

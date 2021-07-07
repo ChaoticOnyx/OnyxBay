@@ -108,7 +108,7 @@
 
 /obj/machinery/resleever/tgui_interact(mob/user, datum/tgui/ui)
 	ui = SStgui.try_update_ui(user, src, ui)
-	
+
 	if(!ui)
 		ui = new(user, src, "ReSleever", name)
 		ui.open()
@@ -221,7 +221,7 @@
 
 /obj/machinery/resleever/MouseDrop_T(mob/target, mob/user)
 	if(occupant)
-		to_chat(user, SPAN_WARNING("\The [src] is in use."))
+		to_chat(user, SPAN("warning", "\The [src] is in use."))
 		return
 
 	if(!ismob(target))

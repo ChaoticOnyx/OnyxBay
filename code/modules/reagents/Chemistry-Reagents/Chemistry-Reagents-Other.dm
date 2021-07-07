@@ -184,7 +184,7 @@
 				GLOB.cult.remove_antagonist(usr.mind, 1)
 			if(prob(2))
 				var/obj/effect/spider/spiderling/S = new /obj/effect/spider/spiderling(M.loc)
-				M.visible_message(SPAN_WARNING("\The [M] coughs up \the [S]!</span>"))
+				M.visible_message(SPAN("warning", "\The [M] coughs up \the [S]!</span>"))
 
 		if(M.mind && M.mind.vampire)
 			M.adjustFireLoss(6)
@@ -192,7 +192,7 @@
 			M.IgniteMob()
 			if(prob(20))
 				for (var/mob/V in viewers(src))
-					V.show_message(SPAN_WARNING("[M]'s skin sizzles and burns."), 1)
+					V.show_message(SPAN("warning", "[M]'s skin sizzles and burns."), 1)
 /datum/reagent/water/holywater/touch_turf(turf/T)
 	if(volume >= 5)
 		T.holy = TRUE

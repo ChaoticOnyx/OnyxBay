@@ -15,15 +15,15 @@
 /obj/machinery/gamepod/attackby(obj/item/I, mob/user)
 	if(istype(I, /obj/item/weapon/card/id))
 		if(is_payed)
-			to_chat(user, SPAN_NOTICE("It is already payed."))
+			to_chat(user, SPAN("notice", "It is already payed."))
 			return
 		scan_card(I)
 	else if(istype(I, /obj/item/weapon/card/emag))
 		if(emagged)
-			to_chat(user, SPAN_NOTICE("It is already broken."))
+			to_chat(user, SPAN("notice", "It is already broken."))
 			return
 		else
-			to_chat(user, SPAN_NOTICE("You broke something."))
+			to_chat(user, SPAN("notice", "You broke something."))
 		emagged = TRUE
 	else if(isScrewdriver(I))
 		playsound(loc, 'sound/items/Screwdriver.ogg', 50, 1)
@@ -31,17 +31,17 @@
 			panel_open = 1
 			if(occupant)
 				move_outside()
-			to_chat(user, SPAN_NOTICE("You open the maintenance hatch of [src]."))
+			to_chat(user, SPAN("notice", "You open the maintenance hatch of [src]."))
 			return
 		panel_open = 0
-		to_chat(user, SPAN_NOTICE("You close the maintenance hatch of [src]."))
+		to_chat(user, SPAN("notice", "You close the maintenance hatch of [src]."))
 		return
 	else if(isCrowbar(I))
 		if(!panel_open)
-			to_chat(user, SPAN_NOTICE("You must open the maintenance hatch first."))
+			to_chat(user, SPAN("notice", "You must open the maintenance hatch first."))
 			return
 		playsound(loc, 'sound/items/Crowbar.ogg', 50, 1)
-		to_chat(user, SPAN_NOTICE("You pry off the circutry."))
+		to_chat(user, SPAN("notice", "You pry off the circutry."))
 		var/obj/machinery/constructable_frame/machine_frame/M = new /obj/machinery/constructable_frame/machine_frame(loc)
 		M.state = 2
 		M.icon_state = "box_1"
@@ -61,11 +61,11 @@
 	if(attempt_pin)
 		D = attempt_account_access(C.associated_account_number, attempt_pin, 2)
 	if(!D)
-		to_chat(user, SPAN_WARNING("No access granted!"))
+		to_chat(user, SPAN("warning", "No access granted!"))
 		return
 	var/transaction_amount = PRICE_PER_USE
 	if(transaction_amount > D.money)
-		to_chat(user, SPAN_WARNING("You don't have that much money!"))
+		to_chat(user, SPAN("warning", "You don't have that much money!"))
 		return
 	D.money -= transaction_amount
 	station_account.money += transaction_amount
@@ -80,7 +80,7 @@
 	T.target_name = D.owner_name
 	station_account.transaction_log.Add(T)
 	qdel(T)
-	to_chat(user, SPAN_NOTICE("Transaction successful. Have a nice time."))
+	to_chat(user, SPAN("notice", "Transaction successful. Have a nice time."))
 	is_payed = TRUE
 	if(occupant)
 		create_body()
@@ -94,22 +94,22 @@
 		return
 
 	if(!is_payed)
-		to_chat(usr, SPAN_NOTICE("Pay first."))
+		to_chat(usr, SPAN("notice", "Pay first."))
 		return
 	move_inside(usr)
-	to_chat(usr, SPAN_WARNING("Welcome to battleroyal game"))
+	to_chat(usr, SPAN("warning", "Welcome to battleroyal game"))
 
 /obj/machinery/gamepod/MouseDrop_T(mob/target, mob/user)
 	if(user != target || target.stat != CONSCIOUS || !(ishuman(target)))
 		return
 	if(!is_payed)
-		to_chat(user, SPAN_NOTICE("Pay first."))
+		to_chat(user, SPAN("notice", "Pay first."))
 		return
 	move_inside(target)
 
 /obj/machinery/gamepod/proc/move_inside(mob/living/carbon/human/H, mob/user)
 	if(occupant)
-		to_chat(user, SPAN_NOTICE("[src] is in use."))
+		to_chat(user, SPAN("notice", "[src] is in use."))
 		return
 
 	if(!powered())
@@ -122,7 +122,7 @@
 
 /obj/machinery/gamepod/proc/create_body(mob/user)
 	if(!GLOB.thunderfield_spawns_list.len)
-		to_chat(user, SPAN_WARNING("No spawn points are available. Something went wrong."))
+		to_chat(user, SPAN("warning", "No spawn points are available. Something went wrong."))
 		return
 	if(!occupant.mind)//How that can even happen?
 		return
@@ -147,7 +147,7 @@
 	set src in oview(1)
 
 	if(usr != occupant || usr.stat != CONSCIOUS || !(ishuman(usr) || !(isMonkey(usr))))
-		to_chat(usr, SPAN_NOTICE("You cant do that."))
+		to_chat(usr, SPAN("notice", "You cant do that."))
 		return
 	move_outside()
 
@@ -159,7 +159,7 @@
 	if(occupant_mind) //We need to get player back
 		if(occupant in src)
 			occupant.dropInto(loc)
-		to_chat(occupant, SPAN_WARNING("Temporary issues, VR aborted."))
+		to_chat(occupant, SPAN("warning", "Temporary issues, VR aborted."))
 		occupant_mind.thunderfield_cheater = FALSE
 		occupant_mind = null
 		occupant = null

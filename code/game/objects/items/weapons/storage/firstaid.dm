@@ -183,20 +183,20 @@
 
 /obj/item/weapon/storage/pill_bottle/attack_self(mob/user)
 	if(user.get_inactive_hand())
-		to_chat(user, SPAN_NOTICE("You need an empty hand to take something out."))
+		to_chat(user, SPAN("notice", "You need an empty hand to take something out."))
 		return
 	if(length(contents))
 		var/obj/item/I = contents[1]
 		if(!remove_from_storage(I, user))
 			return
 		if(user.put_in_inactive_hand(I))
-			to_chat(user, SPAN_NOTICE("You take \the [I] out of \the [src]."))
+			to_chat(user, SPAN("notice", "You take \the [I] out of \the [src]."))
 			user.swap_hand()
 		else
 			I.dropInto(loc)
-			to_chat(user, SPAN_WARNING("You fumble around with \the [src] and drop \the [I] on the floor."))
+			to_chat(user, SPAN("warning", "You fumble around with \the [src] and drop \the [I] on the floor."))
 	else
-		to_chat(user, SPAN_WARNING("\The [src] is empty."))
+		to_chat(user, SPAN("warning", "\The [src] is empty."))
 
 /obj/item/weapon/storage/pill_bottle/attack(mob/M, mob/user, def_zone)
 	if(spam_flag)

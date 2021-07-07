@@ -730,7 +730,7 @@
 		M.Weaken(2)
 		M.Stun(2)
 	if(M.chem_doses[type] == round(threshold * 0.5, metabolism))
-		to_chat(M, SPAN_WARNING("Your muscles slacken and cease to obey you."))
+		to_chat(M, SPAN("warning", "Your muscles slacken and cease to obey you."))
 	if(M.chem_doses[type] >= threshold)
 		M.add_chemical_effect(CE_SEDATE, 1)
 		M.eye_blurry = max(M.eye_blurry, 10)

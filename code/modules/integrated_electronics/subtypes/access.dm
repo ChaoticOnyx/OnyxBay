@@ -24,7 +24,7 @@
 	if(card) // An ID card.
 		set_pin_data(IC_OUTPUT, 1, card.registered_name)
 		set_pin_data(IC_OUTPUT, 2, card.assignment)
-		to_chat(user, SPAN_NOTICE("You slide ID card into [get_object()]"))
+		to_chat(user, SPAN("notice", "You slide ID card into [get_object()]"))
 
 	else if(length(access))	// A non-card object that has access levels.
 		set_pin_data(IC_OUTPUT, 1, null)

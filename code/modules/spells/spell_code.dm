@@ -18,7 +18,7 @@ var/list/spells = typesof(/spell) //needed for the badmin verb for now
 
 	var/charge_max = 100 //recharge time in deciseconds if charge_type = Sp_RECHARGE or starting charges if charge_type = Sp_CHARGES
 	var/charge_counter = 0 //can only cast spells if it equals recharge, ++ each decisecond if charge_type = Sp_RECHARGE or -- each cast if charge_type = Sp_CHARGES
-	var/still_recharging_msg = SPAN_NOTICE("The spell is still recharging.")
+	var/still_recharging_msg = SPAN("notice", "The spell is still recharging.")
 
 	var/silenced = 0 //not a binary - the length of time we can't cast this for
 	var/processing = FALSE //are we processing already? Mainly used so that silencing a spell doesn't call process() again. (and inadvertedly making it run twice as fast)
@@ -217,12 +217,12 @@ var/list/spells = typesof(/spell) //needed for the badmin verb for now
 
 	if(!(src in user.mind.learned_spells) && holder == user && !(isanimal(user)))
 		error("[user] utilized the spell '[src]' without having it.")
-		to_chat(user, SPAN_WARNING("You shouldn't have this spell! Something's wrong."))
+		to_chat(user, SPAN("warning", "You shouldn't have this spell! Something's wrong."))
 		return FALSE
 
 	var/turf/user_turf = get_turf(user)
 	if(!user_turf)
-		to_chat(user, SPAN_WARNING("You cannot cast spells in null space!"))
+		to_chat(user, SPAN("warning", "You cannot cast spells in null space!"))
 
 	if((spell_flags & Z2NOCAST) && (user_turf.z in GLOB.using_map.admin_levels)) //Certain spells are not allowed on the centcomm zlevel
 		return FALSE
@@ -235,7 +235,7 @@ var/list/spells = typesof(/spell) //needed for the badmin verb for now
 	if(istype(user, /mob/living/simple_animal) && holder == user)
 		var/mob/living/simple_animal/SA = user
 		if(SA.purge)
-			to_chat(SA, SPAN_WARNING("The nullrod's power interferes with your own!"))
+			to_chat(SA, SPAN("warning", "The nullrod's power interferes with your own!"))
 			return FALSE
 
 	if(!src.check_charge(skipcharge, user)) //sees if we can cast based on charges alone
@@ -267,7 +267,7 @@ var/list/spells = typesof(/spell) //needed for the badmin verb for now
 					return FALSE
 			if(Sp_CHARGES)
 				if(!charge_counter)
-					to_chat(user, SPAN_NOTICE("[name] has no charges left."))
+					to_chat(user, SPAN("notice", "[name] has no charges left."))
 					return FALSE
 	return TRUE
 

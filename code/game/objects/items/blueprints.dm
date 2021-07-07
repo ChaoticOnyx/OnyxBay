@@ -25,7 +25,7 @@
 
 /obj/item/blueprints/attack_self(mob/M)
 	if(!ishuman(M))
-		to_chat(M, SPAN_WARNING("This stack of blue paper means nothing to you."))//monkeys cannot into projecting
+		to_chat(M, SPAN("warning", "This stack of blue paper means nothing to you."))//monkeys cannot into projecting
 		return
 	add_fingerprint(M)
 	interact(M)
@@ -36,7 +36,7 @@
 	if((usr.restrained() || usr.stat))
 		return
 	if(!usr.is_item_in_hands(src))
-		to_chat(usr, SPAN_WARNING("You need to hold \the [src] in your hands!"))
+		to_chat(usr, SPAN("warning", "You need to hold \the [src] in your hands!"))
 		return
 	switch(href_list["action"])
 		if("create_area")
@@ -116,20 +116,20 @@ move an amendment</a> to the drawing, or <a href='?src=\ref[src];action=delete_a
 	if(!istype(res,/list))
 		switch(res)
 			if(ROOM_ERR_SPACE)
-				to_chat(user, SPAN_WARNING("The new area must be completely airtight!"))
+				to_chat(user, SPAN("warning", "The new area must be completely airtight!"))
 				return
 			if(ROOM_ERR_TOOLARGE)
-				to_chat(user, SPAN_WARNING("The new area too large!"))
+				to_chat(user, SPAN("warning", "The new area too large!"))
 				return
 			else
-				to_chat(user, SPAN_WARNING("Error! Please notify administration!"))
+				to_chat(user, SPAN("warning", "Error! Please notify administration!"))
 				return
 	var/list/turf/turfs = res
 	var/str = sanitizeSafe(input(user, "New area name:","Blueprint Editing", ""), MAX_NAME_LEN)
 	if(!str || !length(str))
 		return
 	if(length(str) > 50)
-		to_chat(user, SPAN_WARNING("Name too long."))
+		to_chat(user, SPAN("warning", "Name too long."))
 		return
 	var/area/A = new
 	A.SetName(str)
@@ -159,11 +159,11 @@ move an amendment</a> to the drawing, or <a href='?src=\ref[src];action=delete_a
 	if(!str || !length(str) || str==prevname) //cancel
 		return
 	if(length(str) > 50)
-		to_chat(usr, SPAN_WARNING("Text too long."))
+		to_chat(usr, SPAN("warning", "Text too long."))
 		return
 	set_area_machinery_title(A,str,prevname)
 	A.SetName(str)
-	to_chat(usr, SPAN_NOTICE("You set the area '[prevname]' title to '[str]'."))
+	to_chat(usr, SPAN("notice", "You set the area '[prevname]' title to '[str]'."))
 	interact()
 	return
 
@@ -174,7 +174,7 @@ move an amendment</a> to the drawing, or <a href='?src=\ref[src];action=delete_a
 	if(get_area_type(A) != AREA_STATION || A.apc) //let's just check this one last time, just in case
 		interact()
 		return
-	to_chat(user, SPAN_NOTICE("You instructed nano-machines to remove [A.name] from the blueprint. You just have to wait."))
+	to_chat(user, SPAN("notice", "You instructed nano-machines to remove [A.name] from the blueprint. You just have to wait."))
 	log_and_message_admins("deleted area [A.name] via station blueprints.")
 	qdel(A)
 	interact(user)

@@ -51,7 +51,7 @@ SUBSYSTEM_DEF(storyteller)
 	if(__storyteller_tick == -1) // first tick is called with default 'wait', we need our tick with our value of 'wait'
 		__storyteller_tick = 0
 		return
-	
+
 	ASSERT(evacuation_controller)
 	if(evacuation_controller.is_evacuating())
 		_log_debug("Skip cycle due to evacuation. The next try is scheduled for 1 minute")
@@ -66,7 +66,7 @@ SUBSYSTEM_DEF(storyteller)
 
 /datum/controller/subsystem/storyteller/proc/__get_params_for_ui(current_tab)
 	var/list/data = new
-	
+
 	switch (current_tab)
 		if ("StorytellerCPCharacterTab")
 			data["character"] = __character ? __character.get_params_for_ui() : null
@@ -85,9 +85,9 @@ SUBSYSTEM_DEF(storyteller)
 				if (trigger.can_be_invoked())
 					triggers_data[type] = trigger.get_params_for_ui()
 			data["triggers"] = triggers_data
-		
+
 		else crash_with("Bad tab key")
-	
+
 	return data
 
 /datum/controller/subsystem/storyteller/proc/open_control_panel(mob/user, drop_data = TRUE)
@@ -142,7 +142,7 @@ SUBSYSTEM_DEF(storyteller)
 		var/trigger_type = text2path(href_list["invoke_trigger"])
 		ASSERT(ispath(trigger_type, /storyteller_trigger))
 		var/result = run_trigger(trigger_type)
-		to_chat(user, SPAN_WARNING("Trigger '[trigger_type]' was [result ? " completed successfuly!" : " failed!"]"))
+		to_chat(user, SPAN("warning", "Trigger '[trigger_type]' was [result ? " completed successfuly!" : " failed!"]"))
 		open_control_panel(user, drop_data = FALSE)
 
 	return 0

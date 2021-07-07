@@ -148,23 +148,23 @@
 /mob/living/simple_animal/corgi/attackby(obj/item/O, mob/user)  // Marker -Agouri
 	if(user.a_intent == I_HELP && istype(O, /obj/item/clothing/head)) 	// Equiping corgi with a cool hat!
 		if(istype(O, /obj/item/clothing/head/helmet)) 					// Looks too bad on corgi
-			to_chat(user, SPAN_WARNING("\The [O] is too small for [name] head."))
+			to_chat(user, SPAN("warning", "\The [O] is too small for [name] head."))
 			return
 		if(istype(O, /obj/item/clothing/head/kitty)) // Tail of kitty ears in not properly aligned
-			to_chat(user, SPAN_WARNING("[name] cannot wear \the [O]!"))
+			to_chat(user, SPAN("warning", "[name] cannot wear \the [O]!"))
 			return
 		if(hat)
-			to_chat(user, SPAN_WARNING("[name] is already wearing \the [hat]."))
+			to_chat(user, SPAN("warning", "[name] is already wearing \the [hat]."))
 			return
 		user.unEquip(O)
 		wear_hat(O)
-		user.visible_message(SPAN_WARNING("[user] puts \the [O] on [name]."))
+		user.visible_message(SPAN("warning", "[user] puts \the [O] on [name]."))
 		return
 	if(istype(O, /obj/item/weapon/newspaper))
 		if(!stat)
 			for(var/mob/M in viewers(user, null))
 				if ((M.client && !( M.blinded )))
-					M.show_message(SPAN_WARNING("[user] baps [name] on the nose with the rolled up [O]!"))
+					M.show_message(SPAN("warning", "[user] baps [name] on the nose with the rolled up [O]!"))
 			spawn(0)
 				for(var/i in list(1,2,4,8,4,2,1,2))
 					set_dir(i)
@@ -238,7 +238,7 @@
 //pupplies cannot wear anything.
 /mob/living/simple_animal/corgi/puppy/Topic(href, href_list)
 	if(href_list["remove_inv"] || href_list["add_inv"])
-		to_chat(usr, SPAN_WARNING("You can't fit this on [src]"))
+		to_chat(usr, SPAN("warning", "You can't fit this on [src]"))
 		return
 	..()
 
@@ -261,7 +261,7 @@
 //Lisa already has a cute bow!
 /mob/living/simple_animal/corgi/Lisa/Topic(href, href_list)
 	if(href_list["remove_inv"] || href_list["add_inv"])
-		to_chat(usr, SPAN_WARNING("[src] already has a cute bow!"))
+		to_chat(usr, SPAN("warning", "[src] already has a cute bow!"))
 		return
 	..()
 

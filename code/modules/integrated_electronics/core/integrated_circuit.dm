@@ -193,7 +193,7 @@ a creative player the means to solve many problems.  Circuits are held inside an
 	if(check_interactivity(M))
 		if(!input)
 			input = name
-		to_chat(M, SPAN_NOTICE("The circuit '[name]' is now labeled '[input]'."))
+		to_chat(M, SPAN("notice", "The circuit '[name]' is now labeled '[input]'."))
 		displayed_name = input
 
 /obj/item/integrated_circuit/interact(mob/user)
@@ -342,7 +342,7 @@ a creative player the means to solve many problems.  Circuits are held inside an
 			if(istype(held_item, /obj/item/device/integrated_electronics) || isMultitool(held_item))
 				update_to_assembly = pin.handle_wire(linked, held_item, href_list["act"], usr)
 			else
-				to_chat(usr, SPAN_WARNING("You can't do a whole lot without the proper tools."))
+				to_chat(usr, SPAN("warning", "You can't do a whole lot without the proper tools."))
 				success = FALSE
 			if(success && assembly)
 				assembly.add_allowed_scanner(usr.ckey)
@@ -353,9 +353,9 @@ a creative player the means to solve many problems.  Circuits are held inside an
 			if(D.accepting_refs)
 				D.afterattack(src, usr, TRUE)
 			else
-				to_chat(usr, SPAN_WARNING("The debugger's 'ref scanner' needs to be on."))
+				to_chat(usr, SPAN("warning", "The debugger's 'ref scanner' needs to be on."))
 		else
-			to_chat(usr, SPAN_WARNING("You need a debugger set to 'ref' mode to do that."))
+			to_chat(usr, SPAN("warning", "You need a debugger set to 'ref' mode to do that."))
 
 	if(href_list["return"])
 		update_to_assembly = TRUE

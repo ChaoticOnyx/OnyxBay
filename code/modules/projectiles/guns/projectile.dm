@@ -168,11 +168,11 @@
 		if(allow_dump)
 			user.drop_from_inventory(ammo_magazine)
 			user.visible_message("[user] ejects [ammo_magazine] from [src].",
-			SPAN_NOTICE("You eject [ammo_magazine] from [src]."))
+			SPAN("notice", "You eject [ammo_magazine] from [src]."))
 		else
 			user.put_in_hands(ammo_magazine)
 			user.visible_message("[user] removes [ammo_magazine] from [src].",
-			SPAN_NOTICE("You remove [ammo_magazine] from [src]."))
+			SPAN("notice", "You remove [ammo_magazine] from [src]."))
 		playsound(src.loc, mag_eject_sound, 75)
 		ammo_magazine.update_icon()
 		ammo_magazine = null

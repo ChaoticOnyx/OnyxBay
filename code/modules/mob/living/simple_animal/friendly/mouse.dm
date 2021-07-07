@@ -107,7 +107,7 @@
 /mob/living/simple_animal/mouse/examine(mob/user)
 	. = ..()
 	if(holding_item)
-		. += "\n[SPAN_NOTICE("You may notice that she has \a [holding_item] glued with tape.")]"
+		. += "\n[SPAN("notice", "You may notice that she has \a [holding_item] glued with tape.")]"
 
 /mob/living/simple_animal/mouse/proc/splat()
 	icon_dead = "mouse_[body_color]_splat"
@@ -119,7 +119,7 @@
 		var/mob/living/carbon/human/H = A
 
 		if(hiding)
-			to_chat(src, SPAN_WARNING("You can't bite while you are hiding!"))
+			to_chat(src, SPAN("warning", "You can't bite while you are hiding!"))
 			return
 
 		var/available_limbs = H.lying ? BP_ALL_LIMBS : BP_FEET
@@ -132,8 +132,8 @@
 		var/blocked = H.run_armor_check(limb.organ_tag, "melee")
 		for(var/obj/item/clothing/clothes in list(H.head, H.wear_mask, H.wear_suit, H.w_uniform, H.gloves, H.shoes))
 			if(istype(clothes) && (clothes.body_parts_covered & limb.body_part) && ((clothes.item_flags & ITEM_FLAG_THICKMATERIAL) || (blocked >= 30)))
-				visible_message(SPAN_NOTICE("[src] bites [H]'s [clothes] harmlessly."),
-								SPAN_WARNING("You failed to bite through [H]'s [clothes]."))
+				visible_message(SPAN("notice", "[src] bites [H]'s [clothes] harmlessly."),
+								SPAN("warning", "You failed to bite through [H]'s [clothes]."))
 				do_attack_animation(H)
 				return
 
@@ -141,8 +141,8 @@
 			limb.germ_level += rand(75, 150)
 			if(virus)
 				infect_virus2(H, virus)
-		visible_message(SPAN_DANGER("[src] bites [H]'s [organ_name_by_zone(H, limb.organ_tag)]!"),
-						SPAN_WARNING("You bite [H]'s [organ_name_by_zone(H, limb.organ_tag)]!"))
+		visible_message(SPAN("danger", "[src] bites [H]'s [organ_name_by_zone(H, limb.organ_tag)]!"),
+						SPAN("warning", "You bite [H]'s [organ_name_by_zone(H, limb.organ_tag)]!"))
 		admin_attack_log(src, H, "Bit the victim", "Was bitten", "bite")
 		setClickCooldown(DEFAULT_ATTACK_COOLDOWN)
 		do_attack_animation(H)
@@ -165,8 +165,8 @@
 /mob/living/simple_animal/mouse/attack_hand(mob/living/carbon/human/user)
 	if(holding_item && user.a_intent == I_HELP)
 		user.put_in_hands(holding_item)
-		user.visible_message(SPAN_NOTICE("[user] removes \the [holding_item] from \the [name]."),
-							SPAN_NOTICE("You remove \the [holding_item] from \the [name]."))
+		user.visible_message(SPAN("notice", "[user] removes \the [holding_item] from \the [name]."),
+							SPAN("notice", "You remove \the [holding_item] from \the [name]."))
 		holding_item = null
 		playsound(loc, 'sound/effects/duct_tape_peeling_off.ogg', 50, 1)
 		update_icon()
@@ -175,16 +175,16 @@
 
 /mob/living/simple_animal/mouse/attackby(obj/item/O, mob/user)
 	if(!holding_item && user.a_intent == I_HELP && istype(user.get_inactive_hand(), /obj/item/weapon/tape_roll) && O.w_class == ITEM_SIZE_TINY)
-		user.visible_message(SPAN_NOTICE("[user] is trying to attach \a [O] with duct tape to \the [name]."),
-							SPAN_NOTICE("You are trying to attach \a [O] with duct tape to \the [name]."))
+		user.visible_message(SPAN("notice", "[user] is trying to attach \a [O] with duct tape to \the [name]."),
+							SPAN("notice", "You are trying to attach \a [O] with duct tape to \the [name]."))
 		if(do_after(user, 3 SECONDS, src))
 			if(holding_item)
 				return
 			holding_item = O
 			user.drop_item()
 			O.loc = src
-			user.visible_message(SPAN_NOTICE("[user] attaches \the [O] with duct tape to \the [name]."),
-								SPAN_NOTICE("You attach \the [O] with duct tape to \the [name]."))
+			user.visible_message(SPAN("notice", "[user] attaches \the [O] with duct tape to \the [name]."),
+								SPAN("notice", "You attach \the [O] with duct tape to \the [name]."))
 			playsound(loc, 'sound/effects/duct_tape.ogg', 50, 1)
 			update_icon()
 	else

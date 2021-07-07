@@ -428,24 +428,24 @@
 	var/obj/item/grab/G = user.get_inactive_hand()
 	if(G?.affecting == target)
 		if(!G?.current_grab?.can_absorb)
-			to_chat(user, SPAN_NOTICE("You need a better grab for this."))
+			to_chat(user, SPAN("notice", "You need a better grab for this."))
 			return
 
 		var/obj/item/organ/external/head/head = target.organs_by_name[BP_HEAD]
 		if(!istype(head))
-			to_chat(user, SPAN_NOTICE("You can't shoot in [target]'s mouth because you can't find their head."))
+			to_chat(user, SPAN("notice", "You can't shoot in [target]'s mouth because you can't find their head."))
 			return
 
 		var/obj/item/clothing/head/helmet = target.get_equipped_item(slot_head)
 		var/obj/item/clothing/mask/mask = target.get_equipped_item(slot_wear_mask)
 		if((istype(helmet) && (helmet.body_parts_covered & HEAD)) || (istype(mask) && (mask.body_parts_covered & FACE)))
-			to_chat(user, SPAN_NOTICE("You can't shoot in [target]'s mouth because their face is covered."))
+			to_chat(user, SPAN("notice", "You can't shoot in [target]'s mouth because their face is covered."))
 			return
 
 		weapon_in_mouth = TRUE
-		target.visible_message(SPAN_DANGER("[user] sticks their gun in [target]'s mouth, ready to pull the trigger..."))
+		target.visible_message(SPAN("danger", "[user] sticks their gun in [target]'s mouth, ready to pull the trigger..."))
 		if(!do_after(user, 2 SECONDS, progress=0))
-			target.visible_message(SPAN_NOTICE("[user] decided [target]'s life was worth living."))
+			target.visible_message(SPAN("notice", "[user] decided [target]'s life was worth living."))
 			weapon_in_mouth = FALSE
 			return
 		if(istype(src, /obj/item/weapon/gun/flamer))
@@ -459,14 +459,14 @@
 		var/obj/item/projectile/in_chamber = consume_next_projectile()
 		if(istype(in_chamber) && process_projectile(in_chamber, user, target, BP_MOUTH))
 			var/not_killable = istype(in_chamber, /obj/item/projectile/energy/electrode) || istype(in_chamber, /obj/item/projectile/energy/flash)
-			user.visible_message(SPAN_WARNING("[user] pulls the trigger."))
+			user.visible_message(SPAN("warning", "[user] pulls the trigger."))
 			var/shot_sound = in_chamber.fire_sound ? in_chamber.fire_sound : fire_sound
 			if(silenced)
 				playsound(user, shot_sound, 10, 1)
 			else
 				playsound(user, shot_sound, 50, 1)
 			if(istype(in_chamber, /obj/item/projectile/beam/lastertag))
-				user.show_message(SPAN_WARNING("You feel rather silly, trying to shoot [target] with a toy."))
+				user.show_message(SPAN("warning", "You feel rather silly, trying to shoot [target] with a toy."))
 				weapon_in_mouth = FALSE
 				return
 
@@ -476,7 +476,7 @@
 				target.apply_damage(in_chamber.damage * 2.5, in_chamber.damage_type, BP_HEAD, 0, in_chamber.damage_flags(), used_weapon = "Point blank shot in the mouth with \a [in_chamber]")
 				target.death()
 			else
-				to_chat(user, SPAN_NOTICE("Ow..."))
+				to_chat(user, SPAN("notice", "Ow..."))
 				target.apply_effect(110, PAIN, 0)
 			qdel(in_chamber)
 			weapon_in_mouth = FALSE

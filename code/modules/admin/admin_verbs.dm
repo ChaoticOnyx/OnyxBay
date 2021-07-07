@@ -466,11 +466,11 @@ var/list/admin_verbs_mentor = list(
 	if(holder && mob)
 		if(mob.invisibility == INVISIBILITY_OBSERVER)
 			mob.set_invisibility(initial(mob.invisibility))
-			to_chat(mob, SPAN_DANGER("Invisimin off. Invisibility reset."))
+			to_chat(mob, SPAN("danger", "Invisimin off. Invisibility reset."))
 			mob.alpha = max(mob.alpha + 100, 255)
 		else
 			mob.set_invisibility(INVISIBILITY_OBSERVER)
-			to_chat(mob, SPAN_NOTICE("Invisimin on. You are now as invisible as a ghost."))
+			to_chat(mob, SPAN("notice", "Invisimin on. You are now as invisible as a ghost."))
 			mob.alpha = max(mob.alpha - 100, 0)
 		log_admin("[key_name(src)] [mob.invisibility == INVISIBILITY_OBSERVER ? "enabled" : "disabled"] invisimin mode.")
 

@@ -147,7 +147,7 @@
 					if(istype(D) && !(D.stat & BROKEN))
 						Weaken(6)
 						playsound(AM, 'sound/effects/clang.ogg', 75)
-						visible_message(SPAN_WARNING("[src] falls into \the [AM]!"), SPAN_WARNING("You fall into \the [AM]!"))
+						visible_message(SPAN("warning", "[src] falls into \the [AM]!"), SPAN_WARNING("You fall into \the [AM]!"))
 						if (client)
 							client.perspective = EYE_PERSPECTIVE
 							client.eye = src
@@ -155,7 +155,7 @@
 					else
 						Weaken(2)
 						playsound(loc, "punch", rand(80, 100), 1, -1)
-						visible_message(SPAN_WARNING("[src] [pick("ran", "slammed")] into \the [AM]!"))
+						visible_message(SPAN("warning", "[src] [pick("ran", "slammed")] into \the [AM]!"))
 					src.apply_damage(5, BRUTE)
 				return
 			if (!now_pushing)
@@ -587,7 +587,7 @@
 			if(prob(75))
 				var/obj/item/grab/G = pick(M.grabbed_by)
 				if(istype(G))
-					M.visible_message(SPAN_WARNING("[G.affecting] has been pulled from [G.assailant]'s grip by [src]!"), SPAN_WARNING("[G.affecting] has been pulled from your grip by [src]!"))
+					M.visible_message(SPAN("warning", "[G.affecting] has been pulled from [G.assailant]'s grip by [src]!"), SPAN_WARNING("[G.affecting] has been pulled from your grip by [src]!"))
 					qdel(G)
 		if(!M.grabbed_by.len)
 			M.handle_pull_damage(src)

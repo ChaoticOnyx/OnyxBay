@@ -19,15 +19,15 @@
 		if (is_sharp(I))
 			slice(I, user)
 		else
-			to_chat(user, SPAN_DANGER("You need something sharp to do that!"))
+			to_chat(user, SPAN("danger", "You need something sharp to do that!"))
 		return
 	var/obj/item/grab/G = I
 
 	if (!istype(G) || !G.affecting || !can_spike(G.affecting))
-		to_chat(user, SPAN_DANGER("You can't put that on [src]!"))
+		to_chat(user, SPAN("danger", "You can't put that on [src]!"))
 		return
 	if (!G.force_danger())
-		to_chat(user, SPAN_DANGER("You need better grip to do it!"))
+		to_chat(user, SPAN("danger", "You need better grip to do it!"))
 		return
 	if (spike(user, G.affecting))
 		qdel(G)
@@ -42,7 +42,7 @@
 	return iscarbon(victim) || isanimal(victim)
 
 /obj/structure/kitchenspike/proc/spike(mob/user, mob/living/victim)
-	user.visible_message(SPAN_DANGER("[user] starts putting [victim] onto \the [src]..."),
+	user.visible_message(SPAN("danger", "[user] starts putting [victim] onto \the [src]..."),
 		SPAN("userdanger","[user] starts putting [victim] onto \the [src]..."),
 		SPAN("italics", "You hear a squishy wet noise."))
 	if(!do_mob(user, src, time = 120))
@@ -52,7 +52,7 @@
 	if(victim.buckled)
 		return
 	playsound(src.loc, "sound/effects/splat.ogg", 50, 1)
-	victim.visible_message(SPAN_DANGER("[user] slams [victim] onto \the [src]!"),
+	victim.visible_message(SPAN("danger", "[user] slams [victim] onto \the [src]!"),
 		SPAN("userdanger", "[user] slams [victim] onto \the [src]!"),
 		SPAN("italics", "You hear a squishy wet noise."))
 	victim.forceMove(src.loc)
@@ -79,27 +79,27 @@
 	if (!buckled_mob || !buckled_mob.buckled)
 		return
 	if (unbuckling)
-		to_chat(user, SPAN_NOTICE("Someone is already trying to get [buckled_mob == user ? "you" : buckled_mob] off \the [src], you can't help!"))
+		to_chat(user, SPAN("notice", "Someone is already trying to get [buckled_mob == user ? "you" : buckled_mob] off \the [src], you can't help!"))
 		return
 
 	var/mob/living/M = buckled_mob
 	if(M != user)
 		M.visible_message(\
-			SPAN_WARNING("[user] tries to pull [M] free of \the [src]!"),\
-			SPAN_WARNING("[user] is trying to pull you off \the [src], opening up fresh wounds!"),\
+			SPAN("warning", "[user] tries to pull [M] free of \the [src]!"),\
+			SPAN("warning", "[user] is trying to pull you off \the [src], opening up fresh wounds!"),\
 			SPAN("italics", "You hear a squishy wet noise.</span>"))
 		unbuckling = TRUE
 		if(!do_after(user, delay = 150, target = src))
 			if(M && M == buckled_mob)
 				M.visible_message(\
-				SPAN_WARNING("[user] fails to free [M]!"),\
-				SPAN_WARNING("[user] fails to pull you off of \the [src]."))
+				SPAN("warning", "[user] fails to free [M]!"),\
+				SPAN("warning", "[user] fails to pull you off of \the [src]."))
 			unbuckling = FALSE
 			return
 	else
 		M.visible_message(\
-		SPAN_WARNING("[M] struggles to break free from \the [src]!"),\
-		SPAN_WARNING("You struggle to break free from \the [src], exacerbating your wounds!"),\
+		SPAN("warning", "[M] struggles to break free from \the [src]!"),\
+		SPAN("warning", "You struggle to break free from \the [src], exacerbating your wounds!"),\
 		SPAN("italics", "You hear a wet squishing noise."))
 		M.adjustBruteLoss(30)
 		if(!do_after(M, delay = 600, target = src))
@@ -111,7 +111,7 @@
 	if(!M || M != buckled_mob)
 		return
 	M.adjustBruteLoss(30)
-	src.visible_message(SPAN_DANGER("[M] falls free of \the [src]!"))
+	src.visible_message(SPAN("danger", "[M] falls free of \the [src]!"))
 	M.hanging = FALSE
 	unbuckle_mob()
 	var/mob/living/carbon/C = M
@@ -125,7 +125,7 @@
 
 	var/mob/living/carbon/human/H = buckled_mob
 	if (!istype(H))
-		to_chat(user, SPAN_NOTICE("You start to butcher [buckled_mob] with your [I]..."))
+		to_chat(user, SPAN("notice", "You start to butcher [buckled_mob] with your [I]..."))
 		if (!do_after(user, delay = 100, target = buckled_mob))
 			return
 		var/slab_name = buckled_mob.name
@@ -162,7 +162,7 @@
 				if (buckled_mob.reagents)
 					buckled_mob.reagents.trans_to_obj(new_meat, reagent_transfer_amt)
 
-		to_chat(user, SPAN_NOTICE("You've finished butchering [buckled_mob]."))
+		to_chat(user, SPAN("notice", "You've finished butchering [buckled_mob]."))
 		admin_attack_log(user, buckled_mob, "Gibbed the victim", "Was gibbed", "gibbed")
 		playsound(loc, 'sound/effects/splat.ogg', 50, 1)
 		QDEL_NULL(buckled_mob)
@@ -171,14 +171,14 @@
 	var/zone = check_zone(user.zone_sel?.selecting)
 	var/obj/item/organ/external/organ = H.get_organ(zone)
 	if (BP_IS_ROBOTIC(organ))
-		to_chat(user, SPAN_WARNING("Can't extract meat from robotic limbs!"))
+		to_chat(user, SPAN("warning", "Can't extract meat from robotic limbs!"))
 		return
 	if (!organ || organ.is_stump())
-		to_chat(user, SPAN_WARNING("Can't extract meat from there!"))
+		to_chat(user, SPAN("warning", "Can't extract meat from there!"))
 		return
 	var/obj/item/organ/external/chest/C = organ
 	if (istype(C) && C.butchering_capacity <= 0) //workaround for chests not getting stumped/whatever
-		to_chat(user, SPAN_WARNING("Can't extract any more meat from there!"))
+		to_chat(user, SPAN("warning", "Can't extract any more meat from there!"))
 		return
 
 	var/meat_limbs_left = 0
@@ -199,8 +199,8 @@
 		nutrition_transfer_mod *= 0.5
 
 	var/butchered_organ_name = "[organ.name]";
-	user.visible_message(SPAN_WARNING("[user] tries to butcher [H]'s [butchered_organ_name]!"),\
-		SPAN_NOTICE("You try to butcher [H]'s [butchered_organ_name]..."),\
+	user.visible_message(SPAN("warning", "[user] tries to butcher [H]'s [butchered_organ_name]!"),\
+		SPAN("notice", "You try to butcher [H]'s [butchered_organ_name]..."),\
 		SPAN("italics", "You hear a wet squishing noise.</span>"))
 
 	if (do_after(user, delay = 20, target = H))
@@ -211,8 +211,8 @@
 			C.butchering_capacity--
 		else
 			organ.droplimb(clean = FALSE, silent = TRUE, disintegrate = DROPLIMB_BLUNT) //blunt so it gets turned into gore
-		user.visible_message(SPAN_WARNING("[user]'ve successfully butchered [H]'s [butchered_organ_name]!"),\
-			SPAN_NOTICE("You've successfully butchered [H]'s [butchered_organ_name]..."),\
+		user.visible_message(SPAN("warning", "[user]'ve successfully butchered [H]'s [butchered_organ_name]!"),\
+			SPAN("notice", "You've successfully butchered [H]'s [butchered_organ_name]..."),\
 			SPAN("italics", "You hear a squishy wet noise.</span>"))
 		if (H.can_feel_pain())
 			H.emote("scream")

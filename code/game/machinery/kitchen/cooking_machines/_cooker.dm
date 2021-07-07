@@ -62,33 +62,33 @@
 						smell = pick(S.nutriment_desc)
 				. += "\nYou can see \a [thing_inside] inside. It smells [smell]."
 			if(BURNED)
-				. += "\n[SPAN_WARNING("Inside is covered by dirt, and it smells smoke!")]"
+				. += "\n[SPAN("warning", "Inside is covered by dirt, and it smells smoke!")]"
 
 /obj/machinery/cooker/attackby(obj/item/I, mob/user)
 	set waitfor = 0  //So that any remaining parts of calling proc don't have to wait for the long cooking time ahead.
 
 	if(!cook_type || (stat & (NOPOWER|BROKEN)))
-		to_chat(user, SPAN_WARNING("\The [src] is not working."))
+		to_chat(user, SPAN("warning", "\The [src] is not working."))
 		return 0
 
 	if(product_status() != NO_PRODUCT)
-		to_chat(user, SPAN_WARNING("There is no more space in \the [src]. \A [thing_inside] is already there!"))
+		to_chat(user, SPAN("warning", "There is no more space in \the [src]. \A [thing_inside] is already there!"))
 		return 0
 
 	var/mob/living/inserted_mob
 	if(istype(I, /obj/item/weapon/reagent_containers/food/snacks/badrecipe))
-		to_chat(user, SPAN_WARNING("Making [I] [cook_type] shouldn't help."))
+		to_chat(user, SPAN("warning", "Making [I] [cook_type] shouldn't help."))
 		return 0
 	else if(istype(I, /obj/item/weapon/reagent_containers/food/snacks))
 		var/obj/item/weapon/reagent_containers/food/snacks/check = I
 		if(cook_type in check.cooked_types)
-			to_chat(user, SPAN_WARNING("\The [I] has already been [cook_type]."))
+			to_chat(user, SPAN("warning", "\The [I] has already been [cook_type]."))
 			return 0
 	else if(istype(I, /obj/item/weapon/reagent_containers/food/condiment))
-		to_chat(user, SPAN_WARNING("You can't make \the [I] [cook_type]."))
+		to_chat(user, SPAN("warning", "You can't make \the [I] [cook_type]."))
 		return 0
 	else if(istype(I, /obj/item/weapon/reagent_containers/glass))
-		to_chat(user, SPAN_WARNING("That would probably break [src]."))
+		to_chat(user, SPAN("warning", "That would probably break [src]."))
 		return 0
 	else if(istype(I, /obj/item/weapon/holder) || istype(I, /obj/item/grab))
 		if(istype(I, /obj/item/weapon/holder))
@@ -99,11 +99,11 @@
 			var/obj/item/grab/G = I
 			inserted_mob = G.affecting
 	else
-		to_chat(user, SPAN_WARNING("That's not edible."))
+		to_chat(user, SPAN("warning", "That's not edible."))
 		return 0
 
 	if(inserted_mob && (!isliving(inserted_mob) || isbot(inserted_mob) || issilicon(inserted_mob)))
-		to_chat(user, SPAN_WARNING("You can't cook that."))
+		to_chat(user, SPAN("warning", "You can't cook that."))
 		return 0
 
 	if(inserted_mob && inserted_mob.mob_size > mob_fitting_size)
@@ -118,7 +118,7 @@
 		thing_inside = inserted_mob
 	else
 		thing_inside = I
-	user.visible_message(SPAN_NOTICE("\The [user] puts \the [thing_inside] into \the [src]."))
+	user.visible_message(SPAN("notice", "\The [user] puts \the [thing_inside] into \the [src]."))
 	thing_inside.forceMove(src)
 	is_cooking = 1
 	cooking_is_done = FALSE
@@ -172,7 +172,7 @@
 					I.cooked_types |= cook_type
 				cooking_is_done = TRUE
 
-				src.visible_message(SPAN_NOTICE("\The [src] pings!"))
+				src.visible_message(SPAN("notice", "\The [src] pings!"))
 				if(cooked_sound)
 					playsound(src, cooked_sound, 50, 1)
 		if(COOKED)
@@ -185,7 +185,7 @@
 					if(prob(burn_chance))
 						qdel(thing_inside)
 						thing_inside = new /obj/item/weapon/reagent_containers/food/snacks/badrecipe(src)
-						visible_message(SPAN_DANGER("\The [src] vomits a gout of rancid smoke!"))
+						visible_message(SPAN("danger", "\The [src] vomits a gout of rancid smoke!"))
 						var/datum/effect/effect/system/smoke_spread/bad/smoke = new /datum/effect/effect/system/smoke_spread/bad()
 						smoke.attach(src)
 						smoke.set_up(10, 0, loc)
@@ -214,7 +214,7 @@
 			var/mob/living/L = thing_inside
 			L.get_scooped(receiver, self_grab = FALSE)
 		else
-			to_chat(receiver, SPAN_NOTICE("You grab \the [thing_inside] from \the [src]."))
+			to_chat(receiver, SPAN("notice", "You grab \the [thing_inside] from \the [src]."))
 			receiver.put_in_hands(thing_inside)
 	else
 		thing_inside.forceMove(get_turf(src))
@@ -242,15 +242,15 @@
 			return
 		if(choice == "Default")
 			selected_option = null
-			to_chat(user, SPAN_NOTICE("You decide not to make anything specific with \the [src]."))
+			to_chat(user, SPAN("notice", "You decide not to make anything specific with \the [src]."))
 		else
 			selected_option = choice
-			to_chat(user, SPAN_NOTICE("You prepare \the [src] to make \a [selected_option]."))
+			to_chat(user, SPAN("notice", "You prepare \the [src] to make \a [selected_option]."))
 
 	..()
 
 /obj/machinery/cooker/proc/hurt_big_mob(mob/living/victim, mob/user)
-	to_chat(user, SPAN_WARNING("That's not going to fit."))
+	to_chat(user, SPAN("warning", "That's not going to fit."))
 	return
 
 /obj/machinery/cooker/proc/change_product_strings(atom/movable/product, atom/movable/origin)

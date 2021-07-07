@@ -33,7 +33,7 @@
 		if(standard_splash_mob(user,target))
 			return
 		if(reagents && reagents.total_volume)
-			to_chat(user, SPAN_NOTICE("You splash the contents of \the [src] onto [target].")) //They are on harm intent, aka wanting to spill it.
+			to_chat(user, SPAN("notice", "You splash the contents of \the [src] onto [target].")) //They are on harm intent, aka wanting to spill it.
 			reagents.splash(target, reagents.total_volume)
 			return
 

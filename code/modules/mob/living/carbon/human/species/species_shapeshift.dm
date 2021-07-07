@@ -100,10 +100,10 @@ var/list/wrapped_species_by_ref = list()
 	set category = "Abilities"
 
 	if(stat)
-		to_chat(usr, SPAN_WARNING("You can't use your abilities while you unconscious."))
+		to_chat(usr, SPAN("warning", "You can't use your abilities while you unconscious."))
 		return
 	if(world.time < last_special)
-		to_chat(usr, SPAN_WARNING("You can't use your abilities so fast!"))
+		to_chat(usr, SPAN("warning", "You can't use your abilities so fast!"))
 		return
 
 	last_special = world.time + 50
@@ -112,7 +112,7 @@ var/list/wrapped_species_by_ref = list()
 	if(!new_gender)
 		return
 
-	visible_message(SPAN_NOTICE("\The [src]'s form contorts subtly."))
+	visible_message(SPAN("notice", "\The [src]'s form contorts subtly."))
 	change_gender(new_gender)
 	shapeshifter_sanitize_body()
 
@@ -122,10 +122,10 @@ var/list/wrapped_species_by_ref = list()
 	set category = "Abilities"
 
 	if(stat)
-		to_chat(usr, SPAN_WARNING("You can't use your abilities while you unconscious."))
+		to_chat(usr, SPAN("warning", "You can't use your abilities while you unconscious."))
 		return
 	if(world.time < last_special)
-		to_chat(usr, SPAN_WARNING("You can't use your abilities so fast!"))
+		to_chat(usr, SPAN("warning", "You can't use your abilities so fast!"))
 		return
 
 	last_special = world.time + 50
@@ -145,10 +145,10 @@ var/list/wrapped_species_by_ref = list()
 	set category = "Abilities"
 
 	if(stat)
-		to_chat(usr, SPAN_WARNING("You can't use your abilities while you unconscious."))
+		to_chat(usr, SPAN("warning", "You can't use your abilities while you unconscious."))
 		return
 	if(world.time < last_special)
-		to_chat(usr, SPAN_WARNING("You can't use your abilities so fast!"))
+		to_chat(usr, SPAN("warning", "You can't use your abilities so fast!"))
 		return
 
 	last_special = world.time + 50
@@ -184,10 +184,10 @@ var/list/wrapped_species_by_ref = list()
 	set category = "Abilities"
 
 	if(stat)
-		to_chat(usr, SPAN_WARNING("You can't use your abilities while you unconscious."))
+		to_chat(usr, SPAN("warning", "You can't use your abilities while you unconscious."))
 		return
 	if(world.time < last_special)
-		to_chat(usr, SPAN_WARNING("You can't use your abilities so fast!"))
+		to_chat(usr, SPAN("warning", "You can't use your abilities so fast!"))
 		return
 
 	last_special = world.time + 30
@@ -199,7 +199,7 @@ var/list/wrapped_species_by_ref = list()
 		if(!new_body_build || body_build == new_body_build)
 			return
 		change_body_build(new_body_build)
-		visible_message(SPAN_NOTICE("\The [src]'s form contorts subtly."))
+		visible_message(SPAN("notice", "\The [src]'s form contorts subtly."))
 
 /mob/living/carbon/human/proc/shapeshifter_sanitize_body()
 	var/datum/species/S = all_species[wrapped_species_by_ref["\ref[src]"]]

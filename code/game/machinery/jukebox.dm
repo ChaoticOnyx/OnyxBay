@@ -80,7 +80,7 @@
 
 /obj/machinery/media/jukebox/interact(mob/user)
 	if(!anchored)
-		to_chat(usr, SPAN_WARNING("You must secure \the [src] first."))
+		to_chat(usr, SPAN("warning", "You must secure \the [src] first."))
 		return
 
 	if(stat & (NOPOWER|BROKEN))
@@ -174,7 +174,7 @@
 
 /obj/machinery/media/jukebox/proc/explode()
 	walk_to(src, 0)
-	src.visible_message(SPAN_DANGER("\the [src] blows apart!"), 1)
+	src.visible_message(SPAN("danger", "\the [src] blows apart!"), 1)
 
 	explosion(get_turf(src), 0, 0, 1, rand(1,2), 1)
 
@@ -194,15 +194,15 @@
 	else if(istype(W, /obj/item/music_tape))
 		var/obj/item/music_tape/D = W
 		if(tape)
-			to_chat(user, SPAN_NOTICE("There is already \a [tape] inside."))
+			to_chat(user, SPAN("notice", "There is already \a [tape] inside."))
 			return
 
 		if(D.ruined)
-			to_chat(user, SPAN_WARNING("\The [D] is ruined, you can't use it."))
+			to_chat(user, SPAN("warning", "\The [D] is ruined, you can't use it."))
 			return
 
 		if(user.drop_item())
-			visible_message(SPAN_NOTICE("[usr] insert \a [tape] into \the [src]."))
+			visible_message(SPAN("notice", "[usr] insert \a [tape] into \the [src]."))
 			D.forceMove(src)
 			tape = D
 			tracks += tape.track
@@ -215,7 +215,7 @@
 		playsound(src.loc, 'sound/effects/computer_emag.ogg', 25)
 		emagged = 1
 		StopPlaying()
-		visible_message(SPAN_DANGER("\The [src] makes a fizzling sound."))
+		visible_message(SPAN("danger", "\The [src] makes a fizzling sound."))
 		update_icon()
 		return 1
 
@@ -272,5 +272,5 @@
 			tape.dropInto(loc)
 
 		tape = null
-		visible_message(SPAN_NOTICE("[usr] eject \a [tape] from \the [src]."))
+		visible_message(SPAN("notice", "[usr] eject \a [tape] from \the [src]."))
 		verbs -= /obj/machinery/media/jukebox/verb/eject

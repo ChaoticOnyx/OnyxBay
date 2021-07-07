@@ -46,7 +46,7 @@ var/can_call_ert
 
 /datum/admins/proc/edit_mission()
 	if(GAME_STATE <= RUNLEVEL_SETUP)
-		to_chat(usr, SPAN_DANGER("The game hasn't started yet!"))
+		to_chat(usr, SPAN("danger", "The game hasn't started yet!"))
 		return
 
 	var/out = "<meta charset=\"utf-8\"><b>The Emergency Response Team Mission Menu</b>"
@@ -80,22 +80,22 @@ var/can_call_ert
 		return
 
 	if(!MayRespawn(TRUE))
-		to_chat(src, SPAN_WARNING("You cannot join the response team at this time."))
+		to_chat(src, SPAN("warning", "You cannot join the response team at this time."))
 		return
 
 	if(isghost(src) || isnewplayer(src))
 		if(!send_emergency_team)
-			to_chat(src, SPAN_WARNING("No emergency response team is currently being sent."))
+			to_chat(src, SPAN("warning", "No emergency response team is currently being sent."))
 			return
 		if(jobban_isbanned(src, MODE_ERT) || jobban_isbanned(src, "Security Officer"))
-			to_chat(src, SPAN_WARNING("You are jobbanned from the emergency reponse team!"))
+			to_chat(src, SPAN("warning", "You are jobbanned from the emergency reponse team!"))
 			return
 		if(GLOB.ert.current_antagonists.len >= GLOB.ert.hard_cap)
-			to_chat(src, SPAN_WARNING("The emergency response team is already full!"))
+			to_chat(src, SPAN("warning", "The emergency response team is already full!"))
 			return
 		GLOB.ert.create_default(src)
 	else
-		to_chat(src, SPAN_WARNING("You need to be an observer or new player to use this."))
+		to_chat(src, SPAN("warning", "You need to be an observer or new player to use this."))
 
 // returns a number of dead players in %
 /proc/percentage_dead()

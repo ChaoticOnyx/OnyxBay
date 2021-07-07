@@ -157,7 +157,7 @@
 			fields++
 
 		if(fields > 50)
-			to_chat(usr, SPAN_WARNING("Too many fields. Sorry, you can't do this."))
+			to_chat(usr, SPAN("warning", "Too many fields. Sorry, you can't do this."))
 			return
 		loaded_data = newtext
 		is_edited = 1

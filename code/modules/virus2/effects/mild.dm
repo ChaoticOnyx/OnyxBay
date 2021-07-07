@@ -8,7 +8,7 @@
 	if(..())
 		return
 	playsound(mob.loc, 'sound/items/bikehorn.ogg', 50, 1)
-	to_chat(mob, SPAN_WARNING("You suddenly honk."))
+	to_chat(mob, SPAN("warning", "You suddenly honk."))
 
 
 /datum/disease2/effect/invisible
@@ -125,7 +125,7 @@
 		return
 	if(!data["name"])
 		data["name"] = mob.real_name
-	to_chat(mob, SPAN_WARNING("Your throat hurts."))
+	to_chat(mob, SPAN("warning", "Your throat hurts."))
 	special_voice_old = mob.GetSpecialVoice()
 	mob.SetSpecialVoice(data["name"])
 
@@ -238,11 +238,11 @@
 		return
 	mob.bodytemperature += 5
 	if(prob(3))
-		to_chat(mob, SPAN_WARNING("Your stomach feels heavy."))
+		to_chat(mob, SPAN("warning", "Your stomach feels heavy."))
 		mob.take_organ_damage(2 * multiplier)
 	if(prob(10))
 		mob.bodytemperature += 10
-		to_chat(mob, SPAN_WARNING("Your muscles ache."))
+		to_chat(mob, SPAN("warning", "Your muscles ache."))
 
 
 /datum/disease2/effect/aggressive

@@ -81,7 +81,7 @@ AI MODULES
 		laws.sync(target, 0)
 	addAdditionalLaws(target, sender)
 
-	to_chat(target, SPAN_DANGER("\The [sender] has uploaded a change to the laws you must follow, using \an [src]. From now on: "))
+	to_chat(target, SPAN("danger", "\The [sender] has uploaded a change to the laws you must follow, using \an [src]. From now on: "))
 	target.show_laws()
 
 /obj/item/weapon/aiModule/proc/log_law_changes(mob/living/silicon/ai/target, mob/sender)

@@ -239,7 +239,7 @@ var/list/artefact_feedback = list(/obj/structure/closet/wizard/armor = 		"HS",
 	var/turf/T = get_turf(src)
 	if(!T || isNotStationLevel(T.z))
 		if(investing_time)
-			src.visible_message(SPAN_WARNING("<b>\The [src]</b> emits a cranky chime."))
+			src.visible_message(SPAN("warning", "<b>\The [src]</b> emits a cranky chime."))
 			if(uses < spellbook.max_uses)
 				uses++
 			investing_time = 0

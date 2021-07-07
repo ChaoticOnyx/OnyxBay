@@ -27,8 +27,8 @@
 	if (power.isVerb && power.verbpath)
 		vampire.current.verbs += power.verbpath
 	if (announce)
-		to_chat(vampire.current, SPAN_NOTICE("<b>You have unlocked a new power:</b> [power.name]."))
-		to_chat(vampire.current, SPAN_NOTICE("[power.desc]"))
+		to_chat(vampire.current, SPAN("notice", "<b>You have unlocked a new power:</b> [power.name]."))
+		to_chat(vampire.current, SPAN("notice", "[power.desc]"))
 		if (power.helptext)
 			to_chat(vampire.current, "<font color='green'>[power.helptext]</font>")
 

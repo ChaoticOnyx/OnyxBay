@@ -41,7 +41,7 @@ GLOBAL_LIST_EMPTY(ai_custom_icons)
 		var/dead_icon_state = "[real_name]-ai-crash"
 
 		if(!(alive_icon_state in custom_icon_states))
-			to_chat(src, SPAN_WARNING("Custom display entry found but the icon state '[alive_icon_state]' is missing! Please report this to local developer."))
+			to_chat(src, SPAN("warning", "Custom display entry found but the icon state '[alive_icon_state]' is missing! Please report this to local developer."))
 			continue
 
 		if(!(dead_icon_state in custom_icon_states))
@@ -63,6 +63,6 @@ GLOBAL_LIST_EMPTY(ai_custom_icons)
 			if("[ckey]-Standard" in valid_states)
 				icon_state = "[ckey]-Standard"
 			else
-				to_chat(src, SPAN_WARNING("Could not locate [ckey]-Standard sprite. Please report this to local developer"))
+				to_chat(src, SPAN("warning", "Could not locate [ckey]-Standard sprite. Please report this to local developer"))
 				icon =  'icons/mob/robots.dmi'
 

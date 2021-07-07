@@ -28,7 +28,7 @@
 			new_data = sanitize(user.get_input("Now type in a string", "[src] string writing", null, MOB_INPUT_TEXT, src), trim = 0)
 			if(istext(new_data) && user.IsAdvancedToolUser())
 				data_to_write = new_data
-				to_chat(user, SPAN_NOTICE("You set \the [src]'s memory to \"[new_data]\"."))
+				to_chat(user, SPAN("notice", "You set \the [src]'s memory to \"[new_data]\"."))
 		if("number")
 			accepting_refs = FALSE
 			copy_values = FALSE
@@ -36,7 +36,7 @@
 			new_data = input(user, "Now type in a number.","[src] number writing") as null|num
 			if(isnum_safe(new_data) && user.IsAdvancedToolUser())
 				data_to_write = new_data
-				to_chat(user, SPAN_NOTICE("You set \the [src]'s memory to [new_data]."))
+				to_chat(user, SPAN("notice", "You set \the [src]'s memory to [new_data]."))
 		if("ref")
 			accepting_refs = TRUE
 			copy_values = FALSE
@@ -52,7 +52,7 @@
 		if("null")
 			data_to_write = null
 			copy_values = FALSE
-			to_chat(user, SPAN_NOTICE("You set \the [src]'s memory to absolutely nothing."))
+			to_chat(user, SPAN("notice", "You set \the [src]'s memory to absolutely nothing."))
 		if("id lock")
 			accepting_refs = FALSE
 			copy_values = FALSE
@@ -64,7 +64,7 @@
 	. = ..()
 	if(accepting_refs && proximity)
 		data_to_write = weakref(target)
-		visible_message(SPAN_NOTICE("[user] slides \a [src]'s over \the [target]."))
+		visible_message(SPAN("notice", "[user] slides \a [src]'s over \the [target]."))
 		to_chat(user, SPAN_NOTICE("You set \the [src]'s memory to a reference to [target.name] \[Ref\].  The ref scanner is \
 		now off."))
 		accepting_refs = FALSE
@@ -76,7 +76,7 @@
 			now off."))
 
 		else
-			to_chat(user, SPAN_NOTICE("You turn the id card scanner is off."))
+			to_chat(user, SPAN("notice", "You turn the id card scanner is off."))
 
 		copy_id = FALSE
 		return
@@ -87,7 +87,7 @@
 		//If the debugger is set to copy, copy the data in the pin onto it
 		if(copy_values)
 			data_to_write = io.data
-			to_chat(user, SPAN_NOTICE("You let the debugger copy the data."))
+			to_chat(user, SPAN("notice", "You let the debugger copy the data."))
 			copy_values = FALSE
 			return
 
@@ -99,11 +99,11 @@
 			var/weakref/W = data_to_write
 			var/atom/A = W.resolve()
 			data_to_show = A.name
-		to_chat(user, SPAN_NOTICE("You write '[data_to_write ? data_to_show : "NULL"]' to the '[io]' pin of \the [io.holder]."))
+		to_chat(user, SPAN("notice", "You write '[data_to_write ? data_to_show : "NULL"]' to the '[io]' pin of \the [io.holder]."))
 
 	//If the pin can only be pulsed
 	else if(io.io_type == PULSE_CHANNEL)
 		SScircuit_components.queue_component(io.holder, TRUE, io.ord, TRUE) //ignore_power = TRUE
-		to_chat(user, SPAN_NOTICE("You pulse \the [io.holder]'s [io]."))
+		to_chat(user, SPAN("notice", "You pulse \the [io.holder]'s [io]."))
 
   io.holder.interact(user) // This is to update the UI.

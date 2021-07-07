@@ -252,25 +252,25 @@
 /mob/proc/on_hear_radio(part_a, speaker_name, track, part_b, part_c, formatted, loud)
 	var/text = "[part_a][speaker_name][part_b][formatted][part_c]"
 	if(loud)
-		text = FONT_LARGE(text)
+		text = SPAN("normal", text)
 	to_chat(src, text)
 
 /mob/observer/ghost/on_hear_radio(part_a, speaker_name, track, part_b, part_c, formatted, loud)
 	var/text = "[part_a][track][part_b][formatted][part_c]"
 	if(loud)
-		text = FONT_LARGE(text)
+		text = SPAN("normal", text)
 	to_chat(src, text)
 
 /mob/living/silicon/on_hear_radio(part_a, speaker_name, track, part_b, part_c, formatted, loud)
 	var/text = "[say_timestamp()][part_a][speaker_name][part_b][formatted][part_c]"
 	if(loud)
-		text = FONT_LARGE(text)
+		text = SPAN("normal", text)
 	to_chat(src, text)
 
 /mob/living/silicon/ai/on_hear_radio(part_a, speaker_name, track, part_b, part_c, formatted, loud)
 	var/text = "[say_timestamp()][part_a][track][part_b][formatted][part_c]"
 	if(loud)
-		text = FONT_LARGE(text)
+		text = SPAN("normal", text)
 	to_chat(src, text)
 
 /mob/proc/hear_signlang(message, verb = "gestures", datum/language/language, mob/speaker = null)

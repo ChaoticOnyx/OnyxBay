@@ -18,8 +18,8 @@
 		return
 	new /mob/living/simple_animal/bee(mob.loc)
 	var/datum/gender/G = gender_datums[mob.get_visible_gender()]
-	mob.visible_message(SPAN_WARNING("Bees fly out of [mob]'s throat when [G.he] coughs!"),
-						SPAN_DANGER("Bees fly out of your throat when you cough!"))
+	mob.visible_message(SPAN("warning", "Bees fly out of [mob]'s throat when [G.he] coughs!"),
+						SPAN("danger", "Bees fly out of your throat when you cough!"))
 
 
 ////////////////////////STAGE 2/////////////////////////////////
@@ -119,7 +119,7 @@
 	if(!isking)
 		for(var/mob/living/carbon/human/dead in GLOB.dead_mob_list_)
 			if(dead == data)
-				to_chat(mob, SPAN_DANGER("You didn't protect your master! Now all you deserve is to die in disgrace."))
+				to_chat(mob, SPAN("danger", "You didn't protect your master! Now all you deserve is to die in disgrace."))
 				var/obj/item/organ/internal/brain/B = mob.internal_organs_by_name[BP_BRAIN]
 				if(B && B.damage < B.min_broken_damage)
 					B.take_internal_damage(100)
@@ -280,8 +280,8 @@
 	if(!mob.organs.Find(organ_to_remove))
 		return 0
 
-	mob.visible_message(SPAN_WARNING("The [organ_to_remove] is ripping off from [mob]."),
-						SPAN_DANGER("Your [organ_to_remove] is ripping off you!"))
+	mob.visible_message(SPAN("warning", "The [organ_to_remove] is ripping off from [mob]."),
+						SPAN("danger", "Your [organ_to_remove] is ripping off you!"))
 	playsound(mob.loc, 'sound/effects/bonebreak1.ogg', 100, 1)
 
 	if(organ_to_remove.organ_tag == BP_L_LEG || organ_to_remove.organ_tag == BP_R_LEG)

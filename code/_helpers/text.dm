@@ -20,7 +20,7 @@
 	if(max_length)
 		var/input_length = length_char(input)
 		if(input_length > max_length)
-			to_chat(usr, SPAN_WARNING("Your message is too long by [input_length - max_length] character\s."))
+			to_chat(usr, SPAN("warning", "Your message is too long by [input_length - max_length] character\s."))
 			return
 		input = copytext_char(input, 1, max_length+1)
 

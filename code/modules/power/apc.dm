@@ -907,7 +907,7 @@
 
 	if(href_list["reboot"])
 		if(!allowed(usr) && (locked && !emagged))
-			to_chat(usr, SPAN_WARNING("You must unlock the panel to use this!"))
+			to_chat(usr, SPAN("warning", "You must unlock the panel to use this!"))
 			return 1
 
 		failure_timer = 0
@@ -917,7 +917,7 @@
 
 	if(!istype(usr, /mob/living/silicon) && (locked && !emagged))
 		// Shouldn't happen, this is here to prevent href exploits
-		to_chat(usr, SPAN_WARNING("You must unlock the panel to use this!"))
+		to_chat(usr, SPAN("warning", "You must unlock the panel to use this!"))
 		return 1
 
 	if (href_list["lock"])

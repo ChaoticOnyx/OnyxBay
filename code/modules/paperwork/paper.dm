@@ -393,7 +393,7 @@
 		return
 	if(href_list["write"])
 		if (readonly)
-			to_chat(usr, SPAN_WARNING("Your pen fails to leave any trace on \the [src]!"))
+			to_chat(usr, SPAN("warning", "Your pen fails to leave any trace on \the [src]!"))
 			return
 		var/id = href_list["write"]
 		//var/t = strip_html_simple(input(usr, "What text do you wish to add to " + (id=="end" ? "the end of the paper" : "field "+id) + "?", "[name]", null),8192) as message
@@ -423,7 +423,7 @@
 			return
 
 		if (counttext(t, @"[field]") > 50)
-			to_chat(usr, SPAN_WARNING("Too many fields. Sorry, you can't do this."))
+			to_chat(usr, SPAN("warning", "Too many fields. Sorry, you can't do this."))
 			return
 
 		t = parsepencode(t, i, usr, iscrayon, isfancy) // Encode everything from pencode to html

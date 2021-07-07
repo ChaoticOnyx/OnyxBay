@@ -23,19 +23,19 @@ GLOBAL_LIST_INIT(standing_objects, list(/obj/item/weapon/stool, /obj/structure/t
 	// Forbid to create a noose in the air
 	// Also sanity check for turf in loc
 	if(istype(above, /turf/simulated/open))
-		to_chat(usr, SPAN_WARNING("There is no ceiling above you."))
+		to_chat(usr, SPAN("warning", "There is no ceiling above you."))
 		return
 
 	if(H.restrained() || H.stat || H.paralysis || H.stunned)
-		to_chat(usr, SPAN_WARNING("You can't do it right now."))
+		to_chat(usr, SPAN("warning", "You can't do it right now."))
 		return
 
 	if(!is_standing_on_object(H))
-		to_chat(usr, SPAN_WARNING("You have to be standing on top of a chair, table or bed to make a noose!"))
+		to_chat(usr, SPAN("warning", "You have to be standing on top of a chair, table or bed to make a noose!"))
 		return
 
 	if(amount <= 24)
-		to_chat(H, SPAN_WARNING("You need at least 25 lengths to make a noose!"))
+		to_chat(H, SPAN("warning", "You need at least 25 lengths to make a noose!"))
 		return
 
 	if(!do_mob(H, current_turf, 3 SECONDS))
@@ -45,7 +45,7 @@ GLOBAL_LIST_INIT(standing_objects, list(/obj/item/weapon/stool, /obj/structure/t
 		return
 
 	var/obj/structure/noose/N = new /obj/structure/noose(current_turf)
-	to_chat(usr, SPAN_NOTICE("You wind some cable together to make a noose, tying it to the ceiling."))
+	to_chat(usr, SPAN("notice", "You wind some cable together to make a noose, tying it to the ceiling."))
 	forceMove(N)
 	N.coil = src
 	N.color = color
@@ -69,22 +69,22 @@ GLOBAL_LIST_INIT(standing_objects, list(/obj/item/weapon/stool, /obj/structure/t
 /obj/structure/noose/attackby(obj/item/W, mob/user, params)
 	if(W.edge)
 		user.visible_message(\
-			SPAN_NOTICE("[user] cuts the noose."),\
-			SPAN_NOTICE("You cut the noose."))
+			SPAN("notice", "[user] cuts the noose."),\
+			SPAN("notice", "You cut the noose."))
 		untie()
 		return
 	return ..()
 
 /obj/structure/noose/bullet_act(obj/item/projectile/P)
 	if(prob(40))
-		visible_message(SPAN_NOTICE("\The [src] gets split by \the [P]!"))
+		visible_message(SPAN("notice", "\The [src] gets split by \the [P]!"))
 		untie()
 
 /obj/structure/noose/proc/untie()
 	if(buckled_mob)
 		buckled_mob.visible_message(\
-			SPAN_DANGER("[buckled_mob] falls over and hits the ground!"),\
-			SPAN_DANGER("You fall over and hit the ground!"))
+			SPAN("danger", "[buckled_mob] falls over and hits the ground!"),\
+			SPAN("danger", "You fall over and hit the ground!"))
 		buckled_mob.adjustBruteLoss(10)
 	playsound(src, 'sound/items/Wirecutter.ogg', 60, 1)
 	if(coil)
@@ -130,27 +130,27 @@ GLOBAL_LIST_INIT(standing_objects, list(/obj/item/weapon/stool, /obj/structure/t
 		var/mob/living/M = buckled_mob
 		if(M != user)
 			user.visible_message(\
-				SPAN_NOTICE("[user] begins to untie the noose over [M]'s neck..."),\
-				SPAN_NOTICE("You begin to untie the noose over [M]'s neck..."))
+				SPAN("notice", "[user] begins to untie the noose over [M]'s neck..."),\
+				SPAN("notice", "You begin to untie the noose over [M]'s neck..."))
 			if(do_mob(user, M, 10 SECONDS))
 				user.visible_message(\
-				SPAN_NOTICE("[user] unties the noose over [M]'s neck!"),\
-				SPAN_NOTICE("You untie the noose over [M]'s neck!"))
+				SPAN("notice", "[user] unties the noose over [M]'s neck!"),\
+				SPAN("notice", "You untie the noose over [M]'s neck!"))
 			else
 				return
 		else
 			M.visible_message(\
-				SPAN_WARNING("[M] struggles to untie the noose over their neck!"),\
-				SPAN_NOTICE("You struggle to untie the noose over your neck."))
+				SPAN("warning", "[M] struggles to untie the noose over their neck!"),\
+				SPAN("notice", "You struggle to untie the noose over your neck."))
 			if(!do_after(M, 15 SECONDS))
 				if(M?.buckled)
-					to_chat(M, SPAN_WARNING("You fail to untie yourself!"))
+					to_chat(M, SPAN("warning", "You fail to untie yourself!"))
 				return
 			if(!M.buckled)
 				return
 			M.visible_message(\
-				SPAN_WARNING("[M] unties the noose over their neck!"),\
-				SPAN_NOTICE("You untie the noose over your neck!"))
+				SPAN("warning", "[M] unties the noose over their neck!"),\
+				SPAN("notice", "You untie the noose over your neck!"))
 			M.Weaken(3)
 			M.Stun(2)
 		unbuckle_mob()
@@ -163,7 +163,7 @@ GLOBAL_LIST_INIT(standing_objects, list(/obj/item/weapon/stool, /obj/structure/t
 	var/obj/item/organ/external/affecting = H.get_organ(BP_HEAD)
 	if(!affecting || affecting.is_stump())
 		if(user)
-			to_chat(user, SPAN_DANGER("They don't have a head."))
+			to_chat(user, SPAN("danger", "They don't have a head."))
 		return FALSE
 	else
 		return TRUE
@@ -186,38 +186,38 @@ GLOBAL_LIST_INIT(standing_objects, list(/obj/item/weapon/stool, /obj/structure/t
 	if(M == user)
 		var/datum/gender/G = gender_datums[M.get_visible_gender()]
 		M.visible_message(\
-			SPAN_DANGER("[user] attempts to tie \the [src] over [G.his] neck!"),\
-			SPAN_DANGER("You attempt to tie \the [src] over your neck!"))
+			SPAN("danger", "[user] attempts to tie \the [src] over [G.his] neck!"),\
+			SPAN("danger", "You attempt to tie \the [src] over your neck!"))
 
 		if(do_after(user, 5 SECONDS))
 			if(buckle_mob(M))
 				M.visible_message(\
-					SPAN_WARNING("[user] ties \the [src] over [G.his] neck!"),\
-					SPAN_WARNING("You tie \the [src] over your neck!"))
+					SPAN("warning", "[user] ties \the [src] over [G.his] neck!"),\
+					SPAN("warning", "You tie \the [src] over your neck!"))
 				playsound(user, 'sound/effects/noose/noosed.ogg', 50, 1, -1)
 				return TRUE
 
 		user.visible_message(\
-			SPAN_WARNING("[user] fails to tie \the [src] over [G.his] neck!"),\
-			SPAN_WARNING("You fail to tie \the [src] over your neck!"))
+			SPAN("warning", "[user] fails to tie \the [src] over [G.his] neck!"),\
+			SPAN("warning", "You fail to tie \the [src] over your neck!"))
 		return FALSE
 	else
 		M.visible_message(\
-			SPAN_DANGER("[user] attempts to tie \the [src] over [M]'s neck!"),\
-			SPAN_DANGER("You ties \the [src] over your neck!"))
-		to_chat(user, SPAN_NOTICE("It will take 20 seconds and you have to stand still."))
+			SPAN("danger", "[user] attempts to tie \the [src] over [M]'s neck!"),\
+			SPAN("danger", "You ties \the [src] over your neck!"))
+		to_chat(user, SPAN("notice", "It will take 20 seconds and you have to stand still."))
 
 		if(do_after(user, 20 SECONDS))
 			if(buckle_mob(M))
 				M.visible_message(\
-					SPAN_DANGER("[user] ties \the [src] over [M]'s neck!"),\
-					SPAN_DANGER("You tie \the [src] over your neck!"))
+					SPAN("danger", "[user] ties \the [src] over [M]'s neck!"),\
+					SPAN("danger", "You tie \the [src] over your neck!"))
 				playsound(user, 'sound/effects/noose/noosed.ogg', 50, 1, -1)
 				return TRUE
 
 		user.visible_message(\
-			SPAN_WARNING("[user] fails to tie \the [src] over [M]'s neck!"),\
-			SPAN_WARNING("You fail to tie \the [src] over [M]'s neck!"))
+			SPAN("warning", "[user] fails to tie \the [src] over [M]'s neck!"),\
+			SPAN("warning", "You fail to tie \the [src] over [M]'s neck!"))
 		return FALSE
 
 /obj/structure/noose/Process()
@@ -258,14 +258,14 @@ GLOBAL_LIST_INIT(standing_objects, list(/obj/item/weapon/stool, /obj/structure/t
 
 				if(prob(15))
 					var/flavor_text = list(\
-						SPAN_WARNING("[buckled_mob]'s legs flail for anything to stand on."),\
-						SPAN_WARNING("[buckled_mob]'s hands are desperately clutching the noose."),\
-						SPAN_WARNING("[buckled_mob]'s limbs sway back and forth with diminishing strength."))
+						SPAN("warning", "[buckled_mob]'s legs flail for anything to stand on."),\
+						SPAN("warning", "[buckled_mob]'s hands are desperately clutching the noose."),\
+						SPAN("warning", "[buckled_mob]'s limbs sway back and forth with diminishing strength."))
 
 					if(buckled_mob.stat == DEAD)
 						flavor_text = list(\
-							SPAN_WARNING("[buckled_mob]'s limbs lifelessly sway back and forth."),\
-							SPAN_WARNING("[buckled_mob]'s eyes stare straight ahead."))
+							SPAN("warning", "[buckled_mob]'s limbs lifelessly sway back and forth."),\
+							SPAN("warning", "[buckled_mob]'s eyes stare straight ahead."))
 					buckled_mob.visible_message(pick(flavor_text))
 		if(4)
 			pixel_x = initial(pixel_x)

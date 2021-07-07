@@ -104,16 +104,16 @@ var/global/datum/controller/occupations/job_master
 		if(!CheckGeneralJoinBlockers(joining, job))
 			return FALSE
 		if(job.minimum_character_age && (joining.client.prefs.age < job.minimum_character_age))
-			to_chat(joining, SPAN_WARNING("Your character's in-game age is too low for this job."))
+			to_chat(joining, SPAN("warning", "Your character's in-game age is too low for this job."))
 			return FALSE
 		if(job.faction_restricted && (joining.client.prefs.faction != GLOB.using_map.company_name || (joining.client.prefs.nanotrasen_relation in COMPANY_OPPOSING)))
-			to_chat(joining, SPAN_WARNING("Your characte must be loyal to [GLOB.using_map.company_name]."))
+			to_chat(joining, SPAN("warning", "Your characte must be loyal to [GLOB.using_map.company_name]."))
 			return FALSE
 		if(!job.player_old_enough(joining.client))
-			to_chat(joining, SPAN_WARNING("Your player age (days since first seen on the server) is too low for this job."))
+			to_chat(joining, SPAN("warning", "Your player age (days since first seen on the server) is too low for this job."))
 			return FALSE
 		if(GAME_STATE != RUNLEVEL_GAME)
-			to_chat(joining, SPAN_WARNING("The round is either not ready, or has already finished..."))
+			to_chat(joining, SPAN("warning", "The round is either not ready, or has already finished..."))
 			return FALSE
 		return TRUE
 
@@ -526,7 +526,7 @@ var/global/datum/controller/occupations/job_master
 		to_chat(H, "<b>To speak on your department's radio channel use :h. For the use of other channels, examine your headset.</b>")
 
 		if(rank == "Merchant" && GLOB.merchant_illegalness)
-			to_chat(H, SPAN_DANGER("<b>Your trading license is a forgery. Trading on NSS \"Exodus\" is illegal!</b>"))
+			to_chat(H, SPAN("danger", "<b>Your trading license is a forgery. Trading on NSS \"Exodus\" is illegal!</b>"))
 			H.mind.store_memory("Your trading license is a forgery. Trading on NSS \"Exodus\" is illegal.")
 
 		if(job.req_admin_notify)

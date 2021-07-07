@@ -161,12 +161,12 @@
 	if(!foldable)
 		return
 
-	var/list/collapse_message = list(SPAN_WARNING("\The [src.name] has collapsed!"), null)
+	var/list/collapse_message = list(SPAN("warning", "\The [src.name] has collapsed!"), null)
 
 	if(buckled_mob)
 		collapse_message = list(\
-			SPAN_WARNING("[buckled_mob] falls down [user ? "as [user] collapses" : "from collapsing"] \the [src.name]!"),\
-			user ? SPAN_NOTICE("You collapse \the [src.name] and made [buckled_mob] fall down!") : null)
+			SPAN("warning", "[buckled_mob] falls down [user ? "as [user] collapses" : "from collapsing"] \the [src.name]!"),\
+			user ? SPAN("notice", "You collapse \the [src.name] and made [buckled_mob] fall down!") : null)
 
 		var/mob/living/occupant = unbuckle_mob()
 		var/blocked = occupant.run_armor_check(BP_GROIN, "melee")

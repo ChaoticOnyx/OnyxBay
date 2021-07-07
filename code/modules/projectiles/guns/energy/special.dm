@@ -238,9 +238,9 @@
 	if(current_power < max_shots && danger_attack == TRUE)
 		power_supply.charge = power_supply.charge + charge_cost
 		W.use(1)
-		to_chat(user, SPAN_NOTICE("You insert \the [W.material.use_name] [W.material.sheet_singular_name] into \the [src]."))
+		to_chat(user, SPAN("notice", "You insert \the [W.material.use_name] [W.material.sheet_singular_name] into \the [src]."))
 	else
-		to_chat(user, SPAN_WARNING("You can't insert \the [W.material.use_name] [W.material.sheet_singular_name] into \the [src], it's full."))
+		to_chat(user, SPAN("warning", "You can't insert \the [W.material.use_name] [W.material.sheet_singular_name] into \the [src], it's full."))
 
 /obj/item/weapon/gun/energy/plasmacutter/get_temperature_as_from_ignitor()
 	return 3800

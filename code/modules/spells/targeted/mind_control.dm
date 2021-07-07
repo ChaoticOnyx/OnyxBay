@@ -20,7 +20,7 @@
 /spell/hand/mind_control/cast(list/targets, mob/user, channel)
 	for(var/mob/M in targets)
 		if(M.get_active_hand())
-			to_chat(user, SPAN_WARNING("You need an empty hand to cast this spell."))
+			to_chat(user, SPAN("warning", "You need an empty hand to cast this spell."))
 			return
 		var/obj/item/magic_hand/control_hand/H = new (src)
 		if(!M.put_in_active_hand(H))
@@ -31,7 +31,7 @@
 /spell/hand/mind_control/cast_hand(atom/A, mob/user)
 	var/mob/living/target = A
 	if(target == user)
-		to_chat(user, SPAN_DANGER("You tried to control yourself, thankfully spell didn't worked!"))
+		to_chat(user, SPAN("danger", "You tried to control yourself, thankfully spell didn't worked!"))
 		return // Prevents you from stupid thing
 	var/datum/magical_imprint/magical_imprint = new(instructions)
 	magical_imprint.implant_in_mob(target, BP_HEAD)

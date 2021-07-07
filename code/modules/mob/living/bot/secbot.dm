@@ -458,7 +458,7 @@
 	if(client)
 		process_sec_hud(src,1)
 	if(!client && prob(10))
-		to_chat(src, SPAN_NOTICE("...[pick(secbot_dreams)]..."))
+		to_chat(src, SPAN("notice", "...[pick(secbot_dreams)]..."))
 
 /mob/living/bot/secbot/Stat()
 	..()

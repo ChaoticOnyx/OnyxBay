@@ -77,9 +77,9 @@
 /obj/item/device/electronic_assembly/examine(mob/user)
 	. = ..()
 	if(can_anchor)
-		to_chat(user, SPAN_NOTICE("The anchoring bolts [anchored ? "are" : "can be"] <b>wrenched</b> in place and the maintenance panel [opened ? "can be" : "is"] <b>screwed</b> in place."))
+		to_chat(user, SPAN("notice", "The anchoring bolts [anchored ? "are" : "can be"] <b>wrenched</b> in place and the maintenance panel [opened ? "can be" : "is"] <b>screwed</b> in place."))
 	else
-		to_chat(user, SPAN_NOTICE("The maintenance panel [opened ? "can be" : "is"] <b>screwed</b> in place."))
+		to_chat(user, SPAN("notice", "The maintenance panel [opened ? "can be" : "is"] <b>screwed</b> in place."))
 
 	if((isobserver(user) && ckeys_allowed_to_scan[user.ckey]) || is_admin(user))
 		to_chat(user, "You can <a href='?src=\ref[src];ghostscan=1'>scan</a> this circuit.")
@@ -413,7 +413,7 @@
 				var/saved = "On circuit printers with cloning enabled, you may use the code below to clone the circuit:<br><br><code>[SScircuit.save_electronic_assembly(src)]</code>"
 				show_browser(usr, saved, "window=circuit_scan;size=500x600;border=1;can_resize=1;can_close=1;can_minimize=1")
 			else
-				to_chat(usr, SPAN_WARNING("The circuit is empty!"))
+				to_chat(usr, SPAN("warning", "The circuit is empty!"))
 		return
 
 	if(!check_interactivity(usr))
@@ -430,11 +430,11 @@
 
 	if(href_list["remove_cell"])
 		if(!battery)
-			to_chat(usr, SPAN_WARNING("There's no power cell to remove from \the [src]."))
+			to_chat(usr, SPAN("warning", "There's no power cell to remove from \the [src]."))
 		else
 			battery.forceMove(get_turf(src))
 			playsound(src, 'sound/items/Crowbar.ogg', 50, 1)
-			to_chat(usr, SPAN_NOTICE("You pull \the [battery] out of \the [src]'s power supplier."))
+			to_chat(usr, SPAN("notice", "You pull \the [battery] out of \the [src]'s power supplier."))
 			battery = null
 
 	var/obj/item/integrated_circuit/component
@@ -453,9 +453,9 @@
 				if(D.accepting_refs)
 					D.afterattack(component, usr, TRUE)
 				else
-					to_chat(usr, SPAN_WARNING("The debugger's 'ref scanner' needs to be on."))
+					to_chat(usr, SPAN("warning", "The debugger's 'ref scanner' needs to be on."))
 			else
-				to_chat(usr, SPAN_WARNING("You need a debugger set to 'ref' mode to do that."))
+				to_chat(usr, SPAN("warning", "You need a debugger set to 'ref' mode to do that."))
 
 		// Builtin components are not supposed to be removed or rearranged
 		if(!component.removable)
@@ -511,7 +511,7 @@
 	if(!check_interactivity(M))
 		return
 	if(src && input)
-		to_chat(M, SPAN_NOTICE("The machine now has a label reading '[input]'."))
+		to_chat(M, SPAN("notice", "The machine now has a label reading '[input]'."))
 		name = input
 
 /obj/item/device/electronic_assembly/proc/add_allowed_scanner(ckey)
@@ -547,11 +547,11 @@
 // Returns true if the circuit made it inside.
 /obj/item/device/electronic_assembly/proc/try_add_component(obj/item/integrated_circuit/IC, mob/user)
 	if(!opened)
-		to_chat(user, SPAN_WARNING("\The [src]'s hatch is closed, you can't put anything inside."))
+		to_chat(user, SPAN("warning", "\The [src]'s hatch is closed, you can't put anything inside."))
 		return FALSE
 
 	if(IC.w_class > w_class)
-		to_chat(user, SPAN_WARNING("\The [IC] is way too big to fit into \the [src]."))
+		to_chat(user, SPAN("warning", "\The [IC] is way too big to fit into \the [src]."))
 		return FALSE
 
 	var/total_part_size = return_total_size()
@@ -563,23 +563,23 @@
 			if(component.type == IC.type)
 				current_components++
 		if(current_components >= IC.max_allowed)
-			to_chat(user, SPAN_WARNING("You can't seem to add the '[IC]', as there are too many installed already."))
+			to_chat(user, SPAN("warning", "You can't seem to add the '[IC]', as there are too many installed already."))
 			return FALSE
 
 	if((total_part_size + IC.size) > max_components)
-		to_chat(user, SPAN_WARNING("You can't seem to add the '[IC]', as there's insufficient space."))
+		to_chat(user, SPAN("warning", "You can't seem to add the '[IC]', as there's insufficient space."))
 		return FALSE
 	if((total_complexity + IC.complexity) > max_complexity)
-		to_chat(user, SPAN_WARNING("You can't seem to add the '[IC]', since this setup's too complicated for the case."))
+		to_chat(user, SPAN("warning", "You can't seem to add the '[IC]', since this setup's too complicated for the case."))
 		return FALSE
 	if(IC.action_flags && ((allowed_circuit_action_flags & IC.action_flags) != IC.action_flags))
-		to_chat(user, SPAN_WARNING("You can't seem to add the '[IC]', since the case doesn't support the circuit type."))
+		to_chat(user, SPAN("warning", "You can't seem to add the '[IC]', since the case doesn't support the circuit type."))
 		return FALSE
 
 	if(!IC.forceMove(src))
 		return FALSE
 
-	to_chat(user, SPAN_NOTICE("You slide [IC] inside [src]."))
+	to_chat(user, SPAN("notice", "You slide [IC] inside [src]."))
 	playsound(src, 'sound/items/Deconstruct.ogg', 50, 1)
 	add_allowed_scanner(user.ckey)
 	investigate_log("had [IC]([IC.type]) inserted by [key_name(user)].", INVESTIGATE_CIRCUIT)
@@ -598,17 +598,17 @@
 /obj/item/device/electronic_assembly/proc/try_remove_component(obj/item/integrated_circuit/IC, mob/user, silent)
 	if(!opened)
 		if(!silent)
-			to_chat(user, SPAN_WARNING("[src]'s hatch is closed, so you can't fiddle with the internal components."))
+			to_chat(user, SPAN("warning", "[src]'s hatch is closed, so you can't fiddle with the internal components."))
 		return FALSE
 
 	if(!IC.removable)
 		if(!silent)
-			to_chat(user, SPAN_WARNING("[src] is permanently attached to the case."))
+			to_chat(user, SPAN("warning", "[src] is permanently attached to the case."))
 		return FALSE
 
 	remove_component(IC)
 	if(!silent)
-		to_chat(user, SPAN_NOTICE("You pop \the [IC] out of the case, and slide it out."))
+		to_chat(user, SPAN("notice", "You pop \the [IC] out of the case, and slide it out."))
 		playsound(src, 'sound/items/crowbar.ogg', 50, 1)
 		user.put_in_hands(IC)
 	add_allowed_scanner(user.ckey)
@@ -629,12 +629,12 @@
 	. = ..()
 	for(var/obj/item/integrated_circuit/input/S in assembly_components)
 		if(S.sense(target,user,proximity))
-			visible_message(SPAN_NOTICE(" [user] waves [src] around [target]."))
+			visible_message(SPAN("notice", " [user] waves [src] around [target]."))
 
 
 /obj/item/device/electronic_assembly/proc/screwdriver_act(mob/living/user, obj/item/I)
 	if(sealed || force_sealed)
-		to_chat(user,SPAN_NOTICE("The assembly is sealed. Any attempt to force it open would break it."))
+		to_chat(user,SPAN("notice", "The assembly is sealed. Any attempt to force it open would break it."))
 		return FALSE
 	// some prefabs have invalid sprite after unscrewing
 	if(icon != 'icons/obj/assemblies/electronic_setups.dmi')
@@ -642,7 +642,7 @@
 
 	playsound(src.loc, 'sound/items/Screwdriver.ogg', 50, 1)
 	opened = !opened
-	to_chat(user, SPAN_NOTICE("You [opened ? "open" : "close"] the maintenance hatch of [src]."))
+	to_chat(user, SPAN("notice", "You [opened ? "open" : "close"] the maintenance hatch of [src]."))
 	update_icon()
 	return TRUE
 
@@ -661,31 +661,31 @@
 		if("repair")
 			if(health < max_integrity)
 				health = min(health + 20,max_integrity)
-				to_chat(user,SPAN_NOTICE("You fix the dents and scratches of the assembly."))
+				to_chat(user,SPAN("notice", "You fix the dents and scratches of the assembly."))
 				return TRUE
 			else
-				to_chat(user,SPAN_NOTICE("The assembly is already in impeccable condition."))
+				to_chat(user,SPAN("notice", "The assembly is already in impeccable condition."))
 				return FALSE
 
 		if("seal")
 			if(!opened)
 				if(I.remove_fuel(3,user))
 					sealed = TRUE
-					to_chat(user,SPAN_NOTICE("You seal the assembly, making it impossible to be opened."))
+					to_chat(user,SPAN("notice", "You seal the assembly, making it impossible to be opened."))
 					return TRUE
 
 			else
-				to_chat(user,SPAN_NOTICE("You need to close the assembly first before sealing it indefinitely!"))
+				to_chat(user,SPAN("notice", "You need to close the assembly first before sealing it indefinitely!"))
 				return FALSE
 
 		if("unseal")
-			to_chat(user,SPAN_NOTICE("You start unsealing the assembly carefully..."))
+			to_chat(user,SPAN("notice", "You start unsealing the assembly carefully..."))
 			if(I.remove_fuel(3,user))
 				for(var/obj/item/integrated_circuit/IC in assembly_components)
 					if(prob(50))
 						IC.disconnect_all()
 
-				to_chat(user,SPAN_NOTICE("You unsealed the assembly."))
+				to_chat(user,SPAN("notice", "You unsealed the assembly."))
 				sealed = FALSE
 				return TRUE
 
@@ -707,16 +707,16 @@
 			// check if unlocked to lock
 			if(!idlock)
 				idlock = debugger.idlock
-				to_chat(user,SPAN_NOTICE("You lock \the [src]."))
+				to_chat(user,SPAN("notice", "You lock \the [src]."))
 
 			//if locked, unlock if ids match
 			else
 				if(idlock.resolve() == debugger.idlock.resolve())
 					idlock = null
-					to_chat(user,SPAN_NOTICE("You unlock \the [src]."))
+					to_chat(user,SPAN("notice", "You unlock \the [src]."))
 
 				else
-					to_chat(user,SPAN_NOTICE("The scanned ID doesn't match with \the [src]'s lock."))
+					to_chat(user,SPAN("notice", "The scanned ID doesn't match with \the [src]'s lock."))
 
 			debugger.idlock = null
 			return
@@ -742,19 +742,19 @@
 			interact(user)
 			return TRUE
 		else
-			to_chat(user, SPAN_WARNING("[src]'s hatch is closed, so you can't fiddle with the internal components."))
+			to_chat(user, SPAN("warning", "[src]'s hatch is closed, so you can't fiddle with the internal components."))
 			for(var/obj/item/integrated_circuit/input/S in assembly_components)
 				S.attackby_react(I,user,user.a_intent)
 			return ..()
 
 	else if(istype(I, /obj/item/weapon/cell))
 		if(!opened)
-			to_chat(user, SPAN_WARNING("[src]'s hatch is closed, so you can't access \the [src]'s power supplier."))
+			to_chat(user, SPAN("warning", "[src]'s hatch is closed, so you can't access \the [src]'s power supplier."))
 			for(var/obj/item/integrated_circuit/input/S in assembly_components)
 				S.attackby_react(I,user,user.a_intent)
 			return ..()
 		if(battery)
-			to_chat(user, SPAN_WARNING("[src] already has \a [battery] installed. Remove it first if you want to replace it."))
+			to_chat(user, SPAN("warning", "[src] already has \a [battery] installed. Remove it first if you want to replace it."))
 			for(var/obj/item/integrated_circuit/input/S in assembly_components)
 				S.attackby_react(I,user,user.a_intent)
 			return ..()
@@ -762,7 +762,7 @@
 		I.forceMove(src)
 		battery = I
 		playsound(src, 'sound/items/Deconstruct.ogg', 50, 1)
-		to_chat(user, SPAN_NOTICE("You slot the [I] inside \the [src]'s power supplier."))
+		to_chat(user, SPAN("notice", "You slot the [I] inside \the [src]'s power supplier."))
 		return TRUE
 
 	else if(istype(I, /obj/item/device/integrated_electronics/detailer))
@@ -1113,15 +1113,15 @@
 		return
 	var/turf/T = get_turf(user)
 	if(!isfloor(T) && on_wall.density)
-		to_chat(user, SPAN_WARNING("You cannot place [src] on this spot!"))
+		to_chat(user, SPAN("warning", "You cannot place [src] on this spot!"))
 		return
 	if(gotwallitem(T, ndir))
-		to_chat(user, SPAN_WARNING("There's already an item on this wall!"))
+		to_chat(user, SPAN("warning", "There's already an item on this wall!"))
 		return
 	playsound(src.loc, 'sound/machines/click.ogg', 75, 1)
 	user.visible_message("[user.name] attaches [src] to the wall.",
-		SPAN_NOTICE("You attach [src] to the wall."),
-		SPAN_NOTICE("You hear clicking."))
+		SPAN("notice", "You attach [src] to the wall."),
+		SPAN("notice", "You hear clicking."))
 	if(user.unEquip(src,T))
 		var/matrix/M = matrix()
 		switch(ndir)

@@ -29,24 +29,24 @@
 /obj/item/weapon/storage/lockbox/attackby(obj/item/weapon/W, mob/user)
 	if(istype(W, /obj/item/weapon/card/id))
 		if(broken)
-			to_chat(user, SPAN_WARNING("[src] broken!"))
+			to_chat(user, SPAN("warning", "[src] broken!"))
 			. = ..()
 		if(check_access(W))
 			locked = !locked
 			update_icon()
 			if(locked)
-				to_chat(user, SPAN_NOTICE("You lock \the [src]!"))
+				to_chat(user, SPAN("notice", "You lock \the [src]!"))
 				close_all()
 				return
 			else
-				to_chat(user, SPAN_NOTICE("You unlock \the [src]!"))
+				to_chat(user, SPAN("notice", "You unlock \the [src]!"))
 				return
-		to_chat(user, SPAN_WARNING("Wrong access!"))
+		to_chat(user, SPAN("warning", "Wrong access!"))
 		return
 
 	if(istype(W, /obj/item/weapon/melee/energy/blade))
 		if(broken)
-			to_chat(user, SPAN_WARNING("[src] already broken!"))
+			to_chat(user, SPAN("warning", "[src] already broken!"))
 			. = ..()
 
 		if(emag_act(INFINITY, user, W, "The locker has been sliced open by [user] with an energy blade!", "You hear metal being sliced and sparks flying."))
@@ -65,7 +65,7 @@
 	add_fingerprint(user)
 
 	if(locked && (loc == user)) // lockbox onmob?
-		to_chat(usr, SPAN_WARNING("[src] is locked and cannot be opened!"))
+		to_chat(usr, SPAN("warning", "[src] is locked and cannot be opened!"))
 		return
 	else if(!locked && (loc == user))
 		open(usr)
@@ -77,27 +77,27 @@
 
 /obj/item/weapon/storage/lockbox/show_to(mob/user)
 	if(locked)
-		to_chat(user, SPAN_WARNING("It's locked!"))
+		to_chat(user, SPAN("warning", "It's locked!"))
 		return
 	. = ..()
 
 /obj/item/weapon/storage/lockbox/MouseDrop(over_object, src_location, over_location)
 	add_fingerprint(usr)
 	if (locked)
-		to_chat(usr, SPAN_WARNING("[src] is locked and cannot be opened!"))
+		to_chat(usr, SPAN("warning", "[src] is locked and cannot be opened!"))
 		return
 	. = ..()
 
 /obj/item/weapon/storage/lockbox/emag_act(remaining_charges, mob/user, emag_source, visual_feedback = "", audible_feedback = "")
 	if(!broken)
 		if(visual_feedback)
-			visual_feedback = SPAN_WARNING("[visual_feedback]")
+			visual_feedback = SPAN("warning", "[visual_feedback]")
 		else
-			visual_feedback = SPAN_WARNING("The locker has been sliced open by [user] with an electromagnetic card!")
+			visual_feedback = SPAN("warning", "The locker has been sliced open by [user] with an electromagnetic card!")
 		if(audible_feedback)
-			audible_feedback = SPAN_WARNING("[audible_feedback]")
+			audible_feedback = SPAN("warning", "[audible_feedback]")
 		else
-			audible_feedback = SPAN_WARNING("You hear a faint electrical spark.")
+			audible_feedback = SPAN("warning", "You hear a faint electrical spark.")
 
 		broken = 1
 		locked = 0

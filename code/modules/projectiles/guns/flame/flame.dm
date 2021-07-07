@@ -28,7 +28,7 @@
 		for(var/mob/living/C in get_turf(src))
 			C.flamer_fire_crossed(fire_stacks)
 			if(C.IgniteMob())
-				C.visible_message(SPAN_DANGER("[C] bursts into flames!"))
+				C.visible_message(SPAN("danger", "[C] bursts into flames!"))
 
 	START_PROCESSING(SSobj, src)
 

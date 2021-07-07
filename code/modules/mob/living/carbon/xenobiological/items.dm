@@ -261,7 +261,7 @@
 	if(istype(target, /obj/item/clothing))
 		var/obj/item/clothing/clothing = target
 		if(clothing.max_heat_protection_temperature == FIRESUIT_MAX_HEAT_PROTECTION_TEMPERATURE)
-			to_chat(user, SPAN_WARNING("This clothing has already been protected!"))
+			to_chat(user, SPAN("warning", "This clothing has already been protected!"))
 			return ..()
 		to_chat(user, "You apply the potion.")
 		clothing.max_heat_protection_temperature = FIRESUIT_MAX_HEAT_PROTECTION_TEMPERATURE

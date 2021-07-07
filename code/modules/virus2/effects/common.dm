@@ -201,8 +201,8 @@
 	if(!mob.handcuffed)
 		return
 	mob.visible_message(
-		SPAN_DANGER("\The [mob] manages to remove \the [mob.handcuffed]!"),
-		SPAN_WARNING("[mob.handcuffed] suddenly fall off you.")
+		SPAN("danger", "\The [mob] manages to remove \the [mob.handcuffed]!"),
+		SPAN("warning", "[mob.handcuffed] suddenly fall off you.")
 		)
 	mob.drop_from_inventory(mob.handcuffed)
 

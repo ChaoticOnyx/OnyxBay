@@ -120,41 +120,41 @@
 		return
 
 	if(!istype(C.get_active_hand(), src))
-		to_chat(C, SPAN_WARNING("You need to hold \the [src] in hands!"))
+		to_chat(C, SPAN("warning", "You need to hold \the [src] in hands!"))
 		return
 
 	if(is_open_container())
 		if(!C.check_has_mouth())
-			to_chat(C, SPAN_WARNING("How do you intend to drink \the [src]? You don't have a mouth!"))
+			to_chat(C, SPAN("warning", "How do you intend to drink \the [src]? You don't have a mouth!"))
 			return
 		var/obj/item/blocked = C.check_mouth_coverage()
 		if(blocked)
-			to_chat(C, SPAN_WARNING("\The [blocked] is in the way!"))
+			to_chat(C, SPAN("warning", "\The [blocked] is in the way!"))
 			return
 
 		if(reagents.total_volume > 30) // 30 equates to 3 SECONDS.
 			C.visible_message(\
-				SPAN_NOTICE("[C] prepares to drink down [src]."),\
-				SPAN_NOTICE("You prepare to drink down [src]."))
+				SPAN("notice", "[C] prepares to drink down [src]."),\
+				SPAN("notice", "You prepare to drink down [src]."))
 			playsound(C, 'sound/items/drinking.ogg', reagents.total_volume, 1)
 
 		if(!do_after(C, reagents.total_volume))
 			if(!Adjacent(C)) return
 			standard_splash_mob(src, src)
 			C.visible_message(\
-				SPAN_DANGER("[C] splashed \the [src]'s contents on self while trying drink it down."),\
-				SPAN_DANGER("You splash \the [src]'s contents on yourself!"))
+				SPAN("danger", "[C] splashed \the [src]'s contents on self while trying drink it down."),\
+				SPAN("danger", "You splash \the [src]'s contents on yourself!"))
 			return
 
 		else
 			if(!Adjacent(C)) return
 			C.visible_message(\
-				SPAN_NOTICE("[C] drinked down the whole [src]!"),\
-				SPAN_NOTICE("You drink down the whole [src]!"))
+				SPAN("notice", "[C] drinked down the whole [src]!"),\
+				SPAN("notice", "You drink down the whole [src]!"))
 			playsound(C, 'sound/items/drinking_after.ogg', reagents.total_volume, 1)
 			reagents.trans_to_mob(C, reagents.total_volume, CHEM_INGEST)
 	else
-		to_chat(C, SPAN_NOTICE("You need to open \the [src] first!"))
+		to_chat(C, SPAN("notice", "You need to open \the [src] first!"))
 
 ////////////////////////////////////////////////////////////////////////////////
 /// Drinks. END

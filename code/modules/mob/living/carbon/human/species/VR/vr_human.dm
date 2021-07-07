@@ -52,7 +52,7 @@
 	revive()
 	if(!vr_mind)
 		return
-	to_chat(src, SPAN_DANGER("You are respawned! Respawns left: [vr_mind.thunder_respawns]."))
+	to_chat(src, SPAN("danger", "You are respawned! Respawns left: [vr_mind.thunder_respawns]."))
 
 /mob/living/carbon/human/vrhuman/updatehealth()
 	..()
@@ -125,7 +125,7 @@
 
 /mob/living/carbon/human/vrhuman/verb/try_cleanup() //to do
 	if(world.time < (last_cleanup_time + CLEANUP_COOLDOWN))
-		to_chat(src, SPAN_DANGER("Please wait!"))
+		to_chat(src, SPAN("danger", "Please wait!"))
 		return
 	last_cleanup_time = world.time
 	for(var/turf/unsimulated/floor/self_cleaning/sc in GLOB.self_cleaning_list)

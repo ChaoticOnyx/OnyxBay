@@ -59,6 +59,6 @@
 	if(!target)
 		return
 
-	to_chat(target, SPAN_DANGER("You feel punished!"))
+	to_chat(target, SPAN("danger", "You feel punished!"))
 	target.fire_stacks += 15
 	target.IgniteMob()

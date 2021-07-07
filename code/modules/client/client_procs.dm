@@ -226,7 +226,7 @@
 		<font size='3'>Please update it to [MIN_CLIENT_VERSION].</font></center>")
 		qdel(src)
 		return
-	
+
 	GLOB.using_map.map_info(src)
 
 	if(custom_event_msg && custom_event_msg != "")
@@ -268,7 +268,7 @@
 			send_link(src, "[config.panic_address]?redirect")
 
 		else
-			DIRECT_OUTPUT(src, SPAN_WARNING("<h1>This server is currently full and not accepting new connections.</h1>"))
+			DIRECT_OUTPUT(src, SPAN("warning", "<h1>This server is currently full and not accepting new connections.</h1>"))
 
 		log_admin("[ckey] tried to join but the server is full (player_limit=[config.player_limit])")
 		qdel(src)

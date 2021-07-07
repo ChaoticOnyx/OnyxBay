@@ -145,7 +145,7 @@ SUBSYSTEM_DEF(eams)
 
 /datum/controller/subsystem/eams/proc/__LoadResponseFromCache(ip)
 	ASSERT(istext(ip))
-	
+
 	if(!establish_db_connection())  // Database isn't connected
 		__DBError()
 		return FALSE
@@ -264,7 +264,7 @@ SUBSYSTEM_DEF(eams)
 		if (C.eams_info.ip_country == "")
 			C.eams_info.ip_country = "unknown"
 
-		to_chat(C, SPAN_WARNING("You were blocked by EAMS! Please, contact Administrators."))
+		to_chat(C, SPAN("warning", "You were blocked by EAMS! Please, contact Administrators."))
 		log_and_message_admins("Blocked by EAMS: [C.key] ([C.address]) connected from [C.eams_info.ip_country] ([C.eams_info.ip_countryCode])", 0)
 
 		return FALSE

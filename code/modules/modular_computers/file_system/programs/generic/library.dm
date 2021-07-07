@@ -215,7 +215,7 @@ The answer was five and a half years -ZeroBits
 		return
 
 	if(!establish_db_connection())
-		to_chat(user, SPAN_WARNING("Failed to establish database connection!"))
+		to_chat(user, SPAN("warning", "Failed to establish database connection!"))
 		return
 
 	var/author
@@ -226,7 +226,7 @@ The answer was five and a half years -ZeroBits
 		author = query.item[1]
 		title = query.item[2]
 	else
-		to_chat(user, SPAN_WARNING("Book with ISBN number \[[id]\] was not found!"))
+		to_chat(user, SPAN("warning", "Book with ISBN number \[[id]\] was not found!"))
 		return
 
 	query = sql_query("DELETE FROM library WHERE id = $id", dbcon, list(id = id))
@@ -297,7 +297,7 @@ The answer was five and a half years -ZeroBits
 		if(istype(nano_host(), /obj/item/modular_computer))
 			var/obj/item/modular_computer/computer = nano_host()
 			if(!computer.nano_printer)
-				to_chat(usr, SPAN_DANGER("Error: No printer detected. Unable to print document."))
+				to_chat(usr, SPAN("danger", "Error: No printer detected. Unable to print document."))
 				return 1
 		new /obj/item/weapon/book/wiki/template(get_turf(nano_host()), href_list["topic"], emagged ? 0 : 1)
 		return 1

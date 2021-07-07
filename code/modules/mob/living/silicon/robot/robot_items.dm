@@ -197,7 +197,7 @@
 		img.overlays = tool.overlays
 		tool_images[tool] = img
 	selected_tool = show_radial_menu(user, src, tool_images, radius = 42, require_near = TRUE, in_screen = TRUE)
-	to_chat(user, SPAN_NOTICE("You select to use [selected_tool ? selected_tool : "nothing"]"))
+	to_chat(user, SPAN("notice", "You select to use [selected_tool ? selected_tool : "nothing"]"))
 
 /obj/item/weapon/surgical_selector/return_item()
 	return selected_tool

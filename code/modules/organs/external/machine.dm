@@ -97,7 +97,7 @@
 	// It's time to do it. This code doesn't allow to resurrect a organic human this way.
 	if(owner && owner.stat == DEAD && BP_IS_ROBOTIC(owner.organs_by_name[parent_organ]))
 		owner.set_stat(CONSCIOUS)
-		owner.visible_message(SPAN_DANGER("\The [owner] twitches visibly!"))
+		owner.visible_message(SPAN("danger", "\The [owner] twitches visibly!"))
 
 /obj/item/organ/internal/cell/listen()
 	if(get_charge())

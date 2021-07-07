@@ -2116,7 +2116,7 @@
 		else if(href_list["obj_announce"])
 			for(var/datum/mind/player in GLOB.ert.current_antagonists)
 				var/obj_count = 1
-				to_chat(player.current, SPAN_NOTICE("Your current objectives:"))
+				to_chat(player.current, SPAN("notice", "Your current objectives:"))
 				for(var/datum/objective/objective in player.objectives)
 					to_chat(player.current, "<B>Objective #[obj_count]</B>: [objective.explanation_text]")
 					obj_count++

@@ -254,7 +254,7 @@
 	return
 /obj/structure/railing/proc/check_tile(mob/living/user, turf/T)
 	if(T.density == 1)
-		to_chat(user, SPAN_DANGER("There is [T] \a in the way."))
+		to_chat(user, SPAN("danger", "There is [T] \a in the way."))
 		return 0
 	else
 		for(var/obj/O in T.contents)
@@ -271,7 +271,7 @@
 			if(O.atom_flags & ATOM_FLAG_CHECKS_BORDER && !(turn(O.dir, 180) & src.dir))//checks if next item is directed
 				//allows if not directed towards climber
 				continue
-			to_chat(user, SPAN_DANGER("There is  [O] \a in the way."))
+			to_chat(user, SPAN("danger", "There is  [O] \a in the way."))
 			return 0
 	return 1
 /obj/structure/railing/can_climb(mob/living/user, post_climb_check = 0)
@@ -283,7 +283,7 @@
 	else if (T == UT)
 		return check_tile(user, OT)
 	else
-		to_chat(user, SPAN_DANGER("Too far to climb"))
+		to_chat(user, SPAN("danger", "Too far to climb"))
 		return 0
 
 

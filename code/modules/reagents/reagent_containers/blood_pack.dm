@@ -35,10 +35,10 @@
 /obj/item/weapon/reagent_containers/ivbag/attack(mob/living/carbon/human/M, mob/living/carbon/human/user, target_zone)
 	if (user == M && M.mind && M.mind.vampire)
 		if (being_feed)
-			to_chat(user, SPAN_NOTICE("You are already feeding on \the [src]."))
+			to_chat(user, SPAN("notice", "You are already feeding on \the [src]."))
 			return
 		if (reagents.get_reagent_amount(/datum/reagent/blood))
-			user.visible_message(SPAN_WARNING("[user] raises \the [src] up to their mouth and bites into it."), SPAN_NOTICE("You raise \the [src] up to your mouth and bite into it, starting to drain its contents.<br>You need to stand still."))
+			user.visible_message(SPAN("warning", "[user] raises \the [src] up to their mouth and bites into it."), SPAN("notice", "You raise \the [src] up to your mouth and bite into it, starting to drain its contents.<br>You need to stand still."))
 			being_feed = TRUE
 			vampire_marks = TRUE
 			while (do_after(user, 30, src))
@@ -51,11 +51,11 @@
 				user.mind.vampire.blood_usable += blood_taken
 
 				if (blood_taken)
-					to_chat(user, SPAN_NOTICE("You have accumulated [user.mind.vampire.blood_usable] [user.mind.vampire.blood_usable > 1 ? "units" : "unit"] of usable blood. It tastes quite stale."))
+					to_chat(user, SPAN("notice", "You have accumulated [user.mind.vampire.blood_usable] [user.mind.vampire.blood_usable > 1 ? "units" : "unit"] of usable blood. It tastes quite stale."))
 
 				if (reagents.get_reagent_amount(/datum/reagent/blood) < 1)
 					break
-			user.visible_message(SPAN_WARNING("[user] licks \his fangs dry, lowering \the [src]."), SPAN_NOTICE("You lick your fangs clean of the tasteless blood."))
+			user.visible_message(SPAN("warning", "[user] licks \his fangs dry, lowering \the [src]."), SPAN("notice", "You lick your fangs clean of the tasteless blood."))
 			being_feed = FALSE
 	else
 		..()
@@ -63,7 +63,7 @@
 /obj/item/weapon/reagent_containers/ivbag/examine(mob/user, distance = 2)
 	. = ..()
 	if (vampire_marks)
-		. += SPAN_WARNING("There are teeth marks on it.")
+		. += SPAN("warning", "There are teeth marks on it.")
 
 /obj/item/weapon/reagent_containers/attackby(obj/item/weapon/W as obj, mob/user as mob)
 
@@ -87,7 +87,7 @@
 		visible_message("\The [attached] is taken off \the [src]")
 		attached = null
 	else if(ishuman(over_object))
-		visible_message(SPAN_WARNING("\The [usr] starts hooking \the [over_object] up to \the [src]."))
+		visible_message(SPAN("warning", "\The [usr] starts hooking \the [over_object] up to \the [src]."))
 		if(do_after(usr, 30))
 			to_chat(usr, "You hook \the [over_object] up to \the [src].")
 			attached = over_object

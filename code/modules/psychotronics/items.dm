@@ -76,7 +76,7 @@
 				safe_thing = victim.glasses
 
 		if(safe_thing)
-			to_chat(user, SPAN_WARNING("\the [safe_thing] on the way!"))
+			to_chat(user, SPAN("warning", "\the [safe_thing] on the way!"))
 			return
 
 	if (!neuromod)
@@ -87,12 +87,12 @@
 		crash_with("neuromod's type must be `path`")
 
 	if (target == user)
-		visible_message(SPAN_WARNING("[user] trying to inject content of \the [src.name] to self."))
+		visible_message(SPAN("warning", "[user] trying to inject content of \the [src.name] to self."))
 	else
-		visible_message(SPAN_WARNING("[user] trying to inject content of \the [src.name] to [target]!"))
+		visible_message(SPAN("warning", "[user] trying to inject content of \the [src.name] to [target]!"))
 
 	if (do_after(user, 20, target, TRUE, TRUE, INCAPACITATION_DEFAULT, FALSE, FALSE))
-		visible_message(SPAN_WARNING("[user] did inject content of \the [src.name] to [target]"))
+		visible_message(SPAN("warning", "[user] did inject content of \the [src.name] to [target]"))
 
 		if (!istype(target, created_for))
 			target.adjustToxLoss(70)

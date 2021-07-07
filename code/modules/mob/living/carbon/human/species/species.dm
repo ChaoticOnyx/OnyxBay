@@ -392,12 +392,12 @@ The slots that you can use are found in items_clothing.dm and are the inventory 
 				target_mask = V.wear_mask
 			if(actor_mask && target_mask)
 				if(istype(actor_mask, /obj/item/clothing/mask/smokable/cigarette) && istype(target_mask, /obj/item/clothing/mask/smokable/cigarette))
-					H.visible_message(SPAN_NOTICE("[H] reaches out for [target]'s face...)"), \
-									SPAN_NOTICE("You reach out for [target]'s face..."))
+					H.visible_message(SPAN("notice", "[H] reaches out for [target]'s face...)"), \
+									SPAN("notice", "You reach out for [target]'s face..."))
 					H.next_move = world.time + 15
 					if(!do_after(H,15,target) || target.a_intent != I_HELP)
 						return
-					H.visible_message(SPAN_NOTICE("\The [actor_mask] touches \the [target_mask].</span>")) // Harsh spessman flirt
+					H.visible_message(SPAN("notice", "\The [actor_mask] touches \the [target_mask].</span>")) // Harsh spessman flirt
 					var/obj/item/clothing/mask/smokable/cigarette/actor_cig = actor_mask
 					var/obj/item/clothing/mask/smokable/cigarette/target_cig = target_mask
 					if(actor_cig.lit && !target_cig.lit)
