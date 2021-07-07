@@ -29,6 +29,8 @@ GLOBAL_DATUM_INIT(xenomorphs, /datum/antagonist/xenos, new)
 	spawn_announcement = replacetext(GLOB.using_map.unidentified_lifesigns_message, "%STATION_NAME%", station_name())
 	spawn_announcement_sound = GLOB.using_map.xenomorph_spawn_sound
 	..()
+	if(config.xeno_min_age)
+		min_player_age = config.xeno_min_age
 
 /datum/antagonist/xenos/greet(datum/mind/player)
 	to_chat(player.current, SPAN("danger", "<font size=3>You are a [role_text]!</font>"))
