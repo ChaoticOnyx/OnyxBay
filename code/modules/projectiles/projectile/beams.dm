@@ -236,7 +236,7 @@
 /obj/item/projectile/beam/plasmacutter/danger
 	name = "plasma arc"
 	icon_state = "omnilaser"
-	fire_sound = "sound/effects/weapons/energy/fire3.ogg"
+	fire_sound = 'sound/effects/weapons/energy/fire3.ogg'
 	damage = 25
 	sharp = 1
 	edge = 1

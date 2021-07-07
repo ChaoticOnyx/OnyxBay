@@ -48,8 +48,8 @@ const Tab = (props) => {
         ...computeBoxClassName(rest),
       ])}
       {...computeBoxProps(rest)}>
-      {(canRender(leftSlot) && <div className='Tab__left'>{leftSlot}</div>) ||
-        (!!icon && (
+      {(canRender(leftSlot) && <div className='Tab__left'>{leftSlot}</div>)
+        || (!!icon && (
           <div className='Tab__left'>
             <Icon name={icon} />
           </div>

@@ -84,8 +84,8 @@ export const spellCheckerMiddleware = (store) => {
       filtered = removeBlacklistedWords(filtered, settings.blacklist);
       yandexRequest(filtered, (response) => {
         if (
-          response.readyState === XMLHttpRequest.DONE &&
-            response.status === 200
+          response.readyState === XMLHttpRequest.DONE
+            && response.status === 200
         ) {
           let res = handleYandexResponse(JSON.parse(response.responseText));
 

@@ -61,7 +61,8 @@
 		data["storage"] += list(list(
 			"name" = material,
 			"count" = stored_material[material],
-			"capacity" = storage_capacity[material]
+			"capacity" = storage_capacity[material],
+			"icon" = icon2base64html(get_icon_for_material(material))
 			))
 
 	var/index = 0
@@ -78,6 +79,7 @@
 			"category" = R.category,
 			"hidden" = R.hidden == null ? FALSE : TRUE,
 			"required" = list(),
+			"icon" = icon2base64html(R.path),
 			"multipliers" = list()
 		)
 
@@ -199,7 +201,16 @@
 	else
 		to_chat(user, "You fill \the [src] with \the [eating].")
 
-	flick("autolathe_o", src) // Plays metal insertion animation. Work out a good way to work out a fitting animation. ~Z
+	if(eating.matter.Find("steel"))
+		if(panel_open)
+			flick("autolathe_o_t", src)
+		else
+			flick("autolathe_o", src) // Plays metal insertion animation. Work out a good way to work out a fitting animation. ~Z
+	else if(eating.matter.Find("glass"))
+		if(panel_open)
+			flick("autolathe_r_t", src)
+		else
+			flick("autolathe_r", src)
 
 	if(istype(eating,/obj/item/stack))
 		var/obj/item/stack/stack = eating

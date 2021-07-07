@@ -836,3 +836,51 @@
 		var/image/I = O
 		composite.Blend(new /icon(I.icon, I.icon_state), ICON_OVERLAY)
 	return composite
+
+/*
+ *	Converts an icon to base64. Operates by putting the icon in the iconCache savefile,
+ *	exporting it as text, and then parsing the base64 from that.
+ *	(This relies on byond automatically storing icons in savefiles as base64)
+ */
+/proc/icon2base64(icon/icon)
+	ASSERT(isicon(icon))
+
+	var/savefile/dummySave = new("tmp/dummySave.sav")
+	dummySave["dummy"] << icon
+	var/iconData = dummySave.ExportText("dummy")
+	var/list/partial = splittext(iconData, "{")
+
+	// If cleanup fails we want to still return the correct base64
+	. = replacetext(copytext_char(partial[2], 3, -5), "\n", "")
+	dummySave.Unlock()
+	dummySave = null
+
+	// If you get the idea to try and make this more optimized,
+	// make sure to still call unlock on the savefile after every write to unlock it.
+	fdel("tmp/dummySave.sav")
+
+// This proc accepts an icon or a path you need the icon from.
+/proc/icon2base64html(thing)
+	var/static/list/bicon_cache = list()
+	
+	ASSERT(thing)
+
+	if(ispath(thing))
+		var/atom/A = thing
+		var/key = "[initial(A.icon)]-[initial(A.icon_state)]"
+		var/cached = bicon_cache[key]
+
+		if(!cached)
+			bicon_cache[key] = cached = icon2base64(icon(initial(A.icon), initial(A.icon_state), SOUTH, 1))
+
+		return "<img class='game-icon' src='data:image/png;base64,[cached]'>"
+	if(isicon(thing))
+		var/key = "\ref[thing]"
+		var/cached = bicon_cache[key]
+
+		if(!cached)
+			bicon_cache[key] = cached = icon2base64(thing)
+
+		return "<img class='game-icon' src='data:image/png;base64,[cached]'>"
+
+	CRASH("[thing] is must be a path or an icon")

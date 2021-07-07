@@ -13,7 +13,7 @@
 /obj/item/stack/material/glass
 	name = "glass"
 	singular_name = "glass sheet"
-	icon_state = "sheet-glass"
+	icon_state = "glass"
 	var/created_window = /obj/structure/window/basic
 	var/is_reinforced = 0
 	var/list/construction_options = list("One Direction", "Full Window")
@@ -128,7 +128,7 @@
 /obj/item/stack/material/glass/reinforced
 	name = "reinforced glass"
 	singular_name = "reinforced glass sheet"
-	icon_state = "sheet-rglass"
+	icon_state = "rglass"
 	default_type = "reinforced glass"
 	created_window = /obj/structure/window/reinforced
 	is_reinforced = 1
@@ -140,7 +140,7 @@
 /obj/item/stack/material/glass/plass
 	name = "plass"
 	singular_name = "plass sheet"
-	icon_state = "sheet-plass"
+	icon_state = "plass"
 	created_window = /obj/structure/window/plasmabasic
 	default_type = "plass"
 
@@ -167,7 +167,7 @@
 /obj/item/stack/material/glass/rplass
 	name = "reinforced plass"
 	singular_name = "reinforced plass sheet"
-	icon_state = "sheet-rplass"
+	icon_state = "rplass"
 	default_type = "reinforced plass"
 	created_window = /obj/structure/window/plasmareinforced
 	is_reinforced = 1

@@ -18,7 +18,7 @@
 
 	if(amount)
 		I.stored_plasma += amount
-	I.stored_plasma = max(0,min(I.stored_plasma,I.max_plasma))
+	I.stored_plasma = max(0, min(I.stored_plasma, I.max_plasma))
 
 /mob/living/carbon/human/proc/check_alien_ability(cost, needs_organ = null, needs_foundation = FALSE, silent = FALSE) //Returns 1 if the ability is clear for usage.
 
@@ -172,7 +172,7 @@
 		to_chat(src, "I cannot spit in my current state.")
 		return
 	else if(spitting)
-		if(!check_alien_ability(25, BP_ACID))
+		if(!check_alien_ability(25, BP_ACID, FALSE, TRUE))
 			return
 		last_spit = world.time
 		visible_message("<span class='warning'>[src] spits [spit_name] at \the [T]!</span>", "<span class='alium'>You spit [spit_name] at \the [T].</span>")
@@ -207,7 +207,7 @@
 		to_chat(src, "<span class='alium'>I cannot dissolve this object.</span>")
 		return
 
-	if(check_alien_ability(200, BP_ACID))
+	if(check_alien_ability(200, BP_ACID, FALSE))
 		new /obj/effect/acid(get_turf(O), O)
 		visible_message("<span class='alium'><B>[src] vomits globs of vile stuff all over [O]. It begins to sizzle and melt under the bubbling mess of acid!</B></span>")
 

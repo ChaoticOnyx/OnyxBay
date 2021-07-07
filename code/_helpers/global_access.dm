@@ -257,8 +257,6 @@
 			return global.bomb_set;
 		if("cable_list")
 			return global.cable_list;
-		if("cached_icons")
-			return global.cached_icons;
 		if("cached_space")
 			return global.cached_space;
 		if("camera_alarm")
@@ -1206,8 +1204,6 @@
 			global.bomb_set=newval;
 		if("cable_list")
 			global.cable_list=newval;
-		if("cached_icons")
-			global.cached_icons=newval;
 		if("cached_space")
 			global.cached_space=newval;
 		if("camera_alarm")
@@ -2030,7 +2026,6 @@
 	"blocked",
 	"bomb_set",
 	"cable_list",
-	"cached_icons",
 	"cached_space",
 	"camera_alarm",
 	"camera_range_display_status",

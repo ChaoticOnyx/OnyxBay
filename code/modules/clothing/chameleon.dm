@@ -261,6 +261,9 @@
 //**Chameleon Gloves**
 //********************
 /obj/item/clothing/gloves/chameleon/attackby(obj/item/weapon/card/id/W, mob/user)
+	if(isWirecutter(W) || istype(W, /obj/item/weapon/scalpel) || isCoil(W))
+		to_chat(user, SPAN("notice", "That won't work.")) // Making it obvious
+		return
 	if(!istype(W, /obj/item/weapon/card/id))
 		return
 	check_job(W, user, slot_gloves_str)
@@ -299,6 +302,7 @@
 
 /obj/item/clothing/gloves/chameleon/robust
 	desc = "It looks like a pair of extra robust gloves. It seems to have a small dial inside."
+	unarmed_damage_override = 10
 	origin_tech = list(TECH_ILLEGAL = 5)
 
 /obj/item/clothing/gloves/chameleon/robust/examine(mob/user)

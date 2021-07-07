@@ -104,9 +104,9 @@ export const ReagentLookup = (props, context) => {
             This reagent works on the dead.
           </Box>
         )}
-        {!reagent.failedReagent &&
-          !reagent.inverseReagent &&
-          !reagent.impureReagent && (
+        {!reagent.failedReagent
+          && !reagent.inverseReagent
+          && !reagent.impureReagent && (
           <Box>
             This reagent has no impure reagents.
           </Box>

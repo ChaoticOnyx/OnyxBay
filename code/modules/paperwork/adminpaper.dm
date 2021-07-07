@@ -5,7 +5,7 @@
 	var/datum/admins/admindatum = null
 
 	var/interactions = null
-	var/isCrayon = 0
+	var/isCrayon = FALSE
 	var/origin = null
 	var/mob/sender = null
 	var/obj/machinery/photocopier/faxmachine/destination
@@ -22,7 +22,6 @@
 /obj/item/weapon/paper/admin/New()
 	..()
 	generateInteractions()
-
 
 /obj/item/weapon/paper/admin/proc/generateInteractions()
 	//clear first

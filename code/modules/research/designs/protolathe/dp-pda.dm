@@ -7,12 +7,12 @@
 	materials = list(MATERIAL_STEEL = 50, MATERIAL_GLASS = 50)
 	build_path = /obj/item/device/pda
 	sort_string = "VCAAA"
-	category_items = "PDA"
+	category_items = list("PDA")
 
 /datum/design/item/pda_cartridge
 	req_tech = list(TECH_ENGINEERING = 2, TECH_POWER = 3)
 	materials = list(MATERIAL_STEEL = 50, MATERIAL_GLASS = 50)
-	category_items = "PDA"
+	category_items = list("PDA")
 
 /datum/design/item/pda_cartridge/cart_basic
 	id = "cart_basic"

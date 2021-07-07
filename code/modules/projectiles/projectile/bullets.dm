@@ -219,7 +219,7 @@
 	penetrating = 1
 
 /obj/item/projectile/bullet/rifle/a556
-	damage = 25
+	damage = 27.5
 
 /obj/item/projectile/bullet/rifle/a762
 	damage = 35

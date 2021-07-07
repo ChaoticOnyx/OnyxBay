@@ -16,6 +16,7 @@
 	effect.generate()
 	effect.chance = rand(0,effect.chance_max)
 	effect.multiplier = rand(1,effect.multiplier_max)
+	effect.stage = stage
 	return effect
 
 /proc/get_mutated_effect(original_effect)
@@ -33,6 +34,7 @@
 	effect.generate()
 	effect.chance = rand(0,effect.chance_max)
 	effect.multiplier = rand(1,effect.multiplier_max)
+	effect.stage = stage
 	return effect
 
 /datum/disease2/effect
@@ -51,16 +53,16 @@
 	var/hold_until		//can only fire after this worldtime
 	var/allow_multiple	//allow to have more than 1 effect of this type in the same virus
 
-/datum/disease2/effect/proc/fire(mob/living/carbon/human/mob,current_stage)
+/datum/disease2/effect/proc/fire(current_stage)
 	if(oneshot == -1)
 		return
 	if(hold_until > world.time)
 		return
-	if(mob.chem_effects[CE_ANTIVIRAL] >= badness)
+	if(parent_disease.infected.chem_effects[CE_ANTIVIRAL] >= badness)
 		return
 	if(stage <= current_stage && prob(chance))
 		hold_until = world.time + delay
-		activate(mob)
+		activate(parent_disease.infected)
 		if(oneshot == 1)
 			oneshot = -1
 

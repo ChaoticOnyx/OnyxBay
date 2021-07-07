@@ -247,7 +247,7 @@
 				stage++
 				return
 		if(2)
-			if(W.sharp || istype(W,/obj/item/weapon/hemostat) || isWirecutter(W))
+			if(W.sharp || istype(W, /obj/item/weapon/hemostat) || isWirecutter(W))
 				var/list/organs = get_contents_recursive()
 				if(organs.len)
 					var/obj/item/removing = pick(organs)
@@ -268,18 +268,18 @@
 					user.visible_message(SPAN_DANGER("<b>[user]</b> extracts [removing] from [src] with [W]!"))
 				else
 					if(organ_tag == BP_HEAD && W.sharp)
-						if(alert("Do you really want to rip the skin off [src] with [W]?",,"Ew, no.","MEAT!") == "Ew, no.")
+						var/obj/item/organ/external/head/H = src // yeah yeah this is horrible
+						if(!H.skull_path)
+							user.visible_message(SPAN("danger", "<b>[user]</b> fishes around fruitlessly in [src] with [W]."))
 							return
-						user.visible_message(SPAN_DANGER("<b>[user]</b> rips the skin off [src] with [W], revealing a skull and meat."))
-						food_organ.appearance = food_organ_type
-						food_organ.forceMove(get_turf(loc))
-						food_organ = null
-						if(istype(src.loc,/turf))
-							new /obj/item/weapon/skull(src.loc)
-							gibs(src.loc)
+						user.visible_message(SPAN("danger", "<b>[user]</b> rips the skin off [H] with [W], revealing a skull."))
+						if(istype(H.loc, /turf))
+							new H.skull_path(H.loc)
+							gibs(H.loc)
 						else
-							new /obj/item/weapon/skull(user.loc)
+							new H.skull_path(user.loc)
 							gibs(user.loc)
+						H.skull_path = null // So no skulls dupe in case of lags
 						qdel(src)
 					else
 						if(alert("Do you really want to rip the skin off [src] with [W]?",,"Ew, no.","MEAT!") == "MEAT!")

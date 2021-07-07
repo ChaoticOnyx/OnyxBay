@@ -224,12 +224,13 @@ BLIND     // can't see anything
 	var/wired = FALSE
 	var/wire_color
 	var/clipped = FALSE
-	var/obj/item/clothing/ring/ring = null		//Covered ring
-	var/mob/living/carbon/human/wearer = null	//Used for covered rings when dropping
+	var/obj/item/clothing/ring/ring = null    // Covered ring
+	var/mob/living/carbon/human/wearer = null // Used for covered rings when dropping
+	var/unarmed_damage_override = null        // Overrides unarmed attack damage if not null
 	body_parts_covered = HANDS
 	slot_flags = SLOT_GLOVES
 	attack_verb = list("challenged")
-	species_restricted = list("exclude",SPECIES_NABBER, SPECIES_UNATHI,SPECIES_TAJARA, SPECIES_VOX)
+	species_restricted = list("exclude", SPECIES_NABBER, SPECIES_UNATHI, SPECIES_TAJARA, SPECIES_VOX)
 	blood_overlay_type = "bloodyhands"
 
 /obj/item/clothing/gloves/Initialize()
@@ -295,7 +296,7 @@ BLIND     // can't see anything
 	if(istype(W, /obj/item/weapon/tape_roll) && wired)
 		user.visible_message(SPAN("warning", "\The [user] secures the wires on \the [src] with \the [W]."), SPAN("notice", "You secure the wires on \the [src] with \the [W]."))
 		user.drop_from_inventory(src)
-		new /obj/item/clothing/gloves/stun(src.loc, src)
+		new /obj/item/clothing/gloves/stun(loc, src)
 		return
 
 // Applies "clipped" and removes relevant restricted species from the list,
