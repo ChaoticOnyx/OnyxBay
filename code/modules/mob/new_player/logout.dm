@@ -1,8 +1,9 @@
 /mob/new_player/Logout()
 	ready = 0
-
+	send_output(client, ready, "lobbybrowser:imgsrc")
 	// see login.dm
 	if(my_client)
+		GLOB.using_map.hide_titlescreen(my_client)
 		my_client = null
 
 	..()

@@ -227,6 +227,11 @@ You can set verify to TRUE if you want send() to sleep until the client has the 
 		"icons/pda_icons/",
 	)
 
+/datum/asset/simple/lobby
+	assets = list(
+		"FixedsysExcelsior3.01Regular.ttf" = 'html/browser/FixedsysExcelsior3.01Regular.ttf',
+	)
+
 /datum/asset/simple/fontawesome
 	isTrivial = TRUE
 	verify = FALSE

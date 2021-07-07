@@ -1,42 +1,3 @@
-/obj/screen/splash
-	name = "Chaotic Onyx"
-	desc = "This shouldn't be read."
-	screen_loc = "WEST,SOUTH"
-	icon = 'maps/exodus/exodus_lobby.dmi'
-	icon_state = "title"
-	layer = FULLSCREEN_LAYER
-	plane = FULLSCREEN_PLANE
-	var/client/holder
-
-/obj/screen/splash/New(client/C, visible) //TODO: Make this use INITIALIZE_IMMEDIATE, except its not easy
-	. = ..()
-
-	holder = C
-
-	if(!visible)
-		alpha = 0
-
-	holder.screen += src
-	icon_state = ""
-	icon = config.current_lobbyscreen
-
-/obj/screen/splash/proc/Fade(out, qdel_after = TRUE)
-	if(QDELETED(src))
-		return
-	if(out)
-		animate(src, alpha = 0, time = 30)
-	else
-		alpha = 0
-		animate(src, alpha = 255, time = 30)
-	if(qdel_after)
-		QDEL_IN(src, 30)
-
-/obj/screen/splash/Destroy()
-	if(holder)
-		holder.screen -= src
-		holder = null
-	return ..()
-
 /mob/new_player/Login()
 	SHOULD_CALL_PARENT(FALSE)
 	update_Login_details()	//handles setting lastKnownIP and computer_id for use by the ban systems as well as checking for multikeying
@@ -51,7 +12,7 @@
 		mind.current = src
 
 	loc = null
-	new /obj/screen/splash(client, TRUE)
+	GLOB.using_map.show_titlescreen(client)
 	my_client = client
 	set_sight(sight|SEE_TURFS)
 	GLOB.player_list |= src
@@ -70,8 +31,6 @@
 	
 	client.prefs.apply_post_login_preferences(client)
 	client.playtitlemusic()
-
-	new_player_panel(TRUE)
 
 	// bolds the changelog button on the interface so we know there are updates.
 	if(client.prefs.lastchangelog != changelog_hash)

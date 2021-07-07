@@ -4,7 +4,7 @@
 	full_name = "NSS Exodus"
 	path = "exodus"
 
-	lobby_icon = 'maps/exodus/exodus_lobby.dmi'
+	lobby_screens = ('maps/exodus/exodus_lobby.png')
 
 	load_legacy_saves = TRUE
 

@@ -519,17 +519,31 @@
 	var/aspect_ratio = view_size[1] / view_size[2]
 
 	// Calculate desired pixel width using window size and aspect ratio
-	var/sizes = params2list(winget(src, "mainwindow.mainvsplit;mapwindow", "size"))
-	var/map_size = splittext(sizes["mapwindow.size"], "x")
-	if(!length(map_size))
-		return // Something's broken. Happens when a client connects multiple times at once.
+	var/list/sizes = params2list(winget(src, "mainwindow.mainvsplit;mapwindow", "size"))
+
+	// Client closed the window? Some other error? This is unexpected behaviour, let's
+	// CRASH with some info.
+	if(!sizes["mapwindow.size"])
+		CRASH("sizes does not contain mapwindow.size key. This means a winget failed to return what we wanted. --- sizes var: [sizes] --- sizes length: [length(sizes)]")
+
+	var/list/map_size = splittext(sizes["mapwindow.size"], "x")
+
+	// Looks like we expect mapwindow.size to be "ixj" where i and j are numbers.
+	// If we don't get our expected 2 outputs, let's give some useful error info.
+	if(length(map_size) != 2)
+		CRASH("map_size of incorrect length --- map_size var: [map_size] --- map_size length: [length(map_size)]")
+
 	var/height = text2num(map_size[2])
 	var/desired_width = round(height * aspect_ratio)
-	if(text2num(map_size[1]) == desired_width)
-		return // Nothing to do
+	if (text2num(map_size[1]) == desired_width)
+		// Nothing to do
+		return
 
 	var/split_size = splittext(sizes["mainwindow.mainvsplit.size"], "x")
 	var/split_width = text2num(split_size[1])
+
+	// Avoid auto-resizing the statpanel and chat into nothing.
+	desired_width = min(desired_width, split_width - 300)
 
 	// Calculate and apply a best estimate
 	// +4 pixels are for the width of the splitter's handle
