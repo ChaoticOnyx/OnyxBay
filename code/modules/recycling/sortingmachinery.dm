@@ -55,7 +55,7 @@
 					"You hear someone scribbling a note.")
 				else
 					user.visible_message("\The [user] titles \the [src] with \a [W]: \"[str]\"",\
-					"<span class='notice'>You title \the [src]: \"[str]\"</span>",\
+					SPAN("notice", You title \the [src]: \"[str]\"),\
 					"You hear the sound of a small printer.")
 				SetName("[name] ([str])")
 				if(!examtext && !nameset)
@@ -76,11 +76,11 @@
 					examtext = str
 				if(istype(W, /obj/item/weapon/pen))
 					user.visible_message("\The [user] labels \the [src] with \a [W], scribbling down: \"[examtext]\"",\
-					"<span class='notice'>You label \the [src]: \"[examtext]\"</span>",\
+					SPAN("notice", "You label \the [src]: \"[examtext]\""),\
 					"You hear someone scribbling a note.")
 				else
 					user.visible_message("\The [user] labels \the [src] with \a [W]: \"[examtext]\"",\
-					"<span class='notice'>You label \the [src]: \"[examtext]\"</span>",\
+					SPAN("notice", "You label \the [src]: \"[examtext]\""),\
 					"You hear the sound of a small printer.")
 
 /obj/structure/bigDelivery/update_icon()
@@ -192,11 +192,11 @@
 					return
 				if(istype(W, /obj/item/weapon/pen))
 					user.visible_message("\The [user] titles \the [src] with \a [W], marking down: \"[str]\"",\
-					"<span class='notice'>You title \the [src]: \"[str]\"</span>",\
+					SPAN("notice", You title \the [src]: \"[str]\"),\
 					"You hear someone scribbling a note.")
 				else
 					user.visible_message("\The [user] titles \the [src] with \a [W]: \"[str]\"",\
-					"<span class='notice'>You title \the [src]: \"[str]\"</span>",\
+					SPAN("notice", You title \the [src]: \"[str]\"),\
 					"You hear the sound of a small printer.")
 				SetName("[name] ([str])")
 				if(!examtext && !nameset)
@@ -217,11 +217,11 @@
 					examtext = str
 				if(istype(W, /obj/item/weapon/pen))
 					user.visible_message("\The [user] labels \the [src] with \a [W], scribbling down: \"[examtext]\"",\
-					"<span class='notice'>You label \the [src]: \"[examtext]\"</span>",\
+					SPAN("notice", "You label \the [src]: \"[examtext]\""),\
 					"You hear someone scribbling a note.")
 				else
 					user.visible_message("\The [user] labels \the [src] with \a [W]: \"[examtext]\"",\
-					"<span class='notice'>You label \the [src]: \"[examtext]\"</span>",\
+					SPAN("notice", "You label \the [src]: \"[examtext]\""),\
 					"You hear the sound of a small printer.")
 	return
 
