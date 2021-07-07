@@ -69,7 +69,8 @@
 	changeling.isabsorbing = FALSE
 	var/datum/mind/M = T.mind
 	var/datum/antagonist/changeling/a = GLOB.all_antag_types_[MODE_CHANGELING]
-	a.add_antagonist(M, 1, 1, 0, 1, 1) // Ignore equipment and role type for this.
+	// Ignore equipment and role type for this.
+	a.add_antagonist(M, TRUE, TRUE, FALSE, TRUE, TRUE)
 
 	M.changeling.geneticpoints = 7
 	M.changeling.chem_charges = 40
