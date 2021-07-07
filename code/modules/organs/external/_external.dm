@@ -262,9 +262,6 @@
 						removing = O.transfer_and_delete()
 
 					removing.forceMove(get_turf(src))
-
-					if(!(user.l_hand && user.r_hand))
-						user.put_in_hands(removing)
 					user.visible_message(SPAN_DANGER("<b>[user]</b> extracts [removing] from [src] with [W]!"))
 				else
 					if(organ_tag == BP_HEAD && W.sharp)

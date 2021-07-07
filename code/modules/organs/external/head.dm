@@ -33,7 +33,6 @@
 	. = ..()
 	var/obj/item/weapon/skull/SK = new /obj/item/weapon/skull(get_turf(src))
 	user.put_in_active_hand(SK)
-	gibs(user.loc)
 
 /obj/item/organ/external/head/examine(mob/user)
 	. = ..()
