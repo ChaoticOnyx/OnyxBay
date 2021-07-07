@@ -70,7 +70,7 @@
 	var/datum/mind/M = T.mind
 	var/datum/antagonist/changeling/a = GLOB.all_antag_types_[MODE_CHANGELING]
 	// Ignore equipment and role type for this.
-	a.add_antagonist(M, TRUE, TRUE, FALSE, TRUE, TRUE)
+	a.add_antagonist(M, ignore_role = TRUE, do_not_equip = TRUE)
 
 	M.changeling.geneticpoints = 7
 	M.changeling.chem_charges = 40
