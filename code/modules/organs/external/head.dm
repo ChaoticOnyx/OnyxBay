@@ -29,6 +29,11 @@
 
 	var/skull_path = /obj/item/weapon/skull
 
+/obj/item/organ/external/head/organ_eaten(mob/user)
+	. = ..()
+	var/obj/item/weapon/skull/SK = new /obj/item/weapon/skull(get_turf(src))
+	user.put_in_active_hand(SK)
+
 /obj/item/organ/external/head/examine(mob/user)
 	. = ..()
 
