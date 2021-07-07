@@ -612,7 +612,7 @@ const device = (device: Device, context: any) => {
 };
 
 const designs = (device: Device, context: any) => {
-  const { act } = useBackend<InputData>(context);
+  const { act, data } = useBackend<InputData>(context);
   const { designs, filters } = device.data;
   const [searchQuery, setSearchQuery] = useLocalState(
     context,
@@ -630,8 +630,8 @@ const designs = (device: Device, context: any) => {
   }
 
   if (currentFilter !== null && currentFilter !== 'All') {
-    found = found.filter(
-      (design, _) => design.category.find((s) => s === currentFilter),
+    found = found.filter((design, _) =>
+      design.category.find((s) => s === currentFilter),
     );
   }
 
@@ -699,7 +699,8 @@ const designs = (device: Device, context: any) => {
       <Divider />
       <Table>
         <Table.Row className='candystripe'>
-          <Table.Cell textAlign='center' bold>
+          <Table.Cell width='3ch' textAlign='center' bold />
+          <Table.Cell width='6em' textAlign='center' bold>
             Build
           </Table.Cell>
           <Table.Cell pl='0.5rem' bold>
@@ -711,6 +712,32 @@ const designs = (device: Device, context: any) => {
           ? found.map((design, i) => {
               return (
                 <Table.Row className='candystripe'>
+                  <Table.Cell style={{
+                      'vertical-align': 'middle',
+                  }}>
+                    { data.disk?.data
+                    ? <Button.Confirm
+                        textAlign='center'
+                        ml='0.2rem'
+                        width='4ch'
+                        tooltip='Save to Disk'
+                        confirmContent={<Icon name='save' />}
+                        icon='save'
+                        disabled={!(data.disk?.type === DiskType.Design)}
+                        onClick={() =>
+                        act('save', { thing: DiskType.Design, id: design.id })
+                      }
+                    /> : <Button
+                      textAlign='center'
+                      ml='0.2rem'
+                      tooltip='Save to Disk'
+                      icon='save'
+                      disabled={!(data.disk?.type === DiskType.Design)}
+                      onClick={() =>
+                      act('save', { thing: DiskType.Design, id: design.id })
+                    }
+                  />}
+                  </Table.Cell>
                   <Table.Cell
                     style={{
                       'vertical-align': 'middle',
