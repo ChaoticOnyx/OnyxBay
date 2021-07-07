@@ -187,7 +187,7 @@
 /obj/machinery/vending/proc/pay(obj/item/weapon/W, mob/user)
 	if(!W)
 		return FALSE
-	
+
 	var/obj/item/weapon/card/id/I = W.GetIdCard()
 
 	if(currently_vending && vendor_account && !vendor_account.suspended)
@@ -864,32 +864,6 @@
 	icon_state = "snack_wall"
 	use_vend_state = FALSE
 	vend_delay = 25
-	products = list(/obj/item/weapon/reagent_containers/food/snacks/packaged/tweakers =6,
-					/obj/item/weapon/reagent_containers/food/snacks/packaged/sweetroid = 6,
-					/obj/item/weapon/reagent_containers/food/snacks/packaged/sugarmatter = 6,
-					/obj/item/weapon/reagent_containers/food/snacks/packaged/jellaws = 6,
-					/obj/item/weapon/reagent_containers/food/drinks/dry_ramen = 6,
-					/obj/item/weapon/reagent_containers/food/drinks/chickensoup = 6,
-					/obj/item/weapon/reagent_containers/food/snacks/packaged/chips = 6,
-					/obj/item/weapon/reagent_containers/food/snacks/packaged/sosjerky = 6,
-					/obj/item/weapon/reagent_containers/food/snacks/packaged/no_raisin = 6,
-					/obj/item/weapon/reagent_containers/food/snacks/spacetwinkie = 6,
-					/obj/item/weapon/reagent_containers/food/snacks/packaged/cheesiehonkers = 6,
-					/obj/item/weapon/reagent_containers/food/snacks/packaged/tastybread = 6)
-	contraband = list(/obj/item/weapon/reagent_containers/food/snacks/packaged/syndicake = 6,
-					  /obj/item/weapon/reagent_containers/food/snacks/packaged/skrellsnacks = 3)
-	prices = list(/obj/item/weapon/reagent_containers/food/snacks/packaged/tweakers = 5,
-				  /obj/item/weapon/reagent_containers/food/snacks/packaged/sweetroid = 5,
-				  /obj/item/weapon/reagent_containers/food/snacks/packaged/sugarmatter = 5,
-				  /obj/item/weapon/reagent_containers/food/snacks/packaged/jellaws = 5,
-				  /obj/item/weapon/reagent_containers/food/drinks/dry_ramen = 10,
-				  /obj/item/weapon/reagent_containers/food/drinks/chickensoup = 20,
-				  /obj/item/weapon/reagent_containers/food/snacks/packaged/chips = 10,
-				  /obj/item/weapon/reagent_containers/food/snacks/packaged/sosjerky = 20,
-				  /obj/item/weapon/reagent_containers/food/snacks/packaged/no_raisin = 15,
-				  /obj/item/weapon/reagent_containers/food/snacks/spacetwinkie = 5,
-				  /obj/item/weapon/reagent_containers/food/snacks/packaged/cheesiehonkers = 10,
-				  /obj/item/weapon/reagent_containers/food/snacks/packaged/tastybread = 10)
 
 /obj/machinery/vending/snack/medbay
 	name = "Getmore Healthy Snacks"
@@ -957,7 +931,7 @@
 
 	idle_power_usage = 211 //refrigerator - believe it or not, this is actually the average power consumption of a refrigerated vending machine according to NRCan.
 
-/obj/machinery/vending/cola_red
+/obj/machinery/vending/cola/cola_red
 	icon_state = "Cola_Machine_red"
 
 /obj/machinery/vending/fitness
@@ -1004,7 +978,7 @@
 
 
 /obj/machinery/vending/cigarette
-	name = "Cigarette machine" //OCD had to be uppercase to look nice with the new formating
+	name = "Cigarette machine"
 	desc = "A specialized vending machine designed to contribute to your slow and uncomfortable death."
 	product_slogans = "There's no better time to start smokin'.;\
 		Smoke now, and win the adoration of your peers.;\
@@ -1099,98 +1073,12 @@
 					/obj/item/weapon/reagent_containers/ecig_cartridge/blanknico = 15)
 
 
-/obj/machinery/vending/cigars  //////// cigars midcentury vend
-	name = "Cigars midcentury machine" //OCD had to be uppercase to look nice with the new formating
+/obj/machinery/vending/cigarette/cigars
+	name = "Cigars midcentury machine"
 	desc = "Classy vending machine designed to contribute to your slow and uncomfortable death with style."
-	product_slogans = "There's no better time to start smokin'.;\
-		Smoke now, and win the adoration of your peers.;\
-		They beat cancer centuries ago, so smoke away.;\
-		If you're not smoking, you must be joking."
-	product_ads = "Probably not bad for you!;\
-		Don't believe the scientists!;\
-		It's good for you!;\
-		Don't quit, buy more!;\
-		Smoke!;\
-		Nicotine heaven.;\
-		Best cigarettes since 2150.;\
-		Award-winning cigarettes, all the best brands.;\
-		Feeling temperamental? Try a Temperamento!;\
-		Carcinoma Angels - go fuck yerself!;\
-		Don't be so hard on yourself, kid. Smoke a Lucky Star!;\
-		We understand the depressed, alcoholic cowboy in you. That's why we also smoke Jericho.;\
-		Professionals. Better cigarettes for better people. Yes, better people.;\
-		StarLing - look cool 'till you drool!"
 	vend_delay = 21
 	icon_state = "cigars"
 	use_vend_state = TRUE
-	products = list(/obj/item/weapon/storage/fancy/cigarettes = 5,
-					/obj/item/weapon/storage/fancy/cigarettes/luckystars = 2,
-					/obj/item/weapon/storage/fancy/cigarettes/jerichos = 2,
-					/obj/item/weapon/storage/fancy/cigarettes/menthols = 2,
-					/obj/item/weapon/storage/fancy/cigarettes/carcinomas = 2,
-					/obj/item/weapon/storage/fancy/cigarettes/professionals = 2,
-					/obj/item/weapon/storage/fancy/cigarettes/cigarello = 2,
-					/obj/item/weapon/storage/fancy/cigarettes/cigarello/mint = 2,
-					/obj/item/weapon/storage/fancy/cigarettes/cigarello/variety = 2,
-					/obj/item/weapon/storage/box/matches = 10,
-					/obj/item/weapon/flame/lighter/random = 5,
-					/obj/item/weapon/storage/fancy/rollingpapers = 5,
-					/obj/item/weapon/storage/fancy/rollingpapers/good = 3,
-					/obj/item/weapon/storage/tobaccopack/generic = 2,
-					/obj/item/weapon/storage/tobaccopack/menthol = 2,
-					/obj/item/weapon/storage/tobaccopack/cherry = 2,
-					/obj/item/weapon/storage/tobaccopack/chocolate = 2,
-					/obj/item/clothing/mask/smokable/ecig/simple = 10,
-					/obj/item/clothing/mask/smokable/ecig/util = 5,
-					/obj/item/clothing/mask/smokable/ecig/deluxe = 1,
-					/obj/item/weapon/reagent_containers/ecig_cartridge/med_nicotine = 10,
-					/obj/item/weapon/reagent_containers/ecig_cartridge/high_nicotine = 5,
-					/obj/item/weapon/reagent_containers/ecig_cartridge/orange = 5,
-					/obj/item/weapon/reagent_containers/ecig_cartridge/mint = 5,
-					/obj/item/weapon/reagent_containers/ecig_cartridge/watermelon = 5,
-					/obj/item/weapon/reagent_containers/ecig_cartridge/grape = 5,
-					/obj/item/weapon/reagent_containers/ecig_cartridge/lemonlime = 5,
-					/obj/item/weapon/reagent_containers/ecig_cartridge/coffee = 5,
-					/obj/item/weapon/reagent_containers/ecig_cartridge/blanknico = 2)
-
-	contraband = list(/obj/item/weapon/flame/lighter/zippo = 4,
-					  /obj/item/weapon/storage/tobaccopack/contraband = 1)
-
-	premium = list(/obj/item/weapon/storage/fancy/cigar = 5,
-				   /obj/item/weapon/storage/fancy/cigarettes/killthroat = 5,
-				   /obj/item/weapon/storage/tobaccopack/premium = 3,
-				   /obj/item/clothing/mask/smokable/pipe = 1)
-
-	prices = list(/obj/item/weapon/storage/fancy/cigarettes = 45,
-					/obj/item/weapon/storage/fancy/cigarettes/luckystars = 50,
-					/obj/item/weapon/storage/fancy/cigarettes/jerichos = 65,
-					/obj/item/weapon/storage/fancy/cigarettes/menthols = 55,
-					/obj/item/weapon/storage/fancy/cigarettes/carcinomas = 65,
-					/obj/item/weapon/storage/fancy/cigarettes/professionals = 70,
-					/obj/item/weapon/storage/fancy/cigarettes/cigarello = 85,
-					/obj/item/weapon/storage/fancy/cigarettes/cigarello/mint = 85,
-					/obj/item/weapon/storage/fancy/cigarettes/cigarello/variety = 85,
-					/obj/item/weapon/storage/box/matches = 3,
-					/obj/item/weapon/flame/lighter/random = 10,
-					/obj/item/weapon/storage/fancy/rollingpapers = 20,
-					/obj/item/weapon/storage/fancy/rollingpapers/good = 35,
-					/obj/item/weapon/storage/tobaccopack/generic = 35,
-					/obj/item/weapon/storage/tobaccopack/menthol = 40,
-					/obj/item/weapon/storage/tobaccopack/cherry = 50,
-					/obj/item/weapon/storage/tobaccopack/chocolate = 50,
-					/obj/item/clothing/mask/smokable/ecig/simple = 50,
-					/obj/item/clothing/mask/smokable/ecig/util = 100,
-					/obj/item/clothing/mask/smokable/ecig/deluxe = 250,
-					/obj/item/weapon/reagent_containers/ecig_cartridge/med_nicotine = 15,
-					/obj/item/weapon/reagent_containers/ecig_cartridge/high_nicotine = 15,
-					/obj/item/weapon/reagent_containers/ecig_cartridge/orange = 15,
-					/obj/item/weapon/reagent_containers/ecig_cartridge/mint = 15,
-					/obj/item/weapon/reagent_containers/ecig_cartridge/watermelon = 15,
-					/obj/item/weapon/reagent_containers/ecig_cartridge/grape = 15,
-					/obj/item/weapon/reagent_containers/ecig_cartridge/lemonlime = 15,
-					/obj/item/weapon/reagent_containers/ecig_cartridge/coffee = 15,
-					/obj/item/weapon/reagent_containers/ecig_cartridge/blanknico = 15)
-
 
 /obj/machinery/vending/medical
 	name = "NanoMed Plus"
