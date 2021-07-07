@@ -837,6 +837,9 @@
 		composite.Blend(new /icon(I.icon, I.icon_state), ICON_OVERLAY)
 	return composite
 
+/proc/path2icon(path, dir = SOUTH, frame = 1, moving = FALSE)
+	var/atom/A = path
+	return icon(initial(A.icon), initial(A.icon_state), dir, frame, moving)
 /*
  *	Converts an icon to base64. Operates by putting the icon in the iconCache savefile,
  *	exporting it as text, and then parsing the base64 from that.
@@ -871,7 +874,7 @@
 		var/cached = bicon_cache[key]
 
 		if(!cached)
-			bicon_cache[key] = cached = icon2base64(icon(initial(A.icon), initial(A.icon_state), SOUTH, 1))
+			bicon_cache[key] = cached = icon2base64(path2icon(A))
 
 		return "<img class='game-icon' src='data:image/png;base64,[cached]'>"
 	if(isicon(thing))

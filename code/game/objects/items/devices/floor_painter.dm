@@ -1,3 +1,7 @@
+// Some local macros to help with copypasta
+#define GET_BASE64_FLAT_ICON(path) icon2base64(getFlatIcon(path2icon(path)))
+#define GET_DECAL_DATA(path) "icon" = path, "path" = GET_BASE64_FLAT_ICON(path)
+
 /obj/item/device/floor_painter
 	name = "floor painter"
 	icon = 'icons/obj/device.dmi'
@@ -12,20 +16,20 @@
 	var/paint_dir =    "precise"
 	var/paint_colour = COLOR_WHITE
 
-	var/list/decals = list(
-		"industrial: hazard stripes" =  	list("path" = /obj/effect/floor_decal/industrial/warning),
-		"industrial: corner, hazard" =  	list("path" = /obj/effect/floor_decal/industrial/warning/corner),
-		"industrial: hatched marking" = 	list("path" = /obj/effect/floor_decal/industrial/hatch, "coloured" = 1),
-		"industrial: dashed outline" =  	list("path" = /obj/effect/floor_decal/industrial/outline, "coloured" = 1),
-		"industrial: loading sign" =   		list("path" = /obj/effect/floor_decal/industrial/loading),
-		"mosaic: chapel" =     				list("path" = /obj/effect/floor_decal/chapel),
-		"tile decor: quarter-turf" =   		list("path" = /obj/effect/floor_decal/corner, "precise" = 1, "coloured" = 1),
-		"tile decor: steel-quarter-turf" =  list("path" = /obj/effect/floor_decal/corner_steel_grid, "precise" = 1),
-		"tile decor: edge drain" =			list("path" = /obj/effect/floor_decal/floordetail/edgedrain),
-		"tile decor: dots" =		  		list("path" = /obj/effect/floor_decal/floordetail/tiled, "coloured" = 1),
-		"tile decor: traction" =			list("path" = /obj/effect/floor_decal/floordetail/traction, "coloured" = 1),
-		"tile decor: plain spline" =		list("path" = /obj/effect/floor_decal/spline/plain, "precise" = 1, "coloured" = 1),
-		"tile decor: wood spline" =			list("path" = /obj/effect/floor_decal/spline/fancy/wood, "precise" = 1),
+	var/static/list/decals = list(
+		"industrial: hazard stripes" =  	list(GET_DECAL_DATA(/obj/effect/floor_decal/industrial/warning)),
+		"industrial: corner, hazard" =  	list(GET_DECAL_DATA(/obj/effect/floor_decal/industrial/warning/corner)),
+		"industrial: hatched marking" = 	list(GET_DECAL_DATA(/obj/effect/floor_decal/industrial/hatch),           "coloured" = 1),
+		"industrial: dashed outline" =  	list(GET_DECAL_DATA(/obj/effect/floor_decal/industrial/outline),         "coloured" = 1),
+		"industrial: loading sign" =   		list(GET_DECAL_DATA(/obj/effect/floor_decal/industrial/loading)),
+		"mosaic: chapel" =     				list(GET_DECAL_DATA(/obj/effect/floor_decal/chapel)),
+		"tile decor: quarter-turf" =   		list(GET_DECAL_DATA(/obj/effect/floor_decal/corner),                     "precise"  = 1, "coloured" = 1),
+		"tile decor: steel-quarter-turf" =  list(GET_DECAL_DATA(/obj/effect/floor_decal/corner_steel_grid),          "precise"  = 1),
+		"tile decor: edge drain" =			list(GET_DECAL_DATA(/obj/effect/floor_decal/floordetail/edgedrain)),
+		"tile decor: dots" =		  		list(GET_DECAL_DATA(/obj/effect/floor_decal/floordetail/tiled),          "coloured" = 1),
+		"tile decor: traction" =			list(GET_DECAL_DATA(/obj/effect/floor_decal/floordetail/traction),       "coloured" = 1),
+		"tile decor: plain spline" =		list(GET_DECAL_DATA(/obj/effect/floor_decal/spline/plain),               "precise"  = 1, "coloured" = 1),
+		"tile decor: wood spline" =			list(GET_DECAL_DATA(/obj/effect/floor_decal/spline/fancy/wood),          "precise"  = 1),
 
 		"sign: 1" =                 list("path" = /obj/effect/floor_decal/sign),
 		"sign: 2" =                 list("path" = /obj/effect/floor_decal/sign/two),
@@ -52,6 +56,22 @@
 		"precise" = 0
 		)
 
+/obj/item/device/floor_painter/tgui_interact(mob/user, datum/tgui/ui)
+	ui = SStgui.try_update_ui(user, src, ui)
+
+	if(!ui)
+		ui = new(user, src, "FloorPainter", name)
+		ui.open()
+
+/obj/item/device/floor_painter/tgui_act(action, list/params, datum/tgui/ui, datum/ui_state/state)
+	. = ..()
+	
+	if(.)
+		return
+
+/obj/item/device/floor_painter/tgui_static_data(mob/user)
+	return decals
+
 /obj/item/device/floor_painter/afterattack(atom/A, mob/user, proximity, params)
 	if(!proximity)
 		return
@@ -59,11 +79,11 @@
 
 	var/turf/simulated/floor/F = A
 	if(!istype(F))
-		to_chat(user, "<span class='warning'>\The [src] can only be used on actual flooring.</span>")
+		to_chat(user, SPAN("warning", "\The [src] can only be used on actual flooring."))
 		return
 
 	if(!F.flooring || !F.flooring.can_paint || F.broken || F.burnt)
-		to_chat(user, "<span class='warning'>\The [src] cannot paint broken tiles.</span>")
+		to_chat(user, SPAN("warning", "\The [src] cannot paint broken tiles."))
 		return
 
 	var/list/decal_data = decals[decal]
@@ -77,11 +97,11 @@
 			config_error = 1
 
 	if(config_error)
-		to_chat(user, "<span class='warning'>\The [src] flashes an error light. You might need to reconfigure it.</span>")
+		to_chat(user, SPAN("warning", "\The [src] flashes an error light. You might need to reconfigure it."))
 		return
 
 	if(F.decals && F.decals.len > 5 && painting_decal != /obj/effect/floor_decal/reset)
-		to_chat(user, "<span class='warning'>\The [F] has been painted too much; you need to clear it off.</span>")
+		to_chat(user, SPAN("warning", "\The [F] has been painted too much; you need to clear it off."))
 		return
 
 	var/painting_dir = 0
@@ -139,7 +159,7 @@
 	var/new_colour = input(usr, "Choose a colour.", "Floor painter", paint_colour) as color|null
 	if(new_colour && new_colour != paint_colour)
 		paint_colour = new_colour
-		to_chat(usr, "<span class='notice'>You set \the [src] to paint with <font color='[paint_colour]'>a new colour</font>.</span>")
+		to_chat(usr, SPAN("notice", "You set \the [src] to paint with <font color='[paint_colour]'>a new colour</font>."))
 
 /obj/item/device/floor_painter/verb/choose_decal()
 	set name = "Choose Decal"
@@ -153,7 +173,7 @@
 	var/new_decal = input("Select a decal.") as null|anything in decals
 	if(new_decal && !isnull(decals[new_decal]))
 		decal = new_decal
-		to_chat(usr, "<span class='notice'>You set \the [src] decal to '[decal]'.</span>")
+		to_chat(usr, SPAN("notice", "You set \the [src] decal to '[decal]'."))
 
 /obj/item/device/floor_painter/verb/choose_direction()
 	set name = "Choose Direction"
@@ -167,4 +187,8 @@
 	var/new_dir = input("Select a direction.") as null|anything in paint_dirs
 	if(new_dir && !isnull(paint_dirs[new_dir]))
 		paint_dir = new_dir
-		to_chat(usr, "<span class='notice'>You set \the [src] direction to '[paint_dir]'.</span>")
+		to_chat(usr, SPAN("notice", "You set \the [src] direction to '[paint_dir]'."))
+
+
+#undef GET_BASE64_FLAT_ICON
+#undef GET_DECAL_DATA
