@@ -24,7 +24,7 @@
 	. = ..()
 	if(.)
 		if(rigged)
-			visible_message(SPAN("danger", "There are wires attached to the lid of [src]..."))
+			visible_message(SPAN_DANGER("There are wires attached to the lid of [src]..."))
 			for(var/obj/item/device/assembly_holder/H in src)
 				H.process_activation(usr)
 			for(var/obj/item/device/assembly/A in src)
@@ -40,7 +40,7 @@
 			devices += A
 		. += "\nThere are some wires attached to the lid, connected to [english_list(devices)]."
 
-/obj/structure/closet/crate/attackby(obj/item/weapon/W as obj, mob/user as mob)
+/obj/structure/closet/crate/attackby(obj/item/weapon/W, mob/user)
 	if(opened)
 		return ..()
 	else if(istype(W, /obj/item/weapon/packageWrap))
@@ -48,23 +48,23 @@
 	else if(istype(W, /obj/item/stack/cable_coil))
 		var/obj/item/stack/cable_coil/C = W
 		if(rigged)
-			to_chat(user, "<span class='notice'>[src] is already rigged!</span>")
+			to_chat(user, SPAN_NOTICE("[src] is already rigged!"))
 			return
 		if (C.use(1))
-			to_chat(user, "<span class='notice'>You rig [src].</span>")
-			rigged = 1
+			to_chat(user, SPAN_NOTICE("You rig [src]."))
+			rigged = TRUE
 			return
 	else if(istype(W, /obj/item/device/assembly_holder) || istype(W, /obj/item/device/assembly))
 		if(rigged)
-			to_chat(user, "<span class='notice'>You attach [W] to [src].</span>")
+			to_chat(user, SPAN_NOTICE("You attach [W] to [src]."))
 			user.drop_item()
 			W.forceMove(src)
 			return
 	else if(isWirecutter(W))
 		if(rigged)
-			to_chat(user, "<span class='notice'>You cut away the wiring.</span>")
+			to_chat(user, SPAN_NOTICE("You cut away the wiring."))
 			playsound(loc, 'sound/items/Wirecutter.ogg', 100, 1)
-			rigged = 0
+			rigged = FALSE
 			return
 	else
 		return ..()
@@ -104,10 +104,11 @@
 	icon_opened = "plasticcrateopen"
 	icon_closed = "plasticcrate"
 	points_per_crate = 1
+	material = /obj/item/stack/material/plastic
 
 /obj/structure/closet/crate/handmade
 	name = "handmade crate"
-	desc = "Another handmade by a young assistant. How cute!"
+	desc = "Another handmade by a young assistant. Crude crate, now it`s more steel than plasteel."
 	icon_state = "handmadecrate"
 	icon_opened = "handmadecrateopen"
 	icon_closed = "handmadecrate"
