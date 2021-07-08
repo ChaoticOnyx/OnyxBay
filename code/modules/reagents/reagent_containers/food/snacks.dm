@@ -32,6 +32,9 @@
 				M.put_in_hands(TrashItem)
 			else if(istype(trash,/obj/item))
 				M.put_in_hands(trash)
+		if(istype(loc, /obj/item/organ))
+			var/obj/item/organ/O = loc
+			O.organ_eaten(M)
 		qdel(src)
 	return
 
@@ -111,18 +114,21 @@
 
 	return 0
 
+/obj/item/weapon/reagent_containers/food/snacks/proc/get_bitecount()
+	if (bitecount==0)
+		return
+	else if (bitecount==1)
+		return SPAN_NOTICE("\n\The [src] was bitten by someone!")
+	else if (bitecount<=3)
+		return SPAN_NOTICE("\n\The [src] was bitten [bitecount] time\s!")
+	else
+		return SPAN_NOTICE("\n\The [src] was bitten multiple times!")
+
 /obj/item/weapon/reagent_containers/food/snacks/examine(mob/user)
 	. = ..()
 	if(get_dist(src, user) > 1)
 		return
-	if (bitecount==0)
-		return
-	else if (bitecount==1)
-		. += "\n<span class='notice'>\The [src] was bitten by someone!</span>"
-	else if (bitecount<=3)
-		. += "\n<span class='notice'>\The [src] was bitten [bitecount] time\s!</span>"
-	else
-		. += "\n<span class='notice'>\The [src] was bitten multiple times!</span>"
+	. += get_bitecount()
 
 /obj/item/weapon/reagent_containers/food/snacks/throw_impact(atom/hit_atom, speed, thrown_with, target_zone)
 	var/mob/living/carbon/human/H = hit_atom

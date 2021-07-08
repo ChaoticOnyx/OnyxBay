@@ -289,7 +289,6 @@
 					return
 				new /mob/living/simple_animal/corgi/puppy(loc)
 
-
 		if(prob(1))
 			visible_emote(pick("dances around","chases her tail"))
 			spawn(0)
