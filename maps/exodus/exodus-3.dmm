@@ -1927,7 +1927,7 @@
 "aMY" = (/obj/machinery/atmospherics/pipe/simple/visible,/obj/machinery/door/airlock/hatch{frequency = 1380; icon_state = "door_locked"; id_tag = "vox_southwest_lock"; locked = 1; name = "Ship External Access"; req_one_access = 150},/turf/simulated/floor/plating,/area/skipjack_station/start)
 "aNb" = (/obj/structure/table/woodentable,/obj/item/weapon/book/wiki/nuclear,/turf/unsimulated/floor{dir = 8; icon_state = "wood"},/area/wizard_station)
 "aNd" = (/obj/machinery/atmospherics/pipe/simple/visible,/obj/machinery/door/airlock/hatch{frequency = 1380; id_tag = "skipjack_shuttle_inner"; name = "Ship External Access"; req_one_access = 150},/turf/simulated/floor/plating,/area/skipjack_station/start)
-"aNe" = (/obj/machinery/vending/hydroseeds,/turf/unsimulated/floor{icon_state = "plating"; name = "plating"},/area/acting/backstage)
+"aNe" = (/obj/machinery/seed_storage/garden_public,/turf/unsimulated/floor{icon_state = "plating"; name = "plating"},/area/acting/backstage)
 "aNf" = (/turf/simulated/floor/tiled,/area/acting/stage)
 "aNg" = (/obj/machinery/light{dir = 1; icon_state = "tube1"},/turf/simulated/floor/tiled,/area/acting/stage)
 "aNh" = (/obj/machinery/microwave,/turf/unsimulated/floor{icon_state = "plating"; name = "plating"},/area/acting/backstage)

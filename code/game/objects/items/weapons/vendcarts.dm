@@ -22,11 +22,7 @@
 /obj/item/weapon/vendcart/booze
 	name = "Booz'n Cartridge"
 
-//CART
-/obj/item/weapon/vendcart/cart
-	name = "O'Tech Cartridge"
-
-//CIGGS
+//CIGS
 /obj/item/weapon/vendcart/cigarette
 	name = "SiggZ Cartridge"
 
@@ -69,10 +65,6 @@
 //HYDRONUTRIENTS
 /obj/item/weapon/vendcart/hydronutrients
 	name = "NutriMax Cartridge"
-
-//HYDROSEEDS
-/obj/item/weapon/vendcart/hydroseeds
-	name = "MegaSeed Cartridge"
 
 //MAGIVEND
 /obj/item/weapon/vendcart/magivend

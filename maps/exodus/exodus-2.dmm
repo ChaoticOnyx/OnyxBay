@@ -2701,7 +2701,7 @@
 "aZW" = (/obj/structure/table/darkwood_reinforced,/obj/machinery/reagentgrinder,/turf/simulated/floor/trim/darkwood,/area/crew_quarters/bar)
 "aZX" = (/obj/structure/cable/green{d2 = 4; icon_state = "0-4"},/obj/machinery/power/apc{dir = 1; name = "north bump"; pixel_x = 0; pixel_y = 24},/obj/structure/flora/pottedplant/tropicalflowers,/obj/machinery/light/small{dir = 8; icon_state = "bulb1"},/turf/simulated/floor/trim/darkwood,/area/crew_quarters/mess)
 "aZY" = (/obj/machinery/atmospherics/pipe/simple/hidden/scrubbers,/obj/machinery/atmospherics/pipe/simple/hidden/supply,/obj/structure/cable/green{d1 = 1; d2 = 2; icon_state = "1-2"; pixel_x = 0; pixel_y = 0},/obj/structure/cable/green{d1 = 1; d2 = 8; icon_state = "1-8"},/turf/simulated/floor/trim/darkwood,/area/crew_quarters/mess)
-"aZZ" = (/obj/machinery/vending/cigars,/turf/simulated/floor/trim/darkwood,/area/crew_quarters/mess)
+"aZZ" = (/obj/machinery/vending/cigarette/cigars,/turf/simulated/floor/trim/darkwood,/area/crew_quarters/mess)
 "baa" = (/obj/structure/kitchenspike,/turf/simulated/floor/tiled/freezer,/area/crew_quarters/kitchen)
 "bab" = (/obj/machinery/atmospherics/pipe/simple/hidden/scrubbers,/obj/machinery/atmospherics/pipe/simple/hidden/supply,/obj/structure/disposalpipe/segment,/turf/simulated/floor/tiled/freezer,/area/crew_quarters/kitchen)
 "bac" = (/turf/simulated/floor/tiled/freezer,/area/crew_quarters/kitchen)
