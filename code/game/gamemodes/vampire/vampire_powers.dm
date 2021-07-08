@@ -74,7 +74,7 @@
 		remembrance = "remembered"
 	admin_attack_log(src, T, "drained blood from [key_name(T)], who [remembrance] the encounter.", "had their blood drained by [key_name(src)] and [remembrance] the encounter.", "is draining blood from")
 
-	to_chat(T, SPAN_WARNING("You feel yourself falling into a pleasant dream, from which even a smile appeared on your face."))
+	to_chat(T, SPAN("warning",FONT_LARGE("You feel yourself falling into a pleasant dream, from which even a smile appeared on your face.")))
 	T.paralysis = 3400
 
 	playsound(src.loc, 'sound/effects/drain_blood.ogg', 50, 1)
@@ -153,9 +153,9 @@
 	if(target_aware)
 		T.paralysis = 0
 		if(T.stat != DEAD && vampire.stealth)
-			to_chat(T, SPAN_WARNING("You remember nothing about the cause of blacked out. Instead, you simply remember having a pleasant encounter with [src.name]"))
+			to_chat(T, SPAN("warning",FONT_LARGE("You remember nothing about the cause of blacked out. Instead, you simply remember having a pleasant encounter with [src.name]")))
 		else if(T.stat != DEAD)
-			to_chat(T, SPAN_WARNING("You remember everything that happened. Remember how blood was sucked from your neck. It gave you pleasure, like a pleasant dream. You feel great. How you react to [src.name]'s actions is up to you."))
+			to_chat(T, SPAN("warning",FONT_LARGE("You remember everything that happened. Remember how blood was sucked from your neck. It gave you pleasure, like a pleasant dream. You feel great. How you react to [src.name]'s actions is up to you.")))
 	verbs -= /mob/living/carbon/human/proc/vampire_drain_blood
 	if(blood_drained <= 85)
 
@@ -724,7 +724,7 @@
 	set name = "Enthrall (150)"
 	set desc = "Bind a mortal soul with a bloodbond to obey your every command."
 
-	var/datum/vampire/vampire = vampire_power(150, 0)
+	var/datum/vampire/vampire = vampire_power(120, 0)
 	if (!vampire)
 		return
 
@@ -775,7 +775,7 @@
 // Makes the vampire appear 'friendlier' to others.
 /mob/living/carbon/human/proc/vampire_presence()
 	set category = "Vampire"
-	set name = "Presence (10)"
+	set name = "Presence (5)"
 	set desc = "Influences those weak of mind to look at you in a friendlier light."
 
 	var/datum/vampire/vampire = vampire_power(0, 0)
