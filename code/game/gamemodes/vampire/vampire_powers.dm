@@ -1013,3 +1013,17 @@
 
 	verbs -= /mob/living/carbon/human/proc/grapple
 	ADD_VERB_IN_IF(src, 800, /mob/living/carbon/human/proc/grapple, CALLBACK(src, .proc/finish_vamp_timeout, VAMP_FRENZIED))
+
+/mob/living/carbon/human/proc/night_vision()
+	set category = "Vampire"
+	set name = "Toggle Darkvision"
+	set desc = "You're are able to see in the dark."
+
+
+	var/mob/living/carbon/C = src
+	C.seeDarkness = !C.seeDarkness
+	if(C.seeDarkness)
+		to_chat(C, SPAN("notice", "You're no longer need light to see."))
+	else
+		to_chat(C, SPAN("notice", "You're allow the shadows to return."))
+	return TRUE
