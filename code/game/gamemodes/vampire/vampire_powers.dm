@@ -838,10 +838,10 @@
 
 /mob/living/carbon/human/proc/vampire_touch_of_life()
 	set category = "Vampire"
-	set name = "Touch of Life (50)"
+	set name = "Touch of Life (30)"
 	set desc = "You lay your hands on the target, transferring healing chemicals to them."
 
-	var/datum/vampire/vampire = vampire_power(50, 0)
+	var/datum/vampire/vampire = vampire_power(30, 0)
 	if (!vampire)
 		return
 
@@ -857,7 +857,7 @@
 
 	visible_message("<b>[src]</b> gently touches [T].")
 	to_chat(T, SPAN_NOTICE("You feel pure bliss as [src] touches you."))
-	vampire.use_blood(50)
+	vampire.use_blood(30)
 
 	T.reagents.add_reagent(/datum/reagent/rezadone, 3)
 	T.reagents.add_reagent(/datum/reagent/tramadol/oxycodone, 0.15) //enough to get back onto their feet
