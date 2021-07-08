@@ -340,10 +340,10 @@
 // Chiropteran Screech
 /mob/living/carbon/human/proc/vampire_screech()
 	set category = "Vampire"
-	set name = "Chiropteran Screech (90)"
+	set name = "Chiropteran Screech (70)"
 	set desc = "Emit a powerful screech which shatters glass within a seven-tile radius, and stuns hearers in a four-tile radius."
 
-	var/datum/vampire/vampire = vampire_power(90, 0)
+	var/datum/vampire/vampire = vampire_power(70, 0)
 	if (!vampire)
 		return
 
@@ -374,7 +374,7 @@
 		L.broken()
 
 	playsound(src.loc, 'sound/effects/creepyshriek.ogg', 100, 1)
-	vampire.use_blood(90)
+	vampire.use_blood(70)
 
 	if (victims.len)
 		admin_attacker_log_many_victims(src, victims, "used chriopteran screech to stun", "was stunned by [key_name(src)] using chriopteran screech", "used chiropteran screech to stun")
@@ -721,7 +721,7 @@
 // Enthralls a person, giving the vampire a mortal slave.
 /mob/living/carbon/human/proc/vampire_enthrall()
 	set category = "Vampire"
-	set name = "Enthrall (150)"
+	set name = "Enthrall (120)"
 	set desc = "Bind a mortal soul with a bloodbond to obey your every command."
 
 	var/datum/vampire/vampire = vampire_power(120, 0)
@@ -768,7 +768,7 @@
 	to_chat(src, SPAN_NOTICE("You have completed the thralling process. They are now your slave and will obey your commands."))
 	admin_attack_log(src, T, "enthralled [key_name(T)]", "was enthralled by [key_name(src)]", "successfully enthralled")
 
-	vampire.use_blood(150)
+	vampire.use_blood(120)
 	verbs -= /mob/living/carbon/human/proc/vampire_enthrall
 	ADD_VERB_IN_IF(src, 2800, /mob/living/carbon/human/proc/vampire_enthrall, CALLBACK(src, .proc/finish_vamp_timeout))
 
@@ -786,8 +786,8 @@
 		vampire.status &= ~VAMP_PRESENCE
 		to_chat(src, SPAN_WARNING("You are no longer influencing those weak of mind."))
 		return
-	else if (vampire.blood_usable < 15)
-		to_chat(src, SPAN_WARNING("You do not have enough usable blood. 15 needed."))
+	else if (vampire.blood_usable < 10)
+		to_chat(src, SPAN_WARNING("You do not have enough usable blood. 10 needed."))
 		return
 
 	to_chat(src, SPAN_NOTICE("You begin passively influencing the weak minded."))
@@ -800,7 +800,7 @@
 							"[src] has your best interests at heart, you can feel it.",
 							"A quiet voice tells you that [src] should be considered a friend.")
 
-	vampire.use_blood(10)
+	vampire.use_blood(5)
 
 	log_and_message_admins("activated presence.")
 
@@ -1018,7 +1018,9 @@
 	set category = "Vampire"
 	set name = "Toggle Darkvision"
 	set desc = "You're are able to see in the dark."
-
+	var/datum/vampire/vampire = vampire_power(0, 0)
+	if (!vampire)
+		return
 
 	var/mob/living/carbon/C = src
 	C.seeDarkness = !C.seeDarkness
