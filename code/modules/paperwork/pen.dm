@@ -211,6 +211,12 @@
 	item_state = "edagger0"
 	hitsound = 'sound/effects/fighting/energy1.ogg'
 	attack_verb = list("attacked", "slashed", "stabbed", "sliced", "torn", "ripped", "diced", "cut")
+	var/spam_flag = FALSE // spamming can possibly overload lighting SS
+	var/flashlight_max_bright = 0.35 // brightness of light when on, must be no greater than 1.
+	var/flashlight_inner_range = 0.1 // inner range of light when on, can be negative
+	var/flashlight_outer_range = 2 // outer range of light when on, can be negative
+	var/flashlight_falloff_curve = 4
+	var/brightness_color = "ff5959"
 
 /obj/item/weapon/pen/energy_dagger/attack_self(mob/living/user)
 	battlepen = !battlepen
@@ -242,6 +248,7 @@
 	icon_state = "edagger1"
 	item_state = "edagger1"
 	playsound(user, 'sound/weapons/saberon.ogg', 50, 1)
+	set_light(flashlight_max_bright, flashlight_inner_range, flashlight_outer_range, flashlight_falloff_curve, brightness_color)
 
 /obj/item/weapon/pen/energy_dagger/proc/deactivate(mob/living/user)
 	battlepen = FALSE
@@ -254,6 +261,7 @@
 	icon_state = initial(icon_state)
 	item_state = initial(item_state)
 	playsound(user, 'sound/weapons/saberoff.ogg', 50, 1)
+	set_light(0)
 
 /obj/item/weapon/pen/energy_dagger/dropped()
 	spawn(9)
