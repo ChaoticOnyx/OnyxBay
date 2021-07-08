@@ -11,7 +11,6 @@
 	var/obj/machinery/power/master = null
 	anchored = 1
 
-
 /obj/machinery/power/terminal/New()
 	..()
 	var/turf/T = src.loc

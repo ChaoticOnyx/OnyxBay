@@ -74,46 +74,46 @@ var/floor_light_color_cache = list()
 		else
 			anchored = !anchored
 			levelupdate()
-			visible_message("<span class='notice'>\The [user] has [anchored ? "attached" : "detached"] \the [src].</span>")
+			visible_message(SPAN("notice", "\The [user] has [anchored ? "attached" : "detached"] \the [src]."))
 	else if(isWelder(W) && (damaged || (stat & BROKEN)))
 		var/obj/item/weapon/weldingtool/WT = W
 		if(!WT.remove_fuel(0, user))
-			to_chat(user, "<span class='warning'>\The [src] must be on to complete this task.</span>")
+			to_chat(user, SPAN("warning", "\The [src] must be on to complete this task."))
 			return
 		playsound(src.loc, 'sound/items/Welder.ogg', 50, 1)
 		if(!do_after(user, 20, src))
 			return
 		if(!src || !WT.isOn())
 			return
-		visible_message("<span class='notice'>\The [user] has repaired \the [src].</span>")
+		visible_message(SPAN("notice", "\The [user] has repaired \the [src]."))
 		set_broken(FALSE)
 		damaged = FALSE
 	else if(isMultitool(W))
 		if(!on)
-			to_chat(user, "<span class='warning'>\The [src] needs to be switched on for the setup.</span>")
+			to_chat(user, SPAN("warning", "\The [src] needs to be switched on for the setup."))
 			return
 		if(damaged)
-			to_chat(user, "<span class='warning'>\The [src] needs to be repaired for the setup.</span>")
+			to_chat(user, SPAN("warning", "\The [src] needs to be repaired for the setup."))
 			return
 		switch(alert("What would you like to change?",, "Color", "intensity", "Invert", "Cancel"))
 			if("Color")
 				light_colour = input(user, "Choose your floor light's color:") as color
 				update_brightness()
 				glow = FALSE
-				visible_message("<span class='notice'>\The [user] change \the [src] color.</span>")
+				visible_message(SPAN("notice", "\The [user] change \the [src] color."))
 				playsound(src.loc, "button", 50, 1)
 				return
 			if("intensity")
 				switch(alert("Choose your floor light's intensity",, "slow", "normal", "fast"))
 					if("slow")
 						light_intensity = 0
-						visible_message("<span class='notice'>\The [user] change \the [src] intensity to slow.</span>")
+						visible_message(SPAN("notice", "\The [user] change \the [src] intensity to slow."))
 					if("normal")
 						light_intensity = 1
-						visible_message("<span class='notice'>\The [user] change \the [src] intensity to normal.</span>")
+						visible_message(SPAN("notice", "\The [user] change \the [src] intensity to normal."))
 					if("fast")
 						light_intensity = 2
-						visible_message("<span class='notice'>\The [user] change \the [src] intensity to fast.</span>")
+						visible_message(SPAN("notice", "\The [user] change \the [src] intensity to fast."))
 					else return
 				update_brightness()
 				glow = FALSE
@@ -123,7 +123,7 @@ var/floor_light_color_cache = list()
 				inverted = !inverted
 				update_brightness()
 				glow = FALSE
-				visible_message("<span class='notice'>\The [user] inverted \the [src] rhythm.</span>")
+				visible_message(SPAN("notice", "\The [user] inverted \the [src] rhythm."))
 				playsound(src.loc, "button", 50, 1)
 				return
 			if("Cancel")
@@ -135,11 +135,11 @@ var/floor_light_color_cache = list()
 /obj/machinery/floor_light/attack_hand(mob/user)
 	if(user.a_intent == I_HURT && !issmall(user))
 		if(damaged >= shield && !(stat & BROKEN))
-			visible_message("<span class='danger'>\The [user] smashes \the [src]!</span>")
+			visible_message(SPAN("danger", "\The [user] smashes \the [src]!"))
 			playsound(src, "window_breaking", 70, 1)
 			set_broken(TRUE)
 		else
-			visible_message("<span class='danger'>\The [user] attacks \the [src]!</span>")
+			visible_message(SPAN("danger", "\The [user] attacks \the [src]!"))
 			playsound(src.loc, get_sfx("glass_hit"), 75, 1)
 		if(damaged < hp)
 			damaged++
@@ -150,16 +150,16 @@ var/floor_light_color_cache = list()
 	else
 		on = !on
 		playsound(src, "switch_small", 75, 1)
-		to_chat(user, "<span class='notice'>You switch \the [src]  [on ? "on" : "off"].</span>")
+		to_chat(user, SPAN("notice", "You switch \the [src]  [on ? "on" : "off"]."))
 		if(on)
 			if(stat && BROKEN)
-				to_chat(user, "<span class='warning'>\The [src] is too damaged to glow.</span>")
+				to_chat(user, SPAN("warning", "\The [src] is too damaged to glow."))
 				return
 			if(!anchored)
-				to_chat(user, "<span class='warning'>\The [src] must be screwed down to glow.</span>")
+				to_chat(user, SPAN("warning", "\The [src] must be screwed down to glow."))
 				return
 			if(stat && NOPOWER)
-				to_chat(user, "<span class='warning'>\The [src] is unpowered.</span>")
+				to_chat(user, SPAN("warning", "\The [src] is unpowered."))
 				return
 
 /obj/machinery/floor_light/proc/update_brightness()
