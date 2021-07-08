@@ -64,34 +64,34 @@
 	if(isWrench(W) && state == 0)
 		if(anchored && !reinf_material)
 			playsound(src.loc, 'sound/items/Ratchet.ogg', 100, 1)
-			user.visible_message(SPAN("notice", "[user] is disassembling \the [src]..."),
+			user.visible_message(SPAN("notice", "[user] is disassembling \the [src]..."), \
 					   	         SPAN("notice", "Now disassembling \the [src]..."))
 			if(do_after(user,40,src))
 				if(!src) return
-				user.visible_message(SPAN("notice", "[user] dissasembled \the [src]!"),
+				user.visible_message(SPAN("notice", "[user] dissasembled \the [src]!"), \
 					        	     SPAN("notice", "You dissasembled \the [src]!"))
 				dismantle()
 		else if(!anchored)
 			playsound(src.loc, 'sound/items/Ratchet.ogg', 100, 1)
-			user.visible_message(SPAN("notice", "[user] is securing \the [src]..."),
+			user.visible_message(SPAN("notice", "[user] is securing \the [src]..."), \
 					   	         SPAN("notice", "Now securing \the [src]..."))
 			if(do_after(user, 40,src))
 				if(!src) return
-				user.visible_message(SPAN("notice", "[user] secured \the [src]!"),
+				user.visible_message(SPAN("notice", "[user] secured \the [src]!"), \
 					   	         	 SPAN("notice", "You secured \the [src]!"))
 				reset_girder()
 
 	else if((istype(W, /obj/item/weapon/gun/energy/plasmacutter) || (istype(W, /obj/item/weapon/melee/energy) && W.force > 20)) && user.a_intent == I_HELP)
-		user.visible_message(SPAN("notice", "[user] is slicing apart \the [src]..."),
+		user.visible_message(SPAN("notice", "[user] is slicing apart \the [src]..."), \
 				             SPAN("notice", "Now slicing apart \the [src]..."))
 		if(do_after(user,30,src))
 			if(!src) return
-			user.visible_message(SPAN("notice", "[user] slices apart \the [src]!"),
+			user.visible_message(SPAN("notice", "[user] slices apart \the [src]!"), \
 				             	 SPAN("notice", "You slice apart \the [src]!"))
 			dismantle()
 
 	else if(istype(W, /obj/item/weapon/pickaxe/diamonddrill))
-		user.visible_message(SPAN("notice", "[user] drills through \the [src]!"),
+		user.visible_message(SPAN("notice", "[user] drills through \the [src]!"), \
 				             SPAN("notice", "You drill through \the [src]!"))
 		dismantle()
 
@@ -122,11 +122,11 @@
 
 	else if(isCrowbar(W) && state == 0 && anchored)
 		playsound(src.loc, 'sound/items/Crowbar.ogg', 100, 1)
-		user.visible_message(SPAN("notice", "[user] is dislodging \the [src]..."),
+		user.visible_message(SPAN("notice", "[user] is dislodging \the [src]..."), \
 				             SPAN("notice", "Now dislodging \the [src]..."))
 		if(do_after(user, 40, src))
 			if(!src) return
-			user.visible_message(SPAN("notice", "[user] dislodged \the [src]."),
+			user.visible_message(SPAN("notice", "[user] dislodged \the [src]."), \
 				                 SPAN("notice", "You dislodged \the [src]."))
 			icon_state = "displaced"
 			anchored = 0
@@ -142,13 +142,13 @@
 		if(!WT.remove_fuel(0,user))
 			to_chat(user, SPAN("notice", "You need more welding fuel to complete this task."))
 			return
-		user.visible_message(SPAN("notice", "[user] is repairing the damage to \the [src]..."),
+		user.visible_message(SPAN("notice", "[user] is repairing the damage to \the [src]..."), \
 				             SPAN("notice", "You start repairing the damage to \the [src]..."))
 		playsound(src, 'sound/items/Welder.ogg', 100, 1)
 		if(!do_after(user, max(5, health / 3), src) && WT && WT.isOn())
 			return
 		health = max_health
-		user.visible_message(SPAN("notice", "[user] repairs \the [src]."),
+		user.visible_message(SPAN("notice", "[user] repairs \the [src]."), \
 				             SPAN("notice", "You repair \the [src]."))
 
 	else if(istype(W, /obj/item/stack/material))
@@ -189,17 +189,17 @@
 		to_chat(user, SPAN("notice", "This material is too soft for use in wall construction."))
 		return 0
 
-	user.visible_message(SPAN("notice", "[user] is adding some planting to \the [src]..."),
+	user.visible_message(SPAN("notice", "[user] is adding some planting to \the [src]..."), \
 				    	 SPAN("notice", "You begin adding the plating..."))
 
 	if(!do_after(user,40,src) || !S.use(2))
 		return 1 //once we've gotten this far don't call parent attackby()
 
 	if(anchored)
-		user.visible_message(SPAN("notice", "[user] added some planting to \the [src]!"),
+		user.visible_message(SPAN("notice", "[user] added some planting to \the [src]!"), \
 				        	 SPAN("notice", "You added the plating!"))
 	else
-		user.visible_message(SPAN("notice", "[user] added some planting to \the [src]!"),
+		user.visible_message(SPAN("notice", "[user] added some planting to \the [src]!"), \
 				        	 SPAN("notice", "You create a false wall! Push on it to open or close the passage.")) // Some stealthy stuff
 		wall_fake = 1
 
@@ -227,11 +227,11 @@
 		to_chat(user, SPAN("notice", "You cannot reinforce \the [src] with that; it is too soft."))
 		return 0
 
-	user.visible_message(SPAN("notice", "[user] is reinforcing \the [src]..."),
+	user.visible_message(SPAN("notice", "[user] is reinforcing \the [src]..."), \
 				    	 SPAN("notice", "Now reinforcing \the [src]..."))
 	if (!do_after(user, 40,src) || !S.use(2))
 		return 1 //don't call parent attackby() past this point
-	user.visible_message(SPAN("notice", "[user] added reinforcement to \the [src]!"),
+	user.visible_message(SPAN("notice", "[user] added reinforcement to \the [src]!"), \
 				    	 SPAN("notice", "You added reinforcement to \the [src]!"))
 
 	reinf_material = M
@@ -252,7 +252,7 @@
 
 /obj/structure/girder/attack_hand(mob/user as mob)
 	if(MUTATION_HULK in user.mutations)
-		user.visible_message(SPAN("danger", "[user] smashes \the [src] apart!"),
+		user.visible_message(SPAN("danger", "[user] smashes \the [src] apart!"), \
 							 SPAN("danger", "You smash \the [src] apart!"))
 		dismantle()
 		return
@@ -290,25 +290,25 @@
 /obj/structure/girder/cult/attackby(obj/item/W as obj, mob/user as mob)
 	if(isWrench(W))
 		playsound(src.loc, 'sound/items/Ratchet.ogg', 100, 1)
-		user.visible_message(SPAN("notice", "[user] is disassembling \the [src]..."),
+		user.visible_message(SPAN("notice", "[user] is disassembling \the [src]..."), \
 				   	         SPAN("notice", "Now disassembling \the [src]!"))
 		if(do_after(user,40,src))
 			if(!src) return
-			user.visible_message(SPAN("notice", "[user] dissasembled \the [src]!"),
+			user.visible_message(SPAN("notice", "[user] dissasembled \the [src]!"), \
 				        	     SPAN("notice", "You dissasembled \the [src]!"))
 			dismantle()
 
 	else if((istype(W, /obj/item/weapon/gun/energy/plasmacutter) || (istype(W, /obj/item/weapon/melee/energy) && W.force > 20)) && user.a_intent == I_HELP)
-		user.visible_message(SPAN("notice", "[user] is slicing apart \the [src]..."),
+		user.visible_message(SPAN("notice", "[user] is slicing apart \the [src]..."), \
 				             SPAN("notice", "Now slicing apart \the [src]..."))
 		if(do_after(user,30,src))
 			if(!src) return
-			user.visible_message(SPAN("notice", "[user] slices apart \the [src]!"),
+			user.visible_message(SPAN("notice", "[user] slices apart \the [src]!"), \
 				             	 SPAN("notice", "You slice apart \the [src]!"))
 		dismantle()
 
 	else if(istype(W, /obj/item/weapon/pickaxe/diamonddrill))
-		user.visible_message(SPAN("notice", "[user] drills through \the [src]!"),
+		user.visible_message(SPAN("notice", "[user] drills through \the [src]!"), \
 				             SPAN("notice", "You drill through \the [src]!"))
 		new /obj/item/remains/human(get_turf(src))
 		dismantle()

@@ -71,16 +71,16 @@
 
 /datum/recipe/proc/check_items(obj/container as obj)
 	. = 1
-	if(length(items))
+	if (items && items.len)
 		var/list/checklist = list()
 		checklist = items.Copy() // You should really trust Copy
-		for(var/obj/item/I in container.InsertedContents())
-			if(istype(I,/obj/item/weapon/reagent_containers/food/snacks/grown))
+		for(var/obj/O in container.InsertedContents())
+			if(istype(O,/obj/item/weapon/reagent_containers/food/snacks/grown))
 				continue // Fruit is handled in check_fruit().
 			var/found = 0
-			for(var/i in 1 to length(checklist))
+			for(var/i = 1; i < checklist.len+1; i++)
 				var/item_type = checklist[i]
-				if(istype(I.return_item(),item_type))
+				if (istype(O,item_type))
 					checklist.Cut(i, i+1)
 					found = 1
 					break
@@ -93,29 +93,28 @@
 //general version
 /datum/recipe/proc/make(obj/container as obj)
 	var/obj/result_obj = new result(container)
-	for(var/obj/item/I in (container.InsertedContents() - result_obj))
-		I.return_item().reagents.trans_to_obj(result_obj, I.return_item().reagents.total_volume)
-		qdel(I)
+	for (var/obj/O in (container.InsertedContents()-result_obj))
+		O.reagents.trans_to_obj(result_obj, O.reagents.total_volume)
+		qdel(O)
 	container.reagents.clear_reagents()
 	return result_obj
 
 // food-related
 /datum/recipe/proc/make_food(obj/container as obj)
 	if(!result)
-		log_error(SPAN("danger", "Recipe [type] is defined without a result, please bug this."))
+		log_error("<span class='danger'>Recipe [type] is defined without a result, please bug this.</span>")
 
 		return
 	var/obj/result_obj = new result(container)
-	for(var/obj/item/I in (container.InsertedContents() - result_obj))
-		var/obj/item/O = I.return_item()
+	for (var/obj/O in (container.InsertedContents()-result_obj))
 		if (O.reagents)
 			O.reagents.del_reagent(/datum/reagent/nutriment)
 			O.reagents.update_total()
 			O.reagents.trans_to_obj(result_obj, O.reagents.total_volume)
-		if(istype(I, /obj/item/weapon/holder/))
-			var/obj/item/weapon/holder/H = I
+		if(istype(O,/obj/item/weapon/holder/))
+			var/obj/item/weapon/holder/H = O
 			H.destroy_all()
-		qdel(I)
+		qdel(O)
 	container.reagents.clear_reagents()
 	return result_obj
 

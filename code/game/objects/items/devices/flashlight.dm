@@ -95,7 +95,7 @@
 				to_chat(user, "<span class='warning'>\The [H] is missing \his [initial(vision.name)]!</span>")
 				return
 
-			user.visible_message(SPAN("notice", "\The [user] directs [src] into [M]'s [vision.name]."),
+			user.visible_message("<span class='notice'>\The [user] directs [src] into [M]'s [vision.name].</span>", \
 								 "<span class='notice'>You direct [src] into [M]'s [vision.name].</span>")
 
 			inspect_vision(vision, user)
@@ -305,7 +305,7 @@
 
 /obj/item/device/flashlight/flare/attack_self(mob/user)
 	if(turn_on(user))
-		user.visible_message(SPAN("notice", "\The [user] activates \the [src]."), SPAN("notice", "You pull the cord on the flare, activating it!"))
+		user.visible_message("<span class='notice'>\The [user] activates \the [src].</span>", "<span class='notice'>You pull the cord on the flare, activating it!</span>")
 
 /obj/item/device/flashlight/flare/proc/turn_on(mob/user)
 	if(on)
@@ -390,7 +390,7 @@
 
 	. = ..()
 	if(.)
-		user.visible_message(SPAN("notice", "[user] cracks and shakes the glowstick."), SPAN("notice", "You crack and shake the glowstick, turning it on!"))
+		user.visible_message("<span class='notice'>[user] cracks and shakes the glowstick.</span>", "<span class='notice'>You crack and shake the glowstick, turning it on!</span>")
 		START_PROCESSING(SSobj, src)
 
 /obj/item/device/flashlight/glowstick/red

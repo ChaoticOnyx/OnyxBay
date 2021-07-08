@@ -143,7 +143,7 @@
 		src.active = 2
 	if(src.active >= 1)
 		if(src.power == 0)
-			src.visible_message(SPAN("warning", "The [src.name] shuts down due to lack of power!"),
+			src.visible_message("<span class='warning'>The [src.name] shuts down due to lack of power!</span>", \
 				"You hear heavy droning fade out")
 			src.active = 0
 			update_icon()
@@ -296,7 +296,7 @@
 /obj/machinery/shieldwall/attackby(obj/item/I, mob/user)
 	var/obj/machinery/shieldwallgen/G = prob(50) ? gen_primary : gen_secondary
 	G.storedpower -= I.force*2500
-	user.visible_message(SPAN("danger", "\The [user] hits \the [src] with \the [I]!"))
+	user.visible_message("<span class='danger'>\The [user] hits \the [src] with \the [I]!</span>")
 	user.setClickCooldown(DEFAULT_ATTACK_COOLDOWN)
 	user.do_attack_animation(src)
 	playsound(loc, 'sound/effects/fighting/smash.ogg', 75, 1)

@@ -92,7 +92,7 @@
 
 		M.heal_organ_damage((src.heal_brute/2), (src.heal_burn/2))
 		user.visible_message( \
-			SPAN("notice", "[M] has been applied with [src] by [user]."),
+			SPAN("notice", "[M] has been applied with [src] by [user]."), \
 			SPAN("notice", "You apply \the [src] to [M].") \
 		)
 		use(1)
@@ -126,7 +126,7 @@
 			to_chat(user, SPAN("notice", "The wounds on [M]'s [affecting.name] have already been bandaged."))
 			return 1
 		else
-			user.visible_message(SPAN("notice", "\The [user] starts treating [M]'s [affecting.name]."),
+			user.visible_message(SPAN("notice", "\The [user] starts treating [M]'s [affecting.name]."), \
 					             SPAN("notice", "You start treating [M]'s [affecting.name]."))
 			var/used = 0
 			for (var/datum/wound/W in affecting.wounds)
@@ -139,14 +139,14 @@
 					break
 
 				if (W.current_stage <= W.max_bleeding_stage)
-					user.visible_message(SPAN("notice", "\The [user] bandages \a [W.desc] on [M]'s [affecting.name]."),
+					user.visible_message(SPAN("notice", "\The [user] bandages \a [W.desc] on [M]'s [affecting.name]."), \
 					                              SPAN("notice", "You bandage \a [W.desc] on [M]'s [affecting.name]."))
 					//H.add_side_effect("Itch")
 				else if (W.damage_type == BRUISE)
-					user.visible_message(SPAN("notice", "\The [user] places a bruise patch over \a [W.desc] on [M]'s [affecting.name]."),
+					user.visible_message(SPAN("notice", "\The [user] places a bruise patch over \a [W.desc] on [M]'s [affecting.name]."), \
 					                              SPAN("notice", "You place a bruise patch over \a [W.desc] on [M]'s [affecting.name]."))
 				else
-					user.visible_message(SPAN("notice", "\The [user] places a bandaid over \a [W.desc] on [M]'s [affecting.name]."),
+					user.visible_message(SPAN("notice", "\The [user] places a bandaid over \a [W.desc] on [M]'s [affecting.name]."), \
 					                              SPAN("notice", "You place a bandaid over \a [W.desc] on [M]'s [affecting.name]."))
 				W.bandage()
 				W.heal_damage(heal_brute)
@@ -183,12 +183,12 @@
 			to_chat(user, SPAN("notice", "The wounds on [M]'s [affecting.name] have already been salved."))
 			return 1
 		else
-			user.visible_message(SPAN("notice", "\The [user] starts salving wounds on [M]'s [affecting.name]."),
+			user.visible_message(SPAN("notice", "\The [user] starts salving wounds on [M]'s [affecting.name]."), \
 					                      SPAN("notice", "You start salving wounds on [M]'s [affecting.name]."))
 			if(!do_mob(user, M, 10))
 				to_chat(user, SPAN("warning", "You must stand still to salve wounds.</span>"))
 				return 1
-			user.visible_message(SPAN("notice", "[user] salved wounds on [M]'s [affecting.name]."),
+			user.visible_message(SPAN("notice", "[user] salved wounds on [M]'s [affecting.name]."), \
 			                        SPAN("notice", "You salved wounds on [M]'s [affecting.name]."))
 			use(1)
 			affecting.salve()
@@ -247,7 +247,7 @@
 			to_chat(user, SPAN("notice", "The wounds on [M]'s [affecting.name] have already been treated."))
 			return 1
 		else
-			user.visible_message(SPAN("notice", "\The [user] starts treating [M]'s [affecting.name]."),
+			user.visible_message(SPAN("notice", "\The [user] starts treating [M]'s [affecting.name]."), \
 					                      SPAN("notice", "You start treating [M]'s [affecting.name]."))
 			var/used = 0
 			for (var/datum/wound/W in affecting.wounds)
@@ -259,10 +259,10 @@
 					to_chat(user, SPAN("warning", "You must stand still to apply \the [src]."))
 					break
 				if (W.current_stage <= W.max_bleeding_stage)
-					user.visible_message(SPAN("notice", "\The [user] cleans \a [W.desc] on [M]'s [affecting.name] and seals the edges with somatic gel."),
+					user.visible_message(SPAN("notice", "\The [user] cleans \a [W.desc] on [M]'s [affecting.name] and seals the edges with somatic gel."), \
 					                     SPAN("notice", "You clean and seal \a [W.desc] on [M]'s [affecting.name]."))
 				else
-					user.visible_message(SPAN("notice", "\The [user] smears some somatic gel over \a [W.desc] on [M]'s [affecting.name]."),
+					user.visible_message(SPAN("notice", "\The [user] smears some somatic gel over \a [W.desc] on [M]'s [affecting.name]."), \
 					                              SPAN("notice", "You smear some somatic gel over \a [W.desc] on [M]'s [affecting.name]."))
 				W.bandage()
 				W.disinfect()
@@ -300,12 +300,12 @@
 			to_chat(user, SPAN("notice", "The wounds on [M]'s [affecting.name] have already been salved."))
 			return 1
 		else
-			user.visible_message(SPAN("notice", "\The [user] starts salving wounds on [M]'s [affecting.name]."),
+			user.visible_message(SPAN("notice", "\The [user] starts salving wounds on [M]'s [affecting.name]."), \
 					                      SPAN("notice", "You start salving wounds on [M]'s [affecting.name]."))
 			if(!do_mob(user, M, 10))
 				to_chat(user, SPAN("warning", "You must stand still to salve wounds."))
 				return 1
-			user.visible_message(SPAN("notice", "[user] covers wounds on [M]'s [affecting.name] with protein-renaturating gel."),
+			user.visible_message(SPAN("notice", "[user] covers wounds on [M]'s [affecting.name] with protein-renaturating gel."), \
 					                 SPAN("notice", "You cover wounds on [M]'s [affecting.name] with protein-renaturating gel."))
 			affecting.heal_damage(0,heal_burn)
 			use(1)
@@ -337,21 +337,21 @@
 			to_chat(user, SPAN("notice", "[M]'s [limb] is already splinted!"))
 			return
 		if (M != user)
-			user.visible_message(SPAN("notice", "[user] starts to apply \the [src] to [M]'s [limb]."),
-					                 SPAN("notice", "You start to apply \the [src] to [M]'s [limb]."),
+			user.visible_message(SPAN("notice", "[user] starts to apply \the [src] to [M]'s [limb]."), \
+					                 SPAN("notice", "You start to apply \the [src] to [M]'s [limb]."), \
 								    SPAN("warning", "You hear something being wrapped."))
 		else
 			if(( !user.hand && (affecting.organ_tag in list(BP_R_ARM, BP_R_HAND)) || \
 				user.hand && (affecting.organ_tag in list(BP_L_ARM, BP_L_HAND)) ))
 				to_chat(user, SPAN("warning", "You can't apply a splint to the arm you're using!"))
 				return
-			user.visible_message(SPAN("notice", "[user] starts to apply \the [src] to their [limb]."),
-						             SPAN("notice", "You start to apply \the [src] to your [limb]."),
+			user.visible_message(SPAN("notice", "[user] starts to apply \the [src] to their [limb]."), \
+						             SPAN("notice", "You start to apply \the [src] to your [limb]."), \
 						            SPAN("warning", "You hear something being wrapped."))
 		if(do_after(user, 50, M))
 			if(M == user && prob(75))
-				user.visible_message(SPAN("warning", "\The [user] fumbles [src]."),
-							         SPAN("warning", "You fumble [src]."),
+				user.visible_message(SPAN("warning", "\The [user] fumbles [src]."), \
+							         SPAN("warning", "You fumble [src]."), \
 							         SPAN("warning", "You hear something being wrapped."))
 				return
 			var/obj/item/stack/medical/splint/S = new /obj/item/stack/medical/splint(user,1)
@@ -359,18 +359,18 @@
 				if(affecting.apply_splint(S))
 					S.forceMove(affecting)
 					if (M != user)
-						user.visible_message(SPAN("notice", "\The [user] finishes applying \the [src] to [M]'s [limb]."),
-							                           SPAN("notice", "You finish applying \the [src] to [M]'s [limb]."),
+						user.visible_message(SPAN("notice", "\The [user] finishes applying \the [src] to [M]'s [limb]."), \
+							                           SPAN("notice", "You finish applying \the [src] to [M]'s [limb]."), \
 							   	                      SPAN("warning", "You hear something being wrapped."))
 					else
-						user.visible_message(SPAN("notice", "\The [user] successfully applies \the [src] to their [limb]."),
-										               SPAN("notice", "You successfully apply \the [src] to your [limb]."),
+						user.visible_message(SPAN("notice", "\The [user] successfully applies \the [src] to their [limb]."), \
+										               SPAN("notice", "You successfully apply \the [src] to your [limb]."), \
 											          SPAN("warning", "You hear something being wrapped."))
 					src.use(1)
 					return
 				S.dropInto(src.loc) //didn't get applied, so just drop it
-			user.visible_message(SPAN("warning", "\The [user] fails to apply [src]."),
-							              SPAN("warning", "You fail to apply [src]."),
+			user.visible_message(SPAN("warning", "\The [user] fails to apply [src]."), \
+							              SPAN("warning", "You fail to apply [src]."), \
 							              SPAN("warning", "You hear something being wrapped."))
 		return
 
@@ -410,7 +410,7 @@
 			to_chat(user, SPAN("notice", "The wounds on [M]'s [affecting.name] have already been treated."))
 			return 1
 		else
-			user.visible_message(SPAN("notice", "\The [user] starts treating [M]'s [affecting.name]."),
+			user.visible_message(SPAN("notice", "\The [user] starts treating [M]'s [affecting.name]."), \
 					                      SPAN("notice", "You start treating [M]'s [affecting.name]."))
 			var/used = 0
 			for (var/datum/wound/W in affecting.wounds)
@@ -422,7 +422,7 @@
 					to_chat(user, SPAN("warning", "You must stand still to place a bandaid."))
 					break
 
-				user.visible_message(SPAN("notice", "\The [user] places a bandaid over \a [W.desc] on [M]'s [affecting.name]."),
+				user.visible_message(SPAN("notice", "\The [user] places a bandaid over \a [W.desc] on [M]'s [affecting.name]."), \
 									          SPAN("notice", "You place a bandaid over \a [W.desc] on [M]'s [affecting.name]."))
 				W.bandage()
 				used++

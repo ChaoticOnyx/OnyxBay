@@ -447,7 +447,7 @@ var/list/global/tank_gauge_cache = list()
 			integrity -=7
 	else if(pressure > TANK_RUPTURE_PRESSURE)
 		#ifdef FIREDBG
-		log_debug(SPAN("warning", "[x],[y] tank is rupturing: [pressure] kPa, integrity [integrity]"))
+		log_debug("<span class='warning'>[x],[y] tank is rupturing: [pressure] kPa, integrity [integrity]</span>")
 		#endif
 
 		if(integrity <= 0)
@@ -456,7 +456,7 @@ var/list/global/tank_gauge_cache = list()
 				return
 			T.assume_air(air_contents)
 			playsound(src, 'sound/effects/weapons/gun/fire_shotgun.ogg', 20, 1)
-			visible_message("\icon[src] "SPAN("danger", "\The [src] flies apart!"), SPAN("warning", "You hear a bang!</span>")
+			visible_message("\icon[src] <span class='danger'>\The [src] flies apart!</span>", "<span class='warning'>You hear a bang!</span>")
 			T.hotspot_expose(air_contents.temperature, 70, 1)
 
 			var/strength = 1+((pressure-TANK_LEAK_PRESSURE)/TANK_FRAGMENT_SCALE)
@@ -491,7 +491,7 @@ var/list/global/tank_gauge_cache = list()
 				playsound(loc, 'sound/effects/spray.ogg', 10, 1, -3)
 				leaking = 1
 				#ifdef FIREDBG
-				log_debug(SPAN("warning", "[x],[y] tank is leaking: [pressure] kPa, integrity [integrity]"))
+				log_debug("<span class='warning'>[x],[y] tank is leaking: [pressure] kPa, integrity [integrity]</span>")
 				#endif
 		else
 			integrity-= 2

@@ -56,7 +56,7 @@
 			to_chat(user, "<span class='notice'>This brain is completely useless to you.</span>")
 			return
 
-		user.visible_message(SPAN("notice", "\The [user] sticks \a [O] into \the [src]."))
+		user.visible_message("<span class='notice'>\The [user] sticks \a [O] into \the [src].</span>")
 
 		brainmob = B.brainmob
 		B.brainmob = null

@@ -94,7 +94,7 @@
 				if(open)
 					health = min(maxhealth, health+10)
 					user.setClickCooldown(DEFAULT_ATTACK_COOLDOWN)
-					user.visible_message(SPAN("warning", "\The [user] repairs \the [src]!"), SPAN("notice", "You repair \the [src]!"))
+					user.visible_message("<span class='warning'>\The [user] repairs \the [src]!</span>","<span class='notice'>You repair \the [src]!</span>")
 				else
 					to_chat(user, "<span class='notice'>Unable to repair with the maintenance panel closed.</span>")
 			else
@@ -194,7 +194,7 @@
 		return 1
 
 /obj/vehicle/proc/explode()
-	src.visible_message(SPAN("danger", "\The [src] blows apart!"))
+	src.visible_message("<span class='danger'>\The [src] blows apart!</span>")
 	var/turf/Tsec = get_turf(src)
 
 	new /obj/item/stack/rods(Tsec)
@@ -361,7 +361,7 @@
 /obj/vehicle/attack_generic(mob/user, damage, attack_message)
 	if(!damage)
 		return
-	visible_message(SPAN("danger", "\The [user] [attack_message] the \the [src]!"))
+	visible_message("<span class='danger'>\The [user] [attack_message] the \the [src]!</span>")
 	if(istype(user))
 		admin_attacker_log(user, "attacked \the [src]")
 		user.do_attack_animation(src)

@@ -444,7 +444,7 @@
 			if(prob(90) && !supplies["2"])
 				var/turf/simulated/floor/F = src.loc
 				F.ChangeTurf(/turf/space)
-				src.visible_message(SPAN("danger", "Something slams into the floor around \the [src], exposing it to space!"), "You hear something crack and break.")
+				src.visible_message("<span class='danger'>Something slams into the floor around \the [src], exposing it to space!</span>", "You hear something crack and break.")
 			else
 				src.visible_message("Something slams into the floor around \the [src] - luckily, it didn't get through!", "You hear something crack.")
 		if(ORION_TRAIL_GAMEOVER)
@@ -500,15 +500,15 @@
 	log_game("[key_name(usr)] primed an explosive Orion ship for detonation.")
 	to_chat(user, "<span class='warning'>You flip the switch on the underside of [src].</span>")
 	active = 1
-	src.visible_message(SPAN("notice", "[src] softly beeps and whirs to life!"))
+	src.visible_message("<span class='notice'>[src] softly beeps and whirs to life!</span>")
 	src.audible_message("<b>\The [src]</b> says, 'This is ship ID #[rand(1,1000)] to Orion Port Authority. We're coming in for landing, over.'")
 	sleep(20)
-	src.visible_message(SPAN("warning", "[src] begins to vibrate..."))
+	src.visible_message("<span class='warning'>[src] begins to vibrate...</span>")
 	src.audible_message("<b>\The [src]</b> says, 'Uh, Port? Having some issues with our reactor, could you check it out? Over.'")
 	sleep(30)
 	src.audible_message("<b>\The [src]</b> says, 'Oh, God! Code Eight! CODE EIGHT! IT'S GONNA BL-'")
 	sleep(3.6)
-	src.visible_message(SPAN("danger", "[src] explodes!"))
+	src.visible_message("<span class='danger'>[src] explodes!</span>")
 	explosion(src.loc, 1,2,4)
 	qdel(src)
 

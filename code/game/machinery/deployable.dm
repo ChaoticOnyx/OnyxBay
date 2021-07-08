@@ -138,13 +138,13 @@ for reference:
 /obj/structure/barricade/ex_act(severity)
 	switch(severity)
 		if(1.0)
-			visible_message(SPAN("danger", "\The [src] is blown apart!"))
+			visible_message("<span class='danger'>\The [src] is blown apart!</span>")
 			qdel(src)
 			return
 		if(2.0)
 			src.health -= 25
 			if (src.health <= 0)
-				visible_message(SPAN("danger", "\The [src] is blown apart!"))
+				visible_message("<span class='danger'>\The [src] is blown apart!</span>")
 				dismantle()
 			return
 
@@ -194,7 +194,7 @@ for reference:
 					var/datum/effect/effect/system/spark_spread/s = new /datum/effect/effect/system/spark_spread
 					s.set_up(2, 1, src)
 					s.start()
-					visible_message(SPAN("warning", "BZZzZZzZZzZT"))
+					visible_message("<span class='warning'>BZZzZZzZZzZT</span>")
 					return
 			return
 		else if(isWrench(W))
@@ -202,12 +202,12 @@ for reference:
 				src.health = src.maxhealth
 				src.emagged = 0
 				src.req_access = list(access_security)
-				visible_message(SPAN("warning", "[user] repairs \the [src]!"))
+				visible_message("<span class='warning'>[user] repairs \the [src]!</span>")
 				return
 			else if (src.emagged > 0)
 				src.emagged = 0
 				src.req_access = list(access_security)
-				visible_message(SPAN("warning", "[user] repairs \the [src]!"))
+				visible_message("<span class='warning'>[user] repairs \the [src]!</span>")
 				return
 			return
 		else
@@ -246,7 +246,7 @@ for reference:
 
 	proc/explode()
 
-		visible_message(SPAN("danger", "[src] blows apart!"))
+		visible_message("<span class='danger'>[src] blows apart!</span>")
 		var/turf/Tsec = get_turf(src)
 		new /obj/item/stack/rods(Tsec)
 
@@ -269,7 +269,7 @@ for reference:
 		var/datum/effect/effect/system/spark_spread/s = new /datum/effect/effect/system/spark_spread
 		s.set_up(2, 1, src)
 		s.start()
-		visible_message(SPAN("warning", "BZZzZZzZZzZT"))
+		visible_message("<span class='warning'>BZZzZZzZZzZT</span>")
 		return 1
 	else if (src.emagged == 1)
 		playsound(src.loc, 'sound/effects/computer_emag.ogg', 25)
@@ -278,5 +278,5 @@ for reference:
 		var/datum/effect/effect/system/spark_spread/s = new /datum/effect/effect/system/spark_spread
 		s.set_up(2, 1, src)
 		s.start()
-		visible_message(SPAN("warning", "BZZzZZzZZzZT"))
+		visible_message("<span class='warning'>BZZzZZzZZzZT</span>")
 		return 1

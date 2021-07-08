@@ -225,7 +225,7 @@
 		message = "<span class='notice'>You begin constructing \a [initial(work.name)].</span>"
 	else
 		message = "<span class='notice'>You begin construction.</span>"
-	user.visible_message(SPAN("notice", "\The [user] uses \a [rcd] to construct something."), message)
+	user.visible_message("<span class='notice'>\The [user] uses \a [rcd] to construct something.</span>", message)
 
 /*
 	Airlock construction
@@ -269,7 +269,7 @@
 	name = "Deconstruction"
 
 /decl/hierarchy/rcd_mode/deconstruction/work_message(atom/target, mob/user, rcd)
-	user.visible_message(SPAN("warning", "\The [user] is using \a [rcd] to deconstruct \the [target]!"), SPAN("warning", "You are deconstructing \the [target]!"))
+	user.visible_message("<span class='warning'>\The [user] is using \a [rcd] to deconstruct \the [target]!</span>", "<span class='warning'>You are deconstructing \the [target]!</span>")
 
 /decl/hierarchy/rcd_mode/deconstruction/airlock
 	cost = 10

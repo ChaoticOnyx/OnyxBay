@@ -48,21 +48,21 @@
 		user.setClickCooldown(DEFAULT_ATTACK_COOLDOWN)
 		playsound(src.loc, 'sound/items/Ratchet.ogg', 100, 1)
 		if(anchored)
-			user.visible_message(SPAN("notice", "[user] is unsecuring \the [src]..."),
+			user.visible_message(SPAN("notice", "[user] is unsecuring \the [src]..."), \
 					   	         SPAN("notice", "Now unsecuring \the [src]..."))
 		else
-			user.visible_message(SPAN("notice", "[user] is securing \the [src]..."),
+			user.visible_message(SPAN("notice", "[user] is securing \the [src]..."), \
 					   	         SPAN("notice", "Now securing \the [src]..."))
 		if(!do_after(user, 10, src))
 			return
 		anchored = !anchored
 		if(anchored)
-			user.visible_message(SPAN("notice", "[user] secured \the [src]!"),
+			user.visible_message(SPAN("notice", "[user] secured \the [src]!"), \
 								 SPAN("notice", "You secured \the [src]!"))
 			generator.loc = src.loc
 			generator.connect_to_network()
 		else
-			user.visible_message(SPAN("notice", "[user] unsecured \the [src]!"),
+			user.visible_message(SPAN("notice", "[user] unsecured \the [src]!"), \
 								 SPAN("notice", "You unsecured \the [src]!"))
 			generator.disconnect_from_network()
 			generator.loc = null

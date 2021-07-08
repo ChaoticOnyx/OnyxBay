@@ -51,11 +51,11 @@ REAGENT SCANNER
 	var/data[0]
 
 	if ((MUTATION_CLUMSY in user.mutations) && prob(60))
-		user.visible_message(SPAN("notice", "\The [user] runs \the [src] over the floor."))
+		user.visible_message("<span class='notice'>\The [user] runs \the [src] over the floor.</span>")
 		data["p_name"] = "<span class='black'><b>Scan results for the floor:</b><br></span>"
 		data["brain"] = "<span class='black'>Overall Status: Healthy</span>"
 	else
-		user.visible_message(SPAN("notice", "\The [user] runs \the [src] over \the [target]."))
+		user.visible_message("<span class='notice'>\The [user] runs \the [src] over \the [target].</span>")
 		var/list/scan_data = medical_scan_results(target, mode, 1)
 		for(var/i = 1,i <= scan_data.len,i++)
 			scan_data[i] = replacetext(scan_data[i],"'notice'","'black'")
@@ -460,7 +460,7 @@ REAGENT SCANNER
 	if (last_target && dat)
 		var/obj/item/weapon/paper/P = new /obj/item/weapon/paper/(get_turf(src))
 		P.set_content("<tt>[dat]</tt>", "Body scan report - [last_target]", TRUE)
-		src.visible_message(SPAN("notice", "[src] prints out \the scan result."))
+		src.visible_message("<span class='notice'>[src] prints out \the scan result.</span>")
 
 
 /obj/item/device/analyzer
@@ -674,7 +674,7 @@ REAGENT SCANNER
 	user.visible_message("\The [user] scans \the [target] with \the [src]")
 	if(istype(target, /mob/living/carbon/human))
 		var/mob/living/carbon/human/H = target
-		user.show_message(SPAN("notice", "Data for [H]:"))
+		user.show_message("<span class='notice'>Data for [H]:</span>")
 		user.show_message("Species:\t[H.species]")
 		user.show_message("Breathes:\t[gas_data.name[H.species.breath_type]]")
 		user.show_message("Exhales:\t[gas_data.name[H.species.exhale_type]]")
@@ -683,20 +683,20 @@ REAGENT SCANNER
 		user.show_message("Pressure comfort zone:\t[H.species.warning_low_pressure] kPa to [H.species.warning_high_pressure] kPa")
 	else if(istype(target, /mob/living/simple_animal))
 		var/mob/living/simple_animal/A = target
-		user.show_message(SPAN("notice", "Data for [A]:"))
+		user.show_message("<span class='notice'>Data for [A]:</span>")
 		user.show_message("Species:\t[initial(A.name)]")
 		user.show_message("Breathes:\t[list_gases(A.min_gas)]")
 		user.show_message("Known toxins:\t[list_gases(A.max_gas)]")
 		user.show_message("Temperature comfort zone:\t[A.minbodytemp] K to [A.maxbodytemp] K")
 	else if(istype(target, /mob/living/carbon/metroid/))
 		var/mob/living/carbon/metroid/T = target
-		user.show_message(SPAN("notice", "Metroid scan result for \the [T]:"))
+		user.show_message("<span class='notice'>Metroid scan result for \the [T]:</span>")
 		user.show_message("[T.colour] [T.is_adult ? "adult" : "baby"] metroid")
 		user.show_message("Nutrition:\t[T.nutrition]/[T.get_max_nutrition()]")
 		if(T.nutrition < T.get_starve_nutrition())
 			user.show_message("<span class='alert'>Warning:\tthe metroid is starving!</span>")
 		else if (T.nutrition < T.get_hunger_nutrition())
-			user.show_message(SPAN("warning", "Warning:\tthe metroid is hungry."))
+			user.show_message("<span class='warning'>Warning:\tthe metroid is hungry.</span>")
 		user.show_message("Electric charge strength:\t[T.powerlevel]")
 		user.show_message("Health:\t[round(T.health / T.maxHealth)]%")
 

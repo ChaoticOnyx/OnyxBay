@@ -43,7 +43,7 @@
 
 /obj/machinery/optable/attack_hand(mob/user as mob)
 	if (MUTATION_HULK in usr.mutations)
-		visible_message(SPAN("danger", "\The [usr] destroys \the [src]!"))
+		visible_message("<span class='danger'>\The [usr] destroys \the [src]!</span>")
 		src.set_density(0)
 		qdel(src)
 	return
@@ -125,7 +125,7 @@
 	if (C == user)
 		user.visible_message("[user] climbs on \the [src].","You climb on \the [src].")
 	else
-		visible_message(SPAN("notice", "\The [C] has been laid on \the [src] by [user]."))
+		visible_message("<span class='notice'>\The [C] has been laid on \the [src] by [user].</span>")
 	if (C.client)
 		C.client.perspective = EYE_PERSPECTIVE
 		C.client.eye = src

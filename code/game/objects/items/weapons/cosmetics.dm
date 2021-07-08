@@ -56,15 +56,15 @@
 				to_chat(user, "<span class='notice'>You need to wipe off the old lipstick first!</span>")
 				return
 			if(H == user)
-				user.visible_message(SPAN("notice", "[user] does their lips with \the [src]."),
+				user.visible_message("<span class='notice'>[user] does their lips with \the [src].</span>", \
 									 "<span class='notice'>You take a moment to apply \the [src]. Perfect!</span>")
 				H.lip_style = colour
 				H.update_body()
 			else
-				user.visible_message(SPAN("warning", "[user] begins to do [H]'s lips with \the [src]."),
+				user.visible_message("<span class='warning'>[user] begins to do [H]'s lips with \the [src].</span>", \
 									 "<span class='notice'>You begin to apply \the [src].</span>")
 				if(do_after(user, 20, H) && do_after(H, 20, needhand = 0, progress = 0, incapacitation_flags = INCAPACITATION_NONE))	//user needs to keep their active hand, H does not.
-					user.visible_message(SPAN("notice", "[user] does [H]'s lips with \the [src]."),
+					user.visible_message("<span class='notice'>[user] does [H]'s lips with \the [src].</span>", \
 										 "<span class='notice'>You apply \the [src].</span>")
 					H.lip_style = colour
 					H.update_body()
@@ -85,4 +85,4 @@
 	item_state = "comb"
 
 /obj/item/weapon/haircomb/attack_self(mob/user)
-	user.visible_message(SPAN("notice", "[user] uses [src] to comb their hair with incredible style and sophistication. What a [user.gender == FEMALE ? "lady" : "guy"]."))
+	user.visible_message("<span class='notice'>[user] uses [src] to comb their hair with incredible style and sophistication. What a [user.gender == FEMALE ? "lady" : "guy"].</span>")

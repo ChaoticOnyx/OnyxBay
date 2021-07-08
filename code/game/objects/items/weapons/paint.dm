@@ -16,7 +16,7 @@
 /obj/item/weapon/reagent_containers/glass/paint/afterattack(turf/simulated/target, mob/user, proximity)
 	if(!proximity) return
 	if(istype(target) && reagents.total_volume > 5)
-		user.visible_message(SPAN("warning", "\The [target] has been splashed with something by [user]!"))
+		user.visible_message("<span class='warning'>\The [target] has been splashed with something by [user]!</span>")
 		reagents.trans_to_turf(target, 5)
 	else
 		return ..()

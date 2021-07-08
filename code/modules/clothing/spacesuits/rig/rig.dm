@@ -246,13 +246,13 @@
 	sealing = TRUE
 
 	if(!seal_target && !suit_is_deployed())
-		wearer.visible_message(SPAN("danger", "[wearer]'s suit flashes an error light."), SPAN("danger", "Your suit flashes an error light. It can't function properly without being fully deployed."))
+		wearer.visible_message("<span class='danger'>[wearer]'s suit flashes an error light.</span>","<span class='danger'>Your suit flashes an error light. It can't function properly without being fully deployed.</span>")
 		failed_to_seal = 1
 
 	if(!failed_to_seal)
 
 		if(!instant)
-			wearer.visible_message("<span class='info'>[wearer]'s suit emits a quiet hum as it begins to adjust its seals."), SPAN("info", "With a quiet hum, the suit begins running checks and adjusting components.</span>")
+			wearer.visible_message("<span class='info'>[wearer]'s suit emits a quiet hum as it begins to adjust its seals.</span>","<span class='info'>With a quiet hum, the suit begins running checks and adjusting components.</span>")
 			if(seal_delay && !do_after(wearer,seal_delay, src))
 				if(wearer) to_chat(wearer, "<span class='warning'>You must remain still while the suit is adjusting the components.</span>")
 				failed_to_seal = 1
@@ -638,7 +638,7 @@
 	..()
 
 	if(seal_delay > 0 && istype(M) && M.back == src)
-		M.visible_message("<span class='info'>[M] starts putting on \the [src]..."), SPAN("info", "You start putting on \the [src]...</span>")
+		M.visible_message("<span class='info'>[M] starts putting on \the [src]...</span>", "<span class='info'>You start putting on \the [src]...</span>")
 		if(!do_after(M,seal_delay,src))
 			if(M && M.back == src)
 				if(!M.unEquip(src))
@@ -647,7 +647,7 @@
 			return
 
 	if(istype(M) && M.back == src)
-		M.visible_message("<span class='info'><b>[M] struggles into \the [src].</b>"), SPAN("info", "<b>You struggle into \the [src].</b></span>")
+		M.visible_message("<span class='info'><b>[M] struggles into \the [src].</b></span>", "<span class='info'><b>You struggle into \the [src].</b></span>")
 		wearer = M
 		wearer.wearing_rig = src
 		update_icon()

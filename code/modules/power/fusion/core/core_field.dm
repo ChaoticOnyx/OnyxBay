@@ -165,21 +165,21 @@
 	else
 		if(percent_unstable > 0.5 && prob(percent_unstable*100))
 			if(plasma_temperature < FUSION_RUPTURE_THRESHOLD)
-				visible_message(SPAN("danger", "\The [src] ripples uneasily, like a disturbed pond."))
+				visible_message("<span class='danger'>\The [src] ripples uneasily, like a disturbed pond.</span>")
 			else
 				var/flare
 				var/fuel_loss
 				var/rupture
 				if(percent_unstable < 0.7)
-					visible_message(SPAN("danger", "\The [src] ripples uneasily, like a disturbed pond."))
+					visible_message("<span class='danger'>\The [src] ripples uneasily, like a disturbed pond.</span>")
 					fuel_loss = prob(5)
 				else if(percent_unstable < 0.9)
-					visible_message(SPAN("danger", "\The [src] undulates violently, shedding plumes of plasma!"))
+					visible_message("<span class='danger'>\The [src] undulates violently, shedding plumes of plasma!</span>")
 					flare = prob(50)
 					fuel_loss = prob(20)
 					rupture = prob(5)
 				else
-					visible_message(SPAN("danger", "\The [src] is wracked by a series of horrendous distortions, buckling and twisting like a living thing!"))
+					visible_message("<span class='danger'>\The [src] is wracked by a series of horrendous distortions, buckling and twisting like a living thing!</span>")
 					flare = 1
 					fuel_loss = prob(50)
 					rupture = prob(25)
@@ -204,7 +204,7 @@
 	return
 
 /obj/effect/fusion_em_field/proc/Rupture()
-	visible_message(SPAN("danger", "\The [src] shudders like a dying animal before flaring to eye-searing brightness and rupturing!"))
+	visible_message("<span class='danger'>\The [src] shudders like a dying animal before flaring to eye-searing brightness and rupturing!</span>")
 	set_light(1, 0.1, 15, 2, "#ccccff")
 	empulse(get_turf(src), ceil(plasma_temperature/1000), ceil(plasma_temperature/300))
 	sleep(5)
@@ -295,7 +295,7 @@
 			if(skip_obstacle)
 				continue
 
-			AM.visible_message(SPAN("danger", "The field buckles visibly around \the [AM]!"))
+			AM.visible_message("<span class='danger'>The field buckles visibly around \the [AM]!</span>")
 			tick_instability += rand(30,50)
 			AM.emp_act(empsev)
 

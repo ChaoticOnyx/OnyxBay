@@ -14,17 +14,13 @@ GLOBAL_DATUM_INIT(ninjas, /datum/antagonist/ninja, new)
 	initial_spawn_target = 1
 	hard_cap = 1
 	hard_cap_round = 3
+	min_player_age = 18
 
 	id_type = /obj/item/weapon/card/id/syndicate
 
 	faction = "ninja"
 
 	station_crew_involved = FALSE
-
-/datum/antagonist/ninja/Initialize()
-	. = ..()
-	if(config.ninja_min_age)
-		min_player_age = config.ninja_min_age
 
 /datum/antagonist/ninja/attempt_random_spawn()
 	if(config.ninjas_allowed) ..()

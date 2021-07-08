@@ -111,7 +111,7 @@
 	if(!proximity)
 		return
 	if(charge == 0)
-		visible_message(SPAN("warning", "With a slight hiss, the [src] dissolves."),
+		visible_message("<span class='warning'>With a slight hiss, the [src] dissolves.</span>",
 		"<span class='notice'>You turn off your device.</span>",
 		"<span class='italics'>You hear a faint hiss.</span>")
 		playsound(src, 'sound/effects/flare.ogg', 30, 1)
@@ -143,7 +143,7 @@
 				charge--
 	playsound(src, 'sound/effects/flare.ogg', 30, 1)
 	if(charge == 0)
-		visible_message(SPAN("warning", "With a slight hiss, the [src] dissolves."),
+		visible_message("<span class='warning'>With a slight hiss, the [src] dissolves.</span>",
 		"<span class='notice'>You turn off your device.</span>",
 		"<span class='italics'>You hear a faint hiss.</span>")
 		spawn(1)
@@ -152,7 +152,7 @@
 		return
 
 /obj/item/weapon/vox_rcd/dropped(mob/user)
-	visible_message(SPAN("warning", "With a slight hiss, the [src] dissolves."),
+	visible_message("<span class='warning'>With a slight hiss, the [src] dissolves.</span>",
 	"<span class='notice'>You turn off our device.</span>",
 	"<span class='italics'>You hear a faint hiss.</span>")
 	playsound(src, 'sound/effects/flare.ogg', 30, 1)
@@ -296,7 +296,7 @@
 		if(!istype(H.head, /obj/item/clothing/head/helmet/space/vox/stealth))
 			remain_cloaked = 0
 	H.invisibility = initial(H.invisibility)
-	H.visible_message(SPAN("warning", "[H] suddenly fades in, seemingly from nowhere!"),
+	H.visible_message("<span class='warning'>[H] suddenly fades in, seemingly from nowhere!</span>",
 	"<span class='notice'>Stealth mode disabled.</span>")
 	cloak = FALSE
 

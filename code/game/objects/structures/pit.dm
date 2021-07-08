@@ -10,9 +10,9 @@
 
 /obj/structure/pit/attackby(obj/item/W, mob/user)
 	if( istype(W,/obj/item/weapon/shovel) )
-		visible_message(SPAN("notice", "\The [user] starts [open ? "filling" : "digging open"] \the [src]"))
+		visible_message("<span class='notice'>\The [user] starts [open ? "filling" : "digging open"] \the [src]</span>")
 		if( do_after(user, 50) )
-			visible_message(SPAN("notice", "\The [user] [open ? "fills" : "digs open"] \the [src]!"))
+			visible_message("<span class='notice'>\The [user] [open ? "fills" : "digs open"] \the [src]!</span>")
 			if(open)
 				close(user)
 			else
@@ -24,9 +24,9 @@
 		if(locate(/obj/structure/gravemarker) in src.loc)
 			to_chat(user, "<span class='notice'>There's already a grave marker here.</span>")
 		else
-			visible_message(SPAN("notice", "\The [user] starts making a grave marker on top of \the [src]"))
+			visible_message("<span class='notice'>\The [user] starts making a grave marker on top of \the [src]</span>")
 			if( do_after(user, 50) )
-				visible_message(SPAN("notice", "\The [user] finishes the grave marker"))
+				visible_message("<span class='notice'>\The [user] finishes the grave marker</span>")
 				var/obj/item/stack/material/wood/plank = W
 				plank.use(1)
 				new /obj/structure/gravemarker(src.loc)
@@ -74,7 +74,7 @@
 
 	escapee.setClickCooldown(100)
 	to_chat(escapee, "<span class='warning'>You start digging your way out of \the [src] (this will take about [breakout_time] minute\s)</span>")
-	visible_message(SPAN("danger", "Something is scratching its way out of \the [src]!"))
+	visible_message("<span class='danger'>Something is scratching its way out of \the [src]!</span>")
 
 	for(var/i in 1 to (6*breakout_time * 2)) //minutes * 6 * 5seconds * 2
 		playsound(src.loc, 'sound/weapons/bite.ogg', 100, 1)
@@ -89,7 +89,7 @@
 			to_chat(escapee, "<span class='warning'>Halfway there...</span>")
 
 	to_chat(escapee, "<span class='warning'>You successfuly dig yourself out!</span>")
-	visible_message(SPAN("danger", "\the [escapee] emerges from \the [src]!"))
+	visible_message("<span class='danger'>\the [escapee] emerges from \the [src]!</span>")
 	playsound(src.loc, 'sound/effects/squelch1.ogg', 100, 1)
 	open()
 

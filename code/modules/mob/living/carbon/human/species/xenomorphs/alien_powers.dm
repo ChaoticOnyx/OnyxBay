@@ -125,7 +125,7 @@
 		return
 
 	if(check_alien_ability(500))
-		visible_message("<span class='alium'><B>[src] begins to twist and contort!</B>"), SPAN("alium", "I begin to evolve!</span>")
+		visible_message("<span class='alium'><B>[src] begins to twist and contort!</B></span>", "<span class='alium'>I begin to evolve!</span>")
 		set_species(SPECIES_XENO_QUEEN)
 
 	return
@@ -175,7 +175,7 @@
 		if(!check_alien_ability(25, BP_ACID, FALSE, TRUE))
 			return
 		last_spit = world.time
-		visible_message(SPAN("warning", "[src] spits [spit_name] at \the [T]!"), SPAN("alium", "You spit [spit_name] at \the [T]."))
+		visible_message("<span class='warning'>[src] spits [spit_name] at \the [T]!</span>", "<span class='alium'>You spit [spit_name] at \the [T].</span>")
 		var/obj/item/projectile/P = new spit_projectile(get_turf(src))
 		P.launch(T, get_organ_target())
 		playsound(loc, 'sound/weapons/pierce.ogg', 25, 0)

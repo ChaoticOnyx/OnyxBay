@@ -69,7 +69,7 @@
 
 	var/turf/T = get_turf_or_move(src.loc)
 	for (var/mob/M in viewers(T))
-		M.show_message(SPAN("notice", "The positronic brain buzzes quietly, and the golden lights fade away. Perhaps you could try again?"))
+		M.show_message("<span class='notice'>The positronic brain buzzes quietly, and the golden lights fade away. Perhaps you could try again?</span>")
 
 /obj/item/organ/internal/posibrain/attack_ghost(mob/observer/ghost/user)
 	if(!searching || (src.brainmob && src.brainmob.key))

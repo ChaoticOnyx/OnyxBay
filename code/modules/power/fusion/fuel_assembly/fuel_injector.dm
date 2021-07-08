@@ -53,9 +53,9 @@ var/list/fuel_injectors = list()
 
 		if(cur_assembly)
 			cur_assembly.forceMove(get_turf(src))
-			visible_message(SPAN("notice", "\The [user] swaps \the [src]'s [cur_assembly] for \a [W]."))
+			visible_message("<span class='notice'>\The [user] swaps \the [src]'s [cur_assembly] for \a [W].</span>")
 		else
-			visible_message(SPAN("notice", "\The [user] inserts \a [W] into \the [src]."))
+			visible_message("<span class='notice'>\The [user] inserts \a [W] into \the [src].</span>")
 
 		user.drop_from_inventory(W)
 		W.forceMove(src)
@@ -90,7 +90,7 @@ var/list/fuel_injectors = list()
 	if(cur_assembly)
 		cur_assembly.forceMove(get_turf(src))
 		user.put_in_hands(cur_assembly)
-		visible_message(SPAN("notice", "\The [user] removes \the [cur_assembly] from \the [src]."))
+		visible_message("<span class='notice'>\The [user] removes \the [cur_assembly] from \the [src].</span>")
 		cur_assembly = null
 		return
 	else

@@ -103,7 +103,7 @@
 				if(health > maxHealth)
 					health = maxHealth
 				add_fingerprint(user)
-				src.visible_message(SPAN("notice", "\The [user] has spot-welded some of the damage to \the [src]!"))
+				src.visible_message("<span class='notice'>\The [user] has spot-welded some of the damage to \the [src]!</span>")
 			else
 				to_chat(user, "<span class='warning'>\The [src] is undamaged!</span>")
 		else
@@ -154,7 +154,7 @@
 		src.SetName("spider-bot ([M.brainmob.name])")
 
 /mob/living/simple_animal/spiderbot/proc/explode() //When emagged.
-	src.visible_message(SPAN("danger", "\The [src] makes an odd warbling noise, fizzles, and explodes!"))
+	src.visible_message("<span class='danger'>\The [src] makes an odd warbling noise, fizzles, and explodes!</span>")
 	explosion(get_turf(loc), -1, -1, 3, 5)
 	eject_brain()
 	death()
@@ -226,7 +226,7 @@
 		return 0
 
 	if(istype(held_item, /obj/item/weapon/grenade))
-		visible_message(SPAN("danger", "\The [src] launches \the [held_item]!"),
+		visible_message("<span class='danger'>\The [src] launches \the [held_item]!</span>", \
 			"<span class='danger'>You launch \the [held_item]!</span>", \
 			"You hear a skittering noise and a thump!")
 		var/obj/item/weapon/grenade/G = held_item
@@ -235,7 +235,7 @@
 		held_item = null
 		return 1
 
-	visible_message(SPAN("notice", "\The [src] drops \the [held_item]."),
+	visible_message("<span class='notice'>\The [src] drops \the [held_item].</span>", \
 		"<span class='notice'>You drop \the [held_item].</span>", \
 		"You hear a skittering noise and a soft thump.")
 
@@ -267,7 +267,7 @@
 			if(selection == I)
 				held_item = selection
 				selection.loc = src
-				visible_message(SPAN("notice", "\The [src] scoops up \the [held_item]."),
+				visible_message("<span class='notice'>\The [src] scoops up \the [held_item].</span>", \
 					"<span class='notice'>You grab \the [held_item].</span>", \
 					"You hear a skittering noise and a clink.")
 				return held_item

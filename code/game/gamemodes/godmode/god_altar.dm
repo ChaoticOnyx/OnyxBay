@@ -22,7 +22,7 @@
 		if(G.force_danger())
 			G.affecting.forceMove(get_turf(src))
 			G.affecting.Weaken(1)
-			user.visible_message(SPAN("warning", "\The [user] throws \the [G.affecting] onto \the [src]!"))
+			user.visible_message("<span class='warning'>\The [user] throws \the [G.affecting] onto \the [src]!</span>")
 			user.drop_from_inventory(G)
 	else ..()
 
@@ -82,7 +82,7 @@
 			return TOPIC_HANDLED
 
 		M.last_special = world.time + 10 SECONDS
-		M.visible_message(SPAN("warning", "\The [M] writhes on top of \the [src]!"), SPAN("notice", "You struggle against the intruding thoughts, keeping them at bay!"))
+		M.visible_message("<span class='warning'>\The [M] writhes on top of \the [src]!</span>", "<span class='notice'>You struggle against the intruding thoughts, keeping them at bay!</span>")
 		to_chat(linked_god, "<span class='warning'>\The [M] slows its conversion through willpower!</span>")
 		cycles_before_converted++
 		if(prob(50))

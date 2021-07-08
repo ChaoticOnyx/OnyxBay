@@ -148,7 +148,7 @@
 		to_chat(usr, "<span class='notice'>There's no tape!</span>")
 		return
 	if(mytape.ruined || emagged)
-		audible_message(SPAN("warning", "The tape recorder makes a scratchy noise."))
+		audible_message("<span class='warning'>The tape recorder makes a scratchy noise.</span>")
 		return
 	if(recording)
 		to_chat(usr, "<span class='notice'>You're already recording!</span>")
@@ -218,7 +218,7 @@
 	if(usr.incapacitated())
 		return
 	if(emagged || mytape.ruined)
-		audible_message(SPAN("warning", "The tape recorder makes a scratchy noise."))
+		audible_message("<span class='warning'>The tape recorder makes a scratchy noise.</span>")
 		return
 	if(recording || playing)
 		to_chat(usr, "<span class='notice'>You can't wipe the tape while playing or recording!</span>")
@@ -243,7 +243,7 @@
 		to_chat(usr, "<span class='notice'>There's no tape!</span>")
 		return
 	if(mytape.ruined)
-		audible_message(SPAN("warning", "The tape recorder makes a scratchy noise."))
+		audible_message("<span class='warning'>The tape recorder makes a scratchy noise.</span>")
 		return
 	if(recording)
 		to_chat(usr, "<span class='notice'>You can't playback when recording!</span>")
@@ -317,7 +317,7 @@
 		to_chat(usr, "<span class='notice'>There's no tape!</span>")
 		return
 	if(mytape.ruined || emagged)
-		audible_message(SPAN("warning", "The tape recorder makes a scratchy noise."))
+		audible_message("<span class='warning'>The tape recorder makes a scratchy noise.</span>")
 		return
 	if(!canprint)
 		to_chat(usr, "<span class='notice'>The recorder can't print that fast!</span>")

@@ -24,7 +24,7 @@
 	. = ..()
 	if(.)
 		if(rigged)
-			visible_message(SPAN_DANGER("There are wires attached to the lid of [src]..."))
+			visible_message("<span class='danger'>There are wires attached to the lid of [src]...</span>")
 			for(var/obj/item/device/assembly_holder/H in src)
 				H.process_activation(usr)
 			for(var/obj/item/device/assembly/A in src)
@@ -40,7 +40,7 @@
 			devices += A
 		. += "\nThere are some wires attached to the lid, connected to [english_list(devices)]."
 
-/obj/structure/closet/crate/attackby(obj/item/weapon/W, mob/user)
+/obj/structure/closet/crate/attackby(obj/item/weapon/W as obj, mob/user as mob)
 	if(opened)
 		return ..()
 	else if(istype(W, /obj/item/weapon/packageWrap))
@@ -48,23 +48,23 @@
 	else if(istype(W, /obj/item/stack/cable_coil))
 		var/obj/item/stack/cable_coil/C = W
 		if(rigged)
-			to_chat(user, SPAN_NOTICE("[src] is already rigged!"))
+			to_chat(user, "<span class='notice'>[src] is already rigged!</span>")
 			return
 		if (C.use(1))
-			to_chat(user, SPAN_NOTICE("You rig [src]."))
-			rigged = TRUE
+			to_chat(user, "<span class='notice'>You rig [src].</span>")
+			rigged = 1
 			return
 	else if(istype(W, /obj/item/device/assembly_holder) || istype(W, /obj/item/device/assembly))
 		if(rigged)
-			to_chat(user, SPAN_NOTICE("You attach [W] to [src]."))
+			to_chat(user, "<span class='notice'>You attach [W] to [src].</span>")
 			user.drop_item()
 			W.forceMove(src)
 			return
 	else if(isWirecutter(W))
 		if(rigged)
-			to_chat(user, SPAN_NOTICE("You cut away the wiring."))
+			to_chat(user, "<span class='notice'>You cut away the wiring.</span>")
 			playsound(loc, 'sound/items/Wirecutter.ogg', 100, 1)
-			rigged = FALSE
+			rigged = 0
 			return
 	else
 		return ..()
@@ -104,11 +104,10 @@
 	icon_opened = "plasticcrateopen"
 	icon_closed = "plasticcrate"
 	points_per_crate = 1
-	material = /obj/item/stack/material/plastic
 
 /obj/structure/closet/crate/handmade
 	name = "handmade crate"
-	desc = "Another handmade by a young assistant. Crude crate, now it`s more steel than plasteel."
+	desc = "Another handmade by a young assistant. How cute!"
 	icon_state = "handmadecrate"
 	icon_opened = "handmadecrateopen"
 	icon_closed = "handmadecrate"

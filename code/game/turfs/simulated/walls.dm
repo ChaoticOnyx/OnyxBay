@@ -331,7 +331,7 @@
 		return
 	F.burn_tile()
 	F.icon_state = "wall_thermite"
-	visible_message(SPAN("danger", "\The [src] spontaneously combusts!.") //!!OH SHIT!!)
+	visible_message("<span class='danger'>\The [src] spontaneously combusts!.</span>") //!!OH SHIT!!
 	return
 
 /turf/simulated/wall/proc/take_damage(dam)

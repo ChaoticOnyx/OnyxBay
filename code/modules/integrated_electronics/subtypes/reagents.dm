@@ -135,7 +135,7 @@
 		return
 	var/atom/movable/acting_object = get_object()
 	log_admin("[key_name(L)] was successfully injected with " + reagents.get_reagents() + " by \the [acting_object]")
-	L.visible_message(SPAN("warning", "\The [acting_object] injects [L] with its needle!"),
+	L.visible_message("<span class='warning'>\The [acting_object] injects [L] with its needle!</span>", \
 					"<span class='warning'>\The [acting_object] injects you with its needle!</span>")
 	reagents.trans_to_mob(L, transfer_amount, CHEM_BLOOD)
 	activate_pin(2)
@@ -148,7 +148,8 @@
 		return
 	var/atom/movable/acting_object = get_object()
 
-	C.visible_message(SPAN("warning", "\The [acting_object] draws blood from \the [C]"), SPAN("warning", "\The [acting_object] draws blood from you."))
+	C.visible_message("<span class='warning'>\The [acting_object] draws blood from \the [C]</span>",
+					"<span class='warning'>\The [acting_object] draws blood from you.</span>"
 					)
 	C.take_blood(src, amount)
 	activate_pin(2)
@@ -183,7 +184,7 @@
 			var/injection_status = L.can_inject(null, BP_CHEST)
 			// admin logging stuff
 			log_admin("[key_name(L)] is getting injected with " + reagents.get_reagents() + " by \the [acting_object]")
-			L.visible_message(SPAN("danger", "[acting_object] is trying to inject [L]!"),
+			L.visible_message(SPAN("danger", "[acting_object] is trying to inject [L]!"), \
 								SPAN("danger", "[acting_object] is trying to inject you!"))
 			busy = TRUE
 			addtimer(CALLBACK(src, .proc/inject_after, weakref(L)), injection_status * 3 SECONDS)
@@ -210,7 +211,7 @@
 			if(istype(C, /mob/living/carbon/metroid) || !C.dna || !injection_status)
 				activate_pin(3)
 				return
-			C.visible_message(SPAN("danger", "[acting_object] takes a blood sample from [C]!"),
+			C.visible_message(SPAN("danger", "[acting_object] takes a blood sample from [C]!"), \
 			SPAN("danger", "[acting_object] takes a blood sample from you!"))
 			busy = TRUE
 			addtimer(CALLBACK(src, .proc/draw_after, weakref(C), tramount), injection_status * 3 SECONDS)

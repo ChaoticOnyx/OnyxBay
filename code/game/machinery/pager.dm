@@ -53,7 +53,7 @@
 		return
 	if(!acknowledged && href_list["ack"])
 		playsound(src, 'sound/machines/ping.ogg', 60)
-		visible_message(SPAN("notice", "Page acknowledged."))
+		visible_message("<span class='notice'>Page acknowledged.</span>")
 		acknowledged = 1
 		var/obj/machinery/message_server/MS = get_message_server(z)
 		if(!MS)

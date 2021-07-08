@@ -398,7 +398,7 @@
 	else
 		M.apply_effect(4, PAIN, 0)
 		if(prob(5))
-			M.visible_message(SPAN("warning", "[M] [pick("dry heaves!","coughs!","splutters!")]"), SPAN("danger", "You feel like your insides are burning!"))
+			M.visible_message("<span class='warning'>[M] [pick("dry heaves!","coughs!","splutters!")]</span>", "<span class='danger'>You feel like your insides are burning!</span>")
 	if(istype(M, /mob/living/carbon/metroid))
 		M.bodytemperature += rand(15, 30)
 	holder.remove_reagent(/datum/reagent/frostoil, 5)

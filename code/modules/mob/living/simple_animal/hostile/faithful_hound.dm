@@ -58,12 +58,12 @@
 			if(1)
 				src.audible_message("\The [src] growls.")
 			if(2)
-				src.audible_message(SPAN("warning", "\The [src] barks threateningly!"))
+				src.audible_message("<span class='warning'>\The [src] barks threateningly!</span>")
 			if(3)
-				src.visible_message(SPAN("danger", "\The [src] snaps at the air!"))
+				src.visible_message("<span class='danger'>\The [src] snaps at the air!</span>")
 
 /mob/living/simple_animal/faithful_hound/hear_say(message, verb = "says", datum/language/language = null, alt_name = "", italics = 0, mob/speaker = null, sound/speech_sound, sound_vol)
 	if(password && findtext(message,password))
 		allowed_mobs |= speaker
 		spawn(10)
-			src.visible_message(SPAN("notice", "\The [src] nods in understanding towards \the [speaker]."))
+			src.visible_message("<span class='notice'>\The [src] nods in understanding towards \the [speaker].</span>")

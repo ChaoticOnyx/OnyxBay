@@ -67,7 +67,7 @@
 
 	last_special = world.time + 5 SECONDS
 
-	src.visible_message(SPAN("danger", "\The [src] hunkers down over \the [target], tearing into their flesh."))
+	src.visible_message("<span class='danger'>\The [src] hunkers down over \the [target], tearing into their flesh.</span>")
 	if(do_mob(src, target, 5 SECONDS))
 		to_chat(target,"<span class='danger'>\The [src] scrapes your flesh from your bones!</span>")
 		to_chat(src,"<span class='danger'>You feed hungrily off \the [target]'s flesh.</span>")

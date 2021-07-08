@@ -81,7 +81,7 @@
 		var/turf/T = get_turf(container)
 		var/list/seen = viewers(4, T)
 		for(var/mob/M in seen)
-			M.show_message(SPAN("notice", "\icon[container] [mix_message]"), 1)
+			M.show_message("<span class='notice'>\icon[container] [mix_message]</span>", 1)
 		playsound(T, reaction_sound, 80, 1)
 
 //obtains any special data that will be provided to the reaction products
@@ -862,7 +862,7 @@
 	required = /obj/item/metroid_extract/green
 
 /datum/chemical_reaction/metroid/create/on_reaction(datum/reagents/holder)
-	holder.my_atom.visible_message(SPAN("warning", "Infused with plasma, the core begins to quiver and grow, and soon a new baby metroid emerges from it!"))
+	holder.my_atom.visible_message("<span class='warning'>Infused with plasma, the core begins to quiver and grow, and soon a new baby metroid emerges from it!</span>")
 	var/mob/living/carbon/metroid/S = new /mob/living/carbon/metroid
 	S.loc = get_turf(holder.my_atom)
 	..()
@@ -1203,7 +1203,7 @@
 	..()
 	for(var/mob/living/carbon/metroid/metroid in viewers(get_turf(holder.my_atom), null))
 		metroid.rabid = 1
-		metroid.visible_message(SPAN("warning", "The [metroid] is driven into a frenzy!"))
+		metroid.visible_message("<span class='warning'>The [metroid] is driven into a frenzy!</span>")
 
 //Pink
 /datum/chemical_reaction/metroid/docility

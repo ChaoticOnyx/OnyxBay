@@ -193,7 +193,7 @@
 		if(!in_vacuum())
 			toggle()
 		if(heat > critical_heat)
-			src.visible_message(SPAN("danger", "\The [src] violently spews out sparks!"))
+			src.visible_message("<span class='danger'>\The [src] violently spews out sparks!</span>")
 			var/datum/effect/effect/system/spark_spread/s = new /datum/effect/effect/system/spark_spread
 			s.set_up(3, 1, src)
 			s.start()

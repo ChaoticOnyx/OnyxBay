@@ -48,10 +48,10 @@
 		return
 
 	if(prob(I.force * 2))
-		visible_message(SPAN("warning", "[user] smashes [src] with [I]!"))
+		visible_message("<span class='warning'>[user] smashes [src] with [I]!</span>")
 		shatter()
 	else
-		visible_message(SPAN("warning", "[user] hits [src] with [I]!"))
+		visible_message("<span class='warning'>[user] hits [src] with [I]!</span>")
 		playsound(src.loc, get_sfx("glass_hit"), 70, 1)
 	user.setClickCooldown(I.update_attack_cooldown())
 	user.do_attack_animation(src)
@@ -63,10 +63,10 @@
 		return 0
 
 	if(damage)
-		user.visible_message(SPAN("danger", "[user] smashes [src]!"))
+		user.visible_message("<span class='danger'>[user] smashes [src]!</span>")
 		shatter()
 	else
-		user.visible_message(SPAN("danger", "[user] hits [src] and bounces off!"))
+		user.visible_message("<span class='danger'>[user] hits [src] and bounces off!</span>")
 	return 1
 
 /obj/structure/mirror/Destroy()

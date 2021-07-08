@@ -67,14 +67,14 @@ var/list/solars_list = list()
 
 	if(isCrowbar(W))
 		playsound(src.loc, 'sound/machines/click.ogg', 50, 1)
-		user.visible_message(SPAN("notice", "[user] begins to take the glass off the solar panel."))
+		user.visible_message("<span class='notice'>[user] begins to take the glass off the solar panel.</span>")
 		if(do_after(user, 50,src))
 			var/obj/item/solar_assembly/S = locate() in src
 			if(S)
 				S.loc = src.loc
 				S.give_glass()
 			playsound(src.loc, 'sound/items/Deconstruct.ogg', 50, 1)
-			user.visible_message(SPAN("notice", "[user] takes the glass off the solar panel."))
+			user.visible_message("<span class='notice'>[user] takes the glass off the solar panel.</span>")
 			qdel(src)
 		return
 	else if (W)
@@ -231,13 +231,13 @@ var/list/solars_list = list()
 			pixel_x = 0
 			pixel_y = 0
 			pixel_z = 0
-			user.visible_message(SPAN("notice", "[user] wrenches the solar assembly into place."))
+			user.visible_message("<span class='notice'>[user] wrenches the solar assembly into place.</span>")
 			playsound(src.loc, 'sound/items/Ratchet.ogg', 75, 1)
 			return 1
 	else
 		if(isWrench(W))
 			anchored = 0
-			user.visible_message(SPAN("notice", "[user] unwrenches the solar assembly from it's place."))
+			user.visible_message("<span class='notice'>[user] unwrenches the solar assembly from it's place.</span>")
 			playsound(src.loc, 'sound/items/Ratchet.ogg', 75, 1)
 			return 1
 
@@ -246,7 +246,7 @@ var/list/solars_list = list()
 			if(S.use(2))
 				glass_type = W.type
 				playsound(src.loc, 'sound/machines/click.ogg', 50, 1)
-				user.visible_message(SPAN("notice", "[user] places the glass on the solar assembly."))
+				user.visible_message("<span class='notice'>[user] places the glass on the solar assembly.</span>")
 				if(tracker)
 					new /obj/machinery/power/tracker(get_turf(src), src)
 				else
@@ -261,13 +261,13 @@ var/list/solars_list = list()
 			tracker = 1
 			user.drop_item()
 			qdel(W)
-			user.visible_message(SPAN("notice", "[user] inserts the electronics into the solar assembly."))
+			user.visible_message("<span class='notice'>[user] inserts the electronics into the solar assembly.</span>")
 			return 1
 	else
 		if(isCrowbar(W))
 			new /obj/item/weapon/tracker_electronics(src.loc)
 			tracker = 0
-			user.visible_message(SPAN("notice", "[user] takes out the electronics from the solar assembly."))
+			user.visible_message("<span class='notice'>[user] takes out the electronics from the solar assembly.</span>")
 			return 1
 	..()
 

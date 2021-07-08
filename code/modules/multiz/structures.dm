@@ -87,11 +87,11 @@
 
 	var/direction = target_ladder == target_up ? "up" : "down"
 
-	user.visible_message(SPAN("notice", "\The [user] begins climbing [direction] \the [src]!"),
+	user.visible_message("<span class='notice'>\The [user] begins climbing [direction] \the [src]!</span>",
 	"You begin climbing [direction] \the [src]!",
 	"You hear the grunting and clanging of a metal ladder being used.")
 
-	target_ladder.audible_message(SPAN("notice", "You hear something coming [direction] \the [src]"))
+	target_ladder.audible_message("<span class='notice'>You hear something coming [direction] \the [src]</span>")
 
 	var/time = dragging ? drag_time : climb_time
 

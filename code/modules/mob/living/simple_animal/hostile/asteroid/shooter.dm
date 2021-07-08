@@ -115,7 +115,7 @@
 		stance = HOSTILE_STANCE_ATTACK
 		if(isliving(target_mob))
 			var/mob/living/L = target_mob
-			visible_message(SPAN("danger", "The [src.name]'s evil gaze chills [L.name] to the bone!"))
+			visible_message("<span class='danger'>The [src.name]'s evil gaze chills [L.name] to the bone!</span>")
 	return
 
 /mob/living/simple_animal/hostile/asteroid/shooter/beholder/death(gibbed, deathmessage, show_dead_message)
@@ -160,6 +160,6 @@
 			switch(get_dist(M, location))
 				if(0 to 5)
 					M.flash_eyes()
-		src.visible_message(SPAN("warning", "\The [src] disappears in a bright flash!"))
+		src.visible_message("<span class='warning'>\The [src] disappears in a bright flash!</span>")
 		qdel(src)
 		return

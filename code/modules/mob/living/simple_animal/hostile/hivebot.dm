@@ -68,7 +68,7 @@
 	var/datum/effect/effect/system/smoke_spread/smoke = new /datum/effect/effect/system/smoke_spread()
 	smoke.set_up(5, 0, src.loc)
 	smoke.start()
-	visible_message(SPAN("danger", "\The [src] warps in!"))
+	visible_message("<span class='danger'>\The [src] warps in!</span>")
 	playsound(src.loc, 'sound/effects/EMPulse.ogg', 25, 1)
 
 /mob/living/simple_animal/hostile/hivebot/tele/proc/warpbots()
@@ -83,7 +83,7 @@
 /mob/living/simple_animal/hostile/hivebot/tele/FindTarget()
 	if(..() && !spawn_time)
 		spawn_time = world.time + spawn_delay
-		visible_message(SPAN("danger", "\The [src] turns on!"))
+		visible_message("<span class='danger'>\The [src] turns on!</span>")
 		icon_state = "def_radar"
 	return null
 

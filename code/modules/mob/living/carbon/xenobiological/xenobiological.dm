@@ -206,11 +206,11 @@
 	if(Victim)
 		if(Victim == M)
 			if(prob(60))
-				visible_message(SPAN("warning", "\The [M] attempts to wrestle \the [src] off!"))
+				visible_message("<span class='warning'>\The [M] attempts to wrestle \the [src] off!</span>")
 				playsound(loc, 'sound/weapons/punchmiss.ogg', 25, 1, -1)
 
 			else
-				visible_message(SPAN("warning", "\The [M] manages to wrestle \the [src] off!"))
+				visible_message("<span class='warning'>\The [M] manages to wrestle \the [src] off!</span>")
 				playsound(loc, 'sound/weapons/thudswoosh.ogg', 50, 1, -1)
 
 				confused = max(confused, 2)
@@ -221,11 +221,11 @@
 
 		else
 			if(prob(30))
-				visible_message(SPAN("warning", "\The [M] attempts to wrestle \the [src] off \the [Victim]!"))
+				visible_message("<span class='warning'>\The [M] attempts to wrestle \the [src] off \the [Victim]!</span>")
 				playsound(loc, 'sound/weapons/punchmiss.ogg', 25, 1, -1)
 
 			else
-				visible_message(SPAN("warning", "\The [M] manages to wrestle \the [src] off \the [Victim]!"))
+				visible_message("<span class='warning'>\The [M] manages to wrestle \the [src] off \the [Victim]!</span>")
 				playsound(loc, 'sound/weapons/thudswoosh.ogg', 50, 1, -1)
 
 				confused = max(confused, 2)
@@ -241,7 +241,7 @@
 
 		if (I_DISARM)
 			var/success = prob(40)
-			visible_message(SPAN("warning", "\The [M] pushes \the [src]![success ? " \The [src] looks momentarily disoriented!" : ""]"))
+			visible_message("<span class='warning'>\The [M] pushes \the [src]![success ? " \The [src] looks momentarily disoriented!" : ""]</span>")
 			if(success)
 				confused = max(confused, 2)
 				UpdateFace()
@@ -266,14 +266,14 @@
 						step_away(src,M,15)
 
 				playsound(loc, "punch", rand(80, 100), 1, -1)
-				visible_message(SPAN("danger", "[M] has punched [src]!"),
+				visible_message("<span class='danger'>[M] has punched [src]!</span>", \
 						"<span class='danger'>[M] has punched [src]!</span>")
 
 				adjustBruteLoss(damage)
 				updatehealth()
 			else
 				playsound(loc, 'sound/weapons/punchmiss.ogg', 25, 1, -1)
-				visible_message(SPAN("danger", "[M] has attempted to punch [src]!"))
+				visible_message("<span class='danger'>[M] has attempted to punch [src]!</span>")
 	return
 
 /mob/living/carbon/metroid/attackby(obj/item/W, mob/user)

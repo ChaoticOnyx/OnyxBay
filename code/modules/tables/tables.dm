@@ -55,7 +55,7 @@
 			amount *= TABLE_BRITTLE_MATERIAL_MULTIPLIER
 	health -= amount
 	if(health <= 0)
-		visible_message(SPAN("warning", "\The [src] breaks down!"))
+		visible_message("<span class='warning'>\The [src] breaks down!</span>")
 		if(atom_flags & ATOM_FLAG_CLIMBABLE)
 			object_shaken()
 		throw_contents_around()
@@ -110,7 +110,7 @@
 		return 1
 
 	if(carpeted && isCrowbar(W))
-		user.visible_message(SPAN("notice", "\The [user] removes the carpet from \the [src]."),
+		user.visible_message("<span class='notice'>\The [user] removes the carpet from \the [src].</span>",
 		                              "<span class='notice'>You remove the carpet from \the [src].</span>")
 		new /obj/item/stack/tile/carpet(loc)
 		carpeted = 0
@@ -120,7 +120,7 @@
 	if(!carpeted && material && istype(W, /obj/item/stack/tile/carpet))
 		var/obj/item/stack/tile/carpet/C = W
 		if(C.use(1))
-			user.visible_message(SPAN("notice", "\The [user] adds \the [C] to \the [src]."),
+			user.visible_message("<span class='notice'>\The [user] adds \the [C] to \the [src].</span>",
 			                              "<span class='notice'>You add \the [C] to \the [src].</span>")
 			carpeted = 1
 			update_icon()
@@ -149,7 +149,7 @@
 			playsound(src.loc, 'sound/items/Welder.ogg', 50, 1)
 			if(!do_after(user, 20, src) || !F.remove_fuel(1, user))
 				return
-			user.visible_message(SPAN("notice", "\The [user] repairs some damage to \the [src]."),
+			user.visible_message("<span class='notice'>\The [user] repairs some damage to \the [src].</span>",
 			                              "<span class='notice'>You repair some damage to \the [src].</span>")
 			health = max(health+(maxhealth/5), maxhealth) // 20% repair per application
 			return 1
@@ -219,7 +219,7 @@
 	if(!do_after(user, 20, src) || !S.use(1))
 		manipulating = 0
 		return null
-	user.visible_message(SPAN("notice", "\The [user] [verb]es \the [src] with [M.display_name]."), SPAN("notice", "You finish [verb]ing \the [src]."))
+	user.visible_message("<span class='notice'>\The [user] [verb]es \the [src] with [M.display_name].</span>", "<span class='notice'>You finish [verb]ing \the [src].</span>")
 	manipulating = 0
 	return M
 
@@ -231,14 +231,14 @@
 
 	if(manipulating) return M
 	manipulating = 1
-	user.visible_message(SPAN("notice", "\The [user] begins removing the [type_holding] holding \the [src]'s [M.display_name] [what] in place."),
+	user.visible_message("<span class='notice'>\The [user] begins removing the [type_holding] holding \the [src]'s [M.display_name] [what] in place.</span>",
 	                              "<span class='notice'>You begin removing the [type_holding] holding \the [src]'s [M.display_name] [what] in place.</span>")
 	if(sound)
 		playsound(src.loc, sound, 50, 1)
 	if(!do_after(user, 40, src))
 		manipulating = 0
 		return M
-	user.visible_message(SPAN("notice", "\The [user] removes the [M.display_name] [what] from \the [src]."),
+	user.visible_message("<span class='notice'>\The [user] removes the [M.display_name] [what] from \the [src].</span>",
 	                              "<span class='notice'>You remove the [M.display_name] [what] from \the [src].</span>")
 	new M.stack_type(src.loc)
 	manipulating = 0
@@ -253,13 +253,13 @@
 /obj/structure/table/proc/dismantle(obj/item/weapon/wrench/W, mob/user)
 	if(manipulating) return
 	manipulating = 1
-	user.visible_message(SPAN("notice", "\The [user] begins dismantling \the [src]."),
+	user.visible_message("<span class='notice'>\The [user] begins dismantling \the [src].</span>",
 	                              "<span class='notice'>You begin dismantling \the [src].</span>")
 	playsound(src.loc, 'sound/items/Ratchet.ogg', 50, 1)
 	if(!do_after(user, 20, src))
 		manipulating = 0
 		return
-	user.visible_message(SPAN("notice", "\The [user] dismantles \the [src]."),
+	user.visible_message("<span class='notice'>\The [user] dismantles \the [src].</span>",
 	                              "<span class='notice'>You dismantle \the [src].</span>")
 	new /obj/item/stack/material/steel(src.loc)
 	qdel(src)

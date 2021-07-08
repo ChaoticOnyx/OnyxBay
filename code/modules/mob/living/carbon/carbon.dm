@@ -51,7 +51,7 @@
 	if((user in src.stomach_contents) && istype(user))
 		if(user.last_special <= world.time)
 			user.last_special = world.time + 50
-			src.visible_message(SPAN("danger", "You hear something rumbling inside [src]'s stomach..."))
+			src.visible_message("<span class='danger'>You hear something rumbling inside [src]'s stomach...</span>")
 			var/obj/item/I = user.get_active_hand()
 			var/dmg = (I && I.force) ? rand(round(I.force / 4), I.force) : rand(1, 6) //give a chance to creatures without hands
 			if(istype(src, /mob/living/carbon/human))
@@ -62,7 +62,7 @@
 				H.updatehealth()
 			else
 				take_organ_damage(dmg)
-			user.visible_message(SPAN("danger", "[user] attacks [src]'s stomach wall!"))
+			user.visible_message("<span class='danger'>[user] attacks [src]'s stomach wall!</span>")
 			playsound(user.loc, 'sound/effects/attackblob.ogg', 50, 1)
 
 			if(prob(getBruteLoss() - 50))
@@ -78,7 +78,7 @@
 		M.loc = src.loc
 		for(var/mob/N in viewers(src, null))
 			if(N.client)
-				N.show_message(text(SPAN("danger", "[M] bursts out of [src]!"), 2))
+				N.show_message(text("<span class='danger'>[M] bursts out of [src]!</span>"), 2)
 	..()
 
 /mob/living/carbon/attack_hand(mob/M as mob)
@@ -211,20 +211,20 @@
 			var/mob/living/carbon/human/H = src
 			if(istype(H)) show_ssd = H.species.show_ssd
 			if(show_ssd && !client && !teleop)
-				M.visible_message(SPAN("notice", "[M] shakes [src] trying to wake [t_him] up!"),
+				M.visible_message(SPAN("notice", "[M] shakes [src] trying to wake [t_him] up!"), \
 								  SPAN("notice", "You shake [src], but they do not respond... Maybe they have S.S.D?"))
 			else if(lying || src.sleeping)
 				src.sleeping = max(0,src.sleeping-5)
 				if(src.sleeping == 0)
 					src.resting = 0
-				M.visible_message(SPAN("notice", "[M] shakes [src] trying to wake [t_him] up!"),
+				M.visible_message(SPAN("notice", "[M] shakes [src] trying to wake [t_him] up!"), \
 								  SPAN("notice", "You shake [src] trying to wake [t_him] up!"))
 			else
 				var/mob/living/carbon/human/hugger = M
 				if(istype(hugger))
 					hugger.species.hug(hugger,src)
 				else
-					M.visible_message(SPAN("notice", "[M] hugs [src] to make [t_him] feel better!"),
+					M.visible_message(SPAN("notice", "[M] hugs [src] to make [t_him] feel better!"), \
 									  SPAN("notice", "You hug [src] to make [t_him] feel better!"))
 				if(M.fire_stacks >= (src.fire_stacks + 3))
 					src.fire_stacks += 1

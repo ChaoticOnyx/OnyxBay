@@ -31,7 +31,7 @@
 
 /obj/machinery/floorlayer/attack_hand(mob/user as mob)
 	on=!on
-	user.visible_message(SPAN("notice", "[user] has [!on?"de":""]activated \the [src]."), SPAN("notice", "You [!on?"de":""]activate \the [src]."))
+	user.visible_message("<span class='notice'>[user] has [!on?"de":""]activated \the [src].</span>", "<span class='notice'>You [!on?"de":""]activate \the [src].</span>")
 	return
 
 /obj/machinery/floorlayer/attackby(obj/item/W as obj, mob/user as mob)
@@ -40,7 +40,7 @@
 		var/m = input("Choose work mode", "Mode") as null|anything in mode
 		mode[m] = !mode[m]
 		var/O = mode[m]
-		user.visible_message(SPAN("notice", "[usr] has set \the [src] [m] mode [!O?"off":"on"]."), SPAN("notice", "You set \the [src] [m] mode [!O?"off":"on"]."))
+		user.visible_message("<span class='notice'>[usr] has set \the [src] [m] mode [!O?"off":"on"].</span>", "<span class='notice'>You set \the [src] [m] mode [!O?"off":"on"].</span>")
 		return
 
 	if(istype(W, /obj/item/stack/tile))

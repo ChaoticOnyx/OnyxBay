@@ -219,7 +219,7 @@
 			if(M in stomach_contents)
 				stomach_contents.Remove(M)
 				M.forceMove(loc)
-		src.visible_message(SPAN("danger", "[src] hurls out the contents of their stomach!"))
+		src.visible_message("<span class='danger'>[src] hurls out the contents of their stomach!</span>")
 	return
 
 /mob/living/carbon/human/proc/psychic_whisper(mob/M as mob in oview())
@@ -287,7 +287,7 @@
 	for(var/obj/item/W in src)
 		drop_from_inventory(W)
 
-	visible_message(SPAN("warning", "\The [src] quivers slightly, then splits apart with a wet slithering noise."))
+	visible_message("<span class='warning'>\The [src] quivers slightly, then splits apart with a wet slithering noise.</span>")
 
 	if(!mind)
 		qdel(src)
@@ -357,7 +357,7 @@
 
 	if(prob(90) && src.make_grab(src, T, GRAB_NAB_SPECIAL))
 		T.Weaken(rand(1,3))
-		visible_message(SPAN("danger", "\The [src] suddenly lunges out and grabs \the [T]!"))
+		visible_message("<span class='danger'>\The [src] suddenly lunges out and grabs \the [T]!</span>")
 		LAssailant = src
 
 		src.do_attack_animation(T)
@@ -365,7 +365,7 @@
 		return 1
 
 	else
-		visible_message(SPAN("danger", "\The [src] suddenly lunges out, almost grabbing \the [T]!"))
+		visible_message("<span class='danger'>\The [src] suddenly lunges out, almost grabbing \the [T]!</span>")
 
 /mob/living/carbon/human/proc/active_camo()
 	set category = "Abilities"

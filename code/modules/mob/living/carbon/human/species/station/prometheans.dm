@@ -76,7 +76,7 @@ var/datum/species/shapeshifter/promethean/prometheans
 
 /datum/species/shapeshifter/promethean/hug(mob/living/carbon/human/H,mob/living/target)
 	var/datum/gender/G = gender_datums[target.gender]
-	H.visible_message(SPAN("notice", "\The [H] glomps [target] to make [G.him] feel better!"),
+	H.visible_message("<span class='notice'>\The [H] glomps [target] to make [G.him] feel better!</span>", \
 					"<span class='notice'>You glomps [target] to make [G.him] feel better!</span>")
 	H.apply_stored_shock_to(target)
 

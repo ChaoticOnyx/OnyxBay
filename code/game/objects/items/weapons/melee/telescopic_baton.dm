@@ -16,7 +16,7 @@
 /obj/item/weapon/melee/telebaton/attack_self(mob/user as mob)
 	on = !on
 	if(on)
-		user.visible_message(SPAN("warning", "With a flick of their wrist, [user] extends their telescopic baton."),
+		user.visible_message("<span class='warning'>With a flick of their wrist, [user] extends their telescopic baton.</span>",
 		"<span class='warning'>You extend the baton.</span>",
 		"You hear an ominous click.")
 		w_class = ITEM_SIZE_NORMAL
@@ -26,7 +26,7 @@
 		mod_handy = 1.25
 		attack_verb = list("smacked", "struck", "slapped")
 	else
-		user.visible_message(SPAN("notice", "\The [user] collapses their telescopic baton."),
+		user.visible_message("<span class='notice'>\The [user] collapses their telescopic baton.</span>",
 		"<span class='notice'>You collapse the baton.</span>",
 		"You hear a click.")
 		w_class = ITEM_SIZE_SMALL

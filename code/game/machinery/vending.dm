@@ -187,7 +187,7 @@
 /obj/machinery/vending/proc/pay(obj/item/weapon/W, mob/user)
 	if(!W)
 		return FALSE
-
+	
 	var/obj/item/weapon/card/id/I = W.GetIdCard()
 
 	if(currently_vending && vendor_account && !vendor_account.suspended)
@@ -249,14 +249,14 @@
 		if(!WT.remove_fuel(0, user))
 			to_chat(user, SPAN("notice", "You need more welding fuel to complete this task."))
 			return
-		user.visible_message(SPAN("notice", "[user] is repairing \the [src]..."),
+		user.visible_message(SPAN("notice", "[user] is repairing \the [src]..."), \
 				             SPAN("notice", "You start repairing the damage to [src]..."))
 		playsound(src, 'sound/items/Welder.ogg', 100, 1)
 		if(!do_after(user, 30, src) && WT && WT.isOn())
 			return
 		health = max_health
 		set_broken(0)
-		user.visible_message(SPAN("notice", "[user] repairs \the [src]."),
+		user.visible_message(SPAN("notice", "[user] repairs \the [src]."), \
 				             SPAN("notice", "You repair \the [src]."))
 		return
 	else if(attempt_to_stock(W, user))

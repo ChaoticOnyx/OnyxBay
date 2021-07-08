@@ -169,9 +169,9 @@
 				return
 			if(allow == INJECTION_PORT)
 				injtime *= 2
-				user.visible_message(SPAN("warning", "\The [user] begins hunting for an injection port on [target]'s suit!"))
+				user.visible_message("<span class='warning'>\The [user] begins hunting for an injection port on [target]'s suit!</span>")
 			else
-				user.visible_message(SPAN("warning", "\The [user] is trying to take a blood sample from [target]."))
+				user.visible_message("<span class='warning'>\The [user] is trying to take a blood sample from [target].</span>")
 
 			user.setClickCooldown(DEFAULT_QUICK_COOLDOWN)
 			user.do_attack_animation(target)
@@ -182,7 +182,7 @@
 			T.take_blood(src, amount)
 			to_chat(user, "<span class='notice'>You take a blood sample from [target].</span>")
 			for(var/mob/O in viewers(4, user))
-				O.show_message(SPAN("notice", "[user] takes a blood sample from [target]."), 1)
+				O.show_message("<span class='notice'>[user] takes a blood sample from [target].</span>", 1)
 
 	else //if not mob
 		if(!target.reagents.total_volume)
@@ -244,9 +244,9 @@
 			return
 		if(allow == INJECTION_PORT)
 			injtime *= 2
-			user.visible_message(SPAN("warning", "\The [user] begins hunting for an injection port on [target]'s suit!"))
+			user.visible_message("<span class='warning'>\The [user] begins hunting for an injection port on [target]'s suit!</span>")
 		else
-			user.visible_message(SPAN("warning", "\The [user] is trying to inject [target] with [visible_name]!"))
+			user.visible_message("<span class='warning'>\The [user] is trying to inject [target] with [visible_name]!</span>")
 
 		user.setClickCooldown(DEFAULT_QUICK_COOLDOWN)
 		user.do_attack_animation(trackTarget)
@@ -262,7 +262,7 @@
 	if(target != user)
 		var/contained = reagentlist()
 		admin_inject_log(user, target, src, contained, trans)
-		user.visible_message(SPAN("warning", "\the [user] injects \the [target] with [visible_name]!"), SPAN("notice", "You inject \the [target] with [trans] units of the solution. \The [src] now contains [src.reagents.total_volume] units."))
+		user.visible_message("<span class='warning'>\the [user] injects \the [target] with [visible_name]!</span>", "<span class='notice'>You inject \the [target] with [trans] units of the solution. \The [src] now contains [src.reagents.total_volume] units.</span>")
 	else
 		to_chat(user, "<span class='notice'>You inject yourself with [trans] units of the solution. \The [src] now contains [src.reagents.total_volume] units.</span>")
 
@@ -290,18 +290,18 @@
 
 		if (target != user && H.getarmor(target_zone, "melee") > 5 && prob(50))
 			for(var/mob/O in viewers(world.view, user))
-				O.show_message(text(SPAN("danger", "[user] tries to stab [target] in \the [hit_area] with [src.name], but the attack is deflected by armor!"), 1))
+				O.show_message(text("<span class='danger'>[user] tries to stab [target] in \the [hit_area] with [src.name], but the attack is deflected by armor!</span>"), 1)
 			user.remove_from_mob(src)
 			qdel(src)
 
 			admin_attack_log(user, target, "Attacked using \a [src]", "Was attacked with \a [src]", "used \a [src] to attack")
 			return
 
-		user.visible_message(SPAN("danger", "[user] stabs [target] in \the [hit_area] with [src.name]!"))
+		user.visible_message("<span class='danger'>[user] stabs [target] in \the [hit_area] with [src.name]!</span>")
 		affecting.take_external_damage(3)
 
 	else
-		user.visible_message(SPAN("danger", "[user] stabs [target] with [src.name]!"))
+		user.visible_message("<span class='danger'>[user] stabs [target] with [src.name]!</span>")
 		target.take_organ_damage(3)// 7 is the same as crowbar punch
 	user.setClickCooldown(src.update_attack_cooldown())
 	user.do_attack_animation(target)

@@ -46,11 +46,11 @@
 					if (src.auth_need - src.authorized.len > 0)
 						message_admins("[key_name_admin(user)] has authorized early shuttle launch")
 						log_game("[user.ckey] has authorized early shuttle launch")
-						to_world(text(SPAN("notice", "<b>Alert: [] authorizations needed until shuttle is launched early</b>"), src.auth_need - src.authorized.len))
+						to_world(text("<span class='notice'><b>Alert: [] authorizations needed until shuttle is launched early</b></span>", src.auth_need - src.authorized.len))
 					else
 						message_admins("[key_name_admin(user)] has launched the shuttle")
 						log_game("[user.ckey] has launched the shuttle early")
-						to_world(SPAN("notice", "<b>Alert: Shuttle launch time shortened to 10 seconds!</b>"))
+						to_world("<span class='notice'><b>Alert: Shuttle launch time shortened to 10 seconds!</b></span>")
 						evacuation_controller.set_launch_time(world.time+100)
 						//src.authorized = null
 						qdel(src.authorized)
@@ -58,10 +58,10 @@
 
 				if("Repeal")
 					src.authorized -= W:registered_name
-					to_world(text(SPAN("notice", "<b>Alert: [] authorizations needed until shuttle is launched early</b>"), src.auth_need - src.authorized.len))
+					to_world(text("<span class='notice'><b>Alert: [] authorizations needed until shuttle is launched early</b></span>", src.auth_need - src.authorized.len))
 
 				if("Abort")
-					to_world(SPAN("notice", "<b>All authorizations to shortening time for shuttle launch have been revoked!</b>"))
+					to_world("<span class='notice'><b>All authorizations to shortening time for shuttle launch have been revoked!</b></span>")
 					src.authorized.len = 0
 					src.authorized = list(  )
 
@@ -71,7 +71,7 @@
 			if(!emagged && !evacuation_controller.is_prepared() && user.get_active_hand() == W)
 				switch(choice)
 					if("Launch")
-						to_world(SPAN("notice", "<b>Alert: Shuttle launch time shortened to 10 seconds!</b>"))
+						to_world("<span class='notice'><b>Alert: Shuttle launch time shortened to 10 seconds!</b></span>")
 						evacuation_controller.set_launch_time(world.time+100)
 						emagged = 1
 					if("Cancel")

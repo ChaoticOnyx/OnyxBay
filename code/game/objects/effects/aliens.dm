@@ -213,9 +213,9 @@
 
 /obj/effect/alien/weeds/attackby(obj/item/weapon/W, mob/user)
 	if(W.attack_verb.len)
-		visible_message(SPAN("danger", "\The [src] have been [pick(W.attack_verb)] with \the [W][(user ? " by [user]." : ".")]"))
+		visible_message("<span class='danger'>\The [src] have been [pick(W.attack_verb)] with \the [W][(user ? " by [user]." : ".")]</span>")
 	else
-		visible_message(SPAN("danger", "\The [src] have been attacked with \the [W][(user ? " by [user]." : ".")]"))
+		visible_message("<span class='danger'>\The [src] have been attacked with \the [W][(user ? " by [user]." : ".")]</span>")
 
 	if(istype(W, /obj/item/weapon/weldingtool))
 		var/obj/item/weapon/weldingtool/WT = W
@@ -228,7 +228,7 @@
 			qdel(src)
 
 /obj/effect/alien/weeds/attack_generic(mob/user, damage, attack_verb)
-	visible_message(SPAN("danger", "[user] [attack_verb] the [src]!"))
+	visible_message("<span class='danger'>[user] [attack_verb] the [src]!</span>")
 	user.do_attack_animation(src)
 	if(prob(50 + damage))
 		qdel(src)

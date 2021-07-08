@@ -38,7 +38,7 @@
 
 	if(istype(I, /obj/item/device/measuring_tape))
 		var/obj/item/device/measuring_tape/P = I
-		user.visible_message(SPAN("notice", "\The [user] extends \the [P] towards \the [src]."), SPAN("notice", "You extend \the [P] towards \the [src]."))
+		user.visible_message("<span class='notice'>\The [user] extends \the [P] towards \the [src].</span>", "<span class='notice'>You extend \the [P] towards \the [src].</span>")
 		if(do_after(user, 15))
 			to_chat(user, "<span class='notice'>\The [src] has been excavated to a depth of [src.excavation_level]cm.</span>")
 		return
@@ -60,7 +60,7 @@
 
 		if(excavation_level > 200)
 			//failure
-			user.visible_message(SPAN("warning", "\The [src] suddenly crumbles away."), SPAN("warning", "\The [src] has disintegrated under your onslaught, any secrets it was holding are long gone."))
+			user.visible_message("<span class='warning'>\The [src] suddenly crumbles away.</span>", "<span class='warning'>\The [src] has disintegrated under your onslaught, any secrets it was holding are long gone.</span>")
 			qdel(src)
 			return
 
@@ -73,9 +73,9 @@
 					var/obj/machinery/artifact/X = O
 					if(X.my_effect)
 						X.my_effect.artifact_id = artifact_find.artifact_id
-				src.visible_message(SPAN("warning", "\The [src] suddenly crumbles away."))
+				src.visible_message("<span class='warning'>\The [src] suddenly crumbles away.</span>")
 			else
-				user.visible_message(SPAN("warning", "\The [src] suddenly crumbles away."), SPAN("notice", "\The [src] has been whittled away under your careful excavation, but there was nothing of interest inside."))
+				user.visible_message("<span class='warning'>\The [src] suddenly crumbles away.</span>", "<span class='notice'>\The [src] has been whittled away under your careful excavation, but there was nothing of interest inside.</span>")
 			qdel(src)
 
 /obj/structure/boulder/Bumped(AM)

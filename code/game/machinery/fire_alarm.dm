@@ -79,11 +79,11 @@
 				if(isMultitool(W))
 					src.detecting = !( src.detecting )
 					if (src.detecting)
-						user.visible_message(SPAN("notice", "\The [user] has reconnected [src]'s detecting unit!"), SPAN("notice", "You have reconnected [src]'s detecting unit."))
+						user.visible_message("<span class='notice'>\The [user] has reconnected [src]'s detecting unit!</span>", "<span class='notice'>You have reconnected [src]'s detecting unit.</span>")
 					else
-						user.visible_message(SPAN("notice", "\The [user] has disconnected [src]'s detecting unit!"), SPAN("notice", "You have disconnected [src]'s detecting unit."))
+						user.visible_message("<span class='notice'>\The [user] has disconnected [src]'s detecting unit!</span>", "<span class='notice'>You have disconnected [src]'s detecting unit.</span>")
 				else if(isWirecutter(W))
-					user.visible_message(SPAN("notice", "\The [user] has cut the wires inside \the [src]!"), SPAN("notice", "You have cut the wires inside \the [src]."))
+					user.visible_message("<span class='notice'>\The [user] has cut the wires inside \the [src]!</span>", "<span class='notice'>You have cut the wires inside \the [src].</span>")
 					new /obj/item/stack/cable_coil(get_turf(src), 5)
 					playsound(src.loc, 'sound/items/Wirecutter.ogg', 50, 1)
 					buildstage = 1

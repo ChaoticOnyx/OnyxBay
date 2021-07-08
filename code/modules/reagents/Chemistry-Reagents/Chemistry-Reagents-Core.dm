@@ -166,7 +166,7 @@
 		var/removed_heat = between(0, volume * WATER_LATENT_HEAT, -environment.get_thermal_energy_change(min_temperature))
 		environment.add_thermal_energy(-removed_heat)
 		if(prob(5))
-			T.visible_message(SPAN("warning", "The water sizzles as it lands on \the [T]!"))
+			T.visible_message("<span class='warning'>The water sizzles as it lands on \the [T]!</span>")
 
 	else if(volume >= 10 && slippery)
 		var/turf/simulated/S = T
@@ -201,7 +201,7 @@
 		if(S.Victim)
 			S.Feedstop()
 	if(M.chem_doses[type] == removed)
-		M.visible_message(SPAN("warning", "[S]'s flesh sizzles where the water touches it!"), SPAN("danger", "Your flesh burns in the water!"))
+		M.visible_message("<span class='warning'>[S]'s flesh sizzles where the water touches it!</span>", "<span class='danger'>Your flesh burns in the water!</span>")
 		M.confused = max(M.confused, 2)
 
 /datum/reagent/water/firefoam

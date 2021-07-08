@@ -25,7 +25,7 @@
 
 	proc/Gib(atom/location)
 		if(gibtypes.len != gibamounts.len || gibamounts.len != gibdirections.len)
-			log_error(SPAN("warning", "Gib list length mismatch!"))
+			log_error("<span class='warning'>Gib list length mismatch!</span>")
 			return
 
 		if(sparks)

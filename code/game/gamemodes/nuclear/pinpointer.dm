@@ -126,7 +126,7 @@
 		new_mode = "Authentication Disk Locator"
 	if(new_mode)
 		playsound(loc, 'sound/signals/ping2.ogg', 50, 0)
-		visible_message(SPAN("notice", "[new_mode] active."))
+		visible_message("<span class='notice'>[new_mode] active.</span>")
 		target = acquire_target()
 	..()
 

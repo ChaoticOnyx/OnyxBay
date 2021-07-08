@@ -61,7 +61,7 @@
 			spawn(20)
 				smashing = 0
 			return
-		user.visible_message(SPAN("warning", "\The [user] hits \the [src] with \the [I], and it breaks.[shade.client ? " You hear a terrible scream!" : ""]"), SPAN("warning", "You hit \the [src] with \the [I], and it breaks.[shade.client ? " You hear a terrible scream!" : ""], shade.client ? "You hear a scream." : null"))
+		user.visible_message("<span class='warning'>\The [user] hits \the [src] with \the [I], and it breaks.[shade.client ? " You hear a terrible scream!" : ""]</span>", "<span class='warning'>You hit \the [src] with \the [I], and it breaks.[shade.client ? " You hear a terrible scream!" : ""]</span>", shade.client ? "You hear a scream." : null)
 		set_full(SOULSTONE_CRACKED)
 
 /obj/item/device/soulstone/attack(mob/living/simple_animal/M, mob/user)

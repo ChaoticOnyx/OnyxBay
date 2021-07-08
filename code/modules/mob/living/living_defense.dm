@@ -24,9 +24,9 @@
 
 	if(fullblock >= 1 || prob(fullblock*100))
 		if(absorb_text)
-			show_message(SPAN("warning", "[absorb_text]"))
+			show_message("<span class='warning'>[absorb_text]</span>")
 		else
-			show_message(SPAN("warning", "Your armor absorbs the blow!"))
+			show_message("<span class='warning'>Your armor absorbs the blow!</span>")
 		return 100
 
 	//this makes it so that X armour blocks X% damage, when including the chance of hard block.
@@ -39,9 +39,9 @@
 	if(blocked > 20)
 		//Should we show this every single time?
 		if(soften_text)
-			show_message(SPAN("warning", "[soften_text]"))
+			show_message("<span class='warning'>[soften_text]</span>")
 		else
-			show_message(SPAN("warning", "Your armor softens the blow!"))
+			show_message("<span class='warning'>Your armor softens the blow!</span>")
 
 	return round(blocked, 1)
 
@@ -66,7 +66,7 @@
 	var/obj/item/device/assembly/signaler/signaler = get_active_hand()
 	if(istype(signaler) && signaler.deadman)
 		log_and_message_admins("has triggered a signaler deadman's switch")
-		src.visible_message(SPAN("warning", "[src] triggers their deadman's switch!"))
+		src.visible_message("<span class='warning'>[src] triggers their deadman's switch!</span>")
 		signaler.signal()
 
 	//Armor
@@ -150,7 +150,7 @@
 
 //Called when the mob is hit with an item in combat. Returns the blocked result
 /mob/living/proc/hit_with_weapon(obj/item/I, mob/living/user, effective_force, hit_zone, atype = 0)
-	visible_message(SPAN("danger", "[src] has been [I.attack_verb.len? pick(I.attack_verb) : "attacked"] with [I.name] by [user]!"))
+	visible_message("<span class='danger'>[src] has been [I.attack_verb.len? pick(I.attack_verb) : "attacked"] with [I.name] by [user]!</span>")
 
 	var/blocked = run_armor_check(hit_zone, "melee")
 	standard_weapon_hit_effects(I, user, effective_force, blocked, hit_zone)
@@ -165,7 +165,7 @@
 	return hit_with_weapon(I, user, effective_force, hit_zone)
 
 /mob/living/proc/touch_with_weapon(obj/item/I, mob/living/user, effective_force, hit_zone)
-	visible_message(SPAN("notice", "[user] touches [src] with [I.name]."))
+	visible_message("<span class='notice'>[user] touches [src] with [I.name].</span>")
 
 //returns 0 if the effects failed to apply for some reason, 1 otherwise.
 /mob/living/proc/standard_weapon_hit_effects(obj/item/I, mob/living/user, effective_force, blocked, hit_zone)
@@ -275,7 +275,7 @@
 
 //This is called when the mob is thrown into a dense turf
 /mob/living/proc/turf_collision(turf/T, speed)
-	visible_message(SPAN("danger", "[src] slams into \the [T]!"))
+	visible_message("<span class='danger'>[src] slams into \the [T]!</span>")
 	playsound(loc, 'sound/effects/bangtaper.ogg', 50, 1, -1)
 	src.take_organ_damage(speed*2.5)
 
@@ -303,7 +303,7 @@
 	adjustBruteLoss(damage)
 	admin_attack_log(user, src, "Attacked", "Was attacked", "attacked")
 
-	src.visible_message(SPAN("danger", "[user] has [attack_message] [src]!"))
+	src.visible_message("<span class='danger'>[user] has [attack_message] [src]!</span>")
 	user.do_attack_animation(src)
 	spawn(1) updatehealth()
 	return 1

@@ -50,9 +50,9 @@
 		add_fingerprint(user, 0, W)
 		src.disable = !src.disable
 		if (src.disable)
-			user.visible_message(SPAN("warning", "[user] has disconnected the [src]'s flashbulb!"), SPAN("warning", "You disconnect the [src]'s flashbulb!"))
+			user.visible_message("<span class='warning'>[user] has disconnected the [src]'s flashbulb!</span>", "<span class='warning'>You disconnect the [src]'s flashbulb!</span>")
 		if (!src.disable)
-			user.visible_message(SPAN("warning", "[user] has connected the [src]'s flashbulb!"), SPAN("warning", "You connect the [src]'s flashbulb!"))
+			user.visible_message("<span class='warning'>[user] has connected the [src]'s flashbulb!</span>", "<span class='warning'>You connect the [src]'s flashbulb!</span>")
 	else
 		..()
 
@@ -127,12 +127,12 @@
 		anchored = !anchored
 
 		if (!anchored)
-			user.show_message(text(SPAN("warning", "[src] can now be moved.")))
+			user.show_message(text("<span class='warning'>[src] can now be moved.</span>"))
 			overlays.Cut()
 			proximity_monitor.SetRange(0)
 
 		else if (src.anchored)
-			user.show_message(text(SPAN("warning", "[src] is now secured.")))
+			user.show_message(text("<span class='warning'>[src] is now secured.</span>"))
 			overlays += "[base_state]-s"
 			proximity_monitor.SetRange(range)
 

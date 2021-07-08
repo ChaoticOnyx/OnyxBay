@@ -533,7 +533,7 @@
 			updatehealth()
 			add_fingerprint(user)
 			for(var/mob/O in viewers(user, null))
-				O.show_message(text(SPAN("warning", "[user] has fixed some of the dents on [src]!"), 1))
+				O.show_message(text("<span class='warning'>[user] has fixed some of the dents on [src]!</span>"), 1)
 		else
 			to_chat(user, "Need more welding fuel!")
 			return
@@ -548,12 +548,12 @@
 			adjustFireLoss(-30)
 			updatehealth()
 			for(var/mob/O in viewers(user, null))
-				O.show_message(text(SPAN("warning", "[user] has fixed some of the burnt wires on [src]!"), 1))
+				O.show_message(text("<span class='warning'>[user] has fixed some of the burnt wires on [src]!</span>"), 1)
 
 	else if(isCrowbar(W))	// crowbar means open or close the cover - we all know what a crowbar is by now
 		if(opened)
 			if(cell)
-				user.visible_message(SPAN("notice", "\The [user] begins clasping shut \the [src]'s maintenance hatch."), SPAN("notice", "You begin closing up \the [src]."))
+				user.visible_message("<span class='notice'>\The [user] begins clasping shut \the [src]'s maintenance hatch.</span>", "<span class='notice'>You begin closing up \the [src].</span>")
 				if(do_after(user, 50, src))
 					to_chat(user, "<span class='notice'>You close \the [src]'s maintenance hatch.</span>")
 					opened = 0
@@ -565,7 +565,7 @@
 					to_chat(user, "\The [src] has no brain to remove.")
 					return
 
-				user.visible_message(SPAN("notice", "\The [user] begins ripping [mmi] from [src]."), SPAN("notice", "You jam the crowbar into the robot and begin levering [mmi]."))
+				user.visible_message("<span class='notice'>\The [user] begins ripping [mmi] from [src].</span>", "<span class='notice'>You jam the crowbar into the robot and begin levering [mmi].</span>")
 				if(do_after(user, 50, src))
 					to_chat(user, "<span class='notice'>You damage some parts of the chassis, but eventually manage to rip out [mmi]!</span>")
 					var/obj/item/robot_parts/robot_suit/C = new /obj/item/robot_parts/robot_suit(loc)
@@ -607,7 +607,7 @@
 			if(locked)
 				to_chat(user, "The cover is locked and cannot be opened.")
 			else
-				user.visible_message(SPAN("notice", "\The [user] begins prying open \the [src]'s maintenance hatch."), SPAN("notice", "You start opening \the [src]'s maintenance hatch."))
+				user.visible_message("<span class='notice'>\The [user] begins prying open \the [src]'s maintenance hatch.</span>", "<span class='notice'>You start opening \the [src]'s maintenance hatch.</span>")
 				if(do_after(user, 50, src))
 					to_chat(user, "<span class='notice'>You open \the [src]'s maintenance hatch.</span>")
 					opened = 1

@@ -163,14 +163,14 @@
 
 	else if(!status)
 		if(affecting)
-			target.visible_message(SPAN("warning", "[target] has been prodded in the [affecting.name] with [src] by [user]. Luckily it was off."))
+			target.visible_message("<span class='warning'>[target] has been prodded in the [affecting.name] with [src] by [user]. Luckily it was off.</span>")
 		else
-			target.visible_message(SPAN("warning", "[target] has been prodded with [src] by [user]. Luckily it was off."))
+			target.visible_message("<span class='warning'>[target] has been prodded with [src] by [user]. Luckily it was off.</span>")
 	else
 		if(affecting)
-			target.visible_message(SPAN("danger", "[target] has been prodded in the [affecting.name] with [src] by [user]!"))
+			target.visible_message("<span class='danger'>[target] has been prodded in the [affecting.name] with [src] by [user]!</span>")
 		else
-			target.visible_message(SPAN("danger", "[target] has been prodded with [src] by [user]!"))
+			target.visible_message("<span class='danger'>[target] has been prodded with [src] by [user]!</span>")
 		playsound(loc, 'sound/weapons/Egloves.ogg', 50, 1, -1)
 
 	//stun effects

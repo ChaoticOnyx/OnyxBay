@@ -92,7 +92,7 @@
 		I.loc = src
 		loaded_item = I
 		for(var/mob/M in viewers())
-			M.show_message(text(SPAN("notice", "[user] adds the [I] to the [src]."), 1))
+			M.show_message(text("<span class='notice'>[user] adds the [I] to the [src].</span>"), 1)
 		desc = initial(desc) + "<br>It is holding \the [loaded_item]."
 		flick("portable_analyzer_load", src)
 		icon_state = "portable_analyzer_full"
@@ -254,7 +254,7 @@
 				overlays += image("icon" = I.icon, "icon_state" = I.icon_state, "layer" = 30 + I.layer)
 				addedSomething = 1
 		if ( addedSomething )
-			user.visible_message(SPAN("notice", "\The [user] load some items onto their service tray."))
+			user.visible_message("<span class='notice'>\The [user] load some items onto their service tray.</span>")
 
 		return
 
@@ -294,9 +294,9 @@
 							sleep(rand(2,4))
 		if ( droppedSomething )
 			if ( foundtable )
-				user.visible_message(SPAN("notice", "[user] unloads their service tray."))
+				user.visible_message("<span class='notice'>[user] unloads their service tray.</span>")
 			else
-				user.visible_message(SPAN("notice", "[user] drops all the items on their tray."))
+				user.visible_message("<span class='notice'>[user] drops all the items on their tray.</span>")
 
 	return ..()
 
@@ -372,7 +372,7 @@
 	deploy_paper(get_turf(src))
 
 /obj/item/weapon/form_printer/proc/deploy_paper(turf/T)
-	T.visible_message(SPAN("notice", "\The [src.loc] dispenses a sheet of crisp white paper."))
+	T.visible_message("<span class='notice'>\The [src.loc] dispenses a sheet of crisp white paper.</span>")
 	new /obj/item/weapon/paper(T)
 
 
@@ -532,7 +532,7 @@
 			var/obj/item/R = held[length(held)]
 			held -= R
 			R.forceMove(get_turf(src))
-			R.visible_message(SPAN("danger", "[R] drops on the [get_turf(src)]!"))
+			R.visible_message("<span class='danger'>[R] drops on the [get_turf(src)]!</span>")
 			if(R && istype(R.loc,/turf))
 				R.throw_at(get_edge_target_turf(R.loc,pick(GLOB.alldirs)),rand(1,3),30)
 
@@ -566,7 +566,7 @@
 			if (istype(R, /obj/item/bodybag))
 				R.attack_self(user) // deploy it
 			inuse = 0
-			user.visible_message(SPAN("notice", "\The [user]'s \the [src] delpoys [R]."))
+			user.visible_message("<span class='notice'>\The [user]'s \the [src] delpoys [R].</span>")
 			update_icon()
 		else
 			inuse = 0
@@ -585,7 +585,7 @@
 						if (I == O)
 							return
 					inuse = 1
-					user.visible_message(SPAN("notice", "\The [user] started picking up [O]."))
+					user.visible_message("<span class='notice'>\The [user] started picking up [O].</span>")
 					if (pickup_sound)
 						playsound(src.loc, pickup_sound, 20, 1)
 					if(do_after(user,pickup_time,src))
@@ -812,7 +812,7 @@
 		for (var/datum/dispense_type/T in item_types)
 			if (istype(A,T.item_type))
 				inuse = 1
-				user.visible_message(SPAN("notice", "\The [user] starts recycling [A]..."))
+				user.visible_message("<span class='notice'>\The [user] starts recycling [A]...</span>")
 				if(do_after(user,recycling_time,src))
 					to_chat(user, "<span class='notice'>\The [src] consumes [A] and you get some energy back.</span>")
 					if(istype(A, /obj/structure/closet))
@@ -869,7 +869,7 @@
 				else if (istype(product,/obj/item/weapon/reagent_containers/ivbag/blood/OMinus))
 					product.name = "synthesised blood pack"
 
-			user.visible_message(SPAN("notice", "\The [user]'s \the [src] spits out \the [selected.name]."))
+			user.visible_message("<span class='notice'>\The [user]'s \the [src] spits out \the [selected.name].</span>")
 			product.loc = get_turf(A)
 			if(isrobot(user))
 				var/mob/living/silicon/robot/R = user

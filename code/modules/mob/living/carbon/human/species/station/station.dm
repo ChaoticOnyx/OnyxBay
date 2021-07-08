@@ -373,7 +373,7 @@
 
 		if(H.mind)
 			H.mind.transfer_to(S)
-		H.visible_message(SPAN("danger", "\The [H] collapses into parts, revealing a solitary diona nymph at the core."))
+		H.visible_message("<span class='danger'>\The [H] collapses into parts, revealing a solitary diona nymph at the core.</span>")
 		return
 	else
 		H.diona_split_nymph()

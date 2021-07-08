@@ -14,7 +14,7 @@
 		if(!user.unEquip(underwear))
 			return
 		qdel(underwear)
-		user.visible_message(SPAN("notice", "\The [user] inserts \their [underwear.name] into \the [src]."), SPAN("notice", "You insert your [underwear.name] into \the [src]."))
+		user.visible_message("<span class='notice'>\The [user] inserts \their [underwear.name] into \the [src].</span>", "<span class='notice'>You insert your [underwear.name] into \the [src].</span>")
 
 		var/id = user.GetIdCard()
 		var/message

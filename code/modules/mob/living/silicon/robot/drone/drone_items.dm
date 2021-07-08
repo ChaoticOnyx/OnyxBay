@@ -328,7 +328,7 @@
 					S.open(user)
 				if (MODE_EMPTY)
 					inuse = 1
-					visible_message(SPAN("notice", "\The [user] starts removing item from \the [S]."))
+					visible_message("<span class='notice'>\The [user] starts removing item from \the [S].</span>")
 					if (do_after(user,30))
 						inuse = 0
 						if (length(S.contents))
@@ -337,7 +337,7 @@
 								return
 							var/turf/T = get_turf(src)
 							S.remove_from_storage(I,T)
-							visible_message(SPAN("notice", "\The [I] drops on \the [T]."))
+							visible_message("<span class='notice'>\The [I] drops on \the [T].</span>")
 						else
 							inuse = 0
 							to_chat(user, "<span class='notice'>\The [target] is empty.</span>")
@@ -389,7 +389,7 @@
 				A.charging = 0
 				A.update_icon()
 
-				user.visible_message(SPAN("danger", "[user] removes the power cell from [A]!"), "You remove the power cell.")
+				user.visible_message("<span class='danger'>[user] removes the power cell from [A]!</span>", "You remove the power cell.")
 
 	else if(istype(target,/mob/living/silicon/robot))
 		var/mob/living/silicon/robot/A = target
@@ -404,7 +404,7 @@
 				A.cell.loc = src
 				A.cell = null
 
-				user.visible_message(SPAN("danger", "[user] removes the power cell from [A]!"), "You remove the power cell.")
+				user.visible_message("<span class='danger'>[user] removes the power cell from [A]!</span>", "You remove the power cell.")
 
 	else if(istype(target,/obj/machinery/portable_atmospherics/canister))
 		var/obj/machinery/portable_atmospherics/canister/A = target
@@ -485,7 +485,7 @@
 
 	for(var/mob/M in T)
 		if(istype(M,/mob/living/simple_animal/lizard) || istype(M,/mob/living/simple_animal/mouse))
-			src.loc.visible_message(SPAN("danger", "[src.loc] sucks [M] into its decompiler. There's a horrible crunching noise."), SPAN("danger", "It's a bit of a struggle, but you manage to suck [M] into your decompiler. It makes a series of visceral crunching noises."))
+			src.loc.visible_message("<span class='danger'>[src.loc] sucks [M] into its decompiler. There's a horrible crunching noise.</span>","<span class='danger'>It's a bit of a struggle, but you manage to suck [M] into your decompiler. It makes a series of visceral crunching noises.</span>")
 			new /obj/effect/decal/cleanable/blood/splatter(get_turf(src))
 			qdel(M)
 			if(wood)

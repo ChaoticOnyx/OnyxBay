@@ -9,7 +9,7 @@
 
 /obj/structure/onyxawards2018/attack_hand(mob/user as mob)
 	if(user.a_intent == I_HELP)
-		visible_message(SPAN("notice", "[user] touches [src]."))
+		visible_message("<span class='notice'>[user] touches [src].</span>")
 		to_chat(user, "<span class='notice'>This is [info]</span>")
 	else
 		return ..()
@@ -23,13 +23,13 @@
 
 /obj/structure/onyxawards2018/shadow_lead/attack_hand(mob/user as mob)
 	if(user.a_intent == I_HELP)
-		visible_message(SPAN("notice", "[user] touches [src]."))
+		visible_message("<span class='notice'>[user] touches [src].</span>")
 		to_chat(user, "<span class='notice'>This is [info]</span>")
 	else
 		if (!interactable)
 			return
 		interactable = FALSE
-		visible_message(SPAN("danger", "<b><i>I AM THE KING!</i></b>"))
+		visible_message("<span class='danger'><b><i>I AM THE KING!</i></b></span>")
 		to_chat(user, "<span class='notice'>What the fuck?</span>")
 		flick(":king:", src)
 		spawn(1 SECOND)
@@ -165,7 +165,7 @@
 
 /obj/structure/onyxawards2018/dead/attack_hand(mob/user as mob)
 	if(user.a_intent != I_HELP)
-		visible_message(SPAN("danger", "[user] open [src]!"))
+		visible_message("<span class='danger'>[user] open [src]!</span>")
 		to_chat(user, "<span class='notice'>You open the admiral's coffin.</span>")
 		new /obj/structure/onyxawards2018/dead/opened(get_turf(src))
 		qdel(src)

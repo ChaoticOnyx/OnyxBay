@@ -16,6 +16,7 @@ GLOBAL_DATUM_INIT(raiders, /datum/antagonist/raider, new)
 	hard_cap_round = 6
 	initial_spawn_req = 3
 	initial_spawn_target = 4
+	min_player_age = 14
 
 	id_type = /obj/item/weapon/card/id/syndicate
 
@@ -104,11 +105,6 @@ GLOBAL_DATUM_INIT(raiders, /datum/antagonist/raider, new)
 		/obj/item/clothing/accessory/holster/waist,
 		/obj/item/clothing/accessory/holster/hip
 		)
-
-/datum/antagonist/raider/Initialize()
-	. = ..()
-	if(config.raider_min_age)
-		min_player_age = config.raider_min_age
 
 /datum/antagonist/raider/update_access(mob/living/player)
 	for(var/obj/item/weapon/card/id/id in player.contents)

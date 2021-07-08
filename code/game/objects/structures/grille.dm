@@ -100,7 +100,7 @@
 		if(!shock(user, 90))
 			playsound(loc, 'sound/items/Screwdriver.ogg', 100, 1)
 			anchored = !anchored
-			user.visible_message(SPAN("notice", "[user] [anchored ? "fastens" : "unfastens"] the grille."),
+			user.visible_message("<span class='notice'>[user] [anchored ? "fastens" : "unfastens"] the grille.</span>", \
 								 "<span class='notice'>You have [anchored ? "fastened the grille to" : "unfastened the grill from"] the floor.</span>")
 			return
 
@@ -215,7 +215,7 @@
 	spawn (0) healthcheck()
 
 /obj/structure/grille/attack_generic(mob/user, damage, attack_verb)
-	visible_message(SPAN("danger", "[user] [attack_verb] the [src]!"))
+	visible_message("<span class='danger'>[user] [attack_verb] the [src]!</span>")
 	attack_animation(user)
 	health -= damage
 	spawn(1) healthcheck()

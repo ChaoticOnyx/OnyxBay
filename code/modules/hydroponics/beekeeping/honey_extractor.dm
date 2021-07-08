@@ -29,7 +29,7 @@
 		if(!H.honey)
 			to_chat(user, "<span class='notice'>\The [H] is empty, put it into a beehive.</span>")
 			return
-		user.visible_message(SPAN("notice", "\The [user] loads \the [H] into \the [src] and turns it on."), SPAN("notice", "You load \the [H] into \the [src] and turn it on."))
+		user.visible_message("<span class='notice'>\The [user] loads \the [H] into \the [src] and turns it on.</span>", "<span class='notice'>You load \the [H] into \the [src] and turn it on.</span>")
 		processing = H.honey
 		icon_state = "centrifuge_moving"
 		qdel(H)
@@ -50,7 +50,7 @@
 		var/transferred = min(G.reagents.maximum_volume - G.reagents.total_volume, honey)
 		G.reagents.add_reagent(/datum/reagent/nutriment/honey, transferred)
 		honey -= transferred
-		user.visible_message(SPAN("notice", "\The [user] collects honey from \the [src] into \the [G]."), SPAN("notice", "You collect [transferred] units of honey from \the [src] into \the [G]."))
+		user.visible_message("<span class='notice'>\The [user] collects honey from \the [src] into \the [G].</span>", "<span class='notice'>You collect [transferred] units of honey from \the [src] into \the [G].</span>")
 		return 1
 	else if((isScrewdriver(I) || isCrowbar(I) || isWrench(I)))
 		if(default_deconstruction_screwdriver(user, I))

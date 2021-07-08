@@ -120,7 +120,7 @@ var/global/list/possible_changeling_IDs = list("Alpha","Beta","Gamma","Delta","E
 	..()
 	if(ismob(loc))
 		creator = loc
-		creator.visible_message(SPAN("danger", "A grotesque weapon forms around [loc.name]\'s arm!"),
+		creator.visible_message(SPAN("danger", "A grotesque weapon forms around [loc.name]\'s arm!"), \
 								null, \
 								SPAN("italics", "You hear organic matter ripping and tearing!"))
 
@@ -129,8 +129,8 @@ var/global/list/possible_changeling_IDs = list("Alpha","Beta","Gamma","Delta","E
 	START_PROCESSING(SSobj, src)
 
 /obj/item/weapon/melee/changeling/dropped(mob/user)
-	user.visible_message(SPAN("danger", "With a sickening crunch, [creator] reforms their arm!"),
-						 SPAN("changeling", "We assimilate the weapon back into our body."),
+	user.visible_message(SPAN("danger", "With a sickening crunch, [creator] reforms their arm!"), \
+						 SPAN("changeling", "We assimilate the weapon back into our body."), \
 						 SPAN("italics", "You hear organic matter ripping and tearing!"))
 	playsound(src, 'sound/effects/blob/blobattack.ogg', 30, 1)
 	spawn(1)

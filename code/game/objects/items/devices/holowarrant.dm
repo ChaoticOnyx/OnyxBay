@@ -45,7 +45,7 @@
 			var/choice = alert(user, "Would you like to authorize this warrant?","Warrant authorization","Yes","No")
 			if(choice == "Yes")
 				active.fields["auth"] = "[I.registered_name] - [I.assignment ? I.assignment : "(Unknown)"]"
-			user.visible_message(SPAN("notice", "You swipe \the [I] through the [src]."),
+			user.visible_message("<span class='notice'>You swipe \the [I] through the [src].</span>", \
 					"<span class='notice'>[user] swipes \the [I] through the [src].</span>")
 			broadcast_security_hud_message("\A [active.fields["arrestsearch"]] warrant for <b>[active.fields["namewarrant"]]</b> has been authorized by [I.assignment ? I.assignment+" " : ""][I.registered_name].", src)
 		else
@@ -55,7 +55,7 @@
 
 //hit other people with it
 /obj/item/device/holowarrant/attack(mob/living/carbon/M as mob, mob/living/carbon/user as mob)
-	user.visible_message(SPAN("notice", "[user] holds up a warrant projector and shows the contents to [M]."),
+	user.visible_message("<span class='notice'>[user] holds up a warrant projector and shows the contents to [M].</span>", \
 			"<span class='notice'>You show the warrant to [M].</span>")
 	M.examinate(src)
 

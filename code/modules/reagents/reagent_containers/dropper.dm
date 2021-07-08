@@ -32,7 +32,7 @@
 				//	return
 
 				var/time = 20 //2/3rds the time of a syringe
-				user.visible_message(SPAN("warning", "[user] is trying to squirt something into [target]'s eyes!"))
+				user.visible_message("<span class='warning'>[user] is trying to squirt something into [target]'s eyes!</span>")
 
 				if(!do_mob(user, target, time))
 					return
@@ -53,7 +53,7 @@
 
 					if(safe_thing)
 						trans = reagents.splash(safe_thing, amount_per_transfer_from_this, max_spill=30)
-						user.visible_message(SPAN("warning", "[user] tries to squirt something into [target]'s eyes, but fails!"), SPAN("notice", "You transfer [trans] units of the solution."))
+						user.visible_message("<span class='warning'>[user] tries to squirt something into [target]'s eyes, but fails!</span>", "<span class='notice'>You transfer [trans] units of the solution.</span>")
 						return
 
 				var/mob/living/M = target
@@ -63,7 +63,7 @@
 				var/spill_amt = M.incapacitated()? 0 : 30
 				trans += reagents.splash(target, reagents.total_volume/2, max_spill = spill_amt)
 				trans += reagents.trans_to_mob(target, reagents.total_volume/2, CHEM_BLOOD) //I guess it gets into the bloodstream through the eyes or something
-				user.visible_message(SPAN("warning", "[user] squirts something into [target]'s eyes!"), SPAN("notice", "You transfer [trans] units of the solution."))
+				user.visible_message("<span class='warning'>[user] squirts something into [target]'s eyes!</span>", "<span class='notice'>You transfer [trans] units of the solution.</span>")
 
 
 				return

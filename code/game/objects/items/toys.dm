@@ -88,7 +88,7 @@
 
 /obj/item/toy/water_balloon/throw_impact(atom/hit_atom)
 	if(src.reagents.total_volume >= 1)
-		src.visible_message(SPAN("warning", "\The [src] bursts!"),"You hear a pop and a splash.")
+		src.visible_message("<span class='warning'>\The [src] bursts!</span>","You hear a pop and a splash.")
 		src.reagents.touch_turf(get_turf(hit_atom))
 		for(var/atom/A in get_turf(hit_atom))
 			src.reagents.touch(A)
@@ -209,7 +209,7 @@
 						if(!istype(M,/mob/living)) continue
 						if(M == user) continue
 						for(var/mob/O in viewers(world.view, D))
-							O.show_message(text(SPAN("warning", "\The [] was hit by the foam dart!"), M, 1))
+							O.show_message(text("<span class='warning'>\The [] was hit by the foam dart!</span>", M), 1)
 						new /obj/item/toy/ammo/crossbow(M.loc)
 						qdel(D)
 						return
@@ -231,7 +231,7 @@
 		else if (bullets == 0)
 			user.Weaken(5)
 			for(var/mob/O in viewers(world.view, user))
-				O.show_message(text(SPAN("warning", "\The [] realized they were out of ammo and starting scrounging for some!"), user, 1))
+				O.show_message(text("<span class='warning'>\The [] realized they were out of ammo and starting scrounging for some!</span>", user), 1)
 
 
 	attack(mob/M, mob/user)
@@ -243,15 +243,15 @@
 
 			for(var/mob/O in viewers(M, null))
 				if(O.client)
-					O.show_message(text(SPAN("danger", "\The [] casually lines up a shot with []'s head and pulls the trigger!"), user, M), 1, SPAN("warning", "You hear the sound of foam against skull"), 2)
-					O.show_message(text(SPAN("warning", "\The [] was hit in the head by the foam dart!"), M, 1))
+					O.show_message(text("<span class='danger'>\The [] casually lines up a shot with []'s head and pulls the trigger!</span>", user, M), 1, "<span class='warning'>You hear the sound of foam against skull</span>", 2)
+					O.show_message(text("<span class='warning'>\The [] was hit in the head by the foam dart!</span>", M), 1)
 
 			playsound(user.loc, 'sound/items/syringeproj.ogg', 50, 1)
 			new /obj/item/toy/ammo/crossbow(M.loc)
 			src.bullets--
 		else if (M.lying && src.bullets == 0)
 			for(var/mob/O in viewers(M, null))
-				if (O.client)	O.show_message(text(SPAN("danger", "\The [] casually lines up a shot with []'s head, pulls the trigger, then realizes they are out of ammo and drops to the floor in search of some!"), user, M), 1, SPAN("warning", "You hear someone fall"), 2)
+				if (O.client)	O.show_message(text("<span class='danger'>\The [] casually lines up a shot with []'s head, pulls the trigger, then realizes they are out of ammo and drops to the floor in search of some!</span>", user, M), 1, "<span class='warning'>You hear someone fall</span>", 2)
 			user.Weaken(5)
 		return
 
@@ -334,7 +334,7 @@
 		s.set_up(3, 1, src)
 		s.start()
 		new /obj/effect/decal/cleanable/ash(src.loc)
-		src.visible_message(SPAN("warning", "The [src.name] explodes!"), SPAN("warning", "You hear a snap!"))
+		src.visible_message("<span class='warning'>The [src.name] explodes!</span>","<span class='warning'>You hear a snap!</span>")
 		playsound(src, 'sound/effects/snap.ogg', 50, 1)
 		qdel(src)
 
@@ -348,7 +348,7 @@
 			s.set_up(2, 0, src)
 			s.start()
 			new /obj/effect/decal/cleanable/ash(src.loc)
-			src.visible_message(SPAN("warning", "The [src.name] explodes!"), SPAN("warning", "You hear a snap!"))
+			src.visible_message("<span class='warning'>The [src.name] explodes!</span>","<span class='warning'>You hear a snap!</span>")
 			playsound(src, 'sound/effects/snap.ogg', 50, 1)
 			qdel(src)
 
@@ -712,13 +712,13 @@
 
 /obj/structure/plushie/attack_hand(mob/user)
 	if(user.a_intent == I_HELP)
-		user.visible_message(SPAN("notice", "<b>\The [user]</b> hugs [src]!"), SPAN("notice", "You hug [src]!"))
+		user.visible_message("<span class='notice'><b>\The [user]</b> hugs [src]!</span>","<span class='notice'>You hug [src]!</span>")
 	else if (user.a_intent == I_HURT)
-		user.visible_message(SPAN("warning", "<b>\The [user]</b> punches [src]!"), SPAN("warning", "You punch [src]!"))
+		user.visible_message("<span class='warning'><b>\The [user]</b> punches [src]!</span>","<span class='warning'>You punch [src]!</span>")
 	else if (user.a_intent == I_GRAB)
-		user.visible_message(SPAN("warning", "<b>\The [user]</b> attempts to strangle [src]!"), SPAN("warning", "You attempt to strangle [src]!"))
+		user.visible_message("<span class='warning'><b>\The [user]</b> attempts to strangle [src]!</span>","<span class='warning'>You attempt to strangle [src]!</span>")
 	else
-		user.visible_message(SPAN("notice", "<b>\The [user]</b> pokes the [src]."), SPAN("notice", "You poke the [src]."))
+		user.visible_message("<span class='notice'><b>\The [user]</b> pokes the [src].</span>","<span class='notice'>You poke the [src].</span>")
 		visible_message("[src] says, \"[phrase]\"")
 
 /obj/structure/plushie/ian
@@ -754,13 +754,13 @@
 
 /obj/item/toy/plushie/attack_self(mob/user)
 	if(user.a_intent == I_HELP)
-		user.visible_message(SPAN("notice", "<b>\The [user]</b> hugs [src]!"), SPAN("notice", "You hug [src]!"))
+		user.visible_message("<span class='notice'><b>\The [user]</b> hugs [src]!</span>","<span class='notice'>You hug [src]!</span>")
 	else if (user.a_intent == I_HURT)
-		user.visible_message(SPAN("warning", "<b>\The [user]</b> punches [src]!"), SPAN("warning", "You punch [src]!"))
+		user.visible_message("<span class='warning'><b>\The [user]</b> punches [src]!</span>","<span class='warning'>You punch [src]!</span>")
 	else if (user.a_intent == I_GRAB)
-		user.visible_message(SPAN("warning", "<b>\The [user]</b> attempts to strangle [src]!"), SPAN("warning", "You attempt to strangle [src]!"))
+		user.visible_message("<span class='warning'><b>\The [user]</b> attempts to strangle [src]!</span>","<span class='warning'>You attempt to strangle [src]!</span>")
 	else
-		user.visible_message(SPAN("notice", "<b>\The [user]</b> pokes the [src]."), SPAN("notice", "You poke the [src]."))
+		user.visible_message("<span class='notice'><b>\The [user]</b> pokes the [src].</span>","<span class='notice'>You poke the [src].</span>")
 
 /obj/item/toy/plushie/nymph
 	name = "diona nymph plush"
@@ -831,20 +831,20 @@
 
 /obj/item/weapon/marshalling_wand/attack_self(mob/living/user)
 	if (user.a_intent == I_HELP)
-		user.visible_message(SPAN("notice", "[user] beckons with \the [src], signalling forward motion."),
+		user.visible_message("<span class='notice'>[user] beckons with \the [src], signalling forward motion.</span>",
 							"<span class='notice'>You beckon with \the [src], signalling forward motion.</span>")
 	else if (user.a_intent == I_DISARM)
-		user.visible_message(SPAN("notice", "[user] holds \the [src] above their head, signalling a stop."),
+		user.visible_message("<span class='notice'>[user] holds \the [src] above their head, signalling a stop.</span>",
 							"<span class='notice'>You hold \the [src] above your head, signalling a stop.</span>")
 	else if (user.a_intent == I_GRAB)
 		var/WAND_TURN_DIRECTION
 		if (user.l_hand == src) WAND_TURN_DIRECTION = "left"
 		else if (user.r_hand == src) WAND_TURN_DIRECTION = "right"
 		else return //how can you not be holding it in either hand?? black magic
-		user.visible_message(SPAN("notice", "[user] waves \the [src] to the [WAND_TURN_DIRECTION], signalling a turn."),
+		user.visible_message("<span class='notice'>[user] waves \the [src] to the [WAND_TURN_DIRECTION], signalling a turn.</span>",
 							"<span class='notice'>You wave \the [src] to the [WAND_TURN_DIRECTION], signalling a turn.</span>")
 	else if (user.a_intent == I_HURT)
-		user.visible_message(SPAN("warning", "[user] frantically waves \the [src] above their head!"),
+		user.visible_message("<span class='warning'>[user] frantically waves \the [src] above their head!</span>",
 							"<span class='warning'>You frantically wave \the [src] above your head!</span>")
 
 /obj/item/toy/torchmodel
@@ -862,13 +862,13 @@
 
 /obj/item/toy/ringbell/attack_hand(mob/user)
 	if (user.a_intent == I_HELP)
-		user.visible_message(SPAN("notice", "[user] rings \the [src], signalling the beginning of the contest."))
+		user.visible_message("<span class='notice'>[user] rings \the [src], signalling the beginning of the contest.</span>")
 		playsound(user.loc, 'sound/items/oneding.ogg', 60)
 	else if (user.a_intent == I_DISARM)
-		user.visible_message(SPAN("notice", "[user] rings \the [src] three times, signalling the end of the contest!"))
+		user.visible_message("<span class='notice'>[user] rings \the [src] three times, signalling the end of the contest!</span>")
 		playsound(user.loc, 'sound/items/threedings.ogg', 60)
 	else if (user.a_intent == I_HURT)
-		user.visible_message(SPAN("warning", "[user] rings \the [src] repeatedly, signalling a disqualification!"))
+		user.visible_message("<span class='warning'>[user] rings \the [src] repeatedly, signalling a disqualification!</span>")
 		playsound(user.loc, 'sound/items/manydings.ogg', 60)
 
 /obj/item/toy/chubbyskeleton
@@ -936,11 +936,11 @@
 /obj/item/toy/chubbyskeleton/proc/badtime(mob/user)
 	dodgecount++
 	if(dodgecount < 4)
-		user.visible_message(SPAN("warning", "[src] dodges [user]'s attack!"))
+		user.visible_message("<span class='warning'>[src] dodges [user]'s attack!</span>")
 		speak(pick("welp.","what? you think i'm just gonna stand there and take it? ","all right.","our reports showed a massive bluespace anomaly.","that sent chills down my SPINE."))
 	else if(dodgecount == 4)
 		icon_state = "badtime"
-		user.visible_message(SPAN("warning", "[src] dodges [user]'s attack!"))
+		user.visible_message("<span class='warning'>[src] dodges [user]'s attack!</span>")
 		speak(pick("do you wanna have a bad time?","you are REALLY not going to like what happens next."))
 	else
 		icon_state = "heya"
@@ -962,8 +962,8 @@
 /obj/item/toy/banbanana/attack_self(mob/user)
 	for(var/mob/M in viewers(user, null))
 		if(M.client)
-			M.show_message(SPAN("danger", "You have been banned by HO$T.\nReason: Honk."))
-			M.show_message(SPAN("warning", "This is a PERMENANT ban."))
+			M.show_message("<span class='danger'>You have been banned by HO$T.\nReason: Honk.</span>")
+			M.show_message("<span class='warning'>This is a PERMENANT ban.</span>")
 			if(ishuman(M))
 				var/mob/living/carbon/human/H = M
 				H.eye_blind += 1

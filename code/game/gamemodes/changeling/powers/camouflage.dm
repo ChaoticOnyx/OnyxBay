@@ -51,7 +51,7 @@
 				mind.changeling.chem_recharge_rate = 0 //making sure nobody loses out on their bonus regeneration after they're done hiding.
 
 		H.invisibility = initial(invisibility)
-		visible_message(SPAN("warning", "[src] suddenly fades in, seemingly from nowhere!"),
+		visible_message(SPAN("warning", "[src] suddenly fades in, seemingly from nowhere!"), \
 						SPAN("changeling", "We revert our camouflage, revealing ourselves."))
 		H.set_m_intent(M_RUN)
 		H.mind.changeling.cloaked = 0

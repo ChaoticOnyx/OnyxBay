@@ -12,11 +12,11 @@
 	deploy_path = /obj/machinery/power/supply_beacon/supermatter
 
 /obj/item/supply_beacon/attack_self(mob/user)
-	user.visible_message(SPAN("notice", "\The [user] begins setting up \the [src]."))
+	user.visible_message("<span class='notice'>\The [user] begins setting up \the [src].</span>")
 	if(!do_after(user, deploy_time, src))
 		return
 	var/obj/S = new deploy_path(get_turf(user))
-	user.visible_message(SPAN("notice", "\The [user] deploys \the [S]."))
+	user.visible_message("<span class='notice'>\The [user] deploys \the [S].</span>")
 	user.unEquip(src)
 	qdel(src)
 
@@ -49,7 +49,7 @@
 			to_chat(user, "<span class='warning'>This device must be placed over an exposed cable.</span>")
 			return
 		anchored = !anchored
-		user.visible_message(SPAN("notice", "\The [user] [anchored ? "secures" : "unsecures"] \the [src]."))
+		user.visible_message("<span class='notice'>\The [user] [anchored ? "secures" : "unsecures"] \the [src].</span>")
 		playsound(src.loc, 'sound/items/Ratchet.ogg', 50, 1)
 		return
 	return ..()

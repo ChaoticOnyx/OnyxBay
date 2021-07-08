@@ -43,4 +43,4 @@
 
 	if(usr.unEquip(I))
 		target.put_in_hands(I) // If this fails it will just end up on the floor, but that's fitting for things like dionaea.
-		usr.visible_message(SPAN("notice", "\The [usr] handed \the [I] to \the [target]."))
+		usr.visible_message("<span class='notice'>\The [usr] handed \the [I] to \the [target].</span>")

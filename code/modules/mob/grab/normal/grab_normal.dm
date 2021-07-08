@@ -17,9 +17,9 @@
 	playsound(affecting.loc, 'sound/weapons/thudswoosh.ogg', 50, 1, -1)
 	var/obj/O = get_targeted_organ()
 	if(O.name == "right hand" || O.name == "left hand")
-		visible_message(SPAN("notice", "[assailant] has grabbed [affecting] by their hands!"))
+		visible_message("<span class='notice'>[assailant] has grabbed [affecting] by their hands!</span>")
 	else
-		visible_message(SPAN("warning", "[assailant] has grabbed [affecting]'s [O.name]!"))
+		visible_message("<span class='warning'>[assailant] has grabbed [affecting]'s [O.name]!</span>")
 	affecting.grabbed_by += src
 
 	if(!(affecting.a_intent == I_HELP))
@@ -48,7 +48,7 @@
 
 	if(!G.attacking && !affecting.lying)
 
-		affecting.visible_message(SPAN("notice", "[assailant] is trying to pin [affecting] to the ground!"))
+		affecting.visible_message("<span class='notice'>[assailant] is trying to pin [affecting] to the ground!</span>")
 		G.attacking = 1
 
 		if(do_mob(assailant, affecting, action_cooldown - 1))
@@ -56,12 +56,12 @@
 			G.action_used()
 			affecting.Weaken(2)
 			affecting.Stun(2)
-			affecting.visible_message(SPAN("notice", "[assailant] pins [affecting] to the ground!"))
+			affecting.visible_message("<span class='notice'>[assailant] pins [affecting] to the ground!</span>")
 			affecting.damage_poise(affecting.poise)
 
 			return 1
 		else
-			affecting.visible_message(SPAN("notice", "[assailant] fails to pin [affecting] to the ground."))
+			affecting.visible_message("<span class='notice'>[assailant] fails to pin [affecting] to the ground.</span>")
 			G.attacking = 0
 			return 0
 	else
@@ -77,7 +77,7 @@
 		to_chat(assailant, "<span class='warning'>[affecting] is missing that body part!</span>")
 		return 0
 
-	assailant.visible_message(SPAN("danger", "[assailant] begins to [pick("bend", "twist")] [affecting]'s [O.name] into a jointlock!"))
+	assailant.visible_message("<span class='danger'>[assailant] begins to [pick("bend", "twist")] [affecting]'s [O.name] into a jointlock!</span>")
 	G.attacking = 1
 
 	if(do_mob(assailant, affecting, action_cooldown - 1))
@@ -87,13 +87,13 @@
 		G.attacking = 0
 		G.action_used()
 		O.jointlock(assailant)
-		assailant.visible_message(SPAN("danger", "[affecting]'s [O.name] is twisted!"))
+		assailant.visible_message("<span class='danger'>[affecting]'s [O.name] is twisted!</span>")
 		playsound(assailant.loc, 'sound/weapons/thudswoosh.ogg', 50, 1, -1)
 		return 1
 
 	else
 
-		affecting.visible_message(SPAN("notice", "[assailant] fails to jointlock [affecting]'s [O.name]."))
+		affecting.visible_message("<span class='notice'>[assailant] fails to jointlock [affecting]'s [O.name].</span>")
 		G.attacking = 0
 		return 0
 
@@ -109,7 +109,7 @@
 
 	if(!O.dislocated)
 
-		assailant.visible_message(SPAN("warning", "[assailant] begins to dislocate [affecting]'s [O.joint]!"))
+		assailant.visible_message("<span class='warning'>[assailant] begins to dislocate [affecting]'s [O.joint]!</span>")
 		G.attacking = 1
 
 		if(do_mob(assailant, affecting, action_cooldown - 1))
@@ -119,13 +119,13 @@
 			G.attacking = 0
 			G.action_used()
 			O.dislocate(1)
-			assailant.visible_message(SPAN("danger", "[affecting]'s [O.joint] [pick("gives way","caves in","crumbles","collapses")]!"))
+			assailant.visible_message("<span class='danger'>[affecting]'s [O.joint] [pick("gives way","caves in","crumbles","collapses")]!</span>")
 			playsound(assailant.loc, 'sound/weapons/thudswoosh.ogg', 50, 1, -1)
 			return 1
 
 		else
 
-			affecting.visible_message(SPAN("notice", "[assailant] fails to dislocate [affecting]'s [O.joint]."))
+			affecting.visible_message("<span class='notice'>[assailant] fails to dislocate [affecting]'s [O.joint].</span>")
 			G.attacking = 0
 			return 0
 
@@ -186,9 +186,9 @@
 		damage_flags = hat.damage_flags()
 
 	if(damage_flags & DAM_SHARP)
-		attacker.visible_message(SPAN("danger", "[attacker] gores [target][istype(hat)? " with \the [hat]" : ""]!"))
+		attacker.visible_message("<span class='danger'>[attacker] gores [target][istype(hat)? " with \the [hat]" : ""]!</span>")
 	else
-		attacker.visible_message(SPAN("danger", "[attacker] thrusts \his head into [target]'s skull!"))
+		attacker.visible_message("<span class='danger'>[attacker] thrusts \his head into [target]'s skull!</span>")
 
 	var/armor = target.run_armor_check(BP_HEAD, "melee")
 	target.apply_damage(damage, BRUTE, BP_HEAD, armor, damage_flags)
@@ -196,7 +196,7 @@
 
 	if(armor < 50 && target.headcheck(BP_HEAD) && prob(damage))
 		target.apply_effect(20, PARALYZE)
-		target.visible_message(SPAN("danger", "[target] [target.species.get_knockout_message(target)]"))
+		target.visible_message("<span class='danger'>[target] [target.species.get_knockout_message(target)]</span>")
 
 	playsound(attacker.loc, "swing_hit", 25, 1, -1)
 
@@ -220,9 +220,9 @@
 		return
 	switch(diff_zone)
 		if(BP_MOUTH)
-			G.assailant.visible_message(SPAN("warning", "\The [G.assailant] covers [G.affecting]'s mouth!"))
+			G.assailant.visible_message("<span class='warning'>\The [G.assailant] covers [G.affecting]'s mouth!</span>")
 		if(BP_EYES)
-			G.assailant.visible_message(SPAN("warning", "\The [G.assailant] covers [G.affecting]'s eyes!"))
+			G.assailant.visible_message("<span class='warning'>\The [G.assailant] covers [G.affecting]'s eyes!</span>")
 
 
 /datum/grab/normal/check_special_target(obj/item/grab/G)
@@ -264,7 +264,7 @@
 
 	if(!W.edge || !W.force || W.damtype != BRUTE)
 		return 0 //unsuitable weapon
-	user.visible_message(SPAN("danger", "\The [user] begins to slit [affecting]'s throat with \the [W]!"))
+	user.visible_message("<span class='danger'>\The [user] begins to slit [affecting]'s throat with \the [W]!</span>")
 
 	user.next_move = world.time + 30 //also should prevent user from triggering this repeatedly
 	if(!do_after(user, 30))
@@ -288,7 +288,7 @@
 
 
 	if(total_damage)
-		user.visible_message(SPAN("danger", "\The [user] slit [affecting]'s throat open with \the [W]!"))
+		user.visible_message("<span class='danger'>\The [user] slit [affecting]'s throat open with \the [W]!</span>")
 
 		if(W.hitsound)
 			playsound(affecting.loc, W.hitsound, 50, 1, -1)
@@ -316,7 +316,7 @@
 	if(istype(helmet) && (helmet.body_parts_covered & HEAD) && (helmet.item_flags & ITEM_FLAG_STOPPRESSUREDAMAGE))
 		return 0 //hard to reach one's soft cheeks through that spess helm
 
-	user.visible_message(SPAN("danger", "\The [user] begins to slit [affecting]'s cheeks with \the [W]!"))
+	user.visible_message("<span class='danger'>\The [user] begins to slit [affecting]'s cheeks with \the [W]!</span>")
 
 	user.next_move = world.time + 30
 	if(!do_after(user, 30))
@@ -329,7 +329,7 @@
 		var/damage = min(W.force, 12)
 		affecting.apply_damage(damage, W.damtype, BP_HEAD, 0, damage_flags, used_weapon=W)
 
-	user.visible_message(SPAN("danger", "\The [user] slit [affecting]'s cheeks  with \the [W], giving them a bloody smile!"))
+	user.visible_message("<span class='danger'>\The [user] slit [affecting]'s cheeks  with \the [W], giving them a bloody smile!</span>")
 	head.deformities = 1
 	affecting.update_deformities()
 
@@ -354,7 +354,7 @@
 	if(!O || O.is_stump() || !(O.limb_flags & ORGAN_FLAG_HAS_TENDON) || (O.status & ORGAN_TENDON_CUT))
 		return FALSE
 
-	user.visible_message(SPAN("danger", "\The [user] begins to cut \the [affecting]'s [O.tendon_name] with \the [W]!"))
+	user.visible_message("<span class='danger'>\The [user] begins to cut \the [affecting]'s [O.tendon_name] with \the [W]!</span>")
 	user.next_move = world.time + 20
 
 	if(!do_after(user, 20, progress=0))
@@ -364,7 +364,7 @@
 	if(!O || O.is_stump() || !O.sever_tendon())
 		return 0
 
-	user.visible_message(SPAN("danger", "\The [user] cut \the [affecting]'s [O.tendon_name] with \the [W]!"))
+	user.visible_message("<span class='danger'>\The [user] cut \the [affecting]'s [O.tendon_name] with \the [W]!</span>")
 	if(W.hitsound) playsound(affecting.loc, W.hitsound, 50, 1, -1)
 	G.last_action = world.time
 	admin_attack_log(user, affecting, "hamstrung their victim", "was hamstrung", "hamstrung")
@@ -388,7 +388,7 @@
 		to_chat(user, "<span class='warning'>You cannot locate any eyes on [affecting]!</span>")
 		return 0
 
-	user.visible_message(SPAN("danger", "\The [user] aims \his [W.name] at [affecting]'s eyes!"))
+	user.visible_message("<span class='danger'>\The [user] aims \his [W.name] at [affecting]'s eyes!</span>")
 
 	user.next_move = world.time + 25
 	if(!do_after(user, 25))
@@ -418,7 +418,7 @@
 		var/obj/item/organ/external/E = affecting.get_organ(eyes.parent_organ)
 		E.take_external_damage(10)
 
-	user.visible_message(SPAN("danger", "\The [user] stabs [affecting]'s eyes with \the [W]!"))
+	user.visible_message("<span class='danger'>\The [user] stabs [affecting]'s eyes with \the [W]!</span>")
 	admin_attack_log(user, affecting, "Grab-stabbed the victim's eyes.", "Had their eyes grab-stabbed.", "stabbed the eyes, using a grab action, of")
 
 	if(!eyes)
@@ -434,7 +434,7 @@
 	eyes.dropInto(affecting.loc)
 	playsound(affecting.loc, 'sound/effects/squelch1.ogg', 20, 1)
 
-	user.visible_message(SPAN("danger", "\The [user] brutally pokes [affecting]'s eyes out with \the [W]!"))
+	user.visible_message("<span class='danger'>\The [user] brutally pokes [affecting]'s eyes out with \the [W]!</span>")
 	admin_attack_log(user, affecting, "Poked the victim's eyes out.", "Had their eyes poked out.", "poked the eyes out, using a grab action, of")
 
 	affecting.update_deformities()

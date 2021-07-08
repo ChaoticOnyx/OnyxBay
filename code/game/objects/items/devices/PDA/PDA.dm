@@ -761,7 +761,7 @@ var/global/list/obj/item/device/pda/PDAs = list()
 				if(!isnull(P))
 					if (!P.toff && cartridge.charges > 0)
 						cartridge.charges--
-						U.show_message(SPAN("notice", "Virus sent!"), 1)
+						U.show_message("<span class='notice'>Virus sent!</span>", 1)
 						P.honkamt = (rand(15,20))
 				else
 					to_chat(U, "PDA not found.")
@@ -774,7 +774,7 @@ var/global/list/obj/item/device/pda/PDAs = list()
 				if(!isnull(P))
 					if (!P.toff && cartridge.charges > 0)
 						cartridge.charges--
-						U.show_message(SPAN("notice", "Virus sent!"), 1)
+						U.show_message("<span class='notice'>Virus sent!</span>", 1)
 						P.message_silent = 1
 						P.news_silent = 1
 						P.ttone = "silence"
@@ -802,10 +802,10 @@ var/global/list/obj/item/device/pda/PDAs = list()
 				var/obj/item/device/pda/P = locate(href_list["target"])
 				var/datum/reception/reception = get_reception(src, P, "", do_sleep = 0)
 				if(!(reception.message_server && reception.telecomms_reception & TELECOMMS_RECEPTION_SENDER))
-					U.show_message(SPAN("warning", "An error flashes on your [src]: Connection unavailable"), 1)
+					U.show_message("<span class='warning'>An error flashes on your [src]: Connection unavailable</span>", 1)
 					return
 				if(reception.telecomms_reception & TELECOMMS_RECEPTION_RECEIVER == 0) // Does our recepient have a broadcaster on their level?
-					U.show_message(SPAN("warning", "An error flashes on your [src]: Recipient unavailable"), 1)
+					U.show_message("<span class='warning'>An error flashes on your [src]: Recipient unavailable</span>", 1)
 					return
 				if(!isnull(P))
 					if (!P.toff && cartridge.charges > 0)
@@ -823,15 +823,15 @@ var/global/list/obj/item/device/pda/PDAs = list()
 								difficulty += 3
 
 						if(prob(difficulty))
-							U.show_message(SPAN("warning", "An error flashes on your [src]."), 1)
+							U.show_message("<span class='warning'>An error flashes on your [src].</span>", 1)
 						else if (prob(difficulty * 7))
-							U.show_message(SPAN("warning", "Energy feeds back into your [src]!"), 1)
+							U.show_message("<span class='warning'>Energy feeds back into your [src]!</span>", 1)
 							ui.close()
 							detonate_act(src)
 							log_admin("[key_name(U)] just attempted to blow up [P] with the Detomatix cartridge but failed, blowing themselves up")
 							message_admins("[key_name_admin(U)] just attempted to blow up [P] with the Detomatix cartridge but failed.", 1)
 						else
-							U.show_message(SPAN("notice", "Success!"), 1)
+							U.show_message("<span class='notice'>Success!</span>", 1)
 							log_admin("[key_name(U)] just attempted to blow up [P] with the Detomatix cartridge and succeeded")
 							message_admins("[key_name_admin(U)] just attempted to blow up [P] with the Detomatix cartridge and succeeded.", 1)
 							detonate_act(P)
@@ -973,7 +973,7 @@ var/global/list/obj/item/device/pda/PDAs = list()
 		to_chat(U, "<span class='notice'>ERROR: This user does not accept messages.</span>")
 		return
 	if(tap)
-		U.visible_message(SPAN("notice", "\The [U] taps on \his PDA's screen."))
+		U.visible_message("<span class='notice'>\The [U] taps on \his PDA's screen.</span>")
 	var/message = input(U, "Please enter message", P.name, tempmessage[P]) as text
 	message = sanitizeSafe(message, extra = 0)
 	//t = readd_quotes(t)
@@ -1255,14 +1255,14 @@ var/global/list/obj/item/device/pda/PDAs = list()
 			if(1)
 
 				for (var/mob/O in viewers(C, null))
-					O.show_message(SPAN("warning", "\The [user] has analyzed [C]'s vitals!"), 1)
+					O.show_message("<span class='warning'>\The [user] has analyzed [C]'s vitals!</span>", 1)
 				user.show_message(medical_scan_results(C, 1))
 
 			if(2)
 				if (!istype(C:dna, /datum/dna))
 					to_chat(user, "<span class='notice'>No fingerprints found on [C]</span>")
 				else
-					to_chat(user, text(SPAN("notice", "\The [C]'s Fingerprints: [md5(C:dna.uni_identity)]")))
+					to_chat(user, text("<span class='notice'>\The [C]'s Fingerprints: [md5(C:dna.uni_identity)]</span>"))
 				if ( !(C:blood_DNA) )
 					to_chat(user, "<span class='notice'>No blood found on [C]</span>")
 					if(C:blood_DNA)
@@ -1275,13 +1275,13 @@ var/global/list/obj/item/device/pda/PDAs = list()
 
 			if(4)
 				for (var/mob/O in viewers(C, null))
-					O.show_message(SPAN("warning", "\The [user] has analyzed [C]'s radiation levels!"), 1)
+					O.show_message("<span class='warning'>\The [user] has analyzed [C]'s radiation levels!</span>", 1)
 
-				user.show_message(SPAN("notice", "Analyzing Results for [C]:"))
+				user.show_message("<span class='notice'>Analyzing Results for [C]:</span>")
 				if(C.radiation)
-					user.show_message(SPAN("notice", "Radiation Level: [C.radiation] mSv"))
+					user.show_message("<span class='notice'>Radiation Level: [C.radiation] mSv</span>")
 				else
-					user.show_message(SPAN("notice", "No radiation detected."))
+					user.show_message("<span class='notice'>No radiation detected.</span>")
 
 /obj/item/device/pda/afterattack(atom/A as mob|obj|turf|area, mob/user as mob, proximity)
 	if(!proximity) return

@@ -222,7 +222,7 @@
 		if(!user.remove_from_mob(O))
 			return
 		stock_item(O)
-		user.visible_message(SPAN("notice", "\The [user] has added \the [O] to \the [src]."), SPAN("notice", "You add \the [O] to \the [src]."))
+		user.visible_message("<span class='notice'>\The [user] has added \the [O] to \the [src].</span>", "<span class='notice'>You add \the [O] to \the [src].</span>")
 
 	else if(istype(O, /obj/item/weapon/storage))
 		var/obj/item/weapon/storage/bag/P = O
@@ -233,7 +233,7 @@
 				stock_item(G)
 
 		if(plants_loaded)
-			user.visible_message(SPAN("notice", "\The [user] loads \the [src] with the contents of \the [P]."), SPAN("notice", "You load \the [src] with the contents of \the [P]."))
+			user.visible_message("<span class='notice'>\The [user] loads \the [src] with the contents of \the [P].</span>", "<span class='notice'>You load \the [src] with the contents of \the [P].</span>")
 			if(P.contents.len > 0)
 				to_chat(user, "<span class='notice'>Some items were refused.</span>")
 
@@ -345,7 +345,7 @@
 		return 0
 	spawn(0)
 		throw_item.throw_at(target,16,3,src)
-	src.visible_message(SPAN("warning", "[src] launches [throw_item.name] at [target.name]!"))
+	src.visible_message("<span class='warning'>[src] launches [throw_item.name] at [target.name]!</span>")
 	return 1
 
 /************************

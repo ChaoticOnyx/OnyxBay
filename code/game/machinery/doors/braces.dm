@@ -117,7 +117,7 @@
 	cur_health = between(0, cur_health - amount, max_health)
 	if(!cur_health)
 		if(airlock)
-			airlock.visible_message(SPAN("danger", "\The [src] breaks off of \the [airlock]!"))
+			airlock.visible_message("<span class='danger'>\The [src] breaks off of \the [airlock]!</span>")
 		unlock_brace(null)
 		qdel(src)
 

@@ -93,7 +93,7 @@
 	return FALSE
 
 /datum/species/xenos/hug(mob/living/carbon/human/H,mob/living/target)
-	H.visible_message(SPAN("notice", "[H] caresses [target] with its scythe-like arm."),
+	H.visible_message("<span class='notice'>[H] caresses [target] with its scythe-like arm.</span>", \
 					"<span class='notice'>I caress [target] with my scythe-like arm.</span>")
 
 /datum/species/xenos/handle_post_spawn(mob/living/carbon/human/H)

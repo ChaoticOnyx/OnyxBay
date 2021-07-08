@@ -124,7 +124,7 @@ SUBSYSTEM_DEF(ticker)
 				while (next_map.type == current_map.type)
 					next_map = GLOB.all_maps[pick(GLOB.all_maps)]
 
-				to_world(SPAN("notice", "Map has been changed to: <b>[next_map.name]</b>"))
+				to_world("<span class='notice'>Map has been changed to: <b>[next_map.name]</b></span>")
 				fdel("data/use_map")
 				text2file("[next_map.type]", "data/use_map")
 
@@ -147,12 +147,12 @@ SUBSYSTEM_DEF(ticker)
 				else
 					feedback_set_details("end_proper","universe destroyed")
 				if(!delay_end)
-					to_world(SPAN("notice", "<b>Rebooting due to destruction of [station_name()] in [restart_timeout/10] seconds</b>"))
+					to_world("<span class='notice'><b>Rebooting due to destruction of [station_name()] in [restart_timeout/10] seconds</b></span>")
 
 			else
 				feedback_set_details("end_proper","proper completion")
 				if(!delay_end)
-					to_world(SPAN("notice", "<b>Restarting in [restart_timeout/10] seconds</b>"))
+					to_world("<span class='notice'><b>Restarting in [restart_timeout/10] seconds</b></span>")
 
 			handle_tickets()
 			SSstoryteller.collect_statistics()
@@ -373,18 +373,18 @@ Helpers
 
 /datum/controller/subsystem/ticker/proc/notify_delay()
 	if(!delay_notified)
-		to_world(SPAN("notice", "<b>An admin has delayed the round end</b>"))
+		to_world("<span class='notice'><b>An admin has delayed the round end</b></span>")
 	delay_notified = 1
 
 /datum/controller/subsystem/ticker/proc/handle_tickets()
 	for(var/datum/ticket/ticket in tickets)
 		if(ticket.is_active())
 			if(!delay_notified)
-				message_staff(SPAN("warning", "<b>Automatically delaying restart due to active tickets.</b>"))
+				message_staff("<span class='warning'><b>Automatically delaying restart due to active tickets.</b></span>")
 			notify_delay()
 			end_game_state = END_GAME_AWAITING_TICKETS
 			return
-	message_staff(SPAN("warning", "<b>No active tickets remaining, restarting in [restart_timeout/10] seconds if an admin has not delayed the round end.</b>"))
+	message_staff("<span class='warning'><b>No active tickets remaining, restarting in [restart_timeout/10] seconds if an admin has not delayed the round end.</b></span>")
 	end_game_state = END_GAME_ENDING
 
 /datum/controller/subsystem/ticker/proc/declare_completion()

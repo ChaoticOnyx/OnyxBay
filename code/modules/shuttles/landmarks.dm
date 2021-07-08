@@ -106,7 +106,7 @@
 
 /obj/item/device/spaceflare/attack_self(mob/user)
 	if(!active)
-		visible_message(SPAN("notice", "[user] pulls the cord, activating the [src]."))
+		visible_message("<span class='notice'>[user] pulls the cord, activating the [src].</span>")
 		activate()
 
 /obj/item/device/spaceflare/proc/activate()

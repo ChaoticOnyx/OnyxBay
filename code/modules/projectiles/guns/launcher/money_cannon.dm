@@ -43,10 +43,10 @@
 	if(projectile_vomit)
 		vomit_onto.AdjustStunned(3)
 		vomit_onto.AdjustWeakened(3)
-		vomit_onto.visible_message(SPAN("danger", "\The [vomit_onto] blasts themselves full in the face with \the [src]!"))
+		vomit_onto.visible_message("<span class='danger'>\The [vomit_onto] blasts themselves full in the face with \the [src]!</span>")
 		playsound(T, "sound/effects/weapons/misc/money_launcher_jackpot.ogg", 100, 1)
 	else
-		vomit_onto.visible_message(SPAN("danger", "\The [vomit_onto] ejects a few credits into their face."))
+		vomit_onto.visible_message("<span class='danger'>\The [vomit_onto] ejects a few credits into their face.</span>")
 		playsound(T, 'sound/effects/weapons/misc/money_launcher.ogg', 100, 1)
 
 	receptacle_value = 0
@@ -152,10 +152,10 @@
 		return
 
 	var/mob/living/carbon/human/M = user
-	M.visible_message(SPAN("danger", "[user] sticks [src] in their mouth, ready to pull the trigger..."))
+	M.visible_message("<span class='danger'>[user] sticks [src] in their mouth, ready to pull the trigger...</span>")
 
 	if(!do_after(user, 40, progress = 0))
-		M.visible_message(SPAN("notice", "[user] decided life was worth living."))
+		M.visible_message("<span class='notice'>[user] decided life was worth living.</span>")
 		return
 
 	src.make_it_rain(user)

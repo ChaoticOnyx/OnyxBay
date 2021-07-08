@@ -730,7 +730,7 @@
 
 /mob/living/carbon/human/proc/play_xylophone()
 	if(!src.xylophone)
-		visible_message(SPAN("warning", "\The [src] begins playing \his ribcage like a xylophone. It's quite spooky."), SPAN("notice'>You begin to play a spooky refrain on your ribcage.</span>","<span class='warning"), "You hear a spooky xylophone melody.")
+		visible_message("<span class='warning'>\The [src] begins playing \his ribcage like a xylophone. It's quite spooky.</span>","<span class='notice'>You begin to play a spooky refrain on your ribcage.</span>","<span class='warning'>You hear a spooky xylophone melody.</span>")
 		var/song = pick('sound/effects/xylophone1.ogg','sound/effects/xylophone2.ogg','sound/effects/xylophone3.ogg')
 		playsound(loc, song, 50, 1, -1)
 		xylophone = 1
@@ -777,7 +777,7 @@
 						if(src.species.gluttonous & GLUT_PROJECTILE_VOMIT)
 							A.throw_at(get_edge_target_turf(src,src.dir),7,7,src)
 
-					src.visible_message(SPAN("warning", "[src] throws up!"), SPAN("warning", "You throw up!"))
+					src.visible_message("<span class='warning'>[src] throws up!</span>","<span class='warning'>You throw up!</span>")
 					playsound(loc, 'sound/effects/splat.ogg', 50, 1)
 
 					var/turf/location = loc
@@ -867,7 +867,7 @@
 	regenerate_icons()
 	check_dna()
 
-	visible_message(SPAN("notice", "\The [src] morphs and changes [get_visible_gender() == MALE ? "his" : get_visible_gender() == FEMALE ? "her" : "their"] appearance!"), SPAN("notice", "You change your appearance!"), SPAN("warning", "Oh, god! What the hell was that? It sounded like flesh getting squished and bone ground into a different shape!"))
+	visible_message("<span class='notice'>\The [src] morphs and changes [get_visible_gender() == MALE ? "his" : get_visible_gender() == FEMALE ? "her" : "their"] appearance!</span>", "<span class='notice'>You change your appearance!</span>", "<span class='warning'>Oh, god!  What the hell was that?  It sounded like flesh getting squished and bone ground into a different shape!</span>")
 
 /mob/living/carbon/human/proc/remotesay()
 	set name = "Project mind"
@@ -890,10 +890,10 @@
 
 	var/say = sanitize(input("What do you wish to say"))
 	if(mRemotetalk in target.mutations)
-		target.show_message(SPAN("notice", "You hear [src.real_name]'s voice: [say]"))
+		target.show_message("<span class='notice'>You hear [src.real_name]'s voice: [say]</span>")
 	else
-		target.show_message(SPAN("notice", "You hear a voice that seems to echo around the room: [say]"))
-	usr.show_message(SPAN("notice", "You project your mind into [target.real_name]: [say]"))
+		target.show_message("<span class='notice'>You hear a voice that seems to echo around the room: [say]</span>")
+	usr.show_message("<span class='notice'>You project your mind into [target.real_name]: [say]</span>")
 	log_say("[key_name(usr)] sent a telepathic message to [key_name(target)]: [say]")
 	for(var/mob/observer/ghost/G in world)
 		G.show_message("<i>Telepathic message from <b>[src]</b> to <b>[target]</b>: [say]</i>")
@@ -1061,10 +1061,10 @@
 	if(usr == src)
 		self = 1
 	if(!self)
-		usr.visible_message(SPAN("notice", "[usr] kneels down, puts \his hand on [src]'s wrist and begins counting their pulse."),
+		usr.visible_message("<span class='notice'>[usr] kneels down, puts \his hand on [src]'s wrist and begins counting their pulse.</span>",\
 		"You begin counting [src]'s pulse")
 	else
-		usr.visible_message(SPAN("notice", "[usr] begins counting their pulse."),
+		usr.visible_message("<span class='notice'>[usr] begins counting their pulse.</span>",\
 		"You begin counting your pulse.")
 
 	if(pulse())

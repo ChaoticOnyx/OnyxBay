@@ -36,7 +36,7 @@
 		return
 
 	deployed = 1
-	visible_message(SPAN("danger", "The explosive bolts on \the [src] detonate, throwing it open!"))
+	visible_message("<span class='danger'>The explosive bolts on \the [src] detonate, throwing it open!</span>")
 	playsound(src.loc, 'sound/effects/bang.ogg', 50, 1, 5)
 
 	// This is shit but it will do for the sake of testing.

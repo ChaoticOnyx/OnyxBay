@@ -29,18 +29,18 @@
 	attack_damage = Clamp(attack_damage, 1, 5)
 
 	if(target == user)
-		user.visible_message(SPAN("danger", "[user] [pick(attack_verb)] \himself in the [affecting.name]!"))
+		user.visible_message("<span class='danger'>[user] [pick(attack_verb)] \himself in the [affecting.name]!</span>")
 		return 0
 
 	switch(zone)
 		if(BP_HEAD, BP_MOUTH, BP_EYES)
 			// ----- HEAD ----- //
 			switch(attack_damage)
-				if(1 to 2) user.visible_message(SPAN("danger", "[user] scratched [target] across \his cheek!"))
+				if(1 to 2) user.visible_message("<span class='danger'>[user] scratched [target] across \his cheek!</span>")
 				if(3 to 4)
 					user.visible_message(pick(
-						80; user.visible_message(SPAN("danger", "[user] [pick(attack_verb)] [target]'s [pick("face", "neck", affecting.name)]!"),)
-						20; user.visible_message(SPAN("danger", "[user] [pick(attack_verb)] [pick("[target] in the [affecting.name]", "[target] across \his [pick("face", "neck", affecting.name)]")]!"),)
+						80; user.visible_message("<span class='danger'>[user] [pick(attack_verb)] [target]'s [pick("face", "neck", affecting.name)]!</span>"),
+						20; user.visible_message("<span class='danger'>[user] [pick(attack_verb)] [pick("[target] in the [affecting.name]", "[target] across \his [pick("face", "neck", affecting.name)]")]!</span>"),
 						))
 				if(5)
 					user.visible_message(pick(
@@ -50,13 +50,13 @@
 		else
 			// ----- BODY ----- //
 			switch(attack_damage)
-				if(1 to 2)	user.visible_message(SPAN("danger", "[user] [pick("scratched", "grazed")] [target]'s [affecting.name]!"))
+				if(1 to 2)	user.visible_message("<span class='danger'>[user] [pick("scratched", "grazed")] [target]'s [affecting.name]!</span>")
 				if(3 to 4)
 					user.visible_message(pick(
-						80; user.visible_message(SPAN("danger", "[user] [pick(attack_verb)] [target]'s [affecting.name]!"),)
-						20; user.visible_message(SPAN("danger", "[user] [pick(attack_verb)] [pick("[target] in the [affecting.name]", "[target] across \his [affecting.name]")]!"),)
+						80; user.visible_message("<span class='danger'>[user] [pick(attack_verb)] [target]'s [affecting.name]!</span>"),
+						20; user.visible_message("<span class='danger'>[user] [pick(attack_verb)] [pick("[target] in the [affecting.name]", "[target] across \his [affecting.name]")]!</span>"),
 						))
-				if(5)		user.visible_message(SPAN("danger", "[user] tears \his [pick(attack_noun)] [pick("deep into", "into", "across")] [target]'s [affecting.name]!"))
+				if(5)		user.visible_message("<span class='danger'>[user] tears \his [pick(attack_noun)] [pick("deep into", "into", "across")] [target]'s [affecting.name]!</span>")
 
 /datum/unarmed_attack/claws/strong
 	attack_verb = list("slashed")
@@ -101,7 +101,7 @@
 
 /datum/unarmed_attack/stomp/weak/show_attack(mob/living/carbon/human/user, mob/living/carbon/human/target, zone, attack_damage)
 	var/obj/item/organ/external/affecting = target.get_organ(zone)
-	user.visible_message(SPAN("warning", "[user] jumped up and down on \the [target]'s [affecting.name]!"))
+	user.visible_message("<span class='warning'>[user] jumped up and down on \the [target]'s [affecting.name]!</span>")
 	playsound(user.loc, attack_sound, 25, 1, -1)
 
 /datum/unarmed_attack/tail //generally meant for people like unathi
@@ -135,11 +135,11 @@
 	attack_damage = 3 + attack_damage - rand(1, 5)
 	switch(attack_damage)
 
-		if(3 to 5)	user.visible_message(SPAN("danger", "[user] glanced [target] with their [pick(attack_noun)] in the [organ]!"))
+		if(3 to 5)	user.visible_message("<span class='danger'>[user] glanced [target] with their [pick(attack_noun)] in the [organ]!</span>")
 
-		if(6 to 7)	user.visible_message(SPAN("danger", "[user] [pick(attack_verb)] [target] in \his [organ]!"))
+		if(6 to 7)	user.visible_message("<span class='danger'>[user] [pick(attack_verb)] [target] in \his [organ]!</span>")
 
-		if(8)		user.visible_message(SPAN("danger", "[user] landed a heavy blow with their [pick(attack_noun)] against [target]'s [organ]!"))
+		if(8)		user.visible_message("<span class='danger'>[user] landed a heavy blow with their [pick(attack_noun)] against [target]'s [organ]!</span>")
 
 /datum/unarmed_attack/nabber
 	attack_verb = list("mauled", "slashed", "struck", "pierced")

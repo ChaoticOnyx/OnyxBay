@@ -6,7 +6,7 @@
 	icon_state = "diamond"
 
 /obj/item/clothing/ring/engagement/attack_self(mob/user)
-	user.visible_message(SPAN("warning", "\The [user] gets down on one knee, presenting \the [src]."), SPAN("warning", "You get down on one knee, presenting \the [src]."))
+	user.visible_message("<span class='warning'>\The [user] gets down on one knee, presenting \the [src].</span>","<span class='warning'>You get down on one knee, presenting \the [src].</span>")
 
 /obj/item/clothing/ring/cti
 	name = "CTI ring"

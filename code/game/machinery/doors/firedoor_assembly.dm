@@ -39,7 +39,7 @@
 	else if(istype(C, /obj/item/weapon/airalarm_electronics) && wired)
 		if(anchored)
 			playsound(src.loc, 'sound/items/Deconstruct.ogg', 50, 1)
-			user.visible_message(SPAN("warning", "[user] has inserted a circuit into \the [src]!"),
+			user.visible_message("<span class='warning'>[user] has inserted a circuit into \the [src]!</span>",
 								  "You have inserted the circuit into \the [src]!")
 			new /obj/machinery/door/firedoor(src.loc)
 			qdel(C)
@@ -49,17 +49,17 @@
 	else if(isWrench(C))
 		anchored = !anchored
 		playsound(src.loc, 'sound/items/Ratchet.ogg', 50, 1)
-		user.visible_message(SPAN("warning", "[user] has [anchored ? "" : "un" ]secured \the [src]!"),
+		user.visible_message("<span class='warning'>[user] has [anchored ? "" : "un" ]secured \the [src]!</span>",
 							  "You have [anchored ? "" : "un" ]secured \the [src]!")
 		update_icon()
 	else if(!anchored && isWelder(C))
 		var/obj/item/weapon/weldingtool/WT = C
 		if(WT.remove_fuel(0, user))
-			user.visible_message(SPAN("warning", "[user] dissassembles \the [src]."),
+			user.visible_message("<span class='warning'>[user] dissassembles \the [src].</span>",
 			"You start to dissassemble \the [src].")
 			if(do_after(user, 40, src))
 				if(!src || !WT.isOn()) return
-				user.visible_message(SPAN("warning", "[user] has dissassembled \the [src]."),
+				user.visible_message("<span class='warning'>[user] has dissassembled \the [src].</span>",
 									"You have dissassembled \the [src].")
 				new /obj/item/stack/material/steel(src.loc, 2)
 				qdel(src)

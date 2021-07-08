@@ -42,13 +42,13 @@
 
 /obj/item/clothing/mask/smokable/pipe/attack_self(mob/user as mob)
 	if(lit == 1)
-		user.visible_message(SPAN("notice", "[user] puts out [src]."), SPAN("notice", "You put out [src]."))
+		user.visible_message("<span class='notice'>[user] puts out [src].</span>", "<span class='notice'>You put out [src].</span>")
 		lit = 0
 		update_icon()
 		STOP_PROCESSING(SSobj, src)
 	else if(smoketime)
 		var/turf/location = get_turf(user)
-		user.visible_message(SPAN("notice", "[user] empties out [src]."), SPAN("notice", "You empty out [src]."))
+		user.visible_message("<span class='notice'>[user] empties out [src].</span>", "<span class='notice'>You empty out [src].</span>")
 		new /obj/effect/decal/cleanable/ash(location)
 		smoketime = 0
 		reagents.clear_reagents()

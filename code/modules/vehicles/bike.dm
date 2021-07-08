@@ -111,7 +111,7 @@
 			if(engine)
 				to_chat(user, "<span class='warning'>There is already an engine block in \the [src].</span>")
 				return 1
-			user.visible_message(SPAN("warning", "\The [user] installs \the [W] into \the [src]."))
+			user.visible_message("<span class='warning'>\The [user] installs \the [W] into \the [src].</span>")
 			load_engine(W)
 			return
 		else if(engine && engine.attackby(W,user))

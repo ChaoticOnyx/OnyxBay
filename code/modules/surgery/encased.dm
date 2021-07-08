@@ -56,8 +56,8 @@
 		return
 	var/obj/item/organ/external/affected = target.get_organ(target_zone)
 
-	user.visible_message(SPAN("notice", "[user] has cut [target]'s [affected.encased] open with \the [tool]."),		\
-	SPAN("notice", "You have cut [target]'s [affected.encased] open with \the [tool]."))
+	user.visible_message("<span class='notice'>[user] has cut [target]'s [affected.encased] open with \the [tool].</span>",		\
+	"<span class='notice'>You have cut [target]'s [affected.encased] open with \the [tool].</span>")
 	affected.fracture()
 
 /datum/surgery_step/open_encased/saw/fail_step(mob/living/user, mob/living/carbon/human/target, target_zone, obj/item/tool)
@@ -66,8 +66,8 @@
 		return
 	var/obj/item/organ/external/affected = target.get_organ(target_zone)
 
-	user.visible_message(SPAN("warning", "[user]'s hand slips, cracking [target]'s [affected.encased] with \the [tool]!"), \
-	SPAN("warning", "Your hand slips, cracking [target]'s [affected.encased] with \the [tool]!"))
+	user.visible_message("<span class='warning'>[user]'s hand slips, cracking [target]'s [affected.encased] with \the [tool]!</span>" , \
+	"<span class='warning'>Your hand slips, cracking [target]'s [affected.encased] with \the [tool]!</span>" )
 
 	affected.take_external_damage(15, 0, (DAM_SHARP|DAM_EDGE), used_weapon = tool)
 	affected.fracture()

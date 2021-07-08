@@ -94,14 +94,14 @@
 	if(O.gel_amt != 0)
 		if(!O.emagged)
 			if(affected && affected.damage > 0 && !BP_IS_ROBOTIC(affected) && (affected.surface_accessible || target.get_organ(target_zone).open() >= (target.get_organ(target_zone).encased ? SURGERY_ENCASED : SURGERY_RETRACTED)))
-				user.visible_message(SPAN("notice", "[user] repairs [target]'s [affected.name] with [O]."),
+				user.visible_message(SPAN("notice", "[user] repairs [target]'s [affected.name] with [O]."), \
 				SPAN("notice", "You repair [target]'s [affected.name] with [O]."))
 				affected.damage = 0
 				if(affected.status & ORGAN_DEAD && affected.can_recover())
 					affected.status &= ~ORGAN_DEAD
 				affected.owner.update_body(1)
 		else
-			user.visible_message(SPAN("warning", "[user]'s hand slips, getting mess and tearing the inside of [target]'s [affected.name] with \the [O]!"),
+			user.visible_message(SPAN("warning", "[user]'s hand slips, getting mess and tearing the inside of [target]'s [affected.name] with \the [O]!"), \
 			SPAN("warning", "Something goes wrong and \the [O] shreds [target]'s [affected.name] before you have a chance to react!"))
 
 			target.custom_pain("Your [target.op_stage.current_organ] feels like it's getting torn apart!",150,affecting = target.op_stage.current_organ)
@@ -119,7 +119,7 @@
 		return
 	var/obj/item/organ/internal/affected = target.op_stage.current_organ
 
-	user.visible_message(SPAN("warning", "[user]'s hand slips, getting mess and tearing the inside of [target]'s [affected.name] with \the [tool]!"),
+	user.visible_message(SPAN("warning", "[user]'s hand slips, getting mess and tearing the inside of [target]'s [affected.name] with \the [tool]!"), \
 	SPAN("warning", "Your hand slips, getting mess and tearing the inside of [target]'s [affected.name] with \the [tool]!"))
 
 	target.adjustToxLoss(10)
@@ -193,7 +193,7 @@
 				if((I.status & ORGAN_DEAD) && !I.can_recover())
 					to_chat(user, SPAN("notice", "[target]'s [I.name] is destroyed and can't be fixed with \the [O]."))
 					continue
-				user.visible_message(SPAN("notice", "[user] repairs [target]'s [I.name] with \the [O]."),
+				user.visible_message(SPAN("notice", "[user] repairs [target]'s [I.name] with \the [O]."), \
 				SPAN("notice", "You repair [target]'s [I.name] with \the [O]."))
 				I.damage = 0
 				if((I.status & ORGAN_DEAD) && I.can_recover())
@@ -202,7 +202,7 @@
 				if(O.gel_amt_max != -1)
 					O.gel_amt--
 	else
-		user.visible_message(SPAN("warning", "[user]'s hand slips, getting mess and tearing the inside of [target]'s [affected.name] with \the [O]!"),
+		user.visible_message(SPAN("warning", "[user]'s hand slips, getting mess and tearing the inside of [target]'s [affected.name] with \the [O]!"), \
 		SPAN("warning", "Something goes wrong and \the [O] shreds everything inside [target]'s [affected.name] before you have a chance to react!"))
 
 		target.custom_pain("Your whole [affected] feels like it's getting torn apart!",150,affecting = affected)
@@ -217,7 +217,7 @@
 		return
 	var/obj/item/organ/external/affected = target.get_organ(target_zone)
 
-	user.visible_message(SPAN("warning", "[user]'s hand slips, getting mess and tearing the inside of [target]'s [affected.name] with \the [tool]!"),
+	user.visible_message(SPAN("warning", "[user]'s hand slips, getting mess and tearing the inside of [target]'s [affected.name] with \the [tool]!"), \
 	SPAN("warning", "Your hand slips, getting mess and tearing the inside of [target]'s [affected.name] with \the [tool]!"))
 	target.adjustToxLoss(10)
 	affected.take_external_damage(5, 0, (DAM_SHARP|DAM_EDGE), used_weapon = tool)
@@ -309,10 +309,10 @@
 	var/obj/item/organ/internal/affected = target.op_stage.current_organ
 	if(affected && affected.damage > 0 && !BP_IS_ROBOTIC(affected) && (affected.surface_accessible || target.get_organ(target_zone).open() >= (target.get_organ(target_zone).encased ? SURGERY_ENCASED : SURGERY_RETRACTED)))
 		if(affected.status & ORGAN_DEAD && affected.can_recover())
-			user.visible_message(SPAN("notice", "[user] treats damage to [target]'s [affected.name] with [tool_name], though it needs to be recovered further."),
+			user.visible_message(SPAN("notice", "[user] treats damage to [target]'s [affected.name] with [tool_name], though it needs to be recovered further."), \
 						             SPAN("notice", "You treat damage to [target]'s [affected.name] with [tool_name], though it needs to be recovered further."))
 		else
-			user.visible_message(SPAN("notice", "[user] treats damage to [target]'s [affected.name] with [tool_name]."),
+			user.visible_message(SPAN("notice", "[user] treats damage to [target]'s [affected.name] with [tool_name]."), \
 						             SPAN("notice", "You treat damage to [target]'s [affected.name] with [tool_name]."))
 		if(istype(tool, /obj/item/stack/medical/advanced/bruise_pack) || istype(tool, /obj/item/stack/medical/bruise_pack))
 			var/obj/item/stack/medical/M = tool
@@ -326,7 +326,7 @@
 		return
 	var/obj/item/organ/external/affected = target.get_organ(target_zone)
 
-	user.visible_message(SPAN("warning", "[user]'s hand slips, getting mess and tearing the inside of [target]'s [affected.name] with \the [tool]!"),
+	user.visible_message(SPAN("warning", "[user]'s hand slips, getting mess and tearing the inside of [target]'s [affected.name] with \the [tool]!"), \
 			                 SPAN("warning", "Your hand slips, getting mess and tearing the inside of [target]'s [affected.name] with \the [tool]!"))
 	var/dam_amt = 2
 
@@ -407,7 +407,7 @@
 
 /datum/surgery_step/internal/detatch_organ/fail_step(mob/living/user, mob/living/carbon/human/target, target_zone, obj/item/tool)
 	var/obj/item/organ/external/affected = target.get_organ(target_zone)
-	user.visible_message(SPAN("warning", "[user]'s hand slips, slicing an artery inside [target]'s [affected.name] with \the [tool]!"),
+	user.visible_message(SPAN("warning", "[user]'s hand slips, slicing an artery inside [target]'s [affected.name] with \the [tool]!"), \
 	SPAN("warning", "Your hand slips, slicing an artery inside [target]'s [affected.name] with \the [tool]!"))
 	affected.take_external_damage(rand(30,50), 0, (DAM_SHARP|DAM_EDGE), used_weapon = tool)
 
@@ -466,7 +466,7 @@
 	..()
 
 /datum/surgery_step/internal/remove_organ/end_step(mob/living/user, mob/living/carbon/human/target, target_zone, obj/item/tool)
-	user.visible_message(SPAN("notice", "[user] has removed [target]'s [target.op_stage.current_organ] with \the [tool]."),
+	user.visible_message(SPAN("notice", "[user] has removed [target]'s [target.op_stage.current_organ] with \the [tool]."), \
 	SPAN("notice", "You have removed [target]'s [target.op_stage.current_organ] with \the [tool]."))
 
 	// Extract the organ!
@@ -491,7 +491,7 @@
 
 /datum/surgery_step/internal/remove_organ/fail_step(mob/living/user, mob/living/carbon/human/target, target_zone, obj/item/tool)
 	var/obj/item/organ/external/affected = target.get_organ(target_zone)
-	user.visible_message(SPAN("warning", "[user]'s hand slips, damaging [target]'s [affected.name] with \the [tool]!"),
+	user.visible_message(SPAN("warning", "[user]'s hand slips, damaging [target]'s [affected.name] with \the [tool]!"), \
 	SPAN("warning", "Your hand slips, damaging [target]'s [affected.name] with \the [tool]!"))
 	affected.take_external_damage(20, used_weapon = tool)
 
@@ -565,7 +565,7 @@
 
 /datum/surgery_step/internal/replace_organ/end_step(mob/living/user, mob/living/carbon/human/target, target_zone, obj/item/tool)
 	var/obj/item/organ/external/affected = target.get_organ(target_zone)
-	user.visible_message(SPAN("notice", "[user] has transplanted \the [tool] into [target]'s [affected.name]."),
+	user.visible_message(SPAN("notice", "[user] has transplanted \the [tool] into [target]'s [affected.name]."), \
 	SPAN("notice", "You have transplanted \the [tool] into [target]'s [affected.name]."))
 	var/obj/item/organ/O = tool
 	if(istype(O))
@@ -580,7 +580,7 @@
 		playsound(target.loc, 'sound/effects/squelch1.ogg', 15, 1)
 
 /datum/surgery_step/internal/replace_organ/fail_step(mob/living/user, mob/living/carbon/human/target, target_zone, obj/item/tool)
-	user.visible_message(SPAN("warning", "[user]'s hand slips, damaging \the [tool]!"),
+	user.visible_message(SPAN("warning", "[user]'s hand slips, damaging \the [tool]!"), \
 	SPAN("warning", "Your hand slips, damaging \the [tool]!"))
 	var/obj/item/organ/internal/I = tool
 	if(istype(I))
@@ -655,7 +655,7 @@
 
 /datum/surgery_step/internal/attach_organ/fail_step(mob/living/user, mob/living/carbon/human/target, target_zone, obj/item/tool)
 	var/obj/item/organ/external/affected = target.get_organ(target_zone)
-	user.visible_message(SPAN("warning", "[user]'s hand slips, damaging the flesh in [target]'s [affected.name] with \the [tool]!"),
+	user.visible_message(SPAN("warning", "[user]'s hand slips, damaging the flesh in [target]'s [affected.name] with \the [tool]!"), \
 	SPAN("warning", "Your hand slips, damaging the flesh in [target]'s [affected.name] with \the [tool]!"))
 	affected.take_external_damage(20, used_weapon = tool)
 
@@ -747,7 +747,7 @@
 				affected.death_time = 0
 				affected.owner.update_body(1)
 
-		user.visible_message(SPAN("notice", "[user] applies [trans] unit\s of the solution to affected tissue in [target]'s [affected.name]"),
+		user.visible_message(SPAN("notice", "[user] applies [trans] unit\s of the solution to affected tissue in [target]'s [affected.name]"), \
 			SPAN("notice", "You apply [trans] unit\s of the solution to affected tissue in [target]'s [affected.name] with \the [tool]."))
 	qdel(temp_reagents)
 

@@ -640,7 +640,7 @@
 				for(var/mob/living/M in view(7,user))
 					choices += M
 				T = input(user,"Who do you wish to sculpt?") as null|anything in choices
-				user.visible_message(SPAN("notice", "[user] begins sculpting."),
+				user.visible_message("<span class='notice'>[user] begins sculpting.</span>",
 					"<span class='notice'>You begin sculpting.</span>")
 
 			var/sculpting_coefficient = get_dist(user,T)
@@ -651,7 +651,7 @@
 				to_chat(user, "<span class='warning'>You hardly remember what [T] really looks like! Bah!</span>")
 				T = null
 
-			user.visible_message(SPAN("notice", "[user] carves away at the sculpting block!"),
+			user.visible_message("<span class='notice'>[user] carves away at the sculpting block!</span>",
 				"<span class='notice'>You continue sculpting.</span>")
 
 			playsound(user, get_sfx("chisel"), 30, 1)
@@ -670,7 +670,7 @@
 					return
 				else
 					sculpted = 1
-					user.visible_message(SPAN("notice", "[user] finishes sculpting their magnum opus!"),
+					user.visible_message("<span class='notice'>[user] finishes sculpting their magnum opus!</span>",
 						"<span class='notice'>You finish sculpting a masterpiece.</span>")
 					src.appearance = T
 					appearance_flags = KEEP_TOGETHER

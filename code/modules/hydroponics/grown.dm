@@ -20,7 +20,7 @@
 /obj/item/weapon/reagent_containers/food/snacks/grown/Initialize()
 	. = ..()
 	if(!SSplants)
-		log_error(SPAN("danger", "Plant controller does not exist and [src] requires it. Aborting."))
+		log_error("<span class='danger'>Plant controller does not exist and [src] requires it. Aborting.</span>")
 		return INITIALIZE_HINT_QDEL
 
 	seed = SSplants.seeds[plantname]
@@ -69,7 +69,7 @@
 	if(!SSplants)
 		sleep(250) // ugly hack, should mean roundstart plants are fine.
 	if(!SSplants)
-		log_error(SPAN("danger", "Plant controller does not exist and [src] requires it. Aborting."))
+		log_error("<span class='danger'>Plant controller does not exist and [src] requires it. Aborting.</span>")
 		qdel(src)
 		return
 
@@ -183,13 +183,13 @@
 				return
 		else if(W.edge)
 			if(seed.kitchen_tag == "pumpkin") // Ugggh these checks are awful.
-				user.show_message(SPAN("notice", "You carve a face into [src]!"), 1)
+				user.show_message("<span class='notice'>You carve a face into [src]!</span>", 1)
 				new /obj/item/clothing/head/pumpkinhead (user.loc)
 				qdel(src)
 				return
 			else if(seed.chems)
 				if(istype(W,/obj/item/weapon/material/hatchet) && !isnull(seed.chems[/datum/reagent/woodpulp]))
-					user.show_message(SPAN("notice", "You make planks out of \the [src]!"), 1)
+					user.show_message("<span class='notice'>You make planks out of \the [src]!</span>", 1)
 					var/flesh_colour = seed.get_trait(TRAIT_FLESH_COLOUR)
 					if(!flesh_colour) flesh_colour = seed.get_trait(TRAIT_PRODUCT_COLOUR)
 					for(var/i=0,i<2,i++)
@@ -256,14 +256,14 @@
 		return
 
 	if(user.a_intent == I_HURT)
-		user.visible_message(SPAN("danger", "\The [user] squashes \the [src]!"))
+		user.visible_message("<span class='danger'>\The [user] squashes \the [src]!</span>")
 		seed.thrown_at(src,user)
 		sleep(-1)
 		if(src) qdel(src)
 		return
 
 	if(seed.kitchen_tag == "grass")
-		user.show_message(SPAN("notice", "You make a grass tile out of \the [src]!"), 1)
+		user.show_message("<span class='notice'>You make a grass tile out of \the [src]!</span>", 1)
 		var/flesh_colour = seed.get_trait(TRAIT_FLESH_COLOUR)
 		if(!flesh_colour) flesh_colour = seed.get_trait(TRAIT_PRODUCT_COLOUR)
 		for(var/i=0,i<2,i++)

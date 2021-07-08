@@ -100,9 +100,9 @@
 		W.message = message
 		W.add_hiddenprint(src)
 		if(!bloodless)
-			W.visible_message(SPAN("warning", "Invisible fingers crudely paint something in blood on \the [T]."))
+			W.visible_message("<span class='warning'>Invisible fingers crudely paint something in blood on \the [T].</span>")
 		else
-			W.visible_message(SPAN("warning", "Blood appears out of nowhere as invisible fingers crudely paint something on \the [T]."))
+			W.visible_message("<span class='warning'>Blood appears out of nowhere as invisible fingers crudely paint something on \the [T].</span>")
 
 		log_admin("[src] ([src.key]) used ghost magic to write '[message]'", src)
 
@@ -159,7 +159,7 @@
 		return
 
 	if(step_to(choice, T))
-		choice.visible_message(SPAN("warning", "\The [choice] suddenly moves!"))
+		choice.visible_message("<span class='warning'>\The [choice] suddenly moves!</span>")
 
 	ghost_magic_cd = world.time + 60 SECONDS
 

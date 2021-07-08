@@ -474,7 +474,7 @@
 		temperature_gain = 60
 		reagents.remove_any(1)
 		if(prob(2))
-			audible_message(SPAN("notice", "[src] churns happily"))
+			audible_message("<span class='notice'>[src] churns happily</span>")
 	else
 		rad_power = initial(rad_power)
 		temperature_gain = initial(temperature_gain)
@@ -491,10 +491,10 @@
 		var/obj/item/weapon/reagent_containers/R = O
 		if(R.standard_pour_into(src,user))
 			if(reagents.has_reagent("vodka"))
-				audible_message(SPAN("notice", "[src] blips happily"))
+				audible_message("<span class='notice'>[src] blips happily</span>")
 				playsound(src,'sound/machines/synth_yes.ogg', 50, 0)
 			else
-				audible_message(SPAN("warning", "[src] blips in disappointment"))
+				audible_message("<span class='warning'>[src] blips in disappointment</span>")
 				playsound(src, 'sound/machines/synth_no.ogg', 50, 0)
 		return
 	..()

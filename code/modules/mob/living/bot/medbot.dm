@@ -75,7 +75,7 @@
 		return
 
 	icon_state = "medibots"
-	visible_message(SPAN("warning", "[src] is trying to inject [H]!"))
+	visible_message("<span class='warning'>[src] is trying to inject [H]!</span>")
 	if(declare_treatment)
 		var/area/location = get_area(src)
 		broadcast_medical_hud_message("[src] is treating <b>[H]</b> in <b>[location]</b>", src)
@@ -86,7 +86,7 @@
 			reagent_glass.reagents.trans_to_mob(H, injection_amount, CHEM_BLOOD)
 		else
 			H.reagents.add_reagent(t, injection_amount)
-		visible_message(SPAN("warning", "[src] injects [H] with the syringe!"))
+		visible_message("<span class='warning'>[src] injects [H] with the syringe!</span>")
 	busy = 0
 	update_icons()
 
@@ -201,7 +201,7 @@
 		if(user)
 			to_chat(user, "<span class='warning'>You short out [src]'s reagent synthesis circuits.</span>")
 			ignore_list |= user
-		visible_message(SPAN("warning", "[src] buzzes oddly!"))
+		visible_message("<span class='warning'>[src] buzzes oddly!</span>")
 		flick("medibot_spark", src)
 		target = null
 		busy = 0
@@ -212,7 +212,7 @@
 
 /mob/living/bot/medbot/explode()
 	on = 0
-	visible_message(SPAN("danger", "[src] blows apart!"))
+	visible_message("<span class='danger'>[src] blows apart!</span>")
 	var/turf/Tsec = get_turf(src)
 
 	new /obj/item/weapon/storage/firstaid(Tsec)

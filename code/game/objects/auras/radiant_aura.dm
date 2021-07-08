@@ -15,6 +15,6 @@
 
 /obj/aura/radiant_aura/bullet_act(obj/item/projectile/P, def_zone)
 	if(P.check_armour == "laser")
-		user.visible_message(SPAN("warning", "\The [P] refracts, bending into \the [user]'s aura."))
+		user.visible_message("<span class='warning'>\The [P] refracts, bending into \the [user]'s aura.</span>")
 		return AURA_FALSE
 	return 0

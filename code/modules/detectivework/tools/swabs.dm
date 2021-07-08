@@ -36,7 +36,7 @@
 			return
 
 		if(user != H && H.a_intent != I_HELP && !H.lying)
-			user.visible_message(SPAN("danger", "\The [user] tries to take a swab sample from \the [H], but they move away."))
+			user.visible_message("<span class='danger'>\The [user] tries to take a swab sample from \the [H], but they move away.</span>")
 			inuse = 0
 			return
 		var/target_dna

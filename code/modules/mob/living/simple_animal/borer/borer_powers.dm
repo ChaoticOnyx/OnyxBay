@@ -356,7 +356,7 @@ GLOBAL_LIST_INIT(borer_reagent_types_by_name, setup_borer_reagents())
 		return
 
 	verbs -= /mob/living/carbon/human/proc/jumpstart
-	visible_message(SPAN("warning", "With a hideous, rattling moan, [src] shudders back to life!"))
+	visible_message("<span class='warning'>With a hideous, rattling moan, [src] shudders back to life!</span>")
 
 	rejuvenate()
 	restore_blood()

@@ -200,7 +200,7 @@ var/list/mob_hat_cache = list()
 			return
 		user.unEquip(W)
 		wear_hat(W)
-		user.visible_message(SPAN("notice", "\The [user] puts \the [W] on \the [src]."))
+		user.visible_message("<span class='notice'>\The [user] puts \the [W] on \the [src].</span>")
 		return
 	else if(istype(W, /obj/item/borg/upgrade/))
 		to_chat(user, "<span class='danger'>\The [src] is not compatible with \the [W].</span>")
@@ -222,12 +222,12 @@ var/list/mob_hat_cache = list()
 				to_chat(user, "<span class='danger'>Access denied.</span>")
 				return
 
-			user.visible_message(SPAN("danger", "\The [user] swipes \his ID card through \the [src], attempting to reboot it."), SPAN("danger", "You swipe your ID card through \the [src], attempting to reboot it."))
+			user.visible_message("<span class='danger'>\The [user] swipes \his ID card through \the [src], attempting to reboot it.</span>", "<span class='danger'>You swipe your ID card through \the [src], attempting to reboot it.</span>")
 			request_player()
 			return
 
 		else
-			user.visible_message(SPAN("danger", "\The [user] swipes \his ID card through \the [src], attempting to shut it down."), SPAN("danger", "You swipe your ID card through \the [src], attempting to shut it down."))
+			user.visible_message("<span class='danger'>\The [user] swipes \his ID card through \the [src], attempting to shut it down.</span>", "<span class='danger'>You swipe your ID card through \the [src], attempting to shut it down.</span>")
 
 			if(emagged)
 				return

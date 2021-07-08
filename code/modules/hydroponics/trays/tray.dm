@@ -154,13 +154,13 @@
 		if(weedlevel > 0)
 			nymph.reagents.add_reagent(/datum/reagent/nutriment/glucose, weedlevel)
 			weedlevel = 0
-			nymph.visible_message("<span class='info'><b>[nymph]</b> begins rooting through [src], ripping out weeds and eating them noisily."), SPAN("info", "You begin rooting through [src], ripping out weeds and eating them noisily.</span>")
+			nymph.visible_message("<span class='info'><b>[nymph]</b> begins rooting through [src], ripping out weeds and eating them noisily.</span>","<span class='info'>You begin rooting through [src], ripping out weeds and eating them noisily.</span>")
 		else if(nymph.nutrition > 100 && nutrilevel < 10)
 			nymph.nutrition -= ((10-nutrilevel)*5)
 			nutrilevel = 10
-			nymph.visible_message("<span class='info'><b>[nymph]</b> secretes a trickle of green liquid, refilling [src]."), SPAN("info", "You secrete a trickle of green liquid, refilling [src].</span>")
+			nymph.visible_message("<span class='info'><b>[nymph]</b> secretes a trickle of green liquid, refilling [src].</span>","<span class='info'>You secrete a trickle of green liquid, refilling [src].</span>")
 		else
-			nymph.visible_message("<span class='info'><b>[nymph]</b> rolls around in [src] for a bit."), SPAN("info", "You roll around in [src] for a bit.</span>")
+			nymph.visible_message("<span class='info'><b>[nymph]</b> rolls around in [src] for a bit.</span>","<span class='info'>You roll around in [src] for a bit.</span>")
 		return
 
 /obj/machinery/portable_atmospherics/hydroponics/Initialize()
@@ -343,7 +343,7 @@
 	pestlevel = 0
 	sampled = 0
 	update_icon()
-	visible_message(SPAN("notice", "[src] has been overtaken by [seed.display_name]."))
+	visible_message("<span class='notice'>[src] has been overtaken by [seed.display_name].</span>")
 
 	return
 
@@ -414,7 +414,7 @@
 	weedlevel = 0
 
 	update_icon()
-	visible_message(SPAN("danger", "The </span><span class='notice'>[previous_plant]</span><span class='danger'> has suddenly mutated into </span><span class='notice'>[seed.display_name]!"))
+	visible_message("<span class='danger'>The </span><span class='notice'>[previous_plant]</span><span class='danger'> has suddenly mutated into </span><span class='notice'>[seed.display_name]!</span>")
 
 	return
 
@@ -475,7 +475,7 @@
 	else if (istype(O, /obj/item/weapon/material/minihoe))  // The minihoe
 
 		if(weedlevel > 0)
-			user.visible_message(SPAN("danger", "[user] starts uprooting the weeds."), SPAN("danger", "You remove the weeds from the [src]."))
+			user.visible_message("<span class='danger'>[user] starts uprooting the weeds.</span>", "<span class='danger'>You remove the weeds from the [src].</span>")
 			weedlevel = 0
 			update_icon()
 		else
@@ -515,7 +515,7 @@
 
 	else if(O.force && seed)
 		user.setClickCooldown(DEFAULT_ATTACK_COOLDOWN)
-		user.visible_message(SPAN("danger", "\The [seed.display_name] has been attacked by [user] with \the [O]!"))
+		user.visible_message("<span class='danger'>\The [seed.display_name] has been attacked by [user] with \the [O]!</span>")
 		playsound(src, O.hitsound, 100, 1)
 		if(!dead)
 			health -= O.force

@@ -122,7 +122,7 @@
 					GM.client.eye = src
 				GM.forceMove(src)
 				for(var/mob/C in viewers(src))
-					C.show_message(SPAN("warning", "[GM.name] has been placed in the [src] by [user]."), 3)
+					C.show_message("<span class='warning'>[GM.name] has been placed in the [src] by [user].</span>", 3)
 				qdel(G)
 				admin_attack_log(usr, GM, "Placed the victim into \the [src].", "Was placed into \the [src] by the attacker.", "stuffed \the [src] with")
 		return
@@ -177,7 +177,7 @@
 	src.add_fingerprint(user)
 	var/old_loc = AM.loc
 	if(AM == user)
-		user.visible_message(SPAN("warning", "[user] starts climbing into [src]."),
+		user.visible_message("<span class='warning'>[user] starts climbing into [src].</span>", \
 							 "<span class='notice'>You start climbing into [src].</span>")
 	else
 		user.visible_message("<span class='[is_dangerous ? "warning" : "notice"]'>[user] starts stuffing [AM] into [src].</span>", \
@@ -196,7 +196,7 @@
 
 	// Messages and logging
 	if(AM == user)
-		user.visible_message(SPAN("danger", "[user] climbs into [src]."),
+		user.visible_message("<span class='danger'>[user] climbs into [src].</span>", \
 							 "<span class='notice'>You climb into [src].</span>")
 	else
 		user.visible_message("<span class='[is_dangerous ? "danger" : "notice"]'>[user] stuffs [AM] into [src][is_dangerous ? "!" : "."]</span>", \
@@ -1230,7 +1230,7 @@
 	if(isCrowbar(I))
 		var/obj/item/disposal_switch_construct/C = new /obj/item/disposal_switch_construct(src.loc, id_tag)
 		transfer_fingerprints_to(C)
-		user.visible_message(SPAN("notice", "\The [user] deattaches \the [src]"))
+		user.visible_message("<span class='notice'>\The [user] deattaches \the [src]</span>")
 		qdel(src)
 	else
 		..()
@@ -1327,7 +1327,7 @@
 		if(C.id_tag)
 			id_tag = C.id_tag
 			playsound(src.loc, 'sound/signals/ping1.ogg', 75, 0)
-			user.visible_message(SPAN("notice", "\The [user] changes \the [src]'s tag."))
+			user.visible_message("<span class='notice'>\The [user] changes \the [src]'s tag.</span>")
 
 
 /obj/structure/disposalpipe/diversion_junction/nextdir(fromdir, sortTag)

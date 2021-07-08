@@ -23,12 +23,12 @@
 
 	var/turf/T = get_turf(explosion_source)
 	if(isStationLevel(T.z))
-		to_world(SPAN("danger", "The [station_name()] was destroyed by the nuclear blast!"))
+		to_world("<span class='danger'>The [station_name()] was destroyed by the nuclear blast!</span>")
 		GLOB.ert.is_station_secure = FALSE
 		dust_mobs(GLOB.using_map.station_levels)
 		play_cinematic_station_destroyed()
 	else
-		to_world(SPAN("danger", "A nuclear device was set off, but the explosion was out of reach of the [station_name()]!"))
+		to_world("<span class='danger'>A nuclear device was set off, but the explosion was out of reach of the [station_name()]!</span>")
 
 		dust_mobs(list(T.z))
 		play_cinematic_station_unaffected()

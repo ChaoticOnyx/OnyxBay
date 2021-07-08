@@ -39,7 +39,7 @@
 /datum/surgery_step/glue_bone/end_step(mob/living/user, mob/living/carbon/human/target, target_zone, obj/item/tool)
 	var/obj/item/organ/external/affected = target.get_organ(target_zone)
 	var/bone = affected.encased ? "[target]'s [affected.encased]" : "bones in [target]'s [affected.name]"
-	user.visible_message(SPAN("notice", "[user] applies some [tool.name] to [bone]"),
+	user.visible_message(SPAN("notice", "[user] applies some [tool.name] to [bone]"), \
 		SPAN("notice", "You apply some [tool.name] to [bone]."))
 	affected.stage = 1
 
@@ -80,11 +80,11 @@
 	var/obj/item/organ/external/affected = target.get_organ(target_zone)
 	var/bone = affected.encased ? "[target]'s [affected.encased]" : "bones in [target]'s [affected.name]"
 	if (affected.status & ORGAN_BROKEN)
-		user.visible_message(SPAN("notice", "[user] sets the [bone] in place with \the [tool]."),
+		user.visible_message(SPAN("notice", "[user] sets the [bone] in place with \the [tool]."), \
 			SPAN("notice", "You set the [bone] in place with \the [tool]."))
 		affected.stage = 2
 	else
-		user.visible_message(SPAN("notice", "[user] sets the [bone]") + SPAN("warning", " in the WRONG place with \the [tool]."),
+		user.visible_message(SPAN("notice", "[user] sets the [bone]") + SPAN("warning", " in the WRONG place with \the [tool]."), \
 			SPAN("notice", "You set the [bone]") + SPAN("warning", " in the WRONG place with \the [tool]."))
 		affected.fracture()
 

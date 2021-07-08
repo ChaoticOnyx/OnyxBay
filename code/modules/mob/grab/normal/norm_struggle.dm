@@ -31,7 +31,7 @@
 	var/mob/living/carbon/human/assailant = G.assailant
 
 	if(affecting.incapacitated() || affecting.a_intent == I_HELP)
-		affecting.visible_message(SPAN("warning", "[affecting] isn't prepared to fight back as [assailant] tightens \his grip!"))
+		affecting.visible_message("<span class='warning'>[affecting] isn't prepared to fight back as [assailant] tightens \his grip!</span>")
 		done_struggle = TRUE
 		G.upgrade(TRUE)
 
@@ -40,11 +40,11 @@
 	var/mob/living/carbon/human/assailant = G.assailant
 
 	if(affecting.incapacitated() || affecting.a_intent == I_HELP)
-		affecting.visible_message(SPAN("warning", "[affecting] isn't prepared to fight back as [assailant] tightens \his grip!"))
+		affecting.visible_message("<span class='warning'>[affecting] isn't prepared to fight back as [assailant] tightens \his grip!</span>")
 		done_struggle = TRUE
 		G.upgrade(TRUE)
 	else
-		affecting.visible_message(SPAN("warning", "[affecting] struggles against [assailant]!"))
+		affecting.visible_message("<span class='warning'>[affecting] struggles against [assailant]!</span>")
 		spawn(10)
 			handle_resist(G)
 		if(do_after(assailant, upgrade_cooldown, G, can_move = 1))

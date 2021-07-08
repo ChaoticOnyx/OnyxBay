@@ -47,12 +47,12 @@
 		if(M == user)
 			if(!M.can_eat(loaded))
 				return
-			M.visible_message(SPAN("notice", "\The [user] eats some [loaded] from \the [src]."))
+			M.visible_message("<span class='notice'>\The [user] eats some [loaded] from \the [src].</span>")
 		else
-			user.visible_message(SPAN("warning", "\The [user] begins to feed \the [M]!"))
+			user.visible_message("<span class='warning'>\The [user] begins to feed \the [M]!</span>")
 			if(!(M.can_force_feed(user, loaded) && do_mob(user, M, 5 SECONDS)))
 				return
-			M.visible_message(SPAN("notice", "\The [user] feeds some [loaded] to \the [M] with \the [src]."))
+			M.visible_message("<span class='notice'>\The [user] feeds some [loaded] to \the [M] with \the [src].</span>")
 		playsound(M.loc, 'sound/items/eatfood.ogg', rand(10, 40), 1)
 		overlays.Cut()
 		return

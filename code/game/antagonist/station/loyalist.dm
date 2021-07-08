@@ -34,9 +34,6 @@ GLOBAL_DATUM_INIT(loyalists, /datum/antagonist/loyalists, new)
 	faction_welcome = "Preserve [GLOB.using_map.company_short]'s interests against the traitorous recidivists amongst the crew. Protect the heads of staff with your life."
 	faction_descriptor = "[GLOB.using_map.company_name]"
 
-	if(config.loyalists_min_age)
-		min_player_age = config.loyalists_min_age
-
 /datum/antagonist/loyalists/create_global_objectives()
 	if(!..())
 		return

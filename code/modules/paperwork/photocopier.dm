@@ -175,7 +175,7 @@
 	if(need_toner)
 		toner--
 	if(toner == 0)
-		visible_message(SPAN("notice", "A red light on \the [src] flashes, indicating that it is out of toner."))
+		visible_message("<span class='notice'>A red light on \the [src] flashes, indicating that it is out of toner.</span>")
 	c.update_icon()
 	return c
 
@@ -204,7 +204,7 @@
 		toner -= 5	//photos use a lot of ink!
 	if(toner < 0)
 		toner = 0
-		visible_message(SPAN("notice", "A red light on \the [src] flashes, indicating that it is out of toner."))
+		visible_message("<span class='notice'>A red light on \the [src] flashes, indicating that it is out of toner.</span>")
 
 	return p
 
@@ -214,7 +214,7 @@
 	for(var/obj/item/weapon/W in bundle.pages)
 		if(toner <= 0 && need_toner)
 			toner = 0
-			visible_message(SPAN("notice", "A red light on \the [src] flashes, indicating that it is out of toner."))
+			visible_message("<span class='notice'>A red light on \the [src] flashes, indicating that it is out of toner.</span>")
 			break
 
 		if(istype(W, /obj/item/weapon/paper))

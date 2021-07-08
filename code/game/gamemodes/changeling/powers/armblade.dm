@@ -20,6 +20,6 @@
 			if(!changeling_generic_weapon(/obj/item/weapon/melee/changeling/arm_blade))
 				return
 
-	visible_message(SPAN("danger", "The flesh is torn around the [name]\'s arm!"),
-					SPAN("changeling", "We transform our hand into a blade."),
+	visible_message(SPAN("danger", "The flesh is torn around the [name]\'s arm!"), \
+					SPAN("changeling", "We transform our hand into a blade."), \
 					SPAN("italics", "You hear organic matter ripping and tearing!"))

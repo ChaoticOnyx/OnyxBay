@@ -24,7 +24,7 @@
 	if(!proximity)
 		return
 	user.say("Ta'gh fara[pick("'","`")]qha fel d'amar det!")
-	user.visible_message(SPAN("danger", "\The [user] invokes \the [src] at [target]."), SPAN("danger", "You invoke \the [src] at [target]."))
+	user.visible_message("<span class='danger'>\The [user] invokes \the [src] at [target].</span>", "<span class='danger'>You invoke \the [src] at [target].</span>")
 	target.emp_act(1)
 	qdel(src)
 
@@ -34,7 +34,7 @@
 	if(!proximity)
 		return
 	user.say("Ra'gh fara[pick("'","`")]ydar fel d'amar det in girdiun!")
-	user.visible_message(SPAN("danger", "\The [user] invokes \the [src] at [target]."), SPAN("danger", "You invoke \the [src] at [target]."))
+	user.visible_message("<span class='danger'>\The [user] invokes \the [src] at [target].</span>", "<span class='danger'>You invoke \the [src] at [target].</span>")
 	var/obj/item/weapon/nullrod/N = locate() in target
 	if(N)
 		return

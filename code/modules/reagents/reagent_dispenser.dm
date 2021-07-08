@@ -106,9 +106,9 @@
 
 /obj/structure/reagent_dispensers/fueltank/attack_hand()
 	if (rig)
-		usr.visible_message(SPAN("notice", "\The [usr] begins to detach [rig] from \the [src]."), SPAN("notice", "You begin to detach [rig] from \the [src]."))
+		usr.visible_message("<span class='notice'>\The [usr] begins to detach [rig] from \the [src].</span>", "<span class='notice'>You begin to detach [rig] from \the [src].</span>")
 		if(do_after(usr, 20, src))
-			usr.visible_message(SPAN("notice", "\The [usr] detaches \the [rig] from \the [src]."), SPAN("notice", "You detach [rig] from \the [src]"))
+			usr.visible_message("<span class='notice'>\The [usr] detaches \the [rig] from \the [src].</span>", "<span class='notice'>You detach [rig] from \the [src]</span>")
 			rig.loc = get_turf(usr)
 			rig = null
 			overlays = new /list()
@@ -129,7 +129,7 @@
 			return ..()
 		user.visible_message("\The [user] begins rigging [W] to \the [src].", "You begin rigging [W] to \the [src]")
 		if(do_after(user, 20, src))
-			user.visible_message(SPAN("notice", "The [user] rigs [W] to \the [src]."), SPAN("notice", "You rig [W] to \the [src]."))
+			user.visible_message("<span class='notice'>The [user] rigs [W] to \the [src].</span>", "<span class='notice'>You rig [W] to \the [src].</span>")
 
 			var/obj/item/device/assembly_holder/H = W
 			if (istype(H.a_left,/obj/item/device/assembly/igniter) || istype(H.a_right,/obj/item/device/assembly/igniter))
@@ -147,7 +147,7 @@
 
 	else if(W.get_temperature_as_from_ignitor())
 		log_and_message_admins("triggered a fueltank explosion with [W].")
-		user.visible_message(SPAN("danger", "[user] puts [W] to [src]!"), SPAN("danger", "You put \the [W] to \the [src] and with a moment of lucidity you realize, this might not have been the smartest thing you've ever done."))
+		user.visible_message("<span class='danger'>[user] puts [W] to [src]!</span>", "<span class='danger'>You put \the [W] to \the [src] and with a moment of lucidity you realize, this might not have been the smartest thing you've ever done.</span>")
 		src.explode()
 
 		return

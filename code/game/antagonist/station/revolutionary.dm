@@ -32,10 +32,6 @@ GLOBAL_DATUM_INIT(revs, /datum/antagonist/revolutionary, new)
 	restricted_jobs = list(/datum/job/merchant, /datum/job/captain, /datum/job/hop, /datum/job/hos, /datum/job/chief_engineer, /datum/job/rd, /datum/job/cmo, /datum/job/lawyer)
 	additional_restricted_jobs = list(/datum/job/officer, /datum/job/warden, /datum/job/detective)
 
-/datum/antagonist/revolutionary/Initialize()
-	. = ..()
-	if(config.revolutionary_min_age)
-		min_player_age = config.revolutionary_min_age
 
 /datum/antagonist/revolutionary/create_global_objectives()
 	if(!..())

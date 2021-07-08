@@ -184,7 +184,7 @@
 							to_chat(usr, "<span class='notice'>Hardware error: Printer was unable to print the file. It may be out of paper.</span>")
 							return
 						else
-							computer.visible_message(SPAN("notice", "\The [computer] prints out paper."))
+							computer.visible_message("<span class='notice'>\The [computer] prints out paper.</span>")
 				else
 					var/contents = {"<h4>Crew Manifest</h4>
 									<br>
@@ -194,7 +194,7 @@
 						to_chat(usr, "<span class='notice'>Hardware error: Printer was unable to print the file. It may be out of paper.</span>")
 						return
 					else
-						computer.visible_message(SPAN("notice", "\The [computer] prints out paper."))
+						computer.visible_message("<span class='notice'>\The [computer] prints out paper.</span>")
 		if("eject")
 			if(computer)
 				if(computer.card_slot && computer.card_slot.stored_card)
@@ -214,7 +214,7 @@
 					if(temp_name)
 						id_card.registered_name = temp_name
 					else
-						computer.visible_message(SPAN("notice", "[computer] buzzes rudely."))
+						computer.visible_message("<span class='notice'>[computer] buzzes rudely.</span>")
 				else if(href_list["account"])
 					var/account_num = text2num(input("Enter account number.", "Account", id_card.associated_account_number))
 					id_card.associated_account_number = account_num

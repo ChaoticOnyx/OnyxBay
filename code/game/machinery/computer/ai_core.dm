@@ -250,19 +250,19 @@
 		return
 	else if(istype(W, /obj/item/weapon/wrench))
 		if(anchored)
-			user.visible_message(SPAN("notice", "\The [user] starts to unbolt \the [src] from the plating..."))
+			user.visible_message("<span class='notice'>\The [user] starts to unbolt \the [src] from the plating...</span>")
 			if(!do_after(user,40,src))
-				user.visible_message(SPAN("notice", "\The [user] decides not to unbolt \the [src]."))
+				user.visible_message("<span class='notice'>\The [user] decides not to unbolt \the [src].</span>")
 				return
-			user.visible_message(SPAN("notice", "\The [user] finishes unfastening \the [src]!"))
+			user.visible_message("<span class='notice'>\The [user] finishes unfastening \the [src]!</span>")
 			anchored = 0
 			return
 		else
-			user.visible_message(SPAN("notice", "\The [user] starts to bolt \the [src] to the plating..."))
+			user.visible_message("<span class='notice'>\The [user] starts to bolt \the [src] to the plating...</span>")
 			if(!do_after(user,40,src))
-				user.visible_message(SPAN("notice", "\The [user] decides not to bolt \the [src]."))
+				user.visible_message("<span class='notice'>\The [user] decides not to bolt \the [src].</span>")
 				return
-			user.visible_message(SPAN("notice", "\The [user] finishes fastening down \the [src]!"))
+			user.visible_message("<span class='notice'>\The [user] finishes fastening down \the [src]!</span>")
 			anchored = 1
 			return
 	else

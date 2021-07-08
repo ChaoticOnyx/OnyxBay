@@ -84,7 +84,7 @@
 		return
 	state = CURRENTLY_ACTIVE
 	update_icon()
-	user.visible_message(SPAN("notice", "\The [user] activates \the [src]."), SPAN("notice", "You activate \the [src]."))
+	user.visible_message("<span class='notice'>\The [user] activates \the [src].</span>", "<span class='notice'>You activate \the [src].</span>")
 	log_and_message_admins("has activated the service '[service_label]'", user)
 
 	if(service_duration)
@@ -99,7 +99,7 @@
 	state = HAS_BEEN_ACTIVATED
 	update_icon()
 	playsound(loc, "spark", 50, 1)
-	visible_message(SPAN("warning", "\The [src] shuts down with a spark."))
+	visible_message("<span class='warning'>\The [src] shuts down with a spark.</span>")
 
 /obj/item/device/uplink_service/update_icon()
 	switch(state)
@@ -181,7 +181,7 @@
 	if(state != AWAITING_ACTIVATION)
 		to_chat(user, "<span class='warning'>\The [src] won't activate again.</span>")
 		return
-	user.visible_message(SPAN("notice", "\The [user] activates \the [src]."), SPAN("notice", "You activate \the [src]."))
+	user.visible_message("<span class='notice'>\The [user] activates \the [src].</span>", "<span class='notice'>You activate \the [src].</span>")
 	log_and_message_admins("has activated the service '[service_label]'", user)
 	state = CURRENTLY_ACTIVE
 	var/input = sanitize(input(user, "Please enter anything you want. Anything. Serious.", "What?", "") as message|null, extra = 0)

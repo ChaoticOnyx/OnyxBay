@@ -69,9 +69,9 @@
 	update_icon()
 
 /obj/item/weapon/material/twohanded/update_icon()
-	var/new_item_state = "[base_icon][wielded]"
-	item_state_slots[slot_l_hand_str] = new_item_state
-	item_state_slots[slot_r_hand_str] = new_item_state
+	icon_state = "[base_icon][wielded]"
+	item_state_slots[slot_l_hand_str] = icon_state
+	item_state_slots[slot_r_hand_str] = icon_state
 
 /*
  * Fireaxe
@@ -151,6 +151,7 @@
 	desc = "HOME RUN!"
 	icon_state = "metalbat0"
 	base_icon = "metalbat"
+	item_state = "metalbat"
 	w_class = ITEM_SIZE_LARGE
 	mod_weight = 1.5
 	mod_reach = 1.0

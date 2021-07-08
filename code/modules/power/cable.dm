@@ -172,7 +172,7 @@ var/list/possible_cable_coil_colours
 			new /obj/item/stack/cable_coil(T, 1, color)
 
 		for(var/mob/O in viewers(src, null))
-			O.show_message(SPAN("warning", "[user] cuts the cable."), 1)
+			O.show_message("<span class='warning'>[user] cuts the cable.</span>", 1)
 
 		if(d1 == DOWN || d2 == DOWN)
 			var/turf/turf = GetBelow(src)

@@ -10,7 +10,7 @@
 		to_chat(hitter, "<span class='warning'>You don't feel as if this will do anything for you.</span>")
 		return
 
-	hitter.visible_message(SPAN("notice", "\The [hitter] dips their hands into \the [src], a soft glow emanating from them."))
+	hitter.visible_message("<span class='notice'>\The [hitter] dips their hands into \the [src], a soft glow emanating from them.</span>")
 	if(do_after(hitter,600,src,needhand=0))
 		for(var/s in hitter.mind.learned_spells)
 			var/spell/spell = s

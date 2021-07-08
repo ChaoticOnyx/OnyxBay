@@ -146,7 +146,7 @@
 	else if(istype(W, /obj/item/grab))
 		var/obj/item/grab/G = W
 		var/mob/living/affecting = G.affecting
-		user.visible_message(SPAN("notice", "[user] attempts to buckle [affecting] into \the [src]!"))
+		user.visible_message("<span class='notice'>[user] attempts to buckle [affecting] into \the [src]!</span>")
 		if(do_after(user, 20, src))
 			if(user_buckle_mob(affecting, user))
 				qdel(W)

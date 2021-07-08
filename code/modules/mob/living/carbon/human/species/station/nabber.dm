@@ -214,7 +214,7 @@
 
 	var/armor = affecting.run_armor_check(BP_CHEST, "melee")
 	affecting.apply_damage(15, BRUTE, BP_CHEST, armor, DAM_SHARP, "organic punctures")
-	affecting.visible_message(SPAN("danger", "[assailant]'s spikes dig in painfully!"))
+	affecting.visible_message("<span class='danger'>[assailant]'s spikes dig in painfully!</span>")
 	affecting.Stun(10)
 
 /datum/species/nabber/update_skin(mob/living/carbon/human/H)
@@ -267,7 +267,7 @@
 	playsound(target.loc, 'sound/weapons/pushhiss.ogg', 50, 1, -1)
 	if(!T.density)
 		step(target, get_dir(get_turf(attacker), get_turf(target)))
-		target.visible_message(SPAN("danger", "[pick("[target] was sent flying backward!", "[target] staggers back from the impact!")]"))
+		target.visible_message("<span class='danger'>[pick("[target] was sent flying backward!", "[target] staggers back from the impact!")]</span>")
 	else
 		target.turf_collision(T, target.throw_speed / 2)
 	if(prob(50))

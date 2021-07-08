@@ -46,7 +46,7 @@
 	return 1
 
 /mob/proc/handle_changeling_transform(datum/absorbed_dna/chosen_dna)
-	src.visible_message(SPAN("warning", "[src] transforms!"))
+	src.visible_message("<span class='warning'>[src] transforms!</span>")
 
 	src.dna = chosen_dna.dna
 	src.real_name = chosen_dna.name

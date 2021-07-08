@@ -117,9 +117,9 @@
 		if(!issilicon(M))
 			user.visible_message("<span class='disarm'>[user] blinds [M] with \the [src]!</span>")
 		else
-			user.visible_message(SPAN("notice", "[user] overloads [M]'s sensors with \the [src]!"))
+			user.visible_message("<span class='notice'>[user] overloads [M]'s sensors with \the [src]!</span>")
 	else
-		user.visible_message(SPAN("notice", "[user] fails to blind [M] with \the [src]!"))
+		user.visible_message("<span class='notice'>[user] fails to blind [M] with \the [src]!</span>")
 	return
 
 
@@ -129,7 +129,7 @@
 	if(!user || !clown_check(user)) 	return
 
 	if(broken)
-		user.show_message(SPAN("warning", "The [src.name] is broken"), 2)
+		user.show_message("<span class='warning'>The [src.name] is broken</span>", 2)
 		return
 
 	flash_recharge()
@@ -145,7 +145,7 @@
 				return
 			times_used++
 		else	//can only use it  5 times a minute
-			user.show_message(SPAN("warning", "*click* *click*"), 2)
+			user.show_message("<span class='warning'>*click* *click*</span>", 2)
 			return
 	user.setClickCooldown(DEFAULT_ATTACK_COOLDOWN)
 	playsound(src.loc, 'sound/weapons/flash.ogg', 100, 1)

@@ -87,7 +87,7 @@
 	if(!survey_data)
 		to_chat(M,"<span class='warning'>There is no survey data stored on [src].</span>")
 		return
-	visible_message(SPAN("notice", "[src] records [survey_data] GEP worth of the data on the disk and spits it out."))
+	visible_message("<span class='notice'>[src] records [survey_data] GEP worth of the data on the disk and spits it out.</span>")
 	var/obj/item/weapon/disk/survey/D = new(get_turf(src))
 	D.data = survey_data
 	survey_data = 0

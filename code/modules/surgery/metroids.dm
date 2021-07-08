@@ -35,13 +35,13 @@
 	"You start cutting through [target]'s flesh with \the [tool].")
 
 /datum/surgery_step/metroid/cut_flesh/end_step(mob/living/user, mob/living/carbon/metroid/target, target_zone, obj/item/tool)
-	user.visible_message(SPAN("notice", "[user] cuts through [target]'s flesh with \the [tool]."),\
-	SPAN("notice", "You cut through [target]'s flesh with \the [tool], revealing its silky innards."))
+	user.visible_message("<span class='notice'>[user] cuts through [target]'s flesh with \the [tool].</span>",	\
+	"<span class='notice'>You cut through [target]'s flesh with \the [tool], revealing its silky innards.</span>")
 	target.core_removal_stage = 1
 
 /datum/surgery_step/metroid/cut_flesh/fail_step(mob/living/user, mob/living/carbon/metroid/target, target_zone, obj/item/tool)
-	user.visible_message(SPAN("warning", "[user]'s hand slips, tearing [target]'s flesh with \the [tool]!"),
-	SPAN("warning", "Your hand slips, tearing [target]'s flesh with \the [tool]!"))
+	user.visible_message("<span class='warning'>[user]'s hand slips, tearing [target]'s flesh with \the [tool]!</span>", \
+	"<span class='warning'>Your hand slips, tearing [target]'s flesh with \the [tool]!</span>")
 
 //////////////////////////////////////////////////////////////////
 //	metroid innards cutting surgery step
@@ -64,13 +64,13 @@
 	"You start cutting [target]'s silky innards apart with \the [tool].")
 
 /datum/surgery_step/metroid/cut_innards/end_step(mob/living/user, mob/living/carbon/metroid/target, target_zone, obj/item/tool)
-	user.visible_message(SPAN("notice", "[user] cuts [target]'s innards apart with \the [tool], exposing the cores."),\
-	SPAN("notice", "You cut [target]'s innards apart with \the [tool], exposing the cores."))
+	user.visible_message("<span class='notice'>[user] cuts [target]'s innards apart with \the [tool], exposing the cores.</span>",	\
+	"<span class='notice'>You cut [target]'s innards apart with \the [tool], exposing the cores.</span>")
 	target.core_removal_stage = 2
 
 /datum/surgery_step/metroid/cut_innards/fail_step(mob/living/user, mob/living/carbon/metroid/target, target_zone, obj/item/tool)
-	user.visible_message(SPAN("warning", "[user]'s hand slips, tearing [target]'s innards with \the [tool]!"),
-	SPAN("warning", "Your hand slips, tearing [target]'s innards with \the [tool]!"))
+	user.visible_message("<span class='warning'>[user]'s hand slips, tearing [target]'s innards with \the [tool]!</span>", \
+	"<span class='warning'>Your hand slips, tearing [target]'s innards with \the [tool]!</span>")
 
 //////////////////////////////////////////////////////////////////
 //	metroid core removal surgery step
@@ -94,8 +94,8 @@
 
 /datum/surgery_step/metroid/saw_core/end_step(mob/living/user, mob/living/carbon/metroid/target, target_zone, obj/item/tool)
 	target.cores--
-	user.visible_message(SPAN("notice", "[user] cuts out one of [target]'s cores with \the [tool]."),,\
-	SPAN("notice", "You cut out one of [target]'s cores with \the [tool]. [target.cores] cores left."))
+	user.visible_message("<span class='notice'>[user] cuts out one of [target]'s cores with \the [tool].</span>",,	\
+	"<span class='notice'>You cut out one of [target]'s cores with \the [tool]. [target.cores] cores left.</span>")
 
 	if(target.cores >= 0)
 		var/coreType = target.GetCoreType()
@@ -105,5 +105,5 @@
 
 
 /datum/surgery_step/metroid/saw_core/fail_step(mob/living/user, mob/living/carbon/metroid/target, target_zone, obj/item/tool)
-	user.visible_message(SPAN("warning", "[user]'s hand slips, causing \him to miss the core!"),
-	SPAN("warning", "Your hand slips, causing you to miss the core!"))
+	user.visible_message("<span class='warning'>[user]'s hand slips, causing \him to miss the core!</span>", \
+	"<span class='warning'>Your hand slips, causing you to miss the core!</span>")

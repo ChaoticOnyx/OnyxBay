@@ -26,7 +26,7 @@ var/list/floor_light_cache = list()
 /obj/machinery/floor_light/attackby(obj/item/W, mob/user)
 	if(isScrewdriver(W))
 		anchored = !anchored
-		visible_message(SPAN("notice", "\The [user] has [anchored ? "attached" : "detached"] \the [src]."))
+		visible_message("<span class='notice'>\The [user] has [anchored ? "attached" : "detached"] \the [src].</span>")
 	else if(isWelder(W) && (damaged || (stat & BROKEN)))
 		var/obj/item/weapon/weldingtool/WT = W
 		if(!WT.remove_fuel(0, user))
@@ -37,7 +37,7 @@ var/list/floor_light_cache = list()
 			return
 		if(!src || !WT.isOn())
 			return
-		visible_message(SPAN("notice", "\The [user] has repaired \the [src]."))
+		visible_message("<span class='notice'>\The [user] has repaired \the [src].</span>")
 		set_broken(FALSE)
 		damaged = null
 		update_brightness()
@@ -49,11 +49,11 @@ var/list/floor_light_cache = list()
 
 	if(user.a_intent == I_HURT && !issmall(user))
 		if(!isnull(damaged) && !(stat & BROKEN))
-			visible_message(SPAN("danger", "\The [user] smashes \the [src]!"))
+			visible_message("<span class='danger'>\The [user] smashes \the [src]!</span>")
 			playsound(src, "window_breaking", 70, 1)
 			set_broken(TRUE)
 		else
-			visible_message(SPAN("danger", "\The [user] attacks \the [src]!"))
+			visible_message("<span class='danger'>\The [user] attacks \the [src]!</span>")
 			playsound(src.loc, get_sfx("glass_hit"), 75, 1)
 			if(isnull(damaged)) damaged = 0
 		update_brightness()
@@ -75,7 +75,7 @@ var/list/floor_light_cache = list()
 		on = !on
 		if(on)
 			update_use_power(POWER_USE_ACTIVE)
-		visible_message(SPAN("notice", "\The [user] turns \the [src] [on ? "on" : "off"]."))
+		visible_message("<span class='notice'>\The [user] turns \the [src] [on ? "on" : "off"].</span>")
 		update_brightness()
 		return
 

@@ -15,7 +15,7 @@
 	assailant.put_in_active_hand(src)
 	assailant.do_attack_animation(affecting)
 	playsound(affecting.loc, 'sound/weapons/thudswoosh.ogg', 50, 1, -1)
-	visible_message(SPAN("warning", "[assailant] has nabbed [affecting] passively!"))
+	visible_message("<span class='warning'>[assailant] has nabbed [affecting] passively!</span>")
 	affecting.grabbed_by += src
 
 
@@ -41,7 +41,7 @@
 
 	var/crush_damage = rand(8,14)
 
-	affecting.visible_message(SPAN("danger", "[assailant] begins crushing [affecting]!"))
+	affecting.visible_message("<span class='danger'>[assailant] begins crushing [affecting]!</span>")
 	G.attacking = 1
 	if(do_mob(assailant, affecting, action_cooldown - 1))
 		G.attacking = 0
@@ -50,7 +50,7 @@
 		return 1
 	else
 		G.attacking = 0
-		affecting.visible_message(SPAN("notice", "[assailant] stops crushing [affecting]!"))
+		affecting.visible_message("<span class='notice'>[assailant] stops crushing [affecting]!</span>")
 		return 0
 
 /datum/grab/nab/on_hit_harm(obj/item/grab/G)
@@ -59,7 +59,7 @@
 
 	var/masticate_damage = rand(15,20)
 
-	affecting.visible_message(SPAN("danger", "[assailant] begins chewing on [affecting]!"))
+	affecting.visible_message("<span class='danger'>[assailant] begins chewing on [affecting]!</span>")
 	G.attacking = 1
 
 	if(do_mob(assailant, affecting, action_cooldown - 1))
@@ -69,7 +69,7 @@
 		return 1
 	else
 		G.attacking = 0
-		affecting.visible_message(SPAN("notice", "[assailant] stops chewing on [affecting]."))
+		affecting.visible_message("<span class='notice'>[assailant] stops chewing on [affecting].</span>")
 		return 0
 
 // This causes the assailant to crush the affecting mob. There is a chance that the crush will cause the
@@ -80,12 +80,12 @@
 
 	var/armor = G.affecting.run_armor_check(hit_zone, "melee")
 
-	G.affecting.visible_message(SPAN("danger", "[G.assailant] crushes [G.affecting]'s [damaging.name]!"))
+	G.affecting.visible_message("<span class='danger'>[G.assailant] crushes [G.affecting]'s [damaging.name]!</span>")
 
 	if(prob(30))
 		G.affecting.apply_damage(max(attack_damage + 10, 15), BRUTE, hit_zone, armor, DAM_SHARP, "organic punctures")
 		G.affecting.apply_effect(attack_damage, PAIN, armor)
-		G.affecting.visible_message(SPAN("danger", "[G.assailant]'s spikes dig in painfully!"))
+		G.affecting.visible_message("<span class='danger'>[G.assailant]'s spikes dig in painfully!</span>")
 	else
 		G.affecting.apply_damage(attack_damage, BRUTE, hit_zone, armor,, "crushing")
 	playsound(G.assailant, 'sound/weapons/bite.ogg', 25, 1, -1)
@@ -100,7 +100,7 @@
 	var/armor = G.affecting.run_armor_check(hit_zone, "melee")
 
 	G.affecting.apply_damage(attack_damage, BRUTE, hit_zone, armor, DAM_SHARP|DAM_EDGE, "mandibles")
-	G.affecting.visible_message(SPAN("danger", "[G.assailant] chews on [G.affecting]'s [damaging.name]!"))
+	G.affecting.visible_message("<span class='danger'>[G.assailant] chews on [G.affecting]'s [damaging.name]!</span>")
 	playsound(G.assailant, 'sound/weapons/bite.ogg', 25, 1, -1)
 
 	admin_attack_log(G.assailant, G.affecting, "Chews their victim.", "Was chewed.", "chewed")
