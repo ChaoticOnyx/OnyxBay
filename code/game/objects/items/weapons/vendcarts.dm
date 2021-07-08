@@ -127,7 +127,3 @@
 /obj/item/weapon/vendcart/seed_storage
 	name = "O'Seedz Cartridge"
 	icon_state = "cube_c"
-
-//MINING
-/obj/item/weapon/vendcart/equipment_vendor
-	name = "Dig'n Cartridge"

@@ -963,20 +963,6 @@
 
 	contraband = list(/obj/item/weapon/reagent_containers/syringe/steroid/packaged = 4)
 
-//This one's from bay12
-/obj/machinery/vending/cart
-	name = "PTech"
-	desc = "Cartridges for PDAs."
-	product_slogans = "Carts to go!"
-	icon_state = "cart"
-	use_vend_state = TRUE
-	vend_delay = 23
-	products = list(/obj/item/weapon/cartridge/medical = 10,
-					/obj/item/weapon/cartridge/engineering = 10,
-					/obj/item/weapon/cartridge/janitor = 10,
-					/obj/item/weapon/cartridge/signal/science = 10)
-
-
 /obj/machinery/vending/cigarette
 	name = "Cigarette machine"
 	desc = "A specialized vending machine designed to contribute to your slow and uncomfortable death."
@@ -1072,12 +1058,17 @@
 					/obj/item/weapon/reagent_containers/ecig_cartridge/coffee = 15,
 					/obj/item/weapon/reagent_containers/ecig_cartridge/blanknico = 15)
 
-
 /obj/machinery/vending/cigarette/cigars
-	name = "Cigars midcentury machine"
-	desc = "Classy vending machine designed to contribute to your slow and uncomfortable death with style."
 	vend_delay = 21
 	icon_state = "cigars"
+	use_vend_state = TRUE
+
+/obj/machinery/vending/cigarette/wallcigs
+	name = "Cigars midcentury machine"
+	desc = "Classy vending machine designed to contribute to your slow and uncomfortable death with style."
+	density = 0
+	vend_delay = 18
+	icon_state = "cigs_wall"
 	use_vend_state = TRUE
 
 /obj/machinery/vending/medical
@@ -1184,50 +1175,6 @@
 	premium = list(/obj/item/weapon/reagent_containers/glass/bottle/ammonia = 10,
 			   	   /obj/item/weapon/reagent_containers/glass/bottle/diethylamine = 5)
 	idle_power_usage = 211 //refrigerator - believe it or not, this is actually the average power consumption of a refrigerated vending machine according to NRCan.
-
-/obj/machinery/vending/hydroseeds
-	name = "MegaSeed Servitor"
-	desc = "When you need seeds fast!"
-	product_slogans = "THIS'S WHERE TH' SEEDS LIVE! GIT YOU SOME!;Hands down the best seed selection this half of the galaxy!;Also certain mushroom varieties available, more for experts! Get certified today!"
-	product_ads = "We like plants!;Grow some crops!;Grow, baby, growww!;Aw h'yeah son!"
-	icon_state = "seeds"
-	use_vend_state = TRUE
-	vend_delay = 13
-	products = list(/obj/item/seeds/bananaseed = 3, /obj/item/seeds/berryseed = 3, /obj/item/seeds/carrotseed = 3, /obj/item/seeds/chantermycelium = 3, /obj/item/seeds/chiliseed = 3,
-					/obj/item/seeds/cornseed = 3, /obj/item/seeds/eggplantseed = 3, /obj/item/seeds/potatoseed = 3, /obj/item/seeds/replicapod = 3, /obj/item/seeds/soyaseed = 3,
-					/obj/item/seeds/sunflowerseed = 3, /obj/item/seeds/tomatoseed = 3, /obj/item/seeds/towermycelium = 3, /obj/item/seeds/wheatseed = 3, /obj/item/seeds/appleseed = 3,
-					/obj/item/seeds/poppyseed = 3, /obj/item/seeds/sugarcaneseed = 3, /obj/item/seeds/ambrosiavulgarisseed = 3, /obj/item/seeds/peanutseed = 3, /obj/item/seeds/whitebeetseed = 3, /obj/item/seeds/watermelonseed = 3, /obj/item/seeds/limeseed = 3,
-					/obj/item/seeds/lemonseed = 3, /obj/item/seeds/orangeseed = 3, /obj/item/seeds/grassseed = 3, /obj/item/seeds/cocoapodseed = 3, /obj/item/seeds/plumpmycelium = 2,
-					/obj/item/seeds/cabbageseed = 3, /obj/item/seeds/grapeseed = 3, /obj/item/seeds/pumpkinseed = 3, /obj/item/seeds/cherryseed = 3, /obj/item/seeds/plastiseed = 3, /obj/item/seeds/riceseed = 3, /obj/item/seeds/lavenderseed = 3)
-	contraband = list(/obj/item/seeds/amanitamycelium = 2, /obj/item/seeds/glowshroom = 2, /obj/item/seeds/libertymycelium = 2, /obj/item/seeds/mtearseed = 2,
-					  /obj/item/seeds/nettleseed = 2, /obj/item/seeds/reishimycelium = 2, /obj/item/seeds/reishimycelium = 2, /obj/item/seeds/shandseed = 2, )
-	premium = list(/obj/item/weapon/reagent_containers/spray/waterflower = 1)
-
-/**
- *  Populate hydroseeds product_records
- *
- *  This needs to be customized to fetch the actual names of the seeds, otherwise
- *  the machine would simply list "packet of seeds" times 20
- */
-/obj/machinery/vending/hydroseeds/build_inventory()
-	var/list/all_products = list(
-		list(products, CAT_NORMAL),
-		list(contraband, CAT_HIDDEN),
-		list(premium, CAT_COIN))
-
-	for(var/current_list in all_products)
-		var/category = current_list[2]
-
-		for(var/entry in current_list[1])
-			var/obj/item/seeds/S = new entry(src)
-			var/name = S.name
-			var/datum/stored_items/vending_products/product = new /datum/stored_items/vending_products(src, entry, name)
-
-			product.price = (entry in prices) ? prices[entry] : 0
-			product.amount = (current_list[1][entry]) ? current_list[1][entry] : 1
-			product.category = category
-
-			product_records.Add(product)
 
 /obj/machinery/vending/magivend
 	name = "MagiVend"
