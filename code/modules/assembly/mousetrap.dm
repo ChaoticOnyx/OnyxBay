@@ -41,7 +41,7 @@
 				H.updatehealth()
 		else if(ismouse(target))
 			var/mob/living/simple_animal/mouse/M = target
-			visible_message("<span class='danger'>SPLAT!</span>")
+			visible_message(SPAN("danger", "SPLAT!"))
 			M.splat()
 		playsound(target.loc, 'sound/effects/snap.ogg', 50, 1)
 		reset_plane_and_layer()
@@ -59,7 +59,7 @@
 				if(!user.hand)
 					which_hand = BP_R_HAND
 				triggered(user, which_hand)
-				user.visible_message("<span class='warning'>[user] accidentally sets off [src], breaking their fingers.</span>", \
+				user.visible_message(SPAN("warning", "[user] accidentally sets off [src], breaking their fingers."),
 									 "<span class='warning'>You accidentally trigger [src]!</span>")
 				return
 			to_chat(user, "<span class='notice'>You disarm [src].</span>")
@@ -75,7 +75,7 @@
 				if(!user.hand)
 					which_hand = BP_R_HAND
 				triggered(user, which_hand)
-				user.visible_message("<span class='warning'>[user] accidentally sets off [src], breaking their fingers.</span>", \
+				user.visible_message(SPAN("warning", "[user] accidentally sets off [src], breaking their fingers."),
 									 "<span class='warning'>You accidentally trigger [src]!</span>")
 				return
 		..()
@@ -87,7 +87,7 @@
 				var/mob/living/carbon/H = AM
 				if(H.m_intent == M_RUN)
 					triggered(H)
-					H.visible_message("<span class='warning'>[H] accidentally steps on [src].</span>", \
+					H.visible_message(SPAN("warning", "[H] accidentally steps on [src]."),
 									  "<span class='warning'>You accidentally step on [src]</span>")
 			if(ismouse(AM))
 				triggered(AM)
@@ -96,7 +96,7 @@
 
 	on_found(mob/finder as mob)
 		if(armed)
-			finder.visible_message("<span class='warning'>[finder] accidentally sets off [src], breaking their fingers.</span>", \
+			finder.visible_message(SPAN("warning", "[finder] accidentally sets off [src], breaking their fingers."),
 								   "<span class='warning'>You accidentally trigger [src]!</span>")
 			triggered(finder, finder.hand ? BP_L_HAND : BP_R_HAND)
 			return 1	//end the search!
@@ -106,7 +106,7 @@
 	hitby(A as mob|obj)
 		if(!armed)
 			return ..()
-		visible_message("<span class='warning'>[src] is triggered by [A].</span>")
+		visible_message(SPAN("warning", "[src] is triggered by [A]."))
 		triggered(null)
 
 

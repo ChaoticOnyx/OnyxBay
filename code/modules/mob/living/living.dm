@@ -714,7 +714,7 @@
 		resisting++
 		G.handle_resist()
 	if(resisting)
-		visible_message("<span class='danger'>[src] resists!</span>")
+		visible_message(SPAN("danger", "[src] resists!"))
 
 /mob/living/verb/lay_down()
 	set name = "Rest"
@@ -883,7 +883,7 @@
 	set waitfor = 0
 	sleep(rand(5,10))
 	if(!paralysis && stat == CONSCIOUS)
-		visible_message("<span class='warning'>\The [src] starts having a seizure!</span>")
+		visible_message(SPAN("warning", "\The [src] starts having a seizure!"))
 		Paralyse(rand(8,16))
 		make_jittery(rand(150,200))
 		adjustHalLoss(rand(50,60))

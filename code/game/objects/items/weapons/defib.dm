@@ -334,10 +334,10 @@
 		to_chat(find_dead_player(H.ckey, 1), "<span class='notice'>Someone is attempting to resuscitate you. Re-enter your body if you want to be revived!</span>")
 
 	//beginning to place the paddles on patient's chest to allow some time for people to move away to stop the process
-	user.visible_message("<span class='warning'>\The [user] begins to place [src] on [H]'s chest.</span>", "<span class='warning'>You begin to place [src] on [H]'s chest...</span>")
+	user.visible_message(SPAN("warning", "\The [user] begins to place [src] on [H]'s chest."), SPAN("warning", "You begin to place [src] on [H]'s chest..."))
 	if(!do_after(user, 30, H))
 		return
-	user.visible_message("<span class='notice'>\The [user] places [src] on [H]'s chest.</span>", "<span class='warning'>You place [src] on [H]'s chest.</span>")
+	user.visible_message(SPAN("notice", "\The [user] places [src] on [H]'s chest."), SPAN("warning", "You place [src] on [H]'s chest."))
 	playsound(src, 'sound/machines/defib_charge.ogg', 50, 0)
 
 	var/error = can_defib(H)
@@ -359,7 +359,7 @@
 		playsound(src, 'sound/machines/defib_failed.ogg', 50, 0)
 		return
 
-	H.visible_message("<span class='warning'>\The [H]'s body convulses a bit.</span>")
+	H.visible_message(SPAN("warning", "\The [H]'s body convulses a bit."))
 	playsound(src, 'sound/machines/defib_zap.ogg', 50, 1, -1)
 	set_cooldown(cooldowntime)
 
@@ -389,7 +389,7 @@
 		return
 
 	//no need to spend time carefully placing the paddles, we're just trying to shock them
-	user.visible_message("<span class='danger'>\The [user] slaps [src] onto [H]'s [affecting.name].</span>", "<span class='danger'>You overcharge [src] and slap them onto [H]'s [affecting.name].</span>")
+	user.visible_message(SPAN("danger", "\The [user] slaps [src] onto [H]'s [affecting.name]."), SPAN("danger", "You overcharge [src] and slap them onto [H]'s [affecting.name]."))
 
 	//Just stop at awkwardly slapping electrodes on people if the safety is enabled
 	if(safety)
@@ -397,7 +397,7 @@
 		return
 
 	playsound(src, 'sound/machines/defib_charge.ogg', 50, 0)
-	audible_message("<span class='warning'>\The [src] lets out a steadily rising hum...</span>")
+	audible_message(SPAN("warning", "\The [src] lets out a steadily rising hum..."))
 
 	if(!do_after(user, chargetime, H))
 		return
@@ -408,7 +408,7 @@
 		playsound(src, 'sound/machines/defib_failed.ogg', 50, 0)
 		return
 
-	user.visible_message("<span class='danger'><i>\The [user] shocks [H] with \the [src]!</i></span>", "<span class='warning'>You shock [H] with \the [src]!</span>")
+	user.visible_message(SPAN("danger", "<i>\The [user] shocks [H] with \the [src]!</i>"), SPAN("warning", "You shock [H] with \the [src]!"))
 	playsound(src, 'sound/machines/defib_zap.ogg', 100, 1, -1)
 	playsound(loc, 'sound/weapons/Egloves.ogg', 100, 1, -1)
 	set_cooldown(cooldowntime)

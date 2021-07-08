@@ -127,13 +127,13 @@
 
 			//work out if we need to shutdown
 			if(inserted_battery.stored_charge <= 0)
-				loc.visible_message("<span class='notice'>\icon[src] [src] buzzes.</span>", "<span class='notice'>\icon[src] You hear something buzz.</span>")
+				loc.visible_message(SPAN("notice", "\icon[src] [src] buzzes."), SPAN("notice", "\icon[src] You hear something buzz."))
 				shutdown_emission()
 			else if(world.time > time_end)
-				loc.visible_message("<span class='notice'>\icon[src] [src] chimes.</span>", "<span class='notice'>\icon[src] You hear something chime.</span>")
+				loc.visible_message(SPAN("notice", "\icon[src] [src] chimes."), SPAN("notice", "\icon[src] You hear something chime."))
 				shutdown_emission()
 		else
-			visible_message("<span class='notice'>\icon[src] [src] buzzes.</span>", "<span class='notice'>\icon[src] You hear something buzz.</span>")
+			visible_message(SPAN("notice", "\icon[src] [src] buzzes."), SPAN("notice", "\icon[src] You hear something buzz."))
 			shutdown_emission()
 		last_process = world.time
 
@@ -163,7 +163,7 @@
 	else if(href_list["startup"])
 		if(inserted_battery && inserted_battery.battery_effect && (inserted_battery.stored_charge > 0) )
 			activated = 1
-			visible_message("<span class='notice'>\icon[src] [src] whirrs.</span>", "<span class='notice'>\icon[src] You hear something whirr.</span>")
+			visible_message(SPAN("notice", "\icon[src] [src] whirrs."), SPAN("notice", "\icon[src] You hear something whirr."))
 			if(!inserted_battery.battery_effect.activated)
 				inserted_battery.battery_effect.ToggleActivate(1)
 			time_end = world.time + duration
@@ -206,9 +206,9 @@
 	if(activated && inserted_battery.battery_effect.effect == EFFECT_TOUCH && !isnull(inserted_battery))
 		inserted_battery.battery_effect.DoEffectTouch(M)
 		inserted_battery.use_power(energy_consumed_on_touch)
-		user.visible_message("<span class='notice'>[user] taps [M] with [src], and it shudders on contact.</span>")
+		user.visible_message(SPAN("notice", "[user] taps [M] with [src], and it shudders on contact."))
 	else
-		user.visible_message("<span class='notice'>[user] taps [M] with [src], but nothing happens.</span>")
+		user.visible_message(SPAN("notice", "[user] taps [M] with [src], but nothing happens."))
 
 	if(inserted_battery.battery_effect)
 		admin_attack_log(user, M, "Tapped their victim with \a [src] (EFFECT: [inserted_battery.battery_effect.name])", "Was tapped by \a [src] (EFFECT: [inserted_battery.battery_effect.name])", "used \a [src] (EFFECT: [inserted_battery.battery_effect.name]) to tap")

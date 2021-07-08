@@ -29,7 +29,7 @@
 		Aggro()
 	if(P.damage < 30)
 		P.damage = (P.damage / 3)
-		visible_message("<span class='danger'>[P] has a reduced effect on [src]!</span>")
+		visible_message(SPAN("danger", "[P] has a reduced effect on [src]!"))
 
 	..()
 
@@ -39,7 +39,7 @@
 		if(!stat)
 			Aggro()
 		if(T.throwforce <= 20)
-			visible_message("<span class='notice'>The [T.name] [src.throw_message] [src.name]!</span>")
+			visible_message(SPAN("notice", "The [T.name] [src.throw_message] [src.name]!"))
 			return
 	..()
 

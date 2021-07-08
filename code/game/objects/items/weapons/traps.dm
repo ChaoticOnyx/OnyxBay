@@ -25,7 +25,7 @@
 			"<span class='notice'>You hear metal creaking.</span>"
 			)
 		if(do_after(user, 60, src))
-			user.visible_message("<span class='notice'>\The [buckled_mob] has been freed from \the [src] by \the [user].</span>")
+			user.visible_message(SPAN("notice", "\The [buckled_mob] has been freed from \the [src] by \the [user]."))
 			unbuckle_mob()
 			anchored = 0
 

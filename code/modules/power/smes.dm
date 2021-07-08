@@ -456,7 +456,7 @@
 	amount = max(0, round(amount))
 	damage += amount
 	if(damage > maxdamage)
-		visible_message("<span class='danger'>\The [src] explodes in large rain of sparks and smoke!</span>")
+		visible_message(SPAN("danger", "\The [src] explodes in large rain of sparks and smoke!"))
 		// Depending on stored charge percentage cause damage.
 		switch(Percentage())
 			if(75 to INFINITY)

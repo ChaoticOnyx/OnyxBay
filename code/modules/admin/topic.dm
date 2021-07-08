@@ -1031,7 +1031,7 @@
 		SSticker.master_mode = href_list["c_mode2"]
 		SSticker.bypass_gamemode_vote = 1
 		log_and_message_admins("set the mode as [SSticker.master_mode].")
-		to_world("<span class='notice'><b>The mode is now: [SSticker.master_mode]</b></span>")
+		to_world(SPAN("notice", "<b>The mode is now: [SSticker.master_mode]</b>"))
 		Game() // updates the main game menu
 		world.save_mode(SSticker.master_mode)
 		.(href, list("c_mode"=1))

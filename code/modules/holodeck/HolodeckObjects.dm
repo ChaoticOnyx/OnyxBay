@@ -130,11 +130,11 @@
 	if(!istype(W) || W.item_flags & ITEM_FLAG_NO_BLUDGEON) return
 
 	if(istype(W, /obj/item/weapon/screwdriver))
-		to_chat(user, ("<span class='notice'>It's a holowindow, you can't unfasten it!</span>"))
+		to_chat(user, (SPAN("notice", "It's a holowindow, you can't unfasten it!")))
 	else if(istype(W, /obj/item/weapon/crowbar) && reinf && state <= 1)
-		to_chat(user, ("<span class='notice'>It's a holowindow, you can't pry it!</span>"))
+		to_chat(user, (SPAN("notice", "It's a holowindow, you can't pry it!")))
 	else if(istype(W, /obj/item/weapon/wrench) && !anchored && (!state || !reinf))
-		to_chat(user, ("<span class='notice'>It's a holowindow, you can't dismantle it!</span>"))
+		to_chat(user, (SPAN("notice", "It's a holowindow, you can't dismantle it!")))
 	else
 		if(W.damtype == BRUTE || W.damtype == BURN)
 			hit(W.force)
@@ -168,7 +168,7 @@
 	if(src.density && istype(I, /obj/item/weapon) && !istype(I, /obj/item/weapon/card))
 		var/aforce = I.force
 		playsound(src.loc, get_sfx("glass_hit"), 75, 1)
-		visible_message("<span class='danger'>\The [src] was hit by \the [I].</span>")
+		visible_message(SPAN("danger", "\The [src] was hit by \the [I]."))
 		if(I.damtype == BRUTE || I.damtype == BURN)
 			take_damage(aforce)
 		return
@@ -200,7 +200,7 @@
 
 /obj/structure/bed/chair/holochair/attackby(obj/item/weapon/W as obj, mob/user as mob)
 	if(istype(W, /obj/item/weapon/wrench))
-		to_chat(user, ("<span class='notice'>It's a holochair, you can't dismantle it!</span>"))
+		to_chat(user, (SPAN("notice", "It's a holochair, you can't dismantle it!")))
 	return
 
 /obj/item/weapon/holo
@@ -277,9 +277,9 @@
 			return TRUE
 		if(prob(50))
 			I.forceMove(loc)
-			visible_message("<span class='notice'>Swish! \the [I] lands in \the [src].</span>", 3)
+			visible_message(SPAN("notice", "Swish! \the [I] lands in \the [src]."), 3)
 		else
-			visible_message("<span class='warning'>\The [I] bounces off of \the [src]'s rim!</span>", 3)
+			visible_message(SPAN("warning", "\The [I] bounces off of \the [src]'s rim!"), 3)
 		return FALSE
 	return ..()
 

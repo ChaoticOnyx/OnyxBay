@@ -10,10 +10,10 @@ Contains helper procs for airflow, handled in /connection_group.
 	if(last_airflow_stun > world.time - vsc.airflow_stun_cooldown)	return 0
 
 	if(!(status_flags & CANSTUN) && !(status_flags & CANWEAKEN))
-		to_chat(src, "<span class='notice'>You stay upright as the air rushes past you.</span>")
+		to_chat(src, SPAN("notice", "You stay upright as the air rushes past you."))
 		return 0
 	if(buckled)
-		to_chat(src, "<span class='notice'>Air suddenly rushes past you!</span>")
+		to_chat(src, SPAN("notice", "Air suddenly rushes past you!"))
 		return 0
 	if(lying)
 		return 0
@@ -30,7 +30,7 @@ mob/living/carbon/metroid/airflow_stun()
 
 /mob/living/carbon/human/airflow_stun()
 	if(!slip_chance())
-		to_chat(src, "<span class='notice'>Air suddenly rushes past you!</span>")
+		to_chat(src, SPAN("notice", "Air suddenly rushes past you!"))
 		return 0
 	..()
 
@@ -109,7 +109,7 @@ mob/living/carbon/metroid/airflow_stun()
 
 /mob/airflow_hit(atom/A)
 	for(var/mob/M in hearers(src))
-		M.show_message("<span class='danger'>\The [src] slams into \a [A]!</span>",1,"<span class='danger'>You hear a loud slam!</span>",2)
+		M.show_message(SPAN("danger", "\The [src] slams into \a [A]!"), 1, SPAN("danger", "You hear a loud slam!"),2)
 	playsound(src.loc, "smash.ogg", 25, 1, -1)
 	var/weak_amt = istype(A,/obj/item) ? A:w_class : rand(1,5) //Heheheh
 	Weaken(weak_amt)
@@ -117,7 +117,7 @@ mob/living/carbon/metroid/airflow_stun()
 
 /obj/airflow_hit(atom/A)
 	for(var/mob/M in hearers(src))
-		M.show_message("<span class='danger'>\The [src] slams into \a [A]!</span>",1,"<span class='danger'>You hear a loud slam!</span>",2)
+		M.show_message(SPAN("danger", "\The [src] slams into \a [A]!"), 1, SPAN("danger", "You hear a loud slam!"),2)
 	playsound(src.loc, "smash.ogg", 25, 1, -1)
 	. = ..()
 
@@ -127,7 +127,7 @@ mob/living/carbon/metroid/airflow_stun()
 
 /mob/living/carbon/human/airflow_hit(atom/A)
 //	for(var/mob/M in hearers(src))
-//		M.show_message("<span class='danger'>[src] slams into [A]!</span>",1,"<span class='danger'>You hear a loud slam!</span>",2)
+//		M.show_message(SPAN("danger", "[src] slams into [A]!"), 1, SPAN("danger", "You hear a loud slam!",2))
 	playsound(src.loc, "punch", rand(80, 100), 1, -1)
 	if (prob(33))
 		loc:add_blood(src)

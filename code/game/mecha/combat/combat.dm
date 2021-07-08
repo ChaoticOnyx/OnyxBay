@@ -76,7 +76,7 @@
 						target:attackby(src,src.occupant)
 					else if(prob(5))
 						target:dismantle_wall(1)
-						src.occupant_message("<span class='notice'>You smash through the wall.</span>")
+						src.occupant_message(SPAN("notice", "You smash through the wall."))
 						src.visible_message("<b>[src.name] smashes through the wall</b>")
 						playsound(src, 'sound/effects/fighting/smash.ogg', 50, 1)
 					melee_can_hit = 0

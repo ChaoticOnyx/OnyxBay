@@ -451,8 +451,7 @@
 		if(!istype(H.head, /obj/item/clothing/head/helmet/space/void/optical))
 			remain_cloaked = 0
 	H.invisibility = initial(H.invisibility)
-	H.visible_message("<span class='warning'>[H] suddenly fades in.</span>",
-	"<span class='notice'>Optical disruptor deactivated.</span>")
+	H.visible_message(SPAN("warning", "[H] suddenly fades in."), SPAN("notice", "Optical disruptor deactivated.</span>"))
 	cloak = FALSE
 
 	animate(H,alpha = 85, alpha = 255, time = 10)

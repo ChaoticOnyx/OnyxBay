@@ -53,7 +53,7 @@
 		update_icon()
 	else
 		if(busy)
-			visible_message("<span class='notice'>\icon [src] flashes: insufficient materials: [getLackingMaterials(D)].</span>")
+			visible_message(SPAN("notice", "\icon [src] flashes: insufficient materials: [getLackingMaterials(D)]."))
 			busy = 0
 			update_icon()
 

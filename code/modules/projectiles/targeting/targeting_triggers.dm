@@ -20,7 +20,7 @@
 	if(!owner.canClick())
 		return
 	owner.setClickCooldown(DEFAULT_QUICK_COOLDOWN) // Spam prevention, essentially.
-	owner.visible_message("<span class='danger'>\The [owner] pulls the trigger reflexively!</span>")
+	owner.visible_message(SPAN("danger", "\The [owner] pulls the trigger reflexively!"))
 	var/obj/item/weapon/gun/G = aiming_with
 	if(istype(G))
 		G.Fire(aiming_at, owner)

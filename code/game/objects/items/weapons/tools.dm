@@ -257,7 +257,7 @@
 			qdel(src)
 		else
 			QDEL_NULL(src)
-		user.visible_message("<span class='notice'>\The [user] fits \the [W] to \the [src] as a crude barrel.</span>")
+		user.visible_message(SPAN("notice", "\The [user] fits \the [W] to \the [src] as a crude barrel."))
 		var/obj/item/weapon/boomstickframe/F = new /obj/item/weapon/boomstickframe(user.loc)
 		F.add_fingerprint(user)
 		return
@@ -421,7 +421,7 @@
 			if(M)
 				to_chat(M, "<span class='notice'>You switch the [src] on.</span>")
 			else if(T)
-				T.visible_message("<span class='danger'>\The [src] turns on.</span>")
+				T.visible_message(SPAN("danger", "\The [src] turns on."))
 			force = 15
 			damtype = "fire"
 			hitsound = 'sound/effects/flare.ogg' // Surprisingly it sounds just perfect
@@ -439,7 +439,7 @@
 		if(M)
 			to_chat(M, "<span class='notice'>You switch \the [src] off.</span>")
 		else if(T)
-			T.visible_message("<span class='warning'>\The [src] turns off.</span>")
+			T.visible_message(SPAN("warning", "\The [src] turns off."))
 		force = 3
 		damtype = "brute"
 		hitsound = initial(hitsound)

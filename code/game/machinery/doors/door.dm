@@ -38,10 +38,10 @@
 
 /obj/machinery/door/attack_generic(mob/user, damage)
 	if(damage >= 10)
-		visible_message("<span class='danger'>\The [user] smashes into \the [src]!</span>")
+		visible_message(SPAN("danger", "\The [user] smashes into \the [src]!"))
 		take_damage(damage)
 	else
-		visible_message("<span class='notice'>\The [user] bonks \the [src] harmlessly.</span>")
+		visible_message(SPAN("notice", "\The [user] bonks \the [src] harmlessly."))
 	attack_animation(user)
 
 /obj/machinery/door/New()
@@ -150,7 +150,7 @@
 	if (damage > 90)
 		destroy_hits--
 		if (destroy_hits <= 0)
-			visible_message("<span class='danger'>\The [src.name] disintegrates!</span>")
+			visible_message(SPAN("danger", "\The [src.name] disintegrates!"))
 			switch (Proj.damage_type)
 				if(BRUTE)
 					new /obj/item/stack/material/steel(src.loc, 2)
@@ -252,9 +252,9 @@
 			user.do_attack_animation(src)
 			user.setClickCooldown(W.update_attack_cooldown())
 			if(W.force < min_force)
-				user.visible_message("<span class='danger'>\The [user] hits \the [src] with \the [W] with no visible effect.</span>")
+				user.visible_message(SPAN("danger", "\The [user] hits \the [src] with \the [W] with no visible effect."))
 			else
-				user.visible_message("<span class='danger'>\The [user] forcefully strikes \the [src] with \the [W]!</span>")
+				user.visible_message(SPAN("danger", "\The [user] forcefully strikes \the [src] with \the [W]!"))
 				playsound(src.loc, hitsound, 100, 1)
 				take_damage(W.force)
 				shake_animation(3,3)

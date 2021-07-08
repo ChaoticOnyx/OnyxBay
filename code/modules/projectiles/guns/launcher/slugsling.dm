@@ -33,7 +33,7 @@
 		squish()
 
 /obj/item/weapon/slugegg/proc/squish()
-	src.visible_message("<span class='warning'>\The [src] bursts open!</span>")
+	src.visible_message(SPAN("warning", "\The [src] bursts open!"))
 	new /mob/living/simple_animal/hostile/voxslug(get_turf(src))
 	playsound(src.loc,'sound/effects/attackblob.ogg',100, 1)
 	qdel(src)

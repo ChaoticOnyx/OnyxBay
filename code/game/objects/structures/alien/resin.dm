@@ -33,7 +33,7 @@
 
 /obj/structure/alien/resin/attack_hand(mob/user)
 	if (MUTATION_HULK in user.mutations)
-		visible_message("<span class='danger'>\The [user] destroys \the [name]!</span>")
+		visible_message(SPAN("danger", "\The [user] destroys \the [name]!"))
 		health = 0
 	else
 		// Aliens can get straight through these.
@@ -44,7 +44,7 @@
 				health = 0
 				healthcheck()
 			return
-		visible_message("<span class='danger'>\The [user] claws at \the [src]!</span>")
+		visible_message(SPAN("danger", "\The [user] claws at \the [src]!"))
 		// Todo check attack datums.
 		health -= rand(5,10)
 	healthcheck()

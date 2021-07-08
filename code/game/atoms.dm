@@ -460,7 +460,7 @@ its easier to just keep the beam vertical.
 /atom/attack_hand(mob/user)
 	..()
 	if(climbers.len && !(user in climbers))
-		user.visible_message("<span class='warning'>[user.name] shakes \the [src].</span>", \
+		user.visible_message(SPAN("warning", "[user.name] shakes \the [src]."),
 					"<span class='notice'>You shake \the [src].</span>")
 		object_shaken()
 
@@ -517,7 +517,7 @@ its easier to just keep the beam vertical.
 	if (!can_climb(user))
 		return
 
-	user.visible_message("<span class='warning'>\The [user] starts climbing onto \the [src]!</span>")
+	user.visible_message(SPAN("warning", "\The [user] starts climbing onto \the [src]!"))
 	climbers |= user
 
 	if(!do_after(user,(issmall(user) ? 30 : 50), src))
@@ -531,7 +531,7 @@ its easier to just keep the beam vertical.
 	user.forceMove(get_turf(src))
 
 	if (get_turf(user) == get_turf(src))
-		user.visible_message("<span class='warning'>\The [user] climbs onto \the [src]!</span>")
+		user.visible_message(SPAN("warning", "\The [user] climbs onto \the [src]!"))
 	climbers -= user
 
 /atom/proc/object_shaken()

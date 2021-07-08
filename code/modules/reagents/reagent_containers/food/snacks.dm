@@ -23,7 +23,7 @@
 	//Placeholder for effect that trigger on eating that aren't tied to reagents.
 /obj/item/weapon/reagent_containers/food/snacks/proc/On_Consume(mob/M)
 	if(!reagents.total_volume)
-		M.visible_message("<span class='notice'>[M] finishes eating \the [src].</span>","<span class='notice'>You finish eating \the [src].</span>")
+		M.visible_message(SPAN("notice", "[M] finishes eating \the [src]."), SPAN("notice", "You finish eating \the [src]."))
 
 		M.drop_item()
 		if(trash)
@@ -81,9 +81,9 @@
 				return
 
 			if (fullness <= STOMACH_FULLNESS_HIGH)
-				user.visible_message("<span class='danger'>[user] attempts to feed [M] [src].</span>")
+				user.visible_message(SPAN("danger", "[user] attempts to feed [M] [src]."))
 			else
-				user.visible_message("<span class='danger'>[user] cannot force anymore of [src] down [M]'s throat.</span>")
+				user.visible_message(SPAN("danger", "[user] cannot force anymore of [src] down [M]'s throat."))
 				return 0
 
 			user.setClickCooldown(DEFAULT_ATTACK_COOLDOWN)
@@ -95,7 +95,7 @@
 
 			var/contained = reagentlist()
 			admin_attack_log(user, M, "Fed the victim with [name] (Reagents: [contained])", "Was fed [src] (Reagents: [contained])", "used [src] (Reagents: [contained]) to feed")
-			user.visible_message("<span class='danger'>[user] feeds [M] [src].</span>")
+			user.visible_message(SPAN("danger", "[user] feeds [M] [src]."))
 
 		if(reagents)								//Handle ingestion of the reagent.
 			playsound(M.loc, "eat", rand(45, 60), FALSE)
@@ -201,10 +201,10 @@
 
 			var/slices_lost = 0
 			if (W.w_class > 3)
-				user.visible_message("<span class='notice'>\The [user] crudely slices \the [src] with [W]!</span>", "<span class='notice'>You crudely slice \the [src] with your [W]!</span>")
+				user.visible_message(SPAN("notice", "\The [user] crudely slices \the [src] with [W]!"), SPAN("notice", "You crudely slice \the [src] with your [W]!"))
 				slices_lost = rand(1,min(1,round(slices_num/2)))
 			else
-				user.visible_message("<span class='notice'>\The [user] slices \the [src]!</span>", "<span class='notice'>You slice \the [src]!</span>")
+				user.visible_message(SPAN("notice", "\The [user] slices \the [src]!"), SPAN("notice", "You slice \the [src]!"))
 
 			var/reagents_per_slice = reagents.total_volume/slices_num
 			for(var/i=1 to (slices_num-slices_lost))
@@ -505,7 +505,7 @@
 		return // Could be happened hitby()
 	new /obj/effect/decal/cleanable/egg_smudge(src.loc)
 	src.reagents.splash(hit_atom, src.reagents.total_volume)
-	src.visible_message("<span class='warning'>\The [src] has been squashed!</span>","<span class='warning'>You hear a smack.</span>")
+	src.visible_message(SPAN("warning", "\The [src] has been squashed!"), SPAN("warning", "You hear a smack."))
 	qdel(src)
 
 /obj/item/weapon/reagent_containers/food/snacks/egg/attackby(obj/item/weapon/W as obj, mob/user as mob)
@@ -795,7 +795,7 @@
 		to_chat(user, "<span class='notice'>The heating chemicals have already been spent.</span>")
 		return
 	has_been_heated = 1
-	user.visible_message("<span class='notice'>[user] crushes \the [src] package.</span>", "You crush \the [src] package and feel a comfortable heat build up.")
+	user.visible_message(SPAN("notice", "[user] crushes \the [src] package."), "You crush \the [src] package and feel a comfortable heat build up.")
 	addtimer(CALLBACK(src, .proc/heat, user), 200)
 
 /obj/item/weapon/reagent_containers/food/snacks/donkpocket/sinpocket/heat(user)
@@ -1007,7 +1007,7 @@
 /obj/item/weapon/reagent_containers/food/snacks/pie/throw_impact(atom/hit_atom)
 	..()
 	new /obj/effect/decal/cleanable/pie_smudge(src.loc)
-	src.visible_message("<span class='danger'>\The [src.name] splats.</span>","<span class='danger'>You hear a splat.</span>")
+	src.visible_message(SPAN("danger", "\The [src.name] splats."), SPAN("danger", "You hear a splat."))
 	qdel(src)
 
 /obj/item/weapon/reagent_containers/food/snacks/berryclafoutis
@@ -1671,7 +1671,7 @@
 /obj/item/weapon/reagent_containers/food/snacks/monkeycube/proc/Expand()
 	if(!growing)
 		growing = 1
-		src.visible_message("<span class='notice'>\The [src] expands!</span>")
+		src.visible_message(SPAN("notice", "\The [src] expands!"))
 		var/mob/monkey = new monkey_type
 		monkey.dropInto(src.loc)
 		qdel(src)
@@ -1687,7 +1687,7 @@
 /obj/item/weapon/reagent_containers/food/snacks/monkeycube/On_Consume(mob/M)
 	if(ishuman(M))
 		var/mob/living/carbon/human/H = M
-		H.visible_message("<span class='warning'>A screeching creature bursts out of [M]'s chest!</span>")
+		H.visible_message(SPAN("warning", "A screeching creature bursts out of [M]'s chest!"))
 		var/obj/item/organ/external/organ = H.get_organ(BP_CHEST)
 		organ.take_external_damage(50, 0, 0, "Animal escaping the ribcage")
 	Expand()

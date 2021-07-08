@@ -4,26 +4,26 @@
 		return src
 
 	var/datum/seed/S = diverge()	//Let's not modify all of the seeds.
-	T.visible_message("<span class='notice'>\The [S.display_name] quivers!</span>")	//Mimicks the normal mutation.
+	T.visible_message(SPAN("notice", "\The [S.display_name] quivers!")	//Mimicks the normal mutation.)
 	G.mutate(S, T)
-	
+
 	return S
-	
+
 /decl/plantgene
 	var/gene_tag
-	
+
 /decl/plantgene/biochem
 	gene_tag = GENE_BIOCHEMISTRY
-	
+
 /decl/plantgene/hardiness
 	gene_tag = GENE_HARDINESS
-	
+
 /decl/plantgene/environment
 	gene_tag = GENE_ENVIRONMENT
 
 /decl/plantgene/metabolism
 	gene_tag = GENE_METABOLISM
-	
+
 /decl/plantgene/structure
 	gene_tag = GENE_STRUCTURE
 
@@ -38,7 +38,7 @@
 
 /decl/plantgene/atmosphere
 	gene_tag = GENE_ATMOSPHERE
-	
+
 /decl/plantgene/vigour
 	gene_tag = GENE_VIGOUR
 
@@ -53,7 +53,7 @@
 
 /decl/plantgene/biochem/mutate(datum/seed/S)
 	S.set_trait(TRAIT_POTENCY, S.get_trait(TRAIT_POTENCY)+rand(-20,20),200, 0)
-	
+
 /decl/plantgene/hardiness/mutate(datum/seed/S)
 	if(prob(60))
 		S.set_trait(TRAIT_TOXINS_TOLERANCE, S.get_trait(TRAIT_TOXINS_TOLERANCE)+rand(-2,2),10,0)
@@ -63,7 +63,7 @@
 		S.set_trait(TRAIT_WEED_TOLERANCE, S.get_trait(TRAIT_WEED_TOLERANCE)+rand(-2,2),10,0)
 	if(prob(60))
 		S.set_trait(TRAIT_ENDURANCE, S.get_trait(TRAIT_ENDURANCE)+rand(-5,5),100,0)
-	
+
 /decl/plantgene/environment/mutate(datum/seed/S)
 	if(prob(60))
 		S.set_trait(TRAIT_IDEAL_HEAT, S.get_trait(TRAIT_IDEAL_HEAT)+rand(-2,2),10,0)
@@ -71,7 +71,7 @@
 		S.set_trait(TRAIT_IDEAL_LIGHT, S.get_trait(TRAIT_IDEAL_LIGHT)+rand(-2,2),10,0)
 	if(prob(60))
 		S.set_trait(TRAIT_LIGHT_TOLERANCE, S.get_trait(TRAIT_LIGHT_TOLERANCE)+rand(-5,5),100,0)
-	
+
 /decl/plantgene/metabolism/mutate(datum/seed/S)
 	if(prob(65))
 		S.set_trait(TRAIT_REQUIRES_NUTRIENTS, S.get_trait(TRAIT_REQUIRES_NUTRIENTS)+rand(-2,2),10,0)
@@ -79,7 +79,7 @@
 		S.set_trait(TRAIT_REQUIRES_WATER, S.get_trait(TRAIT_REQUIRES_WATER)+rand(-2,2),10,0)
 	if(prob(40))
 		S.set_trait(TRAIT_ALTER_TEMP, S.get_trait(TRAIT_ALTER_TEMP)+rand(-5,5),100,0)
-	
+
 /decl/plantgene/diet/mutate(datum/seed/S)
 	if(prob(60))
 		S.set_trait(TRAIT_CARNIVOROUS, S.get_trait(TRAIT_CARNIVOROUS)+rand(-1,1),2,0)
@@ -94,15 +94,15 @@
 	if(prob(50))
 		S.set_trait(TRAIT_BIOLUM,         !S.get_trait(TRAIT_BIOLUM))
 		if(S.get_trait(TRAIT_BIOLUM))
-			T.visible_message("<span class='notice'>\The [S.display_name] begins to glow!</span>")
+			T.visible_message(SPAN("notice", "\The [S.display_name] begins to glow!"))
 			if(prob(50))
 				S.set_trait(TRAIT_BIOLUM_COLOUR,get_random_colour(0,75,190))
-				T.visible_message("<span class='notice'>\The [S.display_name]'s glow </span><font color='[S.get_trait(TRAIT_BIOLUM_COLOUR)]'>changes colour</font>!")
+				T.visible_message(SPAN("notice", "\The [S.display_name]'s glow <font color='[S.get_trait(TRAIT_BIOLUM_COLOUR)]'>changes colour</font>!"))
 			else
-				T.visible_message("<span class='notice'>\The [S.display_name]'s glow dims...</span>")
+				T.visible_message(SPAN("notice", "\The [S.display_name]'s glow dims..."))
 	if(prob(60))
 		S.set_trait(TRAIT_PRODUCES_POWER, !S.get_trait(TRAIT_PRODUCES_POWER))
-	
+
 /decl/plantgene/atmosphere/mutate(datum/seed/S)
 	if(prob(60))
 		S.set_trait(TRAIT_TOXINS_TOLERANCE, S.get_trait(TRAIT_TOXINS_TOLERANCE)+rand(-2,2),10,0)
@@ -112,7 +112,7 @@
 		S.set_trait(TRAIT_WEED_TOLERANCE, S.get_trait(TRAIT_WEED_TOLERANCE)+rand(-2,2),10,0)
 	if(prob(60))
 		S.set_trait(TRAIT_ENDURANCE, S.get_trait(TRAIT_ENDURANCE)+rand(-5,5),100,0)
-	
+
 /decl/plantgene/vigour/mutate(datum/seed/S, turf/T)
 	if(prob(65))
 		S.set_trait(TRAIT_PRODUCTION, S.get_trait(TRAIT_PRODUCTION)+rand(-1,1),10,0)
@@ -120,8 +120,8 @@
 		S.set_trait(TRAIT_MATURATION, S.get_trait(TRAIT_MATURATION)+rand(-1,1),30,0)
 	if(prob(55))
 		S.set_trait(TRAIT_SPREAD, S.get_trait(TRAIT_SPREAD)+rand(-1,1),2,0)
-		T.visible_message("<span class='notice'>\The [S.display_name] spasms visibly, shifting in the tray.</span>")
-	
+		T.visible_message(SPAN("notice", "\The [S.display_name] spasms visibly, shifting in the tray."))
+
 /decl/plantgene/fruit/mutate(datum/seed/S)
 	if(prob(65))
 		S.set_trait(TRAIT_STINGS, !S.get_trait(TRAIT_STINGS))
@@ -129,7 +129,7 @@
 		S.set_trait(TRAIT_EXPLOSIVE, !S.get_trait(TRAIT_EXPLOSIVE))
 	if(prob(65))
 		S.set_trait(TRAIT_JUICY, !S.get_trait(TRAIT_JUICY))
-	
+
 /decl/plantgene/special/mutate(datum/seed/S)
 	if(prob(65))
 		S.set_trait(TRAIT_TELEPORTING, !S.get_trait(TRAIT_TELEPORTING))

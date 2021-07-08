@@ -144,7 +144,7 @@
 		if(ruined || !user.Adjacent(src))
 			return
 
-		visible_message("<span class='warning'>\The [user] rips \the [src] in a single, decisive motion!</span>" )
+		visible_message(SPAN("warning", "\The [user] rips \the [src] in a single, decisive motion!" ))
 		playsound(src.loc, 'sound/items/poster_ripped.ogg', 100, 1)
 		ruined = 1
 		icon_state = "poster_ripped"

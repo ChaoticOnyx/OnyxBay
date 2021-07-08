@@ -25,8 +25,8 @@
 	if(!curloc || !targloc)
 		return
 	chassis.use_power(energy_drain)
-	chassis.visible_message("<span class='warning'>[chassis] fires [src]!</span>")
-	occupant_message("<span class='warning'>You fire [src]!</span>")
+	chassis.visible_message(SPAN("warning", "[chassis] fires [src]!"))
+	occupant_message(SPAN("warning", "You fire [src]!"))
 	log_message("Fired from [src], targeting [target].")
 	for(var/i = 1 to min(projectiles, projectiles_per_shot))
 		var/turf/aimloc = targloc

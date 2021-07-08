@@ -47,12 +47,12 @@
 
 	if(istype(A, /turf/simulated/wall/cult))
 		var/turf/simulated/wall/cult/W = A
-		user.visible_message("<span class='notice'>\The [user] touches \the [A] with \the [src], and the enchantment affecting it fizzles away.</span>", "<span class='notice'>You touch \the [A] with \the [src], and the enchantment affecting it fizzles away.</span>")
+		user.visible_message(SPAN("notice", "\The [user] touches \the [A] with \the [src], and the enchantment affecting it fizzles away."), SPAN("notice", "You touch \the [A] with \the [src], and the enchantment affecting it fizzles away."))
 		W.ChangeTurf(/turf/simulated/wall)
 
 	if(istype(A, /turf/simulated/floor/misc/cult))
 		var/turf/simulated/floor/misc/cult/F = A
-		user.visible_message("<span class='notice'>\The [user] touches \the [A] with \the [src], and the enchantment affecting it fizzles away.</span>", "<span class='notice'>You touch \the [A] with \the [src], and the enchantment affecting it fizzles away.</span>")
+		user.visible_message(SPAN("notice", "\The [user] touches \the [A] with \the [src], and the enchantment affecting it fizzles away."), SPAN("notice", "You touch \the [A] with \the [src], and the enchantment affecting it fizzles away."))
 		F.ChangeTurf(/turf/simulated/floor)
 
 
@@ -184,9 +184,9 @@
 	if(health <=0)
 		set_density(0)
 		if(countdown <= 0)
-			visible_message("<span class='warning'>\The [src] fades away!</span>")
+			visible_message(SPAN("warning", "\The [src] fades away!"))
 		else
-			visible_message("<span class='danger'>\The [src] is torn apart!</span>")
+			visible_message(SPAN("danger", "\The [src] is torn apart!"))
 		qdel(src)
 
 /obj/effect/energy_net/bullet_act(obj/item/projectile/Proj)

@@ -626,7 +626,7 @@ var/list/global/slot_flags_enumeration = list(
 			to_chat(user, SPAN("danger", "You stab [M] in the eye with [src]!"))
 		else
 			user.visible_message( \
-				SPAN("danger", "[user] has stabbed themself with [src]!"), \
+				SPAN("danger", "[user] has stabbed themself with [src]!"),
 				SPAN("danger", "You stab yourself in the eyes with [src]!") \
 			)
 

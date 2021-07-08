@@ -78,7 +78,7 @@
 
 	if(!can_open)
 		if(user.a_intent == I_HURT)
-			user.visible_message("<span class='danger'>\The [user] bangs against \the [src]!</span>",
+			user.visible_message(SPAN("danger", "\The [user] bangs against \the [src]!"),
 								 "<span class='danger'>You bang against \the [src]!</span>",
 								 "You hear a banging sound.")
 			user.do_attack_animation(src)
@@ -241,7 +241,7 @@
 
 			to_chat(user, "<span class='notice'>You remove the outer plating.</span>")
 			dismantle_wall()
-			user.visible_message("<span class='warning'>\The [src] was torn open by [user]!</span>")
+			user.visible_message(SPAN("warning", "\The [src] was torn open by [user]!"))
 			return
 
 	//Reinforced dismantling.
@@ -361,10 +361,10 @@
 		user.do_attack_animation(src)
 		var/dam_prob = min(100, material.hardness*1.5)
 		if(dam_prob < 100 && W.force > (dam_threshhold/10))
-			visible_message("<span class='danger'>\The [user] attacks \the [src] with \the [W]!</span>")
+			visible_message(SPAN("danger", "\The [user] attacks \the [src] with \the [W]!"))
 			playsound(src, 'sound/effects/metalhit2.ogg', rand(50,75), 1, -1)
 			take_damage(W.force)
 		else
-			visible_message("<span class='danger'>\The [user] attacks \the [src] with \the [W], but it bounces off!</span>")
+			visible_message(SPAN("danger", "\The [user] attacks \the [src] with \the [W], but it bounces off!"))
 			playsound(src, 'sound/effects/metalhit2.ogg', 20, 1, -1)
 		return

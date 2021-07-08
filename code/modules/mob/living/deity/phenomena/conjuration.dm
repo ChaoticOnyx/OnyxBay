@@ -81,7 +81,7 @@
 	to_chat(L, "<span class='danger'>Something hard hits you!</span>")
 	if(L.health < L.maxHealth/2) //If it reduces past 50%
 		var/obj/effect/rift/R = new(get_turf(L))
-		L.visible_message("<span class='danger'>\The [L] is quickly sucked into \a [R]!</span>")
+		L.visible_message(SPAN("danger", "\The [L] is quickly sucked into \a [R]!"))
 		L.forceMove(R)
 		spawn(300)
 			qdel(R)

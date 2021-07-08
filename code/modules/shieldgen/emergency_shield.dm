@@ -24,7 +24,7 @@
 
 /obj/machinery/shield/proc/check_failure()
 	if (src.health <= 0)
-		visible_message("<span class='notice'>\The [src] dissipates!</span>")
+		visible_message(SPAN("notice", "\The [src] dissipates!"))
 		qdel(src)
 		return
 
@@ -89,7 +89,7 @@
 
 /obj/machinery/shield/hitby(atom/movable/AM) // Okay this stuff is belly-deep in legacy stuff, let's rework it later
 	//Let everyone know we've been hit!
-	visible_message("<span class='notice'><B>\[src] was hit by [AM].</B></span>")
+	visible_message(SPAN("notice", "<B>\[src] was hit by [AM].</B>"))
 
 	//Super realistic, resource-intensive, real-time damage calculations.
 	var/tforce = 0
@@ -249,13 +249,13 @@
 		return
 
 	if (src.active)
-		user.visible_message("<span class='notice'>\icon[src] [user] deactivated the shield generator.</span>", \
+		user.visible_message(SPAN("notice", "\icon[src] [user] deactivated the shield generator."),
 			"<span class='notice'>\icon[src] You deactivate the shield generator.</span>", \
 			"You hear heavy droning fade out.")
 		src.shields_down()
 	else
 		if(anchored)
-			user.visible_message("<span class='notice'>\icon[src] [user] activated the shield generator.</span>", \
+			user.visible_message(SPAN("notice", "\icon[src] [user] activated the shield generator."),
 				"<span class='notice'>\icon[src] You activate the shield generator.</span>", \
 				"You hear heavy droning.")
 			src.shields_up()

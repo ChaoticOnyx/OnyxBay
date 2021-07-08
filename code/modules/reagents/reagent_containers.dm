@@ -96,7 +96,7 @@
 	var/contained = reagentlist()
 	admin_attack_log(user, target, "Used \the [name] containing [contained] to splash the victim.", "Was splashed by \the [name] containing [contained].", "used \the [name] containing [contained] to splash")
 
-	user.visible_message("<span class='danger'>[target] has been splashed with something by [user]!</span>", "<span class = 'notice'>You splash the solution onto [target].</span>")
+	user.visible_message(SPAN("danger", "[target] has been splashed with something by [user]!"), SPAN("notice", "You splash the solution onto [target]."))
 	reagents.splash(target, reagents.total_volume)
 	return 1
 
@@ -104,10 +104,10 @@
 	to_chat(user, "<span class='notice'>You eat \the [src]</span>")
 
 /obj/item/weapon/reagent_containers/proc/other_feed_message_start(mob/user, mob/target)
-	user.visible_message("<span class='warning'>[user] is trying to feed [target] \the [src]!</span>")
+	user.visible_message(SPAN("warning", "[user] is trying to feed [target] \the [src]!"))
 
 /obj/item/weapon/reagent_containers/proc/other_feed_message_finish(mob/user, mob/target)
-	user.visible_message("<span class='warning'>[user] has fed [target] \the [src]!</span>")
+	user.visible_message(SPAN("warning", "[user] has fed [target] \the [src]!"))
 
 /obj/item/weapon/reagent_containers/proc/feed_sound(mob/user)
 	playsound(user, "drink", rand(45, 60), TRUE)

@@ -10,11 +10,11 @@
 
 	var/mob/living/carbon/M = src
 
-	M.visible_message(SPAN("danger", "You hear a loud cracking sound coming from \the [M]."), \
+	M.visible_message(SPAN("danger", "You hear a loud cracking sound coming from \the [M]."),
 					  SPAN("changeling", "We begin disjunction of our body to form a pack of autonomous organisms."))
 
 	if(!do_after(src, 60, needhand = 0, incapacitation_flags = INCAPACITATION_NONE))
-		M.visible_message(SPAN("danger", "[M]'s transformation abruptly reverts itself!"), \
+		M.visible_message(SPAN("danger", "[M]'s transformation abruptly reverts itself!"),
 						  SPAN("changeling", "Our transformation has been interrupted!"))
 		return
 

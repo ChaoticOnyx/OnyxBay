@@ -113,7 +113,7 @@ var/const/NO_EMAG_ACT = -50
 		log_and_message_admins("emagged \an [A].")
 
 	if(uses<1)
-		user.visible_message("<span class='warning'>\The [src] fizzles and sparks - it seems it's been used once too often, and is now spent.</span>")
+		user.visible_message(SPAN("warning", "\The [src] fizzles and sparks - it seems it's been used once too often, and is now spent."))
 	return 1
 
 /obj/item/weapon/card/emag/robot/examine(mob/user)

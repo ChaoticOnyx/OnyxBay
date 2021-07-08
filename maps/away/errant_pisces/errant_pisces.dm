@@ -42,7 +42,7 @@
 		var/datum/gas_mixture/sharkmaw_plasma = new
 		sharkmaw_plasma.adjust_gas("plasma",  10)
 		environment.merge(sharkmaw_plasma)
-		visible_message("<span class='warning'>\The [src]'s body releases some gas from the gills with a quiet fizz!</span>")
+		visible_message(SPAN("warning", "\The [src]'s body releases some gas from the gills with a quiet fizz!"))
 
 /mob/living/simple_animal/hostile/carp/shark/AttackingTarget()
 	set waitfor = 0//to deal with sleep() possibly stalling other procs
@@ -50,7 +50,7 @@
 	var/mob/living/L = .
 	if(istype(L))
 		if(prob(25))//if one is unlucky enough, they get tackled few tiles away
-			L.visible_message("<span class='danger'>\The [src] tackles [L]!</span>")
+			L.visible_message(SPAN("danger", "\The [src] tackles [L]!"))
 			var/tackle_length = rand(3,5)
 			for (var/i = 1 to tackle_length)
 				var/turf/T = get_step(L.loc, dir)//on a first step of tackling standing mob would block movement so let's check if there's something behind it. Works for consequent moves too
@@ -59,7 +59,7 @@
 				sleep(2)
 				forceMove(T)//maybe there's better manner then just forceMove() them
 				L.forceMove(T)
-			visible_message("<span class='danger'>\The [src] releases [L].</span>")
+			visible_message(SPAN("danger", "\The [src] releases [L]."))
 
 /obj/item/weapon/reagent_containers/food/snacks/sharkmeat
 	name = "cosmoshark fillet"
@@ -112,13 +112,13 @@ obj/structure/net/Initialize(mapload)
 		if (!(SH.sharp) || (SH.sharp && SH.force < 10))//is not sharp enough or at all
 			to_chat(user,"<span class='warning'>You can't cut throught \the [src] with \the [W], it's too dull.</span>")
 			return
-		visible_message("<span class='warning'>[user] starts to cut through \the [src] with \the [W]!</span>")
+		visible_message(SPAN("warning", "[user] starts to cut through \the [src] with \the [W]!"))
 		while (health > 0)
 			if (!do_after(user, 20, src))
-				visible_message("<span class='warning'>[user] stops cutting through \the [src] with \the [W]!</span>")
+				visible_message(SPAN("warning", "[user] stops cutting through \the [src] with \the [W]!"))
 				return
 			health -= 20 * (1 + (SH.force-10)/10)//the sharper the faster, every point of force above 10 adds 10 % to damage
-		visible_message("<span class='warning'>[user] cuts through \the [src]!</span>")
+		visible_message(SPAN("warning", "[user] cuts through \the [src]!"))
 		new /obj/item/stack/net(src.loc)
 		qdel(src)
 
@@ -126,10 +126,10 @@ obj/structure/net/Initialize(mapload)
 	. = PROJECTILE_CONTINUE //few cloth ribbons won't stop bullet or energy ray
 	if(P.damage_type != BURN)//beams, lasers, fire. Bullets won't make a lot of damage to the few hanging belts.
 		return
-	visible_message("<span class='warning'>\The [P] hits \the [src] and tears it!</span>")
+	visible_message(SPAN("warning", "\The [P] hits \the [src] and tears it!"))
 	health -= P.damage
 	if (health < 0)
-		visible_message("<span class='warning'>\The [src] is torn apart!</span>")
+		visible_message(SPAN("warning", "\The [src] is torn apart!"))
 		qdel(src)
 
 /obj/structure/net/proc/update_connections()//maybe this should also be called when any of the walls nearby is removed but no idea how I can make it happen

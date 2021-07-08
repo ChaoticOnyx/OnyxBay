@@ -109,7 +109,7 @@
 			update_icon()
 			H.Weaken(3)
 			H.Stun(3)
-			H.visible_message("<span class='danger'>\the [src] latches onto \the [H], pulsating!</span>")
+			H.visible_message(SPAN("danger", "\the [src] latches onto \the [H], pulsating!"))
 			if(carried && length(gripping.virus2) == 0)
 				infect_virus2(gripping, carried, 1)
 			src.loc = gripping.loc

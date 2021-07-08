@@ -1,6 +1,6 @@
 /obj/proc/analyze_gases(obj/A, mob/user, advanced)
 	playsound(src.loc, 'sound/signals/processing21.ogg', 50)
-	user.visible_message("<span class='notice'>\The [user] has used \an [src] on \the [A].</span>")
+	user.visible_message(SPAN("notice", "\The [user] has used \an [src] on \the [A]."))
 	A.add_fingerprint(user)
 
 	var/air_contents = A.return_air()

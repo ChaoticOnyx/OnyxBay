@@ -155,9 +155,9 @@
 		if(aiming_at == target)
 			return
 		cancel_aiming(1)
-		owner.visible_message("<span class='danger'>\The [owner] turns \the [thing] on \the [target]!</span>")
+		owner.visible_message(SPAN("danger", "\The [owner] turns \the [thing] on \the [target]!"))
 	else
-		owner.visible_message("<span class='danger'>\The [owner] aims \the [thing] at \the [target]!</span>")
+		owner.visible_message(SPAN("danger", "\The [owner] aims \the [thing] at \the [target]!"))
 
 	if(owner.client)
 		owner.client.add_gun_icons()
@@ -222,7 +222,7 @@
 	if(istype(aiming_with, /obj/item/weapon/gun))
 		playsound(owner, 'sound/weapons/TargetOff.ogg', 50,1)
 	if(!no_message)
-		owner.visible_message("<span class='notice'>\The [owner] lowers \the [aiming_with].</span>")
+		owner.visible_message(SPAN("notice", "\The [owner] lowers \the [aiming_with]."))
 
 	GLOB.moved_event.unregister(owner, src)
 	if(aiming_at)

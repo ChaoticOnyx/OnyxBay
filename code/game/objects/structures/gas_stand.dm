@@ -54,7 +54,7 @@
 		qdel(tank)
 	if(breather)
 		breather.remove_from_mob(contained)
-		src.visible_message("<span class='notice'>The mask rapidly retracts just before \the [src] is destroyed!</span>")
+		src.visible_message(SPAN("notice", "The mask rapidly retracts just before \the [src] is destroyed!"))
 	qdel(contained)
 	contained = null
 	breather = null
@@ -81,7 +81,7 @@
 
 /obj/structure/gas_stand/attack_hand(mob/user as mob)
 	if (tank && is_loosen)
-		user.visible_message("<span class='notice'>\The [user] removes \the [tank] from \the [src].</span>", "<span class='notice'>You remove \the [tank] from \the [src].</span>")
+		user.visible_message(SPAN("notice", "\The [user] removes \the [tank] from \the [src]."), SPAN("notice", "You remove \the [tank] from \the [src]."))
 		user.put_in_hands(tank)
 		src.add_fingerprint(user)
 		tank.add_fingerprint(user)
@@ -93,7 +93,7 @@
 		return
 	else
 		if (valve_opened)
-			src.visible_message("<span class='notice'>\The [user] closes valve on \the [src]!</span>")
+			src.visible_message(SPAN("notice", "\The [user] closes valve on \the [src]!"))
 			if(breather)
 				if(breather.internals)
 					breather.internals.icon_state = "internal0"
@@ -101,7 +101,7 @@
 			valve_opened = FALSE
 			update_icon()
 		else
-			src.visible_message("<span class='notice'>\The [user] opens valve on \the [src]!</span>")
+			src.visible_message(SPAN("notice", "\The [user] opens valve on \the [src]!"))
 			if(breather)
 				breather.internal = tank
 				if(breather.internals)
@@ -165,7 +165,7 @@
 				is_loosen = FALSE
 				if (valve_opened)
 					START_PROCESSING(SSobj,src)
-			user.visible_message("<span class='notice'>\The [user] [is_loosen == TRUE ? "loosen" : "tighten"] \the nut holding [tank] in place.</span>", "<span class='notice'>You [is_loosen == TRUE ? "loosen" : "tighten"] \the nut holding [tank] in place.</span>")
+			user.visible_message(SPAN("notice", "\The [user] [is_loosen == TRUE ? "loosen" : "tighten"] \the nut holding [tank] in place."), SPAN("notice", "You [is_loosen == TRUE ? "loosen" : "tighten"] \the nut holding [tank] in place."))
 			return
 		else
 			to_chat(user, "<span class='warning'>There is no tank in \the [src].</span>")
@@ -180,7 +180,7 @@
 			user.drop_item()
 			W.forceMove(src)
 			tank = W
-			user.visible_message("<span class='notice'>\The [user] attaches \the [tank] to \the [src].</span>", "<span class='notice'>You attach \the [tank] to \the [src].</span>")
+			user.visible_message(SPAN("notice", "\The [user] attaches \the [tank] to \the [src]."), SPAN("notice", "You attach \the [tank] to \the [src]."))
 			src.add_fingerprint(user)
 			update_icon()
 
@@ -206,7 +206,7 @@
 			else
 				qdel(contained)
 				contained=new mask_type (src)
-			src.visible_message("<span class='notice'>\The [contained] slips to \the [src]!</span>")
+			src.visible_message(SPAN("notice", "\The [contained] slips to \the [src]!"))
 			breather = null
 			update_icon()
 			return

@@ -36,7 +36,7 @@
 		qdel(tank)
 	if(breather)
 		breather.remove_from_mob(contained)
-		src.visible_message("<span class='notice'>The mask rapidly retracts just before \the [src] is destroyed!</span>")
+		src.visible_message(SPAN("notice", "The mask rapidly retracts just before \the [src] is destroyed!"))
 	qdel(contained)
 	contained = null
 	breather = null
@@ -58,7 +58,7 @@
 
 /obj/machinery/oxygen_pump/attack_hand(mob/user as mob)
 	if((stat & MAINT) && tank)
-		user.visible_message("<span class='notice'>\The [user] removes \the [tank] from \the [src].</span>", "<span class='notice'>You remove \the [tank] from \the [src].</span>")
+		user.visible_message(SPAN("notice", "\The [user] removes \the [tank] from \the [src]."), SPAN("notice", "You remove \the [tank] from \the [src]."))
 		user.put_in_hands(tank)
 		src.add_fingerprint(user)
 		tank.add_fingerprint(user)
@@ -72,7 +72,7 @@
 			tank.forceMove(src)
 		breather.remove_from_mob(contained)
 		contained.forceMove(src)
-		src.visible_message("<span class='notice'>\The [user] makes \The [contained] rapidly retracts back into \the [src]!</span>")
+		src.visible_message(SPAN("notice", "\The [user] makes \The [contained] rapidly retracts back into \the [src]!"))
 		if(breather.internals)
 			breather.internals.icon_state = "internal0"
 		breather = null
@@ -133,7 +133,7 @@
 /obj/machinery/oxygen_pump/attackby(obj/item/weapon/W as obj, mob/user as mob)
 	if(isScrewdriver(W))
 		stat ^= MAINT
-		user.visible_message("<span class='notice'>\The [user] [stat & MAINT ? "opens" : "closes"] \the [src].</span>", "<span class='notice'>You [stat & MAINT ? "open" : "close"] \the [src].</span>")
+		user.visible_message(SPAN("notice", "\The [user] [stat & MAINT ? "opens" : "closes"] \the [src]."), SPAN("notice", "You [stat & MAINT ? "open" : "close"] \the [src]."))
 		if(stat & MAINT)
 			icon_state = icon_state_open
 		if(!stat)
@@ -146,7 +146,7 @@
 			user.drop_item()
 			W.forceMove(src)
 			tank = W
-			user.visible_message("<span class='notice'>\The [user] installs \the [tank] into \the [src].</span>", "<span class='notice'>You install \the [tank] into \the [src].</span>")
+			user.visible_message(SPAN("notice", "\The [user] installs \the [tank] into \the [src]."), SPAN("notice", "You install \the [tank] into \the [src]."))
 			src.add_fingerprint(user)
 	if(istype(W, /obj/item/weapon/tank) && !stat)
 		to_chat(user, "<span class='warning'>Please open the maintenance hatch first.</span>")
@@ -169,7 +169,7 @@
 			else
 				qdel(contained)
 				contained=new mask_type (src)
-			src.visible_message("<span class='notice'>\The [contained] rapidly retracts back into \the [src]!</span>")
+			src.visible_message(SPAN("notice", "\The [contained] rapidly retracts back into \the [src]!"))
 			breather = null
 			use_power = 1
 		else if(!breather.internal && tank)

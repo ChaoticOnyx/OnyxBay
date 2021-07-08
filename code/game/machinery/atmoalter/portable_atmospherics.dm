@@ -165,7 +165,7 @@
 		C.add_fingerprint(user)
 		cell = C
 		C.forceMove(src)
-		user.visible_message("<span class='notice'>[user] opens the panel on [src] and inserts [C].</span>", "<span class='notice'>You open the panel on [src] and insert [C].</span>")
+		user.visible_message(SPAN("notice", "[user] opens the panel on [src] and inserts [C]."), SPAN("notice", "You open the panel on [src] and insert [C]."))
 		power_change()
 		return
 
@@ -174,7 +174,7 @@
 			to_chat(user, "<span class='warning'>There is no power cell installed.</span>")
 			return
 
-		user.visible_message("<span class='notice'>[user] opens the panel on [src] and removes [cell].</span>", "<span class='notice'>You open the panel on [src] and remove [cell].</span>")
+		user.visible_message(SPAN("notice", "[user] opens the panel on [src] and removes [cell]."), SPAN("notice", "You open the panel on [src] and remove [cell]."))
 		cell.add_fingerprint(user)
 		cell.dropInto(loc)
 		cell = null

@@ -83,7 +83,7 @@
 /obj/item/clothing/mask/smokable/ecig/Process()
 	if(idle >= idle_treshold) //idle too long -> automatic shut down
 		idle = 0
-		src.visible_message("<span class='notice'>\The [src] powered down automatically.</span>", null, 2)
+		src.visible_message(SPAN("notice", "\The [src] powered down automatically."), null, 2)
 		active=0//autodisable the cigarette
 		STOP_PROCESSING(SSobj, src)
 		update_icon()

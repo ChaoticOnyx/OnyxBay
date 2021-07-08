@@ -281,7 +281,7 @@
 	if(buckled_mob)
 		if(prob(85))
 			return buckled_mob.bullet_act(Proj)
-	visible_message("<span class='warning'>[Proj] ricochets off the [callme]!</span>")
+	visible_message(SPAN("warning", "[Proj] ricochets off the [callme]!"))
 
 
 /obj/item/key

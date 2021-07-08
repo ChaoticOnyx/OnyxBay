@@ -194,14 +194,14 @@
 	take_damage(tforce, FALSE)
 
 /obj/structure/window/attack_tk(mob/user as mob)
-	user.visible_message("<span class='notice'>Something knocks on [src].</span>")
+	user.visible_message(SPAN("notice", "Something knocks on [src]."))
 	playsound(loc, get_sfx("glass_knock"), 50, 1)
 
 /obj/structure/window/attack_hand(mob/user as mob)
 	user.setClickCooldown(DEFAULT_ATTACK_COOLDOWN)
 	if(MUTATION_HULK in user.mutations)
 		user.say(pick(";RAAAAAAAARGH!", ";HNNNNNNNNNGGGGGGH!", ";GWAAAAAAAARRRHHH!", "NNNNNNNNGGGGGGGGHH!", ";AAAAAAARRRGH!"))
-		user.visible_message("<span class='danger'>[user] smashes through [src]!</span>")
+		user.visible_message(SPAN("danger", "[user] smashes through [src]!"))
 		user.do_attack_animation(src)
 		shatter()
 
@@ -215,7 +215,7 @@
 
 		playsound(src.loc, get_sfx("glass_hit"), 80, 1)
 		user.do_attack_animation(src)
-		user.visible_message("<span class='danger'>\The [user] bangs against \the [src]!</span>",
+		user.visible_message(SPAN("danger", "\The [user] bangs against \the [src]!"),
 							"<span class='danger'>You bang against \the [src]!</span>",
 							"You hear a banging sound.")
 	else
@@ -232,10 +232,10 @@
 	if(!damage)
 		return
 	if(damage >= 10)
-		visible_message("<span class='danger'>[user] smashes into [src]!</span>")
+		visible_message(SPAN("danger", "[user] smashes into [src]!"))
 		take_damage(damage)
 	else
-		visible_message("<span class='notice'>\The [user] bonks \the [src] harmlessly.</span>")
+		visible_message(SPAN("notice", "\The [user] bonks \the [src] harmlessly."))
 	return 1
 
 /obj/structure/window/attackby(obj/item/W as obj, mob/user as mob)
@@ -266,7 +266,7 @@
 			to_chat(user, "<span class='notice'>You're not sure how to dismantle \the [src] properly.</span>")
 		else
 			playsound(src.loc, 'sound/items/Ratchet.ogg', 75, 1)
-			visible_message("<span class='notice'>[user] dismantles \the [src].</span>")
+			visible_message(SPAN("notice", "[user] dismantles \the [src]."))
 			if(dir == SOUTHWEST)
 				var/obj/item/stack/material/mats = new glasstype(loc)
 				mats.amount = is_fulltile() ? 4 : 2

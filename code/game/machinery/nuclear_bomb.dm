@@ -164,9 +164,9 @@ var/bomb_set
 	else if(deployable)
 		if(removal_stage < 5)
 			src.anchored = 1
-			visible_message("<span class='warning'>With a steely snap, bolts slide out of [src] and anchor it to the flooring!</span>")
+			visible_message(SPAN("warning", "With a steely snap, bolts slide out of [src] and anchor it to the flooring!"))
 		else
-			visible_message("<span class='warning'>\The [src] makes a highly unpleasant crunching noise. It looks like the anchoring bolts have been cut.</span>")
+			visible_message(SPAN("warning", "\The [src] makes a highly unpleasant crunching noise. It looks like the anchoring bolts have been cut."))
 		extended = 1
 		if(!src.lighthack)
 			flick("lock", src)
@@ -307,16 +307,16 @@ var/bomb_set
 			if(href_list["anchor"])
 				if(removal_stage == 5)
 					anchored = 0
-					visible_message("<span class='warning'>\The [src] makes a highly unpleasant crunching noise. It looks like the anchoring bolts have been cut.</span>")
+					visible_message(SPAN("warning", "\The [src] makes a highly unpleasant crunching noise. It looks like the anchoring bolts have been cut."))
 					return 1
 
 				if(!isinspace())
 					anchored = !anchored
 					if(anchored)
-						visible_message("<span class='warning'>With a steely snap, bolts slide out of \the [src] and anchor it to the flooring.</span>")
+						visible_message(SPAN("warning", "With a steely snap, bolts slide out of \the [src] and anchor it to the flooring."))
 					else
 						secure_device()
-						visible_message("<span class='warning'>The anchoring bolts slide back into the depths of \the [src].</span>")
+						visible_message(SPAN("warning", "The anchoring bolts slide back into the depths of \the [src]."))
 				else
 					to_chat(usr, "<span class='warning'>There is nothing to anchor to!</span>")
 	return 1
@@ -520,12 +520,12 @@ var/bomb_set
 		if(!istype(sd) || !sd.armed)
 			to_chat(usr, "<span class='warning'>An inserter has not been armed or is damaged.</span>")
 			return
-	visible_message("<span class='warning'>Warning. The self-destruct sequence override will be disabled [self_destruct_cutoff] seconds before detonation.</span>")
+	visible_message(SPAN("warning", "Warning. The self-destruct sequence override will be disabled [self_destruct_cutoff] seconds before detonation."))
 	..()
 
 /obj/machinery/nuclearbomb/station/check_cutoff()
 	if(timeleft <= self_destruct_cutoff)
-		visible_message("<span class='warning'>Self-Destruct abort is no longer possible.</span>")
+		visible_message(SPAN("warning", "Self-Destruct abort is no longer possible."))
 		return
 	..()
 

@@ -178,7 +178,7 @@
 		var/mob/living/carbon/human/H = user
 		if(H.species?.can_shred(H))
 			playsound(loc, get_sfx("glass_hit"), 75, 1)
-			visible_message("<span class='danger'>[user] smashes against the [name].</span>", 1)
+			visible_message(SPAN("danger", "[user] smashes against the [name]."), 1)
 			user.do_attack_animation(src)
 			user.setClickCooldown(DEFAULT_QUICK_COOLDOWN)
 			take_damage(25)
@@ -207,7 +207,7 @@
 			spark_system.start()
 			playsound(loc, "spark", 50, 1)
 			playsound(loc, 'sound/weapons/blade1.ogg', 50, 1)
-			visible_message("<span class='warning'>The glass door was sliced open by [user]!</span>")
+			visible_message(SPAN("warning", "The glass door was sliced open by [user]!"))
 		return 1
 
 	//If it's emagged, crowbar can pry electronics out.
@@ -253,7 +253,7 @@
 	if(density && istype(I, /obj/item/weapon) && !istype(I, /obj/item/weapon/card))
 		var/aforce = I.force
 		playsound(loc, get_sfx("glass_hit"), 75, 1)
-		visible_message("<span class='danger'>[src] was hit by [I].</span>")
+		visible_message(SPAN("danger", "[src] was hit by [I]."))
 		user.setClickCooldown(I.update_attack_cooldown())
 		user.do_attack_animation(src)
 		if(I.damtype == BRUTE || I.damtype == BURN)

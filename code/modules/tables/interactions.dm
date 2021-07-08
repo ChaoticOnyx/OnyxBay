@@ -48,7 +48,7 @@
 		//prevent tables with 1 health left from stopping bullets outright
 		return PROJECTILE_CONTINUE //the projectile destroyed the table, so it gets to keep going
 
-	visible_message("<span class='warning'>\The [P] hits [src]!</span>")
+	visible_message(SPAN("warning", "\The [P] hits [src]!"))
 	return 0
 
 /obj/structure/table/CheckExit(atom/movable/O as mob|obj, target as turf)
@@ -109,7 +109,7 @@
 
 			if(G.force_danger())
 				G.assailant.next_move = world.time + 13 //also should prevent user from triggering this repeatedly
-				visible_message("<span class='warning'>[G.assailant] starts putting [G.affecting] on \the [src].</span>")
+				visible_message(SPAN("warning", "[G.assailant] starts putting [G.affecting] on \the [src]."))
 				if(!do_after(G.assailant, 13))
 					return 0
 				if(!G) //check that we still have a grab
@@ -117,7 +117,7 @@
 				G.affecting.forceMove(src.loc)
 				G.affecting.Weaken(rand(1,4))
 				G.affecting.Stun(1)
-				visible_message("<span class='warning'>[G.assailant] puts [G.affecting] on \the [src].</span>")
+				visible_message(SPAN("warning", "[G.assailant] puts [G.affecting] on \the [src]."))
 				G.affecting.break_all_grabs(G.assailant)
 				qdel(W)
 			else
@@ -137,7 +137,7 @@
 		spark_system.start()
 		playsound(src.loc, 'sound/weapons/blade1.ogg', 50, 1)
 		playsound(src.loc, "spark", 50, 1)
-		user.visible_message("<span class='danger'>\The [src] was sliced apart by [user]!</span>")
+		user.visible_message(SPAN("danger", "\The [src] was sliced apart by [user]!"))
 		break_to_parts()
 		return
 

@@ -160,7 +160,7 @@
 		if(drawing == "rune")
 			drawing = "rune[rand(1,6)]"
 		new /obj/effect/decal/cleanable/crayon(last_target, colour, shadeColour, drawing, visible_name)
-		usr.visible_message(SPAN("notice", "[usr] finished drawing [visible_name] on \the [last_target]."), \
+		usr.visible_message(SPAN("notice", "[usr] finished drawing [visible_name] on \the [last_target]."),
 							SPAN("notice", "You finished drawing [visible_name] on \the [last_target]"))
 		last_target.add_fingerprint(usr)
 		reduce_uses()

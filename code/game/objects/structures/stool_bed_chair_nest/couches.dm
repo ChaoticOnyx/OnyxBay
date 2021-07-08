@@ -28,19 +28,19 @@
 		if(!WT.remove_fuel(0,user))
 			to_chat(user, SPAN("notice", "You need more welding fuel to complete this task."))
 			return
-		user.visible_message(SPAN("notice", "[user] is repairing the damage to \the [src]..."), \
+		user.visible_message(SPAN("notice", "[user] is repairing the damage to \the [src]..."),
 				             SPAN("notice", "You start repairing the damage to \the [src]..."))
 		playsound(src, 'sound/items/Welder.ogg', 100, 1)
 		if(!do_after(user, max(5, health / 3), src) && WT && WT.isOn())
 			return
 		health = max_health
-		user.visible_message(SPAN("notice", "[user] repairs \the [src]."), \
+		user.visible_message(SPAN("notice", "[user] repairs \the [src]."),
 				             SPAN("notice", "You repair \the [src]."))
 		update_icon()
 	else if(istype(W, /obj/item/grab))
 		var/obj/item/grab/G = W
 		var/mob/living/affecting = G.affecting
-		user.visible_message("<span class='notice'>[user] attempts to buckle [affecting] into \the [src]!</span>")
+		user.visible_message(SPAN("notice", "[user] attempts to buckle [affecting] into \the [src]!"))
 		if(do_after(user, 20, src))
 			if(user_buckle_mob(affecting, user))
 				qdel(W)

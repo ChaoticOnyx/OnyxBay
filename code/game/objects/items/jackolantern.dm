@@ -8,7 +8,7 @@
 
 /obj/item/jackolantern/attackby(obj/item/W, mob/user)
 	if(W.get_temperature_as_from_ignitor() && !lit_up)
-		user.visible_message("<span class='notice'>\The [user] lit up \the [src] with \the [W].</span>", "<span class='notice'>You lit up \the [src] with \the [W].</span>")
+		user.visible_message(SPAN("notice", "\The [user] lit up \the [src] with \the [W]."), SPAN("notice", "You lit up \the [src] with \the [W]."))
 		lit_up = TRUE
 		set_light(0.5, 0.1, 2, 2, COLOR_ORANGE)
 		icon_state = "[initial(icon_state)]_lit_up"
@@ -16,7 +16,7 @@
 
 /obj/item/jackolantern/attack_self(mob/user)
 	if(lit_up)
-		user.visible_message("<span class='notice'>\The [user] put out \the [src].</span>", "<span class='notice'>You put out \the [src].</span>")
+		user.visible_message(SPAN("notice", "\The [user] put out \the [src]."), SPAN("notice", "You put out \the [src]."))
 		lit_up = FALSE
 		set_light(0)
 		icon_state = "[initial(icon_state)]"

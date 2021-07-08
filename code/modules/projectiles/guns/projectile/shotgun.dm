@@ -110,7 +110,7 @@
 	if(isWelder(W) && buildstate == 0)
 		var/obj/item/weapon/weldingtool/WT = W
 		if(WT.remove_fuel(0, user))
-			user.visible_message("<span class='notice'>\The [user] secures \the [src]'s barrel.</span>")
+			user.visible_message(SPAN("notice", "\The [user] secures \the [src]'s barrel."))
 			add_fingerprint(user)
 			buildstate++
 			update_icon()
@@ -118,7 +118,7 @@
 	else if(istype(W,/obj/item/stack/rods) && buildstate == 1)
 		var/obj/item/stack/rods/R = W
 		R.use(1)
-		user.visible_message("<span class='notice'>\The [user] attaches a grip to \the [src].</span>")
+		user.visible_message(SPAN("notice", "\The [user] attaches a grip to \the [src]."))
 		add_fingerprint(user)
 		buildstate++
 		update_icon()
@@ -126,19 +126,19 @@
 	else if(istype(W,/obj/item/device/assembly/mousetrap) && buildstate == 2)
 		user.drop_from_inventory(W)
 		qdel(W)
-		user.visible_message("<span class='notice'>\The [user] takes apart \the [W] and uses the parts to construct a crude chamber loader inside \the [src].</span>")
+		user.visible_message(SPAN("notice", "\The [user] takes apart \the [W] and uses the parts to construct a crude chamber loader inside \the [src]."))
 		add_fingerprint(user)
 		buildstate++
 		update_icon()
 		return
 	else if(istype(W,/obj/item/weapon/tape_roll) && buildstate == 3)
-		user.visible_message("<span class='notice'>\The [user] madly wraps the assembly with \the [W].</span>")
+		user.visible_message(SPAN("notice", "\The [user] madly wraps the assembly with \the [W]."))
 		add_fingerprint(user)
 		buildstate++
 		update_icon()
 		return
 	else if(isScrewdriver(W) && buildstate == 4)
-		user.visible_message("<span class='notice'>\The [user] secures \the [src] with \the [W].</span>")
+		user.visible_message(SPAN("notice", "\The [user] secures \the [src] with \the [W]."))
 		playsound(loc, 'sound/items/Screwdriver.ogg', 50, 1)
 		var/obj/item/weapon/gun/projectile/shotgun/pump/boomstick/herewego
 		herewego = new /obj/item/weapon/gun/projectile/shotgun/pump/boomstick { starts_loaded = 0 } (loc)
@@ -202,7 +202,7 @@
 		if(loaded.len)
 			for(var/i in 1 to max_shells)
 				Fire(user, user)	//will this work? //it will. we call it twice, for twice the FUN
-			user.visible_message("<span class='danger'>The shotgun goes off!</span>", "<span class='danger'>The shotgun goes off in your face!</span>")
+			user.visible_message(SPAN("danger", "The shotgun goes off!"), SPAN("danger", "The shotgun goes off in your face!"))
 			return
 		if(do_after(user, 30, src))	//SHIT IS STEALTHY EYYYYY
 			icon_state = "sawnshotgun"

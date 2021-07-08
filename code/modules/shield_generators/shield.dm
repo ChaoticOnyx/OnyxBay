@@ -107,9 +107,9 @@
 // Fails shield segments in specific range. Range of 1 affects the shielded turf only.
 /obj/effect/shield/proc/fail_adjacent_segments(range, hitby = null)
 	if(hitby)
-		visible_message("<span class='danger'>\The [src] flashes a bit as \the [hitby] collides with it, eventually fading out in a rain of sparks!</span>")
+		visible_message(SPAN("danger", "\The [src] flashes a bit as \the [hitby] collides with it, eventually fading out in a rain of sparks!"))
 	else
-		visible_message("<span class='danger'>\The [src] flashes a bit as it eventually fades out in a rain of sparks!</span>")
+		visible_message(SPAN("danger", "\The [src] flashes a bit as it eventually fades out in a rain of sparks!"))
 	fail(range * 2)
 
 	for(var/obj/effect/shield/S in range(range, src))
@@ -203,7 +203,7 @@
 	user.do_attack_animation(src)
 
 	if(gen.check_flag(MODEFLAG_HYPERKINETIC))
-		user.visible_message("<span class='danger'>\The [user] hits \the [src] with \the [I]!</span>")
+		user.visible_message(SPAN("danger", "\The [user] hits \the [src] with \the [I]!"))
 		if(I.damtype == BURN)
 			take_damage(I.force, SHIELD_DAMTYPE_HEAT)
 		else if (I.damtype == BRUTE)
@@ -211,7 +211,7 @@
 		else
 			take_damage(I.force, SHIELD_DAMTYPE_EM)
 	else
-		user.visible_message("<span class='danger'>\The [user] tries to attack \the [src] with \the [I], but it passes through!</span>")
+		user.visible_message(SPAN("danger", "\The [user] tries to attack \the [src] with \the [I], but it passes through!"))
 
 
 // Special treatment for meteors because they would otherwise penetrate right through the shield.
@@ -293,6 +293,6 @@
 	if(!S.gen.check_flag(MODEFLAG_HYPERKINETIC))
 		return
 	S.take_damage(get_shield_damage(), SHIELD_DAMTYPE_PHYSICAL, src)
-	visible_message("<span class='danger'>\The [src] breaks into dust!</span>")
+	visible_message(SPAN("danger", "\The [src] breaks into dust!"))
 	make_debris()
 	qdel(src)

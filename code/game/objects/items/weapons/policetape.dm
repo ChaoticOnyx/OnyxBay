@@ -308,7 +308,7 @@ var/list/tape_roll_applications = list()
 
 /obj/item/tape/attack_hand(mob/user as mob)
 	if (user.a_intent == I_HELP && src.allowed(user))
-		user.show_viewers("<span class='notice'>\The [user] lifts \the [src], allowing passage.</span>")
+		user.show_viewers(SPAN("notice", "\The [user] lifts \the [src], allowing passage."))
 		for(var/obj/item/tape/T in gettapeline())
 			T.lift(100) //~10 seconds
 	else
@@ -355,7 +355,7 @@ var/list/tape_roll_applications = list()
 	if(user.a_intent == I_HELP)
 		to_chat(user, "<span class='warning'>You refrain from breaking \the [src].</span>")
 		return
-	user.visible_message("<span class='notice'>\The [user] breaks \the [src]!</span>","<span class='notice'>You break \the [src].</span>")
+	user.visible_message(SPAN("notice", "\The [user] breaks \the [src]!"), SPAN("notice", "You break \the [src]."))
 
 	for (var/obj/item/tape/T in gettapeline())
 		if(T == src)

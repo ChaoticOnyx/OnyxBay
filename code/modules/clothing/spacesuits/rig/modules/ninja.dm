@@ -203,19 +203,19 @@
 			return
 
 		if(usr == holder.wearer)
-			holder.wearer.visible_message("<span class='warning'> \The [src.holder.wearer] flicks a small switch on the back of \the [src.holder].</span>",1)
+			holder.wearer.visible_message(SPAN("warning", " \The [src.holder.wearer] flicks a small switch on the back of \the [src.holder]."), 1)
 			sleep(blink_delay)
 
 	self_destructing = 1
 	src.blink_mode = 1
 	src.blink()
-	holder.visible_message("<span class='notice'>\The [src.holder] begins beeping.</span>","<span class='notice'> You hear beeping.</span>")
+	holder.visible_message(SPAN("notice", "\The [src.holder] begins beeping."), SPAN("notice", " You hear beeping."))
 	sleep(blink_time)
 	src.blink_mode = 2
-	holder.visible_message("<span class='warning'>\The [src.holder] beeps rapidly!</span>","<span class='warning'> You hear rapid beeping!</span>")
+	holder.visible_message(SPAN("warning", "\The [src.holder] beeps rapidly!"), SPAN("warning", " You hear rapid beeping!"))
 	sleep(blink_rapid_time)
 	src.blink_mode = 3
-	holder.visible_message("<span class='danger'>\The [src.holder] emits a shrill tone!</span>","<span class='danger'> You hear a shrill tone!</span>")
+	holder.visible_message(SPAN("danger", "\The [src.holder] emits a shrill tone!"), SPAN("danger", " You hear a shrill tone!"))
 	sleep(blink_solid_time)
 	src.blink_mode = 0
 	src.holder.set_light(0, 0, 0, 2, "#000000")

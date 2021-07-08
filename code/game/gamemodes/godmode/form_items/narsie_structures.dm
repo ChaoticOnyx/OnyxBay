@@ -78,7 +78,7 @@
 		return
 
 	var/mob/living/carbon/human/H = user
-	user.visible_message("<span class='warning'>\The [user] calmly slices their finger on \the [src], smeering it over the black stone.</span>","<span class='warning'>You slowly slide your finger down one of \the [src]'s sharp edges, smeering it over its smooth surface.</span>")
+	user.visible_message(SPAN("warning", "\The [user] calmly slices their finger on \the [src], smeering it over the black stone."), SPAN("warning", "You slowly slide your finger down one of \the [src]'s sharp edges, smeering it over its smooth surface."))
 	while(do_after(H,50,src))
 		user.audible_message("\The [user] utters something under their breath.", "<span class='cult'>You mutter a dark prayer to your master as you feel the stone eat away at your lifeforce.</span>")
 		if(H.should_have_organ(BP_HEART))

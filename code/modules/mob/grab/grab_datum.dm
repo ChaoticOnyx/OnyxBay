@@ -313,12 +313,12 @@
 
 	if(p_diff > assailant.poise || prob(p_diff))
 		if(can_downgrade_on_resist && !prob(p_diff))
-			affecting.visible_message("<span class='warning'>[affecting] has loosened [assailant]'s grip!</span>")
+			affecting.visible_message(SPAN("warning", "[affecting] has loosened [assailant]'s grip!"))
 			G.downgrade()
 			assailant.setClickCooldown(10)
 			return
 		else
-			affecting.visible_message("<span class='warning'>[affecting] has broken free of [assailant]'s grip!</span>")
+			affecting.visible_message(SPAN("warning", "[affecting] has broken free of [assailant]'s grip!"))
 			let_go(G)
 			assailant.setClickCooldown(15)
 

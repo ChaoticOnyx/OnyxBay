@@ -52,15 +52,15 @@
 	var/tturf = get_turf(target_mob)
 	if(get_dist(src, target_mob) <= 7)//Screen range check, so you can't get tentacle'd offscreen
 		if(istype(sturf, /turf/simulated/floor/asteroid))//Goliath turf check. No floor-breaking tentacles!
-			visible_message("<span class='warning'>The [src.name] tries to dig its huge tentacles under [target_mob.name]!</span>")
+			visible_message(SPAN("warning", "The [src.name] tries to dig its huge tentacles under [target_mob.name]!"))
 			if(istype(tturf, /turf/simulated/floor/asteroid))//Victim turf check. Again, no floor-breaking tentacles
-				visible_message("<span class='warning'>The [src.name] successfully digs its tentacles under [target_mob.name]!</span>")
+				visible_message(SPAN("warning", "The [src.name] successfully digs its tentacles under [target_mob.name]!"))
 				new /obj/effect/goliath_tentacle/original(tturf)
 				ranged_cooldown = ranged_cooldown_cap
 				icon_state = icon_aggro
 				pre_attack = 0
 			else
-				visible_message("<span class='warning'>The [src.name] cannot dig its tentacles under [target_mob.name] because of solid obstacles!</span>")
+				visible_message(SPAN("warning", "The [src.name] cannot dig its tentacles under [target_mob.name] because of solid obstacles!"))
 				ranged_cooldown = ranged_cooldown_cap
 				icon_state = icon_aggro
 				pre_attack = 0
@@ -107,7 +107,7 @@
 		for(var/mob/living/M in src.loc)
 			M.Weaken(3)
 			M.Stun(2)
-			visible_message("<span class='warning'>The [src.name] knocks [M.name] down!</span>")
+			visible_message(SPAN("warning", "The [src.name] knocks [M.name] down!"))
 		qdel(src)
 
 /obj/effect/goliath_tentacle/Crossed(AM as mob|obj)

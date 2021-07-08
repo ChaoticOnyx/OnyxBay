@@ -69,7 +69,7 @@
 			if(C.data == "Clown Land")
 				//whoops
 				for(var/mob/O in hearers(src, null))
-					O.show_message("<span class='warning'>Incoming bluespace portal detected, unable to lock in.</span>", 2)
+					O.show_message(SPAN("warning", "Incoming bluespace portal detected, unable to lock in."), 2)
 
 				for(var/obj/machinery/teleport/hub/H in range(1))
 					var/amount = rand(2,5)
@@ -78,7 +78,7 @@
 				//
 			else
 				for(var/mob/O in hearers(src, null))
-					O.show_message("<span class='notice'>Locked In</span>", 2)
+					O.show_message(SPAN("notice", "Locked In"), 2)
 				locked = L
 				one_time_use = 1
 
@@ -143,7 +143,7 @@
 
 	locked = L[desc]
 	for(var/mob/O in hearers(src, null))
-		O.show_message("<span class='notice'>Locked In</span>", 2)
+		O.show_message(SPAN("notice", "Locked In"), 2)
 	return
 
 /obj/machinery/computer/teleporter/verb/set_id(t as text)
@@ -201,7 +201,7 @@
 	if(QDELETED(com.locked))
 		com.locked = null // If com is still locked to a deleted item
 		for(var/mob/O in hearers(src, null))
-			O.show_message("<span class='warning'>Failure: Cannot authenticate locked on coordinates. Please reinstate coordinate matrix.</span>")
+			O.show_message(SPAN("warning", "Failure: Cannot authenticate locked on coordinates. Please reinstate coordinate matrix."))
 		return
 	do_teleport(M, com.locked)
 	if(com.one_time_use) //Make one-time-use cards only usable one time!
@@ -215,7 +215,7 @@
 		return
 	if (istype(M, /obj/item/weapon/disk/nuclear)) // Don't let nuke disks get teleported --NeoFite
 		for(var/mob/O in viewers(M, null))
-			O.show_message(text("<span class='danger'>The [] bounces off of the portal!</span>", M.name), 1)
+			O.show_message(text(SPAN("danger", "The [] bounces off of the portal!", M.name), 1))
 		return
 	if (istype(M, /mob/living))
 		var/mob/living/MM = M
@@ -240,7 +240,7 @@
 				disky = 1
 	if (disky)
 		for(var/mob/P in viewers(M, null))
-			P.show_message(text("<span class='danger'>The [] bounces off of the portal!</span>", M.name), 1)
+			P.show_message(text(SPAN("danger", "The [] bounces off of the portal!", M.name), 1))
 		return
 
 //Bags of Holding cause bluespace teleportation to go funky. --NeoFite
@@ -333,7 +333,7 @@
 		update_use_power(POWER_USE_ACTIVE)
 		com.update_use_power(POWER_USE_ACTIVE)
 		for(var/mob/O in hearers(src, null))
-			O.show_message("<span class='notice'>Teleporter engaged!</span>", 2)
+			O.show_message(SPAN("notice", "Teleporter engaged!"), 2)
 	src.add_fingerprint(usr)
 	src.engaged = 1
 	return
@@ -346,7 +346,7 @@
 		com.icon_state = "tele0"
 		com.update_use_power(POWER_USE_IDLE)
 		update_use_power(POWER_USE_IDLE)
-		audible_message("<span class='notice'>Teleporter disengaged!</span>")
+		audible_message(SPAN("notice", "Teleporter disengaged!"))
 	src.add_fingerprint(usr)
 	src.engaged = 0
 	return

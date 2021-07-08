@@ -116,7 +116,7 @@
 			self += ", having to cut your finger two more times before you make it resemble the pattern in your memory. It still looks a little off."
 			timer = 80
 			damage = 2
-	visible_message("<span class='warning'>\The [src] slices open a finger and begins to chant and paint symbols on the floor.</span>", "<span class='notice'>[self]</span>", "You hear chanting.")
+	visible_message(SPAN("warning", "\The [src] slices open a finger and begins to chant and paint symbols on the floor."), SPAN("notice", "[self]"), "You hear chanting.")
 	if(do_after(src, timer))
 		pay_for_rune(cost * damage)
 		if(locate(/obj/effect/rune) in T)
@@ -184,7 +184,7 @@ var/list/Tier2Runes = list(
 	/mob/proc/offering_rune,
 	/mob/proc/drain_rune,
 	/mob/proc/emp_rune,
-	/mob/proc/stun_imbue,	
+	/mob/proc/stun_imbue,
 	/mob/proc/massdefile_rune
 	)
 
@@ -309,12 +309,12 @@ var/list/Tier4Runes = list(
 	set name = "Imbue: EMP"
 
 	make_rune(/obj/effect/rune/imbue/emp)
-	
+
 /mob/proc/stun_imbue()
 	set category = "Cult Magic"
 	set name = "Imbue: Hypnosis"
 
-	make_rune(/obj/effect/rune/imbue/stun)	
+	make_rune(/obj/effect/rune/imbue/stun)
 
 /mob/proc/cult_communicate()
 	set category = "Cult Magic"
@@ -349,4 +349,4 @@ var/list/Tier4Runes = list(
 	return
 
 /mob/living/carbon/human/message_cult_communicate()
-	visible_message("<span class='warning'>\The [src] cuts \his finger and starts drawing on the back of \his hand.</span>")
+	visible_message(SPAN("warning", "\The [src] cuts \his finger and starts drawing on the back of \his hand."))

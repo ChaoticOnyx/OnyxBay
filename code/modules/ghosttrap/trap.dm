@@ -108,7 +108,7 @@ var/list/ghost_traps
 	to_chat(target, "<b>Use say [target.get_language_prefix()]b to speak to other artificial intelligences.</b>")
 	var/turf/T = get_turf(target)
 	var/obj/item/organ/internal/posibrain/P = target.loc
-	T.visible_message("<span class='notice'>\The [P] chimes quietly.</span>")
+	T.visible_message(SPAN("notice", "\The [P] chimes quietly."))
 	if(!istype(P)) //wat
 		return
 	P.searching = 0

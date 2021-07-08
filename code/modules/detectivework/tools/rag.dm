@@ -41,7 +41,7 @@
 
 /obj/item/weapon/reagent_containers/glass/rag/attack_self(mob/user as mob)
 	if(on_fire)
-		user.visible_message("<span class='warning'>\The [user] stamps out [src].</span>", "<span class='warning'>You stamp out [src].</span>")
+		user.visible_message(SPAN("warning", "\The [user] stamps out [src]."), SPAN("warning", "You stamp out [src]."))
 		user.unEquip(src)
 		extinguish()
 	else
@@ -51,7 +51,7 @@
 	if(!on_fire && W.get_temperature_as_from_ignitor())
 		ignite()
 		if(on_fire)
-			visible_message("<span class='warning'>\The [user] lights [src] with [W].</span>")
+			visible_message(SPAN("warning", "\The [user] lights [src] with [W]."))
 		else
 			to_chat(user, "<span class='warning'>You manage to singe [src], but fail to light it.</span>")
 
@@ -82,14 +82,14 @@
 
 	if(reagents.total_volume)
 		var/target_text = trans_dest? "\the [trans_dest]" : "\the [user.loc]"
-		user.visible_message("<span class='danger'>\The [user] begins to wring out [src] over [target_text].</span>", "<span class='notice'>You begin to wring out [src] over [target_text].</span>")
+		user.visible_message(SPAN("danger", "\The [user] begins to wring out [src] over [target_text]."), SPAN("notice", "You begin to wring out [src] over [target_text]."))
 
 		if(do_after(user, reagents.total_volume*5, progress = 0)) //50 for a fully soaked rag
 			if(trans_dest)
 				reagents.trans_to(trans_dest, reagents.total_volume)
 			else
 				reagents.splash(user.loc, reagents.total_volume)
-			user.visible_message("<span class='danger'>\The [user] wrings out [src] over [target_text].</span>", "<span class='notice'>You finish to wringing out [src].</span>")
+			user.visible_message(SPAN("danger", "\The [user] wrings out [src] over [target_text]."), SPAN("notice", "You finish to wringing out [src]."))
 			update_name()
 
 /obj/item/weapon/reagent_containers/glass/rag/proc/wipe_down(atom/A, mob/user)
@@ -107,8 +107,7 @@
 	if(isliving(target))
 		var/mob/living/M = target
 		if(on_fire)
-			user.visible_message("<span class='danger'>\The [user] hits [target] with [src]!</span>",)
-			user.do_attack_animation(src)
+			user.visible_message(SPAN("danger", "\The [user] hits [target] with [src]!"),user.do_attack_animation(src))
 			M.IgniteMob()
 		else if(reagents.total_volume)
 			if(user.zone_sel.selecting == BP_MOUTH)
@@ -136,7 +135,7 @@
 			return
 
 		if(A.reagents && A.reagents.trans_to_obj(src, reagents.maximum_volume))
-			user.visible_message("<span class='notice'>\The [user] soaks [src] using [A].</span>", "<span class='notice'>You soak [src] using [A].</span>")
+			user.visible_message(SPAN("notice", "\The [user] soaks [src] using [A]."), SPAN("notice", "You soak [src] using [A]."))
 			update_name()
 		return
 
@@ -168,7 +167,7 @@
 
 	//also copied from matches
 	if(reagents.get_reagent_amount(/datum/reagent/toxin/plasma)) // the plasma explodes when exposed to fire
-		visible_message("<span class='danger'>\The [src] conflagrates violently!</span>")
+		visible_message(SPAN("danger", "\The [src] conflagrates violently!"))
 		var/datum/effect/effect/system/reagents_explosion/e = new()
 		e.set_up(reagents.get_reagent_amount(/datum/reagent/toxin/plasma), src, 0, 0)
 		e.start()
@@ -189,7 +188,7 @@
 	//rags sitting around with 1 second of burn time left is dumb.
 	//ensures players always have a few seconds of burn time left when they light their rag
 	if(burn_time <= 5)
-		visible_message("<span class='warning'>\The [src] falls apart!</span>")
+		visible_message(SPAN("warning", "\The [src] falls apart!"))
 		new /obj/effect/decal/cleanable/ash(get_turf(src))
 		qdel(src)
 	update_name()
@@ -197,7 +196,7 @@
 
 /obj/item/weapon/reagent_containers/glass/rag/Process()
 	if(!can_ignite())
-		visible_message("<span class='warning'>\The [src] burns out.</span>")
+		visible_message(SPAN("warning", "\The [src] burns out."))
 		extinguish()
 
 	//copied from matches

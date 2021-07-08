@@ -54,7 +54,7 @@
 
 /obj/item/weapon/gun/projectile/consume_next_projectile()
 	if(!is_jammed && prob(jam_chance))
-		src.visible_message("<span class='danger'>\The [src] jams!</span>")
+		src.visible_message(SPAN("danger", "\The [src] jams!"))
 		is_jammed = 1
 	if(is_jammed)
 		return null

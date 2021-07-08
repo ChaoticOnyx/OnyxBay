@@ -310,7 +310,7 @@
 /mob/living/carbon/human/proc/zombify()
 	ChangeToHusk()
 	mutations |= MUTATION_CLUMSY
-	src.visible_message("<span class='danger'>\The [src]'s skin decays before your very eyes!</span>", "<span class='danger'>Your entire body is ripe with pain as it is consumed down to flesh and bones. You ... hunger. Not only for flesh, but to spread this gift.</span>")
+	src.visible_message(SPAN("danger", "\The [src]'s skin decays before your very eyes!"), SPAN("danger", "Your entire body is ripe with pain as it is consumed down to flesh and bones. You ... hunger. Not only for flesh, but to spread this gift."))
 	if (!src.mind || (src.mind && src.mind.special_role == "Zombie"))
 		return
 	src.mind.special_role = "Zombie"

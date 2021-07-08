@@ -313,7 +313,7 @@
 
 		welded = !welded
 		update_icon()
-		user.visible_message("<span class='notice'>\The [user] [welded ? "welds \the [src] shut" : "unwelds \the [src]"].</span>", \
+		user.visible_message(SPAN("notice", "\The [user] [welded ? "welds \the [src] shut" : "unwelds \the [src]"]."),
 			"<span class='notice'>You [welded ? "weld \the [src] shut" : "unweld \the [src]"].</span>", \
 			"You hear welding.")
 		return 1

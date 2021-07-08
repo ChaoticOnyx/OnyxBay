@@ -58,7 +58,7 @@
 	if(!charged_item)
 		return 0
 	else
-		charged_item.visible_message("<span class='notice'>[charged_item] suddenly sparks with energy!</span>")
+		charged_item.visible_message(SPAN("notice", "[charged_item] suddenly sparks with energy!"))
 		return 1
 
 

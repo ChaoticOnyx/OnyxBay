@@ -138,7 +138,7 @@
 
 /obj/machinery/organ_printer/proc/can_print(choice)
 	if(stored_matter < products[choice][3])
-		visible_message("<span class='notice'>\The [src] displays a warning: 'Not enough matter. [stored_matter] stored and [products[choice][3]] needed.'</span>")
+		visible_message(SPAN("notice", "\The [src] displays a warning: 'Not enough matter. [stored_matter] stored and [products[choice][3]] needed.'"))
 		return 0
 	return 1
 

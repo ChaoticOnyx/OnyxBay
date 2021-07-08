@@ -64,7 +64,7 @@
 	if(prob(1) && ishuman(loc))
 		var/mob/living/carbon/human/H = loc
 		if(H.head && istype(H.head, /obj/item/clothing/head/cardborg))
-			H.visible_message(SPAN("danger", "[src] ignites \the [H.head], and sets [H] on fire!"), \
+			H.visible_message(SPAN("danger", "[src] ignites \the [H.head], and sets [H] on fire!"),
 							  SPAN("danger", "[src] ignites \the [H.head] on your head. You are on fire!"))
 			H.adjust_fire_stacks(1)
 			H.IgniteMob()

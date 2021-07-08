@@ -18,7 +18,7 @@
 		atom_holder.verbs += /atom/proc/RemoveLabel
 	LAZYADD(labels, label)
 
-	user?.visible_message("<span class='notice'>\The [user] attaches a label to \the [atom_holder].</span>", \
+	user?.visible_message(SPAN("notice", "\The [user] attaches a label to \the [atom_holder]."),
 						 	 "<span class='notice'>You attach a label, '[label]', to \the [atom_holder].</span>")
 
 	var/old_name = atom_holder.name
@@ -38,7 +38,7 @@
 	if(!index) // Playing it safe, something might not have set the name properly
 		return
 
-	user.visible_message("<span class='notice'>\The [user] removes a label from \the [atom_holder].</span>", \
+	user.visible_message(SPAN("notice", "\The [user] removes a label from \the [atom_holder]."),
 						 "<span class='notice'>You remove a label, '[label]', from \the [atom_holder].</span>")
 
 	var/old_name = atom_holder.name

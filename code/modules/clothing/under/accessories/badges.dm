@@ -26,13 +26,13 @@
 
 	if(isliving(user))
 		if(stored_name)
-			user.visible_message("<span class='notice'>[user] displays their [src.name].\nIt reads: [stored_name], [badge_string].</span>","<span class='notice'>You display your [src.name].\nIt reads: [stored_name], [badge_string].</span>")
+			user.visible_message(SPAN("notice", "[user] displays their [src.name].\nIt reads: [stored_name], [badge_string]."), SPAN("notice", "You display your [src.name].\nIt reads: [stored_name], [badge_string]."))
 		else
-			user.visible_message("<span class='notice'>[user] displays their [src.name].\nIt reads: [badge_string].</span>","<span class='notice'>You display your [src.name]. It reads: [badge_string].</span>")
+			user.visible_message(SPAN("notice", "[user] displays their [src.name].\nIt reads: [badge_string]."), SPAN("notice", "You display your [src.name]. It reads: [badge_string]."))
 
 /obj/item/clothing/accessory/badge/attack(mob/living/carbon/human/M, mob/living/user)
 	if(isliving(user))
-		user.visible_message("<span class='danger'>[user] invades [M]'s personal space, thrusting \the [src] into their face insistently.</span>","<span class='danger'>You invade [M]'s personal space, thrusting \the [src] into their face insistently.</span>")
+		user.visible_message(SPAN("danger", "[user] invades [M]'s personal space, thrusting \the [src] into their face insistently."), SPAN("danger", "You invade [M]'s personal space, thrusting \the [src] into their face insistently."))
 
 /obj/item/clothing/accessory/badge/PI
 	name = "private investigator's badge"

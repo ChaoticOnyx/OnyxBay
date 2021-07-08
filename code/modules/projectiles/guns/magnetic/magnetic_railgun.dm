@@ -58,7 +58,7 @@
 /obj/item/weapon/gun/magnetic/railgun/proc/out_of_ammo()
 	qdel(loaded)
 	loaded = null
-	visible_message("<span class='warning'>\The [src] beeps and ejects its empty cartridge.</span>")
+	visible_message(SPAN("warning", "\The [src] beeps and ejects its empty cartridge."))
 
 /obj/item/weapon/gun/magnetic/railgun/automatic // Adminspawn only, this shit is absurd.
 	name = "\improper RHR accelerator"
@@ -107,4 +107,4 @@
 		)
 
 /obj/item/weapon/gun/magnetic/railgun/flechette/out_of_ammo()
-	visible_message("<span class='warning'>\The [src] beeps to indicate the magazine is empty.</span>")
+	visible_message(SPAN("warning", "\The [src] beeps to indicate the magazine is empty."))

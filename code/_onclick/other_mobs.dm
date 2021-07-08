@@ -41,15 +41,15 @@
 			if(location.has_gravity && !can_overcome_gravity())
 				return
 
-			visible_message("<span class='notice'>[src] starts climbing onto \the [A]!</span>", "<span class='notice'>You start climbing onto \the [A]!</span>")
-			shadow.visible_message("<span class='notice'>[shadow] starts climbing onto \the [A]!</span>")
+			visible_message(SPAN("notice", "[src] starts climbing onto \the [A]!"), SPAN("notice", "You start climbing onto \the [A]!"))
+			shadow.visible_message(SPAN("notice", "[shadow] starts climbing onto \the [A]!"))
 			if(do_after(src, 50, A))
-				visible_message("<span class='notice'>[src] climbs onto \the [A]!</span>", "<span class='notice'>You climb onto \the [A]!</span>")
-				shadow.visible_message("<span class='notice'>[shadow] climbs onto \the [A]!</span>")
+				visible_message(SPAN("notice", "[src] climbs onto \the [A]!"), SPAN("notice", "You climb onto \the [A]!"))
+				shadow.visible_message(SPAN("notice", "[shadow] climbs onto \the [A]!"))
 				src.Move(T)
 			else
-				visible_message("<span class='warning'>[src] gives up on trying to climb onto \the [A]!</span>", "<span class='warning'>You give up on trying to climb onto \the [A]!</span>")
-				shadow.visible_message("<span class='warning'>[shadow] gives up on trying to climb onto \the [A]!</span>")
+				visible_message(SPAN("warning", "[src] gives up on trying to climb onto \the [A]!"), SPAN("warning", "You give up on trying to climb onto \the [A]!"))
+				shadow.visible_message(SPAN("warning", "[shadow] gives up on trying to climb onto \the [A]!"))
 			return
 
 	if(!gloves && !mutations.len) return
@@ -110,7 +110,7 @@
 
 		switch(src.a_intent)
 			if (I_HELP) // We just poke the other
-				M.visible_message("<span class='notice'>[src] gently pokes [M]!</span>", "<span class='notice'>[src] gently pokes you!</span>")
+				M.visible_message(SPAN("notice", "[src] gently pokes [M]!"), SPAN("notice", "[src] gently pokes you!"))
 			if (I_DISARM) // We stun the target, with the intention to feed
 				var/stunprob = 1
 
@@ -128,17 +128,17 @@
 					var/shock_damage = max(0, powerlevel-3) * rand(6,10)
 					M.electrocute_act(shock_damage, src, 1.0, ran_zone())
 				else if(prob(40))
-					M.visible_message("<span class='danger'>[src] has pounced at [M]!</span>", "<span class='danger'>[src] has pounced at you!</span>")
+					M.visible_message(SPAN("danger", "[src] has pounced at [M]!"), SPAN("danger", "[src] has pounced at you!"))
 					M.Weaken(power)
 					M.Stun(power/2)
 				else
-					M.visible_message("<span class='danger'>[src] has tried to pounce at [M]!</span>", "<span class='danger'>[src] has tried to pounce at you!</span>")
+					M.visible_message(SPAN("danger", "[src] has tried to pounce at [M]!"), SPAN("danger", "[src] has tried to pounce at you!"))
 				M.updatehealth()
 			if (I_GRAB) // We feed
 				Wrap(M)
 			if (I_HURT) // Attacking
 				if(iscarbon(M) && prob(15))
-					M.visible_message("<span class='danger'>[src] has pounced at [M]!</span>", "<span class='danger'>[src] has pounced at you!</span>")
+					M.visible_message(SPAN("danger", "[src] has pounced at [M]!"), SPAN("danger", "[src] has pounced at you!"))
 					M.Weaken(power)
 					M.Stun(power/2)
 				else

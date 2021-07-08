@@ -34,27 +34,27 @@
 		// Handle things that are part of this interface but not removing/replacing a given item.
 		if("pockets")
 			if(stripping)
-				visible_message("<span class='danger'>\The [user] is trying to empty [src]'s pockets!</span>")
+				visible_message(SPAN("danger", "\The [user] is trying to empty [src]'s pockets!"))
 				if(do_after(user, HUMAN_STRIP_DELAY, src, progress = 0))
 					empty_pockets(user)
 			else
 				//should it be possible to discreetly slip something into someone's pockets?
-				visible_message("<span class='danger'>\The [user] is trying to stuff \a [held] into [src]'s pocket!</span>")
+				visible_message(SPAN("danger", "\The [user] is trying to stuff \a [held] into [src]'s pocket!"))
 				if(do_after(user, HUMAN_STRIP_DELAY, src, progress = 0))
 					place_in_pockets(held, user)
 			return
 		if("splints")
-			visible_message("<span class='danger'>\The [user] is trying to remove \the [src]'s splints!</span>")
+			visible_message(SPAN("danger", "\The [user] is trying to remove \the [src]'s splints!"))
 			if(do_after(user, HUMAN_STRIP_DELAY, src, progress = 0))
 				remove_splints(user)
 			return
 		if("sensors")
-			visible_message("<span class='danger'>\The [user] is trying to set \the [src]'s sensors!</span>")
+			visible_message(SPAN("danger", "\The [user] is trying to set \the [src]'s sensors!"))
 			if(do_after(user, HUMAN_STRIP_DELAY, src, progress = 0))
 				toggle_sensors(user)
 			return
 		if("internals")
-			visible_message("<span class='danger'>\The [usr] is trying to set \the [src]'s internals!</span>")
+			visible_message(SPAN("danger", "\The [usr] is trying to set \the [src]'s internals!"))
 			if(do_after(user, HUMAN_STRIP_DELAY, src, progress = 0))
 				toggle_internals(user)
 			return
@@ -66,7 +66,7 @@
 				A = input("Select an accessory to remove from [holder]") as null|anything in holder.accessories
 			if(!istype(A))
 				return
-			visible_message("<span class='danger'>\The [user] is trying to remove \the [src]'s [A.name]!</span>")
+			visible_message(SPAN("danger", "\The [user] is trying to remove \the [src]'s [A.name]!"))
 
 			if(!do_after(user, HUMAN_STRIP_DELAY, src, progress = 0))
 				return
@@ -86,7 +86,7 @@
 				return
 
 	if(user.strippingActions == 1 && isAggresiveStrip(user) && stripping)
-		visible_message("<span class='danger'>[user] is starting to aggressively strip [src]!</span>")
+		visible_message(SPAN("danger", "[user] is starting to aggressively strip [src]!"))
 
 	var/obj/item/target_slot = get_equipped_item(text2num(slot_to_strip_text))
 	if(stripping)
@@ -96,12 +96,12 @@
 			to_chat(user, "<span class='warning'>You cannot remove \the [src]'s [target_slot.name].</span>")
 			return
 
-		visible_message("<span class='danger'>\The [user] is trying to remove \the [src]'s [target_slot.name]!</span>")
+		visible_message(SPAN("danger", "\The [user] is trying to remove \the [src]'s [target_slot.name]!"))
 	else
 		if(text2num(slot_to_strip_text) == slot_wear_mask && istype(held, /obj/item/weapon/grenade))
-			visible_message("<span class='danger'>\The [user] is trying to put \a [held] in \the [src]'s mouth!</span>")
+			visible_message(SPAN("danger", "\The [user] is trying to put \a [held] in \the [src]'s mouth!"))
 		else
-			visible_message("<span class='danger'>\The [user] is trying to put \a [held] on \the [src]!</span>")
+			visible_message(SPAN("danger", "\The [user] is trying to put \a [held] on \the [src]!"))
 
 	if(!do_after(user, HUMAN_STRIP_DELAY, src))
 		return
@@ -131,7 +131,7 @@
 		unEquip(r_store)
 	if(l_store)
 		unEquip(l_store)
-	visible_message("<span class='danger'>\The [user] empties [src]'s pockets!</span>")
+	visible_message(SPAN("danger", "\The [user] empties [src]'s pockets!"))
 
 /mob/living/carbon/human/proc/place_in_pockets(obj/item/I, mob/living/user)
 	if(!user.unEquip(I))
@@ -172,7 +172,7 @@
 					user.put_in_active_hand(S)
 					removed_splint = 1
 	if(removed_splint)
-		visible_message("<span class='danger'>\The [user] removes \the [src]'s splints!</span>")
+		visible_message(SPAN("danger", "\The [user] removes \the [src]'s splints!"))
 	else
 		to_chat(user, "<span class='warning'>\The [src] has no splints that can be removed.</span>")
 
@@ -196,9 +196,9 @@
 			internal = belt
 
 	if(internal)
-		visible_message("<span class='warning'>\The [src] is now running on internals!</span>")
+		visible_message(SPAN("warning", "\The [src] is now running on internals!"))
 		internal.add_fingerprint(user)
 		if (internals)
 			internals.icon_state = "internal1"
 	else
-		visible_message("<span class='danger'>\The [user] disables \the [src]'s internals!</span>")
+		visible_message(SPAN("danger", "\The [user] disables \the [src]'s internals!"))

@@ -89,7 +89,7 @@
 			code_owner.store_memory("<B>Nuclear Bomb Code</B>: [code]", 0, 0)
 			to_chat(code_owner.current, "The nuclear authorization code is: <B>[code]</B>")
 	else
-		message_admins("<span class='danger'>Could not spawn nuclear bomb. Contact a developer.</span>")
+		message_admins(SPAN("danger", "Could not spawn nuclear bomb. Contact a developer."))
 		return
 
 	spawned_nuke = code

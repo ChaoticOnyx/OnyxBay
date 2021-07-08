@@ -37,7 +37,7 @@
 /obj/machinery/computer/atmoscontrol/emag_act(remaining_carges, mob/user)
 	if(!emagged)
 		playsound(src.loc, 'sound/effects/computer_emag.ogg', 25)
-		user.visible_message("<span class='warning'>\The [user] does something \the [src], causing the screen to flash!</span>",\
+		user.visible_message(SPAN("warning", "\The [user] does something \the [src], causing the screen to flash!"),
 			"<span class='warning'>You cause the screen to flash as you gain full control.</span>",\
 			"You hear an electronic warble.")
 		atmos_control.emagged = 1

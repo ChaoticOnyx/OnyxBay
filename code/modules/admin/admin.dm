@@ -697,7 +697,7 @@ var/global/floorIsLava = 0
 		var/init_by = "<span class='notice'>Initiated by [usr.key].</span>"
 		switch(result)
 			if("Regular Restart")
-				to_world("<span class='danger'>Restarting world!</span> [init_by]")
+				to_world(SPAN("danger", "Restarting world! [init_by]"))
 				log_admin("[key_name(usr)] initiated a reboot.")
 				world.Reboot()
 			if("Hard Restart (Skip MC Shutdown)")
@@ -729,7 +729,7 @@ var/global/floorIsLava = 0
 	if(!check_rights(R_SERVER)) return
 	var/datum/map/M = GLOB.all_maps[input("Select map:","Change map",GLOB.using_map) as null|anything in GLOB.all_maps]
 	if(M)
-		to_world("<span class='notice'>Map has been changed to: <b>[M.name]</b></span>")
+		to_world(SPAN("notice", "Map has been changed to: <b>[M.name]</b>"))
 		log_and_message_admins("[key_name(usr)] changed map to [M.name]")
 		fdel("data/use_map")
 		text2file("[M.type]", "data/use_map")

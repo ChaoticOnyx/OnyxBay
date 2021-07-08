@@ -223,7 +223,7 @@
 			user.drop_item()
 			I.forceMove(src)
 			component_parts += I
-			user.visible_message("<span class='notice'>\The [user] adds \a [I] to \the [src].</span>", "<span class='notice'>You add \a [I] to \the [src].</span>")
+			user.visible_message(SPAN("notice", "\The [user] adds \a [I] to \the [src]."), SPAN("notice", "You add \a [I] to \the [src]."))
 		else
 			to_chat(user, "<span class='warning'>\The [src] has a beaker already.</span>")
 			return
@@ -245,7 +245,7 @@
 			return
 		if(!check_compatibility(I:affecting, user))
 			return
-		user.visible_message("<span class='notice'>\The [user] starts placing \the [I:affecting] into \the [src].</span>", "<span class='notice'>You start placing \the [I:affecting] into \the [src].</span>")
+		user.visible_message(SPAN("notice", "\The [user] starts placing \the [I:affecting] into \the [src]."), SPAN("notice", "You start placing \the [I:affecting] into \the [src]."))
 
 		if(do_after(user, 20, src))
 			if(!check_compatibility(I:affecting, user))

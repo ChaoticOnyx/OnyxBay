@@ -25,7 +25,7 @@
 		to_chat(usr, "<span class='notice'>It won't budge.</span>")
 		return
 
-	usr.visible_message("<span class='warning'>[usr] flips \the [src]!</span>")
+	usr.visible_message(SPAN("warning", "[usr] flips \the [src]!"))
 
 	if(atom_flags & ATOM_FLAG_CLIMBABLE)
 		object_shaken()

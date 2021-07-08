@@ -138,9 +138,9 @@
 				else
 					if(welder.isOn())
 						playsound(src, 'sound/items/Welder.ogg', 80, 1)
-						visible_message("<span class='notice'>[user] has started melting the plating's reinforcements!</span>")
+						visible_message(SPAN("notice", "[user] has started melting the plating's reinforcements!"))
 						if(do_after(user, 5 SECONDS) && welder.isOn())
-							visible_message("<span class='warning'>[user] has melted the plating's reinforcements! It should be possible to pry it off.</span>")
+							visible_message(SPAN("warning", "[user] has melted the plating's reinforcements! It should be possible to pry it off."))
 							playsound(src, 'sound/items/Welder.ogg', 80, 1)
 							burnt = 1
 							remove_decals()
@@ -163,7 +163,7 @@
 		playsound(src, 'sound/items/Welder.ogg', 80, 1)
 		visible_message("<span class='alium'>The acid has started melting \the [name]'s reinforcements!</span>")
 		if(T)
-			T.audible_message("<span class='warning'>A strange sizzling noise eminates from the ceiling.</span>")
+			T.audible_message(SPAN("warning", "A strange sizzling noise eminates from the ceiling."))
 		burnt = 1
 		remove_decals()
 		update_icon()
@@ -174,15 +174,15 @@
 			playsound(src, 'sound/items/Welder.ogg', 80, 1)
 
 			if(T)
-				T.visible_message("<span class='warning'>A strange substance drips from the ceiling, dropping below with a sizzle.</span>")
+				T.visible_message(SPAN("warning", "A strange substance drips from the ceiling, dropping below with a sizzle."))
 			acid_melted++
 		else
-			visible_message("<span class='danger'>The acid melts the plating away into nothing!</span>")
+			visible_message(SPAN("danger", "The acid melts the plating away into nothing!"))
 			new /obj/item/stack/tile/floor(src)
 			src.ReplaceWithLattice()
 			playsound(src, 'sound/items/Deconstruct.ogg', 80, 1)
 			if(T)
-				T.visible_message("<span class='danger'>The ceiling above melts away!</span>")
+				T.visible_message(SPAN("danger", "The ceiling above melts away!"))
 			. = TRUE
 			qdel(src)
 	else

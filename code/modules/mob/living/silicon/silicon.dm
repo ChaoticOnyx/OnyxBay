@@ -98,7 +98,7 @@
 
 		shock_damage *= 0.75	//take reduced damage
 		take_overall_damage(0, shock_damage)
-		visible_message("<span class='warning'>\The [src] was shocked by \the [source]!</span>", \
+		visible_message(SPAN("warning", "\The [src] was shocked by \the [source]!"),
 			"<span class='danger'>Energy pulse detected, system damaged!</span>", \
 			"<span class='warning'>You hear an electrical crack</span>")
 		if(prob(20))
@@ -363,7 +363,7 @@
 
 		if(alarm_raised)
 			text += "<A HREF=?src=\ref[src];showalerts=1>\[Show Alerts\]</A>"
-		
+
 		if(text)
 			to_chat(src, text)
 

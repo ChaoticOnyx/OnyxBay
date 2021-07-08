@@ -34,7 +34,7 @@
 				to_chat(human_target, SPAN("warning", "You feel dumber."))
 				visible_message(SPAN("warning", "[user] beats [human_target] over the head with \the [src]!"))
 			else
-				human_target.visible_message(SPAN("warning", "[user] heals [human_target] with the power of [src.deity_name]!"), \
+				human_target.visible_message(SPAN("warning", "[user] heals [human_target] with the power of [src.deity_name]!"),
 											 SPAN("warning", "May the power of [src.deity_name] compel you to be healed!"))
 				human_target.heal_overall_damage(20,20)
 			playsound(src.loc, "punch", 25, 1, -1)

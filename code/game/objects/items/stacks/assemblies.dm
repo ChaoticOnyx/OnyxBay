@@ -35,7 +35,7 @@
 			new_item.add_fingerprint(user)
 			new_item.add_to_stacks(usr)
 			for (var/mob/M in viewers(src))
-				M.show_message("<span class='notice'>[src] is shaped into metal by [user.name] with the weldingtool.</span>", 3, "<span class='notice'>You hear welding.</span>", 2)
+				M.show_message(SPAN("notice", "[src] is shaped into metal by [user.name] with the weldingtool."), 3, SPAN("notice", "You hear welding."), 2)
 			var/obj/item/stack/gassembly/R = src
 			src = null
 			var/replace = (user.get_inactive_hand()==R)
@@ -45,7 +45,7 @@
 		return
 
 	if(isWrench(W) && !in_use)
-		user.visible_message("<span class='notice'>\The [user] begins assembling \a [singular_name].</span>", \
+		user.visible_message(SPAN("notice", "\The [user] begins assembling \a [singular_name]."),
 				"<span class='notice'>You begin assembling \the [singular_name].</span>")
 		in_use = 1
 
@@ -59,7 +59,7 @@
 		else
 			new_girder = new(usr.loc)
 
-		user.visible_message("<span class='notice'>\The [user] assembles \a [singular_name].</span>", \
+		user.visible_message(SPAN("notice", "\The [user] assembles \a [singular_name]."),
 				"<span class='notice'>You assemble \the [singular_name].</span>")
 		in_use = 0
 		new_girder.add_fingerprint(user)
@@ -75,7 +75,7 @@
 	if(!istype(user.loc,/turf)) return 0
 
 	if(!in_use)
-		user.visible_message("<span class='notice'>\The [user] begins assembling \a [singular_name].</span>", \
+		user.visible_message(SPAN("notice", "\The [user] begins assembling \a [singular_name]."),
 				"<span class='notice'>You begin assembling \the [singular_name].</span>")
 		in_use = 1
 
@@ -85,7 +85,7 @@
 
 		var/obj/structure/girder/new_girder = new(usr.loc)
 
-		user.visible_message("<span class='notice'>\The [user] assembles \a [new_girder].</span>", \
+		user.visible_message(SPAN("notice", "\The [user] assembles \a [new_girder]."),
 				"<span class='notice'>You assemble \a [new_girder].</span>")
 		in_use = 0
 		new_girder.add_fingerprint(user)

@@ -20,7 +20,7 @@
 		return
 
 	changeling.chem_charges--
-	H.visible_message("<span class='warning'>[H] transforms!</span>")
+	H.visible_message(SPAN("warning", "[H] transforms!"))
 	changeling.geneticdamage = 30
 	to_chat(H, "<span class='warning'>Our genes cry out!</span>")
 	H = H.monkeyize()
@@ -57,7 +57,7 @@
 
 	changeling.chem_charges--
 	C.remove_changeling_powers()
-	C.visible_message("<span class='warning'>[C] transforms!</span>")
+	C.visible_message(SPAN("warning", "[C] transforms!"))
 	C.dna = chosen_dna.Clone()
 
 	var/list/implants = list()

@@ -97,7 +97,7 @@
 			to_chat(user, "<span class='notice'>\The [I] is no longer in storage.</span>")
 			return TOPIC_HANDLED
 
-		visible_message("<span class='notice'>The console beeps happily as it disgorges \the [I].</span>", 3)
+		visible_message(SPAN("notice", "The console beeps happily as it disgorges \the [I]."), 3)
 
 		I.dropInto(loc)
 		frozen_items -= I
@@ -110,7 +110,7 @@
 			to_chat(user, "<span class='notice'>There is nothing to recover from storage.</span>")
 			return TOPIC_HANDLED
 
-		visible_message("<span class='notice'>The console beeps happily as it disgorges the desired objects.</span>", 3)
+		visible_message(SPAN("notice", "The console beeps happily as it disgorges the desired objects."), 3)
 
 		for(var/obj/item/I in frozen_items)
 			I.dropInto(loc)
@@ -429,7 +429,7 @@
 	log_and_message_admins("[key_name(occupant)] ([role_alt_title]) entered cryostorage.")
 
 	announce.autosay("[occupant.real_name], [role_alt_title], [on_store_message]", get_announcement_computer("[on_store_name]"))
-	visible_message("<span class='notice'>\The [initial(name)] hums and hisses as it moves [occupant.real_name] into storage.</span>", 3)
+	visible_message(SPAN("notice", "\The [initial(name)] hums and hisses as it moves [occupant.real_name] into storage."), 3)
 
 	//This should guarantee that ghosts don't spawn.
 	occupant.ckey = null

@@ -65,7 +65,7 @@
 	if (health > 0)
 		health = max(0,health - 3)
 		if (contents.len)
-			visible_message("<span class='danger'>\The [src] slams into [hit_atom], spilling its contents!</span>")
+			visible_message(SPAN("danger", "\The [src] slams into [hit_atom], spilling its contents!"))
 			for (var/obj/O in contents)
 				O.dropInto(loc)
 		if (health < 1)

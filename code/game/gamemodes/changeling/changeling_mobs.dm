@@ -59,7 +59,7 @@
 		headcrab_runaway() // Because byond doesn't want to update verbs sometimes this engine is a fucking mess
 		return
 
-	BIO.loc.visible_message(SPAN("warning", "[BIO.loc] suddenly grows little legs!"), \
+	BIO.loc.visible_message(SPAN("warning", "[BIO.loc] suddenly grows little legs!"),
 							SPAN("changeling", "<font size='2'><b>We have just transformed into mobile but vulnerable form! We have to find a new host quickly!</b></font>"))
 	qdel(limb_to_del)
 
@@ -224,18 +224,18 @@
 		return
 
 	forceMove(target.loc)
-	visible_message(SPAN("danger", "[src] has latched onto \the [target]."), \
+	visible_message(SPAN("danger", "[src] has latched onto \the [target]."),
 					SPAN("changeling", "We have latched onto \the [target]."))
 
 	changeling.isabsorbing = TRUE
 	for(var/stage = 1 to 3)
 		switch(stage)
 			if(2)
-				src.visible_message(SPAN("danger", "[src] merged their tegument with [target]"), \
+				src.visible_message(SPAN("danger", "[src] merged their tegument with [target]"),
 									SPAN("changeling", "We bind our tegument to our prey."))
 				target.getBruteLoss(10)
 			if(3)
-				src.visible_message(SPAN("danger", "[src] grown their appendages into [target]"), \
+				src.visible_message(SPAN("danger", "[src] grown their appendages into [target]"),
 									SPAN("changeling", "We grow inwards."))
 				target.getBruteLoss(15)
 
@@ -246,7 +246,7 @@
 			target.getBruteLoss(39)
 			return
 
-	visible_message(SPAN("danger", "[src] dissolved in [target] and merged with them completely!"), \
+	visible_message(SPAN("danger", "[src] dissolved in [target] and merged with them completely!"),
 					SPAN("notice", "We merged with our prey."))
 
 	to_chat(target, SPAN("danger", "<h3>Your neural network has been overtaken by \the [src]!</h3>"))
@@ -418,5 +418,5 @@
 	BIO.parent_organ = BP_CHEST // So we don't end up inside nonexistent limbs
 	changeling_transfer_mind(HC)
 
-	HC.visible_message(SPAN("danger", "[BIO] suddenly grows tiny eyes and reforms it's appendages into legs!"), \
+	HC.visible_message(SPAN("danger", "[BIO] suddenly grows tiny eyes and reforms it's appendages into legs!"),
 					   SPAN("changeling", "<font size='2'><b>We are in our weakest form! WE HAVE TO SURVIVE!</b></font>"))

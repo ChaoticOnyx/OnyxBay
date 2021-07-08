@@ -56,13 +56,13 @@
 	if(stat & (BROKEN|NOPOWER))
 		if(damage >= 10)
 			if(density)
-				visible_message("<span class='danger'>\The [user] forces \the [src] open!</span>")
+				visible_message(SPAN("danger", "\The [user] forces \the [src] open!"))
 				open(1)
 			else
-				visible_message("<span class='danger'>\The [user] forces \the [src] closed!</span>")
+				visible_message(SPAN("danger", "\The [user] forces \the [src] closed!"))
 				close(1)
 		else
-			visible_message("<span class='notice'>\The [user] strains fruitlessly to force \the [src] [density ? "open" : "closed"].</span>")
+			visible_message(SPAN("notice", "\The [user] strains fruitlessly to force \the [src] [density ? "open" : "closed"]."))
 		return
 	..()
 
@@ -697,7 +697,7 @@ About the new airlock wires panel:
 		var/obj/item/weapon/material/twohanded/fireaxe/F = C
 		if(F.wielded)
 			playsound(src, 'sound/effects/fighting/smash.ogg', 100, 1)
-			user.visible_message("<span class='danger'>[user] smashes \the [C] into the airlock's control panel! It explodes in a shower of sparks!</span>", "<span class='danger'>You smash \the [C] into the airlock's control panel! It explodes in a shower of sparks!</span>")
+			user.visible_message(SPAN("danger", "[user] smashes \the [C] into the airlock's control panel! It explodes in a shower of sparks!"), SPAN("danger", "You smash \the [C] into the airlock's control panel! It explodes in a shower of sparks!"))
 			health = 0
 			set_broken(TRUE)
 		else

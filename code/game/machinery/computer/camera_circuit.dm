@@ -40,7 +40,7 @@
 		..()
 		if(isScrewdriver(I))
 			secured = !secured
-			user.visible_message("<span class='notice'>The [src] can [secured ? "no longer" : "now"] be modified.</span>")
+			user.visible_message(SPAN("notice", "The [src] can [secured ? "no longer" : "now"] be modified."))
 			updateBuildPath()
 		return
 

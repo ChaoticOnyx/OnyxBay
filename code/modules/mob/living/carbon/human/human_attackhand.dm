@@ -33,7 +33,7 @@
 			var/damage = rand(0, 9)
 			if(!damage)
 				playsound(loc, 'sound/weapons/punchmiss.ogg', 25, 1, -1)
-				visible_message("<span class='danger'>\The [H] has attempted to punch \the [src]!</span>")
+				visible_message(SPAN("danger", "\The [H] has attempted to punch \the [src]!"))
 				return 0
 			var/obj/item/organ/external/affecting = get_organ(ran_zone(H.zone_sel.selecting))
 			var/armor_block = run_armor_check(affecting, "melee")
@@ -43,11 +43,11 @@
 
 			playsound(loc, "punch", rand(80, 100), 1, -1)
 
-			visible_message("<span class='danger'>[H] has punched \the [src]!</span>")
+			visible_message(SPAN("danger", "[H] has punched \the [src]!"))
 
 			apply_damage(damage, PAIN, affecting, armor_block)
 			if(damage >= 9)
-				visible_message("<span class='danger'>[H] has weakened \the [src]!</span>")
+				visible_message(SPAN("danger", "[H] has weakened \the [src]!"))
 				apply_effect(4, WEAKEN, armor_block)
 
 			return
@@ -73,12 +73,12 @@
 				spawn(30)
 					cpr_time = 1
 
-				H.visible_message("<span class='notice'>\The [H] is trying to perform CPR on \the [src].</span>")
+				H.visible_message(SPAN("notice", "\The [H] is trying to perform CPR on \the [src]."))
 
 				if(!do_after(H, 30, src))
 					return
 
-				H.visible_message("<span class='notice'>\The [H] performs CPR on \the [src]!</span>")
+				H.visible_message(SPAN("notice", "\The [H] performs CPR on \the [src]!"))
 				if(prob(5))
 					var/obj/item/organ/external/chest = get_organ(BP_CHEST)
 					if(chest)
@@ -317,7 +317,7 @@
 	var/success = 0
 	if(pulling)
 		if(!silent)
-			visible_message("<span class='danger'>[user] has broken [src]'s grip on [pulling]!</span>")
+			visible_message(SPAN("danger", "[user] has broken [src]'s grip on [pulling]!"))
 		success = 1
 		stop_pulling()
 
@@ -325,7 +325,7 @@
 		var/obj/item/grab/lgrab = l_hand
 		if(lgrab.affecting)
 			if(!silent)
-				visible_message("<span class='danger'>[user] has broken [src]'s grip on [lgrab.affecting]!</span>")
+				visible_message(SPAN("danger", "[user] has broken [src]'s grip on [lgrab.affecting]!"))
 			success = 1
 		spawn(1)
 			qdel(lgrab)
@@ -333,7 +333,7 @@
 		var/obj/item/grab/rgrab = r_hand
 		if(rgrab.affecting)
 			if(!silent)
-				visible_message("<span class='danger'>[user] has broken [src]'s grip on [rgrab.affecting]!</span>")
+				visible_message(SPAN("danger", "[user] has broken [src]'s grip on [rgrab.affecting]!"))
 			success = 1
 		spawn(1)
 			qdel(rgrab)

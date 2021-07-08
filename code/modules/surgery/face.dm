@@ -39,14 +39,14 @@
 	..()
 
 /datum/surgery_step/generic/cut_face/end_step(mob/living/user, mob/living/carbon/human/target, target_zone, obj/item/tool)
-	user.visible_message("<span class='notice'>[user] has cut open [target]'s face and neck with \the [tool].</span>" , \
-	"<span class='notice'>You have cut open [target]'s face and neck with \the [tool].</span>",)
+	user.visible_message(SPAN("notice", "[user] has cut open [target]'s face and neck with \the [tool]."),
+	SPAN("notice", "You have cut open [target]'s face and neck with \the [tool]."),)
 	target.op_stage.face = 1
 
 /datum/surgery_step/generic/cut_face/fail_step(mob/living/user, mob/living/carbon/human/target, target_zone, obj/item/tool)
 	var/obj/item/organ/external/affected = target.get_organ(target_zone)
-	user.visible_message("<span class='warning'>[user]'s hand slips, slicing [target]'s throat wth \the [tool]!</span>" , \
-	"<span class='warning'>Your hand slips, slicing [target]'s throat wth \the [tool]!</span>" )
+	user.visible_message(SPAN("warning", "[user]'s hand slips, slicing [target]'s throat wth \the [tool]!"), \
+	SPAN("warning", "Your hand slips, slicing [target]'s throat wth \the [tool]!") )
 	affected.take_external_damage(40, 0, (DAM_SHARP|DAM_EDGE), used_weapon = tool)
 	target.losebreath += 10
 
@@ -71,13 +71,13 @@
 	..()
 
 /datum/surgery_step/face/mend_vocal/end_step(mob/living/user, mob/living/carbon/human/target, target_zone, obj/item/tool)
-	user.visible_message("<span class='notice'>[user] mends [target]'s vocal cords with \the [tool].</span>", \
-	"<span class='notice'>You mend [target]'s vocal cords with \the [tool].</span>")
+	user.visible_message(SPAN("notice", "[user] mends [target]'s vocal cords with \the [tool]."),
+	SPAN("notice", "You mend [target]'s vocal cords with \the [tool]."))
 	target.op_stage.face = 2
 
 /datum/surgery_step/face/mend_vocal/fail_step(mob/living/user, mob/living/carbon/human/target, target_zone, obj/item/tool)
-	user.visible_message("<span class='warning'>[user]'s hand slips, clamping [target]'s trachea shut for a moment with \the [tool]!</span>", \
-	"<span class='warning'>Your hand slips, clamping [user]'s trachea shut for a moment with \the [tool]!</span>")
+	user.visible_message(SPAN("warning", "[user]'s hand slips, clamping [target]'s trachea shut for a moment with \the [tool]!"),
+	SPAN("warning", "Your hand slips, clamping [user]'s trachea shut for a moment with \the [tool]!"))
 	target.losebreath += 10
 
 //////////////////////////////////////////////////////////////////
@@ -100,14 +100,14 @@
 	..()
 
 /datum/surgery_step/face/fix_face/end_step(mob/living/user, mob/living/carbon/human/target, target_zone, obj/item/tool)
-	user.visible_message("<span class='notice'>[user] pulls the skin on [target]'s face back in place with \the [tool].</span>",	\
-	"<span class='notice'>You pull the skin on [target]'s face back in place with \the [tool].</span>")
+	user.visible_message(SPAN("notice", "[user] pulls the skin on [target]'s face back in place with \the [tool]."),	\
+	SPAN("notice", "You pull the skin on [target]'s face back in place with \the [tool]."))
 	target.op_stage.face = 3
 
 /datum/surgery_step/face/fix_face/fail_step(mob/living/user, mob/living/carbon/human/target, target_zone, obj/item/tool)
 	var/obj/item/organ/external/affected = target.get_organ(target_zone)
-	user.visible_message("<span class='warning'>[user]'s hand slips, tearing skin on [target]'s face with \the [tool]!</span>", \
-	"<span class='warning'>Your hand slips, tearing skin on [target]'s face with \the [tool]!</span>")
+	user.visible_message(SPAN("warning", "[user]'s hand slips, tearing skin on [target]'s face with \the [tool]!"),
+	SPAN("warning", "Your hand slips, tearing skin on [target]'s face with \the [tool]!"))
 	affected.take_external_damage(10, 0, (DAM_SHARP|DAM_EDGE), used_weapon = tool)
 
 //////////////////////////////////////////////////////////////////
@@ -133,8 +133,8 @@
 
 /datum/surgery_step/face/cauterize/end_step(mob/living/user, mob/living/carbon/human/target, target_zone, obj/item/tool)
 	var/obj/item/organ/external/affected = target.get_organ(target_zone)
-	user.visible_message("<span class='notice'>[user] cauterizes the incision on [target]'s face and neck with \the [tool].</span>", \
-	"<span class='notice'>You cauterize the incision on [target]'s face and neck with \the [tool].</span>")
+	user.visible_message(SPAN("notice", "[user] cauterizes the incision on [target]'s face and neck with \the [tool]."),
+	SPAN("notice", "You cauterize the incision on [target]'s face and neck with \the [tool]."))
 	if (target.op_stage.face == 3)
 		var/obj/item/organ/external/head/h = affected
 		h.status &= ~ORGAN_DISFIGURED
@@ -144,6 +144,6 @@
 
 /datum/surgery_step/face/cauterize/fail_step(mob/living/user, mob/living/carbon/human/target, target_zone, obj/item/tool)
 	var/obj/item/organ/external/affected = target.get_organ(target_zone)
-	user.visible_message("<span class='warning'>[user]'s hand slips, leaving a small burn on [target]'s face with \the [tool]!</span>", \
-	"<span class='warning'>Your hand slips, leaving a small burn on [target]'s face with \the [tool]!</span>")
+	user.visible_message(SPAN("warning", "[user]'s hand slips, leaving a small burn on [target]'s face with \the [tool]!"),
+	SPAN("warning", "Your hand slips, leaving a small burn on [target]'s face with \the [tool]!"))
 	affected.take_external_damage(0, 4, used_weapon = tool)

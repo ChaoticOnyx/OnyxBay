@@ -54,36 +54,36 @@
 /mob/living/simple_animal/hostile/retaliate/goat/king/Retaliate()
 	..()
 	if(stat == CONSCIOUS && prob(5))
-		visible_message("<span class='warning'>\The [src] bellows indignantly, with a judgemental gleam in his eye.</span>")
+		visible_message(SPAN("warning", "\The [src] bellows indignantly, with a judgemental gleam in his eye."))
 
 /mob/living/simple_animal/hostile/retaliate/goat/king/phase2/Retaliate()
 	..()
 	if(spellscast < 3)
 		if(prob(5) && turns_per_move != 15) //speed buff
 			spellscast++
-			visible_message("<span class='cult'>\The [src] shimmers and seems to phase in and out of reality itself!</span>")
+			visible_message(SPAN("cult", "\The [src] shimmers and seems to phase in and out of reality itself!"))
 			turns_per_move = 20
 
 		else if(prob(5) && melee_damage_lower != 50) //damage buff
 			spellscast++
-			visible_message("<span class='cult'>\The [src]' horns glimmer with holy light!</span>")
+			visible_message(SPAN("cult", "\The [src]' horns glimmer with holy light!"))
 			melee_damage_lower = 50
 
 		else if(prob(5)) //stun move
 			spellscast++
-			visible_message("<span class='cult'>\The [src]' fleece flashes with blinding light!</span>")
+			visible_message(SPAN("cult", "\The [src]' fleece flashes with blinding light!"))
 			new /obj/item/weapon/grenade/flashbang/instant(src.loc) //lol
 
 		else if(prob(5)) //spawn adds
 			spellscast++
-			visible_message("<span class='cult'>\The [src] calls his imperial guard to his aid!</span>")
+			visible_message(SPAN("cult", "\The [src] calls his imperial guard to his aid!"))
 			new /mob/living/simple_animal/hostile/retaliate/goat/guard/master(src.loc)
 			new /mob/living/simple_animal/hostile/retaliate/goat/guard(src.loc)
 			new /mob/living/simple_animal/hostile/retaliate/goat/guard(src.loc)
 
 		else if(prob(5)) //EMP blast
 			spellscast++
-			visible_message("<span class='cult'>\The [src] disrupts nearby electrical equipment!</span>")
+			visible_message(SPAN("cult", "\The [src] disrupts nearby electrical equipment!"))
 			empulse(get_turf(src), 3, 2, 0)
 
 		else return
@@ -96,18 +96,18 @@
 		health = 500
 		icon_state = "king_goat3"
 		icon_living = "king_goat3"
-		visible_message("<span class='cult'>\The [src]' wounds close with a flash and he shines even more radiantly than before!</span>")
+		visible_message(SPAN("cult", "\The [src]' wounds close with a flash and he shines even more radiantly than before!"))
 
 /mob/living/simple_animal/hostile/retaliate/goat/king/proc/OnDeath()
 	if(prob(85))
-		visible_message("<span class='cult'>\The light radiating from \the [src]' fleece dims...</span>")
+		visible_message(SPAN("cult", "\The light radiating from \the [src]' fleece dims..."))
 	else
-		visible_message("<span class='cult'>\The [src] lets loose a terrific wail as its wounds close shut with a flash of light, and its eyes glow even brighter than before!</span>")
+		visible_message(SPAN("cult", "\The [src] lets loose a terrific wail as its wounds close shut with a flash of light, and its eyes glow even brighter than before!"))
 		new /mob/living/simple_animal/hostile/retaliate/goat/king/phase2(src.loc)
 		Destroy()
 
 /mob/living/simple_animal/hostile/retaliate/goat/king/phase2/OnDeath()
-	visible_message("<span class='cult'>\The [src] shrieks as the seal on his power breaks and his wool sheds off!</span>")
+	visible_message(SPAN("cult", "\The [src] shrieks as the seal on his power breaks and his wool sheds off!"))
 	new /obj/item/weapon/towel/fleece(src.loc)
 
 /mob/living/simple_animal/hostile/retaliate/goat/king/death()

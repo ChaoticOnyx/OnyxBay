@@ -58,13 +58,13 @@
 			if (O.damtype == PAIN)
 				damage = 0
 			health -= damage
-			visible_message("<span class='danger'>\The [src] has been attacked with \the [O] by \the [user].</span>")
+			visible_message(SPAN("danger", "\The [src] has been attacked with \the [O] by \the [user]."))
 		else
-			visible_message("<span class='danger'>\The [src] blocks the [O] with its shield!</span>")
+			visible_message(SPAN("danger", "\The [src] blocks the [O] with its shield!"))
 		//user.do_attack_animation(src)
 	else
 		to_chat(usr, "<span class='warning'>This weapon is ineffective, it does no damage.</span>")
-		visible_message("<span class='warning'>\The [user] gently taps \the [src] with \the [O].</span>")
+		visible_message(SPAN("warning", "\The [user] gently taps \the [src] with \the [O]."))
 
 
 /mob/living/simple_animal/hostile/syndicate/melee/bullet_act(obj/item/projectile/Proj)
@@ -72,7 +72,7 @@
 	if(prob(65))
 		src.health -= Proj.damage
 	else
-		visible_message("<span class='danger'>\The [src] blocks \the [Proj] with its shield!</span>")
+		visible_message(SPAN("danger", "\The [src] blocks \the [Proj] with its shield!"))
 	return 0
 
 

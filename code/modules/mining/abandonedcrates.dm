@@ -162,7 +162,7 @@
 		playsound(user, 'sound/machines/lockreset.ogg', 50, 1)
 		..()
 	else
-		visible_message("<span class='warning'>A red light on \the [src]'s control panel flashes briefly.</span>")
+		visible_message(SPAN("warning", "A red light on \the [src]'s control panel flashes briefly."))
 		attempts--
 		if (attempts == 0)
 			to_chat(user, "<span class='danger'>The crate's anti-tamper system activates!</span>")

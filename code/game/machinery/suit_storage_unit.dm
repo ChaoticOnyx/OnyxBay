@@ -452,7 +452,7 @@
 					tank = null
 				if(mask)
 					mask = null
-				visible_message("<span class='warning'>With a loud whining noise, the Suit Storage Unit's door grinds open. Puffs of ashen smoke come out of its chamber.</span>", 3)
+				visible_message(SPAN("warning", "With a loud whining noise, the Suit Storage Unit's door grinds open. Puffs of ashen smoke come out of its chamber."), 3)
 				isbroken = 1
 				isopen = 1
 				islocked = 0
@@ -542,7 +542,7 @@
 	if(isScrewdriver(I))
 		panelopen = !panelopen
 		playsound(loc, 'sound/items/Screwdriver.ogg', 100, 1)
-		to_chat(user, text("<span class='notice'>You [panelopen ? "open" : "close"] the unit's maintenance panel.</span>"))
+		to_chat(user, text(SPAN("notice", "You [panelopen ? "open" : "close"] the unit's maintenance panel.")))
 		updateUsrDialog()
 		update_icon()
 		return
@@ -796,7 +796,7 @@
 			to_chat(user, "<span class='danger'>There is no room inside the cycler for [G.affecting.name].</span>")
 			return
 
-		visible_message("<span class='notice'>[user] starts putting [G.affecting.name] into the suit cycler.</span>", 3)
+		visible_message(SPAN("notice", "[user] starts putting [G.affecting.name] into the suit cycler."), 3)
 
 		if(do_after(user, 20, src))
 			if(!G || !G.affecting) return

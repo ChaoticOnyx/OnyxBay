@@ -55,23 +55,23 @@
 	if(src.broken > 0)
 		if(src.broken == 2 && isScrewdriver(O)) // If it's broken and they're using a screwdriver
 			user.visible_message( \
-				SPAN("notice", "\The [user] starts to fix part of the microwave."), \
+				SPAN("notice", "\The [user] starts to fix part of the microwave."),
 				SPAN("notice", "You start to fix part of the microwave.") \
 			)
 			if (do_after(user, 20, src))
 				user.visible_message( \
-					SPAN("notice", "\The [user] fixes part of the microwave."), \
+					SPAN("notice", "\The [user] fixes part of the microwave."),
 					SPAN("notice", "You have fixed part of the microwave.") \
 				)
 				src.broken = 1 // Fix it a bit
 		else if(src.broken == 1 && isWrench(O)) // If it's broken and they're doing the wrench
 			user.visible_message( \
-				SPAN("notice", "\The [user] starts to fix part of the microwave."), \
+				SPAN("notice", "\The [user] starts to fix part of the microwave."),
 				SPAN("notice", "You start to fix part of the microwave.") \
 			)
 			if (do_after(user, 20, src))
 				user.visible_message( \
-					SPAN("notice", "\The [user] fixes the microwave."), \
+					SPAN("notice", "\The [user] fixes the microwave."),
 					SPAN("notice", "You have fixed the microwave.") \
 				)
 				src.broken = 0 // Fix it!
@@ -84,12 +84,12 @@
 	else if(src.dirty==100) // The microwave is all dirty so can't be used!
 		if(istype(O, /obj/item/weapon/reagent_containers/spray/cleaner) || istype(O, /obj/item/weapon/reagent_containers/glass/rag)) // If they're trying to clean it then let them
 			user.visible_message( \
-				SPAN("notice", "\The [user] starts to clean the microwave."), \
+				SPAN("notice", "\The [user] starts to clean the microwave."),
 				SPAN("notice", "You start to clean the microwave.") \
 			)
 			if (do_after(user, 20, src))
 				user.visible_message( \
-					SPAN("notice", "\The [user] has cleaned the microwave."), \
+					SPAN("notice", "\The [user] has cleaned the microwave."),
 					SPAN("notice", "You have cleaned the microwave.") \
 				)
 				src.dirty = 0 // It's clean!
@@ -111,7 +111,7 @@
 			else
 				user.drop_item(src)
 			user.visible_message( \
-					SPAN("notice", "\The [user] has added one of [O] to \the [src]."), \
+					SPAN("notice", "\The [user] has added one of [O] to \the [src]."),
 					SPAN("notice", "You add one of [O] to \the [src]."))
 			return
 		else
@@ -119,7 +119,7 @@
 				return
 			O.forceMove(src)
 			user.visible_message( \
-				SPAN("notice", "\The [user] has added \the [O] to \the [src]."), \
+				SPAN("notice", "\The [user] has added \the [O] to \the [src]."),
 				SPAN("notice", "You add \the [O] to \the [src]."))
 			return
 	else if(istype(O,/obj/item/weapon/reagent_containers/glass) || \
@@ -139,13 +139,13 @@
 		return 1
 	else if(isCrowbar(O))
 		user.visible_message( \
-			SPAN("notice", "\The [user] begins [src.anchored ? "unsecuring" : "securing"] the microwave."), \
+			SPAN("notice", "\The [user] begins [src.anchored ? "unsecuring" : "securing"] the microwave."),
 			SPAN("notice", "You attempt to [src.anchored ? "unsecure" : "secure"] the microwave.")
 			)
 		if(do_after(user,20, src))
 			src.anchored = !src.anchored
 			user.visible_message( \
-			SPAN("notice", "\The [user] [src.anchored ? "secures" : "unsecures"] the microwave."), \
+			SPAN("notice", "\The [user] [src.anchored ? "secures" : "unsecures"] the microwave."),
 			SPAN("notice", "You [src.anchored ? "secure" : "unsecure"] the microwave.")
 			)
 		else

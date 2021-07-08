@@ -100,7 +100,7 @@ GLOBAL_DATUM_INIT(cult, /datum/antagonist/cultist, new)
 	to_chat(player.current, "<span class='danger'>An unfamiliar white light flashes through your mind, cleansing the taint of the dark-one and the memories of your time as his servant with it.</span>")
 	player.memory = ""
 	if(show_message)
-		player.current.visible_message("<span class='notice'>[player.current] looks like they just reverted to their old faith!</span>")
+		player.current.visible_message(SPAN("notice", "[player.current] looks like they just reverted to their old faith!"))
 	remove_cult_magic(player.current)
 	remove_cultiness(CULTINESS_PER_CULTIST)
 

@@ -99,7 +99,7 @@
 				set_damaged()
 
 /obj/machinery/self_destruct/proc/set_damaged()
-		src.visible_message("<span class='warning'>[src] dents and chars.</span>")
+		src.visible_message(SPAN("warning", "[src] dents and chars."))
 		damaged = 1
 
 /obj/machinery/self_destruct/examine(mob/user)

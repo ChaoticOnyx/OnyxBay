@@ -27,8 +27,8 @@
 		to_chat(user, SPAN("warning", "[src] doesn't work on this location!"))
 		return
 	if(use(1))
-		user.visible_message(SPAN("warning", "\The [user] crushes a crystal!"), \
-							 SPAN("notice", "You crush \a [src]!"), \
+		user.visible_message(SPAN("warning", "\The [user] crushes a crystal!"),
+							 SPAN("notice", "You crush \a [src]!"),
 							 SPAN("italics", "You hear the sound of a crystal breaking just before a sudden crack of electricity."))
 		var/turf/T = get_random_turf_in_range(user, 7, 3)
 		if(T)

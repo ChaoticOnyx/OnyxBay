@@ -364,13 +364,13 @@
 			var/turf/T = get_turf(src)
 			for(var/obj/item/I in LB.contents)
 				LB.remove_from_storage(I, T)
-			user.visible_message("<span class='notice'>[user] empties \the [LB] into \the [src].</span>", \
+			user.visible_message(SPAN("notice", "[user] empties \the [LB] into \the [src]."),
 								 "<span class='notice'>You empty \the [LB] into \the [src].</span>", \
 								 "<span class='notice'>You hear rustling of clothes.</span>")
 			return
 
 		if(istype(W, /obj/item/weapon/screwdriver) && dremovable && cdoor)
-			user.visible_message("<span class='notice'>[user] starts unscrewing [cdoor] from [src].</span>")
+			user.visible_message(SPAN("notice", "[user] starts unscrewing [cdoor] from [src]."))
 			user.next_move = world.time + 10
 			if(!do_after(user, 30))
 				return 0
@@ -382,13 +382,13 @@
 
 		if(istype(W, /obj/item/weapon/shield/closet) && dremovable && !cdoor)
 			var/obj/item/weapon/shield/closet/C = W
-			user.visible_message("<span class='notice'>[user] starts connecting [C] to [src].</span>")
+			user.visible_message(SPAN("notice", "[user] starts connecting [C] to [src]."))
 			user.next_move = world.time + 10
 			if(!do_after(user, 20))
 				return 0
 			if(cdoor)
 				return 0
-			user.visible_message("<span class='notice'>[user] connected [C] to [src].</span>")
+			user.visible_message(SPAN("notice", "[user] connected [C] to [src]."))
 			user.drop_item()
 			attach_door(C)
 			return
@@ -419,7 +419,7 @@
 				return
 		src.welded = !src.welded
 		src.update_icon()
-		user.visible_message("<span class='warning'>\The [src] has been [welded?"welded shut":"unwelded"] by \the [user].</span>", blind_message = "You hear welding.", range = 3)
+		user.visible_message(SPAN("warning", "\The [src] has been [welded?"welded shut":"unwelded"] by \the [user]."), blind_message = "You hear welding."), range = 3
 	else if(istype(W, /obj/item/device/multitool) && (setup & CLOSET_HAS_LOCK))
 		var/obj/item/device/multitool/multi = W
 		if(multi.in_use)
@@ -438,7 +438,7 @@
 		broken = 1
 		src.update_icon()
 		multi.in_use=0
-		user.visible_message("<span class='warning'>[user] [locked?"locks":"unlocks"] [name] with a multitool.</span>",
+		user.visible_message(SPAN("warning", "[user] [locked?"locks":"unlocks"] [name] with a multitool."),
 			"<span class='warning'>I [locked?"enable":"disable"] the locking modules.</span>")
 	else if(setup & CLOSET_HAS_LOCK)
 		src.togglelock(user, W)
@@ -450,7 +450,7 @@
 		to_chat(user, "<span class='notice'>You need more welding fuel to complete this task.</span>")
 		return
 	new /obj/item/stack/material/steel(src.loc)
-	user.visible_message("<span class='notice'>\The [src] has been cut apart by [user] with \the [WT].</span>", \
+	user.visible_message(SPAN("notice", "\The [src] has been cut apart by [user] with \the [WT]."),
 						 "<span class='notice'>You have cut \the [src] apart with \the [WT].</span>", \
 						 "You hear welding.")
 	qdel(src)
@@ -474,7 +474,7 @@
 		return
 	step_towards(O, src.loc)
 	if(user != O)
-		user.show_viewers("<span class='danger'>[user] stuffs [O] into [src]!</span>")
+		user.show_viewers(SPAN("danger", "[user] stuffs [O] into [src]!"))
 	src.add_fingerprint(user)
 	return
 
@@ -567,7 +567,7 @@
 	if(!damage || !wallbreaker)
 		return
 	attack_animation(user)
-	visible_message("<span class='danger'>[user] [attack_message] the [src]!</span>")
+	visible_message(SPAN("danger", "[user] [attack_message] the [src]!"))
 	dump_contents()
 	spawn(1) qdel(src)
 	return 1
@@ -598,7 +598,7 @@
 	else
 		to_chat(escapee, "<span class='warning'>You lean on the back of \the [src] and start pushing the door open. (this will take about [breakout_time] minutes)</span>")
 
-	visible_message("<span class='danger'>\The [src] begins to shake violently!</span>")
+	visible_message(SPAN("danger", "\The [src] begins to shake violently!"))
 
 	breakout = 1 //can't think of a better way to do this right now.
 	for(var/i in 1 to (6*breakout_time * 2)) //minutes * 6 * 5seconds * 2
@@ -617,7 +617,7 @@
 	//Well then break it!
 	breakout = 0
 	to_chat(escapee, "<span class='warning'>You successfully break out!</span>")
-	visible_message("<span class='danger'>\The [escapee] successfully broke out of \the [src]!</span>")
+	visible_message(SPAN("danger", "\The [escapee] successfully broke out of \the [src]!"))
 	playsound(src.loc, 'sound/effects/grillehit.ogg', 100, 1)
 	break_open()
 	shake_animation()
@@ -670,7 +670,7 @@
 
 	if(CanToggleLock(user, id_card))
 		locked = !locked
-		visible_message("<span class='notice'>\The [src] has been [locked ? null : "un"]locked by \the [user].</span>", range = 3)
+		visible_message(SPAN("notice", "\The [src] has been [locked ? null : "un"]locked by \the [user]."), range = 3)
 		update_icon()
 		return TRUE
 	else
@@ -710,9 +710,9 @@
 		if(visual_feedback)
 			visible_message(visual_feedback, audible_feedback)
 		else if(user && emag_source)
-			visible_message("<span class='warning'>\The [src] has been broken by \the [user] with \an [emag_source]!</span>", "You hear a faint electrical spark.")
+			visible_message(SPAN("warning", "\The [src] has been broken by \the [user] with \an [emag_source]!"), "You hear a faint electrical spark.")
 		else
-			visible_message("<span class='warning'>\The [src] sparks and breaks open!</span>", "You hear a faint electrical spark.")
+			visible_message(SPAN("warning", "\The [src] sparks and breaks open!"), "You hear a faint electrical spark.")
 		return 1
 	else
 		. = ..()

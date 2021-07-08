@@ -19,10 +19,10 @@
 	var/obj/item/loaded                                        // Currently loaded object, for retrieval/unloading.
 	var/load_type = /obj/item/stack/rods                       // Type of stack to load with.
 	var/projectile_type = /obj/item/projectile/bullet/magnetic // Actual fire type, since this isn't throw_at rod launcher.
-	
+
 	var/heat_level = 0										   // When a magnetic weapon has too much heat, it malfunctions.
 	var/able_to_overheat = TRUE							       // Changes whether it should or should not overheat.
-	
+
 	var/power_cost = 950                                       // Cost per fire, should consume almost an entire basic cell.
 	var/power_per_tick                                         // Capacitor charge per process(). Updated based on capacitor rating.
 
@@ -113,7 +113,7 @@
 			user.drop_from_inventory(cell)
 			cell.forceMove(src)
 			playsound(loc, 'sound/machines/click.ogg', 10, 1)
-			user.visible_message("<span class='notice'>\The [user] slots \the [cell] into \the [src].</span>")
+			user.visible_message(SPAN("notice", "\The [user] slots \the [cell] into \the [src]."))
 			update_icon()
 			return
 
@@ -123,7 +123,7 @@
 				return
 			capacitor.forceMove(get_turf(src))
 			user.put_in_hands(capacitor)
-			user.visible_message("<span class='notice'>\The [user] unscrews \the [capacitor] from \the [src].</span>")
+			user.visible_message(SPAN("notice", "\The [user] unscrews \the [capacitor] from \the [src]."))
 			playsound(loc, 'sound/items/Screwdriver.ogg', 50, 1)
 			capacitor = null
 			update_icon()
@@ -138,7 +138,7 @@
 			capacitor.forceMove(src)
 			playsound(loc, 'sound/machines/click.ogg', 10, 1)
 			power_per_tick = (power_cost*0.15) * capacitor.rating
-			user.visible_message("<span class='notice'>\The [user] slots \the [capacitor] into \the [src].</span>")
+			user.visible_message(SPAN("notice", "\The [user] slots \the [capacitor] into \the [src]."))
 			update_icon()
 			return
 
@@ -159,7 +159,7 @@
 			loaded = new load_type(src, 1)
 			ammo.use(1)
 
-		user.visible_message("<span class='notice'>\The [user] loads \the [src] with \the [loaded].</span>")
+		user.visible_message(SPAN("notice", "\The [user] loads \the [src] with \the [loaded]."))
 		playsound(loc, 'sound/weapons/flipblade.ogg', 50, 1)
 		update_icon()
 		return
@@ -179,7 +179,7 @@
 		if(removing)
 			removing.forceMove(get_turf(src))
 			user.put_in_hands(removing)
-			user.visible_message("<span class='notice'>\The [user] removes \the [removing] from \the [src].</span>")
+			user.visible_message(SPAN("notice", "\The [user] removes \the [removing] from \the [src]."))
 			playsound(loc, 'sound/machines/click.ogg', 10, 1)
 			update_icon()
 			return
@@ -197,7 +197,7 @@
 		heat_level += rand(5, 9)
 	else
 		heat_level += rand(3, 5)
-		
+
 /obj/item/weapon/gun/magnetic/proc/emit_sparks()
 	var/datum/effect/effect/system/spark_spread/spark = new /datum/effect/effect/system/spark_spread()
 	spark.set_up(3, 1, src)
@@ -212,7 +212,7 @@
 		increase_heat_level()
 		if(heat_level > 10 && prob(5 + heat_level))
 			if(heat_level < 15 || prob(90 - heat_level))
-				to_chat(user, "<span class='warning'>\The [src] misfires!</span>") 
+				to_chat(user, "<span class='warning'>\The [src] misfires!</span>")
 				capacitor.use(power_cost)
 				emit_sparks()
 				update_icon()
@@ -225,10 +225,10 @@
 						return
 				else
 					spawn(3) // So that it will still fire - considered modifying Fire() to return a value but burst fire makes that annoying.
-						visible_message("<span class='danger'>\The [src] explodes with the force of the shot!</span>")
+						visible_message(SPAN("danger", "\The [src] explodes with the force of the shot!"))
 						explosion(get_turf(src), -1, 0, 2)
 						qdel(src)
-							
+
 		if(heat_level > 15)
 			emit_sparks()
 

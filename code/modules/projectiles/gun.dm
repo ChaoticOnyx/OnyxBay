@@ -381,9 +381,9 @@
 	var/mob/living/carbon/human/M = user
 
 	mouthshoot = 1
-	M.visible_message("<span class='danger'>[user] sticks their gun in their mouth, ready to pull the trigger...</span>")
+	M.visible_message(SPAN("danger", "[user] sticks their gun in their mouth, ready to pull the trigger..."))
 	if(!do_after(user, 40, progress=0))
-		M.visible_message("<span class='notice'>[user] decided life was worth living</span>")
+		M.visible_message(SPAN("notice", "[user] decided life was worth living"))
 		mouthshoot = 0
 		return
 	if(istype(src, /obj/item/weapon/gun/flamer))

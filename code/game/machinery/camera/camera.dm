@@ -200,7 +200,7 @@
 		set_status(0)
 		user.do_attack_animation(src)
 		user.setClickCooldown(DEFAULT_QUICK_COOLDOWN)
-		visible_message("<span class='warning'>\The [user] slashes at [src]!</span>")
+		visible_message(SPAN("warning", "\The [user] slashes at [src]!"))
 		playsound(src.loc, 'sound/weapons/slash.ogg', 100, 1)
 		add_hiddenprint(user)
 		destroy()
@@ -212,7 +212,7 @@
 //		to_chat(user, "<span class='notice'>You start to [panel_open ? "close" : "open"] the camera's panel.</span>")
 		//if(toggle_panel(user)) // No delay because no one likes screwdrivers trying to be hip and have a duration cooldown
 		panel_open = !panel_open
-		user.visible_message("<span class='warning'>[user] screws the camera's panel [panel_open ? "open" : "closed"]!</span>",
+		user.visible_message(SPAN("warning", "[user] screws the camera's panel [panel_open ? "open" : "closed"]!"),
 		"<span class='notice'>You screw the camera's panel [panel_open ? "open" : "closed"].</span>")
 		playsound(src.loc, 'sound/items/Screwdriver.ogg', 50, 1)
 
@@ -267,7 +267,7 @@
 		user.setClickCooldown(DEFAULT_ATTACK_COOLDOWN)
 		if (W.force >= src.toughness)
 			user.do_attack_animation(src)
-			visible_message("<span class='warning'><b>[src] has been [pick(W.attack_verb)] with [W] by [user]!</b></span>")
+			visible_message(SPAN("warning", "<b>[src] has been [pick(W.attack_verb)] with [W] by [user]!</b>"))
 			shake_animation(stime = 3)
 			obj_attack_sound(W)
 		take_damage(W.force)
@@ -286,17 +286,17 @@
 	set_status(!src.status)
 	if (!(src.status))
 		if(user)
-			visible_message("<span class='notice'> [user] has deactivated [src]!</span>")
+			visible_message(SPAN("notice", " [user] has deactivated [src]!"))
 		else
-			visible_message("<span class='notice'> [src] clicks and shuts down. </span>")
+			visible_message(SPAN("notice", " [src] clicks and shuts down. "))
 		playsound(src.loc, 'sound/items/Wirecutter.ogg', 100, 1)
 		icon_state = "[initial(icon_state)]1"
 		add_hiddenprint(user)
 	else
 		if(user)
-			visible_message("<span class='notice'> [user] has reactivated [src]!</span>")
+			visible_message(SPAN("notice", " [user] has reactivated [src]!"))
 		else
-			visible_message("<span class='notice'> [src] clicks and reactivates itself. </span>")
+			visible_message(SPAN("notice", " [src] clicks and reactivates itself. "))
 		playsound(src.loc, 'sound/items/Wirecutter.ogg', 100, 1)
 		icon_state = initial(icon_state)
 		add_hiddenprint(user)

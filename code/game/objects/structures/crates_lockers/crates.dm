@@ -24,7 +24,7 @@
 	. = ..()
 	if(.)
 		if(rigged)
-			visible_message("<span class='danger'>There are wires attached to the lid of [src]...</span>")
+			visible_message(SPAN("danger", "There are wires attached to the lid of [src]..."))
 			for(var/obj/item/device/assembly_holder/H in src)
 				H.process_activation(usr)
 			for(var/obj/item/device/assembly/A in src)

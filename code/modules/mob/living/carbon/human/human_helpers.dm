@@ -263,7 +263,7 @@
 	// We don't present the cloaking message if the human was already cloaked just before cleanup.
 	if(!has_uncloaked && LAZYLEN(cloaking_sources) == 1)
 		update_icons()
-		src.visible_message("<span class='warning'>\The [src] seems to disappear before your eyes!</span>", "<span class='notice'>You feel completely invisible.</span>")
+		src.visible_message(SPAN("warning", "\The [src] seems to disappear before your eyes!"), SPAN("notice", "You feel completely invisible."))
 		return TRUE
 	return FALSE
 

@@ -133,12 +133,12 @@
 		busy = 1
 		update_icons()
 		if(F.flooring)
-			visible_message("<span class='warning'>[src] begins to tear the floor tile from the floor.</span>")
+			visible_message(SPAN("warning", "[src] begins to tear the floor tile from the floor."))
 			if(do_after(src, 50, F))
 				F.break_tile_to_plating()
 				addTiles(1)
 		else
-			visible_message("<span class='danger'>[src] begins to tear through the floor!</span>")
+			visible_message(SPAN("danger", "[src] begins to tear through the floor!"))
 			if(do_after(src, 150, F)) // Extra time because this can and will kill.
 				F.ReplaceWithLattice()
 				addTiles(1)
@@ -149,7 +149,7 @@
 		if(F.broken || F.burnt)
 			busy = 1
 			update_icons()
-			visible_message("<span class='notice'>[src] begins to remove the broken floor.</span>")
+			visible_message(SPAN("notice", "[src] begins to remove the broken floor."))
 			if(do_after(src, 50, F))
 				if(F.broken || F.burnt)
 					F.make_plating()
@@ -159,7 +159,7 @@
 		else if(!F.flooring && amount)
 			busy = 1
 			update_icons()
-			visible_message("<span class='notice'>[src] begins to improve the floor.</span>")
+			visible_message(SPAN("notice", "[src] begins to improve the floor."))
 			if(do_after(src, 50, F))
 				if(!F.flooring)
 					F.set_flooring(get_flooring_data(floor_build_type))
@@ -168,7 +168,7 @@
 			update_icons()
 	else if(istype(A, /obj/item/stack/tile/floor) && amount < maxAmount)
 		var/obj/item/stack/tile/floor/T = A
-		visible_message("<span class='notice'>\The [src] begins to collect tiles.</span>")
+		visible_message(SPAN("notice", "\The [src] begins to collect tiles."))
 		busy = 1
 		update_icons()
 		if(do_after(src, 20))
@@ -181,7 +181,7 @@
 	else if(istype(A, /obj/item/stack/material) && amount + 4 <= maxAmount)
 		var/obj/item/stack/material/M = A
 		if(M.get_material_name() == MATERIAL_STEEL)
-			visible_message("<span class='notice'>\The [src] begins to make tiles.</span>")
+			visible_message(SPAN("notice", "\The [src] begins to make tiles."))
 			busy = 1
 			update_icons()
 			if(do_after(src, 50))
@@ -191,7 +191,7 @@
 
 /mob/living/bot/floorbot/explode()
 	turn_off()
-	visible_message("<span class='danger'>[src] blows apart!</span>")
+	visible_message(SPAN("danger", "[src] blows apart!"))
 	var/turf/Tsec = get_turf(src)
 
 	var/obj/item/weapon/storage/toolbox/mechanical/N = new /obj/item/weapon/storage/toolbox/mechanical(Tsec)

@@ -237,7 +237,7 @@
 /obj/machinery/atmospherics/pipe/simple/proc/burst()
 	ASSERT(parent)
 	parent.temporarily_store_air()
-	src.visible_message("<span class='danger'>\The [src] bursts!</span>");
+	src.visible_message(SPAN("danger", "\The [src] bursts!");)
 	playsound(src.loc, 'sound/effects/bang.ogg', 25, 1)
 	var/datum/effect/effect/system/smoke_spread/smoke = new
 	smoke.set_up(1,0, src.loc, 0)
