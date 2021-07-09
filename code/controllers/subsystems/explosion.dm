@@ -450,68 +450,106 @@ SUBSYSTEM_DEF(explosions)
 		currentpart = SSEXPLOSIONS_MOVABLES
 
 		timer = TICK_USAGE_REAL
-		var/list/low_turf = lowturf
-		lowturf = list()
-		for(var/thing in low_turf)
-			var/turf/turf_thing = thing
+		while(length(lowturf))
+			if(MC_TICK_CHECK)
+				break
+			var/turf/turf_thing = lowturf[lowturf.len]
+			lowturf.len--
+			if(!isturf(turf_thing))
+				continue
 			turf_thing.ex_act(EXPLODE_LIGHT)
 		cost_lowturf = MC_AVERAGE(cost_lowturf, TICK_DELTA_TO_MS(TICK_USAGE_REAL - timer))
 
+		if(MC_TICK_CHECK)
+			if(lowturf.len || medturf.len || highturf.len)
+				Master.laggy_byond_map_update_incoming()
+			currentpart = SSEXPLOSIONS_TURFS
+			return
+
 		timer = TICK_USAGE_REAL
-		var/list/med_turf = medturf
-		medturf = list()
-		for(var/thing in med_turf)
-			var/turf/turf_thing = thing
+		while(length(medturf))
+			if(MC_TICK_CHECK)
+				break
+			var/turf/turf_thing = medturf[medturf.len]
+			medturf.len--
+			if(!isturf(turf_thing))
+				continue
 			turf_thing.ex_act(EXPLODE_HEAVY)
 		cost_medturf = MC_AVERAGE(cost_medturf, TICK_DELTA_TO_MS(TICK_USAGE_REAL - timer))
 
+		if(MC_TICK_CHECK)
+			if(lowturf.len || medturf.len || highturf.len)
+				Master.laggy_byond_map_update_incoming()
+			currentpart = SSEXPLOSIONS_TURFS
+			return
+
 		timer = TICK_USAGE_REAL
-		var/list/high_turf = highturf
-		highturf = list()
-		for(var/thing in high_turf)
-			var/turf/turf_thing = thing
+		while(length(highturf))
+			if(MC_TICK_CHECK)
+				break
+			var/turf/turf_thing = highturf[highturf.len]
+			highturf.len--
+			if(!isturf(turf_thing))
+				continue
 			turf_thing.ex_act(EXPLODE_DEVASTATE)
 		cost_highturf = MC_AVERAGE(cost_highturf, TICK_DELTA_TO_MS(TICK_USAGE_REAL - timer))
 
-		timer = TICK_USAGE_REAL
+		if(MC_TICK_CHECK)
+			if(lowturf.len || medturf.len || highturf.len)
+				Master.laggy_byond_map_update_incoming()
+			currentpart = SSEXPLOSIONS_TURFS
+			return
 
-		if (low_turf.len || med_turf.len || high_turf.len)
-			Master.laggy_byond_map_update_incoming()
+		timer = TICK_USAGE_REAL
 
 	if(currentpart == SSEXPLOSIONS_MOVABLES)
 		currentpart = SSEXPLOSIONS_THROWS
 
 		timer = TICK_USAGE_REAL
-		var/list/local_high_mov_atom = high_mov_atom
-		high_mov_atom = list()
-		for(var/thing in local_high_mov_atom)
-			var/atom/movable/movable_thing = thing
+		while(length(high_mov_atom))
+			if(MC_TICK_CHECK)
+				break
+			var/atom/movable/movable_thing = high_mov_atom[high_mov_atom.len]
+			high_mov_atom.len--
 			if(QDELETED(movable_thing))
 				continue
 			movable_thing.ex_act(EXPLODE_DEVASTATE)
 		cost_high_mov_atom = MC_AVERAGE(cost_high_mov_atom, TICK_DELTA_TO_MS(TICK_USAGE_REAL - timer))
 
+		if(MC_TICK_CHECK)
+			currentpart = SSEXPLOSIONS_MOVABLES
+			return
+
 		timer = TICK_USAGE_REAL
-		var/list/local_med_mov_atom = med_mov_atom
-		med_mov_atom = list()
-		for(var/thing in local_med_mov_atom)
-			var/atom/movable/movable_thing = thing
+		while(length(med_mov_atom))
+			if(MC_TICK_CHECK)
+				break
+			var/atom/movable/movable_thing = med_mov_atom[med_mov_atom.len]
+			med_mov_atom.len--
 			if(QDELETED(movable_thing))
 				continue
 			movable_thing.ex_act(EXPLODE_HEAVY)
 		cost_med_mov_atom = MC_AVERAGE(cost_med_mov_atom, TICK_DELTA_TO_MS(TICK_USAGE_REAL - timer))
 
+		if(MC_TICK_CHECK)
+			currentpart = SSEXPLOSIONS_MOVABLES
+			return
+
 		timer = TICK_USAGE_REAL
-		var/list/local_low_mov_atom = low_mov_atom
-		low_mov_atom = list()
-		for(var/thing in local_low_mov_atom)
-			var/atom/movable/movable_thing = thing
+		while(length(low_mov_atom))
+			if(MC_TICK_CHECK)
+				break
+			var/atom/movable/movable_thing = low_mov_atom[low_mov_atom.len]
+			low_mov_atom.len--
 			if(QDELETED(movable_thing))
 				continue
 			movable_thing.ex_act(EXPLODE_LIGHT)
 		cost_low_mov_atom = MC_AVERAGE(cost_low_mov_atom, TICK_DELTA_TO_MS(TICK_USAGE_REAL - timer))
 
-	if (currentpart == SSEXPLOSIONS_THROWS)
+		if(MC_TICK_CHECK)
+			return
+
+	if (currentpart == SSEXPLOSIONS_THROWS) // throw is fine enougth, some lags are fine.
 		currentpart = SSEXPLOSIONS_TURFS
 		timer = TICK_USAGE_REAL
 		var/list/throw_turf = throwturf
