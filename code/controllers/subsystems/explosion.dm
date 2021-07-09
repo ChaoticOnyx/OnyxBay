@@ -142,7 +142,7 @@ SUBSYSTEM_DEF(explosions)
 	far_dist += heavy_impact_range * 15
 	far_dist += devastation_range * 20
 
-	shake_the_room(epicenter, orig_max_distance, far_dist, devastation_range, heavy_impact_range)
+	shake_the_room(epicenter, orig_max_distance, far_dist, devastation_range, heavy_impact_range, near_sound = sfx_to_play)
 
 	if(heavy_impact_range > 1)
 		var/datum/effect/system/explosion/E = new()
@@ -314,7 +314,7 @@ SUBSYSTEM_DEF(explosions)
  * - [creaking_sound][/sound]: The sound that plays when the station creaks during the explosion.
  * - [hull_creaking_sound][/sound]: The sound that plays when the station creaks after the explosion.
  */
-/datum/controller/subsystem/explosions/proc/shake_the_room(turf/epicenter, near_distance, far_distance, quake_factor, echo_factor, creaking, near_sound = "explosion", far_sound = "far_explosion", echo_sound = sound('sound/effects/explosion_distant.ogg'), sound/creaking_sound = sound(get_sfx("explosion_creaking")), sound/hull_creaking_sound = sound(get_sfx("hull_creaking")))
+/datum/controller/subsystem/explosions/proc/shake_the_room(turf/epicenter, near_distance, far_distance, quake_factor, echo_factor, creaking, near_sound = "explosion", far_sound = "far_explosion")
 	var/frequency = get_rand_frequency()
 	var/blast_z = epicenter.z
 	if(isnull(creaking)) // Autoset creaking.
@@ -341,30 +341,12 @@ SUBSYSTEM_DEF(explosions)
 
 		else if(distance < far_distance) // You can hear a far explosion if you are outside the blast radius. Small explosions shouldn't be heard throughout the station.
 			var/far_volume = clamp(far_distance / 2, FAR_LOWER, FAR_UPPER)
-			if(creaking)
-				listener.playsound_local(epicenter, creaking_sound, far_volume, FALSE, falloff = 5)
-			else if(prob(FAR_SOUND_PROB)) // Sound variety during meteor storm/tesloose/other bad event
-				listener.playsound_local(epicenter, far_sound, far_volume, FALSE, falloff = 5)
-			else
-				listener.playsound_local(epicenter, echo_sound, far_volume, FALSE, falloff = 5)
+			listener.playsound_local(epicenter, far_sound, far_volume, FALSE, falloff = 5)
 
 			if(base_shake_amount || quake_factor)
 				if(!base_shake_amount) // Devastating explosions rock the station and ground
 					base_shake_amount = quake_factor * 3
 				shake_camera(listener, FAR_SHAKE_DURATION, clamp(base_shake_amount / 4, 0, FAR_SHAKE_CAP))
-
-		else if(!isspaceturf(listener_turf) && echo_factor) // Big enough explosions echo through the hull.
-			var/echo_volume
-			if(quake_factor)
-				base_shake_amount = quake_factor
-				echo_volume = 60
-				shake_camera(listener, FAR_SHAKE_DURATION, clamp(base_shake_amount / 4, 0, FAR_SHAKE_CAP))
-			else
-				echo_volume = 40
-			listener.playsound_local(epicenter, echo_sound, echo_volume, FALSE, falloff = 5)
-
-		if(creaking) // 5 seconds after the bang, the station begins to creak
-			addtimer(CALLBACK(listener, /mob/proc/playsound_local, epicenter, hull_creaking_sound, rand(FREQ_LOWER, FREQ_UPPER), 5, FALSE), CREAK_DELAY)
 
 #undef CREAK_DELAY
 #undef QUAKE_CREAK_PROB

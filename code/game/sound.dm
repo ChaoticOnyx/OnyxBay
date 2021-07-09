@@ -354,17 +354,6 @@ GLOBAL_LIST_INIT(switch_large_sound,list('sound/effects/using/switch/large1.ogg'
 GLOBAL_LIST_INIT(button_sound,list('sound/machines/button1.ogg','sound/machines/button2.ogg','sound/machines/button3.ogg','sound/machines/button4.ogg'))
 GLOBAL_LIST_INIT(chop_sound,list('sound/effects/fighting/chop1.ogg','sound/effects/fighting/chop2.ogg','sound/effects/fighting/chop3.ogg'))
 
-GLOBAL_LIST_INIT(hull_creaking, list(
-	'sound/effects/hull_creaking/creak1.ogg',
-	'sound/effects/hull_creaking/creak2.ogg',
-	'sound/effects/hull_creaking/creak3.ogg'
-))
-
-GLOBAL_LIST_INIT(explosion_creaking, list(
-	'sound/effects/explosion_creaking/explosioncreak1.ogg',
-	'sound/effects/explosion_creaking/explosioncreak2.ogg'
-))
-
 GLOBAL_LIST_INIT(far_explosion_sound,list('sound/effects/explosions/far_explosion1.ogg', 'sound/effects/explosions/far_explosion2.ogg', 'sound/effects/explosions/far_explosion3.ogg',
 										'sound/effects/explosions/far_explosion4.ogg', 'sound/effects/explosions/far_explosion5.ogg', 'sound/effects/explosions/far_explosion6.ogg',
 										'sound/effects/explosions/far_explosion7.ogg', 'sound/effects/explosions/far_explosion8.ogg', 'sound/effects/explosions/far_explosion9.ogg',
@@ -569,8 +558,6 @@ var/const/FALLOFF_SOUNDS = 0.5
 /proc/get_sfx(soundin)
 	if(istext(soundin))
 		switch(soundin)
-			if("hull_creaking")        soundin = pick(GLOB.hull_creaking)
-			if("explosion_creaking")   soundin = pick(GLOB.explosion_creaking)
 			if("far_fire")             soundin = pick(GLOB.far_fire_sound)
 			if("female_closed_breath") soundin = pick(GLOB.f_cheavyb_sound)
 			if("female_cough")         soundin = pick(GLOB.f_cough_sound)
