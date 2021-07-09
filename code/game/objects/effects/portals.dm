@@ -43,7 +43,9 @@
 		if (!target)
 			qdel(src)
 			return
-		for(var/cardinal in GLOB.cardinal)
+		if(!ismob(M) && !M.density)
+			continue
+		for(var/cardinal in shuffle(GLOB.cardinal))
 			if(step(M, cardinal))
 				break
 	// if any objcets still in loc, teleport them, e.g. crates abuse
