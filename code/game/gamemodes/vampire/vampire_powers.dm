@@ -66,7 +66,7 @@
 
 	vampire.status |= VAMP_DRAINING
 
-	visible_message(SPAN("danger", "[src.name] bites [T.name]'s neck!"), SPAN_DANGER("You bite [T.name]'s neck and begin to drain their blood."), SPAN("notice", "You hear a soft puncture and a wet sucking noise"))
+	visible_message(SPAN("danger", "[src.name] bites [T.name]'s neck!"), SPAN("danger", "You bite [T.name]'s neck and begin to drain their blood."), SPAN("notice", "You hear a soft puncture and a wet sucking noise"))
 	var/remembrance
 	if(vampire.stealth)
 		remembrance = "forgot"
@@ -347,7 +347,7 @@
 	if (!vampire)
 		return
 
-	visible_message(SPAN("danger", "[src.name] lets out an ear piercin shriek!"), SPAN_DANGER("You let out an ear-shattering shriek!"), SPAN_DANGER("You hear a painfully loud shriek!"))
+	visible_message(SPAN("danger", "[src.name] lets out an ear piercin shriek!"), SPAN("danger", "You let out an ear-shattering shriek!"), SPAN("danger", "You hear a painfully loud shriek!"))
 
 	var/list/victims = list()
 
@@ -923,7 +923,7 @@
 
 	vampire.status |= VAMP_DRAINING
 
-	visible_message(SPAN("danger", "[src] bites [T]'s neck!"), SPAN_DANGER("You bite [T]'s neck and begin to drain their blood, as the first step of introducing the corruption of the Veil to them."), SPAN("notice", "You hear a soft puncture and a wet sucking noise."))
+	visible_message(SPAN("danger", "[src] bites [T]'s neck!"), SPAN("danger", "You bite [T]'s neck and begin to drain their blood, as the first step of introducing the corruption of the Veil to them."), SPAN("notice", "You hear a soft puncture and a wet sucking noise."))
 
 	to_chat(T, SPAN("notice", "You are currently being turned into a vampire. You will die in the course of this, but you will be revived by the end. Please do not ghost out of your body until the process is complete."))
 

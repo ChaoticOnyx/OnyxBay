@@ -173,13 +173,13 @@ GLOBAL_LIST_EMPTY(music_players)
 	if(isScrewdriver(I))
 		switch(panel)
 			if(PANEL_UNSCREWED)
-				user.visible_message(SPAN("notice", "\The [user] screw \the [src]'s front panel with \the [I]."), SPAN_NOTICE("You screw \the [src]'s front panel."))
+				user.visible_message(SPAN("notice", "\The [user] screw \the [src]'s front panel with \the [I]."), SPAN("danger", "You screw \the [src]'s front panel."))
 				playsound(src, 'sound/items/Screwdriver.ogg', 50, 1)
 				panel = PANEL_CLOSED
 				return TRUE
 
 			if(PANEL_CLOSED)
-				user.visible_message(SPAN("notice", "\The [user] unscrew \the [src]'s front panel with \the [I]."), SPAN_NOTICE("You unscrew \the [src]'s front panel."))
+				user.visible_message(SPAN("notice", "\The [user] unscrew \the [src]'s front panel with \the [I]."), SPAN("danger", "You unscrew \the [src]'s front panel."))
 				playsound(src, 'sound/items/Screwdriver.ogg', 50, 1)
 				panel = PANEL_UNSCREWED
 				return TRUE
@@ -217,14 +217,14 @@ GLOBAL_LIST_EMPTY(music_players)
 	if(isCrowbar(I))
 		switch(panel)
 			if(PANEL_OPENED)
-				user.visible_message(SPAN("notice", "\The [user] re-attaches \the [src]'s front panel with \the [I]."), SPAN_NOTICE("You re-attach \the [src]'s front panel."))
+				user.visible_message(SPAN("notice", "\The [user] re-attaches \the [src]'s front panel with \the [I]."), SPAN("danger", "You re-attach \the [src]'s front panel."))
 				playsound(src, 'sound/items/Crowbar.ogg', 100, 1)
 				panel = PANEL_UNSCREWED
 				update_icon()
 				return TRUE
 
 			if(PANEL_UNSCREWED)
-				user.visible_message(SPAN("notice", "\The [user] unhinges \the [src]'s front panel with \the [I]."), SPAN_NOTICE("You unhinge \the [src]'s front panel."))
+				user.visible_message(SPAN("notice", "\The [user] unhinges \the [src]'s front panel with \the [I]."), SPAN("danger", "You unhinge \the [src]'s front panel."))
 				playsound(src, 'sound/items/Crowbar.ogg', 100, 1)
 				panel = PANEL_OPENED
 				update_icon()
@@ -235,7 +235,7 @@ GLOBAL_LIST_EMPTY(music_players)
 		var/obj/item/stack/S = I
 		if(broken && panel == PANEL_OPENED)
 			if(S.use(1))
-				user.visible_message(SPAN("notice", "\The [user] pours some of \the [S] onto \the [src]."), SPAN_NOTICE("You pour some of \the [S] over \the [src]'s internals and watch as it retraces and resolders paths."))
+				user.visible_message(SPAN("notice", "\The [user] pours some of \the [S] onto \the [src]."), SPAN("danger", "You pour some of \the [S] over \the [src]'s internals and watch as it retraces and resolders paths."))
 				broken = FALSE
 			else
 				to_chat(user, SPAN("notice", "\The [S] is empty."))
@@ -245,10 +245,10 @@ GLOBAL_LIST_EMPTY(music_players)
 		var/obj/item/stack/S = I
 		if(broken && panel == PANEL_OPENED)
 			if(S.use(5))
-				user.visible_message(SPAN("notice", "\The [user] starts replace burned out wires in \the [src]."), SPAN_NOTICE("You are replacing burned out wires in \the [src]'."))
+				user.visible_message(SPAN("notice", "\The [user] starts replace burned out wires in \the [src]."), SPAN("danger", "You are replacing burned out wires in \the [src]'."))
 				if(!do_after(user, 60, src))
 					return
-				user.visible_message(SPAN("notice", "\The [user] replaces burned out wires in \the [src]."), SPAN_NOTICE("You replace burned out wires in \the [src]."))
+				user.visible_message(SPAN("notice", "\The [user] replaces burned out wires in \the [src]."), SPAN("danger", "You replace burned out wires in \the [src]."))
 				broken = FALSE
 			else
 				to_chat(user, SPAN("notice", "You need more [I] to fix \the [src]."))
@@ -292,7 +292,7 @@ GLOBAL_LIST_EMPTY(music_players)
 		frequency -= 0.1
 	frequency = Clamp(frequency, MIN_FREQUENCY, MAX_FREQUENCY)
 
-	user.visible_message(SPAN("notice", "\The [user] adjusts \the [src]'s player head."), SPAN_NOTICE("You adjust \the [src]'s player head."))
+	user.visible_message(SPAN("notice", "\The [user] adjusts \the [src]'s player head."), SPAN("danger", "You adjust \the [src]'s player head."))
 	playsound(src, 'sound/items/Screwdriver.ogg', 50, 1)
 
 	if(frequency > 1.0)

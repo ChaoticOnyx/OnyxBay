@@ -33,8 +33,7 @@
 				to_chat(user, SPAN("warning", "Wiring \the [selected_io.holder]'s [selected_io.name] into itself is rather pointless."))
 				return
 			if(io.io_type != selected_io.io_type)
-				to_chat(user, SPAN_WARNING("Those two types of channels are incompatible.  The first is a [selected_io.io_type], \
-				while the second is a [io.io_type]."))
+				to_chat(user, SPAN("warning", "Those two types of channels are incompatible.  The first is a [selected_io.io_type], while the second is a [io.io_type]."))
 				return
 			if(io.holder.assembly && io.holder.assembly != selected_io.holder.assembly)
 				to_chat(user, SPAN("warning", "Both \the [io.holder] and \the [selected_io.holder] need to be inside the same assembly."))

@@ -106,7 +106,7 @@
 		if(!T.contains_dense_objects())
 			last_valid_turf = T
 	else
-		to_chat(user, SPAN_WARNING("Some strange aura is blocking the way!"))
+		to_chat(user, SPAN("warning", "Some strange aura is blocking the way!"))
 	canmove = 0
 	addtimer(CALLBACK(src, .proc/allow_move), 2)
 

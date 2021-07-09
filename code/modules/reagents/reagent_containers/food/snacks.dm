@@ -118,11 +118,11 @@
 	if (bitecount==0)
 		return
 	else if (bitecount==1)
-		return SPAN_NOTICE("\n\The [src] was bitten by someone!")
+		return SPAN("danger", "\n\The [src] was bitten by someone!")
 	else if (bitecount<=3)
-		return SPAN_NOTICE("\n\The [src] was bitten [bitecount] time\s!")
+		return SPAN("danger", "\n\The [src] was bitten [bitecount] time\s!")
 	else
-		return SPAN_NOTICE("\n\The [src] was bitten multiple times!")
+		return SPAN("danger", "\n\The [src] was bitten multiple times!")
 
 /obj/item/weapon/reagent_containers/food/snacks/examine(mob/user)
 	. = ..()

@@ -150,7 +150,7 @@
 	var/drawing = href_list["drawing"] ? href_list["drawing"] : "rune"
 	var/visible_name = href_list["type"] ? replacetext(href_list["type"], "_", " ") : "drawing"
 	popup.close()
-	usr.visible_message(SPAN("notice", "[usr] starts drawing something on \the [last_target]."), SPAN_NOTICE("You start drawing on \the [last_target]"))
+	usr.visible_message(SPAN("notice", "[usr] starts drawing something on \the [last_target]."), SPAN("danger", "You start drawing on \the [last_target]"))
 	var/turf/multiple_check = last_target
 	if(instant || do_after(usr, 50))
 		if(multiple_check != last_target)

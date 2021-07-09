@@ -221,10 +221,10 @@
 				continue
 			if(I == return_item())
 				continue
-			. += SPAN_DANGER("\nThere is \a [I] sticking out of it.")
+			. += SPAN("danger", "\nThere is \a [I] sticking out of it.")
 		var/ouchies = get_wounds_desc()
 		if(ouchies != "nothing")
-			. += SPAN_NOTICE("\nThere is [ouchies] visible on it.")
+			. += SPAN("danger", "\nThere is [ouchies] visible on it.")
 
 	return
 
@@ -262,7 +262,7 @@
 						removing = O.transfer_and_delete()
 
 					removing.forceMove(get_turf(src))
-					user.visible_message(SPAN_DANGER("<b>[user]</b> extracts [removing] from [src] with [W]!"))
+					user.visible_message(SPAN("danger", "<b>[user]</b> extracts [removing] from [src] with [W]!"))
 				else
 					if(organ_tag == BP_HEAD && W.sharp)
 						var/obj/item/organ/external/head/H = src // yeah yeah this is horrible
@@ -285,7 +285,7 @@
 								food_organ.forceMove(get_turf(loc))
 								food_organ = null
 								qdel(src)
-						user.visible_message(SPAN_DANGER("<b>[user]</b> fishes around fruitlessly in [src] with [W]."))
+						user.visible_message(SPAN("danger", "<b>[user]</b> fishes around fruitlessly in [src] with [W]."))
 				return
 	..()
 

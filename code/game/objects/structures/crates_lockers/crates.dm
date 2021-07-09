@@ -24,7 +24,7 @@
 	. = ..()
 	if(.)
 		if(rigged)
-			visible_message(SPAN_DANGER("There are wires attached to the lid of [src]..."))
+			visible_message(SPAN("danger", "There are wires attached to the lid of [src]..."))
 			for(var/obj/item/device/assembly_holder/H in src)
 				H.process_activation(usr)
 			for(var/obj/item/device/assembly/A in src)
@@ -48,21 +48,21 @@
 	else if(istype(W, /obj/item/stack/cable_coil))
 		var/obj/item/stack/cable_coil/C = W
 		if(rigged)
-			to_chat(user, SPAN_NOTICE("[src] is already rigged!"))
+			to_chat(user, SPAN("danger", "[src] is already rigged!"))
 			return
 		if (C.use(1))
-			to_chat(user, SPAN_NOTICE("You rig [src]."))
+			to_chat(user, SPAN("danger", "You rig [src]."))
 			rigged = TRUE
 			return
 	else if(istype(W, /obj/item/device/assembly_holder) || istype(W, /obj/item/device/assembly))
 		if(rigged)
-			to_chat(user, SPAN_NOTICE("You attach [W] to [src]."))
+			to_chat(user, SPAN("danger", "You attach [W] to [src]."))
 			user.drop_item()
 			W.forceMove(src)
 			return
 	else if(isWirecutter(W))
 		if(rigged)
-			to_chat(user, SPAN_NOTICE("You cut away the wiring."))
+			to_chat(user, SPAN("danger", "You cut away the wiring."))
 			playsound(loc, 'sound/items/Wirecutter.ogg', 100, 1)
 			rigged = FALSE
 			return

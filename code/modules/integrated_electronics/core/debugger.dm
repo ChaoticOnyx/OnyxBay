@@ -41,14 +41,12 @@
 			accepting_refs = TRUE
 			copy_values = FALSE
 			copy_id = FALSE
-			to_chat(user, SPAN_NOTICE("You turn \the [src]'s ref scanner on.  Slide it across \
-			an object for a ref of that object to save it in memory."))
+			to_chat(user, SPAN("danger", "You turn \the [src]'s ref scanner on.  Slide it across an object for a ref of that object to save it in memory."))
 		if("copy")
 			accepting_refs = FALSE
 			copy_values = TRUE
 			copy_id = FALSE
-			to_chat(user, SPAN_NOTICE("You turn \the [src]'s value copier on.  Use it on a pin \
-			to save its current value in memory."))
+			to_chat(user, SPAN("danger", "You turn \the [src]'s value copier on.  Use it on a pin to save its current value in memory."))
 		if("null")
 			data_to_write = null
 			copy_values = FALSE
@@ -57,23 +55,20 @@
 			accepting_refs = FALSE
 			copy_values = FALSE
 			copy_id = TRUE
-			to_chat(user, SPAN_NOTICE("You turn \the [src]'s id card scanner on. Use your own card \
-			to store the identity and id-lock an assembly."))
+			to_chat(user, SPAN("danger", "You turn \the [src]'s id card scanner on. Use your own card to store the identity and id-lock an assembly."))
 
 /obj/item/device/integrated_electronics/debugger/afterattack(atom/target, mob/living/user, proximity)
 	. = ..()
 	if(accepting_refs && proximity)
 		data_to_write = weakref(target)
 		visible_message(SPAN("notice", "[user] slides \a [src]'s over \the [target]."))
-		to_chat(user, SPAN_NOTICE("You set \the [src]'s memory to a reference to [target.name] \[Ref\].  The ref scanner is \
-		now off."))
+		to_chat(user, SPAN("danger", "You set \the [src]'s memory to a reference to [target.name] \[Ref\]. The ref scanner is now off."))
 		accepting_refs = FALSE
 
 	else if(copy_id && proximity)
 		if(istype(target,/obj/item/weapon/card/id))
 			src.idlock = weakref(target)
-			to_chat(user, SPAN_NOTICE("You set \the [src]'s card memory to [target.name].  The id card scanner is \
-			now off."))
+			to_chat(user, SPAN("danger", "You set \the [src]'s card memory to [target.name]. The id card scanner is now off."))
 
 		else
 			to_chat(user, SPAN("notice", "You turn the id card scanner is off."))
