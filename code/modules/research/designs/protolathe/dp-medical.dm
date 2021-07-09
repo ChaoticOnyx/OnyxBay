@@ -4,11 +4,11 @@
 	req_tech = list(TECH_BIO = 2, TECH_MAGNET = 3)
 	build_path = /obj/item/clothing/glasses/hud/standard/medical
 	sort_string = "GAAAA"
-	category_items = "Medical"
+	category_items = list("Medical")
 
 /datum/design/item/medical
 	materials = list(MATERIAL_STEEL = 30, MATERIAL_GLASS = 20)
-	category_items = "Medical"
+	category_items = list("Medical")
 
 /datum/design/item/medical/metroid_scanner
 	desc = "Multipurpose organic life scanner."
@@ -63,7 +63,7 @@
 	sort_string = "MAEAA"
 
 /datum/design/item/beaker
-	category_items = "Medical"
+	category_items = list("Medical")
 
 /datum/design/item/beaker/noreact
 	desc = "A cryostasis beaker that allows for chemical storage without reactions. Can hold up to 50 units."
@@ -83,7 +83,7 @@
 
 /datum/design/item/implant
 	materials = list(MATERIAL_STEEL = 50, MATERIAL_GLASS = 50)
-	category_items = "Medical"
+	category_items = list("Medical")
 
 /datum/design/item/implant/chemical
 	name = "chemical implant"

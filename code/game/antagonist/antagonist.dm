@@ -46,7 +46,6 @@
 	var/landmark_id                         // Spawn point identifier.
 	var/mob_path = /mob/living/carbon/human // Mobtype this antag will use if none is provided.
 	var/feedback_tag = "traitor_objective"  // End of round
-	var/minimum_player_age = 7            	// Players need to be at least minimum_player_age days old before they are eligable for auto-spawning
 	var/suspicion_chance = 50               // Prob of being on the initial Command report
 	var/flags = 0                           // Various runtime options.
 	var/show_objectives_on_creation = 1     // Whether or not objectives are shown when a player is added to this antag datum
@@ -54,7 +53,7 @@
 
 	// Used for setting appearance.
 	var/list/valid_species = list(SPECIES_UNATHI,SPECIES_TAJARA,SPECIES_SKRELL,SPECIES_HUMAN,SPECIES_VOX)
-	var/min_player_age = 14
+	var/min_player_age
 
 	// Runtime vars.
 	var/datum/mind/leader                   // Current leader, if any.
@@ -111,8 +110,8 @@
 			continue
 		if(ghosts_only && !(isghostmind(player) || isnewplayer(player.current)))
 			log_debug_verbose("[key_name(player)] is not eligible to become a [role_text]: Only ghosts may join as this role!")
-		else if(config.use_age_restriction_for_antags && player.current.client.player_age < minimum_player_age)
-			log_debug_verbose("[key_name(player)] is not eligible to become a [role_text]: Is only [player.current.client.player_age] day\s old, has to be [minimum_player_age] day\s!")
+		else if(config.use_age_restriction_for_antags && player.current.client.player_age < min_player_age)
+			log_debug_verbose("[key_name(player)] is not eligible to become a [role_text]: Is only [player.current.client.player_age] day\s old, has to be [min_player_age] day\s!")
 		else if(player.special_role)
 			log_debug_verbose("[key_name(player)] is not eligible to become a [role_text]: They already have a special role ([player.special_role])!")
 		else if (player in pending_antagonists)
@@ -140,8 +139,8 @@
 	for(var/datum/mind/player in mode.get_players_for_role(id))
 		if(ghosts_only && !(isghostmind(player) || isnewplayer(player.current)))
 			log_debug_verbose("[key_name(player)] is not eligible to become a [role_text]: Only ghosts may join as this role!")
-		else if(config.use_age_restriction_for_antags && player.current.client.player_age < minimum_player_age)
-			log_debug_verbose("[key_name(player)] is not eligible to become a [role_text]: Is only [player.current.client.player_age] day\s old, has to be [minimum_player_age] day\s!")
+		else if(config.use_age_restriction_for_antags && player.current.client.player_age < min_player_age)
+			log_debug_verbose("[key_name(player)] is not eligible to become a [role_text]: Is only [player.current.client.player_age] day\s old, has to be [min_player_age] day\s!")
 		else if(player.special_role)
 			log_debug_verbose("[key_name(player)] is not eligible to become a [role_text]: They already have a special role ([player.special_role])!")
 		else if (player in pending_antagonists)
