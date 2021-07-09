@@ -310,10 +310,10 @@ var/list/channel_to_radio_key = new
 
 
 	if(whispering)
-		log_whisper("[name]/[key] : [message]")
+		log_whisper("[key_name(src)] : [message]")
 		log_message(message, INDIVIDUAL_SAY_LOG)
 	else
-		log_say("[name]/[key] : [message]")
+		log_say("[key_name(src)] : [message]")
 		log_message(message, INDIVIDUAL_SAY_LOG)
 	return 1
 

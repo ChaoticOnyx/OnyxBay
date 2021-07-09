@@ -128,7 +128,7 @@
 		return
 
 	if (message)
-		log_emote("[name]/[key] : [message]")
+		log_emote("[key_name(src)] : [message]")
 		log_message(input, INDIVIDUAL_SAY_LOG, "\[EMOTE\]")
 
 	//do not show NPC animal emotes to ghosts, it turns into hellscape
