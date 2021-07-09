@@ -151,6 +151,7 @@ SUBSYSTEM_DEF(demo)
 	if(!src.marked_new.len && !src.marked_dirty.len && !src.marked_turfs.len)
 		return // nothing to do
 
+	Master.current_ticklimit = TICK_LIMIT_RUNNING //force using the entire tick if we need it. Insane Doster-d.
 	last_queued = src.marked_new.len + src.marked_dirty.len + src.marked_turfs.len
 	last_completed = 0
 

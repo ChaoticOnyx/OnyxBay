@@ -10,6 +10,7 @@
 #define SS_PRIORITY_CHAT		   100
 
 // Normal
+#define SS_PRIORITY_DEMO           200	// Replays
 #define SS_PRIORITY_TICKER         100	// Gameticker.
 #define SS_PRIORITY_MOB            95	// Mob Life().
 #define SS_PRIORITY_MACHINERY      95	// Machinery + powernet ticks.
@@ -26,7 +27,6 @@
 #define SS_PRIORITY_VOTE           10	// Vote management.
 #define SS_PRIORITY_INACTIVITY     10	// Idle kicking.
 #define SS_PRIORITY_SUPPLY         10	// Supply point accumulation.
-#define SS_PRIORITY_DEMO           10
 #define SS_PRIORITY_TRADE          10	// Adds/removes traders.
 
 // SS_BACKGROUND
