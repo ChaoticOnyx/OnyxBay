@@ -75,13 +75,13 @@
 				else
 					examtext = str
 				if(istype(W, /obj/item/weapon/pen))
-					user.visible_message("\The [user] labels \the [src] with \a [W], scribbling down: \"[examtext]\"",\
-					SPAN("notice", "You label \the [src]: \"[examtext]\""),\
-					"You hear someone scribbling a note.")
+					user.visible_message("\The [user] labels \the [src] with \a [W], scribbling down: \"[examtext]\"",
+					                     SPAN("notice", "You label \the [src]: \"[examtext]\""),
+					                     "You hear someone scribbling a note.")
 				else
-					user.visible_message("\The [user] labels \the [src] with \a [W]: \"[examtext]\"",\
-					SPAN("notice", "You label \the [src]: \"[examtext]\""),\
-					"You hear the sound of a small printer.")
+					user.visible_message("\The [user] labels \the [src] with \a [W]: \"[examtext]\"",
+					                     SPAN("notice", "You label \the [src]: \"[examtext]\""),
+					                     "You hear the sound of a small printer.")
 
 /obj/structure/bigDelivery/update_icon()
 	overlays = new()
@@ -216,13 +216,13 @@
 				else
 					examtext = str
 				if(istype(W, /obj/item/weapon/pen))
-					user.visible_message("\The [user] labels \the [src] with \a [W], scribbling down: \"[examtext]\"",\
-					SPAN("notice", "You label \the [src]: \"[examtext]\""),\
-					"You hear someone scribbling a note.")
+					user.visible_message("\The [user] labels \the [src] with \a [W], scribbling down: \"[examtext]\"",
+					                     SPAN("notice", "You label \the [src]: \"[examtext]\""),
+					                     "You hear someone scribbling a note.")
 				else
-					user.visible_message("\The [user] labels \the [src] with \a [W]: \"[examtext]\"",\
-					SPAN("notice", "You label \the [src]: \"[examtext]\""),\
-					"You hear the sound of a small printer.")
+					user.visible_message("\The [user] labels \the [src] with \a [W]: \"[examtext]\"",
+					                     SPAN("notice", "You label \the [src]: \"[examtext]\""),
+					                     "You hear the sound of a small printer.")
 	return
 
 /obj/item/smallDelivery/update_icon()
