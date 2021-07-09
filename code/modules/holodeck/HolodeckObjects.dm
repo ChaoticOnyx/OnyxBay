@@ -100,7 +100,7 @@
 	base_desc = "Uncomfortably gritty for a hologram."
 	icon_state = "asteroid"
 	base_icon_state = "asteroid"
-	icon = 'icons/turf/flooring/asteroid.dmi'
+	icon = 'icons/turf/flooring/sand.dmi'
 	base_icon = 'icons/turf/flooring/asteroid.dmi'
 	initial_flooring = null
 
