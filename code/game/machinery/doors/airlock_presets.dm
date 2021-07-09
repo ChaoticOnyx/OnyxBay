@@ -83,10 +83,10 @@
 //////////////////////////////////////////
 /obj/machinery/door/airlock/centcom
 	name = "Airlock"
-	explosion_block = 2
 	icon = 'icons/obj/doors/doorele.dmi'
 	opacity = 0
 
+	explosion_block = 2
 /obj/machinery/door/airlock/centcom/Process()
 	return PROCESS_KILL
 
@@ -95,11 +95,11 @@
 	name = "Vault"
 	icon = 'icons/obj/doors/vault.dmi'
 	explosion_resistance = 20
-	explosion_block = 2
 	opacity = 1
 	secured_wires = 1
 	assembly_type = /obj/structure/door_assembly/door_assembly_highsecurity //Until somebody makes better sprites.
 
+	explosion_block = 2
 /obj/machinery/door/airlock/vault/bolted
 	icon_state = "door_locked"
 	locked = 1
@@ -313,10 +313,10 @@
 //////////////////////////////////////////
 /obj/machinery/door/airlock/diamond
 	name = "Diamond Airlock"
-	explosion_block = 2
 	icon = 'icons/obj/doors/doordiamond.dmi'
 	mineral = MATERIAL_DIAMOND
 
+	explosion_block = 2
 //////////////////////////////////////////
 /obj/machinery/door/airlock/uranium
 	name = "Uranium Airlock"

@@ -21,7 +21,7 @@
 	var/shardtype = /obj/item/weapon/material/shard
 	var/glasstype = null // Set this in subtypes. Null is assumed strange or otherwise impossible to dismantle, such as for shuttle glass.
 	var/silicate = 0 // number of units of silicate
-	var/real_explosion_block //ignore this, just use explosion_block
+	var/real_explosion_block // ignore this, just use explosion_block
 
 	hitby_sound = "glass_hit"
 	hitby_loudness_multiplier = 2.0
@@ -502,7 +502,7 @@
 /obj/structure/window/Initialize()
 	. = ..()
 	layer = is_full_window() ? FULL_WINDOW_LAYER : SIDE_WINDOW_LAYER
-	//windows only block while reinforced and fulltile, so we'll use the proc
+	// windows only block while reinforced and fulltile, so we'll use the proc
 	real_explosion_block = explosion_block
 	explosion_block = EXPLOSION_BLOCK_PROC
 
