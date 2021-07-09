@@ -219,6 +219,7 @@ SUBSYSTEM_DEF(explosions)
 						if(AM && AM.simulated && !T.protects_atom(AM))
 							AllContents.Remove(atom_movable)
 					items += AllContents
+				items += A
 			for(var/thing in items)
 				var/atom/movable/movable_thing = thing
 				if(QDELETED(movable_thing))
@@ -552,15 +553,17 @@ SUBSYSTEM_DEF(explosions)
 	if (currentpart == SSEXPLOSIONS_THROWS) // throw is fine enougth, some lags are fine.
 		currentpart = SSEXPLOSIONS_TURFS
 		timer = TICK_USAGE_REAL
-		var/list/throw_turf = throwturf
-		throwturf = list()
-		for (var/thing in throw_turf)
-			if (!thing)
-				continue
+		while(length(throwturf))
+			if(MC_TICK_CHECK)
+				break
+			var/thing = throwturf[throwturf.len]
+			throwturf.len--
 			var/turf/T = thing
+			if(isturf(T))
+				continue
 			var/list/L = T.explosion_throw_details
 			T.explosion_throw_details = null
-			if (length(L) != 3)
+			if(length(L) != 3)
 				continue
 			var/throw_range = L[1]
 			var/throw_dir = L[2]
@@ -572,6 +575,9 @@ SUBSYSTEM_DEF(explosions)
 					var/atom_throw_range = rand(throw_range, max_range)
 					var/turf/throw_at = get_ranged_target_turf(A, throw_dir, atom_throw_range)
 					A.throw_at(throw_at, atom_throw_range, EXPLOSION_THROW_SPEED)
+		if(MC_TICK_CHECK)
+			currentpart = SSEXPLOSIONS_THROWS
+			return
 		cost_throwturf = MC_AVERAGE(cost_throwturf, TICK_DELTA_TO_MS(TICK_USAGE_REAL - timer))
 
 	currentpart = SSEXPLOSIONS_TURFS
