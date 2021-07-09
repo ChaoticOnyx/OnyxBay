@@ -200,7 +200,7 @@
 	seed_name = "blood tomato"
 	display_name = "blood tomato plant"
 	mutants = list("killertomato","nanotomato")
-	chems = list(/datum/reagent/nutriment = list(1,10), /datum/reagent/bloodbase/blood = list(1,5))
+	chems = list(/datum/reagent/nutriment = list(1,10), /datum/reagent/blood = list(1,5))
 	splat_type = /obj/effect/decal/cleanable/blood/splatter
 
 /datum/seed/tomato/blood/New()

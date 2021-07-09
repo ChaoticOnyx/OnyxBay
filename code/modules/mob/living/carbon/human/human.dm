@@ -951,7 +951,7 @@
 
 /mob/living/carbon/human/revive(ignore_prosthetic_prefs = FALSE)
 	if(should_have_organ(BP_HEART))
-		vessel.add_reagent(/datum/reagent/bloodbase/blood, species.blood_volume - vessel.total_volume)
+		vessel.add_reagent(/datum/reagent/blood, species.blood_volume - vessel.total_volume)
 		fixblood()
 
 	species.create_organs(src) // Reset our organs/limbs.
@@ -1182,9 +1182,9 @@
 		regenerate_icons()
 		if(vessel.total_volume < species.blood_volume)
 			vessel.maximum_volume = species.blood_volume
-			vessel.add_reagent(/datum/reagent/bloodbase/blood, species.blood_volume - vessel.total_volume)
+			vessel.add_reagent(/datum/reagent/blood, species.blood_volume - vessel.total_volume)
 		else if(vessel.total_volume > species.blood_volume)
-			vessel.remove_reagent(/datum/reagent/bloodbase/blood, vessel.total_volume - species.blood_volume)
+			vessel.remove_reagent(/datum/reagent/blood, vessel.total_volume - species.blood_volume)
 			vessel.maximum_volume = species.blood_volume
 		fixblood()
 

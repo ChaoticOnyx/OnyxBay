@@ -88,7 +88,7 @@
 			var/dat = "<meta charset=\"utf-8\">"
 			if(!condi)
 				if(href_list["name"] == "Blood")
-					var/datum/reagent/bloodbase/blood/G
+					var/datum/reagent/blood/G
 					for(var/datum/reagent/F in R.reagent_list)
 						if(F.name == href_list["name"])
 							G = F

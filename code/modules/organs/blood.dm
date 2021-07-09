@@ -16,13 +16,13 @@
 	if(!should_have_organ(BP_HEART)) //We want the var for safety but we can do without the actual blood.
 		return
 
-	vessel.add_reagent(/datum/reagent/bloodbase/blood,species.blood_volume)
+	vessel.add_reagent(/datum/reagent/blood,species.blood_volume)
 	fixblood()
 
 //Resets blood data
 /mob/living/carbon/human/proc/fixblood()
-	for(var/datum/reagent/bloodbase/blood/B in vessel.reagent_list)
-		if(B.type == /datum/reagent/bloodbase/blood)
+	for(var/datum/reagent/blood/B in vessel.reagent_list)
+		if(B.type == /datum/reagent/blood)
 			B.data = list(
 				"donor" = weakref(src),
 				"species" = species.name,
@@ -103,7 +103,7 @@
 		return 0
 	if(!amt)
 		return 0
-	return vessel.remove_reagent(/datum/reagent/bloodbase/blood, amt * (src.mob_size/MOB_MEDIUM))
+	return vessel.remove_reagent(/datum/reagent/blood, amt * (src.mob_size/MOB_MEDIUM))
 
 /****************************************************
 				BLOOD TRANSFERS
@@ -111,11 +111,11 @@
 
 //Gets blood from mob to the container, preserving all data in it.
 /mob/living/carbon/proc/take_blood(obj/item/weapon/reagent_containers/container, amount)
-	var/datum/reagent/bloodbase/blood/B = get_blood(container.reagents)
+	var/datum/reagent/blood/B = get_blood(container.reagents)
 	if(!B)
-		B = new /datum/reagent/bloodbase/blood
+		B = new /datum/reagent/blood
 		B.sync_to(src)
-		container.reagents.add_reagent(/datum/reagent/bloodbase/blood, amount, B.data)
+		container.reagents.add_reagent(/datum/reagent/blood, amount, B.data)
 	else
 		B.sync_to(src)
 		B.volume += amount
@@ -128,17 +128,17 @@
 		reagents.trans_to_obj(container, amount)
 		return 1
 
-	if(vessel.get_reagent_amount(/datum/reagent/bloodbase/blood) < amount)
+	if(vessel.get_reagent_amount(/datum/reagent/blood) < amount)
 		return null
 
 	//make sure virus/etc data is up to date
-	var/datum/reagent/bloodbase/blood/our = get_blood(vessel)
+	var/datum/reagent/blood/our = get_blood(vessel)
 	our.sync_to(src)
 	vessel.trans_to_holder(container.reagents,amount)
 	return 1
 
 //Transfers blood from container ot vessels
-/mob/living/carbon/proc/inject_blood(datum/reagent/bloodbase/blood/injected, amount)
+/mob/living/carbon/proc/inject_blood(datum/reagent/blood/injected, amount)
 	if (!injected || !istype(injected))
 		return
 	var/list/sniffles = virus_copylist(injected.data["virus2"])
@@ -154,10 +154,10 @@
 	reagents.update_total()
 
 //Transfers blood from reagents to vessel, respecting blood types compatability.
-/mob/living/carbon/human/inject_blood(datum/reagent/bloodbase/blood/injected, amount)
+/mob/living/carbon/human/inject_blood(datum/reagent/blood/injected, amount)
 
 	if(!should_have_organ(BP_HEART))
-		reagents.add_reagent(/datum/reagent/bloodbase/blood, amount, injected.data)
+		reagents.add_reagent(/datum/reagent/blood, amount, injected.data)
 		reagents.update_total()
 		return
 
@@ -165,16 +165,16 @@
 		reagents.add_reagent(/datum/reagent/toxin, amount * 0.5)
 		reagents.update_total()
 	else
-		vessel.add_reagent(/datum/reagent/bloodbase/blood, amount, injected.data)
+		vessel.add_reagent(/datum/reagent/blood, amount, injected.data)
 		vessel.update_total()
 	..()
 
 //Gets human's own blood.
 /mob/living/carbon/proc/get_blood(datum/reagents/container)
-	var/datum/reagent/bloodbase/blood/res = locate() in container.reagent_list //Grab some blood
+	var/datum/reagent/blood/res = locate() in container.reagent_list //Grab some blood
 	if(res) // Make sure there's some blood at all
 		if(weakref && res.data["donor"] != weakref) //If it's not theirs, then we look for theirs
-			for(var/datum/reagent/bloodbase/blood/D in container.reagent_list)
+			for(var/datum/reagent/blood/D in container.reagent_list)
 				if(weakref && D.data["donor"] != weakref)
 					return D
 	return res
@@ -201,16 +201,16 @@
 	return 0
 
 /mob/living/carbon/human/proc/regenerate_blood(amount)
-	var/blood_volume_raw = vessel.get_reagent_amount(/datum/reagent/bloodbase/blood)
+	var/blood_volume_raw = vessel.get_reagent_amount(/datum/reagent/blood)
 	amount = max(0,min(amount, species.blood_volume - blood_volume_raw))
 	if(amount)
-		var/datum/reagent/bloodbase/blood/B = get_blood(vessel)
+		var/datum/reagent/blood/B = get_blood(vessel)
 		if(istype(B))
 			B.volume += amount
 			vessel.update_total()
 	return amount
 
-/proc/blood_splatter(target,datum/reagent/bloodbase/blood/source,large,spray_dir)
+/proc/blood_splatter(target,datum/reagent/blood/source,large,spray_dir)
 
 	var/obj/effect/decal/cleanable/blood/B
 	var/decal_type = /obj/effect/decal/cleanable/blood/splatter
@@ -271,7 +271,7 @@
 
 //Percentage of maximum blood volume.
 /mob/living/carbon/human/proc/get_blood_volume()
-	return round((vessel.get_reagent_amount(/datum/reagent/bloodbase/blood)/species.blood_volume)*100)
+	return round((vessel.get_reagent_amount(/datum/reagent/blood)/species.blood_volume)*100)
 
 //Percentage of maximum blood volume, affected by the condition of circulation organs
 /mob/living/carbon/human/proc/get_blood_circulation()

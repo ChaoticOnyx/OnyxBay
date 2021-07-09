@@ -22,7 +22,7 @@
 		if(!istype(H))
 			return
 
-		var/datum/reagent/bloodbase/blood/B = locate(/datum/reagent/bloodbase/blood) in H.vessel.reagent_list
+		var/datum/reagent/blood/B = locate(/datum/reagent/blood) in H.vessel.reagent_list
 		blood_splatter(H,B,1)
 		var/obj/effect/decal/cleanable/blood/splatter/goo = locate() in get_turf(owner)
 		if(goo)

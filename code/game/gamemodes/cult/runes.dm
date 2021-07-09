@@ -581,10 +581,10 @@
 		victim = M
 	if(!victim)
 		return fizzle(user)
-	if(!victim.vessel.has_reagent(/datum/reagent/bloodbase/blood, 20))
+	if(!victim.vessel.has_reagent(/datum/reagent/blood, 20))
 		to_chat(user, "<span class='warning'>This body has no blood in it.</span>")
 		return fizzle(user)
-	victim.vessel.remove_reagent(/datum/reagent/bloodbase/blood, 20)
+	victim.vessel.remove_reagent(/datum/reagent/blood, 20)
 	admin_attack_log(user, victim, "Used a blood drain rune.", "Was victim of a blood drain rune.", "used a blood drain rune on")
 	speak_incantation(user, "Yu[pick("'","`")]gular faras desdae. Havas mithum javara. Umathar uf'kal thenar!")
 	user.visible_message("<span class='warning'>Blood flows from \the [src] into \the [user]!</span>", "<span class='cult'>The blood starts flowing from \the [src] into your frail mortal body. [capitalize(english_list(heal_user(user), nothing_text = "you feel no different"))].</span>", "You hear liquid flow.")
@@ -598,7 +598,7 @@
 	var/use
 	use = min(charges, user.species.blood_volume - user.vessel.total_volume)
 	if(use > 0)
-		user.vessel.add_reagent(/datum/reagent/bloodbase/blood, use)
+		user.vessel.add_reagent(/datum/reagent/blood, use)
 		charges -= use
 		statuses += "you regain lost blood"
 		if(!charges)

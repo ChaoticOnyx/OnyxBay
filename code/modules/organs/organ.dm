@@ -104,9 +104,9 @@ var/list/organ_cache = list()
 		return
 
 	if(!owner && reagents)
-		var/datum/reagent/bloodbase/blood/B = locate(/datum/reagent/bloodbase/blood) in reagents.reagent_list
+		var/datum/reagent/blood/B = locate(/datum/reagent/blood) in reagents.reagent_list
 		if(B && prob(40))
-			reagents.remove_reagent(/datum/reagent/bloodbase/blood,0.1)
+			reagents.remove_reagent(/datum/reagent/blood,0.1)
 			blood_splatter(src,B,1)
 		if(config.organs_decay)
 			take_general_damage(rand(1,3))
@@ -260,7 +260,7 @@ var/list/organ_cache = list()
 	START_PROCESSING(SSobj, src)
 	rejecting = null
 	if(!BP_IS_ROBOTIC(src))
-		var/datum/reagent/bloodbase/blood/organ_blood = locate(/datum/reagent/bloodbase/blood) in reagents.reagent_list //TODO fix this and all other occurences of locate(/datum/reagent/bloodbase/blood) horror
+		var/datum/reagent/blood/organ_blood = locate(/datum/reagent/blood) in reagents.reagent_list //TODO fix this and all other occurences of locate(/datum/reagent/blood) horror
 		if(!organ_blood || !organ_blood.data["blood_DNA"])
 			owner.vessel.trans_to(src, 5, 1, 1)
 

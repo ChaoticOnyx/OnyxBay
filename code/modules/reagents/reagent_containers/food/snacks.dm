@@ -1496,7 +1496,7 @@
 /obj/item/weapon/reagent_containers/food/snacks/bloodsoup/Initialize()
 	. = ..()
 	reagents.add_reagent(/datum/reagent/nutriment/protein, 2)
-	reagents.add_reagent(/datum/reagent/bloodbase/blood, 10)
+	reagents.add_reagent(/datum/reagent/blood, 10)
 	reagents.add_reagent(/datum/reagent/water, 5)
 	bitesize = 5
 
@@ -1580,7 +1580,7 @@
 			reagents.add_reagent(/datum/reagent/drink/juice/banana, 10)
 		if(6)
 			reagents.add_reagent(/datum/reagent/nutriment, 6)
-			reagents.add_reagent(/datum/reagent/bloodbase/blood, 10)
+			reagents.add_reagent(/datum/reagent/blood, 10)
 		if(7)
 			reagents.add_reagent(/datum/reagent/metroidjelly, 10)
 			reagents.add_reagent(/datum/reagent/water, 10)

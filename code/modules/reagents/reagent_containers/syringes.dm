@@ -150,7 +150,7 @@
 		return
 
 	if(ismob(target))//Blood!
-		if(reagents.has_reagent(/datum/reagent/bloodbase/blood))
+		if(reagents.has_reagent(/datum/reagent/blood))
 			to_chat(user, "<span class='notice'>There is already a blood sample in this syringe.</span>")
 			return
 		if(istype(target, /mob/living/carbon))
@@ -345,7 +345,7 @@
 
 /obj/item/weapon/reagent_containers/dna_sampler/attack_self(mob/user as mob)
 	if (!reagents.get_free_space())
-		src.reagents.del_reagent(/datum/reagent/bloodbase/blood)
+		src.reagents.del_reagent(/datum/reagent/blood)
 		icon_state = "dna_sampler"
 		to_chat(user, SPAN("notice", "You reset \the [src]."))
 
@@ -356,7 +356,7 @@
 	if(!proximity)
 		return
 	if(ismob(target))//Blood!
-		if(reagents.has_reagent(/datum/reagent/bloodbase/blood))
+		if(reagents.has_reagent(/datum/reagent/blood))
 			to_chat(user, SPAN("notice", "There is already a sample present."))
 			return
 		if(istype(target, /mob/living/carbon))

@@ -549,7 +549,7 @@ REAGENT SCANNER
 		var/list/blood_traces = list()
 		var/list/blood_doses = list()
 		for(var/datum/reagent/R in reagents.reagent_list)
-			if(R.type != /datum/reagent/bloodbase/blood)
+			if(R.type != /datum/reagent/blood)
 				reagents.clear_reagents()
 				to_chat(user, "<span class='warning'>The sample was contaminated! Please insert another sample</span>")
 				return

@@ -817,7 +817,7 @@ I said no!
 	result = /obj/item/weapon/reagent_containers/food/snacks/jellysandwich/cherry
 
 /datum/recipe/bloodsoup
-	reagents = list(/datum/reagent/bloodbase/blood = 30)
+	reagents = list(/datum/reagent/blood = 30)
 	result = /obj/item/weapon/reagent_containers/food/snacks/bloodsoup
 
 /datum/recipe/metroidsoup

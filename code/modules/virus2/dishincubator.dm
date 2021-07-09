@@ -75,7 +75,7 @@
 	data["beaker_has_no_blood"] =null
 
 	if (beaker)
-		var/datum/reagent/bloodbase/blood/B = locate(/datum/reagent/bloodbase/blood) in beaker.reagents.reagent_list
+		var/datum/reagent/blood/B = locate(/datum/reagent/blood) in beaker.reagents.reagent_list
 
 		if (B)
 			if (!B.data["virus2"])
@@ -220,7 +220,7 @@
 		if (!dish)
 			return TOPIC_HANDLED
 
-		var/datum/reagent/bloodbase/blood/B = locate(/datum/reagent/bloodbase/blood) in beaker.reagents.reagent_list
+		var/datum/reagent/blood/B = locate(/datum/reagent/blood) in beaker.reagents.reagent_list
 		if (!B)
 			return TOPIC_HANDLED
 

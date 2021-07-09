@@ -346,7 +346,7 @@ GLOBAL_LIST_INIT(syndicate_factions, list(
 /datum/antag_contract/item/blood/check_contents(list/contents)
 	var/list/samples = list()
 	for(var/obj/item/weapon/reagent_containers/C in contents)
-		var/list/data = C.reagents?.get_data(/datum/reagent/bloodbase/blood)
+		var/list/data = C.reagents?.get_data(/datum/reagent/blood)
 		if(!data || (data["blood_DNA"] in samples))
 			continue
 		samples += data["blood_DNA"]

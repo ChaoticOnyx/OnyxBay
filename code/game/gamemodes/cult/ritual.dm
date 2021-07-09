@@ -130,7 +130,7 @@
 	return 0
 
 /mob/living/carbon/human/make_rune(rune, cost, tome_required)
-	if(should_have_organ(BP_HEART) && vessel && !vessel.has_reagent(/datum/reagent/bloodbase/blood, species.blood_volume * 0.7))
+	if(should_have_organ(BP_HEART) && vessel && !vessel.has_reagent(/datum/reagent/blood, species.blood_volume * 0.7))
 		to_chat(src, "<span class='danger'>You are too weak to draw runes.</span>")
 		return
 	..()
@@ -140,7 +140,7 @@
 
 /mob/living/carbon/human/pay_for_rune(blood)
 	if(should_have_organ(BP_HEART))
-		vessel.remove_reagent(/datum/reagent/bloodbase/blood, blood)
+		vessel.remove_reagent(/datum/reagent/blood, blood)
 
 /mob/proc/get_blood_name()
 	return "blood"
@@ -184,7 +184,7 @@ var/list/Tier2Runes = list(
 	/mob/proc/offering_rune,
 	/mob/proc/drain_rune,
 	/mob/proc/emp_rune,
-	/mob/proc/stun_imbue,
+	/mob/proc/stun_imbue,	
 	/mob/proc/massdefile_rune
 	)
 
@@ -309,12 +309,12 @@ var/list/Tier4Runes = list(
 	set name = "Imbue: EMP"
 
 	make_rune(/obj/effect/rune/imbue/emp)
-
+	
 /mob/proc/stun_imbue()
 	set category = "Cult Magic"
 	set name = "Imbue: Hypnosis"
 
-	make_rune(/obj/effect/rune/imbue/stun)
+	make_rune(/obj/effect/rune/imbue/stun)	
 
 /mob/proc/cult_communicate()
 	set category = "Cult Magic"

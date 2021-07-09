@@ -641,8 +641,8 @@
 			location.add_blood(src)
 			if(ishuman(src))
 				var/mob/living/carbon/human/H = src
-				if(round(H.vessel.get_reagent_amount(/datum/reagent/bloodbase/blood)) > 0)
-					H.vessel.remove_reagent(/datum/reagent/bloodbase/blood, 1)
+				if(round(H.vessel.get_reagent_amount(/datum/reagent/blood)) > 0)
+					H.vessel.remove_reagent(/datum/reagent/blood, 1)
 			. = TRUE
 
 /mob/living/verb/resist()

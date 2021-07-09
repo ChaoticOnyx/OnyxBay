@@ -33,11 +33,11 @@
 	if(scanning)
 		scanning -= 1
 		if(scanning == 0)
-			if(!container.reagents.has_reagent(/datum/reagent/bloodbase/antibodies)) //if there are no antibody reagents, return false
+			if(!container.reagents.has_reagent(/datum/reagent/antibodies)) //if there are no antibody reagents, return false
 				return 0
 
 			else
-				var/list/data = container.reagents.get_data(/datum/reagent/bloodbase/antibodies) //now that we know there are antibody reagents, get the data
+				var/list/data = container.reagents.get_data(/datum/reagent/antibodies) //now that we know there are antibody reagents, get the data
 				var/list/given_antibodies = data["antibodies"] //now check what specific antibodies it's holding
 				var/list/common_antibodies = known_antibodies & given_antibodies
 				var/list/unknown_antibodies = common_antibodies ^ given_antibodies
@@ -57,7 +57,7 @@
 			update_icon()
 
 	else if(container && !scanning && !pause)
-		if(container.reagents.has_reagent(/datum/reagent/bloodbase/antibodies))
+		if(container.reagents.has_reagent(/datum/reagent/antibodies))
 			scanning = 5
 			update_icon()
 		else

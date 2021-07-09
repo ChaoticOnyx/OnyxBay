@@ -119,7 +119,7 @@
 	if(assembly)
 		if(assembly.battery)
 			var/bp = 500000
-			if((assembly.battery.maxcharge-assembly.battery.charge) / CELLRATE > bp && reagents.remove_reagent(/datum/reagent/bloodbase/blood, 1)) //only blood is powerful enough to power the station(c)
+			if((assembly.battery.maxcharge-assembly.battery.charge) / CELLRATE > bp && reagents.remove_reagent(/datum/reagent/blood, 1)) //only blood is powerful enough to power the station(c)
 				assembly.give_power(bp)
 			for(var/I in fuel)
 				if((assembly.battery.maxcharge-assembly.battery.charge) / CELLRATE > fuel[I])

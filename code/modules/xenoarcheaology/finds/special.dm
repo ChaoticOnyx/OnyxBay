@@ -7,7 +7,7 @@
 
 /obj/item/weapon/reagent_containers/glass/replenishing/Initialize()
 	. = ..()
-	spawning_id = pick(/datum/reagent/bloodbase/blood,/datum/reagent/water/holywater,/datum/reagent/lube,/datum/reagent/soporific,/datum/reagent/ethanol,/datum/reagent/drink/ice,/datum/reagent/glycerol,/datum/reagent/fuel,/datum/reagent/space_cleaner)
+	spawning_id = pick(/datum/reagent/blood,/datum/reagent/water/holywater,/datum/reagent/lube,/datum/reagent/soporific,/datum/reagent/ethanol,/datum/reagent/drink/ice,/datum/reagent/glycerol,/datum/reagent/fuel,/datum/reagent/space_cleaner)
 	START_PROCESSING(SSobj, src)
 
 /obj/item/weapon/reagent_containers/glass/replenishing/Process()
@@ -147,7 +147,7 @@
 		B.target_turf = pick(range(1, src))
 		B.blood_DNA = list()
 		B.blood_DNA[M.dna.unique_enzymes] = M.dna.b_type
-		M.vessel.remove_reagent(/datum/reagent/bloodbase/blood,rand(25,50))
+		M.vessel.remove_reagent(/datum/reagent/blood,rand(25,50))
 
 //animated blood 2 SPOOKY
 /obj/effect/decal/cleanable/blood/splatter/animated
