@@ -21,6 +21,7 @@
 	var/shardtype = /obj/item/weapon/material/shard
 	var/glasstype = null // Set this in subtypes. Null is assumed strange or otherwise impossible to dismantle, such as for shuttle glass.
 	var/silicate = 0 // number of units of silicate
+	var/real_explosion_block //ignore this, just use explosion_block
 
 	hitby_sound = "glass_hit"
 	hitby_loudness_multiplier = 2.0
@@ -48,6 +49,9 @@
 			. += "\n<span class='notice'>It is covered in silicate.</span>"
 		else
 			. += "\n<span class='notice'>There is a thick layer of silicate covering it.</span>"
+
+/obj/structure/window/GetExplosionBlock()
+	return reinf && (state == 5) ? real_explosion_block : 0
 
 /obj/structure/window/proc/take_damage(damage = 0,  sound_effect = 1)
 	var/initialhealth = health
@@ -450,6 +454,7 @@
 	name = "plass window"
 	desc = "A plasmasilicate alloy window. It seems to be quite strong."
 	basestate = "plasmawindow"
+	explosion_block = 1
 	icon_state = "plasmawindow"
 	shardtype = /obj/item/weapon/material/shard/plasma
 	glasstype = /obj/item/stack/material/glass/plass
@@ -465,6 +470,7 @@
 	shardtype = /obj/item/weapon/material/shard/plasma
 	glasstype = /obj/item/stack/material/glass/rplass
 	reinf = 1
+	explosion_block = 2
 	maximal_heat = T0C + 4000
 	damage_per_fire_tick = 1.0 // This should last for 80 fire ticks if the window is not damaged at all. The idea is that plass windows have something like ablative layer that protects them for a while.
 	maxhealth = 80.0
@@ -481,6 +487,7 @@
 	maxhealth = 40.0
 	reinf = 1
 	maximal_heat = T0C + 750
+	explosion_block = 1
 	damage_per_fire_tick = 2.0
 	glasstype = /obj/item/stack/material/glass/reinforced
 
@@ -495,6 +502,9 @@
 /obj/structure/window/Initialize()
 	. = ..()
 	layer = is_full_window() ? FULL_WINDOW_LAYER : SIDE_WINDOW_LAYER
+	//windows only block while reinforced and fulltile, so we'll use the proc
+	real_explosion_block = explosion_block
+	explosion_block = EXPLOSION_BLOCK_PROC
 
 /obj/structure/window/reinforced/full
 	dir = 5
@@ -520,6 +530,7 @@
 	icon = 'icons/obj/podwindows.dmi'
 	icon_state = "window"
 	basestate = "window"
+	explosion_block = 3
 	maxhealth = 40
 	reinf = 1
 	basestate = "w"
@@ -533,6 +544,7 @@
 	basestate = "window-mine"
 	reinf = 1
 	maxhealth = 40
+	explosion_block = 3
 	dir = 5
 
 /obj/structure/window/research
@@ -543,6 +555,7 @@
 	basestate = "window-res"
 	reinf = 1
 	maxhealth = 40
+	explosion_block = 3
 	dir = 5
 
 /obj/structure/window/reinforced/polarized

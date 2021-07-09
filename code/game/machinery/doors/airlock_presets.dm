@@ -83,6 +83,7 @@
 //////////////////////////////////////////
 /obj/machinery/door/airlock/centcom
 	name = "Airlock"
+	explosion_block = 2
 	icon = 'icons/obj/doors/doorele.dmi'
 	opacity = 0
 
@@ -94,6 +95,7 @@
 	name = "Vault"
 	icon = 'icons/obj/doors/vault.dmi'
 	explosion_resistance = 20
+	explosion_block = 2
 	opacity = 1
 	secured_wires = 1
 	assembly_type = /obj/structure/door_assembly/door_assembly_highsecurity //Until somebody makes better sprites.
@@ -311,6 +313,7 @@
 //////////////////////////////////////////
 /obj/machinery/door/airlock/diamond
 	name = "Diamond Airlock"
+	explosion_block = 2
 	icon = 'icons/obj/doors/doordiamond.dmi'
 	mineral = MATERIAL_DIAMOND
 
@@ -388,6 +391,7 @@
 //////////////////////////////////////////
 /obj/machinery/door/airlock/highsecurity
 	name = "Secure Airlock"
+	explosion_block = 2
 	icon = 'icons/obj/doors/hightechsecurity.dmi'
 	explosion_resistance = 20
 	secured_wires = 1
