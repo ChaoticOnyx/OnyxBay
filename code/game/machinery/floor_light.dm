@@ -100,7 +100,7 @@ var/floor_light_color_cache = list()
 		if(damaged)
 			to_chat(user, SPAN("warning", "\The [src] needs to be repaired for the setup."))
 			return
-		switch(alert("What would you like to change?",, "Color", "intensity", "Invert", "Cancel"))
+		switch(alert("What would you like to change?",, "color", "intensity", "invert", "Cancel"))
 			if("Color")
 				light_colour = input(user, "Choose your floor light's color:") as color
 				update_brightness()
