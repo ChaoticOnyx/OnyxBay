@@ -121,6 +121,9 @@ LOG_GAME
 ## log world.log messages
 # LOG_WORLD_OUTPUT
 
+## log replays messages
+# LOG_DEMO
+
 # # # # # # # # # # # # # # # # # # # # # #
 #        MULTIACCOUNT COUNTERACTION       #
 # # # # # # # # # # # # # # # # # # # # # #
