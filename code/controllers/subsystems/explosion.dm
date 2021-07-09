@@ -242,6 +242,8 @@ SUBSYSTEM_DEF(explosions)
 						if(EXPLODE_HEAVY)
 							SSexplosions.med_mov_atom += movable_thing
 						if(EXPLODE_LIGHT)
+							if(T.protects_atom(movable_thing))
+								continue
 							SSexplosions.low_mov_atom += movable_thing
 		switch(dist)
 			if(EXPLODE_DEVASTATE)
