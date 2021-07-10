@@ -169,14 +169,15 @@
 		//Removing from inventory
 		if(href_list["remove_inv"])
 			var/remove_from = href_list["remove_inv"]
-			if("hat")
-				if(hat)
-					hat.loc = src.loc
-					hat = null
-					overlays.Cut()
-				else
-					to_chat(usr, SPAN_WARNING("There is nothing to remove from [remove_from]"))
-					return
+			switch(remove_from)
+				if("hat")
+					if(hat)
+						hat.loc = src.loc
+						hat = null
+						overlays.Cut()
+					else
+						to_chat(usr, SPAN_WARNING("There is nothing to remove from [name]"))
+						return
 		else if(href_list["add_inv"])
 			var/add_to = href_list["add_inv"]
 			if(!usr.get_active_hand())
