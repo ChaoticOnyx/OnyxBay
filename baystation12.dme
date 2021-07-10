@@ -117,6 +117,7 @@
 #include "code\_helpers\sql.dm"
 #include "code\_helpers\storage.dm"
 #include "code\_helpers\text.dm"
+#include "code\_helpers\text_processor.dm"
 #include "code\_helpers\text_sql_encoding.dm"
 #include "code\_helpers\time.dm"
 #include "code\_helpers\turfs.dm"

@@ -11,10 +11,12 @@
 /var/global/log_end= world.system_type == UNIX ? ascii2text(13) : ""
 
 /proc/log_story(type, message, location)
+	var/static/datum/text_processor/confidential/P = new()
+
 	if(!config.log_story || !GLOB.world_story_log)
 		return
 
-	message = GLOB.moniker_handler.process_message(message)
+	message = P.process(message)
 	var/turf/T = get_turf(location)
 	var/loc = T && location ? "([T.x],[T.y],[T.z])" : ""
 

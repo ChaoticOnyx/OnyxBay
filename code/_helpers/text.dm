@@ -14,9 +14,6 @@
 // Used for preprocessing entered text
 // Added in an additional check to alert players if input is too long
 /proc/sanitize(input, max_length = MAX_MESSAGE_LEN, encode = 1, trim = 1, extra = 1)
-	// Used to remove symbols in range of the private usage area.
-	var/static/regex/pua = new("\[\uE000-\uF8FF]", "g")
-
 	if(!input)
 		return
 
@@ -41,7 +38,7 @@
 		// note: we can also remove here byond formatting codes: 0xFF + next byte
 		input = replace_characters(input, list("<"=" ", ">"=" "))
 
-	input = replacetext(input, pua, "")
+	input = replacetext(input, GLOB.pua, "")
 
 	if(trim)
 		// Maybe, we need trim text twice? Here and before copytext?

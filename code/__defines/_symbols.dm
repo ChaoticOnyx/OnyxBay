@@ -1,5 +1,5 @@
 // These symbol in range of unicode's privae user area U+E000—U+F8FF.
-// With these symbols we can add some semantic meaning to any part of a message.
+// With these symbols we can add some semantics to any part of a message.
 #define SYMBOL_CKEY_START "" // U+E000
 #define SYMBOL_CKEY_END   "" // U+E001
 
