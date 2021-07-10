@@ -164,7 +164,6 @@ var/global/list/possible_changeling_IDs = list("Alpha","Beta","Gamma","Delta","E
 	icon_state = "arm_blade"
 	force = 25
 	armor_penetration = 15
-	mod_shield = 2.5
 	sharp = 1
 	edge = 1
 	anchored = 1
