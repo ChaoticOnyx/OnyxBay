@@ -631,14 +631,19 @@ const designs = (device: Device, context: any) => {
   const categories = ['All'].concat(filters);
   const [currentFilter, setFilter] = useLocalState(context, 'filter', 'All');
 
+  if (!categories.find((c) => c === currentFilter))
+  {
+    setFilter('All');
+  }
+
   let found: Design[] = designs;
 
   if (searchQuery !== null) {
-    found = found.filter((design, _) => design.name.search(searchQuery) >= 0);
+    found = found?.filter((design, _) => design.name.search(searchQuery) >= 0);
   }
 
   if (currentFilter !== null && currentFilter !== 'All') {
-    found = found.filter((design, _) =>
+    found = found?.filter((design, _) =>
       design.category.find((s) => s === currentFilter),
     );
   }
@@ -727,7 +732,10 @@ const designs = (device: Device, context: any) => {
       <Input
         placeholder='Search'
         fluid
-        onInput={(e: any) => setSearchQuery(e.target.value)}
+        onInput={(e: any) => {
+          setCurrentPage(1);
+          return setSearchQuery(e.target.value);
+        }}
       />
       <Divider />
       <Flex bold wrap justify='flex-start' align='center'>
@@ -739,6 +747,7 @@ const designs = (device: Device, context: any) => {
                 selected={filter === currentFilter}
                 content={filter}
                 onClick={() => {
+                  setCurrentPage(1);
                   act(''); // For click sound
                   setFilter(filter);
                 }}
