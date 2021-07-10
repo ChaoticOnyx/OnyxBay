@@ -387,7 +387,7 @@
 						)
 
 //MEDICAL
-/obj/item/weapon/vendcart/nmedplus
+/obj/item/weapon/vendcart/medical
 	name = "NanoMed Plus Cartridge"
 	icon_state = "cube_b"
 	legal = list(

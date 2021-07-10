@@ -30,7 +30,6 @@
 	var/cartridge
 
 	var/list/datum/seed_pile/piles = list()
-	var/list/starting_seeds = list()
 	var/list/scanner = list() // What properties we can view
 
 /obj/machinery/seed_storage/Initialize()
@@ -40,11 +39,14 @@
 	component_parts += new /obj/item/weapon/circuitboard/vendomat(src)
 	component_parts += new /obj/item/weapon/stock_parts/matter_bin(src)
 	component_parts += new /obj/item/weapon/stock_parts/matter_bin(src)
+	component_parts += new /obj/item/weapon/stock_parts/console_screen(src)
 	component_parts += new cartridge(src)
+	RefreshSeeds()
 
+/obj/machinery/seed_storage/proc/RefreshSeeds()
 	for(var/obj/item/weapon/vendcart/seed_storage/S in component_parts)
 		for(var/typepath in S.legal)
-			var/amount = starting_seeds[typepath]
+			var/amount = S.legal[typepath]
 			if(isnull(amount))
 				amount = 1
 			for (var/i = 1 to amount)
@@ -222,6 +224,10 @@
 	updateUsrDialog()
 
 /obj/machinery/seed_storage/attackby(obj/item/O as obj, mob/user as mob)
+	if(default_deconstruction_screwdriver(user, O))
+		return
+	if(default_deconstruction_crowbar(user, O))
+		return
 	if (istype(O, /obj/item/seeds))
 		add(O)
 		user.visible_message("[user] puts \the [O.name] into \the [src].", "You put \the [O] into \the [src].")

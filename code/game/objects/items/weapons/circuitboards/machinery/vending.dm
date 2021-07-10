@@ -62,7 +62,7 @@
 							"Getmore Healthy Snacks" = list("path" = /obj/machinery/vending/snack/medbay, "components" = list(/obj/item/weapon/vendcart/medbay = 1)),
 							"SweatMAX" = list("path" = /obj/machinery/vending/fitness, "components" = list(/obj/item/weapon/vendcart/fitness = 1)),
 
-							"NanoMed Plus" = list("path" = /obj/machinery/vending/medical, "components" = list(/obj/item/weapon/vendcart/nmedplus = 1)),
+							"NanoMed Plus" = list("path" = /obj/machinery/vending/medical, "components" = list(/obj/item/weapon/vendcart/medical = 1)),
 							"NanoMed (Wall)" = list("path" = /obj/machinery/vending/wallmed1, "components" = list(/obj/item/weapon/vendcart/wallmed1 = 1)),
 							"NanoMed Mini (Wall)" = list("path" = /obj/machinery/vending/wallmed2, "components" = list(/obj/item/weapon/vendcart/wallmed2 = 1)),
 

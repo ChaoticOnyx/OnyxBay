@@ -71,6 +71,8 @@
 	var/shoot_inventory = 0 //Fire items at customers! We're broken!
 	var/shooting_chance = 2 //The chance that items are being shot per tick
 
+	var/cartridge
+
 	var/scan_id = 1
 	var/obj/item/weapon/coin/coin
 	var/datum/wires/vending/wires = null
@@ -78,6 +80,12 @@
 /obj/machinery/vending/Initialize()
 	. = ..()
 	wires = new(src)
+
+	component_parts = list()
+	component_parts += new /obj/item/weapon/circuitboard/vendomat(src)
+	component_parts += new /obj/item/weapon/stock_parts/matter_bin(src)
+	component_parts += new /obj/item/weapon/stock_parts/matter_bin(src)
+	component_parts += new cartridge(src)
 
 	if(product_slogans)
 		slogan_list += splittext(product_slogans, ";")
@@ -215,13 +223,14 @@
 /obj/machinery/vending/attackby(obj/item/weapon/W, mob/user)
 	if(pay(W, user))
 		return
-	else if(istype(W, /obj/item/weapon/screwdriver))
+	else if(isScrewdriver(W))
 		panel_open = !panel_open
 		to_chat(user, "You [panel_open ? "open" : "close"] the maintenance panel.")
 		overlays.Cut()
 		if(panel_open)
 			overlays += image(icon, "[base_icon]-panel")
-
+		return
+	else if(default_deconstruction_crowbar(user, W))
 		return
 	else if(isMultitool(W) || isWirecutter(W))
 		if(panel_open)
@@ -711,12 +720,15 @@
 	product_slogans = "I hope nobody asks me for a bloody cup o' tea...;Alcohol is humanity's friend. Would you abandon a friend?;Quite delighted to serve you!;Is nobody thirsty on this station?"
 	product_ads = "Drink up!;Booze is good for you!;Alcohol is humanity's best friend.;Quite delighted to serve you!;Care for a nice, cold beer?;Nothing cures you like booze!;Have a sip!;Have a drink!;Have a beer!;Beer is good for you!;Only the finest alcohol!;Best quality booze since 2053!;Award-winning wine!;Maximum alcohol!;Man loves beer.;A toast for progress!"
 	req_access = list(access_bar)
+	cartridge = /obj/item/weapon/vendcart/boozeomat
 
 /obj/machinery/vending/assist
 	product_ads = "Only the finest!;Have some tools.;The most robust equipment.;The finest gear in space!"
+	cartridge = /obj/item/weapon/vendcart/assist
 
 /obj/machinery/vending/assist/antag
 	name = "AntagCorpVend"
+	cartridge = /obj/item/weapon/vendcart/antag
 
 /obj/machinery/vending/coffee
 	name = "Hot Drinks machine"
@@ -730,6 +742,7 @@
 	idle_power_usage = 211 //refrigerator - believe it or not, this is actually the average power consumption of a refrigerated vending machine according to NRCan.
 	vend_power_usage = 85000 //85 kJ to heat a 250 mL cup of coffee
 	rand_amount = TRUE
+	cartridge = /obj/item/weapon/vendcart/coffee
 
 	prices = list(/obj/item/weapon/reagent_containers/food/drinks/coffee = 3,
 			   	  /obj/item/weapon/reagent_containers/food/drinks/tea = 3,
@@ -744,6 +757,7 @@
 	use_vend_state = TRUE
 	vend_delay = 25
 	rand_amount = TRUE
+	cartridge = /obj/item/weapon/vendcart/snack
 
 	prices = list(/obj/item/weapon/reagent_containers/food/snacks/packaged/tweakers = 5,
 				  /obj/item/weapon/reagent_containers/food/snacks/packaged/sweetroid = 5,
@@ -775,6 +789,7 @@
 	icon_state = "snackmed"
 	use_vend_state = TRUE
 	vend_delay = 25
+	cartridge = /obj/item/weapon/vendcart/medbay
 
 	prices = list(/obj/item/weapon/reagent_containers/food/snacks/grown/apple = 1,
 				  /obj/item/weapon/reagent_containers/food/snacks/packaged/hematogen = 10,
@@ -796,6 +811,7 @@
 	product_slogans = "Robust Softdrinks: More robust than a toolbox to the head!"
 	product_ads = "Refreshing!;Hope you're thirsty!;Over 1 million drinks sold!;Thirsty? Why not cola?;Please, have a drink!;Drink up!;The best drinks in space."
 	rand_amount = TRUE
+	cartridge = /obj/item/weapon/vendcart/cola
 
 	prices = list(/obj/item/weapon/reagent_containers/food/drinks/cans/cola = 5,
 				  /obj/item/weapon/reagent_containers/food/drinks/cans/colavanilla = 8,
@@ -820,6 +836,7 @@
 	use_vend_state = TRUE
 	vend_delay = 6
 	rand_amount = TRUE
+	cartridge = /obj/item/weapon/vendcart/fitness
 
 	prices = list(/obj/item/weapon/reagent_containers/food/drinks/milk/smallcarton = 3,
 					/obj/item/weapon/reagent_containers/food/drinks/milk/smallcarton/chocolate = 3,
@@ -857,6 +874,7 @@
 	use_alt_icons = TRUE
 	use_vend_state = TRUE
 	rand_amount = TRUE
+	cartridge = /obj/item/weapon/vendcart/cigarette
 
 	prices = list(/obj/item/weapon/storage/fancy/cigarettes = 45,
 					/obj/item/weapon/storage/fancy/cigarettes/luckystars = 50,
@@ -909,6 +927,8 @@
 	vend_delay = 18
 	product_ads = "Go save some lives!;The best stuff for your medbay.;Only the finest tools.;Natural chemicals!;This stuff saves lives.;Don't you want some?;Ping!"
 	req_access = list(access_medical_equip)
+	cartridge = /obj/item/weapon/vendcart/medical
+
 	idle_power_usage = 211 //refrigerator - believe it or not, this is actually the average power consumption of a refrigerated vending machine according to NRCan.
 
 
@@ -916,6 +936,7 @@
 /obj/machinery/vending/plasmaresearch
 	name = "Toximate 3000"
 	desc = "All the fine parts you need in one vending machine!"
+	cartridge = /obj/item/weapon/vendcart/plasmaresearch
 
 /obj/machinery/vending/wallmed1
 	name = "NanoMed"
@@ -923,6 +944,7 @@
 	product_ads = "Go save some lives!;The best stuff for your medbay.;Only the finest tools.;Natural chemicals!;This stuff saves lives.;Don't you want some?"
 	icon_state = "wallmed"
 	density = 0 //It is wall-mounted, and thus, not dense. --Superxpdude
+	cartridge = /obj/item/weapon/vendcart/wallmed1
 
 /obj/machinery/vending/wallmed2
 	name = "NanoMed Mini"
@@ -930,6 +952,7 @@
 	product_ads = "Go save some lives!;The best stuff for your medbay.;Only the finest tools.;Natural chemicals!;This stuff saves lives.;Don't you want some?"
 	icon_state = "wallmed"
 	density = 0 //It is wall-mounted, and thus, not dense. --Superxpdude
+	cartridge = /obj/item/weapon/vendcart/wallmed2
 
 /obj/machinery/vending/security
 	name = "SecTech"
@@ -941,6 +964,7 @@
 	use_vend_state = TRUE
 	vend_delay = 20
 	req_access = list(access_security)
+	cartridge = /obj/item/weapon/vendcart/security
 
 /obj/machinery/vending/hydronutrients
 	name = "NutriMax"
@@ -951,6 +975,7 @@
 	use_vend_state = TRUE
 	vend_delay = 26
 	idle_power_usage = 211 //refrigerator - believe it or not, this is actually the average power consumption of a refrigerated vending machine according to NRCan.
+	cartridge = /obj/item/weapon/vendcart/hydronutrients
 
 /obj/machinery/vending/magivend
 	name = "MagiVend"
@@ -960,6 +985,7 @@
 	vend_delay = 15
 	vend_reply = "Have an enchanted evening!"
 	product_ads = "FJKLFJSD;AJKFLBJAKL;1234 LOONIES LOL!;>MFW;Kill them fuckers!;GET DAT FUKKEN DISK;HONK!;EI NATH;Down with Central!;Admin conspiracies since forever!;Space-time bending hardware!"
+	cartridge = /obj/item/weapon/vendcart/magivend
 
 /obj/machinery/vending/dinnerware
 	name = "Dinnerware"
@@ -967,6 +993,7 @@
 	product_ads = "Mm, food stuffs!;Food and food accessories.;Get your plates!;You like forks?;I like forks.;Woo, utensils.;You don't really need these..."
 	icon_state = "dinnerware"
 	use_vend_state = TRUE
+	cartridge = /obj/item/weapon/vendcart/dinnerware
 
 /obj/machinery/vending/sovietsoda
 	name = "BODA"
@@ -976,6 +1003,7 @@
 	product_ads = "For Tsar and Country.;Have you fulfilled your nutrition quota today?;Very nice!;We are simple people, for this is all we eat.;If there is a person, there is a problem. If there is no person, then there is no problem."
 	rand_amount = TRUE
 	idle_power_usage = 211 //refrigerator - believe it or not, this is actually the average power consumption of a refrigerated vending machine according to NRCan.
+	cartridge = /obj/item/weapon/vendcart/sovietsoda
 
 /obj/machinery/vending/tool
 	name = "YouTool"
@@ -984,6 +1012,7 @@
 	use_vend_state = TRUE
 	vend_delay = 11
 	//req_access = list(access_maint_tunnels) //Maintenance access
+	cartridge = /obj/item/weapon/vendcart/tool
 
 /obj/machinery/vending/engivend
 	name = "Engi-Vend"
@@ -992,6 +1021,7 @@
 	use_vend_state = TRUE
 	vend_delay = 21
 	req_one_access = list(access_atmospherics, access_engine_equip)
+	cartridge = /obj/item/weapon/vendcart/engivend
 
 //This one's from bay12
 /obj/machinery/vending/engineering
@@ -999,6 +1029,7 @@
 	desc = "Everything you need for do-it-yourself repair."
 	icon_state = "engi"
 	req_one_access = list(access_atmospherics, access_engine_equip)
+	cartridge = /obj/item/weapon/vendcart/engineering
 
 //This one's from bay12
 /obj/machinery/vending/robotics
@@ -1006,18 +1037,21 @@
 	desc = "All the tools you need to create your own robot army."
 	icon_state = "robotics"
 	req_access = list(access_robotics)
+	cartridge = /obj/item/weapon/vendcart/robotics
 
 //FOR ACTORS GUILD - mainly props that cannot be spawned otherwise
 /obj/machinery/vending/props
 	name = "prop dispenser"
 	desc = "All the props an actor could need. Probably."
 	icon_state = "Theater"
+	cartridge = /obj/item/weapon/vendcart/props
 
 //FOR ACTORS GUILD - Containers
 /obj/machinery/vending/containers
 	name = "container dispenser"
 	desc = "A container that dispenses containers."
 	icon_state = "robotics"
+	cartridge = /obj/item/weapon/vendcart/containers
 
 /obj/machinery/vending/fashionvend
 	name = "Smashing Fashions"
@@ -1027,6 +1061,8 @@
 	vend_delay = 15
 	vend_reply = "Absolutely smashing!"
 	product_ads = "Impress the love of your life!;Don't look poor, look rich!;100% authentic designers!;All sales are final!;Lowest prices guaranteed!"
+	cartridge = /obj/item/weapon/vendcart/fashionvend
+
 	prices = list(/obj/item/weapon/mirror = 60,
 				  /obj/item/weapon/haircomb = 40,
 				  /obj/item/clothing/glasses/monocle = 700,
@@ -1046,6 +1082,7 @@
 	product_slogans = "Escape to a fantasy world!;Fuel your gambling addiction!;Ruin your friendships!"
 	product_ads = "Elves and dwarves!;Totally not satanic!;Fun times forever!"
 	icon_state = "games"
+	cartridge = /obj/item/weapon/vendcart/games
 
 	prices = list(/obj/item/toy/blink = 3,
 				  /obj/item/toy/spinningtoy = 10,
