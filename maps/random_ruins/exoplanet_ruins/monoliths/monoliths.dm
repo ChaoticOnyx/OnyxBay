@@ -8,7 +8,7 @@
 
 /obj/structure/monolith
 	name = "monolith"
-	desc = "An obviously artifical structure of unknown origin. The symbols '<font face='Shage'>DWNbTX</font>' are engraved on the base."
+	desc = "An obviously artifical structure of unknown origin. The symbols 'DWNbTX' are engraved on the base."
 	icon = 'icons/obj/monolith.dmi'
 	icon_state = "jaggy1"
 
@@ -37,7 +37,7 @@
 		I.layer = ABOVE_LIGHTING_LAYER
 		I.plane = EFFECTS_ABOVE_LIGHTING_PLANE
 		overlays += I
-		set_light(2, 1, I.color)
+		set_light(0.4, 0.1, 2, 2, I.color)
 
 /obj/structure/monolith/attack_hand(mob/user)
 	visible_message("[user] touches \the [src].")

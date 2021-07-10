@@ -19,6 +19,12 @@
 				"/html/changelogs/.all_changelog.json"
 			],
 			"url": "/.vscode/changelog_cache.schema.json"
+		},
+		{
+			"fileMatch": [
+				"/tools/CI/CodeStyleRules.json"
+			],
+			"url": "/.vscode/codestyle.schema.json"
 		}
 	]
 }

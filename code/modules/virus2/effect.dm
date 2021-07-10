@@ -16,6 +16,7 @@
 	effect.generate()
 	effect.chance = rand(0,effect.chance_max)
 	effect.multiplier = rand(1,effect.multiplier_max)
+	effect.stage = stage
 	return effect
 
 /proc/get_mutated_effect(original_effect)
@@ -33,6 +34,7 @@
 	effect.generate()
 	effect.chance = rand(0,effect.chance_max)
 	effect.multiplier = rand(1,effect.multiplier_max)
+	effect.stage = stage
 	return effect
 
 /datum/disease2/effect
@@ -51,16 +53,16 @@
 	var/hold_until		//can only fire after this worldtime
 	var/allow_multiple	//allow to have more than 1 effect of this type in the same virus
 
-/datum/disease2/effect/proc/fire(mob/living/carbon/human/mob,current_stage)
+/datum/disease2/effect/proc/fire(current_stage)
 	if(oneshot == -1)
 		return
 	if(hold_until > world.time)
 		return
-	if(mob.chem_effects[CE_ANTIVIRAL] >= badness)
+	if(parent_disease.infected.chem_effects[CE_ANTIVIRAL] >= badness)
 		return
 	if(stage <= current_stage && prob(chance))
 		hold_until = world.time + delay
-		activate(mob)
+		activate(parent_disease.infected)
 		if(oneshot == 1)
 			oneshot = -1
 
@@ -72,6 +74,20 @@
 			multiplier = rand(1,multiplier_max)
 
 /datum/disease2/effect/proc/activate(mob/living/carbon/human/mob)
+	if(!istype(mob))
+		if(parent_disease) // if virus not in mob, delete this fucking shit, that's buggy virus
+			QDEL_NULL(parent_disease)
+		return TRUE
 /datum/disease2/effect/proc/deactivate(mob/living/carbon/human/mob)
+	if(!istype(mob))
+		if(parent_disease) // if virus not in mob, delete this fucking shit, that's buggy virus
+			QDEL_NULL(parent_disease)
+		return TRUE
+
 /datum/disease2/effect/proc/generate(copy_data) // copy_data will be non-null if this is a copy; it should be used to initialise the data for this effect if present
+	if(!copy_data) // are you fucking sure in our fucking build, n-word?
+		if(parent_disease) // if virus not in mob, delete this fucking shit, that's buggy virus
+			QDEL_NULL(parent_disease)
+		return TRUE
+
 /datum/disease2/effect/proc/change_parent()

@@ -521,14 +521,6 @@
 	materials = list(MATERIAL_STEEL = 10000, MATERIAL_GLASS = 15000, MATERIAL_DIAMOND = 10000)
 	build_path = /obj/item/borg/upgrade/syndicate
 
-/datum/design/item/mecha_tracking
-	name = "Exosuit tracking beacon"
-	build_type = MECHFAB
-	time = 5
-	materials = list(MATERIAL_STEEL = 500)
-	build_path = /obj/item/mecha_parts/mecha_tracking
-	category = "Misc"
-
 /datum/design/item/mecha
 	build_type = MECHFAB
 	category = "Exosuit Equipment"
@@ -538,6 +530,13 @@
 /datum/design/item/mecha/AssembleDesignDesc()
 	if(!desc)
 		desc = "Allows for the construction of \a '[item_name]' exosuit module."
+
+/datum/design/item/mecha/mecha_tracking
+	name = "Tracking beacon"
+	id = "mecha_tracking"
+	build_path = /obj/item/mecha_parts/mecha_tracking
+	time = 5
+	materials = list(MATERIAL_STEEL = 500)
 
 /datum/design/item/mecha/hydraulic_clamp
 	name = "Hydraulic clamp"

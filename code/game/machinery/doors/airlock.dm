@@ -267,7 +267,7 @@ About the new airlock wires panel:
 	if(density)
 		if(locked && lights && arePowerSystemsOn())
 			icon_state = "door_locked"
-			set_light(2, 0.75, COLOR_RED_LIGHT)
+			set_light(0.35, 0.9, 1.5, 3, COLOR_RED_LIGHT)
 		else
 			icon_state = "door_closed"
 		if(p_open || welded)
@@ -286,7 +286,7 @@ About the new airlock wires panel:
 	else
 		icon_state = "door_open"
 		if(arePowerSystemsOn() && !p_open) // Doors with opened panels have no green lights on their icons
-			set_light(2, 0.65, COLOR_LIME)
+			set_light(0.30, 0.9, 1.5, 3, COLOR_LIME)
 		if((stat & BROKEN) && !(stat & NOPOWER))
 			overlays += image(icon, "sparks_open")
 
@@ -299,7 +299,7 @@ About the new airlock wires panel:
 		if("opening")
 			overlays?.Cut()
 			if(!p_open)
-				set_light(2, 0.65, COLOR_LIME)
+				set_light(0.30, 0.9, 1.5, 3, COLOR_LIME)
 			flick("[p_open ? "o_door_opening" : "door_opening"]", src)
 			update_icon(1)
 		if("closing")

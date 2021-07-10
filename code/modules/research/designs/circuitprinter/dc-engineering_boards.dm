@@ -4,7 +4,7 @@
 	req_tech = list(TECH_DATA = 3, TECH_PLASMA = 3, TECH_POWER = 3, TECH_ENGINEERING = 3)
 	build_path = /obj/item/weapon/circuitboard/pacman
 	sort_string = "JBAAA"
-	category_items = "Engineering Boards"
+	category_items = list("Engineering Boards")
 
 /datum/design/circuit/superpacman
 	name = "SUPERPACMAN-type generator"
@@ -12,7 +12,7 @@
 	req_tech = list(TECH_DATA = 3, TECH_POWER = 4, TECH_ENGINEERING = 4)
 	build_path = /obj/item/weapon/circuitboard/pacman/super
 	sort_string = "JBAAB"
-	category_items = "Engineering Boards"
+	category_items = list("Engineering Boards")
 
 /datum/design/circuit/mrspacman
 	name = "MRSPACMAN-type generator"
@@ -20,7 +20,7 @@
 	req_tech = list(TECH_DATA = 3, TECH_POWER = 5, TECH_ENGINEERING = 5)
 	build_path = /obj/item/weapon/circuitboard/pacman/mrs
 	sort_string = "JBAAC"
-	category_items = "Engineering Boards"
+	category_items = list("Engineering Boards")
 
 /datum/design/circuit/batteryrack
 	name = "cell rack PSU"
@@ -28,7 +28,7 @@
 	req_tech = list(TECH_POWER = 3, TECH_ENGINEERING = 2)
 	build_path = /obj/item/weapon/circuitboard/batteryrack
 	sort_string = "JBABA"
-	category_items = "Engineering Boards"
+	category_items = list("Engineering Boards")
 
 /datum/design/circuit/smes_cell
 	name = "'SMES' superconductive magnetic energy storage"
@@ -37,7 +37,7 @@
 	req_tech = list(TECH_POWER = 7, TECH_ENGINEERING = 5)
 	build_path = /obj/item/weapon/circuitboard/smes
 	sort_string = "JBABB"
-	category_items = "Engineering Boards"
+	category_items = list("Engineering Boards")
 
 /datum/design/circuit/gas_heater
 	name = "gas heating system"
@@ -45,7 +45,7 @@
 	req_tech = list(TECH_POWER = 2, TECH_ENGINEERING = 1)
 	build_path = /obj/item/weapon/circuitboard/unary_atmos/heater
 	sort_string = "JCAAA"
-	category_items = "Engineering Boards"
+	category_items = list("Engineering Boards")
 
 /datum/design/circuit/gas_cooler
 	name = "gas cooling system"
@@ -53,7 +53,7 @@
 	req_tech = list(TECH_MAGNET = 2, TECH_ENGINEERING = 2)
 	build_path = /obj/item/weapon/circuitboard/unary_atmos/cooler
 	sort_string = "JCAAB"
-	category_items = "Engineering Boards"
+	category_items = list("Engineering Boards")
 
 /datum/design/circuit/secure_airlock
 	name = "secure airlock electronics"
@@ -62,11 +62,11 @@
 	req_tech = list(TECH_DATA = 3)
 	build_path = /obj/item/weapon/airlock_electronics/secure
 	sort_string = "JDAAA"
-	category_items = "Engineering Boards"
+	category_items = list("Engineering Boards")
 
 /datum/design/circuit/tcom
 	req_tech = list(TECH_DATA = 4, TECH_ENGINEERING = 4)
-	category_items = "Engineering Boards"
+	category_items = list("Engineering Boards")
 
 /datum/design/circuit/tcom/AssembleDesignName()
 	name = "Telecommunications machinery circuit design ([name])"

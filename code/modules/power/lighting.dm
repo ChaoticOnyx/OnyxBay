@@ -212,7 +212,7 @@
 	light_type = /obj/item/weapon/light/bulb/red
 
 /obj/machinery/light/small/hl
-	name = "hanging lantern"
+	name = "old light fixture"
 	icon_state = "hanginglantern1"
 	base_state = "hanginglantern"
 	desc = "Combination of old technologies and electricity."
@@ -270,10 +270,10 @@
 	var/image/TO
 	if(lightbulb?.tone_overlay)
 		TO = overlay_image(icon, "[icon_state]-over", flags=RESET_COLOR)
-		TO.color = lightbulb.brightness_color
+		TO.color = lightbulb.b_color
 		TO.layer = ABOVE_LIGHTING_LAYER
 		TO.plane = EFFECTS_ABOVE_LIGHTING_PLANE
-		TO.alpha = between(128, (lightbulb.brightness_power/6 * 255), 255)
+		TO.alpha = between(128, (lightbulb.b_max_bright * 1.25 * 255), 255)
 
 	if(on)
 		update_use_power(POWER_USE_ACTIVE)
@@ -283,9 +283,9 @@
 			changed = set_light(arglist(lightbulb.lighting_modes[current_mode]))
 			if(TO)
 				TO.color = lightbulb.lighting_modes[current_mode]["l_color"]
-				TO.alpha = between(128, (lightbulb.lighting_modes[current_mode]["l_power"]/6 * 255), 255) // Some fine tuning here
+				TO.alpha = between(128, (lightbulb.lighting_modes[current_mode]["l_max_bright"] * 1.5 * 255), 255) // Some fine tuning here
 		else
-			changed = set_light(lightbulb.brightness_range, lightbulb.brightness_power, lightbulb.brightness_color)
+			changed = set_light(lightbulb.b_max_bright, lightbulb.b_inner_range, lightbulb.b_outer_range, lightbulb.b_curve, lightbulb.b_color)
 
 		if(trigger && changed && get_status() == LIGHT_OK)
 			switch_check()
@@ -299,7 +299,7 @@
 	if(TO)
 		overlays += TO
 
-	change_power_consumption((light_range * light_power) * LIGHTING_POWER_FACTOR, POWER_USE_ACTIVE)
+	change_power_consumption((light_outer_range * light_max_bright) * LIGHTING_POWER_FACTOR, POWER_USE_ACTIVE)
 
 /obj/machinery/light/proc/get_status()
 	if(!lightbulb)
@@ -425,9 +425,33 @@
 		user.setClickCooldown(W.update_attack_cooldown())
 		user.do_attack_animation(src)
 
+	// attempt to remove the lightbulb out of the fixture with a crowbar
+	else if(isCrowbar(W) && lightbulb)
+		if(powered() && (W.obj_flags & OBJ_FLAG_CONDUCTIBLE))
+			var/datum/effect/effect/system/spark_spread/s = new /datum/effect/effect/system/spark_spread
+			s.set_up(3, 1, src)
+			s.start()
+			if(ishuman(user) && prob(75))
+				var/mob/living/carbon/human/H = user
+				var/wrong_choice = TRUE
+				if(H.species.siemens_coefficient <= 0)
+					wrong_choice = FALSE
+				else if(H.gloves)
+					var/obj/item/clothing/gloves/G = H.gloves
+					if(G.siemens_coefficient == 0)
+						wrong_choice = FALSE
+				if(wrong_choice)
+					user.visible_message(SPAN("warning", "[user] tries to pry [lightbulb] out of [src] with [W], only to get shocked."))
+					user.drop_item()
+					electrocute_mob(user, get_area(src), src, rand(0.7, 1.0))
+					return
+		user.visible_message(SPAN("notice", "[user] pries [lightbulb] out of [src] with [W]."))
+		remove_bulb()
+		return
+
 	// attempt to stick weapon into light socket
 	else if(!lightbulb)
-		if(istype(W, /obj/item/weapon/screwdriver)) //If it's a screwdriver open it.
+		if(isScrewdriver(W)) //If it's a screwdriver open it.
 			playsound(src.loc, 'sound/items/Screwdriver.ogg', 75, 1)
 			user.visible_message("[user.name] opens [src]'s casing.", "You open [src]'s casing.", "You hear a noise.")
 			new construct_type(src.loc, src.dir, src)
@@ -618,9 +642,12 @@
 	var/rigged = 0		// true if rigged to explode
 	var/broken_chance = 2
 
-	var/brightness_range = 2 //how much light it gives off
-	var/brightness_power = 1
-	var/brightness_color = "#ffffff"
+	var/b_max_bright = 0.7
+	var/b_inner_range = 1
+	var/b_outer_range = 2
+	var/b_curve = 2
+	var/b_color = "#ffffff"
+
 	var/list/lighting_modes = list()
 	var/sound_on
 	var/random_tone = FALSE
@@ -635,7 +662,7 @@
 /obj/item/weapon/light/Initialize()
 	. = ..()
 	if(random_tone)
-		brightness_color = pick(random_tone_options)
+		b_color = pick(random_tone_options)
 		update_icon()
 
 /obj/item/weapon/light/tube
@@ -646,14 +673,15 @@
 	item_state = "c_tube"
 	matter = list(MATERIAL_GLASS = 100)
 
-	brightness_range = 7	// luminosity when on, also used in power calculation
-	brightness_power = 6
-	brightness_color = "#fffee0"
+	b_max_bright = 0.85
+	b_outer_range = 7
+	b_curve = 2.5
+	b_color = "#fffee0"
 	lighting_modes = list(
-		LIGHTMODE_EMERGENCY = list(l_range = 4, l_power = 1, l_color = "#da0205"),
-		LIGHTMODE_EVACUATION = list(l_range = 7, l_power = 6, l_color = "#bf0000"),
-		LIGHTMODE_ALARM = list(l_range = 7, l_power = 6, l_color = "#ff3333"),
-		LIGHTMODE_RADSTORM = list(l_range = 7, l_power = 3, l_color = "#8A9929")
+		LIGHTMODE_EMERGENCY  = list(l_max_bright = 0.4,  l_inner_range = 1, l_outer_range = 5, l_falloff_curve = 2.5, l_color = "#da0205"),
+		LIGHTMODE_EVACUATION = list(l_max_bright = 0.85, l_inner_range = 1, l_outer_range = 7, l_falloff_curve = 2.5, l_color = "#bf0000"),
+		LIGHTMODE_ALARM      = list(l_max_bright = 0.85, l_inner_range = 1, l_outer_range = 7, l_falloff_curve = 2.5, l_color = "#ff3333"),
+		LIGHTMODE_RADSTORM   = list(l_max_bright = 0.55, l_inner_range = 1, l_outer_range = 7, l_falloff_curve = 2.5, l_color = "#8A9929")
 		)
 	sound_on = 'sound/machines/lightson.ogg'
 	random_tone = TRUE
@@ -661,16 +689,15 @@
 /obj/item/weapon/light/tube/large
 	w_class = ITEM_SIZE_SMALL
 	name = "large light tube"
-	brightness_range = 9
-	brightness_power = 6
+	b_outer_range = 8
 
 /obj/item/weapon/light/tube/he
 	name = "high efficiency light tube"
 	desc = "An efficient light used to reduce strain on the station's power grid."
 	base_state = "lhetube"
-	brightness_range = 9
-	brightness_power = 7
-	brightness_color = "#33cccc"
+	b_outer_range = 7
+	b_max_bright = 0.9
+	b_color = "#33cccc"
 	matter = list(MATERIAL_STEEL = 60, MATERIAL_GLASS = 300)
 	random_tone = FALSE
 	tone_overlay = FALSE
@@ -679,9 +706,9 @@
 	name = "quartz light tube"
 	desc = "Light is almost the same as sunlight."
 	base_state = "lqtube"
-	brightness_range = 7
-	brightness_power = 10
-	brightness_color = "#8A2BE2"
+	b_outer_range = 8
+	b_max_bright = 1.0
+	b_color = "#8A2BE2"
 	random_tone = FALSE
 	tone_overlay = FALSE
 
@@ -694,14 +721,16 @@
 	broken_chance = 5
 	matter = list(MATERIAL_GLASS = 100)
 
-	brightness_range = 4
-	brightness_power = 3
-	brightness_color = "#a0a080"
+	b_max_bright = 0.4
+	b_inner_range = 0.75
+	b_outer_range = 4
+	b_curve = 4.0
+	b_color = "#a0a080"
 	lighting_modes = list(
-		LIGHTMODE_EMERGENCY = list(l_range = 3, l_power = 1, l_color = "#da0205"),
-		LIGHTMODE_EVACUATION = list(l_range = 4, l_power = 3, l_color = "#bf0000"),
-		LIGHTMODE_ALARM = list(l_range = 4, l_power = 3, l_color = "#ff3333"),
-		LIGHTMODE_RADSTORM = list(l_range = 4, l_power = 2, l_color = "#8A9929")
+		LIGHTMODE_EMERGENCY  = list(l_max_bright = 0.3, l_inner_range = 0.5,  l_outer_range = 3, l_falloff_curve = 4.0, l_color = "#da0205"),
+		LIGHTMODE_EVACUATION = list(l_max_bright = 0.4, l_inner_range = 0.75, l_outer_range = 4, l_falloff_curve = 4.0, l_color = "#bf0000"),
+		LIGHTMODE_ALARM      = list(l_max_bright = 0.4, l_inner_range = 0.75, l_outer_range = 4, l_falloff_curve = 4.0, l_color = "#ff3333"),
+		LIGHTMODE_RADSTORM   = list(l_max_bright = 0.3, l_inner_range = 0.5,  l_outer_range = 4, l_falloff_curve = 4.0, l_color = "#8A9929")
 		)
 	random_tone = TRUE
 
@@ -709,9 +738,9 @@
 	name = "high efficiency light bulb"
 	desc = "An efficient light used to reduce strain on the station's power grid."
 	base_state = "lhebulb"
-	brightness_range = 6
-	brightness_power = 5
-	brightness_color = "#33cccc"
+	b_max_bright = 0.6
+	b_outer_range = 5
+	b_color = "#33cccc"
 	matter = list(MATERIAL_STEEL = 30, MATERIAL_GLASS = 150)
 	random_tone = FALSE
 	tone_overlay = FALSE
@@ -720,9 +749,9 @@
 	name = "quartz light bulb"
 	desc = "Light is almost the same as sunlight."
 	base_state = "lqbulb"
-	brightness_range = 4
-	brightness_power = 8
-	brightness_color = "#8A2BE2"
+	b_max_bright = 0.8
+	b_outer_range = 5
+	b_color = "#8A2BE2"
 	random_tone = FALSE
 	tone_overlay = FALSE
 
@@ -730,23 +759,23 @@
 	name = "old light bulb"
 	desc = "Old type of light bulbs, almost not being used at the station."
 	base_state = "lold_bulb"
-	brightness_range = 5
-	brightness_power = 3
-	brightness_color = "#ec8b2f"
+	broken_chance = 1
+	b_max_bright = 0.8
+	b_outer_range = 6
+	b_color = "#ec8b2f"
 	random_tone = FALSE
 	tone_overlay = FALSE
 
 /obj/item/weapon/light/bulb/red
+	b_outer_range = 6
 	color = "#da0205"
-	brightness_color = "#da0205"
+	b_color = "#da0205"
 	random_tone = FALSE
-	tone_overlay = FALSE
+	tone_overlay = TRUE
 
 /obj/item/weapon/light/bulb/red/readylight
-	brightness_range = 5
-	brightness_power = 2
 	lighting_modes = list(
-		LIGHTMODE_READY = list(l_range = 5, l_power = 1, l_color = "#00ff00"),
+		LIGHTMODE_READY = list(l_max_bright = 0.4, l_inner_range = 0.5,  l_outer_range = 4, l_falloff_curve = 4.0, l_color = "#00ff00")
 		)
 
 /obj/item/weapon/light/throw_impact(atom/hit_atom)
@@ -760,8 +789,6 @@
 	base_state = "fbulb"
 	item_state = "egg4"
 	matter = list(MATERIAL_GLASS = 100)
-	brightness_range = 4
-	brightness_power = 4
 	random_tone = FALSE
 	tone_overlay = FALSE
 
@@ -780,7 +807,7 @@
 			desc = "A broken [name]."
 	if(tone_overlay)
 		var/image/TO = overlay_image(icon, "[icon_state]-over", flags=RESET_COLOR)
-		TO.color = brightness_color
+		TO.color = b_color
 		overlays += TO
 
 // attack bulb/tube with object

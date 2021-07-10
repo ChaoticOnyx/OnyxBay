@@ -107,7 +107,7 @@ var/global/list/minevendor_list = list( //keep in order of price
 	var/dat
 	dat +="<div class='statusDisplay'>"
 	if(istype(inserted_id))
-		dat += "You have [inserted_id.mining_points] mining points collected. <A href='?src=\ref[src];choice=eject'>Eject ID.</A><br>"
+		dat += "You have [inserted_id.mining_points ? inserted_id.mining_points : "no"] mining points collected. <A href='?src=\ref[src];choice=eject'>Eject ID.</A><br>"
 	else
 		dat += "No ID inserted.  <A href='?src=\ref[src];choice=insert'>Insert ID.</A><br>"
 	dat += "</div>"
@@ -132,6 +132,9 @@ var/global/list/minevendor_list = list( //keep in order of price
 	if(href_list["choice"])
 		if(istype(inserted_id))
 			if(href_list["choice"] == "eject")
+				if(!Adjacent(usr))
+					to_chat(usr, SPAN("warning","You can't reach it."))
+					return
 				inserted_id.loc = loc
 				if(!usr.get_active_hand())
 					usr.put_in_hands(inserted_id)

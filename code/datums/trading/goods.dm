@@ -224,7 +224,7 @@ Sells devices, odds and ends, and medical stuff
 								/obj/item/device/analyzer						= TRADER_ALL,
 								/obj/item/device/mass_spectrometer				= TRADER_ALL,
 								/obj/item/device/reagent_scanner				= TRADER_ALL,
-								/obj/item/device/slime_scanner					= TRADER_THIS_TYPE,
+								/obj/item/device/metroid_scanner					= TRADER_THIS_TYPE,
 								/obj/item/device/suit_cooling_unit				= TRADER_THIS_TYPE,
 								/obj/item/device/t_scanner						= TRADER_THIS_TYPE,
 								/obj/item/device/taperecorder					= TRADER_THIS_TYPE,
@@ -324,7 +324,7 @@ Sells devices, odds and ends, and medical stuff
 //	possible_trading_items = list(/mob/living/simple_animal/hostile/carp= TRADER_THIS_TYPE,
 //								/obj/item/device/dociler              = TRADER_THIS_TYPE,
 //								/obj/item/weapon/beartrap			  = TRADER_THIS_TYPE,
-//								/obj/item/device/slime_scanner = TRADER_THIS_TYPE)
+//								/obj/item/device/metroid_scanner = TRADER_THIS_TYPE)
 
 /datum/trader/ship/medical
 	name = "Medical Supplier"

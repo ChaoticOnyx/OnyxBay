@@ -98,6 +98,7 @@
 
 			to_chat(user, "<span class='info'>You insert [I] into [src].</span>")
 			src.attack_hand(user)
+			dolla.worth = 0
 			qdel(I)
 	else
 		..()

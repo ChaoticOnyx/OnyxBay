@@ -87,7 +87,6 @@ the HUD updates properly! */
 	GLOB.med_hud_users -= src
 	GLOB.sec_hud_users -= src
 	GLOB.xeno_hud_users -= src
-	GLOB.psychoscope_hud_users -= src
 
 /mob/proc/in_view(turf/T)
 	return view(T)

@@ -238,7 +238,7 @@
 			if("larva")				M.change_mob_type( /mob/living/carbon/alien/larva , null, null, delmob )
 			if("nymph")				M.change_mob_type( /mob/living/carbon/alien/diona , null, null, delmob )
 			if("human")				M.change_mob_type( /mob/living/carbon/human , null, null, delmob, href_list["species"])
-			if("slime")				M.change_mob_type( /mob/living/carbon/slime , null, null, delmob )
+			if("metroid")				M.change_mob_type( /mob/living/carbon/metroid , null, null, delmob )
 			if("monkey")			M.change_mob_type( /mob/living/carbon/human/monkey , null, null, delmob )
 			if("robot")				M.change_mob_type( /mob/living/silicon/robot , null, null, delmob )
 			if("cat")				M.change_mob_type( /mob/living/simple_animal/cat , null, null, delmob )
@@ -1123,6 +1123,17 @@
 		to_chat(M, "<span class='warning'>You have been sent to the prison station!</span>")
 		log_and_message_admins("sent [key_name_admin(M)] to the prison station.")
 
+	else if(href_list["blind"])
+		if(!check_rights(R_ADMIN))
+			return
+
+		var/mob/M = locate(href_list["blind"])
+		if(!ismob(M) || !M.client)
+			return
+
+		M.client.view = M.client.view == world.view ? -1 : world.view
+		log_and_message_admins("[M.client.view == world.view ? "opened" : "closed"] the game window for [key_name_admin(M)]")
+
 	else if(href_list["tdome1"])
 		if(!check_rights(R_FUN))	return
 
@@ -1249,15 +1260,15 @@
 		log_and_message_admins("AIized [key_name_admin(H)]!")
 		H.AIize()
 
-	else if(href_list["makeslime"])
+	else if(href_list["makemetroid"])
 		if(!check_rights(R_SPAWN))	return
 
-		var/mob/living/carbon/human/H = locate(href_list["makeslime"])
+		var/mob/living/carbon/human/H = locate(href_list["makemetroid"])
 		if(!istype(H))
 			to_chat(usr, "This can only be used on instances of type /mob/living/carbon/human")
 			return
 
-		usr.client.cmd_admin_slimeize(H)
+		usr.client.cmd_admin_metroidize(H)
 
 	else if(href_list["makerobot"])
 		if(!check_rights(R_SPAWN))	return
@@ -1652,17 +1663,6 @@
 			to_chat(usr, "This can only be used on instances of type /mob.")
 			return
 		show_traitor_panel(M)
-
-	else if(href_list["skillpanel"])
-		if(!check_rights(R_INVESTIGATE))
-			return
-
-		if(GAME_STATE < RUNLEVEL_GAME)
-			alert("The game hasn't started yet!")
-			return
-
-		var/mob/M = locate(href_list["skillpanel"])
-		show_skills(M)
 
 	else if(href_list["create_object"])
 		if(!check_rights(R_SPAWN))	return
@@ -2127,6 +2127,50 @@
 			if(change_num <= 0) return
 			GLOB.ert.hard_cap = change_num
 		edit_mission()
+		return
+
+	if(href_list["contract_action"])
+		if(href_list["obj_add"])
+			var/datum/antag_contract/contract
+			var/datum/contract_organization/selected_org
+			var/selected_org_name = input("Select syndicate organization:", "Syndicate organization", null) as null|anything in GLOB.traitors.fixer.organizations_by_name
+			if(!selected_org_name) return
+			selected_org = GLOB.traitors.fixer.organizations_by_name[selected_org_name]
+			if(!selected_org) return
+			var/new_cnt_type = input("Select contract type:", "Contract type", null) as null|anything in list("Assassinate", "Implant", "Steal", "Steal active AI", "Steal blood samples", "Dump")
+			var/selected_reason = input("Enter reason (don't select any, if you want to select reason by code)", "Contract reason") as null|text
+			if(!selected_reason) selected_reason = null
+			switch(new_cnt_type)
+				if("Assassinate")
+					var/datum/mind/selected_target = input("Select target (don't select any, if you want to select target by code):", "Syndicate organization", null) as null|anything in SSticker.minds
+					contract = new /datum/antag_contract/item/assassinate(selected_org, selected_reason, selected_target)
+				if("Implant")
+					var/datum/mind/selected_target = input("Select target (don't select any, if you want to select target by code):", "Syndicate organization", null) as null|anything in SSticker.minds
+					contract = new /datum/antag_contract/implant(selected_org, selected_reason, selected_target)
+				if("Steal")
+					var/selected_item = input("Enter path to item to steal", "Steal item")
+					contract = new /datum/antag_contract/item/steal(selected_org, selected_reason, text2path(selected_item))
+				if("Steal active AI")
+					var/mob/living/silicon/ai/selected_AI = input("Select target (don't select any, if you want to select target by code):", "Syndicate organization", null) as null|anything in ai_list
+					contract = new /datum/antag_contract/item/steal_ai(selected_org, selected_reason, selected_AI)
+				if("Steal blood samples")
+					var/count_samples = input("Enter amount of blood samples to steal", "Amount of blood") as null|num
+					contract = new /datum/antag_contract/item/blood(selected_org, selected_reason, count_samples)
+				if("Dump")
+					var/money = input("Enter amount of MANIY to steal", "Amount of money") as null|num
+					contract = new /datum/antag_contract/item/dump(selected_org, selected_reason, money)
+			if(!contract.can_place())
+				to_chat(usr, "Internal error detected, please try again, if you use custom target and reason, please report this.")
+				qdel(contract)
+			else
+				selected_org.add_contract(contract)
+		if(href_list["obj_remove"])
+			var/datum/antag_contract/contract = locate(href_list["obj_remove"])
+			ASSERT(istype(contract))
+			var/datum/contract_organization/org = contract.organization
+			ASSERT(istype(org))
+			org.remove_conract(contract)
+		edit_contracts()
 		return
 
 	watchlist.AdminTopicProcess(src, href_list)

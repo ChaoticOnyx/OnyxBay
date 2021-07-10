@@ -405,6 +405,19 @@ datum/objective/harm
 				return 1
 		return 0
 
+/datum/objective/contracts
+	var/amount = 1
+
+/datum/objective/contracts/New()
+	amount = rand(3, 5)
+	explanation_text = "Complete at least [amount] contracts."
+
+/datum/objective/contracts/check_completion()
+	if(owner.completed_contracts >= amount)
+		return TRUE
+	else
+		return FALSE
+
 /datum/objective/ert_station_save
 
 /datum/objective/ert_station_save/check_completion()
@@ -439,7 +452,6 @@ datum/objective/harm
 	var/target_name
 
 	var/global/possible_items[] = list(
-		"the prototype psychoscope" = /obj/item/clothing/glasses/psychoscope,
 		"the captain's antique laser gun" = /obj/item/weapon/gun/energy/captain,
 		"a bluespace rift generator in hand teleporter" = /obj/item/integrated_circuit/manipulation/bluespace_rift,
 		"an RCD" = /obj/item/weapon/rcd,
@@ -450,7 +462,7 @@ datum/objective/harm
 		"the [station_name()] blueprints" = /obj/item/blueprints,
 		"a nasa voidsuit" = /obj/item/clothing/suit/space/void,
 		"28 moles of plasma (full tank)" = /obj/item/weapon/tank,
-		"a sample of slime extract" = /obj/item/slime_extract,
+		"a sample of metroid extract" = /obj/item/metroid_extract,
 		"a piece of corgi meat" = /obj/item/weapon/reagent_containers/food/snacks/meat/corgi,
 		"a research director's jumpsuit" = /obj/item/clothing/under/rank/research_director,
 		"a chief engineer's jumpsuit" = /obj/item/clothing/under/rank/chief_engineer,
@@ -819,7 +831,7 @@ datum/objective/heist/salvage
 		if(GLOB.raiders && GLOB.raiders.is_raider_crew_safe()) return 1
 		return 0
 
-//Borer objective(s).
+// Borer objective(s).
 /datum/objective/borer_survive
 	explanation_text = "Survive in a host until the end of the round."
 

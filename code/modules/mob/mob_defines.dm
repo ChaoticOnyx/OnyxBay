@@ -150,7 +150,7 @@
 	var/blocking = 0
 	var/parrying = 0
 
-//The last mob/living/carbon to push/drag/grab this mob (mostly used by slimes friend recognition)
+//The last mob/living/carbon to push/drag/grab this mob (mostly used by metroids friend recognition)
 	var/mob/living/carbon/LAssailant = null
 
 	mouse_drag_pointer = MOUSE_ACTIVE_POINTER
@@ -190,3 +190,5 @@
 	var/datum/browser/show_inventory
 
 	var/nabbing = 0  // Whether a creature with a CAN_NAB tag is grabbing normally or in nab mode.
+	
+	var/last_time_pointed_at = 0

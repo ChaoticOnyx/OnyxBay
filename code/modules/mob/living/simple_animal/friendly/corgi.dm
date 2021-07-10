@@ -24,14 +24,14 @@
 	maxHealth = 30
 	possession_candidate = 1
 	holder_type = /obj/item/weapon/holder/corgi
-	var/obj/item/inventory_head
-	var/obj/item/inventory_back
+	var/obj/item/hat
+	var/old_dir
 	var/obj/movement_target
 
 //IAN! SQUEEEEEEEEE~
 /mob/living/simple_animal/corgi/Ian
 	name = "Ian"
-	real_name = "Ian"	//Intended to hold the name without altering it.
+	real_name = "Ian"	// Intended to hold the name without altering it.
 	gender = MALE
 	desc = "It's a corgi."
 	turns_since_scan = 0
@@ -39,12 +39,16 @@
 	response_disarm = "bops"
 	response_harm   = "kicks"
 
+/mob/living/simple_animal/corgi/Move(a, b, flag)
+	..()
+	update_hat()
+
 /mob/living/simple_animal/corgi/Life()
 	..()
-
+	update_hat() // In case somewhere something unpredictable happens - it'll fix it, I guess.
 	regular_hud_updates()
 
-	//Feeding, chasing food, FOOOOODDDD
+	// Feeding, chasing food, FOOOOODDDD
 	if(!stat && !resting && !buckled)
 		turns_since_scan++
 		if(turns_since_scan > 5)
@@ -68,7 +72,7 @@
 					sleep(3)
 					step_to(src,movement_target,1)
 
-					if(movement_target)		//Not redundant due to sleeps, Item can be gone in 6 decisecomds
+					if(movement_target)		// Not redundant due to sleeps, Item can be gone in 6 decisecomds
 						if (movement_target.loc.x < src.x)
 							set_dir(WEST)
 						else if (movement_target.loc.x > src.x)
@@ -79,8 +83,9 @@
 							set_dir(NORTH)
 						else
 							set_dir(SOUTH)
+						update_hat()
 
-						if(isturf(movement_target.loc) )
+						if(isturf(movement_target.loc))
 							UnarmedAttack(movement_target)
 						else if(ishuman(movement_target.loc) && prob(20))
 							visible_emote("stares at the [movement_target] that [movement_target.loc] has with sad puppy eyes.")
@@ -90,7 +95,9 @@
 			spawn(0)
 				for(var/i in list(1,2,4,8,4,2,1,2,4,8,4,2,1,2,4,8,4,2))
 					set_dir(i)
+					update_hat() // Too bad, it'll be better to optimize.
 					sleep(1)
+
 
 /mob/living/simple_animal/corgi/proc/regular_hud_updates()
 	if(pullin)
@@ -100,7 +107,7 @@
 			pullin.icon_state = "pull0"
 	if(fire)
 		if(fire_alert)
-			fire.icon_state = "fire[fire_alert]" //fire_alert is either 0 if no alert, 1 for heat and 2 for cold.
+			fire.icon_state = "fire[fire_alert]" // fire_alert is either 0 if no alert, 1 for heat and 2 for cold.
 		else
 			fire.icon_state = "fire0"
 	if(oxygen)
@@ -138,41 +145,86 @@
 	name = "Corgi meat"
 	desc = "Tastes like... well you know..."
 
-/mob/living/simple_animal/corgi/attackby(obj/item/O as obj, mob/user as mob)  //Marker -Agouri
+/mob/living/simple_animal/corgi/attackby(obj/item/O, mob/user)  // Marker -Agouri
+	if(user.a_intent == I_HELP && istype(O, /obj/item/clothing/head)) 	// Equiping corgi with a cool hat!
+		if(istype(O, /obj/item/clothing/head/helmet)) 					// Looks too bad on corgi
+			to_chat(user, SPAN_WARNING("\The [O] is too small for [name] head."))
+			return
+		if(istype(O, /obj/item/clothing/head/kitty)) // Tail of kitty ears in not properly aligned
+			to_chat(user, SPAN_WARNING("[name] cannot wear \the [O]!"))
+			return
+		if(hat)
+			to_chat(user, SPAN_WARNING("[name] is already wearing \the [hat]."))
+			return
+		user.unEquip(O)
+		wear_hat(O)
+		user.visible_message(SPAN_WARNING("[user] puts \the [O] on [name]."))
+		return
 	if(istype(O, /obj/item/weapon/newspaper))
 		if(!stat)
 			for(var/mob/M in viewers(user, null))
 				if ((M.client && !( M.blinded )))
-					M.show_message("<span class='notice'>[user] baps [name] on the nose with the rolled up [O]</span>")
+					M.show_message(SPAN_WARNING("[user] baps [name] on the nose with the rolled up [O]!"))
 			spawn(0)
 				for(var/i in list(1,2,4,8,4,2,1,2))
 					set_dir(i)
+					update_hat()
 					sleep(1)
 	else
 		..()
+///////////////////
+//// HAT STUFF ////
+//////////////////
+/mob/living/simple_animal/corgi/proc/get_hat_icon(obj/item/hat, offset_x, offset_y)
+	var/t_state = hat.icon_state
+	if(hat.item_state_slots && hat.item_state_slots[slot_head_str])
+		t_state = hat.item_state_slots[slot_head_str]
+	else if(hat.item_state)
+		t_state = hat.item_state
+	var/key = "[t_state]_[offset_x]_[offset_y]"
+	if(!mob_hat_cache[key])            // Not ideal as there's no guarantee all hat icon_states
+		var/t_icon = default_onmob_icons[slot_head_str] // are unique across multiple dmis, but whatever.
+		if(hat.icon_override)
+			t_icon = hat.icon_override
+		else if(hat.item_icons && (slot_head_str in hat.item_icons))
+			t_icon = hat.item_icons[slot_head_str]
+		var/image/I = image(icon = t_icon, icon_state = t_state)
+		I.pixel_x = offset_x
+		I.pixel_y = offset_y
+		mob_hat_cache[key] = I
+	return mob_hat_cache[key]
 
-/mob/living/simple_animal/corgi/regenerate_icons()
-	overlays = list()
+/mob/living/simple_animal/corgi/proc/wear_hat(obj/item/new_hat)
+	if(hat)
+		return
+	hat = new_hat
+	new_hat.forceMove(src)
+	update_hat()
 
-	if(inventory_head)
-		var/head_icon_state = inventory_head.icon_state
-		if(health <= 0)
-			head_icon_state += "2"
-
-		var/icon/head_icon = image('icons/mob/corgi_head.dmi',head_icon_state)
-		if(head_icon)
-			overlays += head_icon
-
-	if(inventory_back)
-		var/back_icon_state = inventory_back.icon_state
-		if(health <= 0)
-			back_icon_state += "2"
-
-		var/icon/back_icon = image('icons/mob/corgi_back.dmi',back_icon_state)
-		if(back_icon)
-			overlays += back_icon
-	return
-
+/mob/living/simple_animal/corgi/proc/update_hat()
+	if(!hat)
+		return
+	if(stat == DEAD)
+		overlays.Cut()
+		hat.dropInto(loc)
+		hat = null
+		return
+	if(old_dir == dir) // We do not need to update hat, if we did not change dir
+		return
+	old_dir = dir
+	var/hat_offset_x = 1 		// preseting offsets to north and south
+	var/hat_offset_y = -7
+	if(dir == 4)			// Setting offset for east and west to properly render hats
+		hat_offset_x = 8
+		hat_offset_y = -8
+	else if(dir == 8)
+		hat_offset_x = -8
+		hat_offset_y = -8
+	overlays.Cut()
+	overlays |= get_hat_icon(hat, hat_offset_x, hat_offset_y)
+///////////////////////
+// END OF HAT STUFF //
+/////////////////////
 
 /mob/living/simple_animal/corgi/puppy
 	name = "\improper corgi puppy"
@@ -186,7 +238,7 @@
 //pupplies cannot wear anything.
 /mob/living/simple_animal/corgi/puppy/Topic(href, href_list)
 	if(href_list["remove_inv"] || href_list["add_inv"])
-		to_chat(usr, "<span class='warning'>You can't fit this on [src]</span>")
+		to_chat(usr, SPAN_WARNING("You can't fit this on [src]"))
 		return
 	..()
 
@@ -209,7 +261,7 @@
 //Lisa already has a cute bow!
 /mob/living/simple_animal/corgi/Lisa/Topic(href, href_list)
 	if(href_list["remove_inv"] || href_list["add_inv"])
-		to_chat(usr, "<span class='warning'>[src] already has a cute bow!</span>")
+		to_chat(usr, SPAN_WARNING("[src] already has a cute bow!"))
 		return
 	..()
 

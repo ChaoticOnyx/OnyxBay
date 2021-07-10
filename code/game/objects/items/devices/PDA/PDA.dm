@@ -348,7 +348,7 @@ var/global/list/obj/item/device/pda/PDAs = list()
 			set_light(0)
 		else
 			fon = 1
-			set_light(f_lum)
+			set_light(0.25, 0.1, 2, 3, "#5cceed")
 
 /obj/item/device/pda/GetAccess()
 	if(id)
@@ -1039,8 +1039,7 @@ var/global/list/obj/item/device/pda/PDAs = list()
 				if(ai.aiPDA != P && ai.aiPDA != src)
 					ai.show_message("<i>Intercepted message from <b>[who]</b>: [message]</i>")
 
-		if(U.client?.get_preference_value(/datum/client_preference/spell_checking) == GLOB.PREF_YES && U.client.chatOutput)
-			U.client.chatOutput.spell_check(message)
+		U.client.spellcheck(message)
 
 		P.new_message_from_pda(src, message)
 		SSnano.update_user_uis(U, src) // Update the sending user's PDA UI so that they can see the new message

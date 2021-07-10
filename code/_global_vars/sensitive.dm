@@ -10,3 +10,10 @@ GLOBAL_REAL_VAR(sqlfdbkdb)    = "test"
 GLOBAL_REAL_VAR(sqlfdbklogin) = "root"
 GLOBAL_REAL_VAR(sqlfdbkpass)  = ""
 GLOBAL_REAL_VAR(sqllogging)   = 0 // Should we log deaths, population stats, etc.?
+
+// Donations DB
+GLOBAL_REAL_VAR(sqldonaddress)= "localhost"
+GLOBAL_REAL_VAR(sqldonport)   = "3306"
+GLOBAL_REAL_VAR(sqldondb)     = "tgstation"
+GLOBAL_REAL_VAR(sqldonlogin)  = "root"
+GLOBAL_REAL_VAR(sqldonpass)   = ""

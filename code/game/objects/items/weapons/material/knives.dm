@@ -195,6 +195,7 @@
 	matter = list(MATERIAL_STEEL = 6000)
 	randpixel = 0
 	applies_material_colour = 0
+	hitsound = "swing_hit"
 
 /obj/item/weapon/material/shivgrip/wood/New(newloc)
 	..(newloc, MATERIAL_WOOD)

@@ -275,12 +275,12 @@
 /obj/random/projectile/spawn_choices()
 	return list(/obj/item/weapon/gun/projectile/shotgun/pump = 3,
 				/obj/item/weapon/gun/projectile/automatic/c20r = 2,
-				/obj/item/weapon/gun/projectile/automatic/sts35 = 2,
+				/obj/item/weapon/gun/projectile/automatic/as75 = 2,
 				/obj/item/weapon/gun/projectile/automatic/z8 = 2,
-				/obj/item/weapon/gun/projectile/colt = 4,
-				/obj/item/weapon/gun/projectile/sec = 4,
-				/obj/item/weapon/gun/projectile/sec/wood = 3,
-				/obj/item/weapon/gun/projectile/pistol = 4,
+				/obj/item/weapon/gun/projectile/pistol/colt = 4,
+				/obj/item/weapon/gun/projectile/pistol/vp78 = 4,
+				/obj/item/weapon/gun/projectile/pistol/secgun/wood = 3,
+				/obj/item/weapon/gun/projectile/pistol/holdout = 4,
 				/obj/item/weapon/gun/projectile/pirate = 5,
 				/obj/item/weapon/gun/projectile/revolver = 2,
 				/obj/item/weapon/gun/projectile/automatic/wt550 = 3,
@@ -298,12 +298,12 @@
 	icon_state = "secgundark"
 
 /obj/random/handgun/spawn_choices()
-	return list(/obj/item/weapon/gun/projectile/sec = 3,
+	return list(/obj/item/weapon/gun/projectile/pistol/vp78 = 3,
 				/obj/item/weapon/gun/energy/gun = 2,
-				/obj/item/weapon/gun/projectile/colt = 2,
-				/obj/item/weapon/gun/projectile/pistol = 2,
+				/obj/item/weapon/gun/projectile/pistol/colt = 2,
+				/obj/item/weapon/gun/projectile/pistol/holdout = 2,
 				/obj/item/weapon/gun/energy/retro = 1,
-				/obj/item/weapon/gun/projectile/sec/wood = 1)
+				/obj/item/weapon/gun/projectile/pistol/secgun/wood = 1)
 
 /obj/random/ammo
 	name = "Random Ammunition"
@@ -546,8 +546,8 @@
 /obj/random/material //Random materials for building stuff
 	name = "random material"
 	desc = "This is a random material."
-	icon = 'icons/obj/items.dmi'
-	icon_state = "sheet-metal"
+	icon = 'icons/obj/materials.dmi'
+	icon_state = "metal"
 	spawn_nothing_percentage = 25
 
 /obj/random/material/spawn_choices()

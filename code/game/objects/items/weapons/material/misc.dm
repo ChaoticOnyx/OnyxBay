@@ -40,6 +40,7 @@
 	mod_reach = 0.5
 	mod_handy = 1.25
 	attack_verb = list("stabbed", "chopped", "cut")
+	hitsound = 'sound/weapons/bladeslice.ogg'
 	applies_material_colour = 1
 
 /obj/item/weapon/material/hatchet/machete

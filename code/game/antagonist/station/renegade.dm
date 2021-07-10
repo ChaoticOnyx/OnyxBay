@@ -29,19 +29,24 @@ GLOBAL_DATUM_INIT(renegades, /datum/antagonist/renegade, new)
 		/obj/item/weapon/gun/energy/gun,
 		/obj/item/weapon/gun/energy/crossbow,
 		/obj/item/weapon/gun/energy/crossbow/largecrossbow,
-		/obj/item/weapon/gun/projectile/automatic,
+		/obj/item/weapon/gun/projectile/automatic/machine_pistol,
 		/obj/item/weapon/gun/projectile/automatic/machine_pistol/mini_uzi,
 		/obj/item/weapon/gun/projectile/automatic/c20r,
 		/obj/item/weapon/gun/projectile/automatic/wt550,
-		/obj/item/weapon/gun/projectile/colt/detective,
-		/obj/item/weapon/gun/projectile/sec/wood,
-		/obj/item/weapon/gun/projectile/silenced,
-		/obj/item/weapon/gun/projectile/pistol,
+		/obj/item/weapon/gun/projectile/pistol/colt/detective,
+		/obj/item/weapon/gun/projectile/pistol/secgun/wood,
+		/obj/item/weapon/gun/projectile/pistol/silenced,
+		/obj/item/weapon/gun/projectile/pistol/holdout,
 		/obj/item/weapon/gun/projectile/revolver,
 		/obj/item/weapon/gun/projectile/shotgun/doublebarrel/sawn,
-		/obj/item/weapon/gun/projectile/magnum_pistol,
+		/obj/item/weapon/gun/projectile/pistol/magnum_pistol,
 		list(/obj/item/weapon/gun/projectile/revolver/detective, /obj/item/weapon/gun/projectile/revolver/deckard)
 		)
+
+/datum/antagonist/renegade/Initialize()
+	. = ..()
+	if(config.renegade_min_age)
+		min_player_age = config.renegade_min_age
 
 /datum/antagonist/renegade/create_objectives(datum/mind/player)
 

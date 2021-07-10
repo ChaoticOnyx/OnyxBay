@@ -15,8 +15,9 @@ var/list/floor_light_cache = list()
 
 	var/on
 	var/damaged
-	var/default_light_range = 4
-	var/default_light_power = 2
+	var/default_light_max_bright = 0.75
+	var/default_light_inner_range = 1
+	var/default_light_outer_range = 3
 	var/default_light_colour = "#ffffff"
 
 /obj/machinery/floor_light/prebuilt
@@ -93,15 +94,14 @@ var/list/floor_light_cache = list()
 
 /obj/machinery/floor_light/proc/update_brightness()
 	if(on && use_power == POWER_USE_ACTIVE)
-		if(light_range != default_light_range || light_power != default_light_power || light_color != default_light_colour)
-			set_light(default_light_range, default_light_power, default_light_colour)
+		if(light_outer_range != default_light_outer_range || light_max_bright != default_light_max_bright || light_color != default_light_colour)
+			set_light(default_light_max_bright, default_light_inner_range, default_light_outer_range, 2, default_light_colour)
 	else
 		update_use_power(POWER_USE_OFF)
-		if(light_range || light_power)
+		if(light_outer_range || light_max_bright)
 			set_light(0)
 
-	//active_power_usage = ((light_range + light_power) * 10)
-	change_power_consumption((light_range + light_power) * 10, POWER_USE_ACTIVE)
+	change_power_consumption((light_outer_range + light_max_bright) * 10, POWER_USE_ACTIVE)
 	update_icon()
 
 /obj/machinery/floor_light/update_icon()

@@ -89,7 +89,6 @@
 	var/enemy_hp = 45 //Enemy health/attack points
 	var/enemy_mp = 20
 	var/gameover = 0
-	var/blocked = 0 //Player cannot attack/heal while set
 	var/turtle = 0
 	var/list/attack_sounds = list(
 			'sound/effects/arcade/attack1.ogg',
@@ -117,167 +116,163 @@
 	name_action = pick("Defeat ", "Annihilate ", "Save ", "Strike ", "Stop ", "Destroy ", "Robust ", "Romance ", "Pwn ", "Own ", "Ban ")
 
 	name_part1 = pick("the Automatic ", "Farmer ", "Lord ", "Professor ", "the Cuban ", "the Evil ", "the Dread King ", "the Space ", "Lord ", "the Great ", "Duke ", "General ")
-	name_part2 = pick("Melonoid", "Murdertron", "Sorcerer", "Ruin", "Jeff", "Ectoplasm", "Crushulon", "Uhangoid", "Vhakoid", "Peteoid", "slime", "Griefer", "ERPer", "Lizard Man", "Unicorn", "Bloopers")
+	name_part2 = pick("Melonoid", "Murdertron", "Sorcerer", "Ruin", "Jeff", "Ectoplasm", "Crushulon", "Uhangoid", "Vhakoid", "Peteoid", "metroid", "Griefer", "ERPer", "Lizard Man", "Unicorn", "Bloopers")
 
 	src.enemy_name = replacetext((name_part1 + name_part2), "the ", "")
 	src.SetName((name_action + name_part1 + name_part2))
 
+/obj/machinery/computer/arcade/battle/tgui_interact(mob/user, datum/tgui/ui)
+	ui = SStgui.try_update_ui(user, src, ui)
+	
+	if(!ui)
+		ui = new(user, src, "Arcade", "")
+		ui.open()
 
-/obj/machinery/computer/arcade/battle/attack_hand(mob/user as mob)
-	if(..())
+/obj/machinery/computer/arcade/battle/tgui_data(mob/user)
+	return list(
+		"title" = name,
+		"is_gameover" = gameover,
+		"message" = temp,
+		"enemy" = list(
+			"name" = enemy_name,
+			"hp" = enemy_hp,
+			"mp" = enemy_mp
+		),
+		"player" = list(
+			"hp" = player_hp,
+			"mp" = player_mp
+		)
+	)
+
+/obj/machinery/computer/arcade/battle/tgui_act(action, params)
+	. = ..()
+	
+	if(.)
 		return
-	user.set_machine(src)
-	var/dat = "<meta charset=\"utf-8\"><a href='byond://?src=\ref[src];close=1'>Close</a>"
-	dat += "<center><h4>[src.enemy_name]</h4></center>"
+	
+	switch(action)
+		if("attack")
+			playsound(loc, pick(attack_sounds), 15, TRUE)
+			var/attackamt = rand(2,6)
+			temp = "You attack for [attackamt] damage!"
 
-	dat += "<br><center><h3>[src.temp]</h3></center>"
-	dat += "<br><center>Health: [src.player_hp] | Magic: [src.player_mp] | Enemy Health: [src.enemy_hp]</center>"
+			if(turtle > 0)
+				turtle--
 
-	dat += "<center><b>"
-	if (src.gameover)
-		dat += "<a href='byond://?src=\ref[src];newgame=1'>New Game</a>"
-	else
-		dat += "<a href='byond://?src=\ref[src];attack=1'>Attack</a> | "
-		dat += "<a href='byond://?src=\ref[src];heal=1'>Heal</a> | "
-		dat += "<a href='byond://?src=\ref[src];charge=1'>Recharge Power</a>"
+			enemy_hp -= attackamt
+			arcade_action(usr)
 
-	dat += "</b></center>"
+			return TRUE
+		if("heal")
+			playsound(loc, 'sound/effects/arcade/heal1.ogg', 15, TRUE)
+			blocked = 1
+			var/pointamt = rand(1,3)
+			var/healamt = rand(6,8)
+			temp = "You use [pointamt] magic to heal for [healamt] damage!"
+			turtle++
+			player_mp -= pointamt
+			player_hp += healamt
+			blocked = 1
+			arcade_action(usr)
 
-	show_browser(user, dat, "window=arcade")
-	onclose(user, "arcade")
-	return
+			return TRUE
+		if("charge")
+			playsound(loc, 'sound/effects/arcade/recharge1.ogg', 15, TRUE)
+			blocked = 1
+			var/chargeamt = rand(4,7)
+			temp = "You regain [chargeamt] points"
+			player_mp += chargeamt
 
-/obj/machinery/computer/arcade/battle/CanUseTopic(mob/user, datum/topic_state/state, href_list)
-	if((blocked || gameover) && (href_list["attack"] || href_list["heal"] || href_list["charge"]))
-		return min(..(), STATUS_UPDATE)
-	return ..()
+			if(turtle > 0)
+				turtle--
+			
+			arcade_action(usr)
 
-/obj/machinery/computer/arcade/battle/OnTopic(user, href_list)
-	set waitfor = 0
+			return TRUE
+		if("newgame")
+			playsound(loc, 'sound/effects/arcade/start1.ogg', 15, TRUE)
+			temp = "New Round"
+			player_hp = 30
+			player_mp = 10
+			enemy_hp = 45
+			enemy_mp = 20
+			gameover = 0
+			turtle = 0
 
-	if (href_list["close"])
-		close_browser(user, "window=arcade")
-		return TOPIC_HANDLED
+			if(emagged)
+				emagged = 0
+				SetupGame()
+			
+			return TRUE
 
-	if (href_list["attack"])
-		playsound(src.loc, pick(attack_sounds), 15, TRUE)
-		src.blocked = 1
-		var/attackamt = rand(2,6)
-		src.temp = "You attack for [attackamt] damage!"
-		if(turtle > 0)
-			turtle--
-		src.enemy_hp -= attackamt
+/obj/machinery/computer/arcade/battle/attack_hand(mob/user)
+	. = ..()
+	
+	if(.)
+		return
 
-		. = TOPIC_REFRESH
-		sleep(10)
-		src.arcade_action(user)
-
-	else if (href_list["heal"])
-		playsound(src.loc, 'sound/effects/arcade/heal1.ogg', 15, TRUE)
-		src.blocked = 1
-		var/pointamt = rand(1,3)
-		var/healamt = rand(6,8)
-		src.temp = "You use [pointamt] magic to heal for [healamt] damage!"
-		turtle++
-
-		src.player_mp -= pointamt
-		src.player_hp += healamt
-		src.blocked = 1
-
-		. = TOPIC_REFRESH
-		sleep(10)
-		src.arcade_action(user)
-
-	else if (href_list["charge"])
-		playsound(src.loc, 'sound/effects/arcade/recharge1.ogg', 15, TRUE)
-		src.blocked = 1
-		var/chargeamt = rand(4,7)
-		src.temp = "You regain [chargeamt] points"
-		src.player_mp += chargeamt
-		if(turtle > 0)
-			turtle--
-
-		. = TOPIC_REFRESH
-		sleep(10)
-		src.arcade_action(user)
-
-	else if (href_list["newgame"]) //Reset everything
-		playsound(src.loc, 'sound/effects/arcade/start1.ogg', 15, TRUE)
-		temp = "New Round"
-		player_hp = 30
-		player_mp = 10
-		enemy_hp = 45
-		enemy_mp = 20
-		gameover = 0
-		turtle = 0
-		if(emagged)
-			emagged = 0
-			SetupGame()
-		. = TOPIC_REFRESH
-
-	if(. == TOPIC_REFRESH)
-		attack_hand(user)
+	tgui_interact(user)
 
 /obj/machinery/computer/arcade/battle/proc/arcade_action(user)
-	if ((src.enemy_mp <= 0) || (src.enemy_hp <= 0))
+	if ((enemy_mp <= 0) || (enemy_hp <= 0))
 		if(!gameover)
-			src.gameover = 1
-			src.temp = "[src.enemy_name] has fallen! Rejoice!"
+			gameover = 1
+			temp = "[enemy_name] has fallen! Rejoice!"
 
 			if(emagged)
 				feedback_inc("arcade_win_emagged")
-				new /obj/effect/spawner/newbomb/timer/syndicate(src.loc)
-				new /obj/item/clothing/head/collectable/petehat(src.loc)
+				new /obj/effect/spawner/newbomb/timer/syndicate(loc)
+				new /obj/item/clothing/head/collectable/petehat(loc)
 				log_and_message_admins("has outbombed Cuban Pete and been awarded a bomb.")
 				SetupGame()
 				emagged = 0
 			else
 				feedback_inc("arcade_win_normal")
-				src.prizevend()
+				prizevend()
 
 	else if (emagged && (turtle >= 4))
-		playsound(src.loc, pick(damage_sounds), 15, TRUE)
+		playsound(loc, pick(damage_sounds), 15, TRUE)
 		var/boomamt = rand(5,10)
-		src.temp = "[src.enemy_name] throws a bomb, exploding you for [boomamt] damage!"
-		src.player_hp -= boomamt
+		temp = "[enemy_name] throws a bomb, exploding you for [boomamt] damage!"
+		player_hp -= boomamt
 
-	else if ((src.enemy_mp <= 5) && (prob(70)))
+	else if ((enemy_mp <= 5) && (prob(70)))
 		var/stealamt = rand(2,3)
-		src.temp = "[src.enemy_name] steals [stealamt] of your power!"
-		src.player_mp -= stealamt
+		temp = "[enemy_name] steals [stealamt] of your power!"
+		player_mp -= stealamt
 		attack_hand(user)
 
-		if (src.player_mp <= 0)
-			src.gameover = 1
+		if (player_mp <= 0)
+			gameover = 1
 			sleep(10)
-			src.temp = "You have been drained! GAME OVER"
+			temp = "You have been drained!"
 			if(emagged)
 				feedback_inc("arcade_loss_mana_emagged")
 				explode()
 			else
 				feedback_inc("arcade_loss_mana_normal")
 
-	else if ((src.enemy_hp <= 10) && (src.enemy_mp > 4))
-		src.temp = "[src.enemy_name] heals for 4 health!"
-		src.enemy_hp += 4
-		src.enemy_mp -= 4
+	else if ((enemy_hp <= 10) && (enemy_mp > 4))
+		temp = "[enemy_name] heals for 4 health!"
+		enemy_hp += 4
+		enemy_mp -= 4
 
 	else
 		var/attackamt = rand(3,6)
-		playsound(src.loc, pick(damage_sounds), 15, TRUE)
-		src.temp = "[src.enemy_name] attacks for [attackamt] damage!"
-		src.player_hp -= attackamt
+		playsound(loc, pick(damage_sounds), 15, TRUE)
+		temp = "[enemy_name] attacks for [attackamt] damage!"
+		player_hp -= attackamt
 
-	if ((src.player_mp <= 0) || (src.player_hp <= 0))
-		src.gameover = 1
-		src.temp = "You have been crushed! GAME OVER"
+	if ((player_mp <= 0) || (player_hp <= 0))
+		gameover = 1
+		temp = "You have been crushed!"
 		if(emagged)
 			feedback_inc("arcade_loss_hp_emagged")
 			explode()
 		else
 			feedback_inc("arcade_loss_hp_normal")
 
-	src.blocked = 0
+	blocked = 0
 
 /obj/machinery/computer/arcade/proc/explode()
 	explosion(loc, 0, 1, 2, 3)

@@ -8,6 +8,7 @@
 	invocation = "Re-Alki R'natha."
 	invocation_type = SpI_WHISPER
 	cooldown_min = 300
+	need_target = FALSE
 
 	smoke_amt = 1
 	smoke_spread = 5
@@ -24,24 +25,27 @@
 	else
 		return list(mark)
 
-/spell/mark_recall/cast(list/targets,mob/user)
+/spell/mark_recall/cast(list/targets, mob/user)
+	if(istype(user.loc, /obj/machinery/atmospherics/unary/cryo_cell))
+		var/obj/machinery/atmospherics/unary/cryo_cell/cell = user.loc
+		cell.go_out()
 	if(!targets.len)
-		return 0
+		return FALSE
 	var/target = targets[1]
 	if(istext(target))
 		mark = new /obj/effect/decal/cleanable/wizard_mark(get_turf(user),src)
-		return 1
+		return TRUE
 	if(!istype(target,/obj)) //something went wrong
-		return 0
+		return FALSE
 	var/turf/T = get_turf(target)
 	if(!T)
-		return 0
+		return FALSE
 	user.forceMove(T)
 	..()
 
 /spell/mark_recall/empower_spell()
 	if(!..())
-		return 0
+		return FALSE
 
 	spell_flags = STATALLOWED
 
@@ -53,8 +57,8 @@
 	icon = 'icons/obj/rune.dmi'
 	icon_state = "wizard_mark"
 
-	anchored = 1
-	unacidable = 1
+	anchored = TRUE
+	unacidable = TRUE
 	layer = TURF_LAYER
 
 	var/spell/mark_recall/spell

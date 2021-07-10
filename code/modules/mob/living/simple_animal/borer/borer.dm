@@ -38,14 +38,14 @@
 	var/controlling                         // Used in human death check.
 	var/docile = 0                          // Sugar can stop borers from acting.
 	var/has_reproduced
-	var/roundstart
+	var/initial
 
-/mob/living/simple_animal/borer/roundstart
-	roundstart = 1
+/mob/living/simple_animal/borer/initial
+	initial = 1
 
 /mob/living/simple_animal/borer/Login()
 	..()
-	if(mind)
+	if(!initial)
 		GLOB.borers.add_antagonist(mind)
 
 /mob/living/simple_animal/borer/New(atom/newloc, gen=1)
@@ -57,7 +57,8 @@
 
 	generation = gen
 	truename = "[borer_names[min(generation, borer_names.len)]] [random_id("borer[generation]", 1000, 9999)]"
-	if(!roundstart) request_player()
+	if(!initial)
+		request_player()
 
 /mob/living/simple_animal/borer/Life()
 

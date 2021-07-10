@@ -84,7 +84,6 @@
 	icon_state = "frag"
 
 	w_class = ITEM_SIZE_NORMAL
-	throw_speed = 3
 	throw_range = 5 //heavy, can't be thrown as far
 
 	fragment_types = list(/obj/item/projectile/bullet/pellet/fragment=1,/obj/item/projectile/bullet/pellet/fragment/strong=4)

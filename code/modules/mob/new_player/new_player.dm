@@ -25,8 +25,9 @@
 	verbs += /mob/proc/join_as_actor
 	verbs += /mob/proc/join_response_team
 
-/mob/new_player/verb/new_player_panel()
-	set src = usr
+/mob/new_player/proc/new_player_panel(forced = FALSE)
+	if(!SScharacter_setup.initialized && !forced)
+		return // Not ready yet.
 	new_player_panel_proc()
 
 /mob/new_player/proc/new_player_panel_proc()
@@ -144,10 +145,11 @@
 			if(isnull(client.holder))
 				announce_ghost_joinleave(src)
 
-			var/mob/living/carbon/human/dummy/mannequin = new()
-			client.prefs.dress_preview_mob(mannequin)
-			observer.set_appearance(mannequin)
-			qdel(mannequin)
+			var/mob/living/carbon/human/dummy/mannequin = get_mannequin(client.ckey)
+			if(mannequin)
+				client.prefs.dress_preview_mob(mannequin)
+				observer.set_appearance(mannequin)
+				qdel(mannequin)
 
 			if(client.prefs.be_random_name)
 				client.prefs.real_name = random_name(client.prefs.gender)
@@ -223,14 +225,12 @@
 		return
 
 	if(href_list["privacy_poll"])
-		establish_db_connection()
-		if(!dbcon.IsConnected())
+		if(!establish_db_connection())
 			return
 		var/voted = 0
 
 		//First check if the person has not voted yet.
-		var/DBQuery/query = dbcon.NewQuery("SELECT * FROM erro_privacy WHERE ckey='[src.ckey]'")
-		query.Execute()
+		var/DBQuery/query = sql_query("SELECT * FROM erro_privacy WHERE ckey = $ckey", dbcon, list(ckey = ckey))
 		while(query.NextRow())
 			voted = 1
 			break
@@ -254,9 +254,7 @@
 			return
 
 		if(!voted)
-			var/sql = "INSERT INTO erro_privacy VALUES (null, Now(), '[src.ckey]', '[option]')"
-			var/DBQuery/query_insert = dbcon.NewQuery(sql)
-			query_insert.Execute()
+			sql_query("INSERT INTO erro_privacy VALUES (null, Now(), $ckey, $option)", dbcon, list(ckey = ckey, option = option))
 			to_chat(usr, "<b>Thank you for your vote!</b>")
 			close_browser(usr, "window=privacypoll")
 
@@ -493,9 +491,10 @@
 			spawning = 0 //abort
 			return null
 		new_character = new(spawn_turf, chosen_species.name)
-		if(chosen_species.has_organ[BP_POSIBRAIN] && client && client.prefs.is_shackled)
+		/*if(chosen_species.has_organ[BP_POSIBRAIN] && client && client.prefs.is_shackled)
 			var/obj/item/organ/internal/posibrain/B = new_character.internal_organs_by_name[BP_POSIBRAIN]
-			if(B)	B.shackle(client.prefs.get_lawset())
+			if(B)
+				B.shackle(client.prefs.get_lawset())*/ // Removed until we get those cyberdummies working
 
 	if(!new_character)
 		new_character = new(spawn_turf)

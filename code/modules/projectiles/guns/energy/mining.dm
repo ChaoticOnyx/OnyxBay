@@ -18,7 +18,7 @@
 	slot_flags = SLOT_BELT|SLOT_BACK
 	origin_tech = list(TECH_COMBAT = 2, TECH_MAGNET = 4, TECH_POWER = 4)
 	projectile_type = /obj/item/projectile/kinetic
-	fire_sound = 'sound/weapons/kenetic_accel.ogg'
+	fire_sound = 'sound/effects/weapons/energy/kinetic_accel.ogg'
 	var/max_mod_capacity = 100
 	var/list/modkits = list()
 	combustion = FALSE
@@ -28,7 +28,7 @@
 		user.setClickCooldown(DEFAULT_ATTACK_COOLDOWN)
 		to_chat(user, "<span class='notice'>You begin charging \the [src]...</span>")
 		if(do_after(user,20))
-			playsound(src.loc, 'sound/weapons/kenetic_reload.ogg', 60, 1)
+			playsound(src.loc, 'sound/effects/weapons/energy/kinetic_reload.ogg', 60, 1)
 			user.visible_message(
 				"<span class='warning'>\The [user] pumps \the [src]!</span>",
 				"<span class='warning'>You pump \the [src]!</span>"

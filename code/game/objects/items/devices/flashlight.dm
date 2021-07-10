@@ -15,8 +15,10 @@
 	var/activation_sound = 'sound/effects/flashlight.ogg'
 	var/spam_flag = FALSE // spamming can possibly overload lighting SS
 
-	var/brightness_range = 4         // range of light when on
-	var/brightness_power = 1         // intensity of light when on, defaults to brightness_range if set to null
+	var/flashlight_max_bright    = 0.5 // brightness of light when on, must be no greater than 1.
+	var/flashlight_inner_range   = 1   // inner range of light when on, can be negative
+	var/flashlight_outer_range   = 4   // outer range of light when on, can be negative
+	var/flashlight_falloff_curve = 4.0
 	var/brightness_color = "#fff3b2" // color of light when on
 	var/light_overlay = TRUE
 
@@ -41,7 +43,7 @@
 /obj/item/device/flashlight/proc/switch_light(state = FALSE)
 	on = state
 	if(on)
-		set_light(brightness_range, brightness_power, brightness_color)
+		set_light(flashlight_max_bright, flashlight_inner_range, flashlight_outer_range, flashlight_falloff_curve, brightness_color)
 	else
 		set_light(0)
 
@@ -141,8 +143,9 @@
 	icon_state = "biglight"
 	item_state = "biglight"
 
-	brightness_range = 6
-	brightness_power = 3
+	flashlight_max_bright = 0.75
+	flashlight_outer_range = 5
+	flashlight_falloff_curve = 3.0
 	brightness_color = "#afffff"
 
 /obj/item/device/flashlight/flashdark
@@ -152,9 +155,11 @@
 	item_state = "flashdark"
 	w_class = ITEM_SIZE_NORMAL
 
-	brightness_range = 11
-	brightness_power = -11
-	brightness_color = "#000000"
+	flashlight_max_bright = -3
+	flashlight_outer_range = 4
+	flashlight_inner_range = 1
+	flashlight_falloff_curve = 3.0
+	brightness_color = "#ffffff"
 
 /obj/item/device/flashlight/pen
 	name = "penlight"
@@ -165,7 +170,9 @@
 	slot_flags = SLOT_EARS
 	w_class = ITEM_SIZE_TINY
 
-	brightness_range = 2
+	flashlight_max_bright = 0.25
+	flashlight_inner_range = 0.1
+	flashlight_outer_range = 2
 
 /obj/item/device/flashlight/maglight
 	name = "maglight"
@@ -187,7 +194,9 @@
 	obj_flags = OBJ_FLAG_CONDUCTIBLE
 	w_class = ITEM_SIZE_TINY
 
-	brightness_range = 2
+	flashlight_max_bright = 0.25
+	flashlight_inner_range = 0.1
+	flashlight_outer_range = 2
 
 /obj/item/device/flashlight/lantern
 	name = "lantern"
@@ -195,8 +204,9 @@
 	item_state = "lantern"
 	desc = "A mining lantern."
 
-	brightness_range = 5
-	brightness_power = 2
+	flashlight_max_bright = 0.75
+	flashlight_outer_range = 5
+	flashlight_falloff_curve = 2.5
 	brightness_color = "#ffc58f"
 	light_overlay = FALSE
 
@@ -209,8 +219,10 @@
 	w_class = ITEM_SIZE_LARGE
 	obj_flags = OBJ_FLAG_CONDUCTIBLE
 
-	brightness_range = 4
-	brightness_power = 2
+	flashlight_max_bright = 0.3
+	flashlight_inner_range = 2
+	flashlight_outer_range = 4
+	flashlight_falloff_curve = 4.0
 	on = 1
 
 // green-shaded desk lamp
@@ -219,18 +231,18 @@
 	icon_state = "lampgreen"
 	item_state = "lampgreen"
 
-	brightness_range = 3
-	brightness_power = 2
-	brightness_color = "#ffc58f"
+	flashlight_inner_range = 1.5
+	flashlight_outer_range = 3
+	brightness_color = "#efac75"
 
 /obj/item/device/flashlight/lamp/brown
 	desc = "A classic brown-shaded desk lamp."
 	icon_state = "lampbrown"
 	item_state = "lampbrown"
 
-	brightness_range = 3
-	brightness_power = 2
-	brightness_color = "#ffc58f"
+	flashlight_inner_range = 1.5
+	flashlight_outer_range = 3
+	brightness_color = "#efac75"
 
 
 /obj/item/device/flashlight/lamp/verb/toggle_light()
@@ -250,8 +262,10 @@
 	icon_state = "flare"
 	item_state = "flare"
 
-	brightness_range = 8 // Pretty bright.
-	brightness_power = 3
+	flashlight_max_bright = 0.8
+	flashlight_inner_range = 2
+	flashlight_outer_range = 7
+	flashlight_falloff_curve = 2.5
 	brightness_color = "#e58775"
 
 	action_button_name = null //just pull it manually, neckbeard.
@@ -317,8 +331,9 @@
 	var/fuel = 0
 	activation_sound = null
 
-	brightness_range = 3
-	brightness_power = 2
+	flashlight_max_bright = 0.6
+	flashlight_inner_range = 0.1
+	flashlight_outer_range = 3
 	brightness_color = "#49f37c"
 	color = "#49f37c"
 	light_overlay = FALSE
@@ -354,7 +369,7 @@
 		I.blend_mode = BLEND_ADD
 		overlays += I
 		item_state = "glowstick-on"
-		set_light(brightness_range, brightness_power, brightness_color)
+		set_light(flashlight_max_bright, flashlight_inner_range, flashlight_outer_range, 2, brightness_color)
 	else
 		icon_state = "glowstick"
 	var/mob/M = loc
@@ -403,27 +418,28 @@
 	color = rgb(rand(50, 255), rand(50, 255), rand(50, 255))
 	..()
 
-/obj/item/device/flashlight/slime
+/obj/item/device/flashlight/metroid
 	gender = PLURAL
-	name = "glowing slime extract"
+	name = "glowing metroid extract"
 	desc = "A glowing ball of what appears to be amber."
 	icon = 'icons/obj/lighting.dmi'
 	icon_state = "slime-on"
 	item_state = "slime"
 	w_class = ITEM_SIZE_TINY
 
-	brightness_range = 4
-	brightness_power = 1
+	flashlight_max_bright = 1
+	flashlight_inner_range = 0.1
+	flashlight_outer_range = 4
 	brightness_color = "#ffff00"
 	light_overlay = FALSE
 	on = 1 //Bio-luminesence has one setting, on.
 
-/obj/item/device/flashlight/slime/New()
+/obj/item/device/flashlight/metroid/New()
 	..()
-	set_light(brightness_range, brightness_power, brightness_color)
+	set_light(flashlight_max_bright, flashlight_inner_range, flashlight_outer_range, 2, brightness_color)
 
-/obj/item/device/flashlight/slime/update_icon()
+/obj/item/device/flashlight/metroid/update_icon()
 	return
 
-/obj/item/device/flashlight/slime/attack_self(mob/user)
+/obj/item/device/flashlight/metroid/attack_self(mob/user)
 	return //Bio-luminescence does not toggle.

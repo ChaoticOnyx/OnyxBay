@@ -66,7 +66,6 @@
 	recipes += new /datum/stack_recipe_list("airlock assemblies", list( \
 		new /datum/stack_recipe("standard airlock assembly", /obj/structure/door_assembly, 4, time = 50, one_per_turf = 1, on_floor = 1), \
 		new /datum/stack_recipe("command airlock assembly", /obj/structure/door_assembly/door_assembly_com, 4, time = 50, one_per_turf = 1, on_floor = 1), \
-		new /datum/stack_recipe("sol airlock assembly", /obj/structure/door_assembly/door_assembly_sol, 4, time = 50, one_per_turf = 1, on_floor = 1), \
 		new /datum/stack_recipe("security airlock assembly", /obj/structure/door_assembly/door_assembly_sec, 4, time = 50, one_per_turf = 1, on_floor = 1), \
 		new /datum/stack_recipe("engineering airlock assembly", /obj/structure/door_assembly/door_assembly_eng, 4, time = 50, one_per_turf = 1, on_floor = 1), \
 		new /datum/stack_recipe("mining airlock assembly", /obj/structure/door_assembly/door_assembly_min, 4, time = 50, one_per_turf = 1, on_floor = 1), \
@@ -99,7 +98,7 @@
 /material/plasteel/generate_recipes()
 	..()
 	recipes += new /datum/stack_recipe("AI core", /obj/structure/AIcore, 8, time = 50, one_per_turf = 1)
-	recipes += new /datum/stack_recipe("Metal crate", /obj/structure/closet/crate/handmade, 5, time = 30, one_per_turf = 1)
+	recipes += new /datum/stack_recipe("Handmade crate", /obj/structure/closet/crate/handmade, 5, time = 30, one_per_turf = 1)
 
 /material/stone/generate_recipes()
 	..()

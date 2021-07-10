@@ -9,11 +9,15 @@ LEGACY_RECORD_STRUCTURE(virus_records, virus_record)
 	var/clicks = 0
 	var/uniqueID = 0
 	var/list/datum/disease2/effect/effects = list()
+	var/mob/living/carbon/human/infected = null // Someone who will suffer from disease
 	var/antigen = list() // 16 bits describing the antigens, when one bit is set, a cure with that bit can dock here
 	var/max_stage = 4
 	var/list/affected_species = list(SPECIES_HUMAN, SPECIES_UNATHI, SPECIES_SKRELL, SPECIES_TAJARA)
 
 /datum/disease2/disease/New(random_severity = 0)
+	if(GAME_STATE <= RUNLEVEL_SETUP) // fix server start runtime
+		qdel(src)
+		return
 	uniqueID = rand(0, 10000)
 	if(random_severity)
 		makerandom(random_severity)
@@ -30,6 +34,13 @@ LEGACY_RECORD_STRUCTURE(virus_records, virus_record)
 	if(!antigen)
 		antigen = list(pick(ALL_ANTIGENS))
 		antigen |= pick(ALL_ANTIGENS)
+	
+	if(infected) //if virus mutated inside human, update his virus2
+		for(var/ID in infected.virus2) 
+			var/datum/disease2/disease/V = infected.virus2["[ID]"]
+			if(V.uniqueID != ID)
+				infected.virus2.Remove("[ID]")
+				infected.virus2["[V.uniqueID]"] = V
 
 	for(var/datum/disease2/effect/E in effects)
 		E.parent_disease = src
@@ -74,37 +85,37 @@ LEGACY_RECORD_STRUCTURE(virus_records, virus_record)
 				res |= picked.primitive_form
 	return res
 
-/datum/disease2/disease/proc/process(mob/living/carbon/human/H)
-	if(!H)
+/datum/disease2/disease/proc/process()
+	if(!infected)
 		return
 
 	if(dead)
-		cure(H)
+		cure()
 		return
 
-	if(H.stat == DEAD)
+	if(infected.stat == DEAD)
 		return
 
 	if(stage <= 1 && clicks == 0) 	// with a certain chance, the mob may become immune to the disease before it starts properly
-		if(prob(H.virus_immunity() * 0.05))
-			cure(H, 1)
+		if(prob(infected.virus_immunity() * 0.05))
+			cure()
 			return
 
 	// Some species are flat out immune to organic viruses.
-	if(H.species.get_virus_immune(H))
-		cure(H)
+	if(infected.species.get_virus_immune(infected))
+		cure()
 		return
 
-	if(H.radiation > 50)
+	if(infected.radiation > 50)
 		if(prob(4))
 			majormutate()
 
-	if(prob(H.virus_immunity()) && prob(stage)) // Increasing chance of curing as the virus progresses
-		cure(H, 1)
+	if(prob(infected.virus_immunity()) && prob(stage)) // Increasing chance of curing as the virus progresses
+		cure()
 	//Waiting out the disease the old way
 	if(stage == max_stage && clicks > max(stage * 100, 300))
-		if(prob(H.virus_immunity() * 0.05 + 100 - infectionchance))
-			cure(H, 1)
+		if(prob(infected.virus_immunity() * 0.05 + 100 - infectionchance))
+			cure()
 
 	var/top_badness = 1
 	for(var/datum/disease2/effect/e in effects)
@@ -112,15 +123,15 @@ LEGACY_RECORD_STRUCTURE(virus_records, virus_record)
 			top_badness = max(top_badness, e.badness)
 
 	//Space antibiotics might stop disease completely
-	if(H.chem_effects[CE_ANTIVIRAL] > top_badness)
+	if(infected.chem_effects[CE_ANTIVIRAL] > top_badness)
 		if(stage == 1 && prob(20))
-			cure(H)
+			cure()
 		return
 
 	clicks += speed
 	//Virus food speeds up disease progress
-	if(H.reagents.has_reagent(/datum/reagent/nutriment/virus_food))
-		H.reagents.remove_reagent(/datum/reagent/nutriment/virus_food, REM)
+	if(infected.reagents.has_reagent(/datum/reagent/nutriment/virus_food))
+		infected.reagents.remove_reagent(/datum/reagent/nutriment/virus_food, REM)
 		clicks += 10
 
 	//Moving to the next stage
@@ -131,22 +142,23 @@ LEGACY_RECORD_STRUCTURE(virus_records, virus_record)
 
 	//Do nasty effects
 	for(var/datum/disease2/effect/e in effects)
-		e.fire(H,stage)
+		e.fire(stage)
 
 	//fever
-	if(!H.chem_effects[CE_ANTIVIRAL])
-		H.bodytemperature = max(H.bodytemperature, min(310 + 5 * min(stage, max_stage), H.bodytemperature + 5 * min(stage, max_stage)))
+	if(!infected.chem_effects[CE_ANTIVIRAL])
+		infected.bodytemperature = max(infected.bodytemperature, min(310 + 5 * min(stage, max_stage), infected.bodytemperature + 5 * min(stage, max_stage)))
 
-/datum/disease2/disease/proc/cure(mob/living/carbon/human/H, antigen)
-	if(!H)
-		return
+/datum/disease2/disease/proc/cure()
+	ASSERT(infected) //You can't cure disease if there's no diseased
+
+	SSvirus2suka.dequeue_virus(src)
 	for(var/datum/disease2/effect/e in effects)
-		e.deactivate(H)
-	H.virus2.Remove("[uniqueID]")
+		e.deactivate(infected)
+	infected.virus2.Remove("[uniqueID]")
 	if(antigen)
-		H.antibodies |= antigen
+		infected.antibodies |= antigen
 
-	BITSET(H.hud_updateflag, STATUS_HUD)
+	BITSET(infected.hud_updateflag, STATUS_HUD)
 
 /datum/disease2/disease/proc/minormutate()
 	var/datum/disease2/effect/E = pick(effects)

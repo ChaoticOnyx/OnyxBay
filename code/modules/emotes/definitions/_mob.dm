@@ -147,7 +147,7 @@
 		/decl/emote/audible/synth/security/halt
 		)
 
-/mob/living/carbon/slime
+/mob/living/carbon/metroid
 	default_emotes = list(
 		/decl/emote/audible/moan,
 		/decl/emote/visible/twitch,
@@ -157,10 +157,10 @@
 		/decl/emote/visible/jiggle,
 		/decl/emote/visible/lightup,
 		/decl/emote/visible/vibrate,
-		/decl/emote/slime,
-		/decl/emote/slime/pout,
-		/decl/emote/slime/sad,
-		/decl/emote/slime/angry,
-		/decl/emote/slime/frown,
-		/decl/emote/slime/smile
+		/decl/emote/metroid,
+		/decl/emote/metroid/pout,
+		/decl/emote/metroid/sad,
+		/decl/emote/metroid/angry,
+		/decl/emote/metroid/frown,
+		/decl/emote/metroid/smile
 		)

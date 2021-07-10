@@ -5,8 +5,9 @@
 	icon_state = "butterflystep1"
 	force_divisor = 0.1
 	thrown_force_divisor = 0.1
+	hitsound = "swing_hit"
 
-/obj/item/weapon/material/butterflyconstruction/attackby(obj/item/W as obj, mob/user as mob)
+/obj/item/weapon/material/butterflyconstruction/attackby(obj/item/W, mob/user)
 	if(isScrewdriver(W))
 		to_chat(user, "You finish the concealed blade weapon.")
 		user.put_in_hands(new /obj/item/weapon/material/butterfly(user.loc, material.name))
@@ -28,9 +29,9 @@
 	icon_state = "butterfly1"
 	force_divisor = 0.1
 	thrown_force_divisor = 0.1
+	hitsound = "swing_hit"
 
-/obj/item/weapon/material/butterflyhandle/attackby(obj/item/W as obj, mob/user as mob)
-
+/obj/item/weapon/material/butterflyhandle/attackby(obj/item/W, mob/user)
 	if(istype(W,/obj/item/weapon/material/butterflyblade))
 		var/obj/item/weapon/material/butterflyblade/B = W
 		to_chat(user, "You attach the two concealed blade parts.")
@@ -55,11 +56,12 @@
 	mod_reach = 1.25
 	mod_handy = 1.0
 	attack_verb = list("hit", "bludgeoned", "whacked", "bonked")
+	hitsound = "swing_hit"
 	force_divisor = 0
 	thrown_force_divisor = 0
 	applies_material_colour = 0
 
-/obj/item/weapon/material/wirerod/attackby(obj/item/I, mob/user as mob)
+/obj/item/weapon/material/wirerod/attackby(obj/item/I, mob/user)
 	..()
 	var/obj/item/finished
 	if(istype(I, /obj/item/weapon/material/shard) || istype(I, /obj/item/weapon/material/knife/shiv))
@@ -75,4 +77,5 @@
 		qdel(I)
 		qdel(src)
 		user.put_in_hands(finished)
+		return
 	update_icon(user)

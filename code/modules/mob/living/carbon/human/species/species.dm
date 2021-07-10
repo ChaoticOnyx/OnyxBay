@@ -144,22 +144,23 @@
 	var/grab_type = GRAB_NORMAL		// The species' default grab type.
 
 	// Body/form vars.
-	var/list/inherent_verbs 	  // Species-specific verbs.
-	var/has_fine_manipulation = 1 // Can use small items.
-	var/siemens_coefficient = 1   // The lower, the thicker the skin and better the insulation.
-	var/darksight = 2             // Native darksight distance.
-	var/species_flags = 0         // Various specific features.
-	var/appearance_flags = 0      // Appearance/display related features.
-	var/spawn_flags = 0           // Flags that specify who can spawn as this species
-	var/slowdown = 0              // Passive movement speed malus (or boost, if negative)
-	var/primitive_form            // Lesser form, if any (ie. monkey for humans)
-	var/greater_form              // Greater form, if any, ie. human for monkeys.
+	var/list/inherent_verbs 	       // Species-specific verbs.
+	var/has_fine_manipulation = 1      // Can use small items.
+	var/siemens_coefficient = 1        // The lower, the thicker the skin and better the insulation.
+	var/darksight_range = 2            // Native darksight distance.
+	var/darksight_tint = DARKTINT_NONE // How shadows are tinted.
+	var/species_flags = 0              // Various specific features.
+	var/appearance_flags = 0           // Appearance/display related features.
+	var/spawn_flags = 0                // Flags that specify who can spawn as this species
+	var/slowdown = 0                   // Passive movement speed malus (or boost, if negative)
+	var/primitive_form                 // Lesser form, if any (ie. monkey for humans)
+	var/greater_form                   // Greater form, if any, ie. human for monkeys.
 	var/holder_type
-	var/gluttonous                // Can eat some mobs. Values can be GLUT_TINY, GLUT_SMALLER, GLUT_ANYTHING, GLUT_ITEM_TINY, GLUT_ITEM_NORMAL, GLUT_ITEM_ANYTHING, GLUT_PROJECTILE_VOMIT
-	var/stomach_capacity = 5      // How much stuff they can stick in their stomach
-	var/rarity_value = 1          // Relative rarity/collector value for this species.
-	                              // Determines the organs that the species spawns with and
-	var/list/has_organ = list(    // which required-organ checks are conducted.
+	var/gluttonous                     // Can eat some mobs. Values can be GLUT_TINY, GLUT_SMALLER, GLUT_ANYTHING, GLUT_ITEM_TINY, GLUT_ITEM_NORMAL, GLUT_ITEM_ANYTHING, GLUT_PROJECTILE_VOMIT
+	var/stomach_capacity = 5           // How much stuff they can stick in their stomach
+	var/rarity_value = 1               // Relative rarity/collector value for this species.
+	                                   // Determines the organs that the species spawns with and
+	var/list/has_organ = list(         // which required-organ checks are conducted.
 		BP_HEART =    /obj/item/organ/internal/heart,
 		BP_STOMACH =  /obj/item/organ/internal/stomach,
 		BP_LUNGS =    /obj/item/organ/internal/lungs,
@@ -280,14 +281,19 @@ The slots that you can use are found in items_clothing.dm and are the inventory 
 /datum/species/proc/create_organs(mob/living/carbon/human/H) //Handles creation of mob organs.
 
 	H.mob_size = mob_size
-	var/list/obj/item/organ/internal/foreign_organs = list()
+	var/list/foreign_organs = list()
+	var/list/implants_from_external_organs = list()
 
 	for(var/obj/item/organ/external/E in H.contents)
 		for(var/obj/item/organ/internal/O in E.internal_organs)
 			if(istype(O) && O.foreign)
-				E.internal_organs -= O
-				H.internal_organs -= O
+				E.internal_organs.Remove(O)
+				H.internal_organs.Remove(O)
 				foreign_organs |= O
+		if(E.implants.len)
+			implants_from_external_organs[E.organ_tag] = list()
+		for(var/I in E.implants)
+			implants_from_external_organs[E.organ_tag] += I
 
 	for(var/obj/item/organ/organ in H.contents)
 		if((organ in H.organs) || (organ in H.internal_organs))
@@ -317,6 +323,8 @@ The slots that you can use are found in items_clothing.dm and are the inventory 
 		H.internal_organs_by_name[organ_tag] = O
 
 	for(var/obj/item/organ/internal/organ in foreign_organs)
+		organ.owner = H // Let's just make sure, it doesn't hurt
+		organ.rejuvenate()
 		var/obj/item/organ/external/E = H.get_organ(organ.parent_organ)
 		E.internal_organs |= organ
 		H.internal_organs_by_name[organ.organ_tag] = organ
@@ -333,8 +341,11 @@ The slots that you can use are found in items_clothing.dm and are the inventory 
 
 	H.sync_organ_dna()
 
-/datum/species/proc/hug(mob/living/carbon/human/H,mob/living/target)
+	for(var/obj/item/organ/external/E in H.contents)
+		if(E.organ_tag in implants_from_external_organs)
+			E.implants += implants_from_external_organs[E.organ_tag]
 
+/datum/species/proc/hug(mob/living/carbon/human/H, mob/living/target)
 	var/mob/living/carbon/human/V
 	if(istype(target,/mob/living/carbon/human))
 		V = target
@@ -501,12 +512,13 @@ The slots that you can use are found in items_clothing.dm and are the inventory 
 /datum/species/proc/handle_vision(mob/living/carbon/human/H)
 	H.update_sight()
 	H.set_sight(H.sight|get_vision_flags(H)|H.equipment_vision_flags)
+	H.change_light_color(darksight_tint)
 
 	if(H.stat == DEAD)
 		return 1
 
 	if(!H.druggy)
-		H.set_see_in_dark((H.sight == (SEE_TURFS|SEE_MOBS|SEE_OBJS)) ? 8 : min(darksight + H.equipment_darkness_modifier, 8))
+		H.set_see_in_dark((H.sight == (SEE_TURFS|SEE_MOBS|SEE_OBJS)) ? 8 : min(darksight_range + H.equipment_darkness_modifier, 8))
 		if(H.equipment_see_invis)
 			H.set_see_invisible(min(H.see_invisible, H.equipment_see_invis))
 
@@ -612,7 +624,10 @@ The slots that you can use are found in items_clothing.dm and are the inventory 
 				return W.afterattack(shoot_to,target)
 
 	var/effective_armor = target.getarmor(attacker.zone_sel.selecting, "melee")
-	target.damage_poise(round(4.0+4.0*((100-effective_armor)/100),0.1))
+	var/poisedmg = round(4.0 + 4.0 * ((100 - effective_armor) / 100), 0.1)
+	if(istype(attacker.gloves, /obj/item/clothing/gloves/chameleon/robust))
+		poisedmg *= 1.75
+	target.damage_poise(poisedmg)
 
 	//target.visible_message("Debug \[DISARM\]: [target] lost [round(4.0+4.0*((100-effective_armor)/100),0.1)] poise ([target.poise]/[target.poise_pool])") // Debug Message
 

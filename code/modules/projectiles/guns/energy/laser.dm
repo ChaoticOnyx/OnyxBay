@@ -1,10 +1,10 @@
 /obj/item/weapon/gun/energy/laser
-	name = "laser carbine"
-	desc = "A Hephaestus Industries G40E carbine, designed to kill with concentrated energy blasts."
+	name = "laser rifle"
+	desc = "A Hephaestus Industries G40E rifle, designed to kill with concentrated energy blasts."
 	icon_state = "laser"
 	item_state = "laserrifle"
-	slot_flags = SLOT_BELT|SLOT_BACK
-	w_class = ITEM_SIZE_LARGE
+	slot_flags = SLOT_BACK
+	w_class = ITEM_SIZE_HUGE
 	force = 12.5
 	mod_weight = 1.0
 	mod_reach = 0.8
@@ -24,7 +24,7 @@
 	)
 
 /obj/item/weapon/gun/energy/laser/mounted
-	desc = "A modification Hephaestus Industries G40E carbine, designed to be mounted on cyborgs and other battle machinery. It's designed to kill with concentrated energy blasts."
+	desc = "A modification Hephaestus Industries G40E rifle, designed to be mounted on cyborgs and other battle machinery. It's designed to kill with concentrated energy blasts."
 	self_recharge = 1
 	use_external_power = 1
 	one_hand_penalty = 0 //just in case
@@ -49,7 +49,7 @@
 	..()
 
 /obj/item/weapon/gun/energy/laser/practice
-	name = "practice laser carbine"
+	name = "practice laser rifle"
 	desc = "A modified version of the HI G40E, this one fires less concentrated energy bolts designed for target practice."
 	icon_state = "laserp"
 	projectile_type = /obj/item/projectile/beam/practice
@@ -117,7 +117,7 @@
 	icon_state = "lasercannon"
 	item_state = null
 	origin_tech = list(TECH_COMBAT = 4, TECH_MATERIAL = 3, TECH_POWER = 3)
-	slot_flags = SLOT_BELT|SLOT_BACK
+	slot_flags = SLOT_BACK
 	one_hand_penalty = 6 //large and heavy
 	w_class = ITEM_SIZE_HUGE
 	projectile_type = /obj/item/projectile/beam/heavylaser
@@ -149,11 +149,11 @@
 	desc = "A high-power laser gun capable of emitting concentrated x-ray blasts, that are able to penetrate laser-resistant armor much more readily than standard photonic beams."
 	icon_state = "xray"
 	item_state = "xray"
-	slot_flags = SLOT_BELT|SLOT_BACK
+	slot_flags = SLOT_BACK
 	origin_tech = list(TECH_COMBAT = 5, TECH_MATERIAL = 3, TECH_MAGNET = 2, TECH_ILLEGAL = 2)
 	projectile_type = /obj/item/projectile/beam/xray/midlaser
 	one_hand_penalty = 2
-	w_class = ITEM_SIZE_LARGE
+	w_class = ITEM_SIZE_HUGE
 	charge_cost = 15
 	max_shots = 10
 	wielded_item_state = "gun_wielded"

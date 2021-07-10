@@ -12,15 +12,18 @@
 	level_max = list(Sp_TOTAL = 4, Sp_SPEED = 4, Sp_POWER = 3)
 	cooldown_min = 100 //50 deciseconds reduction per rank
 	duration = 50 //in deciseconds
-
+	need_target = FALSE
 	hud_state = "wiz_jaunt"
 
-/spell/targeted/ethereal_jaunt/cast(list/targets) //magnets, so mostly hardcoded
+/spell/targeted/ethereal_jaunt/cast(list/targets, mob/user) //magnets, so mostly hardcoded
 	for(var/mob/living/target in targets)
 		if(HAS_TRANSFORMATION_MOVEMENT_HANDLER(target))
 			continue
 		if(target.buckled)
 			target.buckled.unbuckle_mob()
+		if(istype(user.loc, /obj/machinery/atmospherics/unary/cryo_cell))
+			var/obj/machinery/atmospherics/unary/cryo_cell/cell = user.loc
+			cell.go_out()
 		spawn(0)
 			var/mobloc = get_turf(target.loc)
 			var/obj/effect/dummy/spell_jaunt/holder = new /obj/effect/dummy/spell_jaunt(mobloc)
@@ -103,7 +106,7 @@
 		if(!T.contains_dense_objects())
 			last_valid_turf = T
 	else
-		to_chat(user, SPAN("warning", "Some strange aura is blocking the way!"))
+		to_chat(user, SPAN_WARNING("Some strange aura is blocking the way!"))
 	canmove = 0
 	addtimer(CALLBACK(src, .proc/allow_move), 2)
 

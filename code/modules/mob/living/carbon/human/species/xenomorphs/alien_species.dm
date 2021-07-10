@@ -47,7 +47,8 @@
 
 	vision_flags = SEE_SELF|SEE_MOBS
 	eye_icon = "blank_eyes"
-	darksight = 8
+	darksight_range = 8
+	darksight_tint = DARKTINT_GOOD
 
 	has_organ = list(
 		O_BRAIN =    /obj/item/organ/internal/brain/xeno,

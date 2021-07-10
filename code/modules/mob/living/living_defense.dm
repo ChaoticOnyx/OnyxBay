@@ -185,25 +185,28 @@
 
 	return 1
 
-//this proc handles being hit by a thrown atom
-/mob/living/hitby(atom/movable/AM as mob|obj,speed = THROWFORCE_SPEED_DIVISOR)//Standardization and logging -Sieve
+// this proc handles being hit by a thrown atom
+/mob/living/hitby(atom/movable/AM, speed = THROWFORCE_SPEED_DIVISOR)// Standardization and logging -Sieve
 	if(!aura_check(AURA_TYPE_THROWN, AM, speed))
 		return
-	if(istype(AM,/obj/))
+
+	if(isobj(AM))
 		var/obj/O = AM
 		var/dtype = O.damtype
-		var/throw_damage = O.throwforce*(speed/THROWFORCE_SPEED_DIVISOR)
+		var/throw_damage = O.throwforce * (speed / THROWFORCE_SPEED_DIVISOR)
 
 		var/miss_chance = 15
-		if (O.throw_source)
+		if(O.throw_source)
 			var/distance = get_dist(O.throw_source, loc)
-			miss_chance = max(15*(distance-2), 0)
+			miss_chance = max(15 * (distance - 2), 0)
 
-		if (prob(miss_chance))
-			visible_message("<span class='notice'>\The [O] misses [src] narrowly!</span>")
+		if(prob(miss_chance))
+			visible_message(SPAN("notice", "\The [O] misses [src] narrowly!"))
 			return
 
-		src.visible_message("<span class='warning'>\The [src] has been hit by \the [O]</span>.")
+		visible_message(SPAN("warning", "\The [src] has been hit by \the [O]."))
+		play_hitby_sound(AM)
+
 		var/armor = run_armor_check(null, "melee")
 		if(armor < 100)
 			var/damage_flags = O.damage_flags()
@@ -223,28 +226,47 @@
 		var/mass = 1.5
 		if(istype(O, /obj/item))
 			var/obj/item/I = O
-			mass = I.w_class/THROWNOBJ_KNOCKBACK_DIVISOR
-		var/momentum = speed*mass
+			mass = I.w_class / THROWNOBJ_KNOCKBACK_DIVISOR
+		var/momentum = speed * mass
 
 		if(O.throw_source && momentum >= THROWNOBJ_KNOCKBACK_SPEED)
 			var/dir = get_dir(O.throw_source, src)
 
-			visible_message("<span class='warning'>\The [src] staggers under the impact!</span>","<span class='warning'>You stagger under the impact!</span>")
-			src.throw_at(get_edge_target_turf(src,dir),1,momentum)
+			visible_message(SPAN("warning", "\The [src] staggers under the impact!"), SPAN("warning", "You stagger under the impact!"))
+			throw_at(get_edge_target_turf(src,dir), 1, momentum)
 
-			if(!O || !src) return
+			if(!O || !src)
+				return
 
 			if(O.sharp) //Projectile is suitable for pinning.
 				//Handles embedding for non-humans and simple_animals.
 				embed(O)
 
-				var/turf/T = near_wall(dir,2)
+				var/turf/T = near_wall(dir, 2)
 
 				if(T)
 					src.loc = T
-					visible_message("<span class='warning'>[src] is pinned to the wall by [O]!</span>","<span class='warning'>You are pinned to the wall by [O]!</span>")
-					src.anchored = 1
-					src.pinned += O
+					visible_message(SPAN("warning", "[src] is pinned to the wall by [O]!"), SPAN("warning", "You are pinned to the wall by [O]!"))
+					anchored = 1
+					pinned += O
+
+/mob/living/play_hitby_sound(atom/movable/AM)
+	var/sound_to_play
+	if(istype(AM, /obj/item))
+		var/obj/item/I = AM
+		sound_to_play = I.hitsound
+	else if(isliving(AM))
+		sound_to_play = "punch"
+	if(!sound_to_play)
+		return
+
+	var/sound_loudness = rand(65, 85)
+
+	if(isobj(AM))
+		var/obj/O = AM
+		sound_loudness = min(100, O.w_class * (O.throwforce ? 15 : 5))
+
+	playsound(src, sound_to_play, sound_loudness, 1)
 
 /mob/living/proc/embed(obj/O, def_zone=null, datum/wound/supplied_wound)
 	O.loc = src
@@ -289,14 +311,14 @@
 /mob/living/proc/IgniteMob()
 	if(fire_stacks > 0 && !on_fire)
 		on_fire = 1
-		set_light(light_range + 3)
+		set_light(0.6, 0.1, light_outer_range + 3)
 		update_fire()
 
 /mob/living/proc/ExtinguishMob()
 	if(on_fire)
 		on_fire = 0
 		fire_stacks = 0
-		set_light(max(0, light_range - 3))
+		set_light(max(0, light_outer_range - 3))
 		update_fire()
 
 /mob/living/proc/update_fire()

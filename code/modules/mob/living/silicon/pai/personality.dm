@@ -8,7 +8,7 @@
 */
 
 /datum/paiCandidate/proc/savefile_path(client/user)
-	return "data/player_saves/[copytext(user.ckey, 1, 2)]/[user.ckey]/pai.sav"
+	return "data/players/[user.ckey]/pai.sav"
 
 /datum/paiCandidate/proc/savefile_save(client/user)
 	if(IsGuestKey(user.key))

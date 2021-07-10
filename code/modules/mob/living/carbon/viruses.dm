@@ -5,7 +5,7 @@
 	if(bodytemperature > 406)
 		for(var/ID in virus2)
 			var/datum/disease2/disease/V = virus2[ID]
-			V.cure(src)
+			V.cure()
 
 	if(life_tick % 3) //don't spam checks over all objects in view every tick.
 		for(var/obj/effect/decal/cleanable/O in view(1, src))
@@ -35,7 +35,7 @@
 			if(isnull(V)) // Trying to figure out a runtime error that keeps repeating
 				CRASH("virus2 nulled before calling activate()")
 			else
-				V.process(src)
+				SSvirus2suka.queue_virus(V, TRUE, src) // fast, fast, fast
 			// activate may have deleted the virus
 			if(!V)
 				continue

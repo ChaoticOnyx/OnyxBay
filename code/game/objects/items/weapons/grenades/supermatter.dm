@@ -16,7 +16,7 @@
 	START_PROCESSING(SSobj, src)
 	implode_at = world.time + 10 SECONDS
 	update_icon()
-	playsound(src, 'sound/weapons/wave.ogg', 100)
+	playsound(src, 'sound/effects/weapons/energy/wave.ogg', 100)
 
 /obj/item/weapon/grenade/supermatter/update_icon()
 	overlays.Cut()

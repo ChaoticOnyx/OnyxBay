@@ -111,7 +111,8 @@
 	..()
 	if(!istype(H) || !H.organs || !H.organs.len)
 		H.death()
-	if(prob(50) && spawn_diona_nymph(get_turf(src)))
+	if(prob(50))
+		spawn_diona_nymph(get_turf(src))
 		qdel(src)
 
 // Copypaste due to eye code, RIP.
@@ -120,6 +121,7 @@
 	max_damage = 50
 	min_broken_damage = 25
 	limb_flags = ORGAN_FLAG_CAN_AMPUTATE | ORGAN_FLAG_CAN_BREAK
+	skull_path = null
 
 /obj/item/organ/external/head/no_eyes/diona/removed()
 	if(BP_IS_ROBOTIC(src))
@@ -128,7 +130,8 @@
 	..()
 	if(!istype(H) || !H.organs || !H.organs.len)
 		H.death()
-	if(prob(50) && spawn_diona_nymph(get_turf(src)))
+	if(prob(50))
+		spawn_diona_nymph(get_turf(src))
 		qdel(src)
 
 /obj/item/organ/internal/diona
@@ -144,7 +147,8 @@
 	..()
 	if(!istype(H) || !H.organs || !H.organs.len)
 		H.death()
-	if(prob(50) && !skip_nymph && spawn_diona_nymph(get_turf(src)))
+	if(prob(50) && !skip_nymph)
+		spawn_diona_nymph(get_turf(src))
 		qdel(src)
 
 /obj/item/organ/internal/diona/Process()

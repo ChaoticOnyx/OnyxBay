@@ -7,6 +7,8 @@
 	var/last_bumped = 0
 	var/pass_flags = 0
 	var/throwpass = 0
+	var/hitby_sound = null
+	var/hitby_loudness_multiplier = 1.0
 	var/germ_level = GERM_LEVEL_AMBIENT // The higher the germ level, the more germ on the atom.
 	var/simulated = 1 //filter for actions - used by lighting overlays
 	var/fluorescent // Shows up under a UV light.
@@ -58,7 +60,7 @@
 		crash_with("Warning: [src]([type]) initialized multiple times!")
 	atom_flags |= ATOM_FLAG_INITIALIZED
 
-	if(light_power && light_range)
+	if(light_max_bright && light_outer_range)
 		update_light()
 
 	if(opacity)
@@ -309,10 +311,26 @@ its easier to just keep the beam vertical.
 	CAN_BE_REDEFINED(TRUE)
 	return
 
-/atom/proc/hitby(atom/movable/AM as mob|obj)
-	if (density)
+/atom/proc/hitby(atom/movable/AM, speed = 0, nomsg = FALSE)
+	if(density)
 		AM.throwing = 0
+		play_hitby_sound(AM)
+		if(!nomsg)
+			visible_message(SPAN("warning", "[src] was hit by \the [AM]."))
 	return
+
+/atom/proc/play_hitby_sound(atom/movable/AM)
+	if(!hitby_sound)
+		return
+	var/sound_loudness = rand(65, 85)
+
+	if(istype(AM, /obj/item/projectile))
+		sound_loudness = 100
+	if(isobj(AM))
+		var/obj/O = AM
+		sound_loudness = min(100, O.w_class * (O.throwforce ? 10 : 5) * hitby_loudness_multiplier)
+
+	playsound(src, hitby_sound, sound_loudness, 1)
 
 
 //returns 1 if made bloody, returns 0 otherwise

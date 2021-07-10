@@ -28,6 +28,7 @@
 	active_power_usage = 2200	//the pneumatic pump power. 3 HP ~ 2200W
 	idle_power_usage = 100
 	atom_flags = ATOM_FLAG_CLIMBABLE
+	hitby_loudness_multiplier = 0.5
 	var/datum/browser/disposal_menu
 
 // create a new disposal
@@ -57,35 +58,37 @@
 		return
 
 	add_fingerprint(user, 0, I)
-	if(mode<=0) // It's off
+	if(mode <= 0) // It's off
 		if(isScrewdriver(I))
 			if(contents.len > 0)
 				to_chat(user, "Eject the items first!")
 				return
-			if(mode==0) // It's off but still not unscrewed
-				mode=-1 // Set it to doubleoff l0l
+			if(mode == 0) // It's off but still not unscrewed
+				mode = -1 // Set it to doubleoff l0l
 				playsound(src.loc, 'sound/items/Screwdriver.ogg', 50, 1)
 				to_chat(user, "You remove the screws around the power connection.")
 				return
-			else if(mode==-1)
-				mode=0
+			else if(mode == -1)
+				mode = 0
 				playsound(src.loc, 'sound/items/Screwdriver.ogg', 50, 1)
 				to_chat(user, "You attach the screws around the power connection.")
 				return
-		else if(isWelder(I) && mode==-1)
+		else if(isWelder(I) && mode == -1)
 			if(contents.len > 0)
 				to_chat(user, "Eject the items first!")
 				return
 			var/obj/item/weapon/weldingtool/W = I
-			if(W.remove_fuel(0,user))
+			if(W.remove_fuel(0, user))
 				playsound(src.loc, 'sound/items/Welder2.ogg', 100, 1)
 				to_chat(user, "You start slicing the floorweld off the disposal unit.")
 
-				if(do_after(user,20,src))
-					if(!src || !W.isOn()) return
+				if(do_after(user, 20, src))
+					if(!src || !W.isOn())
+						return
+					eject() // In case if something's got inside while we were slicin' and the GC got fucked due to lag
 					to_chat(user, "You sliced the floorweld off the disposal unit.")
 					var/obj/structure/disposalconstruct/C = new (src.loc)
-					src.transfer_fingerprints_to(C)
+					transfer_fingerprints_to(C)
 					C.ptype = 6 // 6 = disposal unit
 					C.anchored = 1
 					C.set_density(1)
@@ -334,7 +337,7 @@
 // eject the contents of the disposal unit
 /obj/machinery/disposal/proc/eject()
 	for(var/atom/movable/AM in src)
-		AM.forceMove(src.loc)
+		AM.forceMove(loc)
 		AM.pipe_eject(0)
 	update_icon()
 
@@ -477,6 +480,10 @@
 		H.vent_gas(loc)
 		qdel(H)
 
+
+/obj/machinery/disposal/hitby(atom/movable/AM, speed, nomsg = TRUE)
+	..()
+
 /obj/machinery/disposal/CanPass(atom/movable/mover, turf/target)
 	if(istype(mover,/obj/item) && mover.throwing)
 		var/obj/item/I = mover
@@ -512,146 +519,143 @@
 
 
 	// initialize a holder from the contents of a disposal unit
-	proc/init(var/obj/machinery/disposal/D, var/datum/gas_mixture/flush_gas)
-		gas = flush_gas// transfer gas resv. into holder object -- let's be explicit about the data this proc consumes, please.
+/obj/structure/disposalholder/proc/init(var/obj/machinery/disposal/D, var/datum/gas_mixture/flush_gas)
+	gas = flush_gas// transfer gas resv. into holder object -- let's be explicit about the data this proc consumes, please.
 
-		//Check for any living mobs trigger hasmob.
-		//hasmob effects whether the package goes to cargo or its tagged destination.
-		for(var/mob/living/M in D)
-			if(M && M.stat != 2 && !istype(M,/mob/living/silicon/robot/drone))
-				hasmob = 1
+	//Check for any living mobs trigger hasmob.
+	//hasmob effects whether the package goes to cargo or its tagged destination.
+	for(var/mob/living/M in D)
+		if(M && M.stat != 2 && !istype(M,/mob/living/silicon/robot/drone))
+			hasmob = 1
 
-		//Checks 1 contents level deep. This means that players can be sent through disposals...
-		//...but it should require a second person to open the package. (i.e. person inside a wrapped locker)
-		for(var/obj/O in D)
-			if(O.contents)
-				for(var/mob/living/M in O.contents)
-					if(M && M.stat != 2 && !istype(M,/mob/living/silicon/robot/drone))
-						hasmob = 1
+	//Checks 1 contents level deep. This means that players can be sent through disposals...
+	//...but it should require a second person to open the package. (i.e. person inside a wrapped locker)
+	for(var/obj/O in D)
+		if(O.contents)
+			for(var/mob/living/M in O.contents)
+				if(M && M.stat != 2 && !istype(M,/mob/living/silicon/robot/drone))
+					hasmob = 1
 
-		// now everything inside the disposal gets put into the holder
-		// note AM since can contain mobs or objs
-		for(var/atom/movable/AM in D)
-			AM.forceMove(src)
-			if(istype(AM, /obj/structure/bigDelivery) && !hasmob)
-				var/obj/structure/bigDelivery/T = AM
-				src.destinationTag = T.sortTag
-			if(istype(AM, /obj/item/smallDelivery) && !hasmob)
-				var/obj/item/smallDelivery/T = AM
-				src.destinationTag = T.sortTag
-			//Drones can mail themselves through maint.
-			if(istype(AM, /mob/living/silicon/robot/drone))
-				var/mob/living/silicon/robot/drone/drone = AM
-				src.destinationTag = drone.mail_destination
+	// now everything inside the disposal gets put into the holder
+	// note AM since can contain mobs or objs
+	for(var/atom/movable/AM in D)
+		AM.forceMove(src)
+		if(istype(AM, /obj/structure/bigDelivery) && !hasmob)
+			var/obj/structure/bigDelivery/T = AM
+			src.destinationTag = T.sortTag
+		if(istype(AM, /obj/item/smallDelivery) && !hasmob)
+			var/obj/item/smallDelivery/T = AM
+			src.destinationTag = T.sortTag
+		//Drones can mail themselves through maint.
+		if(istype(AM, /mob/living/silicon/robot/drone))
+			var/mob/living/silicon/robot/drone/drone = AM
+			src.destinationTag = drone.mail_destination
 
 
-	// start the movement process
-	// argument is the disposal unit the holder started in
-	proc/start(var/obj/machinery/disposal/D)
-		if(!D.trunk)
-			D.expel(src)	// no trunk connected, so expel immediately
-			return
-
-		forceMove(D.trunk)
-		active = 1
-		set_dir(DOWN)
-		spawn(1)
-			move()		// spawn off the movement process
-
+// start the movement process
+// argument is the disposal unit the holder started in
+/obj/structure/disposalholder/proc/start(var/obj/machinery/disposal/D)
+	if(!D.trunk)
+		D.expel(src)	// no trunk connected, so expel immediately
 		return
 
-	// movement process, persists while holder is moving through pipes
-	proc/move()
-		var/obj/structure/disposalpipe/last
-		while(active)
-			sleep(1)		// was 1
-			if(!loc) return // check if we got GC'd
+	forceMove(D.trunk)
+	active = 1
+	set_dir(DOWN)
+	spawn(1)
+		move()		// spawn off the movement process
 
-			if(hasmob && prob(3))
-				for(var/mob/living/H in src)
-					if(!istype(H,/mob/living/silicon/robot/drone)) //Drones use the mailing code to move through the disposal system,
-						H.take_overall_damage(20, 0, "Blunt Trauma")//horribly maim any living creature jumping down disposals.  c'est la vie
+	return
 
-			var/obj/structure/disposalpipe/curr = loc
-			last = curr
-			curr = curr.transfer(src)
+// movement process, persists while holder is moving through pipes
+/obj/structure/disposalholder/proc/move()
+	var/obj/structure/disposalpipe/last
+	while(active)
+		sleep(1)		// was 1
+		if(!loc) return // check if we got GC'd
 
-			if(!loc) return //side effects
+		if(hasmob && prob(3))
+			for(var/mob/living/H in src)
+				if(!istype(H,/mob/living/silicon/robot/drone)) //Drones use the mailing code to move through the disposal system,
+					H.take_overall_damage(20, 0, "Blunt Trauma")//horribly maim any living creature jumping down disposals.  c'est la vie
 
-			if(!curr)
-				last.expel(src, loc, dir)
+		var/obj/structure/disposalpipe/curr = loc
+		last = curr
+		curr = curr.transfer(src)
 
-			//
-			if(!(count--))
-				active = 0
-		return
+		if(!loc) return //side effects
+
+		if(!curr)
+			last.expel(src, loc, dir)
+
+		//
+		if(!(count--))
+			active = 0
+	return
 
 
 
-	// find the turf which should contain the next pipe
-	proc/nextloc()
-		return get_step(loc,dir)
+// find the turf which should contain the next pipe
+/obj/structure/disposalholder/proc/nextloc()
+	return get_step(loc,dir)
 
-	// find a matching pipe on a turf
-	proc/findpipe(var/turf/T)
-
-		if(!T)
-			return null
-
-		var/fdir = turn(dir, 180)	// flip the movement direction
-		for(var/obj/structure/disposalpipe/P in T)
-			if(fdir & P.dpdir)		// find pipe direction mask that matches flipped dir
-				return P
-		// if no matching pipe, return null
+// find a matching pipe on a turf
+/obj/structure/disposalholder/proc/findpipe(var/turf/T)
+	if(!T)
 		return null
 
-	// merge two holder objects
-	// used when a a holder meets a stuck holder
-	proc/merge(var/obj/structure/disposalholder/other)
-		for(var/atom/movable/AM in other)
-			AM.forceMove(src)		// move everything in other holder to this one
-			if(ismob(AM))
-				var/mob/M = AM
-				if(M.client)	// if a client mob, update eye to follow this holder
-					M.client.eye = src
+	var/fdir = turn(dir, 180)	// flip the movement direction
+	for(var/obj/structure/disposalpipe/P in T)
+		if(fdir & P.dpdir)		// find pipe direction mask that matches flipped dir
+			return P
+	// if no matching pipe, return null
+	return null
 
-		qdel(other)
+// merge two holder objects
+// used when a a holder meets a stuck holder
+/obj/structure/disposalholder/proc/merge(var/obj/structure/disposalholder/other)
+	for(var/atom/movable/AM in other)
+		AM.forceMove(src)		// move everything in other holder to this one
+		if(ismob(AM))
+			var/mob/M = AM
+			if(M.client)	// if a client mob, update eye to follow this holder
+				M.client.eye = src
+
+	qdel(other)
 
 
-	proc/settag(var/new_tag)
+/obj/structure/disposalholder/proc/settag(var/new_tag)
+	destinationTag = new_tag
+
+/obj/structure/disposalholder/proc/setpartialtag(var/new_tag)
+	if(partialTag == new_tag)
 		destinationTag = new_tag
+		partialTag = ""
+	else
+		partialTag = new_tag
 
-	proc/setpartialtag(var/new_tag)
-		if(partialTag == new_tag)
-			destinationTag = new_tag
-			partialTag = ""
-		else
-			partialTag = new_tag
-
-
-	// called when player tries to move while in a pipe
-	relaymove(mob/user as mob)
-
-		if(!istype(user,/mob/living))
-			return
-
-		var/mob/living/U = user
-
-		if (U.stat || U.last_special <= world.time)
-			return
-
-		U.last_special = world.time+100
-
-		if (src.loc)
-			for (var/mob/M in hearers(src.loc.loc))
-				to_chat(M, "<FONT size=[max(0, 5 - get_dist(src, M))]>CLONG, clong!</FONT>")
-
-		playsound(src.loc, 'sound/effects/clang.ogg', 50, 0, 0)
-
-	// called to vent all gas in holder to a location
-	proc/vent_gas(var/atom/location)
-		location.assume_air(gas)  // vent all gas to turf
+// called when player tries to move while in a pipe
+/obj/structure/disposalholder/relaymove(mob/user as mob)
+	if(!istype(user,/mob/living))
 		return
+
+	var/mob/living/U = user
+
+	if (U.stat || U.last_special <= world.time)
+		return
+
+	U.last_special = world.time+100
+
+	if (src.loc)
+		for (var/mob/M in hearers(src.loc.loc))
+			to_chat(M, "<FONT size=[max(0, 5 - get_dist(src, M))]>CLONG, clong!</FONT>")
+
+	playsound(src.loc, 'sound/effects/clang.ogg', 50, 0, 0)
+
+// called to vent all gas in holder to a location
+/obj/structure/disposalholder/proc/vent_gas(var/atom/location)
+	location.assume_air(gas)  // vent all gas to turf
+	return
 
 /obj/structure/disposalholder/Destroy()
 	qdel(gas)
@@ -1487,18 +1491,32 @@
 	update()
 	return
 
+/obj/structure/disposalpipe/trunk/Destroy()
+	getunlinked()
+	return ..()
+
 /obj/structure/disposalpipe/trunk/proc/getlinked()
 	linked = null
-	var/obj/machinery/disposal/D = locate() in src.loc
+	var/obj/machinery/disposal/D = locate() in loc
 	if(D)
 		linked = D
-		if (!D.trunk)
+		if(!D.trunk)
 			D.trunk = src
 
-	var/obj/structure/disposaloutlet/O = locate() in src.loc
+	var/obj/structure/disposaloutlet/O = locate() in loc
 	if(O)
 		linked = O
 
+	update()
+	return
+
+/obj/structure/disposalpipe/trunk/proc/getunlinked()
+	if(!linked)
+		return
+	if(istype(linked, /obj/machinery/disposal))
+		var/obj/machinery/disposal/D = linked
+		D.trunk = null
+	linked = null
 	update()
 	return
 

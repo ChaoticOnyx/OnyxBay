@@ -182,12 +182,10 @@
 
 	..() //and give it the regular chance of being deleted outright
 
-/obj/machinery/camera/hitby(AM as mob|obj)
+/obj/machinery/camera/hitby(atom/movable/AM, speed, nomsg)
 	..()
-	if (istype(AM, /obj))
+	if(istype(AM, /obj))
 		var/obj/O = AM
-		if (O.throwforce >= src.toughness)
-			visible_message("<span class='warning'><B>[src] was hit by [O].</B></span>")
 		take_damage(O.throwforce)
 
 /obj/machinery/camera/proc/setViewRange(num = 7)

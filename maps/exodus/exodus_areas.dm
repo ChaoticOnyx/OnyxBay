@@ -32,7 +32,7 @@
 
 /area/shuttle/supply/elevator/lower
 	name = "Cargo Elevator Lower Deck"
-	base_turf = /turf/simulated/floor
+	base_turf = /turf/simulated/floor/plating
 
 /area/shuttle/merchant
 	icon_state = "shuttlegrn"
@@ -854,6 +854,17 @@
 /area/maintenance/chapel
 	name = "\improper Chapel Maintenance"
 	icon_state = "maint_security_port"
+
+/area/maintenance/chapel/north
+	name = "\improper Chapel Maintenance - North"
+
+/area/maintenance/chapel/south
+	name = "\improper Chapel Maintenance - South"
+
+/area/maintenance/abandoned_casino
+	name = "\improper Abandoned Casino"
+	icon_state = "ghettocasino"
+
 
 /area/maintenance/getto_rnd
 	name = "\improper RnD Maintenance"

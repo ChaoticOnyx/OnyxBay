@@ -153,20 +153,20 @@ nanoui is used to open and update nano browser uis
   *
   * @param push_update int (bool) Push an update to the ui to update it's status. This is set to 0/false if an update is going to be pushed anyway (to avoid unnessary updates)
   *
-  * @return nothing
+  * @return 1 if closed, null otherwise.
   */
 /datum/nanoui/proc/update_status(push_update = 0)
 	var/atom/host = src_object && src_object.nano_host()
 	if(!host)
 		close()
-		return
+		return 1
 	var/new_status = host.CanUseTopic(user, state)
 	if(master_ui)
 		new_status = min(new_status, master_ui.status)
 
 	if(new_status == STATUS_CLOSE)
 		close()
-		return
+		return 1
 	set_status(new_status, push_update)
 
  /**
@@ -427,10 +427,9 @@ nanoui is used to open and update nano browser uis
 		close()
 
 	var/window_size = ""
-	if (width && height)
+	if(width && height)
 		window_size = "size=[width]x[height];"
-	update_status(0)
-	if(status == STATUS_CLOSE)
+	if(update_status(0))
 		return // Will be closed by update_status().
 
 	show_browser(user, get_html(), "window=[window_id];[window_size][window_options]")
@@ -474,12 +473,17 @@ nanoui is used to open and update nano browser uis
   * @return nothing
   */
 /datum/nanoui/proc/on_close_winset()
-	if(!user.client)
+	if(!user || !user.client)
 		return
-	var/params = "\ref[src]"
+	var/param = "null"
+	if(ref)
+		param = "\ref[ref]"
 
-	spawn(2)
-		winset(user, window_id, "on-close=\"nanoclose [params]\"")
+	addtimer(CALLBACK(user, /mob/proc/post_close_winset, window_id, param), 2)
+
+/mob/proc/post_close_winset(window_id, param)
+	if(client)
+		winset(src, window_id, "on-close=\".nanoclose [param]\"")
 
  /**
   * Push data to an already open UI window
@@ -487,8 +491,9 @@ nanoui is used to open and update nano browser uis
   * @return nothing
   */
 /datum/nanoui/proc/push_data(data, force_push = 0)
-	update_status(0)
-	if (status == STATUS_DISABLED && !force_push)
+	if(update_status(0))
+		return // Closed
+	if(status == STATUS_DISABLED && !force_push)
 		return // Cannot update UI, no visibility
 
 	var/list/send_data = get_send_data(data)

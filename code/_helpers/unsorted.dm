@@ -461,7 +461,7 @@ Turf and target are seperate in case you want to teleport some distance from a t
 		moblist.Add(M)
 	for(var/mob/new_player/M in sortmob)
 		moblist.Add(M)
-	for(var/mob/living/carbon/slime/M in sortmob)
+	for(var/mob/living/carbon/metroid/M in sortmob)
 		moblist.Add(M)
 	for(var/mob/living/simple_animal/M in sortmob)
 		moblist.Add(M)
@@ -1072,7 +1072,7 @@ GLOBAL_DATUM_INIT(dview_mob, /mob/dview, new)
 /atom/proc/get_light_and_color(atom/origin)
 	if(origin)
 		color = origin.color
-		set_light(origin.light_range, origin.light_power, origin.light_color)
+		set_light(origin.light_max_bright, origin.light_inner_range, origin.light_outer_range, origin.light_falloff_curve)
 
 /mob/dview/Initialize()
 	. = ..()
