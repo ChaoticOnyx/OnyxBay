@@ -84,6 +84,8 @@
 
 	var/ear_protection = 0
 
+	var/can_hack = FALSE
+
 /obj/item/New()
 	..()
 	if(randpixel && (!pixel_x && !pixel_y) && isturf(loc)) //hopefully this will prevent us from messing with mapper-set pixel_x/y
