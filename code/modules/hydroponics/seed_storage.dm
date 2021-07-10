@@ -27,183 +27,55 @@
 	anchored = 1
 	idle_power_usage = 100
 
+	var/cartridge
+
 	var/list/datum/seed_pile/piles = list()
 	var/list/starting_seeds = list()
 	var/list/scanner = list() // What properties we can view
 
-/obj/machinery/seed_storage/Initialize(mapload)
+/obj/machinery/seed_storage/Initialize()
 	. = ..()
-	for(var/typepath in starting_seeds)
-		var/amount = starting_seeds[typepath]
-		if(isnull(amount))
-			amount = 1
-		for (var/i = 1 to amount)
-			var/O = new typepath
-			add(O)
 
-/obj/machinery/seed_storage/random // This is mostly for testing, but I guess admins could spawn it
-	name = "Random seed storage"
-	scanner = list("stats", "produce", "soil", "temperature", "light")
-	starting_seeds = list(/obj/item/seeds/random = 50)
+	component_parts = list()
+	component_parts += new /obj/item/weapon/circuitboard/vendomat(src)
+	component_parts += new /obj/item/weapon/stock_parts/matter_bin(src)
+	component_parts += new /obj/item/weapon/stock_parts/matter_bin(src)
+	component_parts += new cartridge(src)
 
-/obj/machinery/seed_storage/garden
+	for(var/obj/item/weapon/vendcart/seed_storage/S in component_parts)
+		for(var/typepath in S.legal)
+			var/amount = starting_seeds[typepath]
+			if(isnull(amount))
+				amount = 1
+			for (var/i = 1 to amount)
+				var/O = new typepath
+				add(O)
+
+//Standart
+/obj/machinery/seed_storage/standard
+	name = "Seed storage"
+	scanner = list("stats")
+
+/obj/machinery/seed_storage/standard/garden
 	name = "Hydroponics seed storage"
-	scanner = list("stats")
-	starting_seeds = list(
-		/obj/item/seeds/amanitamycelium = 10,
-		/obj/item/seeds/ambrosiavulgarisseed = 10,
-		/obj/item/seeds/appleseed = 5,
-		/obj/item/seeds/greenappleseed = 5,
-		/obj/item/seeds/yellowappleseed = 5,
-		/obj/item/seeds/bananaseed = 10,
-		/obj/item/seeds/berryseed = 10,
-		/obj/item/seeds/blueberryseed = 10,
-		/obj/item/seeds/cabbageseed = 10,
-		/obj/item/seeds/carrotseed = 10,
-		/obj/item/seeds/cannabisseed = 10,
-		/obj/item/seeds/chantermycelium = 10,
-		/obj/item/seeds/cherryseed = 10,
-		/obj/item/seeds/chiliseed = 10,
-		/obj/item/seeds/cocoapodseed = 10,
-		/obj/item/seeds/coconutseed = 10,
-		/obj/item/seeds/cornseed = 10,
-		/obj/item/seeds/eggplantseed = 10,
-		/obj/item/seeds/garlicseed = 10,
-		/obj/item/seeds/glowshroom = 10,
-		/obj/item/seeds/grapeseed = 10,
-		/obj/item/seeds/grassseed = 10,
-		/obj/item/seeds/harebell = 10,
-		/obj/item/seeds/lavenderseed = 10,
-		/obj/item/seeds/lemonseed = 10,
-		/obj/item/seeds/libertymycelium = 10,
-		/obj/item/seeds/limeseed = 10,
-		/obj/item/seeds/mtearseed = 10,
-		/obj/item/seeds/nettleseed = 10,
-		/obj/item/seeds/onionseed = 10,
-		/obj/item/seeds/orangeseed = 10,
-		/obj/item/seeds/peanutseed = 10,
-		/obj/item/seeds/peppercornseed = 10,
-		/obj/item/seeds/poppyseed = 10,
-		/obj/item/seeds/potatoseed = 10,
-		/obj/item/seeds/plumpmycelium = 10,
-		/obj/item/seeds/pumpkinseed = 10,
-		/obj/item/seeds/reishimycelium = 10,
-		/obj/item/seeds/replicapod = 10,
-		/obj/item/seeds/riceseed = 10,
-		/obj/item/seeds/shandseed = 10,
-		/obj/item/seeds/soyaseed = 10,
-		/obj/item/seeds/sugarcaneseed = 10,
-		/obj/item/seeds/sunflowerseed = 10,
-		/obj/item/seeds/tobaccoseed = 10,
-		/obj/item/seeds/tomatoseed = 10,
-		/obj/item/seeds/towermycelium = 10,
-		/obj/item/seeds/watermelonseed = 10,
-		/obj/item/seeds/wheatseed = 10,
-		/obj/item/seeds/whitebeetseed = 10
-	)
+	cartridge = /obj/item/weapon/vendcart/seed_storage/garden
 
-/obj/machinery/seed_storage/garden_public
-	name = "Public garden seed storage"
-	scanner = list("stats")
-	starting_seeds = list(
-		/obj/item/seeds/appleseed = 5,
-		/obj/item/seeds/bananaseed = 5,
-		/obj/item/seeds/berryseed = 5,
-		/obj/item/seeds/blueberryseed = 5,
-		/obj/item/seeds/cabbageseed = 5,
-		/obj/item/seeds/carrotseed = 5,
-		/obj/item/seeds/cherryseed = 5,
-		/obj/item/seeds/chiliseed = 5,
-		/obj/item/seeds/cocoapodseed = 5,
-		/obj/item/seeds/cornseed = 5,
-		/obj/item/seeds/peanutseed = 5,
-		/obj/item/seeds/eggplantseed = 5,
-		/obj/item/seeds/grapeseed = 5,
-		/obj/item/seeds/grassseed = 5,
-		/obj/item/seeds/harebell = 5,
-		/obj/item/seeds/lavenderseed = 5,
-		/obj/item/seeds/lemonseed = 5,
-		/obj/item/seeds/limeseed = 5,
-		/obj/item/seeds/mtearseed = 5,
-		/obj/item/seeds/orangeseed = 5,
-		/obj/item/seeds/plumpmycelium = 5,
-		/obj/item/seeds/poppyseed = 5,
-		/obj/item/seeds/potatoseed = 5,
-		/obj/item/seeds/onionseed = 5,
-		/obj/item/seeds/garlicseed = 5,
-		/obj/item/seeds/pumpkinseed = 5,
-		/obj/item/seeds/reishimycelium = 5,
-		/obj/item/seeds/riceseed = 5,
-		/obj/item/seeds/soyaseed = 5,
-		/obj/item/seeds/peppercornseed = 5,
-		/obj/item/seeds/sugarcaneseed = 5,
-		/obj/item/seeds/sunflowerseed = 5,
-		/obj/item/seeds/shandseed = 5,
-		/obj/item/seeds/tobaccoseed = 5,
-		/obj/item/seeds/tomatoseed = 5,
-		/obj/item/seeds/towermycelium = 5,
-		/obj/item/seeds/watermelonseed = 5,
-		/obj/item/seeds/wheatseed = 5,
-		/obj/item/seeds/whitebeetseed = 5
-	)
+/obj/machinery/seed_storage/standard/garden_public
+	name = "Garden seed storage"
+	cartridge = /obj/item/weapon/vendcart/seed_storage/garden
 
-/obj/machinery/seed_storage/xenobotany
-	name = "Xenobotany seed storage"
+//Advanced
+/obj/machinery/seed_storage/advanced
+	name = "Advanced seed storage"
 	scanner = list("stats", "produce", "soil", "temperature", "light")
-	starting_seeds = list(
-		/obj/item/seeds/appleseed = 5,
-		/obj/item/seeds/greenappleseed = 5,
-		/obj/item/seeds/yellowappleseed = 5,
-		/obj/item/seeds/bananaseed = 10,
-		/obj/item/seeds/berryseed = 10,
-		/obj/item/seeds/blueberryseed = 10,
-		/obj/item/seeds/cabbageseed = 10,
-		/obj/item/seeds/carrotseed = 10,
-		/obj/item/seeds/cannabisseed = 10,
-		/obj/item/seeds/chantermycelium = 10,
-		/obj/item/seeds/cherryseed = 10,
-		/obj/item/seeds/chiliseed = 10,
-		/obj/item/seeds/cocoapodseed = 10,
-		/obj/item/seeds/coconutseed = 10,
-		/obj/item/seeds/cornseed = 10,
-		/obj/item/seeds/peanutseed = 10,
-		/obj/item/seeds/replicapod = 10,
-		/obj/item/seeds/eggplantseed = 10,
-		/obj/item/seeds/amanitamycelium = 10,
-		/obj/item/seeds/glowshroom = 10,
-		/obj/item/seeds/grapeseed = 10,
-		/obj/item/seeds/grassseed = 10,
-		/obj/item/seeds/harebell = 10,
-		/obj/item/seeds/kudzuseed = 10,
-		/obj/item/seeds/lavenderseed = 10,
-		/obj/item/seeds/lemonseed = 10,
-		/obj/item/seeds/libertymycelium = 10,
-		/obj/item/seeds/limeseed = 10,
-		/obj/item/seeds/mtearseed = 10,
-		/obj/item/seeds/nettleseed = 10,
-		/obj/item/seeds/orangeseed = 10,
-		/obj/item/seeds/plastiseed = 10,
-		/obj/item/seeds/plumpmycelium = 10,
-		/obj/item/seeds/poppyseed = 10,
-		/obj/item/seeds/potatoseed = 10,
-		/obj/item/seeds/onionseed = 10,
-		/obj/item/seeds/garlicseed = 10,
-		/obj/item/seeds/pumpkinseed = 10,
-		/obj/item/seeds/reishimycelium = 10,
-		/obj/item/seeds/riceseed = 10,
-		/obj/item/seeds/soyaseed = 10,
-		/obj/item/seeds/peppercornseed = 10,
-		/obj/item/seeds/sugarcaneseed = 10,
-		/obj/item/seeds/sunflowerseed = 10,
-		/obj/item/seeds/shandseed = 10,
-		/obj/item/seeds/tobaccoseed = 10,
-		/obj/item/seeds/tomatoseed = 10,
-		/obj/item/seeds/towermycelium = 10,
-		/obj/item/seeds/watermelonseed = 10,
-		/obj/item/seeds/wheatseed = 10,
-		/obj/item/seeds/whitebeetseed = 10,
-		/obj/item/seeds/random = 10
-	)
+
+/obj/machinery/seed_storage/advanced/random
+	name = "Random seed storage"
+	cartridge = /obj/item/weapon/vendcart/seed_storage/random
+
+/obj/machinery/seed_storage/advanced/xenobotany
+	name = "Xenobotany seed storage"
+	cartridge = /obj/item/weapon/vendcart/seed_storage/xenobotany
 
 /obj/machinery/seed_storage/attack_hand(mob/user as mob)
 	user.set_machine(src)
