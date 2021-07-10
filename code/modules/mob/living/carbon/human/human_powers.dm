@@ -229,7 +229,7 @@
 
 	var/msg = sanitize(input("Message:", "Psychic Whisper") as text|null)
 	if(msg)
-		log_say("PsychicWhisper: [key_name(src)]->[M.key] : [msg]")
+		log_say("PsychicWhisper: [key_name(src)]->[M.key]: [msg]")
 		to_chat(M, "<span class='alium'>You hear a strange, alien voice in your head... <i>[msg]</i></span>")
 		to_chat(src, "<span class='alium'>You channel a message: \"[msg]\" to [M]</span>")
 	return

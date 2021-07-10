@@ -240,7 +240,7 @@ var/list/channel_to_radio_key = new
 				src.custom_emote(1, "[pick(speaking.signlang_verb)].")
 
 		if(speaking.flags & SIGNLANG)
-			log_say("[name]/[key] : SIGN: [message]")
+			log_say("[name]/[key]: SIGN: [message]")
 			log_message(message, INDIVIDUAL_SAY_LOG)
 			return say_signlang(message, pick(speaking.signlang_verb), speaking)
 
@@ -310,10 +310,10 @@ var/list/channel_to_radio_key = new
 
 
 	if(whispering)
-		log_whisper("[key_name(src)] : [message]")
+		log_whisper("[key_name(src)]: [message]")
 		log_message(message, INDIVIDUAL_SAY_LOG)
 	else
-		log_say("[key_name(src)] : [message]")
+		log_say("[key_name(src)]: [message]")
 		log_message(message, INDIVIDUAL_SAY_LOG)
 	return 1
 

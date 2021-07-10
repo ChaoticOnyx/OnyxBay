@@ -19,11 +19,19 @@
 		return
 	if(target == world)
 		target = GLOB.clients
+
+	// Used to remove symbols in range of the private usage area.
+	var/static/regex/pua = new("\[\uE000-\uF8FF]", "g")
 	// Build a message
 	var/message = list()
-	if(type) message["type"] = type
-	if(text) message["text"] = text
-	if(html) message["html"] = html
+	if(type)
+		message["type"] = type
+	if(text)
+		text = replacetext(text, pua, "")
+		message["text"] = text
+	if(html)
+		html = replacetext(html, pua, "")
+		message["html"] = html
 	if(avoid_highlighting) message["avoidHighlighting"] = avoid_highlighting
 	var/message_blob = TGUI_CREATE_MESSAGE("chat/message", message)
 	var/message_html = message_to_html(message)
@@ -75,13 +83,18 @@
 	// not even hacks with reassigning usr work
 	var/static/regex/i = new(@/<IMG CLASS=icon SRC=(\[[^]]+])(?: ICONSTATE='([^']+)')?>/, "g")
 	//'
+	// Used to remove symbols in range of the private usage area.
+	var/static/regex/pua = new("\[\uE000-\uF8FF]", "g")
+
 	if(type) message["type"] = type
 	if(text)
+		text = replacetext(text, pua, "")
 		message["text"] = text
 	if(html)
 		while(i.Find(html))
 			html = copytext(html, 1, i.index) + icon2html(locate(i.group[1]), target, icon_state = i.group[2]) + copytext(html, i.next)
 
+		html = replacetext(html, pua, "")
 		message["html"] = html
 	if(avoid_highlighting) message["avoidHighlighting"] = avoid_highlighting
 	SSchat.queue(target, message)
