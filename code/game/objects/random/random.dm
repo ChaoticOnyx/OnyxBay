@@ -1302,10 +1302,10 @@ var/list/random_useful_
 			random_junk_ += /obj/item/weapon/material/shard
 			random_junk_ += /obj/item/weapon/hand/missing_card
 
-			random_junk_ -= /obj/item/trash/dishes/plate
-			random_junk_ -= /obj/item/trash/dishes/bowl
+			random_junk_ -= /obj/item/trash/dish/plate
+			random_junk_ -= /obj/item/trash/dish/bowl
 			random_junk_ -= /obj/item/trash/syndi_cakes
-			random_junk_ -= /obj/item/trash/dishes/tray
+			random_junk_ -= /obj/item/trash/dish/tray
 		return pick(random_junk_)
 
 	// Misc. actually useful stuff or perhaps even food

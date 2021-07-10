@@ -10,24 +10,24 @@
 	mod_weight = 0.25
 	mod_handy = 0.25
 
-/obj/item/trash/dishes
+/obj/item/trash/dish
 	var/list/stack = list()
 
-/obj/item/trash/dishes/baking_sheet
+/obj/item/trash/dish/baking_sheet
 	name = "baking sheet"
-	icon_state = "baking_sheet0"
+	icon_state = "baking_sheet"
 
-/obj/item/trash/dishes/plate
+/obj/item/trash/dish/plate
 	name = "plate"
-	icon_state = "plate0"
+	icon_state = "plate"
 
-/obj/item/trash/dishes/bowl
+/obj/item/trash/dish/bowl
 	name = "bowl"
-	icon_state	= "bowl0"
+	icon_state	= "bowl"
 
-/obj/item/trash/dishes/tray
+/obj/item/trash/dish/tray
 	name = "tray"
-	icon_state = "tray0"
+	icon_state = "tray"
 
 /obj/item/trash/raisins
 	name = "\improper 4no raisins"
@@ -196,17 +196,16 @@
 /obj/item/trash/attack(mob/M as mob, mob/living/user as mob)
 	return
 
-/obj/item/trash/dishes/update_icon()
-	var/old_icon_state = copytext(icon_state, 1, length(icon_state)) // suitable for different name lengths
-	icon_state = "[old_icon_state][length(stack)]"
+/obj/item/trash/dish/update_icon()
+	icon_state = "[initial(icon_state)][length(stack) || ""]"
 
-/obj/item/trash/dishes/attackby(obj/item/I, mob/user)
-	var/obj/item/trash/dishes/dish = I
-	if(I.type == type) // We add only objects of our own type
+/obj/item/trash/dish/attackby(obj/item/I, mob/user)
+	var/obj/item/trash/dish/dish = I
+	if(I.type == type)
 		var/list/dishestoadd = list()
 		dishestoadd += dish
 
-		for(var/obj/item/trash/dishes/i in dish.stack)
+		for(var/obj/item/trash/dish/i in dish.stack)
 			dishestoadd += i
 
 		if((length(stack) + length(dishestoadd)) <= 4)
@@ -221,12 +220,12 @@
 		else
 			to_chat(user, SPAN("warning", "The stack is too high!"))
 
-/obj/item/trash/dishes/attack_hand(mob/user)
+/obj/item/trash/dish/attack_hand(mob/user)
 	if(user.get_inactive_hand() != src)
 		..()
 		return
 
-	var/obj/item/trash/dishes/dish = stack[length(stack)]
+	var/obj/item/trash/dish/dish = stack[length(stack)]
 	stack -= dish
 
 	user.put_in_hands(dish)
