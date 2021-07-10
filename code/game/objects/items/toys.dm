@@ -285,12 +285,9 @@
 	w_class = ITEM_SIZE_SMALL
 	attack_verb = list("attacked", "struck", "hit")
 
-	var/spam_flag = FALSE // spamming can possibly overload lighting SS
-	var/flashlight_max_bright = 0.75 // brightness of light when on, must be no greater than 1.
-	var/flashlight_inner_range = 0.1 // inner range of light when on, can be negative
-	var/flashlight_outer_range = 1.6 // outer range of light when on, can be negative
-	var/flashlight_falloff_curve = 4
-	var/brightness_color = "#4de4ff" // color of light when on
+	var/flashlight_max_bright = 0.3
+	var/flashlight_outer_range = 1.6
+	var/brightness_color = "#4de4ff"
 
 	attack_self(mob/user)
 		src.active = !( src.active )
@@ -300,7 +297,7 @@
 			src.icon_state = "swordblue"
 			src.item_state = "swordblue"
 			src.w_class = ITEM_SIZE_HUGE
-			set_light(flashlight_max_bright, flashlight_inner_range, flashlight_outer_range, flashlight_falloff_curve, brightness_color)
+			set_light(flashlight_max_bright, null, flashlight_outer_range, null, brightness_color)
 		else
 			to_chat(user, "<span class='notice'>You push the plastic blade back down into the handle.</span>")
 			playsound(user, 'sound/weapons/saberoff.ogg', 50, 1)
