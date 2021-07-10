@@ -831,7 +831,7 @@
 "pY" = (/turf/simulated/wall,/area/hydroponics)
 "pZ" = (/obj/machinery/door/firedoor/border_only,/obj/structure/window/reinforced,/obj/structure/window/reinforced{dir = 8},/obj/structure/window/reinforced{dir = 1},/obj/structure/window/reinforced{dir = 4},/obj/structure/grille,/turf/simulated/floor/plating,/area/hydroponics)
 "qa" = (/obj/machinery/vending/hydronutrients,/obj/structure/window/reinforced{dir = 1},/turf/simulated/floor/tiled,/area/hydroponics)
-"qb" = (/obj/machinery/vending/hydroseeds,/obj/structure/window/reinforced{dir = 1},/turf/simulated/floor/tiled,/area/hydroponics)
+"qb" = (/obj/machinery/seed_storage/standard/garden,/obj/structure/window/reinforced{dir = 1},/turf/simulated/floor/tiled,/area/hydroponics)
 "qc" = (/obj/structure/lattice,/obj/machinery/light/small{dir = 4; pixel_y = 0},/turf/simulated/open,/area/crew_quarters/bar)
 "qd" = (/obj/structure/lattice,/obj/machinery/light/small{dir = 8},/turf/simulated/open,/area/crew_quarters/bar)
 "qe" = (/obj/structure/cable{d1 = 2; d2 = 4; icon_state = "2-4"},/obj/machinery/atmospherics/pipe/simple/hidden/supply{dir = 4; icon_state = "intact-supply"},/obj/machinery/atmospherics/pipe/simple/hidden/scrubbers{dir = 4},/turf/simulated/floor/trim/carpet/orange,/area/engineering/engine_monitoring)
