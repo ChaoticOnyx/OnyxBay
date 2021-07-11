@@ -583,6 +583,32 @@
 /obj/item/weapon/vendcart/seed_storage
 	name = "O'Seedz Cartridge"
 	icon_state = "cube_c"
+	var/list/piles = list()
+
+/obj/item/weapon/vendcart/seed_storage/New()
+	..()
+	for(var/typepath in legal)
+		var/amount = legal[typepath]
+		if(isnull(amount))
+			amount = 1
+		for (var/i = 1 to amount)
+			var/O = new typepath
+			add(O)
+
+/obj/item/weapon/vendcart/seed_storage/proc/add(obj/item/seeds/O as obj)
+	O.loc = src
+	var/newID = 0
+
+	for (var/datum/seed_pile/N in piles)
+		if (N.matches(O))
+			++N.amount
+			N.seeds += (O)
+			return
+		else if(N.ID >= newID)
+			newID = N.ID + 1
+
+	piles += new /datum/seed_pile(O, newID)
+	return
 
 /obj/item/weapon/vendcart/seed_storage/garden
 	desc = "Bluespace box for storing and selling stuff. This one has garden seeds inside."

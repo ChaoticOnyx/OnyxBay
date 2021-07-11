@@ -29,7 +29,6 @@
 
 	var/cartridge
 
-	var/list/datum/seed_pile/piles = list()
 	var/list/scanner = list() // What properties we can view
 
 /obj/machinery/seed_storage/Initialize()
@@ -41,17 +40,6 @@
 	component_parts += new /obj/item/weapon/stock_parts/matter_bin(src)
 	component_parts += new /obj/item/weapon/stock_parts/console_screen(src)
 	component_parts += new cartridge(src)
-	RefreshSeeds()
-
-/obj/machinery/seed_storage/proc/RefreshSeeds()
-	for(var/obj/item/weapon/vendcart/seed_storage/S in component_parts)
-		for(var/typepath in S.legal)
-			var/amount = S.legal[typepath]
-			if(isnull(amount))
-				amount = 1
-			for (var/i = 1 to amount)
-				var/O = new typepath
-				add(O)
 
 //Standart
 /obj/machinery/seed_storage/standard
@@ -87,113 +75,114 @@
 	if (..())
 		return
 
-	var/dat = "<meta charset=\"utf-8\"><center><h1>Seed storage contents</h1></center>"
-	if (piles.len == 0)
-		dat += "<font color='red'>No seeds</font>"
-	else
-		dat += "<table style='text-align:center;border-style:solid;border-width:1px;padding:4px'><tr><td>Name</td>"
-		dat += "<td>Variety</td>"
-		if ("stats" in scanner)
-			dat += "<td>E</td><td>Y</td><td>M</td><td>Pr</td><td>Pt</td><td>Harvest</td>"
-		if ("temperature" in scanner)
-			dat += "<td>Temp</td>"
-		if ("light" in scanner)
-			dat += "<td>Light</td>"
-		if ("soil" in scanner)
-			dat += "<td>Nutri</td><td>Water</td>"
-		dat += "<td>Notes</td><td>Amount</td><td></td></tr>"
-		for (var/datum/seed_pile/S in piles)
-			var/datum/seed/seed = S.seed_type
-			if(!seed)
-				continue
-			dat += "<tr>"
-			dat += "<td>[seed.seed_name]</td>"
-			dat += "<td>#[seed.uid]</td>"
+	for(var/obj/item/weapon/vendcart/seed_storage/C in component_parts)
+		var/dat = "<meta charset=\"utf-8\"><center><h1>Seed storage contents</h1></center>"
+		if (C.piles.len == 0)
+			dat += "<font color='red'>No seeds</font>"
+		else
+			dat += "<table style='text-align:center;border-style:solid;border-width:1px;padding:4px'><tr><td>Name</td>"
+			dat += "<td>Variety</td>"
 			if ("stats" in scanner)
-				dat += "<td>[seed.get_trait(TRAIT_ENDURANCE)]</td><td>[seed.get_trait(TRAIT_YIELD)]</td><td>[seed.get_trait(TRAIT_MATURATION)]</td><td>[seed.get_trait(TRAIT_PRODUCTION)]</td><td>[seed.get_trait(TRAIT_POTENCY)]</td>"
-				if(seed.get_trait(TRAIT_HARVEST_REPEAT))
-					dat += "<td>Multiple</td>"
-				else
-					dat += "<td>Single</td>"
+				dat += "<td>E</td><td>Y</td><td>M</td><td>Pr</td><td>Pt</td><td>Harvest</td>"
 			if ("temperature" in scanner)
-				dat += "<td>[seed.get_trait(TRAIT_IDEAL_HEAT)] K</td>"
+				dat += "<td>Temp</td>"
 			if ("light" in scanner)
-				dat += "<td>[seed.get_trait(TRAIT_IDEAL_LIGHT)] L</td>"
+				dat += "<td>Light</td>"
 			if ("soil" in scanner)
-				if(seed.get_trait(TRAIT_REQUIRES_NUTRIENTS))
-					if(seed.get_trait(TRAIT_NUTRIENT_CONSUMPTION) < 0.05)
-						dat += "<td>Low</td>"
-					else if(seed.get_trait(TRAIT_NUTRIENT_CONSUMPTION) > 0.2)
-						dat += "<td>High</td>"
+				dat += "<td>Nutri</td><td>Water</td>"
+			dat += "<td>Notes</td><td>Amount</td><td></td></tr>"
+			for (var/datum/seed_pile/S in C.piles)
+				var/datum/seed/seed = S.seed_type
+				if(!seed)
+					continue
+				dat += "<tr>"
+				dat += "<td>[seed.seed_name]</td>"
+				dat += "<td>#[seed.uid]</td>"
+				if ("stats" in scanner)
+					dat += "<td>[seed.get_trait(TRAIT_ENDURANCE)]</td><td>[seed.get_trait(TRAIT_YIELD)]</td><td>[seed.get_trait(TRAIT_MATURATION)]</td><td>[seed.get_trait(TRAIT_PRODUCTION)]</td><td>[seed.get_trait(TRAIT_POTENCY)]</td>"
+					if(seed.get_trait(TRAIT_HARVEST_REPEAT))
+						dat += "<td>Multiple</td>"
 					else
-						dat += "<td>Norm</td>"
-				else
-					dat += "<td>No</td>"
-				if(seed.get_trait(TRAIT_REQUIRES_WATER))
-					if(seed.get_trait(TRAIT_WATER_CONSUMPTION) < 1)
-						dat += "<td>Low</td>"
-					else if(seed.get_trait(TRAIT_WATER_CONSUMPTION) > 5)
-						dat += "<td>High</td>"
+						dat += "<td>Single</td>"
+				if ("temperature" in scanner)
+					dat += "<td>[seed.get_trait(TRAIT_IDEAL_HEAT)] K</td>"
+				if ("light" in scanner)
+					dat += "<td>[seed.get_trait(TRAIT_IDEAL_LIGHT)] L</td>"
+				if ("soil" in scanner)
+					if(seed.get_trait(TRAIT_REQUIRES_NUTRIENTS))
+						if(seed.get_trait(TRAIT_NUTRIENT_CONSUMPTION) < 0.05)
+							dat += "<td>Low</td>"
+						else if(seed.get_trait(TRAIT_NUTRIENT_CONSUMPTION) > 0.2)
+							dat += "<td>High</td>"
+						else
+							dat += "<td>Norm</td>"
 					else
-						dat += "<td>Norm</td>"
-				else
-					dat += "<td>No</td>"
+						dat += "<td>No</td>"
+					if(seed.get_trait(TRAIT_REQUIRES_WATER))
+						if(seed.get_trait(TRAIT_WATER_CONSUMPTION) < 1)
+							dat += "<td>Low</td>"
+						else if(seed.get_trait(TRAIT_WATER_CONSUMPTION) > 5)
+							dat += "<td>High</td>"
+						else
+							dat += "<td>Norm</td>"
+					else
+						dat += "<td>No</td>"
 
-			dat += "<td>"
-			switch(seed.get_trait(TRAIT_CARNIVOROUS))
-				if(1)
-					dat += "CARN "
-				if(2)
-					dat	+= "<font color='red'>CARN </font>"
-			switch(seed.get_trait(TRAIT_SPREAD))
-				if(1)
-					dat += "VINE "
-				if(2)
-					dat	+= "<font color='red'>VINE </font>"
-			if ("pressure" in scanner)
-				if(seed.get_trait(TRAIT_LOWKPA_TOLERANCE) < 20)
-					dat += "LP "
-				if(seed.get_trait(TRAIT_HIGHKPA_TOLERANCE) > 220)
-					dat += "HP "
-			if ("temperature" in scanner)
-				if(seed.get_trait(TRAIT_HEAT_TOLERANCE) > 30)
-					dat += "TEMRES "
-				else if(seed.get_trait(TRAIT_HEAT_TOLERANCE) < 10)
-					dat += "TEMSEN "
-			if ("light" in scanner)
-				if(seed.get_trait(TRAIT_LIGHT_TOLERANCE) > 10)
-					dat += "LIGRES "
-				else if(seed.get_trait(TRAIT_LIGHT_TOLERANCE) < 3)
-					dat += "LIGSEN "
-			if(seed.get_trait(TRAIT_TOXINS_TOLERANCE) < 3)
-				dat += "TOXSEN "
-			else if(seed.get_trait(TRAIT_TOXINS_TOLERANCE) > 6)
-				dat += "TOXRES "
-			if(seed.get_trait(TRAIT_PEST_TOLERANCE) < 3)
-				dat += "PESTSEN "
-			else if(seed.get_trait(TRAIT_PEST_TOLERANCE) > 6)
-				dat += "PESTRES "
-			if(seed.get_trait(TRAIT_WEED_TOLERANCE) < 3)
-				dat += "WEEDSEN "
-			else if(seed.get_trait(TRAIT_WEED_TOLERANCE) > 6)
-				dat += "WEEDRES "
-			if(seed.get_trait(TRAIT_PARASITE))
-				dat += "PAR "
-			if ("temperature" in scanner)
-				if(seed.get_trait(TRAIT_ALTER_TEMP) > 0)
-					dat += "TEMP+ "
-				if(seed.get_trait(TRAIT_ALTER_TEMP) < 0)
-					dat += "TEMP- "
-			if(seed.get_trait(TRAIT_BIOLUM))
-				dat += "LUM "
-			dat += "</td>"
-			dat += "<td>[S.amount]</td>"
-			dat += "<td><a href='byond://?src=\ref[src];task=vend;id=[S.ID]'>Vend</a> <a href='byond://?src=\ref[src];task=purge;id=[S.ID]'>Purge</a></td>"
-			dat += "</tr>"
-		dat += "</table>"
+				dat += "<td>"
+				switch(seed.get_trait(TRAIT_CARNIVOROUS))
+					if(1)
+						dat += "CARN "
+					if(2)
+						dat	+= "<font color='red'>CARN </font>"
+				switch(seed.get_trait(TRAIT_SPREAD))
+					if(1)
+						dat += "VINE "
+					if(2)
+						dat	+= "<font color='red'>VINE </font>"
+				if ("pressure" in scanner)
+					if(seed.get_trait(TRAIT_LOWKPA_TOLERANCE) < 20)
+						dat += "LP "
+					if(seed.get_trait(TRAIT_HIGHKPA_TOLERANCE) > 220)
+						dat += "HP "
+				if ("temperature" in scanner)
+					if(seed.get_trait(TRAIT_HEAT_TOLERANCE) > 30)
+						dat += "TEMRES "
+					else if(seed.get_trait(TRAIT_HEAT_TOLERANCE) < 10)
+						dat += "TEMSEN "
+				if ("light" in scanner)
+					if(seed.get_trait(TRAIT_LIGHT_TOLERANCE) > 10)
+						dat += "LIGRES "
+					else if(seed.get_trait(TRAIT_LIGHT_TOLERANCE) < 3)
+						dat += "LIGSEN "
+				if(seed.get_trait(TRAIT_TOXINS_TOLERANCE) < 3)
+					dat += "TOXSEN "
+				else if(seed.get_trait(TRAIT_TOXINS_TOLERANCE) > 6)
+					dat += "TOXRES "
+				if(seed.get_trait(TRAIT_PEST_TOLERANCE) < 3)
+					dat += "PESTSEN "
+				else if(seed.get_trait(TRAIT_PEST_TOLERANCE) > 6)
+					dat += "PESTRES "
+				if(seed.get_trait(TRAIT_WEED_TOLERANCE) < 3)
+					dat += "WEEDSEN "
+				else if(seed.get_trait(TRAIT_WEED_TOLERANCE) > 6)
+					dat += "WEEDRES "
+				if(seed.get_trait(TRAIT_PARASITE))
+					dat += "PAR "
+				if ("temperature" in scanner)
+					if(seed.get_trait(TRAIT_ALTER_TEMP) > 0)
+						dat += "TEMP+ "
+					if(seed.get_trait(TRAIT_ALTER_TEMP) < 0)
+						dat += "TEMP- "
+				if(seed.get_trait(TRAIT_BIOLUM))
+					dat += "LUM "
+				dat += "</td>"
+				dat += "<td>[S.amount]</td>"
+				dat += "<td><a href='byond://?src=\ref[src];task=vend;id=[S.ID]'>Vend</a> <a href='byond://?src=\ref[src];task=purge;id=[S.ID]'>Purge</a></td>"
+				dat += "</tr>"
+			dat += "</table>"
 
-	show_browser(user, dat, "window=seedstorage")
-	onclose(user, "seedstorage")
+		show_browser(user, dat, "window=seedstorage")
+		onclose(user, "seedstorage")
 
 /obj/machinery/seed_storage/Topic(href, list/href_list)
 	if (..())
@@ -201,26 +190,27 @@
 	var/task = href_list["task"]
 	var/ID = text2num(href_list["id"])
 
-	for (var/datum/seed_pile/N in piles)
-		if (N.ID == ID)
-			if (task == "vend")
-				var/obj/O = pick(N.seeds)
-				if (O)
-					--N.amount
-					N.seeds -= O
-					if (N.amount <= 0 || N.seeds.len <= 0)
-						piles -= N
+	for(var/obj/item/weapon/vendcart/seed_storage/C in component_parts)
+		for (var/datum/seed_pile/N in C.piles)
+			if (N.ID == ID)
+				if (task == "vend")
+					var/obj/O = pick(N.seeds)
+					if (O)
+						--N.amount
+						N.seeds -= O
+						if (N.amount <= 0 || N.seeds.len <= 0)
+							C.piles -= N
+							qdel(N)
+						O.loc = src.loc
+					else
+						C.piles -= N
 						qdel(N)
-					O.loc = src.loc
-				else
-					piles -= N
-					qdel(N)
-			else if (task == "purge")
-				for (var/obj/O in N.seeds)
-					qdel(O)
-					piles -= N
-					qdel(N)
-			break
+				else if (task == "purge")
+					for (var/obj/O in N.seeds)
+						qdel(O)
+						C.piles -= N
+						qdel(N)
+				break
 	updateUsrDialog()
 
 /obj/machinery/seed_storage/attackby(obj/item/O as obj, mob/user as mob)
@@ -259,13 +249,14 @@
 	O.loc = src
 	var/newID = 0
 
-	for (var/datum/seed_pile/N in piles)
-		if (N.matches(O))
-			++N.amount
-			N.seeds += (O)
-			return
-		else if(N.ID >= newID)
-			newID = N.ID + 1
+	for(var/obj/item/weapon/vendcart/seed_storage/C in component_parts)
+		for (var/datum/seed_pile/N in C.piles)
+			if (N.matches(O))
+				++N.amount
+				N.seeds += (O)
+				return
+			else if(N.ID >= newID)
+				newID = N.ID + 1
 
-	piles += new /datum/seed_pile(O, newID)
+		C.piles += new /datum/seed_pile(O, newID)
 	return
