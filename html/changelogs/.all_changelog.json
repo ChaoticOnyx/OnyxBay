@@ -1,6 +1,50 @@
 [
   {
     "author": "Gr13v0us",
+    "date": "2021-07-12T00:00:00+03:00",
+    "changes": [
+      {
+        "prefix": "Tweak",
+        "message": "Matter decompiler теперь может перерабатывать спички.",
+        "pr": 5938
+      }
+    ]
+  },
+  {
+    "author": "igorsaux",
+    "date": "2021-07-12T00:00:00+03:00",
+    "changes": [
+      {
+        "prefix": "ImageAdd",
+        "message": "Добавлен интерфейс для Floor Painter.",
+        "pr": 5994
+      }
+    ]
+  },
+  {
+    "author": "Doster-d",
+    "date": "2021-07-12T00:00:00+03:00",
+    "changes": [
+      {
+        "prefix": "Tweak",
+        "message": "Взрывы должны обрабатываться в несколько раз быстрее.",
+        "pr": 6008
+      }
+    ]
+  },
+  {
+    "author": "No-Tips",
+    "date": "2021-07-12T00:00:00+03:00",
+    "changes": [
+      {
+        "prefix": "BugFix",
+        "message": "Фикс отсутствия спрайта адамантинового метроида.",
+        "pr": 6023
+      }
+    ]
+  },
+  {
+    "author": "Gr13v0us",
     "date": "2021-07-08T00:00:00+03:00",
     "changes": [
       {
