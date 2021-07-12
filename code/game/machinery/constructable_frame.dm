@@ -40,9 +40,9 @@
 				if(isWrench(P))
 					playsound(src.loc, 'sound/items/Ratchet.ogg', 50, 1)
 					if(do_after(user, 20, src))
-						to_chat(user, "<span class='notice'>You unfasten the frame.</span>")
-						src.anchored = 0
-						src.state = 0
+						to_chat(user, SPAN("notice", "You unfasten the frame."))
+						anchored = 0
+						state = 0
 				if(isCoil(P))
 					var/obj/item/stack/cable_coil/C = P
 					if (C.get_amount() < 5)
