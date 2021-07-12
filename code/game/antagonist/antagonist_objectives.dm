@@ -68,8 +68,7 @@
 	 - your goals. They will be visible to all players after the end of the round. \
 	remember you cannot rewrite them - only add new lines.", "Antagonist Goal") as null|message)
 	if(!isnull(new_goal))
-		new_goal = "<br>[roundduration2text()]: [new_goal]"
-		mind.ambitions += new_goal
+		mind.ambitions += (new_goal = "<br>[roundduration2text()]: [new_goal]")
 		to_chat(src, SPAN_NOTICE("Your ambitions now look like this: <b>[mind.ambitions]</b><br>. \
 		You can view you ambitions in notes <b>Notes</b>. If you wish to change your ambition, \
 		please contact Administator."))
