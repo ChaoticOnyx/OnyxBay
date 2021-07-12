@@ -8,9 +8,42 @@
 	throw_speed = 1
 	throw_range = 7
 	w_class = ITEM_SIZE_NORMAL
+	var/rand_amount = FALSE
 	var/list/legal = list()
 	var/list/illegal = list()
 	var/list/premium = list()
+	var/list/product_records = list()
+
+/obj/item/weapon/vendcart/Initialize(mapload)
+	..()
+
+	if(mapload)
+		rand_amount = TRUE
+	else
+		rand_amount = FALSE
+
+	BuildInventory()
+
+/obj/item/weapon/vendcart/proc/BuildInventory()
+	var/list/all_products = list(
+		list(legal, CAT_NORMAL),
+		list(illegal, CAT_HIDDEN),
+		list(premium, CAT_COIN))
+
+	for(var/current_list in all_products)
+		var/category = current_list[2]
+
+		for(var/entry in current_list[1])
+			var/datum/stored_items/vending_products/product = new /datum/stored_items/vending_products(src, entry)
+			product.price = 0
+			product.category = category
+			if(rand_amount)
+				var/sum = current_list[1][entry]
+				product.amount = sum ? max(0, sum - rand(0, round(sum * 1.5))) : 1
+			else
+				product.amount = current_list[1][entry] || 1
+
+			product_records.Add(product)
 
 //ASSISTANT
 /obj/item/weapon/vendcart/assist

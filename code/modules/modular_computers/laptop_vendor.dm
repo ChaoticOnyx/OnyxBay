@@ -8,6 +8,11 @@
 	layer = BELOW_OBJ_LAYER
 	anchored = 1
 	density = 1
+	component_types = list(
+							/obj/item/weapon/circuitboard/vendomat,
+							/obj/item/weapon/stock_parts/matter_bin = 2,
+							/obj/item/weapon/stock_parts/console_screen
+							)
 
 	// The actual laptop/tablet
 	var/obj/item/modular_computer/laptop/fabricated_laptop = null
@@ -261,8 +266,12 @@
 
 
 /obj/machinery/lapvend/attackby(obj/item/weapon/W, mob/user)
-	var/obj/item/weapon/card/id/I = W.GetIdCard()
+	if(default_deconstruction_screwdriver(user, W))
+		return
+	if(default_deconstruction_crowbar(user, W))
+		return
 	// Awaiting payment state
+	var/obj/item/weapon/card/id/I = W.GetIdCard()
 	if(state == 2)
 		if(process_payment(I,W))
 			fabricate_and_recalc_price(1)

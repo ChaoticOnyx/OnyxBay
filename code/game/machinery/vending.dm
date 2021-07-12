@@ -41,13 +41,8 @@
 		These are used for initialization only, and so are optional if
 		product_records is specified
 	*/
-	var/list/products	= list() // For each, use the following pattern:
-	var/list/contraband	= list() // list(/type/path = amount,/type/path2 = amount2)
-	var/list/premium 	= list() // No specified amount = only one in stock
-	var/list/prices     = list() // Prices for each item, list(/type/path = price), items not in the list don't have a price.
 
-	// List of vending_product items available.
-	var/list/product_records = list()
+	var/list/prices = list() // Prices for each item, list(/type/path = price), items not in the list don't have a price.
 
 	var/rand_amount = FALSE
 
@@ -72,6 +67,7 @@
 	var/shooting_chance = 2 //The chance that items are being shot per tick
 
 	var/cartridge
+	var/obj/item/weapon/vendcart/V
 
 	var/scan_id = 1
 	var/obj/item/weapon/coin/coin
@@ -79,6 +75,9 @@
 
 /obj/machinery/vending/Initialize()
 	. = ..()
+
+	V = locate() in component_parts
+
 	wires = new(src)
 
 	component_parts = list()
@@ -98,7 +97,7 @@
 	if(product_ads)
 		ads_list += splittext(product_ads, ";")
 
-	build_inventory()
+	set_prices()
 	power_change()
 	setup_icon_states()
 
@@ -126,36 +125,16 @@
  *  products that the vending machine is to carry without manually populating
  *  src.product_records.
  */
-/obj/machinery/vending/proc/build_inventory()
-	var/list/all_products = list(
-		list(products, CAT_NORMAL),
-		list(contraband, CAT_HIDDEN),
-		list(premium, CAT_COIN))
-
-	for(var/current_list in all_products)
-		var/category = current_list[2]
-
-		for(var/entry in current_list[1])
-			var/datum/stored_items/vending_products/product = new /datum/stored_items/vending_products(src, entry)
-
-			product.price = (entry in prices) ? prices[entry] : 0
-			product.category = category
-			if(rand_amount)
-				var/sum = current_list[1][entry]
-				product.amount = sum ? max(0, sum - rand(0, round(sum * 1.5))) : 1
-			else
-				product.amount = (current_list[1][entry]) ? current_list[1][entry] : 1
-
-			product_records.Add(product)
+/obj/machinery/vending/proc/set_prices()
+	var/obj/item/weapon/vendcart/V = locate(/obj/item/weapon/vendcart) in component_parts
+	for(var/datum/stored_items/vending_products/P in V.product_records)
+		P.price = (P.item_path in prices) ? prices[P.item_path] : 0
 
 /obj/machinery/vending/Destroy()
 	qdel(wires)
 	wires = null
 	qdel(coin)
 	coin = null
-	for(var/datum/stored_items/vending_products/R in product_records)
-		qdel(R)
-	product_records = null
 	. = ..()
 
 /obj/machinery/vending/ex_act(severity)
@@ -221,8 +200,11 @@
 	return FALSE
 
 /obj/machinery/vending/attackby(obj/item/weapon/W, mob/user)
+	var/obj/item/weapon/vendcart/V = locate(/obj/item/weapon/vendcart) in component_parts
+
 	if(pay(W, user))
 		return
+
 	else if(isScrewdriver(W))
 		panel_open = !panel_open
 		to_chat(user, "You [panel_open ? "open" : "close"] the maintenance panel.")
@@ -230,24 +212,29 @@
 		if(panel_open)
 			overlays += image(icon, "[base_icon]-panel")
 		return
+
 	else if(default_deconstruction_crowbar(user, W))
 		return
+
 	else if(isMultitool(W) || isWirecutter(W))
 		if(panel_open)
 			attack_hand(user)
 		return
+
 	else if((obj_flags & OBJ_FLAG_ANCHORABLE) && isWrench(W))
 		if(wrench_floor_bolts(user))
 			update_standing_icon()
 			power_change()
 		return
-	else if(istype(W, /obj/item/weapon/coin) && premium.len > 0)
+
+	else if(istype(W, /obj/item/weapon/coin) && V.premium.len > 0)
 		user.drop_item()
 		W.forceMove(src)
 		coin = W
 		categories |= CAT_COIN
 		to_chat(user, SPAN("notice", "You insert \the [W] into \the [src]."))
 		return
+
 	else if(istype(W, /obj/item/weapon/weldingtool))
 		var/obj/item/weapon/weldingtool/WT = W
 		if(!WT.isOn())
@@ -268,8 +255,10 @@
 		user.visible_message(SPAN("notice", "[user] repairs \the [src]."), \
 				             SPAN("notice", "You repair \the [src]."))
 		return
+
 	else if(attempt_to_stock(W, user))
 		return
+
 	else if(W.force >= 10)
 		take_damage(W.force)
 		user.visible_message(SPAN("danger", "\The [src] has been [pick(W.attack_verb)] with [W] by [user]!"))
@@ -279,6 +268,7 @@
 		shake_animation(stime = 4)
 		return
 	..()
+
 	if(W.mod_weight >= 0.75)
 		shake_animation(stime = 2)
 	return
@@ -289,7 +279,8 @@
 	return attempt_to_stock(I, user)
 
 /obj/machinery/vending/proc/attempt_to_stock(obj/item/I as obj, mob/user as mob)
-	for(var/datum/stored_items/vending_products/R in product_records)
+	var/obj/item/weapon/vendcart/V = locate() in component_parts
+	for(var/datum/stored_items/vending_products/R in V.product_records)
 		if(I.type == R.item_path)
 			stock(I, R, user)
 			return 1
@@ -435,8 +426,9 @@
 
 	var/list/listed_products = list()
 
-	for(var/key = 1 to product_records.len)
-		var/datum/stored_items/vending_products/I = product_records[key]
+	var/obj/item/weapon/vendcart/V = locate() in component_parts
+	for(var/key = 1 to V.product_records.len)
+		var/datum/stored_items/vending_products/I = V.product_records[key]
 
 		if(!(I.category & categories))
 			continue
@@ -497,7 +489,8 @@
 				return TRUE
 
 			var/key = text2num(params["vend"])
-			var/datum/stored_items/vending_products/R = product_records[key]
+			var/obj/item/weapon/vendcart/V = locate() in component_parts
+			var/datum/stored_items/vending_products/R = V.product_records[key]
 
 			// This should not happen unless the request from NanoUI was bad
 			if(!(R.category & categories))
@@ -660,7 +653,8 @@
 
 //Oh no we're malfunctioning!  Dump out some product and break.
 /obj/machinery/vending/proc/malfunction()
-	for(var/datum/stored_items/vending_products/R in product_records)
+	var/obj/item/weapon/vendcart/V = locate() in component_parts
+	for(var/datum/stored_items/vending_products/R in V.product_records)
 		while(R.get_amount()>0)
 			R.get_product(loc)
 		break
@@ -672,8 +666,8 @@
 	var/mob/living/target = locate() in view(7, src)
 	if(!target)
 		return 0
-
-	for(var/datum/stored_items/vending_products/R in shuffle(product_records))
+	var/obj/item/weapon/vendcart/V = locate() in component_parts
+	for(var/datum/stored_items/vending_products/R in shuffle(V.product_records))
 		throw_item = R.get_product(loc)
 		if(throw_item)
 			break
