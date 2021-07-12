@@ -1,7 +1,3 @@
-// helper.dm
-/// Stringifies whatever you put into it.
-#define STRINGIFY(argument) #argument
-
 // game.dm
 //We used to use linear regression to approximate the answer, but Mloc realized this was actually faster.
 //And lo and behold, it is, and it's more accurate to boot.
