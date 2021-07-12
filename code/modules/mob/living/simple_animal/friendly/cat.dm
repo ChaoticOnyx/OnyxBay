@@ -25,6 +25,7 @@
 	holder_type = /obj/item/weapon/holder/cat
 	mob_size = MOB_SMALL
 	possession_candidate = 1
+	renamable = TRUE
 
 /mob/living/simple_animal/cat/Life()
 	if(!..() || incapacitated() || client)
@@ -40,14 +41,10 @@
 					stop_automated_movement = 0
 					break
 
-
-
 	for(var/mob/living/simple_animal/mouse/snack in oview(src,5))
 		if(snack.stat < DEAD && prob(15))
 			audible_emote(pick("hisses and spits!","mrowls fiercely!","eyes [snack] hungrily."))
 		break
-
-
 
 	turns_since_scan++
 	if (turns_since_scan > 5)
@@ -216,6 +213,7 @@
 	item_state = "cat"
 	icon_living = "cat"
 	icon_dead = "cat_dead"
+	renamable = FALSE
 
 /mob/living/simple_animal/cat/kitten
 	name = "kitten"
@@ -225,6 +223,7 @@
 	icon_living = "kitten"
 	icon_dead = "kitten_dead"
 	gender = NEUTER
+	renamable = TRUE
 
 // Leaving this here for now.
 /obj/item/weapon/holder/cat/fluff/bones
@@ -232,6 +231,7 @@
 	desc = "It's Bones! Meow."
 	gender = MALE
 	icon_state = "cat3"
+
 
 /mob/living/simple_animal/cat/fluff/bones
 	name = "Bones"
@@ -243,6 +243,7 @@
 	icon_dead = "cat3_dead"
 	holder_type = /obj/item/weapon/holder/cat/fluff/bones
 	var/friend_name = "Erstatz Vryroxes"
+	renamable = FALSE
 
 /mob/living/simple_animal/cat/kitten/New()
 	gender = pick(MALE, FEMALE)

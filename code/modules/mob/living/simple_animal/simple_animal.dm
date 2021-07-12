@@ -38,6 +38,9 @@
 	var/turns_since_scan = 0
 	var/shy_animal = 0
 
+	//Naming
+	var/renamable = FALSE
+
 	//Temperature effect
 	var/minbodytemp = 250
 	var/maxbodytemp = 350
