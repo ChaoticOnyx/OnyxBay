@@ -76,9 +76,9 @@
 /obj/machinery/vending/Initialize()
 	. = ..()
 
-	V = locate() in component_parts
-
 	wires = new(src)
+
+	RefreshParts()
 
 	component_parts = list()
 	component_parts += new /obj/item/weapon/circuitboard/vendomat(src)
@@ -101,6 +101,8 @@
 	power_change()
 	setup_icon_states()
 
+/obj/machinery/vending/RefreshParts()
+	V = locate() in component_parts
 /obj/machinery/vending/examine(mob/user)
 	. = ..()
 	if(.)
@@ -200,8 +202,6 @@
 	return FALSE
 
 /obj/machinery/vending/attackby(obj/item/weapon/W, mob/user)
-	var/obj/item/weapon/vendcart/V = locate(/obj/item/weapon/vendcart) in component_parts
-
 	if(pay(W, user))
 		return
 
@@ -220,6 +220,20 @@
 		if(panel_open)
 			attack_hand(user)
 		return
+
+	else if(panel_open && istype(W, cartridge))
+		to_chat(user, SPAN("notice", "You start replacing cartridge in \the [src]."))
+		if(do_after(user, 20, src))
+			to_chat(user, SPAN("notice", "You replace cartridge in \the [src]."))
+			for(var/obj/item/weapon/vendcart/B in component_parts)
+				var/mob/living/carbon/human/A = user
+				A.remove_from_mob(W)
+				component_parts -= B
+				W.forceMove(src)
+				component_parts += W
+				A.put_in_hands(B)
+				RefreshParts()
+				return
 
 	else if((obj_flags & OBJ_FLAG_ANCHORABLE) && isWrench(W))
 		if(wrench_floor_bolts(user))

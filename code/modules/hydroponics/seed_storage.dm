@@ -218,6 +218,21 @@
 		return
 	if(default_deconstruction_crowbar(user, O))
 		return
+
+	if(panel_open && istype(O, cartridge))
+		to_chat(user, SPAN("notice", "You start replacing cartridge in \the [src]."))
+		if(do_after(user, 20, src))
+			to_chat(user, SPAN("notice", "You replace cartridge in \the [src]."))
+			for(var/obj/item/weapon/vendcart/seed_storage/B in component_parts)
+				var/mob/living/carbon/human/A = user
+				A.remove_from_mob(O)
+				component_parts -= B
+				O.forceMove(src)
+				component_parts += O
+				A.put_in_hands(B)
+				RefreshParts()
+				return
+
 	if (istype(O, /obj/item/seeds))
 		add(O)
 		user.visible_message("[user] puts \the [O.name] into \the [src].", "You put \the [O] into \the [src].")
