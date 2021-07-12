@@ -129,3 +129,59 @@
 	desc = "A lisp is a speech impediment in which a person misarticulates sibilants."
 
 	lisping = TRUE
+
+/datum/modifier/trait/opiat_additiction
+	name = "Opiat addiction"
+	desc = "You are addicted to opiates."
+
+/datum/modifier/trait/opiat_additiction/on_applied()
+	. = ..()
+	var/mob/living/carbon/human/H = holder
+	if(H)
+		var/datum/additiction/opioid/A = new
+		A.chronic = TRUE
+		A.max_power = rand(40, 70)
+		A.power = A.max_power * 0.25
+		H.add_additiction(A)
+		spawn()
+			var/turf/T = get_turf(H)
+			H.equip_to_storage_or_drop(new /obj/item/weapon/reagent_containers/syringe/drugs(T))
+			H.equip_to_storage_or_drop(new /obj/item/weapon/reagent_containers/syringe/drugs(T))
+			H.equip_to_storage_or_drop(new /obj/item/weapon/reagent_containers/syringe/drugs(T))
+			H.equip_to_storage_or_drop(new /obj/item/weapon/reagent_containers/syringe/drugs(T))
+
+/datum/modifier/trait/alcohol_additiction
+	name = "Alcohol addiction"
+	desc = "You are addicted to alcohol."
+
+/datum/modifier/trait/alcohol_additiction/on_applied()
+	. = ..()
+	var/mob/living/carbon/human/H = holder
+	if(H)
+		var/datum/additiction/alcohol/A = new
+		A.chronic = TRUE
+		A.max_power = rand(40, 70)
+		A.power = A.max_power * 0.25
+		H.add_additiction(A)
+
+/datum/modifier/trait/smoker
+	name = "Smoker"
+	desc = "You are smoker."
+
+/datum/modifier/trait/smoker/on_applied()
+	. = ..()
+	var/mob/living/carbon/human/H = holder
+	if(H)
+		var/datum/additiction/nicotine/A = new
+		A.chronic = TRUE
+		A.max_power = rand(40, 70)
+		A.power = A.max_power * 0.25
+		H.add_additiction(A)
+
+		spawn()
+			var/turf/T = get_turf(H)
+
+			var/cigarett_t = pick(subtypesof(/obj/item/weapon/storage/fancy/cigarettes) - subtypesof(/obj/item/weapon/storage/fancy/cigarettes/syndi_cigs))
+			var/lighter_t = pick(subtypesof(/obj/item/weapon/flame/lighter))
+			H.equip_to_storage_or_drop(new cigarett_t(T))
+			H.equip_to_storage_or_drop(new lighter_t(T))

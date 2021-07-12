@@ -143,7 +143,6 @@
 	reagents.add_reagent(/datum/reagent/tramadol, 15)
 	color = reagents.get_color()
 
-
 /obj/item/weapon/reagent_containers/pill/inaprovaline
 	name = "Inaprovaline (30u)"
 	desc = "Used to stabilize patients."

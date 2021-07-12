@@ -122,9 +122,9 @@
 	catalysts = list(/datum/reagent/toxin/plasma = 5)
 	result_amount = 1
 
-/datum/chemical_reaction/tarine
-	name = "Tarine"
-	result = /datum/reagent/tramadol/opium/tarine
+/datum/chemical_reaction/heroin
+	name = "Heroin"
+	result = /datum/reagent/tramadol/opium/heroin
 	required_reagents = list(/datum/reagent/tramadol/opium = 3, /datum/reagent/acetone = 1, /datum/reagent/acid/hydrochloric = 1)
 	result_amount = 3
 

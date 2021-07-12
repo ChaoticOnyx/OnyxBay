@@ -276,6 +276,7 @@
 	var/pain_power = 120 //magnitide of painkilling effect
 	var/effective_dose = 0.5 //how many units it need to process to reach max power
 	var/soft_overdose = 15 //determines when it starts causing negative effects w/out actually causing OD
+	var/additiction_coef = 0.8
 
 /datum/reagent/tramadol/affect_blood(mob/living/carbon/M, alien, removed)
 	var/effectiveness = 1
@@ -333,6 +334,7 @@
 	overdose = 20
 	pain_power = 200
 	effective_dose = 2
+	additiction_coef = 1.5
 
 /datum/reagent/tramadol/opium // yes, opium is a subtype of tramadol, for reasons ~Toby
 	name = "Opium"
@@ -346,6 +348,7 @@
 	data = 0
 	pain_power = 150
 	var/drugdata = 0
+	additiction_coef = 2
 
 /datum/reagent/tramadol/opium/affect_blood(mob/living/carbon/M, alien, removed)
 	var/effectiveness = 1
@@ -386,8 +389,8 @@
 			M.Weaken(2)
 			M.drowsyness = max(M.drowsyness, 5)
 
-/datum/reagent/tramadol/opium/tarine
-	name = "Tarine"
+/datum/reagent/tramadol/opium/heroin
+	name = "Heroin"
 	description = "An opioid most commonly used as a recreational drug for its euphoric effects. An extremely effective painkiller, yet is terribly addictive and notorious for its life-threatening side-effects."
 	color = "#b79a8d"
 	overdose = 15
@@ -395,12 +398,13 @@
 	pain_power = 240
 	scannable = 0
 	reagent_state = SOLID
+	additiction_coef = 3
 
-/datum/reagent/tramadol/opium/tarine/affect_blood(mob/living/carbon/M, alien, removed)
+/datum/reagent/tramadol/opium/heroin/affect_blood(mob/living/carbon/M, alien, removed)
 	..()
 	M.add_chemical_effect(CE_SLOWDOWN, 1)
 
-/datum/reagent/tramadol/opium/tarine/handle_painkiller_overdose(mob/living/carbon/M)
+/datum/reagent/tramadol/opium/heroin/handle_painkiller_overdose(mob/living/carbon/M)
 	var/whole_volume = (volume + M.chem_doses[type]) // side effects are more robust (dose-wise) than in the case of *legal* painkillers usage
 	if(whole_volume > soft_overdose)
 		M.hallucination(30, 30)
@@ -417,6 +421,8 @@
 		if(prob(25))
 			M.sleeping = max(M.sleeping, 3)
 		M.add_chemical_effect(CE_BREATHLOSS, 0.2)
+
+
 
 /* Other medicine */
 

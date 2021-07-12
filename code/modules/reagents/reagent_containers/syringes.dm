@@ -454,9 +454,8 @@
 
 /obj/item/weapon/reagent_containers/syringe/drugs/Initialize()
 	. = ..()
-	reagents.add_reagent(/datum/reagent/space_drugs, 5)
-	reagents.add_reagent(/datum/reagent/mindbreaker, 5)
-	reagents.add_reagent(/datum/reagent/cryptobiolin, 5)
+	reagents.add_reagent(/datum/reagent/tramadol/opium, 5)
+	reagents.add_reagent(/datum/reagent/tramadol/opium/heroin, 10)
 	update_icon()
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -474,7 +473,6 @@
 	. = ..()
 	reagents.add_reagent(/datum/reagent/adrenaline, 5)
 	reagents.add_reagent(/datum/reagent/hyperzine, 10)
-
 ////////////////////////////////////////////////////////////////////////////////
 /obj/item/weapon/reagent_containers/syringe/ld50_syringe
 	name = "Lethal Injection Syringe"

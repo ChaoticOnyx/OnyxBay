@@ -323,13 +323,13 @@
 	reagents.add_reagent(/datum/reagent/tramadol/opium, 60)
 	update_icon()
 
-/obj/item/weapon/reagent_containers/glass/bottle/tarine
-	name = "tarine bottle"
-	desc = "A small bottle of tarine. An extremely effective painkiller, yet is terribly addictive and notorious for its life-threatening side-effects."
+/obj/item/weapon/reagent_containers/glass/bottle/heroin
+	name = "heroin bottle"
+	desc = "A small bottle of heroin. An extremely effective painkiller, yet is terribly addictive and notorious for its life-threatening side-effects."
 	icon = 'icons/obj/chemical.dmi'
 	icon_state = "bottle-4"
 
-/obj/item/weapon/reagent_containers/glass/bottle/tarine/Initialize()
+/obj/item/weapon/reagent_containers/glass/bottle/heroin/Initialize()
 	. = ..()
-	reagents.add_reagent(/datum/reagent/tramadol/opium/tarine, 60)
+	reagents.add_reagent(/datum/reagent/tramadol/opium/heroin, 60)
 	update_icon()
