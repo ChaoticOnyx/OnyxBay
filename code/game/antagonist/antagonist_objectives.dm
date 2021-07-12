@@ -52,7 +52,7 @@
 	to_chat(src, "<b><font size=3>These objectives are completely voluntary. You are not required to complete them.</font></b>")
 	show_objectives(src.mind)
 
-/mob/living/proc/write_ambition()
+/mob/living/proc/set_ambition()
 	set name = "Set Ambition"
 	set category = "IC"
 	set src = usr
@@ -63,22 +63,23 @@
 		to_chat(src, "<span class='warning'>While you may perhaps have goals, this verb's meant to only be visible \
 		to antagonists.  Please make a bug report!</span>")
 		return
-	var/new_ambitions = input(src, "Write a short sentence of what your character hopes to accomplish \
-	today as an antagonist.  Remember that this is purely optional.  It will be shown at the end of the \
-	round for everybody else.", "Ambitions", mind.ambitions) as null|message
-	if(isnull(new_ambitions))
-		return
-	new_ambitions = sanitize(new_ambitions)
-	mind.ambitions = new_ambitions
-	if(new_ambitions)
-		to_chat(src, "<span class='notice'>You've set your goal to be '[new_ambitions]'.</span>")
-	else
-		to_chat(src, "<span class='notice'>You leave your ambitions behind.</span>")
-	log_and_message_admins("has set their ambitions to now be: [new_ambitions].")
+
+	var/datum/goal/ambition/goal = SSgoals.ambitions[mind]
+	var/new_goal = sanitize(input(src, "Напишите, чего Вы хотите достичь в этом раунде как антагонист - \
+	свои цели. Они будут видны всем игрокам после конца раунда. Помните, что Вы не можете \
+	переписать их - только дополнить новыми строками.", "Antagonist Goal") as null|message)
+	if(!isnull(new_goal))
+		if(!goal)
+			goal = new /datum/goal/ambition(mind)
+		goal.description += "<br>[roundduration2text()]: [new_goal]"
+		to_chat(src, SPAN_NOTICE("Теперь, Ваша амбиция выглядит так: <b>[goal.description]</b><br>. \
+		Вы можете просмотреть её через кнопку <b>Notes</b>. Если Вы хотите изменить всю амбицию, \
+		то обратитесь к администратору."))
+		log_and_message_admins("обновил свою амбицию: [new_goal].")
 
 //some antagonist datums are not actually antagonists, so we might want to avoid
 //sending them the antagonist meet'n'greet messages.
 //E.G. ERT
-/datum/antagonist/proc/show_objectives_at_creation(datum/mind/player)
+/datum/antagonist/proc/show_objectives_at_creation(var/datum/mind/player)
 	if(src.show_objectives_on_creation)
 		show_objectives(player)
