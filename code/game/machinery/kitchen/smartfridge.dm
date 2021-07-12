@@ -151,7 +151,7 @@
 		playsound(src.loc, 'sound/items/Screwdriver.ogg', 50, 1)
 		if(do_after(user, 20, src))
 			var/obj/machinery/constructable_frame/machine_frame/M = new /obj/machinery/constructable_frame/machine_frame(get_turf(src))
-			M.set_dir(src.dir)
+			M.set_dir(dir)
 			M.state = 2
 			M.icon_state = "box_1"
 			new /obj/item/stack/material/wood(loc, 2)
