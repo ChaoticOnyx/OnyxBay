@@ -53,7 +53,7 @@
 	show_objectives(src.mind)
 
 /mob/living/proc/set_ambition()
-	set name = "Set Ambition"
+	set name = "Set Ambition" //ported from infinitystation
 	set category = "IC"
 	set src = usr
 
@@ -64,18 +64,16 @@
 		to antagonists.  Please make a bug report!</span>")
 		return
 
-	var/datum/goal/ambition/goal = SSgoals.ambitions[mind]
-	var/new_goal = sanitize(input(src, "Напишите, чего Вы хотите достичь в этом раунде как антагонист - \
-	свои цели. Они будут видны всем игрокам после конца раунда. Помните, что Вы не можете \
-	переписать их - только дополнить новыми строками.", "Antagonist Goal") as null|message)
+	var/new_goal = sanitize(input(src, "Write down what you want to achieve in this round as an antagonist \
+	 - your goals. They will be visible to all players after the end of the round. \
+	remember you cannot rewrite them - only add new lines.", "Antagonist Goal") as null|message)
 	if(!isnull(new_goal))
-		if(!goal)
-			goal = new /datum/goal/ambition(mind)
-		goal.description += "<br>[roundduration2text()]: [new_goal]"
-		to_chat(src, SPAN_NOTICE("Теперь, Ваша амбиция выглядит так: <b>[goal.description]</b><br>. \
-		Вы можете просмотреть её через кнопку <b>Notes</b>. Если Вы хотите изменить всю амбицию, \
-		то обратитесь к администратору."))
-		log_and_message_admins("обновил свою амбицию: [new_goal].")
+		new_goal = "<br>[roundduration2text()]: [new_goal]"
+		mind.ambitions += new_goal
+		to_chat(src, SPAN_NOTICE("Your ambitions now look like this: <b>[mind.ambitions]</b><br>. \
+		You can view you ambitions in notes <b>Notes</b>. If you wish to change your ambition, \
+		please contact Administator."))
+		log_and_message_admins("updated his ambition: [new_goal]")
 
 //some antagonist datums are not actually antagonists, so we might want to avoid
 //sending them the antagonist meet'n'greet messages.
