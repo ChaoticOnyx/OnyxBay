@@ -154,7 +154,7 @@
 			M.set_dir(src.dir)
 			M.state = 2
 			M.icon_state = "box_1"
-			new /obj/item/stack/material/wood(src.loc, 2)
+			new /obj/item/stack/material/wood(loc, 2)
 			qdel(src)
 			return
 	..()
