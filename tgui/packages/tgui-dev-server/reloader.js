@@ -56,8 +56,8 @@ export const findCacheRoot = async () => {
     if (userpath) {
       cacheRoot = userpath
         .replace(/\\$/, '')
-        .replace(/\\/g, '/') +
-        '/cache';
+        .replace(/\\/g, '/')
+        + '/cache';
       onCacheRootFound(cacheRoot);
       return cacheRoot;
     }

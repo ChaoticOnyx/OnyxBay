@@ -546,41 +546,43 @@
 	return 1
 
 /obj/mecha/proc/update_health()
-	if(src.health > 0)
-		src.spark_system.start()
+	if(health > 0)
+		spark_system.start()
 	else
 		qdel(src)
 	return
 
-/obj/mecha/attack_hand(mob/user as mob)
-	src.log_message("Attack by hand/paw. Attacker - [user].",1)
+/obj/mecha/attack_hand(mob/user)
+	log_message("Attack by hand/paw. Attacker - [user].", 1)
+	user.setClickCooldown(DEFAULT_ATTACK_COOLDOWN)
+	user.do_attack_animation(src)
 
 	if(istype(user,/mob/living/carbon/human))
 		var/mob/living/carbon/human/H = user
 		if(H.species.can_shred(user))
-			if(!deflect_hit(is_melee=1))
-				src.hit_damage(damage=15, is_melee=1)
-				src.check_for_internal_damage(list(MECHA_INT_TEMP_CONTROL,MECHA_INT_TANK_BREACH,MECHA_INT_CONTROL_LOST))
+			if(!deflect_hit(is_melee = 1))
+				src.hit_damage(damage = 15, is_melee = 1)
+				src.check_for_internal_damage(list(MECHA_INT_TEMP_CONTROL, MECHA_INT_TANK_BREACH, MECHA_INT_CONTROL_LOST))
 				playsound(src.loc, 'sound/weapons/slash.ogg', 50, 1, -1)
-				to_chat(user, "<span class='danger'>You slash at the armored suit!</span>")
-				visible_message("<span class='danger'>\The [user] slashes at [src.name]'s armor!</span>")
+				to_chat(user, SPAN("danger", "You slash at the armored suit!"))
+				visible_message(SPAN("danger", "\The [user] slashes at [src.name]'s armor!"))
 			else
 				src.log_append_to_last("Armor saved.")
 				playsound(src.loc, 'sound/weapons/slash.ogg', 50, 1, -1)
-				to_chat(user, "<span class='danger'>Your claws had no effect!</span>")
-				src.occupant_message("<span class='notice'>\The [user]'s claws are stopped by the armor.</span>")
-				visible_message("<span class='warning'>\The [user] rebounds off [src.name]'s armor!</span>")
+				to_chat(user, SPAN("danger", "Your claws had no effect!"))
+				src.occupant_message(SPAN("notice", "\The [user]'s claws are stopped by the armor."))
+				visible_message(SPAN("warning", "\The [user] rebounds off [src.name]'s armor!"))
 		else
-			user.visible_message("<span class='danger'>\The [user] hits \the [src]. Nothing happens.</span>","<span class='danger'>You hit \the [src] with no visible effect.</span>")
-			src.log_append_to_last("Armor saved.")
+			user.visible_message(SPAN("danger", "\The [user] hits \the [src]. Nothing happens."), SPAN("danger", "You hit \the [src] with no visible effect."))
+			log_append_to_last("Armor saved.")
 		return
-	else if ((MUTATION_HULK in user.mutations) && !deflect_hit(is_melee=1))
-		src.hit_damage(damage=15, is_melee=1)
-		src.check_for_internal_damage(list(MECHA_INT_TEMP_CONTROL,MECHA_INT_TANK_BREACH,MECHA_INT_CONTROL_LOST))
-		user.visible_message("<font color='red'><b>[user] hits [src.name], doing some damage.</b></font>", "<font color='red'><b>You hit [src.name] with all your might. The metal creaks and bends.</b></font>")
+	else if((MUTATION_HULK in user.mutations) && !deflect_hit(is_melee = 1))
+		hit_damage(damage = 15, is_melee = 1)
+		check_for_internal_damage(list(MECHA_INT_TEMP_CONTROL, MECHA_INT_TANK_BREACH, MECHA_INT_CONTROL_LOST))
+		user.visible_message("<font color='red'><b>[user] hits [name], doing some damage.</b></font>", "<font color='red'><b>You hit [name] with all your might. The metal creaks and bends.</b></font>")
 	else
-		user.visible_message("<font color='red'><b>[user] hits [src.name]. Nothing happens</b></font>","<font color='red'><b>You hit [src.name] with no visible effect.</b></font>")
-		src.log_append_to_last("Armor saved.")
+		user.visible_message("<font color='red'><b>[user] hits [name]. Nothing happens</b></font>", "<font color='red'><b>You hit [name] with no visible effect.</b></font>")
+		log_append_to_last("Armor saved.")
 	return
 
 /obj/mecha/hitby(atom/movable/AM, speed, nomsg = TRUE)

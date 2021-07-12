@@ -34,15 +34,15 @@ var/global/list/protected_objects = list(/obj/structure/table, /obj/structure/ca
 
 	var/weakref/copy_of
 	var/weakref/creator // the creator
-	var/destroy_objects = 0
-	var/knockdown_people = 0
+	var/destroy_objects = FALSE
+	var/knockdown_people = FALSE
 
 /mob/living/simple_animal/hostile/mimic/New(newloc, obj/o, mob/living/creator)
 	..()
-	if(o)
-		if(ispath(o))
-			o = new o(newloc)
-		CopyObject(o,creator)
+	o = o || /obj/structure/closet/crate
+	if(ispath(o))
+		o = new o(newloc)
+	CopyObject(o,creator)
 
 /mob/living/simple_animal/hostile/mimic/FindTarget()
 	. = ..()
@@ -64,10 +64,10 @@ var/global/list/protected_objects = list(/obj/structure/table, /obj/structure/ca
 		icon_living = icon_state
 
 		if(istype(O, /obj/structure))
-			health = (anchored * 50) + 50
-			destroy_objects = 1
+			health = anchored * 50 + 50
+			destroy_objects = TRUE
 			if(O.density && O.anchored)
-				knockdown_people = 1
+				knockdown_people = TRUE
 				melee_damage_lower *= 2
 				melee_damage_upper *= 2
 		else if(istype(O, /obj/item))
@@ -79,10 +79,8 @@ var/global/list/protected_objects = list(/obj/structure/table, /obj/structure/ca
 
 		maxHealth = health
 		if(creator)
-			src.creator = weakref(creator)
+			creator = weakref(creator)
 			faction = "\ref[creator]" // very unique
-		return 1
-	return
 
 /mob/living/simple_animal/hostile/mimic/death()
 	if(!copy_of)
@@ -120,7 +118,7 @@ var/global/list/protected_objects = list(/obj/structure/table, /obj/structure/ca
 		if(istype(L))
 			if(prob(15))
 				L.Weaken(1)
-				L.visible_message("<span class='danger'>\The [src] knocks down \the [L]!</span>")
+				L.visible_message(SPAN_DANGER("\The [src] knocks down \the [L]!"))
 
 /mob/living/simple_animal/hostile/mimic/Destroy()
 	copy_of = null
@@ -129,10 +127,10 @@ var/global/list/protected_objects = list(/obj/structure/table, /obj/structure/ca
 	return ..()
 
 /mob/living/simple_animal/hostile/mimic/sleeping
-	wander = 0
-	stop_automated_movement = 1
+	wander = FALSE
+	stop_automated_movement = TRUE
 
-	var/awake = 0
+	var/awake = FALSE
 
 /mob/living/simple_animal/hostile/mimic/sleeping/ListTargets()
 	if(!awake)
@@ -141,8 +139,8 @@ var/global/list/protected_objects = list(/obj/structure/table, /obj/structure/ca
 
 /mob/living/simple_animal/hostile/mimic/sleeping/proc/trigger()
 	if(!awake)
-		src.visible_message("<b>\The [src]</b> starts to move!")
-		awake = 1
+		visible_message("<b>\The [src]</b> starts to move!")
+		awake = TRUE
 
 /mob/living/simple_animal/hostile/mimic/sleeping/adjustBruteLoss(damage)
 	trigger()

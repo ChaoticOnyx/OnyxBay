@@ -269,9 +269,9 @@ export const Box = (props: BoxProps) => {
   if (typeof children === 'function') {
     return children(computeBoxProps(props));
   }
-  const computedClassName = typeof className === 'string' ?
-    className + ' ' + computeBoxClassName(rest) :
-    computeBoxClassName(rest);
+  const computedClassName = typeof className === 'string'
+    ? className + ' ' + computeBoxClassName(rest)
+    : computeBoxClassName(rest);
   const computedProps = computeBoxProps(rest);
   // Render a wrapper element
   return createVNode(

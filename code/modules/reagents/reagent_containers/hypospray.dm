@@ -106,7 +106,7 @@
 /obj/item/weapon/reagent_containers/hypospray/autoinjector
 	name = "autoinjector"
 	desc = "A rapid and safe way to administer small amounts of drugs by untrained or trained personnel."
-	icon_state = "blue"
+	icon_state = "blue1"
 	item_state = "autoinjector"
 	amount_per_transfer_from_this = 10
 	volume = 10
@@ -114,6 +114,7 @@
 	atom_flags = null
 	var/list/starts_with = list(/datum/reagent/inaprovaline = 10)
 	var/content_desc = "Inaprovaline 10u. Use to stabilize an injured person."
+	var/base_state = "blue"
 
 /obj/item/weapon/reagent_containers/hypospray/autoinjector/Initialize()
 	. = ..()
@@ -131,9 +132,9 @@
 
 /obj/item/weapon/reagent_containers/hypospray/autoinjector/update_icon()
 	if(reagents.total_volume > 0)
-		icon_state = "[initial(icon_state)]1"
+		icon_state = "[base_state]1"
 	else
-		icon_state = "[initial(icon_state)]0"
+		icon_state = "[base_state]0"
 
 /obj/item/weapon/reagent_containers/hypospray/autoinjector/examine(mob/user)
 	. = ..()
@@ -143,30 +144,35 @@
 		. += "\n<span class='notice'>It is spent.</span>"
 
 /obj/item/weapon/reagent_containers/hypospray/autoinjector/detox
-	icon_state = "green"
+	icon_state = "green1"
 	content_desc = "Dylovene 10u. Use in case of poisoning."
+	base_state = "green"
 	starts_with = list(/datum/reagent/dylovene = 10)
 
 /obj/item/weapon/reagent_containers/hypospray/autoinjector/tricordrazine
-	icon_state = "red"
+	icon_state = "red1"
 	content_desc = "Tricordrazine 10u. Use to speed up recovery from physical trauma."
+	base_state = "red"
 	starts_with = list(/datum/reagent/tricordrazine = 10)
 
 /obj/item/weapon/reagent_containers/hypospray/autoinjector/pain
-	icon_state = "purple"
+	icon_state = "purple1"
 	content_desc = "Tramadol 10u. Highly potent painkiller. Warning: Do Not Mix With Alcohol!"
+	base_state = "purple"
 	starts_with = list(/datum/reagent/tramadol = 10)
 
 /obj/item/weapon/reagent_containers/hypospray/autoinjector/combatpain
-	icon_state = "black"
+	icon_state = "black1"
 	content_desc = "Oxycodone 5u"
+	base_state = "black"
 	starts_with = list(/datum/reagent/tramadol/oxycodone = 5)
 	amount_per_transfer_from_this = 5
 	volume = 5
 
 /obj/item/weapon/reagent_containers/hypospray/autoinjector/mindbreaker
-	icon_state = "black"
+	icon_state = "black1"
 	content_desc = ""
+	base_state = "black"
 	starts_with = list(/datum/reagent/mindbreaker = 5)
 	amount_per_transfer_from_this = 5
 	volume = 5

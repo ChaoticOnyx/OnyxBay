@@ -78,9 +78,9 @@ const handlePassthrough = (key: KeyEvent) => {
     return;
   }
   // NOTE: Alt modifier is pretty bad and sticky in IE11.
-  if (key.event.defaultPrevented ||
-      key.isModifierKey() ||
-      hotKeysAcquired.includes(key.code)) {
+  if (key.event.defaultPrevented
+      || key.isModifierKey()
+      || hotKeysAcquired.includes(key.code)) {
     return;
   }
   const byondKeyCode = keyCodeToByond(key.code);

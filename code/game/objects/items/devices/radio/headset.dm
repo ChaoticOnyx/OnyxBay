@@ -264,7 +264,7 @@
 	icon_state = "tac_earmuffs"
 	item_state = "tac_earmuffs"
 	slot_flags = SLOT_EARS | SLOT_TWOEARS
-	ear_protection = 0.5
+	ear_protection = 0.5 // Worn on both ears, effectively providing 1 ear protection
 
 /obj/item/device/radio/headset/tactical/sec
 	ks2type = /obj/item/device/encryptionkey/headset_sec

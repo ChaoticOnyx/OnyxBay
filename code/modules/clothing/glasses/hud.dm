@@ -64,6 +64,7 @@
 	icon_state = "matrix_thermal"
 	vision_flags = SEE_MOBS
 	see_invisible = SEE_INVISIBLE_NOLIGHTING
+	flash_protection = FLASH_PROTECTION_REDUCED
 	matrix_type = "thermal"
 	matrix_icon = "thermal"
 

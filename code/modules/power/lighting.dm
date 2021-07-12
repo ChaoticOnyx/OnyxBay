@@ -212,7 +212,7 @@
 	light_type = /obj/item/weapon/light/bulb/red
 
 /obj/machinery/light/small/hl
-	name = "hanging lantern"
+	name = "old light fixture"
 	icon_state = "hanginglantern1"
 	base_state = "hanginglantern"
 	desc = "Combination of old technologies and electricity."

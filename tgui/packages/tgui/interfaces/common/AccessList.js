@@ -48,9 +48,9 @@ export const AccessList = (props, context) => {
     // logic.
     if (showBasic) {
       regionAccess.forEach(access => {
-        if (trimAccess.includes(access.ref) &&
-          selectedList.includes(access.ref) &&
-          !selectedTrimAccess.includes(access.ref)
+        if (trimAccess.includes(access.ref)
+          && selectedList.includes(access.ref)
+          && !selectedTrimAccess.includes(access.ref)
         ) {
           selectedTrimAccess.push(access.ref);
         }
@@ -200,9 +200,9 @@ const RegionTabList = (props, context) => {
   return (
     <Tabs vertical>
       {accesses.map(access => {
-        const icon = (access.allSelected && "check") ||
-          (access.hasSelected && "minus") ||
-          "times";
+        const icon = (access.allSelected && "check")
+          || (access.hasSelected && "minus")
+          || "times";
         return (
           <Tabs.Tab
             key={access.name}
@@ -274,10 +274,10 @@ const RegionAccessList = (props, context) => {
     selectedAccessEntries.map(entry => {
       const id = entry.ref;
       const disableButton = (
-        ((wcAvail === 0) && (wcAccess[id] !== selWildcard)) ||
-        ((wcAvail > 0) && wcAccess[id] && wcAccess[id] !== selWildcard));
-      const entryName = (!wcAccess[id] && trimAccess.includes(id)) ?
-        entry.desc : entry.desc + " (" + accessFlagNames[accessFlags[id]] + ")";
+        ((wcAvail === 0) && (wcAccess[id] !== selWildcard))
+        || ((wcAvail > 0) && wcAccess[id] && wcAccess[id] !== selWildcard));
+      const entryName = (!wcAccess[id] && trimAccess.includes(id))
+        ? entry.desc : entry.desc + " (" + accessFlagNames[accessFlags[id]] + ")";
 
       return (
         <Button.Checkbox

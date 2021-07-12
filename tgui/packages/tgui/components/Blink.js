@@ -42,8 +42,8 @@ export class Blink extends Component {
   }
 
   componentDidUpdate(prevProps) {
-    if (prevProps.interval !== this.props.interval ||
-      prevProps.time !== this.props.time) {
+    if (prevProps.interval !== this.props.interval
+      || prevProps.time !== this.props.time) {
       this.createTimer();
     }
   }

@@ -42,8 +42,8 @@ export class ChatPanel extends Component {
     requestAnimationFrame(() => {
       chatRenderer.ensureScrollTracking();
     });
-    const shouldUpdateStyle =
-      !prevProps || shallowDiffers(this.props, prevProps);
+    const shouldUpdateStyle
+      = !prevProps || shallowDiffers(this.props, prevProps);
     if (shouldUpdateStyle) {
       chatRenderer.assignStyle({
         'width': '100%',

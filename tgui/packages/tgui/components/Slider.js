@@ -71,8 +71,8 @@ export const Slider = (props) => {
           maxValue,
         );
         const scaledDisplayValue = scale(displayValue, minValue, maxValue);
-        const effectiveColor =
-          color || keyOfMatchingRange(fillValue ?? value, ranges) || 'default';
+        const effectiveColor
+          = color || keyOfMatchingRange(fillValue ?? value, ranges) || 'default';
         return (
           <div
             className={classes([
@@ -98,8 +98,8 @@ export const Slider = (props) => {
               className='ProgressBar__fill'
               style={{
                 width:
-                  clamp01(Math.min(scaledFillValue, scaledDisplayValue)) * 100 +
-                  '%',
+                  clamp01(Math.min(scaledFillValue, scaledDisplayValue)) * 100
+                  + '%',
               }}
             />
             <div

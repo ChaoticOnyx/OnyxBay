@@ -138,11 +138,11 @@
 	item_cost = 5
 	path = /obj/item/device/powersink
 
-/datum/uplink_item/item/stealth_items/chameleon_hologram
+/datum/uplink_item/item/stealth_items/chameleon_bomb
 	name = "Chameleon Bomb"
 	desc = "A powerful bomb with an integrated chameleon hologram projector. Be careful, once you arm and activate it, any touch will trigger an explosion!"
 	item_cost = 6
-	path = /obj/item/device/chameleonholo
+	path = /obj/item/device/chameleonholo/bomb
 
 /datum/uplink_item/item/tools/c4explosive/heavy
 	name = "Large Package Bomb"
@@ -167,7 +167,7 @@
 /datum/uplink_item/item/tools/flashdark
 	name = "Flashdark"
 	item_cost = 7
-	antag_costs = list(MODE_NUKE = 11)
+	antag_costs = list(MODE_NUKE = 14)
 	path = /obj/item/device/flashlight/flashdark
 
 /datum/uplink_item/item/tools/ai_module

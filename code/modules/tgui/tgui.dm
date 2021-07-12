@@ -297,6 +297,7 @@
 		return FALSE
 	switch(type)
 		if("ready")
+			send_full_update()
 			initialized = TRUE
 		if("pingReply")
 			initialized = TRUE

@@ -81,8 +81,8 @@ export class DraggableControl extends Component {
     };
 
     this.handleDragMove = (e) => {
-      const { minValue, maxValue, step, stepPixelSize, dragMatrix } =
-        this.props;
+      const { minValue, maxValue, step, stepPixelSize, dragMatrix }
+        = this.props;
       this.setState((prevState) => {
         const state = { ...prevState };
         const offset = getScalarScreenOffset(e, dragMatrix) - state.origin;
@@ -174,13 +174,13 @@ export class DraggableControl extends Component {
     // Shows a formatted number based on what we are currently doing
     // with the draggable surface.
     const renderDisplayElement = (value) => value + (unit ? ' ' + unit : '');
-    const displayElement =
-      (animated && !dragging && !suppressingFlicker && (
+    const displayElement
+      = (animated && !dragging && !suppressingFlicker && (
         <AnimatedNumber value={displayValue} format={format}>
           {renderDisplayElement}
         </AnimatedNumber>
-      )) ||
-      renderDisplayElement(format ? format(displayValue) : displayValue);
+      ))
+      || renderDisplayElement(format ? format(displayValue) : displayValue);
     // Setup an input element
     // Handles direct input via the keyboard
     const inputElement = (
