@@ -25,8 +25,8 @@
 	var/datum/wires/smartfridge/wires = null
 
 	component_types = list(
-							/obj/item/weapon/circuitboard/smartfridge,
-							/obj/item/weapon/stock_parts/matter_bin = 2
+        /obj/item/weapon/circuitboard/smartfridge,
+        /obj/item/weapon/stock_parts/matter_bin = 2
 	)
 
 /obj/machinery/smartfridge/secure
