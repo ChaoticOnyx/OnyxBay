@@ -37,6 +37,7 @@
 	var/mob/panic_target = null // shy simple animals run away from humans
 	var/turns_since_scan = 0
 	var/shy_animal = 0
+	var/renamable = FALSE
 
 	//Temperature effect
 	var/minbodytemp = 250

@@ -25,6 +25,7 @@
 	holder_type = /obj/item/weapon/holder/cat
 	mob_size = MOB_SMALL
 	possession_candidate = 1
+	renamable = TRUE
 
 /mob/living/simple_animal/cat/Life()
 	if(!..() || incapacitated() || client)
@@ -216,6 +217,7 @@
 	item_state = "cat"
 	icon_living = "cat"
 	icon_dead = "cat_dead"
+	renamable = FALSE
 
 /mob/living/simple_animal/cat/kitten
 	name = "kitten"
@@ -225,6 +227,7 @@
 	icon_living = "kitten"
 	icon_dead = "kitten_dead"
 	gender = NEUTER
+	renamable = TRUE
 
 // Leaving this here for now.
 /obj/item/weapon/holder/cat/fluff/bones
@@ -241,6 +244,7 @@
 	item_state = "cat3"
 	icon_living = "cat3"
 	icon_dead = "cat3_dead"
+	renamable = FALSE
 	holder_type = /obj/item/weapon/holder/cat/fluff/bones
 	var/friend_name = "Erstatz Vryroxes"
 

@@ -32,6 +32,8 @@
 	can_pull_size = ITEM_SIZE_TINY
 	can_pull_mobs = MOB_PULL_SAME
 
+	renamable = TRUE
+
 
 /mob/living/simple_animal/crab/Crossed(AM as mob|obj)
 	if(!client && ishuman(AM) && !stat)
@@ -52,3 +54,4 @@
 	response_harm = "stomps"
 	possession_candidate = FALSE
 	controllable = FALSE
+	renamable = FALSE
