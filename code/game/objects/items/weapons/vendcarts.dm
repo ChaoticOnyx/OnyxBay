@@ -235,7 +235,7 @@
 
 //CONTAINERS
 /obj/item/weapon/vendcart/containers
-	name = "Containers-s Cartridge"
+	name = "Containers Cartridge"
 	legal = list(
 						/obj/structure/closet/crate/freezer = 2,
 						/obj/structure/closet = 3,
@@ -618,7 +618,7 @@
 	icon_state = "cube_c"
 	var/list/piles = list()
 
-/obj/item/weapon/vendcart/seed_storage/New()
+/obj/item/weapon/vendcart/seed_storage/Initialize()
 	..()
 	for(var/typepath in legal)
 		var/amount = legal[typepath]

@@ -139,7 +139,7 @@
 	containername = "dispenser cartridge crate"
 
 /decl/hierarchy/supply_pack/dispenser_cartridges
-	name = "Dispenser Cartridges"
+	name = "Cartridges"
 
 #define SEC_PACK(_tname, _type, _name, _cname, _cost, _access)\
 	decl/hierarchy/supply_pack/dispenser_cartridges{\
@@ -152,6 +152,20 @@
 			contains = list( _type , _type );\
 		}\
 	}
+
+#define V_PACK(_tname, _type, _name, _cname, _cost, _access)\
+	decl/hierarchy/supply_pack/dispenser_cartridges{\
+		_tname {\
+			name = _name ;\
+			containername = _cname ;\
+			containertype = /obj/structure/closet/crate/secure;\
+			access = list( _access );\
+			cost = _cost ;\
+			contains = list( _type );\
+		}\
+	}
+
+
 #define PACK(_tname, _type, _name, _cname, _cost)\
 	decl/hierarchy/supply_pack/dispenser_cartridges{\
 		_tname {\
@@ -199,6 +213,37 @@ SEC_PACK(vermouth, /obj/item/weapon/reagent_containers/chem_disp_cartridge/vermo
 SEC_PACK(cognac,   /obj/item/weapon/reagent_containers/chem_disp_cartridge/cognac,   "Reagent refill - Cognac",   "cognac reagent cartridge crate",   15, access_bar)
 SEC_PACK(ale,      /obj/item/weapon/reagent_containers/chem_disp_cartridge/ale,      "Reagent refill - Ale",      "ale reagent cartridge crate",      15, access_bar)
 SEC_PACK(mead,     /obj/item/weapon/reagent_containers/chem_disp_cartridge/mead,     "Reagent refill - Mead",     "mead reagent cartridge crate",     15, access_bar)
+
+// Botany-restricted (vendomat cartridges)
+V_PACK(garden,			/obj/item/weapon/vendcart/seed_storage/garden,		"O'Seedz Cartridge - Garden",		"seed cartridge crate",	15,	access_hydroponics)
+V_PACK(xenobotany,		/obj/item/weapon/vendcart/seed_storage/xenobotany,	"O'Seedz Cartridge - Xenobotany",	"seed cartridge crate",	15,	access_xenobiology)
+V_PACK(random,			/obj/item/weapon/vendcart/seed_storage/random,		"O'Seedz Cartridge - Random",		"seed cartridge crate",	15,	access_xenobiology)
+// Eng-restricted (vendomat cartridges)
+V_PACK(wallmed1,		/obj/item/weapon/vendcart/wallmed1,			"NanoMed Cartridge",			"NanoMed cartridge crate",				15, access_engine)
+V_PACK(wallmed2,		/obj/item/weapon/vendcart/wallmed2,			"NanoMed Mini Cartridge",		"NanoMed Mini cartridge crate",			15, access_engine)
+V_PACK(tool,			/obj/item/weapon/vendcart/tool,				"YouTool Cartridge",			"assistant equipment cartridge crate",	15, access_engine)
+V_PACK(sovietsoda,		/obj/item/weapon/vendcart/sovietsoda,		"BODA Cartridge",				"BODA cartridge crate",					15, access_engine)
+V_PACK(medbay,			/obj/item/weapon/vendcart/medbay,			"Getmore Healthy Cartridge",	"Getmore Healthy cartridge crate",		15, access_engine)
+V_PACK(snack,			/obj/item/weapon/vendcart/snack,			"Getmore Chocolate Cartridge",	"Getmore Chocolate cartridge crate",	15, access_engine)
+V_PACK(security,		/obj/item/weapon/vendcart/security,			"SecTech Cartridge",			"SecTech cartridge crate",				15, access_engine)
+V_PACK(robotics,		/obj/item/weapon/vendcart/robotics,			"Robotech Deluxe Cartridge",	"robotics equipment cartridge crate",	15, access_engine)
+V_PACK(props,			/obj/item/weapon/vendcart/props,			"O'Props Cartridge",			"props cartridge crate",				15, access_engine)
+V_PACK(plasmaresearch,	/obj/item/weapon/vendcart/plasmaresearch,	"Toximate 3000 Cartridge",		"Toximate 3000 cartridge crate",		15, access_engine)
+V_PACK(medical,     	/obj/item/weapon/vendcart/medical,			"NanoMed Plus Cartridge",		"NanoMed Plus cartridge crate",			15, access_engine)
+V_PACK(hydronutrients,	/obj/item/weapon/vendcart/hydronutrients,	"NutriMax Cartridge",			"NutriMax cartridge crate",				15, access_engine)
+V_PACK(games,     		/obj/item/weapon/vendcart/games,			"GCF Cartridge",				"GCF cartridge crate",					15, access_engine)
+V_PACK(fitness,			/obj/item/weapon/vendcart/fitness,			"SweatMAX Cartridge",			"SweatMAX  cartridge crate",			15, access_engine)
+V_PACK(fashionvend,		/obj/item/weapon/vendcart/fashionvend,		"Smashing Fashions Cartridge",	"Smashing Fashions cartridge crate",	15, access_engine)
+V_PACK(engivend,		/obj/item/weapon/vendcart/engivend,			"Engi-Vend Cartridge",			"engi-vend cartridge crate",			15, access_engine)
+V_PACK(engineering,		/obj/item/weapon/vendcart/engineering,		"RTM Cartridge",				"RTM cartridge crate",					15, access_engine)
+V_PACK(dinnerware,		/obj/item/weapon/vendcart/dinnerware,		"Dinnerware Cartridge",			"dinnerware cartridge crate",			15, access_engine)
+V_PACK(containers,		/obj/item/weapon/vendcart/containers,		"Containers Cartridge",			"containers cartridge crate",			15, access_engine)
+V_PACK(cola,			/obj/item/weapon/vendcart/cola,				"CoceCola Cartridge",			"cola cartridge crate",					15, access_engine)
+V_PACK(coffee,			/obj/item/weapon/vendcart/coffee,			"StarDucks Cartridge",			"coffee cartridge crate",				15, access_engine)
+V_PACK(cigarette,		/obj/item/weapon/vendcart/cigarette,		"SiggZ Cartridge",				"cigarettes cartridge crate",			15, access_engine)
+V_PACK(boozeomat,		/obj/item/weapon/vendcart/boozeomat,		"Booze-O-Mat Cartridge",		"Booze-O-Mat cartridge crate",			15, access_engine)
+V_PACK(assist,			/obj/item/weapon/vendcart/assist,			"Mr.Grey's Cartridge",			"assistant equipment cartridge crate",	15, access_engine)
+
 
 // Unrestricted (water, sugar, non-alcoholic drinks)
 //  Datum path   Contents type                                                       Supply pack name                        Container name                                          Cost
