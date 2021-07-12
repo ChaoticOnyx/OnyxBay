@@ -22,7 +22,6 @@
 	var/locked = 0
 	var/scan_id = 1
 	var/is_secure = 0
-	var/qlen
 	var/datum/wires/smartfridge/wires = null
 
 	component_types = list(
@@ -147,6 +146,19 @@
 	icon_off = "drying_rack"
 	component_types = list()
 
+/obj/machinery/smartfridge/drying_rack/attackby(obj/item/O as obj, mob/user as mob)
+	if(isScrewdriver(O))
+		playsound(src.loc, 'sound/items/Screwdriver.ogg', 50, 1)
+		if(do_after(user, 20, src))
+			var/obj/machinery/constructable_frame/machine_frame/M = new /obj/machinery/constructable_frame/machine_frame(get_turf(src))
+			M.set_dir(src.dir)
+			M.state = 2
+			M.icon_state = "box_1"
+			new /obj/item/stack/material/wood(src.loc, 2)
+			qdel(src)
+			return
+	..()
+
 /obj/machinery/smartfridge/drying_rack/accept_check(obj/item/O as obj)
 	if(istype(O, /obj/item/weapon/reagent_containers/food/snacks/))
 		var/obj/item/weapon/reagent_containers/food/snacks/S = O
@@ -210,23 +222,13 @@
 
 /obj/machinery/smartfridge/attackby(obj/item/O as obj, mob/user as mob)
 	if(isScrewdriver(O))
-		if(istype(src, /obj/machinery/smartfridge/drying_rack))
-			playsound(src.loc, 'sound/items/Screwdriver.ogg', 50, 1)
-			if(do_after(user, 20, src))
-				var/obj/machinery/constructable_frame/machine_frame/M = new /obj/machinery/constructable_frame/machine_frame(get_turf(src))
-				M.set_dir(src.dir)
-				M.state = 2
-				M.icon_state = "box_1"
-				new /obj/item/stack/material/wood(src.loc, 2)
-				qdel(src)
-		else
-			panel_open = !panel_open
-			user.visible_message("[user] [panel_open ? "opens" : "closes"] the maintenance panel of \the [src].", "You [panel_open ? "open" : "close"] the maintenance panel of \the [src].")
-			overlays.Cut()
-			if(panel_open)
-				overlays += image(icon, icon_panel)
-			SSnano.update_uis(src)
-			return
+		panel_open = !panel_open
+		user.visible_message("[user] [panel_open ? "opens" : "closes"] the maintenance panel of \the [src].", "You [panel_open ? "open" : "close"] the maintenance panel of \the [src].")
+		overlays.Cut()
+		if(panel_open)
+			overlays += image(icon, icon_panel)
+		SSnano.update_uis(src)
+		return
 
 	if(default_deconstruction_crowbar(user, O))
 		return
