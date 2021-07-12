@@ -1,6 +1,6 @@
 SUBSYSTEM_DEF(virus2suka)
 	name = "Virus Shit System"
-	priority = SS_PRIORITY_CIRCUIT_COMP
+	priority = SS_PRIORITY_VIRUSES
 	flags = SS_NO_INIT
 	wait = 1
 
