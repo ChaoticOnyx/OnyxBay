@@ -139,7 +139,13 @@
 	containername = "dispenser cartridge crate"
 
 /decl/hierarchy/supply_pack/dispenser_cartridges
-	name = "Cartridges"
+	name = "Chemistry cartridges"
+
+/decl/hierarchy/supply_pack/booze_cartridges
+	name = "Alcohol cartridges"
+
+/decl/hierarchy/supply_pack/vend_cartridges
+	name = "Vendomat cartridges"
 
 #define SEC_PACK(_tname, _type, _name, _cname, _cost, _access)\
 	decl/hierarchy/supply_pack/dispenser_cartridges{\
@@ -154,7 +160,7 @@
 	}
 
 #define V_PACK(_tname, _type, _name, _cname, _cost, _access)\
-	decl/hierarchy/supply_pack/dispenser_cartridges{\
+	decl/hierarchy/supply_pack/vend_cartridges{\
 		_tname {\
 			name = _name ;\
 			containername = _cname ;\
@@ -165,9 +171,20 @@
 		}\
 	}
 
+#define B_PACK(_tname, _type, _name, _cname, _cost, _access)\
+	decl/hierarchy/supply_pack/booze_cartridges{\
+		_tname {\
+			name = _name ;\
+			containername = _cname ;\
+			containertype = /obj/structure/closet/crate/secure;\
+			access = list( _access );\
+			cost = _cost ;\
+			contains = list( _type , _type );\
+		}\
+	}
 
 #define PACK(_tname, _type, _name, _cname, _cost)\
-	decl/hierarchy/supply_pack/dispenser_cartridges{\
+	decl/hierarchy/supply_pack/booze_cartridges{\
 		_tname {\
 			name = _name ;\
 			containername = _cname ;\
@@ -201,18 +218,18 @@ SEC_PACK(tungsten,  /obj/item/weapon/reagent_containers/chem_disp_cartridge/tung
 
 // Bar-restricted (alcoholic drinks)
 //      Datum path Contents type                                                     Supply pack name             Container name                    Cost  Container access
-SEC_PACK(beer,     /obj/item/weapon/reagent_containers/chem_disp_cartridge/beer,     "Reagent refill - Beer",     "beer reagent cartridge crate",     15, access_bar)
-SEC_PACK(kahlua,   /obj/item/weapon/reagent_containers/chem_disp_cartridge/kahlua,   "Reagent refill - Kahlua",   "kahlua reagent cartridge crate",   15, access_bar)
-SEC_PACK(whiskey,  /obj/item/weapon/reagent_containers/chem_disp_cartridge/whiskey,  "Reagent refill - Whiskey",  "whiskey reagent cartridge crate",  15, access_bar)
-SEC_PACK(wine,     /obj/item/weapon/reagent_containers/chem_disp_cartridge/wine,     "Reagent refill - Wine",     "wine reagent cartridge crate",     15, access_bar)
-SEC_PACK(vodka,    /obj/item/weapon/reagent_containers/chem_disp_cartridge/vodka,    "Reagent refill - Vodka",    "vodka reagent cartridge crate",    15, access_bar)
-SEC_PACK(gin,      /obj/item/weapon/reagent_containers/chem_disp_cartridge/gin,      "Reagent refill - Gin",      "gin reagent cartridge crate",      15, access_bar)
-SEC_PACK(rum,      /obj/item/weapon/reagent_containers/chem_disp_cartridge/rum,      "Reagent refill - Rum",      "rum reagent cartridge crate",      15, access_bar)
-SEC_PACK(tequila,  /obj/item/weapon/reagent_containers/chem_disp_cartridge/tequila,  "Reagent refill - Tequila",  "tequila reagent cartridge crate",  15, access_bar)
-SEC_PACK(vermouth, /obj/item/weapon/reagent_containers/chem_disp_cartridge/vermouth, "Reagent refill - Vermouth", "vermouth reagent cartridge crate", 15, access_bar)
-SEC_PACK(cognac,   /obj/item/weapon/reagent_containers/chem_disp_cartridge/cognac,   "Reagent refill - Cognac",   "cognac reagent cartridge crate",   15, access_bar)
-SEC_PACK(ale,      /obj/item/weapon/reagent_containers/chem_disp_cartridge/ale,      "Reagent refill - Ale",      "ale reagent cartridge crate",      15, access_bar)
-SEC_PACK(mead,     /obj/item/weapon/reagent_containers/chem_disp_cartridge/mead,     "Reagent refill - Mead",     "mead reagent cartridge crate",     15, access_bar)
+B_PACK(beer,     /obj/item/weapon/reagent_containers/chem_disp_cartridge/beer,     "Reagent refill - Beer",     "beer reagent cartridge crate",     15, access_bar)
+B_PACK(kahlua,   /obj/item/weapon/reagent_containers/chem_disp_cartridge/kahlua,   "Reagent refill - Kahlua",   "kahlua reagent cartridge crate",   15, access_bar)
+B_PACK(whiskey,  /obj/item/weapon/reagent_containers/chem_disp_cartridge/whiskey,  "Reagent refill - Whiskey",  "whiskey reagent cartridge crate",  15, access_bar)
+B_PACK(wine,     /obj/item/weapon/reagent_containers/chem_disp_cartridge/wine,     "Reagent refill - Wine",     "wine reagent cartridge crate",     15, access_bar)
+B_PACK(vodka,    /obj/item/weapon/reagent_containers/chem_disp_cartridge/vodka,    "Reagent refill - Vodka",    "vodka reagent cartridge crate",    15, access_bar)
+B_PACK(gin,      /obj/item/weapon/reagent_containers/chem_disp_cartridge/gin,      "Reagent refill - Gin",      "gin reagent cartridge crate",      15, access_bar)
+B_PACK(rum,      /obj/item/weapon/reagent_containers/chem_disp_cartridge/rum,      "Reagent refill - Rum",      "rum reagent cartridge crate",      15, access_bar)
+B_PACK(tequila,  /obj/item/weapon/reagent_containers/chem_disp_cartridge/tequila,  "Reagent refill - Tequila",  "tequila reagent cartridge crate",  15, access_bar)
+B_PACK(vermouth, /obj/item/weapon/reagent_containers/chem_disp_cartridge/vermouth, "Reagent refill - Vermouth", "vermouth reagent cartridge crate", 15, access_bar)
+B_PACK(cognac,   /obj/item/weapon/reagent_containers/chem_disp_cartridge/cognac,   "Reagent refill - Cognac",   "cognac reagent cartridge crate",   15, access_bar)
+B_PACK(ale,      /obj/item/weapon/reagent_containers/chem_disp_cartridge/ale,      "Reagent refill - Ale",      "ale reagent cartridge crate",      15, access_bar)
+B_PACK(mead,     /obj/item/weapon/reagent_containers/chem_disp_cartridge/mead,     "Reagent refill - Mead",     "mead reagent cartridge crate",     15, access_bar)
 
 // Botany-restricted (vendomat cartridges)
 V_PACK(garden,			/obj/item/weapon/vendcart/seed_storage/garden,		"O'Seedz Cartridge - Garden",		"seed cartridge crate",	15,	access_hydroponics)
@@ -270,4 +287,6 @@ PACK(milk,       /obj/item/weapon/reagent_containers/chem_disp_cartridge/milk,  
 PACK(cream,      /obj/item/weapon/reagent_containers/chem_disp_cartridge/cream,      "Reagent refill - Cream",               "cream reagent cartridge crate",                         15)
 
 #undef SEC_PACK
+#undef V_PACK
+#undef B_PACK
 #undef PACK
