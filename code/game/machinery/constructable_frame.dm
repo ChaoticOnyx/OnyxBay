@@ -33,9 +33,9 @@
 				if(isWrench(P))
 					playsound(src.loc, 'sound/items/Ratchet.ogg', 50, 1)
 					if(do_after(user, 20, src))
-						to_chat(user, "<span class='notice'>You wrench the frame into place.</span>")
-						src.anchored = 1
-						src.state = 1
+						to_chat(user, SPAN("notice", "You wrench the frame into place."))
+						anchored = 1
+						state = 1
 			if(1)
 				if(isWrench(P))
 					playsound(src.loc, 'sound/items/Ratchet.ogg', 50, 1)
