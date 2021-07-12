@@ -148,7 +148,7 @@
 
 /obj/machinery/smartfridge/drying_rack/attackby(obj/item/O as obj, mob/user as mob)
 	if(isScrewdriver(O))
-		playsound(src.loc, 'sound/items/Screwdriver.ogg', 50, 1)
+		playsound(loc, 'sound/items/Screwdriver.ogg', 50, 1)
 		if(do_after(user, 20, src))
 			var/obj/machinery/constructable_frame/machine_frame/M = new /obj/machinery/constructable_frame/machine_frame(get_turf(src))
 			M.set_dir(dir)
