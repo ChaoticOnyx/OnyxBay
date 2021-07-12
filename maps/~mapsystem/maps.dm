@@ -207,15 +207,6 @@ var/const/MAP_HAS_RANK = 2		//Rank system, also togglable
 	report_progress("Finished loading away sites, remaining budget [away_site_budget], remaining sites [sites_by_spawn_weight.len]")
 #endif
 
-/datum/map/proc/build_exoplanets()
-	if(!use_overmap)
-		return
-
-	for(var/i = 0, i < num_exoplanets, i++)
-		var/exoplanet_type = pick(subtypesof(/obj/effect/overmap/sector/exoplanet))
-		var/obj/effect/overmap/sector/exoplanet/new_planet = new exoplanet_type(null, planet_size[1], planet_size[2])
-		new_planet.build_level()
-
 // Used to apply various post-compile procedural effects to the map.
 /datum/map/proc/refresh_mining_turfs(zlevel)
 

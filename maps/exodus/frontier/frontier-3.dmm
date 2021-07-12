@@ -2062,7 +2062,7 @@
 "aPp" = (/obj/effect/landmark{name = "tdome1"},/obj/machinery/camera/network/thunder{c_tag = "Green Team"; invisibility = 101},/turf/unsimulated/floor{dir = 5; icon_state = "vault"},/area/tdome/tdome1)
 "aPq" = (/obj/machinery/atmospherics/pipe/vent,/turf/unsimulated/floor{icon_state = "bcircuit"},/area/tdome)
 "aPw" = (/obj/machinery/acting/changer,/turf/unsimulated/floor{icon_state = "plating"; name = "plating"},/area/acting/backstage)
-"aPx" = (/obj/machinery/camera/network/thunder{c_tag = "Thunderdome Arena"; invisibility = 101},/obj/effect/landmark/test/safe_turf,/turf/unsimulated/floor{icon_state = "bcircuit"},/area/tdome)
+"aPx" = (/obj/machinery/camera/network/thunder{c_tag = "Thunderdome Arena"; invisibility = 101},/turf/unsimulated/floor{icon_state = "bcircuit"},/area/tdome)
 "aPy" = (/obj/machinery/atmospherics/pipe/simple/visible{dir = 5; icon_state = "intact"},/turf/unsimulated/floor{icon_state = "dark"},/area/tdome)
 "aPE" = (/obj/machinery/vending/props,/turf/unsimulated/floor{icon_state = "plating"; name = "plating"},/area/acting/backstage)
 "aPF" = (/obj/machinery/newscaster{pixel_y = -27},/turf/unsimulated/floor{icon_state = "plating"; name = "plating"},/area/acting/backstage)

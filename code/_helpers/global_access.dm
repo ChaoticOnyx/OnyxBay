@@ -205,10 +205,6 @@
 			return global.all_species;
 		if("all_ui_styles")
 			return global.all_ui_styles;
-		if("all_unit_tests_passed")
-			return global.all_unit_tests_passed;
-		if("all_virtual_listeners")
-			return global.all_virtual_listeners;
 		if("announced_news_types")
 			return global.announced_news_types;
 		if("antag_add_finished")
@@ -219,18 +215,6 @@
 			return global.area_repository;
 		if("artefact_feedback")
 			return global.artefact_feedback;
-		if("ascii_esc")
-			return global.ascii_esc;
-		if("ascii_green")
-			return global.ascii_green;
-		if("ascii_red")
-			return global.ascii_red;
-		if("ascii_reset")
-			return global.ascii_reset;
-		if("ascii_yellow")
-			return global.ascii_yellow;
-		if("asset_cache")
-			return global.asset_cache;
 		if("asset_datums")
 			return global.asset_datums;
 		if("assigned")
@@ -257,8 +241,6 @@
 			return global.bomb_set;
 		if("cable_list")
 			return global.cable_list;
-		if("cached_space")
-			return global.cached_space;
 		if("camera_alarm")
 			return global.camera_alarm;
 		if("camera_range_display_status")
@@ -339,8 +321,6 @@
 			return global.default_body_build;
 		if("default_material_composition")
 			return global.default_material_composition;
-		if("default_mobloc")
-			return global.default_mobloc;
 		if("default_onmob_icons")
 			return global.default_onmob_icons;
 		if("default_pai_software")
@@ -395,8 +375,6 @@
 			return global.failed_db_connections;
 		if("failed_old_db_connections")
 			return global.failed_old_db_connections;
-		if("failed_unit_tests")
-			return global.failed_unit_tests;
 		if("file_uid")
 			return global.file_uid;
 		if("fileaccess_timer")
@@ -543,8 +521,6 @@
 			return global.mannequins_;
 		if("map_count")
 			return global.map_count;
-		if("map_sectors")
-			return global.map_sectors;
 		if("maploader")
 			return global.maploader;
 		if("mark")
@@ -597,8 +573,6 @@
 			return global.mob_repository;
 		if("motion_alarm")
 			return global.motion_alarm;
-		if("moving_levels")
-			return global.moving_levels;
 		if("multi_point_spawns")
 			return global.multi_point_spawns;
 		if("name_to_material")
@@ -649,8 +623,6 @@
 			return global.outfits_decls_by_type_;
 		if("outfits_decls_root_")
 			return global.outfits_decls_root_;
-		if("overmap_event_handler")
-			return global.overmap_event_handler;
 		if("paiController")
 			return global.paiController;
 		if("pai_emotions")
@@ -763,14 +735,10 @@
 			return global.server_name;
 		if("severity_to_string")
 			return global.severity_to_string;
-		if("ship_engines")
-			return global.ship_engines;
 		if("side_effects")
 			return global.side_effects;
 		if("skin_styles_female_list")
 			return global.skin_styles_female_list;
-		if("skipped_unit_tests")
-			return global.skipped_unit_tests;
 		if("slot_equipment_priority")
 			return global.slot_equipment_priority;
 		if("slot_flags_enumeration")
@@ -879,8 +847,6 @@
 			return global.total_lighting_overlays;
 		if("total_lighting_sources")
 			return global.total_lighting_sources;
-		if("total_unit_tests")
-			return global.total_unit_tests;
 		if("trait_categories")
 			return global.trait_categories;
 		if("trait_datums")
@@ -1152,8 +1118,6 @@
 			global.all_species=newval;
 		if("all_ui_styles")
 			global.all_ui_styles=newval;
-		if("all_unit_tests_passed")
-			global.all_unit_tests_passed=newval;
 		if("all_virtual_listeners")
 			global.all_virtual_listeners=newval;
 		if("announced_news_types")
@@ -1166,16 +1130,6 @@
 			global.area_repository=newval;
 		if("artefact_feedback")
 			global.artefact_feedback=newval;
-		if("ascii_esc")
-			global.ascii_esc=newval;
-		if("ascii_green")
-			global.ascii_green=newval;
-		if("ascii_red")
-			global.ascii_red=newval;
-		if("ascii_reset")
-			global.ascii_reset=newval;
-		if("ascii_yellow")
-			global.ascii_yellow=newval;
 		if("asset_cache")
 			global.asset_cache=newval;
 		if("asset_datums")
@@ -1204,8 +1158,6 @@
 			global.bomb_set=newval;
 		if("cable_list")
 			global.cable_list=newval;
-		if("cached_space")
-			global.cached_space=newval;
 		if("camera_alarm")
 			global.camera_alarm=newval;
 		if("camera_range_display_status")
@@ -1286,8 +1238,6 @@
 			global.default_body_build=newval;
 		if("default_material_composition")
 			global.default_material_composition=newval;
-		if("default_mobloc")
-			global.default_mobloc=newval;
 		if("default_onmob_icons")
 			global.default_onmob_icons=newval;
 		if("default_pai_software")
@@ -1342,8 +1292,6 @@
 			global.failed_db_connections=newval;
 		if("failed_old_db_connections")
 			global.failed_old_db_connections=newval;
-		if("failed_unit_tests")
-			global.failed_unit_tests=newval;
 		if("file_uid")
 			global.file_uid=newval;
 		if("fileaccess_timer")
@@ -1490,8 +1438,6 @@
 			global.mannequins_=newval;
 		if("map_count")
 			global.map_count=newval;
-		if("map_sectors")
-			global.map_sectors=newval;
 		if("maploader")
 			global.maploader=newval;
 		if("mark")
@@ -1544,8 +1490,6 @@
 			global.mob_repository=newval;
 		if("motion_alarm")
 			global.motion_alarm=newval;
-		if("moving_levels")
-			global.moving_levels=newval;
 		if("multi_point_spawns")
 			global.multi_point_spawns=newval;
 		if("name_to_material")
@@ -1596,8 +1540,6 @@
 			global.outfits_decls_by_type_=newval;
 		if("outfits_decls_root_")
 			global.outfits_decls_root_=newval;
-		if("overmap_event_handler")
-			global.overmap_event_handler=newval;
 		if("paiController")
 			global.paiController=newval;
 		if("pai_emotions")
@@ -1710,14 +1652,10 @@
 			global.server_name=newval;
 		if("severity_to_string")
 			global.severity_to_string=newval;
-		if("ship_engines")
-			global.ship_engines=newval;
 		if("side_effects")
 			global.side_effects=newval;
 		if("skin_styles_female_list")
 			global.skin_styles_female_list=newval;
-		if("skipped_unit_tests")
-			global.skipped_unit_tests=newval;
 		if("slot_equipment_priority")
 			global.slot_equipment_priority=newval;
 		if("slot_flags_enumeration")
@@ -1826,8 +1764,6 @@
 			global.total_lighting_overlays=newval;
 		if("total_lighting_sources")
 			global.total_lighting_sources=newval;
-		if("total_unit_tests")
-			global.total_unit_tests=newval;
 		if("trait_categories")
 			global.trait_categories=newval;
 		if("trait_datums")
@@ -1840,8 +1776,6 @@
 			global.turbolifts=newval;
 		if("turret_icons")
 			global.turret_icons=newval;
-		if("uniqueness_repository")
-			global.uniqueness_repository=newval;
 		if("universe_has_ended")
 			global.universe_has_ended=newval;
 		if("uplink")
