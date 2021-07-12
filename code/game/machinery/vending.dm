@@ -78,13 +78,13 @@
 
 	wires = new(src)
 
-	RefreshParts()
-
 	component_parts = list()
 	component_parts += new /obj/item/weapon/circuitboard/vendomat(src)
 	component_parts += new /obj/item/weapon/stock_parts/matter_bin(src)
 	component_parts += new /obj/item/weapon/stock_parts/matter_bin(src)
 	component_parts += new cartridge(src)
+
+	RefreshParts()
 
 	if(product_slogans)
 		slogan_list += splittext(product_slogans, ";")
@@ -103,6 +103,7 @@
 
 /obj/machinery/vending/RefreshParts()
 	V = locate() in component_parts
+
 /obj/machinery/vending/examine(mob/user)
 	. = ..()
 	if(.)
