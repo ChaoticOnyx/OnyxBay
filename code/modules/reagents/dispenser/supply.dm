@@ -142,7 +142,7 @@
 	name = "Chemistry cartridges"
 
 /decl/hierarchy/supply_pack/booze_cartridges
-	name = "Alcohol cartridges"
+	name = "Alcohol & Soft-drinks cartridges"
 
 /decl/hierarchy/supply_pack/vend_cartridges
 	name = "Vendomat cartridges"
