@@ -56,9 +56,9 @@
 							state = 2
 							icon_state = "box_1"
 				if(isWelder(P))
-					playsound(src.loc, 'sound/items/Ratchet.ogg', 75, 1)
-					to_chat(user, "<span class='notice'>You dismantle the frame</span>")
-					new /obj/item/stack/material/wood(src.loc, 2)
+					playsound(loc, 'sound/items/Ratchet.ogg', 75, 1)
+					to_chat(user, SPAN("notice", "You dismantle the frame"))
+					new /obj/item/stack/material/wood(loc, 2)
 					qdel(src)
 			if(2)
 				if(istype(P, /obj/item/weapon/circuitboard))
