@@ -78,6 +78,6 @@
 //some antagonist datums are not actually antagonists, so we might want to avoid
 //sending them the antagonist meet'n'greet messages.
 //E.G. ERT
-/datum/antagonist/proc/show_objectives_at_creation(var/datum/mind/player)
+/datum/antagonist/proc/show_objectives_at_creation(datum/mind/player)
 	if(src.show_objectives_on_creation)
 		show_objectives(player)
