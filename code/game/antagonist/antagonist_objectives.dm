@@ -70,7 +70,7 @@
 	if(!isnull(new_goal))
 		mind.ambitions += (new_goal = "<br>[roundduration2text()]: [new_goal]")
 		to_chat(src, SPAN_NOTICE("Your ambitions now look like this: <b>[mind.ambitions]</b><br>. \
-		You can view you ambitions in notes <b>Notes</b>. If you wish to change your ambition, \
+		You can view your ambitions in <b>Notes</b>. If you wish to change your ambition, \
 		please contact Administator."))
 		log_and_message_admins("updated his ambition: [new_goal]")
 
