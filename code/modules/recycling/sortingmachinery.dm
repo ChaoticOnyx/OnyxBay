@@ -50,11 +50,11 @@
 					to_chat(usr, SPAN("warning", "Invalid text"))
 					return
 				if(istype(W, /obj/item/weapon/pen))
-					user.visible_message("\The [user] titles \the [src] with \a [W]",\
+					user.visible_message("\The [user] titles \the [src] with \a [W].",\
 					SPAN("notice", "You title \the [src]: \"[str]\""),\
 					"You hear someone scribbling a note.")
 				else
-					user.visible_message("\The [user] titles \the [src] with \a [W]",\
+					user.visible_message("\The [user] titles \the [src] with \a [W].",\
 					SPAN("notice", "You title \the [src]: \"[str]\""),\
 					"You hear the sound of a small printer.")
 				SetName("[name] ([str])")
@@ -75,11 +75,11 @@
 				else
 					examtext = str
 				if(istype(W, /obj/item/weapon/pen))
-					user.visible_message("\The [user] labels \the [src] with \a [W], scribbling something down",
+					user.visible_message("\The [user] labels \the [src] with \a [W], scribbling something down.",
 					                     SPAN("notice", "You label \the [src]: \"[examtext]\""),
 					                     "You hear someone scribbling a note.")
 				else
-					user.visible_message("\The [user] labels \the [src] with \a [W]",
+					user.visible_message("\The [user] labels \the [src] with \a [W].",
 					                     SPAN("notice", "You label \the [src]: \"[examtext]\""),
 					                     "You hear the sound of a small printer.")
 
@@ -191,11 +191,11 @@
 					to_chat(usr, SPAN("warning", "Invalid text"))
 					return
 				if(istype(W, /obj/item/weapon/pen))
-					user.visible_message("\The [user] titles \the [src] with \a [W]",\
+					user.visible_message("\The [user] titles \the [src] with \a [W].",\
 					SPAN("notice", "You title \the [src]: \"[str]\""),\
 					"You hear someone scribbling a note.")
 				else
-					user.visible_message("\The [user] titles \the [src] with \a [W]:",\
+					user.visible_message("\The [user] titles \the [src] with \a [W].",\
 					SPAN("notice", "You title \the [src]: \"[str]\""),\
 					"You hear the sound of a small printer.")
 				SetName("[name] ([str])")
@@ -216,11 +216,11 @@
 				else
 					examtext = str
 				if(istype(W, /obj/item/weapon/pen))
-					user.visible_message("\The [user] labels \the [src] with \a [W], scribbling something down",
+					user.visible_message("\The [user] labels \the [src] with \a [W], scribbling something down.",
 					                     SPAN("notice", "You label \the [src]: \"[examtext]\""),
 					                     "You hear someone scribbling a note.")
 				else
-					user.visible_message("\The [user] labels \the [src] with \a [W]",
+					user.visible_message("\The [user] labels \the [src] with \a [W].",
 					                     SPAN("notice", "You label \the [src]: \"[examtext]\""),
 					                     "You hear the sound of a small printer.")
 	return
@@ -319,7 +319,7 @@
 			src.add_fingerprint(usr)
 			src.amount -= 1
 			user.visible_message("\The [user] wraps \a [target] with \a [src].",\
-			SPAN("notice", "You wrap \the [target], leaving [amount] units of paper on \the [src]"),\
+			SPAN("notice", "You wrap \the [target], leaving [amount] units of paper on \the [src]."),\
 			"You hear someone taping paper around a small object.")
 	else if (istype(target, /obj/structure/closet/crate))
 		var/obj/structure/closet/crate/O = target
