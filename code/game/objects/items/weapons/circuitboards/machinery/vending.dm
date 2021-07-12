@@ -28,7 +28,7 @@
 							"Refrigerated Food Showcase" = /obj/machinery/smartfridge/secure/food,
 							"Refrigerated Medicine Storage" = /obj/machinery/smartfridge/secure/medbay,
 							"Refrigerated Virus Storage" = /obj/machinery/smartfridge/secure/virology
-	)
+							)
 
 	req_components = list(
 							/obj/item/weapon/stock_parts/matter_bin = 2,
@@ -91,8 +91,7 @@
 							"Toximate 3000" = list("path" = /obj/machinery/vending/plasmaresearch, "components" = list(/obj/item/weapon/vendcart/plasmaresearch = 1)),
 							"Robotech Deluxe" = list("path" = /obj/machinery/vending/robotics, "components" = list(/obj/item/weapon/vendcart/robotics = 1)),
 							"Robco Tool Maker" = list("path" = /obj/machinery/vending/engineering, "components" = list(/obj/item/weapon/vendcart/engineering = 1))
-
-	)
+							)
 
 	req_components = list(
 							/obj/item/weapon/stock_parts/matter_bin = 2,
@@ -104,9 +103,9 @@
 	origin_tech = list(TECH_DATA = 2, TECH_ILLEGAL = 1)
 	build_path = /obj/machinery/vending/assist/antag
 	bpath = list(
-							"AntagCorpVend" = list("path" = /obj/machinery/vending/assist/antag, "components" = list(/obj/item/weapon/vendcart/antag = 1)),
-							"MagiVend" = list("path" = /obj/machinery/vending/magivend, "components" = list(/obj/item/weapon/vendcart/magivend = 1))
-							)
+					"AntagCorpVend" = list("path" = /obj/machinery/vending/assist/antag, "components" = list(/obj/item/weapon/vendcart/antag = 1)),
+					"MagiVend" = list("path" = /obj/machinery/vending/magivend, "components" = list(/obj/item/weapon/vendcart/magivend = 1))
+					)
 
 	req_components = list(
 							/obj/item/weapon/stock_parts/matter_bin = 2,
