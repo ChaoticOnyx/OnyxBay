@@ -101,6 +101,7 @@
 							)
 
 /obj/item/weapon/circuitboard/vendomat/antagmat
+	origin_tech = list(TECH_DATA = 2, TECH_ILLEGAL = 1)
 	build_path = /obj/machinery/vending/assist/antag
 	bpath = list(
 							"AntagCorpVend" = list("path" = /obj/machinery/vending/assist/antag, "components" = list(/obj/item/weapon/vendcart/antag = 1)),
