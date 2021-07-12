@@ -38,7 +38,7 @@
 						state = 1
 			if(1)
 				if(isWrench(P))
-					playsound(src.loc, 'sound/items/Ratchet.ogg', 50, 1)
+					playsound(loc, 'sound/items/Ratchet.ogg', 50, 1)
 					if(do_after(user, 20, src))
 						to_chat(user, SPAN("notice", "You unfasten the frame."))
 						anchored = 0
