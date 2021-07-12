@@ -84,11 +84,11 @@
 					else
 						to_chat(user, "<span class='warning'>This frame does not accept circuit boards of this type!</span>")
 				if(isWirecutter(P))
-					playsound(src.loc, 'sound/items/Wirecutter.ogg', 50, 1)
-					to_chat(user, "<span class='notice'>You remove the cables.</span>")
+					playsound(loc, 'sound/items/Wirecutter.ogg', 50, 1)
+					to_chat(user, SPAN("notice", "You remove the cables."))
 					state = 1
 					icon_state = "box_0"
-					var/obj/item/stack/cable_coil/A = new /obj/item/stack/cable_coil( src.loc )
+					var/obj/item/stack/cable_coil/A = new /obj/item/stack/cable_coil(loc)
 					A.amount = 5
 				if(istype(P, /obj/item/stack/material) && P.get_material_name() == MATERIAL_WOOD)
 					var/obj/item/stack/material/M = P
