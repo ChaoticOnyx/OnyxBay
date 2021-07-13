@@ -113,7 +113,7 @@
 		/obj/item/weapon/vendcart/antag = 1
 	)
 
-/obj/item/weapon/circuitboard/vendomat/attackby(obj/item/weapon/W as obj, mob/user as mob)
+/obj/item/weapon/circuitboard/vendomat/attackby(obj/item/weapon/W, mob/user)
 	if(isScrewdriver(W))
 		var/circuit = input(user, "Select a circuit type.") as null|anything in bpath
 		if(circuit)
