@@ -1,12 +1,5 @@
 #include "magshield_areas.dm"
 
-/datum/map_template/ruin/away_site/magshield
-	name = "Magshield"
-	id = "awaysite_magshield"
-	description = "It's an orbital shield station."
-	suffixes = list("magshield/magshield.dmm")
-	cost = 1
-
 /obj/effect/shuttle_landmark/nav_magshield/nav1
 	name = "Orbital Station Navpoint #1"
 	landmark_tag = "nav_magshield_1"

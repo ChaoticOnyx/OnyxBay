@@ -1,12 +1,5 @@
 #include "mobius_rift_areas.dm"
 
-/datum/map_template/ruin/away_site/mobius_rift
-	name = "Mobius rift"
-	id = "awaysite_mobius_rift"
-	description = "Non-euclidian mess."
-	suffixes = list("mobius_rift/mobius_rift.dmm")
-	cost = 1
-
 /obj/effect/step_trigger/mobius_rift/seamless_portal
 	var/obj/effect/step_trigger/mobius_rift/seamless_portal/dest
 	//NORTH or EAST cases

@@ -112,10 +112,6 @@
 /proc/game_log(category, text)
 	WRITE_FILE(GLOB.world_common_log, "\[[time_stamp()]\] [game_id] [category]: [text][log_end]")
 
-/proc/log_unit_test(text)
-	log_to_dd("\[[time_stamp()]]\[UNIT TEST] [text]")
-	log_debug(text)
-
 /proc/log_qdel(text)
 	WRITE_FILE(GLOB.world_qdel_log, "\[[time_stamp()]]QDEL: [text]")
 

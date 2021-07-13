@@ -13,14 +13,6 @@
 	name = "Navpoint Aft"
 	landmark_tag = "nav_hydro_3"
 
-/datum/map_template/ruin/away_site/hydro
-	name = "Hydroponics Station"
-	id = "awaysite_hydro"
-	description = "Hydroponics station with farmbots and goats."
-	suffixes = list("hydro/hydro.dmm")
-	cost = 0.75
-	accessibility_weight = 10
-
 // Objs //
 /obj/structure/closet/secure_closet/hydroponics/hydro
 	name = "hydroponics supplies locker"

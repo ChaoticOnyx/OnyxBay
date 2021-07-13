@@ -20,13 +20,6 @@ obj/effect/icarus/irradiate/Destroy()
 	. = ..()
 	QDEL_NULL(S)
 
-/datum/map_template/ruin/away_site/icarus
-	name = "Fallen Icarus"
-	id = "awaysite_icarus"
-	description = "The crashlanding site of the SEV Icarus."
-	suffixes = list("icarus/icarus-1.dmm", "icarus/icarus-2.dmm")
-	cost = 2
-
 /obj/effect/shuttle_landmark/nav_icarus/nav1
 	name = "Planetary Navpoint #1"
 	landmark_tag = "nav_icarus_1"

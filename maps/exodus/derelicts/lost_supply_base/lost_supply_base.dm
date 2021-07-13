@@ -1,13 +1,6 @@
 #include "lost_supply_base_areas.dm"
 #include "../mining/mining_areas.dm"
 
-/datum/map_template/ruin/away_site/lost_supply_base
-	name = "Lost Supply Base"
-	id = "awaysite_lost_supply_base"
-	description = "An abandoned supply base."
-	suffixes = list("lost_supply_base/lost_supply_base.dmm")
-	cost = 1
-
 /obj/effect/shuttle_landmark/nav_lost_supply_base/nav1
 	name = "Abandoned Supply Base Navpoint #1"
 	landmark_tag = "nav_lost_supply_base_1"

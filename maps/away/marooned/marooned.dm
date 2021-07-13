@@ -9,13 +9,6 @@
 	initial_gas = list("oxygen" = MOLES_O2STANDARD, "nitrogen" = MOLES_N2STANDARD)
 	dynamic_lighting = 0
 
-/datum/map_template/ruin/away_site/marooned
-	name = "Marooned"
-	id = "awaysite_marooned"
-	description = "A snowy wasteland."
-	suffixes = list("marooned/marooned.dmm")
-	cost = 1
-
 /obj/effect/shuttle_landmark/nav_marooned/nav1
 	name = "Planetside Navpoint #1"
 	landmark_tag = "nav_marooned_1"

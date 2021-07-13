@@ -1,13 +1,6 @@
 #include "casino_areas.dm"
 #include "../mining/mining_areas.dm"
 
-/datum/map_template/ruin/away_site/casino
-	name = "Casino"
-	id = "awaysite_casino"
-	description = "A casino ship!"
-	suffixes = list("casino/casino.dmm")
-	cost = 1
-
 /obj/effect/shuttle_landmark/nav_casino/nav1
 	name = "Casino Ship Navpoint #1"
 	landmark_tag = "nav_casino_1"

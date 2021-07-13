@@ -1,13 +1,5 @@
 #include "bearcat_areas.dm"
 
-/datum/map_template/ruin/away_site/bearcat_wreck
-	name = "Bearcat Wreck"
-	id = "awaysite_bearcat_wreck"
-	description = "A wrecked light freighter."
-	suffixes = list("bearcat/bearcat-1.dmm", "bearcat/bearcat-2.dmm")
-	cost = 1
-	shuttles_to_initialise = list(/datum/shuttle/autodock/ferry/lift)
-
 /datum/shuttle/autodock/ferry/lift
 	name = "Cargo Lift"
 	shuttle_area = /area/ship/scrap/shuttle/lift

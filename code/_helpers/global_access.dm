@@ -69,8 +69,6 @@
 			return global.SSlighting;
 		if("SSmachines")
 			return global.SSmachines;
-		if("SSmapping")
-			return global.SSmapping;
 		if("SSmisc")
 			return global.SSmisc;
 		if("SSmisc_late")
@@ -982,8 +980,6 @@
 			global.SSlighting=newval;
 		if("SSmachines")
 			global.SSmachines=newval;
-		if("SSmapping")
-			global.SSmapping=newval;
 		if("SSmisc")
 			global.SSmisc=newval;
 		if("SSmisc_late")
@@ -1934,7 +1930,6 @@
 	"all_robolimbs",
 	"all_species",
 	"all_ui_styles",
-	"all_unit_tests_passed",
 	"all_virtual_listeners",
 	"announced_news_types",
 	"antag_add_finished",
@@ -2030,7 +2025,6 @@
 	"explosion_turfs",
 	"failed_db_connections",
 	"failed_old_db_connections",
-	"failed_unit_tests",
 	"file_uid",
 	"fileaccess_timer",
 	"finds_as_strings",
@@ -2221,7 +2215,6 @@
 	"ship_engines",
 	"side_effects",
 	"skin_styles_female_list",
-	"skipped_unit_tests",
 	"slot_equipment_priority",
 	"slot_flags_enumeration",
 	"solar_gen_rate",
@@ -2291,7 +2284,6 @@
 	"total_lighting_corners",
 	"total_lighting_overlays",
 	"total_lighting_sources",
-	"total_unit_tests",
 	"trait_categories",
 	"trait_datums",
 	"trait_type_to_ref",

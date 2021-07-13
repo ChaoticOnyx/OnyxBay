@@ -108,12 +108,7 @@ var/server_name = "OnyxBay"
 
 	. = ..()
 
-#ifdef UNIT_TEST
-	log_unit_test("Unit Tests Enabled. This will destroy the world when testing is complete.")
-	load_unit_test_changes()
-#endif
 	Master.Initialize(10, FALSE)
-
 	webhook_send_roundstatus("lobby", "[config.server_id]")
 
 #undef RECOMMENDED_VERSION
@@ -726,7 +721,7 @@ var/failed_don_db_connections = 0
 //If you don't know what any of this do, look at the same code above
 /proc/setup_old_database_connection()
 
-	if(failed_old_db_connections > FAILED_DB_CONNECTION_CUTOFF)	
+	if(failed_old_db_connections > FAILED_DB_CONNECTION_CUTOFF)
 		return 0
 
 	if(!dbcon_old)
