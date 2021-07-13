@@ -52,8 +52,8 @@
 	to_chat(src, "<b><font size=3>These objectives are completely voluntary. You are not required to complete them.</font></b>")
 	show_objectives(src.mind)
 
-/mob/living/proc/set_ambition()
-	set name = "Set Ambition" //ported from infinitystation
+/mob/living/proc/write_ambition()
+	set name = "Write Ambitions" //ported from infinitystation
 	set category = "IC"
 	set src = usr
 
