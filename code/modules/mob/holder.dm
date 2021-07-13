@@ -15,7 +15,7 @@ var/list/holder_mob_icon_cache = list()
 	pixel_y = 8
 
 	var/last_holder
-	var/mob/living/simple_animal/M
+	var/mob/living/simple_animal/mob
 
 /obj/item/weapon/holder/New()
 	..()
@@ -57,7 +57,7 @@ var/list/holder_mob_icon_cache = list()
 			register_all_movement(loc, M)
 
 	last_holder = loc
-	M = locate() in contents
+	mob = locate() in contents
 
 /obj/item/weapon/holder/onDropInto(atom/movable/AM)
 	if(ismob(loc))   // Bypass our holding mob and drop directly to its loc
@@ -112,15 +112,14 @@ var/list/holder_mob_icon_cache = list()
 	update_held_icon()
 
 /obj/item/weapon/holder/proc/rename(new_name)
-	name = new_name
-	M.name = name = new_name
-	M.renamable = FALSE
+	mob.name = name = new_name
+	mob.renamable = FALSE
 
 /obj/item/weapon/holder/verb/name_pet()
 	set category = "Object"
 	set name = "Name"
-	if(M.renamable)
-		var/new_name = sanitize(input("How do you want to name this creature?", "Rename \the [M.name]", M.name) as null|text)
+	if(mob.renamable)
+		var/new_name = sanitize(input("How do you want to name this creature?", "Rename \the [mob.name]", mob.name) as null|text)
 		to_chat(usr, SPAN_NOTICE("The creature is now named as '[new_name]'."))
 		rename(new_name)
 
