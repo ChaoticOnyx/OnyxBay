@@ -213,7 +213,7 @@
 			break
 	updateUsrDialog()
 
-/obj/machinery/seed_storage/attackby(obj/item/O as obj, mob/user as mob)
+/obj/machinery/seed_storage/attackby(obj/item/O, mob/user)
 	if(default_deconstruction_screwdriver(user, O))
 		return
 	if(default_deconstruction_crowbar(user, O))
