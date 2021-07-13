@@ -9,10 +9,10 @@
 	anchored = 1
 	density = 1
 	component_types = list(
-            /obj/item/weapon/circuitboard/vendomat,
-            /obj/item/weapon/stock_parts/matter_bin = 2,
-            /obj/item/weapon/stock_parts/console_screen
-)
+    		/obj/item/weapon/circuitboard/vendomat,
+    		/obj/item/weapon/stock_parts/matter_bin = 2,
+    		/obj/item/weapon/stock_parts/console_screen
+	)
 
 	// The actual laptop/tablet
 	var/obj/item/modular_computer/laptop/fabricated_laptop = null
