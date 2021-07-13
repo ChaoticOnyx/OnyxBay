@@ -19,7 +19,7 @@
 	user.setClickCooldown(DEFAULT_ATTACK_COOLDOWN)
 	user.do_attack_animation(M)
 	if(M.mind && LAZYLEN(M.mind.learned_spells))
-		M.silence_spells(300)
+		M.silence_spells(30 SECONDS)
 		to_chat(M, SPAN_DANGER("You've been silenced!"))
 		return
 
