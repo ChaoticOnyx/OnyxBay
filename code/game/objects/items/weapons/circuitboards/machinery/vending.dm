@@ -34,7 +34,7 @@
 		/obj/item/weapon/stock_parts/matter_bin = 2,
 	)
 
-/obj/item/weapon/circuitboard/smartfridge/attackby(obj/item/weapon/W as obj, mob/user as mob)
+/obj/item/weapon/circuitboard/smartfridge/attackby(obj/item/weapon/W, mob/user)
 	if(isScrewdriver(W))
 		var/circuit = input(user, "Select a circuit type.") as null|anything in bpath
 		if(circuit)
