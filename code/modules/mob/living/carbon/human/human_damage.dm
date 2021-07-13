@@ -513,7 +513,7 @@ This function restores all organs.
 	traumatic_shock -= chem_effects[CE_PAINKILLER] // TODO: check what is actually stored here.
 
 	if(stat == UNCONSCIOUS)
-		traumatic_shock *= 0.6
+		traumatic_shock *= 0.8
 	return max(0, traumatic_shock)
 
 /mob/living/carbon/human/apply_effect(effect = 0,effecttype = STUN, blocked = 0)

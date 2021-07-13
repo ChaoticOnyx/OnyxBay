@@ -471,6 +471,7 @@
 	desc = "Contains a morphine - opiat painkiller."
 	mode = SYRINGE_INJECT
 	starting_label = "morphine"
+	package_state = "package_drugs"
 
 /obj/item/weapon/reagent_containers/syringe/morphine/packaged
 	mode = SYRINGE_PACKAGED
