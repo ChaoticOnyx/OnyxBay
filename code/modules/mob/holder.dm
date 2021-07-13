@@ -113,7 +113,7 @@ var/list/holder_mob_icon_cache = list()
 
 /obj/item/weapon/holder/proc/rename(new_name)
 	name = new_name
-	M.name = new_name
+	M.name = name = new_name
 	M.renamable = FALSE
 
 /obj/item/weapon/holder/verb/name_pet()
