@@ -406,7 +406,7 @@
 
 	illegal = list(
 		/obj/item/weapon/reagent_containers/glass/bottle/ammonia = 10,
-		/obj/item/weapon/reagent_containers/glass/bottle/diethylamine = 5
+		/obj/item/weapon/reagent_containers/glass/bottle/diethylamine = 5,
 		/obj/item/device/dociler = 1
 	)
 //MAGIVEND
