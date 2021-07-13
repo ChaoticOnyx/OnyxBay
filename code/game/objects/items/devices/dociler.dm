@@ -17,7 +17,7 @@
 
 /obj/item/device/dociler/examine(mob/user)
 	. = ..()
-	. += SPAN("notice", "It is currently set to [mode] docile mode.")
+	. += SPAN("notice", " It is currently set to [mode] docile mode.")
 
 /obj/item/device/dociler/attack_self(mob/user)
 	if(state == 3)
@@ -31,11 +31,12 @@
 		state = 3
 	to_chat(user, "You set \the [src] to [mode] docile mode.")
 
-/obj/item/device/dociler/proc/rename(var/mob/living/simple_animal/L, var/mob_name)
-	if(length(mob_name))
+/obj/item/device/dociler/proc/rename(var/mob/living/simple_animal/L)
+	var/new_name = sanitize(input("How do you want to name this creature?", "Rename \the [L.name]", L.name) as null|text)
+	if(length(new_name))
 		L.renamable = FALSE
-		L.real_name = mob_name
-		L.SetName(mob_name)
+		L.real_name = new_name
+		L.SetName(new_name)
 
 /obj/item/device/dociler/proc/inject(var/mob/living/simple_animal/hostile/H, var/mob/U)
 	//Dociler cooldown
@@ -43,10 +44,11 @@
 	icon_state = "animal_tagger0"
 	addtimer(CALLBACK(src, .proc/refill), 5 MINUTES)
 	//Mob
+	U.visible_message("\The [U] thrusts \the [src] deep into \the [H]'s head, injecting something!")
 	H.LoseTarget()
 	H.attack_same = 0
 	H.friends += weakref(U)
-	H.desc += SPAN("notice", "It looks especially docile.")
+	H.desc += SPAN("notice", " It looks especially docile.")
 
 /obj/item/device/dociler/proc/refill()
 	loaded = 1
@@ -61,23 +63,20 @@
 		to_chat(user, SPAN("warning", "The [src] isn't loaded!"))
 		return
 	else
-		user.visible_message("\The [user] thrusts \the [src] deep into \the [L]'s head, injecting something!")
-		var/new_name = sanitize(input("How do you want to name this creature?", "Rename \the [L.name]", L.name) as null|text)
 		switch(state)
 			if(1)
 				if(istype(L,/mob/living/simple_animal/hostile))
 					to_chat(L, SPAN("notice", "You feel pain as \the [user] injects something into you. All of a sudden you feel as if all the galaxy are your friends."))
 					L.faction = null
-					L.desc += SPAN("notice", "It looks especially docile.")
 					inject(L, user)
-					rename(L, new_name)
+					rename(L)
 			if(2)
 				if(istype(L,/mob/living/simple_animal/hostile))
 					to_chat(L, SPAN("notice", "You feel pain as \the [user] injects something into you. All of a sudden you feel as if [user] is the friendliest and nicest person you've ever know. You want to be friends with him and all his friends."))
 					L.faction = user.faction
 					inject(L, user)
-					rename(L, new_name)
+					rename(L)
 			if(3)
 				var/mob/living/simple_animal/A = L
-				if(A.renamable)
-					rename(L, new_name)
+				if(A?.renamable)
+					rename(L)
