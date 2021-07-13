@@ -118,7 +118,7 @@ var/list/holder_mob_icon_cache = list()
 /obj/item/weapon/holder/verb/name_pet()
 	set category = "Object"
 	set name = "Name"
-	if(mob.renamable)
+	if(mob?.renamable)
 		var/new_name = sanitize(input("How do you want to name this creature?", "Rename \the [mob.name]", mob.name) as null|text)
 		to_chat(usr, SPAN_NOTICE("The creature is now named as '[new_name]'."))
 		rename(new_name)
