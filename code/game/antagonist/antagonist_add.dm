@@ -42,7 +42,7 @@
 		to_chat(player.current, "<span class='notice'>Once you decide on a goal to pursue, you can optionally display it to \
 			everyone at the end of the shift with the <b>Set Ambition</b> verb, located in the IC tab.  You can change this at any time, \
 			and it otherwise has no bearing on your round.</span>")
-	player.current.verbs += /mob/living/proc/set_ambition
+	player.current.verbs += /mob/living/proc/write_ambition
 
 	if(player.assigned_role == "Clown")
 		to_chat(player.current, "<span class='notice'>Your diligent training has helped overcome your clownish nature.</span>")
@@ -75,7 +75,7 @@
 
 		if(!is_special_character(player))
 			if(player.current)
-				player.current.verbs -= /mob/living/proc/set_ambition
+				player.current.verbs -= /mob/living/proc/write_ambition
 				if(player.current.client)
 					player.current.client.verbs -= /client/proc/aooc
 			player.ambitions = ""
