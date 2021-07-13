@@ -146,7 +146,7 @@
 	icon_off = "drying_rack"
 	component_types = list()
 
-/obj/machinery/smartfridge/drying_rack/attackby(obj/item/O as obj, mob/user as mob)
+/obj/machinery/smartfridge/drying_rack/attackby(obj/item/O, mob/user)
 	if(isScrewdriver(O))
 		playsound(loc, 'sound/items/Screwdriver.ogg', 50, 1)
 		if(do_after(user, 20, src))
