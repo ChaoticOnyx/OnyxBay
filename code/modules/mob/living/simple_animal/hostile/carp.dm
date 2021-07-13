@@ -1,12 +1,9 @@
-
-
 /mob/living/simple_animal/hostile/carp
 	name = "space carp"
 	desc = "A ferocious, fang-bearing creature that resembles a fish."
 	icon_state = "carp"
 	icon_living = "carp"
 	icon_dead = "carp_dead"
-	icon_gib = "carp_gib"
 	speak_chance = 0
 	turns_per_move = 5
 	meat_type = /obj/item/weapon/reagent_containers/food/snacks/carpmeat
