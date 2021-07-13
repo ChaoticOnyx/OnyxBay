@@ -318,6 +318,9 @@ var/global/list/plant_seed_sprites = list()
 /obj/item/seeds/onionseed
 	seed_type = "onion"
 
+/obj/item/seeds/opium
+	seed_type = "opiumpoppies"
+
 /obj/item/seeds/cannabisseed
 	seed_type = "cannabis"
 

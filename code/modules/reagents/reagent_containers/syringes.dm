@@ -448,14 +448,37 @@
 	mode = SYRINGE_INJECT
 	starting_label = "drugs"
 	package_state = "package_drugs"
+	var/possible_contents = list(
+		list(/datum/reagent/tramadol/opium/heroin/krokodil = 10, /datum/reagent/tramadol/opium/heroin = 5),
+		list(/datum/reagent/tramadol/opium/heroin/krokodil = 5, /datum/reagent/tramadol/opium/kodein = 5, /datum/reagent/tramadol/opium/heroin = 5),
+		list(/datum/reagent/space_drugs = 6, /datum/reagent/tramadol/opium/heroin/krokodil = 4, /datum/reagent/tramadol/opium/heroin = 5),
+		list(/datum/reagent/water = 7.5, /datum/reagent/tramadol/opium/heroin/krokodil = 4, /datum/reagent/lithium = 2.5, /datum/reagent/tramadol/opium/heroin = 1)
+	)
 
 /obj/item/weapon/reagent_containers/syringe/drugs/packaged
 	mode = SYRINGE_PACKAGED
 
 /obj/item/weapon/reagent_containers/syringe/drugs/Initialize()
 	. = ..()
-	reagents.add_reagent(/datum/reagent/tramadol/opium, 5)
-	reagents.add_reagent(/datum/reagent/tramadol/opium/heroin, 10)
+	var/contents = pick(possible_contents)
+	for(var/R in contents)
+		reagents.add_reagent(R, contents[R])
+	update_icon()
+
+////////////////////////////////////////////////////////////////////////////////
+/obj/item/weapon/reagent_containers/syringe/morphine
+	name = "syringe (morphine)"
+	desc = "Contains a morphine - opiat painkiller."
+	mode = SYRINGE_INJECT
+	starting_label = "morphine"
+
+/obj/item/weapon/reagent_containers/syringe/morphine/packaged
+	mode = SYRINGE_PACKAGED
+
+/obj/item/weapon/reagent_containers/syringe/morphine/Initialize()
+	. = ..()
+	reagents.add_reagent(/datum/reagent/tramadol/opium/morphine, 14)
+	reagents.add_reagent(/datum/reagent/naloxone, 1)
 	update_icon()
 
 ////////////////////////////////////////////////////////////////////////////////

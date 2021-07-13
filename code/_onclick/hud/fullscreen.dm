@@ -124,6 +124,12 @@
 	screen_loc = "WEST,SOUTH to EAST,NORTH"
 	icon_state = "druggy"
 
+/obj/screen/fullscreen/high_s
+	icon = 'icons/mob/screen1.dmi'
+	screen_loc = "WEST,SOUTH to EAST,NORTH"
+	icon_state = "druggy"
+	alpha = 127
+
 /obj/screen/fullscreen/noise
 	icon = 'icons/effects/static.dmi'
 	icon_state = "1 light"

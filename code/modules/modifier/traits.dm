@@ -145,10 +145,10 @@
 		H.add_additiction(A)
 		spawn()
 			var/turf/T = get_turf(H)
-			H.equip_to_storage_or_drop(new /obj/item/weapon/reagent_containers/syringe/drugs(T))
-			H.equip_to_storage_or_drop(new /obj/item/weapon/reagent_containers/syringe/drugs(T))
-			H.equip_to_storage_or_drop(new /obj/item/weapon/reagent_containers/syringe/drugs(T))
-			H.equip_to_storage_or_drop(new /obj/item/weapon/reagent_containers/syringe/drugs(T))
+			H.equip_to_storage_or_drop(new /obj/item/weapon/reagent_containers/syringe/drugs/packaged(T))
+			H.equip_to_storage_or_drop(new /obj/item/weapon/reagent_containers/syringe/drugs/packaged(T))
+			H.equip_to_storage_or_drop(new /obj/item/weapon/reagent_containers/syringe/drugs/packaged(T))
+			H.equip_to_storage_or_drop(new /obj/item/seeds/opium(T))
 
 /datum/modifier/trait/alcohol_additiction
 	name = "Alcohol addiction"

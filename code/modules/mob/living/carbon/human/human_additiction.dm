@@ -15,7 +15,7 @@
 	return
 
 /datum/additiction/proc/can_gone(var/mob/living/carbon/human/H)
-	return power < 0
+	return TRUE
 
 /mob/living/carbon/human/var/list/datum/additiction/additictions = list()
 
@@ -47,7 +47,7 @@
 	name = "Opioid"
 
 /datum/additiction/opioid/can_gone(var/mob/living/carbon/human/H)
-	return power <= (-max_power * chronic ? 2 : 1.5)
+	return chronic ? FALSE : power <= (-max_power * 1.5)
 
 /datum/additiction/opioid/update(var/mob/living/carbon/human/H)
 	var/power_diff = 0
@@ -63,9 +63,12 @@
 		else if(abs(power) < (max_power * 0.8))
 			power -= 0.1
 
+	if(/datum/reagent/naloxone in H.chem_doses)
+		power += 0.2
+
 	if(power_diff > 0.1 && prob(7) && max_power > 30)
 		if(power < -10)
-			to_chat(H, SPAN_NOTICE("You feel [pick("unbeliveably happy", "like living your best life", "blissful", "blessed", "unearthly tranquility")]"))
+			to_chat(H, SPAN_NOTICE("You feel <big>[pick("unbeliveably happy", "like living your best life", "blissful", "blessed", "unearthly tranquility")]</big>"))
 		else if(power >= -10)
 			to_chat(H, SPAN_NOTICE("You feel [pick("happy", "joyful", "relaxed", "tranquility")]"))
 
@@ -78,6 +81,8 @@
 	if(power >= 0)
 		return
 	var/P = abs(power)
+	if(/datum/reagent/naloxone in H.chem_doses)
+		P *= CLAMP01(1 - H.chem_doses[/datum/reagent/naloxone])
 	if(prob(10))
 		H.take_overall_damage(brute = P * 0.25, "Opioid additiction")
 		switch(P)
@@ -93,16 +98,26 @@
 				if(prob(30))
 					spawn()
 						H.vomit()
-			if(30 to 60)
+			if(30 to INFINITY)
 				if(chronic && power > 60)
 					H.custom_pain("Your body crushes all over.", P * 3.5, 0, null, 0)
-					if(prob(10))
-						chronic = FALSE
 				else
 					H.custom_pain("Your body aches all over, it's driving you mad.", P * 3, 0, null, 0)
 				if(prob(60))
 					spawn()
 						H.vomit()
+		if(prob(10))
+			switch(P)
+				if(0 to 6)
+					to_chat(H, SPAN_NOTICE("You want opiates."))
+				if(6 to 13)
+					to_chat(H, SPAN_WARNING("You really want opiates."))
+				if(13 to 30)
+					to_chat(H, SPAN_DANGER("You need opiates."))
+				if(30 to 60)
+					to_chat(H, SPAN_DANGER("<big>You need opiates.</big>"))
+				if(60 to INFINITY)
+					to_chat(H, SPAN_DANGER("<big>OH GOD! You cannot live without opiates.</big>"))
 
 		H.adjustToxLoss(P / 40)
 
@@ -131,6 +146,8 @@
 	power += power_diff / 10
 
 	power -= 0.025
+	if(/datum/reagent/naloxone in H.chem_doses)
+		power += 0.2
 
 	if(power_diff >= 1 && prob(3) && max_power > 30)
 		if(power < -10)
@@ -144,6 +161,8 @@
 	if(power >= 0)
 		return
 	var/P = abs(power)
+	if(/datum/reagent/naloxone in H.chem_doses)
+		P *= CLAMP01(1 - H.chem_doses[/datum/reagent/naloxone])
 	if(prob(3))
 		switch(P)
 			if(0 to 12)
@@ -167,12 +186,16 @@
 		power_diff *= 200
 	power += power_diff / 10
 	power -= 0.1
+	if(/datum/reagent/naloxone in H.chem_doses)
+		power += 0.2
 	max_power = max(power, max_power)
 
 /datum/additiction/nicotine/tick(var/mob/living/carbon/human/H)
 	if(power >= 0)
 		return
 	var/P = abs(power)
+	if(/datum/reagent/naloxone in H.chem_doses)
+		P *= CLAMP01(1 - H.chem_doses[/datum/reagent/naloxone])
 	if(prob(4))
 		switch(P)
 			if(0 to 12)

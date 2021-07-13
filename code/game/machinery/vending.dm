@@ -187,7 +187,7 @@
 /obj/machinery/vending/proc/pay(obj/item/weapon/W, mob/user)
 	if(!W)
 		return FALSE
-	
+
 	var/obj/item/weapon/card/id/I = W.GetIdCard()
 
 	if(currently_vending && vendor_account && !vendor_account.suspended)
@@ -1212,7 +1212,7 @@
 					/obj/item/stack/medical/advanced/bruise_pack = 3,
 					/obj/item/stack/medical/advanced/ointment = 3,
 					/obj/item/stack/medical/splint = 2,
-					/obj/item/weapon/reagent_containers/hypospray/autoinjector/pain = 4)
+					/obj/item/weapon/reagent_containers/syringe/morphine/packaged = 3)
 	contraband = list(/obj/item/weapon/reagent_containers/pill/tox = 3,
 					  /obj/item/weapon/reagent_containers/pill/stox = 4,
 					  /obj/item/weapon/reagent_containers/pill/dylovene = 6,
