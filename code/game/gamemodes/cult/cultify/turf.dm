@@ -16,7 +16,7 @@
 /turf/simulated/floor/proc/cultify_floor()
 	var/turf/simulated/floor/floor = src
 	var/old_type = floor.type
-	var/turf/simulated/floor/misc/cult/cult_floor= src
+	var/turf/simulated/floor/misc/cult/cult_floor = src
 	ChangeTurf(/turf/simulated/floor/misc/cult)
 	cult_floor.previous_type = old_type
 	GLOB.cult.add_cultiness(CULTINESS_PER_TURF)
