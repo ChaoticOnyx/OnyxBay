@@ -22,6 +22,7 @@
 	health = 40
 	melee_damage_lower = 1
 	melee_damage_upper = 5
+	renamable = TRUE
 	var/datum/reagents/udder = null
 
 /mob/living/simple_animal/hostile/retaliate/goat/New()
@@ -106,6 +107,7 @@
 	response_harm   = "kicks"
 	attacktext = "kicked"
 	health = 50
+	renamable = TRUE
 	var/milktype = /datum/reagent/drink/milk
 	var/datum/reagents/udder = null
 

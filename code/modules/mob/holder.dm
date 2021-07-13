@@ -112,8 +112,9 @@ var/list/holder_mob_icon_cache = list()
 	update_held_icon()
 
 /obj/item/weapon/holder/proc/rename(new_name)
-	mob.name = name = new_name
-	mob.renamable = FALSE
+	if(length(new_name))
+		mob.name = name = new_name
+		mob.renamable = FALSE
 
 /obj/item/weapon/holder/verb/name_pet()
 	set category = "Object"
