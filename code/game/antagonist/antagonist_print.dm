@@ -23,7 +23,7 @@
 				num++
 			if(P.ambitions)
 				text += "<br>Their goals for today were..."
-				text += "<br><span class='notice'>[P.ambitions]</span>"
+				text += "<br>[SPAN_NOTICE(P.ambitions)]"
 			if(failed)
 				text += "<br><font color='red'><B>The [role_text] has failed.</B></font>"
 			else
