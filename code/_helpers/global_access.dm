@@ -2160,7 +2160,6 @@
 	"outfits_decls_",
 	"outfits_decls_by_type_",
 	"outfits_decls_root_",
-	"overmap_event_handler",
 	"paiController",
 	"pai_emotions",
 	"pai_software_by_key",

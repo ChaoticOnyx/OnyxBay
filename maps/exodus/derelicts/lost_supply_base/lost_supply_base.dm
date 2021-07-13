@@ -1,19 +1,6 @@
 #include "lost_supply_base_areas.dm"
 #include "../mining/mining_areas.dm"
 
-/obj/effect/overmap/sector/lost_supply_base
-	name = "supply station"
-	desc = "This looks like abandoned and heavy damaged supply station."
-	icon_state = "object"
-	known = 0
-
-	initial_generic_waypoints = list(
-		"nav_lost_supply_base_1",
-		"nav_lost_supply_base_2",
-		"nav_lost_supply_base_3",
-		"nav_lost_supply_base_antag"
-	)
-
 /datum/map_template/ruin/away_site/lost_supply_base
 	name = "Lost Supply Base"
 	id = "awaysite_lost_supply_base"

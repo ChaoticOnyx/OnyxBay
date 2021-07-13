@@ -9,23 +9,6 @@
 	initial_gas = list("oxygen" = MOLES_O2STANDARD, "nitrogen" = MOLES_N2STANDARD)
 	dynamic_lighting = 0
 
-/obj/effect/overmap/sector/marooned
-	name = "glacial planetoid"
-	desc = "Moon-sized planet with breathable atmosphere. Sensors are picking up a weak radio signal from the surface."
-	icon_state = "globe"
-	known = 0
-	in_space = 0
-
-	generic_waypoints = list(
-		"nav_marooned_1",
-		"nav_marooned_2",
-		"nav_marooned_antag"
-	)
-
-/obj/effect/overmap/sector/marooned/New(nloc, max_x, max_y)
-	name = "[generate_planet_name()], \a [name]"
-	..()
-
 /datum/map_template/ruin/away_site/marooned
 	name = "Marooned"
 	id = "awaysite_marooned"

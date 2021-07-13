@@ -1,11 +1,5 @@
 #include "mobius_rift_areas.dm"
 
-/obj/effect/overmap/sector/mobius_rift
-	name = "unusual asteroid"
-	desc = "Sensors error: ERROR #E0x003141592: recursive stack overflow for CALCULATE_APPROXIMATE_SIZE()."
-	icon_state = "object"
-	known = 0
-
 /datum/map_template/ruin/away_site/mobius_rift
 	name = "Mobius rift"
 	id = "awaysite_mobius_rift"

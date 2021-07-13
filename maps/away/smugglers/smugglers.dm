@@ -1,17 +1,6 @@
 #include "smugglers_areas.dm"
 #include "../mining/mining_areas.dm"
 
-/obj/effect/overmap/sector/smugglers
-	name = "asteroid station"
-	desc = "A small station built into an asteroid. No radio traffic detected."
-	icon_state = "object"
-	known = 0
-
-	initial_generic_waypoints = list(
-		"nav_smugglers",
-		"nav_smugglers_antag"
-	)
-
 /datum/map_template/ruin/away_site/smugglers
 	name = "Smugglers' Base"
 	id = "awaysite_smugglers"

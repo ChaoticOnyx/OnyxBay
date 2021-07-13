@@ -82,10 +82,6 @@ var/const/MAP_HAS_RANK = 2		//Rank system, also togglable
 	var/default_spawn = "Arrivals Shuttle"
 	var/flags = 0
 	var/evac_controller_type = /datum/evacuation_controller
-	var/use_overmap = 0		//If overmap should be used (including overmap space travel override)
-	var/overmap_size = 20		//Dimensions of overmap zlevel if overmap is used.
-	var/overmap_z = 0		//If 0 will generate overmap zlevel on init. Otherwise will populate the zlevel provided.
-	var/overmap_event_areas = 0 //How many event "clouds" will be generated
 
 	var/lobby_icon									// The icon which contains the lobby image(s)
 	var/list/lobby_screens = list()                 // The list of lobby screen to pick() from. If left unset the first icon state is always selected.
@@ -96,10 +92,6 @@ var/const/MAP_HAS_RANK = 2		//Rank system, also togglable
 	var/security_state = /decl/security_state/default // The default security state system to use.
 
 	var/id_hud_icons = 'icons/mob/hud.dmi' // Used by the ID HUD (primarily sechud) overlay.
-
-	var/num_exoplanets = 0
-	var/list/planet_size  //dimensions of planet zlevel, defaults to world size. Due to how maps are generated, must be (2^n+1) e.g. 17,33,65,129 etc. Map will just round up to those if set to anything other.
-	var/away_site_budget = 0
 
 	var/list/loadout_blacklist	//list of types of loadout items that will not be pickable
 
@@ -159,8 +151,6 @@ var/const/MAP_HAS_RANK = 2		//Rank system, also togglable
 		map_levels = station_levels.Copy()
 	if(!allowed_jobs)
 		allowed_jobs = subtypesof(/datum/job)
-	if(!planet_size)
-		planet_size = list(world.maxx, world.maxy)
 
 /datum/map/proc/setup_map()
 	if(dynamic_z_levels)
@@ -177,35 +167,6 @@ var/const/MAP_HAS_RANK = 2		//Rank system, also togglable
 
 /datum/map/proc/perform_map_generation()
 	return
-
-/datum/map/proc/build_away_sites()
-#ifdef UNIT_TEST
-	report_progress("Unit testing, so not loading away sites")
-	return // don't build away sites during unit testing
-#else
-	report_progress("Loading away sites...")
-	var/list/sites_by_spawn_weight = list()
-	for (var/site_name in SSmapping.away_sites_templates)
-		var/datum/map_template/ruin/away_site/site = SSmapping.away_sites_templates[site_name]
-
-		if((site.template_flags & TEMPLATE_FLAG_SPAWN_GUARANTEED) && site.load_new_z()) // no check for budget, but guaranteed means guaranteed
-			report_progress("Loaded guaranteed away site [site]!")
-			away_site_budget -= site.cost
-			continue
-
-		sites_by_spawn_weight[site] = site.spawn_weight
-	while (away_site_budget > 0 && sites_by_spawn_weight.len)
-		var/datum/map_template/ruin/away_site/selected_site = pickweight(sites_by_spawn_weight)
-		if (!selected_site)
-			break
-		sites_by_spawn_weight -= selected_site
-		if(selected_site.cost > away_site_budget)
-			continue
-		if (selected_site.load_new_z())
-			report_progress("Loaded away site [selected_site]!")
-			away_site_budget -= selected_site.cost
-	report_progress("Finished loading away sites, remaining budget [away_site_budget], remaining sites [sites_by_spawn_weight.len]")
-#endif
 
 // Used to apply various post-compile procedural effects to the map.
 /datum/map/proc/refresh_mining_turfs(zlevel)

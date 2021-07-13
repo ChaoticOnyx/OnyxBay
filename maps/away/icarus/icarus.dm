@@ -1,21 +1,5 @@
 #include "icarus_areas.dm"
 
-/obj/effect/overmap/sector/icarus
-	name = "forest planetoid"
-	desc = "Sensors detect anomalous radiation area with the presence of artificial structures."
-	icon_state = "globe"
-	known = 0
-	in_space = 0
-	initial_generic_waypoints = list(
-		"nav_icarus_1",
-		"nav_icarus_2",
-		"nav_icarus_antag"
-	)
-
-/obj/effect/overmap/sector/icarus/New(nloc, max_x, max_y)
-	name = "[generate_planet_name()], \a [name]"
-	..()
-
 obj/effect/icarus/irradiate
 	var/radiation_power = 20//20 Bq. Dangerous but survivable for 10-15 minutes if crew is too lazy to read away map description
 	var/datum/radiation_source/S

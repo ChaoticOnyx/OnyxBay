@@ -9,24 +9,12 @@ SUBSYSTEM_DEF(mapping)
 	var/list/exoplanet_ruins_templates = list()
 	var/list/away_sites_templates = list()
 
-/datum/controller/subsystem/mapping/Initialize(timeofday)
-	preloadTemplates()
-	GLOB.using_map.build_away_sites()
-	..()
-
 /datum/controller/subsystem/mapping/Recover()
 	flags |= SS_NO_INIT
 	map_templates = SSmapping.map_templates
 	space_ruins_templates = SSmapping.space_ruins_templates
 	exoplanet_ruins_templates = SSmapping.exoplanet_ruins_templates
 	away_sites_templates = SSmapping.away_sites_templates
-
-/datum/controller/subsystem/mapping/proc/preloadTemplates(path = "maps/templates/") //see master controller setup
-	var/list/filelist = flist(path)
-	for(var/map in filelist)
-		var/datum/map_template/T = new(paths = list("[path][map]"), rename = "[map]")
-		map_templates[T.name] = T
-	preloadBlacklistableTemplates()
 
 /datum/controller/subsystem/mapping/proc/preloadBlacklistableTemplates()
 	// Still supporting bans by filename

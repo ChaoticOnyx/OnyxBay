@@ -1,21 +1,5 @@
 #include "derelict_areas.dm"
 
-/obj/effect/overmap/sector/derelict
-	name = "debris field"
-	desc = "A large field of miscellanious debris."
-	icon_state = "object"
-	known = 0
-
-	initial_generic_waypoints = list(
-		"nav_derelict_1",
-		"nav_derelict_2",
-		"nav_derelict_3",
-		"nav_derelict_4",
-		"nav_derelict_5",
-		"nav_derelict_6",
-		"nav_derelict_7"
-	)
-
 /datum/map_template/ruin/away_site/derelict
 	name = "Derelict Station"
 	id = "awaysite_derelict"

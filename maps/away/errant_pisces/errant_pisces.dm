@@ -1,14 +1,5 @@
 #include "errant_pisces_areas.dm"
 
-/obj/effect/overmap/ship/errant_pisces
-	name = "XCV Ahab's Harpoon"
-	desc = "Sensors detect civilian vessel with unusual signs of life aboard."
-	color = "#bd6100"
-	vessel_mass = 150
-	default_delay = 20 SECONDS
-	speed_mod = 10 SECONDS
-	burn_delay = 15 SECONDS
-
 /datum/map_template/ruin/away_site/errant_pisces
 	name = "Errant Pisces"
 	id = "awaysite_errant_pisces"
