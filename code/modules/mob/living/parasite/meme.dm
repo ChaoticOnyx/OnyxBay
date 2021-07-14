@@ -345,7 +345,7 @@ be able to influence the host through various commands.
 
 	spawn
 		var/mob/living/carbon/human/host = src.host
-		host.druggy = max(host.druggy, 50)
+		host.make_drugged(50)
 		host.slurring = max(host.slurring, 10)
 
 		to_chat(usr, "<b>You stimulate [host.name]'s brain, injecting waves of endorphines and dopamine into the tissue. They should now forget all their worries, particularly relating to you, for around a minute.</b>")

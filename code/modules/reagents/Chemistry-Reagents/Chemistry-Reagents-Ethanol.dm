@@ -60,7 +60,7 @@
 		M.Sleeping(30)
 
 	if(druggy != 0)
-		M.druggy = max(M.druggy, druggy)
+		M.make_drugged(druggy)
 
 	if(adj_temp > 0 && M.bodytemperature < targ_temp) // 310 is the normal bodytemp. 310.055
 		M.bodytemperature = min(targ_temp, M.bodytemperature + (adj_temp * TEMPERATURE_DAMAGE_COEFFICIENT))
@@ -1333,7 +1333,7 @@
 
 	var/threshold = 10
 
-	M.druggy = max(M.druggy, 30)
+	M.make_drugged(30)
 
 	if(M.chem_doses[type] < 1 * threshold)
 		M.apply_effect(3, STUTTER)
@@ -1352,7 +1352,7 @@
 		M.add_up_to_chemical_effect(CE_SPEEDBOOST, 1.25)
 		M.add_chemical_effect(CE_PULSE, 3)
 
-		M.druggy = max(M.druggy, 35)
+		M.make_drugged(35)
 		if(prob(10))
 			M.emote(pick("twitch", "blink_r", "shiver"))
 	else
@@ -1365,7 +1365,7 @@
 		M.add_up_to_chemical_effect(CE_SPEEDBOOST, 2)
 		M.add_chemical_effect(CE_PULSE, 4)
 
-		M.druggy = max(M.druggy, 40)
+		M.make_drugged(40)
 		if(prob(15))
 			M.emote(pick("twitch", "blink_r", "shiver"))
 

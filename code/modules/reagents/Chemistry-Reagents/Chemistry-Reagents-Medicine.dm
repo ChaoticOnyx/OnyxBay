@@ -259,7 +259,7 @@
 
 /datum/reagent/paracetamol/overdose(mob/living/carbon/M, alien)
 	M.add_chemical_effect(CE_TOXIN, 1)
-	M.druggy = max(M.druggy, 2)
+	M.make_drugged(2)
 	M.add_chemical_effect(CE_PAINKILLER, 10)
 
 /datum/reagent/tramadol
@@ -294,7 +294,7 @@
 /datum/reagent/tramadol/overdose(mob/living/carbon/M, alien)
 	..()
 	M.hallucination(120, 30)
-	M.druggy = max(M.druggy, 10)
+	M.make_drugged(10)
 	M.add_chemical_effect(CE_PAINKILLER, pain_power*0.5) //extra painkilling for extra trouble
 	M.add_chemical_effect(CE_BREATHLOSS, 0.6) //Have trouble breathing, need more air
 	if(isboozed(M))
@@ -365,7 +365,7 @@
 	var/whole_volume = (volume + M.chem_doses[type]) // side effects are more robust (dose-wise) than in the case of *legal* painkillers usage
 	if(whole_volume > soft_overdose)
 		M.add_chemical_effect(CE_SLOWDOWN, 1)
-		M.druggy = max(M.druggy, 10)
+		M.make_drugged(10)
 		if(prob(1))
 			M.slurring = max(M.slurring, 10)
 	if(whole_volume > (overdose+soft_overdose)/2)
@@ -378,6 +378,7 @@
 		if(prob(1))
 			M.Weaken(2)
 			M.drowsyness = max(M.drowsyness, 5)
+	M.make_jittery(whole_volume * 0.5)
 
 /datum/reagent/tramadol/opium/heroin
 	name = "Heroin"
@@ -400,7 +401,7 @@
 		M.hallucination(30, 30)
 		M.eye_blurry = max(M.eye_blurry, 10)
 		M.drowsyness = max(M.drowsyness, 5)
-		M.druggy = max(M.druggy, 10)
+		M.make_drugged(10)
 		M.add_chemical_effect(CE_SLOWDOWN, 2)
 		if(prob(5))
 			M.slurring = max(M.slurring, 20)
@@ -411,6 +412,7 @@
 		if(prob(25))
 			M.sleeping = max(M.sleeping, 3)
 		M.add_chemical_effect(CE_BREATHLOSS, 0.2)
+	M.make_jittery(whole_volume * 0.5)
 
 /datum/reagent/tramadol/opium/kodein
 	name = "Heroin"
@@ -438,8 +440,8 @@
 	name = "Morphine"
 	description = "An opioid painkiller drug."
 	color = "#aaaabb"
-	overdose = 20
-	soft_overdose = 10
+	overdose = 25
+	soft_overdose = 15
 	scannable = 1
 	reagent_state = SOLID
 	data = 0
@@ -928,7 +930,7 @@
 /datum/reagent/antidexafen/overdose(mob/living/carbon/M, alien)
 	M.add_chemical_effect(CE_TOXIN, 1)
 	M.hallucination(60, 20)
-	M.druggy = max(M.druggy, 2)
+	M.make_drugged(2)
 
 /datum/reagent/adrenaline
 	name = "Adrenaline"
@@ -1002,7 +1004,7 @@
 		M.add_chemical_effect(CE_PAINKILLER, 85)
 		M.drowsyness = max(M.drowsyness, 10)
 		if(prob(30))
-			M.druggy = max(M.druggy, 6)
+			M.make_drugged(6)
 		if(prob(5))
 			M.emote(pick("cough", "giggle", "laugh"))
 		if(world.time > data + ANTIDEPRESSANT_MESSAGE_DELAY)
@@ -1020,9 +1022,9 @@
 		M.nutrition -= 20 * removed
 		M.add_chemical_effect(CE_PAINKILLER, 50)
 		if(prob(15))
-			M.druggy = max(M.druggy, 2)
+			M.make_drugged(2)
 		if(prob(5))
-			M.druggy = max(M.druggy, 4)
+			M.make_drugged(4)
 			M.emote(pick("cough", "giggle"))
 		if(world.time > data + ANTIDEPRESSANT_MESSAGE_DELAY)
 			data = world.time
@@ -1039,9 +1041,9 @@
 		M.nutrition -= 10 * removed
 		M.add_chemical_effect(CE_PAINKILLER, 25)
 		if(prob(10))
-			M.druggy = max(M.druggy, 2)
+			M.make_drugged(2)
 		if(prob(4))
-			M.druggy = max(M.druggy, 3)
+			M.make_drugged(3)
 			M.emote(pick("cough"))
 		if(world.time > data + ANTIDEPRESSANT_MESSAGE_DELAY)
 			data = world.time
@@ -1058,7 +1060,7 @@
 		M.nutrition -= 3 * removed
 		M.add_chemical_effect(CE_PAINKILLER, 5)
 		if(prob(3))
-			M.druggy = max(M.druggy, 2)
+			M.make_drugged(2)
 			M.emote(pick("cough"))
 		if(world.time > data + ANTIDEPRESSANT_MESSAGE_DELAY)
 			data = world.time

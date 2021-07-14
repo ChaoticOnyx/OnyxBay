@@ -117,6 +117,13 @@
 		silent = max(silent-1, 0)
 	return silent
 
+
+/mob/living/proc/make_drugged(vol, weigth = 0.5, force = FALSE)
+	if(force)
+		druggy = vol
+	else if(druggy < vol)
+		druggy = Interpolate(druggy, vol, weigth)
+
 /mob/living/proc/handle_drugged()
 	if(druggy)
 		druggy = max(druggy-1, 0)
@@ -197,8 +204,8 @@
 		clear_fullscreen("blind")
 		set_fullscreen(disabilities & NEARSIGHTED, "impaired", /obj/screen/fullscreen/impaired, 1)
 		set_fullscreen(eye_blurry, "blurry", /obj/screen/fullscreen/blurry)
-		set_fullscreen(druggy >  5, "high", /obj/screen/fullscreen/high)
-		set_fullscreen(druggy <= 5, "high_s", /obj/screen/fullscreen/high_s)
+		set_fullscreen(druggy >  DRUGGY_MILD_LEVEL, "high", /obj/screen/fullscreen/high)
+		set_fullscreen(druggy <= DRUGGY_MILD_LEVEL && druggy, "high_s", /obj/screen/fullscreen/high_s)
 
 	set_fullscreen(stat == UNCONSCIOUS, "blackout", /obj/screen/fullscreen/blackout)
 

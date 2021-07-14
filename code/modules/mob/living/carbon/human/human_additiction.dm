@@ -64,7 +64,10 @@
 			power -= 0.1
 
 	if(/datum/reagent/naloxone in H.chem_doses)
-		power += 0.2
+		if(power_diff > 0)
+			power_diff *= 0.8
+		else
+			power_diff *= 1.2
 
 	if(power_diff > 0.1 && prob(7) && max_power > 30)
 		if(power < -10)
@@ -147,7 +150,10 @@
 
 	power -= 0.025
 	if(/datum/reagent/naloxone in H.chem_doses)
-		power += 0.2
+		if(power_diff > 0)
+			power_diff *= 0.8
+		else
+			power_diff *= 1.2
 
 	if(power_diff >= 1 && prob(3) && max_power > 30)
 		if(power < -10)
@@ -196,7 +202,7 @@
 	var/P = abs(power)
 	if(/datum/reagent/naloxone in H.chem_doses)
 		P *= CLAMP01(1 - H.chem_doses[/datum/reagent/naloxone])
-	if(prob(4))
+	if(prob(3))
 		switch(P)
 			if(0 to 12)
 				to_chat(H, SPAN_NOTICE("You wanna smoke."))
