@@ -611,7 +611,7 @@
 	icon_state = "lizsuit"
 	
 /obj/item/clothing/suit/snakeskin
-	name = "snakeskin coat"
+	name = "snakeskin coat" //sprite by CeUvi#1236
 	desc = "A stylish coat, made out of snake skin"
 	icon_state = "snakeskin"
 	item_state = "snakeskin"
