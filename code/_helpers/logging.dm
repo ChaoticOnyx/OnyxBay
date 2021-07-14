@@ -8,7 +8,7 @@
 // will get logs that are one big line if the system is Linux and they are using notepad.  This solves it by adding CR to every line ending
 // in the logs.  ascii character 13 = CR
 
-/var/global/log_end= world.system_type == UNIX ? ascii2text(13) : ""
+/var/global/log_end = world.system_type == UNIX ? ascii2text(13) : ""
 
 /proc/log_story(type, message, location)
 	var/static/datum/text_processor/confidential/P = new()
@@ -157,6 +157,9 @@
 		log_error("\[EARLY RUNTIME] [text]")
 		return
 	WRITE_FILE(GLOB.world_runtime_log, text)
+
+/proc/log_integrated_circuits(text)
+	WRITE_FILE(GLOB.world_integrated_circuits_log, text)
 
 /* ui logging */
 
