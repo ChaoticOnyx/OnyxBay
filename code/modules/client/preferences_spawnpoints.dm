@@ -27,16 +27,6 @@ GLOBAL_VAR(spawntypes)
 
 	return 1
 
-#ifdef UNIT_TEST
-/datum/spawnpoint/Del()
-	crash_with("Spawn deleted: [log_info_line(src)]")
-	..()
-
-/datum/spawnpoint/Destroy()
-	crash_with("Spawn destroyed: [log_info_line(src)]")
-	. = ..()
-#endif
-
 /datum/spawnpoint/arrivals
 	display_name = "Arrivals Shuttle"
 	msg = "has arrived on the station"

@@ -1,17 +1,6 @@
 #include "hydro_areas.dm"
 
 // Map setup //
-/obj/effect/overmap/sector/hydro
-	name = "unregistered hydroponics station"
-	desc = "A hydroponics station of unknown origin."
-	icon_state = "object"
-	known = 0
-
-	generic_waypoints = list(
-		"nav_hydro_1",
-		"nav_hydro_2",
-		"nav_hydro_3")
-
 /obj/effect/shuttle_landmark/nav_hydro/nav1
 	name = "Navpoint Fore"
 	landmark_tag = "nav_hydro_1"
@@ -23,21 +12,6 @@
 /obj/effect/shuttle_landmark/nav_hydro/nav3
 	name = "Navpoint Aft"
 	landmark_tag = "nav_hydro_3"
-
-/obj/effect/overmap/sector/hydro/New()
-	name = "[pick("IRS","IS")] [pick("Persephone", "Demeter", "Lakshmi")]"
-	for(var/area/hydro/A)
-		A.name = "\improper [name] - [A.name]"
-		GLOB.using_map.area_purity_test_exempt_areas += A.type
-	..()
-
-/datum/map_template/ruin/away_site/hydro
-	name = "Hydroponics Station"
-	id = "awaysite_hydro"
-	description = "Hydroponics station with farmbots and goats."
-	suffixes = list("hydro/hydro.dmm")
-	cost = 0.75
-	accessibility_weight = 10
 
 // Objs //
 /obj/structure/closet/secure_closet/hydroponics/hydro
