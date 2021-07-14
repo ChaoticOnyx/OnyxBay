@@ -20,23 +20,24 @@
 	. += SPAN("notice", " It is currently set to [mode] docile mode.")
 
 /obj/item/device/dociler/attack_self(mob/user)
-	if(state == 3)
-		mode = "completely"
-		state = 1
-	else if(state == 1)
-		mode = "somewhat"
-		state = 2
-	else if(state == 2)
-		mode = "naming"
-		state = 3
+	switch(state)
+		if(3)
+			mode = "completely"
+			state = 1
+		if(1)
+			mode = "somewhat"
+			state = 2
+		if(2)
+			mode = "naming"
+			state = 3
 	to_chat(user, "You set \the [src] to [mode] docile mode.")
 
-/obj/item/device/dociler/proc/rename(var/mob/living/simple_animal/L)
+/obj/item/device/dociler/proc/rename(var/mob/living/simple_animal/L, var/mob/U)
 	var/new_name = sanitize(input("How do you want to name this creature?", "Rename \the [L.name]", L.name) as null|text)
-	if(length(new_name))
+	if(new_name)
+		log_game("[key_name(U)] named [L.name] as [new_name]")
+		L.real_name = L.name = new_name
 		L.renamable = FALSE
-		L.real_name = new_name
-		L.SetName(new_name)
 
 /obj/item/device/dociler/proc/inject(var/mob/living/simple_animal/hostile/H, var/mob/U)
 	//Dociler cooldown
@@ -59,6 +60,9 @@
 	if(!istype(L, /mob/living/simple_animal))
 		to_chat(user, SPAN("warning", "\The [src] cannot not work on \the [L]."))
 		return
+	if(L.stat == DEAD)
+		to_chat(user, SPAN("warning", "The [L] is completely dead!"))
+		return
 	if(!loaded)
 		to_chat(user, SPAN("warning", "The [src] isn't loaded!"))
 		return
@@ -69,14 +73,14 @@
 					to_chat(L, SPAN("notice", "You feel pain as \the [user] injects something into you. All of a sudden you feel as if all the galaxy are your friends."))
 					L.faction = null
 					inject(L, user)
-					rename(L)
+					rename(L, user)
 			if(2)
 				if(istype(L,/mob/living/simple_animal/hostile))
 					to_chat(L, SPAN("notice", "You feel pain as \the [user] injects something into you. All of a sudden you feel as if [user] is the friendliest and nicest person you've ever know. You want to be friends with him and all his friends."))
 					L.faction = user.faction
 					inject(L, user)
-					rename(L)
+					rename(L, user)
 			if(3)
 				var/mob/living/simple_animal/A = L
 				if(A?.renamable)
-					rename(L)
+					rename(L, user)
