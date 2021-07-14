@@ -16,6 +16,8 @@
 	create_objectives(target)
 	update_icons_added(target)
 	greet(target)
+	if(isrobot(target.current))
+		add_overrides(target.current)
 	if(!gag_announcement)
 		announce_antagonist_spawn()
 
@@ -122,3 +124,7 @@
 	if(player.mind) player.mind.name = player.name
 	// Update any ID cards.
 	update_access(player)
+
+/datum/antagonist/proc/add_overrides(mob/living/silicon/robot/R)
+	R.add_robot_verbs()
+	to_chat(R, SPAN_WARNING("ATTENTION! Your safety protocols are still active, override is avaliable."))

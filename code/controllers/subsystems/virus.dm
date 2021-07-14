@@ -1,6 +1,6 @@
 SUBSYSTEM_DEF(virus2suka)
 	name = "Virus Shit System"
-	priority = SS_PRIORITY_CIRCUIT_COMP
+	priority = SS_PRIORITY_VIRUSES
 	flags = SS_NO_INIT
 	wait = 1
 
@@ -33,7 +33,7 @@ SUBSYSTEM_DEF(virus2suka)
 				break
 			continue
 
-		circuit.process(arglist(entry))
+		circuit.process()
 		if(MC_TICK_CHECK)
 			break
 	position = null

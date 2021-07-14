@@ -92,6 +92,10 @@
 	if(mask && !mask.knocked_out(H, dist = 0))
 		H.visible_message(SPAN("warning", "\The [src] tries to rip [H]'s [mask] off, but fails."))
 		return FALSE
+	var/obj/item/l_ear = H.get_equipped_item(slot_l_ear)
+	l_ear?.knocked_out(H, dist = 0)
+	var/obj/item/r_ear = H.get_equipped_item(slot_r_ear)
+	r_ear?.knocked_out(H, dist = 0)
 
 	var/obj/item/weapon/holder/facehugger/holder = new()
 	forceMove(holder)

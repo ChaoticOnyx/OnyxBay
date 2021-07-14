@@ -12,6 +12,7 @@ import {
   ProgressBar,
   Box,
 } from '../components';
+import { GameIcon } from '../components/GameIcon';
 import { Window } from '../layouts';
 
 interface InputData {
@@ -34,6 +35,7 @@ interface Buildable {
   category: string;
   resourses: string;
   time: string;
+  icon: string;
 }
 
 interface Manufacturer {
@@ -44,6 +46,7 @@ interface Manufacturer {
 interface Material {
   mat: string;
   amt: number;
+  icon: string;
 }
 
 interface Queue {
@@ -88,19 +91,19 @@ const fabricatorStorage = (props: any, context: any) => {
   const { act, data } = useBackend<InputData>(context);
 
   return (
-    <Section minHeight='100%' title='Storage'>
+    <Section className='Storage' minHeight='100%' title='Storage'>
       <Stack vertical>
         {data.materials.map((material, k) => {
           return (
             <Stack.Item key={k}>
+              <GameIcon html={material.icon} />
               {material.mat}:{' '}
               <AnimatedNumber
                 format={(val: number) => Math.round(val).toLocaleString()}
                 value={material.amt}
               />
               /{data.maxres.toLocaleString()}
-              <Divider hidden />
-              <Box class='Multipliers'>
+              <Box mt='0.5rem' class='Multipliers'>
                 {ejectMultipliers.map((multiplier, i) => {
                   return (
                     <Button.Segmented
@@ -155,9 +158,9 @@ const fabricatorProduction = (props: any, context: any) => {
       return value.category === data.category;
     })
     .filter((value) => {
-      return searchQuery === null ?
-        true :
-        value.name.toLowerCase().search(searchQuery.toLowerCase()) >= 0;
+      return searchQuery === null
+        ? true
+        : value.name.toLowerCase().search(searchQuery.toLowerCase()) >= 0;
     });
 
   return (
@@ -213,11 +216,12 @@ const fabricatorProduction = (props: any, context: any) => {
         })}
       </Flex>
       <Divider />
-      <Table>
+      <Table className='Buildable'>
         {buildableToShow.map((buildable, i) => {
           return (
             <Table.Row className='candystripe' key={i}>
-              <Table.Cell width='25ch'>
+              <Table.Cell width='40ch'>
+                <GameIcon html={buildable.icon} />
                 <Button.Link
                   onClick={() => act('build', { build: buildable.id })}>
                   {buildable.name}
@@ -274,7 +278,7 @@ export const MechaFabricator = (props: any, context: any) => {
     <Window
       theme={getTheme('primer')}
       width={1000}
-      height={600}
+      height={760}
       title='Exosuit Fabricator UI'>
       <Window.Content>
         <Stack fill justify='stretch'>

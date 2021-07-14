@@ -24,6 +24,9 @@
 
 #define SEE_IN_DARK_DEFAULT 2
 
+//for obj explosion block calculation
+#define EXPLOSION_BLOCK_PROC -1
+
 #define SEE_INVISIBLE_MINIMUM 5
 #define INVISIBILITY_MAXIMUM 100
 

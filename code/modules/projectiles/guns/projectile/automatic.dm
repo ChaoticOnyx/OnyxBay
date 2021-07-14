@@ -128,9 +128,9 @@
 		icon_state = "c20r"
 	..()
 
-/obj/item/weapon/gun/projectile/automatic/sts35
+/obj/item/weapon/gun/projectile/automatic/as75
 	name = "assault rifle"
-	desc = "The rugged STS-35 is a durable automatic weapon of a make popular on the frontier worlds. The serial number has been scratched off. Uses 5.56mm rounds."
+	desc = "The rugged AS-75 is a durable automatic weapon of a make popular on the frontier worlds. The serial number has been scratched off. Uses 5.56mm rounds."
 	icon_state = "arifle"
 	item_state = "arifle"
 	w_class = ITEM_SIZE_HUGE
@@ -155,7 +155,7 @@
 		list(mode_name = "5-round bursts", burst = 5, fire_delay = null, move_delay = 6,    one_hand_penalty = 6, burst_accuracy = list(0, -1, -2, -3, -3), dispersion = list(0.6, 1.0, 1.2, 1.2, 1.5))
 		)
 
-/obj/item/weapon/gun/projectile/automatic/sts35/update_icon()
+/obj/item/weapon/gun/projectile/automatic/as75/update_icon()
 	if(ammo_magazine)
 		if(ammo_magazine?.stored_ammo.len)
 			icon_state = "arifle-loaded"

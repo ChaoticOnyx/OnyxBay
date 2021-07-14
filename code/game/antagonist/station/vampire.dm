@@ -8,13 +8,17 @@ GLOBAL_DATUM_INIT(vampires, /datum/antagonist/vampire, new)
 	restricted_jobs = list(/datum/job/captain, /datum/job/hos, /datum/job/hop,
 							/datum/job/rd, /datum/job/chief_engineer, /datum/job/cmo,
 							/datum/job/merchant, /datum/job/lawyer)
-	minimum_player_age = 7
 	additional_restricted_jobs = list(/datum/job/officer, /datum/job/warden, /datum/job/detective)
 
 	blacklisted_jobs = list(/datum/job/ai, /datum/job/cyborg, /datum/job/chaplain)
 	welcome_text = "You are a Vampire! Use the \"<b>Vampire Help</b>\" command to learn about the backstory and mechanics! Stay away from the Chaplain, and use the darkness to your advantage."
 	flags = ANTAG_SUSPICIOUS | ANTAG_RANDSPAWN | ANTAG_VOTABLE
 	antaghud_indicator = "hudvampire"
+
+/datum/antagonist/vampire/Initialize()
+	. = ..()
+	if(config.vampire_min_age)
+		min_player_age = config.vampire_min_age
 
 /datum/antagonist/vampire/create_objectives(datum/mind/player)
 	if(!..())

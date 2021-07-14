@@ -63,32 +63,31 @@
 	throw_speed = 3
 	throw_range = 5
 	matter = list(MATERIAL_STEEL = 75)
-	center_of_mass = "x=16;y=7"
 	attack_verb = list("stabbed")
 	lock_picking_level = 5
 	hitsound = 'sound/weapons/bladeslice.ogg'
 
 /obj/item/weapon/screwdriver/Initialize()
-	switch(pick("red","blue","purple","brown","green","cyan","yellow"))
-		if ("red")
+	switch(pick("red", "blue", "purple", "brown", "green", "cyan", "yellow"))
+		if("red")
 			icon_state = "screwdriver2"
 			item_state = "screwdriver"
-		if ("blue")
+		if("blue")
 			icon_state = "screwdriver"
 			item_state = "screwdriver_blue"
-		if ("purple")
+		if("purple")
 			icon_state = "screwdriver3"
 			item_state = "screwdriver_purple"
-		if ("brown")
+		if("brown")
 			icon_state = "screwdriver4"
 			item_state = "screwdriver_brown"
-		if ("green")
+		if("green")
 			icon_state = "screwdriver5"
 			item_state = "screwdriver_green"
-		if ("cyan")
+		if("cyan")
 			icon_state = "screwdriver6"
 			item_state = "screwdriver_cyan"
-		if ("yellow")
+		if("yellow")
 			icon_state = "screwdriver7"
 			item_state = "screwdriver_yellow"
 
@@ -130,7 +129,7 @@
 	mod_handy = 0.75
 	origin_tech = list(TECH_MATERIAL = 1, TECH_ENGINEERING = 1)
 	matter = list(MATERIAL_STEEL = 80)
-	center_of_mass = "x=18;y=10"
+	center_of_mass = "x=18;y=16"
 	attack_verb = list("pinched", "nipped")
 	sharp = 1
 	edge = 1
@@ -499,6 +498,7 @@
 	icon = 'icons/obj/tools.dmi'
 	icon_state = "fuel_m"
 	w_class = ITEM_SIZE_SMALL
+	center_of_mass = "x=13;y=9"
 	var/max_fuel = 20
 	var/can_remove = 1
 
@@ -631,7 +631,6 @@
 	mod_handy = 1.0
 	origin_tech = list(TECH_ENGINEERING = 1)
 	matter = list(MATERIAL_STEEL = 140)
-	center_of_mass = "x=16;y=20"
 	attack_verb = list("attacked", "bashed", "battered", "bludgeoned", "whacked")
 
 /obj/item/weapon/crowbar/red

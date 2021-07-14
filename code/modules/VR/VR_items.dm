@@ -26,8 +26,8 @@ GLOBAL_LIST_EMPTY(thunderfield_items)
 	cost = 1
 
 /datum/thunderfield_item/sts_gun
-	name = "STS-35 automatic gun"
-	item = /obj/item/weapon/gun/projectile/automatic/sts35
+	name = "AS-75 automatic gun"
+	item = /obj/item/weapon/gun/projectile/automatic/as75
 	cost = 3
 
 /datum/thunderfield_item/sts_gun_magazine

@@ -1,7 +1,7 @@
 /obj/item/device/taperecorder
 	name = "universal recorder"
 	desc = "A device that can record to cassette tapes, and play them. It automatically translates the content in playback."
-	icon_state = "taperecorder"
+	icon_state = "taperecorder_idle"
 	item_state = "analyzer"
 	w_class = ITEM_SIZE_SMALL
 
@@ -21,7 +21,7 @@
 
 /obj/item/device/taperecorder/New()
 	..()
-	set_extension(src, /datum/extension/base_icon_state, /datum/extension/base_icon_state, icon_state)
+	set_extension(src, /datum/extension/base_icon_state, /datum/extension/base_icon_state, "taperecorder")
 	if(ispath(mytape))
 		mytape = new mytape(src)
 	GLOB.listening_objects += src

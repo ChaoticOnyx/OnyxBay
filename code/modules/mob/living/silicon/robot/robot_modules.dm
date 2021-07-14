@@ -954,6 +954,7 @@ var/global/list/robot_modules = list(
 	src.modules += new /obj/item/weapon/extinguisher/mini(src)
 	src.modules += new /obj/item/device/pipe_painter(src)
 	src.modules += new /obj/item/device/floor_painter(src)
+	src.modules += new /obj/item/weapon/inflatable_dispenser/robot(src)
 	src.modules += new /obj/item/robot_rack/general(src)
 	src.modules += new /obj/item/weapon/robot_item_dispenser/engineer(src)
 	src.modules += new /obj/item/weapon/robot_item_dispenser/pipe(src)

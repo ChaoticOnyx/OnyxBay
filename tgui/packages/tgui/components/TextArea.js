@@ -67,10 +67,10 @@ export class TextArea extends Component {
         if (keyCode === 9) {
           e.preventDefault();
           const { value, selectionStart, selectionEnd } = e.target;
-          e.target.value =
-            value.substring(0, selectionStart) +
-            '\t' +
-            value.substring(selectionEnd);
+          e.target.value
+            = value.substring(0, selectionStart)
+            + '\t'
+            + value.substring(selectionEnd);
           e.target.selectionEnd = selectionStart + 1;
         }
       }

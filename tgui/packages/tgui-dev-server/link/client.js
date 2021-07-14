@@ -136,9 +136,9 @@ export const sendLogEntry = (level, ns, ...args) => {
 };
 
 export const setupHotReloading = () => {
-  if (process.env.NODE_ENV !== 'production' &&
-      process.env.WEBPACK_HMR_ENABLED &&
-      window.WebSocket) {
+  if (process.env.NODE_ENV !== 'production'
+      && process.env.WEBPACK_HMR_ENABLED
+      && window.WebSocket) {
     if (module.hot) {
       ensureConnection();
       sendLogEntry(0, null, 'setting up hot reloading');

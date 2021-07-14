@@ -261,6 +261,9 @@
 //**Chameleon Gloves**
 //********************
 /obj/item/clothing/gloves/chameleon/attackby(obj/item/weapon/card/id/W, mob/user)
+	if(isWirecutter(W) || istype(W, /obj/item/weapon/scalpel) || isCoil(W))
+		to_chat(user, SPAN("notice", "That won't work.")) // Making it obvious
+		return
 	if(!istype(W, /obj/item/weapon/card/id))
 		return
 	check_job(W, user, slot_gloves_str)

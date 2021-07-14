@@ -5,7 +5,7 @@
 	if(bodytemperature > 406)
 		for(var/ID in virus2)
 			var/datum/disease2/disease/V = virus2[ID]
-			V.cure(src)
+			V.cure()
 
 	if(life_tick % 3) //don't spam checks over all objects in view every tick.
 		for(var/obj/effect/decal/cleanable/O in view(1, src))

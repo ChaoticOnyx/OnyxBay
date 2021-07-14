@@ -9,7 +9,7 @@
 
 /obj/item/weapon/contract/attack_self(mob/user as mob)
 	if(contract_master == null)
-		to_chat(user, "<span class='notice'>You bind the contract to your soul, making you the recipient of whatever poor fool's soul that decides to contract with you.</span>")
+		to_chat(user, SPAN_NOTICE("You bind the contract to your soul, making you the recipient of whatever poor fool's soul that decides to contract with you."))
 		contract_master = user
 		return
 
@@ -34,7 +34,7 @@
 		qdel(src)
 
 /obj/item/weapon/contract/proc/contract_effect(mob/user as mob)
-	to_chat(user, "<span class='warning'>You've signed your soul over to \the [contract_master] and with that your unbreakable vow of servitude begins.</span>")
+	to_chat(user, SPAN_WARNING("You've signed your soul over to \the [contract_master] and with that your unbreakable vow of servitude begins."))
 	return 1
 
 /obj/item/weapon/contract/apprentice
@@ -44,10 +44,10 @@
 
 /obj/item/weapon/contract/apprentice/contract_effect(mob/user as mob)
 	if(user.mind.special_role == "apprentice")
-		to_chat(user, "<span class='warning'>You are already a wizarding apprentice!</span>")
+		to_chat(user, SPAN_WARNING("You are already a wizarding apprentice!"))
 		return 0
 	if(GLOB.wizards.add_antagonist_mind(user.mind,1,"apprentice","<b>You are an apprentice! Your job is to learn the wizarding arts!</b>"))
-		to_chat(user, "<span class='notice'>With the signing of this paper you agree to become \the [contract_master]'s apprentice in the art of wizardry.</span>")
+		to_chat(user, SPAN_NOTICE("With the signing of this paper you agree to become \the [contract_master]'s apprentice in the art of wizardry."))
 		return 1
 	return 0
 
@@ -67,7 +67,7 @@
 		user.set_sight(user.sight|SEE_MOBS|SEE_OBJS|SEE_TURFS)
 		user.set_see_in_dark(8)
 		user.set_see_invisible(SEE_INVISIBLE_LEVEL_TWO)
-		to_chat(user, "<span class='notice'>The walls suddenly disappear.</span>")
+		to_chat(user, SPAN_NOTICE("The walls suddenly disappear."))
 		return 1
 	return 0
 
@@ -82,7 +82,7 @@
 		user.mutations.Add(mRemotetalk)
 		user.dna.SetSEState(GLOB.REMOTETALKBLOCK,1)
 		domutcheck(user, null, MUTCHK_FORCED)
-		to_chat(user, "<span class='notice'>You expand your mind outwards.</span>")
+		to_chat(user, SPAN_NOTICE("You expand your mind outwards."))
 		return 1
 	return 0
 
@@ -95,7 +95,7 @@
 	..()
 	if(!(MUTATION_TK in user.mutations))
 		user.mutations.Add(MUTATION_TK)
-		to_chat(user, "<span class='notice'>You feel your mind expanding!</span>")
+		to_chat(user, SPAN_NOTICE("You feel your mind expanding!"))
 		return 1
 	return 0
 

@@ -41,7 +41,7 @@
 	if(..())
 		return
 	if(mob.reagents.get_reagent_amount(data) > multiplier)
-		parent_disease.cure(mob)
+		parent_disease.cure()
 
 ////////////////////////STAGE 2/////////////////////////////////
 
@@ -104,7 +104,7 @@
 	for(var/obj/item/organ/external/E in mob.organs)
 		var/dmg = E.get_damage()
 		if(dmg > 8*multiplier)
-			parent_disease.cure(mob)
+			parent_disease.cure()
 
 
 
@@ -120,7 +120,7 @@
 	if(..())
 		return
 	if(mob.radiation > 10*multiplier)
-		parent_disease.cure(mob)
+		parent_disease.cure()
 ////////////////////////STAGE 3/////////////////////////////////
 
 /datum/disease2/effect/chem_synthesis

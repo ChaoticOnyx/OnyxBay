@@ -135,6 +135,10 @@ using metal and glass, it uses glass and reagents (usually sulphuric acid).
 	return
 
 /obj/machinery/r_n_d/circuit_imprinter/proc/removeFromQueue(index)
+	if(index  == -1)
+		queue.Cut()
+		return
+
 	queue.Cut(index, index + 1)
 	return
 

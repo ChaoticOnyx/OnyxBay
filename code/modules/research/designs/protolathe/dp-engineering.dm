@@ -1,7 +1,7 @@
 /datum/design/item/powercell
 	build_type = PROTOLATHE | MECHFAB
 	category = "Misc"
-	category_items = "Engineering"
+	category_items = list("Engineering")
 
 /datum/design/item/powercell/AssembleDesignDesc()
 	if(build_path)
@@ -65,7 +65,7 @@
 	materials = list(MATERIAL_STEEL = 2000, MATERIAL_GLASS = 50)
 	build_path = /obj/item/weapon/airlock_brace
 	sort_string = "VAGAD"
-	category_items = "Engineering"
+	category_items = list("Engineering")
 
 /datum/design/item/tool/brace_jack
 	name = "maintenance jack"
@@ -75,7 +75,7 @@
 	materials = list(MATERIAL_STEEL = 120)
 	build_path = /obj/item/weapon/crowbar/brace_jack
 	sort_string = "VAGAE"
-	category_items = "Engineering"
+	category_items = list("Engineering")
 
 /datum/design/item/tool/clamp
 	name = "stasis clamp"
@@ -85,7 +85,7 @@
 	materials = list(MATERIAL_STEEL = 500, MATERIAL_GLASS = 500)
 	build_path = /obj/item/clamp
 	sort_string = "VAGAF"
-	category_items = "Engineering"
+	category_items = list("Engineering")
 
 /datum/design/item/tool/experimental_welder
 	name = "experimental welding tool"
@@ -95,7 +95,7 @@
 	materials = list(MATERIAL_STEEL = 120, MATERIAL_GLASS = 50)
 	build_path = /obj/item/weapon/weldingtool/experimental
 	sort_string = "VAGAH"
-	category_items = "Engineering"
+	category_items = list("Engineering")
 
 /datum/design/item/tool/shield_diffuser
 	name = "portable shield diffuser"
@@ -105,7 +105,7 @@
 	materials = list(MATERIAL_STEEL = 5000, MATERIAL_GLASS = 5000, MATERIAL_GOLD = 2000, MATERIAL_SILVER = 2000)
 	build_path = /obj/item/weapon/shield_diffuser
 	sort_string = "VAGAI"
-	category_items = "Engineering"
+	category_items = list("Engineering")
 
 /datum/design/tool/t_ray_scanner
 	name = "T-Ray Scanner"
@@ -116,7 +116,7 @@
 	materials = list(MATERIAL_STEEL = 500, MATERIAL_GLASS = 100)
 	build_path = /obj/item/device/t_scanner
 	sort_string = "VAGBA"
-	category_items = "Engineering"
+	category_items = list("Engineering")
 
 /datum/design/tool/p_ray_scanner
 	name = "P-Ray Scanner"
@@ -127,11 +127,11 @@
 	materials = list(MATERIAL_STEEL = 5000, MATERIAL_GLASS = 1000)
 	build_path = /obj/item/device/t_scanner/advanced
 	sort_string = "VAGBB"
-	category_items = "Engineering"
+	category_items = list("Engineering")
 
 // Superconductive magnetic coils
 /datum/design/item/smes_coil
-	category_items = "Engineering"
+	category_items = list("Engineering")
 
 /datum/design/item/smes_coil
 	desc = "A superconductive magnetic coil used to store power in magnetic fields."

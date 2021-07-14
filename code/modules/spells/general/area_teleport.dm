@@ -8,7 +8,7 @@
 	invocation = "Scyar Nila!"
 	invocation_type = SpI_SHOUT
 	cooldown_min = 200 //100 deciseconds reduction per rank
-	need_target = 0
+	need_target = FALSE
 
 	smoke_spread = 1
 	smoke_amt = 5
@@ -36,6 +36,9 @@
 	return TRUE
 
 /spell/area_teleport/cast(area/thearea, mob/user)
+	if(istype(user.loc, /obj/machinery/atmospherics/unary/cryo_cell))
+		var/obj/machinery/atmospherics/unary/cryo_cell/cell = user.loc
+		cell.go_out()	
 	playsound(user,cast_sound,50,1)
 	if(!istype(thearea))
 		if(istype(thearea, /list))

@@ -29,9 +29,9 @@ export const computeFlexProps = (props: FlexProps) => {
     className: classes([
       'Flex',
       Byond.IS_LTE_IE10 && (
-        direction === 'column' ?
-          'Flex--iefix--column' :
-          'Flex--iefix'
+        direction === 'column'
+          ? 'Flex--iefix--column'
+          : 'Flex--iefix'
       ),
       inline && 'Flex--inline',
       className,
