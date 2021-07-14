@@ -212,7 +212,7 @@
 	hitsound = 'sound/effects/fighting/energy1.ogg'
 	attack_verb = list("attacked", "slashed", "stabbed", "sliced", "torn", "ripped", "diced", "cut")
 	var/active_max_bright = 0.17
-	var/active_max_bright_outer_range = 1.65
+	var/active_outer_range = 1.65
 	var/brightness_color = "#ff5959"
 
 /obj/item/weapon/pen/energy_dagger/attack_self(mob/living/user)
