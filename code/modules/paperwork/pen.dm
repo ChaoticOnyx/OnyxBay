@@ -211,8 +211,8 @@
 	item_state = "edagger0"
 	hitsound = 'sound/effects/fighting/energy1.ogg'
 	attack_verb = list("attacked", "slashed", "stabbed", "sliced", "torn", "ripped", "diced", "cut")
-	var/flashlight_max_bright = 0.17
-	var/flashlight_outer_range = 1.65
+	var/active_max_bright = 0.17
+	var/active_max_bright_outer_range = 1.65
 	var/brightness_color = "#ff5959"
 
 /obj/item/weapon/pen/energy_dagger/attack_self(mob/living/user)
@@ -245,7 +245,7 @@
 	icon_state = "edagger1"
 	item_state = "edagger1"
 	playsound(user, 'sound/weapons/saberon.ogg', 50, 1)
-	set_light(flashlight_max_bright, null, flashlight_outer_range, null, brightness_color)
+	set_light(active_max_bright, null, active_outer_range, null, brightness_color)
 
 /obj/item/weapon/pen/energy_dagger/proc/deactivate(mob/living/user)
 	battlepen = FALSE

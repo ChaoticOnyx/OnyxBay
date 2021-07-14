@@ -10,8 +10,8 @@
 	edge = 0
 	armor_penetration = 50
 	atom_flags = ATOM_FLAG_NO_BLOOD
-	var/flashlight_max_bright = 0.3
-	var/flashlight_outer_range = 1.6
+	var/active_max_bright = 0.3
+	var/active_outer_range = 1.6
 	var/brightness_color
 
 /obj/item/weapon/melee/energy/proc/activate(mob/living/user)
@@ -188,7 +188,7 @@
 	..()
 	attack_verb = list("attacked", "slashed", "stabbed", "sliced", "torn", "ripped", "diced", "cut")
 	icon_state = "sword[blade_color]"
-	set_light(flashlight_max_bright, null, flashlight_outer_range, null, brightness_color)
+	set_light(active_max_bright, null, active_outer_range, null, brightness_color)
 
 /obj/item/weapon/melee/energy/sword/deactivate(mob/living/user)
 	if(active)
@@ -268,8 +268,8 @@
 	mod_shield_a = 2.75
 	origin_tech = list(TECH_MAGNET = 4, TECH_ILLEGAL = 5)
 	var/base_block_chance = 50
-	flashlight_max_bright = 0.5
-	flashlight_outer_range = 1.8
+	active_max_bright = 0.5
+	active_outer_range = 1.8
 
 /obj/item/weapon/melee/energy/sword/dualsaber/New()
 	var/list/colorparam = list("green" = "#68ff4d", "red" = "#ff5959", "blue" = "#4de4ff", "purple" = "#de4dff")
