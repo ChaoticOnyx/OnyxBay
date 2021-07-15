@@ -8,7 +8,19 @@
 // will get logs that are one big line if the system is Linux and they are using notepad.  This solves it by adding CR to every line ending
 // in the logs.  ascii character 13 = CR
 
-/var/global/log_end= world.system_type == UNIX ? ascii2text(13) : ""
+/var/global/log_end = world.system_type == UNIX ? ascii2text(13) : ""
+
+/proc/log_story(type, message, location)
+	var/static/datum/text_processor/confidential/P = new()
+
+	if(!config.log_story || !GLOB.world_story_log)
+		return
+
+	message = P.process(message)
+	var/turf/T = get_turf(location)
+	var/loc = T && location ? "([T.x],[T.y],[T.z])" : ""
+
+	WRITE_FILE(GLOB.world_story_log, "\[[time_stamp()]] [game_id] [type]: [message] [loc][log_end]")
 
 /proc/log_to_dd(text)
 	to_world_log(text)
@@ -77,22 +89,27 @@
 	log_generic("VOTE", text, null, config.log_vote)
 
 /proc/log_access(text, notify_admin)
-	log_generic("ACCESS", text, null, config.log_vote, notify_admin, MESSAGE_TYPE_ADMINLOG)
+	log_generic("ACCESS", text, null, config.log_access, notify_admin, MESSAGE_TYPE_ADMINLOG)
 
 /proc/log_say(text)
 	log_generic("SAY", text, null, config.log_say)
+	log_story("SAY", text, null)
 
 /proc/log_ooc(text)
 	log_generic("OOC", text, null, config.log_ooc)
+	log_story("OOC", text, null)
 
 /proc/log_whisper(text)
 	log_generic("WHISPER", text, null, config.log_whisper)
+	log_story("WHISPER", text, null)
 
 /proc/log_emote(text)
 	log_generic("EMOTE", text, null, config.log_emote)
+	log_story("EMOTE", text, null)
 
 /proc/log_attack(text, location, notify_admin)
 	log_generic("ATTACK", text, location, config.log_attack, notify_admin, MESSAGE_TYPE_ATTACKLOG)
+	log_story("ATTACK", text, location)
 
 /proc/log_adminsay(text)
 	log_generic("ADMINSAY", text, null, config.log_adminchat, FALSE, MESSAGE_TYPE_ADMINLOG)
@@ -102,6 +119,7 @@
 
 /proc/log_pda(text)
 	log_generic("PDA", text, null, config.log_pda)
+	log_story("PDA", text, null)
 
 /proc/log_misc(text) //Replace with log_game ?
 	log_generic("MISC", text)
@@ -135,6 +153,9 @@
 		log_error("\[EARLY RUNTIME] [text]")
 		return
 	WRITE_FILE(GLOB.world_runtime_log, text)
+
+/proc/log_integrated_circuits(text)
+	WRITE_FILE(GLOB.world_integrated_circuits_log, text)
 
 /* ui logging */
 
@@ -215,7 +236,7 @@
 		if(include_link && C)
 			. += "<a href='?priv_msg=\ref[C];ticket=\ref[ticket]'>"
 
-		. += key
+		. += MARK_CKEY(key)
 
 		if(include_link)
 			if(C)	. += "</a>"
@@ -231,6 +252,10 @@
 		else if(M.name)
 			name = M.name
 
+		if(name == key)
+			name = MARK_CKEY(name)
+		else
+			name = MARK_CHARACTER_NAME(name)
 
 		if(include_link && is_special_character(M) && highlight_special_characters)
 			. += "/(<font color='#ffa500'>[name]</font>)" //Orange
