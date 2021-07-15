@@ -96,7 +96,7 @@
 		if(!QDELETED(src))
 			qdel(src)
 
-/obj/item/grab/proc/check_grab()
+/obj/item/grab/proc/is_grab_should_be_broken()
 	// can't grab non-carbon/human/'s
 	if(!istype(affecting))
 		return FALSE
@@ -113,7 +113,7 @@
 	return TRUE
 
 /obj/item/grab/proc/can_grab()
-	if(!check_grab())
+	if(!is_grab_should_be_broken())
 		return FALSE
 
 	for(var/obj/item/grab/G in affecting.grabbed_by)
