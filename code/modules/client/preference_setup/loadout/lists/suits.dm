@@ -147,7 +147,7 @@
 /datum/gear/suit/snakeskin
 	display_name = "snakeskin coat"
 	path = /obj/item/clothing/suit/snakeskin
-	cost = 1
+	cost = 2
 
 /datum/gear/suit/trenchcoat/New()
 	..()
