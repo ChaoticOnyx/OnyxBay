@@ -245,7 +245,7 @@
 	icon_state = "edagger1"
 	item_state = "edagger1"
 	playsound(user, 'sound/weapons/saberon.ogg', 50, 1)
-	set_light(active_max_bright, null, active_outer_range, null, brightness_color)
+	set_light(l_max_bright = active_max_bright, l_outer_range = active_outer_range, l_color = brightness_color)
 
 /obj/item/weapon/pen/energy_dagger/proc/deactivate(mob/living/user)
 	battlepen = FALSE

@@ -188,7 +188,7 @@
 	..()
 	attack_verb = list("attacked", "slashed", "stabbed", "sliced", "torn", "ripped", "diced", "cut")
 	icon_state = "sword[blade_color]"
-	set_light(active_max_bright, null, active_outer_range, null, brightness_color)
+	set_light(l_max_bright = active_max_bright, l_outer_range = active_outer_range, l_color = brightness_color)
 
 /obj/item/weapon/melee/energy/sword/deactivate(mob/living/user)
 	if(active)

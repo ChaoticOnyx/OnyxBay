@@ -297,7 +297,7 @@
 			src.icon_state = "swordblue"
 			src.item_state = "swordblue"
 			src.w_class = ITEM_SIZE_HUGE
-			set_light(active_max_bright, null, active_outer_range, null, brightness_color)
+			set_light(l_max_bright = active_max_bright, l_outer_range = active_outer_range, l_color = brightness_color)
 		else
 			to_chat(user, "<span class='notice'>You push the plastic blade back down into the handle.</span>")
 			playsound(user, 'sound/weapons/saberoff.ogg', 50, 1)
