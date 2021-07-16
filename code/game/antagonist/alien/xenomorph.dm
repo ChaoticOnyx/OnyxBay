@@ -81,10 +81,9 @@ GLOBAL_DATUM_INIT(xenomorphs, /datum/antagonist/xenos, new)
 
 /datum/antagonist/xenos/update_antag_mob(datum/mind/player, preserve_appearance)
 	if(!player.current || (!ishuman(player.current) && !istype(player.current, mob_path))) // Humans keep their humanity, others become larvae
-		var/mob/holder = player.current
-		player.current = new mob_path(get_turf(player.current))
-		player.transfer_to(player.current)
-		if(holder)
-			qdel(holder)
+		var/mob/previous_mob = player.current
+		player.transfer_to(new mob_path(get_turf(previous_mob)))
+		if(previous_mob)
+			qdel(previous_mob)
 	player.original = player.current
 	return player.current
