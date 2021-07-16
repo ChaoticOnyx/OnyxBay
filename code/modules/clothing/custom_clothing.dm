@@ -133,7 +133,7 @@
 	desc = "A suit that protects against minor chemical spills. This one looks especially special. Perhaps, its owner survived a fireaxey medbay massacre? Or just put it into a washing machine with some red cloth."
 	icon_state = "amicoat"
 
-/obj/item/clothing/suit/storage/toggle/labcoat/amired/verb/toggle()
+/obj/item/clothing/suit/storage/toggle/labcoat/amired/toggle()
 	set name = "Toggle Coat Buttons"
 	set category = "Object"
 	set src in usr
