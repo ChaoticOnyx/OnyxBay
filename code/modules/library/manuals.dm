@@ -165,10 +165,6 @@
 	topic = "Guide to Medicine"
 	style = WIKI_MOBILE
 
-/obj/item/weapon/book/wiki/ipc
-	topic = "IPC"
-	style = WIKI_MOBILE
-
 /obj/item/weapon/book/wiki/syndicate
 	topic = "Syndicate"
 	style = WIKI_MOBILE

@@ -37,9 +37,8 @@
 
 	var/mob/living/carbon/human/T = G.affecting
 	if (!istype(T) || T.species.species_flags & SPECIES_FLAG_NO_BLOOD)
-		//Added this to prevent vampires draining diona and IPCs
+		//Added this to prevent vampires draining diona
 		//Diona have 'blood' but its really green sap and shouldn't help vampires
-		//IPCs leak oil
 		to_chat(src, SPAN_WARNING("[T] is not a creature you can drain useful blood from."))
 		return
 	if(T.head && (T.head.item_flags & ITEM_FLAG_AIRTIGHT))
