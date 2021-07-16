@@ -36,9 +36,12 @@
 	return 0
 
 /client/proc/is_key_ignored(key_to_check)
+	if(!prefs)
+		return FALSE
+
 	key_to_check = ckey(key_to_check)
 	if(key_to_check in prefs.ignored_players)
-		if(check_rights(R_MENTOR|R_MOD|R_ADMIN, 0)) // Admins, mentors and moderators are not ignorable
+		if(check_rights(R_MENTOR | R_MOD | R_ADMIN, 0)) // Admins, mentors and moderators are not ignorable
 			return 0
 		return 1
 	return 0
