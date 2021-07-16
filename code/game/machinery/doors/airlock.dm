@@ -638,8 +638,8 @@ About the new airlock wires panel:
 
 	if(!repairing && isWelder(C) && !(operating > 0) && density)
 		var/obj/item/weapon/weldingtool/W = C
-		user.setClickCooldown(SLOW_WEAPON_COOLDOWN)
-		if(W.remove_fuel(0, user) && (playsound(src, 'sound/items/Welder.ogg', 100, 1) || do_after(user, SLOW_WEAPON_COOLDOWN, src)))
+		if(W.remove_fuel(0, user))
+			playsound(src, 'sound/items/Welder.ogg', 100, 1)
 			if(!welded)
 				welded = TRUE
 			else
