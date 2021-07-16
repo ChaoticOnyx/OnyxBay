@@ -14,7 +14,7 @@
 	cultify_wall()
 
 turf/simulated/floor/misc/cult/cultify()
-	return()
+	return
 
 /turf/simulated/floor/proc/cultify_floor()
 	var/turf/simulated/floor/floor = src
