@@ -13,6 +13,9 @@
 /turf/unsimulated/wall/cultify()
 	cultify_wall()
 
+turf/simulated/floor/misc/cult/cultify()
+	return()
+
 /turf/simulated/floor/proc/cultify_floor()
 	var/turf/simulated/floor/floor = src
 	var/old_type = floor.type
