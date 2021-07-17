@@ -41,9 +41,9 @@
 		These are used for initialization only, and so are optional if
 		product_records is specified
 	*/
-	var/list/products	= list() // For each, use the following pattern:
-	var/list/contraband	= list() // list(/type/path = amount,/type/path2 = amount2)
-	var/list/premium 	= list() // No specified amount = only one in stock
+	var/list/products    = list() // For each, use the following pattern:
+	var/list/contraband = list() // list(/type/path = amount,/type/path2 = amount2)
+	var/list/premium    = list() // No specified amount = only one in stock
 	var/list/prices     = list() // Prices for each item, list(/type/path = price), items not in the list don't have a price.
 
 	// List of vending_product items available.
@@ -156,22 +156,22 @@
 			qdel(src)
 			return
 		if(2.0)
-			if (prob(50))
+			if(prob(50))
 				qdel(src)
 				return
 		if(3.0)
-			if (prob(25))
+			if(prob(25))
 				spawn(0)
-					src.malfunction()
+					malfunction()
 					return
 				return
 		else
 	return
 
 /obj/machinery/vending/emag_act(remaining_charges, mob/user)
-	if (!emagged)
-		playsound(src.loc, 'sound/effects/computer_emag.ogg', 25)
-		src.emagged = 1
+	if(!emagged)
+		playsound(loc, 'sound/effects/computer_emag.ogg', 25)
+		emagged = 1
 		to_chat(user, "You short out the product lock on \the [src]")
 		return 1
 
@@ -197,38 +197,38 @@
 			return
 
 		if(I) //for IDs and PDAs and wallets with IDs
-			paid = pay_with_card(I,W)
+			paid = pay_with_card(I, W)
 			handled = 1
-		else if (istype(W, /obj/item/weapon/spacecash/ewallet))
+		else if(istype(W, /obj/item/weapon/spacecash/ewallet))
 			var/obj/item/weapon/spacecash/ewallet/C = W
 			paid = pay_with_ewallet(C)
 			handled = 1
-		else if (istype(W, /obj/item/weapon/spacecash/bundle))
+		else if(istype(W, /obj/item/weapon/spacecash/bundle))
 			var/obj/item/weapon/spacecash/bundle/C = W
 			paid = pay_with_cash(C)
 			handled = 1
 
 		if(paid)
-			src.vend(currently_vending, usr)
+			vend(currently_vending, usr)
 			return
 		else if(handled)
 			SSnano.update_uis(src)
 			return // don't smack that machine with your 2 credits
 
-	if (I || istype(W, /obj/item/weapon/spacecash))
+	if(I || istype(W, /obj/item/weapon/spacecash))
 		attack_hand(user)
 		return
 	else if(istype(W, /obj/item/weapon/screwdriver))
-		src.panel_open = !src.panel_open
-		to_chat(user, "You [src.panel_open ? "open" : "close"] the maintenance panel.")
-		src.overlays.Cut()
-		if(src.panel_open)
-			src.overlays += image(src.icon, "[base_icon]-panel")
+		panel_open = !panel_open
+		to_chat(user, "You [panel_open ? "open" : "close"] the maintenance panel.")
+		overlays.Cut()
+		if(panel_open)
+			overlays += image(icon, "[base_icon]-panel")
 
 		SSnano.update_uis(src)  // Speaker switch is on the main UI, not wires UI
 		return
 	else if(isMultitool(W) || isWirecutter(W))
-		if(src.panel_open)
+		if(panel_open)
 			attack_hand(user)
 		return
 	else if((obj_flags & OBJ_FLAG_ANCHORABLE) && isWrench(W))
@@ -241,7 +241,7 @@
 		W.forceMove(src)
 		coin = W
 		categories |= CAT_COIN
-		to_chat(user, "<span class='notice'>You insert \the [W] into \the [src].</span>")
+		to_chat(user, SPAN("notice", "You insert \the [W] into \the [src]."))
 		SSnano.update_uis(src)
 		return
 	else if(istype(W,/obj/item/weapon/weldingtool))
@@ -251,18 +251,18 @@
 		if(health == max_health)
 			to_chat(user, SPAN("notice", "\The [src] is undamaged."))
 			return
-		if(!WT.remove_fuel(0,user))
+		if(!WT.remove_fuel(0, user))
 			to_chat(user, SPAN("notice", "You need more welding fuel to complete this task."))
 			return
 		user.visible_message(SPAN("notice", "[user] is repairing \the [src]..."), \
-				             SPAN("notice", "You start repairing the damage to [src]..."))
+							 SPAN("notice", "You start repairing the damage to [src]..."))
 		playsound(src, 'sound/items/Welder.ogg', 100, 1)
 		if(!do_after(user, 30, src) && WT && WT.isOn())
 			return
 		health = max_health
 		set_broken(0)
 		user.visible_message(SPAN("notice", "[user] repairs \the [src]."), \
-				             SPAN("notice", "You repair \the [src]."))
+							 SPAN("notice", "You repair \the [src]."))
 		return
 	else if(attempt_to_stock(W, user))
 		return
@@ -300,7 +300,7 @@
 		to_chat(usr, "\icon[cashmoney] <span class='warning'>That is not enough money.</span>")
 		return 0
 
-	visible_message("<span class='info'>\The [usr] inserts some cash into \the [src].</span>")
+	visible_message(SPAN("info", "\The [usr] inserts some cash into \the [src]."))
 	cashmoney.worth -= currently_vending.price
 
 	if(cashmoney.worth <= 0)
@@ -320,10 +320,10 @@
  * successful, 0 if failed.
  */
 /obj/machinery/vending/proc/pay_with_ewallet(obj/item/weapon/spacecash/ewallet/wallet)
-	visible_message("<span class='info'>\The [usr] swipes \the [wallet] through \the [src].</span>")
+	visible_message(SPAN("info", "\The [usr] swipes \the [wallet] through \the [src]."))
 	if(currently_vending.price > wallet.worth)
-		src.status_message = "Insufficient funds on chargecard."
-		src.status_error = 1
+		status_message = "Insufficient funds on chargecard."
+		status_error = 1
 		return 0
 	else
 		wallet.worth -= currently_vending.price
@@ -338,18 +338,18 @@
  */
 /obj/machinery/vending/proc/pay_with_card(obj/item/weapon/card/id/I, obj/item/ID_container)
 	if(I==ID_container || ID_container == null)
-		visible_message("<span class='info'>\The [usr] swipes \the [I] through \the [src].</span>")
+		visible_message(SPAN("info", "\The [usr] swipes \the [I] through \the [src]."))
 	else
-		visible_message("<span class='info'>\The [usr] swipes \the [ID_container] through \the [src].</span>")
+		visible_message(SPAN("info", "\The [usr] swipes \the [ID_container] through \the [src]."))
 	var/datum/money_account/customer_account = get_account(I.associated_account_number)
-	if (!customer_account)
-		src.status_message = "Error: Unable to access account. Please contact technical support if problem persists."
-		src.status_error = 1
+	if(!customer_account)
+		status_message = "Error: Unable to access account. Please contact technical support if problem persists."
+		status_error = 1
 		return 0
 
 	if(customer_account.suspended)
-		src.status_message = "Unable to access account: account suspended."
-		src.status_error = 1
+		status_message = "Unable to access account: account suspended."
+		status_error = 1
 		return 0
 
 	// Have the customer punch in the PIN before checking if there's enough money. Prevents people from figuring out acct is
@@ -359,13 +359,13 @@
 		customer_account = attempt_account_access(I.associated_account_number, attempt_pin, 2)
 
 		if(!customer_account)
-			src.status_message = "Unable to access account: incorrect credentials."
-			src.status_error = 1
+			status_message = "Unable to access account: incorrect credentials."
+			status_error = 1
 			return 0
 
 	if(currently_vending.price > customer_account.money)
-		src.status_message = "Insufficient funds in account."
-		src.status_error = 1
+		status_message = "Insufficient funds in account."
+		status_error = 1
 		return 0
 	else
 		// Okay to move the money at this point
@@ -397,8 +397,8 @@
 	if(stat & (BROKEN|NOPOWER))
 		return
 
-	if(src.seconds_electrified != 0)
-		if(src.shock(user, 100))
+	if(seconds_electrified != 0)
+		if(shock(user, 100))
 			return
 
 	wires.Interact(user)
@@ -420,16 +420,16 @@
 		data["product"] = currently_vending.item_name
 		data["price"] = currently_vending.price
 		data["message_err"] = 0
-		data["message"] = src.status_message
-		data["message_err"] = src.status_error
+		data["message"] = status_message
+		data["message_err"] = status_error
 	else
 		data["mode"] = 0
 		var/list/listed_products = list()
 
-		for(var/key = 1 to src.product_records.len)
-			var/datum/stored_items/vending_products/I = src.product_records[key]
+		for(var/key = 1 to product_records.len)
+			var/datum/stored_items/vending_products/I = product_records[key]
 
-			if(!(I.category & src.categories))
+			if(!(I.category & categories))
 				continue
 
 			listed_products.Add(list(list(
@@ -441,18 +441,18 @@
 
 		data["products"] = listed_products
 
-	if(src.coin)
-		data["coin"] = src.coin.name
+	if(coin)
+		data["coin"] = coin.name
 
-	if(src.panel_open)
+	if(panel_open)
 		data["panel"] = 1
-		data["speaker"] = src.shut_up ? 0 : 1
+		data["speaker"] = shut_up ? 0 : 1
 	else
 		data["panel"] = 0
 
 	ui = SSnano.try_update_ui(user, src, ui_key, ui, data, force_open)
-	if (!ui)
-		ui = new(user, src, ui_key, "vending_machine.tmpl", src.name, 440, 600)
+	if(!ui)
+		ui = new(user, src, ui_key, "vending_machine.tmpl", name, 440, 600)
 		ui.set_initial_data(data)
 		ui.open()
 
@@ -467,17 +467,17 @@
 			to_chat(usr, "There is no coin in this machine.")
 			return
 
-		coin.forceMove(src.loc)
+		coin.forceMove(loc)
 		if(!usr.get_active_hand())
 			usr.put_in_hands(coin)
-		to_chat(usr, "<span class='notice'>You remove \the [coin] from \the [src]</span>")
+		to_chat(usr, SPAN("notice", "You remove \the [coin] from \the [src]"))
 		coin = null
 		categories &= ~CAT_COIN
 
-	if ((usr.contents.Find(src) || (in_range(src, usr) && istype(src.loc, /turf))))
-		if ((href_list["vend"]) && (src.vend_ready) && (!currently_vending))
+	if((usr.contents.Find(src) || (in_range(src, usr) && istype(loc, /turf))))
+		if((href_list["vend"]) && (vend_ready) && (!currently_vending))
 			if((!allowed(usr)) && !emagged && scan_id)	//For SECURE VENDING MACHINES YEAH
-				to_chat(usr, "<span class='warning'>Access denied.</span>")//Unless emagged of course
+				to_chat(usr, SPAN("warning", "Access denied."))//Unless emagged of course
 				flick("[base_icon]-deny", src)
 				return
 
@@ -485,50 +485,50 @@
 			var/datum/stored_items/vending_products/R = product_records[key]
 
 			// This should not happen unless the request from NanoUI was bad
-			if(!(R.category & src.categories))
+			if(!(R.category & categories))
 				return
 
 			if(R.price <= 0)
-				src.vend(R, usr)
+				vend(R, usr)
 			else if(istype(usr,/mob/living/silicon)) //If the item is not free, provide feedback if a synth is trying to buy something.
-				to_chat(usr, "<span class='danger'>Artificial unit recognized.  Artificial units cannot complete this transaction.  Purchase canceled.</span>")
+				to_chat(usr, SPAN("danger", "Artificial unit recognized.  Artificial units cannot complete this transaction.  Purchase canceled."))
 				return
 			else
-				src.currently_vending = R
+				currently_vending = R
 				if(!vendor_account || vendor_account.suspended)
-					src.status_message = "This machine is currently unable to process payments due to problems with the associated account."
-					src.status_error = 1
+					status_message = "This machine is currently unable to process payments due to problems with the associated account."
+					status_error = 1
 				else
-					src.status_message = "Please swipe a card or insert cash to pay for the item."
-					src.status_error = 0
+					status_message = "Please swipe a card or insert cash to pay for the item."
+					status_error = 0
 
-		else if (href_list["cancelpurchase"])
-			src.currently_vending = null
+		else if(href_list["cancelpurchase"])
+			currently_vending = null
 
-		else if ((href_list["togglevoice"]) && (src.panel_open))
-			src.shut_up = !src.shut_up
+		else if((href_list["togglevoice"]) && (panel_open))
+			shut_up = !shut_up
 
 		SSnano.update_uis(src)
 
 /obj/machinery/vending/proc/vend(datum/stored_items/vending_products/R, mob/user)
 	if((!allowed(usr)) && !emagged && scan_id)	//For SECURE VENDING MACHINES YEAH
-		to_chat(usr, "<span class='warning'>Access denied.</span>")//Unless emagged of course
+		to_chat(usr, SPAN("warning", "Access denied."))//Unless emagged of course
 		flick("[base_icon]-deny", src)
 		return
-	src.vend_ready = 0 //One thing at a time!!
-	src.status_message = "Vending..."
-	src.status_error = 0
+	vend_ready = 0 //One thing at a time!!
+	status_message = "Vending..."
+	status_error = 0
 	SSnano.update_uis(src)
 
-	if (R.category & CAT_COIN)
+	if(R.category & CAT_COIN)
 		if(!coin)
-			to_chat(user, "<span class='notice'>You need to insert a coin to get this item.</span>")
+			to_chat(user, SPAN("notice", "You need to insert a coin to get this item."))
 			return
 		if(coin.string_attached)
 			if(prob(50))
-				to_chat(user, "<span class='notice'>You successfully pull the coin out before \the [src] could swallow it.</span>")
+				to_chat(user, SPAN("notice", "You successfully pull the coin out before \the [src] could swallow it."))
 			else
-				to_chat(user, "<span class='notice'>You weren't able to pull the coin out fast enough, the machine ate it, string and all.</span>")
+				to_chat(user, SPAN("notice", "You weren't able to pull the coin out fast enough, the machine ate it, string and all."))
 				qdel(coin)
 				coin = null
 				categories &= ~CAT_COIN
@@ -537,31 +537,31 @@
 			coin = null
 			categories &= ~CAT_COIN
 
-	if(((src.last_reply + (src.vend_delay + 200)) <= world.time) && src.vend_reply)
+	if(((last_reply + (vend_delay + 200)) <= world.time) && vend_reply)
 		spawn(0)
-			src.speak(src.vend_reply)
-			src.last_reply = world.time
+			speak(vend_reply)
+			last_reply = world.time
 
 	use_power_oneoff(vend_power_usage)	//actuators and stuff
 	if(use_vend_state) //Show the vending animation if needed
 		flick("[base_icon]-vend", src)
-	spawn(src.vend_delay) //Time to vend
+	spawn(vend_delay) //Time to vend
 		playsound(src, 'sound/effects/using/disposal/drop2.ogg', 40, TRUE)
 		if(prob(diona_spawn_chance)) //Hehehe
 			var/turf/T = get_turf(src)
 			var/mob/living/carbon/alien/diona/S = new(T)
-			src.visible_message("<span class='notice'>\The [src] makes an odd grinding noise before coming to a halt as \a [S.name] slurmps out from the receptacle.</span>")
+			visible_message(SPAN("notice", "\The [src] makes an odd grinding noise before coming to a halt as \a [S.name] slurmps out from the receptacle."))
 		else //Just a normal vend, then
 			R.get_product(get_turf(src))
-			src.visible_message("\The [src] whirs as it vends \the [R.item_name].")
+			visible_message("\The [src] whirs as it vends \the [R.item_name].")
 			if(prob(1)) //The vending gods look favorably upon you
 				sleep(3)
 				if(R.get_product(get_turf(src)))
-					src.visible_message("<span class='notice'>\The [src] clunks as it vends an additional [R.item_name].</span>")
+					visible_message(SPAN("notice", "\The [src] clunks as it vends an additional [R.item_name]."))
 
-		src.status_message = ""
-		src.status_error = 0
-		src.vend_ready = 1
+		status_message = ""
+		status_error = 0
+		vend_ready = 1
 		currently_vending = null
 		SSnano.update_uis(src)
 
@@ -576,7 +576,7 @@
 		return
 
 	if(R.add_product(W))
-		to_chat(user, "<span class='notice'>You insert \the [W] in the product receptor.</span>")
+		to_chat(user, SPAN("notice", "You insert \the [W] in the product receptor."))
 		SSnano.update_uis(src)
 		return 1
 
@@ -586,20 +586,20 @@
 	if(stat & (BROKEN|NOPOWER))
 		return
 
-	if(!src.active)
+	if(!active)
 		return
 
-	if(src.seconds_electrified > 0)
-		src.seconds_electrified--
+	if(seconds_electrified > 0)
+		seconds_electrified--
 
 	//Pitch to the people!  Really sell it!
-	if(((src.last_slogan + src.slogan_delay) <= world.time) && (src.slogan_list.len > 0) && (!src.shut_up) && prob(5))
-		var/slogan = pick(src.slogan_list)
-		src.speak(slogan)
-		src.last_slogan = world.time
+	if(((last_slogan + slogan_delay) <= world.time) && (slogan_list.len > 0) && (!shut_up) && prob(5))
+		var/slogan = pick(slogan_list)
+		speak(slogan)
+		last_slogan = world.time
 
-	if(src.shoot_inventory && prob(shooting_chance))
-		src.throw_item()
+	if(shoot_inventory && prob(shooting_chance))
+		throw_item()
 
 	return
 
@@ -607,11 +607,11 @@
 	if(stat & NOPOWER)
 		return
 
-	if (!message)
+	if(!message)
 		return
 
 	for(var/mob/O in hearers(src, null))
-		O.show_message("<span class='game say'><span class='name'>\The [src]</span> beeps, \"[message]\"</span>",2)
+		O.show_message("<span class='game say'><span class='name'>\The [src]</span> beeps, \"[message]\"</span>", 2)
 	return
 
 /obj/machinery/vending/powered()
@@ -643,7 +643,7 @@
 
 //Oh no we're malfunctioning!  Dump out some product and break.
 /obj/machinery/vending/proc/malfunction()
-	for(var/datum/stored_items/vending_products/R in src.product_records)
+	for(var/datum/stored_items/vending_products/R in product_records)
 		while(R.get_amount()>0)
 			R.get_product(loc)
 		break
@@ -652,19 +652,19 @@
 //Somebody cut an important wire and now we're following a new definition of "pitch."
 /obj/machinery/vending/proc/throw_item()
 	var/obj/throw_item = null
-	var/mob/living/target = locate() in view(7,src)
+	var/mob/living/target = locate() in view(7, src)
 	if(!target)
 		return 0
 
-	for(var/datum/stored_items/vending_products/R in shuffle(src.product_records))
+	for(var/datum/stored_items/vending_products/R in shuffle(product_records))
 		throw_item = R.get_product(loc)
-		if (throw_item)
+		if(throw_item)
 			break
-	if (!throw_item)
+	if(!throw_item)
 		return 0
 	spawn(0)
-		throw_item.throw_at(target, rand(1,2), 3, src)
-	src.visible_message("<span class='warning'>\The [src] launches \a [throw_item] at \the [target]!</span>")
+		throw_item.throw_at(target, rand(1, 2), 3, src)
+	visible_message(SPAN("warning", "\The [src] launches \a [throw_item] at \the [target]!"))
 	return 1
 
 /obj/machinery/vending/set_broken(new_state)
@@ -760,7 +760,7 @@
 					/obj/item/weapon/reagent_containers/food/drinks/ice = 10)
 	contraband = list(/obj/item/weapon/reagent_containers/food/drinks/bottle/premiumwine = 2,
 					  /obj/item/weapon/reagent_containers/food/drinks/bottle/premiumvodka = 2,
-				      /obj/item/weapon/reagent_containers/food/drinks/cans/dopecola = 5,
+					  /obj/item/weapon/reagent_containers/food/drinks/cans/dopecola = 5,
 					  /obj/item/weapon/glass_extra/glassholder = 10)
 	vend_delay = 15
 	idle_power_usage = 211 //refrigerator - believe it or not, this is actually the average power consumption of a refrigerated vending machine according to NRCan.
@@ -769,11 +769,11 @@
 	req_access = list(access_bar)
 
 /obj/machinery/vending/assist
-	products = list(	/obj/item/device/assembly/prox_sensor = 5,
-						/obj/item/device/assembly/igniter = 3,
-						/obj/item/device/assembly/signaler = 4,
-						/obj/item/weapon/wirecutters = 1,
-						/obj/item/weapon/cartridge/signal = 4)
+	products = list(/obj/item/device/assembly/prox_sensor = 5,
+					/obj/item/device/assembly/igniter = 3,
+					/obj/item/device/assembly/signaler = 4,
+					/obj/item/weapon/wirecutters = 1,
+					/obj/item/weapon/cartridge/signal = 4)
 	contraband = list(/obj/item/device/flashlight = 5,
 					  /obj/item/device/assembly/timer = 2,
 					  /obj/item/device/assembly/voice = 2)
@@ -782,15 +782,15 @@
 /obj/machinery/vending/assist/antag
 	name = "AntagCorpVend"
 	contraband = list()
-	products = list(	/obj/item/device/assembly/prox_sensor = 5,
-						/obj/item/device/assembly/signaler = 4,
-						/obj/item/device/assembly/voice = 4,
-						/obj/item/device/assembly/infra = 4,
-						/obj/item/device/assembly/prox_sensor = 4,
-						/obj/item/weapon/handcuffs = 8,
-						/obj/item/device/flash = 4,
-						/obj/item/weapon/cartridge/signal = 4,
-						/obj/item/clothing/glasses/sunglasses = 4)
+	products = list(/obj/item/device/assembly/prox_sensor = 5,
+					/obj/item/device/assembly/signaler = 4,
+					/obj/item/device/assembly/voice = 4,
+					/obj/item/device/assembly/infra = 4,
+					/obj/item/device/assembly/prox_sensor = 4,
+					/obj/item/weapon/handcuffs = 8,
+					/obj/item/device/flash = 4,
+					/obj/item/weapon/cartridge/signal = 4,
+					/obj/item/clothing/glasses/sunglasses = 4)
 
 /obj/machinery/vending/coffee
 	name = "Hot Drinks machine"
@@ -809,8 +809,8 @@
 					/obj/item/weapon/reagent_containers/food/drinks/h_chocolate = 25)
 	contraband = list(/obj/item/weapon/reagent_containers/food/drinks/ice = 10)
 	prices = list(/obj/item/weapon/reagent_containers/food/drinks/coffee = 3,
-			   	  /obj/item/weapon/reagent_containers/food/drinks/tea = 3,
-			   	  /obj/item/weapon/reagent_containers/food/drinks/h_chocolate = 3)
+				  /obj/item/weapon/reagent_containers/food/drinks/tea = 3,
+				  /obj/item/weapon/reagent_containers/food/drinks/h_chocolate = 3)
 
 /obj/machinery/vending/snack
 	name = "Getmore Chocolate Corp"
@@ -1286,7 +1286,7 @@
 					/obj/item/weapon/reagent_containers/syringe = 5,
 					/obj/item/weapon/storage/plants = 5)
 	premium = list(/obj/item/weapon/reagent_containers/glass/bottle/ammonia = 10,
-			   	   /obj/item/weapon/reagent_containers/glass/bottle/diethylamine = 5)
+					/obj/item/weapon/reagent_containers/glass/bottle/diethylamine = 5)
 	idle_power_usage = 211 //refrigerator - believe it or not, this is actually the average power consumption of a refrigerated vending machine according to NRCan.
 
 /obj/machinery/vending/hydroseeds
@@ -1297,14 +1297,48 @@
 	icon_state = "seeds"
 	use_vend_state = TRUE
 	vend_delay = 13
-	products = list(/obj/item/seeds/bananaseed = 3,/obj/item/seeds/berryseed = 3,/obj/item/seeds/carrotseed = 3,/obj/item/seeds/chantermycelium = 3,/obj/item/seeds/chiliseed = 3,
-					/obj/item/seeds/cornseed = 3, /obj/item/seeds/eggplantseed = 3, /obj/item/seeds/potatoseed = 3, /obj/item/seeds/replicapod = 3,/obj/item/seeds/soyaseed = 3,
-					/obj/item/seeds/sunflowerseed = 3,/obj/item/seeds/tomatoseed = 3,/obj/item/seeds/towermycelium = 3,/obj/item/seeds/wheatseed = 3,/obj/item/seeds/appleseed = 3,
-					/obj/item/seeds/poppyseed = 3,/obj/item/seeds/sugarcaneseed = 3,/obj/item/seeds/ambrosiavulgarisseed = 3,/obj/item/seeds/peanutseed = 3,/obj/item/seeds/whitebeetseed = 3,/obj/item/seeds/watermelonseed = 3,/obj/item/seeds/limeseed = 3,
-					/obj/item/seeds/lemonseed = 3,/obj/item/seeds/orangeseed = 3,/obj/item/seeds/grassseed = 3,/obj/item/seeds/cocoapodseed = 3,/obj/item/seeds/plumpmycelium = 2,
-					/obj/item/seeds/cabbageseed = 3,/obj/item/seeds/grapeseed = 3,/obj/item/seeds/pumpkinseed = 3,/obj/item/seeds/cherryseed = 3,/obj/item/seeds/plastiseed = 3,/obj/item/seeds/riceseed = 3,/obj/item/seeds/lavenderseed = 3)
-	contraband = list(/obj/item/seeds/amanitamycelium = 2,/obj/item/seeds/glowshroom = 2,/obj/item/seeds/libertymycelium = 2,/obj/item/seeds/mtearseed = 2,
-					  /obj/item/seeds/nettleseed = 2,/obj/item/seeds/reishimycelium = 2,/obj/item/seeds/reishimycelium = 2,/obj/item/seeds/shandseed = 2,)
+	products = list(/obj/item/seeds/bananaseed = 3,
+					/obj/item/seeds/berryseed = 3,
+					/obj/item/seeds/carrotseed = 3,
+					/obj/item/seeds/chantermycelium = 3,
+					/obj/item/seeds/chiliseed = 3,
+					/obj/item/seeds/cornseed = 3,
+					/obj/item/seeds/eggplantseed = 3,
+					/obj/item/seeds/potatoseed = 3,
+					/obj/item/seeds/replicapod = 3,
+					/obj/item/seeds/soyaseed = 3,
+					/obj/item/seeds/sunflowerseed = 3,
+					/obj/item/seeds/tomatoseed = 3,
+					/obj/item/seeds/towermycelium = 3,
+					/obj/item/seeds/wheatseed = 3,
+					/obj/item/seeds/appleseed = 3,
+					/obj/item/seeds/poppyseed = 3,
+					/obj/item/seeds/sugarcaneseed = 3,
+					/obj/item/seeds/ambrosiavulgarisseed = 3,
+					/obj/item/seeds/peanutseed = 3,
+					/obj/item/seeds/whitebeetseed = 3,
+					/obj/item/seeds/watermelonseed = 3,
+					/obj/item/seeds/limeseed = 3,
+					/obj/item/seeds/lemonseed = 3,
+					/obj/item/seeds/orangeseed = 3,
+					/obj/item/seeds/grassseed = 3,
+					/obj/item/seeds/cocoapodseed = 3,
+					/obj/item/seeds/plumpmycelium = 2,
+					/obj/item/seeds/cabbageseed = 3,
+					/obj/item/seeds/grapeseed = 3,
+					/obj/item/seeds/pumpkinseed = 3,
+					/obj/item/seeds/cherryseed = 3,
+					/obj/item/seeds/plastiseed = 3,
+					/obj/item/seeds/riceseed = 3,
+					/obj/item/seeds/lavenderseed = 3)
+	contraband = list(/obj/item/seeds/amanitamycelium = 2,
+					/obj/item/seeds/glowshroom = 2,
+					/obj/item/seeds/libertymycelium = 2,
+					/obj/item/seeds/mtearseed = 2,
+					/obj/item/seeds/nettleseed = 2,
+					/obj/item/seeds/reishimycelium = 2,
+					/obj/item/seeds/reishimycelium = 2,
+					/obj/item/seeds/shandseed = 2,)
 	premium = list(/obj/item/weapon/reagent_containers/spray/waterflower = 1)
 
 /**
@@ -1315,9 +1349,9 @@
  */
 /obj/machinery/vending/hydroseeds/build_inventory()
 	var/list/all_products = list(
-		list(src.products, CAT_NORMAL),
-		list(src.contraband, CAT_HIDDEN),
-		list(src.premium, CAT_COIN))
+		list(products, CAT_NORMAL),
+		list(contraband, CAT_HIDDEN),
+		list(premium, CAT_COIN))
 
 	for(var/current_list in all_products)
 		var/category = current_list[2]
@@ -1327,11 +1361,11 @@
 			var/name = S.name
 			var/datum/stored_items/vending_products/product = new /datum/stored_items/vending_products(src, entry, name)
 
-			product.price = (entry in src.prices) ? src.prices[entry] : 0
+			product.price = (entry in prices) ? prices[entry] : 0
 			product.amount = (current_list[1][entry]) ? current_list[1][entry] : 1
 			product.category = category
 
-			src.product_records.Add(product)
+			product_records.Add(product)
 
 /obj/machinery/vending/magivend
 	name = "MagiVend"
@@ -1341,7 +1375,12 @@
 	vend_delay = 15
 	vend_reply = "Have an enchanted evening!"
 	product_ads = "FJKLFJSD;AJKFLBJAKL;1234 LOONIES LOL!;>MFW;Kill them fuckers!;GET DAT FUKKEN DISK;HONK!;EI NATH;Down with Central!;Admin conspiracies since forever!;Space-time bending hardware!"
-	products = list(/obj/item/clothing/head/wizard = 1,/obj/item/clothing/suit/wizrobe = 1,/obj/item/clothing/head/wizard/red = 1,/obj/item/clothing/suit/wizrobe/red = 1,/obj/item/clothing/shoes/sandal = 1,/obj/item/weapon/staff = 2)
+	products = list(/obj/item/clothing/head/wizard = 1,
+					/obj/item/clothing/suit/wizrobe = 1,
+					/obj/item/clothing/head/wizard/red = 1,
+					/obj/item/clothing/suit/wizrobe/red = 1,
+					/obj/item/clothing/shoes/sandal = 1,
+					/obj/item/weapon/staff = 2)
 
 /obj/machinery/vending/dinnerware
 	name = "Dinnerware"
@@ -1349,28 +1388,25 @@
 	product_ads = "Mm, food stuffs!;Food and food accessories.;Get your plates!;You like forks?;I like forks.;Woo, utensils.;You don't really need these..."
 	icon_state = "dinnerware"
 	use_vend_state = TRUE
-	products = list(
-	/obj/item/weapon/tray = 8,
-	/obj/item/weapon/material/kitchen/utensil/fork = 8,
-	/obj/item/weapon/material/kitchen/utensil/knife = 8,
-	/obj/item/weapon/material/kitchen/utensil/spoon = 8,
-	/obj/item/weapon/material/knife/kitchen = 3,
-	/obj/item/weapon/material/kitchen/rollingpin = 2,
-	/obj/item/weapon/reagent_containers/food/drinks/pitcher = 2,
-	/obj/item/weapon/reagent_containers/food/drinks/coffeecup = 8,
-	/obj/item/weapon/reagent_containers/food/drinks/glass2/carafe = 2,
-	/obj/item/weapon/reagent_containers/food/drinks/glass2/square = 8,
-	/obj/item/clothing/suit/chef/classic = 2,
-	/obj/item/weapon/storage/lunchbox = 3,
-	/obj/item/weapon/storage/lunchbox/heart = 3,
-	/obj/item/weapon/storage/lunchbox/cat = 3,
-	/obj/item/weapon/storage/lunchbox/nt = 3,
-	/obj/item/weapon/storage/lunchbox/mars = 3,
-	/obj/item/weapon/storage/lunchbox/cti = 3,
-	/obj/item/weapon/storage/lunchbox/nymph = 3,
-	/obj/item/weapon/storage/lunchbox/syndicate = 3)
-
-
+	products = list(/obj/item/weapon/tray = 8,
+					/obj/item/weapon/material/kitchen/utensil/fork = 8,
+					/obj/item/weapon/material/kitchen/utensil/knife = 8,
+					/obj/item/weapon/material/kitchen/utensil/spoon = 8,
+					/obj/item/weapon/material/knife/kitchen = 3,
+					/obj/item/weapon/material/kitchen/rollingpin = 2,
+					/obj/item/weapon/reagent_containers/food/drinks/pitcher = 2,
+					/obj/item/weapon/reagent_containers/food/drinks/coffeecup = 8,
+					/obj/item/weapon/reagent_containers/food/drinks/glass2/carafe = 2,
+					/obj/item/weapon/reagent_containers/food/drinks/glass2/square = 8,
+					/obj/item/clothing/suit/chef/classic = 2,
+					/obj/item/weapon/storage/lunchbox = 3,
+					/obj/item/weapon/storage/lunchbox/heart = 3,
+					/obj/item/weapon/storage/lunchbox/cat = 3,
+					/obj/item/weapon/storage/lunchbox/nt = 3,
+					/obj/item/weapon/storage/lunchbox/mars = 3,
+					/obj/item/weapon/storage/lunchbox/cti = 3,
+					/obj/item/weapon/storage/lunchbox/nymph = 3,
+					/obj/item/weapon/storage/lunchbox/syndicate = 3)
 	contraband = list(/obj/item/weapon/material/knife/butch/kitchen = 2)
 
 /obj/machinery/vending/sovietsoda
@@ -1411,7 +1447,7 @@
 	icon_state = "engivend"
 	use_vend_state = TRUE
 	vend_delay = 21
-	req_one_access = list(access_atmospherics,access_engine_equip)
+	req_one_access = list(access_atmospherics, access_engine_equip)
 	products = list(/obj/item/clothing/glasses/hud/standard/meson = 2,
 					/obj/item/device/multitool = 4,
 					/obj/item/device/geiger = 4,
@@ -1428,7 +1464,7 @@
 	name = "Robco Tool Maker"
 	desc = "Everything you need for do-it-yourself repair."
 	icon_state = "engi"
-	req_one_access = list(access_atmospherics,access_engine_equip)
+	req_one_access = list(access_atmospherics, access_engine_equip)
 	products = list(/obj/item/weapon/storage/belt/utility = 4,
 					/obj/item/clothing/glasses/hud/standard/meson = 4,
 					/obj/item/clothing/gloves/insulated = 4,
@@ -1526,8 +1562,8 @@
 				  /obj/item/weapon/lipstick/purple = 100,
 				  /obj/item/weapon/lipstick/jade = 100,
 				  /obj/item/weapon/storage/bouquet = 800,
-				  /obj/item/weapon/storage/wallet/poly = 600
-					)
+				  /obj/item/weapon/storage/wallet/poly = 600)
+
 // eliza's attempt at a new vending machine
 /obj/machinery/vending/games
 	name = "Good Clean Fun"
