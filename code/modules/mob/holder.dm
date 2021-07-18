@@ -15,7 +15,7 @@ var/list/holder_mob_icon_cache = list()
 	pixel_y = 8
 
 	var/last_holder
-	var/mob/living/simple_animal/holded_mob
+	var/mob/living/simple_animal/held_mob
 
 /obj/item/weapon/holder/New()
 	..()
@@ -42,14 +42,14 @@ var/list/holder_mob_icon_cache = list()
 		update_state()
 
 /obj/item/weapon/holder/proc/update_state()
-	holded_mob = locate() in contents
+	held_mob = locate() in contents
 
 	if(last_holder != loc)
 		for(var/mob/M in contents)
 			unregister_all_movement(last_holder, M)
 
-	if(holded_mob.name != name)
-		sync(holded_mob)
+	if(held_mob.name != name)
+		sync(held_mob)
 
 	if(istype(loc,/turf) || !(contents.len))
 		for(var/mob/M in contents)
@@ -117,10 +117,10 @@ var/list/holder_mob_icon_cache = list()
 
 /obj/item/weapon/holder/proc/rename(var/new_name, var/mob/U)
 	if(new_name)
-		log_game("[key_name(U)] named [holded_mob.name] as [new_name]")
-		holded_mob.real_name = holded_mob.name = new_name
-		holded_mob.renamable = FALSE
-		sync(holded_mob)
+		log_game("[key_name(U)] named [held_mob.name] as [new_name]")
+		held_mob.real_name = held_mob.name = new_name
+		held_mob.renamable = FALSE
+		sync(held_mob)
 
 /obj/item/weapon/holder/verb/name_pet(var/mob/living/simple_animal/M in contents, mob/user)
 	set category = "Object"
