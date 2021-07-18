@@ -67,7 +67,7 @@
 	var/new_goal = sanitize(input(src, "Write down what you want to achieve in this round as an antagonist \
 	 - your goals. They will be visible to all players after the end of the round. \
 	remember you cannot rewrite them - only add new lines.", "Antagonist Goal") as null|message)
-	if(!isnull(new_goal))
+	if(new_goal)
 		mind.ambitions += (new_goal = "<br>[roundduration2text()]: [new_goal]")
 		to_chat(src, SPAN_NOTICE("Your ambitions now look like this: <b>[mind.ambitions]</b><br>. \
 		You can view your ambitions in <b>Notes</b>. If you wish to change your ambition, \
