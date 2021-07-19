@@ -10,6 +10,9 @@
 	edge = 0
 	armor_penetration = 50
 	atom_flags = ATOM_FLAG_NO_BLOOD
+	var/active_max_bright = 0.3
+	var/active_outer_range = 1.6
+	var/brightness_color
 
 /obj/item/weapon/melee/energy/proc/activate(mob/living/user)
 	if(active)
@@ -185,6 +188,7 @@
 	..()
 	attack_verb = list("attacked", "slashed", "stabbed", "sliced", "torn", "ripped", "diced", "cut")
 	icon_state = "sword[blade_color]"
+	set_light(l_max_bright = active_max_bright, l_outer_range = active_outer_range, l_color = brightness_color)
 
 /obj/item/weapon/melee/energy/sword/deactivate(mob/living/user)
 	if(active)
@@ -192,7 +196,7 @@
 	..()
 	attack_verb = list()
 	icon_state = initial(icon_state)
-
+	set_light(0)
 
 /obj/item/weapon/melee/energy/sword/one_hand
 	name = "energy sword"
@@ -200,19 +204,25 @@
 	icon_state = "sword0"
 
 /obj/item/weapon/melee/energy/sword/one_hand/New()
-	blade_color = pick("red", "blue", "green", "purple")
+	var/list/colorparam = list("green" = "#68ff4d", "red" = "#ff5959", "blue" = "#4de4ff", "purple" = "#de4dff")
+	blade_color = pick(colorparam)
+	brightness_color = colorparam[blade_color]
 
 /obj/item/weapon/melee/energy/sword/one_hand/green/New()
 	blade_color = "green"
+	brightness_color = "#68ff4d"
 
 /obj/item/weapon/melee/energy/sword/one_hand/red/New()
 	blade_color = "red"
+	brightness_color = "#ff5959"
 
 /obj/item/weapon/melee/energy/sword/one_hand/blue/New()
 	blade_color = "blue"
+	brightness_color = "#4de4ff"
 
 /obj/item/weapon/melee/energy/sword/one_hand/purple/New()
 	blade_color = "purple"
+	brightness_color = "#de4dff"
 
 /obj/item/weapon/melee/energy/sword/one_hand/attackby(obj/item/sword, mob/user)
 	if(istype(sword, /obj/item/weapon/melee/energy/sword/one_hand))
@@ -232,6 +242,7 @@
 	mod_reach_a = 1.35
 	mod_handy_a = 1.35
 	mod_shield_a = 2.0
+	brightness_color = "#ff5959"
 
 /obj/item/weapon/melee/energy/sword/pirate/activate(mob/living/user)
 	..()
@@ -257,21 +268,29 @@
 	mod_shield_a = 2.75
 	origin_tech = list(TECH_MAGNET = 4, TECH_ILLEGAL = 5)
 	var/base_block_chance = 50
+	active_max_bright = 0.5
+	active_outer_range = 1.8
 
 /obj/item/weapon/melee/energy/sword/dualsaber/New()
-	blade_color = pick("red", "blue", "green", "purple")
+	var/list/colorparam = list("green" = "#68ff4d", "red" = "#ff5959", "blue" = "#4de4ff", "purple" = "#de4dff")
+	blade_color = pick(colorparam)
+	brightness_color = colorparam[blade_color]
 
 /obj/item/weapon/melee/energy/sword/dualsaber/green/New()
 	blade_color = "green"
+	brightness_color = "#68ff4d"
 
 /obj/item/weapon/melee/energy/sword/dualsaber/red/New()
 	blade_color = "red"
+	brightness_color = "#ff5959"
 
 /obj/item/weapon/melee/energy/sword/dualsaber/blue/New()
 	blade_color = "blue"
+	brightness_color = "#4de4ff"
 
 /obj/item/weapon/melee/energy/sword/dualsaber/purple/New()
 	blade_color = "purple"
+	brightness_color = "#de4dff"
 
 /obj/item/weapon/melee/energy/sword/dualsaber/activate(mob/living/user)
 	..()
