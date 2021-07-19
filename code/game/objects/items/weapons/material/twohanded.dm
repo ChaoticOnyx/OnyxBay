@@ -192,9 +192,9 @@
 
 	force_divisor = 0.8
 	unwielded_force_divisor = 0.2
-	sharp = 0
-	edge = 0
-	unbreakable = 1
+	sharp = FALSE
+	edge = FALSE
+	unbreakable = TRUE
 
 	var/chainsaw_active = FALSE
 
@@ -212,9 +212,9 @@
 			base_icon = "chainsaw_off"
 			desc = "Using for sawing wood more effective"
 			chainsaw_active = FALSE
-			sharp = 0
-			edge = 0
-			force_wielded = 0
+			sharp = FALSE
+			edge = FALSE
+			force_wielded = FALSE
 			hitsound = "swing_hit"
 			attack_verb = list("smashed", "beaten", "slammed", "smacked", "struck", "battered", "bonked")
 		else
@@ -224,8 +224,8 @@
 			base_icon = "chainsaw_on"
 			desc = "BRRRR-BRRRR-BRRRR!"
 			chainsaw_active = TRUE
-			sharp = 1
-			edge = 1
+			sharp = TRUE
+			edge = TRUE
 			force_wielded = 30
 			hitsound = list ('sound/items/chainsaw_attack1.ogg', 'sound/items/chainsaw_attack2.ogg')
 			attack_verb = list("attacked", "slashed", "torn", "gored")
