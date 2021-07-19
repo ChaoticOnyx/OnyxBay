@@ -62,7 +62,7 @@
 /obj/item/weapon/melee/prosthetic/bio/
 	prost_type = "bioprosthetic"
 
-/obj/item/weapon/melee/prosthetic/bio/attach_prosthetic(prosthetic , organ)
+/obj/item/weapon/melee/prosthetic/bio/attach_prosthetic(prosthetic, organ)
 	if(!prosthetic || !organ || !isProsthetic(prosthetic))
 		return FALSE
 	if(istype(prosthetic,/obj/item/weapon/melee/prosthetic))
