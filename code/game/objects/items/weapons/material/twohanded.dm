@@ -90,11 +90,11 @@
 	edge = 1
 	w_class = ITEM_SIZE_HUGE
 	mod_handy_w = 1.2
-	mod_weight_w = 2.0
+	mod_weight_w = 2
 	mod_reach_w = 1.5
 	mod_handy_u = 0.4
 	mod_weight_u = 1.5
-	mod_reach_u = 1.0
+	mod_reach_u = 1
 	slot_flags = SLOT_BACK
 	force_wielded = 30
 	attack_verb = list("attacked", "chopped", "cleaved", "torn", "cut")
@@ -127,9 +127,9 @@
 	w_class = ITEM_SIZE_HUGE
 	mod_handy_w = 1.25
 	mod_weight_w = 1.25
-	mod_reach_w = 2.0
+	mod_reach_w = 2
 	mod_handy_u = 0.75
-	mod_weight_u = 1.0
+	mod_weight_u = 1
 	mod_reach_u = 1.5
 	slot_flags = SLOT_BACK
 
@@ -155,21 +155,21 @@
 	item_state = "metalbat"
 	w_class = ITEM_SIZE_LARGE
 	mod_weight = 1.5
-	mod_reach = 1.0
-	mod_handy = 1.0
+	mod_reach = 1
+	mod_handy = 1
 
-	mod_handy_w = 1.0
+	mod_handy_w = 1
 	mod_weight_w = 1.5
-	mod_reach_w = 1.0
+	mod_reach_w = 1
 	mod_handy_u = 0.8
 	mod_weight_u = 1.35
-	mod_reach_u = 1.0
+	mod_reach_u = 1
 
 	throwforce = 7
 	attack_verb = list("smashed", "beaten", "slammed", "smacked", "struck", "battered", "bonked")
 	hitsound = "swing_hit"
 	default_material = MATERIAL_WOOD
-	force_divisor = 1.0           // 20 when wielded with weight 20 (steel)
+	force_divisor = 1           // 20 when wielded with weight 20 (steel)
 	unwielded_force_divisor = 0.7 // 15 when unwielded based on above.
 	slot_flags = SLOT_BACK
 
@@ -184,11 +184,11 @@
 	applies_material_colour = FALSE
 	hitsound = "swing_hit"
 	mod_handy_w = 1.2
-	mod_weight_w = 3.0
+	mod_weight_w = 3
 	mod_reach_w = 1.5
 	mod_handy_u = 0.4
 	mod_weight_u = 1.5
-	mod_reach_u = 1.0
+	mod_reach_u = 1.
 
 	force_divisor = 0.8
 	unwielded_force_divisor = 0.2
