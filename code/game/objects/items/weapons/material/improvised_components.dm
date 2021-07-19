@@ -80,7 +80,7 @@
 		return
 	update_icon(user)
 
-/obj/item/weapon/circular_saw/var/step = 1
+var/step = 1
 
 /obj/item/weapon/circular_saw/attackby(obj/item/W, mob/user)
 	switch (step)
