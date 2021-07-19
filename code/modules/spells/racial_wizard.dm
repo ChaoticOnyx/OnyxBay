@@ -15,7 +15,8 @@
 		SPECIES_TAJARA = /spell/messa_shroud,
 		SPECIES_UNATHI = /spell/moghes_blessing,
 		SPECIES_DIONA = /spell/aoe_turf/conjure/grove/gestalt,
-		SPECIES_SKRELL = /obj/item/weapon/contract/apprentice/skrell)
+		SPECIES_SKRELL = /obj/item/weapon/contract/apprentice/skrell,
+		SPECIES_IPC = /spell/camera_connection)
 
 /obj/item/weapon/magic_rock/attack_self(mob/user)
 	if(!istype(user,/mob/living/carbon/human))
@@ -207,6 +208,7 @@
 		user.put_in_hands(I)
 		new /obj/item/weapon/contract/apprentice/skrell(get_turf(src),linked,contract_master)
 
+//IPC
 /spell/camera_connection
 	name = "Camera Connection"
 	desc = "This spell allows the wizard to connect to the local camera network and see what it sees."

@@ -100,11 +100,11 @@
 		var/obj/item/organ/internal/cell/potato = H.internal_organs_by_name[BP_CELL]
 		if(potato)
 			target = potato.cell
-
+			
 		if((!target || target.percent() > 95) && istype(H.back,/obj/item/weapon/rig))
 			var/obj/item/weapon/rig/R = H.back
 			if(R.cell && !R.cell.fully_charged())
-				target = R.cell
+				target = R.cell			
 
 	if(target && !target.fully_charged())
 		var/diff = min(target.maxcharge - target.charge, charging_power * CELLRATE) // Capped by charging_power / tick
@@ -229,11 +229,11 @@
 		return (R.cell)
 	if(ishuman(M))
 		var/mob/living/carbon/human/H = M
-		if(H.isSynthetic()) // FBPs
+		if(H.isSynthetic()) // FBPs and IPCs
 			return 1
 		if(istype(H.back,/obj/item/weapon/rig))
 			var/obj/item/weapon/rig/R = H.back
-			return R.cell
+			return R.cell			
 		return H.internal_organs_by_name["cell"]
 	return 0
 

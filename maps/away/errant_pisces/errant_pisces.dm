@@ -223,7 +223,7 @@ obj/structure/net/Initialize(mapload)
 	if (amount < 1)
 		qdel(src)
 
-/obj/item/clothing/under/carp //as far as I know sprites are taken from /tg/
+/obj/item/clothing/under/carp//as far as I know sprites are taken from /tg/
 	name = "space carp suit"
 	desc = "A suit in a shape of a space carp. Usually worn by corporate interns who are sent to entertain children during HQ excursions."
 	icon_state = "carp_suit"
@@ -233,7 +233,7 @@ obj/structure/net/Initialize(mapload)
 /obj/effect/landmark/corpse/carp_fisher
 	name = "carp fisher"
 	corpse_outfits = list(/decl/hierarchy/outfit/corpse/carp_fisher)
-	species = list(SPECIES_HUMAN = 70, SPECIES_UNATHI = 10)
+	species = list(SPECIES_HUMAN = 70, SPECIES_IPC = 20, SPECIES_UNATHI = 10)
 
 /decl/hierarchy/outfit/corpse/carp_fisher
 	name = "Dead carp fisher"

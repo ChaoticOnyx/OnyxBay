@@ -93,7 +93,7 @@
 
 /obj/item/organ/internal/cell/replaced()
 	..()
-	// This is very ghetto way of rebooting an MMI. TODO better way.
+	// This is very ghetto way of rebooting an IPC. TODO better way.
 	// It's time to do it. This code doesn't allow to resurrect a organic human this way.
 	if(owner && owner.stat == DEAD && BP_IS_ROBOTIC(owner.organs_by_name[parent_organ]))
 		owner.set_stat(CONSCIOUS)
