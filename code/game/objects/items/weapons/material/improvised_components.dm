@@ -87,7 +87,7 @@
 		if (1)
 			if(istype(W, /obj/item/stack/cable_coil))
 				var/obj/item/stack/cable_coil = W
-				if(cable_coil.amount == 30) //full cabel from vending machine
+				if(cable_coil.amount == 3) //full cabel from vending machine
 					qdel(W)
 					to_chat(user, "You're changing the wiring of circular saw")
 					making_chainsaw_step = 2
@@ -99,7 +99,7 @@
 		if (3)
 			if(istype(W, /obj/item/stack/material/plasteel))
 				var/obj/item/stack/material/plasteel = W
-				if (plasteel.amount == 10)
+				if (plasteel.amount == 5)
 					qdel(W)
 					to_chat(user, "You're making the chainsaw shell")
 					making_chainsaw_step = 4
