@@ -109,106 +109,29 @@ var/datum/robolimb/basic_robolimb
 	icon = 'icons/mob/human_races/cyberlimbs/veymed/veymed_skrell.dmi'
 	restricted_to = list(SPECIES_SKRELL)
 
-// /datum/robolimb/bishop
-// 	company = "Bishop"
-// 	desc = "This limb has a white polymer casing with blue holo-displays."
-// 	icon = 'icons/mob/human_races/cyberlimbs/bishop/bishop_main.dmi'
-// 	unavailable_at_fab = 1
-
-// /datum/robolimb/bishop/alt
-// 	company = "Bishop Alt."
-// 	icon = 'icons/mob/human_races/cyberlimbs/bishop/bishop_alt.dmi'
-// 	applies_to_part = list(BP_HEAD)
-// 	unavailable_at_fab = 1
-
-// /datum/robolimb/bishop/alt/monitor
-// 	company = "Bishop Monitor."
-// 	icon = 'icons/mob/human_races/cyberlimbs/bishop/bishop_monitor.dmi'
-// 	restricted_to = list(SPECIES_IPC)
-// 	unavailable_at_fab = 1
-
-/datum/robolimb/hephaestus
-	company = "Hephaestus Industries"
-	desc = "This limb has a militaristic black and green casing with gold stripes."
-	icon = 'icons/mob/human_races/cyberlimbs/hephaestus/hephaestus_main.dmi'
-	unavailable_to_build = 1
-
-/datum/robolimb/hephaestus/alt
-	company = "Hephaestus Alt."
-	icon = 'icons/mob/human_races/cyberlimbs/hephaestus/hephaestus_alt1.dmi'
-	applies_to_part = list(BP_HEAD)
-	unavailable_to_build = 1
-
-// /datum/robolimb/hesphiastos/alt/monitor
-// 	company = "Hephaestus Monitor."
-// 	icon = 'icons/mob/human_races/cyberlimbs/hephaestus/hephaestus_monitor.dmi'
-// 	restricted_to = list(SPECIES_IPC)
-// 	can_eat = null
-// 	unavailable_at_fab = 1
-
-<<<<<<< HEAD
-=======
-/datum/robolimb/zenghu
-	company = "Zeng-Hu"
-	desc = "This limb has a rubbery fleshtone covering with visible seams."
-	icon = 'icons/mob/human_races/cyberlimbs/zenghu/zenghu_main.dmi'
+//CYBERSOLUTIONS
+/datum/robolimb/cybersolutions
+	company = "Cyber Solutions"
+	desc = "This limb is grey and rough, with little in the way of aesthetic."
+	icon = 'icons/mob/human_races/cyberlimbs/cybersolutions/cybersolutions_main.dmi'
 	can_eat = 1
-	unavailable_at_fab = 1
-	restricted_to = list(SPECIES_HUMAN, SPECIES_IPC)
+	skintone = 1
+	unavailable_to_build = 1
+	restricted_to = list(SPECIES_HUMAN)
+	species_cannot_use = list(SPECIES_DIONA, SPECIES_VOX, SPECIES_PROMETHEAN, SPECIES_UNATHI, SPECIES_TAJARA, SPECIES_SKRELL)
 
->>>>>>> parent of 9ec93edae9 (Grand IPC purge.)
-/datum/robolimb/xion
- 	company = "Xion"
- 	desc = "This limb has a minimalist black and red casing."
- 	icon = 'icons/mob/human_races/cyberlimbs/xion/xion_main.dmi'
- 	unavailable_to_build = 1
+/datum/robolimb/cybersolutions/cybersolutions_alt1
+	company = "Cyber Solutions - Wight"
+	desc = "This limb has cheap plastic panels mounted on grey metal."
+	icon = 'icons/mob/human_races/cyberlimbs/cybersolutions/cybersolutions_alt1.dmi'
 
-/datum/robolimb/xion/alt
- 	company = "Xion Alt."
- 	icon = 'icons/mob/human_races/cyberlimbs/xion/xion_alt.dmi'
- 	applies_to_part = list(BP_HEAD)
- 	unavailable_to_build = 1
+/datum/robolimb/cybersolutions/cybersolutions_alt2
+	company = "Cyber Solutions - Outdated"
+	desc = "This limb is of severely outdated design; there's no way it's comfortable or very functional to use."
+	icon = 'icons/mob/human_races/cyberlimbs/cybersolutions/cybersolutions_alt2.dmi'
 
-//  /datum/robolimb/xion/alt/monitor
-// 	company = "Xion Monitor."
-// 	icon = 'icons/mob/human_races/cyberlimbs/xion/xion_monitor.dmi'
-// 	restricted_to = list(SPECIES_IPC)
-// 	can_eat = null
-// 	unavailable_at_fab = 1
-
-
-
-// /datum/robolimb/wardtakahashi
-// 	company = "Ward-Takahashi"
-// 	desc = "This limb features sleek black and white polymers."
-// 	icon = 'icons/mob/human_races/cyberlimbs/wardtakahashi/wardtakahashi_main.dmi'
-// 	can_eat = 1
-// 	unavailable_at_fab = 1
-
-// /datum/robolimb/wardtakahashi/alt
-// 	company = "Ward-Takahashi Alt."
-// 	icon = 'icons/mob/human_races/cyberlimbs/wardtakahashi/wardtakahashi_alt.dmi'
-// 	applies_to_part = list(BP_HEAD)
-// 	unavailable_at_fab = 1
-
-// /datum/robolimb/wardtakahashi/alt/monitor
-// 	company = "Ward-Takahashi Monitor."
-// 	icon = 'icons/mob/human_races/cyberlimbs/wardtakahashi/wardtakahashi_monitor.dmi'
-// 	restricted_to = list(SPECIES_IPC)
-// 	can_eat = null
-// 	unavailable_at_fab = 1
-
-// /datum/robolimb/morpheus
-// 	company = "Morpheus"
-// 	desc = "This limb is simple and functional; no effort has been made to make it look human."
-// 	icon = 'icons/mob/human_races/cyberlimbs/morpheus/morpheus_main.dmi'
-// 	restricted_to = list(SPECIES_IPC)
-// 	use_eye_icon = "blank_eyes"
-// 	unavailable_at_fab = 1
-
-// /datum/robolimb/morpheus/alt
-// 	company = "Morpheus Alt."
-// 	icon = 'icons/mob/human_races/cyberlimbs/morpheus/morpheus_alt.dmi'
-// 	applies_to_part = list(BP_HEAD)
-// 	unavailable_at_fab = 1
-
+/datum/robolimb/cybersolutions/cybersolutions_alt3
+	company = "Cyber Solutions - Array"
+	desc = "This limb is simple and functional; array of sensors on a featureless case."
+	icon = 'icons/mob/human_races/cyberlimbs/cybersolutions/cybersolutions_alt3.dmi'
+	parts = list(BP_HEAD)
