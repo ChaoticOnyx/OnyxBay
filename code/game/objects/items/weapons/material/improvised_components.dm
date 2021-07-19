@@ -80,36 +80,36 @@
 		return
 	update_icon(user)
 
-/obj/item/weapon/circular_saw/var/making_chainsaw_step = 1
+/obj/item/weapon/circular_saw/var/step = 1
 
 /obj/item/weapon/circular_saw/attackby(obj/item/W, mob/user)
-	switch (making_chainsaw_step)
+	switch (step)
 		if (1)
 			if(istype(W, /obj/item/stack/cable_coil))
 				var/obj/item/stack/cable_coil = W
 				if(cable_coil.amount == 3) //full cabel from vending machine
 					qdel(W)
 					to_chat(user, "You're changing the wiring of circular saw")
-					making_chainsaw_step = 2
+					step = 2
 		if (2)
 			if(istype(W, /obj/item/weapon/stock_parts/capacitor/adv))
 				qdel(W)
 				to_chat(user, "adding the capacitor for future chainsaw")
-				making_chainsaw_step = 3
+				step = 3
 		if (3)
 			if(istype(W, /obj/item/stack/material/plasteel))
 				var/obj/item/stack/material/plasteel = W
 				if (plasteel.amount == 5)
 					qdel(W)
 					to_chat(user, "You're making the chainsaw shell")
-					making_chainsaw_step = 4
+					step = 4
 		if (4)
 			if(isWelder(W))
 				var/obj/item/weapon/weldingtool/WT = W
 				if(istype(WT) && WT.remove_fuel(5,user))
 					playsound(user,'sound/effects/flare.ogg', 50, 5, 7)
 					to_chat(user, "You're welding and complete the chainsaw")
-					making_chainsaw_step = 1
+					step = 1
 					user.put_in_hands(new /obj/item/weapon/material/twohanded/chainsaw)
 					qdel(src)
 					return
