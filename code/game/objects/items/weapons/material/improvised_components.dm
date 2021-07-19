@@ -87,14 +87,14 @@ var/step = 1
 		if (1)
 			if(istype(W, /obj/item/stack/cable_coil))
 				var/obj/item/stack/cable_coil = W
-				if(cable_coil.amount == 3) //full cabel from vending machine
+				if(cable_coil.amount == 3) 
 					qdel(W)
-					to_chat(user, "You're changing the wiring of circular saw")
+					to_chat(user, "You're changing the wiring for \the [src].")
 					step = 2
 		if (2)
 			if(istype(W, /obj/item/weapon/stock_parts/capacitor/adv))
 				qdel(W)
-				to_chat(user, "adding the capacitor for future chainsaw")
+				to_chat(user, "Adding \the [W] capacitor for a future chainsaw.")
 				step = 3
 		if (3)
 			if(istype(W, /obj/item/stack/material/plasteel))
