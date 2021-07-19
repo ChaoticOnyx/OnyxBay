@@ -134,4 +134,4 @@ var/datum/robolimb/basic_robolimb
 	company = "Cyber Solutions - Array"
 	desc = "This limb is simple and functional; array of sensors on a featureless case."
 	icon = 'icons/mob/human_races/cyberlimbs/cybersolutions/cybersolutions_alt3.dmi'
-	parts = list(BP_HEAD)
+	applies_to_part = list(BP_HEAD)
