@@ -145,7 +145,7 @@
 	name = "Corgi meat"
 	desc = "Tastes like... well you know..."
 
-/mob/living/simple_animal/corgi/show_inv(mob/user as mob)
+/mob/living/simple_animal/corgi/show_inv(mob/user)
 	user.set_machine(src)
 	if(user.stat) return
 
@@ -165,14 +165,13 @@
 
 	//Is the usr's mob type able to do this?
 	if(ishuman(usr) || issmall(usr) || isrobot(usr))
-
 		//Removing from inventory
 		if(href_list["remove_inv"])
 			var/remove_from = href_list["remove_inv"]
 			switch(remove_from)
 				if("hat")
 					if(hat)
-						hat.loc = src.loc
+						hat.loc = loc
 						hat = null
 						overlays.Cut()
 					else
