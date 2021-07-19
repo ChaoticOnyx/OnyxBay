@@ -101,14 +101,14 @@ var/step = 1
 				var/obj/item/stack/material/plasteel = W
 				if (plasteel.amount == 5)
 					qdel(W)
-					to_chat(user, "You're making the chainsaw shell")
+					to_chat(user, "You make the chainsaw shell.")
 					step = 4
 		if (4)
 			if(isWelder(W))
 				var/obj/item/weapon/weldingtool/WT = W
 				if(istype(WT) && WT.remove_fuel(5,user))
 					playsound(user,'sound/effects/flare.ogg', 50, 5, 7)
-					to_chat(user, "You're welding and complete the chainsaw")
+					to_chat(user, "You finish making the circular saw.")
 					step = 1
 					user.put_in_hands(new /obj/item/weapon/material/twohanded/chainsaw)
 					qdel(src)
