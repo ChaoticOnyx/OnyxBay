@@ -207,7 +207,7 @@
 
 	/obj/item/weapon/material/twohanded/chainsaw/attack_self(mob/living/user)
 		if (chainsaw_active)
-			src.visible_message("<span class='warning'>[usr] turns off the chainsaw!</span>")
+			visible_message(SPAN("warning", "[usr] turns off the chainsaw!"))
 			playsound(user,'sound/items/chainsaw_stop.ogg', 50, 5, 7)
 			base_icon = "chainsaw_off"
 			desc = "Using for sawing wood more effective"
