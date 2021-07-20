@@ -13,6 +13,7 @@
 	var/active_max_bright = 0.3
 	var/active_outer_range = 1.6
 	var/brightness_color
+	var/needs_blocking = TRUE
 
 /obj/item/weapon/melee/energy/proc/activate(mob/living/user)
 	if(active)
@@ -80,7 +81,7 @@
 /obj/item/weapon/melee/energy/handle_shield(mob/user, damage, atom/damage_source = null, mob/attacker = null, def_zone = null, attack_text = "the attack")
 	if(!active)
 		return 0
-	if(!user.blocking)
+	if(!user.blocking && needs_blocking)
 		return 0
 	if(user.incapacitated(INCAPACITATION_DISABLED))
 		return 0
@@ -363,3 +364,9 @@
 			host.embedded -= src
 			host.drop_from_inventory(src)
 		QDEL_IN(src, 0)
+
+/obj/item/weapon/melee/energy/sword/robot
+	icon_state = "sword0"
+	blade_color = "red"
+	brightness_color = "#ff5959"
+	needs_blocking = FALSE
