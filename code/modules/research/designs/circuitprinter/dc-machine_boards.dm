@@ -12,6 +12,20 @@
 	build_path = /obj/item/weapon/circuitboard/arcade/orion_trail
 	sort_string = "MABAA"
 
+/datum/design/circuit/vendomat
+	name = "vendomat"
+	id = "vendomat"
+	req_tech = list(TECH_DATA = 1)
+	build_path = /obj/item/weapon/circuitboard/vendomat
+	sort_string = "MAABA"
+
+/datum/design/circuit/smartfridge
+	name = "smartfridge"
+	id = "smartfridge"
+	req_tech = list(TECH_DATA = 1)
+	build_path = /obj/item/weapon/circuitboard/smartfridge
+	sort_string = "MAAAB"
+
 /datum/design/circuit/resleever
 	name = "neural lace resleever"
 	id = "resleever"
