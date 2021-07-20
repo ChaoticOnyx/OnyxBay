@@ -254,7 +254,7 @@ for reference:
 		s.set_up(3, 1, src)
 		s.start()
 
-		explosion(src.loc,-1,-1,0)
+		explosion(get_turf(src.loc),-1,-1,0)
 		if(src)
 			qdel(src)
 

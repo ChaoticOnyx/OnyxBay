@@ -378,7 +378,7 @@ GLOBAL_LIST_EMPTY(music_players)
 	walk_to(src, 0)
 	src.visible_message(SPAN_DANGER("\The [src] blows apart!"), 1)
 
-	explosion(src.loc, 1, 1, 1, rand(3, 4), 1)
+	explosion(get_turf(src.loc), 1, 1, 1, rand(3, 4), 1)
 
 	var/datum/effect/effect/system/spark_spread/s = new /datum/effect/effect/system/spark_spread
 	s.set_up(3, 1, src)
