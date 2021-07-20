@@ -14,6 +14,7 @@
 
 /turf/simulated/wall/cult
 	icon_state = "cult"
+	var/previous_type = /turf/simulated/wall
 
 /turf/simulated/wall/cult/New(newloc, reinforce = 0)
 	..(newloc, MATERIAL_CULT, reinforce ? MATERIAL_REINFORCED_CULT : null)
