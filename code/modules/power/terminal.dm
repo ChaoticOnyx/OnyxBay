@@ -7,10 +7,9 @@
 	icon_state = "term"
 	desc = "It's an underfloor wiring terminal for power equipment."
 	level = 1
-	layer = EXPOSED_WIRE_TERMINAL_LAYER
+	layer = WIRE_TERMINAL_LAYER
 	var/obj/machinery/power/master = null
 	anchored = 1
-
 
 /obj/machinery/power/terminal/New()
 	..()
