@@ -13,6 +13,12 @@
 
 /obj/item/organ/internal/appendix/Process()
 	..()
+	if(germ_level > INFECTION_LEVEL_ONE + 100)
+		if(prob(1))
+			inflamed++
+			if(inflamed == 1)
+				update_icon()
+
 	if(inflamed && owner)
 		inflamed++
 		if(prob(5))
@@ -44,7 +50,7 @@
 
 				var/obj/item/organ/external/E = owner.get_organ(parent_organ)
 				E.sever_artery()
-				E.germ_level = max(INFECTION_LEVEL_TWO, E.germ_level)
+				E.germ_level = max(INFECTION_LEVEL_TWO + 100, E.germ_level)
 				owner.adjustToxLoss(25)
 				removed()
 				qdel(src)

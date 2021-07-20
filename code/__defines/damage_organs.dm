@@ -78,8 +78,9 @@
 #define GERM_LEVEL_MOVE_CAP 200 // Maximum germ level you can reach by running around.
 
 #define INFECTION_LEVEL_ONE   100
-#define INFECTION_LEVEL_TWO   500
-#define INFECTION_LEVEL_THREE 1000
+#define INFECTION_LEVEL_TWO   250
+#define INFECTION_LEVEL_THREE 550
+#define INFECTION_LEVEL_FOUR  850 // Organ death.
 
 //Blood levels. These are percentages based on the species blood_volume far.
 #define BLOOD_VOLUME_SAFE    85

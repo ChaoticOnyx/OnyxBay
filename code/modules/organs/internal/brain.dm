@@ -153,6 +153,12 @@
 		handle_disabilities()
 		handle_damage_effects()
 
+		if(germ_level > INFECTION_LEVEL_ONE && prob(1))
+			owner.hallucination(120, 50)
+		if(germ_level > INFECTION_LEVEL_TWO && prob(1))
+			owner.hallucination(120, 50)
+			owner.Stun(2)
+
 		// Brain damage from low oxygenation or lack of blood.
 		if(owner.should_have_organ(BP_HEART))
 

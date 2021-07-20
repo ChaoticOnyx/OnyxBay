@@ -43,6 +43,15 @@
 		if(damage >= min_bruised_damage && prob((damage / max_damage) * 100))
 			functioning = FALSE
 
+		if(germ_level > INFECTION_LEVEL_ONE && prob(1))
+			functioning = FALSE
+
+		if(germ_level > INFECTION_LEVEL_TWO && prob(5))
+			functioning = FALSE
+
+		if(germ_level > INFECTION_LEVEL_THREE && prob(10))
+			functioning = FALSE
+
 		if(functioning)
 			for(var/mob/living/M in contents)
 				if(M.stat == DEAD)

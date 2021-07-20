@@ -225,11 +225,11 @@ REAGENT SCANNER
 					break
 			if(E.has_infected_wound())
 				limb_damaged = TRUE
-				if(E.germ_level >= INFECTION_LEVEL_THREE)
-					limb_result = "[limb_result] \[<span class='danger'>extreme infection</span>\]"
+				if(E.germ_level >= INFECTION_LEVEL_FOUR)
+					limb_result = "[limb_result] \[[SPAN_DANGER("extreme infection")]\]"
 					found_extreme_infection = TRUE
 				else
-					limb_result = "[limb_result] \[<span class='danger'>infection</span>\]"
+					limb_result = "[limb_result] \[[SPAN_DANGER("infection")]\]"
 			if(!found_bleed && (E.status & ORGAN_ARTERY_CUT))
 				found_bleed = TRUE
 			if(!found_tendon && (E.status & ORGAN_TENDON_CUT))

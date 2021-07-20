@@ -240,6 +240,20 @@
 
 	duration = CAUTERIZE_DURATION
 
+/datum/surgery_step/generic/cauterize/proc/is_desinfection_cauterize(obj/item/organ/external/affected)
+	if(affected.open() && affected.get_incision(1))
+		return FALSE
+
+	if(affected.germ_level < INFECTION_LEVEL_TWO)
+		return FALSE
+
+	if(affected.is_stump())
+		if(affected.status & ORGAN_ARTERY_CUT)
+			return FALSE
+
+	return TRUE
+
+
 /datum/surgery_step/generic/cauterize/can_use(mob/living/user, mob/living/carbon/human/target, target_zone, obj/item/tool)
 
 	if(target_zone == BP_MOUTH || target_zone == BP_EYES)
@@ -251,9 +265,12 @@
 		return FALSE
 	if(BP_IS_ROBOTIC(affected))
 		return FALSE
+	if(is_desinfection_cauterize(affected))
+		return TRUE
 	if(!affected.get_incision(1))
-		to_chat(user, "<span class='warning'>There are no incisions on [target]'s [affected.name] that can be closed cleanly with \the [tool]!</span>")
+		to_chat(user, SPAN_WARNING("There are no incisions on [target]'s [affected.name] that can be closed cleanly with \the [tool]!"))
 		return SURGERY_FAILURE
+
 	if(affected.is_stump()) // Copypasting some stuff here to avoid having to modify ..() for a single surgery
 		return affected.status & ORGAN_ARTERY_CUT
 	else
@@ -262,21 +279,39 @@
 
 /datum/surgery_step/generic/cauterize/begin_step(mob/user, mob/living/carbon/human/target, target_zone, obj/item/tool)
 	var/obj/item/organ/external/affected = target.get_organ(target_zone)
-	var/datum/wound/cut/W = affected.get_incision()
-	user.visible_message("[user] is beginning to cauterize[W ? " \a [W.desc] on" : ""] \the [target]'s [affected.name] with \the [tool]." , \
-	"You are beginning to cauterize[W ? " \a [W.desc] on" : ""] \the [target]'s [affected.name] with \the [tool].")
-	target.custom_pain("Your [affected.name] is being burned!",40,affecting = affected)
+	if(is_desinfection_cauterize(affected))
+		user.visible_message("[user] is beginning to burn out infected flesh on \the [target]'s [affected.name] with \the [tool]." , \
+		"You are beginning to cauterize infected flesh on \the [target]'s [affected.name] with \the [tool].")
+		target.custom_pain("Your [affected.name] is being burned!", 55, affecting = affected)
+	else
+		var/datum/wound/cut/W = affected.get_incision()
+		user.visible_message("[user] is beginning to cauterize[W ? " \a [W.desc] on" : ""] \the [target]'s [affected.name] with \the [tool]." , \
+		"You are beginning to cauterize[W ? " \a [W.desc] on" : ""] \the [target]'s [affected.name] with \the [tool].")
+		target.custom_pain("Your [affected.name] is being burned!", 40, affecting = affected)
 	..()
 
 /datum/surgery_step/generic/cauterize/end_step(mob/living/user, mob/living/carbon/human/target, target_zone, obj/item/tool)
 	var/obj/item/organ/external/affected = target.get_organ(target_zone)
-	var/datum/wound/cut/W = affected.get_incision()
-	user.visible_message("<span class='notice'>[user] cauterizes[W ? " \a [W.desc] on" : ""] \the [target]'s [affected.name] with \the [tool].</span>", \
-	"<span class='notice'>You cauterize[W ? " \a [W.desc] on" : ""] \the [target]'s [affected.name] with \the [tool].</span>")
-	if(W)
-		W.close()
-	if(affected.is_stump())
-		affected.status &= ~ORGAN_ARTERY_CUT
+
+	if(is_desinfection_cauterize(affected))
+		user.visible_message(SPAN_NOTICE("[user] burns out infected flesh on \the [target]'s [affected.name] with \the [tool]."), \
+		SPAN_NOTICE("You cauterize infected flesh on \the [target]'s [affected.name] with \the [tool]."))
+		var/removed = Clamp(affected.germ_level - INFECTION_LEVEL_TWO, 0, rand(125, 160))
+		if(!removed)
+			return
+
+		affected.germ_level -= removed
+		affected.take_external_damage(0, removed / 10, used_weapon = tool)
+	else
+		var/datum/wound/cut/W = affected.get_incision()
+
+		var/message = SPAN_NOTICE("[user] cauterizes[W ? " a [W.desc] on" : ""] \the [target]'s [affected.name] with \the [tool].")
+		var/self_message = SPAN_NOTICE("You cauterize[W ? " a [W.desc] on" : ""] \the [target]'s [affected.name] with \the [tool].")
+		user.visible_message(message, self_message)
+		if(W)
+			W.close()
+		if(affected.is_stump())
+			affected.status &= ~ORGAN_ARTERY_CUT
 
 /datum/surgery_step/generic/cauterize/fail_step(mob/living/user, mob/living/carbon/human/target, target_zone, obj/item/tool)
 	var/obj/item/organ/external/affected = target.get_organ(target_zone)

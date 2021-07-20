@@ -130,8 +130,10 @@ var/list/organ_cache = list()
 			take_general_damage(rand(1,3))
 		germ_level += rand(2,6)
 		if(germ_level >= INFECTION_LEVEL_TWO)
-			germ_level += rand(2,6)
+			germ_level += rand(4,8)
 		if(germ_level >= INFECTION_LEVEL_THREE)
+			germ_level += rand(1,2)
+		if(germ_level >= INFECTION_LEVEL_FOUR)
 			die()
 
 	else if(owner && owner.bodytemperature >= 170)	//cryo stops germs from moving and doing their bad stuffs
@@ -175,29 +177,35 @@ var/list/organ_cache = list()
 
 	var/antibiotics = owner.chem_effects[CE_ANTIBIOTIC]
 
-	if (germ_level > 0 && germ_level < INFECTION_LEVEL_ONE/2 && prob(virus_immunity*0.3))
+	if(germ_level > 0 && germ_level < INFECTION_LEVEL_ONE/2 && prob(virus_immunity * 0.3))
 		germ_level--
 
-	if (germ_level >= INFECTION_LEVEL_ONE/2)
-		//aiming for germ level to go from ambient to INFECTION_LEVEL_TWO in an average of 15 minutes
-		if(antibiotics < 5 && prob(round(germ_level/6 * owner.immunity_weakness() * 0.01)))
-			if(virus_immunity > 0)
-				germ_level += round(1/virus_immunity, 1) // Immunity starts at 100. This doubles infection rate at 50% immunity. Rounded to nearest whole.
-			else // Will only trigger if immunity has hit zero. Once it does, 10x infection rate.
-				germ_level += 10
+	if(germ_level >= INFECTION_LEVEL_ONE/2)
+		if(antibiotics < 5 && prob(round(germ_level/(INFECTION_LEVEL_TWO*0.015) * owner.immunity_weakness())))
+			germ_level += round(M_EULER**(germ_level/1000) * owner.immunity_weakness())
+		else // Will only trigger if immunity has hit zero. Once it does, 10x infection rate.
+			germ_level += round(M_EULER**(germ_level/1000) * owner.immunity_weakness()) * 10
 
 	if(germ_level >= INFECTION_LEVEL_ONE)
-		var/fever_temperature = (owner.species.heat_level_1 - owner.species.body_temperature - 5)* min(germ_level/INFECTION_LEVEL_TWO, 1) + owner.species.body_temperature
-		owner.bodytemperature += between(0, (fever_temperature - T20C)/BODYTEMP_COLD_DIVISOR + 1, fever_temperature - owner.bodytemperature)
+		if(owner.bodytemperature - T0C < 45.5)
+			owner.bodytemperature += germ_level / 170
 
-	if (germ_level >= INFECTION_LEVEL_TWO)
+	if(germ_level >= INFECTION_LEVEL_TWO)
 		var/obj/item/organ/external/parent = owner.get_organ(parent_organ)
 		//spread germs
-		if (antibiotics < 5 && parent.germ_level < germ_level && ( parent.germ_level < INFECTION_LEVEL_ONE*2 || prob(owner.immunity_weakness() * 0.3) ))
+		if(antibiotics < 5 && parent.germ_level < germ_level && ( parent.germ_level < INFECTION_LEVEL_ONE*2 || prob(owner.immunity_weakness() * 0.3) ))
 			parent.germ_level++
 
-		if (prob(3))	//about once every 30 seconds
+		if(prob(3))	//about once every 30 seconds
 			take_general_damage(1,silent=prob(30))
+
+	if(germ_level >= INFECTION_LEVEL_THREE)
+		if(prob(6))
+			take_general_damage(1, silent=prob(20))
+
+	if(germ_level >= INFECTION_LEVEL_FOUR)
+		if(prob(12))
+			take_general_damage(1, silent=prob(15))
 
 /obj/item/organ/proc/handle_rejection()
 	// Process unsuitable transplants. TODO: consider some kind of
@@ -240,27 +248,23 @@ var/list/organ_cache = list()
 		else if(status == "mechanical")
 			robotize()
 
-//Germs
 /obj/item/organ/proc/handle_antibiotics()
-	if(!owner || !germ_level)
-		return
-	var/antibiotics = owner.chem_effects[CE_ANTIBIOTIC]
-	if (!antibiotics)
+	if(!owner || !germ_level || BP_IS_ROBOTIC(src))
 		return
 
-	if (germ_level < INFECTION_LEVEL_ONE)
-		germ_level = 0	//cure instantly
-	else if (germ_level < INFECTION_LEVEL_TWO)
-		germ_level -= 5	//at germ_level == 500, this should cure the infection in 5 minutes
-	else
-		germ_level -= 3 //at germ_level == 1000, this will cure the infection in 10 minutes
+	var/antibiotics = owner.chem_effects[CE_ANTIBIOTIC]
+	if(!antibiotics)
+		return
+
+	germ_level -= Interpolate(antibiotics, 1, germ_level / (INFECTION_LEVEL_FOUR + 400))
+	if(germ_level < INFECTION_LEVEL_ONE)
+		germ_level = 0 // cure instantly
 
 /obj/item/organ/proc/take_general_damage(amount, silent = FALSE)
 	CRASH("Not Implemented")
 
 /obj/item/organ/proc/heal_damage(amount)
 	damage = between(0, damage - round(amount, 0.1), max_damage)
-
 
 /obj/item/organ/proc/robotize() //Being used to make robutt hearts, etc
 	status = ORGAN_ROBOTIC
@@ -347,20 +351,26 @@ var/list/organ_cache = list()
 		else
 			. += "Destroyed"
 	switch (germ_level)
-		if (INFECTION_LEVEL_ONE to INFECTION_LEVEL_ONE + 200)
-			. +=  "Mild Infection"
-		if (INFECTION_LEVEL_ONE + 200 to INFECTION_LEVEL_ONE + 300)
-			. +=  "Mild Infection+"
-		if (INFECTION_LEVEL_ONE + 300 to INFECTION_LEVEL_ONE + 400)
-			. +=  "Mild Infection++"
-		if (INFECTION_LEVEL_TWO to INFECTION_LEVEL_TWO + 200)
-			. +=  "Acute Infection"
-		if (INFECTION_LEVEL_TWO + 200 to INFECTION_LEVEL_TWO + 300)
-			. +=  "Acute Infection+"
-		if (INFECTION_LEVEL_TWO + 300 to INFECTION_LEVEL_TWO + 400)
-			. +=  "Acute Infection++"
-		if (INFECTION_LEVEL_THREE to INFINITY)
-			. +=  "Septic"
+		if(INFECTION_LEVEL_ONE to INFECTION_LEVEL_ONE + 50)
+			. += "Mild Infection I"
+		if(INFECTION_LEVEL_ONE + 50 to INFECTION_LEVEL_ONE + 100)
+			. += "Mild Infection II"
+		if(INFECTION_LEVEL_ONE + 100 to INFECTION_LEVEL_TWO)
+			. += "Mild Infection III"
+		if(INFECTION_LEVEL_TWO to INFECTION_LEVEL_TWO + 100)
+			. += "Acute Infection I"
+		if(INFECTION_LEVEL_TWO + 100 to INFECTION_LEVEL_TWO + 200)
+			. += "Acute Infection II"
+		if(INFECTION_LEVEL_TWO + 200 to INFECTION_LEVEL_THREE)
+			. += "Acute Infection III"
+		if(INFECTION_LEVEL_THREE to INFECTION_LEVEL_THREE + 100)
+			. += "Septic I"
+		if(INFECTION_LEVEL_THREE + 100 to INFECTION_LEVEL_THREE + 200)
+			. += "Septic II"
+		if(INFECTION_LEVEL_THREE + 200 to INFECTION_LEVEL_FOUR)
+			. += "Septic III"
+		if(INFECTION_LEVEL_FOUR to INFINITY)
+			. += "Gangrene"
 	if(rejecting)
 		. += "Genetic Rejection"
 
