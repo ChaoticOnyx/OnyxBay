@@ -74,19 +74,36 @@ Used In File(s): \code\game\objects\items\devices\uplinks.dm
         </div>
     {{/for}}
 {{else data.menu == 3}}
+	<H2><span class="white">Accepted Contracts:</span></H2>
+	<br>
+	<table style="width:100%">
+		<tr>
+			<th>Title</th>
+			<th style="width:60%">Description</th>
+			<th style="width:20%">Confirm</th>
+		</tr>
+	{{for data.accepted_contracts}}
+		<tr class="candystripe">
+			<td style="text-align: center;">{{:value.name}}</td>
+			<td style="text-indent: 20px; padding: 5px;">{{:value.desc}}</td>
+			<td style="text-align: center;">{{:helper.link('Confirm', 'gear', {'confirm_contract' : value.ref}, value.can_confirm ? null : 'disabled')}}</td>
+		</tr>
+	{{/for}}
+	</table>
+	<br>
 	<H2><span class="white">Avaliable Contracts:</span></H2>
 	<br>
 	<table style="width:100%">
 		<tr>
 			<th>Title</th>
-			<th style="width:68%">Description</th>
-			<th style="width:12%">Reward</th>
+			<th style="width:62%">Description</th>
+			<th style="width:18%">Reward</th>
 		</tr>
 	{{for data.contracts}}
 		<tr class="candystripe">
-			<td style="text-align: center;">{{:value[0]}}</td>
-			<td style="text-indent: 20px; padding: 5px;">{{:value[1]}}</td>
-			<td style="text-align: center;">{{:value[2]}}</td>
+			<td style="text-align: center;">{{:value.name}}</td>
+			<td style="text-indent: 20px; padding: 5px;">{{:value.desc}}</td>
+			<td style="text-align: center;">{{:helper.link(value.reward, 'gear', {'accept_contract' : value.ref}, value.can_take ? null : 'disabled')}} </td>
 		</tr>
 	{{/for}}
 	</table>

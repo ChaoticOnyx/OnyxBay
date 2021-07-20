@@ -44,17 +44,37 @@ GLOBAL_LIST_INIT(syndicate_factions, list(
 	var/completed = FALSE
 	var/datum/mind/completed_by
 	var/unique = FALSE
+	var/can_confirm = FALSE
 
-	var/intent
+	var/difficulty = CONTRACT_DIFFICULTY_NONE
 	var/datum/mind/target_mind
+	var/datum/mind/accepted_by
+	var/obj/item/device/uplink/accepted_by_uplink
+
+	var/timer
+	var/required_timer = TRUE
+	var/timer_time = 10 MINUTES
 
 	var/reason
 	var/list/reason_list = list()
 	var/datum/contract_organization/organization
 
 /datum/antag_contract/New(datum/contract_organization/contract_organization, reason, datum/mind/target)
-	ASSERT(intent)
+	if(required_timer && !timer)
+		timer = addtimer(CALLBACK(src, .proc/on_expired), timer_time, TIMER_STOPPABLE)
 	return src
+
+/datum/antag_contract/proc/can_take_contract(datum/mind/M, obj/item/device/uplink/uplink)
+	return TRUE
+
+/datum/antag_contract/proc/on_expired()
+	remove()
+	return
+
+/datum/antag_contract/proc/on_confirm_action()
+	if(can_confirm)
+		return TRUE
+	return FALSE
 
 /datum/antag_contract/proc/ban_non_crew_antag()
 	for(var/antag_type in list(MODE_MEME, MODE_BLOB, MODE_DEITY, MODE_WIZARD, MODE_RAIDER, MODE_NINJA, MODE_NUKE, MODE_ACTOR, MODE_XENOMORPH, MODE_COMMANDO))
@@ -92,8 +112,11 @@ GLOBAL_LIST_INIT(syndicate_factions, list(
 	return
 
 /datum/antag_contract/proc/create_explain_text(target_and_task)
+	var/time_desc = ""
+	if(required_timer)
+		time_desc = " The contract will automatically closed in [duration2stationtime(timer_time)]. Hurry up!"
 	desc = "My client is [organization.name], [reason]. They have information that the target is located somwhere aboard [GLOB.using_map.station_name]. \
-	Your mission[prob(25) ? ", should you choose to accept it, is to" : " is to"] [target_and_task] The reward for closing this contract is [reward] TC."
+	Your mission[prob(25) ? ", should you choose to accept it, is to" : " is to"] [target_and_task] The reward for closing this contract is [reward] TC.[time_desc]"
 
 /datum/antag_contract/proc/can_place()
 	if(unique)
@@ -108,6 +131,10 @@ GLOBAL_LIST_INIT(syndicate_factions, list(
 		organization.contracts |= src
 
 /datum/antag_contract/proc/remove()
+	if(timer)
+		qdel(timer)
+	if(accepted_by_uplink && (src in accepted_by_uplink.accepted_contracts))
+		accepted_by_uplink.accepted_contracts.Remove(src)
 	GLOB.all_contracts -= src
 	if(organization)
 		organization.contracts -= src
@@ -124,6 +151,12 @@ GLOBAL_LIST_INIT(syndicate_factions, list(
 	var/datum/mind/M = close_uplink.uplink_owner
 	completed = TRUE
 	completed_by = M
+
+	if(accepted_by_uplink && (src in accepted_by_uplink.accepted_contracts))
+		accepted_by_uplink.accepted_contracts.Remove(src)
+
+	if(timer)
+		qdel(timer)
 
 	if(M)
 		M.completed_contracts++
@@ -150,7 +183,8 @@ GLOBAL_LIST_INIT(syndicate_factions, list(
 /datum/antag_contract/implant
 	name = "Implant"
 	reward = 4
-	intent = CONTRACT_IMPACT_MILITARY
+	timer_time = 20 MINUTES
+	difficulty = CONTRACT_DIFFICULTY_MEDIUM
 
 /datum/antag_contract/implant/New(datum/contract_organization/contract_organization, reason, datum/mind/target)
 	organization = contract_organization
@@ -192,19 +226,17 @@ GLOBAL_LIST_INIT(syndicate_factions, list(
 				target_mind = null
 				H = null
 				continue
-			name = "[name] [H.real_name]"
 			break
 	else
 		if(!Creason)
 			skip_antag_role(TRUE)
 		H = target.current
 		if(!istype(H))
-			remove()
 			return
 		target_mind = target
-		name = "[name] [H.real_name]"
 	if(!istype(H))
 		return
+	name = "[name] [H.real_name]"
 	create_explain_text("implant [H.real_name] with a spying implant (don't forget to authorize it first).")
 
 /datum/antag_contract/implant/can_place()
@@ -223,7 +255,8 @@ GLOBAL_LIST_INIT(syndicate_factions, list(
 /datum/antag_contract/item/steal
 	name = "Steal"
 	reward = 3
-	intent = CONTRACT_IMPACT_OPERATION
+	difficulty = CONTRACT_DIFFICULTY_EASY
+	timer_time = 15 MINUTES
 	var/target_desc
 	var/target_type
 
@@ -281,7 +314,8 @@ GLOBAL_LIST_INIT(syndicate_factions, list(
 /datum/antag_contract/item/steal_ai
 	name = "Steal an active AI"
 	reward = 7
-	intent = CONTRACT_IMPACT_HIJACK
+	difficulty = CONTRACT_DIFFICULTY_EXTREME
+	required_timer = FALSE
 	var/target_desc = "a functional AI"
 	var/mob/living/silicon/ai/AI
 
@@ -324,7 +358,8 @@ GLOBAL_LIST_INIT(syndicate_factions, list(
 	name = "Steal blood samples"
 	unique = TRUE
 	reward = 5
-	intent = CONTRACT_IMPACT_OPERATION | CONTRACT_IMPACT_SOCIAL
+	timer_time = 30 MINUTES
+	difficulty = CONTRACT_DIFFICULTY_MEDIUM
 	var/count
 
 /datum/antag_contract/item/blood/New(datum/contract_organization/contract_organization, reason, target)
@@ -356,20 +391,41 @@ GLOBAL_LIST_INIT(syndicate_factions, list(
 
 /datum/antag_contract/item/assassinate
 	name = "Assassinate"
-	reward = 2 // This is how expensive your life is, fellow NT employee
-	intent = CONTRACT_IMPACT_MILITARY
+	reward = 3 // This is how expensive your life is, fellow NT employee
+	difficulty = CONTRACT_DIFFICULTY_HARD
+	timer_time = 45 MINUTES
+	can_confirm = TRUE
 	var/target_real_name
 	var/detected_less_tc = FALSE
-	var/target_detected_in_STD = FALSE
 	var/obj/item/organ/internal/brain/brain
 	var/obj/item/organ/target
-	var/obj/item/alternative_target
 	var/mob/living/carbon/human/H
+	var/datum/antag_contract/protect/P
 
 /datum/antag_contract/item/assassinate/New(datum/contract_organization/contract_organization, reason, datum/mind/target)
 	organization = contract_organization
 	create_contract(reason, target)
 	..()
+	if(prob(25) && organization)
+		var/list/datum/contract_organization/COs = organization.holder.organizations
+		COs.Remove(organization)
+		P = new(pick(COs), null, target_mind, TRUE)
+		P.linked_A = src
+		if(P.can_place())
+			P.place()
+		else
+			qdel(P)
+
+/datum/antag_contract/item/assassinate/on_confirm_action()
+	. = ..()
+	if(. && accepted_by_uplink)
+		detected_less_tc = TRUE
+		complete(accepted_by_uplink)
+
+/datum/antag_contract/item/assassinate/on_expired()
+	. = ..()
+	if(P)
+		P.on_expired()
 
 /datum/antag_contract/item/assassinate/generate_antag_reasons()
 	..()
@@ -406,7 +462,6 @@ GLOBAL_LIST_INIT(syndicate_factions, list(
 				target_mind = null
 				H = null
 				continue
-			name = "[name] [target_real_name]"
 			break
 	else
 		target_mind = Ctarget
@@ -416,40 +471,28 @@ GLOBAL_LIST_INIT(syndicate_factions, list(
 		if(!istype(H))
 			return
 		target_real_name = H.real_name
-		name = "[name] [target_real_name]"
+	name = "[name] [target_real_name]"
 	if(!istype(H))
 		return
-	var/alternative_message = ""
-	alternative_target = H.get_idcard()
-	if(alternative_target)
-		alternative_message = " <b>[alternative_target], [target_real_name]'s brain in MMI, [target_real_name]'s brain</b>"
 	brain = H.organs_by_name[BP_BRAIN]
 	target = H.organs_by_name[BP_HEAD]
 	if(H.organs_by_name[BP_STACK])
 		target = H.organs_by_name[BP_STACK]
 
 	var/datum/gender/T = gender_datums[H.get_gender()]
-	create_explain_text("assassinate <b>[target_real_name]</b> and send[alternative_message] or <b>[T.his] [target.name]</b> for double pay via STD (found in <b>Devices and Tools</b>) as a proof. You must make sure that the target is completely, irreversibly dead.")
+	create_explain_text("assassinate <b>[target_real_name]</b> and press <b>\"Confirm\" in your uplink device</b> or send <b>[T.his] [target.name]</b> for double pay via STD (found in <b>Devices and Tools</b>) as a proof. You must make sure that the target is completely, irreversibly dead.")
 
 /datum/antag_contract/item/assassinate/can_place()
 	return ..() && target
 
 /datum/antag_contract/item/assassinate/check_contents(list/contents)
-	var/obj/item/device/mmi/MMI = brain?.loc
-	detected_less_tc = ((istype(MMI) && (MMI in contents)) || (brain in contents))
-	if(detected_less_tc)
-		target_detected_in_STD = TRUE
-	if(alternative_target in contents)
-		detected_less_tc = TRUE
+	detected_less_tc = !(target in contents)
 
-	if(target in contents)
-		detected_less_tc = FALSE
-
-	return ((target in contents) || (MMI in contents) || (alternative_target in contents) || (brain in contents))
+	return target in contents
 
 /datum/antag_contract/item/assassinate/complete(obj/item/device/uplink/close_uplink)
 	var/datum/mind/M = close_uplink.uplink_owner
-	if(H.stat != DEAD || ((istype(brain?.loc, /obj/item/device/mmi)) && !target_detected_in_STD))
+	if(H.stat != DEAD || istype(brain?.loc, /obj/item/device/mmi) || istype(target, /obj/item/organ/internal/stack))
 		if(M)
 			to_chat(M, SPAN("danger", "According to our information, the target ([target_real_name]) specified in the contract is still alive, don't try to deceive us or the consequences will be... Inevitable."))
 		return
@@ -465,7 +508,8 @@ GLOBAL_LIST_INIT(syndicate_factions, list(
 	name = "Dump"
 	unique = TRUE
 	reward = 5
-	intent = CONTRACT_STEAL_OPERATION
+	timer_time = 25 MINUTES
+	difficulty = CONTRACT_DIFFICULTY_EASY
 	var/sum
 
 /datum/antag_contract/item/dump/New(datum/contract_organization/contract_organization, reason, target)
@@ -495,7 +539,8 @@ GLOBAL_LIST_INIT(syndicate_factions, list(
 	name = "Steal research"
 	unique = TRUE
 	reward = 4
-	intent = CONTRACT_STEAL_SCIENCE
+	timer_time = 15 MINUTES
+	difficulty = CONTRACT_DIFFICULTY_MEDIUM
 	var/list/datum/design/targets = list()
 	var/static/counter = 0
 
@@ -552,7 +597,8 @@ GLOBAL_LIST_INIT(syndicate_factions, list(
 /datum/antag_contract/recon
 	name = "Recon"
 	reward = 3 // One 2 TC kit is enough to complete two of these.
-	intent = CONTRACT_STEAL_OPERATION
+	timer_time = 30 MINUTES
+	difficulty = CONTRACT_DIFFICULTY_MEDIUM
 	var/list/area/targets = list()
 
 /datum/antag_contract/recon/New(datum/contract_organization/contract_organization, reason, list/area/target)
@@ -591,3 +637,212 @@ GLOBAL_LIST_INIT(syndicate_factions, list(
 	for(var/area/A in sensor.active_recon_areas_list)
 		if(A in targets)
 			complete(sensor.uplink)
+
+/datum/antag_contract/protect
+	name = "Protect"
+	reward = 4 // This is how expensive your life is, fellow NT employee
+	difficulty = CONTRACT_DIFFICULTY_HARD
+	timer_time = 45 MINUTES
+	var/target_real_name
+	var/mob/living/carbon/human/H
+	var/obj/item/organ/target
+	var/datum/antag_contract/item/assassinate/linked_A
+
+/datum/antag_contract/protect/can_take_contract(datum/mind/M, obj/item/device/uplink/uplink)
+	if(linked_A)
+		if(linked_A.accepted_by == M || linked_A.accepted_by_uplink == uplink)
+			return FALSE
+	..()
+
+/datum/antag_contract/protect/New(datum/contract_organization/contract_organization, reason, datum/mind/target, no_timer = FALSE)
+	if(no_timer)
+		required_timer = FALSE
+	organization = contract_organization
+	create_contract(reason, target)
+	..()
+
+/datum/antag_contract/protect/generate_antag_reasons()
+	..()
+	reason_list[MODE_TRAITOR] = list("the target is important for the current operations on this object", 2, 50)
+	reason_list[MODE_ERT] = list("the target is very important for the current operations at [GLOB.using_map.company_name]'s objects", 3, 25)
+	ban_non_crew_antag()
+
+/datum/antag_contract/protect/create_contract(Creason, datum/mind/Ctarget)
+	generate_antag_reasons()
+	if(!Creason)
+		reason = pick("the target has important data", "the target important to Syndicate")
+	else
+		reason = Creason
+
+	if(!Ctarget)
+		var/list/candidates = SSticker.minds.Copy()
+
+		// Don't target the same player twice
+		for(var/datum/antag_contract/protect/C in GLOB.all_contracts)
+			candidates -= C.target_mind
+
+		while(candidates.len)
+			var/datum/mind/candidate_mind = pick(candidates)
+			candidates -= candidate_mind
+
+			H = candidate_mind.current
+			if(!istype(H) || H.stat == DEAD || !is_station_turf(get_turf(H)))
+				continue
+
+			target_real_name = H.real_name
+			target_mind = candidate_mind
+			var/skipped = skip_antag_role()
+			if(skipped)
+				target_mind = null
+				H = null
+				continue
+			break
+	else
+		target_mind = Ctarget
+		if(!Creason)
+			skip_antag_role(TRUE)
+		H = target_mind.current
+		if(!istype(H))
+			return
+		target_real_name = H.real_name
+	name = "[name] [target_real_name]"
+	if(!istype(H))
+		return
+
+	var/target_message = ""
+	var/datum/gender/T = gender_datums[H.get_gender()]
+	if(H.organs_by_name[BP_BRAIN])
+		target = H.organs_by_name[BP_BRAIN]
+		target_message = "if \the <b>[T.his] [target]</b>"
+	if(H.organs_by_name[BP_STACK])
+		target = H.organs_by_name[BP_STACK]
+		target_message += "if \the <b>[T.his] [target]</b>"
+	target_message += " is protected until assassination contract end,"
+
+	create_explain_text("protect <b>[target_real_name]</b> if target are down, you still can complete contract, [target_message] it's count as success. You must make sure that the target is completely, irreversibly alive.")
+
+/datum/antag_contract/protect/can_place()
+	return ..() && target
+
+/datum/antag_contract/protect/on_mob_despawned(datum/mind/M)
+	if(M == target_mind)
+		remove()
+
+// will be called in assassinate/on_expired()
+/datum/antag_contract/protect/on_expired()
+	if(accepted_by_uplink)
+		complete(accepted_by_uplink)
+	..()
+
+/datum/antag_contract/protect/complete(obj/item/device/uplink/close_uplink)
+	var/datum/mind/M = close_uplink.uplink_owner
+	if(H.stat != DEAD || istype(target?.loc, /obj/item/device/mmi) || istype(target, /obj/item/organ/internal/stack))
+		if(M)
+			to_chat(M, SPAN("notice", "According to our information, the target ([target_real_name]) specified in the contract is alive, job done."))
+		..(close_uplink)
+	else
+		remove()
+
+/datum/antag_contract/kidnap
+	name = "Kidnap"
+	timer_time = 45 MINUTES
+	reward = 4
+	difficulty = CONTRACT_DIFFICULTY_HARD
+	var/mob/living/carbon/human/target_human
+
+/datum/antag_contract/kidnap/New(datum/contract_organization/contract_organization, reason, datum/mind/target)
+	organization = contract_organization
+	create_contract(reason, target)
+	..()
+
+/datum/antag_contract/kidnap/generate_antag_reasons()
+	..()
+	reason_list[MODE_TRAITOR] = list("they want to evacuate target from station object to save place", 2, 40)
+	reason_list[MODE_ERT] = list("they want to get bustle on this object via this target", 3, 80)
+	ban_non_crew_antag()
+
+/datum/antag_contract/kidnap/create_contract(Creason, datum/mind/target)
+	generate_antag_reasons()
+	if(!Creason)
+		reason = pick("they want to replace their important man organs with target's organs",
+		"they have information, that this person is high valuable on black market, they want them.",
+		"they want to evacuate target from station object to save place")
+	else
+		reason = Creason
+
+	var/mob/living/carbon/human/H
+	if(!target)
+		var/list/candidates = SSticker.minds.Copy()
+
+		// Don't target the same player twice
+		for(var/datum/antag_contract/kidnap/C in GLOB.all_contracts)
+			candidates -= C.target_mind
+
+		while(candidates.len)
+			var/datum/mind/candidate_mind = pick(candidates)
+			candidates -= candidate_mind
+
+			H = candidate_mind.current
+			if(!istype(H) || H.stat == DEAD || !is_station_turf(get_turf(H)))
+				continue
+
+			target_mind = candidate_mind
+			var/skipped = skip_antag_role()
+			if(skipped)
+				target_mind = null
+				H = null
+				continue
+			break
+	else
+		if(!Creason)
+			skip_antag_role(TRUE)
+		H = target.current
+		if(!istype(H))
+			return
+		target_mind = target
+	if(!istype(H))
+		return
+	name = "[name] [H.real_name]"
+	target_human = H
+	create_explain_text("take [H.real_name], the [target_mind.assigned_role] alive to <b>Scary Red Portal</b>, can be created via <b>Scary Red Portal Generator</b> (found in <b>Devices and Tools</b>).")
+
+/datum/antag_contract/kidnap/can_place()
+	return ..() && target_mind
+
+/datum/antag_contract/kidnap/proc/check_mob(mob/living/carbon/human/H)
+	if(completed)
+		return FALSE
+	if(target_mind && H && H == target_human && H.stat != DEAD)
+		// var/obj/item/organ/internal/brain/B = H.internal_organs_by_name[BP_BRAIN]
+		// if(B)
+		// 	if(B.damage < B.max_damage / 2)
+		return TRUE
+	return FALSE
+
+/datum/antag_contract/kidnap/on_mob_despawned(datum/mind/M)
+	if(M == target_mind)
+		remove()
+
+/datum/antag_contract/custom
+	name = "Custom Contract"
+	required_timer = FALSE
+
+/datum/antag_contract/custom/New(datum/contract_organization/contract_organization, creason, explanation_txt, use_timer, timer_amount, cdesc, selected_reward, cname)
+	organization = contract_organization
+
+	if(cname)
+		name = cname
+
+	if(creason && explanation_txt)
+		reason = creason
+		create_explain_text(explanation_txt)
+	else
+		desc = cdesc
+
+	if(use_timer)
+		required_timer = TRUE
+		timer_time = timer_amount
+
+	reward = selected_reward
+
+	..()

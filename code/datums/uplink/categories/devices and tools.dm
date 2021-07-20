@@ -19,6 +19,19 @@
 	item_cost = 1
 	path = /obj/item/weapon/storage/briefcase/std
 
+/datum/uplink_item/item/tools/portalgen
+	name = "Scary Red Portal Generator"
+	desc = "It uses bluespace and plasma to create portal to our concentration camp, used for kidnap contract."
+	item_cost = 2
+	path = /obj/item/device/portalgen
+
+/datum/uplink_item/item/tools/portalgen/buy(obj/item/device/uplink/U)
+	. = ..()
+	if(.)
+		var/obj/item/device/portalgen/pg = .
+		if(istype(pg))
+			pg.linked_uplink = U
+
 /datum/uplink_item/item/tools/encryptionkey_radio
 	name = "Encrypted Radio Channel Key"
 	item_cost = 1

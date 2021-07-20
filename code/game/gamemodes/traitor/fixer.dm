@@ -36,11 +36,10 @@
 /datum/contract_organization
 	var/name = "This is bug!"
 	var/list/datum/antag_contract/contracts = list()
-	var/intents // what contracts organization prefers?
+	var/accepted_difficulty = CONTRACT_DIFFICULTY_NONE // what contracts difficulty organization prefers?
 	var/datum/contract_fixer/holder
 
 /datum/contract_organization/New(datum/contract_fixer/CF)
-	ASSERT(intents)
 	holder = CF
 	holder.organizations.Add(src)
 	holder.organizations_by_name[name] = src
@@ -48,20 +47,22 @@
 /datum/contract_organization/proc/get_contracts(datum/mind/M)
 	var/list/datum/antag_contract/avaliable_contracts = list()
 	for(var/datum/antag_contract/contract in contracts)
-		if(!contract.completed && !(M && (contract?.target_mind == M) && prob(85))) // 15 percent to show contract to contract target
+		if(!contract.completed && !(contract.accepted_by || contract.accepted_by_uplink) && !(M && (contract?.target_mind == M) && prob(85))) // 15 percent to show contract to contract target
 			avaliable_contracts.Add(contract)
 	return avaliable_contracts
 
 /datum/contract_organization/proc/create_random_contract()
 	var/list/candidates = (subtypesof(/datum/antag_contract))
-	candidates.Remove(/datum/antag_contract/item) // place banned contracts here, e.g. parent contracts without intent
+	candidates.Remove(/datum/antag_contract/item, /datum/antag_contract/custom) // place banned contracts here, e.g. parent contracts without intent
 	while(candidates.len)
 		var/contract_type = pick(candidates)
 		var/datum/antag_contract/C = new contract_type(src)
 		if(!C)
 			continue
-		var/not_avaliable = (intents ^ C.intent || prob(75))
-		if(!C.can_place() && not_avaliable)
+		var/not_avaliable = C.difficulty > accepted_difficulty
+		if(not_avaliable && prob(25))
+			not_avaliable = FALSE
+		if(!C.can_place() || not_avaliable)
 			candidates -= contract_type
 			qdel(C)
 			continue
@@ -92,34 +93,42 @@
 
 	var/out = "<meta charset=\"utf-8\"><b>The Syndicate Operations Menu</b>"
 	out += "<hr><b>Contracts (Operations|Objectives)</b></br>"
-	for(var/datum/antag_contract/contract in GLOB.traitors.fixer.return_contracts())
+	for(var/datum/antag_contract/contract in GLOB.all_contracts)
 		out += "<br><b>Contract [contract.name]:</b> <small>[contract.desc]</small> "
 		if(contract.completed)
 			out += "(<font color='green'>completed</font>)"
 		else
-			out += "(<font color='red'>incompleted</font>)"
+			out += "(<font color='red'>incompleted</font>) |\
+			 [contract.accepted_by ? "Contract assigned to [contract.accepted_by.name]." : "Contract doesn't assigned to anyone."] | \
+			 <a href='?src=\ref[src];obj_complete=\ref[contract];contract_action=1'>\[complete contract]</a>"
 		out += " <a href='?src=\ref[src];obj_remove=\ref[contract];contract_action=1'>\[remove contract]</a>"
 	out += "<hr><a href='?src=\ref[src];obj_add=1;contract_action=1'>\[add contract]</a><br><br>"
 	show_browser(usr, out, "window=edit_contracts[src]")
 
 /datum/contract_organization/syndicate/tti
 	name = "Trauma Team Interspace"
-	intents = CONTRACT_IMPACT_SOCIAL | CONTRACT_IMPACT_OPERATION
+	accepted_difficulty = CONTRACT_DIFFICULTY_EASY
+
 /datum/contract_organization/syndicate/ms
 	name = "MiliSpace"
-	intents = CONTRACT_IMPACT_MILITARY | CONTRACT_IMPACT_HIJACK
+	accepted_difficulty = CONTRACT_DIFFICULTY_EXTREME
+
 /datum/contract_organization/syndicate/bs
 	name = "Biospacenica"
-	intents = CONTRACT_IMPACT_SOCIAL
+	accepted_difficulty = CONTRACT_DIFFICULTY_EASY
+
 /datum/contract_organization/syndicate/kt
 	name = "Kang Too"
-	intents = CONTRACT_IMPACT_SOCIAL | CONTRACT_IMPACT_OPERATION | CONTRACT_IMPACT_MILITARY
+	accepted_difficulty = CONTRACT_DIFFICULTY_EXTREME
+
 /datum/contract_organization/syndicate/nv
 	name = "NovaPlasma"
-	intents = CONTRACT_IMPACT_SOCIAL | CONTRACT_IMPACT_OPERATION
+	accepted_difficulty = CONTRACT_DIFFICULTY_HARD
+
 /datum/contract_organization/syndicate/dt
 	name = "Dynamoon Technologies"
-	intents = CONTRACT_IMPACT_SOCIAL | CONTRACT_IMPACT_HIJACK
+	accepted_difficulty = CONTRACT_DIFFICULTY_MEDIUM
+
 /datum/contract_organization/syndicate/ns
 	name = "NanoSaka"
-	intents = CONTRACT_IMPACT_SOCIAL | CONTRACT_IMPACT_OPERATION | CONTRACT_IMPACT_MILITARY | CONTRACT_IMPACT_HIJACK
+	accepted_difficulty = CONTRACT_DIFFICULTY_EXTREME

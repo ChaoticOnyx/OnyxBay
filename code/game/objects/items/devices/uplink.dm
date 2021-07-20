@@ -1,3 +1,4 @@
+#define MAX_CONTRACTS 3
 // HIDDEN UPLINK - Can be stored in anything but the host item has to have a trigger for it.
 /* How to create an uplink in 3 easy steps!
 
@@ -26,6 +27,7 @@
 	var/list/nanoui_data = new 			// Additional data for NanoUI use
 
 	var/datum/mind/uplink_owner = null
+	var/list/datum/antag_contract/accepted_contracts = list()
 	var/used_TC = 0
 	var/offer_time = 15 MINUTES			//The time increment per discount offered
 	var/next_offer_time					//The time a discount will next be offered
@@ -44,13 +46,13 @@
 	update_nano_data()
 
 	src.uplink_owner = owner
-	world_uplinks += src
+	GLOB.world_uplinks += src
 	uses = telecrystals
 	START_PROCESSING(SSobj, src)
 
 /obj/item/device/uplink/Destroy()
 	uplink_owner = null
-	world_uplinks -= src
+	GLOB.world_uplinks -= src
 	STOP_PROCESSING(SSobj, src)
 	return ..()
 
@@ -150,6 +152,24 @@
 		var/datum/uplink_item/UI = (locate(href_list["buy_item"]) in uplink.items)
 		UI.buy(src, usr)
 		. = TOPIC_REFRESH
+	else if(href_list["confirm_contract"])
+		var/datum/antag_contract/AC = (locate(href_list["confirm_contract"]) in GLOB.all_contracts)
+		if(AC && !AC.completed)
+			AC.on_confirm_action()
+		. = TOPIC_REFRESH
+	else if(href_list["accept_contract"])
+		var/datum/antag_contract/AC = (locate(href_list["accept_contract"]) in GLOB.all_contracts)
+		if(AC && src.uplink_owner)
+			if(length(accepted_contracts) < MAX_CONTRACTS)
+				if(!(AC.accepted_by || AC.accepted_by_uplink))
+					AC.accepted_by = src.uplink_owner
+					AC.accepted_by_uplink = src
+					accepted_contracts.Add(AC)
+				else
+					to_chat(user, SPAN("notice", "You failed to assign to contract, because someone already take them."))
+			else
+				to_chat(user, SPAN("notice", "You failed to assign to contract, because you have too many active contracts"))
+		. = TOPIC_REFRESH
 	else if(href_list["lock"])
 		toggle()
 		SSnano.close_user_uis(user, src, "main")
@@ -189,9 +209,16 @@
 			permanentData[++permanentData.len] = list(Name = L.get_name(),"id" = L.uid, "exploit" = length(L.get_antagRecord()))
 		nanoui_data["exploit_records"] = permanentData
 	else if(nanoui_menu == 3)
+		var/list/accepted_contracts_list = list()
 		var/list/contracts = list()
+		for(var/datum/antag_contract/AC in accepted_contracts)
+			accepted_contracts_list.Add(list(list("name" = AC.name, "desc" = AC.desc, "reward" = AC.reward, "ref" = "\ref[AC]", "can_confirm" = AC.can_confirm)))
 		for(var/datum/antag_contract/AC in GLOB.traitors.fixer.return_contracts(src?.uplink_owner))
-			contracts.Add(list(list(AC.name, AC.desc, AC.reward)))
+			var/can_take = AC.can_take_contract(uplink_owner, src)
+			if(length(accepted_contracts) > MAX_CONTRACTS - 1)
+				can_take = FALSE
+			contracts.Add(list(list("name" = AC.name, "desc" = AC.desc, "reward" = "[AC.reward] TC", "ref" = "\ref[AC]", "can_take" = can_take)))
+		nanoui_data["accepted_contracts"] = accepted_contracts_list
 		nanoui_data["contracts"] = contracts
 	else if(nanoui_menu == 21)
 		nanoui_data["exploit_exists"] = 0
@@ -271,3 +298,4 @@
 
 /obj/item/device/uplink/contained/ui_interact(mob/user, ui_key = "main", datum/nanoui/ui = null, force_open = 1, uistate = GLOB.contained_state)
 	return ..()
+#undef MAX_CONTRACTS
