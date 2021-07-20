@@ -92,6 +92,26 @@ var/datum/robolimb/basic_robolimb
 	icon = 'icons/mob/human_races/cyberlimbs/zenghu/zenghu_taj.dmi'
 	restricted_to = list(SPECIES_TAJARA)
 
+//BISHOP
+/datum/robolimb/bishop
+	company = "Bishop"
+	desc = "This limb has a white polymer casing with blue holo-displays."
+	icon = 'icons/mob/human_races/cyberlimbs/bishop/bishop_main.dmi'
+	can_eat = 1
+	skintone = 1
+	unavailable_to_build = 1
+	restricted_to = list(SPECIES_HUMAN)
+	species_cannot_use = list(SPECIES_DIONA, SPECIES_VOX, SPECIES_PROMETHEAN, SPECIES_UNATHI, SPECIES_TAJARA, SPECIES_SKRELL)
+
+/datum/robolimb/bishop/bishop_alt1
+	company = "Bishop - Glyph"
+	icon = 'icons/mob/human_races/cyberlimbs/bishop/bishop_alt1.dmi'
+	applies_to_part = list(BP_HEAD)
+
+/datum/robolimb/bishop/bishop_alt2
+	company = "Bishop - Rook"
+	icon = 'icons/mob/human_races/cyberlimbs/bishop/bishop_alt2.dmi'
+
 //VEY-MED
 /datum/robolimb/veymed
 	company = "Vey-Med"
