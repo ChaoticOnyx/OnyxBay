@@ -122,7 +122,7 @@
 		spark_system.start()
 		if(prob(67))
 			visible_message("\The [src]'s reactor heats up uncontrollably!")
-			explosion(src.loc, -1, 1, 2)
+			explosion(get_turf(src.loc), -1, 1, 2)
 			if(src)
 				user.drop_from_inventory(src)
 				qdel(src)
