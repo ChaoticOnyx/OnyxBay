@@ -25,6 +25,51 @@
 	push_data()
 	activate_pin(2)
 
+/obj/item/integrated_circuit/text/ascii2text
+	name = "ascii to text converter"
+	desc = "This circuit will translate ascii to character"
+	icon_state = "lowercase"
+	inputs = list("input" = IC_PINTYPE_NUMBER)
+	outputs = list("output" = IC_PINTYPE_STRING)
+	activators = list("to text" = IC_PINTYPE_PULSE_IN, "on converted" = IC_PINTYPE_PULSE_OUT)
+	spawn_flags = IC_SPAWN_DEFAULT|IC_SPAWN_RESEARCH
+
+/obj/item/integrated_circuit/text/ascii2text/do_work()
+	var/result = ""
+	pull_data()
+	var/incoming = get_pin_data(IC_INPUT, 1)
+	if(!isnum_safe(incoming))
+		return
+	incoming = min(255, incoming)
+	incoming = max(incoming, 0)
+	result = "[sanitize(ascii2text(incoming))]"
+	set_pin_data(IC_OUTPUT, 1, result)
+	push_data()
+	activate_pin(2)
+
+/obj/item/integrated_circuit/text/text2ascii
+	name = "text to ascii converter"
+	desc = "This circuit will translate ascii to character"
+	icon_state = "lowercase"
+	inputs = list("input" = IC_PINTYPE_STRING, "pos" = IC_PINTYPE_NUMBER)
+	outputs = list("output" = IC_PINTYPE_NUMBER)
+	activators = list("to text" = IC_PINTYPE_PULSE_IN, "on converted" = IC_PINTYPE_PULSE_OUT)
+	spawn_flags = IC_SPAWN_DEFAULT|IC_SPAWN_RESEARCH
+
+/obj/item/integrated_circuit/text/text2ascii/do_work()
+	var/result = null
+	pull_data()
+	var/incoming = get_pin_data(IC_INPUT, 1)
+	var/position = get_pin_data(IC_INPUT, 2)
+	if(!istext(incoming))
+		if(!isnum_safe(position) || position > length_char(incoming))
+			position = 1
+		result = text2ascii_char(incoming, position)
+
+	set_pin_data(IC_OUTPUT, 1, result)
+	push_data()
+	activate_pin(2)
+
 /obj/item/integrated_circuit/text/uppercase
 	name = "uppercase string converter"
 	desc = "THIS WILL CAUSE A STRING TO COME OUT IN ALL UPPERCASE."

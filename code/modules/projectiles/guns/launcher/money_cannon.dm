@@ -12,7 +12,7 @@
 	release_force = 80
 	fire_sound_text = "a whoosh and a crisp, papery rustle"
 	fire_delay = 1
-	fire_sound = 'sound/weapons/gunshot/money_launcher.ogg'
+	fire_sound = 'sound/effects/weapons/misc/money_launcher.ogg'
 	mod_weight = 0.7
 	mod_reach = 0.5
 	mod_handy = 1.0
@@ -44,10 +44,10 @@
 		vomit_onto.AdjustStunned(3)
 		vomit_onto.AdjustWeakened(3)
 		vomit_onto.visible_message("<span class='danger'>\The [vomit_onto] blasts themselves full in the face with \the [src]!</span>")
-		playsound(T, "sound/weapons/gunshot/money_launcher_jackpot.ogg", 100, 1)
+		playsound(T, "sound/effects/weapons/misc/money_launcher_jackpot.ogg", 100, 1)
 	else
 		vomit_onto.visible_message("<span class='danger'>\The [vomit_onto] ejects a few credits into their face.</span>")
-		playsound(T, 'sound/weapons/gunshot/money_launcher.ogg', 100, 1)
+		playsound(T, 'sound/effects/weapons/misc/money_launcher.ogg', 100, 1)
 
 	receptacle_value = 0
 
@@ -128,6 +128,7 @@
 
 		receptacle_value += bling.worth
 		to_chat(user, "<span class='notice'>You slide [bling.worth] credits into [src]'s receptacle.</span>")
+		bling.worth = 0
 		qdel(bling)
 
 	else

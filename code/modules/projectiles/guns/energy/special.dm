@@ -147,7 +147,7 @@
 	item_icons = null
 	icon_state = "staffofchange"
 	item_state = "staffofchange"
-	fire_sound = 'sound/weapons/emitter.ogg'
+	fire_sound = 'sound/effects/weapons/energy/emitter.ogg'
 	obj_flags =  OBJ_FLAG_CONDUCTIBLE
 	slot_flags = SLOT_BELT|SLOT_BACK
 	w_class = ITEM_SIZE_LARGE
@@ -179,7 +179,7 @@
 	projectile_type = /obj/item/projectile/animate
 	max_shots = 10
 
-obj/item/weapon/gun/energy/staff/focus
+/obj/item/weapon/gun/energy/staff/focus
 	name = "mental focus"
 	desc = "An artefact that channels the will of the user into destructive bolts of force. If you aren't careful with it, you might poke someone's brain out."
 	icon = 'icons/obj/wizard.dmi'
@@ -208,7 +208,7 @@ obj/item/weapon/gun/energy/staff/focus
 	icon = 'icons/obj/tools.dmi'
 	icon_state = "plasmacutter"
 	item_state = "plasmacutter"
-	fire_sound = 'sound/weapons/plasma_cutter.ogg'
+	fire_sound = 'sound/effects/weapons/energy/plasma_cutter.ogg'
 	slot_flags = SLOT_BELT|SLOT_BACK
 	w_class = ITEM_SIZE_NORMAL
 	force = 8

@@ -64,12 +64,13 @@
 	attack_verb = list("shoved", "bashed")
 	var/cooldown = 0 //shield bash cooldown. based on world.time
 
-/obj/item/weapon/shield/riot/handle_shield(mob/user)
+/obj/item/weapon/shield/riot/handle_shield(mob/user, damage, atom/damage_source = null, mob/attacker = null, def_zone = null, attack_text = "the attack")
 	. = ..()
-	if(.) playsound(user.loc, 'sound/effects/fighting/Genhit.ogg', 50, 1)
+	if(.)
+		playsound(user.loc, 'sound/effects/fighting/Genhit.ogg', 50, 1)
 
 
-/obj/item/weapon/shield/riot/attackby(obj/item/weapon/W as obj, mob/user as mob)
+/obj/item/weapon/shield/riot/attackby(obj/item/weapon/W, mob/user)
 	if(istype(W, /obj/item/weapon/melee/baton))
 		if(cooldown < world.time - 25)
 			user.visible_message("<span class='warning'>[user] bashes [src] with [W]!</span>")
@@ -93,9 +94,10 @@
 	matter = list(MATERIAL_STEEL = 1000, MATERIAL_WOOD = 1000)
 	attack_verb = list("shoved", "bashed")
 
-/obj/item/weapon/shield/buckler/handle_shield(mob/user)
+/obj/item/weapon/shield/buckler/handle_shield(mob/user, damage, atom/damage_source = null, mob/attacker = null, def_zone = null, attack_text = "the attack")
 	. = ..()
-	if(.) playsound(user.loc, 'sound/effects/fighting/Genhit.ogg', 50, 1)
+	if(.)
+		playsound(user.loc, 'sound/effects/fighting/Genhit.ogg', 50, 1)
 
 /*
  * Energy Shield
@@ -112,44 +114,59 @@
 	throw_speed = 1
 	throw_range = 4
 	w_class = ITEM_SIZE_SMALL
-	mod_weight = 0.5
-	mod_reach = 0.5
-	mod_handy = 1.25
+	mod_weight = 0.35
+	mod_reach = 0.3
+	mod_handy = 1.0
 	mod_shield = 3.0
 	origin_tech = list(TECH_MATERIAL = 4, TECH_MAGNET = 3, TECH_ILLEGAL = 4)
 	attack_verb = list("shoved", "bashed")
 	var/active = 0
 
-/obj/item/weapon/shield/energy/handle_shield(mob/user)
+/obj/item/weapon/shield/energy/handle_shield(mob/user, damage, atom/damage_source = null, mob/attacker = null, def_zone = null, attack_text = "the attack")
 	if(!active)
 		return 0 //turn it on first!
-	. = ..()
+	if(!user.blocking)
+		return 0
+	if(user.incapacitated(INCAPACITATION_DISABLED))
+		return 0
+	if(istype(damage_source, /obj/item/projectile))
+		var/obj/item/projectile/P = damage_source
+		if(!P.blockable)
+			return 0
+		// some effects here
+		var/datum/effect/effect/system/spark_spread/spark_system = new /datum/effect/effect/system/spark_spread()
+		spark_system.set_up(3, 0, user.loc)
+		spark_system.start()
 
-	if(.)
+		visible_message(SPAN("warning", "\The [user] disintegrates [P] with their [name]!"))
+		proj_poise_drain(user, P)
 		playsound(user.loc, 'sound/weapons/blade1.ogg', 50, 1)
+		return PROJECTILE_FORCE_BLOCK
+	return 0
 
-/obj/item/weapon/shield/energy/attack_self(mob/living/user as mob)
-	if ((MUTATION_CLUMSY in user.mutations) && prob(50))
+/obj/item/weapon/shield/energy/attack_self(mob/living/user)
+	if((MUTATION_CLUMSY in user.mutations) && prob(50))
 		to_chat(user, "<span class='warning'>You beat yourself in the head with [src].</span>")
 		user.take_organ_damage(5)
 	active = !active
-	if (active)
+	if(active)
 		force = 15
 		update_icon()
 		w_class = ITEM_SIZE_HUGE
 		mod_weight = 1.5
 		mod_reach = 1.0
 		mod_handy = 1.5
+		mod_shield = 3.0
 		playsound(user, 'sound/weapons/saberon.ogg', 50, 1)
 		to_chat(user, "<span class='notice'>\The [src] is now active.</span>")
-
 	else
 		force = 5
 		update_icon()
 		w_class = ITEM_SIZE_TINY
-		mod_weight = 0.35
-		mod_reach = 0.3
-		mod_handy = 1.0
+		mod_weight = initial(mod_weight)
+		mod_reach = initial(mod_reach)
+		mod_handy = initial(mod_handy)
+		mod_shield = initial(mod_shield)
 		playsound(user, 'sound/weapons/saberoff.ogg', 50, 1)
 		to_chat(user, "<span class='notice'>\The [src] can now be concealed.</span>")
 
@@ -164,7 +181,7 @@
 /obj/item/weapon/shield/energy/update_icon()
 	icon_state = "eshield[active]"
 	if(active)
-		set_light(1.5, 1.5, "#006aff")
+		set_light(0.4, 0.1, 1, 2, "#006aff")
 	else
 		set_light(0)
 

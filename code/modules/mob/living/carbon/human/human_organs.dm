@@ -358,7 +358,7 @@
 	return FALSE
 
 /mob/living/carbon/human/is_asystole()
-	if(isSynthetic())
+	if(full_prosthetic)
 		var/obj/item/organ/internal/cell/C = internal_organs_by_name[BP_CELL]
 		if(istype(C) && !C.is_usable())
 			return TRUE

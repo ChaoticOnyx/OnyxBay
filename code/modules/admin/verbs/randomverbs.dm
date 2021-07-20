@@ -217,7 +217,7 @@
 	message_admins("[key_name_admin(usr)] has toggled [key_name_admin(M)]'s nodamage to [(M.status_flags & GODMODE) ? "On" : "Off"]", 1)
 	feedback_add_details("admin_verb","GOD") //If you are copy-pasting this, ensure the 2nd parameter is unique to the new proc!
 
-proc/cmd_admin_mute(mob/M as mob, mute_type)
+/proc/cmd_admin_mute(mob/M, mute_type)
 	if(!usr || !usr.client)
 		return
 	if(!usr.client.holder)
@@ -401,10 +401,10 @@ Ccomp's first proc.
 	message_admins("Admin [key_name_admin(usr)] has [action] on joining the round if they use AntagHUD", 1)
 
 /*
-If a guy was gibbed and you want to revive him, this is a good way to do so.
-Works kind of like entering the game with a new character. Character receives a new mind if they didn't have one.
-Traitors and the like can also be revived with the previous role mostly intact.
-/N */
+	If a guy was gibbed and you want to revive him, this is a good way to do so.
+	Works kind of like entering the game with a new character. Character receives a new mind if they didn't have one.
+	Traitors and the like can also be revived with the previous role mostly intact.
+ */
 /client/proc/respawn_character()
 	set category = "Special Verbs"
 	set name = "Respawn Character"
@@ -434,12 +434,12 @@ Traitors and the like can also be revived with the previous role mostly intact.
 
 	if(record_found)//If they have a record we can determine a few things.
 		new_character.real_name = record_found.get_name()
-		new_character.gender = record_found.get_sex()
+		new_character.gender = lowertext(record_found.get_sex())
 		new_character.age = record_found.get_age()
 		new_character.b_type = record_found.get_bloodtype()
 	else
 		new_character.gender = pick(MALE,FEMALE)
-		var/datum/preferences/A = new()
+		var/datum/preferences/A = new(G_found.client)
 		A.randomize_appearance_and_body_for(new_character)
 		new_character.real_name = G_found.real_name
 

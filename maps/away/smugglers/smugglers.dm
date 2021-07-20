@@ -1,24 +1,6 @@
 #include "smugglers_areas.dm"
 #include "../mining/mining_areas.dm"
 
-/obj/effect/overmap/sector/smugglers
-	name = "asteroid station"
-	desc = "A small station built into an asteroid. No radio traffic detected."
-	icon_state = "object"
-	known = 0
-
-	initial_generic_waypoints = list(
-		"nav_smugglers",
-		"nav_smugglers_antag"
-	)
-
-/datum/map_template/ruin/away_site/smugglers
-	name = "Smugglers' Base"
-	id = "awaysite_smugglers"
-	description = "Yarr."
-	suffixes = list("smugglers/smugglers.dmm")
-	cost = 1
-
 /obj/effect/shuttle_landmark/nav_asteroid_base/nav1
 	name = "Abandoned Asteroid Base Navpoint #1"
 	landmark_tag = "nav_smugglers"
@@ -64,8 +46,8 @@
 		/obj/random/cash,
 		/obj/random/smokes,
 		new /datum/atom_creator/simple(/obj/item/weapon/reagent_containers/syringe, 50),
-		new /datum/atom_creator/simple(/obj/item/weapon/reagent_containers/syringe/steroid, 10),
-		new /datum/atom_creator/simple(/obj/item/weapon/reagent_containers/syringe/steroid, 10),
+		new /datum/atom_creator/simple(/obj/item/weapon/reagent_containers/syringe/steroid/packaged, 10),
+		new /datum/atom_creator/simple(/obj/item/weapon/reagent_containers/syringe/steroid/packaged, 10),
 		new /datum/atom_creator/weighted(list(/obj/item/weapon/reagent_containers/food/drinks/cans/cola, /obj/item/weapon/reagent_containers/food/drinks/cans/waterbottle, /obj/item/weapon/reagent_containers/food/drinks/cans/dr_gibb)),
 		new /datum/atom_creator/simple(/obj/item/clothing/glasses/eyepatch, 30),
 		new /datum/atom_creator/simple(/obj/item/clothing/gloves/duty, 80),

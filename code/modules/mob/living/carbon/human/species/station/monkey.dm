@@ -36,8 +36,8 @@
 	spawn_flags = SPECIES_IS_RESTRICTED
 
 	bump_flag = MONKEY
-	swap_flags = MONKEY|SLIME|SIMPLE_ANIMAL
-	push_flags = MONKEY|SLIME|SIMPLE_ANIMAL|ALIEN
+	swap_flags = MONKEY|METROID|SIMPLE_ANIMAL
+	push_flags = MONKEY|METROID|SIMPLE_ANIMAL|ALIEN
 
 	pass_flags = PASS_FLAG_TABLE
 	holder_type = /obj/item/weapon/holder

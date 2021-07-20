@@ -261,7 +261,7 @@
 	anchored = 1
 	density = 1
 	unacidable = 1
-	light_range = 3
+	light_outer_range = 3
 	var/needs_power = 0
 	var/active = 1
 	var/delay = 5
@@ -288,7 +288,7 @@
 
 /obj/machinery/shieldwall/Destroy()
 	update_nearby_tiles()
-	..()
+	return ..()
 
 /obj/machinery/shieldwall/attack_hand(mob/user as mob)
 	return

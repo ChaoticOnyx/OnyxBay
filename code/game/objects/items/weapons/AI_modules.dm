@@ -300,7 +300,7 @@ AI MODULES
 
 /******************** SCG Aggressive ********************/
 
-obj/item/weapon/aiModule/solgov_aggressive
+/obj/item/weapon/aiModule/solgov_aggressive
 	name = "\improper 'Military' Core AI Module"
 	desc = "A 'Military' Core AI Module: 'Reconfigures the AI's core laws.'."
 	origin_tech = list(TECH_DATA = 3, TECH_MATERIAL = 4)

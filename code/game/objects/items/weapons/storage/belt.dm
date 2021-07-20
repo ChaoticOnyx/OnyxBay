@@ -147,7 +147,7 @@
 		/obj/item/device/hailer,
 		/obj/item/device/megaphone,
 		/obj/item/weapon/melee,
-		/obj/item/weapon/gun/projectile/sec,
+		/obj/item/weapon/gun/projectile/pistol/vp78,
 		/obj/item/taperoll,
 		/obj/item/device/holowarrant,
 		/obj/item/weapon/magnetic_ammo,
@@ -253,7 +253,7 @@
 		/obj/item/weapon/storage/pill_bottle,
 		/obj/item/weapon/ore,
 		/obj/item/weapon/reagent_containers/food/drinks,
-		/obj/item/weapon/storage/plants,
+		/obj/item/weapon/storage/plants
 		)
 
 /obj/item/weapon/storage/belt/military

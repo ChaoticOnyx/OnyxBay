@@ -157,7 +157,7 @@
 	shoes = /obj/item/clothing/shoes/jackboots
 	l_ear = /obj/item/device/radio/headset/raider
 	r_pocket = /obj/item/weapon/card/emag
-	//belt = /obj/item/weapon/gun/projectile/pistol
+	//belt = /obj/item/weapon/gun/projectile/pistol/holdout
 	suit = /obj/item/clothing/suit/armor/vest
 	//mask = /obj/item/clothing/mask/gas
 	gloves = /obj/item/clothing/gloves/thick/swat/combat

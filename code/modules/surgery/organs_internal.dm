@@ -170,7 +170,7 @@
 	if(!affected || affected.open() < 2)
 		return
 	for(var/obj/item/organ/internal/I in affected.internal_organs)
-		if(I && (I.damage > 0 || O.emagged == 1) && !BP_IS_ROBOTIC(I) && (!I.status & ORGAN_DEAD || I.can_recover()) && (I.surface_accessible || affected.open() >= (affected.encased ? 3 : 2)))
+		if(I && (I.damage > 0 || O.emagged == 1) && !BP_IS_ROBOTIC(I) && (!(I.status & ORGAN_DEAD) || I.can_recover()) && (I.surface_accessible || affected.open() >= (affected.encased ? 3 : 2)))
 			user.visible_message("[user] starts treating damage to [target]'s [I.name] with \the [tool].", \
 			"You start treating damage to [target]'s [I.name] with \the [tool]." )
 
@@ -190,13 +190,13 @@
 				if(O.gel_amt == 0)
 					to_chat(user, SPAN("warning", "\The [O] runs out of gel!"))
 					return FALSE
-				if(I.status & ORGAN_DEAD && !I.can_recover())
+				if((I.status & ORGAN_DEAD) && !I.can_recover())
 					to_chat(user, SPAN("notice", "[target]'s [I.name] is destroyed and can't be fixed with \the [O]."))
 					continue
 				user.visible_message(SPAN("notice", "[user] repairs [target]'s [I.name] with \the [O]."), \
 				SPAN("notice", "You repair [target]'s [I.name] with \the [O]."))
 				I.damage = 0
-				if(I.status & ORGAN_DEAD && I.can_recover())
+				if((I.status & ORGAN_DEAD) && I.can_recover())
 					I.status &= ~ORGAN_DEAD
 				I.owner.update_body(1)
 				if(O.gel_amt_max != -1)

@@ -50,7 +50,7 @@ SUBSYSTEM_DEF(eams)
 	if (!initialized && user)
 		to_chat(user, SPAN("adminnotice", "Wait until EAMS initialized!"))
 		return
-	if(!__active && (!dbcon || !dbcon.IsConnected()))
+	if(!__active && !establish_db_connection())
 		to_chat(user, SPAN("adminnotice", "EAMS can't be enabled because there is no DB connection!"))
 		return
 
@@ -100,12 +100,12 @@ SUBSYSTEM_DEF(eams)
 	if (!__active)
 		return FALSE
 
-	if(!dbcon || !dbcon.IsConnected())  // Database isn't connected
+	if(!establish_db_connection())  // Database isn't connected
 		__DBError()
 		return FALSE
 
-	var/DBQuery/query = dbcon.NewQuery("SELECT ckey FROM whitelist_ckey WHERE ckey = \"[C.ckey]\" LIMIT 0,1")
-	if (!query.Execute())
+	var/DBQuery/query = sql_query("SELECT ckey FROM whitelist_ckey WHERE ckey = $ckey LIMIT 0,1", dbcon, list(ckey = C.ckey))
+	if (!query)
 		__DBError()
 		return FALSE
 
@@ -120,18 +120,18 @@ SUBSYSTEM_DEF(eams)
 	if (!__active)
 		return FALSE
 
-	if(!dbcon || !dbcon.IsConnected())  // Database isn't connected
+	if(!establish_db_connection())  // Database isn't connected
 		__DBError()
 		return FALSE
 
 	var/DBQuery/query = null
 
 	if (value)
-		query = dbcon.NewQuery("INSERT INTO whitelist_ckey (ckey) VALUES ('[C.ckey]')")
+		query = sql_query("INSERT INTO whitelist_ckey (ckey) VALUES ($ckey)", dbcon, list(ckey = C.ckey))
 	else
-		query = dbcon.NewQuery("DELETE FROM whitelist_ckey WHERE ckey='[C.ckey]'")
+		query = sql_query("DELETE FROM whitelist_ckey WHERE ckey=$ckey", dbcon, list(ckey = C.ckey))
 
-	if (!query.Execute())
+	if (!query)
 		__DBError()
 		return FALSE
 
@@ -145,11 +145,14 @@ SUBSYSTEM_DEF(eams)
 
 /datum/controller/subsystem/eams/proc/__LoadResponseFromCache(ip)
 	ASSERT(istext(ip))
+	
+	if(!establish_db_connection())  // Database isn't connected
+		__DBError()
+		return FALSE
 
-	ip = dbcon.Quote(ip)
-	var/DBQuery/query = dbcon.NewQuery("SELECT response FROM eams_cache WHERE ip = [ip] LIMIT 1")
+	var/DBQuery/query = sql_query("SELECT response FROM eams_cache WHERE ip = $ip LIMIT 1", dbcon, list(ip = ip))
 
-	if (!query.Execute())
+	if (!query)
 		__DBError()
 		return FALSE
 
@@ -162,50 +165,35 @@ SUBSYSTEM_DEF(eams)
 	ASSERT(istext(ip))
 	ASSERT(istext(raw_response))
 
-	ip = dbcon.Quote(ip)
-	raw_response = dbcon.Quote(raw_response)
-	var/DBQuery/query = dbcon.NewQuery("INSERT INTO eams_cache(ip, response) VALUES ([ip], [raw_response])")
+	if(!establish_db_connection())  // Database isn't connected
+		__DBError()
+		return FALSE
 
-	if (!query.Execute())
+	var/DBQuery/query = sql_query("INSERT INTO eams_cache(ip, response) VALUES ($ip, $raw_response)", dbcon, list(ip = ip, raw_response = raw_response))
+
+	if (!query)
 		__DBError()
 		return FALSE
 
 	return TRUE
 
-/datum/controller/subsystem/eams/proc/__RecordClientIP(client/C)
-	ASSERT(istype(C))
-
-	var/DBQuery/query = dbcon.NewQuery("INSERT INTO ckey_ip(ckey, ip) VALUES ([dbcon.Quote(C.ckey)], [dbcon.Quote(C.address)])")
-	if (!query.Execute())
-		__DBError()
-
-/datum/controller/subsystem/eams/proc/__RecordClientCID(client/C)
-	ASSERT(istype(C))
-
-	var/DBQuery/query = dbcon.NewQuery("INSERT INTO ckey_computerid(ckey, computerid) VALUES ([dbcon.Quote(C.ckey)], [dbcon.Quote(C.computer_id)])")
-	if (!query.Execute())
-		__DBError()
-
 /datum/controller/subsystem/eams/proc/CollectDataForClient(client/C)
 	ASSERT(istype(C))
 
-	if (!__active)
+	if(!__active)
 		__postponed_clients.Add(C)
 		return
 
-	__RecordClientIP(C)
-	__RecordClientCID(C)
-
 	C.eams_info.whitelisted = __IsClientWhitelisted(C)
 
-	if (!C.address || C.address == "127.0.0.1") // host
+	if(!C.address || C.address == "127.0.0.1") // host
 		return
 
 	var/list/response = __LoadResponseFromCache(C.address)
-	if (response)
+	if(response)
 		log_debug("EAMS data for [C] ([C.address]) is loaded from cache!")
 
-	while (!response && __active && __errors_counter < __acceptable_count_of_errors)
+	while(!response && __active && __errors_counter < __acceptable_count_of_errors)
 		var/list/http = world.Export("http://ip-api.com/json/[C.address]?fields=262143")
 
 		if(!http)
@@ -222,14 +210,14 @@ SUBSYSTEM_DEF(eams)
 			log_and_message_admins("EAMS could not check [C.key] due JSON decode error, EAMS will not be disabled! JSON decode error: [e.name]")
 			return
 
-		if (response["status"] == "fail")
+		if(response["status"] == "fail")
 			log_and_message_admins("EAMS could not check [C.key] due request error, EAMS will not be disabled! CheckIP response: [response["message"]]")
 			return
 
 		log_debug("EAMS data for [C] ([C.address]) is loaded from external API!")
 		__CacheResponse(C.address, raw_response)
 
-	if (__errors_counter >= __acceptable_count_of_errors && __active)
+	if(__errors_counter >= __acceptable_count_of_errors && __active)
 		log_and_message_admins("EAMS was disabled due connection errors!")
 		__active = FALSE
 		return
@@ -292,7 +280,7 @@ SUBSYSTEM_DEF(eams)
 	set category = "Server"
 	set name = "Toggle EAMS"
 
-	if (!dbcon || !dbcon.IsConnected())
+	if (!establish_db_connection())
 		to_chat(usr, SPAN("adminnotice", "The Database is not connected!"))
 		return
 

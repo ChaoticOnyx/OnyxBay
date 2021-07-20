@@ -10,6 +10,8 @@
 	organ_tag = "limb"
 	appearance_flags = PIXEL_SCALE
 
+	food_organ_type = /obj/item/weapon/reagent_containers/food/snacks/meat/human
+
 	throwforce = 2.5
 	// Strings
 	var/broken_description             // fracture string if any.
@@ -101,6 +103,11 @@
 		if(print)
 			return print
 
+/obj/item/organ/external/organ_eaten(mob/user)
+	for(var/obj/item/organ/external/stump/stump in children)
+		qdel(stump)
+	..()
+
 /obj/item/organ/external/afterattack(atom/A, mob/user, proximity)
 	..()
 	if(proximity && get_fingerprint())
@@ -114,6 +121,9 @@
 		replaced(owner)
 		sync_colour_to_human(owner)
 	get_icon()
+
+	if(food_organ in implants)
+		implants -= food_organ
 
 /obj/item/organ/external/Destroy()
 
@@ -133,9 +143,10 @@
 	if(internal_organs)
 		for(var/obj/item/organ/O in internal_organs)
 			qdel(O)
+		internal_organs.Cut()
 
 	applied_pressure = null
-	if(splinted && splinted.loc == src)
+	if(splinted?.loc == src)
 		qdel(splinted)
 	splinted = null
 
@@ -189,6 +200,8 @@
 		for(var/obj/item/I in E.contents)
 			if(istype(I,/obj/item/organ))
 				continue
+			if(I == E.return_item())
+				continue
 			removable_objects |= I
 	if(removable_objects.len)
 		var/obj/item/I = pick(removable_objects)
@@ -206,10 +219,12 @@
 		for(var/obj/item/I in contents)
 			if(istype(I, /obj/item/organ))
 				continue
-			. += "\n<span class='danger'>There is \a [I] sticking out of it.</span>"
+			if(I == return_item())
+				continue
+			. += SPAN_DANGER("\nThere is \a [I] sticking out of it.")
 		var/ouchies = get_wounds_desc()
 		if(ouchies != "nothing")
-			. += "\n<span class='notice'>There is [ouchies] visible on it.</span>"
+			. += SPAN_NOTICE("\nThere is [ouchies] visible on it.")
 
 	return
 
@@ -218,20 +233,21 @@
 	for(var/obj/item/organ/external/child in children)
 		child.show_decay_status(user)
 
-/obj/item/organ/external/attackby(obj/item/weapon/W as obj, mob/user as mob)
+/obj/item/organ/external/attackby(obj/item/weapon/W, mob/user)
+	user.setClickCooldown(DEFAULT_ATTACK_COOLDOWN)
 	switch(stage)
 		if(0)
 			if(W.sharp)
-				user.visible_message("<span class='danger'><b>[user]</b> cuts [src] open with [W]!</span>")
+				user.visible_message(SPAN("danger", "<b>[user]</b> cuts [src] open with [W]!"))
 				stage++
 				return
 		if(1)
 			if(istype(W))
-				user.visible_message("<span class='danger'><b>[user]</b> cracks [src] open like an egg with [W]!</span>")
+				user.visible_message(SPAN("danger", "<b>[user]</b> cracks [src] open like an egg with [W]!"))
 				stage++
 				return
 		if(2)
-			if(W.sharp || istype(W,/obj/item/weapon/hemostat) || isWirecutter(W))
+			if(W.sharp || istype(W, /obj/item/weapon/hemostat) || isWirecutter(W))
 				var/list/organs = get_contents_recursive()
 				if(organs.len)
 					var/obj/item/removing = pick(organs)
@@ -245,23 +261,31 @@
 						var/obj/item/organ/internal/mmi_holder/O = removing
 						removing = O.transfer_and_delete()
 
-					removing.forceMove(get_turf(user))
-
-					if(!(user.l_hand && user.r_hand))
-						user.put_in_hands(removing)
-					user.visible_message("<span class='danger'><b>[user]</b> extracts [removing] from [src] with [W]!</span>")
+					removing.forceMove(get_turf(src))
+					user.visible_message(SPAN_DANGER("<b>[user]</b> extracts [removing] from [src] with [W]!"))
 				else
 					if(organ_tag == BP_HEAD && W.sharp)
-						user.visible_message("<span class='danger'><b>[user]</b> rips the skin off [src] with [W], revealing a skull.</span>")
-						if(istype(src.loc,/turf))
-							new /obj/item/weapon/skull(src.loc)
-							gibs(src.loc)
+						var/obj/item/organ/external/head/H = src // yeah yeah this is horrible
+						if(!H.skull_path)
+							user.visible_message(SPAN("danger", "<b>[user]</b> fishes around fruitlessly in [src] with [W]."))
+							return
+						user.visible_message(SPAN("danger", "<b>[user]</b> rips the skin off [H] with [W], revealing a skull."))
+						if(istype(H.loc, /turf))
+							new H.skull_path(H.loc)
+							gibs(H.loc)
 						else
-							new /obj/item/weapon/skull(user.loc)
+							new H.skull_path(user.loc)
 							gibs(user.loc)
+						H.skull_path = null // So no skulls dupe in case of lags
 						qdel(src)
 					else
-						user.visible_message("<span class='danger'><b>[user]</b> fishes around fruitlessly in [src] with [W].</span>")
+						if(alert("Do you really want to rip the skin off [src] with [W]?",,"Ew, no.","MEAT!") == "MEAT!")
+							if(src && !QDELETED(src))
+								food_organ.appearance = food_organ_type
+								food_organ.forceMove(get_turf(loc))
+								food_organ = null
+								qdel(src)
+						user.visible_message(SPAN_DANGER("<b>[user]</b> fishes around fruitlessly in [src] with [W]."))
 				return
 	..()
 
@@ -413,7 +437,7 @@
 /*
 This function completely restores a damaged organ to perfect condition.
 */
-/obj/item/organ/external/rejuvenate(ignore_prosthetic_prefs)
+/obj/item/organ/external/rejuvenate(ignore_prosthetic_prefs = FALSE)
 	damage_state = "00"
 
 	status = 0
@@ -564,6 +588,15 @@ This function completely restores a damaged organ to perfect condition.
 	else
 		remove_all_pain()
 		..()
+/obj/item/organ/external/cook_organ()
+	..()
+	for(var/obj/item/organ/internal in internal_organs)
+		internal.cook_organ()
+
+/obj/item/organ/external/die()
+	for(var/obj/item/organ/external/E in children)
+		E.take_external_damage(10, 0, used_weapon = "parent organ sepsis")
+	..()
 
 //Updating germ levels. Handles organ germ levels and necrosis.
 /*
@@ -974,7 +1007,7 @@ Note that amputating the affected organ does in fact remove the infection from t
 		if(W.clamped)
 			return 1
 
-obj/item/organ/external/proc/remove_clamps()
+/obj/item/organ/external/proc/remove_clamps()
 	var/rval = 0
 	for(var/datum/wound/W in wounds)
 		rval |= W.clamped
@@ -1504,7 +1537,7 @@ obj/item/organ/external/proc/remove_clamps()
 	return !BP_IS_ROBOTIC(src) && species && species.sexybits_location == organ_tag
 
 // Added to the mob's move delay tally if this organ is being used to move with.
-obj/item/organ/external/proc/movement_delay(max_delay)
+/obj/item/organ/external/proc/movement_delay(max_delay)
 	. = 0
 	if(is_stump())
 		. += max_delay

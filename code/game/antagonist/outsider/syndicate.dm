@@ -15,11 +15,15 @@ GLOBAL_DATUM_INIT(syndies, /datum/antagonist/syndicate, new)
 	hard_cap_round = 6
 	initial_spawn_req = 3
 	initial_spawn_target = 4
-	min_player_age = 14
 
 	faction = "syndicate"
 
 	station_crew_involved = FALSE
+
+/datum/antagonist/syndicate/Initialize()
+	. = ..()
+	if(config.nuke_min_age)
+		min_player_age = config.nuke_min_age
 
 /datum/antagonist/syndicate/create_global_objectives()
 	if(!..())
@@ -35,7 +39,7 @@ GLOBAL_DATUM_INIT(syndies, /datum/antagonist/syndicate, new)
 	var/decl/hierarchy/outfit/syndicate = outfit_by_type(/decl/hierarchy/outfit/syndicate)
 	syndicate.equip(player)
 
-	var/obj/item/device/radio/uplink/U = new(get_turf(player), player.mind, DEFAULT_TELECRYSTAL_AMOUNT)
+	var/obj/item/device/radio/uplink/U = new(get_turf(player), player.mind, NUCLEAR_TELECRYSTAL_AMOUNT)
 	player.put_in_hands(U)
 
 	return 1

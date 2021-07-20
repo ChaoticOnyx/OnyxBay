@@ -16,3 +16,8 @@ GLOBAL_DATUM_INIT(deity, /datum/antagonist/deity, new)
 	initial_spawn_target = 1
 
 	station_crew_involved = FALSE
+
+/datum/antagonist/deity/Initialize()
+	. = ..()
+	if(config.deity_min_age)
+		min_player_age = config.deity_min_age

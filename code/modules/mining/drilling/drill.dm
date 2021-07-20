@@ -80,11 +80,6 @@
 		var/turf/simulated/floor/asteroid/T = get_turf(src)
 		if(!T.dug)
 			T.gets_dug()
-	else if(istype(get_turf(src), /turf/simulated/floor/exoplanet))
-		var/turf/simulated/floor/exoplanet/T = get_turf(src)
-		if(T.diggable)
-			new /obj/structure/pit(T)
-			T.diggable = 0
 	else if(istype(get_turf(src), /turf/simulated/floor))
 		var/turf/simulated/floor/T = get_turf(src)
 		T.ex_act(2.0)

@@ -21,7 +21,7 @@
 	maxHealth = 300
 	speed = 8
 	projectiletype = /obj/item/projectile/beam/drone
-	projectilesound = 'sound/weapons/laser3.ogg'
+	projectilesound = 'sound/effects/weapons/energy/Laser3.ogg'
 	destroy_surroundings = 0
 	var/datum/effect/effect/system/trail/ion_trail
 
@@ -48,7 +48,7 @@
 	. = ..()
 	if(prob(5))
 		projectiletype = /obj/item/projectile/beam/pulse/drone
-		projectilesound = 'sound/weapons/pulse2.ogg'
+		projectilesound = 'sound/effects/weapons/energy/pulse2.ogg'
 	ion_trail = new /datum/effect/effect/system/trail/ion()
 	ion_trail.set_up(src)
 	ion_trail.start()
@@ -268,7 +268,7 @@
 			C.SetName("Corrupted drone morality core")
 			C.origin_tech = list(TECH_ILLEGAL = rand(3,6))
 
-	..()
+	return ..()
 
 /obj/item/projectile/beam/drone
 	damage = 15

@@ -1,0 +1,25 @@
+name: Linters
+
+on:
+  pull_request
+
+jobs:
+  DreamChecker:
+    runs-on: ubuntu-latest
+    if: github.repository == 'ChaoticOnyx/OnyxBay' && github.base_ref == 'dev' && github.event.pull_request.draft == false && !contains(github.event.head_commit.message, '[ci skip]')
+    steps:
+      - name: Checkout
+        uses: actions/checkout@5a4ac9002d0be2fb38bd78e4b4dbde5606d7042f
+        with:
+          persist-credentials: true
+          fetch-depth: 25
+      - name: Download & Lint
+        env:
+          PR: ${{ github.event.number }}
+        shell: pwsh
+        run: |
+          Import-Module ./scripts/GitHub/
+          Import-Module ./scripts/DreamChecker/
+          $env:DREAMCHECKER = (Install-DreamChecker -Path $env:GITHUB_WORKSPACE)
+          Invoke-Expression "$env:GITHUB_WORKSPACE/dreamchecker --version"
+          ./tools/CI/DreamCheckerLinter.ps1

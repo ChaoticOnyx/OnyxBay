@@ -90,3 +90,6 @@ var/list/datum/power/vampire/vampirepowers = list()
 	desc = "Corrupt another innocent soul with the power of the Veil. They will become your kin: a vampire."
 	blood_cost = 500
 	verbpath = /mob/living/carbon/human/proc/vampire_embrace
+
+/datum/power/vampire/night_vision
+	verbpath = /mob/living/carbon/human/proc/night_vision

@@ -23,7 +23,7 @@ GLOBAL_DATUM_INIT(density_set_event, /decl/observ/density_set, new)
 	if(density != old_density)
 		GLOB.density_set_event.raise_event(src, old_density, density)
 
-/turf/ChangeTurf()
+/turf/ChangeTurf(turf/N, tell_universe = TRUE, force_lighting_update = FALSE)
 	var/old_density = opacity
 	. = ..()
 	if(density != old_density)

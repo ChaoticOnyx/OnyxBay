@@ -26,7 +26,7 @@
 	see_invisible = SEE_INVISIBLE_NOLIGHTING
 	var/nullblock = 0
 
-	mob_swap_flags = HUMAN|SIMPLE_ANIMAL|SLIME|MONKEY
+	mob_swap_flags = HUMAN|SIMPLE_ANIMAL|METROID|MONKEY
 	mob_push_flags = ALLMOBS
 
 	var/list/construct_spells = list()
@@ -253,7 +253,7 @@
 	eye_glow.plane = EFFECTS_ABOVE_LIGHTING_PLANE
 	eye_glow.layer = EYE_GLOW_LAYER
 	overlays += eye_glow
-	set_light(3, -10, l_color = "#ffffff")
+	set_light(-10, 0.1, 3, l_color = "#ffffff")
 
 ////////////////HUD//////////////////////
 

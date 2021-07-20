@@ -46,12 +46,12 @@
 */
 /proc/pick_subarea_turf(areatype, list/predicates)
 	var/list/turfs = get_subarea_turfs(areatype, predicates)
-	if(turfs && turfs.len)
+	if(length(turfs))
 		return pick(turfs)
 
 /proc/pick_area_turf(area/A, list/predicates)
 	var/list/turfs = get_area_turfs(A, predicates)
-	if(turfs && turfs.len)
+	if(length(turfs))
 		return pick(turfs)
 
 /proc/pick_area_by_type(areatype, list/predicates)
@@ -65,7 +65,7 @@
 
 /proc/pick_area(list/predicates)
 	var/list/areas = get_filtered_areas(predicates)
-	if(areas && areas.len)
+	if(length(areas))
 		. = pick(areas)
 
 /proc/pick_area_and_turf(list/area_predicates, list/turf_predicates)
@@ -97,9 +97,6 @@
 
 /proc/is_area_without_turf(area/A)
 	. = !is_area_with_turf(A)
-
-/proc/is_coherent_area(area/A)
-	return !is_type_in_list(A, GLOB.using_map.area_coherency_test_exempt_areas)
 
 GLOBAL_LIST_INIT(is_station_but_not_space_or_shuttle_area, list(/proc/is_station_area, /proc/is_not_space_area, /proc/is_not_shuttle_area))
 

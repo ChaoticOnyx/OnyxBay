@@ -1,10 +1,15 @@
- /**
-  * tgui state: z_state
-  *
-  * Only checks that the Z-level of the user and src_object are the same.
- **/
+/*!
+ * Copyright (c) 2020 Aleksej Komarov
+ * SPDX-License-Identifier: MIT
+ */
 
-/var/global/datum/ui_state/z_state/tg_z_state = new()
+/**
+ * tgui state: z_state
+ *
+ * Only checks that the Z-level of the user and src_object are the same.
+ */
+
+GLOBAL_DATUM_INIT(tgui_z_state, /datum/ui_state/z_state, new)
 
 /datum/ui_state/z_state/can_use_topic(src_object, mob/user)
 	var/turf/turf_obj = get_turf(src_object)

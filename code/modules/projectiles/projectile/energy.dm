@@ -11,7 +11,7 @@
 /obj/item/projectile/energy/flash
 	name = "chemical shell"
 	icon_state = "bullet"
-	fire_sound = 'sound/weapons/gunshot/gunshot_pistol.ogg'
+	fire_sound = 'sound/effects/weapons/gun/fire_generic_pistol.ogg'
 	damage = 5
 	agony = 20
 	kill_count = 15 //if the shell hasn't hit anything after travelling this far it just explodes.
@@ -46,7 +46,7 @@
 /obj/item/projectile/energy/flash/flare
 	damage = 10
 	agony = 25
-	fire_sound = 'sound/weapons/gunshot/shotgun.ogg'
+	fire_sound = 'sound/effects/weapons/gun/fire_shotgun.ogg'
 	flash_range = 2
 	brightness = 15
 
@@ -63,7 +63,7 @@
 	damage = 5
 	agony = 25
 	icon_state = "bullet"
-	fire_sound = 'sound/weapons/gunshot/shotgun.ogg'
+	fire_sound = 'sound/effects/weapons/gun/fire_shotgun.ogg'
 	flash_range = 1
 	brightness = 10
 
@@ -72,7 +72,7 @@
 /obj/item/projectile/energy/electrode
 	name = "electrode"
 	icon_state = "spark"
-	fire_sound = 'sound/weapons/Taser.ogg'
+	fire_sound = 'sound/effects/weapons/energy/Taser.ogg'
 	nodamage = 1
 	agony = 50
 	damage_type = PAIN
@@ -84,6 +84,7 @@
 	agony = 70
 	damage_type = BURN
 	armor_penetration = 10
+	penetration_modifier = 0.2
 
 /obj/item/projectile/energy/electrode/stunsphere
 	damage_type = PAIN
@@ -99,7 +100,7 @@
 	damage_type = BURN
 	damage = 3 //A little ouchie.
 	armor_penetration = 10
-	fire_sound = 'sound/weapons/gunshot/gunshot.ogg'
+	fire_sound = 'sound/effects/weapons/gun/gunshot.ogg'
 
 /obj/item/projectile/energy/electrode/c44
 	name = "shock bullet"
@@ -109,7 +110,7 @@
 	damage_type = BRUTE
 	damage = 5 //It's still a bullet
 	armor_penetration = 10
-	fire_sound = 'sound/weapons/gun_revolver44.ogg'
+	fire_sound = 'sound/effects/weapons/gun/fire_revolver44.ogg'
 
 /obj/item/projectile/energy/c44
 	name = "overheated bullet"
@@ -119,12 +120,12 @@
 	eyeblur = 4
 	damage_type = BURN
 	armor_penetration = 15
-	fire_sound = 'sound/weapons/gun_revolver44.ogg'
+	fire_sound = 'sound/effects/weapons/gun/fire_revolver44.ogg'
 
 /obj/item/projectile/energy/declone
 	name = "decloner beam"
 	icon_state = "declone"
-	fire_sound = 'sound/weapons/pulse3.ogg'
+	fire_sound = 'sound/effects/weapons/energy/pulse3.ogg'
 	damage = 30
 	damage_type = CLONE
 	irradiate = 40
@@ -181,7 +182,7 @@
 /obj/item/projectile/energy/plasmastun
 	name = "plasma pulse"
 	icon_state = "plasma_stun"
-	fire_sound = 'sound/weapons/blaster.ogg'
+	fire_sound = 'sound/effects/weapons/energy/blaster.ogg'
 	armor_penetration = 10
 	kill_count = 4
 	damage = 5

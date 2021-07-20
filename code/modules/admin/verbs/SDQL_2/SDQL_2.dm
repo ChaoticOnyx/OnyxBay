@@ -32,10 +32,8 @@
 
 	if(!query_text || length(query_text) < 1)
 		return
-
-	var/query_log = "[key_name(src)] executed SDQL query: \"[query_text]\"."
-	log_to_dd(query_log)
-	log_and_message_admins(query_log)
+ 
+	log_debug("[key_name(src)] try to execute SDQL query: \"[query_text]\".")
 	sleep(-1) // Incase the server crashes due to a huge query, we allow the server to log the above things (it might just delay it).
 
 	var/list/query_list = SDQL2_tokenize(query_text)
@@ -142,9 +140,10 @@
 
 							CHECK_TICK
 
-			to_chat(usr, "<span class='notice'>Query executed on [objs.len] object\s.</span>")
+			to_chat(usr, SPAN_NOTICE("Query executed on [objs.len] object\s."))
+			log_and_message_admins("[key_name(src)] successfully executed SDQL query: \"[query_text]\".")
 	catch(var/exception/e)
-		to_chat(usr, "<span class='danger'>An exception has occured during the execution of your query and your query has been aborted.</span>")
+		to_chat(usr, SPAN_DANGER("An exception has occured during the execution of your query and your query has been aborted."))
 		to_chat(usr, "exception name: [e.name]")
 		to_chat(usr, "file/line: [e.file]/[e.line]")
 		return
@@ -434,6 +433,10 @@
 
 /proc/SDQL_function(datum/object, procname, list/arguments, source)
 	set waitfor = FALSE
+
+	if(is_proc_protected(procname))
+		log_admin("[usr.key] failed to execute SDQL query: forbidden procname '[procname]'")
+		throw EXCEPTION("Forbidden procname")
 
 	var/list/new_args = list()
 	for(var/arg in arguments)

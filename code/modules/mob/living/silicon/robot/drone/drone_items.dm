@@ -154,7 +154,7 @@
 		/obj/item/organ/internal/posibrain,
 		/obj/item/stack/cable_coil,
 		/obj/item/weapon/circuitboard,
-		/obj/item/slime_extract,
+		/obj/item/metroid_extract,
 		/obj/item/weapon/reagent_containers/glass,
 		/obj/item/weapon/reagent_containers/food/snacks/monkeycube,
 		/obj/item/mecha_parts,
@@ -529,7 +529,7 @@
 		//Different classes of items give different commodities.
 		if(istype(W,/obj/item/weapon/cigbutt))
 			if(plastic)
-				plastic.add_charge(500)
+				plastic.add_charge(250)
 		else if(istype(W,/obj/effect/spider/spiderling))
 			if(wood)
 				wood.add_charge(2000)
@@ -570,6 +570,9 @@
 		else if(istype(W,/obj/item/weapon/material/shard))
 			if(glass)
 				glass.add_charge(1000)
+		else if(istype(W,/obj/item/weapon/flame/match))
+			if(wood)
+				wood.add_charge(250)
 		else if(istype(W,/obj/item/weapon/reagent_containers/food/snacks/grown))
 			if(wood)
 				wood.add_charge(4000)

@@ -1,10 +1,14 @@
 /turf/simulated/wall/r_wall
 	icon_state = "rgeneric"
+
+	explosion_block = 2
 /turf/simulated/wall/r_wall/New(newloc)
 	..(newloc, MATERIAL_PLASTEEL, MATERIAL_PLASTEEL) //3strong
 
 /turf/simulated/wall/ocp_wall
 	icon_state = "rgeneric"
+
+	explosion_block = 2
 /turf/simulated/wall/ocp_wall/New(newloc)
 	..(newloc, MATERIAL_OSMIUM_CARBIDE_PLASTEEL, MATERIAL_OSMIUM_CARBIDE_PLASTEEL)
 
@@ -61,6 +65,7 @@
 	..(newloc, MATERIAL_SILVER, MATERIAL_GOLD)
 
 /turf/simulated/wall/sandstonediamond/New(newloc)
+	explosion_block = 2
 	..(newloc, MATERIAL_SANDSTONE, MATERIAL_DIAMOND)
 
 // Kind of wondering if this is going to bite me in the butt.

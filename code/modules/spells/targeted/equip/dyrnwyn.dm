@@ -9,7 +9,7 @@
 	invocation = "Anrhydeddu Fi!"
 	invocation_type = SpI_SHOUT
 	spell_flags = INCLUDEUSER
-	range = -1
+	range = 0
 	level_max = list(Sp_TOTAL = 1, Sp_SPEED = 0, Sp_POWER = 1)
 	duration = 300 //30 seconds
 	max_targets = 1

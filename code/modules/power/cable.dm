@@ -237,7 +237,7 @@ var/list/possible_cable_coil_colours
 				new /obj/item/stack/cable_coil(src.loc, src.d1 ? 2 : 1, color)
 				qdel(src)
 
-obj/structure/cable/proc/cableColor(colorC)
+/obj/structure/cable/proc/cableColor(colorC)
 	var/color_n = "#dd0000"
 	if(colorC)
 		color_n = colorC

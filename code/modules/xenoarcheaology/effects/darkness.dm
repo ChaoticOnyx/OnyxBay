@@ -13,6 +13,6 @@
 	..()
 	if(holder)
 		if(!activated)
-			holder.set_light(effectrange, -dark_level)
+			holder.set_light(-dark_level, 1, effectrange)
 		else
 			holder.set_light(0)

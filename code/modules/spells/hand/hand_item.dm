@@ -69,11 +69,12 @@ Basically: I can use it to target things where I click. I can then pass these ta
 
 /obj/item/magic_hand/Destroy() //better save than sorry.
 	hand_spell = null
-	..()
+
+	return ..()
 
 /obj/item/magic_hand/control_hand
 	icon_state = "domination_spell"
-	list/instructions
+	var/list/instructions
 	var/spell/hand/mind_control/mind_spell
 
 /obj/item/magic_hand/control_hand/attack_self(mob/user)

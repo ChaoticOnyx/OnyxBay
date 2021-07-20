@@ -93,7 +93,11 @@ var/list/limb_icon_cache = list()
 			else
 				body_build = owner.body_build.roboindex
 
-		icon_state = "[icon_name][gender][body_build]"
+		var/stump_icon = ""
+		if(is_stump())
+			stump_icon = "_s"
+
+		icon_state = "[icon_name][gender][body_build][stump_icon]"
 
 		if (species)
 			if(species.base_skin_colours && !isnull(species.base_skin_colours[s_base]))
@@ -178,8 +182,8 @@ var/list/robot_hud_colours = list("#ffffff","#cccccc","#aaaaaa","#888888","#6666
 
 
 	// Calculate the required color index.
-	var/dam_state = min(1,((brute_dam+burn_dam)/max(1,max_damage)))
-	var/min_dam_state = min(1,(get_full_pain()/max(1,max_damage)))
+	var/dam_state = min(1, ((brute_dam + burn_dam) / max(1, max_damage)))
+	var/min_dam_state = min(1, (full_pain / max(1, max_damage)))
 	if(min_dam_state && dam_state < min_dam_state)
 		dam_state = min_dam_state
 	// Apply colour and return product.

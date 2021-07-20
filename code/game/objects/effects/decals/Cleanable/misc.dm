@@ -22,13 +22,6 @@
 		F.dirt += 4
 	qdel(src)
 
-/obj/effect/decal/cleanable/greenglow
-
-	New()
-		..()
-		spawn(1200)// 2 minutes
-			qdel(src)
-
 /obj/effect/decal/cleanable/dirt
 	name = "dirt"
 	desc = "Someone should clean that up."
@@ -54,9 +47,12 @@
 	gender = PLURAL
 	density = 0
 	anchored = 1
-	light_range = 1
 	icon = 'icons/effects/effects.dmi'
 	icon_state = "greenglow"
+
+/obj/effect/decal/cleanable/greenglow/Initialize()
+	. = ..()
+	set_light(0.2, 0.1, 1)
 
 /obj/effect/decal/cleanable/cobweb
 	name = "cobweb"
@@ -97,6 +93,16 @@
 	icon_state = "vomit_1"
 	random_icon_states = list("vomit_1", "vomit_2", "vomit_3", "vomit_4")
 	var/list/viruses = list()
+
+/obj/effect/decal/cleanable/vomit/Initialize()
+	. = ..()
+	var/drytime = DRYING_TIME * (rand(20, 30) / 10) // 10 to 15 minutes
+	addtimer(CALLBACK(src, .proc/dry), drytime)
+
+/obj/effect/decal/cleanable/vomit/proc/dry()
+	viruses.Cut()
+	name = "dried vomit"
+	color = "#cccc00"
 
 /obj/effect/decal/cleanable/tomato_smudge
 	name = "tomato smudge"

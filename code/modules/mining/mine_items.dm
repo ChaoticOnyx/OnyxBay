@@ -16,7 +16,7 @@
 	if(prob(50))
 		new /obj/item/weapon/storage/backpack/industrial(src)
 	else
-		new /obj/item/weapon/storage/backpack/satchel_eng(src)
+		new /obj/item/weapon/storage/backpack/satchel/eng(src)
 	new /obj/item/device/radio/headset/headset_cargo(src)
 	new /obj/item/clothing/under/rank/miner(src)
 	new /obj/item/clothing/gloves/thick(src)
@@ -27,15 +27,6 @@
 	new /obj/item/weapon/shovel(src)
 	new /obj/item/weapon/pickaxe(src)
 	new /obj/item/clothing/glasses/hud/standard/meson(src)
-
-/******************************Lantern*******************************/
-
-/obj/item/device/flashlight/lantern
-	name = "lantern"
-	icon_state = "lantern"
-	item_state = "lantern"
-	desc = "A mining lantern."
-	brightness_on = 6			// luminosity when on
 
 /*****************************Pickaxe********************************/
 
@@ -62,11 +53,6 @@
 	sharp = 1
 
 	var/excavation_amount = 200
-
-/obj/item/weapon/pickaxe/hammer
-	name = "sledgehammer"
-	//icon_state = "sledgehammer" Waiting on sprite
-	desc = "A mining hammer made of reinforced metal. You feel like smashing your boss in the face with this."
 
 /obj/item/weapon/pickaxe/silver
 	name = "silver pickaxe"
@@ -135,6 +121,45 @@
 	digspeed = 10
 	desc = ""
 	drill_verb = "drilling"
+
+/obj/item/weapon/pickaxe/sledgehammer
+	name = "sledgehammer"
+	desc = "A mining hammer made of reinforced metal. You feel like smashing your boss in the face with this."
+	icon_state = "sledgehammer"
+	item_state = "sledgehammer0"
+	slot_flags = null
+	force = 15.0
+	throwforce = 15.0
+	attack_verb = list("smashed", "beaten", "slammed", "smacked", "struck")
+	sharp = FALSE
+	mod_weight = 1.5
+	mod_reach = 1.0
+	mod_handy = 0.4
+	drill_verb = "hammering"
+	digspeed = 20
+	var/wielded = 0
+
+/obj/item/weapon/pickaxe/sledgehammer/update_twohanding()
+	var/mob/living/M = loc
+	if(istype(M) && M.can_wield_item(src) && is_held_twohanded(M))
+		wielded = TRUE
+		force = 40.0 // Higher than fireaxe's (30), but this thing is not sharp so it's probably fine
+		mod_handy = 1.2
+		mod_weight = 2.0
+		mod_reach = 1.5
+	else
+		wielded = FALSE
+		force = 17.5
+		mod_weight = 1.5
+		mod_reach = 1.0
+		mod_handy = 0.4
+	update_icon()
+	..()
+
+/obj/item/weapon/pickaxe/sledgehammer/update_icon()
+	var/new_state = "[icon_state][wielded]"
+	item_state_slots[slot_l_hand_str] = new_state
+	item_state_slots[slot_r_hand_str] = new_state
 
 /*****************************Shovel********************************/
 
@@ -252,7 +277,7 @@
 	anchored = 1
 	icon_state = "[initial(icon_state)]_open"
 	if(fringe)
-		set_light(2, 0.1) // Very dim so the rest of the flag is barely visible - if the turf is completely dark, you can't see anything on it, no matter what
+		set_light(0.2, 0.1, 1) // Very dim so the rest of the flag is barely visible - if the turf is completely dark, you can't see anything on it, no matter what
 		var/image/addon = image(icon = src.icon, icon_state = fringe) // Bright fringe
 		addon.layer = ABOVE_LIGHTING_LAYER
 		addon.plane = EFFECTS_ABOVE_LIGHTING_PLANE
@@ -474,7 +499,7 @@
 		R.burst(T)
 		return
 	if(fields.len < fieldlimit)
-		playsound(src,'sound/weapons/resonator_fire.ogg',50,1)
+		playsound(src,'sound/effects/weapons/energy/resonator_fire.ogg',50,1)
 		var/obj/effect/resonance/RE = new /obj/effect/resonance(T, creator, burst_time, src)
 		fields += RE
 

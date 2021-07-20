@@ -19,6 +19,8 @@
 	var/icon_state_closed = null
 	var/icon_state_closing = null
 
+	explosion_block = 3
+
 	var/open_sound = 'sound/machines/blastdoor_open.ogg'
 	var/close_sound = 'sound/machines/blastdoor_close.ogg'
 
@@ -190,9 +192,8 @@
 /obj/machinery/door/blast/regular/open
 	begins_closed = FALSE
 
-/obj/machinery/door/blast/regular/singulo
-	emp_act()
-		return
+/obj/machinery/door/blast/regular/singulo/emp_act()
+	return
 
 /obj/machinery/door/blast/regular/retro
 	desc = "That looks like it doesn't open easily. However, it's probably not as durable as the modern ones."

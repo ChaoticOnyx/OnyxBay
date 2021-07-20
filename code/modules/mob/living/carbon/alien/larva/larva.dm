@@ -17,6 +17,7 @@
 	. = ..()
 	add_language("Xenomorph") //Bonus language.
 	internal_organs |= new /obj/item/organ/internal/xenos/hivenode(src)
+	verbs += /mob/living/carbon/proc/toggle_darksight
 
 /obj/structure/alien/egg/CanUseTopic(mob/user)
 	return isghost(user) ? STATUS_INTERACTIVE : STATUS_CLOSE
@@ -49,12 +50,24 @@
 		return
 
 	ckey = user.ckey
-	GLOB.xenomorphs.add_antagonist(mind, 1)
+
+	if(mind && !GLOB.xenomorphs.is_antagonist(mind))
+		GLOB.xenomorphs.add_antagonist(mind, 1)
+
 	spawn(-1)
 		if(user)
 			qdel(user) // Remove the keyless ghost if it exists.
+
+/mob/living/carbon/alien/larva/Login()
+	. = ..()
+	if(mind && !GLOB.xenomorphs.is_antagonist(mind))
+		GLOB.xenomorphs.add_antagonist(mind, 1)
 
 /mob/living/carbon/alien/larva/proc/larva_announce_to_ghosts()
 	for(var/mob/observer/ghost/O in GLOB.ghost_mob_list)
 		if(O.client && !jobban_isbanned(O, MODE_XENOMORPH))
 			to_chat(O, SPAN("notice", "A new alien larva has been born! ([ghost_follow_link(src, O)]) (<a href='byond://?src=\ref[src];occupy=1'>OCCUPY</a>)"))
+
+/mob/living/carbon/alien/larva/update_living_sight()
+	..()
+	set_sight(sight|SEE_MOBS)

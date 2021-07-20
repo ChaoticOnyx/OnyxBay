@@ -128,7 +128,6 @@ var/global/list/image/ghost_sightless_images = list() //this is a list of images
 	L.ckey = ckey
 	L.teleop = null
 	L.reload_fullscreen()
-	L.verbs |= /mob/living/proc/ghost
 	L.on_ghost_possess()
 
 /mob/observer/ghost/verb/ghost_possess(mob/living/M in GLOB.available_mobs_for_possess)
@@ -200,26 +199,50 @@ This is the proc mobs get to turn into a ghost. Forked from ghostize due to comp
 	set category = "OOC"
 	set name = "Ghost"
 	set desc = "Leave your body and enter the land of the dead."
-	set hidden = 0
 
 	if(stat == DEAD)
-		announce_ghost_joinleave(ghostize(1))
-	else if(controllable)
-		ghostize(can_reenter_corpse = FALSE)
-	else if(istype(loc, /obj/machinery/cryopod))
-		var/response
-		if(config.respawn_delay)
-			response = alert(src, "Are you -sure- you want to ghost?\n(You are alive. If you ghost, you won't be able to play this round for another [config.respawn_delay] minute\s! You can't change your mind so choose wisely!)", "Are you sure you want to ghost?", "Ghost", "Stay in body")
-		else
-			response = alert(src, "Are you -sure- you want to ghost?\n(You are alive. If you ghost, you won't be able to return to this body! You can't change your mind so choose wisely!)", "Are you sure you want to ghost?", "Ghost", "Stay in body")
-		if(response != "Ghost")
-			return
-		var/turf/location = get_turf(src)
-		log_and_message_admins(" has ghosted. (<A HREF='?_src_=holder;adminplayerobservecoodjump=1;X=[location.x];Y=[location.y];Z=[location.z]'>JMP</a>)")
-		var/mob/observer/ghost/ghost = ghostize(0)	//0 parameter is so we can never re-enter our body, "Charlie, you can never come baaaack~" :3
-		if(ghost)
-			ghost.timeofdeath = world.time // Because the living mob won't have a time of death and we want the respawn timer to work properly.
-			announce_ghost_joinleave(ghost)
+		announce_ghost_joinleave(ghostize(can_reenter_corpse = TRUE))
+		return
+
+	if(!may_ghost())
+		to_chat(src, SPAN("warning", "You may not to ghost right now."))
+		return
+
+	var/response = alert(src, "Are you -sure- you want to ghost?\n(You are alive. If you ghost, you won't be able to [config.respawn_delay ? "play this round for another [config.respawn_delay] minute\s" : "return to this body"]! You can't change your mind so choose wisely!)", "Are you sure you want to ghost?", "Ghost", "Stay in body")
+	if(response == "Stay in body" || !may_ghost())
+		return
+
+	log_and_message_admins("has ghosted")
+	var/mob/observer/ghost/ghost = ghostize(can_reenter_corpse = FALSE)
+	if(ghost)
+		ghost.timeofdeath = world.time // Because the living mob won't have a time of death and we want the respawn timer to work properly.
+		announce_ghost_joinleave(ghost)
+
+/mob/living/proc/may_ghost()
+	return TRUE
+
+/mob/living/carbon/human/may_ghost()
+	if(istype(loc, /obj/machinery/cryopod))
+		return TRUE
+	if(internal_organs_by_name[BP_BRAIN])
+		var/obj/item/organ/internal/brain/brain = internal_organs_by_name[BP_BRAIN]
+		if(brain.is_broken() && stat == UNCONSCIOUS)
+			return TRUE
+	if(internal_organs_by_name[BP_CELL])
+		var/obj/item/organ/internal/cell/C = internal_organs_by_name[BP_CELL]
+		if(!C.cell || C.cell.charge <= 1)
+			return TRUE
+	return FALSE
+
+/mob/living/silicon/robot/may_ghost()
+	if(istype(loc, /obj/machinery/cryopod/robot))
+		return TRUE
+	else if(!cell || cell.charge <= 1 || !is_component_functioning("power cell"))
+		return TRUE
+	return FALSE
+
+/mob/living/silicon/robot/drone/may_ghost()
+	return TRUE
 
 /mob/observer/ghost/can_use_hands()	return 0
 /mob/observer/ghost/is_active()		return 0
@@ -235,17 +258,22 @@ This is the proc mobs get to turn into a ghost. Forked from ghostize due to comp
 /mob/observer/ghost/verb/reenter_corpse()
 	set category = "Ghost"
 	set name = "Re-enter Corpse"
-	if(!client)	return
-	if(!(mind && mind.current && can_reenter_corpse))
-		to_chat(src, "<span class='warning'>You have no body.</span>")
+
+	if(!client)
+		return
+	if(!(mind && mind.current && mind.current.loc && can_reenter_corpse))
+		to_chat(src, SPAN("warning", "You have no body."))
 		return
 	if(mind.current.key && copytext(mind.current.key,1,2)!="@")	//makes sure we don't accidentally kick any clients
-		to_chat(src, "<span class='warning'>Another consciousness is in your body... it is resisting you.</span>")
+		to_chat(src, SPAN("warning", "Another consciousness is in your body... It is resisting you."))
 		return
 	stop_following()
 	mind.current.key = key
 	mind.current.teleop = null
 	mind.current.reload_fullscreen()
+	if(isliving(mind.current))
+		var/mob/living/L = mind.current
+		L.handle_regular_hud_updates() // So we see a proper health icon and stuff
 	if(!admin_ghosted)
 		announce_ghost_joinleave(mind, 0, "They now occupy their body again.")
 	return 1

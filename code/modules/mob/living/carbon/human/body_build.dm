@@ -30,6 +30,7 @@ var/global/datum/body_build/default_body_build = new
 
 	var/rig_back     = 'icons/inv_slots/rig/mob.dmi'
 	var/blood_icon   = 'icons/mob/human_races/masks/blood_human.dmi'
+	var/dam_mask     = 'icons/mob/human_races/masks/dam_mask_human.dmi'
 
 /datum/body_build/proc/get_mob_icon(slot, icon_state)
 	var/icon/I
@@ -73,6 +74,7 @@ var/global/datum/body_build/default_body_build = new
 		)
 	rig_back             = 'icons/inv_slots/rig/mob_slim.dmi'
 	blood_icon           = 'icons/mob/human_races/masks/blood_human_slim.dmi'
+	dam_mask             = 'icons/mob/human_races/masks/dam_mask_human_slim.dmi'
 
 /datum/body_build/slim/alt
 	name                 = "Slim Alt"
@@ -99,6 +101,7 @@ var/global/datum/body_build/default_body_build = new
 		"slot_r_hand"    = 'icons/mob/onmob/items/righthand_slim.dmi'
 		)
 	blood_icon           = 'icons/mob/human_races/masks/blood_human_slim_alt.dmi'
+	dam_mask             = 'icons/mob/human_races/masks/dam_mask_human_slim_alt.dmi'
 
 /datum/body_build/slim/male
 	name                 = "Slim"
@@ -126,6 +129,7 @@ var/global/datum/body_build/default_body_build = new
 		"slot_r_hand"    = 'icons/mob/onmob/items/righthand_slim.dmi'
 		)
 	blood_icon           = 'icons/mob/human_races/masks/blood_human_m_slim.dmi'
+	dam_mask             = 'icons/mob/human_races/masks/dam_mask_human_m_slim.dmi'
 
 /datum/body_build/slim/alt/tajaran //*sigh. I regret of doing this.
 	name                 = "Slim Tajaran"
@@ -152,6 +156,7 @@ var/global/datum/body_build/default_body_build = new
 
 	rig_back             = 'icons/inv_slots/rig/mob_slim.dmi'
 	blood_icon           = 'icons/mob/human_races/masks/blood_human_slim.dmi'
+	dam_mask             = 'icons/mob/human_races/masks/dam_mask_tajaran_slim.dmi'
 
 /datum/body_build/tajaran
 	name                 = "Tajaran"
@@ -175,6 +180,7 @@ var/global/datum/body_build/default_body_build = new
 		"slot_l_hand"    = 'icons/mob/onmob/items/lefthand.dmi',
 		"slot_r_hand"    = 'icons/mob/onmob/items/righthand.dmi'
 		)
+	dam_mask             = 'icons/mob/human_races/masks/dam_mask_tajaran.dmi'
 
 /datum/body_build/unathi
 	name                 = SPECIES_UNATHI
@@ -183,7 +189,7 @@ var/global/datum/body_build/default_body_build = new
 		"slot_w_uniform" = 'icons/inv_slots/uniforms/mob.dmi',
 		"slot_suit"      = 'icons/inv_slots/suits/mob_unathi.dmi',
 		"slot_gloves"    = 'icons/inv_slots/gloves/mob.dmi',
-		"slot_glasses"   = 'icons/inv_slots/glasses/mob.dmi',,
+		"slot_glasses"   = 'icons/inv_slots/glasses/mob.dmi',
 		"slot_l_ear"     = 'icons/inv_slots/ears/mob.dmi',
 		"slot_r_ear"     = 'icons/inv_slots/ears/mob_r.dmi',
 		"slot_wear_mask" = 'icons/inv_slots/masks/mob_unathi.dmi',
@@ -198,6 +204,7 @@ var/global/datum/body_build/default_body_build = new
 		"slot_l_hand"    = 'icons/mob/onmob/items/lefthand.dmi',
 		"slot_r_hand"    = 'icons/mob/onmob/items/righthand.dmi'
 		)
+	dam_mask             = 'icons/mob/human_races/masks/dam_mask_lizard.dmi'
 
 /datum/body_build/vox
 	name                 = "Vox"
@@ -245,8 +252,10 @@ var/global/datum/body_build/default_body_build = new
 		"slot_r_hand"    = 'icons/mob/onmob/items/righthand.dmi'
 		)
 	blood_icon           = 'icons/mob/human_races/masks/blood_monkey.dmi'
+	dam_mask             = 'icons/mob/human_races/masks/dam_mask_monkey.dmi'
 
 /datum/body_build/xenomorph
 	name                 = "Xenomorph"
 	genders              = list(MALE, FEMALE, NEUTER)
 	blood_icon           = null // Fuck it, I ain't gonna spend all day showering if I'm an apex predator
+	dam_mask             = 'icons/mob/human_races/masks/dam_mask_xenos.dmi'

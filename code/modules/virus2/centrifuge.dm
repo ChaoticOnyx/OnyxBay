@@ -155,6 +155,7 @@
 	if (!sample) return
 	var/obj/item/weapon/virusdish/dish = new /obj/item/weapon/virusdish(loc)
 	dish.virus2 = virus2
+	dish.virus2.infected = null
 	virus2 = null
 
 	SSnano.update_uis(src)

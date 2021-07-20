@@ -49,6 +49,7 @@
 	icon = 'icons/obj/toy.dmi'
 	icon_state = "waterballoon-e"
 	item_state = "balloon-empty"
+	w_class = ITEM_SIZE_TINY
 
 /obj/item/toy/water_balloon/New()
 	create_reagents(10)
@@ -59,11 +60,12 @@
 
 /obj/item/toy/water_balloon/afterattack(atom/A, mob/user, proximity)
 	if(!proximity) return
-	if (istype(A, /obj/structure/reagent_dispensers/watertank) && get_dist(src,A) <= 1)
+	if(istype(A, /obj/structure/reagent_dispensers) && Adjacent(A))
 		A.reagents.trans_to_obj(src, 10)
 		to_chat(user, "<span class='notice'>You fill the balloon with the contents of [A].</span>")
 		src.desc = "A translucent balloon with some form of liquid sloshing around in it."
 		src.update_icon()
+		w_class = ITEM_SIZE_SMALL
 	return
 
 /obj/item/toy/water_balloon/attackby(obj/O, mob/user)
@@ -80,6 +82,7 @@
 					src.desc = "A translucent balloon with some form of liquid sloshing around in it."
 					to_chat(user, "<span class='notice'>You fill the balloon with the contents of [O].</span>")
 					O.reagents.trans_to_obj(src, 10)
+					w_class = ITEM_SIZE_SMALL
 	src.update_icon()
 	return
 
@@ -124,6 +127,12 @@
 	desc = "Man, I love NanoTrasen soooo much. I use only NT products. You have NO idea."
 	icon_state = "ntballoon"
 	item_state = "ntballoon"
+
+/obj/item/toy/balloon/snail
+	name = "\improper 'snail' balloon"
+	desc = "It looks quite familiar, right?"
+	icon_state = "snailballoon"
+	item_state = "snailballoon"
 
 /*
  * Fake telebeacon
@@ -276,6 +285,10 @@
 	w_class = ITEM_SIZE_SMALL
 	attack_verb = list("attacked", "struck", "hit")
 
+	var/active_max_bright = 0.3
+	var/active_outer_range = 1.6
+	var/brightness_color = "#4de4ff"
+
 	attack_self(mob/user)
 		src.active = !( src.active )
 		if (src.active)
@@ -284,12 +297,14 @@
 			src.icon_state = "swordblue"
 			src.item_state = "swordblue"
 			src.w_class = ITEM_SIZE_HUGE
+			set_light(l_max_bright = active_max_bright, l_outer_range = active_outer_range, l_color = brightness_color)
 		else
 			to_chat(user, "<span class='notice'>You push the plastic blade back down into the handle.</span>")
 			playsound(user, 'sound/weapons/saberoff.ogg', 50, 1)
 			src.icon_state = "sword0"
 			src.item_state = "sword0"
 			src.w_class = initial(w_class)
+			set_light(0)
 
 		update_held_icon()
 
@@ -817,7 +832,7 @@
 	attack_verb = list("attacked", "whacked", "jabbed", "poked", "marshalled")
 
 /obj/item/weapon/marshalling_wand/Initialize()
-	set_light(1.5, 1.5, "#ff0000")
+	set_light(0.6, 0.5, 2, 2, "#ff0000")
 	return ..()
 
 /obj/item/weapon/marshalling_wand/attack_self(mob/living/user)

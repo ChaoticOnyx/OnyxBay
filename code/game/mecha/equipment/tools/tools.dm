@@ -618,7 +618,8 @@
 /obj/item/mecha_parts/mecha_equipment/repair_droid/Destroy()
 	qdel(pr_repair_droid)
 	pr_repair_droid = null
-	..()
+
+	return ..()
 
 /obj/item/mecha_parts/mecha_equipment/repair_droid/attach(obj/mecha/M as obj)
 	..()
@@ -708,7 +709,8 @@
 /obj/item/mecha_parts/mecha_equipment/tesla_energy_relay/Destroy()
 	qdel(pr_energy_relay)
 	pr_energy_relay = null
-	..()
+
+	return ..()
 
 /obj/item/mecha_parts/mecha_equipment/tesla_energy_relay/detach()
 	pr_energy_relay.stop()
@@ -795,7 +797,8 @@
 /obj/item/mecha_parts/mecha_equipment/generator/Destroy()
 	qdel(pr_mech_generator)
 	pr_mech_generator = null
-	..()
+
+	return ..()
 
 /obj/item/mecha_parts/mecha_equipment/generator/proc/init()
 	fuel = new /obj/item/stack/material/plasma(src)
@@ -1113,7 +1116,7 @@
 			to_chat(usr, SPAN("danger", "Kinda hard to climb in while handcuffed don't you think?"))
 			return
 
-	for(var/mob/living/carbon/slime/M in range(1,usr))
+	for(var/mob/living/carbon/metroid/M in range(1,usr))
 		if(M.Victim == usr)
 			to_chat(usr, SPAN("danger", "You're too busy getting your life sucked out of you."))
 			return

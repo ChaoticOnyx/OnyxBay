@@ -9,7 +9,9 @@
 	var/beat_sound = 'sound/effects/singlebeat.ogg'
 	var/tmp/next_blood_squirt = 0
 	relative_size = 15
-	max_damage = 45
+	max_damage = 50
+	min_bruised_damage = 15
+	min_broken_damage = 35
 	var/open
 
 /obj/item/organ/internal/heart/die()

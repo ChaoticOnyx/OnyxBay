@@ -65,6 +65,23 @@
 	organ_tag = BP_RESIN
 	associated_power = /mob/living/carbon/human/proc/resin
 
+/obj/item/organ/internal/xenos/ganglion
+	name = "spinal ganglion"
+	desc = "It reminds both a dead cuttlefish and a wad of purple bubblegum."
+	icon = 'icons/mob/alien.dmi'
+	parent_organ = BP_CHEST
+	icon_state = "weed_extract" // For now it looks... acceptable
+	organ_tag = BP_GANGLION
+	vital = 1
+
+/obj/item/organ/internal/xenos/ganglion/New(mob/living/carbon/holder)
+	..()
+	max_damage = 100
+	if(species)
+		max_damage = species.total_health*1.5
+	min_bruised_damage = max_damage*0.25
+	min_broken_damage = max_damage*0.75
+
 /obj/item/organ/internal/eyes/xenos/update_colour()
 	if(!owner)
 		return
@@ -101,6 +118,10 @@
 	arterial_bleed_severity = 0
 	limb_flags = ORGAN_FLAG_HEALS_OVERKILL
 	max_damage = 100
+	skull_path = null // The head itself is a skull. Exoskeleton, eh?
+
+/obj/item/organ/external/head/xeno/disfigure(type)
+	return // Lets just dont, kay?
 
 // Xenolimbs.
 /obj/item/organ/external/chest/xeno
@@ -199,10 +220,34 @@
 			if(!larva_path) // Something went very wrong, the host cannot give birth
 				die()
 				return PROCESS_KILL
-			var/mob/living/carbon/alien/larva/L = new larva_path(get_turf(src))
-			L.larva_announce_to_ghosts()
+			var/birth_loc = loc
+			spawn(1 SECOND) // So the newborn larvae won't get shredded by flying limbs
+				var/mob/living/carbon/alien/larva/L = new larva_path(get_turf(birth_loc))
+				L.larva_announce_to_ghosts()
 			die()
 			owner.gib()
 			QDEL_NULL(src)
 			return PROCESS_KILL
+		else if(owner.can_feel_pain())
+			var/obj/item/organ/external/parent = owner.get_organ(parent_organ)
+			switch(growth)
+				if(230 to INFINITY)
+					if(prob(50))
+						owner.custom_pain("Something is just about to burst through your chest!", 60, affecting = parent)
+					owner.Weaken(10)
+					owner.Stun(10)
+					owner.make_jittery(100)
+				if(200 to 229)
+					if(prob(20))
+						owner.custom_pain("You feel like your chest is ripping apart!", 45, affecting = parent)
+				if(140 to 199)
+					if(prob(10))
+						owner.custom_pain("You feel a stabbing pain in your chest!", 15, affecting = parent)
+				if(70 to 139)
+					if(prob(5))
+						owner.custom_pain("You feel a stinging pain in your chest!", 5, affecting = parent)
+		else if(growth == 235)
+			to_chat(owner, SPAN("danger", "You feel like something is massacring your chest from the inside!"))
+			owner.Weaken(10)
+			owner.Stun(10)
 	..()
