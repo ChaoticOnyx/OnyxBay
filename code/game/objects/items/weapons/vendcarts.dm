@@ -546,7 +546,7 @@
 	)
 
 	illegal = list(
-	//	/obj/item/weapon/reagent_containers/food/snacks/packaged/hemptogen = 3,
+		/obj/item/weapon/reagent_containers/food/snacks/packaged/hemptogen = 3,
 		/obj/item/weapon/reagent_containers/food/snacks/packaged/skrellsnacks = 3
 	)
 
