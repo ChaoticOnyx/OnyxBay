@@ -219,7 +219,6 @@
 			attack_verb = list("smashed", "beaten", "slammed", "smacked", "struck", "battered", "bonked")
 		else
 			visible_message(SPAN("warning", "[usr] starts the chainsaw!"))
-			//usr << sound('sound/items/chainsaw_activated.ogg',repeat = 0, volume = 20)
 			playsound(user, list('sound/items/chainsaw_activated.ogg','sound/items/chainsaw_activated2.ogg' ), 50, 5, 7)
 			base_icon = "chainsaw_on"
 			desc = "BRRRR-BRRRR-BRRRR!"
