@@ -24,6 +24,8 @@
 	maxHealth = 30
 	possession_candidate = 1
 	holder_type = /obj/item/weapon/holder/corgi
+	renamable = TRUE
+
 	var/obj/item/hat
 	var/old_dir
 	var/obj/movement_target
@@ -38,6 +40,7 @@
 	response_help  = "pets"
 	response_disarm = "bops"
 	response_harm   = "kicks"
+	renamable = FALSE
 
 /mob/living/simple_animal/corgi/Move(a, b, flag)
 	..()
@@ -256,7 +259,9 @@
 	response_disarm = "bops"
 	response_harm   = "kicks"
 	turns_since_scan = 0
+	renamable = FALSE
 	var/puppies = 0
+
 
 //Lisa already has a cute bow!
 /mob/living/simple_animal/corgi/Lisa/Topic(href, href_list)

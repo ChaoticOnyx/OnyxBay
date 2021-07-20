@@ -35,6 +35,8 @@
 	can_pull_size = ITEM_SIZE_TINY
 	can_pull_mobs = MOB_PULL_SAME
 
+	renamable = TRUE
+
 /mob/living/simple_animal/lizard/Crossed(AM as mob|obj)
 	if(ishuman(AM) && !stat)
 		var/mob/M = AM

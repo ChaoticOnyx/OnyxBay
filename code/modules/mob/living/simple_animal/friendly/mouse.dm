@@ -40,6 +40,8 @@
 	can_pull_size = ITEM_SIZE_TINY
 	can_pull_mobs = MOB_PULL_SAME
 
+	renamable = TRUE
+
 /mob/living/simple_animal/mouse/Life()
 	..()
 	if(!stat && prob(speak_chance))
@@ -215,6 +217,7 @@
 /mob/living/simple_animal/mouse/brown/Tom
 	name = "Tom"
 	desc = "Jerry the cat is not amused."
+	renamable = FALSE
 
 /mob/living/simple_animal/mouse/brown/Tom/New()
 	..()

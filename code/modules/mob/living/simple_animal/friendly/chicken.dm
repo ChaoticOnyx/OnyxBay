@@ -35,6 +35,7 @@ GLOBAL_VAR_INIT(chicken_count, 0) // Number of /mob/living/simple_animal/chicken
 	var/amount_grown = 0
 	pass_flags = PASS_FLAG_TABLE | PASS_FLAG_GRILLE
 	mob_size = MOB_MINISCULE
+	renamable = TRUE
 
 /mob/living/simple_animal/chick/Initialize()
 	. = ..()
@@ -79,6 +80,7 @@ GLOBAL_VAR_INIT(chicken_count, 0) // Number of /mob/living/simple_animal/chicken
 	pass_flags = PASS_FLAG_TABLE
 	mob_size = MOB_SMALL
 	holder_type = /obj/item/weapon/holder/chicken
+	renamable = TRUE
 
 /mob/living/simple_animal/chicken/Initialize()
 	. = ..()

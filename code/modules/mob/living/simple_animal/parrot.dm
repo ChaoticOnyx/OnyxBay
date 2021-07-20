@@ -88,6 +88,7 @@
 
 	holder_type = /obj/item/weapon/holder/parrot
 
+	renamable = TRUE
 
 /mob/living/simple_animal/parrot/New()
 	..()
@@ -719,6 +720,7 @@
 	name = "Poly"
 	desc = "Poly the Parrot. An expert on quantum cracker theory."
 	speak = list("Поли хочет крекер!", ":e Проверьте материю, ущербы!",":e Настраивайте СМЕСы, ленивые жопы!",":e КТО СПИЗДИЛ ЧЕРТОВЫ РИГИ?",":e ОНА СЕЙЧАС ЕБНЕТ ВЫЗЫВАЙТЕ ШАТТЛ!")
+	renamable = FALSE
 
 /mob/living/simple_animal/parrot/Poly/New()
 	ears = new /obj/item/device/radio/headset/headset_eng(src)
