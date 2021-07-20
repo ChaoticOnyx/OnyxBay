@@ -53,7 +53,7 @@
 	show_objectives(src.mind)
 
 /mob/living/proc/write_ambition()
-	set name = "Set Ambition"
+	set name = "Write Ambitions" //ported from infinitystation
 	set category = "IC"
 	set src = usr
 
@@ -63,18 +63,16 @@
 		to_chat(src, "<span class='warning'>While you may perhaps have goals, this verb's meant to only be visible \
 		to antagonists.  Please make a bug report!</span>")
 		return
-	var/new_ambitions = input(src, "Write a short sentence of what your character hopes to accomplish \
-	today as an antagonist.  Remember that this is purely optional.  It will be shown at the end of the \
-	round for everybody else.", "Ambitions", mind.ambitions) as null|message
-	if(isnull(new_ambitions))
-		return
-	new_ambitions = sanitize(new_ambitions)
-	mind.ambitions = new_ambitions
-	if(new_ambitions)
-		to_chat(src, "<span class='notice'>You've set your goal to be '[new_ambitions]'.</span>")
-	else
-		to_chat(src, "<span class='notice'>You leave your ambitions behind.</span>")
-	log_and_message_admins("has set their ambitions to now be: [new_ambitions].")
+
+	var/new_goal = sanitize(input(src, "Write down what you want to achieve in this round as an antagonist \
+	 - your goals. They will be visible to all players after the end of the round. \
+	remember you cannot rewrite them - only add new lines.", "Antagonist Goal") as null|message)
+	if(new_goal)
+		mind.ambitions += (new_goal = "<br>[roundduration2text()]: [new_goal]")
+		to_chat(src, SPAN_NOTICE("Your ambitions now look like this: <b>[mind.ambitions]</b><br>. \
+		You can view your ambitions in <b>Notes</b>. If you wish to change your ambition, \
+		please contact Administator."))
+		log_and_message_admins("updated his ambition: [new_goal]")
 
 //some antagonist datums are not actually antagonists, so we might want to avoid
 //sending them the antagonist meet'n'greet messages.
