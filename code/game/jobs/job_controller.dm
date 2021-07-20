@@ -567,7 +567,11 @@ var/global/datum/controller/occupations/job_master
 				G.prescription = 7
 
 		// give pinpointer to new players
-		if(H?.client?.player_age <= NEW_PLAYER_WAYFINDING_TRACKER)
+		var/wayfinding_pref = H.get_preference_value(/datum/client_preference/give_wayfinding)
+		var/player_age = H?.client?.player_age
+		if(istext(player_age)) // database not initialized
+			player_age = 0
+		if((player_age <= NEW_PLAYER_WAYFINDING_TRACKER && wayfinding_pref == GLOB.PREF_BASIC) || wayfinding_pref == GLOB.PREF_YES)
 			var/obj/item/weapon/pinpointer/wayfinding/W = new(H)
 			var/equipped = H.equip_to_slot_or_store_or_drop(W, slot_l_store)
 			if(equipped)
