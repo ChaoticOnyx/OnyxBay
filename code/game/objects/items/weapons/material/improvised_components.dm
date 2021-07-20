@@ -79,3 +79,38 @@
 		user.put_in_hands(finished)
 		return
 	update_icon(user)
+
+var/step = 1
+
+/obj/item/weapon/circular_saw/attackby(obj/item/W, mob/user)
+	switch (step)
+		if (1)
+			if(istype(W, /obj/item/stack/cable_coil))
+				var/obj/item/stack/cable_coil = W
+				if(cable_coil.amount == 3) 
+					qdel(W)
+					to_chat(user, "You're changing the wiring for \the [src].")
+					step = 2
+		if (2)
+			if(istype(W, /obj/item/weapon/stock_parts/capacitor/adv))
+				qdel(W)
+				to_chat(user, "Adding \the [W] capacitor for a future chainsaw.")
+				step = 3
+		if (3)
+			if(istype(W, /obj/item/stack/material/plasteel))
+				var/obj/item/stack/material/plasteel = W
+				if (plasteel.amount == 5)
+					qdel(W)
+					to_chat(user, "You make the chainsaw shell.")
+					step = 4
+		if (4)
+			if(isWelder(W))
+				var/obj/item/weapon/weldingtool/WT = W
+				if(istype(WT) && WT.remove_fuel(5,user))
+					playsound(user,'sound/effects/flare.ogg', 50, 5, 7)
+					to_chat(user, "You finish making the circular saw.")
+					step = 1
+					user.put_in_hands(new /obj/item/weapon/material/twohanded/chainsaw)
+					qdel(src)
+					return
+

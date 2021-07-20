@@ -4,6 +4,7 @@
  *		Fireaxe
  *		Spears
  *		Baseball bats
+ *		Chainsaw
  */
 
 /*##################################################################
@@ -89,11 +90,11 @@
 	edge = 1
 	w_class = ITEM_SIZE_HUGE
 	mod_handy_w = 1.2
-	mod_weight_w = 2.0
+	mod_weight_w = 2
 	mod_reach_w = 1.5
 	mod_handy_u = 0.4
 	mod_weight_u = 1.5
-	mod_reach_u = 1.0
+	mod_reach_u = 1
 	slot_flags = SLOT_BACK
 	force_wielded = 30
 	attack_verb = list("attacked", "chopped", "cleaved", "torn", "cut")
@@ -126,9 +127,9 @@
 	w_class = ITEM_SIZE_HUGE
 	mod_handy_w = 1.25
 	mod_weight_w = 1.25
-	mod_reach_w = 2.0
+	mod_reach_w = 2
 	mod_handy_u = 0.75
-	mod_weight_u = 1.0
+	mod_weight_u = 1
 	mod_reach_u = 1.5
 	slot_flags = SLOT_BACK
 
@@ -153,23 +154,83 @@
 	base_icon = "metalbat"
 	w_class = ITEM_SIZE_LARGE
 	mod_weight = 1.5
-	mod_reach = 1.0
-	mod_handy = 1.0
+	mod_reach = 1
+	mod_handy = 1
 
-	mod_handy_w = 1.0
+	mod_handy_w = 1
 	mod_weight_w = 1.5
-	mod_reach_w = 1.0
+	mod_reach_w = 1
 	mod_handy_u = 0.8
 	mod_weight_u = 1.35
-	mod_reach_u = 1.0
+	mod_reach_u = 1
 
 	throwforce = 7
 	attack_verb = list("smashed", "beaten", "slammed", "smacked", "struck", "battered", "bonked")
 	hitsound = "swing_hit"
 	default_material = MATERIAL_WOOD
-	force_divisor = 1.0           // 20 when wielded with weight 20 (steel)
+	force_divisor = 1           // 20 when wielded with weight 20 (steel)
 	unwielded_force_divisor = 0.7 // 15 when unwielded based on above.
 	slot_flags = SLOT_BACK
+
+/obj/item/weapon/material/twohanded/chainsaw
+	name = "chainsaw"
+	desc = "Using for sawing wood more effective"
+	icon_state = "chainsaw_off0"
+	base_icon = "chainsaw_off"
+	w_class = ITEM_SIZE_LARGE
+	attack_verb = list("smashed", "beaten", "slammed", "smacked", "struck", "battered", "bonked")
+	default_material = MATERIAL_STEEL
+	applies_material_colour = FALSE
+	hitsound = "swing_hit"
+	mod_handy_w = 1.2
+	mod_weight_w = 3
+	mod_reach_w = 1.5
+	mod_handy_u = 0.4
+	mod_weight_u = 1.5
+	mod_reach_u = 1.
+
+	force_divisor = 0.8
+	unwielded_force_divisor = 0.2
+	sharp = FALSE
+	edge = FALSE
+	unbreakable = TRUE
+
+	var/chainsaw_active = FALSE
+
+	/obj/item/weapon/material/twohanded/chainsaw/update_icon()
+		if(chainsaw_active)
+			base_icon = "chainsaw_on"
+		else
+			base_icon = "chainsaw_off"
+		..()
+
+	/obj/item/weapon/material/twohanded/chainsaw/attack_self(mob/living/user)
+		if (chainsaw_active)
+			src.visible_message("<span class='warning'>[usr] turns off the chainsaw!</span>")
+			playsound(user,'sound/items/chainsaw_stop.ogg', 50, 5, 7)
+			base_icon = "chainsaw_off"
+			desc = "Using for sawing wood more effective"
+			chainsaw_active = FALSE
+			sharp = FALSE
+			edge = FALSE
+			force_wielded = FALSE
+			hitsound = "swing_hit"
+			attack_verb = list("smashed", "beaten", "slammed", "smacked", "struck", "battered", "bonked")
+		else
+			src.visible_message("<span class='warning'>[usr] starts the chainsaw!</span>")
+			//usr << sound('sound/items/chainsaw_activated.ogg',repeat = 0, volume = 20)
+			playsound(user, list('sound/items/chainsaw_activated.ogg','sound/items/chainsaw_activated2.ogg' ), 50, 5, 7)
+			base_icon = "chainsaw_on"
+			desc = "BRRRR-BRRRR-BRRRR!"
+			chainsaw_active = TRUE
+			sharp = TRUE
+			edge = TRUE
+			force_wielded = 30
+			hitsound = list ('sound/items/chainsaw_attack1.ogg', 'sound/items/chainsaw_attack2.ogg')
+			attack_verb = list("attacked", "slashed", "torn", "gored")
+		update_icon()
+
+
 
 //Predefined materials go here.
 /obj/item/weapon/material/twohanded/baseballbat/metal/New(newloc)
