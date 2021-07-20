@@ -40,6 +40,10 @@
 	..()
 	update_icon()
 
+/obj/item/weapon/reagent_containers/syringe/on_enter_storage(obj/item/weapon/storage/S)
+	..()
+	update_icon()
+
 /obj/item/weapon/reagent_containers/syringe/attack_self(mob/user)
 	switch(mode)
 		if(SYRINGE_DRAW)
@@ -105,6 +109,9 @@
 
 /obj/item/weapon/reagent_containers/syringe/update_icon()
 	overlays.Cut()
+
+	icon_rotation = istype(loc, /obj/item/weapon/storage) ? 90 : 0
+	update_transform()
 
 	if(mode == SYRINGE_BROKEN)
 		icon_state = "broken"
