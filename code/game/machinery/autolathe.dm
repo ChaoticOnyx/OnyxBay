@@ -79,8 +79,8 @@
 			"category" = R.category,
 			"hidden" = R.hidden == null ? FALSE : TRUE,
 			"required" = list(),
-			"multipliers" = list(),
-			"icon" = icon2base64html(R.path)
+			"icon" = icon2base64html(R.path),
+			"multipliers" = list()
 		)
 
 		var/max_sheets = 0

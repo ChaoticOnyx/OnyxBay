@@ -95,31 +95,3 @@
 	/obj/effect/meteor/silver     = 10,
 	/obj/effect/meteor/tunguska   = 1,
 )
-
-/datum/event/meteor_wave/overmap
-	next_meteor_lower = 5
-	next_meteor_upper = 10
-	next_meteor = 0
-	var/obj/effect/overmap/ship/victim
-
-/datum/event/meteor_wave/overmap/Destroy()
-	victim = null
-	. = ..()
-
-/datum/event/meteor_wave/overmap/tick()
-	if(victim && !victim.is_still()) //Meteors mostly fly in your face
-		start_side = prob(90) ? victim.fore_dir : pick(GLOB.cardinal)
-	else //Unless you're standing
-		start_side = pick(GLOB.cardinal)
-	..()
-
-/datum/event/meteor_wave/overmap/get_wave_size()
-	. = ..()
-	if(!victim)
-		return
-	if(victim.is_still()) //Standing still means less shit flies your way
-		. = round(. * 0.25)
-	if(victim.get_speed() < 0.3) //Slow and steady
-		. = round(. * 0.6)
-	if(victim.get_speed() > 3) //Sanic stahp
-		. *= 2

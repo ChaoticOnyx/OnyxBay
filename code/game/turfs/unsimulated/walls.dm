@@ -5,6 +5,7 @@
 	opacity = 1
 	density = 1
 	plane = DEFAULT_PLANE
+	explosion_block = 1
 
 /turf/unsimulated/wall/fakeglass
 	name = "window"

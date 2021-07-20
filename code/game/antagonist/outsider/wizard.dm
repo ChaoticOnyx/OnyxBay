@@ -13,11 +13,15 @@ GLOBAL_DATUM_INIT(wizards, /datum/antagonist/wizard, new)
 	hard_cap_round = 3
 	initial_spawn_req = 1
 	initial_spawn_target = 1
-	min_player_age = 18
 
 	faction = "wizard"
 
 	station_crew_involved = FALSE
+
+/datum/antagonist/wizard/Initialize()
+	. = ..()
+	if(config.wizard_min_age)
+		min_player_age = config.wizard_min_age
 
 /datum/antagonist/wizard/create_objectives(datum/mind/wizard)
 

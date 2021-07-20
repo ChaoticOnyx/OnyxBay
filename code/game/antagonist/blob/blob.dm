@@ -25,6 +25,11 @@ GLOBAL_DATUM_INIT(blobs, /datum/antagonist/blob, new)
 //#warn Set countdown
 	var/countdown = 300
 
+/datum/antagonist/blob/Initialize()
+	. = ..()
+	if(config.blob_min_age)
+		min_player_age = config.blob_min_age
+
 /datum/antagonist/blob/Process()
 	if (!current_antagonists.len || antags_are_dead())
 		if (under_quarantine)

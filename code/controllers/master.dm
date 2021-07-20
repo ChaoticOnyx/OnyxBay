@@ -50,6 +50,9 @@ GLOBAL_REAL(Master, /datum/controller/master) = new
 
 	var/current_runlevel	//for scheduling different subsystems for different stages of the round
 
+	/// Only run ticker subsystems for the next n ticks.
+	var/skip_ticks = 0
+
 	var/static/restart_clear = 0
 	var/static/restart_timeout = 0
 	var/static/restart_count = 0
@@ -189,11 +192,7 @@ GLOBAL_REAL(Master, /datum/controller/master) = new
 	// Sort subsystems by display setting for easy access.
 	sortTim(subsystems, /proc/cmp_subsystem_display)
 	// Set world options.
-#ifdef UNIT_TEST
-	world.sleep_offline = FALSE
-#else
 	world.sleep_offline = TRUE
-#endif
 	world.fps = config.fps
 	var/initialized_tod = REALTIMEOFDAY
 
@@ -320,7 +319,7 @@ GLOBAL_REAL(Master, /datum/controller/master) = new
 			new /datum/controller/failsafe() // (re)Start the failsafe.
 
 		//now do the actual stuff
-		if (!queue_head || !(iteration % 3))
+		if (!queue_head || !(iteration % 3) && !skip_ticks)
 			var/checking_runlevel = current_runlevel
 			if(cached_runlevel != checking_runlevel)
 				//resechedule subsystems
@@ -366,6 +365,8 @@ GLOBAL_REAL(Master, /datum/controller/master) = new
 
 		iteration++
 		last_run = world.time
+		if(skip_ticks)
+			skip_ticks--
 		src.sleep_delta = MC_AVERAGE_FAST(src.sleep_delta, sleep_delta)
 		current_ticklimit = TICK_LIMIT_RUNNING
 		if (processing * sleep_delta <= world.tick_lag)
@@ -402,6 +403,10 @@ GLOBAL_REAL(Master, /datum/controller/master) = new
 		SS.enqueue()
 	. = 1
 
+/// Warns us that the end of tick byond map_update will be laggier then normal, so that we can just skip running subsystems this tick.
+/datum/controller/master/proc/laggy_byond_map_update_incoming()
+	if(!skip_ticks)
+		skip_ticks = 1
 
 // Run thru the queue of subsystems to run, running them while balancing out their allocated tick precentage
 /datum/controller/master/proc/RunQueue()
@@ -464,7 +469,7 @@ GLOBAL_REAL(Master, /datum/controller/master) = new
 
 			current_ticklimit = round(TICK_USAGE + tick_precentage)
 
-			if (!(queue_node_flags & SS_TICKER))
+			if (!(queue_node_flags & SS_TICKER) || skip_ticks)
 				ran_non_ticker = TRUE
 			ran = TRUE
 

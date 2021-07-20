@@ -1,5 +1,5 @@
 /datum/design/item/surgery
-	category_items = "Surgery"
+	category_items = list("Surgery")
 
 /datum/design/item/surgery/scalpel_laser1
 	name = "basic laser scalpel"
@@ -108,4 +108,4 @@
 	materials = list (MATERIAL_STEEL = 10000, MATERIAL_GLASS = 7500, MATERIAL_SILVER = 1000, MATERIAL_GOLD = 1000)
 	build_path = /obj/item/organ/internal/stack
 	sort_string = "VACBA"
-	category_items = "Surgery"
+	category_items = list("Surgery")

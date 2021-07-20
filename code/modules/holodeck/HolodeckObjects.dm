@@ -98,10 +98,10 @@
 	base_name = "desert sand"
 	desc = "Uncomfortably gritty for a hologram."
 	base_desc = "Uncomfortably gritty for a hologram."
-	icon_state = "asteroid"
-	base_icon_state = "asteroid"
-	icon = 'icons/turf/flooring/asteroid.dmi'
-	base_icon = 'icons/turf/flooring/asteroid.dmi'
+	icon_state = "sand0"
+	base_icon_state = "sand0"
+	icon = 'icons/turf/flooring/sand.dmi'
+	base_icon = 'icons/turf/flooring/sand.dmi'
 	initial_flooring = null
 
 /turf/simulated/floor/holofloor/desert/New()
