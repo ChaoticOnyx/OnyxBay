@@ -254,7 +254,7 @@
 	work_type = /turf/simulated/floor/tiled
 
 /decl/hierarchy/rcd_mode/floor_and_walls/base_turf/can_handle_work(rcd, turf/target)
-	return istype(target) && (isspace(target) || istype(target, get_base_turf_by_area(target)) || istype(target, /turf/simulated/open))
+	return istype(target) && (isspace(target) || istype(target, get_base_turf_by_area(target)) || isopenspace(target))
 
 /decl/hierarchy/rcd_mode/floor_and_walls/floor_turf
 	cost = 3
