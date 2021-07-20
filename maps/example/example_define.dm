@@ -4,7 +4,7 @@
 	full_name = "The Example"
 	path = "example"
 
-	lobby_icon = 'maps/example/example_lobby.dmi'
+	lobby_screens = list('maps/example/example_lobby.png')
 
 	station_levels = list(1, 2, 3)
 	contact_levels = list(1, 2, 3)

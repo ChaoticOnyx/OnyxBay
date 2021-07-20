@@ -1103,3 +1103,11 @@ GLOBAL_DATUM_INIT(dview_mob, /mob/dview, new)
 /proc/remove_images_from_clients(image/I, list/show_to)
 	for(var/client/C in show_to)
 		C.images -= I
+
+/proc/refresh_lobby_browsers()
+	for(var/mob/new_player/player in GLOB.player_list)
+		INVOKE_ASYNC(GLOB.using_map, /datum/map/proc/show_titlescreen, player.client)
+
+/proc/change_lobbyscreen(new_screen)
+	GLOB.using_map.current_lobby_screen = new_screen || config.current_lobbyscreen || pick(GLOB.using_map.lobby_screens)
+	refresh_lobby_browsers()

@@ -100,6 +100,7 @@ var/server_name = "OnyxBay"
 	if(lobby_music_tracks.len)
 		lobby_music_type = pick(lobby_music_tracks)
 	GLOB.lobby_music = new lobby_music_type()
+	change_lobbyscreen()
 
 	callHook("startup")
 	//Emergency Fix

@@ -1,12 +1,6 @@
 //This file was auto-corrected by findeclaration.exe on 25.5.2012 20:42:33
 
 /mob/new_player
-	var/ready = 0
-	var/spawning = 0//Referenced when you want to delete the new_player later on in the code.
-	var/totalPlayers = 0		 //Player counts for the Lobby tab
-	var/totalPlayersReady = 0
-	var/datum/browser/panel
-	var/show_invalid_jobs = 0
 	universal_speak = 1
 
 	invisibility = 101
@@ -19,41 +13,18 @@
 
 	virtual_mob = null // Hear no evil, speak no evil
 
+	var/ready = 0
+	var/spawning = 0//Referenced when you want to delete the new_player later on in the code.
+	var/totalPlayers = 0		 //Player counts for the Lobby tab
+	var/totalPlayersReady = 0
+	var/datum/browser/panel
+	var/show_invalid_jobs = 0
+
 /mob/new_player/New()
 	. = ..()
 	verbs += /mob/proc/toggle_antag_pool
 	verbs += /mob/proc/join_as_actor
 	verbs += /mob/proc/join_response_team
-
-/mob/new_player/proc/new_player_panel(forced = FALSE)
-	if(!SScharacter_setup.initialized && !forced)
-		return // Not ready yet.
-	new_player_panel_proc()
-
-/mob/new_player/proc/new_player_panel_proc()
-	var/output = "<div align='center'>"
-	output +="<hr>"
-	output += "<p><a href='byond://?src=\ref[src];show_preferences=1'>Setup Character</A></p>"
-
-	if(GAME_STATE <= RUNLEVEL_LOBBY)
-		if(ready)
-			output += "<p>\[ <span class='linkOn'><b>Ready</b></span> | <a href='byond://?src=\ref[src];ready=0'>Not Ready</a> \]</p>"
-		else
-			output += "<p>\[ <a href='byond://?src=\ref[src];ready=1'>Ready</a> | <span class='linkOn'><b>Not Ready</b></span> \]</p>"
-
-	else
-		output += "<a href='byond://?src=\ref[src];manifest=1'>View the Crew Manifest</A><br><br>"
-		output += "<p><a href='byond://?src=\ref[src];late_join=1'>Join Game!</A></p>"
-
-	output += "<p><a href='byond://?src=\ref[src];observe=1'>Observe</A></p>"
-
-	output += "</div>"
-
-	panel = new(src, "Welcome","Welcome", 210, 280, src)
-	panel.set_window_options("can_close=0")
-	panel.set_content(output)
-	panel.open()
-	return
 
 /mob/new_player/Stat()
 	. = ..()
@@ -80,18 +51,23 @@
 				if(player.ready)totalPlayersReady++
 
 /mob/new_player/Topic(href, href_list[])
-	if(!client)	return 0
-
-	if (usr != src)
+	if (usr != src || !client)
 		href_exploit(usr.ckey, href)
 		return 0
 
-	if(href_list["show_preferences"])
+	if(href_list["lobby_changelog"])
+		client.changes()
+		return
+
+	if(href_list["lobby_setup"])
 		client.prefs.ShowChoices(src)
 		return 1
 
-	if(href_list["ready"])
+	if(href_list["lobby_ready"])
 		if(GAME_STATE <= RUNLEVEL_LOBBY) // Make sure we don't ready up after the round has started
+			if(ready && SSticker.pregame_timeleft <= 5 SECONDS)
+				to_chat(src, SPAN_WARNING("Locked! The round is about to start."))
+				return
 			if(jobban_isbanned(src, "MALE") && jobban_isbanned(src, "FEMALE"))
 				to_chat(src, "<span class='warning'>Only genderqueers allowed.</span>")
 				return
@@ -104,19 +80,13 @@
 				to_chat(src, "<span class='warning'>No traps allowed.</span>")
 				return
 
-			var/value = text2num(href_list["ready"])
-			if (value && !SSeams.CheckForAccess(client))
+			if (!SSeams.CheckForAccess(client))
 				return
 
-			ready = value
-		else
-			ready = 0
+			send_output(client, null, "lobbybrowser:imgsrc")
+			ready = !ready
 
-	if(href_list["refresh"])
-		panel.close()
-		new_player_panel_proc()
-
-	if(href_list["observe"])
+	if(href_list["lobby_observe"])
 		if(GAME_STATE < RUNLEVEL_LOBBY)
 			to_chat(src, "<span class='warning'>Please wait for server initialization to complete...</span>")
 			return
@@ -158,13 +128,11 @@
 			if(!client.holder && !config.antag_hud_allowed)           // For new ghosts we remove the verb from even showing up if it's not allowed.
 				observer.verbs -= /mob/observer/ghost/verb/toggle_antagHUD        // Poor guys, don't know what they are missing!
 			observer.key = key
-			var/obj/screen/splash/S = new(observer.client, TRUE)
-			S.Fade(TRUE, TRUE)
 			qdel(src)
 
 			return 1
 
-	if(href_list["late_join"])
+	if(href_list["lobby_join"])
 
 		if(GAME_STATE != RUNLEVEL_GAME)
 			to_chat(usr, "<span class='warning'>The round is either not ready, or has already finished...</span>")
@@ -187,7 +155,7 @@
 
 		LateChoices() //show the latejoin job selection menu
 
-	if(href_list["manifest"])
+	if(href_list["lobby_crew"])
 		ViewManifest()
 
 	if(href_list["SelectedJob"])
@@ -261,67 +229,6 @@
 	if(!ready && href_list["preference"])
 		if(client)
 			client.prefs.process_link(src, href_list)
-	else if(!href_list["late_join"])
-		new_player_panel()
-
-	if(href_list["showpoll"])
-
-		handle_player_polling()
-		return
-
-	if(href_list["pollid"])
-
-		var/pollid = href_list["pollid"]
-		if(istext(pollid))
-			pollid = text2num(pollid)
-		if(isnum(pollid))
-			src.poll_player(pollid)
-		return
-
-	if(href_list["invalid_jobs"])
-		show_invalid_jobs = !show_invalid_jobs
-		LateChoices()
-
-	if(href_list["votepollid"] && href_list["votetype"])
-		var/pollid = text2num(href_list["votepollid"])
-		var/votetype = href_list["votetype"]
-		switch(votetype)
-			if("OPTION")
-				var/optionid = text2num(href_list["voteoptionid"])
-				vote_on_poll(pollid, optionid)
-			if("TEXT")
-				var/replytext = href_list["replytext"]
-				log_text_poll_reply(pollid, replytext)
-			if("NUMVAL")
-				var/id_min = text2num(href_list["minid"])
-				var/id_max = text2num(href_list["maxid"])
-
-				if( (id_max - id_min) > 100 )	//Basic exploit prevention
-					to_chat(usr, "The option ID difference is too big. Please contact administration or the database admin.")
-					return
-
-				for(var/optionid = id_min; optionid <= id_max; optionid++)
-					if(!isnull(href_list["o[optionid]"]))	//Test if this optionid was replied to
-						var/rating
-						if(href_list["o[optionid]"] == "abstain")
-							rating = null
-						else
-							rating = text2num(href_list["o[optionid]"])
-							if(!isnum(rating))
-								return
-
-						vote_on_numval_poll(pollid, optionid, rating)
-			if("MULTICHOICE")
-				var/id_min = text2num(href_list["minoptionid"])
-				var/id_max = text2num(href_list["maxoptionid"])
-
-				if( (id_max - id_min) > 100 )	//Basic exploit prevention
-					to_chat(usr, "The option ID difference is too big. Please contact administration or the database admin.")
-					return
-
-				for(var/optionid = id_min; optionid <= id_max; optionid++)
-					if(!isnull(href_list["option_[optionid]"]))	//Test if this optionid was selected
-						vote_on_poll(pollid, optionid, 1)
 
 /mob/new_player/proc/IsJobAvailable(datum/job/job)
 	if(!job)	return 0
@@ -554,8 +461,6 @@
 	new_character.regenerate_icons()
 
 	new_character.key = key		//Manually transfer the key to log them in
-	var/obj/screen/splash/S = new(new_character.client, TRUE)
-	S.Fade(TRUE, TRUE)
 
 	// Give them their cortical stack if we're using them.
 	if(config && config.use_cortical_stacks && new_character.client && new_character.client.prefs.has_cortical_stack /*&& new_character.should_have_organ(BP_BRAIN)*/)
@@ -630,3 +535,7 @@
 
 /mob/new_player/say(message)
 	sanitize_and_communicate(/decl/communication_channel/ooc, client, message)
+
+/hook/roundstart/proc/update_lobby_browsers()
+	refresh_lobby_browsers()
+	return TRUE
