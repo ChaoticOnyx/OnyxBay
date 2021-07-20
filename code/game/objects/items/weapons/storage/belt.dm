@@ -308,6 +308,5 @@
 		/obj/item/weapon/storage/bag/trash,
 		/obj/item/weapon/screwdriver,
 		/obj/item/weapon/wrench,
-		/obj/item/weapon/crowbar,
-		/obj/item/weapon/reagent_containers/spray/cleaner
+		/obj/item/weapon/crowbar
 		)
