@@ -53,7 +53,10 @@
 		owner.adjustToxLoss(0.5 * max(2 - filter_effect, 0) * (1 + owner.chem_effects[CE_ALCOHOL_TOXIC] + 0.5 * owner.chem_effects[CE_ALCOHOL]))
 	else
 		// Get rid of some stored toxins.
-		tox_filtering = max(damage, (tox_filtering - filter_effect*0.1))
+		tox_filtering = max(damage, (tox_filtering - filter_effect * 0.1))
+
+	if((tox_filtering > (min_broken_damage * 0.5)) && prob(tox_filtering * 0.1))
+		to_chat(src, SPAN("warning", "You feel nauseous..."))
 
 	if(owner.chem_effects[CE_ALCOHOL_TOXIC])
 		take_internal_damage(store_tox(owner.chem_effects[CE_ALCOHOL_TOXIC]/2), prob(90)) // Chance to warn them
