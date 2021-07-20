@@ -140,7 +140,7 @@ var/global/Holiday = null
 /proc/Holiday_Game_Start()
 	if(Holiday)
 		to_world("<span class='info'>and...</span>")
-		if (Holiday == "Christmas Eve" || Holiday == "Christmas")
+		if(Holiday == "Christmas Eve" || Holiday == "Christmas")
 			to_world("<h4>Merry [Holiday] Everybody!</h4>")
 		else
 			to_world("<h4>Happy [Holiday] Everybody!</h4>")
