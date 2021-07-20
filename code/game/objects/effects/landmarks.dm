@@ -237,30 +237,6 @@
 	new /obj/item/clothing/under/sexymime(src.loc)
 	delete_me = 1
 
-// /obj/effect/landmark/costume/savagehunter/New()
-// 	new /obj/item/clothing/mask/spirit(src.loc)
-// 	new /obj/item/clothing/under/savage_hunter(src.loc)
-// 	delete_me = 1
-
-// /obj/effect/landmark/costume/savagehuntress/New()
-// 	new /obj/item/clothing/mask/spirit(src.loc)
-// 	new /obj/item/clothing/under/savage_hunter/female(src.loc)
-// 	delete_me = 1
-
-/obj/effect/landmark/ruin
-	var/datum/map_template/ruin/ruin_template
-
-/obj/effect/landmark/ruin/New(loc, my_ruin_template)
-	name = "ruin_[sequential_id(/obj/effect/landmark/ruin)]"
-	..(loc)
-	ruin_template = my_ruin_template
-	GLOB.ruin_landmarks |= src
-
-/obj/effect/landmark/ruin/Destroy()
-	GLOB.ruin_landmarks -= src
-	ruin_template = null
-	. = ..()
-
 /obj/effect/landmark/random_gen
 	var/generation_width
 	var/generation_height

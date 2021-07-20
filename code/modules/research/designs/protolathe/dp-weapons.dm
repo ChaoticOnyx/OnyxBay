@@ -1,5 +1,5 @@
 /datum/design/item/weapon
-	category_items = "Weapons"
+	category_items = list("Weapons")
 
 /datum/design/item/weapon/AssembleDesignDesc()
 	if(!desc)
@@ -51,7 +51,7 @@
 	materials = list(MATERIAL_STEEL = 2000, MATERIAL_GLASS = 500, MATERIAL_URANIUM = 500)
 	build_path = /obj/item/weapon/gun/energy/floragun
 	sort_string = "TACAA"
-	category_items = "Misc"
+	category_items = list("Misc")
 
 /datum/design/item/weapon/advancedflash
 	id = "advancedflash"

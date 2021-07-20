@@ -1,6 +1,6 @@
 /datum/design/item/stock_part
 	build_type = PROTOLATHE
-	category_items = "Stock Parts"
+	category_items = list("Stock Parts")
 
 /datum/design/item/stock_part/AssembleDesignDesc()
 	if(!desc)

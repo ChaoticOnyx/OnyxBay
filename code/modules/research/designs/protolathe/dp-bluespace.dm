@@ -1,5 +1,5 @@
 /datum/design/item/bluespace
-	category_items = "Bluespace"
+	category_items = list("Bluespace")
 
 
 /datum/design/item/bluespace/beacon

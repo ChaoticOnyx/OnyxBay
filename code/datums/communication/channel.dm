@@ -13,7 +13,7 @@
 */
 /decl/communication_channel/proc/communicate(datum/communicator, message)
 	if(can_communicate(arglist(args)))
-		call(log_proc)("[(flags&COMMUNICATION_LOG_CHANNEL_NAME) ? "([name]) " : ""][communicator.communication_identifier()] : [message]")
+		call(log_proc)("[(flags&COMMUNICATION_LOG_CHANNEL_NAME) ? "([name]) " : ""][communicator.communication_identifier()]: [message]")
 		return do_communicate(arglist(args))
 	return FALSE
 
@@ -73,11 +73,10 @@
 
 // Misc. helpers
 /datum/proc/communication_identifier()
-	return usr ? "[src] - usr: [plain_key_name(usr)]" : "[src]"
+	return usr ? "[key_name(usr)]" : "[key_name(src)]"
 
 /mob/communication_identifier()
-	var/key_name = plain_key_name(src)
-	return usr != src ? "[key_name] - usr: [plain_key_name(usr)]" : key_name
+	return usr != src ? "[key_name(usr)]" : "[key_name(src)]"
 
 /proc/sanitize_and_communicate(channel_type, communicator, message)
 	message = sanitize(message)

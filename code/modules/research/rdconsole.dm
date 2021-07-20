@@ -49,6 +49,7 @@
 
 	var/id = 0			// ID of the computer (for server restrictions).
 	var/sync = 1		// If sync = 0, it doesn't show up on Server Control Console
+	var/selected_device = "destructor"
 
 /obj/machinery/computer/rdconsole/proc/CallReagentName(reagent_type)
 	var/datum/reagent/R = reagent_type
@@ -172,9 +173,9 @@
 		"disk" = null,
 		"techs" = list(),
 		"devices" = list(
-			list("name" = "destructor", "connected" = !!linked_destroy,   "data" = get_destructor_data()),
-			list("name" = "imprinter",  "connected" = !!linked_imprinter, "data" = get_imprinter_data()),
-			list("name" = "protolathe", "connected" = !!linked_lathe,     "data" = get_protolathe_data())
+			list("name" = "destructor", "connected" = !!linked_destroy,   "data" = selected_device == "destructor" && get_destructor_data()),
+			list("name" = "imprinter",  "connected" = !!linked_imprinter, "data" = selected_device == "imprinter" && get_imprinter_data()),
+			list("name" = "protolathe", "connected" = !!linked_lathe,     "data" = selected_device == "protolathe" && get_protolathe_data())
 		)
 	)
 
@@ -263,6 +264,14 @@
 		if("disconnect")
 			disconnect(params["thing"])
 			return TRUE
+		if("select_device")
+			set_selected_device(params["device"])
+			return TRUE
+
+/obj/machinery/computer/rdconsole/proc/set_selected_device(new_value)
+	ASSERT(new_value in list("destructor", "protolathe", "imprinter"))
+
+	selected_device = new_value
 
 /obj/machinery/computer/rdconsole/proc/get_destructor_data()
 	if(!linked_destroy)
@@ -279,7 +288,6 @@
 		return data
 
 	data["item"] = list(
-		"icon" = icon2base64html(loaded_item.type),
 		"name" = loaded_item.name
 	)
 
@@ -369,10 +377,9 @@
 
 /obj/machinery/computer/rdconsole/proc/get_design_data(datum/design/design)
 	var/list/data = list(
-		"icon" = icon2base64html(design.build_path),
 		"id" = design.id,
 		"name" = design.name,
-		"category" = design.category,
+		"category" = design.category_items,
 		"build_type" = null,
 		"materials" = list(),
 		"chemicals" = list(),

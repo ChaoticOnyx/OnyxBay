@@ -112,7 +112,7 @@
 	update_icon()
 	var/turf/T = get_turf(src)
 	T.visible_message(generate_lighting_message(used_tool, holder))
-	set_light(0.6, 0.5, 2, 2, "#e38f46")
+	set_light(0.3, 0.2, 1, 1, "#e38f46")
 	smokeamount = reagents.total_volume / smoketime
 	START_PROCESSING(SSobj, src)
 
