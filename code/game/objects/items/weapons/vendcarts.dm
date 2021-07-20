@@ -535,6 +535,7 @@
 
 /obj/item/weapon/vendcart/medbay
 	name = "Getmore Healthy Cartridge"
+
 	legal = list(
 		/obj/item/weapon/reagent_containers/food/snacks/grown/apple = 10,
 		/obj/item/weapon/reagent_containers/food/snacks/packaged/hematogen = 10,
@@ -545,7 +546,7 @@
 	)
 
 	illegal = list(
-		/obj/item/weapon/reagent_containers/food/snacks/cannabar = 3,
+	//	/obj/item/weapon/reagent_containers/food/snacks/packaged/hemptogen = 3,
 		/obj/item/weapon/reagent_containers/food/snacks/packaged/skrellsnacks = 3
 	)
 
