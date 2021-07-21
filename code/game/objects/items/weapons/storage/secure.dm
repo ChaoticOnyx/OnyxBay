@@ -393,7 +393,7 @@
 			return
 	return
 
-/obj/item/weapon/storage/secure/proc/on_hack_behavior(obj/item/weapon/W, mob/user)
+/obj/item/weapon/storage/secure/proc/on_hack_behavior()
 	var/datum/effect/effect/system/spark_spread/spark_system = new /datum/effect/effect/system/spark_spread()
 	spark_system.set_up(5, 0, src.loc)
 	spark_system.start()
