@@ -14,6 +14,12 @@
 	QDEL_NULL_LIST(internal_organs)
 	QDEL_NULL_LIST(stomach_contents)
 	QDEL_NULL_LIST(hallucinations)
+	if(loc)
+		for(var/mob/M in contents)
+			M.dropInto(loc)
+	else
+		for(var/mob/M in contents)
+			qdel(M)
 	return ..()
 
 /mob/living/carbon/rejuvenate(ignore_prosthetic_prefs = FALSE)
@@ -239,7 +245,7 @@
 /mob/living/carbon/proc/get_ear_protection()
 	return 0
 
-/mob/living/carbon/flash_eyes(intensity = FLASH_PROTECTION_MODERATE, override_blindness_check = FALSE, affect_silicon = FALSE, visual = FALSE, type = /obj/screen/fullscreen/flash)
+/mob/living/carbon/flash_eyes(intensity = FLASH_PROTECTION_MODERATE, override_blindness_check = FALSE, affect_silicon = FALSE, visual = FALSE, type = /obj/screen/fullscreen/flash, effect_duration = 25)
 	if(eyecheck() < intensity || override_blindness_check)
 		return ..()
 
@@ -275,6 +281,8 @@
 
 /mob/living/carbon/throw_item(atom/target)
 	throw_mode_off()
+	if(!isturf(loc))
+		return
 	if(stat || !target)
 		return
 	if(target.type == /obj/screen)
@@ -424,7 +432,7 @@
 		return null
 	return species.default_language ? all_languages[species.default_language] : null
 
-/mob/living/carbon/show_inv(mob/user as mob)
+/mob/living/carbon/show_inv(mob/user)
 	user.set_machine(src)
 	var/dat = {"
 	<meta charset=\"utf-8\">

@@ -6,6 +6,5 @@ SUBSYSTEM_DEF(misc_late)
 	flags = SS_NO_FIRE
 
 /datum/controller/subsystem/misc_late/Initialize()
-	GLOB.using_map.build_exoplanets()
 	populate_lathe_recipes() // This creates and deletes objects; could use improvement.
 	. = ..()

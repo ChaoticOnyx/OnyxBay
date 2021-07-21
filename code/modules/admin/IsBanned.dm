@@ -32,7 +32,7 @@
 		//Ban Checking
 		. = CheckBan(ckeytext, computer_id, address)
 		if(.)
-			log_access("Failed Login: [key] [computer_id] [address] - Banned [.["reason"]]")
+			log_access("Failed Login: [key_name(key)] [MARK_COMPUTER_ID(computer_id)] [address] - Banned [.["reason"]]")
 			message_admins("<span class='notice'>Failed Login: [key] id:[computer_id] ip:[address] - Banned [.["reason"]]</span>")
 			key_cache[key] = 0
 			return .
@@ -108,7 +108,11 @@
 			if(text2num(duration) > 0)
 				expires = " The ban is for [duration] minutes and expires on [expiration] UTC."
 
-			var/desc = "\nReason: You, or another user of this computer or connection ([pckey]) is banned from playing here. The ban reason is:\n[reason]\nThis ban was applied by [ackey] on [bantime], [expires]"
+			var/appeal
+			if(config && config.banappeals)
+				appeal = "\nTo get more information about your ban, or to appeal it, head to <a href='[config.banappeals]'>[config.banappeals]</a>"
+
+			var/desc = "\nReason: You, or another user of this computer or connection ([pckey]) is banned from playing here. The ban reason is:\n[reason]\nThis ban was applied by [ackey] on [bantime], [expires][appeal]"
 
 			key_cache[key] = 0
 			return list("reason"="[bantype]", "desc"="[desc]")

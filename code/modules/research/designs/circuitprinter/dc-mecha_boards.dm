@@ -1,6 +1,6 @@
 /datum/design/circuit/mecha
 	req_tech = list(TECH_DATA = 3)
-	category_items = "Mecha Boards"
+	category_items = list("Mecha Boards")
 
 /datum/design/circuit/mecha/AssembleDesignName()
 	name = "Exosuit module circuit design ([name])"

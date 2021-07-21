@@ -855,6 +855,17 @@
 	name = "\improper Chapel Maintenance"
 	icon_state = "maint_security_port"
 
+/area/maintenance/chapel/north
+	name = "\improper Chapel Maintenance - North"
+
+/area/maintenance/chapel/south
+	name = "\improper Chapel Maintenance - South"
+
+/area/maintenance/abandoned_casino
+	name = "\improper Abandoned Casino"
+	icon_state = "ghettocasino"
+
+
 /area/maintenance/getto_rnd
 	name = "\improper RnD Maintenance"
 	icon_state = "maint_cargo"
@@ -1758,7 +1769,7 @@
 
 /area/outpost/main_outpost/infirmary
 	name = "Outpost Infirmary"
-	ambience = list("global_ambient", "science", "outpost_ambient")
+	ambience = list("global_ambient", "science_ambient", "outpost_ambient")
 
 /area/outpost/main_outpost/canteen
 	name = "Outpost Canteen"

@@ -196,32 +196,36 @@ span.text-tag {
   padding-left: 0.2rem;
   padding-right: 0.2rem;
 
-  &.ooc {
+  &-ooc {
     background-color: #5353ff;
   }
 
-  &.mod {
+  &-mod {
     background-color: #9611d4;
   }
 
-  &.admin {
+  &-admin {
     background-color: #735638;
   }
 
-  &.aooc {
+  &-aooc {
     background-color: #960018;
   }
 
-  &.dead {
+  &-dead {
     background-color: #c380ff;
   }
 
-  &.looc {
+  &-looc {
     background-color: #3a9696;
   }
 
-  &.dooc {
+  &-dooc {
     background-color: #5869ea;
+  }
+
+  &-help {
+    background-color: #d10023;
   }
 }
 

@@ -94,9 +94,9 @@ export const combineReducers = reducersObj => {
         nextState[key] = nextDomainState;
       }
     }
-    return hasChanged ?
-      nextState :
-      prevState;
+    return hasChanged
+      ? nextState
+      : prevState;
   };
 };
 

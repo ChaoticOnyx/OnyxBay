@@ -7,6 +7,7 @@
 	fire_resist = 2
 	custom_process=1
 	destroy_sound = "sound/effects/blob/blobkill.ogg"
+	explosion_block = 6
 
 	var/overmind_get_delay = 0 // we don't want to constantly try to find an overmind, do it every 30 seconds
 	var/last_resource_collection

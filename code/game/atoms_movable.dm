@@ -19,15 +19,23 @@
 	var/pull_sound = null
 
 /atom/movable/Destroy()
-	. = ..()
-	for(var/atom/movable/AM in src)
-		qdel(AM)
+	for(var/A in src)
+		qdel(A)
 
 	forceMove(null)
-	if (pulledby)
-		if (pulledby.pulling == src)
+	if(pulledby)
+		if(pulledby.pulling == src)
 			pulledby.pulling = null
 		pulledby = null
+
+	if(LAZYLEN(movement_handlers) && !ispath(movement_handlers[1]))
+		QDEL_NULL_LIST(movement_handlers)
+
+	if(virtual_mob && !ispath(virtual_mob))
+		qdel(virtual_mob)
+		virtual_mob = null
+
+	. = ..()
 
 /atom/movable/Bump(atom/A, yes)
 	if(src.throwing)
@@ -109,13 +117,16 @@
 			if(A.density && !A.throwpass)	// **TODO: Better behaviour for windows which are dense, but shouldn't always stop movement
 				throw_impact(A, speed)
 
-/atom/movable/proc/throw_at(atom/target, range, speed, thrower, thrown_with, target_zone)
+/atom/movable/proc/throw_at(atom/target, range, speed, atom/thrower, thrown_with, target_zone)
 	if(!target || !src)
-		return 0
+		return FALSE
 	if(target.z != src.z)
-		return 0
+		return FALSE
+	// src loc check
+	if(thrower && !isturf(thrower.loc))
+		return FALSE
 	//use a modified version of Bresenham's algorithm to get from the atom's current position to that of the target
-	src.throwing = 1
+	src.throwing = TRUE
 	src.thrower = thrower
 	src.throw_source = get_turf(src)	//store the origin turf
 	src.pixel_z = 0
@@ -246,10 +257,6 @@
 		return
 
 	if(!GLOB.universe.OnTouchMapEdge(src))
-		return
-
-	if(GLOB.using_map.use_overmap)
-		overmap_spacetravel(get_turf(src), src)
 		return
 
 	var/new_x

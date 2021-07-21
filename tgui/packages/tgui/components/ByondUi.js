@@ -89,8 +89,8 @@ export class ByondUi extends Component {
       params: nextParams = {},
       ...nextRest
     } = nextProps;
-    return shallowDiffers(prevParams, nextParams) ||
-      shallowDiffers(prevRest, nextRest);
+    return shallowDiffers(prevParams, nextParams)
+      || shallowDiffers(prevRest, nextRest);
   }
 
   componentDidMount() {

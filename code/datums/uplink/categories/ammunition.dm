@@ -6,17 +6,17 @@
 	item_cost = 1
 
 /datum/uplink_item/item/ammo/c45m
-	name = ".45"
+	name = ".45 Magazine"
 	item_cost = 1
 	path = /obj/item/ammo_magazine/c45m
 
 /datum/uplink_item/item/ammo/mc9mm
-	name = "9mm"
+	name = "9mm Magazine"
 	item_cost = 1
 	path = /obj/item/ammo_magazine/mc9mm
 
 /datum/uplink_item/item/ammo/a10mm
-	name = "10mm"
+	name = "10mm Magazine"
 	item_cost = 1
 	path = /obj/item/ammo_magazine/a10mm
 
@@ -26,17 +26,22 @@
 	path = /obj/item/ammo_magazine/chemdart
 
 /datum/uplink_item/item/ammo/a357
-	name = ".357"
+	name = ".357 Speedloader"
 	item_cost = 2
 	path = /obj/item/ammo_magazine/a357
 
 /datum/uplink_item/item/ammo/a556
-	name = "5.56mm"
+	name = "5.56mm Magazine"
 	item_cost = 2
 	path = /obj/item/ammo_magazine/c556
 
+/datum/uplink_item/item/ammo/a556box
+	name = "5.56mm Magazine Box"
+	item_cost = 3
+	path = /obj/item/ammo_magazine/box/a556
+
 /datum/uplink_item/item/ammo/rocket
-	name = "rocket"
+	name = "Rocket"
 	item_cost = 2
 	path = /obj/item/ammo_casing/rocket
 
@@ -46,7 +51,7 @@
 	path = /obj/item/weapon/storage/box/sniperammo
 
 /datum/uplink_item/item/ammo/bullpup //for zipguns
-	name = "Bullpup Rifle Magazine"
+	name = "7.62 Magazine"
 	item_cost = 2
 	path = /obj/item/ammo_magazine/a762
 
@@ -71,17 +76,17 @@
 	path = /obj/item/ammo_magazine/c45uzi
 
 /datum/uplink_item/item/ammo/a50
-	name = ".50 AE magazine"
+	name = ".50 AE Magazine"
 	item_cost = 3
 	path = /obj/item/ammo_magazine/a50
 
 /datum/uplink_item/item/ammo/c50
-	name = ".50 AE speedloader"
+	name = ".50 AE Speedloader"
 	item_cost = 3
 	path = /obj/item/ammo_magazine/c50
 
 /datum/uplink_item/item/ammo/c38
-	name = ".38 speedloader"
+	name = ".38 Speedloader"
 	item_cost = 1
 	path = /obj/item/ammo_magazine/c38
 

@@ -219,6 +219,32 @@
 				M.client.perspective = EYE_PERSPECTIVE
 				M.client.eye = src
 
+/obj/machinery/resleever/MouseDrop_T(mob/target, mob/user)
+	if(occupant)
+		to_chat(user, SPAN_WARNING("\The [src] is in use."))
+		return
+
+	if(!ismob(target))
+		return
+
+	if(!check_occupant_allowed(target))
+		return
+
+	visible_message("[user] starts putting [target] into \the [src].", 3)
+
+	if(do_after(user, 20, src))
+		if(!target || !(target in range(2, src)))
+			return
+
+		target.forceMove(src)
+		occupant = target
+		occupant_name = occupant.name
+		update_icon()
+		if(target.client)
+			target.client.perspective = EYE_PERSPECTIVE
+			target.client.eye = src
+
+
 /obj/machinery/resleever/proc/eject_occupant()
 	if(!(occupant))
 		return

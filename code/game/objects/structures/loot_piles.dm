@@ -222,6 +222,7 @@ Loot piles can be depleted, if loot_depleted is turned on.  Note that players wh
 		/obj/item/trash/dish/baking_sheet,
 		/obj/item/trash/pan,
 		/obj/item/trash/hematogen,
+		/obj/item/trash/hemptogen,
 		/obj/item/trash/skrellsnacks,
 		/obj/item/weapon/reagent_containers/food/snacks/mysterysoup,
 		/obj/item/stack/rods{amount = 5},

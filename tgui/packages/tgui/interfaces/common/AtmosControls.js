@@ -157,8 +157,8 @@ export const Scrubber = (props, context) => {
             })} />
         </LabeledList.Item>
         <LabeledList.Item label='Filters'>
-          {scrubbing &&
-            filter_types.map(filter => (
+          {scrubbing
+            && filter_types.map(filter => (
               <Button key={filter.gas_id}
                 icon={filter.enabled ? 'check-square-o' : 'square-o'}
                 content={getGasLabel(filter.gas_id, filter.gas_name)}
@@ -168,8 +168,8 @@ export const Scrubber = (props, context) => {
                   id_tag,
                   val: filter.gas_id,
                 })} />
-            )) ||
-            'N/A'}
+            ))
+            || 'N/A'}
         </LabeledList.Item>
       </LabeledList>
     </Section>

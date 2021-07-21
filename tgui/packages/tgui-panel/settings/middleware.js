@@ -12,15 +12,15 @@ import { FONTS_DISABLED } from './constants';
 import { resetSettings } from '../chat/actions';
 
 const setGlobalFontSize = (fontSize) => {
-  document.documentElement.style.setProperty('font-size', fontSize + 'px');
-  document.body.style.setProperty('font-size', fontSize + 'px');
+  document.documentElement?.style.setProperty('font-size', fontSize + 'px');
+  document.body?.style.setProperty('font-size', fontSize + 'px');
 };
 
 const setGlobalFontFamily = (fontFamily) => {
   if (fontFamily === FONTS_DISABLED) fontFamily = null;
 
-  document.documentElement.style.setProperty('font-family', fontFamily);
-  document.body.style.setProperty('font-family', fontFamily);
+  document.documentElement?.style.setProperty('font-family', `${fontFamily}, "apple color emoji", "segoe ui emoji", "segoe ui symbol"`);
+  document.body?.style.setProperty('font-family', `${fontFamily}, "apple color emoji", "segoe ui emoji", "segoe ui symbol"`);
 };
 
 const setBackgroundImage = (background) => {
@@ -28,6 +28,10 @@ const setBackgroundImage = (background) => {
 
   const chat = document.querySelectorAll('#chatContainer')[0];
   const backgroundContainer = document.querySelectorAll('#imageContainer')[0];
+
+  if (!chat || !backgroundContainer) {
+    return;
+  }
 
   if (!url) {
     chat.style.removeProperty('background-color');

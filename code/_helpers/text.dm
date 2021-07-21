@@ -38,6 +38,8 @@
 		// note: we can also remove here byond formatting codes: 0xFF + next byte
 		input = replace_characters(input, list("<"=" ", ">"=" "))
 
+	input = replacetext(input, GLOB.pua, "")
+
 	if(trim)
 		// Maybe, we need trim text twice? Here and before copytext?
 		input = trim(input)
@@ -336,7 +338,7 @@
 	return html_encode(copytext_char(html_decode(text), first, last))
 
 /proc/create_text_tag(tagname, tagdesc)
-	return SPAN("text-tag [tagname]", tagdesc)
+	return SPAN("text-tag text-tag-[tagname]", tagdesc)
 
 /proc/contains_az09(input)
 	for(var/i=1, i<=length(input), i++)

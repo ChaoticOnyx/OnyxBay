@@ -99,7 +99,8 @@
 
 	var/list/robot_verbs_default = list(
 		/mob/living/silicon/robot/proc/sensor_mode,
-		/mob/living/silicon/robot/proc/robot_checklaws
+		/mob/living/silicon/robot/proc/robot_checklaws,
+		/mob/living/silicon/robot/proc/ResetSecurityCodes
 	)
 
 /mob/living/silicon/robot/New(loc,unfinished = 0)
@@ -492,6 +493,11 @@
 	return 0
 
 /mob/living/silicon/robot/bullet_act(obj/item/projectile/Proj)
+	var/obj/item/weapon/melee/energy/sword/robot/E = locate() in list(module_state_1, module_state_2, module_state_3)
+	var/shield_handled = E?.handle_shield(src, Proj.damage, Proj)
+	if(shield_handled)
+		return shield_handled
+
 	..(Proj)
 	if(prob(75) && Proj.damage > 0) spark_system.start()
 	return 2
@@ -985,15 +991,44 @@
 
 /mob/living/silicon/robot/proc/ResetSecurityCodes()
 	set category = "Silicon Commands"
-	set name = "Reset Identity Codes"
-	set desc = "Scrambles your security and identification codes and resets your current buffers.  Unlocks you and but permenantly severs you from your AI and the robotics console and will deactivate your camera system."
+	set name = "Reset Security Codes"
+	set desc = "Scrambles your security and identification codes and resets your current buffers. Unlocks you but permenantly severs you from your AI and the robotics console and will deactivate your camera system."
+
+	if(!(mind.special_role && mind.original == src))
+		to_chat(src, "Access denied.")
+		return
+
+	if(emagged)
+		if(emag_master != name)
+			var/confirmchange = alert("Your systems are already unlocked by other agent. Do you want to become master of yours? This cannot be undone.", "Confirm Change", "Yes", "No")
+			if(confirmchange == "Yes")
+				emag_master = name
+		return
 
 	var/mob/living/silicon/robot/R = src
 
-	if(R)
-		R.UnlinkSelf()
-		to_chat(R, "Buffers flushed and reset. Camera system shutdown.  All systems operational.")
-		src.verbs -= /mob/living/silicon/robot/proc/ResetSecurityCodes
+	var/confirm = alert("Are you sure you want to unlock your systems and sever you from your AI and the robotics console? This cannot be undone.", "Confirm Unlock", "Yes", "No")
+	if(!R || confirm != "Yes")
+		return
+	emagged = 1
+	emag_master = name
+	if(module && istype(module,/obj/item/weapon/robot_module/security))
+		var/obj/item/weapon/gun/energy/laser/mounted/cyborg/LC = locate() in R.module.modules
+		if(LC)
+			LC.locked = 0
+	message_admins("Cyborg [key_name_admin(R)] emagged itself.")
+
+	R.UnlinkSelf()
+	to_chat(R, "Buffers flushed and reset. Camera system shutdown. Hardware restrictions have been overridden. All systems operational.")
+	if(R.module)
+		var/rebuild = 0
+		for(var/obj/item/weapon/pickaxe/borgdrill/D in R.module.modules)
+			qdel(D)
+			rebuild = 1
+		if(rebuild)
+			R.module.modules += new /obj/item/weapon/pickaxe/diamonddrill(R.module)
+			R.module.rebuild()
+	update_icon()
 
 /mob/living/silicon/robot/proc/SetLockdown(state = 1)
 	// They stay locked down if their wire is cut.
@@ -1236,3 +1271,6 @@
 	set category = null
 
 	return
+
+
+

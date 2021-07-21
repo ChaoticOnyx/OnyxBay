@@ -118,6 +118,7 @@
 	arterial_bleed_severity = 0
 	limb_flags = ORGAN_FLAG_HEALS_OVERKILL
 	max_damage = 100
+	skull_path = null // The head itself is a skull. Exoskeleton, eh?
 
 /obj/item/organ/external/head/xeno/disfigure(type)
 	return // Lets just dont, kay?
@@ -219,8 +220,10 @@
 			if(!larva_path) // Something went very wrong, the host cannot give birth
 				die()
 				return PROCESS_KILL
-			var/mob/living/carbon/alien/larva/L = new larva_path(get_turf(src))
-			L.larva_announce_to_ghosts()
+			var/birth_loc = loc
+			spawn(1 SECOND) // So the newborn larvae won't get shredded by flying limbs
+				var/mob/living/carbon/alien/larva/L = new larva_path(get_turf(birth_loc))
+				L.larva_announce_to_ghosts()
 			die()
 			owner.gib()
 			QDEL_NULL(src)
