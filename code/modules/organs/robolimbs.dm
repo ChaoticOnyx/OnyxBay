@@ -81,7 +81,6 @@ var/datum/robolimb/basic_robolimb
 	company = "Zeng-Hu"
 	desc = "This limb has a rubbery fleshtone covering with visible seams."
 	icon = 'icons/mob/human_races/cyberlimbs/zenghu/zenghu_main.dmi'
-	can_eat = 1
 	unavailable_to_build = 1
 	restricted_to = list(SPECIES_HUMAN)
 	species_cannot_use = list(SPECIES_DIONA, SPECIES_VOX, SPECIES_PROMETHEAN, SPECIES_UNATHI)
@@ -97,7 +96,6 @@ var/datum/robolimb/basic_robolimb
 	company = "Bishop"
 	desc = "This limb has a white polymer casing with blue holo-displays."
 	icon = 'icons/mob/human_races/cyberlimbs/bishop/bishop_main.dmi'
-	can_eat = 1
 	skintone = 1
 	unavailable_to_build = 1
 	restricted_to = list(SPECIES_HUMAN)
@@ -111,6 +109,21 @@ var/datum/robolimb/basic_robolimb
 /datum/robolimb/bishop/bishop_alt2
 	company = "Bishop - Rook"
 	icon = 'icons/mob/human_races/cyberlimbs/bishop/bishop_alt2.dmi'
+
+//HEPHAESTUS
+/datum/robolimb/hephaestus
+	company = "Hephaestus"
+	desc = "This limb has a militaristic black and green casing with gold stripes"
+	icon = 'icons/mob/human_races/cyberlimbs/hephaestus/hephaestus_main.dmi'
+	skintone = 1
+	unavailable_to_build = 1
+	restricted_to = list(SPECIES_HUMAN)
+	species_cannot_use = list(SPECIES_DIONA, SPECIES_VOX, SPECIES_PROMETHEAN, SPECIES_UNATHI, SPECIES_TAJARA, SPECIES_SKRELL)
+
+/datum/robolimb/hephaestus/hephaestus_alt1
+	company = "Hephaestus - Athena"
+	desc = "This rather thick limb has a militaristic green plating."
+	icon = 'icons/mob/human_races/cyberlimbs/hephaestus/hephaestus_alt1.dmi'
 
 //VEY-MED
 /datum/robolimb/veymed
@@ -134,7 +147,6 @@ var/datum/robolimb/basic_robolimb
 	company = "Cyber Solutions"
 	desc = "This limb is grey and rough, with little in the way of aesthetic."
 	icon = 'icons/mob/human_races/cyberlimbs/cybersolutions/cybersolutions_main.dmi'
-	can_eat = 1
 	skintone = 1
 	unavailable_to_build = 1
 	restricted_to = list(SPECIES_HUMAN)
