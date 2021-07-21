@@ -192,7 +192,7 @@
 	name = "hand-rolled cigarette"
 	desc = "A roll-your-own smokable."
 	icon_state = "cigroll"
-	item_state = "cigroll"
+	item_state = "cigoff"
 	type_butt = /obj/item/weapon/cigbutt/roll
 	smoketime = 120
 	chem_volume = 7.5
@@ -212,7 +212,7 @@
 /obj/item/clothing/mask/smokable/cigarette/roll/good
 	desc = "A roll-your-own smokable made of high-quality paper."
 	icon_state = "ciggoodroll"
-	item_state = "ciggoodroll"
+	item_state = "cigoff"
 	type_butt = /obj/item/weapon/cigbutt/roll/good
 	smoketime = 180
 
@@ -220,7 +220,7 @@
 	name = "joint"
 	desc = "A regular joint."
 	icon_state = "jointoff"
-	item_state = "jointoff"
+	item_state = "spliffoff"
 	icon_on = "jointon"
 	ember_state = ""
 	type_butt = /obj/item/weapon/cigbutt/joint
@@ -231,7 +231,7 @@
 	name = "joint"
 	desc = "A high-quality joint."
 	icon_state = "goodjointoff"
-	item_state = "goodjointoff"
+	item_state = "spliffoff"
 	icon_on = "goodjointon"
 	type_butt = /obj/item/weapon/cigbutt/joint/good
 	smoketime = 180
@@ -240,7 +240,7 @@
 	name = "big joint"
 	desc = "A big joint made of a regular sheet of paper."
 	icon_state = "bigjointoff"
-	item_state = "bigjointoff"
+	item_state = "spliffoff"
 	icon_on = "bigjointon"
 	chem_volume = 15.0
 	smoketime = 240
