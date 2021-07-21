@@ -44,20 +44,13 @@
 		to_chat(user, SPAN_WARNING("Wrong access!"))
 		return
 
-	if(W.can_hack)
+	if(istype(W, /obj/item/weapon/melee/energy))
+		var/obj/item/weapon/melee/energy/WS = W
 		if(broken)
 			to_chat(user, SPAN_WARNING("[src] already broken!"))
 			. = ..()
-
-		if(emag_act(INFINITY, user, W, "The locker has been sliced open by [user] with an energy blade!", "You hear metal being sliced and sparks flying."))
-			var/datum/effect/effect/system/spark_spread/spark_system = new /datum/effect/effect/system/spark_spread()
-			spark_system.set_up(5, 0, loc)
-			spark_system.start()
-			playsound(loc, 'sound/weapons/blade1.ogg', 50, 1)
-			playsound(loc, "spark", 50, 1)
-			broken = !broken
-			update_icon()
-			return
+		if(WS.can_hack)
+			emag_act(INFINITY, user, W, "The locker has been sliced open by [user] with an energy blade!", "You hear metal being sliced and sparks flying.")
 
 	. = ..()
 
@@ -89,6 +82,7 @@
 	. = ..()
 
 /obj/item/weapon/storage/lockbox/emag_act(remaining_charges, mob/user, emag_source, visual_feedback = "", audible_feedback = "")
+	on_hack_behavior()
 	if(!broken)
 		if(visual_feedback)
 			visual_feedback = SPAN_WARNING("[visual_feedback]")
@@ -99,12 +93,12 @@
 		else
 			audible_feedback = SPAN_WARNING("You hear a faint electrical spark.")
 
-		broken = 1
-		locked = 0
+		broken = TRUE
+		locked = FALSE
 		desc = "It appears to be broken."
 		icon_state = icon_broken
 		visible_message(visual_feedback, audible_feedback)
-		return 1
+		return TRUE
 
 /obj/item/weapon/storage/lockbox/loyalty
 	name = "lockbox of loyalty implants"
@@ -126,3 +120,13 @@
 /obj/item/weapon/storage/lockbox/clusterbang/Initialize()
 	. = ..()
 	new /obj/item/weapon/grenade/flashbang/clusterbang(src)
+
+/obj/item/weapon/storage/lockbox/proc/on_hack_behavior()
+	var/datum/effect/effect/system/spark_spread/spark_system = new /datum/effect/effect/system/spark_spread()
+	spark_system.set_up(5, 0, loc)
+	spark_system.start()
+	playsound(loc, 'sound/weapons/blade1.ogg', 50, 1)
+	playsound(loc, "spark", 50, 1)
+	broken = !broken
+	update_icon()
+	return

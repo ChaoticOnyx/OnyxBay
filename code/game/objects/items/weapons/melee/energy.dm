@@ -14,6 +14,7 @@
 	var/active_outer_range = 1.6
 	var/brightness_color
 	var/needs_blocking = TRUE
+	var/can_hack = FALSE
 
 /obj/item/weapon/melee/energy/proc/activate(mob/living/user)
 	if(active)
@@ -191,6 +192,7 @@
 	attack_verb = list("attacked", "slashed", "stabbed", "sliced", "torn", "ripped", "diced", "cut")
 	icon_state = "sword[blade_color]"
 	set_light(l_max_bright = active_max_bright, l_outer_range = active_outer_range, l_color = brightness_color)
+	can_hack = TRUE
 
 /obj/item/weapon/melee/energy/sword/deactivate(mob/living/user)
 	if(active)
@@ -199,14 +201,12 @@
 	attack_verb = list()
 	icon_state = initial(icon_state)
 	set_light(0)
+	can_hack = FALSE
 
 /obj/item/weapon/melee/energy/sword/one_hand
 	name = "energy sword"
 	desc = "May the force be within you."
 	icon_state = "sword0"
-/obj/item/weapon/melee/energy/sword/activate(mob/living/user)
-	..()
-	can_hack = TRUE
 
 /obj/item/weapon/melee/energy/sword/one_hand/New()
 	var/list/colorparam = list("green" = "#68ff4d", "red" = "#ff5959", "blue" = "#4de4ff", "purple" = "#de4dff")
@@ -252,7 +252,6 @@
 /obj/item/weapon/melee/energy/sword/pirate/activate(mob/living/user)
 	..()
 	icon_state = "cutlass1"
-	can_hack = TRUE
 
 /*
  *DualSaber
@@ -301,7 +300,6 @@
 /obj/item/weapon/melee/energy/sword/dualsaber/activate(mob/living/user)
 	..()
 	icon_state = "dualsaber[blade_color]"
-	can_hack = TRUE
 
 /*
  *Energy Blade
@@ -377,3 +375,4 @@
 	blade_color = "red"
 	brightness_color = "#ff5959"
 	needs_blocking = FALSE
+	can_hack = TRUE
