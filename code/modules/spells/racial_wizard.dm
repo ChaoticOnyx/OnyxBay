@@ -178,7 +178,7 @@
 	name = "skrellian apprenticeship contract"
 	var/obj/item/weapon/spellbook/linked
 	color = "#3366ff"
-	contract_spells = list(/spell/contract/return_master) //somewhat of a necessity due to how many spells they would have after a while.
+	contract_spells = list(/datum/spell/contract/return_master) //somewhat of a necessity due to how many spells they would have after a while.
 
 /obj/item/weapon/contract/apprentice/skrell/New(newloc,spellbook, owner)
 	..()

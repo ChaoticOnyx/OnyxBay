@@ -11,10 +11,10 @@
 	var/can_make_contracts = FALSE
 	var/investable = FALSE
 
-	var/static/list/spells = list()
-	var/static/list/artefacts = list()
-	var/static/list/sacrifice_objects = list()
-	var/static/list/sacrifice_reagents = list()
+	var/list/spells = list()
+	var/list/artefacts = list()
+	var/list/sacrifice_objects = list()
+	var/list/sacrifice_reagents = list()
 
 /datum/wizard_class/New()
 	ASSERT(name != "")

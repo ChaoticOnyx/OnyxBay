@@ -2502,7 +2502,6 @@
 #include "code\modules\spells\artifacts\storage.dm"
 #include "code\modules\spells\classes\_defines.dm"
 #include "code\modules\spells\classes\wizard_class.dm"
-#include "code\modules\spells\classes\~undefines.dm"
 #include "code\modules\spells\general\acid_spray.dm"
 #include "code\modules\spells\general\area_teleport.dm"
 #include "code\modules\spells\general\contract_spells.dm"
