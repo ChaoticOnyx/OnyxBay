@@ -1,6 +1,6 @@
 //basic transformation spell. Should work for most simple_animals
 
-/spell/targeted/shapeshift
+/datum/spell/targeted/shapeshift
 	name = "Shapeshift"
 	desc = "This spell transforms the target into something else for a short while."
 
@@ -20,7 +20,7 @@
 	var/drop_items = 1 //do we want to drop all our items when we transform?
 	var/list/transformed_dudes = list() //Who we transformed. Transformed = Transformation. Both mobs.
 
-/spell/targeted/shapeshift/cast(list/targets, mob/user)
+/datum/spell/targeted/shapeshift/cast(list/targets, mob/user)
 	for(var/mob/living/M in targets)
 		if(M.stat == DEAD)
 			to_chat(user, "[name] can only transform living targets.")
@@ -55,19 +55,19 @@
 		M.forceMove(trans) //move inside the new dude to hide him.
 		M.status_flags |= GODMODE //dont want him to die or breathe or do ANYTHING
 		transformed_dudes[trans] = M
-		GLOB.death_event.register(trans,src,/spell/targeted/shapeshift/proc/stop_transformation)
-		GLOB.destroyed_event.register(trans,src,/spell/targeted/shapeshift/proc/stop_transformation)
-		GLOB.destroyed_event.register(M, src, /spell/targeted/shapeshift/proc/destroyed_transformer)
+		GLOB.death_event.register(trans,src, /datum/spell/targeted/shapeshift/proc/stop_transformation)
+		GLOB.destroyed_event.register(trans,src, /datum/spell/targeted/shapeshift/proc/stop_transformation)
+		GLOB.destroyed_event.register(M, src, /datum/spell/targeted/shapeshift/proc/destroyed_transformer)
 		if(duration)
 			spawn(duration)
 				stop_transformation(trans)
 
-/spell/targeted/shapeshift/proc/destroyed_transformer(mob/target) //Juuuuust in case
+/datum/spell/targeted/shapeshift/proc/destroyed_transformer(mob/target) //Juuuuust in case
 	var/mob/current = transformed_dudes[target]
 	to_chat(current, "<span class='danger'>You suddenly feel as if this transformation has become permanent...</span>")
 	remove_target(target)
 
-/spell/targeted/shapeshift/proc/stop_transformation(mob/living/target)
+/datum/spell/targeted/shapeshift/proc/stop_transformation(mob/living/target)
 	var/mob/living/transformer = transformed_dudes[target]
 	if(!transformer)
 		return
@@ -86,7 +86,7 @@
 	remove_target(target)
 	qdel(target)
 
-/spell/targeted/shapeshift/proc/remove_target(mob/living/target)
+/datum/spell/targeted/shapeshift/proc/remove_target(mob/living/target)
 	var/mob/current = transformed_dudes[target]
 	GLOB.destroyed_event.unregister(target,src)
 	GLOB.death_event.unregister(current,src)
@@ -94,7 +94,7 @@
 	transformed_dudes[target] = null
 	transformed_dudes -= target
 
-/spell/targeted/shapeshift/baleful_polymorph
+/datum/spell/targeted/shapeshift/baleful_polymorph
 	name = "Baleful Polymorth"
 	desc = "This spell transforms its target into a small, furry animal."
 	feedback = "BP"
@@ -127,7 +127,7 @@
 
 	hud_state = "wiz_poly"
 
-/spell/targeted/shapeshift/baleful_polymorph/critfail(list/targets, mob/user)
+/datum/spell/targeted/shapeshift/baleful_polymorph/critfail(list/targets, mob/user)
 	possible_transformations = list(
 	/mob/living/simple_animal/hostile/giant_spider,
 	/mob/living/simple_animal/hostile/asteroid/goliath/alpha
@@ -135,7 +135,7 @@
 	cast(targets, user)
 	possible_transformations = basic_transformations
 
-/spell/targeted/shapeshift/baleful_polymorph/empower_spell()
+/datum/spell/targeted/shapeshift/baleful_polymorph/empower_spell()
 	if(!..())
 		return 0
 
@@ -143,7 +143,7 @@
 
 	return "Your target will now stay in their polymorphed form for [duration/10] seconds."
 
-/spell/targeted/shapeshift/avian
+/datum/spell/targeted/shapeshift/avian
 	name = "Polymorph"
 	desc = "This spell transforms the wizard into the common parrot."
 	feedback = "AV"
@@ -161,7 +161,7 @@
 	level_max = list(Sp_TOTAL = 1, Sp_SPEED = 1, Sp_POWER = 0)
 	hud_state = "wiz_parrot"
 
-/spell/targeted/shapeshift/corrupt_form
+/datum/spell/targeted/shapeshift/corrupt_form
 	name = "Corrupt Form"
 	desc = "This spell shapes the wizard into a terrible, terrible beast."
 	feedback = "CF"
@@ -183,7 +183,7 @@
 
 	hud_state = "wiz_corrupt"
 
-/spell/targeted/shapeshift/corrupt_form/empower_spell()
+/datum/spell/targeted/shapeshift/corrupt_form/empower_spell()
 	if(!..())
 		return 0
 

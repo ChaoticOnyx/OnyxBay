@@ -1,4 +1,4 @@
-/spell/aoe_turf/disable_tech
+/datum/spell/aoe_turf/disable_tech
 	name = "Disable Tech"
 	desc = "This spell disables all weapons, cameras and most other technology in range."
 	feedback = "DT"
@@ -16,12 +16,12 @@
 	var/emp_heavy = 4
 	var/emp_light = 6
 
-/spell/aoe_turf/disable_tech/cast(list/targets)
+/datum/spell/aoe_turf/disable_tech/cast(list/targets)
 	for(var/turf/target in targets)
 		empulse(get_turf(target), emp_heavy, emp_light)
 	return
 
-/spell/aoe_turf/disable_tech/empower_spell()
+/datum/spell/aoe_turf/disable_tech/empower_spell()
 	if(!..())
 		return 0
 	emp_heavy += 2

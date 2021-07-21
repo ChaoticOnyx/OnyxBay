@@ -1,7 +1,7 @@
 /datum/uplink_item/deity/boon/single_charge/buy(obj/item/device/uplink/U, mob/living/deity/user)
 	. = ..()
-	if(istype(., /spell))
-		var/spell/S = .
+	if(istype(., /datum/spell))
+		var/datum/spell/S = .
 		if(S.spell_flags & NEEDSCLOTHES)
 			S.spell_flags &= ~NEEDSCLOTHES
 

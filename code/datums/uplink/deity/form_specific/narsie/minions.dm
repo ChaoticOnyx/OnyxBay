@@ -18,7 +18,7 @@
 	name = "Tear Veil"
 	desc = "Grant your follower the ability to literally rip a hole in this reality, allowing things to pass through."
 	item_cost = 50
-	path = /spell/tear_veil
+	path = /datum/spell/tear_veil
 
 /datum/uplink_item/deity/feat/phenomena/hellscape
 	name = "Phenomena: Reveal Hellscape"

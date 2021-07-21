@@ -112,14 +112,14 @@
 	if(ispath(path,/obj))
 		var/obj/O = path
 		item_name = initial(O.name)
-	else if(ispath(path,/spell))
-		var/spell/S = path
+	else if(ispath(path, /datum/spell))
+		var/datum/spell/S = path
 		item_name = initial(S.name)
 	name = "[item_name] contract"
 
 /obj/item/weapon/contract/boon/contract_effect(mob/user as mob)
 	..()
-	if(ispath(path,/spell))
+	if(ispath(path, /datum/spell))
 		user.add_spell(new path)
 		return 1
 	else if(ispath(path,/obj))
@@ -131,31 +131,31 @@
 	contract_master = "\improper Wizard Academy"
 
 /obj/item/weapon/contract/boon/wizard/artificer
-	path = /spell/aoe_turf/conjure/construct
+	path = /datum/spell/aoe_turf/conjure/construct
 	desc = "This contract has a passage dedicated to an entity known as 'Nar-Sie'."
 
 /obj/item/weapon/contract/boon/wizard/fireball
-	path = /spell/targeted/projectile/dumbfire/fireball
+	path = /datum/spell/targeted/projectile/dumbfire/fireball
 	desc = "This contract feels warm to the touch."
 
 /obj/item/weapon/contract/boon/wizard/smoke
-	path = /spell/aoe_turf/smoke
+	path = /datum/spell/aoe_turf/smoke
 	desc = "This contract smells as dank as they come."
 
 /obj/item/weapon/contract/boon/wizard/forcewall
-	path = /spell/aoe_turf/conjure/forcewall
+	path = /datum/spell/aoe_turf/conjure/forcewall
 	contract_master = "\improper Mime Federation"
 	desc = "This contract has a dedication to mimes everywhere at the top."
 
 /obj/item/weapon/contract/boon/wizard/knock
-	path = /spell/aoe_turf/knock
+	path = /datum/spell/aoe_turf/knock
 	desc = "This contract is hard to hold still."
 
 /obj/item/weapon/contract/boon/wizard/horsemask
-	path = /spell/targeted/equip_item/horsemask
+	path = /datum/spell/targeted/equip_item/horsemask
 	desc = "This contract is more horse than your mind has room for."
 
 /obj/item/weapon/contract/boon/wizard/charge
-	path = /spell/aoe_turf/charge
+	path = /datum/spell/aoe_turf/charge
 	desc = "This contract is made of 100% post-consumer wizard."
 

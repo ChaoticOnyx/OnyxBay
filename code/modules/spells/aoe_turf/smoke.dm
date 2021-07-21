@@ -1,4 +1,4 @@
-/spell/aoe_turf/smoke
+/datum/spell/aoe_turf/smoke
 	name = "Smoke"
 	desc = "This spell spawns a cloud of choking smoke at your location and does not require wizard garb."
 	feedback = "SM"
@@ -17,7 +17,7 @@
 
 	hud_state = "wiz_smoke"
 
-/spell/aoe_turf/smoke/empower_spell()
+/datum/spell/aoe_turf/smoke/empower_spell()
 	if(!..())
 		return 0
 	smoke_amt += 2

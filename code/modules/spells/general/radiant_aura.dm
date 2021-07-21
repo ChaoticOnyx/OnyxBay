@@ -1,4 +1,4 @@
-/spell/radiant_aura
+/datum/spell/radiant_aura
 	name = "Radiant aura"
 	desc = "Form a protective layer of light around you, making you immune to laser fire."
 	school = "transmutation"
@@ -13,9 +13,9 @@
 	duration = 150
 	hud_state = "gen_immolate"
 
-/spell/radiant_aura/choose_targets()
+/datum/spell/radiant_aura/choose_targets()
 	return list(holder)
 
-/spell/radiant_aura/cast(list/targets, mob/user)
+/datum/spell/radiant_aura/cast(list/targets, mob/user)
 	var/obj/aura/radiant_aura/A = new(user)
 	QDEL_IN(A,duration)

@@ -1,4 +1,4 @@
-/spell/targeted/heal_target
+/datum/spell/targeted/heal_target
 	name = "Cure Light Wounds"
 	desc = "a rudimentary spell used mainly by wizards to heal papercuts. Does not require wizard garb."
 	feedback = "CL"
@@ -19,7 +19,7 @@
 
 	message = "You feel a pleasant rush of heat move through your body."
 
-/spell/targeted/heal_target/empower_spell()
+/datum/spell/targeted/heal_target/empower_spell()
 	if(!..())
 		return 0
 	amt_dam_brute -= 15
@@ -27,7 +27,7 @@
 	heals_external_bleeding = 1
 	return "[src] will now heal more."
 
-/spell/targeted/heal_target/major
+/datum/spell/targeted/heal_target/major
 	name = "Cure Major Wounds"
 	desc = "A spell used to fix others that cannot be fixed with regular medicine."
 	feedback = "CM"
@@ -45,7 +45,7 @@
 
 	message = "Your body feels like a furnace."
 
-/spell/targeted/heal_target/major/empower_spell()
+/datum/spell/targeted/heal_target/major/empower_spell()
 	if(!..())
 		return 0
 	amt_blood  += 12
@@ -63,7 +63,7 @@
 		heals_internal_bleeding = 1
 		return "[src] now heals more and stops internal bleeding"
 
-/spell/targeted/heal_target/area
+/datum/spell/targeted/heal_target/area
 	name = "Cure Area"
 	desc = "This spell heals everyone in an area."
 	feedback = "HA"
@@ -79,7 +79,7 @@
 	amt_dam_brute = -25
 	amt_dam_fire = -25
 
-/spell/targeted/heal_target/area/empower_spell()
+/datum/spell/targeted/heal_target/area/empower_spell()
 	if(!..())
 		return 0
 	amt_dam_brute -= 15
@@ -89,7 +89,7 @@
 	return "[src] now heals more in a wider area."
 
 
-/spell/targeted/heal_target/sacrifice
+/datum/spell/targeted/heal_target/sacrifice
 	name = "Sacrifice"
 	desc = "This spell heals immensily. For a price. Does not require wizard garb."
 	feedback = "SF"
@@ -109,7 +109,7 @@
 	heal_bones = 1
 	hud_state = "gen_dissolve"
 
-/spell/targeted/heal_target/sacrifice/empower_spell()
+/datum/spell/targeted/heal_target/sacrifice/empower_spell()
 	if(!..())
 		return 0
 

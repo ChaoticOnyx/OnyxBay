@@ -1,4 +1,4 @@
-/spell/targeted/projectile/dumbfire/fireball
+/datum/spell/targeted/projectile/dumbfire/fireball
 	name = "Fireball"
 	desc = "This spell fires a fireball at a target and does not require wizard garb."
 	feedback = "FB"
@@ -26,7 +26,7 @@
 
 	hud_state = "wiz_fireball"
 
-/spell/targeted/projectile/dumbfire/fireball/prox_cast(list/targets, spell_holder)
+/datum/spell/targeted/projectile/dumbfire/fireball/prox_cast(list/targets, spell_holder)
 	for(var/mob/living/M in targets)
 		apply_spell_damage(M)
 		if(ishuman(M))
@@ -36,7 +36,7 @@
 				cig.light(src, H)
 	explosion(get_turf(spell_holder), ex_severe, ex_heavy, ex_light, ex_flash)
 
-/spell/targeted/projectile/dumbfire/fireball/empower_spell()
+/datum/spell/targeted/projectile/dumbfire/fireball/empower_spell()
 	if(!..())
 		return 0
 

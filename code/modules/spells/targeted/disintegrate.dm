@@ -1,4 +1,4 @@
-/spell/targeted/disintegrate
+/datum/spell/targeted/disintegrate
 	name = "Disintegrate"
 	desc = "This spell immediately and permanently destroys its victim."
 	feedback = "DI"
@@ -23,7 +23,7 @@
 
 	cast_sound = 'sound/effects/squelch2.ogg'
 
-/spell/targeted/disintegrate/cast(list/targets, mob/user)
+/datum/spell/targeted/disintegrate/cast(list/targets, mob/user)
 	for(var/mob/T in targets)
 		if(!in_range(T, user))
 			to_chat(user, "<span class='warning'>That was not so bright of you.</span>")

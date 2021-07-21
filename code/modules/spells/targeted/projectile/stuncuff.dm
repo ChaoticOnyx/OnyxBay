@@ -1,4 +1,4 @@
-/spell/targeted/projectile/dumbfire/stuncuff
+/datum/spell/targeted/projectile/dumbfire/stuncuff
 	name = "Stun Cuff"
 	desc = "This spell fires out a small curse that stuns and cuffs the target."
 	feedback = "SC"
@@ -21,7 +21,7 @@
 
 	hud_state = "wiz_cuff"
 
-/spell/targeted/projectile/dumbfire/stuncuff/empower_spell()
+/datum/spell/targeted/projectile/dumbfire/stuncuff/empower_spell()
 	. = ..()
 	charge_type = Sp_RECHARGE // becomes rechargable
 	charge_max = 40
@@ -29,7 +29,7 @@
 	src.process()
 	return "[src] are now rechargable"
 
-/spell/targeted/projectile/dumbfire/stuncuff/prox_cast(list/targets, spell_holder)
+/datum/spell/targeted/projectile/dumbfire/stuncuff/prox_cast(list/targets, spell_holder)
 	for(var/mob/living/M in targets)
 		if(istype(M,/mob/living/carbon/human))
 			var/mob/living/carbon/human/H = M

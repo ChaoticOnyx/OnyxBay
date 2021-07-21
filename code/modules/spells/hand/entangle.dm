@@ -1,4 +1,4 @@
-/spell/hand/charges/entangle
+/datum/spell/hand/charges/entangle
 	name = "Entangle"
 	desc = "This spell creates vines that immediately entangle a nearby victim."
 	feedback = "ET"
@@ -19,7 +19,7 @@
 	show_message = " points towards the ground, causing plants to erupt"
 	var/datum/seed/seed
 
-/spell/hand/charges/entangle/New()
+/datum/spell/hand/charges/entangle/New()
 	..()
 	seed = new()
 	seed.set_trait(TRAIT_PLANT_ICON,"flower")
@@ -31,7 +31,7 @@
 	seed.display_name = "vines"
 	seed.chems = list(/datum/reagent/nutriment = list(1,20))
 
-/spell/hand/charges/entangle/cast_hand(mob/M,mob/user)
+/datum/spell/hand/charges/entangle/cast_hand(mob/M,mob/user)
 	var/turf/T = get_turf(M)
 	var/obj/effect/vine/single/P = new(T,seed, start_matured =1)
 	P.can_buckle = 1
@@ -41,7 +41,7 @@
 	M.visible_message("<span class='danger'>[P] appear from the floor, spinning around \the [M] tightly!</span>")
 	return ..()
 
-/spell/hand/charges/entangle/empower_spell()
+/datum/spell/hand/charges/entangle/empower_spell()
 	if(!..())
 		return 0
 

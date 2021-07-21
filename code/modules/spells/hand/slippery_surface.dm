@@ -1,4 +1,4 @@
-/spell/hand/slippery_surface
+/datum/spell/hand/slippery_surface
 	name = "Slippery Surface"
 	desc = "More of a practical joke than an actual spell."
 	school = "transmutation"
@@ -11,7 +11,7 @@
 	hud_state = "gen_ice"
 	level_max = list(Sp_TOTAL = 0, Sp_SPEED = 0, Sp_POWER = 0)
 
-/spell/hand/slippery_surface/cast_hand(atom/a, mob/user)
+/datum/spell/hand/slippery_surface/cast_hand(atom/a, mob/user)
 	for(var/turf/simulated/T in view(1,a))
 		T.wet_floor(50)
 	return ..()

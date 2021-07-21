@@ -1,4 +1,4 @@
-/spell/targeted/projectile/dumbfire/passage
+/datum/spell/targeted/projectile/dumbfire/passage
 	name = "Passage"
 	desc = "throw a spell towards an area and teleport to it."
 	feedback = "PA"
@@ -22,7 +22,7 @@
 	hud_state = "gen_project"
 
 
-/spell/targeted/projectile/dumbfire/passage/prox_cast(list/targets, atom/spell_holder, mob/user)
+/datum/spell/targeted/projectile/dumbfire/passage/prox_cast(list/targets, atom/spell_holder, mob/user)
 	if(istype(user.loc, /obj/machinery/atmospherics/unary/cryo_cell))
 		var/obj/machinery/atmospherics/unary/cryo_cell/cell = user.loc
 		cell.go_out()
@@ -37,7 +37,7 @@
 	S.start()
 
 
-/spell/targeted/projectile/dumbfire/passage/empower_spell()
+/datum/spell/targeted/projectile/dumbfire/passage/empower_spell()
 	if(!..())
 		return FALSE
 

@@ -1,4 +1,4 @@
-/spell/aoe_turf/knock
+/datum/spell/aoe_turf/knock
 	name = "Knock"
 	desc = "This spell opens nearby doors and does not require wizard garb."
 	feedback = "KN"
@@ -13,7 +13,7 @@
 
 	hud_state = "wiz_knock"
 
-/spell/aoe_turf/knock/cast(list/targets)
+/datum/spell/aoe_turf/knock/cast(list/targets)
 	for(var/turf/T in targets)
 		for(var/obj/machinery/door/door in T.contents)
 			spawn(1)
@@ -24,7 +24,7 @@
 	return
 
 
-/spell/aoe_turf/knock/empower_spell()
+/datum/spell/aoe_turf/knock/empower_spell()
 	if(!..())
 		return FALSE
 	range *= 2
