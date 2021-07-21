@@ -29,7 +29,7 @@
 	current_boon = null
 	return
 
-/mob/living/deity/proc/grant_spell(mob/living/target, spell/spell)
+/mob/living/deity/proc/grant_spell(mob/living/target, datum/spell/spell)
 	var/datum/mind/M = target.mind
 	for(var/s in M.learned_spells)
 		var/datum/spell/S = s

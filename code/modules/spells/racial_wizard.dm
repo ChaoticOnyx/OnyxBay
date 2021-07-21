@@ -33,7 +33,7 @@
 			return
 	user.drop_from_inventory(src)
 	var/a = new reward()
-	if(ispath(reward,/spell))
+	if(ispath(reward, /datum/spell))
 		H.add_spell(a)
 	else if(ispath(reward,/obj))
 		H.put_in_hands(a)

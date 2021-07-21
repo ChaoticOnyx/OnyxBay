@@ -5,3 +5,34 @@
 	spell_points = 6
 	can_make_contracts = TRUE
 	investable = TRUE
+
+	spells = list(
+		SPELL_DATA(/datum/spell/targeted/heal_target,             1),
+		SPELL_DATA(/datum/spell/targeted/heal_target/sacrifice,   1),
+		SPELL_DATA(/datum/spell/aoe_turf/conjure/mirage,          1),
+		SPELL_DATA(/datum/spell/aoe_turf/conjure/summon/bats,     1),
+		SPELL_DATA(/datum/spell/aoe_turf/conjure/summon/bear,     1),
+		SPELL_DATA(/datum/spell/targeted/equip_item/party_hardy,  1),
+		SPELL_DATA(/datum/spell/targeted/equip_item/seed,         1),
+		SPELL_DATA(/datum/spell/targeted/shapeshift/avian,        1),
+		SPELL_DATA(/datum/spell/aoe_turf/disable_tech,            1),
+		SPELL_DATA(/datum/spell/hand/charges/entangle,            1),
+		SPELL_DATA(/datum/spell/aoe_turf/conjure/grove/sanctuary, 1),
+		SPELL_DATA(/datum/spell/aoe_turf/knock,                   1),
+		SPELL_DATA(/datum/spell/area_teleport,                    2),
+		SPELL_DATA(/datum/spell/noclothes,                        3),
+		SPELL_DATA(/datum/spell/aoe_turf/conjure/faithful_hound,  1)
+	)
+
+	artefacts = list(
+		ARTEFACT_DATA(/obj/structure/closet/wizard/souls,         1),
+		ARTEFACT_DATA(/obj/item/weapon/magic_rock,                1),
+		ARTEFACT_DATA(/obj/item/weapon/monster_manual,            1),
+		ARTEFACT_DATA(/obj/item/weapon/contract/wizard/telepathy, 1),
+		ARTEFACT_DATA(/obj/item/weapon/contract/apprentice,       1)
+	)
+
+	sacrifice_objects = list(
+		/obj/item/seeds/ambrosiavulgarisseed,
+		/obj/item/seeds/ambrosiadeusseed
+	)

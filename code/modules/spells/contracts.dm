@@ -7,7 +7,7 @@
 	var/contract_master = null
 	var/list/contract_spells = list(/spell/contract/reward,/spell/contract/punish,/spell/contract/return_master)
 
-/obj/item/weapon/contract/attack_self(mob/user as mob)
+/obj/item/weapon/contract/attack_self(mob/user)
 	if(contract_master == null)
 		to_chat(user, SPAN_NOTICE("You bind the contract to your soul, making you the recipient of whatever poor fool's soul that decides to contract with you."))
 		contract_master = user
@@ -33,7 +33,7 @@
 		user.drop_from_inventory(src)
 		qdel(src)
 
-/obj/item/weapon/contract/proc/contract_effect(mob/user as mob)
+/obj/item/weapon/contract/proc/contract_effect(mob/user)
 	to_chat(user, SPAN_WARNING("You've signed your soul over to \the [contract_master] and with that your unbreakable vow of servitude begins."))
 	return 1
 
@@ -42,7 +42,7 @@
 	desc = "a wizarding school contract for those who want to sign their soul for a piece of the magic pie."
 	color = "#993300"
 
-/obj/item/weapon/contract/apprentice/contract_effect(mob/user as mob)
+/obj/item/weapon/contract/apprentice/contract_effect(mob/user)
 	if(user.mind.special_role == "apprentice")
 		to_chat(user, SPAN_WARNING("You are already a wizarding apprentice!"))
 		return 0
@@ -60,11 +60,11 @@
 	desc = "This contract is almost see-through..."
 	color = "#339900"
 
-/obj/item/weapon/contract/wizard/xray/contract_effect(mob/user as mob)
+/obj/item/weapon/contract/wizard/xray/contract_effect(mob/user)
 	..()
 	if (!(MUTATION_XRAY in user.mutations))
 		user.mutations.Add(MUTATION_XRAY)
-		user.set_sight(user.sight|SEE_MOBS|SEE_OBJS|SEE_TURFS)
+		user.set_sight(user.sight | SEE_MOBS | SEE_OBJS | SEE_TURFS)
 		user.set_see_in_dark(8)
 		user.set_see_invisible(SEE_INVISIBLE_LEVEL_TWO)
 		to_chat(user, SPAN_NOTICE("The walls suddenly disappear."))
@@ -76,7 +76,7 @@
 	desc = "The edges of the contract grow blurry when you look away from them. To be fair, actually reading it gives you a headache."
 	color = "#fcc605"
 
-/obj/item/weapon/contract/wizard/telepathy/contract_effect(mob/user as mob)
+/obj/item/weapon/contract/wizard/telepathy/contract_effect(mob/user)
 	..()
 	if(!(mRemotetalk in user.mutations))
 		user.mutations.Add(mRemotetalk)
@@ -91,7 +91,7 @@
 	desc = "This contract makes your mind buzz. It promises to give you the ability to move things with your mind. At a price."
 	color = "#990033"
 
-/obj/item/weapon/contract/wizard/tk/contract_effect(mob/user as mob)
+/obj/item/weapon/contract/wizard/tk/contract_effect(mob/user)
 	..()
 	if(!(MUTATION_TK in user.mutations))
 		user.mutations.Add(MUTATION_TK)
@@ -117,7 +117,7 @@
 		item_name = initial(S.name)
 	name = "[item_name] contract"
 
-/obj/item/weapon/contract/boon/contract_effect(mob/user as mob)
+/obj/item/weapon/contract/boon/contract_effect(mob/user)
 	..()
 	if(ispath(path, /datum/spell))
 		user.add_spell(new path)
