@@ -714,6 +714,7 @@
 		else
 			visible_message(SPAN_WARNING("\The [src] sparks and breaks open!"), "You hear a faint electrical spark.")
 			on_hack_behavior()
+		on_hack_behavior()
 		return TRUE
 	else
 		. = ..()
