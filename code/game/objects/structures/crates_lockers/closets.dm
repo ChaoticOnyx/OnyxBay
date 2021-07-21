@@ -707,7 +707,6 @@
 		update_icon()
 		if(visual_feedback)
 			visible_message(visual_feedback, audible_feedback)
-			on_hack_behavior()
 		else if(user && emag_source)
 			visible_message(SPAN_WARNING("\The [src] has been broken by \the [user] with \an [emag_source]!"), "You hear a faint electrical spark.")
 		else
