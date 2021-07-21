@@ -2,15 +2,15 @@
 	name = "Summon Dyrnwyn"
 	desc = "Summons the legendary sword of Rhydderch Hael, said to draw in flame when held by a worthy man."
 	feedback = "SD"
-	charge_type = Sp_HOLDVAR
+	charge_type = SP_HOLDVAR
 	holder_var_type = "fireloss"
 	holder_var_amount = 10
 	school = "conjuration"
 	invocation = "Anrhydeddu Fi!"
-	invocation_type = SpI_SHOUT
+	invocation_type = SPI_SHOUT
 	spell_flags = INCLUDEUSER
 	range = 0
-	level_max = list(Sp_TOTAL = 1, Sp_SPEED = 0, Sp_POWER = 1)
+	level_max = list(SP_TOTAL = 1, SP_SPEED = 0, SP_POWER = 1)
 	duration = 300 //30 seconds
 	max_targets = 1
 	equipped_summons = list("active hand" = /obj/item/weapon/material/sword)

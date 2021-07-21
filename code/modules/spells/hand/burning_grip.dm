@@ -5,12 +5,12 @@
 	feedback = "bg"
 	range = 5
 	spell_flags = 0
-	invocation_type = SpI_NONE
+	invocation_type = SPI_NONE
 	show_message = " throws sparks from their hands"
 	spell_delay = 50
 	hud_state = "wiz_burn"
 	compatible_targets = list(/mob/living/carbon/human)
-	level_max = list(Sp_TOTAL = 0, Sp_SPEED = 0, Sp_POWER = 0)
+	level_max = list(SP_TOTAL = 0, SP_SPEED = 0, SP_POWER = 0)
 
 /datum/spell/hand/burning_grip/valid_target(mob/living/L, mob/user)
 	if(!..())

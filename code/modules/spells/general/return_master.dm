@@ -6,7 +6,7 @@
 	charge_max = 600
 	spell_flags = 0
 	invocation = "none"
-	invocation_type = SpI_NONE
+	invocation_type = SPI_NONE
 	cooldown_min = 200
 	smoke_spread = 1
 	smoke_amt = 5

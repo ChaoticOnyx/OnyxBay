@@ -6,11 +6,11 @@
 	charge_max = 600
 	spell_flags = NEEDSCLOTHES | SELECTABLE | IGNOREPREV
 	invocation = "Bu-Ekel'Inas!"
-	invocation_type = SpI_SHOUT
+	invocation_type = SPI_SHOUT
 	range = 3
 	max_casts = 1
 
-	level_max = list(Sp_TOTAL = 2, Sp_SPEED = 2, Sp_POWER = 2)
+	level_max = list(SP_TOTAL = 2, SP_SPEED = 2, SP_POWER = 2)
 	cooldown_min = 300
 	duration = 30
 	compatible_targets = list(/mob)

@@ -9,7 +9,7 @@
 	range = 1
 	cooldown_min = 600
 
-	level_max = list(Sp_TOTAL = 3, Sp_SPEED = 3, Sp_POWER = 1)
+	level_max = list(SP_TOTAL = 3, SP_SPEED = 3, SP_POWER = 1)
 
 	summon_amt = 47
 	summon_type = list(/turf/simulated/floor/natural/grass)
@@ -35,11 +35,11 @@
 	desc = "Creates a sanctuary of nature around the wizard as well as creating a healing plant."
 	feedback = "SY"
 	invocation = "Bo K'Iitan!"
-	invocation_type = SpI_SHOUT
+	invocation_type = SPI_SHOUT
 	spell_flags = IGNOREDENSE | IGNORESPACE | NEEDSCLOTHES | Z2NOCAST | IGNOREPREV
 	cooldown_min = 600
 
-	level_max = list(Sp_TOTAL = 3, Sp_SPEED = 3, Sp_POWER = 1)
+	level_max = list(SP_TOTAL = 3, SP_SPEED = 3, SP_POWER = 1)
 
 	seed_type = /datum/seed/merlin_tear
 	newVars = list("name" = "sanctuary", "desc" = "This grass makes you feel comfortable. Peaceful.","blessed" = 1)

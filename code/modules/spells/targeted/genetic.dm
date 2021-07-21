@@ -39,9 +39,9 @@ code\game\dna\genes\goon_powers.dm
 
 	spell_flags = 0
 	invocation = "Sty Kaly."
-	invocation_type = SpI_WHISPER
+	invocation_type = SPI_WHISPER
 	message = "<span class='danger'>Your eyes cry out in pain!</span>"
-	level_max = list(Sp_TOTAL = 3, Sp_SPEED = 1, Sp_POWER = 3)
+	level_max = list(SP_TOTAL = 3, SP_SPEED = 1, SP_POWER = 3)
 	cooldown_min = 50
 
 	range = 7
@@ -67,7 +67,7 @@ code\game\dna\genes\goon_powers.dm
 	charge_max = 400
 	spell_flags = Z2NOCAST | NEEDSCLOTHES | INCLUDEUSER
 	invocation = "BIRUZ BENNAR"
-	invocation_type = SpI_SHOUT
+	invocation_type = SPI_SHOUT
 	message = "<span class='notice'>You feel strong! You feel a pressure building behind your eyes!</span>"
 	range = 0
 	max_targets = 1
@@ -75,7 +75,7 @@ code\game\dna\genes\goon_powers.dm
 	mutations = list(MUTATION_LASER, MUTATION_HULK)
 	duration = 300
 
-	level_max = list(Sp_TOTAL = 1, Sp_SPEED = 1, Sp_POWER = 0)
+	level_max = list(SP_TOTAL = 1, SP_SPEED = 1, SP_POWER = 0)
 	cooldown_min = 300
 
 	hud_state = "wiz_hulk"

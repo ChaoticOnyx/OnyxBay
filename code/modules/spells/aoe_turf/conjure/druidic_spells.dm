@@ -24,8 +24,8 @@
 	charge_max = 1200 //2 minutes
 	spell_flags = NEEDSCLOTHES
 	invocation = "Bla'yo daya!"
-	invocation_type = SpI_SHOUT
-	level_max = list(Sp_TOTAL = 3, Sp_SPEED = 3, Sp_POWER = 3)
+	invocation_type = SPI_SHOUT
+	level_max = list(SP_TOTAL = 3, SP_SPEED = 3, SP_POWER = 3)
 	cooldown_min = 600
 
 	range = 1
@@ -39,7 +39,7 @@
 	if(!..())
 		return 0
 
-	newVars = list("maxHealth" = 20 + spell_levels[Sp_POWER]*10, "health" = 20 + spell_levels[Sp_POWER]*10, "melee_damage_lower" = 10 + spell_levels[Sp_POWER]*3, "melee_damage_upper" = 10 + spell_levels[Sp_POWER]*5)
+	newVars = list("maxHealth" = 20 + spell_levels[SP_POWER]*10, "health" = 20 + spell_levels[SP_POWER]*10, "melee_damage_lower" = 10 + spell_levels[SP_POWER]*3, "melee_damage_upper" = 10 + spell_levels[SP_POWER]*5)
 
 	return "Your bats are now stronger."
 
@@ -50,8 +50,8 @@
 	charge_max = 3000 //5 minutes because this is a REALLY powerful spell. May tone it down/up.
 	spell_flags = NEEDSCLOTHES
 	invocation = "REA'YO GOR DAYA!"
-	invocation_type = SpI_SHOUT
-	level_max = list(Sp_TOTAL = 4, Sp_SPEED = 0, Sp_POWER = 4)
+	invocation_type = SPI_SHOUT
+	level_max = list(SP_TOTAL = 4, SP_SPEED = 0, SP_POWER = 4)
 
 	range = 0
 
@@ -74,7 +74,7 @@
 /datum/spell/aoe_turf/conjure/summon/bear/empower_spell()
 	if(!..())
 		return 0
-	switch(spell_levels[Sp_POWER])
+	switch(spell_levels[SP_POWER])
 		if(1)
 			newVars = list("maxHealth" = 150,
 						"health" = 150,

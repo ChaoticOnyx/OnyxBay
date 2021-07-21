@@ -6,9 +6,9 @@
 	charge_max = 150
 	spell_flags = NEEDSCLOTHES
 	invocation = "Forti Gy-Ama!"
-	invocation_type = SpI_SHOUT
+	invocation_type = SPI_SHOUT
 	range = 7
-	level_max = list(Sp_TOTAL = 3, Sp_SPEED = 3, Sp_POWER = 3)
+	level_max = list(SP_TOTAL = 3, SP_SPEED = 3, SP_POWER = 3)
 	cooldown_min = 90 //15 deciseconds reduction per rank
 
 	max_targets = 0
@@ -34,7 +34,7 @@
 	if(!..())
 		return 0
 
-	if(spell_levels[Sp_POWER] == level_max[Sp_POWER])
+	if(spell_levels[SP_POWER] == level_max[SP_POWER])
 		amt_paralysis += 2
 		amt_stunned += 2
 		return "[src] will now stun people for a longer duration."

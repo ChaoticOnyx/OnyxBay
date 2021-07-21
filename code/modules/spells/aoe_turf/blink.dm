@@ -6,11 +6,11 @@
 	charge_max = 20
 	spell_flags = Z2NOCAST | IGNOREDENSE | IGNORESPACE
 	invocation = "none"
-	invocation_type = SpI_NONE
+	invocation_type = SPI_NONE
 	range = 7
 	inner_radius = 1
 
-	level_max = list(Sp_TOTAL = 4, Sp_SPEED = 4, Sp_POWER = 4)
+	level_max = list(SP_TOTAL = 4, SP_SPEED = 4, SP_POWER = 4)
 	cooldown_min = 5 //4 deciseconds reduction per rank
 	hud_state = "wiz_blink"
 

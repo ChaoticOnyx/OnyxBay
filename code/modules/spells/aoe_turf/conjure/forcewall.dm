@@ -18,7 +18,7 @@
 	school = "mime"
 	panel = "Mime"
 	summon_type = list(/obj/effect/forcefield/mime)
-	invocation_type = SpI_EMOTE
+	invocation_type = SPI_EMOTE
 	invocation = "mimes placing their hands on a flat surfacing, and pushing against it."
 	charge_max = 300
 	cast_sound = null

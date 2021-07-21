@@ -4,14 +4,14 @@
 	feedback = "TM"
 	school = "illusion"
 	invocation = "Anta Di-Rai!"
-	invocation_type = SpI_SHOUT
+	invocation_type = SPI_SHOUT
 	time_between_channels = 150
 	range = 1
 	hand_state = "domination_spell"
 	hud_state = "wiz_dominate"
 	show_message = " puts his hand on target head, it's starting to glow brightly."
 	spell_flags = NEEDSCLOTHES
-	level_max = list(Sp_TOTAL = 3, Sp_SPEED = 3, Sp_POWER = 0)
+	level_max = list(SP_TOTAL = 3, SP_SPEED = 3, SP_POWER = 0)
 	spell_delay = 3000
 	compatible_targets = list(/mob/living/carbon/human)
 	var/list/instructions = list("Serve the Wizard Federation!")

@@ -4,15 +4,15 @@
 	feedback = "SC"
 	proj_type = /obj/item/projectile/spell_projectile/stuncuff
 
-	charge_type = Sp_CHARGES
+	charge_type = SP_CHARGES
 	charge_max = 6
 	charge_counter = 6
 	spell_flags = 0
 	invocation = "Fu'Reai Diakan!"
-	invocation_type = SpI_SHOUT
+	invocation_type = SPI_SHOUT
 	range = 20
 
-	level_max = list(Sp_TOTAL = 1, Sp_SPEED = 0, Sp_POWER = 1)
+	level_max = list(SP_TOTAL = 1, SP_SPEED = 0, SP_POWER = 1)
 
 	duration = 20
 	proj_step_delay = 1
@@ -23,7 +23,7 @@
 
 /datum/spell/targeted/projectile/dumbfire/stuncuff/empower_spell()
 	. = ..()
-	charge_type = Sp_RECHARGE // becomes rechargable
+	charge_type = SP_RECHARGE // becomes rechargable
 	charge_max = 40
 	charge_counter = 40
 	src.process()

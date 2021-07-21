@@ -3,12 +3,12 @@
 	desc = "Form a protective layer of light around you, making you immune to laser fire."
 	school = "transmutation"
 	feedback = "ra"
-	invocation_type = SpI_EMOTE
+	invocation_type = SPI_EMOTE
 	invocation = "conjures a sphere of fire around themselves."
 	school = "conjuration"
 	charge_max = 300
 	cooldown_min = 100
-	level_max = list(Sp_TOTAL = 2, Sp_SPEED = 2, Sp_POWER = 0)
+	level_max = list(SP_TOTAL = 2, SP_SPEED = 2, SP_POWER = 0)
 	cast_sound = 'sound/effects/snap.ogg'
 	duration = 150
 	hud_state = "gen_immolate"

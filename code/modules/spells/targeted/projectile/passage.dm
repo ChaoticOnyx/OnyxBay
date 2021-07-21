@@ -9,11 +9,11 @@
 	charge_max = 250
 	spell_flags = 0
 	invocation = "A'YASAMA"
-	invocation_type = SpI_SHOUT
+	invocation_type = SPI_SHOUT
 	range = 15
 
 
-	level_max = list(Sp_TOTAL = 1, Sp_SPEED = 0, Sp_POWER = 1)
+	level_max = list(SP_TOTAL = 1, SP_SPEED = 0, SP_POWER = 1)
 	spell_flags = NEEDSCLOTHES
 	duration = 10
 

@@ -6,7 +6,7 @@
 
 	school = "transmutation"
 
-	charge_type = Sp_RECHARGE
+	charge_type = SP_RECHARGE
 	charge_max = 600
 
 	duration = 0 //set to 0 for permanent.
@@ -115,13 +115,13 @@
 
 	share_damage = 0
 	invocation = "Yo'balada!"
-	invocation_type = SpI_SHOUT
+	invocation_type = SPI_SHOUT
 	spell_flags = NEEDSCLOTHES | SELECTABLE
 	range = 3
 	duration = 150 //15 seconds.
 	cooldown_min = 200 //20 seconds
 
-	level_max = list(Sp_TOTAL = 2, Sp_SPEED = 2, Sp_POWER = 2)
+	level_max = list(SP_TOTAL = 2, SP_SPEED = 2, SP_POWER = 2)
 
 	newVars = list("health" = 50, "maxHealth" = 50)
 
@@ -152,13 +152,13 @@
 	drop_items = 0
 	share_damage = 0
 	invocation = "Poli'crakata!"
-	invocation_type = SpI_SHOUT
+	invocation_type = SPI_SHOUT
 	spell_flags = INCLUDEUSER
 	range = 0
 	duration = 150
 	charge_max = 600
 	cooldown_min = 300
-	level_max = list(Sp_TOTAL = 1, Sp_SPEED = 1, Sp_POWER = 0)
+	level_max = list(SP_TOTAL = 1, SP_SPEED = 1, SP_POWER = 0)
 	hud_state = "wiz_parrot"
 
 /datum/spell/targeted/shapeshift/corrupt_form
@@ -168,7 +168,7 @@
 	possible_transformations = list(/mob/living/simple_animal/hostile/faithless)
 
 	invocation = "mutters something dark and twisted as their form begins to twist..."
-	invocation_type = SpI_EMOTE
+	invocation_type = SPI_EMOTE
 	spell_flags = INCLUDEUSER
 	range = 0
 	duration = 150
@@ -177,7 +177,7 @@
 
 	drop_items = 0
 	share_damage = 0
-	level_max = list(Sp_TOTAL = 3, Sp_SPEED = 2, Sp_POWER = 2)
+	level_max = list(SP_TOTAL = 3, SP_SPEED = 2, SP_POWER = 2)
 
 	newVars = list("name" = "corrupted soul")
 
@@ -187,7 +187,7 @@
 	if(!..())
 		return 0
 
-	switch(spell_levels[Sp_POWER])
+	switch(spell_levels[SP_POWER])
 		if(1)
 			duration *= 2
 			return "You will now stay corrupted for [duration/10] seconds."

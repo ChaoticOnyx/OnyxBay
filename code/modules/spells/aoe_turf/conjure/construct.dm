@@ -8,7 +8,7 @@
 	charge_max = 600
 	spell_flags = 0
 	invocation = "none"
-	invocation_type = SpI_NONE
+	invocation_type = SPI_NONE
 	range = 0
 
 	summon_type = list(/obj/structure/constructshell)
@@ -28,7 +28,7 @@
 	charge_max = 20
 	spell_flags = Z2NOCAST | CONSTRUCT_CHECK
 	invocation = "none"
-	invocation_type = SpI_NONE
+	invocation_type = SPI_NONE
 	range = 0
 	summon_type = list(/turf/simulated/floor/misc/cult)
 
@@ -41,7 +41,7 @@
 	charge_max = 100
 	spell_flags = Z2NOCAST | CONSTRUCT_CHECK
 	invocation = "none"
-	invocation_type = SpI_NONE
+	invocation_type = SPI_NONE
 	range = 0
 	summon_type = list(/turf/simulated/wall/cult)
 
@@ -54,7 +54,7 @@
 	charge_max = 300
 	spell_flags = Z2NOCAST
 	invocation = "none"
-	invocation_type = SpI_NONE
+	invocation_type = SPI_NONE
 	range = 0
 	cast_delay = 50
 
@@ -67,7 +67,7 @@
 	charge_max = 3000
 	spell_flags = 0
 	invocation = "none"
-	invocation_type = SpI_NONE
+	invocation_type = SPI_NONE
 	range = 0
 
 	summon_type = list(/obj/item/device/soulstone)
@@ -82,7 +82,7 @@
 	charge_max = 200
 	spell_flags = CONSTRUCT_CHECK
 	invocation = "none"
-	invocation_type = SpI_NONE
+	invocation_type = SPI_NONE
 	range = 0
 
 	summon_type = list(/obj/structure/cult/pylon)
@@ -105,7 +105,7 @@
 	charge_max = 300
 	spell_flags = 0
 	invocation = "none"
-	invocation_type = SpI_NONE
+	invocation_type = SPI_NONE
 	range = 0
 	summon_type = list(/obj/effect/forcefield/cult)
 	duration = 200

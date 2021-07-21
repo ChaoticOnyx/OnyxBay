@@ -5,9 +5,9 @@
 	school = "conjuration"
 
 	invocation = "Ei'Nath!"
-	invocation_type = SpI_SHOUT
+	invocation_type = SPI_SHOUT
 
-	level_max = list(Sp_TOTAL = 2, Sp_SPEED = 2, Sp_POWER = 0)
+	level_max = list(SP_TOTAL = 2, SP_SPEED = 2, SP_POWER = 0)
 
 	spell_flags = INCLUDEUSER | SELECTABLE | NEEDSCLOTHES // Yep, you can EI NATH yourself ftw
 	range = 1

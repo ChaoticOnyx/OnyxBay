@@ -6,9 +6,9 @@
 	charge_max = 100
 	spell_flags = 0
 	invocation = "Aulie Oxin Fiera."
-	invocation_type = SpI_WHISPER
+	invocation_type = SPI_WHISPER
 	range = 3
-	level_max = list(Sp_TOTAL = 4, Sp_SPEED = 4, Sp_POWER = 1)
+	level_max = list(SP_TOTAL = 4, SP_SPEED = 4, SP_POWER = 1)
 	cooldown_min = 20 //20 deciseconds reduction per rank
 
 	hud_state = "wiz_knock"

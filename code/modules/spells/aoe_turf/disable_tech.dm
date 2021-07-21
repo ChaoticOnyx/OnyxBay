@@ -5,11 +5,11 @@
 	charge_max = 400
 	spell_flags = NEEDSCLOTHES
 	invocation = "NEC CANTIO"
-	invocation_type = SpI_SHOUT
+	invocation_type = SPI_SHOUT
 	selection_type = "range"
 	range = 0
 	inner_radius = -1
-	level_max = list(Sp_TOTAL = 2, Sp_SPEED = 2, Sp_POWER = 2)
+	level_max = list(SP_TOTAL = 2, SP_SPEED = 2, SP_POWER = 2)
 	cooldown_min = 200 //50 deciseconds reduction per rank
 	hud_state = "wiz_tech"
 

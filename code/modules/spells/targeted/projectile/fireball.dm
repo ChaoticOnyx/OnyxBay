@@ -8,10 +8,10 @@
 	charge_max = 100
 	spell_flags = 0
 	invocation = "Oni-Soma!"
-	invocation_type = SpI_SHOUT
+	invocation_type = SPI_SHOUT
 	range = 20
 
-	level_max = list(Sp_TOTAL = 5, Sp_SPEED = 0, Sp_POWER = 5)
+	level_max = list(SP_TOTAL = 5, SP_SPEED = 0, SP_POWER = 5)
 
 	duration = 20
 	proj_step_delay = 1
@@ -43,7 +43,7 @@
 	amt_dam_brute += 10
 	amt_dam_fire += 25
 
-	if(spell_levels[Sp_POWER]%2 == 1)
+	if(spell_levels[SP_POWER]%2 == 1)
 		ex_severe++
 	ex_heavy++
 	ex_light++

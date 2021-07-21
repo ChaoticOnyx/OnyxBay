@@ -4,7 +4,7 @@
 
 	charge_max = 200
 	spell_flags = Z2NOCAST | INCLUDEUSER | CONSTRUCT_CHECK
-	invocation_type = SpI_NONE
+	invocation_type = SPI_NONE
 	range = 0
 	duration = 50 //in deciseconds
 

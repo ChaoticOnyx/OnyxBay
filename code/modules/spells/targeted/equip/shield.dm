@@ -4,15 +4,15 @@
 	feedback = "SH"
 	school = "conjuration"
 	invocation = "Sia helda!"
-	invocation_type = SpI_SHOUT
+	invocation_type = SPI_SHOUT
 	spell_flags = INCLUDEUSER | NEEDSCLOTHES
 	range = 0
 	max_targets = 1
 
 	compatible_mobs = list(/mob/living/carbon/human)
 
-	level_max = list(Sp_TOTAL = 3, Sp_SPEED = 2, Sp_POWER = 1)
-	charge_type = Sp_RECHARGE
+	level_max = list(SP_TOTAL = 3, SP_SPEED = 2, SP_POWER = 1)
+	charge_type = SP_RECHARGE
 	charge_max = 900
 	cooldown_min = 300
 	equipped_summons = list("off hand" = /obj/item/weapon/shield/)

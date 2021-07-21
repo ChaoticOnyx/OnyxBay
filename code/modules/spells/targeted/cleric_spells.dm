@@ -6,10 +6,10 @@
 	charge_max = 200
 	spell_flags = INCLUDEUSER | SELECTABLE
 	invocation = "Di'Nath!"
-	invocation_type = SpI_SHOUT
+	invocation_type = SPI_SHOUT
 	range = 2
 	max_targets = 1
-	level_max = list(Sp_TOTAL = 2, Sp_SPEED = 1, Sp_POWER = 2)
+	level_max = list(SP_TOTAL = 2, SP_SPEED = 1, SP_POWER = 2)
 
 	cooldown_reduc = 50
 	hud_state = "heal_minor"
@@ -35,7 +35,7 @@
 	spell_flags = INCLUDEUSER | SELECTABLE | NEEDSCLOTHES
 	invocation = "Borv Di'Nath!"
 	range = 1
-	level_max = list(Sp_TOTAL = 2, Sp_SPEED = 1, Sp_POWER = 2)
+	level_max = list(SP_TOTAL = 2, SP_SPEED = 1, SP_POWER = 2)
 	cooldown_reduc = 100
 	hud_state = "heal_major"
 	heals_external_bleeding = 1
@@ -72,7 +72,7 @@
 	invocation = "Nal Di'Nath!"
 	range = 2
 	max_targets = 0
-	level_max = list(Sp_TOTAL = 1, Sp_SPEED = 1, Sp_POWER = 1)
+	level_max = list(SP_TOTAL = 1, SP_SPEED = 1, SP_POWER = 1)
 	cooldown_reduc = 300
 	hud_state = "heal_area"
 
@@ -95,10 +95,10 @@
 	feedback = "SF"
 	spell_flags = SELECTABLE
 	invocation = "Ei'Nath Borv Di'Nath!"
-	charge_type = Sp_HOLDVAR
+	charge_type = SP_HOLDVAR
 	holder_var_type = "fireloss"
 	holder_var_amount = 100
-	level_max = list(Sp_TOTAL = 1, Sp_SPEED = 0, Sp_POWER = 1)
+	level_max = list(SP_TOTAL = 1, SP_SPEED = 0, SP_POWER = 1)
 	heals_external_bleeding = 1
 	amt_dam_brute = -1000
 	amt_dam_fire = -1000

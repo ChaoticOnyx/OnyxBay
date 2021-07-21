@@ -5,7 +5,7 @@
 	school = "illusion"
 	charge_max = 300
 	spell_flags = 0
-	invocation_type = SpI_NONE
+	invocation_type = SPI_NONE
 	range = 5
 	max_targets = 1
 	compatible_mobs = list(/mob/living/carbon/human)

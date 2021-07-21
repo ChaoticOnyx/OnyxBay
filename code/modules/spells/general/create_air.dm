@@ -5,7 +5,7 @@
 	charge_max = 200
 	spell_flags = Z2NOCAST
 	invocation = "none"
-	invocation_type = SpI_NONE
+	invocation_type = SPI_NONE
 
 	number_of_channels = 0
 	time_between_channels = 200

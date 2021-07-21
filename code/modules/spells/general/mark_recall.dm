@@ -6,14 +6,14 @@
 	charge_max = 600 //1 minutes for how OP this shit is (apparently not as op as I thought)
 	spell_flags = Z2NOCAST
 	invocation = "Re-Alki R'natha."
-	invocation_type = SpI_WHISPER
+	invocation_type = SPI_WHISPER
 	cooldown_min = 300
 	need_target = FALSE
 
 	smoke_amt = 1
 	smoke_spread = 5
 
-	level_max = list(Sp_TOTAL = 4, Sp_SPEED = 4, Sp_POWER = 1)
+	level_max = list(SP_TOTAL = 4, SP_SPEED = 4, SP_POWER = 1)
 
 	cast_sound = 'sound/effects/teleport.ogg'
 	hud_state = "wiz_mark"

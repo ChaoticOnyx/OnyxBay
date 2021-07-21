@@ -4,14 +4,14 @@
 	feedback = "SW"
 	school = "conjuration"
 
-	charge_type = Sp_HOLDVAR
+	charge_type = SP_HOLDVAR
 	holder_var_type = "brainloss"
 	holder_var_amount = 10
 
 	invocation = "Joyo!"
-	invocation_type = SpI_WHISPER
+	invocation_type = SPI_WHISPER
 
-	level_max = list(Sp_TOTAL = 2, Sp_SPEED = 0, Sp_POWER = 2)
+	level_max = list(SP_TOTAL = 2, SP_SPEED = 0, SP_POWER = 2)
 
 	spell_flags = Z2NOCAST
 	range = 6

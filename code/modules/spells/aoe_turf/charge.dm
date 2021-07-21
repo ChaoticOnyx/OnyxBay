@@ -6,7 +6,7 @@
 	charge_max = 600
 	spell_flags = 0
 	invocation = "DIRI CEL"
-	invocation_type = SpI_WHISPER
+	invocation_type = SPI_WHISPER
 	range = 0
 	cooldown_min = 400 //50 deciseconds reduction per rank
 
@@ -66,6 +66,6 @@
 	name = "blood charge"
 	desc = "This spell charges things around it using the lifeforce gained by sacrificed blood."
 
-	charge_type = Sp_HOLDVAR
+	charge_type = SP_HOLDVAR
 	holder_var_type = "bruteloss"
 	holder_var_amount = 30

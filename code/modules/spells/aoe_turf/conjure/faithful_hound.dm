@@ -6,7 +6,7 @@
 	charge_max = 600
 	spell_flags = NEEDSCLOTHES
 	invocation = "Du korilath tangus"
-	invocation_type = SpI_WHISPER
+	invocation_type = SPI_WHISPER
 	range = 0
 
 	summon_amt = 1

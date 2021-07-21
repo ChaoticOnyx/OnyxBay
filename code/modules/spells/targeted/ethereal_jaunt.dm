@@ -6,10 +6,10 @@
 	charge_max = 300
 	spell_flags = Z2NOCAST | NEEDSCLOTHES | INCLUDEUSER
 	invocation = "none"
-	invocation_type = SpI_NONE
+	invocation_type = SPI_NONE
 	range = 0
 	max_targets = 1
-	level_max = list(Sp_TOTAL = 4, Sp_SPEED = 4, Sp_POWER = 3)
+	level_max = list(SP_TOTAL = 4, SP_SPEED = 4, SP_POWER = 3)
 	cooldown_min = 100 //50 deciseconds reduction per rank
 	duration = 50 //in deciseconds
 	need_target = FALSE

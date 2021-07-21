@@ -8,7 +8,7 @@
 	school = "transmutation"
 	spell_flags = 0
 	invocation = "none"
-	invocation_type = SpI_NONE
+	invocation_type = SPI_NONE
 
 	var/mob/subject
 

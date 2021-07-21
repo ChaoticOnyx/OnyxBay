@@ -59,7 +59,7 @@
 
 	school = "racial"
 	spell_flags = 0
-	invocation_type = SpI_EMOTE
+	invocation_type = SPI_EMOTE
 	invocation = "mutters a small prayer, the light around them darkening."
 	charge_max = 300 //30 seconds
 
@@ -92,7 +92,7 @@
 
 	school = "racial"
 	spell_flags = INCLUDEUSER
-	invocation_type = SpI_EMOTE
+	invocation_type = SPI_EMOTE
 	range = 0
 	invocation = "begins to grow!"
 	charge_max = 1200 //2 minutes
@@ -118,9 +118,9 @@
 
 	school = "racial"
 	spell_flags = 0
-	invocation_type = SpI_EMOTE
+	invocation_type = SPI_EMOTE
 	invocation = "whispers something."
-	charge_type = Sp_HOLDVAR
+	charge_type = SP_HOLDVAR
 	holder_var_type = "bruteloss"
 	holder_var_amount = 10
 
@@ -160,10 +160,10 @@
 
 	school = "racial"
 	spell_flags = 0
-	invocation_type = SpI_EMOTE
+	invocation_type = SPI_EMOTE
 	invocation = "rumbles as green alien plants grow quickly along the floor."
 
-	charge_type = Sp_HOLDVAR
+	charge_type = SP_HOLDVAR
 	holder_var_type = "bruteloss"
 	holder_var_amount = 20
 
@@ -215,11 +215,11 @@
 
 	school = "racial"
 
-	invocation_type = SpI_EMOTE
+	invocation_type = SPI_EMOTE
 	invocation = "emits a beeping sound before standing very, very still."
 
 	charge_max = 600 //1 minute
-	charge_type = Sp_RECHARGE
+	charge_type = SP_RECHARGE
 
 
 	spell_flags = Z2NOCAST

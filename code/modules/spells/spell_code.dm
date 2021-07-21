@@ -13,10 +13,10 @@ var/list/spells = typesof(/datum/spell) //needed for the badmin verb for now
 	Transmutation - Modifying an object or transforming it.
 	Illusion - Altering perception or thought.
 	*/
-	var/charge_type = Sp_RECHARGE //can be recharge or charges, see charge_max and charge_counter descriptions; can also be based on the holder's vars now, use "holder_var" for that
+	var/charge_type = SP_RECHARGE //can be recharge or charges, see charge_max and charge_counter descriptions; can also be based on the holder's vars now, use "holder_var" for that
 
-	var/charge_max = 100 //recharge time in deciseconds if charge_type = Sp_RECHARGE or starting charges if charge_type = Sp_CHARGES
-	var/charge_counter = 0 //can only cast spells if it equals recharge, ++ each decisecond if charge_type = Sp_RECHARGE or -- each cast if charge_type = Sp_CHARGES
+	var/charge_max = 100 //recharge time in deciseconds if charge_type = SP_RECHARGE or starting charges if charge_type = SP_CHARGES
+	var/charge_counter = 0 //can only cast spells if it equals recharge, ++ each decisecond if charge_type = SP_RECHARGE or -- each cast if charge_type = SP_CHARGES
 	var/still_recharging_msg = SPAN_NOTICE("The spell is still recharging.")
 
 	var/silenced = 0 //not a binary - the length of time we can't cast this for
@@ -27,7 +27,7 @@ var/list/spells = typesof(/datum/spell) //needed for the badmin verb for now
 
 	var/spell_flags = NEEDSCLOTHES
 	var/invocation = "HURP DURP"	//what is uttered when the wizard casts the spell
-	var/invocation_type = SpI_NONE	//can be none, whisper, shout, and emote
+	var/invocation_type = SPI_NONE	//can be none, whisper, shout, and emote
 	var/range = 7					//the range of the spell; outer radius for aoe spells
 	var/message = ""				//whatever it says to the guy affected by it
 	var/selection_type = "view"		//can be "range" or "view"
@@ -35,8 +35,8 @@ var/list/spells = typesof(/datum/spell) //needed for the badmin verb for now
 	var/duration = 0 //how long the spell lasts
 	var/need_target = TRUE
 
-	var/list/spell_levels = list(Sp_SPEED = 0, Sp_POWER = 0) //the current spell levels - total spell levels can be obtained by just adding the two values
-	var/list/level_max = list(Sp_TOTAL = 4, Sp_SPEED = 4, Sp_POWER = 0) //maximum possible levels in each category. Total does cover both.
+	var/list/spell_levels = list(SP_SPEED = 0, SP_POWER = 0) //the current spell levels - total spell levels can be obtained by just adding the two values
+	var/list/level_max = list(SP_TOTAL = 4, SP_SPEED = 4, SP_POWER = 0) //maximum possible levels in each category. Total does cover both.
 	var/cooldown_reduc = 0		//If set, defines how much charge_max drops by every speed upgrade
 	var/delay_reduc = 0
 	var/cooldown_min = 0 //minimum possible cooldown for a charging spell
@@ -245,7 +245,7 @@ var/list/spells = typesof(/datum/spell) //needed for the badmin verb for now
 			to_chat(usr, "Not when you're incapacitated.")
 			return FALSE
 
-		if(ishuman(user) && !(invocation_type in list(SpI_EMOTE, SpI_NONE)))
+		if(ishuman(user) && !(invocation_type in list(SPI_EMOTE, SPI_NONE)))
 			if(user.is_muzzled())
 				to_chat(user, "Mmmf mrrfff!")
 				return FALSE
@@ -260,11 +260,11 @@ var/list/spells = typesof(/datum/spell) //needed for the badmin verb for now
 /datum/spell/proc/check_charge(skipcharge, mob/user)
 	if(!skipcharge)
 		switch(charge_type)
-			if(Sp_RECHARGE)
+			if(SP_RECHARGE)
 				if(charge_counter < charge_max)
 					to_chat(user, still_recharging_msg)
 					return FALSE
-			if(Sp_CHARGES)
+			if(SP_CHARGES)
 				if(!charge_counter)
 					to_chat(user, SPAN_NOTICE("[name] has no charges left."))
 					return FALSE
@@ -273,14 +273,14 @@ var/list/spells = typesof(/datum/spell) //needed for the badmin verb for now
 /datum/spell/proc/take_charge(mob/user = user, skipcharge)
 	if(!skipcharge)
 		switch(charge_type)
-			if(Sp_RECHARGE)
+			if(SP_RECHARGE)
 				charge_counter = 0 //doesn't start recharging until the targets selecting ends
 				src.process()
 				return TRUE
-			if(Sp_CHARGES)
+			if(SP_CHARGES)
 				charge_counter-- //returns the charge if the targets selecting fails
 				return TRUE
-			if(Sp_HOLDVAR)
+			if(SP_HOLDVAR)
 				adjust_var(user, holder_var_type, holder_var_amount)
 				return TRUE
 		return FALSE
@@ -305,17 +305,17 @@ var/list/spells = typesof(/datum/spell) //needed for the badmin verb for now
 /datum/spell/proc/invocation(mob/user = usr, list/targets) // spelling the spell out and setting it on recharge/reducing charges amount
 
 	switch(invocation_type)
-		if(SpI_SHOUT)
+		if(SPI_SHOUT)
 			if(prob(50))//Auto-mute? Fuck that noise
 				user.say(invocation)
 			else
 				user.say(replacetext(invocation," ","`"))
-		if(SpI_WHISPER)
+		if(SPI_WHISPER)
 			if(prob(50))
 				user.whisper(invocation)
 			else
 				user.whisper(replacetext(invocation," ","`"))
-		if(SpI_EMOTE)
+		if(SPI_EMOTE)
 			user.custom_emote(VISIBLE_MESSAGE, invocation)
 
 /////////////////////
@@ -323,7 +323,7 @@ var/list/spells = typesof(/datum/spell) //needed for the badmin verb for now
 /////////////////////
 
 /datum/spell/proc/can_improve(upgrade_type)
-	if(level_max[Sp_TOTAL] <= ( spell_levels[Sp_SPEED] + spell_levels[Sp_POWER] )) //too many levels, can't do it
+	if(level_max[SP_TOTAL] <= ( spell_levels[SP_SPEED] + spell_levels[SP_POWER] )) //too many levels, can't do it
 		return FALSE
 
 	if(upgrade_type && spell_levels[upgrade_type] >= level_max[upgrade_type])
@@ -332,35 +332,35 @@ var/list/spells = typesof(/datum/spell) //needed for the badmin verb for now
 	return TRUE
 
 /datum/spell/proc/empower_spell()
-	if(!can_improve(Sp_POWER))
+	if(!can_improve(SP_POWER))
 		return FALSE
 
-	spell_levels[Sp_POWER]++
+	spell_levels[SP_POWER]++
 
 	return TRUE
 
 /datum/spell/proc/quicken_spell()
-	if(!can_improve(Sp_SPEED))
+	if(!can_improve(SP_SPEED))
 		return FALSE
 
-	spell_levels[Sp_SPEED]++
+	spell_levels[SP_SPEED]++
 
 	if(delay_reduc && cast_delay)
 		cast_delay = max(0, cast_delay - delay_reduc)
 	else if(cast_delay)
-		cast_delay = round( max(0, initial(cast_delay) * ((level_max[Sp_SPEED] - spell_levels[Sp_SPEED]) / level_max[Sp_SPEED] ) ) )
+		cast_delay = round( max(0, initial(cast_delay) * ((level_max[SP_SPEED] - spell_levels[SP_SPEED]) / level_max[SP_SPEED] ) ) )
 
-	if(charge_type == Sp_RECHARGE)
+	if(charge_type == SP_RECHARGE)
 		if(cooldown_reduc)
 			charge_max = max(cooldown_min, charge_max - cooldown_reduc)
 		else
-			charge_max = round( max(cooldown_min, initial(charge_max) * ((level_max[Sp_SPEED] - spell_levels[Sp_SPEED]) / level_max[Sp_SPEED] ) ) ) //the fraction of the way you are to max speed levels is the fraction you lose
+			charge_max = round( max(cooldown_min, initial(charge_max) * ((level_max[SP_SPEED] - spell_levels[SP_SPEED]) / level_max[SP_SPEED] ) ) ) //the fraction of the way you are to max speed levels is the fraction you lose
 	if(charge_max < charge_counter)
 		charge_counter = charge_max
 
 	var/temp = ""
 	name = initial(name)
-	switch(level_max[Sp_SPEED] - spell_levels[Sp_SPEED])
+	switch(level_max[SP_SPEED] - spell_levels[SP_SPEED])
 		if(3)
 			temp = "You have improved [name] into Efficient [name]."
 			name = "Efficient [name]"

@@ -9,7 +9,7 @@
 	charge_max = 100
 	spell_flags = Z2NOCAST
 	invocation = "none"
-	invocation_type = SpI_NONE
+	invocation_type = SPI_NONE
 
 	hud_state = "const_wall"
 	cast_sound = 'sound/effects/meteorimpact.ogg'

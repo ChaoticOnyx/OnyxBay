@@ -5,7 +5,7 @@
 	charge_max = 10
 	spell_flags = Z2NOCAST
 	invocation = "none"
-	invocation_type = SpI_NONE
+	invocation_type = SPI_NONE
 
 	eye_type = /mob/observer/eye
 
