@@ -117,6 +117,12 @@ var/global/list/_client_preferences_by_type
 	description ="Play jukeboxes"
 	key = "SOUND_JUKEBOXES"
 
+/datum/client_preference/give_wayfinding
+	description = "Spawn with a wayfinder tracker"
+	options = list(GLOB.PREF_YES, GLOB.PREF_NO, GLOB.PREF_BASIC)
+	default_value = GLOB.PREF_BASIC
+	key = "WAYFINDING_POINTER"
+
 /datum/client_preference/play_instruments
 	description ="Play instruments"
 	key = "SOUND_INSTRUMENTS"
