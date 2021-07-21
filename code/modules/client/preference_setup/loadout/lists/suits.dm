@@ -143,6 +143,11 @@
 	display_name = "trenchcoat selection"
 	path = /obj/item/clothing/suit
 	cost = 3
+	
+/datum/gear/suit/snakeskin
+	display_name = "snakeskin coat"
+	path = /obj/item/clothing/suit/snakeskin
+	cost = 2
 
 /datum/gear/suit/trenchcoat/New()
 	..()

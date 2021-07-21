@@ -609,3 +609,10 @@
 	name = "unathi suit"
 	desc = "A Unathi suit made out of rubber."
 	icon_state = "lizsuit"
+	
+/obj/item/clothing/suit/snakeskin
+	name = "snakeskin coat" // sprite by CeUvi#1236
+	desc = "A stylish coat, made out of snake skin"
+	icon_state = "snakeskin"
+	item_state = "snakeskin"
+	body_parts_covered = UPPER_TORSO|LOWER_TORSO|LEGS|FEET|ARMS|HANDS
