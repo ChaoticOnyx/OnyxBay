@@ -44,6 +44,7 @@
 	mod_weight = initial(mod_weight)
 	mod_reach = initial(mod_reach)
 	mod_shield = initial(mod_shield)
+	can_hack = FALSE
 
 /obj/item/weapon/melee/energy/attack_self(mob/living/user)
 	if(active)
@@ -203,6 +204,9 @@
 	name = "energy sword"
 	desc = "May the force be within you."
 	icon_state = "sword0"
+/obj/item/weapon/melee/energy/sword/activate(mob/living/user)
+	..()
+	can_hack = TRUE
 
 /obj/item/weapon/melee/energy/sword/one_hand/New()
 	var/list/colorparam = list("green" = "#68ff4d", "red" = "#ff5959", "blue" = "#4de4ff", "purple" = "#de4dff")
@@ -248,6 +252,7 @@
 /obj/item/weapon/melee/energy/sword/pirate/activate(mob/living/user)
 	..()
 	icon_state = "cutlass1"
+	can_hack = TRUE
 
 /*
  *DualSaber
@@ -296,6 +301,7 @@
 /obj/item/weapon/melee/energy/sword/dualsaber/activate(mob/living/user)
 	..()
 	icon_state = "dualsaber[blade_color]"
+	can_hack = TRUE
 
 /*
  *Energy Blade
@@ -321,6 +327,7 @@
 	mod_shield = 2.5
 	atom_flags = ATOM_FLAG_NO_BLOOD
 	canremove = 0
+	can_hack = TRUE
 	attack_verb = list("attacked", "slashed", "stabbed", "sliced", "torn", "ripped", "diced", "cut")
 	hitsound = 'sound/effects/fighting/energy1.ogg'
 	var/mob/living/creator

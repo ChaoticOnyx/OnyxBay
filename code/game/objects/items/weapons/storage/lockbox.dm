@@ -44,7 +44,7 @@
 		to_chat(user, SPAN_WARNING("Wrong access!"))
 		return
 
-	if(istype(W, /obj/item/weapon/melee/energy/blade))
+	if(W.can_hack)
 		if(broken)
 			to_chat(user, SPAN_WARNING("[src] already broken!"))
 			. = ..()
