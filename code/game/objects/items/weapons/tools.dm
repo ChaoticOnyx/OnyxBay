@@ -91,9 +91,10 @@
 			icon_state = "screwdriver7"
 			item_state = "screwdriver_yellow"
 
-	if (prob(75))
-		src.pixel_y = rand(0, 16)
+	if(prob(75))
+		pixel_y = rand(0, 16)
 	. = ..()
+	update_icon()
 
 /obj/item/weapon/screwdriver/attack(mob/living/carbon/M as mob, mob/living/carbon/user as mob)
 	if(!istype(M) || user.a_intent == "help")
@@ -105,6 +106,26 @@
 	if((MUTATION_CLUMSY in user.mutations) && prob(50))
 		M = user
 	return eyestab(M,user)
+
+/obj/item/weapon/screwdriver/pickup(mob/user)
+	..()
+	update_icon()
+
+/obj/item/weapon/screwdriver/dropped(mob/user)
+	..()
+	update_icon()
+
+/obj/item/weapon/screwdriver/attack_hand()
+	..()
+	update_icon()
+
+/obj/item/weapon/screwdriver/on_enter_storage(obj/item/weapon/storage/S)
+	..()
+	update_icon()
+
+/obj/item/weapon/screwdriver/update_icon()
+	icon_rotation = istype(loc, /obj/item/weapon/storage) ? -90 : 0
+	update_transform()
 
 /*
  * Wirecutters
