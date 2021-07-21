@@ -53,10 +53,11 @@
 	)
 
 /obj/item/integrated_circuit/output/access_displayer/do_work()
-	var/passkey = get_pin_data(IC_INPUT, 1)
-
+	var/passkey = sanitize(get_pin_data(IC_INPUT, 1))
+	passkey = hextostr(passkey, TRUE)
+	passkey = XorEncrypt(passkey, SScircuit.cipherkey)
 	// from hippie_xor_decrypt proc
-	var/list/access = json_decode(XorEncrypt(hextostr(passkey, TRUE), SScircuit.cipherkey))
+	var/list/access = json_decode(passkey)
 	if(access && islist(access) && assembly)
 		// reset previus card access and set new access
 		assembly.access_card.access = access

@@ -137,7 +137,9 @@
 		return
 	var/r
 	for(var/i = 1 to length(string))
-		r += ascii2text(text2ascii(string,i) ^ text2ascii(key,((i-1)%length(key))+1))
+		var/j = (i - 1) % length(string) + 1
+		var/xor = text2ascii(string, i) ^ text2ascii(key, j)
+		r += ascii2text(xor)
 	return r
 
 /// Encodes a string to hex
@@ -175,4 +177,3 @@
 
 /proc/check_data_signature(signature, data)
 	return (compute_signature(data) == signature)
-

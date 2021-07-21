@@ -8,6 +8,8 @@
 	blood_level = 1
 	shock_level = 40
 	delicate = 1
+	var/obj/item/organ/preselected_organ
+	var/ignore_tool = FALSE
 
 /datum/surgery_step/internal/can_use(mob/living/user, mob/living/carbon/human/target, target_zone, obj/item/tool)
 	if(!hasorgans(target))
@@ -61,18 +63,18 @@
 			img.pixel_x = 3
 			damaged_organs[I] = img
 
-	var/obj/item/organ/internal/organ_to_fix = show_radial_menu(user, target, damaged_organs, require_near = TRUE)
+	preselected_organ = show_radial_menu(user, target, damaged_organs, require_near = TRUE)
 
-	if(!organ_to_fix || (user.get_active_hand().return_item() != tool))
+	if(!preselected_organ || (!ignore_tool && (user.get_active_hand().return_item() != tool)))
 		return FALSE
-	if(!organ_to_fix.can_recover())
-		to_chat(user, SPAN("notice", "The [organ_to_fix.name] is destroyed and can't be saved."))
+	if(!preselected_organ.can_recover())
+		to_chat(user, SPAN("notice", "The [preselected_organ.name] is destroyed and can't be saved."))
 		return SURGERY_FAILURE
-	if(!organ_to_fix.damage && !O.emagged)
-		to_chat(user, SPAN("notice", "The [organ_to_fix.name] is intact and doesn't require any healing."))
+	if(!preselected_organ.damage && !O.emagged)
+		to_chat(user, SPAN("notice", "The [preselected_organ.name] is intact and doesn't require any healing."))
 		return SURGERY_FAILURE
 
-	target.op_stage.current_organ = organ_to_fix
+	target.op_stage.current_organ = preselected_organ
 
 	return TRUE
 
@@ -379,17 +381,18 @@
 			img.pixel_x = 3
 			attached_organs[organ] = img
 
-	var/organ_to_remove = show_radial_menu(user, target, attached_organs, require_near = TRUE)
+	if(!istype(preselected_organ))
+		preselected_organ = show_radial_menu(user, target, attached_organs, require_near = TRUE)
 
-	if(!organ_to_remove || (user.get_active_hand().return_item() != tool))
+	if(!preselected_organ || (!ignore_tool && (user.get_active_hand().return_item() != tool)))
 		return FALSE
 	if(target.op_stage.current_organ)
 		to_chat(user, SPAN("warning", "You can't do this right now."))
 		return SURGERY_FAILURE
 
-	target.op_stage.current_organ = organ_to_remove
+	target.op_stage.current_organ = preselected_organ
 
-	return ..() && organ_to_remove
+	return ..() && preselected_organ
 
 /datum/surgery_step/internal/detatch_organ/begin_step(mob/user, mob/living/carbon/human/target, target_zone, obj/item/tool)
 	user.visible_message("[user] starts to separate [target]'s [target.op_stage.current_organ] with \the [tool].", \
@@ -447,15 +450,16 @@
 			img.pixel_x = 3
 			removable_organs[I] = img
 
-	var/organ_to_remove = show_radial_menu(user, target, removable_organs, require_near = TRUE)
+	if(!istype(preselected_organ))
+		preselected_organ = show_radial_menu(user, target, removable_organs, require_near = TRUE)
 
-	if(!organ_to_remove || (user.get_active_hand().return_item() != tool))
+	if(!preselected_organ || (!ignore_tool && (user.get_active_hand().return_item() != tool)))
 		return FALSE
 	if(target.op_stage.current_organ)
 		to_chat(user, SPAN("warning", "You can't do this right now."))
 		return SURGERY_FAILURE
 
-	target.op_stage.current_organ = organ_to_remove
+	target.op_stage.current_organ = preselected_organ
 	return ..()
 
 /datum/surgery_step/internal/remove_organ/begin_step(mob/user, mob/living/carbon/human/target, target_zone, obj/item/tool)
@@ -620,19 +624,19 @@
 			img.pixel_y = -5
 			img.pixel_x = 3
 			attachable_organs[I] = img
+	if(!istype(preselected_organ))
+		preselected_organ = show_radial_menu(user, target, attachable_organs, require_near = TRUE)
 
-	var/obj/item/organ/organ_to_replace = show_radial_menu(user, target, attachable_organs, require_near = TRUE)
-
-	if(!organ_to_replace || (user.get_active_hand().return_item() != tool))
+	if(!preselected_organ || (!ignore_tool && (user.get_active_hand().return_item() != tool)))
 		return FALSE
 	if(target.op_stage.current_organ)
 		to_chat(user, SPAN("warning", "You can't do this right now."))
 		return SURGERY_FAILURE
-	if(organ_to_replace.parent_organ != affected.organ_tag)
-		to_chat(user, SPAN("warning", "You can't find anywhere to attach [organ_to_replace] to!"))
+	if(preselected_organ.parent_organ != affected.organ_tag)
+		to_chat(user, SPAN("warning", "You can't find anywhere to attach [preselected_organ] to!"))
 		return SURGERY_FAILURE
 
-	target.op_stage.current_organ = organ_to_replace
+	target.op_stage.current_organ = preselected_organ
 	return ..()
 
 /datum/surgery_step/internal/attach_organ/begin_step(mob/user, mob/living/carbon/human/target, target_zone, obj/item/tool)

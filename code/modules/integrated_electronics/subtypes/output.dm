@@ -137,6 +137,7 @@
 	outputs = list()
 	activators = list("play sound" = IC_PINTYPE_PULSE_IN)
 	power_draw_per_use = 10
+	var/volume
 	var/list/sounds = list()
 
 /obj/item/integrated_circuit/output/sound/Initialize()
@@ -150,7 +151,7 @@
 
 /obj/item/integrated_circuit/output/sound/do_work()
 	var/ID = get_pin_data(IC_INPUT, 1)
-	var/vol = get_pin_data(IC_INPUT, 2)
+	var/vol = volume
 	var/freq = get_pin_data(IC_INPUT, 3)
 	if(!isnull(ID) && !isnull(vol))
 		var/selected_sound = sounds[ID]
@@ -162,9 +163,8 @@
 		A.investigate_log("played a sound ([selected_sound]) as [type].", INVESTIGATE_CIRCUIT)
 
 /obj/item/integrated_circuit/output/sound/on_data_written()
-	var/volume = get_pin_data(IC_INPUT, 2)
+	volume = get_pin_data(IC_INPUT, 2)
 	volume = Clamp(volume, 0, 100)
-	set_pin_data(IC_INPUT, 2, volume)
 	power_draw_per_use =  volume * 15
 
 /obj/item/integrated_circuit/output/sound/beeper
@@ -263,6 +263,50 @@
 			log_say("[assembly] [ref(assembly)]: [sanitized_text]")
 		else
 			log_say("[name] ([type]): [sanitized_text]")
+
+/obj/item/integrated_circuit/output/text_to_speech/direct_message
+	name = "personal message circuit"
+	desc = "Takes any string as an input and will connect to brain/borg brain via antennas in body to sends message to person, if they are near"
+	extended_desc = "This unit is more advanced than the plain speaker circuit, able to transpose any valid text to speech, but person need to have neural lace inside his head"
+	complexity = 14
+	inputs = list(
+		"to speech" = IC_PINTYPE_STRING,
+		"target" = IC_PINTYPE_REF
+	)
+	activators = list(
+		"to speech" = IC_PINTYPE_PULSE_IN,
+		"on succes" = IC_PINTYPE_PULSE_OUT,
+		"on fail" = IC_PINTYPE_PULSE_OUT
+	)
+	power_draw_per_use = 90
+
+/obj/item/integrated_circuit/output/text_to_speech/direct_message/do_work()
+	var/text_to_speech = get_pin_data(IC_INPUT, 1)
+	var/mob/living/L = get_pin_data(IC_INPUT, 2)
+	var/message_before_tts = "" // for cool text
+	if(!istype(L) && !istext(text_to_speech))
+		activate_pin(3)
+		return
+	var/dist = get_dist(get_object(), L)
+	if(dist == -1 || dist > 3)
+		activate_pin(3)
+		return
+	if(isrobot(L))
+		message_before_tts = "Your antenna reciving signal: "
+	if(ishuman(L))
+		var/mob/living/carbon/human/h = L
+		var/obj/item/organ/internal/stack/S = h.internal_organs_by_name[BP_STACK]
+		var/obj/item/organ/internal/cell/C = h.internal_organs_by_name[BP_CELL]
+		if(S)
+			message_before_tts = "Your [S] reciving signal: " // TODO: make cases when imaginary friend will talk the message, that's will be fun.
+		else if(C)
+			message_before_tts = "Your internal antenna near [C] reciving signal: "
+	if(istext(message_before_tts))
+		text_to_speech = sanitize(text_to_speech)
+		to_chat(L, SPAN_NOTICE("[message_before_tts][text_to_speech]"))
+		activate_pin(2)
+	else
+		activate_pin(3)
 
 /obj/item/integrated_circuit/output/video_camera
 	name = "video camera circuit"
