@@ -603,7 +603,10 @@
 		flat.Blend(add, iconmode, I:pixel_x + 2 - flatX1, I:pixel_y + 2 - flatY1)
 
 	if(A.color)
-		flat.Blend(A.color, ICON_MULTIPLY)
+		if(islist(A.color))
+			flat.MapColors(arglist(A.color))
+		else
+			flat.Blend(A.color, ICON_MULTIPLY)
 	if(A.alpha < 255)
 		flat.Blend(rgb(255, 255, 255, A.alpha), ICON_MULTIPLY)
 

@@ -40,6 +40,7 @@
 	spawn(10)
 		src.verbs += /mob/proc/changeling_transform
 
+	changeling.last_transformation_at = world.time
 	changeling_update_languages(changeling.absorbed_languages)
 
 	feedback_add_details("changeling_powers","TR")

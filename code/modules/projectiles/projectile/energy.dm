@@ -84,6 +84,7 @@
 	agony = 70
 	damage_type = BURN
 	armor_penetration = 10
+	penetration_modifier = 0.2
 
 /obj/item/projectile/energy/electrode/stunsphere
 	damage_type = PAIN

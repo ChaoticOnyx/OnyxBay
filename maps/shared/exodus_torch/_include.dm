@@ -1,6 +1,5 @@
 #include "areas.dm"
 #include "presets.dm"
-#include "zas_tests.dm"
 /*#include "./loadout/loadout_gloves.dm"
 #include "./loadout/loadout_head.dm"
 #include "./loadout/loadout_shoes.dm"
