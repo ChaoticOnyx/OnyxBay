@@ -33,6 +33,6 @@
 	)
 
 	sacrifice_objects = list(
-		/obj/item/seeds/ambrosiavulgarisseed,
-		/obj/item/seeds/ambrosiadeusseed
+		SACRIFICE_DATA(/obj/item/seeds/ambrosiavulgarisseed),
+		SACRIFICE_DATA(/obj/item/seeds/ambrosiadeusseed)
 	)

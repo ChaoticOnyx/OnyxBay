@@ -33,6 +33,6 @@
 	)
 
 	sacrifice_objects = list(
-		/obj/item/organ/internal/heart,
-		/obj/item/stack/material/silver
+		SACRIFICE_DATA(/obj/item/organ/internal/heart),
+		SACRIFICE_DATA(/obj/item/stack/material/silver)
 	)

@@ -33,10 +33,10 @@
 	)
 
 	sacrifice_objects = list(
-		/obj/item/seeds/mtearseed
+		SACRIFICE_DATA(/obj/item/seeds/mtearseed)
 	)
 
 	sacrifice_reagents = list(
-		/datum/reagent/peridaxon,
-		/datum/reagent/adminordrazine
+		SACRIFICE_DATA(/datum/reagent/peridaxon),
+		SACRIFICE_DATA(/datum/reagent/adminordrazine)
 	)

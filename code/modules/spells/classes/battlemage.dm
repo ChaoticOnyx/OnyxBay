@@ -33,6 +33,6 @@
 	)
 
 	sacrifice_objects = list(
-		/obj/item/weapon/material/sword,
-		/obj/item/weapon/material/twohanded/fireaxe
+		SACRIFICE_DATA(/obj/item/weapon/material/sword),
+		SACRIFICE_DATA(/obj/item/weapon/material/twohanded/fireaxe)
 	)

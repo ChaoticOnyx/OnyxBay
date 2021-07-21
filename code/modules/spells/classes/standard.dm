@@ -39,6 +39,6 @@
 	)
 
 	sacrifice_objects = list(
-		/obj/item/stack/material/gold,
-		/obj/item/stack/material/silver
+		SACRIFICE_DATA(/obj/item/stack/material/gold),
+		SACRIFICE_DATA(/obj/item/stack/material/silver)
 	)
