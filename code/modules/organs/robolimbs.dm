@@ -142,6 +142,24 @@ var/datum/robolimb/basic_robolimb
 	icon = 'icons/mob/human_races/cyberlimbs/veymed/veymed_skrell.dmi'
 	restricted_to = list(SPECIES_SKRELL)
 
+//WOODEN
+/datum/robolimb/wooden
+	company = "Morgan Trading Co"
+	desc = "A simplistic, metal-banded, wood-panelled prosthetic."
+	icon = 'icons/mob/human_races/cyberlimbs/makeshift/wooden.dmi'
+	unavailable_to_build = 1
+	restricted_to = list(SPECIES_HUMAN)
+	species_cannot_use = list(SPECIES_DIONA, SPECIES_VOX, SPECIES_PROMETHEAN, SPECIES_UNATHI, SPECIES_TAJARA, SPECIES_SKRELL)
+
+//EINSTEIN
+/datum/robolimb/einstein
+	company = "Einstein Engines"
+	desc = "This limb is lightweight with a sleek design."
+	icon = 'icons/mob/human_races/cyberlimbs/einstein/einstein.dmi'
+	unavailable_to_build = 1
+	restricted_to = list(SPECIES_HUMAN)
+	species_cannot_use = list(SPECIES_DIONA, SPECIES_VOX, SPECIES_PROMETHEAN, SPECIES_UNATHI, SPECIES_TAJARA, SPECIES_SKRELL)
+
 //CYBERSOLUTIONS
 /datum/robolimb/cybersolutions
 	company = "Cyber Solutions"
