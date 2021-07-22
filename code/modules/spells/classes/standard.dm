@@ -27,7 +27,7 @@
 		SPELL_DATA(/datum/spell/aoe_turf/conjure/faithful_hound,       1)
 	)
 
-	artefacts = list(
+	artifacts = list(
 		ARTEFACT_DATA(/obj/item/weapon/gun/energy/staff/focus,    1),
 		ARTEFACT_DATA(/obj/structure/closet/wizard/souls,         1),
 		ARTEFACT_DATA(/obj/item/weapon/gun/energy/staff/animate,  1),

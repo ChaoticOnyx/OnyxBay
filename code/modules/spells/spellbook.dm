@@ -19,9 +19,7 @@ var/list/artefact_feedback = list(/obj/structure/closet/wizard/armor = 		"HS",
 #define PAGE_SPELLS    1
 #define PAGE_ARTEFACTS 2
 // Pages about one thing:
-#define PAGE_SPELL     3
-#define PAGE_ARTEFACT  4
-#define PAGE_CHARACTER 5
+#define PAGE_CHARACTER 3
 
 /obj/item/weapon/spellbook
 	name = "spell book"
@@ -81,7 +79,4 @@ var/list/artefact_feedback = list(/obj/structure/closet/wizard/armor = 		"HS",
 #undef PAGE_CLASSES
 #undef PAGE_SPELLS
 #undef PAGE_ARTEFACTS
-#undef PAGE_CLASS
-#undef PAGE_SPELL
-#undef PAGE_ARTEFACT
 #undef PAGE_CHARACTER

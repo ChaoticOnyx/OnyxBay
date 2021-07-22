@@ -12,7 +12,7 @@
 		SPELL_DATA(/datum/spell/targeted/projectile/magic_missile, 1)
 	)
 
-	artefacts = list(
+	artifacts = list(
 		ARTEFACT_DATA(/obj/item/weapon/gun/energy/staff/focus, 1),
 		ARTEFACT_DATA(/obj/item/weapon/contract/wizard/xray,   1)
 	)

@@ -15,7 +15,7 @@
 	var/investable = FALSE
 
 	var/list/spells = list()
-	var/list/artefacts = list()
+	var/list/artifacts = list()
 	var/list/sacrifice_objects = list()
 	var/list/sacrifice_reagents = list()
 
@@ -32,7 +32,7 @@
 			"investable"         = investable
 		),
 		"spells"             = list(),
-		"artefacts"          = list(),
+		"artifacts"          = list(),
 		"sacrifice_objects"  = list(),
 		"sacrifice_reagents" = list()
 	)
@@ -67,12 +67,12 @@
 
 		data["spells"] += list(T)
 	
-	for(var/T in artefacts)
+	for(var/T in artifacts)
 		var/obj/artefact = T["path"]
 		T["icon"]        = icon2base64html(T["path"])
 		T["name"]        = initial(artefact.name)
 		T["description"] = initial(artefact.desc)
-		data["artefacts"] += list(T)
+		data["artifacts"] += list(T)
 	
 	for(var/T in sacrifice_objects)
 		var/obj/object   = T["path"]

@@ -24,7 +24,7 @@
 		SPELL_DATA(/datum/spell/noclothes,                             3)
 	)
 
-	artefacts = list(
+	artifacts = list(
 		ARTEFACT_DATA(/obj/item/weapon/contract/apprentice,    1),
 		ARTEFACT_DATA(/obj/item/weapon/gun/energy/staff/focus, 1),
 		ARTEFACT_DATA(/obj/structure/closet/wizard/souls,      1),
