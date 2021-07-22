@@ -21,47 +21,70 @@
 
 /datum/wizard_class/proc/to_list()
 	var/list/data = list(
-		"name" = name,
-		"icon" = icon2base64html(type),
-		"description" = description,
+		"name"         = name,
+		"icon"         = icon2base64html(type),
+		"description"  = description,
 		"spell_points" = spell_points,
-		"flags" = list(
-			"no_revert" = no_revert,
-			"locked" = locked,
+		"flags"        = list(
+			"no_revert"          = no_revert,
+			"locked"             = locked,
 			"can_make_contracts" = can_make_contracts,
-			"investable" = investable
+			"investable"         = investable
 		),
-		"spells" = list(),
-		"artefacts" = list(),
-		"sacrifice_objects" = list(),
+		"spells"             = list(),
+		"artefacts"          = list(),
+		"sacrifice_objects"  = list(),
 		"sacrifice_reagents" = list()
 	)
 
 	for(var/T in spells)
 		var/datum/spell/spell = T["path"]
-		T["icon"] = icon2base64html(T["path"])
-		T["name"] = initial(spell.name)
-		T["description"] = initial(spell.desc)
+		var/flags           = initial(spell.spell_flags)
+		T["icon"]           = icon2base64html(T["path"])
+		T["name"]           = initial(spell.name)
+		T["description"]    = initial(spell.desc)
+		T["school"]         = initial(spell.school)
+		T["charge_type"]    = initial(spell.charge_type)
+		T["charge_max"]     = initial(spell.charge_max)
+		T["flags"]          = list(
+			"needs_clothes" = flags & NEEDSCLOTHES,
+			"needs_human"   = flags & NEEDSHUMAN,
+			"include_user"  = flags & INCLUDEUSER,
+			"selectable"    = flags & SELECTABLE,
+			"no_button"     = flags & NO_BUTTON
+		)
+		T["range"]      = initial(spell.range)
+		T["duration"]   = initial(spell.duration)
+
+		if(spell in typesof(/datum/spell/targeted))
+			T["ability"] = "Target"
+		else if(spell in typesof(/datum/spell/aoe_turf))
+			T["ability"] = "AOE"
+		else if(spell in typesof(/datum/spell/hand))
+			T["ability"] = "Touch"
+		else
+			T["ability"] = "No Target"
+
 		data["spells"] += list(T)
 	
 	for(var/T in artefacts)
 		var/obj/artefact = T["path"]
-		T["icon"] = icon2base64html(T["path"])
-		T["name"] = initial(artefact.name)
+		T["icon"]        = icon2base64html(T["path"])
+		T["name"]        = initial(artefact.name)
 		T["description"] = initial(artefact.desc)
 		data["artefacts"] += list(T)
 	
 	for(var/T in sacrifice_objects)
-		var/obj/object = T["path"]
-		T["icon"] = icon2base64html(T["path"])
-		T["name"] = initial(object.name)
+		var/obj/object   = T["path"]
+		T["icon"]        = icon2base64html(T["path"])
+		T["name"]        = initial(object.name)
 		T["description"] = initial(object.desc)
 		data["sacrifice_objects"] += list(T)
 
 	for(var/T in sacrifice_reagents)
 		var/datum/reagent/reagent = T["path"]
-		T["name"] = initial(reagent.name)
-		T["description"] = initial(reagent.description)
+		T["name"]                 = initial(reagent.name)
+		T["description"]          = initial(reagent.description)
 		data["sacrifice_reagents"] += list(T)
 
 	return data

@@ -2,6 +2,7 @@ interface GameIconProps {
   html: string;
   className?: string | null;
   style?: any | null;
+  title?: string | null;
 }
 
 export const GameIcon = (props: GameIconProps) => {
@@ -10,6 +11,7 @@ export const GameIcon = (props: GameIconProps) => {
 
   return (
     <img
+      {...props}
       class={`game-icon ${className || ''}`}
       src={iconSrc}
       style={{ '-ms-interpolation-mode': 'nearest-neighbor', ...style }}

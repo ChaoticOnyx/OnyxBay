@@ -1,4 +1,4 @@
-// Spells/spellbooks have a variable for this but as artefacts are literal items they do not.
+// Spells/spellbooks have a variable for this but as artefacts are literal items they do not,
 // so we do this instead.
 var/list/artefact_feedback = list(/obj/structure/closet/wizard/armor = 		"HS",
 								/obj/item/weapon/gun/energy/staff/focus = 	"MF",
@@ -13,10 +13,15 @@ var/list/artefact_feedback = list(/obj/structure/closet/wizard/armor = 		"HS",
 								/obj/item/weapon/gun/energy/staff/animate =	"SA",
 								/obj/item/weapon/dice/d20/cursed = 			"DW")
 
-#define PAGE_CLASSES  0
-#define PAGE_SPELLS   1
-#define PAGE_CLASS    2
-#define PAGE_SPELL    3
+// These constants must be the same in SpellBook.tsx.
+// Pages that contains list of all objects of a type:
+#define PAGE_CLASSES   0
+#define PAGE_SPELLS    1
+#define PAGE_ARTEFACTS 2
+// Pages about one thing:
+#define PAGE_SPELL     3
+#define PAGE_ARTEFACT  4
+#define PAGE_CHARACTER 5
 
 /obj/item/weapon/spellbook
 	name = "spell book"
@@ -27,39 +32,18 @@ var/list/artefact_feedback = list(/obj/structure/closet/wizard/armor = 		"HS",
 	throw_range = 5
 	w_class = ITEM_SIZE_NORMAL
 	var/uses = 1
+	/// A page that will be opened in the UI.
 	var/page = PAGE_CLASSES
+	/// A path of spell/class or whatever we inspecting in the UI.
+	var/inspecting_path = null
 
 /obj/item/weapon/spellbook/tgui_data(mob/user)
 	var/list/data = list(
 		"page" = page,
-		"data" = get_page_data()
+		"inspecting_path" = inspecting_path
 	)
 
 	return data
-
-/obj/item/weapon/spellbook/proc/get_class_data(class_path)
-	for(var/datum/wizard_class/class in GLOB.wizard_classes)
-		if(istype(class, class_path))
-			return class
-
-/obj/item/weapon/spellbook/proc/get_classes_page_data()
-	var/list/data = list()
-
-	return data
-
-/obj/item/weapon/spellbook/proc/get_spells_page_data()
-	var/list/data = list()
-
-	return data
-
-/obj/item/weapon/spellbook/proc/get_page_data()
-	switch(page)
-		if(PAGE_CLASSES)
-			return get_classes_page_data()
-		if(PAGE_SPELLS)
-			return get_spells_page_data()
-
-	CRASH("Invalid page [page]")
 
 /obj/item/weapon/spellbook/tgui_static_data(mob/user)
 	var/list/data = list(
@@ -70,6 +54,19 @@ var/list/artefact_feedback = list(/obj/structure/closet/wizard/armor = 		"HS",
 		data["classes"] += list(C.to_list())
 	
 	return data
+
+/obj/item/weapon/spellbook/tgui_act(action, list/params)
+	. = ..()
+	if(.)
+		return
+
+	switch(action)
+		if("change_page")
+			page = params["page"]
+			return TRUE
+		if("set_inspecting")
+			inspecting_path = params["path"]
+			return TRUE
 
 /obj/item/weapon/spellbook/tgui_interact(mob/user, datum/tgui/ui)
 	ui = SStgui.try_update_ui(user, src, ui)
@@ -83,5 +80,8 @@ var/list/artefact_feedback = list(/obj/structure/closet/wizard/armor = 		"HS",
 
 #undef PAGE_CLASSES
 #undef PAGE_SPELLS
+#undef PAGE_ARTEFACTS
 #undef PAGE_CLASS
 #undef PAGE_SPELL
+#undef PAGE_ARTEFACT
+#undef PAGE_CHARACTER

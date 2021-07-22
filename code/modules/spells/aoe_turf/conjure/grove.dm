@@ -29,7 +29,6 @@
 	var/obj/effect/vine/P = new(T,seed)
 	P.spread_chance = spread
 
-
 /datum/spell/aoe_turf/conjure/grove/sanctuary
 	name = "Sanctuary"
 	desc = "Creates a sanctuary of nature around the wizard as well as creating a healing plant."

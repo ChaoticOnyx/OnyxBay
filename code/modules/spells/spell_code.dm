@@ -390,3 +390,28 @@
 /datum/spell/proc/set_connected_god(mob/living/deity/god)
 	connected_god = god
 	return
+
+/datum/spell/proc/to_list()
+	var/list/data = list(
+		"name"        = name,
+		"description" = desc,
+		"school"      = school,
+		"charge_type" = charge_type,
+		"charge_max"  = charge_max,
+		"flags"       = list(
+			"needs_clothes" = spell_flags & NEEDSCLOTHES,
+			"needs_human"   = spell_flags & NEEDSHUMAN,
+			"include_user"  = spell_flags & INCLUDEUSER,
+			"selectable"    = spell_flags & SELECTABLE,
+			"no_button"     = spell_flags & NO_BUTTON
+		),
+		"range"      = range,
+		"duration"   = duration,
+		"max_levels" = list(
+			"total" = level_max["total"],
+			"power" = level_max["power"],
+			"speed" = level_max["speed"]
+		)
+	)
+
+	return data

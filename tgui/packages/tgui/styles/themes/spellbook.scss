@@ -67,7 +67,7 @@
     background-color: #42372d;
   }
 
-  .ClassCard {
+  .Card {
     margin-bottom: 0.5rem;
     padding: 0.5rem;
     padding-top: 0;
@@ -76,6 +76,7 @@
     border: #615877 solid $border-thick;
     box-shadow: inset 0 0 0.6rem 0.1rem #1b1820;
 
+    .Icon--spell,
     .game-icon {
       vertical-align: -40%;
     }
@@ -89,6 +90,8 @@
     border-radius: 0.25rem;
     border: #351315 solid $border-thick;
     font-weight: bold;
+    padding-left: 0.5rem;
+    padding-right: 0.5rem;
 
     &:hover,
     &:focus,
@@ -97,45 +100,62 @@
     }
   }
 
-  .SpellButton {
+  .Button--invisible {
+    background: none !important;
+    border: none !important;
+    margin: 0 !important;
+    padding: 0 !important;
+  }
+
+  .Icon--spell {
     background: none;
     border: #1f2b52 solid $border-thick;
-    box-shadow: inset 0 0 1rem 0.2rem #10162b;
-    padding: 0.2rem;
+    box-shadow: inset 0 0 1rem 0 #10162b;
 
     &:hover,
-    &:focus,
-    &.Button--selected {
+    &:focus {
       background: none;
       border: #314483 solid $border-thick;
     }
   }
 
-  .ArtefactButton {
+  .Icon--artefact {
     background: none;
     border: #391f52 solid $border-thick;
-    box-shadow: inset 0 0 1rem 0.2rem #1a1715;
-    padding: 0.2rem;
+    box-shadow: inset 0 0 1rem 0 #1a1715;
 
     &:hover,
-    &:focus,
-    &.Button--selected {
+    &:focus {
       background: none;
       border: #593080 solid $border-thick;
     }
   }
 
-  .SacrificeButton {
+  .Icon--sacrifice {
     background: none;
     border: #521f1f solid $border-thick;
-    box-shadow: inset 0 0 1rem 0.2rem #2c1010;
-    padding: 0.2rem;
+    box-shadow: inset 0 0 1rem 0 #2c1010;
 
     &:hover,
-    &:focus,
-    &.Button--selected {
+    &:focus {
       background: none;
       border: #813131 solid $border-thick;
+    }
+  }
+
+  .Flag {
+    font-weight: bold;
+
+    &--NeedsClothes {
+      color: rgb(243, 98, 123);
+    }
+
+    &--NeedsHuman {
+      color: rgb(91, 143, 255);
+    }
+
+    &--NoButton {
+      color: rgb(91, 255, 118);
     }
   }
 }
