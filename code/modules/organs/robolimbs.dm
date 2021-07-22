@@ -96,7 +96,6 @@ var/datum/robolimb/basic_robolimb
 	company = "Bishop"
 	desc = "This limb has a white polymer casing with blue holo-displays."
 	icon = 'icons/mob/human_races/cyberlimbs/bishop/bishop_main.dmi'
-	skintone = 1
 	unavailable_to_build = 1
 	restricted_to = list(SPECIES_HUMAN)
 	species_cannot_use = list(SPECIES_DIONA, SPECIES_VOX, SPECIES_PROMETHEAN, SPECIES_UNATHI, SPECIES_TAJARA, SPECIES_SKRELL)
@@ -115,7 +114,6 @@ var/datum/robolimb/basic_robolimb
 	company = "Hephaestus"
 	desc = "This limb has a militaristic black and green casing with gold stripes"
 	icon = 'icons/mob/human_races/cyberlimbs/hephaestus/hephaestus_main.dmi'
-	skintone = 1
 	unavailable_to_build = 1
 	restricted_to = list(SPECIES_HUMAN)
 	species_cannot_use = list(SPECIES_DIONA, SPECIES_VOX, SPECIES_PROMETHEAN, SPECIES_UNATHI, SPECIES_TAJARA, SPECIES_SKRELL)
@@ -165,7 +163,6 @@ var/datum/robolimb/basic_robolimb
 	company = "Cyber Solutions"
 	desc = "This limb is grey and rough, with little in the way of aesthetic."
 	icon = 'icons/mob/human_races/cyberlimbs/cybersolutions/cybersolutions_main.dmi'
-	skintone = 1
 	unavailable_to_build = 1
 	restricted_to = list(SPECIES_HUMAN)
 	species_cannot_use = list(SPECIES_DIONA, SPECIES_VOX, SPECIES_PROMETHEAN, SPECIES_UNATHI, SPECIES_TAJARA, SPECIES_SKRELL)
@@ -185,3 +182,23 @@ var/datum/robolimb/basic_robolimb
 	desc = "This limb is simple and functional; array of sensors on a featureless case."
 	icon = 'icons/mob/human_races/cyberlimbs/cybersolutions/cybersolutions_alt3.dmi'
 	applies_to_part = list(BP_HEAD)
+
+//WARDTAKAHASHI
+/datum/robolimb/wardtakahashi
+	company = "Ward-Takahashi"
+	desc = "This limb features sleek black and white polymers."
+	icon = 'icons/mob/human_races/cyberlimbs/wardtakahashi/wardtakahashi_main.dmi'
+	unavailable_to_build = 1
+	restricted_to = list(SPECIES_HUMAN)
+	species_cannot_use = list(SPECIES_DIONA, SPECIES_VOX, SPECIES_PROMETHEAN, SPECIES_UNATHI, SPECIES_TAJARA, SPECIES_SKRELL)
+
+/datum/robolimb/wardtakahashi/wardtakahashi_alt1
+	company = "Ward-Takahashi - Shroud"
+	desc = "This limb features sleek black and white polymers. This one looks more like a helmet of some sort."
+	icon = 'icons/mob/human_races/cyberlimbs/wardtakahashi/wardtakahashi_alt1.dmi'
+	applies_to_part = list(BP_HEAD)
+
+/datum/robolimb/wardtakahashi/wardtakahashi_alt2
+	company = "Ward-Takahashi - Spirit"
+	desc = "This limb has white and purple features, with a heavier casing."
+	icon = 'icons/mob/human_races/cyberlimbs/wardtakahashi/wardtakahashi_alt2.dmi'
