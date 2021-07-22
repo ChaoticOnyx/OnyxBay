@@ -82,7 +82,6 @@
 	. = ..()
 
 /obj/item/weapon/storage/lockbox/emag_act(remaining_charges, mob/user, emag_source, visual_feedback = "", audible_feedback = "")
-	on_hack_behavior()
 	if(!broken)
 		if(visual_feedback)
 			visual_feedback = SPAN_WARNING("[visual_feedback]")
@@ -92,7 +91,7 @@
 			audible_feedback = SPAN_WARNING("[audible_feedback]")
 		else
 			audible_feedback = SPAN_WARNING("You hear a faint electrical spark.")
-
+		on_hack_behavior()
 		broken = TRUE
 		locked = FALSE
 		desc = "It appears to be broken."
