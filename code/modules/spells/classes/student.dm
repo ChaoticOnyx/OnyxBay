@@ -13,6 +13,6 @@
 	)
 
 	artifacts = list(
-		ARTEFACT_DATA(/obj/item/weapon/gun/energy/staff/focus, 1),
-		ARTEFACT_DATA(/obj/item/weapon/contract/wizard/xray,   1)
+		ARTIFACT_DATA(/obj/item/weapon/gun/energy/staff/focus, 1),
+		ARTIFACT_DATA(/obj/item/weapon/contract/wizard/xray,   1)
 	)

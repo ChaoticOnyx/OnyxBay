@@ -4,14 +4,15 @@ import { useBackend, useLocalState } from '../backend';
 import { Button, Divider, Flex, Input, Stack } from '../components';
 import { GameIcon } from '../components/GameIcon';
 import { Window } from '../layouts';
+import { escapeRegExp } from '../sanitize';
 
 const PAGE_CLASSES = 0;
 const PAGE_SPELLS = 1;
 const PAGE_ARTIFACTS = 2;
-const PAGE_ARTIFACT = 4;
-const PAGE_CHARACTER = 5;
+const PAGE_CHARACTER = 3;
 
 interface Class {
+  path: string;
   name: string;
   icon: string;
   description: string;
@@ -96,11 +97,11 @@ const SpellIcon = (props: Spell, ignored: boolean = false) => {
   );
 };
 
-const ArtifactIcon = (props: Artifact) => {
+const ArtifactIcon = (props: Artifact, ignored: boolean = false) => {
   return (
     <GameIcon
       title={`${capitalize(props.name)}\n${capitalize(props.description)}`}
-      className='Icon--artifact'
+      className={`Icon--artifact ${ignored && 'Icon--ignored'}`}
       html={props.icon}
     />
   );
@@ -139,17 +140,23 @@ const SpellButton = (
   );
 };
 
-const ArtifactButton = (props: Artifact, context: any) => {
+const ArtifactButton = (
+  props: Artifact,
+  context: any,
+  ignored: boolean = false,
+  selected: boolean = false,
+) => {
   const { act } = useBackend<InputData>(context);
 
   return (
     <Button
       className='Button--invisible'
+      selected={selected}
       onClick={() => {
         act('set_inspecting', { path: props.path });
-        act('change_page', { page: PAGE_ARTIFACT });
+        act('change_page', { page: PAGE_ARTIFACTS });
       }}>
-      {ArtifactIcon(props)}
+      {ArtifactIcon(props, ignored)}
     </Button>
   );
 };
@@ -169,6 +176,7 @@ const classCard = (props: Class, context: any) => {
               'font-size': '0.9em',
             }}
             content='Choose'
+            onClick={() => act('choose_class', { path: props.path })}
           />
         </h2>
       </Flex.Item>
@@ -292,7 +300,7 @@ const spellCard = (props: Spell, context: any) => {
         <br></br>
         {flags.needs_clothes ? (
           <>
-            <span class='Flag Flag--NeedsClothes'>Needs clothes</span>
+            <span class='Flag Flag--NeedsClothes'>Needs Clothes</span>
             <br></br>
           </>
         ) : null}
@@ -313,19 +321,15 @@ const spellCard = (props: Spell, context: any) => {
   );
 };
 
-const spellPage = (props: any, context: any) => {
-  const { data } = useBackend<InputData>(context);
-  const { inspecting_path, classes } = data;
-  const spell = classes
-    .flatMap((c, i) => {
-      return c.spells;
-    })
-    .find((s, i) => s.path === inspecting_path);
-
+const artifactCard = (props: Artifact, context: any) => {
   return (
-    <Flex direction='column'>
-      <Flex.Item>{navPanel(props, context)}</Flex.Item>
-      <Flex.Item mt='0.5rem'>{spellCard(spell, context)}</Flex.Item>
+    <Flex className='Card' direction='column'>
+      <Flex.Item>
+        <h2>
+          {ArtifactIcon(props)} {capitalize(props.name)}
+        </h2>
+      </Flex.Item>
+      <Flex.Item>{props.description}</Flex.Item>
     </Flex>
   );
 };
@@ -334,22 +338,22 @@ const spellsPage = (props: any, context: any) => {
   const { data } = useBackend<InputData>(context);
   const [nameFilter, setNameFilter] = useLocalState(
     context,
-    'nameFilter',
+    'spellsNameFilter',
     null,
   );
   const [classNameFilter, setClassNameFilter] = useLocalState(
     context,
-    'classNameFilter',
+    'spellsClassNameFilter',
     null,
   );
   const [abilityFilter, setAbilityFilter] = useLocalState(
     context,
-    'abilityFilter',
+    'spellsAbilityFilter',
     null,
   );
   const [schoolFilter, setSchoolFilter] = useLocalState(
     context,
-    'schoolFilter',
+    'spellsSchoolFilter',
     null,
   );
   const allSpells = data.classes.flatMap((c, i) => {
@@ -382,18 +386,16 @@ const spellsPage = (props: any, context: any) => {
     }
   }
 
-  spellsToShow = spellsToShow.sort((a, b) => a.name.localeCompare(b.name));
-
   let ignoredSpells: Spell[] = [];
 
-  for (const spell of allSpells) {
+  for (const spell of spellsToShow) {
     let ignore = false;
 
     if (
       nameFilter &&
       spell.name
         .toLocaleLowerCase()
-        .search(escape(nameFilter.toLocaleLowerCase()))
+        .search(escapeRegExp(nameFilter.toLocaleLowerCase()))
     ) {
       ignore = true;
     }
@@ -407,8 +409,8 @@ const spellsPage = (props: any, context: any) => {
     }
 
     if (classNameFilter) {
-      let wizardClass = data.classes.find((c, i) => c.name === classNameFilter);
-      let hasSpell = !!wizardClass.spells.find((s, i) => s.path === spell.path);
+      const wizardClass = data.classes.find((c, i) => c.name === classNameFilter);
+      const hasSpell = !!wizardClass.spells.find((s, i) => s.path === spell.path);
 
       if (!hasSpell) {
         ignore = true;
@@ -420,6 +422,8 @@ const spellsPage = (props: any, context: any) => {
     }
   }
 
+  spellsToShow = spellsToShow.sort((a, b) => a.name.localeCompare(b.name));
+
   return (
     <Flex direction='column'>
       <Flex.Item>{navPanel(props, context)}</Flex.Item>
@@ -427,14 +431,14 @@ const spellsPage = (props: any, context: any) => {
         <h2>Spells</h2>
         <Flex wrap>
           {spellsToShow.map((s, i) => {
-            let isIgnored = !!ignoredSpells.find(
+            const isIgnored = !!ignoredSpells.find(
               (ignored, k) => ignored.path === s.path,
             );
             return SpellButton(
               s,
               context,
               isIgnored,
-              s.path === inspectingSpell.path,
+              s.path === inspectingSpell?.path,
             );
           })}
         </Flex>
@@ -508,13 +512,107 @@ const spellsPage = (props: any, context: any) => {
 
 const artifactsPage = (props: any, context: any) => {
   const { data } = useBackend<InputData>(context);
+  const [nameFilter, setNameFilter] = useLocalState(
+    context,
+    'artifactsNameFilter',
+    null,
+  );
+  const [classNameFilter, setClassNameFilter] = useLocalState(
+    context,
+    'artifactsClassNameFilter',
+    null,
+  );
+  const allArtifacts = data.classes.flatMap((c, i) => {
+    return c.artifacts;
+  });
+  const classNames = data.classes.flatMap((c, i) => {
+    return c.name;
+  });
+
+  let artifactsToShow: Artifact[] = [];
+  let inspectingArtifact: Artifact = null;
+  let ignoredArtifacts: Artifact[] = [];
+
+  for (const artifact of allArtifacts) {
+    if (!artifactsToShow.find((a, i) => a.path === artifact.path)) {
+      artifactsToShow.push(artifact);
+    }
+
+    if (artifact.path === data.inspecting_path) {
+      inspectingArtifact = artifact;
+    }
+  }
+
+  for (const artifact of artifactsToShow) {
+    let ignore = false;
+
+    if (nameFilter && artifact.name.toLocaleLowerCase().search(escapeRegExp(nameFilter.toLocaleLowerCase()))) {
+      ignore = true;
+    }
+
+    if (classNameFilter) {
+      const wizardClass = data.classes.find((c, i) => c.name === classNameFilter);
+      const hasArtifact = !!wizardClass.artifacts.find((s, i) => s.path === artifact.path);
+
+      if (!hasArtifact) {
+        ignore = true;
+      }
+    }
+
+    if (ignore) {
+      ignoredArtifacts.push(artifact);
+    }
+  }
+
+  artifactsToShow = artifactsToShow.sort((s, b) => s.name.localeCompare(b.name));
 
   return (
     <Flex direction='column'>
       <Flex.Item>{navPanel(props, context)}</Flex.Item>
       <Flex.Item pb='1rem' mt='0.5rem' className='Card'>
         <h2>Artifacts</h2>
-        <Flex wrap></Flex>
+        <Flex wrap>
+          {artifactsToShow.map((a, i) => {
+            const isIgnored = !!ignoredArtifacts.find(
+              (ignored, k) => ignored.path === a.path,
+            );
+            return ArtifactButton(
+              a,
+              context,
+              isIgnored,
+              a.path === inspectingArtifact?.path,
+            );
+          })}
+        </Flex>
+      </Flex.Item>
+      <Flex.Item className='Card'>
+        <h2>Filters</h2>
+        <b>By Name: </b>{' '}
+        <Input
+          onInput={(e: any) => {
+            setNameFilter(e.target.value);
+          }}
+        />
+        <Divider />
+        <b>By Class: </b>
+        {classNames.map((c, i) => {
+          return (
+            <Button
+              content={c}
+              selected={c === classNameFilter}
+              onClick={() => {
+                if (c === classNameFilter) {
+                  setClassNameFilter(null);
+                } else {
+                  setClassNameFilter(c);
+                }
+              }}
+            />
+          );
+        })}
+      </Flex.Item>
+      <Flex.Item>
+        {inspectingArtifact ? artifactCard(inspectingArtifact, context) : null}
       </Flex.Item>
     </Flex>
   );
@@ -531,7 +629,7 @@ const PAGES = {
     render: artifactsPage,
   },
   3: {
-    render: spellPage,
+    render: null,
   },
 };
 

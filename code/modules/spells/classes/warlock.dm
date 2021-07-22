@@ -25,11 +25,11 @@
 	)
 
 	artifacts = list(
-		ARTEFACT_DATA(/obj/item/weapon/contract/apprentice,    1),
-		ARTEFACT_DATA(/obj/item/weapon/gun/energy/staff/focus, 1),
-		ARTEFACT_DATA(/obj/structure/closet/wizard/souls,      1),
-		ARTEFACT_DATA(/obj/structure/closet/wizard/scrying,    1),
-		ARTEFACT_DATA(/obj/item/weapon/monster_manual,         1)
+		ARTIFACT_DATA(/obj/item/weapon/contract/apprentice,    1),
+		ARTIFACT_DATA(/obj/item/weapon/gun/energy/staff/focus, 1),
+		ARTIFACT_DATA(/obj/structure/closet/wizard/souls,      1),
+		ARTIFACT_DATA(/obj/structure/closet/wizard/scrying,    1),
+		ARTIFACT_DATA(/obj/item/weapon/monster_manual,         1)
 	)
 
 	sacrifice_objects = list(

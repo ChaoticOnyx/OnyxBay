@@ -21,6 +21,7 @@
 
 /datum/wizard_class/proc/to_list()
 	var/list/data = list(
+		"path"         = type,
 		"name"         = name,
 		"icon"         = icon2base64html(type),
 		"description"  = description,
