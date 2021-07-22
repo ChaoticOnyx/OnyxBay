@@ -14,7 +14,7 @@
 	level_max = list(SP_TOTAL = 3, SP_SPEED = 1, SP_POWER = 2)
 	delete_old = 0
 
-	hud_state = "wiz_party"
+	icon_state = "wiz_party"
 
 	compatible_mobs = list(/mob/living/carbon/human)
 	equipped_summons = list("active hand" = /obj/item/weapon/reagent_containers/food/drinks/bottle/small/beer)

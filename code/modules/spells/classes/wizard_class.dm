@@ -37,20 +37,32 @@
 		"sacrifice_reagents" = list()
 	)
 
-	for(var/S in spells)
-		S["icon"] = icon2base64html(S["path"])
-		data["spells"] += list(S)
+	for(var/T in spells)
+		var/datum/spell/spell = T["path"]
+		T["icon"] = icon2base64html(T["path"])
+		T["name"] = initial(spell.name)
+		T["description"] = initial(spell.desc)
+		data["spells"] += list(T)
 	
-	for(var/A in artefacts)
-		A["icon"] = icon2base64html(A["path"])
-		data["artefacts"] += list(A)
+	for(var/T in artefacts)
+		var/obj/artefact = T["path"]
+		T["icon"] = icon2base64html(T["path"])
+		T["name"] = initial(artefact.name)
+		T["description"] = initial(artefact.desc)
+		data["artefacts"] += list(T)
 	
-	for(var/O in sacrifice_objects)
-		O["icon"] = icon2base64html(O["path"])
-		data["sacrifice_objects"] += list(O)
+	for(var/obj/T in sacrifice_objects)
+		var/obj/object = T["path"]
+		T["icon"] = icon2base64html(T["path"])
+		T["name"] = initial(object.name)
+		T["description"] = initial(object.desc)
+		data["sacrifice_objects"] += list(T)
 
-	for(var/R in sacrifice_reagents)
-		R["icon"] = icon2base64html(R["path"])
-		data["sacrifice_reagents"] += list(R)
+	for(var/T in sacrifice_reagents)
+		var/datum/reagent/reagent = T["path"]
+		T["icon"] = icon2base64html(T["path"])
+		T["name"] = initial(reagent.name)
+		T["description"] = initial(reagent.description)
+		data["sacrifice_reagents"] += list(T)
 
 	return data

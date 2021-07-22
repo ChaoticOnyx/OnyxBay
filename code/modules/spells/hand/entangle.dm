@@ -15,7 +15,7 @@
 	duration = 30
 	compatible_targets = list(/mob)
 
-	hud_state = "wiz_entangle"
+	icon_state = "wiz_entangle"
 	show_message = " points towards the ground, causing plants to erupt"
 	var/datum/seed/seed
 

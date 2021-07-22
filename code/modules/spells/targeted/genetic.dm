@@ -50,7 +50,7 @@ code\game\dna\genes\goon_powers.dm
 	amt_eye_blind = 10
 	amt_eye_blurry = 20
 
-	hud_state = "wiz_blind"
+	icon_state = "wiz_blind"
 
 /datum/spell/targeted/genetic/blind/empower_spell()
 	if(!..())
@@ -78,4 +78,4 @@ code\game\dna\genes\goon_powers.dm
 	level_max = list(SP_TOTAL = 1, SP_SPEED = 1, SP_POWER = 0)
 	cooldown_min = 300
 
-	hud_state = "wiz_hulk"
+	icon_state = "wiz_hulk"

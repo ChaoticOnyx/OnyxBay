@@ -13,7 +13,7 @@
 	cooldown_min = 100 //50 deciseconds reduction per rank
 	duration = 50 //in deciseconds
 	need_target = FALSE
-	hud_state = "wiz_jaunt"
+	icon_state = "wiz_jaunt"
 
 /datum/spell/targeted/ethereal_jaunt/cast(list/targets, mob/user) //magnets, so mostly hardcoded
 	for(var/mob/living/target in targets)

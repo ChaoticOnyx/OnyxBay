@@ -17,7 +17,7 @@
 	duration = 10
 	proj_step_delay = 5
 
-	hud_state = "wiz_mm"
+	icon_state = "wiz_mm"
 
 	amt_paralysis = 3
 	amt_stunned = 3

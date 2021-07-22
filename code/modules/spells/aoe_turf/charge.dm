@@ -10,7 +10,7 @@
 	range = 0
 	cooldown_min = 400 //50 deciseconds reduction per rank
 
-	hud_state = "wiz_charge"
+	icon_state = "wiz_charge"
 
 /datum/spell/aoe_turf/charge/cast(list/targets, mob/user)
 	for(var/turf/T in targets)

@@ -19,7 +19,7 @@
 
 	proj_step_delay = 1
 
-	hud_state = "gen_project"
+	icon_state = "gen_project"
 
 
 /datum/spell/targeted/projectile/dumbfire/passage/prox_cast(list/targets, atom/spell_holder, mob/user)

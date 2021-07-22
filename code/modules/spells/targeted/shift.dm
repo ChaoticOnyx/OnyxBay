@@ -8,7 +8,7 @@
 	range = 0
 	duration = 50 //in deciseconds
 
-	hud_state = "const_shift"
+	icon_state = "const_shift"
 
 /datum/spell/targeted/ethereal_jaunt/shift/jaunt_disappear(atom/movable/overlay/animation, mob/living/target)
 	animation.icon_state = "phase_shift"

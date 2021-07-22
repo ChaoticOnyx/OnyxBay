@@ -9,7 +9,7 @@
 
 	number_of_channels = 0
 	time_between_channels = 200
-	hud_state = "const_floor"
+	icon_state = "const_floor"
 	cast_sound = 'sound/effects/meteorimpact.ogg'
 	var/list/possible_spawns = list(
 		/mob/living/simple_animal/hostile/scarybat/cult,

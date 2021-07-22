@@ -18,7 +18,7 @@
 
 	cast_sound = 'sound/effects/teleport.ogg'
 
-	hud_state = "wiz_tele"
+	icon_state = "wiz_tele"
 
 /datum/spell/area_teleport/before_cast()
 	return

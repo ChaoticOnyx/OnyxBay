@@ -10,7 +10,7 @@
 	range = 0
 	cast_sound = null
 
-	hud_state = "wiz_shield"
+	icon_state = "wiz_shield"
 
 /datum/spell/aoe_turf/conjure/forcewall/mime
 	name = "Invisible wall"
@@ -24,7 +24,7 @@
 	cast_sound = null
 
 	override_base = "grey"
-	hud_state = "mime_wall"
+	icon_state = "mime_wall"
 
 /obj/effect/forcefield
 	desc = "A space wizard's magic wall."

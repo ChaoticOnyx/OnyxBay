@@ -1,3 +1,4 @@
+import { capitalize } from '../../common/string';
 import { useBackend } from '../backend';
 import { Button, Divider, Flex } from '../components';
 import { GameIcon } from '../components/GameIcon';
@@ -19,12 +20,16 @@ interface Artefact {
   path: string;
   cost: number;
   icon: string;
+  name: string;
+  description: string;
 }
 
 interface Spell {
   path: string;
   cost: number;
   icon: string;
+  name: string;
+  description: string;
 }
 
 interface Flags {
@@ -47,29 +52,27 @@ interface InputData {
 const classElement = (props: Class, context: any) => {
   return <Flex class='ClassCard' direction='column'>
     <Flex.Item>
-      <h2><GameIcon html={props.icon} />{props.name} <Button style={{
+      <h3><GameIcon html={props.icon} />{props.name} <Button style={{
         'float': 'right',
-        'font-size': '0.8em'
-      }} content='Choose' /></h2> 
+        'font-size': '0.9em'
+      }} content='Choose' /></h3> 
     </Flex.Item>
     <Flex.Item>
       {props.description}
     </Flex.Item>
     <Flex.Item>
-      <h3>Spells:</h3>
       <Divider />
+      <h4>Spells:</h4>      
       {props.spells.map((s, i) => {
-        return <Button title={s.path} className='SpellButton'><GameIcon html={s.icon} /></Button>
+        return <Button title={`${capitalize(s.name)}\n${s.description}`} className='SpellButton'><GameIcon html={s.icon} /></Button>
       })}
-      <Divider />
     </Flex.Item>
     <Flex.Item>
-      <h3>Artefacts:</h3>
       <Divider />
+      <h4>Artefacts:</h4>      
       {props.artefacts.map((a, i) => {
-        return <Button title={a.path} className='ArtefactButton'><GameIcon html={a.icon} /></Button>
+        return <Button title={`${capitalize(a.name)}\n${a.description}`} className='ArtefactButton'><GameIcon html={a.icon} /></Button>
       })}
-      <Divider/>
     </Flex.Item>
   </Flex>
 }
@@ -79,6 +82,9 @@ const classesPage = (props: any, context: any) => {
   const { classes } = data;
 
   return <Flex direction='column'>
+    <Flex.Item align='center'>
+      <h2>Wizard Classes</h2>
+    </Flex.Item>
     {classes.map((c, i) => classElement(c, context))}
   </Flex>
 }

@@ -20,7 +20,7 @@
 
 	compatible_mobs = list(/mob/living/carbon/human)
 
-	hud_state = "wiz_subj"
+	icon_state = "wiz_subj"
 
 /datum/spell/targeted/subjugation/empower_spell()
 	if(!..())

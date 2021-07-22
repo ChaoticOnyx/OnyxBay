@@ -24,7 +24,7 @@
 	var/ex_light = 2
 	var/ex_flash = 5
 
-	hud_state = "wiz_fireball"
+	icon_state = "wiz_fireball"
 
 /datum/spell/targeted/projectile/dumbfire/fireball/prox_cast(list/targets, spell_holder)
 	for(var/mob/living/M in targets)

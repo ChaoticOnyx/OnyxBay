@@ -68,7 +68,7 @@
 
 	cast_sound = 'sound/effects/bamf.ogg'
 
-	hud_state = "wiz_tajaran"
+	icon_state = "wiz_tajaran"
 
 /datum/spell/messa_shroud/choose_targets()
 	return list(get_turf(holder))
@@ -103,7 +103,7 @@
 
 	possible_transformations = list(/mob/living/simple_animal/hostile/armalis)
 
-	hud_state = "wiz_vox"
+	icon_state = "wiz_vox"
 
 	cast_sound = 'sound/voice/shriek1.ogg'
 	revert_sound = 'sound/voice/shriek1.ogg'
@@ -124,7 +124,7 @@
 	holder_var_type = "bruteloss"
 	holder_var_amount = 10
 
-	hud_state = "wiz_unathi"
+	icon_state = "wiz_unathi"
 
 /datum/spell/moghes_blessing/choose_targets(mob/user = usr)
 	var/list/hands = list()
@@ -171,7 +171,7 @@
 	summon_type = list(/turf/simulated/floor/misc/diona)
 	seed_type = /datum/seed/diona
 
-	hud_state = "wiz_diona"
+	icon_state = "wiz_diona"
 
 //SKRELL
 /obj/item/weapon/contract/apprentice/skrell
@@ -223,7 +223,7 @@
 
 
 	spell_flags = Z2NOCAST
-	hud_state = "wiz_IPC"
+	icon_state = "wiz_IPC"
 	var/mob/observer/eye/vision
 	var/eye_type = /mob/observer/eye/wizard_eye
 

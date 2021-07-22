@@ -13,7 +13,7 @@
 	time_between_channels = 100
 	number_of_channels = 3
 	cast_sound = 'sound/effects/squelch2.ogg'
-	hud_state = "const_rune"
+	icon_state = "const_rune"
 
 /datum/spell/aoe_turf/drain_blood/cast(list/targets, mob/user)
 	for(var/t in targets)

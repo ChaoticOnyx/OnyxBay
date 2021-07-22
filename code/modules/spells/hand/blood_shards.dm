@@ -10,7 +10,7 @@
 	range = 7
 	max_casts = 2
 	compatible_targets = list(/atom)
-	hud_state = "wiz_bshard"
+	icon_state = "wiz_bshard"
 
 /datum/spell/hand/charges/blood_shard/cast_hand(atom/A,mob/user)
 	var/obj/item/projectile/blood_shard/B = new(get_turf(user))

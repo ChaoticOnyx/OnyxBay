@@ -11,7 +11,7 @@
 	invocation = "none"
 	invocation_type = SPI_NONE
 
-	hud_state = "const_wall"
+	icon_state = "const_wall"
 	cast_sound = 'sound/effects/meteorimpact.ogg'
 
 /datum/spell/construction/choose_targets()

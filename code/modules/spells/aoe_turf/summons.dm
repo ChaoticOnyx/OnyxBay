@@ -7,7 +7,7 @@
 	range = 3
 	newVars = list("emagged" = 1,"name" = "Wizard's Justicebot")
 
-	hud_state = "wiz_ed"
+	icon_state = "wiz_ed"
 
 /datum/spell/aoe_turf/conjure/carp
 	name = "Summon Carp"
@@ -22,7 +22,7 @@
 
 	summon_type = list(/mob/living/simple_animal/hostile/carp)
 
-	hud_state = "wiz_carp"
+	icon_state = "wiz_carp"
 
 /datum/spell/aoe_turf/conjure/creature
 	name = "Summon Creature Swarm"
@@ -38,7 +38,7 @@
 
 	summon_type = list(/mob/living/simple_animal/hostile/creature)
 
-	hud_state = "wiz_creature"
+	icon_state = "wiz_creature"
 
 /datum/spell/aoe_turf/conjure/mirage
 	name = "Summon Mirage"
@@ -57,7 +57,7 @@
 
 	summon_type = list(/mob/living/simple_animal/hostile/carp)
 
-	hud_state = "wiz_carp"
+	icon_state = "wiz_carp"
 
 	newVars = list("melee_damage_lower" = 0, "melee_damage_upper" = 0, "break_stuff_probability" = 0)
 

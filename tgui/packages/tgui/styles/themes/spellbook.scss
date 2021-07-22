@@ -44,14 +44,14 @@
     user-select: none;
     -ms-user-select: none;
 
-    background-color: #2b151e;
+    background-color: #5c2226;
 
     &__title {
       color: white;
     }
 
     &__close {
-      background-color: #2b151e;
+      background-color: #5c2226;
       color: white;
 
       &:hover {
@@ -73,8 +73,8 @@
     padding-top: 0;
     background-color: #24201d;
     border-radius: 0.25rem;
-    border: #70645b solid $border-thick;
-    box-shadow: inset 0 0 0.6rem 0.1rem #1a1715;
+    border: #615877 solid $border-thick;
+    box-shadow: inset 0 0 0.6rem 0.1rem #1b1820;
 
     .game-icon {
       vertical-align: -40%;
@@ -84,22 +84,44 @@
   .Button {
     cursor: pointer;
     margin-top: 0.2rem;
-    background-color: #4d2436;
+    color: #fce940;
+    background-color: #5c2226;
     border-radius: 0.25rem;
-    border: #2b151e solid $border-thick;
+    border: #351315 solid $border-thick;
     font-weight: bold;
 
     &:hover,
     &:focus,
     &--selected {
-      background-color: #663046;
+      background-color: #8b343a;
     }
   }
 
-  .SpellButton,
+  .SpellButton {
+    background: none;
+    border: #1f2b52 solid $border-thick;
+    box-shadow: inset 0 0 1rem 0.2rem #10162b;
+    padding: 0.2rem;
+
+    &:hover,
+    &:focus,
+    &.Button--selected {
+      background: none;
+      border: #314483 solid $border-thick;
+    }
+  }
+
   .ArtefactButton {
     background: none;
-    border: none;
+    border: #391f52 solid $border-thick;
+    box-shadow: inset 0 0 1rem 0.2rem #1a1715;
     padding: 0.2rem;
+
+    &:hover,
+    &:focus,
+    &.Button--selected {
+      background: none;
+      border: #593080 solid $border-thick;
+    }
   }
 }

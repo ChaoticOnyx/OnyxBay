@@ -16,7 +16,7 @@
 
 	compatible_mobs = list(/mob/living/carbon/human)
 
-	hud_state = "wiz_horse"
+	icon_state = "wiz_horse"
 
 /datum/spell/targeted/equip_item/horsemask/New()
 	..()

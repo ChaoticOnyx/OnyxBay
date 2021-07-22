@@ -15,7 +15,7 @@
 	overlay_icon_state = "rune_teleport"
 	overlay_lifespan = 0
 
-	hud_state = "const_harvest"
+	icon_state = "const_harvest"
 
 /datum/spell/targeted/harvest/cast(list/targets, mob/user)//because harvest is already a proc
 	..()

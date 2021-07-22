@@ -36,7 +36,7 @@
 	need_target = FALSE
 	charge_max = 300
 	cooldown_min = 100
-	hud_state = "wiz_jaunt_old"
+	icon_state = "wiz_jaunt_old"
 
 /datum/spell/contract/reward/cast(mob/living/target, mob/user)
 	target = ..(target,user)
@@ -52,7 +52,7 @@
 	need_target = FALSE
 	charge_max = 300
 	cooldown_min = 100
-	hud_state = "gen_immolate"
+	icon_state = "gen_immolate"
 
 /datum/spell/contract/punish/cast(mob/living/target, mob/user)
 	target = ..(target,user)

@@ -9,7 +9,7 @@
 
 	eye_type = /mob/observer/eye
 
-	hud_state = "gen_mind"
+	icon_state = "gen_mind"
 
 /datum/spell/camera_connection/god_vision/set_connected_god(mob/living/deity/god)
 	..()

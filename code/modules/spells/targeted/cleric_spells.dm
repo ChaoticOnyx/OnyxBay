@@ -12,7 +12,7 @@
 	level_max = list(SP_TOTAL = 2, SP_SPEED = 1, SP_POWER = 2)
 
 	cooldown_reduc = 50
-	hud_state = "heal_minor"
+	icon_state = "heal_minor"
 
 	amt_dam_brute = -15
 	amt_dam_fire = -5
@@ -37,7 +37,7 @@
 	range = 1
 	level_max = list(SP_TOTAL = 2, SP_SPEED = 1, SP_POWER = 2)
 	cooldown_reduc = 100
-	hud_state = "heal_major"
+	icon_state = "heal_major"
 	heals_external_bleeding = 1
 	amt_dam_brute = -75
 	amt_dam_fire  = -50
@@ -74,7 +74,7 @@
 	max_targets = 0
 	level_max = list(SP_TOTAL = 1, SP_SPEED = 1, SP_POWER = 1)
 	cooldown_reduc = 300
-	hud_state = "heal_area"
+	icon_state = "heal_area"
 
 	amt_dam_brute = -25
 	amt_dam_fire = -25
@@ -107,7 +107,7 @@
 	amt_blood  = 280
 	heals_internal_bleeding = 1
 	heal_bones = 1
-	hud_state = "gen_dissolve"
+	icon_state = "gen_dissolve"
 
 /datum/spell/targeted/heal_target/sacrifice/empower_spell()
 	if(!..())

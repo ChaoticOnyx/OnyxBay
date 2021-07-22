@@ -15,7 +15,7 @@
 	smoke_spread = 2
 	smoke_amt = 5
 
-	hud_state = "wiz_smoke"
+	icon_state = "wiz_smoke"
 
 /datum/spell/aoe_turf/smoke/empower_spell()
 	if(!..())

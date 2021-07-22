@@ -18,4 +18,4 @@
 	range = 0
 	max_targets = 1
 
-	hud_state = "wiz_seed"
+	icon_state = "wiz_seed"

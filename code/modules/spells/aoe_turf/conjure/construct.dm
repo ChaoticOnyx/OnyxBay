@@ -13,12 +13,12 @@
 
 	summon_type = list(/obj/structure/constructshell)
 
-	hud_state = "artificer"
+	icon_state = "artificer"
 
 /datum/spell/aoe_turf/conjure/construct/lesser
 	charge_max = 1800
 	summon_type = list(/obj/structure/constructshell/cult)
-	hud_state = "const_shell"
+	icon_state = "const_shell"
 	override_base = "const"
 
 /datum/spell/aoe_turf/conjure/floor
@@ -32,7 +32,7 @@
 	range = 0
 	summon_type = list(/turf/simulated/floor/misc/cult)
 
-	hud_state = "const_floor"
+	icon_state = "const_floor"
 
 /datum/spell/aoe_turf/conjure/wall
 	name = "Lesser Construction"
@@ -45,7 +45,7 @@
 	range = 0
 	summon_type = list(/turf/simulated/wall/cult)
 
-	hud_state = "const_wall"
+	icon_state = "const_wall"
 
 /datum/spell/aoe_turf/conjure/wall/reinforced
 	name = "Greater Construction"
@@ -72,7 +72,7 @@
 
 	summon_type = list(/obj/item/device/soulstone)
 
-	hud_state = "const_stone"
+	icon_state = "const_stone"
 	override_base = "const"
 
 /datum/spell/aoe_turf/conjure/pylon
@@ -87,7 +87,7 @@
 
 	summon_type = list(/obj/structure/cult/pylon)
 
-	hud_state = "const_pylon"
+	icon_state = "const_pylon"
 
 /datum/spell/aoe_turf/conjure/pylon/cast(list/targets)
 	..()
@@ -110,7 +110,7 @@
 	summon_type = list(/obj/effect/forcefield/cult)
 	duration = 200
 
-	hud_state = "const_juggwall"
+	icon_state = "const_juggwall"
 
 //Code for the Juggernaut construct's forcefield, that seemed like a good place to put it.
 /obj/effect/forcefield/cult

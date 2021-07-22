@@ -18,7 +18,7 @@
 	max_targets = 1
 	compatible_mobs = list(/mob/living)
 
-	hud_state = "wiz_swap"
+	icon_state = "wiz_swap"
 
 	cast_sound = 'sound/effects/bamf.ogg'
 

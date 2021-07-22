@@ -19,7 +19,7 @@
 
 	compatible_mobs = list(/mob/living)
 
-	hud_state = "wiz_disint"
+	icon_state = "wiz_disint"
 
 	cast_sound = 'sound/effects/squelch2.ogg'
 

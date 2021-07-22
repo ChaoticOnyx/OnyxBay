@@ -17,8 +17,7 @@
 	delete_old = 0
 	var/material = MATERIAL_GOLD
 
-	hud_state = "gen_immolate"
-
+	icon_state = "gen_immolate"
 
 /datum/spell/targeted/equip_item/dyrnwyn/summon_item(new_type)
 	var/obj/item/weapon/W = new new_type(null,material)

@@ -11,7 +11,7 @@
 	smoke_spread = 1
 	smoke_amt = 5
 	need_target = FALSE
-	hud_state = "wiz_tele"
+	icon_state = "wiz_tele"
 
 
 /datum/spell/contract/return_master/cast(mob/target, mob/user)

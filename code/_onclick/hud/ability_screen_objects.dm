@@ -368,7 +368,7 @@
 	if(last_charge == spell.charge_counter && !forced_update)
 		return //nothing to see here
 
-	overlays -= spell.hud_state
+	overlays -= spell.icon_state
 
 	if(spell.charge_type == SP_RECHARGE || spell.charge_type == SP_CHARGES)
 		if(spell.charge_counter < spell.charge_max)
@@ -390,7 +390,7 @@
 	else
 		icon_state = "[spell_base]_spell_ready"
 
-	overlays += spell.hud_state
+	overlays += spell.icon_state
 
 	last_charge = spell.charge_counter
 

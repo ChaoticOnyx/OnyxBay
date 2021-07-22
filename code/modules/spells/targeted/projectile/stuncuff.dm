@@ -19,7 +19,7 @@
 
 	amt_stunned = 6
 
-	hud_state = "wiz_cuff"
+	icon_state = "wiz_cuff"
 
 /datum/spell/targeted/projectile/dumbfire/stuncuff/empower_spell()
 	. = ..()

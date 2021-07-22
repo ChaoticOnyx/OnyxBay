@@ -11,7 +11,7 @@
 	level_max = list(SP_TOTAL = 2, SP_SPEED = 2, SP_POWER = 0)
 	cast_sound = 'sound/effects/snap.ogg'
 	duration = 150
-	hud_state = "gen_immolate"
+	icon_state = "gen_immolate"
 
 /datum/spell/radiant_aura/choose_targets()
 	return list(holder)

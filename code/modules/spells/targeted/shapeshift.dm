@@ -125,7 +125,7 @@
 
 	newVars = list("health" = 50, "maxHealth" = 50)
 
-	hud_state = "wiz_poly"
+	icon_state = "wiz_poly"
 
 /datum/spell/targeted/shapeshift/baleful_polymorph/critfail(list/targets, mob/user)
 	possible_transformations = list(
@@ -159,7 +159,7 @@
 	charge_max = 600
 	cooldown_min = 300
 	level_max = list(SP_TOTAL = 1, SP_SPEED = 1, SP_POWER = 0)
-	hud_state = "wiz_parrot"
+	icon_state = "wiz_parrot"
 
 /datum/spell/targeted/shapeshift/corrupt_form
 	name = "Corrupt Form"
@@ -181,7 +181,7 @@
 
 	newVars = list("name" = "corrupted soul")
 
-	hud_state = "wiz_corrupt"
+	icon_state = "wiz_corrupt"
 
 /datum/spell/targeted/shapeshift/corrupt_form/empower_spell()
 	if(!..())

@@ -9,7 +9,7 @@
 
 	number_of_channels = 0
 	time_between_channels = 200
-	hud_state = "wiz_air"
+	icon_state = "wiz_air"
 	var/list/air_change = list("oxygen" = ONE_ATMOSPHERE)
 	number_of_channels = 0
 

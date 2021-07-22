@@ -36,6 +36,6 @@
 		SACRIFICE_DATA(/obj/item/stack/telecrystal)
 	)
 
-	sacrifice_objects = list(
+	sacrifice_reagents = list(
 		SACRIFICE_DATA(/datum/reagent/hyperzine)
 	)

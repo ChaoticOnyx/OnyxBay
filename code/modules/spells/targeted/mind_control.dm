@@ -8,7 +8,7 @@
 	time_between_channels = 150
 	range = 1
 	hand_state = "domination_spell"
-	hud_state = "wiz_dominate"
+	icon_state = "wiz_dominate"
 	show_message = " puts his hand on target head, it's starting to glow brightly."
 	spell_flags = NEEDSCLOTHES
 	level_max = list(SP_TOTAL = 3, SP_SPEED = 3, SP_POWER = 0)

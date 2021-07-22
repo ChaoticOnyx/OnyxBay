@@ -11,7 +11,7 @@
 	inner_radius = -1
 	level_max = list(SP_TOTAL = 2, SP_SPEED = 2, SP_POWER = 2)
 	cooldown_min = 200 //50 deciseconds reduction per rank
-	hud_state = "wiz_tech"
+	icon_state = "wiz_tech"
 
 	var/emp_heavy = 4
 	var/emp_light = 6

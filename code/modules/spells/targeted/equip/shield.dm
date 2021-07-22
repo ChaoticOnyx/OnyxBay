@@ -21,7 +21,7 @@
 	var/item_color = "#6666ff"
 	var/mod_shield = 2.0
 
-	hud_state = "wiz_shield"
+	icon_state = "wiz_shield"
 
 /datum/spell/targeted/equip_item/shield/summon_item(new_type)
 	var/obj/item/weapon/shield/I = new new_type()

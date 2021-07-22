@@ -4,7 +4,8 @@
 	var/feedback = "" //what gets sent if this spell gets chosen by the spellbook.
 	var/panel = "Spells"//What panel the proc holder needs to go on.
 
-	var/icon = 'icons/testing/zone.dmi'
+	var/icon = 'icons/mob/screen_spells.dmi'
+	// Name of the icon used in generating the spell hud object
 	var/icon_state = "fullblock"
 
 	var/school = "evocation" //not relevant at now, but may be important later if there are changes to how spells work. the ones I used for now will probably be changed... maybe spell presets? lacking flexibility but with some other benefit?
@@ -59,7 +60,6 @@
 	var/cast_delay = 1
 	var/cast_sound = ""
 
-	var/hud_state = "" //name of the icon used in generating the spell hud object
 	var/override_base = ""
 
 

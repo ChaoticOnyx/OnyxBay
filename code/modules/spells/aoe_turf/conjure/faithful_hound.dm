@@ -11,7 +11,7 @@
 
 	summon_amt = 1
 	summon_type = list(/mob/living/simple_animal/faithful_hound)
-	hud_state = "wiz_hound"
+	icon_state = "wiz_hound"
 
 /datum/spell/aoe_turf/conjure/faithful_hound/before_cast()
 	..()

@@ -17,8 +17,7 @@
 
 	var/loss = 30
 
-	hud_state = "wiz_horse"
-
+	icon_state = "wiz_horse"
 
 /datum/spell/targeted/torment/cast(list/targets, mob/user)
 	gibs(user.loc)

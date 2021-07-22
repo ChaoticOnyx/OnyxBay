@@ -44,7 +44,7 @@
 	seed_type = /datum/seed/merlin_tear
 	newVars = list("name" = "sanctuary", "desc" = "This grass makes you feel comfortable. Peaceful.","blessed" = 1)
 
-	hud_state = "wiz_grove"
+	icon_state = "wiz_grove"
 /datum/spell/aoe_turf/conjure/grove/sanctuary/empower_spell()
 	if(!..())
 		return 0

@@ -16,7 +16,7 @@
 	delete_old = 0
 	compatible_mobs = list(/mob/living/carbon/human)
 
-	hud_state = "purge1"
+	icon_state = "purge1"
 
 	equipped_summons = list("active hand" = /obj/item/weapon/nullrod)
 

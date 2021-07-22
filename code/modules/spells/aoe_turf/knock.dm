@@ -11,7 +11,7 @@
 	level_max = list(SP_TOTAL = 4, SP_SPEED = 4, SP_POWER = 1)
 	cooldown_min = 20 //20 deciseconds reduction per rank
 
-	hud_state = "wiz_knock"
+	icon_state = "wiz_knock"
 
 /datum/spell/aoe_turf/knock/cast(list/targets)
 	for(var/turf/T in targets)

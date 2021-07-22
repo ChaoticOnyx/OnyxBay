@@ -33,7 +33,7 @@
 	summon_amt = 1
 	summon_type = list(/mob/living/simple_animal/hostile/scarybat)
 
-	hud_state = "wiz_bats"
+	icon_state = "wiz_bats"
 
 /datum/spell/aoe_turf/conjure/summon/bats/empower_spell()
 	if(!..())
@@ -65,7 +65,7 @@
 				"melee_damage_upper" = 20,
 				)
 
-	hud_state = "wiz_bear"
+	icon_state = "wiz_bear"
 
 /datum/spell/aoe_turf/conjure/summon/bear/before_cast()
 	..()

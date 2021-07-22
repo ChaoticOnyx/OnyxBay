@@ -16,7 +16,7 @@
 	level_max = list(SP_TOTAL = 4, SP_SPEED = 4, SP_POWER = 1)
 
 	cast_sound = 'sound/effects/teleport.ogg'
-	hud_state = "wiz_mark"
+	icon_state = "wiz_mark"
 	var/mark = null
 
 /datum/spell/mark_recall/choose_targets()

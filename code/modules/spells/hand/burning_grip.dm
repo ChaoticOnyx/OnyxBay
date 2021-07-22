@@ -8,7 +8,7 @@
 	invocation_type = SPI_NONE
 	show_message = " throws sparks from their hands"
 	spell_delay = 50
-	hud_state = "wiz_burn"
+	icon_state = "wiz_burn"
 	compatible_targets = list(/mob/living/carbon/human)
 	level_max = list(SP_TOTAL = 0, SP_SPEED = 0, SP_POWER = 0)
 

@@ -13,7 +13,7 @@
 	time_between_channels = 150
 	number_of_channels = 0
 
-	hud_state = "wiz_statue"
+	icon_state = "wiz_statue"
 
 /datum/spell/targeted/shatter/cast(list/targets, mob/user)
 	var/mob/living/carbon/human/H = targets[1]

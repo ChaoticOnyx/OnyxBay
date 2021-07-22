@@ -9,4 +9,4 @@
 	range = 0
 	cast_sound = null
 
-	hud_state = "wiz_force"
+	icon_state = "wiz_force"

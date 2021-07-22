@@ -9,7 +9,7 @@
 
 	spell_flags = CONSTRUCT_CHECK
 
-	hud_state = "const_rune"
+	icon_state = "const_rune"
 
 	smoke_amt = 1
 
