@@ -158,6 +158,16 @@ var/datum/robolimb/basic_robolimb
 	restricted_to = list(SPECIES_HUMAN)
 	species_cannot_use = list(SPECIES_DIONA, SPECIES_VOX, SPECIES_PROMETHEAN, SPECIES_UNATHI, SPECIES_TAJARA, SPECIES_SKRELL)
 
+//ANCIENT
+/datum/robolimb/einstein
+	company = "Uesseka Prototyping Ltd."
+	desc = "This limb seems meticulously hand-crafted, and distinctly Unathi in design."
+	icon = 'icons/mob/human_races/cyberlimbs/ancient/ancient.dmi'
+	unavailable_at_chargen = 1
+	unavailable_to_build = 1
+	restricted_to = list(SPECIES_UNATHI)
+	species_cannot_use = list(SPECIES_DIONA, SPECIES_VOX, SPECIES_PROMETHEAN, SPECIES_HUMAN, SPECIES_TAJARA, SPECIES_SKRELL)
+
 //CYBERSOLUTIONS
 /datum/robolimb/cybersolutions
 	company = "Cyber Solutions"
