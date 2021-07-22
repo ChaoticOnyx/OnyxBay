@@ -51,7 +51,7 @@
 		T["description"] = initial(artefact.desc)
 		data["artefacts"] += list(T)
 	
-	for(var/obj/T in sacrifice_objects)
+	for(var/T in sacrifice_objects)
 		var/obj/object = T["path"]
 		T["icon"] = icon2base64html(T["path"])
 		T["name"] = initial(object.name)
@@ -60,7 +60,6 @@
 
 	for(var/T in sacrifice_reagents)
 		var/datum/reagent/reagent = T["path"]
-		T["icon"] = icon2base64html(T["path"])
 		T["name"] = initial(reagent.name)
 		T["description"] = initial(reagent.description)
 		data["sacrifice_reagents"] += list(T)
