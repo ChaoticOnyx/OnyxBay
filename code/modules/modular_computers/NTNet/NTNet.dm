@@ -8,7 +8,6 @@ var/global/datum/ntnet/ntnet_global = new()
 	var/list/available_station_software = list()
 	var/list/available_software_by_category = list()
 	var/list/available_antag_software = list()
-	var/list/available_news = list()
 	var/list/chat_channels = list()
 	var/list/fileservers = list()
 	var/list/email_accounts = list()				// I guess we won't have more than 999 email accounts active at once in single round, so this will do until Servers are implemented someday.
