@@ -1,5 +1,11 @@
 GLOBAL_DATUM_INIT(wizards, /datum/antagonist/wizard, new)
 
+/proc/isWizard(mob/player)
+	if(!GLOB.wizards || !player.mind)
+		return FALSE
+	if(player.mind in GLOB.wizards.current_antagonists)
+		return TRUE
+
 /datum/antagonist/wizard
 	id = MODE_WIZARD
 	role_text = "Space Wizard"

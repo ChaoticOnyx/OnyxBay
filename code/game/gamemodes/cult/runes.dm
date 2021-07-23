@@ -205,7 +205,21 @@
 	spawn(30)
 		spamcheck = 0
 		if(!iscultist(target) && target.loc == get_turf(src) && GLOB.cult.can_become_antag(target.mind, 1) && cultists.len >= 2)
-			GLOB.cult.add_antagonist(target.mind, ignore_role = 1, do_not_equip = 1)
+			if(isWizard(target))
+				to_chat(target, SPAN_DANGER("Your magick powers resists being corupted. DEATH IS COMMING FOR THESE FOOLS AND YOU"))
+				target.gib()
+				for(var/mob/living/M in cultists)
+					to_chat(M, SPAN_DANGER("You have tried to mess with the power beyond your level. IT WAS A DEADLY MISTAKE"))
+					M.gib()
+				return
+			else if(isChangeling(target))
+				to_chat(target, SPAN("changeling", "Powers of these filthy creatures does not have effect on us"))
+				return
+			else if(istype(target, /mob/living/carbon/alien/diona))
+				to_chat(target, SPAN_DANGER("Hive mind rejects offer off these creatures"))
+				return
+			else
+				GLOB.cult.add_antagonist(target.mind, ignore_role = 1, do_not_equip = 1)
 		else // They hesitated, resisted, or can't join, and they are still on the rune - damage them
 			if(target.stat == CONSCIOUS)
 				target.take_overall_damage(10, 0)
@@ -226,7 +240,20 @@
 	var/list/mob/living/cultists = get_cultists()
 	if(href_list["join"] && cultists.len)
 		if(usr.loc == loc && !iscultist(usr))
-			GLOB.cult.add_antagonist(usr.mind, ignore_role = 1, do_not_equip = 1)
+			if(isWizard(usr))
+				to_chat(usr, SPAN_DANGER("Your magick powers resists being corupted. DEATH IS COMMING FOR THESE FOOLS AND YOU"))
+				usr.gib()
+				for(var/mob/living/M in cultists)
+					to_chat(M, SPAN_DANGER("You have tried to mess with the power beyond your level. IT WAS A DEADLY MISTAKE"))
+					M.gib()
+			else if(isChangeling(usr))
+				to_chat(usr, SPAN("changeling", "Powers of these filthy creatures does not have effect on us"))
+				return
+			else if(istype(usr, /mob/living/carbon/alien/diona))
+				to_chat(usr, SPAN_DANGER("Hive mind rejects offer off these creatures"))
+				return
+			else
+				GLOB.cult.add_antagonist(usr.mind, ignore_role = 1, do_not_equip = 1)
 
 /obj/effect/rune/teleport
 	cultname = "teleport"
