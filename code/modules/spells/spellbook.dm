@@ -38,9 +38,14 @@ var/list/artefact_feedback = list(
 		"user" = list(
 			"class" = W.class?.type,
 			"points" = W.points,
-			"name" = user.name
+			"name" = user.name,
+			"spells" = list(),
+			"can_reset_class" = W.can_reset_class
 		)
 	)
+
+	for(var/datum/spell/S in user.mind.learned_spells)
+		data["user"]["spells"] += S.type
 
 	return data
 
@@ -73,6 +78,67 @@ var/list/artefact_feedback = list(
 		if("buy_artifact")
 			buy_artifact(usr, text2path(params["path"]))
 			return TRUE
+		if("buy_spell")
+			buy_spell(usr, text2path(params["path"]))
+			return TRUE
+		if("reset_class")
+			reset_class(usr)
+			return TRUE
+
+/obj/item/weapon/spellbook/proc/reset_class(mob/user)
+	var/datum/wizard/W = user.mind.wizard	
+	var/area/wizard_station/A = get_area(user)
+
+	if(!W)
+		CRASH("[user] has no wizard's datum")
+
+	if(!W.class)
+		CRASH("Trying to reset a wizard class without any assigned one.")
+
+	if(!W.can_reset_class)
+		to_chat(user, SPAN("warning", "You can't reset your class again!"))
+		return
+
+	if(!istype(A))
+		to_chat(user, SPAN("warning", "You must be in the wizard academy to re-memorize your spells."))
+		return
+
+	user.spellremove()
+	W.reset()
+	to_chat(user, "All spells and investments have been removed. You may now memorize a new set of spells.")
+	feedback_add_details("wizard_class_reset", "UM")
+
+/obj/item/weapon/spellbook/proc/buy_spell(mob/user, datum/spell/path)
+	var/datum/wizard/W = user.mind.wizard
+	
+	if(!W)
+		CRASH("[user] has no wizard's datum")
+
+	if(!W.class)
+		CRASH("Trying to buy an artifact without any wizard class assigned.")
+
+	if(!(path in subtypesof(/datum/spell)))
+		CRASH("Invalid spell [path]")
+	
+	if(!W.class.has_spell(path))
+		CRASH("Spell [path] does not exist in [W.class]")
+
+	for(var/datum/spell/S in user.mind.learned_spells)
+		if(S.type == path)
+			to_chat(user, SPAN("warning", "You already know the spell [S]."))
+			return
+
+	var/cost = W.class.get_spell_cost(path)
+
+	if(!W.can_spend(cost))
+		to_chat(user, SPAN("warning", "You don't have enough points to purchase this spell."))
+		return
+
+	W.spend(cost)
+	var/datum/spell/new_spell = new path
+	feedback_add_details("wizard_spell_purchased", new_spell.feedback)
+	user.add_spell(new_spell)
+	to_chat(user, "You learn the spell [new_spell]")
 
 /obj/item/weapon/spellbook/proc/set_wizard_class(mob/user, datum/wizard_class/path)
 	if(!(path in subtypesof(/datum/wizard_class)))
@@ -83,7 +149,8 @@ var/list/artefact_feedback = list(
 		return
 
 	user.mind.wizard.set_class(path)
-	to_chat(user, SPAN("notice", "You are now a [user.mind.wizard.class.name]!"))
+	feedback_add_details("wizard_class_choose", user.mind.wizard.class.feedback_tag)
+	to_chat(user, SPAN("notice", "You are now \a [user.mind.wizard.class.name]!"))
 
 /obj/item/weapon/spellbook/proc/buy_artifact(mob/user, obj/path)
 	var/datum/wizard/W = user.mind.wizard
@@ -102,7 +169,8 @@ var/list/artefact_feedback = list(
 	
 	W.spend(cost)
 	feedback_add_details("wizard_artifact_purchased", artefact_feedback[path])
-	new path(usr.loc)
+	var/obj/A = new path(get_turf(usr))
+	to_chat(user, "You have purchased \a [A].")
 
 /obj/item/weapon/spellbook/tgui_interact(mob/user, datum/tgui/ui)
 	ui = SStgui.try_update_ui(user, src, ui)

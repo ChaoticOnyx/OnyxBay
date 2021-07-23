@@ -4,6 +4,12 @@
 	var/datum/wizard_class/class = null
 	/// Points that a wizard spends to buy artifacts or spells.
 	var/points = 0
+	var/can_reset_class = TRUE
+
+/datum/wizard/proc/reset()
+	class = null
+	points = 0
+	can_reset_class = FALSE
 
 /datum/wizard/proc/set_class(datum/wizard_class/path)
 	class = GLOB.wizard_classes["[path]"]

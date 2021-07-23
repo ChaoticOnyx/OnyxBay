@@ -1,6 +1,15 @@
 import { capitalize } from '../../common/string';
 import { useBackend, useLocalState } from '../backend';
-import { Button, Divider, Flex, Input, Stack } from '../components';
+import {
+  Box,
+  Button,
+  Collapsible,
+  Divider,
+  Dropdown,
+  Flex,
+  Input,
+  Stack,
+} from '../components';
 import { GameIcon } from '../components/GameIcon';
 import { Window } from '../layouts';
 import { escapeRegExp } from '../sanitize';
@@ -14,6 +23,8 @@ interface User {
   class?: string | null;
   name: string;
   points: number;
+  spells: string[];
+  can_reset_class: boolean;
 }
 
 interface Class {
@@ -310,7 +321,7 @@ const classesPage = (props: any, context: any) => {
   );
 };
 
-const spellCard = (props: Spell, context: any) => {
+const spellCard = (props: Spell, buttons: Element[] | null = null) => {
   const { flags } = props;
 
   return (
@@ -318,6 +329,7 @@ const spellCard = (props: Spell, context: any) => {
       <Flex.Item>
         <h2>
           {SpellIcon(props, false, false)} {props.name}
+          {buttons ? buttons : null}
         </h2>
       </Flex.Item>
       <Flex.Item>{capitalize(props.description)}</Flex.Item>
@@ -373,7 +385,7 @@ const BuyArtifactCard = (props: Artifact, context: any) => {
     <Flex className='Card' direction='column'>
       <Flex.Item>
         <h2>
-          {InspectArtifactButton(props, context)} {capitalize(props.name)}
+          {ArtifactIcon(props, false, false)} {capitalize(props.name)}
           <Button
             disabled={user.points - props.cost < 0}
             onClick={() => act('buy_artifact', { path: props.path })}
@@ -565,7 +577,7 @@ const spellsPage = (props: any, context: any) => {
         })}
       </Flex.Item>
       <Flex.Item>
-        {inspectingSpell ? spellCard(inspectingSpell, context) : null}
+        {inspectingSpell ? spellCard(inspectingSpell) : null}
       </Flex.Item>
     </Flex>
   );
@@ -708,6 +720,21 @@ const characterPage = (props: any, context: any) => {
     );
   }
 
+  let learnedSpells: Spell[] = [];
+  let notLearnedSpells: Spell[] = [];
+
+  for (const spell of userClass.spells) {
+    if (
+      user.spells.find((s, i) => {
+        return s === spell.path;
+      })
+    ) {
+      learnedSpells.push(spell);
+    } else {
+      notLearnedSpells.push(spell);
+    }
+  }
+
   return (
     <Flex direction='column'>
       <Flex.Item>{navPanel(props, context)}</Flex.Item>
@@ -719,20 +746,50 @@ const characterPage = (props: any, context: any) => {
         <b>Free Points: </b>
         {user.points}
         <br></br>
-        <Button
+        <Button.Confirm
+          disabled={!user.can_reset_class}
+          onClick={() => act('reset_class')}
           content='Reset Class'
           title='You can reset your class only once.'
         />
       </Flex.Item>
-      <Flex.Item align='center'>
-        <h2>Artifacts</h2>
+      <Flex.Item>
+        <Collapsible title={`Learned Spells (${learnedSpells.length})`}>
+          <Flex direction='column'>
+            {learnedSpells.map((s, i) => {
+              return spellCard(s);
+            })}
+          </Flex>
+        </Collapsible>
       </Flex.Item>
       <Flex.Item>
-        <Flex direction='column'>
-          {userClass.artifacts.map((a, i) => {
-            return BuyArtifactCard(a, context);
-          })}
-        </Flex>
+        <Collapsible title={`Spells (${notLearnedSpells.length})`}>
+          <Flex direction='column'>
+            {notLearnedSpells.map((s, i) => {
+              return spellCard(
+                s,
+                <Button
+                  disabled={user.points - s.cost < 0}
+                  onClick={() => act('buy_spell', { path: s.path })}
+                  content={`Buy (${s.cost} points)`}
+                  style={{
+                    'float': 'right',
+                    'font-size': '0.8em',
+                  }}
+                />,
+              );
+            })}
+          </Flex>
+        </Collapsible>
+      </Flex.Item>
+      <Flex.Item>
+        <Collapsible title={`Artifacts (${userClass.artifacts.length})`}>
+          <Flex direction='column'>
+            {userClass.artifacts.map((a, i) => {
+              return BuyArtifactCard(a, context);
+            })}
+          </Flex>
+        </Collapsible>
       </Flex.Item>
     </Flex>
   );
@@ -757,7 +814,7 @@ export const SpellBook = (props: any, context: any) => {
   const { data } = useBackend<InputData>(context);
 
   return (
-    <Window theme='spellbook' width={600} height={800}>
+    <Window theme='spellbook' width={575} height={700}>
       <Window.Content scrollable>
         {PAGES[data.page].render(props, context)}
       </Window.Content>
