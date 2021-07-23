@@ -33,11 +33,10 @@
 	. = ..()
 	for(dir in list(NORTH,EAST,SOUTH,WEST))
 		computer = locate(/obj/machinery/computer/operating, get_step(src, dir))
-		if(computer)
-			if(computer?.table)
-				continue
-			computer.table = src
-			break
+		if(computer?.table)
+			continue
+		computer.table = src
+		break
 	RefreshParts()
 	update_icon()
 
