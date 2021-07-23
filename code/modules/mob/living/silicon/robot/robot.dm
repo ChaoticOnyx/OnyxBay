@@ -796,7 +796,7 @@
 			overlays += eye_overlay
 
 	if(opened)
-		var/panelprefix = custom_sprite ? src.ckey : "ov"
+		var/panelprefix = (icontype == "Custom") ? src.ckey : "ov"
 		if(wiresexposed)
 			overlays += "[panelprefix]-openpanel +w"
 		else if(cell)
