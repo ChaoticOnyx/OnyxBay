@@ -329,7 +329,7 @@ const techsTable = (techs: OriginTech[] | Tech[], context: any) => {
       {techs.length
         ? techs.map((tech: Tech, i: any) => {
             return (
-              <Table.Row className='candystripe' key={i}>
+              <Table.Row className='candystripe' key={tech.id}>
                 <Table.Cell>{tech.id && saveButton(tech)}</Table.Cell>
                 <Table.Cell>
                   <Icon name='info' mr='0.4rem' title={tech.description} /> {tech.name}
@@ -501,7 +501,7 @@ const device = (device: Device, context: any) => {
             </Table.Row>
             {material?.materials.map((mat, i) => {
               return (
-                <Table.Row className='candystripe'>
+                <Table.Row key={i} className='candystripe'>
                   <Table.Cell>{ejectButtons(mat)}</Table.Cell>
                   <Table.Cell className='Materials--small'>
                     <GameIcon html={mat.icon} /> {capitalize(mat.name)}
@@ -555,7 +555,7 @@ const device = (device: Device, context: any) => {
             {chemical?.chemicals.length
               ? chemical.chemicals.map((chem, i) => {
                   return (
-                    <Table.Row className='candystripe'>
+                    <Table.Row key={chem.ref} className='candystripe'>
                       <Table.Cell>
                         <Button
                           onClick={() =>
@@ -761,7 +761,7 @@ const designs = (device: Device, context: any) => {
               )
               .map((design, i) => {
                 return (
-                  <Table.Row className='candystripe'>
+                  <Table.Row key={design.id} className='candystripe'>
                     <Table.Cell
                       style={{
                         'vertical-align': 'middle',
@@ -880,7 +880,7 @@ const queue = (device: Device, context: any) => {
           {queue?.length
             ? queue.map((design, i) => {
                 return (
-                  <Table.Row className='candystripe'>
+                  <Table.Row className='candystripe' key={design.id}>
                     <Table.Cell
                       style={{ 'vertical-align': 'middle' }}
                       width='1ch'>
