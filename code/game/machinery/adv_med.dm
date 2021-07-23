@@ -110,7 +110,7 @@
 	src.icon_state = "body_scanner_0"
 	return
 
-/obj/machinery/bodyscanner/attackby(obj/item/W, mob/user as mob)
+/obj/machinery/bodyscanner/attackby(obj/item/W, mob/user)
 	if(default_deconstruction_screwdriver(user, W))
 		return
 	if(default_deconstruction_crowbar(user, W))
@@ -272,7 +272,7 @@
 			break
 	return ..()
 
-/obj/machinery/body_scanconsole/attackby(obj/item/W, mob/user as mob)
+/obj/machinery/body_scanconsole/attackby(obj/item/W, mob/user)
 	if(default_deconstruction_screwdriver(user, W))
 		return
 	if(default_deconstruction_crowbar(user, W))
