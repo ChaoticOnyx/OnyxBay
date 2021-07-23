@@ -54,6 +54,7 @@
 	plushes["lizard plush"] = /obj/item/toy/plushie/lizard
 	plushes["spider plush"] = /obj/item/toy/plushie/spider
 	plushes["farwa plush"] = /obj/item/toy/plushie/farwa
+	plushes["snail plush"] = /obj/item/toy/plushie/snail
 	gear_tweaks += new /datum/gear_tweak/path(plushes)
 
 /datum/gear/mirror
