@@ -42,8 +42,10 @@
 /obj/machinery/chem_master/Destroy()
 	if(loaded_pill_bottle)
 		loaded_pill_bottle.forceMove(get_turf(src))
+		loaded_pill_bottle = null
 	if(beaker)
 		beaker.forceMove(get_turf(src))
+		beaker = null
 	..()
 
 /obj/machinery/chem_master/ex_act(severity)
@@ -354,6 +356,7 @@
 /obj/machinery/reagentgrinder/Destroy()
 	if(beaker)
 		beaker.forceMove(get_turf(src))
+		beaker = null
 	..()
 
 /obj/machinery/reagentgrinder/attackby(obj/item/O as obj, mob/user as mob)

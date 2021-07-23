@@ -258,6 +258,7 @@
 /obj/machinery/body_scanconsole/Destroy()
 	if(connected)
 		connected.BSC = null
+		connected = null
 	..()
 
 /obj/machinery/body_scanconsole/Initialize()
