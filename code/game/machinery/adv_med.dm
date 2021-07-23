@@ -266,8 +266,7 @@
 		src.connected = locate(/obj/machinery/bodyscanner, get_step(src, D))
 		if(src.connected)
 			var/obj/machinery/bodyscanner/BS = src.connected
-			if(BS.BSC)
-				src.connected = null
+			if(BS?.BSC)
 				continue
 			BS.BSC = src
 			break
