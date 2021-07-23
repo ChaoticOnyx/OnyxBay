@@ -315,7 +315,7 @@ const classesPage = (props: any, context: any) => {
     <Flex direction='column'>
       <Flex.Item>{navPanel(props, context)}</Flex.Item>
       <Flex.Item mt='0.5rem'>
-        {classes.map((c, i) => classCard(c, context))}
+        {classes?.map((c, i) => classCard(c, context))}
       </Flex.Item>
     </Flex>
   );
