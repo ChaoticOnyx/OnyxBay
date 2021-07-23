@@ -410,7 +410,6 @@
 		in_chamber.on_hit(M)
 		if (in_chamber.damage_type != PAIN)
 			log_and_message_admins("[key_name(user)] tried to commit suicide \a [src]")
-			to_world("inchamber=[ref(in_chamber)] | pm=[in_chamber.penetration_modifier] | pen=[in_chamber.armor_penetration] | dam=[in_chamber.damage]")
 			M.get_organ(BP_HEAD).createwound(PIERCE, in_chamber.damage * 4)
 			user.adjustBrainLoss(amount = (in_chamber.damage * rand(15,20)))
 			Fire(user, user, src, "head")
