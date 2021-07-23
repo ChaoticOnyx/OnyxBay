@@ -14,7 +14,7 @@
 	..()
 	for(dir in list(NORTH,EAST,SOUTH,WEST))
 		table = locate(/obj/machinery/optable, get_step(src, dir))
-		if(table?.computer)
+		if(!table || table?.computer)
 			continue
 		table.computer = src
 		break

@@ -32,7 +32,7 @@
 	..()
 	for(var/D in GLOB.cardinal)
 		var/obj/machinery/body_scanconsole/console = locate() in get_step(src, D)
-		if(console?.connected)
+		if(!console || console?.connected)
 			continue
 		console.connected = src
 		BSC = console

@@ -33,7 +33,7 @@
 	. = ..()
 	for(dir in list(NORTH,EAST,SOUTH,WEST))
 		computer = locate(/obj/machinery/computer/operating, get_step(src, dir))
-		if(computer?.table)
+		if(!computer || computer?.table)
 			continue
 		computer.table = src
 		break
