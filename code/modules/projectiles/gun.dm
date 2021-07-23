@@ -380,6 +380,11 @@
 		return
 	var/mob/living/carbon/human/M = user
 
+	var/obj/item/blocked = M.check_mouth_coverage()
+	if(blocked)
+		to_chat(M, SPAN_WARNING("\The [blocked] is in the way!"))
+		return
+
 	mouthshoot = 1
 	M.visible_message("<span class='danger'>[user] sticks their gun in their mouth, ready to pull the trigger...</span>")
 	if(!do_after(user, 40, progress=0))
@@ -397,11 +402,6 @@
 	var/obj/item/projectile/in_chamber = consume_next_projectile()
 	if (istype(in_chamber) && process_projectile(in_chamber, user, user, BP_MOUTH))
 		user.visible_message("<span class = 'warning'>[user] pulls the trigger.</span>")
-		var/shot_sound = in_chamber.fire_sound? in_chamber.fire_sound : fire_sound
-		if(silenced)
-			playsound(user, shot_sound, 10, 1)
-		else
-			playsound(user, shot_sound, 50, 1)
 		if(istype(in_chamber, /obj/item/projectile/beam/lastertag))
 			user.show_message("<span class = 'warning'>You feel rather silly, trying to commit suicide with a toy.</span>")
 			mouthshoot = 0
@@ -409,9 +409,11 @@
 
 		in_chamber.on_hit(M)
 		if (in_chamber.damage_type != PAIN)
-			log_and_message_admins("[key_name(user)] commited suicide using \a [src]")
-			user.apply_damage(in_chamber.damage*2.5, in_chamber.damage_type, BP_HEAD, 0, in_chamber.damage_flags(), used_weapon = "Point blank shot in the mouth with \a [in_chamber]")
-			user.death()
+			log_and_message_admins("[key_name(user)] tried to commit suicide \a [src]")
+			to_world("inchamber=[ref(in_chamber)] | pm=[in_chamber.penetration_modifier] | pen=[in_chamber.armor_penetration] | dam=[in_chamber.damage]")
+			M.get_organ(BP_HEAD).createwound(PIERCE, in_chamber.damage * 4)
+			user.adjustBrainLoss(amount = (in_chamber.damage * rand(15,20)))
+			Fire(user, user, src, "head")
 		else
 			to_chat(user, "<span class = 'notice'>Ow...</span>")
 			user.apply_effect(110,PAIN,0)
