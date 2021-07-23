@@ -22,12 +22,12 @@
 	beepsounds = "medical_beep"
 
 /obj/machinery/optable/RefreshParts()
-	var/default_strip = 6 SECONDS
-	var/rating = 1
-	for(var/obj/item/weapon/stock_parts/P in component_parts)
-		if(ismanipulator(P) && rating > P.rating)
-			rating = P.rating
-	time_to_strip = clamp(default_strip - rating, 2 SECONDS, 5 SECONDS)
+    var/default_strip = 6 SECONDS
+    var/efficiency = 0 
+    for(var/obj/item/weapon/stock_parts/P in component_parts)
+        if(ismanipulator(P))
+            efficiency += 0.25 * P.rating
+    time_to_strip = clamp(default_strip - efficiency, 1 SECONDS, 5 SECONDS)
 
 /obj/machinery/optable/Initialize()
 	. = ..()
