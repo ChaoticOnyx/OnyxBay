@@ -25,6 +25,7 @@
 	go_out()
 	if(BSC)
 		BSC.connected = null
+		BSC = null
 	..()
 
 /obj/machinery/bodyscanner/Initialize()
