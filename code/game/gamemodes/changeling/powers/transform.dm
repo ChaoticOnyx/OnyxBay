@@ -58,6 +58,11 @@
 		var/newSpecies = chosen_dna.speciesName
 		H.modifiers = chosen_dna.modifiers
 		H.flavor_texts = chosen_dna.flavor_texts
+		if(H.mob_size != all_species[newSpecies].mob_size)
+			for (var/obj/item/underwear/U in H.worn_underwear)
+				H.worn_underwear -= U
+				H.drop_from_inventory(U)
+			H.update_underwear()
 		H.set_species(newSpecies,1)
 		H.b_type = chosen_dna.dna.b_type
 		H.sync_organ_dna()
