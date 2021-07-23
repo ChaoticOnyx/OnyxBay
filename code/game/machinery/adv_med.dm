@@ -32,12 +32,11 @@
 	..()
 	for(var/D in GLOB.cardinal)
 		var/obj/machinery/body_scanconsole/console = locate() in get_step(src, D)
-		if(console)
-			if(console.connected)
-				continue
-			console.connected = src
-			BSC = console
-			break
+		if(console?.connected)
+			continue
+		console.connected = src
+		BSC = console
+		break
 	RefreshParts()
 	update_icon()
 
