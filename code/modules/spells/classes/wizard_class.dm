@@ -3,7 +3,8 @@
 	var/name = ""
 	var/description = ""
 	var/feedback_tag = ""
-	var/spell_points = 0
+	/// For buying spells and artifacts.
+	var/points = 0
 
 	var/icon = 'icons/obj/library.dmi'
 	var/icon_state = "spellbook"
@@ -19,13 +20,14 @@
 	var/list/sacrifice_objects = list()
 	var/list/sacrifice_reagents = list()
 
+/// Perfomance heavy proc
 /datum/wizard_class/proc/to_list()
 	var/list/data = list(
 		"path"         = type,
 		"name"         = name,
 		"icon"         = icon2base64html(type),
 		"description"  = description,
-		"spell_points" = spell_points,
+		"points"       = points,
 		"flags"        = list(
 			"no_revert"          = no_revert,
 			"locked"             = locked,

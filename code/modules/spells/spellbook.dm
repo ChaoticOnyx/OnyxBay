@@ -1,25 +1,19 @@
 // Spells/spellbooks have a variable for this but as artefacts are literal items they do not,
 // so we do this instead.
-var/list/artefact_feedback = list(/obj/structure/closet/wizard/armor = 		"HS",
-								/obj/item/weapon/gun/energy/staff/focus = 	"MF",
-								/obj/item/weapon/monster_manual = 			"MA",
-								/obj/item/weapon/magic_rock = 				"RA",
-								/obj/item/weapon/contract/apprentice = 		"CP",
-								/obj/structure/closet/wizard/souls = 		"SS",
-								/obj/item/weapon/contract/wizard/tk = 		"TK",
-								/obj/structure/closet/wizard/scrying = 		"SO",
-								/obj/item/weapon/teleportation_scroll = 	"TS",
-								/obj/item/weapon/gun/energy/staff = 		"ST",
-								/obj/item/weapon/gun/energy/staff/animate =	"SA",
-								/obj/item/weapon/dice/d20/cursed = 			"DW")
-
-// These constants must be the same in SpellBook.tsx.
-// Pages that contains list of all objects of a type:
-#define PAGE_CLASSES   0
-#define PAGE_SPELLS    1
-#define PAGE_ARTEFACTS 2
-// Pages about one thing:
-#define PAGE_CHARACTER 3
+var/list/artefact_feedback = list(
+	/obj/structure/closet/wizard/armor        = "HS",
+	/obj/item/weapon/gun/energy/staff/focus   = "MF",
+	/obj/item/weapon/monster_manual           = "MA",
+	/obj/item/weapon/magic_rock               = "RA",
+	/obj/item/weapon/contract/apprentice      = "CP",
+	/obj/structure/closet/wizard/souls        = "SS",
+	/obj/item/weapon/contract/wizard/tk       = "TK",
+	/obj/structure/closet/wizard/scrying      = "SO",
+	/obj/item/weapon/teleportation_scroll     = "TS",
+	/obj/item/weapon/gun/energy/staff         = "ST",
+	/obj/item/weapon/gun/energy/staff/animate = "SA",
+	/obj/item/weapon/dice/d20/cursed          = "DW"
+)
 
 /obj/item/weapon/spellbook
 	name = "spell book"
@@ -31,14 +25,21 @@ var/list/artefact_feedback = list(/obj/structure/closet/wizard/armor = 		"HS",
 	w_class = ITEM_SIZE_NORMAL
 	var/uses = 1
 	/// A page that will be opened in the UI.
-	var/page = PAGE_CLASSES
+	var/page = 0
 	/// A path of spell/class or whatever we inspecting in the UI.
 	var/inspecting_path = null
 
 /obj/item/weapon/spellbook/tgui_data(mob/user)
+	var/datum/wizard/W = user.mind.wizard
+
 	var/list/data = list(
 		"page" = page,
-		"inspecting_path" = inspecting_path
+		"inspecting_path" = inspecting_path,
+		"user" = list(
+			"class" = W.class,
+			"points" = W.points,
+			"name" = user.name
+		)
 	)
 
 	return data
@@ -48,9 +49,10 @@ var/list/artefact_feedback = list(/obj/structure/closet/wizard/armor = 		"HS",
 		"classes" = list()
 	)
 
-	for(var/datum/wizard_class/C in GLOB.wizard_classes)
+	for(var/T in GLOB.wizard_classes)
+		var/datum/wizard_class/C = GLOB.wizard_classes[T]
 		data["classes"] += list(C.to_list())
-	
+
 	return data
 
 /obj/item/weapon/spellbook/tgui_act(action, list/params)
@@ -65,6 +67,21 @@ var/list/artefact_feedback = list(/obj/structure/closet/wizard/armor = 		"HS",
 		if("set_inspecting")
 			inspecting_path = params["path"]
 			return TRUE
+		if("choose_class")
+			set_wizard_class(usr, text2path(params["path"]))
+			return TRUE
+
+/obj/item/weapon/spellbook/proc/set_wizard_class(mob/user, datum/wizard_class/path)
+	if(!(path in subtypesof(/datum/wizard_class)))
+		CRASH("Invalid wizard class [path]")
+
+	if(user.mind.wizard.class)
+		to_chat(user, SPAN("warning", "You can't have more than one class at the moment."))
+		return
+
+	user.mind.wizard.set_class(path)
+	var/text_path = "[path]"
+	to_chat(user, SPAN("notice", "You are now a [GLOB.wizard_classes[text_path].name]!"))
 
 /obj/item/weapon/spellbook/tgui_interact(mob/user, datum/tgui/ui)
 	ui = SStgui.try_update_ui(user, src, ui)
@@ -74,9 +91,8 @@ var/list/artefact_feedback = list(/obj/structure/closet/wizard/armor = 		"HS",
 		ui.open()
 
 /obj/item/weapon/spellbook/attack_self(mob/user)
-	tgui_interact(user, null)
+	if(!GLOB.wizards.is_antagonist(user.mind))
+		to_chat(user, "You can't make heads or tails of this book.")
+		return
 
-#undef PAGE_CLASSES
-#undef PAGE_SPELLS
-#undef PAGE_ARTEFACTS
-#undef PAGE_CHARACTER
+	tgui_interact(user, null)

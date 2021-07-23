@@ -72,6 +72,7 @@ GLOBAL_DATUM_INIT(wizards, /datum/antagonist/wizard, new)
 	wizard.current.real_name = "[pick(GLOB.wizard_first)] [pick(GLOB.wizard_second)]"
 	wizard.current.SetName(wizard.current.real_name)
 	wizard.current.mutations.Add(MUTATION_CLUMSY)
+	wizard.wizard = new()
 
 /datum/antagonist/wizard/equip(mob/living/carbon/human/wizard_mob)
 

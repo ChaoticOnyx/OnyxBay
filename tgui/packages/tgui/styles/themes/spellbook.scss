@@ -115,6 +115,13 @@
         border: #593080 solid $border-thick;
       }
     }
+
+    &--disabled {
+      cursor: default;
+      background-color: #4b3133 !important;
+      color: #a59e64;
+      border: #311e20 solid $border-thick;
+    }
   }
 
   .Button--invisible {

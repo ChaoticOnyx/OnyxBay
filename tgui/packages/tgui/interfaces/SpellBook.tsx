@@ -1,4 +1,3 @@
-import { classes } from '../../common/react';
 import { capitalize } from '../../common/string';
 import { useBackend, useLocalState } from '../backend';
 import { Button, Divider, Flex, Input, Stack } from '../components';
@@ -11,12 +10,18 @@ const PAGE_SPELLS = 1;
 const PAGE_ARTIFACTS = 2;
 const PAGE_CHARACTER = 3;
 
+interface User {
+  class?: string | null;
+  name: string;
+  points: number;
+}
+
 interface Class {
   path: string;
   name: string;
   icon: string;
   description: string;
-  spell_points: number;
+  points: number;
   flags: Flags;
   spells: Spell[];
   artifacts: Artifact[];
@@ -85,22 +90,35 @@ interface InputData {
   page: number;
   classes: Class[];
   inspecting_path: string;
+  user: User;
 }
 
-const SpellIcon = (props: Spell, ignored: boolean = false) => {
+const SpellIcon = (
+  props: Spell,
+  ignored: boolean = false,
+  showCost: boolean = true,
+) => {
   return (
     <GameIcon
-      title={`${capitalize(props.name)}\n${capitalize(props.description)}`}
+      title={`${capitalize(props.name)}${
+        showCost && props.cost ? ` (${props.cost} points)` : ''
+      }\n${capitalize(props.description)}`}
       className={`Icon--spell ${ignored && 'Icon--ignored'}`}
       html={props.icon}
     />
   );
 };
 
-const ArtifactIcon = (props: Artifact, ignored: boolean = false) => {
+const ArtifactIcon = (
+  props: Artifact,
+  ignored: boolean = false,
+  showCost: boolean = true,
+) => {
   return (
     <GameIcon
-      title={`${capitalize(props.name)}\n${capitalize(props.description)}`}
+      title={`${capitalize(props.name)}${
+        showCost && props.cost ? ` (${props.cost} points)` : ''
+      }\n${capitalize(props.description)}`}
       className={`Icon--artifact ${ignored && 'Icon--ignored'}`}
       html={props.icon}
     />
@@ -119,11 +137,12 @@ const SacrificeIcon = (props: SacrificeObject) => {
   );
 };
 
-const SpellButton = (
+const InspectSpellButton = (
   props: Spell,
   context: any,
   ignored: boolean = false,
   selected: boolean = false,
+  showCost: boolean = true,
 ) => {
   const { act } = useBackend<InputData>(context);
 
@@ -135,7 +154,7 @@ const SpellButton = (
         act('set_inspecting', { path: props.path });
         act('change_page', { page: PAGE_SPELLS });
       }}>
-      {SpellIcon(props, ignored)}
+      {SpellIcon(props, ignored, showCost)}
     </Button>
   );
 };
@@ -145,6 +164,7 @@ const ArtifactButton = (
   context: any,
   ignored: boolean = false,
   selected: boolean = false,
+  showCost: boolean = true,
 ) => {
   const { act } = useBackend<InputData>(context);
 
@@ -156,13 +176,15 @@ const ArtifactButton = (
         act('set_inspecting', { path: props.path });
         act('change_page', { page: PAGE_ARTIFACTS });
       }}>
-      {ArtifactIcon(props, ignored)}
+      {ArtifactIcon(props, ignored, showCost)}
     </Button>
   );
 };
 
 const classCard = (props: Class, context: any) => {
-  const { act } = useBackend<InputData>(context);
+  const { data, act } = useBackend<InputData>(context);
+  const isSelected = data.user.class === props.path;
+  const isDisabled = !isSelected && !!data.user.class;
 
   return (
     <Flex class='Card' direction='column'>
@@ -173,23 +195,28 @@ const classCard = (props: Class, context: any) => {
           <Button
             style={{
               'float': 'right',
-              'font-size': '0.9em',
+              'font-size': '0.8em',
             }}
+            selected={data.user.class === props.path}
+            disabled={isDisabled}
             content='Choose'
-            onClick={() => act('choose_class', { path: props.path })}
+            onClick={() => {
+              act('choose_class', { path: props.path });
+              act('change_page', { page: PAGE_CHARACTER });
+            }}
           />
         </h2>
       </Flex.Item>
       <Flex.Item>{props.description}</Flex.Item>
       <Flex.Item>
         <p></p>
-        <b>Spell Points:</b> {props.spell_points}
+        <b>Points:</b> {props.points}
       </Flex.Item>
       <Flex.Item>
         <Divider />
         <h3>Spells:</h3>
         {props.spells.map((s, i) => {
-          return SpellButton(s, context);
+          return InspectSpellButton(s, context);
         })}
       </Flex.Item>
       <Flex.Item>
@@ -235,6 +262,7 @@ const navPanel = (props: any, context: any) => {
     <Stack width='100%' justify='center'>
       <Stack.Item>
         <Button
+          title='List of classes'
           selected={page === PAGE_CLASSES}
           onClick={() => act('change_page', { page: PAGE_CLASSES })}
           content='Classes'
@@ -242,6 +270,7 @@ const navPanel = (props: any, context: any) => {
       </Stack.Item>
       <Stack.Item>
         <Button
+          title='List of spells'
           selected={page === PAGE_SPELLS}
           onClick={() => act('change_page', { page: PAGE_SPELLS })}
           content='Spells'
@@ -249,6 +278,7 @@ const navPanel = (props: any, context: any) => {
       </Stack.Item>
       <Stack.Item>
         <Button
+          title='List of artifacts'
           selected={page === PAGE_ARTIFACTS}
           onClick={() => act('change_page', { page: PAGE_ARTIFACTS })}
           content='Artifacts'
@@ -256,6 +286,7 @@ const navPanel = (props: any, context: any) => {
       </Stack.Item>
       <Stack.Item>
         <Button
+          title='Your character information'
           selected={page === PAGE_CHARACTER}
           onClick={() => act('change_page', { page: PAGE_CHARACTER })}
           content='Character'
@@ -286,7 +317,7 @@ const spellCard = (props: Spell, context: any) => {
     <Flex className='Card' direction='column'>
       <Flex.Item>
         <h2>
-          {SpellIcon(props)} {props.name}
+          {SpellIcon(props, false, false)} {props.name}
         </h2>
       </Flex.Item>
       <Flex.Item>{capitalize(props.description)}</Flex.Item>
@@ -326,7 +357,7 @@ const artifactCard = (props: Artifact, context: any) => {
     <Flex className='Card' direction='column'>
       <Flex.Item>
         <h2>
-          {ArtifactIcon(props)} {capitalize(props.name)}
+          {ArtifactIcon(props, false, false)} {capitalize(props.name)}
         </h2>
       </Flex.Item>
       <Flex.Item>{props.description}</Flex.Item>
@@ -409,8 +440,12 @@ const spellsPage = (props: any, context: any) => {
     }
 
     if (classNameFilter) {
-      const wizardClass = data.classes.find((c, i) => c.name === classNameFilter);
-      const hasSpell = !!wizardClass.spells.find((s, i) => s.path === spell.path);
+      const wizardClass = data.classes.find(
+        (c, i) => c.name === classNameFilter,
+      );
+      const hasSpell = !!wizardClass.spells.find(
+        (s, i) => s.path === spell.path,
+      );
 
       if (!hasSpell) {
         ignore = true;
@@ -434,11 +469,12 @@ const spellsPage = (props: any, context: any) => {
             const isIgnored = !!ignoredSpells.find(
               (ignored, k) => ignored.path === s.path,
             );
-            return SpellButton(
+            return InspectSpellButton(
               s,
               context,
               isIgnored,
               s.path === inspectingSpell?.path,
+              false,
             );
           })}
         </Flex>
@@ -546,13 +582,22 @@ const artifactsPage = (props: any, context: any) => {
   for (const artifact of artifactsToShow) {
     let ignore = false;
 
-    if (nameFilter && artifact.name.toLocaleLowerCase().search(escapeRegExp(nameFilter.toLocaleLowerCase()))) {
+    if (
+      nameFilter &&
+      artifact.name
+        .toLocaleLowerCase()
+        .search(escapeRegExp(nameFilter.toLocaleLowerCase()))
+    ) {
       ignore = true;
     }
 
     if (classNameFilter) {
-      const wizardClass = data.classes.find((c, i) => c.name === classNameFilter);
-      const hasArtifact = !!wizardClass.artifacts.find((s, i) => s.path === artifact.path);
+      const wizardClass = data.classes.find(
+        (c, i) => c.name === classNameFilter,
+      );
+      const hasArtifact = !!wizardClass.artifacts.find(
+        (s, i) => s.path === artifact.path,
+      );
 
       if (!hasArtifact) {
         ignore = true;
@@ -564,7 +609,9 @@ const artifactsPage = (props: any, context: any) => {
     }
   }
 
-  artifactsToShow = artifactsToShow.sort((s, b) => s.name.localeCompare(b.name));
+  artifactsToShow = artifactsToShow.sort((s, b) =>
+    s.name.localeCompare(b.name),
+  );
 
   return (
     <Flex direction='column'>
@@ -581,6 +628,7 @@ const artifactsPage = (props: any, context: any) => {
               context,
               isIgnored,
               a.path === inspectingArtifact?.path,
+              false,
             );
           })}
         </Flex>
@@ -618,6 +666,34 @@ const artifactsPage = (props: any, context: any) => {
   );
 };
 
+const characterPage = (props: any, context: any) => {
+  const { data, act } = useBackend<InputData>(context);
+  const { user, classes } = data;
+
+  const userClass = classes.find((c, i) => c.path === user.class);
+
+  if (!userClass) {
+    return <Flex direction='column'>
+      <Flex.Item>{navPanel(props, context)}</Flex.Item>
+      <Flex.Item pb='1rem' mt='0.5rem' align='center'>
+        <h2>Choose a class first.</h2>
+      </Flex.Item>
+    </Flex>
+  }
+
+  return (
+    <Flex direction='column'>
+      <Flex.Item>{navPanel(props, context)}</Flex.Item>
+      <Flex.Item mt='0.5rem' className='Card'>
+        <h2>{user.name}</h2>
+        <b>Class: </b>{userClass.name}<br></br>
+        <b>Free Points: </b>{user.points}<br></br>
+        <Button content='Reset Class' title='You can reset your class only once.' />
+      </Flex.Item>
+    </Flex>
+  );
+};
+
 const PAGES = {
   0: {
     render: classesPage,
@@ -629,7 +705,7 @@ const PAGES = {
     render: artifactsPage,
   },
   3: {
-    render: null,
+    render: characterPage,
   },
 };
 
