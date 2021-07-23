@@ -36,7 +36,7 @@ var/list/artefact_feedback = list(
 		"page" = page,
 		"inspecting_path" = inspecting_path,
 		"user" = list(
-			"class" = W.class,
+			"class" = W.class?.type,
 			"points" = W.points,
 			"name" = user.name
 		)
@@ -70,6 +70,9 @@ var/list/artefact_feedback = list(
 		if("choose_class")
 			set_wizard_class(usr, text2path(params["path"]))
 			return TRUE
+		if("buy_artifact")
+			buy_artifact(usr, text2path(params["path"]))
+			return TRUE
 
 /obj/item/weapon/spellbook/proc/set_wizard_class(mob/user, datum/wizard_class/path)
 	if(!(path in subtypesof(/datum/wizard_class)))
@@ -80,8 +83,26 @@ var/list/artefact_feedback = list(
 		return
 
 	user.mind.wizard.set_class(path)
-	var/text_path = "[path]"
-	to_chat(user, SPAN("notice", "You are now a [GLOB.wizard_classes[text_path].name]!"))
+	to_chat(user, SPAN("notice", "You are now a [user.mind.wizard.class.name]!"))
+
+/obj/item/weapon/spellbook/proc/buy_artifact(mob/user, obj/path)
+	var/datum/wizard/W = user.mind.wizard
+
+	if(!W.class)
+		CRASH("Trying to buy an artifact without any wizard class assigned.")
+
+	if(!W.class.has_artifact(path))
+		CRASH("Artifact [path] does not exist in [W.class]")
+	
+	var/cost = W.class.get_artifact_cost(path)
+
+	if(!W.can_spend(cost))
+		to_chat(user, SPAN("warning", "You don't have enough points to purchase this artifact."))
+		return
+	
+	W.spend(cost)
+	feedback_add_details("wizard_artifact_purchased", artefact_feedback[path])
+	new path(usr.loc)
 
 /obj/item/weapon/spellbook/tgui_interact(mob/user, datum/tgui/ui)
 	ui = SStgui.try_update_ui(user, src, ui)

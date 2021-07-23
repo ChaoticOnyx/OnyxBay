@@ -1,4 +1,4 @@
-// Abstract type for all wizard's classes
+/// Abstract type for all wizard's classes.
 /datum/wizard_class
 	var/name = ""
 	var/description = ""
@@ -20,7 +20,47 @@
 	var/list/sacrifice_objects = list()
 	var/list/sacrifice_reagents = list()
 
-/// Perfomance heavy proc
+/datum/wizard_class/proc/get_spell_data(datum/spell/path)
+	for(var/S in spells)
+		if(S["path"] == path)
+			return S
+	
+	return null
+
+/datum/wizard_class/proc/get_spell_cost(datum/spell/path)
+	return get_spell_data(path)["cost"]
+
+/datum/wizard_class/proc/has_spell(datum/spell/path)
+	return !!get_spell_data(path)
+
+/datum/wizard_class/proc/get_artifact_data(obj/path)
+	for(var/A in artifacts)
+		if(A["path"] == path)
+			return A
+	
+	return null
+
+/datum/wizard_class/proc/get_artifact_cost(obj/path)
+	return get_artifact_data(path)["cost"]
+
+/datum/wizard_class/proc/has_artifact(obj/path)
+	return !!get_artifact_data(path)
+
+/datum/wizard_class/proc/has_sacrifice_object(obj/path)
+	for(var/O in sacrifice_objects)
+		if(O["path"] == path)
+			return TRUE
+	
+	return FALSE
+
+/datum/wizard_class/proc/has_sacrifice_reagent(datum/reagent/path)
+	for(var/R in sacrifice_reagents)
+		if(R["path"] == path)
+			return TRUE
+	
+	return FALSE
+
+/// Perfomance heavy proc.
 /datum/wizard_class/proc/to_list()
 	var/list/data = list(
 		"path"         = type,

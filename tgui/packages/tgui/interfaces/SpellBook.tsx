@@ -159,7 +159,7 @@ const InspectSpellButton = (
   );
 };
 
-const ArtifactButton = (
+const InspectArtifactButton = (
   props: Artifact,
   context: any,
   ignored: boolean = false,
@@ -224,7 +224,7 @@ const classCard = (props: Class, context: any) => {
         <Divider />
         <h3>Artifacts:</h3>
         {props.artifacts.map((a, i) => {
-          return ArtifactButton(a, context);
+          return InspectArtifactButton(a, context);
         })}
       </Flex.Item>
       <Flex.Item>
@@ -358,6 +358,31 @@ const artifactCard = (props: Artifact, context: any) => {
       <Flex.Item>
         <h2>
           {ArtifactIcon(props, false, false)} {capitalize(props.name)}
+        </h2>
+      </Flex.Item>
+      <Flex.Item>{props.description}</Flex.Item>
+    </Flex>
+  );
+};
+
+const BuyArtifactCard = (props: Artifact, context: any) => {
+  const { act, data } = useBackend<InputData>(context);
+  const { user } = data;
+
+  return (
+    <Flex className='Card' direction='column'>
+      <Flex.Item>
+        <h2>
+          {InspectArtifactButton(props, context)} {capitalize(props.name)}
+          <Button
+            disabled={user.points - props.cost < 0}
+            onClick={() => act('buy_artifact', { path: props.path })}
+            content={`Buy (${props.cost} points)`}
+            style={{
+              'float': 'right',
+              'font-size': '0.8em',
+            }}
+          />
         </h2>
       </Flex.Item>
       <Flex.Item>{props.description}</Flex.Item>
@@ -623,7 +648,7 @@ const artifactsPage = (props: any, context: any) => {
             const isIgnored = !!ignoredArtifacts.find(
               (ignored, k) => ignored.path === a.path,
             );
-            return ArtifactButton(
+            return InspectArtifactButton(
               a,
               context,
               isIgnored,
@@ -673,12 +698,14 @@ const characterPage = (props: any, context: any) => {
   const userClass = classes.find((c, i) => c.path === user.class);
 
   if (!userClass) {
-    return <Flex direction='column'>
-      <Flex.Item>{navPanel(props, context)}</Flex.Item>
-      <Flex.Item pb='1rem' mt='0.5rem' align='center'>
-        <h2>Choose a class first.</h2>
-      </Flex.Item>
-    </Flex>
+    return (
+      <Flex direction='column'>
+        <Flex.Item>{navPanel(props, context)}</Flex.Item>
+        <Flex.Item pb='1rem' mt='0.5rem' align='center'>
+          <h2>Choose a class first.</h2>
+        </Flex.Item>
+      </Flex>
+    );
   }
 
   return (
@@ -686,9 +713,26 @@ const characterPage = (props: any, context: any) => {
       <Flex.Item>{navPanel(props, context)}</Flex.Item>
       <Flex.Item mt='0.5rem' className='Card'>
         <h2>{user.name}</h2>
-        <b>Class: </b>{userClass.name}<br></br>
-        <b>Free Points: </b>{user.points}<br></br>
-        <Button content='Reset Class' title='You can reset your class only once.' />
+        <b>Class: </b>
+        {userClass.name}
+        <br></br>
+        <b>Free Points: </b>
+        {user.points}
+        <br></br>
+        <Button
+          content='Reset Class'
+          title='You can reset your class only once.'
+        />
+      </Flex.Item>
+      <Flex.Item align='center'>
+        <h2>Artifacts</h2>
+      </Flex.Item>
+      <Flex.Item>
+        <Flex direction='column'>
+          {userClass.artifacts.map((a, i) => {
+            return BuyArtifactCard(a, context);
+          })}
+        </Flex>
       </Flex.Item>
     </Flex>
   );
