@@ -58,7 +58,8 @@
 		var/newSpecies = chosen_dna.speciesName
 		H.modifiers = chosen_dna.modifiers
 		H.flavor_texts = chosen_dna.flavor_texts
-		if(H.mob_size != all_species[newSpecies].mob_size)
+		var/datum/species/newS_dat = all_species[newSpecies]
+		if(H.mob_size != newS_dat.mob_size)
 			for (var/obj/item/underwear/U in H.worn_underwear)
 				H.worn_underwear -= U
 				H.drop_from_inventory(U)
