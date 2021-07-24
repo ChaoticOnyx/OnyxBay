@@ -2828,7 +2828,7 @@
 "pfY" = (/obj/structure/table/woodentable,/obj/item/weapon/reagent_containers/food/snacks/amanitajelly,/turf/simulated/floor/trim/wood,/area/thunderfield)
 "phQ" = (/obj/effect/spider/stickyweb,/turf/simulated/floor/trim/carpet/red,/area/thunderfield)
 "piT" = (/obj/effect/floor_decal/spline/fancy/wood,/obj/effect/floor_decal/spline/fancy/wood{dir = 4},/turf/unsimulated/floor{icon_state = "asteroid"},/area/thunderfield)
-"pmL" = (/obj/structure/table/steel,/obj/item/trash/snack_bowl,/turf/simulated/floor/shuttle/black{initial_gas = list("nitrogen" = 103.984)},/area/skipjack_station/start)
+"pmL" = (/obj/structure/table/steel,/obj/item/trash/dish/bowl,/turf/simulated/floor/shuttle/black{initial_gas = list("nitrogen" = 103.984)},/area/skipjack_station/start)
 "ptv" = (/obj/structure/table/gamblingtable,/obj/item/weapon/storage/fancy/cigarettes,/obj/item/weapon/flame/lighter/zippo,/turf/simulated/floor/trim/carpet/orange,/area/thunderfield)
 "pCq" = (/obj/structure/flora/pottedplant/autumn,/turf/simulated/floor/shuttle/black{initial_gas = list("nitrogen" = 103.984)},/area/skipjack_station/start)
 "pDs" = (/obj/item/weapon/stool/padded,/turf/simulated/floor/trim/wood,/area/thunderfield)
