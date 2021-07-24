@@ -189,16 +189,24 @@
   .Flag {
     font-weight: bold;
 
-    &--NeedsClothes {
+    &--needsClothes {
       color: rgb(243, 98, 123);
     }
 
-    &--NeedsHuman {
+    &--needsHuman {
       color: rgb(91, 143, 255);
     }
 
-    &--NoButton {
+    &--noButton {
       color: rgb(91, 255, 118);
+    }
+
+    &--investable {
+      color: gold;
+    }
+
+    &--contracts {
+      color: rgb(0, 217, 255);
     }
   }
 

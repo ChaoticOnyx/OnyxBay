@@ -237,8 +237,11 @@ const classCard = (props: Class, context: any) => {
       </Flex.Item>
       <Flex.Item>{props.description}</Flex.Item>
       <Flex.Item>
-        <p></p>
         <b>Points:</b> {props.points}
+        <br></br>
+        {props.flags.investable ? <span class='Flag Flag--investable'>Investable</span> : null}
+        <br></br>
+        {props.flags.can_make_contracts ? <span class='Flag Flag--contracts'>Can Make Contracts</span> : null}
       </Flex.Item>
       <Flex.Item>
         <Divider />
@@ -358,21 +361,23 @@ const spellCard = (props: Spell, buttons?: InfernoNode) => {
         <br></br>
         <b>Range:</b> {props.range}
         <br></br>
+        <b>Duration:</b> {Math.ceil(props.duration / 10)} seconds
+        <br></br>
         {flags.needs_clothes ? (
           <>
-            <span class='Flag Flag--NeedsClothes'>Needs Clothes</span>
+            <span class='Flag Flag--needsClothes'>Needs Clothes</span>
             <br></br>
           </>
         ) : null}
         {flags.needs_human ? (
           <>
-            <span class='Flag Flag--NeedsHuman'>Human Caster</span>
+            <span class='Flag Flag--needsHuman'>Human Caster</span>
             <br></br>
           </>
         ) : null}
         {flags.no_button ? (
           <>
-            <span class='Flag Flag--NoButton'>Passive</span>
+            <span class='Flag Flag--noButton'>Passive</span>
             <br></br>
           </>
         ) : null}
