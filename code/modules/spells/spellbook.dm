@@ -224,6 +224,12 @@ var/list/artefact_feedback = list(
 		ui = new(user, src, "SpellBook", name)
 		ui.open()
 
+/obj/item/weapon/spellbook/tgui_state(mob/user)
+	if(!GLOB.wizards.is_antagonist(user.mind))
+		return UI_CLOSE
+	
+	return ..()
+
 /obj/item/weapon/spellbook/attack_self(mob/user)
 	if(!GLOB.wizards.is_antagonist(user.mind))
 		to_chat(user, "You can't make heads or tails of this book.")
