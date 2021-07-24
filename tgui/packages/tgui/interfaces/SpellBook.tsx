@@ -5,7 +5,6 @@ import {
   Button,
   Collapsible,
   Divider,
-  Dropdown,
   Flex,
   Input,
   Stack,
@@ -14,7 +13,6 @@ import { GameIcon } from '../components/GameIcon';
 import { Window } from '../layouts';
 import { escapeRegExp } from '../sanitize';
 import { InfernoNode } from 'inferno';
-import { logger } from '../logging';
 
 const PAGE_CLASSES = 0;
 const PAGE_SPELLS = 1;
@@ -44,6 +42,7 @@ interface User {
   points: number;
   spells: UserSpells[];
   can_reset_class: boolean;
+  can_invest: boolean;
 }
 
 interface Class {
@@ -239,9 +238,13 @@ const classCard = (props: Class, context: any) => {
       <Flex.Item>
         <b>Points:</b> {props.points}
         <br></br>
-        {props.flags.investable ? <span class='Flag Flag--investable'>Investable</span> : null}
+        {props.flags.investable ? (
+          <span class='Flag Flag--investable'>Investable</span>
+        ) : null}
         <br></br>
-        {props.flags.can_make_contracts ? <span class='Flag Flag--contracts'>Can Make Contracts</span> : null}
+        {props.flags.can_make_contracts ? (
+          <span class='Flag Flag--contracts'>Can Make Contracts</span>
+        ) : null}
       </Flex.Item>
       <Flex.Item>
         <Divider />
@@ -778,6 +781,12 @@ const characterPage = (props: any, context: any) => {
         <b>Free Points: </b>
         {user.points}
         <br></br>
+        <Button
+          onClick={() => act('invest')}
+          title='Spend one of your points and get 2 points after 15 minutes.'
+          disabled={!user.can_invest}
+          content='Invest'
+        />
       </Flex.Item>
       <Flex.Item>
         <Collapsible

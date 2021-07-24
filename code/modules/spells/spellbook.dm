@@ -40,7 +40,8 @@ var/list/artefact_feedback = list(
 			"points"          = W.points,
 			"name"            = user.name,
 			"spells"          = list(),
-			"can_reset_class" = W.can_reset_class
+			"can_reset_class" = W.can_reset_class,
+			"can_invest"      = W.can_invest()
 		)
 	)
 
@@ -104,11 +105,32 @@ var/list/artefact_feedback = list(
 		if("upgrade_spell")
 			upgrade_spell(usr, text2path(params["path"]), params["type"])
 			return TRUE
+		if("invest")
+			invest(usr)
+			return TRUE
+
+/obj/item/weapon/spellbook/proc/invest(mob/user)
+	var/datum/wizard/W = user.mind.wizard
+
+	if(!W.class.investable)
+		to_chat(user, SPAN("warning", "Your class does not support investing."))
+		return
+	
+	if(!W.can_spend(1))
+		to_chat(user, SPAN("warning", "You don't have enough points to make investing!"))
+		return
+	
+	if(!W.can_invest())
+		to_chat(user, SPAN("warning", "Wait your previous investing to finish."))
+		return
+
+	W.spend(1)
+	W.invest_begin()
 
 /obj/item/weapon/spellbook/proc/upgrade_spell(mob/user, datum/spell/path, upgrade_type)
 	var/datum/wizard/W = user.mind.wizard
 	var/datum/spell/spell_to_upgrade = null
-	
+
 	if(!(path in subtypesof(/datum/spell)))
 		CRASH("Invalid spell [path]")
 
@@ -140,7 +162,7 @@ var/list/artefact_feedback = list(
 			CRASH("Unknown upgrade type [upgrade_type]")
 
 /obj/item/weapon/spellbook/proc/reset_class(mob/user)
-	var/datum/wizard/W = user.mind.wizard	
+	var/datum/wizard/W = user.mind.wizard
 	var/area/wizard_station/A = get_area(user)
 
 	if(!W.class)
@@ -164,7 +186,7 @@ var/list/artefact_feedback = list(
 
 	if(!(path in subtypesof(/datum/spell)))
 		CRASH("Invalid spell [path]")
-	
+
 	if(!W.class.has_spell(path))
 		CRASH("Spell [path] does not exist in [W.class]")
 
@@ -205,13 +227,13 @@ var/list/artefact_feedback = list(
 
 	if(!W.class.has_artifact(path))
 		CRASH("Artifact [path] does not exist in [W.class]")
-	
+
 	var/cost = W.class.get_artifact_cost(path)
 
 	if(!W.can_spend(cost))
 		to_chat(user, SPAN("warning", "You don't have enough points to purchase this artifact."))
 		return
-	
+
 	W.spend(cost)
 	feedback_add_details("wizard_artifact_purchased", artefact_feedback[path])
 	var/obj/A = new path(get_turf(usr))
@@ -227,7 +249,7 @@ var/list/artefact_feedback = list(
 /obj/item/weapon/spellbook/tgui_state(mob/user)
 	if(!GLOB.wizards.is_antagonist(user.mind))
 		return UI_CLOSE
-	
+
 	return ..()
 
 /obj/item/weapon/spellbook/attack_self(mob/user)
