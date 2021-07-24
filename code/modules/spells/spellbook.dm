@@ -26,26 +26,43 @@ var/list/artefact_feedback = list(
 	var/uses = 1
 	/// A page that will be opened in the UI.
 	var/page = 0
-	/// A path of spell/class or whatever we inspecting in the UI.
+	/// A path of spell/artifact or whatever we inspecting in the UI.
 	var/inspecting_path = null
 
 /obj/item/weapon/spellbook/tgui_data(mob/user)
 	var/datum/wizard/W = user.mind.wizard
 
 	var/list/data = list(
-		"page" = page,
+		"page"            = page,
 		"inspecting_path" = inspecting_path,
 		"user" = list(
-			"class" = W.class?.type,
-			"points" = W.points,
-			"name" = user.name,
-			"spells" = list(),
+			"class"           = W.class?.type,
+			"points"          = W.points,
+			"name"            = user.name,
+			"spells"          = list(),
 			"can_reset_class" = W.can_reset_class
 		)
 	)
 
 	for(var/datum/spell/S in user.mind.learned_spells)
-		data["user"]["spells"] += S.type
+		data["user"]["spells"] += list(list(
+			"path"        = S.type,
+			"levels" = list(
+				list(
+					"type" = SP_SPEED,
+					"level" = S.spell_levels[SP_SPEED],
+					"max" = S.level_max[SP_SPEED],
+					"can_upgrade" = S.can_improve(SP_SPEED)
+				),
+				list(
+					"type" = SP_POWER,
+					"level" = S.spell_levels[SP_POWER],
+					"max" = S.level_max[SP_POWER],
+					"can_upgrade" = S.can_improve(SP_POWER)
+				)
+			),
+			"total_upgrades" = S.level_max[SP_TOTAL]
+		))
 
 	return data
 
@@ -84,13 +101,47 @@ var/list/artefact_feedback = list(
 		if("reset_class")
 			reset_class(usr)
 			return TRUE
+		if("upgrade_spell")
+			upgrade_spell(usr, text2path(params["path"]), params["type"])
+			return TRUE
+
+/obj/item/weapon/spellbook/proc/upgrade_spell(mob/user, datum/spell/path, upgrade_type)
+	var/datum/wizard/W = user.mind.wizard
+	var/datum/spell/spell_to_upgrade = null
+	
+	if(!(path in subtypesof(/datum/spell)))
+		CRASH("Invalid spell [path]")
+
+	for(var/datum/spell/S in user.mind.learned_spells)
+		if(istype(S, path))
+			spell_to_upgrade = S
+			break
+
+	if(!spell_to_upgrade)
+		CRASH("Trying to upgrade a not learned spell.")
+
+	if(!spell_to_upgrade.can_improve(upgrade_type))
+		to_chat(user, SPAN("warning", "You can't do that type of upgrade more."))
+		return
+
+	if(!W.can_spend(1))
+		to_chat(user, SPAN("warning", "You don't have enough points to upgrade the spell!"))
+		return
+
+	W.spend(1)
+	switch(upgrade_type)
+		if(SP_POWER)
+			ASSERT(spell_to_upgrade.empower_spell())
+			to_chat(user, "You empower [spell_to_upgrade]!")
+		if(SP_SPEED)
+			ASSERT(spell_to_upgrade.quicken_spell())
+			to_chat(user, "You quicken [spell_to_upgrade]!")
+		else
+			CRASH("Unknown upgrade type [upgrade_type]")
 
 /obj/item/weapon/spellbook/proc/reset_class(mob/user)
 	var/datum/wizard/W = user.mind.wizard	
 	var/area/wizard_station/A = get_area(user)
-
-	if(!W)
-		CRASH("[user] has no wizard's datum")
 
 	if(!W.class)
 		CRASH("Trying to reset a wizard class without any assigned one.")
@@ -110,12 +161,6 @@ var/list/artefact_feedback = list(
 
 /obj/item/weapon/spellbook/proc/buy_spell(mob/user, datum/spell/path)
 	var/datum/wizard/W = user.mind.wizard
-	
-	if(!W)
-		CRASH("[user] has no wizard's datum")
-
-	if(!W.class)
-		CRASH("Trying to buy an artifact without any wizard class assigned.")
 
 	if(!(path in subtypesof(/datum/spell)))
 		CRASH("Invalid spell [path]")
@@ -138,7 +183,7 @@ var/list/artefact_feedback = list(
 	var/datum/spell/new_spell = new path
 	feedback_add_details("wizard_spell_purchased", new_spell.feedback)
 	user.add_spell(new_spell)
-	to_chat(user, "You learn the spell [new_spell]")
+	to_chat(user, "You learn the spell [new_spell].")
 
 /obj/item/weapon/spellbook/proc/set_wizard_class(mob/user, datum/wizard_class/path)
 	if(!(path in subtypesof(/datum/wizard_class)))

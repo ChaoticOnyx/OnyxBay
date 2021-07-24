@@ -13,17 +13,36 @@ import {
 import { GameIcon } from '../components/GameIcon';
 import { Window } from '../layouts';
 import { escapeRegExp } from '../sanitize';
+import { InfernoNode } from 'inferno';
+import { logger } from '../logging';
 
 const PAGE_CLASSES = 0;
 const PAGE_SPELLS = 1;
 const PAGE_ARTIFACTS = 2;
 const PAGE_CHARACTER = 3;
 
+enum UpgradeType {
+  PowerLevel = 'power',
+  SpeedLevel = 'speed',
+}
+interface SpellLevels {
+  type: UpgradeType;
+  level: number;
+  max: number;
+  can_upgrade: boolean;
+}
+
+interface UserSpells {
+  path: string;
+  levels: SpellLevels[];
+  total_upgrades: number;
+}
+
 interface User {
   class?: string | null;
   name: string;
   points: number;
-  spells: string[];
+  spells: UserSpells[];
   can_reset_class: boolean;
 }
 
@@ -194,8 +213,7 @@ const InspectArtifactButton = (
 
 const classCard = (props: Class, context: any) => {
   const { data, act } = useBackend<InputData>(context);
-  const isSelected = data.user.class === props.path;
-  const isDisabled = !isSelected && !!data.user.class;
+  const isDisabled = !!data.user.class;
 
   return (
     <Flex class='Card' direction='column'>
@@ -208,7 +226,6 @@ const classCard = (props: Class, context: any) => {
               'float': 'right',
               'font-size': '0.8em',
             }}
-            selected={data.user.class === props.path}
             disabled={isDisabled}
             content='Choose'
             onClick={() => {
@@ -321,7 +338,7 @@ const classesPage = (props: any, context: any) => {
   );
 };
 
-const spellCard = (props: Spell, buttons: Element[] | null = null) => {
+const spellCard = (props: Spell, buttons?: InfernoNode) => {
   const { flags } = props;
 
   return (
@@ -329,7 +346,7 @@ const spellCard = (props: Spell, buttons: Element[] | null = null) => {
       <Flex.Item>
         <h2>
           {SpellIcon(props, false, false)} {props.name}
-          {buttons ? buttons : null}
+          <Box className='Card__buttons'>{buttons}</Box>
         </h2>
       </Flex.Item>
       <Flex.Item>{capitalize(props.description)}</Flex.Item>
@@ -726,7 +743,7 @@ const characterPage = (props: any, context: any) => {
   for (const spell of userClass.spells) {
     if (
       user.spells.find((s, i) => {
-        return s === spell.path;
+        return s.path === spell.path;
       })
     ) {
       learnedSpells.push(spell);
@@ -739,31 +756,75 @@ const characterPage = (props: any, context: any) => {
     <Flex direction='column'>
       <Flex.Item>{navPanel(props, context)}</Flex.Item>
       <Flex.Item mt='0.5rem' className='Card'>
-        <h2>{user.name}</h2>
+        <h2>
+          {user.name}
+          <Box className='Card__buttons'>
+            <Button.Confirm
+              disabled={!user.can_reset_class}
+              onClick={() => act('reset_class')}
+              content='Reset Class'
+              title='You can reset your class only once.'
+            />
+          </Box>
+        </h2>
         <b>Class: </b>
         {userClass.name}
         <br></br>
         <b>Free Points: </b>
         {user.points}
         <br></br>
-        <Button.Confirm
-          disabled={!user.can_reset_class}
-          onClick={() => act('reset_class')}
-          content='Reset Class'
-          title='You can reset your class only once.'
-        />
       </Flex.Item>
       <Flex.Item>
-        <Collapsible title={`Learned Spells (${learnedSpells.length})`}>
+        <Collapsible
+          disabled={!learnedSpells.length}
+          title={`Learned Spells (${learnedSpells.length})`}>
           <Flex direction='column'>
             {learnedSpells.map((s, i) => {
-              return spellCard(s);
+              const spellData = user.spells.find((b, k) => {
+                return b.path === s.path;
+              });
+              const powerUpgrade = spellData.levels.find((l) => {
+                return l.type === UpgradeType.PowerLevel;
+              });
+              const speedUpgrade = spellData.levels.find((l) => {
+                return l.type === UpgradeType.SpeedLevel;
+              });
+
+              return spellCard(
+                s,
+                <>
+                  <Button
+                    onClick={() =>
+                      act('upgrade_spell', {
+                        path: s.path,
+                        type: powerUpgrade.type,
+                      })
+                    }
+                    disabled={!powerUpgrade.can_upgrade}
+                    title='Upgrade the skill by increasing his power.'
+                    content={`Empower (${powerUpgrade.level}/${powerUpgrade.max})`}
+                  />
+                  <Button
+                    onClick={() =>
+                      act('upgrade_spell', {
+                        path: s.path,
+                        type: speedUpgrade.type,
+                      })
+                    }
+                    disabled={!speedUpgrade.can_upgrade}
+                    title='Upgrade the skill by increasing his speed.'
+                    content={`Quicken (${speedUpgrade.level}/${speedUpgrade.max})`}
+                  />
+                </>,
+              );
             })}
           </Flex>
         </Collapsible>
       </Flex.Item>
       <Flex.Item>
-        <Collapsible title={`Spells (${notLearnedSpells.length})`}>
+        <Collapsible
+          disabled={!notLearnedSpells.length}
+          title={`Spells (${notLearnedSpells.length})`}>
           <Flex direction='column'>
             {notLearnedSpells.map((s, i) => {
               return spellCard(
@@ -772,10 +833,6 @@ const characterPage = (props: any, context: any) => {
                   disabled={user.points - s.cost < 0}
                   onClick={() => act('buy_spell', { path: s.path })}
                   content={`Buy (${s.cost} points)`}
-                  style={{
-                    'float': 'right',
-                    'font-size': '0.8em',
-                  }}
                 />,
               );
             })}
@@ -783,7 +840,9 @@ const characterPage = (props: any, context: any) => {
         </Collapsible>
       </Flex.Item>
       <Flex.Item>
-        <Collapsible title={`Artifacts (${userClass.artifacts.length})`}>
+        <Collapsible
+          disabled={!userClass.artifacts.length}
+          title={`Artifacts (${userClass.artifacts.length})`}>
           <Flex direction='column'>
             {userClass.artifacts.map((a, i) => {
               return BuyArtifactCard(a, context);
