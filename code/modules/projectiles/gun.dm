@@ -402,6 +402,7 @@
 	var/obj/item/projectile/in_chamber = consume_next_projectile()
 	if (istype(in_chamber) && process_projectile(in_chamber, user, user, BP_MOUTH))
 		user.visible_message("<span class = 'warning'>[user] pulls the trigger.</span>")
+		handle_post_fire(user,user)
 		if(istype(in_chamber, /obj/item/projectile/beam/lastertag))
 			user.show_message("<span class = 'warning'>You feel rather silly, trying to commit suicide with a toy.</span>")
 			mouthshoot = 0
@@ -409,10 +410,9 @@
 
 		in_chamber.on_hit(M)
 		if (in_chamber.damage_type != PAIN)
-			log_and_message_admins("[key_name(user)] tried to commit suicide \a [src]")
+			log_and_message_admins("[key_name(user)] try commited suicide using \a [src]")
 			M.get_organ(BP_HEAD).createwound(PIERCE, in_chamber.damage * 4)
 			user.adjustBrainLoss(amount = (in_chamber.damage * rand(15,20)))
-			Fire(user, user, src, "head")
 		else
 			to_chat(user, "<span class = 'notice'>Ow...</span>")
 			user.apply_effect(110,PAIN,0)
