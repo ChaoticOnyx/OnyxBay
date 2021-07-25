@@ -829,6 +829,14 @@ const characterPage = (props: any, context: any) => {
                     title='Upgrade the skill by increasing his speed.'
                     content={`Quicken (${speedUpgrade.level}/${speedUpgrade.max})`}
                   />
+                  {userClass.flags.can_make_contracts ? (
+                    <Button
+                      onClick={() => act('contract', { path: s.path })}
+                      title={`Spend ${s.cost} points to get a contract.`}
+                      disabled={user.points < s.cost}
+                      content='Contract'
+                    />
+                  ) : null}
                 </>,
               );
             })}
@@ -843,11 +851,21 @@ const characterPage = (props: any, context: any) => {
             {notLearnedSpells.map((s, i) => {
               return spellCard(
                 s,
-                <Button
-                  disabled={user.points - s.cost < 0}
-                  onClick={() => act('buy_spell', { path: s.path })}
-                  content={`Buy (${s.cost} points)`}
-                />,
+                <>
+                  <Button
+                    disabled={user.points - s.cost < 0}
+                    onClick={() => act('buy_spell', { path: s.path })}
+                    content={`Buy (${s.cost} points)`}
+                  />
+                  {userClass.flags.can_make_contracts ? (
+                    <Button
+                      onClick={() => act('contract', { path: s.path })}
+                      title={`Spend ${s.cost} points to get a contract.`}
+                      disabled={user.points < s.cost}
+                      content='Contract'
+                    />
+                  ) : null}
+                </>,
               );
             })}
           </Flex>

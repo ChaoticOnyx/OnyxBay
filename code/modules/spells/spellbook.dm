@@ -108,21 +108,27 @@ var/list/artefact_feedback = list(
 		if("invest")
 			invest(usr)
 			return TRUE
+		if("contract")
+			make_contract(usr, text2path(params["path"]))
+			return TRUE
+
+/obj/item/weapon/spellbook/proc/make_contract(mob/user, spell_path)
+	var/datum/wizard/W = user.mind.wizard
+	var/spell_cost = W.class.get_spell_cost(spell_path)
+
+	ASSERT(W.class.can_make_contracts)
+	ASSERT(W.can_spend(spell_cost))
+
+	W.spend(spell_cost)
+	var/obj/O = new /obj/item/weapon/contract/boon(get_turf(user), spell_path)
+	to_chat(user, "You have purchased \the [O].")
 
 /obj/item/weapon/spellbook/proc/invest(mob/user)
 	var/datum/wizard/W = user.mind.wizard
 
-	if(!W.class.investable)
-		to_chat(user, SPAN("warning", "Your class does not support investing."))
-		return
-	
-	if(!W.can_spend(1))
-		to_chat(user, SPAN("warning", "You don't have enough points to make investing!"))
-		return
-	
-	if(!W.can_invest())
-		to_chat(user, SPAN("warning", "Wait your previous investing to finish."))
-		return
+	ASSERT(W.class.investable)
+	ASSERT(W.can_spend(1))
+	ASSERT(W.can_invest())
 
 	W.spend(1)
 	W.invest_begin()
@@ -131,8 +137,8 @@ var/list/artefact_feedback = list(
 	var/datum/wizard/W = user.mind.wizard
 	var/datum/spell/spell_to_upgrade = null
 
-	if(!(path in subtypesof(/datum/spell)))
-		CRASH("Invalid spell [path]")
+
+	ASSERT(path in subtypesof(/datum/spell))
 
 	for(var/datum/spell/S in user.mind.learned_spells)
 		if(istype(S, path))
@@ -165,16 +171,12 @@ var/list/artefact_feedback = list(
 	var/datum/wizard/W = user.mind.wizard
 	var/area/wizard_station/A = get_area(user)
 
-	if(!W.class)
-		CRASH("Trying to reset a wizard class without any assigned one.")
-
-	if(!W.can_reset_class)
-		to_chat(user, SPAN("warning", "You can't reset your class again!"))
-		return
-
 	if(!istype(A))
 		to_chat(user, SPAN("warning", "You must be in the wizard academy to re-memorize your spells."))
 		return
+
+	ASSERT(W.class)
+	ASSERT(W.can_reset_class)
 
 	user.spellremove()
 	W.reset()
@@ -184,11 +186,8 @@ var/list/artefact_feedback = list(
 /obj/item/weapon/spellbook/proc/buy_spell(mob/user, datum/spell/path)
 	var/datum/wizard/W = user.mind.wizard
 
-	if(!(path in subtypesof(/datum/spell)))
-		CRASH("Invalid spell [path]")
-
-	if(!W.class.has_spell(path))
-		CRASH("Spell [path] does not exist in [W.class]")
+	ASSERT(path in subtypesof(/datum/spell))
+	ASSERT(W.class.has_spell(path))
 
 	for(var/datum/spell/S in user.mind.learned_spells)
 		if(S.type == path)
@@ -197,9 +196,7 @@ var/list/artefact_feedback = list(
 
 	var/cost = W.class.get_spell_cost(path)
 
-	if(!W.can_spend(cost))
-		to_chat(user, SPAN("warning", "You don't have enough points to purchase this spell."))
-		return
+	ASSERT(W.can_spend(cost))
 
 	W.spend(cost)
 	var/datum/spell/new_spell = new path
@@ -208,8 +205,7 @@ var/list/artefact_feedback = list(
 	to_chat(user, "You learn the spell [new_spell].")
 
 /obj/item/weapon/spellbook/proc/set_wizard_class(mob/user, datum/wizard_class/path)
-	if(!(path in subtypesof(/datum/wizard_class)))
-		CRASH("Invalid wizard class [path]")
+	ASSERT(path in subtypesof(/datum/wizard_class))
 
 	if(user.mind.wizard.class)
 		to_chat(user, SPAN("warning", "You can't have more than one class at the moment."))
@@ -222,17 +218,11 @@ var/list/artefact_feedback = list(
 /obj/item/weapon/spellbook/proc/buy_artifact(mob/user, obj/path)
 	var/datum/wizard/W = user.mind.wizard
 
-	if(!W.class)
-		CRASH("Trying to buy an artifact without any wizard class assigned.")
-
-	if(!W.class.has_artifact(path))
-		CRASH("Artifact [path] does not exist in [W.class]")
+	ASSERT(W.class.has_artifact(path))
 
 	var/cost = W.class.get_artifact_cost(path)
 
-	if(!W.can_spend(cost))
-		to_chat(user, SPAN("warning", "You don't have enough points to purchase this artifact."))
-		return
+	ASSERT(W.can_spend(cost))
 
 	W.spend(cost)
 	feedback_add_details("wizard_artifact_purchased", artefact_feedback[path])
