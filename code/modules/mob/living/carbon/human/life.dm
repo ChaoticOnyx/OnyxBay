@@ -34,7 +34,7 @@
 #define HUMAN_DEFAULT_POISE 50 //100% healthy, non-drugged human being.
 #define HUMAN_MIN_POISE 25 //Some balancing stuff here. Even drunk pirates should be able to fight.
 
-#define DOSTER_SLIM_COEFFICIENT 50 * 1/2/3/5 // 1.6666666666666667, coefficient to multiply damage poise, used on slim human.
+#define DOSTER_SLIM_COEFFICIENT 5/3 // 1.6666666666666667, coefficient to multiply damage poise, used on slim human.
 
 /mob/living/carbon/human
 	var/oxygen_alert = 0
