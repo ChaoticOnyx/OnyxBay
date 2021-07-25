@@ -1,5 +1,5 @@
 SUBSYSTEM_DEF(virus)
-	name = "Virus Shit System"
+	name = "Virus Processing System"
 	priority = SS_PRIORITY_VIRUSES
 	flags = SS_NO_INIT
 	wait = 1
