@@ -31,6 +31,7 @@ var/global/datum/body_build/default_body_build = new
 	var/rig_back     = 'icons/inv_slots/rig/mob.dmi'
 	var/blood_icon   = 'icons/mob/human_races/masks/blood_human.dmi'
 	var/dam_mask     = 'icons/mob/human_races/masks/dam_mask_human.dmi'
+	var/weak_body_build = FALSE
 
 /datum/body_build/proc/get_mob_icon(slot, icon_state)
 	var/icon/I
@@ -75,6 +76,7 @@ var/global/datum/body_build/default_body_build = new
 	rig_back             = 'icons/inv_slots/rig/mob_slim.dmi'
 	blood_icon           = 'icons/mob/human_races/masks/blood_human_slim.dmi'
 	dam_mask             = 'icons/mob/human_races/masks/dam_mask_human_slim.dmi'
+	weak_body_build      = TRUE
 
 /datum/body_build/slim/alt
 	name                 = "Slim Alt"

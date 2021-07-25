@@ -312,7 +312,7 @@ meteor_act
 
 	if(istype(user,/mob/living/carbon/human))
 		var/mob/living/carbon/human/A = user
-		if((A.body_build.name == "Slim" || A.body_build.name == "Slim Alt") && !I.sharp)
+		if(A.body_build.weak_body_build && !I.sharp)
 			effective_force *= 0.75 // It's kinda hard to club people when you're two times thinner than a regular person.
 
 	effective_force *= round((100-blocked)/100, 0.01)
@@ -401,7 +401,7 @@ meteor_act
 		effective_force *= 1.5 // Well it's easier to beat all the shit outta lying dudes right?
 	if(istype(user,/mob/living/carbon/human))
 		var/mob/living/carbon/human/A = user
-		if(A.body_build.name == "Slim" || A.body_build.name == "Slim Alt")
+		if(A.body_build.weak_body_build)
 			effective_force *= 0.8
 
 	effective_force *= round((100-blocked)/60, 0.01)
