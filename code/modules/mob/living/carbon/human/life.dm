@@ -1263,3 +1263,5 @@
 			Stun(amount/12)
 			Weaken(amount/10)
 			visible_message("<b>[src]</b> collapses!", SPAN("warning", "You collapse from shock!"))
+
+#undef DOSTER_SLIM_COEFFICIENT
