@@ -232,6 +232,5 @@
 	stack -= dish
 
 	user.put_in_hands(dish)
-	to_chat(user, SPAN("warning", "You have removed the topmost [src] from your hand."))
 
 	update_icon()
