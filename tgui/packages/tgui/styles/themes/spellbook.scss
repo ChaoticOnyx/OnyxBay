@@ -2,27 +2,6 @@
   $border-thick: 0.15rem;
   $icon-size: 4rem;
 
-  @mixin item-border {
-    border: transparent solid $border-thick + 0.1rem;
-    border-image: url('../../assets/spellbook/item_border.png');
-    border-image-slice: 6 6 6 6 fill;
-    border-image-width: 4px;
-  }
-
-  @mixin item-border-selected {
-    border: transparent solid $border-thick + 0.1rem;
-    border-image: url('../../assets/spellbook/item_border_selected.png');
-    border-image-slice: 6 6 6 6 fill;
-    border-image-width: 4px;
-  }
-
-  @mixin item-border-ignored {
-    border: transparent solid $border-thick + 0.1rem;
-    border-image: url('../../assets/spellbook/item_border_ignored.png');
-    border-image-slice: 6 6 6 6 fill;
-    border-image-width: 4px;
-  }
-
   .TitleBar {
     font-family: Reaver, serif;
     border: none;
@@ -69,8 +48,8 @@
     }
 
     &__buttons {
-      float: right;
-      font-size: 0.8em;
+        float: right;
+        font-size: 0.8em;
     }
   }
 
@@ -97,13 +76,13 @@
       border: #cfc033 solid $border-thick !important;
 
       .Icon--spell {
-        box-shadow: inset 0 0 1rem 0.15rem #314483;
-        @include item-border-selected;
+        background-color: #314483;
+        border: #314483 solid $border-thick;
       }
 
       .Icon--artifact {
-        box-shadow: inset 0 0 1rem 0.15rem #593080;
-        @include item-border-selected;
+        background-color: #593080;
+        border: #593080 solid $border-thick;
       }
     }
 
@@ -128,45 +107,42 @@
   }
 
   .Icon--spell {
-    @include item-border;
-    box-shadow: inset 0 0 1rem 0.15rem #10162b;
+    border: #1f2b52 solid $border-thick;
+    box-shadow: inset 0 0 1rem 0 #10162b;
 
     &:hover,
     &:focus {
-      box-shadow: inset 0 0 1rem 0.15rem #314483;
-      @include item-border-selected;
+      border: #314483 solid $border-thick;
     }
   }
 
   .Icon--artifact {
-    @include item-border;
-    box-shadow: inset 0 0 1rem 0.15rem #221324;
+    border: #391f52 solid $border-thick;
+    box-shadow: inset 0 0 1rem 0 #1a1715;
 
     &:hover,
     &:focus {
-      box-shadow: inset 0 0 1rem 0.15rem #593080;
-      @include item-border-selected;
+      border: #593080 solid $border-thick;
     }
   }
 
   .Icon--sacrifice {
-    @include item-border;
-    box-shadow: inset 0 0 1rem 0.15rem #2c1010;
+    border: #521f1f solid $border-thick;
+    box-shadow: inset 0 0 1rem 0 #2c1010;
 
     &:hover,
     &:focus {
-      box-shadow: inset 0 0 1rem 0.15rem #813131;
-      @include item-border-selected;
+      border: #813131 solid $border-thick;
     }
   }
 
   .Icon--ignored {
-    box-shadow: inset 0 0 1rem 0.5rem #521f1f;
-    @include item-border-ignored;
+    background-color: #521f1f;
+    border: #2c1111 solid $border-thick;
   }
 
   .Input {
-    background-color: #0f0c0a;
+    background-color: #0F0C0A;
     border-radius: 0.5rem;
     border: #63677c solid $border-thick;
 

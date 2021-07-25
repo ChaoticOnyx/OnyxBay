@@ -66,7 +66,7 @@ interface Artifact {
   description: string;
 }
 
-export interface Spell {
+interface Spell {
   path: string;
   cost: number;
   icon: string;
@@ -81,13 +81,13 @@ export interface Spell {
   ability: string;
 }
 
-export enum ChargeType {
+enum ChargeType {
   Recharge = 'recharge',
   Charges = 'charges',
   Holdvar = 'holdervar',
 }
 
-export interface SpellFlags {
+interface SpellFlags {
   needs_clothes: boolean;
   needs_human: boolean;
   include_user: boolean;
@@ -237,11 +237,11 @@ const classCard = (props: Class, context: any) => {
       <Flex.Item>{props.description}</Flex.Item>
       <Flex.Item>
         <b>Points:</b> {props.points}
-        <br></br>
+        <br />
         {props.flags.investable ? (
           <span class='Flag Flag--investable'>Investable</span>
         ) : null}
-        <br></br>
+        <br />
         {props.flags.can_make_contracts ? (
           <span class='Flag Flag--contracts'>Can Make Contracts</span>
         ) : null}
@@ -254,7 +254,7 @@ const classCard = (props: Class, context: any) => {
         })}
       </Flex.Item>
       <Flex.Item>
-        <br></br>
+        <br />
         <Divider />
         <h3>Artifacts:</h3>
         {props.artifacts.map((a, i) => {
@@ -278,7 +278,7 @@ const classCard = (props: Class, context: any) => {
               return (
                 <>
                   - <b>{capitalize(r.name)}</b>: {r.description}
-                  <br></br>
+                  <br />
                 </>
               );
             })
@@ -359,29 +359,29 @@ const spellCard = (props: Spell, buttons?: InfernoNode) => {
       <Flex.Item>
         <Divider />
         <b>School:</b> {capitalize(props.school)}
-        <br></br>
+        <br />
         <b>Ability:</b> {props.ability}
-        <br></br>
+        <br />
         <b>Range:</b> {props.range}
-        <br></br>
+        <br />
         <b>Duration:</b> {Math.ceil(props.duration / 10)} seconds
-        <br></br>
+        <br />
         {flags.needs_clothes ? (
           <>
             <span class='Flag Flag--needsClothes'>Needs Clothes</span>
-            <br></br>
+            <br />
           </>
         ) : null}
         {flags.needs_human ? (
           <>
             <span class='Flag Flag--needsHuman'>Human Caster</span>
-            <br></br>
+            <br />
           </>
         ) : null}
         {flags.no_button ? (
           <>
             <span class='Flag Flag--noButton'>Passive</span>
-            <br></br>
+            <br />
           </>
         ) : null}
       </Flex.Item>
@@ -485,8 +485,8 @@ const spellsPage = (props: any, context: any) => {
     let ignore = false;
 
     if (
-      nameFilter &&
-      spell.name
+      nameFilter
+      && spell.name
         .toLocaleLowerCase()
         .search(escapeRegExp(nameFilter.toLocaleLowerCase()))
     ) {
@@ -645,8 +645,8 @@ const artifactsPage = (props: any, context: any) => {
     let ignore = false;
 
     if (
-      nameFilter &&
-      artifact.name
+      nameFilter
+      && artifact.name
         .toLocaleLowerCase()
         .search(escapeRegExp(nameFilter.toLocaleLowerCase()))
     ) {
@@ -777,10 +777,10 @@ const characterPage = (props: any, context: any) => {
         </h2>
         <b>Class: </b>
         {userClass.name}
-        <br></br>
+        <br />
         <b>Free Points: </b>
         {user.points}
-        <br></br>
+        <br />
         <Button
           onClick={() => act('invest')}
           title='Spend one of your points and get 2 points after 15 minutes.'
@@ -906,7 +906,7 @@ export const SpellBook = (props: any, context: any) => {
 
   return (
     <Window theme='spellbook' width={575} height={700}>
-      <link rel="stylesheet" type="text/css" href="reaver.css"></link>
+      <link rel='stylesheet' type='text/css' href='reaver.css' />
       <Window.Content scrollable>
         {PAGES[data.page].render(props, context)}
       </Window.Content>
