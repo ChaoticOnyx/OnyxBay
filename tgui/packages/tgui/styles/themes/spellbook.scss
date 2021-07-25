@@ -1,45 +1,30 @@
-@font-face {
-  font-family: 'Reaver';
-  src: url('https://cdn.cloudflare.steamstatic.com/apps/dota2/fonts/Reaver-Regular.woff')
-    format('woff');
-  font-weight: 400;
-  font-style: normal;
-  font-display: swap;
-}
-
-@font-face {
-  font-family: 'Reaver';
-  src: url('https://cdn.cloudflare.steamstatic.com/apps/dota2/fonts/Reaver-SemiBold.woff')
-    format('woff');
-  font-weight: 600;
-  font-style: normal;
-  font-display: swap;
-}
-
-@font-face {
-  font-family: 'Reaver';
-  src: url('https://cdn.cloudflare.steamstatic.com/apps/dota2/fonts/Reaver-Bold.woff')
-    format('woff');
-  font-weight: 700;
-  font-style: normal;
-  font-display: swap;
-}
-
-@font-face {
-  font-family: 'Reaver';
-  src: url('https://cdn.cloudflare.steamstatic.com/apps/dota2/fonts/Reaver-Black.woff')
-    format('woff');
-  font-weight: 800;
-  font-style: normal;
-  font-display: swap;
-}
-
 .theme-spellbook {
   $border-thick: 0.15rem;
   $icon-size: 4rem;
 
+  @mixin item-border {
+    border: transparent solid $border-thick + 0.1rem;
+    border-image: url('../../assets/spellbook/item_border.png');
+    border-image-slice: 6 6 6 6 fill;
+    border-image-width: 4px;
+  }
+
+  @mixin item-border-selected {
+    border: transparent solid $border-thick + 0.1rem;
+    border-image: url('../../assets/spellbook/item_border_selected.png');
+    border-image-slice: 6 6 6 6 fill;
+    border-image-width: 4px;
+  }
+
+  @mixin item-border-ignored {
+    border: transparent solid $border-thick + 0.1rem;
+    border-image: url('../../assets/spellbook/item_border_ignored.png');
+    border-image-slice: 6 6 6 6 fill;
+    border-image-width: 4px;
+  }
+
   .TitleBar {
-    font-family: 'Reaver', serif;
+    font-family: Reaver, serif;
     border: none;
     box-shadow: none;
     user-select: none;
@@ -84,8 +69,8 @@
     }
 
     &__buttons {
-        float: right;
-        font-size: 0.8em;
+      float: right;
+      font-size: 0.8em;
     }
   }
 
@@ -112,13 +97,13 @@
       border: #cfc033 solid $border-thick !important;
 
       .Icon--spell {
-        background-color: #314483;
-        border: #314483 solid $border-thick;
+        box-shadow: inset 0 0 1rem 0.15rem #314483;
+        @include item-border-selected;
       }
 
       .Icon--artifact {
-        background-color: #593080;
-        border: #593080 solid $border-thick;
+        box-shadow: inset 0 0 1rem 0.15rem #593080;
+        @include item-border-selected;
       }
     }
 
@@ -143,42 +128,45 @@
   }
 
   .Icon--spell {
-    border: #1f2b52 solid $border-thick;
-    box-shadow: inset 0 0 1rem 0 #10162b;
+    @include item-border;
+    box-shadow: inset 0 0 1rem 0.15rem #10162b;
 
     &:hover,
     &:focus {
-      border: #314483 solid $border-thick;
+      box-shadow: inset 0 0 1rem 0.15rem #314483;
+      @include item-border-selected;
     }
   }
 
   .Icon--artifact {
-    border: #391f52 solid $border-thick;
-    box-shadow: inset 0 0 1rem 0 #1a1715;
+    @include item-border;
+    box-shadow: inset 0 0 1rem 0.15rem #221324;
 
     &:hover,
     &:focus {
-      border: #593080 solid $border-thick;
+      box-shadow: inset 0 0 1rem 0.15rem #593080;
+      @include item-border-selected;
     }
   }
 
   .Icon--sacrifice {
-    border: #521f1f solid $border-thick;
-    box-shadow: inset 0 0 1rem 0 #2c1010;
+    @include item-border;
+    box-shadow: inset 0 0 1rem 0.15rem #2c1010;
 
     &:hover,
     &:focus {
-      border: #813131 solid $border-thick;
+      box-shadow: inset 0 0 1rem 0.15rem #813131;
+      @include item-border-selected;
     }
   }
 
   .Icon--ignored {
-    background-color: #521f1f;
-    border: #2c1111 solid $border-thick;
+    box-shadow: inset 0 0 1rem 0.5rem #521f1f;
+    @include item-border-ignored;
   }
 
   .Input {
-    background-color: #0F0C0A;
+    background-color: #0f0c0a;
     border-radius: 0.5rem;
     border: #63677c solid $border-thick;
 

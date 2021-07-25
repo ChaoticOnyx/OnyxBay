@@ -242,6 +242,11 @@ var/list/artefact_feedback = list(
 
 	return ..()
 
+/obj/item/weapon/spellbook/tgui_assets(mob/user)
+	return list(
+		get_asset_datum(/datum/asset/simple/reaver)
+	)
+
 /obj/item/weapon/spellbook/attack_self(mob/user)
 	if(!GLOB.wizards.is_antagonist(user.mind))
 		to_chat(user, "You can't make heads or tails of this book.")

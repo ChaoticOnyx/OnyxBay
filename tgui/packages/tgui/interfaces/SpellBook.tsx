@@ -906,6 +906,7 @@ export const SpellBook = (props: any, context: any) => {
 
   return (
     <Window theme='spellbook' width={575} height={700}>
+      <link rel="stylesheet" type="text/css" href="reaver.css"></link>
       <Window.Content scrollable>
         {PAGES[data.page].render(props, context)}
       </Window.Content>
