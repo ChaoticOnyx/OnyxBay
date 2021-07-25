@@ -12,6 +12,7 @@
 
 /obj/item/trash/dish
 	var/list/stack = list()
+	var/max_stack = 5
 
 /obj/item/trash/dish/baking_sheet
 	name = "baking sheet"
@@ -212,15 +213,13 @@
 		for(var/obj/item/trash/dish/i in dish.stack)
 			dishestoadd += i
 
-		if((length(stack) + length(dishestoadd)) <= 4)
+		if((length(stack) + length(dishestoadd)) < max_stack)
 			user.drop_item()
 			dish.forceMove(src)
 			dish.stack.Cut()
 			dish.update_icon()
 			stack += dishestoadd
 			update_icon()
-
-			to_chat(user, SPAN("warning", "You put \the [dish] ontop of \the [src]!"))
 		else
 			to_chat(user, SPAN("warning", "The stack is too high!"))
 
