@@ -316,7 +316,8 @@ var/list/admin_verbs_hideable = list(
 	/client/proc/toggle_possess_mode,
 	/client/proc/enable_profiler,
 	/client/proc/bluespace_tech,
-	/client/proc/delbook
+	/client/proc/delbook,
+	/client/proc/debug_glob_variables
 	)
 
 var/list/admin_verbs_mod = list(
