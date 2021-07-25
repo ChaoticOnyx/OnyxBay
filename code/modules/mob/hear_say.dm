@@ -319,7 +319,7 @@
 			heardword = copytext(heardword, 2)
 		if(copytext(heardword, -1) in punctuation)
 			heardword = copytext(heardword, 1, length(heardword))
-		heard = "<span class = 'game_say'>...<i>You hear something about</i>... <i>[heardword]</b>...</span>"
+		heard = SPAN("game_say", "...<i>You hear something about</i>... <i>[heardword]</i>...")
 
 	else
 		heard = "<span class = 'game_say'>...<i>You almost hear someone talking</i>...</span>"
