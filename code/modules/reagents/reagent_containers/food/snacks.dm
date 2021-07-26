@@ -44,7 +44,17 @@
 /obj/item/weapon/reagent_containers/food/snacks/attack(mob/M as mob, mob/user as mob, def_zone)
 	if(!reagents.total_volume)
 		to_chat(user, "<span class='danger'>None of [src] left!</span>")
-		user.drop_from_inventory(src)
+		//Gordo spijxjxeno iz strocxek vysxe. Top notch monkey coding.
+		M.drop_item()
+		if(trash)
+			if(ispath(trash,/obj/item))
+				var/obj/item/TrashItem = new trash(get_turf(M))
+				M.put_in_hands(TrashItem)
+			else if(istype(trash,/obj/item))
+				M.put_in_hands(trash)
+		if(istype(loc, /obj/item/organ))
+			var/obj/item/organ/O = loc
+			O.organ_eaten(M)
 		qdel(src)
 		return 0
 
