@@ -1,6 +1,30 @@
 .theme-spellbook {
   $border-thick: 0.15rem;
-  $icon-size: 4rem;
+  $icon-size: 3.5rem;
+
+  @mixin item-border {
+    border-radius: 0.5rem;
+    border: transparent solid $border-thick;
+    border-image: url('../../assets/spellbook/item_border.png');
+    border-image-slice: 6 6 6 6 fill;
+    border-image-width: 0.25rem;
+  }
+
+  @mixin item-border-selected {
+    border-radius: 0.5rem;
+    border: transparent solid $border-thick;
+    border-image: url('../../assets/spellbook/item_border_selected.png');
+    border-image-slice: 6 6 6 6 fill;
+    border-image-width: 0.25rem;
+  }
+
+  @mixin item-border-ignored {
+    border-radius: 0.5rem;
+    border: transparent solid $border-thick;
+    border-image: url('../../assets/spellbook/item_border_ignored.png');
+    border-image-slice: 6 6 6 6 fill;
+    border-image-width: 0.25rem;
+  }
 
   .TitleBar {
     font-family: Reaver, serif;
@@ -30,6 +54,15 @@
     font-family: 'Reaver', serif;
     background: none;
     background-color: #42372d;
+    font-size: 0.8em;
+  }
+
+  h2 {
+    font-size: 1.4em;
+  }
+
+  h3 {
+    font-size: 1.2em;
   }
 
   .Card {
@@ -38,8 +71,7 @@
     padding-top: 0;
     background-color: #24201d;
     border-radius: 0.25rem;
-    border: #615877 solid $border-thick;
-    box-shadow: inset 0 0 0.6rem 0.1rem #1b1820;
+    border: #4A423B solid $border-thick;
 
     .Icon--spell,
     .Icon--artifact,
@@ -49,7 +81,7 @@
 
     &__buttons {
         float: right;
-        font-size: 0.8em;
+        font-size: 0.6em;
     }
   }
 
@@ -63,7 +95,6 @@
     font-weight: bold;
     padding-left: 0.5rem;
     padding-right: 0.5rem;
-    font-size: 0.9em;
 
     &:hover,
     &:focus {
@@ -77,12 +108,12 @@
 
       .Icon--spell {
         background-color: #314483;
-        border: #314483 solid $border-thick;
+        @include item-border-selected;
       }
 
       .Icon--artifact {
         background-color: #593080;
-        border: #593080 solid $border-thick;
+        @include item-border-selected;
       }
     }
 
@@ -107,38 +138,38 @@
   }
 
   .Icon--spell {
-    border: #1f2b52 solid $border-thick;
     box-shadow: inset 0 0 1rem 0 #10162b;
+    @include item-border;
 
     &:hover,
     &:focus {
-      border: #314483 solid $border-thick;
+      @include item-border-selected;
     }
   }
 
   .Icon--artifact {
-    border: #391f52 solid $border-thick;
     box-shadow: inset 0 0 1rem 0 #1a1715;
+    @include item-border;
 
     &:hover,
     &:focus {
-      border: #593080 solid $border-thick;
+      @include item-border-selected;
     }
   }
 
   .Icon--sacrifice {
-    border: #521f1f solid $border-thick;
     box-shadow: inset 0 0 1rem 0 #2c1010;
+    @include item-border;
 
     &:hover,
     &:focus {
-      border: #813131 solid $border-thick;
+      @include item-border-selected;
     }
   }
 
   .Icon--ignored {
     background-color: #521f1f;
-    border: #2c1111 solid $border-thick;
+    @include item-border-ignored;
   }
 
   .Input {
@@ -177,5 +208,7 @@
 
   .Divider {
     border-top: rgba(255, 255, 255, 0.1) solid 2px;
-  }
+
+ 
+}
 }

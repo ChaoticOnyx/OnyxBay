@@ -126,6 +126,7 @@ const SpellIcon = (
   props: Spell,
   ignored: boolean = false,
   showCost: boolean = true,
+  key: any,
 ) => {
   return (
     <GameIcon
@@ -142,6 +143,7 @@ const ArtifactIcon = (
   props: Artifact,
   ignored: boolean = false,
   showCost: boolean = true,
+  key: any,
 ) => {
   return (
     <GameIcon
@@ -154,9 +156,10 @@ const ArtifactIcon = (
   );
 };
 
-const SacrificeIcon = (props: SacrificeObject) => {
+const SacrificeIcon = (props: SacrificeObject, key: any) => {
   return (
     <GameIcon
+      key={key}
       title={`${capitalize(props.name)}\n${capitalize(
         props.description || '',
       )}`}
@@ -172,6 +175,7 @@ const InspectSpellButton = (
   ignored: boolean = false,
   selected: boolean = false,
   showCost: boolean = true,
+  key: any,
 ) => {
   const { act } = useBackend<InputData>(context);
 
@@ -183,7 +187,7 @@ const InspectSpellButton = (
         act('set_inspecting', { path: props.path });
         act('change_page', { page: PAGE_SPELLS });
       }}>
-      {SpellIcon(props, ignored, showCost)}
+      {SpellIcon(props, ignored, showCost, key)}
     </Button>
   );
 };
@@ -194,6 +198,7 @@ const InspectArtifactButton = (
   ignored: boolean = false,
   selected: boolean = false,
   showCost: boolean = true,
+  key: any,
 ) => {
   const { act } = useBackend<InputData>(context);
 
@@ -205,33 +210,31 @@ const InspectArtifactButton = (
         act('set_inspecting', { path: props.path });
         act('change_page', { page: PAGE_ARTIFACTS });
       }}>
-      {ArtifactIcon(props, ignored, showCost)}
+      {ArtifactIcon(props, ignored, showCost, key)}
     </Button>
   );
 };
 
-const classCard = (props: Class, context: any) => {
+const classCard = (props: Class, context: any, key: any) => {
   const { data, act } = useBackend<InputData>(context);
   const isDisabled = !!data.user.class;
 
   return (
-    <Flex class='Card' direction='column'>
+    <Flex key={key} class='Card' direction='column'>
       <Flex.Item>
         <h2>
           <GameIcon html={props.icon} />
           {props.name}{' '}
-          <Button
-            style={{
-              'float': 'right',
-              'font-size': '0.8em',
-            }}
-            disabled={isDisabled}
-            content='Choose'
-            onClick={() => {
-              act('choose_class', { path: props.path });
-              act('change_page', { page: PAGE_CHARACTER });
-            }}
-          />
+          <Box className='Card__buttons'>
+            <Button
+              disabled={isDisabled}
+              content='Choose'
+              onClick={() => {
+                act('choose_class', { path: props.path });
+                act('change_page', { page: PAGE_CHARACTER });
+              }}
+            />
+          </Box>
         </h2>
       </Flex.Item>
       <Flex.Item>{props.description}</Flex.Item>
@@ -249,24 +252,24 @@ const classCard = (props: Class, context: any) => {
       <Flex.Item>
         <Divider />
         <h3>Spells:</h3>
-        {props.spells.map((s, i) => {
-          return InspectSpellButton(s, context);
+        {props.spells.map((s) => {
+          return InspectSpellButton(s, context, false, false, false, s.path);
         })}
       </Flex.Item>
       <Flex.Item>
         <br />
         <Divider />
         <h3>Artifacts:</h3>
-        {props.artifacts.map((a, i) => {
-          return InspectArtifactButton(a, context);
+        {props.artifacts.map((a) => {
+          return InspectArtifactButton(a, context, false, false, false, a.path);
         })}
       </Flex.Item>
       <Flex.Item>
         <Divider />
         <h3>Sacrifice Objects:</h3>
         {props.sacrifice_objects.length
-          ? props.sacrifice_objects.map((o, i) => {
-              return SacrificeIcon(o);
+          ? props.sacrifice_objects.map((o) => {
+              return SacrificeIcon(o, o.path);
             })
           : 'None'}
       </Flex.Item>
@@ -338,7 +341,7 @@ const classesPage = (props: any, context: any) => {
     <Flex direction='column'>
       <Flex.Item>{navPanel(props, context)}</Flex.Item>
       <Flex.Item mt='0.5rem'>
-        {classes?.map((c, i) => classCard(c, context))}
+        {classes?.map((c, i) => classCard(c, context, c.path))}
       </Flex.Item>
     </Flex>
   );
@@ -351,7 +354,7 @@ const spellCard = (props: Spell, buttons?: InfernoNode) => {
     <Flex className='Card' direction='column'>
       <Flex.Item>
         <h2>
-          {SpellIcon(props, false, false)} {props.name}
+          {SpellIcon(props, false, false, props.path)} {props.name}
           <Box className='Card__buttons'>{buttons}</Box>
         </h2>
       </Flex.Item>
@@ -394,7 +397,8 @@ const artifactCard = (props: Artifact, context: any) => {
     <Flex className='Card' direction='column'>
       <Flex.Item>
         <h2>
-          {ArtifactIcon(props, false, false)} {capitalize(props.name)}
+          {ArtifactIcon(props, false, false, props.path)}{' '}
+          {capitalize(props.name)}
         </h2>
       </Flex.Item>
       <Flex.Item>{props.description}</Flex.Item>
@@ -410,7 +414,8 @@ const BuyArtifactCard = (props: Artifact, context: any) => {
     <Flex className='Card' direction='column'>
       <Flex.Item>
         <h2>
-          {ArtifactIcon(props, false, false)} {capitalize(props.name)}
+          {ArtifactIcon(props, false, false, props.path)}{' '}
+          {capitalize(props.name)}
           <Button
             disabled={user.points - props.cost < 0}
             onClick={() => act('buy_artifact', { path: props.path })}
@@ -485,8 +490,8 @@ const spellsPage = (props: any, context: any) => {
     let ignore = false;
 
     if (
-      nameFilter
-      && spell.name
+      nameFilter &&
+      spell.name
         .toLocaleLowerCase()
         .search(escapeRegExp(nameFilter.toLocaleLowerCase()))
     ) {
@@ -537,6 +542,7 @@ const spellsPage = (props: any, context: any) => {
               isIgnored,
               s.path === inspectingSpell?.path,
               false,
+              s.path,
             );
           })}
         </Flex>
@@ -645,8 +651,8 @@ const artifactsPage = (props: any, context: any) => {
     let ignore = false;
 
     if (
-      nameFilter
-      && artifact.name
+      nameFilter &&
+      artifact.name
         .toLocaleLowerCase()
         .search(escapeRegExp(nameFilter.toLocaleLowerCase()))
     ) {
@@ -691,6 +697,7 @@ const artifactsPage = (props: any, context: any) => {
               isIgnored,
               a.path === inspectingArtifact?.path,
               false,
+              a.path,
             );
           })}
         </Flex>
@@ -905,7 +912,7 @@ export const SpellBook = (props: any, context: any) => {
   const { data } = useBackend<InputData>(context);
 
   return (
-    <Window theme='spellbook' width={575} height={700}>
+    <Window theme='spellbook' width={425} height={520}>
       <link rel='stylesheet' type='text/css' href='reaver.css' />
       <Window.Content scrollable>
         {PAGES[data.page].render(props, context)}

@@ -3,14 +3,16 @@ interface GameIconProps {
   className?: string | null;
   style?: any | null;
   title?: string | null;
+  key?: any
 }
 
 export const GameIcon = (props: GameIconProps) => {
-  const { html, className, style } = props;
+  const { html, className, style, key } = props;
   const iconSrc = html.match('src=["\'](.*)["\']')[1];
 
   return (
     <img
+      key={key}
       {...props}
       class={`game-icon ${className || ''}`}
       src={iconSrc}
