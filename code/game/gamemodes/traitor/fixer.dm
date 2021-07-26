@@ -92,7 +92,7 @@
 
 	var/out = "<meta charset=\"utf-8\"><b>The Syndicate Operations Menu</b>"
 	out += "<hr><b>Contracts (Operations|Objectives)</b></br>"
-	for(var/datum/antag_contract/contract in GLOB.traitors.fixer.return_contracts())
+	for(var/datum/antag_contract/contract in GLOB.all_contracts)
 		out += "<br><b>Contract [contract.name]:</b> <small>[contract.desc]</small> "
 		if(contract.completed)
 			out += "(<font color='green'>completed</font>)"
