@@ -51,7 +51,7 @@
 	var/rendered = "<span class=\"log_message\"><span class=\"prefix\">[type] LOG:</span> <span class=\"message\">[message]</span></span>"
 	if(notify_admin && SScharacter_setup.initialized) // Checking SScharacter_setup early so won't cycle through all the admins
 		for(var/client/C in GLOB.admins)
-			to_chat(C, rendered, message_type)
+			to_chat(C, rendered, message_type, confidential = TRUE)
 
 /proc/log_roundend(text)
 	log_generic("ROUNDEND", text, null, config.log_game)
