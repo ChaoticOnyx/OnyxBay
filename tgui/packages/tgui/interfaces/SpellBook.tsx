@@ -253,7 +253,7 @@ const classCard = (props: Class, context: any, key: any) => {
         <Divider />
         <h3>Spells:</h3>
         {props.spells.map((s) => {
-          return InspectSpellButton(s, context, false, false, false, s.path);
+          return InspectSpellButton(s, context, false, false, true, s.path);
         })}
       </Flex.Item>
       <Flex.Item>
@@ -261,7 +261,7 @@ const classCard = (props: Class, context: any, key: any) => {
         <Divider />
         <h3>Artifacts:</h3>
         {props.artifacts.map((a) => {
-          return InspectArtifactButton(a, context, false, false, false, a.path);
+          return InspectArtifactButton(a, context, false, false, true, a.path);
         })}
       </Flex.Item>
       <Flex.Item>
@@ -416,15 +416,13 @@ const BuyArtifactCard = (props: Artifact, context: any) => {
         <h2>
           {ArtifactIcon(props, false, false, props.path)}{' '}
           {capitalize(props.name)}
-          <Button
-            disabled={user.points - props.cost < 0}
-            onClick={() => act('buy_artifact', { path: props.path })}
-            content={`Buy (${props.cost} points)`}
-            style={{
-              'float': 'right',
-              'font-size': '0.8em',
-            }}
-          />
+          <Box className='Card__buttons'>
+            <Button
+              disabled={user.points - props.cost < 0}
+              onClick={() => act('buy_artifact', { path: props.path })}
+              content={`Buy (${props.cost} points)`}
+            />
+          </Box>
         </h2>
       </Flex.Item>
       <Flex.Item>{props.description}</Flex.Item>
@@ -490,8 +488,8 @@ const spellsPage = (props: any, context: any) => {
     let ignore = false;
 
     if (
-      nameFilter &&
-      spell.name
+      nameFilter
+      && spell.name
         .toLocaleLowerCase()
         .search(escapeRegExp(nameFilter.toLocaleLowerCase()))
     ) {
@@ -651,8 +649,8 @@ const artifactsPage = (props: any, context: any) => {
     let ignore = false;
 
     if (
-      nameFilter &&
-      artifact.name
+      nameFilter
+      && artifact.name
         .toLocaleLowerCase()
         .search(escapeRegExp(nameFilter.toLocaleLowerCase()))
     ) {

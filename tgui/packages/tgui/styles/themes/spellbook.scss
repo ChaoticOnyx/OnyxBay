@@ -6,24 +6,45 @@
     border-radius: 0.5rem;
     border: transparent solid $border-thick;
     border-image: url('../../assets/spellbook/item_border.png');
-    border-image-slice: 6 6 6 6 fill;
+    border-image-slice: 6 6 6 6;
     border-image-width: 0.25rem;
+    border-image-repeat: repeat repeat;
   }
 
   @mixin item-border-selected {
     border-radius: 0.5rem;
     border: transparent solid $border-thick;
     border-image: url('../../assets/spellbook/item_border_selected.png');
-    border-image-slice: 6 6 6 6 fill;
+    border-image-slice: 6 6 6 6;
     border-image-width: 0.25rem;
+    border-image-repeat: repeat repeat;
   }
 
   @mixin item-border-ignored {
     border-radius: 0.5rem;
     border: transparent solid $border-thick;
     border-image: url('../../assets/spellbook/item_border_ignored.png');
-    border-image-slice: 6 6 6 6 fill;
+    border-image-slice: 6 6 6 6;
     border-image-width: 0.25rem;
+    border-image-repeat: repeat repeat;
+  }
+
+  @mixin button-border {
+    border-radius: 0.5rem;
+    border: transparent solid $border-thick;
+    border-image: url('../../assets/spellbook/button_border.png');
+    border-image-slice: 8 8 8 8;
+    border-image-width: 0.25rem;
+    border-image-repeat: repeat repeat;
+  }
+
+  @mixin button-border-selected {
+    border-radius: 0.5rem;
+    border: transparent solid $border-thick;
+    border-image: url('../../assets/spellbook/button_border_selected.png');
+    border-image-slice: 8 8 8 8;
+    border-image-width: 0.25rem;
+    border-image-repeat: repeat repeat;
   }
 
   .TitleBar {
@@ -89,22 +110,21 @@
     cursor: pointer;
     margin-top: 0.2rem;
     color: #fce940;
-    background-color: #5c2226;
-    border-radius: 0.25rem;
-    border: #351315 solid $border-thick;
+    background: linear-gradient(90deg, rgba(92,34,38,1) 0%, rgba(113,43,47,1) 50%, rgba(92,34,38,1) 100%);
     font-weight: bold;
-    padding-left: 0.5rem;
-    padding-right: 0.5rem;
+    @include button-border;
 
     &:hover,
     &:focus {
+      background: none;
       background-color: #8b343a;
     }
 
     &--selected {
+      background: none;
       color: #8b343a !important;
       background-color: #fce940 !important;
-      border: #cfc033 solid $border-thick !important;
+      @include button-border-selected;
 
       .Icon--spell {
         background-color: #314483;
@@ -118,6 +138,7 @@
     }
 
     &--disabled {
+      background: none;
       cursor: default;
       background-color: #4b3133 !important;
       color: #a59e64;
@@ -175,7 +196,7 @@
   .Input {
     background-color: #0F0C0A;
     border-radius: 0.5rem;
-    border: #63677c solid $border-thick;
+    @include item-border;
 
     &__input {
       font-family: 'Reaver';

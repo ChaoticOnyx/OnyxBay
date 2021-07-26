@@ -3,7 +3,7 @@
 	feedback_tag = "ST"
 	description = "This spells are dedicated to neophytes in the ways of magic."
 	points = 5
-	can_make_contracts = TRUE
+	can_make_contracts = FALSE
 	investable = TRUE
 
 	spells = list(
