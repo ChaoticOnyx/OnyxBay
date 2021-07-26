@@ -31,9 +31,9 @@ LEGACY_RECORD_STRUCTURE(virus_records, virus_record)
 	if(!antigen)
 		antigen = list(pick(ALL_ANTIGENS))
 		antigen |= pick(ALL_ANTIGENS)
-	
+
 	if(infected) //if virus mutated inside human, update his virus2
-		for(var/ID in infected.virus2) 
+		for(var/ID in infected.virus2)
 			var/datum/disease2/disease/V = infected.virus2["[ID]"]
 			if(V.uniqueID != ID)
 				infected.virus2.Remove("[ID]")
@@ -148,7 +148,7 @@ LEGACY_RECORD_STRUCTURE(virus_records, virus_record)
 /datum/disease2/disease/proc/cure()
 	ASSERT(infected) //You can't cure disease if there's no diseased
 
-	SSvirus2suka.dequeue_virus(src)
+	SSvirus.dequeue_virus(src)
 	for(var/datum/disease2/effect/e in effects)
 		e.deactivate(infected)
 	infected.virus2.Remove("[uniqueID]")
