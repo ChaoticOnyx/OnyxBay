@@ -85,6 +85,15 @@
 	new /obj/item/weapon/wirecutters(src)
 	new /obj/item/device/t_scanner(src)
 
+/obj/item/weapon/storage/belt/utility/chief/New()
+	..()
+	new /obj/item/weapon/screwdriver/old(src)
+	new /obj/item/weapon/wrench/old(src)
+	new /obj/item/weapon/weldingtool/old(src)
+	new /obj/item/weapon/crowbar/brace_jack(src)
+	new /obj/item/weapon/wirecutters/old(src)
+	new /obj/item/device/t_scanner(src)
+	new /obj/item/stack/cable_coil(src, 30, "red")
 
 
 /obj/item/weapon/storage/belt/medical
