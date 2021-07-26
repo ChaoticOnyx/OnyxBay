@@ -79,7 +79,7 @@ REAGENT SCANNER
 
 /obj/item/device/healthanalyzer/CanUseTopic(mob/user, datum/topic_state/state)
 	. = ..()
-	var/datum/src_object = nano_host()
+	var/atom/src_object = nano_host()
 	if(src_object in get_rig()?.selected_module)
 		return STATUS_INTERACTIVE
 
