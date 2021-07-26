@@ -86,7 +86,6 @@
 		if(MODE_CHANGELING)    return 8
 		if(MODE_NINJA)         return 12
 		if(MODE_WIZARD)        return 16
-		if(MODE_BLOB)          return 24
 		if(MODE_MALFUNCTION)   return 24
 	return 0
 

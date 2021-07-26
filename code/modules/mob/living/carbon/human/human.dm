@@ -191,13 +191,6 @@
 			loss_val = 0.05
 		temp.take_external_damage(b_loss * loss_val, f_loss * loss_val, used_weapon = weapon_message)
 
-/mob/living/carbon/human/blob_act(destroy = 0, obj/effect/blob/source = null)
-	if(is_dead())
-		return
-
-	var/blocked = run_armor_check(BP_CHEST, "melee")
-	apply_damage(25, BRUTE, BP_CHEST, blocked)
-
 /mob/living/carbon/human/proc/implant_loyalty(mob/living/carbon/human/M, override = FALSE) // Won't override by default.
 	if(!config.use_loyalty_implants && !override) return // Nuh-uh.
 
