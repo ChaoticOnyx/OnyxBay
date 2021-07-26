@@ -124,6 +124,9 @@ LOG_GAME
 ## log replays messages
 # LOG_DEMO
 
+## log story.log
+# LOG_STORY
+
 # # # # # # # # # # # # # # # # # # # # # #
 #        MULTIACCOUNT COUNTERACTION       #
 # # # # # # # # # # # # # # # # # # # # # #

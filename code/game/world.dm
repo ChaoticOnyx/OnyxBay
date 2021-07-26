@@ -108,12 +108,7 @@ var/server_name = "OnyxBay"
 
 	. = ..()
 
-#ifdef UNIT_TEST
-	log_unit_test("Unit Tests Enabled. This will destroy the world when testing is complete.")
-	load_unit_test_changes()
-#endif
 	Master.Initialize(10, FALSE)
-
 	webhook_send_roundstatus("lobby", "[config.server_id]")
 
 #undef RECOMMENDED_VERSION
@@ -656,6 +651,7 @@ var/world_topic_spam_protect_time = world.timeofday
 	WORLD_SETUP_LOG_DETAILED(debug)
 	WORLD_SETUP_LOG_DETAILED(hrefs)
 	WORLD_SETUP_DEMO(demo)
+	WORLD_SETUP_LOG_DETAILED(story)
 	WORLD_SETUP_LOG(common)
 
 #undef WORLD_SETUP_LOG_DETAILED

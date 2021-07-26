@@ -285,6 +285,10 @@
 	w_class = ITEM_SIZE_SMALL
 	attack_verb = list("attacked", "struck", "hit")
 
+	var/active_max_bright = 0.3
+	var/active_outer_range = 1.6
+	var/brightness_color = "#4de4ff"
+
 	attack_self(mob/user)
 		src.active = !( src.active )
 		if (src.active)
@@ -293,12 +297,14 @@
 			src.icon_state = "swordblue"
 			src.item_state = "swordblue"
 			src.w_class = ITEM_SIZE_HUGE
+			set_light(l_max_bright = active_max_bright, l_outer_range = active_outer_range, l_color = brightness_color)
 		else
 			to_chat(user, "<span class='notice'>You push the plastic blade back down into the handle.</span>")
 			playsound(user, 'sound/weapons/saberoff.ogg', 50, 1)
 			src.icon_state = "sword0"
 			src.item_state = "sword0"
 			src.w_class = initial(w_class)
+			set_light(0)
 
 		update_held_icon()
 

@@ -25,6 +25,9 @@
 	var/F = investigate_subject2file(subject)
 	if(!F)	return
 	to_chat(F, "<small>[time_stamp()] \ref[src] ([x],[y],[z])</small> || [src] [message]<br>", confidential = TRUE)
+	var/log = "<small>[time_stamp()] \ref[src] ([x],[y],[z])</small> || [src] [message]<br>"
+	to_chat(F, log)
+	log_integrated_circuits(log)
 
 //ADMINVERBS
 /client/proc/investigate_show( subject in list("hrefs","notes","watchlist","singulo","telesci", INVESTIGATE_CIRCUIT) )

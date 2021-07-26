@@ -10,6 +10,13 @@
 	build_path = /obj/item/weapon/circuitboard/operating
 	sort_string = "FACAA"
 
+/datum/design/circuit/bodyscanner_console
+	name = "body scanner console"
+	id = "bodyscanner_console"
+	req_tech = list(TECH_ENGINEERING = 3, TECH_BIO = 5, TECH_DATA = 5)
+	build_path = /obj/item/weapon/circuitboard/bodyscanner_console
+	sort_string = "FACAB"
+
 /datum/design/circuit/crewconsole
 	name = "crew monitoring console"
 	id = "crewconsole"

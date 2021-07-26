@@ -179,3 +179,12 @@ var/global/list/minevendor_list = list( //keep in order of price
 	if(default_deconstruction_crowbar(I))
 		return
 	return ..()
+
+/obj/machinery/mineral/equipment_vendor/emag_act(remaining_charges, mob/user)
+	if(!emagged)
+		playsound(loc, 'sound/effects/computer_emag.ogg', 25)
+		emagged = 1
+		to_chat(user, "You short out the safety lock on \the [src]. Shorty after, a wild sledgehammer appears.")
+		playsound(src, 'sound/effects/using/disposal/drop3.ogg', 80, TRUE)
+		new /obj/item/weapon/pickaxe/sledgehammer(loc)
+		return 1

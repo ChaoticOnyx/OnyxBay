@@ -25,6 +25,15 @@
 	var/ejecting = 0
 	var/biochemical_stasis = 0
 
+	component_types = list(
+		/obj/item/weapon/circuitboard/cryo_cell,
+		/obj/item/device/healthanalyzer,
+		/obj/item/weapon/stock_parts/scanning_module,
+		/obj/item/weapon/stock_parts/matter_bin,
+		/obj/item/weapon/stock_parts/manipulator = 3,
+		/obj/item/weapon/stock_parts/console_screen
+	)
+
 	beepsounds = list(
 		'sound/effects/machinery/medical/beep1.ogg',
 		'sound/effects/machinery/medical/beep2.ogg',
@@ -40,12 +49,18 @@
 	update_icon()
 	initialize_directions = dir
 
+	RefreshParts()
+	update_icon()
+
 /obj/machinery/atmospherics/unary/cryo_cell/Destroy()
 	var/turf/T = loc
 	T.contents += contents
 	if(beaker)
 		beaker.forceMove(get_step(loc, SOUTH)) //Beaker is carefully ejected from the wreckage of the cryotube
 		beaker = null
+	if(occupant)
+		occupant.forceMove(get_step(loc, SOUTH))
+		occupant = null
 	. = ..()
 
 /obj/machinery/atmospherics/unary/cryo_cell/atmos_init()
@@ -215,6 +230,12 @@
 	. = ..()
 
 /obj/machinery/atmospherics/unary/cryo_cell/attackby(obj/G, mob/user as mob)
+	if(default_deconstruction_screwdriver(user, G))
+		return
+	if(default_deconstruction_crowbar(user, G))
+		return
+	if(default_part_replacement(user, G))
+		return
 	if(istype(G, /obj/item/weapon/reagent_containers/glass))
 		if(beaker)
 			to_chat(user, SPAN("warning", "A beaker is already loaded into the machine."))
@@ -292,9 +313,9 @@
 			occupant.handle_chemicals_in_body(handle_ingested = FALSE)
 		if(emagged)
 			if(prob(5))
-				to_chat(occupant, "<span class='notice'>You feel strange.</span>")
+				to_chat(occupant, SPAN("notice", "You feel strange."))
 			else if(prob(3))
-				to_chat(occupant, "<span class='notice'>Your skin is itching.</span>")
+				to_chat(occupant, SPAN("notice", "Your skin is itching."))
 
 			if(beaker)
 				if (beaker.reagents.has_reagent(/datum/reagent/cryoxadone))
@@ -346,19 +367,19 @@
 	return
 /obj/machinery/atmospherics/unary/cryo_cell/proc/put_mob(mob/living/carbon/M as mob)
 	if (stat & (NOPOWER|BROKEN))
-		to_chat(usr, "<span class='warning'>The cryo cell is not functioning.</span>")
+		to_chat(usr, SPAN("warning", "The cryo cell is not functioning."))
 		return
 	if (!istype(M))
-		to_chat(usr, "<span class='danger'>The cryo cell cannot handle such a lifeform!</span>")
+		to_chat(usr, SPAN("danger", "The cryo cell cannot handle such a lifeform!"))
 		return
 	if (occupant)
-		to_chat(usr, "<span class='danger'>The cryo cell is already occupied!</span>")
+		to_chat(usr, SPAN("danger", "The cryo cell is already occupied!"))
 		return
 	if (M.abiotic())
-		to_chat(usr, "<span class='warning'>Subject may not have abiotic items on.</span>")
+		to_chat(usr, SPAN("warning", "Subject may not have abiotic items on."))
 		return
 	if(!node)
-		to_chat(usr, "<span class='warning'>The cell is not correctly connected to its pipe network!</span>")
+		to_chat(usr, SPAN("warning", "The cell is not correctly connected to its pipe network!"))
 		return
 	if (M.client)
 		M.client.perspective = EYE_PERSPECTIVE
@@ -367,7 +388,7 @@
 	M.forceMove(src)
 	M.ExtinguishMob()
 	if(M.stat != DEAD)
-		to_chat(M, "<span class='notice'><b>You feel a cold liquid surround you. Your skin starts to freeze up.</b></span>")
+		to_chat(M, SPAN("notice", "<b>You feel a cold liquid surround you. Your skin starts to freeze up.</b>"))
 	occupant = M
 	current_heat_capacity = HEAT_CAPACITY_HUMAN
 	update_use_power(POWER_USE_ACTIVE)
@@ -386,7 +407,7 @@
 	if (!istype(target))
 		return 0
 	if (target.buckled)
-		to_chat(user, "<span class='warning'>Unbuckle the subject before attempting to move them.</span>")
+		to_chat(user, SPAN("warning", "Unbuckle the subject before attempting to move them."))
 		return 0
 	return 1
 
@@ -394,7 +415,7 @@
 /obj/machinery/atmospherics/unary/cryo_cell/MouseDrop_T(mob/target, mob/user)
 	if(!check_compatibility(target, user))
 		return
-	user.visible_message("<span class='notice'>\The [user] begins placing \the [target] into \the [src].</span>", "<span class='notice'>You start placing \the [target] into \the [src].</span>")
+	user.visible_message(SPAN("notice", "\The [user] begins placing \the [target] into \the [src]."), SPAN("notice", "You start placing \the [target] into \the [src]."))
 	if(!do_after(user, 30, src))
 		return
 	if(!check_compatibility(target, user))
@@ -409,7 +430,7 @@
 	if(usr == occupant)//If the user is inside the tube...
 		if(usr.stat == 2 || ejecting)//and he's not dead or not trying already....
 			return
-		to_chat(usr, "<span class='notice'>Release sequence activated. This will take two minutes.</span>")
+		to_chat(usr, SPAN("notice", "Release sequence activated. This will take two minutes."))
 		ejecting = 1
 		if(do_after(occupant, 1200, src, needhand = 0, incapacitation_flags = 0) && (src || usr || occupant || (occupant == usr))) //Check if someone's released/replaced/bombed him already
 			ejecting = 0
@@ -466,7 +487,7 @@
 		return
 	playsound(src.loc, 'sound/effects/computer_emag.ogg', 25)
 	emagged = 1
-	to_chat(user, "<span class='danger'>You short out \the [src]'s circuits.</span>")
+	to_chat(user, SPAN("danger", "You short out \the [src]'s circuits."))
 	var/datum/effect/effect/system/spark_spread/spark_system = new /datum/effect/effect/system/spark_spread()
 	spark_system.set_up(5, 0, src.loc)
 	spark_system.start()
