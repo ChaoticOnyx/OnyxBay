@@ -239,7 +239,7 @@
 			to_chat(M, SPAN_DANGER("You have tried to mess with the power beyond your level. IT WAS A DEADLY MISTAKE"))
 			M.gib()
 			return
-	else if(isChangeling(usr))
+	else if(isChangeling(target))
 		to_chat(target, SPAN("changeling", "Powers of these filthy creatures does not have effect on us"))
 		return
 	else if(isXenomorph(usr))
