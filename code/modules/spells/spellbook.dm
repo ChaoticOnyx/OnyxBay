@@ -112,6 +112,50 @@ var/list/artefact_feedback = list(
 			make_contract(usr, text2path(params["path"]))
 			return TRUE
 
+/obj/item/weapon/spellbook/attackby(obj/item/item, mob/user)
+	var/datum/wizard/W = user.mind?.wizard
+
+	if(!W?.can_sacrifice())
+		return ..()
+
+	var/list/objects = W.class.sacrifice_objects
+	if(objects)
+		for(var/O in objects)
+			if(istype(item, O["path"]))
+				make_sacrifice(item, user)
+				return
+	
+	var/list/reagents = W.class.sacrifice_reagents
+	var/datum/reagents/R = item.reagents
+	if(reagents && R)
+		for(var/id in reagents)
+			if(R.has_reagent(id, 5))
+				make_sacrifice(item, user, id)
+				return
+
+	..()
+
+/obj/item/weapon/spellbook/proc/make_sacrifice(obj/item/item, mob/user, reagent = null)
+	var/datum/wizard/W = user.mind.wizard
+
+	ASSERT(W.can_sacrifice())
+	
+	if(reagent)
+		var/datum/reagents/R = item.reagents
+		R.remove_reagent(reagent, 5)
+	else
+		var/obj/item/stack/S = item
+		if(istype(S))
+			if(S.amount < S.max_amount)
+				to_chat(user, SPAN("warning", "You must sacrifice [S.max_amount] stacks of [S]!"))
+				return
+			
+		user.remove_from_mob(item)
+		qdel(item)
+	
+	to_chat(user, SPAN("notice", "Your sacrifice was accepted!"))
+	W.sacrifice()
+
 /obj/item/weapon/spellbook/proc/make_contract(mob/user, spell_path)
 	var/datum/wizard/W = user.mind.wizard
 	var/spell_cost = W.class.get_spell_cost(spell_path)
