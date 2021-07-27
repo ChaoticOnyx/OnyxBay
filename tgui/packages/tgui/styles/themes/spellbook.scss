@@ -80,6 +80,17 @@
     }
   }
 
+  .Layout,
+.Layout * {
+    scrollbar-base-color: #5C2226;
+    scrollbar-face-color: #5C2226;
+    scrollbar-3dlight-color: #5C2226;
+    scrollbar-highlight-color: #5C2226;
+    scrollbar-track-color: #24201D;
+    scrollbar-arrow-color: #42372D;
+    scrollbar-shadow-color: #24201D;
+}
+
   .Layout__content {
     font-family: 'Reaver', serif;
     background: none;
