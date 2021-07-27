@@ -61,7 +61,7 @@
 		if(!C)
 			continue
 		var/not_avaliable = (intents ^ C.intent || prob(75))
-		if(!C.can_place() && not_avaliable)
+		if(!C.can_place() || not_avaliable)
 			candidates -= contract_type
 			qdel(C)
 			continue
