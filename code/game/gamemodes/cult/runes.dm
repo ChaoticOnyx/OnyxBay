@@ -242,7 +242,7 @@
 	else if(isChangeling(target))
 		to_chat(target, SPAN("changeling", "Powers of these filthy creatures does not have effect on us"))
 		return
-	else if(isXenomorph(usr))
+	else if(isXenomorph(target))
 		to_chat(target, SPAN_DANGER("Hive mind rejects offer of these creatures"))
 		return
 	else if(istype(target, /mob/living/carbon/alien/diona))
