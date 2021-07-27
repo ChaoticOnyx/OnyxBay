@@ -333,6 +333,10 @@ JOBS_HAVE_MINIMAL_ACCESS
 # GODCULTIST_MIN_AGE     14
 # LOYALISTS_MIN_AGE      14
 
+# SETTINGS TO DISABLE OOC THINGS AFTER ROUND START.
+# DISABLE_OOC_AT_ROUNDSTART
+# DISABLE_LOOC_AT_ROUNDSTART
+
 ## Unhash this to use recursive explosions, keep it hashed to use circle explosions.
 ## Recursive explosions react to walls, airlocks and blast doors, making them look a lot cooler than the boring old circular explosions.
 ## They require more CPU and are (as of january 2013) experimental.
