@@ -23,19 +23,35 @@ var/server_name = "OnyxBay"
 		t = round(t / l)
 	return 1
 
-/proc/set_ooc(new_value = TRUE)
-	config.ooc_allowed = new_value
-	if(config.ooc_allowed)
-		to_world("<b>The OOC channel has been globally enabled!</b>")
-	else
-		to_world("<b>The OOC channel has been globally disabled!</b>")
+/proc/toogle_ooc()
+    config.ooc_allowed = !config.ooc_allowed
+    if(config.ooc_allowed)
+        to_world("<b>The OOC channel has been globally enabled!</b>")
+    else
+        to_world("<b>The OOC channel has been globally disabled!</b>")
 
-/proc/set_looc(new_value = TRUE)
-	config.looc_allowed = new_value
-	if(config.looc_allowed)
-		to_world("<b>The LOOC channel has been globally enabled!</b>")
-	else
-		to_world("<b>The LOOC channel has been globally disabled!</b>")
+/proc/disable_ooc()
+    if(config.ooc_allowed)
+        toogle_ooc()
+
+/proc/enable_ooc()
+    if(!config.ooc_allowed)
+        toogle_ooc()
+
+/proc/toogle_looc()
+    config.looc_allowed = !config.looc_allowed
+    if(config.looc_allowed)
+        to_world("<b>The LOOC channel has been globally enabled!</b>")
+    else
+        to_world("<b>The LOOC channel has been globally disabled!</b>")
+
+/proc/disable_looc()
+    if(config.ooc_allowed)
+        toogle_ooc()
+
+/proc/enable_looc()
+    if(!config.looc_allowed)
+        toogle_looc()
 
 // Find mobs matching a given string
 //
@@ -414,7 +430,7 @@ var/world_topic_spam_protect_time = world.timeofday
 				return "Bad Key (Throttled)"
 			world_topic_spam_protect_time = world.time
 			return "Bad Key"
-		set_ooc(!(config.ooc_allowed))
+		toogle_ooc(!(config.ooc_allowed))
 		log_and_message_admins("discord toggled OOC.")
 		return config.ooc_allowed ? "ON" : "OFF"
 

@@ -106,10 +106,10 @@ SUBSYSTEM_DEF(ticker)
 		send2adminirc("Round has started with no admins online.")
 
 	if(config.disable_ooc_roundstart)
-		set_ooc(FALSE)
+		disable_ooc()
 
 	if(config.disable_looc_roundstart)
-		set_looc(FALSE)
+		disable_looc()
 
 /datum/controller/subsystem/ticker/proc/playing_tick()
 	mode.process()
