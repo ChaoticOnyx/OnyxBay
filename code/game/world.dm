@@ -23,14 +23,14 @@ var/server_name = "OnyxBay"
 		t = round(t / l)
 	return 1
 
-/proc/set_ooc(new_value = FALSE)
+/proc/set_ooc(new_value = TRUE)
 	config.ooc_allowed = new_value
 	if(config.ooc_allowed)
 		to_world("<b>The OOC channel has been globally enabled!</b>")
 	else
 		to_world("<b>The OOC channel has been globally disabled!</b>")
 
-/proc/set_looc(new_value = FALSE)
+/proc/set_looc(new_value = TRUE)
 	config.looc_allowed = new_value
 	if(config.looc_allowed)
 		to_world("<b>The LOOC channel has been globally enabled!</b>")
