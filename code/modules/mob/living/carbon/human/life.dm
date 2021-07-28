@@ -34,7 +34,7 @@
 #define HUMAN_DEFAULT_POISE 50 //100% healthy, non-drugged human being.
 #define HUMAN_MIN_POISE 25 //Some balancing stuff here. Even drunk pirates should be able to fight.
 
-#define DOSTER_SLIM_COEFFICIENT 1.1 // 1.1, coefficient to multiply damage poise, used on slim human.
+#define DAMAGE_SLIM_COEFFICIENT 1.1 // 1.1, coefficient to multiply damage poise, used on slim human.
 
 /mob/living/carbon/human
 	var/oxygen_alert = 0
@@ -1009,7 +1009,7 @@
 
 /mob/living/carbon/human/proc/damage_poise(dmg = 1)
 	if(body_build.weak_body_build)
-		dmg = dmg * DOSTER_SLIM_COEFFICIENT
+		dmg = dmg * DAMAGE_SLIM_COEFFICIENT
 	poise -= dmg
 	poise_icon?.icon_state = "[round(poise)]"
 
@@ -1264,4 +1264,4 @@
 			Weaken(amount/10)
 			visible_message("<b>[src]</b> collapses!", SPAN("warning", "You collapse from shock!"))
 
-#undef DOSTER_SLIM_COEFFICIENT
+#undef DAMAGE_SLIM_COEFFICIENT
