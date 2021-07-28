@@ -105,13 +105,11 @@ SUBSYSTEM_DEF(ticker)
 	if(!length(GLOB.admins))
 		send2adminirc("Round has started with no admins online.")
 
-	if(config.disable_ooc_r)
-		config.ooc_allowed = FALSE
-		to_world("<b>The OOC channel has been globally disabled!</b>")
+	if(config.disable_ooc_roundstart)
+		toggle_ooc(FALSE)
 
-	if(config.disable_looc_r)
-		config.looc_allowed = FALSE
-		to_world("<b>The LOOC channel has been globally disabled!</b>")
+	if(config.disable_looc_roundstart)
+		toggle_looc(FALSE)
 
 /datum/controller/subsystem/ticker/proc/playing_tick()
 	mode.process()
@@ -164,14 +162,6 @@ SUBSYSTEM_DEF(ticker)
 
 			handle_tickets()
 			SSstoryteller.collect_statistics()
-
-			if(config.disable_ooc_r)
-				config.ooc_allowed = TRUE
-				to_world("<b>The OOC channel has been globally enabled!</b>")
-
-			if(config.disable_looc_r)
-				config.looc_allowed = TRUE
-				to_world("<b>The LOOC channel has been globally enabled!</b>")
 
 		if(END_GAME_ENDING)
 			restart_timeout -= (world.time - last_fire)

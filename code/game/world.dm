@@ -23,6 +23,20 @@ var/server_name = "OnyxBay"
 		t = round(t / l)
 	return 1
 
+/proc/toggle_ooc(new_value = !(config.ooc_allowed))
+	config.ooc_allowed = new_value
+	if(config.ooc_allowed)
+		to_world("<b>The OOC channel has been globally enabled!</b>")
+	else
+		to_world("<b>The OOC channel has been globally disabled!</b>")
+
+/proc/toggle_looc(new_value = !(config.looc_allowed))
+	config.looc_allowed = new_value
+	if(config.looc_allowed)
+		to_world("<b>The LOOC channel has been globally enabled!</b>")
+	else
+		to_world("<b>The LOOC channel has been globally disabled!</b>")
+
 // Find mobs matching a given string
 //
 // search_string: the string to search for, in params format; for example, "some_key;mob_name"
