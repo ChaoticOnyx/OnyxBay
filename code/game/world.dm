@@ -430,7 +430,7 @@ var/world_topic_spam_protect_time = world.timeofday
 				return "Bad Key (Throttled)"
 			world_topic_spam_protect_time = world.time
 			return "Bad Key"
-		toogle_ooc(!(config.ooc_allowed))
+		toogle_ooc()
 		log_and_message_admins("discord toggled OOC.")
 		return config.ooc_allowed ? "ON" : "OFF"
 
