@@ -130,15 +130,15 @@
 	icon_state = "tree6"
 
 
-/*
-I need help here with chopping the trees (delete the tree and checking the active of chainsaw)
 /obj/structure/flora/tree/attackby(obj/item/W, mob/user)
 	if(istype(W, /obj/item/weapon/material/twohanded/chainsaw))
-		var/obj/item/weapon/material/twohanded/chainsaw = W
-		if (chainsaw.chainsaw_active)
-			src.visible_message("<span class='warning'>[usr] cutting wood with a chainsaw!</span>")
-			user.put_in_hands(new /obj/item/stack/material/wood/ten)
-*/
+		var/obj/item/weapon/material/twohanded/chainsaw/checker = W
+		if (checker.active)
+			if (do_after(user, 30))
+				playsound(loc,'sound/items/chaisaw_sawing.ogg', 50, 5, 7)
+				visible_message("<span class='warning'>[usr] cutting wood with a chainsaw!</span>")
+				user.put_in_hands(new /obj/item/stack/material/wood/ten(get_turf(loc)))
+				qdel(src)
 
 //grass
 /obj/structure/flora/grass
