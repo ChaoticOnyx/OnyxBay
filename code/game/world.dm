@@ -23,7 +23,7 @@ var/server_name = "OnyxBay"
 		t = round(t / l)
 	return 1
 
-/proc/toogle_ooc()
+/proc/toggle_ooc()
     config.ooc_allowed = !config.ooc_allowed
     if(config.ooc_allowed)
         to_world("<b>The OOC channel has been globally enabled!</b>")
@@ -32,11 +32,11 @@ var/server_name = "OnyxBay"
 
 /proc/disable_ooc()
     if(config.ooc_allowed)
-        toogle_ooc()
+        toggle_ooc()
 
 /proc/enable_ooc()
     if(!config.ooc_allowed)
-        toogle_ooc()
+        toggle_ooc()
 
 /proc/toggle_looc()
     config.looc_allowed = !config.looc_allowed
@@ -47,7 +47,7 @@ var/server_name = "OnyxBay"
 
 /proc/disable_looc()
     if(config.ooc_allowed)
-        toogle_ooc()
+        toggle_ooc()
 
 /proc/enable_looc()
     if(!config.looc_allowed)
@@ -430,7 +430,7 @@ var/world_topic_spam_protect_time = world.timeofday
 				return "Bad Key (Throttled)"
 			world_topic_spam_protect_time = world.time
 			return "Bad Key"
-		toogle_ooc()
+		toggle_ooc()
 		log_and_message_admins("discord toggled OOC.")
 		return config.ooc_allowed ? "ON" : "OFF"
 
