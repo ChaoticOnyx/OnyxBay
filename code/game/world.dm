@@ -38,7 +38,7 @@ var/server_name = "OnyxBay"
     if(!config.ooc_allowed)
         toogle_ooc()
 
-/proc/toogle_looc()
+/proc/toggle_looc()
     config.looc_allowed = !config.looc_allowed
     if(config.looc_allowed)
         to_world("<b>The LOOC channel has been globally enabled!</b>")
@@ -51,7 +51,7 @@ var/server_name = "OnyxBay"
 
 /proc/enable_looc()
     if(!config.looc_allowed)
-        toogle_looc()
+        toggle_looc()
 
 // Find mobs matching a given string
 //
