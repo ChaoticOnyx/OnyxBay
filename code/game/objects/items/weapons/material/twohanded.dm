@@ -196,22 +196,22 @@
 	edge = FALSE
 	unbreakable = TRUE
 
-	var/chainsaw_active = FALSE
+	var/active = FALSE
 
 	/obj/item/weapon/material/twohanded/chainsaw/update_icon()
-		if(chainsaw_active)
+		if(active)
 			base_icon = "chainsaw_on"
 		else
 			base_icon = "chainsaw_off"
 		..()
 
 	/obj/item/weapon/material/twohanded/chainsaw/attack_self(mob/living/user)
-		if (chainsaw_active)
+		if (active)
 			visible_message(SPAN("warning", "[usr] turns off the chainsaw!"))
 			playsound(loc, 'sound/items/chainsaw_stop.ogg', 50, 5, 7)
 			base_icon = "chainsaw_off"
 			desc = "Using for sawing wood more effective"
-			chainsaw_active = FALSE
+			active = FALSE
 			sharp = FALSE
 			edge = FALSE
 			force_wielded = FALSE
@@ -222,7 +222,7 @@
 			playsound(user, list('sound/items/chainsaw_activated.ogg','sound/items/chainsaw_activated2.ogg' ), 50, 5, 7)
 			base_icon = "chainsaw_on"
 			desc = "BRRRR-BRRRR-BRRRR!"
-			chainsaw_active = TRUE
+			active = TRUE
 			sharp = TRUE
 			edge = TRUE
 			force_wielded = 30
