@@ -107,11 +107,11 @@ SUBSYSTEM_DEF(ticker)
 
 	if(config.disable_ooc_r)
 		config.ooc_allowed = FALSE
-		to_world("<B>The OOC channel has been globally disabled!</B>")
+		to_world("<b>The OOC channel has been globally disabled!</b>")
 
 	if(config.disable_looc_r)
 		config.looc_allowed = FALSE
-		to_world("<B>The LOOC channel has been globally disabled!</B>")
+		to_world("<b>The LOOC channel has been globally disabled!</b>")
 
 /datum/controller/subsystem/ticker/proc/playing_tick()
 	mode.process()
@@ -167,11 +167,11 @@ SUBSYSTEM_DEF(ticker)
 
 			if(config.disable_ooc_r)
 				config.ooc_allowed = TRUE
-				to_world("<B>The OOC channel has been globally enabled!</B>")
+				to_world("<b>The OOC channel has been globally enabled!</b>")
 
 			if(config.disable_looc_r)
 				config.looc_allowed = TRUE
-				to_world("<B>The LOOC channel has been globally enabled!</B>")
+				to_world("<b>The LOOC channel has been globally enabled!</b>")
 
 		if(END_GAME_ENDING)
 			restart_timeout -= (world.time - last_fire)
