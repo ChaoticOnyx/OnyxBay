@@ -380,13 +380,11 @@
 		return
 	var/mob/living/carbon/human/M = user
 
-	var/obj/item/blocked = M.check_mouth_coverage()
-	if(blocked)
-		to_chat(M, SPAN_WARNING("\The [blocked] is in the way!"))
-		return
-
 	mouthshoot = 1
-	M.visible_message("<span class='danger'>[user] sticks their gun in their mouth, ready to pull the trigger...</span>")
+	if(M.check_mouth_coverage())
+		M.visible_message("<span class='danger'>[user] puts a gun to his temple, ready to pull the trigger...</span>")
+	else
+		M.visible_message("<span class='danger'>[user] sticks their gun in their mouth, ready to pull the trigger...</span>")
 	if(!do_after(user, 40, progress=0))
 		M.visible_message("<span class='notice'>[user] decided life was worth living</span>")
 		mouthshoot = 0
@@ -410,9 +408,13 @@
 
 		in_chamber.on_hit(M)
 		if (in_chamber.damage_type != PAIN)
+			var/result_dmg = in_chamber.damage * ((100-(M.run_armor_check(BP_HEAD, in_chamber.check_armour, in_chamber.armor_penetration)))/100)
 			log_and_message_admins("[key_name(user)] try commited suicide using \a [src]")
-			M.get_organ(BP_HEAD).createwound(PIERCE, in_chamber.damage * 4)
-			user.adjustBrainLoss(amount = (in_chamber.damage * rand(15,20)))
+			user.adjustBrainLoss(amount = (result_dmg * rand(3,4)))
+			if(in_chamber.check_armour == "bullet" || in_chamber.check_armour == "melee")
+				M.get_organ(BP_HEAD).take_external_damage(brute = result_dmg * rand(2,5), used_weapon = src)
+			else
+				M.get_organ(BP_HEAD).take_external_damage(burn = result_dmg * rand(2,5), used_weapon = src)
 		else
 			to_chat(user, "<span class = 'notice'>Ow...</span>")
 			user.apply_effect(110,PAIN,0)
