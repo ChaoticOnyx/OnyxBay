@@ -35,7 +35,7 @@ var/datum/robolimb/basic_robolimb
 	var/list/species_cannot_use = list(SPECIES_DIONA, SPECIES_VOX, SPECIES_PROMETHEAN)
 	// Applyes to specific bodypart.
 	var/list/applies_to_part = list()
-	//Spicies alternatives._abs(A)
+	// Spicies alternatives
 	var/list/species_alternates = list(SPECIES_TAJARA = "Unbranded - Tajaran", SPECIES_UNATHI = "Unbranded - Unathi")
 
 /datum/robolimb/alt1
@@ -81,7 +81,7 @@ var/datum/robolimb/basic_robolimb
 	company = "Zeng-Hu"
 	desc = "This limb has a rubbery fleshtone covering with visible seams."
 	icon = 'icons/mob/human_races/cyberlimbs/zenghu/zenghu_main.dmi'
-	unavailable_to_build = 1
+	unavailable_to_build = TRUE
 	restricted_to = list(SPECIES_HUMAN)
 	species_cannot_use = list(SPECIES_DIONA, SPECIES_VOX, SPECIES_PROMETHEAN, SPECIES_UNATHI)
 	species_alternates = list(SPECIES_UNATHI = "Zeng-Hu - Tajaran")
@@ -96,7 +96,7 @@ var/datum/robolimb/basic_robolimb
 	company = "Bishop"
 	desc = "This limb has a white polymer casing with blue holo-displays."
 	icon = 'icons/mob/human_races/cyberlimbs/bishop/bishop_main.dmi'
-	unavailable_to_build = 1
+	unavailable_to_build = TRUE
 	restricted_to = list(SPECIES_HUMAN)
 	species_cannot_use = list(SPECIES_DIONA, SPECIES_VOX, SPECIES_PROMETHEAN, SPECIES_UNATHI, SPECIES_TAJARA, SPECIES_SKRELL)
 
@@ -114,7 +114,7 @@ var/datum/robolimb/basic_robolimb
 	company = "Hephaestus"
 	desc = "This limb has a militaristic black and green casing with gold stripes"
 	icon = 'icons/mob/human_races/cyberlimbs/hephaestus/hephaestus_main.dmi'
-	unavailable_to_build = 1
+	unavailable_to_build = TRUE
 	restricted_to = list(SPECIES_HUMAN)
 	species_cannot_use = list(SPECIES_DIONA, SPECIES_VOX, SPECIES_PROMETHEAN, SPECIES_UNATHI, SPECIES_TAJARA, SPECIES_SKRELL)
 
@@ -128,9 +128,9 @@ var/datum/robolimb/basic_robolimb
 	company = "Vey-Med"
 	desc = "This high quality limb is nearly indistinguishable from an organic one."
 	icon = 'icons/mob/human_races/cyberlimbs/veymed/veymed_main.dmi'
-	can_eat = 1
+	can_eat = TRUE
 	skintone = 1
-	unavailable_to_build = 1
+	unavailable_to_build = TRUE
 	restricted_to = list(SPECIES_HUMAN)
 	species_cannot_use = list(SPECIES_DIONA, SPECIES_VOX, SPECIES_PROMETHEAN, SPECIES_UNATHI, SPECIES_TAJARA)
 	species_alternates = list(SPECIES_SKRELL = "Vey-Med - Skrell")
@@ -145,7 +145,7 @@ var/datum/robolimb/basic_robolimb
 	company = "Morgan Trading Co"
 	desc = "A simplistic, metal-banded, wood-panelled prosthetic."
 	icon = 'icons/mob/human_races/cyberlimbs/makeshift/wooden.dmi'
-	unavailable_to_build = 1
+	unavailable_to_build = TRUE
 	restricted_to = list(SPECIES_HUMAN)
 	species_cannot_use = list(SPECIES_DIONA, SPECIES_VOX, SPECIES_PROMETHEAN, SPECIES_UNATHI, SPECIES_TAJARA, SPECIES_SKRELL)
 
@@ -154,7 +154,7 @@ var/datum/robolimb/basic_robolimb
 	company = "Einstein Engines"
 	desc = "This limb is lightweight with a sleek design."
 	icon = 'icons/mob/human_races/cyberlimbs/einstein/einstein.dmi'
-	unavailable_to_build = 1
+	unavailable_to_build = TRUE
 	restricted_to = list(SPECIES_HUMAN)
 	species_cannot_use = list(SPECIES_DIONA, SPECIES_VOX, SPECIES_PROMETHEAN, SPECIES_UNATHI, SPECIES_TAJARA, SPECIES_SKRELL)
 
@@ -163,8 +163,8 @@ var/datum/robolimb/basic_robolimb
 	company = "Uesseka Prototyping Ltd."
 	desc = "This limb seems meticulously hand-crafted, and distinctly Unathi in design."
 	icon = 'icons/mob/human_races/cyberlimbs/ancient/ancient.dmi'
-	unavailable_at_chargen = 1
-	unavailable_to_build = 1
+	unavailable_at_chargen = TRUE
+	unavailable_to_build = TRUE
 	restricted_to = list(SPECIES_UNATHI)
 	species_cannot_use = list(SPECIES_DIONA, SPECIES_VOX, SPECIES_PROMETHEAN, SPECIES_HUMAN, SPECIES_TAJARA, SPECIES_SKRELL)
 
@@ -173,7 +173,7 @@ var/datum/robolimb/basic_robolimb
 	company = "Ward-Takahashi"
 	desc = "This limb features sleek black and white polymers."
 	icon = 'icons/mob/human_races/cyberlimbs/wardtakahashi/wardtakahashi_main.dmi'
-	unavailable_to_build = 1
+	unavailable_to_build = TRUE
 	restricted_to = list(SPECIES_HUMAN)
 	species_cannot_use = list(SPECIES_DIONA, SPECIES_VOX, SPECIES_PROMETHEAN, SPECIES_UNATHI, SPECIES_TAJARA, SPECIES_SKRELL)
 
@@ -193,7 +193,7 @@ var/datum/robolimb/basic_robolimb
 	company = "Cyber Solutions"
 	desc = "This limb is grey and rough, with little in the way of aesthetic."
 	icon = 'icons/mob/human_races/cyberlimbs/cybersolutions/cybersolutions_main.dmi'
-	unavailable_to_build = 1
+	unavailable_to_build = TRUE
 	restricted_to = list(SPECIES_HUMAN)
 	species_cannot_use = list(SPECIES_DIONA, SPECIES_VOX, SPECIES_PROMETHEAN, SPECIES_UNATHI, SPECIES_TAJARA, SPECIES_SKRELL)
 
@@ -218,7 +218,7 @@ var/datum/robolimb/basic_robolimb
 	company = "Xion"
 	desc = "This limb has a minimalist black and red casing."
 	icon = 'icons/mob/human_races/cyberlimbs/xion/xion_main.dmi'
-	unavailable_to_build = 1
+	unavailable_to_build = TRUE
 	restricted_to = list(SPECIES_HUMAN)
 	species_cannot_use = list(SPECIES_DIONA, SPECIES_VOX, SPECIES_PROMETHEAN, SPECIES_UNATHI, SPECIES_TAJARA, SPECIES_SKRELL)
 
