@@ -22,17 +22,21 @@
 		pet_holder = new pet_path(src)
 		STOP_PROCESSING(SSmobs, pet_holder) // we will do all calling work inside this mob.
 		pet_holder.the_real_src = src
-		name = pet_holder.name
-		desc = pet_holder.desc
-		icon = pet_holder.icon
-		icon_state = pet_holder.icon_state
-		overlays = pet_holder.overlays
-		update_icon()
-		stat = pet_holder.stat
-		health = pet_holder.health
-		gender = pet_holder.gender
+		holder_type = pet_holder.holder_type
+		sync_with_pet_holder()
 	else
 		QDEL_IN(src, 0)
+
+/mob/living/simple_animal/pet/proc/sync_with_pet_holder()
+	name = pet_holder.name
+	desc = pet_holder.desc
+	icon = pet_holder.icon
+	icon_state = pet_holder.icon_state
+	overlays = pet_holder.overlays
+	update_icon()
+	stat = pet_holder.stat
+	health = pet_holder.health
+	gender = pet_holder.gender
 
 /mob/living/simple_animal/pet/bullet_act(obj/item/projectile/Proj)
 	. = pet_holder?.bullet_act(arglist(args))
@@ -103,12 +107,7 @@
 	. = ..()
 	if(pet_holder)
 		. = pet_holder.Life()
-		icon = pet_holder.icon
-		icon_state = pet_holder.icon_state
-		overlays = pet_holder.overlays
-		update_icon()
-		stat = pet_holder.stat
-		health = pet_holder.health
+		sync_with_pet_holder()
 	switch(current_command)
 		if(COMMAND_WANDERING)
 			wandering()
@@ -180,6 +179,7 @@
 	return 1
 
 //returns a list of everybody we wanna do stuff with.
+//TODO: make this mess of code working, if you did it, replace this proc in simple_animals.dm, and remove /proc/ keyword from same proc in hostile/commanded.dm
 /mob/living/simple_animal/pet/proc/get_targets_by_name(text, filter_friendlies = 0)
 	var/list/possible_targets = hearers(src,10)
 	. = list()
