@@ -73,12 +73,19 @@
 	// contained in a cage
 	var/in_stasis = 0
 
+	// need for stuff in pets.dm, basically used for moving things.
+	var/mob/the_real_src
+
+/mob/living/simple_animal/Initialize()
+	the_real_src = src
+	. = ..()
+
 /mob/living/simple_animal/Life()
 	if(stat == DEAD)
 		return 0
 	. = ..()
 	if(!.)
-		walk(src, 0)
+		walk(the_real_src, 0)
 		return 0
 
 	handle_stunned()
@@ -89,15 +96,15 @@
 	if(buckled && can_escape)
 		if(istype(buckled, /obj/effect/energy_net))
 			var/obj/effect/energy_net/Net = buckled
-			Net.escape_net(src)
+			Net.escape_net(the_real_src)
 		else if(prob(50))
-			escape(src, buckled)
+			escape(the_real_src, buckled)
 		else if(prob(50))
-			visible_message("<span class='warning'>\The [src] struggles against \the [buckled]!</span>")
+			visible_message("<span class='warning'>\The [the_real_src] struggles against \the [buckled]!</span>")
 
 	//Movement
 	if(!client && !stop_automated_movement && wander && !anchored)
-		if(isturf(src.loc) && !resting && !buckled)		//This is so it only moves if it's not inside a closet, gentics machine, etc.
+		if(isturf(the_real_src.loc) && !resting && !buckled)		//This is so it only moves if it's not inside a closet, gentics machine, etc.
 			turns_since_move++
 			if(turns_since_move >= turns_per_move)
 				if(!(stop_automated_movement_when_pulled && pulledby)) //Some animals don't move when pulled
@@ -126,7 +133,7 @@
 	if(shy_animal)
 		turns_since_scan++
 		if(turns_since_scan > 5)
-			walk_to(src,0)
+			walk_to(the_real_src,0)
 			turns_since_scan = 0
 			handle_panic_target()
 
@@ -203,17 +210,17 @@
 
 		if(I_HELP)
 			if(health > 0)
-				M.visible_message("<span class='notice'>[M] [response_help] \the [src].</span>")
+				M.visible_message("<span class='notice'>[M] [response_help] \the [the_real_src].</span>")
 
 		if(I_DISARM)
-			M.visible_message("<span class='notice'>[M] [response_disarm] \the [src].</span>")
-			M.do_attack_animation(src)
+			M.visible_message("<span class='notice'>[M] [response_disarm] \the [the_real_src].</span>")
+			M.do_attack_animation(the_real_src)
 			//TODO: Push the mob away or something
 
 		if(I_HURT)
 			adjustBruteLoss(harm_intent_damage)
-			M.visible_message("<span class='warning'>[M] [response_harm] \the [src]!</span>")
-			M.do_attack_animation(src)
+			M.visible_message("<span class='warning'>[M] [response_harm] \the [the_real_src]!</span>")
+			M.do_attack_animation(the_real_src)
 
 	return
 
@@ -222,7 +229,7 @@
 		if(stat != DEAD)
 			var/obj/item/stack/medical/MED = O
 			if(!MED.animal_heal)
-				to_chat(user, "<span class='notice'>That [MED] won't help \the [src] at all!</span>")
+				to_chat(user, "<span class='notice'>That [MED] won't help \the [the_real_src] at all!</span>")
 				return
 			if(health < maxHealth)
 				if(MED.amount >= 1)
@@ -230,24 +237,24 @@
 					MED.amount -= 1
 					if(MED.amount <= 0)
 						qdel(MED)
-					for(var/mob/M in viewers(src, null))
+					for(var/mob/M in viewers(the_real_src, null))
 						if ((M.client && !( M.blinded )))
-							M.show_message("<span class='notice'>[user] applies the [MED] on [src].</span>")
+							M.show_message("<span class='notice'>[user] applies the [MED] on [the_real_src].</span>")
 		else
-			to_chat(user, "<span class='notice'>\The [src] is dead, medical items won't bring \him back to life.</span>")
+			to_chat(user, "<span class='notice'>\The [the_real_src] is dead, medical items won't bring \him back to life.</span>")
 		return
 	if(meat_type && (stat == DEAD))	//if the animal has a meat, and if it is dead.
 		if(istype(O, /obj/item/weapon/material/knife) || istype(O, /obj/item/weapon/material/knife/butch))
 			harvest(user)
 	else
 		if(!O.force)
-			visible_message("<span class='notice'>[user] gently taps [src] with \the [O].</span>")
+			visible_message("<span class='notice'>[user] gently taps [the_real_src] with \the [O].</span>")
 		else
-			O.attack(src, user, user.zone_sel.selecting)
+			O.attack(the_real_src, user, user.zone_sel.selecting)
 
 /mob/living/simple_animal/hit_with_weapon(obj/item/O, mob/living/user, effective_force, hit_zone)
 
-	visible_message("<span class='danger'>\The [src] has been attacked with \the [O] by [user]!</span>")
+	visible_message("<span class='danger'>\The [the_real_src] has been attacked with \the [O] by [user]!</span>")
 
 	if(O.force <= resistance)
 		to_chat(user, "<span class='danger'>This weapon is ineffective; it does no damage.</span>")
@@ -288,7 +295,7 @@
 		icon_state = icon_dead
 		density = 0
 		health = 0 //Make sure dey dead.
-		walk_to(src, 0)
+		walk_to(the_real_src, 0)
 
 /mob/living/simple_animal/rejuvenate()
 	..()
@@ -364,7 +371,7 @@
 	return verb
 
 /mob/living/simple_animal/put_in_hands(obj/item/W) // No hands.
-	W.loc = get_turf(src)
+	W.loc = get_turf(the_real_src)
 	return 1
 
 // Harvest an animal's delicious byproducts
@@ -372,14 +379,14 @@
 	var/actual_meat_amount = max(1,(meat_amount/2))
 	if(meat_type && actual_meat_amount>0 && (stat == DEAD))
 		for(var/i=0;i<actual_meat_amount;i++)
-			var/obj/item/meat = new meat_type(get_turf(src))
-			meat.SetName("[src.name] [meat.name]")
-		if(issmall(src))
-			user.visible_message("<span class='danger'>[user] chops up \the [src]!</span>")
-			new /obj/effect/decal/cleanable/blood/splatter(get_turf(src))
-			qdel(src)
+			var/obj/item/meat = new meat_type(get_turf(the_real_src))
+			meat.SetName("[the_real_src.name] [meat.name]")
+		if(issmall(the_real_src))
+			user.visible_message("<span class='danger'>[user] chops up \the [the_real_src]!</span>")
+			new /obj/effect/decal/cleanable/blood/splatter(get_turf(the_real_src))
+			qdel(the_real_src)
 		else
-			user.visible_message("<span class='danger'>[user] butchers \the [src] messily!</span>")
+			user.visible_message("<span class='danger'>[user] butchers \the [the_real_src] messily!</span>")
 			gib()
 
 /mob/living/simple_animal/handle_fire()
@@ -395,12 +402,12 @@
 /mob/living/simple_animal/proc/handle_panic_target()
 	//see if we should stop panicing
 	if(panic_target)
-		if (!(panic_target.loc in view(src)))
+		if (!(panic_target.loc in view(the_real_src)))
 			panic_target = null
 			stop_automated_movement = 0
 		else
 			stop_automated_movement = 1
-			walk_away(src, panic_target, 7, 4)
+			walk_away(the_real_src, panic_target, 7, 4)
 
 /mob/living/simple_animal/proc/set_panic_target(mob/M)
 	if(M && !ckey)

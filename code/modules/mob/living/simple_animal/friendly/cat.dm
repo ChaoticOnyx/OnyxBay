@@ -30,7 +30,7 @@
 	if(!..() || incapacitated() || client)
 		return
 	//MICE!
-	if((src.loc) && isturf(src.loc))
+	if((the_real_src.loc) && isturf(the_real_src.loc))
 		if(!resting && !buckled)
 			for(var/mob/living/simple_animal/mouse/M in loc)
 				if(!M.stat)
@@ -42,7 +42,7 @@
 
 
 
-	for(var/mob/living/simple_animal/mouse/snack in oview(src,5))
+	for(var/mob/living/simple_animal/mouse/snack in oview(the_real_src,5))
 		if(snack.stat < DEAD && prob(15))
 			audible_emote(pick("hisses and spits!","mrowls fiercely!","eyes [snack] hungrily."))
 		break
@@ -51,7 +51,7 @@
 
 	turns_since_scan++
 	if (turns_since_scan > 5)
-		walk_to(src,0)
+		walk_to(the_real_src,0)
 		turns_since_scan = 0
 
 		if (flee_target) //fleeing takes precendence
@@ -60,7 +60,7 @@
 			handle_movement_target()
 
 	if(prob(2)) //spooky
-		var/mob/observer/ghost/spook = locate() in range(src,5)
+		var/mob/observer/ghost/spook = locate() in range(the_real_src,5)
 		if(spook)
 			var/turf/T = spook.loc
 			var/list/visible = list()
@@ -77,28 +77,28 @@
 		movement_target = null
 		stop_automated_movement = 0
 	//if we have no target or our current one is out of sight/too far away
-	if( !movement_target || !(movement_target.loc in oview(src, 4)) )
+	if( !movement_target || !(movement_target.loc in oview(the_real_src, 4)) )
 		movement_target = null
 		stop_automated_movement = 0
-		for(var/mob/living/simple_animal/mouse/snack in oview(src)) //search for a new target
+		for(var/mob/living/simple_animal/mouse/snack in oview(the_real_src)) //search for a new target
 			if(isturf(snack.loc) && !snack.stat)
 				movement_target = snack
 				break
 
 	if(movement_target)
 		stop_automated_movement = 1
-		walk_to(src,movement_target,0,3)
+		walk_to(the_real_src,movement_target,0,3)
 
 /mob/living/simple_animal/cat/proc/handle_flee_target()
 	//see if we should stop fleeing
-	if (flee_target && !(flee_target.loc in view(src)))
+	if (flee_target && !(flee_target.loc in view(the_real_src)))
 		flee_target = null
 		stop_automated_movement = 0
 
 	if (flee_target)
 		if(prob(25)) say("HSSSSS")
 		stop_automated_movement = 1
-		walk_away(src, flee_target, 7, 2)
+		walk_away(the_real_src, flee_target, 7, 2)
 
 /mob/living/simple_animal/cat/proc/set_flee_target(atom/A)
 	if(A)
@@ -108,7 +108,7 @@
 /mob/living/simple_animal/cat/attackby(obj/item/O, mob/user)
 	. = ..()
 	if(O.force)
-		set_flee_target(user? user : src.loc)
+		set_flee_target(user? user : the_real_src.loc)
 
 /mob/living/simple_animal/cat/attack_hand(mob/living/carbon/human/M as mob)
 	. = ..()
@@ -117,15 +117,15 @@
 
 /mob/living/simple_animal/cat/ex_act()
 	. = ..()
-	set_flee_target(src.loc)
+	set_flee_target(the_real_src.loc)
 
 /mob/living/simple_animal/cat/bullet_act(obj/item/projectile/proj)
 	. = ..()
-	set_flee_target(proj.firer? proj.firer : src.loc)
+	set_flee_target(proj.firer? proj.firer : the_real_src.loc)
 
 /mob/living/simple_animal/cat/hitby(atom/movable/AM)
 	. = ..()
-	set_flee_target(AM.thrower? AM.thrower : src.loc)
+	set_flee_target(AM.thrower? AM.thrower : the_real_src.loc)
 
 //Basic friend AI
 /mob/living/simple_animal/cat/fluff
@@ -140,22 +140,22 @@
 		else if (friend.stat || friend.health <= 50) //danger or just sleeping
 			follow_dist = 2
 		var/near_dist = max(follow_dist - 2, 1)
-		var/current_dist = get_dist(src, friend)
+		var/current_dist = get_dist(the_real_src, friend)
 
 		if (movement_target != friend)
-			if (current_dist > follow_dist && !istype(movement_target, /mob/living/simple_animal/mouse) && (friend in oview(src)))
+			if (current_dist > follow_dist && !istype(movement_target, /mob/living/simple_animal/mouse) && (friend in oview(the_real_src)))
 				//stop existing movement
-				walk_to(src,0)
+				walk_to(the_real_src,0)
 				turns_since_scan = 0
 
 				//walk to friend
 				stop_automated_movement = 1
 				movement_target = friend
-				walk_to(src, movement_target, near_dist, 4)
+				walk_to(the_real_src, movement_target, near_dist, 4)
 
 		//already following and close enough, stop
 		else if (current_dist <= near_dist)
-			walk_to(src,0)
+			walk_to(the_real_src,0)
 			movement_target = null
 			stop_automated_movement = 0
 			if (prob(10))
@@ -168,7 +168,7 @@
 	..()
 	if (stat || !friend)
 		return
-	if (get_dist(src, friend) <= 1)
+	if (get_dist(the_real_src, friend) <= 1)
 		if (friend.stat >= DEAD || friend.is_asystole())
 			if (prob((friend.stat < DEAD)? 50 : 15))
 				var/verb = pick("meows", "mews", "mrowls")
@@ -198,13 +198,13 @@
 		. = 1 //already friends, but show success anyways
 
 	if(.)
-		set_dir(get_dir(src, friend))
+		set_dir(get_dir(the_real_src, friend))
 		visible_emote(pick("nuzzles [friend].",
 						   "brushes against [friend].",
 						   "rubs against [friend].",
 						   "purrs."))
 	else
-		to_chat(usr, "<span class='notice'>[src] ignores you.</span>")
+		to_chat(usr, "<span class='notice'>[the_real_src] ignores you.</span>")
 	return
 
 //RUNTIME IS ALIVE! SQUEEEEEEEE~
