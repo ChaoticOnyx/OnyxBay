@@ -24,34 +24,34 @@ var/server_name = "OnyxBay"
 	return 1
 
 /proc/toggle_ooc()
-    config.ooc_allowed = !config.ooc_allowed
-    if(config.ooc_allowed)
-        to_world("<b>The OOC channel has been globally enabled!</b>")
-    else
-        to_world("<b>The OOC channel has been globally disabled!</b>")
+	config.ooc_allowed = !config.ooc_allowed
+	if(config.ooc_allowed)
+		to_world("<b>The OOC channel has been globally enabled!</b>")
+	else
+		to_world("<b>The OOC channel has been globally disabled!</b>")
 
 /proc/disable_ooc()
-    if(config.ooc_allowed)
-        toggle_ooc()
+	if(config.ooc_allowed)
+		toggle_ooc()
 
 /proc/enable_ooc()
-    if(!config.ooc_allowed)
-        toggle_ooc()
+	if(!config.ooc_allowed)
+		toggle_ooc()
 
 /proc/toggle_looc()
-    config.looc_allowed = !config.looc_allowed
-    if(config.looc_allowed)
-        to_world("<b>The LOOC channel has been globally enabled!</b>")
-    else
-        to_world("<b>The LOOC channel has been globally disabled!</b>")
+	config.looc_allowed = !config.looc_allowed
+	if(config.looc_allowed)
+		to_world("<b>The LOOC channel has been globally enabled!</b>")
+	else
+		to_world("<b>The LOOC channel has been globally disabled!</b>")
 
 /proc/disable_looc()
-    if(config.ooc_allowed)
-        toggle_ooc()
+	if(config.ooc_allowed)
+		toggle_ooc()
 
 /proc/enable_looc()
-    if(!config.looc_allowed)
-        toggle_looc()
+	if(!config.looc_allowed)
+		toggle_looc()
 
 // Find mobs matching a given string
 //
