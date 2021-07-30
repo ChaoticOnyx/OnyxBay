@@ -70,10 +70,6 @@
 	dizziness = 0
 	jitteriness = 0
 
-	set_sight(sight|SEE_TURFS|SEE_MOBS|SEE_OBJS)
-	set_see_in_dark(8)
-	set_see_invisible(SEE_INVISIBLE_LEVEL_TWO)
-
 	drop_r_hand()
 	drop_l_hand()
 

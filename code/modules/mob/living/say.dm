@@ -142,6 +142,8 @@ var/list/channel_to_radio_key = new
 
 	if(stat)
 		if(stat == 2)
+			if(!can_ghostize_human())
+				return
 			return say_dead(message)
 		return
 

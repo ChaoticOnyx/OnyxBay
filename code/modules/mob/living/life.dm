@@ -225,6 +225,9 @@
 	set_see_invisible(initial(see_invisible))
 
 /mob/living/proc/update_dead_sight()
+	if(!can_ghostize_human())
+		update_living_sight()
+		return
 	set_sight(sight|SEE_TURFS|SEE_MOBS|SEE_OBJS)
 	set_see_in_dark(8)
 	set_see_invisible(SEE_INVISIBLE_LEVEL_TWO)

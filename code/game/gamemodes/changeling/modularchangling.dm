@@ -312,10 +312,18 @@ var/list/datum/power/changeling/powerinstances = list()
 
 // Modularchangling, totally stolen from the new player panel.  YAYY
 /datum/changeling/proc/EvolutionMenu()//The new one
+	set name = "Evolutin Menu"
 	set category = "Changeling"
 	set desc = "Level up!"
 
-	if(!usr || !usr.mind || !usr.mind.changeling)	return
+	if(!usr || !usr.mind || !usr.mind.changeling)
+		return
+	if(usr.is_regenerating())
+		to_chat(src, SPAN("changeling", "We cannot use our body while in stasis."))
+		return
+	else if(!ishuman(usr))
+		to_chat(src, SPAN("changeling", "We need to be in the body to evolve."))
+		return
 	src = usr.mind.changeling
 
 	if(!powerinstances.len)

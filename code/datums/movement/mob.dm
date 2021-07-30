@@ -33,6 +33,11 @@
 	else
 		control_object.set_dir(direction)
 
+/mob/proc/can_ghostize_human()
+	if(!isnull(src.mind.changeling))
+		return src.mind.changeling.true_dead
+	return 1
+
 // Death handling
 /datum/movement_handler/mob/death/DoMove(var/direction, var/mob/mover)
 	if(mob.stat != DEAD)
@@ -41,6 +46,8 @@
 	if(!mob.client)
 		if(mover != mob)
 			. = MOVEMENT_PROCEED
+		return
+	if(!mob.can_ghostize_human())
 		return
 	mob.ghostize()
 
