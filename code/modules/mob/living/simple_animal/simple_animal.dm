@@ -73,6 +73,32 @@
 	// contained in a cage
 	var/in_stasis = 0
 
+	var/datum/mob_ai/ai_controller
+	var/is_pet = FALSE
+
+/mob/living/simple_animal/Initialize()
+	. = ..()
+	if(is_pet)
+		ai_controller = new /datum/mob_ai/pet()
+	else
+		ai_controller = new()
+	ai_controller.holder = src
+	ai_controller.faction = faction
+
+/mob/living/simple_animal/hear_say(message, verb = "says", datum/language/language = null, alt_name = "", italics = 0, mob/speaker = null, sound/speech_sound, sound_vol)
+	if(is_pet)
+		if(speaker == ai_controller.master)
+			ai_controller.listen(speaker, lowertext(message))
+		return 0
+	..()
+
+/mob/living/simple_animal/hear_radio(message, verb="says", datum/language/language=null, part_a, part_b, part_c, mob/speaker = null, hard_to_hear = 0)
+	if(is_pet)
+		if(speaker == ai_controller.master)
+			ai_controller.listen(speaker, lowertext(message))
+		return 0
+	..()
+
 /mob/living/simple_animal/Life()
 	if(stat == DEAD)
 		return 0
@@ -86,39 +112,13 @@
 	handle_paralysed()
 	handle_supernatural()
 
-	if(buckled && can_escape)
-		if(istype(buckled, /obj/effect/energy_net))
-			var/obj/effect/energy_net/Net = buckled
-			Net.escape_net(src)
-		else if(prob(50))
-			escape(src, buckled)
-		else if(prob(50))
-			visible_message("<span class='warning'>\The [src] struggles against \the [buckled]!</span>")
+	ai_controller.attempt_escape()
 
-	//Movement
-	if(!client && !stop_automated_movement && wander && !anchored)
-		if(isturf(src.loc) && !resting && !buckled)		//This is so it only moves if it's not inside a closet, gentics machine, etc.
-			turns_since_move++
-			if(turns_since_move >= turns_per_move)
-				if(!(stop_automated_movement_when_pulled && pulledby)) //Some animals don't move when pulled
-					SelfMove(pick(GLOB.cardinal))
+	ai_controller.process_moving()
 
-	//Speaking
-	if(!client && speak_chance)
-		if(rand(0,200) < speak_chance)
-			var/action = pick(
-				speak.len;      "speak",
-				emote_hear.len; "emote_hear",
-				emote_see.len;  "emote_see"
-				)
+	ai_controller.process_speaking()
 
-			switch(action)
-				if("speak")
-					say(pick(speak))
-				if("emote_hear")
-					audible_emote("[pick(emote_hear)].")
-				if("emote_see")
-					visible_emote("[pick(emote_see)].")
+	ai_controller.process_special_actions()
 
 	if(in_stasis)
 		return 1
