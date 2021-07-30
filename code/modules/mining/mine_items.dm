@@ -54,11 +54,6 @@
 
 	var/excavation_amount = 200
 
-/obj/item/weapon/pickaxe/hammer
-	name = "sledgehammer"
-	//icon_state = "sledgehammer" Waiting on sprite
-	desc = "A mining hammer made of reinforced metal. You feel like smashing your boss in the face with this."
-
 /obj/item/weapon/pickaxe/silver
 	name = "silver pickaxe"
 	icon_state = "spickaxe"
@@ -126,6 +121,45 @@
 	digspeed = 10
 	desc = ""
 	drill_verb = "drilling"
+
+/obj/item/weapon/pickaxe/sledgehammer
+	name = "sledgehammer"
+	desc = "A mining hammer made of reinforced metal. You feel like smashing your boss in the face with this."
+	icon_state = "sledgehammer"
+	item_state = "sledgehammer0"
+	slot_flags = null
+	force = 15.0
+	throwforce = 15.0
+	attack_verb = list("smashed", "beaten", "slammed", "smacked", "struck")
+	sharp = FALSE
+	mod_weight = 1.5
+	mod_reach = 1.0
+	mod_handy = 0.4
+	drill_verb = "hammering"
+	digspeed = 20
+	var/wielded = 0
+
+/obj/item/weapon/pickaxe/sledgehammer/update_twohanding()
+	var/mob/living/M = loc
+	if(istype(M) && M.can_wield_item(src) && is_held_twohanded(M))
+		wielded = TRUE
+		force = 40.0 // Higher than fireaxe's (30), but this thing is not sharp so it's probably fine
+		mod_handy = 1.2
+		mod_weight = 2.0
+		mod_reach = 1.5
+	else
+		wielded = FALSE
+		force = 17.5
+		mod_weight = 1.5
+		mod_reach = 1.0
+		mod_handy = 0.4
+	update_icon()
+	..()
+
+/obj/item/weapon/pickaxe/sledgehammer/update_icon()
+	var/new_state = "[icon_state][wielded]"
+	item_state_slots[slot_l_hand_str] = new_state
+	item_state_slots[slot_r_hand_str] = new_state
 
 /*****************************Shovel********************************/
 

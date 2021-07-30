@@ -1,5 +1,5 @@
 /datum/design/item/mining
-	category_items = "Mining"
+	category_items = list("Mining")
 
 /datum/design/item/mining/jackhammer
 	id = "jackhammer"

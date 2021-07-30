@@ -1,26 +1,5 @@
 #include "magshield_areas.dm"
 
-/obj/effect/overmap/sector/magshield
-	name = "orbital station"
-	desc = "Sensors detect an orbital station above the exoplanet. Sporadic magentic impulses are registred inside it. Planet landing is impossible due to lower orbits being cluttered with chaotically moving metal chunks."
-	icon_state = "object"
-	known = 0
-
-	initial_generic_waypoints = list(
-		"nav_magshield_1",
-		"nav_magshield_2",
-		"nav_magshield_3",
-		"nav_magshield_4",
-		"nav_magshield_antag"
-	)
-
-/datum/map_template/ruin/away_site/magshield
-	name = "Magshield"
-	id = "awaysite_magshield"
-	description = "It's an orbital shield station."
-	suffixes = list("magshield/magshield.dmm")
-	cost = 1
-
 /obj/effect/shuttle_landmark/nav_magshield/nav1
 	name = "Orbital Station Navpoint #1"
 	landmark_tag = "nav_magshield_1"

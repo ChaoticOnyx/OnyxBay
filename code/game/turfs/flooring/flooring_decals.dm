@@ -39,6 +39,7 @@ var/list/floor_decals = list()
 
 /obj/effect/floor_decal/reset
 	name = "reset marker"
+	icon_state = "clear"
 
 /obj/effect/floor_decal/reset/Initialize()
 	var/turf/T = get_turf(src)
