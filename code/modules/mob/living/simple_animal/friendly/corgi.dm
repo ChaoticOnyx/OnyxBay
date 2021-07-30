@@ -56,30 +56,30 @@
 			if((movement_target) && !(isturf(movement_target.loc) || ishuman(movement_target.loc) ))
 				movement_target = null
 				stop_automated_movement = 0
-			if( !movement_target || !(movement_target.loc in oview(the_real_src, 3)) )
+			if( !movement_target || !(movement_target.loc in oview(src, 3)) )
 				movement_target = null
 				stop_automated_movement = 0
-				for(var/obj/item/weapon/reagent_containers/food/snacks/S in oview(the_real_src,3))
+				for(var/obj/item/weapon/reagent_containers/food/snacks/S in oview(src,3))
 					if(isturf(S.loc) || ishuman(S.loc))
 						movement_target = S
 						break
 			if(movement_target)
 				spawn(0) // Jesus fucking christ, do we still need that sleep(3) spamming abomination in Life proc?
 					stop_automated_movement = 1
-					step_to(the_real_src,movement_target,1)
+					step_to(src,movement_target,1)
 					sleep(3)
-					step_to(the_real_src,movement_target,1)
+					step_to(src,movement_target,1)
 					sleep(3)
-					step_to(the_real_src,movement_target,1)
+					step_to(src,movement_target,1)
 
 					if(movement_target)		// Not redundant due to sleeps, Item can be gone in 6 decisecomds
-						if (movement_target.loc.x < the_real_src.x)
+						if (movement_target.loc.x < src.x)
 							set_dir(WEST)
-						else if (movement_target.loc.x > the_real_src.x)
+						else if (movement_target.loc.x > src.x)
 							set_dir(EAST)
-						else if (movement_target.loc.y < the_real_src.y)
+						else if (movement_target.loc.y < src.y)
 							set_dir(SOUTH)
-						else if (movement_target.loc.y > the_real_src.y)
+						else if (movement_target.loc.y > src.y)
 							set_dir(NORTH)
 						else
 							set_dir(SOUTH)
@@ -198,7 +198,7 @@
 	if(hat)
 		return
 	hat = new_hat
-	new_hat.forceMove(the_real_src)
+	new_hat.forceMove(src)
 	update_hat()
 
 /mob/living/simple_animal/corgi/proc/update_hat()
@@ -238,7 +238,7 @@
 //pupplies cannot wear anything.
 /mob/living/simple_animal/corgi/puppy/Topic(href, href_list)
 	if(href_list["remove_inv"] || href_list["add_inv"])
-		to_chat(usr, SPAN_WARNING("You can't fit this on [the_real_src]"))
+		to_chat(usr, SPAN_WARNING("You can't fit this on [src]"))
 		return
 	..()
 
@@ -261,7 +261,7 @@
 //Lisa already has a cute bow!
 /mob/living/simple_animal/corgi/Lisa/Topic(href, href_list)
 	if(href_list["remove_inv"] || href_list["add_inv"])
-		to_chat(usr, SPAN_WARNING("[the_real_src] already has a cute bow!"))
+		to_chat(usr, SPAN_WARNING("[src] already has a cute bow!"))
 		return
 	..()
 
@@ -274,7 +274,7 @@
 			turns_since_scan = 0
 			var/alone = 1
 			var/ian = 0
-			for(var/mob/M in oviewers(7, the_real_src))
+			for(var/mob/M in oviewers(7, src))
 				if(istype(M, /mob/living/simple_animal/corgi/Ian))
 					if(M.client)
 						alone = 0
@@ -285,7 +285,7 @@
 					alone = 0
 					break
 			if(alone && ian && puppies < 4)
-				if(near_camera(the_real_src) || near_camera(ian))
+				if(near_camera(src) || near_camera(ian))
 					return
 				new /mob/living/simple_animal/corgi/puppy(loc)
 
