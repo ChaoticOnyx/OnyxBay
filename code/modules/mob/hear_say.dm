@@ -315,11 +315,11 @@
 		var/list/messages = splittext(message, " ")
 		var/R = rand(1, messages.len)
 		var/heardword = messages[R]
-		if(copytext(heardword,1, 1) in punctuation)
-			heardword = copytext(heardword,2)
-		if(copytext(heardword,-1) in punctuation)
-			heardword = copytext(heardword,1,length(heardword))
-		heard = "<span class = 'game_say'>...You hear something about...[heardword]</span>"
+		if(copytext(heardword, 1, 1) in punctuation)
+			heardword = copytext(heardword, 2)
+		if(copytext(heardword, -1) in punctuation)
+			heardword = copytext(heardword, 1, length(heardword))
+		heard = SPAN("game_say", "...<i>You hear something about</i>... <i>[heardword]</i>...")
 
 	else
 		heard = "<span class = 'game_say'>...<i>You almost hear someone talking</i>...</span>"

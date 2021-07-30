@@ -54,3 +54,9 @@
 	if(!global_vars_)
 		global_vars_ = new()
 	debug_variables(global_vars_)
+
+/client/proc/debug_glob_variables()
+	set category = "Debug"
+	set name = "View GLOB Variables"
+
+	debug_variables(GLOB)

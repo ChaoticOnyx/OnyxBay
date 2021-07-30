@@ -5,7 +5,7 @@
 	materials = list(MATERIAL_STEEL = 500, MATERIAL_GLASS = 200)
 	build_path = /obj/item/device/robotanalyzer
 	sort_string = "MACFB"
-	category_items = "Robotics"
+	category_items = list("Robotics")
 
 /datum/design/item/synthstorage/intelicard
 	name = "InteliCard"
@@ -52,4 +52,4 @@
 	materials = list(MATERIAL_STEEL = 5000, MATERIAL_GLASS = 1000, MATERIAL_SILVER = 250, MATERIAL_GOLD = 250, MATERIAL_DIAMOND = 1250, MATERIAL_URANIUM = 500)
 	build_path = /obj/item/mecha_parts/mecha_equipment/tool/drill/resonant
 	sort_string = "VADAA"
-	category_items = "Robotics"
+	category_items = list("Robotics")

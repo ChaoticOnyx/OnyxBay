@@ -8,6 +8,7 @@
 	fire_resist = 2
 	layer = BLOB_SHIELD_LAYER
 	spawning = 0
+	explosion_block = 3
 	destroy_sound = "sound/effects/blobsplat.ogg"
 
 /obj/effect/blob/shield/New(loc,newlook = null)

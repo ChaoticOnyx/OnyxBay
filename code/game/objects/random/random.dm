@@ -378,12 +378,15 @@
 	spawn_nothing_percentage = 35
 
 /obj/random/plushie/spawn_choices()
-	return list(/obj/item/toy/plushie/nymph,
-				/obj/item/toy/plushie/mouse,
-				/obj/item/toy/plushie/kitten,
-				/obj/item/toy/plushie/lizard,
-				/obj/item/toy/plushie/farwa,
-				/obj/item/toy/plushie/spider)
+	return list(
+		/obj/item/toy/plushie/nymph,
+		/obj/item/toy/plushie/mouse,
+		/obj/item/toy/plushie/kitten,
+		/obj/item/toy/plushie/lizard,
+		/obj/item/toy/plushie/farwa,
+		/obj/item/toy/plushie/spider,
+		/obj/item/toy/plushie/snail
+	)
 
 /obj/random/plushie/large
 	name = "random large plushie"

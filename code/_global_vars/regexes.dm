@@ -6,6 +6,8 @@ GLOBAL_DATUM_INIT(is_email, /regex, regex("\[a-z0-9_-]+@\[a-z0-9_-]+.\[a-z0-9_-]
 GLOBAL_DATUM_INIT(is_alphanumeric, /regex, regex("\[a-z0-9]+", "i"))
 GLOBAL_DATUM_INIT(is_punctuation, /regex, regex("\[.!?]+", "i"))
 GLOBAL_DATUM_INIT(is_color, /regex, regex("^#\[0-9a-fA-F]{6}$"))
+// Used to remove symbols in range of the private usage area.
+GLOBAL_DATUM_INIT(pua, /regex, regex("\[\uE000-\uF8FF]", "g"))
 
 //finds text strings recognized as links on discord. Mainly used to stop embedding.
 GLOBAL_DATUM_INIT(has_discord_embeddable_links, /regex, regex("(https?://\[^\\s|<\]{2,})"))

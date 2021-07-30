@@ -59,7 +59,7 @@
 	price = 5
 
 /datum/gear/lighters/zippo/pt
-	display_name = "T&P lighter"
+	display_name = "T'n'P lighter"
 	path = /obj/item/weapon/flame/lighter/zippo/pt
 	price = 7
 
