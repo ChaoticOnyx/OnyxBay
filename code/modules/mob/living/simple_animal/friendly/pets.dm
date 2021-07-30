@@ -134,6 +134,10 @@
 	return 0
 
 /mob/living/simple_animal/pet/proc/commanded_stop()
+	var/turf/T = get_turf(src)
+	if(T.loc != safe_area)
+		wandering()
+		return
 	//Movement
 	if(!client && wander && !anchored)
 		if(isturf(the_real_src.loc) && !resting && !buckled)		//This is so it only moves if it's not inside a closet, genetics machine, etc.
