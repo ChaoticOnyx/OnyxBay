@@ -61,6 +61,7 @@ CIGARETTES AND STUFF ARE IN 'SMOKABLES' FOLDER
 	item_state = "cigoff"
 	name = "burnt match"
 	desc = "A match. This one has seen better days."
+	set_light(0) // cont. - After experimenting with two IRL, I came to conclusion both are shit at lighting.
 	STOP_PROCESSING(SSobj, src)
 
 /////////
