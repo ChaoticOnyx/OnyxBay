@@ -1,5 +1,6 @@
 #define COMMAND_STOP "стой тут" //basically moves around in area.
 #define COMMAND_FOLLOW "иди за" //follows a owner
+#define COMMAND_WANDERING "прогуляйся" // set pet behaviour to basic behaviour: wandering
 /mob/living/simple_animal/pet
 	name = "Pet"
 	desc = "Pet desc, it's bug"
@@ -15,7 +16,7 @@
 	var/vision_range = 7 //How big of an area to search for targets in, a vision of 7 attempts to find targets as soon as they walk into screen view
 
 /mob/living/simple_animal/pet/Initialize()
-	known_commands = list(COMMAND_STOP, COMMAND_FOLLOW)
+	known_commands = list(COMMAND_STOP, COMMAND_FOLLOW, COMMAND_WANDERING)
 	. = ..()
 	if(pet_path)
 		pet_holder = new pet_path(src)
@@ -93,6 +94,11 @@
 /mob/living/simple_animal/pet/Topic(href, href_list)
 	. = pet_holder?.Topic(arglist(args))
 
+/mob/living/simple_animal/pet/get_scooped(mob/living/carbon/human/grabber, self_grab)
+	. = ..()
+	if(.)
+		wandering()
+
 /mob/living/simple_animal/pet/Life()
 	. = ..()
 	if(pet_holder)
@@ -104,6 +110,8 @@
 		stat = pet_holder.stat
 		health = pet_holder.health
 	switch(current_command)
+		if(COMMAND_WANDERING)
+			wandering()
 		if(COMMAND_STOP)
 			commanded_stop()
 		if(COMMAND_FOLLOW)
@@ -162,6 +170,8 @@
 				if(COMMAND_FOLLOW)
 					if(follow_command(speaker,text))
 						break
+				if(COMMAND_WANDERING)
+					wandering()
 
 	return 1
 
@@ -185,6 +195,11 @@
 					break
 		if(found)
 			. += M
+
+/mob/living/simple_animal/pet/proc/wandering()
+	current_command = COMMAND_WANDERING
+	stop_automated_movement = FALSE
+	safe_area = null
 
 /mob/living/simple_animal/pet/proc/stay_command(mob/speaker,text)
 	target_mob = null
