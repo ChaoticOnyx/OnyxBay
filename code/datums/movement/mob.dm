@@ -34,9 +34,7 @@
 		control_object.set_dir(direction)
 
 /mob/proc/can_ghostize_human()
-	if(!isnull(src.mind.changeling))
-		return src.mind.changeling.true_dead
-	return 1
+	return mind.changeling?.true_dead || TRUE
 
 // Death handling
 /datum/movement_handler/mob/death/DoMove(var/direction, var/mob/mover)
