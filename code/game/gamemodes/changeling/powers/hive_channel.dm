@@ -19,7 +19,7 @@
 			names += DNA.name
 
 	if(names.len <= 0)
-		to_chat(src, SPAN("changeling", "The airwaves already have all of our DNA."))
+		to_chat(src, SPAN(LANGUAGE_LING, "The airwaves already have all of our DNA."))
 		return
 
 	var/S = input("Select a DNA to channel: ", "Channel DNA", null) as null|anything in names
@@ -33,11 +33,11 @@
 	var/datum/species/spec = all_species[chosen_dna.speciesName]
 
 	if(spec && spec.species_flags & SPECIES_FLAG_NEED_DIRECT_ABSORB)
-		to_chat(src, SPAN("changeling", "That species must be absorbed directly."))
+		to_chat(src, SPAN(LANGUAGE_LING, "That species must be absorbed directly."))
 		return
 
 	changeling.chem_charges -= 10
 	hivemind_bank += chosen_dna
-	to_chat(src, SPAN("changeling", "We channel the DNA of [S] to the air."))
+	to_chat(src, SPAN(LANGUAGE_LING, "We channel the DNA of [S] to the air."))
 
 	feedback_add_details("changeling_powers","HU")

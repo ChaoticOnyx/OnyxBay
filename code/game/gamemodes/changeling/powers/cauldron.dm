@@ -69,11 +69,11 @@
 	if(amount <= 0)
 		return
 	if(changeling.chem_charges <= amount)
-		to_chat(src, SPAN("changeling", "Not enough chemicals."))
+		to_chat(src, SPAN(LANGUAGE_LING, "Not enough chemicals."))
 		return
 	if(target_chem == /datum/reagent/toxin/plasma)
 		if(changeling.chem_charges <= 2 * amount)
-			to_chat(src, SPAN("changeling", "Not enough chemicals."))
+			to_chat(src, SPAN(LANGUAGE_LING, "Not enough chemicals."))
 			return
 
 	var/obj/item/organ/internal/biostructure/BIO = locate() in contents
@@ -98,7 +98,7 @@
 		return FALSE
 
 	if(src.status_flags & FAKEDEATH)	//Check for stasis
-		to_chat(src, SPAN("changeling", "We can't sting until our stasis ends successfully."))
+		to_chat(src, SPAN(LANGUAGE_LING, "We can't sting until our stasis ends successfully."))
 		return FALSE
 
 	var/mob/living/carbon/human/C = src

@@ -12,7 +12,7 @@
 	var/mob/living/carbon/C = src
 	if(C.does_not_breathe == FALSE)
 		C.does_not_breathe = TRUE
-		to_chat(src, SPAN("changeling", "We stop breathing, as we no longer need to."))
+		to_chat(src, SPAN(LANGUAGE_LING, "We stop breathing, as we no longer need to."))
 	else
 		C.does_not_breathe = FALSE
-		to_chat(src, SPAN("changeling", "We resume breathing, as we now need to again."))
+		to_chat(src, SPAN(LANGUAGE_LING, "We resume breathing, as we now need to again."))

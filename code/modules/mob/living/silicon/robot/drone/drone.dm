@@ -127,9 +127,9 @@ var/list/mob_hat_cache = list()
 	..()
 
 	verbs += /mob/living/proc/hide
-	remove_language("Robot Talk")
-	add_language("Robot Talk", 0)
-	add_language("Drone Talk", 1)
+	remove_language(LANGUAGE_ROBOT)
+	add_language(LANGUAGE_ROBOT, 0)
+	add_language(LANGUAGE_DRONE, 1)
 
 	// NO BRAIN.
 	mmi = null

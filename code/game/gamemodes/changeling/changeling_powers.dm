@@ -92,7 +92,7 @@ var/list/datum/absorbed_dna/hivemind_bank = list()
 		mind.changeling = new /datum/changeling(gender)
 
 	verbs += /datum/changeling/proc/EvolutionMenu
-	add_language("Changeling")
+	add_language(LANGUAGE_LING)
 
 	var/lesser_form = !ishuman(src)
 
@@ -146,11 +146,11 @@ var/list/datum/absorbed_dna/hivemind_bank = list()
 // Checks if we are in stasis or dead. Some abilities don't need all the checks performed by changeling_power(), so we use this one.
 /mob/proc/changeling_is_incapacitated(max_stat = CONSCIOUS, allow_stasis = FALSE)
 	if(!allow_stasis && is_regenerating())
-		to_chat(src, SPAN("changeling", "We cannot use our body while in stasis."))
+		to_chat(src, SPAN(LANGUAGE_LING, "We cannot use our body while in stasis."))
 		return TRUE
 
 	if(stat > max_stat)
-		to_chat(src, SPAN("changeling", "We are incapacitated."))
+		to_chat(src, SPAN(LANGUAGE_LING, "We are incapacitated."))
 		return TRUE
 
 	return FALSE
@@ -171,15 +171,15 @@ var/list/datum/absorbed_dna/hivemind_bank = list()
 		return
 
 	if(changeling.absorbed_dna.len < required_dna)
-		to_chat(src, SPAN("changeling", "We require at least <b>[required_dna]</b> samples of compatible DNA."))
+		to_chat(src, SPAN(LANGUAGE_LING, "We require at least <b>[required_dna]</b> samples of compatible DNA."))
 		return
 
 	if(changeling.chem_charges < required_chems)
-		to_chat(src, SPAN("changeling", "We require at least <b>[required_chems]</b> units of chemicals to do that!"))
+		to_chat(src, SPAN(LANGUAGE_LING, "We require at least <b>[required_chems]</b> units of chemicals to do that!"))
 		return
 
 	if(changeling.geneticdamage > max_genetic_damage)
-		to_chat(src, SPAN("changeling", "Our genomes are still reassembling. We need time to recover first."))
+		to_chat(src, SPAN(LANGUAGE_LING, "Our genomes are still reassembling. We need time to recover first."))
 		return
 
 	return changeling
@@ -192,7 +192,7 @@ var/list/datum/absorbed_dna/hivemind_bank = list()
 		languages += language
 
 	//This isn't strictly necessary but just to be safe...
-	add_language("Changeling")
+	add_language(LANGUAGE_LING)
 	return
 
 //Speeds up chemical regeneration
@@ -213,11 +213,11 @@ var/list/datum/absorbed_dna/hivemind_bank = list()
 	if(M.loc == loc)
 		return TRUE //target and source are in the same thing
 	if(!isturf(loc) || !isturf(M.loc))
-		to_chat(src, SPAN("changeling", "We cannot reach \the [M] with a sting!"))
+		to_chat(src, SPAN(LANGUAGE_LING, "We cannot reach \the [M] with a sting!"))
 		return FALSE //One is inside, the other is outside something.
 	// Maximum queued turfs set to 25; I don't *think* anything raises sting_range above 2, but if it does the 25 may need raising
 	if(!AStar(loc, M.loc, /turf/proc/AdjacentTurfs, /turf/proc/Distance, max_nodes = 25, max_node_depth = sting_range)) //If we can't find a path, fail
-		to_chat(src, SPAN("changeling", "We cannot find a path to sting \the [M] by!"))
+		to_chat(src, SPAN(LANGUAGE_LING, "We cannot find a path to sting \the [M] by!"))
 		return FALSE
 	return TRUE
 
@@ -239,7 +239,7 @@ var/list/datum/absorbed_dna/hivemind_bank = list()
 
 	var/obj/item/organ/external/target_limb = T.get_organ(src.zone_sel.selecting)
 	if (!target_limb)
-		to_chat(src, SPAN("changeling", "[T] is missing the limb we are targeting."))
+		to_chat(src, SPAN(LANGUAGE_LING, "[T] is missing the limb we are targeting."))
 		return
 
 	changeling.chem_charges -= required_chems
@@ -252,11 +252,11 @@ var/list/datum/absorbed_dna/hivemind_bank = list()
 	if(loud)
 		visible_message(SPAN("danger", "[src] fires an organic shard into [T]!"))
 	else
-		to_chat(src, SPAN("changeling", "We stealthily sting [T]."))
+		to_chat(src, SPAN(LANGUAGE_LING, "We stealthily sting [T]."))
 
 	for(var/obj/item/clothing/clothes in list(T.head, T.wear_mask, T.wear_suit, T.w_uniform, T.gloves, T.shoes))
 		if(istype(clothes) && (clothes.body_parts_covered & target_limb.body_part) && (clothes.item_flags & ITEM_FLAG_THICKMATERIAL))
-			to_chat(src, SPAN("changeling", "[T]'s armor has protected them."))
+			to_chat(src, SPAN(LANGUAGE_LING, "[T]'s armor has protected them."))
 			return //thick clothes will protect from the sting
 
 	if(T.isSynthetic() || BP_IS_ROBOTIC(target_limb))
@@ -280,7 +280,7 @@ var/list/datum/absorbed_dna/hivemind_bank = list()
 	var/mob/living/M = src
 
 	if(M.l_hand && M.r_hand)
-		to_chat(M, SPAN("changeling", "Our hands are full."))
+		to_chat(M, SPAN(LANGUAGE_LING, "Our hands are full."))
 		return
 
 	var/obj/item/weapon/W = new weapon_type(src)

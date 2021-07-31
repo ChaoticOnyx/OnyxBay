@@ -64,7 +64,7 @@
 		return
 	if(M?.mind && brainchan)
 		M.mind.transfer_to(brainchan)
-		to_chat(brainchan, SPAN("changeling", "We feel slightly disoriented."))
+		to_chat(brainchan, SPAN(LANGUAGE_LING, "We feel slightly disoriented."))
 
 // Called when biostructure is taken out of a mob
 /obj/item/organ/internal/biostructure/removed(mob/living/user)

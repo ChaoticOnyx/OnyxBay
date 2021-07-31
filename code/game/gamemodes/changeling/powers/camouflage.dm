@@ -20,7 +20,7 @@
 		changeling.chem_charges -= 10
 		var/old_regen_rate = H.mind.changeling.chem_recharge_rate
 
-		to_chat(H, SPAN("changeling", "We vanish from sight, and will remain hidden, so long as we move carefully."))
+		to_chat(H, SPAN(LANGUAGE_LING, "We vanish from sight, and will remain hidden, so long as we move carefully."))
 		H.mind.changeling.cloaked = TRUE
 		H.mind.changeling.chem_recharge_rate = 0
 		animate(src, alpha = 255, alpha = 10, time = 10)
@@ -28,7 +28,7 @@
 		var/must_walk = TRUE
 		if(mind.changeling.recursive_enhancement)
 			must_walk = FALSE
-			to_chat(src, SPAN("changeling", "We may move at our normal speed while hidden."))
+			to_chat(src, SPAN(LANGUAGE_LING, "We may move at our normal speed while hidden."))
 
 		if(must_walk)
 			H.set_m_intent(M_WALK)
@@ -52,7 +52,7 @@
 
 		H.invisibility = initial(invisibility)
 		visible_message(SPAN("warning", "[src] suddenly fades in, seemingly from nowhere!"), \
-						SPAN("changeling", "We revert our camouflage, revealing ourselves."))
+						SPAN(LANGUAGE_LING, "We revert our camouflage, revealing ourselves."))
 		H.set_m_intent(M_RUN)
 		H.mind.changeling.cloaked = 0
 		H.mind.changeling.chem_recharge_rate = old_regen_rate

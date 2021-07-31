@@ -26,7 +26,7 @@
 		var/obj/item/organ/external/new_parent = input(src, "Where do we want to move our [BIO.name]?") as null|anything in available_limbs
 
 		if(new_parent)
-			to_chat(src, SPAN("changeling", "We start to move our [BIO.name] to \the [new_parent]."))
+			to_chat(src, SPAN(LANGUAGE_LING, "We start to move our [BIO.name] to \the [new_parent]."))
 			BIO.moving = TRUE
 			var/move_time
 			if(mind.changeling.recursive_enhancement)
@@ -40,7 +40,7 @@
 						var/mob/living/carbon/human/H = src
 						var/obj/item/organ/external/E = H.get_organ(BIO.parent_organ)
 						if(!E)
-							to_chat(src, SPAN("changeling", "We are missing that limb."))
+							to_chat(src, SPAN(LANGUAGE_LING, "We are missing that limb."))
 							return
 						if(istype(E))
 							E.internal_organs -= BIO
@@ -49,5 +49,5 @@
 						if(!E)
 							CRASH("[src] spawned in [src] without a parent organ: [BIO.parent_organ].")
 						E.internal_organs |= BIO
-						to_chat(src, SPAN("changeling", "Our [BIO.name] is now in \the [new_parent]."))
+						to_chat(src, SPAN(LANGUAGE_LING, "Our [BIO.name] is now in \the [new_parent]."))
 						log_debug("([src])The changeling biostructure moved in [new_parent].")

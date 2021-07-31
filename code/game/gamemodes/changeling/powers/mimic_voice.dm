@@ -11,7 +11,7 @@
 
 	if(changeling.mimicing)
 		changeling.mimicing = ""
-		to_chat(src, SPAN("changeling", "We return our vocal glands to their original form."))
+		to_chat(src, SPAN(LANGUAGE_LING, "We return our vocal glands to their original form."))
 		return
 
 	var/mimic_voice = sanitize(input(usr, "Enter a name to mimic.", "Mimic Voice", null), MAX_NAME_LEN)
@@ -20,7 +20,7 @@
 
 	changeling.mimicing = mimic_voice
 
-	to_chat(src, SPAN("changeling", "We shape our glands to take the voice of <b>[mimic_voice]</b>, this will stop us from regenerating chemicals while active.\nUse this power again to return to our original voice and reproduce chemicals again."))
+	to_chat(src, SPAN(LANGUAGE_LING, "We shape our glands to take the voice of <b>[mimic_voice]</b>, this will stop us from regenerating chemicals while active.\nUse this power again to return to our original voice and reproduce chemicals again."))
 	feedback_add_details("changeling_powers","MV")
 
 	spawn(0)

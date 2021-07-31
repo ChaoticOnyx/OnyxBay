@@ -11,11 +11,11 @@
 	if(mind.changeling.recursive_enhancement)
 		if(!changeling_generic_weapon(/obj/item/weapon/melee/changeling/claw/greater, 15))
 			return
-		to_chat(src, SPAN("changeling", "We prepare an extra sharp claw."))
+		to_chat(src, SPAN(LANGUAGE_LING, "We prepare an extra sharp claw."))
 	else
 		if(!changeling_generic_weapon(/obj/item/weapon/melee/changeling/claw, 15))
 			return
 
 	visible_message(SPAN("danger", "[name]\'s arm twists horribly as sharpened bones grow through flesh!"), \
-					SPAN("changeling", "We transform our hand into a claw."), \
+					SPAN(LANGUAGE_LING, "We transform our hand into a claw."), \
 					SPAN("italics", "You hear organic matter ripping and tearing!"))

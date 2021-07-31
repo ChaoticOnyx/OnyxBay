@@ -15,7 +15,14 @@
 #define LANGUAGE_INDEPENDENT "Independent"
 #define LANGUAGE_NABBER "Serpentid"
 #define LANGUAGE_SPACER "Spacer"
+#define LANGUAGE_OCCULT "Occult"
+#define LANGUAGE_VOXPID "Vox-pidgin"
+#define LANGUAGE_BORER "Cortical Link"
+#define LANGUAGE_LING "Changeling"
+#define LANGUAGE_XENOMIND "Hivemind"
+#define LANGUAGE_XENOMORPH "Xenomorph"
 #define LANGUAGE_ROBOT "Robot Talk"
+#define LANGUAGE_DRONE "Drone Talk"
 
 // Language flags.
 #define WHITELISTED  1   // Language is available if the speaker is whitelisted.

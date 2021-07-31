@@ -1,7 +1,7 @@
 /datum/species/vr_human
 	name = "VR human"
 
-	language = "Sol Common"
+	language = LANGUAGE_SOL_COMMON
 	unarmed_types = list(/datum/unarmed_attack/stomp, /datum/unarmed_attack/kick, /datum/unarmed_attack/punch)
 	species_flags = SPECIES_FLAG_NO_PAIN | SPECIES_FLAG_NO_SCAN | SPECIES_FLAG_NO_POISON
 	spawn_flags = SPECIES_IS_RESTRICTED

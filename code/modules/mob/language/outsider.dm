@@ -1,5 +1,5 @@
 /datum/language/xenocommon
-	name = "Xenomorph"
+	name = LANGUAGE_XENOMORPH
 	colour = "alien"
 	desc = "The common tongue of the xenomorphs."
 	speech_verb = "hisses"
@@ -12,7 +12,7 @@
 	shorthand = "Xeno"
 
 /datum/language/xenos
-	name = "Hivemind"
+	name = LANGUAGE_XENOMIND
 	desc = "Xenomorphs have the strange ability to commune over a psychic hivemind."
 	speech_verb = "hisses"
 	ask_verb = "hisses"
@@ -49,7 +49,7 @@
 		..(speaker,message)
 
 /datum/language/corticalborer
-	name = "Cortical Link"
+	name = LANGUAGE_BORER
 	desc = "Cortical borers possess a strange link between their tiny minds."
 	speech_verb = "sings"
 	ask_verb = "sings"
@@ -74,7 +74,7 @@
 	..(speaker,message,speaker_mask)
 
 /datum/language/vox
-	name = "Vox-pidgin"
+	name = LANGUAGE_VOXPID
 	desc = "The common tongue of the various Vox ships making up the Shoal. It sounds like chaotic shrieking to everyone else."
 	speech_verb = "shrieks"
 	ask_verb = "creels"
@@ -111,7 +111,7 @@
 	shorthand = "CT"
 
 /datum/language/cult
-	name = "Occult"
+	name = LANGUAGE_OCCULT
 	desc = "The initiated can share their thoughts by means defying all reason."
 	speech_verb = "intones"
 	ask_verb = "intones"

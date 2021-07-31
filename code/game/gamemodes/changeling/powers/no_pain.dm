@@ -12,9 +12,9 @@
 	C.no_pain = !C.no_pain
 
 	if(C.can_feel_pain())
-		to_chat(C, SPAN("changeling", "We are able to feel pain now."))
+		to_chat(C, SPAN(LANGUAGE_LING, "We are able to feel pain now."))
 	else
-		to_chat(C, SPAN("changeling", "We are unable to feel pain anymore."))
+		to_chat(C, SPAN(LANGUAGE_LING, "We are unable to feel pain anymore."))
 		changeling.chem_charges -= 10
 
 	spawn()

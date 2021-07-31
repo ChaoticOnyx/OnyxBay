@@ -32,7 +32,7 @@
 		src.visible_message(SPAN("warning", "[src]'s body begins to twist, changing rapidly!"))
 
 	if(!do_after(src, changeTime))
-		to_chat(src, SPAN("changeling", "We fail to change shape."))
+		to_chat(src, SPAN(LANGUAGE_LING, "We fail to change shape."))
 		return
 	handle_changeling_transform(chosen_dna)
 

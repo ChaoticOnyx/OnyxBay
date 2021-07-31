@@ -94,7 +94,7 @@
 	if(owner && ishuman(owner))
 		var/mob/living/carbon/human/H = owner
 		to_chat(H, "<span class='alium'>I feel my connection to the hivemind fray and fade away...</span>")
-		H.remove_language("Hivemind")
+		H.remove_language(LANGUAGE_XENOMIND)
 		if(H.mind && H.species.name != "Xenomorph")
 			GLOB.xenomorphs.remove_antagonist(H.mind)
 	..(user)
@@ -105,7 +105,7 @@
 
 	if(owner && ishuman(owner))
 		var/mob/living/carbon/human/H = owner
-		H.add_language("Hivemind")
+		H.add_language(LANGUAGE_XENOMIND)
 		if(H.mind && H.species.name != "Xenomorph")
 			to_chat(H, "<span class='alium'>You feel a sense of pressure as a vast intelligence meshes with your thoughts...</span>")
 			GLOB.xenomorphs.add_antagonist_mind(H.mind, 1, GLOB.xenomorphs.faction_role_text, GLOB.xenomorphs.faction_welcome)

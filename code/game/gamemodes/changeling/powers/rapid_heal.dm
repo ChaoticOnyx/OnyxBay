@@ -8,7 +8,7 @@
 		var/mob/living/carbon/human/H = src
 		if(H.mind.changeling.heal)
 			H.mind.changeling.heal = !H.mind.changeling.heal
-			to_chat(H, SPAN("changeling", "We inactivate our stemocyte pool and stop intensive fleshmending."))
+			to_chat(H, SPAN(LANGUAGE_LING, "We inactivate our stemocyte pool and stop intensive fleshmending."))
 			return
 
 		var/datum/changeling/changeling = changeling_power(10, 0, 0, DEAD)
@@ -16,7 +16,7 @@
 			return
 
 		H.mind.changeling.heal = !H.mind.changeling.heal
-		to_chat(H, SPAN("changeling", "We activate our stemocyte pool and begin intensive fleshmending."))
+		to_chat(H, SPAN(LANGUAGE_LING, "We activate our stemocyte pool and begin intensive fleshmending."))
 
 		spawn(0)
 			while(H && H.mind && H.mind.changeling.heal && H.mind.changeling.damaged && !is_regenerating())
@@ -41,7 +41,7 @@
 						if(regen_organ.damage > 0 && !(regen_organ.status & ORGAN_DEAD))
 							regen_organ.damage = max(regen_organ.damage - 5, 0)
 							if(prob(5))
-								to_chat(H, SPAN("changeling", "We feel a soothing sensation as our [regen_organ] mends..."))
+								to_chat(H, SPAN(LANGUAGE_LING, "We feel a soothing sensation as our [regen_organ] mends..."))
 						if(regen_organ.status & ORGAN_DEAD)
 							regen_organ.status &= ~ORGAN_DEAD
 
@@ -55,5 +55,5 @@
 
 				if(H.mind.changeling.chem_charges == 0)
 					H.mind.changeling.heal = !H.mind.changeling.heal
-					to_chat(H, SPAN("changeling", "We inactivate our stemocyte pool and stop intensive fleshmending because we run out of chemicals."))
+					to_chat(H, SPAN(LANGUAGE_LING, "We inactivate our stemocyte pool and stop intensive fleshmending because we run out of chemicals."))
 				sleep(40)

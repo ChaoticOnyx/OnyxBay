@@ -60,7 +60,7 @@
 		return
 
 	BIO.loc.visible_message(SPAN("warning", "[BIO.loc] suddenly grows little legs!"), \
-							SPAN("changeling", "<font size='2'><b>We have just transformed into mobile but vulnerable form! We have to find a new host quickly!</b></font>"))
+							SPAN(LANGUAGE_LING, "<font size='2'><b>We have just transformed into mobile but vulnerable form! We have to find a new host quickly!</b></font>"))
 	qdel(limb_to_del)
 
 
@@ -138,30 +138,30 @@
 
 /mob/living/simple_animal/hostile/little_changeling/proc/paralyse_sting(mob/living/carbon/human/target as mob in oview(1))
 	if(stat == DEAD)
-		to_chat(src, SPAN("changeling", "We cannot use this ability. We are dead."))
+		to_chat(src, SPAN(LANGUAGE_LING, "We cannot use this ability. We are dead."))
 		return
 
 	if(last_special > world.time)
-		to_chat(src, SPAN("changeling", "We must wait a little while before we can use this ability again!"))
+		to_chat(src, SPAN(LANGUAGE_LING, "We must wait a little while before we can use this ability again!"))
 		return
 
 	if(!target)
 		return FALSE
 
 	if(!istype(target))
-		to_chat(src, SPAN("changeling", "[target] is not human. How should we sting that thing?!"))
+		to_chat(src, SPAN(LANGUAGE_LING, "[target] is not human. How should we sting that thing?!"))
 		return
 
 	if(target.isSynthetic())
-		to_chat(src, SPAN("changeling", "[target] is not an biological organism, we can't paralyse them."))
+		to_chat(src, SPAN(LANGUAGE_LING, "[target] is not an biological organism, we can't paralyse them."))
 		return
 
 	if(!sting_can_reach(target, 1))
-		to_chat(src, SPAN("changeling", "We are too far away."))
+		to_chat(src, SPAN(LANGUAGE_LING, "We are too far away."))
 		return
 
 	if(!target.has_any_exposed_bodyparts())
-		to_chat(src, SPAN("changeling", "[target]'s armor has protected them from our stinger."))
+		to_chat(src, SPAN(LANGUAGE_LING, "[target]'s armor has protected them from our stinger."))
 		return
 
 	to_chat(target, SPAN("danger", "Your muscles begin to painfully tighten."))
@@ -188,60 +188,60 @@
 		return
 
 	if(stat == DEAD)
-		to_chat(src, SPAN("changeling", "We cannot use this ability. We are dead."))
+		to_chat(src, SPAN(LANGUAGE_LING, "We cannot use this ability. We are dead."))
 		return
 
 	if(cloaked)
-		to_chat(src, SPAN("changeling", "We can't infest while mimicking enviroment."))
+		to_chat(src, SPAN(LANGUAGE_LING, "We can't infest while mimicking enviroment."))
 		return
 
 	if(!sting_can_reach(target, 1))
-		to_chat(src, SPAN("changeling", "We are too far away."))
+		to_chat(src, SPAN(LANGUAGE_LING, "We are too far away."))
 		return
 
 	if(!istype(target))
-		to_chat(src, SPAN("changeling", "[target] is not compatible with our biology."))
+		to_chat(src, SPAN(LANGUAGE_LING, "[target] is not compatible with our biology."))
 		return
 
 	if(target.species.species_flags & SPECIES_FLAG_NO_SCAN)
-		to_chat(src, SPAN("changeling", "[target] is not compatible with our biology."))
+		to_chat(src, SPAN(LANGUAGE_LING, "[target] is not compatible with our biology."))
 		return
 
 	if(MUTATION_HUSK in target.mutations)
-		to_chat(src, SPAN("changeling", "This creature's DNA is ruined beyond useability!"))
+		to_chat(src, SPAN(LANGUAGE_LING, "This creature's DNA is ruined beyond useability!"))
 		return
 
 	if(changeling.isabsorbing)
-		to_chat(src, SPAN("changeling", "We are already infesting!"))
+		to_chat(src, SPAN(LANGUAGE_LING, "We are already infesting!"))
 		return
 
 	if(target.stat != DEAD && !target.is_asystole() && !target.incapacitated(INCAPACITATION_ALL))
-		to_chat(src, SPAN("changeling", "We need our victim to be paralysed, dead or somehow else incapable of defending themself for us to latch on!"))
+		to_chat(src, SPAN(LANGUAGE_LING, "We need our victim to be paralysed, dead or somehow else incapable of defending themself for us to latch on!"))
 		return
 
 	if(!target.has_any_exposed_bodyparts())
-		to_chat(src, SPAN("changeling", "We can't merge with [target] because they are coated with something impenetrable for us!"))
+		to_chat(src, SPAN(LANGUAGE_LING, "We can't merge with [target] because they are coated with something impenetrable for us!"))
 		return
 
 	forceMove(target.loc)
 	visible_message(SPAN("danger", "[src] has latched onto \the [target]."), \
-					SPAN("changeling", "We have latched onto \the [target]."))
+					SPAN(LANGUAGE_LING, "We have latched onto \the [target]."))
 
 	changeling.isabsorbing = TRUE
 	for(var/stage = 1 to 3)
 		switch(stage)
 			if(2)
 				src.visible_message(SPAN("danger", "[src] merged their tegument with [target]"), \
-									SPAN("changeling", "We bind our tegument to our prey."))
+									SPAN(LANGUAGE_LING, "We bind our tegument to our prey."))
 				target.getBruteLoss(10)
 			if(3)
 				src.visible_message(SPAN("danger", "[src] grown their appendages into [target]"), \
-									SPAN("changeling", "We grow inwards."))
+									SPAN(LANGUAGE_LING, "We grow inwards."))
 				target.getBruteLoss(15)
 
 		feedback_add_details("changeling_powers","A[stage]")
 		if(!do_mob(src, target, 150))
-			to_chat(src, SPAN("changeling", "Our infestation of [target] has been interrupted!"))
+			to_chat(src, SPAN(LANGUAGE_LING, "Our infestation of [target] has been interrupted!"))
 			changeling.isabsorbing = FALSE
 			target.getBruteLoss(39)
 			return
@@ -384,21 +384,21 @@
 	set desc = "We smooth and contract our chromatophores, almost vanishing in the air."
 
 	if(stat == DEAD)
-		to_chat(src, SPAN("changeling", "We can't use this ability. We are dead."))
+		to_chat(src, SPAN(LANGUAGE_LING, "We can't use this ability. We are dead."))
 		return
 
 	if(mind.changeling.isabsorbing)
-		to_chat(src, SPAN("changeling", "We can't mimic environment while infesting."))
+		to_chat(src, SPAN(LANGUAGE_LING, "We can't mimic environment while infesting."))
 		return
 
 	if(cloaked)
 		cloaked = FALSE
-		to_chat(src, SPAN("changeling", "We stop mimicking the environment, regaining our mobility."))
+		to_chat(src, SPAN(LANGUAGE_LING, "We stop mimicking the environment, regaining our mobility."))
 		update_icon()
 		speed = 0
 	else
 		cloaked = TRUE
-		to_chat(src, SPAN("changeling", "We are now mimicking our environment, but we can't move quickly in that state."))
+		to_chat(src, SPAN(LANGUAGE_LING, "We are now mimicking our environment, but we can't move quickly in that state."))
 		update_icon()
 		speed = 4
 		apply_effect(2, STUN, 0)
@@ -419,4 +419,4 @@
 	changeling_transfer_mind(HC)
 
 	HC.visible_message(SPAN("danger", "[BIO] suddenly grows tiny eyes and reforms it's appendages into legs!"), \
-					   SPAN("changeling", "<font size='2'><b>We are in our weakest form! WE HAVE TO SURVIVE!</b></font>"))
+					   SPAN(LANGUAGE_LING, "<font size='2'><b>We are in our weakest form! WE HAVE TO SURVIVE!</b></font>"))

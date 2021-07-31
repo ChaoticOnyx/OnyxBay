@@ -10,7 +10,7 @@
 		return
 
 	changeling.chem_charges -= 10
-	to_chat(src, SPAN("changeling", "Our throat adjusts to launch a sting."))
+	to_chat(src, SPAN(LANGUAGE_LING, "Our throat adjusts to launch a sting."))
 	changeling.sting_range = 2
 	verbs -= /mob/proc/changeling_boost_range
 	spawn(5)

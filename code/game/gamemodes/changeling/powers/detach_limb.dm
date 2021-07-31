@@ -26,14 +26,14 @@
 		return
 	if(!T.organs.Find(organ_to_remove))
 		changeling.isdetachingnow = FALSE
-		to_chat(T, SPAN("changeling", "We don't have this limb!"))
+		to_chat(T, SPAN(LANGUAGE_LING, "We don't have this limb!"))
 		return
 
 	visible_message(SPAN("danger", "\The [organ_to_remove] is ripping off from [src]!"), \
-					SPAN("changeling", "We begin detaching our \the [organ_to_remove]."))
+					SPAN(LANGUAGE_LING, "We begin detaching our \the [organ_to_remove]."))
 	if(!do_after(src, 10, can_move = TRUE, needhand = FALSE, incapacitation_flags = INCAPACITATION_NONE))
 		visible_message(SPAN("danger", "\The [organ_to_remove] is connecting back to [src]."), \
-						SPAN("changeling", "We were interrupted."))
+						SPAN(LANGUAGE_LING, "We were interrupted."))
 		changeling.isdetachingnow = FALSE
 		return
 

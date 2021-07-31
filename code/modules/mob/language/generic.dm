@@ -58,7 +58,7 @@
 
 // Criminal language.
 /datum/language/gutter
-	name = "Gutter"
+	name = LANGUAGE_GUTTER
 	desc = "Much like Common, this crude pidgin tongue descended from numerous languages and serves as a trade language for criminal elements."
 	speech_verb = "growls"
 	colour = "rough"

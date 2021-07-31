@@ -7,7 +7,7 @@
 
 	var/mob/living/carbon/human/C = src
 	if(C.digitalcamo)
-		to_chat(C, SPAN("changeling", "We return to normal."))
+		to_chat(C, SPAN(LANGUAGE_LING, "We return to normal."))
 		C.digitalcamo = FALSE
 		return
 
@@ -15,7 +15,7 @@
 	if(!changeling)
 		return
 
-	to_chat(C, SPAN("changeling", "We distort our form to prevent AI-tracking."))
+	to_chat(C, SPAN(LANGUAGE_LING, "We distort our form to prevent AI-tracking."))
 	C.digitalcamo = TRUE
 
 	spawn(0)

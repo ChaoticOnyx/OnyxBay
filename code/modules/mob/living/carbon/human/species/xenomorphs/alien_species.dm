@@ -2,8 +2,8 @@
 	name = SPECIES_XENO
 	name_plural = "Xenomorphs"
 
-	default_language = "Xenomorph"
-	language = "Hivemind"
+	default_language = LANGUAGE_XENOMORPH
+	language = LANGUAGE_XENOMIND
 	genders = list(NEUTER)
 	assisted_langs = list()
 	unarmed_types = list(/datum/unarmed_attack/claws/strong/xeno, /datum/unarmed_attack/bite/strong/xeno)

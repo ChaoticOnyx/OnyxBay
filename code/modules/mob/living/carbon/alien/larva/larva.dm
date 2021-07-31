@@ -4,18 +4,18 @@
 	adult_form = /mob/living/carbon/human
 	speak_emote = list("hisses")
 	icon_state = "larva"
-	language = "Hivemind"
+	language = LANGUAGE_XENOMIND
 	maxHealth = 30
 	health = 30
 	faction = "xenomorph"
-	species_language = "Xenomorph"
+	species_language = LANGUAGE_XENOMORPH
 	density = 0
 	max_grown = 180
 	see_in_dark = 8
 
 /mob/living/carbon/alien/larva/Initialize()
 	. = ..()
-	add_language("Xenomorph") //Bonus language.
+	add_language(LANGUAGE_XENOMORPH) //Bonus language.
 	internal_organs |= new /obj/item/organ/internal/xenos/hivenode(src)
 	verbs += /mob/living/carbon/proc/toggle_darksight
 

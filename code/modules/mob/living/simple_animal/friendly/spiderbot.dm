@@ -85,7 +85,7 @@
 		to_chat(user, "<span class='notice'>You install \the [O] in \the [src]!</span>")
 		if(istype(O, /obj/item/organ/internal/posibrain))
 			positronic = 1
-			add_language("Robot Talk")
+			add_language(LANGUAGE_ROBOT)
 
 		user.drop_item()
 		src.mmi = O
@@ -181,7 +181,7 @@
 		real_name = initial(real_name)
 		SetName(real_name)
 		update_icon()
-	remove_language("Robot Talk")
+	remove_language(LANGUAGE_ROBOT)
 	positronic = null
 
 /mob/living/simple_animal/spiderbot/Destroy()

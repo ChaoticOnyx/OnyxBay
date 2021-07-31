@@ -14,7 +14,7 @@
 			names[DNA.name] = DNA
 
 	if(names.len <= 0)
-		to_chat(src, SPAN("changeling", "There's no new DNA to absorb from the air."))
+		to_chat(src, SPAN(LANGUAGE_LING, "There's no new DNA to absorb from the air."))
 		return
 
 	var/S = input("Select a DNA absorb from the air: ", "Absorb DNA", null) as null|anything in names
@@ -26,6 +26,6 @@
 
 	changeling.chem_charges -= 20
 	absorbDNA(chosen_dna)
-	to_chat(src, SPAN("changeling", "We absorb the DNA of [S] from the air."))
+	to_chat(src, SPAN(LANGUAGE_LING, "We absorb the DNA of [S] from the air."))
 
 	feedback_add_details("changeling_powers", "HD")

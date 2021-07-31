@@ -10,11 +10,11 @@
 		return
 
 	if(mind.changeling.recursive_enhancement)
-		to_chat(src, SPAN("changeling", "We will no longer empower our abilities."))
+		to_chat(src, SPAN(LANGUAGE_LING, "We will no longer empower our abilities."))
 		mind.changeling.recursive_enhancement = FALSE
 		return
 	else
-		to_chat(src, SPAN("changeling", "We empower ourselves. Our abilities will now be extra potent."))
+		to_chat(src, SPAN(LANGUAGE_LING, "We empower ourselves. Our abilities will now be extra potent."))
 		mind.changeling.recursive_enhancement = TRUE
 
 	feedback_add_details("changeling_powers", "RE")

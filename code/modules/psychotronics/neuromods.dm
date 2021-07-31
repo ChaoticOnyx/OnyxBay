@@ -113,18 +113,18 @@
 
 /* -- SIIK'MAAS -- */
 /datum/neuromod/language/siik_maas
-	name = "Language: Siik'maas"
-	desc = "The neuromod makes possible to speak on 'Siik'maas'"
+	name = "Language: [LANGUAGE_SIIK_MAAS]"
+	desc = "The neuromod makes possible to speak on '[LANGUAGE_SIIK_MAAS]'"
 	language = LANGUAGE_SIIK_MAAS
 
 /* -- SOGHUN -- */
 /datum/neuromod/language/soghun
-	name = "Language: Soghun"
-	desc = "The neuromod makes possible to speak on 'Soghun'"
+	name = "Language: [LANGUAGE_UNATHI]"
+	desc = "The neuromod makes possible to speak on '[LANGUAGE_UNATHI]'"
 	language = LANGUAGE_UNATHI
 
 /* -- SKRELLIAN -- */
 /datum/neuromod/language/skrellian
-	name = "Language: Skrellian"
-	desc = "The neuromod makes possible to speak on 'Skrellian'"
+	name = "Language: [LANGUAGE_SKRELLIAN]"
+	desc = "The neuromod makes possible to speak on '[LANGUAGE_SKRELLIAN]'"
 	language = LANGUAGE_SKRELLIAN

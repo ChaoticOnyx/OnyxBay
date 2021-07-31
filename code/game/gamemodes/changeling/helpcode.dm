@@ -130,7 +130,7 @@ var/global/list/possible_changeling_IDs = list("Alpha","Beta","Gamma","Delta","E
 
 /obj/item/weapon/melee/changeling/dropped(mob/user)
 	user.visible_message(SPAN("danger", "With a sickening crunch, [creator] reforms their arm!"), \
-						 SPAN("changeling", "We assimilate the weapon back into our body."), \
+						 SPAN(LANGUAGE_LING, "We assimilate the weapon back into our body."), \
 						 SPAN("italics", "You hear organic matter ripping and tearing!"))
 	playsound(src, 'sound/effects/blob/blobattack.ogg', 30, 1)
 	spawn(1)
@@ -203,10 +203,10 @@ var/global/list/possible_changeling_IDs = list("Alpha","Beta","Gamma","Delta","E
 
 /obj/item/weapon/finger_lockpick/New()
 	if(ismob(loc))
-		to_chat(loc, SPAN("changeling", "We shape our finger to fit inside electronics, and are ready to force them open."))
+		to_chat(loc, SPAN(LANGUAGE_LING, "We shape our finger to fit inside electronics, and are ready to force them open."))
 
 /obj/item/weapon/finger_lockpick/dropped(mob/user)
-	to_chat(user, SPAN("changeling", "We discreetly shape our finger back to a less suspicious form."))
+	to_chat(user, SPAN(LANGUAGE_LING, "We discreetly shape our finger back to a less suspicious form."))
 	spawn(1)
 		if(src)
 			qdel(src)
@@ -222,11 +222,11 @@ var/global/list/possible_changeling_IDs = list("Alpha","Beta","Gamma","Delta","E
 	var/datum/changeling/ling_datum = user.mind.changeling
 
 	if(ling_datum.chem_charges < 10)
-		to_chat(user, SPAN("changeling", "We require more chemicals to do that."))
+		to_chat(user, SPAN(LANGUAGE_LING, "We require more chemicals to do that."))
 		return
 
 	if(world.time < ling_datum.FLP_last_time_used + 10 SECONDS)
-		to_chat(user, SPAN("changeling", "The finger lockpick is still recharging, we have to wait!"))
+		to_chat(user, SPAN(LANGUAGE_LING, "The finger lockpick is still recharging, we have to wait!"))
 		return
 	else
 		ling_datum.FLP_last_time_used = world.time
@@ -234,7 +234,7 @@ var/global/list/possible_changeling_IDs = list("Alpha","Beta","Gamma","Delta","E
 	//Airlocks require an ugly block of code, but we don't want to just call emag_act(), since we don't want to break airlocks forever.
 	if(istype(target,/obj/machinery/door))
 		var/obj/machinery/door/door = target
-		to_chat(user, SPAN("changeling", "We send an electrical pulse up our finger, and into \the [target], attempting to open it."))
+		to_chat(user, SPAN(LANGUAGE_LING, "We send an electrical pulse up our finger, and into \the [target], attempting to open it."))
 
 		if(door.density && door.operable())
 			door.do_animate("spark")
@@ -245,22 +245,22 @@ var/global/list/possible_changeling_IDs = list("Alpha","Beta","Gamma","Delta","E
 
 				if(airlock.locked) //Check if we're bolted.
 					airlock.unlock()
-					to_chat(user, SPAN("changeling", "We've unlocked \the [airlock]. Another pulse is requried to open it."))
+					to_chat(user, SPAN(LANGUAGE_LING, "We've unlocked \the [airlock]. Another pulse is requried to open it."))
 				else	//We're not bolted, so open the door already.
 					airlock.open()
-					to_chat(user, SPAN("changeling", "We've opened \the [airlock]."))
+					to_chat(user, SPAN(LANGUAGE_LING, "We've opened \the [airlock]."))
 			else
 				door.open() //If we're a windoor, open the windoor.
-				to_chat(user, SPAN("changeling", "We've opened \the [door]."))
+				to_chat(user, SPAN(LANGUAGE_LING, "We've opened \the [door]."))
 		else //Probably broken or no power.
-			to_chat(user, SPAN("changeling", "The door does not respond to the pulse."))
+			to_chat(user, SPAN(LANGUAGE_LING, "The door does not respond to the pulse."))
 
 		door.add_fingerprint(user)
 		log_and_message_admins("finger-lockpicked \an [door].")
 		ling_datum.chem_charges -= 10
 	else if(istype(target, /obj/)) //This should catch everything else we might miss, without a million typechecks.
 		var/obj/O = target
-		to_chat(user, SPAN("changeling", "We send an electrical pulse up our finger, and into \the [O]."))
+		to_chat(user, SPAN(LANGUAGE_LING, "We send an electrical pulse up our finger, and into \the [O]."))
 		O.add_fingerprint(user)
 		O.emag_act(1, user, src)
 		log_and_message_admins("finger-lockpicked \an [O].")

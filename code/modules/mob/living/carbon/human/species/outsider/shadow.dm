@@ -5,7 +5,7 @@
 	icobase = 'icons/mob/human_races/r_shadow.dmi'
 	deform = 'icons/mob/human_races/r_shadow.dmi'
 
-	language = "Sol Common" //todo?
+	language = LANGUAGE_SOL_COMMON //todo?
 	unarmed_types = list(/datum/unarmed_attack/claws/strong, /datum/unarmed_attack/bite/sharp)
 	darksight_range = 8
 	darksight_tint = DARKTINT_GOOD

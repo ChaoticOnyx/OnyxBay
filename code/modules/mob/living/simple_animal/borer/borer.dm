@@ -51,7 +51,7 @@
 /mob/living/simple_animal/borer/New(atom/newloc, gen=1)
 	..(newloc)
 
-	add_language("Cortical Link")
+	add_language(LANGUAGE_BORER)
 	verbs += /mob/living/proc/ventcrawl
 	verbs += /mob/living/proc/hide
 
@@ -121,7 +121,7 @@
 
 	controlling = 0
 
-	host.remove_language("Cortical Link")
+	host.remove_language(LANGUAGE_BORER)
 	host.verbs -= /mob/living/carbon/proc/release_control
 	host.verbs -= /mob/living/carbon/proc/punish_host
 	host.verbs -= /mob/living/carbon/proc/spawn_larvae

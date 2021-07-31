@@ -18,4 +18,4 @@
 		empulse(T.loc, 1, 1)
 		changeling.chem_charges -= 20
 	else
-		to_chat(src, SPAN("changeling", "The target is too far away."))
+		to_chat(src, SPAN(LANGUAGE_LING, "The target is too far away."))

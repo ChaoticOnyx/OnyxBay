@@ -5,7 +5,7 @@
 	icobase = 'icons/mob/human_races/r_golem.dmi'
 	deform = 'icons/mob/human_races/r_golem.dmi'
 
-	language = "Sol Common" //todo?
+	language = LANGUAGE_SOL_COMMON //todo?
 	unarmed_types = list(/datum/unarmed_attack/stomp, /datum/unarmed_attack/kick, /datum/unarmed_attack/punch)
 	species_flags = SPECIES_FLAG_NO_PAIN | SPECIES_FLAG_NO_SCAN | SPECIES_FLAG_NO_POISON | SPECIES_FLAG_NO_BLOOD
 	spawn_flags = SPECIES_IS_RESTRICTED

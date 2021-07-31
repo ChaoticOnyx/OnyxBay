@@ -10,7 +10,7 @@
 		return
 
 	if(changeling.rapidregen_active)
-		to_chat(src, SPAN("changeling", "We are already actively regenerating!"))
+		to_chat(src, SPAN(LANGUAGE_LING, "We are already actively regenerating!"))
 		return
 
 	changeling.rapidregen_active = TRUE
