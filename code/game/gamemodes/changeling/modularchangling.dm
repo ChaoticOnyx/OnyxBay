@@ -312,7 +312,7 @@ var/list/datum/power/changeling/powerinstances = list()
 
 // Modularchangling, totally stolen from the new player panel.  YAYY
 /datum/changeling/proc/EvolutionMenu()//The new one
-	set name = "Evolutin Menu"
+	set name = "Evolution Menu"
 	set category = "Changeling"
 	set desc = "Level up!"
 
@@ -641,4 +641,3 @@ var/list/datum/power/changeling/powerinstances = list()
 		call(M.current, Thepower.verbpath)()
 	else if(remake_verbs)
 		M.current.make_changeling()
-
