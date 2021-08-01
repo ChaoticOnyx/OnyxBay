@@ -260,6 +260,9 @@
 	return module_sprites
 
 /mob/living/silicon/robot/proc/pick_module()
+	if(modtype != "Default")
+		return
+	modtype = null
 	if(module)
 		return
 	sensor_mode = 0
