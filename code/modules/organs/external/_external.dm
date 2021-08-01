@@ -1116,7 +1116,7 @@ Note that amputating the affected organ does in fact remove the infection from t
 			model = company
 			force_icon = R.icon
 			if(R.lifelike)
-				status = ORGAN_LIFELIKE
+				status |= ORGAN_LIFELIKE
 				name = "[initial(name)]"
 			else
 				name = "robotic [initial(name)]"

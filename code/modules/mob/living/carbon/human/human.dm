@@ -1279,10 +1279,10 @@
 		return 0
 
 	if(BP_IS_ROBOTIC(affecting))
-		if(affecting.status == ORGAN_LIFELIKE)
+		if(BP_IS_LIFELIKE(affecting))
 			to_chat(user, SPAN("warning", "Your needle refuses to penetrate more than a short distance..."))
 			return 0
-		if(affecting.status == ORGAN_ROBOTIC)
+		else
 			to_chat(user, SPAN("warning", "That limb is robotic."))
 			return 0
 
