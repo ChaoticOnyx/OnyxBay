@@ -1,14 +1,6 @@
 #include "casino_areas.dm"
 #include "../mining/mining_areas.dm"
 
-/datum/map_template/ruin/away_site/casino
-	name = "Casino"
-	id = "awaysite_casino"
-	description = "A casino ship!"
-	suffixes = list("casino/casino.dmm")
-	cost = 1
-	shuttles_to_initialise = list(/datum/shuttle/autodock/overmap/casino_cutter)
-
 /obj/effect/shuttle_landmark/nav_casino/nav1
 	name = "Casino Ship Navpoint #1"
 	landmark_tag = "nav_casino_1"
@@ -28,15 +20,6 @@
 /obj/effect/shuttle_landmark/nav_casino/nav5
 	name = "Casino Ship Navpoint #5"
 	landmark_tag = "nav_casino_antag"
-
-/datum/shuttle/autodock/overmap/casino_cutter
-	name = "Casino Cutter"
-	warmup_time = 15
-	move_time = 60
-	shuttle_area = /area/casino/casino_cutter
-	current_location = "nav_casino_hangar"
-	landmark_transition = "nav_casino_transit"
-	defer_initialisation = TRUE
 
 /obj/effect/shuttle_landmark/nav_casino/cutter_hangar
 	name = "Casino Hangar"

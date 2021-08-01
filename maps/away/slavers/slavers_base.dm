@@ -1,13 +1,6 @@
 #include "slavers_base_areas.dm"
 #include "../mining/mining_areas.dm"
 
-/datum/map_template/ruin/away_site/slavers
-	name = "Slavers' Base"
-	id = "awaysite_slavers"
-	description = "Asteroid with slavers base inside."
-	suffixes = list("slavers/slavers_base.dmm")
-	cost = 1
-
 /obj/effect/shuttle_landmark/nav_slavers_base/nav1
 	name = "Slavers Base Navpoint #1"
 	landmark_tag = "nav_slavers_base_1"

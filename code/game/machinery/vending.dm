@@ -187,7 +187,7 @@
 /obj/machinery/vending/proc/pay(obj/item/weapon/W, mob/user)
 	if(!W)
 		return FALSE
-	
+
 	var/obj/item/weapon/card/id/I = W.GetIdCard()
 
 	if(currently_vending && vendor_account && !vendor_account.suspended)
@@ -905,7 +905,7 @@
 					/obj/item/weapon/reagent_containers/food/snacks/packaged/no_raisin = 10,
 					/obj/item/weapon/reagent_containers/food/snacks/grown/orange = 10,
 					/obj/item/weapon/reagent_containers/food/snacks/packaged/tastybread = 10)
-	contraband = list(/obj/item/weapon/reagent_containers/food/snacks/cannabar = 3,
+	contraband = list(/obj/item/weapon/reagent_containers/food/snacks/packaged/hemptogen = 3,
 					  /obj/item/weapon/reagent_containers/food/snacks/packaged/skrellsnacks = 3)
 	prices = list(/obj/item/weapon/reagent_containers/food/snacks/grown/apple = 1,
 				  /obj/item/weapon/reagent_containers/food/snacks/packaged/hematogen = 10,
@@ -957,7 +957,7 @@
 
 	idle_power_usage = 211 //refrigerator - believe it or not, this is actually the average power consumption of a refrigerated vending machine according to NRCan.
 
-/obj/machinery/vending/cola_red
+/obj/machinery/vending/cola/red
 	icon_state = "Cola_Machine_red"
 
 /obj/machinery/vending/fitness

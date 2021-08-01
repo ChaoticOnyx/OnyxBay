@@ -44,9 +44,6 @@
 		var/banjob = href_list["dbbanaddjob"]
 		var/banreason = href_list["dbbanreason"]
 
-		var/baneverywhere
-		if("dbbaneverywhere" in href_list)
-			baneverywhere = TRUE
 
 		banckey = ckey(banckey)
 
@@ -90,7 +87,7 @@
 			message_admins("Ban process: A mob matching [playermob.ckey] was found at location [playermob.x], [playermob.y], [playermob.z]. Custom ip and computer id fields replaced with the ip and computer id from the located mob")
 		notes_add(banckey,banreason,usr)
 
-		DB_ban_record(bantype, playermob, banduration, banreason, banjob, null, banckey, banip, bancid, baneverywhere)
+		DB_ban_record(bantype, playermob, banduration, banreason, banjob, null, banckey, banip, bancid)
 
 	else if(href_list["editrights"])
 		if(!check_rights(R_PERMISSIONS))
@@ -787,19 +784,15 @@
 					if(!reason)
 						return
 
-					var/ban_everywhere = FALSE
-					if(!isnull(config.server_id))
-						switch(alert("Ban everywhere or just on [config.server_id]?",, "Everywhere", "Just here", "Cancel"))
-							if("Cancel")	return
-							if("Everywhere")
-								ban_everywhere = TRUE
+					switch(alert("Ban on [config.server_id ? config.server_id : "this server"]?",, "Ban", "Cancel"))
+						if("Cancel")	return
 
 					var/msg
 					for(var/job in notbannedlist)
 						ban_unban_log_save("[key_name(usr)] temp-jobbanned [key_name(M)] from [job] for [mins] minutes. reason: [reason]")
 						log_admin("[key_name(usr)] temp-jobbanned [key_name(M)] from [job] for [mins] minutes")
 						feedback_inc("ban_job_tmp",1)
-						DB_ban_record(BANTYPE_JOB_TEMP, M, mins, reason, job, ban_everywhere = ban_everywhere)
+						DB_ban_record(BANTYPE_JOB_TEMP, M, mins, reason, job)
 						feedback_add_details("ban_job_tmp","- [job]")
 						jobban_fullban(M, job, "[reason]; By [usr.ckey] on [time2text(world.realtime)]") //Legacy banning does not support temporary jobbans.
 						if(!msg)
@@ -817,18 +810,16 @@
 					if(!check_rights(R_BAN))  return
 					var/reason = sanitize(input(usr,"Reason?","Please State Reason","") as text|null)
 					if(reason)
-						var/ban_everywhere = FALSE
-						if(!isnull(config.server_id))
-							switch(alert("Ban everywhere or just on [config.server_id]?",, "Everywhere", "Just here", "Cancel"))
-								if("Cancel")	return
-								if("Everywhere")
-									ban_everywhere = TRUE
+
+						switch(alert("Ban on [config.server_id ? config.server_id : "this server"]?",, "Ban", "Cancel"))
+							if("Cancel")	return
+
 						var/msg
 						for(var/job in notbannedlist)
 							ban_unban_log_save("[key_name(usr)] perma-jobbanned [key_name(M)] from [job]. reason: [reason]")
 							log_admin("[key_name(usr)] perma-banned [key_name(M)] from [job]")
 							feedback_inc("ban_job",1)
-							DB_ban_record(BANTYPE_JOB_PERMA, M, -1, reason, job, ban_everywhere = ban_everywhere)
+							DB_ban_record(BANTYPE_JOB_PERMA, M, -1, reason, job)
 							feedback_add_details("ban_job","- [job]")
 							jobban_fullban(M, job, "[reason]; By [usr.ckey] on [time2text(world.realtime)]")
 							if(!msg)	msg = job
@@ -927,19 +918,17 @@
 				var/reason = sanitize(input(usr,"Reason?","reason","Griefer") as text|null)
 				if(!reason)
 					return
-				var/ban_everywhere = FALSE
-				if(!isnull(config.server_id))
-					switch(alert("Ban everywhere or just on [config.server_id]?",, "Everywhere", "Just here", "Cancel"))
-						if("Cancel")	return
-						if("Everywhere")
-							ban_everywhere = TRUE
+
+				switch(alert("Ban on [config.server_id ? config.server_id : "this server"]?",, "Ban", "Cancel"))
+					if("Cancel")	return
+
 				AddBan(M.ckey, M.computer_id, reason, usr.ckey, 1, mins)
 				ban_unban_log_save("[usr.client.ckey] has banned [M.ckey]. - Reason: [reason] - This will be removed in [mins] minutes.")
 				notes_add(M.ckey,"[usr.client.ckey] has banned [M.ckey]. - Reason: [reason] - This will be removed in [mins] minutes.",usr)
 				to_chat(M, "<span class='danger'>You have been banned by [usr.client.ckey].\nReason: [reason].</span>")
 				to_chat(M, "<span class='warning'>This is a temporary ban, it will be removed in [mins] minutes.</span>")
 				feedback_inc("ban_tmp",1)
-				DB_ban_record(BANTYPE_TEMP, M, mins, reason, ban_everywhere = ban_everywhere)
+				DB_ban_record(BANTYPE_TEMP, M, mins, reason)
 				feedback_inc("ban_tmp_mins",mins)
 				if(config.banappeals)
 					to_chat(M, "<span class='warning'>To try to resolve this matter head to [config.banappeals]</span>")
@@ -954,12 +943,10 @@
 				var/reason = sanitize(input(usr,"Reason?","reason","Griefer") as text|null)
 				if(!reason)
 					return
-				var/ban_everywhere = FALSE
-				if(!isnull(config.server_id))
-					switch(alert("Ban everywhere or just on [config.server_id]?",, "Everywhere", "Just here", "Cancel"))
-						if("Cancel")	return
-						if("Everywhere")
-							ban_everywhere = TRUE
+
+				switch(alert("Ban on [config.server_id ? config.server_id : "this server"]?",, "Ban", "Cancel"))
+					if("Cancel")	return
+
 				switch(alert(usr,"IP ban?",,"Yes","No","Cancel"))
 					if("Cancel")	return
 					if("Yes")
@@ -976,7 +963,7 @@
 				notes_add(M.ckey,"[usr.client.ckey] has permabanned [M.ckey]. - Reason: [reason] - This is a ban until appeal.",usr)
 				log_and_message_admins("has banned [M.ckey].\nReason: [reason]\nThis is a ban until appeal.")
 				feedback_inc("ban_perma",1)
-				DB_ban_record(BANTYPE_PERMA, M, -1, reason, ban_everywhere = ban_everywhere)
+				DB_ban_record(BANTYPE_PERMA, M, -1, reason)
 
 				qdel(M.client)
 				//qdel(M)

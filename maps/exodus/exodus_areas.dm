@@ -1769,7 +1769,7 @@
 
 /area/outpost/main_outpost/infirmary
 	name = "Outpost Infirmary"
-	ambience = list("global_ambient", "science", "outpost_ambient")
+	ambience = list("global_ambient", "science_ambient", "outpost_ambient")
 
 /area/outpost/main_outpost/canteen
 	name = "Outpost Canteen"
