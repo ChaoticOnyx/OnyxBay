@@ -83,8 +83,14 @@
 				return 1
 
 		if(BP_IS_ROBOTIC(affecting))
-			to_chat(user, SPAN("warning", "This isn't useful at all on a robotic limb."))
-			return 1
+			if(affecting.status == ORGAN_LIFELIKE)
+				to_chat(user, SPAN("notice", "[M] has been applied with [src] by [user]."))
+				to_chat(user, SPAN("warning", "You apply \the [src] to [M], but it seems to have no effect..."))
+				use(1)
+				return 1
+			if(affecting.status == ORGAN_ROBOTIC)
+				to_chat(user, SPAN("warning", "This isn't useful at all on a robotic limb."))
+				return 1
 
 		H.UpdateDamageIcon()
 

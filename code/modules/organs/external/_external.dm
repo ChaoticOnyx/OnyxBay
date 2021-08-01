@@ -1112,10 +1112,14 @@ Note that amputating the affected organ does in fact remove the infection from t
 		 (R.restricted_to.len && !(species.name in R.restricted_to)) || \
 		 (R.applies_to_part.len && !(organ_tag in R.applies_to_part)))
 			R = basic_robolimb
-		else
+		if(R)
 			model = company
 			force_icon = R.icon
-			name = "robotic [initial(name)]"
+			if(R.lifelike)
+				status = ORGAN_LIFELIKE
+				name = "[initial(name)]"
+			else
+				name = "robotic [initial(name)]"
 			desc = "[R.desc] It looks like it was produced by [R.company]."
 
 	dislocated = -1
@@ -1341,19 +1345,26 @@ Note that amputating the affected organ does in fact remove the infection from t
 
 /obj/item/organ/external/proc/get_wounds_desc()
 	if(BP_IS_ROBOTIC(src))
+		var/LL
 		var/list/descriptors = list()
+
+		if(BP_IS_LIFELIKE(src))
+			LL = TRUE
+
 		if(brute_dam)
 			switch(brute_dam)
 				if(0 to 20)
-					descriptors += "some dents"
+					descriptors += "some [LL ? "cuts" : "dents"]"
 				if(21 to INFINITY)
-					descriptors += pick("a lot of dents","severe denting")
+					descriptors += "[LL? pick("exposed wiring", "torn-back synthflesh") : pick("a lot of dents", "severe denting")]"
+
 		if(burn_dam)
 			switch(burn_dam)
 				if(0 to 20)
 					descriptors += "some burns"
 				if(21 to INFINITY)
-					descriptors += pick("a lot of burns","severe melting")
+					descriptors += "[LL ? pick("roasted synth-flesh", "melted internal wiring") : pick("a lot of burns", "severe melting")]"
+
 		switch(hatch_state)
 			if(HATCH_UNSCREWED)
 				descriptors += "a closed but unsecured panel"

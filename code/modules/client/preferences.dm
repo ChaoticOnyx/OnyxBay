@@ -254,7 +254,7 @@
 			O = new limb_path(character)
 
 	// Destroy/cyborgize organs and limbs. The order is important for preserving low-level choices for robolimb sprites being overridden.
-	for(var/name in BP_BY_DEPTH)
+	for(var/name in BP_ALL_LIMBS)
 		var/status = organ_data[name]
 		var/obj/item/organ/external/O = character.organs_by_name[name]
 		if(!O)

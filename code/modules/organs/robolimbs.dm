@@ -26,22 +26,27 @@ var/datum/robolimb/basic_robolimb
 	var/icon = 'icons/mob/human_races/cyberlimbs/unbranded/unbranded_main.dmi'       // Icon base to draw from.
 	var/unavailable_at_chargen                           // If set, not available at chargen.
 	var/unavailable_to_build                             // If set, cannot be fabricated.
-	var/can_eat
-	var/use_eye_icon = "eyes_s"
 	var/can_feel_pain
+	// Eyes stuff
+	var/has_eyes
+	var/use_eye_icon = "eyes_s"
+	// Skin & BP stuff
+	var/can_eat
 	var/skintone
+	var/lifelike
 	// Species in these lists can't / can take these prosthetics.
 	var/list/restricted_to = list(SPECIES_HUMAN)
-	var/list/species_cannot_use = list(SPECIES_DIONA, SPECIES_VOX, SPECIES_PROMETHEAN)
+	var/list/species_cannot_use = list(SPECIES_SKRELL, SPECIES_DIONA, SPECIES_VOX, SPECIES_PROMETHEAN)
 	// Applyes to specific bodypart.
 	var/list/applies_to_part = list()
 	// Spicies alternatives
 	var/list/species_alternates = list(SPECIES_TAJARA = "Unbranded - Tajaran", SPECIES_UNATHI = "Unbranded - Unathi")
 
 /datum/robolimb/alt1
- 	company = "Unbranded - Mantis Prosis"
- 	desc = "This limb has a casing of sleek black metal and repulsive insectile design."
- 	icon = 'icons/mob/human_races/cyberlimbs/unbranded/unbranded_alt1.dmi'
+	company = "Unbranded - Mantis Prosis"
+	has_eyes = TRUE
+	desc = "This limb has a casing of sleek black metal and repulsive insectile design."
+	icon = 'icons/mob/human_races/cyberlimbs/unbranded/unbranded_alt1.dmi'
 
 /datum/robolimb/tajaran
  	company = "Unbranded - Tajaran"
@@ -60,7 +65,6 @@ var/datum/robolimb/basic_robolimb
 	company = "NanoTrasen"
 	desc = "A simple but efficient robotic limb, created by NanoTrasen."
 	icon = 'icons/mob/human_races/cyberlimbs/nanotrasen/nanotrasen_main.dmi'
-	species_cannot_use = list()
 
 /datum/robolimb/nanotrasen/alt1
  	company = "NanoTrasen Plus"
@@ -81,6 +85,7 @@ var/datum/robolimb/basic_robolimb
 	company = "Zeng-Hu"
 	desc = "This limb has a rubbery fleshtone covering with visible seams."
 	icon = 'icons/mob/human_races/cyberlimbs/zenghu/zenghu_main.dmi'
+	lifelike = TRUE
 	unavailable_to_build = TRUE
 	restricted_to = list(SPECIES_HUMAN)
 	species_cannot_use = list(SPECIES_DIONA, SPECIES_VOX, SPECIES_PROMETHEAN, SPECIES_UNATHI)
@@ -107,6 +112,7 @@ var/datum/robolimb/basic_robolimb
 
 /datum/robolimb/bishop/bishop_alt2
 	company = "Bishop - Rook"
+	has_eyes = TRUE
 	icon = 'icons/mob/human_races/cyberlimbs/bishop/bishop_alt2.dmi'
 
 //HEPHAESTUS
@@ -128,14 +134,15 @@ var/datum/robolimb/basic_robolimb
 	company = "Vey-Med"
 	desc = "This high quality limb is nearly indistinguishable from an organic one."
 	icon = 'icons/mob/human_races/cyberlimbs/veymed/veymed_main.dmi'
-	can_eat = TRUE
 	skintone = 1
+	can_eat = TRUE
+	lifelike = TRUE
 	unavailable_to_build = TRUE
 	restricted_to = list(SPECIES_HUMAN)
 	species_cannot_use = list(SPECIES_DIONA, SPECIES_VOX, SPECIES_PROMETHEAN, SPECIES_UNATHI, SPECIES_TAJARA)
 	species_alternates = list(SPECIES_SKRELL = "Vey-Med - Skrell")
 
-/datum/robolimb/veymed
+/datum/robolimb/veymed/skrell
 	company = "Vey-Med - Skrell"
 	icon = 'icons/mob/human_races/cyberlimbs/veymed/veymed_skrell.dmi'
 	restricted_to = list(SPECIES_SKRELL)

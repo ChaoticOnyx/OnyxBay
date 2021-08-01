@@ -87,7 +87,11 @@
 		var/datum/robolimb/R = all_robolimbs[company]
 		if(R)
 			can_intake_reagents = R.can_eat
-			eye_icon = R.use_eye_icon
+			if(R.has_eyes)
+				eye_icon = "eyes"
+				eye_icon_location = R.icon
+			else
+				eye_icon = R.use_eye_icon
 	. = ..(company, skip_prosthetics, 1)
 	has_lips = null
 

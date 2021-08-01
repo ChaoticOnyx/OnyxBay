@@ -320,3 +320,18 @@
 		if(istype(C))
 			. += C.ear_protection
 	return .
+
+/mob/living/carbon/human/proc/looksSynthetic()
+	var/obj/item/organ/external/C = organs_by_name[BP_CHEST]
+	var/obj/item/organ/external/H = organs_by_name[BP_HEAD]
+
+	if(!head || !(head.flags_inv & HIDEFACE))
+		if(H && H.status == ORGAN_ROBOTIC)
+			return 1
+
+	if(!wear_suit || (wear_suit && !(wear_suit.flags_inv & HIDEJUMPSUIT)))
+		if(!w_uniform || (w_uniform && !(w_uniform.body_parts_covered && UPPER_TORSO)))
+			if(C && C.status == ORGAN_ROBOTIC)
+				return 1
+
+	return 0
