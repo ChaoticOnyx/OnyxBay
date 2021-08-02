@@ -405,6 +405,7 @@
 	if(!ui)
 		ui = new(user, src, "Vending")
 		ui.open()
+		ui.set_autoupdate(TRUE)
 
 /obj/machinery/vending/tgui_data(mob/user)
 	var/list/data = list(
