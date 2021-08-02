@@ -119,16 +119,14 @@
 
 // Kills the biostructure
 /obj/item/organ/internal/biostructure/die()
-	if(brainchan)
-		if(brainchan.mind)
-			brainchan.mind.changeling.true_dead = TRUE
-			brainchan.mind.current = null
-		brainchan.death()
+	if(ishuman(loc))
+		var/mob/owner = loc
+		owner.mind.changeling.true_dead = TRUE
+		owner.death()
 	else
-		var/mob/host = loc
-		if(istype(host))
-			host.mind.changeling.true_dead = TRUE
-			host.death()
+		brainchan.mind.changeling.true_dead = TRUE
+		brainchan.mind.current = null
+		brainchan.death()
 	dead_icon = "Strange_biostructure_dead"
 	QDEL_NULL(brainchan)
 	return ..()
