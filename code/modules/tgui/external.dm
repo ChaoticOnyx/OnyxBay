@@ -22,7 +22,7 @@
  *
  * Returns TRUE if a non autoupdating UI needs to update.
  */
-/datum/proc/ui_requires_update(mob/user, datum/tgui/ui)
+/datum/proc/tgui_requires_update(mob/user, datum/tgui/ui)
 	if(ui.needs_update)
 		ui.needs_update = FALSE
 		return TRUE
@@ -35,7 +35,7 @@
  * Better than calling SStgui.update if this is callable by the user,
  * since it calls on process rather than instantly which handles spamming.
  */
-/datum/proc/ui_update()
+/datum/proc/tgui_update()
 	for(var/datum/tgui/ui as() in SStgui.get_all_open_uis(src))
 		ui.needs_update = TRUE
 

@@ -251,7 +251,7 @@
 			if(!choice || !(choice in autolathe_categories + "All"))
 				return TRUE
 			show_category = choice
-			ui_update()
+			tgui_update()
 			return TRUE
 		if("make")
 			if(!machine_recipes)
@@ -278,7 +278,7 @@
 					if(stored_material[material] < round(making.resources[material] * mat_efficiency) * multiplier)
 						busy = FALSE
 						update_use_power(POWER_USE_IDLE)
-						ui_update()
+						tgui_update()
 						return TRUE
 
 			// Consume materials.
@@ -297,7 +297,7 @@
 
 			// Sanity check.
 			if(!making || QDELETED(src))
-				ui_update()
+				tgui_update()
 				return TRUE
 
 			// Create the desired item.
@@ -307,7 +307,7 @@
 				S.amount = multiplier
 				S.update_icon()
 			
-			ui_update()
+			tgui_update()
 
 
 /obj/machinery/autolathe/update_icon()

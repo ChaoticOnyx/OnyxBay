@@ -160,7 +160,7 @@
 			. = TRUE
 	
 	if(.)
-		ui_update()
+		tgui_update()
 
 /obj/machinery/mecha_part_fabricator/attackby(obj/item/I, mob/user)
 	if(busy)
@@ -235,7 +235,7 @@
 	else
 		busy = 0
 	
-	ui_update()
+	tgui_update()
 
 /obj/machinery/mecha_part_fabricator/proc/add_to_queue(index)
 	var/datum/design/D = files.known_designs[index]

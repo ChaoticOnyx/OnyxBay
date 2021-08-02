@@ -206,7 +206,7 @@
 			. = TRUE
 	
 	if(.)
-		ui_update()
+		tgui_update()
 
 /obj/machinery/computer/arcade/battle/attack_hand(mob/user)
 	. = ..()

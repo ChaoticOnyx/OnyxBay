@@ -111,7 +111,7 @@
 		user.drop_item()
 		D.loc = src
 		to_chat(user, SPAN("notice", "You add \the [D] to the machine."))
-		ui_update()
+		tgui_update()
 	else
 		// The construction/deconstruction of the console code.
 		..()
@@ -270,7 +270,7 @@
 			. = TRUE
 	
 	if(.)
-		ui_update()
+		tgui_update()
 
 /obj/machinery/computer/rdconsole/proc/set_selected_device(new_value)
 	ASSERT(new_value in list("destructor", "protolathe", "imprinter"))
