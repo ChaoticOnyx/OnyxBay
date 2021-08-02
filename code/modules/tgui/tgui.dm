@@ -260,7 +260,7 @@
 		close(can_be_suspended = FALSE)
 		return
 	// Update through a normal call to ui_interact
-	if(status != UI_DISABLED && (autoupdate || force))
+	if(status != UI_DISABLED && (autoupdate || force || src_object.tgui_requires_update(user, src)))
 		src_object.tgui_interact(user, src)
 		return
 	// Update status only
