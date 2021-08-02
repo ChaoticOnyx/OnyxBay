@@ -7,7 +7,7 @@
 	if(mind.changeling.is_revive_ready)
 		if(mind.changeling.true_dead)
 			to_chat(src, SPAN("changeling", "We can not do this. We are really dead."))
-		else if(changeling_power(0, 1, 100, DEAD, TRUE))
+		else
 			mind.changeling.chem_charges = 0
 			mind.changeling.is_revive_ready = FALSE
 			revive(ignore_prosthetic_prefs = TRUE) // Complete regeneration
@@ -21,11 +21,7 @@
 		to_chat(usr, SPAN("changeling", "We're still regenerating."))
 		return
 
-	var/datum/changeling/changeling = changeling_power(0, 1, 100, DEAD)
-	if(!changeling)
-		return
-
-	if(changeling.true_dead)
+	if(mind.changeling.true_dead)
 		to_chat(src, SPAN("changeling", "We can not do this. We are really dead."))
 		return
 
@@ -42,7 +38,6 @@
 
 	clear_fullscreens()
 	set_fullscreen(TRUE, "oxydamageoverlay", /obj/screen/fullscreen/oxy, 7)
-	set_fullscreen(TRUE, "blurry", /obj/screen/fullscreen/blurry)
 
 	death(0) // So our body ~actually~ dies until revived
 	to_chat(usr, SPAN("changeling", "We're starting to regenerate."))
