@@ -199,9 +199,9 @@
 
 	/obj/item/weapon/material/twohanded/chainsaw/update_icon()
 		if(active)
-			base_icon = "chainsaw_on"
+			icon_state = "chainsaw_on1"
 		else
-			base_icon = "chainsaw_off"
+			icon_state = "chainsaw_off0"
 		..()
 
 	/obj/item/weapon/material/twohanded/chainsaw/attack_self(mob/living/user)
