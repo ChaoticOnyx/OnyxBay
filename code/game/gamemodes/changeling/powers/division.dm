@@ -74,4 +74,4 @@
 	M.changeling.geneticpoints = 7
 	M.changeling.chem_charges = 40
 
-	T.death(0)
+	T.changeling_fakedeath_proc()

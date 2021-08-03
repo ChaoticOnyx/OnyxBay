@@ -114,5 +114,6 @@
 	changeling.absorbedcount++
 	changeling.isabsorbing = FALSE
 
+	T.mind?.changeling?.true_dead = TRUE
 	T.death(0)
 	T.Drain()

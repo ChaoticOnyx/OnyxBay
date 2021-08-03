@@ -17,29 +17,19 @@
 			clear_fullscreens()
 		return
 
-	if(is_regenerating())
-		to_chat(usr, SPAN("changeling", "We're still regenerating."))
-		return
-
 	if(mind.changeling.true_dead)
 		to_chat(src, SPAN("changeling", "We can not do this. We are really dead."))
+		return
+
+	if(is_regenerating())
+		to_chat(usr, SPAN("changeling", "We're still regenerating."))
 		return
 
 	if(!stat && alert("Are we sure we wish to fake our death?",,"Yes","No") == "No") // Confirmation for living changelings if they want to fake their death
 		return
 
-	status_flags |= FAKEDEATH
-	update_canmove()
+	changeling_fakedeath_proc()
 
-	emote("gasp")
-
-	if(has_brain())
-		internal_organs_by_name[BP_BRAIN].die()
-
-	clear_fullscreens()
-	set_fullscreen(TRUE, "oxydamageoverlay", /obj/screen/fullscreen/oxy, 7)
-
-	death(0) // So our body ~actually~ dies until revived
 	to_chat(usr, SPAN("changeling", "We're starting to regenerate."))
 
 	addtimer(CALLBACK(src, .proc/revive_ready), rand(80 SECONDS, 200 SECONDS))
@@ -51,3 +41,17 @@
 	to_chat(src, SPAN("changeling", "<font size='5'>We are ready to rise. Use the <b>Regenerative Stasis</b> verb when we are ready.</font>"))
 
 	feedback_add_details("changeling_powers", "FD")
+
+/mob/living/carbon/human/proc/changeling_fakedeath_proc()
+	status_flags |= FAKEDEATH
+	update_canmove()
+
+	emote("gasp")
+
+	if(has_brain())
+		internal_organs_by_name[BP_BRAIN].die()
+
+	clear_fullscreens()
+	set_fullscreen(TRUE, "oxydamageoverlay", /obj/screen/fullscreen/oxy, 7)
+
+	death(0)

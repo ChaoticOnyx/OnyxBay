@@ -318,10 +318,9 @@ var/list/datum/power/changeling/powerinstances = list()
 
 	if(!usr || !usr.mind || !usr.mind.changeling)
 		return
-	if(usr.is_regenerating())
-		to_chat(src, SPAN("changeling", "We cannot use our body while in stasis."))
+	if(usr.changeling_is_incapacitated())
 		return
-	else if(!ishuman(usr))
+	if(!ishuman(usr))
 		to_chat(src, SPAN("changeling", "We need to be in the body to evolve."))
 		return
 	src = usr.mind.changeling

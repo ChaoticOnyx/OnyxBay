@@ -145,7 +145,7 @@ var/list/datum/absorbed_dna/hivemind_bank = list()
 
 // Checks if we are in stasis or dead. Some abilities don't need all the checks performed by changeling_power(), so we use this one.
 /mob/proc/changeling_is_incapacitated(max_stat = CONSCIOUS, allow_stasis = FALSE)
-	if(!allow_stasis && is_regenerating())
+	if(!allow_stasis && is_regenerating() && !can_ghostize_human())
 		to_chat(src, SPAN("changeling", "We cannot use our body while in stasis."))
 		return TRUE
 

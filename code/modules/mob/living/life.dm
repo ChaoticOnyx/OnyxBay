@@ -225,7 +225,7 @@
 	set_see_invisible(initial(see_invisible))
 
 /mob/living/proc/update_dead_sight()
-	if(!client)
+	if(client)
 		update_living_sight()
 		return
 	set_sight(sight|SEE_TURFS|SEE_MOBS|SEE_OBJS)
