@@ -119,10 +119,11 @@
 
 // Kills the biostructure
 /obj/item/organ/internal/biostructure/die()
-	if(ishuman(loc))
+	if(isliving(loc))
 		var/mob/owner = loc
 		owner.mind.changeling.true_dead = TRUE
-		owner.death()
+		if(!istype(loc, /mob/living/simple_animal/hostile/little_changeling/headcrab))
+			owner.death()
 	else
 		brainchan.mind.changeling.true_dead = TRUE
 		brainchan.mind.current = null

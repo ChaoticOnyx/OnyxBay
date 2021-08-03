@@ -38,7 +38,7 @@
 				BIO.moving = FALSE
 				if(mind)
 					if(istype(src,/mob/living/carbon/human))
-						var/obj/item/organ/external/E = H.get_organ(BIO.parent_organ)
+						var/obj/item/organ/external/E = H.get_organ(new_parent.organ_tag)
 						if(!E)
 							to_chat(src, SPAN("changeling", "We are missing that limb."))
 							return

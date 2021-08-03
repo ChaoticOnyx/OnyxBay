@@ -352,7 +352,7 @@
 	melee_damage_lower = 5.0
 	melee_damage_upper = 7.5
 	speed = 0
-	name = "headcrab"
+	name = "running biostructure"
 	icon_state = "headcrab"
 	icon_living = "headcrab"
 	icon_dead = "headcrab_dead"
