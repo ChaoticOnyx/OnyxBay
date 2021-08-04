@@ -193,4 +193,4 @@
 	melee_damage_upper = 20
 	attacktext = "kicked"
 
-	wizardy_spells = list(/spell/targeted/projectile/magic_missile)
+	wizardy_spells = list(/datum/spell/targeted/projectile/magic_missile)
