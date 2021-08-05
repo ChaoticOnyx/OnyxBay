@@ -111,6 +111,7 @@
 		user.drop_item()
 		D.loc = src
 		to_chat(user, SPAN("notice", "You add \the [D] to the machine."))
+		tgui_update()
 	else
 		// The construction/deconstruction of the console code.
 		..()
@@ -215,58 +216,61 @@
 	switch(action)
 		if("print")
 			print(params["page"])
-			return TRUE
+			. = TRUE
 		if("load")
 			load_from_disk()
-			return TRUE
+			. = TRUE
 		if("erase")
 			erase_disk()
-			return TRUE
+			. = TRUE
 		if("eject")
 			eject_disk()
-			return TRUE
+			. = TRUE
 		if("save")
 			save_to_disk(params["thing"], params["id"])
-			return TRUE
+			. = TRUE
 		if("eject_destructor")
 			eject_from_destructor(usr)
-			return TRUE
+			. = TRUE
 		if("deconstruct")
 			deconstruct(usr)
-			return TRUE
+			. = TRUE
 		if("sync")
 			do_sync()
-			return TRUE
+			. = TRUE
 		if("toggle_sync")
 			sync = !sync
-			return TRUE
+			. = TRUE
 		if("imprint")
 			imprint(params["id"], params["count"])
-			return TRUE
+			. = TRUE
 		if("build")
 			build(params["id"], params["count"])
-			return TRUE
+			. = TRUE
 		if("dispose")
 			dispose(params["from"], params["thing"])
-			return TRUE
+			. = TRUE
 		if("eject_sheet")
 			eject_sheet(params["from"], params["thing"], params["amount"])
-			return TRUE
+			. = TRUE
 		if("remove")
 			remove_from_queue(params["from"], params["index"])
-			return TRUE
+			. = TRUE
 		if("find_device")
 			find_device()
-			return TRUE
+			. = TRUE
 		if("reset")
 			reset()
-			return TRUE
+			. = TRUE
 		if("disconnect")
 			disconnect(params["thing"])
-			return TRUE
+			. = TRUE
 		if("select_device")
 			set_selected_device(params["device"])
-			return TRUE
+			. = TRUE
+	
+	if(.)
+		tgui_update()
 
 /obj/machinery/computer/rdconsole/proc/set_selected_device(new_value)
 	ASSERT(new_value in list("destructor", "protolathe", "imprinter"))
