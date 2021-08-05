@@ -39,6 +39,7 @@ var/datum/robolimb/basic_robolimb
 	var/list/species_cannot_use = list(SPECIES_SKRELL, SPECIES_DIONA, SPECIES_VOX, SPECIES_PROMETHEAN)
 	// Applyes to specific bodypart.
 	var/list/applies_to_part = list()
+	var/modular_bodyparts = MODULAR_BODYPART_INVALID
 	// Spicies alternatives
 	var/list/species_alternates = list(SPECIES_TAJARA = "Unbranded - Tajaran", SPECIES_UNATHI = "Unbranded - Unathi")
 
@@ -153,6 +154,7 @@ var/datum/robolimb/basic_robolimb
 	desc = "A simplistic, metal-banded, wood-panelled prosthetic."
 	icon = 'icons/mob/human_races/cyberlimbs/makeshift/wooden.dmi'
 	unavailable_to_build = TRUE
+	modular_bodyparts = MODULAR_BODYPART_PROSTHETIC
 	restricted_to = list(SPECIES_HUMAN)
 	species_cannot_use = list(SPECIES_DIONA, SPECIES_VOX, SPECIES_PROMETHEAN, SPECIES_UNATHI, SPECIES_TAJARA, SPECIES_SKRELL)
 

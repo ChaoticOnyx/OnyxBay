@@ -44,6 +44,10 @@
 #define ORGAN_ROBOTIC    (1<<11) // The organ is robotic. Changes numerous behaviors, search BP_IS_ROBOTIC for checks.
 #define ORGAN_LIFELIKE   (1<<12) // The organ is robotic but looks like a real one.
 
+#define MODULAR_BODYPART_INVALID    0 // Cannot be detached or reattached.
+#define MODULAR_BODYPART_PROSTHETIC 1 // Can be detached or reattached freely.
+#define MODULAR_BODYPART_CYBERNETIC 2 // Can be detached or reattached to compatible parent organs.
+
 // Organ flag defines.
 #define ORGAN_FLAG_CAN_AMPUTATE   (1<<0) // The organ can be amputated.
 #define ORGAN_FLAG_CAN_BREAK      (1<<1) // The organ can be broken.

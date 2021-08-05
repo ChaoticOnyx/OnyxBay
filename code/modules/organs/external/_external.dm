@@ -351,9 +351,12 @@
 	..()
 
 	if(istype(owner))
+		if(limb_flags & ORGAN_FLAG_CAN_GRASP)
+			owner.grasp_limbs[src] = TRUE
 
-		if(limb_flags & ORGAN_FLAG_CAN_GRASP) owner.grasp_limbs[src] = TRUE
-		if(limb_flags & ORGAN_FLAG_CAN_STAND) owner.stance_limbs[src] = TRUE
+		if(limb_flags & ORGAN_FLAG_CAN_STAND)
+			owner.stance_limbs[src] = TRUE
+
 		owner.organs_by_name[organ_tag] = src
 		owner.organs |= src
 
@@ -372,6 +375,8 @@
 
 		for(var/obj/item/organ/external/organ in children)
 			organ.replaced(owner)
+
+		owner.refresh_modular_limb_verbs()
 
 	if(!parent && parent_organ)
 		parent = owner.organs_by_name[src.parent_organ]
@@ -1149,6 +1154,8 @@ Note that amputating the affected organ does in fact remove the infection from t
 		while(null in owner.internal_organs)
 			owner.internal_organs -= null
 
+		owner.refresh_modular_limb_verbs()
+
 	return 1
 
 /obj/item/organ/external/proc/get_damage()	//returns total damage
@@ -1281,6 +1288,9 @@ Note that amputating the affected organ does in fact remove the infection from t
 		qdel(src)
 	else if(is_stump())
 		qdel(src)
+
+	victim.refresh_modular_limb_verbs()
+	victim.update_body()
 
 /obj/item/organ/external/head/proc/disfigure(type = "brute")
 	if(status & ORGAN_DISFIGURED)
