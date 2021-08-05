@@ -45,9 +45,10 @@ var/datum/robolimb/basic_robolimb
 
 /datum/robolimb/alt1
 	company = "Unbranded - Mantis Prosis"
-	has_eyes = TRUE
 	desc = "This limb has a casing of sleek black metal and repulsive insectile design."
 	icon = 'icons/mob/human_races/cyberlimbs/unbranded/unbranded_alt1.dmi'
+	has_eyes = TRUE
+	modular_bodyparts = MODULAR_BODYPART_PROSTHETIC
 
 /datum/robolimb/tajaran
  	company = "Unbranded - Tajaran"
@@ -88,9 +89,10 @@ var/datum/robolimb/basic_robolimb
 	icon = 'icons/mob/human_races/cyberlimbs/zenghu/zenghu_main.dmi'
 	lifelike = TRUE
 	unavailable_to_build = TRUE
+	modular_bodyparts = MODULAR_BODYPART_CYBERNETIC
 	restricted_to = list(SPECIES_HUMAN)
-	species_cannot_use = list(SPECIES_DIONA, SPECIES_VOX, SPECIES_PROMETHEAN, SPECIES_UNATHI)
-	species_alternates = list(SPECIES_UNATHI = "Zeng-Hu - Tajaran")
+	species_cannot_use = list(SPECIES_DIONA, SPECIES_VOX, SPECIES_PROMETHEAN, SPECIES_UNATHI, SPECIES_SKRELL)
+	species_alternates = list(SPECIES_TAJARA = "Zeng-Hu - Tajaran")
 
 /datum/robolimb/zenghu/tajaran
 	company = "Zeng-Hu - Tajaran"
@@ -113,8 +115,8 @@ var/datum/robolimb/basic_robolimb
 
 /datum/robolimb/bishop/bishop_alt2
 	company = "Bishop - Rook"
-	has_eyes = TRUE
 	icon = 'icons/mob/human_races/cyberlimbs/bishop/bishop_alt2.dmi'
+	has_eyes = TRUE
 
 //HEPHAESTUS
 /datum/robolimb/hephaestus
@@ -139,6 +141,7 @@ var/datum/robolimb/basic_robolimb
 	can_eat = TRUE
 	lifelike = TRUE
 	unavailable_to_build = TRUE
+	modular_bodyparts = MODULAR_BODYPART_CYBERNETIC
 	restricted_to = list(SPECIES_HUMAN)
 	species_cannot_use = list(SPECIES_DIONA, SPECIES_VOX, SPECIES_PROMETHEAN, SPECIES_UNATHI, SPECIES_TAJARA)
 	species_alternates = list(SPECIES_SKRELL = "Vey-Med - Skrell")
@@ -157,6 +160,7 @@ var/datum/robolimb/basic_robolimb
 	modular_bodyparts = MODULAR_BODYPART_PROSTHETIC
 	restricted_to = list(SPECIES_HUMAN)
 	species_cannot_use = list(SPECIES_DIONA, SPECIES_VOX, SPECIES_PROMETHEAN, SPECIES_UNATHI, SPECIES_TAJARA, SPECIES_SKRELL)
+	applies_to_part = list(BP_L_FOOT, BP_R_FOOT, BP_L_LEG, BP_R_LEG, BP_L_HAND, BP_R_HAND, BP_L_ARM, BP_R_ARM)
 
 //EINSTEIN
 /datum/robolimb/einstein
@@ -164,6 +168,7 @@ var/datum/robolimb/basic_robolimb
 	desc = "This limb is lightweight with a sleek design."
 	icon = 'icons/mob/human_races/cyberlimbs/einstein/einstein.dmi'
 	unavailable_to_build = TRUE
+	modular_bodyparts = MODULAR_BODYPART_PROSTHETIC
 	restricted_to = list(SPECIES_HUMAN)
 	species_cannot_use = list(SPECIES_DIONA, SPECIES_VOX, SPECIES_PROMETHEAN, SPECIES_UNATHI, SPECIES_TAJARA, SPECIES_SKRELL)
 
@@ -183,6 +188,7 @@ var/datum/robolimb/basic_robolimb
 	desc = "This limb features sleek black and white polymers."
 	icon = 'icons/mob/human_races/cyberlimbs/wardtakahashi/wardtakahashi_main.dmi'
 	unavailable_to_build = TRUE
+	modular_bodyparts = MODULAR_BODYPART_PROSTHETIC
 	restricted_to = list(SPECIES_HUMAN)
 	species_cannot_use = list(SPECIES_DIONA, SPECIES_VOX, SPECIES_PROMETHEAN, SPECIES_UNATHI, SPECIES_TAJARA, SPECIES_SKRELL)
 
@@ -196,6 +202,7 @@ var/datum/robolimb/basic_robolimb
 	company = "Ward-Takahashi - Spirit"
 	desc = "This limb has white and purple features, with a heavier casing."
 	icon = 'icons/mob/human_races/cyberlimbs/wardtakahashi/wardtakahashi_alt2.dmi'
+	modular_bodyparts = MODULAR_BODYPART_PROSTHETIC
 
 //CYBERSOLUTIONS
 /datum/robolimb/cybersolutions
@@ -203,6 +210,7 @@ var/datum/robolimb/basic_robolimb
 	desc = "This limb is grey and rough, with little in the way of aesthetic."
 	icon = 'icons/mob/human_races/cyberlimbs/cybersolutions/cybersolutions_main.dmi'
 	unavailable_to_build = TRUE
+	modular_bodyparts = MODULAR_BODYPART_CYBERNETIC
 	restricted_to = list(SPECIES_HUMAN)
 	species_cannot_use = list(SPECIES_DIONA, SPECIES_VOX, SPECIES_PROMETHEAN, SPECIES_UNATHI, SPECIES_TAJARA, SPECIES_SKRELL)
 
@@ -210,11 +218,13 @@ var/datum/robolimb/basic_robolimb
 	company = "Cyber Solutions - Wight"
 	desc = "This limb has cheap plastic panels mounted on grey metal."
 	icon = 'icons/mob/human_races/cyberlimbs/cybersolutions/cybersolutions_alt1.dmi'
+	modular_bodyparts = MODULAR_BODYPART_PROSTHETIC
 
 /datum/robolimb/cybersolutions/cybersolutions_alt2
 	company = "Cyber Solutions - Outdated"
 	desc = "This limb is of severely outdated design; there's no way it's comfortable or very functional to use."
 	icon = 'icons/mob/human_races/cyberlimbs/cybersolutions/cybersolutions_alt2.dmi'
+	modular_bodyparts = MODULAR_BODYPART_PROSTHETIC
 
 /datum/robolimb/cybersolutions/cybersolutions_alt3
 	company = "Cyber Solutions - Array"

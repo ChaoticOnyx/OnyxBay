@@ -122,7 +122,7 @@
 			to_chat(src, SPAN_WARNING("You can't bite while you are hiding!"))
 			return
 
-		var/available_limbs = H.lying ? BP_ALL_LIMBS : BP_FEET
+		var/available_limbs = H.lying ? BP_ALL_LIMBS : list(BP_L_FOOT, BP_R_FOOT)
 		var/obj/item/organ/external/limb
 		for(var/L in shuffle(available_limbs))
 			limb = H.get_organ(L)
