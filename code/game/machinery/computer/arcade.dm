@@ -162,7 +162,7 @@
 			enemy_hp -= attackamt
 			arcade_action(usr)
 
-			return TRUE
+			. = TRUE
 		if("heal")
 			playsound(loc, 'sound/effects/arcade/heal1.ogg', 15, TRUE)
 			blocked = 1
@@ -175,7 +175,7 @@
 			blocked = 1
 			arcade_action(usr)
 
-			return TRUE
+			. = TRUE
 		if("charge")
 			playsound(loc, 'sound/effects/arcade/recharge1.ogg', 15, TRUE)
 			blocked = 1
@@ -188,7 +188,7 @@
 			
 			arcade_action(usr)
 
-			return TRUE
+			. = TRUE
 		if("newgame")
 			playsound(loc, 'sound/effects/arcade/start1.ogg', 15, TRUE)
 			temp = "New Round"
@@ -203,7 +203,10 @@
 				emagged = 0
 				SetupGame()
 			
-			return TRUE
+			. = TRUE
+	
+	if(.)
+		tgui_update()
 
 /obj/machinery/computer/arcade/battle/attack_hand(mob/user)
 	. = ..()
