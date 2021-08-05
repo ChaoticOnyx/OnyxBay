@@ -28,6 +28,7 @@
 	var/list/ico[0]      //Icons and
 	var/list/offset_x[0] //offsets stored for later
 	var/list/offset_y[0] //usage by the photocopier
+	var/taped = FALSE
 	var/rigged = FALSE
 	var/spam_flag = FALSE
 	var/readonly = FALSE
@@ -57,8 +58,8 @@
 	set_content(text ? text : info, title, rawhtml || src.rawhtml)
 
 /obj/item/weapon/paper/proc/copy(loc = src.loc, generate_stamps = TRUE)
-	var/obj/item/weapon/paper/P = new (loc)
-	P.name = name
+	var/obj/item/weapon/paper/P = new src.type(loc)
+	P.name = (taped) ? copytext(name, 1, length(name)-7) : name
 	P.info = info
 	P.info_links = info_links
 	P.migrateinfolinks(src)
@@ -131,10 +132,14 @@
 /obj/item/weapon/paper/update_icon()
 	if(dynamic_icon)
 		return
-	else if(info)
-		icon_state = "paper_words"
+	if(findtext(icon_state,"scrap"))
+		icon_state = "scrap"
 	else
 		icon_state = "paper"
+		if(length(info)>length("<!--paper_field_end-->"))
+			icon_state += "_words"
+	if(taped)
+		icon_state += "_taped"
 
 /obj/item/weapon/paper/proc/update_space()
 	free_space = initial(free_space)
@@ -173,6 +178,8 @@
 	// We check loc one level up, so we can rename in clipboards and such. See also: /obj/item/weapon/photo/rename()
 	if((loc == usr || loc.loc && loc.loc == usr) && usr.stat == 0 && n_name)
 		SetName(n_name)
+		if(taped)
+			name += " (taped)"
 		add_fingerprint(usr)
 
 /obj/item/weapon/paper/attack_self(mob/living/user as mob)
@@ -184,16 +191,28 @@
 		info = stars(info,85)
 		user.visible_message("\The [user] crumples \the [src] into a ball!")
 		icon_state = "scrap"
+		update_icon()
 		throw_range = 7
 		throw_speed = 2
 		return
-	user.examinate(src)
-	if(rigged && (Holiday == "April Fool's Day"))
-		if(!spam_flag)
-			spam_flag = TRUE
-			playsound(loc, 'sound/items/bikehorn.ogg', 50, 1)
-			spawn(20)
-				spam_flag = FALSE
+	if(taped)
+		name = copytext(name, 1, length(name)-7)
+		to_chat(user, "You remove the piece of tape from [name].")
+		taped = FALSE
+		anchored = FALSE
+		update_icon()
+	else
+		user.examinate(src)
+		if(rigged && (Holiday == "April Fool's Day"))
+			if(!spam_flag)
+				spam_flag = TRUE
+				playsound(loc, 'sound/items/bikehorn.ogg', 50, 1)
+				spawn(20)
+					spam_flag = FALSE
+
+/obj/item/weapon/paper/attack_hand(mob/user)
+	anchored = FALSE // Unattach it from whereever it's on, if anything.
+	return ..()
 
 /obj/item/weapon/paper/attack_ai(mob/living/silicon/ai/user)
 	show_content(user)
@@ -219,6 +238,169 @@
 										 "<span class='notice'>You wipe off [H]'s lipstick.</span>")
 					H.lip_style = null
 					H.update_body()
+
+/obj/item/weapon/paper/afterattack(A, mob/user, flag, params)
+	if(!taped)
+		return
+
+	if(!in_range(user, A) || istype(A, /obj/machinery/door) || istype(A, /obj/item))
+		return
+
+	if(src != user.get_active_hand())//if anything took paper
+		return
+
+	var/turf/target_turf = get_turf(A)
+	var/turf/source_turf = get_turf(user)
+
+	var/dir_offset = 0
+	if(target_turf != source_turf)
+		dir_offset = get_dir(source_turf, target_turf)
+		if(!(dir_offset in GLOB.cardinal))
+			to_chat(user, "You cannot reach that from here.")// can only place stuck papers in cardinal directions, to
+			return											// reduce papers around corners issue.
+
+	user.drop_from_inventory(src)
+	forceMove(source_turf)
+	anchored = TRUE
+
+	if(params)
+		var/list/mouse_control = params2list(params)
+		if(mouse_control["icon-x"])
+			pixel_x = text2num(mouse_control["icon-x"]) - 16
+			if(dir_offset & EAST)
+				pixel_x += 32
+			else if(dir_offset & WEST)
+				pixel_x -= 32
+		if(mouse_control["icon-y"])
+			pixel_y = text2num(mouse_control["icon-y"]) - 16
+			if(dir_offset & NORTH)
+				pixel_y += 32
+			else if(dir_offset & SOUTH)
+				pixel_y -= 32
+
+/obj/item/weapon/paper/attackby(obj/item/weapon/P as obj, mob/user as mob)
+	..()
+	var/clown = 0
+	if(user.mind && (user.mind.assigned_role == "Clown"))
+		clown = 1
+
+	if(istype(P, /obj/item/weapon/tape_roll))
+		if(taped)
+			to_chat(user, "It has been taped already!")
+			return
+		name += " (taped)"
+		taped = TRUE
+		update_icon()
+		return
+
+	if(istype(P, /obj/item/weapon/paper) || istype(P, /obj/item/weapon/photo))
+		if (istype(P, /obj/item/weapon/paper/carbon))
+			var/obj/item/weapon/paper/carbon/C = P
+			if (!C.iscopy && !C.copied)
+				to_chat(user, "<span class='notice'>Take off the carbon copy first.</span>")
+				add_fingerprint(user)
+				return
+		var/obj/item/weapon/paper_bundle/B = new(src.loc)
+		if (name != "paper")
+			B.SetName(name)
+		else if (P.name != "paper" && P.name != "photo")
+			B.SetName(P.name)
+
+		user.drop_from_inventory(P)
+		user.drop_from_inventory(src)
+		user.put_in_hands(B)
+		src.forceMove(B)
+		P.forceMove(B)
+
+		to_chat(user, "<span class='notice'>You clip the [P.name] to [(src.name == "paper") ? "the paper" : src.name].</span>")
+
+		B.pages.Add(src)
+		B.pages.Add(P)
+		B.update_icon()
+
+	else if(istype(P, /obj/item/weapon/pen))
+		if(icon_state == "scrap")
+			to_chat(usr, "<span class='warning'>\The [src] is too crumpled to write on.</span>")
+			return
+
+		var/obj/item/weapon/pen/robopen/RP = P
+		if ( istype(RP) && RP.mode == 2 )
+			RP.RenamePaper(user,src)
+		else
+			show_browser(user, "<HTML><meta charset=\"utf-8\"><HEAD><TITLE>[name]</TITLE></HEAD><BODY bgcolor='[color]'>[info_links][stamps]</BODY></HTML>", "window=[name]")
+		return
+
+	else if(istype(P, /obj/item/weapon/stamp) || istype(P, /obj/item/clothing/ring/seal))
+		if((!in_range(src, usr) && loc != user && !( istype(loc, /obj/item/weapon/clipboard) ) && loc.loc != user && user.get_active_hand() != P))
+			return
+
+		stamps += (stamps=="" ? "<HR>" : "<BR>") + "<i>This paper has been stamped with the [P.name].</i>"
+
+		var/image/stampoverlay = image('icons/obj/bureaucracy.dmi')
+		var/x
+		var/y
+		if(istype(P, /obj/item/weapon/stamp/captain) || istype(P, /obj/item/weapon/stamp/centcomm))
+			x = rand(-2, 0)
+			y = rand(-1, 2)
+		else
+			x = rand(-2, 2)
+			y = rand(-3, 2)
+		offset_x += x
+		offset_y += y
+		stampoverlay.pixel_x = x
+		stampoverlay.pixel_y = y
+
+		if(istype(P, /obj/item/weapon/stamp/clown))
+			if(!clown)
+				to_chat(user, "<span class='notice'>You are totally unable to use the stamp. HONK!</span>")
+				return
+
+		if(!ico)
+			ico = new
+		ico += "paper_[P.icon_state]"
+		stampoverlay.icon_state = "paper_[P.icon_state]"
+
+		if(!stamped)
+			stamped = new
+		stamped += P.type
+		overlays += stampoverlay
+
+		to_chat(user, "<span class='notice'>You stamp the paper with your [P.name].</span>")
+
+	else if(istype(P, /obj/item/weapon/flame))
+		burnpaper(P, user)
+
+	else if(istype(P, /obj/item/weapon/paper_bundle))
+		var/obj/item/weapon/paper_bundle/attacking_bundle = P
+		attacking_bundle.insert_sheet_at(user, (attacking_bundle.pages.len)+1, src)
+		attacking_bundle.update_icon()
+
+	else if(istype(P, /obj/item/weapon/reagent_containers/food/snacks/grown))
+		var/obj/item/weapon/reagent_containers/food/snacks/grown/G = P
+		if(!G.dry)
+			to_chat(user, SPAN("notice", "[G] must be dried before you can grind and roll it."))
+			return
+		var/R_loc = loc
+		var/roll_in_hands = FALSE
+		if(ishuman(loc))
+			R_loc = user.loc
+			roll_in_hands = TRUE
+		var/obj/item/clothing/mask/smokable/cigarette/roll/joint/big/R = new(R_loc)
+		if(G.reagents)
+			if(G.reagents.has_reagent(/datum/reagent/nutriment))
+				G.reagents.del_reagent(/datum/reagent/nutriment)
+			G.reagents.trans_to_obj(R, G.reagents.total_volume)
+		R.desc += " Looks like it contains some [G]."
+		to_chat(user, SPAN("notice", "You grind \the [G] and roll a big joint!"))
+		R.add_fingerprint(user)
+		qdel(src)
+		qdel(G)
+		if(roll_in_hands)
+			user.put_in_hands(R)
+		return
+
+	add_fingerprint(user)
+	return
 
 /obj/item/weapon/paper/proc/addtofield(id, text, terminate = FALSE)
 	var/token = "<!--paper_field_[id]-->"
@@ -442,127 +624,6 @@
 		show_browser(usr, "<HTML><meta charset=\"utf-8\"><HEAD><TITLE>[name]</TITLE></HEAD><BODY bgcolor='[color]'>[info_links][stamps]</BODY></HTML>", "window=[name]") // Update the window
 
 		update_icon()
-
-
-/obj/item/weapon/paper/attackby(obj/item/weapon/P as obj, mob/user as mob)
-	..()
-	var/clown = FALSE
-	if(user.mind && (user.mind.assigned_role == "Clown"))
-		clown = TRUE
-
-	if(istype(P, /obj/item/weapon/tape_roll))
-		var/obj/item/weapon/tape_roll/tape = P
-		tape.stick(src, user)
-		return
-
-	if(istype(P, /obj/item/weapon/paper) || istype(P, /obj/item/weapon/photo))
-		if (istype(P, /obj/item/weapon/paper/carbon))
-			var/obj/item/weapon/paper/carbon/C = P
-			if (!C.iscopy && !C.copied)
-				to_chat(user, "<span class='notice'>Take off the carbon copy first.</span>")
-				add_fingerprint(user)
-				return
-		var/obj/item/weapon/paper_bundle/B = new(src.loc)
-		if (name != "paper")
-			B.SetName(name)
-		else if (P.name != "paper" && P.name != "photo")
-			B.SetName(P.name)
-
-		user.drop_from_inventory(P)
-		user.drop_from_inventory(src)
-		user.put_in_hands(B)
-		src.forceMove(B)
-		P.forceMove(B)
-
-		to_chat(user, "<span class='notice'>You clip the [P.name] to [(src.name == "paper") ? "the paper" : src.name].</span>")
-
-		B.pages.Add(src)
-		B.pages.Add(P)
-		B.update_icon()
-
-	else if(istype(P, /obj/item/weapon/pen))
-		if(icon_state == "scrap")
-			to_chat(usr, "<span class='warning'>\The [src] is too crumpled to write on.</span>")
-			return
-
-		var/obj/item/weapon/pen/robopen/RP = P
-		if ( istype(RP) && RP.mode == 2 )
-			RP.RenamePaper(user,src)
-		else
-			show_browser(user, "<HTML><meta charset=\"utf-8\"><HEAD><TITLE>[name]</TITLE></HEAD><BODY bgcolor='[color]'>[info_links][stamps]</BODY></HTML>", "window=[name]")
-		return
-
-	else if(istype(P, /obj/item/weapon/stamp) || istype(P, /obj/item/clothing/ring/seal))
-		if((!in_range(src, usr) && loc != user && !( istype(loc, /obj/item/weapon/clipboard) ) && loc.loc != user && user.get_active_hand() != P))
-			return
-
-		stamps += (stamps=="" ? "<HR>" : "<BR>") + "<i>This paper has been stamped with the [P.name].</i>"
-
-		var/image/stampoverlay = image('icons/obj/bureaucracy.dmi')
-		var/x
-		var/y
-		if(istype(P, /obj/item/weapon/stamp/captain) || istype(P, /obj/item/weapon/stamp/centcomm))
-			x = rand(-2, 0)
-			y = rand(-1, 2)
-		else
-			x = rand(-2, 2)
-			y = rand(-3, 2)
-		offset_x += x
-		offset_y += y
-		stampoverlay.pixel_x = x
-		stampoverlay.pixel_y = y
-
-		if(istype(P, /obj/item/weapon/stamp/clown))
-			if(!clown)
-				to_chat(user, "<span class='notice'>You are totally unable to use the stamp. HONK!</span>")
-				return
-
-		if(!ico)
-			ico = new
-		ico += "paper_[P.icon_state]"
-		stampoverlay.icon_state = "paper_[P.icon_state]"
-
-		if(!stamped)
-			stamped = new
-		stamped += P.type
-		overlays += stampoverlay
-
-		to_chat(user, "<span class='notice'>You stamp the paper with your [P.name].</span>")
-
-	else if(istype(P, /obj/item/weapon/flame))
-		burnpaper(P, user)
-
-	else if(istype(P, /obj/item/weapon/paper_bundle))
-		var/obj/item/weapon/paper_bundle/attacking_bundle = P
-		attacking_bundle.insert_sheet_at(user, (attacking_bundle.pages.len)+1, src)
-		attacking_bundle.update_icon()
-
-	else if(istype(P, /obj/item/weapon/reagent_containers/food/snacks/grown))
-		var/obj/item/weapon/reagent_containers/food/snacks/grown/G = P
-		if(!G.dry)
-			to_chat(user, SPAN("notice", "[G] must be dried before you can grind and roll it."))
-			return
-		var/R_loc = loc
-		var/roll_in_hands = FALSE
-		if(ishuman(loc))
-			R_loc = user.loc
-			roll_in_hands = TRUE
-		var/obj/item/clothing/mask/smokable/cigarette/roll/joint/big/R = new(R_loc)
-		if(G.reagents)
-			if(G.reagents.has_reagent(/datum/reagent/nutriment))
-				G.reagents.del_reagent(/datum/reagent/nutriment)
-			G.reagents.trans_to_obj(R, G.reagents.total_volume)
-		R.desc += " Looks like it contains some [G]."
-		to_chat(user, SPAN("notice", "You grind \the [G] and roll a big joint!"))
-		R.add_fingerprint(user)
-		qdel(src)
-		qdel(G)
-		if(roll_in_hands)
-			user.put_in_hands(R)
-		return
-
-	add_fingerprint(user)
-	return
 
 //For supply.
 /obj/item/weapon/paper/manifest
