@@ -43,6 +43,7 @@
 	//Mob
 	U.visible_message("\The [U] thrusts \the [src] deep into \the [H]'s head, injecting something!")
 	H.LoseTarget()
+	H.faction = (mode == "somewhat") ? U.faction : null
 	H.attack_same = 0
 	H.friends += weakref(U)
 	H.desc += SPAN("notice", " It looks especially docile.")
@@ -50,7 +51,7 @@
 /obj/item/device/dociler/proc/refill()
 	loaded = TRUE
 	icon_state = "animal_tagger1"
-	src.visible_message("\The [src] beeps, refilling itself.")
+	visible_message("\The [src] beeps, refilling itself.")
 
 /obj/item/device/dociler/attack(mob/living/L, mob/user)
 	if(!istype(L, /mob/living/simple_animal))
@@ -67,13 +68,11 @@
 			if("completely")
 				if(istype(L,/mob/living/simple_animal/hostile))
 					to_chat(L, SPAN("notice", "You feel pain as \the [user] injects something into you. All of a sudden you feel as if all the galaxy are your friends."))
-					L.faction = null
 					inject(L, user)
 					rename(L, user)
 			if("somewhat")
 				if(istype(L,/mob/living/simple_animal/hostile))
 					to_chat(L, SPAN("notice", "You feel pain as \the [user] injects something into you. All of a sudden you feel as if [user] is the friendliest and nicest person you've ever know. You want to be friends with him and all his friends."))
-					L.faction = user.faction
 					inject(L, user)
 					rename(L, user)
 			if("naming")
