@@ -113,6 +113,7 @@
 	if(!ui)
 		ui = new(user, src, "ReSleever", name)
 		ui.open()
+		ui.set_autoupdate(TRUE)
 
 /obj/machinery/resleever/tgui_data()
 	var/list/data = list(
