@@ -26,8 +26,8 @@
 
 	startswith = list(
 		/obj/item/device/healthanalyzer,
-		/obj/item/stack/medical/bruise_pack = 3,
-		/obj/item/stack/medical/ointment = 2,
+		/obj/item/stack/medical/bruise_pack = 2,
+		/obj/item/stack/medical/ointment = 1,
 		/obj/item/weapon/reagent_containers/hypospray/autoinjector,
 		/obj/item/weapon/storage/pill_bottle/antidexafen,
 		/obj/item/weapon/storage/pill_bottle/paracetamol
