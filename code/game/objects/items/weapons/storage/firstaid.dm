@@ -13,8 +13,13 @@
 	icon_state = "firstaid"
 	throw_speed = 2
 	throw_range = 8
+	force = 7.0
+	mod_weight = 1.25
+	mod_reach = 0.7
+	mod_handy = 0.7
 	max_w_class = ITEM_SIZE_SMALL
 	max_storage_space = DEFAULT_BOX_STORAGE
+	attack_verb = list("doctored", "medicined", "unhealed", "fist-aided")
 
 /obj/item/weapon/storage/firstaid/regular
 	icon_state = "firstaid"
