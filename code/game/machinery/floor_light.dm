@@ -35,6 +35,19 @@ var/floor_light_color_cache = list()
 	var/broken_light_colour = "#FFFFFF"
 	var/light_colour = "#69baff"
 
+	var/static/radial_color_input = image(icon = 'icons/mob/radial.dmi', icon_state = "color_input")
+	var/static/radial_intensity = image(icon = 'icons/mob/radial.dmi', icon_state = "intensity")
+	var/static/radial_intensity_slow = image(icon = 'icons/mob/radial.dmi', icon_state = "intensity_slow")
+	var/static/radial_intensity_normal = image(icon = 'icons/mob/radial.dmi', icon_state = "intensity_normal")
+	var/static/radial_intensity_fast = image(icon = 'icons/mob/radial.dmi', icon_state = "intensity_fast")
+	var/static/radial_invert = image(icon = 'icons/mob/radial.dmi', icon_state = "invert")
+
+	// we show the button even if the proc will not work
+	var/static/list/settings_options = list("Color" = radial_color_input, "Intensity" = radial_intensity, "Invert" = radial_invert)
+	var/static/list/ai_settings_options = list("Color" = radial_color_input, "Intensity" = radial_intensity, "Invert" = radial_invert)
+	var/static/list/intensity_options = list("slow" = radial_intensity_slow, "normal" = radial_intensity_normal, "fast" = radial_intensity_fast)
+	var/static/list/ai_intensity_options = list("slow" = radial_intensity_slow, "normal" = radial_intensity_normal, "fast" = radial_intensity_fast)
+
 /obj/machinery/floor_light/New()
 	health = max_health
 	shield = max_health * 0.5
@@ -96,7 +109,9 @@ var/floor_light_color_cache = list()
 		if(broken())
 			to_chat(user, SPAN("warning", "\The [src] needs to be repaired for the setup."))
 			return
-		switch(alert("What would you like to change?",, "Color", "Intensity", "Invert", "Cancel"))
+
+		var/settings_choice = show_radial_menu(user, src, isAI(user) ? ai_settings_options : settings_options, require_near = !issilicon(user))
+		switch(settings_choice)
 			if("Color")
 				light_colour = input(user, "Choose your floor light's color:") as color
 				update_brightness()
@@ -104,27 +119,32 @@ var/floor_light_color_cache = list()
 				playsound(src.loc, "button", 50, 1)
 				return
 			if("Intensity")
-				switch(alert("Choose your floor light's intensity",, "slow", "normal", "fast"))
+				var/intensity_choice = show_radial_menu(user, src, isAI(user) ? ai_intensity_options : intensity_options, require_near = !issilicon(user))
+				switch(intensity_choice)
 					if("slow")
 						light_intensity = 0
 						visible_message(SPAN("notice", "\The [user] change \the [src] intensity to slow."))
+						update_brightness()
+						playsound(src.loc, "button", 50, 1)
+						return
 					if("normal")
 						light_intensity = 1
 						visible_message(SPAN("notice", "\The [user] change \the [src] intensity to normal."))
+						update_brightness()
+						playsound(src.loc, "button", 50, 1)
+						return
 					if("fast")
 						light_intensity = 2
 						visible_message(SPAN("notice", "\The [user] change \the [src] intensity to fast."))
-					else return
-				update_brightness()
-				playsound(src.loc, "button", 50, 1)
+						update_brightness()
+						playsound(src.loc, "button", 50, 1)
+						return
 				return
 			if("Invert")
 				inverted = !inverted
 				update_brightness()
 				visible_message(SPAN("notice", "\The [user] inverted \the [src] rhythm."))
 				playsound(src.loc, "button", 50, 1)
-				return
-			if("Cancel")
 				return
 		return
 
@@ -165,10 +185,8 @@ var/floor_light_color_cache = list()
 		playsound(loc, get_sfx("glass_hit"), 100, 1)
 		if(health <= shield / 2)
 			visible_message("[src] looks like it's about to shatter!")
-			playsound(loc, get_sfx("sound/effects/glass_step.ogg"), 100, 1)
 		else if(broken())
 			visible_message("[src] looks seriously damaged!")
-			playsound(loc, get_sfx("sound/effects/glass_step.ogg"), 50, 1)
 		damaged++
 		health -= damage
 		update_brightness()
@@ -222,6 +240,7 @@ var/floor_light_color_cache = list()
 			crack = rand(1,8)
 			var/cache_key = "floorlight[ID]-damaged[crack]"
 			var/image/I = image("damaged[crack]")
+			playsound(loc, get_sfx("sound/effects/glass_step.ogg"), 100, 1)
 			update_light_cache(ID, cache_key, I, crack_layer)
 			cracks++
 	else overlays.Cut()
