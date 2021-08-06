@@ -83,6 +83,14 @@
 	deform = 'icons/mob/human_races/r_def_tajaran.dmi'
 	tail = "tajtail"
 	tail_animation = 'icons/mob/species/tajaran/tail.dmi'
+
+	inherent_verbs = list(
+		/mob/living/carbon/human/proc/emote_swish,
+		/mob/living/carbon/human/proc/emote_wag,
+		/mob/living/carbon/human/proc/emote_fastsway,
+		/mob/living/carbon/human/proc/emote_stopsway
+		)
+
 	default_h_style = "Tajaran Ears"
 	unarmed_types = list(/datum/unarmed_attack/stomp, /datum/unarmed_attack/kick, /datum/unarmed_attack/claws, /datum/unarmed_attack/bite/sharp)
 	darksight_range = 8
