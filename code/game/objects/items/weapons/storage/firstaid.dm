@@ -42,7 +42,7 @@
 	startswith = list(
 		/obj/item/device/healthanalyzer,
 		/obj/item/weapon/reagent_containers/hypospray/autoinjector,
-		/obj/item/stack/medical/bruise_pack = 2,
+		/obj/item/stack/medical/bruise_pack,
 		/obj/item/stack/medical/ointment = 2,
 		/obj/item/weapon/storage/pill_bottle/kelotane,
 		/obj/item/weapon/storage/pill_bottle/paracetamol
@@ -59,9 +59,10 @@
 	item_state = "firstaid-toxin"
 
 	startswith = list(
-		/obj/item/weapon/reagent_containers/syringe/antitoxin/packaged = 3,
-		/obj/item/weapon/storage/pill_bottle/dylovene,
 		/obj/item/device/healthanalyzer,
+		/obj/item/weapon/storage/pill_bottle/dylovene,
+		/obj/item/weapon/reagent_containers/syringe/antitoxin/packaged = 3,
+		/obj/item/weapon/reagent_containers/food/drinks/cans/waterbottle
 		)
 
 /obj/item/weapon/storage/firstaid/toxin/Initialize()
@@ -78,7 +79,9 @@
 		/obj/item/device/healthanalyzer,
 		/obj/item/weapon/storage/pill_bottle/dexalin,
 		/obj/item/weapon/reagent_containers/hypospray/autoinjector,
-		/obj/item/weapon/reagent_containers/syringe/inaprovaline/packaged
+		/obj/item/weapon/reagent_containers/syringe/inaprovaline/packaged,
+		/obj/item/weapon/tank/emergency/oxygen,
+		/obj/item/clothing/mask/breath
 		)
 
 /obj/item/weapon/storage/firstaid/adv
@@ -90,11 +93,9 @@
 	startswith = list(
 		/obj/item/device/healthanalyzer,
 		/obj/item/weapon/reagent_containers/hypospray/autoinjector,
-		/obj/item/stack/medical/advanced/bruise_pack = 3,
+		/obj/item/stack/medical/advanced/bruise_pack = 2,
 		/obj/item/stack/medical/advanced/ointment = 2,
-		/obj/item/stack/medical/splint,
-		/obj/item/weapon/storage/pill_bottle/antidexafen,
-		/obj/item/weapon/storage/pill_bottle/paracetamol
+		/obj/item/stack/medical/splint
 		)
 
 /obj/item/weapon/storage/firstaid/combat
@@ -102,6 +103,7 @@
 	desc = "Contains advanced medical treatments."
 	icon_state = "firstaid-bezerk"
 	item_state = "firstaid-advanced"
+	storage_slots = 9 // Tacticoolness makes it more spaceous
 
 	startswith = list(
 		/obj/item/stack/medical/advanced/bruise_pack,

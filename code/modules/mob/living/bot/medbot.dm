@@ -148,9 +148,9 @@
 	. += "<br>Injection level: "
 	. += "<a href='?src=\ref[src];command=adj_inject;amount=-5'>-</a> "
 	. += "[injection_amount] "
-	. += "<a href='?src=\ref[src];command=adj_inject;amount=5'>+</a><br>"
+	. += "<a href='?src=\ref[src];command=adj_inject;amount=5'>+</a>"
 
-	. += "<br>Treatment types: "
+	. += "<br><br>Treatment types: "
 	. += "<br>Physical traumas: <a href='?src=\ref[src];command=toggle_brute'>[should_treat_brute ? "On" : "Off"]</a>"
 	. += "<br>Burns: <a href='?src=\ref[src];command=toggle_fire'>[should_treat_fire ? "On" : "Off"]</a>"
 	. += "<br>Oxygen deprivation: <a href='?src=\ref[src];command=toggle_oxy'>[should_treat_oxy ? "On" : "Off"]</a>"
@@ -203,13 +203,13 @@
 					should_treat_brute = !should_treat_brute
 			if("toggle_oxy")
 				if(!locked || issilicon(user))
-					should_treat_brute = !should_treat_oxy
+					should_treat_oxy = !should_treat_oxy
 			if("toggle_fire")
 				if(!locked || issilicon(user))
-					should_treat_brute = !should_treat_fire
+					should_treat_fire = !should_treat_fire
 			if("toggle_tox")
 				if(!locked || issilicon(user))
-					should_treat_brute = !should_treat_tox
+					should_treat_tox = !should_treat_tox
 
 	if(CanAccessMaintenance(user))
 		switch(command)
