@@ -170,7 +170,7 @@
 "dn" = (/obj/item/weapon/material/shard,/obj/item/stack/rods,/turf/simulated/floor/plating/airless,/area/outpost/abandoned)
 "do" = (/turf/simulated/floor/plating/airless,/area/outpost/abandoned)
 "dp" = (/obj/structure/grille,/obj/structure/window/reinforced{dir = 4},/turf/simulated/floor/plating/airless,/area/outpost/abandoned)
-"dq" = (/obj/structure/table/standard,/obj/item/trash/dish/bowl,/turf/simulated/floor/tiled/airless,/area/outpost/abandoned)
+"dq" = (/obj/structure/table/standard,/obj/item/trash/snack_bowl,/turf/simulated/floor/tiled/airless,/area/outpost/abandoned)
 "dr" = (/obj/structure/table/standard,/obj/random/junk,/turf/simulated/floor/tiled/airless,/area/outpost/abandoned)
 "ds" = (/obj/random/closet,/turf/simulated/floor/plating/airless,/area/outpost/abandoned)
 "dt" = (/obj/item/weapon/inflatable_duck,/turf/simulated/floor/plating/airless,/area/outpost/abandoned)

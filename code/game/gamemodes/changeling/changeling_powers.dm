@@ -32,7 +32,6 @@ var/list/datum/absorbed_dna/hivemind_bank = list()
 	var/FLP_last_time_used = 0
 	var/rapidregen_active = FALSE
 	var/is_revive_ready = FALSE
-	var/last_transformation_at = 0
 
 /datum/changeling/New()
 	..()
@@ -194,6 +193,7 @@ var/list/datum/absorbed_dna/hivemind_bank = list()
 	//This isn't strictly necessary but just to be safe...
 	add_language("Changeling")
 	return
+
 
 //Speeds up chemical regeneration
 /mob/proc/changeling_fastchemical()

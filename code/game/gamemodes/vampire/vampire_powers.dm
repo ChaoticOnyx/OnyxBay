@@ -9,8 +9,8 @@
 	set category = "Vampire"
 	set name = "Victim Alertness"
 	set desc = "Toggle whether you wish for your victims to get paralyzed and forget your deeds."
-	var/power_use_cost = 0
-	var/datum/vampire/vampire = vampire_power(power_use_cost, 0)
+
+	var/datum/vampire/vampire = vampire_power(0, 0)
 	vampire.stealth = !vampire.stealth
 	if(vampire.stealth)
 		to_chat(src, SPAN_NOTICE("Your victims will now forget your interactions, and get paralyzed when you do them."))
@@ -22,8 +22,8 @@
 	set category = "Vampire"
 	set name = "Drain Blood"
 	set desc = "Drain the blood of a humanoid creature."
-	var/power_use_cost = 0
-	var/datum/vampire/vampire = vampire_power(power_use_cost, 0)
+
+	var/datum/vampire/vampire = vampire_power(0, 0)
 	if (!vampire)
 		return
 
@@ -74,7 +74,7 @@
 		remembrance = "remembered"
 	admin_attack_log(src, T, "drained blood from [key_name(T)], who [remembrance] the encounter.", "had their blood drained by [key_name(src)] and [remembrance] the encounter.", "is draining blood from")
 
-	to_chat(T, SPAN("warning", FONT_LARGE("You feel yourself falling into a pleasant dream, from which even a smile appeared on your face.")))
+	to_chat(T, SPAN_WARNING("You feel yourself falling into a pleasant dream, from which even a smile appeared on your face."))
 	T.paralysis = 3400
 
 	playsound(src.loc, 'sound/effects/drain_blood.ogg', 50, 1)
@@ -153,9 +153,9 @@
 	if(target_aware)
 		T.paralysis = 0
 		if(T.stat != DEAD && vampire.stealth)
-			to_chat(T, SPAN("warning", FONT_LARGE("You remember nothing about the cause of blacked out. Instead, you simply remember having a pleasant encounter with [src.name]")))
+			to_chat(T, SPAN_WARNING("You remember nothing about the cause of blacked out. Instead, you simply remember having a pleasant encounter with [src.name]"))
 		else if(T.stat != DEAD)
-			to_chat(T, SPAN("warning", FONT_LARGE("You remember everything that happened. Remember how blood was sucked from your neck. It gave you pleasure, like a pleasant dream. You feel great. How you react to [src.name]'s actions is up to you.")))
+			to_chat(T, SPAN_WARNING("You remember everything that happened. Remember how blood was sucked from your neck. It gave you pleasure, like a pleasant dream. You feel great. How you react to [src.name]'s actions is up to you."))
 	verbs -= /mob/living/carbon/human/proc/vampire_drain_blood
 	if(blood_drained <= 85)
 
@@ -173,9 +173,8 @@
 	set category = "Vampire"
 	set name = "Glare"
 	set desc = "Your eyes flash a bright light, stunning any who are watching."
-	var/power_use_cost = 0
 
-	if (!vampire_power(power_use_cost, 1))
+	if (!vampire_power(0, 1))
 		return
 	if (eyecheck() > FLASH_PROTECTION_NONE)
 		to_chat(src, SPAN_WARNING("You can't do that, because no one will see the light of your eyes!"))
@@ -208,9 +207,8 @@
 	set category = "Vampire"
 	set name = "Hypnotise (10)"
 	set desc = "Through blood magic, you dominate the victim's mind and force them into a hypnotic transe."
-	var/power_use_cost = 10
 
-	var/datum/vampire/vampire = vampire_power(power_use_cost, 1)
+	var/datum/vampire/vampire = vampire_power(10, 1)
 	if (!vampire)
 		return
 
@@ -243,7 +241,7 @@
 		T.Stun(25)
 		T.silent += 30
 
-		vampire.use_blood(power_use_cost)
+		vampire.use_blood(10)
 		admin_attack_log(src, T, "used hypnotise to stun [key_name(T)]", "was stunned by [key_name(src)] using hypnotise", "used hypnotise on")
 
 		verbs -= /mob/living/carbon/human/proc/vampire_hypnotise
@@ -256,13 +254,12 @@
 	set category = null
 	set name = "Veil Step (20)"
 	set desc = "For a moment, move through the Veil and emerge at a shadow of your choice."
-	var/power_use_cost = 20
 
 	if (!T || T.density || T.contains_dense_objects())
 		to_chat(src, SPAN_WARNING("You cannot do that."))
 		return
 
-	var/datum/vampire/vampire = vampire_power(power_use_cost, 1)
+	var/datum/vampire/vampire = vampire_power(20, 1)
 	if (!vampire)
 		return
 	if (!istype(loc, /turf))
@@ -290,7 +287,7 @@
 
 	log_and_message_admins("activated veil step.")
 
-	vampire.use_blood(power_use_cost)
+	vampire.use_blood(20)
 	verbs -= /mob/living/carbon/human/proc/vampire_veilstep
 	ADD_VERB_IN_IF(src, 300, /mob/living/carbon/human/proc/vampire_veilstep, CALLBACK(src, .proc/finish_vamp_timeout))
 
@@ -299,9 +296,8 @@
 	set category = "Vampire"
 	set name = "Summon Bats (60)"
 	set desc = "You tear open the Veil for just a moment, in order to summon a pair of bats to assist you in combat."
-	var/power_use_cost = 60
 
-	var/datum/vampire/vampire = vampire_power(power_use_cost, 0)
+	var/datum/vampire/vampire = vampire_power(60, 0)
 	if (!vampire)
 		return
 
@@ -337,18 +333,17 @@
 
 	log_and_message_admins("summoned bats.")
 
-	vampire.use_blood(power_use_cost)
+	vampire.use_blood(60)
 	verbs -= /mob/living/carbon/human/proc/vampire_bats
 	ADD_VERB_IN_IF(src, 1200, /mob/living/carbon/human/proc/vampire_bats, CALLBACK(src, .proc/finish_vamp_timeout))
 
 // Chiropteran Screech
 /mob/living/carbon/human/proc/vampire_screech()
 	set category = "Vampire"
-	set name = "Chiropteran Screech (70)"
+	set name = "Chiropteran Screech (90)"
 	set desc = "Emit a powerful screech which shatters glass within a seven-tile radius, and stuns hearers in a four-tile radius."
-	var/power_use_cost = 70
 
-	var/datum/vampire/vampire = vampire_power(power_use_cost, 0)
+	var/datum/vampire/vampire = vampire_power(90, 0)
 	if (!vampire)
 		return
 
@@ -379,7 +374,7 @@
 		L.broken()
 
 	playsound(src.loc, 'sound/effects/creepyshriek.ogg', 100, 1)
-	vampire.use_blood(power_use_cost)
+	vampire.use_blood(90)
 
 	if (victims.len)
 		admin_attacker_log_many_victims(src, victims, "used chriopteran screech to stun", "was stunned by [key_name(src)] using chriopteran screech", "used chiropteran screech to stun")
@@ -394,7 +389,6 @@
 	set category = "Vampire"
 	set name = "Toggle Veil Walking (80)"
 	set desc = "You enter the veil, leaving only an incorporeal manifestation of you visible to the others."
-	var/power_use_cost = 80
 
 	var/datum/vampire/vampire = vampire_power(0, 0, 1)
 	if (!vampire)
@@ -403,7 +397,7 @@
 	if (vampire.holder)
 		vampire.holder.deactivate()
 	else
-		vampire = vampire_power(power_use_cost, 0, 1)
+		vampire = vampire_power(80, 0, 1)
 		if (!vampire)
 			return
 
@@ -412,7 +406,7 @@
 
 		log_and_message_admins("activated veil walk.")
 
-		vampire.use_blood(power_use_cost)
+		vampire.use_blood(80)
 
 // Veilwalk's dummy holder
 /obj/effect/dummy/veil_walk
@@ -421,7 +415,6 @@
 	icon = 'icons/mob/mob.dmi'
 	icon_state = "blank"
 	density = FALSE
-	var/power_use_cost = 5
 
 	var/last_valid_turf = null
 	var/can_move = TRUE
@@ -470,7 +463,7 @@
 			return
 
 	if (owner_vampire.blood_usable >= 5)
-		owner_vampire.use_blood(power_use_cost)
+		owner_vampire.use_blood(5)
 
 		switch (warning_level)
 			if (0)
@@ -674,9 +667,8 @@
 	set category = "Vampire"
 	set name = "Dominate (50)"
 	set desc = "Dominate the mind of a victim, make them obey your will."
-	var/power_use_cost = 50
 
-	var/datum/vampire/vampire = vampire_power(power_use_cost, 0)
+	var/datum/vampire/vampire = vampire_power(25, 0)
 	if (!vampire)
 		return
 
@@ -722,18 +714,17 @@
 	to_chat(src, SPAN_NOTICE("You command [T], and they will obey."))
 	emote("me", 1, "whispers.")
 
-	vampire.use_blood(power_use_cost)
+	vampire.use_blood(50)
 	verbs -= /mob/living/carbon/human/proc/vampire_dominate
 	ADD_VERB_IN_IF(src, 1800, /mob/living/carbon/human/proc/vampire_dominate, CALLBACK(src, .proc/finish_vamp_timeout))
 
 // Enthralls a person, giving the vampire a mortal slave.
 /mob/living/carbon/human/proc/vampire_enthrall()
 	set category = "Vampire"
-	set name = "Enthrall (120)"
+	set name = "Enthrall (150)"
 	set desc = "Bind a mortal soul with a bloodbond to obey your every command."
-	var/power_use_cost = 120
 
-	var/datum/vampire/vampire = vampire_power(power_use_cost, 0)
+	var/datum/vampire/vampire = vampire_power(150, 0)
 	if (!vampire)
 		return
 
@@ -777,18 +768,17 @@
 	to_chat(src, SPAN_NOTICE("You have completed the thralling process. They are now your slave and will obey your commands."))
 	admin_attack_log(src, T, "enthralled [key_name(T)]", "was enthralled by [key_name(src)]", "successfully enthralled")
 
-	vampire.use_blood(power_use_cost)
+	vampire.use_blood(150)
 	verbs -= /mob/living/carbon/human/proc/vampire_enthrall
 	ADD_VERB_IN_IF(src, 2800, /mob/living/carbon/human/proc/vampire_enthrall, CALLBACK(src, .proc/finish_vamp_timeout))
 
 // Makes the vampire appear 'friendlier' to others.
 /mob/living/carbon/human/proc/vampire_presence()
 	set category = "Vampire"
-	set name = "Presence (5)"
+	set name = "Presence (10)"
 	set desc = "Influences those weak of mind to look at you in a friendlier light."
-	var/power_use_cost = 5
 
-	var/datum/vampire/vampire = vampire_power(power_use_cost, 0)
+	var/datum/vampire/vampire = vampire_power(0, 0)
 	if (!vampire)
 		return
 
@@ -796,8 +786,8 @@
 		vampire.status &= ~VAMP_PRESENCE
 		to_chat(src, SPAN_WARNING("You are no longer influencing those weak of mind."))
 		return
-	else if (vampire.blood_usable < 10)
-		to_chat(src, SPAN_WARNING("You do not have enough usable blood. 10 needed."))
+	else if (vampire.blood_usable < 15)
+		to_chat(src, SPAN_WARNING("You do not have enough usable blood. 15 needed."))
 		return
 
 	to_chat(src, SPAN_NOTICE("You begin passively influencing the weak minded."))
@@ -810,7 +800,7 @@
 							"[src] has your best interests at heart, you can feel it.",
 							"A quiet voice tells you that [src] should be considered a friend.")
 
-	vampire.use_blood(power_use_cost)
+	vampire.use_blood(10)
 
 	log_and_message_admins("activated presence.")
 
@@ -839,7 +829,7 @@
 			if (prob(probability))
 				to_chat(T, "<font color='green'><i>[pick(emotes)]</i></font>")
 
-		vampire.use_blood(power_use_cost)
+		vampire.use_blood(5)
 
 		if (vampire.blood_usable < 5)
 			vampire.status &= ~VAMP_PRESENCE
@@ -848,11 +838,10 @@
 
 /mob/living/carbon/human/proc/vampire_touch_of_life()
 	set category = "Vampire"
-	set name = "Touch of Life (30)"
+	set name = "Touch of Life (50)"
 	set desc = "You lay your hands on the target, transferring healing chemicals to them."
-	var/power_use_cost = 30
 
-	var/datum/vampire/vampire = vampire_power(power_use_cost, 0)
+	var/datum/vampire/vampire = vampire_power(50, 0)
 	if (!vampire)
 		return
 
@@ -868,7 +857,7 @@
 
 	visible_message("<b>[src]</b> gently touches [T].")
 	to_chat(T, SPAN_NOTICE("You feel pure bliss as [src] touches you."))
-	vampire.use_blood(power_use_cost)
+	vampire.use_blood(50)
 
 	T.reagents.add_reagent(/datum/reagent/rezadone, 3)
 	T.reagents.add_reagent(/datum/reagent/tramadol/oxycodone, 0.15) //enough to get back onto their feet
@@ -878,9 +867,8 @@
 	set category = "Vampire"
 	set name = "The Embrace"
 	set desc = "Spread your corruption to an innocent soul, turning them into a spawn of the Veil, much akin to yourself."
-	var/power_use_cost = 0
 
-	var/datum/vampire/vampire = vampire_power(power_use_cost, 0)
+	var/datum/vampire/vampire = vampire_power(0, 0)
 	if (!vampire)
 		return
 
@@ -1025,21 +1013,3 @@
 
 	verbs -= /mob/living/carbon/human/proc/grapple
 	ADD_VERB_IN_IF(src, 800, /mob/living/carbon/human/proc/grapple, CALLBACK(src, .proc/finish_vamp_timeout, VAMP_FRENZIED))
-
-/mob/living/carbon/human/proc/night_vision()
-	set category = "Vampire"
-	set name = "Toggle Darkvision"
-	set desc = "You're are able to see in the dark."
-	var/power_use_cost = 0
-
-	var/datum/vampire/vampire = vampire_power(power_use_cost, 0)
-	if (!vampire)
-		return
-
-	var/mob/living/carbon/C = src
-	C.seeDarkness = !C.seeDarkness
-	if(C.seeDarkness)
-		to_chat(C, SPAN("notice", "You're no longer need light to see."))
-	else
-		to_chat(C, SPAN("notice", "You're allow the shadows to return."))
-	return TRUE

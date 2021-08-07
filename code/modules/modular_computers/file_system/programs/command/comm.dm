@@ -176,6 +176,9 @@
 					var/input = sanitize(input("Please choose a message to transmit to [GLOB.using_map.boss_short] via quantum entanglement.  Please be aware that this process is very expensive, and abuse will lead to... termination.  Transmission does not guarantee a response. There is a 30 second delay before you may send another message, be clear, full and concise.", "To abort, send an empty message.", "") as message|null)
 					if(!input || !can_still_topic())
 						return 1
+					// TOOD: spellcheck
+					// if(usr.client?.get_preference_value(/datum/client_preference/spell_checking) == GLOB.PREF_YES && usr.client.chatOutput)
+					//	usr.client.chatOutput.spell_check(input)
 					Centcomm_announce(input, usr)
 					to_chat(usr, SPAN("notice", "Message transmitted."))
 					log_say("[key_name(usr)] has made an IA [GLOB.using_map.boss_short] announcement: [input]")

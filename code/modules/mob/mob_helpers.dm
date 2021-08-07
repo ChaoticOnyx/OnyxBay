@@ -316,9 +316,6 @@ It's fairly easy to fix if dealing with single letters but not so much with comp
 
 		var/x
 		for(x=0; x<duration, x++)
-			if(!M.client)
-				return
-
 			if(aiEyeFlag)
 				M.client.eye = locate(dd_range(1,oldeye.loc.x+rand(-strength,strength),world.maxx),dd_range(1,oldeye.loc.y+rand(-strength,strength),world.maxy),oldeye.loc.z)
 			else
@@ -435,7 +432,18 @@ var/list/intents = list(I_HELP,I_DISARM,I_GRAB,I_HURT)
 			C = M.original.client
 
 	if(C)
-		var/name = key_name(C)
+		var/name
+		if(C.mob)
+			var/mob/M = C.mob
+			if(M.mind && M.mind.name)
+				name = M.mind.name
+			if(M.real_name && M.real_name != name)
+				if(name)
+					name += " ([M.real_name])"
+				else
+					name = M.real_name
+		if(!name)
+			name = C.key
 		var/diedat = ""
 		if(C.mob.lastarea)
 			diedat = " at [C.mob.lastarea]"

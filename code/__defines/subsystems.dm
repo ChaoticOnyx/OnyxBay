@@ -48,8 +48,8 @@
 #define SS_INIT_BAY_LEGACY      -12
 #define SS_INIT_STORYTELLER     -15
 #define SS_INIT_TICKER          -20
-#define SS_INIT_EXPLOSIONS      -69
-#define SS_INIT_ORDER_CHAT 		-100 // Should be last to ensure chat remains smooth during init.
+#define SS_INIT_UNIT_TESTS      -100
+#define SS_INIT_ORDER_CHAT 		-200 // Should be last to ensure chat remains smooth during init.
 
 // SS runlevels
 
@@ -58,10 +58,5 @@
 #define RUNLEVEL_SETUP 2
 #define RUNLEVEL_GAME 4
 #define RUNLEVEL_POSTGAME 8
-
-// Explosion Subsystem subtasks
-#define SSEXPLOSIONS_MOVABLES 1
-#define SSEXPLOSIONS_TURFS    2
-#define SSEXPLOSIONS_THROWS   3
 
 #define RUNLEVELS_DEFAULT (RUNLEVEL_SETUP | RUNLEVEL_GAME | RUNLEVEL_POSTGAME)

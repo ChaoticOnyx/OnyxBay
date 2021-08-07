@@ -97,12 +97,14 @@
 					"<span class='notice'>I caress [target] with my scythe-like arm.</span>")
 
 /datum/species/xenos/handle_post_spawn(mob/living/carbon/human/H)
+	if(H.mind)
+		GLOB.xenomorphs.add_antagonist(H.mind, 1)
+
 	alien_number++ //Keep track of how many aliens we've had so far.
 	H.real_name = get_random_name()
 	H.SetName(H.real_name)
+
 	..()
-	if(H.mind && !GLOB.xenomorphs.is_antagonist(H.mind))
-		GLOB.xenomorphs.add_antagonist(H.mind, 1)
 
 /datum/species/xenos/get_random_name()
 	return "alien [caste_name] ([rand(100,999)])"

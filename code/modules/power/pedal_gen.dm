@@ -101,7 +101,7 @@
 	if(!ishuman(user))
 		unbuckle_mob()
 	var/mob/living/carbon/human/pedaler = user
-	if(istype(pedaler) && !pedaler.handcuffed)
+	if(!pedaler.handcuffed)
 		unbuckle_mob()
 	else
 		if(!pedaled)

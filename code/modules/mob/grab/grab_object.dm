@@ -96,33 +96,25 @@
 		if(!QDELETED(src))
 			qdel(src)
 
-/obj/item/grab/proc/is_eligible()
+/obj/item/grab/proc/can_grab()
+
 	// can't grab non-carbon/human/'s
 	if(!istype(affecting))
-		return FALSE
+		return 0
 
 	if(assailant.anchored || affecting.anchored)
-		return FALSE
+		return 0
 
 	if(!assailant.Adjacent(affecting))
-		return FALSE
-
-	if(assailant.buckled || affecting.buckled)
-		return FALSE
-
-	return TRUE
-
-/obj/item/grab/proc/can_grab()
-	if(!is_eligible())
-		return FALSE
+		return 0
 
 	for(var/obj/item/grab/G in affecting.grabbed_by)
 		if(G.assailant == assailant && G.target_zone == target_zone)
 			var/obj/O = G.get_targeted_organ()
 			to_chat(assailant, "<span class='notice'>You already grabbed [affecting]'s [O.name].</span>")
-			return FALSE
+			return 0
 
-	return TRUE
+	return 1
 
 // This is for all the sorts of things that need to be checked for pretty much every
 // grab made. Feel free to override it but it stops a lot of situations that could

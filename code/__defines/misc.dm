@@ -24,9 +24,6 @@
 
 #define SEE_IN_DARK_DEFAULT 2
 
-//for obj explosion block calculation
-#define EXPLOSION_BLOCK_PROC -1
-
 #define SEE_INVISIBLE_MINIMUM 5
 #define INVISIBILITY_MAXIMUM 100
 
@@ -96,7 +93,7 @@
 #define CUSTOM_ITEM_OBJ 'icons/obj/custom_items_obj.dmi'
 #define CUSTOM_ITEM_MOB null
 #define CUSTOM_ITEM_ROBOTS 'icons/mob/robots_custom.dmi'
-#define CUSTOM_ITEM_AI 'icons/mob/ai_custom/ai_cores.dmi'
+#define CUSTOM_ITEM_AI null
 #define CUSTOM_ITEM_AI_HOLO 'icons/mob/ai_custom/ai_holos.dmi'
 
 #define WALL_CAN_OPEN 1

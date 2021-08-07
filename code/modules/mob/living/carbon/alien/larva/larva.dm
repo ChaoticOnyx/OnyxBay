@@ -50,18 +50,10 @@
 		return
 
 	ckey = user.ckey
-
-	if(mind && !GLOB.xenomorphs.is_antagonist(mind))
-		GLOB.xenomorphs.add_antagonist(mind, 1)
-
+	GLOB.xenomorphs.add_antagonist(mind, 1)
 	spawn(-1)
 		if(user)
 			qdel(user) // Remove the keyless ghost if it exists.
-
-/mob/living/carbon/alien/larva/Login()
-	. = ..()
-	if(mind && !GLOB.xenomorphs.is_antagonist(mind))
-		GLOB.xenomorphs.add_antagonist(mind, 1)
 
 /mob/living/carbon/alien/larva/proc/larva_announce_to_ghosts()
 	for(var/mob/observer/ghost/O in GLOB.ghost_mob_list)

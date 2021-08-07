@@ -6,7 +6,6 @@ var/list/gamemode_cache = list()
 	var/server_suffix = 0					// generate numeric suffix based on server port
 	var/subserver_name = null               // subserver name in window title, ignored if null
 
-	var/log_story = 0						// Story logging, say, emote, ooc and etc without personal data.
 	var/log_ooc = 0							// Log OOC channel
 	var/log_access = 0						// Log login/logout
 	var/log_say = 0							// Log client say
@@ -411,9 +410,6 @@ var/list/gamemode_cache = list()
 
 				if ("use_recursive_explosions")
 					use_recursive_explosions = 1
-
-				if("log_story")
-					config.log_story = TRUE
 
 				if ("log_ooc")
 					config.log_ooc = 1

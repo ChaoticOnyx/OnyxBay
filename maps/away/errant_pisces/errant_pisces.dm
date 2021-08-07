@@ -1,5 +1,21 @@
 #include "errant_pisces_areas.dm"
 
+/obj/effect/overmap/ship/errant_pisces
+	name = "XCV Ahab's Harpoon"
+	desc = "Sensors detect civilian vessel with unusual signs of life aboard."
+	color = "#bd6100"
+	vessel_mass = 150
+	default_delay = 20 SECONDS
+	speed_mod = 10 SECONDS
+	burn_delay = 15 SECONDS
+
+/datum/map_template/ruin/away_site/errant_pisces
+	name = "Errant Pisces"
+	id = "awaysite_errant_pisces"
+	description = "Xynergy carp trawler"
+	suffixes = list("errant_pisces/errant_pisces.dmm")
+	cost = 1
+
 /mob/living/simple_animal/hostile/carp/shark // generally stronger version of a carp that doesn't die from a mean look. Fance new sprites included, credits to F-Tang Steve
 	name = "cosmoshark"
 	desc = "Enormous creature that resembles a shark with magenta glowing lines along its body and set of long deep-purple teeth."

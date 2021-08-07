@@ -40,7 +40,6 @@
 	spawn(10)
 		src.verbs += /mob/proc/changeling_transform
 
-	changeling.last_transformation_at = world.time
 	changeling_update_languages(changeling.absorbed_languages)
 
 	feedback_add_details("changeling_powers","TR")
@@ -58,12 +57,6 @@
 		var/newSpecies = chosen_dna.speciesName
 		H.modifiers = chosen_dna.modifiers
 		H.flavor_texts = chosen_dna.flavor_texts
-		var/datum/species/newS_dat = all_species[newSpecies]
-		if(H.mob_size != newS_dat.mob_size)
-			for (var/obj/item/underwear/U in H.worn_underwear)
-				H.worn_underwear -= U
-				H.drop_from_inventory(U)
-			H.update_underwear()
 		H.set_species(newSpecies,1)
 		H.b_type = chosen_dna.dna.b_type
 		H.sync_organ_dna()

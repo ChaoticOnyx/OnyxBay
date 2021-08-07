@@ -13,9 +13,6 @@
 	var/simulated = 1 //filter for actions - used by lighting overlays
 	var/fluorescent // Shows up under a UV light.
 
-	///Value used to increment ex_act() if reactionary_explosions is on
-	var/explosion_block = 0
-
 	///Proximity monitor associated with this atom
 	var/datum/proximity_monitor/proximity_monitor
 

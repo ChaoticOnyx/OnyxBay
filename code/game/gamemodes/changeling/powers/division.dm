@@ -67,11 +67,10 @@
 	changeling.geneticpoints -= 2
 
 	changeling.isabsorbing = FALSE
-	var/datum/mind/M = T.mind
-	var/datum/antagonist/changeling/CH = GLOB.all_antag_types_[MODE_CHANGELING]
-	CH.add_antagonist(M, ignore_role = TRUE, do_not_equip = TRUE)
+	var/datum/antagonist/changeling/a = new
+	a.create_antagonist(T.mind)
 
-	M.changeling.geneticpoints = 7
-	M.changeling.chem_charges = 40
+	T.mind.changeling.geneticpoints = 7
+	T.mind.changeling.chem_charges = 40
 
 	T.death(0)

@@ -9,6 +9,9 @@
 	#include "exodus_shuttles.dm"
 	#include "exodus_jobs.dm"
 
+	#include "exodus_unit_testing.dm"
+	#include "exodus_zas_tests.dm"
+
 	#include "../shared/exodus_torch/_include.dm"
 
 	#include "dynamic/null-1.dmm"

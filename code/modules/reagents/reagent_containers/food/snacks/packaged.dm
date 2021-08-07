@@ -182,22 +182,6 @@
 	bitesize = 5
 
 
-/obj/item/weapon/reagent_containers/food/snacks/packaged/hemptogen
-	name = "Hemp-2-Gen"
-	desc = "It's made of cannabis. It sends you high. That's the medicine we truly deserve."
-	icon_state = "hemp2gen"
-	trash = /obj/item/trash/hemptogen
-	filling_color = "#7d5f46"
-	nutriment_amt = 2
-	nutriment_desc = list("candy" = 1, "hemp" = 1)
-
-/obj/item/weapon/reagent_containers/food/snacks/packaged/hemptogen/Initialize()
-	. = ..()
-	reagents.add_reagent(/datum/reagent/sugar, 3)
-	reagents.add_reagent(/datum/reagent/thc, 10)
-	bitesize = 5
-
-
 /obj/item/weapon/reagent_containers/food/snacks/packaged/tastybread
 	name = "bread tube"
 	desc = "Bread in a tube. Chewy...and surprisingly tasty."

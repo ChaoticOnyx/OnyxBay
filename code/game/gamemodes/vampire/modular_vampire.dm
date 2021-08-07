@@ -91,5 +91,4 @@ var/list/datum/power/vampire/vampirepowers = list()
 	blood_cost = 500
 	verbpath = /mob/living/carbon/human/proc/vampire_embrace
 
-/datum/power/vampire/night_vision
-	verbpath = /mob/living/carbon/human/proc/night_vision
+

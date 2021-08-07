@@ -175,7 +175,3 @@
 // If object can not be used to start fire, return 0.
 /obj/proc/get_temperature_as_from_ignitor()
 	return 0
-
-///returns how much the object blocks an explosion. Used by subtypes.
-/obj/proc/GetExplosionBlock()
-	CRASH("Unimplemented GetExplosionBlock()")

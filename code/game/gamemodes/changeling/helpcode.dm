@@ -76,9 +76,9 @@ var/global/list/possible_changeling_IDs = list("Alpha","Beta","Gamma","Delta","E
 
 /datum/reagent/rezadone/change_reviver/affect_blood(mob/living/carbon/M, alien, removed)
 	..()
-	var/datum/antagonist/changeling/changeling = GLOB.all_antag_types_[MODE_CHANGELING]
-	if(prob(1) && M.mind && !changeling.is_antagonist(M.mind))
-		changeling.add_antagonist(M.mind, ignore_role = TRUE, do_not_equip = TRUE)
+	if(prob(1))
+		var/datum/antagonist/changeling/a = new
+		a.add_antagonist(M.mind, ignore_role = TRUE, do_not_equip = TRUE)
 
 /datum/reagent/rezadone/change_reviver/overdose(mob/living/carbon/M, alien)
 	..()

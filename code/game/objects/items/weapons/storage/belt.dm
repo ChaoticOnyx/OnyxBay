@@ -85,15 +85,6 @@
 	new /obj/item/weapon/wirecutters(src)
 	new /obj/item/device/t_scanner(src)
 
-/obj/item/weapon/storage/belt/utility/chief/New()
-	..()
-	new /obj/item/weapon/screwdriver/old(src)
-	new /obj/item/weapon/wrench/old(src)
-	new /obj/item/weapon/weldingtool/old(src)
-	new /obj/item/weapon/crowbar/brace_jack(src)
-	new /obj/item/weapon/wirecutters/old(src)
-	new /obj/item/device/t_scanner(src)
-	new /obj/item/stack/cable_coil(src, 30, "red")
 
 
 /obj/item/weapon/storage/belt/medical
@@ -262,7 +253,7 @@
 		/obj/item/weapon/storage/pill_bottle,
 		/obj/item/weapon/ore,
 		/obj/item/weapon/reagent_containers/food/drinks,
-		/obj/item/weapon/storage/plants
+		/obj/item/weapon/storage/plants,
 		)
 
 /obj/item/weapon/storage/belt/military

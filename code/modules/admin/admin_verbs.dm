@@ -8,7 +8,6 @@ var/list/admin_verbs_default = list(
 	/client/proc/hide_most_verbs,		//hides all our hideable adminverbs,
 	/client/proc/debug_variables,		//allows us to -see- the variables of any instance in the game. +VAREDIT needed to modify,
 	/client/proc/debug_global_variables,//as above but for global variables,
-	/client/proc/debug_glob_variables,
 //	/client/proc/check_antagonists,		//shows all antags,
 	/client/proc/cmd_mentor_check_new_players,
 	/client/proc/checkAccount
@@ -203,6 +202,9 @@ var/list/admin_verbs_debug = list(
 	/client/proc/apply_random_map,
 	/client/proc/overlay_random_map,
 	/client/proc/delete_random_map,
+	/datum/admins/proc/map_template_load,
+	/datum/admins/proc/map_template_load_new_z,
+	/datum/admins/proc/map_template_upload,
 	/client/proc/enable_debug_verbs,
 	/client/proc/callproc,
 	/client/proc/callproc_target,
@@ -212,6 +214,7 @@ var/list/admin_verbs_debug = list(
 	/client/proc/jumptomob_verb,
 	/client/proc/jumptocoord,
 	/client/proc/dsay,
+	/datum/admins/proc/run_unit_test,
 	/turf/proc/view_chunk,
 	/turf/proc/update_chunk,
 	/datum/admins/proc/capture_map,
@@ -316,8 +319,7 @@ var/list/admin_verbs_hideable = list(
 	/client/proc/toggle_possess_mode,
 	/client/proc/enable_profiler,
 	/client/proc/bluespace_tech,
-	/client/proc/delbook,
-	/client/proc/debug_glob_variables
+	/client/proc/delbook
 	)
 
 var/list/admin_verbs_mod = list(

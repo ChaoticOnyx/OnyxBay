@@ -13,13 +13,14 @@
 	mod_reach = 0.75
 	mod_handy = 1.0
 
-/obj/item/weapon/nullrod/attack(mob/M, mob/living/user)
+/obj/item/weapon/nullrod/attack(mob/M as mob, mob/living/user as mob) //Paste from old-code to decult with a null rod.
 	admin_attack_log(user, M, "Attacked using \a [src]", "Was attacked with \a [src]", "used \a [src] to attack")
 
 	user.setClickCooldown(DEFAULT_ATTACK_COOLDOWN)
 	user.do_attack_animation(M)
+	//if(user != M)
 	if(M.mind && LAZYLEN(M.mind.learned_spells))
-		M.silence_spells(30 SECONDS)
+		M.silence_spells(300) //30 seconds
 		to_chat(M, SPAN_DANGER("You've been silenced!"))
 		return
 
@@ -46,16 +47,13 @@
 
 	if(istype(A, /turf/simulated/wall/cult))
 		var/turf/simulated/wall/cult/W = A
-		user.visible_message(SPAN("notice", "\The [user] touches \the [A] with \the [src], and the enchantment affecting it fizzles away."))
-		W.decultify_wall()
+		user.visible_message("<span class='notice'>\The [user] touches \the [A] with \the [src], and the enchantment affecting it fizzles away.</span>", "<span class='notice'>You touch \the [A] with \the [src], and the enchantment affecting it fizzles away.</span>")
+		W.ChangeTurf(/turf/simulated/wall)
 
 	if(istype(A, /turf/simulated/floor/misc/cult))
 		var/turf/simulated/floor/misc/cult/F = A
-		user.visible_message(SPAN("notice", "\The [user] touches \the [A] with \the [src], and the enchantment affecting it fizzles away."))
-		F.decultify_floor()
-		playsound(F, 'sound/effects/fighting/Genhit.ogg', 25, 1)
-
-
+		user.visible_message("<span class='notice'>\The [user] touches \the [A] with \the [src], and the enchantment affecting it fizzles away.</span>", "<span class='notice'>You touch \the [A] with \the [src], and the enchantment affecting it fizzles away.</span>")
+		F.ChangeTurf(/turf/simulated/floor)
 
 
 /obj/item/weapon/energy_net

@@ -216,9 +216,6 @@ GLOBAL_LIST_EMPTY(common_report)
 	log_roundend(GLOB.common_report)
 
 /datum/controller/subsystem/ticker/proc/give_show_report_button(client/C)
-	if(!istype(C.mob, /mob/living))
-		return
-
 	var/datum/action/report/R = new
 	R.Grant(C.mob)
 	to_chat(C,"<a href='?src=\ref[R];report=1'>Show roundend report again</a>")

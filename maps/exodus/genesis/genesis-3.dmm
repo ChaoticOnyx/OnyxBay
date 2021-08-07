@@ -2075,7 +2075,7 @@
 "NU" = (/obj/item/robot_parts/l_leg,/turf/simulated/floor/plating,/area/skipjack_station/start)
 "NV" = (/obj/machinery/vending/robotics,/turf/unsimulated/floor{icon_state = "plating"; name = "plating"},/area/acting/backstage)
 "NW" = (/obj/machinery/atmospherics/pipe/vent,/turf/unsimulated/floor{icon_state = "bcircuit"},/area/tdome)
-"NX" = (/obj/machinery/camera/network/thunder{c_tag = "Thunderdome Arena"; invisibility = 101},/turf/unsimulated/floor{icon_state = "bcircuit"},/area/tdome)
+"NX" = (/obj/machinery/camera/network/thunder{c_tag = "Thunderdome Arena"; invisibility = 101},/obj/effect/landmark/test/safe_turf,/turf/unsimulated/floor{icon_state = "bcircuit"},/area/tdome)
 "NY" = (/obj/machinery/atmospherics/pipe/simple/visible,/obj/machinery/portable_atmospherics/hydroponics,/turf/simulated/floor/plating,/area/skipjack_station/start)
 "NZ" = (/obj/machinery/floodlight,/turf/simulated/floor/plating,/area/skipjack_station/start)
 "Oa" = (/obj/structure/table/rack,/obj/item/weapon/gun/launcher/crossbow,/obj/item/stack/rods{amount = 10},/obj/machinery/light/small{dir = 8},/obj/item/weapon/beartrap,/obj/item/weapon/beartrap,/obj/item/weapon/beartrap,/obj/item/weapon/beartrap,/obj/item/weapon/beartrap,/obj/item/weapon/beartrap,/turf/simulated/floor/shuttle/red,/area/skipjack_station/start)

@@ -6,9 +6,10 @@
 
 	// Get the mob.
 	if((flags & ANTAG_OVERRIDE_MOB) && (!player.current || (mob_path && !istype(player.current, mob_path))))
-		var/mob/previous_mob = player.current
-		player.transfer_to(new mob_path(get_turf(previous_mob)))
-		if(previous_mob) qdel(previous_mob)
+		var/mob/holder = player.current
+		player.current = new mob_path(get_turf(player.current))
+		player.transfer_to(player.current)
+		if(holder) qdel(holder)
 	player.original = player.current
 	if(!preserve_appearance && (flags & ANTAG_SET_APPEARANCE))
 		spawn(3)

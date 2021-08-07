@@ -2,7 +2,7 @@
 	SSnano.user_logout(src) // this is used to clean up (remove) this user's Nano UIs
 	SStgui && SStgui.on_logout(src)
 	GLOB.player_list -= src
-	log_access("Logout: [key_name(src, include_name = FALSE)]")
+	log_access("Logout: [key_name(src)]")
 	handle_admin_logout()
 	if(my_client)
 		my_client.screen -= l_general

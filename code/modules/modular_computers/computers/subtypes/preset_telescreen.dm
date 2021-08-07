@@ -18,6 +18,7 @@
 	..()
 	hard_drive.store_file(new /datum/computer_file/program/chatclient())
 	hard_drive.store_file(new /datum/computer_file/program/nttransfer())
+	hard_drive.store_file(new /datum/computer_file/program/newsbrowser())
 	hard_drive.store_file(new /datum/computer_file/program/camera_monitor())
 	hard_drive.store_file(new /datum/computer_file/program/email_client())
 	hard_drive.store_file(new /datum/computer_file/program/supply())

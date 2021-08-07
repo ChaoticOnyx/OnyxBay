@@ -493,11 +493,6 @@
 	return 0
 
 /mob/living/silicon/robot/bullet_act(obj/item/projectile/Proj)
-	var/obj/item/weapon/melee/energy/sword/robot/E = locate() in list(module_state_1, module_state_2, module_state_3)
-	var/shield_handled = E?.handle_shield(src, Proj.damage, Proj)
-	if(shield_handled)
-		return shield_handled
-
 	..(Proj)
 	if(prob(75) && Proj.damage > 0) spark_system.start()
 	return 2
@@ -796,7 +791,7 @@
 			overlays += eye_overlay
 
 	if(opened)
-		var/panelprefix = (icontype == "Custom") ? src.ckey : "ov"
+		var/panelprefix = custom_sprite ? src.ckey : "ov"
 		if(wiresexposed)
 			overlays += "[panelprefix]-openpanel +w"
 		else if(cell)

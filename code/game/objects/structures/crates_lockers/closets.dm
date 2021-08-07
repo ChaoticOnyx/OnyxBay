@@ -13,7 +13,7 @@
 	var/icon_opened = "open"
 
 	var/icon_locked
-	var/icon_broken = "sparks"
+	var/icon_broken = "spark"
 	var/icon_off
 
 	var/welded = FALSE
@@ -425,22 +425,20 @@
 	else if(istype(W, /obj/item/device/multitool) && (setup & CLOSET_HAS_LOCK))
 		var/obj/item/device/multitool/multi = W
 		if(multi.in_use)
-			to_chat(user, SPAN("warning", "This multitool is already in use!"))
+			to_chat(user, SPAN_WARNING("This multitool is already in use!"))
 			return
 		multi.in_use = 1
-		var/prev_locked = locked
-		for(var/i in 1 to rand(4, 8))
-			user.visible_message(SPAN("warning", "[user] picks in wires of \the [name] with a multitool."),
-								 SPAN("warning", "I am trying to reset circuitry lock module ([i])..."))
-			if(!do_after(user, 200)|| locked != prev_locked || opened || (!istype(src, /obj/structure/closet/crate) && !cdoor))
-				multi.in_use = 0
+		for(var/i in 1 to rand(4,8))
+			user.visible_message(SPAN_WARNING("[user] picks in wires of the [src.name] with a multitool."), SPAN_WARNING("I am trying to reset circuitry lock module ([i])...")
+				)
+			if(!do_after(user,200)||!locked)
+				multi.in_use=0
 				return
-		locked = !locked
-		broken = !locked
-		update_icon()
-		multi.in_use = 0
-		user.visible_message(SPAN("warning", "[user] [locked ? "locks" : "unlocks"] \the [name] with a multitool."),
-							 SPAN("warning", "I [locked ? "enable" : "disable"] the locking modules."))
+		locked = 0
+		broken = 1
+		src.update_icon()
+		multi.in_use=0
+		user.visible_message(SPAN_WARNING("[user] [locked ? "locks" : "unlocks"] [name] with a multitool."), SPAN_WARNING("I [locked ? "enable" : "disable"] the locking modules."))
 	else if(setup & CLOSET_HAS_LOCK)
 		src.togglelock(user, W)
 	else

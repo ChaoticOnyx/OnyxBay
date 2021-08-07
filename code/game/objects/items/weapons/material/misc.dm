@@ -46,7 +46,6 @@
 /obj/item/weapon/material/hatchet/machete
 	name = "machete"
 	desc = "A long, sturdy blade with a rugged handle. Leading the way to cursed treasures since before space travel."
-	icon_state = "machete"
 	item_state = "machete"
 	w_class = ITEM_SIZE_NORMAL
 	slot_flags = SLOT_BELT

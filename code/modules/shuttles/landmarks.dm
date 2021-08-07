@@ -39,8 +39,15 @@
 		docking_controller = locate(docking_tag)
 		if(!istype(docking_controller))
 			log_error("Could not find docking controller for shuttle waypoint '[name]', docking tag was '[docking_tag]'.")
+		if(GLOB.using_map.use_overmap)
+			var/obj/effect/overmap/location = map_sectors["[z]"]
+			if(location && location.docking_codes)
+				docking_controller.docking_codes = location.docking_codes
 
 	SSshuttle.register_landmark(landmark_tag, src)
+
+//Called when the landmark is added to an overmap sector.
+/obj/effect/shuttle_landmark/proc/sector_set(obj/effect/overmap/O)
 
 /obj/effect/shuttle_landmark/proc/is_valid(datum/shuttle/shuttle)
 	if(shuttle.current_location == src)
@@ -72,6 +79,10 @@
 /obj/effect/shuttle_landmark/automatic/Initialize()
 	landmark_tag += "-[x]-[y]-[z]"
 	return ..()
+
+/obj/effect/shuttle_landmark/automatic/sector_set(obj/effect/overmap/O)
+	..()
+	SetName("[O.name] - [name]")
 
 //Subtype that calls explosion on init to clear space for shuttles
 /obj/effect/shuttle_landmark/automatic/clearing

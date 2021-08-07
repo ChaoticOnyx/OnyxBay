@@ -362,7 +362,7 @@
 		//Check if the item is blacklisted.
 		var/grab = 0
 		for(var/typepath in can_hold)
-			if(istype(I,typepath) && !I.anchored)
+			if(istype(I,typepath))
 				grab = 1
 				break
 

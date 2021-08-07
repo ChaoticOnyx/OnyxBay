@@ -60,8 +60,6 @@
 
 #define isstack(A) istype(A, /obj/item/stack)
 
-#define isspaceturf(A) istype(A, /turf/space)
-
 #define isspace(A) istype(A, /area/space)
 
 #define ispAI(A) istype(A, /mob/living/silicon/pai)

@@ -1,7 +1,6 @@
 /turf/space/transit
 	// pushdirection is now dir // push things that get caught in the transit tile this direction
 	var/static/list/phase_shift
-	explosion_block = INFINITY
 
 //Overwrite because we dont want people building rods in space.
 /turf/space/transit/attackby(obj/O as obj, mob/user as mob)

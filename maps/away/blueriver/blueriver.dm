@@ -1,5 +1,26 @@
 //quality code theft
 #include "blueriver_areas.dm"
+/obj/effect/overmap/sector/arcticplanet
+	name = "arctic planetoid"
+	desc = "Sensor array detects an arctic planet with a small vessle on the planet's surface. Scans further indicate strange energy levels below the planet's surface."
+	in_space = 0
+	icon_state = "globe"
+	initial_generic_waypoints = list(
+		"nav_blueriv_1",
+		"nav_blueriv_2",
+		"nav_blueriv_3",
+		"nav_blueriv_antag"
+	)
+
+/obj/effect/overmap/sector/arcticplanet/New(nloc, max_x, max_y)
+	name = "[generate_planet_name()], \a [name]"
+	..()
+
+/datum/map_template/ruin/away_site/blueriver
+ 	name = "Bluespace River"
+ 	id = "awaysite_blue"
+ 	description = "Two z-level map with an arctic planet and an alien underground surface"
+ 	suffixes = list("blueriver/blueriver-1.dmm", "blueriver/blueriver-2.dmm")
 
 //This is ported from /vg/ and isn't entirely functional. If it sees a threat, it moves towards it, and then activates it's animation.
 //At that point while it sees threats, it will remain in it's attack stage. It's a bug, but I figured it nerfs it enough to not be impossible to deal with

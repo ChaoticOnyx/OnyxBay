@@ -432,7 +432,7 @@
 "ip" = (/obj/effect/landmark{name = "bluespacerift"},/turf/simulated/floor/tiled/white,/area/outpost/research/anomaly_analysis)
 "iq" = (/obj/item/weapon/anodevice{pixel_x = 3; pixel_y = 3},/obj/item/weapon/anodevice,/obj/structure/table/steel,/turf/simulated/floor/tiled/white,/area/outpost/research/anomaly_analysis)
 "ir" = (/obj/item/remains/human,/turf/simulated/floor/tiled/airless,/area/outpost/abandoned)
-"is" = (/obj/structure/table/standard,/obj/item/trash/dish/bowl,/turf/simulated/floor/tiled/airless,/area/outpost/abandoned)
+"is" = (/obj/structure/table/standard,/obj/item/trash/snack_bowl,/turf/simulated/floor/tiled/airless,/area/outpost/abandoned)
 "it" = (/turf/simulated/wall,/area/mine/unexplored)
 "iu" = (/obj/structure/sign/warning/internals_required{pixel_x = -32},/turf/simulated/floor/asteroid,/area/mine/explored)
 "iv" = (/obj/machinery/light,/obj/effect/floor_decal/corner/red/diagonal,/turf/simulated/floor/tiled/white,/area/outpost/research/dock)

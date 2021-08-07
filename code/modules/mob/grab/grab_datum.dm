@@ -100,7 +100,7 @@
 	G.force_drop()
 
 /datum/grab/proc/process(obj/item/grab/G)
-	if(!G.is_eligible()) // In case if the grab wants to process, but there's no longer a mob grabbed by this exact grab
+	if(!G.affecting) // In case if the grab wants to process, but there's no longer a mob grabbed by this exact grab
 		let_go(G)
 		return
 	var/diff_zone = G.target_change()

@@ -1081,7 +1081,7 @@ var/global/list/obj/item/device/pda/PDAs = list()
 	var/reception_message = "\icon[src] <b>Message from [sender] ([sender_job]), </b>\"[message]\" (<a href='byond://?src=\ref[src];choice=Message;skiprefresh=1;target=\ref[sending_unit]'>Reply</a>)"
 	new_info(message_silent, ttone, reception_message)
 
-	log_pda("[key_name(usr)] (PDA: [sending_unit]) sent \"[message]\" to [name]")
+	log_pda("[usr] (PDA: [sending_unit]) sent \"[message]\" to [name]")
 	new_message = 1
 	update_icon()
 

@@ -32,7 +32,7 @@
 		//Ban Checking
 		. = CheckBan(ckeytext, computer_id, address)
 		if(.)
-			log_access("Failed Login: [key_name(key)] [MARK_COMPUTER_ID(computer_id)] [address] - Banned [.["reason"]]")
+			log_access("Failed Login: [key] [computer_id] [address] - Banned [.["reason"]]")
 			message_admins("<span class='notice'>Failed Login: [key] id:[computer_id] ip:[address] - Banned [.["reason"]]</span>")
 			key_cache[key] = 0
 			return .

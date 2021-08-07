@@ -14,10 +14,9 @@
 	..()
 	for(dir in list(NORTH,EAST,SOUTH,WEST))
 		table = locate(/obj/machinery/optable, get_step(src, dir))
-		if(!table || table?.computer)
-			continue
-		table.computer = src
-		break
+		if (table)
+			table.computer = src
+			break
 
 /obj/machinery/computer/operating/attack_ai(mob/user)
 	if(stat & (BROKEN|NOPOWER))

@@ -2676,7 +2676,7 @@
 "aZD" = (/obj/machinery/camera/autoname{dir = 8},/obj/machinery/light_switch{pixel_x = 26; pixel_y = 0},/turf/simulated/floor/trim/carpet/red,/area/chapel/main)
 "aZE" = (/obj/machinery/atmospherics/unary/vent_pump/on{dir = 1},/obj/machinery/button/crematorium{pixel_x = 26},/turf/simulated/floor/tiled/dark,/area/chapel/office)
 "aZF" = (/obj/structure/table/woodentable,/turf/simulated/floor/trim/wood/broken2,/area/maintenance/hydro)
-"aZG" = (/obj/structure/table/woodentable,/obj/item/trash/dish/plate,/turf/simulated/floor/plating,/area/maintenance/hydro)
+"aZG" = (/obj/structure/table/woodentable,/obj/item/trash/plate,/turf/simulated/floor/plating,/area/maintenance/hydro)
 "aZH" = (/obj/structure/grille,/obj/structure/window/reinforced{dir = 8},/obj/structure/window/reinforced{dir = 4},/obj/structure/window/reinforced,/obj/machinery/ai_status_display{pixel_y = -32},/obj/machinery/door/firedoor/border_only,/turf/simulated/floor/plating,/area/chapel/main)
 "aZI" = (/obj/machinery/atmospherics/unary/vent_scrubber/on{dir = 4},/turf/simulated/floor/tiled/white,/area/medical/virology)
 "aZJ" = (/obj/machinery/atmospherics/pipe/simple/hidden/supply,/obj/machinery/atmospherics/pipe/manifold/hidden{dir = 4; icon_state = "map"},/obj/machinery/atmospherics/pipe/simple/hidden/scrubbers,/turf/simulated/floor/tiled/white,/area/medical/virology)

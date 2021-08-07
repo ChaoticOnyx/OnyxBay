@@ -183,7 +183,7 @@
 		user.visible_message("<span class='[is_dangerous ? "warning" : "notice"]'>[user] starts stuffing [AM] into [src].</span>", \
 							 "<span class='notice'>You start stuffing [AM] into [src].</span>")
 
-	if(!do_after(user, 2 SECONDS, src, incapacitation_flags = incapacitation_flags))
+	if(!do_after(user, 2 SECONDS, src))
 		return
 
 	// Repeat checks
