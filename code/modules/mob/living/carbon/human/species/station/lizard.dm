@@ -6,13 +6,6 @@
 	tail = "sogtail"
 	tail_animation = 'icons/mob/species/unathi/tail.dmi'
 
-	inherent_verbs = list(
-		/mob/living/carbon/human/proc/emote_swish,
-		/mob/living/carbon/human/proc/emote_wag,
-		/mob/living/carbon/human/proc/emote_fastsway,
-		/mob/living/carbon/human/proc/emote_stopsway
-		)
-
 	unarmed_types = list(/datum/unarmed_attack/stomp, /datum/unarmed_attack/tail, /datum/unarmed_attack/claws, /datum/unarmed_attack/bite/sharp)
 	primitive_form = "Stok"
 	darksight_range = 3
