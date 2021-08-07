@@ -10,7 +10,7 @@
 	name = "sandwich"
 	desc = "The best thing since sliced bread."
 	icon_state = "breadslice"
-	trash = /obj/item/trash/plate
+	trash = /obj/item/trash/dish/plate
 	bitesize = 2
 
 	var/list/ingredients = list()

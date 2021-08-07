@@ -38,6 +38,8 @@
 		// note: we can also remove here byond formatting codes: 0xFF + next byte
 		input = replace_characters(input, list("<"=" ", ">"=" "))
 
+	input = replacetext(input, GLOB.pua, "")
+
 	if(trim)
 		// Maybe, we need trim text twice? Here and before copytext?
 		input = trim(input)

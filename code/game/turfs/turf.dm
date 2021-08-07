@@ -20,6 +20,8 @@
 	var/temperature = T20C      // Initial turf temperature.
 	var/blocks_air = 0          // Does this turf contain air/let air through?
 
+	var/list/explosion_throw_details
+
 	// General properties.
 	var/icon_old = null
 	var/pathweight = 1          // How much does it cost to pathfind over this turf?

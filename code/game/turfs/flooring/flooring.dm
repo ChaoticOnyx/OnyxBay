@@ -260,7 +260,7 @@ var/list/flooring_types
 	icon_base = "cult"
 	build_type = null
 	has_damage_range = 6
-	flags = TURF_ACID_IMMUNE | TURF_CAN_BREAK | TURF_REMOVE_WRENCH
+	flags = TURF_ACID_IMMUNE | TURF_CAN_BREAK
 	can_paint = null
 
 /decl/flooring/reinforced/cult/on_remove()

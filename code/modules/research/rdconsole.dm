@@ -173,9 +173,9 @@
 		"disk" = null,
 		"techs" = list(),
 		"devices" = list(
-			list("name" = "destructor", "connected" = !!linked_destroy,   "data" = get_destructor_data(selected_device == "destructor")),
-			list("name" = "imprinter",  "connected" = !!linked_imprinter, "data" = get_imprinter_data(selected_device == "imprinter")),
-			list("name" = "protolathe", "connected" = !!linked_lathe,     "data" = get_protolathe_data(selected_device == "protolathe"))
+			list("name" = "destructor", "connected" = !!linked_destroy,   "data" = selected_device == "destructor" && get_destructor_data()),
+			list("name" = "imprinter",  "connected" = !!linked_imprinter, "data" = selected_device == "imprinter" && get_imprinter_data()),
+			list("name" = "protolathe", "connected" = !!linked_lathe,     "data" = selected_device == "protolathe" && get_protolathe_data())
 		)
 	)
 
@@ -299,13 +299,13 @@
 
 	return data
 
-/obj/machinery/computer/rdconsole/proc/get_imprinter_data(get_full_data = TRUE)
-	return get_device_data(linked_imprinter, get_full_data)
+/obj/machinery/computer/rdconsole/proc/get_imprinter_data()
+	return get_device_data(linked_imprinter)
 
-/obj/machinery/computer/rdconsole/proc/get_protolathe_data(get_full_data = TRUE)
-	return get_device_data(linked_lathe, get_full_data)
+/obj/machinery/computer/rdconsole/proc/get_protolathe_data()
+	return get_device_data(linked_lathe)
 
-/obj/machinery/computer/rdconsole/proc/get_device_data(obj/machinery/device, get_full_data = TRUE)
+/obj/machinery/computer/rdconsole/proc/get_device_data(obj/machinery/device)
 	if(!device)
 		return null
 
@@ -335,9 +335,6 @@
 		"busy" = device:busy,
 		"queue" = list()
 	)
-
-	if(!get_full_data)
-		return data
 
 	for(var/M in device:materials)
 		var/amount = device:materials[M]

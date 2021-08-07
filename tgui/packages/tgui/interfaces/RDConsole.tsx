@@ -9,7 +9,6 @@ import {
   Table,
   Icon,
   Box,
-  Tooltip,
   AnimatedNumber,
   Input,
   Flex,
@@ -199,32 +198,28 @@ const summaryTab = (props: any, context: any) => {
           <h2>Status</h2>
           <Button
             icon='sync'
-            tooltipPosition='top'
-            tooltip='Sync Database with Network'
+            title='Sync Database with Network'
             content='Sync'
             disabled={!data.sync}
             onClick={() => act('sync')}
           />
           <Button
             icon='search'
-            tooltipPosition='top'
-            tooltip='Re-sync with Nearby Devices'
+            title='Re-sync with Nearby Devices'
             content='Find'
             onClick={() => act('find_device')}
           />
           {(data.sync && (
             <Button
               icon='unlink'
-              tooltipPosition='top'
-              tooltip='Disconnect from Fabrication Network'
+              title='Disconnect from Fabrication Network'
               content='Disconnect'
               onClick={() => act('toggle_sync')}
             />
           )) || (
             <Button
               icon='link'
-              tooltipPosition='top'
-              tooltip='Connect to Fabrication Network'
+              title='Connect to Fabrication Network'
               content='Connect'
               onClick={() => act('toggle_sync')}
             />
@@ -232,8 +227,7 @@ const summaryTab = (props: any, context: any) => {
           <Button.Confirm
             color='bad'
             icon='trash'
-            tooltipPosition='top'
-            tooltip='Reset R&D Database'
+            title='Reset R&D Database'
             content='Reset'
             onClick={() => act('reset')}
           />
@@ -303,7 +297,7 @@ const techsTable = (techs: OriginTech[] | Tech[], context: any) => {
         mb='0.2rem'
         width='4ch'
         icon='save'
-        tooltip='Save to Disk'
+        title='Save to Disk'
         confirmContent={<Icon name='save' />}
         onClick={() => act('save', { thing: DiskType.Tech, id: tech.id })}
         disabled={!(data.disk?.type === DiskType.Tech)}
@@ -316,20 +310,10 @@ const techsTable = (techs: OriginTech[] | Tech[], context: any) => {
         mb='0.2rem'
         width='4ch'
         icon='save'
-        tooltip='Save to Disk'
+        title='Save to Disk'
         onClick={() => act('save', { thing: DiskType.Tech, id: tech.id })}
         disabled={!(data.disk?.type === DiskType.Tech)}
       />
-    );
-  };
-
-  const techDescription = (tech: Tech) => {
-    return (
-      <Tooltip position='bottom' content={tech.description}>
-        <Box mr='0.4rem' inline position='relative'>
-          <Icon name='info' />
-        </Box>
-      </Tooltip>
     );
   };
 
@@ -345,10 +329,10 @@ const techsTable = (techs: OriginTech[] | Tech[], context: any) => {
       {techs.length
         ? techs.map((tech: Tech, i: any) => {
             return (
-              <Table.Row className='candystripe' key={i}>
+              <Table.Row className='candystripe' key={tech.id}>
                 <Table.Cell>{tech.id && saveButton(tech)}</Table.Cell>
                 <Table.Cell>
-                  {tech.description && techDescription(tech)} {tech.name}
+                  <Icon name='info' mr='0.4rem' title={tech.description} /> {tech.name}
                 </Table.Cell>
                 <Table.Cell textAlign='center'>{tech.level}</Table.Cell>
               </Table.Row>
@@ -413,8 +397,8 @@ const destructorTab = (props: any, context: any) => {
 const device = (device: Device, context: any) => {
   const { act } = useBackend<InputData>(context);
   const { storage } = device.data;
-  const material = storage.material;
-  const chemical = storage.chemical;
+  const material = storage?.material;
+  const chemical = storage?.chemical;
 
   const emptyRow = () => {
     return (
@@ -480,16 +464,16 @@ const device = (device: Device, context: any) => {
           Material Storage (
           <AnimatedNumber
             format={(value: number) => Math.round(value).toLocaleString()}
-            value={material.total}
+            value={material?.total ?? 0}
           />{' '}
-          / {material.maximum.toLocaleString()})
+          / {material?.maximum.toLocaleString() ?? 0})
         </h2>
         <Button
           icon='eject'
           content='Eject All'
-          disabled={!material.materials.filter((mat) => mat.amount > 0).length}
+          disabled={!material?.materials.filter((mat) => mat.amount > 0).length}
           onClick={() => {
-            material.materials.forEach((mat, i) => {
+            material?.materials.forEach((mat, i) => {
               mat.amount > 0
                 && act('eject_sheet', {
                   from: device.name,
@@ -515,9 +499,9 @@ const device = (device: Device, context: any) => {
                 Amount
               </Table.Cell>
             </Table.Row>
-            {material.materials.map((mat, i) => {
+            {material?.materials.map((mat, i) => {
               return (
-                <Table.Row className='candystripe'>
+                <Table.Row key={i} className='candystripe'>
                   <Table.Cell>{ejectButtons(mat)}</Table.Cell>
                   <Table.Cell className='Materials--small'>
                     <GameIcon html={mat.icon} /> {capitalize(mat.name)}
@@ -541,15 +525,15 @@ const device = (device: Device, context: any) => {
           Chemical Storage (
           <AnimatedNumber
             format={(value: number) => Math.round(value).toLocaleString()}
-            value={chemical.total}
+            value={chemical?.total ?? 0}
           />{' '}
-          / {chemical.maximum.toLocaleString()})
+          / {chemical?.maximum.toLocaleString() ?? 0})
         </h2>
         <Button.Confirm
           icon='trash'
           content='Purge All'
           color='bad'
-          disabled={!chemical.chemicals.length}
+          disabled={!chemical?.chemicals.length}
           onClick={() => act('dispose', { from: device.name, thing: 'all' })}
         />
         <Divider />
@@ -568,10 +552,10 @@ const device = (device: Device, context: any) => {
                 Amount
               </Table.Cell>
             </Table.Row>
-            {chemical.chemicals.length
+            {chemical?.chemicals.length
               ? chemical.chemicals.map((chem, i) => {
                   return (
-                    <Table.Row className='candystripe'>
+                    <Table.Row key={chem.ref} className='candystripe'>
                       <Table.Cell>
                         <Button
                           onClick={() =>
@@ -612,6 +596,7 @@ const device = (device: Device, context: any) => {
 };
 
 const designs = (device: Device, context: any) => {
+  const MAX_PER_PAGE = 10;
   const { act, data } = useBackend<InputData>(context);
   const { designs, filters } = device.data;
   const [searchQuery, setSearchQuery] = useLocalState(
@@ -620,20 +605,74 @@ const designs = (device: Device, context: any) => {
     null,
   );
 
+  const [currentPage, setCurrentPage] = useLocalState(
+    context,
+    `currentPage${device.name}`,
+    1,
+  );
+
   const categories = ['All'].concat(filters);
   const [currentFilter, setFilter] = useLocalState(context, 'filter', 'All');
+
+  if (!categories.find((c) => c === currentFilter))
+  {
+    setFilter('All');
+  }
 
   let found: Design[] = designs;
 
   if (searchQuery !== null) {
-    found = found.filter((design, _) => design.name.search(searchQuery) >= 0);
+    found = found?.filter((design, _) => design.name.search(searchQuery) >= 0);
   }
 
   if (currentFilter !== null && currentFilter !== 'All') {
-    found = found.filter((design, _) =>
+    found = found?.filter((design, _) =>
       design.category.find((s) => s === currentFilter),
     );
   }
+
+  const paginator = (designs: Design[], id: string, context: any) => {
+    const numberWithinRange = (min: number, n: number, max: number) =>
+      Math.min(Math.max(n, min), max);
+    const [currentPage, setCurrentPage] = useLocalState(
+      context,
+      `currentPage${id}`,
+      1,
+    );
+    const totalPages = Math.ceil(designs?.length / MAX_PER_PAGE);
+
+    return (
+      <Stack width='100%' justify='space-between'>
+        <Stack.Item>
+          <Button.Segmented
+            icon='fast-backward'
+            onClick={() => setCurrentPage(1)}
+          />
+          <Button.Segmented
+            icon='step-backward'
+            onClick={() =>
+              setCurrentPage(numberWithinRange(1, currentPage - 1, totalPages))
+            }
+          />
+        </Stack.Item>
+        <Stack.Item>
+          {currentPage} / {totalPages}
+        </Stack.Item>
+        <Stack.Item>
+          <Button.Segmented
+            icon='step-forward'
+            onClick={() =>
+              setCurrentPage(numberWithinRange(1, currentPage + 1, totalPages))
+            }
+          />
+          <Button.Segmented
+            icon='fast-forward'
+            onClick={() => setCurrentPage(totalPages)}
+          />
+        </Stack.Item>
+      </Stack>
+    );
+  };
 
   const emptyRow = () => {
     return (
@@ -676,7 +715,10 @@ const designs = (device: Device, context: any) => {
       <Input
         placeholder='Search'
         fluid
-        onInput={(e: any) => setSearchQuery(e.target.value)}
+        onInput={(e: any) => {
+          setCurrentPage(1);
+          return setSearchQuery(e.target.value);
+        }}
       />
       <Divider />
       <Flex bold wrap justify='flex-start' align='center'>
@@ -688,6 +730,7 @@ const designs = (device: Device, context: any) => {
                 selected={filter === currentFilter}
                 content={filter}
                 onClick={() => {
+                  setCurrentPage(1);
                   act(''); // For click sound
                   setFilter(filter);
                 }}
@@ -696,6 +739,8 @@ const designs = (device: Device, context: any) => {
           );
         })}
       </Flex>
+      <Divider />
+      {paginator(found, device.name, context)}
       <Divider />
       <Table>
         <Table.Row className='candystripe'>
@@ -708,76 +753,91 @@ const designs = (device: Device, context: any) => {
           </Table.Cell>
           <Table.Cell bold>Required</Table.Cell>
         </Table.Row>
-        {found.length
-          ? found.map((design, i) => {
-              return (
-                <Table.Row className='candystripe'>
-                  <Table.Cell style={{
-                      'vertical-align': 'middle',
-                  }}>
-                    { data.disk?.data
-                    ? <Button.Confirm
-                        textAlign='center'
-                        ml='0.2rem'
-                        width='4ch'
-                        tooltip='Save to Disk'
-                        confirmContent={<Icon name='save' />}
-                        icon='save'
-                        disabled={!(data.disk?.type === DiskType.Design)}
-                        onClick={() =>
-                        act('save', { thing: DiskType.Design, id: design.id })
-                      }
-                    /> : <Button
-                      textAlign='center'
-                      ml='0.2rem'
-                      tooltip='Save to Disk'
-                      icon='save'
-                      disabled={!(data.disk?.type === DiskType.Design)}
-                      onClick={() =>
-                      act('save', { thing: DiskType.Design, id: design.id })
-                    }
-                  />}
-                  </Table.Cell>
-                  <Table.Cell
-                    style={{
-                      'vertical-align': 'middle',
-                    }}
-                    width='11ch'>
-                    {buildButtons(design)}
-                  </Table.Cell>
-                  <Table.Cell
-                    style={{
-                      'vertical-align': 'middle',
-                    }}
-                    className='Materials--small'>
-                    {design.name}
-                  </Table.Cell>
-                  <Table.Cell
-                    style={{
-                      'vertical-align': 'middle',
-                      'padding-top': '0.2rem',
-                      'padding-bottom': '0.2rem',
-                    }}>
-                    {design.materials.map((material, i) => {
-                      return (
-                        <Box key={i}>
-                          {capitalize(material.name)
-                            + ' '
-                            + material.required.toLocaleString()}
-                        </Box>
-                      );
-                    })}
-                    {design.chemicals.map((chem, i) => {
-                      return (
-                        <Box key={i}>
-                          {chem.name + ' ' + chem.required.toLocaleString()}
-                        </Box>
-                      );
-                    })}
-                  </Table.Cell>
-                </Table.Row>
-              );
-            })
+        {found?.length
+          ? found
+              .slice(
+                (currentPage - 1) * MAX_PER_PAGE,
+                currentPage * MAX_PER_PAGE,
+              )
+              .map((design, i) => {
+                return (
+                  <Table.Row key={design.id} className='candystripe'>
+                    <Table.Cell
+                      style={{
+                        'vertical-align': 'middle',
+                      }}>
+                      {data.disk?.data ? (
+                        <Button.Confirm
+                          textAlign='center'
+                          ml='0.2rem'
+                          width='4ch'
+                          title='Save to Disk'
+                          confirmContent={<Icon name='save' />}
+                          icon='save'
+                          disabled={!(data.disk?.type === DiskType.Design)}
+                          onClick={() =>
+                            act('save', {
+                              thing: DiskType.Design,
+                              id: design.id,
+                            })
+                          }
+                        />
+                      ) : (
+                        <Button
+                          textAlign='center'
+                          ml='0.2rem'
+                          title='Save to Disk'
+                          icon='save'
+                          disabled={!(data.disk?.type === DiskType.Design)}
+                          onClick={() =>
+                            act('save', {
+                              thing: DiskType.Design,
+                              id: design.id,
+                            })
+                          }
+                        />
+                      )}
+                    </Table.Cell>
+                    <Table.Cell
+                      style={{
+                        'vertical-align': 'middle',
+                      }}
+                      width='11ch'>
+                      {buildButtons(design)}
+                    </Table.Cell>
+                    <Table.Cell
+                      style={{
+                        'vertical-align': 'middle',
+                      }}
+                      className='Materials--small'>
+                      {design.name}
+                    </Table.Cell>
+                    <Table.Cell
+                      style={{
+                        'vertical-align': 'middle',
+                        'padding-top': '0.2rem',
+                        'padding-bottom': '0.2rem',
+                      }}>
+                      {design.materials.map((material, i) => {
+                        return (
+                          <Box key={i}>
+                            {capitalize(material.name)
+                              + ' '
+                              + material.required.toLocaleString()}
+                          </Box>
+                        );
+                      })}
+                      {design.chemicals.map((chem, i) => {
+                        return (
+                          <Box key={i}>
+                            {chem.name + ' ' + chem.required.toLocaleString()}
+                          </Box>
+                        );
+                      })}
+                    </Table.Cell>
+                  </Table.Row>
+                );
+              })
           : emptyRow()}
       </Table>
     </>
@@ -799,11 +859,11 @@ const queue = (device: Device, context: any) => {
 
   return (
     <>
-      <h2>Queue ({<AnimatedNumber value={queue.length} />})</h2>
+      <h2>Queue ({<AnimatedNumber value={queue?.length} />})</h2>
       <Button
         icon='eraser'
         content='Clear'
-        disabled={!queue.length}
+        disabled={!queue?.length}
         onClick={() => act('remove', { from: device.name, index: -1 })}
       />
       <Divider />
@@ -817,10 +877,10 @@ const queue = (device: Device, context: any) => {
             <Table.Cell />
             <Table.Cell bold>Name</Table.Cell>
           </Table.Row>
-          {queue.length
+          {queue?.length
             ? queue.map((design, i) => {
                 return (
-                  <Table.Row className='candystripe'>
+                  <Table.Row className='candystripe' key={design.id}>
                     <Table.Cell
                       style={{ 'vertical-align': 'middle' }}
                       width='1ch'>
