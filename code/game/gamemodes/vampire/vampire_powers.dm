@@ -155,7 +155,6 @@
 		if(T.stat != DEAD && vampire.stealth)
 			spawn()			//Spawned in the same manner the brain damage alert is, just so the proc keeps running without stops.
 				alert(T, "You remember NOTHING about the cause of your blackout. Instead, you remember having a pleasant encounter with [src.name].", "Bitten by a vampire")
-			// to_chat(T, SPAN("warning", FONT_LARGE("You remember nothing about the cause of blacked out. Instead, you simply remember having a pleasant encounter with [src.name]")))
 		else if(T.stat != DEAD)
 			spawn()
 				alert(T, "You remember everything that happened. Remember how blood was sucked from your neck. It gave you pleasure, like a pleasant dream. You feel great. How you react to [src.name]'s actions is up to you.", "Bitten by a vampire")
