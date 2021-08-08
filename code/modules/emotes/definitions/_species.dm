@@ -104,7 +104,7 @@ GLOBAL_LIST_INIT(default_humanoid_emotes_proc, list(
 /datum/species/human/New()
 	. = ..()
 	default_emotes.Add(GLOB.default_humanoid_emotes)
-	inherent_verbs = GLOB.default_humanoid_emotes_proc
+	inherent_verbs.Add(GLOB.default_humanoid_emotes_proc)
 
 /mob/living/carbon/update_emotes()
 	. = ..(skip_sort=1)
@@ -117,12 +117,6 @@ GLOBAL_LIST_INIT(default_humanoid_emotes_proc, list(
 
 // Specific defines follow.
 
-/*
-/datum/species/human
-	default_emotes = GLOB.default_humanoid_emotes
-	inherent_verbs = GLOB.default_humanoid_emotes_proc
-*/
-
 /datum/species/metroid
 	default_emotes = list(
 		/decl/emote/visible/bounce,
@@ -131,8 +125,9 @@ GLOBAL_LIST_INIT(default_humanoid_emotes_proc, list(
 		/decl/emote/visible/vibrate
 		)
 
-/datum/species/unathi
-	default_emotes = list(
+/datum/species/unathi/New()
+	. = ..()
+	default_emotes += list(
 		/decl/emote/human/swish,
 		/decl/emote/human/wag,
 		/decl/emote/human/sway,
@@ -140,17 +135,19 @@ GLOBAL_LIST_INIT(default_humanoid_emotes_proc, list(
 		/decl/emote/human/fastsway,
 		/decl/emote/human/swag,
 		/decl/emote/human/stopsway
-		)
+	) + GLOB.default_humanoid_emotes
 
-	inherent_verbs = list(
+	inherent_verbs += list(
 		/mob/proc/emote_swish,
 		/mob/proc/emote_wag,
 		/mob/proc/emote_fastsway,
 		/mob/proc/emote_stopsway
-		)
+	) + GLOB.default_humanoid_emotes_proc
 
-/datum/species/tajaran
-	default_emotes = list(
+
+/datum/species/tajaran/New()
+	. = ..()
+	default_emotes += list(
 		/decl/emote/human/swish,
 		/decl/emote/human/wag,
 		/decl/emote/human/sway,
@@ -158,13 +155,41 @@ GLOBAL_LIST_INIT(default_humanoid_emotes_proc, list(
 		/decl/emote/human/fastsway,
 		/decl/emote/human/swag,
 		/decl/emote/human/stopsway
-		)
-	inherent_verbs = list(
+	) + GLOB.default_humanoid_emotes
+
+	inherent_verbs += list(
 		/mob/proc/emote_swish,
 		/mob/proc/emote_wag,
 		/mob/proc/emote_fastsway,
 		/mob/proc/emote_stopsway
-		)
+	) + GLOB.default_humanoid_emotes_proc
+
+
+/datum/species/monkey/New()
+	. = ..()
+	default_emotes += list(
+		/decl/emote/visible/scratch,
+		/decl/emote/visible/jump,
+		/decl/emote/visible/roll,
+		/decl/emote/visible,
+		/decl/emote/audible/cry,
+		/decl/emote/audible/whimper,
+		/decl/emote/audible/scream,
+		/decl/emote/audible/giggle,
+		/decl/emote/visible/frown
+	)
+
+	inherent_verbs += list(
+		/mob/proc/emote_scratch,
+		/mob/proc/emote_jump,
+		/mob/proc/emote_roll,
+		/mob/proc/emote_tail,
+		/mob/proc/emote_cry,
+		/mob/proc/emote_whimper,
+		/mob/proc/emote_scream,
+		/mob/proc/emote_giggle,
+		/mob/proc/emote_frown
+	)
 
 /datum/species/nabber
 	default_emotes = list(

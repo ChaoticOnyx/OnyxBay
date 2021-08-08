@@ -259,7 +259,27 @@
 	visible_message(SPAN("danger", "[src] puts two fingers in his mouth."))
 	usr.emote("vomit")
 
-//	XENO EMOTES
+/mob/proc/emote_scratch()
+	set name = "Scratch"
+	set category = "Emotes"
+	usr.emote("scratch")
+
+/mob/proc/emote_jump()
+	set name = "Jump"
+	set category = "Emotes"
+	usr.emote("jump")
+
+/mob/proc/emote_roll()
+	set name = "Roll"
+	set category = "Emotes"
+	usr.emote("roll")
+
+/mob/proc/emote_tail()
+	set name = "Wave your tail"
+	set category = "Emotes"
+	usr.emote("tail")
+
+//	TAIL EMOTES
 
 /mob/proc/emote_swish()
 	set name = "> Wave your tail once"
