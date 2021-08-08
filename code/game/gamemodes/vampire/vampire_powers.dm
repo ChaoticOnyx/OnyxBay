@@ -158,7 +158,6 @@
 		else if(T.stat != DEAD)
 			spawn()
 				alert(T, "You remember everything that happened. Remember how blood was sucked from your neck. It gave you pleasure, like a pleasant dream. You feel great. How you react to [src.name]'s actions is up to you.", "Bitten by a vampire")
-			// to_chat(T, SPAN("warning", FONT_LARGE("You remember everything that happened. Remember how blood was sucked from your neck. It gave you pleasure, like a pleasant dream. You feel great. How you react to [src.name]'s actions is up to you.")))
 	verbs -= /mob/living/carbon/human/proc/vampire_drain_blood
 	if(blood_drained <= 85)
 
