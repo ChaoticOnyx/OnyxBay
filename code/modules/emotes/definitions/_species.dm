@@ -164,6 +164,10 @@ GLOBAL_LIST_INIT(default_humanoid_emotes_proc, list(
 		/mob/proc/emote_stopsway
 	) + GLOB.default_humanoid_emotes_proc
 
+/datum/species/skrell/New()
+	. = ..()
+	default_emotes.Add(GLOB.default_humanoid_emotes)
+	inherent_verbs.Add(GLOB.default_humanoid_emotes_proc)
 
 /datum/species/monkey/New()
 	. = ..()
