@@ -135,14 +135,14 @@ GLOBAL_LIST_INIT(default_humanoid_emotes_proc, list(
 		/decl/emote/human/fastsway,
 		/decl/emote/human/swag,
 		/decl/emote/human/stopsway
-	) + GLOB.default_humanoid_emotes
+	) | GLOB.default_humanoid_emotes
 
 	inherent_verbs += list(
 		/mob/proc/emote_swish,
 		/mob/proc/emote_wag,
 		/mob/proc/emote_fastsway,
 		/mob/proc/emote_stopsway
-	) + GLOB.default_humanoid_emotes_proc
+	) | GLOB.default_humanoid_emotes_proc
 
 
 /datum/species/tajaran/New()
@@ -155,14 +155,14 @@ GLOBAL_LIST_INIT(default_humanoid_emotes_proc, list(
 		/decl/emote/human/fastsway,
 		/decl/emote/human/swag,
 		/decl/emote/human/stopsway
-	) + GLOB.default_humanoid_emotes
+	) | GLOB.default_humanoid_emotes
 
 	inherent_verbs += list(
 		/mob/proc/emote_swish,
 		/mob/proc/emote_wag,
 		/mob/proc/emote_fastsway,
 		/mob/proc/emote_stopsway
-	) + GLOB.default_humanoid_emotes_proc
+	) | GLOB.default_humanoid_emotes_proc
 
 /datum/species/skrell/New()
 	. = ..()

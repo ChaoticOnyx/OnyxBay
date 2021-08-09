@@ -2,7 +2,7 @@
 	var/avalibe_target = mobs_in_view(range = range, source = usr.client)
 	if(length(avalibe_target))
 		avalibe_target |= "No target"
-		var/target = input("Choose a target for applying emotion", "", null) as null|anything in avalibe_target
+		var/target = input("Choose a target for applying emotion", "", null) as null | anything in avalibe_target
 		if(target == null)
 			return
 		if(target == "No target")
