@@ -233,20 +233,20 @@
 
 /obj/effect/rune/convert/proc/on_convert_success(list/mob/living/cultists, mob/living/carbon/target)
 	if(isWizard(target))
-		to_chat(target, SPAN_DANGER("Your magick powers resists being corupted. DEATH IS COMMING FOR THESE FOOLS AND YOU"))
+		to_chat(target, SPAN_DANGER("Followers of the Blood God have tried to corrupt you. DEATH IS COMMING FOR THOSE FOOLS AND YOU"))
 		target.gib()
 		for(var/mob/living/M in cultists)
-			to_chat(M, SPAN_DANGER("You have tried to mess with the power beyond your level. IT WAS A DEADLY MISTAKE"))
+			to_chat(M, SPAN_DANGER("This person cant be converted. IT WAS A DEADLY MISTAKE"))
 			M.gib()
 			return
 	else if(isChangeling(target))
-		to_chat(target, SPAN("changeling", "Powers of these filthy creatures does not have effect on us"))
+		to_chat(target, SPAN("changeling", "We reject offer of these creatures"))
 		return
 	else if(isXenomorph(target))
-		to_chat(target, SPAN_DANGER("Hive mind rejects offer of these creatures"))
+		to_chat(target, SPAN_DANGER("Hive mind rejects offer of those creatures"))
 		return
 	else if(istype(target, /mob/living/carbon/alien/diona))
-		to_chat(target, SPAN_DANGER("Hive mind rejects offer of these creatures"))
+		to_chat(target, SPAN_DANGER("Hive mind rejects offer of those creatures"))
 		return
 	else
 		GLOB.cult.add_antagonist(target.mind, ignore_role = TRUE, do_not_equip = TRUE)
