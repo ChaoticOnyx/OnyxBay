@@ -15,7 +15,7 @@ var/floor_light_color_cache = list()
 	matter = list(MATERIAL_STEEL = 250, MATERIAL_GLASS = 250)
 
 	var/ID
-	var/max_health = 40
+	var/max_health = 50
 	var/health	// Hits to destroy
 	var/shield	// Hits to broke
 	var/damaged = FALSE
@@ -94,7 +94,7 @@ var/floor_light_color_cache = list()
 	if(user.a_intent == I_HURT)
 		user.setClickCooldown(W.update_attack_cooldown())
 		user.do_attack_animation(src)
-		if((W.damtype == BRUTE || W.damtype == BURN) && W.force >= 3)
+		if((W.damtype == BRUTE || W.damtype == BURN) && W.force >= 5)
 			visible_message(SPAN("danger", "[src] has been hit by [user] with [W]. [W.force] damage"))
 			hit(W.force, user)
 		else
