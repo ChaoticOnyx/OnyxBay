@@ -1,6 +1,11 @@
-#define COMMAND_STOP "стой тут" //basically moves around in area.
-#define COMMAND_FOLLOW "иди за" //follows a owner
-#define COMMAND_WANDERING "прогуляйся" // set pet behaviour to basic behaviour: wandering
+#define COMMAND_STOP 1 //basically moves around in area.
+#define COMMAND_FOLLOW 2 //follows a owner
+#define COMMAND_WANDERING 3 // set pet behaviour to basic behaviour: wandering
+
+GLOBAL_LIST_INIT(pets_follow, world.file2list("config/names/animal_commands/follow.txt"))
+GLOBAL_LIST_INIT(pets_stop, world.file2list("config/names/animal_commands/wander.txt"))
+GLOBAL_LIST_INIT(pets_wander, world.file2list("config/names/animal_commands/stop.txt"))
+
 /datum/mob_ai
 	var/mob/living/simple_animal/holder // contains the connected mob
 	var/mob/master = null //undisputed master. Their commands hold ultimate sway and ultimate power.
@@ -89,7 +94,6 @@
 
 /datum/mob_ai/pet
 	var/current_command
-	var/list/known_commands = list()
 	var/mob/target_mob
 	var/area/safe_area
 	var/move_to_delay = 4 //delay for the automated movement.
@@ -97,7 +101,6 @@
 
 /datum/mob_ai/pet/New()
 	. = ..()
-	known_commands = list(COMMAND_STOP, COMMAND_FOLLOW, COMMAND_WANDERING)
 
 // /mob/living/simple_animal/pet/SelfMove(direction)
 // 	var/turf/T = get_step(src, direction)
@@ -142,8 +145,18 @@
 /datum/mob_ai/pet/listen(mob/speaker, text)
 	if(speaker != master)
 		return
-	for(var/command in known_commands)
-		if(findtext_char(text,command))
+
+	var/list/text_to_command = list()
+	for(var/some_text in GLOB.pets_stop)
+		text_to_command[some_text] = COMMAND_STOP
+	for(var/some_text in GLOB.pets_follow)
+		text_to_command[some_text] = COMMAND_FOLLOW
+	for(var/some_text in GLOB.pets_wander)
+		text_to_command[some_text] = COMMAND_WANDERING
+
+	for(var/command_text in text_to_command)
+		if(findtext_char(text, command_text))
+			var/command = text_to_command[command_text]
 			switch(command)
 				if(COMMAND_STOP)
 					if(stay_command(speaker, text))
@@ -152,7 +165,8 @@
 					if(follow_command(speaker,text))
 						break
 				if(COMMAND_WANDERING)
-					wandering()
+					if(wandering())
+						break
 
 	return TRUE
 
@@ -160,6 +174,7 @@
 	current_command = COMMAND_WANDERING
 	holder.stop_automated_movement = FALSE
 	safe_area = null
+	return TRUE
 
 /datum/mob_ai/pet/proc/stay_command(mob/speaker,text)
 	target_mob = null
@@ -171,19 +186,9 @@
 	return TRUE
 
 /datum/mob_ai/pet/proc/follow_command(mob/speaker,text)
-	//we can assume 'stop following' is handled by stop_command
-	if(findtext_char(text, "мной"))
-		current_command = COMMAND_FOLLOW
-		target_mob = speaker //this wont bite me in the ass later.
-		return 1
-	var/list/targets = get_targets_by_name(text)
-	if(targets.len > 1 || !length(targets)) //CONFUSED. WHO DO I FOLLOW?
-		return 0
-
-	current_command = COMMAND_FOLLOW //GOT SOMEBODY. BETTER FOLLOW EM.
-	target_mob = pick(targets) //YEAH GOOD IDEA
-	// schizophrenia above
-
+	current_command = COMMAND_FOLLOW
+	target_mob = speaker //this wont bite me in the ass later.
+	// TODO make code to follow other mobs than speaker
 	return 1
 
 // presets for pets
