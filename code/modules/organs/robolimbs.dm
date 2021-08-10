@@ -36,51 +36,63 @@ var/datum/robolimb/basic_robolimb
 	var/lifelike
 	// Species in these lists can't / can take these prosthetics.
 	var/list/restricted_to = list(SPECIES_HUMAN)
-	var/list/species_cannot_use = list(SPECIES_SKRELL, SPECIES_DIONA, SPECIES_VOX, SPECIES_PROMETHEAN)
+	var/list/species_cannot_use = list(SPECIES_PROMETHEAN, SPECIES_DIONA, SPECIES_VOX)
 	// Applyes to specific bodypart.
 	var/list/applies_to_part = list()
 	var/modular_bodyparts = MODULAR_BODYPART_INVALID
 	// Spicies alternatives
 	var/list/species_alternates = list(SPECIES_TAJARA = "Unbranded - Tajaran", SPECIES_UNATHI = "Unbranded - Unathi")
 
-/datum/robolimb/alt1
+/datum/robolimb/unbranded_alt1
 	company = "Unbranded - Mantis Prosis"
 	desc = "This limb has a casing of sleek black metal and repulsive insectile design."
 	icon = 'icons/mob/human_races/cyberlimbs/unbranded/unbranded_alt1.dmi'
 	has_eyes = TRUE
 	modular_bodyparts = MODULAR_BODYPART_PROSTHETIC
 
-/datum/robolimb/tajaran
+
+/datum/robolimb/unbranded_tajaran
  	company = "Unbranded - Tajaran"
  	desc = "A simple robotic limb with feline design. Seems rather stiff."
  	icon = 'icons/mob/human_races/cyberlimbs/unbranded/unbranded_tajaran.dmi'
  	restricted_to = list(SPECIES_TAJARA)
+	 species_cannot_use = list(SPECIES_HUMAN, SPECIES_SKRELL, SPECIES_UNATHI, SPECIES_PROMETHEAN, SPECIES_DIONA, SPECIES_VOX)
 
-/datum/robolimb/unathi
+/datum/robolimb/unbranded_unathi
  	company = "Unbranded - Unathi"
  	desc = "A simple robotic limb with reptilian design. Seems rather stiff."
  	icon = 'icons/mob/human_races/cyberlimbs/unbranded/unbranded_unathi.dmi'
  	restricted_to = list(SPECIES_UNATHI)
+	 species_cannot_use = list(SPECIES_HUMAN, SPECIES_SKRELL, SPECIES_TAJARA, SPECIES_PROMETHEAN, SPECIES_DIONA, SPECIES_VOX)
 
 //NANOTRASEN
 /datum/robolimb/nanotrasen
 	company = "NanoTrasen"
 	desc = "A simple but efficient robotic limb, created by NanoTrasen."
 	icon = 'icons/mob/human_races/cyberlimbs/nanotrasen/nanotrasen_main.dmi'
+	unavailable_to_build = TRUE
 
-/datum/robolimb/nanotrasen/alt1
+/datum/robolimb/nanotrasen_alt1
  	company = "NanoTrasen Plus"
+	 desc = "A simple but efficient robotic limb, created by NanoTrasen."
  	icon = 'icons/mob/human_races/cyberlimbs/nanotrasen/nanotrasen_alt1.dmi'
+	 unavailable_to_build = TRUE
 
-/datum/robolimb/nanotrasen/tajaran
+/datum/robolimb/nanotrasen_tajaran
 	company = "NanoTrasen - Tajaran"
+	desc = "A simple but efficient robotic limb, created by NanoTrasen."
 	icon = 'icons/mob/human_races/cyberlimbs/nanotrasen/nanotrasen_tajaran.dmi'
+	unavailable_to_build = TRUE
 	restricted_to = list(SPECIES_TAJARA)
+	species_cannot_use = list(SPECIES_HUMAN, SPECIES_SKRELL, SPECIES_UNATHI, SPECIES_PROMETHEAN, SPECIES_DIONA, SPECIES_VOX)
 
-/datum/robolimb/nanotrasen/unathi
+/datum/robolimb/nanotrasen_unathi
 	company = "NanoTrasen - Unathi"
+	desc = "A simple but efficient robotic limb, created by NanoTrasen."
 	icon = 'icons/mob/human_races/cyberlimbs/nanotrasen/nanotrasen_unathi.dmi'
+	unavailable_to_build = TRUE
 	restricted_to = list(SPECIES_UNATHI)
+	species_cannot_use = list(SPECIES_HUMAN, SPECIES_SKRELL, SPECIES_TAJARA, SPECIES_PROMETHEAN, SPECIES_DIONA, SPECIES_VOX)
 
 //ZENG-HU
 /datum/robolimb/zenghu
@@ -91,13 +103,18 @@ var/datum/robolimb/basic_robolimb
 	unavailable_to_build = TRUE
 	modular_bodyparts = MODULAR_BODYPART_CYBERNETIC
 	restricted_to = list(SPECIES_HUMAN)
-	species_cannot_use = list(SPECIES_DIONA, SPECIES_VOX, SPECIES_PROMETHEAN, SPECIES_UNATHI, SPECIES_SKRELL)
+	species_cannot_use = list(SPECIES_TAJARA, SPECIES_UNATHI, SPECIES_SKRELL, SPECIES_PROMETHEAN, SPECIES_DIONA, SPECIES_VOX)
 	species_alternates = list(SPECIES_TAJARA = "Zeng-Hu - Tajaran")
 
-/datum/robolimb/zenghu/tajaran
+/datum/robolimb/zenghu_tajaran
 	company = "Zeng-Hu - Tajaran"
+	desc = "This limb has a rubbery fleshtone covering with visible seams."
 	icon = 'icons/mob/human_races/cyberlimbs/zenghu/zenghu_taj.dmi'
+	lifelike = TRUE
+	unavailable_to_build = TRUE
+	modular_bodyparts = MODULAR_BODYPART_CYBERNETIC
 	restricted_to = list(SPECIES_TAJARA)
+	species_cannot_use = list(SPECIES_HUMAN, SPECIES_SKRELL, SPECIES_UNATHI, SPECIES_PROMETHEAN, SPECIES_DIONA, SPECIES_VOX)
 
 //BISHOP
 /datum/robolimb/bishop
@@ -106,17 +123,25 @@ var/datum/robolimb/basic_robolimb
 	icon = 'icons/mob/human_races/cyberlimbs/bishop/bishop_main.dmi'
 	unavailable_to_build = TRUE
 	restricted_to = list(SPECIES_HUMAN)
-	species_cannot_use = list(SPECIES_DIONA, SPECIES_VOX, SPECIES_PROMETHEAN, SPECIES_UNATHI, SPECIES_TAJARA, SPECIES_SKRELL)
+	species_cannot_use = list(SPECIES_UNATHI, SPECIES_TAJARA, SPECIES_SKRELL, SPECIES_PROMETHEAN, SPECIES_DIONA, SPECIES_VOX)
 
-/datum/robolimb/bishop/bishop_alt1
+/datum/robolimb/bishop_alt1
 	company = "Bishop - Glyph"
+	desc = "This limb has a white polymer casing with blue holo-displays."
 	icon = 'icons/mob/human_races/cyberlimbs/bishop/bishop_alt1.dmi'
+	unavailable_to_build = TRUE
 	applies_to_part = list(BP_HEAD)
+	restricted_to = list(SPECIES_HUMAN)
+	species_cannot_use = list(SPECIES_UNATHI, SPECIES_TAJARA, SPECIES_SKRELL, SPECIES_PROMETHEAN, SPECIES_DIONA, SPECIES_VOX)
 
-/datum/robolimb/bishop/bishop_alt2
+/datum/robolimb/bishop_alt2
 	company = "Bishop - Rook"
+	desc = "This limb has a white polymer casing with blue holo-displays."
 	icon = 'icons/mob/human_races/cyberlimbs/bishop/bishop_alt2.dmi'
 	has_eyes = TRUE
+	unavailable_to_build = TRUE
+	restricted_to = list(SPECIES_HUMAN)
+	species_cannot_use = list(SPECIES_UNATHI, SPECIES_TAJARA, SPECIES_SKRELL, SPECIES_PROMETHEAN, SPECIES_DIONA, SPECIES_VOX)
 
 //HEPHAESTUS
 /datum/robolimb/hephaestus
@@ -125,12 +150,13 @@ var/datum/robolimb/basic_robolimb
 	icon = 'icons/mob/human_races/cyberlimbs/hephaestus/hephaestus_main.dmi'
 	unavailable_to_build = TRUE
 	restricted_to = list(SPECIES_HUMAN)
-	species_cannot_use = list(SPECIES_DIONA, SPECIES_VOX, SPECIES_PROMETHEAN, SPECIES_UNATHI, SPECIES_TAJARA, SPECIES_SKRELL)
 
 /datum/robolimb/hephaestus/hephaestus_alt1
 	company = "Hephaestus - Athena"
 	desc = "This rather thick limb has a militaristic green plating."
 	icon = 'icons/mob/human_races/cyberlimbs/hephaestus/hephaestus_alt1.dmi'
+	unavailable_to_build = TRUE
+	restricted_to = list(SPECIES_HUMAN)
 
 //VEY-MED
 /datum/robolimb/veymed
@@ -143,13 +169,19 @@ var/datum/robolimb/basic_robolimb
 	unavailable_to_build = TRUE
 	modular_bodyparts = MODULAR_BODYPART_CYBERNETIC
 	restricted_to = list(SPECIES_HUMAN)
-	species_cannot_use = list(SPECIES_DIONA, SPECIES_VOX, SPECIES_PROMETHEAN, SPECIES_UNATHI, SPECIES_TAJARA)
+	species_cannot_use = list(SPECIES_SKRELL, SPECIES_UNATHI, SPECIES_TAJARA, SPECIES_PROMETHEAN, SPECIES_DIONA, SPECIES_VOX)
 	species_alternates = list(SPECIES_SKRELL = "Vey-Med - Skrell")
 
 /datum/robolimb/veymed/skrell
 	company = "Vey-Med - Skrell"
+	desc = "This high quality limb is nearly indistinguishable from an organic one."
 	icon = 'icons/mob/human_races/cyberlimbs/veymed/veymed_skrell.dmi'
+	skintone = 1
+	can_eat = TRUE
+	lifelike = TRUE
+	unavailable_to_build = TRUE
 	restricted_to = list(SPECIES_SKRELL)
+	species_cannot_use = list(SPECIES_HUMAN, SPECIES_UNATHI, SPECIES_TAJARA, SPECIES_PROMETHEAN, SPECIES_DIONA, SPECIES_VOX)
 
 //WOODEN
 /datum/robolimb/wooden
@@ -158,8 +190,6 @@ var/datum/robolimb/basic_robolimb
 	icon = 'icons/mob/human_races/cyberlimbs/makeshift/wooden.dmi'
 	unavailable_to_build = TRUE
 	modular_bodyparts = MODULAR_BODYPART_PROSTHETIC
-	restricted_to = list(SPECIES_HUMAN)
-	species_cannot_use = list(SPECIES_DIONA, SPECIES_VOX, SPECIES_PROMETHEAN, SPECIES_UNATHI, SPECIES_TAJARA, SPECIES_SKRELL)
 	applies_to_part = list(BP_L_FOOT, BP_R_FOOT, BP_L_LEG, BP_R_LEG, BP_L_HAND, BP_R_HAND, BP_L_ARM, BP_R_ARM)
 
 //EINSTEIN
@@ -170,17 +200,17 @@ var/datum/robolimb/basic_robolimb
 	unavailable_to_build = TRUE
 	modular_bodyparts = MODULAR_BODYPART_PROSTHETIC
 	restricted_to = list(SPECIES_HUMAN)
-	species_cannot_use = list(SPECIES_DIONA, SPECIES_VOX, SPECIES_PROMETHEAN, SPECIES_UNATHI, SPECIES_TAJARA, SPECIES_SKRELL)
+	species_cannot_use = list(SPECIES_UNATHI, SPECIES_TAJARA, SPECIES_SKRELL, SPECIES_PROMETHEAN, SPECIES_DIONA, SPECIES_VOX)
 
 //ANCIENT
 /datum/robolimb/ancient
 	company = "Uesseka Prototyping Ltd."
 	desc = "This limb seems meticulously hand-crafted, and distinctly Unathi in design."
 	icon = 'icons/mob/human_races/cyberlimbs/ancient/ancient.dmi'
-	unavailable_at_chargen = TRUE
 	unavailable_to_build = TRUE
+	unavailable_at_chargen = TRUE
 	restricted_to = list(SPECIES_UNATHI)
-	species_cannot_use = list(SPECIES_DIONA, SPECIES_VOX, SPECIES_PROMETHEAN, SPECIES_HUMAN, SPECIES_TAJARA, SPECIES_SKRELL)
+	species_cannot_use = list(SPECIES_HUMAN, SPECIES_TAJARA, SPECIES_SKRELL, SPECIES_PROMETHEAN, SPECIES_DIONA, SPECIES_VOX)
 
 //WARDTAKAHASHI
 /datum/robolimb/wardtakahashi
@@ -190,19 +220,25 @@ var/datum/robolimb/basic_robolimb
 	unavailable_to_build = TRUE
 	modular_bodyparts = MODULAR_BODYPART_PROSTHETIC
 	restricted_to = list(SPECIES_HUMAN)
-	species_cannot_use = list(SPECIES_DIONA, SPECIES_VOX, SPECIES_PROMETHEAN, SPECIES_UNATHI, SPECIES_TAJARA, SPECIES_SKRELL)
+	species_cannot_use = list(SPECIES_UNATHI, SPECIES_TAJARA, SPECIES_PROMETHEAN, SPECIES_DIONA, SPECIES_VOX)
 
-/datum/robolimb/wardtakahashi/wardtakahashi_alt1
+/datum/robolimb/wardtakahashi_alt1
 	company = "Ward-Takahashi - Shroud"
 	desc = "This limb features sleek black and white polymers. This one looks more like a helmet of some sort."
 	icon = 'icons/mob/human_races/cyberlimbs/wardtakahashi/wardtakahashi_alt1.dmi'
+	unavailable_to_build = TRUE
 	applies_to_part = list(BP_HEAD)
+	restricted_to = list(SPECIES_HUMAN)
+	species_cannot_use = list(SPECIES_UNATHI, SPECIES_TAJARA, SPECIES_PROMETHEAN, SPECIES_DIONA, SPECIES_VOX)
 
-/datum/robolimb/wardtakahashi/wardtakahashi_alt2
+/datum/robolimb/wardtakahashi_alt2
 	company = "Ward-Takahashi - Spirit"
 	desc = "This limb has white and purple features, with a heavier casing."
 	icon = 'icons/mob/human_races/cyberlimbs/wardtakahashi/wardtakahashi_alt2.dmi'
+	unavailable_to_build = TRUE
 	modular_bodyparts = MODULAR_BODYPART_PROSTHETIC
+	restricted_to = list(SPECIES_HUMAN)
+	species_cannot_use = list(SPECIES_UNATHI, SPECIES_TAJARA, SPECIES_PROMETHEAN, SPECIES_DIONA, SPECIES_VOX)
 
 //CYBERSOLUTIONS
 /datum/robolimb/cybersolutions
@@ -212,25 +248,34 @@ var/datum/robolimb/basic_robolimb
 	unavailable_to_build = TRUE
 	modular_bodyparts = MODULAR_BODYPART_CYBERNETIC
 	restricted_to = list(SPECIES_HUMAN)
-	species_cannot_use = list(SPECIES_DIONA, SPECIES_VOX, SPECIES_PROMETHEAN, SPECIES_UNATHI, SPECIES_TAJARA, SPECIES_SKRELL)
+	species_cannot_use = list(SPECIES_SKRELL, SPECIES_PROMETHEAN, SPECIES_DIONA, SPECIES_VOX)
 
-/datum/robolimb/cybersolutions/cybersolutions_alt1
+/datum/robolimb/cybersolutions_alt1
 	company = "Cyber Solutions - Wight"
 	desc = "This limb has cheap plastic panels mounted on grey metal."
 	icon = 'icons/mob/human_races/cyberlimbs/cybersolutions/cybersolutions_alt1.dmi'
+	unavailable_to_build = TRUE
 	modular_bodyparts = MODULAR_BODYPART_PROSTHETIC
+	restricted_to = list(SPECIES_HUMAN)
+	species_cannot_use = list(SPECIES_SKRELL, SPECIES_PROMETHEAN, SPECIES_DIONA, SPECIES_VOX)
 
-/datum/robolimb/cybersolutions/cybersolutions_alt2
+/datum/robolimb/cybersolutions_alt2
 	company = "Cyber Solutions - Outdated"
 	desc = "This limb is of severely outdated design; there's no way it's comfortable or very functional to use."
 	icon = 'icons/mob/human_races/cyberlimbs/cybersolutions/cybersolutions_alt2.dmi'
+	unavailable_to_build = TRUE
 	modular_bodyparts = MODULAR_BODYPART_PROSTHETIC
+	restricted_to = list(SPECIES_HUMAN)
+	species_cannot_use = list(SPECIES_SKRELL, SPECIES_PROMETHEAN, SPECIES_DIONA, SPECIES_VOX)
 
-/datum/robolimb/cybersolutions/cybersolutions_alt3
+/datum/robolimb/cybersolutions_alt3
 	company = "Cyber Solutions - Array"
 	desc = "This limb is simple and functional; array of sensors on a featureless case."
 	icon = 'icons/mob/human_races/cyberlimbs/cybersolutions/cybersolutions_alt3.dmi'
+	unavailable_to_build = TRUE
 	applies_to_part = list(BP_HEAD)
+	restricted_to = list(SPECIES_HUMAN)
+	species_cannot_use = list(SPECIES_SKRELL, SPECIES_PROMETHEAN, SPECIES_DIONA, SPECIES_VOX)
 
 //XION
 /datum/robolimb/xion
@@ -239,21 +284,73 @@ var/datum/robolimb/basic_robolimb
 	icon = 'icons/mob/human_races/cyberlimbs/xion/xion_main.dmi'
 	unavailable_to_build = TRUE
 	restricted_to = list(SPECIES_HUMAN)
-	species_cannot_use = list(SPECIES_DIONA, SPECIES_VOX, SPECIES_PROMETHEAN, SPECIES_UNATHI, SPECIES_TAJARA, SPECIES_SKRELL)
+	species_cannot_use = list(SPECIES_SKRELL, SPECIES_PROMETHEAN, SPECIES_DIONA, SPECIES_VOX)
 
-/datum/robolimb/xion/xion_alt1
+/datum/robolimb/xion_alt1
 	company = "Xion - Breach"
 	desc = "This limb has a minimalist black and red casing. Looks a bit menacing."
 	icon = 'icons/mob/human_races/cyberlimbs/xion/xion_alt1.dmi'
+	unavailable_to_build = TRUE
 	applies_to_part = list(BP_HEAD)
+	restricted_to = list(SPECIES_HUMAN)
+	species_cannot_use = list(SPECIES_UNATHI, SPECIES_TAJARA, SPECIES_SKRELL, SPECIES_PROMETHEAN, SPECIES_DIONA, SPECIES_VOX)
 
-/datum/robolimb/xion/xion_alt2
+/datum/robolimb/xion_alt2
 	company = "Xion - Whiteout"
 	desc = "This limb has a minimalist black and white casing."
 	icon = 'icons/mob/human_races/cyberlimbs/xion/xion_alt2.dmi'
+	unavailable_to_build = TRUE
+	restricted_to = list(SPECIES_HUMAN)
+	species_cannot_use = list(SPECIES_SKRELL, SPECIES_PROMETHEAN, SPECIES_DIONA, SPECIES_VOX)
 
-/datum/robolimb/xion/xion_alt3
+/datum/robolimb/xion_alt3
 	company = "Xion - Breach - Whiteout"
 	desc = "This limb has a minimalist black and white casing. Looks a bit menacing."
 	icon = 'icons/mob/human_races/cyberlimbs/xion/xion_alt3.dmi'
+	unavailable_to_build = TRUE
 	applies_to_part = list(BP_HEAD)
+	restricted_to = list(SPECIES_HUMAN)
+	species_cannot_use = list(SPECIES_UNATHI, SPECIES_TAJARA, SPECIES_SKRELL, SPECIES_PROMETHEAN, SPECIES_DIONA, SPECIES_VOX)
+
+// DESIGN DISKS
+
+/obj/item/weapon/disk/limb
+	name = "Limb Blueprints"
+	desc = "A disk containing the blueprints for prosthetics."
+	icon = 'icons/obj/cloning.dmi'
+	icon_state = "datadisk2"
+	var/list/company = list()
+
+/obj/item/weapon/disk/limb/New(var/newloc)
+	..()
+	if(company)
+		name = "[company[1]] [initial(name)]"
+
+/obj/item/weapon/disk/limb/nanotrasen
+	company = list("NanoTrasen", "NanoTrasen Plus")
+
+/obj/item/weapon/disk/limb/bishop
+	company = list("Bishop", "Bishop - Rook")
+
+/obj/item/weapon/disk/limb/cybersolutions
+	company = list("Cyber Solutions", "Cyber Solutions - Wight", "Cyber Solutions - Outdated")
+
+/obj/item/weapon/disk/limb/hephaestus
+	company = list("Hephaestus", "Hephaestus - Athena")
+
+/obj/item/weapon/disk/limb/veymed
+	company = list("Vey-Med")
+
+/obj/item/weapon/disk/limb/wardtakahashi
+	company = list("Ward-Takahashi", "Ward-Takahashi - Spirit")
+
+/obj/item/weapon/disk/limb/xion
+	company = list("Xion", "Xion - Whiteout")
+
+/obj/item/weapon/disk/limb/zenghu
+	company = list("Zeng-Hu")
+
+// Rare ones
+
+/obj/item/weapon/disk/limb/ancient
+	company = list("Uesseka Prototyping Ltd.")
