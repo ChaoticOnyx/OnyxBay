@@ -1120,7 +1120,8 @@
 		return
 	for(var/item in dropped_items)
 		var/atom/movable/I = item
-		I.forceMove(loc)
+		if(I in contents)
+			I.forceMove(loc)
 	dropped_items.Cut()
 	if(mob_container.forceMove(src.loc))//ejecting mob container
 	/*
