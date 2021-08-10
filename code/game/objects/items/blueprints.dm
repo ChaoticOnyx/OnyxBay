@@ -30,13 +30,26 @@
 	add_fingerprint(M)
 	interact(M)
 
-/obj/item/blueprints/Topic(href, href_list)
-	if((. = ..()))
-		return
+/obj/item/blueprints/proc/check_mob(mob/M)
 	if((usr.restrained() || usr.stat))
 		return
 	if(!usr.is_item_in_hands(src))
 		to_chat(usr, SPAN_WARNING("You need to hold \the [src] in your hands!"))
+		return
+	return TRUE
+
+/obj/item/blueprints/borg/attack_self(mob/M)
+	interact(M)
+
+/obj/item/blueprints/borg/check_mob(mob/M)
+	if(usr.stat != CONSCIOUS)
+		return
+	return TRUE
+
+/obj/item/blueprints/Topic(href, href_list)
+	if((. = ..()))
+		return
+	if(!check_mob(usr))
 		return
 	switch(href_list["action"])
 		if("create_area")
