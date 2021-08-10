@@ -71,6 +71,8 @@
 
 
 /obj/item/device/assembly/signaler/Topic(href, href_list, state = GLOB.physical_state)
+	if(!usr.get_active_hand(src) && !usr.get_inactive_hand(src))
+		return
 	if((. = ..()))
 		close_browser(usr, "window=radio")
 		onclose(usr, "radio")
