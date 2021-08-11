@@ -82,7 +82,7 @@
 
 
 /obj/item/device/assembly/timer/Topic(href, href_list, state = GLOB.physical_state)
-	if(!usr.get_active_hand(src) && !usr.get_inactive_hand(src))
+	if(usr.stat || !(src in usr.contents))
 		return
 	if((. = ..()))
 		close_browser(usr, "window=timer")
