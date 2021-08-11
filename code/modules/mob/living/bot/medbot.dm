@@ -8,7 +8,6 @@
 	var/skin = null // Set to "tox", "fire", "o2", "adv" or "bezerk" for different firstaid styles.
 
 	//AI vars
-	var/last_newpatient_speak = 0
 	var/vocal = 1
 
 	//Healing vars
@@ -42,13 +41,13 @@
 	for(var/mob/living/carbon/human/H in view(7, src)) // Time to find a patient!
 		if(confirmTarget(H))
 			target = H
-			if(last_newpatient_speak + 300 < world.time)
+			THROTTLE(last_speak, 30 SECONDS)
+			if(last_speak)
 				var/list/messagevoice = list("Hey, [H.name]! Hold on, I'm coming." = 'sound/voice/medbot/coming.ogg', "Wait [H.name]! I want to help!" = 'sound/voice/medbot/help.ogg', "[H.name], you appear to be injured!" = 'sound/voice/medbot/injured.ogg')
 				var/message = pick(messagevoice)
 				say(message)
 				playsound(src, messagevoice[message], 75, FALSE)
 				custom_emote(1, "points at [H.name].")
-				last_newpatient_speak = world.time
 			break
 
 /mob/living/bot/medbot/UnarmedAttack(mob/living/carbon/human/H, proximity)

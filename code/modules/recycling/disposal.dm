@@ -23,7 +23,6 @@
 	var/flushing = 0	// true if flushing in progress
 	var/flush_every_ticks = 30 //Every 30 ticks it will look whether it is ready to flush
 	var/flush_count = 0 //this var adds 1 once per tick. When it reaches flush_every_ticks it resets and tries to flush.
-	var/last_sound = 0
 	var/list/allowed_objects = list(/obj/structure/closet)
 	active_power_usage = 2200	//the pneumatic pump power. 3 HP ~ 2200W
 	idle_power_usage = 100
@@ -434,9 +433,9 @@
 
 
 	sleep(10)
-	if(last_sound < world.time + 1)
+	THROTTLE(last_sound, 1)
+	if(last_sound)
 		playsound(src, 'sound/machines/disposalflush.ogg', 50, 0, 0)
-		last_sound = world.time
 	sleep(5) // wait for animation to finish
 
 
