@@ -233,8 +233,9 @@
 
 /obj/effect/rune/convert/proc/on_convert_success(list/mob/living/cultists, mob/living/carbon/target)
 	if(isWizard(target))
-		to_chat(target, SPAN_DANGER("Followers of the Blood God have tried to corrupt you. DEATH IS COMMING FOR THOSE FOOLS AND YOU"))
-		target.gib()
+		to_chat(target, SPAN_DANGER("Followers of the Blood God have tried to corrupt you. DEATH IS COMMING FOR THOSE FOOLS"))
+		GLOB.wizards.remove_antagonist(target.mind, TRUE)
+		GLOB.cult.add_antagonist(target.mind, ignore_role = TRUE, do_not_equip = TRUE)
 		for(var/mob/living/M in cultists)
 			to_chat(M, SPAN_DANGER("This person cant be converted. IT WAS A DEADLY MISTAKE"))
 			M.gib()
