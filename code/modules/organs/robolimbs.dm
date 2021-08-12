@@ -348,7 +348,7 @@ var/datum/robolimb/basic_robolimb
 	company = list("Xion", "Xion - Whiteout")
 
 /obj/item/weapon/disk/limb/zenghu
-	company = list("Zeng-Hu", "Zeng-Hu - Unathi")
+	company = list("Zeng-Hu", "Zeng-Hu - Tajaran")
 
 // Rare ones
 
