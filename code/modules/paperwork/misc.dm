@@ -15,13 +15,13 @@
 
 /obj/item/weapon/paper/eng_wires
 	name = "Airlock Wires"
+	readonly = TRUE
 
 /obj/item/weapon/paper/eng_wires/Initialize()
-	. = ..()
 	var/list/airlock_wires = same_wires[/obj/machinery/door/airlock].Copy()
 
-	var/message = ""
-	message += "\[center]\[large]There is some information about standart airlock wires:\[/large]"
+	info = ""
+	info += "\[center]\[large]There is some information about standart airlock wires:\[/large]\[/center]"
 
 	var/list/wire_to_wire_purpose_list = list(
 		num2text(AIRLOCK_WIRE_DOOR_BOLTS) = "Door bolts wire",
@@ -40,10 +40,8 @@
 
 	for(var/wire_color in airlock_wires)
 		var/airlock_num = airlock_wires[wire_color]
-		message += "\[br]\[i][wire_color]\[/i] - [wire_to_wire_purpose_list[num2text(airlock_num)]]"
-	message += "\[/center]"
-	set_content(message)
-	make_readonly()
+		info += "\[br]\[i][wire_color]\[/i] - [wire_to_wire_purpose_list[num2text(airlock_num)]]"
+	. = ..()
 
 /obj/item/weapon/paper/exodus_armory
 	name = "armory inventory"
@@ -95,6 +93,7 @@
 	desc = "A flimsy piece of laminated cardboard."
 	icon_state = "trade_license"
 	dynamic_icon = TRUE
+	readonly = TRUE
 	var/dest_station = ""
 	var/possible_mis = list("nt_code", "org_code", "date", "dest", "department")
 	var/true_departaments = list("NanoTrasen Supply Department", \
@@ -148,7 +147,6 @@
 
 
 /obj/item/weapon/paper/trade_lic/Initialize()
-	. = ..()
 	dest_station = "[station_name()]"
 	var/department = pick(true_departaments)
 	var/org_name = pick(org_names)
@@ -169,38 +167,36 @@
 			if("department")
 				department = pick(fake_departaments)
 
-	var/message = ""
-	message += "\[center]\[large]\[b]Разрешение на торговлю\[/b]\[/large]\[/center]"
-	message += "\[center]\[large]\[bluelogo]\[/large]\[/center]"
-	message += "\[small]Выдана агентом [pick(GLOB.first_names_female)] [pick(GLOB.last_names)] от лица [department]"
-	message += "\[br]Код агента: [nt_code]\[br] Код организации: [org_code]"
-	message += "\[br]Дата выдачи: [date["day"]].[date["month"]].[date["year"]]\[br] Срок действия: [date["dur"]] года\[/small]"
-	message += "\[hr]"
-	message += "\[small]Данная лицензия дает разрешение всем сотрудникам торговой \
+	info = ""
+	info += "\[center]\[large]\[b]Разрешение на торговлю\[/b]\[/large]\[/center]"
+	info += "\[center]\[large]\[bluelogo]\[/large]\[/center]"
+	info += "\[small]Выдана агентом [pick(GLOB.first_names_female)] [pick(GLOB.last_names)] от лица [department]"
+	info += "\[br]Код агента: [nt_code]\[br] Код организации: [org_code]"
+	info += "\[br]Дата выдачи: [date["day"]].[date["month"]].[date["year"]]\[br] Срок действия: [date["dur"]] года\[/small]"
+	info += "\[hr]"
+	info += "\[small]Данная лицензия дает разрешение всем сотрудникам торговой \
 	 компании \[i][org_name]\[/i] обслуживать станцию \[i][dest_station]\[/i] корпорации НаноТрейзен, осуществляя услуги по \
 	 сбыту и приобретению перечисленных категорий товара:"
-	message += "\[list]"
+	info += "\[list]"
 	for(var/tr_cat in trade_category)
 		if(prob(trade_category[tr_cat]))
-			message += "\[item]\[b][tr_cat]\[/b]\[/item]"
-	message += "\[/list]"
-	message += "\[i]This paper has been stamped with the [department] stamp.\[/i]"
-	message += "\[br]\[i]This paper has been stamped with the [org_name] stamp.\[/i]"
-	message += "\[/small]"
-	set_content(message)
-	make_readonly()
+			info += "\[item]\[b][tr_cat]\[/b]\[/item]"
+	info += "\[/list]"
+	info += "\[i]This paper has been stamped with the [department] stamp.\[/i]"
+	info += "\[br]\[i]This paper has been stamped with the [org_name] stamp.\[/i]"
+	info += "\[/small]"
+	. = ..()
 
 /obj/item/weapon/paper/trade_lic/trade_guide
 	name = "Trade License Template"
 	dynamic_icon = FALSE
 
 /obj/item/weapon/paper/trade_lic/trade_guide/Initialize()
-	. = ..()
-	var/message = ""
-	message += "Departments:\[small]\[list]"
+	info = ""
+	info += "Departments:\[small]\[list]"
 	for(var/tr_deps in true_departaments)
-		message += "\[item]\[b][tr_deps]\[/b]\[/item]"
-	message += "\[/small]\[/list]"
-	message += "NT departments codes: XXX-XXX-XXX\[br]"
-	message += "Organizations codes: XXX-(XX or XXX)-XXX\[br]"
-	set_content(message)
+		info += "\[item]\[b][tr_deps]\[/b]\[/item]"
+	info += "\[/small]\[/list]"
+	info += "NT departments codes: XXX-XXX-XXX\[br]"
+	info += "Organizations codes: XXX-(XX or XXX)-XXX\[br]"
+	. = ..()
