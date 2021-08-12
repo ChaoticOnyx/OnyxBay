@@ -327,7 +327,7 @@ var/datum/robolimb/basic_robolimb
 		name = "[company[1]] [initial(name)]"
 
 /obj/item/weapon/disk/limb/nanotrasen
-	company = list("NanoTrasen", "NanoTrasen Plus")
+	company = list("NanoTrasen", "NanoTrasen Plus", "NanoTrasen - Tajaran", "NanoTrasen - Unathi")
 
 /obj/item/weapon/disk/limb/bishop
 	company = list("Bishop", "Bishop - Rook")
@@ -339,7 +339,7 @@ var/datum/robolimb/basic_robolimb
 	company = list("Hephaestus", "Hephaestus - Athena")
 
 /obj/item/weapon/disk/limb/veymed
-	company = list("Vey-Med")
+	company = list("Vey-Med", "Vey-Med - Skrell")
 
 /obj/item/weapon/disk/limb/wardtakahashi
 	company = list("Ward-Takahashi", "Ward-Takahashi - Spirit")
@@ -348,7 +348,7 @@ var/datum/robolimb/basic_robolimb
 	company = list("Xion", "Xion - Whiteout")
 
 /obj/item/weapon/disk/limb/zenghu
-	company = list("Zeng-Hu")
+	company = list("Zeng-Hu", "Zeng-Hu - Unathi")
 
 // Rare ones
 
