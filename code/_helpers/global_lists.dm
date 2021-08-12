@@ -173,9 +173,9 @@ var/global/list/string_slot_flags = list(
 		S.race_key = rkey //Used in mob icon caching.
 		all_species[S.name] = S
 
-		if(!(S.spawn_flags & SPECIES_IS_RESTRICTED))
+		if(!(S.spawn_flags & SPECIES_IS_RESTRICTED) && !(S.name in playable_species)) // Fixes "playable_species = list(SPECIES_HUMAN, SPECIES_HUMAN)"
 			playable_species += S.name
-		if(S.spawn_flags & SPECIES_IS_WHITELISTED)
+		if((S.spawn_flags & SPECIES_IS_WHITELISTED) && !(S.name in whitelisted_species)) // Fixes "whitelisted_species = list(SPECIES_HUMAN, SPECIES_HUMAN)"
 			whitelisted_species += S.name
 
 	//Posters
