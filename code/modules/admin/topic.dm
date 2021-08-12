@@ -193,10 +193,6 @@
 		if(!SSticker.mode || !evacuation_controller)
 			return
 
-		if(SSticker.mode.name == "blob")
-			alert("You can't call the shuttle during blob!")
-			return
-
 		switch(href_list["call_shuttle"])
 			if("1")
 				if (evacuation_controller.call_evacuation(usr, TRUE))
