@@ -132,7 +132,7 @@ var/global/datum/body_build/default_body_build = new
 	dam_mask             = 'icons/mob/human_races/masks/dam_mask_human_m_slim.dmi'
 
 /datum/body_build/slim/alt/tajaran //*sigh. I regret of doing this.
-	name                 = "Slim Tajaran"
+	name                 = "Slim"
 
 	clothing_icons       = list(
 		"slot_w_uniform" = 'icons/inv_slots/uniforms/mob_slimalt.dmi',
@@ -159,7 +159,7 @@ var/global/datum/body_build/default_body_build = new
 	dam_mask             = 'icons/mob/human_races/masks/dam_mask_tajaran_slim.dmi'
 
 /datum/body_build/tajaran
-	name                 = "Tajaran"
+	name                 = "Default"
 
 	clothing_icons       = list(
 		"slot_w_uniform" = 'icons/inv_slots/uniforms/mob.dmi',
@@ -207,7 +207,7 @@ var/global/datum/body_build/default_body_build = new
 	dam_mask             = 'icons/mob/human_races/masks/dam_mask_lizard.dmi'
 
 /datum/body_build/vox
-	name                 = "Vox"
+	name                 = SPECIES_VOX
 
 	clothing_icons       = list(
 		"slot_w_uniform" = 'icons/inv_slots/uniforms/mob_vox.dmi',
@@ -230,7 +230,7 @@ var/global/datum/body_build/default_body_build = new
 		)
 
 /datum/body_build/monkey
-	name                 = "Monkey"
+	name                 = SPECIES_MONKEY
 
 	clothing_icons       = list(
 		"slot_w_uniform" = 'icons/mob/species/monkey/uniform.dmi',
@@ -255,7 +255,7 @@ var/global/datum/body_build/default_body_build = new
 	dam_mask             = 'icons/mob/human_races/masks/dam_mask_monkey.dmi'
 
 /datum/body_build/xenomorph
-	name                 = "Xenomorph"
+	name                 = SPECIES_XENO
 	genders              = list(MALE, FEMALE, NEUTER)
 	blood_icon           = null // Fuck it, I ain't gonna spend all day showering if I'm an apex predator
 	dam_mask             = 'icons/mob/human_races/masks/dam_mask_xenos.dmi'
