@@ -51,7 +51,7 @@
 	set_light(l_max_bright = active_max_bright, l_outer_range = active_outer_range, l_color = brightness_color)
 
 
-/obj/item/weapon/melee/energy/sword/deactivate(mob/living/user)
+/obj/item/weapon/melee/energy/sword/dyrnwyn/deactivate(mob/living/user)
 	if(active)
 		to_chat(user, SPAN("notice", "\The [src] flames disappear!"))
 	..()
