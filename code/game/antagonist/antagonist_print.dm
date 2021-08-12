@@ -22,7 +22,6 @@
 					failed = 1
 				num++
 			if(P.ambitions)
-				text += "<br>Their goals for today were..."
 				text += "<br>Their goals for today were...<br>[SPAN_NOTICE(P.ambitions)]"
 			if(failed)
 				text += "<br><font color='red'><B>The [role_text] has failed.</B></font>"
