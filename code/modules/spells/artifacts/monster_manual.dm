@@ -13,14 +13,16 @@
 							/mob/living/simple_animal/familiar/carcinus,
 							/mob/living/simple_animal/familiar/horror,
 							/mob/living/simple_animal/familiar/minor_amaros,
-							/mob/living/simple_animal/familiar/pike
+							/mob/living/simple_animal/familiar/pike,
+							/mob/living/simple_animal/familiar/goat
 							)
 	var/list/monster_info = list(   "It is well known that the blackest of cats make good familiars.",
 									"Mice are full of mischief and magic. A simple animal, yes, but one of the wizard's finest.",
 									"A mortal decendant of the original Carcinus, it is said their shells are near impenetrable and their claws as sharp as knives.",
 									"The physical embodiment of flesh and decay, its made from the reanimated corpse of a murdered man.",
 									"A small magical creature known for its healing powers and pacifist ways.",
-									"The more carnivorous and knowledge hungry cousin of the Space Carp. Keep away from books."
+									"The more carnivorous and knowledge hungry cousin of the Space Carp. Keep away from books.",
+									"The old symbol of Satan. But this one almost can`t do anything special."
 									)
 
 /obj/item/weapon/monster_manual/attack_self(mob/user as mob)

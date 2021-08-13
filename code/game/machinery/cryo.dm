@@ -21,7 +21,6 @@
 
 	var/current_heat_capacity = 50
 
-	var/occupant_icon_update_timer = 0
 	var/ejecting = 0
 	var/biochemical_stasis = 0
 
@@ -95,7 +94,8 @@
 
 	if(occupant)
 		if(occupant.stat != DEAD)
-			if(occupant_icon_update_timer < world.time)
+			THROTTLE(icon_update_cooldown, 3 SECONDS)
+			if(icon_update_cooldown)
 				update_icon()
 			process_occupant()
 
@@ -284,7 +284,6 @@
 		pickle.overlays = occupant.overlays
 		pickle.pixel_z = 18
 		overlays += pickle
-		occupant_icon_update_timer = world.time + 30
 
 	I = image(icon, "lid[overlays_state]")
 	overlays += I

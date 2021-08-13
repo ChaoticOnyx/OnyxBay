@@ -287,34 +287,34 @@
 	. = ..()
 
 	if(.)
-		return
+		return TRUE
 
 	if(!allowed(usr))
 		to_chat(usr, SPAN("warning", "Access denied."))
-		return
+		return TRUE
 
 	switch (action)
 		if ("print")
 			if (!src.connected)
 				to_chat(usr, SPAN("warning", "Error: No body scanner connected."))
-				return
+				return TRUE
 
 			var/mob/living/carbon/human/occupant = src.connected.occupant
 			if (!src.connected.occupant)
 				to_chat(usr, SPAN("warning", "The body scanner is empty."))
-				return
+				return TRUE
 
 			if (!istype(occupant, /mob/living/carbon/human))
 				to_chat(usr, SPAN("warning", "The body scanner cannot scan that lifeform."))
-				return
+				return TRUE
 
 			var/obj/item/weapon/paper/P = new /obj/item/weapon/paper/(loc)
 			P.set_content("<tt>[connected.occupant.get_medical_data()]</tt>", "Body scan report - [occupant]", TRUE)
-			return
+			return TRUE
 		if ("eject")
 			if (connected)
 				connected.eject()
-				return
+				return TRUE
 
 /obj/machinery/body_scanconsole/tgui_data(mob/user)
 	var/list/data = list()
@@ -333,6 +333,7 @@
 	if(!ui)
 		ui = new(user, src, "BodyScanner", name)
 		ui.open()
+		ui.set_autoupdate(TRUE)
 
 /obj/machinery/body_scanconsole/attack_hand(mob/user)
 	if(..())
