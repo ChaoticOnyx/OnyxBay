@@ -26,6 +26,7 @@ GLOBAL_DATUM_INIT(ert, /datum/antagonist/ert, new)
 	initial_spawn_target = 4
 
 	station_crew_involved = FALSE
+	can_spawn_from_ghost = TRUE
 
 	var/is_station_secure = TRUE
 

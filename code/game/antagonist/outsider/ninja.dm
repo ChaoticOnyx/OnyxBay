@@ -20,6 +20,7 @@ GLOBAL_DATUM_INIT(ninjas, /datum/antagonist/ninja, new)
 	faction = "ninja"
 
 	station_crew_involved = FALSE
+	can_spawn_from_ghost = TRUE
 
 /datum/antagonist/ninja/Initialize()
 	. = ..()

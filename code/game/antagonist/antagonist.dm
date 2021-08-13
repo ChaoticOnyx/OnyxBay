@@ -41,6 +41,7 @@
 	var/spawn_announcement_title            // Report title.
 	var/spawn_announcement_sound            // Report sound clip.
 	var/spawn_announcement_delay            // Time between initial spawn and round announcement.
+	var/can_spawn_from_ghost = FALSE
 
 	// Misc.
 	var/landmark_id                         // Spawn point identifier.
@@ -296,8 +297,8 @@
 		return TRUE
 	if (istype(player.current, /mob/living/silicon/ai))
 		return TRUE
-	if (isghostmind(player))
+	if (isghostmind(player) && can_spawn_from_ghost)
 		return TRUE
-	if (istype(player.current, /mob/new_player))
+	if (istype(player.current, /mob/new_player) && can_spawn_from_ghost) // also counts as ghost.
 		return TRUE
 	return FALSE

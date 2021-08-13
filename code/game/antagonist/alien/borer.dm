@@ -24,6 +24,7 @@ GLOBAL_DATUM_INIT(borers, /datum/antagonist/borer, new)
 	spawn_announcement_delay = 5000
 
 	station_crew_involved = FALSE
+	can_spawn_from_ghost = TRUE
 
 /datum/antagonist/borer/Initialize()
 	spawn_announcement = replacetext(GLOB.using_map.unidentified_lifesigns_message, "%STATION_NAME%", station_name())
