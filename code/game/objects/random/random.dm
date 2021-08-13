@@ -192,7 +192,7 @@
 				/obj/item/weapon/storage/firstaid/o2 = 6,
 				/obj/item/weapon/storage/firstaid/adv = 3,
 				/obj/item/weapon/storage/firstaid/combat = 1,
-				/obj/item/weapon/storage/firstaid/empty = 6,
+				/obj/item/weapon/storage/firstaid = 6,
 				/obj/item/weapon/storage/firstaid/fire = 6)
 
 /obj/random/contraband

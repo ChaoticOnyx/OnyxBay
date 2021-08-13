@@ -102,12 +102,6 @@
 	qdel(src)
 	return
 
-/obj/structure/window/blob_act(destroy)
-	if (destroy)
-		shatter()
-	else
-		take_damage(25)
-
 /obj/structure/window/bullet_act(obj/item/projectile/Proj)
 
 	var/proj_damage = Proj.get_structure_damage()

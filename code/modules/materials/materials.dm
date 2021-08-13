@@ -972,3 +972,27 @@ var/list/name_to_material
 	ignition_point = T0C+232
 	melting_point = T0C+300
 	conductive = 0
+
+/material/goat_hide
+	name = "goat hide"
+	use_name = "goat hide"
+	stack_type = /obj/item/stack/material/animalhide/goat
+	stack_origin_tech = list(TECH_MATERIAL = 2)
+	icon_colour = "#e8e7c8"
+	flags = MATERIAL_PADDING
+	ignition_point = T0C+300
+	melting_point = T0C+300
+	conductive = 0
+	craft_tool = 1
+
+/material/hairless_hide
+	name = "hairless hide"
+	use_name = "hairless hide"
+	stack_type = /obj/item/stack/material/hairlesshide
+	stack_origin_tech = list(TECH_MATERIAL = 2)
+	icon_colour = "#e8e7c8"
+	flags = MATERIAL_PADDING
+	ignition_point = T0C+300
+	melting_point = T0C+300
+	conductive = 0
+	craft_tool = 1
