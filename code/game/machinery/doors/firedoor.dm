@@ -76,7 +76,7 @@
 /obj/machinery/door/firedoor/examine(mob/user)
 	. = ..()
 	if(!istype(usr, /mob/living/silicon) && (get_dist(src, user) > 1 || !density))
-			return
+		return
 
 	if(pdiff >= FIREDOOR_MAX_PRESSURE_DIFF)
 		. += "\n<span class='warning'>WARNING: Current pressure differential is [pdiff]kPa! Opening door may result in injury!</span>"
