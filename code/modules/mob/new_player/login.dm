@@ -77,4 +77,4 @@
 	if(client.prefs.lastchangelog != changelog_hash)
 		to_chat(client, SPAN("info", "You have unread updates in the changelog."))
 		if(config.aggressive_changelog)
-			client.changes()
+			client.changelog()
