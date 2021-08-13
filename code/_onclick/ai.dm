@@ -27,9 +27,6 @@
 		return
 
 	var/list/modifiers = params2list(params)
-	if(modifiers["ctrl"] && modifiers["alt"])
-		CtrlAltClickOn(A)
-		return
 	if(modifiers["shift"] && modifiers["ctrl"])
 		CtrlShiftClickOn(A)
 		return
@@ -97,11 +94,6 @@
 	for AI shift, ctrl, and alt clicking.
 */
 
-/mob/living/silicon/ai/CtrlAltClickOn(atom/A)
-	if(!control_disabled && A.AICtrlAltClick(src))
-		return
-	..()
-
 /mob/living/silicon/ai/ShiftClickOn(atom/A)
 	if(!control_disabled && A.AIShiftClick(src))
 		return
@@ -127,9 +119,7 @@
 	I have no idea why it was in atoms.dm instead of respective files.
 */
 
-/atom/proc/AICtrlAltClick()
-
-/obj/machinery/door/airlock/AICtrlAltClick() // Electrifies doors.
+/obj/machinery/door/airlock/AIAltClick() // Electrifies doors.
 	if(usr.incapacitated())
 		return
 	if(!electrified_until)
