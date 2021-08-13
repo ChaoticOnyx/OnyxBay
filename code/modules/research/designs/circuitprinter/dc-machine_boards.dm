@@ -72,7 +72,7 @@
 	name = "All-In-One Grinder"
 	id = "grinder"
 	req_tech = list(TECH_ENGINEERING = 3, TECH_BIO = 2)
-	build_path = /obj/item/weapon/circuitboard/chemmaster
+	build_path = /obj/item/weapon/circuitboard/grinder
 	sort_string = "FAGAP"
 
 /datum/design/circuit/chemical_dispenser

@@ -9,10 +9,10 @@
 	density = 1
 	anchored = 1
 	use_power = POWER_USE_OFF
-	var/obj/item/weapon/circuitboard/circuit = null
-	var/list/components = null
-	var/list/req_components = null
-	var/list/req_component_names = null
+	var/obj/item/weapon/circuitboard/circuit
+	var/list/components = list()
+	var/list/req_components = list()
+	var/list/req_component_names = list()
 	var/state = 1
 	atom_flags = ATOM_FLAG_CLIMBABLE
 
@@ -108,13 +108,11 @@
 							var/obj/machinery/new_machine = new src.circuit.build_path(src.loc, src.dir)
 
 							if(new_machine.component_parts)
-								new_machine.component_parts.Cut()
-							else
-								new_machine.component_parts = list()
+								QDEL_LIST(new_machine.component_parts)
 
 							src.circuit.construct(new_machine)
 
-							for(var/obj/O in src)
+							for(var/obj/O in components)
 								if(circuit.contain_parts) // things like disposal don't want their parts in them
 									O.loc = new_machine
 								else
@@ -125,6 +123,7 @@
 								circuit.loc = new_machine
 							else
 								circuit.loc = null
+							new_machine.component_parts.Add(circuit)
 
 							new_machine.RefreshParts()
 							qdel(src)
@@ -141,13 +140,13 @@
 											CC.amount = camt
 											CC.update_icon()
 											CP.use(camt)
-											components += CC
+											components.Add(CC)
 											req_components[I] -= camt
 											update_desc()
 											break
 									user.drop_item()
 									P.loc = src
-									components += P
+									components.Add(P)
 									req_components[I]--
 									update_desc()
 									break
