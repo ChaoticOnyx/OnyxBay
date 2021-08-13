@@ -75,8 +75,7 @@
 
 /obj/machinery/door/firedoor/examine(mob/user)
 	. = ..()
-	if(!istype(usr, /mob/living/silicon))
-		if(get_dist(src, user) > 1 || !density)
+	if(!istype(usr, /mob/living/silicon) && (get_dist(src, user) > 1 || !density))
 			return
 
 	if(pdiff >= FIREDOOR_MAX_PRESSURE_DIFF)
