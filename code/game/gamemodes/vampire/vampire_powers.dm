@@ -8,14 +8,14 @@
 /mob/living/carbon/human/proc/vampire_alertness()
 	set category = "Vampire"
 	set name = "Victim Alertness"
-	set desc = "Toggle whether you wish for your victims to get paralyzed and forget your deeds."
+	set desc = "Toggle whether you wish for your victims to forget your deeds."
 	var/power_use_cost = 0
 	var/datum/vampire/vampire = vampire_power(power_use_cost, 0)
 	vampire.stealth = !vampire.stealth
 	if(vampire.stealth)
-		to_chat(src, SPAN_NOTICE("Your victims will now forget your interactions, and get paralyzed when you do them."))
+		to_chat(src, SPAN_NOTICE("Your victims will now forget your interactions."))
 	else
-		to_chat(src, SPAN_NOTICE("Your victims will now remember your interactions, and stay completely mobile during them."))
+		to_chat(src, SPAN_NOTICE("Your victims will now remember your interactions."))
 
 // Drains the target's blood.
 /mob/living/carbon/human/proc/vampire_drain_blood()

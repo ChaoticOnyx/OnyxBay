@@ -120,3 +120,13 @@ GLOBAL_VAR_INIT(rollovercheck_last_timeofday, 0)
 	while (world.tick_usage > min(TICK_LIMIT_TO_RUN, Master.current_ticklimit))
 
 #undef DELTA_CALC
+
+/*
+	Simple throttle realization.
+	Using example:
+
+	THROTTLE(my_cooldown, 1 SECOND)
+	if(my_cooldown)
+		do_something()
+*/
+#define THROTTLE(variable, delay) var/static/__throttle##variable=world.time; var/##variable = 0; if(__throttle##variable + delay < world.time) {__throttle##variable=world.time; variable=TRUE} else{variable=FALSE}
