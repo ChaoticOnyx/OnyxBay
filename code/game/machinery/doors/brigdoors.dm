@@ -219,6 +219,7 @@
 	if(!ui)
 		ui = new(user, src, "BrigTimer", name)
 		ui.open()
+		ui.set_autoupdate(TRUE)
 
 // icon update function
 // if NOPOWER, display blank

@@ -24,8 +24,6 @@
 
 	tgui_interact(user)
 
-
-
 // tgui interact code generously lifted from tgstation.
 /obj/item/weapon/airlock_electronics/tgui_interact(mob/user, datum/tgui/ui)
 	ui = SStgui.try_update_ui(user, src, ui)
@@ -33,6 +31,7 @@
 	if(!ui)
 		ui = new(user, src, "AirlockElectronics", name)
 		ui.open()
+		ui.set_autoupdate(TRUE)
 
 /obj/item/weapon/airlock_electronics/tgui_data(mob/user)
 	var/list/data = list()
@@ -67,39 +66,39 @@
 		if("clear")
 			conf_access = list()
 			one_access = 0
-			return
+			return TRUE
 		if("one_access")
 			one_access = !one_access
-			return
+			return TRUE
 		if("set")
 			var/access = text2num(params["access"])
 			if (!(access in conf_access))
 				conf_access += access
 			else
 				conf_access -= access
-			return
+			return TRUE
 		if("unlock")
 			if(!lockable)
-				return
+				return TRUE
 			if(!req_access || istype(usr, /mob/living/silicon))
 				locked = 0
 				last_configurator = usr.name
-				return
+				return TRUE
 			else
 				var/obj/item/weapon/card/id/I = usr.get_active_hand()
 				I = I ? I.GetIdCard() : null
 				if(!istype(I, /obj/item/weapon/card/id))
 					to_chat(usr, SPAN("warning", "[\src] flashes a yellow LED near the ID scanner. Did you remember to scan your ID or PDA?"))
-					return
+					return TRUE
 				if (check_access(I))
 					locked = 0
 					last_configurator = I.registered_name
 				else
 					to_chat(usr, SPAN("warning", "[\src] flashes a red LED near the ID scanner, indicating your access has been denied."))
-					return
+					return TRUE
 		if("lock")
 			if(!lockable)
-				return
+				return TRUE
 			locked = 1
 
 /obj/item/weapon/airlock_electronics/secure
