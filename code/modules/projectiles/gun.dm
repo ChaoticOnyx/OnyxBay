@@ -86,6 +86,7 @@
 	var/tmp/told_cant_shoot = 0 //So that it doesn't spam them with the fact they cannot hit them.
 	var/tmp/lock_time = -100
 
+	var/use_weapon_controller = TRUE
 	var/formfactor_type = /obj/item/formfactor
 	var/obj/item/formfactor/weapon_controller
 
@@ -171,63 +172,63 @@
 		return ..() //Pistolwhippin'
 
 /obj/item/weapon/gun/proc/Fire(atom/target, mob/living/user, clickparams, pointblank=0, reflex=0)
-	. = weapon_controller.Fire(arglist(args))
-	/*
-	if(!user || !target) return
-	if(target.z != user.z) return
+	if(use_weapon_controller)
+		. = weapon_controller.Fire(arglist(args))
+	else
+		if(!user || !target) return
+		if(target.z != user.z) return
 
-	add_fingerprint(user)
+		add_fingerprint(user)
 
-	if(!special_check(user))
-		return
+		if(!special_check(user))
+			return
 
-	if(world.time < next_fire_time)
-		if (world.time % 3) //to prevent spam
-			to_chat(user, "<span class='warning'>[src] is not ready to fire again!</span>")
-		return
+		if(world.time < next_fire_time)
+			if (world.time % 3) //to prevent spam
+				to_chat(user, "<span class='warning'>[src] is not ready to fire again!</span>")
+			return
 
-	var/shoot_time = (burst - 1)* burst_delay
-	user.setClickCooldown(shoot_time) //no clicking on things while shooting
-	user.setMoveCooldown(shoot_time) //no moving while shooting either
-	next_fire_time = world.time + shoot_time
+		var/shoot_time = (burst - 1)* burst_delay
+		user.setClickCooldown(shoot_time) //no clicking on things while shooting
+		user.setMoveCooldown(shoot_time) //no moving while shooting either
+		next_fire_time = world.time + shoot_time
 
-	var/held_twohanded = (user.can_wield_item(src) && src.is_held_twohanded(user))
+		var/held_twohanded = (user.can_wield_item(src) && src.is_held_twohanded(user))
 
-	//actually attempt to shoot
-	var/turf/targloc = get_turf(target) //cache this in case target gets deleted during shooting, e.g. if it was a securitron that got destroyed.
-	for(var/i in 1 to burst)
-		var/obj/projectile = weapon_controller.consume_next_projectile(user)
-		if(!projectile)
-			handle_click_empty(user)
-			break
+		//actually attempt to shoot
+		var/turf/targloc = get_turf(target) //cache this in case target gets deleted during shooting, e.g. if it was a securitron that got destroyed.
+		for(var/i in 1 to burst)
+			var/obj/projectile = weapon_controller.consume_next_projectile(user)
+			if(!projectile)
+				handle_click_empty(user)
+				break
 
-		process_accuracy(projectile, user, target, i, held_twohanded)
+			process_accuracy(projectile, user, target, i, held_twohanded)
 
-		if(pointblank)
-			process_point_blank(projectile, user, target)
+			if(pointblank)
+				process_point_blank(projectile, user, target)
 
-		if(process_projectile(projectile, user, target, user.zone_sel?.selecting, clickparams))
-			var/burstfire = 0
-			if(burst > 1) // It ain't a burst? Then just act normally
-				if(i > 1)
-					burstfire = -1  // We've already seen the BURST message, so shut up
-				else
-					burstfire = 1 // We've yet to see the BURST message
-			handle_post_fire(user, target, pointblank, reflex, burstfire)
-			update_icon()
+			if(process_projectile(projectile, user, target, user.zone_sel?.selecting, clickparams))
+				var/burstfire = 0
+				if(burst > 1) // It ain't a burst? Then just act normally
+					if(i > 1)
+						burstfire = -1  // We've already seen the BURST message, so shut up
+					else
+						burstfire = 1 // We've yet to see the BURST message
+				handle_post_fire(user, target, pointblank, reflex, burstfire)
+				update_icon()
 
-		if(i < burst)
-			sleep(burst_delay)
+			if(i < burst)
+				sleep(burst_delay)
 
-		if(!(target && target.loc))
-			target = targloc
-			pointblank = 0
+			if(!(target && target.loc))
+				target = targloc
+				pointblank = 0
 
-	//update timing
-	user.setClickCooldown(DEFAULT_QUICK_COOLDOWN)
-	user.setMoveCooldown(move_delay)
-	next_fire_time = world.time + fire_delay
-	*/
+		//update timing
+		user.setClickCooldown(DEFAULT_QUICK_COOLDOWN)
+		user.setMoveCooldown(move_delay)
+		next_fire_time = world.time + fire_delay
 
 //obtains the next projectile to fire
 //this should be called by weapon controller.

@@ -198,27 +198,30 @@
 	return TRUE
 
 /obj/item/weapon/gun/flamer/Fire(atom/target, mob/living/user, params, pointblank=0, reflex=0)
-	var/turf/curloc = get_turf(user) //In case the target or we are expired.
-	var/turf/targloc = get_turf(target)
-	if(!targloc || !curloc)
-		return //Something has gone wrong...
+	if(use_weapon_controller)
+		. = weapon_controller.Fire(arglist(args))
+	else
+		var/turf/curloc = get_turf(user) //In case the target or we are expired.
+		var/turf/targloc = get_turf(target)
+		if(!targloc || !curloc)
+			return //Something has gone wrong...
 
-	if(!is_held_twohanded(user))
-		to_chat(user, SPAN_WARNING("You cant fire on target with just one hand"))
-		return
+		if(!is_held_twohanded(user))
+			to_chat(user, SPAN_WARNING("You cant fire on target with just one hand"))
+			return
 
-	if(is_flamer_can_fire(user))
-		if(world.time > last_use + fire_delay)
-			last_fired = world.time
-			last_use = world.time
-			unleash_flame(target, user)
-			targloc.hotspot_expose(700,125)
-			log_attack("[user] start spreadding fire with \ref[src].")
-			return
-		else
-			to_chat(user, SPAN_WARNING("[src] is not ready to fire again!"))
-			playsound(loc, 'sound/signals/warning3.ogg', 50, 0)
-			return
+		if(is_flamer_can_fire(user))
+			if(world.time > last_use + fire_delay)
+				last_fired = world.time
+				last_use = world.time
+				unleash_flame(target, user)
+				targloc.hotspot_expose(700,125)
+				log_attack("[user] start spreadding fire with \ref[src].")
+				return
+			else
+				to_chat(user, SPAN_WARNING("[src] is not ready to fire again!"))
+				playsound(loc, 'sound/signals/warning3.ogg', 50, 0)
+				return
 
 
 /obj/item/weapon/gun/flamer/proc/is_flamer_can_fire(mob/user)
