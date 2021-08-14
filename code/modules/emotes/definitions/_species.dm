@@ -103,8 +103,8 @@ GLOBAL_LIST_INIT(default_humanoid_emotes_proc, list(
 
 /datum/species/human/New()
 	. = ..()
-	default_emotes.Add(GLOB.default_humanoid_emotes)
-	inherent_verbs.Add(GLOB.default_humanoid_emotes_proc)
+	default_emotes += GLOB.default_humanoid_emotes
+	inherent_verbs += GLOB.default_humanoid_emotes_proc
 
 /mob/living/carbon/update_emotes()
 	. = ..(skip_sort=1)
