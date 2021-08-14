@@ -86,6 +86,9 @@
 	var/tmp/told_cant_shoot = 0 //So that it doesn't spam them with the fact they cannot hit them.
 	var/tmp/lock_time = -100
 
+	var/formfactor_type = /obj/item/formfactor
+	var/obj/item/formfactor/weapon_controller
+
 /obj/item/weapon/gun/New()
 	..()
 	for(var/i in 1 to firemodes.len)
@@ -93,6 +96,7 @@
 
 	if(isnull(scoped_accuracy))
 		scoped_accuracy = accuracy
+	weapon_controller = new formfactor_type(src)
 
 /obj/item/weapon/gun/update_twohanding()
 	if(one_hand_penalty)
@@ -126,7 +130,7 @@
 		to_chat(M, "<span class='danger'>Your fingers are much too large for the trigger guard!</span>")
 		return 0
 	if((MUTATION_CLUMSY in M.mutations) && prob(40) && !clumsy_unaffected) //Clumsy handling
-		var/obj/P = consume_next_projectile()
+		var/obj/P = weapon_controller.consume_next_projectile()
 		if(P)
 			if(process_projectile(P, user, user, pick(BP_L_FOOT, BP_R_FOOT)))
 				handle_post_fire(user, user)
@@ -167,6 +171,8 @@
 		return ..() //Pistolwhippin'
 
 /obj/item/weapon/gun/proc/Fire(atom/target, mob/living/user, clickparams, pointblank=0, reflex=0)
+	. = weapon_controller.Fire(arglist(args))
+	/*
 	if(!user || !target) return
 	if(target.z != user.z) return
 
@@ -190,7 +196,7 @@
 	//actually attempt to shoot
 	var/turf/targloc = get_turf(target) //cache this in case target gets deleted during shooting, e.g. if it was a securitron that got destroyed.
 	for(var/i in 1 to burst)
-		var/obj/projectile = consume_next_projectile(user)
+		var/obj/projectile = weapon_controller.consume_next_projectile(user)
 		if(!projectile)
 			handle_click_empty(user)
 			break
@@ -221,8 +227,10 @@
 	user.setClickCooldown(DEFAULT_QUICK_COOLDOWN)
 	user.setMoveCooldown(move_delay)
 	next_fire_time = world.time + fire_delay
+	*/
 
 //obtains the next projectile to fire
+//this should be called by weapon controller.
 /obj/item/weapon/gun/proc/consume_next_projectile()
 	return null
 
@@ -394,7 +402,7 @@
 		playsound(user, 'sound/weapons/gunshot/flamethrower/flamer_fire.ogg', 50, 1)
 		mouthshoot = 0
 		return
-	var/obj/item/projectile/in_chamber = consume_next_projectile()
+	var/obj/item/projectile/in_chamber = weapon_controller.consume_next_projectile()
 	if (istype(in_chamber) && process_projectile(in_chamber, user, user, BP_MOUTH))
 		user.visible_message("<span class = 'warning'>[user] pulls the trigger.</span>")
 		var/shot_sound = in_chamber.fire_sound? in_chamber.fire_sound : fire_sound
@@ -456,7 +464,7 @@
 			playsound(user, 'sound/weapons/gunshot/flamethrower/flamer_fire.ogg', 50, 1)
 			weapon_in_mouth = FALSE
 			return
-		var/obj/item/projectile/in_chamber = consume_next_projectile()
+		var/obj/item/projectile/in_chamber = weapon_controller.consume_next_projectile()
 		if(istype(in_chamber) && process_projectile(in_chamber, user, target, BP_MOUTH))
 			var/not_killable = istype(in_chamber, /obj/item/projectile/energy/electrode) || istype(in_chamber, /obj/item/projectile/energy/flash)
 			user.visible_message(SPAN_WARNING("[user] pulls the trigger."))

@@ -2144,6 +2144,7 @@
 #include "code\modules\modular_computers\NTNet\emails\email_account.dm"
 #include "code\modules\modular_computers\NTNet\emails\email_message.dm"
 #include "code\modules\modular_computers\NTNet\NTNRC\conversation.dm"
+#include "code\modules\modular_objects\weapons\formfactor.dm"
 #include "code\modules\multiz\_stubs.dm"
 #include "code\modules\multiz\basic.dm"
 #include "code\modules\multiz\movement.dm"

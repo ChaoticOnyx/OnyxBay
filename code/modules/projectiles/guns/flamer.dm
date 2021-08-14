@@ -28,6 +28,7 @@
 	var/last_use = 0
 	var/last_fired = 0
 	fire_delay = 35
+	formfactor_type = /obj/item/formfactor/flamerthrower
 
 /obj/item/weapon/gun/flamer/Initialize()
 	. = ..()
