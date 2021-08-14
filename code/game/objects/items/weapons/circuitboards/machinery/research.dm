@@ -53,8 +53,19 @@
 							/obj/item/weapon/reagent_containers/glass/beaker = 2)
 
 /obj/item/weapon/circuitboard/mechfab
-	name = "Circuit board (Exosuit Fabricator)"
+	name = T_BOARD("Exosuit Fabricator")
 	build_path = /obj/machinery/mecha_part_fabricator
+	board_type = "machine"
+	origin_tech = list(TECH_DATA = 3, TECH_ENGINEERING = 3)
+	req_components = list(
+							/obj/item/weapon/stock_parts/matter_bin = 2,
+							/obj/item/weapon/stock_parts/manipulator = 1,
+							/obj/item/weapon/stock_parts/micro_laser = 1,
+							/obj/item/weapon/stock_parts/console_screen = 1)
+
+/obj/item/weapon/circuitboard/prosfab
+	name = T_BOARD("Prosthetics Fabricator")
+	build_path = /obj/machinery/pros_fabricator
 	board_type = "machine"
 	origin_tech = list(TECH_DATA = 3, TECH_ENGINEERING = 3)
 	req_components = list(
