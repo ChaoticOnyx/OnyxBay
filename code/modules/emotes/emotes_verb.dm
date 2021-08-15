@@ -1,20 +1,23 @@
-/mob/proc/target_emote(emote, range = null)
-	var/avalibe_target = mobs_in_view(range = range, source = usr.client)
-	if(length(avalibe_target))
-		avalibe_target |= "No target"
-		var/target = input("Choose a target for applying emotion", "", null) as null | anything in avalibe_target
-		if(target == null)
-			return
-		if(target == "No target")
-			usr.emote("[emote]")
-			return
-		if(!(target in mobs_in_view(range = range, source = usr.client)))
-			to_chat(usr, SPAN("warning", "Target out of range!"))
-			return
+/mob/proc/target_emote(emote, min_range = null)
+	var/datum/click_handler/handler = GetClickHandler()
+	if(handler.type == /datum/click_handler/emotes/target_emote)
+		to_chat(src, SPAN("notice", "Target selection canceled."))
+		usr.PopClickHandler()
+	else
+		to_chat(src, SPAN("notice", "Select your target."))
+		PushClickHandler(/datum/click_handler/emotes/target_emote, list(emote, min_range))
+
+/mob/proc/prepare_target_emote(mob/living/target, parameters)
+	var/emote = parameters[1]
+	var/min_range = parameters[2]
+	if(min_range != null && !(target in view(min_range)))
+		to_chat(src, SPAN("warning", "Target is too far."))
+		return
+	if(target != usr)
 		usr.emote("[emote] [target]")
+		return
 	else
 		usr.emote("[emote]")
-
 // HUMAN EMOTES
 
 /mob/proc/emote_pale()
@@ -241,7 +244,7 @@
 /mob/proc/emote_dap()
 	set name = "Give dap..."
 	set category = "Emotes"
-	target_emote("dap")
+	target_emote("dap", 1)
 
 /mob/proc/emote_grunt()
 	set name = "Grunt"
@@ -252,6 +255,16 @@
 	set name = "Look..."
 	set category = "Emotes"
 	target_emote("look")
+
+/mob/proc/emote_glare()
+	set name = "Glare..."
+	set category = "Emotes"
+	target_emote("glare")
+
+/mob/proc/emote_stare()
+	set name = "Stare..."
+	set category = "Emotes"
+	target_emote("stare")
 
 /mob/proc/emote_vomit()
 	set name = "Induce vomit"

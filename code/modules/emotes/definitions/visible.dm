@@ -126,6 +126,16 @@
 	emote_message_3p_target = "USER looks at TARGET."
 	emote_message_3p = "USER looks."
 
+/decl/emote/visible/glare
+	key = "glare"
+	emote_message_3p_target = "USER glares at TARGET."
+	emote_message_3p = "USER glares."
+
+/decl/emote/visible/stare
+	key = "stare"
+	emote_message_3p_target = "USER stares at TARGET."
+	emote_message_3p = "USER stares."
+
 /decl/emote/visible/point
 	key = "point"
 	check_restraints = TRUE

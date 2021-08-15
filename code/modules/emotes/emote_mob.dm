@@ -1,18 +1,5 @@
-#define EMOTE_COOLDOWN 10
-
 /mob/proc/can_emote(emote_type)
 	return (stat == CONSCIOUS)
-
-/mob/proc/handle_emote_cooldown()
-	if(emote_cooldown == TRUE)
-		return TRUE
-
-	emote_cooldown = TRUE	// Starting cooldown
-	spawn(EMOTE_COOLDOWN)
-		emote_cooldown = FALSE // Cooldown complete, ready for more!
-	return FALSE
-
-#undef EMOTE_COOLDOWN
 
 /mob/living/can_emote(emote_type)
 	return (..() && !(silent && emote_type == AUDIBLE_MESSAGE))
@@ -27,8 +14,6 @@
 			return
 		if(!can_emote(m_type))
 			to_chat(src, "<span class='warning'>You cannot currently [m_type == AUDIBLE_MESSAGE ? "audibly" : "visually"] emote!</span>")
-			return
-		if(handle_emote_cooldown())
 			return
 
 		if(act == "me")
@@ -55,6 +40,10 @@
 
 	if(act == "help")
 		to_chat(src,"<b>Usable emotes:</b> [english_list(usable_emotes)]")
+		return
+
+	THROTTLE(emote_cooldown, 1 SECOND)
+	if(!emote_cooldown && act != "deathgasp")
 		return
 
 	var/decl/emote/use_emote = usable_emotes[act]

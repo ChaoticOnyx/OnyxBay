@@ -34,6 +34,8 @@ GLOBAL_LIST_INIT(default_humanoid_emotes, list(
 	/decl/emote/visible/blush,
 	/decl/emote/visible/wave,
 	/decl/emote/visible/look,
+	/decl/emote/visible/stare,
+	/decl/emote/visible/glare,
 	/decl/emote/visible/raise,
 	/decl/emote/visible/grin,
 	/decl/emote/visible/shrug,
@@ -96,6 +98,8 @@ GLOBAL_LIST_INIT(default_humanoid_emotes_proc, list(
 	/mob/proc/emote_dap,
 	/mob/proc/emote_grunt,
 	/mob/proc/emote_look,
+	/mob/proc/emote_glare,
+	/mob/proc/emote_stare,
 	/mob/proc/emote_vomit
 ))
 /datum/species
@@ -166,8 +170,8 @@ GLOBAL_LIST_INIT(default_humanoid_emotes_proc, list(
 
 /datum/species/skrell/New()
 	. = ..()
-	default_emotes.Add(GLOB.default_humanoid_emotes)
-	inherent_verbs.Add(GLOB.default_humanoid_emotes_proc)
+	default_emotes += GLOB.default_humanoid_emotes
+	inherent_verbs += GLOB.default_humanoid_emotes_proc
 
 /datum/species/monkey/New()
 	. = ..()
