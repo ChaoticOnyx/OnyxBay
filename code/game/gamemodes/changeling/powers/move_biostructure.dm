@@ -20,7 +20,7 @@
 
 	if(!BIO.moving)
 		var/mob/living/carbon/human/H = src
-		var/list/available_limbs = organs.Copy() - H.get_organ(BIO.parent_organ)
+		var/list/available_limbs = organs - H.get_organ(BIO.parent_organ)
 		for(var/obj/item/organ/external/E in available_limbs)
 			if(E.organ_tag == BP_R_HAND || E.organ_tag == BP_L_HAND || E.organ_tag == BP_R_FOOT || E.organ_tag == BP_L_FOOT || E.is_stump() || BP_IS_ROBOTIC(E))
 				available_limbs -= E

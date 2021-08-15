@@ -24,7 +24,7 @@
 			italics = 1
 			sound_vol *= 0.5 //muffle the sound a bit, so it's like we're actually talking through contact
 
-	if(sleeping || stat == UNCONSCIOUS || (status_flags & FAKEDEATH && stat == DEAD)) // status_flags & FAKEDEATH
+	if(sleeping || stat == UNCONSCIOUS || status_flags & FAKEDEATH)
 		hear_sleep(message)
 		return
 
@@ -122,7 +122,7 @@
 	if(!client)
 		return
 
-	if(sleeping || stat==1 || (status_flags & FAKEDEATH && stat == DEAD)) //If unconscious or sleeping
+	if(sleeping || stat==1 || status_flags & FAKEDEATH) //If unconscious or sleeping
 		hear_sleep(message)
 		return
 
