@@ -150,14 +150,13 @@ var/list/organ_cache = list()
 
 	var/antibiotics = owner.chem_effects[CE_ANTIBIOTIC]
 
-	if(germ_level > 0 && germ_level < INFECTION_LEVEL_ONE/2 && prob(virus_immunity * 0.3))
+	if(germ_level > 0 && germ_level < INFECTION_LEVEL_ONE / 2 && prob(virus_immunity * 0.3))
 		germ_level--
 
-	if(germ_level >= INFECTION_LEVEL_ONE/2)
-		if(antibiotics < 5 && prob(round(germ_level/(INFECTION_LEVEL_TWO*0.015) * owner.immunity_weakness())))
-			germ_level += round(M_EULER**(germ_level/1000) * owner.immunity_weakness())
-		else // Will only trigger if immunity has hit zero. Once it does, 10x infection rate.
-			germ_level += round(M_EULER**(germ_level/1000) * owner.immunity_weakness()) * 10
+	if(germ_level >= INFECTION_LEVEL_ONE / 2 && antibiotics < 5)
+		var/dgerm_level = round(M_EULER ** (germ_level / GERMS_BREEDING_COEF))
+		dgerm_level *= owner.immunity_weakness()
+		dgerm_level *= owner.immunity_weakness() > 1.9 ? 10 : 1
 
 	if(germ_level >= INFECTION_LEVEL_ONE)
 		if(owner.bodytemperature - T0C < 45.5)
@@ -165,20 +164,12 @@ var/list/organ_cache = list()
 
 	if(germ_level >= INFECTION_LEVEL_TWO)
 		var/obj/item/organ/external/parent = owner.get_organ(parent_organ)
-		//spread germs
-		if(antibiotics < 5 && parent.germ_level < germ_level && ( parent.germ_level < INFECTION_LEVEL_ONE*2 || prob(owner.immunity_weakness() * 0.3) ))
+		// Spread germs
+		if(antibiotics < 5 && parent.germ_level < germ_level && (parent.germ_level < INFECTION_LEVEL_ONE * 2 || prob(owner.immunity_weakness() * 0.3)))
 			parent.germ_level++
 
 		if(prob(3))	//about once every 30 seconds
-			take_general_damage(1,silent=prob(30))
-
-	if(germ_level >= INFECTION_LEVEL_THREE)
-		if(prob(6))
-			take_general_damage(1, silent=prob(20))
-
-	if(germ_level >= INFECTION_LEVEL_FOUR)
-		if(prob(12))
-			take_general_damage(1, silent=prob(15))
+			take_general_damage(germ_level / INFECTION_LEVEL_TWO, silent = prob(30))
 
 /obj/item/organ/proc/handle_rejection()
 	// Process unsuitable transplants. TODO: consider some kind of
@@ -229,7 +220,7 @@ var/list/organ_cache = list()
 	if(!antibiotics)
 		return
 
-	germ_level -= Interpolate(antibiotics, 1, germ_level / (INFECTION_LEVEL_FOUR + 400))
+	germ_level -= antibiotics / 5
 	if(germ_level < INFECTION_LEVEL_ONE)
 		germ_level = 0 // cure instantly
 

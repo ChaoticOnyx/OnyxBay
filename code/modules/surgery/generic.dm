@@ -228,6 +228,63 @@
 	affected.take_external_damage(12, 0, (DAM_SHARP|DAM_EDGE), used_weapon = tool)
 
 //////////////////////////////////////////////////////////////////
+//	 skin cauterization surgery step
+//////////////////////////////////////////////////////////////////
+/datum/surgery_step/generic/cauterize
+	allowed_tools = list(
+	/obj/item/weapon/cautery = 100,			\
+	/obj/item/clothing/mask/smokable/cigarette = 75,	\
+	/obj/item/weapon/flame/lighter = 50,			\
+	/obj/item/weapon/weldingtool = 25
+	)
+
+	duration = CAUTERIZE_DURATION
+
+/datum/surgery_step/generic/cauterize/can_use(mob/living/user, mob/living/carbon/human/target, target_zone, obj/item/tool)
+
+	if(target_zone == BP_MOUTH || target_zone == BP_EYES)
+		return FALSE
+	if(!hasorgans(target))
+		return FALSE
+	var/obj/item/organ/external/affected = target.get_organ(target_zone)
+	if(!affected)
+		return FALSE
+	if(BP_IS_ROBOTIC(affected))
+		return FALSE
+	if(!affected.get_incision(1))
+		to_chat(user, "<span class='warning'>There are no incisions on [target]'s [affected.name] that can be closed cleanly with \the [tool]!</span>")
+		return SURGERY_FAILURE
+	if(affected.is_stump()) // Copypasting some stuff here to avoid having to modify ..() for a single surgery
+		return affected.status & ORGAN_ARTERY_CUT
+	else
+		return affected.open()
+
+
+/datum/surgery_step/generic/cauterize/begin_step(mob/user, mob/living/carbon/human/target, target_zone, obj/item/tool)
+	var/obj/item/organ/external/affected = target.get_organ(target_zone)
+	var/datum/wound/cut/W = affected.get_incision()
+	user.visible_message("[user] is beginning to cauterize[W ? " \a [W.desc] on" : ""] \the [target]'s [affected.name] with \the [tool]." , \
+	"You are beginning to cauterize[W ? " \a [W.desc] on" : ""] \the [target]'s [affected.name] with \the [tool].")
+	target.custom_pain("Your [affected.name] is being burned!",40,affecting = affected)
+	..()
+
+/datum/surgery_step/generic/cauterize/end_step(mob/living/user, mob/living/carbon/human/target, target_zone, obj/item/tool)
+	var/obj/item/organ/external/affected = target.get_organ(target_zone)
+	var/datum/wound/cut/W = affected.get_incision()
+	user.visible_message("<span class='notice'>[user] cauterizes[W ? " \a [W.desc] on" : ""] \the [target]'s [affected.name] with \the [tool].</span>", \
+	"<span class='notice'>You cauterize[W ? " \a [W.desc] on" : ""] \the [target]'s [affected.name] with \the [tool].</span>")
+	if(W)
+		W.close()
+	if(affected.is_stump())
+		affected.status &= ~ORGAN_ARTERY_CUT
+
+/datum/surgery_step/generic/cauterize/fail_step(mob/living/user, mob/living/carbon/human/target, target_zone, obj/item/tool)
+	var/obj/item/organ/external/affected = target.get_organ(target_zone)
+	user.visible_message("<span class='warning'>[user]'s hand slips, leaving a small burn on [target]'s [affected.name] with \the [tool]!</span>", \
+	"<span class='warning'>Your hand slips, leaving a small burn on [target]'s [affected.name] with \the [tool]!</span>")
+	affected.take_external_damage(0, 3, used_weapon = tool)
+
+//////////////////////////////////////////////////////////////////
 //	 limb amputation surgery step
 //////////////////////////////////////////////////////////////////
 /datum/surgery_step/generic/amputate

@@ -631,15 +631,15 @@ Note that amputating the affected organ does in fact remove the infection from t
 
 	germ_level += 1.5
 
-	//spread the infection to internal organs
-	var/obj/item/organ/target_organ = null	//make internal organs become infected one at a time instead of all at once
+	// Spread the infection to internal organs
+	var/obj/item/organ/target_organ = null	// Make internal organs become infected one at a time instead of all at once
 	for(var/obj/item/organ/I in internal_organs)
-		if(I.germ_level < germ_level)	//once the organ reaches whatever we can give it, or level two, switch to a different one
-			if(!target_organ || I.germ_level < target_organ.germ_level)	//choose the organ with the lowest germ_level
+		if(I.germ_level < germ_level)	// Once the organ reaches whatever we can give it, or level two, switch to a different one
+			if(!target_organ || I.germ_level < target_organ.germ_level)	// Choose the organ with the lowest germ_level
 				target_organ = I
 
 	if(!target_organ)
-		//figure out which organs we can spread germs to and pick one at random
+		// Figure out which organs we can spread germs to and pick one at random
 		var/list/candidate_organs = list()
 		for(var/obj/item/organ/I in internal_organs)
 			if(I.germ_level < germ_level)
@@ -655,7 +655,7 @@ Note that amputating the affected organ does in fact remove the infection from t
 	if(target_organ)
 		target_organ.germ_level++
 
-	//spread the infection to child and parent organs
+	// Spread the infection to child and parent organs
 	if(children)
 		for(var/obj/item/organ/external/child in children)
 			if(child.germ_level < germ_level && !BP_IS_ROBOTIC(child))
@@ -667,7 +667,7 @@ Note that amputating the affected organ does in fact remove the infection from t
 			if(parent.germ_level < INFECTION_LEVEL_ONE * 2 || prob(30 - antibiotics))
 				parent.germ_level++
 
-	if(germ_level >= INFECTION_LEVEL_FOUR && antibiotics < 15)	//overdosing is necessary to stop severe infections
+	if(germ_level >= INFECTION_LEVEL_FOUR && antibiotics < 15) // Overdosing is necessary to stop severe infections
 		if(!(status & ORGAN_DEAD))
 			status |= ORGAN_DEAD
 			to_chat(owner, SPAN_DANGER("You can't feel your [name] anymore..."))

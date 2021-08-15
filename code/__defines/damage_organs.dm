@@ -82,6 +82,7 @@
 #define INFECTION_LEVEL_THREE 550
 #define INFECTION_LEVEL_FOUR  850 // Organ death.
 
+#define GERMS_BREEDING_COEF   1000
 //Blood levels. These are percentages based on the species blood_volume far.
 #define BLOOD_VOLUME_SAFE    85
 #define BLOOD_VOLUME_OKAY    75

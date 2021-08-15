@@ -69,21 +69,14 @@
 	if(!owner)
 		return
 
-	if(germ_level > INFECTION_LEVEL_ONE && active_breathing)
-		if(prob(1))
-			owner.emote("cough")		// pneumony
-	if(germ_level > INFECTION_LEVEL_TWO && active_breathing)
-		if(prob(2))
-			owner.emote("cough")
-	if(germ_level > INFECTION_LEVEL_THREE && active_breathing)
-		if(prob(5))
-			owner.emote("cough")
-		if(prob(2))
-			owner.visible_message(
-				"<B>\The [owner]</B> coughs up blood!",
-				SPAN_WARNING("You cough up blood!"),
-				"You hear someone coughing!",
-			)
+	if(active_breathing && germ_level > INFECTION_LEVEL_ONE && prob(2))
+		owner.emote("cough")		// pneumony
+	if(germ_level > INFECTION_LEVEL_THREE && active_breathing && prob(1))
+		owner.visible_message(
+			"<B>\The [owner]</B> coughs up blood!",
+			SPAN_WARNING("You cough up blood!"),
+			"You hear someone coughing!",
+		)
 
 
 	if(is_bruised() && !owner.is_asystole())

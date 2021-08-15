@@ -13,11 +13,9 @@
 
 /obj/item/organ/internal/appendix/Process()
 	..()
-	if(germ_level > INFECTION_LEVEL_TWO)
-		if(prob(1))
-			inflamed++
-			if(inflamed == 1)
-				update_icon()
+	if(germ_level > INFECTION_LEVEL_TWO && prob(1))
+		if(++inflamed == 1)
+			update_icon()
 
 	if(inflamed && owner)
 		inflamed++

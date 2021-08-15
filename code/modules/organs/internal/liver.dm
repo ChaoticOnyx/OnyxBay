@@ -20,14 +20,10 @@
 	if(!owner)
 		return
 
-	if(germ_level > INFECTION_LEVEL_ONE)
-		if(prob(1))
-			to_chat(owner, SPAN_WARNING("Your skin itches."))
-	if(germ_level > INFECTION_LEVEL_TWO)
-		if(prob(1))
-			spawn owner.vomit()
-		if(prob(1))
-			to_chat(owner, SPAN_WARNING("Your skin itches."))
+	if(germ_level > INFECTION_LEVEL_ONE && prob(1))
+		to_chat(owner, SPAN_DANGER("Your skin itches."))
+	if(germ_level > INFECTION_LEVEL_TWO && prob(1))
+		spawn owner.vomit()
 
 	//Detox can heal small amounts of damage
 	if(damage < max_damage && !owner.chem_effects[CE_TOXIN])
