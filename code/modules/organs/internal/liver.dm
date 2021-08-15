@@ -26,12 +26,6 @@
 	if(germ_level > INFECTION_LEVEL_TWO)
 		if(prob(1))
 			spawn owner.vomit()
-			take_internal_damage(0.1)
-	if(germ_level > INFECTION_LEVEL_THREE)
-		take_internal_damage(0.1)
-		if(prob(1))
-			spawn owner.vomit()
-			take_internal_damage(0.1)
 		if(prob(1))
 			to_chat(owner, SPAN_WARNING("Your skin itches."))
 

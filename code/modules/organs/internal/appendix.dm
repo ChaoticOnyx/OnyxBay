@@ -13,7 +13,7 @@
 
 /obj/item/organ/internal/appendix/Process()
 	..()
-	if(germ_level > INFECTION_LEVEL_ONE + 100)
+	if(germ_level > INFECTION_LEVEL_TWO)
 		if(prob(1))
 			inflamed++
 			if(inflamed == 1)

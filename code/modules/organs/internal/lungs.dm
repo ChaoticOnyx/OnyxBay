@@ -70,10 +70,10 @@
 		return
 
 	if(germ_level > INFECTION_LEVEL_ONE && active_breathing)
-		if(prob(5))
-			owner.emote("cough")		//respitory tract infection
+		if(prob(1))
+			owner.emote("cough")		// pneumony
 	if(germ_level > INFECTION_LEVEL_TWO && active_breathing)
-		if(prob(5))
+		if(prob(2))
 			owner.emote("cough")
 	if(germ_level > INFECTION_LEVEL_THREE && active_breathing)
 		if(prob(5))
@@ -84,7 +84,6 @@
 				SPAN_WARNING("You cough up blood!"),
 				"You hear someone coughing!",
 			)
-		take_internal_damage(0.1)
 
 
 	if(is_bruised() && !owner.is_asystole())
