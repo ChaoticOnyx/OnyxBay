@@ -184,13 +184,14 @@
 			if(event == ORION_TRAIL_GAMEOVER)
 				event = null
 				attack_hand(user)
-				return TOPIC_REFRESH
+				. = TOPIC_REFRESH
+				//This used to be "return TOPIC_REFRESH". It wouldn't leave time for operations with the dot variable.
 			if(!settlers.len)
 				event_desc = "You and your crew were killed on the way to Orion, your ship left abandoned for scavengers to find."
 				next_event = ORION_TRAIL_GAMEOVER
 			if(port == 9)
 				win()
-				return TOPIC_REFRESH
+				. = TOPIC_REFRESH
 			var/travel = min(rand(1000,10000),distance)
 			if(href_list["fix"])
 				var/item = href_list["fix"]
@@ -231,34 +232,34 @@
 				generate_event(next_event)
 		else
 			view = ORION_VIEW_MAIN
-		return TOPIC_REFRESH
+		. = TOPIC_REFRESH
 
 	else if(href_list["supplies"])
 		view = ORION_VIEW_SUPPLIES
-		return TOPIC_REFRESH
+		. = TOPIC_REFRESH
 
 	else if(href_list["crew"])
 		view = ORION_VIEW_CREW
-		return TOPIC_REFRESH
+		. = TOPIC_REFRESH
 
 	else if(href_list["buy"])
 		var/item = href_list["buy"]
 		if(supply_cost["[item]"] <= supplies["6"])
 			supplies["[item]"] += (text2num(item) > 3 ? 10 : 1)
 			supplies["6"] -= supply_cost["[item]"]
-		return TOPIC_REFRESH
+		. = TOPIC_REFRESH
 
 	else if(href_list["sell"])
 		var/item = href_list["sell"]
 		if(supplies["[item]"] >= (text2num(item) > 3 ? 10 : 1))
 			supplies["6"] += supply_cost["[item]"]
 			supplies["[item]"] -= (text2num(item) > 3 ? 10 : 1)
-		return TOPIC_REFRESH
+		. = TOPIC_REFRESH
 
 	else if(href_list["kill"])
 		var/item = text2num(href_list["kill"])
 		remove_settler(item)
-		return TOPIC_REFRESH
+		. = TOPIC_REFRESH
 
 	else if(href_list["attack"])
 		supply_cost = list()
@@ -276,7 +277,7 @@
 				if(prob(10))
 					remove_settler(null, "died while you were escaping!")
 		event = ORION_TRAIL_SPACEPORT_RAIDED
-		return TOPIC_REFRESH
+		. = TOPIC_REFRESH
 
 	if(. == TOPIC_REFRESH)
 		attack_hand(user)
