@@ -18,10 +18,6 @@
 	H.holder = src
 	H.activate()
 
-/mob/living/carbon/human/verb/Hallucinate()
-	var/T = input(usr, "Choose a hallucination", "Choose") in subtypesof(/datum/hallucination)
-	make_hallucination(new T, force = TRUE)
-
 /mob/living/carbon/proc/handle_hallucinations()
 	//Tick down the duration
 	hallucination_duration = max(0, hallucination_duration - 1)
@@ -575,7 +571,7 @@
 // Mirage
 /datum/hallucination/mirage
 	duration = 30 SECONDS
-	var/number = 1
+	var/number = 8
 	var/list/things = list() //list of images to display
 	var/sound // Pop!
 	var/volume = 25
