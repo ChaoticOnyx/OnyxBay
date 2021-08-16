@@ -409,3 +409,13 @@
 
 /turf/simulated/floor/misc/cult/cultify()
 	return
+
+/turf/simulated/floor/water/fountain
+	name = "water"
+	icon = 'icons/misc/beach.dmi'
+	icon_state = "seadeep"
+
+/turf/simulated/floor/water/fountain/Crossed(atom/movable/AM)
+	if(istype(AM, /mob/living))
+		var/mob/living/M = AM
+		M.slip("the [src.name]", 4)
