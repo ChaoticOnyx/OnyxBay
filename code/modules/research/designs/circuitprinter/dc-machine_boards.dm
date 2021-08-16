@@ -34,10 +34,10 @@
 	sort_string = "FAGAL"
 
 /datum/design/circuit/roboprinter
-	name = "prosthetic organ fabricator"
+	name = "prosthetics fabricator"
 	id = "roboprinter"
 	req_tech = list(TECH_ENGINEERING = 2, TECH_DATA = 3)
-	build_path = /obj/item/weapon/circuitboard/roboprinter
+	build_path = /obj/item/weapon/circuitboard/prosfab
 	sort_string = "FAGAM"
 
 /datum/design/circuit/destructive_analyzer
