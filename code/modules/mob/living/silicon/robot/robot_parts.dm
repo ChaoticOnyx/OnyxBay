@@ -258,7 +258,8 @@
 			coil.use(1)
 			src.wires = 1.0
 			to_chat(user, "<span class='notice'>You insert the wire!</span>")
-
+	return
+	
 /obj/item/robot_parts/chest/proc/GetCyborgSpecies()
 	. = list()
 	for(var/N in playable_species)
