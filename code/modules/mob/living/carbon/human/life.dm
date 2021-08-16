@@ -758,7 +758,7 @@
 				if(25 to 40)        pains.icon_state = "pain2"
 				if(10 to 25)        pains.icon_state = "pain1"
 				else                pains.icon_state = "pain0"
-		if(healths)
+		if(healths && should_update_healths)
 			healths.overlays.Cut()
 			if(chem_effects[CE_PAINKILLER] > 100)
 				healths.icon_state = "health_numb"

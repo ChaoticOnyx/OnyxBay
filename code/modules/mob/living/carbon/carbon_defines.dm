@@ -42,3 +42,4 @@
 	var/stasis_value
 	var/does_not_breathe = FALSE
 	var/seeDarkness = FALSE
+	var/should_update_healths = TRUE

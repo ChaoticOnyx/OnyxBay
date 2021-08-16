@@ -2762,6 +2762,7 @@
 #include "maps\cache_ref.dm"
 #include "maps\away\casino\casino.dm"
 #include "maps\away\slavers\slavers_base.dm"
+#include "maps\example\example.dm"
 #include "maps\exodus\exodus.dm"
 #include "maps\exodus\exodus_define.dm"
 #include "maps\exodus\alpha\sunset_define.dm"

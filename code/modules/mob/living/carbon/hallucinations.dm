@@ -11,6 +11,17 @@
 	hallucination_duration = max(0, hallucination_duration + duration)
 	hallucination_power = max(0, hallucination_power + power)
 
+/mob/living/carbon/proc/make_hallucination(datum/hallucination/H, force = FALSE)
+	if(!H.can_affect(src) && !force)
+		return
+
+	H.holder = src
+	H.activate()
+
+/mob/living/carbon/human/verb/Hallucinate()
+	var/T = input(usr, "Choose a hallucination", "Choose") in subtypesof(/datum/hallucination)
+	make_hallucination(new T, force = TRUE)
+
 /mob/living/carbon/proc/handle_hallucinations()
 	//Tick down the duration
 	hallucination_duration = max(0, hallucination_duration - 1)
@@ -97,6 +108,91 @@
 		qdel(src)
 
 
+#define FAKE_FLOOD_EXPAND_TIME 5
+#define FAKE_FLOOD_MAX_RADIUS 30
+
+/datum/hallucination/fake_flood
+	// Plasma starts flooding from the nearby vent
+	var/turf/center
+	var/list/flood_images = list()
+	var/list/turf/flood_turfs = list()
+	var/image_icon = 'icons/effects/plasma.dmi'
+	var/image_state = "onturf"
+	var/radius = 0
+	var/next_expand = 0
+	duration = 1 MINUTE
+	min_power = 40
+
+/datum/hallucination/fake_flood/can_affect(mob/living/carbon/C)
+	for(var/obj/machinery/atmospherics/unary/vent_pump/U in view(7, usr))
+		if(!U.welded)
+			return TRUE
+	return FALSE
+
+/datum/hallucination/fake_flood/start()
+	for(var/obj/machinery/atmospherics/unary/vent_pump/U in view(7, usr))
+		if(!U.welded)
+			center = get_turf(U)
+			break
+
+	if(!center)
+		qdel(src)
+		return
+
+	var/image/plasma_image = image(image_icon, center, image_state)
+	plasma_image.alpha = 50
+	plasma_image.plane = FLY_LAYER
+	flood_images += plasma_image
+	flood_turfs += center
+	if(holder.client)
+		holder.client.images |= flood_images
+	next_expand = world.time + FAKE_FLOOD_EXPAND_TIME
+	START_PROCESSING(SSobj, src)
+
+/datum/hallucination/fake_flood/Process()
+	if((get_turf(holder) in flood_turfs) && !holder.internal)
+		var/need_hud_error = TRUE
+		for(var/datum/hallucination/hud_error/H in holder.hallucinations)
+			if(H.errortype == "toxin")
+				need_hud_error = FALSE
+				break
+
+		need_hud_error && holder.make_hallucination(new /datum/hallucination/hud_error("toxin"))
+	if(next_expand <= world.time)
+		next_expand = world.time + FAKE_FLOOD_EXPAND_TIME
+		if(radius > FAKE_FLOOD_MAX_RADIUS)
+			return
+		expand()
+
+/datum/hallucination/fake_flood/proc/expand()
+	for(var/image/I in flood_images)
+		I.alpha = min(I.alpha + 50, 255)
+
+	var/expanded = 0
+	for(var/turf/FT in flood_turfs)
+		for(var/dir in GLOB.cardinal)
+			var/turf/T = get_step(FT, dir)
+			if((T in flood_turfs) || !FT.CanZASPass(T))
+				continue
+			var/image/new_plasma = image(image_icon, T, image_state)
+			new_plasma.alpha = 50
+			new_plasma.plane = FLY_LAYER
+			flood_images += new_plasma
+			flood_turfs += T
+			expanded = 1
+	radius += expanded
+	if(holder.client)
+		holder.client.images |= flood_images
+
+/datum/hallucination/fake_flood/end()
+	STOP_PROCESSING(SSobj, src)
+
+	if(holder.client)
+		holder.client.images.Remove(flood_images)
+	QDEL_LIST(flood_images)
+	flood_turfs.Cut()
+	holder.hallucinations -= src
+
 //Playing a random sound
 /datum/hallucination/sound
 	var/list/sounds = list('sound/machines/airlock.ogg','sound/machines/windowdoor.ogg','sound/machines/twobeep.ogg')
@@ -138,6 +234,10 @@
 	gunshot = pick('sound/effects/weapons/gun/fire_strong.ogg', 'sound/effects/weapons/gun/gunshot2.ogg', 'sound/effects/weapons/gun/fire_shotgun.ogg', 'sound/effects/weapons/gun/gunshot.ogg','sound/effects/weapons/energy/Taser.ogg')
 	origin = locate(holder.x + rand(4,8), holder.y + rand(4,8), holder.z)
 	holder.playsound_local(origin,gunshot,50)
+	spawn(5)
+		holder.playsound_local(origin,gunshot,50)
+	spawn(10)
+		holder.playsound_local(origin,gunshot,50)
 
 /datum/hallucination/gunfire/end()
 	holder.playsound_local(origin,gunshot,50)
@@ -217,7 +317,262 @@
 	holder.playsound_local(holder, 'sound/effects/Evacuation.ogg', 35)
 	to_chat(holder, "<h1 class='alert'>Priority Announcement</h1><br>[SPAN("alert", replacetext(GLOB.using_map.emergency_shuttle_docked_message, "%ETD%", "3 minutes"))]")
 
+/datum/hallucination/death
+	min_power = 60 // Very high
+	duration = 16 SECONDS
+
+/datum/hallucination/death/can_affect()
+	return prob(5)
+
+/datum/hallucination/death/proc/deadsay(period)
+	sleep(period)
+	var/mob/fakemob
+
+	var/list/dead_people = list()
+	for(var/mob/observer/ghost/G in GLOB.player_list)
+		dead_people += G
+
+	fakemob = dead_people.len ? pick(dead_people) : holder
+
+	var/message = pick(GLOB.hallucination_deadchat_phrases)
+	to_chat(holder, SPAN_DEADSAY("[create_text_tag("dead", "DEAD")] <b>[fakemob.name]</b> says, [message]"))
+	return 1
+
+/datum/hallucination/death/start()
+	holder.silent += 10
+	holder.Paralyse(300)
+	sleep(5)
+
+	holder.healths.overlays = null
+	holder.healths.icon_state = "health7"
+	holder.should_update_healths = FALSE
+
+	to_chat(holder, SPAN_DEADSAY("You have died."))
+
+	if(GLOB.hallucination_deadchat_phrases.len)
+		if(prob(25))
+			deadsay(rand(2 SECONDS, 4 SECONDS))
+		if(prob(25))
+			deadsay(rand(4 SECONDS, 6 SECONDS))
+		if(prob(50))
+			deadsay(rand(6 SECONDS, 8 SECONDS))
+		if(prob(30))
+			deadsay(rand(8 SECONDS,10 SECONDS))
+		if(prob(25))
+			deadsay(rand(10 SECOND,12 SECONDS))
+
+
+/datum/hallucination/death/end()
+	holder.SetParalysis(0)
+	holder.silent = 0
+	holder.should_update_healths = TRUE
+
 //Seeing stuff
+
+/obj/item/mirage_item
+	var/image/img
+	var/client/client
+
+/obj/item/mirage_item/pickup(mob/living/carbon/human/H)
+	H.visible_message(SPAN_NOTICE("[H] tried to take something, but only grabbed air."),
+		SPAN_WARNING("Your hand seems to go right through the [name ? src : "item"]. It's like it doesn't exist."))
+
+	client.images -= img
+	qdel(src)
+
+/datum/hallucination/item_mirage
+	duration = 30 SECONDS
+	var/number = 1
+	var/list/items = list() // items
+	var/sound // Pop!
+	var/volume = 25
+
+/datum/hallucination/item_mirage/Destroy()
+	end()
+	. = ..()
+
+/datum/hallucination/item_mirage/proc/generate_mirage(turf/loc)
+	var/obj/item/mirage_item/I = new(loc)
+	I.name = null // it will be visible to anyone with RMB and with RMB only, because it have no icon
+
+	switch(rand(1,6))
+		if(1) // gun
+			var/icon/icon = new('icons/obj/gun.dmi')
+
+			var/list/icon_states = icon.IconStates()
+			icon_states -= list("energykill", "energystan", "nenergy-g", "nenergy-f", "nenergy-c",
+								"nucgun-stun", "nucgun-kill", "nucgun-100", "nucgun-75", "nucgun-50",
+								"nucgun-25", "nucgun-0", "nucgun-whee", "nucgun-clean", "nucgun-light",
+								"nucgun-crit", "unused")
+			I.img = image(icon, icon_state = pick(icon_states), loc = I)
+		if(2) // bomb
+			var/icon/icon = new('icons/obj/grenade.dmi')
+			I.img = image(icon, icon_state = pick(icon.IconStates()), loc = I)
+		if(3) // weapon
+			var/icon/icon = new('icons/obj/weapons.dmi')
+			var/list/icon_state = pick(icon.IconStates())
+			I.img = image(icon, icon_state = icon_state, loc = I)
+
+			if(findtext(icon_state, "sword"))
+				I.name = "Energy sword"
+			if(findtext(icon_state, "stanbaton"))
+				I.name = "Stanbaton"
+		if(4) // card
+			var/icon/icon = new('icons/obj/card.dmi')
+			var/icon_state = pick(icon.IconStates())
+			I.img = image(icon, icon_state = icon_state, loc = I)
+
+			switch(icon_state)
+				if("emag")
+					I.name = "Cryptographic Sequencer"
+				if("gold")
+					I.name = "captain's spare ID"
+		if(5) // trash
+			var/icon/icon = new('icons/obj/trash.dmi')
+			I.img = image(icon, icon_state = pick(icon.IconStates()), loc = I)
+		if(6) // money
+			I.name = "Cash"
+			I.img = image('icons/obj/items.dmi', "spacecash[pick(1000,500,200,100,50)]", loc = I)
+
+
+	return I
+
+/datum/hallucination/item_mirage/start()
+	var/list/possible_points = list()
+	for(var/turf/simulated/floor/F in view(holder, world.view+1))
+		possible_points += F
+	if(!possible_points.len)
+		return
+	for(var/i = 1 to number)
+		var/turf/simulated/floor/point = pick(possible_points)
+		var/obj/item/mirage_item/thing = generate_mirage(point)
+		thing.client = holder.client
+		items += thing
+		if(sound)
+			holder.playsound_local(point, sound, volume)
+		holder.client.images += thing.img
+
+/datum/hallucination/item_mirage/end()
+	if(!holder.client)
+		return
+	for(var/obj/item/mirage_item/I in items)
+		holder.client.images -= I.img
+		qdel(I)
+
+// Singulo
+/obj/item/mirage_item/singulo
+	var/target
+
+/obj/item/mirage_item/singulo/New(loc)
+	START_PROCESSING(SSobj, src)
+
+/obj/item/mirage_item/singulo/Destroy()
+	STOP_PROCESSING(SSobj, src)
+	..()
+
+/obj/item/mirage_item/singulo/Process()
+	step_to(src, target, 1)
+	if(get_dist(src, target) < 2)
+		qdel(src)
+		var/mob/living/carbon/human/H = target
+		H?.Paralyse(5)
+		H.playsound_local(get_turf(src), sound('sound/effects/bang.ogg'), 70, 1, 30)
+
+/datum/hallucination/item_mirage/singulo
+	number = 1
+	min_power = 50
+
+/datum/hallucination/item_mirage/singulo/generate_mirage(turf/loc)
+	var/obj/item/mirage_item/singulo/I = new(loc)
+	I.img = image('icons/effects/96x96.dmi', loc = I, icon_state = "singularity_s3")
+	I.target = holder
+	return I
+
+// Balloons
+
+/obj/item/mirage_item/balloon
+	var/target
+	var/mdir
+
+/obj/item/mirage_item/balloon/New(loc)
+	START_PROCESSING(SSfastprocess, src)
+	mdir = rand(-1, 1)
+	..(loc)
+
+/obj/item/mirage_item/balloon/Destroy()
+	STOP_PROCESSING(SSfastprocess, src)
+	..()
+
+/obj/item/mirage_item/balloon/Process()
+	pixel_x += sin(world.time) * 16 * mdir * rand(-1, 1)
+	pixel_y += cos(world.time) * 16 * mdir * rand(-1, 1)
+
+	if(!prob(10))
+		return
+	step_to(src, target, 1)
+	if(get_dist(src, target) < 2)
+		step_away(src, target, 5, 128)
+
+/obj/item/mirage_item/balloon/pickup(mob/living/carbon/human/H)
+	H.visible_message(SPAN_NOTICE("[H] tried to take something, but only grabbed air."),
+		SPAN_WARNING("Your hand seems to go right through the [name ? src : "item"]. It's like it doesn't exist."))
+	qdel(src)
+
+/datum/hallucination/item_mirage/balloon
+	number = 5
+	min_power = 20
+
+/datum/hallucination/item_mirage/balloon/generate_mirage(turf/loc)
+	var/obj/item/mirage_item/balloon/I = new(loc)
+	I.img = image('icons/obj/weapons.dmi', loc = I, icon_state = pick("syndballoon", "ntballoon", "snailballoon"))
+	I.target = holder
+	return I
+
+// Black holes
+
+/obj/item/mirage_item/bhole
+	var/target
+	var/mdir
+
+/obj/item/mirage_item/bhole/New(loc)
+	START_PROCESSING(SSfastprocess, src)
+	mdir = rand(-1, 1)
+	..(loc)
+
+/obj/item/mirage_item/bhole/Destroy()
+	STOP_PROCESSING(SSfastprocess, src)
+	..()
+
+/obj/item/mirage_item/bhole/Process()
+	pixel_x += sin(world.time) * 32 * mdir * rand(-1, 1)
+	pixel_y += cos(world.time) * 32 * mdir * rand(-1, 1)
+
+	if(get_dist(src, target) < 2)
+		var/mob/living/carbon/human/H = target
+		if(!H)
+			return
+		H.Paralyse(1)
+		to_chat(H, SPAN("danger", "*BANG*"))
+		H.playsound_local(get_turf(src), sound('sound/effects/bang.ogg'), 50, 1, 30)
+		qdel(src)
+	else if(prob(5))
+		step_rand(src)
+	else if(prob(6))
+		step_to(src, target)
+
+/obj/item/mirage_item/bhole/pickup(mob/living/carbon/human/H)
+	qdel(src)
+/datum/hallucination/item_mirage/bhole
+	number = 3
+	min_power = 40
+
+/datum/hallucination/item_mirage/bhole/generate_mirage(turf/loc)
+	var/obj/item/mirage_item/bhole/I = new(loc)
+	I.img = image('icons/obj/objects.dmi', loc = I, icon_state = "bhole3")
+	I.target = holder
+	return I
+
+// Mirage
 /datum/hallucination/mirage
 	duration = 30 SECONDS
 	var/number = 1
@@ -251,19 +606,29 @@
 	if(holder.client)
 		holder.client.images -= things
 
-//LOADSEMONEY
-/datum/hallucination/mirage/money
-	min_power = 20
-	max_power = 45
-	number = 2
+/datum/hallucination/mirage/crayon/generate_mirage()
+	var/icon/T  = new('icons/effects/crayondecal.dmi')
+	var/icon/T2 = new('icons/effects/crayongraffiti.dmi')
+	var/list/states = T.IconStates() | T2.IconStates()
+	for(var/S in states)
+		if(length(S) <= 2 || copytext(S, -2) == "_s")
+			states.Remove(S)
 
-/datum/hallucination/mirage/money/generate_mirage()
-	return image('icons/obj/items.dmi', "spacecash[pick(1000,500,200,100,50)]", layer = BELOW_TABLE_LAYER)
+	var/state = pick(states)
+
+	var/main  = rgb(rand(0,255), rand(0, 255), rand(0, 255))
+	var/shade = rgb(rand(0,255), rand(0, 255), rand(0, 255))
+	return image(get_crayon_preview(main, shade, state))
+
+/datum/hallucination/mirage/crayon/New()
+	number = rand(5, 15)
+
 
 //Blood and aftermath of firefight
 /datum/hallucination/mirage/carnage
 	min_power = 40
-	number = 10
+	number = 20
+
 
 /datum/hallucination/mirage/carnage/generate_mirage()
 	if(prob(50))
@@ -274,8 +639,8 @@
 		var/image/I = image('icons/obj/ammo.dmi', "s-casing-spent", layer = BELOW_TABLE_LAYER)
 		I.layer = BELOW_TABLE_LAYER
 		I.dir = pick(GLOB.alldirs)
-		I.pixel_x = rand(-10,10)
-		I.pixel_y = rand(-10,10)
+		I.pixel_x = rand(-10, 10)
+		I.pixel_y = rand(-10, 10)
 		return I
 
 /datum/hallucination/mirage/portal
@@ -283,10 +648,16 @@
 
 /datum/hallucination/mirage/portal/generate_mirage()
 	sound = 'sound/effects/phasein.ogg'
-	if(prob(90))
-		return image('icons/obj/stationobjs.dmi', "portal", layer = ABOVE_OBJ_LAYER)
-	else
-		return image('icons/obj/stationobjs.dmi', "portal1", layer = ABOVE_OBJ_LAYER)
+	return image('icons/obj/stationobjs.dmi', prob(50) ? "portal" : "portal1", layer = ABOVE_OBJ_LAYER)
+
+/datum/hallucination/mirage/explosions
+	min_power = 50
+	duration = 10
+	number = 12
+
+/datum/hallucination/mirage/explosions/generate_mirage()
+	sound = get_sfx("explosion")
+	return image('icons/effects/96x96.dmi', prob(50) ? "explosion" : "explosionfast", layer = FLY_LAYER)
 
 //Fake telepathy
 /datum/hallucination/telepahy
@@ -473,6 +844,13 @@
 	duration = 10 SECONDS
 	min_power = 30
 	var/obj/screen/fake
+	var/errortype = ""
+
+/datum/hallucination/hud_error/New(type_)
+	if(type_)
+		errortype = type_
+	else
+		errortype = pick("oxygen", "toxin", "fire", "body temperature", "pressure", "nutrition")
 
 /datum/hallucination/hud_error/can_affect(mob/living/carbon/C)
 	if(!..())
@@ -482,8 +860,21 @@
 /datum/hallucination/hud_error/start()
 	ASSERT(istype(holder, /mob/living/carbon/human))
 	var/mob/living/carbon/human/H = holder
-	var/obj/screen/origin = pick(H.toxin, H.oxygen, H.fire, H.bodytemp, H.pressure, H.nutrition_icon)
-	fake = new()
+	var/obj/screen/origin
+	switch(errortype)
+		if("oxygen")
+			origin = H.oxygen
+		if("toxin")
+			origin = H.toxin
+		if("fire")
+			origin = H.fire
+		if("body temperature")
+			origin = H.bodytemp
+		if("pressure")
+			origin = H.pressure
+		if("nutrition")
+			origin = H.nutrition
+	fake = new
 	fake.name = origin.name
 	fake.icon = origin.icon
 	fake.appearance_flags = origin.appearance_flags
