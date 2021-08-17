@@ -2180,6 +2180,7 @@
 #include "code\modules\nano\modules\nano_module.dm"
 #include "code\modules\organs\_organ_setup.dm"
 #include "code\modules\organs\blood.dm"
+#include "code\modules\organs\craftable_limbs.dm"
 #include "code\modules\organs\organ.dm"
 #include "code\modules\organs\pain.dm"
 #include "code\modules\organs\robolimbs.dm"
