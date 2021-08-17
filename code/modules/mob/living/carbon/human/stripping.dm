@@ -53,6 +53,12 @@
 			if(do_after(user, HUMAN_STRIP_DELAY, src, progress = 0))
 				toggle_sensors(user)
 			return
+		if("rolldown")
+			visible_message(SPAN_DANGER("\The [user] is trying to roll down \the [src]'s uniform!"))
+			if(do_after(user, HUMAN_STRIP_DELAY, src, progress = 0))
+				var/obj/item/clothing/under/U = w_uniform
+				U?.rollsuit()
+			return
 		if("internals")
 			visible_message("<span class='danger'>\The [usr] is trying to set \the [src]'s internals!</span>")
 			if(do_after(user, HUMAN_STRIP_DELAY, src, progress = 0))

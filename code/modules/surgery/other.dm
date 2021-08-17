@@ -176,6 +176,8 @@
 		return 0
 	if(!istype(booze) && !container.reagents.has_reagent(/datum/reagent/sterilizine))
 		return 0
+	if(istype(booze) && user == target && istype(user.buckled, /obj/structure/bed/chair))
+		return 0
 	return 1
 
 /datum/surgery_step/sterilize/begin_step(mob/user, mob/living/carbon/human/target, target_zone, obj/item/tool)
