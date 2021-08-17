@@ -1,6 +1,7 @@
 /datum/design/item/prosfab
 	build_type = PROSFAB
 
+
 /datum/design/item/prosfab/pros
 	category = "Prosthetics"
 
@@ -28,8 +29,8 @@
 		O.dna.ResetUI()
 		O.dna.ResetSE()
 
-		spawn(10)
-			O.dir = 2
+		O.status |= ORGAN_CUT_AWAY
+		O.dir = SOUTH
 
 		return O
 
@@ -63,7 +64,6 @@
 
 		H.set_species(new_species)
 		H.gender = new_gender
-		H.fully_replace_character_name(name)
 
 		// Some body build magic !
 		var/datum/species/S = all_species[new_species]
@@ -80,7 +80,6 @@
 				var/new_body_build = BB
 				H.change_body_build(new_body_build)
 
-		// Removes all external organs other than chest and groin.
 		for(var/obj/item/organ/O in H.organs)
 
 			if(O.organ_tag == BP_CHEST || O.organ_tag == BP_GROIN)
@@ -176,6 +175,7 @@
 	time = 15
 	materials = list(MATERIAL_STEEL = 2813)
 
+//////////////////// Organs ////////////////////
 /datum/design/item/prosfab/pros/internal
 	category = "Prosthetics, Internal"
 
@@ -211,6 +211,13 @@
 	name = "Prosthetic Liver"
 	id = "pros_liver"
 	build_path = /obj/item/organ/internal/liver
+	time = 15
+	materials = list(MATERIAL_STEEL = 5625, MATERIAL_GLASS = 1000)
+
+/datum/design/item/prosfab/pros/limbs/internal/liver
+	name = "Prosthetic Stomach"
+	id = "pros_stomach"
+	build_path = /obj/item/organ/internal/stomach
 	time = 15
 	materials = list(MATERIAL_STEEL = 5625, MATERIAL_GLASS = 1000)
 

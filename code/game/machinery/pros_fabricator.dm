@@ -92,8 +92,10 @@
 		icon_state = "[icon_state]_work"
 
 /obj/machinery/pros_fabricator/Destroy()
+
 	for(var/f in materials)
 		eject_materials(f, -1)
+
 	..()
 
 /obj/machinery/pros_fabricator/RefreshParts()
@@ -194,6 +196,35 @@
 		if(1)
 			visible_message("\icon[src] <b>[src]</b> beeps: \"No records in User DB\"")
 
+/obj/machinery/pros_fabricator/proc/eject_materials(material, amount)
+	var/recursive = amount == -1 ? 1 : 0
+	material = lowertext(material)
+	var/mattype
+
+	switch(material)
+		if(MATERIAL_STEEL)
+			mattype = /obj/item/stack/material/steel
+		if(MATERIAL_GLASS)
+			mattype = /obj/item/stack/material/glass
+		if(MATERIAL_PLASTIC)
+			mattype = /obj/item/stack/material/plastic
+		else
+			return
+
+	var/obj/item/stack/material/S = new mattype(loc)
+
+	if(amount <= 0)
+		amount = S.max_amount
+	var/ejected = min(round(materials[material] / S.perunit), amount)
+	S.amount = min(ejected, amount)
+	if(S.amount <= 0)
+		qdel(S)
+		return
+	materials[material] -= ejected * S.perunit
+	if(recursive && materials[material] >= S.perunit)
+		eject_materials(material, -1)
+	update_busy()
+
 /obj/machinery/pros_fabricator/proc/update_busy()
 	if(queue.len)
 		if(can_build(queue[1]))
@@ -202,13 +233,6 @@
 			busy = FALSE
 	else
 		busy = FALSE
-
-/obj/machinery/pros_fabricator/attack_hand(user)
-	if(..(user))
-		return
-	if(!allowed(user))
-		return
-	ui_interact(user)
 
 /obj/machinery/pros_fabricator/proc/add_to_queue(index)
 	var/datum/design/D = files.known_designs[index]
@@ -280,35 +304,6 @@
 	for(var/T in materials)
 		. += list(list("mat" = capitalize(T), "amt" = materials[T]))
 
-/obj/machinery/pros_fabricator/proc/eject_materials(material, amount)
-	var/recursive = amount == -1 ? 1 : 0
-	material = lowertext(material)
-	var/mattype
-
-	switch(material)
-		if(MATERIAL_STEEL)
-			mattype = /obj/item/stack/material/steel
-		if(MATERIAL_GLASS)
-			mattype = /obj/item/stack/material/glass
-		if(MATERIAL_PLASTIC)
-			mattype = /obj/item/stack/material/plastic
-		else
-			return
-
-	var/obj/item/stack/material/S = new mattype(loc)
-
-	if(amount <= 0)
-		amount = S.max_amount
-	var/ejected = min(round(materials[material] / S.perunit), amount)
-	S.amount = min(ejected, amount)
-	if(S.amount <= 0)
-		qdel(S)
-		return
-	materials[material] -= ejected * S.perunit
-	if(recursive && materials[material] >= S.perunit)
-		eject_materials(material, -1)
-	update_busy()
-
 /obj/machinery/pros_fabricator/proc/update_categories()
 	categories = list()
 	if(files)
@@ -360,6 +355,15 @@
 
 	if(!pros_build)
 		pros_build = pros_build_list[1]
+
+/obj/machinery/pros_fabricator/attack_hand(user)
+	if(..(user))
+		return
+
+	if(!allowed(user))
+		return
+
+	ui_interact(user)
 
 /obj/machinery/pros_fabricator/ui_interact(mob/user, ui_key, datum/nanoui/ui, force_open, datum/nanoui/master_ui, datum/topic_state/state)
 	var/data[0]
