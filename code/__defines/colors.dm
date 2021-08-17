@@ -60,6 +60,7 @@
 #define COLOR_CYAN_BLUE        "#3366cc"
 #define COLOR_LIGHT_CYAN       "#66ccff"
 #define COLOR_PAKISTAN_GREEN   "#006600"
+#define COLOR_4CHAN_GREENTEXT  "#789922"
 
 //Color defines used by the assembly detailer.
 
