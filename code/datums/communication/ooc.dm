@@ -37,6 +37,12 @@
 		if(holder.rights & R_ADMIN)
 			ooc_style = "admin"
 
+	var/greentext
+	var/green = html_decode(message)
+	green = copytext(green,1,2)
+	if(green == ">")
+		greentext = TRUE
+
 	var/can_badmin = !is_stealthed && can_select_ooc_color(C) && (C.prefs.ooccolor != initial(C.prefs.ooccolor))
 	var/ooc_color = C.prefs.ooccolor
 	var/decorated_ckey = C.donator_info.get_decorated_ooc_name(C)
@@ -46,7 +52,7 @@
 	for(var/client/target in GLOB.clients)
 		if(target.is_key_ignored(C.key)) // If we're ignored by this person, then do nothing.
 			continue
-		var/sent_message = "[create_text_tag("ooc", "OOC")] <EM>[decorated_ckey]:</EM> <span class='message linkify'>[message]</span>"
+		var/sent_message = "[create_text_tag("ooc", "OOC")] <EM>[decorated_ckey]:</EM> <span class='message linkify'>[greentext ? "<font color='#789922'>[message]</font>" : "[message]"]</span>"
 		if(can_badmin)
 			receive_communication(C, target, "<span class='ooc'><font color='[ooc_color]'>[sent_message]</font></span>")
 		else
