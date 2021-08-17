@@ -225,7 +225,7 @@
 			breathe_organ.add_oxygen_deprivation(amount)
 	BITSET(hud_updateflag, HEALTH_HUD)
 
-/mob/living/carbon/human/getToxLoss()
+/mob/living/carbon/human/getToxLoss() // In fact, returns internal organs damage. Should be reworked sometime in the future.
 	if((species.species_flags & SPECIES_FLAG_NO_POISON) || isSynthetic())
 		return 0
 	var/amount = 0
@@ -256,8 +256,13 @@
 	if(kidneys)
 		pick_organs -= kidneys
 		pick_organs.Insert(1, kidneys)
+	// Liver is buffering some toxic damage, preventing its friends from getting damage unless it's too busy with filtering.
 	var/obj/item/organ/internal/liver/liver = internal_organs_by_name[BP_LIVER]
 	if(liver)
+		if(!heal)
+			amount -= liver.store_tox(amount)
+			if(amount <= 0)
+				return // Try to store toxins in the liver; stop right here if it sponges all the damage
 		pick_organs -= liver
 		pick_organs.Insert(1, liver)
 

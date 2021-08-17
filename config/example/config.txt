@@ -622,6 +622,9 @@ DEFAULT_NO_VOTE
 ## Patreon URL
 # PATREONURL http://example.com
 
+## Changelog URL
+# CHANGELOGURL http://example.com
+
 # # # # # # # # # # # # # # # # # # # # # #
 #     EXTERNAL CONNECTIONS / DATABASE     #
 # # # # # # # # # # # # # # # # # # # # # #

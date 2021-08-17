@@ -143,14 +143,6 @@
 	#define ABOVE_HUMAN_LAYER           4.08
 	#define VEHICLE_LOAD_LAYER          4.09
 	#define CAMERA_LAYER                4.10
-	// BLOB
-	#define BLOB_BASE_LAYER				4.11
-	#define BLOB_SHIELD_LAYER			4.12
-	#define BLOB_RESOURCE_LAYER			4.13
-	#define BLOB_FACTORY_LAYER			4.14
-	#define BLOB_NODE_LAYER				4.15
-	#define BLOB_CORE_LAYER				5.16
-	#define BLOB_SPORE_LAYER			6.17
 	// EFFECTS BELOW LIGHTING
 	#define BELOW_PROJECTILE_LAYER      4.18
 	#define DEEP_FLUID_LAYER            4.19

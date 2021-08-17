@@ -125,7 +125,7 @@
 "cv" = (/turf/simulated/floor/tiled/usedup,/area/ship/scrap/crew/saloon)
 "cw" = (/obj/structure/cable{d1 = 1; d2 = 2; icon_state = "1-2"},/obj/machinery/atmospherics/pipe/simple/hidden/scrubbers,/obj/machinery/atmospherics/pipe/simple/hidden/supply,/obj/item/weapon/stool/padded,/obj/machinery/atmospherics/pipe/manifold/hidden/scrubbers{dir = 8},/turf/simulated/floor/tiled/usedup,/area/ship/scrap/crew/saloon)
 "cx" = (/obj/machinery/atmospherics/unary/vent_scrubber{dir = 8},/turf/simulated/floor/tiled/usedup,/area/ship/scrap/crew/saloon)
-"cy" = (/obj/effect/floor_decal/corner/beige{icon_state = "corner_white"; dir = 6},/obj/structure/table/standard,/obj/machinery/recharger,/obj/structure/sign/poster{pixel_x = 32; pixel_y = 0},/obj/item/trash/tray,/obj/item/weapon/circular_saw,/turf/simulated/floor/tiled/usedup,/area/ship/scrap/crew/saloon)
+"cy" = (/obj/effect/floor_decal/corner/beige{icon_state = "corner_white"; dir = 6},/obj/structure/table/standard,/obj/machinery/recharger,/obj/structure/sign/poster{pixel_x = 32; pixel_y = 0},/obj/item/trash/dish/tray,/obj/item/weapon/circular_saw,/turf/simulated/floor/tiled/usedup,/area/ship/scrap/crew/saloon)
 "cz" = (/obj/machinery/light/small{icon_state = "bulb1"; dir = 8},/obj/item/weapon/crowbar,/turf/simulated/floor/tiled/usedup,/area/ship/scrap/crew/hallway/starboard)
 "cA" = (/turf/simulated/wall/r_wall,/area/ship/scrap/crew/cryo)
 "cB" = (/turf/simulated/wall,/area/ship/scrap/crew/cryo)
