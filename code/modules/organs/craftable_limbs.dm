@@ -7,7 +7,7 @@
 	var/state = 1
 
 	var/company = "Morgan Trading Co"
-	var/list/parts =  list(BP_L_ARM)
+	var/build_path = /obj/item/organ/external/arm
 
 /obj/item/weapon/crafrable_limb/Initialize()
 	. = ..()
@@ -26,24 +26,6 @@
 			overlays.Add(image(icon, "[icon_state]_casing"))
 
 /obj/item/weapon/craftable_limb/proc/create_prosthtic()
-	var/mob/living/carbon/human/H = new /mob/living/carbon/human(get_turf(loc))
-	H.death(0, "no message")
-	H.set_species(SPECIES_HUMAN)
-
-	for(var/obj/item/organ/external/O in H.organs)
-		if(!(O.organ_tag in parts))
-			continue
-
-		O.robotize(company)
-		O.dna = new/datum/dna()
-		O.dna.ResetUI()
-		O.dna.ResetSE()
-
-		O.status |= ORGAN_CUT_AWAY
-		O.dir = SOUTH
-		return O
-
-	qdel(H)
 
 /obj/item/weapon/craftable_limb/attackby(obj/item/weapon/W, mob/user)
 	switch(state)
