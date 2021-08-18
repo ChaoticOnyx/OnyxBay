@@ -92,9 +92,15 @@
 		icon_state = "[icon_state]_work"
 
 /obj/machinery/pros_fabricator/Destroy()
+	var/turf/T = get_turf(src)
 
 	for(var/f in materials)
 		eject_materials(f, -1)
+
+	if(T)
+		for(var/obj/I in contents)
+			if(istype(I, /obj/item/weapon/disk/limb))
+				I.forceMove(T)
 
 	..()
 
