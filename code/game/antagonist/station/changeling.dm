@@ -1,5 +1,12 @@
 GLOBAL_DATUM_INIT(changelings, /datum/antagonist/changeling, new)
 
+/proc/isChangeling(mob/player)
+	if(!GLOB.changelings || !player.mind)
+		return FALSE
+	if(player.mind in GLOB.changelings.current_antagonists)
+		return TRUE
+
+
 /datum/antagonist/changeling
 	id = MODE_CHANGELING
 	role_text = "Changeling"
