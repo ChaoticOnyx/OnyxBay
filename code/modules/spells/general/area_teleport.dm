@@ -1,4 +1,4 @@
-/spell/area_teleport
+/datum/spell/area_teleport
 	name = "Teleport"
 	desc = "This spell teleports you to a type of area of your selection."
 	feedback = "TP"
@@ -6,7 +6,7 @@
 	charge_max = 600
 	spell_flags = NEEDSCLOTHES
 	invocation = "Scyar Nila!"
-	invocation_type = SpI_SHOUT
+	invocation_type = SPI_SHOUT
 	cooldown_min = 200 //100 deciseconds reduction per rank
 	need_target = FALSE
 
@@ -18,12 +18,12 @@
 
 	cast_sound = 'sound/effects/teleport.ogg'
 
-	hud_state = "wiz_tele"
+	icon_state = "wiz_tele"
 
-/spell/area_teleport/before_cast()
+/datum/spell/area_teleport/before_cast()
 	return
 
-/spell/area_teleport/choose_targets()
+/datum/spell/area_teleport/choose_targets()
 	var/area/thearea
 	if(!randomise_selection)
 		thearea = input("Area to teleport to", "Teleport") as null|anything in teleportlocs
@@ -32,13 +32,13 @@
 		thearea = pick(teleportlocs)
 	return list(teleportlocs[thearea])
 
-/spell/area_teleport/check_valid_targets()
+/datum/spell/area_teleport/check_valid_targets()
 	return TRUE
 
-/spell/area_teleport/cast(area/thearea, mob/user)
+/datum/spell/area_teleport/cast(area/thearea, mob/user)
 	if(istype(user.loc, /obj/machinery/atmospherics/unary/cryo_cell))
 		var/obj/machinery/atmospherics/unary/cryo_cell/cell = user.loc
-		cell.go_out()	
+		cell.go_out()
 	playsound(user,cast_sound,50,1)
 	if(!istype(thearea))
 		if(istype(thearea, /list))
@@ -76,10 +76,10 @@
 
 	return
 
-/spell/area_teleport/after_cast()
+/datum/spell/area_teleport/after_cast()
 	return
 
-/spell/area_teleport/invocation(mob/user, area/chosenarea)
+/datum/spell/area_teleport/invocation(mob/user, area/chosenarea)
 	if(!istype(chosenarea))
 		return //can't have that, can we
 	if(!invocation_area || !chosenarea)

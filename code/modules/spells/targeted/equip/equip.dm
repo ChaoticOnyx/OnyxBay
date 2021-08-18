@@ -1,6 +1,6 @@
 //You can set duration to 0 to have the items last forever
 
-/spell/targeted/equip_item
+/datum/spell/targeted/equip_item
 	name = "equipment spell"
 
 	var/list/equipped_summons = list() //assoc list of text ids and paths to spawn
@@ -11,7 +11,7 @@
 
 	var/single_item = FALSE //if the item is single and cant summon multiple
 
-/spell/targeted/equip_item/cast(list/targets, mob/user = usr)
+/datum/spell/targeted/equip_item/cast(list/targets, mob/user = usr)
 	..()
 	if(single_item)
 		for(var/obj/item/to_delete in summoned_items)
@@ -45,5 +45,5 @@
 					M.remove_from_mob(to_remove)
 				qdel(to_remove)
 
-/spell/targeted/equip_item/proc/summon_item(newtype)
+/datum/spell/targeted/equip_item/proc/summon_item(newtype)
 	return new newtype

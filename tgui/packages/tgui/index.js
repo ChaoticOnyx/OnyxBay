@@ -19,6 +19,7 @@ import './styles/themes/wizard.scss';
 import './styles/themes/primer.scss';
 import './styles/themes/vending.scss';
 import './styles/themes/arcade.scss';
+import './styles/themes/spellbook.scss';
 
 import { perf } from 'common/perf';
 import { setupHotReloading } from 'tgui-dev-server/link/client';

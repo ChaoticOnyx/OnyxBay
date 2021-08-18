@@ -796,7 +796,7 @@
 			overlays += eye_overlay
 
 	if(opened)
-		var/panelprefix = custom_sprite ? src.ckey : "ov"
+		var/panelprefix = (icontype == "Custom") ? src.ckey : "ov"
 		if(wiresexposed)
 			overlays += "[panelprefix]-openpanel +w"
 		else if(cell)
@@ -1232,14 +1232,6 @@
 				to_chat(user, "You fail to hack [src]'s interface.")
 				to_chat(src, "Hack attempt detected.")
 			return 1
-
-/mob/living/silicon/robot/blob_act(destroy, obj/effect/blob/source)
-	if (is_dead())
-		gib()
-
-	. = ..()
-
-	spark_system.start()
 
 /mob/living/silicon/robot/incapacitated(incapacitation_flags = INCAPACITATION_DEFAULT)
 	if((incapacitation_flags & INCAPACITATION_FORCELYING) && (lockcharge || !is_component_functioning("actuator")))

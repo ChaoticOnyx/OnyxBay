@@ -129,5 +129,7 @@
 /obj/machinery/cell_charger/Process()
 	if(!charging)
 		return PROCESS_KILL
+	if(stat & NOPOWER)
+		return
 	charging.give(active_power_usage*CELLRATE)
 	update_icon()

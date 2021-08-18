@@ -1,6 +1,6 @@
 
 //heal spell of magical magical boy
-/mob/living/carbon/human/proc/wizard_heal(spell/targeted/heal)
+/mob/living/carbon/human/proc/wizard_heal(datum/spell/targeted/heal)
 	if(!heal)
 		return
 	radiation += min(radiation, heal.amt_radiation)

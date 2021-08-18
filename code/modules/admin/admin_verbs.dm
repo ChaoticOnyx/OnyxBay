@@ -8,6 +8,7 @@ var/list/admin_verbs_default = list(
 	/client/proc/hide_most_verbs,		//hides all our hideable adminverbs,
 	/client/proc/debug_variables,		//allows us to -see- the variables of any instance in the game. +VAREDIT needed to modify,
 	/client/proc/debug_global_variables,//as above but for global variables,
+	/client/proc/debug_glob_variables,
 //	/client/proc/check_antagonists,		//shows all antags,
 	/client/proc/cmd_mentor_check_new_players,
 	/client/proc/checkAccount
@@ -315,7 +316,8 @@ var/list/admin_verbs_hideable = list(
 	/client/proc/toggle_possess_mode,
 	/client/proc/enable_profiler,
 	/client/proc/bluespace_tech,
-	/client/proc/delbook
+	/client/proc/delbook,
+	/client/proc/debug_glob_variables
 	)
 
 var/list/admin_verbs_mod = list(
@@ -955,7 +957,7 @@ var/list/admin_verbs_mentor = list(
 	set category = "Fun"
 	set name = "Give Spell"
 	set desc = "Gives a spell to a mob."
-	var/spell/S = input("Choose the spell to give to that guy", "ABRAKADABRA") as null|anything in spells
+	var/datum/spell/S = input("Choose the spell to give to that guy", "ABRAKADABRA") as null|anything in typesof(/datum/spell)
 	if(!S) return
 	T.add_spell(new S)
 	feedback_add_details("admin_verb","GS") //If you are copy-pasting this, ensure the 2nd parameter is unique to the new proc!

@@ -19,11 +19,14 @@
 	if(A == loc)	// if placing the labeller into something (e.g. backpack)
 		return		// don't set a label
 
+	if(istype(A, /obj/structure/bigDelivery) || istype(A, /obj/item/smallDelivery))	// Restricts adding a label not through the hand labeller dialog
+		return
+
 	if(!labels_left)
-		to_chat(user, "<span class='notice'>No labels left.</span>")
+		to_chat(user, SPAN("notice", "No labels left."))
 		return
 	if(!label || !length(label))
-		to_chat(user, "<span class='notice'>No label text set.</span>")
+		to_chat(user, SPAN("notice", "No label text set."))
 		return
 	if(has_extension(A, /datum/extension/labels))
 		var/datum/extension/labels/L = get_extension(A, /datum/extension/labels)
@@ -32,14 +35,14 @@
 	A.attach_label(user, src, label)
 
 /atom/proc/attach_label(user, atom/labeler, label_text)
-	to_chat(user, "<span class='notice'>The label refuses to stick to [name].</span>")
+	to_chat(user, SPAN("notice", "The label refuses to stick to [name]."))
 
 /mob/observer/attach_label(user, atom/labeler, label_text)
-	to_chat(user, "<span class='notice'>\The [labeler] passes through \the [src].</span>")
+	to_chat(user, SPAN("notice", "\The [labeler] passes through \the [src]."))
 
 /obj/machinery/portable_atmospherics/hydroponics/attach_label(user)
 	if(!mechanical)
-		to_chat(user, "<span class='notice'>How are you going to label that?</span>")
+		to_chat(user, SPAN("notice", "How are you going to label that?"))
 		return
 	..()
 	update_icon()
@@ -54,13 +57,13 @@
 	mode = !mode
 	icon_state = "labeler[mode]"
 	if(mode)
-		to_chat(user, "<span class='notice'>You turn on \the [src].</span>")
+		to_chat(user, SPAN("notice", "You turn on \the [src]."))
 		//Now let them chose the text.
 		var/str = sanitizeSafe(input(user,"Label text?","Set label",""), MAX_LNAME_LEN)
 		if(!str || !length(str))
-			to_chat(user, "<span class='notice'>Invalid text.</span>")
+			to_chat(user, SPAN("notice", "Invalid text."))
 			return
 		label = str
-		to_chat(user, "<span class='notice'>You set the text to '[str]'.</span>")
+		to_chat(user, SPAN("notice", "You set the text to '[str]'."))
 	else
-		to_chat(user, "<span class='notice'>You turn off \the [src].</span>")
+		to_chat(user, SPAN("notice", "You turn off \the [src]."))

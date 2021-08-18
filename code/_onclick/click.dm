@@ -637,7 +637,7 @@ var/const/CLICK_HANDLER_ALL                  = (~0)
 /datum/click_handler/wizard/fireball/OnClick(atom/target)
 	if (!isliving(target) && !isturf(target))
 		return 0
-	for(var/spell/spell_storage in user.mind.learned_spells)
+	for(var/datum/spell/spell_storage in user.mind.learned_spells)
 		if (src.handler_name == spell_storage.name)
 			return spell_storage.perform(user,0,target)
 	to_chat(user, "We cannot find it's power... call admins")

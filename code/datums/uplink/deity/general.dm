@@ -8,7 +8,7 @@
 	name = "Godsvision"
 	desc = "Grants the ability for a servant to see the world like you do."
 	item_cost = 20
-	path = /spell/camera_connection/god_vision
+	path = /datum/spell/camera_connection/god_vision
 
 /datum/uplink_item/deity/feat/ability_general/innate_minimum
 	name = "Increase Potential"
