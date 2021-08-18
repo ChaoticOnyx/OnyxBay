@@ -1,11 +1,5 @@
 GLOBAL_DATUM_INIT(wizards, /datum/antagonist/wizard, new)
 
-/proc/isWizard(mob/player)
-	if(!GLOB.wizards || !player.mind)
-		return FALSE
-	if(player.mind in GLOB.wizards.current_antagonists)
-		return TRUE
-
 /datum/antagonist/wizard
 	id = MODE_WIZARD
 	role_text = "Space Wizard"
@@ -79,8 +73,6 @@ GLOBAL_DATUM_INIT(wizards, /datum/antagonist/wizard, new)
 	wizard.current.SetName(wizard.current.real_name)
 	wizard.current.mutations.Add(MUTATION_CLUMSY)
 	wizard.wizard = new()
-	wizard.current.add_language(LANGUAGE_CULT)
-
 
 /datum/antagonist/wizard/equip(mob/living/carbon/human/wizard_mob)
 
