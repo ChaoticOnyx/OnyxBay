@@ -80,7 +80,6 @@
 	speed = T / 2
 
 /obj/machinery/bioprinter/Destroy()
-
 	var/turf/T = get_turf(src)
 
 	if(T)
@@ -89,7 +88,11 @@
 			stored_matter -= amount_list[/obj/item/weapon/reagent_containers/food/snacks/meat]
 			new /obj/item/weapon/reagent_containers/food/snacks/meat(T)
 
-	return ..()
+		for(var/obj/I in contents)
+			if(istype(I, /obj/item/weapon/disk/biolimb))
+				I.forceMove(T)
+
+	..()
 
 /obj/machinery/bioprinter/Process()
 	..()
@@ -112,7 +115,7 @@
 	else
 		return
 	if(busy)
-		overlays.Add(image(icon, "[icon_state]_work"))
+		icon_state = "[icon_state]_work"
 
 /obj/machinery/bioprinter/proc/update_busy()
 	if(queue.len)
@@ -139,18 +142,18 @@
 		return
 
 	if(istype(O, /obj/item/weapon/disk/biolimb))
-		var/obj/item/weapon/disk/biolimb/B = O
 
-		if(B in contents)
-			to_chat(user, SPAN("warning", "Bioprinter already contains advanced blueprints."))
-			return
+		for(var/obj/I in contents)
+			if(istype(I, O))
+				to_chat(user, SPAN("warning", "Bioprinter already contains advanced blueprints."))
+				return
 
 		to_chat(user, SPAN("notice", "Installing blueprint files..."))
 		if(do_after(user, 50, src))
 			to_chat(user, SPAN("notice", "Installed advanced blueprints!"))
 			user.drop_from_inventory(O)
 			contents += O
-
+			var/obj/item/weapon/disk/biolimb/B = O
 			products += B.products
 			update_categories()
 
@@ -159,7 +162,6 @@
 	// Load with matter for printing.
 	for(var/path in amount_list)
 		if(istype(O, path))
-
 
 			if(max_stored_matter == stored_matter)
 				to_chat(user, "<span class='warning'>\The [src] is too full.</span>")
@@ -277,7 +279,7 @@
 
 	for(var/A in products)
 		if(products[A][1] == queue[1])
-			choice = lowertext(A)
+			choice = A
 
 	stored_matter = max(0, stored_matter - products[choice][4] * mat_efficiency)
 
@@ -295,11 +297,17 @@
 			var/new_organ = H.species.has_organ[choice]
 			O = new new_organ(get_turf(src))
 			O.status |= ORGAN_CUT_AWAY
+			O.dir = SOUTH
+		else
+			var/new_organ = products[choice][3]
+			O = new new_organ(get_turf(src))
+			O.status |= ORGAN_CUT_AWAY
+			O.dir = SOUTH
 
 		O.set_dna(H.dna)
 
+		// This is a very hacky way of doing of what organ/New() does if it has an owner.
 		if(O.species)
-			// This is a very hacky way of doing of what organ/New() does if it has an owner
 			O.w_class = max(O.w_class + mob_size_difference(O.species.mob_size, MOB_MEDIUM), 1)
 
 	visible_message(SPAN("info", "\The [src] churns for a moment, injects its stored DNA into the biomass, then spits out \a [O]."))

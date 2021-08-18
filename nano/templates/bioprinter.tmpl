@@ -1,5 +1,4 @@
 <div style="float: left; width: 100%;">
-
 	{{for data.dna}}
 		<div class="item">
 			<b>DNA:</b> {{:value.dna_name}}, {{:value.dna_species}}
@@ -9,18 +8,15 @@
 			No DNA sample stored.
 		</div>
 	{{/for}}
-
 </div>
 
-
-<div style="float: left; width: 50%;">
-
-	<b>Materials:</b>
-	<div class="itemLabelWide">
+<div style="float: left; width: 60%;">
+	<b>Materials:</b><br>
+	<div class="item">
 		Biomass: {{:data.amt}}/{{:data.maxres}}
 	</div>
 
-	<b>Categories:</b>
+	<b>Categories:</b><br>
 	<div class="item">
 		{{for data.categories}}
 			{{:helper.link(value, null, {'category' : value}, value == data.category ? 'selected' : null)}}
@@ -29,55 +25,48 @@
 		{{/for}}
 	</div>
 
+	<b>Designs:</b>
+	{{for data.buildable}}
+		{{if value.category == data.category}}
+			<div class="item">
+				<div class="itemLabelWide">
+					{{:helper.link(value.name, null, {'build' : value.id})}}
+				</div>
+				<div class="itemContentMedium">
+					{{:value.resources}}
+				</div>
+			</div>
+		{{/if}}
+	{{/for}}
 </div>
 
-<div style="float: right; width: 50%;">
-
-			<b>Queue:</b>
-			{{if data.current}}
-				<div class="item">
-					<div class="itemLabelWide">
-						<b>{{:data.current}}</b> ({{:data.builtperc}}% ready)
-					</div>
-					<div class="itemContentMedium">
-						{{:helper.link('Cancel', null, {'remove' : 1})}}
-					</div>
-				</div>
-				{{for data.queue}}
-					<div class="item">
-					<div class="itemLabelWide">
-						{{:index + 2}}: {{:value}}
-					</div>
-					<div class="itemContentMedium">
-						{{:helper.link('Remove', null, {'remove' : index + 2})}}
-					</div>
-				{{empty}}
-					<div class="item">
-						The queue is empty
-					</div>
-				{{/for}}
-			{{else}}
-				<div class="item">
-					Nothing
-				</div>
-			{{/if}}
-
-</div>
-
-<div style="float: left; width: 100%;">
-
-		<b>Designs:</b>
-		{{for data.buildable}}
-			{{if value.category == data.category}}
-				<div class="item">
-					<div class="itemLabelWide">
-						{{:helper.link(value.name, null, {'build' : value.id})}}
-					</div>
-					<div class="itemContentMedium">
-						{{:value.resources}}
-					</div>
-				</div>
-			{{/if}}
+<div style="float: right; width: 40%;">
+	<b>Queue:</b>
+	{{if data.current}}
+		<div class="item">
+			<div class="itemLabelWide">
+				<b>{{:data.current}}</b> ({{:data.builtperc}}% ready)
+			</div>
+			<div class="itemContentMedium">
+				{{:helper.link('Cancel', null, {'remove' : 1})}}
+			</div>
+		</div>
+		{{for data.queue}}
+			<div class="item">
+			<div class="itemLabelWide">
+				{{:index + 2}}: {{:value}}
+			</div>
+			<div class="itemContentMedium">
+				{{:helper.link('Remove', null, {'remove' : index + 2})}}
+			</div>
+		{{empty}}
+			<div class="item">
+				The queue is empty
+			</div>
 		{{/for}}
-
+	{{else}}
+		<div class="item">
+			Nothing
+		</div>
+	{{/if}}
 </div>
