@@ -1,4 +1,4 @@
-/spell/targeted/heal_target
+/datum/spell/targeted/heal_target
 	name = "Cure Light Wounds"
 	desc = "a rudimentary spell used mainly by wizards to heal papercuts. Does not require wizard garb."
 	feedback = "CL"
@@ -6,20 +6,20 @@
 	charge_max = 200
 	spell_flags = INCLUDEUSER | SELECTABLE
 	invocation = "Di'Nath!"
-	invocation_type = SpI_SHOUT
+	invocation_type = SPI_SHOUT
 	range = 2
 	max_targets = 1
-	level_max = list(Sp_TOTAL = 2, Sp_SPEED = 1, Sp_POWER = 2)
+	level_max = list(SP_TOTAL = 2, SP_SPEED = 1, SP_POWER = 2)
 
 	cooldown_reduc = 50
-	hud_state = "heal_minor"
+	icon_state = "heal_minor"
 
 	amt_dam_brute = -15
 	amt_dam_fire = -5
 
 	message = "You feel a pleasant rush of heat move through your body."
 
-/spell/targeted/heal_target/empower_spell()
+/datum/spell/targeted/heal_target/empower_spell()
 	if(!..())
 		return 0
 	amt_dam_brute -= 15
@@ -27,7 +27,7 @@
 	heals_external_bleeding = 1
 	return "[src] will now heal more."
 
-/spell/targeted/heal_target/major
+/datum/spell/targeted/heal_target/major
 	name = "Cure Major Wounds"
 	desc = "A spell used to fix others that cannot be fixed with regular medicine."
 	feedback = "CM"
@@ -35,9 +35,9 @@
 	spell_flags = INCLUDEUSER | SELECTABLE | NEEDSCLOTHES
 	invocation = "Borv Di'Nath!"
 	range = 1
-	level_max = list(Sp_TOTAL = 2, Sp_SPEED = 1, Sp_POWER = 2)
+	level_max = list(SP_TOTAL = 2, SP_SPEED = 1, SP_POWER = 2)
 	cooldown_reduc = 100
-	hud_state = "heal_major"
+	icon_state = "heal_major"
 	heals_external_bleeding = 1
 	amt_dam_brute = -75
 	amt_dam_fire  = -50
@@ -45,7 +45,7 @@
 
 	message = "Your body feels like a furnace."
 
-/spell/targeted/heal_target/major/empower_spell()
+/datum/spell/targeted/heal_target/major/empower_spell()
 	if(!..())
 		return 0
 	amt_blood  += 12
@@ -63,7 +63,7 @@
 		heals_internal_bleeding = 1
 		return "[src] now heals more and stops internal bleeding"
 
-/spell/targeted/heal_target/area
+/datum/spell/targeted/heal_target/area
 	name = "Cure Area"
 	desc = "This spell heals everyone in an area."
 	feedback = "HA"
@@ -72,14 +72,14 @@
 	invocation = "Nal Di'Nath!"
 	range = 2
 	max_targets = 0
-	level_max = list(Sp_TOTAL = 1, Sp_SPEED = 1, Sp_POWER = 1)
+	level_max = list(SP_TOTAL = 1, SP_SPEED = 1, SP_POWER = 1)
 	cooldown_reduc = 300
-	hud_state = "heal_area"
+	icon_state = "heal_area"
 
 	amt_dam_brute = -25
 	amt_dam_fire = -25
 
-/spell/targeted/heal_target/area/empower_spell()
+/datum/spell/targeted/heal_target/area/empower_spell()
 	if(!..())
 		return 0
 	amt_dam_brute -= 15
@@ -89,16 +89,16 @@
 	return "[src] now heals more in a wider area."
 
 
-/spell/targeted/heal_target/sacrifice
+/datum/spell/targeted/heal_target/sacrifice
 	name = "Sacrifice"
 	desc = "This spell heals immensily. For a price. Does not require wizard garb."
 	feedback = "SF"
 	spell_flags = SELECTABLE
 	invocation = "Ei'Nath Borv Di'Nath!"
-	charge_type = Sp_HOLDVAR
+	charge_type = SP_HOLDVAR
 	holder_var_type = "fireloss"
 	holder_var_amount = 100
-	level_max = list(Sp_TOTAL = 1, Sp_SPEED = 0, Sp_POWER = 1)
+	level_max = list(SP_TOTAL = 1, SP_SPEED = 0, SP_POWER = 1)
 	heals_external_bleeding = 1
 	amt_dam_brute = -1000
 	amt_dam_fire = -1000
@@ -107,9 +107,9 @@
 	amt_blood  = 280
 	heals_internal_bleeding = 1
 	heal_bones = 1
-	hud_state = "gen_dissolve"
+	icon_state = "gen_dissolve"
 
-/spell/targeted/heal_target/sacrifice/empower_spell()
+/datum/spell/targeted/heal_target/sacrifice/empower_spell()
 	if(!..())
 		return 0
 

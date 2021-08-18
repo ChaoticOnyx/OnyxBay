@@ -47,3 +47,7 @@ export const sanitizeText = (input, tags = defTag, forbidAttr = defAttr) => {
     FORBID_ATTR: forbidAttr,
   });
 };
+
+export const escapeRegExp = (string) => {
+  return string.replace(/[.*+?^${}()|[\]\\]/g, '\\$&'); // $& means the whole matched string
+};

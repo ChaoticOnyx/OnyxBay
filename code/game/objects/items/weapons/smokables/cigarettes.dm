@@ -89,7 +89,7 @@
 			return SPAN("notice", "[holder] touches \his [tool.name] with \a [name] to light it up.")
 		else
 			return SPAN("danger", "[holder] fired \his [tool.name] into the air, lighting \a [name] in the process!")
-	if(istype(tool, /spell/targeted/projectile/dumbfire/fireball))
+	if(istype(tool, /datum/spell/targeted/projectile/dumbfire/fireball))
 		return SPAN("notice", "Roaring fireball lits \a [name] in the mouth of [holder]!")
 	if(istype(tool, /obj/machinery/light))
 		return SPAN("notice", "[holder] cleverly lights \his [name] by a red-hot incandescent spiral inside the broken lightbulb.")

@@ -29,7 +29,7 @@
 	if(istype(A, /obj/item/weapon/storage) || istype(A, /obj/structure/table) || istype(A, /obj/structure/closet) || istype(A, /obj/item/weapon/reagent_containers) || istype(A, /obj/structure/sink) || istype(A, /obj/structure/janitorialcart) || istype(A, /obj/item/weapon/backwear/reagent))
 		return
 
-	if(istype(A, /spell))
+	if(istype(A, /datum/spell))
 		return
 
 	var/obj/item/weapon/reagent_containers/actual_container = external_container ? external_container : src
