@@ -205,28 +205,53 @@
 	spawn(30)
 		spamcheck = 0
 		if(!iscultist(target) && target.loc == get_turf(src) && GLOB.cult.can_become_antag(target.mind, 1) && cultists.len >= 2)
-			GLOB.cult.add_antagonist(target.mind, ignore_role = 1, do_not_equip = 1)
-		else // They hesitated, resisted, or can't join, and they are still on the rune - damage them
-			if(target.stat == CONSCIOUS)
-				target.take_overall_damage(10, 0)
-				switch(target.getFireLoss())
-					if(0 to 25)
-						to_chat(target, SPAN_DANGER("Your blood boils as you force yourself to resist the corruption invading every corner of your mind."))
-					if(25 to 45)
-						to_chat(target, SPAN_DANGER("Your blood boils and your body burns as the corruption further forces itself into your body and mind."))
-						target.take_overall_damage(3, 5)
-					if(45 to 75)
-						to_chat(target, SPAN_DANGER("You begin to hallucinate images of a dark and incomprehensible being and your entire body feels like its engulfed in flame as your mental defenses crumble."))
-						target.take_overall_damage(5, 10)
-					if(75 to 100)
-						to_chat(target, SPAN_OCCULT("Your mind turns to ash as the burning flames engulf your very soul and images of an unspeakable horror begin to bombard the last remnants of mental resistance."))
-						target.take_overall_damage(10, 20)
+			on_convert_success(cultists, target)
+		else
+			convert_penalty(target)
+
 
 /obj/effect/rune/convert/Topic(href, href_list)
 	var/list/mob/living/cultists = get_cultists()
 	if(href_list["join"] && cultists.len)
 		if(usr.loc == loc && !iscultist(usr))
-			GLOB.cult.add_antagonist(usr.mind, ignore_role = 1, do_not_equip = 1)
+			on_convert_success(cultists, usr)
+
+/obj/effect/rune/convert/proc/convert_penalty(mob/living/carbon/target)
+	if(target.stat == CONSCIOUS)
+		target.take_overall_damage(10, 0)
+		switch(target.getFireLoss())
+			if(0 to 25)
+				to_chat(target, SPAN_DANGER("Your blood boils as you force yourself to resist the corruption invading every corner of your mind."))
+			if(25 to 45)
+				to_chat(target, SPAN_DANGER("Your blood boils and your body burns as the corruption further forces itself into your body and mind."))
+				target.take_overall_damage(3, 5)
+			if(45 to 75)
+				to_chat(target, SPAN_DANGER("You begin to hallucinate images of a dark and incomprehensible being and your entire body feels like its engulfed in flame as your mental defenses crumble."))
+				target.take_overall_damage(5, 10)
+			if(75 to 100)
+				to_chat(target, SPAN_OCCULT("Your mind turns to ash as the burning flames engulf your very soul and images of an unspeakable horror begin to bombard the last remnants of mental resistance."))
+				target.take_overall_damage(10, 20)
+
+/obj/effect/rune/convert/proc/on_convert_success(list/mob/living/cultists, mob/living/carbon/target)
+	if(isWizard(target))
+		to_chat(target, SPAN_DANGER("Followers of the Blood God have tried to corrupt you. DEATH IS COMMING FOR THOSE FOOLS"))
+		GLOB.wizards.remove_antagonist(target.mind, TRUE)
+		GLOB.cult.add_antagonist(target.mind, ignore_role = TRUE, do_not_equip = TRUE)
+		for(var/mob/living/M in cultists)
+			to_chat(M, SPAN_DANGER("This person cant be converted. IT WAS A DEADLY MISTAKE"))
+			M.gib()
+			return
+	else if(isChangeling(target))
+		to_chat(target, SPAN("changeling", "We reject offer of these creatures"))
+		return
+	else if(isXenomorph(target))
+		to_chat(target, SPAN_DANGER("Hive mind rejects offer of those creatures"))
+		return
+	else if(istype(target, /mob/living/carbon/alien/diona))
+		to_chat(target, SPAN_DANGER("Hive mind rejects offer of those creatures"))
+		return
+	else
+		GLOB.cult.add_antagonist(target.mind, ignore_role = TRUE, do_not_equip = TRUE)
 
 /obj/effect/rune/teleport
 	cultname = "teleport"
