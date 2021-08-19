@@ -44,6 +44,14 @@
 		BP_EYES    = list("Eyes", "Organs", /obj/item/organ/internal/eyes,       5600),
 		BP_LIVER   = list("Liver", "Organs", /obj/item/organ/internal/liver,      5600),
 		BP_STOMACH = list("Stomach", "Organs", /obj/item/organ/internal/stomach,    5600),
+		BP_L_ARM   = list("Left Arm", "Limbs",  /obj/item/organ/external/arm,        10125),
+		BP_R_ARM   = list("Right Arm", "Limbs",  /obj/item/organ/external/arm/right,  10125),
+		BP_L_HAND  = list("Left Hand", "Limbs",  /obj/item/organ/external/hand,       3375),
+		BP_R_HAND  = list("Right Hand", "Limbs",  /obj/item/organ/external/hand/right, 3375),
+		BP_L_LEG   = list("Left Leg", "Limbs",  /obj/item/organ/external/leg,        10125),
+		BP_R_LEG   = list("Right Leg", "Limbs",  /obj/item/organ/external/leg/right,  10125),
+		BP_L_FOOT  = list("Left Foot", "Limbs",  /obj/item/organ/external/foot,       3375),
+		BP_R_FOOT  = list("Right Foot", "Limbs",  /obj/item/organ/external/foot/right, 3375)
 		)
 
 	var/category = null
@@ -87,10 +95,6 @@
 		while(stored_matter >= amount_list[/obj/item/weapon/reagent_containers/food/snacks/meat])
 			stored_matter -= amount_list[/obj/item/weapon/reagent_containers/food/snacks/meat]
 			new /obj/item/weapon/reagent_containers/food/snacks/meat(T)
-
-		for(var/obj/I in contents)
-			if(istype(I, /obj/item/weapon/disk/biolimb))
-				I.forceMove(T)
 
 	..()
 
@@ -139,24 +143,6 @@
 		return
 
 	if(default_part_replacement(user, O))
-		return
-
-	if(istype(O, /obj/item/weapon/disk/biolimb))
-
-		for(var/obj/I in contents)
-			if(istype(I, O))
-				to_chat(user, SPAN("warning", "Bioprinter already contains advanced blueprints."))
-				return
-
-		to_chat(user, SPAN("notice", "Installing blueprint files..."))
-		if(do_after(user, 50, src))
-			to_chat(user, SPAN("notice", "Installed advanced blueprints!"))
-			user.drop_from_inventory(O)
-			contents += O
-			var/obj/item/weapon/disk/biolimb/B = O
-			products += B.products
-			update_categories()
-
 		return
 
 	// Load with matter for printing.
@@ -376,21 +362,3 @@
 			category = href_list["category"]
 
 	return 1
-
-/obj/item/weapon/disk/biolimb
-	name = "Limb Blueprints"
-	desc = "A disk containing the blueprints for organic body parts."
-	icon = 'icons/obj/cloning.dmi'
-	icon_state = "datadisk0"
-	w_class = ITEM_SIZE_TINY
-
-	var/list/products = list(
-		BP_L_ARM   = list("Left Arm", "Limbs",  /obj/item/organ/external/arm,        10125),
-		BP_R_ARM   = list("Right Arm", "Limbs",  /obj/item/organ/external/arm/right,  10125),
-		BP_L_HAND  = list("Left Hand", "Limbs",  /obj/item/organ/external/hand,       3375),
-		BP_R_HAND  = list("Right Hand", "Limbs",  /obj/item/organ/external/hand/right, 3375),
-		BP_L_LEG   = list("Left Leg", "Limbs",  /obj/item/organ/external/leg,        10125),
-		BP_R_LEG   = list("Right Leg", "Limbs",  /obj/item/organ/external/leg/right,  10125),
-		BP_L_FOOT  = list("Left Foot", "Limbs",  /obj/item/organ/external/foot,       3375),
-		BP_R_FOOT  = list("Right Foot", "Limbs",  /obj/item/organ/external/foot/right, 3375)
-	)

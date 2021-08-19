@@ -17,14 +17,6 @@
 	build_path = /obj/item/weapon/disk/tech_disk
 	sort_string = "AAAAB"
 
-/datum/design/item/biolimb
-	name = "Limb Blueprints"
-	desc = "A disk containing the blueprints for organic body parts."
-	id = "biolimb"
-	req_tech = list(TECH_DATA = 2, TECH_BIO = 4)
-	build_path = /obj/item/weapon/disk/biolimb
-	sort_string = "AAAAC"
-
 /datum/design/item/holopad
 	name = "Holopad"
 	desc = "A holografic communication device."
@@ -32,4 +24,4 @@
 	req_tech = list(TECH_BLUESPACE = 2, TECH_DATA = 1, TECH_BLUESPACE = 3)
 	materials = list(MATERIAL_STEEL = 700, MATERIAL_GLASS = 70)
 	build_path = /obj/item/device/holopad
-	sort_string = "AAAAD"
+	sort_string = "AAAAC"
