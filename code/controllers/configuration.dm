@@ -6,6 +6,9 @@ var/list/gamemode_cache = list()
 	var/server_suffix = 0					// generate numeric suffix based on server port
 	var/subserver_name = null               // subserver name in window title, ignored if null
 
+	var/doomsday_protocol = 0               // Abble to connect with own ckey across byond hub and WWW
+	var/list/doomsday_entity = list()       // Entity list(cid=ckey)
+
 	var/log_story = 0						// Story logging, say, emote, ooc and etc without personal data.
 	var/log_ooc = 0							// Log OOC channel
 	var/log_access = 0						// Log login/logout
@@ -330,6 +333,29 @@ var/list/gamemode_cache = list()
 
 		if(type == "config")
 			switch (name)
+				if("enable_doomsday_protocol")
+					config.doomsday_protocol = TRUE
+
+					var/list/localLines = file2list("config/keys_list.txt")
+
+					//process each line seperately
+					for(var/line in localLines)
+						if(!length(line) || copytext(line,1,2) == "#")
+							continue
+
+						//Split the line at every "-"
+						var/list/List = splittext(line, ":")
+						if(!List.len && List.len != 2)
+							continue
+
+						//ckey is before the first "-"
+						var/cid = List[1]
+						var/key = List[2]
+						if(!cid || !key)
+							continue
+
+						config.doomsday_entity[cid] = key
+
 				if ("override_splash")
 					var/lobbyscreen_file = file(value)
 

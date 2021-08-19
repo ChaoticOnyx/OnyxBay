@@ -709,3 +709,6 @@ ERROR_SILENCE_TIME 6000
 
 ## How long to wait between messaging admins about occurrences of a unique error.
 ERROR_MSG_DELAY 50
+
+## Abble to connect server with own ckey across byond and www
+# ENABLE_DOOMSDAY_PROTOCOL

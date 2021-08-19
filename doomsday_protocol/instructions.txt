@@ -1,0 +1,22 @@
+Unzip byond linux or windows (check your OS) to any folder
+
+.HOSTING
+FOR WINDOWS
+1. Execute dreammaker.exe in byond/bin
+2. From top panel choice File -> Open Environment and open baystation12.dme
+3. From top panel choice Build -> Clean Compile and wait some time
+4. After compiling in root folder will appears baystation12.dmb
+5. Execute dreamdaemon.exe in byond/bin
+6. Choice *.dmb path and type port
+7. Click green icon "Go"
+
+FOR LINUX
+1. Read readme.txt for installing byond
+2. Open root folder, where exsist *.dme
+3. Type "DreamMaker baystation12.dme -clean" and wait some time
+4. After compiling type "DreamDaemon baystation12.dmb 2021" for run server (2021 - server port, you may change this)
+
+.CONNECT (Only for windows OS)
+1. Execute dreamseeker.exe in byond/bin
+2. Type server address (Ask your system administator) or insert 'localhost:2021' if you host server
+3. Click Ok button

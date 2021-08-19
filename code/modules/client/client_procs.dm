@@ -170,6 +170,22 @@
 	if(!(connection in list("seeker", "web")))					// Invalid connection type.
 		return null
 
+	// Doomsday auth
+	if(config.doomsday_protocol && IsGuestKey(key))
+		if(!(computer_id in config.doomsday_entity))
+			. = ..()
+			show_browser(src, "Access Denied!<br><br>Your computer id: [computer_id]<br><br>Tell your id to system administator for adding you to doomsday protocol", "window=cid;size=400x200;")
+
+			var/error = "Failed Login: [computer_id] from [address]"
+			log_access(error)
+			message_admins(SPAN_NOTICE(error))
+			report_progress(error)
+
+			qdel(src)
+			return
+
+		key = config.doomsday_entity[computer_id]
+
 	if(!config.guests_allowed && IsGuestKey(key))
 		alert(src, "This server doesn't allow guest accounts to play. Please go to http://www.byond.com/ and register for a key.", "Guest", "OK")
 		qdel(src)
@@ -226,7 +242,7 @@
 		<font size='3'>Please update it to [MIN_CLIENT_VERSION].</font></center>")
 		qdel(src)
 		return
-	
+
 	GLOB.using_map.map_info(src)
 
 	if(custom_event_msg && custom_event_msg != "")
@@ -273,6 +289,11 @@
 		log_admin("[ckey] tried to join but the server is full (player_limit=[config.player_limit])")
 		qdel(src)
 		return
+
+	if(join_motd)
+		to_chat(src, "<div class=\"motd\">[join_motd]</div>")
+	show_regular_announcement()
+	to_chat(src, "<div class='info'>Game ID: <div class='danger'>[game_id]</div></div>")
 
 /*	if(holder)
 		src.control_freak = 0 // Devs need 0 for profiler access

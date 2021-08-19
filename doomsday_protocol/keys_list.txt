@@ -1,0 +1,8 @@
+### TABLE OF COMPUTER ID
+
+## USE IF BYOND HUB OR WWW DOWN
+## COPY THIS INTO ./config AND UNCOMMENT "ENABLE_DOOMSDAY_PROTOCOL" (remove #)
+## IF FILES NOT EXISTS IN ./config, UPLOAD ALL FROM ./config/example to ./config
+
+# computer_id:key
+# 0123456789:HentaiStorm
