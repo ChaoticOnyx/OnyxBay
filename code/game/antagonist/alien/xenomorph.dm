@@ -1,5 +1,11 @@
 GLOBAL_DATUM_INIT(xenomorphs, /datum/antagonist/xenos, new)
 
+/proc/isXenomorph(mob/player)
+	if(!GLOB.xenomorphs || !player.mind)
+		return FALSE
+	if(player.mind in GLOB.xenomorphs.current_antagonists)
+		return TRUE
+
 /datum/antagonist/xenos
 	id = MODE_XENOMORPH
 	role_text = "Xenomorph"
