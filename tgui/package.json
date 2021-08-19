@@ -2,6 +2,11 @@
   "private": true,
   "name": "tgui-workspace",
   "version": "4.3.0",
+  "scripts": {
+    "dev": "node packages/tgui-dev-server/index.esm.js",
+    "lint": "tsc && eslint packages --ext \".js,.cjs,.ts,.tsx\"",
+    "build": "npm run lint && webpack-cli --mode=production"
+  },
   "workspaces": [
     "packages/common",
     "packages/tgfont",
