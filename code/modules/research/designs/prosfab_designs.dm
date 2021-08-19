@@ -214,7 +214,7 @@
 	time = 15
 	materials = list(MATERIAL_STEEL = 5625, MATERIAL_GLASS = 1000)
 
-/datum/design/item/prosfab/pros/limbs/internal/liver
+/datum/design/item/prosfab/pros/internal/stomach
 	name = "Prosthetic Stomach"
 	id = "pros_stomach"
 	build_path = /obj/item/organ/internal/stomach
