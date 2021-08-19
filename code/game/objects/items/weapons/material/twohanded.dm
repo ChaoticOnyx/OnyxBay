@@ -187,7 +187,7 @@
 	mod_reach_w = 1.5
 	mod_handy_u = 0.4
 	mod_weight_u = 1.5
-	mod_reach_u = 1.
+	mod_reach_u = 1.0
 
 	force_divisor = 0.8
 	unwielded_force_divisor = 0.2
