@@ -4,23 +4,24 @@
  * @license MIT
  */
 
-import { useLocalState } from '../backend';
-import { Box, DraggableControl, Icon, Input, Knob, LabeledList, NumberInput, Section, Slider } from '../components';
+import { useLocalState } from '../backend'
+import { Box, DraggableControl, Icon, Input, Knob, LabeledList, NumberInput, Section, Slider } from '../components'
 
 export const meta = {
   title: 'Input',
-  render: () => <Story />,
-};
+  // eslint-disable-next-line react/display-name
+  render: () => <Story />
+}
 
 const Story = (props, context) => {
   const [
     number,
-    setNumber,
-  ] = useLocalState(context, 'number', 0);
+    setNumber
+  ] = useLocalState(context, 'number', 0)
   const [
     text,
-    setText,
-  ] = useLocalState(context, 'text', "Sample text");
+    setText
+  ] = useLocalState(context, 'text', 'Sample text')
   return (
     <Section>
       <LabeledList>
@@ -112,5 +113,5 @@ const Story = (props, context) => {
         </LabeledList.Item>
       </LabeledList>
     </Section>
-  );
-};
+  )
+}

@@ -4,9 +4,9 @@
  * @license MIT
  */
 
-import { toFixed } from 'common/math';
-import { useLocalState } from 'tgui/backend';
-import { useDispatch, useSelector } from 'common/redux';
+import { toFixed } from 'common/math'
+import { useLocalState } from 'tgui/backend'
+import { useDispatch, useSelector } from 'common/redux'
 import {
   Box,
   Button,
@@ -20,24 +20,24 @@ import {
   Section,
   Stack,
   Tabs,
-  TextArea,
-} from 'tgui/components';
-import { ChatPageSettings } from '../chat';
+  TextArea
+} from 'tgui/components'
+import { ChatPageSettings } from '../chat'
 import {
   loadSettingsFromDisk,
   rebuildChat,
   resetSettings,
   saveChatToDisk,
-  saveSettingsToDisk,
-} from '../chat/actions';
-import { THEMES } from '../themes';
-import { changeSettingsTab, updateSettings } from './actions';
-import { FONTS, REPEAT_MODE, SETTINGS_TABS, SIZE_MODE } from './constants';
-import { selectActiveTab, selectSettings } from './selectors';
+  saveSettingsToDisk
+} from '../chat/actions'
+import { THEMES } from '../themes'
+import { changeSettingsTab, updateSettings } from './actions'
+import { FONTS, REPEAT_MODE, SETTINGS_TABS, SIZE_MODE } from './constants'
+import { selectActiveTab, selectSettings } from './selectors'
 
 export const SettingsPanel = (props, context) => {
-  const activeTab = useSelector(context, selectActiveTab);
-  const dispatch = useDispatch(context);
+  const activeTab = useSelector(context, selectActiveTab)
+  const dispatch = useDispatch(context)
   return (
     <Stack fill>
       <Stack.Item>
@@ -50,9 +50,9 @@ export const SettingsPanel = (props, context) => {
                 onClick={() =>
                   dispatch(
                     changeSettingsTab({
-                      tabId: tab.id,
-                    }),
-                )}>
+                      tabId: tab.id
+                    })
+                  )}>
                 {tab.name}
               </Tabs.Tab>
             ))}
@@ -65,8 +65,8 @@ export const SettingsPanel = (props, context) => {
         {activeTab === 'backgroundImage' && <BackgroundImageSettings />}
       </Stack.Item>
     </Stack>
-  );
-};
+  )
+}
 
 export const SettingsGeneral = (props, context) => {
   const {
@@ -75,11 +75,11 @@ export const SettingsGeneral = (props, context) => {
     fontSize,
     lineHeight,
     highlightText,
-    highlightColor,
-  } = useSelector(context, selectSettings);
-  const dispatch = useDispatch(context);
-  const [freeFont, setFreeFont] = useLocalState(context, 'freeFont', false);
-  const [pastedJson, setPastedJson] = useLocalState(context, 'pastedJson', '');
+    highlightColor
+  } = useSelector(context, selectSettings)
+  const dispatch = useDispatch(context)
+  const [freeFont, setFreeFont] = useLocalState(context, 'freeFont', false)
+  const [pastedJson, setPastedJson] = useLocalState(context, 'pastedJson', '')
 
   return (
     <Section>
@@ -91,9 +91,9 @@ export const SettingsGeneral = (props, context) => {
             onSelected={(value) =>
               dispatch(
                 updateSettings({
-                  theme: value,
-                }),
-            )}
+                  theme: value
+                })
+              )}
           />
         </LabeledList.Item>
         <LabeledList.Item label='Font style'>
@@ -106,18 +106,18 @@ export const SettingsGeneral = (props, context) => {
                   onSelected={(value) =>
                     dispatch(
                       updateSettings({
-                        fontFamily: value,
-                      }),
-                  )} />
+                        fontFamily: value
+                      })
+                    )} />
               )) || (
                 <Input
                   value={fontFamily}
                   onChange={(e, value) =>
                     dispatch(
                       updateSettings({
-                        fontFamily: value,
-                      }),
-                  )} />
+                        fontFamily: value
+                      })
+                    )} />
               )}
             </Stack.Item>
             <Stack.Item>
@@ -127,7 +127,7 @@ export const SettingsGeneral = (props, context) => {
                 color={freeFont ? 'good' : 'bad'}
                 ml={1}
                 onClick={() => {
-                  setFreeFont(!freeFont);
+                  setFreeFont(!freeFont)
                 }} />
             </Stack.Item>
           </Stack>
@@ -145,9 +145,9 @@ export const SettingsGeneral = (props, context) => {
             onChange={(e, value) =>
               dispatch(
                 updateSettings({
-                  fontSize: value,
-                }),
-            )} />
+                  fontSize: value
+                })
+              )} />
         </LabeledList.Item>
         <LabeledList.Item label='Line height'>
           <NumberInput
@@ -161,9 +161,9 @@ export const SettingsGeneral = (props, context) => {
             onDrag={(e, value) =>
               dispatch(
                 updateSettings({
-                  lineHeight: value,
-                }),
-            )} />
+                  lineHeight: value
+                })
+              )} />
         </LabeledList.Item>
         <LabeledList.Item label='Save Settings'>
           <Button
@@ -183,9 +183,9 @@ export const SettingsGeneral = (props, context) => {
                 onClick={() =>
                   dispatch(
                     loadSettingsFromDisk({
-                      data: pastedJson,
-                    }),
-                )}
+                      data: pastedJson
+                    })
+                  )}
                 icon='upload'
                 content='Load' />
             </Stack.Item>
@@ -206,9 +206,9 @@ export const SettingsGeneral = (props, context) => {
               onInput={(e, value) =>
                 dispatch(
                   updateSettings({
-                    highlightColor: value,
-                  }),
-              )}
+                    highlightColor: value
+                  })
+                )}
             />
           </Flex.Item>
         </Flex>
@@ -218,9 +218,9 @@ export const SettingsGeneral = (props, context) => {
           onChange={(e, value) =>
             dispatch(
               updateSettings({
-                highlightText: value,
-              }),
-          )}
+                highlightText: value
+              })
+            )}
         />
       </Box>
       <Divider />
@@ -243,21 +243,21 @@ export const SettingsGeneral = (props, context) => {
         Reset Chat
       </Button.Confirm>
     </Section>
-  );
-};
+  )
+}
 
 export const BackgroundImageSettings = (props, context) => {
-  let { background } = useSelector(context, selectSettings);
-  const dispatch = useDispatch(context);
+  let { background } = useSelector(context, selectSettings)
+  const dispatch = useDispatch(context)
 
   background ||= {
     url: null,
     opaque: 0,
     repeat: REPEAT_MODE.no,
-    size: SIZE_MODE.contain,
-  };
+    size: SIZE_MODE.contain
+  }
 
-  const { url, opaque, repeat, size, color } = background;
+  const { url, opaque, repeat, size } = background
 
   return (
     <Section>
@@ -272,10 +272,10 @@ export const BackgroundImageSettings = (props, context) => {
                 updateSettings({
                   background: {
                     ...background,
-                    url: value,
-                  },
-                }),
-            )}
+                    url: value
+                  }
+                })
+              )}
           />
         </LabeledList.Item>
         <LabeledList.Item label='Opaque'>
@@ -289,10 +289,10 @@ export const BackgroundImageSettings = (props, context) => {
                 updateSettings({
                   background: {
                     ...background,
-                    opaque: value,
-                  },
-                }),
-            )}
+                    opaque: value
+                  }
+                })
+              )}
           />
         </LabeledList.Item>
         <LabeledList.Item label='Repeat'>
@@ -304,10 +304,10 @@ export const BackgroundImageSettings = (props, context) => {
                 updateSettings({
                   background: {
                     ...background,
-                    repeat: REPEAT_MODE.no,
-                  },
-                }),
-            )}
+                    repeat: REPEAT_MODE.no
+                  }
+                })
+              )}
           />
           <Button.Checkbox
             content='Repeat'
@@ -317,10 +317,10 @@ export const BackgroundImageSettings = (props, context) => {
                 updateSettings({
                   background: {
                     ...background,
-                    repeat: REPEAT_MODE.repeat,
-                  },
-                }),
-            )}
+                    repeat: REPEAT_MODE.repeat
+                  }
+                })
+              )}
           />
           <Button.Checkbox
             content='Repeat-X'
@@ -330,10 +330,10 @@ export const BackgroundImageSettings = (props, context) => {
                 updateSettings({
                   background: {
                     ...background,
-                    repeat: REPEAT_MODE.repeatx,
-                  },
-                }),
-            )}
+                    repeat: REPEAT_MODE.repeatx
+                  }
+                })
+              )}
           />
           <Button.Checkbox
             content='Repeat-Y'
@@ -343,10 +343,10 @@ export const BackgroundImageSettings = (props, context) => {
                 updateSettings({
                   background: {
                     ...background,
-                    repeat: REPEAT_MODE.repeaty,
-                  },
-                }),
-            )}
+                    repeat: REPEAT_MODE.repeaty
+                  }
+                })
+              )}
           />
         </LabeledList.Item>
         <LabeledList.Item label='Size'>
@@ -358,10 +358,10 @@ export const BackgroundImageSettings = (props, context) => {
                 updateSettings({
                   background: {
                     ...background,
-                    size: SIZE_MODE.cover,
-                  },
-                }),
-            )}
+                    size: SIZE_MODE.cover
+                  }
+                })
+              )}
           />
           <Button.Checkbox
             content='Contain'
@@ -371,13 +371,13 @@ export const BackgroundImageSettings = (props, context) => {
                 updateSettings({
                   background: {
                     ...background,
-                    size: SIZE_MODE.contain,
-                  },
-                }),
-            )}
+                    size: SIZE_MODE.contain
+                  }
+                })
+              )}
           />
         </LabeledList.Item>
       </LabeledList>
     </Section>
-  );
-};
+  )
+}

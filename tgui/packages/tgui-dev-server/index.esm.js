@@ -1,5 +1,5 @@
 const esmRequire = require('esm')(module, {
-  cache: false,
-});
+  cache: false
+})
 
-esmRequire('./index.js');
+esmRequire('./index.js')

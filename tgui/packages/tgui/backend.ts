@@ -1,3 +1,4 @@
+/* eslint-disable no-undef */
 /**
  * This file provides a clear separation layer between backend updates
  * and what state our React app sees.
@@ -11,25 +12,25 @@
  * @license MIT
  */
 
-import { perf } from 'common/perf';
-import { createAction } from 'common/redux';
-import { setupDrag } from './drag';
-import { focusMap } from './focus';
-import { createLogger } from './logging';
-import { resumeRenderer, suspendRenderer } from './renderer';
+import { perf } from 'common/perf'
+import { createAction } from 'common/redux'
+import { setupDrag } from './drag'
+import { focusMap } from './focus'
+import { createLogger } from './logging'
+import { resumeRenderer, suspendRenderer } from './renderer'
 
-const logger = createLogger('backend');
+const logger = createLogger('backend')
 
-export const backendUpdate = createAction('backend/update');
-export const backendSetSharedState = createAction('backend/setSharedState');
-export const backendSuspendStart = createAction('backend/suspendStart');
+export const backendUpdate = createAction('backend/update')
+export const backendSetSharedState = createAction('backend/setSharedState')
+export const backendSuspendStart = createAction('backend/suspendStart')
 
 export const backendSuspendSuccess = () => ({
   type: 'backend/suspendSuccess',
   payload: {
-    timestamp: Date.now(),
-  },
-});
+    timestamp: Date.now()
+  }
+})
 
 const initialState = {
   config: {},
@@ -37,34 +38,33 @@ const initialState = {
   shared: {},
   // Start as suspended
   suspended: Date.now(),
-  suspending: false,
-};
+  suspending: false
+}
 
 export const backendReducer = (state = initialState, action) => {
-  const { type, payload } = action;
+  const { type, payload } = action
 
   if (type === 'backend/update') {
     // Merge config
     const config = {
       ...state.config,
-      ...payload.config,
-    };
+      ...payload.config
+    }
     // Merge data
     const data = {
       ...state.data,
       ...payload.static_data,
-      ...payload.data,
-    };
+      ...payload.data
+    }
     // Merge shared states
-    const shared = { ...state.shared };
+    const shared = { ...state.shared }
     if (payload.shared) {
-      for (let key of Object.keys(payload.shared)) {
-        const value = payload.shared[key];
+      for (const key of Object.keys(payload.shared)) {
+        const value = payload.shared[key]
         if (value === '') {
-          shared[key] = undefined;
-        }
-        else {
-          shared[key] = JSON.parse(value);
+          shared[key] = undefined
+        } else {
+          shared[key] = JSON.parse(value)
         }
       }
     }
@@ -74,30 +74,30 @@ export const backendReducer = (state = initialState, action) => {
       config,
       data,
       shared,
-      suspended: false,
-    };
+      suspended: false
+    }
   }
 
   if (type === 'backend/setSharedState') {
-    const { key, nextState } = payload;
+    const { key, nextState } = payload
     return {
       ...state,
       shared: {
         ...state.shared,
-        [key]: nextState,
-      },
-    };
+        [key]: nextState
+      }
+    }
   }
 
   if (type === 'backend/suspendStart') {
     return {
       ...state,
-      suspending: true,
-    };
+      suspending: true
+    }
   }
 
   if (type === 'backend/suspendSuccess') {
-    const { timestamp } = payload;
+    const { timestamp } = payload
     return {
       ...state,
       data: {},
@@ -105,129 +105,128 @@ export const backendReducer = (state = initialState, action) => {
       config: {
         ...state.config,
         title: '',
-        status: 1,
+        status: 1
       },
       suspending: false,
-      suspended: timestamp,
-    };
+      suspended: timestamp
+    }
   }
 
-  return state;
-};
+  return state
+}
 
 export const backendMiddleware = store => {
-  let fancyState;
-  let suspendInterval;
+  let fancyState
+  let suspendInterval
 
   return next => action => {
-    const { suspended } = selectBackend(store.getState());
-    const { type, payload } = action;
+    const { suspended } = selectBackend(store.getState())
+    const { type, payload } = action
 
     if (type === 'update') {
-      store.dispatch(backendUpdate(payload));
-      return;
+      store.dispatch(backendUpdate(payload))
+      return
     }
 
     if (type === 'suspend') {
-      store.dispatch(backendSuspendSuccess());
-      return;
+      store.dispatch(backendSuspendSuccess())
+      return
     }
 
     if (type === 'ping') {
       sendMessage({
-        type: 'pingReply',
-      });
-      return;
+        type: 'pingReply'
+      })
+      return
     }
 
     if (type === 'backend/suspendStart' && !suspendInterval) {
-      logger.log(`suspending (${window.__windowId__})`);
+      logger.log(`suspending (${window.__windowId__})`)
       // Keep sending suspend messages until it succeeds.
       // It may fail multiple times due to topic rate limiting.
       const suspendFn = () => sendMessage({
-        type: 'suspend',
-      });
-      suspendFn();
-      suspendInterval = setInterval(suspendFn, 2000);
+        type: 'suspend'
+      })
+      suspendFn()
+      suspendInterval = setInterval(suspendFn, 2000)
     }
 
     if (type === 'backend/suspendSuccess') {
-      suspendRenderer();
-      clearInterval(suspendInterval);
-      suspendInterval = undefined;
+      suspendRenderer()
+      clearInterval(suspendInterval)
+      suspendInterval = undefined
       Byond.winset(window.__windowId__, {
-        'is-visible': false,
-      });
-      setImmediate(() => focusMap());
+        'is-visible': false
+      })
+      setImmediate(() => focusMap())
     }
 
     if (type === 'backend/update') {
-      const fancy = payload.config?.window?.fancy;
+      const fancy = payload.config?.window?.fancy
       // Initialize fancy state
       if (fancyState === undefined) {
-        fancyState = fancy;
-      }
-      // React to changes in fancy
-      else if (fancyState !== fancy) {
-        logger.log('changing fancy mode to', fancy);
-        fancyState = fancy;
+        fancyState = fancy
+      } else if (fancyState !== fancy) {
+        // React to changes in fancy
+        logger.log('changing fancy mode to', fancy)
+        fancyState = fancy
         Byond.winset(window.__windowId__, {
           titlebar: !fancy,
-          'can-resize': !fancy,
-        });
+          'can-resize': !fancy
+        })
       }
     }
 
     // Resume on incoming update
     if (type === 'backend/update' && suspended) {
       // Show the payload
-      logger.log('backend/update', payload);
+      logger.log('backend/update', payload)
       // Signal renderer that we have resumed
-      resumeRenderer();
+      resumeRenderer()
       // Setup drag
-      setupDrag();
+      setupDrag()
       // We schedule this for the next tick here because resizing and unhiding
       // during the same tick will flash with a white background.
       setImmediate(() => {
-        perf.mark('resume/start');
+        perf.mark('resume/start')
         // Doublecheck if we are not re-suspended.
-        const { suspended } = selectBackend(store.getState());
+        const { suspended } = selectBackend(store.getState())
         if (suspended) {
-          return;
+          return
         }
         Byond.winset(window.__windowId__, {
-          'is-visible': true,
-        });
-        perf.mark('resume/finish');
+          'is-visible': true
+        })
+        perf.mark('resume/finish')
         if (process.env.NODE_ENV !== 'production') {
           logger.log('visible in',
-            perf.measure('render/finish', 'resume/finish'));
+            perf.measure('render/finish', 'resume/finish'))
         }
-      });
+      })
     }
 
-    return next(action);
-  };
-};
+    return next(action)
+  }
+}
 
 /**
  * Sends a message to /datum/tgui_window.
  */
 export const sendMessage = (message: any = {}) => {
-  const { payload, ...rest } = message;
+  const { payload, ...rest } = message
   const data: any = {
     // Message identifying header
     tgui: 1,
     window_id: window.__windowId__,
     // Message body
-    ...rest,
-  };
+    ...rest
+  }
   // JSON-encode the payload
   if (payload !== null && payload !== undefined) {
-    data.payload = JSON.stringify(payload);
+    data.payload = JSON.stringify(payload)
   }
-  Byond.topic(data);
-};
+  Byond.topic(data)
+}
 
 /**
  * Sends an action to `ui_act` on `src_object` that this tgui window
@@ -235,18 +234,18 @@ export const sendMessage = (message: any = {}) => {
  */
 export const sendAct = (action: string, payload: object = {}) => {
   // Validate that payload is an object
-  const isObject = typeof payload === 'object'
-    && payload !== null
-    && !Array.isArray(payload);
+  const isObject = typeof payload === 'object' &&
+    payload !== null &&
+    !Array.isArray(payload)
   if (!isObject) {
-    logger.error(`Payload for act() must be an object, got this:`, payload);
-    return;
+    logger.error('Payload for act() must be an object, got this:', payload)
+    return
   }
   sendMessage({
     type: 'act/' + action,
-    payload,
-  });
-};
+    payload
+  })
+}
 
 type BackendState<TData> = {
   config: {
@@ -263,7 +262,7 @@ type BackendState<TData> = {
     client: {
       ckey: string,
       address: string,
-      computer_id: string,
+      computerId: string,
     },
     user: {
       name: string,
@@ -281,7 +280,7 @@ type BackendState<TData> = {
  */
 export const selectBackend = <TData>(state: any): BackendState<TData> => (
   state.backend || {}
-);
+)
 
 /**
  * A React hook (sort of) for getting tgui state and related functions.
@@ -292,15 +291,15 @@ export const selectBackend = <TData>(state: any): BackendState<TData> => (
  * You can make
  */
 export const useBackend = <TData>(context: any) => {
-  const { store } = context;
-  const state = selectBackend<TData>(store.getState());
+  const { store } = context
+  const state = selectBackend<TData>(store.getState())
   return {
     ...state,
     act: sendAct,
-    getTheme: (baseName: string) => 
-    `${baseName}-${(state.config.theme.toLowerCase())}`,
-  };
-};
+    getTheme: (baseName: string) =>
+    `${baseName}-${(state.config.theme.toLowerCase())}`
+  }
+}
 
 /**
  * A tuple that contains the state and a setter function for it.
@@ -323,14 +322,14 @@ type StateWithSetter<T> = [T, (nextState: T) => void];
 export const useLocalState = <T>(
   context: any,
   key: string,
-  initialState: T,
+  initialState: T
 ): StateWithSetter<T> => {
-  const { store } = context;
-  const state = selectBackend(store.getState());
-  const sharedStates = state.shared ?? {};
+  const { store } = context
+  const state = selectBackend(store.getState())
+  const sharedStates = state.shared ?? {}
   const sharedState = (key in sharedStates)
     ? sharedStates[key]
-    : initialState;
+    : initialState
   return [
     sharedState,
     nextState => {
@@ -340,11 +339,11 @@ export const useLocalState = <T>(
           typeof nextState === 'function'
             ? nextState(sharedState)
             : nextState
-        ),
-      }));
-    },
-  ];
-};
+        )
+      }))
+    }
+  ]
+}
 
 /**
  * Allocates state on Redux store, and **shares** it with other clients
@@ -363,14 +362,14 @@ export const useLocalState = <T>(
 export const useSharedState = <T>(
   context: any,
   key: string,
-  initialState: T,
+  initialState: T
 ): StateWithSetter<T> => {
-  const { store } = context;
-  const state = selectBackend(store.getState());
-  const sharedStates = state.shared ?? {};
+  const { store } = context
+  const state = selectBackend(store.getState())
+  const sharedStates = state.shared ?? {}
   const sharedState = (key in sharedStates)
     ? sharedStates[key]
-    : initialState;
+    : initialState
   return [
     sharedState,
     nextState => {
@@ -381,8 +380,8 @@ export const useSharedState = <T>(
           typeof nextState === 'function'
             ? nextState(sharedState)
             : nextState
-        ) || '',
-      });
-    },
-  ];
-};
+        ) || ''
+      })
+    }
+  ]
+}

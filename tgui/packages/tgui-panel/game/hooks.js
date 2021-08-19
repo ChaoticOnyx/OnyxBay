@@ -4,9 +4,9 @@
  * @license MIT
  */
 
-import { useSelector } from 'common/redux';
-import { selectGame } from './selectors';
+import { useSelector } from 'common/redux'
+import { selectGame } from './selectors'
 
 export const useGame = context => {
-  return useSelector(context, selectGame);
-};
+  return useSelector(context, selectGame)
+}

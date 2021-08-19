@@ -4,8 +4,8 @@
  * @license MIT
  */
 
-import { classes, pureComponentHooks } from 'common/react';
-import { computeBoxClassName, computeBoxProps } from './Box';
+import { classes, pureComponentHooks } from 'common/react'
+import { computeBoxClassName, computeBoxProps } from './Box'
 
 export const Table = props => {
   const {
@@ -13,44 +13,44 @@ export const Table = props => {
     collapsing,
     children,
     ...rest
-  } = props;
+  } = props
   return (
     <table
       className={classes([
         'Table',
         collapsing && 'Table--collapsing',
         className,
-        computeBoxClassName(rest),
+        computeBoxClassName(rest)
       ])}
       {...computeBoxProps(rest)}>
       <tbody>
         {children}
       </tbody>
     </table>
-  );
-};
+  )
+}
 
-Table.defaultHooks = pureComponentHooks;
+Table.defaultHooks = pureComponentHooks
 
 export const TableRow = props => {
   const {
     className,
     header,
     ...rest
-  } = props;
+  } = props
   return (
     <tr
       className={classes([
         'Table__row',
         header && 'Table__row--header',
         className,
-        computeBoxClassName(props),
+        computeBoxClassName(props)
       ])}
       {...computeBoxProps(rest)} />
-  );
-};
+  )
+}
 
-TableRow.defaultHooks = pureComponentHooks;
+TableRow.defaultHooks = pureComponentHooks
 
 export const TableCell = props => {
   const {
@@ -58,7 +58,7 @@ export const TableCell = props => {
     collapsing,
     header,
     ...rest
-  } = props;
+  } = props
   return (
     <td
       className={classes([
@@ -66,13 +66,13 @@ export const TableCell = props => {
         collapsing && 'Table__cell--collapsing',
         header && 'Table__cell--header',
         className,
-        computeBoxClassName(props),
+        computeBoxClassName(props)
       ])}
       {...computeBoxProps(rest)} />
-  );
-};
+  )
+}
 
-TableCell.defaultHooks = pureComponentHooks;
+TableCell.defaultHooks = pureComponentHooks
 
-Table.Row = TableRow;
-Table.Cell = TableCell;
+Table.Row = TableRow
+Table.Cell = TableCell
