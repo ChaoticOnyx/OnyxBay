@@ -238,7 +238,7 @@
 		GLOB.wizards.remove_antagonist(target.mind, TRUE)
 		GLOB.cult.add_antagonist(target.mind, ignore_role = TRUE, do_not_equip = TRUE)
 		for(var/mob/living/M in cultists)
-			to_chat(M, SPAN_DANGER("This person cant be converted. IT WAS A DEADLY MISTAKE"))
+			to_chat(M, SPAN_DANGER("This person cannot be converted. THIS WAS A DEADLY MISTAKE"))
 			M.gib()
 			return
 	else if(isChangeling(target))
