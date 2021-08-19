@@ -7,7 +7,7 @@
 	invocation = "conjures a sphere of fire around themselves."
 	school = "conjuration"
 	charge_max = 300
-	cooldown_min = 100
+	cooldown_min = 150
 	level_max = list(SP_TOTAL = 2, SP_SPEED = 2, SP_POWER = 0)
 	cast_sound = 'sound/effects/snap.ogg'
 	duration = 150

@@ -13,7 +13,7 @@
 	smoke_amt = 1
 	smoke_spread = 5
 
-	level_max = list(SP_TOTAL = 4, SP_SPEED = 4, SP_POWER = 1)
+	level_max = list(SP_TOTAL = 3, SP_SPEED = 2, SP_POWER = 1)
 
 	cast_sound = 'sound/effects/teleport.ogg'
 	icon_state = "wiz_mark"
