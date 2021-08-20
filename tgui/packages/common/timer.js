@@ -11,22 +11,22 @@
  * function on the leading edge, instead of the trailing.
  */
 export const debounce = (fn, time, immediate = false) => {
-  let timeout;
+  let timeout
   return (...args) => {
     const later = () => {
-      timeout = null;
+      timeout = null
       if (!immediate) {
-        fn(...args);
+        fn(...args)
       }
-    };
-    const callNow = immediate && !timeout;
-    clearTimeout(timeout);
-    timeout = setTimeout(later, time);
-    if (callNow) {
-      fn(...args);
     }
-  };
-};
+    const callNow = immediate && !timeout
+    clearTimeout(timeout)
+    timeout = setTimeout(later, time)
+    if (callNow) {
+      fn(...args)
+    }
+  }
+}
 
 /**
  * Suspends an asynchronous function for N milliseconds.
@@ -35,4 +35,4 @@ export const debounce = (fn, time, immediate = false) => {
  */
 export const sleep = time => (
   new Promise(resolve => setTimeout(resolve, time))
-);
+)

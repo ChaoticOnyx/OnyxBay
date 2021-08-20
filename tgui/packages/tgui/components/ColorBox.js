@@ -4,8 +4,8 @@
  * @license MIT
  */
 
-import { classes, pureComponentHooks } from 'common/react';
-import { computeBoxClassName, computeBoxProps } from './Box';
+import { classes, pureComponentHooks } from 'common/react'
+import { computeBoxClassName, computeBoxProps } from './Box'
 
 export const ColorBox = props => {
   const {
@@ -15,20 +15,20 @@ export const ColorBox = props => {
     color,
     backgroundColor,
     ...rest
-  } = props;
-  rest.color = content ? null : 'transparent';
-  rest.backgroundColor = color || backgroundColor;
+  } = props
+  rest.color = content ? null : 'transparent'
+  rest.backgroundColor = color || backgroundColor
   return (
     <div
       className={classes([
         'ColorBox',
         className,
-        computeBoxClassName(rest),
+        computeBoxClassName(rest)
       ])}
       {...computeBoxProps(rest)}>
       {content || '.'}
     </div>
-  );
-};
+  )
+}
 
-ColorBox.defaultHooks = pureComponentHooks;
+ColorBox.defaultHooks = pureComponentHooks

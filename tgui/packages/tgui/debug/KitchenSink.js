@@ -4,11 +4,11 @@
  * @license MIT
  */
 
-import { useLocalState } from '../backend';
-import { Flex, Section, Tabs } from '../components';
-import { Pane, Window } from '../layouts';
+import { useLocalState } from '../backend'
+import { Flex, Section, Tabs } from '../components'
+import { Pane, Window } from '../layouts'
 
-const r = require.context('../stories', false, /\.stories\.js$/);
+const r = require.context('../stories', false, /\.stories\.js$/)
 
 /**
  * @returns {{
@@ -18,15 +18,15 @@ const r = require.context('../stories', false, /\.stories\.js$/);
  *   },
  * }[]}
  */
-const getStories = () => r.keys().map((path) => r(path));
+const getStories = () => r.keys().map((path) => r(path))
 
 export const KitchenSink = (props, context) => {
-  const { panel } = props;
-  const [theme] = useLocalState(context, 'kitchenSinkTheme');
-  const [pageIndex, setPageIndex] = useLocalState(context, 'pageIndex', 0);
-  const stories = getStories();
-  const story = stories[pageIndex];
-  const Layout = panel ? Pane : Window;
+  const { panel } = props
+  const [theme] = useLocalState(context, 'kitchenSinkTheme')
+  const [pageIndex, setPageIndex] = useLocalState(context, 'pageIndex', 0)
+  const stories = getStories()
+  const story = stories[pageIndex]
+  const Layout = panel ? Pane : Window
   return (
     <Layout title='Kitchen Sink' width={600} height={500} theme={theme}>
       <Flex height='100%'>
@@ -50,5 +50,5 @@ export const KitchenSink = (props, context) => {
         </Flex.Item>
       </Flex>
     </Layout>
-  );
-};
+  )
+}
