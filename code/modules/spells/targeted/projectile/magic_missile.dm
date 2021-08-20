@@ -8,7 +8,7 @@
 	invocation = "Forti Gy-Ama!"
 	invocation_type = SPI_SHOUT
 	range = 7
-	level_max = list(SP_TOTAL = 3, SP_SPEED = 3, SP_POWER = 3)
+	level_max = list(SP_TOTAL = 3, SP_SPEED = 2, SP_POWER = 3)
 	cooldown_min = 90 //15 deciseconds reduction per rank
 
 	max_targets = 0
