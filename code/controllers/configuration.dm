@@ -343,12 +343,12 @@ var/list/gamemode_cache = list()
 						if(!length(line) || copytext(line,1,2) == "#")
 							continue
 
-						//Split the line at every "-"
+						//Split the line at every ":"
 						var/list/List = splittext(line, ":")
 						if(!List.len && List.len != 2)
 							continue
 
-						//ckey is before the first "-"
+						//ckey is before the first ":"
 						var/cid = List[1]
 						var/key = List[2]
 						if(!cid || !key)
