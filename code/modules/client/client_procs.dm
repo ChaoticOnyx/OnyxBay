@@ -174,7 +174,7 @@
 	if(config.doomsday_protocol && IsGuestKey(key))
 		if(!(computer_id in config.doomsday_entity))
 			. = ..()
-			show_browser(src, "Access Denied!<br><br>Your computer id: [computer_id]<br><br>Tell your id to system administator for adding you to doomsday protocol", "window=cid;size=400x200;")
+			show_browser(src, "Access Denied!<br><br>Your computer id: [computer_id]<br><br>Tell your id to game hoster for adding you to doomsday protocol", "window=cid;size=400x200;")
 
 			var/error = "Failed Login: [computer_id] from [address]"
 			log_access(error)

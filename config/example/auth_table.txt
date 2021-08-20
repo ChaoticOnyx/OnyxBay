@@ -1,0 +1,5 @@
+### TABLE OF COMPUTER ID
+## USE IF BYOND HUB OR WWW DOWN
+
+# computer_id:key
+# 0123456789:HentaiStorm

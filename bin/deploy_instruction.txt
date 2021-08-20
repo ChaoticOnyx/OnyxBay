@@ -16,7 +16,14 @@ FOR LINUX
 3. Type "DreamMaker baystation12.dme -clean" and wait some time
 4. After compiling type "DreamDaemon baystation12.dmb 2021" for run server (2021 - server port, you may change this)
 
+.HOSTING IF DOOMSDAY ALREADY HAPPENED
+1. Uncomment "ENABLE_DOOMSDAY_PROTOCOL" in ./config/config.txt or make this
+2. Comment (add #) line "GUEST_BAN" if exsist
+3. Copy auth_table.txt from ./config/example to ./config
+4. Edit auth_table.txt -> adding line like "your_computer_id:desired_name"
+
 .CONNECT (Only for windows OS)
 1. Execute dreamseeker.exe in byond/bin
-2. Type server address (Ask your system administator) or insert 'localhost:2021' if you host server
+2. Type server address (Ask your game hoster) or insert 'localhost:2021' if you host server
 3. Click Ok button
+

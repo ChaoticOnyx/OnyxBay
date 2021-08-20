@@ -336,7 +336,7 @@ var/list/gamemode_cache = list()
 				if("enable_doomsday_protocol")
 					config.doomsday_protocol = TRUE
 
-					var/list/localLines = file2list("config/keys_list.txt")
+					var/list/localLines = file2list("config/auth_table.txt")
 
 					//process each line seperately
 					for(var/line in localLines)
