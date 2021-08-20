@@ -225,7 +225,7 @@ REAGENT SCANNER
 					break
 			if(E.has_infected_wound())
 				limb_damaged = TRUE
-				if(E.germ_level >= INFECTION_LEVEL_FOUR)
+				if(E.germ_level >= INFECTION_LEVEL_FOUR - 100)
 					limb_result = "[limb_result] \[[SPAN_DANGER("extreme infection")]\]"
 					found_extreme_infection = TRUE
 				else

@@ -609,16 +609,18 @@ Note that amputating the affected organ does in fact remove the infection from t
 	var/antibiotics = owner.chem_effects[CE_ANTIBIOTIC]
 
 	for(var/datum/wound/W in wounds)
-		//Open wounds can become infected
-		if(owner.germ_level > W.germ_level && W.infection_check())
-			W.germ_level += W.germ_speed
+		if(W.infection_check())
+			W.germ_level += W.germ_speed()
+		else
+			W.germ_level -= antibiotics / 5
 
-	if(antibiotics < 15)
-		for(var/datum/wound/W in wounds)
-			//Infected wounds raise the organ's germ level
-			if(W.germ_level > germ_level && prob(Interpolate(5, 100, 1 - antibiotics / 15)))
-				germ_level++
-				break	//limit increase to a maximum of one per second
+	if(antibiotics >= 15)
+		return
+	for(var/datum/wound/W in wounds)
+		// Infected wounds raise the organ's germ level
+		if(W.germ_level > germ_level && prob(100 - (antibiotics / 15) * 100))
+			germ_level++
+			break	// Limit increase to a maximum of one per second
 
 /obj/item/organ/external/handle_germ_effects()
 	if(BP_IS_ROBOTIC(src))
@@ -656,11 +658,10 @@ Note that amputating the affected organ does in fact remove the infection from t
 		target_organ.germ_level++
 
 	// Spread the infection to child and parent organs
-	if(children)
-		for(var/obj/item/organ/external/child in children)
-			if(child.germ_level < germ_level && !BP_IS_ROBOTIC(child))
-				if(child.germ_level < INFECTION_LEVEL_ONE * 2 || prob(30 - antibiotics))
-					child.germ_level++
+	for(var/obj/item/organ/external/child in SANITIZE_LIST(children))
+		if(child.germ_level < germ_level && !BP_IS_ROBOTIC(child))
+			if(child.germ_level < INFECTION_LEVEL_ONE * 2 || prob(30 - antibiotics))
+				child.germ_level++
 
 	if(parent)
 		if(parent.germ_level < germ_level && !BP_IS_ROBOTIC(parent))
@@ -676,7 +677,7 @@ Note that amputating the affected organ does in fact remove the infection from t
 		owner.adjustToxLoss(0.5)
 
 	if(germ_level >= INFECTION_LEVEL_THREE)
-		owner.adjustToxLoss(germ_level / (INFECTION_LEVEL_FOUR + antibiotics * 65) * 1)
+		owner.adjustToxLoss(germ_level / (INFECTION_LEVEL_FOUR + antibiotics * 65))
 
 //Updating wounds. Handles wound natural I had some free spachealing, internal bleedings and infections
 /obj/item/organ/external/proc/update_wounds()
@@ -973,8 +974,7 @@ Note that amputating the affected organ does in fact remove the infection from t
 	var/rval = 0
 	for(var/datum/wound/W in wounds)
 		rval |= !W.disinfected
-		W.disinfected = 1
-		W.germ_level = 0
+		W.disinfect()
 	return rval
 
 /obj/item/organ/external/proc/clamp_organ()

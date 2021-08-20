@@ -115,7 +115,7 @@
 				if(E.wounds.len)
 					for(var/datum/wound/W in E.wounds)
 						if(W.infection_check())
-							W.germ_level += 1
+							W.germ_level += 5
 
 /mob/living/carbon/human/proc/handle_stance()
 	// Don't need to process any of this if they aren't standing anyways

@@ -103,9 +103,6 @@
 		return 0
 	if (is_treated() && damage < 25)	//anything less than a flesh wound (or equivalent) isn't infectable if treated properly
 		return 0
-	if (disinfected)
-		germ_level = 0	//reset this, just in case
-		return 0
 
 	if (damage_type == BRUISE && !bleeding()) //bruises only infectable if bleeding
 		return 0
@@ -128,7 +125,9 @@
 	salved = 1
 
 /datum/wound/proc/disinfect()
-	disinfected = 1
+	if(!disinfected)
+		germ_level *= 0.5
+		disinfected = 1
 
 // heal the given amount of damage, and if the given amount of damage was more
 // than what needed to be healed, return how much heal was left
@@ -191,3 +190,8 @@
 
 /datum/wound/proc/is_surgical()
 	return 0
+
+/datum/wound/proc/germ_speed()
+	.  = germ_speed
+	. *= is_treated() ? 0.8 : 1
+	. *= disinfected  ? 0.6 : 1

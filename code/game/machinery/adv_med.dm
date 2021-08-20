@@ -432,6 +432,7 @@
 
 	data["external_organs"] = list()
 
+	var/infections // 0 - not found, 1 - infection, 2 - severe infection
 	for (var/obj/item/organ/external/E in H.organs)
 		var/organ_data = list(
 			"name" = capitalize(E.name), "status" = list(), "damage" = list()
@@ -451,7 +452,18 @@
 
 			organ_data["status"] += list("[english_list(E.get_scan_results(), nothing_text = "", and_text = ", ")]")
 
+			if(E.has_infected_wound() && infections < 2)
+				if(E.germ_level >= INFECTION_LEVEL_FOUR - 100)
+					infections = max(infections, 2)
+				else
+					infections = max(infections, 1)
 		data["external_organs"] += list(organ_data)
+
+	switch(infections)
+		if(1)
+			data["warnings"] += list("Infected wounds detected.")
+		if(2)
+			data["warnings"] += list("Warning: Extreme infection detected.")
 
 	data["internal_organs"] = list()
 
