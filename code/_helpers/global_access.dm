@@ -49,8 +49,8 @@
 			return global.SScharacter_setup;
 		if("SScircuit")
 			return global.SScircuit;
-		if("SSvirus2suka")
-			return global.SSvirus2suka;
+		if("SSvirus")
+			return global.SSvirus;
 		if("SScircuit_components")
 			return global.SScircuit_components;
 		if("SSevac")
@@ -753,8 +753,6 @@
 			return global.spacevines_spawned;
 		if("sparring_attack_cache")
 			return global.sparring_attack_cache;
-		if("spells")
-			return global.spells;
 		if("splatter_cache")
 			return global.splatter_cache;
 		if("sqladdress")
@@ -960,8 +958,8 @@
 			global.SScharacter_setup=newval;
 		if("SScircuit")
 			global.SScircuit=newval;
-		if("SSvirus2suka")
-			global.SSvirus2suka=newval;
+		if("SSvirus")
+			global.SSvirus=newval;
 		if("SScircuit_components")
 			global.SScircuit_components=newval;
 		if("SSevac")
@@ -1668,8 +1666,6 @@
 			global.spacevines_spawned=newval;
 		if("sparring_attack_cache")
 			global.sparring_attack_cache=newval;
-		if("spells")
-			global.spells=newval;
 		if("splatter_cache")
 			global.splatter_cache=newval;
 		if("sqladdress")

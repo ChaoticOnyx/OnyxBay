@@ -9,14 +9,12 @@ import {
   Table,
   Icon,
   Box,
-  Tooltip,
   AnimatedNumber,
   Input,
   Flex,
 } from '../components';
 import { GameIcon } from '../components/GameIcon';
 import { Window } from '../layouts';
-import { logger } from '../logging';
 
 const capitalize = (str: string) => {
   return str[0].toUpperCase() + str.substr(1);
@@ -200,32 +198,28 @@ const summaryTab = (props: any, context: any) => {
           <h2>Status</h2>
           <Button
             icon='sync'
-            tooltipPosition='top'
-            tooltip='Sync Database with Network'
+            title='Sync Database with Network'
             content='Sync'
             disabled={!data.sync}
             onClick={() => act('sync')}
           />
           <Button
             icon='search'
-            tooltipPosition='top'
-            tooltip='Re-sync with Nearby Devices'
+            title='Re-sync with Nearby Devices'
             content='Find'
             onClick={() => act('find_device')}
           />
           {(data.sync && (
             <Button
               icon='unlink'
-              tooltipPosition='top'
-              tooltip='Disconnect from Fabrication Network'
+              title='Disconnect from Fabrication Network'
               content='Disconnect'
               onClick={() => act('toggle_sync')}
             />
           )) || (
             <Button
               icon='link'
-              tooltipPosition='top'
-              tooltip='Connect to Fabrication Network'
+              title='Connect to Fabrication Network'
               content='Connect'
               onClick={() => act('toggle_sync')}
             />
@@ -233,8 +227,7 @@ const summaryTab = (props: any, context: any) => {
           <Button.Confirm
             color='bad'
             icon='trash'
-            tooltipPosition='top'
-            tooltip='Reset R&D Database'
+            title='Reset R&D Database'
             content='Reset'
             onClick={() => act('reset')}
           />
@@ -304,7 +297,7 @@ const techsTable = (techs: OriginTech[] | Tech[], context: any) => {
         mb='0.2rem'
         width='4ch'
         icon='save'
-        tooltip='Save to Disk'
+        title='Save to Disk'
         confirmContent={<Icon name='save' />}
         onClick={() => act('save', { thing: DiskType.Tech, id: tech.id })}
         disabled={!(data.disk?.type === DiskType.Tech)}
@@ -317,20 +310,10 @@ const techsTable = (techs: OriginTech[] | Tech[], context: any) => {
         mb='0.2rem'
         width='4ch'
         icon='save'
-        tooltip='Save to Disk'
+        title='Save to Disk'
         onClick={() => act('save', { thing: DiskType.Tech, id: tech.id })}
         disabled={!(data.disk?.type === DiskType.Tech)}
       />
-    );
-  };
-
-  const techDescription = (tech: Tech) => {
-    return (
-      <Tooltip position='bottom' content={tech.description}>
-        <Box mr='0.4rem' inline position='relative'>
-          <Icon name='info' />
-        </Box>
-      </Tooltip>
     );
   };
 
@@ -346,10 +329,10 @@ const techsTable = (techs: OriginTech[] | Tech[], context: any) => {
       {techs.length
         ? techs.map((tech: Tech, i: any) => {
             return (
-              <Table.Row className='candystripe' key={i}>
+              <Table.Row className='candystripe' key={tech.id}>
                 <Table.Cell>{tech.id && saveButton(tech)}</Table.Cell>
                 <Table.Cell>
-                  {tech.description && techDescription(tech)} {tech.name}
+                  <Icon name='info' mr='0.4rem' title={tech.description} /> {tech.name}
                 </Table.Cell>
                 <Table.Cell textAlign='center'>{tech.level}</Table.Cell>
               </Table.Row>
@@ -518,7 +501,7 @@ const device = (device: Device, context: any) => {
             </Table.Row>
             {material?.materials.map((mat, i) => {
               return (
-                <Table.Row className='candystripe'>
+                <Table.Row key={i} className='candystripe'>
                   <Table.Cell>{ejectButtons(mat)}</Table.Cell>
                   <Table.Cell className='Materials--small'>
                     <GameIcon html={mat.icon} /> {capitalize(mat.name)}
@@ -572,7 +555,7 @@ const device = (device: Device, context: any) => {
             {chemical?.chemicals.length
               ? chemical.chemicals.map((chem, i) => {
                   return (
-                    <Table.Row className='candystripe'>
+                    <Table.Row key={chem.ref} className='candystripe'>
                       <Table.Cell>
                         <Button
                           onClick={() =>
@@ -778,7 +761,7 @@ const designs = (device: Device, context: any) => {
               )
               .map((design, i) => {
                 return (
-                  <Table.Row className='candystripe'>
+                  <Table.Row key={design.id} className='candystripe'>
                     <Table.Cell
                       style={{
                         'vertical-align': 'middle',
@@ -788,7 +771,7 @@ const designs = (device: Device, context: any) => {
                           textAlign='center'
                           ml='0.2rem'
                           width='4ch'
-                          tooltip='Save to Disk'
+                          title='Save to Disk'
                           confirmContent={<Icon name='save' />}
                           icon='save'
                           disabled={!(data.disk?.type === DiskType.Design)}
@@ -803,7 +786,7 @@ const designs = (device: Device, context: any) => {
                         <Button
                           textAlign='center'
                           ml='0.2rem'
-                          tooltip='Save to Disk'
+                          title='Save to Disk'
                           icon='save'
                           disabled={!(data.disk?.type === DiskType.Design)}
                           onClick={() =>
@@ -897,7 +880,7 @@ const queue = (device: Device, context: any) => {
           {queue?.length
             ? queue.map((design, i) => {
                 return (
-                  <Table.Row className='candystripe'>
+                  <Table.Row className='candystripe' key={design.id}>
                     <Table.Cell
                       style={{ 'vertical-align': 'middle' }}
                       width='1ch'>

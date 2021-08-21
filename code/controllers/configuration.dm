@@ -112,6 +112,7 @@ var/list/gamemode_cache = list()
 	var/discordurl
 	var/githuburl
 	var/patreonurl
+	var/changelogurl
 
 	var/minutetopiclimit
 	var/secondtopiclimit
@@ -173,7 +174,6 @@ var/list/gamemode_cache = list()
 	var/xeno_min_age
 	var/malf_min_age
 	var/cultist_min_age
-	var/blob_min_age
 	var/actor_min_age
 	var/ert_min_age
 	var/revolutionary_min_age
@@ -375,8 +375,6 @@ var/list/gamemode_cache = list()
 					config.malf_min_age = text2num(value)
 				if ("cultist_min_age")
 					config.cultist_min_age = text2num(value)
-				if ("blob_min_age")
-					config.blob_min_age = text2num(value)
 				if ("actor_min_age")
 					config.actor_min_age = text2num(value)
 				if ("ert_min_age")
@@ -571,6 +569,9 @@ var/list/gamemode_cache = list()
 
 				if ("patreonurl")
 					config.patreonurl = value
+
+				if ("changelogurl")
+					config.changelogurl = value
 
 				if ("ghosts_can_possess_animals")
 					config.ghosts_can_possess_animals = value

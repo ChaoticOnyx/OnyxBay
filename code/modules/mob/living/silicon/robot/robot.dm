@@ -493,6 +493,11 @@
 	return 0
 
 /mob/living/silicon/robot/bullet_act(obj/item/projectile/Proj)
+	var/obj/item/weapon/melee/energy/sword/robot/E = locate() in list(module_state_1, module_state_2, module_state_3)
+	var/shield_handled = E?.handle_shield(src, Proj.damage, Proj)
+	if(shield_handled)
+		return shield_handled
+
 	..(Proj)
 	if(prob(75) && Proj.damage > 0) spark_system.start()
 	return 2
@@ -791,7 +796,7 @@
 			overlays += eye_overlay
 
 	if(opened)
-		var/panelprefix = custom_sprite ? src.ckey : "ov"
+		var/panelprefix = (icontype == "Custom") ? src.ckey : "ov"
 		if(wiresexposed)
 			overlays += "[panelprefix]-openpanel +w"
 		else if(cell)
@@ -1227,14 +1232,6 @@
 				to_chat(user, "You fail to hack [src]'s interface.")
 				to_chat(src, "Hack attempt detected.")
 			return 1
-
-/mob/living/silicon/robot/blob_act(destroy, obj/effect/blob/source)
-	if (is_dead())
-		gib()
-
-	. = ..()
-
-	spark_system.start()
 
 /mob/living/silicon/robot/incapacitated(incapacitation_flags = INCAPACITATION_DEFAULT)
 	if((incapacitation_flags & INCAPACITATION_FORCELYING) && (lockcharge || !is_component_functioning("actuator")))

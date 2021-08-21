@@ -171,11 +171,6 @@
 		move_outside()
 	..()
 
-/obj/machinery/gamepod/blob_act()
-	if(occupant)
-		move_outside()
-	..()
-
 /obj/machinery/gamepod/power_change()
 	. = ..()
 	if(occupant && (stat & NOPOWER))

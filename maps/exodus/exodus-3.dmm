@@ -2620,7 +2620,7 @@
 "hNW" = (/obj/effect/wingrille_spawn/reinforced,/turf/simulated/floor/shuttle/white{initial_gas = list("nitrogen" = 103.984)},/area/skipjack_station/start)
 "hQm" = (/obj/structure/bed/chair,/turf/simulated/floor/shuttle/black{initial_gas = list("nitrogen" = 103.984)},/area/skipjack_station/start)
 "hRO" = (/obj/machinery/washing_machine,/turf/simulated/floor/trim/wood,/area/thunderfield)
-"hSo" = (/obj/structure/table/steel,/obj/item/trash/snack_bowl,/turf/simulated/floor/shuttle/black{initial_gas = list("nitrogen" = 103.984)},/area/skipjack_station/start)
+"hSo" = (/obj/structure/table/steel,/obj/item/trash/dish/bowl,/turf/simulated/floor/shuttle/black{initial_gas = list("nitrogen" = 103.984)},/area/skipjack_station/start)
 "hTZ" = (/obj/structure/flora/ausbushes/ywflowers,/obj/effect/floor_decal/spline/fancy/wood{dir = 1},/obj/effect/floor_decal/spline/fancy/wood{dir = 8},/turf/unsimulated/floor{icon_state = "asteroid"},/area/thunderfield)
 "hUa" = (/obj/structure/table/gamblingtable,/obj/item/weapon/flame/lighter/zippo,/turf/simulated/floor/trim/carpet/red,/area/thunderfield)
 "hVG" = (/obj/structure/table/woodentable,/obj/item/weapon/storage/fancy/cigarettes,/turf/unsimulated/floor{icon_state = "lino"; initial_gas = list("nitrogen" = 103.984)},/area/skipjack_station/base)
