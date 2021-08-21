@@ -1,5 +1,7 @@
-import { capitalize } from '../../common/string';
-import { useBackend, useLocalState } from '../backend';
+/* eslint-disable camelcase */
+/* eslint-disable no-unused-vars */
+import { capitalize } from '../../common/string'
+import { useBackend, useLocalState } from '../backend'
 import {
   Box,
   Button,
@@ -7,17 +9,17 @@ import {
   Divider,
   Flex,
   Input,
-  Stack,
-} from '../components';
-import { GameIcon } from '../components/GameIcon';
-import { Window } from '../layouts';
-import { escapeRegExp } from '../sanitize';
-import { InfernoNode } from 'inferno';
+  Stack
+} from '../components'
+import { GameIcon } from '../components/GameIcon'
+import { Window } from '../layouts'
+import { escapeRegExp } from '../sanitize'
+import { InfernoNode } from 'inferno'
 
-const PAGE_CLASSES = 0;
-const PAGE_SPELLS = 1;
-const PAGE_ARTIFACTS = 2;
-const PAGE_CHARACTER = 3;
+const PAGE_CLASSES = 0
+const PAGE_SPELLS = 1
+const PAGE_ARTIFACTS = 2
+const PAGE_CHARACTER = 3
 
 enum UpgradeType {
   PowerLevel = 'power',
@@ -45,25 +47,25 @@ interface User {
   can_invest: boolean;
 }
 
-interface Class {
-  path: string;
-  name: string;
-  icon: string;
-  description: string;
-  points: number;
-  flags: Flags;
-  spells: Spell[];
-  artifacts: Artifact[];
-  sacrifice_objects: SacrificeObject[];
-  sacrifice_reagents: SacrificeReagent[];
+interface Flags {
+  noRevert: number;
+  locked: number;
+  can_make_contracts: number;
+  investable: number;
 }
 
-interface Artifact {
-  path: string;
-  cost: number;
-  icon: string;
-  name: string;
-  description: string;
+interface SpellFlags {
+  needs_clothes: boolean;
+  needs_human: boolean;
+  include_user: boolean;
+  selectable: boolean;
+  no_button: boolean;
+}
+
+enum ChargeType {
+  Recharge = 'recharge',
+  Charges = 'charges',
+  Holdvar = 'holdervar',
 }
 
 interface Spell {
@@ -81,25 +83,12 @@ interface Spell {
   ability: string;
 }
 
-enum ChargeType {
-  Recharge = 'recharge',
-  Charges = 'charges',
-  Holdvar = 'holdervar',
-}
-
-interface SpellFlags {
-  needs_clothes: boolean;
-  needs_human: boolean;
-  include_user: boolean;
-  selectable: boolean;
-  no_button: boolean;
-}
-
-interface Flags {
-  noRevert: number;
-  locked: number;
-  can_make_contracts: number;
-  investable: number;
+interface Artifact {
+  path: string;
+  cost: number;
+  icon: string;
+  name: string;
+  description: string;
 }
 
 interface SacrificeReagent {
@@ -115,6 +104,19 @@ interface SacrificeObject {
   description: string;
 }
 
+interface Class {
+  path: string;
+  name: string;
+  icon: string;
+  description: string;
+  points: number;
+  flags: Flags;
+  spells: Spell[];
+  artifacts: Artifact[];
+  sacrifice_objects: SacrificeObject[];
+  sacrifice_reagents: SacrificeReagent[];
+}
+
 interface InputData {
   page: number;
   classes: Class[];
@@ -126,7 +128,7 @@ const SpellIcon = (
   props: Spell,
   ignored: boolean = false,
   showCost: boolean = true,
-  key: any,
+  key: any
 ) => {
   return (
     <GameIcon
@@ -136,14 +138,14 @@ const SpellIcon = (
       className={`Icon--spell ${ignored && 'Icon--ignored'}`}
       html={props.icon}
     />
-  );
-};
+  )
+}
 
 const ArtifactIcon = (
   props: Artifact,
   ignored: boolean = false,
   showCost: boolean = true,
-  key: any,
+  key: any
 ) => {
   return (
     <GameIcon
@@ -153,21 +155,21 @@ const ArtifactIcon = (
       className={`Icon--artifact ${ignored && 'Icon--ignored'}`}
       html={props.icon}
     />
-  );
-};
+  )
+}
 
 const SacrificeIcon = (props: SacrificeObject, key: any) => {
   return (
     <GameIcon
       key={key}
       title={`${capitalize(props.name)}\n${capitalize(
-        props.description || '',
+        props.description || ''
       )}`}
       className='Icon--sacrifice'
       html={props.icon}
     />
-  );
-};
+  )
+}
 
 const InspectSpellButton = (
   props: Spell,
@@ -175,22 +177,22 @@ const InspectSpellButton = (
   ignored: boolean = false,
   selected: boolean = false,
   showCost: boolean = true,
-  key: any,
+  key: any
 ) => {
-  const { act } = useBackend<InputData>(context);
+  const { act } = useBackend<InputData>(context)
 
   return (
     <Button
       className='Button--invisible'
       selected={selected}
       onClick={() => {
-        act('set_inspecting', { path: props.path });
-        act('change_page', { page: PAGE_SPELLS });
+        act('set_inspecting', { path: props.path })
+        act('change_page', { page: PAGE_SPELLS })
       }}>
       {SpellIcon(props, ignored, showCost, key)}
     </Button>
-  );
-};
+  )
+}
 
 const InspectArtifactButton = (
   props: Artifact,
@@ -198,26 +200,26 @@ const InspectArtifactButton = (
   ignored: boolean = false,
   selected: boolean = false,
   showCost: boolean = true,
-  key: any,
+  key: any
 ) => {
-  const { act } = useBackend<InputData>(context);
+  const { act } = useBackend<InputData>(context)
 
   return (
     <Button
       className='Button--invisible'
       selected={selected}
       onClick={() => {
-        act('set_inspecting', { path: props.path });
-        act('change_page', { page: PAGE_ARTIFACTS });
+        act('set_inspecting', { path: props.path })
+        act('change_page', { page: PAGE_ARTIFACTS })
       }}>
       {ArtifactIcon(props, ignored, showCost, key)}
     </Button>
-  );
-};
+  )
+}
 
 const classCard = (props: Class, context: any, key: any) => {
-  const { data, act } = useBackend<InputData>(context);
-  const isDisabled = !!data.user.class;
+  const { data, act } = useBackend<InputData>(context)
+  const isDisabled = !!data.user.class
 
   return (
     <Flex key={key} class='Card' direction='column'>
@@ -230,8 +232,8 @@ const classCard = (props: Class, context: any, key: any) => {
               disabled={isDisabled}
               content='Choose'
               onClick={() => {
-                act('choose_class', { path: props.path });
-                act('change_page', { page: PAGE_CHARACTER });
+                act('choose_class', { path: props.path })
+                act('change_page', { page: PAGE_CHARACTER })
               }}
             />
           </Box>
@@ -241,19 +243,23 @@ const classCard = (props: Class, context: any, key: any) => {
       <Flex.Item>
         <b>Points:</b> {props.points}
         <br />
-        {props.flags.investable ? (
-          <span class='Flag Flag--investable'>Investable</span>
-        ) : null}
+        {props.flags.investable
+          ? (
+          <span className='Flag Flag--investable'>Investable</span>
+            )
+          : null}
         <br />
-        {props.flags.can_make_contracts ? (
-          <span class='Flag Flag--contracts'>Can Make Contracts</span>
-        ) : null}
+        {props.flags.can_make_contracts
+          ? (
+          <span className='Flag Flag--contracts'>Can Make Contracts</span>
+            )
+          : null}
       </Flex.Item>
       <Flex.Item>
         <Divider />
         <h3>Spells:</h3>
         {props.spells.map((s) => {
-          return InspectSpellButton(s, context, false, false, true, s.path);
+          return InspectSpellButton(s, context, false, false, true, s.path)
         })}
       </Flex.Item>
       <Flex.Item>
@@ -261,7 +267,7 @@ const classCard = (props: Class, context: any, key: any) => {
         <Divider />
         <h3>Artifacts:</h3>
         {props.artifacts.map((a) => {
-          return InspectArtifactButton(a, context, false, false, true, a.path);
+          return InspectArtifactButton(a, context, false, false, true, a.path)
         })}
       </Flex.Item>
       <Flex.Item>
@@ -269,8 +275,8 @@ const classCard = (props: Class, context: any, key: any) => {
         <h3>Sacrifice Objects:</h3>
         {props.sacrifice_objects.length
           ? props.sacrifice_objects.map((o) => {
-              return SacrificeIcon(o, o.path);
-            })
+            return SacrificeIcon(o, o.path)
+          })
           : 'None'}
       </Flex.Item>
       <Flex.Item>
@@ -278,22 +284,22 @@ const classCard = (props: Class, context: any, key: any) => {
         <h3>Sacrifice Reagents:</h3>
         {props.sacrifice_reagents.length
           ? props.sacrifice_reagents.map((r, i) => {
-              return (
+            return (
                 <>
                   - <b>{capitalize(r.name)}</b>: {r.description}
                   <br />
                 </>
-              );
-            })
+            )
+          })
           : 'None'}
       </Flex.Item>
     </Flex>
-  );
-};
+  )
+}
 
 const navPanel = (props: any, context: any) => {
-  const { data, act } = useBackend<InputData>(context);
-  const { page } = data;
+  const { data, act } = useBackend<InputData>(context)
+  const { page } = data
 
   return (
     <Stack width='100%' justify='center'>
@@ -330,12 +336,12 @@ const navPanel = (props: any, context: any) => {
         />
       </Stack.Item>
     </Stack>
-  );
-};
+  )
+}
 
 const classesPage = (props: any, context: any) => {
-  const { data } = useBackend<InputData>(context);
-  const { classes } = data;
+  const { data } = useBackend<InputData>(context)
+  const { classes } = data
 
   return (
     <Flex direction='column'>
@@ -344,11 +350,11 @@ const classesPage = (props: any, context: any) => {
         {classes?.map((c, i) => classCard(c, context, c.path))}
       </Flex.Item>
     </Flex>
-  );
-};
+  )
+}
 
 const spellCard = (props: Spell, buttons?: InfernoNode) => {
-  const { flags } = props;
+  const { flags } = props
 
   return (
     <Flex className='Card' direction='column'>
@@ -369,28 +375,34 @@ const spellCard = (props: Spell, buttons?: InfernoNode) => {
         <br />
         <b>Duration:</b> {Math.ceil(props.duration / 10)} seconds
         <br />
-        {flags.needs_clothes ? (
+        {flags.needs_clothes
+          ? (
           <>
-            <span class='Flag Flag--needsClothes'>Needs Clothes</span>
+            <span className='Flag Flag--needsClothes'>Needs Clothes</span>
             <br />
           </>
-        ) : null}
-        {flags.needs_human ? (
+            )
+          : null}
+        {flags.needs_human
+          ? (
           <>
-            <span class='Flag Flag--needsHuman'>Human Caster</span>
+            <span className='Flag Flag--needsHuman'>Human Caster</span>
             <br />
           </>
-        ) : null}
-        {flags.no_button ? (
+            )
+          : null}
+        {flags.no_button
+          ? (
           <>
-            <span class='Flag Flag--noButton'>Passive</span>
+            <span className='Flag Flag--noButton'>Passive</span>
             <br />
           </>
-        ) : null}
+            )
+          : null}
       </Flex.Item>
     </Flex>
-  );
-};
+  )
+}
 
 const artifactCard = (props: Artifact, context: any) => {
   return (
@@ -403,12 +415,12 @@ const artifactCard = (props: Artifact, context: any) => {
       </Flex.Item>
       <Flex.Item>{props.description}</Flex.Item>
     </Flex>
-  );
-};
+  )
+}
 
 const BuyArtifactCard = (props: Artifact, context: any) => {
-  const { act, data } = useBackend<InputData>(context);
-  const { user } = data;
+  const { act, data } = useBackend<InputData>(context)
+  const { user } = data
 
   return (
     <Flex className='Card' direction='column'>
@@ -427,102 +439,102 @@ const BuyArtifactCard = (props: Artifact, context: any) => {
       </Flex.Item>
       <Flex.Item>{props.description}</Flex.Item>
     </Flex>
-  );
-};
+  )
+}
 
 const spellsPage = (props: any, context: any) => {
-  const { data } = useBackend<InputData>(context);
+  const { data } = useBackend<InputData>(context)
   const [nameFilter, setNameFilter] = useLocalState(
     context,
     'spellsNameFilter',
-    null,
-  );
+    null
+  )
   const [classNameFilter, setClassNameFilter] = useLocalState(
     context,
     'spellsClassNameFilter',
-    null,
-  );
+    null
+  )
   const [abilityFilter, setAbilityFilter] = useLocalState(
     context,
     'spellsAbilityFilter',
-    null,
-  );
+    null
+  )
   const [schoolFilter, setSchoolFilter] = useLocalState(
     context,
     'spellsSchoolFilter',
-    null,
-  );
+    null
+  )
   const allSpells = data.classes.flatMap((c, i) => {
-    return c.spells;
-  });
+    return c.spells
+  })
 
-  let inspectingSpell: Spell = null;
-  let spellsToShow: Spell[] = [];
-  let abilities: string[] = [];
-  let schools: string[] = [];
+  let inspectingSpell: Spell = null
+  let spellsToShow: Spell[] = []
+  const abilities: string[] = []
+  const schools: string[] = []
   const classNames = data.classes.flatMap((c, i) => {
-    return c.name;
-  });
+    return c.name
+  })
 
   for (const spell of allSpells) {
     if (!spellsToShow.find((s, i) => s.path === spell.path)) {
-      spellsToShow.push(spell);
+      spellsToShow.push(spell)
     }
 
     if (!abilities.find((a, i) => a === spell.ability)) {
-      abilities.push(spell.ability);
+      abilities.push(spell.ability)
     }
 
     if (!schools.find((s, i) => s === spell.school)) {
-      schools.push(spell.school);
+      schools.push(spell.school)
     }
 
     if (spell.path === data.inspecting_path) {
-      inspectingSpell = spell;
+      inspectingSpell = spell
     }
   }
 
-  let ignoredSpells: Spell[] = [];
+  const ignoredSpells: Spell[] = []
 
   for (const spell of spellsToShow) {
-    let ignore = false;
+    let ignore = false
 
     if (
-      nameFilter
-      && spell.name
+      nameFilter &&
+      spell.name
         .toLocaleLowerCase()
         .search(escapeRegExp(nameFilter.toLocaleLowerCase()))
     ) {
-      ignore = true;
+      ignore = true
     }
 
     if (abilityFilter && spell.ability !== abilityFilter) {
-      ignore = true;
+      ignore = true
     }
 
     if (schoolFilter && spell.school !== schoolFilter) {
-      ignore = true;
+      ignore = true
     }
 
     if (classNameFilter) {
       const wizardClass = data.classes.find(
-        (c, i) => c.name === classNameFilter,
-      );
+        (c, i) => c.name === classNameFilter
+      )
       const hasSpell = !!wizardClass.spells.find(
-        (s, i) => s.path === spell.path,
-      );
+        (s, i) => s.path === spell.path
+      )
 
       if (!hasSpell) {
-        ignore = true;
+        ignore = true
       }
     }
 
     if (ignore) {
-      ignoredSpells.push(spell);
+      ignoredSpells.push(spell)
     }
   }
 
-  spellsToShow = spellsToShow.sort((a, b) => a.name.localeCompare(b.name));
+  spellsToShow = spellsToShow.sort((a, b) => a.name.localeCompare(b.name))
 
   return (
     <Flex direction='column'>
@@ -532,16 +544,16 @@ const spellsPage = (props: any, context: any) => {
         <Flex wrap>
           {spellsToShow.map((s, i) => {
             const isIgnored = !!ignoredSpells.find(
-              (ignored, k) => ignored.path === s.path,
-            );
+              (ignored, k) => ignored.path === s.path
+            )
             return InspectSpellButton(
               s,
               context,
               isIgnored,
               s.path === inspectingSpell?.path,
               false,
-              s.path,
-            );
+              s.path
+            )
           })}
         </Flex>
       </Flex.Item>
@@ -550,7 +562,7 @@ const spellsPage = (props: any, context: any) => {
         <b>By Name: </b>
         <Input
           onInput={(e: any) => {
-            setNameFilter(e.target.value);
+            setNameFilter(e.target.value)
           }}
         />
         <Divider />
@@ -558,126 +570,129 @@ const spellsPage = (props: any, context: any) => {
         {classNames.map((n, i) => {
           return (
             <Button
+              key={i}
               content={n}
               selected={classNameFilter === n}
               onClick={() => {
                 if (n === classNameFilter) {
-                  setClassNameFilter(null);
+                  setClassNameFilter(null)
                 } else {
-                  setClassNameFilter(n);
+                  setClassNameFilter(n)
                 }
               }}
             />
-          );
+          )
         })}
         <Divider />
         <b>By Ability: </b>
         {abilities.map((a, i) => {
           return (
             <Button
+              key={i}
               content={a}
               selected={abilityFilter === a}
               onClick={() => {
                 if (a === abilityFilter) {
-                  setAbilityFilter(null);
+                  setAbilityFilter(null)
                 } else {
-                  setAbilityFilter(a);
+                  setAbilityFilter(a)
                 }
               }}
             />
-          );
+          )
         })}
         <Divider />
         <b>By School: </b>
         {schools.map((s, i) => {
           return (
             <Button
+              key={i}
               content={capitalize(s)}
               selected={schoolFilter === s}
               onClick={() => {
                 if (s === schoolFilter) {
-                  setSchoolFilter(null);
+                  setSchoolFilter(null)
                 } else {
-                  setSchoolFilter(s);
+                  setSchoolFilter(s)
                 }
               }}
             />
-          );
+          )
         })}
       </Flex.Item>
       <Flex.Item>
         {inspectingSpell ? spellCard(inspectingSpell) : null}
       </Flex.Item>
     </Flex>
-  );
-};
+  )
+}
 
 const artifactsPage = (props: any, context: any) => {
-  const { data } = useBackend<InputData>(context);
+  const { data } = useBackend<InputData>(context)
   const [nameFilter, setNameFilter] = useLocalState(
     context,
     'artifactsNameFilter',
-    null,
-  );
+    null
+  )
   const [classNameFilter, setClassNameFilter] = useLocalState(
     context,
     'artifactsClassNameFilter',
-    null,
-  );
+    null
+  )
   const allArtifacts = data.classes.flatMap((c, i) => {
-    return c.artifacts;
-  });
+    return c.artifacts
+  })
   const classNames = data.classes.flatMap((c, i) => {
-    return c.name;
-  });
+    return c.name
+  })
 
-  let artifactsToShow: Artifact[] = [];
-  let inspectingArtifact: Artifact = null;
-  let ignoredArtifacts: Artifact[] = [];
+  let artifactsToShow: Artifact[] = []
+  let inspectingArtifact: Artifact = null
+  const ignoredArtifacts: Artifact[] = []
 
   for (const artifact of allArtifacts) {
     if (!artifactsToShow.find((a, i) => a.path === artifact.path)) {
-      artifactsToShow.push(artifact);
+      artifactsToShow.push(artifact)
     }
 
     if (artifact.path === data.inspecting_path) {
-      inspectingArtifact = artifact;
+      inspectingArtifact = artifact
     }
   }
 
   for (const artifact of artifactsToShow) {
-    let ignore = false;
+    let ignore = false
 
     if (
-      nameFilter
-      && artifact.name
+      nameFilter &&
+      artifact.name
         .toLocaleLowerCase()
         .search(escapeRegExp(nameFilter.toLocaleLowerCase()))
     ) {
-      ignore = true;
+      ignore = true
     }
 
     if (classNameFilter) {
       const wizardClass = data.classes.find(
-        (c, i) => c.name === classNameFilter,
-      );
+        (c, i) => c.name === classNameFilter
+      )
       const hasArtifact = !!wizardClass.artifacts.find(
-        (s, i) => s.path === artifact.path,
-      );
+        (s, i) => s.path === artifact.path
+      )
 
       if (!hasArtifact) {
-        ignore = true;
+        ignore = true
       }
     }
 
     if (ignore) {
-      ignoredArtifacts.push(artifact);
+      ignoredArtifacts.push(artifact)
     }
   }
 
   artifactsToShow = artifactsToShow.sort((s, b) =>
-    s.name.localeCompare(b.name),
-  );
+    s.name.localeCompare(b.name)
+  )
 
   return (
     <Flex direction='column'>
@@ -687,16 +702,16 @@ const artifactsPage = (props: any, context: any) => {
         <Flex wrap>
           {artifactsToShow.map((a, i) => {
             const isIgnored = !!ignoredArtifacts.find(
-              (ignored, k) => ignored.path === a.path,
-            );
+              (ignored, k) => ignored.path === a.path
+            )
             return InspectArtifactButton(
               a,
               context,
               isIgnored,
               a.path === inspectingArtifact?.path,
               false,
-              a.path,
-            );
+              a.path
+            )
           })}
         </Flex>
       </Flex.Item>
@@ -705,7 +720,7 @@ const artifactsPage = (props: any, context: any) => {
         <b>By Name: </b>{' '}
         <Input
           onInput={(e: any) => {
-            setNameFilter(e.target.value);
+            setNameFilter(e.target.value)
           }}
         />
         <Divider />
@@ -713,31 +728,32 @@ const artifactsPage = (props: any, context: any) => {
         {classNames.map((c, i) => {
           return (
             <Button
+              key={i}
               content={c}
               selected={c === classNameFilter}
               onClick={() => {
                 if (c === classNameFilter) {
-                  setClassNameFilter(null);
+                  setClassNameFilter(null)
                 } else {
-                  setClassNameFilter(c);
+                  setClassNameFilter(c)
                 }
               }}
             />
-          );
+          )
         })}
       </Flex.Item>
       <Flex.Item>
         {inspectingArtifact ? artifactCard(inspectingArtifact, context) : null}
       </Flex.Item>
     </Flex>
-  );
-};
+  )
+}
 
 const characterPage = (props: any, context: any) => {
-  const { data, act } = useBackend<InputData>(context);
-  const { user, classes } = data;
+  const { data, act } = useBackend<InputData>(context)
+  const { user, classes } = data
 
-  const userClass = classes.find((c, i) => c.path === user.class);
+  const userClass = classes.find((c, i) => c.path === user.class)
 
   if (!userClass) {
     return (
@@ -747,21 +763,21 @@ const characterPage = (props: any, context: any) => {
           <h2>Choose a class first.</h2>
         </Flex.Item>
       </Flex>
-    );
+    )
   }
 
-  let learnedSpells: Spell[] = [];
-  let notLearnedSpells: Spell[] = [];
+  const learnedSpells: Spell[] = []
+  const notLearnedSpells: Spell[] = []
 
   for (const spell of userClass.spells) {
     if (
       user.spells.find((s, i) => {
-        return s.path === spell.path;
+        return s.path === spell.path
       })
     ) {
-      learnedSpells.push(spell);
+      learnedSpells.push(spell)
     } else {
-      notLearnedSpells.push(spell);
+      notLearnedSpells.push(spell)
     }
   }
 
@@ -800,14 +816,14 @@ const characterPage = (props: any, context: any) => {
           <Flex direction='column'>
             {learnedSpells.map((s, i) => {
               const spellData = user.spells.find((b, k) => {
-                return b.path === s.path;
-              });
+                return b.path === s.path
+              })
               const powerUpgrade = spellData.levels.find((l) => {
-                return l.type === UpgradeType.PowerLevel;
-              });
+                return l.type === UpgradeType.PowerLevel
+              })
               const speedUpgrade = spellData.levels.find((l) => {
-                return l.type === UpgradeType.SpeedLevel;
-              });
+                return l.type === UpgradeType.SpeedLevel
+              })
 
               return spellCard(
                 s,
@@ -816,7 +832,7 @@ const characterPage = (props: any, context: any) => {
                     onClick={() =>
                       act('upgrade_spell', {
                         path: s.path,
-                        type: powerUpgrade.type,
+                        type: powerUpgrade.type
                       })
                     }
                     disabled={!powerUpgrade.can_upgrade}
@@ -827,23 +843,25 @@ const characterPage = (props: any, context: any) => {
                     onClick={() =>
                       act('upgrade_spell', {
                         path: s.path,
-                        type: speedUpgrade.type,
+                        type: speedUpgrade.type
                       })
                     }
                     disabled={!speedUpgrade.can_upgrade}
                     title='Upgrade the skill by increasing his speed.'
                     content={`Quicken (${speedUpgrade.level}/${speedUpgrade.max})`}
                   />
-                  {userClass.flags.can_make_contracts ? (
+                  {userClass.flags.can_make_contracts
+                    ? (
                     <Button
                       onClick={() => act('contract', { path: s.path })}
                       title={`Spend ${s.cost} points to get a contract.`}
                       disabled={user.points < s.cost}
                       content='Contract'
                     />
-                  ) : null}
-                </>,
-              );
+                      )
+                    : null}
+                </>
+              )
             })}
           </Flex>
         </Collapsible>
@@ -862,16 +880,18 @@ const characterPage = (props: any, context: any) => {
                     onClick={() => act('buy_spell', { path: s.path })}
                     content={`Buy (${s.cost} points)`}
                   />
-                  {userClass.flags.can_make_contracts ? (
+                  {userClass.flags.can_make_contracts
+                    ? (
                     <Button
                       onClick={() => act('contract', { path: s.path })}
                       title={`Spend ${s.cost} points to get a contract.`}
                       disabled={user.points < s.cost}
                       content='Contract'
                     />
-                  ) : null}
-                </>,
-              );
+                      )
+                    : null}
+                </>
+              )
             })}
           </Flex>
         </Collapsible>
@@ -882,32 +902,32 @@ const characterPage = (props: any, context: any) => {
           title={`Artifacts (${userClass.artifacts.length})`}>
           <Flex direction='column'>
             {userClass.artifacts.map((a, i) => {
-              return BuyArtifactCard(a, context);
+              return BuyArtifactCard(a, context)
             })}
           </Flex>
         </Collapsible>
       </Flex.Item>
     </Flex>
-  );
-};
+  )
+}
 
 const PAGES = {
   0: {
-    render: classesPage,
+    render: classesPage
   },
   1: {
-    render: spellsPage,
+    render: spellsPage
   },
   2: {
-    render: artifactsPage,
+    render: artifactsPage
   },
   3: {
-    render: characterPage,
-  },
-};
+    render: characterPage
+  }
+}
 
 export const SpellBook = (props: any, context: any) => {
-  const { data } = useBackend<InputData>(context);
+  const { data } = useBackend<InputData>(context)
 
   return (
     <Window theme='spellbook' width={425} height={520}>
@@ -916,5 +936,5 @@ export const SpellBook = (props: any, context: any) => {
         {PAGES[data.page].render(props, context)}
       </Window.Content>
     </Window>
-  );
-};
+  )
+}

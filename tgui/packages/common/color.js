@@ -4,18 +4,18 @@
  * @license MIT
  */
 
-const EPSILON = 0.0001;
+const EPSILON = 0.0001
 
 export class Color {
-  constructor(r = 0, g = 0, b = 0, a = 1) {
-    this.r = r;
-    this.g = g;
-    this.b = b;
-    this.a = a;
+  constructor (r = 0, g = 0, b = 0, a = 1) {
+    this.r = r
+    this.g = g
+    this.b = b
+    this.a = a
   }
 
-  toString() {
-    return `rgba(${this.r | 0}, ${this.g | 0}, ${this.b | 0}, ${this.a | 0})`;
+  toString () {
+    return `rgba(${this.r | 0}, ${this.g | 0}, ${this.b | 0}, ${this.a | 0})`
   }
 }
 
@@ -27,7 +27,7 @@ Color.fromHex = hex => (
     parseInt(hex.substr(1, 2), 16),
     parseInt(hex.substr(3, 2), 16),
     parseInt(hex.substr(5, 2), 16))
-);
+)
 
 /**
  * Linear interpolation of two colors.
@@ -38,25 +38,25 @@ Color.lerp = (c1, c2, n) => (
     (c2.g - c1.g) * n + c1.g,
     (c2.b - c1.b) * n + c1.b,
     (c2.a - c1.a) * n + c1.a)
-);
+)
 
 /**
  * Loops up the color in the provided list of colors
  * with linear interpolation.
  */
 Color.lookup = (value, colors = []) => {
-  const len = colors.length;
+  const len = colors.length
   if (len < 2) {
-    throw new Error('Needs at least two colors!');
+    throw new Error('Needs at least two colors!')
   }
-  const scaled = value * (len - 1);
+  const scaled = value * (len - 1)
   if (value < EPSILON) {
-    return colors[0];
+    return colors[0]
   }
   if (value >= 1 - EPSILON) {
-    return colors[len - 1];
+    return colors[len - 1]
   }
-  const ratio = scaled % 1;
-  const index = scaled | 0;
-  return Color.lerp(colors[index], colors[index + 1], ratio);
-};
+  const ratio = scaled % 1
+  const index = scaled | 0
+  return Color.lerp(colors[index], colors[index + 1], ratio)
+}
