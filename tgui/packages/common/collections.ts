@@ -225,9 +225,7 @@ export const uniqBy = <T extends unknown>(
     let value: T | 0 = array[index]
     const computed = iterateeFn ? iterateeFn(value) : value
     value = value !== 0 ? value : 0
-    // WTF
-    // eslint-disable-next-line no-self-compare
-    if (computed === computed) {
+    if (!Number.isNaN(computed)) {
       let seenIndex = seen.length
       while (seenIndex--) {
         if (seen[seenIndex] === computed) {
