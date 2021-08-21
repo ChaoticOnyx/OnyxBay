@@ -64,6 +64,15 @@
 	sort_string = "JDAAA"
 	category_items = list("Engineering Boards")
 
+/datum/design/circuit/trading
+	name = "trading electronics"
+	desc = "Trading vendor electronics"
+	id = "trading"
+	req_tech = list(TECH_ENGINEERING = 3)
+	build_path = /obj/item/weapon/circuitboard/trading
+	sort_string = "JDAAA"
+	category_items = list("Engineering Boards")
+
 /datum/design/circuit/tcom
 	req_tech = list(TECH_DATA = 4, TECH_ENGINEERING = 4)
 	category_items = list("Engineering Boards")

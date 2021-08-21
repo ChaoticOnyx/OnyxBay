@@ -111,6 +111,14 @@
 		if(health == 0)
 			set_broken(1)
 
+/obj/machinery/vending/proc/make_product_record(T, price, amount = 1, category = CAT_NORMAL)
+	var/datum/stored_items/vending_products/product = new /datum/stored_items/vending_products(src, T)
+	product.price = price
+	product.category = category
+	product.amount = amount
+
+	product_records += product
+
 /**
  *  Build src.produdct_records from the products lists
  *
@@ -128,17 +136,15 @@
 		var/category = current_list[2]
 
 		for(var/entry in current_list[1])
-			var/datum/stored_items/vending_products/product = new /datum/stored_items/vending_products(src, entry)
-
-			product.price = (entry in prices) ? prices[entry] : 0
-			product.category = category
+			var/price = (entry in prices) ? prices[entry] : 0
+			var/amount = 0
 			if(rand_amount)
 				var/sum = current_list[1][entry]
-				product.amount = sum ? max(0, sum - rand(0, round(sum * 1.5))) : 1
+				amount = sum ? max(0, sum - rand(0, round(sum * 1.5))) : 1
 			else
-				product.amount = (current_list[1][entry]) ? current_list[1][entry] : 1
+				amount = (current_list[1][entry]) ? current_list[1][entry] : 1
 
-			product_records.Add(product)
+			make_product_record(entry, price, amount, category)
 
 /obj/machinery/vending/Destroy()
 	qdel(wires)
@@ -379,9 +385,7 @@
  *
  *  Called after the money has already been taken from the customer.
  */
-/obj/machinery/vending/proc/credit_purchase(target as text)
-	vendor_account.money += currently_vending.price
-
+/obj/machinery/vending/proc/credit_purchase(target)
 	var/datum/transaction/T = new(target, "Purchase of [currently_vending.item_name]", currently_vending.price, name)
 	vendor_account.do_transaction(T)
 

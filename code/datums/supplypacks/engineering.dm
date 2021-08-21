@@ -272,3 +272,10 @@
 	containername = "\improper EVA RIG crate"
 	containertype = /obj/structure/closet/crate/secure/engineering
 	access = access_engine_equip
+
+/decl/hierarchy/supply_pack/engineering/trading
+	name = "Trading circuits"
+	contains = list(/obj/item/weapon/circuitboard/trading, /obj/item/weapon/circuitboard/trading)
+	cost = 10
+	containername = "\improper Trading circuitboard crate"
+	containertype = /obj/structure/closet/crate/engineering
