@@ -16,11 +16,10 @@
 	RefreshParts()
 
 /obj/machinery/vending/trading/proc/make_password(mob/user)
-	while(!password)
-		password = input(user, "Enter password", "New password", -1) as null|num
-		if(!password)
-			return FALSE
-
+	password = input(user, "Enter password", "New password. 0 - 9999", -1) as null|num
+	if(password == null || password < 0 || password > 9999)
+		to_chat(user, "\icon[src][SPAN_WARNING("Wrong password! Try again!")]")
+		password = null
 	return password
 
 /obj/machinery/vending/trading/proc/authorize_manual(mob/user)
