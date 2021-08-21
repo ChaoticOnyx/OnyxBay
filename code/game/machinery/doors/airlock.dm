@@ -52,6 +52,8 @@
 	var/datum/wifi/receiver/button/door/wifi_receiver
 	var/obj/item/weapon/airlock_brace/brace = null
 
+	var/thermite = FALSE
+
 /obj/machinery/door/airlock/attack_generic(mob/user, damage)
 	if(stat & (BROKEN|NOPOWER))
 		if(damage >= 10)
@@ -622,11 +624,35 @@ About the new airlock wires panel:
 
 	if(!istype(usr, /mob/living/silicon))
 		if(isElectrified())
+			if(thermite)
+				thermitemelt(user)
 			if(shock(user, 75))
 				return
 
 	if(istype(C, /obj/item/taperoll))
 		return
+
+	if(thermite)
+		if(isWelder(C))
+			var/obj/item/weapon/weldingtool/WT = C
+			if( WT.remove_fuel(0,user) )
+				thermitemelt(user)
+				return
+
+		else if(istype(C, /obj/item/weapon/gun/energy/plasmacutter))
+			thermitemelt(user)
+			return
+
+		else if( istype(C, /obj/item/weapon/melee/energy/blade) )
+			var/obj/item/weapon/melee/energy/blade/EB = C
+
+			EB.spark_system.start()
+			to_chat(user, "<span class='notice'>You slash \the [src] with \the [EB]; the thermite ignites!</span>")
+			playsound(src, "spark", 50, 1)
+			playsound(src, 'sound/weapons/blade1.ogg', 50, 1)
+
+			thermitemelt(user)
+			return
 
 	if(!repairing && (stat & BROKEN) && locked) //bolted and broken
 		if(!cut_bolts(C,user))
@@ -712,6 +738,33 @@ About the new airlock wires panel:
 
 	else
 		..()
+
+/obj/machinery/door/airlock/proc/thermitemelt(mob/user as mob)
+	//if(!can_melt())
+		//return
+	var/obj/effect/overlay/O = new /obj/effect/overlay( src )
+	O.SetName("Thermite")
+	O.desc = "Looks hot."
+	O.icon = 'icons/effects/fire.dmi'
+	O.icon_state = "2"
+	O.anchored = 1
+	O.set_density(1)
+	O.plane = LIGHTING_PLANE
+	O.layer = FIRE_LAYER
+
+	//src.ChangeTurf(/turf/simulated/floor/plating)
+
+	//var/turf/simulated/floor/F = src
+	//F.burn_tile()
+	//F.icon_state = "wall_thermite"
+	to_chat(user, "<span class='warning'>The thermite starts melting through the door.</span>")
+
+	set_broken(TRUE)
+	spawn(100)
+		if(O)
+			qdel(O)
+			deconstruct()
+	return
 
 /obj/machinery/door/airlock/deconstruct(mob/user, moved = FALSE)
 	var/obj/structure/door_assembly/da = new assembly_type(src.loc)
