@@ -62,11 +62,19 @@ var/global/list/string_part_flags = list(
 	"face" = FACE,
 	"eyes" = EYES,
 	"upper body" = UPPER_TORSO,
+	"chest" = UPPER_TORSO,
 	"lower body" = LOWER_TORSO,
+	"groin" = LOWER_TORSO,
 	"legs" = LEGS,
+	"l_leg" = LEGS,
+	"r_leg" = LEGS,
 	"feet" = FEET,
+	"l_foot" = FEET,
+	"r_foot" = FEET,
 	"arms" = ARMS,
-	"hands" = HANDS
+	"l_arm" = ARMS,
+	"r_arm" = ARMS,
+	"hands" = HANDS,
 )
 
 // Strings which corraspond to slot flags, useful for outputting what slot something is.
