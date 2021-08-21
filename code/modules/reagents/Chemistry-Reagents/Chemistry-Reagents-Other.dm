@@ -232,12 +232,18 @@
 
 /datum/reagent/thermite/touch_turf(turf/T)
 	if(volume >= 5)
+		var/obj/machinery/door/airlock/D = locate() in T
+		if(istype(D))
+			D.thermite = TRUE
+			D.overlays += image('icons/effects/effects.dmi',icon_state = "#673910")
+			remove_self(5)
+			return
 		if(istype(T, /turf/simulated/wall))
 			var/turf/simulated/wall/W = T
-			W.thermite = 1
+			W.thermite = TRUE
 			W.overlays += image('icons/effects/effects.dmi',icon_state = "#673910")
 			remove_self(5)
-	return
+			return
 
 /datum/reagent/thermite/touch_mob(mob/living/L, amount)
 	if(istype(L))
