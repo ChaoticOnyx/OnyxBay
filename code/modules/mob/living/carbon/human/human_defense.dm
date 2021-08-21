@@ -312,7 +312,7 @@ meteor_act
 
 	if(istype(user,/mob/living/carbon/human))
 		var/mob/living/carbon/human/A = user
-		effective_force *= A.body_build.weapon_hit_coefficient
+		effective_force *= A.body_build.taken_poise_dmg_coefficient
 
 	effective_force *= round((100-blocked)/100, 0.01)
 
@@ -400,7 +400,7 @@ meteor_act
 		effective_force *= 1.5 // Well it's easier to beat all the shit outta lying dudes right?
 	if(istype(user,/mob/living/carbon/human))
 		var/mob/living/carbon/human/A = user
-		effective_force *= A.body_build.weapon_hit_coefficient
+		effective_force *= A.body_build.taken_poise_dmg_coefficient
 
 	effective_force *= round((100-blocked)/60, 0.01)
 

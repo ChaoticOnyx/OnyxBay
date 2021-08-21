@@ -1006,7 +1006,7 @@
 	poise_icon?.icon_state = "[round(poise)]"
 
 /mob/living/carbon/human/proc/damage_poise(dmg = 1)
-	dmg *= body_build.poise_coefficient
+	dmg *= body_build.taken_poise_dmg_coefficient
 	poise -= dmg
 	poise_icon?.icon_state = "[round(poise)]"
 
