@@ -3,7 +3,7 @@
 	desc = "It's a machine that prints replacement organs."
 
 	icon = 'icons/obj/robotics.dmi'
-	icon_state = "prosfab"
+	icon_state = "prosfab-idle"
 	layer = BELOW_OBJ_LAYER
 
 	density = 1
@@ -83,13 +83,14 @@
 
 /obj/machinery/pros_fabricator/update_icon()
 	overlays.Cut()
-	icon_state = initial(icon_state)
 	if(panel_open)
-		overlays.Add(image(icon, "[icon_state]_panel"))
-	else
-		return
+		overlays.Add(image(icon, "prosfab-panel"))
+	if(stat & (BROKEN|NOPOWER))
+		icon_state = "prosfab-idle"
 	if(busy)
-		icon_state = "[icon_state]_work"
+		icon_state = "prosfab-work"
+	else
+		icon_state = "prosfab-pause"
 
 /obj/machinery/pros_fabricator/Destroy()
 	var/turf/T = get_turf(src)
@@ -142,6 +143,7 @@
 
 		to_chat(user, SPAN("notice", "Installing blueprint files for [D.company[1]]..."))
 		if(do_after(user, 50, src))
+			flick("prosfab-disk", src)
 			to_chat(user, SPAN("notice", "Installed [D.company[1]] blueprints!"))
 			user.drop_from_inventory(O)
 			contents += O
@@ -170,7 +172,7 @@
 		if(materials[material] + amnt <= res_max_amount)
 			if(stack && stack.get_amount() >= 1)
 				var/count = 0
-				flick("[initial(icon_state)]_loading", src)
+				flick("prosfab-loading", src)
 				while(materials[material] + amnt <= res_max_amount && stack.amount >= 1)
 					materials[material] += amnt
 					stack.use(1)
@@ -274,8 +276,8 @@
 		materials[M] = max(0, materials[M] - D.materials[M] * mat_efficiency)
 
 	if(D.build_path)
+		flick("prosfab-finish", src)
 		var/obj/new_item = D.Fabricate(get_step(get_turf(src), src.dir), src)
-		flick("[initial(icon_state)]_finish", src)
 		visible_message("\The [src] pings, indicating that \the [D] is complete.", "You hear a ping.")
 		if(mat_efficiency != 1)
 			if(istype(new_item, /obj/) && new_item.matter && new_item.matter.len > 0)
