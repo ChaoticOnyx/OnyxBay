@@ -112,14 +112,10 @@
 
 /obj/machinery/bioprinter/update_icon()
 	overlays.Cut()
-	icon_state = initial(icon_state)
-
 	if(panel_open)
-		overlays.Add(image(icon, "[icon_state]_panel"))
-	else
-		return
+		overlays.Add(image(icon, "_panel"))
 	if(busy)
-		icon_state = "[icon_state]_work"
+		overlays.Add(image(icon, "_work"))
 
 /obj/machinery/bioprinter/proc/update_busy()
 	if(queue.len)
@@ -278,6 +274,7 @@
 	var/weakref/W = loaded_dna["donor"]
 	var/mob/living/carbon/human/H = W.resolve()
 
+	// TODO: refactor external organ's /New, /update_icon and more so they'll generate proper icons upon being spawned outside a mob.
 	if(H && istype(H))
 		if(H.species && H.species.has_organ[choice])
 			var/new_organ = H.species.has_organ[choice]
