@@ -1,7 +1,5 @@
 /obj/machinery/vending/trading
 	name = "Trading"
-	contraband = list()
-	products = list()
 	var/password
 	var/trader_access
 	var/datum/money_account/vendor_account
@@ -33,7 +31,7 @@
 
 	if(vendor_account.suspended)
 		vendor_account = null
-		to_chat(user, "\icon[src][SPAN_WARNING("Account has been suspended.")]")
+		to_chat(user, "\icon[src][SPAN_WARNING("Account have been suspended.")]")
 		return
 
 	if(make_password(user))
@@ -46,7 +44,7 @@
 	var/account_num = I.associated_account_number
 	vendor_account = get_account(account_num)
 	if(vendor_account)
-		to_chat(user, "\icon[src][SPAN_NOTICE("Account #[account_num] has been successfully authorized.")]")
+		to_chat(user, "\icon[src][SPAN_NOTICE("Account #[account_num] have been successfully authorized.")]")
 	else
 		to_chat(user, "\icon[src][SPAN_WARNING("Authorization failed.")]")
 
@@ -54,7 +52,7 @@
 	if(!I)
 		return
 	if(trader_access && !(trader_access in I.GetAccess()))
-		to_chat(user, "\icon[src][SPAN_WARNING("Access denied.")]")
+		to_chat(user, "\icon[src][SPAN_DANGER("Access denied.")]")
 		return
 
 	var/account_type = input(user,
@@ -93,40 +91,54 @@
 	if(!check_authorization(user))
 		return
 
+	if(istype(W, /obj/item/weapon/disk/nuclear))
+		to_chat(user, "\icon[src][SPAN_DANGER("This item cannot be traided!")]")
+
 	if(!attempt_to_stock(W, user))
 		var/price = max(0, round(input(user, "Enter price", "Price", 0) as num))
 		make_product_record(W.type, price, amount = 0)
 		attempt_to_stock(W, user)
 
-// fuck the byond
 /obj/machinery/vending/trading/credit_purchase(target)
 	var/datum/transaction/T = new(target, "Purchase of [currently_vending.item_name]", currently_vending.price, name)
 	vendor_account.do_transaction(T)
 
 /obj/machinery/vending/trading/attackby(obj/item/W, mob/user)
+	cleanup()
 	if(!panel_open || isScrewdriver(W))
 		return ..()
 
-	if(!vendor_account)
+	if(!vendor_account && istype(W, /obj/item/weapon/card/id))
 		authorize(W, user)
 		return
 
 	if(istype(W, /obj/item/weapon/pen))
 		if(!check_authorization(user))
 			return
-		switch(input(user, "Select action", "Action", "Cancel") in list("Rename", "Change description", "Cancel"))
+		switch(input(user, "Select action", "Action", "Cancel") in list("Rename", "Change description", "Change appearence", "Cancel"))
 			if("Rename")
 				name = "[sanitizeSafe(input(user, "Rename", "New name", name) as null|text)]"
 			if("Change description")
 				desc = "[sanitizeSafe(input(user, "Change description", "Description", desc) as null|text)]"
+			if("Change appearence")
+				var/list/vends = icon_states(icon)
+				var/list/ovends = vends
+				for(var/V in vends)
+					if(findtext(V, "-")) // ancillary states
+						vends -= V
+					if(findtext(V, "wall"))
+						vends -= V
+					if(!("[V]-panel" in ovends))
+						vends -= V
+
+				base_icon = icon_state = input("Select appearence", "Appearence", icon_state) in vends
+				overlays.Cut()
+				overlays += image(icon, "[base_icon]-panel")
+		return
 
 	if(vendor_account)
 		insert_item(W, user)
 
 /obj/machinery/vending/trading/attack_hand(mob/user)
-	if(panel_open)
-		return
-	cleanup()
 	. = ..()
-
-
+	cleanup()
