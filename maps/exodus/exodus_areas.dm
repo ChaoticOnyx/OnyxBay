@@ -18,6 +18,10 @@
 //shuttle areas must contain at least two areas in a subgroup if you want to move a shuttle from one
 //place to another. Look at escape shuttle for example.
 //All shuttles should now be under shuttle since we have smooth-wall code.
+/area/shuttle/administration/centcom
+	name = "\improper Administration Shuttle"
+	icon_state = "shuttlered"
+
 /area/shuttle/administration/station
 	name = "\improper Administration Shuttle"
 	icon_state = "shuttlered2"

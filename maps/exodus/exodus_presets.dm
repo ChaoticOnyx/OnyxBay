@@ -1,3 +1,7 @@
+var/const/NETWORK_COMMAND = "Command"
+var/const/NETWORK_ENGINE  = "Engine"
+var/const/NETWORK_ENGINEERING_OUTPOST = "Engineering Outpost"
+
 /datum/map/exodus/get_network_access(network)
 	switch(network)
 		if(NETWORK_CIVILIAN_WEST)
@@ -6,7 +10,12 @@
 			return access_research
 		if(NETWORK_TELECOM)
 			return access_heads
-	return get_shared_network_access(network) || ..()
+		if(NETWORK_COMMAND)
+			return access_heads
+		if(NETWORK_ENGINE, NETWORK_ENGINEERING_OUTPOST)
+			return access_engine
+
+	return ..()
 
 /datum/map/exodus
 	station_networks = list(
