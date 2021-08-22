@@ -1,6 +1,6 @@
-import { useBackend, useLocalState } from '../backend';
-import { AnimatedNumber, Box, Button, Icon, LabeledList, ProgressBar, Section } from '../components';
-import { Window } from '../layouts';
+import { useBackend } from '../backend'
+import { AnimatedNumber, Box, Button, LabeledList, Section } from '../components'
+import { Window } from '../layouts'
 
 interface BeakerContent
 {
@@ -19,9 +19,9 @@ interface DispenserInput
 }
 
 export const Dispenser = (props, context) => {
-  const { act, data } = useBackend<DispenserInput>(context);
-  const beakerTransferAmounts = data.beakerTransferAmounts;
-  const beakerContents = data.beakerContents || [];
+  const { act, data } = useBackend<DispenserInput>(context)
+  const beakerTransferAmounts = data.beakerTransferAmounts
+  const beakerContents = data.beakerContents || []
   return (
     <Window
       width={565}
@@ -37,7 +37,7 @@ export const Dispenser = (props, context) => {
                 selected={Math.round(amount) === Math.round(data.amount)}
                 content={amount}
                 onClick={() => act('amount', {
-                  target: amount,
+                  target: amount
                 })} />
             ))
           )}>
@@ -51,7 +51,7 @@ export const Dispenser = (props, context) => {
                 width='129.5px'
                 lineHeight={1.75}
                 onClick={() => act('dispense', {
-                  reagent: chemical,
+                  reagent: chemical
                 })} />
             ))}
           </Box>
@@ -68,22 +68,23 @@ export const Dispenser = (props, context) => {
                   disabled={!data.isBeakerLoaded}
                   onClick={() => act('eject')} />
               )}>
-              {data.isBeakerLoaded
-                  && (
+              {(data.isBeakerLoaded &&
+              (
                     <>
                       <AnimatedNumber
                         initial={0}
                         value={data.beakerCurrentVolume} />
                       /{data.beakerMaxVolume} units
                     </>
-                  )
-                || 'No beaker'}
+              )) ||
+              'No beaker'}
             </LabeledList.Item>
             <LabeledList.Item
               label='Contents'>
               <Box color='label'>
-                {(!data.isBeakerLoaded) && 'N/A'
-                  || beakerContents.length === 0 && 'Nothing'}
+                {(((!data.isBeakerLoaded) &&
+                  'N/A') ||
+                beakerContents.length === 0) && 'Nothing'}
               </Box>
               {beakerContents.map(chemical => (
                 <Box
@@ -101,5 +102,5 @@ export const Dispenser = (props, context) => {
         </Section>
       </Window.Content>
     </Window>
-  );
-};
+  )
+}
