@@ -1,8 +1,6 @@
 name: Additional Checks
 
-on:
-  pull_request_target:
-    types: [synchronize]
+on: [push, pull_request]
 
 jobs:
   Checks:
