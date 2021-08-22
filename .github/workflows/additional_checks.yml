@@ -30,3 +30,13 @@ jobs:
         run: |
           source $HOME/BYOND-${BYOND_MAJOR}.${BYOND_MINOR}/byond/bin/byondsetup
           bash dm.sh ${DM_BUILDFILE}
+      - name: After Success
+        if: ${{ success() }}
+        run: |
+          chmod +x ./send-to-discord.sh
+          ./send-to-discord.sh success $WEBHOOK_URL
+      - name: After Failure
+        if: ${{ failure() }}
+        run: |
+          chmod +x ./send-to-discord.sh
+          ./send-to-discord.sh failure $WEBHOOK_URL
