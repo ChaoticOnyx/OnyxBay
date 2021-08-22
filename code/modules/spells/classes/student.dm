@@ -4,7 +4,6 @@
 	description = "This spells are dedicated to neophytes in the ways of magic."
 	points = 5
 	can_make_contracts = FALSE
-	investable = TRUE
 
 	spells = list(
 		SPELL_DATA(/datum/spell/aoe_turf/knock,                    1),
