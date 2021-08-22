@@ -405,13 +405,25 @@
 
 		in_chamber.on_hit(M)
 		if (in_chamber.damage_type != PAIN)
-			var/result_dmg = in_chamber.damage * ((100-(M.run_armor_check(BP_HEAD, in_chamber.check_armour, in_chamber.armor_penetration)))/100)
+			var/result_dmg = in_chamber.damage * ((100 - (M.run_armor_check(BP_HEAD, in_chamber.check_armour, in_chamber.armor_penetration))) / 100)
 			log_and_message_admins("[key_name(user)] try commited suicide using \a [src]")
-			user.adjustBrainLoss(amount = (result_dmg * rand(3,4)))
+			user.adjustBrainLoss(amount = (result_dmg * rand(3, 4)))
 			if(in_chamber.check_armour == "bullet" || in_chamber.check_armour == "melee")
+<<<<<<< HEAD
 				M.get_organ(BP_HEAD).take_external_damage(brute = result_dmg * rand(2,5), used_weapon = "Point blank shot in the head with \a [in_chamber]")
+||||||| 51542daa0c
+				M.get_organ(BP_HEAD).take_external_damage(brute = result_dmg * rand(2,5), used_weapon = src)
+=======
+				M.get_organ(BP_HEAD).take_external_damage(brute = result_dmg * rand(2, 5), used_weapon = src)
+>>>>>>> 823fa32eb1d0b6e16b0a323443f1b4bebb9d6fbe
 			else
+<<<<<<< HEAD
 				M.get_organ(BP_HEAD).take_external_damage(burn = result_dmg * rand(2,5), used_weapon = "Point blank shot in the head with \a [in_chamber]")
+||||||| 51542daa0c
+				M.get_organ(BP_HEAD).take_external_damage(burn = result_dmg * rand(2,5), used_weapon = src)
+=======
+				M.get_organ(BP_HEAD).take_external_damage(burn = result_dmg * rand(2, 5), used_weapon = src)
+>>>>>>> 823fa32eb1d0b6e16b0a323443f1b4bebb9d6fbe
 		else
 			to_chat(user, SPAN_NOTICE("Ow..."))
 			user.apply_effect(110,PAIN,0)
