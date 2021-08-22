@@ -202,3 +202,10 @@
 	req_tech = list(TECH_BIO = 3, TECH_DATA = 3)
 	build_path = /obj/item/weapon/circuitboard/replicator
 	sort_string = "WAAAR"
+
+/datum/design/circuit/surgprinter
+	name = "surgical printer"
+	id = "surgprinter"
+	req_tech = list(TECH_BIO = 2, TECH_DATA = 1)
+	build_path = /obj/item/weapon/circuitboard/surg_printer
+	sort_string = "WAAAS"

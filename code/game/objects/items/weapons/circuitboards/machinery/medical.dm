@@ -12,6 +12,17 @@
 							/obj/item/weapon/stock_parts/scanning_module = 1,
 							/obj/item/weapon/stock_parts/manipulator = 3,
 							/obj/item/weapon/stock_parts/console_screen = 1)
+
+/obj/item/weapon/circuitboard/surg_printer
+	name = T_BOARD("surgical printer")
+	build_path = /obj/machinery/surg_printer
+	board_type = "machine"
+	origin_tech = list(TECH_ENGINEERING = 1, TECH_BIO = 3, TECH_DATA = 3)
+	req_components = list(
+							/obj/item/weapon/stock_parts/matter_bin = 2,
+							/obj/item/weapon/stock_parts/manipulator = 2,
+							)
+
 /obj/item/weapon/circuitboard/bioprinter
 	name = T_BOARD("bioprinter")
 	build_path = /obj/machinery/bioprinter
@@ -76,33 +87,33 @@
 	name = T_BOARD("chem Master 3000")
 	board_type = "machine"
 	build_path = /obj/machinery/chem_master
+	origin_tech = list(TECH_ENGINEERING = 3, TECH_BIO = 3, TECH_DATA = 3)
 	req_components = list(
 		/obj/item/device/healthanalyzer = 1,
 		/obj/item/weapon/stock_parts/scanning_module = 2,
 		/obj/item/weapon/stock_parts/manipulator = 4,
 		/obj/item/weapon/stock_parts/console_screen = 1,
 	)
-	origin_tech = list(TECH_ENGINEERING = 3, TECH_BIO = 3, TECH_DATA = 3)
 
 /obj/item/weapon/circuitboard/grinder
 	name = T_BOARD("All-In-One Grinder")
 	board_type = "machine"
+	build_path = /obj/machinery/reagentgrinder
+	origin_tech = list(TECH_ENGINEERING = 3, TECH_BIO = 2)
 	req_components = list(
 		/obj/item/weapon/stock_parts/scanning_module = 1,
 		/obj/item/weapon/stock_parts/manipulator = 2,
 		/obj/item/weapon/stock_parts/console_screen = 1,
 	)
-	build_path = /obj/machinery/reagentgrinder
-	origin_tech = list(TECH_ENGINEERING = 3, TECH_BIO = 2)
 
 /obj/item/weapon/circuitboard/chemical_dispenser
 	name = T_BOARD("chemical dispenser")
 	board_type = "machine"
 	build_path = /obj/machinery/chemical_dispenser
+	origin_tech = list(TECH_ENGINEERING = 3, TECH_BIO = 3, TECH_DATA = 3)
 	req_components = list(
 		/obj/item/device/healthanalyzer = 1,
 		/obj/item/weapon/stock_parts/scanning_module = 2,
 		/obj/item/weapon/stock_parts/manipulator = 4,
 		/obj/item/weapon/stock_parts/console_screen = 1,
 	)
-	origin_tech = list(TECH_ENGINEERING = 3, TECH_BIO = 3, TECH_DATA = 3)
