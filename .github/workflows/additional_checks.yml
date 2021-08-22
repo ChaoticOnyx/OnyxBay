@@ -6,7 +6,7 @@ on:
 jobs:
   Checks:
     runs-on: ubuntu-latest
-    if: github.repository == 'ChaoticOnyx/OnyxBay' && github.base_ref == 'dev' && github.event.pull_request.draft == false
+    if: github.repository == 'ChaoticOnyx/OnyxBay' && github.event.pull_request.draft == false
     env:
       BYOND_MAJOR: 513
       BYOND_MINOR: 1521
