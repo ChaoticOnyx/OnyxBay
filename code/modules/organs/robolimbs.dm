@@ -318,7 +318,7 @@ var/datum/robolimb/basic_robolimb
 	name = "Limb Blueprints"
 	desc = "A disk containing the blueprints for prosthetics."
 	icon = 'icons/obj/cloning.dmi'
-	icon_state = "harddisk"
+	icon_state = "datadisk1"
 	w_class = ITEM_SIZE_TINY
 	var/list/company = list()
 
