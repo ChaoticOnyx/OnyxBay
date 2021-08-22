@@ -171,6 +171,7 @@
 			to_chat(user, SPAN("info", "You inject the blood sample into the bioprinter."))
 
 			get_owner_name()
+			update_busy()
 
 		return
 
