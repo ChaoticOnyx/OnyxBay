@@ -32,11 +32,15 @@ jobs:
           bash dm.sh ${DM_BUILDFILE}
       - name: After Success
         if: ${{ success() }}
+        env:
+          $WEBHOOK_URL: ${{secrets.$WEBHOOK_URL}}
         run: |
           chmod +x ./send-to-discord.sh
           ./send-to-discord.sh success $WEBHOOK_URL
       - name: After Failure
         if: ${{ failure() }}
+        env:
+          $WEBHOOK_URL: ${{secrets.$WEBHOOK_URL}}
         run: |
           chmod +x ./send-to-discord.sh
           ./send-to-discord.sh failure $WEBHOOK_URL
