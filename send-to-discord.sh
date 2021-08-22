@@ -1,71 +1,98 @@
 #!/bin/bash
+# This original source of this code: https://github.com/DiscordHooks/travis-ci-discord-webhook
+# The same functionality from TravisCI is needed for Github Actions
+#
+# For info on the GITHUB prefixed variables, visit:
+# https://help.github.com/en/articles/virtual-environments-for-github-actions#environment-variables
 
-if [ -z "$2" ]; then
-  echo -e "WARNING!!\nYou need to pass the WEBHOOK_URL environment variable as the second argument to this script.\nFor details & guide, visit: https://github.com/k3rn31p4nic/travis-ci-discord-webhook" && exit
-fi
+AVATAR="https://github.com/actions.png"
 
-echo -e "[Webhook]: Sending webhook to Discord...\\n";
-
-case $1 in
+# More info: https://www.gnu.org/software/bash/manual/bash.html#Shell-Parameter-Expansion
+case ${1,,} in
   "success" )
     EMBED_COLOR=3066993
-    STATUS_MESSAGE="Build passed"
-    AVATAR="https://travis-ci.org/images/logos/TravisCI-Mascot-blue.png"
+    STATUS_MESSAGE="Passed"
     ;;
 
   "failure" )
     EMBED_COLOR=15158332
-    STATUS_MESSAGE="Build failed"
-    AVATAR="https://travis-ci.org/images/logos/TravisCI-Mascot-red.png"
+    STATUS_MESSAGE="Failed"
     ;;
 
   * )
+    STATUS_MESSAGE="Status Unknown"
     EMBED_COLOR=0
-    STATUS_MESSAGE="Status unknown"
-    AVATAR="https://travis-ci.org/images/logos/TravisCI-Mascot-1.png"
     ;;
 esac
 
-AUTHOR_NAME="$(git log -1 "$TRAVIS_COMMIT" --pretty="%aN")"
-COMMITTER_NAME="$(git log -1 "$TRAVIS_COMMIT" --pretty="%cN")"
-COMMIT_SUBJECT="$(git log -1 "$TRAVIS_COMMIT" --pretty="%s")"
-COMMIT_MESSAGE="$(git log -1 "$TRAVIS_COMMIT" --pretty="%b")"
+shift
 
+if [ $# -lt 1 ]; then
+  echo -e "WARNING!!\nYou need to pass the WEBHOOK_URL environment variable as the second argument to this script.\nFor details & guide, visit: https://github.com/DiscordHooks/github-actions-discord-webhook" && exit
+fi
+
+AUTHOR_NAME="$(git log -1 "$GITHUB_SHA" --pretty="%aN")"
+COMMITTER_NAME="$(git log -1 "$GITHUB_SHA" --pretty="%cN")"
+COMMIT_SUBJECT="$(git log -1 "$GITHUB_SHA" --pretty="%s")"
+COMMIT_MESSAGE="$(git log -1 "$GITHUB_SHA" --pretty="%b")" | sed -E ':a;N;$!ba;s/\r{0,1}\n/\\n/g'
+COMMIT_URL="https://github.com/$GITHUB_REPOSITORY/commit/$GITHUB_SHA"
+
+# If, for example, $GITHUB_REF = refs/heads/feature/example-branch
+# Then this sed command returns: feature/example-branch
+BRANCH_NAME="$(echo $GITHUB_REF | sed 's/^[^/]*\/[^/]*\///g')"
+REPO_URL="https://github.com/$GITHUB_REPOSITORY"
+BRANCH_OR_PR="Branch"
+BRANCH_OR_PR_URL="$REPO_URL/tree/$BRANCH_NAME"
+ACTION_URL="$COMMIT_URL/checks"
+COMMIT_OR_PR_URL=$COMMIT_URL
 if [ "$AUTHOR_NAME" == "$COMMITTER_NAME" ]; then
   CREDITS="$AUTHOR_NAME authored & committed"
 else
   CREDITS="$AUTHOR_NAME authored & $COMMITTER_NAME committed"
 fi
 
-if [[ $TRAVIS_PULL_REQUEST != false ]]; then
-  URL="https://github.com/$TRAVIS_REPO_SLUG/pull/$TRAVIS_PULL_REQUEST"
-else
-  URL=""
+if [ "$GITHUB_EVENT_NAME" == "pull_request" ]; then
+	BRANCH_OR_PR="Pull Request"
+	
+	PR_NUM=$(sed 's/\/.*//g' <<< $BRANCH_NAME)
+	BRANCH_OR_PR_URL="$REPO_URL/pull/$PR_NUM"
+	BRANCH_NAME="#${PR_NUM}"
+	
+	# Call to GitHub API to get PR title
+	PULL_REQUEST_ENDPOINT="https://api.github.com/repos/$GITHUB_REPOSITORY/pulls/$PR_NUM"
+	
+	WORK_DIR=$(dirname ${BASH_SOURCE[0]})
+	PULL_REQUEST_TITLE=$(ruby $WORK_DIR/get_pull_request_title.rb $PULL_REQUEST_ENDPOINT)
+	
+	COMMIT_SUBJECT=$PULL_REQUEST_TITLE
+	COMMIT_MESSAGE="Pull Request #$PR_NUM"
+	ACTION_URL="$BRANCH_OR_PR_URL/checks"
+	COMMIT_OR_PR_URL=$BRANCH_OR_PR_URL
 fi
 
-TIMESTAMP=$(date --utc +%FT%TZ)
+TIMESTAMP=$(date -u +%FT%TZ)
 WEBHOOK_DATA='{
   "username": "",
-  "avatar_url": "https://travis-ci.org/images/logos/TravisCI-Mascot-1.png",
+  "avatar_url": "'$AVATAR'",
   "embeds": [ {
     "color": '$EMBED_COLOR',
     "author": {
-      "name": "Job #'"$TRAVIS_JOB_NUMBER"' (Build #'"$TRAVIS_BUILD_NUMBER"') '"$STATUS_MESSAGE"' - '"$TRAVIS_REPO_SLUG"'",
-      "url": "https://travis-ci.org/'"$TRAVIS_REPO_SLUG"'/builds/'"$TRAVIS_BUILD_ID"'",
+      "name": "'"$STATUS_MESSAGE"': '"$WORKFLOW_NAME"' ('"${HOOK_OS_NAME}"') - '"$GITHUB_REPOSITORY"'",
+      "url": "'$ACTION_URL'",
       "icon_url": "'$AVATAR'"
     },
     "title": "'"$COMMIT_SUBJECT"'",
-    "url": "'"$URL"'",
+    "url": "'"$COMMIT_OR_PR_URL"'",
     "description": "'"${COMMIT_MESSAGE//$'\n'/ }"\\n\\n"$CREDITS"'",
     "fields": [
       {
         "name": "Commit",
-        "value": "'"[\`${TRAVIS_COMMIT:0:7}\`](https://github.com/$TRAVIS_REPO_SLUG/commit/$TRAVIS_COMMIT)"'",
+        "value": "'"[\`${GITHUB_SHA:0:7}\`](${COMMIT_URL})"'",
         "inline": true
       },
       {
-        "name": "Branch/Tag",
-        "value": "'"[\`$TRAVIS_BRANCH\`](https://github.com/$TRAVIS_REPO_SLUG/tree/$TRAVIS_BRANCH)"'",
+        "name": "'"$BRANCH_OR_PR"'",
+        "value": "'"[\`${BRANCH_NAME}\`](${BRANCH_OR_PR_URL})"'",
         "inline": true
       }
     ],
@@ -73,5 +100,9 @@ WEBHOOK_DATA='{
   } ]
 }'
 
-(curl --fail --progress-bar -A "TravisCI-Webhook" -H Content-Type:application/json -H X-Author:k3rn31p4nic#8383 -d "$WEBHOOK_DATA" "$2" \
+for ARG in "$@"; do
+  echo -e "[Webhook]: Sending webhook to Discord...\\n";
+
+  (curl --fail --progress-bar -A "GitHub-Actions-Webhook" -H Content-Type:application/json -H X-Author:k3rn31p4nic#8383 -d "${WEBHOOK_DATA//	/ }" "$ARG" \
   && echo -e "\\n[Webhook]: Successfully sent the webhook.") || echo -e "\\n[Webhook]: Unable to send webhook."
+done
