@@ -9,12 +9,12 @@
 	var/list/spawn_cartridges = null // Set to a list of types to spawn one of each on New()
 
 	var/list/cartridges = list() // Associative, label -> cartridge
-	var/obj/item/weapon/reagent_containers/container = null
+	var/obj/item/weapon/reagent_containers/beaker = null
 
 	var/ui_title = "Chemical Dispenser"
 
 	var/accept_drinking = 0
-	var/amount = 30
+	var/amount = 5
 
 	component_types = list(
 		/obj/item/weapon/circuitboard/chemical_dispenser,
@@ -28,6 +28,9 @@
 	density = 1
 	anchored = 1
 	obj_flags = OBJ_FLAG_ANCHORABLE
+
+	var/list/recording_recipe
+	var/list/saved_recipes = list()
 
 /obj/machinery/chemical_dispenser/Initialize()
 	. = ..()
@@ -67,12 +70,10 @@
 	C.loc = src
 	cartridges[C.label] = C
 	cartridges = sortAssoc(cartridges)
-	SSnano.update_uis(src)
 
 /obj/machinery/chemical_dispenser/proc/remove_cartridge(label)
 	. = cartridges[label]
 	cartridges -= label
-	SSnano.update_uis(src)
 
 /obj/machinery/chemical_dispenser/attackby(obj/item/weapon/W, mob/user)
 	if(default_deconstruction_crowbar(user, W))
@@ -94,8 +95,8 @@
 			C.loc = loc
 
 	else if(istype(W, /obj/item/weapon/reagent_containers/glass) || istype(W, /obj/item/weapon/reagent_containers/food))
-		if(container)
-			to_chat(user, "<span class='warning'>There is already \a [container] on \the [src]!</span>")
+		if(beaker)
+			to_chat(user, SPAN_WARNING("There is already \a [beaker] on \the [src]!"))
 			return
 
 		var/obj/item/weapon/reagent_containers/RC = W
@@ -112,82 +113,92 @@
 			to_chat(user, "<span class='warning'>You don't see how \the [src] could dispense reagents into \the [RC].</span>")
 			return
 
-		container =  RC
+		beaker =  RC
 		user.drop_from_inventory(RC)
 		RC.loc = src
 		update_icon()
 		to_chat(user, "<span class='notice'>You set \the [RC] on \the [src].</span>")
-		SSnano.update_uis(src) // update all UIs attached to src
+		SStgui.update_uis(src)
 
 	else
 		..()
 	return
 
-/obj/machinery/chemical_dispenser/ui_interact(mob/user, ui_key = "main",datum/nanoui/ui = null, force_open = 1)
-	// this is the data which will be sent to the ui
-	var/data[0]
+/obj/machinery/chemical_dispenser/tgui_data(mob/user)
+	var/list/data = list()
 	data["amount"] = amount
-	data["isBeakerLoaded"] = container ? 1 : 0
-	data["glass"] = accept_drinking
-	var beakerD[0]
-	if(container && container.reagents && container.reagents.reagent_list.len)
-		for(var/datum/reagent/R in container.reagents.reagent_list)
-			beakerD[++beakerD.len] = list("name" = R.name, "volume" = R.volume)
-	data["beakerContents"] = beakerD
+	data["isBeakerLoaded"] = !!beaker
 
-	if(container)
-		data["beakerCurrentVolume"] = container.reagents.total_volume
-		data["beakerMaxVolume"] = container.reagents.maximum_volume
+	var/list/beakerContents = list()
+	var/beakerCurrentVolume = 0
+	if(beaker && beaker.reagents && beaker.reagents.reagent_list.len)
+		for(var/datum/reagent/R in beaker.reagents.reagent_list)
+			beakerContents.Add(list(list("name" = R.name, "volume" = round(R.volume, MINIMUM_CHEMICAL_VOLUME)))) // list in a list because Byond merges the first list...
+			beakerCurrentVolume += R.volume
+	data["beakerContents"] = beakerContents
+
+	if (beaker)
+		data["beakerCurrentVolume"] = round(beakerCurrentVolume, 0.01)
+		data["beakerMaxVolume"] = beaker.volume
+		data["beakerTransferAmounts"] = splittext(beaker.possible_transfer_amounts, ";")
 	else
 		data["beakerCurrentVolume"] = null
 		data["beakerMaxVolume"] = null
+		data["beakerTransferAmounts"] = null
 
-	var chemicals[0]
+	var/list/chemicals = list()
 	for(var/label in cartridges)
-		var/obj/item/weapon/reagent_containers/chem_disp_cartridge/C = cartridges[label]
-		chemicals[++chemicals.len] = list("label" = label, "amount" = C.reagents.total_volume)
+		chemicals += label
 	data["chemicals"] = chemicals
 
-	// update the ui if it exists, returns null if no ui is passed/found
-	ui = SSnano.try_update_ui(user, src, ui_key, ui, data, force_open)
-	if(!ui)
-		ui = new(user, src, ui_key, "chem_disp.tmpl", ui_title, 390, 680)
-		ui.set_initial_data(data)
-		ui.open()
+	return data
 
-/obj/machinery/chemical_dispenser/OnTopic(user, href_list)
-	if(href_list["amount"])
-		amount = round(text2num(href_list["amount"]), 1) // round to nearest 1
-		amount = max(0, min(120, amount)) // Since the user can actually type the commands himself, some sanity checking
-		return TOPIC_REFRESH
-
-	if(href_list["dispense"])
-		var/label = href_list["dispense"]
-		if(cartridges[label] && container && container.is_open_container())
+/obj/machinery/chemical_dispenser/tgui_act(action, params)
+	. = ..()
+	if(.)
+		return
+	switch(action)
+		if("amount")
+			var/target = text2num(params["target"])
+			amount = between(0, target, 120)
+			. = TRUE
+		if("dispense")
+			var/reagent_name = params["reagent"]
+			var/obj/item/weapon/reagent_containers/chem_disp_cartridge/cartridge = cartridges[reagent_name]
+			if(!(beaker && cartridge))
+				return
+			var/datum/reagents/holder = beaker.reagents
+			var/to_dispense = between(0, holder.maximum_volume - holder.total_volume, amount)
 			playsound(loc, 'sound/effects/using/sink/fast_filling1.ogg', 75)
-			var/obj/item/weapon/reagent_containers/chem_disp_cartridge/C = cartridges[label]
-			C.reagents.trans_to(container, amount)
-			return TOPIC_REFRESH
-		return TOPIC_HANDLED
-
-	else if(href_list["ejectBeaker"])
-		if(container)
-			var/obj/item/weapon/reagent_containers/B = container
+			cartridge.reagents.trans_to_holder(holder, to_dispense)
+			. = TRUE
+		if("eject")
+			var/obj/item/weapon/reagent_containers/B = beaker
+			if(!B)
+				return
 			B.dropInto(loc)
-			container = null
+			beaker = null
 			update_icon()
-			return TOPIC_REFRESH
-		return TOPIC_HANDLED
+			. = TRUE
+
+
+
+/obj/machinery/chemical_dispenser/tgui_interact(mob/user, datum/tgui/ui)
+	ui = SStgui.try_update_ui(user, src, ui)
+	if(!ui)
+		ui = new(user, src, "Dispenser")
+		ui.open()
+		ui.set_autoupdate(TRUE)
 
 /obj/machinery/chemical_dispenser/attack_ai(mob/user as mob)
-	ui_interact(user)
+	tgui_interact(user)
 
 /obj/machinery/chemical_dispenser/attack_hand(mob/user as mob)
-	ui_interact(user)
+	tgui_interact(user)
 
 /obj/machinery/chemical_dispenser/update_icon()
 	overlays.Cut()
-	if(container)
+	if(beaker)
 		var/mutable_appearance/beaker_overlay
 		beaker_overlay = image('icons/obj/chemical.dmi', src, "lil_beaker")
 		beaker_overlay.pixel_x = rand(-10, 5)
