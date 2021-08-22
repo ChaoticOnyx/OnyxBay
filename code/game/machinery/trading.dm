@@ -103,6 +103,38 @@
 	var/datum/transaction/T = new(target, "Purchase of [currently_vending.item_name]", currently_vending.price, name)
 	vendor_account.do_transaction(T)
 
+/obj/machinery/vending/trading/proc/modify_slogans(mob/user)
+	var/actions = list("Cancel", "Add")
+	if(slogan_list.len)
+		actions += list("Edit", "Remove")
+	var/action = input(user, "Select action", "Action", "Cancel") in actions
+	switch(action)
+		if("Edit")
+			var/target = input(user, "Select", "Slogan") in slogan_list
+			slogan_list -= target
+			slogan_list += sanitize(input(user, "Edit slogan", "Edit", target) as text, MAX_LNAME_LEN)
+		if("Remove")
+			var/target = input(user, "Select", "Slogan") in slogan_list
+			slogan_list -= target
+		if("Add")
+			slogan_list += sanitize(input(user, "Write slogan", "Slogan") as text, MAX_LNAME_LEN)
+
+/obj/machinery/vending/trading/proc/modify_ads(mob/user)
+	var/actions = list("Cancel", "Add")
+	if(ads_list.len)
+		actions += list("Edit", "Remove")
+	var/action = input(user, "Select action", "Action", "Cancel") in actions
+
+	switch(action)
+		if("Edit")
+			var/target = input(user, "Select", "Ad") in ads_list
+			ads_list -= target
+			ads_list += sanitize(input(user, "Edit ad", "Edit", target) as text, MAX_LNAME_LEN)
+		if("Remove")
+			ads_list -= input(user, "Select", "Ad") in ads_list
+		if("Add")
+			ads_list += sanitize(input(user, "Write ad", "Ad") as text, MAX_LNAME_LEN)
+
 /obj/machinery/vending/trading/attackby(obj/item/W, mob/user)
 	cleanup()
 	if(!panel_open || isScrewdriver(W))
@@ -115,11 +147,12 @@
 	if(istype(W, /obj/item/weapon/pen))
 		if(!check_authorization(user))
 			return
-		switch(input(user, "Select action", "Action", "Cancel") in list("Rename", "Change description", "Change appearence", "Cancel"))
+		switch(input(user, "Select action", "Action", "Cancel") in
+			list("Rename", "Change description", "Change appearence", "Modify slogans", "Modify ads", "Cancel"))
 			if("Rename")
-				name = "[sanitizeSafe(input(user, "Rename", "New name", name) as null|text)]"
+				name = "[sanitize(input(user, "Rename", "New name", name) as null|text, MAX_LNAME_LEN)]"
 			if("Change description")
-				desc = "[sanitizeSafe(input(user, "Change description", "Description", desc) as null|text)]"
+				desc = "[sanitize(input(user, "Change description", "Description", desc) as null|text, MAX_LNAME_LEN)]"
 			if("Change appearence")
 				var/list/vends = icon_states(icon)
 				var/list/ovends = vends
@@ -134,6 +167,10 @@
 				base_icon = icon_state = input("Select appearence", "Appearence", icon_state) in vends
 				overlays.Cut()
 				overlays += image(icon, "[base_icon]-panel")
+			if("Modify slogans")
+				modify_slogans(user)
+			if("Modify ads")
+				modify_ads(user)
 		return
 
 	if(vendor_account)
