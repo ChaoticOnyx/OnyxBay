@@ -2,30 +2,50 @@
 	name = "prosthetic assembly"
 	desc = "It looks like some kind of prosthetic limb."
 	icon = 'icons/mob/human_races/cyberlimbs/makeshift/wooden_assembly.dmi'
-	icon_state = "hand"
+	icon_state = "arm"
 
 	var/state = 1
 
 	var/company = "Morgan Trading Co"
-	var/build_path = /obj/item/organ/external/arm
+	var/body_part = BP_L_ARM
 
-/obj/item/weapon/crafrable_limb/Initialize()
-	. = ..()
+/obj/item/weapon/craftable_limb/right
+	body_part = BP_R_ARM
 
-	update_icon()
+/obj/item/weapon/craftable_limb/leg
+	icon_state = "leg"
+	body_part = BP_L_LEG
+
+/obj/item/weapon/craftable_limb/leg/right
+	body_part = BP_R_LEG
 
 /obj/item/weapon/craftable_limb/update_icon()
 	overlays.Cut()
-	icon_state = initial(icon_state)
 	switch(state)
 		if(1)
-			return
+			icon_state = initial(icon_state)
 		if(2)
-			overlays.Add(image(icon, "[icon_state]_wire"))
+			icon_state = "[initial(icon_state)]_wire"
 		if(3)
-			overlays.Add(image(icon, "[icon_state]_casing"))
+			icon_state = "[initial(icon_state)]_casing"
 
 /obj/item/weapon/craftable_limb/proc/create_prosthtic()
+	var/mob/living/carbon/human/H = new /mob/living/carbon/human(usr.loc)
+	H.death(0, "no message")
+
+	H.set_species(SPECIES_HUMAN)
+	H.gender = MALE
+
+	var/obj/item/organ/external/O = H.get_organ(body_part)
+	O.robotize(company)
+	O.dna = new/datum/dna()
+	O.dna.ResetUI()
+	O.dna.ResetSE()
+
+	O.droplimb(clean = TRUE, silent = TRUE)
+	O.clean_blood()
+
+	qdel(H)
 
 /obj/item/weapon/craftable_limb/attackby(obj/item/weapon/W, mob/user)
 	switch(state)
@@ -79,6 +99,7 @@
 				if(do_after(user, 20, src))
 					to_chat(user, SPAN("notice", "You secure \the [src]'s cover."))
 					create_prosthtic()
+					qdel(src)
 	return ..()
 
 
