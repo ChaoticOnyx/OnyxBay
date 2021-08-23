@@ -158,6 +158,7 @@
 
 	last_special = world.time
 	E.removed(src)
+	E.clean_blood()
 	E.dropInto(loc)
 	put_in_hands(E)
 	var/datum/gender/G = gender_datums[gender]
