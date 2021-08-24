@@ -21,7 +21,7 @@
 
 	// Printing stuff
 	var/busy = 	FALSE
-	var/print_delay = 20
+	var/print_delay = 100
 
 	var/category = null
 	var/list/categories = list()
