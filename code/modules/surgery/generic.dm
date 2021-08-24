@@ -289,7 +289,6 @@
 //////////////////////////////////////////////////////////////////
 /datum/surgery_step/generic/amputate
 	allowed_tools = list(
-		/obj/item/weapon/circular_saw/plasmasaw = 100,
 		/obj/item/weapon/circular_saw = 100,
 		/obj/item/weapon/gun/energy/plasmacutter = 90,
 		/obj/item/weapon/material/twohanded/fireaxe = 85,
@@ -306,9 +305,7 @@
 	var/obj/item/organ/external/affected = target.get_organ(target_zone)
 	if (affected == null)
 		return 0
-	if (affected.open())
-		to_chat(user,"<span class='warning'>You can't get a clean cut with incisions getting in the way.</span>")
-		return SURGERY_FAILURE
+
 	return (affected.limb_flags & ORGAN_FLAG_CAN_AMPUTATE)
 
 /datum/surgery_step/generic/amputate/begin_step(mob/user, mob/living/carbon/human/target, target_zone, obj/item/tool)
