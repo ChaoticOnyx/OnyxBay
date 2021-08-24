@@ -106,6 +106,7 @@
 		hide_SMES_details = !hide_SMES_details
 	if(href_list["hide_breakers"])
 		hide_breakers = !hide_breakers
+	return TOPIC_REFRESH
 
 
 // Proc: GetSMESByTag()
