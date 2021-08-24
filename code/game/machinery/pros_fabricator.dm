@@ -44,7 +44,7 @@
 	var/list/species_list = list()
 
 /obj/machinery/pros_fabricator/Initialize()
-	. = ..()
+	..()
 
 	component_parts = list()
 	component_parts += new /obj/item/weapon/circuitboard/prosfab(src)
