@@ -91,19 +91,6 @@ interface Artifact {
   description: string;
 }
 
-interface SacrificeReagent {
-  path: string;
-  name: string;
-  description: string;
-}
-
-interface SacrificeObject {
-  path: string;
-  icon: string;
-  name: string;
-  description: string;
-}
-
 interface Class {
   path: string;
   name: string;
@@ -113,8 +100,6 @@ interface Class {
   flags: Flags;
   spells: Spell[];
   artifacts: Artifact[];
-  sacrifice_objects: SacrificeObject[];
-  sacrifice_reagents: SacrificeReagent[];
 }
 
 interface InputData {
@@ -153,19 +138,6 @@ const ArtifactIcon = (
         showCost && props.cost ? ` (${props.cost} points)` : ''
       }\n${capitalize(props.description)}`}
       className={`Icon--artifact ${ignored && 'Icon--ignored'}`}
-      html={props.icon}
-    />
-  )
-}
-
-const SacrificeIcon = (props: SacrificeObject, key: any) => {
-  return (
-    <GameIcon
-      key={key}
-      title={`${capitalize(props.name)}\n${capitalize(
-        props.description || ''
-      )}`}
-      className='Icon--sacrifice'
       html={props.icon}
     />
   )
@@ -269,29 +241,6 @@ const classCard = (props: Class, context: any, key: any) => {
         {props.artifacts.map((a) => {
           return InspectArtifactButton(a, context, false, false, true, a.path)
         })}
-      </Flex.Item>
-      <Flex.Item>
-        <Divider />
-        <h3>Sacrifice Objects:</h3>
-        {props.sacrifice_objects.length
-          ? props.sacrifice_objects.map((o) => {
-            return SacrificeIcon(o, o.path)
-          })
-          : 'None'}
-      </Flex.Item>
-      <Flex.Item>
-        <Divider />
-        <h3>Sacrifice Reagents:</h3>
-        {props.sacrifice_reagents.length
-          ? props.sacrifice_reagents.map((r, i) => {
-            return (
-                <>
-                  - <b>{capitalize(r.name)}</b>: {r.description}
-                  <br />
-                </>
-            )
-          })
-          : 'None'}
       </Flex.Item>
     </Flex>
   )
