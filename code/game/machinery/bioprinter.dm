@@ -20,7 +20,7 @@
 	var/speed = 1
 	var/mat_efficiency = 1
 
-	var/max_stored_matter = 100000
+	var/max_stored_matter = 25000
 	var/stored_matter = 0
 
 	var/list/amount_list = list(
@@ -41,7 +41,7 @@
 	var/list/categories = list()
 
 /obj/machinery/bioprinter/Initialize()
-	. = ..()
+	..()
 
 	component_parts = list()
 	component_parts += new /obj/item/weapon/circuitboard/bioprinter(src)
@@ -183,27 +183,30 @@
 	category = null
 	categories = list()
 
-	categories = bioprinter_categories
+	categories = printer_categories
 
 	if(!category)
 		category = categories[1]
 
 /obj/machinery/bioprinter/proc/get_build_options()
 	. = list()
-	for(var/i = 1 to bioprinter_recipes.len)
-		var/datum/bioprinter/recipe/R = bioprinter_recipes[i]
+	for(var/i = 1 to printer_recipes.len)
+		var/datum/printer/recipe/R = printer_recipes[i]
 		if(R.build_path)
-			. += list(list("name" = R.name, "id" = i, "category" = R.category, "time" = R.time, "resources" = R.biomass * mat_efficiency))
+			. += list(list("name" = R.name, "id" = i, "category" = R.category, "time" = get_design_time(R), "resources" = R.matter * mat_efficiency))
+
+/obj/machinery/bioprinter/proc/get_design_time(datum/printer/recipe/R)
+	return time2text(round(10 * R.time / speed), "mm:ss")
 
 // Queue manipulations.
 /obj/machinery/bioprinter/proc/get_queue_names()
 	. = list()
 	for(var/i = 2 to queue.len)
-		var/datum/bioprinter/recipe/R = queue[i]
+		var/datum/printer/recipe/R = queue[i]
 		. += R.name
 
 /obj/machinery/bioprinter/proc/add_to_queue(index)
-	var/datum/bioprinter/recipe/R = bioprinter_recipes[index]
+	var/datum/printer/recipe/R = printer_recipes[index]
 	queue += R
 	update_busy()
 
@@ -214,12 +217,12 @@
 	update_busy()
 
 // Printing.
-/obj/machinery/bioprinter/proc/can_build(datum/bioprinter/recipe/R)
+/obj/machinery/bioprinter/proc/can_build(datum/printer/recipe/R)
 	if(!loaded_dna)
 		visible_message("\icon[src] <b>[src]</b> beeps: \"No DNA saved. Insert a blood sample.\"")
 		return 0
 
-	if(stored_matter < R.biomass * mat_efficiency)
+	if(stored_matter < R.matter * mat_efficiency)
 		visible_message("\icon[src] <b>[src]</b> beeps: \"Not enough matter stored to construct chosen item.\"")
 		return 0
 
@@ -230,7 +233,7 @@
 		progress = 0
 		return
 
-	var/datum/bioprinter/recipe/R = queue[1]
+	var/datum/printer/recipe/R = queue[1]
 
 	if(!can_build(R))
 		progress = 0
@@ -239,7 +242,7 @@
 	if(R.time > progress)
 		return
 
-	stored_matter = max(0, stored_matter - R.biomass * mat_efficiency)
+	stored_matter = max(0, stored_matter - R.matter * mat_efficiency)
 
 	if(R.build_path)
 		print_organ()
@@ -251,7 +254,7 @@
 	var/weakref/W = loaded_dna["donor"]
 	var/mob/living/carbon/human/H = W.resolve()
 
-	var/datum/bioprinter/recipe/R = queue[1]
+	var/datum/printer/recipe/R = queue[1]
 
 	// TODO: refactor external organ's /New, /update_icon and more so they'll generate proper icons upon being spawned outside a mob.
 	if(H && istype(H))
@@ -296,10 +299,10 @@
 /obj/machinery/bioprinter/ui_interact(mob/user, ui_key, datum/nanoui/ui, force_open, datum/nanoui/master_ui, datum/topic_state/state)
 	var/data[0]
 
-	var/datum/bioprinter/recipe/current = queue.len ? queue[1] : null
-
 	if(!category)
 		get_categories()
+
+	var/datum/printer/recipe/current = queue.len ? queue[1] : null
 
 	if(current)
 		data["current"] = current.name
@@ -321,7 +324,7 @@
 
 	ui = SSnano.try_update_ui(user, src, ui_key, ui, data, force_open)
 	if(!ui)
-		ui = new(user, src, ui_key, "bioprinter.tmpl", "Bioprinter UI", 410, 510 )
+		ui = new(user, src, ui_key, "bioprinter.tmpl", "Bioprinter UI", 410, 420 )
 		ui.set_initial_data(data)
 		ui.open()
 		ui.set_auto_update(1)
