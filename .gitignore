@@ -26,3 +26,11 @@ __pycache__
 
 
 sql/test_db
+
+# vscode specific files
+.vscode/*
+!.vscode/settings.json
+!.vscode/tasks.json
+!.vscode/launch.json
+!.vscode/extensions.json
+!.vscode/*.schema.json
