@@ -7,7 +7,7 @@
 //	generic ribcage surgery step datum
 //////////////////////////////////////////////////////////////////
 /datum/surgery_step/open_encased
-	priority = 2
+	priority = 3
 	can_infect = 1
 	blood_level = 1
 	shock_level = 40
