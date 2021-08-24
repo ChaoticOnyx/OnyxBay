@@ -14,50 +14,32 @@
 	idle_power_usage = 20
 	active_power_usage = 5000
 
+	// Resources
 	var/matter_type = MATERIAL_STEEL
-	var/matter_amount_per_sheet = 20
 	var/stored_matter = 0
-	var/max_stored_matter = 100
+	var/max_stored_matter = 10000
 
 	// Printing stuff
-	var/print_delay = 100
 	var/busy = 	FALSE
+	var/print_delay = 20
 
-	var/datum/browser/printer_menu
-
-	// These should be subtypes of /obj/item/organ
-	var/list/products = list(
-		BP_HEART   = list("Heart",       /obj/item/organ/internal/heart,     25),
-		BP_LUNGS   = list("Lungs",      /obj/item/organ/internal/lungs,      25),
-		BP_KIDNEYS = list("Kidneys",    /obj/item/organ/internal/kidneys,    20),
-		BP_EYES    = list("Eyes",       /obj/item/organ/internal/eyes,       20),
-		BP_LIVER   = list("Liver",      /obj/item/organ/internal/liver,      25),
-		BP_STOMACH = list("Stomach",    /obj/item/organ/internal/stomach,    25),
-		BP_L_ARM   = list("Left Arm",   /obj/item/organ/external/arm,        65),
-		BP_R_ARM   = list("Right Arm",  /obj/item/organ/external/arm/right,  65),
-		BP_L_HAND  = list("Left Hand",  /obj/item/organ/external/hand,       40),
-		BP_R_HAND  = list("Right Hand", /obj/item/organ/external/hand/right, 40),
-		BP_L_LEG   = list("Left Leg",   /obj/item/organ/external/leg,        65),
-		BP_R_LEG   = list("Right Leg",  /obj/item/organ/external/leg/right,  65),
-		BP_L_FOOT  = list("Left Foot",  /obj/item/organ/external/foot,       40),
-		BP_R_FOOT  = list("Right Foot", /obj/item/organ/external/foot/right, 40)
-		)
+	var/category = null
+	var/list/categories = list()
 
 /obj/machinery/surg_printer/Initialize()
 	..()
 
 	component_parts = list()
-	component_parts += new /obj/machinery/surg_printer(src)
+	component_parts += new /obj/item/weapon/circuitboard/surg_printer(src)
 	component_parts += new /obj/item/weapon/stock_parts/matter_bin(src)
 	component_parts += new /obj/item/weapon/stock_parts/matter_bin(src)
 	component_parts += new /obj/item/weapon/stock_parts/manipulator(src)
-	component_parts += new /obj/item/weapon/stock_parts/manipulator(src)
-
-	RefreshParts()
 
 /obj/machinery/surg_printer/Destroy()
-	if(stored_matter >= matter_amount_per_sheet)
-		new /obj/item/stack/material/steel(get_turf(src), Floor(stored_matter/matter_amount_per_sheet))
+	var/obj/item/stack/material/steel/S
+	var/amnt = S.perunit
+	if(stored_matter >= amnt)
+		new S(get_turf(src), Floor(stored_matter/amnt))
 	return ..()
 
 /obj/machinery/surg_printer/update_icon()
@@ -66,13 +48,6 @@
 		overlays.Add(image(icon, "_panel"))
 	if(busy)
 		overlays.Add(image(icon, "_work"))
-
-/obj/machinery/surg_printer/attack_hand(mob/user)
-	if(busy || (stat & (BROKEN|NOPOWER)))
-		return
-
-	show_printer_menu(user)
-	printer_menu.open()
 
 /obj/machinery/surg_printer/attackby(obj/item/O, mob/user)
 	if(default_deconstruction_screwdriver(user, O))
@@ -83,84 +58,65 @@
 		return
 
 	if(istype(O, /obj/item/stack/material) && O.get_material_name() == matter_type)
-		if((max_stored_matter-stored_matter) < matter_amount_per_sheet)
+		var/obj/item/stack/material/S = O
+		var/amnt = S.perunit
+
+		if((max_stored_matter-stored_matter) < amnt)
 			to_chat(user, SPAN("warning", "\The [src] is too full."))
 			return
 
-		var/obj/item/stack/S = O
 		var/space_left = max_stored_matter - stored_matter
-		var/sheets_to_take = min(S.amount, Floor(space_left/matter_amount_per_sheet))
+		var/sheets_to_take = min(S.amount, Floor(space_left/amnt))
+
 		if(sheets_to_take <= 0)
 			to_chat(user, SPAN("warning", "\The [src] is too full."))
 			return
 
-		stored_matter = min(max_stored_matter, stored_matter + (sheets_to_take*matter_amount_per_sheet))
+		stored_matter = min(max_stored_matter, stored_matter + (sheets_to_take*amnt))
 		to_chat(user, SPAN("info", "\The [src] processes \the [O]. Levels of stored matter now: [stored_matter]"))
 		S.use(sheets_to_take)
 		return
 
 	return ..()
 
-// Menu stuff.
-/obj/machinery/surg_printer/proc/show_printer_menu(mob/user)
-	add_fingerprint(user)
-	if(stat & (NOPOWER|BROKEN) || !Adjacent(user))
-		user.unset_machine()
+// Printing checks.
+/obj/machinery/surg_printer/proc/check_print(choice)
+	if(!choice || busy || (stat & (BROKEN|NOPOWER)))
 		return
 
-	var/dat = "<B>Loaded matter:</B> [stored_matter]/[max_stored_matter]."
-	dat += "<HR>Printing menu:"
-	for(var/entry in products)
-		dat += "<BR><a href='?src=\ref[src];item=[entry]'>[products[entry][1]]</a> - [products[entry][3]] matter"
+	var/datum/printer/recipe/R = printer_recipes[choice]
 
-	user.set_machine(src)
-	if(!printer_menu || printer_menu.user != user)
-		printer_menu = new /datum/browser(user, "disposal", "<B>[src]</B>", 360, 410)
-		printer_menu.set_content(dat)
-	else
-		printer_menu.set_content(dat)
-		printer_menu.update()
+	if(!can_print(R))
+		return
+
+	// Machine starts printing.
+	update_use_power(POWER_USE_ACTIVE)
+	busy = TRUE
+	update_icon()
+
+	sleep(print_delay)
+
+	// Machine finishes printing.
+	update_use_power(POWER_USE_IDLE)
+	busy = FALSE
+	update_icon()
+
+	if(!choice || !src || (stat & (BROKEN|NOPOWER)))
+		return
+
+	stored_matter -= R.matter
+	print_organ(R)
+
 	return
 
-/obj/machinery/surg_printer/OnTopic(user, href_list)
-	// Receives list(name, type, cost)
-	if(href_list["item"])
-		var/choice = href_list["item"]
-		if(!choice || busy || (stat & (BROKEN|NOPOWER)))
-			return
-		if(!can_print(choice))
-			return
-
-		update_use_power(POWER_USE_ACTIVE)
-		busy = TRUE
-		update_icon()
-
-		sleep(print_delay)
-
-		update_use_power(POWER_USE_IDLE)
-		busy = FALSE
-		update_icon()
-
-		if(!choice || !src || (stat & (BROKEN|NOPOWER)))
-			return
-
-		stored_matter -= products[choice][3]
-		print_organ(choice)
-		for(var/mob/M in viewers(1, src.loc))
-			if((M.client && M.machine == src))
-				show_printer_menu(M)
-		return
-
-// Printing checks.
-/obj/machinery/surg_printer/proc/can_print(choice)
-	if(stored_matter < products[choice][3])
-		visible_message(SPAN("notice", "\The [src] displays a warning: 'Not enough matter. [stored_matter] stored and [products[choice][3]] needed.'"))
+/obj/machinery/surg_printer/proc/can_print(datum/printer/recipe/R)
+	if(stored_matter < R.matter)
+		visible_message(SPAN("notice", "\The [src] displays a warning: 'Not enough matter. [stored_matter] stored and [R.matter] needed.'"))
 		return 0
 	return 1
 
-/obj/machinery/surg_printer/proc/print_organ(choice)
-	var/build_path = products[choice][2]
-	var/obj/item/organ/O = new build_path(get_turf(src))
+/obj/machinery/surg_printer/proc/print_organ(datum/printer/recipe/R)
+	var/obj/item/organ/O = new R.build_path(get_turf(src))
 
 	O.species = all_species[SPECIES_HUMAN]
 
@@ -175,3 +131,67 @@
 
 	visible_message(SPAN("notice", "\The [src] churns for a moment, then spits out \a [O]."))
 	return O
+
+// Getters.
+/obj/machinery/surg_printer/proc/get_categories()
+	category = null
+	categories = list()
+
+	categories = printer_categories
+
+	if(!category)
+		category = categories[1]
+
+/obj/machinery/surg_printer/proc/get_build_options()
+	. = list()
+	for(var/i = 1 to printer_recipes.len)
+		var/datum/printer/recipe/R = printer_recipes[i]
+		if(R.build_path)
+			. += list(list("name" = R.name, "id" = i, "category" = R.category, "resources" = R.matter))
+
+// NanoUI stuff.
+/obj/machinery/surg_printer/attack_hand(user)
+	if(..(user))
+		return
+
+	if(busy)
+		return
+
+	if(!allowed(user))
+		return
+
+	ui_interact(user)
+
+/obj/machinery/surg_printer/ui_interact(mob/user, ui_key, datum/nanoui/ui, force_open, datum/nanoui/master_ui, datum/topic_state/state)
+	var/data[0]
+
+	if(!category)
+		get_categories()
+
+	data["maxres"] = max_stored_matter
+	data["amt"] = stored_matter
+
+	data["category"] = category
+	data["categories"] = categories
+
+	data["buildable"] = get_build_options()
+
+	ui = SSnano.try_update_ui(user, src, ui_key, ui, data, force_open)
+	if(!ui)
+		ui = new(user, src, ui_key, "surgprinter.tmpl", "Surgical Priner UI", 360, 410)
+		ui.set_initial_data(data)
+		ui.open()
+		ui.set_auto_update(1)
+
+/obj/machinery/surg_printer/Topic(href, href_list)
+	if(..())
+		return
+
+	if(href_list["category"])
+		if(href_list["category"] in categories)
+			category = href_list["category"]
+
+	if(href_list["build"])
+		check_print(text2num(href_list["build"]))
+
+	return 1

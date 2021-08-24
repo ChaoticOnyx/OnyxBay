@@ -1,0 +1,29 @@
+<div style="float: left; width: 100%;">
+	<b>Materials:</b><br>
+	<div class="item">
+		Steel: {{:data.amt}}/{{:data.maxres}}
+	</div>
+
+	<b>Categories:</b><br>
+	<div class="item">
+		{{for data.categories}}
+			{{:helper.link(value, null, {'category' : value}, value == data.category ? 'selected' : null)}}
+		{{empty}}
+		There are no known designs
+		{{/for}}
+	</div>
+
+	<b>Designs:</b>
+	{{for data.buildable}}
+		{{if value.category == data.category}}
+			<div class="item">
+				<div class="itemLabelWide">
+					{{:helper.link(value.name, null, {'build' : value.id})}}
+				</div>
+				<div class="itemContentMedium">
+					Steel: {{:value.resources}}
+				</div>
+			</div>
+		{{/if}}
+	{{/for}}
+</div>
