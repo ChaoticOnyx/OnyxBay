@@ -43,8 +43,10 @@
 	var/species = null
 	var/list/species_list = list()
 
+	var/sync_message = ""
+
 /obj/machinery/pros_fabricator/Initialize()
-	..()
+	. = ..()
 
 	component_parts = list()
 	component_parts += new /obj/item/weapon/circuitboard/prosfab(src)
@@ -81,16 +83,14 @@
 		update_use_power(POWER_USE_IDLE)
 	update_icon()
 
-/obj/machinery/pros_fabricator/update_icon()
-	overlays.Cut()
-	if(panel_open)
-		overlays.Add(image(icon, "prosfab-panel"))
-	if(stat & (BROKEN|NOPOWER))
-		icon_state = "prosfab-idle"
-	if(busy)
-		icon_state = "prosfab-work"
+/obj/machinery/pros_fabricator/proc/update_busy()
+	if(queue.len)
+		if(can_build(queue[1]))
+			busy = TRUE
+		else
+			busy = FALSE
 	else
-		icon_state = "prosfab-pause"
+		busy = FALSE
 
 /obj/machinery/pros_fabricator/Destroy()
 	var/turf/T = get_turf(src)
@@ -104,6 +104,17 @@
 				I.forceMove(T)
 
 	..()
+
+/obj/machinery/pros_fabricator/update_icon()
+	overlays.Cut()
+	if(panel_open)
+		overlays.Add(image(icon, "prosfab-panel"))
+	if(stat & (BROKEN|NOPOWER))
+		icon_state = "prosfab-idle"
+	if(busy)
+		icon_state = "prosfab-work"
+	else
+		icon_state = "prosfab-pause"
 
 /obj/machinery/pros_fabricator/RefreshParts()
 	res_max_amount = 0
@@ -233,15 +244,7 @@
 		eject_materials(material, -1)
 	update_busy()
 
-/obj/machinery/pros_fabricator/proc/update_busy()
-	if(queue.len)
-		if(can_build(queue[1]))
-			busy = TRUE
-		else
-			busy = FALSE
-	else
-		busy = FALSE
-
+// Queue manipulations.
 /obj/machinery/pros_fabricator/proc/add_to_queue(index)
 	var/datum/design/D = files.known_designs[index]
 	queue += D
@@ -253,6 +256,13 @@
 	queue.Cut(index, index + 1)
 	update_busy()
 
+/obj/machinery/pros_fabricator/proc/get_queue_names()
+	. = list()
+	for(var/i = 2 to queue.len)
+		var/datum/design/D = queue[i]
+		. += D.name
+
+// Build checks and etc.
 /obj/machinery/pros_fabricator/proc/can_build(datum/design/D)
 	for(var/M in D.materials)
 		if(materials[M] <= D.materials[M] * mat_efficiency)
@@ -285,12 +295,7 @@
 					new_item.matter[i] = new_item.matter[i] * mat_efficiency
 		remove_from_queue(1)
 
-/obj/machinery/pros_fabricator/proc/get_queue_names()
-	. = list()
-	for(var/i = 2 to queue.len)
-		var/datum/design/D = queue[i]
-		. += D.name
-
+// Getters and other stuff...
 /obj/machinery/pros_fabricator/proc/get_build_options()
 	. = list()
 	for(var/i = 1 to files.known_designs.len)
@@ -312,16 +317,6 @@
 	for(var/T in materials)
 		. += list(list("mat" = capitalize(T), "amt" = materials[T]))
 
-/obj/machinery/pros_fabricator/proc/update_categories()
-	categories = list()
-	if(files)
-		for(var/datum/design/D in files.known_designs)
-			if(!D.build_path || !(D.build_type & PROSFAB))
-				continue
-			categories |= D.category
-	if(!category || !(category in categories))
-		category = categories[1]
-
 /obj/machinery/pros_fabricator/proc/get_species()
 	species_list = list()
 	for(var/N in playable_species)
@@ -335,6 +330,16 @@
 /obj/machinery/pros_fabricator/proc/get_genders()
 	if(!pros_gender)
 		pros_gender = pros_gender_list[1]
+
+/obj/machinery/pros_fabricator/proc/update_categories()
+	categories = list()
+	if(files)
+		for(var/datum/design/D in files.known_designs)
+			if(!D.build_path || !(D.build_type & PROSFAB))
+				continue
+			categories |= D.category
+	if(!category || !(category in categories))
+		category = categories[1]
 
 /obj/machinery/pros_fabricator/proc/update_pros_list()
 	manufacturer = null
@@ -364,6 +369,21 @@
 	if(!pros_build)
 		pros_build = pros_build_list[1]
 
+// Sync.
+/obj/machinery/pros_fabricator/proc/sync()
+	sync_message = "Error: no console found."
+	for(var/obj/machinery/computer/rdconsole/RDC in get_area_all_atoms(get_area(src)))
+		if(!RDC.sync)
+			continue
+		for(var/datum/tech/T in RDC.files.known_tech)
+			files.AddTech2Known(T)
+		for(var/datum/design/D in RDC.files.known_designs)
+			files.AddDesign2Known(D)
+		files.RefreshResearch()
+		sync_message = "Sync complete."
+	update_categories()
+
+// NanoUI stuff.
 /obj/machinery/pros_fabricator/attack_hand(user)
 	if(..(user))
 		return
@@ -400,6 +420,8 @@
 
 	data["materials"] = get_materials()
 	data["maxres"] = res_max_amount
+
+	data["sync"] = sync_message
 
 	if(current)
 		data["builtperc"] = round((progress / current.time) * 100)
@@ -446,5 +468,10 @@
 
 	if(href_list["eject"])
 		eject_materials(href_list["eject"], text2num(href_list["amount"]))
+
+	if(href_list["sync"])
+		sync()
+	else
+		sync_message = ""
 
 	return 1
