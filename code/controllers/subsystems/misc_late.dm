@@ -7,4 +7,5 @@ SUBSYSTEM_DEF(misc_late)
 
 /datum/controller/subsystem/misc_late/Initialize()
 	populate_lathe_recipes() // This creates and deletes objects; could use improvement.
+	populate_bioprinter_recipes()
 	. = ..()

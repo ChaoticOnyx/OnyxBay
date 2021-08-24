@@ -2415,6 +2415,7 @@
 #include "code\modules\research\research.dm"
 #include "code\modules\research\server.dm"
 #include "code\modules\research\stock_parts.dm"
+#include "code\modules\research\designs\bioprinter_designs.dm"
 #include "code\modules\research\designs\prosfab_designs.dm"
 #include "code\modules\research\designs\circuitprinter\dc-console_boards.dm"
 #include "code\modules\research\designs\circuitprinter\dc-device.dm"

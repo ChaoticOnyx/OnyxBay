@@ -37,28 +37,11 @@
 	var/busy = FALSE
 	var/list/queue = list()
 
-	var/list/products = list(
-		BP_HEART   = list("Heart", "Organs", /obj/item/organ/internal/heart,      5600),
-		BP_LUNGS   = list("Lungs", "Organs", /obj/item/organ/internal/lungs,      5600),
-		BP_KIDNEYS = list("Kidneys", "Organs", /obj/item/organ/internal/kidneys,    5600),
-		BP_EYES    = list("Eyes", "Organs", /obj/item/organ/internal/eyes,       5600),
-		BP_LIVER   = list("Liver", "Organs", /obj/item/organ/internal/liver,      5600),
-		BP_STOMACH = list("Stomach", "Organs", /obj/item/organ/internal/stomach,    5600),
-		BP_L_ARM   = list("Left Arm", "Limbs",  /obj/item/organ/external/arm,        10125),
-		BP_R_ARM   = list("Right Arm", "Limbs",  /obj/item/organ/external/arm/right,  10125),
-		BP_L_HAND  = list("Left Hand", "Limbs",  /obj/item/organ/external/hand,       3375),
-		BP_R_HAND  = list("Right Hand", "Limbs",  /obj/item/organ/external/hand/right, 3375),
-		BP_L_LEG   = list("Left Leg", "Limbs",  /obj/item/organ/external/leg,        10125),
-		BP_R_LEG   = list("Right Leg", "Limbs",  /obj/item/organ/external/leg/right,  10125),
-		BP_L_FOOT  = list("Left Foot", "Limbs",  /obj/item/organ/external/foot,       3375),
-		BP_R_FOOT  = list("Right Foot", "Limbs",  /obj/item/organ/external/foot/right, 3375)
-		)
-
 	var/category = null
 	var/list/categories = list()
 
 /obj/machinery/bioprinter/Initialize()
-	..()
+	. = ..()
 
 	component_parts = list()
 	component_parts += new /obj/item/weapon/circuitboard/bioprinter(src)
@@ -69,8 +52,6 @@
 	component_parts += new /obj/item/device/healthanalyzer(src)
 
 	RefreshParts()
-
-	update_categories()
 
 /obj/machinery/bioprinter/RefreshParts()
 	max_stored_matter = 0
@@ -119,7 +100,7 @@
 
 /obj/machinery/bioprinter/proc/update_busy()
 	if(queue.len)
-		if(can_print(queue[1]))
+		if(can_build(queue[1]))
 			busy = TRUE
 		else
 			busy = FALSE
@@ -198,30 +179,32 @@
 			visible_message("\icon[src] <b>[src]</b> beeps: \"No records in User DB\"")
 
 // Categories, build options & material getters.
-/obj/machinery/bioprinter/proc/update_categories()
-	categories = list()
+/obj/machinery/bioprinter/proc/get_categories()
 	category = null
+	categories = list()
 
-	for(var/A in products)
-		if(!(products[A][2] in categories))
-			categories += products[A][2]
+	categories = bioprinter_categories
 
 	if(!category)
 		category = categories[1]
 
 /obj/machinery/bioprinter/proc/get_build_options()
 	. = list()
-	for(var/A in products)
-		. += list(list("name" = products[A][1], "id" = A, "category" = products[A][2], "resources" = products[A][4] * mat_efficiency))
+	for(var/i = 1 to bioprinter_recipes.len)
+		var/datum/bioprinter/recipe/R = bioprinter_recipes[i]
+		if(R.build_path)
+			. += list(list("name" = R.name, "id" = i, "category" = R.category, "time" = R.time, "resources" = R.biomass * mat_efficiency))
 
 // Queue manipulations.
 /obj/machinery/bioprinter/proc/get_queue_names()
 	. = list()
 	for(var/i = 2 to queue.len)
-		. += queue[i]
+		var/datum/bioprinter/recipe/R = queue[i]
+		. += R.name
 
 /obj/machinery/bioprinter/proc/add_to_queue(index)
-	queue += products[index][1]
+	var/datum/bioprinter/recipe/R = bioprinter_recipes[index]
+	queue += R
 	update_busy()
 
 /obj/machinery/bioprinter/proc/remove_from_queue(index)
@@ -231,16 +214,12 @@
 	update_busy()
 
 // Printing.
-/obj/machinery/bioprinter/proc/can_print(choice)
+/obj/machinery/bioprinter/proc/can_build(datum/bioprinter/recipe/R)
 	if(!loaded_dna)
 		visible_message("\icon[src] <b>[src]</b> beeps: \"No DNA saved. Insert a blood sample.\"")
 		return 0
 
-	for(var/A in products)
-		if(products[A][1] == choice)
-			choice = lowertext(A)
-
-	if(stored_matter < products[choice][4] * mat_efficiency)
+	if(stored_matter < R.biomass * mat_efficiency)
 		visible_message("\icon[src] <b>[src]</b> beeps: \"Not enough matter stored to construct chosen item.\"")
 		return 0
 
@@ -251,39 +230,38 @@
 		progress = 0
 		return
 
-	if(time > progress)
-		return
+	var/datum/bioprinter/recipe/R = queue[1]
 
-	var/choice = queue[1]
-
-	if(!can_print(choice))
+	if(!can_build(R))
 		progress = 0
 		return
 
-	for(var/A in products)
-		if(products[A][1] == queue[1])
-			choice = A
+	if(R.time > progress)
+		return
 
-	stored_matter = max(0, stored_matter - products[choice][4] * mat_efficiency)
+	stored_matter = max(0, stored_matter - R.biomass * mat_efficiency)
 
-	if(choice)
-		print_organ(choice)
+	if(R.build_path)
+		print_organ()
 		remove_from_queue(1)
 
-/obj/machinery/bioprinter/proc/print_organ(choice)
+/obj/machinery/bioprinter/proc/print_organ()
 	var/obj/item/organ/O
+
 	var/weakref/W = loaded_dna["donor"]
 	var/mob/living/carbon/human/H = W.resolve()
 
+	var/datum/bioprinter/recipe/R = queue[1]
+
 	// TODO: refactor external organ's /New, /update_icon and more so they'll generate proper icons upon being spawned outside a mob.
 	if(H && istype(H))
-		if(H.species && H.species.has_organ[choice])
-			var/new_organ = H.species.has_organ[choice]
+		if(H.species && H.species.has_organ[R.id])
+			var/new_organ = H.species.has_organ[R.id]
 			O = new new_organ(get_turf(src))
 			O.status |= ORGAN_CUT_AWAY
 			O.dir = SOUTH
 		else
-			var/new_organ = products[choice][3]
+			var/new_organ = R.build_path
 			O = new new_organ(get_turf(src))
 			O.status |= ORGAN_CUT_AWAY
 			O.dir = SOUTH
@@ -318,10 +296,13 @@
 /obj/machinery/bioprinter/ui_interact(mob/user, ui_key, datum/nanoui/ui, force_open, datum/nanoui/master_ui, datum/topic_state/state)
 	var/data[0]
 
-	var/current = queue.len ? queue[1] : null
+	var/datum/bioprinter/recipe/current = queue.len ? queue[1] : null
+
+	if(!category)
+		get_categories()
 
 	if(current)
-		data["current"] = current
+		data["current"] = current.name
 
 	if(loaded_dna)
 		data["dna"] = get_owner_name()
@@ -336,7 +317,7 @@
 	data["maxres"] = max_stored_matter
 
 	if(current)
-		data["builtperc"] = round((progress / time) * 100)
+		data["builtperc"] = round((progress / current.time) * 100)
 
 	ui = SSnano.try_update_ui(user, src, ui_key, ui, data, force_open)
 	if(!ui)
@@ -350,7 +331,7 @@
 		return
 
 	if(href_list["build"])
-		add_to_queue(lowertext(href_list["build"]))
+		add_to_queue(text2num(href_list["build"]))
 
 	if(href_list["remove"])
 		remove_from_queue(text2num(href_list["remove"]))
