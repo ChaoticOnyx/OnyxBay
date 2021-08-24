@@ -31,10 +31,10 @@
 //////////////////////////////////////////////////////////////////
 /datum/surgery_step/generic/cut_with_laser
 	allowed_tools = list(
-	/obj/item/weapon/scalpel/laser3 = 95, \
-	/obj/item/weapon/scalpel/laser2 = 85, \
-	/obj/item/weapon/scalpel/laser1 = 75, \
-	/obj/item/weapon/melee/energy/sword/one_hand = 50
+		/obj/item/weapon/scalpel/laser3 = 95,
+		/obj/item/weapon/scalpel/laser2 = 85,
+		/obj/item/weapon/scalpel/laser1 = 75,
+		/obj/item/weapon/melee/energy/sword/one_hand = 50,
 	)
 	priority = 2
 	duration = CUT_DURATION
@@ -71,7 +71,7 @@
 //////////////////////////////////////////////////////////////////
 /datum/surgery_step/generic/incision_manager
 	allowed_tools = list(
-	/obj/item/weapon/scalpel/manager = 100
+		/obj/item/weapon/scalpel/manager = 100,
 	)
 	priority = 2
 	duration = CUT_DURATION
@@ -107,11 +107,11 @@
 //////////////////////////////////////////////////////////////////
 /datum/surgery_step/generic/cut_open
 	allowed_tools = list(
-	/obj/item/weapon/scalpel = 100,		\
-	/obj/item/weapon/material/knife = 75,	\
-	/obj/item/weapon/material/kitchen/utensil/knife = 75,	\
-	/obj/item/weapon/broken_bottle = 50,
-	/obj/item/weapon/material/shard = 50, 		\
+		/obj/item/weapon/scalpel = 100,
+		/obj/item/weapon/material/knife = 75,
+		/obj/item/weapon/material/kitchen/utensil/knife = 75,
+		/obj/item/weapon/broken_bottle = 50,
+		/obj/item/weapon/material/shard = 50,
 	)
 
 	duration = CUT_DURATION
@@ -152,9 +152,9 @@
 //////////////////////////////////////////////////////////////////
 /datum/surgery_step/generic/clamp_bleeders
 	allowed_tools = list(
-	/obj/item/weapon/hemostat = 100,	\
-	/obj/item/stack/cable_coil = 75, 	\
-	/obj/item/device/assembly/mousetrap = 20
+		/obj/item/weapon/hemostat = 100,
+		/obj/item/stack/cable_coil = 75,
+		/obj/item/device/assembly/mousetrap = 20,
 	)
 
 	duration = CLAMP_DURATION
@@ -190,10 +190,10 @@
 //////////////////////////////////////////////////////////////////
 /datum/surgery_step/generic/retract_skin
 	allowed_tools = list(
-	/obj/item/weapon/retractor = 100, 	\
-	/obj/item/weapon/crowbar = 75,
-	/obj/item/weapon/material/knife = 50,	\
-	/obj/item/weapon/material/kitchen/utensil/fork = 50
+		/obj/item/weapon/retractor = 100,
+		/obj/item/weapon/crowbar = 75,
+		/obj/item/weapon/material/knife = 50,
+		/obj/item/weapon/material/kitchen/utensil/fork = 50,
 	)
 
 	priority = 1
@@ -232,10 +232,10 @@
 //////////////////////////////////////////////////////////////////
 /datum/surgery_step/generic/cauterize
 	allowed_tools = list(
-	/obj/item/weapon/cautery = 100,			\
-	/obj/item/clothing/mask/smokable/cigarette = 75,	\
-	/obj/item/weapon/flame/lighter = 50,			\
-	/obj/item/weapon/weldingtool = 25
+		/obj/item/weapon/cautery = 100,
+		/obj/item/clothing/mask/smokable/cigarette = 75,
+		/obj/item/weapon/flame/lighter = 50,
+		/obj/item/weapon/weldingtool = 25,
 	)
 
 	duration = CAUTERIZE_DURATION
@@ -289,10 +289,11 @@
 //////////////////////////////////////////////////////////////////
 /datum/surgery_step/generic/amputate
 	allowed_tools = list(
-	/obj/item/weapon/circular_saw = 100, \
-	/obj/item/weapon/material/hatchet = 75, \
-	/obj/item/weapon/material/twohanded/fireaxe = 85, \
-	/obj/item/weapon/gun/energy/plasmacutter = 90
+		/obj/item/weapon/circular_saw/plasmasaw = 100,
+		/obj/item/weapon/circular_saw = 100,
+		/obj/item/weapon/gun/energy/plasmacutter = 90,
+		/obj/item/weapon/material/twohanded/fireaxe = 85,
+		/obj/item/weapon/material/hatchet = 75,
 	)
 
 	duration = 125 //hardcoded by design
