@@ -110,70 +110,70 @@
 	id = "pros_torso"
 	build_path = /obj/item/organ/external/chest
 	time = 35
-	materials = list(DEFAULT_WALL_MATERIAL = 30000, "glass" = 7500)
+	materials = list(MATERIAL_STEEL = 30000, MATERIAL_GLASS = 7500)
 
 /datum/design/item/prosfab/pros/head
 	name = "Prosthetic Head"
 	id = "pros_head"
 	build_path = /obj/item/organ/external/head
 	time = 30
-	materials = list(MATERIAL_STEEL = 18750, MATERIAL_GLASS = 3750)
+	materials = list(MATERIAL_STEEL = 18000, MATERIAL_GLASS = 3700)
 
 /datum/design/item/prosfab/pros/l_arm
 	name = "Prosthetic Left Arm"
 	id = "pros_l_arm"
 	build_path = /obj/item/organ/external/arm
 	time = 20
-	materials = list(MATERIAL_STEEL = 10125)
+	materials = list(MATERIAL_STEEL = 10100)
 
 /datum/design/item/prosfab/pros/l_hand
 	name = "Prosthetic Left Hand"
 	id = "pros_l_hand"
 	build_path = /obj/item/organ/external/hand
 	time = 15
-	materials = list(MATERIAL_STEEL = 3375)
+	materials = list(MATERIAL_STEEL = 3400)
 
 /datum/design/item/prosfab/pros/r_arm
 	name = "Prosthetic Right Arm"
 	id = "pros_r_arm"
 	build_path = /obj/item/organ/external/arm/right
 	time = 20
-	materials = list(MATERIAL_STEEL = 10125)
+	materials = list(MATERIAL_STEEL = 10100)
 
 /datum/design/item/prosfab/pros/r_hand
 	name = "Prosthetic Right Hand"
 	id = "pros_r_hand"
 	build_path = /obj/item/organ/external/hand/right
 	time = 15
-	materials = list(MATERIAL_STEEL = 3375)
+	materials = list(MATERIAL_STEEL = 3400)
 
 /datum/design/item/prosfab/pros/l_leg
 	name = "Prosthetic Left Leg"
 	id = "pros_l_leg"
 	build_path = /obj/item/organ/external/leg
 	time = 20
-	materials = list(MATERIAL_STEEL = 8437)
+	materials = list(MATERIAL_STEEL = 8400)
 
 /datum/design/item/prosfab/pros/l_foot
 	name = "Prosthetic Left Foot"
 	id = "pros_l_foot"
 	build_path = /obj/item/organ/external/foot
 	time = 15
-	materials = list(MATERIAL_STEEL = 2813)
+	materials = list(MATERIAL_STEEL = 3000)
 
 /datum/design/item/prosfab/pros/r_leg
 	name = "Prosthetic Right Leg"
 	id = "pros_r_leg"
 	build_path = /obj/item/organ/external/leg/right
 	time = 20
-	materials = list(MATERIAL_STEEL = 8437)
+	materials = list(MATERIAL_STEEL = 8400)
 
 /datum/design/item/prosfab/pros/r_foot
 	name = "Prosthetic Right Foot"
 	id = "pros_r_foot"
 	build_path = /obj/item/organ/external/foot/right
 	time = 15
-	materials = list(MATERIAL_STEEL = 2813)
+	materials = list(MATERIAL_STEEL = 3000)
 
 //////////////////// Organs ////////////////////
 /datum/design/item/prosfab/pros/internal
@@ -191,40 +191,40 @@
 	id = "pros_eyes"
 	build_path = /obj/item/organ/internal/eyes/robot
 	time = 15
-	materials = list(MATERIAL_STEEL = 5625, MATERIAL_GLASS = 5625)
+	materials = list(MATERIAL_STEEL = 1500, MATERIAL_GLASS = 2000)
 
 /datum/design/item/prosfab/pros/internal/heart
 	name = "Prosthetic Heart"
 	id = "pros_heart"
 	build_path = /obj/item/organ/internal/heart
 	time = 15
-	materials = list(MATERIAL_STEEL = 5625, MATERIAL_GLASS = 1000)
+	materials = list(MATERIAL_STEEL = 2500, MATERIAL_GLASS = 1000)
 
 /datum/design/item/prosfab/pros/internal/lungs
 	name = "Prosthetic Lungs"
 	id = "pros_lung"
 	build_path = /obj/item/organ/internal/lungs
 	time = 15
-	materials = list(MATERIAL_STEEL = 5625, MATERIAL_GLASS = 1000)
+	materials = list(MATERIAL_STEEL = 3000, MATERIAL_GLASS = 1000)
 
 /datum/design/item/prosfab/pros/internal/liver
 	name = "Prosthetic Liver"
 	id = "pros_liver"
 	build_path = /obj/item/organ/internal/liver
 	time = 15
-	materials = list(MATERIAL_STEEL = 5625, MATERIAL_GLASS = 1000)
+	materials = list(MATERIAL_STEEL = 2500, MATERIAL_GLASS = 1000)
 
 /datum/design/item/prosfab/pros/internal/stomach
 	name = "Prosthetic Stomach"
 	id = "pros_stomach"
 	build_path = /obj/item/organ/internal/stomach
 	time = 15
-	materials = list(MATERIAL_STEEL = 5625, MATERIAL_GLASS = 1000)
+	materials = list(MATERIAL_STEEL = 3000, MATERIAL_GLASS = 1000)
 
 /datum/design/item/prosfab/pros/internal/kidneys
 	name = "Prosthetic Kidneys"
 	id = "pros_kidney"
 	build_path = /obj/item/organ/internal/kidneys
 	time = 15
-	materials = list(MATERIAL_STEEL = 5625, MATERIAL_GLASS = 1000)
+	materials = list(MATERIAL_STEEL = 2500, MATERIAL_GLASS = 1000)
 
