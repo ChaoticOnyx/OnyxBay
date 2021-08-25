@@ -18,7 +18,8 @@
 				"insult_bad"        = "If I had my gun I'd shoot you!"
 				)
 
-	possible_trading_items = list(/obj/item/weapon/gun/projectile/pistol/holdout        = TRADER_ALL,
+	possible_trading_items = list(/obj/item/weapon/disk/limb/hephaestus					= TRADER_THIS_TYPE,
+								/obj/item/weapon/gun/projectile/pistol/holdout          = TRADER_ALL,
 								/obj/item/weapon/gun/projectile/pistol/colt             = TRADER_ALL,
 								/obj/item/weapon/gun/projectile/pistol/magnum_pistol    = TRADER_ALL,
 								/obj/item/weapon/gun/projectile/revolver                = TRADER_THIS_TYPE,
@@ -70,7 +71,8 @@
 				"insult_bad"        = "That's... very mean. I won't think twice about blacklisting your channel, so stop."
 				)
 
-	possible_trading_items = list(/obj/item/weapon/gun/energy/taser							= TRADER_THIS_TYPE,
+	possible_trading_items = list(/obj/item/weapon/disk/limb/cybersolutions					= TRADER_THIS_TYPE,
+								/obj/item/weapon/gun/energy/taser							= TRADER_THIS_TYPE,
 								/obj/item/weapon/gun/energy/stunrevolver					= TRADER_THIS_TYPE,
 								/obj/item/weapon/gun/energy/xray							= TRADER_ALL,
 								/obj/item/weapon/gun/energy/laser							= TRADER_THIS_TYPE,
@@ -115,4 +117,4 @@
 								/obj/item/weapon/gun/energy/laser/dogan                                 = TRADER_THIS_TYPE,
 								/obj/item/weapon/gun/projectile/automatic/machine_pistol/mini_uzi/usi   = TRADER_THIS_TYPE,
 								/obj/item/clothing/accessory/holster                                    = TRADER_ALL)
-	
+

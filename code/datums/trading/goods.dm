@@ -276,7 +276,9 @@ Sells devices, odds and ends, and medical stuff
 								/mob/living/bot										= TRADER_SUBTYPES_ONLY,
 								/obj/item/organ/internal/posibrain					= TRADER_THIS_TYPE,
 								/obj/item/robot_parts								= TRADER_SUBTYPES_ONLY,
-								/obj/item/weapon/stock_parts/manipulator			= TRADER_THIS_TYPE
+								/obj/item/weapon/stock_parts/manipulator			= TRADER_THIS_TYPE,
+								/obj/item/weapon/disk/limb/bishop					= TRADER_THIS_TYPE,
+								/obj/item/weapon/disk/limb/wardtakahashi			= TRADER_THIS_TYPE
 								)
 	speech = list("hail_generic" = "Welcome to ORIGIN! Let me walk you through our fine robotic selection!",
 				"hail_silicon"   = "Welcome to ORIGIN! Let- oh, you're a synth! Well, your money is good anyway. Welcome, welcome!",
@@ -380,7 +382,8 @@ Sells devices, odds and ends, and medical stuff
 								/obj/item/weapon/reagent_containers/chem_disp_cartridge/dexalin/small	= TRADER_THIS_TYPE,
 								/obj/item/weapon/reagent_containers/hypospray/autoinjector/combatpain	= TRADER_THIS_TYPE,
 								/obj/item/sign/medipolma												= TRADER_THIS_TYPE,
-								/mob/living/carbon/human/blank											= TRADER_THIS_TYPE
+								/mob/living/carbon/human/blank											= TRADER_THIS_TYPE,
+								/obj/item/weapon/disk/limb/veymed										= TRADER_THIS_TYPE
 								)
 
 ///datum/trader/ship/mining     		Merged with trader/ship/trading_beacon/manufacturing

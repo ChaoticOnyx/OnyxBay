@@ -75,7 +75,9 @@ They sell generic supplies and ask for generic supplies.
 /datum/trader/ship/trading_beacon/mine
 	origin = "Mining Beacon"
 
-	possible_trading_items = list(/obj/item/weapon/ore										= TRADER_SUBTYPES_ONLY,
+	possible_trading_items = list(/obj/item/weapon/disk/limb/zenghu						    = TRADER_THIS_TYPE,
+								/obj/item/weapon/disk/limb/xion							    = TRADER_THIS_TYPE,
+								/obj/item/weapon/ore										= TRADER_SUBTYPES_ONLY,
 								/obj/item/stack/material/uranium/ten						= TRADER_THIS_TYPE,
 								/obj/item/stack/material/plasteel/fifty						= TRADER_THIS_TYPE,
 								/obj/item/stack/material/steel/fifty						= TRADER_THIS_TYPE,
