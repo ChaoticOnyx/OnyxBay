@@ -52,37 +52,34 @@ var/datum/robolimb/basic_robolimb
 
 
 /datum/robolimb/unbranded_tajaran
- 	company = "Unbranded - Tajaran"
- 	desc = "A simple robotic limb with feline design. Seems rather stiff."
- 	icon = 'icons/mob/human_races/cyberlimbs/unbranded/unbranded_tajaran.dmi'
- 	restricted_to = list(SPECIES_TAJARA)
-	 species_cannot_use = list(SPECIES_HUMAN, SPECIES_SKRELL, SPECIES_UNATHI, SPECIES_PROMETHEAN, SPECIES_DIONA, SPECIES_VOX)
+	company = "Unbranded - Tajaran"
+	desc = "A simple robotic limb with feline design. Seems rather stiff."
+	icon = 'icons/mob/human_races/cyberlimbs/unbranded/unbranded_tajaran.dmi'
+	restricted_to = list(SPECIES_TAJARA)
+	species_cannot_use = list(SPECIES_HUMAN, SPECIES_SKRELL, SPECIES_UNATHI, SPECIES_PROMETHEAN, SPECIES_DIONA, SPECIES_VOX)
 
 /datum/robolimb/unbranded_unathi
- 	company = "Unbranded - Unathi"
- 	desc = "A simple robotic limb with reptilian design. Seems rather stiff."
- 	icon = 'icons/mob/human_races/cyberlimbs/unbranded/unbranded_unathi.dmi'
- 	restricted_to = list(SPECIES_UNATHI)
-	 species_cannot_use = list(SPECIES_HUMAN, SPECIES_SKRELL, SPECIES_TAJARA, SPECIES_PROMETHEAN, SPECIES_DIONA, SPECIES_VOX)
+	company = "Unbranded - Unathi"
+	desc = "A simple robotic limb with reptilian design. Seems rather stiff."
+	icon = 'icons/mob/human_races/cyberlimbs/unbranded/unbranded_unathi.dmi'
+	restricted_to = list(SPECIES_UNATHI)
+	species_cannot_use = list(SPECIES_HUMAN, SPECIES_SKRELL, SPECIES_TAJARA, SPECIES_PROMETHEAN, SPECIES_DIONA, SPECIES_VOX)
 
 //NANOTRASEN
 /datum/robolimb/nanotrasen
 	company = "NanoTrasen"
 	desc = "A simple but efficient robotic limb, created by NanoTrasen."
 	icon = 'icons/mob/human_races/cyberlimbs/nanotrasen/nanotrasen_main.dmi'
-	unavailable_to_build = TRUE
 
 /datum/robolimb/nanotrasen_alt1
- 	company = "NanoTrasen Plus"
-	 desc = "A simple but efficient robotic limb, created by NanoTrasen."
- 	icon = 'icons/mob/human_races/cyberlimbs/nanotrasen/nanotrasen_alt1.dmi'
-	 unavailable_to_build = TRUE
+	company = "NanoTrasen Plus"
+	desc = "A simple but efficient robotic limb, created by NanoTrasen."
+	icon = 'icons/mob/human_races/cyberlimbs/nanotrasen/nanotrasen_alt1.dmi'
 
 /datum/robolimb/nanotrasen_tajaran
 	company = "NanoTrasen - Tajaran"
 	desc = "A simple but efficient robotic limb, created by NanoTrasen."
 	icon = 'icons/mob/human_races/cyberlimbs/nanotrasen/nanotrasen_tajaran.dmi'
-	unavailable_to_build = TRUE
 	restricted_to = list(SPECIES_TAJARA)
 	species_cannot_use = list(SPECIES_HUMAN, SPECIES_SKRELL, SPECIES_UNATHI, SPECIES_PROMETHEAN, SPECIES_DIONA, SPECIES_VOX)
 
@@ -90,7 +87,6 @@ var/datum/robolimb/basic_robolimb
 	company = "NanoTrasen - Unathi"
 	desc = "A simple but efficient robotic limb, created by NanoTrasen."
 	icon = 'icons/mob/human_races/cyberlimbs/nanotrasen/nanotrasen_unathi.dmi'
-	unavailable_to_build = TRUE
 	restricted_to = list(SPECIES_UNATHI)
 	species_cannot_use = list(SPECIES_HUMAN, SPECIES_SKRELL, SPECIES_TAJARA, SPECIES_PROMETHEAN, SPECIES_DIONA, SPECIES_VOX)
 
@@ -313,7 +309,6 @@ var/datum/robolimb/basic_robolimb
 	species_cannot_use = list(SPECIES_UNATHI, SPECIES_TAJARA, SPECIES_SKRELL, SPECIES_PROMETHEAN, SPECIES_DIONA, SPECIES_VOX)
 
 // DESIGN DISKS
-
 /obj/item/weapon/disk/limb
 	name = "Limb Blueprints"
 	desc = "A disk containing the blueprints for prosthetics."
@@ -326,9 +321,6 @@ var/datum/robolimb/basic_robolimb
 	..()
 	if(company)
 		name = "[company[1]] [initial(name)]"
-
-/obj/item/weapon/disk/limb/nanotrasen
-	company = list("NanoTrasen", "NanoTrasen Plus", "NanoTrasen - Tajaran", "NanoTrasen - Unathi")
 
 /obj/item/weapon/disk/limb/bishop
 	company = list("Bishop", "Bishop - Rook")
@@ -352,6 +344,5 @@ var/datum/robolimb/basic_robolimb
 	company = list("Zeng-Hu", "Zeng-Hu - Tajaran")
 
 // Rare ones
-
 /obj/item/weapon/disk/limb/ancient
 	company = list("Uesseka Prototyping Ltd.")
