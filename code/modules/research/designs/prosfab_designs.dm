@@ -111,7 +111,7 @@
 	build_path = /obj/item/organ/external/chest
 	time = 35
 	materials = list(MATERIAL_STEEL = 30000, MATERIAL_GLASS = 7500)
-	req_tech = list(TECH_ENGINEERING = 2, TECH_MATERIAL = 3, TECH_DATA = 3)
+	//req_tech = list(TECH_ENGINEERING = 2, TECH_MATERIAL = 3, TECH_DATA = 3)
 
 /datum/design/item/prosfab/pros/head
 	name = "Prosthetic Head"
@@ -119,7 +119,7 @@
 	build_path = /obj/item/organ/external/head
 	time = 30
 	materials = list(MATERIAL_STEEL = 18000, MATERIAL_GLASS = 3700)
-	req_tech = list(TECH_ENGINEERING = 2, TECH_MATERIAL = 3, TECH_DATA = 3)
+	//req_tech = list(TECH_ENGINEERING = 2, TECH_MATERIAL = 3, TECH_DATA = 3)
 
 /datum/design/item/prosfab/pros/l_arm
 	name = "Prosthetic Left Arm"
