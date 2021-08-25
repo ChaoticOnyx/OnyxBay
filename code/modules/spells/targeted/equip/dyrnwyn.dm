@@ -25,7 +25,7 @@
 	w_class = ITEM_SIZE_HUGE
 	slot_flags = SLOT_BELT
 	damtype = BRUTE
-	clumsy_unaffected = FALSE
+	clumsy_unaffected = TRUE
 	active_force = 36
 	active_throwforce = 35
 	force = 30

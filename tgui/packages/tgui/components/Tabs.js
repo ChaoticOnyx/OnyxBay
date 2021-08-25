@@ -4,12 +4,12 @@
  * @license MIT
  */
 
-import { canRender, classes } from 'common/react';
-import { computeBoxClassName, computeBoxProps } from './Box';
-import { Icon } from './Icon';
+import { canRender, classes } from 'common/react'
+import { computeBoxClassName, computeBoxProps } from './Box'
+import { Icon } from './Icon'
 
 export const Tabs = (props) => {
-  const { className, vertical, fill, fluid, children, ...rest } = props;
+  const { className, vertical, fill, fluid, children, ...rest } = props
   return (
     <div
       className={classes([
@@ -18,13 +18,13 @@ export const Tabs = (props) => {
         fill && 'Tabs--fill',
         fluid && 'Tabs--fluid',
         className,
-        computeBoxClassName(rest),
+        computeBoxClassName(rest)
       ])}
       {...computeBoxProps(rest)}>
       {children}
     </div>
-  );
-};
+  )
+}
 
 const Tab = (props) => {
   const {
@@ -36,7 +36,7 @@ const Tab = (props) => {
     rightSlot,
     children,
     ...rest
-  } = props;
+  } = props
   return (
     <div
       className={classes([
@@ -45,11 +45,11 @@ const Tab = (props) => {
         'Tab--color--' + color,
         selected && 'Tab--selected',
         className,
-        ...computeBoxClassName(rest),
+        ...computeBoxClassName(rest)
       ])}
       {...computeBoxProps(rest)}>
-      {(canRender(leftSlot) && <div className='Tab__left'>{leftSlot}</div>)
-        || (!!icon && (
+      {(canRender(leftSlot) && <div className='Tab__left'>{leftSlot}</div>) ||
+        (!!icon && (
           <div className='Tab__left'>
             <Icon name={icon} />
           </div>
@@ -57,7 +57,7 @@ const Tab = (props) => {
       <div className='Tab__text'>{children}</div>
       {canRender(rightSlot) && <div className='Tab__right'>{rightSlot}</div>}
     </div>
-  );
-};
+  )
+}
 
-Tabs.Tab = Tab;
+Tabs.Tab = Tab

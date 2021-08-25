@@ -14,7 +14,6 @@
 	var/active_outer_range = 1.6
 	var/brightness_color
 	var/needs_blocking = TRUE
-	var/clumsy_unaffected = FALSE
 	var/activate_sound = 'sound/weapons/saberon.ogg'
 	var/deactivate_sound = 'sound/weapons/saberon.ogg'
 
